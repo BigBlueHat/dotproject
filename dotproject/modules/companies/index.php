@@ -64,18 +64,30 @@ if (isset( $_GET['tab'] )) {
 }
 $companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ), 0 );
 
-function getCompanyTypeID($type) {
+/*function getCompanyTypeID($type) {
 	global $types;
 	$arr = array_keys($types, $type);
 	return $arr[0];
 }
 
-$tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
-$companiesType = $tabTypes[$companiesTypeTab];
+$tabTypes = array();
+foreach($types as $type_id => $type){
+	$tabTypes[] = $type_id;
+}
+*/
+// $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
+$companiesType = $companiesTypeTab;
 
 $tabBox = new CTabBox( "?m=companies", "{$AppUI->cfg['root_dir']}/modules/companies/", $companiesTypeTab );
-$tabBox->add( 'vw_companies', 'Clients' );
+foreach($types as $type_name){
+	$tabBox->add('vw_companies', $type_name);
+}
+$tabBox->add('vw_companies', 'All Companies');
+
+/*$tabBox->add( 'vw_companies', 'Clients' );
 $tabBox->add( 'vw_companies', 'Suppliers' );
 $tabBox->add( 'vw_companies', 'All Companies' );
+*/
+
 $tabBox->show();
 ?>

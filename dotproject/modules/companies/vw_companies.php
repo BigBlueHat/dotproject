@@ -37,7 +37,7 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 		OR (permission_grant_on = 'companies' and permission_item = company_id)
 		)"
 	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
-	. ($companiesType ? " AND company_type = $companiesType" : "");
+	. ($companiesType < count($types) ? " AND company_type = $companiesType" : "");
 	
 if($search_string != ""){
 	$sql .= " AND company_name LIKE '%$search_string%' ";
