@@ -361,7 +361,7 @@
 			$q->addInsert('field_datatype', $field_datatype);
 			$q->addInsert('field_order', $field_order);
 			$q->addInsert('field_name', $field_name);
-			$q->addInsert('field_description', )$field_description;
+			$q->addInsert('field_description', $field_description);
 			$q->addInsert('field_extratags', $field_extratags);
 
 
