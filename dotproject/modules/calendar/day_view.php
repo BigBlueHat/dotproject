@@ -12,8 +12,8 @@ $company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
 
 $event_filter = $AppUI->checkPrefState('CalIdxFilter', @$_REQUEST['event_filter'], 'EVENTFILTER', 'my');
 
-$AppUI->setState( 'CompVwTab', dPgetParam($_GET, 'tab', $tab) );
-$tab = $AppUI->getState( 'CompVwTab' ,'0');
+$AppUI->setState( 'CalDayViewTab', dPgetParam($_GET, 'tab', $tab) );
+$tab = $AppUI->getState( 'CalDayViewTab' ,'0');
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
