@@ -88,19 +88,11 @@ function column2array ($query) {
 
 }
 
-/* common page header */
-function common_header ($title) {   global $CONFIG;
-
-}
-
-/* common page footer */
-function common_footer () {}
-
 /* create drop-down box */
 function create_selectbox ($name, $options, $selected) {
 	$output= "";
 	
-    $output .= "<select name=\"$name\" onChange=\"document.form.submit()\">\n";
+    $output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
 	while(list($key, $val) = each($options)) {
 		$output .= "<option value=\"$key\"";
 		if ($key == $selected) {

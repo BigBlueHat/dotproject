@@ -11,9 +11,6 @@ if(empty($sort_column)) $sort_column = "";
 /* set title */
 $title = "Search Tickets";
 
-/* start page */
-common_header($title);
-
 /* start form */
 print("<form action=index.php?m=ticketsmith&a=search method=\"post\">\n");
 
@@ -145,8 +142,4 @@ if ($search_pattern) {
 
 /* end form */
 print("</form>\n");
-
-/* end page */
-common_footer();
-
 ?>

@@ -48,10 +48,6 @@ if (@$comment) {
 
 else {
 
-    /* start page */
-    common_header($title);
-
-
     /* start table */
 	print("<table class=maintable bgcolor=\"#eeeeee\">\n");
     print("<tr>\n");
@@ -96,10 +92,6 @@ else {
 
     /* end form */
     print("</form>\n");
-
-    /* end page */
-    common_footer();
-    
 }
 
 ?>

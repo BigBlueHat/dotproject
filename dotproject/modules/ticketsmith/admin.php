@@ -68,9 +68,6 @@ switch ($action) {
         }
 }
 
-/* start page */
-common_header($title);
-
 /* start form */
 print("<form action=\"$PHP_SELF\" method=\"post\">\n");
 
@@ -108,8 +105,4 @@ print("</table>\n");
 
 /* end form */
 print("</form>\n");
-
-/* end page */
-common_footer();
-
 ?>

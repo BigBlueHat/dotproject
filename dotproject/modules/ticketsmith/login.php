@@ -8,9 +8,6 @@ require("modules/ticketsmith/common.inc.php");
 /* set title */
 $title = "Ticketsmith Login";
 
-/* start page */
-common_header($title);
-
 /* start form */
 print("<form name=\"form\" action=\"$PHP_SELF\" method=\"post\">\n");
 
@@ -37,8 +34,4 @@ print("</form>\n");
 print("<script language=\"javascript\">\n");
 print("\tdocument.form.login_attempt.focus();\n");
 print("</script>\n");
-
-/* end page */
-common_footer();
-
 ?>
