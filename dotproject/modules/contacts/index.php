@@ -81,11 +81,11 @@ $tdw = floor( 100 / $carrWidth );
 $a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
 $a2z .= "\n<tr>";
 $a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
-$a2z .= '<td><a href="./index.php?m=admin&where=0">' . $AppUI->_('All') . '</a></td>';
+$a2z .= '<td><a href="./index.php?m=contacts&where=0">' . $AppUI->_('All') . '</a></td>';
 for ($c=65; $c < 91; $c++) {
 	$cu = chr( $c );
 	$cell = strpos($let, "$cu") > 0 ?
-		"<a href=\"?m=admin&where=$cu\">$cu</a>" :
+		"<a href=\"?m=contacts&where=$cu\">$cu</a>" :
 		"<font color=\"#999999\">$cu</font>";
 	$a2z .= "\n\t<td>$cell</td>";
 }
