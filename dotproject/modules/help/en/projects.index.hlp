@@ -4,6 +4,7 @@
 <p>This page shows you a list of the projects that have been defined. It displays a variety of information about Projects listed under <b>Active Projects</b>, <b>Completed Projects</b>, and <b>Archived Projects</b>.</p>
 
 <ul>
+	<li>Proposed Projects - those that have been proposed and have not been started</li>
 	<li>Active Projects - those that are less than 100% complete</li>
 	<li>Completed Projects - those that are 100% complete</li>
 	<li>Archived Projects - those marked as archived</li>
@@ -43,12 +44,14 @@
 
 
 <h1>Active, Completed and Archived Projects Screens</h1>
-<p>When you first launch a new installation of DotProject, there will not be any entries for <b>Active, Completed</b> or <b>Archived Projects.</b> This is expected because you haven't created any <b>Projects</b> or <b>Project Tasks</b> yet.</p>
+<p>When you first launch a new installation of DotProject, there will not be any entries for <b>Proposed, Active, Completed</b> or <b>Archived Projects.</b> This is expected because you haven't created any <b>Projects</b> or <b>Project Tasks</b> yet.</p>
 
 <p>However, once you begin creating <b>Projects</b> and <b>Tasks</b>, the fields for each of the <b>Project Screens</b> will fill with data. In the following descriptions, we assume you have created series of <b>Projects</b> and associated <b>Tasks</b>.</p>
 
 <br />
 
+<h2>Proposed Projects</h2>
+<p>The <b>Proposed Projects Screen</b> lists the "Progress", "Name", "Owner", and "Tasks" for all of the <b>Proposed Projects</b>. This can be changed by editting the project and change the current status to anotherone that is not "Proposed".</p>
 
 <h2>Active Projects</h2>
 <p>The <b>Active Projects Screen</b> lists the "Progress", "Name", "Owner", "Tasks (My)", and "Due Date" for all of the <b>Active Projects</b>. By default, the <b>Projects</b> are listed in the order that they are created. However, you can easily <b>sort</b> the <b>Projects</b> by clicking on the <b>Name, Owner, Tasks (My), </b> or <b>Due Date</b> headings.</p>

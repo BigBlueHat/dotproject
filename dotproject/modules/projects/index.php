@@ -4,6 +4,20 @@ $AppUI->savePlace();
 // load the companies class to retrieved denied companies
 require_once( $AppUI->getModuleClass( 'companies' ) );
 
+// Let's update project status!
+if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && isset($_GET["project_id"]) ){
+	$projects_id = $_GET["project_id"]; // This must be an array
+
+	foreach($projects_id as $project_id){
+		$sql = "UPDATE projects
+		        SET project_status = '{$_GET['project_status']}'
+				WHERE project_id   = '$project_id'";
+		db_exec( $sql );
+		echo db_error();
+	}
+}
+// End of project status update
+
 // retrieve any state parameters
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjIdxTab', $_GET['tab'] );
@@ -31,7 +45,7 @@ SELECT
         project_id, project_active, project_status, project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_actual_end_date,
 	project_color_identifier,
-	project_company, company_name,
+	project_company, company_name, project_status,
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
 	user_username,
@@ -81,7 +95,8 @@ $titleBlock->show();
 
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
-$tabBox->add( 'vw_idx_active', 'Active Projects' );
+$tabBox->add( 'vw_idx_proposed', $AppUI->_('Proposed Projects') );
+$tabBox->add( 'vw_idx_active'  , 'Active Projects' );
 $tabBox->add( 'vw_idx_complete', 'Completed Projects' );
 $tabBox->add( 'vw_idx_archived', 'Archived Projects' );
 $tabBox->show();
