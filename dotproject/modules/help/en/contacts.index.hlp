@@ -47,3 +47,15 @@ could <strong>deny access</strong> to this module to specific users.</p>
 <p>To date, the <strong>contacts module</strong> has not received much attention from current development team, and 
 will probably be rewritten as part of an amalgamated <strong>user</strong> or <strong>company</strong> submodule. If you 
 have suggestions on how you think the <strong>contacts module</strong> should function, please send us your ideas.</p>
+
+<h3>Searching within contacts</h3>
+<p>If you want to look for especific information, you can type it in the search box. The search will be made on the following fields:</p>
+<ul>
+	<li>First name</li>
+	<li>Last name</li>
+	<li>Company name</li>
+	<li>Display name</li>
+	<li>Email</li>
+	<li>Notes</li>
+</ul>
+<p>The search filter will be mantained until you click on the <b>reset search</b> button.</p>
