@@ -1,3 +1,13 @@
+2003-09-06 06:51  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.php
+- Minor change to use standard not equal syntax.
+
+2003-09-06 04:05  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-05 20:59  (jcgonz)
 ---------------------------------
 modules/tasks/vw_log_update.php
@@ -488,16 +498,6 @@ modules/tasks/todo.php
 - Corrected a short php tag <? to <?php
 
 2003-07-08 18:25  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Updated a short php tag <?
-
-2003-07-07 01:24  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-07-07 01:15  (kripper)
 ...
 
 (This file has been wrapped)
