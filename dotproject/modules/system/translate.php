@@ -18,7 +18,8 @@ $modules = array(
 	'common',
 	'companies',
 	'forums',
-	'help'
+	'help',
+	'system'
 );
 
 ob_start();
@@ -57,12 +58,12 @@ ksort($trans);
 <form action="?m=system&a=translate" method="post" name="modlang">
 <tr>
 	<td><img src="./images/icons/world.gif" alt="" border="0"></td>
-	<td nowrap valign="top"><span class="title">Translation Management</span></td>
-	<td align="right" width="100%" nowrap>Module:</span></td>
+	<td nowrap valign="top"><span class="title"><?php echo $AppUI->_( 'Translation Management' );?></span></td>
+	<td align="right" width="100%" nowrap><?php echo $AppUI->_( 'Module' );?>:</span></td>
 	<td><?php
 	echo arraySelect( $modules, 'module', 'size="1" class="text" onchange="document.modlang.submit();"', $module );
 	?></td>
-	<td align="right" width="100%" nowrap>&nbsp;Language:</span></td>
+	<td align="right" width="100%" nowrap>&nbsp;<?php echo $AppUI->_( 'Language' );?>:</span></td>
 	<td><?php
 	echo arraySelect( $AppUI->locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang );
 	?></td>
@@ -72,16 +73,16 @@ ksort($trans);
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td nowrap><a href="?m=system">System Admin</a></td>
+	<td nowrap><a href="?m=system"><?php echo $AppUI->_( 'System Admin' );?></a></td>
 </tr>
 </table>
 
 <table width="98%" border="0" cellpadding="1" cellspacing="1" class="tbl">
 <tr>
-	<th width="15%" nowrap>Abbreviation</th>
-	<th width="40%" nowrap>English String</th>
-	<th width="40%" nowrap><?php echo $AppUI->locales[$lang];?> String</th>
-	<th width="5%" nowrap>Delete</th>
+	<th width="15%" nowrap><?php echo $AppUI->_( 'Abbreviation' );?></th>
+	<th width="40%" nowrap>English <?php echo $AppUI->_( 'String' );?></th>
+	<th width="40%" nowrap><?php echo $AppUI->locales[$lang];?> <?php echo $AppUI->_( 'String' );?></th>
+	<th width="5%" nowrap><?php echo $AppUI->_( 'delete' );?></th>
 </tr>
 <form action="?m=system&a=translate_save" method="post" name="editlang">
 <input type="hidden" name="module" value="<?php echo $modules[$module];?>">
@@ -137,7 +138,7 @@ foreach ($trans as $k => $langs){
 ?>
 <tr>
 	<td colspan="4" align="right">
-		<input type="submit" value="save changes" class="button">
+		<input type="submit" value="<?php echo $AppUI->_( 'submit' );?>" class="button">
 	</td>
 </tr>
 </form>
