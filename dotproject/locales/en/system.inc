@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"bg"=>"Bulgarian",
 "Abbreviation",
 "All Events",
 "Are you sure you want to delete this?",
