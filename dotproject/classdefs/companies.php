@@ -37,7 +37,7 @@ class CCompany {
 
 	function bind( $hash ) {
 		if (!is_array( $hash )) {
-			return "Company::bind failed";
+			return get_class( $this )."::bind failed";
 		} else {
 			bindHashToObject( $hash, $this );
 			return NULL;
@@ -55,7 +55,7 @@ class CCompany {
 	function store() {
 		$msg = $this->check();
 		if( $msg ) {
-			return "Company::store-check failed";
+			return get_class( $this )."::store-check failed";
 		}
 		if( $this->company_id ) {
 			$ret = db_updateObject( 'companies', $this, 'company_id' );
@@ -63,7 +63,7 @@ class CCompany {
 			$ret = db_insertObject( 'companies', $this, 'company_id' );
 		}
 		if( !$ret ) {
-			return "Company::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br>" . db_error();
 		} else {
 			return NULL;
 		}
@@ -76,7 +76,7 @@ class CCompany {
 		if (db_num_rows( $res )) {
 			return "You cannot delete a company that has projects associated with it.";
 		} else{
-			$sql = "DELETE from COMPANIES where COMPANY_ID = $this->company_id";
+			$sql = "DELETE FROM companies WHERE company_id = $this->company_id";
 			if (!db_exec( $sql )) {
 				return db_error();
 			} else {
