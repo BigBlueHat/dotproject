@@ -247,12 +247,13 @@ for ($x=0; $x < $nums; $x++) {
 
 	//add information about assigned users into the page output
 	$ausql = "SELECT ut.user_id,
-	u.user_username, contact_email
+	u.user_username, contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent
 	FROM user_tasks ut
 	LEFT JOIN users u ON u.user_id = ut.user_id
         LEFT JOIN contacts ON u.user_contact = contact_id
-	WHERE ut.task_id=".$row['task_id'];
-	
+	WHERE ut.task_id=".$row['task_id']."
+        GROUP BY ut.user_id";
+
 	$assigned_users = array ();
 	$paurc = db_exec( $ausql );
 	$nnums = db_num_rows( $paurc );
@@ -264,11 +265,15 @@ for ($x=0; $x < $nums; $x++) {
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
+// get Users with all Allocation info (e.g. their freeCapacity)
+$tempoTask = new CTask();
+$userAlloc = $tempoTask->getAllocation("user_id");
+
 //This kludgy function echos children tasks as threads
 
 if (! function_exists('showtask') ) {
 function showtask( &$a, $level=0, $is_opened = true ) {
-	global $AppUI, $done, $query_string, $durnTypes, $show_all_assignees;
+	global $AppUI, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
 
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$df .= " " . $AppUI->getPref('TIMEFORMAT');
@@ -331,14 +336,19 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 			$s .= '<td align="center">';
 			foreach ( $assigned_users as $val) {
 				//$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
-				$a_u_tmp_array[] = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'>".$val['user_username']."</a>";
+                                $aInfo = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'";
+                                $aInfo .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$val['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$val['user_id']]['freeCapacity'].'%'.'">';
+                                $aInfo .= $val['user_username']." (".$val['perc_assignment']."%)</a>";
+				$a_u_tmp_array[] = $aInfo;
 			}
 			$s .= join ( ', ', $a_u_tmp_array );
 			$s .= '</td>';
 		} else {
 			$s .= '<td align="center" nowrap="nowrap">';
 //			$s .= $a['assignee_username'];
-			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'>".$assigned_users[0]['user_username'] . '</a>';
+			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'";
+                        $s .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[0]['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[0]['user_id']]['freeCapacity'].'%'.'">';
+                        $s .= $assigned_users[0]['user_username'] .' (' . $assigned_users[0]['perc_assignment'] .'%)</a>';
 			if($a['assignee_count']>1){
                         $id = $a['task_id'];
 			$s .= " <a href=\"javascript: void(0);\"  onClick=\"toggle_users('users_$id');\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
@@ -347,8 +357,10 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 
                                 $a_u_tmp_array[] = $assigned_users[0]['user_username'];
 				for ( $i = 1; $i < count( $assigned_users ); $i++) {
-					$a_u_tmp_array[] = $assigned_users[$i]['user_username'];
-                                        $s .= '<br /><a href="?m=admin&a=viewuser&user_id="' . $assigned_users[$i]['user_id'] . '">' . $assigned_users[$i]['user_username'] . '</a>';
+                                        $a_u_tmp_array[] = $assigned_users[$i]['user_username'];
+                                        $s .= '<br /><a href="?m=admin&a=viewuser&user_id=';
+                                        $s .=  $assigned_users[$i]['user_id'] . '" title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[$i]['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[$i]['user_id']]['freeCapacity'].'%'.'">';
+                                        $s .= $assigned_users[$i]['user_username'] .' (' . $assigned_users[$i]['perc_assignment'] .'%)</a>';
 				}
                         $s .= '</span>';
 			}
