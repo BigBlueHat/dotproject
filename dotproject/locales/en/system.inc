@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"bg"=>"Bulgarian",
 "Abbreviation",
 "All Events",
 "Are you sure you want to delete this?",
@@ -95,39 +94,53 @@
 "active",
 "added",
 "admin_username_title"=>"Admin Username",
-"admin_username_tooltip"=>"Username for the admin user",
+"admin_username_tooltip"=>"Nominate the login name of the Administrative User.",
 "app_item_title"=>"dotProject Extended Sessions",
-"auth_group_title"=>"Authentication Settings",
-"auth_method_title"=>"Authentication Method",
-"auth_method_tooltip"=>"Select the style of authentication to use.",
+"auth_group_title"=>"User Authentication Settings",
+"auth_method_title"=>"User Authentication Method",
+"auth_method_tooltip"=>"Select the User authentication method that you wish to use.",
+"bg"=>"Bulgarian",
 "cal_day_end_title"=>"Calendar End Hour",
 "cal_day_end_tooltip"=>"End hour, in 24 hour format.",
 "cal_day_increment_title"=>"Calendar Minute Increment",
-"cal_day_increment_tooltip"=>"Calendar Minute Increment in Minutes.",
+"cal_day_increment_tooltip"=>"Minute increment setting for the Calendar Time Display",
 "cal_day_start_title"=>"Calendar Start Hour",
-"cal_day_start_tooltip"=>"Start hour, in 24 hour format.",
-"cal_day_view_show_minical_title"=>"Show MiniCals in Day View?",
-"cal_day_view_show_minical_tooltip"=>"Defines whether in day view the minicalendars are shown or not.",
+"cal_day_start_tooltip"=>"Use this option to indicate the starting hour for your calendar day - use 24 hour format.",
+"cal_day_view_show_minical_title"=>"Show MiniCals in Day View",
+"cal_day_view_show_minical_tooltip"=>"Include MiniCalendar Displays in the Day View.",
 "cal_working_days_title"=>"Calendar Working Days",
-"cal_working_days_tooltip"=>"Days of week that the company works: 0=Sunday.",
-"check_overallocation_title"=>"Check Overallocation?",
-"check_overallocation_tooltip"=>"Enable or disable the overallocation checkup",
-"check_tasks_dates_title"=>"Check Tasks\' Dates?",
-"check_tasks_dates_tooltip"=>"Enable if you want to check task\'s start and end dates. Disable if you want to be able to leave start or end dates empty.",
+"cal_working_days_tooltip"=>"Establish the required working days for your company in a comma separated list where 0 is Sunday.  For example if you work Monday through to Friday your list would be 1,2,3,4,5.  If you work Friday through to Sunday your list would be 5,6,0
+",
+"check_overallocation_title"=>"Overallocation Checking",
+"check_overallocation_tooltip"=>"The over allocation component of dotProject is an incomplete function which has been developed.  It is the basis of a system that will allow Project Managers to establish the maximum % of time that a resource can be allocated to a particular task for a particular period of time.   ",
+"check_tasks_dates_title"=>"Check Task Dates",
+"check_tasks_dates_tooltip"=>"If this option is turned on the start and end dates will be required in all tasks before they can be added.",
 "cn"=>"Chinese",
 "company_name_title"=>"Company Name",
-"company_name_tooltip"=>"Fill in the name of your organization.",
+"company_name_tooltip"=>"The company name setting is used to stipulate what will appear in the top name of the login box on your site.",
 "configure",
 "cs"=>"Czech",
 "currency_symbol_title"=>"Currency Symbol",
-"currency_symbol_tooltip"=>"Localisation of the currency-symbol. For the EURO sign symbol set to \'&#8364;\' Check http://www.w3.org/TR/html401/sgml/entities.html for information about html special characters.",
+"currency_symbol_tooltip"=>"Whilst we currently have locale support built in there is still an extra facility for setting Currency Symbol. 
+
+Localisation of the currency-symbol. For the EURO sign symbol set to \'&#8364;\' 
+
+Check http://www.w3.org/TR/html401/sgml/entities.html for information about html special characters.",
 "daily_working_hours_title"=>"Daily Working Hours",
-"daily_working_hours_tooltip"=>"The number of *working* hours in a day.",
+"daily_working_hours_tooltip"=>"This setting establishes the standard number of hours in a working day for your installation, for example 8.0",
 "de"=>"German",
-"debug_title"=>"Debugging Intensity",
-"debug_tooltip"=>"Set debug > 0 to provide more debug information in analysing errors.
-Set this to 1 to provide the best compromise between normal operation and error tracking information.
-Set to 10 to get complete debugging information.",
+"debug_title"=>"Debug Level",
+"debug_tooltip"=>"Turn this option on to display debug messages as well as log them.
+
+WARNING:  Setting to true, if the debug level is greater than 1, can cause dotProject to fail on messages that are technically only Warnings and therefore can be ignored.
+
+Normally errors will be displayed so this should only be set to track warnings and debug messages if you do not have access to the PHP log files.
+
+Anything other than 0 will provide debugging information.
+
+Level 1 is probably the most reasonable compromise between normal operation and error tracking information.
+
+Set to 10 to get complete debugging information but be aware that this will generate large log files and/or debug listings very very quickly.",
 "default user preferences",
 "default_view_a_title"=>"Default Submodule",
 "default_view_a_tooltip"=>"If you want to define your own start/default page set this.
@@ -139,32 +152,33 @@ If the value is empty then the first listed module becomes the default view.",
 "default_view_tab_tooltip"=>"If you want to define your own start/default page set this.
 Specifies a tabbed subview. 0=first tab, ...",
 "deleted",
-"direct_edit_assignment_title"=>"Direct Edit Assignments?",
-"direct_edit_assignment_tooltip"=>"Set to true if you want to be able to directly edit task assignment in the big tasks lists.
-Set to false if you only want to have *clean* task lists",
+"direct_edit_assignment_title"=>"Edit Multiple Task Assignments",
+"direct_edit_assignment_tooltip"=>"Turning this option on will allow you to edit task assignments and other options (per task block) in the main Task Module view.
+
+",
 "disabled",
-"display_debug_title"=>"Show Debug Messages?",
+"display_debug_title"=>"Show Debug Messages",
 "display_debug_tooltip"=>"Set to true to display debug messages as well as log them. WARNING: Setting to true can cause dotproject to fail on warnings if the debug level is set greater than 1.
 Normally errors will be displayed so this should only be
 set to track warnings and debug messages if you do not
 have access to the PHP log files.",
 "edit",
 "email_prefix_title"=>"Email Prefix",
-"email_prefix_tooltip"=>"Text to be inserted at the beginning of email subjects sent from dotProject",
+"email_prefix_tooltip"=>"This setting is used to stipulate the subject line prefix for all email that dotProject sends out.",
 "en"=>"English",
-"enable_gantt_charts_title"=>"Enable Gantt Charts?",
-"enable_gantt_charts_tooltip"=>"Enable if you want to support gantt charts.",
+"enable_gantt_charts_title"=>"Enable Gantt Charts",
+"enable_gantt_charts_tooltip"=>"The option to enable or disable Gantt charts allows you to turn on the function or turn off the function, depending upon whether you wish to use Gantt charts on your site. ",
 "es"=>"Spanish",
-"files_ci_preserve_attr_title"=>"Preserve File Attributes during CI?",
-"files_ci_preserve_attr_tooltip"=>"Keep file attributes during CI operation. If this is true, you won\'t be able to change file type, project or task of a file during CI.",
-"files_show_versions_edit_title"=>"Show Versions Edit?",
+"files_ci_preserve_attr_title"=>"Preserve File Settings on CI",
+"files_ci_preserve_attr_tooltip"=>"Keep file attributes during Check In.  If this is on, you will not t be able to change file type, project or task of a file during the check in.",
+"files_show_versions_edit_title"=>"Show Versions Edit",
 "files_show_versions_edit_tooltip"=>"Whether to show an edit icon in the html table with the previous file versions.",
 "fr"=>"French",
 "hidden",
 "host_locale_title"=>"Host Locale",
-"host_locale_tooltip"=>"Localisation/language of the login screen",
+"host_locale_tooltip"=>"This option indicates the localisation or language setting for your site.",
 "host_style_title"=>"Default User Interface Style",
-"host_style_tooltip"=>"Default User Interface Style",
+"host_style_tooltip"=>"Default User Interface Style - as set in the User Preferences area, however, you will need to type the name of the default in here.  If you need a prompt - check the dropdown in the User preferences and repeat that name here.",
 "index_max_file_size_title"=>"Maximum File Size for Indexing",
 "index_max_file_size_tooltip"=>"File Indexing for Searching:
 Large Files may cause timeout problems during exhausting indexing process.
@@ -176,8 +190,9 @@ A negative value defines the absence of a limit (index all files).",
 "it"=>"Italian",
 "ja"=>"Japanese",
 "jpLocale_title"=>"jpGraph Locale",
-"jpLocale_tooltip"=>"Sets the locale for the jpGraph library.  Leave blank if you experience problems.",
-"l"=>"",
+"jpLocale_tooltip"=>"Use this option to set a locale for jpGraph if it is required.
+
+jpGraph is the third party package that is used throughout dotProject to create graphics or charts (eg the Gantt chart).  Leave blank if you experience problems.",
 "ldap_allow_login_title"=>"LDAP also allows standard login",
 "ldap_allow_login_tooltip"=>"SQL based users will also be allowed to login",
 "ldap_base_dn_title"=>"LDAP Base DN",
@@ -195,17 +210,18 @@ A negative value defines the absence of a limit (index all files).",
 "ldap_user_filter_tooltip"=>"User Filter to use for determining matching users on LDAP queries.  Check with your site administrator for details.",
 "ldap_version_title"=>"LDAP Version",
 "ldap_version_tooltip"=>"LDAP Version that the LDAP host understands. If unsure, leave at the default of 3.",
-"link_tickets_kludge_title"=>"Allow Tickets Relinking?",
-"link_tickets_kludge_tooltip"=>"Set to true if you need to be able to relink tickets to an arbitrary parent. Useful for email-generated tickets.",
+"link_tickets_kludge_title"=>"Allow Ticket Relinking",
+"link_tickets_kludge_tooltip"=>"Having this option turned on will allow you to relink tickets to an arbitrary parent in Ticketsmith.  Could be useful for email-generated tickets.",
 "locale_alert_title"=>"Translation Alert String",
-"locale_alert_tooltip"=>"The string appended to untranslated strings or unfound keys.",
-"locale_warn_title"=>"Translation Warning?",
-"locale_warn_tooltip"=>"Warn when a translation is not found (for developers and translators)?",
-"log_changes_title"=>"Log Changes?",
-"log_changes_tooltip"=>"Enable if you want to log changes using the history module.",
-"mail_auth_title"=>"Host requires login?",
+"locale_alert_tooltip"=>"The string appended to untranslated strings or unfound keys if Translation Warning is turned on.",
+"locale_warn_title"=>"Translation Warning",
+"locale_warn_tooltip"=>"Display a warning in the User Interface when a translated item is not found.",
+"log_changes_title"=>"Log Changes",
+"log_changes_tooltip"=>"This option allows you to nominate whether you wish to Log Changes in the history module automatically.
+",
+"mail_auth_title"=>"Host requires login",
 "mail_auth_tooltip"=>"Some SMTP hosts require authentication, if yours does you will need to set this and provide a username and password",
-"mail_defer_title"=>"Queue Email for later sending?",
+"mail_defer_title"=>"Queue Email for later sending",
 "mail_defer_tooltip"=>"Check this to queue email for later sending.  An entry will be made in the Event Queue.  You will need to either set the Scan Event Queue option in Session Handling or create a cron job to call:
 
 wget -O- http://your.domain/dotproject/queuescanner.php",
@@ -223,7 +239,7 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "mail_user_title"=>"SMTP Username",
 "mail_user_tooltip"=>"The username to use when authenticating to your SMTP server",
 "page_title_title"=>"Page Title",
-"page_title_tooltip"=>"Fill in the browser title for the web dotProject webpages.",
+"page_title_tooltip"=>"Stipulate what will appear on the top line of the browser - before the browser name. ",
 "parser_application/msword_title"=>"MS Word Indexing Parser",
 "parser_application/msword_tooltip"=>"Location for the MS Word File Indexing Parser.",
 "parser_application/pdf_title"=>"PDF Indexing Parser",
@@ -232,8 +248,9 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "parser_default_tooltip"=>"Location for the Default File Indexing Parser, e.g. /usr/bin/strings",
 "parser_text/html_title"=>"Html File Indexing Parser",
 "parser_text/html_tooltip"=>"Location for the Html File Indexing Parser, e.g. /usr/bin/strings",
-"password_min_len_title"=>"Minimal Password Length",
-"password_min_len_tooltip"=>"Set minimal password length when creating new users, this can NOT be longer than the length of the column in DB",
+"password_min_len_title"=>"Minimum Password Length",
+"password_min_len_tooltip"=>"Establish the minimum length of any password entry in dotProject.  This can NOT be longer than the length of the column in DB
+",
 "php_item_title"=>"PHP Default",
 "pl"=>"Polish",
 "pn_item_title"=>"PostNuke",
@@ -243,15 +260,17 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "pt_br"=>"Portuguese Brazillian",
 "record types",
 "remove",
-"restrict_color_selection_title"=>"Restrict Colour Selection?",
-"restrict_color_selection_tooltip"=>"Set to true will cause the color selection dialog for projects to only provide a text list of
-selections to choose from, as defined in as sysvalues.
-Set to false will provide a color selection palette for selection of arbitrary colors.
-Set this to true if you would like to have the project colors correlate with a specific meaning.",
-"restrict_task_time_editing_title"=>"Restrict Task Time Editing?",
-"restrict_task_time_editing_tooltip"=>"If you want only to enable task owner, project owner or sysadmin to edit already created task time related information,
-just set to *true*.",
-"session_gc_scan_queue_title"=>"Scan Event Queue on Session Garbage Collection?",
+"restrict_color_selection_title"=>"Restrict Project Colour Selection",
+"restrict_color_selection_tooltip"=>"Used in conjuction with the System Value Look up option \"ProjectColors\" you can use this setting to control the project colour selection options accessible by all users on this system.
+
+If you turn this option on then project creators will only be able to select from the colour options defined in the System Value Lookup outlined above.
+
+If you turn this option off then project creators will be able to access the default system presets and the full colour pallette.
+",
+"restrict_task_time_editing_title"=>"Restrict Task Time Editing",
+"restrict_task_time_editing_tooltip"=>"Turned on, this option will restrict the editing of task time settings to the task owner, the project owner or the system administration only.
+",
+"session_gc_scan_queue_title"=>"Scan Event Queue on Session Garbage Collection",
 "session_gc_scan_queue_tooltip"=>"If using deferred email or any other event queue, setting this causes the session handler to check the queue when it garbage collects the session.  This is an option to using an external program to call the queue scanner.",
 "session_group_title"=>"Session Handling Settings",
 "session_handling_title"=>"Session Handler",
@@ -265,21 +284,28 @@ Values are in seconds unless followed by a letter: h = hours, d = days, m = mont
 You can only have 1 character within a string, so 2d4h is NOT valid, but 28h is.",
 "session_max_lifetime_title"=>"Session Maximum Lifetime",
 "session_max_lifetime_tooltip"=>"The maximum time a session can exist before it is trashed, regardless of how active it is.",
-"show_all_task_assignees_title"=>"Show All Task Assignees?",
-"show_all_task_assignees_tooltip"=>"Set to true if you want the task lists to show all assignees names. Set to false if you only want to display the first assignee and then a count of the rest the full list is still available on a mouse over.",
+"show_all_task_assignees_title"=>"Show All Task Assignees",
+"show_all_task_assignees_tooltip"=>"Set this option on if you wish to show all assignee names in the project task task list or off if you would prefer to see just the main assignee name and a count in brackets of the number of other assignees.
+",
 "show_all_tasks_title"=>"Show Other Users\' Tasks",
-"show_all_tasks_tooltip"=>"Enable if you want to be able to see other users\'s tasks",
+"show_all_tasks_tooltip"=>"Controls viewing of tasks that belong to other users.",
 "site_domain_title"=>"Site Domain",
-"site_domain_tooltip"=>"Fill in the domain name (only for visual purposes) for this application.",
+"site_domain_tooltip"=>"The Site Domain is used as a visual embelishment in required locations throughout dotProject and is not used as part of the email settings, site settings or any other component.  Set it to match your domain for consistency\'s sake.",
 "sl"=>"Slovenian",
 "smtp_item_title"=>"SMTP",
 "sql_item_title"=>"Standard dotProject",
-"syscfg_intro"=>"Please be careful by tweaking the following options. If you don\'t understand what you do leave the value as is. There are mouseover-tooltips and (?)-information popups with the fields for your assistance.",
+"syscfg_intro"=>"The following configuration variables have a direct impact on how your system functions.  
+
+If you adjust any of these options incorrectly this may affect the operation of your installation and restoring the setting may require external action.
+
+We would strongly suggest that if any of these items are not clearly understood that it would be safer to leave them as they are or check the code implications before proceeding.
+
+There are mouseover-tooltips and (?)-information popups with each of the fields that include as much information as we are able to provide.",
 "system admin",
 "system configuration",
 "updated",
-"username_min_len_title"=>"Minimal Username Length",
-"username_min_len_tooltip"=>"Set minimal user name length when creating new users, this can NOT be longer than the length of the column in DB",
+"username_min_len_title"=>"Minimum Username Length",
+"username_min_len_tooltip"=>"Establish the minimum length of any user names for dotProject.  This can NOT be longer than the length of the column in DB",
 "visible",
 "zh"=>"Chinese",
 "zh_tw"=>"Chinese (Taiwan)",
