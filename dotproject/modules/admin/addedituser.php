@@ -1,4 +1,4 @@
-<?php
+<?php /* ADMIN $Id$ */
 //add or edit a system user
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
 
