@@ -682,13 +682,53 @@ list_value varchar(250)
 
 # 20050302
 # ldap system config variables
-INSERT INTO config VALUES ('', 'auth_method', 'sql', '', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_host', 'localhost', '', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_port', '387', '', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_version', '3', '', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', '', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text'); 
+INSERT INTO config VALUES ('', 'auth_method', 'sql', 'auth', 'select'); 
+INSERT INTO config VALUES ('', 'ldap_host', 'localhost', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_port', '387', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_version', '3', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', 'ldap', 'text'); 
 
 # 20050302
 # PostNuke authentication variables
-INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', '', 'checkbox');
+INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', 'auth', 'checkbox');
+
+# 20050302
+# New list support for config variables
+CREATE TABLE `config_list` (
+`config_list_id` integer not null auto_increment,
+`config_id` integer not null default 0,
+`config_list_name` varchar(30) not null default '',
+PRIMARY KEY(`config_list_id`),
+KEY(`config_id`)
+);
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'sql'
+	FROM config
+	WHERE config_name = 'auth_method';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'ldap'
+	FROM config
+	WHERE config_name = 'auth_method';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'pn'
+	FROM config
+	WHERE config_name = 'auth_method';
+
+# change the session management to a list
+UPDATE config SET config_group = 'session' WHERE config_name like 'session%';
+
+UPDATE config SET config_type = 'select' WHERE config_name = 'session_handling';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'app'
+	FROM config
+	WHERE config_name = 'session_handling';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'php'
+	FROM config
+	WHERE config_name = 'session_handling';

@@ -653,9 +653,9 @@ INSERT INTO `config` VALUES ('', 'default_view_m', 'calendar', '', 'text');
 INSERT INTO `config` VALUES ('', 'default_view_a', 'day_view', '', 'text');
 INSERT INTO `config` VALUES ('', 'default_view_tab', '1', '', 'text');
 INSERT INTO `config` VALUES ('', 'index_max_file_size', '-1', '', 'text');
-INSERT INTO `config` VALUES ('', 'session_handling', 'app', '', 'text');
-INSERT INTO `config` VALUES ('', 'session_idle_time', '2d', '', 'text');
-INSERT INTO `config` VALUES ('', 'session_max_lifetime', '1m', '', 'text');
+INSERT INTO `config` VALUES ('', 'session_handling', 'app', 'session', 'select');
+INSERT INTO `config` VALUES ('', 'session_idle_time', '2d', 'session', 'text');
+INSERT INTO `config` VALUES ('', 'session_max_lifetime', '1m', 'session', 'text');
 INSERT INTO `config` VALUES ('', 'debug', '1', '', 'text');
 INSERT INTO `config` VALUES ('', 'auto_fields_creation', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'parser_default', '/usr/bin/strings', '', 'text');
@@ -668,7 +668,7 @@ INSERT INTO `config` VALUES ('', 'files_show_versions_edit', 'false', '', 'check
 
 # 20050302
 # ldap system config variables
-INSERT INTO config VALUES ('', 'auth_method', 'sql', '', 'text'); 
+INSERT INTO config VALUES ('', 'auth_method', 'sql', 'auth', 'select'); 
 INSERT INTO config VALUES ('', 'ldap_host', 'localhost', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_port', '387', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_version', '3', '', 'text'); 
@@ -677,7 +677,42 @@ INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text
 
 # 20050302
 # PostNuke authentication variables
-INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', '', 'checkbox');
+INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', 'auth', 'checkbox');
+
+# 20050302
+# New list support for config variables
+CREATE TABLE `config_list` (
+`config_list_id` integer not null auto_increment,
+`config_id` integer not null default 0,
+`config_list_name` varchar(30) not null default '',
+PRIMARY KEY(`config_list_id`),
+KEY(`config_id`)
+);
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'sql'
+	FROM config
+	WHERE config_name = 'auth_method';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'ldap'
+	FROM config
+	WHERE config_name = 'auth_method';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'pn'
+	FROM config
+	WHERE config_name = 'auth_method';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'app'
+	FROM config
+	WHERE config_name = 'session_handling';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'php'
+	FROM config
+	WHERE config_name = 'session_handling';
 
 # 20050302
 # new custom fields
