@@ -15,10 +15,9 @@ $AppUI =& $HTTP_SESSION_VARS['AppUI'];
 
 $ok = $AppUI->login( $username, $password );
 if (!$ok) {
-	$message  = '<span class="error">Login Failed!</span>'
-		.(ini_get( 'register_globals') ? '' : '<br>WARNING: dotproject is not supported with register_globals=off');
+	$message = 'Login Failed';
 	include "./includes/login.php";
 	die;
 }
+echo '<script language="JavaScript">window.location = "./index.php";</script>';
 ?>
-<script language="JavaScript">window.location = "./index.php";</script>
