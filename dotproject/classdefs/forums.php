@@ -149,7 +149,7 @@ class CForumMessage {
 	}
 
 	function sendWatchMail( $debug=false ) {
-		GLOBAL $base_url, $AppUI;
+		GLOBAL $base_url, $AppUI, $debug;
 		$subj_prefix = "Dotproject forum activity:";
 		$body_msg = "There has been activity in a forum you are watching.";
 		$from = "Dotproject forum watch";
