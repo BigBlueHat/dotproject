@@ -18,6 +18,13 @@ $ok = @include_once( "{$dPconfig['root_dir']}/modules/$obj->mod_directory/setup.
 if (!$ok) {
 	if ($obj->mod_type != 'core') {
 		$AppUI->setMsg( 'Module setup file could not be found', UI_MSG_ERROR );
+                if ($cmd == 'remove')
+                {
+                        $sql = "DELETE FROM modules WHERE mod_id = $mod_id";
+                        db_exec($sql);
+                        echo db_error();
+                        $AppUI->setMsg( 'Module has been removed from the modules list - please check your database for additional tables that may need to be removed', UI_MSG_ERROR );       
+                }       
 		$AppUI->redirect();
 	}
 }
