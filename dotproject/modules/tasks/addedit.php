@@ -1,4 +1,9 @@
 <?php /* TASKS $Id$ */
+/**
+* Tasks :: Add/Edit Form
+* @todo Get auto-calculate duration buttons working properly
+*/
+
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
 $task_parent = intval( dPgetParam( $_GET, "task_parent", 0 ) );
 
@@ -221,6 +226,8 @@ function removeTaskDependency() {
 var workHours = <?php echo $AppUI->getConfig( 'daily_working_hours' );?>;
 var hourMSecs = 3600*1000;
 
+/*
+Need to rehash these to cope with the new date format
 function calcDuration() {
 	var f = document.editFrm;
 
@@ -253,6 +260,7 @@ function calcFinish() {
 // this is the easy way out for the moment
 	alert( 'NOTE: Finish date has been updated ['+f.task_end_date.value+'] although the formatted date has not' );
 }
+*/
 </script>
 
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
@@ -354,6 +362,7 @@ function calcFinish() {
 				?>
 				</td>
 			</tr>
+<?php /* TODO ?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Calculate' );?>:</td>
 				<td nowrap="nowrap">
@@ -361,6 +370,7 @@ function calcFinish() {
 					<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
 				</td>
 			</tr>
+<?php */ ?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
