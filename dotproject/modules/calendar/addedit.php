@@ -86,12 +86,16 @@ function submitIt(){
 		alert("Please enter an end date");
 		form.event_end_date.focus();
 	}
+/* FUNCTIONALITY NOT YET ENABLED
 	if (form.event_recurs.selectedIndex != 0 && isNaN(parseInt(form.event_times_recuring.value))){
 		alert("Please select how often you wish this event to recur.");
 		form.event_times_recuring.focus();
 	} else {
+*/
 		form.submit();
+/*
 	}
+*/
 }
 
 function delIt(){
@@ -183,6 +187,7 @@ function setCalendar( uts, fdate ) {
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Time' );?>:</td>
 	<td><?php echo arraySelect( $times, 'end_time', 'size="1" class="text"', $end_time ); ?></td>
 </tr>
+<?php /* FUNCTIONALITY NOT YET ENABLED ?>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Recurs' );?>:</td>
 	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $event['event_recurs'] ); ?></td>
@@ -195,6 +200,7 @@ function setCalendar( uts, fdate ) {
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Remind Me' );?>:</td>
 	<td><?php echo arraySelect( $remind, 'event_remind', 'size="1" class="text"', $event['event_remind'] ); ?> <?php echo $AppUI->_( 'in advance' );?></td>
 </tr>
+<?php */ ?>
 <tr>
 	<td valign="top" align="right"><?php echo $AppUI->_( 'Description' );?></td>
 	<td align="left" colspan="3">
