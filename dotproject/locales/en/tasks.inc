@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"update",
+"Low Priority Tasks",
 "Action",
 "Add Task",
 "All Tasks",
@@ -67,11 +67,15 @@
 "hour",
 "id",
 "low",
+"mark as finished",
 "my todo",
 "new task",
 "normal",
 "notifyChange"=>"Notify Assignees of Task by Email",
 "see gantt chart",
+"set priority to high",
+"set priority to low",
+"set priority to normal",
 "show archived projects",
 "show low priority tasks",
 "task for",
@@ -85,6 +89,7 @@
 "tasksComment"=>"Please enter a worthwhile comment.",
 "tasksPercent"=>"The percent complete must be an integer.",
 "tasksPercentValue"=>"The percent complete must be a value between 0 and 100.",
+"update",
 "update selected tasks priority",
 "update task",
 "view this project",
