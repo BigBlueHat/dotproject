@@ -84,16 +84,18 @@
 		
 						$q  = new DBQuery;
 						$q->addTable('custom_fields_values');
-						$q->addUpdate('value_id', $new_value_id);
-						$q->addUpdate('value_module', '');
-						$q->addUpdate('value_field_id', $this->field_id);
-						$q->addUpdate('value_object_id', $object_id);
+						$q->addInsert('value_id', $new_value_id);
+						$q->addInsert('value_module', '');
+						$q->addInsert('value_field_id', $this->field_id);
+						$q->addInsert('value_object_id', $object_id);
 
-						$q->addUpdate('value_charvalue', db_escape(strip_tags( $this->value_charvalue )));
-						$q->addUpdate('value_intvalue', $ins_intvalue);
-						$q->addWhere("value_id = ".$this->value_id);
+						$q->addInsert('value_charvalue', db_escape(strip_tags( $this->value_charvalue )));
+						$q->addInsert('value_intvalue', $ins_intvalue);
 				}
-				if ($sql != NULL) $rs = $q->exec();
+//				if ($sql != NULL) $rs = $q->exec();
+                // No $sql var defined
+                $rs = $q->exec();
+                
 				$q->clear();
 				if (!$rs) return $db->ErrorMsg()." | SQL: ";
 			}

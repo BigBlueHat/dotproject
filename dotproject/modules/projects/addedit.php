@@ -345,7 +345,7 @@ function setDepartment(department_id_string){
 			<td align="right" colspan="3">
 			<?php
 				require_once("./classes/CustomFields.class.php");
-				$custom_fields = New CustomFields( $m, $a, $obj->project_id, "edit" );
+				$custom_fields = New CustomFields( $m, $a, $row->project_id, "edit" );
 				$custom_fields->printHTML();
 			?>
 			</td>
