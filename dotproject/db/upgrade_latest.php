@@ -39,10 +39,8 @@ function dPupgrade($from_version, $to_version, $last_updated)
 		$perms =& new dPacl;
 		$perms->add_object('app', 'Task Logs', 'task_log', 11, 0, 'axo');
 		$all_mods = $perms->get_group_id('all', null, 'axo');
-		$admin_mods = $perms->get_group_id('admin', null, 'axo');
 		$nonadmin = $perms->get_group_id('non_admin', null, 'axo');
 		$perms->add_group_object($all_mods, 'app', 'task_log', 'axo');
-		$perms->add_group_object($admin_mods, 'app', 'task_log', 'axo');
 		$perms->add_group_object($nonadmin, 'app', 'task_log', 'axo');
 	}
 	return $latest_update;
