@@ -200,11 +200,15 @@ class dPacl extends gacl_api {
 
   function getPermittedUsers($module = null) {
     // Not as pretty as I'd like, but we can do it reasonably well.
+		// Check to see if we are allowed to see other users.
+		global $AppUI;
+		$canViewUsers = $this->checkModule('admin', 'view');
     $sql = "select user_id from users";
     $res = db_exec($sql);
     $userlist = array();
     while ($row = db_fetch_row($res)) {
-      if ($this->isUserPermitted($row[0], $module))
+			if ( ($canViewUsers || $row[0] == $AppUI->user_id)
+      && $this->isUserPermitted($row[0], $module))
 	$userlist[] = $row[0];
     }
     //  Now format the userlist as an assoc array.
