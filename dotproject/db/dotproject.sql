@@ -1,10 +1,17 @@
 #
 # dotproject.sql Database Schema
 # 	updated by JRP (08 July 2002)
+#	updated by JCP (29 November 2002)
 #
 # Use this schema for creating your database for 
 # a new installation of dotProject.
 #
+
+CREATE TABLE task_dependencies (
+	task_id int(11) NOT NULL,
+	dep_task_id int(11) NOT NULL,
+	PRIMARY KEY (task_id, dep_task_id)
+);
 
 CREATE TABLE companies (
   company_id smallint(6) NOT NULL auto_increment,
@@ -217,6 +224,7 @@ CREATE TABLE tasks (
   task_creator int(11) NOT NULL default '0',
   task_order int(11) NOT NULL default '0',
   task_client_publish tinyint(1) NOT NULL default '0',
+  task_dynamic tinyint(1) NOT NULL default 0,
   PRIMARY KEY  (task_id),
   KEY idx_task_parent (task_parent),
   KEY idx_task_project (task_project),

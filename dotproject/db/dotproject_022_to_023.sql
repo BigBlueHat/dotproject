@@ -4,6 +4,7 @@
 #
 # CHANGE LOG
 #     creation by Andrew Eddie (25 Oct 2002) pre-alpha
+#     updated by J. Christopher Pereira (29 Nov 2002)
 # 
 # Use this schema for updating version 022 to 023
 # 
@@ -11,6 +12,14 @@
 # This file may be in a state of development flux at the moment.
 # Watch out for changes (see above)
 #
+
+CREATE TABLE task_dependencies (
+	task_id int(11) NOT NULL,
+	dep_task_id int(11) NOT NULL,
+	PRIMARY KEY (task_id, dep_task_id)
+);
+
+ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
 
 #
 # Table structure for table 'departments'
