@@ -60,13 +60,16 @@ function db_exec( $sql ) {
 
 	if (! is_object($db))
 	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
-//        echo "Executing $sql";
 	$qid = $db->Execute( $sql );
-	dprint(__FILE__, __LINE__, 7, $sql);
-	//if( !$qid ) {
-	//	return false;
-	//}
-	if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
+	dprint(__FILE__, __LINE__, 10, $sql);
+	if ($msg = db_error())
+        {
+                global $AppUI;
+                dprint(__FILE__, __LINE__, 7, "Error executing: <pre>$sql</pre>");
+                include_once(dPgetConfig('root_dir') . '/db/create_db_fields.php');
+                echo '<script language="JavaScript"> location.reload(); </script>';
+        }
+        if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
 	  dprint(__FILE__, __LINE__, 0, $sql);
 	return $qid;
 }
