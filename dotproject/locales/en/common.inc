@@ -1,9 +1,11 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"delete",
 "- New Item -",
 "About",
 "Active Projects",
+"Add",
 "Address",
 "Archived Projects",
 "Calendar",
@@ -14,6 +16,7 @@
 "Departments",
 "Description",
 "Details",
+"Edit",
 "Event",
 "Fax",
 "File",
@@ -45,6 +48,7 @@
 "openSource"=>"an open source<br>project management<br>application",
 "password",
 "save",
+"search",
 "sort by",
 "submit",
 "tabbed",
