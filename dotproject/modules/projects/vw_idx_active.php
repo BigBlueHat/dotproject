@@ -1,5 +1,7 @@
 <?php /* PROJECTS $Id$ */
-GLOBAL $AppUI, $projects, $company_id, $priority;
+global $projects;
+global $AppUI, $company_id, $priority;
+
 $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
 ?>

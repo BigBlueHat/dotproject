@@ -726,7 +726,6 @@ class CTask extends CDpObject {
 	**/
 	function dependantTasks ($taskId = false, $isDep = false, $recurse = true) {
 		static $aDeps = false;
-
 		// Initialize the dependencies array
 		if (($taskId == false) && ($isDep == false))
 			$aDeps = array();
@@ -742,7 +741,6 @@ class CTask extends CDpObject {
 			AND td.dependencies_task_id = t.task_id
 		";
 		// AND t.task_dynamic != 1   dynamics are not updated but they are considered
-
 		$aBuf = db_loadColumn($sql);
 		$aBuf = !empty($aBuf) ? $aBuf : array();
 		//$aBuf = array_values(db_loadColumn ($sql));

@@ -36,7 +36,7 @@ if ($sub_form) {
 
 	// Include any files for handling module-specific requirements
 	foreach (findTabModules('tasks', 'addedit') as $mod) {
-		$fname = $GLOBALS['dPconfig']['root_dir'] . "/modules/$mod/tasks_dosql.addedit.php";
+		$fname = dPgetConfig('root_dir') . "/modules/$mod/tasks_dosql.addedit.php";
 		dprint(__FILE__, __LINE__, 1, "checking for $fname");
 		if (file_exists($fname))
 			require_once $fname;

@@ -158,6 +158,7 @@ WHERE 1 = 1"
 GROUP BY projects.project_id
 ORDER BY $orderby
 ";
+global $projects;
 $projects = db_loadList( $sql );
 
 // get the list of permitted companies
@@ -266,11 +267,11 @@ foreach($project_types as $project_type){
 
 $show_all_projects = false;
 if($tab == 0) $show_all_projects = true;
-
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$dPconfig['root_dir']}/modules/projects/", $tab );
-foreach($project_types as $project_type)
+foreach($project_types as $project_type) {
 	$tabBox->add($project_file_type[$project_type], $project_type);
+}
 $min_view = true;
 $tabBox->add("viewgantt", "Gantt");
 $tabBox->show();
