@@ -409,6 +409,7 @@ function delIt() {
 $query_string = "?m=tasks&a=view&task_id=$task_id";
 $tabBox = new CTabBox( "?m=tasks&a=view&task_id=$task_id", "", $tab );
 
+$tabBox_show = 0;
 if ( $obj->task_dynamic == 0 ) {
 	// tabbed information boxes
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
