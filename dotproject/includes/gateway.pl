@@ -285,7 +285,6 @@ sub insert_message {
     # do insertion
     $insert_query = "INSERT INTO tickets (parent, attachment, timestamp, author, subject, body, type, cc, assignment) ";
     $insert_query .= "VALUES ($db_parent, $attachment, UNIX_TIMESTAMP(), $author, $subject, $body, $type, $cc, $assignment)";
-    print $insert_query . "\n";
     $sth = $dbh->prepare($insert_query);
     $sth->execute();
     $ticket = $sth->{'mysql_insertid'};
