@@ -1,4 +1,14 @@
 <?php 
+// check permissions
+$denyRead = getDenyRead( $m );
+$denyEdit = getDenyEdit( $m );
+
+if ($denyRead) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=help&a=access_denied";
+	</script>
+';
+}
 
 //Forum index.php
 $sql = "select forum_id,forum_project,forum_description,forum_owner,user_username,forum_name,forum_create_date,forum_last_date,forum_message_count,forum_moderated, project_name, project_color_identifier, project_id
@@ -7,9 +17,6 @@ where user_id = forum_owner and ";
 if(isset($project_id))$sql.= "forum_project = $project_id and ";
 $sql.= " project_id = forum_project order by forum_project, forum_name";
 $rc= mysql_query($sql);
-
-
-
 ?>
 
 
@@ -20,11 +27,15 @@ $rc= mysql_query($sql);
 	<TR>
 	<TD><img src="./images/icons/communicate.gif" alt="" border="0" width=42 height=42></td>
 		<TD nowrap><span class="title">User Forums</span></td>
-		<TD width="100%" align="right"><input class=button type=text name=s maxlength=30 size=20></TD>
+		<TD width="100%" align="right"><input class=button type=text name=s maxlength=30 size=20 value="Not implemented" disabled></TD>
 		<TD><img src="images/shim.gif" width=5 height=5></td>
-		<TD><input class=button type="submit" value="search"></td>
+		<TD><input class=button type="submit" value="search" disabled></td>
 		<TD><img src="images/shim.gif" width=5 height=5></td>
-		<TD align="right"><input type="button" class=button value="add new forum" onClick="javascript:window.location='./index.php?m=forums&a=addedit';"></td>
+		<TD align="right">
+		<?php if (!$denyEdit) { ?>
+			<input type="button" class=button value="add new forum" onClick="javascript:window.location='./index.php?m=forums&a=addedit';">
+		<?php } ?>
+		</td>
 	</tr></form>
 </TABLE>
 <table width="95%"  cellpadding="1" cellspacing=1><tr><td bgcolor="black">

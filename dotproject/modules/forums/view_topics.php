@@ -36,7 +36,11 @@
 	<TABLE border=0 cellpadding=2 cellspacing=1 width="95%" >
 		<TR>
 		<TD><A href="./index.php?m=forums">All forums</a></td>
-			<TD align="right"><input type="button" class=button style="width:120;" value="start a new topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&post_message=1';"></td>
+			<TD align="right">
+			<?php if (!$denyEdit) { ?>
+				<input type="button" class=button style="width:120;" value="start a new topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&post_message=1';">
+			<?php } ?>
+			</td>
 			</TR>
 		</TABLE>
 		<TABLE border=0 cellpadding=2 cellspacing=1 width="95%" >

@@ -26,8 +26,11 @@
 		<TR>
 		<TD><A href="./index.php?m=forums">All forums</a>::<A href="./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>"><?php echo $forum_name;?></a></td>
 			<TD align="right">
-			<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
-			<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';"></td>
+			<?php if (!$denyEdit) { ?>
+				<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
+				<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
+			<?php } ?>
+			</td>
 			</TR>
 		</TABLE>
 		<TABLE border=0 cellpadding=4 cellspacing=1 width="95%" bgcolor="#ffffff">
@@ -63,7 +66,10 @@
 		<TR>
 		<TD><A href="./index.php?m=forums">All forums</a>::<A href="./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>"><?php echo $forum_name;?></a></td>
 			<TD align="right">
-			<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
-			<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0';"></td>
+			<?php if (!$denyEdit) { ?>
+				<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
+				<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
+			<?php } ?>
+			</td>
 			</TR>
 		</TABLE>

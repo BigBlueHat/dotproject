@@ -1,16 +1,32 @@
 <?php
 //view posts
-if(empty($forum_id))$forum_id=0;
-if(empty($message_id))$message_id=0;
-if(empty($post_message))$post_message=0;
+$forum_id = isset($HTTP_GET_VARS["forum_id"]) ? $HTTP_GET_VARS["forum_id"] : 0;
+$message_id = isset($HTTP_GET_VARS["message_id"]) ? $HTTP_GET_VARS["message_id"] : 0;
+$post_message = isset($HTTP_GET_VARS["post_message"]) ? $HTTP_GET_VARS["post_message"] : 0;
+
+// check permissions
+$denyRead = getDenyRead( $m, $forum_id );
+$denyEdit = getDenyEdit( $m, $forum_id );
+
+if ($denyRead || ($post_message & $denyEdit)) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=help&a=access_denied";
+	</script>
+';
+}
+
 $parr = array();
 
-$sql = "select 
-forum_id,
-forum_project,
-project_name,
-forum_description,forum_owner,user_username,forum_name,forum_create_date,forum_last_date,forum_message_count,forum_moderated 
-from forums, users, projects where user_id = forum_owner and forum_id = $forum_id and forum_project = project_id";
+$sql = "
+select forum_id,forum_project,project_name,
+	forum_description,forum_owner,
+	user_username,forum_name,forum_create_date,forum_last_date,
+	forum_message_count,forum_moderated 
+from forums, users, projects 
+where user_id = forum_owner 
+	and forum_id = $forum_id 
+	and forum_project = project_id
+";
 $rc= mysql_query($sql);
 $row = mysql_fetch_array($rc);
 $forum_name = $row["forum_name"];
@@ -25,9 +41,9 @@ echo mysql_error();
 	<TR>
 	<TD><img src="./images/icons/communicate.gif" alt="" border="0" width=42 height=42></td>
 		<TD nowrap><span class="title">User Forums</span></td>
-		<TD width="100%" align="right"><input class=button type=text name=s maxlength=30 size=20></TD>
+		<TD width="100%" align="right"><input class=button type=text name=s maxlength=30 size=20 value="Not implemented" disabled></TD>
 		<TD><img src="images/shim.gif" width=5 height=5></td>
-		<TD><input class=button type="submit" value="search"></td>
+		<TD><input class=button type="submit" value="search" disabled></td>
 		<TD><img src="images/shim.gif" width=5 height=5></td>
 	</tr></form>
 </TABLE>
