@@ -427,6 +427,10 @@ if ( count($obj->getChildren()) > 0 ) {
 	$f = 'children';
 	$min_view = true;
 	$tabBox_show = 1;
+	// in the tasks file there is an if that checks
+	// $_GET[task_status]; this patch is to be able to see
+	// child tasks withing an inactive task
+	$_GET["task_status"] = $obj->task_status;
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
 	
