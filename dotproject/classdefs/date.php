@@ -177,29 +177,25 @@ class CDate
 		return $this->ts;
 	}
 
-	function daysInMonth()
-	{
+	function daysInMonth() {
 		if( $this->change )
 			$this->_calc();
 		return date( "t", $this->ts );
 	}
 
-	function daysInYear()
-	{
+	function daysInYear() {
 		if( $this->change )
 			$this->_calc();
 		return date( "t", $this->ts );
 	}
 
-	function isToday()
-	{
+	function isToday() {
 		// bad guess fixme
 		$today = getdate( time() );
 		return $this->Y == $today['year'] && $this->M == $today['mon'] && $this->D == $today['mday'];
 	}
 // comparison functions
-	function compareTo( $date )
-	{
+	function compareTo( $date ) {
 		if( ! is_object($date) || get_class($date) != "cdate" )
 			return false;
 		return $this->getTimestamp() - $date->getTimestamp();
@@ -208,9 +204,13 @@ class CDate
 	function inMonth( $date ) {
 		return ($this->M == $date->M && $this->Y == $date->Y);
 	}
+	
+	function isBetween( $start, $end ) {
+		$ts = $this->getTimestamp();
+		return ($start->getTimestamp() <= $ts && $ts <= $end->getTimestamp());
+	}
 
 	function daysTo( $date, $real=false ) {
-
 		if( ! is_object($date) || get_class($date) != "cdate" ) {
 			return false;
 		}
