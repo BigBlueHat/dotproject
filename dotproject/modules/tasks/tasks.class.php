@@ -12,6 +12,9 @@ $task_access = array(
 	'3'=>'Private'
 );
 
+// this var is intended to track new status in task
+$new_status = null;
+
 /*
 * CTask Class
 */
@@ -48,18 +51,21 @@ class CTask extends CDpObject {
 	var $task_contacts = NULL;
 	var $task_custom = NULL;
 
+	
 	function CTask() {
 		$this->CDpObject( 'tasks', 'task_id' );
 	}
 
 // overload check
 	function check() {
+		global $new_status;
+		
 		if ($this->task_id === NULL) {
 			return 'task id is NULL';
 		}
 	// ensure changes to checkboxes are honoured
 		$this->task_milestone = intval( $this->task_milestone );
-		$this->task_dynamic = intval( $this->task_dynamic );
+		$this->task_dynamic   = intval( $this->task_dynamic );
 		
 		$this->task_percent_complete = intval( $this->task_percent_complete );
 	
@@ -74,6 +80,11 @@ class CTask extends CDpObject {
 		}
 		if (!$this->task_notify) {
 			$this->task_notify = 0;
+		}
+		
+		$actual_status = db_loadResult("select task_status from tasks where task_id='$this->task_id'");
+		if($actual_status != $this->task_status){
+			$new_status = $this->task_status;
 		}
 		return NULL;
 	}
@@ -147,15 +158,23 @@ class CTask extends CDpObject {
 * @todo Parent store could be partially used
 */
 	function store() {
-		GLOBAL $AppUI;
+		GLOBAL $AppUI, $new_status;
+		
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->task_id ) {
 			$this->_action = 'updated';
+			
+			// if task_status chenged, then update subtasks
+			if(!is_null($new_status)){
+				$this->updateSubTasksStatus($new_status);
+			}
 			$this->updateDynamics(true);
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
+			
+			
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
@@ -484,6 +503,32 @@ class CTask extends CDpObject {
 		        where ut.task_id = '$this->task_id'
 		              and ut.user_id = u.user_id";
 		return db_loadHashList($sql, "user_id");
+	}
+	
+	/**
+	* This function, recursively, updates all tasks status
+	* to the one passed as parameter
+	*/ 
+	function updateSubTasksStatus($new_status, $task_id = null){
+		if(is_null($task_id)){
+			$task_id = $this->task_id;
+		}
+		
+		$sql = "select task_id
+		        from tasks
+		        where task_parent = '$task_id'";
+		
+		$tasks_id = db_loadColumn($sql);
+		if(count($tasks_id) == 0) return true;
+		
+		$sql = "update tasks set task_status = '$new_status' where task_parent = '$task_id'";
+
+		db_exec($sql);
+		foreach($tasks_id as $id){
+			if($id != $task_id){
+				$this->updateSubTasksStatus($new_status, $id);
+			}
+		}
 	}
 }
 
