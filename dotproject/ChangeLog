@@ -1,3 +1,8 @@
+2003-04-15 00:18  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-14 08:27  (eddieajau)
 ---------------------------------
 modules/ticketsmith/post_ticket.php
@@ -492,11 +497,6 @@ modules/forums/post_message.php
 modules/tasks/vw_log_update.php
 modules/tasks/addedit.php
 - Widened the hours/duration fields
-
-2003-04-03 05:18  (eddieajau)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- Fixed bug in description field
 
 ...
 
