@@ -233,7 +233,7 @@ if ( isset($_REQUEST['m']) ) {
  * run for example the file module/directory1/directory2/file.php
  * Also it won't be possible to run modules/module/abc.zyz.class.php for that dots are
  * not allowed in the request parameters.
-
+*/
 if ( isset($_REQUEST['u']) ) {
 	if ( !preg_match("/^[a-z\_]+$/",$_REQUEST['a']) ){
 	$AppUI->redirect( "m=public&a=access_denied" );
