@@ -132,14 +132,14 @@ foreach ($tasks as $a) {
 
 	if ($now->after( $start ) && $a["task_percent_complete"] == 0) {
 		$style = 'background-color:#ffeebb';
+	} else if ($now->after( $start )) {
+		$style = 'background-color:#e6eedd';
 	}
 
 	if ($now->after( $end )) {
 		$sign = -1;
 		$style = 'background-color:#cc6666;color:#ffffff';
-	} else if ($now->after( $start )) {
-		$style = 'background-color:#e6eedd';
-	}
+	} 
 
 	$days = $now->dateDiff( $end ) * $sign;
 
