@@ -50,20 +50,22 @@ $prc = mysql_query($psql);
 
 // SETUP FOR FILE LIST
 $fsql = "
-select files.*, project_name, project_color_identifier, project_active
-from files, permissions
-left join projects on file_project = project_id
-where
+SELECT files.*, project_name, project_color_identifier, project_active, 
+	user_first_name, user_last_name
+FROM files, permissions
+LEFT JOIN projects ON file_project = project_id
+LEFT JOIN users ON file_owner = user_id
+WHERE
 	permission_user = $user_cookie
-	and permission_value <> 0
-	and (
+	AND permission_value <> 0
+	AND (
 		(permission_grant_on = 'all')
-		or (permission_grant_on = 'projects' and permission_item = -1)
-		or (permission_grant_on = 'projects' and permission_item = project_id)
+		OR (permission_grant_on = 'projects' AND permission_item = -1)
+		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)
-" . (count($deny) > 0 ? 'and project_id not in (' . implode( ',', $deny ) . ')' : '') . "
-".($project_id ? "and file_project = $project_id" : '')."
-order by project_id , file_name
+" . (count($deny) > 0 ? 'AND project_id NOT IN (' . implode( ',', $deny ) . ')' : '') . "
+".($project_id ? "AND file_project = $project_id" : '')."
+ORDER BY project_id , file_name
 ";
 
 $frc =mysql_query($fsql);
@@ -143,7 +145,7 @@ while ($row = mysql_fetch_array( $frc )) {
 	<?php } ?>
 	</td>
 	<TD nowrap><A href="./fileviewer.php?file_id=<?php echo $row["file_id"];?>"><?php echo $row["file_name"];?></a></td>
-	<TD nowrap><?php echo $row["file_owner"];?></td>
+	<TD nowrap><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>
 	<TD nowrap><?php echo $row["file_date"];?></td>
 	<TD nowrap><?php echo $row["file_type"];?></td>
 	<TD nowrap><?php echo intval($row["file_size"] / 1024);?>k</td>
