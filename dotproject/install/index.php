@@ -13,6 +13,9 @@
 //todo: better error management with displaying what worked well (has been installed) and what went wrong
 //todo: enable db upgrade functionality if db/upgrade.sql is available
 //todo: core: store database version (dp version) in dPdatabase for verifying db upgrade scripts!
+//todo: ask how advanced the user is, do not show advanced config settings in dummy case
+//todo: centralized registration of config vars!
+
 
 /*
 * dotProject Installer
@@ -25,6 +28,19 @@
 * @ Major Parts are based on Code from Mambo Open Source www.mamboserver.com
 * @version $Revision$
 */
+
+### A NOTE FOR DEVELOPERS ###
+### HOWTO REGISTER A NEW (NON-DB RELATED) CONFIG VARIABLE WITH THE INSTALLER (2004 05 01) ###
+# 1) Add an appropriate line to the list of input type hidden fallback items in db.php (somewhere at the end of file)
+# 2) Copy the same line to the list of input type hidden fallback items in do_backup.php (somewhere at the end of file)
+# 3) Copy the same line to the list of input type hidden fallback items in config.php (somewhere at the middle of file)
+# 4) Add an appropriate line to the list of dPgetParam/POST definitions in do_backup.php (somewhere at the top of file)
+# 5) Copy the same line to the list of dPgetParam/POST definitions in config.php (somewhere at the top of file)
+# 6) Copy the same line to the list of dPgetParam/POST definitions in pref.php (somewhere at the top of file)
+# 7) Add an appropriate html form field (tag) to pref.php
+# 8) Add an appropriate line to the list of config variables that will be written to the config file in config.php (somewhere more to the end of file)
+### THE REGISTRATION OF THE CONFIG VAR SHOULD NOW BE COMPLETE ###
+### IN CASE YOU EXPERIENCE PROBLEMS CONTACT THE AUTHOR/MAINTAINER OF THIS INSTALLER ###
 
 require_once("commonlib.php");
 ?>
@@ -72,3 +88,4 @@ require_once("commonlib.php");
 </table>
 </body>
 </html>
+
