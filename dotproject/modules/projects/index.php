@@ -148,7 +148,7 @@ ORDER BY company_name,dept_parent,dept_name
 $rows = db_loadList( $sql, NULL );
 
 //display the select list
-$buffer .= '<select name="department" onChange="document.pickCompany.submit()" class="text">';
+$buffer = '<select name="department" onChange="document.pickCompany.submit()" class="text">';
 $buffer .= '<option value="company_0" style="font-weight:bold;">'.$AppUI->_('All').'</option>'."\n";
 $company = '';
 foreach ($rows as $row) {
