@@ -68,6 +68,7 @@ SELECT u.user_id, u.user_username, u.user_first_name,u.user_last_name, u.user_em
 FROM users u, user_tasks t
 WHERE t.task_id =$task_id AND
 	t.user_id = u.user_id
+ORDER by u.user_last_name, u.user_first_name
 ";
 $users = db_loadList( $sql );
 
@@ -77,6 +78,7 @@ SELECT file_id, file_name, file_size,file_type
 FROM files
 WHERE file_task = $task_id
 	AND file_task <> 0
+ORDER by file_name
 ";
 $files = db_loadList( $sql );
 
