@@ -730,13 +730,14 @@ class CEvent extends CDpObject {
 	  if (! isset($userlist))
 	    return false;
 	  $users = explode(',', $userlist);
-	  if (! count($users))
-	    return false;
 
 	  // Now, remove the owner from the list, as we will always clash on this.
 	  $key = array_search($AppUI->user_id, $users);
 	  if (isset($key) && $key !== false) // Need both for change in php 4.2.0
 	    unset($users[$key]);
+
+	  if (! count($users))
+	    return false;
 
 	  $start_date =& new CDate($this->event_start_date);
 	  $end_date =& new CDate($this->event_end_date);
