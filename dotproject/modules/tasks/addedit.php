@@ -1088,7 +1088,7 @@ $titleBlock->show();
 				</td>
 			</tr>
 			<tr>
-				<td align="center" nowrap="nowrap" colspan="3"><b><?php echo $AppUI->_( 'Dependancy Tracking' );?></b></td>
+				<td align="center" nowrap="nowrap" colspan="3"><b><?php echo $AppUI->_( 'Dependency Tracking' );?></b></td>
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'On' );?></td>
@@ -1137,7 +1137,7 @@ $titleBlock->show();
 			</tr>
 			<tr>
 				<td colspan="2">
-				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Set task start date based on dependancy' );?>
+				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Set task start date based on dependency' );?>
 				</td>
 			</tr>
 			<tr>
