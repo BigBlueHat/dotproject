@@ -1,3 +1,129 @@
+2003-03-03 20:39  (eddieajau)
+---------------------------------
+modules/departments/view.php
+- Minor bug fix
+
+2003-03-03 19:40  (eddieajau)
+---------------------------------
+modules/calendar/view.php
+- Locked down editting to creator only
+
+2003-03-03 19:39  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+- Fixed bug in date changing
+- Locked down editting to creator only
+
+2003-03-03 19:38  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Added filter for private events
+
+2003-03-03 15:10  (eddieajau)
+---------------------------------
+modules/departments/dosql.php
+- [no log message]
+
+2003-03-03 14:58  (eddieajau)
+---------------------------------
+modules/projects/view.php
+- Fixed bug in move task functions in task tab
+
+2003-03-03 14:56  (eddieajau)
+---------------------------------
+modules/help/framed/search.php
+modules/help/framed/top.php
+modules/help/framed/keywords.php
+- Fixed undeclared variables
+
+2003-03-03 14:55  (eddieajau)
+---------------------------------
+modules/help/framed/includes/db_connect.php
+- Minor update
+
+2003-03-03 14:54  (eddieajau)
+---------------------------------
+modules/help/framed/includes/config.php
+- Added maximum error reporting
+
+2003-03-03 14:54  (eddieajau)
+---------------------------------
+modules/files/addedit.php
+- Added ability to manually change the task reference to a file
+- plus other cosmetic changes
+
+2003-03-03 14:49  (eddieajau)
+---------------------------------
+modules/departments/view.php
+- Update titleblock
+
+2003-03-03 14:44  (eddieajau)
+---------------------------------
+modules/departments/addedit.php
+- Updated title block
+- Moved delete function to view page
+
+2003-03-03 14:44  (eddieajau)
+---------------------------------
+modules/departments/do_dept_aed.php
+- Renamed file
+
+2003-03-03 14:42  (eddieajau)
+---------------------------------
+modules/companies/vw_depts.php
+- Added dept_name to list sort_order
+
+2003-03-03 14:41  (eddieajau)
+---------------------------------
+modules/companies/view.php
+- Fixed display where invalid company_id is passed in the url
+
+2003-03-03 14:39  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added utility function for existing roles handling (to be expanded in v1.1)
+
+2003-03-03 14:37  (eddieajau)
+---------------------------------
+docs/INSTALL.txt
+- Updated content
+
+2003-03-03 14:37  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+- Minor update to default values of users table
+
+2003-03-03 14:36  (eddieajau)
+---------------------------------
+classdefs/tasks.php
+- Fixed bug where milestone state will not save when toggled
+
+2003-03-03 14:02  (kripper)
+---------------------------------
+modules/tasks/viewgantt.php
+- Fixed bug on ignoring end_date (bug 695122)
+
+2003-03-03 13:38  (kripper)
+---------------------------------
+modules/tasks/viewgantt.php
+- Moved gantt scaling options from crumbs in order to display options when
+- displayed in project TabBox.
+
+2003-02-28 10:26  (kobudo)
+---------------------------------
+modules/admin/vw_usr.php
+- Remove hardcoded <font color="white"> links and replace with <a ... class="hdr"> tags.
+
+2003-02-28 08:26  (kobudo)
+---------------------------------
+db/dotproject_100.sql
+- Remove FL and US defaults.
+
+2003-02-27 20:24  (kobudo)
+---------------------------------
+ChangeLog
+- Updated ChangeLog
+
 2003-02-27 20:04  (eddieajau)
 ---------------------------------
 classdefs/date.php
