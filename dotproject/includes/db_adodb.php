@@ -59,15 +59,11 @@ function db_exec( $sql ) {
         {
                 global $AppUI;
                 dprint(__FILE__, __LINE__, 7, "Error executing: <pre>$sql</pre>");
-                if (dPgetConfig('auto_fields_creation'))
-                {
-                        include_once($baseDir . '/db/create_db_fields.php');
-                        // Useless statement, but it is being executed only on error, 
-                        // and it stops infinite loop.
-                        $db->Execute( $sql );
-                        if (!db_error())
-                                echo '<script language="JavaScript"> location.reload(); </script>';
-                }
+		// Useless statement, but it is being executed only on error, 
+		// and it stops infinite loop.
+		$db->Execute( $sql );
+		if (!db_error())
+			echo '<script language="JavaScript"> location.reload(); </script>';
         }
         if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
 	  dprint(__FILE__, __LINE__, 0, $sql);

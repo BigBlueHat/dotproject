@@ -8,16 +8,16 @@ if (!$canEdit && $user_id != $AppUI->user_id) {
     $AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$sql = "
-SELECT users.*, contacts.*
-    company_id, company_name, 
-    dept_name
-FROM users
-LEFT JOIN contacts ON user_contact = contact_id
-LEFT JOIN companies ON contact_company = companies.company_id
-LEFT JOIN departments ON dept_id = contact_department
-WHERE user_id = $user_id
-";
+$q  = new DBQuery;
+$q->addTable('users', 'u');
+$q->addQuery('u.*');
+$q->addQuery('con.*, company_id, company_name, dept_name');
+$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+$q->addJoin('companies', 'com', 'contact_company = company_id');
+$q->addJoin('departments', 'dep', 'dept_id = contact_department');
+$q->addWhere('u.user_id = '.$user_id);
+$sql = $q->prepare();
+
 if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=admin", "users list" );
@@ -25,8 +25,11 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 } else {
         $user['contact_id'] = 0;
 // pull companies
-	$sql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
-	$companies = arrayMerge( array( 0 => '' ), db_loadHashList( $sql ) );
+	$q = new DBQuery;
+	$q->addTable('companies');
+	$q->addQuery('company_id, company_name');
+	$q->addOrder('company_name');
+	$companies = arrayMerge( array( 0 => '' ), $q->loadHashList() );
 
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";

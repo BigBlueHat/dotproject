@@ -4,9 +4,12 @@ GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab;
 $perms =& $AppUI->acl();
 $module_list = $perms->getModuleList();
 $pgos = array();
-$psql = "select mod_id, mod_name, permissions_item_table from modules 
-where permissions_item_table is not null and permissions_item_table <> ''";
-$pgo_list = db_loadHashList($psql, 'mod_name');
+$q  = new DBQuery;
+$q->addTable('modules', 'm');
+$q->addQuery('mod_id, mod_name, permissions_item_table');
+$q->addWhere('permissions_item_table is not null');
+$q->addWhere("permissions_item_table <> ''");
+$pgo_list = $q->loadHashList('mod_name');
 
 // Build an intersection array for the modules and their listing
 $modules = array();

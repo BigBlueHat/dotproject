@@ -43,7 +43,10 @@ if ($del) {
 
 		//pull a list of existing usernames
 		$sql = "SELECT user_username FROM users";
-		$users = db_loadList( $sql );
+		$q  = new DBQuery;
+		$q->addTable('users','u');
+		$q->addQuery('user_username');
+		$users = $q->loadList();
 
 		// Iterate the above userNameExistenceCheck for each user
 		foreach ( $users as $usrs ) {

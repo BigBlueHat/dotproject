@@ -60,14 +60,13 @@ if (empty($user_display))
 	<?php if (dPgetParam($_REQUEST, "tab", 0) == 0){ ?>
 	<td>
 	       <?php 
-	           $sql = "select user_access_log_id, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_in ) ) / 3600 as hours,
-	                                ( unix_timestamp( now( ) ) - unix_timestamp( date_time_last_action ) ) / 3600 as idle,
-	                                if(isnull(date_time_out) or date_time_out ='0000-00-00 00:00:00','1','0') as online
-	                       from user_access_log
-	                       where user_id ='". $row["user_id"]."'
-	                       order by user_access_log_id desc
-	                       limit 1";
-	           $user_logs = db_loadList($sql);
+	          	$q  = new DBQuery;
+			$q->addTable('user_access_log', 'ual');
+			$q->addQuery("user_access_log_id, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_in ) ) / 3600 as 		hours, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_last_action ) ) / 3600 as 		idle, if(isnull(date_time_out) or date_time_out ='0000-00-00 00:00:00','1','0') as online");
+			$q->addWhere("user_id ='". $row["user_id"]."'");
+			$q->addOrder('user_access_log_id DESC');
+			$q->setLimit(1);
+			$user_logs = $q->loadList();
 	           
                 if ($user_logs)
 	           foreach ($user_logs as $row_log) {

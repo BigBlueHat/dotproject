@@ -687,7 +687,6 @@ INSERT INTO `config` VALUES ('', 'session_handling', 'app', 'session', 'select')
 INSERT INTO `config` VALUES ('', 'session_idle_time', '2d', 'session', 'text');
 INSERT INTO `config` VALUES ('', 'session_max_lifetime', '1m', 'session', 'text');
 INSERT INTO `config` VALUES ('', 'debug', '1', '', 'text');
-INSERT INTO `config` VALUES ('', 'auto_fields_creation', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'parser_default', '/usr/bin/strings', '', 'text');
 INSERT INTO `config` VALUES ('', 'parser_application/msword', '/usr/bin/strings', '', 'text');
 INSERT INTO `config` VALUES ('', 'parser_text/html', '/usr/bin/strings', '', 'text');

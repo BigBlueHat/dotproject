@@ -1,14 +1,13 @@
 <?php /* ADMIN $Id$ */
 GLOBAL $AppUI, $user_id;
 
-$sql = "
-SELECT projects.*
-FROM projects
-WHERE project_owner = $user_id
-	AND project_active <> 0
-ORDER BY project_name
-";
-$projects = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('projects', 'p');
+$q->addQuery('p.*');
+$q->addWhere('project_active <> 0');
+$q->addWhere("project_owner = $user_id");
+$q->addOrder('project_name');
+$projects = $q->loadList();
 
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 ?>

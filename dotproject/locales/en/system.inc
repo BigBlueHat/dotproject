@@ -98,9 +98,6 @@
 "auth_group_title"=>"Authentication Settings",
 "auth_method_title"=>"Authentication Method",
 "auth_method_tooltip"=>"Select the style of authentication to use.",
-"auto_fields_creation_title"=>"Auto Fields Creation",
-"auto_fields_creation_tooltip"=>"When set to true, if dp makes a query, which ends with
-an error, it automatically inserts everything in db/upgrade_latest.sql to try to repair db problems.",
 "cal_day_end_title"=>"Calendar End Hour",
 "cal_day_end_tooltip"=>"End hour, in 24 hour format.",
 "cal_day_increment_title"=>"Calendar Minute Increment",

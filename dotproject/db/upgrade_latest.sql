@@ -831,3 +831,8 @@ INSERT INTO dpversion VALUES ('2.0-alpha', 2, '2005-03-04', '2005-03-04');
 INSERT INTO config VALUES ('', 'ldap_search_user', 'Manager', 'ldap', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_search_pass', 'secret', 'ldap', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_allow_login', 'true', 'ldap', 'checkbox');
+
+# 20050311
+# removed auto fields cfg options
+#
+DELETE FROM config WHERE config_name = 'auto_fields_creation' LIMIT 1;

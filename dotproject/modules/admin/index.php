@@ -23,20 +23,29 @@ $orderby = $AppUI->getState( 'UserIdxOrderby' ) ? $AppUI->getState( 'UserIdxOrde
 
 // Pull First Letters
 $let = ":";
-$sql = "SELECT DISTINCT UPPER(SUBSTRING(user_username, 1, 1)) AS L FROM users";
-$arr = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('users','u');
+$q->addQuery('DISTINCT UPPER(SUBSTRING(user_username, 1, 1)) AS L');
+$arr = $q->loadList();
 foreach( $arr as $L ) {
     $let .= $L['L'];
 }
-$sql = "SELECT DISTINCT UPPER(SUBSTRING(contact_first_name, 1, 1)) AS L FROM users LEFT JOIN contacts ON contact_id = user_contact";
-$arr = db_loadList( $sql );
+
+$q  = new DBQuery;
+$q->addTable('users','u');
+$q->addQuery('DISTINCT UPPER(SUBSTRING(contact_first_name, 1, 1)) AS L');
+$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+$arr = $q->loadList();
 foreach( $arr as $L ) {
     if ($L['L'])
 	$let .= strpos($let, $L['L']) ? '' : $L['L'];
 }
 
-$sql = "SELECT DISTINCT UPPER(SUBSTRING(contact_last_name, 1, 1)) AS L FROM users LEFT JOIN contacts ON contact_id = user_contact";
-$arr = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('users','u');
+$q->addQuery('DISTINCT UPPER(SUBSTRING(contact_last_name, 1, 1)) AS L');
+$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+$arr = $q->loadList();
 foreach( $arr as $L ) {
     if ($L['L'])
 	$let .= strpos($let, $L['L']) ? '' : $L['L'];

@@ -9,16 +9,16 @@ if (isset( $_GET['tab'] )) {
 $tab = $AppUI->getState( 'UserVwTab' ) !== NULL ? $AppUI->getState( 'UserVwTab' ) : 0;
 
 // pull data
-$sql = "
-SELECT users.*, contacts.*
-	company_id, company_name, 
-	dept_name, dept_id
-FROM users
-LEFT JOIN contacts on user_contact = contact_id
-LEFT JOIN companies ON contact_company = companies.company_id
-LEFT JOIN departments ON dept_id = contact_department
-WHERE user_id = $user_id
-";
+$q  = new DBQuery;
+$q->addTable('users', 'u');
+$q->addQuery('u.*');
+$q->addQuery('con.*, company_id, company_name, dept_name, dept_id');
+$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+$q->addJoin('companies', 'com', 'contact_company = company_id');
+$q->addJoin('departments', 'dep', 'dept_id = contact_department');
+$q->addWhere('u.user_id = '.$user_id);
+$sql = $q->prepare();
+
 if (!db_loadHash( $sql, $user )) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=admin", "users list" );

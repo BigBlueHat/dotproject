@@ -79,18 +79,18 @@ if ($a = dPgetParam($_REQUEST, "a", "") == ""){
 
 <?php 
 if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) {  
-    $user_filter = $user_id == 0 ? "" : "and ual.user_id='$user_id'";
-    $sql = "select ual.*, u.*, c.*
-                from user_access_log as ual,
-                        users as u,
-                        contacts as c
-                where ual.user_id = u.user_id
-                          and user_contact = contact_id
-                          $user_filter
-                          and ual.date_time_in >=' ".dPgetParam($_REQUEST, "start_date", "")." ' 
-                          and ual.date_time_out <='".dPgetParam($_REQUEST, "end_date", "")."'
-		GROUP BY ual.date_time_last_action DESC";
-    $logs = db_loadList($sql);
+    	$q  = new DBQuery;
+	$q->addTable('user_access_log', 'ual');
+	$q->addTable('users', 'u');
+	$q->addTable('contacts', 'c');
+	$q->addQuery('ual.*, u.*, c.*');
+	$q->addWhere('ual.user_id = u.user_id');
+	$q->addWhere('user_contact = contact_id ');
+	if(user_id != 0) { $q->addWhere("ual.user_id='$user_id'"); }
+	$q->addWhere("ual.date_time_in >=' ".dPgetParam($_REQUEST, "start_date", "")." '");
+	$q->addWhere("ual.date_time_out <='".dPgetParam($_REQUEST, "end_date", "")."'");
+	$q->addGroup('ual.date_time_last_action DESC');
+	$logs = $q->loadList();
 ?>
 <table align="center" class="tbl" width="50%">
     <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Name(s)');?></th>

@@ -54,21 +54,33 @@ class CUser extends CDpObject {
 		if( $this->user_id ) {
 		// save the old password
 			$perm_func = "updateLogin";
-			$sql = "SELECT user_password FROM users WHERE user_id = $this->user_id";
+			$q  = new DBQuery;
+			$q->addTable('users', 'u');
+			$q->addQuery('user_password');
+			$q->addWhere("user_id = $this->user_id");
+			$sql = $q->prepare();
+
 			db_loadHash( $sql, $hash );
 			$pwd = $hash['user_password'];	// this will already be encrypted
 
 			$ret = db_updateObject( 'users', $this, 'user_id', false );
 
 		// update password if there has been a change
-			$pwsql = "UPDATE users SET user_password = MD5('$this->user_password')"
-				."\nWHERE user_id = $this->user_id AND user_password != '$pwd'";
+			$q  = new DBQuery;
+			$q->addTable('users', 'u');
+			$q->addUpdate('user_password', "MD5('$this->user_password')");
+			$q->addWhere("user_id = $this->user_id");
+			$q->addWhere("user_password != '$pwd'");
+			$q->exec();
 		} else {
 			$perm_func = "addLogin";
 			$ret = db_insertObject( 'users', $this, 'user_id' );
 		// encrypt password
-			$pwsql = "UPDATE users SET user_password = MD5('$this->user_password')"
-				."\nWHERE user_id = $this->user_id";
+			$q  = new DBQuery;
+			$q->addTable('users', 'u');
+			$q->addUpdate('user_password', "MD5('$this->user_password')");
+			$q->addWhere("user_id = $this->user_id");
+			$q->exec();
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
