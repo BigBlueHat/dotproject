@@ -25,17 +25,13 @@ function sendNewPass() {
 	. "\nWHERE user_username='$checkusername' AND LOWER(user_email)='$confirmEmail'"
 	;
 	if (!($user_id = db_loadResult($query)) || !$checkusername || !$confirmEmail) {
-		$AppUI->setMsg( 'Invalid username or email.' );
+		$AppUI->setMsg( 'Invalid username or email.', UI_MSG_ERROR );
 		$AppUI->redirect();
 	}
 	
 	$newpass = makePass();
-	$message = "The user account $checkusername has this email associated with it.\n"
-		."A web user from $_live_site has just requested that a new password be sent.\n\n"
-		." Your New Password is: $newpass\n\nIf you didn't ask for this, don't worry."
-		." You are seeing this message, not them. If this was an error just login with your"
-		." new password and then change your password to what you would like it to be.";
-	$subject = "$_sitename :: New password for - $checkusername";
+	$message = $AppUI->_('sendpass0')." $checkusername ". $AppUI->_('sendpass1') . " $_live_site  ". $AppUI->_('sendpass2') ." $newpass ". $AppUI->_('sendpass3');
+	$subject = "$_sitename :: ".$AppUI->_('sendpass4')." - $checkusername";
 	$headers = "";
 	$headers .= "From: dotproject\r\n";
 	//$headers .= "Reply-To: <".$adminEmail.">\r\n";
