@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Current user",
 "- New Item -",
 "About",
 "Active Projects",
@@ -18,6 +17,7 @@
 "Contact",
 "Contacts",
 "Country",
+"Current user",
 "Department",
 "Departments",
 "Description",
@@ -75,7 +75,7 @@
 "new department",
 "next",
 "nodepartments"=>"There are no departments",
-"openSource"=>"an open source<br>project management<br>application",
+"openSource"=>"an open source project management application",
 "previous",
 "required",
 "requiredField"=>"indicates required field",
