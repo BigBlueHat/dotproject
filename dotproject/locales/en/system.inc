@@ -1,8 +1,9 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Language Support",
+"Language",
 "Abbreviation",
+"Language Support",
 "Locales file saved",
 "Module",
 "String",
