@@ -57,17 +57,19 @@ if (!$ok) {
 		echo "<br />table = $table \n";
 		echo "<br />ok = $ok \n";
 	}
-} else { 
+} else {
 	require_once './includes/config.php';
-	require_once './includes/db_connect.php';
-	require_once( "{$AppUI->cfg['root_dir']}/classdefs/ui.php" );
-	require_once './includes/main_functions.php';
-
+	require_once( "./classdefs/ui.php" );
+	
 	session_name( 'dotproject' );
 	session_start();
-	session_register( 'AppUI' );
-
+	session_register( 'AppUI' );	
 	$AppUI =& $_SESSION['AppUI'];
+	
+	require_once './includes/db_connect.php';
+
+	require_once './includes/main_functions.php';
+
 	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
 	@include_once( "{$AppUI->cfg['root_dir']}/locales/core.php" );
 
