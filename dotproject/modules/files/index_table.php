@@ -103,7 +103,7 @@ GLOBAL $AppUI, $deny1, $canRead, $canEdit;
 
 $tab = $AppUI->getState( 'FileIdxTab' ) !== NULL ? $AppUI->getState( 'FileIdxTab' ) : 0;
 $page = dPgetParam( $_GET, "page", 1);
-$project_id = dPgetParam( $_POST, 'project_id', 0);
+$project_id = dPgetParam( $_REQUEST, 'project_id', 0);
 $showProject = true;
 
 $xpg_pagesize = 30;
