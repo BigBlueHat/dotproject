@@ -303,7 +303,7 @@ if(!$suppressHeaders) {
 }
 
 
-if (! isset($_SESSION['all_tabs'][$m])) {
+if (! isset($_SESSION['all_tabs'][$m]) && !( $_GET['m'] == 'install' && $dPrunLevel < 2 )) {
 	$all_tabs = array();
 	$_SESSION['all_tabs'][$m] =& $all_tabs;
 	foreach ($AppUI->getActiveModules() as $dir => $module)
