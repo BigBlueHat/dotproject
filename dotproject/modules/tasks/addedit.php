@@ -135,6 +135,38 @@ function removeUser() {
 	}
 }
 
+function addTaskDependency() {
+	var form = document.AddEdit;
+	var at = form.all_tasks.length -1;
+	var td = form.task_dependencies.length -1;
+	var tasks = "x";
+
+	//build array of task dependencies
+	for (td; td > -1; td--) {
+		tasks = tasks + "," + form.task_dependencies.options[td].value + ","
+	}
+
+	//Pull selected resources and add them to list
+	for (at; at > -1; at--) {
+		if (form.all_tasks.options[at].selected && tasks.indexOf( "," + form.all_tasks.options[at].value + "," ) == -1) {
+			t = form.task_dependencies.length
+			opt = new Option( form.all_tasks.options[at].text, form.all_tasks.options[at].value );
+			form.task_dependencies.options[t] = opt
+		}
+	}
+}
+
+function removeTaskDependency() {
+	var form = document.AddEdit;
+	td = form.task_dependencies.length -1;
+
+	for (td; td > -1; td--) {
+		if (form.task_dependencies.options[td].selected) {
+			form.task_dependencies.options[td] = null;
+		}
+	}
+}
+
 function delIt() {
 	if (confirm( "Are you sure that you would like to delete this task?\n" )) {
 		var form = document.AddEdit;
@@ -175,7 +207,7 @@ function delIt() {
 <table border="1" cellpadding="6" cellspacing="0" width="95%" bgcolor="#eeeeee">
 <tr class="basic" valign="top" width="50%">
 	<td>
-		<span id="ccstasknamestr"><span class="FormLabel">task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$prow["task_name"];?>" size="40" maxlength="255">
+		<span id="ccstasknamestr"><span class="FormLabel">Task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$prow["task_name"];?>" size="40" maxlength="255">
 	</td>
 	<td>
 		<TABLE width="100%" bgcolor="#dddddd">
@@ -210,7 +242,7 @@ function delIt() {
 </tr>
 <tr class="basic" valign="top">
 	<TD width="50%">
-		task owner
+		Task owner
 		<br><select name="task_owner" style="width:200px;">
 
 		<?php while ($row = mysql_fetch_array( $urc )) { ?>
@@ -223,18 +255,16 @@ function delIt() {
 		}?>><?php echo $row["user_first_name"];?> <?php echo $row["user_last_name"];?>
 		<?php }?>
 		</select>
-		<br>Related URL
+		<br><br>Related URL
 		<br><input type="Text" name="task_related_url" value="<?php echo @$prow["task_related_url"];?>" size="40" maxlength="255"">
 		<br>
 		<table>
 		<tr>
-			<TD>Task budget</td>
-			<TD><img src="./images/shim.gif" width=30 height=1></td>
 			<TD>Task Parent:</td>
+			<TD><img src="./images/shim.gif" width=30 height=1></td>
+			<TD>Task budget</td>
 		</tr>
 		<tr>
-			<TD>$<input type="Text" name="task_target_budget" value="<?php echo @$prow["task_target_budget"];?>" size="10" maxlength="10"></td>
-			<TD><img src="./images/shim.gif" width=30 height=1></td>
 			<TD>
 				<select name="task_parent" style="width:150px;"><option value="<?php echo $prow["task_id"];?>">None
 					<?php
@@ -247,6 +277,8 @@ function delIt() {
 					}?>
 				</select>
 			</td>
+			<TD><img src="./images/shim.gif" width=30 height=1></td>			
+			<TD>$<input type="Text" name="task_target_budget" value="<?php echo @$prow["task_target_budget"];?>" size="10" maxlength="10"></td>			
 		</tr>
 		</table>
 	</td>
@@ -303,6 +335,46 @@ function delIt() {
 			</td></tr>
 		</table>
 	</td>
+</tr>
+<tr class="basic">
+	<td>
+		<TABLE>
+			<TR>
+				<TD>All tasks</td>
+				<TD></td>
+				<TD>Task dependencies</td>
+			</TR>
+			<TR>
+				<TD>
+					<Select multiple name="all_tasks" style="width:150px" size="10" style="font-size:9pt;">
+				<?php
+					mysql_data_seek( $atrc, 0 );
+					while ($row = mysql_fetch_array( $atrc)) {
+						echo "<option value='".$row["task_id"]."'>". $row["task_name"];
+					}
+				?>
+					</select>
+				</td>
+				<TD nowrap>
+					<input type="button" value=" << " onClick="removeTaskDependency()">
+					<input type="button" value=" >> " onClick="addTaskDependency()">
+				</td>
+				<TD>
+					<Select multiple name="task_dependencies" style="width:150px" size="10" style="font-size:9pt;">
+				<?php
+					/*
+					mysql_data_seek( $atrc, 0 );
+					while ($row = mysql_fetch_array( $atrc, MYSQL_ASSOC )) {
+						echo "<option value='".$row["task_id"]."'>". $row["task_name"];
+					}
+					*/
+				?>
+					</select>
+				</td>
+			</tr>
+		</table>		
+	</td>
+	<td>&nbsp;</td>
 </tr>
 <tr class="basic">
 	<td valign="middle">
