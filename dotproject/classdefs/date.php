@@ -44,6 +44,11 @@ class CDate
 	var $format;
 
 	function CDate( $ts = null ) {
+		global $AppUI;
+		if(@$AppUI) {
+			$this->format = $AppUI->getPref('SHDATEFORMAT');
+		}
+		
 		if( $ts !== null ) {
 			$this->setTimestamp($ts);
 		} else {
