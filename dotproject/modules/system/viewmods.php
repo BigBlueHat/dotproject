@@ -75,7 +75,11 @@ foreach ($modules as $row) {
 	$s .= '<td width="1%" nowrap="nowrap">'.$row['mod_name'].'</td>';
 	$s .= '<td>';
 	$s .= '<img src="./images/obj/dot'.($row['mod_active'] ? 'green' : 'yellowanim').'.gif" width="12" height="12" />&nbsp;';
-	$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('deactivate') : $AppUI->_('activate')).'</a>';
+	// John changes Module Terminology to be more descriptive of current Module State... [14 Feb 2003]
+		// Status term "deactivate" changed to "Active"
+		// Status term "activate" changed to "Disabled"
+	//$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('deactivate') : $AppUI->_('activate')).'</a>';
+	$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('Active') : $AppUI->_('Disabled')).'</a>';
 	if ($row['mod_type'] != 'core') {
 		$s .= ' | <a href="'.$query_string . '&cmd=remove">'.$AppUI->_('remove').'</a>';
 	}
@@ -88,7 +92,11 @@ foreach ($modules as $row) {
 	$s .= '<td>';
 	$s .= '<img src="./images/obj/'.($row['mod_ui_active'] ? 'dotgreen.gif' : 'dotredanim.gif').'" width="12" height="12" />&nbsp;';
 //	$s .= $row['mod_ui_active'] ? '<span style="color:green">'.$AppUI->_('on') : '<span style="color:red">'.$AppUI->_('off');
-	$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('hide') : $AppUI->_('show')).'</a></td>';
+	// John changes Module Terminology to be more descriptive of current Module State... [14 Feb 2003]
+		// Menu Status term "show" changed to "Visible"
+		// Menu Status term "activate" changed to "Disabled"
+	//$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('hide') : $AppUI->_('show')).'</a></td>';
+	$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('Visible') : $AppUI->_('Hidden')).'</a></td>';
 
 	$s .= '<td>'.$row['mod_ui_order'].'</td>';
 
