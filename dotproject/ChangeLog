@@ -1,3 +1,13 @@
+2003-10-30 13:59  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- My unfinished tasks filter now exclude tasks from a finished or on hold project
+
+2003-10-29 03:41  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-28 19:22  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
@@ -488,16 +498,6 @@ classes/ui.class.php
 modules/departments/departments.class.php
 - Fixed problem with creating the first department for a company.
 - Updated messages to include the actual error that occurred.
-
-2003-09-09 18:58  (ajdonnison)
----------------------------------
-includes/main_functions.php
-- Removed IE6 hack as it has been causing more problems than it has been
-- solving.
-
-2003-09-09 09:08  (gregorerhardt)
----------------------------------
-style/default/favicon.ico
 ...
 
 (This file has been wrapped)
