@@ -112,7 +112,7 @@ function constructTaskTree($task_data, $depth = 0){
 	global $projTasks, $task_parent_options, $task_parent, $task_id;
 	
 	$projTasks[$task_data[0]] = $task_data[1];
-	
+
 	$selected = $task_data[0] == $task_parent ? "selected" : "";
 	$task_data[1] = strlen($task_data[1])>45 ? substr($task_data[1],0, 45)."..." : $task_data[1];
 	
@@ -146,6 +146,11 @@ $task_parent_options = "";
 // let's iterate root tasks
 while ($root_task = db_fetch_row( $root_tasks )) {
 	constructTaskTree($root_task);
+        if ($task_id == 0) {
+                // (add task:) save some infos to integrate in javaScriptCode later
+                // in order to check if there is already a root task with the existing name
+                $rooTasks[] = $root_task['task_name'];
+        }
 }
 
 //create array with start and end date of all tasks.
@@ -345,7 +350,7 @@ function setTasksStartDate() {
 			
 			 var d = projTasksWithEndDates[max_id][0];
 			 //hardcoded date format Ymd
-			 form.task_start_date.value = d.substring(6,10) + "" + d.substring(3,5) + "" + d.substring(0,2);	 
+			 form.task_start_date.value = d.substring(6,10) + "" + d.substring(3,5) + "" + d.substring(0,2);
 		}	
 		setAMPM(form.start_hour);
 	}
@@ -391,8 +396,12 @@ function submitIt( nt ){
 	if (form.task_name.value.length < 3) {
 		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
-	}
-<?php 
+	} else if (checkRootTaskName(form.task_name.value) && form.task_parent.value == 0) {
+                // check if a root task with the same name already exists
+                alert("<?php echo $AppUI->_('taskNameExist'); ?>");
+                form.task_name.focus();
+        }
+<?php
 	if ( dPgetConfig( 'check_task_dates' )  && $can_edit_time_information) {
 ?>
 	else if (!form.task_start_date.value) {
@@ -405,7 +414,7 @@ function submitIt( nt ){
 	}
 <?php
 	}
-?>	
+?>
 	else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
@@ -433,6 +442,20 @@ function submitIt( nt ){
 		form.submit();
 	}
 }
+
+// check if a root task with the same name already exists!
+function checkRootTaskName(task) {
+        var a = new Array();
+        <?php
+                if ($task_id == 0) {
+                        foreach($rooTasks as $r) {
+                                echo "a['$r'] = true;\n\t";
+                        }
+                }
+        ?>
+        return eval("a[task]");
+}
+
 
 function setPercentAssign(fc){
         var form = document.editFrm;
