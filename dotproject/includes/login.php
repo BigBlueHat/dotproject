@@ -53,7 +53,7 @@ Password:
 
 <br><UL type="square">
 <LI>
-<A href="mailto:support@mysite.com">Help! I've forgotten my username and password!</a>
+<A href="mailto:<?php echo 'admin@' . $site_domain;?>">Help! I've forgotten my username and password!</a>
 
 </ul>
 </td></tr>
