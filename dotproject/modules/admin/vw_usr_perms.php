@@ -92,6 +92,12 @@ $modules = arrayMerge( array( 'all'=>'all' ), $AppUI->getActiveModules( 'modules
 ?>
 
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function editPerm( id, gon, it, vl, nm ) {
 /*
 	id = Permission_id
@@ -163,6 +169,7 @@ function setPermItem( key, val ) {
 		f.permission_item_name.value = 'all';
 	}
 }
+<?php } ?>
 </script>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="0">

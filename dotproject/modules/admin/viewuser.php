@@ -39,9 +39,16 @@ if (!db_loadHash( $sql, $user )) {
 	$titleBlock->show();
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit || $user_id == $AppUI->user_id) {
+?>
 function popChgPwd() {
 	window.open( './index.php?m=public&a=chpwd&dialog=1', 'chpwd', 'top=250,left=250,width=350, height=220, scollbars=false' );
 }
+<?php } ?>
 </script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
