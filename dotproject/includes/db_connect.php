@@ -159,8 +159,17 @@ function db_loadColumn( $sql, $maxrows=NULL ) {
 	}
 	$list = array();
 	$cnt = 0;
+	$row_index = null;
 	while ($row = db_fetch_row( $cur )) {
-		$list[] = $row[0];
+		if (! isset($row_index)) {
+			if (isset($row[0])) {
+				$row_index = 0;
+			} else {
+				$row_indices = array_keys($row);
+				$row_index = $row_indices[0];
+			}
+		}
+		$list[] = $row[$row_index];
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
@@ -180,8 +189,17 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 	}
 	$list = array();
 	$cnt = 0;
+	$row_index = null;
 	while ($row = db_fetch_array( $cur )) {
-		$object->load( $row[0] );
+		if (! isset($row_index)) {
+			if (isset($row[0]))
+				$row_index = 0;
+			else {
+				$row_indices = array_keys($row);
+				$row_index = $row_indices[0];
+			}
+		}
+		$object->load( $row[$row_index] );
 		$list[] = $object;
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
