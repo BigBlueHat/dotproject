@@ -121,8 +121,8 @@ function getDenyEdit( $mod, $item_id=0 ) {
  * all items which for which no explicit read permission is granted.
  */
 function winnow( $mod, $key, &$where, $alias = 'perm' ) {
-	GLOBAL $AppUI;
-	
+	GLOBAL $AppUI, $perms;
+
 	// TODO: Should we also check empty( $perms['all'] ?
 	if( ! empty( $perms[$mod] ) ) {
 		// We have permissions for specific items => filter items
