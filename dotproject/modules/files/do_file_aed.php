@@ -75,16 +75,6 @@ if (isset( $_FILES['formfile'] )) {
 		    $AppUI->redirect();
 		}
 
-		/* Workaround for indexing large files:
-		** Based on the value defined in config data,
-		** files with file_size greater than specified limit
-		** are not indexed for searching.
-		** Negative value :<=> no filesize limit
-		*/
-		$index_max_file_size = dPgetConfig('index_max_file_size', 0);
-		if ($index_max_file_size < 0 || $obj->file_size <= $index_max_file_size*1024) {
-			$obj->indexStrings();
-		}
 	}
 }
 
@@ -118,6 +108,17 @@ if (($msg = $obj->store())) {
 	$obj->load($obj->file_id);
 	if ($not=='1') $obj->notify();
 	$AppUI->setMsg( $file_id ? 'updated' : 'added', UI_MSG_OK, true );
+	/* Workaround for indexing large files:
+	** Based on the value defined in config data,
+	** files with file_size greater than specified limit
+	** are not indexed for searching.
+	** Negative value :<=> no filesize limit
+	*/
+	$index_max_file_size = dPgetConfig('index_max_file_size', 0);
+	if ($index_max_file_size < 0 || $obj->file_size <= $index_max_file_size*1024) {
+		$obj->indexStrings();
+		$AppUI->setMsg('; ' . $indexed . ' words indexed', UI_MSG_OK, true);
+	}
 }
 $AppUI->redirect();
 ?>
