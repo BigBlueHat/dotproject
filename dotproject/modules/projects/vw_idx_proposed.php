@@ -24,7 +24,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
                 <a href="?m=projects&orderby=project_color_identifier" class="hdr"><?php echo $AppUI->_('Color');?></a>
         </th>
 	<th nowrap="nowrap">
-		<a href="?m=projects&orderby=project_name" class="hdr"><?php echo $AppUI->_('Name');?></a>
+		<a href="?m=projects&orderby=project_name" class="hdr"><?php echo $AppUI->_('Project Name');?></a>
 	</th>
         <th nowrap="nowrap">
 		<a href="?m=projects&orderby=project_start_date" class="hdr"><?php echo $AppUI->_('Start');?></a>
