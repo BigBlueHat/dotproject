@@ -62,7 +62,7 @@
 "System Administration",
 "User",
 "User Administration",
-"User added - please setup roles and permissions now. User must have at least one role to log in.",
+"added - please setup roles and permissions now. User must have at least one role to log in.",
 "User Log",
 "User Management",
 "User Table",
