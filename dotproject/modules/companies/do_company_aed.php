@@ -1,6 +1,7 @@
 <?php /* COMPANIES $Id$ */
 $del = dPgetParam( $_POST, 'del', 0 );
 $obj = new CCompany();
+$msg = '';
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
@@ -10,6 +11,10 @@ if (!$obj->bind( $_POST )) {
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Company' );
 if ($del) {
+	if (!$obj->canDelete( $msg )) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect();
+	}
 	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();

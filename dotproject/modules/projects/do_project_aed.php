@@ -1,21 +1,34 @@
 <?php /* PROJECTS $Id$ */
-$project = new CProject();
+$obj = new CProject();
+$msg = '';
 
-if (($msg = $project->bind( $_POST ))) {
-	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 // convert dates to SQL format first
-$project->project_start_date = db_unix2DateTime( $project->project_start_date );
-$project->project_end_date = db_unix2DateTime( $project->project_end_date );
-$project->project_actual_end_date = db_unix2DateTime( $project->project_actual_end_date );
+$date = new Date( $obj->project_start_date, DATE_FORMAT_TIMESTAMP_DATE );
+$obj->project_start_date = $date->format( DATE_FORMAT_ISO );
+
+if ($obj->project_end_date) {
+	$date = new Date( $obj->project_end_date, DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->project_end_date = $date->format( DATE_FORMAT_ISO );
+}
+if ($obj->project_actual_end_date) {
+	$date = new Date( $obj->project_actual_end_date, DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->project_actual_end_date = $date->format( DATE_FORMAT_ISO );
+}
 
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Project' );
 if ($del) {
-	if (($msg = $project->delete())) {
+	if (!$obj->canDelete( $msg )) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect();
+	}
+	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
@@ -23,7 +36,7 @@ if ($del) {
 		$AppUI->redirect( "", -1 );
 	}
 } else {
-	if (($msg = $project->store())) {
+	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['project_id'];
