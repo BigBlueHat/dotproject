@@ -457,11 +457,10 @@ function addUser() {
 function removeUser() {
 	var form = document.editFrm;
 	fl = form.assigned.length -1;
-
 	for (fl; fl > -1; fl--) {
 		if (form.assigned.options[fl].selected) {
 			//remove from hperc_assign
-			var selValue = form.assigned.options[form.assigned.selectedIndex].value;			
+			var selValue = form.assigned.options[fl].value;			
 			var re = ".*("+selValue+"=[0-9]*;).*";
 			var hiddenValue = form.hperc_assign.value;
 			if (hiddenValue) {
@@ -472,6 +471,28 @@ function removeUser() {
 				form.hperc_assign.value = hiddenValue;
 				form.assigned.options[fl] = null;
 			}
+//alert(form.hperc_assign.value);
+		}
+	}
+}
+
+//Check to see if None has been selected.
+function checkForTaskDependencyNone(obj){
+	var td = obj.length -1;
+	for (td; td > -1; td--) {
+		if(obj.options[td].value=='<?=$obj->task_id?>'){
+			clearExceptFor(obj, '<?=$obj->task_id?>');
+			break;
+		}
+	}
+}
+
+//If None has been selected, remove the existing entries.
+function clearExceptFor(obj, id){
+	var td = obj.length -1;
+	for (td; td > -1; td--) {
+		if(obj.options[td].value != id){
+			obj.options[td]=null;
 		}
 	}
 }
@@ -481,6 +502,13 @@ function addTaskDependency() {
 	var at = form.all_tasks.length -1;
 	var td = form.task_dependencies.length -1;
 	var tasks = "x";
+
+	//Check to see if None is currently in the dependencies list, and if so, remove it.
+
+	if(td>=0 && form.task_dependencies.options[0].value=='<?=$obj->task_id?>'){
+		form.task_dependencies.options[0] = null;
+		td = form.task_dependencies.length -1;
+	}
 
 	//build array of task dependencies
 	for (td; td > -1; td--) {
@@ -496,6 +524,7 @@ function addTaskDependency() {
 		}
 	}
 	
+	checkForTaskDependencyNone(form.task_dependencies);
 	setTasksStartDate();
 }
 
@@ -881,10 +910,10 @@ function changeRecordType(value){
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
 				</td>
 			</tr>
 			<tr>
@@ -906,10 +935,10 @@ function changeRecordType(value){
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
 				</td>
 			<tr>
 				<td colspan="2" align="center">
