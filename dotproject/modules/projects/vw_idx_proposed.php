@@ -114,7 +114,7 @@ foreach ($projects as $row) {
 
 		if($show_all_projects){
 			$s .= $CR . '<td align="center" nowrap="nowrap">';
-			$s .= $CT . $row["project_status"] == 0 ? $AppUI->_('Not Defined') : $AppUI->_($project_types[$row["project_status"]]);
+			$s .= $CT . $row["project_status"] == 0 ? $AppUI->_('Not Defined') : $project_types[$row["project_status"]];
 			$s .= $CR . '</td>';
 		}
 		
