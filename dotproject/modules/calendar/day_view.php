@@ -1,15 +1,9 @@
-<?php
-
-// check permissions
-$denyRead = getDenyRead( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* CALENDAR $Id$ */
 $AppUI->savePlace();
 
 // get the passed timestamp (today if none)
 $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
+$company_id = $AppUI->user_company;
 
 $this_day = new CDate( $uts );
 $this_day->setTime( 0,0,0 );
@@ -20,7 +14,25 @@ $prev_day->addDays( -1 );
 $next_day = $this_day;
 $next_day->addDays( +1 );
 
+$tasks = getTasksForPeriod( $this_day, $next_day, $company_id );
 $events = getEventsForPeriod( $this_day, $next_day );
+
+$links = array();
+
+// override standard length
+$strMaxLen = 50;
+addTaskLinks( $tasks, $this_day, $next_day, $links, $strMaxLen );
+
+foreach ($events as $row) {
+	$start = new CDate( $row['event_start_date'] );
+// the link
+	$link['href'] = "?m=calendar&a=addedit&event_id=".$row['event_id'];
+	$link['alt'] = $row['event_description'];
+	$link['text'] = '<img src="./images/obj/event.gif" width="16" height="16" border="0" alt="">'
+		.'<span class="event">'.$row['event_title'].'</span>';
+	$links[$start->getDay()][] = $link;
+}
+
 
 $crumbs = array();
 $crumbs["?m=calendar"] = "month view";
@@ -66,33 +78,22 @@ function clickDay( uts, fdate ) {
 		</table>
 
 		<table cellspacing="1" cellpadding="2" border="0" width="100%" class="tbl">
-		<tr>
-			<th>&nbsp;</th>
-			<th><?php echo $AppUI->_('Event Title');?></th>
-			<th><?php echo $AppUI->_('Start Date');?></th>
-			<th><?php echo $AppUI->_('End Date');?></th>
-		</tr>
-		<?php
-			$df = $AppUI->getPref('SHDATEFORMAT');
+	<?php
+		$s = '';
+		if (isset( $links[$this_day->getDay()] )) {
+			foreach ($links[$this_day->getDay()] as $e) {
+				$href = isset($e['href']) ? $e['href'] : null;
+				$alt = isset($e['alt']) ? $e['alt'] : null;
 
-			foreach ($events as $e) {
-				$start = new CDate( $e['event_start_date'] );
-				$end = new CDate( $e['event_end_date'] );
-				if ($start->getDay() != $this_day->getDay()) {
-					continue;
-				}
-		?>
-		<tr>
-			<td width="5%">
-				<a href="index.php?m=calendar&a=addedit&event_id=<?php echo $e['event_id'];?>">
-					<img src="images/icons/pencil.gif" alt="Edit Event" border="0" width="12" height="12">
-				</a>
-			</td>
-			<td width="50%"><?php echo $e['event_title']; ?></td>
-			<td width="10%" nowrap="nowrap"><?php echo $start->toString( "$df %I:%m %p" ); ?></td>
-			<td width="10%" nowrap="nowrap"><?php echo $end->toString( "$df %I:%m %p" );?></td>
-		</tr>
-		<?php	} ?>
+				$s .= "<tr><td>";
+				$s .= $href ? "<a href=\"$href\" class=\"event\" title=\"$alt\">" : '';
+				$s .= "{$e['text']}";
+				$s .= $href ? '</a>' : '';
+				$s .= '</td></tr>';
+			}
+		}
+		echo $s;
+	?>
 		</table>
 	</td>
 	<td valign="top" width="200">

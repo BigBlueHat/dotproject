@@ -1,26 +1,13 @@
-<?php /* $Id$ */
+<?php /* CALENDAR $Id$ */
 // check permissions
-$denyEdit = getDenyEdit( $m );
-
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
-
 $event_id = isset( $_GET['event_id'] ) ? $_GET['event_id'] : 0;
 
 // Pull event information
 $sql = "SELECT * FROM events WHERE event_id = $event_id";
 db_loadHash( $sql, $event );
-
-//Set the starting date and time
-if(is_array($event)){
-	$stime = strftime( "%H:%M", $event["event_start_date"] );
-	$shour = strftime( "%H", $event["event_start_date"] );
-	$smin = strftime( "%M", $event["event_start_date"] );
-	$etime = strftime( "%H:%M", $event["event_end_date"] );
-	$ehour = strftime( "%H", $event["event_end_date"] );
-	$emin = strftime( "%M", $event["event_end_date"] );
-}
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -67,9 +54,8 @@ for ($m=0; $m < 1440; $m+=30) {
 	$times[$m] = $t->toString( "%I:%M %p" );
 }
 $crumbs = array();
-//$crumbs["?m=calendar"] = "calendar";
+$crumbs["?m=calendar"] = "month view";
 ?>
-
 
 <script language="javascript">
 function submitIt(){

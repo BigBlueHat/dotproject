@@ -1,10 +1,12 @@
-<?php
-$denyRead = getDenyRead( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* CALENDAR $Id$ */
 $AppUI->savePlace();
+
+// restore/get the company filter if specified
+//if (isset( $_REQUEST['company_id'] )) {
+//	$AppUI->setState( 'ProjIdxCompany', $_REQUEST['company_id'] );
+//}
+//$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+$company_id = $AppUI->user_company;
 
 // get the passed timestamp (today if none)
 $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
@@ -21,10 +23,18 @@ $next_week->addDays( +7 );
 
 $thisDay=0;
 
+$tasks = getTasksForPeriod( $this_week, $next_week, $company_id );
 $events = getEventsForPeriod( $this_week, $next_week );
+
+################3echo '<pre>';print_r($tasks);echo '</pre>';
 
 // assemble the links for the events
 $links = array();
+
+// override standard length
+$strMaxLen = 50;
+addTaskLinks( $tasks, $this_week, $next_week, $links, $strMaxLen );
+
 foreach ($events as $row) {
 	$start = new CDate( $row['event_start_date'] );
 // the link
@@ -34,10 +44,6 @@ foreach ($events as $row) {
 		.'<span class="event">'.$row['event_title'].'</span>';
 	$links[$start->getDay()][] = $link;
 }
-
-//echo '<pre>';print_r($links);echo '</pre>';
-//echo '<pre>';print_r($next_week);echo '</pre>';
-//echo $this_week->getTimestamp().','.$next_week->getTimestamp();
 
 $crumbs = array();
 $crumbs["?m=calendar"] = "month view";
