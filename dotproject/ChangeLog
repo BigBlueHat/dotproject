@@ -1,3 +1,112 @@
+2002-12-09 09:13  (eddieajau)
+---------------------------------
+modules/companies/index.php
+modules/projects/index.php
+modules/projects/vw_tasks.php
+modules/forums/index.php
+modules/forums/view_topics.php
+- Updated user_id from cookie to session variable
+
+2002-12-09 09:10  (eddieajau)
+---------------------------------
+index.php
+- Added pilot language support
+
+2002-12-09 09:09  (eddieajau)
+---------------------------------
+modules/system/index.php
+modules/system/translate.php
+modules/system/translate_save.php
+- New module for pilot language file editting
+
+2002-12-09 09:07  (eddieajau)
+---------------------------------
+includes/leftnav.php
+- Added system admin
+
+2002-12-09 09:05  (eddieajau)
+---------------------------------
+db/dotproject.sql
+db/dotproject_022_to_023.sql
+- Dropped localization table
+
+2002-12-09 09:04  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added portugese for testing. Modified savePlace function.
+
+2002-12-09 09:01  (eddieajau)
+---------------------------------
+logincheck.php
+includes/login.php
+- Change format of error message
+
+2002-12-09 08:59  (eddieajau)
+---------------------------------
+locales/pt_br/common.inc
+- Initial upload
+
+2002-12-09 08:57  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/es/common.inc
+- Added to file
+
+2002-12-09 08:54  (eddieajau)
+---------------------------------
+images/icons/system.gif
+images/icons/world.gif
+- Initial upload
+
+2002-12-09 08:53  (eddieajau)
+---------------------------------
+style/main.css
+- Added sub-title style
+
+2002-12-09 08:23  (kripper)
+---------------------------------
+functions/tasks_func.php
+includes/main_functions.php
+modules/tasks/index.php
+modules/tasks/organizer.php
+- Added new time formatting function in main_functions.php
+
+2002-12-09 07:26  (kripper)
+---------------------------------
+modules/tasks/organizer.php
+- Added options
+- Consider task's user assignements for two overlapping tasks (a user is defined as essential if there are not more than two other users assigned to this task)
+
+2002-12-08 18:27  (kripper)
+---------------------------------
+modules/tasks/organizer.php
+- Added initial version of the tasks organizer (will not be linked yet
+- and maybe not included in the next release)
+
+2002-12-08 16:25  (kripper)
+---------------------------------
+locales/es/admin.txt
+locales/es/calendar.txt
+locales/es/companies.txt
+locales/es/contacts.txt
+locales/es/files.txt
+locales/es/forums.txt
+locales/es/general.txt
+locales/es/locales.php
+locales/es/projects.txt
+locales/es/tasks.txt
+- Added files for spanish translation
+
+2002-12-08 15:53  (kripper)
+---------------------------------
+includes/main_functions.php
+- Added a new functin for converting php times to formated dates
+
+2002-12-08 15:49  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog file
+
 2002-12-08 15:48  (kripper)
 ---------------------------------
 modules/tasks/viewgantt.php
