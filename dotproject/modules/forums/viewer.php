@@ -12,6 +12,9 @@ $denyEdit = getDenyEdit( $m, $forum_id );
 if ($denyRead || ($post_message & $denyEdit)) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
+require_once( "$root_dir/classdefs/date.php" );
+$df = $AppUI->getPref('SHDATEFORMAT');
+$tf = $AppUI->getPref('TIMEFORMAT');
 
 $sql = "
 SELECT forum_id, forum_project,	forum_description, forum_owner, forum_name,

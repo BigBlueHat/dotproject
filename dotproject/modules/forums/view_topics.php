@@ -5,8 +5,7 @@ $AppUI->savePlace();
 $sql = "
 SELECT fm1.*,
 	COUNT(fm2.message_id) AS replies,
-	DATE_FORMAT(MAX(fm2.message_date), '%d %b %Y %h:%i %p') AS latest_reply,
-	UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(MAX(fm2.message_date)) message_since,
+	MAX(fm2.message_date) AS latest_reply,
 	user_username, user_first_name,
 	watch_user
 FROM forum_messages fm1
@@ -60,7 +59,14 @@ $crumbs["?m=forums"] = "forums list";
 	<th>Last Post</th>
 </tr>
 <?php 
+$date = new CDate();
+$date->setFormat( "$df $tf" );
+
 foreach ($topics as $row) {
+	if ($row["latest_reply"]) {
+		$date->setTimestamp( db_dateTime2unix( $row['latest_reply'] ) );
+		$message_since = abs( $date->compareTo( new CDate() ) );
+	}
 //JBF limit displayed messages to first-in-thread
 	if ($row["message_parent"] < 0) { ?>
 <tr>
@@ -76,13 +82,13 @@ foreach ($topics as $row) {
 	<td align=center><?php echo  $row["replies"];?></td>
 	<td bgcolor=#dddddd>
 <?php if ($row["latest_reply"]) {
-		echo $row["latest_reply"].'<br><font color=#999966>(';
-		if ($row["message_since"] < 3600) {
-			printf( "%d minutes", $row["message_since"]/60 );
-		} else if ($row["message_since"] < 48*3600) {
-			printf( "%d hours", $row["message_since"]/3600 );
+		echo $date->toString().'<br><font color=#999966>(';
+		if ($message_since < 3600) {
+			printf( "%d minutes", $message_since/60 );
+		} else if ($message_since < 48*3600) {
+			printf( "%d hours", $message_since/3600 );
 		} else {
-			printf( "%d days", $row["message_since"]/(24*3600) );
+			printf( "%d days", $message_since/(24*3600) );
 		}
 		echo ' ago)</font>';
 	} else {
