@@ -59,6 +59,8 @@ function db_exec( $sql ) {
 	//if( !$qid ) {
 	//	return false;
 	//}
+	if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
+	  dprint(__FILE__, __LINE__, 0, $sql);
 	return $qid;
 }
 
