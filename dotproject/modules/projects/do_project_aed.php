@@ -19,7 +19,7 @@ if ($obj->project_actual_end_date) {
 	$obj->project_actual_end_date = $date->format( DATE_FORMAT_ISO );
 }
 
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+$del = dPgetParam( $_POST, 'del', 0 );
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Project' );
