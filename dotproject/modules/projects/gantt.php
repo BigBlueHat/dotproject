@@ -279,7 +279,7 @@ foreach($projects as $p) {
 } // End of check for valid projects array.
 
 $today = date("y-m-d");
-$vline = new GanttVLine($today, "Today");
+$vline = new GanttVLine($today, $AppUI->_('Today', UI_OUTPUT_RAW));
 $graph->Add($vline);
 $graph->Stroke();
 ?>
