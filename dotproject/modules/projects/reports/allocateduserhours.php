@@ -3,8 +3,8 @@
 $do_report 		    = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date 	    = dPgetParam( $_POST, "log_end_date", 0 );
-$log_all_projects 	= dPgetParam($_POST["log_all_projects"], 0);
-$log_all		    = dPgetParam($_POST["log_all"], 0);
+$log_all_projects 	= dPgetParam($_POST, "log_all_projects", 0);
+$log_all		    = dPgetParam($_POST, "log_all", 0);
 
 // create Date objects from the datetime fields
 $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();
@@ -76,7 +76,7 @@ function setCalendar( idate, fdate ) {
 </form>
 
 <?php
-if($do_report){
+if($do_report) {
 	
 	// Let's figure out which users we have
 	$sql = "SELECT  u.user_id,
@@ -232,11 +232,13 @@ if($do_report){
 			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
 			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity,2)."<br />";
 			echo $AppUI->_("Percentage used").": ".number_format($allocated_hours_sum/$total_hours_capacity,2)*100 ."%<br />";
-	}			
+	}		
+	?>
+	   </td></tr>
+	   </table>
+	</center>
+	<?php	
 }
 			?>		
-			</td></tr>
-			</table>
-			</center>
 
 
