@@ -2,8 +2,8 @@
 if(empty($project_id))$project_id=0;
 $uri_string="";
 
-if(isset($company_id))$uri_string="&company_id=" . $company_id;
 if(isset($project_id))$uri_string="&project_id=" . $project_id;
+if(isset($company_id))$uri_string="&company_id=" . $company_id;
 if(isset($task_id))$uri_string="&task_id=" . $task_id;
 if(isset($file_id))$uri_string="&file_id=" . $file_id;
 
@@ -14,7 +14,7 @@ function newTask(){
 		alert("You must select a project before you can add a task");
 	}
 	else{
-	window.location="./index.php?m=tasks&a=addedit&project_id=<?php echo $project_id;?>";
+	window.location="./index.php?m=tasks&a=addedit&project_id=<?php echo $project_id;?>&task_parent=<?php echo $task_id;?>";
 	}
 
 
