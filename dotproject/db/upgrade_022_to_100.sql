@@ -1,13 +1,13 @@
 # $Id$
-# dotproject_022_to_023.sql 
+# dotproject_022_to_023.sql
 #     Database Schema Update Script
 #
 # CHANGE LOG
 #     creation by Andrew Eddie (25 Oct 2002) pre-alpha
 #     updated by J. Christopher Pereira (29 Nov 2002)
-# 
+#
 # Use this schema for updating version 022 to 023
-# 
+#
 # WARNING:
 # This file may be in a state of development flux at the moment.
 # Watch out for changes (see above)
@@ -135,7 +135,7 @@ INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 #
 ALTER TABLE `forums` CHANGE `forum_moderated` `forum_moderated` INT DEFAULT "0" NOT NULL;
 
-# AJE (2/Jan/2003): New preference 
+# AJE (2/Jan/2003): New preference
 #INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 
 #
@@ -265,5 +265,34 @@ INSERT INTO sysvals VALUES("1", "1", "ProjectStatus", "0|Not Defined\r\n1|Propos
 # (22/Feb/2003)
 #
 
-alter table companies add column company_is_provider BOOL NOT NULL default 0;
-alter table companies add column company_email varchar(30);
+ALTER TABLE companies ADD COLUMN company_type INT(3) NOT NULL DEFAULT 0;
+ALTER TABLE companies ADD COLUMN company_email varchar(30);
+
+INSERT INTO sysvals VALUES("1", "1", "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
+
+# ROLES TABLES: AJE 26/Feb/2003
+
+#
+# Table structure for table 'roles'
+#
+
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles (
+  role_id int(10) unsigned NOT NULL auto_increment,
+  role_name varchar(24) NOT NULL default '',
+  role_description varchar(255) NOT NULL default '',
+  role_type int(3) unsigned NOT NULL default '0',
+  role_module int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (role_id)
+) TYPE=MyISAM;
+
+#
+# Table structure for table 'user_roles'
+#
+
+DROP TABLE IF EXISTS user_roles;
+CREATE TABLE user_roles (
+  user_id int(10) unsigned NOT NULL default '0',
+  role_id int(10) unsigned NOT NULL default '0'
+) TYPE=MyISAM;
+

@@ -30,7 +30,7 @@ CREATE TABLE companies (
   company_primary_url varchar(255) default NULL,
   company_owner int(11) NOT NULL default '0',
   company_description tinytext,
-  company_is_provider BOOL NOT NULL default 0,
+  company_type int(3) NOT NULL DEFAULT '0',
   company_email varchar(30),
   PRIMARY KEY  (company_id)
 ) TYPE=MyISAM;
@@ -452,4 +452,28 @@ CREATE TABLE sysvals (
 
 INSERT INTO syskeys VALUES("1", "SelectList", "Enter values for list", "0", "\n", "|");
 INSERT INTO sysvals VALUES("1", "1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
+
+#
+# Table structure for table 'roles'
+#
+
+DROP TABLE IF EXISTS roles;
+CREATE TABLE roles (
+  role_id int(10) unsigned NOT NULL auto_increment,
+  role_name varchar(24) NOT NULL default '',
+  role_description varchar(255) NOT NULL default '',
+  role_type int(3) unsigned NOT NULL default '0',
+  role_module int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (role_id)
+) TYPE=MyISAM;
+
+#
+# Table structure for table 'user_roles'
+#
+
+DROP TABLE IF EXISTS user_roles;
+CREATE TABLE user_roles (
+  user_id int(10) unsigned NOT NULL default '0',
+  role_id int(10) unsigned NOT NULL default '0'
+) TYPE=MyISAM;
 
