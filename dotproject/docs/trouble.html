@@ -11,7 +11,7 @@
 
 <body>
 
-<h1>Trouble shooting dotProject</h1>
+<h1>Troubleshooting dotProject</h1>
 
 <h2>config.php settings</h2>
 <ol>
@@ -48,8 +48,32 @@
 		<b>file_uploads = on</b>
 		<br />Set to on to enable the file upload module. You will also need to have appropriate permissions on the file folder. Maximum upload size can also be configured in <b>php.ini</b>.
 	</li>
-
 </ol>
+
+<h2>Maximum File Upload Size [php.ini file settings]</h2>
+The maximum file upload size will depend on:<br />
+<ol>
+	<li>
+		<b>Server Configuration</b>
+	</li>
+	<li>
+		<b>Bandwidth Connectivity</b>
+	</li>
+</ol>
+For the most part, you can control the ability of uploading LARGE (>8mb files) by modification of your <code>php.ini</code> file. However, your modifications will likely go beyond simply tweeking the <code>upload_max_filesize</code> variable.<br />
+<br />
+Here are some sample <code>php.ini</code> modifications used to get a 11mb+ upload to function:<br />
+<br />
+<pre>
+	<code>upload_max_filesize = 20M </code>; DEFAULT is 2M 
+	<code>max_execution_time = 300 </code>; DEFAULT is 30 [seconds] 
+	<code>post_max_size = 12M </code>; DEFAULT is 8M 
+</pre>
+You may also find it necessary to modify the <code>memory_limit</code> Resource Limit, but this shouldn't be an issue if you have good bandwidth.<br />
+<br />
+In order to get a 3MB upload to work within our LAN environment, it was only necessary to modify the <code>upload_max_filesize</code> variable. However, file uploads may fail because of script timeouts exceeding <code>max_execution_time</code> if you have a poor network connection between your client and server (e.g. dialup).<br />
+<br />
+Please remember to restart Apache after making modifications to <code>php.ini</code>.<br /><br /> 
 
 <h2>PHP</h2>
 <ol>
