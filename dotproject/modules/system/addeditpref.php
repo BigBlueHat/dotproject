@@ -22,7 +22,9 @@ $prefs = db_loadHashList( $sql );
 $user = dPgetUsernameFromID($user_id);
 
 $titleBlock = new CTitleBlock( 'Edit User Preferences', 'myevo-weather.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=system", "system admin" );
+$perms =& $AppUI->acl();
+if ($perms->checkModule('system', 'edit'))
+	$titleBlock->addCrumb( "?m=system", "system admin" );
 $titleBlock->show();
 ?>
 <script language="javascript">
