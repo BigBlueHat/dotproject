@@ -120,8 +120,7 @@ class CTask extends CDpObject {
 			//Update percent complete
 			$sql = "SELECT sum( task_percent_complete )  / count( task_percent_complete ) 
 					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
-					" AND task_id != " . $modified_task->task_id . 
-					" GROUP BY task_id";
+					" AND task_id != " . $modified_task->task_id;
 			$modified_task->task_percent_complete = floatval(db_loadResult( $sql ));
 			
 			//Update start date
