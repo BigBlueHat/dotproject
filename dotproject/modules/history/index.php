@@ -64,7 +64,6 @@ function show_history($history)
         return $msg;
 }
 
-//TODO: Add security
 $psql = 
 "SELECT * from history, users WHERE history_user = user_id ORDER BY history_date DESC";
 $prc = db_exec( $psql );
@@ -82,6 +81,12 @@ $history = array();
 </tr>
 <?php
 while ($row = db_fetch_assoc( $prc )) {
+  $module = $row['history_table'] == 'task_log'?'tasks':$row['history_table'];
+  // Checking permissions.
+  // TODO: Enable the lines below to activate new permissions.
+//        $perms = & $AppUI->acl();
+  if (true) //$perms->checkModuleItem($module, "access", $row['history_item']))
+  {
 ?>
 <tr>	
 	<td><a href='<?php echo "?m=history&a=addedit&history_id=" . $row["history_id"] ?>'><img src="./images/icons/pencil.gif" alt="<?php echo $AppUI->_( 'Edit History' ) ?>" border="0" width="12" height="12"></a></td>
@@ -90,6 +95,7 @@ while ($row = db_fetch_assoc( $prc )) {
 	<td><?php echo $row["user_username"]?></td>
 </tr>	
 <?php
+  }
 }
 ?>
 </table>
