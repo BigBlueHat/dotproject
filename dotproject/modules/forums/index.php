@@ -43,23 +43,23 @@ FROM forums, users, projects
 LEFT JOIN forum_messages t ON t.message_forum = forum_id AND t.message_parent = -1
 LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > -1
 LEFT JOIN forum_messages l ON l.message_id = forum_last_id
-LEFT JOIN forum_watch ON watch_user = $thisuser_id AND watch_forum = forum_id
+LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
 WHERE user_id = forum_owner";
 if (isset($project_id)) {
 	$sql.= " AND forum_project = $project_id";
 }
 switch ($f) {
 	case 1:
-		$sql.= " AND forum_owner = $thisuser_id";
+		$sql.= " AND forum_owner = $AppUI->user_id";
 		break;
 	case 2:
 		$sql.= " AND watch_user IS NOT NULL";
 		break;
 	case 3:
-		$sql.= " AND project_owner = $thisuser_id";
+		$sql.= " AND project_owner = $AppUI->user_id";
 		break;
 	case 4:
-		$sql.= " AND project_company = $thisuser_company";
+		$sql.= " AND project_company = $AppUI->user_company";
 		break;
 }
 $sql .= " AND  project_id = forum_project

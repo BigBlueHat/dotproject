@@ -12,7 +12,7 @@ SELECT fm1.message_id, fm1.message_parent, fm1.message_author, fm1.message_title
 FROM forum_messages fm1
 LEFT JOIN users ON fm1.message_author = users.user_id
 LEFT JOIN forum_messages fm2 ON fm1.message_id = fm2.message_parent
-LEFT JOIN forum_watch ON watch_user = $thisuser_id AND watch_topic = fm1.message_id
+LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_topic = fm1.message_id
 WHERE fm1.message_forum = $forum_id
 ";
 switch ($f) {

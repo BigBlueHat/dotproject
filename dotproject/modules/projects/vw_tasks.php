@@ -1,5 +1,5 @@
 <?php
-GLOBAL $project_id, $thisuser_id;
+GLOBAL $project_id, $AppUI;
 ?>
 
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
@@ -24,7 +24,7 @@ SELECT
 	task_order
 FROM tasks, user_tasks
 WHERE task_project = $project_id
-	AND user_tasks.user_id = $thisuser_id
+	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id
 ORDER BY task_order
 ";

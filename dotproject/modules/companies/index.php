@@ -63,7 +63,7 @@ $rows = db_loadList( $sql );
 <table width="98%" border=0 cellpadding=0 cellspacing=1>
 <tr>
 	<td valign="top">
-		<b>Welcome <?php echo $thisuser_first_name;?>.</b>  This page show you a list of current clients and their active projects.
+		<b>Welcome <?php echo $AppUI->user_first_name;?>.</b>  This page show you a list of current clients and their active projects.
 	</td>
 </tr>
 </table>

@@ -12,7 +12,7 @@ if ($denyRead) {
 }
 
 //Projects
-$company_id = isset($_REQUEST["company_id"]) ? $_REQUEST["company_id"] : $thisuser_company;
+$company_id = isset($_REQUEST["company_id"]) ? $_REQUEST["company_id"] : $AppUI->user_company;
 
 //Set up defaults
 $orderby = isset($HTTP_GET_VARS["orderby"]) ? $HTTP_GET_VARS["orderby"] : 'project_end_date';
@@ -53,7 +53,7 @@ FROM permissions,projects
 LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 LEFT JOIN tasks t2 ON projects.project_id = t2.task_project
-	AND t2.task_owner = $thisuser_id
+	AND t2.task_owner = $AppUI->user_id
 WHERE project_active = $active"
 .($company_id ? "\nAND project_company = $company_id" : '')
 ."
