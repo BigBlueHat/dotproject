@@ -56,7 +56,24 @@ foreach ($logs as $row) {
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
 	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . '</td>';
 	$s .= '<td width="100">'.$row["task_log_costcode"].'</td>';
-	$s .= '<td>'.str_replace(chr(10), "<br />",$row["task_log_description"]).'</td>';
+	$s .= '<td>';
+
+// dylan_cuthbert: auto-transation system in-progress, leave these lines
+	$transbrk = "\n[translation]\n";
+	$descrip = str_replace( "\n", "<br />", $row['task_log_description'] );
+	$tranpos = strpos( $descrip, str_replace( "\n", "<br />", $transbrk ) );
+	if ( $tranpos === false) $s .= $descrip;
+	else
+	{
+		$descrip = substr( $descrip, 0, $tranpos );
+		$tranpos = strpos( $row['task_log_description'], $transbrk );
+		$transla = substr( $row['task_log_description'], $tranpos + strlen( $transbrk ) );
+		$transla = trim( str_replace( "'", '"', $transla ) );
+		$s .= $descrip."<div style='font-weight: bold; text-align: right'><a title='$transla' class='hilite'>[".$AppUI->_("translation")."]</a></div>";
+	}
+// end auto-translation code
+			
+	$s .= '</td>';
 	$s .= "\n\t<td>";
 	if ($canEdit) {
 		$s .= "\n\t\t<a href=\"javascript:delIt2({$row['task_log_id']});\" title=\"".$AppUI->_('delete log')."\">"

@@ -155,6 +155,29 @@ class CTask extends CDpObject {
 	}
 	
 /**
+*	Copy the current task
+*
+*	@author	handco <handco@users.sourceforge.net>
+*	@param	int		id of the destination project 
+*	@return	object	The new record object or null if error
+**/
+	function copy($destProject_id = 0) {
+		$newObj = $this->clone();
+		
+		//Fix the parent task
+		if ($newObj->task_parent == $this->task_id)
+			$newObj->task_parent = $newObj->task_id;
+			
+		// Copy this task to another project if it's specified
+		if ($destProject_id != 0) 
+			$newObj->task_project = $destProject_id;
+			
+		$msg = $newObj->store();
+		
+		return $newObj; 
+	}// end of copy()
+
+/**
 * @todo Parent store could be partially used
 */
 	function store() {
@@ -172,6 +195,7 @@ class CTask extends CDpObject {
 				$this->updateSubTasksStatus($new_status);
 			}
 			$this->updateDynamics(true);
+			
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
 			
 			
@@ -239,7 +263,7 @@ class CTask extends CDpObject {
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $user_id) {
 			if (intval( $user_id ) > 0) {
-				$sql = "REPLACE user_tasks (user_id, task_id) VALUES ($user_id, $this->task_id)";
+				$sql = "REPLACE INTO user_tasks (user_id, task_id) VALUES ($user_id, $this->task_id)";
 				db_exec( $sql );
 			}
 		}
@@ -254,11 +278,47 @@ class CTask extends CDpObject {
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $task_id) {
 			if (intval( $task_id ) > 0) {
-				$sql = "REPLACE task_dependencies (dependencies_task_id, dependencies_req_task_id) VALUES ($this->task_id, $task_id)";
+				$sql = "REPLACE INTO task_dependencies (dependencies_task_id, dependencies_req_task_id) VALUES ($this->task_id, $task_id)";
 				db_exec($sql);
 			}
 		}
 	}
+	
+	/**
+	*	Retrieve the tasks dependencies 
+	*
+	*	@author	handco	<handco@users.sourceforge.net>
+	*	@return	string	comma delimited list of tasks id's
+	**/
+	function getDependencies () {
+		// Call the static method for this object
+		$result = $this->staticGetDependencies ($this->task_id);
+		return $result;
+	} // end of getDependencies ()
+
+	//}}}
+
+	//{{{ staticGetDependencies ()
+	/**
+	*	Retrieve the tasks dependencies 
+	*
+	*	@author	handco	<handco@users.sourceforge.net>
+	*	@param	integer	ID of the task we want dependencies
+	*	@return	string	comma delimited list of tasks id's
+	**/
+	function staticGetDependencies ($taskId) {
+		$sql = "
+            SELECT dependencies_req_task_id
+            FROM task_dependencies td
+            WHERE td.dependencies_task_id = $taskId
+		";
+		$hashList = db_loadHashList ($sql);
+		$result = implode (',', array_keys ($hashList));
+
+		return $result;
+	} // end of staticGetDependencies ()
+
+	//}}}
 
 	function notifyOwner() {
 		GLOBAL $AppUI, $locale_char_set;
@@ -539,6 +599,7 @@ class CTask extends CDpObject {
 		}
 	}
 }
+
 
 /**
 * CTask Class

@@ -105,6 +105,7 @@ if ($canEdit) {
 	$titleBlock->addCrumbDelete( 'delete task', $canDelete, $msg );
 }
 $titleBlock->show();
+
 ?>
 
 <script language="JavaScript">

@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Inventory",
 "- New Item -",
 "About",
 "Active Projects",

@@ -53,7 +53,7 @@ if ($project_id != 0)
   $titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 $titleBlock->show();
 ?>
-<link rel="stylesheet" type="text/css" media="all" href="lib/calendar/calendar-dp.css" title="blue" />
+<link rel="stylesheet" type="text/css" media="all" href="<?php echo $AppUI->cfg['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
 <!-- import the calendar script -->
 <script type="text/javascript" src="<?php echo $AppUI->cfg['base_url'];?>/lib/calendar/calendar.js"></script>
 <!-- import the language module -->
@@ -267,6 +267,41 @@ function submitIt() {
 				</table>
 			</td>
 		</tr>
+		<!-- BEGIN Handco patch -->
+		<?php  
+			if ($project_id != 0) {
+				$sql = "SELECT COUNT(task_id) as count FROM tasks WHERE task_project = $project_id";
+				$result = db_loadResult ($sql);
+				$canImportTasks = $result == 0;
+			} else
+				$canImportTasks = true;
+				
+			if ($canImportTasks) { // We provide task import only for an empty project
+				
+				// Retrieve projects that the user can access
+				$objProject = new CProject();
+				$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
+
+				// Loading project with tasks
+				$sql = 'SELECT DISTINCT p.project_id, p.project_name
+						FROM projects AS p , tasks AS t 
+						WHERE ( t.task_project = p.project_id ) AND (p.project_id IN (' .
+						implode (',', array_keys($allowedProjects)) . ')) ORDER BY p.project_name';
+
+				$importList = db_loadHashList ($sql);
+				$importList = arrayMerge( array( '0'=> $AppUI->_('none') ), $importList);
+
+		?>
+			<tr>
+				<td align="right" nowrap="nowrap">
+					<?php echo $AppUI->_('Import tasks from');?><br/>
+				</td>
+				<td colspan="3">
+					<?php echo arraySelect( $importList, 'import_tasks_from', 'size="1" class="text"', null, false ); ?>
+				</td>
+			</tr>
+		<?php } // End of task import list code?>
+		<!-- END Handco patch -->
 		<tr>
 			<td colspan="4">
 				<?php echo $AppUI->_('Description');?><br />

@@ -7,6 +7,8 @@
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
+require_once( $AppUI->getModuleClass( 'tasks' ) );
+require_once( $AppUI->getModuleClass( 'companies' ) );
 
 /**
  * The Project Class

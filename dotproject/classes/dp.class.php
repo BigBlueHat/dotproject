@@ -88,6 +88,23 @@ class CDpObject {
 	function check() {
 		return NULL;
 	}
+	
+/**
+*	Clone de current record
+*
+*	@author	handco <handco@users.sourceforge.net>
+*	@return	object	The new record object or null if error
+**/
+	function clone() {
+		$_key = $this->_tbl_key;
+		
+		$newObj = $this;
+		// blanking the primary key to ensure that's a new record
+		$newObj->$_key = '';
+		
+		return $newObj;
+	}
+
 
 /**
  *	Inserts a new row if id is zero or updates an existing row in the database table

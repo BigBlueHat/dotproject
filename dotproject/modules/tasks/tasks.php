@@ -23,6 +23,13 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
 $task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
 
+$task_sort_item1 = dPgetParam( $_GET, 'task_sort_item1', '' );
+$task_sort_type1 = dPgetParam( $_GET, 'task_sort_type1', '' );
+$task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', '' );
+$task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
+$task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
+$task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
+
 $where = '';
 $join = winnow( 'projects', 'project_id', $where );
 
@@ -220,11 +227,87 @@ function findchild( &$tarr, $parent, $level=0 ){
 	}
 }
 }
+
+/* please throw this in an include file somewhere, its very useful */
+
+function array_csort()   //coded by Ichier2003
+{
+    $args = func_get_args();
+    $marray = array_shift($args);
+	
+	if ( empty( $marray )) return array();
+	
+	$i = 0;
+    $msortline = "return(array_multisort(";
+	$sortarr = array();
+    foreach ($args as $arg) {
+        $i++;
+        if (is_string($arg)) {
+            foreach ($marray as $row) {
+                $sortarr[$i][] = $row[$arg];
+            }
+        } else {
+            $sortarr[$i] = $arg;
+        }
+        $msortline .= "\$sortarr[".$i."],";
+    }
+    $msortline .= "\$marray));";
+
+    eval($msortline);
+    return $marray;
+}
+
+function sort_by_item_title( $title, $item_name, $item_type )
+{
+	global $AppUI,$project_id,$min_view;
+	global $task_sort_item1,$task_sort_type1,$task_sort_order1;
+	global $task_sort_item2,$task_sort_type2,$task_sort_order2;
+	
+	if ( $min_view )
+	{
+		if ( $task_sort_item2 == $item_name ) $item_order = $task_sort_order2;
+		if ( $task_sort_item1 == $item_name ) $item_order = $task_sort_order1;
+		
+		if ( isset( $item_order ) )
+		{
+			if ( $item_order == SORT_ASC ) echo '<img src="./images/icons/low.gif" width=13 height=16>';
+			else echo '<img src="./images/icons/1.gif" width=13 height=16>';
+		}
+		else $item_order = SORT_DESC;
+		
+	/* flip the sort order for the link */
+		$item_order = ( $item_order == SORT_ASC ) ? SORT_DESC : SORT_ASC;
+		
+		echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
+		echo '&task_sort_item1='.$item_name;
+		echo '&task_sort_type1='.$item_type;
+		echo '&task_sort_order1='.$item_order;
+		if ( $task_sort_item1 == $item_name )
+		{
+			echo '&task_sort_item2='.$task_sort_item2;
+			echo '&task_sort_type2='.$task_sort_type2;
+			echo '&task_sort_order2='.$task_sort_order2;
+		}
+		else
+		{
+			echo '&task_sort_item2='.$task_sort_item1;
+			echo '&task_sort_type2='.$task_sort_type1;
+			echo '&task_sort_order2='.$task_sort_order1;
+		}
+		echo '">';
+	}
+	
+	echo $AppUI->_($title);
+	
+	if ( $min_view ) { echo '</a>'; }
+}
+
 ?>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
-	<th width="10">&nbsp;</th>
+<!--
+	<th width="10" STYLE="background: #4aa">&nbsp;</th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
 	<th width="15" align="center">&nbsp;</th>
 	<th width="200"><?php echo $AppUI->_('Task Name');?></th>
@@ -232,6 +315,17 @@ function findchild( &$tarr, $parent, $level=0 ){
 	<th nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Duration');?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?></th>
+-->
+	<th width="10" STYLE="background: #4aa">&nbsp;</th>
+	<th width="20" STYLE="background: #4aa"><?php echo $AppUI->_('Work');?></th>
+	<th width="15" align="center" STYLE="background: #4aa">&nbsp;</th>
+	<th width="200" STYLE="background: #4aa"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
+	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
+	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
+	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
+	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
+
+
 </tr>
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
@@ -266,6 +360,14 @@ foreach ($projects as $k => $p) {
 		}
 		global $done;
 		$done = array();
+		if ( $min_view && $task_sort_item1 != "" )
+		{
+			if ( $task_sort_item2 != "" && $task_sort_item1 != $task_sort_item2 )
+				$p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1
+										  , $task_sort_item2, $task_sort_order2, $task_sort_type2 );
+			else $p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1 );
+		}
+		
 		for ($i=0; $i < $tnums; $i++) {
 			$t = $p['tasks'][$i];
 			if ($t["task_parent"] == $t["task_id"]) {

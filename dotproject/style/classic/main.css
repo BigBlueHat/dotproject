@@ -1,7 +1,7 @@
 BODY.mainpage {
 	margin: 0px;
 	background-color: #ffffff;
-	font-family: verdana,sans-serif;
+	font-family: Osaka,verdana,sans-serif;
 	font-size: 10pt;
 }
 A:link {
@@ -61,19 +61,19 @@ bordertable {
 
 .text{
  border: 1px black solid;
- font-family: verdana,Sans-Serif;
+ font-family: Osaka,verdana,Sans-Serif;
  font-size: 8pt;
  height: 20px;
 }
 
 .textarea{
-	font-family: verdana,helvetica,arial,sans-serif;
+	font-family: Osaka,verdana,helvetica,arial,sans-serif;
 	font-size: 9pt;
 }
 
 textarea.small {
 	border: 1px black solid;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt;
 }
 /*

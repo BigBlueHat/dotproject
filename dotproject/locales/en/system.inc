@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"edit",
+"ja"=>"Japanese",
 "Abbreviation",
 "Are you sure you want to delete this?",
 "Are you sure?",
@@ -28,7 +28,6 @@
 "Module menu state changed",
 "Module not upgraded",
 "Module removed",
-"Module re-ordered",
 "Module setup file could not be found",
 "Module state changed",
 "Module upgraded",
@@ -62,6 +61,7 @@
 "de"=>"German",
 "deleted",
 "disabled",
+"edit",
 "en"=>"English",
 "es"=>"Spanish",
 "fr"=>"French",

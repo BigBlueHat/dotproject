@@ -7,6 +7,8 @@ $do_report = dPgetParam( $_POST, "do_report", 0 );
 $log_all = dPgetParam( $_POST, 'log_all', 0 );
 $log_pdf = dPgetParam( $_POST, 'log_pdf', 0 );
 $log_ignore = dPgetParam( $_POST, 'log_ignore', 0 );
+$log_userfilter = dPgetParam( $_POST, 'log_userfilter', '0' );
+$log_allprojects = dPgetParam( $_POST, 'log_allprojects', '0' );
 
 $log_start_date = dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date = dPgetParam( $_POST, "log_end_date", 0 );
@@ -52,7 +54,7 @@ function setCalendar( idate, fdate ) {
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
 		<input type="hidden" name="log_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
-		<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
+		<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" style="width: 80px" />
 		<a href="#" onClick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
@@ -60,10 +62,44 @@ function setCalendar( idate, fdate ) {
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('to');?></td>
 	<td nowrap="nowrap">
 		<input type="hidden" name="log_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
+		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" style="width: 80px"/>
 		<a href="#" onClick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
+	</td>
+	
+	<TD NOWRAP>
+		<?php echo $AppUI->_('User');?>: 
+		<SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 80px">
+		
+	<?php
+		$usersql = "
+		SELECT user_id, user_username, user_first_name, user_last_name
+		FROM users
+		";
+		
+		if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
+		else echo '<OPTION VALUE="0">All users';
+		
+		if (($rows = db_loadList( $usersql, NULL )))
+		{
+			foreach ($rows as $row)
+			{
+				if ( $log_userfilter == $row["user_id"])
+					echo "<OPTION VALUE='".$row["user_id"]."' SELECTED>".$row["user_username"];
+				else
+					echo "<OPTION VALUE='".$row["user_id"]."'>".$row["user_username"];
+			}
+		}
+
+	?>
+			
+		</SELECT>
+	</TD>
+
+	<td nowrap="nowrap">
+		<input type="checkbox" name="log_allprojects" <?php if ($log_allprojects) echo "checked" ?> />
+		<?php echo $AppUI->_( 'All Projects' );?>
 	</td>
 
 	<td nowrap="nowrap">
@@ -94,13 +130,20 @@ if ($do_report) {
 	$sql = "SELECT t.*, CONCAT_WS(' ',u.user_first_name,u.user_last_name) AS creator"
 		."\nFROM task_log AS t, tasks"
 		."\nLEFT JOIN users AS u ON user_id = task_log_creator"
-		."\nWHERE task_log_task = task_id AND task_project = $project_id";
+		."\nWHERE task_log_task = task_id";
+	if (!$log_allprojects)
+	{
+		 $sql .= "\nAND task_project = $project_id";
+	}
 	if (!$log_all) {
 		$sql .= "\n	AND task_log_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'"
 		."\n	AND task_log_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'";
 	}
 	if ($log_ignore) {
 		$sql .= "\n	AND task_log_hours > 0";
+	}
+	if ($log_userfilter) {
+		$sql .= "\n	AND task_log_creator = $log_userfilter";
 	}
 	$sql .= " ORDER BY task_log_date";
 
@@ -148,7 +191,22 @@ if ($do_report) {
 		<td>
 			<a href="index.php?m=tasks&a=view&tab=1&task_id=<?php echo $log['task_log_task'];?>&task_log_id=<?php echo $log['task_log_id'];?>"><?php echo $log['task_log_name'];?></a>
 		</td>
-		<td><?php echo str_replace( "\n", "<br />", $log['task_log_description'] );?></td>
+		<td><?php
+// dylan_cuthbert: auto-transation system in-progress, leave these lines for time-being
+            $transbrk = "\n[translation]\n";
+			$descrip = str_replace( "\n", "<br />", $log['task_log_description'] );
+			$tranpos = strpos( $descrip, str_replace( "\n", "<br />", $transbrk ) );
+			if ( $tranpos === false) echo $descrip;
+			else
+			{
+				$descrip = substr( $descrip, 0, $tranpos );
+				$tranpos = strpos( $log['task_log_description'], $transbrk );
+				$transla = substr( $log['task_log_description'], $tranpos + strlen( $transbrk ) );
+				$transla = trim( str_replace( "'", '"', $transla ) );
+				echo $descrip."<div style='font-weight: bold; text-align: right'><a title='$transla' class='hilite'>[".$AppUI->_("translation")."]</a></div>";
+			}
+// dylan_cuthbert; auto-translation end
+			?></td>
 		<td><?php echo $date->format( $df );?></td>
 		<td align="right"><?php printf( "%.2f", $log['task_log_hours'] );?></td>
 		<td><?php echo $log['task_log_costcode'];?></td>

@@ -1,6 +1,9 @@
 <?php /* TASKS $Id$ */
 $notify_owner =  isset($_POST['task_log_notify_owner']) ? $_POST['task_log_notify_owner'] : 0;
 
+// dylan_cuthbert: auto-transation system in-progress, leave this line commented out for now
+//include( '/usr/local/translator/translate.php' );
+
 $del = dPgetParam( $_POST, 'del', 0 );
 
 $obj = new CTaskLog();
@@ -9,6 +12,11 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
+
+// dylan_cuthbert: auto-transation system in-progress, leave these lines commented out for now
+//if ( $obj->task_log_description ) {
+//	$obj->task_log_description .= "\n\n[translation]\n".translator_make_translation( $obj->task_log_description );
+//}
 
 if ($obj->task_log_date) {
 	$date = new CDate( $obj->task_log_date );

@@ -5,7 +5,7 @@ BODY {
 	margin-left: 0px;
 	margin-right: 0px;
 	margin-bottom: 10px;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 10pt;
 }
 
@@ -53,19 +53,19 @@ A:hover {
 }
 
 TD {
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt
 }
 
 TR {
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt
 }
 
 h1, .title {
 	font-size: 16px;
 	font-weight: bold;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	color: #08245b;
 	margin-bottom: 0px;
 	margin-top: 5px;
@@ -74,7 +74,7 @@ h1, .title {
 h2, .subtitle {
 	font-size: 12px;
 	font-weight: bold;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	color: #666;
 	margin-bottom: 0px;
 	margin-top: 15px;
@@ -83,7 +83,7 @@ h2, .subtitle {
 h3 {
 	font-size: 12px;
 	font-weight: bold;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	color: #08245b;
 	margin-bottom: 0px;
 	margin-top: 35px;
@@ -99,31 +99,31 @@ bordertable {
 
 .button{
 	border: 1px black solid;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt;
 	/*width: 100px; too small for some translations*/
 }
 
 .text{
 	border: 1px black solid;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt;
 	height: 12pt;
 }
 
 TEXTAREA {
-	font-family: verdana,helvetica,arial,sans-serif;
+	font-family: Osaka,verdana,helvetica,arial,sans-serif;
 	font-size: 9pt;
 }
 
 .textarea {
-	font-family: verdana,helvetica,arial,sans-serif;
+	font-family: Osaka, verdana,helvetica,arial,sans-serif;
 	font-size: 9pt;
 }
 
 textarea.small {
 	border: 1px black solid;
-	font-family: verdana,Sans-Serif;
+	font-family: Osaka, verdana,Sans-Serif;
 	font-size: 8pt;
 }
 
@@ -303,14 +303,14 @@ table.popcal {
 table.popcal th {
 	background-color: #ffffff;
 	color: #000000;
-	font-family: helvetica,arial,sans-serif;
+	font-family: Osaka,helvetica,arial,sans-serif;
 	font-size: 9pt;
 	font-weight: normal;
 }
 
 table.popcal td {
 	background-color: #ffffff;
-	font-family: helvetica,arial,sans-serif;
+	font-family: Osaka,helvetica,arial,sans-serif;
 	font-size: 8pt;
 	text-align: center;
 }
