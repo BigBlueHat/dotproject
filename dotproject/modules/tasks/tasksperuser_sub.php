@@ -497,7 +497,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 $tmp .= "<img src=\"./images/icons/low.gif\" width=13 height=16 alt=\"low\">";
         }
         $tmp.="</td>";
-	$tmp.="<td nowrap=\"nowrap\">";
+	$tmp.="<td>";
 
 	for($i=0;$i<$level;$i++) {
 		$tmp.="&#160";
@@ -514,7 +514,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 $tmp .= "&nbsp;(<img src=\"./images/icons/low.gif\" width=13 height=16 alt=\"low\">)";
         }
 	$tmp.="</td>";
-        $tmp.="<td align=\"center\" nowrap=\"nowrap\" >";
+        $tmp.="<td align=\"center\">";
         $tmp.= "<a href='?m=projects&a=view&project_id=$task->task_project' style='background-color:#".@$projects["project_color_identifier"]."; color:".bestColor(@$projects['project_color_identifier'])."'>".$projects['project_short_name']."</a>";
         $tmp.="</td>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
