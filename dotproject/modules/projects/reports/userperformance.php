@@ -169,8 +169,8 @@ if($do_report){
 			}
 		}
 		$sum_percentage = 0;
-		if($sum_total_hours_allocated > 0){
-			$sum_percentage = ($sum_total_hours_worked/$sum_total_hours_allocated)*100;
+		if($sum_total_hours_worked > 0){
+			$sum_percentage = ($sum_total_hours_allocated/$sum_total_hours_worked)*100;
 		}
 		?>
 			<tr>
