@@ -3,9 +3,6 @@ $project_id = dPgetParam( $_GET, "project_id", 0 );
 
 // check permissions for this project
 $canEdit = !getDenyEdit( $m, $project_id );
-$AppUI->savePlace();
-
-$AppUI->setState( 'ActiveProject', $project_id );
 
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
@@ -32,42 +29,45 @@ GROUP BY project_id
 //echo "<pre>$sql</pre>";
 
 if (!db_loadHash( $sql, $project )) {
-	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=projects", "projects list" );
-	$titleBlock->show();
+	$AppUI->setMsg( 'Project' );
+	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->redirect();
 } else {
-	$df = $AppUI->getPref('SHDATEFORMAT');
+	$AppUI->savePlace();
+}
 
-	$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
-	$start_date->setFormat( $df );
+$df = $AppUI->getPref('SHDATEFORMAT');
 
-	$end_date = $project["project_end_date"] ? CDate::fromDateTime( $project["project_end_date"] ) : new CDate();
-	$end_date->setFormat( $df );
+$ts = db_dateTime2unix( $project["project_start_date"] );
+$start_date = $ts < 0 ? null : new CDate( $ts, $df );
 
-	$actual_end_date = $project["project_actual_end_date"] ? CDate::fromDateTime( $project["project_actual_end_date"] ) : new CDate();
-	$actual_end_date->setFormat( $df );
+$ts = db_dateTime2unix( $project["project_end_date"] );
+$end_date = $ts < 0 ? null : new CDate( $ts, $df );
+
+$ts = db_dateTime2unix( $project["project_actual_end_date"] );
+$actual_end_date = $ts < 0 ? null : new CDate( $ts, $df );
 
 // setup the title block
-	$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, "$m.$a" );
-	if ($canEdit) {
-		$titleBlock->addCell();
-		$titleBlock->addCell(
-			'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-			'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
+$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, "$m.$a" );
+if ($canEdit) {
+	$titleBlock->addCell();
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
+		'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
+	);
+}
+$titleBlock->addCrumb( "?m=projects", "projects list" );
+if ($canEdit) {
+	$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
+	if ($canDelete) {
+		$titleBlock->addCrumbRight(
+			'<a href="javascript:delIt()">'
+				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
+				. $AppUI->_('delete project') . '</a>'
 		);
 	}
-	$titleBlock->addCrumb( "?m=projects", "projects list" );
-	if ($canEdit) {
-		$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
-		if ($canDelete) {
-			$titleBlock->addCrumbRight(
-				'<a href="javascript:delIt()">'
-					. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-					. $AppUI->_('delete project') . '</a>'
-			);
-		}
-	}
-	$titleBlock->show();
+}
+$titleBlock->show();
 ?>
 <script language="javascript">
 function delIt() {
@@ -108,15 +108,15 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Start Date');?>:</td>
-			<td class="hilite"><?php echo $start_date->isValid() ? $start_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $start_date ? $start_date->toString() : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target End Date');?>:</td>
-			<td class="hilite"><?php echo $end_date->isValid() ? $end_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $end_date ? $end_date->toString() : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Actual End Date');?>:</td>
-			<td class="hilite"><?php echo $actual_end_date->isValid() ? $actual_end_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $actual_end_date ? $actual_end_date->toString() : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target Budget');?>:</td>
@@ -164,18 +164,17 @@ function delIt() {
 </table>
 
 <?php
-	$query_string = "?m=projects&a=view&project_id=$project_id";
-	// tabbed information boxes
-	$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
+$query_string = "?m=projects&a=view&project_id=$project_id";
+// tabbed information boxes
+$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
 
-	// settings for tasks
-	$f = 'all';
-	$min_view = true;
+// settings for tasks
+$f = 'all';
+$min_view = true;
 
-	$tabBox->show();
-}
+$tabBox->show();
 ?>

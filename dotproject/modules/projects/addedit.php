@@ -17,42 +17,42 @@ $users = db_loadHashList( $sql );
 
 // pull the project
 $sql = "SELECT * FROM projects WHERE project_id = $project_id";
+
 if (!db_loadHash( $sql, $project ) && $project_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_EDIT' );
-	$titleBlock->addCrumb( "?m=projects", "projects list" );
-	$titleBlock->show();
+	$AppUI->setMsg( 'Project' );
+	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->redirect();
 } else if (count( $companies ) < 2) {
-	$titleBlock = new CTitleBlock( 'noCompanies', 'projects.gif', $m, 'ID_HELP_PROJ_EDIT' );
-	$titleBlock->addCrumb( "?m=companies", "companies list" );
-	$titleBlock->addCrumb( "?m=projects", "projects list" );
-	$titleBlock->show();
+	$AppUI->setMsg( "noCompanies", UI_MSG_ERROR, true );
+	$AppUI->redirect();
+}
+
+// format dates
+$df = $AppUI->getPref('SHDATEFORMAT');
+
+$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
+$start_date->setFormat( $df );
+
+if ($project["project_end_date"]) {
+	$end_date = CDate::fromDateTime( $project["project_end_date"] );
+	$end_date->setFormat( $df );
 } else {
-	// format dates
-	$df = $AppUI->getPref('SHDATEFORMAT');
+	$end_date = null;
+}
 
-	$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
-	$start_date->setFormat( $df );
-
-	if ($project["project_end_date"]) {
-		$end_date = CDate::fromDateTime( $project["project_end_date"] );
-		$end_date->setFormat( $df );
-	} else {
-		$end_date = null;
-	}
-
-	if ($project["project_actual_end_date"]) {
-		$actual_end_date = CDate::fromDateTime( $project["project_actual_end_date"] );
-		$actual_end_date->setFormat( $df );
-	} else {
-		$actual_end_date = null;
-	}
+if ($project["project_actual_end_date"]) {
+	$actual_end_date = CDate::fromDateTime( $project["project_actual_end_date"] );
+	$actual_end_date->setFormat( $df );
+} else {
+	$actual_end_date = null;
+}
 
 // setup the title block
-	$ttl = $project_id > 0 ? "Edit Project" : "New Project";
-	$titleBlock = new CTitleBlock( $ttl, 'projects.gif', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=projects", "projects list" );
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
-	$titleBlock->show();
+$ttl = $project_id > 0 ? "Edit Project" : "New Project";
+$titleBlock = new CTitleBlock( $ttl, 'projects.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=projects", "projects list" );
+$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+$titleBlock->show();
 ?>
 <script language="javascript">
 function setColor(color) {
@@ -271,4 +271,3 @@ function submitIt() {
 </form>
 </table>
 * <?php echo $AppUI->_('requiredField');?>
-<?php } ?>
