@@ -293,13 +293,6 @@ CREATE TABLE eventlog (
   dt datetime NOT NULL default '0000-00-00 00:00:00'
 ) TYPE=MyISAM;
 
-CREATE TABLE localization (
-  lang varchar(5) NOT NULL,
-  name varchar(255) NOT NULL,
-  value varchar(255) default NULL,
-  PRIMARY KEY (lang,name)
-) TYPE=MyISAM;
-    
 CREATE TABLE attendees (
   event_id int(11) NOT NULL,
   attendee_id int(11) NOT NULL,
@@ -322,31 +315,6 @@ CREATE TABLE task_dependencies (
 	dependencies_req_task_id int(11) NOT NULL,
 	PRIMARY KEY (dependencies_task_id, dependencies_req_task_id)
 );
-
-INSERT INTO localization VALUES 
-('fr','Calendar','Agenda'),
-('fr','Projects','Projets'),
-('fr','Files','Documents'),
-('fr','Forums','Forums'),
-('fr','Localization','Traductions'),
-('fr','Module','Module'),
-('fr','Permission Type','Type de permission'),
-('fr','Select user','Choisir utilisateur'),
-('fr','Tasks','Tâches'),
-('fr','Tickets','Tickets'),
-('fr','Translation','Traduction'),
-('fr','User Admin','Admin utilisateurs'),
-('fr','deny','interdire'),
-('fr','read-only','lecture seule'),
-('fr','read-write','lecture-écriture'),
-('fr','Locale key','Clé'),
-('fr','sort by','trier par'),
-('fr','Admin','Administration'),
-('fr','All','Tout'),
-('fr','Clients & Companies','Clients & Sociétés'),
-('fr','Companies','Sociétés'),
-('fr','Contacts','Contacts'),
-('fr','No permissions for this User','Pas de permissions pour cet utilisateur');
 
 #
 # ATTENTION: 
