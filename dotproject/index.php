@@ -45,13 +45,20 @@ $baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://
 $baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
 $baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : dirname(getenv('SCRIPT_NAME'));
 
-is_file( "$baseDir/includes/config.php" )
-	or die( "Fatal Error. You haven't created a config file yet." );
-
 // required includes for start-up
 $dPconfig = array();
 
-require_once "$baseDir/includes/config.php";
+clearstatcache();
+if( is_file( "$baseDir/includes/config.php" ) ) {
+
+	require_once "$baseDir/includes/config.php";
+
+} else {
+	echo "<html><head><meta http-equiv='refresh' content='5; URL=".$baseUrl."/install/index.php'></head><body>";
+	echo "Fatal Error. You haven't created a config file yet.<br/><a href='./install/index.php'>
+		Click Here To Start Installation and Create One!</a> (forwarded in 5 sec.)</body></html>";
+	exit();
+}
 
 if (! isset($GLOBALS['OS_WIN']))
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
