@@ -158,13 +158,14 @@ function dPfindImage( $name, $module=null ) {
  *	@param string The image height
  *	@param string The alt text for the image
  */
-function dPshowImage( $src, $wid='', $hgt='', $alt='' ) {
+function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' ) {
+	global $AppUI;
 	/*
 	if (strpos( $src, '.png' ) > 0 && strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0' ) !== false) {
 		return "<div style=\"height:{$hgt}px; width:{$wid}px; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$src', sizingMethod='scale');\" ></div>";
 	} else {
 	*/
-		return "<img src=\"$src\" width=\"$wid\" height=\"$hgt\" alt=\"$alt\" border=\"0\" />";
+		return "<img src=\"$src\" width=\"$wid\" height=\"$hgt\" alt=\"".$AppUI->_($alt)."\" border=\"0\" title=\"".$AppUI->_($title)."\" />";
 	// }
 }
 
