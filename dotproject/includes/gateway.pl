@@ -51,9 +51,18 @@ exit();
 sub get_headers {
 
     # read in headers
+	# First pass, fix up split headers.
     foreach (@message) {
-        push @headers, $_;
         last if (/^\s$/ || /^$/);
+		if (/^[\s\t]+/) {
+			$last_hdr = pop @headers;
+			$last_hdr .= $_;
+			push @headers, $last_hdr;
+		} else {
+			push @headers, $_;
+		}
+	# Second pass, split out the required headers
+	foreach (@headers) {
         if (/oundary=/) {
 	        $attachment_info = $_;
             $attachment = 1;
