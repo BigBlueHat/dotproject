@@ -50,6 +50,7 @@ if ($canRead) {
 <tr>
 	<th nowrap="nowrap">&nbsp;</th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'File Name' );?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Description' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Version' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Owner' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Size' );?></th>
@@ -71,7 +72,7 @@ if(count($files)) {
 			}
 			if ($showProject) {
 				$s = '<tr>';
-				$s .= '<td colspan="7" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
+				$s .= '<td colspan="8" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
 				$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
 				  . $row["project_name"] . '</font>';
 				$s .= '</td></tr>';
@@ -89,10 +90,11 @@ if(count($files)) {
 	}
 	?>
 	</td>
-	<td nowrap="nowrap">
+	<td width='8%'>
 		<?php echo "<a href=\"./fileviewer.php?file_id={$row['file_id']}\" title=\"{$row['file_description']}\">{$row['file_name']}</a>"; ?>
 	</td>
-	<td width="5%" nowrap="nowrap" align="center"><?php echo $row["file_version"];?></td>
+	    <td width="20%"><?php echo $row["file_description"];?></td>
+	    <td width="5%" nowrap="nowrap" align="center"><?php echo $row["file_version"];?></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>
 	<td width="10%" nowrap="nowrap" align="right"><?php echo intval($row["file_size"] / 1024);?> kb</td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
