@@ -1,3 +1,39 @@
+2003-05-09 18:54  (kripper)
+---------------------------------
+modules/tasks/todo.php
+- Added options for deleting and marking tasks as completed in the ToDo view.
+
+2003-05-09 06:25  (eddieajau)
+---------------------------------
+modules/tasks/todo.php
+- Added 'min_view' support so this can be included in the calendar
+
+2003-05-09 06:24  (eddieajau)
+---------------------------------
+modules/calendar/vw_day_tasks.php
+- Added task todo list
+
+2003-05-09 06:24  (eddieajau)
+---------------------------------
+modules/calendar/day_view.php
+modules/calendar/links_tasks.php
+- Fixed bug in task display
+
+2003-05-09 06:23  (eddieajau)
+---------------------------------
+style/default/header.php
+- Added today link to calendar day view
+
+2003-05-09 06:22  (eddieajau)
+---------------------------------
+calendar.php
+- Moved to public module directory
+
+2003-05-09 05:24  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-09 00:55  (eddieajau)
 ---------------------------------
 index.php
@@ -462,42 +498,6 @@ modules/companies/companies.class.php
 modules/companies/addedit.php
 modules/companies/view.php
 - Changed query result to return an object rather than a hash.
-
-2003-04-28 22:06  (eddieajau)
----------------------------------
-modules/companies/index.php
-- Now uses companies class method to get denied companies
-
-2003-04-28 22:04  (eddieajau)
----------------------------------
-classes/dp.class.php
-classes/ui.class.php
-- Updated for changes in the db_loadObject function
-
-2003-04-28 22:03  (eddieajau)
----------------------------------
-includes/db_connect.php
-- Added skeleton documentation
-- Change the format of the db_loadObject function to always bind the results to the passed object
-
-2003-04-28 21:15  (eddieajau)
----------------------------------
-docs/roadmap.html
-- Added item for error checking
-
-2003-04-28 20:56  (eddieajau)
----------------------------------
-functions/companies_func.php
-functions/contacts_func.php
-- Files no longer used
-
-2003-04-28 03:22  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-28 01:55  (eddieajau)
----------------------------------
 ...
 
 (This file has been wrapped)
