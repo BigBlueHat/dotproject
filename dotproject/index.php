@@ -125,6 +125,11 @@ if ($AppUI->doLogin()) {
 	if (strpos( $redirect, 'logout' ) !== false) {
 		$redirect = '';
 	}
+
+	if (isset( $locale_char_set )) {
+		header("Content-type: text/html;charset=$locale_char_set");
+	}
+
 	require "./style/$uistyle/login.php";
 	// destroy the current session and output login page
 	session_unset();
