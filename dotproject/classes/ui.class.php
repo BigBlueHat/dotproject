@@ -132,7 +132,7 @@ class CAppUI {
 	}
 // set the display of warning for untranslated strings
 	function setWarning( $state=true ) {
-		$temp = $this->cfg['locale_warn'];
+		$temp = @$this->cfg['locale_warn'];
 		$this->cfg['locale_warn'] = $state;
 		return $temp;
 	}
