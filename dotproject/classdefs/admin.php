@@ -67,7 +67,7 @@ class CUser {
 			db_loadHash( $sql, $hash );
 			$pwd = $hash['user_password'];	// this will already be encrypted
 		
-			$ret = db_updateObject( 'users', $this, 'user_id' );
+			$ret = db_updateObject( 'users', $this, 'user_id', false );
 
 		// update password if there has been a change
 			$sql = "UPDATE users SET user_password = password('$this->user_password')"
