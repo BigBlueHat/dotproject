@@ -509,9 +509,11 @@ function dprint($file, $line, $level, $msg)
   global $dPconfig;
   $max_level = 0;
   $max_level = (int)$dPconfig['debug'];
+	$display_debug = isset($dPconfig['display_debug']) ? $dPconfig['display_debug'] : false;
   if ($level <= $max_level) {
     error_log("$file($line): $msg");
-    echo "$file($line): $msg <br />";
+		if ($display_debug)
+			echo "$file($line): $msg <br />";
     if ($level == 0 && $max_level > 0 && version_compare(phpversion(), "4.3.0") >=0 ) {
       format_backtrace(debug_backtrace(), $file, $line, $msg);
     }
