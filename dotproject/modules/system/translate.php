@@ -4,12 +4,13 @@
 // check permissions
 $denyEdit = getDenyEdit( $m );
 
-if ($denyEdit) {
+// only user_type of Administrator (1) can access this page
+if ($denyEdit || $AppUI->user_type != 1) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
 $module = isset( $_REQUEST['module'] ) ? $_REQUEST['module'] : 0;
-$lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : 'es';
+$lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : 'en';
 
 $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 
