@@ -1,3 +1,38 @@
+2003-09-19 01:17  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php
+- Fixed the calendar popups. Might still need to look at the use of the
+- two different calendars though.
+
+2003-09-19 00:50  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Fix for IE6 users, and it doesn't seem to break Mozilla - so it should
+- be a general fix.
+
+2003-09-18 23:36  (ajdonnison)
+---------------------------------
+modules/system/domodsql.php
+- Replaced eval code, cleaned up error messages.
+
+2003-09-18 17:38  (gregorerhardt)
+---------------------------------
+locales/en/ticketsmith.inc
+modules/ticketsmith/comment.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+- translation of ticketsmith
+
+2003-09-18 04:02  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-18 02:04  (ajdonnison)
 ---------------------------------
 modules/projects/addedit.php
@@ -463,41 +498,6 @@ modules/projects/vw_idx_active.php
 2003-08-27 04:09  (kripper)
 ---------------------------------
 ChangeLog
-- Changelog update
-
-2003-08-26 15:56  (jcgonz)
----------------------------------
-modules/help/en/contacts.index.hlp
-- Updated contacts help file to include searching documentation
-
-2003-08-26 15:52  (jcgonz)
----------------------------------
-modules/contacts/index.php
-- Added search feature to the contacts module
-
-2003-08-23 03:58  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-08-23 02:21  (ajdonnison)
----------------------------------
-fileviewer.php
-- Added MIME version header to try and resolve problems with IE6.
-
-2003-08-22 03:59  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-08-21 13:33  (jcgonz)
----------------------------------
-functions/tasks_func.php
-modules/tasks/tasks.php
-- Added My Unfinished Tasks filter to the tasks list
-
-2003-08-21 03:59  (kripper)
----------------------------------
 ...
 
 (This file has been wrapped)
