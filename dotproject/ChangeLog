@@ -1,3 +1,13 @@
+2003-12-10 19:48  (jcgonz)
+---------------------------------
+modules/tasks/tasks.class.php
+- FIX: Percent completed in dynamic parent tasks is now calculated correctly
+
+2003-12-10 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-09 22:07  (jcgonz)
 ---------------------------------
 db/dotproject_101.sql
@@ -488,16 +498,6 @@ modules/admin/do_user_aed.php
 ---------------------------------
 locales/en/system.inc
 - Added Portugese as distinct from Portugese Brazillian.
-
-2003-10-21 03:45  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-20 21:04  (ajdonnison)
----------------------------------
-locales/en/system.inc
-- Added translation string for Polish
 ...
 
 (This file has been wrapped)
