@@ -18,7 +18,7 @@ $resource_max = array();
 while ($row = db_fetch_assoc($res)) {
 	$type = $row['resource_type'];
 	$all_resources[$row['resource_id']] = $resource_types[$row['resource_type']] . ": " . $row['resource_name'];
-	$resource_max[$row['resource_id']] = $row['max_allocation'];
+	$resource_max[$row['resource_id']] = $row['resource_max_allocation'];
 }
 $q->clear();
 
