@@ -58,7 +58,8 @@ function showRow($id=0, $key=0, $title='', $value='') {
 	$s = '<tr>'.$CR;
 	if ($sysval_id == $id && $canEdit) {
 	// edit form
-		$s .= '<form name="sysValFrm" method="post" action="?m=system&u=syskeys&a=do_sysval_aed">'.$CR;
+		$s .= '<form name="sysValFrm" method="post" action="?m=system&u=syskeys">'.$CR;
+		$s .= '<input type="hidden" name="dosql" value="do_sysval_aed" />'.$CR;
 		$s .= '<input type="hidden" name="del" value="0" />'.$CR;
 		$s .= '<input type="hidden" name="sysval_id" value="'.$id.'" />'.$CR;
 

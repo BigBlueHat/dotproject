@@ -1,4 +1,4 @@
-<?php
+<?php /* TASKS $Id$ */
 $task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
 $task_parent = isset( $_GET['task_parent'] ) ? $_GET['task_parent'] : 0;
 
@@ -102,7 +102,7 @@ function submitIt(){
 	var form = document.AddEdit;
 	var fl = form.assigned.length -1;
 	var dl = form.task_dependencies.length -1;
-	
+
 	if (form.task_name.value.length < 3) {
 		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
@@ -114,12 +114,12 @@ function submitIt(){
 		for (fl; fl > -1; fl--){
 			form.hassign.value = "," + form.hassign.value +","+ form.assigned.options[fl].value
 		}
-		
+
 		form.hdependencies.value = "";
 		for (dl; dl > -1; dl--){
 			form.hdependencies.value = "," + form.hdependencies.value +","+ form.task_dependencies.options[dl].value
 		}
-				
+
 		form.submit();
 	}
 }
@@ -199,10 +199,10 @@ function delIt() {
 
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <form name="AddEdit" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
-<input name="dosql" type="hidden" value="task_aed">
-<input name="del" type="hidden" value="0">
-<input name="task_id" type="hidden" value="<?php echo $task_id;?>">
-<input name="task_project" type="hidden" value="<?php echo $task_project;?>">
+	<input name="dosql" type="hidden" value="do_task_aed" />
+	<input name="del" type="hidden" value="0" />
+	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
+	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
 	<td align="left" nowrap="nowrap" width="100%"><h1><?php echo $AppUI->_( $task_id ? 'Edit Task' : 'New Task' );?></h1></td>
@@ -238,7 +238,7 @@ function delIt() {
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Status' );?></td>
-			<td>		
+			<td>
 				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $task["task_status"] ) . '%';?>
 			</td>
 
@@ -249,7 +249,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Progress' );?></td>
-			<td>		
+			<td>
 				<?php echo arraySelect( $percent, 'task_precent_complete', 'size="1" class="text"', $task["task_precent_complete"] ) . '%';?>
 			</td>
 
@@ -279,8 +279,8 @@ function delIt() {
 			<td>
 				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text"', $task_parent ); ?>
 			</td>
-			<td><img src="./images/shim.gif" width=30 height=1></td>			
-			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10"></td>			
+			<td><img src="./images/shim.gif" width=30 height=1></td>
+			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10"></td>
 		</tr>
 		</table>
 	</td>
@@ -307,7 +307,7 @@ function delIt() {
 				</td>
 			</tr>
 			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>				
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
 			<?php if (($task["task_duration"]) > 24 ) {
 				$newdir = ($task["task_duration"] / 24);
@@ -355,7 +355,7 @@ function delIt() {
 				<td align="right"><input type="button" class="button" value="&gt;" onClick="addTaskDependency()"></td>
 				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeTaskDependency()"></td>
 			</tr>
-		</table>		
+		</table>
 	</td>
 	<td valign="top" align="center">
 		<table cellspacing="0" cellpadding="2" border="0">

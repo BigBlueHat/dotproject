@@ -56,9 +56,10 @@ function submitIt(){
 
 <table width="98%" border="0" cellpadding="1" cellspacing="1" class="std">
 
-<form name="changeuser" action="./index.php?m=system&a=do_preference_aed" method="post">
-<input type="hidden" name="pref_user" value="<?php echo $user_id;?>">
-<input type="hidden" name="del" value="0">
+<form name="changeuser" action="./index.php?m=system" method="post">
+	<input type="hidden" name="dosql" value="do_preference_aed" />
+	<input type="hidden" name="pref_user" value="<?php echo $user_id;?>" />
+	<input type="hidden" name="del" value="0" />
 
 <tr height="20">
 	<th colspan="2"><?php echo $AppUI->_('User Preferences');?>:

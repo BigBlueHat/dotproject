@@ -5,7 +5,7 @@ $AppUI->savePlace();
 $sql = "SELECT *,mod_name FROM roles LEFT JOIN modules ON mod_id = role_module ORDER BY role_module, role_name";
 $roles = db_loadList( $sql );
 
-$role_id = dPgetParam( $_GET, 'role_id', -1 );
+$role_id = dPgetParam( $_GET, 'role_id', 0 );
 
 $modules = 
 $sql = "SELECT mod_id, mod_name FROM modules WHERE mod_active > 0 ORDER BY mod_directory";
@@ -54,9 +54,10 @@ function showRow( $role=null ) {
 	$module = @$role['role_module'];
 
 	$s = '<tr>'.$CR;
-	if ($role_id == $id && $canEdit) {
+	if (($role_id == $id || $id == 0) && $canEdit) {
 	// edit form
-		$s .= '<form name="roleFrm" method="post" action="?m=system&u=roles&a=do_role_aed">'.$CR;
+		$s .= '<form name="roleFrm" method="post" action="?m=system&u=roles">'.$CR;
+		$s .= '<input type="hidden" name="dosql" value="do_role_aed" />'.$CR;
 		$s .= '<input type="hidden" name="del" value="0" />'.$CR;
 		$s .= '<input type="hidden" name="role_id" value="'.$id.'" />'.$CR;
 

@@ -193,7 +193,7 @@ function updateTask() {
 <?php if (!$denyEdit) { ?>
 		<form name="update" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
 		<input type="hidden" value="<?php echo uniqid("");?>" name="uniqueid" />
-		<input type="hidden" value="updatetask" name="dosql" />
+		<input type="hidden" value="do_updatetask" name="dosql" />
 		<input type="hidden" value="<?php echo @$task["task_id"];?>" name="task_id" />
 		<input type="hidden" value="<?php echo $AppUI->user_id;?>" name="user_id" />
 		<input type="hidden" value="Update :<?php echo @$task["task_name"];?>" name="comment_title" />
@@ -262,7 +262,7 @@ function updateTask() {
 			<td colspan="3">
 			<?php
 				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>none</td></tr>" : '';
-				foreach ($files as $row) { 
+				foreach ($files as $row) {
 					$s .= '<tr>';
 					$s .= '<td class="hilite"><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
 					$s .= '<td class="hilite">'.$row["file_type"].'</td>';
