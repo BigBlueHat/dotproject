@@ -314,9 +314,6 @@ for ($x=0; $x < $nums; $x++) {
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
-// get Users with all Allocation info (e.g. their freeCapacity)
-$tempoTask = new CTask();
-$userAlloc = $tempoTask->getAllocation("user_id");
 ?>
 
 <script type="text/JavaScript">
@@ -468,7 +465,11 @@ foreach ($projects as $k => $p) {
 		</tr>
 		</table>
         </td>
-        <?php if ($dPconfig['direct_edit_assignment']) { ?>
+        <?php if ($dPconfig['direct_edit_assignment']) { 
+            // get Users with all Allocation info (e.g. their freeCapacity)
+            $tempoTask = new CTask();
+            $userAlloc = $tempoTask->getAllocation("user_id");
+                ?>
          <td colspan="3" align="right" valign="middle">
                 <table width="100%" border="0">
                         <tr>
