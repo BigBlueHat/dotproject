@@ -149,13 +149,17 @@ function showFullProject() {
 <tr>
 	<td>
 <?php
-$src =
-  "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
-  ( $display_option == 'all' ? '' :
-	'&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
-  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '";
+if (db_loadResult( "SELECT COUNT(*) FROM tasks WHERE task_project=$project_id" )) {
+	$src =
+	  "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
+	  ( $display_option == 'all' ? '' :
+		'&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
+	  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '";
 
-echo "<script>document.write('<img src=\"$src\">')</script>";
+	echo "<script>document.write('<img src=\"$src\">')</script>";
+} else {
+	echo $AppUI->_( "No tasks to display" );
+}
 ?>
 	</td>
 </tr>
