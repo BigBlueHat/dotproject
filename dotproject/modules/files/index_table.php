@@ -205,7 +205,19 @@ foreach ($files as $file_row) {
         </td>
         <td width="10%"><?php echo $latest_file['file_co_reason']; ?></td>
 	<td nowrap="8%">
-		<?php echo "<a href=\"./fileviewer.php?file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\">{$latest_file['file_name']}</a>"; ?>
+		<?php 
+$fnamelen = 32;
+$filename = $latest_file['file_name'];
+if (strlen($latest_file['file_name']) > $fnamelen+9)
+{
+	$ext = substr($filename, strpos($filename, '.')+1);
+	$filename = substr($filename, 0, $fnamelen);
+	$filename .= '[...].' . $ext;
+}
+echo "
+<a href=\"./fileviewer.php?file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\">$filename</a>";
+//	{$latest_file['file_name']}
+		?>
 	</td>
 	<td width="20%"><?php echo $latest_file['file_description'];?></td>
 	<td width="5%" nowrap="nowrap" align="center">
