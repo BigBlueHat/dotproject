@@ -10,7 +10,7 @@ if ($user_id) {
 	// has the change form been posted
 	if ($old_pwd && $new_pwd1 && $new_pwd2 && $new_pwd1 == $new_pwd2 ) {
 		// check that the old password matches
-		$sql = "SELECT user_id FROM users WHERE user_password = password('$old_pwd')";
+		$sql = "SELECT user_id FROM users WHERE user_password = password('$old_pwd') AND user_id=$user_id";
 		if (db_loadResult( $sql ) == $user_id) {
 			require_once( "{$AppUI->cfg['root_dir']}/classdefs/admin.php" );
 			$user = new CUser();
