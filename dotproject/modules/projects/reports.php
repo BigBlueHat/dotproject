@@ -12,6 +12,46 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$obj = new CProject();
+$deny = $obj->getDeniedRecords( $AppUI->user_id );
+                                                                                
+$sql = "
+SELECT
+        project_id, project_active, project_status, project_name, project_description, project_short_name
+FROM permissions,projects
+WHERE permission_user = $AppUI->user_id
+        AND permission_value <> 0
+        AND (
+                (permission_grant_on = 'all')
+                OR (permission_grant_on = 'projects' AND permission_item = -1)
+                OR (permission_grant_on = 'projects' AND permission_item = project_id)
+                )".
+(count($deny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
+."
+GROUP BY project_id
+ORDER BY project_short_name
+";
+                                                                                
+$project_list=array("0"=>"Select Project");
+$ptrc = db_exec($sql);
+$nums=db_num_rows($ptrc);
+echo db_error();
+for ($x=0; $x < $nums; $x++) {
+        $row = db_fetch_assoc( $ptrc );
+        if ($row["project_id"] == $project_id) $display_project_name='('.$row["project_short_name"].') '.$row["project_name"];
+        $project_list[$row["project_id"]] = '('.$row["project_short_name"].') '.$row["project_name"];
+}
+
+?>
+<script language="javascript">
+                                                                                
+function changeIt() {
+        var f=document.changeMe;
+        f.submit();
+}
+</script>
+
+<?php
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
@@ -28,6 +68,14 @@ if (! $suppressHeaders) {
 	$titleBlock->show();
 }
 
+if (!isset($display_project_name)) $display_project_name = "None"; ?>
+<?php echo $AppUI->_('Selected Project') . ": <b>".$display_project_name."</b>"; ?>
+<form name="changeMe" action="./index.php?m=projects&a=reports" method="post">
+<?php echo $AppUI->_('Projects') . ':';?>
+<?php echo arraySelect( $project_list, 'project_id', 'size="1" class="text" onchange="changeIt();"', $obj->project_status, true );?>
+</form>
+
+<?php
 if ($report_type) {
 	$report_type = $AppUI->checkFileName( $report_type );
 	$report_type = str_replace( ' ', '_', $report_type );
