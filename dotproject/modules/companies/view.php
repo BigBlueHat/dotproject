@@ -9,12 +9,18 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// retrieve any state parameters
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
 }
 $tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
 
-// pull data
+// check if this object has dependancies to prevent deletion
+$msg = '';
+$obj = new CCompany();
+$canDelete = $obj->canDelete( $msg, $company_id );
+
+// load the record data
 $sql = "
 SELECT companies.*,users.user_first_name,users.user_last_name
 FROM companies
@@ -22,7 +28,8 @@ LEFT JOIN users ON users.user_id = companies.company_owner
 WHERE companies.company_id = $company_id
 ";
 
-if (!db_loadHash( $sql, $row )) {
+$obj = null;
+if (!db_loadObject( $sql, $obj )) {
 	$AppUI->setMsg( 'Company' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -30,14 +37,9 @@ if (!db_loadHash( $sql, $row )) {
 	$AppUI->savePlace();
 }
 
+// load the list of project statii and company types
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 $types = dPgetSysVal( 'CompanyType' );
-
-// load the module object
-$obj = new CCompany();
-
-$msg = '';
-$canDelete = $obj->canDelete( $msg, $company_id );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Company', 'handshake.png', $m, "$m.$a" );
@@ -86,40 +88,40 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?>:</td>
-			<td class="hilite" width="100%"><?php echo $row["company_name"];?></td>
+			<td class="hilite" width="100%"><?php echo $obj->company_name;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Phone');?>:</td>
-			<td class="hilite"><?php echo @$row["company_phone1"];?></td>
+			<td class="hilite"><?php echo @$obj->company_phone1;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Phone');?>2:</td>
-			<td class="hilite"><?php echo @$row["company_phone2"];?></td>
+			<td class="hilite"><?php echo @$obj->company_phone2;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Fax');?>:</td>
-			<td class="hilite"><?php echo @$row["company_fax"];?></td>
+			<td class="hilite"><?php echo @$obj->company_fax;?></td>
 		</tr>
 		<tr valign=top>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite"><?php
-				echo @$row["company_address1"]
-					.( ($row["company_address2"]) ? '<br />'.$row["company_address2"] : '' )
-					.'<br />'.$row["company_city"]
-					.'&nbsp;&nbsp;'.$row["company_state"]
-					.'&nbsp;&nbsp;'.$row["company_zip"]
+				echo @$obj->company_address1
+					.( ($obj->company_address2) ? '<br />'.$obj->company_address2 : '' )
+					.'<br />'.$obj->company_city
+					.'&nbsp;&nbsp;'.$obj->company_state
+					.'&nbsp;&nbsp;'.$obj->company_zip
 					;
 			?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?>:</td>
 			<td class="hilite">
-				<a href="http://<?php echo @$row["company_primary_url"];?>" target="Company"><?php echo @$row["company_primary_url"];?></a>
+				<a href="http://<?php echo @$obj->company_primary_url;?>" target="Company"><?php echo @$obj->company_primary_url;?></a>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
-			<td class="hilite"><?php echo $types[@$row["company_type"]];?></td>
+			<td class="hilite"><?php echo $types[@$obj->company_type];?></td>
 		</tr>
 		</table>
 
@@ -129,11 +131,10 @@ function delIt() {
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br />", $row["company_description"]);?>&nbsp;
+				<?php echo str_replace( chr(10), "<br />", $obj->company_description);?>&nbsp;
 			</td>
 		</tr>
 		</table>
-
 	</td>
 </tr>
 </table>
