@@ -1,3 +1,48 @@
+2003-05-29 02:24  (eddieajau)
+---------------------------------
+modules/help/en/help.toc.hlp
+modules/help/en/system.index.hlp
+- no message
+
+2003-05-29 02:19  (eddieajau)
+---------------------------------
+files/tmp
+- no message
+
+2003-05-29 02:08  (eddieajau)
+---------------------------------
+docs/install.html
+docs/team.html
+docs/trouble.html
+docs/upgrade.html
+- Final tweaks to the documentation
+
+2003-05-29 01:57  (eddieajau)
+---------------------------------
+index.php
+- Version stamp for release
+
+2003-05-29 01:53  (eddieajau)
+---------------------------------
+db/upgrade_100_alpha2_to_beta1.sql
+- Added optional removal of file_content field
+
+2003-05-29 01:51  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+- Removed file content text
+
+2003-05-29 01:48  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+- Removed task ordering
+
+2003-05-28 04:31  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-28 00:40  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.class.php
@@ -453,51 +498,6 @@ modules/calendar/vw_day_tasks.php
 - Added task todo list
 
 2003-05-09 06:24  (eddieajau)
----------------------------------
-modules/calendar/day_view.php
-modules/calendar/links_tasks.php
-- Fixed bug in task display
-
-2003-05-09 06:23  (eddieajau)
----------------------------------
-style/default/header.php
-- Added today link to calendar day view
-
-2003-05-09 06:22  (eddieajau)
----------------------------------
-calendar.php
-- Moved to public module directory
-
-2003-05-09 05:24  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-09 00:55  (eddieajau)
----------------------------------
-index.php
-- Added patch for systems using session.auto_start = 1
-- Removed character set headers
-
-2003-05-08 22:32  (eddieajau)
----------------------------------
-docs/check.php
-docs/main.css
-docs/nav.html
-docs/trouble.html
-- no message
-
-2003-05-08 08:36  (eddieajau)
----------------------------------
-docs/nav.html
-- Added trouble shooting link
-
-2003-05-08 08:36  (eddieajau)
----------------------------------
-docs/trouble.html
-- Initial upload
-
-2003-05-08 08:25  (korinek)
 ...
 
 (This file has been wrapped)
