@@ -148,6 +148,7 @@ if($department_selection_list!=""){
 
 function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
 	global $departments_count;
+	$parsed = '';
 	
 	if($departments_count < 10) $departments_count++;
 	$sql = "select dept_id, dept_name
