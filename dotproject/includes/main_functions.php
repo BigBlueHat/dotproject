@@ -4,7 +4,7 @@
 ##
 
 $CR = "\n";
-define(SECONDS_PER_DAY, 60 * 60 * 24);
+define('SECONDS_PER_DAY', 60 * 60 * 24);
 
 ##
 ## Returns the best color based on a background color (x is cross-over)
