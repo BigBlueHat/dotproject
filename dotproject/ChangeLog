@@ -1,3 +1,9 @@
+2004-03-11 10:14  (kiryl)
+
+modules/tasks/tasks.php
+
+aplied Andrey Smirnov's patch #906480	(Assigned persons in tasks list)
+
 2004-03-10 11:24  (kiryl)
 ---------------------------------
 style/classic/login.php
