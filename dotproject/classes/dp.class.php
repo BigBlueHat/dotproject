@@ -1,10 +1,17 @@
 <?php /* CLASSES $Id$ */
 
 /**
+ *	@package dotproject
+ *	@subpackage modules
+ *	@version $Revision$
+ */
+
+/**
  *	CDpObject Abstract Class.
  *
- *	@package dotProject
+ *	Parent classes to all database derived objects
  *	@author Andrew Eddie
+ *	@abstract
  */
 class CDpObject {
 /**
@@ -21,9 +28,9 @@ class CDpObject {
 	var $_error = '';
 
 /**
- *	object constructor to set table and key field
+ *	Object constructor to set table and key field
  *
- *	can be overloaded/supplemented by the child class
+ *	Can be overloaded/supplemented by the child class
  *	@param string $table name of the table in the db schema relating to child class
  *	@param string $key name of the primary key field in the table
  */

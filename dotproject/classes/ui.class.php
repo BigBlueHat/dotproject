@@ -1,4 +1,8 @@
 <?php /* CLASSES $Id$ */
+/**
+ *	@package dotproject
+ *	@subpackage core
+*/
 
 require_once( "./classes/date.class.php" );
 
@@ -16,10 +20,10 @@ define( "UI_CASE_LOWER", 2 );
 define( "UI_CASE_UPPERFIRST", 3 );
 
 /**
- *	The UI Class.
+ *	The Application User Interface Class.
  *
- *	@package dotProject
  *	@author Andrew Eddie
+ *	@version $Revision$
  */
 class CAppUI {
 /**
@@ -27,27 +31,39 @@ class CAppUI {
  *	@var array
  */
 	var $state;
-// current user parameters
+/** @var int */
 	var $user_id;
+/** @var string */
 	var $user_first_name;
+/** @var string */
 	var $user_last_name;
+/** @var string */
 	var $user_company;
+/** @var int */
 	var $user_department;
+/** @var string */
 	var $user_email;
+/** @var int */
 	var $user_type;
+/** @var array */
 	var $user_prefs;
-// a selected date
+/** @var int Unix time stamp */
 	var $day_selected;
+
 // localisation
+/** @var string */
 	var $user_locale;
+/** @var string */
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
-// theming
-	var $styles = array();
-// message handling
+
+/** @var string Message string*/
 	var $msg = '';
+/** @var string */
 	var $msgNo = '';
+/** @var string Default page for a redirect call*/
 	var $defaultRedirect = '';
-// configuration variable array
+
+/** @var array Configuration variable array*/
 	var $cfg=null;
 
 /**
@@ -95,10 +111,18 @@ class CAppUI {
 		}
 	}
 
+/**
+ *	loads a php class file from the module directory
+ *	@param array A named array of configuration variables (usually from config.php)
+ */
 	function setConfig( &$cfg ) {
 		$this->cfg = $cfg;
 	}
 
+/**
+ *	@param string The name of a configuration setting
+ *	@return The value of the setting, otherwise null if the key is not found in the configuration array
+ */
 	function getConfig( $key ) {
 		if (array_key_exists( $key, $this->cfg )) {
 			return $this->cfg[$key];
@@ -117,6 +141,13 @@ class CAppUI {
 		}
 	}
 
+/**
+ *	Utility function to read the 'directories' under 'path'
+ *
+ *	This function is used to read the modules or locales installed on the file system.
+ *	@param string The path to read.
+ *	@return array A named array of the directories (the key and value are identical).
+ */
 	function readDirs( $path ) {
 		$dirs = array();
 		$d = dir( "{$this->cfg['root_dir']}/$path" );
@@ -129,7 +160,12 @@ class CAppUI {
 		return $dirs;
 	}
 
-// localisation
+/**
+ *	Sets the user locale.
+ *
+ *	Looks in the user preferences first.  If this value has not been set by the user it uses the system default set in config.php.
+ *	@param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
+ */
 	function setUserLocale( $loc='' ) {
 		if ($loc) {
 			$this->user_locale = $loc;
@@ -137,14 +173,20 @@ class CAppUI {
 			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $this->cfg['host_locale'];
 		}
 	}
-/*
-	Translate string to the local language [same form as the gettext abbreviation]
-	This is the order of precedence:
-	If the key exists in the lang array, return the value of the key
-	If no key exists and the base lang is the same as the local lang, just return the string
-	If this is not the base lang, then return string with a red star appended to show
-	that a translation is required.
-*/
+/**
+ *	Translate string to the local language [same form as the gettext abbreviation]
+ *
+ *	This is the order of precedence:
+ *	<ul>
+ *	<li>If the key exists in the lang array, return the value of the key
+ *	<li>If no key exists and the base lang is the same as the local lang, just return the string
+ *	<li>If this is not the base lang, then return string with a red star appended to show
+ *	that a translation is required.
+ *	</ul>
+ *	@param string The string to translate
+ *	@param int Option to change the case of the string
+ *	@return string
+ */
 	function _( $str, $case=0 ) {
 		$str = trim($str);
 		if (empty( $str )) {
@@ -171,13 +213,21 @@ class CAppUI {
 		}
 		return $str;
 	}
-// set the display of warning for untranslated strings
+/**
+ *	Set the display of warning for untranslated strings
+ *	@param string
+ */
 	function setWarning( $state=true ) {
 		$temp = @$this->cfg['locale_warn'];
 		$this->cfg['locale_warn'] = $state;
 		return $temp;
 	}
-// Save the current url query string
+/**
+ *	Save the url query string
+ *
+ *	Also saves one level of history.  This is useful for returning from a delete operation where the record more not now exist.  Returning to a view page would be a nonsense in this case.
+ *	@param string If not set then the current url query string is used
+ */
 	function savePlace( $query='' ) {
 		if (!$query) {
 			$query = @$_SERVER['QUERY_STRING'];
@@ -187,10 +237,16 @@ class CAppUI {
 			$this->state['SAVEDPLACE'] = $query;
 		}
 	}
+/**
+ *	Resets the internal variable
+ */
 	function resetPlace() {
 		$this->state['SAVEDPLACE'] = '';
 	}
-// Get the saved place (usually one that could contain an edit button)
+/**
+ *	Get the saved place (usually one that could contain an edit button)
+ *	@return string
+ */
 	function getPlace() {
 		return @$this->state['SAVEDPLACE'];
 	}

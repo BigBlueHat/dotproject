@@ -1,5 +1,10 @@
 <?php /* CLASSES $Id$ */
 /**
+ *	@package dotproject
+ *	@subpackage utilites
+*/
+
+/**
  *	This class encapsulates the PHP mail() function.
  *
  *	implements CC, Bcc, Priority headers

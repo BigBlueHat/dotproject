@@ -1,12 +1,18 @@
 <?php /* CLASSES $Id$ */
-/*
-	Date class
-	provides an object oriented way to manipulate date and time
-@BUGS
-	As Date class uses Unix timetamp underlyingly, Date is only functionning on period :
-	01 Jan 1970 00:00:00 +0000 to 19 Jan 2038 03:14:07 +0000
-@VERSION 0.5
+/**
+ *	@package dotproject
+ *	@subpackage utilites
 */
+
+/**
+ *	Date class
+ *
+ *	provides an object oriented way to manipulate date and time
+ *	@BUGS
+ *	As Date class uses Unix timetamp underlyingly, Date is only functionning on period :
+ *	01 Jan 1970 00:00:00 +0000 to 19 Jan 2038 03:14:07 +0000
+ *	@VERSION $Revision$
+ */
 
 define( 'FMT_DATEISO', '%Y%m%dT%H%M%S' );
 define( 'FMT_DATELDAP', '%Y%m%d%H%M%SZ' );
@@ -108,10 +114,10 @@ class CDate
 		return strftime( FMT_DATEMYSQL, $this->getTimestamp() );
 	}
 
-	/*
-	 * can use as static form eg: Date::format( "%Y", $ts )
-	 * @static
-	 */
+/*
+ * can use as static form eg: Date::format( "%Y", $ts )
+ * @static
+ */
 	function format( $format, $timestamp )
 	{
 		return strftime( $format, $timestamp );

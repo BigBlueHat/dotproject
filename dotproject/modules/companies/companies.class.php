@@ -1,20 +1,20 @@
 <?php /* COMPANIES $Id$ */
+/**
+ *	@package dotProject
+ *	@subpackage modules
+ *	@version $Revision$
+*/
 
 include_once( $AppUI->getSystemClass ('dp' ) );
 
 /**
  *	Companies Class
  *
- *	@version $Revision$
-*/
+ */
 class CCompany extends CDpObject {
-/**
- *	@var	int
-*/
+/** @var int Primary Key */
 	var $company_id = NULL;
-/**
- *	@var	string
-*/
+/** @var string */
 	var $company_name = NULL;
 
 	var $company_phone1 = NULL;
@@ -25,20 +25,15 @@ class CCompany extends CDpObject {
 	var $company_city = NULL;
 	var $company_state = NULL;
 	var $company_zip = NULL;
-/**
- *	@var	string
-*/
-	var $company_primary_url = NULL;
-/**
- *	@var	int
-*/
-	var $company_owner = NULL;
-	var $company_description = NULL;
-/**
- *	@var	int
-*/
-	var $company_type = null;
 	var $company_email = NULL;
+/** @var string */
+	var $company_primary_url = NULL;
+/** @var int */
+	var $company_owner = NULL;
+/** @var string */
+	var $company_description = NULL;
+/** @var int */
+	var $company_type = null;
 
 	function CCompany() {
 		$this->CDpObject( 'companies', 'company_id' );
