@@ -1,4 +1,6 @@
 <!-- $Id$ -->
 <h2>Projects View Screen</h2>
 
-<p></p>
+<p>This page shows you information about and related to the Project.  An information box at the top shows you the main details of the Project. Below the Project details is a series of tabs with information from other modules that is related to the Project.</p>
+
+<p>Use the breadcrumbs to navigate back to the index of Projects or to edit the Project you are viewing.  The "delete project" link will change depending on whether the Project has dependancies with any other module (like Tasks).  A tooltip will be displayed informing you of what those dependancies are if they exist.  You will not be able to delete a Project if it has dependancies with other modules.</p>

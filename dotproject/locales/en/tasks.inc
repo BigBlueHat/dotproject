@@ -1,8 +1,8 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"none",
 "Action",
+"Add Log",
 "Add Task",
 "All Tasks",
 "All Tasks for my Company",
@@ -71,6 +71,7 @@
 "mark as finished",
 "my todo",
 "new task",
+"none",
 "normal",
 "notifyChange"=>"Notify Assignees of Task by Email",
 "see gantt chart",

@@ -1,4 +1,17 @@
 <!-- $Id$ -->
 <h2>Projects Index Screen</h2>
 
-<p></p>
+<p>This page shows you a list of the projects that have been defined.</p>
+
+<p>The "percentage complete" is shown to the left of the Project Name in a box with the background of the project colour.  Click on the Project Name to view more information about the project.</p>
+
+<p>A list box is provided for you to filter the projects listed by the Comany they are associated with.</p>
+
+<p>Click on the "<strong>new company</strong>" button to add a new company to your database.</p>
+
+<p>There are three tabs to view the Projects by:</p>
+<ul>
+	<li>Active Projects - those that are less than 100% complete</li>
+	<li>Completed Projects - those that are 100% complete</li>
+	<li>Archived Projects - those projects that have been marked as archived</li>
+</ul>
