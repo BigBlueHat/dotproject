@@ -97,8 +97,6 @@ if (isset($_POST['show_task_options'])) {
 }
 $showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 
-$show_all_assignees = isset($dPconfig['show_all_task_assignees']) ? $dPconfig['show_all_task_assignees'] : false;
-
 $where = '';
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;

@@ -1606,12 +1606,13 @@ function closeOpenedTask($task_id){
 //This kludgy function echos children tasks as threads
 
 function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
-	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
+	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $userAlloc;
 
         $now = new CDate();
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$df .= " " . $AppUI->getPref('TIMEFORMAT');
 	$perms =& $AppUI->acl();
+	$show_all_assignees = @$dPconfig['show_all_task_assignees'] ? true : false;
 
 	$done[] = $a['task_id'];
 
@@ -1726,7 +1727,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 		$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
 	}
 //	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
-	if ( isset($a['task_assigned_users']) && $assigned_users = $a['task_assigned_users']) {
+	if ( isset($a['task_assigned_users']) && ($assigned_users = $a['task_assigned_users'])) {
 		$a_u_tmp_array = array();
 		if($show_all_assignees){
 			$s .= '<td align="center">';
