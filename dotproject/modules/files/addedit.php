@@ -24,13 +24,13 @@ WHERE file_id = $file_id
 ";
 
 if (!db_loadHash( $sql, $file ) && $file_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid File ID', 'folder.gif', $m, 'ID_HELP_FILE_EDIT' );
+	$titleBlock = new CTitleBlock( 'Invalid File ID', 'folder5.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=files", "files list" );
 	$titleBlock->show();
 } else {
 // setup the title block
 	$ttl = $file_id > 0 ? "Edit File" : "Add File";
-	$titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, 'ID_HELP_COMP_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=files", "files list" );
 	if ($canDelete) {
 		$titleBlock->addCrumbRight(

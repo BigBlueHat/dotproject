@@ -17,7 +17,7 @@ LEFT JOIN companies ON company_id = dept_company
 WHERE dept_id = $dept_id
 ";
 if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, 'ID_HELP_DEPT_EDIT' );
+	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	if ($company_id) {
 		$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
@@ -49,7 +49,7 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 
 // setup the title block
 	$ttl = $company_id > 0 ? "Edit Department" : "Add Department";
-	$titleBlock = new CTitleBlock( $ttl, 'users.gif', $m, 'ID_HELP_DEPT_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 	$titleBlock->show();

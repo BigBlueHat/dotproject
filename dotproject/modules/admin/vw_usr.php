@@ -19,13 +19,26 @@ foreach ($users as $row) {
 ?>
 <tr>
 	<td align="right" nowrap="nowrap">
-		<img src="images/shim.gif" width="1" height="1" border="0" alt="">
 <?php if ($canEdit) { ?>
-		<a href="./index.php?m=admin&a=addedituser&user_id=<?php echo $row["user_id"];?>"><img src="images/icons/pencil.gif" width="12" height="12" border="0" alt="edit information"></a>
-
-		<a href="?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>&tab=1"><img src="images/obj/lock.gif" width="16" height="16" border="0" alt="edit permissions"></a>
-
-		<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $row["user_first_name"] . " " . $row["user_last_name"];?>')"><img src="images/icons/trash.gif" width="16" height="16" border="0" alt="delete"></a>
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td>
+				<a href="./index.php?m=admin&a=addedituser&user_id=<?php echo $row["user_id"];?>" title="<?php echo $AppUI->_('edit');?>">
+					<?php echo dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' ); ?>
+				</a>
+			</td>
+			<td>
+				<a href="?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>&tab=1" title="">
+					<img src="images/obj/lock.gif" width="16" height="16" border="0" alt="<?php echo $AppUI->_('edit permissions');?>">
+				</a>
+			</td>
+			<td>
+				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $row["user_first_name"] . " " . $row["user_last_name"];?>')" title="<?php echo $AppUI->_('delete');?>">
+					<?php echo dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' ); ?>
+				</a>
+			</td>
+		</tr>
+		</table>
 <?php } ?>
 	</td>
 	<td>

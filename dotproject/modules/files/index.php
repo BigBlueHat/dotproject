@@ -37,7 +37,7 @@ ORDER BY project_name
 $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, 'ID_HELP_FILE_IDX' );
+$titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCell(
 	arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" size="1" class="text"', $project_id ), '',
 	'<form name="pickProject" action="?m=files" method="post">', '</form>'

@@ -22,7 +22,7 @@ $res  = db_exec( $sql );
 echo db_error();
 $user = db_fetch_row( $res );
 
-$titleBlock = new CTitleBlock( 'Edit User Preferences', 'preference.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Edit User Preferences', 'myevo-weather.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=system", "system admin" );
 $titleBlock->show();
 ?>
@@ -121,7 +121,7 @@ function submitIt(){
 
 
 <tr>
-	<td align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td>
-	<td align="right"><input type=button value="submit" onClick="submitIt()" class=button>&nbsp; &nbsp; &nbsp;</td>
+	<td align="left"><input class="button"  type="button" value="back" onClick="javascript:history.back(-1);" /></td>
+	<td align="right"><input class="button" type="button" value="submit" onClick="submitIt()" /></td>
 </tr>
 </table>

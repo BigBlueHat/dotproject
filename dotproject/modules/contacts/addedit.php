@@ -13,7 +13,7 @@ if (!$canEdit) {
 $sql = "SELECT * FROM contacts WHERE contacts.contact_id=$contact_id";
 
 if (!db_loadHash( $sql, $contact ) && $contact_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid Contact ID', 'contacts.gif', $m, "$m.$a" );
+	$titleBlock = new CTitleBlock( 'Invalid Contact ID', 'monkeychat-48.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=contacts", "contacts list" );
 	$titleBlock->show();
 } else {

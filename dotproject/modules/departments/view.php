@@ -24,14 +24,14 @@ WHERE dept_id = $dept_id
 	AND dept_company = company_id
 ";
 if (!db_loadHash( $sql, $dept )) {
-	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, 'ID_HELP_DEPT_VIEW' );
+	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->show();
 } else {
 	$company_id = $dept['dept_company'];
 
 	// setup the title block
-	$titleBlock = new CTitleBlock( 'View Department', 'users.gif', $m, 'ID_HELP_DEPT_VIEW' );
+	$titleBlock = new CTitleBlock( 'View Department', 'users.gif', $m, "$m.$a" );
 	if ($canEdit) {
 		$titleBlock->addCell();
 		$titleBlock->addCell(

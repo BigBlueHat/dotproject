@@ -143,7 +143,9 @@ foreach ($tarr as $row){
 
 	$buf .= '<td nowrap>';
 	if (!$canEdit) {
-		$buf .= "<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']},'{$row['grant_item']}');\"><img src=\"./images/icons/pencil.gif\" alt=\"edit permissions\" border=\"0\" width='12' height='12'></a>";
+		$buf .= "<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']},'{$row['grant_item']}');\" title=\"".$AppUI->_('edit')."\">"
+			. dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' )
+			. "</a>";
 	}
 	$buf .= '</td>';
 
@@ -160,7 +162,9 @@ foreach ($tarr as $row){
 
 	$buf .= '<td nowrap>';
 	if (!$canEdit) {
-		$buf .= "<a href=# onClick=\"delIt({$row['permission_id']});\"><img align='absmiddle' src='./images/icons/trash.gif' width='16' height='16' alt='".$AppUI->_('delete permission')."' border='0'></a>";
+		$buf .= "<a href=# onClick=\"delIt({$row['permission_id']});\" title=\"".$AppUI->_('delete')."\">"
+			. dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
+			. "</a>";
 	}
 	$buf .= '</td>';
 	

@@ -49,7 +49,7 @@ if ($project["project_actual_end_date"]) {
 
 // setup the title block
 $ttl = $project_id > 0 ? "Edit Project" : "New Project";
-$titleBlock = new CTitleBlock( $ttl, 'projects.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( $ttl, 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=projects", "projects list" );
 $titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 $titleBlock->show();

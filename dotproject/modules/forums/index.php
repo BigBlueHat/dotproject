@@ -146,7 +146,9 @@ foreach ($forums as $row) {
 <tr>
 	<td nowrap="nowrap" align="center">
 	<?php if ($row["forum_owner"] == $AppUI->user_id) { ?>
-		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width="12" height="12"></a>
+		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>" title="<?php echo $AppUI->_('edit');?>">
+		<?php echo dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' );?>
+		</a>
 	<?php } ?>
 	</td>
 

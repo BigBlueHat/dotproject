@@ -4,7 +4,7 @@
 ##
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Submit Trouble Ticket', 'ticketsmith.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Submit Trouble Ticket', 'gconf-app-icon.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
 $titleBlock->show();
 

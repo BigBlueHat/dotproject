@@ -92,7 +92,7 @@ $taskDep = db_loadHashList( $sql );
 
 // setup the title block
 $ttl = $task_id > 0 ? "Edit Task" : "Add Task";
-$titleBlock = new CTitleBlock( $ttl, 'tasks.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 $titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
 $titleBlock->addCrumb( "?m=tasks&a=view&task_id={$task['task_id']}", "view this task" );

@@ -8,7 +8,7 @@ $event_id = isset( $_GET['event_id'] ) ? $_GET['event_id'] : 0;
 // Pull event information
 $sql = "SELECT * FROM events WHERE event_id = $event_id";
 if (!db_loadHash( $sql, $event ) && $event_id) {
-	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'calendar.gif', $m, 'ID_HELP_EVENT_EDIT' );
+	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'myevo-appointments.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=calendar", "month view" );
 	$titleBlock->show();
 } else {
@@ -18,7 +18,7 @@ if (!db_loadHash( $sql, $event ) && $event_id) {
 	}
 
 // setup the title block
-	$titleBlock = new CTitleBlock( $AppUI->_(($event_id > 0) ? "Edit Event" : "Add Event" ), 'myevo-appointments.png', $m, 'ID_HELP_EVENT_EDIT' );
+	$titleBlock = new CTitleBlock( $AppUI->_(($event_id > 0) ? "Edit Event" : "Add Event" ), 'myevo-appointments.png', $m, "$m.$a" );
 	if ($canEdit) {
 		$titleBlock->addCell();
 		$titleBlock->addCell(

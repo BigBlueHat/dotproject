@@ -19,13 +19,13 @@ LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
 ";
 if (!db_loadHash( $sql, $user )) {
-	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'admin.gif', $m, 'ID_HELP_USER_VIEW' );
+	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	$titleBlock->show();
 } else {
 
 // setup the title block
-	$titleBlock = new CTitleBlock( 'View User', 'helix-setup-user.png', $m, 'ID_HELP_USER_VIEW' );
+	$titleBlock = new CTitleBlock( 'View User', 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=admin", "users list" );
 	if ($canEdit) {
 		$titleBlock->addCrumb( "?m=admin&a=addedituser&user_id=$user_id", "edit this user" );

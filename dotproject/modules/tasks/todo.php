@@ -49,7 +49,7 @@ $priorities = array(
 );
 
 
-$titleBlock = new CTitleBlock( 'My Tasks To Do', 'tasks.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'My Tasks To Do', 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 $titleBlock->addCrumbRight(
 	'<input type=checkbox name="showArchivedProjects" ' . (@$_POST["showArchivedProjects"] ? "checked" : "")

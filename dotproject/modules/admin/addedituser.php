@@ -17,7 +17,7 @@ LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
 ";
 if (!db_loadHash( $sql, $user ) && $user_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid User ID', 'admin.gif', $m, 'ID_HELP_USER_EDIT' );
+	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->show();
 } else {
@@ -27,7 +27,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
-	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, 'ID_HELP_USER_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=admin", "users list" );
 	$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
 	$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );

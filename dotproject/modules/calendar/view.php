@@ -11,7 +11,7 @@ db_loadHash( $sql, $event );
 
 // setup the title block
 if (!db_loadHash( $sql, $event )) {
-	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'myevo-appointments.png', $m, 'ID_HELP_EVENT_VIEW' );
+	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'myevo-appointments.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=calendar", "month view" );
 	$titleBlock->show();
 } else {
@@ -25,7 +25,7 @@ if (!db_loadHash( $sql, $event )) {
 	$end_date = $event["event_end_date"] ? new CDate( $event["event_end_date"], "$df $tf" ) : null;
 
 // setup the title block
-	$titleBlock = new CTitleBlock( 'View Event', 'calendar.gif', $m, 'ID_HELP_EVENT_VIEW' );
+	$titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
 	if ($canEdit) {
 		$titleBlock->addCell();
 		$titleBlock->addCell(

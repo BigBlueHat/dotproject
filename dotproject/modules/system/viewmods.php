@@ -8,7 +8,7 @@ $modules = db_loadList( $sql );
 // get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs( "modules" );
 
-$titleBlock = new CTitleBlock( 'Modules', 'modules.gif', $m, 'ID_HELP_SYS_IDX' );
+$titleBlock = new CTitleBlock( 'Modules', 'power-management.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=system", "System Admin" );
 $titleBlock->show();
 ?>

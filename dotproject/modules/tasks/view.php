@@ -61,7 +61,7 @@ $files = db_loadList( $sql );
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'View Task', 'tasks.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'View Task', 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCell(
 );
 if ($canEdit) {
@@ -236,11 +236,15 @@ function delIt() {
 		if (!getDenyRead( 'files' )) {
 	?>
 		<tr>
-			<td><strong><?php echo $AppUI->_('Attached Files');?></strong></td>
-			<td colspan="2" align="right">
+			<td width="100%"><strong><?php echo $AppUI->_('Attached Files');?></strong></td>
+			<td align="right" nowrap="nowrap">
 			<?php if (!getDenyEdit( 'files' )) { ?>
-				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?><img src="./images/icons/forum_folder.gif" align="absmiddle" width="20" height="20" alt="attach a file to this task" border="0" /></a>
+				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?>
+				</a>
 			<?php } ?>
+			</td>
+			<td width="20">
+				<?php echo dPshowImage( dPfindImage( 'stock_attach-16.png', $m ), 16, 16, '' ); ?>
 			</td>
 		</tr>
 		<tr>

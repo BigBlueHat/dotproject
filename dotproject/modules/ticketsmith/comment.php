@@ -3,7 +3,7 @@ $ticket = dPgetParam( $_GET, 'ticket', '' );
 $ticket_type = dPgetParam( $_GET, 'ticket_type', '' );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Post Comment', 'ticketsmith.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Post Comment', 'gconf-app-icon.png.gif', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
 $titleBlock->addCrumb( "?m=ticketsmith&a=view&ticket=$ticket", "view this ticket" );
 $titleBlock->show();

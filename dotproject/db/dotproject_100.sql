@@ -16,23 +16,21 @@
 
 CREATE TABLE companies (
   company_id smallint(6) NOT NULL auto_increment,
-  company_username varchar(20) NOT NULL default '',
-  company_password varchar(20) NOT NULL default '',
-  company_name varchar(100) default NULL,
-  company_phone1 varchar(30) default NULL,
-  company_phone2 varchar(30) default NULL,
-  company_fax varchar(30) default NULL,
-  company_address1 varchar(50) default NULL,
-  company_address2 varchar(50) default NULL,
-  company_city varchar(30) default NULL,
-  company_state varchar(30) default NULL,
-  company_zip varchar(11) default NULL,
-  company_primary_url varchar(255) default NULL,
+  company_name varchar(100) default '',
+  company_phone1 varchar(30) default '',
+  company_phone2 varchar(30) default '',
+  company_fax varchar(30) default '',
+  company_address1 varchar(50) default '',
+  company_address2 varchar(50) default '',
+  company_city varchar(30) default '',
+  company_state varchar(30) default '',
+  company_zip varchar(11) default '',
+  company_primary_url varchar(255) default '',
   company_owner int(11) NOT NULL default '0',
-  company_description text,
+  company_description text NOT NULL default '',
   company_type int(3) NOT NULL DEFAULT '0',
   company_email varchar(30),
-  PRIMARY KEY  (company_id)
+  PRIMARY KEY (company_id)
 ) TYPE=MyISAM;
 
 #
@@ -391,16 +389,16 @@ CREATE TABLE `modules` (
 #
 # Dumping data for table 'modules'
 #
-INSERT INTO modules VALUES("1", "Companies", "companies", "1.0.0", "", "core", "1", "Companies", "money.gif", "1", "1", "");
-INSERT INTO modules VALUES("2", "Projects", "projects", "1.0.0", "", "core", "1", "Projects", "projects.gif", "2", "1", "");
-INSERT INTO modules VALUES("3", "Tasks", "tasks", "1.0.0", "", "core", "1", "Tasks", "tasks.gif", "3", "1", "");
-INSERT INTO modules VALUES("4", "Calendar", "calendar", "1.0.0", "", "core", "1", "Calendar", "calendar.gif", "4", "1", "");
-INSERT INTO modules VALUES("5", "Files", "files", "1.0.0", "", "core", "1", "Files", "folder.gif", "5", "1", "");
-INSERT INTO modules VALUES("6", "Contacts", "contacts", "1.0.0", "", "core", "1", "Contacts", "contacts.gif", "6", "1", "");
-INSERT INTO modules VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "Forums", "communicate.gif", "7", "1", "");
+INSERT INTO modules VALUES("1", "Companies", "companies", "1.0.0", "", "core", "1", "Companies", "handshake.png", "1", "1", "");
+INSERT INTO modules VALUES("2", "Projects", "projects", "1.0.0", "", "core", "1", "Projects", "applet3-48.png", "2", "1", "");
+INSERT INTO modules VALUES("3", "Tasks", "tasks", "1.0.0", "", "core", "1", "Tasks", "applet-48.png", "3", "1", "");
+INSERT INTO modules VALUES("4", "Calendar", "calendar", "1.0.0", "", "core", "1", "Calendar", "myevo-appointments.png", "4", "1", "");
+INSERT INTO modules VALUES("5", "Files", "files", "1.0.0", "", "core", "1", "Files", "folder5.png", "5", "1", "");
+INSERT INTO modules VALUES("6", "Contacts", "contacts", "1.0.0", "", "core", "1", "Contacts", "monkeychat-48.png", "6", "1", "");
+INSERT INTO modules VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "Forums", "gconf-app-icon.png", "7", "1", "");
 INSERT INTO modules VALUES("8", "Tickets", "ticketsmith", "1.0.0", "", "core", "1", "Tickets", "ticketsmith.gif", "8", "1", "");
-INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "admin.gif", "9", "1", "");
-INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "system.gif", "10", "1", "");
+INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "helix-setup-users.png", "9", "1", "");
+INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "48_my_computer.png", "10", "1", "");
 INSERT INTO modules VALUES("11", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "");
 INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
 INSERT INTO modules VALUES("13", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "13", "0", "");
@@ -466,4 +464,27 @@ CREATE TABLE user_roles (
   user_id int(10) unsigned NOT NULL default '0',
   role_id int(10) unsigned NOT NULL default '0'
 ) TYPE=MyISAM;
+
+# Host: localhost
+# Database: dotproject
+# Table: 'common_notes'
+# 
+DROP TABLE IF EXISTS `common_notes`;
+CREATE TABLE `common_notes` (
+  `note_id` int(10) unsigned NOT NULL auto_increment,
+  `note_author` int(10) unsigned NOT NULL default '0',
+  `note_module` int(10) unsigned NOT NULL default '0',
+  `note_record_id` int(10) unsigned NOT NULL default '0',
+  `note_category` int(3) unsigned NOT NULL default '0',
+  `note_title` varchar(100) NOT NULL default '',
+  `note_body` text NOT NULL,
+  `note_date` datetime NOT NULL default '0000-00-00 00:00:00',
+  `note_hours` float NOT NULL default '0',
+  `note_code` varchar(8) NOT NULL default '',
+  `note_created` datetime NOT NULL default '0000-00-00 00:00:00',
+  `note_modified` timestamp(14) NOT NULL,
+  `note_modified_by` int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (`note_id`)
+) TYPE=MyISAM; 
+
 

@@ -12,7 +12,7 @@ $sql = "SELECT mod_id, mod_name FROM modules WHERE mod_active > 0 ORDER BY mod_d
 $modules = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Roles', 'users.gif', $m, 'ID_HELP_ROLE_IDX' );
+$titleBlock = new CTitleBlock( 'Roles', 'main-settings.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=system", "System Admin" );
 $titleBlock->show();
 

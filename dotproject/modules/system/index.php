@@ -1,14 +1,14 @@
 <?php /* SYSTEM $Id$ */
 $AppUI->savePlace();
 
-$titleBlock = new CTitleBlock( 'System Administration', 'system.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'System Administration', '48_my_computer.png', $m, "$m.$a" );
 $titleBlock->show();
 ?>
 <p>
 <table width="50%" border="0" cellpadding="0" cellspacing="5" align="left">
 <tr>
-	<td width="34">
-		<img src="./images/icons/world.gif" width="34" height="34" border="0" alt="">
+	<td width="42">
+		<?php echo dPshowImage( dPfindImage( 'rdf2.png', $m ), 42, 42, '' ); ?>
 	</td>
 	<td align="left" class="subtitle">
 		<?php echo $AppUI->_( 'Language Support' );?>
@@ -24,7 +24,7 @@ $titleBlock->show();
 
 <tr>
 	<td>
-		<img src="./images/icons/preference.gif" width="32" height="32" border="0" alt="">
+		<?php echo dPshowImage( dPfindImage( 'myevo-weather.png', $m ), 42, 42, '' ); ?>
 	</td>
 	<td align="left" class="subtitle">
 		<?php echo $AppUI->_('Preferences');?>
@@ -42,7 +42,7 @@ $titleBlock->show();
 
 <tr>
 	<td>
-		<img src="<?php echo dPfindImage( 'modules.gif', $m );?>" width="32" height="32" border=0 alt="">
+		<?php echo dPshowImage( dPfindImage( 'power-management.png', $m ), 42, 42, '' ); ?>
 	</td>
 	<td align="left" class="subtitle">
 		<?php echo $AppUI->_('Modules');?>
@@ -58,7 +58,7 @@ $titleBlock->show();
 
 <tr>
 	<td>
-		<img src="<?php echo dPfindImage( 'users.gif', $m );?>" width="32" height="32" border=0 alt="">
+		<?php echo dPshowImage( dPfindImage( 'main-settings.png', $m ), 42, 42, '' ); ?>
 	</td>
 	<td align="left" class="subtitle">
 		<?php echo $AppUI->_('Administration');?>

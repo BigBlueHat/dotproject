@@ -4,7 +4,7 @@ $keys = db_loadList( $sql );
 
 $syskey_id = isset( $_GET['syskey_id'] ) ? $_GET['syskey_id'] : 0;
 
-$titleBlock = new CTitleBlock( 'System Lookup Keys', 'preference.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'System Lookup Keys', 'myevo-weather.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=system", "System Admin" );
 $titleBlock->show();
 ?>

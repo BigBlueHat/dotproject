@@ -46,38 +46,29 @@ if ($lang != 'en') {
 }
 ksort($trans);
 
-$crumbs = array();
-$crumbs["?m=system"] = "System Admin";
+$titleBlock = new CTitleBlock( 'Translation Management', 'rdf2.png', $m, "$m.$a" );
+$titleBlock->addCell(
+	$AppUI->_( 'Module' ), '',
+	'<form action="?m=system&a=translate" method="post" name="modlang">', ''
+);
+$titleBlock->addCell(
+	arraySelect( $modules, 'module', 'size="1" class="text" onchange="document.modlang.submit();"', $module )
+);
+$titleBlock->addCell(
+	$AppUI->_( 'Language' )
+);
+$temp = $AppUI->setWarning( false );
+$titleBlock->addCell(
+	arraySelect( $locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang, true ), '',
+	'', '</form>'
+);
+$AppUI->setWarning( $temp );
+
+$titleBlock->addCrumb( "?m=system", "system admin" );
+$titleBlock->show();
 ?>
 
-<img src="images/shim.gif" width="1" height="5" alt="" border="0" /><br />
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<form action="?m=system&a=translate" method="post" name="modlang">
-<tr>
-	<td><img src="./images/icons/world.gif" alt="" border="0" /></td>
-	<td nowrap valign="top"><h1><?php echo $AppUI->_( 'Translation Management' );?></h1></td>
-	<td align="right" width="100%" nowrap><?php echo $AppUI->_( 'Module' );?>:</span></td>
-	<td><?php
-	echo arraySelect( $modules, 'module', 'size="1" class="text" onchange="document.modlang.submit();"', $module );
-	?></td>
-	<td align="right" width="100%" nowrap>&nbsp;<?php echo $AppUI->_( 'Language' );?>:</span></td>
-	<td><?php
-	$temp = $AppUI->setWarning( false );
-	echo arraySelect( $locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang, true );
-	$AppUI->setWarning( $temp );
-	?></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_SYS_TRANS' );?></td>
-</tr>
-</form>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="1" cellspacing="1" class="tbl">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" class="tbl">
 <tr>
 	<th width="15%" nowrap><?php echo $AppUI->_( 'Abbreviation' );?></th>
 	<th width="40%" nowrap>English <?php echo $AppUI->_( 'String' );?></th>

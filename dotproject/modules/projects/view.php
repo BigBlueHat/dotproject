@@ -53,7 +53,7 @@ $ts = db_dateTime2unix( $project["project_actual_end_date"] );
 $actual_end_date = $ts < 0 ? null : new CDate( $ts, $df );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'View Project', 'applet3-48.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(

@@ -287,7 +287,7 @@ function process_dependencies($i) {
 
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
-	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
+	<td><?php echo dPshowImage( dPfindImage( 'applet-48.png', $m ), 16, 16, '' ); ?></td>
 	<td nowrap><h1>Tasks Organizer Wizard</h1></td>
 	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td valign="top" align="right" width="100%"></td>

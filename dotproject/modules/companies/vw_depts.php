@@ -15,11 +15,12 @@ ORDER BY dept_parent,dept_name
 ##echo $sql;
 
 function showchild( &$a, $level=0 ) {
+	global $AppUI;
 	$s = '';
 
 	$s .= '<td>';
-	$s .= '<a href="./index.php?m=departments&a=addedit&dept_id='.$a["dept_id"].'">';
-	$s .= '<img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>';
+	$s .= '<a href="./index.php?m=departments&a=addedit&dept_id='.$a["dept_id"].'" title="'.$AppUI->_('edit').'">';
+	$s .= dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' );
 	$s .= '</td>';
 	$s .= '<td>';
 

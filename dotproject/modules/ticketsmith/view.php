@@ -7,7 +7,7 @@ $priority_toggle = dPgetParam( $_POST, 'priority_toggle', '' );
 $assignment_toggle = dPgetParam( $_POST, 'assignment_toggle', '' );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'View Ticket', 'ticketsmith.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'View Ticket', 'gconf-app-icon.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
 $titleBlock->show();
 
