@@ -110,7 +110,7 @@ function popChgPwd() {
 		</tr>
 		<tr>
 			<td align="right" nowrap>AOL Nick:</td>
-			<td class="hilite" width="100%"><?php echo @$user["user_aol"];?></td>
+			<td class="hilite" width="100%"><a href="aim:<?php echo @$user["user_aol"];?>"><?php echo @$user["user_aol"];?></a></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Email');?>:</td>
