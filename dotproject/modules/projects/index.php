@@ -124,7 +124,7 @@ WHERE permission_user = $AppUI->user_id
 GROUP BY projects.project_id
 ORDER BY $orderby
 ";
- echo "<pre>$sql</pre>";
+ //echo "<pre>$sql</pre>";
 $projects = db_loadList( $sql );
 
 
