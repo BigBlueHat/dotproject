@@ -1,3 +1,14 @@
+2003-04-19 17:13  (eddieajau)
+---------------------------------
+classes/libmail.class.php
+classes/ui.class.php
+- Added documentation
+
+2003-04-19 03:37  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-18 14:01  (korinek)
 ---------------------------------
 lib/jpgraph/src/jpgraph.php
@@ -487,17 +498,6 @@ db/upgrade_022_to_100.sql
 db/upgrade_100_alpha1_to_alpha2.sql
 - Rationalised description field of companies, departments and files tables.
 
-2003-04-08 22:32  (eddieajau)
----------------------------------
-modules/forums/forums.class.php
-- Updated mail to libmail class
-
-2003-04-08 21:49  (eddieajau)
----------------------------------
-includes/db_mysql.php
-- Added get object function
-
-2003-04-08 21:48  (eddieajau)
 ...
 
 (This file has been wrapped)
