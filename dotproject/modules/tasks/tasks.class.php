@@ -1709,7 +1709,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 
 	$open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
 	if ($a["task_milestone"] > 0 ) {
-		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
+		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a> <img src="./images/icons/milestone.gif" border="0"></td>';
 	} else if ($a["task_dynamic"] == '1'){
 		if (! $today_view)
 			$s .= $open_link;
@@ -1773,11 +1773,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration or milestone
 	$s .= '<td align="center" nowrap="nowrap" style="'.$style.'">';
-	if ( $a['task_milestone'] == '0' ) {
-		$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
-	} else {
-		$s .= $AppUI->_("Milestone");
-	}
+	$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
 	$s .= '</td>';
 	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
 	if ($today_view) {
