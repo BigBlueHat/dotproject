@@ -254,3 +254,14 @@ modules/calendar/index.php
 modules/calendar/addedit.php
 modules/calendar/dayview.php
 - added permissions
+
+2 September 2002 (AJE):
+-----------------------------
+modules/admin/index.php
+modules/admin/permissions.php
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+- upgraded permissions
+
+modules/projects/addedit.php
+- fixed a bug in the month and day select boxes
