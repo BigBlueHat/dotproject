@@ -94,7 +94,7 @@ function submitIt() {
 <tr>
 	<td align="right" nowrap><?php echo $AppUI->_( 'Phone' );?>:</td>
 	<td>
-		<input type="text" class="text" name="dept_phone" value="<?php echo @$drow["dept_phone1"];?>" maxlength="30" />
+		<input type="text" class="text" name="dept_phone" value="<?php echo @$drow["dept_phone"];?>" maxlength="30" />
 	</td>
 </tr>
 <tr>
