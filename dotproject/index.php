@@ -205,10 +205,10 @@ if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install mo
 $def_a = 'index';
 if ( $_GET['m'] == 'install' && $dPrunLevel < 2 ) {	// allow the install module to run without db
 	$m = 'install';
-} else if (! isset($_GET['m']) && $dPconfig['today_is_default_view']) {
-  	$m = 'calendar';
-	$def_a = 'day_view';
-	$AppUI->setState('CompVwTab', 1);
+} else if (! isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
+  	$m = $dPconfig['default_view_m'];
+	$def_a = !empty($dPconfig['default_view_a']) ? $dPconfig['default_view_a'] : $def_a;
+	$tab = $dPconfig['default_view_tab'];
 } else {
 	// set the module from the url
 	$m = $AppUI->checkFileName(dPgetParam( $_GET, 'm', getReadableModule() ));

@@ -145,10 +145,17 @@ $dPconfig["cal_working_days"]  = "1,2,3,4,5"; // days of week that the company w
 $dPconfig["restrict_task_time_editing"] = false;
 
 
-// If you want the "Todo" list in the Today function to show,
-// Set the following to true.  Otherwise the first listed module
-// becomes the default view.
-$dPconfig["today_is_default_view"] = true;
+// If you want to define your own start/default page
+// set the following variables.
+// If the value of default_view_m is '' then
+// first listed module becomes the default view.
+// default_view_m specifies the module,
+// _a specifies a subview like shown in the url of dP,
+// _tab specifies a tabbed subview.
+$dPconfig['default_view_m'] = 'calendar';
+$dPconfig['default_view_a'] = 'day_view';
+$dPconfig['default_view_tab'] = '1';
+
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
