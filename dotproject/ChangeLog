@@ -1,3 +1,24 @@
+2003-11-04 20:13  (ajdonnison)
+---------------------------------
+modules/admin/do_user_aed.php
+- Added Tom Reinertson's patch to fix user edit errors.
+
+2003-11-04 20:12  (kripper)
+---------------------------------
+locales/en/companies.inc
+- Added company type plurals.
+
+2003-11-04 20:11  (kripper)
+---------------------------------
+modules/companies/index.php
+modules/companies/vw_companies.php
+- Added Tab for filtering companies types
+
+2003-11-03 01:36  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-01 07:57  (gregorerhardt)
 ---------------------------------
 modules/forums/post_message.php
@@ -477,27 +498,6 @@ modules/forums/post_message.php
 - admin now is able to submit edited forum message
 
 2003-09-10 06:48  (gregorerhardt)
----------------------------------
-style/default/images/favicon.ico
-- changing favicon location: add favicon to images
-
-2003-09-10 06:47  (gregorerhardt)
----------------------------------
-style/default/favicon.ico
-style/default/header.php
-style/default/login.php
-- changing favicon location to images
-
-2003-09-10 04:03  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-10 03:35  (ajdonnison)
----------------------------------
-modules/tasks/tasks.class.php
-- Added extra information in error message.
-
 ...
 
 (This file has been wrapped)
