@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"User Log",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
