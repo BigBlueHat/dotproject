@@ -5,7 +5,7 @@
 GLOBAL $company_id; 
 
 $psql = "
-SELECT project_name, project_start_date, project_status, project_target_budget,
+SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
 	DATE_FORMAT(project_start_date, '%d-%b-%Y' ) project_start_date,
 	users.user_first_name, users.user_last_name
 from projects
