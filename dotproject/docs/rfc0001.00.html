@@ -6,7 +6,7 @@
 	<meta name="Author" content="Andrew Eddie">
 	<meta name="Description" content="dotProject Access Control RFC">
 
-	<link rel="stylesheet" type="text/css" href="../style/default/main.css">
+	<link rel="stylesheet" type="text/css" href="./rfc.css">
 
 	<style type="text/css">
 	body,td,th {
@@ -53,6 +53,10 @@
 			<dd>A user.</dd>
 		<dt>User Groups</dt>
 			<dd>A collection of users.</dd>
+		<dt>Scope</td>
+			<dd>Scope is an indication of the extent that something covers.</dd>
+		<td>Context</dt>
+			<dd>Context is where a particular control is applied.</dd>
 	</dl>
 </p>
 
@@ -66,6 +70,7 @@
 
 	<p>
 		<h3>2.1 Policies</h3>
+	</p>
 		
 		
 </p>
@@ -83,7 +88,6 @@
 		<p>The system defined policies will mirror the appropriate SQL commands in their naming convention.</p>
 
 	</p>
-	<p>
 		<h3>3.2 Policies</h3>
 
 		<p>A policy is assigned a 32-bit mask.  The lower word (the first 16 bits) will be system defined policies, this is, dotProject relies on these being certain values.  The upper word (the last 16 bits) will be able to be defined by the use, for programatic use in customisation.</p>
@@ -100,14 +104,59 @@
 		GRANT     0x0016
 		</pre>
 
-		<p>A policy can be applied to a record</p>
-	</p>
+		<p>A policy will have a context (where is applied), a scope (how far is it applied) and an item (which 'thing' is it applied to</p>
+
+		<p><strong>Context</strong> is either for a module or a record.</p>
+
+		<p><strong>Scope</strong> can be private (only applies to single user), protected (applies to users with the same or other role, or in the same or other group, etc) or public.
+
+		<p>The database schema of the policy will be defined by:</p>
+		<pre class="dbtable">
+	Table: acl_policies
+	-------------------------
+	policy_id        INT
+	policy_mask      INT
+	policy_context   INT
+	policy_on        INT
+	policy_to        INT
+	policy_scope     INT
+		</pre>
+
+		<p>Example (with text equivalent values)</p>
+		<pre class="dbtable">
+	id   to        scope   mask           on         context
+	1    all[0]    user    select         all[0]         projects
+	2    manager   role    select|update  all[0]         companies
+	3    Eddie[2]  user    select         Hifi store     companies
+	4    Techos    group   delete         Buy stereo[4]  tasks
+		</pre>
+		
+		<p>These would read in english:
+		<br /><i>All users can select all projects</i>
+		<br /><i>The manager role can select or update all companies</i>
+		<br /><i>Eddie, a user, can select (read) the Hifi store company</i>
+		<br /><i>The Techos group can delete the Buy stereo task</i>
+		</p>
+
+		<p><strong>Implied Policies</strong></p>
+
+		<p>Implied policies are automatically applied to certain things, for example, users can edit records they create (providing they have edit rights that allow this).</p>
 
 	<p>
 		<h3>3.3 Roles</h3>
 		
 
 	</p>
+
+	<h3>Compacting the ACL</h3>
+
+	<p>For efficiency, the ACL require compacting to achieve the least set of unique polices, the UPS (Unique Policy Set).</p>
+
+	<p>The ACL is compiled by selecting all the policies for user, all the policies applied to any users roles and then finally groups.</p>
+
+	<h3>Precedence in the ACL and UPS</h3>
+
+	<p>-- group, role, user
 		
 </p>
 
