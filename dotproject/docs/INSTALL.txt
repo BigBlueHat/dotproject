@@ -5,23 +5,23 @@ Original Document:  17 Oct 2002 (dotProject Team)
 Revised:            03 - 08 July 2002 (by JRP)
 Revised:            30 Aug 2002 (by JRP)
 
-	
+    
 SITUATION
 You have access to a functioning LAMP (Linux+Apache+MySQL+PHP) web server. You also have the ability to create a MySQL database and tables.
-	
+    
 You've decided to install the open-source project management tool called "dotproject".
-	
+    
 If you've been running "dotproject" already, you might want to refer to our UPGRADING.txt (to be written) document.
-	
+    
 
 MISSION
 Install a new copy of dotproject on a LAMP system.
-	
+    
 
 EXECUTION
 1) Download the most recent dotproject tarball:
     http://sourceforge.net/projects/dotproject/
-		
+        
 
 2) Unpack the tarball in your web root directory:
     tar -zxvf dotproject_*.tar.gz
@@ -68,7 +68,34 @@ EXECUTION
     $dbname, $dbpass, $root_dir
     
 
-7) Point your browser to http://yourdomain.com/dotproject/index.php.  If 
+6.5) TRANSITIONING for 023
+    I'm having problems with "db_connection.php", or
+    you will get a blank screen when first hitting the index.php login screen.
+
+7) NEW SECURITY HARDENING:
+    With the implementation of dotproject 0.2.3, we have added a new security enhancement feature: 
+    "config.php" now requires inclusion of the path to "secret.php".
+    
+    "secret.php" is located inside of the "includes" directory by default but should be moved OUTSIDE of your webroot.  Then, in "config.php" specify this path.
+    
+    For example, if your dotproject website was located at:
+    
+    /home/user/public_html/dotproject
+    
+    You might want to create a special folder called "private" outside of the webroot. This directory MUST have execute permission for the "other" group (e.g. 711), and the file must also be executable.
+    You could
+    place secret.php in this folder and reference it as follows from "config.php":
+    
+    require "/home/user/private/secret.php";
+    
+    The default secret password inside "secret.php" should also be changed. To do this simply edit
+    "secret.php" and make it different than the default $secret variable:
+    
+    <?php $secret='tHeSeCrEtPaSsWoRd'; ?>
+    
+    
+
+8) Point your browser to http://yourdomain.com/dotproject/index.php.  If 
         all is well, you should see a login page. 
         Username: admin
         Password: passwd
@@ -150,7 +177,7 @@ Web trouble ticket email gateway: dotproject/includes/gateway.pl
 ---------------------------------------------------------------------------
 (from the ticketsmith installation)
 
-1.	Have a working perl install, with DBI and the DBD::MySQL bundles installed
+1.  Have a working perl install, with DBI and the DBD::MySQL bundles installed
 2.  Be sure to protect the gateway.pl file.  You basically need to do one 
     of two things, either move it out of a web-accessible place or somehow 
     protect it from being accessed over the web:

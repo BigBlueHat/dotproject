@@ -1,5 +1,10 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+26 Oct 2002 (JRP):
+docs/INSTALL.txt
+  start adding discussion of "secret.php" for version 0.2.3 security hardening
+  
+
 25 October 2002 (AJE):
 -----------------------------
 images/bground.gif
