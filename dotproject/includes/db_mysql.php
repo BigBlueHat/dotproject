@@ -84,10 +84,10 @@ function db_unix2dateTime( $time ) {
 
 function db_dateTime2unix( $time ) {
 	if ($time == '0000-00-00 00:00:00') {
-		return null;
+		return -1;
 	}
 	if( ! preg_match( "/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})(.?)$/", $time, $a ) ) {
-		return NULL;
+		return -1;
 	} else {
 		return mktime( $a[4], $a[5], $a[6], $a[2], $a[3], $a[1] );
 	}
