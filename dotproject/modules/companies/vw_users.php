@@ -8,7 +8,7 @@ $q  = new DBQuery;
 $q->addTable('users');
 $q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
 $q->addJoin('contacts', 'c', 'users.user_contact = contact_id');
-$q->addWhere('user_company = '.$company_id);
+$q->addWhere('contact_company = '.$company_id);
 
 if (!($rows = $q->loadList())) {
 	echo $AppUI->_('No data available').'<br />'.$AppUI->getMsg();
