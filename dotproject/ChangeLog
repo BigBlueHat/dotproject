@@ -1,3 +1,215 @@
+2004-06-04 16:30  (gregorerhardt)
+---------------------------------
+modules/calendar/vw_day_events.php
+- 943779: early startdates, late enddates
+
+2004-06-04 15:47  (uid1036151)
+---------------------------------
+locales/en/common.inc
+modules/system/translate.php
+modules/system/translate_save.php
+- Fixed the fact that we weren't erroring when a translation file pointer was
+- bad (not writable, for instance). Fixed problem with slashes in the
+- translations, especially noticable in the English common translation.
+
+2004-06-04 14:52  (uid1036151)
+---------------------------------
+includes/main_functions.php
+modules/admin/vw_usr_perms.php
+modules/public/selector.php
+- dPshowImage now center-aligns images to text
+- Fixed problem in the selector as well as in user permissions where a
+- company with ' in the name (ex. Jack's Bowling) would produce a JavaScript
+- error because the string was unescaped.
+
+2004-06-01 22:10  (bloaterpaste)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/admin/vw_usr_perms.php
+modules/system/system.class.php
+- Extended permissions system to support custom perms for modules.  Individual setup.php files can now include the following fields:
+- $config['permissions_item_table'] = 'table_name'; ie companies
+- $config['permissions_item_label'] = 'descriptive_field_name'; ie company_name
+- $config['permissions_item_field'] = 'id_field'; ie company_id
+- These are now stored, and can be referred to for pulling perms.  This will allow modules to utilize the currently table type currently supported by selector.php, companies, projects, tasks, files, departments, forums and users for permissions grant and revoke criteria.  modules table was modified to support this functionality.
+
+2004-06-01 20:38  (jcgonz)
+---------------------------------
+modules/projects/reports/allocateduserhours.php
+- Added total sum of allocated hours per user
+
+2004-05-27 19:47  (robertoibarra)
+---------------------------------
+includes/db_connect.php
+includes/main_functions.php
+- MAYOR update: this updates even my last update. Looking at more code and issues I found that international characters where marked to be saved as entities in the db, this overrides the concept of handling different locales and encodings so I returned it to the previous state where we use encodings to simplify international characters and maintain compatibility with all the language locales all ready working.
+
+2004-05-27 18:53  (robertoibarra)
+---------------------------------
+includes/db_connect.php
+- UTF-8 locales didn't save in the database correctly, fixed by adding the locale_char_set parameter to the htmlentities function that created the sql
+
+2004-05-25 20:31  (bloaterpaste)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+functions/projects_func.php
+modules/projects/addedit.php
+modules/projects/projects.class.php
+modules/projects/view.php
+- Adding "Project Type" to projects.
+
+2004-05-25 19:23  (bloaterpaste)
+---------------------------------
+modules/projects/vw_logs.php
+- Added additional filters to project task log tab to allow it to filter out the 100% complete tasks and the inactive tasks.
+
+2004-05-25 01:56  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Fix for bug 957310 - problems with HTML
+
+2004-05-25 00:50  (ajdonnison)
+---------------------------------
+includes/db_connect.php
+- Fix for bug 943150 - JavaScript injection.
+
+2004-05-21 23:58  (bloaterpaste)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- Trying to optimize.  Functions are killing the performance of this.  Replaced a couple of drop down generations with API.
+
+2004-05-21 23:47  (bloaterpaste)
+---------------------------------
+modules/help/en/projects.view.hlp
+modules/projects/view.php
+- Changed the name of a few caculated fields.  Documented what they mean.
+
+2004-05-21 19:02  (bloaterpaste)
+---------------------------------
+modules/projects/index.php
+- Oops.  Stuck the form around the wrong cell.  Fixing bug that I created this morning on the company/divisions select drop down.
+
+2004-05-21 18:51  (bloaterpaste)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+functions/projects_func.php
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/projects/vw_idx_active.php
+- Adding Priority value to projects.  Color coding is displayed on the project list for active projects.
+
+2004-05-21 17:59  (bloaterpaste)
+---------------------------------
+modules/projects/index.php
+- Fixed drop down list so that it is centered properly in it's cell.
+
+2004-05-20 20:35  (bloaterpaste)
+---------------------------------
+modules/tasks/addedit.php
+- Making it so tasks can only be moved within a company.
+
+2004-05-20 20:28  (bloaterpaste)
+---------------------------------
+modules/tasks/tasks.class.php
+- Moving tasks will now move all of the children tasks as well.
+
+2004-05-20 02:32  (bloaterpaste)
+---------------------------------
+modules/tasks/addedit.php
+- Adding the ability for users to move tasks to other projects.  Currently only does the selected task.  PENDING: move all dependant tasks as well.
+
+2004-05-19 23:56  (bloaterpaste)
+---------------------------------
+modules/projects/index.php
+- Oops!  Removing debug.
+
+2004-05-19 23:54  (bloaterpaste)
+---------------------------------
+modules/projects/index.php
+- Fixed a small problem that was causing the drop down to default to the wrong entry when there were no department projects found.
+
+2004-05-19 23:36  (bloaterpaste)
+---------------------------------
+modules/projects/index.php
+- Changed company filter to be Company/Department filter.  In conjunction to my contact/deptartment tables that I just checked in, this will allow a user to winnow projects down by the department(s) they are assigned to.  The company drop down now lists all companies and departments.
+
+2004-05-19 20:57  (bloaterpaste)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/projects/projects.class.php
+modules/tasks/tasks.class.php
+- Added project_departments, project_contacts, task_departments and task_contacts tables to store relational data about those relationships.  This does not (at this time) replace the use of the text fields of the same use for tasks and departments.  This is meant to be an interrum step.  But, this will allow better reporting and filtering capabilities throughout the application.  PENDING: upgrade task that will fully populate those four tables based on existing data.  I'll write this as soon and I know where to put it.  If anyone knows where to put a chunk of PHP to be executed on upgrade, please let me know.  For now this change will just affect all projects and tasks edited or created after the point of upgrade.
+- 
+- Added new store() function in the project.class.php file.
+
+2004-05-19 18:14  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasksperuser_sub.php
+- fixing minor bugs and adding project color identifier
+
+2004-05-19 01:27  (bloaterpaste)
+---------------------------------
+modules/projects/view.php
+modules/projects/vw_logs.php
+- Adding "Task Logs" Tab to the project view.  This will display an overview of all task logs that have been applied to tasks contained within this project.  It also has a user filter so you can easily see who has been doing what.
+
+2004-05-17 22:26  (bloaterpaste)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/public/calendar.php
+- The currently selected date will now be highlighted on the calendar popup.  So, if a user had previously clicked on the 10th on the selector, when he/she comes back later and clicks that same popup, the 10th will be highlighted.
+- 
+- Also added to the calendar.class.php the ability to highlight as many days as someone might want by populating it's highlightedDays arrays with name value pairs of dates (20040517) and the hex color for the highlight (#FF0000).
+
+2004-05-17 11:27  (gregorerhardt)
+---------------------------------
+locales/en/tasks.inc
+- added strings
+
+2004-05-17 11:27  (gregorerhardt)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- enable translation for arrayselects
+
+2004-05-17 11:16  (gregorerhardt)
+---------------------------------
+includes/main_functions.php
+- implement translation for alt and title in dPshowImage
+
+2004-05-17 10:51  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_assign_aed.php
+modules/tasks/index.php
+modules/tasks/tasks.class.php
+modules/tasks/tasksperuser.php
+modules/tasks/tasksperuser_sub.php
+- implement page tasksperuser, easy (un)assignment of users-tasks
+
+2004-05-17 10:46  (gregorerhardt)
+---------------------------------
+docs/LICENSE.txt
+- added comment for donated graphics
+
+2004-05-17 10:33  (gregorerhardt)
+---------------------------------
+modules/tasks/images/add.png
+modules/tasks/images/exchange.png
+modules/tasks/images/remove.png
+- initial import
+
+2004-05-15 16:28  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
 2004-05-15 16:25  (gregorerhardt)
 ---------------------------------
 locales/en/admin.inc
