@@ -316,7 +316,7 @@ var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="if(confirm('<?php echo $AppUI->_('taskCancel');?>')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
+				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="if(confirm('<?php echo $AppUI->_('taskCancel', UI_OUTPUT_JS);?>')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
 			</td>
 			<td>
 				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt(document.editFrm);" />

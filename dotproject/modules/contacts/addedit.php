@@ -87,7 +87,7 @@ function setCompany( key, val ){
 
 function delIt(){
 	var form = document.changecontact;
-	if(confirm( "<?php echo $AppUI->_('contactsDelete');?>" )) {
+	if(confirm( "<?php echo $AppUI->_('contactsDelete', UI_OUTPUT_JS);?>" )) {
 		form.del.value = "<?php echo $contact_id;?>";
 		form.submit();
 	}

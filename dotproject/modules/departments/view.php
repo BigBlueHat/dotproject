@@ -63,7 +63,7 @@ if (!db_loadHash( $sql, $dept )) {
 if ($canEdit) {
 ?>
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('departmentDelete');?>" )) {
+	if (confirm( "<?php echo $AppUI->_('departmentDelete', UI_OUTPUT_JS);?>" )) {
 		document.frmDelete.submit();
 	}
 }

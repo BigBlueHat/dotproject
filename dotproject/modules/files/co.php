@@ -102,7 +102,7 @@ $projects = arrayMerge( array( '0'=>$AppUI->_('All') ), $projects );
 </tr>
 <tr>
 	<td>
-		<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('<?php echo $AppUI->_('Are you sure you want to cancel?'); ?>')){location.href = './index.php?m=files';}" />
+		<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('<?php echo $AppUI->_('Are you sure you want to cancel?', UI_OUTPUT_JS); ?>')){location.href = './index.php?m=files';}" />
 	</td>
 	<td align="right">
 		<input type="submit" class="button" value="<?php echo $AppUI->_( 'submit' );?>" />

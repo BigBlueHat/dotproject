@@ -117,7 +117,7 @@ function chAssignment(user_id, rmUser, del) {
                         if (c == 0) {
                                  alert ('<?php echo $AppUI->_('Please select at least one Task!', UI_OUTPUT_JS); ?>');
                         } else {
-                                if (confirm( '<?php echo $AppUI->_('Are you sure you want to unassign the User from Task(s)?'); ?>' )) {
+                                if (confirm( '<?php echo $AppUI->_('Are you sure you want to unassign the User from Task(s)?', UI_OUTPUT_JS); ?>' )) {
                                         f.del.value = 1;
                                         f.rm.value = rmUser;
                                         f.user_id.value = user_id;

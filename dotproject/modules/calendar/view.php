@@ -75,7 +75,7 @@ $titleBlock->show();
 if ($canDelete) {
 ?>
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('eventDelete');?>" )) {
+	if (confirm( "<?php echo $AppUI->_('eventDelete', UI_OUTPUT_JS);?>" )) {
 		document.frmDelete.submit();
 	}
 }
