@@ -34,7 +34,7 @@ foreach ($projects as $row) {
 	</td>
 	<td nowrap><?php echo $row["user_username"];?></td>
 	<td align="center" nowrap><?php echo $row["total_tasks"];?></td>
-	<td align="right" nowrap><?php echo $row["project_end_date"];?></td>
+	<td align="right" nowrap><?php echo $row["proj_end_date"];?></td>
 </tr>
 <?php }?>
 <tr>
