@@ -15,13 +15,15 @@ $trans = isset( $HTTP_POST_VARS['trans'] ) ? $HTTP_POST_VARS['trans'] : 0;
 // into the module's local locale area
 
 if ( file_exists( "{$AppUI->cfg['root_dir']}/locales/$lang/$module.inc" ) ) {
-	$fp = fopen ("{$AppUI->cfg['root_dir']}/locales/$lang/$module.inc", "wt");
+	$filename = "{$AppUI->cfg['root_dir']}/locales/$lang/$module.inc";
 } else {
-	$fp = fopen ("{$AppUI->cfg['root_dir']}/modules/$module/locales/$lang.inc", "wt");
+	$filename = "{$AppUI->cfg['root_dir']}/modules/$module/locales/$lang.inc";
 }
 
+$fp = fopen ($filename, "wt");
+
 if (!$fp) {
-	$AppUI->setMsg( "Could not open locales file to save.", UI_MSG_ERROR );
+	$AppUI->setMsg( "Could not open locales file ($filename) to save.", UI_MSG_ERROR );
 	$AppUI->redirect( "m=system" );
 }
 
