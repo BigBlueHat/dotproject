@@ -30,15 +30,16 @@ $orderby = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrde
 $active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
 // get read denied projects
+$deny = array();
 $sql = "
-SELECT project_id
+SELECT project_id, project_id
 FROM projects, permissions
 WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'projects'
 	AND permission_item = project_id
 	AND permission_value = 0
 ";
-$deny = db_loadList( $sql );
+$deny = db_loadHashList( $sql );
 
 // pull projects
 $sql = "
@@ -62,11 +63,12 @@ WHERE permission_user = $AppUI->user_id
 		OR (permission_grant_on = 'projects' AND permission_item = -1)
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)"
-.(COUNT($deny) > 0 ? '\nAND project_id NOT IN (' . implode( ',', $deny ) . ')' : '')
+.(count($deny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
 .($company_id ? "\nAND project_company = $company_id" : '')
 ."
 GROUP BY project_id
-ORDER BY $orderby";
+ORDER BY $orderby
+";
 
 $projects = db_loadList( $sql );
 
