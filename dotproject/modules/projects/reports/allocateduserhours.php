@@ -1,5 +1,4 @@
 <?php
-require($AppUI->getModuleClass("tasks"));
 
 $do_report 		    = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
