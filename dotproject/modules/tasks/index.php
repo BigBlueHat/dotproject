@@ -105,7 +105,7 @@ switch ($f) {
 		break;
 }
 
-$tsql .= "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
+$tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
 ##echo "<pre>$tsql</pre>".mysql_error();##
 
 $ptrc = mysql_query( $tsql );
@@ -124,6 +124,9 @@ for ($x=0; $x < $nums; $x++) {
 	
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
+
+$crumbs = array();
+$crumbs["?m=tasks&a=todo"] = "my todo";
 
 //This kludgy function echos children tasks as threads
 
@@ -214,7 +217,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 	</td>
 </form>
 
-<!--
+<?php /* ?>
 <form action="<?php echo $REQUEST_URI;?>" method="post" name="pickProject">
 	<td nowrap align="right">
 		Project:
@@ -232,11 +235,18 @@ function findchild( &$tarr, $parent, $level=0 ){
 			</select>
 	</td>
 </form>
--->
+<?php */ ?>
+
 </tr>
 </table>
 
-<?php if(isset($message))echo $message;?>
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<tr>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<td align="right" width="100%"></td>
+</tr>
+</table>
+
 <table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">id</th>
@@ -252,7 +262,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 reset( $projects );
 while (list( $k, ) = each( $projects ) ) {
 	$p = &$projects[$k];
-	$tnums = count( $p['tasks'] );
+	$tnums = count( @$p['tasks'] );
 // don't show project if it has no tasks
 	if ($tnums) {
 //echo '<pre>'; print_r($p); echo '</pre>';
