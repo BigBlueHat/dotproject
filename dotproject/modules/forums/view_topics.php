@@ -40,7 +40,7 @@ $topics = db_loadList( $sql );
 $crumbs = array();
 $crumbs["?m=forums"] = "forums list";
 ?>
-<table width="98%" cellspacing="1" cellpadding="2" border="0">
+<table width="100%" cellspacing="1" cellpadding="2" border="0">
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
@@ -51,7 +51,7 @@ $crumbs["?m=forums"] = "forums list";
 </tr>
 </table>
 
-<table width="98%" cellspacing="1" cellpadding="2" border="0" class="tbl">
+<table width="100%" cellspacing="1" cellpadding="2" border="0" class="tbl">
 <form name="watcher" action="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&f=<?php echo $f;?>" method="post">
 <tr>
 	<th><?php echo $AppUI->_('Watch');?></th>
@@ -60,7 +60,7 @@ $crumbs["?m=forums"] = "forums list";
 	<th><?php echo $AppUI->_('Replies');?></th>
 	<th><?php echo $AppUI->_('Last Post');?></th>
 </tr>
-<?php 
+<?php
 $date = new CDate();
 $date->setFormat( "$df $tf" );
 
@@ -72,17 +72,17 @@ foreach ($topics as $row) {
 //JBF limit displayed messages to first-in-thread
 	if ($row["message_parent"] < 0) { ?>
 <tr>
-	<td nowrap align=center>
-		<input type="checkbox" name="forum_<?php echo $row['message_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?>>
+	<td nowrap="nowrap" align="center">
+		<input type="checkbox" name="forum_<?php echo $row['message_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?> />
 	</td>
 	<td>
 		<span style="font-size:10pt;">
 		<a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id . "&message_id=" . $row["message_id"];?>"><?php echo $row["message_title"];?></a>
 		</span>
 	</td>
-	<td bgcolor=#dddddd><?php echo $row["user_username"];?></td>
-	<td align=center><?php echo  $row["replies"];?></td>
-	<td bgcolor=#dddddd>
+	<td bgcolor="#dddddd"><?php echo $row["user_username"];?></td>
+	<td align="center"><?php echo  $row["replies"];?></td>
+	<td bgcolor="#dddddd">
 <?php if ($row["latest_reply"]) {
 		echo $date->toString().'<br /><font color=#999966>(';
 		if ($message_since < 3600) {
@@ -106,15 +106,15 @@ foreach ($topics as $row) {
 }?>
 </table>
 
-<table width="95%" border=0 cellpadding="0" cellspacing=1>
-<input type=hidden name=dosql value=watch_forum>
-<input type=hidden name=watch value=topic>
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
+<input type="hidden" name="dosql" value="do_watch_forum" />
+<input type="hidden" name="watch" value="topic" />
 <tr>
 	<td>&nbsp;</td>
 </tr>
 <tr>
 	<td align="left">
-		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>">
+		<input type="submit" class="button" value="<?php echo $AppUI->_( 'update watches' );?>" />
 	</td>
 </tr>
 </form>
