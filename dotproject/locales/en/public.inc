@@ -10,3 +10,4 @@
 "colorLegend"=>"Choose a color to uniquely identify your selection and close the Color Selector.",
 "nodepartments, companies, permissions",
 "notasks"=>"No Tasks available",
+"[none]",
