@@ -1,14 +1,11 @@
-<?php
+<?php /* $Id$ */
 
 // check permissions
 $denyEdit = getDenyEdit( $m );
 $user_id = isset($_REQUEST["user_id"]) ? $_REQUEST["user_id"] : $AppUI->user_id;
 
 if ($denyEdit) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
 if (empty( $sqlaction )) {
@@ -24,7 +21,7 @@ if ($sqlaction == 1 && $permission_id == 0) {
 	INSERT INTO permissions (permission_user, permission_grant_on, permission_item, permission_value)
 	VALUES
 	('$user_id', '$permission_grant_on', '$permission_item', '$permission_value')";
-	mysql_query( $apsql );
+	db_exec( $apsql );
 
 	$AppUI->setMsg( "Permission Created " );
 } else if ($sqlaction == 1 && $permission_id <> 0) {
@@ -34,14 +31,14 @@ if ($sqlaction == 1 && $permission_id == 0) {
 	permission_item = '$permission_item',
 	permission_value = '$permission_value'
 	WHERE permission_id = $permission_id";
-	mysql_query( $upsql );
+	db_exec( $upsql );
 	$AppUI->setMsg( "Permission Updated " );
 } else if ($sqlaction == -1 && $permission_id <> 0) {
 	$dpsql = "delete from permissions where permission_id =" . $permission_id;
-	mysql_query( $dpsql );
+	db_exec( $dpsql );
 	$AppUI->setMsg( "Permission Deleted " );
 }
-$e  =mysql_error();
+$e = db_error();
 if (strlen( $e ) > 0) {
 	$AppUI->setMsg( $e );
 }
@@ -61,33 +58,23 @@ AND u.user_id = $user_id
 ORDER BY permission_grant_on, permission_item
 ";
 
-$urc = mysql_query( $usql );
+$urc = db_exec( $usql );
 
 //get username
-$unsql = "
-SELECT user_id, user_username
-FROM users
-WHERE
-user_id = $user_id";
-$uname = mysql_query( $unsql );
-$uname = mysql_fetch_array( $uname, MYSQL_ASSOC );
+$sql = "SELECT user_id, user_username FROM users WHERE user_id = $user_id";
+db_loadHash( $sql, $uname );
 
 //Pull all companies
-$csql = "SELECT company_id AS id, company_name AS name FROM companies ORDER BY company_name";
-$crc = mysql_query( $csql );
+$csql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
+$companies = db_loadHashList( $csql );
 
 //Pull all users
-$u2sql = "SELECT user_id, user_username FROM users ORDER BY user_username";
-$u2rc = mysql_query( $u2sql );
-$users = array();
-while ($row = mysql_fetch_row( $u2rc )) {
-	$users[$row[0]] = $row[1];
-}
-mysql_free_result( $u2rc );
+$sql = "SELECT user_id, user_username FROM users ORDER BY user_username";
+$users = db_loadHashList( $sql );
 
 //Pull all projects
-$psql = "SELECT project_id AS id, project_name AS name FROM projects ORDER BY project_name";
-$prc = mysql_query( $psql );
+$sql = "SELECT project_id, project_name FROM projects ORDER BY project_name";
+$projects = db_loadHashList( $sql );
 
 $modules = array(
 	"all",
@@ -157,29 +144,35 @@ function setPItem( y ) {
 	if (x == "companies") {
 		<?php
 		$i=1;
-		while ($crow = mysql_fetch_array( $crc, MYSQL_ASSOC )) {
-			echo "var option$i = new Option(\"$crow[name]\", \"$crow[id]\");\n";
-			echo "form.permission_item.options[$i]=option$i;\n";
+		$s = '';
+		foreach ($companies as $id => $name) {
+			$s .= "var option$i = new Option(\"$name\", \"$id\");\n";
+			$s .= "form.permission_item.options[$i]=option$i;\n";
 			$i++;
 		}
+		echo $s;
 		?>
 	} else if (x == "projects") {
 		<?php
 		$i=1;
-		while ($crow = mysql_fetch_array( $prc, MYSQL_ASSOC )) {
-			echo "var option$i = new Option(\"$crow[name]\", \"$crow[id]\");\n";
-			echo "form.permission_item.options[$i]=option$i;\n";
+		$s = '';
+		foreach ($projects as $id => $name) {
+			$s .= "var option$i = new Option(\"$name\", \"$id\");\n";
+			$s .= "form.permission_item.options[$i]=option$i;\n";
 			$i++;
 		}
+		echo $s;
 		?>
 	} else if (x == "users") {
 		<?php
 		$i=1;
+		$s = '';
 		foreach ($users as $id => $name) {
-			echo "var option$i = new Option('$name', '$id');\n";
-			echo "form.permission_item.options[$i]=option$i;\n";
+			$s .= "var option$i = new Option('$name', '$id');\n";
+			$s .= "form.permission_item.options[$i]=option$i;\n";
 			$i++;
 		}
+		echo $s;
 		?>
 	}
 // select the item
@@ -336,7 +329,7 @@ while ($row = mysql_fetch_array( $urc )) {
 </tr>
 <tr>
 	<td width="15%" nowrap>
-		<select name="permission_grant_on" onChange="setPItem()" style="font-size:9px">
+		<select name="permission_grant_on" onChange="setPItem()" style="text">
 		<option value="<?php echo $modules[0]; ?>" selected><?php echo $modules[0]; ?>
 	<?php
 		for ($i=1; $i < $nmod; $i++) {
@@ -346,13 +339,13 @@ while ($row = mysql_fetch_array( $urc )) {
 		</select>
 	</td>
 	<td width="25%" nowrap>
-		<select name="permission_item" style="font-size:9px">
+		<select name="permission_item" style="text">
 		<option value="-1" selected>All
 
 		</select>
 	</td>
 	<td width="25%" nowrap>
-		<select name="permission_value" style="font-size:9px">
+		<select name="permission_value" style="text">
 		<option value="0">deny
 		<option value="1">read-only
 		<option value="-1" selected>read-write
