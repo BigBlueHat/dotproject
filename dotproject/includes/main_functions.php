@@ -368,6 +368,11 @@ function dPgetMicroDiff() {
 */
 function dPformSafe( $txt, $deslash=false ) {
 	global $locale_char_set;
+	
+	if(!$locale_char_set){
+	    $locale_char_set = "utf-8";
+	}
+	
 	if (is_object( $txt )) {
 		foreach (get_object_vars($txt) as $k => $v) {
 			if ($deslash) {
