@@ -151,14 +151,19 @@ function dpSessionStart($start_vars = 'AppUI')
 	if (ini_get('session.auto_start') > 0) {
 		session_write_close();
 	}
-	session_set_save_handler(
-		'dPsessionOpen', 
-		'dPsessionClose', 
-		'dPsessionRead', 
-		'dPsessionWrite', 
-		'dPsessionDestroy', 
-		'dPsessionGC');
-	$max_time = dPsessionConvertTime('max_lifetime');
+	if (isset($dPconfig['session_handling'])
+		&& strtolower($dPconfig['session_handling']) == 'app') {
+		session_set_save_handler(
+			'dPsessionOpen', 
+			'dPsessionClose', 
+			'dPsessionRead', 
+			'dPsessionWrite', 
+			'dPsessionDestroy', 
+			'dPsessionGC');
+		$max_time = dPsessionConvertTime('max_lifetime');
+	} else {
+		$max_time = 0; // Browser session only.
+	}
 	// Try and get the correct path to the base URL.
 	preg_match('_^(https?://)([^/]+)(:0-9]+)?(/.*)?$_i', $dPconfig['base_url'], $url_parts);
 	$cookie_dir = $url_parts[4];

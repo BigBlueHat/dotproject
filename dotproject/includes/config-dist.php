@@ -192,6 +192,10 @@ $dPconfig['index_max_file_size'] = -1;
  * You can only have 1 character within a string, so 2d4h is NOT valid,
  * but 28h is.
  */
+// Which session handling to use, should be either 'php' for traditional
+// PHP session management, or 'app' for the dotProject application to
+// manage its own sessions via the database.
+$dPconfig['session_handling'] = 'app';
 // The maximum time a session can have no activity before it is declared dead.
 $dPconfig['session_idle_time'] = '2d';
 // The maximim time a session can exist before it is trashed, regardless of
