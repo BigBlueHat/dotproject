@@ -474,7 +474,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
         global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x;
 	$zi++;
         $users = $task->getAssignedUsers();
-        $projects = $task->getProjectName();
+        $projects = $task->getProject();
 	$tmp="<tr>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
         $tmp .= "<input type=\"checkbox\" name=\"task_id$task->task_id\" value=\"$task->task_id\"/>";

@@ -701,14 +701,11 @@ class CTask extends CDpObject {
 		return db_loadHashList($sql, "user_id");
 	}
 
-        function getProjectName() {
-                $sql = "SELECT project_name, project_short_name, project_color_identifier FROM projects WHERE project_id = '$this->task_project'";
-                $proj = db_loadHash($sql, $projects);
-
-                return $projects;
-
-
-        }
+    function getProject() {
+     $sql = "SELECT project_name, project_short_name, project_color_identifier FROM projects WHERE project_id = '$this->task_project'";
+     $proj = db_loadHash($sql, $projects);
+     return $projects;
+    }
 	
 	//Returns task children IDs
 	function getChildren() {

@@ -240,6 +240,7 @@ if($do_report){
 	
 		$table_header = "<tr>".
 						"<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("Task")."</B></font></td>".
+						( $log_all_projects ? "<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("Project")."</B></font></td>" : "" ) .
 						"<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("Start Date")."</B></font></td>".
 						"<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("End Date")."</B></font></td>".
 						weekDates($display_week_hours,$sss,$sse).
@@ -253,7 +254,7 @@ if($do_report){
 				      ." "
 					  .$user_data["user_last_name"]
 					  ."</B></font></td>";
-		    for($w=0;$w<=(1+weekCells($display_week_hours,$sss,$sse));$w++) {
+		    for($w=0;$w<=(1 + ($log_all_projects ? 1 : 0) + weekCells($display_week_hours,$sss,$sse));$w++) {
 				 $tmpuser.="<td bgcolor='#D0D0D0'></td>";
 			}
 			$tmpuser.="</tr>";
@@ -263,11 +264,11 @@ if($do_report){
 			foreach($task_list as $task) {
 				if (!isChildTask($task)) {
 					if (isMemberOfTask($task_list,$task_assigned_users,$Ntasks,$user_id,$task)) {
-						$tmptasks.=displayTask($task_list,$task,0,$display_week_hours,$sss,$sse);
+						$tmptasks.=displayTask($task_list,$task,0,$display_week_hours,$sss,$sse, $log_all_projects);
 						// Get children
 						$tmptasks.=doChildren($task_list,$task_assigned_users,$Ntasks,
 											  $task->task_id,$user_id,
-											  1,$max_levels,$display_week_hours,$sss,$sse);
+											  1,$max_levels,$display_week_hours,$sss,$sse, $log_all_projects);
 					}
 				}
 			}
@@ -279,7 +280,7 @@ if($do_report){
 	}
 }
 
-function doChildren($list,$Lusers,$N,$id,$uid,$level,$maxlevels,$display_week_hours,$ss,$se) {
+function doChildren($list,$Lusers,$N,$id,$uid,$level,$maxlevels,$display_week_hours,$ss,$se, $log_all_projects = false) {
 	$tmp="";
 	if ($maxlevels==-1 || $level<$maxlevels) {
 		for($c=0;$c<$N;$c++) {
@@ -287,10 +288,10 @@ function doChildren($list,$Lusers,$N,$id,$uid,$level,$maxlevels,$display_week_ho
 			if (($task->task_parent==$id) and isChildTask($task)) {
 				// we have a child, do we have the user as a member?
 				if (isMemberOfTask($list,$Lusers,$N,$uid,$task)) {
-					$tmp.=displayTask($list,$task,$level,$display_week_hours,$ss,$se);
+					$tmp.=displayTask($list,$task,$level,$display_week_hours,$ss,$se, $log_all_projects);
 					$tmp.=doChildren($list,$Lusers,$N,$task->task_id,
                                      $uid,$level+1,$maxlevels,
-                                     $display_week_hours,$ss,$se);
+                                     $display_week_hours,$ss,$se, $log_all_projects);
 				}
 			}
 		}
@@ -322,7 +323,7 @@ function isMemberOfTask($list,$Lusers,$N,$user_id,$task) {
 return false;
 }
 
-function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod) {
+function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $log_all_projects = false) {
 	$tmp="";
 	$tmp.="<tr><td nowrap=\"nowrap\">&#160&#160&#160";
 	for($i=0;$i<$level;$i++) {
@@ -334,6 +335,16 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	if ($level==0) { $tmp.="</B>"; }
 	elseif ($level==1) { $tmp.="</I>"; }
 	$tmp.="&#160&#160&#160</td>";
+	if ( $log_all_projects ) {	
+		//Show project name when we are logging all projects
+		$project = $task->getProject();
+		$tmp .= "<td nowrap=\"nowrap\">";
+		if ( !isChildTask($task) ) {
+			//However only show the name on parent tasks and not the children to make it a bit cleaner
+			$tmp.= $project["project_name"];
+		}
+		$tmp .= "</td>";
+	}
 	$tmp.="<td nowrap=\"nowrap\">";
 	$dt=new CDate($task->task_start_date);
 	$tmp.=$dt->format("%d-%m-%Y");
@@ -378,8 +389,8 @@ function weekCells($display_allocated_hours,$fromPeriod,$toPeriod) {
 
 	if ($fromPeriod==-1) { return 0; }
 	if (!$display_allocated_hours) { return 0; }
-
-
+	
+	
 	$s=new CDate($fromPeriod);
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s); //intval($s->Format("%U"));
