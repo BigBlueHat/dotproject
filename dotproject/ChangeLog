@@ -1,3 +1,17 @@
+2003-10-02 04:59  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+modules/system/roles/index.php
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+- applied patch 814916 for bug 799390: permission deleting is now available for opera. thanks to kotfu
+
+2003-10-01 03:53  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-01 00:53  (jcgonz)
 ---------------------------------
 modules/tasks/gantt.php
@@ -484,20 +498,6 @@ modules/system/addeditpref.php
 includes/permissions.php
 - Fix for problem with viewing tasks unless admin
 
-2003-09-01 04:07  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-08-31 21:59  (ajdonnison)
----------------------------------
-modules/admin/vw_usr_perms.php
-modules/projects/vw_idx_proposed.php
-- Minor localization fixes.
-
-2003-08-31 21:56  (ajdonnison)
----------------------------------
-index.php
 ...
 
 (This file has been wrapped)
