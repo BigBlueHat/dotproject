@@ -19,19 +19,12 @@ if (!isset($HTTP_SESSION_VARS['AppUI']) || isset($HTTP_GET_VARS['logout'])) {
 	$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
 }
 $AppUI =& $HTTP_SESSION_VARS['AppUI'];
-
 if ($AppUI->doLogin()) {
 	session_unset();
 	session_destroy();
 	include "./includes/login.php";
 	exit;
 }
-
-/*
-if (isset( $HTTP_POST_VARS["cookie_project"] )) {
-	setcookie("cookie_project", $HTTP_POST_VARS["cookie_project"]);
-}
-*/
 
 $m = isset( $HTTP_GET_VARS['m'] ) ? $HTTP_GET_VARS['m'] :
 	(isset( $HTTP_COOKIE_VARS['m'] ) ? $HTTP_COOKIE_VARS['m'] : 'companies');
@@ -46,7 +39,8 @@ list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company,
 
 require_once( "./includes/main_functions.php" );
 require_once( "./includes/permissions.php" );
-@include "./functions/" . $m . "_func.php";
+@include_once( "./functions/" . $m . "_func.php" );
+@include_once( "$root_dir/classdefs/$m.php" );
 
 //do some db work if dosql is set
 if (isset( $HTTP_POST_VARS["dosql"]) ) {
