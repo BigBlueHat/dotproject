@@ -207,17 +207,45 @@ $titleBlock->show();
 
 $project_types = dPgetSysVal("ProjectStatus");
 
-$fixed_project_type_file = array("In Progress" => "vw_idx_active",
-                                 "Complete"    => "vw_idx_complete",
-                                 "Archived"    => "vw_idx_archived");
+$active = 0;
+$complete = 0;
+$archive = 0;
+$proposed = 0;
+
+foreach($project_types as $key=>$value)
+{
+        $counter[$key] = 0;
+        foreach ($projects as $p)
+                if ($p['project_status'] == $key)
+                        ++$counter[$key];
+                
+        $project_types[$key] .= ' (' . $counter[$key] . ')';
+}
+
+        foreach ($projects as $p)
+        {
+                if ($p['project_active'] > 0 && $p['project_status'] == 3)
+                        ++$active;
+                else if ($p['project_active'] > 0 && $p['project_status'] == 5)
+                        ++$complete;
+                else if ($p['project_active'] < 1)
+                        ++$archive;
+                else
+                        ++$proposed;
+        }
+
+
+$fixed_project_type_file = array("In Progress ($active)" => "vw_idx_active",
+                                 "Complete ($complete)"    => "vw_idx_complete",
+                                 "Archived ($archive)"    => "vw_idx_archived");
 // we need to manually add Archived project type because this status is defined by 
 // other field (Active) in the project table, not project_status
-$project_types[] = "Archived";
+$project_types[] = "Archived ($archive)";
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
 if ( $tab != -1 ) {
-	$project_types[0] = "All Projects";
+	$project_types[0] = "All Projects (" . count($projects) . ')';
 	$project_types[] = "Not Defined";
 }
 
