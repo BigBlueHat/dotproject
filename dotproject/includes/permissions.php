@@ -6,6 +6,14 @@ define( 'PERM_DENY', '0' );
 define( 'PERM_EDIT', '-1' );
 define( 'PERM_ALL', '-1' );
 
+function getReadableModule() {
+	GLOBAL $perms;
+	foreach ($perms as $mod => $arr) {
+		if( !getDenyRead($mod) ) return $mod;
+	}
+	return null;
+}
+
 function getDenyRead( $mod, $item_id=0 ) {
 	GLOBAL $perms;
 	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ));

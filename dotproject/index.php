@@ -82,6 +82,20 @@ if (isset( $_REQUEST['uts'] )) {
 // bring in the rest of the support and localisation files
 require_once( "./includes/main_functions.php" );
 require_once( "./includes/permissions.php" );
+
+// set the module and action from the url
+if ( isset( $_GET['m'] ) ) {
+	$m = $_GET['m'];
+} else {
+	if( !getDenyRead( $m ) ) {
+		$m = 'companies';
+	} else {
+		$m = getReadableModule();
+	}
+}
+$u = isset( $_GET['u'] ) ? $_GET['u'] : '';
+$a = isset( $_GET['a'] )? $_GET['a'] : 'index';
+
 @include_once( "./functions/" . $m . "_func.php" );
 // check overall module permissions
 // these can be further modified by the included action files
