@@ -7,6 +7,13 @@
 # a new installation of dotProject.
 #
 
+#
+# TODO
+#
+# * replace "precent" with "percent" (?)
+# * replace "task_owner" with "task_creator"
+#
+
 CREATE TABLE companies (
   company_id smallint(6) NOT NULL auto_increment,
   company_username varchar(20) NOT NULL default '',

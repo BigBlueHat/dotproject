@@ -53,12 +53,16 @@ DEFINE("MONTHSTYLE_SHORTNAMEYEAR2",3);
 DEFINE("MONTHSTYLE_LONGNAMEYEAR4",4);
 DEFINE("MONTHSTYLE_SHORTNAMEYEAR4",5);
 
-
 // Types of constrain links
 DEFINE('CONSTRAIN_STARTSTART',0);
 DEFINE('CONSTRAIN_STARTEND',1);
 DEFINE('CONSTRAIN_ENDSTART',2);
 DEFINE('CONSTRAIN_ENDEND',3);
+
+// Types of constrain paths styles
+DEFINE('PATH_RECTANGULAR',0);
+DEFINE('PATH_BLEND_ON_MIDDLE',1);
+DEFINE('PATH_DIAGONAL',2);
 
 // Arrow direction for constrain links
 DEFINE('ARROW_DOWN',0);
@@ -338,13 +342,14 @@ class GanttGraph extends Graph {
 		    if( count($c1) == 4 && count($c2 ) == 4) {
 		        switch( $constrain->iConstrainType ) {
 			    case CONSTRAIN_ENDSTART:
+			    	$y = ($c1[1] + $c1[3]) / 2;
 			        if( $c1[1] < $c2[1] ) {
-				    $link = new GanttLink($c1[2],$c1[3],$c2[0],$c2[1]);
+				    $link = new GanttLink($c1[2], $y ,$c2[0],$c2[1]);
 			        }
 			        else {
-				    $link = new GanttLink($c1[2],$c1[1],$c2[0],$c2[3]);
+				    $link = new GanttLink($c1[2], $y, $c2[0],$c2[3]);
 			        }
-			        $link->SetPath(1);
+			        $link->SetPath(PATH_RECTANGULAR);
 			        break;
 			    case CONSTRAIN_STARTEND:
 			        if( $c1[1] < $c2[1] ) {
@@ -1768,7 +1773,7 @@ class LinkArrow {
 class GanttLink {
     var $iArrowType='';
     var $ix1,$ix2,$iy1,$iy2;
-    var $iPathType=0,$iPathExtend=15;
+    var $iPathType=0, $iPathExtend=15;
     var $iColor='black',$iWeight=1;
     var $iArrowSize=ARROW_S2,$iArrowType=ARROWT_SOLID;
 
@@ -1808,67 +1813,33 @@ class GanttLink {
 	$x2 = $this->ix2 ;
 	$y1 = $this->iy1 ;
 	$y2 = $this->iy2 ;
-	if( $y2 > $y1 ) {
-	    $midy = round(($y2-$y1)/2+$y1);
-	    if( $x2 > $x1 ) {
-		switch ( $this->iPathType  ) {
-		    case 0:
+	
+	$midy = round(($y1+$y2)/2);
+	
+	switch ( $this->iPathType  ) {
+		case PATH_BLEND_ON_MIDDLE:
 			$c = array($x1,$y1,$x1,$midy,$x2,$midy,$x2,$y2);
 			break;
-		    case 1:
-		    case 2:
-			$c = array($x1,$y1,$x2,$y1,$x2,$y2);
+		case PATH_RECTANGULAR:
+			if( $x2 > $x1 ) {
+				$c = array($x1,$y1,$x2,$y1,$x2,$y2);
+			} else {
+				// Always extend out horizontally a bit from the first point
+				$c = array($x1,$y1,$x1+$this->iPathExtend,$y1,
+				$x1+$this->iPathExtend,$midy,
+				$x2,$midy,$x2,$y2);
+			}
 			break;
-		    default:
+		case PATH_DIAGONAL:
+			$c = array($x1, $y1, $x2, $y2);
+			break;
+	  	default:
 			JpGraphError::Raise('Internal error: Unknown path type specified for link.');
 			exit(1);
 			break;
-		}
-	    }
-	    else {
-		switch ( $this->iPathType  ) {
-		    case 0:
-		    case 1:
-			$c = array($x1,$y1,$x1,$midy,$x2,$midy,$x2,$y2);
-			break;
-		    case 2:
-			// Always extend out horizontally a bit from the first point
-			$c = array($x1,$y1,$x1+$this->iPathExtend,$y1,
-				   $x1+$this->iPathExtend,$midy,
-				   $x2,$midy,$x2,$y2);
-		    default:
-			JpGraphError::Raise('Internal error: Unknown path type specified for link.');
-			exit(1);
-			break;
-		}
-	    }
-	    $arrow = new LinkArrow($x2,$y2,ARROW_DOWN);
 	}
-	else {
-	    $midy = round(($y1-$y2)/2+$y2);
-	    if( $x2 > $x1 ) {
-		$c = array($x1,$y1,$x1,$midy,$x2,$midy,$x2,$y2);
-	    }
-	    else {
-		switch ( $this->iPathType  ) {
-		    case 0:
-		    case 1:
-			$c = array($x1,$y1,$x1,$midy,$x2,$midy,$x2,$y2);
-			break;
-		    case 2:
-			// Always extend out horizontally a bit from the first point
-			$c = array($x1,$y1,$x1+$this->iPathExtend,$y1,
-				   $x1+$this->iPathExtend,$midy,
-				   $x2,$midy,$x2,$y2);
-			break;
-		    default:
-			JpGraphError::Raise('Internal error: Unknown path type specified for link.');
-			exit(1);
-			break;
-		}
-	    }
-	    $arrow = new LinkArrow($x2,$y2,ARROW_UP);
-	}
+	$arrow = new LinkArrow($x2,$y2,($y2 > $y1?ARROW_DOWN:ARROW_UP));
+
 	$aImg->SetColor($this->iColor);
 	$aImg->SetLineWeight($this->iWeight);
 	$aImg->Polygon($c);

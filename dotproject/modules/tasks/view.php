@@ -126,7 +126,7 @@ function updateTask() {
 			<td bgcolor="#ffffff"><?php echo @$trow["task_name"];?></td>
 		</tr>
 		<tr>
-			<td align=right nowrap>Owner:</td>
+			<td align=right nowrap>Creator:</td>
 			<td bgcolor="#ffffff"> <?php echo @$trow["username"];?></td>
 		</tr>				<tr>
 			<td align=right nowrap>Priority:</td>

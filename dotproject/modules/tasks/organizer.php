@@ -59,7 +59,7 @@
 	
 		// task_index != task_id !!!
 				
-		global $tasks, $do;
+		global $tasks, $do, $option_advance_if_possible;
 		
 		// don't fixate tasks before now
 		
@@ -104,20 +104,25 @@
 			) {
 				// tasks are overlapping
 				
-				$t1 = $tasks[$task_index]["task_id"];
-				$t2 = $task2["task_id"];
+				if(!$option_advance_if_possible || $task2["task_precent_complete"] != 100) {
 				
-				$sql1 = "select count(*) as num_users from user_tasks where task_id=$t1 or task_id=$t2 group by task_id having num_users <= 2";
-				$sql2 = "select count(*) as frec from user_tasks where task_id=$t1 or task_id=$t2 group by user_id having frec = 2";
-		
-				$vital = mysql_num_rows(mysql_query($sql1)) == 2 && mysql_num_rows(mysql_query($sql2)) > 0;
-				if($vital) {
+					$t1 = $tasks[$task_index]["task_id"];
+					$t2 = $task2["task_id"];
 				
-					log_info("Task can't be set to [$str_start_date - $str_end_date] due to conflicts with task " . task_link($task2) . ".");
-					fixate_task($task_index, $t2_end, $dep_on_task);
-					return;
+					$sql1 = "select count(*) as num_users from user_tasks where task_id=$t1 or task_id=$t2 group by task_id having num_users <= 2";
+					$sql2 = "select count(*) as frec from user_tasks where task_id=$t1 or task_id=$t2 group by user_id having frec = 2";
+			
+					$vital = mysql_num_rows(mysql_query($sql1)) == 2 && mysql_num_rows(mysql_query($sql2)) > 0;
+					if($vital) {
+					
+						log_info("Task can't be set to [$str_start_date - $str_end_date] due to conflicts with task " . task_link($task2) . ".");
+						fixate_task($task_index, $t2_end, $dep_on_task);
+						return;
+					} else {
+						log_info("Task conflicts with task " . task_link($task2) . " but there are no vital users.");
+					}
 				} else {
-					log_info("Task conflicts with task " . task_link($task2) . " but there are no vital users.");
+					log_info("Task " . task_link($task2) . " is complete, I won't check if it is overllaping");
 				}
 			}
 		}
@@ -127,7 +132,7 @@
 		// be quite if nothing will be changed
 		
 		if(substr($tasks[$task_index]["task_start_date"], 0, 10) == $str_start_date && substr($tasks[$task_index]["task_end_date"], 0, 10) == $str_end_date) {
-			log_info("Nothing changed");
+			log_info("Nothing changed, still programmed for [" . $str_start_date . " - " . $str_end_date  . "]");
 			return;
 		}
 		
@@ -173,7 +178,7 @@
 	}
 	
 	function process_dependencies($i) {
-		global $tasks;
+		global $tasks, $option_advance_if_possible;
 		
 		if($tasks[$i]["fixed"]) return;
 		
@@ -189,6 +194,7 @@
 			$latest_end_date = "";
 			
 			// store dependencies in an array (for adding more entries on the fly)
+			
 			$dependencies = array();			
 			while($row = mysql_fetch_array($query)) {
 				array_push($dependencies, $row);
@@ -210,6 +216,7 @@
 					
 					$children = get_last_children($row);															
 					// replace this taskgroup with all its subtasks
+					
 					array_splice($dependencies, $d, 1, $children);
 													
 					continue;
@@ -224,13 +231,18 @@
 				if(!$tasks[$index]["fixed"]) {
 					$all_fixed = false;
 				} else {
-					// store latest end_date
-					$str_end_date = substr($tasks[$index]["task_end_date"],0, 10);
-					$end_date = strtotime($str_end_date);
+					// ignore dependencies of finished tasks if option is enabled
+					if(!$option_advance_if_possible || $tasks[$index]["task_precent_complete"] != 100) {
+						// get latest end_date
+						$str_end_date = substr($tasks[$index]["task_end_date"],0, 10);
+						$end_date = strtotime($str_end_date);
 					
-					if(!$latest_end_date || $end_date > $latest_end_date) {
-						$latest_end_date = $end_date;
-						$dep_on_task = $row;
+						if(!$latest_end_date || $end_date > $latest_end_date) {
+							$latest_end_date = $end_date;
+							$dep_on_task = $row;
+						}
+					} else {
+						log_info("this task is complete => don't check dependency");
 					}
 					$d++;
 				}
@@ -311,6 +323,7 @@ if($set_dynamic) {
 		checkbox("option_check_delayed_tasks", "Check delays for fixed tasks", 1, $do == "conf");
 		checkbox("option_fix_task_group_date_ranges", "Fix date ranges for task groups according to subtasks dates", 1, $do == "conf");
 		checkbox("option_no_end_date_warning", "Warn of fixed tasks without end dates", 0, $do == "conf");
+		checkbox("option_advance_if_possible", "Begin new tasks if dependencies are finished before expected", 1, $do == "conf");
 		
 		/*
 		<input type=checkbox name=option_project value=1 <?php echo $option_project?"checked":"" ?>>Organize tasks belonging only to <select name=option_project_id>

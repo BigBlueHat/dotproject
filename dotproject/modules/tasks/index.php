@@ -117,10 +117,10 @@ $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 for ($x=0; $x < $nums; $x++) {
 	$row = mysql_fetch_array( $ptrc, MYSQL_ASSOC );
 	
-        // calculate or set blank task_end_date if unset
+        // set blank task_end_date if unset
         if($row["task_end_date"] == "0000-00-00 00:00:00") {
 	        $row["task_end_date"] = "";
-        }	
+        }
 	
 	$projects[$row['task_project']]['tasks'][] = $row;
 }

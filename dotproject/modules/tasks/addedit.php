@@ -259,7 +259,7 @@ function delIt() {
 </tr>
 <tr class="basic" valign="top">
 	<TD width="50%">
-		Task owner
+		Task creator
 		<br><select name="task_owner" style="width:200px;">
 
 		<?php while ($row = mysql_fetch_array( $urc )) { ?>
