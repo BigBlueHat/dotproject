@@ -27,6 +27,27 @@ $res = db_exec( $sql );
 echo db_error();
 $message_info = db_fetch_assoc($res);
 
+//pull message information from last response 
+if ($message_parent != -1)
+{
+    $sql = "
+    SELECT forum_messages.*
+    FROM forum_messages
+    WHERE message_parent = ";
+    $sql .= $message_id ? $message_id : $message_parent;
+    $sql .= " ORDER BY forum_messages.message_id DESC"; // fetch last message first
+    $res = db_exec( $sql );
+    echo db_error();
+    $last_message_info = db_fetch_assoc($res);
+    if (!$last_message_info) { // if it's first response, use original message
+        $last_message_info =& $message_info;
+        $last_message_info["message_body"] = wordwrap(@$last_message_info["message_body"], 50, "\n> ");
+    }
+    else {
+        $last_message_info["message_body"] = str_replace("\n", "\n> ", @$last_message_info["message_body"]);
+    }
+}
+
 $crumbs = array();
 $crumbs["?m=forums"] = "forums list";
 $crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
@@ -114,7 +135,7 @@ $date = intval( $message_info["message_date"] ) ? new CDate( $message_info["mess
 <tr>
 	<td align="right" valign="top"><?php echo $AppUI->_( 'Message' );?>:</td>
 	<td align="left" valign="top">
-		<textarea cols="50" name="message_body" style="height:200px"><?php echo $message_id ? @$message_info["message_body"] : '';?></textarea>
+       <textarea cols="60" name="message_body" style="height:200px"><?php echo (($message_id == 0) and ($message_parent != -1)) ? '> ' .  $last_message_info["message_body"] . "\n" : '';?></textarea>
 	</td>
 </tr>
 <tr>
