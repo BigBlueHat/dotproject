@@ -479,7 +479,7 @@ class CAppUI {
 		} else if (array_key_exists($label, $this->state)) {
 			$result = $this->state[$label];
 		} else if (($pref = $this->getPref($prefname)) !== null) {
-			$this->state[$lable] = $pref;
+			$this->state[$label] = $pref;
 			$result = $pref;
 		} else if (isset($default_value)) {
 			$this->state[$label] = $default_value;
