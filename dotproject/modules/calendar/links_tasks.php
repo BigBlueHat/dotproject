@@ -56,7 +56,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 				&& $start->before( $end )) {
 			$temp = $link;
 			$temp['alt'] = "FINISH\n".$link['alt'];
-			$links[$end->getDay()][] = $temp;
+			$links[$end->format( FMT_TIMESTAMP_DATE )][] = $temp;
 		}
 	// convert duration to days
 		if ($durnType < 24.0 ) {
