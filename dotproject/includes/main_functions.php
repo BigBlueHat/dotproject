@@ -37,6 +37,19 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 	return $s;
 }
 
+##
+## breadCrumbs - show a colon separated list of bread crumbs
+## array is in the form url => title
+##
+function breadCrumbs( &$arr ) {
+	GLOBAL $AppUI;
+	$crumbs = array();
+	foreach ($arr as $k => $v) {
+		$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
+	}
+	return implode( ' <b>:</b> ', $crumbs );
+}
+
 //return Duration returns an array that
 function returnDur( $x ){
 	if ($x > 24) {
@@ -77,9 +90,11 @@ function toDate( $date ) {
 
 function fromDate($date) {
 	global $date_format;
-
+	
 	$parts = preg_split("/[-: ]+/", $date);
-
+	if (count( $parts ) < 3) {
+		return '-';
+	}
 	switch ($date_format) {
 		case 1:
 			$retstring = $parts[2] . "/" . $parts[1] . "/" . $parts[0];
