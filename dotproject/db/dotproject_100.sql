@@ -1,9 +1,9 @@
-#
+# $Id$
 # dotproject.sql Database Schema
 #   updated by JRP (08 July 2002)
 #   updated by JCP (29 November 2002)
 #
-# Use this schema for creating your database for 
+# Use this schema for creating your database for
 # a new installation of dotProject.
 #
 
@@ -352,7 +352,7 @@ CREATE TABLE `user_preferences` (
 ) TYPE=MyISAM;
 
 #
-# ATTENTION: 
+# ATTENTION:
 # Customize this section for your installation.
 # Recommended changes include:
 #   New admin username -> replace {admin}
@@ -413,3 +413,40 @@ INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "co
 INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "system.gif", "10", "1", "");
 INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
 INSERT INTO modules VALUES("11", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "");
+
+#
+# Table structure for table 'syskeys'
+#
+
+DROP TABLE IF EXISTS syskeys;
+CREATE TABLE `syskeys` (
+  `syskey_id` int(10) unsigned NOT NULL auto_increment,
+  `syskey_name` varchar(48) NOT NULL default '',
+  `syskey_label` varchar(255) NOT NULL default '',
+  `syskey_type` int(1) unsigned NOT NULL default '0',
+  `syskey_sep1` char(2) default '\n',
+  `syskey_sep2` char(2) NOT NULL default '|',
+  PRIMARY KEY  (`syskey_id`),
+  UNIQUE KEY `idx_syskey_name` (`syskey_id`)
+) TYPE=MyISAM;
+
+#
+# Table structure for table 'sysvals'
+#
+
+DROP TABLE IF EXISTS sysvals;
+CREATE TABLE sysvals (
+  sysval_id int(10) unsigned NOT NULL auto_increment,
+  sysval_key_id int(10) unsigned NOT NULL default '0',
+  sysval_title varchar(48) NOT NULL default '',
+  sysval_value text NOT NULL,
+  PRIMARY KEY  (sysval_id)
+) TYPE=MyISAM;
+
+#
+# Table structure for table 'sysvals'
+#
+
+INSERT INTO syskeys VALUES("1", "SelectList", "Enter values for list", "0", "\n", "|");
+INSERT INTO sysvals VALUES("1", "1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
+
