@@ -60,26 +60,72 @@ Begin IE TD buttonizing
 **********************************
 */
 
-TD.clsBtnUp{
+TD.clsBtnUp {
     cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
 }
 
-TD.clsBtnDown{
+TD.clsBtnDown {
     cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
 }
 
-TD.clsBtnOn{
+TD.clsBtnOn {
     cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
 }
 
-TD.clsBtnOff{
-    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #97C3BB 2px;
+TD.clsBtnOff {
+    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #559999 2px;
 }
 
-TD.topBtnOff
-{
+TD.topBtnOff {
     color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
 }
+TD.nav {
+	color: #FFFFFF; 
+}
+
+/* Standard table 'spreadsheet' style */
+TABLE.tbl {
+	background: #ffffff;
+}
+TABLE.tbl TH {
+	background-color: #878676;   
+	color: white;   
+	list-style-type: disc;   
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+	font-weight: normal;
+}
+TABLE.tbl TD {
+	background-color: #f4efe3;   
+}
+
+TABLE.std {
+	border: solid #878676 2px;
+	background: #f4efe3;
+}
+TD.tabon {
+	background: #ffffff;
+	border-top: outset #cccccc 2px;
+	border-left: outset #cccccc 2px;
+	border-right: outset #cccccc 2px;
+	border-bottom: none;
+}
+TD.taboff {
+	background: #f4efe3;
+	border-top: outset #cccccc 2px;
+	border-left: outset #cccccc 2px;
+	border-right: outset #cccccc 2px;
+	border-bottom: solid #cccccc 2px;
+}
+TD.tabsp {
+	border-bottom: solid #cccccc 2px;
+}
+TD.tabox {
+	border-left: solid #cccccc 2px;
+	border-right: solid #cccccc 2px;
+	border-bottom: solid #cccccc 2px;
+}
+
 .mboxhdr {
    background-color: #878676;   
 	color: white;   
@@ -87,7 +133,6 @@ TD.topBtnOff
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 }
-
 .headergr{   background-color: #878676;   color: white;   list-style-type: disc;   list-style-position: inside;border: outset #eeeeee 1px;
 }
 .newmsg{
