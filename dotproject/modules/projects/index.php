@@ -34,6 +34,7 @@ $company_prefix = 'company_';
 
 if (isset( $_POST['department'] )) {
 	$AppUI->setState( 'ProjIdxDepartment', $_POST['department'] );
+	unset($company_id);
 }
 $department = $AppUI->getState( 'ProjIdxDepartment' ) !== NULL ? $AppUI->getState( 'ProjIdxDepartment' ) : $company_prefix.$AppUI->user_company;
 
@@ -108,7 +109,7 @@ LEFT JOIN companies ON projects.project_company = company_id
 LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks_sum ON projects.project_id = tasks_sum.task_project
 LEFT JOIN tasks_summy ON projects.project_id = tasks_summy.task_project"
-.($department ? "\nLEFT JOIN project_departments ON project_departments.project_id = projects.project_id" : '')."
+.(isset($department) ? "\nLEFT JOIN project_departments ON project_departments.project_id = projects.project_id" : '')."
 WHERE permission_user = $AppUI->user_id
 	AND permission_value <> 0
 	AND (
@@ -117,13 +118,13 @@ WHERE permission_user = $AppUI->user_id
 		OR (permission_grant_on = 'projects' AND permission_item = projects.project_id)
 		)"
 .(count($deny) > 0 ? "\nAND projects.project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-.($company_id ? "\nAND projects.project_company = '$company_id'" : '')
-.($department ? "\nAND project_departments.department_id in ( ".implode(',',$dept_ids)." )" : '')
+.(!isset($department)&&$company_id ? "\nAND projects.project_company = '$company_id'" : '')
+.(isset($department) ? "\nAND project_departments.department_id in ( ".implode(',',$dept_ids)." )" : '')
 ."
 GROUP BY projects.project_id
 ORDER BY $orderby
 ";
-
+ echo "<pre>$sql</pre>";
 $projects = db_loadList( $sql );
 
 
