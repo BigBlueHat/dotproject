@@ -415,12 +415,14 @@ class CTask extends CDpObject {
 			$this->updateDynamics();
 
 		// if is child update parent task
-
 		if ( $this->task_parent != $this->task_id ) {
      			$pTask = new CTask();
 			$pTask->load($this->task_parent);
 			$pTask->updateDynamics(true);
 		}
+
+		// update dependencies
+		$this->updateDependencies($this->getDependencies());
 
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
