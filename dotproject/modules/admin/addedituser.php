@@ -199,7 +199,7 @@ function setDept( key, val ) {
     <td align="right"><?php echo $AppUI->_('State');?>:</td>
     <td><input type="text" class="text" name="contact_state" value="<?php echo $user["contact_state"];?>" maxlength="50" size="40" /> </td></tr>
 <tr>
-    <td align="right"><?php echo $AppUI->_('Zip');?>:</td>
+    <td align="right"><?php echo  $AppUI->_('Postcode').' / '.$AppUI->_('Zip Code');?>:</td>
     <td><input type="text" class="text" name="contact_zip" value="<?php echo $user["contact_zip"];?>" maxlength="50" size="40" /> </td></tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('Country');?>:</td>

@@ -205,7 +205,7 @@ function companyChange() {
 			<td><input type="text" class="text" name="contact_state" value="<?php echo @$row->contact_state;?>" maxlength="30" size="25" /></td>
 		</tr>
 		<tr>
-			<td align="right"><?php echo $AppUI->_('Zip');?>:</td>
+			<td align="right"><?php echo $AppUI->_('Postcode').' / '.$AppUI->_('Zip');?>:</td>
 			<td><input type="text" class="text" name="contact_zip" value="<?php echo @$row->contact_zip;?>" maxlength="11" size="25" /></td>
 		</tr>
 		<tr>
