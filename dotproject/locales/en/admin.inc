@@ -49,6 +49,7 @@
 "adminPasswordsDiffer"=>"Your passwords do not match.",
 "adminValidPassword"=>"Please enter a valid password(greater then 4 chars).",
 "adminValidUserName"=>"Please enter a valid user name.",
+"change password",
 "deny",
 "edit preferences",
 "edit this user",
