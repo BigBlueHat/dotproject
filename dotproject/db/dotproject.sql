@@ -33,6 +33,29 @@ CREATE TABLE companies (
   PRIMARY KEY  (company_id)
 ) TYPE=MyISAM;
 
+#
+# New to version 1.0
+#
+CREATE TABLE departments (
+  dept_id int(10) unsigned NOT NULL auto_increment,
+  dept_parent int(10) unsigned NOT NULL default '0',
+  dept_company int(10) unsigned NOT NULL default '0',
+  dept_name tinytext NOT NULL,
+  dept_phone varchar(30) default NULL,
+  dept_fax varchar(30) default NULL,
+  dept_address1 varchar(30) default NULL,
+  dept_address2 varchar(30) default NULL,
+  dept_city varchar(30) default NULL,
+  dept_state varchar(30) default NULL,
+  dept_zip varchar(11) default NULL,
+  dept_url varchar(25) default NULL,
+  dept_desc mediumtext,
+  dept_owner int(10) unsigned NOT NULL default '0',
+  PRIMARY KEY  (dept_id),
+  UNIQUE KEY dept_id (dept_id),
+  KEY dept_id_2 (dept_id)
+) TYPE=MyISAM COMMENT='Department heirarchy under a company';
+
 CREATE TABLE contacts (
   contact_id int(11) NOT NULL auto_increment,
   contact_first_name varchar(30) default NULL,
@@ -74,6 +97,9 @@ CREATE TABLE events (
   event_recurs int(11) unsigned NOT NULL default '0',
   event_remind int(10) unsigned NOT NULL default '0',
   event_icon varchar(20) default 'obj/event',
+  event_owner int(11) default '0',
+  event_project int(11) default '0',
+  event_private tinyint(3) default '0',
   PRIMARY KEY  (event_id),
   KEY id_esd (event_start_date),
   KEY id_eed (event_end_date),
@@ -125,6 +151,9 @@ CREATE TABLE forum_messages (
   KEY idx_mforum (message_forum)
 ) TYPE=MyISAM;
 
+#
+# new field forum_last_id in Version 1.0
+#
 CREATE TABLE forums (
   forum_id int(11) NOT NULL auto_increment,
   forum_project int(11) NOT NULL default '0',
@@ -133,14 +162,25 @@ CREATE TABLE forums (
   forum_name varchar(50) NOT NULL default '',
   forum_create_date datetime default '0000-00-00 00:00:00',
   forum_last_date datetime default '0000-00-00 00:00:00',
+  forum_last_id INT UNSIGNED DEFAULT '0' NOT NULL,
   forum_message_count int(11) NOT NULL default '0',
   forum_description varchar(255) default NULL,
-  forum_moderated tinyint(1) NOT NULL default '0',
+  forum_moderated int(11) NOT NULL default '0',
   PRIMARY KEY  (forum_id),
   KEY idx_fproject (forum_project),
   KEY idx_fowner (forum_owner),
   KEY forum_status (forum_status)
 ) TYPE=MyISAM;
+
+#
+# New to Version 1.0
+#
+CREATE TABLE forum_watch (
+  watch_user int(10) unsigned NOT NULL default '0',
+  watch_forum int(10) unsigned default NULL,
+  watch_topic int(10) unsigned default NULL
+) TYPE=MyISAM COMMENT='Links users to the forums/messages they are watching';
+
 
 CREATE TABLE permissions (
   permission_id int(11) NOT NULL auto_increment,
@@ -157,6 +197,7 @@ CREATE TABLE permissions (
 CREATE TABLE projects (
   project_id int(11) NOT NULL auto_increment,
   project_company int(11) NOT NULL default '0',
+  project_department int(11) NOT NULL default '0',
   project_name varchar(255) default NULL,
   project_short_name varchar(10) default NULL,
   project_owner int(11) default '0',
@@ -214,7 +255,7 @@ CREATE TABLE tasks (
   task_owner int(11) NOT NULL default '0',
   task_start_date datetime default NULL,
   task_duration float unsigned default '0',
-  task_hours_worked int(10) unsigned default '0',
+  task_hours_worked float unsigned default '0',
   task_end_date datetime default NULL,
   task_status int(11) default '0',
   task_priority tinyint(4) default '0',
@@ -266,10 +307,11 @@ CREATE TABLE users (
   user_username varchar(20) NOT NULL default '',
   user_password varchar(20) NOT NULL default '',
   user_parent int(11) NOT NULL default '0',
-  user_type set('user','client','admin') default NULL,
+  user_type tinyint(3) not null default '0',
   user_first_name varchar(50) default NULL,
   user_last_name varchar(50) default NULL,
-  user_company smallint(6) default '0',
+  user_company int(11) default '0',
+  user_department int(11) default '0',
   user_email varchar(60) default NULL,
   user_phone varchar(30) default NULL,
   user_home_phone varchar(30) default NULL,
@@ -323,6 +365,13 @@ CREATE TABLE task_dependencies (
 	PRIMARY KEY (dependencies_task_id, dependencies_req_task_id)
 );
 
+CREATE TABLE `user_preferences` (
+  `pref_user` varchar(12) NOT NULL default '',
+  `pref_name` varchar(12) NOT NULL default '',
+  `pref_value` varchar(32) NOT NULL default '',
+  KEY `pref_user` (`pref_user`,`pref_name`)
+) TYPE=MyISAM;
+
 #
 # ATTENTION: 
 # Customize this section for your installation.
@@ -335,3 +384,8 @@ CREATE TABLE task_dependencies (
 INSERT INTO users VALUES (1,'admin',password('passwd'),0,'','Admin','Person',1,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
 
 INSERT INTO permissions VALUES (1,1,"all",-1, -1);
+
+INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
+INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
+INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
+
