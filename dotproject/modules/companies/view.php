@@ -11,6 +11,11 @@ if ($denyRead) {
 
 $AppUI->savePlace();
 
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
+}
+$tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
+
 // pull data
 $sql = "
 SELECT companies.*,users.user_first_name,users.user_last_name
@@ -54,6 +59,7 @@ if (!$denyEdit) {
 	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
 	</td>
 	</form>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_VIEW' );?></td>
 </tr>
 </table>
 
@@ -98,7 +104,7 @@ if (!$denyEdit) {
 		</table>
 
 	</td>
-	<td width="50%">
+	<td width="50%" valign="top">
 		<b><?php echo $AppUI->_('Description');?></b>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
@@ -114,10 +120,7 @@ if (!$denyEdit) {
 
 <?php	
 // tabbed information boxes
-if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
-}
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "./modules/companies", $AppUI->getState( 'CompVwTab' ) );
+$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "./modules/companies", $tab );
 $tabBox->add( 'vw_depts', 'Departments' );
 $tabBox->add( 'vw_active', 'Active Projects' );
 $tabBox->add( 'vw_archived', 'Archived Projects' );

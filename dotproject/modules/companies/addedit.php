@@ -63,6 +63,7 @@ function delIt() {
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
 	<td nowrap><span class="title">Clients and Companies</span></td>
 	<td align="right" width="100%">&nbsp;</td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_EDIT' );?></td>
 </tr>
 </table>
 
