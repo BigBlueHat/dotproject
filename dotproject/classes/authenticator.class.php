@@ -179,12 +179,14 @@
 		}
 	}	
 
-	class LDAPAuthenticator
+	class LDAPAuthenticator extends SQLAuthenticator
 	{
 		var $ldap_host;
 		var $ldap_port;
 		var $ldap_version;
 		var $base_dn;
+		var $ldap_search_user;
+		var $ldap_search_pass;	
 		var $filter;
 
 		var $user_id;
@@ -194,41 +196,75 @@
 		{
 			GLOBAL $dPconfig;
 
+			$this->fallback = isset($dPconfig['ldap_allow_login']) ? $dPconfig['ldap_allow_login'] : false;
+
 			$this->ldap_host = $dPconfig["ldap_host"];
 			$this->ldap_port = $dPconfig["ldap_port"];
 			$this->ldap_version = $dPconfig["ldap_version"];
 			$this->base_dn = $dPconfig["ldap_base_dn"];
+			$this->ldap_search_user = $dPconfig["ldap_search_user"];
+			$this->ldap_search_pass = $dPconfig["ldap_search_pass"];
 			$this->filter = $dPconfig["ldap_user_filter"];
 		}
 
 		function authenticate($username, $password)
 		{
 			GLOBAL $dPconfig;
-
 			$this->username = $username;
 
-			if (!$rs = @ldap_connect($this->ldap_host, $this->ldap_port)) return false;
+			if ($this->fallback == true)
+			{
+				if (Parent::authenticate($username, $password)) return true;	
+			}
+			// Fallback SQL authentication fails, proceed with LDAP
+
+			if (!$rs = @ldap_connect($this->ldap_host, $this->ldap_port))
+			{
+				return false;
+			}
 			@ldap_set_option($rs, LDAP_OPT_PROTOCOL_VERSION, $this->ldap_version);
 
-			if (!$bindok = @ldap_bind($rs, "cn=$username,".$this->base_dn, $password))
+			$ldap_bind_dn = "cn=".$this->ldap_search_user.",".$this->base_dn;
+
+			if (!$bindok = @ldap_bind($rs, $ldap_bind_dn, $this->ldap_search_pass))
 			{
+				// Uncomment for LDAP debugging
+				/*
+				$error_msg = ldap_error($rs);
+				die("Couldnt Bind Using ".$ldap_bind_dn."@".$this->ldap_host.":".$this->ldap_port." Because:".$error_msg);
+				*/
 				return false;
 			}
 			else
 			{
-				if ($this->userExists($username))
+				$filter_r = str_replace("%USERNAME%", $username, $this->filter);
+				$result = @ldap_search($rs, $this->base_dn, $filter_r);
+				
+				$result_user = ldap_get_entries($rs, $result);
+				if ($result_user["count"] == 0) return false; // No users match the filter
+
+				$first_user = $result_user[0];
+				$first_user_cn = $first_user["cn"][0];
+
+				// Bind with the dn of the user that matched our filter (only one user should match sAMAccountName or uid etc..)
+				$ldap_user_dn = "CN=".$first_user_cn.",".$this->base_dn;
+
+				if (!$bind_user = @ldap_bind($rs, $ldap_user_dn, $password))
 				{
-					return true;
+					return false;
 				}
 				else
 				{
-					$filter_r = str_replace("%USERNAME%", $username, $this->filter);
-					$result = @ldap_search($rs, $this->base_dn, $filter_r);				
-					$result_arr = ldap_get_entries($rs, $result);
-	
-					$this->createsqluser($username, $password, $result_arr[0]);	
+					if ($this->userExists($username))
+					{
+						return true;
+					}
+					else
+					{
+						$this->createsqluser($username, $password, $first_user); 
+					}
 					return true;
-				}
+				} 
 			}
 		}
 

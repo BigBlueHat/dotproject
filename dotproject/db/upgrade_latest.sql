@@ -825,3 +825,9 @@ CREATE TABLE dpversion (
 );
 
 INSERT INTO dpversion VALUES ('2.0-alpha', 2, '2005-03-04', '2005-03-04');
+
+# 20050307
+# Additional LDAP search user and search password fields for Active Directory compatible LDAP authentication
+INSERT INTO config VALUES ('', 'ldap_search_user', 'Manager', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_search_pass', 'secret', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_allow_login', 'true', 'ldap', 'checkbox');
