@@ -1,4 +1,4 @@
-<?php
+<?php /* INCLUDES $Id$ */
 // This page sets permissions
 
 define( 'PERM_READ', '1' );
@@ -7,9 +7,12 @@ define( 'PERM_EDIT', '-1' );
 define( 'PERM_ALL', '-1' );
 
 function getReadableModule() {
-	GLOBAL $perms;
-	foreach ($perms as $mod => $arr) {
-		if( !getDenyRead($mod) ) return $mod;
+	$sql = "SELECT mod_name FROM modules WHERE mod_active > 0 ORDER BY mod_ui_order";
+	$modules = db_loadColumn( $sql );
+	foreach ($modules as $mod) {
+		if (!getDenyRead($mod)) {
+			return $mod;
+		}
 	}
 	return null;
 }
