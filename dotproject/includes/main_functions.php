@@ -44,9 +44,6 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 			$v=str_replace('&#369;','û',$v);
 			$v=str_replace('&#337;','õ',$v);
 		}
-                else
-			// commented out as it was producing many errors for german localisation 
-                        //$v = dPformSafe($v); // The translation function already does this.
 		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" .  $v  . "</option>";
 	}
 	$s .= "\n</select>\n";
@@ -305,11 +302,13 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 ##
 function dPgetSysVal( $title ) {
 	$q  = new DBQuery;
-	$q->addTable('sysvals, syskeys');
+	$q->addTable('sysvals');
+	$q->leftJoin('syskeys', 'sk', 'syskey_id = sysval_key_id');
 	$q->addQuery('syskey_type, syskey_sep1, syskey_sep2, sysval_value');
-	$q->addWhere("sysval_title = '$title' AND syskey_id = sysval_key_id");
-	$sql = $q->prepare();
-	db_loadHash( $sql, $row );
+	$q->addWhere("sysval_title = '$title'");
+	$q->exec();
+	$row = $q->fetchRow();
+	$q->clear();
 // type 0 = list
 	$sep1 = $row['syskey_sep1'];	// item separator
 	$sep2 = $row['syskey_sep2'];	// alias separator
