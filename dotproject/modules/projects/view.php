@@ -163,6 +163,7 @@ function delIt() {
 </table>
 
 <?php
+	$query_string = "?m=projects&a=view&project_id=$project_id";
 	// tabbed information boxes
 	$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
