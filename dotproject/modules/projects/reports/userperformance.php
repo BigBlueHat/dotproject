@@ -120,14 +120,17 @@ if($do_report){
 		<th colspan='2'><?php echo $AppUI->_('User');?></th>
 		<th><?php echo $AppUI->_('Hours allocated'); ?></th>
 		<th><?php echo $AppUI->_('Hours worked'); ?></th>
-		<th>%</th>
+		<th><?php echo $AppUI->_('% of work done (based on duration)'); ?></th>
+		<th><?php echo $AppUI->_('User Efficiency (based on completed tasks)'); ?></th>
 	</tr>
 
 <?php
 	if(count($user_list)){
 		$percentage_sum = $hours_allocated_sum = $hours_worked_sum = 0;
 		$sum_total_hours_allocated = $sum_total_hours_worked = 0;
-		
+		$sum_hours_allocated_complete = $sum_hours_worked_complete = 0;
+	
+//TODO: Split times for which more than one users were working...	
 		foreach($user_list as $user_id => $user){
 			$sql = "SELECT task_id
 			        FROM user_tasks
@@ -135,6 +138,7 @@ if($do_report){
 			$tasks_id = db_loadColumn($sql);
 
 			$total_hours_allocated = $total_hours_worked = 0;
+			$hours_allocated_complete = $hours_worked_complete = 0;
 			
 			foreach($tasks_id as $task_id){
 				if(isset($task_list[$task_id])){
@@ -145,6 +149,20 @@ if($do_report){
 					              AND task_log_creator = $user_id";
 					$hours_worked = round(db_loadResult($sql),2);
 					
+
+                                        $sql = "SELECT task_percent_complete
+                                                FROM tasks
+                                                WHERE task_id = $task_id";
+                       //                 echo $sql;
+                                        $percent = db_loadColumn($sql);
+                                        $complete = ($percent[0] == 100);
+                                        
+                                        if ($complete)
+                                        {
+                                                $hours_allocated_complete += $task_list[$task_id]["hours_allocated"];
+                                                $hours_worked_complete += $hours_worked;
+                                        }
+
 					$total_hours_allocated += $task_list[$task_id]["hours_allocated"];
 					$total_hours_worked    += $hours_worked;
 				}
@@ -152,25 +170,32 @@ if($do_report){
 			
 			$sum_total_hours_allocated += $total_hours_allocated;
 			$sum_total_hours_worked    += $total_hours_worked;
+
+			$sum_hours_allocated_complete += $hours_allocated_complete;
+			$sum_hours_worked_complete    += $hours_worked_complete;
 			
 			if($total_hours_allocated > 0 || $total_hours_worked > 0){
 				$percentage = 0;
 				if($total_hours_worked>0){
-					$percentage = ($total_hours_allocated/$total_hours_worked)*100;
+					$percentage = ($total_hours_worked/$total_hours_allocated)*100;
+					$percentage_e = ($hours_allocated_complete/$hours_worked_complete)*100;
 				}
 				?>
 				<tr>
 					<td><?php echo "(".$user["user_username"].") </td><td> ".$user["user_first_name"]." ".$user["user_last_name"]; ?></td>
 					<td align='right'><?php echo $total_hours_allocated; ?> </td>
 					<td align='right'><?php echo $total_hours_worked; ?> </td>
-					<td align='right'> <?php echo number_format($percentage,0); ?>% </td>
+					<td align='right'><?php echo number_format($percentage, 0); ?>% </td>
+					<td align='right'><?php echo number_format($percentage_e, 0); ?>% </td>
 				</tr>
 				<?php
 			}
 		}
 		$sum_percentage = 0;
+                $sum_efficiency = 0;
 		if($sum_total_hours_worked > 0){
-			$sum_percentage = ($sum_total_hours_allocated/$sum_total_hours_worked)*100;
+			$sum_percentage = ($sum_total_hours_worked/$sum_total_hours_allocated)*100;
+                        $sum_efficiency = ($sum_hours_allocated_complete/$sum_hours_worked_complete)*100;
 		}
 		?>
 			<tr>
@@ -178,6 +203,7 @@ if($do_report){
 				<td align='right'><?php echo $sum_total_hours_allocated; ?></td>
 				<td align='right'><?php echo $sum_total_hours_worked; ?></td>
 				<td align='right'><?php echo number_format($sum_percentage,0); ?>%</td>
+				<td align='right'><?php echo number_format($sum_efficiency,0); ?>%</td>
 			</tr>
 		<?php
 	} else {
