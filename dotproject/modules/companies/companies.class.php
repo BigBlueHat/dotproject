@@ -5,11 +5,11 @@
  *	@version $Revision$
 */
 
-include_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('dp' ) );
 
 /**
  *	Companies Class
- *
+ *	@todo Move the 'address' fields to a generic table
  */
 class CCompany extends CDpObject {
 /** @var int Primary Key */
@@ -17,6 +17,7 @@ class CCompany extends CDpObject {
 /** @var string */
 	var $company_name = NULL;
 
+// these next fields should be ported to a generic address book
 	var $company_phone1 = NULL;
 	var $company_phone2 = NULL;
 	var $company_fax = NULL;
@@ -26,6 +27,7 @@ class CCompany extends CDpObject {
 	var $company_state = NULL;
 	var $company_zip = NULL;
 	var $company_email = NULL;
+
 /** @var string */
 	var $company_primary_url = NULL;
 /** @var int */
