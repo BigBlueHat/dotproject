@@ -748,8 +748,9 @@ function changeRecordType(value){
 						// Let's check if the actual company has departments registered
 						if($department_selection_list != ""){
 							?>
-									<?php echo $AppUI->_("Departments"); ?><br />
-									<?php echo $department_selection_list; ?>
+								<br />
+								<?php echo $AppUI->_("Departments"); ?><br />
+								<?php echo $department_selection_list; ?>
 							<?php
 						}
 						
