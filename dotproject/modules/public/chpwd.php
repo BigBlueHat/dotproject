@@ -3,14 +3,14 @@ $user_id = @$AppUI->user_id;
 
 // check for a non-zero user id
 if ($user_id) {
-	$old_pwd = dPgetParam( $_POST, 'old_pwd', null );
-	$new_pwd1 = dPgetParam( $_POST, 'new_pwd1', null );
-	$new_pwd2 = dPgetParam( $_POST, 'new_pwd2', null );
+	$old_pwd = db_escape( trim( dPgetParam( $_POST, 'old_pwd', null ) ) );
+	$new_pwd1 = db_escape( trim( dPgetParam( $_POST, 'new_pwd1', null ) ) );
+	$new_pwd2 = db_escape( trim( dPgetParam( $_POST, 'new_pwd2', null ) ) );
 
 	// has the change form been posted
 	if ($old_pwd && $new_pwd1 && $new_pwd2 && $new_pwd1 == $new_pwd2 ) {
 		// check that the old password matches
-		$sql = "SELECT user_id FROM users WHERE user_password = password('$old_pwd') AND user_id=$user_id";
+		$sql = "SELECT user_id FROM users WHERE user_password = MD5('$old_pwd') AND user_id=$user_id";
 		if (db_loadResult( $sql ) == $user_id) {
 			require_once( "{$AppUI->cfg['root_dir']}/modules/admin/admin.class.php" );
 			$user = new CUser();
