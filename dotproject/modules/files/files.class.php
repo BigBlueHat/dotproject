@@ -38,6 +38,7 @@ class CFile extends CDpObject {
 		if (! $this->file_id)
 			return false;
 
+		$result = false;
 		$this->_query->clear();
 		$this->_query->addTable('projects');
 		$this->_query->addQuery('project_owner');
@@ -45,10 +46,10 @@ class CFile extends CDpObject {
 		$res = $this->_query->exec();
 		if ($res && $row = db_fetch_assoc($res)) {
 			if ($row['project_owner'] == $AppUI->user_id)
-				return true;
+				$result =  true;
 		} 
 		$this->_query->clear();
-		return false;
+		return $result;
 	}
 
 	function check() {
