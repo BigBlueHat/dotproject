@@ -2,83 +2,6 @@
 /* FILES $Id$ */
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
-function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
-{
-
-	GLOBAL $AppUI;
-	$xpg_break = false;
-        $xpg_prev_page = $xpg_next_page = 1;
-	
-	echo "\t<table width='100%' cellspacing='0' cellpadding='0' border=0><tr>";
-
-	if ($xpg_totalrecs > $xpg_pagesize) {
-		$xpg_prev_page = $page - 1;
-		$xpg_next_page = $page + 1;
-		// left buttoms
-		if ($xpg_prev_page > 0) {
-			echo "<td align='left' width='15%'>";
-			echo '<a href="./index.php?m=files&amp;page=1">';
-			echo '<img src="images/navfirst.gif" border="0" Alt="First Page"></a>&nbsp;&nbsp;';
-			echo '<a href="./index.php?m=files&amp;page=' . $xpg_prev_page . '">';
-			echo "<img src=\"images/navleft.gif\" border=\"0\" Alt=\"Previous page ($xpg_prev_page)\"></a></td>";
-		} else {
-			echo "<td width='15%'>&nbsp;</td>\n";
-		} 
-		
-		// central text (files, total pages, ...)
-		echo "<td align='center' width='70%'>";
-		echo "$xpg_totalrecs " . $AppUI->_('File(s)') . " ($xpg_total_pages " . $AppUI->_('Page(s)') . ")";
-		echo "</td>";
-
-		// right buttoms
-		if ($xpg_next_page <= $xpg_total_pages) {
-			echo "<td align='right' width='15%'>";
-			echo '<a href="./index.php?m=files&amp;page='.$xpg_next_page.'">';
-			echo '<img src="images/navright.gif" border="0" Alt="Next Page ('.$xpg_next_page.')"></a>&nbsp;&nbsp;';
-			echo '<a href="./index.php?m=files&amp;page=' . $xpg_total_pages . '">';
-			echo '<img src="images/navlast.gif" border="0" Alt="Last Page"></a></td>';
-		} else {
-			echo "<td width='15%'>&nbsp;</td></tr>\n";
-		}
-		// Page numbered list, up to 30 pages
-		echo "<tr><td colspan=\"3\" align=\"center\">";
-		echo " [ ";
-	
-		for($n = $page > 16 ? $page-16 : 1; $n <= $xpg_total_pages; $n++) {
-			if ($n == $page) {
-				echo "<b>$n</b></a>";
-			} else {
-				echo "<a href='./index.php?m=files&amp;page=$n'>";
-				echo $n . "</a>";
-			} 
-			if ($n >= 30+$page-15) {
-				$xpg_break = true;
-				break;
-			} else if ($n < $xpg_total_pages) {
-				echo " | ";
-			} 
-		} 
-	
-		if (!isset($xpg_break)) { // are we supposed to break ?
-			if ($n == $page) {
-				echo "<" . $n . "</a>";
-			} else {
-				echo "<a href='./index.php?m=files&amp;page=$xpg_total_pages'>";
-				echo $n . "</a>";
-			} 
-		} 
-		echo " ] ";
-		echo "</td></tr>";
-	} else { // or we dont have any files..
-		echo "<td align='center'>";
-		if ($xpg_next_page > $xpg_total_pages) {
-		echo $xpg_sqlrecs . " " . "Files" . " ";
-		}
-		echo "</td></tr>";
-	} 
-	echo "</table>";
-}
-
 GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin;
 global $company_id, $project_id, $task_id;
 
@@ -114,9 +37,10 @@ $xpg_pagesize = 30;
 $xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
 
 // load the following classes to retrieved denied records
-include_once( $AppUI->getModuleClass( 'projects' ) );
-include_once( $AppUI->getModuleClass( 'tasks' ) );
-require_once $AppUI->getSystemClass('query');
+include_once $AppUI->getModuleClass( 'projects' );
+include_once $AppUI->getModuleClass( 'tasks' );
+require_once $AppUI->getSystemClass( 'query' );
+require_once $AppUI->getModuleClass( 'files' );
 
 $project = new CProject();
 $task = new CTask();
@@ -225,30 +149,6 @@ function expand(id){
 <?php
 $fp=-1;
 $file_date = new CDate();
-
-function file_size($size)
-{
-        if ($size > 1024*1024*1024)
-                return round($size / 1024 / 1024 / 1024, 2) . ' Gb';
-        if ($size > 1024*1024)
-                return round($size / 1024 / 1024, 2) . ' Mb';
-        if ($size > 1024)
-                return round($size / 1024, 2) . ' Kb';
-        return $size . ' B';
-}
-
-function last_file($file_versions, $file_name, $file_project)
-{
-        $latest = NULL;
-        //global $file_versions;
-        if (isset($file_versions))
-        foreach ($file_versions as $file_version)
-                if ($file_version['file_name'] == $file_name && $file_version['file_project'] == $file_project)
-                        if ($latest == NULL || $latest['file_version'] < $file_version['file_version'])
-                                $latest = $file_version;
-
-        return $latest;
-}
 
 $id = 0;
 foreach ($files as $file_row) {
