@@ -449,8 +449,10 @@ function checkRootTaskName(task) {
         var a = new Array();
         <?php
                 if ($task_id == 0) {
-                        foreach($rooTasks as $r) {
-                                echo "a['$r'] = true;\n\t";
+                        if(is_array($rooTasks)){
+                            foreach($rooTasks as $r) {
+                                    echo "a['$r'] = true;\n\t";
+                            }
                         }
                 }
         ?>
