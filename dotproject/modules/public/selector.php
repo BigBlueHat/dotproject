@@ -61,6 +61,11 @@ case 'departments':
 		$order = 'company_name,dept_name';
 	}
 	break;
+case 'files':
+	$title = 'File';
+	$select = 'file_id,file_name';
+	$order = 'file_name';
+	break;
 case 'forums':
 	$title = 'Forum';
 	$select = 'forum_id,forum_name';
