@@ -146,13 +146,16 @@ class CTask extends CDpObject {
 	}
 
 	function notify() {
-		GLOBAL $AppUI;
-
+		GLOBAL $AppUI, $locale_char_set;
+        
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
 
 		$mail = new Mail;
-		$mail->Subject( "$projname::$this->task_name $this->_action" );
+		
+		$subj = "$projname::$this->task_name ".$AppUI->_($this->_action));
+		
+		$mail->Subject( $subj );
 
 	// c = creator
 	// a = assignee
@@ -177,9 +180,9 @@ class CTask extends CDpObject {
 		$users = db_loadList( $sql );
 
 		if (count( $users )) {
-			$body = "Project: $projname";
-			$body .= "\nTask:    $this->task_name";
-			$body .= "\nURL:     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
+			$body = $AppUI->_('Project').": $projname";
+			$body .= "\n".$AppUI->_('Task').":    $this->task_name";
+			$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
 			$body .= "\n\n" . $AppUI->_('Description') . ":"
 				. "\n$this->task_description";
 			if ($users[0]['creator_email']) {
@@ -191,7 +194,7 @@ class CTask extends CDpObject {
 				. "\n" . $users[0]['owner_first_name'] . " " . $users[0]['owner_last_name' ]
 				. ", " . $users[0]['owner_email'];
 
-			$mail->Body( $body );
+			$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );
 			$mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name 
 				. '" <' . $AppUI->user_email . '>'
 			);
