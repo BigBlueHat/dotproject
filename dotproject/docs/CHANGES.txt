@@ -234,3 +234,22 @@ modules/forums/index.php
 - updated text color selection on project color background
 
 -------------------------------------------------------------------------------
+Update by Andrew Eddie 25 August 2002
+Extended permissions to tasks
+
+./index.php
+- delete assignment of cookie_project (redundant)
+
+function/tasks_func.php
+- added constant, deleted unsed class (these can be replaced later but they do
+  not really form part of the current code base)
+
+modules/files/addedit.php
+- fixed project selection from attach file link in view task
+
+modules/tasks/index.php
+modules/tasks/view.php
+modules/tasks/addedit.php
+- added permissions and tidied up code
+
+-------------------------------------------------------------------------------
