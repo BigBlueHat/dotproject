@@ -10,6 +10,8 @@ class CTabBox extends CTabBox_core {
 	function show( $extra='' ) {
 		GLOBAL $AppUI;
 		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+		if (! $uistyle)
+		  $uistyle = 'default';
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options

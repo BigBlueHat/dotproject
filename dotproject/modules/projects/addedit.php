@@ -21,7 +21,7 @@ $users = db_loadHashList( $sql );
 // load the record data
 $row = new CProject();
 
-if (!$row->load( $project_id ) && $project_id > 0) {
+if (!$row->load( $project_id, false ) && $project_id > 0) {
 	$AppUI->setMsg( 'Project' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -214,13 +214,13 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?></td>
 			<td>
-				<input type="text" name="project_url" value="<?php echo @$row->project_url;?>" size="40" maxlength="255" class="text" />
+				<input type="text" name="project_url" value='<?php echo @$row->project_url;?>' size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Staging URL');?></td>
 			<td>
-				<input type="Text" name="project_demo_url" value="<?php echo @$row->project_demo_url;?>" size="40" maxlength="255" class="text" />
+				<input type="Text" name="project_demo_url" value='<?php echo @$row->project_demo_url;?>' size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		</table>

@@ -66,7 +66,7 @@ class CDpObject {
  *	@param int $oid optional argument, if not specifed then the value of current key is used
  *	@return any result from the database operation
  */
-	function load( $oid=null ) {
+	function load( $oid=null , $strip = true) {
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = intval( $oid );
@@ -76,7 +76,7 @@ class CDpObject {
 			return false;
 		}
 		$sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
-		return db_loadObject( $sql, $this );
+		return db_loadObject( $sql, $this, false, $strip );
 	}
 
 /**

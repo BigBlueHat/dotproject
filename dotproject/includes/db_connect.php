@@ -37,13 +37,13 @@ function db_loadResult( $sql ) {
 * @param string The SQL query
 * @param object The address of variable
 */
-function db_loadObject( $sql, &$object, $bindAll=false ) {
+function db_loadObject( $sql, &$object, $bindAll=false , $strip = true) {
 	if ($object != null) {
 		$hash = array();
 		if( !db_loadHash( $sql, $hash ) ) {
 			return false;
 		}
-		bindHashToObject( $hash, $object, null, true, $bindAll );
+		bindHashToObject( $hash, $object, null, $strip, $bindAll );
 		return true;
 	} else {
 		$cur = db_exec( $sql );
