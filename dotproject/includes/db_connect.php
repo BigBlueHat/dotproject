@@ -37,13 +37,13 @@ function db_loadResult( $sql ) {
 * @param string The SQL query
 * @param object The address of variable
 */
-function db_loadObject( $sql, &$object ) {
+function db_loadObject( $sql, &$object, $bindAll=false ) {
 	if ($object != null) {
 		$hash = array();
 		if( !db_loadHash( $sql, $hash ) ) {
 			return false;
 		}
-		bindHashToObject( $hash, $object );
+		bindHashToObject( $hash, $object, null, true, $bindAll );
 		return true;
 	} else {
 		$cur = db_exec( $sql );
@@ -353,11 +353,17 @@ function db_dateTime2locale( $dateTime, $format ) {
 * @param obj byref the object to fill of any class
 * @param string
 * @param boolean
+* @param boolean
 */
-function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true ) {
+function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true, $bindAll=false ) {
 	is_array( $hash ) or die( "bindHashToObject : hash expected" );
 	is_object( $obj ) or die( "bindHashToObject : object expected" );
-	if ($prefix) {
+
+	if ($bindAll) {
+		foreach ($hash as $k => $v) {
+			$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+		}
+	} else if ($prefix) {
 		foreach (get_object_vars($obj) as $k => $v) {
 			if (isset($hash[$prefix . $k ])) {
 				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
