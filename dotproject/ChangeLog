@@ -1,3 +1,99 @@
+2004-01-29 06:53  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php
+- Added Patch 781717 by iexposure, fix for Actual End date calendar popup.
+
+2004-01-29 06:47  (ajdonnison)
+---------------------------------
+modules/tasks/todo.php
+- Added Patch 781101 by iexposure, corrects the overdue colouring problem.
+
+2004-01-29 06:26  (ajdonnison)
+---------------------------------
+index.php
+includes/main_functions.php
+- Added patch 780088 by xnoguer to provide translation of sysvals.
+
+2004-01-29 04:44  (ajdonnison)
+---------------------------------
+modules/forums/post_message.php
+- Added patch 778977 to add citation to posted message, by xnoguer
+
+2004-01-29 03:57  (ajdonnison)
+---------------------------------
+modules/ticketsmith/index.php
+- Added patch 777024 by iexposure to add config-based default for sorting.
+
+2004-01-29 03:56  (ajdonnison)
+---------------------------------
+modules/ticketsmith/config.inc.php
+- Added patch 777021 by iexposure to add config for sort order.
+
+2004-01-29 03:40  (ajdonnison)
+---------------------------------
+modules/tasks/view.php
+- Added Patch 775973 from gnome444 - view dependencies in task view
+
+2004-01-29 03:30  (ajdonnison)
+---------------------------------
+modules/companies/companies.class.php
+- Patch 775960 from gnome444 - fix to allow companies to be deleted correctly.
+
+2004-01-29 03:26  (ajdonnison)
+---------------------------------
+modules/calendar/addedit.php
+- Added patch 774380 from rufinus, localized time in calendar
+
+2004-01-29 03:25  (ajdonnison)
+---------------------------------
+locales/en/locales.php
+- Patch 774380 from rufinus for localisation in calendar
+
+2004-01-29 03:21  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added Slovenian locale.
+
+2004-01-29 03:13  (ajdonnison)
+---------------------------------
+lib/jpgraph/src/jpgraph.php
+- Added fix from evgenik for Cyrillic bug. (Patch 763145)
+
+2004-01-29 01:12  (ajdonnison)
+---------------------------------
+modules/ticketsmith/common.inc.php
+- Added patch 777016 from iexposure to fix word wrapping.
+
+2004-01-29 00:26  (ajdonnison)
+---------------------------------
+modules/ticketsmith/view.php
+- Added patch 777034 from iexposure - addes my tickets crumb, adds text
+- type email for non-HTML clients.
+- Added patch 823696 from alejandro_liu - fixes sending of dud email when
+- unassigning tasks.
+
+2004-01-28 23:42  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Added patch 777066 from iexposure to clean up HTML output.
+
+2004-01-28 23:36  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Fix for potential sync problem with attachments
+
+2004-01-28 21:13  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php
+- Changed add logic to check on the count of approved projects rather
+- than the number of existing projects (a minor change and unlikely to
+- actually alter operation except in very unusual situations).
+
+2004-01-28 13:30  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-28 04:06  (ajdonnison)
 ---------------------------------
 modules/tasks/do_updatetask.php
@@ -402,102 +498,6 @@ modules/admin/do_perms_cp.php
 - Initial Import for copy permissions from template sqlFile
 
 2003-12-23 09:20  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-22 16:55  (robertoibarra)
----------------------------------
-locales/en/admin.inc
-modules/tasks/view.php
-- Text changed: the tab within a task previously named Tasks caused confusion, renamed to Child Tasks
-
-2003-12-22 09:20  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-21 13:04  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.php
-- #863238: show milestones bold
-
-2003-12-21 09:55  (gregorerhardt)
----------------------------------
-locales/en/forums.inc
-- update for force forum watch
-
-2003-12-21 09:20  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-21 08:57  (gregorerhardt)
----------------------------------
-modules/forums/configure.php
-modules/forums/setup.php
-- initial import of module specific config and setup file
-
-2003-12-21 08:55  (gregorerhardt)
----------------------------------
-modules/forums/forums.class.php
-- added forums module specific config functionality: force watch for all users
-
-2003-12-21 08:52  (gregorerhardt)
----------------------------------
-modules/system/domodsql.php
-modules/system/viewmods.php
-- groundwork for module specific configuration via configure-function and config variable in module's setup.php
-
-2003-12-21 08:49  (gregorerhardt)
----------------------------------
-locales/en/admin.inc
-locales/en/calendar.inc
-locales/en/common.inc
-locales/en/companies.inc
-locales/en/contacts.inc
-locales/en/departments.inc
-locales/en/files.inc
-locales/en/forums.inc
-locales/en/projects.inc
-locales/en/system.inc
-locales/en/tasks.inc
-locales/en/ticketsmith.inc
-- update based on german translation files
-
-2003-12-17 09:21  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-17 00:41  (robertoibarra)
----------------------------------
-index.php
-- Windows workaround: Windows doesn´t use standard ISO codes for locales, a switch statement was added to change the locale from the db to something windows understands.
-
-2003-12-16 23:41  (robertoibarra)
----------------------------------
-locales/en/projects.inc
-modules/companies/vw_depts.php
-- FIX: User performance % was calculated the other way around
-
-2003-12-16 23:03  (robertoibarra)
----------------------------------
-locales/en/contacts.inc
-locales/en/files.inc
-locales/en/public.inc
-locales/en/tasks.inc
-modules/companies/view.php
-modules/contacts/addedit.php
-modules/departments/addedit.php
-modules/files/addedit.php
-modules/tasks/addedit.php
-modules/tasks/vw_log_update.php
-- Visual fixes
-
-2003-12-16 19:24  (jcgonz)
----------------------------------
-modules/departments/vw_contacts.php
 ...
 
 (This file has been wrapped)
