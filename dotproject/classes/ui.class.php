@@ -259,7 +259,9 @@ class CAppUI {
 			case UI_CASE_UPPERFIRST:
 				break;
 		}
-		return $str;
+		/* stripslashes added to fix #811242 on 2004 Jan 10
+		 * if no problems occur, delete this comment. (gregor) */
+		return stripslashes($str);
 	}
 /**
 * Set the display of warning for untranslated strings
@@ -326,7 +328,7 @@ class CAppUI {
 		  else
 		    $params .= "&" . $session_id;
 		}
-		header( "Location: index.php?$params" ); 
+		header( "Location: index.php?$params" );
 		exit();	// stop the PHP execution
 	}
 /**
