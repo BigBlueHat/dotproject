@@ -16,7 +16,7 @@
 
 	$titleBlock->show();
 
-	$sql = "SELECT * FROM modules WHERE mod_name IN ('Companies', 'Projects', 'Tasks', 'Calendar', 'Files') ORDER BY mod_ui_order";
+	$sql = "SELECT * FROM modules WHERE mod_name IN ('Companies', 'Projects', 'Tasks', 'Calendar') ORDER BY mod_ui_order";
 	$modules = db_loadList( $sql );
 
 	echo "<table cellpadding=\"2\">";

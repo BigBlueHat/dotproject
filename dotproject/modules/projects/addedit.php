@@ -326,6 +326,15 @@ function setDepartment(department_id_string){
 				<input type="Text" name="project_demo_url" value='<?php echo @$row->project_demo_url;?>' size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
+		<tr>
+			<td align="right" colspan="3">
+			<?php
+				require_once("./classes/CustomFields.class.php");
+				$custom_fields = New CustomFields( $m, $a, $obj->project_id, "edit" );
+				$custom_fields->printHTML();
+			?>
+			</td>
+		</tr>
 		</table>
 	</td>
 	<td width="50%" valign="top">

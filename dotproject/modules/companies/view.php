@@ -148,11 +148,9 @@ function delIt() {
 		
 		</table>
 		<?php
-			error_reporting(E_ALL);
-			require_once("./classes/customfieldsparser.class.php");
-			// let's create the parser
-			$cfp = new CustomFieldsParser("CompanyCustomFields", $obj->company_id);
-			echo $cfp->parseTableForm(false, $cfp->custom_record_types[$obj->company_type]);
+			require_once("./classes/CustomFields.class.php");
+			$custom_fields = New CustomFields( $m, $a, $obj->company_id, "view" );
+			$custom_fields->printHTML();
 		?>
 	</td>
 </tr>

@@ -144,6 +144,11 @@ function delIt() {
 			</td>
 		</tr>
 		</table>
+		<?php
+				require_once("./classes/CustomFields.class.php");
+				$custom_fields = New CustomFields( $m, $a, $obj->event_id, "view" );
+				$custom_fields->printHTML();
+		?>
 
 	</td>
 </tr>

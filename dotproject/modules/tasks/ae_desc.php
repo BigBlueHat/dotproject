@@ -87,56 +87,11 @@
 		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$obj->task_description;?></textarea>
 		</td></tr></table><br />
 		<?php
-			require_once("./classes/customfieldsparser.class.php");
-			// let's create the parser
-			$cfp = new CustomFieldsParser("TaskCustomFields", $obj->task_id);
-			
-			// we will need the amount of record types
-			$amount_task_record_types = count($cfp->custom_record_types);
+			require_once("./classes/CustomFields.class.php");
+			GLOBAL $m;
+			$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, "edit" );
+			$custom_fields->printHTML();
 		?>
-		
-		<?php
-			// let's parse the custom fields form table
-			echo $cfp->parseTableForm(true);
-		?>
-		
-		<script language="javascript">
-		    var task_types;
-		    
-		    // We need to create an array of all the names
-		    // of the record types in JS so we can map the Key to the type name (used in the field filter)
-		    task_types = new Array(<?php echo $amount_task_record_types; ?>);
-		    
-		    <?php
-		    	foreach($cfp->custom_record_types as $key => $record_type){
-		    		echo "task_types[$key] = new String('".$record_type."');\n";
-		    	}
-		    	reset($cfp->custom_record_types);
-		    	if(count($cfp->custom_record_types) == 0){
-		    		$record_type = "";
-		    	} else {
-		    		$record_type = isset($cfp->custom_record_types[$obj->task_type]) ? $cfp->custom_record_types[$obj->task_type] : null;
-		    		if(is_null($record_type)){
-		    			$record_type = current($cfp->custom_record_types);
-		    		}
-		    	}
-		    	
-		    	$actual_record_type = str_replace(" ", "_", $record_type);
-		    	
-		    	// Let's parse all the show functions
-		    	echo $cfp->parseShowFunctions();
-		    ?>
-		    
-		    // hideAll Function
-			<?php echo $cfp->showHideAllRowsFunction(); ?>
-			
-			// by default hide everything and show the actual type record
-			<?php echo "\n\nhideAllRows();";
-			      if($actual_record_type != ""){
-				      echo "show$actual_record_type();";
-			      } 
-			?>
-		</script>
 	</td>
 </tr>
 </table>

@@ -221,6 +221,15 @@ function delIt() {
 		</tr>
 		<tr>
 			<td colspan="2">
+			<?php
+				require_once("./classes/CustomFields.class.php");
+				$custom_fields = New CustomFields( $m, $a, $obj->project_id, "view" );
+				$custom_fields->printHTML();
+			?>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
 			<strong><?php echo $AppUI->_('Description');?></strong><br />
 			<table cellspacing="0" cellpadding="2" border="0" width="100%">
 			<tr>

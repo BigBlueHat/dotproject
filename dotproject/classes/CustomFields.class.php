@@ -303,7 +303,7 @@
 		function CustomFields($m, $a, $obj_id = NULL, $mode = "edit")
 		{
 			$this->m = $m;
-			$this->a = $a;
+			$this->a = 'addedit'; // only addedit pages can carry the custom field for now
 			$this->obj_id = $obj_id;
 			$this->mode = $mode;
 
@@ -311,14 +311,15 @@
 			$sql = "
 				SELECT  *
 				FROM	custom_fields_struct
-				WHERE	field_module = '".$m."'
-				AND	field_page = '".$a."'
+				WHERE	field_module = '".$this->m."'
+				AND	field_page = '".$this->a."'
 				ORDER BY
 					field_order ASC
 			";
-
+		
+			//echo "<pre>$sql</pre>";
+			
 			$rows = db_loadList($sql);						
-
 			if ($rows == NULL)
 			{
 				// No Custom Fields Available
@@ -481,15 +482,22 @@
 
 		function getHTML()
 		{
-			$html = "<table width=\"100%\">\n";
-
-			foreach ($this->fields as $cfield)
+			if ($this->count() == 0)
 			{
-				$html .= "\t<tr><td nowrap=\"nowrap\">".$cfield->getHTML($this->mode)."</td></tr>\n";
+				return "";
 			}
-			$html .= "</table>\n";
+			else
+			{
+				$html = "<table width=\"100%\">\n";
+	
+				foreach ($this->fields as $cfield)
+				{
+					$html .= "\t<tr><td nowrap=\"nowrap\">".$cfield->getHTML($this->mode)."</td></tr>\n";
+				}
+				$html .= "</table>\n";
 
-			return $html;
+				return $html;
+			}
 		}
 
 

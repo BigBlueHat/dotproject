@@ -170,7 +170,17 @@ function setTask( key, val ) {
 				<textarea name="file_description" class="textarea" rows="4" style="width:270px"><?php echo $obj->file_description;?></textarea>
 			</td>
 		</tr>
-
+		<tr>
+			<td colspan="2">
+			<?php
+				// TODO - Add custom fields to files, doesnt make sense without a detail view.
+				/*
+				require_once("./classes/CustomFields.class.php");
+				$custom_fields = New CustomFields( $m, $a, $obj->file_id, "edit" );
+				$custom_fields->printHTML();
+				*/
+			?>
+			</td>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Upload File' );?>:</td>
 			<td align="left"><input type="File" class="button" name="formfile" style="width:270px"></td>

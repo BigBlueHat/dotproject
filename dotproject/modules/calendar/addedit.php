@@ -348,6 +348,15 @@ function removeUser() {
 	</td>
 </tr>
 <tr>
+	<td colspan="2" align="right">
+			<?php
+				// $m does not equal 'calendar' here???
+				require_once("./classes/CustomFields.class.php");
+				$custom_fields = New CustomFields( 'calendar', 'addedit', $obj->event_id, "edit" );
+				$custom_fields->printHTML();
+			?>
+	</td>
+<tr>
 	<td colspan="2">
 		<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onclick="javascript:history.back();">
 	</td>

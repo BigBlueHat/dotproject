@@ -439,11 +439,9 @@ function delIt() {
 			}
 
 		}
-		require_once("./classes/customfieldsparser.class.php");
-		$cfp = new CustomFieldsParser("TaskCustomFields", $obj->task_id);
-
-		$record_type = isset($cfp->custom_record_types[$obj->task_type]) ? $cfp->custom_record_types[$obj->task_type] : null;
-		echo $cfp->parseTableForm(false, $record_type);
+				require_once("./classes/CustomFields.class.php");
+				$custom_fields = New CustomFields( $m, $a, $obj->task_id, "view" );
+				$custom_fields->printHTML();
 	 ?>
 	 		</td>
 	 	</tr>

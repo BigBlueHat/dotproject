@@ -98,16 +98,6 @@ if ($sub_form) {
 	// let's check if there are some assigned departments to task
 	$obj->task_departments = implode(",", setItem("dept_ids", array()));
 
-	//Assign custom fields to task_custom for them to be saved
-	$custom_fields = dPgetSysVal("TaskCustomFields");
-	$custom_field_data = array();
-	if ( count($custom_fields) > 0 ){
-		foreach ( $custom_fields as $key => $array ) {
-			$custom_field_data[$key] = setItem("custom_$key");
-		}
-		$obj->task_custom = serialize($custom_field_data);
-	}
-
 	// convert dates to SQL format first
 	if ($obj->task_start_date) {
 		$date = new CDate( $obj->task_start_date );
@@ -118,6 +108,8 @@ if ($sub_form) {
 		$obj->task_end_date = $date->format( FMT_DATETIME_MYSQL );
 	}
 
+
+	require_once("./classes/CustomFields.class.php");
 	//echo '<pre>';print_r( $hassign );echo '</pre>';die;
 	// prepare (and translate) the module name ready for the suffix
 	if ($del) {
@@ -133,6 +125,10 @@ if ($sub_form) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			$AppUI->redirect(); // Store failed don't continue?
 		} else {
+			$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, "edit" );
+ 			$custom_fields->bind( $_POST );
+ 			$sql = $custom_fields->store( $obj->task_id ); // Store Custom Fields
+
 			$AppUI->setMsg( $task_id ? 'Task updated' : 'Task added', UI_MSG_OK);
 		}
 
