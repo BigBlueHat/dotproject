@@ -4,10 +4,10 @@
 
 // reply-to address for staff followups
 // i.e. the address the gateway receives
-if ( ! isset($site_domain))
-  $site_domain = "dotproject.net";
+if ( ! isset($AppUI->cfg['site_domain']))
+  $AppUI->cfg['site_domain'] = "dotproject.net";
 
-$CONFIG["reply_to"] = "support@" . $site_domain;
+$CONFIG["reply_to"] = "support@" . $AppUI->cfg['site_domain'];
 
 // relative path of the program installation
 // i.e. the part of the URL after the server name
@@ -33,6 +33,7 @@ $CONFIG["priority_names"] = array("Low","Normal","High","Highest","911");
 // priority colors (low to high)
 $CONFIG["priority_colors"] = array("#006600","#000000","#ff0000","#ff0000","#ff0000");
 
+$CONFIG["type_names"] = array("Open" => "Open", "Closed" => "Closed", "Deleted" => "Deleted");
 // number of tickets to see at once
 $CONFIG["view_rows"] = 40;
 
