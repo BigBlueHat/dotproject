@@ -110,8 +110,17 @@ function autoCheck( $bool )
 /**
  *	Define the subject line of the email
  *	@param string $subject any monoline string
+ *	@param string $charset encoding to be used for Quoted-Printable encoding of the subject 
 */
-function Subject( $subject ) {
+function Subject( $subject, $charset='' ) {
+	if( $charset != "" ) {
+		$this->charset = strtolower($charset);
+	}
+	
+	if( $this->charset != "us-ascii" and function_exists('imap_8bit')) {
+		$subject = "=?".$this->charset."?Q?".
+			str_replace("=\r\n","",imap_8bit($subject))."?=";		
+	}
 	$this->xheaders['Subject'] = strtr( $subject, "\r\n" , "  " );
 }
 
