@@ -1,4 +1,4 @@
-<?php /* $id$ */
+<?php /* STYLE/DP_ULTRA_CLEAN $Id$ */
 ##
 ##  This overrides the show function of the CTabBox_core function
 ##
@@ -9,7 +9,7 @@ class CTabBox extends CTabBox_core {
 		$s = '';
 	// tabbed / flat view options
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
-			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"98%\">\n";
+			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
 			$s .= "<tr>\n";
 			$s .= "<td nowrap=\"nowrap\">";
 			$s .= "<a href=\"".$this->baseHRef."tab=0\">".$AppUI->_('tabbed')."</a> : ";
@@ -18,7 +18,7 @@ class CTabBox extends CTabBox_core {
 			echo $s;
 		} else {
 			if ($extra) {
-				echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"98%\">\n<tr>\n".$extra."</tr>\n</table>\n";
+				echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n<tr>\n".$extra."</tr>\n</table>\n";
 			} else {
 				echo "<img src=\"./images/shim.gif\" height=\"10\" width=\"1\" alt=\"\" />";
 			}
@@ -26,7 +26,7 @@ class CTabBox extends CTabBox_core {
 
 		if ($this->active < 0 && @$AppUI->getPref( 'TABVIEW' ) != 2 ) {
 		// flat view, active = -1
-			echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"98%\">\n";
+			echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
 			foreach ($this->tabs as $v) {
 				echo "<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>\n";
 				echo "<tr><td>";
@@ -36,7 +36,7 @@ class CTabBox extends CTabBox_core {
 			echo "</table>\n";
 		} else {
 		// tabbed view
-			$s = '<table width="98%" border="0" cellpadding="0" cellspacing="0"><tr>';
+			$s = '<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>';
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$sel = ($k == $this->active) ? 'Selected' : '';
