@@ -19,11 +19,11 @@ $mm = $this_week->getMonth();
 $yy = $this_week->getYear();
 
 // prepare time period for 'events'
-$first_time = new CDate( Date_calc::beginOfWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
-$last_time = new CDate( Date_calc::endOfWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
+$first_time = new CDate( Date_calc::beginOfWeek( $dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY ) );
+$last_time = new CDate( Date_calc::endOfWeek( $dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY ) );
 
-$prev_week = new CDate( Date_calc::beginOfPrevWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
-$next_week = new CDate( Date_calc::beginOfNextWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
+$prev_week = new CDate( Date_calc::beginOfPrevWeek( $dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY ) );
+$next_week = new CDate( Date_calc::beginOfNextWeek( $dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY ) );
 
 $tasks = CTask::getTasksForPeriod( $first_time, $last_time, $company_id );
 $events = CEvent::getEventsForPeriod( $first_time, $last_time );
