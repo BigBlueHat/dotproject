@@ -209,7 +209,7 @@ if ($dobackup){
 
   $schema = new adoSchema( $db );
 
-  $sql = $schema->ExtractSchema($content);
+  $sql = $schema->ExtractSchema(true);
 
   header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
   header('Content-Type: text/xml');
