@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-GLOBAL $m, $a, $project_id, $f, $min_view, $query_string;
+GLOBAL $m, $a, $project_id, $f, $min_view, $query_string, $durnTypes;
 /*
 	tasks.php
 
