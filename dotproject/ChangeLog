@@ -1,3 +1,33 @@
+2003-12-04 23:37  (jcgonz)
+---------------------------------
+db/dotproject_101.sql
+db/upgrade_100_to_101.sql
+modules/companies/view.php
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+modules/public/selector.php
+- Companies and Contacts are now linked by the company name (in text). They are not linked by ID so that contacts don't have to have companies registered in the Companies section so it maintains backwards compatibility. New department field added please check the upgrade SQL file. Department can be linked to the Company department by text also. Dotproject now has some mini CRM features!
+
+2003-12-04 18:48  (jcgonz)
+---------------------------------
+classes/ui.class.php
+locales/en/companies.inc
+modules/companies/vw_companies.php
+style/classic/overrides.php
+- Fixed bug where the default theme wouldn't show the rest of the companies/projects categories in flat view. This was due to a require_once line had to be changed to require to allow the tabboxes to be displayed multiple times in one page.
+
+2003-12-04 14:53  (jcgonz)
+---------------------------------
+modules/companies/index.php
+modules/companies/vw_companies.php
+modules/projects/vw_idx_proposed.php
+- Fixed the same issue with the flat look on companies as with projects. Made the projects flat code a little cleaner.
+
+2003-12-04 09:23  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-04 01:16  (jcgonz)
 ---------------------------------
 modules/projects/index.php
@@ -468,36 +498,6 @@ classes/ui.class.php
 - Added warning and note for deprecating the append parameter in setMsg().
 
 2003-09-28 16:16  (kripper)
----------------------------------
-modules/tasks/do_task_aed.php
-- Joined "task deleted" message string. Reason: atomic-wise translation
-- doesn't work for some languagues.
-- For example (in spanish), "task" = "tarea", "deleted" = "eliminado", "task
-- deleted" = "tarea eliminad_a_".
-
-2003-09-28 16:03  (kripper)
----------------------------------
-modules/projects/index.php
-- Moved active projects tab to first position (default)
-
-2003-09-26 03:56  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-25 18:09  (gregorerhardt)
----------------------------------
-modules/ticketsmith/attach.php
-modules/ticketsmith/common.inc.php
-locales/en/ticketsmith.inc
-- enhancing translation of ticketsmith
-
-2003-09-25 09:51  (gregorerhardt)
----------------------------------
-modules/help/en/contacts.index.hlp
-- added help text for vCards
-
-2003-09-23 03:57  (kripper)
 ...
 
 (This file has been wrapped)
