@@ -233,16 +233,16 @@ function chPriority(user_id) {
 echo $AppUI->_('P')."&nbsp;=&nbsp;".$AppUI->_('User specific Task Priority');
 if($do_report){
 	// Let's figure out which users we have
-	$sql = "SELECT  u.user_id,
-	 				u.user_username,
-	        FROM users AS u";
+	$sql = "SELECT u.user_id, u.user_username
+	        FROM users AS u
+                LEFT JOIN contacts uc ON uc.contact_id = u.user_contact";
 
 	if ($log_userfilter!=0) {
-			$sql.=" WHERE user_id=".
+			$sql.=" WHERE u.user_id=".
 						  $log_userfilter
 					      ;//$log_userfilter_users[$log_userfilter]["user_id"];
 	}
-	$sql.=" ORDER by user_username";
+	$sql.=" ORDER by u.user_username";
 
 //echo "<pre>$sql</pre>";
 	$user_list = db_loadHashList($sql, "user_id");
