@@ -36,6 +36,70 @@ if ($canEdit) {
 		echo $AppUI->_( "Add Log" );
 	}
 ?>
+
+<!-- TIMER RELATED SCRIPTS -->
+<script language="JavaScript">
+	// please keep these lines on when you copy the source
+	// made by: Nicolas - http://www.javascript-page.com
+	// adapted by: Juan Carlos Gonzalez jcgonz@users.sourceforge.net
+	
+	var timerID = 0;
+	var tStart  = null;
+	
+	function UpdateTimer() {
+	   if(timerID) {
+	      clearTimeout(timerID);
+	      clockID  = 0;
+	   }
+	
+	   if(!tStart)
+	      tStart   = new Date();
+	
+	   var   tDate = new Date();
+	   var   tDiff = tDate.getTime() - tStart.getTime();
+	
+	   tDate.setTime(tDiff);
+	
+	   // lets put time information in an hour basis
+	   var total_hours  = (tDate.getMinutes())/60;
+	   
+	   // Lets add up the seconds to the minutes
+	   var total_hours = total_hours + ((tDate.getSeconds())/60)/100;
+	   
+	   // Lets round hours to two decimals
+	   var total_hours   = Math.round( total_hours * 100) / 100;
+	   document.editFrm.task_log_hours.value = total_hours;
+	   
+	   timerID = setTimeout("UpdateTimer()", 1000);
+	}
+	
+	function timerStart() {
+		if(!timerID){ // this means that it needs to be started
+			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Stop');?>";
+			document.getElementById("timerStatus").innerHTML = "<center><?php echo $AppUI->_('timer running');?></center>";
+			timerID  = setTimeout("UpdateTimer()", 1000);
+		} else { // timer must be stoped
+			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Start');?>";
+			document.getElementById("timerStatus").innerHTML = "";
+			timerStop();
+		}
+	}
+	
+	function timerStop() {
+	   if(timerID) {
+	      clearTimeout(timerID);
+	      timerID  = 0;
+	   }
+	}
+	
+	function timerReset() {
+		document.editFrm.task_log_hours.value = "0.00";
+	    tStart = null;
+	}
+</script>
+<!-- END OF TIMER RELATED SCRIPTS -->
+
+
 <table cellspacing="1" cellpadding="2" border="0" width="100%">
 <form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
 	<input type="hidden" name="uniqueid" value="<?php echo uniqid("");?>" />
@@ -78,6 +142,9 @@ if ($canEdit) {
 	</td>
 	<td>
 		<input type="text" class="text" name="task_log_hours" value="<?php echo $log->task_log_hours;?>" maxlength="8" size="6" />
+		<input type='button' class="button" value='<?php echo $AppUI->_('Start');?>' onclick='javascript:timerStart()' name='timerStartStopButton' />
+		<input type='button' class="button" value='<?php echo $AppUI->_('Reset'); ?>' onclick="javascript:timerReset()" name='timerResetButton' />
+		<span id='timerStatus'></span>
 	</td>
 </tr>
 <tr>
