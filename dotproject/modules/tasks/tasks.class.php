@@ -356,7 +356,7 @@ class CTask extends CDpObject {
 		//split out related departments and store them seperatly.
 		$sql = 'DELETE FROM task_departments WHERE task_id='.$this->task_id;
 		db_exec( $sql );
-		print_r($this->task_departments);
+		// print_r($this->task_departments);
 		if(!empty($this->task_departments)){
 		  $departments = explode(',',$this->task_departments);
     	  foreach($departments as $department){
