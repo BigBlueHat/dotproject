@@ -1,3 +1,13 @@
+2004-01-26 15:56  (kripper)
+---------------------------------
+modules/projects/index.php
+- Fixed bug of displaying projects of all companies.
+
+2004-01-26 03:57  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-25 18:25  (gregorerhardt)
 ---------------------------------
 modules/projects/addedit.php
@@ -488,16 +498,6 @@ ChangeLog
 
 2003-12-12 17:15  (gregorerhardt)
 ---------------------------------
-modules/calendar/calendar.class.php
-modules/calendar/day_view.php
-modules/calendar/index.php
-- design and usability improvements on miniCal: month names and days are now clickable
-
-2003-12-12 14:39  (jcgonz)
----------------------------------
-modules/tasks/tasks.class.php
-- Now parent tasks status update recursively to all its subtasks
-
 ...
 
 (This file has been wrapped)
