@@ -160,13 +160,31 @@ class CForumMessage {
 		$subj_prefix = $AppUI->_('forumEmailSubj');
 		$body_msg = $AppUI->_('forumEmailBody');
 
-		$sql = "
-		SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
-		FROM users, forum_watch
-		WHERE user_id = watch_user
-			AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)
-		";
+		// SQL-Query to check if the message should be delivered to all users (forced)
+		// In positive case there will be a (0,0,0) row in the forum_watch table
+		$sql = "SELECT * FROM forum_watch WHERE watch_user = 0 AND watch_forum = 0 AND watch_topic = 0";
+		$resAll = db_exec( $sql );
+
+		if (db_num_rows( $resAll ) >= 1)	// message has to be sent to all users
+		{
+			$sql = "
+			SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
+			FROM users
+			";
+		}
+		else 					//message is only delivered to users that checked the forum watch
+		{
+			$sql = "
+			SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
+			FROM users, forum_watch
+			WHERE user_id = watch_user
+				AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)
+			";
+		}
+
+
 	##echo "<pre>$sql</pre>";##
+
 		if (!($res = db_exec( $sql ))) {
 			return;
 		}
@@ -181,7 +199,7 @@ class CForumMessage {
 		$body .= "\n{$AppUI->cfg['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
 		$body .= "\n\n$this->message_title";
 		$body .= "\n\n$this->message_body";
-		
+
 		$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : ""  );
 		$mail->From( $AppUI->_('forumEmailFrom') );
 
