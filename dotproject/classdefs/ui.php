@@ -2,6 +2,7 @@
 ##
 ##	Application User Interface class
 ##
+require_once( "$root_dir/classdefs/date.php" );
 
 // Message No Constants
 define( 'UI_MSG_OK', 1 );
@@ -28,6 +29,8 @@ class CAppUI {
 	var $user_prefs;
 // active project
 	var $project_id;
+// a selected date
+	var $day_selected;
 // localisation
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
@@ -65,6 +68,7 @@ class CAppUI {
 		$this->user_type = 0;
 
 		$this->project_id = 0;
+		$this->day_selected = new CDate();
 
 		$this->defaultRedirect = "";
 // set up the default preferences
@@ -117,7 +121,7 @@ class CAppUI {
 	}
 // Save the current url query string
 	function savePlace( $query='' ) {
-		$this->state['SAVEDPLACE'] = $query ? $query : $_SERVER['QUERY_STRING'];
+		$this->state['SAVEDPLACE'] = $query ? $query : @$_SERVER['QUERY_STRING'];
 	}
 	function resetPlace() {
 		$this->state['SAVEDPLACE'] = '';
@@ -140,9 +144,10 @@ class CAppUI {
 		. "</script>";
 	}
 
-// Set the page message (displayed on page construction
+// Set the page message (displayed on page construction)
 	function setMsg( $msg, $msgNo=0, $append=false ) {
-		$this->msg = $append ? $msg : $this->msg.$msg;
+		$msg = $this->_( $msg );
+		$this->msg = $append ? $this->msg.$msg : $msg;
 		$this->msgNo = $msgNo;
 	}
 // Display the message, format and display icon
@@ -176,7 +181,7 @@ class CAppUI {
 			$this->msg = '';
 			$this->msgNo = 0;
 		}
-		return $msg ? "$img<span class=\"$class\">".$this->_( $msg )."</span>" : '';
+		return $msg ? "$img<span class=\"$class\">$msg</span>" : '';
 	}
 
 	function setState( $label, $tab ) {
@@ -240,6 +245,16 @@ class CAppUI {
 	function setProject( $id=0 ) {
 		$this->project_id = $id;
 	}
+
+	function getDaySelected() {
+		return $this->day_selected->getTimestamp();
+	}
+
+	function setDaySelected( $ts=0 ) {
+		$this->day_selected->setTimestamp( $ts );
+	// zero the time so that 'days' can be compared
+		$this->day_selected->setTime( 0, 0, 0 );
+	}
 }
 /*
 	Tabbed box class
@@ -250,7 +265,7 @@ class CTabBox {
 	var $baseHRef=NULL;
 	var $baseInc;
 
-	function CTabBox( $baseHRef='', $baseInc='.', $active=0 ) {
+	function CTabBox( $baseHRef='', $baseInc='', $active=0 ) {
 		$this->tabs = array();
 		$this->active = $active;
 		$this->baseHRef = ($baseHRef ? "$baseHRef&" : "?");
@@ -290,7 +305,7 @@ class CTabBox {
 			foreach ($this->tabs as $v) {
 				echo '<tr><td><b>'.$AppUI->_($v[1]).'</b></td></tr>';
 				echo '<tr><td>';
-				include "$root_dir/$this->baseInc/$v[0].php";
+				include $this->baseInc.$v[0]."php";
 				echo '</td></tr>';
 			}
 			echo '</table>';
@@ -305,7 +320,7 @@ class CTabBox {
 			$s .= '<td nowrap="nowrap" class="tabsp">&nbsp;</td>';
 			$s .= '</tr><tr><td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">';
 			echo $s;
-			require $this->baseInc.'/'.$this->tabs[$this->active][0].'.php';
+			require $this->baseInc.$this->tabs[$this->active][0].'.php';
 			echo '</td></tr></table>';
 		}
 	}
