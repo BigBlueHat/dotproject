@@ -44,7 +44,11 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	}
 
 	// collect all the users for the department owner list
-	$sql = "SELECT user_id,CONCAT_WS(' ',user_first_name,user_last_name) FROM users ORDER BY user_first_name,user_last_name";
+	$sql = "SELECT user_id,CONCAT_WS(' ',contact_first_name,contact_last_name) 
+			FROM users,
+				contacts
+			where users.user_contact = contacts.contact_id
+			ORDER BY contact_first_name,contact_last_name";
 	$owners = arrayMerge( array( '0'=>'' ), db_loadHashList( $sql ) );
 
 // setup the title block
