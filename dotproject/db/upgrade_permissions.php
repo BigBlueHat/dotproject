@@ -160,4 +160,21 @@ if ($res) {
     }
   }
 }
+
+echo 'Setting permissions for user modules:<br />';
+// Upgrade permissions for custom modules
+$sql = "SELECT mod_directory, mod_name, permissions_item_table
+	FROM modules
+	WHERE mod_ui_active = 1
+	AND mod_type = 'user'";
+$custom_modules = db_loadList($sql);
+foreach($custom_modules as $mod)
+{
+  echo 'Module: ' . $mod['mod_name'] . '<br />';
+  $perms->addModule($mod['mod_directory'], $mod['mod_name']);
+  $perms->addGroupItem($this->mod_directory, "non_admin");
+                
+  if (isset($mod['permissions_item_table']) && $mod['permissions_item_table'])
+    $perms->addModuleSection($mod['permissions_item_table']);
+}
 ?>
