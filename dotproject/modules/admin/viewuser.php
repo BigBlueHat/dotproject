@@ -15,8 +15,8 @@ SELECT users.*, contacts.*
 	dept_name, dept_id
 FROM users
 LEFT JOIN contacts on user_contact = contact_id
-LEFT JOIN companies ON user_company = companies.company_id
-LEFT JOIN departments ON dept_id = user_department
+LEFT JOIN companies ON contact_company = companies.company_id
+LEFT JOIN departments ON dept_id = contact_department
 WHERE user_id = $user_id
 ";
 if (!db_loadHash( $sql, $user )) {
@@ -71,36 +71,36 @@ function popChgPwd() {
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
 			<td class="hilite" width="100%">
-				<a href="?m=companies&a=view&company_id=<?php echo @$user["company_id"];?>"><?php echo @$user["company_name"];?></a>
+				<a href="?m=companies&a=view&company_id=<?php echo @$user["contact_company"];?>"><?php echo @$user["company_name"];?></a>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Department');?>:</td>
 			<td class="hilite" width="100%">
-				<a href="?m=departments&a=view&dept_id=<?php echo @$user["dept_id"];?>"><?php echo $user["dept_name"];?></a>
+				<a href="?m=departments&a=view&dept_id=<?php echo @$user["contact_department"];?>"><?php echo $user["dept_name"];?></a>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>:</td>
-			<td class="hilite" width="100%"><?php echo @$user["user_phone"];?></td>
+			<td class="hilite" width="100%"><?php echo @$user["contact_phone"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Home Phone');?>:</td>
-			<td class="hilite" width="100%"><?php echo @$user["user_home_phone"];?></td>
+			<td class="hilite" width="100%"><?php echo @$user["contact_phone2"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Mobile');?>:</td>
-			<td class="hilite" width="100%"><?php echo @$user["user_mobile"];?></td>
+			<td class="hilite" width="100%"><?php echo @$user["contact_mobile"];?></td>
 		</tr>
 		<tr valign=top>
 			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite" width="100%"><?php
-				echo @$user["user_address1"]
-					.( ($user["user_address2"]) ? '<br />'.$user["user_address2"] : '' )
-					.'<br />'.$user["user_city"]
-					.'&nbsp;&nbsp;'.$user["user_state"]
-					.'&nbsp;&nbsp;'.$user["user_zip"]
-					.'<br />'.$user["user_country"]
+				echo @$user["contact_address1"]
+					.( ($user["contact_address2"]) ? '<br />'.$user["contact_address2"] : '' )
+					.'<br />'.$user["contact_city"]
+					.'&nbsp;&nbsp;'.$user["contact_state"]
+					.'&nbsp;&nbsp;'.$user["contact_zip"]
+					.'<br />'.$user["contact_country"]
 					;
 			?></td>
 		</tr>
@@ -111,19 +111,19 @@ function popChgPwd() {
 		<table width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Birthday');?>:</td>
-			<td class="hilite" width="100%"><?php echo @$user["user_birthday"];?></td>
+			<td class="hilite" width="100%"><?php echo @$user["contact_birthday"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap>ICQ#:</td>
-			<td class="hilite" width="100%"><?php echo @$user["user_icq"];?></td>
+			<td class="hilite" width="100%"><?php echo @$user["contact_icq"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap>AOL Nick:</td>
-			<td class="hilite" width="100%"><a href="aim:<?php echo @$user["user_aol"];?>"><?php echo @$user["user_aol"];?></a></td>
+			<td class="hilite" width="100%"><a href="aim:<?php echo @$user["contact_aol"];?>"><?php echo @$user["contact_aol"];?></a></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Email');?>:</td>
-			<td class="hilite" width="100%"><?php echo '<a href="mailto:'.@$user["user_email"].'">'.@$user["user_email"].'</a>';?></td>
+			<td class="hilite" width="100%"><?php echo '<a href="mailto:'.@$user["contact_email"].'">'.@$user["contact_email"].'</a>';?></td>
 		</tr>
 		<tr>
 			<td colspan="2"><strong><?php echo $AppUI->_('Signature');?>:</strong></td>
@@ -138,7 +138,7 @@ function popChgPwd() {
 </tr>
 </table>
 
-<?php	
+<?php
 	// tabbed information boxes
 	$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", "{$dPconfig['root_dir']}/modules/admin/", $tab );
 	$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
