@@ -1,3 +1,29 @@
+2004-08-07 19:43  (gregorerhardt)
+---------------------------------
+modules/files/do_file_aed.php
+modules/files/files.class.php
+- 0000002: move file on filesystem if project has changed
+
+2004-08-07 18:57  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- 0000033: correct % for parent task
+
+2004-08-07 18:36  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/calendar.inc
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/links_events.php
+- 0000086: do not show events on non-working days
+
+2004-08-07 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-06 23:51  (cyberhorse)
 ---------------------------------
 modules/public/calendar.php
@@ -472,32 +498,6 @@ includes/main_functions.php
 docs/about.html
 docs/index.html
 docs/install.html
-docs/nav.html
-docs/roadmap.html
-docs/team.html
-docs/trouble.html
-docs/upgrade.html
-- Revamped documentation links to point to the live documents.
-- Removed old and outdated docs.
-- Added overview that points people to dotproject.net website.
-
-2004-07-13 12:58  (robertoibarra)
----------------------------------
-modules/projects/vw_logs.php
-- Users sorted first name, last name as shown in the filter by user combo
-
-2004-07-12 21:27  (cyberhorse)
----------------------------------
-includes/db_adodb.php
-- clean the file a little ...
-
-2004-07-12 05:49  (ajdonnison)
----------------------------------
-index.php
-- Altered error setting so that errors are actually reported! Not sure
-- why this was set so that fatal errors were not reporting.
-
-2004-07-12 04:28  (ajdonnison)
 ...
 
 (This file has been wrapped)
