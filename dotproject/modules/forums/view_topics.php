@@ -1,9 +1,9 @@
 <?php
+$AppUI->savePlace();
 
 //Pull All Messages
 $sql = "
-SELECT fm1.message_id, fm1.message_parent, fm1.message_author, fm1.message_title,
-	fm1.message_date, fm1.message_published,
+SELECT fm1.*,
 	COUNT(fm2.message_id) AS replies,
 	DATE_FORMAT(MAX(fm2.message_date), '%d %b %Y %h:%i %p') AS latest_reply,
 	UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(MAX(fm2.message_date)) message_since,
@@ -33,23 +33,26 @@ GROUP BY
 	fm1.message_body,
 	fm1.message_published
 ";
-$prc = mysql_query($sql);
-##echo "<pre>$sql</pre>".mysql_error();
+$topics = db_loadList( $sql );
+##echo "<pre>$sql</pre>".db_error();
+
+$crumbs = array();
+$crumbs["?m=forums"] = "forums list";
 ?>
-<TABLE border=0 cellpadding=2 cellspacing=1 width="95%" >
-<TR>
-	<TD><A href="./index.php?m=forums">All forums</a></td>
-	<TD align="right">
+<table width="98%" cellspacing="1" cellpadding="2" border="0">
+<tr>
+	<td><?php echo breadCrumbs( $crumbs );?></td>
+	<td align="right">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button style="width:120;" value="start a new topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&post_message=1';">
+		<input type="button" class=button style="width:120;" value="<?php echo $AppUI->_( 'start a new topic' );?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&post_message=1';">
 	<?php } ?>
 	</td>
-</TR>
-</TABLE>
+</tr>
+</table>
 
-<TABLE border=0 cellpadding=2 cellspacing=1 width="95%" class=tbl>
-<form name="watcher" action="./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&f=<?php echo $f;?>" method="post">
-<TR>
+<table width="98%" cellspacing="1" cellpadding="2" border="0" class="tbl">
+<form name="watcher" action="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&f=<?php echo $f;?>" method="post">
+<tr>
 	<th>Watch</th>
 	<th>Topics</th>
 	<th>Author</th>
@@ -57,23 +60,21 @@ $prc = mysql_query($sql);
 	<th>Last Post</th>
 </tr>
 <?php 
-$n = mysql_num_rows($prc);
-for ($x=0; $x<$n; $x++) {
-	$row = mysql_fetch_array($prc);
+foreach ($topics as $row) {
 //JBF limit displayed messages to first-in-thread
 	if ($row["message_parent"] < 0) { ?>
-<TR>
-	<TD nowrap align=center>
+<tr>
+	<td nowrap align=center>
 		<input type="checkbox" name="forum_<?php echo $row['message_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?>>
 	</td>
-	<TD>
+	<td>
 		<span style="font-size:10pt;">
-		<A href="./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id . "&message_id=" . $row["message_id"];?>"><?php echo $row["message_title"];?></a>
+		<a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id . "&message_id=" . $row["message_id"];?>"><?php echo $row["message_title"];?></a>
 		</span>
 	</td>
-	<TD bgcolor=#dddddd><?php echo $row["user_username"];?></td>
-	<TD align=center><?php echo  $row["replies"];?></td>
-	<TD bgcolor=#dddddd>
+	<td bgcolor=#dddddd><?php echo $row["user_username"];?></td>
+	<td align=center><?php echo  $row["replies"];?></td>
+	<td bgcolor=#dddddd>
 <?php if ($row["latest_reply"]) {
 		echo $row["latest_reply"].'<br><font color=#999966>(';
 		if ($row["message_since"] < 3600) {
@@ -96,16 +97,16 @@ for ($x=0; $x<$n; $x++) {
 }?>
 </table>
 
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
+<table width="95%" border=0 cellpadding="0" cellspacing=1>
 <input type=hidden name=dosql value=watch_forum>
 <input type=hidden name=watch value=topic>
-<TR>
-	<TD>&nbsp;</td>
+<tr>
+	<td>&nbsp;</td>
 </tr>
-<TR>
-	<TD align="left">
-		<input type="submit" class=button value="update watches">
+<tr>
+	<td align="left">
+		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>">
 	</td>
 </tr>
 </form>
-</TABLE>
+</table>
