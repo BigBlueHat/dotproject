@@ -4,10 +4,10 @@ $keys = db_loadList( $sql );
 
 $syskey_id = isset( $_GET['syskey_id'] ) ? $_GET['syskey_id'] : 0;
 
-$crumbs = array();
-$crumbs["?m=system"] = "System Admin";
+$titleBlock = new CTitleBlock( 'System Lookup Keys', 'preference.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=system", "System Admin" );
+$titleBlock->show();
 ?>
-
 <script language="javascript">
 function delIt(id) {
 	if (confirm( 'Are you sure you want to delete this?' )) {
@@ -19,25 +19,7 @@ function delIt(id) {
 }
 </script>
 
-<table cellspacing="1" cellpadding="1" border="0" width="98%">
-<tr>
-	<td><img src="<?php echo dPfindImage( 'preference.gif', $m );?>" alt="" border="0"></td>
-	<td nowrap="nowrap"><h1><?php echo $AppUI->_('System Lookup Keys');?></h1></td>
-	<td nowrap="nowrap"><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
-	<td valign="top" align="right" width="100%"></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYSKEYS_IDX' );?></td>
-</tr>
-</table>
-
-<table cellspacing="0" cellpadding="4" border="0" width="98%">
-<tr>
-	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
-
-<span style="color:red"><strong>Note this function is still in development and testing phase</strong></span>
-
-<table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
 <tr>
 	<th>&nbsp;</th>
 	<th><?php echo $AppUI->_('Name');?></th>
@@ -51,7 +33,7 @@ function showRow($id=0, $name='', $label='') {
 	$s = '<tr>'.$CR;
 	if ($syskey_id == $id && $canEdit) {
 		$s .= '<form name="sysKeyFrm" method="post" action="?m=system&u=syskeys">'.$CR;
-		$s .= '<input type="hidden" name="dosql" value="do_syskey_aed" />'.$CR;
+		$s .= '<input type="hidden" name="dosql" value="syskeys/do_syskey_aed" />'.$CR;
 		$s .= '<input type="hidden" name="del" value="0" />'.$CR;
 		$s .= '<input type="hidden" name="syskey_id" value="'.$id.'" />'.$CR;
 
