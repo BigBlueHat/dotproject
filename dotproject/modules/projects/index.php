@@ -78,11 +78,35 @@ $tasks_sum = db_exec($sql);
 $sql = "
 CREATE TEMPORARY TABLE tasks_summy
  SELECT task_project, COUNT(distinct task_id) AS my_tasks
- FROM tasks 
+ FROM tasks
  WHERE task_owner = $AppUI->user_id GROUP BY task_project
 ";
 
 $tasks_summy = db_exec($sql);
+
+// temporary critical tasks
+$sql = "
+CREATE TEMPORARY TABLE tasks_critical
+ SELECT task_project, task_id AS critical_task, task_end_date AS project_actual_end_date
+ FROM tasks
+ LEFT JOIN projects ON project_id = task_project
+ GROUP BY task_project
+ ORDER BY task_end_date DESC
+";
+
+$tasks_critical = db_exec($sql);
+
+// temporary task problem logs
+$sql = "
+CREATE TEMPORARY TABLE tasks_problems
+ SELECT task_project, task_log_problem
+ FROM tasks
+ LEFT JOIN task_log ON task_log_task = task_id
+ WHERE task_log_problem > '0'
+ GROUP BY task_project
+";
+
+$tasks_problems = db_exec($sql);
 
 if(isset($department)){
 	//If a department is specified, we want to display projects from the department, and all departments under that, so we need to build that list of departments
@@ -102,6 +126,8 @@ SELECT
 	projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_color_identifier,
 	project_company, company_name, project_status, project_priority,
+        tasks_critical.critical_task, tasks_critical.project_actual_end_date,
+        tasks_problems.task_log_problem,
 	tasks_sum.total_tasks,
 	tasks_summy.my_tasks,
 	tasks_sum.project_percent_complete,
@@ -109,6 +135,8 @@ SELECT
 FROM permissions,projects
 LEFT JOIN companies ON projects.project_company = company_id
 LEFT JOIN users ON projects.project_owner = users.user_id
+LEFT JOIN tasks_critical ON projects.project_id = tasks_critical.task_project
+LEFT JOIN tasks_problems ON projects.project_id = tasks_problems.task_project
 LEFT JOIN tasks_sum ON projects.project_id = tasks_sum.task_project
 LEFT JOIN tasks_summy ON projects.project_id = tasks_summy.task_project"
 .(isset($department) ? "\nLEFT JOIN project_departments ON project_departments.project_id = projects.project_id" : '')."
