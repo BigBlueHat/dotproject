@@ -3,6 +3,8 @@
 ## Global General Purpose Functions
 ##
 
+$CR = "\n";
+
 ##
 ## Returns the best color based on a background color (x is cross-over)
 ##
@@ -116,7 +118,7 @@ function dPfindImage( $name, $module ) {
 #
 # function to return a default value if a variable is not set
 # (should we use something like this to clean up the code?)
-#  	
+#
 function defVal(&$var, $def) {
 	return isset($var) ? $var : $def;
 }
@@ -126,13 +128,13 @@ function defVal(&$var, $def) {
 #
 
 function defValArr(&$arr, $name, $def) {
-	return isset($arr[$name]) ? $arr[$name] : $def;	
+	return isset($arr[$name]) ? $arr[$name] : $def;
 }
 
 #
 # add history entries for tracking changes
 #
-	
+
 function addHistory( $description, $project_id = 0, $module_id = 0) {
 	global $AppUI;	
 	/*
@@ -141,13 +143,13 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	 * 		command(arg1, arg2...)
 	 *  for example:
 	 * 		new_forum('Forum Name', 'URL')
-	 * 
+	 *
 	 * This way, the history module will be able to display descriptions
 	 * using locale definitions:
 	 * 		"new_forum" -> "New forum '%s' was created" -> "Se ha creado un nuevo foro llamado '%s'"
-	 * 
+	 *
 	 * 2) project_id and module_id should be provided in order to filter history entries
-	 * 
+	 *
 	 */
 	if(!$AppUI->cfg['log_changes']) return;
 	$description = str_replace("'", "\'", $description);
@@ -156,6 +158,34 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	  		" VALUES ( '$description', " . $AppUI->user_id . ", now() )";
 	db_exec($psql);
 	echo db_error();
-}	
+}
+
+##
+## Looks up a value from the SYSVALS table
+##
+function dPgetSysVal( $title ) {
+	$sql = "
+	SELECT syskey_type, syskey_sep1, syskey_sep2, sysval_value
+	FROM sysvals,syskeys
+	WHERE sysval_title = '$title'
+		AND syskey_id = sysval_key_id
+	";
+	db_loadHash( $sql, $row );
+// type 0 = list
+	$sep1 = $row['syskey_sep1'];	// item separator
+	$sep2 = $row['syskey_sep2'];	// alias separator
+
+	$temp = explode( $sep1, $row['sysval_value'] );
+	$arr = array();
+	foreach ($temp as $item) {
+		$temp2 = explode( $sep2, $item );
+		if (isset( $temp2[1] )) {
+			$arr[$temp2[0]] = $temp2[1];
+		} else {
+			$arr[$temp2[0]] = $temp2[0];
+		}
+	}
+	return $arr;
+}
 
 ?>
