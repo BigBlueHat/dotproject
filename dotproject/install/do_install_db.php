@@ -187,6 +187,13 @@ $dPconfig = array(
  'base_url' => $baseUrl
 );
 
+// Version array for moving from version to version.
+$versionPath = array(
+	'1.0.2',
+	'2.0-alpha',
+	'2.0-beta'
+);
+
 $lastDBUpdate = '';
 
 require_once( "$baseDir/lib/adodb/adodb.inc.php" );
