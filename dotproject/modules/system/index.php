@@ -9,6 +9,7 @@ if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
+$AppUI->savePlace();
 ?>
 
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
@@ -40,5 +41,22 @@ if ($denyRead) {
 		<br /><a href="#">Date and Time</a>
 	</td>
 </tr>
+
+<tr>
+	<td>
+		<img src="./images/icons/preference.gif" width="32" height="32" border="0" alt="">
+	</td>
+	<td align="left" class="subtitle">
+		Preferences
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&a=addeditpref">Default User Preferences</a>
+	</td>
+</tr>
+
 </table>
 
