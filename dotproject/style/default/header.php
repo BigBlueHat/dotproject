@@ -76,6 +76,9 @@ function tboff(){
 	if ($AppUI->getProject()) {
 		echo '<input type="hidden" name="project_id" value="'.$AppUI->getProject().'">';
 	}
+	if ($AppUI->getDaySelected()) {
+		echo '<input type="hidden" name="uts" value="'.$AppUI->getDaySelected().'">';
+	}
 	if (isset( $company_id )) {
 		echo '<input type="hidden" name="company_id" value="'.$company_id.'">';
 	}
@@ -95,7 +98,5 @@ function tboff(){
 <td valign="top" align="left" width="100%">
 <?php 
 	echo $AppUI->getMsg();
-// legacy support
-	echo @$message;
 ?>
 <!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br> -->

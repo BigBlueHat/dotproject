@@ -132,7 +132,5 @@ echo implode( ' | ', $links );
 <td valign="top" align="center" width="98%">
 <?php 
 	echo $AppUI->getMsg();
-// legacy support
-	echo @$message;
 ?>
 <!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br> -->
