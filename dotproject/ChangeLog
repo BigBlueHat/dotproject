@@ -1,3 +1,29 @@
+2003-11-28 04:51  (dylan_cuthbert)
+---------------------------------
+modules/system/domodsql.php
+modules/system/viewmods.php
+- added "upgrade" option for modules, the upgrade function in the module's setup.php file
+- will be called with the old version no. if the version no. in the setup.php is newer
+- If you are unable to upgrade return false - if the upgrade succeeded return true and
+- the module's new config will be automatically saved
+- 
+- Also added confirmation yes/no dialogs for the deletion or upgrading of a module
+
+2003-11-27 15:48  (gregorerhardt)
+---------------------------------
+modules/forums/post_message.php
+- body of original message is now displayed in a textarea
+
+2003-11-27 14:11  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- translation of 'add' and 'edit'
+
+2003-11-23 09:24  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-22 13:14  (gregorerhardt)
 ---------------------------------
 modules/ticketsmith/attach.php
@@ -472,32 +498,6 @@ ChangeLog
 
 2003-09-16 19:37  (gregorerhardt)
 ---------------------------------
-locales/en/contacts.inc
-- added translation for vCard implementation
-
-2003-09-16 19:09  (ajdonnison)
----------------------------------
-modules/ticketsmith/comment.php
-- Removed extraneous .gif suffix causing problems loading image (bug 807307)
-
-2003-09-16 04:01  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-15 06:02  (gregorerhardt)
----------------------------------
-modules/contacts/index.php
-- we are now able to export vCards
-
-2003-09-15 06:02  (gregorerhardt)
----------------------------------
-modules/contacts/vcardexport.php
-- Initial Import of vCardExport
-
-2003-09-15 04:02  (kripper)
----------------------------------
-ChangeLog
 ...
 
 (This file has been wrapped)
