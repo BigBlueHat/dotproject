@@ -20,6 +20,7 @@ class CFile extends CDpObject {
 	var $file_date = NULL;
 	var $file_size = NULL;
 	var $file_version = NULL;
+        var $file_category = NULL;
 
 	
 	function CFile() {
