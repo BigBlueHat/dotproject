@@ -129,7 +129,12 @@ if ($search_pattern) {
             print("<tr>");
             for ($loop = 0; $loop < count($fields["columns"]); $loop++) {
                 print("<td align=\"" . $fields["aligns"][$loop] . "\">");
-                print(format_field($row[$fields["columns"][$loop]], $fields["types"][$loop]));
+		if ($loop==4) {
+                print(format_field($AppUI->_($row[$fields["columns"][$loop]]), $fields["types"][$loop]));
+		}
+		else {
+		print(format_field($row[$fields["columns"][$loop]], $fields["types"][$loop]));
+		}
                 print("</td>");
             }
             print("</tr>\n");
