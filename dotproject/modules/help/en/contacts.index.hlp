@@ -59,3 +59,7 @@ have suggestions on how you think the <strong>contacts module</strong> should fu
 	<li>Notes</li>
 </ul>
 <p>The search filter will be mantained until you click on the <b>reset search</b> button.</p>
+
+
+<h3>Exporting and Importing vCards</h3>
+<p>dotProject supports the vCard standard. So, contacts can easily managed, stored and shared. Note that dotProject at the moment only supports the existing fields for contacts. When importing any vCard additional data will be ignored. <br/>To export a vCard for an existing contact, click on the <strong>vCard</strong> link after the name of the contact.<br/> For importing a new contact from a vCard file, click on the <strong>Import vCard</strong> link on the upper right of the page on top of the table with the contacts. You're redirected to the Import vCard page where you have to choose the source file with the vCard data. Note that this vCard source file may contain several vCards which will be imported all at once. The imported vCards should now be visible as contacts from the contacts index page. <br/>Security / Privacy Note: Consider that any file that is uploaded by dotProject in order to be read or edited, is stored by the webserver in a temp directory (which is normally writable & readable for everyone on that webserver!).</p>
