@@ -1,7 +1,7 @@
 <?php /* $Id$ */ ?>
 <html>
 <head>
-	<title>dotProject Roadmap</title>
+	<title>dotProject System Check</title>
 	<meta name="Generator" content="EditPlus">
 	<meta name="Author" content="Andrew Eddie">
 	<meta name="Description" content="Troubleshooting dotProject">
