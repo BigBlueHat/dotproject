@@ -134,7 +134,6 @@ switch ($f) {
 	case 'unassigned':
 		$join .= "\n LEFT JOIN user_tasks ON tasks.task_id = user_tasks.task_id";
 		$where .= "
-					AND task_status > -1
 					AND user_tasks.task_id IS NULL";
 		break;
 	case 'taskcreated':
