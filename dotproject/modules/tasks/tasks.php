@@ -58,7 +58,7 @@ task_description, task_owner, user_username
 $from = "tasks";
 $join = "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
-$where = $project_id ? "\ntask_project = $project_id" : 'project_active <> 0';
+$where = $project_id ? "\ntask_project = $project_id" : 'project_active != 0';
 
 switch ($f) {
 	case 'all':
