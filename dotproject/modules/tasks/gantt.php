@@ -18,10 +18,11 @@ global $locale_char_set;
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
 $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
+$criticalTasks = ($project_id > 0) ? $project->getCriticalTasks($project_id) : NULL;
 
 // pull valid projects and their percent complete information
 $psql = "
-SELECT project_id, project_color_identifier, project_name
+SELECT project_id, project_color_identifier, project_name, project_start_date, project_end_date
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_active <> 0
@@ -114,8 +115,10 @@ for ($x=0; $x < $nums; $x++) {
 }
 
 $width      = dPgetParam( $_GET, 'width', 600 );
-$start_date = dPgetParam( $_GET, 'start_date', 0 );
-$end_date   = dPgetParam( $_GET, 'end_date', 0 );
+//consider critical (concerning end date) tasks as well
+$project_end = ($projects[$project_id]["project_end_date"] > $criticalTasks[0]['task_end_date']) ? $projects[$project_id]["project_end_date"] : $criticalTasks[0]['task_end_date'];
+$start_date = dPgetParam( $_GET, 'start_date', $projects[$project_id]["project_start_date"] );
+$end_date   = dPgetParam( $_GET, 'end_date', $project_end );
 
 $count = 0;
 
@@ -141,9 +144,9 @@ if ($start_date && $end_date) {
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 if ($showWork=='1') {
-	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name', UI_OUTPUT_RAW), $AppUI->_('Work'), $AppUI->_('Start', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW)),array(230,16, 60,60));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Work'), $AppUI->_('Start'), $AppUI->_('Finish')),array(230,16, 60,60));
 } else {
-	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name', UI_OUTPUT_RAW), $AppUI->_('Dur.'), $AppUI->_('Start', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW)),array(230,16, 60,60));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Dur.'), $AppUI->_('Start'), $AppUI->_('Finish')),array(230,16, 60,60));
 }
 
 $graph->scale->tableTitle->Set($projects[$project_id]["project_name"]);
@@ -338,7 +341,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 			$work_hours = db_loadResult($_days_sql) * $dPconfig['daily_working_hours'];
 			$work_hours += db_loadResult($_hours_sql);
 			//due to the round above, we don't want to print decimals unless they really exist
-			//$work_hours = rtrim($work_hours, "0");		
+			//$work_hours = rtrim($work_hours, "0");
 			$dur = $work_hours;
 
 			/*
