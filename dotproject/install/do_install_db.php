@@ -236,7 +236,10 @@ if ($do_cfg || $do_db_cfg){
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="100%" align="left">
         <tr>
             <td class="title" valign="top">Database Installation Feedback:</td>
-     <td class="item"><b style="color:<?php echo $dbErr ? 'red' : 'green'; ?>"><?php echo $dbMsg; ?></b></td>
+     <td class="item"><b style="color:<?php echo $dbErr ? 'red' : 'green'; ?>"><?php echo $dbMsg; ?></b><?php if ($dbErr) { ?> <br />
+		   Please note that errors relating to dropping indexes during upgrades are <b>NORMAL</b> and do not indicate a problem.
+			 <?php } ?>
+			 </td>
          <tr>
   <tr>
             <td class="title">Config File Creation Feedback:</td>
