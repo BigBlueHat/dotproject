@@ -1,3 +1,15 @@
+2004-04-08 16:39  (gnome444)
+---------------------------------
+modules/companies/index.php
+modules/companies/vw_companies.php
+- Change companies tab order to match projects.
+- All Companies is now on the left and is the default
+
+2004-04-08 03:51  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-04-07 19:56  (gnome444)
 ---------------------------------
 modules/projects/vw_idx_complete.php
@@ -486,18 +498,6 @@ includes/gateway.pl
 2004-02-07 14:47  (gnome444)
 ---------------------------------
 modules/tasks/addedit.php
-- Fix for undefined var with E_ALL
-
-2004-02-07 14:16  (gnome444)
----------------------------------
-modules/system/syskeys/index.php
-- Point to new help file
-
-2004-02-07 14:13  (gnome444)
----------------------------------
-modules/help/en/system.syskeys.index.hlp
-- Added system.syskeys.index.hlp with TaskCustomFields help notes
-
 ...
 
 (This file has been wrapped)
