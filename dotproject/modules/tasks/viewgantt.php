@@ -2,7 +2,7 @@
 GLOBAL $min_view, $m, $a;
 
 // re-set the memory limit for gantt chart drawing acc. to the config value of reset_memory_limit
-ini_set('memory_limit', $dPconfig['reset_memory_limit']);
+ini_set('memory_limit', dPgetParam($dPconfig, 'reset_memory_limit', 8*1024*1024));
 
 $min_view = defVal( @$min_view, false);
 
