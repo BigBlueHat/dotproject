@@ -636,7 +636,7 @@ class CAppUI {
 		require_once "$baseDir/classes/authenticator.class.php";
 
 		$auth_method = isset($dPconfig['auth_method']) ? $dPconfig['auth_method'] : 'sql';
-		if (@$_POST['login'] != 'login' && $_REQUEST['login'] != $auth_method)
+		if (@$_POST['login'] != 'login' && @$_POST['login'] != $this->_('login') && $_REQUEST['login'] != $auth_method)
 			die("You have chosen to log in using an unsupported or disabled login method '$_REQUEST[login]'");
 		$auth =& getauth($auth_method);
 		
