@@ -67,7 +67,7 @@ if (isset( $perms['all'] ) || isset( $perms['contacts'] )) { ?>
 	</TD>
 </TR>
 <?php }
-if (isset( $perms['all'] ) || isset( $perms['users'] )) { ?>
+if (isset( $perms['all'] ) || isset( $perms['forums'] )) { ?>
 <TR  <?php if($m == "use5rs"){?> bgcolor="#ffffff" <?php }?>>
 	<TD align="center" valign=middle class="clsBtnOff">
 	<table cellspacing=0 cellpadding=0 border=0><tr><td class="clsBtnOff"><A href="./index.php?m=forums"><img src="./images/icons/communicate.gif" alt="<?php echo ptranslate("Users and Communication");?>" border="0" width="30" height="30" onmouseover="doBtn();" onmouseout="doBtn();" onmousedown="doBtn();" onmouseup="doBtn();" ></a></td></tr></table>
