@@ -2,5 +2,5 @@
 GLOBAL $AppUI, $project_id, $deny, $canRead, $canEdit, $dPconfig;
 
 $showProject = false;
-require( "{$dPconfig['root_dir']}/modules/files/index_table.php" );
+require( "{$dPconfig['root_dir']}/modules/files/index_table.php?project_id=$project_id" );
 ?>
