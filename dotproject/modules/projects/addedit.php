@@ -1,6 +1,8 @@
 <?php /* PROJECTS $Id$ */
 $project_id = dPgetParam( $_GET, "project_id", 0 );
 
+require_once( $AppUI->getPearClass( 'Date' ) );
+
 // check permissions for this project
 $canEdit = !getDenyEdit( $m, $project_id );
 if (!$canEdit) {
@@ -30,19 +32,16 @@ if (!db_loadHash( $sql, $project ) && $project_id > 0) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
-$start_date->setFormat( $df );
+$start_date = new Date( $project["project_start_date"] );
 
 if ($project["project_end_date"]) {
-	$end_date = CDate::fromDateTime( $project["project_end_date"] );
-	$end_date->setFormat( $df );
+	$end_date = new Date( $project["project_end_date"] );
 } else {
 	$end_date = null;
 }
 
 if ($project["project_actual_end_date"]) {
-	$actual_end_date = CDate::fromDateTime( $project["project_actual_end_date"] );
-	$actual_end_date->setFormat( $df );
+	$actual_end_date = new Date( $project["project_actual_end_date"] );
 } else {
 	$actual_end_date = null;
 }
@@ -67,14 +66,18 @@ var calendarField = '';
 
 function popCalendar( field ){
 	calendarField = field;
-	uts = eval( 'document.frmEditProject.project_' + field + '.value' );
-	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
+	idate = eval( 'document.frmEditProject.project_' + field + '.value' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
-function setCalendar( uts, fdate ) {
-	fld_uts = eval( 'document.frmEditProject.project_' + calendarField );
+/**
+ *	@param string Input date in the format YYYYMMDD
+ *	@param string Formatted date
+ */
+function setCalendar( idate, fdate ) {
+	fld_date = eval( 'document.frmEditProject.project_' + calendarField );
 	fld_fdate = eval( 'document.frmEditProject.' + calendarField );
-	fld_uts.value = uts;
+	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
 
@@ -150,8 +153,8 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></td>
 			<td>
-				<input type="hidden" name="project_start_date" value="<?php echo $start_date->getTimestamp();?>" />
-				<input type="text" name="start_date" value="<?php echo $start_date->toString();?>" class="text" disabled="disabled" />
+				<input type="hidden" name="project_start_date" value="<?php echo $start_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>" />
+				<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
 				<a href="#" onClick="popCalendar('start_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
@@ -160,8 +163,8 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
 			<td>
-				<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->getTimestamp() : '-1';?>" />
-				<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->toString() : '';?>" class="text" disabled="disabled" />
+				<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>" />
+				<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 				<a href="#" onClick="popCalendar('end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
@@ -179,8 +182,8 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
 			<td>
-				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->getTimestamp() : '-1';?>" />
-				<input type="text" name="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->toString() : '';?>" class="text" disabled="disabled" />
+				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>" />
+				<input type="text" name="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 				<a href="#" onClick="popCalendar('actual_end_date','actual_end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
