@@ -140,6 +140,12 @@ $dPconfig["cal_working_days"]  = "1,2,3,4,5"; // days of week that the company w
 // set to "true" the restrict_task_time_editing flag
 $dPconfig["restrict_task_time_editing"] = false;
 
+
+// If you want the "Todo" list in the Today function to show,
+// Set the following to true.  Otherwise the first listed module
+// becomes the default view.
+$dPconfig["today_is_default_view"] = true;
+
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";

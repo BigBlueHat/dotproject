@@ -197,20 +197,22 @@ if ($AppUI->doLogin()) {
 	exit;
 }
 
-if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+// bring in the rest of the support and localisation files
+require_once( "./includes/permissions.php" );
 
-	// bring in the rest of the support and localisation files
-	require_once( "./includes/permissions.php" );
-
+$def_a = 'index';
+if ( $_GET['m'] == 'install' && $dPrunLevel < 2 ) {	// allow the install module to run without db
+	$m = 'install';
+} else if (! isset($_GET['m']) && $dPconfig['today_is_default_view']) {
+  	$m = 'calendar';
+	$def_a = 'day_view';
+	$AppUI->setState('CompVwTab', 1);
+} else {
 	// set the module from the url
 	$m = $AppUI->checkFileName(dPgetParam( $_GET, 'm', getReadableModule() ));
-
-} else {
-	$m = 'install';
 }
-
 // set the action from the url
-$a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', 'index' ));
+$a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', $def_a));
 
 /* This check for $u implies that a file located in a subdirectory of higher depth than 1
  * in relation to the module base can't be executed. So it would'nt be possible to
