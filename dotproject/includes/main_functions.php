@@ -139,6 +139,7 @@ function dPgetUsername( $user )
 
 function dPgetUsers()
 {
+global $AppUI;
         $usersql = "
         SELECT user_id, concat(contact_first_name,' ',contact_last_name) as name
         FROM users
