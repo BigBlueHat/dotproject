@@ -33,7 +33,7 @@
 	<title><?php echo $AppUI->cfg['page_title'];?></title>
 	<link rel="stylesheet" type="text/css" href="./style/default/main.css" />
 </head>
-<body>
+<body class="mainpage">
 <table class="nav" width="100%" cellpadding="0" cellspacing="2">
 <tr>
 	<td nowrap width="33%"><?php echo $AppUI->cfg['company_name'];?></td>
