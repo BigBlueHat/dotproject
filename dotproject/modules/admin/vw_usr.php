@@ -6,7 +6,7 @@
 	</td>
 	<?php if (dPgetParam($_REQUEST, "tab", 0) == 0){ ?>
 	<th width="125">
-	           <?php echo $AppUI->_('Loged in');?>
+	           <?php echo $AppUI->_('Login History');?>
 	</th>
 	<?php } ?>
 	<th width="150">
@@ -62,6 +62,7 @@ foreach ($users as $row) {
 	                       limit 1";
 	           $user_logs = db_loadList($sql);
 	           
+                if ($user_logs)
 	           foreach ($user_logs as $row_log) {
 	               if ($row_log["online"] == '1'){
 	                   echo $row_log["hours"]." ".$AppUI->_('hrs.'). "( ".$row_log["idle"]." ". $AppUI->_('hrs.')." ".$AppUI->_('idle'). ") - " . $AppUI->_('Online');  
@@ -69,6 +70,8 @@ foreach ($users as $row) {
 	                   echo $AppUI->_('Offline');
 	               }
 	} 
+                else
+                        echo $AppUI->_('Never Visited');
 	}?>
 	</td>
 	<td>
