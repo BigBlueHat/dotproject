@@ -90,37 +90,25 @@ if(isset($movetask)) {
 }
 
 // pull valid projects and their percent complete information
-
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
 	SUM(t1.task_duration*t1.task_precent_complete)/SUM(t1.task_duration) as project_precent_complete
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-WHERE project_active <> 0
-	AND permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)
 GROUP BY project_id
 ORDER BY project_name
 ";
 //echo "<pre>$psql</pre>";
 $prc = db_exec( $psql );
 echo db_error();
-$pnums = db_num_rows( $prc );
 
 $projects = array();
-for ($x=0; $x < $pnums; $x++) {
-	$z = db_fetch_assoc( $prc );
-	$projects[$z["project_id"]] = $z;
+while ($row = db_fetch_assoc( $prc )) {
+	$projects[$row["project_id"]] = $row;
 }
 
 // get any specifically denied tasks
-
 $sql = "
 SELECT task_id, task_id
 FROM tasks, permissions
@@ -129,14 +117,12 @@ WHERE permission_user = $AppUI->user_id
 	AND permission_item = task_id
 	AND permission_value = 0
 ";
-$deny = db_loadList( $sql );
+$deny = db_loadHashList( $sql );
 
 // pull tasks
-
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
-task_priority, task_precent_complete, task_duration, task_order, task_project,
-project_name
+task_priority, task_precent_complete, task_duration, task_order, task_project
 ";
 
 $from = "tasks";
@@ -171,6 +157,8 @@ switch ($f) {
 ";
 		break;
 }
+
+$where .= count($deny) > 0 ? "\nAND tasks.task_id NOT IN (" . implode( ',', $deny ) . ')' : '';
 
 $tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
 ##echo "<pre>$tsql</pre>".db_error();##
@@ -288,37 +276,34 @@ $crumbs["?m=tasks&a=todo"] = "my todo";
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
 reset( $projects );
-while (list( $k, ) = each( $projects ) ) {
-	$p = &$projects[$k];
+foreach ($projects as $k => $p) {
 	$tnums = count( @$p['tasks'] );
 // don't show project if it has no tasks
 	if ($tnums) {
 //echo '<pre>'; print_r($p); echo '</pre>';
+		if (!$min_view) {
 ?>
-
-<?php if (!$min_view) { ?>
 <tr>
 	<td>
-		<a href="index.php?m=tasks&f=<?php echo $f;?>&project_id=<?php echo $project_id ? 0 : $p["project_id"];?>">
+		<a href="index.php?m=tasks&f=<?php echo $f;?>&project_id=<?php echo $project_id ? 0 : $k;?>">
 			<img src="./images/icons/<?php echo $project_id ? 'expand.gif' : 'collapse.gif';?>" width="16" height="16" border="0" alt="<?php echo $project_id ? 'show other projects' : 'show only this project';?>">
 		</a>
 	</td>
 	<td colspan="8">
 		<table width="100%" border="0">
 		<tr>
-			<td nowrap style="border: outset #eeeeee 2px;background-color:<?php echo $p["project_color_identifier"];?>">
+			<td nowrap style="border: outset #eeeeee 2px;background-color:<?php echo @$p["project_color_identifier"];?>">
 				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
-				<span style='color:<?php echo bestColor( $p["project_color_identifier"] ); ?>;text-decoration:none;'><B><?php echo $p["project_name"];?></b></span></a>
+				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><B><?php echo @$p["project_name"];?></b></span></a>
 			</td>
-			<td width="<?php echo (101 - intval($p["project_precent_complete"]));?>%">
-				<?php echo (intval($p["project_precent_complete"]));?>%
+			<td width="<?php echo (101 - intval(@$p["project_precent_complete"]));?>%">
+				<?php echo (intval(@$p["project_precent_complete"]));?>%
 			</td>
 		</tr>
 		</table>
 </tr>
-<?php } ?>
-
 <?php
+		}
 		GLOBAL $done;
 		$done = array();
 		for ($i=0; $i < $tnums; $i++) {
@@ -338,7 +323,7 @@ while (list( $k, ) = each( $projects ) ) {
 		if($tnums && ENABLE_GANTT_CHARTS && !$min_view) { ?>
 		<tr>
 			<td colspan="8" align=right>
-				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $p["project_id"] ?>';">
+				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';">
 			</td>
 		</tr>
 		<?php }
