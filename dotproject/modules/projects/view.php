@@ -178,7 +178,7 @@ function delIt() {
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo htmlspecialchars( str_replace( chr(10), "<br />", $obj->project_description), ENT_QUOTES) ; ?>&nbsp;
+				<?php echo str_replace( chr(10), "<br>", $obj->project_description) ; ?>&nbsp;
 			</td>
 		</tr>
 		</table>
