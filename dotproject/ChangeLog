@@ -1,3 +1,28 @@
+2003-05-30 02:46  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+- Fixed bug when editting the company address 1
+
+2003-05-30 02:44  (eddieajau)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/links_events.php
+modules/calendar/view.php
+modules/calendar/week_view.php
+- Added support for events to span their proper time frame (courtesy of James Kist)
+- Also fixed month view links to return to the correct context
+
+2003-05-29 07:18  (eddieajau)
+---------------------------------
+index.php
+- Stamp for beta 2 dev
+
+2003-05-29 04:30  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-29 02:24  (eddieajau)
 ---------------------------------
 modules/help/en/help.toc.hlp
@@ -473,31 +498,6 @@ modules/tasks/addedit.php
 
 2003-05-11 08:19  (eddieajau)
 ---------------------------------
-modules/tasks/addedit.php
-- Fixed bug in the 'view this task' link
-- Fixed bug in the task_parent field
-
-2003-05-10 04:38  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-09 18:54  (kripper)
----------------------------------
-modules/tasks/todo.php
-- Added options for deleting and marking tasks as completed in the ToDo view.
-
-2003-05-09 06:25  (eddieajau)
----------------------------------
-modules/tasks/todo.php
-- Added 'min_view' support so this can be included in the calendar
-
-2003-05-09 06:24  (eddieajau)
----------------------------------
-modules/calendar/vw_day_tasks.php
-- Added task todo list
-
-2003-05-09 06:24  (eddieajau)
 ...
 
 (This file has been wrapped)
