@@ -28,7 +28,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 {
 
 	global $baseDir;
-	$latest_update = '20050314'; // Set to the latest upgrade date.
+	$latest_update = '20050316'; // Set to the latest upgrade date.
 
 	if (! $last_updated)
 		$last_updated = '00000000';
@@ -42,6 +42,9 @@ function dPupgrade($from_version, $to_version, $last_updated)
 		$nonadmin = $perms->get_group_id('non_admin', null, 'axo');
 		$perms->add_group_object($all_mods, 'app', 'task_log', 'axo');
 		$perms->add_group_object($nonadmin, 'app', 'task_log', 'axo');
+	}
+	if ($last_updated < 20050316) {
+		include "$baseDir/db/upgrade_contacts_company.php";
 	}
 	return $latest_update;
 }

@@ -27,7 +27,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 {
 
 	global $baseDir;
-	$latest_update = '20050304'; // Set to the latest upgrade date.
+	$latest_update = '20050316'; // Set to the latest upgrade date.
 
 	/**
 	 *  This segment will extract all the project/department and project/contact relational info and populate the project_departments and project_contacts tables.
@@ -90,10 +90,19 @@ function dPupgrade($from_version, $to_version, $last_updated)
 			}
 			include "$baseDir/db/upgrade_contacts.php";
 			include "$baseDir/db/upgrade_permissions.php";
-			include "$baseDir/db/upgrade_contacts_company.php";
 
 			// Fallthrough
-		case '20050304':
+		case '20050314':
+			// Add the permissions for task_log
+			dPmsg("Adding Task Log permissions");
+			$perms =& new dPacl;
+			$perms->add_object('app', 'Task Logs', 'task_log', 11, 0, 'axo');
+			$all_mods = $perms->get_group_id('all', null, 'axo');
+			$nonadmin = $perms->get_group_id('non_admin', null, 'axo');
+			$perms->add_group_object($all_mods, 'app', 'task_log', 'axo');
+			$perms->add_group_object($nonadmin, 'app', 'task_log', 'axo');
+		case '20050316':
+			include "$baseDir/db/upgrade_contacts_company.php";
 		default:
 			break;
 	}
