@@ -92,7 +92,7 @@ $forums = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();##
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Forums', 'communicate.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Forums', 'support.png', $m, "$m.$a" );
 $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size="1" class="text" onChange="document.forum_filter.submit();"', $f , true ), '',
 	'<form name="forum_filter" action="?m=forums" method="post">', '</form>'

@@ -36,7 +36,7 @@ if ($start_date) {
 }
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Forum', 'communicate.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Forum', 'support.png', $m, "$m.$a" );
 $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size="1" class="text" onchange="document.filterFrm.submit();"', $f , true), '',
 	'<form action="?m=forums&a=viewer&forum_id='.$forum_id.'" method="post" name="filterFrm">', '</form>'
