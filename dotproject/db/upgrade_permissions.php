@@ -179,3 +179,6 @@ foreach($custom_modules as $mod)
     $perms->addModuleSection($mod['permissions_item_table']);
 }
 ?>
+<center>
+  <p><p><h2><a href="../index.php">Upgrade Completed !!! - Click Here to login</a></h2>
+</center>
