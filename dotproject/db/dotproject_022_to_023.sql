@@ -68,3 +68,13 @@ ALTER TABLE `tasks` CHANGE `task_hours_worked` `task_hours_worked` FLOAT DEFAULT
 #
 ALTER TABLE `users` ADD `user_department` INT UNSIGNED DEFAULT "0" NOT NULL AFTER `user_company`;
 ALTER TABLE `users` CHANGE `user_type` `user_type` TINYINT UNSIGNED DEFAULT "0" NOT NULL;
+
+#
+# Events table
+#
+# The event_project field deprecates the event_parent field
+# event_parent is maintained for the moment to prevent errors
+#
+ALTER TABLE `events` ADD `event_owner` INT UNSIGNED DEFAULT "0";
+ALTER TABLE `events` ADD `event_project` INT UNSIGNED DEFAULT "0";
+ALTER TABLE `events` ADD `event_private` TINYINT UNSIGNED DEFAULT "0";
