@@ -165,7 +165,7 @@ class DBQuery {
     $this->addClause('query', $query);
   }
 
-  function addInsert($field, $value, $set = false)
+  function addInsert($field, $value, $set = false, $func = false)
   {
 		if ($set)
 		{
@@ -182,8 +182,10 @@ class DBQuery {
 			for($i = 0; $i < count($fields); $i++)
 			$this->addMap('value_list', $values[$i], $fields[$i]);
 		}
-		else
+		else if (!$func)
     	$this->addMap('value_list', $this->quote($value), $field);
+		else
+    	$this->addMap('value_list', $value, $field);
     $this->type = 'insert';
   }
 

@@ -273,7 +273,7 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 	 */
 	if(!$dPconfig['log_changes']) return;
 	$description = str_replace("'", "\'", $description);
-	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
+//	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
 	$q  = new DBQuery;
 	$q->addTable('modules');
 	$q->addWhere("mod_name = 'History' and mod_active = 1");
@@ -291,7 +291,7 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 	$q->addInsert('history_item', $id);
 	$q->addInsert('history_description', $description);
 	$q->addInsert('history_user', $AppUI->user_id);
-	$q->addInsert('history_date', "now()");
+	$q->addInsert('history_date', 'now()', false, true);
 	$q->addInsert('history_project', $project_id);
 	$q->addInsert('history_table', $table);
 	$q->exec();
