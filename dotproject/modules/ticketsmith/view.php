@@ -2,6 +2,10 @@
 $ticket = dPgetParam( $_GET, 'ticket', '' );
 $ticket_type = dPgetParam( $_GET, 'ticket_type', '' );
 
+$type_toggle = dPgetParam( $_POST, 'type_toggle', '' );
+$priority_toggle = dPgetParam( $_POST, 'priority_toggle', '' );
+$assignment_toggle = dPgetParam( $_POST, 'assignment_toggle', '' );
+
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Ticket', 'ticketsmith.gif', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
@@ -47,13 +51,18 @@ else {
 }
 
 /* perform updates */
+$orig_assignment = dPgetParam( $_POST, 'orig_assignment', '' );
+$author = dPgetParam( $_POST, 'author', '' );
+$priority = dPgetParam( $_POST, 'priority', '' );
+$subject = dPgetParam( $_POST, 'subject', '' );
+
 if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
     do_query("UPDATE tickets SET type = '$type_toggle', priority = '$priority_toggle', assignment = '$assignment_toggle' WHERE ticket = '$ticket'");
 	if(@$assignment_toggle != @$orig_assignment)
 	{
 		$mailinfo = query2hash("SELECT user_first_name, user_last_name, user_email from users WHERE user_id = $assignment_toggle");
 		
-		$message .= "<html>";
+		$message = "<html>";
 		$message .= "<head>";
 		$message .= "<style>";
 		$message .= ".title {";
@@ -109,8 +118,8 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 	<th colspan="2" align="center"><?php echo $title;?></th>
 </tr>
 
-<form name="form" action="index.php?m=ticketsmith&a=view" method="post">
-<input type="hidden" name="ticket" value="$ticket">
+<form name="form" action="index.php?m=ticketsmith&a=view&ticket=<?php echo $ticket;?>" method="post">
+<input type="hidden" name="ticket" value="$ticket" />
 
 <?php
 /* start form */
@@ -118,10 +127,10 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 /* get ticket */
 $ticket_info = query2hash("SELECT * FROM tickets WHERE ticket = $ticket");
 
-print("<input type=\"hidden\" name=\"orig_assignment\" value='" . $ticket_info["assignment"] . "'>\n");
-print("<input type=\"hidden\" name=\"author\" value='" . $ticket_info["author"] . "'>\n");
-print("<input type=\"hidden\" name=\"priority\" value='" . $ticket_info["priority"] . "'>\n");
-print("<input type=\"hidden\" name=\"subject\" value='" . $ticket_info["subject"] . "'>\n");
+print("<input type=\"hidden\" name=\"orig_assignment\" value='" . $ticket_info["assignment"] . "' />\n");
+print("<input type=\"hidden\" name=\"author\" value='" . $ticket_info["author"] . "' />\n");
+print("<input type=\"hidden\" name=\"priority\" value='" . $ticket_info["priority"] . "' />\n");
+print("<input type=\"hidden\" name=\"subject\" value='" . $ticket_info["subject"] . "' />\n");
 
 /* output ticket */
 for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
