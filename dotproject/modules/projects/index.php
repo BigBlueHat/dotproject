@@ -18,8 +18,8 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
 
-if (isset( $_REQUEST['company_id'] )) {
-	$AppUI->setState( 'ProjIdxCompany', $_REQUEST['company_id'] );
+if (isset( $_POST['company_id'] )) {
+	$AppUI->setState( 'ProjIdxCompany', $_POST['company_id'] );
 }
 $company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
 
@@ -80,7 +80,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap><span class="title"><?php echo $AppUI->_('Project Management');?></span></td>
-<form action="<?php echo $REQUEST_URI;?>" method="get" name="pickCompany">
+<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
 	<td align="right" width="100%">
 		<?php echo $AppUI->_('Company');?>:
 <?php
@@ -94,7 +94,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 <?php	
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&company_id=$company_id&orderby=$orderby", "./modules/projects", $tab );
+$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "./modules/projects", $tab );
 $tabBox->add( 'vw_idx_active', 'Active Projects' );
 $tabBox->add( 'vw_idx_archived', 'Archived Projects' );
 $tabBox->show();
