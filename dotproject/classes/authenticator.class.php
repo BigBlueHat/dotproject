@@ -160,7 +160,7 @@
 				$q->clear();
 				return false;
 			}
-			if (!$row = $q->fetchRow()) 
+			if (!$row = $q->fetchRow()) {
 				$q->clear();
 				return false;
 			}
