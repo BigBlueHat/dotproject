@@ -12,7 +12,9 @@ $date = $date !== '' ? $date : null;
 $this_month = new CDate( $date );
 
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
-
+?>
+<a href="javascript: void(0);" onClick="clickDay('', '');">clear date</a>
+<?php
 $cal = new CMonthCalendar( $this_month );
 $cal->setStyles( 'poptitle', 'popcal' );
 $cal->showWeek = false;
@@ -39,7 +41,6 @@ echo $cal->show();
 		window.close();
 	}
 </script>
-
 <table border="0" cellspacing="0" cellpadding="3" width="100%">
 	<tr>
 <?php
