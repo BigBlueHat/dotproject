@@ -1,0 +1,105 @@
+BODY {
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 10pt;
+}
+A:link {
+	color : BLUE;
+	text-decoration: none;
+}
+A:visited {
+	color : BLUE;
+	text-decoration: none;
+}
+A:active {
+	color : BLUE;
+	text-decoration: none;
+}
+
+TD {
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+}
+
+TR {
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+}
+FormButton {
+	FONT-FAMILY: Verdana,sans-serif; FONT-SIZE: 9pt; WIDTH: 110px
+}
+
+.title {
+	FONT-SIZE: 18pt; SIZE: 18pt;
+}
+
+bordertable{
+	border: 1px black solid;
+}
+
+button{
+	border: 1px black solid;
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+}
+
+.bordertable{
+ border: 1px black solid;
+}
+
+.button{
+ border: 1px black solid;
+ FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt;
+ width: 100px;
+}
+
+.text{
+ border: 1px black solid;
+ FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt;
+ height: 20px;
+}
+
+/*
+**********************************
+Begin IE TD buttonizing 
+**********************************
+*/
+
+TD.clsBtnUp{
+    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+}
+
+TD.clsBtnDown{
+    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+}
+
+TD.clsBtnOn{
+    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
+}
+
+TD.clsBtnOff{
+    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #97C3BB 2px;
+}
+
+TD.topBtnOff
+{
+    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
+}
+.mboxhdr {
+   background-color: #878676;   
+	color: white;   
+	list-style-type: disc;   
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+}
+
+.headergr{   background-color: #878676;   color: white;   list-style-type: disc;   list-style-position: inside;border: outset #eeeeee 1px;
+}
+.newmsg{
+   background-color: #dddddd;
+}
+.graybg{
+   background-color: #f4efe3;
+}
+
+.textarea{
+		FONT-FAMILY: verdana,Sans-Serif; 
+		FONT-SIZE: 9pt; 
+		width: 300px;
+		height: 300px;
+}

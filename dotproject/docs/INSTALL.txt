@@ -1,0 +1,82 @@
+Installing dotproject- hopefully an easy process
+
+This document assumes that you have a working web server 
+running apache+php+MYSQL and access to a MySQL database.
+
+1) 	Download the dotproject tarball from www.dotmarketing.org:
+		http://www.dotmarketing.org/dotproject/dotproject_02.tar.gz
+	
+2) 	Unpack the tarball in your web root directory:
+		tar -zxvf dotproject_02.tar.gz
+	
+3) 	Create a new mysql database called dotproject, create a 
+		new user called dotproject and grant access to user dotproject 
+		on the new dotproject database.
+	
+		mysql> CREATE database dotproject;
+		mysql> GRANT ALL PRIVILEGES ON dotproject.* TO dotproject@'localhost' IDENTIFIED 
+			BY 'yourpassword' WITH GRANT OPTION;
+	
+4) 	Slurp up the db schema and check your permissions at the same time: 
+		mysql -udotproject -pyourpassword dotproject < dotproject/db/dotproject.sql 
+
+	
+5) 	Edit the config file dotproject/includes/config.php and 
+		make the appropiate changes to db host, name, username, 
+		password and web root directory
+
+6) 	Point your browser to http://yourdomain.com/dotproject/index.php.  If 
+		all is well, you should see a login page. 
+		Username: admin
+		Password: passwd
+		
+7)		Click on the Users button and change the admin password as soon as possible.
+
+8) 	Have fun and send us the bug fixes!
+
+
+-dotmarketing team.
+
+
+
+---------------------------------------------------------------------------
+Web trouble ticket email gateway: dotproject/includes/gateway.pl
+---------------------------------------------------------------------------
+(from the ticketsmith installation)
+
+1.	Have a working perl install, with DBI and the DBD::MySQL bundles installed
+2.  Be sure to protect the gateway.pl file.  You basically need to do one 
+    of two things, either move it out of a web-accessible place or somehow 
+    protect it from being accessed over the web:
+    
+            <Files "gateway.pl">
+                    order deny,allow
+                    deny from all
+            </Files>
+    
+    If you don't protect it, one of two things will happen,  either users will be
+    able to see the source and thus grab your Ticketsmith MySQL password, or
+    something unpredictable will happen when Apache tries  to run it as a CGI
+    script.  I don't think this could be harmful, but hey,  you never know.
+
+
+
+7.  Edit the top of gateway.pl to fit your setup.
+
+
+    
+9.  Configure your MDA or MTA to pipe mail for your support list to gateway.pl.  For
+    example,  here is a sample procmail recipe:
+
+            :0
+            * (^To:|^CC:|^Cc:) .*support@foo.bar
+            |/path/to/gateway.pl
+
+    You can also set Ticketsmith up directly with sendmail in /etc/aliases: 
+
+            support: "|/path/to/gateway.pl"
+
+    Keep in mind that with sendmail you need to either put gateway.pl in 
+    /etc/smrsh or at least symlink to it from that directory so that 
+    sendmail will execute it.  If you do this, you'll have to point 
+    the /etc/aliases entry to the copy in /etc/smrsh.
