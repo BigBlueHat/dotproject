@@ -381,11 +381,12 @@ CREATE TABLE `user_preferences` (
 #   New admin email -> replace {admin@localhost}
 #
 
-INSERT INTO users VALUES (1,'admin',password('passwd'),0,'','Admin','Person',1,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
+INSERT INTO users VALUES (1,'admin',password('passwd'),0,1,'Admin','Person',1,0,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
 
 INSERT INTO permissions VALUES (1,1,"all",-1, -1);
 
 INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
 INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
 INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
+INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 
