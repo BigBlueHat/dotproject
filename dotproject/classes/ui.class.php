@@ -311,11 +311,20 @@ class CAppUI {
 * @param string A marker for a historic 'place, only -1 or an empty string is valid.
 */
 	function redirect( $params='', $hist='' ) {
+		$session_id = SID;
+
 		session_write_close();
 	// are the params empty
 		if (!$params) {
 		// has a place been saved
 			$params = !empty($this->state["SAVEDPLACE$hist"]) ? $this->state["SAVEDPLACE$hist"] : $this->defaultRedirect;
+		}
+		// Fix to handle cookieless sessions
+		if ($session_id != "") {
+		  if (!$params)
+		    $params = $session_id;
+		  else
+		    $params .= "&" . $session_id;
 		}
 		header( "Location: index.php?$params" ); 
 		exit();	// stop the PHP execution
