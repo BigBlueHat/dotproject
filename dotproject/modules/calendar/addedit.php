@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 // check permissions
 $denyEdit = getDenyEdit( $m );
 
@@ -35,10 +35,12 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 $start_date = $event["event_start_date"] ? new CDate( $event["event_start_date"] ) : new CDate();
 $start_date->setFormat( $df );
 $start_time = $start_date->getHours() * 60 + $start_date->getMinutes();
+$start_date->setTime( 0, 0, 0 );
 
 $end_date = $event["event_end_date"] ? new CDate( $event["event_end_date"] ) : new CDate();
 $end_date->setFormat( $df );
 $end_time = $end_date->getHours() * 60 + $end_date->getMinutes();
+$end_date->setTime( 0, 0, 0 );
 
 $recurs =  array (
 	'Never',
@@ -208,7 +210,7 @@ function setCalendar( uts, fdate ) {
 </tr>
 <tr>
 	<td colspan="2">
-		<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onClick="javascript:window.location='./index.php?m=events';">
+		<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onclick="javascript:history.back();">
 	</td>
 	<td align="right" colspan="2">
 		<input type="button" value="<?php echo $AppUI->_( 'submit' );?>" class="button" onClick="submitIt()">
