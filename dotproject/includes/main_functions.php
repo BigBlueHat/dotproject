@@ -84,18 +84,6 @@ function dPshowModuleConfig( $config ) {
 	return ($s);
 }
 ##
-## gets the list of active modules for a navigation menu
-##
-function dPgetMenuModules() {
-	$sql = "
-	SELECT mod_directory, mod_ui_name, mod_ui_icon
-	FROM modules
-	WHERE mod_active > 0 AND mod_ui_active > 0
-	ORDER BY mod_ui_order
-	";
-	return (db_loadList( $sql ));
-}
-##
 ## function to recussively find an image in a number of places
 ##
 function dPfindImage( $name, $module ) {
