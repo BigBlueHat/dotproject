@@ -241,12 +241,13 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	 * TODO:
 	 * 1) description should be something like:
 	 * 		command(arg1, arg2...)
+         *  The command should be as module_action
 	 *  for example:
-	 * 		new_forum('Forum Name', 'URL')
+	 * 		forums_new('Forum Name', 'URL')
 	 *
 	 * This way, the history module will be able to display descriptions
 	 * using locale definitions:
-	 * 		"new_forum" -> "New forum '%s' was created" -> "Se ha creado un nuevo foro llamado '%s'"
+	 * 		"forums_new" -> "New forum '%s' was created" -> "Se ha creado un nuevo foro llamado '%s'"
 	 *
 	 * 2) project_id and module_id should be provided in order to filter history entries
 	 *
@@ -262,8 +263,8 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	}
 
 	$psql =	"INSERT INTO history " .
-			"( history_description, history_user, history_date ) " .
-	  		" VALUES ( '$description', " . $AppUI->user_id . ", now() )";
+			"( history_description, history_user, history_date, history_project, history_module ) " .
+	  		" VALUES ( '$description', " . $AppUI->user_id . ", now(), '$project_id', '$module_id' )";
 	db_exec($psql);
 	echo db_error();
 }
