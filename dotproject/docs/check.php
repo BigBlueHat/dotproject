@@ -15,7 +15,14 @@
 <?php
 error_reporting( E_ALL );
 
-require "../includes/config.php";
+$baseDir = dirname(dirname(__FILE__));
+// automatically define the base url
+$baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
+$baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
+$baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? dirname(dirname($_SERVER['SCRIPT_NAME'])) : dirname(dirname(getenv('SCRIPT_NAME')));
+
+
+require "$baseDir/includes/config.php";
 
 if ($dbok = function_exists( 'mysql_pconnect' )) {
 	echo "<tr><td>MySQL</td><td>Available</td><td>OK</td></tr>";
@@ -69,8 +76,9 @@ foreach ($lc_list as $lc) {
 }
 echo "</td></tr>";
 
-$msg = get_cfg_var( 'session.auto_start' ) > 0 ? "<td class=warning>Try setting to 0 if you are having problems with WSOD</td>" : "<td>OK</td>";
-echo "<tr><td>session.auto_start</td><td>".get_cfg_var( 'session.auto_start' )."</td>$msg</tr>";
+$flag = get_cfg_var( 'session.auto_start' );
+$msg = $flag > 0 ? "<td class=warning>Try setting to 0 if you are having problems with WSOD</td>" : "<td>OK</td>";
+echo "<tr><td>session.auto_start</td><td>". ($flag > 0 ? 'ENABLED' : 'Disabled') ."</td>$msg</tr>";
 
 echo "<tr><td>session.save_handler</td><td>".get_cfg_var( 'session.save_handler' )."</td></tr>";
 
@@ -81,58 +89,37 @@ echo "<tr><td>session.serialize_handler</td><td>".get_cfg_var( 'session.serializ
 
 $cookies = intval( get_cfg_var( 'session.use_cookies' ) );
 $msg = $cookies ? "<td>OK</td>" : "<td class=warning>Try setting to 0 if you are having problems logging in</td>";
-echo "<tr><td>session.use_cookies</td><td>$cookies</td>$msg</tr>";
+echo "<tr><td>session.use_cookies</td><td>" . ($cookies ? 'Enabled' : 'DISABLED') . "</td>$msg</tr>";
 
 $sid = intval( get_cfg_var( 'session.use_trans_sid' ) );
 $msg = $sid ? "<td class=warning>There are security risks with this turned on</td>" : "<td>OK</td>";
-echo "<tr><td>session.use_trans_sid</td><td>$sid</td>$msg</tr>";
+echo "<tr><td>session.use_trans_sid</td><td>" . ($sid ? 'ENABLED' : 'Disabled') . "</td>$msg</tr>";
 
 $fup = get_cfg_var( 'file_uploads' );
 $msg = $fup ? "<td>OK</td>" : "<td class=warning>You won't be able to upload files</td>";
-echo "<tr><td>file_uploads</td><td>$fup</td>$msg</tr>";
+echo "<tr><td>file_uploads</td><td>" . ( $fup ? 'Enabled' : 'DISABLED')  . "</td>$msg</tr>";
 
 $iw = is_writable( "{$dPconfig['root_dir']}/locales/en" );
 $msg = $iw ? '<td>OK</td>' : '<td class=warning>Warning: you will not be able to save translation files.  Check the directory permissions.</td>';
-echo "<tr><td>/locales/en directory writable</td><td>$iw</td>$msg</tr>";
+echo "<tr><td>/locales/en directory writable</td><td>" . ($iw ? 'Yes' : 'NO') . "</td>$msg</tr>";
 
 $iw = is_writable( "{$dPconfig['root_dir']}/files" );
 $msg = $iw ? '<td>OK</td>' : '<td class=warning>Warning: you will not be able to upload files.  Check the directory permissions.</td>';
 
-echo "<tr><td>/files directory writable</td><td>$iw</td>$msg</tr>";
+echo "<tr><td>/files directory writable</td><td>" . ($iw ? 'Yes' : 'NO') . "</td>$msg</tr>";
 
 $iw = is_writable( "{$dPconfig['root_dir']}/files/temp" );
 $msg = $iw ? '<td>OK</td>' : '<td class=warning>Warning: you will not be able to make PDF\'s.  Check the directory permissions.</td>';
 
-echo "<tr><td>/files/temp directory writable</td><td>$iw</td>$msg</tr>";
+echo "<tr><td>/files/temp directory writable</td><td>" . ($iw ? 'Yes' : 'NO') . "</td>$msg</tr>";
 
-// Now check to see if the supplied root_dir is the same as the called URL.
-$url = strtr(dirname(dirname(__FILE__)), '\\', '/'); // Gets around problems with IIS, Yahoo
+// No longer need to check these as they are now determined automatically.
+// Simply print them out
 echo "<tr><td>root_dir</td><td>$dPconfig[root_dir]</td>";
-$dproot = strtr($dPconfig['root_dir'], '\\', '/');
-if ($url != $dproot) {
-  echo "<td class=error>root_dir seems to be incorrect, probably should be $url</td></tr>";
-} else {
-  echo "<td>OK</td></tr>";
-}
+echo "</tr>";
 
-$burl = preg_replace('/\/docs\/.*$/', '', $_SERVER['SCRIPT_NAME']);
-preg_match('_^(https?://)([^/]+)(:[0-9]+)?(/.*)?$_i', $dPconfig['base_url'], $url_parts);
 echo "<tr><td>base_url</td><td>$dPconfig[base_url]</td>";
-$server_port = $_SERVER['SERVER_PORT'];
-$https = isset($_SERVER['HTTPS']);
-if ($https)
-	$https = $_SERVER['HTTPS'] != 'off';
-
-$real_base =  ($https ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'];
-if ( $server_port != 80 && $server_port != 443 )
-	$real_base .= ":$server_port";
-$real_base .= $burl;
-if ($url_parts[2] != $_SERVER['SERVER_NAME']
-|| $url_parts[4] != $burl ) {
-	echo "<td class=error>base_dir seems to be incorrect, probably should be $real_base</td></tr>";
-} else {
-	echo "<td>OK</td></tr>";
-}
+echo "</tr>";
 
 echo "</table>";
 
