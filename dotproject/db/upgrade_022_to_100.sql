@@ -223,3 +223,40 @@ ALTER TABLE `tasks` ADD `task_duration_type` VARCHAR(6)  DEFAULT "hours" NOT NUL
 
 # UPDATE tasks SET task_duration_type = 'days' WHERE task_duration >= 24.0;
 # UPDATE tasks SET task_duration = task_duration/24.0 WHERE task_duration >= 24.0;
+
+# AJE (17/Feb/2003)
+
+#
+# Table structure for table 'syskeys'
+#
+
+CREATE TABLE `syskeys` (
+  `syskey_id` int(10) unsigned NOT NULL auto_increment,
+  `syskey_name` varchar(48) NOT NULL default '',
+  `syskey_label` varchar(255) NOT NULL default '',
+  `syskey_type` int(1) unsigned NOT NULL default '0',
+  `syskey_sep1` char(2) default '\n',
+  `syskey_sep2` char(2) NOT NULL default '|',
+  PRIMARY KEY  (`syskey_id`),
+  UNIQUE KEY `idx_syskey_name` (`syskey_id`)
+) TYPE=MyISAM;
+
+#
+# Table structure for table 'sysvals'
+#
+
+DROP TABLE IF EXISTS sysvals;
+CREATE TABLE sysvals (
+  sysval_id int(10) unsigned NOT NULL auto_increment,
+  sysval_key_id int(10) unsigned NOT NULL default '0',
+  sysval_title varchar(48) NOT NULL default '',
+  sysval_value text NOT NULL,
+  PRIMARY KEY  (sysval_id)
+) TYPE=MyISAM;
+
+#
+# Table structure for table 'sysvals'
+#
+
+INSERT INTO syskeys VALUES("1", "SelectList", "Enter values for list", "0", "\n", "|");
+INSERT INTO sysvals VALUES("1", "1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
