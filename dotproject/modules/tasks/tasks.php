@@ -287,7 +287,7 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 
         // prepare coloured highlight of task time information
 	$sign = 1;
-
+        $style = "";
         if ($start_date) {
                 if (!$end_date) {
                         $end_date = $start_date;
