@@ -1,11 +1,24 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+17 October 2002 (AJE):
+-----------------------------
+functions/admin_func.php
+- new file for definable user types
+
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+modules/admin/dosql.php
+- add support to edit user type
+
 20 September 2002 (AJE):
 -----------------------------
 module/ticketsmith/index.php
 module/ticketsmith/post_ticket.php
 dosql/ticket_aed.php
 - added functionality to add basic ticket from the browser
+
+includes/config.php
+- added secret word include
 
 includes/permissions.php
 - fixed login pybass security breach
