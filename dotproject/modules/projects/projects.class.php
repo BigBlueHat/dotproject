@@ -68,7 +68,9 @@ class CProject extends CDpObject {
 	}
 
 	function delete() {
-		$sql = "SELECT task_id FROM tasks WHERE task_project = $this->project_id";
+                $this->load($this->project_id);
+		addHistory('project_delete(' . $this->project_id . ', ' . $this->project_name . ')', $this->project_id, 'projects');
+                $sql = "SELECT task_id FROM tasks WHERE task_project = $this->project_id";
 		$tasks_to_delete = db_loadColumn ( $sql );
 		foreach ( $tasks_to_delete as $task_id ) {
 			db_delete( 'user_tasks', 'task_id', $task_id );
@@ -217,8 +219,10 @@ class CProject extends CDpObject {
 
 		if( $this->project_id ) {
 			$ret = db_updateObject( 'projects', $this, 'project_id', false );
+        		addHistory('project_update(' . $this->project_id . ', ' . $this->project_name . ')', $this->project_id, 'projects');
 		} else {
 			$ret = db_insertObject( 'projects', $this, 'project_id' );
+		        addHistory('project_add(' . $this->project_id . ', ' . $this->project_name . ')', $this->project_id, 'projects');
 		}
 		
 		//split out related departments and store them seperatly.
