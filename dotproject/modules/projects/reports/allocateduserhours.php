@@ -192,7 +192,7 @@ if($do_report){
 				}
 				
 				$array_sum = array_sum($user_usage[$user_id]);
-				$average_user_usage = number_format( ($array_sum/($working_days_count*$AppUI->getConfig("daily_working_hours")))*100, 2);
+				$average_user_usage   = number_format( ($array_sum/($working_days_count*$AppUI->getConfig("daily_working_hours")))*100, 2);
 				$allocated_hours_sum += $array_sum;
 				
 				$bar_color = "blue";
@@ -200,8 +200,8 @@ if($do_report){
 					$bar_color = "red";
 					$average_user_usage = 100;
 				}
-				$table_rows .= "<td ><div align='right'>". $average_user_usage ;
-				$table_rows .= "%</div>";
+				$table_rows .= "<td ><div align='right'>" . round($array_sum, 2) . " hrs. (" . $average_user_usage ;
+				$table_rows .= "%)</div>";
 				$table_rows .= "<div align='left' style='height:2px;width:$average_user_usage%; background-color:$bar_color'>&nbsp;</div></td>";
 				$table_rows .= "</tr>";
 				
