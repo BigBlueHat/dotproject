@@ -39,14 +39,14 @@ function show_history($history)
 	$table_id = (substr($module, -1) == 's'?substr($module, 0, -1):$module) . '_id';
         
         if ($module == 'login')
-               return 'User "' . $history['history_description'] . '" ' . $history['history_action'] . '.';
+               return 'User \'' . $history['history_description'] . '\' ' . $history['history_action'] . '.';
         
         if ($history['history_action'] == 'add')
                 $msg = 'Added new ';
         else if ($history['history_action'] == 'update')
                 $msg = 'Modified ';
         else if ($history['history_action'] == 'delete')
-                return 'Deleted "' . $history['history_description'] . '" from ' . $module . ' module.';
+                return 'Deleted \'' . $history['history_description'] . '\' from ' . $module . ' module.';
 
 	$sql = "SELECT $table_id
 		FROM $module 
