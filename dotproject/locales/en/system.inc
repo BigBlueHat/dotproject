@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"forum_descendent_order_tooltip"=>"If turned on, forum posts are sorted in descending order.  Leave off to sort in ascending order.",
 "Abbreviation",
 "All Events",
 "Are you sure you want to delete this?",
@@ -173,6 +174,7 @@ have access to the PHP log files.",
 "files_ci_preserve_attr_tooltip"=>"Keep file attributes during Check In.  If this is on, you will not t be able to change file type, project or task of a file during the check in.",
 "files_show_versions_edit_title"=>"Show Versions Edit",
 "files_show_versions_edit_tooltip"=>"Whether to show an edit icon in the html table with the previous file versions.",
+"forum_descendent_order_title"=>"Sort Forum Posts in Desc Order",
 "fr"=>"French",
 "hidden",
 "host_locale_title"=>"Host Locale",
