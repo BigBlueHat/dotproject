@@ -2,8 +2,8 @@
 
 /* $Id$ */
 
-require("config.inc.php");
-require("common.inc.php");
+require("modules/ticketsmith/config.inc.php");
+require("modules/ticketsmith/common.inc.php");
 if(empty($search_pattern)) $search_pattern = "";
 if(empty($search_field)) $search_field = "";
 if(empty($search_depth)) $search_depth = "";

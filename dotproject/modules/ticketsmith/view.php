@@ -9,8 +9,8 @@
 
 /* $Id$ */
 
-require("config.inc.php");
-require("common.inc.php");
+require("modules/ticketsmith/config.inc.php");
+require("modules/ticketsmith/common.inc.php");
 
 /* initialize fields */
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {

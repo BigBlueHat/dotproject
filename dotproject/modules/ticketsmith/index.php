@@ -9,8 +9,8 @@
 
 /* $Id$ */
 
-require("config.inc.php");
-require("common.inc.php");
+require("modules/ticketsmith/config.inc.php");
+require("modules/ticketsmith/common.inc.php");
 
 /* expunge deleted tickets */
 if (@$action == "expunge") {

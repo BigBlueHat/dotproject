@@ -2,8 +2,8 @@
 
 /* $Id$ */
 
-require("config.inc.php");
-require("common.inc.php");
+require("modules/ticketsmith/config.inc.php");
+require("modules/ticketsmith/common.inc.php");
 
 /* set title */
 $title = "Ticketsmith Login";
