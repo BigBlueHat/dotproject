@@ -1,7 +1,7 @@
 <?php  /* FORUMS $Id$ */
 $AppUI->savePlace();
-$sort = dPgetParam($_REQUEST, 'sort', 'desc');
-
+$sort = dPgetParam($_REQUEST, 'sort', 'asc');
+$viewtype = dPgetParam($_REQUEST, 'viewtype', 'normal');
 
 $sql = "
 SELECT forum_messages.*,
@@ -23,6 +23,34 @@ $crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
 ?>
 <script language="javascript">
 <?php
+if ($viewtype != 'normal')
+{
+?>
+        function toggle(id)
+        {
+<?php
+if ($viewtype == 'single')
+{
+?>
+                var elems = document.getElementsByTagName("div");
+                for (var i=0; i<elems.length; i++)
+                  if (elems[i].className == 'message')
+                        elems[i].style.display = 'none';
+                document.getElementById(id).style.display = 'block';
+
+<?php 
+}
+else if ($viewtype=='short')
+{
+?>
+                vista = (document.getElementById(id).style.display == 'none') ? 'block' : 'none';
+                document.getElementById(id).style.display = vista;
+<?php
+}
+?>
+        }
+<?php 
+}
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
@@ -38,10 +66,22 @@ function delIt(id){
 }
 <?php } ?>
 </script>
+<?php
+$thispage = "?m=$m&a=viewer&forum_id=$forum_id&message_id=$message_id&sort=$sort";
+// $thispage = $_PHP['self'];
+?>
 
-<table width="98%" cellspacing="1" cellpadding="2" border="0">
+<table width="98%" cellspacing="1" cellpadding="2" border="0" align="center">
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
+        <td>
+<form action="<?php echo $thispage; ?>" method="post">
+        View: 
+        <input type="radio" name="viewtype" value="normal" <?php echo ($viewtype == 'normal')?'checked':'';?> onClick="this.form.submit();" />Normal
+        <input type="radio" name="viewtype" value="short" <?php echo ($viewtype == 'short')?'checked':'';?> onClick="this.form.submit();" />Collapsed
+        <input type="radio" name="viewtype" value="single" <?php echo ($viewtype == 'single')?'checked':'';?> onClick="this.form.submit();" />Single Message at a time
+</form>
+        </td>
 	<td align="right">
         <?php $sort = ($sort == 'asc')?'desc':'asc'; ?>
 		<input type="button" class=button value="<?php echo $AppUI->_('Sort By Date') . ' (' . $sort . ')'; ?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=<?php echo $message_id;?>&sort=<?php echo $sort; ?>'" />
@@ -53,7 +93,7 @@ function delIt(id){
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl">
+<table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl" align="center">
 <!-- <form name="messageForm" method="POST" action="?m=forums&a=viewposts&forum_id=<?php echo $row['message_forum'];?>"> -->
 <form name="messageForm" method="POST" action="?m=forums&forum_id=<?php echo $row['message_forum'];?>">
 	<input type="hidden" name="dosql" value="do_post_aed" />
@@ -61,8 +101,12 @@ function delIt(id){
 	<input type="hidden" name="message_id" value="0" />
 </form>
 <tr>
-	<th nowrap><?php echo $AppUI->_('Author');?>:</th>
-	<th width="100%"><?php echo $AppUI->_('Message');?>:</th>
+<?php 
+if ($viewtype != 'short')
+	echo '<th nowrap>' .$AppUI->_('Author') .':</th>';
+echo '
+	<th width="'.(($viewtype=='single')?'60':'100').'%">'. $AppUI->_('Message').':</th>';
+?>
 </tr>
 
 <?php 
@@ -70,8 +114,17 @@ $x = false;
 
 $date = new CDate();
 $pdfdata = array();
+$pdfhead = array('Date', 'User', 'Message');
 
+if ($viewtype == 'single')
+{
+	$s = '';
+        $first = true;
+}
 foreach ($messages as $row) {
+        // Find the parent message - the topic.
+        if ($row['message_id'] == $message_id)
+                $topic = $row['message_title'];
 	$sql = "
 	SELECT DISTINCT contact_email, contact_first_name, contact_last_name, user_username
 	FROM users, forum_messages
@@ -81,11 +134,15 @@ foreach ($messages as $row) {
 	$editor = db_loadList( $sql );
 
 	$date = intval( $row["message_date"] ) ? new CDate( $row["message_date"] ) : null;
-
+if ($viewtype != 'single')
 	$s = '';
 	$style = $x ? 'background-color:#eeeeee' : '';
 
-	$s .= "<tr>";
+//!!! Different table building for the three different views
+// To be cleaned up, and reuse common code at later stage.
+if ($viewtype =='normal')
+{
+        $s .= "<tr>";
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
 	$s .= '<a href="mailto:'.$row["contact_email"].'">';
@@ -124,7 +181,60 @@ foreach ($messages as $row) {
 	$s .= '</td>';
 
 	$s .= '</tr>';
+}
+else if ($viewtype == 'short')
+{
+        $s .= "<tr>";
 
+        $s .= '<td valign="top" style="'.$style.'" >';
+        $s .= '<a href="mailto:'.$row["contact_email"].'">';
+        $s .= '<font size="2">'.$row['contact_first_name'].' '.$row['contact_last_name'].'</font></a>';
+        $s .= ' (' . $date->format( "$df $tf" ) . ') ';
+        if (sizeof($editor)>0) {
+                $s .= '<br/>&nbsp;<br/>'.$AppUI->_('last edited by');
+                $s .= ':<br/><a href="mailto:'.$editor[0]["contact_email"].'">';
+                $s .= '<font size="1">'.$editor[0]['contact_first_name'].' '.$editor[0]['contact_last_name'].'</font></a>';
+        }
+  $s .= '<a name="'.$row['message_id'].'" href="#'.$row['message_id'].'" onClick="toggle('.$row['message_id'].')">';
+        $s .= '<span size="2"><strong>'.$row["message_title"].'</strong></span></a>';
+        $s .= '<div class="message" id="'.$row['message_id'].'" style="display: none">';
+        $s .= str_replace( chr(13), "&nbsp;<br />", $row["message_body"] );
+        $s .= '</div></td>';
+
+        $s .= '</tr>';
+}
+else if ($viewtype == 'single')
+{
+        $s .= "<tr>";
+
+        $s .= '<td valign="top" style="'.$style.'">';
+        $s .= $date->format( "$df $tf" ).' - ';
+        $s .= '<a href="mailto:'.$row["contact_email"].'">';
+        $s .= '<font size="2">'.$row['contact_first_name'].' '.$row['contact_last_name'].'</font></a>';
+        $s .= '<br />';
+        if (sizeof($editor)>0) {
+                $s .= '<br/>&nbsp;<br/>'.$AppUI->_('last edited by');
+                $s .= ':<br/><a href="mailto:'.$editor[0]["contact_email"].'">';
+                $s .= '<font size="1">'.$editor[0]['contact_first_name'].' '.$editor[0]['contact_last_name'].'</font></a>';
+        }
+  $s .= '<a href="#" onClick="toggle('.$row['message_id'].')">';
+        $s .= '<span size="2"><strong>'.$row["message_title"].'</strong></span></a>';
+        $side .= '<div class="message" id="'.$row['message_id'].'" style="display: none">';
+        $side .= str_replace( chr(13), "&nbsp;<br />", $row["message_body"] );
+        $side .= '</div>';
+        $s .= '</td>';
+        if ($first)
+        {
+                $s .= '<td rowspan="'.count($messages).'" valign="top">';
+                echo $s;
+                $s = '';
+                $first = false;
+        }
+
+        $s .= '</tr>';
+}
+
+if ($viewtype != 'single')
 	echo $s;
 	$x = !$x;
 
@@ -133,8 +243,52 @@ $row['contact_first_name'] . ' ' . $row['contact_last_name'],
 '<b>' . $row['message_title'] . '</b>
 ' . $row['message_body']);
 }
+if ($viewtype == 'single')
+        echo $side . '</td>' . $s;
 ?>
 </table>
+
+
+<?php //PDF Creation
+$font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";
+$temp_dir = $dPconfig['root_dir']."/files/temp";
+$base_url  = $dPconfig['base_url'];
+require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
+
+$pdf = &new Cezpdf($paper='A4',$orientation='portrait');
+$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
+$pdf->selectFont( "$font_dir/Helvetica.afm" );
+$pdf->ezText('Project: ' . $forum['project_name']. '   Forum: '.$forum['forum_name'] );
+$pdf->ezText('Topic: ' . $topic);
+$pdf->ezText('');
+                $options = array(
+                        'showLines' => 1,
+                        'showHeadings' => 1,
+                        'fontSize' => 8,
+                        'rowGap' => 2,
+                        'colGap' => 5,
+                        'xPos' => 50,
+                        'xOrientation' => 'right',
+                        'width'=>'500'
+                );
+
+$pdf->ezTable( $pdfdata, $pdfhead, NULL, $options );
+
+if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
+                        fwrite( $fp, $pdf->ezOutput() );
+                        fclose( $fp );
+                        $crumbs["$base_url/files/temp/forum_$AppUI->user_id.pdf"] = "view PDF file";
+                        //echo "<a href=\"$base_url/files/temp/forum_$AppUI->user_id.pdf\" target=\"pdf\">";
+                        //echo $AppUI->_( "View PDF File" );
+                        //echo "</a>";
+                } else {
+                        echo "Could not open file to save PDF.  ";
+                        if (!is_writable( $temp_dir )) {
+                                "The files/temp directory is not writable.  Check your file system permissions.";
+                        }
+                }
+?>
+
 <table border=0 cellpadding=2 cellspacing=1 width="98%" >
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
@@ -147,41 +301,3 @@ $row['contact_first_name'] . ' ' . $row['contact_last_name'],
 	</td>
 </tr>
 </table>
-
-<?php //PDF Creation
-$font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";
-$temp_dir = $dPconfig['root_dir']."/files/temp";
-$base_url  = $dPconfig['base_url'];
-require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
-
-$pdf = &new Cezpdf($paper='A4',$orientation='portrait');
-$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
-$pdf->selectFont( "$font_dir/Helvetica.afm" );
-$pdf->ezText( 'Forum' );
-
-                $options = array(
-                        'showLines' => 1,
-                        'showHeadings' => 0,
-                        'fontSize' => 8,
-                        'rowGap' => 2,
-                        'colGap' => 5,
-                        'xPos' => 50,
-                        'xOrientation' => 'right',
-                        'width'=>'500'
-                );
-
-$pdf->ezTable( $pdfdata, NULL, NULL, $options );
-
-if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
-                        fwrite( $fp, $pdf->ezOutput() );
-                        fclose( $fp );
-                        echo "<a href=\"$base_url/files/temp/forum_$AppUI->user_id.pdf\" target=\"pdf\">";
-                        echo $AppUI->_( "View PDF File" );
-                        echo "</a>";
-                } else {
-                        echo "Could not open file to save PDF.  ";
-                        if (!is_writable( $temp_dir )) {
-                                "The files/temp directory is not writable.  Check your file system permissions.";
-                        }
-                }
-?>
