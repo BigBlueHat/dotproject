@@ -399,12 +399,14 @@ class CAppUI {
 		 * where appropriate.
 		 * AJD - 2004-12-10
 		 */
+                global $locale_char_set;
+                
 		switch ($flags & UI_OUTPUT_MASK) {
 			case UI_OUTPUT_HTML:
-				$str = htmlentities(stripslashes($str));
+				$str = htmlentities(stripslashes($str), ENT_COMPAT, $locale_char_set);
 				break;
 			case UI_OUTPUT_JS:
-				$str = addslashes(stripslashes($str));
+				$str = addslashes(stripslashes($str), ENT_COMPAT, $locale_char_set);
 				break;
 			case UI_OUTPUT_RAW: 
 				$str = stripslashes($str);
