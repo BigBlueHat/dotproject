@@ -10,7 +10,7 @@ $values = db_loadList( $sql );
 
 $sysval_id = isset( $_GET['sysval_id'] ) ? $_GET['sysval_id'] : 0;
 
-$titleBlock = new CTitleBlock( 'System Lookup Values', 'myevo-weather.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'System Lookup Values', 'myevo-weather.png', $m, "$m.$u.$a" );
 $titleBlock->addCrumb( "?m=system", "System Admin" );
 $titleBlock->show();
 ?>
