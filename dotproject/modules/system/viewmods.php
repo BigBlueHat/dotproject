@@ -8,7 +8,7 @@ $AppUI->setWarning( false );
 $sql = "SELECT * FROM modules ORDER BY mod_ui_order";
 $modules = db_loadList( $sql );
 
-// get the modules actually installed on the fiel system
+// get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs( "modules" );
 
 $crumbs = array();
