@@ -91,9 +91,12 @@ switch ($f) {
 $projects_filter = '';
 $tasks_filter = '';
 
+// TODO: Enable tasks filtering
+
 $join .= winnow( 'projects', 'tasks.task_project', $projects_filter, 'perm1' ) .
   winnow( 'tasks', 'tasks.task_id', $tasks_filter, 'perm2' );
-$where .= " AND ( ($projects_filter) OR ($tasks_filter) )";
+$where .= " AND ( ($projects_filter) )";
+// echo "<pre>$where</pre>";
 
 $tsql = "SELECT $select FROM $from $join WHERE $where" .
   "\nORDER BY project_id, task_percent_complete, task_start_date";
