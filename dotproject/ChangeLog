@@ -1,3 +1,55 @@
+2004-08-18 21:04  (gregorerhardt)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- removed some nowrap tags
+
+2004-08-18 20:58  (gregorerhardt)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- save session place
+
+2004-08-18 20:51  (gregorerhardt)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- rowspan, SQLsort, filterSelection corrected
+
+2004-08-18 20:04  (gregorerhardt)
+---------------------------------
+modules/tasks/index.php
+- usernames in filter should be sorted by username rather than by id
+
+2004-08-18 19:52  (gregorerhardt)
+---------------------------------
+modules/tasks/todo.php
+- print day names for dates
+
+2004-08-18 19:43  (gregorerhardt)
+---------------------------------
+modules/tasks/todo.php
+- sort by end date is better than by start date :)
+
+2004-08-18 19:28  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+- better approach for the top buttons
+
+2004-08-18 19:04  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+- put buttons twice on page, added button for save and add a new task
+
+2004-08-18 17:59  (gregorerhardt)
+---------------------------------
+modules/tasks/view.php
+modules/projects/view.php
+- added a button for new file for projects and tasks
+
+2004-08-18 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-17 08:00  (ajdonnison)
 ---------------------------------
 modules/projects/view.php
@@ -446,58 +498,6 @@ modules/calendar/day_view.php
 modules/calendar/index.php
 modules/calendar/links_tasks.php
 modules/calendar/vw_day_events.php
-modules/calendar/vw_day_tasks.php
-modules/calendar/week_view.php
-modules/companies/index.php
-modules/companies/view.php
-modules/contacts/vcardexport.php
-modules/departments/view.php
-modules/files/files.class.php
-modules/files/index.php
-modules/files/index_table.php
-modules/forums/forums.class.php
-modules/help/index.php
-modules/projects/addedit.php
-modules/projects/index.php
-modules/projects/reports.php
-modules/projects/view.php
-modules/projects/vw_files.php
-modules/public/calendar.php
-modules/public/chpwd.php
-modules/system/domodsql.php
-modules/system/translate.php
-modules/system/translate_save.php
-modules/system/viewmods.php
-modules/tasks/addedit.php
-modules/tasks/gantt.php
-modules/tasks/index.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/tasksperuser.php
-modules/tasks/view.php
-modules/ticketsmith/attach.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/view.php
-style/classic/header.php
-style/classic/login.php
-style/default/header.php
-style/default/login.php
-style/default/lostpass.php
-style/default/overrides.php
-- removed config variables from session data () for security reasons
-
-2004-07-25 07:49  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- had to fix little issues
-
-2004-07-24 12:04  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-07-24 11:58  (gregorerhardt)
----------------------------------
 ...
 
 (This file has been wrapped)
