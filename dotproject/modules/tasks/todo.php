@@ -1,7 +1,17 @@
 <?php /* TASKS $Id$ */
 
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
-$date = intval( dPgetParam( $_GET, 'date', '' ) );
+$date       = intval( dPgetParam( $_GET, 'date', '' ) );
+$user_id    = $AppUI->user_id;
+
+if(!getDenyRead("admin")){ // let's see if the user has sysadmin access
+	if(dPgetParam($_GET, "user_id", 0) != 0){ // lets see if the user wants to see anothers user mytodo
+		$user_id = dPgetParam($_GET, "user_id", $user_id);
+		$AppUI->setState("user_id", $user_id);
+	} else {
+		$user_id = $AppUI->getState("user_id");
+	}
+}
 
 // check permissions
 $canEdit = !getDenyEdit( $m );
@@ -48,7 +58,7 @@ $sql = "
   		 LEFT JOIN tasks AS parent ON a.task_parent = parent.task_id
 		 WHERE user_tasks.task_id = a.task_id
 		 AND b.task_id IS NULL
-		 AND user_tasks.user_id = $AppUI->user_id
+		 AND user_tasks.user_id = $user_id
 		 AND (a.task_percent_complete < 100 OR a.task_percent_complete IS NULL)
 		 AND a.task_start_date != ''
 		 AND a.task_end_date != ''
@@ -74,6 +84,7 @@ if (!@$min_view) {
 	$titleBlock->addCrumb( "?m=tasks", "tasks list" );
 	$titleBlock->show();
 }
+
 ?>
 
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
@@ -81,7 +92,14 @@ if (!@$min_view) {
 <input type="hidden" name="show_form" value="1" />
 
 <tr>
-	<td align="right" width="100%">
+	<td width="50%">
+		<?php
+			if($user_id != $AppUI->user_id){
+				echo $AppUI->_("Tasks for")." ".db_loadResult("select user_username from users where user_id=$user_id");
+			}
+		?>
+	</td>
+	<td align="right" width="50%">
 		<?php echo $AppUI->_('Show'); ?>:
 	</td>
 	<td>

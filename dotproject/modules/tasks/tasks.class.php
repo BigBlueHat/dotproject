@@ -383,7 +383,7 @@ class CTask extends CDpObject {
         
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
-
+		
 		$mail = new Mail;
 		
 		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);

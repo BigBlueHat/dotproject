@@ -8,6 +8,7 @@ $filters = array(
 	'myproj'       => 'My Projects',
 	'mycomp'       => 'All Tasks for my Company',
 	'unassigned'   => 'All Tasks (unassigned)',
+	'taskcreated'  => 'All Tasks I Have Created',
 	'all'          => 'All Tasks'
 );
 

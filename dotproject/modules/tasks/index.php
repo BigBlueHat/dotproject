@@ -1,7 +1,18 @@
 <?php /* TASKS $Id$ */
 $AppUI->savePlace();
-
 // retrieve any state parameters
+$user_id = $AppUI->user_id;
+if(!getDenyRead("admin")){ // Only sysadmins are able to change users
+	if(dPgetParam($_POST, "user_id", 0) != 0){ // this means that 
+		$user_id = dPgetParam($_POST, "user_id", 0);
+		$AppUI->setState("user_id", $_POST["user_id"]);
+	} else if ($AppUI->getState("user_id")){
+		$user_id = $AppUI->getState("user_id");
+	} else {
+		$AppUI->setState("user_id", $user_id);
+	}
+}
+
 if (isset( $_POST['f'] )) {
 	$AppUI->setState( 'TaskIdxFilter', $_POST['f'] );
 }
@@ -37,6 +48,20 @@ $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',
 	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>'
 );
+
+// Let's see if this user has admin privileges
+if(!getDenyRead("admin")){
+	$titleBlock->addCell("Tasks for:");
+	
+	$sql = "select user_id, user_username
+	        from users";
+	$user_list = db_loadHashList($sql);
+	$titleBlock->addCell(
+		arraySelect($user_list, "user_id", "size='1' class='text' onChange='document.userIdForm.submit();'", $user_id, false), "",
+		"<form action='?m=tasks' method='post' name='userIdForm'>","</form>"
+	);
+}
+
 $titleBlock->addCell();
 if ($canEdit && $project_id) {
 	$titleBlock->addCell(
@@ -49,11 +74,12 @@ if ( dPgetParam( $_GET, 'inactive', '' ) == 'toggle' )
 	$AppUI->setState( 'inactive', $AppUI->getState( 'inactive' ) == -1 ? 0 : -1 );
 $in = $AppUI->getState( 'inactive' ) == -1 ? '' : 'in';
 
-$titleBlock->addCrumb( "?m=tasks&a=todo", "my todo" );
+$titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
 $titleBlock->addCrumb( "?m=tasks&inactive=toggle", "show ".$in."active tasks" );
 $titleBlock->show();
 
 // include the re-usable sub view
 	$min_view = false;
 	include("{$AppUI->cfg['root_dir']}/modules/tasks/tasks.php");
+
 ?>

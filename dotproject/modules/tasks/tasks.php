@@ -2,6 +2,7 @@
 GLOBAL $m, $a, $project_id, $f, $min_view, $query_string, $durnTypes;
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
+GLOBAL $user_id;
 /*
 	tasks.php
 
@@ -67,7 +68,7 @@ task_description, task_owner, user_username, task_milestone
 $from = "tasks";
 $join = "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
-$where = $project_id ? "\ntask_project = $project_id" : 'project_active != 0';
+$where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
 
 switch ($f) {
 	case 'all':
@@ -76,7 +77,7 @@ switch ($f) {
 		$where .= "\n	AND task_parent = $task_id AND task_id != $task_id";	
 		break;
 	case 'myproj':
-		$where .= "\n	AND project_owner = $AppUI->user_id";
+		$where .= "\n	AND project_owner = $user_id";
 		break;
 	case 'mycomp':
 		$where .= "\n	AND project_company = $AppUI->user_company";
@@ -87,7 +88,7 @@ switch ($f) {
 		// and the project is not on hold nor completed
 		$where .= "
 					AND task_project             = projects.project_id
-					AND user_tasks.user_id       = $AppUI->user_id
+					AND user_tasks.user_id       = $user_id
 					AND user_tasks.task_id       = tasks.task_id
 					AND task_percent_complete    < '100'
 					AND projects.project_active  = '1'
@@ -110,11 +111,14 @@ switch ($f) {
 					AND task_status > -1
 					AND user_tasks.task_id IS NULL";
 		break;
+	case 'taskcreated':
+		$where .= " AND task_owner = '$user_id'";
+		break;
 	default:
 		$from .= ", user_tasks";
 		$where .= "
 	AND task_project = projects.project_id
-	AND user_tasks.user_id = $AppUI->user_id
+	AND user_tasks.user_id = $user_id
 	AND user_tasks.task_id = tasks.task_id";
 		break;
 }
