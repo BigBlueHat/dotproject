@@ -2,7 +2,7 @@
 global $AppUI, $task_id, $df, $canEdit;
 ?>
 <script language="JavaScript">
-function delIt(id) {
+function delIt2(id) {
 	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Task Log').'?';?>" )) {
 		document.frmDelete2.task_log_id.value = id;
 		document.frmDelete2.submit();
@@ -59,7 +59,7 @@ foreach ($logs as $row) {
 	$s .= '<td>'.str_replace(chr(10), "<br />",$row["task_log_description"]).'</td>';
 	$s .= "\n\t<td>";
 	if ($canEdit) {
-		$s .= "\n\t\t<a href=\"javascript:delIt({$row['task_log_id']});\" title=\"".$AppUI->_('delete log')."\">"
+		$s .= "\n\t\t<a href=\"javascript:delIt2({$row['task_log_id']});\" title=\"".$AppUI->_('delete log')."\">"
 			. "\n\t\t\t". dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
 			. "\n\t\t</a>";
 	}
