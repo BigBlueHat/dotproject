@@ -8,17 +8,19 @@ class forum_messages {
 		return new forum_messages();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Forum Messages')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=forums&a=view&forum_id=".$records["message_forum"]."&message_id=".$records["message_id"]."\">".$records["message_title"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["message_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=forums&a=view&forum_id=".$records["message_forum"]."&message_id=".$records["message_id"]."\">".$records["message_title"]."</a>\n";
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

@@ -9,17 +9,19 @@ class tasks {
 		return new tasks();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Task')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_id"]."\">".$records["task_name"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["task_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_id"]."\">".$records["task_name"]."</a>\n";
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}
@@ -36,11 +38,12 @@ class tasks {
 	function _buildQuery(){
 		$sql = "SELECT task_id, task_name"
 			 . "\nFROM $this->table"
-			 . "\nWHERE";
+			 . "\nWHERE (";
 		foreach($this->search_fields as $field){
 			$sql.=" $field LIKE '%$this->keyword%' or ";
 		}
 		$sql = substr($sql,0,-4);
+		$sql .= ") AND task_project != 0";
 		return $sql;
 	}
 }

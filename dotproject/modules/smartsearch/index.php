@@ -35,7 +35,7 @@ if (isset ($_POST['keyword']))
 
 	<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <?php
-
+    $perms = &$AppUI->acl();
 	sort($files);
 	foreach ($files as $tmp){
 		require_once('./modules/smartsearch/searchobjects/'.$tmp);
@@ -43,7 +43,7 @@ if (isset ($_POST['keyword']))
 		$temp .= '()';	
 		eval ("\$class_search = new $temp;");
 		$class_search->setKeyword($search->keyword);
-		$results = $class_search->fetchResults();
+		$results = $class_search->fetchResults($perms);
 		echo $results;
 	}
 ?>

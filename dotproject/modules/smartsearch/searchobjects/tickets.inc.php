@@ -9,17 +9,19 @@ class tickets {
 		return new tickets();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Tickets')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=ticketsmith&a=view&ticket=".$records["ticket"]."\">".$records["subject"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if($permissions->checkModuleItem($this->table, "view", $records["ticket"])){
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=ticketsmith&a=view&ticket=".$records["ticket"]."\">".$records["subject"]."</a>\n";
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

@@ -9,17 +9,19 @@ class companies {
 		return new companies();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Companies'). "</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=companies&a=view&company_id=".$records["company_id"]."\">".$records["company_name"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["company_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=companies&a=view&company_id=".$records["company_id"]."\">".$records["company_name"]."</a>\n";
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

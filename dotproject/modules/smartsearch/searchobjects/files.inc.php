@@ -8,17 +8,19 @@ class files {
 	function cfiles (){
 		return new files();
 	}
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Files')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=files&a=addedit&file_id=".$records["file_id"]."\">".$records["file_name"]."</a>".' &nbsp -- &nbsp '.$records["file_description"];
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "edit", $records["file_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=files&a=addedit&file_id=".$records["file_id"]."\">".$records["file_name"]."</a>".' &nbsp -- &nbsp '.$records["file_description"];
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

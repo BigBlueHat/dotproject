@@ -9,17 +9,19 @@ class users {
 		return new users();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Users')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=admin&a=viewuser&user_id=".$records["user_id"]."\">".$records["user_username"]."</a>\n";
-				$outstring .= "</td>";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["user_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=admin&a=viewuser&user_id=".$records["user_id"]."\">".$records["user_username"]."</a>\n";
+    				$outstring .= "</td>";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

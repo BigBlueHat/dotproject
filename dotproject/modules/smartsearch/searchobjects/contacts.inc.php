@@ -10,17 +10,19 @@ class contacts {
 		return new contacts();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Contacts')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=contacts&a=addedit&contact_id=".$records["contact_id"]."\">".$records["contact_first_name"]." ".$records["contact_last_name"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["contact_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=contacts&a=addedit&contact_id=".$records["contact_id"]."\">".$records["contact_first_name"]." ".$records["contact_last_name"]."</a>\n";
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

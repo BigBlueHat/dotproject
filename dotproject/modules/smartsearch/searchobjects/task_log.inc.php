@@ -8,17 +8,19 @@ class task_log {
 		return new task_log();
 	}
 	
-		function fetchResults(){
+		function fetchResults(&$permissions){
 			global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Task Log')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_log_task"]."&tab=1&task_log_id=".$records["task_log_id"]. "\">".$records["task_log_name"]."</a>\n";
-				$outstring .= "</td>";
+			    if ($permissions->checkModuleItem("tasks", "view", $records["task_log_task"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_log_task"]."&tab=1&task_log_id=".$records["task_log_id"]. "\">".$records["task_log_name"]."</a>\n";
+    				$outstring .= "</td>";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

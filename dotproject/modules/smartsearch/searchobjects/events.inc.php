@@ -8,17 +8,19 @@ class events {
 		return new events();
 	}
 	
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Events')."</th>\n";
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=calendar&a=view&event_id=".$records["event_id"]."\">".$records["event_title"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["event_id"])) {
+    				$outstring .= "<tr>";
+    				$outstring .= "<td>";
+    				$outstring .= "<a href = \"index.php?m=calendar&a=view&event_id=".$records["event_id"]."\">".$records["event_title"]."</a>\n";
+    				$outstring .= "</td>\n";
+			    }
 			}
 		$outstring .= "</tr>";
 		}

@@ -9,17 +9,23 @@ class projects {
 	}
 
 
-	function fetchResults(){
+	function fetchResults(&$permissions){
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
 		$outstring = "<th nowrap='nowrap' STYLE='background: #08245b' >".$AppUI->_('Projects')."</th>\n";
+		require_once($AppUI->getModuleClass("projects"));
 		if($results){
 			foreach($results as $records){
-				$outstring .= "<tr>";
-				$outstring .= "<td>";
-				$outstring .= "<a href = \"index.php?m=projects&a=view&project_id=".$records["project_id"]."\">".$records["project_name"]."</a>\n";
-				$outstring .= "</td>\n";
+			    if ($permissions->checkModuleItem($this->table, "view", $records["project_id"])) {
+			        $obj = new CProject();
+                    if (!in_array($records["project_id"], $obj->getDeniedRecords($AppUI->user_id))) {
+        				$outstring .= "<tr>";
+        				$outstring .= "<td>";
+        				$outstring .= "<a href = \"index.php?m=projects&a=view&project_id=".$records["project_id"]."\">".$records["project_name"]."</a>\n";
+        				$outstring .= "</td>\n";
+                    }
+			    }
 			}
 		$outstring .= "</tr>";
 		}
