@@ -5,7 +5,7 @@ $dept_id = isset($_GET['dept_id']) ? $_GET['dept_id'] : 0;
 $canRead = !getDenyRead( $m, $dept_id );
 $canEdit = !getDenyEdit( $m, $dept_id );
 
-if ($canRead) {
+if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 $AppUI->savePlace();
