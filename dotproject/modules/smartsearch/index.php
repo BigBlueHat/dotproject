@@ -1,24 +1,7 @@
 <?php
-function getArchivosDirectorio($directorio, $solo_directorios = false){
-	if(!is_dir($directorio)) return array();
-	
-	if($directorio == "") $directorio = "./";
-	
-	$this_dir     = dir($directorio);
-	$result_array = array();
-	while ($file = $this_dir->read()){
-		if($solo_directorios && !strstr($file, ".")){
-			$result_array[] = $file;
-		} else if(strstr($file, ".") && !$solo_directorios && !is_dir($file)){
-			$result_array[] = $file;
-		}
-	}
-	return $result_array;
-}
-                               
-$files = getArchivosDirectorio("./modules/smartsearch/searchobjects");
 
-require_once( $AppUI->getSystemClass( 'ui' ) );
+$files = $AppUI->readFiles( $AppUI->getConfig( 'root_dir' )."./modules/smartsearch/searchobjects", "\.php$" );
+
 require_once( $AppUI->getModuleClass('smartsearch') );
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing=1>
