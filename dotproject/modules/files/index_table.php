@@ -60,28 +60,29 @@ if ($canRead) {
 $fp=-1;
 $file_date = new CDate();
 
-foreach ($files as $row) {
-	$file_date = new CDate( $row['file_date'] );
-
-	if ($fp != $row["file_project"]) {
-		if (!$row["project_name"]) {
-			$row["project_name"] = $AppUI->_('All Projects');
-			$row["project_color_identifier"] = 'f4efe3';
+if(count($files)) {
+	foreach ($files as $row) {
+		$file_date = new CDate( $row['file_date'] );
+		
+		if ($fp != $row["file_project"]) {
+			if (!$row["project_name"]) {
+				$row["project_name"] = $AppUI->_('All Projects');
+				$row["project_color_identifier"] = 'f4efe3';
+			}
+			if ($showProject) {
+				$s = '<tr>';
+				$s .= '<td colspan="7" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
+				$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
+				  . $row["project_name"] . '</font>';
+				$s .= '</td></tr>';
+				echo $s;
+			}
 		}
-		if ($showProject) {
-			$s = '<tr>';
-			$s .= '<td colspan="7" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
-			$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
-			. $row["project_name"] . '</font>';
-			$s .= '</td></tr>';
-			echo $s;
-		}
-	}
-	$fp = $row["file_project"];
-?>
-<tr>
+		$fp = $row["file_project"];
+?>	
+<tr>	
 	<td nowrap="nowrap" width="20">
-	<?php if ($canEdit) {
+		<?php if ($canEdit) {
 		echo "\n".'<a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">';
 		echo dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
 		echo "\n</a>";
@@ -97,5 +98,8 @@ foreach ($files as $row) {
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
-<?php }?>
+<?php 
+	}
+}
+?>
 </table>
