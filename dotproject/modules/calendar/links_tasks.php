@@ -70,7 +70,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		}
 //echo "   -- durn=$durn";
 	// fill in between start and finish based on duration
-		if ($durn > 1) {
+		//if ($durn > 1) {		// commented out this line on 20040612 by gregorerhardt in order to fix #909085
+						// seems not breaking something
 	// notes:
 		// start date is not in a future month, must be this or past month
 		// start date is counted as one days work
@@ -104,7 +105,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 				}
 				$temp->addSeconds( $sid );
 			}
-		}
+		//}				// commented out this line on 20040612 by gregorerhardt in order to fix #909085
+						// seems not breaking something
 	}
 }
 ?>
