@@ -503,6 +503,12 @@ sub mail_report {
     $subject =~ s/\[\#\d+\](.*)/$1/;
     $boundary = "_lkqwkASDHASK89271893712893"; 
 
+    # check for possible mail loops
+    if ( $report_to_address == $report_from_address
+    || $author == $report_from_address ) {
+      print("Mail loop detected, not sending report\n");
+      return;
+    }
     # mail the report
     if ($debug) {
 	print "\nReport Mail:\n";
@@ -604,6 +610,12 @@ sub mail_acknowledgement {
     # remove ticket number
     $subject =~ s/\[\#\d+\](.*)/$1/;
     $boundary = "_lkqwkASDHASK89271893712893"; 
+
+    # Check for mail loops.
+    if ( $author == $report_to_address || $author == $report_from_address) {
+      print("Detected mail loop, not sending acknowledgment\n");
+      return;
+    }
 
     # mail the report
     if ($debug) {
