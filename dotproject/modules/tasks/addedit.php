@@ -113,11 +113,9 @@ ORDER BY task_project
 $projTasks = array( $obj->task_id => $AppUI->_('None') );
 $res = db_exec( $sql );
 while ($row = db_fetch_row( $res )) {
-	/*
-	if (strlen( $row[1] ) > 30) {
-		$row[1] = substr( $row[1], 0, 27 ).'...';
+	if (strlen( $row[1] ) > 60) {
+		$row[1] = substr( $row[1], 0, 57 ).'...';
 	}
-	*/
 	$projTasks[$row[0]] = $row[1];
 }
 
