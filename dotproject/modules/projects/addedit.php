@@ -1,64 +1,62 @@
 <?php
 $project_id = isset($HTTP_GET_VARS['project_id']) ? $HTTP_GET_VARS['project_id'] : 0;
 
-//pull users;
+// check permissions
+$denyEdit = getDenyEdit( $m, $project_id );
+
+if ($denyEdit) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=help&a=access_denied";
+	</script>
+';
+}
+
+// pull users;
 $usql = "select user_first_name, user_last_name, user_id from users order by user_last_name";
 $urc = mysql_query( $usql );
 
-//Pull companies
+// Pull companies
 $csql = "select company_name, company_id from companies order by company_name";
 $crc = mysql_query( $csql );
 $cexists = mysql_num_rows( $crc );
 
 //pull projects
-$psql = "
-select
-	project_id,
-	project_company,
-	project_name,
-	project_short_name,
-	project_owner,
-	project_url,
-	project_demo_url,
-	project_start_date,
-	project_end_date,
-	project_actual_end_date,
-	project_status,
-	project_color_identifier,
-	project_description,
-	project_target_budget,
-	project_actual_budget,
-	project_creator,
-	project_active,
-	count(tasks.task_id)  as countt,
-	avg(tasks.task_precent_complete) as project_precent_complete
-from projects left join tasks on projects.project_id = tasks.task_project
-where project_id = $project_id
-group by project_id
-";
+$psql = "SELECT * FROM projects WHERE project_id = $project_id";
 $prc = mysql_query( $psql );
 echo mysql_error();
-$prow = mysql_fetch_array( $prc );
+$prow = mysql_fetch_array( $prc, MYSQL_ASSOC );
 
 if (strlen( $prow["project_start_date"] ) == 0) {
-	$start_date = date(time());
+	$start_date = date( time() );
 } else {
-	$start_date = mktime( 0, 0, 0, substr($prow["project_start_date"],5,2), substr($prow["project_start_date"],8,2), substr($prow["project_start_date"],0,4) );
+	$start_date = mktime( 0, 0, 0, substr($prow["project_start_date"],5,2),
+		substr($prow["project_start_date"],8,2), 
+		substr($prow["project_start_date"],0,4)
+	);
 }
 
 if (strlen( $prow["project_end_date"] ) == 0) {
 	$end_date = date(time()+(3600*24));
 } else {
-	$end_date = mktime( 0, 0, 0, substr($prow["project_end_date"],5,2), substr($prow["project_end_date"],8,2), substr($prow["project_end_date"],0,4) );
+	$end_date = mktime( 0, 0, 0, substr($prow["project_end_date"],5,2),
+		substr($prow["project_end_date"],8,2),
+		substr($prow["project_end_date"],0,4) 
+	);
 	//$end_date = $prow["project_end_date"];
 }
 
 if (strlen( $prow["project_actual_end_date"] ) ==0) {
 	$actual_end_date = 0;
 } else {
-	$actual_end_date = mktime( 0, 0, 0, substr($prow["project_actual_end_date"],5,2), substr($prow["project_actual_end_date"],8,2), substr($prow["project_actual_end_date"],0,4) );
+	$actual_end_date = mktime( 0, 0, 0, substr($prow["project_actual_end_date"],5,2),
+		substr($prow["project_actual_end_date"],8,2),
+		substr($prow["project_actual_end_date"],0,4) );
 }
 
+// some constants
+$days = array('',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
+$months = array( '','Jan','Feb','Mar','Apr','Mar','Jun','Jul','Aug','Sep','Oct','Nov','Dec' );
+$years = array('',2000=>2000,2001,2002,2003,2004,2005,2006,207,2008,2009);
 ?>
 <SCRIPT language="javascript">
 function setColor() {
@@ -178,7 +176,7 @@ if (!$cexists) {
 				<span class="FormElementRequired">*</span></span>
 				<br><select name="project_company" style="width:200px;">
 			<?php
-				while ($row = mysql_fetch_array( $crc )) {
+				while ($row = mysql_fetch_array( $crc, MYSQL_ASSOC )) {
 					echo '<option value="' . $row["company_id"] . '"'
 						. (($row["company_id"] == $prow["project_company"]) ? ' selected' : '')
 						. '>' . $row["company_name"];
@@ -207,65 +205,9 @@ if (!$cexists) {
 		<tr>
 			<td valign="bottom">
 				<span id="startmmint"><span class="FormLabel">start date (mm/dd/yy)</span></span><br>
-<select name="StartMM_int" size="1">
-<OPTION VALUE="1" <?php if(@date("m", $start_date) == 1){?>selected<?php }?>>Jan
-<OPTION VALUE="2" <?php if(@date("m", $start_date) == 2){?>selected<?php }?>>Feb
-<OPTION VALUE="3" <?php if(@date("m", $start_date) == 3){?>selected<?php }?>>Mar
-<OPTION VALUE="4" <?php if(@date("m", $start_date) == 4){?>selected<?php }?>>Apr
-<OPTION VALUE="5" <?php if(@date("m", $start_date) == 5){?>selected<?php }?>>May
-<OPTION VALUE="6" <?php if(@date("m", $start_date) == 6){?>selected<?php }?>>Jun
-<OPTION VALUE="7" <?php if(@date("m", $start_date) == 7){?>selected<?php }?>>Jul
-<OPTION VALUE="8" <?php if(@date("m", $start_date) == 8){?>selected<?php }?>>Aug
-<OPTION VALUE="9" <?php if(@date("m", $start_date) == 9){?>selected<?php }?>>Sep
-<OPTION VALUE="10" <?php if(@date("m", $start_date) == 10){?>selected<?php }?>>Oct
-<OPTION VALUE="11" <?php if(@date("m", $start_date) == 11){?>selected<?php }?>>Nov
-<OPTION VALUE="12" <?php if(@date("m", $start_date) == 12){?>selected<?php }?>>Dec
-</select>/
-<select name="StartDD_int" size="1">
-<OPTION VALUE="1" <?php if(@date("d", $start_date) == 1){?>selected<?php }?>>1
-<OPTION VALUE="2" <?php if(@date("d", $start_date) == 2){?>selected<?php }?>>2
-<OPTION VALUE="3" <?php if(@date("d", $start_date) == 3){?>selected<?php }?>>3
-<OPTION VALUE="4" <?php if(@date("d", $start_date) == 4){?>selected<?php }?>>4
-<OPTION VALUE="5" <?php if(@date("d", $start_date) == 5){?>selected<?php }?>>5
-<OPTION VALUE="6" <?php if(@date("d", $start_date) == 6){?>selected<?php }?>>6
-<OPTION VALUE="7" <?php if(@date("d", $start_date) == 7){?>selected<?php }?>>7
-<OPTION VALUE="8" <?php if(@date("d", $start_date) == 8){?>selected<?php }?>>8
-<OPTION VALUE="9" <?php if(@date("d", $start_date) == 9){?>selected<?php }?>>9
-<OPTION VALUE="10" <?php if(@date("d", $start_date) == 10){?>selected<?php }?>>10
-<OPTION VALUE="11" <?php if(@date("d", $start_date) == 11){?>selected<?php }?>>11
-<OPTION VALUE="12" <?php if(@date("d", $start_date) == 12){?>selected<?php }?>>12
-<OPTION VALUE="13" <?php if(@date("d", $start_date) == 13){?>selected<?php }?>>13
-<OPTION VALUE="14" <?php if(@date("d", $start_date) == 14){?>selected<?php }?>>14
-<OPTION VALUE="15" <?php if(@date("d", $start_date) == 15){?>selected<?php }?>>15
-<OPTION VALUE="16" <?php if(@date("d", $start_date) == 16){?>selected<?php }?>>16
-<OPTION VALUE="17" <?php if(@date("d", $start_date) == 17){?>selected<?php }?>>17
-<OPTION VALUE="18" <?php if(@date("d", $start_date) == 18){?>selected<?php }?>>18
-<OPTION VALUE="19" <?php if(@date("d", $start_date) == 19){?>selected<?php }?>>19
-<OPTION VALUE="20" <?php if(@date("d", $start_date) == 20){?>selected<?php }?>>20
-<OPTION VALUE="21" <?php if(@date("d", $start_date) == 21){?>selected<?php }?>>21
-<OPTION VALUE="22" <?php if(@date("d", $start_date) == 22){?>selected<?php }?>>22
-<OPTION VALUE="23" <?php if(@date("d", $start_date) == 23){?>selected<?php }?>>23
-<OPTION VALUE="24" <?php if(@date("d", $start_date) == 24){?>selected<?php }?>>24
-<OPTION VALUE="25" <?php if(@date("d", $start_date) == 25){?>selected<?php }?>>25
-<OPTION VALUE="26" <?php if(@date("d", $start_date) == 26){?>selected<?php }?>>26
-<OPTION VALUE="27" <?php if(@date("d", $start_date) == 27){?>selected<?php }?>>27
-<OPTION VALUE="28" <?php if(@date("d", $start_date) == 28){?>selected<?php }?>>28
-<OPTION VALUE="29" <?php if(@date("d", $start_date) == 29){?>selected<?php }?>>29
-<OPTION VALUE="30" <?php if(@date("d", $start_date) == 30){?>selected<?php }?>>30
-<OPTION VALUE="31" <?php if(@date("d", $start_date) == 31){?>selected<?php }?>>31
-</select>/
-<select name="StartYYYY_int" size="1"><OPTION VALUE="1999">1999
-<OPTION VALUE="2000" <?php if(@date("Y", $start_date) == 2000){?>selected<?php }?>>2000
-<OPTION VALUE="2001" <?php if(@date("Y", $start_date) == 2001){?>selected<?php }?>>2001
-<OPTION VALUE="2002" <?php if(@date("Y", $start_date) == 2002){?>selected<?php }?>>2002
-<OPTION VALUE="2003" <?php if(@date("Y", $start_date) == 2003){?>selected<?php }?>>2003
-<OPTION VALUE="2004" <?php if(@date("Y", $start_date) == 2004){?>selected<?php }?>>2004
-<OPTION VALUE="2005" <?php if(@date("Y", $start_date) == 2005){?>selected<?php }?>>2005
-<OPTION VALUE="2006" <?php if(@date("Y", $start_date) == 2006){?>selected<?php }?>>2006
-<OPTION VALUE="2007" <?php if(@date("Y", $start_date) == 2007){?>selected<?php }?>>2007
-<OPTION VALUE="2008" <?php if(@date("Y", $start_date) == 2008){?>selected<?php }?>>2008
-<OPTION VALUE="2009" <?php if(@date("Y", $start_date) == 2009){?>selected<?php }?>>2009
-</select>
+				<?php echo arraySelect( $months, 'StartMM_int', 'size=1', @date("m", $start_date) ); ?> /
+				<?php echo arraySelect( $days, 'StartDD_int', 'size=1', @date("d", $start_date) ); ?> /
+				<?php echo arraySelect( $years, 'StartYYYY_int', 'size=1', @date("Y", $start_date) ); ?>
 			</td>
 			<td valign="bottom">
 				<a href="#" onClick="popCalendar('Start')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="popCalendar('Start')">pop calendar</A>
@@ -282,14 +224,7 @@ if (!$cexists) {
 		</TR>
 		<TR>
 			<TD>
-				<select name="project_status">
-				<option value="0" <?php if($prow["project_status"] ==0){?>selected<?php }?>>Not Defined
-				<option value="1" <?php if($prow["project_status"] ==1){?>selected<?php }?>>Proposed
-				<option value="2" <?php if($prow["project_status"] ==2){?>selected<?php }?>>In planning
-				<option value="3" <?php if($prow["project_status"] ==3){?>selected<?php }?>>In progress
-				<option value="4" <?php if($prow["project_status"] ==4){?>selected<?php }?>>On hold
-				<option value="5" <?php if($prow["project_status"] ==5){?>selected<?php }?>>Complete
-				</select>
+				<?php echo arraySelect( $pstatus, 'project_status', 'size=1', $prow["project_status"] ); ?> 
 			</TD>
 			<TD><b><?php echo intval(@$prow["project_precent_complete"]);?> %</b></TD>
 			<TD><input type=checkbox value=1 name=project_active <?php if($prow["project_active"]){?>checked<?php }?>></TD>
@@ -307,64 +242,9 @@ if (!$cexists) {
 		<tr>
 			<td>
 				<span id="targetmmint"><span class="FormLabel">target finish date (mm/dd/yy)</span></span><br>
-				<select name="TargetMM_int" size="1">
-<OPTION VALUE="1" <?php if(@date("m", $end_date) == 1){?>selected<?php }?>>Jan
-<OPTION VALUE="2" <?php if(@date("m", $end_date) == 2){?>selected<?php }?>>Feb
-<OPTION VALUE="3" <?php if(@date("m", $end_date) == 3){?>selected<?php }?>>Mar
-<OPTION VALUE="4" <?php if(@date("m", $end_date) == 4){?>selected<?php }?>>Apr
-<OPTION VALUE="5" <?php if(@date("m", $end_date) == 5){?>selected<?php }?>>May
-<OPTION VALUE="6" <?php if(@date("m", $end_date) == 6){?>selected<?php }?>>Jun
-<OPTION VALUE="7" <?php if(@date("m", $end_date) == 7){?>selected<?php }?>>Jul
-<OPTION VALUE="8" <?php if(@date("m", $end_date) == 8){?>selected<?php }?>>Aug
-<OPTION VALUE="9" <?php if(@date("m", $end_date) == 9){?>selected<?php }?>>Sep
-<OPTION VALUE="10" <?php if(@date("m", $end_date) == 10){?>selected<?php }?>>Oct
-<OPTION VALUE="11" <?php if(@date("m", $end_date) == 11){?>selected<?php }?>>Nov
-<OPTION VALUE="12" <?php if(@date("m", $end_date) == 12){?>selected<?php }?>>Dec
-</select>/
-<select name="TargetDD_int" size="1">
-<OPTION VALUE="1" <?php if(@date("d", $end_date) == 1){?>selected<?php }?>>1
-<OPTION VALUE="2" <?php if(@date("d", $end_date) == 2){?>selected<?php }?>>2
-<OPTION VALUE="3" <?php if(@date("d", $end_date) == 3){?>selected<?php }?>>3
-<OPTION VALUE="4" <?php if(@date("d", $end_date) == 4){?>selected<?php }?>>4
-<OPTION VALUE="5" <?php if(@date("d", $end_date) == 5){?>selected<?php }?>>5
-<OPTION VALUE="6" <?php if(@date("d", $end_date) == 6){?>selected<?php }?>>6
-<OPTION VALUE="7" <?php if(@date("d", $end_date) == 7){?>selected<?php }?>>7
-<OPTION VALUE="8" <?php if(@date("d", $end_date) == 8){?>selected<?php }?>>8
-<OPTION VALUE="9" <?php if(@date("d", $end_date) == 9){?>selected<?php }?>>9
-<OPTION VALUE="10" <?php if(@date("d", $end_date) == 10){?>selected<?php }?>>10
-<OPTION VALUE="11" <?php if(@date("d", $end_date) == 11){?>selected<?php }?>>11
-<OPTION VALUE="12" <?php if(@date("d", $end_date) == 12){?>selected<?php }?>>12
-<OPTION VALUE="13" <?php if(@date("d", $end_date) == 13){?>selected<?php }?>>13
-<OPTION VALUE="14" <?php if(@date("d", $end_date) == 14){?>selected<?php }?>>14
-<OPTION VALUE="15" <?php if(@date("d", $end_date) == 15){?>selected<?php }?>>15
-<OPTION VALUE="16" <?php if(@date("d", $end_date) == 16){?>selected<?php }?>>16
-<OPTION VALUE="17" <?php if(@date("d", $end_date) == 17){?>selected<?php }?>>17
-<OPTION VALUE="18" <?php if(@date("d", $end_date) == 18){?>selected<?php }?>>18
-<OPTION VALUE="19" <?php if(@date("d", $end_date) == 19){?>selected<?php }?>>19
-<OPTION VALUE="20" <?php if(@date("d", $end_date) == 20){?>selected<?php }?>>20
-<OPTION VALUE="21" <?php if(@date("d", $end_date) == 21){?>selected<?php }?>>21
-<OPTION VALUE="22" <?php if(@date("d", $end_date) == 22){?>selected<?php }?>>22
-<OPTION VALUE="23" <?php if(@date("d", $end_date) == 23){?>selected<?php }?>>23
-<OPTION VALUE="24" <?php if(@date("d", $end_date) == 24){?>selected<?php }?>>24
-<OPTION VALUE="25" <?php if(@date("d", $end_date) == 25){?>selected<?php }?>>25
-<OPTION VALUE="26" <?php if(@date("d", $end_date) == 26){?>selected<?php }?>>26
-<OPTION VALUE="27" <?php if(@date("d", $end_date) == 27){?>selected<?php }?>>27
-<OPTION VALUE="28" <?php if(@date("d", $end_date) == 28){?>selected<?php }?>>28
-<OPTION VALUE="29" <?php if(@date("d", $end_date) == 29){?>selected<?php }?>>29
-<OPTION VALUE="30" <?php if(@date("d", $end_date) == 30){?>selected<?php }?>>30
-<OPTION VALUE="31" <?php if(@date("d", $end_date) == 31){?>selected<?php }?>>31</select>/
-<select name="TargetYYYY_int" size="1"><OPTION VALUE="1999">1999
-<OPTION VALUE="2000" <?php if(@date("Y", $end_date) == 2000){?>selected<?php }?>>2000
-<OPTION VALUE="2001" <?php if(@date("Y", $end_date) == 2001){?>selected<?php }?>>2001
-<OPTION VALUE="2002" <?php if(@date("Y", $end_date) == 2002){?>selected<?php }?>>2002
-<OPTION VALUE="2003" <?php if(@date("Y", $end_date) == 2003){?>selected<?php }?>>2003
-<OPTION VALUE="2004" <?php if(@date("Y", $end_date) == 2004){?>selected<?php }?>>2004
-<OPTION VALUE="2005" <?php if(@date("Y", $end_date) == 2005){?>selected<?php }?>>2005
-<OPTION VALUE="2006" <?php if(@date("Y", $end_date) == 2006){?>selected<?php }?>>2006
-<OPTION VALUE="2007" <?php if(@date("Y", $end_date) == 2007){?>selected<?php }?>>2007
-<OPTION VALUE="2008" <?php if(@date("Y", $end_date) == 2008){?>selected<?php }?>>2008
-<OPTION VALUE="2009" <?php if(@date("Y", $end_date) == 2009){?>selected<?php }?>>2009
-</select>
+				<?php echo arraySelect( $months, 'TargetMM_int', 'size=1', @date("m", $end_date) ); ?> /
+				<?php echo arraySelect( $days, 'TargetDD_int', 'size=1', @date("d", $end_date) ); ?> /
+				<?php echo arraySelect( $years, 'TargetYYYY_int', 'size=1', @date("Y", $end_date) ); ?>
 			</td>
 			<td valign="bottom">
 				<a href="#" onClick="popCalendar('Target')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="popCalendar('Target')">pop calendar</A>
@@ -377,75 +257,9 @@ if (!$cexists) {
 		<tr>
 			<td>
 				<span class="FormLabel">actual finish date (mm/dd/yy)</span><br>
-<select name="ActualMM_int" size="1">
-<OPTION VALUE="" <?php if($actual_end_date == 0){?>selected<?php }?>>
-<OPTION VALUE="1" <?php if(@date("m", $actual_end_date) == 1 && $actual_end_date != 0){?>selected<?php }?>>Jan
-<OPTION VALUE="2" <?php if(@date("m", $actual_end_date) == 2 && $actual_end_date != 0){?>selected<?php }?>>Feb
-<OPTION VALUE="3" <?php if(@date("m", $actual_end_date) == 3 && $actual_end_date != 0){?>selected<?php }?>>Mar
-<OPTION VALUE="4" <?php if(@date("m", $actual_end_date) == 4 && $actual_end_date != 0){?>selected<?php }?>>Apr
-<OPTION VALUE="5" <?php if(@date("m", $actual_end_date) == 5 && $actual_end_date != 0){?>selected<?php }?>>May
-<OPTION VALUE="6" <?php if(@date("m", $actual_end_date) == 6 && $actual_end_date != 0){?>selected<?php }?>>Jun
-<OPTION VALUE="7" <?php if(@date("m", $actual_end_date) == 7 && $actual_end_date != 0){?>selected<?php }?>>Jul
-<OPTION VALUE="8" <?php if(@date("m", $actual_end_date) == 8 && $actual_end_date != 0){?>selected<?php }?>>Aug
-<OPTION VALUE="9" <?php if(@date("m", $actual_end_date) == 9 && $actual_end_date != 0){?>selected<?php }?>>Sep
-<OPTION VALUE="10" <?php if(@date("m", $actual_end_date) == 10 && $actual_end_date != 0){?>selected<?php }?>>Oct
-<OPTION VALUE="11" <?php if(@date("m", $actual_end_date) == 11 && $actual_end_date != 0){?>selected<?php }?>>Nov
-<OPTION VALUE="12" <?php if(@date("m", $actual_end_date) == 12 && $actual_end_date != 0){?>selected<?php }?>>Dec
-</select>/
-<select name="ActualDD_int" size="1">
-<?php if($actual_end_date ==0){?>
-	<OPTION VALUE="">
-	<?php }else{?>
-	<OPTION VALUE="<?php echo @date("d", $actual_end_date);?>"><?php echo @date("d", $actual_end_date);?>
-<?php }?>
-<OPTION VALUE="1">1
-<OPTION VALUE="2">2
-<OPTION VALUE="3">3
-<OPTION VALUE="4">4
-<OPTION VALUE="5">5
-<OPTION VALUE="6">6
-<OPTION VALUE="7">7
-<OPTION VALUE="8">8
-<OPTION VALUE="9">9
-<OPTION VALUE="10">10
-<OPTION VALUE="11">11
-<OPTION VALUE="12">12
-<OPTION VALUE="13">13
-<OPTION VALUE="14">14
-<OPTION VALUE="15">15
-<OPTION VALUE="16">16
-<OPTION VALUE="17">17
-<OPTION VALUE="18">18
-<OPTION VALUE="19">19
-<OPTION VALUE="20">20
-<OPTION VALUE="21">21
-<OPTION VALUE="22">22
-<OPTION VALUE="23">23
-<OPTION VALUE="24">24
-<OPTION VALUE="25">25
-<OPTION VALUE="26">26
-<OPTION VALUE="27">27
-<OPTION VALUE="28">28
-<OPTION VALUE="29">29
-<OPTION VALUE="30">30
-<OPTION VALUE="31">31 </select>/
-<select name="ActualYYYY_int" size="1">
-<?php if($actual_end_date ==0){?>
-<OPTION VALUE="">
-	<?php }else{?>
-	<OPTION VALUE="<?php echo @date("Y", $actual_end_date);?>"><?php echo @date("Y", $actual_end_date);?>
-<?php }?>
-<OPTION VALUE="2000">2000
-<OPTION VALUE="2001">2001
-<OPTION VALUE="2002">2002
-<OPTION VALUE="2003">2003
-<OPTION VALUE="2004">2004
-<OPTION VALUE="2005">2005
-<OPTION VALUE="2006">2006
-<OPTION VALUE="2007">2007
-<OPTION VALUE="2008">2008
-<OPTION VALUE="2009">2009
-</select>
+				<?php echo arraySelect( $months, 'ActualMM_int', 'size=1', @date("m", $actual_end_date) ); ?> /
+				<?php echo arraySelect( $days, 'ActualDD_int', 'size=1', @date("d", $actual_end_date) ); ?> /
+				<?php echo arraySelect( $years, 'ActualYYYY_int', 'size=1', @date("Y", $actual_end_date) ); ?>
 			</td>
 			<td valign="bottom">
 				<a href="#" onClick="popCalendar('Actual')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
@@ -474,7 +288,7 @@ if (!$cexists) {
 		Project owner<br>
 		<select name="project_owner" style="width:200px;">
 	<?php
-		while ($row = mysql_fetch_array( $urc )) { ?>
+		while ($row = mysql_fetch_array( $urc, MYSQL_ASSOC )) { ?>
 		<option value="<?php echo $row["user_id"];?>" <?php if($prow["project_owner"] == $row["user_id"]){echo "selected";}?>><?php echo $row["user_first_name"];?> <?php echo $row["user_last_name"];?>
 	<?php }?>
 		</select>
