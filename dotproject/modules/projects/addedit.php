@@ -65,7 +65,8 @@ function setColor(color) {
 	if (color) {
 		f.project_color_identifier.value = color;
 	}
-	test.style.background = f.project_color_identifier.value;
+	//test.style.background = f.project_color_identifier.value;
+	document.getElementById('test').style.background = '#' + f.project_color_identifier.value; 		//fix for mozilla: does this work with ie? opera ok.
 }
 
 function setShort() {
