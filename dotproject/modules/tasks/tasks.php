@@ -537,9 +537,6 @@ foreach ($projects as $k => $p) {
 			    if(in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
 				    showtask( $p['tasks'][$i], 1, false);
 			    }
-			     if(in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
-				    showtask( $p['tasks'][$i], 1, false);
-			    }
 			}
 		}
 
