@@ -103,6 +103,13 @@ TABLE.std {
 	border: solid #878676 2px;
 	background: #f4efe3;
 }
+TABLE.std TH {
+	background-color: #878676;   
+	color: white;   
+	list-style-type: disc;   
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+}
 TD.tabon {
 	background: #ffffff;
 	border-top: outset #cccccc 2px;
