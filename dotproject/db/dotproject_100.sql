@@ -299,7 +299,7 @@ CREATE TABLE user_tasks (
 CREATE TABLE users (
   user_id int(11) NOT NULL auto_increment,
   user_username varchar(20) NOT NULL default '',
-  user_password varchar(20) NOT NULL default '',
+  user_password varchar(32) NOT NULL default '',
   user_parent int(11) NOT NULL default '0',
   user_type tinyint(3) not null default '0',
   user_first_name varchar(50) default '',
@@ -350,7 +350,7 @@ CREATE TABLE `user_preferences` (
 #   New admin email -> replace {admin@localhost}
 #
 
-INSERT INTO users VALUES (1,'admin',password('passwd'),0,1,'Admin','Person',1,0,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
+INSERT INTO users VALUES (1,'admin',MD5('passwd'),0,1,'Admin','Person',1,0,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
 
 INSERT INTO permissions VALUES (1,1,"all",-1, -1);
 
