@@ -1432,6 +1432,53 @@ class CTaskLog extends CDpObject {
 		$this->task_log_hours = (float) $this->task_log_hours;
 		return NULL;
 	}
+
+function canDelete( &$msg, $oid=null, $joins=null ) {
+		global $AppUI;
+
+		// First things first.  Are we allowed to delete?
+		$acl =& $AppUI->acl();
+		if ( ! $acl->checkModuleItem('tasks', "delete", $oid)) {
+		  $msg = $AppUI->_( "noDeletePermission" );
+		  return false;
+		}
+
+		$k = $this->_tbl_key;
+		if ($oid) {
+			$this->$k = intval( $oid );
+		}
+		if (is_array( $joins )) {
+			$select = "$k";
+			$join = "";
+			foreach( $joins as $table ) {
+				$select .= ",\nCOUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}";
+				$join .= "\nLEFT JOIN {$table['name']} ON {$table['joinfield']} = $k";
+			}
+			$sql = "SELECT $select\nFROM $this->_tbl\n$join\nWHERE $k = ".$this->$k." GROUP BY $k";
+
+			$obj = null;
+			if (!db_loadObject( $sql, $obj )) {
+				$msg = db_error();
+				return false;
+			}
+			$msg = array();
+			foreach( $joins as $table ) {
+				$k = $table['idfield'];
+				if ($obj->$k) {
+					$msg[] = $AppUI->_( $table['label'] );
+				}
+			}
+
+			if (count( $msg )) {
+				$msg = $AppUI->_( "noDeleteRecord" ) . ": " . implode( ', ', $msg );
+				return false;
+			} else {
+				return true;
+			}
+		}
+
+		return true;
+	}
 }
 
 function closeOpenedTask($task_id){
