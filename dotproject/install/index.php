@@ -15,6 +15,8 @@
 //todo: ask how advanced the user is, do not show advanced config settings in dummy case
 //todo: centralized registration of config vars!
 //todo: bug backup db and then there are no preferred values shown
+//todo: translatable
+//todo: db abstraction
 
 
 /*
@@ -42,6 +44,9 @@
 # 9) If the variable's field is a checkbox (bool variable), add a suitable line to the section where NULL values are converted to FALSE in config.php
 ### THE REGISTRATION OF THE CONFIG VAR SHOULD NOW BE COMPLETE ###
 ### IN CASE YOU EXPERIENCE PROBLEMS CONTACT THE AUTHOR/MAINTAINER OF THIS INSTALLER ###
+require_once("../classes/ui.class.php");
+
+
 
 require_once("commonlib.php");
 /* test config loading

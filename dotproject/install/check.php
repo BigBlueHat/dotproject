@@ -67,7 +67,7 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
 </tr>
 <tr>
             <td class="item" colspan="2">The next tests check for database support compiled with php. We use the ADODB database abstraction layer which comes with drivers for
-	    many databases. Consult the ADODB documentation for details. <br />For non-advanced users: MySQL will probably be the database of your choice - make sure MySql Support
+	    many databases. Consult the ADODB documentation for details. <br />For non-advanced users: MySQL will probably be the database of your choice - make sure MySQL Support
 	    is available.</td>
 </tr>
 <tr>
