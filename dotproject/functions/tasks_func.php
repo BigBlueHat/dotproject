@@ -20,4 +20,17 @@ $priority = array(
  1 => 'high'
 );
 
+function get_end_date($start_date, $duration) {
+	define(DAYLY_WORKING_HOURS, 12);
+	
+	if(!$duration) return "";
+	
+	if($duration < 24) {
+		// fix durations < 24 according to working hours
+		$duration = ceil($duration / DAYLY_WORKING_HOURS) * 24;
+	}
+	
+	return date("Y-m-d", strtotime($start_date . " -1 day + " . $duration . " hours"));
+}
+
 ?>
