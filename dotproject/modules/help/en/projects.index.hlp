@@ -1,7 +1,47 @@
 <!-- $Id$ -->
-<h2>Projects Index Screen</h2>
+<h1>Projects Index Screen</h1>
 
-<p>This page shows you a list of the projects that have been defined.</p>
+<p>This page shows you a list of the projects that have been defined. It displays a variety of information about Projects listed under <b>Active Projects</b>, <b>Completed Projects</b>, and <b>Archived Projects</b>.</p>
+
+<ul>
+	<li>Active Projects - those that are less than 100% complete</li>
+	<li>Completed Projects - those that are 100% complete</li>
+	<li>Archived Projects - those marked as archived</li>
+</ul>
+
+<p>Projects are intimately linked with a <b>Company</b>, and understanding this interaction will make it easier to grasp how projects are organized.</p>
+
+<br />
+
+
+<h2>Company Drop-Down Filter</h2>
+<p>Information on <b>Projects</b> can filtered by <b>Company</b>, by selecting the name of a <b>Company</b> from the <b>Company Drop-Down List</b>. This drop-down list is in the Top Menu section to the right of the <b>Projects</b> module title and icon, and to the left of the <b>new project</b> button and <b>context-sensitive help icon</b>.</p>
+
+<p>In order to display <b>ALL</b> Projects without filtering by company, simply select <b>All</b> from the <b>Company Drop-Down List</b>.</p>
+
+<p>By default, the <b>Company Drop-Down List</b> will show the option that was last selected (in the most previous Projects Module usage).</p>
+
+<hr /><br />
+
+
+<h2>Tabbed or Flat Display Options</h2>
+<p>By default, Project Information is broken into three different display screens that are distinguished by <b>Tabs</b> named: <b>Active Projects, Completed Projects,</b> or <b>Archived Projects</b>.</p>
+
+<p>This display behavior can be changed to display all of these items on a single screen by clicking on the <b>flat</b> display option. The display options of <b>tabbed</b> or <b>flat</b> can be toggled by clicking on the respective option [<b>tabbed : flat</b>] beneath the <b>Projects</b> module title.</p>
+
+<hr /><br />
+
+
+<h2>Adding New Projects</h2>
+<p>New Projects can be added by either clicking the <b>new project</b> button in the <b>Projects</b> module Top Menu, or by choosing <b>Project</b> from the Main Navigation Menu's <b> - New Item - </b> drop-down list.</p>
+
+<p>More information on adding <b>New Projects</b> is on a subsequent help documentation page.</p>
+
+<hr /><br />
+
+
+<h2>Active Projects</h2>
+
 
 <p>The "percentage complete" is shown to the left of the Project Name in a box with the background of the project colour.  Click on the Project Name to view more information about the project.</p>
 
@@ -9,9 +49,3 @@
 
 <p>Click on the "<strong>new company</strong>" button to add a new company to your database.</p>
 
-<p>There are three tabs to view the Projects by:</p>
-<ul>
-	<li>Active Projects - those that are less than 100% complete</li>
-	<li>Completed Projects - those that are 100% complete</li>
-	<li>Archived Projects - those projects that have been marked as archived</li>
-</ul>

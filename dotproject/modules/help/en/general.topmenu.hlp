@@ -36,4 +36,4 @@
 
 <p>For example, when the <b>Company</b> module is active, the module title of "Companies" will be displayed, as well as a button labelled "new company" for the module-dependent function.</p>
 
-<p>An icon that links to the <b>Help Documentation</b> system is also usually displayed to the right of any module-dependent function buttons or drop-down lists.</p>
+<p>An icon that links to the <b>Help Documentation</b> system is also usually displayed to the right of any module-dependent function buttons or drop-down lists. Clicking on the <b>help icon</b> will open the <b>Help Documentation</b> window to the appropriate context-specific page.</p>
