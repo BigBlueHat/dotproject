@@ -91,18 +91,6 @@ function delIt() {
 	</td>
 </tr>
 <tr>
-	<td align="right"><?php echo $AppUI->_('Username');?>:</td>
-	<td>
-		<input type="text" class="text" name="company_username" value="<?php echo @$crow["company_username"];?>" maxlength="30"> <?php echo $AppUI->_('Not implemented');?>
-	</td>
-</tr>
-<tr>
-	<td align="right"><?php echo $AppUI->_('Password');?>:</td>
-	<td>
-		<input type="text" class="text" name="company_password" value="<?php echo @$crow["company_password"];?>" maxlength="30"> <?php echo $AppUI->_('Not implemented');?>
-	</td>
-</tr>
-<tr>
 	<td align="right"><?php echo $AppUI->_('Phone');?>:</td>
 	<td>
 		<input type="text" class="text" name="company_phone1" value="<?php echo @$crow["company_phone1"];?>" maxlength="30">
