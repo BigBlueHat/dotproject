@@ -5,8 +5,6 @@
 
 # Fix misspelled table field names [modified to specify incorrect field names then new field names]
 ALTER TABLE `tasks` CHANGE `task_precent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
-# This didn't seem correct (below) so I commented it out and put in something more sensible (kobudo 20 Mar 2003)
-#ALTER TABLE `projects` CHANGE `project_precent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
 ALTER TABLE `projects` CHANGE `project_precent_complete` `project_percent_complete` TINYINT(4)  DEFAULT "0";
 
 # Alterations to the task log table
