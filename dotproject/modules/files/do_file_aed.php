@@ -1,4 +1,4 @@
-<?php
+<?php /* FILES $Id$ */
 //addfile sql
 $file_id = dPgetParam( $_POST, 'file_id', 0 );
 $del = dPgetParam( $_POST, 'del', 0 );
