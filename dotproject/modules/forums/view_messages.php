@@ -51,8 +51,8 @@
 				<TD bgcolor="<?php echo $color;?>" valign="top"><font size="2">
 				<?php if($x==0){?>
 					<img src="./images/icons/post.gif" width="15" height="15" alt="" border="0">
-					<B><?php echo $parr[$x]["message_title"];?></b><hr size=1>
 				<?php }?>
+					<B><?php echo $parr[$x]["message_title"];?></b><hr size=1>
 					<?php echo str_replace(chr(13), "&nbsp;<BR>", $parr[$x]["message_body"]);?></font>&nbsp;<br>&nbsp;<br>
 				</td>
 			</tr>

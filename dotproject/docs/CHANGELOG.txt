@@ -1,5 +1,11 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+18 October 2002 (AJE):
+-----------------------------
+functions/post_message.php
+functions/view_message.php
+- allowed editting of the subject in a reply (still defaults to re:...)
+
 17 October 2002 (AJE):
 -----------------------------
 functions/admin_func.php

@@ -132,8 +132,8 @@ function orderByName(x){
 						<TD align="right">Subject:</td>
 						<TD>
 						<?php if($message_parent > 0){?>
-							<input type="hidden" name="message_title" value="<?php echo $mrow["message_title"];?>">
-							<B>Re: <?php echo $mrow["message_title"];?> </B>
+							<input type="text" name="message_title" value="Re: <?php echo $mrow["message_title"];?>" size=50 maxlength=250>
+
 						<?php }else{?>
 						<input type="text" name="message_title" value="" size=50 maxlength=250>
 						<?php }?>
