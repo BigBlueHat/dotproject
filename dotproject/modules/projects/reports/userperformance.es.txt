@@ -1,0 +1,2 @@
+Eficiencia del usuario
+Reporte que muestra la eficiencia de horas de trabajo respecto a lo asignado

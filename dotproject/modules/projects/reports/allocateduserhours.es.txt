@@ -1,0 +1,2 @@
+Horas asignadas al usuario
+Este reporte muestra cuantas horas han sido asignadas a un usuario en sus días laborales
