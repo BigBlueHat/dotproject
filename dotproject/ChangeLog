@@ -1,3 +1,18 @@
+2003-10-01 00:53  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- There was a bug looking all project in the Gantt Chart when there was a task without start date; solved :)
+
+2003-09-30 18:15  (kripper)
+---------------------------------
+modules/projects/index.php
+- Changed default tab to active projects
+
+2003-09-30 03:54  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-29 23:18  (jcgonz)
 ---------------------------------
 modules/tasks/gantt.php
@@ -483,21 +498,6 @@ modules/projects/vw_idx_proposed.php
 2003-08-31 21:56  (ajdonnison)
 ---------------------------------
 index.php
-includes/config-dist.php
-- Fixed version stamp
-
-2003-08-31 04:08  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-08-30 08:15  (ajdonnison)
----------------------------------
-ChangeLog
-- updated for v1 release
-
-2003-08-30 07:55  (ajdonnison)
----------------------------------
 ...
 
 (This file has been wrapped)
