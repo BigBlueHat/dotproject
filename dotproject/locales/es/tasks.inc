@@ -57,6 +57,7 @@
 "id"=>"id",
 "low"=>"baja",
 "my todo"=>"mi To-Do",
+"new task"=>"nueva tarea",
 "normal"=>"normal",
 "notifyChange"=>"Notificar asignaciones por E-Mail",
 "see gantt chart"=>"ver carta Gantt",
