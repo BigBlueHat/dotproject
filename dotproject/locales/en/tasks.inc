@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Change Task Project",
+"Move this task (and its children), to project",
 "Access",
 "Action",
 "Active",
@@ -25,6 +25,7 @@
 "Attached Files",
 "Begin new tasks if dependencies are finished before expected",
 "Calculate",
+"Change Task Project",
 "Change User specific Task Priority of selected Tasks",
 "Check delays for fixed tasks",
 "Child Tasks",
@@ -113,6 +114,7 @@
 "Task Type",
 "Task added",
 "Task deleted",
+"Task end date",
 "Task updated",
 "Task(s) updated",
 "Tasks Organizer Wizard",
@@ -126,8 +128,8 @@
 "Unassign User from Task and handing-over to selected Users",
 "Use the period",
 "User",
-"User unassigned from Task",
 "User specific Task Priority",
+"User unassigned from Task",
 "User(s) assigned to Task",
 "View Task",
 "Warn of fixed tasks without end dates",
