@@ -11,19 +11,18 @@ $canReadModule = !getDenyRead( $m );
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+$q =& new DBQuery;
 
-$sql = "
-SELECT tasks.*,
-	project_name, project_color_identifier,
-	u1.user_username as username,
-	ROUND(SUM(task_log_hours),2) as log_hours_worked
-FROM tasks
-LEFT JOIN users u1 ON u1.user_id = task_owner
-LEFT JOIN projects ON project_id = task_project
-LEFT JOIN task_log ON task_log_task=$task_id
-WHERE task_id = $task_id
-GROUP BY task_id
-";
+$q->addTable('tasks');
+$q->leftJoin('users', 'u1', 'u1.user_id = task_owner');
+$q->leftJoin('projects', 'p', 'p.project_id = task_project');
+$q->leftJoin('task_log', 'tl', 'tl.task_log_task = task_id');
+$q->addWhere('task_id = ' . $task_id);
+$q->addQuery('tasks.*');
+$q->addQuery('project_name, project_color_identifier');
+$q->addQuery('u1.user_username as username');
+$q->addQuery('ROUND(SUM(task_log_hours),2) as log_hours_worked');
+$q->addGroup('task_id');
 
 // check if this record has dependancies to prevent deletion
 $msg = '';
@@ -31,6 +30,9 @@ $obj = new CTask();
 $canDelete = $obj->canDelete( $msg, $task_id );
 
 //$obj = null;
+$sql = $q->prepare();
+$q->clear();
+
 if (!db_loadObject( $sql, $obj, true, false )) {
 	$AppUI->setMsg( 'Task' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
@@ -61,14 +63,16 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 $canReadProject = !getDenyRead( 'projects', $obj->task_project);
 
 // get the users on this task
-$sql = "
-SELECT u.user_id, u.user_username, contact_email
-FROM users u, user_tasks t
-LEFT JOIN contacts ON user_contact = contact_id
-WHERE t.task_id =$task_id AND
-	t.user_id = u.user_id
-ORDER by u.user_username
-";
+$q->addTable('users', 'u');
+$q->addTable('user_tasks', 't');
+$q->leftJoin('contacts', 'c' , 'user_contact = contact_id');
+$q->addQuery('u.user_id, u.user_username, contact_email');
+$q->addWhere('t.task_id = ' . $task_id);
+$q->addWhere('t.user_id = u.user_id');
+$q->addOrder('u.user_username');
+
+$sql = $q->prepare();
+$q->clear();
 $users = db_loadList( $sql );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
@@ -271,13 +275,13 @@ function delIt() {
 
 		<?php
 			// Pull tasks dependencies
-			$sql = "
-			SELECT t.task_id, t.task_name
-			FROM tasks t, task_dependencies td
-			WHERE td.dependencies_task_id = $task_id
-			AND t.task_id = td.dependencies_req_task_id
-			";
-			$taskDep = db_loadHashList( $sql );
+			$q->addQuery('t.task_id, t.task_name');
+			$q->addTable('tasks', 't');
+			$q->addTable('task_dependencies', 'td');
+			$q->addWhere('td.dependencies_task_id = t.task_id');
+			$q->addWhere('t.task_id = ' . $task_id);
+			$taskDep = $q->loadHashList();
+			$q->clear();
 		?>
 		<tr>
 			<td colspan="3"><strong><?php echo $AppUI->_('Dependencies');?></strong></td>
@@ -296,14 +300,14 @@ function delIt() {
 			</td>
 		</tr>
                 <?php
-			// Pull the tasks depending on this Task
-			$sql = "
-			SELECT t.task_id, t.task_name
-			FROM tasks t, task_dependencies td
-			WHERE td.dependencies_req_task_id = $task_id
-			AND t.task_id = td.dependencies_task_id
-			";
-			$dependingTasks = db_loadHashList( $sql );
+			// Pull the tasks depending on this Task 
+			$q->addQuery('t.task_id, t.task_name');
+			$q->addTable('tasks', 't');
+			$q->addTable('task_dependencies', 'td');
+			$q->addWhere('td.dependencies_req_task_id = t.task_id');
+			$q->addWhere('t.task_id = ' . $task_id);
+			$dependingTasks = $q->loadHashList();
+			$q->clear();
 		?>
 		<tr>
 			<td colspan="3"><strong><?php echo $AppUI->_('Tasks depending on this Task');?></strong></td>
@@ -332,7 +336,14 @@ function delIt() {
 		  </td>
 		</tr>
 <?php
-		if($obj->task_departments != "") {
+		$q->addTable('departments', 'd');
+		$q->addTable('task_departments', 't');
+		$q->addWhere('t.department_id = d.dept_id');
+		$q->addWhere('t.task_id = ' . $task_id);
+		$q->addQuery('dept_id, dept_name, dept_phone');
+		$depts = $q->loadHashList("dept_id");
+		$q->clear();
+		if (count($depts)) {
 			?>
 		    <tr>
 		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
@@ -340,9 +351,6 @@ function delIt() {
 		    <tr>
 		    	<td colspan='3' class="hilite">
 		    		<?php
-		    			$depts = db_loadHashList("select dept_id, dept_name, dept_phone
-		    			                          from departments
-		    			                          where dept_id in (".$obj->task_departments.")", "dept_id");
 		    			foreach($depts as $dept_id => $dept_info){
 		    				echo "<div>".$dept_info["dept_name"];
 		    				if($dept_info["dept_phone"] != ""){
@@ -356,27 +364,31 @@ function delIt() {
 	 		<?php
 		}
 		
-		if($obj->task_contacts != "") {
-			$contacts = db_loadHashList("select contact_id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_department
-		    			                 from contacts
-		    			                 where contact_id in (".$obj->task_contacts.")
-		    			                       and (contact_owner = '$AppUI->user_id' or contact_private='0')", "contact_id");
+			$q->addTable('contacts', 'c');
+			$q->leftJoin('task_contacts', 'tc', 'tc.contact_id = c.contact_id');
+			$q->leftJoin('departments', 'd', 'dept_id = contact_department');
+			$q->addWhere('tc.task_id = ' . $obj->task_id);
+			$q->addQuery('c.contact_id, contact_first_name, contact_last_name, contact_email');
+			$q->addQuery('contact_phone, dept_name');
+			$q->addWhere("( contact_owner = '$AppUI->user_id' or contact_private = '0')");
+			$contacts = $q->loadHashList("contact_id");
+			$q->clear();
 			if(count($contacts)>0){
 				?>
 			    <tr>
-			    	<td><strong><?php echo $AppUI->_("Contacts"); ?></strong></td>
+			    	<td><strong><?php echo $AppUI->_("Task Contacts"); ?></strong></td>
 			    </tr>
 			    <tr>
 			    	<td colspan='3' class="hilite">
 			    		<?php
 			    			echo "<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
-			    			echo "<tr><th>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
+			    			echo "<tr><th>".$AppUI->_("Name")."</font></th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
 			    			foreach($contacts as $contact_id => $contact_data){
 			    				echo "<tr>";
 			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
 			    				echo "<td class='hilite'><a href='mailto: ".$contact_data["contact_email"]."'>".$contact_data["contact_email"]."</a></td>";
 			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
-			    				echo "<td class='hilite'>".$contact_data["contact_department"]."</td>";
+			    				echo "<td class='hilite'>".$contact_data["dept_name"]."</td>";
 			    				echo "</tr>";
 			    			}
 			    			echo "</table>";
@@ -387,8 +399,43 @@ function delIt() {
 			    	<td>
 		 <?php
 			}
-		}
-		error_reporting(E_ALL);
+
+			$q->addTable('contacts', 'c');
+			$q->leftJoin('project_contacts', 'pc', 'pc.contact_id = c.contact_id');
+			$q->leftJoin('departments', 'd', 'd.dept_id = c.contact_department');
+			$q->addWhere('pc.project_id = ' . $obj->task_project);
+			$q->addQuery('c.contact_id, contact_first_name, contact_last_name, contact_email');
+			$q->addQuery('contact_phone, dept_name');
+			$q->addWhere("( contact_owner = '$AppUI->user_id' or contact_private = '0')");
+			$contacts = $q->loadHashList("contact_id");
+			$q->clear();
+			if(count($contacts)>0){
+				?>
+			    <tr>
+			    	<td><strong><?php echo $AppUI->_("Project Contacts"); ?></strong></td>
+			    </tr>
+			    <tr>
+			    	<td colspan='3' class="hilite">
+			    		<?php
+			    			echo "<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
+			    			echo "<tr><th color='white'>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
+			    			foreach($contacts as $contact_id => $contact_data){
+			    				echo "<tr>";
+			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
+			    				echo "<td class='hilite'><a href='mailto: ".$contact_data["contact_email"]."'>".$contact_data["contact_email"]."</a></td>";
+			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
+			    				echo "<td class='hilite'>".$contact_data["dept_name"]."</td>";
+			    				echo "</tr>";
+			    			}
+			    			echo "</table>";
+			    		?>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<td>
+		 <?php
+			}
+
 		require_once("./classes/customfieldsparser.class.php");
 		$cfp = new CustomFieldsParser("TaskCustomFields", $obj->task_id);
 
