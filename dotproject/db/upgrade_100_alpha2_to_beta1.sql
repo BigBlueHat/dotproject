@@ -44,7 +44,7 @@ ALTER TABLE `events` CHANGE `event_end_date` `event_end_date` DATETIME default n
 # Added support for an event type
 #
 ALTER TABLE `events` ADD `event_type` TINYINT(3) DEFAULT "0" NOT NULL;
-INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "EventType", "0|General\n1|Appointment\n2|Meeting\n3|All\nDay Event\n4|Anniversary\n5|Reminder");
+INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "EventType", "0|General\n1|Appointment\n2|Meeting\n3|All Day Event\n4|Anniversary\n5|Reminder");
 
 # This field not used
 # Uncomment if you are satisfied this will not cause you any problems
