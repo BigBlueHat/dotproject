@@ -14,7 +14,18 @@
 #
 
 #
-# Table structure for table 'departments'
+# ATTENTION:
+# The following tables have been dropped from the schema
+# Uncomment the lines to drop them if desired
+#
+
+#DROP TABLE `localization`;
+#DROP TABLE `eventlog`;
+#DROP TABLE `attendees`;
+#DROP TABLE `attendees`;
+
+#
+# Structure for new table 'departments'
 #
 
 CREATE TABLE departments (
@@ -98,12 +109,11 @@ ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
 # Prepare support for user localisation
 #
 
-DROP TABLE `localization`
 
 #
 # Table changes 12 Dec 2002 (aje)
 #
-ALTER TABLE `users` DROP `user_locale`
+ALTER TABLE `users` DROP `user_locale`;
 
 DROP TABLE IF EXISTS user_preferences;
 CREATE TABLE `user_preferences` (

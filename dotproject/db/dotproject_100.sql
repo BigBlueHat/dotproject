@@ -214,7 +214,8 @@ CREATE TABLE projects (
   project_actual_budget int(11) default '0',
   project_creator int(11) default '0',
   project_active tinyint(4) default '1',
-  PRIMARY KEY  (project_id),
+  project_private tinyint(3) unsigned default '0',
+  PRIMARY KEY  (`project_id`),
   KEY idx_project_owner (project_owner),
   KEY idx_sdate (project_start_date),
   KEY idx_edate (project_end_date),
@@ -333,31 +334,6 @@ CREATE TABLE users (
   KEY idx_pwd (user_password),
   KEY idx_user_parent (user_parent)
 ) TYPE=MyISAM;
-
-CREATE TABLE eventlog (
-  objecturl varchar(30) NOT NULL default 'unknown',
-  actiontype varchar(30) default 'unknown',
-  status int(11) NOT NULL default '0',
-  userid int(11) NOT NULL default '0',
-  dt datetime NOT NULL default '0000-00-00 00:00:00'
-) TYPE=MyISAM;
-
-CREATE TABLE attendees (
-  event_id int(11) NOT NULL,
-  attendee_id int(11) NOT NULL,
-  attendee_status smallint,
-  attendee_reminder smallint,
-  PRIMARY KEY(event_id,attendee_id),
-  FOREIGN KEY(event_id) REFERENCES events(event_id)
-);
-
-CREATE TABLE logs (
- objecturl varchar(50) NOT NULL,
- actiontype varchar(20) NOT NULL,
- status int NOT NULL,
- userid varchar(10) DEFAULT NULL,
- dt datetime
-);
 
 CREATE TABLE task_dependencies (
 	dependencies_task_id int(11) NOT NULL,
