@@ -1,3 +1,112 @@
+2003-01-16 06:21  (kobudo)
+---------------------------------
+locales/en/common.inc
+- john makes some minor tweeks (removes <br> tags)
+
+2003-01-16 06:19  (kobudo)
+---------------------------------
+style/default/footer.php
+style/default/header.php
+style/default/login.php
+style/demo1/footer.php
+style/demo1/header.php
+style/demo1/login.php
+- john makes some minor tweeks
+
+2003-01-16 00:15  (kobudo)
+---------------------------------
+style/default/login.php
+style/demo1/login.php
+style/default/main.css
+style/demo1/main.css
+- john makes some changes to demo style 1...
+- convert login page to XHTML 1.0 Trans
+- improve main.css formatting
+- add better link colours and behavior
+- new dotproject icon
+- remove annoying "HELP! I've lost my password" mailto:
+
+2003-01-15 23:58  (eddieajau)
+---------------------------------
+style/default/header.php
+style/demo1/header.php
+- Change about link to new help index page
+
+2003-01-15 23:57  (eddieajau)
+---------------------------------
+style/default/login.php
+style/demo1/login.php
+- Added char set to header
+
+2003-01-15 23:55  (eddieajau)
+---------------------------------
+calendar.php
+logincheck.php
+- Fixed calls to global system variables
+
+2003-01-15 23:54  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Added date and time formats to suit german
+
+2003-01-15 23:52  (eddieajau)
+---------------------------------
+modules/help/index.php
+- Initial upload
+
+2003-01-15 23:51  (eddieajau)
+---------------------------------
+modules/calendar/index.php
+modules/files/index.php
+modules/projects/index.php
+- Fixed calls to global system variables
+
+2003-01-15 23:50  (eddieajau)
+---------------------------------
+misc/diagnostics.php
+- Added Id marker
+
+2003-01-15 23:49  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/en/help.inc
+- Content update
+
+2003-01-15 23:47  (eddieajau)
+---------------------------------
+includes/db_mysql.php
+- datetime2unix function now returns null if no value passed to it
+
+2003-01-15 23:44  (eddieajau)
+---------------------------------
+includes/config.php
+- Updated supported languages
+
+2003-01-15 23:43  (eddieajau)
+---------------------------------
+db/dotproject_help.sql
+- Content update
+
+2003-01-15 23:40  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added support for chinese
+
+2003-01-15 23:39  (eddieajau)
+---------------------------------
+classdefs/calendar.php
+- Fixed calls to global system variables
+
+2003-01-15 23:37  (eddieajau)
+---------------------------------
+classdefs/admin.php
+- Deleted defunct user_locale var from user class
+
+2003-01-15 22:34  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2003-01-14 20:45  (eddieajau)
 ---------------------------------
 db/dotproject.sql
