@@ -11,9 +11,43 @@ $log_ignore = dPgetParam( $_POST, 'log_ignore', 0 );
 $list_start_date = dPgetParam( $_POST, "list_start_date", 0 );
 $list_end_date = dPgetParam( $_POST, "list_end_date", 0 );
 
+$period = dPgetParam($_POST, "period", 0);
+$period_value = dPgetParam($_POST, "pvalue", 1);
+if ($period)
+{
+  $today = new CDate();
+  $ts = $today->format(FMT_TIMESTAMP_DATE);
+        if (strtok($period, " ") == $AppUI->_("Next"))
+                $sign = +1;
+        else //if(...)
+                $sign = -1;
+
+        $day_word = strtok(" ");
+        if ($day_word == $AppUI->_("Day"))
+                $days = $period_value;
+        else if ($day_word == $AppUI->_("Week"))
+                $days = 7*$period_value;
+        else if ($day_word == $AppUI->_("Month"))
+                $days = 30*$period_value;
+
+        $start_date = new CDate($ts);
+        $end_date = new CDate($ts);
+
+        if ($sign > 0)
+                $end_date->addSpan( new Date_Span("$days,0,0,0") );
+        else
+                $start_date->subtractSpan( new Date_Span("$days,0,0,0") );
+
+        $do_report = 1;
+        
+}
+else
+{
 // create Date objects from the datetime fields
-$start_date = intval( $list_start_date ) ? new CDate( $list_start_date ) : new CDate();
-$end_date = intval( $list_end_date ) ? new CDate( $list_end_date ) : new CDate();
+        $start_date = intval( $list_start_date ) ? new CDate( $list_start_date ) : new CDate();
+        $end_date = intval( $list_end_date ) ? new CDate( $list_end_date ) : new CDate();
+}
+
 
 if (!$list_start_date) {
 	$start_date->subtractSpan( new Date_Span( "14,0,0,0" ) );
@@ -48,6 +82,26 @@ function setCalendar( idate, fdate ) {
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
+<tr>
+        <td align="right"><?php echo $AppUI->_('Default Actions'); ?>:</td>
+        <td nowrap="nowrap" colspan="2">
+          <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Previous Month'); ?>" />
+          <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Previous Week'); ?>" />
+          <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Previous Day'); ?>" />
+        </td>
+        <td nowrap="nowrap">
+          <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Next Day'); ?>" />
+          <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Next Week'); ?>" />
+          <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Next Month'); ?>" />
+        </td>
+        <td colspan="3"><input class="text" type="field" size="2" name="pvalue" value="1" /> - value for the previous buttons</td>
+<!--
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Month'); ?>" onClick="set(-30)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Week'); ?>" onClick="set(-7)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Next Week'); ?>" onClick="set(7)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Next Month'); ?>" onClick="set(30)" /></td>
+-->
+</tr>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
