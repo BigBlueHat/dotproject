@@ -1,3 +1,19 @@
+2003-11-12 21:47  (jcgonz)
+---------------------------------
+modules/companies/vw_companies.php
+- Solved a little bug with the search feature
+
+2003-11-12 21:43  (jcgonz)
+---------------------------------
+modules/companies/index.php
+modules/companies/vw_companies.php
+- Added search feature to the companies module and solve a problem with a query that ran twice
+
+2003-11-05 05:29  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-04 20:13  (ajdonnison)
 ---------------------------------
 modules/admin/do_user_aed.php
@@ -482,22 +498,6 @@ modules/calendar/links_tasks.php
 ---------------------------------
 locales/en/forums.inc
 - added translation for last edited by
-
-2003-09-10 21:32  (gregorerhardt)
----------------------------------
-db/dotproject_101.sql
-db/upgrade_100_to_101.sql
-modules/forums/forums.class.php
-modules/forums/post_message.php
-modules/forums/view_messages.php
-- forum_message: new field message_editor for last edited by feature
-
-2003-09-10 19:11  (gregorerhardt)
----------------------------------
-modules/forums/post_message.php
-- admin now is able to submit edited forum message
-
-2003-09-10 06:48  (gregorerhardt)
 ...
 
 (This file has been wrapped)
