@@ -112,4 +112,13 @@ function dPfindImage( $name, $module ) {
 		return "./images/$name";
 	}
 }
+
+#
+# function to return a default value if a variable is not set
+# (should we use something like this to clean up the code?)
+#  	
+function defVal($val, $def) {
+	return isset($$val) ? $$val : $def;
+}
+
 ?>
