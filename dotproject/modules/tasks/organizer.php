@@ -202,7 +202,7 @@ function process_dependencies($i) {
 
 	// query dependencies for this task
 
-	$query = mysql_query("select tasks.* from tasks,task_dependencies where task_id=dependencies_req_task_id and dependencies_task_id=" . $tasks[$i]["task_id"]);	
+	$query = mysql_query("select tasks.* from tasks,task_dependencies where task_id=dependencies_req_task_id and dependencies_task_id=" . $tasks[$i]["task_id"]);
 
 	if(mysql_num_rows($query) != 0) {
 		$all_fixed = true;
@@ -282,7 +282,7 @@ function process_dependencies($i) {
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="100%">
 <tr>
 	<td><?php echo dPshowImage( dPfindImage( 'applet-48.png', $m ), 16, 16, '' ); ?></td>
-	<td nowrap><h1>Tasks Organizer Wizard</h1></td>
+	<td nowrap><h1><?php echo $AppUI->_('Tasks Organizer Wizard'); ?></h1></td>
 	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td valign="top" align="right" width="100%"></td>
 </tr>
@@ -325,10 +325,11 @@ if($do == "conf") {
 }
 
 function checkbox($name, $descr, $default = 0, $show = true) {
+	global $AppUI;
 	global $$name;
 	if(!isset($$name)) $$name=$default;
 	if($show) {
-		echo "<input type=checkbox name=$name value=1 " . ($$name?"checked":"") . ">$descr<br />";
+		echo "<input type=checkbox name=$name value=1 " . ($$name?"checked":"") . ">".$AppUI->_($descr)."<br />";
 	} else {
 		echo "<input type=hidden name=$name value=" . ($$name?"1":"") . ">";
 	}
@@ -338,7 +339,7 @@ function checkbox($name, $descr, $default = 0, $show = true) {
 $sql = "SELECT project_id, project_name FROM projects ORDER BY project_name";
 $projects = arrayMerge( array( 0 => '(' . $AppUI->_('All') . ')' ), db_loadHashList( $sql ) );
 
-echo "Project: " . arraySelect( $projects, 'project_id', 'class="text"', $project_id ) . "<br>";
+echo $AppUI->_('Project').": " . arraySelect( $projects, 'project_id', 'class="text"', $project_id ) . "<br>";
 
 checkbox("option_check_delayed_tasks", "Check delays for fixed tasks", 1, $do == "conf");
 checkbox("option_fix_task_group_date_ranges", "Fix date ranges for task groups according to subtasks dates", 1, $do == "conf");
@@ -427,7 +428,7 @@ if($do != "conf") {
 			process_dependencies($i);
 		}
 	}	
-   
+
 	if($option_fix_task_group_date_ranges) {
 		// query taskgroups
 		$sql = "select distinct a.* from tasks as a, tasks as b " .
@@ -463,7 +464,7 @@ if($do != "conf") {
 	}
 	
 	if(!$action) {
-		echo "<font size=2><strong>Tasks are already organized</strong></font><br />";
+		echo "<font size=2><strong>".$AppUI->_('Tasks are already organized')."</strong></font><br />";
 	}
 
 	echo '</td>';
@@ -476,15 +477,15 @@ if ($do=="conf" || $action) {
 	if(!$errors) {
 		echo "<input type=hidden name=do value=" . ($do=="ask"?"fixate":"ask") . ">";
 		if($do == "ask") {
-			echo "<font size=2><strong>Do you want to accept this changes?</strong></font><br />";
+			echo "<font size=2><strong>".$AppUI->_('Do you want to accept this changes?')."</strong></font><br />";
 			echo "<input type=button value=accept class=button onClick='javascript:document.form.submit()'>";
 		} else if ($do == "fixate") {
-			echo "<font size=2><strong>Tasks has been reorganized</strong></font><br />";
+			echo "<font size=2><strong>".$AppUI->_('Tasks has been reorganized')."</strong></font><br />";
 		} else if ($do == "conf") {
-				echo "<input type=button value=start class=button onClick='javascript:document.form.submit()'>";
+				echo "<input type=button value=".$AppUI->_('start')." class=button onClick='javascript:document.form.submit()'>";
 		}
 	} else {
-		echo "<font size=2><strong>Please correct the above errors</strong></font><br />";
+		echo "<font size=2><strong>".$AppUI->_('Please correct the above errors')."</strong></font><br />";
 		echo "<input type=button value=submit class=button onClick='javascript:document.form.submit()'>";
 	}
 }
