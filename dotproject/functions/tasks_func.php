@@ -4,9 +4,9 @@ $percent = array(0=>'0',5=>'5',10=>'10',15=>'15',20=>'20',25=>'25',30=>'30',35=>
 $filters = array(
 	'my'           => 'My Tasks',
 	'myunfinished' => 'My Unfinished Tasks',
+	'allunfinished' => 'All Unfinished Tasks',
 	'myproj'       => 'My Projects',
 	'mycomp'       => 'All Tasks for my Company',
-	'myinact'      => 'My Tasks (show inactive)',
 	'unassigned'   => 'All Tasks (unassigned)',
 	'all'          => 'All Tasks'
 );
