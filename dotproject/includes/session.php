@@ -97,7 +97,7 @@ function dPsessionGC($maxlifetime)
 	// Find all the session
 	$q = new DBQuery;
 	$q->setDelete('sessions');
-	$q->addWhere("now() - session_update > FROM_UNIXTIME($idle) OR now() - session_created > FROM_UNIXTIME($max)");
+	$q->addWhere("now() - session_updated > FROM_UNIXTIME($idle) OR now() - session_created > FROM_UNIXTIME($max)");
 	$q->exec();
 	$q->clear();
 	return true;
