@@ -137,7 +137,10 @@ $project_types[] = "Archived";
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
-if ( $tab != -1 ) $project_types[] = "All";
+if ( $tab != -1 ) {
+	$project_types[0] = "All Projects";
+	$project_types[] = "Not Defined";
+}
 
 /**
 * Now, we will figure out which vw_idx file are available
@@ -155,17 +158,12 @@ foreach($project_types as $project_type){
 }
 
 $show_all_projects = false;
-if($tab == count($project_types)-1) $show_all_projects = true;
+if($tab == 0) $show_all_projects = true;
 
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
-foreach($project_types as $project_type){
-	$project_type = trim($project_type);
+foreach($project_types as $project_type)
 	$tabBox->add($project_file_type[$project_type], $project_type);
-}
-/*$tabBox->add( 'vw_idx_active'  , 'Active Projects' );
-$tabBox->add( 'vw_idx_proposed', 'Proposed Projects' );
-$tabBox->add( 'vw_idx_complete', 'Completed Projects' );
-$tabBox->add( 'vw_idx_archived', 'Archived Projects' );*/
+
 $tabBox->show();
 ?>

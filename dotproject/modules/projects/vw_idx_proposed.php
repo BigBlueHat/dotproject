@@ -53,6 +53,9 @@ if ( $tab == -1 ){
 } else{
 	//Tabbed view
 	$project_status_filter = $tab;
+	//Project not defined
+	if ($tab == count($project_types)-1)
+		$project_status_filter = 0;
 }
 
 foreach ($projects as $row) {
