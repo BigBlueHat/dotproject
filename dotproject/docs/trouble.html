@@ -1,0 +1,70 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+<title>dotProject Roadmap</title>
+<meta name="Generator" content="EditPlus">
+<meta name="Author" content="Andrew Eddie">
+<meta name="Description" content="Troubleshooting dotProject">
+
+<link rel="stylesheet" type="text/css" href="./main.css">
+
+</head>
+
+<body>
+
+<h1>Trouble shooting dotProject</h1>
+
+<h2>config.php settings</h2>
+<ol>
+	<li>On a new installation, have you created a copy of the distribution file called <b>config-dist.php</b> called <b>config.php</b>?</li>
+	
+	<li>When upgrading an existing installation, have you checked that any new configuration settings in <b>config-dist.php</b> have been transferred to <b>config.php</b>?</li>
+	
+	<li>Is the <b>root_dir</b> variable set correctly.</li>
+	
+	<li>Is there any white space (including carriage returns) after the closing php brace ?&gt;.  If so, delete them.  This cause the html headers to be sent too early.</li>
+
+</ol>
+
+
+<h2>php.ini file settings</h2>
+<ol>
+	<li>
+		<b>register_globals = off</b>
+		<br />Set to off, this hould generally work satisfactorily but you could try setting it to on.
+	</li>
+	<li>
+		<b>session.auto_start = 0</b>
+		<br />This may generally be set to zero.  If you are experiencing trouble and this variable is set to 1, try setting it to 0.
+	</li>
+	<li>
+		<b>session.save_path = /tmp</b> (*nix style)
+		<br /><b>session.save_path = "d:/apache/php/sessiontemp"</b> (Windows style)
+		<br />Check that this directory actually exists.
+	</li>
+</ol>
+
+<h2>PHP</h2>
+<ol>
+	<li>You need PHP version 4.1.x or higher.</li>
+	<li>Is <b>MySQL</b> correctly compiled with PHP on a *nix server.  You can check this by writing a simple little php file that simply contains:
+	<pre>&lt;?php phpinfo(); ?&gt;</pre>
+	Point your browser at this file (via your web server!) and see if there are configuration entries for MySQL.
+	</li>
+
+	<li>If the Gantt charts aren't working, have you compiled the GD libraries with PHP?</li>
+</ol>
+
+<h2>Help!</h2>
+<p>If all else fails then post your problem on the SourceForge forum or Tracker.  However, to help out we remote developers, please include the following information:</p>
+
+<ul>
+	<li>Your PHP and MySQL version.</li>
+	<li>Your web server and it's version.</li>
+	<li>Your browser and version is useful.</li>
+	<li>The version of dotProject you are using (file release or CVS).</li>
+</ul>
+
+
+</body>
+</html>
