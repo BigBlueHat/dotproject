@@ -68,7 +68,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 	{
 		$mailinfo = query2hash("SELECT user_first_name, user_last_name, user_email from users WHERE user_id = $assignment_toggle");
 
-		if (@$mail_info['user_email']) {
+		if (@$mailinfo['user_email']) {
 			$boundary = "_lkqwkASDHASK89271893712893";
 			$message = "--$boundary\n";
 			$message .= "Content-disposition: inline\n";
