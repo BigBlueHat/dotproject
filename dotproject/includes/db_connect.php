@@ -10,9 +10,12 @@ db_connect( $dbhost, $db, $dbuser, $dbpass );
 function db_loadResult( $sql ) {
 	$cur = db_exec( $sql );
 	$cur or exit( db_error() );
-	$row = db_fetch_row( $cur );
+	$ret = null;
+	if ($row = db_fetch_row( $cur )) {
+		$ret = $row[0];
+	}
 	db_free_result( $cur );
-	return $row[0];
+	return $ret;
 }
 
 function db_loadObject( $sql, &$object ) {
