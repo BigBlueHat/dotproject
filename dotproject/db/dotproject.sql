@@ -367,7 +367,7 @@ CREATE TABLE `task_dependencies` (
 
 CREATE TABLE `user_preferences` (
   `pref_user` varchar(12) NOT NULL default '',
-  `pref_name` varchar(12) NOT NULL default '',
+  `pref_name` varchar(24) NOT NULL default '',
   `pref_value` varchar(32) NOT NULL default '',
   KEY `pref_user` (`pref_user`,`pref_name`)
 ) TYPE=MyISAM;
