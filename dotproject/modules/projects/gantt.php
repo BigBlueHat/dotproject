@@ -29,7 +29,7 @@ $working_hours = $dPconfig['daily_working_hours'];
 // pull valid projects and their percent complete information
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 $sql = "
-SELECT DISTINCT project_id, project_color_identifier, project_name, project_start_date, project_end_date, t1.task_end_date AS project_actual_end_date,
+SELECT DISTINCT project_id, project_color_identifier, project_name, project_start_date, project_end_date, max(t1.task_end_date) AS project_actual_end_date,
  SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
 		SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete,
 project_status, project_active
