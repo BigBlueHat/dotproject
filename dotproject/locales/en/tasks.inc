@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"new task",
 "Action",
 "Add Task",
 "All Tasks",
@@ -19,6 +18,7 @@
 "Edit Task",
 "Expected Duration",
 "Finish Date",
+"Hours Worked",
 "Milestone",
 "My Projects",
 "My Tasks",
@@ -54,10 +54,10 @@
 "high",
 "hour",
 "hours",
-"hoursWorked"=>"Hours worked since last update",
 "id",
 "low",
 "my todo",
+"new task",
 "normal",
 "notifyChange"=>"Notify Assignees of Task by Email",
 "see gantt chart",
