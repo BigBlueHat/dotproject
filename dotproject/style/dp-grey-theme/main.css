@@ -224,6 +224,7 @@ table.std TH {
 	font: 13px verdana, arial, helvetica, sans-serif;
 	font-weight: bold;
 	text-align: center;
+	color: white;
 	margin-bottom: 0;
 	padding: 1px 1px 1px 1px;
 	list-style-type: disc;
