@@ -1,3 +1,18 @@
+2003-09-05 03:03  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+- removed ->_(' ..') which is double
+
+2003-09-05 03:00  (gregorerhardt)
+---------------------------------
+modules/projects/index.php
+- removed ->_('Proposed Projects') which is double
+
+2003-09-03 04:06  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-02 20:31  (ajdonnison)
 ---------------------------------
 db/upgrade_022_to_100.sql
@@ -483,21 +498,6 @@ style/default/login.php
 ---------------------------------
 docs/trouble.html
 - no message
-
-2003-07-03 23:07  (eddieajau)
----------------------------------
-modules/contacts/addedit.php
-modules/contacts/do_contact_aed.php
-modules/help/en/contacts.addedit.hlp
-modules/projects/addedit.php
-- Upgraded contacts assume the owner as the first user to edit the contact
-
-2003-07-03 21:45  (eddieajau)
----------------------------------
-modules/system/translate.php
-modules/system/translate_save.php
-- Fixed slashes problem
-
 ...
 
 (This file has been wrapped)
