@@ -122,14 +122,6 @@ function delIt(){
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap valign="top">Status:</td>
-			<td valign="top">
-				<input type="radio" value="-1" <?php if($status ==-1) echo " checked";?> name="forum_status" /><?php echo $AppUI->_('open for posting');?><br />
-				<input type="radio" value="1" <?php if($status == 1) echo " checked";?> name="forum_status" /><?php echo $AppUI->_('read-only');?><br />
-				<input type="radio" value="0" <?php if($status ==0) echo " checked";?> name="forum_status" /><?php echo $AppUI->_('closed');?>
-			</td>
-		</tr>
-		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Moderator');?>:</td>
 			<td>
 		<?php
