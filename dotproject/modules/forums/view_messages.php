@@ -12,7 +12,7 @@ LEFT JOIN users ON message_author = users.user_id
 LEFT JOIN contacts ON contact_id = user_contact
 WHERE forum_id = message_forum
 	AND (message_id = $message_id OR message_parent = $message_id)" .
-  ( @$dPconfig['forum_descendent_order'] ? " ORDER BY message_date $sort" : "" );
+  ( (@$dPconfig['forum_descendent_order'] || $_REQUEST['sort']) ? " ORDER BY message_date $sort" : "" );
 
 //echo "<pre>$sql</pre>";
 $messages = db_loadList( $sql );
@@ -133,6 +133,7 @@ foreach ($messages as $row) {
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
+		<input type="button" class=button value="<?php echo $AppUI->_('Sort By Date') . ' (' . $sort . ')'; ?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=<?php echo $message_id;?>&sort=<?php echo $sort; ?>'" />
 	<?php if ($canEdit) { ?>
 		<input type="button" class="button" value="<?php echo $AppUI->_('Post Reply');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
 		<input type="button" class="button" value="<?php echo $AppUI->_('New Topic');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
