@@ -2,7 +2,14 @@
 $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
 // check permissions for this company
-$canEdit = !getDenyEdit( $m, $company_id );
+$perms =& $AppUI->acl();
+// If the company exists we need edit permission,
+// If it is a new company we need add permission on the module.
+if ($company_id)
+  $canEdit = $perms->checkModuleItem($m, "edit", $company_id);
+else
+  $canEdit = $perms->checkModule($m, "add");
+
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -12,10 +19,9 @@ $types = dPgetSysVal( 'CompanyType' );
 
 // load the record data
 $sql = "
-SELECT companies.*,contact_first_name,contact_last_name
+SELECT companies.*,users.user_first_name,users.user_last_name
 FROM companies
 LEFT JOIN users ON users.user_id = companies.company_owner
-LEFT JOIN contacts ON users.user_contact = contacts.contact_id
 WHERE companies.company_id = $company_id
 ";
 
@@ -28,7 +34,7 @@ if (!db_loadObject( $sql, $obj ) && $company_id > 0) {
 
 // collect all the users for the company owner list
 $owners = array( '0'=>'' );
-$sql = "SELECT user_id,CONCAT_WS(' ',contact_first_name,contact_last_name) FROM users LEFT JOIN contacts ON user_contact=contact_id ORDER BY contact_first_name";
+$sql = "SELECT user_id,CONCAT_WS(' ',user_first_name,user_last_name) FROM users ORDER BY user_first_name";
 $owners = db_loadHashList( $sql );
 
 // setup the title block
@@ -138,7 +144,7 @@ function testURL( x ) {
 		<td align="right"><?php echo $AppUI->_('Company Owner');?>:</td>
 		<td>
 	<?php
-		echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', (isset($obj->company_owner)) ? $obj->company_owner : $AppUI->user_id );
+		echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', @$obj->company_owner );
 	?>
 		</td>
 	</tr>

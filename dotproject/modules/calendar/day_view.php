@@ -7,12 +7,12 @@ require_once( $AppUI->getModuleClass( 'tasks' ) );
 if (isset( $_REQUEST['company_id'] )) {
 	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
 }
-$company_id = $AppUI->getState( 'CalIdxCompany' ) !== NULL ? $AppUI->getState( 'CalIdxCompany' ) : $AppUI->user_company;
+$company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
 
-if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
-}
-$tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
+$event_filter = $AppUI->checkPrefState('CalIdxFilter', @$_REQUEST['event_filter'], 'EVENTFILTER', 'my');
+
+$AppUI->setState( 'CompVwTab', $_GET['tab'] );
+$tab = $AppUI->getState( 'CompVwTab' ,'0');
 
 // get the passed timestamp (today if none)
 $date = dPgetParam( $_GET, 'date', null );
@@ -68,13 +68,7 @@ table.tbl td.event {
 				<a href="<?php echo '?m=calendar&a=day_view&date='.$prev_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
 			</td>
 			<th width="100%">
-				<?php 
-					if($locale_char_set == 'utf-8'){
-						echo utf8_encode($this_day->format( "%A, %d %B %Y" ));
-					} else {
-						echo $this_day->format("%A, %d %B %Y");
-					}
-					       	?>
+				<?php echo $this_day->format( "%A, %d %B %Y" ); ?>
 			</th>
 			<td>
 				<a href="<?php echo '?m=calendar&a=day_view&date='.$next_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
@@ -88,13 +82,9 @@ $tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_T
 	"{$dPconfig['root_dir']}/modules/calendar/", $tab );
 $tabBox->add( 'vw_day_events', 'Events' );
 $tabBox->add( 'vw_day_tasks', 'Tasks' );
-// TODO: Dirty hack :( Is there a better way to do this? Check if a module is installed/active or not? 
-$modules = $AppUI->getActiveModules();
-if (isset( $modules['helpdesk']))
-  $tabBox->add( '../helpdesk/vw_idx_my', $AppUI->_('My Helpdesk Items') );
 $tabBox->show();
 ?>
-<?php if ($dPconfig['cal_day_view_show_minical']) { ?>
+
 	</td>
 	<td valign="top" width="175">
 <?php
@@ -124,6 +114,5 @@ echo '<td align="center" >'.$minical->show().'</td>';
 echo '</tr></table>';
 ?>
 	</td>
-<?php } ?>
 </tr>
 </table>

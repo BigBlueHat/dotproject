@@ -19,6 +19,9 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }}}*/
 
+define('QUERY_STYLE_ASSOC', ADODB_FETCH_ASSOC);
+define('QUERY_STYLE_NUM' , ADODB_FETCH_NUM);
+define('QUERY_STYLE_BOTH', ADODB_FETCH_BOTH);
 
 /** {{{1 class DBQuery
  * Container for creating prefix-safe queries.  Allows build up of
@@ -46,12 +49,15 @@ class DBQuery {
   var $create_table;
   var $create_definition;
   var $_table_prefix;
+	var $_query_id = null;
 
-  function DBQuery() 
+  function DBQuery($prefix = null) 
   {
     global $dPconfig;
 
-    if (isset($dPconfig['dbprefix']))
+    if (isset($prefix))
+      $this->_table_prefix = $prefix;
+    else if (isset($dPconfig['dbprefix']))
       $this->_table_prefix = $dPconfig['dbprefix'];
     else
       $this->_table_prefix = "";
@@ -75,7 +81,17 @@ class DBQuery {
     $this->update_list = null;
     $this->create_table = null;
     $this->create_definition = null;
+		if ($this->_query_id)
+			$this->_query_id->Close();
+		$this->_query_id = null;
   }
+
+	function clearQuery()
+	{
+		if ($this->_query_id)
+			$this->_query_id->Close();
+		$this->_query_id = null;
+	}
   
   /**
    * Add a hash item to an array.
@@ -168,11 +184,6 @@ class DBQuery {
   function createDefinition($def)
   {
     $this->create_definition = $def;
-  }
-
-  function setDelete()
-  {
-    $this->type = 'delete';
   }
 
   /** 
@@ -410,24 +421,83 @@ class DBQuery {
   /**
    * Execute the query and return a handle.  Supplants the db_exec query
    */
-  function exec()
+  function &exec($style = ADODB_FETCH_ASSOC)
   {
     global $db;
+		global $ADODB_FETCH_MODE;
+
+		$ADODB_FETCH_MODE = $style;
+		$this->clearQuery();
     if ($q = $this->prepare()) {
       if (isset($this->limit))
-	$query_id = $db->SelectLimit($q, $this->limit, $this->offset);
+	$this->_query_id = $db->SelectLimit($q, $this->limit, $this->offset);
       else
-	$query_id =  $db->Execute($q);
-      if (! $query_id) {
+	$this->_query_id =  $db->Execute($q);
+      if (! $this->_query_id) {
 	$error = $db->ErrorMsg();
 	dprint(__FILE__, __LINE__, 0, "query failed($q) - error was: " . $error);
-	return false;
+	return $this->_query_id;
       }
-      return $query_id;
+      return $this->_query_id;
     } else {
-      return false;
+      return $this->_query_id;
     }
   }
+
+	function fetchRow()
+	{
+		if (! $this->_query_id) {
+			return false;
+		}
+		return $this->_query_id->FetchRow();
+	}
+
+	/**
+	 * loadList - replaces dbLoadList on 
+	 */
+	function loadList($maxrows = null)
+	{
+		global $db;
+		global $AppUI;
+
+		if (! $this->exec()) {
+			$AppUI->setMsg($db->ErrorMsg(), UI_MSG_ERROR);
+			return false;
+		}
+
+		$list = array();
+		$cnt = 0;
+		while ($hash = $this->fetchRow()) {
+			$list[] = $hash;
+			if ($maxrows && $maxrows == $cnt++)
+				break;
+		}
+		$this->clearQuery();
+		return $list;
+	}
+
+	function loadHashList($index = null) {
+		global $db;
+
+		if (! $this->exec()) {
+			exit ($db->ErrorMsg());
+		}
+		$hashlist = array();
+		$keys = null;
+		while ($hash = $this->fetchRow()) {
+			if ($index) {
+				$hashlist[$hash[$index]] = $hash;
+			} else {
+				// If we are using fetch mode of ASSOC, then we don't
+				// have an array index we can use, so we need to get one
+				if (! $keys)
+					$keys = array_keys($hash);
+				$hashlist[$hash[$keys[0]]] = $hash[$keys[1]];
+			}
+		}
+		$this->clearQuery();
+		return $hashlist;
+	}
 
   /** {{{2 function make_where_clause
    * Create a where clause based upon supplied field.

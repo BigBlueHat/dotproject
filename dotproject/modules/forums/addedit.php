@@ -26,41 +26,23 @@ $status = isset( $forum_info["forum_status"] ) ? $forum_info["forum_status"] : -
 // get any project records denied from viewing
 $projObj = new CProject();
 $projDeny = $projObj->getDeniedRecords( $AppUI->user_id );
+$projAllow = $projObj->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 
 //Pull project Information
-$sql = "SELECT project_id, project_name FROM permissions, projects WHERE project_active <> 0 AND permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)"
-.(count($projDeny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $projDeny ) . ')' : '')
+$sql = "SELECT project_id, project_name FROM projects WHERE project_active <> 0 "
+.(count($projAllow) > 0 ? "\nAND project_id NOT IN (" . implode( ',', array_keys($projAllow) ) . ')' : '')
 .(isset($company_id) ? "\nAND project_company = $company_id" : '')
 ." ORDER BY project_name";
 $projects = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
-//Pull user Information
-$sql = "SELECT user_id, CONCAT_WS(' ', contact_first_name, contact_last_name) 
-        FROM permissions, users 
-        LEFT JOIN contacts ON user_contact = contact_id
-        WHERE user_id = $AppUI->user_id OR permission_user = $AppUI->user_id ";
-
-if ( empty($perms['admin']) ) { // if there are no records for the user's permission on 'admin', the users are displayed
-} elseif ( !empty($perms['admin']) && getDenyRead('admin') ) {	// if the user is denied to read on 'admin', other users are not displayed!
-	$sql .= "
-	AND permission_value <> 0 AND (
-			(permission_grant_on = 'all')
-			OR (permission_grant_on = 'admin' AND permission_item = -1)
-			OR (permission_grant_on = 'admin' AND permission_item = user_id)
-			) ";
-}
-
 $sql .= " ORDER BY user_username";
-$users = array( '0' => '' ) + db_loadHashList( $sql );
-echo db_error();
+$perms =& $AppUI->acl();
+$permittedUsers =& $perms->getPermittedUsers();
+if ( !$perms->checkModule("admin", "view"))
+  $permittedUsers = array();
 
+$users = array( '0' => '' ) + $permittedUsers;
 // setup the title block
 $ttl = $forum_id > 0 ? "Edit Forum" : "Add Forum";
 $titleBlock = new CTitleBlock( $ttl, 'support.png', $m, "$m.$a" );

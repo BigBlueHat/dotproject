@@ -1,5 +1,6 @@
 <?php /* PROJECTS $Id$ */
 GLOBAL $AppUI, $projects, $company_id, $priority;
+$perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
 ?>
 
@@ -35,6 +36,8 @@ $CR = "\n";
 $CT = "\n\t";
 $none = true;
 foreach ($projects as $row) {
+	if (! $perms->checkModuleItem('projects', 'view', $row['project_id']))
+		continue;
 	// We dont check the percent_completed == 100 because some projects
 	// were being categorized as completed because not all the tasks
 	// have been created (for new projects)

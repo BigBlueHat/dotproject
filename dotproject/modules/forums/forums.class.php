@@ -2,7 +2,7 @@
 
 require_once( $AppUI->getSystemClass( 'libmail' ) );
 
-class CForum {
+class CForum extends CDpObject {
 	var $forum_id = NULL;
 	var $forum_project = NULL;
 	var $forum_status = NULL;

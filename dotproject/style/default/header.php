@@ -12,7 +12,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
-	<?php $AppUI->loadJS(); ?>
+	<?php @$AppUI->loadJS(); ?>
 </head>
 
 <body onload="this.focus();">
@@ -28,6 +28,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <?php if (!$dialog) {
 	// top navigation menu
 	$nav = $AppUI->getMenuModules();
+	$perms =& $AppUI->acl();
 ?>
 <tr>
 	<td class="nav" align="left">
@@ -37,7 +38,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 		<?php
 		$links = array();
 		foreach ($nav as $module) {
-			if (!getDenyRead( $module['mod_directory'])) {
+			if ($perms->checkModule($module['mod_directory'], 'access')) {
 				$links[] = '<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
 			}
 		}
@@ -89,7 +90,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 				<?php echo dPcontextHelp( 'Help' );?> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
-	if (!getDenyRead( 'calendar' )) {
+	if ($perms->checkModule('calendar', 'access')) {
 		$now = new CDate();
 ?>                              <b><a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>&tab=1"><?php echo $AppUI->_('Todo');?></a></b> |
 				<a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |

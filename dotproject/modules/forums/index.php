@@ -7,29 +7,11 @@ $tf = $AppUI->getPref( 'TIMEFORMAT' );
 $f = dPgetParam( $_POST, 'f', 0 );
 
 
-// get read denied projects
-$deny = array();
-$sql = "
-SELECT project_id
-FROM projects, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'projects'
-	AND permission_item = project_id
-	AND permission_value = 0
-";
-$deny1 = db_loadColumn( $sql );
-
-// get read denied forums
-$deny = array();
-$sql = "
-SELECT forum_id
-FROM forums, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'forums'
-	AND permission_item = forum_id
-	AND permission_value = 0
-";
-$deny2 = db_loadColumn( $sql );
+$forum =& new CForum;
+require_once $AppUI->getModuleClass('projects');
+$project =& new CProject;
+$allow1 = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
+$allow2 = $forum->getAllowedRecords($AppUI->user_id, 'forum_id, forum_name');
 
 $max_msg_length = 30;
 $sql = "
@@ -43,25 +25,15 @@ SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, foru
 	watch_user,
 	l.message_parent,
 	l.message_id
-FROM forums, users, projects, permissions
+FROM forums, users, projects
 LEFT JOIN forum_messages t ON t.message_forum = forum_id AND t.message_parent = -1
 LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > -1
 LEFT JOIN forum_messages l ON l.message_id = forum_last_id
 LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
 WHERE user_id = forum_owner
-	AND project_id = forum_project
-# filter projects permissions
-	AND permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		OR (permission_grant_on = 'forums' AND permission_item = -1)
-		OR (permission_grant_on = 'forums' AND permission_item = forum_id)
-		)"
-.(count($deny1) > 0 ? "\nAND forum_project NOT IN (" . implode( ',', $deny1 ) . ')' : '')
-.(count($deny2) > 0 ? "\nAND forum_id NOT IN (" . implode( ',', $deny2 ) . ')' : '')
+	AND project_id = forum_project "
+.(count($allow1) > 0 ? "\nAND forum_project IN (" . implode( ',', array_keys($allow1) ) . ')' : '')
+.(count($allow2) > 0 ? "\nAND forum_id IN (" . implode( ',', array_keys($allow2) ) . ')' : '')
 ;
 
 //if (isset($project_id) && $project_id) {

@@ -612,8 +612,10 @@ class CTask extends CDpObject {
 			);
 		}
 
+		$main_owner = $AppUI->getPref('MAILALL');
+
 		foreach ($users as $row) {
-			if ($row['assignee_id'] != $AppUI->user_id) {
+			if ($mail_owner || $row['assignee_id'] != $AppUI->user_id) {
 				if ($mail->ValidEmail($row['assignee_email'])) {
 					$mail->To( $row['assignee_email'], true );
 					$mail->Send();
@@ -635,7 +637,11 @@ class CTask extends CDpObject {
 		
 		// filter tasks for not allowed projects
 		$tasks_filter = '';
-		$join = winnow('projects', 'task_project', $tasks_filter);
+		$proj =& new CProject;
+		$task_filter_where = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
+		if (count($task_filter_where))
+		  $tasks_filter = ' AND (' . implode(' AND ', $task_filter_where) . ")";
+
 
 	// assemble where clause
 		$where = "task_project = project_id"
@@ -643,7 +649,7 @@ class CTask extends CDpObject {
 			. "\n\t\t(task_start_date <= '$db_end' AND task_end_date >= '$db_start')"
 			. "\n\t\tOR task_start_date BETWEEN '$db_start' AND '$db_end'"
 			. "\n\t)"
-		    . "\n\tAND ($tasks_filter)";
+		    . "\n\t$tasks_filter";
 	/*
 			OR
 			task_end_date BETWEEN '$db_start' AND '$db_end'
@@ -662,9 +668,9 @@ class CTask extends CDpObject {
 
 	// get any specifically denied tasks
 		$obj = new CTask();
-		$deny = $obj->getDeniedRecords( $AppUI->user_id );
+		$allow = $obj->getAllowedSQL( $AppUI->user_id );
 
-		$where .= count($deny) > 0 ? "\n\tAND task_id NOT IN (" . implode( ',', $deny ) . ')' : '';
+		$where .= count($allow) > 0 ? "\n\tAND " . implode( ' AND ', $allow ) : '';
 
 	// assemble query
 		$sql = "SELECT task_name, task_id, task_start_date, task_end_date,"

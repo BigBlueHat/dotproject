@@ -1,8 +1,9 @@
 <?php /* TASKS $Id$ */
 $AppUI->savePlace();
+$perms =& $AppUI->acl();
 // retrieve any state parameters
 $user_id = $AppUI->user_id;
-if(!getDenyRead("admin")){ // Only sysadmins are able to change users
+if($perms->checkModule("admin", "view")){ // Only sysadmins are able to change users
 	if(dPgetParam($_POST, "user_id", 0) != 0){ // this means that 
 		$user_id = dPgetParam($_POST, "user_id", 0);
 		$AppUI->setState("user_id", $_POST["user_id"]);

@@ -10,7 +10,10 @@ require_once( $AppUI->getModuleClass( 'tasks' ) );
 if (isset( $_REQUEST['company_id'] )) {
 	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
 }
-$company_id = $AppUI->getState( 'CalIdxCompany' ) !== NULL ? $AppUI->getState( 'CalIdxCompany' ) : $AppUI->user_company;
+$company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
+
+// Using simplified set/get semantics. Doesn't need as much code in the module.
+$event_filter = $AppUI->checkPrefState('CalIdxFilter', @$_REQUEST['event_filter'], 'EVENTFILTER', 'my');
 
 // get the passed timestamp (today if none)
 $date = dPgetParam( $_GET, 'date', null );
@@ -27,6 +30,11 @@ $titleBlock->addCell( $AppUI->_('Company').':' );
 $titleBlock->addCell(
 	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
 	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="pickCompany">', '</form>'
+);
+$titleBlock->addCell( $AppUI->_('Event Filter') . ':');
+$titleBlock->addCell(
+	arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
+	$event_filter ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
 );
 $titleBlock->show();
 ?>
@@ -57,11 +65,11 @@ $last_time->setTime( 23, 59, 59 );
 $links = array();
 
 // assemble the links for the tasks
-require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
 getTaskLinks( $first_time, $last_time, $links, 20, $company_id );
 
 // assemble the links for the events
-require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_events.php" );
 getEventLinks( $first_time, $last_time, $links, 20 );
 
 // create the main calendar

@@ -1,16 +1,30 @@
 <?php /* CALENDAR $Id$ */
-global $this_day, $first_time, $last_time, $company_id;
+global $this_day, $first_time, $last_time, $company_id, $event_filter, $event_filter_list, $AppUI;
 
 // load the event types
 $types = dPgetSysVal( 'EventType' );
 $links = array();
 
+$perms =& $AppUI->acl();
+$user_id = $AppUI->user_id;
+$other_users = false;
+$no_modify = false;
+
+if ($perms->checkModule("admin", "view")) {
+	$other_users = true;
+	if (($show_uid = dPgetParam($_REQUEST, "show_user_events", 0)) != 0) {
+		$user_id = $show_uid;
+		$no_modify = true;
+		$AppUI->setState("event_user_id", $user_id);
+	}
+}
+
 // assemble the links for the events
-$events = CEvent::getEventsForPeriod( $first_time, $last_time );
+$events = CEvent::getEventsForPeriod( $first_time, $last_time, $event_filter, $user_id );
 $events2 = array();
 
-$start_hour = dPgetConfig('cal_day_start');
-$end_hour = dPgetConfig('cal_day_end');
+$start_hour = $AppUI->getConfig('cal_day_start');
+$end_hour = $AppUI->getConfig('cal_day_end');
 
 foreach ($events as $row) {
 	$start = new CDate( $row['event_start_date'] );
@@ -40,7 +54,7 @@ $dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
 $start = $start_hour;
 $end = $end_hour;
-$inc = dPgetConfig('cal_day_increment');
+$inc = $AppUI->getConfig('cal_day_increment');
 
 if ($start === null ) $start = 8;
 if ($end === null ) $end = 17;
@@ -49,7 +63,31 @@ if ($inc === null) $inc = 15;
 
 $this_day->setTime( $start, 0, 0 );
 
-$html = '<table cellspacing="1" cellpadding="2" border="0" width="100%" class="tbl">';
+$html  = "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>";
+$html .= $AppUI->_("Event Filter") . ":" . arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
+	$event_filter );
+if ($other_users) {
+	$html .= $AppUI->_("Show Events for") . ":" . "<select name='show_user_events' onchange='document.pickFilter.submit()' class='text'>";
+	$usersql = "
+	  SELECT user_id, user_username, user_first_name, user_last_name
+                FROM users
+                ";
+
+	if (($rows = db_loadList( $usersql, NULL )))
+	{
+		foreach ($rows as $row)
+		{
+			if ( $user_id == $row["user_id"])
+				$html .= "<OPTION VALUE='".$row["user_id"]."' SELECTED>".$row["user_username"];
+			else
+				$html .= "<OPTION VALUE='".$row["user_id"]."'>".$row["user_username"];
+		}
+	}
+	$html .= "</select>";
+	
+}
+$html .= "</form>";
+$html .= '<table cellspacing="1" cellpadding="2" border="0" width="100%" class="tbl">';
 for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 	$html .= "\n<tr>";
 	

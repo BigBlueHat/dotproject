@@ -9,6 +9,7 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 class CFile extends CDpObject {
 
 	var $file_id = NULL;
+	var $file_version_id = NULL;
 	var $file_project = NULL;
 	var $file_real_filename = NULL;
 	var $file_task = NULL;
@@ -20,18 +21,41 @@ class CFile extends CDpObject {
 	var $file_date = NULL;
 	var $file_size = NULL;
 	var $file_version = NULL;
-        var $file_category = NULL;
+	var $file_category = NULL;
+	var $file_checkout = NULL;
+	var $file_co_reason = NULL;
 
 	
 	function CFile() {
 		$this->CDpObject( 'files', 'file_id' );
 	}
 
+	function canAdmin() {
+		global $AppUI;
+
+		if (! $this->file_project)
+			return false;
+		if (! $this->file_id)
+			return false;
+
+		$this->_query->clear();
+		$this->_query->addTable('projects');
+		$this->_query->addQuery('project_owner');
+		$this->_query->addWhere('project_id = ' . $this->file_project);
+		$res = $this->_query->exec();
+		if ($res && $row = db_fetch_assoc($row)) {
+			if ($row['project_owner'] == $AppUI->user_id)
+				return true;
+		} 
+		return false;
+	}
+
 	function check() {
 	// ensure the integrity of some variables
 		$this->file_id = intval( $this->file_id );
+		$this->file_version_id = intval($this->file_version_id);
 		$this->file_parent = intval( $this->file_parent );
-                $this->file_category = intval( $this->file_category );
+		// $this->file_category = intval( $this->file_category );
 		$this->file_task = intval( $this->file_task );
 		$this->file_project = intval( $this->file_project );
 

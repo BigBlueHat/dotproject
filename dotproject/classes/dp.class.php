@@ -6,6 +6,8 @@
  *	@version $Revision$
  */
 
+require_once $AppUI->getSystemClass('query');
+
 /**
  *	CDpObject Abstract Class.
  *
@@ -28,6 +30,11 @@ class CDpObject {
 	var $_error = '';
 
 /**
+ * @var object Query Handler
+ */
+ var $_query;
+
+/**
  *	Object constructor to set table and key field
  *
  *	Can be overloaded/supplemented by the child class
@@ -35,8 +42,14 @@ class CDpObject {
  *	@param string $key name of the primary key field in the table
  */
 	function CDpObject( $table, $key ) {
+		global $dPconfig;
 		$this->_tbl = $table;
 		$this->_tbl_key = $key;
+		if (isset($dPconfig['dbprefix']))
+			$this->_prefix = $dPconfig['dbprefix'];
+		else
+			$this->_prefix = '';
+		$this->_query =& new DBQuery;
 	}
 /**
  *	@return string Returns the error message
@@ -75,8 +88,37 @@ class CDpObject {
 		if ($oid === null) {
 			return false;
 		}
-		$sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
+		$this->_query->clear();
+		$this->_query->addTable($this->_tbl);
+		$this->_query->addWhere("$this->_tbl_key = $oid");
+		$sql = $this->_query->prepare();
 		return db_loadObject( $sql, $this, false, $strip );
+	}
+
+/**
+ *	Returns an array, keyed by the key field, of all elements that meet
+ *	the where clause provided. Ordered by $order key.
+ */
+	function loadAll($order = null, $where = null) {
+		$this->_query->clear();
+		$this->_query->addTable($this->_tbl);
+		if ($order)
+		  $this->_query->addOrder($order);
+		if ($where)
+		  $this->_query->addWhere($where);
+		$sql = $this->_query->prepare();
+		return db_loadHashList($sql, $this->_tbl_key);
+	}
+
+/**
+ *	Return a DBQuery object seeded with the table name.
+ *	@param string $alias optional alias for table queries.
+ *	@return DBQuery object
+ */
+	function &getQuery($alias = null) {
+		$this->_query->clear();
+		$this->_query->addTable($this->_tbl, $alias);
+		return $this->_query;
 	}
 
 /**
@@ -143,6 +185,14 @@ class CDpObject {
  */
 	function canDelete( &$msg, $oid=null, $joins=null ) {
 		global $AppUI;
+
+		// First things first.  Are we allowed to delete?
+		$acl =& $AppUI->acl();
+		if ( ! $acl->checkModuleItem($this->_tbl, "delete", $oid)) {
+		  $msg = $AppUI->_( "noDeletePermission" );
+		  return false;
+		}
+
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = intval( $oid );
@@ -213,17 +263,8 @@ class CDpObject {
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getDeniedRecords failed, user id = 0" );
 
-		// get read denied projects
-		$deny = array();
-		$sql = "
-		SELECT $this->_tbl_key
-		FROM $this->_tbl, permissions
-		WHERE permission_user = $uid
-			AND permission_grant_on = '$this->_tbl'
-			AND permission_item = $this->_tbl_key
-			AND permission_value = 0
-		";
-		return db_loadColumn( $sql );
+		$perms =& $GLOBALS['AppUI']->acl();
+		return $perms->getDeniedItems($this->_tbl, $uid);
 	}
 
 /**
@@ -237,33 +278,97 @@ class CDpObject {
  */
 // returns a list of records exposed to the user
 	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) {
+		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedRecords failed" );
 		$deny = $this->getDeniedRecords( $uid );
-
-		$sql = "SELECT $fields"
-			. "\nFROM $this->_tbl, permissions";
+		$allow = $perms->getAllowedItems($this->_tbl, $uid);
+		if (! $perms->checkModule($this->_tbl, "view" )) {
+		  if (! count($allow))
+		    return array();	// No access, and no allow overrides, so nothing to show.
+		} else {
+		  $allow = array();	// Full access, allow overrides don't mean anything.
+		}
+		$this->_query->clear();
+		$this->_query->addQuery($fields);
+		$this->_query->addTable($this->_tbl);
 
 		if (@$extra['from']) {
-			$sql .= ',' . $extra['from'];
+			$this->_query->addTable($extra['from']);
 		}
 		
-		$sql .= "\nWHERE permission_user = $uid"
-			. "\n	AND permission_value <> 0"
-			. "\n	AND ("
-			. "\n		(permission_grant_on = 'all')"
-			. "\n		OR (permission_grant_on = '$this->_tbl' AND permission_item = -1)"
-			. "\n		OR (permission_grant_on = '$this->_tbl' AND permission_item = $this->_tbl_key)"
-			. "\n	)"
-			. (count($deny) > 0 ? "\n\tAND $this->_tbl_key NOT IN (" . implode( ',', $deny ) . ')' : '');
-		
-		if (@$extra['where']) {
-			$sql .= "\n\t" . $extra['where'];
+		if (count($allow)) {
+		  $this->_query->addWhere("$this->_tbl_key IN (" . implode(',', $allow) . ")");
+		}
+		if (count($deny)) {
+		  $this->_query->addWhere("$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
+		}
+		if (isset($extra['where'])) {
+		  $this->_query->addWhere($extra['where']);
 		}
 
-		$sql .= ($orderby ? "\nORDER BY $orderby" : '');
+		if ($orderby)
+		  $this->_query->addOrder($orderby);
 
+		$sql = $this->_query->prepare();
 		return db_loadHashList( $sql, $index );
+	}
+
+	function getAllowedSQL( $uid, $index = null ) {
+		$perms =& $GLOBALS['AppUI']->acl();
+		$uid = intval( $uid );
+		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );
+		$deny = $this->getDeniedRecords( $uid );
+		$allow = $perms->getAllowedItems($this->_tbl, $uid);
+		if (! $perms->checkModule($this->_tbl, "view" )) {
+		  if (! count($allow))
+		    return array("1=0");	// No access, and no allow overrides, so nothing to show.
+		} else {
+		  $allow = array();	// Full access, allow overrides don't mean anything.
+		}
+
+		if (! isset($index))
+		   $index = $this->_tbl_key;
+		$where = array();
+		if (count($allow)) {
+		  $where[] = "$index IN (" . implode(',', $allow) . ")";
+		}
+		if (count($deny)) {
+		  $where[] = "$index NOT IN (" . implode(",", $deny) . ")";
+		}
+		return $where;
+	}
+
+	function setAllowedSQL($uid, &$query, $index = null, $key = null) {
+		$perms =& $GLOBALS['AppUI']->acl();
+		$uid = intval( $uid );
+		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );
+		$deny =& $this->getDeniedItems($this->_tbl, $uid );
+		$allow =& $perms->getAllowedItems($this->_tbl, $uid);
+		// Make sure that we add the table otherwise dependencies break
+		if (isset($index)) {
+			if (! $key)
+				$key = substr($this->_tbl, 0, 2);
+			$query->leftJoin($this->_tbl, $key, "$this->_tbl_key = $index");
+		}
+		if (! $perms->checkModule($this->_tbl, "view" )) {
+		  if (! count($allow)) {
+				// We need to ensure that we don't just break complex SQLs, but
+				// instead limit to a nonsensical value.  This assumes that the
+				// key is auto-incremented.
+		    $query->addWhere("$this->_tbl_key = 0");
+		    return;
+			}
+		} else {
+		  $allow = array();	// Full access, allow overrides don't mean anything.
+		}
+
+		if (count($allow)) {
+		  $query->addWhere("$this->_tbl_key IN (" . implode(',', $allow) . ")");
+		}
+		if (count($deny)) {
+		  $query->addWhere("$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
+		}
 	}
 }
 ?>

@@ -71,14 +71,18 @@ if ($is_installer) {
 
 require_once( "./classes/ui.class.php" );
 require_once( "./includes/main_functions.php" );
-require_once("./includes/db_adodb.php");
+require_once( "./includes/db_adodb.php" );
+require_once( "./classes/permissions.class.php" );
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
 
 // manage the session variable(s)
 session_name( 'dotproject' );
-session_set_cookie_params(0, dirname($_SERVER['SCRIPT_NAME']) . '/');
+$cookie_dir = dirname($_SERVER['SCRIPT_NAME']);
+if (substr($cookie_dir, -1) != '/')
+	$cookie_dir .= '/';
+session_set_cookie_params(0, $cookie_dir);
 if (ini_get( 'session.auto_start' ) > 0) {
 	session_write_close();
 }
@@ -136,10 +140,9 @@ if ($config_msg) {
 // load the commonly used classes
 require_once( $AppUI->getSystemClass( 'date' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
+require_once( $AppUI->getSystemClass( 'query' ) );
 
 require_once( "./misc/debug.php" );
-
-
 
 //Function for update lost action in user_access_log
 $AppUI->updateLastAction($last_insert_id);
@@ -280,10 +283,12 @@ if ( ( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run
 
 // check overall module permissions
 // these can be further modified by the included action files
-$canRead = !getDenyRead( $m );
-$canEdit = !getDenyEdit( $m );
-$canAuthor = $canEdit;
-$canDelete = $canEdit;
+$perms =& $AppUI->acl();
+$canAccess = $perms->checkModule($m, 'access');
+$canRead = $perms->checkModule($m, 'view');
+$canEdit = $perms->checkModule($m, 'edit');
+$canAuthor = $perms->checkModule($m, 'add');
+$canDelete = $perms->checkModule($m, 'delete');
 
 if ( !$suppressHeaders ) {
 	// output the character set header
@@ -310,15 +315,20 @@ if (!(
 }
 */
 
-// include the module class file
-@include_once( $AppUI->getModuleClass( $m ) );
-@include_once( "./modules/$m/" . ($u ? "$u/" : "") . "$u.class.php" );
+// include the module class file - we use file_exists instead of @ so
+// that any parse errors in the file are reported, rather than errors
+// further down the track.
+$modclass = $AppUI->getModuleClass($m);
+if (file_exists($modclass))
+	include_once( $modclass );
+if ($u && file_exists("./modules/$m/$u/$u.class.php"))
+	include_once( "./modules/$m/$u/$u.class.php" );
 
 // do some db work if dosql is set
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
 if (isset( $_REQUEST["dosql"]) ) {
     //require("./dosql/" . $_REQUEST["dosql"] . ".php");
-    require ("./modules/$m/" . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php");
+    require ("./modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php");
 }
 
 // start output proper
@@ -357,7 +367,10 @@ if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 ))
 				$arr =& $all_tabs;
 				$name = $nameparts[1];
 			}
-			$arr[ucfirst(str_replace('_', ' ', $name))] = $dPconfig['root_dir'] . '/modules/' . $dir. '/' . $filename;
+			$arr[] = array(
+				'name' => ucfirst(str_replace('_', ' ', $name)),
+				'file' => $dPconfig['root_dir'] . '/modules/' . $dir . '/' . $filename,
+				'module' => $dir);
 		}
 	}
 } else {

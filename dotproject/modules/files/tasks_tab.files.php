@@ -1,5 +1,5 @@
 <?php // check access to files module
-global $AppUI, $m, $obj, $task_id;
+global $AppUI, $m, $obj, $task_id, $dPconfig;
 if (!getDenyRead( 'files' )) {
         if (!getDenyEdit( 'files' )) { 
                 echo '<a href="./index.php?m=files&a=addedit&project_id=' . $obj->task_project . '&file_task=' . $task_id . '">' . $AppUI->_('Attach a file') . '</a>';

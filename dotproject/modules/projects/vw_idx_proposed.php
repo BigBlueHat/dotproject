@@ -1,5 +1,6 @@
 <?php /* PROJECTS $Id$ */
 GLOBAL $AppUI, $projects, $company_id, $pstatus, $show_all_projects, $project_types, $tab;
+$perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 	// Let's check if the user submited the change status form
@@ -71,6 +72,8 @@ if ( $tab == -1 ){
 }
 
 foreach ($projects as $row) {
+	if (! $perms->checkModuleItem('project', 'view', $row['project_id']))
+		continue;
 	if ($show_all_projects ||
 	    ($row["project_active"] > 0 && $row["project_status"] == $project_status_filter)) {
 		$none = false;

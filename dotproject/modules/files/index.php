@@ -6,12 +6,12 @@ if (isset( $_REQUEST['project_id'] )) {
 	$AppUI->setState( 'FileIdxProject', $_REQUEST['project_id'] );
 }
 
-$project_id = $AppUI->getState( 'FileIdxProject' ) !== NULL ? $AppUI->getState( 'FileIdxProject' ) : 0;
+$project_id = $AppUI->getState( 'FileIdxProject', 0 );
 
 if (dPgetParam($_GET, 'tab', -1) != -1 ) {
         $AppUI->setState( 'FileIdxTab', dPgetParam($_GET, 'tab'));
 }
-$tab = $AppUI->getState( 'FileIdxTab' ) !== NULL ? $AppUI->getState( 'FileIdxTab' ) : 0;
+$tab = $AppUI->getState( 'FileIdxTab', 0 );
 $active = intval( !$AppUI->getState( 'FileIdxTab' ) );
 
 require_once( $AppUI->getModuleClass( 'projects' ) );
@@ -19,11 +19,12 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 // get the list of visible companies
 $extra = array(
 	'from' => 'files',
-	'where' => 'AND project_id = file_project'
+	'where' => 'project_id = file_project'
 );
 
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
+$allowedProjects = array_keys($projects);
 $projects = arrayMerge( array( '0'=>$AppUI->_('All') ), $projects );
 
 // setup the title block

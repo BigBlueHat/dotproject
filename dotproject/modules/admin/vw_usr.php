@@ -21,7 +21,10 @@
 </tr>
 <?php 
 
+$perms =& $AppUI->acl();
 foreach ($users as $row) {
+	if ($perms->isUserPermitted($row['user_id']) != $canLogin)
+		continue;
 ?>
 <tr>
 	<td align="right" nowrap="nowrap">
@@ -34,7 +37,7 @@ foreach ($users as $row) {
 				</a>
 			</td>
 			<td>
-				<a href="?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>&tab=1" title="">
+				<a href="?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>&tab=2" title="">
 					<img src="images/obj/lock.gif" width="16" height="16" border="0" alt="<?php echo $AppUI->_('edit permissions');?>">
 				</a>
 			</td>

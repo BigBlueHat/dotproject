@@ -1,6 +1,12 @@
 <?php /* $Id$ */
 $AppUI->savePlace();
 
+if (! $canAccess) {
+	$AppUI->redirect('m=public&a=access_denied');
+}
+
+$perms =& $AppUI->acl();
+
 // To configure an aditional filter to use in the search string
 $additional_filter = "";
 // retrieve any state parameters
@@ -42,6 +48,10 @@ $showfields = array(
 	"contact_email" => "contact_email"
 );
 
+require_once $AppUI->getModuleClass('companies');
+$company =& new CCompany;
+$allowedCompanies = $company->getAllowedSQL($AppUI->user_id);
+
 // assemble the sql statement
 $sql = "SELECT contact_id, contact_order_by, ";
 foreach ($showfields as $val) {
@@ -55,6 +65,7 @@ WHERE (contact_order_by LIKE '$where%' $additional_filter)
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
 		OR contact_owner IS NULL OR contact_owner = 0
 	)
+" . (count($allowedCompanies) > 0 ? implode(' AND ', $allowedCompanies) : '') .  "
 ORDER BY $orderby
 ";
 
@@ -136,6 +147,9 @@ if ($canEdit) {
 	);
 }
 $titleBlock->show();
+
+// TODO: Check to see that the Edit function is separated.
+
 ?>
 <script language="javascript">
 // Callback function for the generic selector

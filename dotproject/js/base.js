@@ -315,20 +315,26 @@ function _HTMLaddHidden(id, value)
 //2}}}
 
 //{{{2 function _HTMLaddSelect
-function _HTMLaddSelect(id)
+function _HTMLaddSelect(id, cls, multi)
 {
   var c = new Comparable;
   c.add('id', id);
   c.add('name', id);
+	if (cls)
+		c.add('class', cls);
+	if (multi)
+		c.add('multiple', 'multiple');
   return this.addNode('SELECT', false, c);
 }
 //2}}}
 
 //{{{2 function _HTMLaddOption
-function _HTMLaddOption(value, text)
+function _HTMLaddOption(value, text, selected)
 {
   var c = new Comparable;
   c.add('value', value);
+	if (selected)
+		c.add('selected', 'selected');
   return this.addTextNode('OPTION', text, c);
 }
 //2}}}

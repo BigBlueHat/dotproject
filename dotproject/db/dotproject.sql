@@ -31,7 +31,8 @@ CREATE TABLE `companies` (
   `company_type` int(3) NOT NULL DEFAULT '0',
   `company_email` varchar(255),
   `company_custom` LONGTEXT,
-  PRIMARY KEY (`company_id`)
+  PRIMARY KEY (`company_id`),
+	KEY `idx_cpy1` (`company_owner`)
 ) TYPE=MyISAM;
 
 #
@@ -106,10 +107,13 @@ CREATE TABLE `events` (
   `event_private` tinyint(3) default '0',
   `event_type` tinyint(3) default '0',
   `event_cwd` tinyint(3) default '0',
+	`event_notify` tinyint(3) NOT NULL default '0',
   PRIMARY KEY  (`event_id`),
   KEY `id_esd` (`event_start_date`),
   KEY `id_eed` (`event_end_date`),
-  KEY `id_evp` (`event_parent`)
+  KEY `id_evp` (`event_parent`),
+	KEY `idx_ev1` (`event_owner`),
+	KEY `idx_ev2` (`event_project`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `files` (
@@ -212,6 +216,7 @@ CREATE TABLE `projects` (
   `project_demo_url` varchar(255) default NULL,
   `project_start_date` datetime default NULL,
   `project_end_date` datetime default NULL,
+  `project_actual_end_date` datetime default NULL,
   `project_status` int(11) default '0',
   `project_percent_complete` tinyint(4) default '0',
   `project_color_identifier` varchar(6) default 'eeeeee',
@@ -229,7 +234,8 @@ CREATE TABLE `projects` (
   KEY `idx_project_owner` (`project_owner`),
   KEY `idx_sdate` (`project_start_date`),
   KEY `idx_edate` (`project_end_date`),
-  KEY `project_short_name` (`project_short_name`)
+  KEY `project_short_name` (`project_short_name`),
+	KEY `idx_proj1` (`project_company`)
 
 ) TYPE=MyISAM;
 
@@ -291,7 +297,9 @@ CREATE TABLE `tasks` (
   KEY `idx_task_parent` (`task_parent`),
   KEY `idx_task_project` (`task_project`),
   KEY `idx_task_owner` (`task_owner`),
-  KEY `idx_task_order` (`task_order`)
+  KEY `idx_task_order` (`task_order`),
+	KEY `idx_task1` (`task_start_date`),
+	KEY `idx_task2` (`task_end_date`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `task_contacts` (
@@ -322,6 +330,13 @@ CREATE TABLE `tickets` (
   PRIMARY KEY  (`ticket`),
   KEY `parent` (`parent`),
   KEY `type` (`type`)
+) TYPE=MyISAM;
+
+CREATE TABLE `user_events` (
+	`user_id` int(11) NOT NULL default '0',
+	`event_id` int(11) NOT NULL default '0',
+	KEY `uek1` (`user_id`, `event_id`),
+	KEY `uek2` (`event_id`, `user_id`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `user_tasks` (
@@ -570,4 +585,355 @@ CREATE TABLE `user_task_pin` (
 `task_pinned` tinyint(2) NOT NULL default '1',
 PRIMARY KEY (`user_id`,`task_id`)
 ) TYPE=MyISAM
+
+#20040920
+# ACL support.
+#
+# Table structure for table `gacl_acl`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 02:15 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_acl`;
+CREATE TABLE `gacl_acl` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default 'system',
+  `allow` int(11) NOT NULL default '0',
+  `enabled` int(11) NOT NULL default '0',
+  `return_value` longtext,
+  `note` longtext,
+  `updated_date` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `gacl_enabled_acl` (`enabled`),
+  KEY `gacl_section_value_acl` (`section_value`),
+  KEY `gacl_updated_date_acl` (`updated_date`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_acl_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 22, 2004 at 01:04 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_acl_sections`;
+CREATE TABLE `gacl_acl_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_acl_sections` (`value`),
+  KEY `gacl_hidden_acl_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aco`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 11:23 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aco`;
+CREATE TABLE `gacl_aco` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(240) NOT NULL default '0',
+  `value` varchar(240) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_section_value_value_aco` (`section_value`,`value`),
+  KEY `gacl_hidden_aco` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aco_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 02:15 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aco_map`;
+CREATE TABLE `gacl_aco_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`acl_id`,`section_value`,`value`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aco_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 23, 2004 at 08:14 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aco_sections`;
+CREATE TABLE `gacl_aco_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_aco_sections` (`value`),
+  KEY `gacl_hidden_aco_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 29, 2004 at 11:38 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aro`;
+CREATE TABLE `gacl_aro` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(240) NOT NULL default '0',
+  `value` varchar(240) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_section_value_value_aro` (`section_value`,`value`),
+  KEY `gacl_hidden_aro` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_groups`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 12:12 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aro_groups`;
+CREATE TABLE `gacl_aro_groups` (
+  `id` int(11) NOT NULL default '0',
+  `parent_id` int(11) NOT NULL default '0',
+  `lft` int(11) NOT NULL default '0',
+  `rgt` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`,`value`),
+  KEY `gacl_parent_id_aro_groups` (`parent_id`),
+  KEY `gacl_value_aro_groups` (`value`),
+  KEY `gacl_lft_rgt_aro_groups` (`lft`,`rgt`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_groups_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 12:26 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aro_groups_map`;
+CREATE TABLE `gacl_aro_groups_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`acl_id`,`group_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 29, 2004 at 11:33 AM
+#
+
+DROP TABLE IF EXISTS `gacl_aro_map`;
+CREATE TABLE `gacl_aro_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`acl_id`,`section_value`,`value`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 22, 2004 at 03:04 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_aro_sections`;
+CREATE TABLE `gacl_aro_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_aro_sections` (`value`),
+  KEY `gacl_hidden_aro_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 26, 2004 at 06:23 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_axo`;
+CREATE TABLE `gacl_axo` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(240) NOT NULL default '0',
+  `value` varchar(240) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_section_value_value_axo` (`section_value`,`value`),
+  KEY `gacl_hidden_axo` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_groups`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 26, 2004 at 11:00 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_axo_groups`;
+CREATE TABLE `gacl_axo_groups` (
+  `id` int(11) NOT NULL default '0',
+  `parent_id` int(11) NOT NULL default '0',
+  `lft` int(11) NOT NULL default '0',
+  `rgt` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`,`value`),
+  KEY `gacl_parent_id_axo_groups` (`parent_id`),
+  KEY `gacl_value_axo_groups` (`value`),
+  KEY `gacl_lft_rgt_axo_groups` (`lft`,`rgt`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_groups_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 11:24 AM
+#
+
+DROP TABLE IF EXISTS `gacl_axo_groups_map`;
+CREATE TABLE `gacl_axo_groups_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`acl_id`,`group_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 02:15 PM
+#
+
+DROP TABLE IF EXISTS `gacl_axo_map`;
+CREATE TABLE `gacl_axo_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`acl_id`,`section_value`,`value`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 23, 2004 at 03:50 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+DROP TABLE IF EXISTS `gacl_axo_sections`;
+CREATE TABLE `gacl_axo_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_axo_sections` (`value`),
+  KEY `gacl_hidden_axo_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_groups_aro_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 29, 2004 at 11:38 AM
+#
+
+DROP TABLE IF EXISTS `gacl_groups_aro_map`;
+CREATE TABLE `gacl_groups_aro_map` (
+  `group_id` int(11) NOT NULL default '0',
+  `aro_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`group_id`,`aro_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_groups_axo_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 26, 2004 at 11:01 AM
+#
+
+DROP TABLE IF EXISTS `gacl_groups_axo_map`;
+CREATE TABLE `gacl_groups_axo_map` (
+  `group_id` int(11) NOT NULL default '0',
+  `axo_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`group_id`,`axo_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_phpgacl`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 22, 2004 at 01:03 PM
+#
+
+DROP TABLE IF EXISTS `gacl_phpgacl`;
+CREATE TABLE `gacl_phpgacl` (
+  `name` varchar(230) NOT NULL default '',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`name`)
+) TYPE=MyISAM;
+
+
+INSERT INTO `gacl_phpgacl` (name, value) VALUES ('version', '3.3.2');
+INSERT INTO `gacl_phpgacl` (name, value) VALUES ('schema_version', '2.1');
+
+INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (1, 'system', 1, 'System');
+INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (2, 'user', 2, 'User');
 

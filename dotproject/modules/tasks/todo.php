@@ -2,14 +2,19 @@
 
 // Project status from sysval, defined as a constant
 $project_on_hold_status = 4;
+$perms =& $AppUI->acl();
 
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 $date       = intval( dPgetParam( $_GET, 'date', '' ) );
 $user_id    = $AppUI->user_id;
+$no_modify	= false;
+$other_users	= false;
 
-if(!getDenyRead("admin")){ // let's see if the user has sysadmin access
-	if(dPgetParam($_GET, "user_id", 0) != 0){ // lets see if the user wants to see anothers user mytodo
-		$user_id = dPgetParam($_GET, "user_id", $user_id);
+if($perms->checkModule("admin","view")){ // let's see if the user has sysadmin access
+	$other_users = true;
+	if(($show_uid = dPgetParam($_REQUEST, "show_user_todo", 0)) != 0){ // lets see if the user wants to see anothers user mytodo
+		$user_id = $show_uid;
+		$no_modify = true;
 		$AppUI->setState("user_id", $user_id);
 	} else {
 //		$user_id = $AppUI->getState("user_id");
@@ -17,7 +22,7 @@ if(!getDenyRead("admin")){ // let's see if the user has sysadmin access
 }
 
 // check permissions
-$canEdit = !getDenyEdit( $m );
+$canEdit = $perms->checkModule( $m, 'edit' );
 
 // retrieve any state parameters
 if (isset( $_POST['show_form'] )) {
@@ -54,6 +59,12 @@ if ($selected && count( $selected )) {
 
 $AppUI->savePlace();
 
+$proj =& new CProject;
+$tobj =& new CTask;
+
+$allowedProjects = $proj->getAllowedSQL($AppUI->user_id);
+$allowedTasks = $tobj->getAllowedSQL($AppUI->user_id, 'a.task_id');
+
 // query my sub-tasks (ignoring task parents)
 
 $sql = "
@@ -74,8 +85,15 @@ $sql = "
   (!$showArcProjs ? " AND project_active = 1" : "") .
   (!$showLowTasks ? " AND a.task_priority >= 0" : "") .  
   (!$showHoldProjs ? " AND project_status != $project_on_hold_status" : "") .
-  (!$showDynTasks ? " AND a.task_dynamic = 0": "") .
-  " GROUP BY a.task_id
+  (!$showDynTasks ? " AND a.task_dynamic = 0": "");
+
+if (count($allowedTasks))
+	$sql .= " AND " . implode(" AND ", $allowedTasks);
+
+if (count($allowedProjects))
+	$sql .= " AND " . implode(" AND ", $allowedProjects);
+
+$sql .=   " GROUP BY a.task_id
 	ORDER BY a.task_end_date, task_priority DESC
 ";
 //echo "<pre>$sql</pre>";
@@ -105,10 +123,30 @@ if (!@$min_view) {
 <tr>
 	<td width="50%">
 		<?php
-			if($user_id != $AppUI->user_id){
-				echo $AppUI->_("Tasks for")." ".db_loadResult("select user_username from users where user_id=$user_id");
+	if ($other_users) {
+		echo $AppUI->_("Show Todo for:");
+		?>
+		<select name="show_user_todo" onchange="document.form_buttons.submit()">
+<?php
+                $usersql = "
+                SELECT user_id, user_username, user_first_name, user_last_name
+                FROM users
+                ";
+
+
+                if (($rows = db_loadList( $usersql, NULL )))
+                {
+                        foreach ($rows as $row)
+                        {
+                                if ( $user_id == $row["user_id"])
+                                        echo "<OPTION VALUE='".$row["user_id"]."' SELECTED>".$row["user_username"];
+                                else
+                                        echo "<OPTION VALUE='".$row["user_id"]."'>".$row["user_username"];
+			                  }
+							  }
 			}
 		?>
+		</select>
 	</td>
 	<td align="right" width="50%">
 		<?php echo $AppUI->_('Show'); ?>:

@@ -18,6 +18,7 @@ define( "UI_CASE_UPPER", 1 );
 define( "UI_CASE_LOWER", 2 );
 define( "UI_CASE_UPPERFIRST", 3 );
 
+require_once dirname(__FILE__) . "/permissions.class.php";
 /**
 * The Application User Interface Class.
 *
@@ -446,18 +447,47 @@ class CAppUI {
 * Set the value of a temporary state variable.
 *
 * The state is only held for the duration of a session.  It is not stored in the database.
+* Also do not set the value if it is unset.
 * @param string The label or key of the state variable
 * @param mixed Value to assign to the label/key
 */
-	function setState( $label, $value ) {
-		$this->state[$label] = $value;
+	function setState( $label, $value = null) {
+		if (isset($value))
+			$this->state[$label] = $value;
 	}
 /**
 * Get the value of a temporary state variable.
+* If a default value is supplied and no value is found, set the default.
 * @return mixed
 */
-	function getState( $label ) {
-		return array_key_exists( $label, $this->state) ? $this->state[$label] : NULL;
+	function getState( $label, $default_value = null ) {
+		if (array_key_exists( $label, $this->state)) {
+			return $this->state[$label];
+		} else if (isset($default_value)) {
+			$this->setState($label, $default_value);
+			return $default_value;
+		} else  {
+			return NULL;
+		}
+	}
+
+	function checkPrefState($label, $value, $prefname, $default_value = null) {
+		// Check if we currently have it set
+		if (isset($value)) {
+			$result = $value;
+			$this->state[$label] = $value;
+		} else if (array_key_exists($label, $this->state)) {
+			$result = $this->state[$label];
+		} else if (($pref = $this->getPref($prefname)) !== null) {
+			$this->state[$lable] = $pref;
+			$result = $pref;
+		} else if (isset($default_value)) {
+			$this->state[$label] = $default_value;
+			$result = $default_value;
+		} else {
+			$result = null;
+		}
+		return $result;
 	}
 /**
 * Login function
@@ -492,10 +522,8 @@ class CAppUI {
 
 		$sql = "
 		SELECT user_id, user_password AS pwd, password('$password') AS pwdpwd, md5('$password') AS pwdmd5
-		FROM users, permissions
+		FROM users
 		WHERE user_username = '$username'
-			AND users.user_id = permissions.permission_user
-			AND permission_value <> 0
 		";
 
 		$row = null;
@@ -520,6 +548,15 @@ class CAppUI {
 			}
 		}
 
+		// Now that the password has been checked, see if they are allowed to
+		// access the system
+		if (! isset($GLOBALS['acl']))
+		  $GLOBALS['acl'] =& new dPacl;
+		if ( ! $GLOBALS['acl']->checkLogin($row->user_id)) {
+		  dprint(__FILE__, __LINE__, 1, "Permission check failed");
+		  return false;
+		}
+
 		$sql = "
 		SELECT user_id, contact_first_name as user_first_name, contact_last_name as user_last_name, contact_company as user_company, user_department, contact_email as user_email, user_type
 		FROM users
@@ -527,9 +564,10 @@ class CAppUI {
 		WHERE user_id = $row->user_id AND user_username = '$username'
 		";
 
-		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
+		dprint(__FILE__, __LINE__, 1, "Login SQL: $sql");
 
 		if( !db_loadObject( $sql, $this ) ) {
+			dprint(__FILE__, __LINE__, 1, "Failed to load user information");
 			return false;
 		}
 
@@ -651,6 +689,22 @@ class CAppUI {
 		return (db_loadList( $sql ));
 	}
 
+	function isActiveModule($module) {
+		$sql = "SELECT mod_active from modules where mod_directory = '$module'";
+		return db_loadResult($sql);
+	}
+
+/**
+ * Returns the global dpACL class or creates it as neccessary.
+ * @return object dPacl
+ */
+	function &acl() {
+		if (! isset($GLOBALS['acl'])) {
+			$GLOBALS['acl'] =& new dPacl;
+	  	}
+	  	return $GLOBALS['acl'];
+	}
+
 /**
  * Find and add to output the file tags required to load module-specific
  * javascript.
@@ -673,13 +727,23 @@ class CAppUI {
 	    if (substr($entry, -3) == '.js')
 	      echo "<script type=\"text/javascript\" src=\"{$base}js/$entry\"></script>\n";
 	  }
+		$this->getModuleJS($m, $a, true);
+	}
 
-	  // Check for a default javascript file for the module.
-	  if (file_exists("{$root}modules/$m/$m.module.js"))
-	    echo "<script type=\"text/javascript\" src=\"{$base}modules/$m/$m.module.js\"></script>\n";
-	  // Check for a javascript file that matches the file being called.
-	  if (isset($a) && file_exists("{$root}modules/$m/$a.js"))
-	    echo "<script type=\"text/javascript\" src=\"{$base}modules/$m/$a.js\"></script>\n";
+	function getModuleJS($module, $file=null, $load_all = false) {
+		global $dPconfig;
+		$root = $dPconfig['root_dir'];
+		if (substr($root, -1) != '/');
+			$root .= '/';
+		$base = $dPconfig['base_url'];
+		if (substr($base, -1) != '/') 
+			$base .= '/';
+		if ($load_all || ! $file) {
+			if (file_exists("{$root}modules/$module/$module.module.js"))
+				echo "<script type=\"text/javascript\" src=\"{$base}modules/$module/$module.module.js\"></script>\n";
+		}
+	  if (isset($file) && file_exists("{$root}modules/$module/$file.js"))
+	    echo "<script type=\"text/javascript\" src=\"{$base}modules/$module/$file.js\"></script>\n";
 	}
 
 }
@@ -696,17 +760,23 @@ class CTabBox_core {
 	var $baseHRef=NULL;
 /** @var string The base path to prefix the include file */
 	var $baseInc;
+/** @var string A javascript function that accepts two arguments,
+the active tab, and the selected tab **/
+	var $javascript = NULL;
 
 /**
 * Constructor
 * @param string The base URL query string to prefix tab links
 * @param string The base path to prefix the include file
 * @param int The active tab
+* @param string Optional javascript method to be used to execute tabs.
+*	Must support 2 arguments, currently active tab, new tab to activate.
 */
-	function CTabBox_core( $baseHRef='', $baseInc='', $active=0 ) {
+	function CTabBox_core( $baseHRef='', $baseInc='', $active=0, $javascript = null ) {
 		$this->tabs = array();
 		$this->active = $active;
 		$this->baseHRef = ($baseHRef ? "$baseHRef&" : "?");
+		$this->javascript = $javascript;
 		$this->baseInc = $baseInc;
 	}
 /**
@@ -773,7 +843,12 @@ class CTabBox_core {
 				$s .= "\n\t\t<img src=\"./images/shim.gif\" height=\"1\" width=\"1\" alt=\"\" />";
 				$s .= "\n\t</td>";
 				$s .= "\n\t<td width=\"1%\" nowrap=\"nowrap\" class=\"$class\">";
-				$s .= "\n\t\t<a href=\"{$this->baseHRef}tab=$k\">".$AppUI->_($v[1])."</a>";
+				$s .= "\n\t\t<a href=\"";
+				if ($this->javascript)
+					$s .= "javascript:" . $this->javascript . "({$this->active}, $k)";
+				else
+					$s .= $this->baseHRef . "tab=$k";
+				$s .= "\">". $AppUI->_($v[1]). "</a>";
 				$s .= "\n\t</td>";
 			}
 			$s .= "\n\t<td nowrap=\"nowrap\" class=\"tabsp\">&nbsp;</td>";
@@ -801,13 +876,36 @@ class CTabBox_core {
 			$tab_array =& $_SESSION['all_tabs'][$module];
 		}
 		$tab_count = 0;
-		foreach ($tab_array as $name => $file) {
-			if (! is_array($file)) {
+		foreach ($tab_array as $tab_elem) {
+			if (isset($tab_elem['name'])) {
 				$tab_count++;
-				$this->add($file, $name);
+				$this->add($tab_elem['file'], $tab_elem['name']);
 			}
 		}
 		return $tab_count;
+	}
+
+	function findTabModule($tab) {
+		global $AppUI, $m, $a;
+
+		if (! isset($_SESSION['all_tabs']) || ! isset($_SESSION['all_tabs'][$m]))
+			return false;
+
+		if (isset($a)) {
+			if (isset($_SESSION['all_tabs'][$m][$a]) && is_array($_SESSION['all_tabs'][$m][$a]))
+				$tab_array =& $_SESSION['all_tabs'][$m][$a];
+			else
+				$tab_array =& $_SESSION['all_tabs'][$m];
+		} else {
+			$tab_array =& $_SESSION['all_tabs'][$m];
+		}
+
+		list($file, $name) = $this->tabs[$tab];
+		foreach ($tab_array as $tab_elem) {
+			if (isset($tab_elem['name']) && $tab_elem['name'] == $name && $tab_elem['file'] == $file)
+				return $tab_elem['module'];
+		}
+		return false;
 	}
 }
 

@@ -62,6 +62,12 @@ class CContact extends CDpObject{
 		$company_id = db_loadResult( $sql );
 		return $company_id;
 	}
+
+	function getCompanyName(){
+		$sql = "select company_name from companies where company_id = '" . $this->contact_company . "'";
+		$company_name = db_loadResult( $sql );
+		return $company_name;
+ 	}
 	
 }
 ?>

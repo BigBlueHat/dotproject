@@ -24,6 +24,7 @@ class CProject extends CDpObject {
 	var $project_demo_url = NULL;
 	var $project_start_date = NULL;
 	var $project_end_date = NULL;
+	var $project_actual_end_date = NULL;
 	var $project_status = NULL;
 	var $project_percent_complete = NULL;
 	var $project_color_identifier = NULL;
@@ -173,7 +174,7 @@ class CProject extends CDpObject {
 		  if ($extra['where'] != "") 
 			  $extra['where'] = $extra['where'] . ' AND ' . $buffer;
 		  else
-			  $extra['where'] = ' AND ' . $buffer; 
+			  $extra['where'] = $buffer; 
 		} else {
 		  // There are no allowed companies, so don't allow projects.
 		  if ($extra['where'] != '')
@@ -184,6 +185,20 @@ class CProject extends CDpObject {
 
 		return parent::getAllowedRecords ($uid, $fields, $orderby, $index, $extra);
 				
+	}
+	
+	function getAllowedSQL($uid, $index = null) {
+		$oCpy = new CCompany ();
+		
+		$where = $oCpy->getAllowedSQL ($uid, "project_company");
+		$project_where = parent::getAllowedSQL($uid, $index);
+		return array_merge($where, $project_where);
+	}
+
+	function setAllowedSQL($uid, &$query, $index = null) {
+		$oCpy = new CCompany;
+		parent::setAllowedSQL($uid, $query, $index);
+		$oCpy->setAllowedSQL($uid, $query, "project_company");
 	}
 	
 	/**
@@ -258,8 +273,10 @@ class CProject extends CDpObject {
                 {
         		$contacts = explode(',',$this->project_contacts);
         		foreach($contacts as $contact){
-        			$sql = 'INSERT INTO project_contacts (project_id, contact_id) values ('.$this->project_id.', '.$contact.')';
-        			db_exec( $sql );
+							if ($contact) {
+								$sql = 'INSERT INTO project_contacts (project_id, contact_id) values ('.$this->project_id.', '.$contact.')';
+								db_exec( $sql );
+							}
         		}
                 }
 

@@ -155,6 +155,29 @@ function submitIt(){
 ?>
 	</td>
 </tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('Default Event Filter');?>:</td>
+	<td>
+<?php
+	require_once $AppUI->getModuleClass('calendar');
+	echo arraySelect( $event_filter_list, 'pref_name[EVENTFILTER]', 'class=text size=1', @$prefs['EVENTFILTER'], true);
+?>
+	</td>
+</tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('Notification Method');?>:</td>
+	<td>
+<?php
+	$notify_filter = array( 
+		0 => $AppUI->_('Do not include task/event owner'),
+		1 => $AppUI->_('Include task/event owner')
+	);
+ 
+	echo arraySelect( $notify_filter, 'pref_name[MAILALL]', 'class=text size=1', @$prefs['MAILALL'], true);
+
+?>
+	</td>
+</tr>
 
 <tr>
 	<td align="left"><input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onClick="javascript:history.back(-1);" /></td>

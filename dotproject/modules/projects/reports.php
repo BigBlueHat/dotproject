@@ -5,7 +5,9 @@ $project_id = intval( dPgetParam( $_REQUEST, "project_id", 0 ) );
 $report_type = dPgetParam( $_REQUEST, "report_type", '' );
 
 // check permissions for this record
-$canRead = !getDenyRead( $m, $project_id );
+$perms =& $AppUI->acl();
+
+$canRead = $perms->checkModuleItem( $m, 'view', $project_id );
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -16,13 +18,15 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 $reports = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/projects/reports", "\.php$" );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Project Reports', 'applet3-48.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=projects", "projects list" );
-$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
-if ($report_type) {
-	$titleBlock->addCrumb( "?m=projects&a=reports&project_id=$project_id", "reports index" );
+if (! $suppressHeaders) {
+	$titleBlock = new CTitleBlock( 'Project Reports', 'applet3-48.png', $m, "$m.$a" );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
+	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+	if ($report_type) {
+		$titleBlock->addCrumb( "?m=projects&a=reports&project_id=$project_id", "reports index" );
+	}
+	$titleBlock->show();
 }
-$titleBlock->show();
 
 if ($report_type) {
 	$report_type = $AppUI->checkFileName( $report_type );
@@ -37,7 +41,10 @@ if ($report_type) {
 		$desc = @file( dPgetConfig( 'root_dir' )."/modules/projects/reports/$desc_file" );
 
 		echo "\n<tr>";
-		echo "\n	<td><a href=\"index.php?m=projects&a=reports&project_id=$project_id&report_type=$type\">";
+		echo "\n	<td><a href=\"index.php?m=projects&a=reports&project_id=$project_id&report_type=$type";
+		if (isset($desc[2]))
+			echo "&" . $desc[2];
+		echo "\">";
 		echo @$desc[0] ? $desc[0] : $v;
 		echo "</a>";
 		echo "\n</td>";

@@ -68,7 +68,7 @@ $date = new CDate();
 
 foreach ($messages as $row) {
 	$sql = "
-	SELECT DISTINCT contact_email, user_username
+	SELECT DISTINCT contact_email, contact_first_name, contact_last_name, user_username
 	FROM users, forum_messages
         LEFT JOIN contacts ON contact_id = user_contact
 	WHERE users.user_id = ".$row["message_editor"];
@@ -84,11 +84,11 @@ foreach ($messages as $row) {
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
 	$s .= '<a href="mailto:'.$row["contact_email"].'">';
-	$s .= '<font size="2">'.dPgetUsername($row['user_username']).'</font></a>';
+	$s .= '<font size="2">'.$row['contact_first_name'].' '.$row['contact_last_name'].'</font></a>';
 	if (sizeof($editor)>0) {
 		$s .= '<br/>&nbsp;<br/>'.$AppUI->_('last edited by');
 		$s .= ':<br/><a href="mailto:'.$editor[0]["contact_email"].'">';
-		$s .= '<font size="1">'.dPgetUsername($editor[0]['user_username']).'</font></a>';
+		$s .= '<font size="1">'.$editor[0]['contact_first_name'].' '.$editor[0]['contact_last_name'].'</font></a>';
 	}
 	$s .= '</td>';
 	$s .= '<td valign="top" style="'.$style.'">';

@@ -103,6 +103,13 @@ $show_all_assignees = isset($dPconfig['show_all_task_assignees']) ? $dPconfig['s
 
 $where = '';
 $join = winnow( 'projects', 'project_id', $where );
+require_once $AppUI->getModuleClass('projects');
+$project =& new CProject;
+// $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
+$allowedProjects = $project->getAllowedSQL($AppUI->user_id);
+$where = "";
+if ( count($allowedProjects))
+  $where = "WHERE " . implode(" AND ", $allowedProjects);
 
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
@@ -111,20 +118,23 @@ SELECT project_id, project_color_identifier, project_name,
 	company_name
 FROM projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project" .
-" LEFT JOIN companies ON company_id = project_company" .
-$join .
-"WHERE $where GROUP BY project_id
+" LEFT JOIN companies ON company_id = project_company
+" . $where  . "
+GROUP BY project_id
 ORDER BY project_name
 ";
 
 //echo "<pre>$psql</pre>";
 
-$prc = db_exec( $psql );
-echo db_error();
-
+$perms =& $AppUI->acl();
 $projects = array();
-while ($row = db_fetch_assoc( $prc )) {
-	$projects[$row["project_id"]] = $row;
+$canViewTask = $perms->checkModule('tasks', 'view');
+if ($canViewTask) {
+	$prc = db_exec( $psql );
+	echo db_error();
+	while ($row = db_fetch_assoc( $prc )) {
+		$projects[$row["project_id"]] = $row;
+	}
 }
 
 $join = "";
@@ -244,9 +254,16 @@ $tasks_filter = '';
 
 // TODO: Enable tasks filtering
 
-$join .= winnow( 'projects', 'tasks.task_project', $projects_filter, 'perm1' );
-$join .= winnow( 'tasks', 'tasks.task_id', $tasks_filter, 'perm2' );
-$where .= " AND ( ($projects_filter) )";
+$allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'task_project');
+if (count($allowedProjects))
+	$where .= " AND " . implode(" AND ", $allowedProjects);
+
+//
+$obj =& new CTask;
+$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+if ( count($allowedTasks))
+	$where .= " AND " . implode(" AND ", $allowedTasks);
+
 // echo "<pre>$where</pre>";
 
 // Filter by company
@@ -262,9 +279,13 @@ $tsql = "SELECT $select FROM $from $join WHERE $where" .
 
 // echo "<pre>$tsql</pre>";
 
-$ptrc = db_exec( $tsql );
-$nums = db_num_rows( $ptrc );
-echo db_error();
+if ($canViewTask) {
+	$ptrc = db_exec( $tsql );
+	$nums = db_num_rows( $ptrc );
+	echo db_error();
+} else {
+	$nums = 0;
+}
 
 //pull the tasks into an array
 /*

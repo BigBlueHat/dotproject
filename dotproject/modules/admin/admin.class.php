@@ -53,6 +53,7 @@ class CUser extends CDpObject {
 		}
 		if( $this->user_id ) {
 		// save the old password
+			$perm_func = "updateLogin";
 			$sql = "SELECT user_password FROM users WHERE user_id = $this->user_id";
 			db_loadHash( $sql, $hash );
 			$pwd = $hash['user_password'];	// this will already be encrypted
@@ -60,37 +61,34 @@ class CUser extends CDpObject {
 			$ret = db_updateObject( 'users', $this, 'user_id', false );
 
 		// update password if there has been a change
-			$sql = "UPDATE users SET user_password = MD5('$this->user_password')"
+			$pwsql = "UPDATE users SET user_password = MD5('$this->user_password')"
 				."\nWHERE user_id = $this->user_id AND user_password != '$pwd'";
-			db_exec( $sql );
 		} else {
+			$perm_func = "addLogin";
 			$ret = db_insertObject( 'users', $this, 'user_id' );
 		// encrypt password
-			$sql = "UPDATE users SET user_password = MD5('$this->user_password')"
+			$pwsql = "UPDATE users SET user_password = MD5('$this->user_password')"
 				."\nWHERE user_id = $this->user_id";
-			db_exec( $sql );
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
+			db_exec( $pwsql ); // Only execute password change in update/insert works.
+			$acl =& $GLOBALS['AppUI']->acl();
+			$acl->$perm_func($this->user_id, $this->user_username);
 			return NULL;
 		}
 	}
-}
 
-/**
-* Permissions class
-*/
-class CPermission extends CDpObject {
-	var $permission_id = NULL;
-	var $permission_user = NULL;
-	var $permission_grant_on = NULL;
-	var $permission_item = NULL;
-	var $permission_value = NULL;
-
-	function CPermission() {
-		$this->CDpObject( 'permissions', 'permission_id' );
-	}
+	function delete( $oid = NULL ) {
+		$id = $this->user_id;
+		$result = parent::delete($oid);
+		if (! $result) {
+			$acl =& $GLOBALS['AppUI']->acl();
+			$acl->deleteLogin($id);
+		}
+		return $result;
+ 	}
 }
 
 ?>

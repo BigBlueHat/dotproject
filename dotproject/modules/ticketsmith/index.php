@@ -1,6 +1,6 @@
 <?php  /* TICKETSMITH $Id$ */
 
-if (!$canRead) {
+if (!$canAccess) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -204,7 +204,9 @@ print(" ".$AppUI->_('Tickets')."</td>\n");
 if ($type == "Deleted" && $parent_count) {
     print("<td align=center><a href=index.php?m=ticketsmith&type=Deleted&action=expunge>".$AppUI->_('Expunge Deleted')."</a></td>");
 }
-print("<td align=right><a href=index.php?m=ticketsmith&a=search>".$AppUI->_('Search')."</a> | 
+print("<td align=right>
+<a href='index.php?m=ticketsmith&a=pdf&type=$type&suppressHeaders=1'>" . $AppUI->_('Report as PDF') . "</a> |
+<a href=index.php?m=ticketsmith&a=search>".$AppUI->_('Search')."</a> | 
 <a href=index.php?m=ticketsmith&type=$type>".$AppUI->_('Back to top')."</a></td></tr>\n");
 print("</table>\n");
 print("</td>\n");

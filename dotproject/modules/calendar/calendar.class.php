@@ -5,6 +5,8 @@
 
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getSystemClass ('dp' ) );
+require_once $AppUI->getSystemClass('libmail');
+require_once $AppUI->getSystemClass('date');
 
 /**
 * Displays a configuration month calendar
@@ -396,7 +398,7 @@ class CEvent extends CDpObject {
 	var $event_project = NULL;
 	var $event_private = NULL;
 	var $event_type = NULL;
-	var $event_cwd = NULL;
+	var $event_notify = null;
 
 	function CEvent() {
 		$this->CDpObject( 'events', 'event_id' );
@@ -407,7 +409,6 @@ class CEvent extends CDpObject {
 	// ensure changes to check boxes and select lists are honoured
 		$this->event_private = intval( $this->event_private );
 		$this->event_type = intval( $this->event_type );
-		$this->event_cwd = intval( $this->event_cwd );
 		return NULL;
 	}
 
@@ -490,7 +491,7 @@ class CEvent extends CDpObject {
 * @param Date End date of the period
 * @return array A list of events
 */
-	function getEventsForPeriod( $start_date, $end_date ) {
+	function getEventsForPeriod( $start_date, $end_date, $filter = 'all', $user_id = null ) {
 		global $AppUI;
 
 	// the event times are stored as unix time stamps, just to be different
@@ -498,27 +499,49 @@ class CEvent extends CDpObject {
 	// convert to default db time stamp
 		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
 		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
+		if (! isset($user_id))
+		  $user_id = $AppUI->user_id;
 
 		// Filter events not allowed
 		$where = '';
-		$join = winnow('projects', 'event_project', $where);
+		// $join = winnow('projects', 'event_project', $where);
+		$project =& new CProject;
+		$allowedProjects = $project->getAllowedSQL($user_id, 'event_project');
+		if (count ($allowedProjects)) {
+		  $where = 'AND ( ( ' . implode(' AND ', $allowedProjects) . ") OR event_project = 0 ) ";
+		  $join  = "LEFT join projects ON project_id = event_project";
+		}
+
+		switch ($filter) {
+			case 'my':
+				$join .= "\nLEFT join user_events ev ON ev.event_id = events.event_id AND ev.user_id = $user_id";
+				$where .= " AND ( ( event_private = 0 AND ev.user_id = $user_id )
+				OR event_owner=$user_id )";
+				break;
+			case 'own':
+				$where .= " AND ( event_owner = $user_id )";
+				break;
+			case 'all':
+				$where .= " AND ( event_private=0
+				OR (event_private=1 AND event_owner=$user_id)
+				)";
+				break;
+		}
+
 
 	// assemble query for non-recursive events
 		$sql = "
-		SELECT *
+		SELECT events.*
 		FROM events
 		$join
 		WHERE (
 				event_start_date <= '$db_end' AND event_end_date >= '$db_start'
 				OR event_start_date BETWEEN '$db_start' AND '$db_end'
 			)
-			AND ( event_private=0
-				OR (event_private=1 AND event_owner=$AppUI->user_id)
-			)
-			AND ($where)
+			$where
 			AND ( event_recurs <= 0 )
 		";
-	//echo "<pre>$sql</pre>";
+	// echo "<pre>$sql</pre>";
 	// execute
 	$eventList = db_loadList( $sql );
 
@@ -528,11 +551,10 @@ class CEvent extends CDpObject {
 		SELECT *
 		FROM events
 		$join
-		WHERE  ( event_private=0  OR (event_private=1 AND event_owner=$AppUI->user_id) )
-			AND ( event_recurs > 0)
-			AND ($where)
+		WHERE event_recurs > 0
+			$where
 		";
-	//echo "<pre>$sql</pre>";
+	// echo "<pre>$sql</pre>";
 
 	// execute
 		$eventListRec = db_loadList( $sql );
@@ -541,7 +563,7 @@ class CEvent extends CDpObject {
 		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
 
 
-		for ($i=0; $i < sizeof($eventListRec);  $i++) {
+		for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
 
 			for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
 
@@ -579,6 +601,205 @@ class CEvent extends CDpObject {
 		//return a list of non-recurrent and recurrent events
 		return $eventList;
 	}
+
+
+	function &getAssigned() {
+		$sql = "SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
+			   FROM users u, user_events e
+			 WHERE e.event_id = $this->event_id
+			 AND e.user_id = u.user_id
+			 ";
+		$assigned = db_loadHashList( $sql );
+		return $assigned;
+	}
+
+	function updateAssigned($assigned) {
+		// First remove the assigned from the user_events table
+		global $AppUI;
+		$sql = "DELETE from user_events WHERE event_id = $this->event_id";
+		db_exec($sql);
+		if (is_array($assigned) && count($assigned)) {
+			$sql = "INSERT into user_events ( event_id, user_id ) VALUES ";
+			$first = false;
+			foreach ($assigned as $uid) {
+			    if ($uid) {
+				if ($first)
+				  $sql .= ",";
+				else
+				  $first = true;
+				$sql .= "( $this->event_id, $uid )";
+			    }
+			}
+			if ($first) {
+			  db_exec($sql);
+			  if ($msg = db_error())
+				$AppUI->setMsg($msg, UI_MSG_ERROR);
+			}
+		}
+	}
+
+	function notify($assignees, $update = false, $clash = false)
+	{
+	  global $AppUI, $locale_char_set, $dPconfig;
+	  $mail_owner = $AppUI->getPref('MAILALL');
+	  $assignee_list = explode(",", $assignees);
+	  $owner_is_assigned = in_array($this->event_owner, $assignee_list);
+	  if ($mail_owner && ! $owner_is_assigned && $this->event_owner) {
+	  	array_push($assignee_list, $this->event_owner);
+	  }
+	  if (! count($assignee_list))
+	  	return;
+
+	  $sql = "select user_id, user_first_name, user_last_name, user_email
+	  from users where user_id in ( " . implode(',', $assignee_list) . ")";
+
+	  $users = db_loadHashList($sql, 'user_id');
+	  $date_format = $AppUI->getPref('SHDATEFORMAT');
+	  $time_format = $AppUI->getPref('TIMEFORMAT');
+	  $fmt = "$date_format $time_format";
+
+	  $start_date =& new CDate($this->event_start_date);
+	  $end_date =& new CDate($this->event_end_date);
+
+	  $mail =& new Mail;
+	  $type = $update ? $AppUI->_('Updated') : $AppUI->_('New');
+	  if ($clash) {
+	    $mail->Subject($AppUI->_('Requested Event') . ": " . $this->event_title, $locale_char_set);
+	  } else  {
+	    $mail->Subject($type . " " . $AppUI->_('Event') . ": " . $this->event_title, $locale_char_set);
+	  }
+	  $mail->From( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name 
+				. '" <' . $AppUI->user_email . '>');
+
+	  $body = '';
+	  if ($clash) {
+	    $body .= "You have been invited to an event by $AppUI->user_first_name $AppUI->uset_last_name\n";
+	    $body .= "However, either you or another intended invitee has a competing event\n";
+	    $body .= "$AppUI->user_first_name $AppUI->user_last_name has requested that you reply to this message\n";
+	    $body .= "and confirm if you can or can not make the requested time.\n\n";
+	  }
+	  $body .= $AppUI->_('Event') . ":\t" . $this->event_title . "\n";
+	  if (! $clash)
+	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . "/index.php?m=calendar&a=view&event_id=" . $this->event_id . "\n";
+	  $body .= $AppUI->_('Starts') . ":\t" . $start_date->format($fmt) . "\n";
+	  $body .= $AppUI->_('Ends') . ":\t" . $end_date->format($fmt) . "\n";
+
+	  // Find the project name.
+	  if ($this->event_project) {
+		$prj = array();
+		db_loadHash("select project_name from projects where project_id = " . $this->event_project, $prj);
+	  	$body .= $AppUI->_('Project') . ":\t". $prj['project_name'];
+	  }
+
+	  $types = dPgetSysVal('EventType');
+
+	  $body .= $AppUI->_('Type') . ":\t" . $AppUI->_($types[$this->event_type]) . "\n";
+	  $body .= $AppUI->_('Attendees') . ":\t";
+	  $start = false;
+	  foreach ($users as $user) {
+		if ($start)
+			$body .=",";
+		else
+			$start = true;
+	  	$body .= "$user[user_first_name] $user[user_last_name]";
+	  }
+	  $body .= "\n\n" . $this->event_description . "\n";
+
+	  $mail->Body($body, $locale_char_set);
+
+	  foreach ($users as $user) {
+		if (! $mail_owner && $user['user_id'] == $this->event_user)
+			continue;
+	  	$mail->To($user['user_email'], true);
+		$mail->Send();
+	  }
+	}
+
+	function checkClash($userlist = null)
+	{
+	  if (! isset($userlist))
+	    return false;
+	  $users = explode(',', $userlist);
+	  if (! count($users))
+	    return false;
+
+	  // Now, remove the owner from the list, as we will always clash on this.
+	  $key = array_search($AppUI->user_id, $users);
+	  if (isset($key) && $key !== false) // Need both for change in php 4.2.0
+	    unset($users[$key]);
+
+	  $start_date =& new CDate($this->event_start_date);
+	  $end_date =& new CDate($this->event_end_date);
+
+	  // Now build a query to find matching events.
+	  $sql = "SELECT e.event_owner, u.user_id,
+	  e.event_id, e.event_start_date, e.event_end_date from
+	  events e
+	  LEFT JOIN user_events u on u.event_id = e.event_id
+	  WHERE event_start_date <= '" . $end_date->format(FMT_DATETIME_MYSQL)
+	  . "' AND event_end_date >= '" . $start_date->format(FMT_DATETIME_MYSQL)
+	  . "' AND ( e.event_owner in (" . implode(",", $users) . ")
+	  OR u.user_id in (" . implode(",", $users) .") )";
+
+	  $result = db_exec($sql);
+	  if (! $result)
+	    return false;
+
+	  $clashes = array();
+	  while ($row = db_fetch_assoc($result)) {
+	    array_push($clashes, $row['event_owner']);
+	    if ($row['user_id'])
+	      array_push($clashes, $row['user_id']);
+	  }
+	  $clash = array_unique($clashes);
+	  if (count($clash)) {
+	    $sql = "SELECT user_id, CONCAT_WS(' ', user_first_name, user_last_name)
+	    FROM users WHERE user_id in (" . implode(",", $clash) . ")";
+	    return db_loadHashList($sql);
+	  } else {
+	    return false;
+	  }
+
+	}
+
+	function getEventsInWindow($start_date, $end_date, $start_time, $end_time, $users = null)
+	{
+	  if (! isset($users))
+	    return false;
+	  if (! count($users))
+	    return false;
+
+	  // Now build a query to find matching events.
+	  $sql = "SELECT e.event_owner, u.user_id,
+	  e.event_id, e.event_start_date, e.event_end_date
+	  from events e
+	  LEFT JOIN user_events u on u.event_id = e.event_id
+	  WHERE event_start_date >= '$start_date'
+	  AND event_end_date <= '$end_date'
+	  AND EXTRACT(HOUR_MINUTE FROM e.event_end_date) >= '$start_time'
+	  AND EXTRACT(HOUR_MINUTE FROM e.event_start_date) <= '$end_time'
+	  AND ( e.event_owner in (" . implode(",", $users) . ")
+	  OR u.user_id in (" . implode(",", $users) .") )";
+
+	  $result = db_exec($sql);
+	  if (! $result)
+	    return false;
+
+	  $eventlist = array();
+	  while ($row = db_fetch_assoc($result)) {
+	    $eventlist[] = $row;
+	  }
+
+	  return $eventlist;
+	}
+
+
+
 }
 
+$event_filter_list = array (
+	'my' => 'My Events',
+	'own' => 'Events I Created',
+	'all' => 'All Events'
+);
 ?>

@@ -21,6 +21,7 @@ if ($stub) {
 $sql .= "\nORDER by $orderby";
 
 $users = db_loadList( $sql );
+$canLogin = true;
 
 require "{$dPconfig['root_dir']}/modules/admin/vw_usr.php";
 ?>

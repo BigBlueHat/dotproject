@@ -143,7 +143,7 @@ function popChgPwd() {
 	$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
 	$tabBox->add( 'vw_usr_perms', 'Permissions' );
 	$tabBox->add( 'vw_usr_log', 'User Log');
-	//$tabBox->add( 'vw_usr_roles', 'Roles' );	// under development
+	$tabBox->add( 'vw_usr_roles', 'Roles' );
 	$tabBox->show();
 }
 ?>

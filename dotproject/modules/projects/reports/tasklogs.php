@@ -3,6 +3,9 @@
 * Generates a report of the task logs for given dates
 */
 error_reporting( E_ALL );
+$perms =& $AppUI->acl();
+if (! $perms->checkModule('tasks', 'view'))
+	redirect('m=public&a=access_denied');
 $do_report = dPgetParam( $_GET, "do_report", 0 );
 $log_all = dPgetParam( $_GET, 'log_all', 0 );
 $log_pdf = dPgetParam( $_GET, 'log_pdf', 0 );
@@ -134,6 +137,7 @@ if ($do_report) {
 		."\nFROM task_log AS t, tasks"
 		."\nLEFT JOIN users AS u ON user_id = task_log_creatori"
                 ."\nLEFT JOIN contacts ON user_contact = contact_id"
+		."\nLEFT JOIN projects ON project_id = task_project"
 		."\nWHERE task_log_task = task_id";
 	if (!$log_allprojects)
 	{
@@ -149,6 +153,13 @@ if ($do_report) {
 	if ($log_userfilter) {
 		$sql .= "\n	AND task_log_creator = $log_userfilter";
 	}
+
+	$proj =& new CProject;
+	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
+	if (count($allowedProjects)) {
+		$sql .= "\n     AND " . implode(" AND ", $allowedProjects);
+	}
+
 	$sql .= " ORDER BY task_log_date";
 
 	//echo "<pre>$sql</pre>";

@@ -82,6 +82,18 @@ class CModule extends CDpObject {
 			// TODO: check for older version - upgrade
 			return false;
 		}
+		$perms =& $GLOBALS['AppUI']->acl();
+		$perms->addModule($this->mod_directory, $this->mod_name);
+		// Determine if it is an admin module or not, then add it to the correct set
+		if (! isset($this->mod_admin))
+			$this->mod_admin = 0;
+		if ($this->mod_admin) {
+			$perms->addGroupItem($this->mod_directory, "admin");
+		} else {
+			$perms->addGroupItem($this->mod_directory, "non_admin");
+		}
+		if (isset($this->permissions_item_table) && $this->permissions_item_table)
+		  $perms->addModuleSection($this->permissions_item_table);
 		$this->store();
 		return true;
 	}
@@ -91,6 +103,17 @@ class CModule extends CDpObject {
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
+			$perms =& $GLOBALS['AppUI']->acl();
+			if (! isset($this->mod_admin))
+				$this->mod_admin = 0;
+			if ($this->mod_admin) {
+				$perms->deleteGroupItem($this->mod_directory, "admin");
+			} else {
+				$perms->deleteGroupItem($this->mod_directory, "non_admin");
+			}
+			$perms->deleteModule($this->mod_directory);
+			if (isset($this->permissions_item_table) && $this->permissions_item_table)
+			  $perms->deleteModuleSection($this->permissions_item_table);
 			return NULL;
 		}
 	}

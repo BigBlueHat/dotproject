@@ -16,7 +16,7 @@ $types = dPgetSysVal( 'CompanyType' );
 // get any records denied from viewing
 
 $obj = new CCompany();
-$deny = $obj->getDeniedRecords( $AppUI->user_id );
+$allowedCompanies = $obj->getAllowedRecords($AppUI->user_id, 'company_id, company_name');
 
 if ( $companiesType == -1 ){
 	//Plain view
@@ -38,20 +38,14 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 	. "count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,"
 	. "contact_first_name, contact_last_name"
 
-	. " FROM permissions, companies"
+	. " FROM companies"
 
 	. " LEFT JOIN projects ON companies.company_id = projects.project_company and projects.project_active <> 0"
 	. " LEFT JOIN users ON companies.company_owner = users.user_id"
         . " LEFT JOIN contacts ON users.user_contact = contacts.contact_id"
 	. " LEFT JOIN projects AS projects2 ON companies.company_id = projects2.project_company AND projects2.project_active = 0"
-	. " WHERE permission_user = $AppUI->user_id"
-	. "	AND permission_value <> 0"
-	. " AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'companies' and permission_item = -1)
-		OR (permission_grant_on = 'companies' and permission_item = company_id)
-		)"
-	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
+	. " WHERE 1=1"
+	. (count($allowedCompanies) > 0 ? ' AND company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')' : '')
 	. ($companiesType ? " AND company_type = $company_type_filter" : "");
 
 if($search_string != ""){

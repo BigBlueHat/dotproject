@@ -1,5 +1,6 @@
 <?php /* CALENDAR $Id$ */
 $event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
+$is_clash = isset($_SESSION['event_is_clash']) ? $_SESSION['event_is_clash'] : false;
 
 // check permissions
 if (!$canEdit) {
@@ -12,18 +13,53 @@ $date = dPgetParam( $_GET, 'date', null );
 // load the record data
 $obj = new CEvent();
 
-if (!$obj->load( $event_id ) && $event_id) {
+if ($is_clash) {
+  $obj->bind($_SESSION['add_event_post']);
+}
+else if ( !$obj->load( $event_id ) && $event_id ) {
 	$AppUI->setMsg( 'Event' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
+
 // check only owner can edit
+// TODO: Should assignee's be allowed to edit?
 if ($obj->event_owner != $AppUI->user_id && $event_id != 0) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // load the event types
 $types = dPgetSysVal( 'EventType' );
+
+// Load the users
+$perms =& $AppUI->acl();
+$users = $perms->getPermittedUsers();
+
+// Load the assignees
+$assigned = array();
+if ($is_clash) {
+	$assignee_list = $_SESSION['add_event_attendees'];
+	if (isset($assignee_list) && $assignee_list) {
+	  $sql = "SELECT user_id, CONCAT_WS(' ' , user_first_name, user_last_name)
+	  FROM users WHERE user_id in ($assignee_list)";
+	  $assigned = db_loadHashList($sql);
+	} else {
+	}
+} else if ( $event_id == 0 ) {
+	$assigned[$AppUI->user_id] = "$AppUI->user_first_name $AppUI->user_last_name";
+} else {
+	$assigned = $obj->getAssigned();
+}
+// Now that we have loaded the possible replacement event,  remove the stored
+// details, NOTE: This could cause using a back button to make things break,
+// but that is the least of our problems.
+if ($is_clash) {
+ 	unset($_SESSION['add_event_post']);
+	unset($_SESSION['add_event_attendees']);
+	unset($_SESSION['add_event_mail']);
+	unset($_SESSION['add_event_clash']);
+	unset($_SESSION['event_is_clash']);
+}
 
 // setup the title block
 $titleBlock = new CTitleBlock( ($event_id ? "Edit Event" : "Add Event") , 'myevo-appointments.png', $m, "$m.$a" );
@@ -41,7 +77,7 @@ $sql = "SELECT project_id, project_name FROM projects ORDER BY project_name";
 $all_projects = '(' . $AppUI->_('All') . ')';
 $projects = arrayMerge( array( 0 => $all_projects ), db_loadHashList( $sql ) );
 
-if ($event_id) {
+if ($event_id || $is_clash) {
 	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;
 	$end_date = intval( $obj->event_end_date ) ? new CDate( $obj->event_end_date ) : $start_date;
 } else {
@@ -102,16 +138,17 @@ function submitIt(){
 		alert("Please enter an end date");
 		form.event_end_date.focus();
 	}
-/* FUNCTIONALITY NOT YET ENABLED
-	if (form.event_recurs.selectedIndex != 0 && isNaN(parseInt(form.event_times_recuring.value))){
-		alert("Please select how often you wish this event to recur.");
-		form.event_times_recuring.focus();
-	} else {
-*/
-		form.submit();
-/*
+	// Ensure that the assigned values are selected before submitting.
+	var assigned = form.assigned;
+	var len = assigned.length;
+	var users = form.event_assigned;
+	users.value = "";
+	for (var i = 0; i < len; i++) {
+		if (i)
+			users.value += ",";
+		users.value += assigned.options[i].value;
 	}
-*/
+	form.submit();
 }
 
 var calendarField = '';
@@ -119,7 +156,7 @@ var calendarField = '';
 function popCalendar( field ){
 	calendarField = field;
 	idate = eval( 'document.editFrm.event_' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=250, height=220, scollbars=false' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
 /**
@@ -132,6 +169,45 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+
+function addUser() {
+	var form = document.editFrm;
+	var fl = form.resources.length -1;
+	var au = form.assigned.length -1;
+	//gets value of percentage assignment of selected resource
+
+	var users = "x";
+
+	//build array of assiged users
+	for (au; au > -1; au--) {
+		users = users + "," + form.assigned.options[au].value + ","
+	}
+
+	//Pull selected resources and add them to list
+	for (fl; fl > -1; fl--) {
+		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
+			t = form.assigned.length
+			opt = new Option( form.resources.options[fl].text, form.resources.options[fl].value);
+			form.assigned.options[t] = opt
+		}
+	}
+
+}
+
+function removeUser() {
+	var form = document.editFrm;
+	fl = form.assigned.length -1;
+	for (fl; fl > -1; fl--) {
+		if (form.assigned.options[fl].selected) {
+			//remove from hperc_assign
+			var selValue = form.assigned.options[fl].value;			
+			var re = ".*("+selValue+"=[0-9]*;).*";
+			form.assigned.options[fl] = null;
+		}
+	}
+}
+
+
 </script>
 
 <table cellspacing="1" cellpadding="2" border="0" width="100%" class="std">
@@ -139,11 +215,16 @@ function setCalendar( idate, fdate ) {
 	<input type="hidden" name="dosql" value="do_event_aed" />
 	<input type="hidden" name="event_id" value="<?php echo $event_id;?>" />
 	<input type="hidden" name="event_project" value="0" />
+	<input type="hidden" name="event_assigned" value="" />
 
 <tr>
-	<td width="33%" align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Event Title' );?>:</td>
+	<td width="20%" align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Event Title' );?>:</td>
 	<td width="20%">
 		<input type="text" class="text" size="25" name="event_title" value="<?php echo @$obj->event_title;?>" maxlength="255">
+	</td>
+	<td align="left" rowspan=4 valign="top" colspan="2" width="40%">
+	<?php echo $AppUI->_( 'Description' ); ?> :<br/>
+		<textarea class="textarea" name="event_description" rows="5" cols="45"><?php echo @$obj->event_description;?></textarea></td>
 	</td>
 </tr>
 
@@ -198,12 +279,6 @@ function setCalendar( idate, fdate ) {
 	<td><?php echo arraySelect( $times, 'end_time', 'size="1" class="text"', $end_date->format( "%H%M%S" ) ); ?></td>
 </tr>
 <tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Show only on Working Days' );?>:</td>
-	<td>
-		<input type="checkbox" value="1" name="event_cwd" <?php echo (@$obj->event_cwd ? 'checked' : '');?>>
-	</td>
-</tr>
-<tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Recurs' );?>:</td>
 	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj->event_recurs, true ); ?></td>
 	<td align="right">x</td>
@@ -217,11 +292,34 @@ function setCalendar( idate, fdate ) {
 	<td><?php echo arraySelect( $remind, 'event_remind', 'size="1" class="text"', $obj['event_remind'] ); ?> <?php echo $AppUI->_( 'in advance' );?></td>
 </tr>
 <?php */ ?>
+
 <tr>
-	<td valign="top" align="right"><?php echo $AppUI->_( 'Description' );?></td>
-	<td align="left" colspan="3">
-		<textarea class="textarea" name="event_description" rows="5" cols="45"><?php echo @$obj->event_description;?></textarea></td>
+	<td align="right"><?php echo $AppUI->_( 'Resources' ); ?>:</td>
+	<td></td>
+	<td align="left"><?php echo $AppUI->_( 'Invited to Event' ); ?>:</td>
+	<td></td>
+</tr>
+<tr>
+	<td colspan="2" align="right">
+	<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" class="text" multiple="multiple" ', null); ?>
 	</td>
+	<td colspan="2" align="left">
+	<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" class="text" multiple="multiple" ', null); ?>
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td colspan=2 align="center">
+		<table>
+			<tr>
+				<td align="left"><input type="button" class="button" value="&gt;"
+				onClick="addUser()" /></td>
+				<td align="right"><input type="button" class="button" value="&lt;"
+				onClick="removeUser()" /></td>
+			</tr>
+		</table>
+	</td>
+	<td align="left"><?php echo $AppUI->_('Mail Attendees?'); ?> <input type='checkbox' name='mail_invited' checked=true></td>
 </tr>
 <tr>
 	<td colspan="2">

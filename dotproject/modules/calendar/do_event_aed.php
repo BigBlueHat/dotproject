@@ -28,6 +28,7 @@ if (!$del && $start_date->compare ($start_date, $end_date) >= 0)
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Event' );
+$do_redirect = true;
 if ($del) {
 	if (!$obj->canDelete( $msg )) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
@@ -44,11 +45,25 @@ if ($del) {
 	if (!$isNotNew) {
 		$obj->event_owner = $AppUI->user_id;
 	}
-	if (($msg = $obj->store())) {
-		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+	// Check for existence of clashes.
+	if ($clash = $obj->checkClash($_POST['event_assigned'])) {
+	  $last_a = $a;
+	  $GLOBALS['a'] = "clash";
+	  $do_redirect = false;
 	} else {
+	  if (($msg = $obj->store())) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+	  } else {
 		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
+		if (isset($_POST['event_assigned']))
+		      $obj->updateAssigned(explode(",",$_POST['event_assigned']));
+		if (isset($_POST['mail_invited'])) {
+		      $obj->notify(@$_POST['event_assigned'], $isNotNew);
+		}
+	  }
 	}
 }
-$AppUI->redirect();
+if ($do_redirect)
+  $AppUI->redirect();
+
 ?>

@@ -5,10 +5,13 @@ $ci = dPgetParam($_GET, 'ci', 0) == 1 ? true : false;
 
 
 // check permissions for this record
-$canEdit = !getDenyEdit( $m, $file_id );
+$perms =& $AppUI->acl();
+$canEdit = $perms->checkModuleItem( $m, 'edit', $file_id );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+
+$canAdmin = $perms->checkModule('system', 'edit');
 
 // load the companies class to retrieved denied companies
 require_once( $AppUI->getModuleClass( 'projects' ) );
@@ -38,7 +41,7 @@ $obj = new CFile();
 $canDelete = $obj->canDelete( $msg, $file_id );
 
 // load the record data
-$obj = null;
+//$obj = null;
 if (!db_loadObject( $sql, $obj ) && $file_id > 0) {
 	$AppUI->setMsg( 'File' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
@@ -48,6 +51,12 @@ if (!db_loadObject( $sql, $obj ) && $file_id > 0) {
 if ($obj->file_checkout != $AppUI->user_id)
         $ci = false;
 
+if (! $canAdmin)
+	$canAdmin = $obj->canAdmin();
+
+if ($obj->file_checkout == 'final' && ! $canAdmin) {
+	redirect('m=public&a=access_denied');
+}
 // setup the title block
 $ttl = $file_id ? "Edit File" : "Add File";
 $ttl = $ci ? 'Checking in' : $ttl;
@@ -76,7 +85,7 @@ if ($obj->file_task) {
 }
 
 $extra = array(
-	'where'=>'AND project_active <> 0'
+	'where'=>'project_active <> 0'
 );
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
@@ -141,6 +150,7 @@ function setTask( key, val ) {
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="<?php echo $file_id;?>" />
+	<input type="hidden" name="file_version_id" value="<?php echo $file_version_id;?>" />
 
 <tr>
 	<td width="100%" valign="top" align="center">
@@ -169,9 +179,10 @@ function setTask( key, val ) {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Version' );?>:</td>
 			<td align="left">
-                        <?php if ($ci) { ?>
+                        <?php if ($ci || ($canAdmin && $obj->file_checkout == 'final') ) { ?>
 				<input type="hidden" name="file_checkout" value="" />
 				<input type="hidden" name="file_co_reason" value="" />
+				<?php } if ($ci) { ?>
 				<input type="hidden" name="file_version" value="<?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version+0.1 : "1";?>" />
                                 <?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version+0.1 : "1";?>
                         <?php } else { ?>
@@ -214,7 +225,7 @@ function setTask( key, val ) {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Upload File' );?>:</td>
 			<td align="left"><input type="File" class="button" name="formfile" style="width:270px"></td>
 		</tr>
-                <?php if ($ci) {
+                <?php if ($ci || ( $canAdmin && $obj->file_checkout == 'final') ) {
                 ?>
 		<tr>
 			<td align="right" nowrap="nowrap">&nbsp;</td>

@@ -2,8 +2,8 @@
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 
 // check permissions for this record
-$canEdit = !getDenyEdit( $m, $contact_id );
-if (!$canEdit) {
+$perms =& $AppUI->acl();
+if (! ($canEdit = $perms->checkModuleItem( 'contacts', 'edit', $contact_id )) ) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 

@@ -1,33 +1,19 @@
 <?php /* PUBLIC $Id$ */
 
-function selPermWhere( $table, $idfld ) {
+function selPermWhere( $obj, $idfld, $namefield ) {
 	global $AppUI;
 
-	// get any companies denied from viewing
-	$sql = "SELECT $idfld"
-		."\nFROM $table, permissions"
-		."\nWHERE permission_user = $AppUI->user_id"
-		."\n	AND permission_grant_on = '$table'"
-		."\n	AND permission_item = $idfld"
-		."\n	AND permission_value = 0";
-	$deny = db_loadColumn( $sql );
-	echo db_error();
-
-	return "permission_user = $AppUI->user_id"
-		."\nAND permission_value <> 0"
-		."\nAND ("
-		."\n	(permission_grant_on = 'all')"
-		."\n	OR (permission_grant_on = '$table' and permission_item = -1)"
-		."\n	OR (permission_grant_on = '$table' and permission_item = $idfld)"
-		."\n	)"
-		. (count($deny) > 0 ? "\nAND $idfld NOT IN (" . implode( ',', $deny ) . ')' : '');
+	$allowed  = $obj->getAllowedRecords($AppUI->user_id, "$idfld, $namefield");
+	if (count($allowed))
+		return " $idfld IN (" . implode(",", array_keys($allowed)) . ") ";
+	else
+		return "";
 }
 
 $debug = false;
 $callback = dPgetParam( $_GET, 'callback', 0 );
 $table = dPgetParam( $_GET, 'table', 0 );
 $user_id = dPgetParam( $_GET, 'user_id', 0 );
-
 
 $ok = $callback & $table;
 
@@ -37,13 +23,17 @@ $from = $table;
 $where = '';
 $order = '';
 
+$modclass = $AppUI->getModuleClass($table);
+if ($modclass && file_exists ($modclass))
+	require_once $modclass;
+
 switch ($table) {
 case 'companies':
+	$obj =& new CCompany;
 	$title = 'Company';
 	$select = 'company_id,company_name';
 	$order = 'company_name';
-	$table .= ", permissions";
-	$where = selPermWhere( 'companies', 'company_id' );
+	$where = selPermWhere( $obj, 'company_id', 'company_name' );
 	break;
 case 'departments':
 // known issue: does not filter out denied companies
@@ -51,10 +41,13 @@ case 'departments':
 	$company_id = dPgetParam( $_GET, 'company_id', 0 );
 	//$ok &= $company_id;  // Is it safe to delete this line ??? [kobudo 13 Feb 2003]
 	//$where = selPermWhere( 'companies', 'company_id' );
-	$where = "dept_company = company_id ";
-	$where .= "\nAND ".selPermWhere( 'departments', 'dept_id' );
+	$obj =& new CDepartment;
+	$where = selPermWhere( $obj, 'dept_id', 'dept_name' );
+	if ($where)
+		$where .= "\nAND ";
+	$where .= "dept_company = company_id ";
 
-	$table .= ", companies, permissions";
+	$table .= ", companies";
 	$hide_company = dPgetParam( $_GET, 'hide_company', 0 );
 	if ( $hide_company == 1 ){
 		$select = "dept_id, dept_name";
@@ -77,22 +70,20 @@ case 'projects':
 	$project_company = dPgetParam( $_GET, 'project_company', 0 );
 
 	$title = 'Project';
+	$obj =& new CProject;
 	$select = 'project_id,project_name';
 	$order = 'project_name';
-        if ($user_id > 0)
-        {
-         $where =  " project_contacts like \"" .$user_id
-	.",%\" or project_contacts like \"%," .$user_id 
-	.",%\" or project_contacts like \"%," .$user_id
-	."\" or project_contacts like \"" .$user_id ."\"";
-        }
-	else
-	{
-	 $where = selPermWhere( 'projects', 'project_id' );
-	 $where .= $project_company ? "\nAND project_company = $project_company" : '';
-	 $table .= ", permissions";
-        }
-
+	$where_clause = array();
+	if ($user_id > 0) {
+		$where_clause[] " project_contacts regex \",*{$user_id},*\" ";
+	}
+	$pwhere = selPermWhere( $obj, 'project_id', 'project_name' );
+	if ($pwhere) {
+		$where_clause[] = $pwhere;
+	}
+	if ($project_company) {
+		$where_clause[] = "AND project_company = $project_company";
+	$where = implode("\nAND ", $where_clause);
 	break;
 case 'tasks':
 	$task_project = dPgetParam( $_GET, 'task_project', 0 );
@@ -109,7 +100,7 @@ case 'users':
 	break;
 case 'SGD':
 	$title = 'Document';
-	$select = 'SGD_id,SGD_name';
+	$select = 'SGD_id, SGD_name';
 	$order = 'SGD_name';
 	break;
 default:

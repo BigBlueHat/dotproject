@@ -11,7 +11,8 @@
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_id=0 ) {
-	GLOBAL $AppUI, $dPconfig;
+	GLOBAL $AppUI;
+	GLOBAL $dPconfig;
 	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $company_id );
 
 //echo "<br>entering add tasks dt=".dPgetMicroDiff();
@@ -97,10 +98,10 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 //echo "  ,".intval(Date::compare( $target, $temp ));
 //continue;
 
-			// Reformatted to speed up calendar display
-			while (Date::compare( $endPeriod, $temp ) > 0
-			    && Date::compare( $target, $temp ) > 0
-			    && ($end == null || $temp->before($end)) ) {
+			// Optimised for speed, AJD.
+			while (Date::compare( $endPeriod, $temp ) > 0 
+			    && Date::compare($target, $temp) > 0
+			    && ( $end == null || $temp->before($end) ) ) {
 				$links[$temp->format( FMT_TIMESTAMP_DATE )][] = $link;
 				$temp->addSeconds( $sid );
 			}

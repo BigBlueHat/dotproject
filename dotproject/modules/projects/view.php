@@ -2,10 +2,17 @@
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
 // check permissions for this record
-$canRead = !getDenyRead( $m, $project_id );
-$canEdit = !getDenyEdit( $m, $project_id );
+$perms =& $AppUI->acl();
+$canRead = $perms->checkModuleItem( $m, 'view', $project_id );
+$canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 
 if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+// Now check if the proect is editable/viewable.
+$denied = $obj->getDeniedRecords($AppUI->user_id);
+if (in_array($project_id, $denied)) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -296,7 +303,14 @@ function delIt() {
 			    			echo "<tr><th>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
 			    			foreach($contacts as $contact_id => $contact_data){
 			    				echo "<tr>";
-			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=view&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
+			    				echo "<td class='hilite'>";
+							$canEdit = $perms->checkModuleItem('contacts', 'edit', $contact_id);
+							if ($canEdit)
+								echo "<a href='index.php?m=contacts&a=view&contact_id=$contact_id'>";
+							echo $contact_data["contact_first_name"]." ".$contact_data["contact_last_name"];
+							if ($canEdit)
+								echo "</a>";
+							echo "</td>";
 			    				echo "<td class='hilite'><a href='mailto: ".$contact_data["contact_email"]."'>".$contact_data["contact_email"]."</a></td>";
 			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
 			    				echo "<td class='hilite'>".$contact_data["contact_department"]."</td>";
@@ -321,18 +335,22 @@ if ($tab == 1) {
 }
 $query_string = "?m=projects&a=view&project_id=$project_id";
 // tabbed information boxes
+// Note that we now control these based upon module requirements.
 $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Tasks' );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_forums", 'Forums' );
-// $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_files", 'Files' );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
-$showProject = false;
-if ($tabBox->loadExtras($m))
-  $tabBox_show = 1;
-//$tabBox->add( "{$dPconfig['root_dir']}/modules/links/index_table", 'Links');
-// settings for tasks
+$canViewTask = $perms->checkModule('tasks', 'view');
+if ($canViewTask) {
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
+}
+if ($perms->checkModule('forums', 'view'))
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
+if ($perms->checkModule('files', 'view'))
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
+if ($canViewTask) {
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
+}
+
 $f = 'all';
 $min_view = true;
 

@@ -19,9 +19,10 @@ $tf = $AppUI->getPref('TIMEFORMAT');
 $sql = "
 SELECT forum_id, forum_project,	forum_description, forum_owner, forum_name,
 	forum_create_date, forum_last_date, forum_message_count, forum_moderated,
-	user_username,
+	user_username, contact_first_name, contact_last_name,
 	project_name, project_color_identifier
-FROM forums, users, projects 
+FROM forums, projects, users
+LEFT JOIN contacts on contact_id = user_contact
 WHERE user_id = forum_owner 
 	AND forum_id = $forum_id 
 	AND forum_project = project_id
@@ -57,7 +58,7 @@ $titleBlock->show();
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>
 	<td nowrap><?php
-		echo dPgetUsername($forum["user_username"]);
+		echo $forum['contact_first_name'] . ' ' . $forum['contact_last_name'];
 		if (intval( $forum["forum_id"] ) <> 0) {
 			echo " (".$AppUI->_( 'moderated' ).") ";
 		}?>

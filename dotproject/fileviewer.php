@@ -2,9 +2,6 @@
 //file viewer
 require_once "./includes/config.php";
 require_once "./classes/ui.class.php";
-require_once "./includes/main_functions.php";
-require_once "./includes/db_adodb.php";
-require_once( "./includes/db_connect.php" );
 
 session_name( 'dotproject' );
 session_set_cookie_params(0, dirname($_SERVER['SCRIPT_NAME']) . '/');
@@ -62,9 +59,13 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 }
 $AppUI =& $_SESSION['AppUI'];
 
+require_once "{$dPconfig['root_dir']}/includes/db_connect.php";
+require_once "{$dPconfig['root_dir']}/includes/main_functions.php";
 require_once "{$dPconfig['root_dir']}/includes/permissions.php";
 
-$canRead = !getDenyRead( 'files' );
+$perms =& $AppUI->acl();
+
+$canRead = $perms->checkModule( 'files' , 'view' );
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -73,27 +74,23 @@ $file_id = isset($_GET['file_id']) ? $_GET['file_id'] : 0;
 
 if ($file_id) {
 	// projects that are denied access
-	$sql = "
-	SELECT project_id
-	FROM projects, permissions
-	WHERE permission_user = $AppUI->user_id
-		AND permission_grant_on = 'projects'
-		AND permission_item = project_id
-		AND permission_value = 0
-	";
-	$deny1 = db_loadColumn( $sql );
+	$project =& new CProject;
+	$allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
+	$fileclass =& new CFile;
+	$allowedFiles = $fileclass->getAllowedRecords($AppUI->user_id, 'file_id, file_name');
+	
+	if (count($allowedFiles) && ! array_key_exists($file_id, $allowedFiles)) {
+		$AppUI->redirect( 'm=public&a=access_denied' );
+	}
+
+	if (count($allowedProjects)) {
+		$allowedProjects[0] = 'All Projects';
+	}
 
 	$sql = "SELECT *
-	FROM permissions, files
-	WHERE file_id=$file_id
-		AND permission_user = $AppUI->user_id
-		AND permission_value <> 0
-		AND (
-			(permission_grant_on = 'all')
-			OR (permission_grant_on = 'projects' AND permission_item = -1)
-			OR (permission_grant_on = 'projects' AND permission_item = file_project)
-			)"
-		.(count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '');
+	FROM files
+	WHERE file_id=$file_id"
+	  . (count( $allowedProjects ) > 0 ? "\nAND file_project IN (" . implode(',', array_keys($allowedProjects) ) . ')' : '');
 
 	if (!db_loadHash( $sql, $file )) {
 		$AppUI->redirect( "m=public&a=access_denied" );

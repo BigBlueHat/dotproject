@@ -144,6 +144,12 @@ if ($do_report) {
 		$sql .= "\n	AND task_start_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'"
 		."\n	AND task_start_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'";
 	}
+
+	$obj =& new CTask;
+	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+	if (count($allowedTasks)) {
+		$sql .= " AND " . implode(" AND ", $allowedTasks);
+	}
 	$sql .= " ORDER BY task_start_date";
 	$Task_List = db_exec( $sql );
 		

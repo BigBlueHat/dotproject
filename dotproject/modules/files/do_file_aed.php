@@ -80,6 +80,17 @@ if ($file_id && ($obj->file_project != $oldObj->file_project) ) {
 
 if (!$file_id) {
 	$obj->file_owner = $AppUI->user_id;
+	if (! $obj->file_version_id)
+	{
+		$sql = 'SELECT file_version_id
+						FROM files
+						ORDER BY file_version_id DESC
+						LIMIT 1';
+		$latest_file_version = db_loadResult($sql);
+		$obj->file_version_id = $latest_file_version + 1;
+	} else {
+		db_exec("UPDATE files SET file_checkout = '' WHERE file_version_id = $obj->file_version_id");
+	}
 }
 
 if (($msg = $obj->store())) {

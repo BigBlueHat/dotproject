@@ -10,7 +10,11 @@ if(isset($_REQUEST["owner_filter_id"])){
 	$AppUI->setState("owner_filter_id", $_REQUEST["owner_filter_id"]);
 	$owner_filter_id = $_REQUEST["owner_filter_id"];
 } else {
-	$owner_filter_id = $AppUI->getState( 'owner_filter_id') ? $AppUI->getState( 'owner_filter_id' ) : $AppUI->user_id;
+	$owner_filter_id = $AppUI->getState( 'owner_filter_id');
+	if (! isset($owner_filter_id)) {
+		$owner_filter_id = $AppUI->user_id;
+		$AppUI->setState('owner_filter_id', $owner_filter_id);
+	}
 }
 
 $orderby         = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
@@ -31,45 +35,12 @@ if($search_string != ""){
 	$search_string = $AppUI->getState("search_string");
 }
 
-$canEdit = !getDenyEdit( $m );
+// $canEdit = !getDenyEdit( $m );
 // retrieve list of records
-/*
- The following query is actually made at vw_companies.php
- It was excuted twice, so I commented out this block
- - jcgonz
- 
-$sql = "
-SELECT company_id, company_name, company_type, company_description,
-	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
-	contact_first_name, contact_last_name
-FROM permissions, companies
-LEFT JOIN projects ON companies.company_id = projects.project_company and projects.project_active <> 0
-LEFT JOIN users ON companies.company_owner = users.user_id
-LEFT JOIN contacts ON users.user_contact = contacts.contact_id
-LEFT JOIN projects AS projects2 ON companies.company_id = projects2.project_company AND projects2.project_active = 0
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'companies' and permission_item = -1)
-		OR (permission_grant_on = 'companies' and permission_item = company_id)
-		)
-" . (count($deny) > 0 ? 'and company_id not in (' . implode( ',', $deny ) . ')' : '')
- . "GROUP BY company_id
-    ORDER BY $orderby";
-
-$rows = db_loadList( $sql );
-*/
 $search_string = dPformSafe($search_string, true);
 
-$sql = "select user_id, concat_ws(' ', contact_first_name, contact_last_name)
-		from users as u 
-                LEFT JOIN contacts ON u.user_contact = contacts.contact_id
-                left join permissions as p on u.user_id = p.permission_user
-		where !isnull(p.permission_user)
-		group by user_id
-		order by contact_first_name";
-$owner_list = array( 0 => $AppUI->_("All")) + db_loadHashList($sql);
+$perms =& $AppUI->acl();
+$owner_list = array( 0 => $AppUI->_("All")) + $perms->getPermittedUsers("companies"); // db_loadHashList($sql);
 $owner_combo = arraySelect($owner_list, "owner_filter_id", "class='text' onchange='javascript:document.searchform.submit()'", $owner_filter_id, false);
 
 // setup the title block
@@ -119,7 +90,7 @@ if ( $companiesTypeTab != -1 ) {
 	$types[] = "Not Defined";
 }
 
-$tabBox = new CTabBox( "?m=companies", "{$dPconfig['root_dir']}/modules/companies/", $companiesTypeTab );
+$tabBox = new CTabBox( "?m=companies", "{$AppUI->cfg['root_dir']}/modules/companies/", $companiesTypeTab );
 foreach($types as $type_name){
 	$tabBox->add('vw_companies', $type_name);
 }

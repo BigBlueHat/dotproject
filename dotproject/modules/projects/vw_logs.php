@@ -85,6 +85,14 @@ function delIt2(id) {
 	<th></th>
 </tr>
 <?php
+// Winnow out the tasks we are not allowed to view.
+$perms =& $AppUI->acl();
+$project =& new CProject;
+$allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'task_project');
+$limitWhere = '';
+if (count($allowedProjects))
+  $limitWhere = " AND " . implode(" AND ", $allowedProjects);
+
 // Pull the task comments
 $sql = "
 SELECT task_log.*, user_username, task_id
@@ -94,7 +102,8 @@ FROM
 	LEFT JOIN tasks ON task_log_task = tasks.task_id
 	LEFT JOIN projects ON task_project = project_id
 WHERE 
-	task_project = $project_id ".
+	task_project = $project_id 
+	$limitWhere ".
 	($user_id>0?" AND task_log_creator=$user_id ":'').
 	($hide_inactive?" AND task_status>=0 ":'').
 	($hide_complete?" AND task_percent_complete < 100 ":'').
@@ -110,7 +119,7 @@ foreach ($logs as $row) {
 
 	$s .= '<tr bgcolor="white" valign="top">';
 	$s .= "\n\t<td>";
-	if (!getDenyEdit($m, $row['task_id']) ) {
+	if ($perms->checkModuleItem($m, 'edit', $row['task_id']) ) {
 		$s .= "\n\t\t<a href=\"?m=tasks&a=view&task_id=".$row['task_id']."&tab=1&task_log_id=".@$row['task_log_id']."\">"
 			. "\n\t\t\t". dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' )
 			. "\n\t\t</a>";

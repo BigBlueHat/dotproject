@@ -106,6 +106,18 @@ if($do_report) {
 	}
 
 	$sql .= " AND t.task_id = ut.task_id";
+
+	$proj =& new CProject;
+	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
+	if (count($allowedProjects)) {
+		$sql .= " AND " . implode(" AND ", $allowedProjects);
+	}
+
+	$obj =& new CTask;
+	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+	if (count($allowedTasks)) {
+		$sql .= " AND " . implode(" AND ", $allowedTasks);
+	}
 	
 	$task_list_hash = db_loadHashList($sql, "task_id");
 	$task_list      = array();

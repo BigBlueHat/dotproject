@@ -113,7 +113,7 @@ function autoCheck( $bool )
  *	@param string $charset encoding to be used for Quoted-Printable encoding of the subject 
 */
 function Subject( $subject, $charset='' ) {
-	if( $charset != "" ) {
+	if( isset($charset) && $charset != "" ) {
 		$this->charset = strtolower($charset);
 	}
 	
@@ -236,7 +236,7 @@ function Bcc( $bcc ) {
 function Body( $body, $charset="" ) {
 	$this->body = $body;
 
-	if( $charset != "" ) {
+	if( isset($charset) && $charset != "" ) {
 		$this->charset = strtolower($charset);
 		if( $this->charset != "us-ascii" )
 			$this->ctencoding = "8bit";

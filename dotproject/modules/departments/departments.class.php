@@ -3,7 +3,7 @@
 ## CDepartment Class
 ##
 
-class CDepartment {
+class CDepartment extends CDpObject {
 	var $dept_id = NULL;
 	var $dept_parent = NULL;
 	var $dept_company = NULL;

@@ -116,15 +116,16 @@ function dPcontextHelp( $title, $link='' ) {
 
 /**
 * Retrieves a configuration setting.
-* @param string The name of a configuration setting
-* @return The value of the setting, otherwise null if the key is not found in the configuration array
+* @param $key string The name of a configuration setting
+* @param $default string The default value to return if the key not found.
+* @return The value of the setting, or the default value if not found.
 */
-function dPgetConfig( $key ) {
+function dPgetConfig( $key, $default = null ) {
 	global $dPconfig;
 	if (array_key_exists( $key, $dPconfig )) {
 		return $dPconfig[$key];
 	} else {
-		return null;
+		return $default;
 	}
 }
 
@@ -517,5 +518,29 @@ function dprint($file, $line, $level, $msg)
   }
 }
 
+/**
+ * Return a list of modules that are associated with tabs for this
+ * page.  This can be used to find post handlers, for instance.
+ */
+function findTabModules($module, $file = null)
+{
+	$modlist = array();
+	if (!isset($_SESSION['all_tabs']) || ! isset($_SESSION['all_tabs'][$module]))
+		return $modlist;
+
+	if (isset($file)) {
+		if (isset($_SESSION['all_tabs'][$module][$file]) && is_array($_SESSION['all_tabs'][$module][$file]))
+			$tabs_array =& $_SESSION['all_tabs'][$module][$file];
+		else
+			return $modlist;
+	} else {
+		$tabs_array =& $_SESSION['all_tabs'][$module];
+	}
+	foreach ($tabs_array as $tab) {
+		if (isset($tab['module']))
+			$modlist[] = $tab['module'];
+	}
+	return array_unique($modlist);
+}
 
 ?>

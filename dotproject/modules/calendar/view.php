@@ -2,7 +2,8 @@
 $event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
 
 // check permissions for this record
-$canEdit = !getDenyEdit( $m, $event_id );
+$perms =& $AppUI->acl();
+$canEdit = $perms->checkModuleItem( $m, "edit", $event_id );
 
 // check if this record has dependancies to prevent deletion
 $msg = '';
@@ -34,6 +35,8 @@ $recurs =  array (
 	'Every Year'
 );
 
+$assigned = $obj->getAssigned();
+
 
 if ($obj->event_owner != $AppUI->user_id) {
 	$canEdit = false;
@@ -58,7 +61,7 @@ $titleBlock->addCrumb( "?m=calendar&date=".$start_date->format( FMT_TIMESTAMP_DA
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=calendar&a=day_view&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "day view" );
 	$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );
-	if ($canEdit) {
+	if ($canDelete) {
 		$titleBlock->addCrumbDelete( 'delete event', $canDelete, $msg );
 	}
 }
@@ -69,7 +72,7 @@ $titleBlock->show();
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
-if ($canEdit) {
+if ($canDelete) {
 ?>
 function delIt() {
 	if (confirm( "<?php echo $AppUI->_('eventDelete');?>" )) {
@@ -114,6 +117,21 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Recurs');?>:</td>
 			<td class="hilite"><?php echo $AppUI->_($recurs[$obj->event_recurs])." (".$obj->event_times_recuring."&nbsp;".$AppUI->_('times').")" ;?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Attendees');?>:</td>
+			<td class="hilite"><?php
+				if (is_array($assigned)) {
+					$start = false;
+					foreach ($assigned as $user) {
+						if ($start)
+							echo "<br/>";
+						else
+							$start = true;
+						echo $user;
+					}
+				}
+			?>
 		</tr>
 		</table>
 	</td>

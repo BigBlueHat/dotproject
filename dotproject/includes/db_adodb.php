@@ -14,7 +14,7 @@ require_once( "{$dPconfig['root_dir']}/lib/adodb/adodb.inc.php" );
 $db = NewADOConnection($dPconfig['dbtype']);
 
 function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
-        global $db, $dPrunLevel;
+        global $db, $dPrunLevel, $ADODB_FETCH_MODE;
 
 	if ($persist) {
 		if ($db->PConnect($host, $user, $passwd, $dbname)) {
@@ -31,7 +31,7 @@ function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port
 		}
 	}
 
-        $ADODB_FETCH_MODE=ADODB_FETCH_ASSOC;
+        $ADODB_FETCH_MODE=ADODB_FETCH_BOTH;
 }
 
 function db_error() {

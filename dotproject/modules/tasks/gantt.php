@@ -15,6 +15,9 @@ $f = defVal( @$_REQUEST['f'], 0 );
 global $showLabels;
 global $showWork;
 global $locale_char_set;
+require_once $AppUI->getModuleClass('projects');
+$project =& new CProject;
+$allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 
 // pull valid projects and their percent complete information
 $psql = "
@@ -22,13 +25,7 @@ SELECT project_id, project_color_identifier, project_name
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_active <> 0
-	AND permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)
+" . (count($allowedProjects) ? "AND project_id IN (" . implode(',', array_keys($allowedProjects)) . ')' : '') ."
 GROUP BY project_id
 ORDER BY project_name
 ";
@@ -44,20 +41,8 @@ for ($x=0; $x < $pnums; $x++) {
 }
 
 // get any specifically denied tasks
-$dsql = "
-SELECT task_id
-FROM tasks, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'tasks'
-	AND permission_item = task_id
-	AND permission_value = 0
-";
-$drc = db_exec( $dsql );
-echo db_error();
-$deny = array();
-while ($row = db_fetch_row( $drc )) {
-        $deny[] = $row[0];
-}
+$task =& new CTask;
+$deny = $task->getDeniedRecords($AppUI->user_id);
 
 // pull tasks
 

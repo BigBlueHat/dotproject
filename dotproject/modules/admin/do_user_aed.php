@@ -67,9 +67,9 @@ if ($del) {
         if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( $isNewUser ? 'added - <b>please setup permissions now.  Without any permissions, user will not be able to log in.</b>' : 'updated', UI_MSG_OK, true );
+		$AppUI->setMsg( $isNewUser ? 'added - <b>please setup roles and permissions now.  User must have at least one role to log in.</b>' : 'updated', UI_MSG_OK, true );
 	}
         }
-//	($isNewUser)?$AppUI->redirect("m=admin&a=viewuser&user_id=". $obj->user_id . "&tab=1"):$AppUI->redirect();
+	($isNewUser)?$AppUI->redirect("m=admin&a=viewuser&user_id=". $obj->user_id . "&tab=2"):$AppUI->redirect();
 
 ?>

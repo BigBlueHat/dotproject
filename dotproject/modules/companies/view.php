@@ -2,8 +2,9 @@
 $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
 // check permissions for this record
-$canRead = !getDenyRead( $m, $company_id );
-$canEdit = !getDenyEdit( $m, $company_id );
+$perms =& $AppUI->acl();
+$canRead = $perms->checkModuleItem( $m, 'view', $company_id );
+$canEdit = $perms->checkModuleItem( $m, 'edit', $company_id );
 
 
 if (!$canRead) {
@@ -56,7 +57,7 @@ $titleBlock->addCrumb( "?m=companies", "company list" );
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
 	
-	if ($canEdit) {
+	if ($canDelete) {
 		$titleBlock->addCrumbDelete( 'delete company', $canDelete, $msg );
 	}
 }
@@ -67,7 +68,7 @@ $titleBlock->show();
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
-if ($canEdit) {
+if ($canDelete) {
 ?>
 function delIt() {
 	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Company').'?';?>" )) {
@@ -79,11 +80,14 @@ function delIt() {
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
+<?php if ($canDelete) {
+?>
 <form name="frmDelete" action="./index.php?m=companies" method="post">
 	<input type="hidden" name="dosql" value="do_company_aed" />
 	<input type="hidden" name="del" value="1" />
 	<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
 </form>
+<?php } ?>
 
 <tr>
 	<td valign="top" width="50%">

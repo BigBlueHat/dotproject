@@ -159,7 +159,8 @@ if($do_report){
 	$where=false;
 
 	$sql = 	 "SELECT t.* "
-			."FROM tasks AS t ";
+			."FROM tasks AS t "
+			."LEFT JOIN projects on project_id = task_project ";
 
 	if ($use_period) {
 		if (!$where) { $sql.=" WHERE ";$where=true; }
@@ -183,8 +184,28 @@ if($do_report){
 			$sql .= " AND ";
 		}
 		$sql.=" task_project='$project_id' ";
+		$and = true;
 	}
 
+	$proj =& new CProject;
+	$obj =& new CTask;
+	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
+	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+
+	if (count($allowedProjects)) {
+		if (!$where) { $sql.=" WHERE ";$where=true; }
+		if ($and) $sql .= " AND ";
+		$and = true;
+		$sql .= implode(" AND ", $allowedProjects);
+	}
+
+	if (count($allowedTasks)) {
+		if (!$where) { $sql.=" WHERE ";$where=true; }
+		if ($and) $sql .= " AND ";
+		$and = true;
+		$sql .= implode(" AND ", $allowedTasks);
+ 	}
+ 
 	$sql .= " ORDER BY task_end_date;";
 
 	$task_list_hash 	 = db_loadHashList($sql, "task_id");

@@ -121,9 +121,14 @@ if(isset($department)){
 // modified for speed
 // by Pablo Roca (pabloroca@mvps.org)
 // 16 August 2003
+// get the list of permitted companies
+$obj = new CCompany();
+$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+
 $sql = "
 SELECT
-	projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
+	projects.project_id, project_active, project_status, project_actual_end_date,
+	project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_color_identifier,
 	project_company, company_name, project_status, project_priority,
         tasks_critical.critical_task, tasks_critical.project_actual_end_date,
@@ -132,7 +137,7 @@ SELECT
 	tasks_summy.my_tasks,
 	tasks_sum.project_percent_complete,
 	user_username
-FROM permissions,projects
+FROM projects
 LEFT JOIN companies ON projects.project_company = company_id
 LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks_critical ON projects.project_id = tasks_critical.task_project
@@ -140,15 +145,9 @@ LEFT JOIN tasks_problems ON projects.project_id = tasks_problems.task_project
 LEFT JOIN tasks_sum ON projects.project_id = tasks_sum.task_project
 LEFT JOIN tasks_summy ON projects.project_id = tasks_summy.task_project"
 .(isset($department) ? "\nLEFT JOIN project_departments ON project_departments.project_id = projects.project_id" : '')."
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = projects.project_id)
-		)"
+WHERE 1 = 1"
 .(count($deny) > 0 ? "\nAND projects.project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-.(!isset($department)&&$company_id ? "\nAND projects.project_company = '$company_id'" : '')
+.(!isset($department)&&$company_id ? "\nAND projects.project_company = '$company_id'" : "\nAND projects.project_company IN (" . implode(',', array_keys($companies)) . ")" )
 .(isset($department) ? "\nAND project_departments.department_id in ( ".implode(',',$dept_ids)." )" : '')
 ."
 GROUP BY projects.project_id
@@ -159,8 +158,6 @@ $projects = db_loadList( $sql );
 
 
 // get the list of permitted companies
-$obj = new CCompany();
-$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 
 //get list of all departments, filtered by the list of permitted companies.

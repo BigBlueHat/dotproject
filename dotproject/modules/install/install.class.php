@@ -34,6 +34,9 @@ var $dPcfg = array();
 //  @var array Container for various informations needed in install process
 var $various = array();
 
+//	@var Object permissions container for providing dummy permissions with installer
+var $_acl = null;
+
 	// Constructor: populate config arrays
 	function Cinstall() {
 
@@ -510,5 +513,17 @@ var $various = array();
                 //return $output;
         }
 
+				function & acl() {
+					if (! isset($this->_acl))
+						$this->_acl =& new InstallerPermissions;
+					return $this->_acl;
+				}
+
+}
+
+class InstallerPermissions {
+	function checkModule($modname, $method, $user_id = null) {
+		return true;
+	}
 }
 ?>
