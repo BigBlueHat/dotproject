@@ -106,7 +106,7 @@ function submitIt(){
 	<TD align="right" width="230">Username:</td>
 	<TD>
 	<?php if(@$prow["user_username"]){?>
-	<input type="hidden" class="text" name="user_username" value="<?php echo $prow["user_username"];?>"><strong><?php =$prow["user_username"]?></strong>
+	<input type="hidden" class="text" name="user_username" value="<?php echo $prow["user_username"];?>"><strong><?php echo $prow["user_username"];?></strong>
 	<?php }else{?>
 		<input type="text" class="text" name="user_username" value="<?php echo $prow["user_username"];?>" maxlength="50" size=40> 	 <span class="smallNorm">(required)</span>
 	<?php }?></td></tr>

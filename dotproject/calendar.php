@@ -71,14 +71,14 @@ if( $nextMonth > 12 ) { $nextMonth = $nextMonth - 12; $nextYear++; }
 <head>
 <SCRIPT language="javascript">
 function setClose(x,y,z){
-	var form = window.opener.document.<?php =$form;?>;
-	var page = "<?php =$page;?>";
+	var form = window.opener.document.<?php echo $form;?>;
+	var page = "<?php echo $page;?>";
 
 	if(page != ""){
-		if ("<?php =$date_format;?>"== "1") {
+		if ("<?php echo $date_format;?>"== "1") {
 			form.<?php echo $field;?>.value = y + "/" + x + "/" + z;
 	}
-		else if ("<?php =$date_format;?>"=="2") {
+		else if ("<?php echo $date_format;?>"=="2") {
 			form.<?php echo $field;?>.value = x + "/" + y + "/" + z;
 		}
 		else {

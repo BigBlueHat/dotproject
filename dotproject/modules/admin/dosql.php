@@ -56,7 +56,7 @@ if(strlen($message2) > 0)$message = $message2;
 
 if(!ereg("admin", $perms) &! ereg("all", $perms)){?>
 <script>
-window.location="./index.php?m=admin&a=addedituser&user_id=<?php =$user_id;?>&message=<?php echo $message;?>";
+window.location="./index.php?m=admin&a=addedituser&user_id=<?php echo $user_id;?>&message=<?php echo $message;?>";
 </script>
 <?php die;}?>
 <script>
