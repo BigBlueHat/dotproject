@@ -61,7 +61,7 @@ function setColor() {
 
 var calendarField = '';
 
-function popCalendar( uts, field ){
+function popCalendar( field ){
 	calendarField = field;
 	uts = eval( 'document.AddEdit.project_' + field + '.value' );
 	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'width=250, height=220, scollbars=false' );
@@ -162,7 +162,7 @@ function delIt() {
 			<td>
 				<input type="hidden" name="project_start_date" value="<?php echo $start_date->getTimestamp();?>">
 				<input type="text" name="start_date" value="<?php echo $start_date->toString();?>" class="text" disabled="disabled">
-				<a href="#" onClick="popCalendar('project_start_date','start_date')">
+				<a href="#" onClick="popCalendar('start_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 				</a>
 			</td>
@@ -172,7 +172,7 @@ function delIt() {
 			<td>
 				<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->getTimestamp() : '-1';?>">
 				<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->toString() : '';?>" class="text" disabled="disabled">
-				<a href="#" onClick="popCalendar('project_end_date','end_date')">
+				<a href="#" onClick="popCalendar('end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 				</a>
 			</td>
