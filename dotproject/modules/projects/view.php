@@ -45,9 +45,16 @@ if (!db_loadObject( $sql, $obj )) {
 	$AppUI->savePlace();
 }
 
-// horas totales
+// worked hours
 $sql = "SELECT SUM(task_log_hours) FROM task_log, tasks WHERE task_log_task = task_id AND task_project = $project_id";
-$total_hours = db_loadResult($sql);
+$worked_hours = db_loadResult($sql);
+
+// total hours
+$sql = "SELECT SUM(task_duration) FROM tasks WHERE task_project = $project_id AND task_duration_type = 24";
+$days = db_loadResult($sql);
+$sql = "SELECT SUM(task_duration) FROM tasks WHERE task_project = $project_id AND task_duration_type = 1";
+$hours = db_loadResult($sql);
+$total_hours = $days * $dPconfig['daily_working_hours'] + $hours;
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -159,9 +166,13 @@ function delIt() {
 			<td class="hilite" width="100%"><?php echo $obj->project_active ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>
 		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Worked Hours');?>:</td>
+			<td class="hilite" width="100%"><?php echo $worked_hours ?></td>
+		</tr>	
+		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Total Hours');?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_hours ?></td>
-		</tr>	
+		</tr>		
 		</table>
 		<strong><?php echo $AppUI->_('Description');?></strong><br />
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
