@@ -110,8 +110,6 @@
 "cal_day_view_show_minical_tooltip"=>"Defines whether in day view the minicalendars are shown or not.",
 "cal_working_days_title"=>"Calendar Working Days",
 "cal_working_days_tooltip"=>"Days of week that the company works: 0=Sunday.",
-"check_legacy_password_title"=>"Check Legacy Passwords?",
-"check_legacy_password_tooltip"=>"ONLY REQUIRED FOR UPGRADES prior to and including version 1.0 alpha 2",
 "check_overallocation_title"=>"Check Overallocation?",
 "check_overallocation_tooltip"=>"Enable or disable the overallocation checkup",
 "check_tasks_dates_title"=>"Check Tasks\' Dates?",
