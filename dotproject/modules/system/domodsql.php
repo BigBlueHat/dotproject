@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* SYSTEM $Id$ */
 ##
 ## Activate or move a module entry
 ##

@@ -1,17 +1,6 @@
-<?php
-// System Administration
-
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
-
+<?php /* SYSTEM $Id$ */
 $AppUI->savePlace();
 ?>
-
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
 <table width="98%" border=0 cellpadding=0 cellspacing=1>
 <tr>
@@ -38,7 +27,6 @@ $AppUI->savePlace();
 	<td>&nbsp;</td>
 	<td align="left">
 		<a href="?m=system&a=translate"><?php echo $AppUI->_( 'Translation Management' );?></a>
-		<br /><a href="#"><?php echo $AppUI->_('Date and Time');?></a>
 	</td>
 </tr>
 
@@ -55,6 +43,8 @@ $AppUI->savePlace();
 	<td>&nbsp;</td>
 	<td align="left">
 		<a href="?m=system&a=addeditpref"><?php echo $AppUI->_('Default User Preferences');?></a>
+		<br /><a href="?m=system&u=syskeys&a=keys"><?php echo $AppUI->_( 'System Lookup Keys' );?></a>
+		<br /><a href="?m=system&u=syskeys"><?php echo $AppUI->_( 'System Lookup Values' );?></a>
 	</td>
 </tr>
 <?php

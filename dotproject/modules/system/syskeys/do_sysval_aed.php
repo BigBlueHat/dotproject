@@ -1,4 +1,4 @@
-<?php
+<?php /* SYSKEYS $Id$ */
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 
 $sysval = new CSysVal();

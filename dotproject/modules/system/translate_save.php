@@ -1,4 +1,4 @@
-<?php
+<?php /* SYSTEM $Id$ */
 
 $module = isset( $HTTP_POST_VARS['module'] ) ? $HTTP_POST_VARS['module'] : 0;
 $lang = isset( $HTTP_POST_VARS['lang'] ) ? $HTTP_POST_VARS['lang'] : 'es';

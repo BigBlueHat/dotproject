@@ -1,4 +1,4 @@
-<?php /* $Id */
+<?php /* SYSKEYS $Id */
 $AppUI->savePlace();
 // temporary until tranlated!
 $AppUI->setWarning( false );

@@ -1,8 +1,4 @@
-<?php
-// Translation Management
-
-// check permissions
-$denyEdit = getDenyEdit( $m );
+<?php /* SYSTEM $Id$ */
 
 // only user_type of Administrator (1) can access this page
 if ($denyEdit || $AppUI->user_type != 1) {
@@ -47,7 +43,7 @@ ob_end_clean();
 $trans = array();
 foreach( $english as $k => $v ) {
 	if ($v != "0") {
-		$trans[ (is_int($k) ? $v : $k) ] = array( 
+		$trans[ (is_int($k) ? $v : $k) ] = array(
 			'english' => $v
 		);
 	}
@@ -112,7 +108,7 @@ $crumbs["?m=system"] = "System Admin";
 <input type="hidden" name="lang" value="<?php echo $lang;?>" />
 <?php
 $index = 0;
-if ($lang == 'en') { 
+if ($lang == 'en') {
 	echo "<tr>\n";
 	echo "<td><input type=\"text\" name=\"trans[$index][abbrev]\" value=\"\" size=\"20\" class=\"text\" /></td>\n";
 	echo "<td><input type=\"text\" name=\"trans[$index][english]\" value=\"\" size=\"40\" class=\"text\" /></td>\n";
@@ -136,12 +132,12 @@ foreach ($trans as $k => $langs){
 			echo '&nbsp;';
 		}
 	?></td>
-	<td><?php 
+	<td><?php
 		$langs['english'] = htmlspecialchars( @$langs['english'], ENT_QUOTES );
 		if ($lang == 'en') {
 			if (strlen($langs['english']) < 40) {
 				echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\" />";
-			} else { 
+			} else {
 			  $rows = round(strlen($langs['english']/35)) +1 ;
 			  echo "<textarea name=\"trans[$index][english]\"  cols=\"40\" class=\"small\" rows=\"$rows\">".$langs['english']."</textarea>";
 			}
@@ -152,12 +148,12 @@ foreach ($trans as $k => $langs){
 				."\" size=\"20\" class=\"text\" />";
 		}
 	?></td>
-	<td><?php 
+	<td><?php
 		if ($lang != 'en') {
 			$langs['lang'] = htmlspecialchars( @$langs['lang'], ENT_QUOTES );
 			if (strlen($langs['lang']) < 40) {
 				echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\" />";
-			} else { 
+			} else {
 			  $rows = round(strlen($langs['lang']/35)) +1 ;
 			  echo "<textarea name=\"trans[$index][lang]\"  cols=\"40\" class=\"small\" rows=\"$rows\">".$langs['lang']."</textarea>";
 			}
@@ -165,7 +161,7 @@ foreach ($trans as $k => $langs){
 	?></td>
 	<td align="center"><?php echo "<input type=\"checkbox\" name=\"trans[$index][del]\" />";?></td>
 </tr>
-<?php 
+<?php
 	$index++;
 }
 ?>

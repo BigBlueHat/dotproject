@@ -1,4 +1,4 @@
-<?php
+<?php /* SYSTEM $Id$ */
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 
 $obj = new CPreferences();

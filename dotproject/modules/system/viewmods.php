@@ -1,11 +1,5 @@
-<?php /* $Id$*/
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
+<?php /* SYSTEM $Id$*/
 
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
 $AppUI->savePlace();
 
 // temporary until tranlated!

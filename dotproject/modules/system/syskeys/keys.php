@@ -1,4 +1,4 @@
-<?php /* $Id$*/
+<?php /* SYSKEYS $Id$*/
 // temporary until tranlated!
 $AppUI->setWarning( false );
 
