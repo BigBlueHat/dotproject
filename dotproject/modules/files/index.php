@@ -35,42 +35,22 @@ ORDER BY project_name
 ";
 
 $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
+
+// setup the title block
+$titleBlock = new CTitleBlock( 'Files', 'folder.gif', $m, 'ID_HELP_FILE_IDX' );
+$titleBlock->addCell(
+	arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" size="1" class="text"', $project_id ), '',
+	'<form name="pickProject" action="?m=files" method="post">', '</form>'
+);
+if ($canEdit) {
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
+		'<form action="?m=files&a=addedit" method="post">', '</form>'
+	);
+}
+$titleBlock->show();
 ?>
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-	<td rowspan="2"><img src="./images/icons/folder.gif" alt="" border="0" width="42" height="42" /></td>
-	<td rowspan="2" nowrap><h1><?php echo $AppUI->_( 'File Management' );?></h1></td>
-	<form name="searcher" action="?m=files&a=search" method="post">
-	<input type="hidden" name="dosql" value="searchfiles" />
-	<td width="100%" align="right">
-		<input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled="disabled" />
-	</td>
-	<td>&nbsp;<input class="button" type="submit" value="<?php echo $AppUI->_('search');?>" disabled="disabled" /></td>
-	</form>
-<?php if ($canEdit) { ?>
-	<td align="right">
-		&nbsp;<input type="button" class=button value="<?php echo $AppUI->_( 'add new file' );?>" onClick="javascript:window.location='./index.php?m=files&a=addedit';" />
-	</td>
-<?php } ?>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help', 'ID_HELP_FILE_IDX' ).'" />' );?></td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-<form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickProject">
-	<td align="right" width="100%" nowrap="nowrap">
-		<?php echo $AppUI->_( 'Project' );?>:
-<?php
-	echo arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" size="1" class="text"', $project_id );
-?>
-	</td>
-<tr>
-</form>
-
-</table>
-
-<table cellspacing="0" cellpadding="0" border="0" width="98%">
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
 <tr>
 	<td>
 <?php
