@@ -8,10 +8,7 @@ if (! isset($baseDir)) {
 
 @include_once "$baseDir/includes/config.php";
 require_once "$baseDir/includes/main_functions.php";
-require_once "$baseDir/classes/ui.class.php";
-
-$AppUI =& new CAppUI;
-
+require_once "$baseDir/install/install.inc.php";
 require_once "$baseDir/includes/db_adodb.php";
 require_once "$baseDir/includes/db_connect.php";
 

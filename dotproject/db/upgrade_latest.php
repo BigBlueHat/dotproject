@@ -8,6 +8,7 @@ include_once "$baseDir/includes/config.php";
 include_once "$baseDir/includes/main_functions.php";
 require_once "$baseDir/includes/db_adodb.php";
 include_once "$baseDir/includes/db_connect.php";
+include_once "$baseDir/install/install.inc.php";
 
 /**
  * DEVELOPERS PLEASE NOTE:
