@@ -1,13 +1,12 @@
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-	<TR>
-	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width="42" height="42" /></td>
-		<TD nowrap><h1>Trouble Ticket Management</h1></td>
-		<TD valign="top" align="right" width="100%">&nbsp;</td>
-	</tr>
-</TABLE>
-<?php
+<?php /* TICKETSMITH $Id$ */
+$ticket = dPgetParam( $_GET, 'ticket', '' );
+$ticket_type = dPgetParam( $_GET, 'ticket_type', '' );
 
-/* $Id$ */
+// setup the title block
+$titleBlock = new CTitleBlock( 'Post Comment', 'ticketsmith.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
+$titleBlock->addCrumb( "?m=ticketsmith&a=view&ticket=$ticket", "view this ticket" );
+$titleBlock->show();
 
 require("modules/ticketsmith/config.inc.php");
 require("modules/ticketsmith/common.inc.php");
@@ -19,9 +18,14 @@ $title = "Post Comment";
 if (!$ticket_parent) {
     $ticket_parent = $ticket;
 }
-    
+
+$author_name = dPgetParam( $_POST, 'author_name', '' );
+$author_email = dPgetParam( $_POST, 'author_email', '' );
+$comment = dPgetParam( $_POST, 'comment', '' );
+$body = dPgetParam( $_POST, 'body', '' );
+
 if (@$comment) {
-    
+
     /* prepare fields */
     list($author_name, $author_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     $subject = addslashes(query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'"));
@@ -32,7 +36,7 @@ if (@$comment) {
     /* prepare query */
     $query = "INSERT INTO tickets (author, subject, body, timestamp, type, parent, assignment) ";
     $query .= "VALUES ('$author','$subject','$comment','$timestamp','Staff Comment','$ticket_parent','9999')";
-    
+
     /* insert comment */
     do_query($query);
 
@@ -44,21 +48,18 @@ if (@$comment) {
 
     exit();
 
-}
-
-else {
+} else {
 
     /* start table */
-	print("<table class=maintable bgcolor=\"#eeeeee\">\n");
+	print("<table class=std bgcolor=\"#eeeeee\" width=\"100%\">\n");
     print("<tr>\n");
-	print("<td colspan=\"2\" align=\"center\"  bgcolor=#878676>\n");
+	print("<th colspan=\"2\" align=\"center\" >\n");
     print("<div class=\"heading\">$title</div>\n");
-    print("</td>\n");
+    print("</th>\n");
     print("</tr>\n");
-	 
+
     /* start form */
-    print("<form action=index.php?m=ticketsmith&a=comment method=\"post\">\n");
-    print("<input type=\"hidden\" name=\"ticket\" value=\"$ticket\">\n");
+    print("<form action=\"index.php?m=ticketsmith&a=comment&ticket=$ticket\" method=\"post\">\n");
 
     /* determine poster */
     print("<tr>\n");
@@ -76,15 +77,14 @@ else {
     print("</textarea>\n");
     print("</tt>\n");
     print("</td>\n");
-    
+
     /* output submit button */
     print("<tr><td><br /></td><td><font size=\"-1\"><input type=\"submit\" class=button value=\"Post Comment\"></font></td></tr>\n");
 
     /* footer links */
     print("<tr>\n");
     print("<td><br /></td>");
-    print("<td><a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>Return to ticket</a> | ");
-    print("<a href=index.php>Return to ticket list</a></td>");
+    print("<td>&nbsp;</td>");
     print("</tr>\n");
 
     /* end table */

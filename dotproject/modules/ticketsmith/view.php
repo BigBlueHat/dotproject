@@ -19,34 +19,34 @@ $app_root="http://dotproject.net/demo";
 
 /* initialize fields */
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {
-    
+
     $title = "$ticket_type to Ticket #$ticket_parent";
-    
+
     $fields = array("headings" => array("From", "To", "Subject", "Date", "Cc", "<br />"),
-                    "columns"  => array("author", "recipient", "subject", "timestamp", "cc", "body"), 
+                    "columns"  => array("author", "recipient", "subject", "timestamp", "cc", "body"),
                     "types"    => array("email", "original_author", "normal", "elapsed_date", "email", "body"));
 
 }
 elseif ($ticket_type == "Staff Comment") {
 
     $title = "$ticket_type to Ticket #$ticket_parent";
-    
+
     $fields = array("headings" => array("From", "Date", "<br />"),
-                    "columns"  => array("author", "timestamp", "body"), 
+                    "columns"  => array("author", "timestamp", "body"),
                     "types"    => array("email", "elapsed_date", "body"));
 
 }
 else {
-    
+
     $title = "Ticket #$ticket";
-    
-    $fields = array("headings" => array("From", "Subject", "Date", "Cc", "Status", 
+
+    $fields = array("headings" => array("From", "Subject", "Date", "Cc", "Status",
                                         "Priority", "Owner", "<br />"),
-                    
-                    "columns"  => array("author", "subject", "timestamp", "cc", 
+
+                    "columns"  => array("author", "subject", "timestamp", "cc",
                                         "type", "priority", "assignment", "body"),
-                    
-                    "types"    => array("email", "normal", "elapsed_date", "email", 
+
+                    "types"    => array("email", "normal", "elapsed_date", "email",
                                         "status", "priority_select", "assignment", "body"));
 }
 
@@ -61,7 +61,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 	if(@$assignment_toggle != @$orig_assignment)
 	{
 		$mailinfo = query2hash("SELECT user_first_name, user_last_name, user_email from users WHERE user_id = $assignment_toggle");
-		
+
 		$message = "<html>";
 		$message .= "<head>";
 		$message .= "<style>";
@@ -156,34 +156,34 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
     print("<tr>\n");
     print("<td align=\"left\" valign=\"top\"><strong>Followups</strong></td>\n");
     print("<td align=\"left\" valign=\"top\">\n");
-   
+
     /* grab followups */
     $query = "SELECT ticket, type, timestamp, author FROM tickets WHERE parent = '$ticket' ORDER BY ticket " . $CONFIG["followup_order"];
     $result = do_query($query);
-    
+
     if (number_rows($result)) {
 
         /* print followups */
         print("<table width=\"100%\" border=\"1\" cellspacing=\"5\" cellpadding=\"5\">\n");
         while ($row = result2hash($result)) {
-            
+
             /* determine row color */
             $color = (@$number++ % 2 == 0) ? "#d3dce3" : "#dddddd";
 
             /* start row */
             print("<tr>\n");
-            
+
             /* do number/author */
             print("<td bgcolor=\"$color\">\n");
             print("<strong>$number</strong> : \n");
             $row["author"] = ereg_replace("\"", "", $row["author"]);
             $row["author"] = htmlspecialchars($row["author"]);
-            print($row["author"] . "\n");    
+            print($row["author"] . "\n");
             print("</td>\n");
-            
+
             /* do type */
             print("<td bgcolor=\"$color\"><a href=\"index.php?m=ticketsmith&a=view&ticket=" . $row["ticket"] . "\">" . $row["type"] . "</a></td>\n");
-            
+
             /* do timestamp */
             print("<td bgcolor=\"$color\">\n");
             print(get_time_ago($row["timestamp"]));
@@ -191,17 +191,17 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
 
             /* end row */
             print("</tr>\n");
-        
+
         }
         print("</table>\n");
-    
+
     }
     else {
         print("<em>none</em>\n");
     }
-    
+
     print("</td>\n</tr>\n");
-    
+
 }
 
 else {
@@ -213,19 +213,19 @@ else {
     while ($row = result2hash($results)) {
         $peer_tickets[] = $row["ticket"];
     }
-    
+
     /* count peers */
     $peer_count = count($peer_tickets);
-    
+
     if ($peer_count > 1) {
-    
+
         /* start row */
         print("<tr>\n");
         print("<td><strong>Followups</strong></td>\n");
-    
+
         /* start cell */
         print("<td valign=\"middle\">");
-        
+
         /* form peer links */
         for ($loop = 0; $loop < $peer_count; $loop++) {
             if ($peer_tickets[$loop] == $ticket) {
@@ -236,17 +236,17 @@ else {
                 $peer_strings[$loop] = "<a href=\"index.php?m=ticketsmith&a=view&ticket=$peer_tickets[$loop]\">" . ($loop + 1) . "</a>";
             }
         }
-            
+
         /* previous navigator */
         if ($viewed_peer > 0) {
             print("<a href=\"index.php?m=ticketsmith&a=view&ticket=" . $peer_tickets[$viewed_peer - 1] . "\">");
             print($CONFIG["followup_order"] == "ASC" ?  "older" : "newer");
             print("</a> | ");
         }
-        
+
         /* ticket list */
         print(join(" | ", $peer_strings));
-        
+
         /* next navigator */
         if ($peer_count - $viewed_peer > 1) {
             print(" | <a href=\"index.php?m=ticketsmith&a=view&ticket=" . $peer_tickets[$viewed_peer + 1] . "\">");
@@ -259,7 +259,7 @@ else {
 
         /* end row */
         print("</tr>\n");
-    
+
     }
 
 }
