@@ -11,9 +11,6 @@ $lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : 'en';
 $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 
 // read the installed modules
-$modules = $AppUI->readDirs( 'modules' );
-
-// read the installed modules
 $modules = arrayMerge( array( 'common', 'styles' ), $AppUI->readDirs( 'modules' ));
 
 // read the installed languages
