@@ -19,6 +19,8 @@ class CCompany {
 	var $company_primary_url = NULL;
 	var $company_owner = NULL;
 	var $company_description = NULL;
+	var $company_is_provider = 0;
+	var $company_email = NULL;
 
 	function CCompany() {
 		// empty constructor
