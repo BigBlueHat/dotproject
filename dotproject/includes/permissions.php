@@ -12,19 +12,47 @@ function getDenyRead( $mod, $item_id=-1 ) {
 		| (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY)
 		| (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] == PERM_DENY);
 	if ($item_id > -1) {
-		$deny |= (isset( $perms[$mod][$item_id] ) & $perms[$mod][$item_id] == PERM_DENY);
+		$deny |= (isset( $perms[$mod][$item_id] ) & $perms[$mod][$item_id] == PERM_DENY)
+			| (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
 	}
+/*
+// DEBUG
+echo ' Read:';
+echo (empty( $perms['all'] ) & empty($perms['companies'] ));
+echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY);
+echo (isset( $perms['companies'][PERM_ALL] ) & $perms['companies'][PERM_ALL] == PERM_DENY);
+echo (isset( $perms['companies'][$company_id] ) & $perms['companies'][$company_id] == PERM_DENY);
+echo (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
+echo "=$deny";
+return false;
+*/
 	return $deny;
 }
 
 function getDenyEdit( $mod, $item_id=-1 ) {
 	GLOBAL $perms;
-	$deny = (empty( $perms['all'] ) & empty( $perms[$m] ))
+
+	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ))
 		| (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT)
 		| (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] <> PERM_EDIT);
 	if ($item_id > -1) {
-		$deny |= (isset( $perms[$mod][$item_id] ) & $perms[$mod][$item_id] <> PERM_EDIT);
+		if (isset( $perms[$mod][$item_id] )) {
+			$deny = ($perms[$mod][$item_id] <> PERM_EDIT) ? 1 : 0;
+		} else {
+			$deny |= (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
+		}
 	}
+/*
+// DEBUG
+echo " Edit:";
+echo (empty( $perms['all'] ) & empty( $perms[$mod] ));
+echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT);
+echo (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] <> PERM_EDIT);
+echo (isset( $perms[$mod][$item_id] ) & $perms[$mod][$item_id] <> PERM_EDIT);
+echo (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
+echo "=$deny";
+return false;
+*/
 	return $deny;
 }
 
