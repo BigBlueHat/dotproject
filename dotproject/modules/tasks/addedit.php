@@ -43,7 +43,7 @@ $project->load( $task_project );
 
 //Pull all users
 $sql = "
-SELECT user_id, CONCAT( user_first_name, ' ', user_last_name)
+SELECT user_id, CONCAT_WS(' ',user_first_name,user_last_name)
 FROM users
 ORDER BY user_first_name, user_last_name
 ";
@@ -51,7 +51,7 @@ $users = db_loadHashList( $sql );
 
 //Pull users on this task
 $sql = "
-SELECT u.user_id, CONCAT( u.user_first_name, ' ', u.user_last_name )
+SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
 FROM users u, user_tasks t
 WHERE t.task_id =$task_id
 	AND t.task_id <> 0

@@ -27,7 +27,7 @@ $body = dPgetParam( $_POST, 'body', '' );
 if (@$comment) {
 
     /* prepare fields */
-    list($author_name, $author_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
+    list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     $subject = addslashes(query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'"));
     $author = $author_name . " <" . $author_email . ">";
     $timestamp = time();
@@ -64,7 +64,7 @@ if (@$comment) {
     /* determine poster */
     print("<tr>\n");
     print("<td align=\"left\"><strong>From</strong></td>");
-    list($author_name, $author_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
+    list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     print("<td align=\"left\">" . $author_name . " &lt;" . $author_email . "&gt;</td>\n");
     print("</tr>");
 

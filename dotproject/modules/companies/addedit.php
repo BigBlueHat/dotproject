@@ -27,7 +27,7 @@ if (!db_loadObject( $sql, $obj ) && $company_id > 0) {
 
 // collect all the users for the company owner list
 $owners = array( '0'=>'' );
-$sql = "SELECT user_id,CONCAT(user_first_name,' ',user_last_name) FROM users ORDER BY user_first_name";
+$sql = "SELECT user_id,CONCAT_WS(' ',user_first_name,user_last_name) FROM users ORDER BY user_first_name";
 $owners = db_loadHashList( $sql );
 
 // setup the title block

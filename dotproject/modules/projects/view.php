@@ -25,7 +25,7 @@ $canDelete = $obj->canDelete( $msg, $project_id );
 $sql = "
 SELECT
 	company_name,
-	CONCAT(user_first_name, ' ', user_last_name) user_name,
+	CONCAT_WS(' ',user_first_name,user_last_name) user_name,
 	projects.*,
 	SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete)/SUM(t1.task_duration*t1.task_duration_type) AS project_percent_complete
 FROM projects

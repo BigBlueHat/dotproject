@@ -54,7 +54,7 @@ case 'departments':
 	$where .= "\nAND ".selPermWhere( 'departments', 'dept_id' );
 
 	$table .= ", companies, permissions";
-	$select = "dept_id,CONCAT(company_name,': ', dept_name) AS dept_name";
+	$select = "dept_id,CONCAT_WS(': ',company_name,dept_name) AS dept_name";
 	if ($company_id) {
 		$where .= "\nAND dept_company = $company_id";
 		$order = 'dept_name';
@@ -87,7 +87,7 @@ case 'tasks':
 	break;
 case 'users':
 	$title = 'User';
-	$select = "user_id,CONCAT(user_first_name,' ',user_last_name)";
+	$select = "user_id,CONCAT_WS(' ',user_first_name,user_last_name)";
 	$order = 'user_first_name';
 	break;
 default:

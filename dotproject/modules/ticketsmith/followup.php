@@ -36,7 +36,7 @@ if (@$followup) {
 
     /* prepare fields */
     $timestamp = time();
-    list($from_name, $from_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
+    list($from_name, $from_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     $author = "$from_name <$from_email>";
     if (!$recipient) {
         $recipient = query2result("SELECT author FROM tickets WHERE ticket = '$ticket_parent'");
@@ -98,7 +98,7 @@ if (@$followup) {
     /* output From: line */
     print("<tr>\n");
     print("<td align=left><strong>From</strong></td>");
-    list($from_name, $from_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
+    list($from_name, $from_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     print("<td align=left>" . $from_name . " &lt;" . $from_email . "&gt;</td>\n");
     print("</tr>\n");
 
