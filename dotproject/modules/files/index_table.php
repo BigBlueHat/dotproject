@@ -79,7 +79,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 	echo "</table>";
 }
 
-GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $project_id;
+GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $project_id, $task_id;
 
 //require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
 
