@@ -25,6 +25,7 @@ class CAppUI {
 	var $user_last_name;
 	var $user_company;
 	var $user_department;
+	var $user_email;
 	var $user_type;
 	var $user_prefs;
 // a selected date
@@ -221,7 +222,7 @@ class CAppUI {
 	function login( $username, $password ) {
 		$sql = "
 		SELECT
-			user_id, user_first_name, user_last_name, user_company, user_department, user_type
+			user_id, user_first_name, user_last_name, user_company, user_department, user_email, user_type
 		FROM users, permissions
 		WHERE user_username = '$username'
 			AND user_password = password('$password')
