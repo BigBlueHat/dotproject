@@ -1,3 +1,20 @@
+2003-12-12 17:15  (gregorerhardt)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+- design and usability improvements on miniCal: month names and days are now clickable
+
+2003-12-12 14:39  (jcgonz)
+---------------------------------
+modules/tasks/tasks.class.php
+- Now parent tasks status update recursively to all its subtasks
+
+2003-12-12 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-11 20:03  (jcgonz)
 ---------------------------------
 modules/projects/view.php
@@ -481,23 +498,6 @@ ChangeLog
 classes/ui.class.php
 style/default/overrides.php
 - Fixed problem in tab box display when user preferences are for flat.
-
-2003-10-28 03:50  (ajdonnison)
----------------------------------
-classes/ui.class.php
-modules/tasks/tasks.php
-- Fix to allow flat display of projects.
-
-2003-10-27 03:42  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-26 21:05  (ajdonnison)
----------------------------------
-modules/files/files.class.php
-- Changed from is_writeable to is_dir in detecting need to create directories.
-
 ...
 
 (This file has been wrapped)
