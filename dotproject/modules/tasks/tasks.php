@@ -21,6 +21,46 @@ if (empty($query_string)) {
 	$query_string = "?m=$m&a=$a";
 }
 
+/****
+// Let's figure out which tasks are selected
+*/
+
+global $tasks_opened;
+global $tasks_closed;
+
+function closeOpenedTask($task_id){
+    global $tasks_opened;
+    global $tasks_closed;
+    
+    unset($tasks_opened[array_search($task_id, $tasks_opened)]);
+    $tasks_closed[] = $task_id;
+}
+
+$tasks_closed = array();
+$tasks_opened = $AppUI->getState("tasks_opened");
+if(!$tasks_opened){
+    $tasks_opened = array();
+}
+
+if(dPGetParam($_GET, "task_id", 0) > 0){
+    $_GET["open_task_id"] = $_REQUEST["task_id"];
+}
+
+if(($open_task_id = dPGetParam($_GET, "open_task_id", 0)) > 0 && !in_array($_GET["open_task_id"], $tasks_opened)) {
+    $tasks_opened[] = $_GET["open_task_id"];
+}
+
+// Closing tasks needs also to be within tasks iteration in order to
+// close down all child tasks
+if(($close_task_id = dPGetParam($_GET, "close_task_id", 0)) > 0) {
+    closeOpenedTask($close_task_id);
+}
+
+// We need to save tasks_opened until the end because some tasks are closed within tasks iteration
+//echo "<pre>"; print_r($tasks_opened); echo "</pre>";
+/// End of tasks_opened routine
+
+
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
@@ -218,7 +258,7 @@ for ($x=0; $x < $nums; $x++) {
 //This kludgy function echos children tasks as threads
 
 if (! function_exists('showtask') ) {
-function showtask( &$a, $level=0 ) {
+function showtask( &$a, $level=0, $is_opened = true ) {
 	global $AppUI, $done, $query_string, $durnTypes, $show_all_assignees;
 
 	$df = $AppUI->getPref('SHDATEFORMAT');
@@ -262,17 +302,18 @@ function showtask( &$a, $level=0 ) {
 // name link
 	$alt = htmlspecialchars( $a["task_description"] );
 
+	$open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
 	if ($a["task_milestone"] > 0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
 	} else if ($a["task_dynamic"] == '1'){
-		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><i>' . $a["task_name"] . '</i></a></td>';
+		$s .= $open_link.'&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b><i>' . $a["task_name"] . '</i></b></a></td>';
 	} else {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
 	}
 // task owner
 	$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
 //	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
-	if ( $assigned_users = $a['task_assigned_users']) {
+	if ( isset($a['task_assigned_users']) && $assigned_users = $a['task_assigned_users']) {
 		$a_u_tmp_array = array();
 		if($show_all_assignees){
 			$s .= '<td align="center">';
@@ -308,7 +349,7 @@ function showtask( &$a, $level=0 ) {
 	
 	$s .= '<td nowrap="nowrap" align="center">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration or milestone
-	$s .= '<td align="center">';
+	$s .= '<td align="center" nowrap="nowrap">';
 	if ( $a['task_milestone'] == '0' ) {
 		$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
 	} else {
@@ -325,14 +366,20 @@ function showtask( &$a, $level=0 ) {
 }
 
 if (! function_exists('findchild') ) {
-function findchild( &$tarr, $parent, $level=0 ){
+function findchild( &$tarr, $parent, $level=0){
 	GLOBAL $projects;
+	global $tasks_opened;
+	
 	$level = $level+1;
 	$n = count( $tarr );
+	
 	for ($x=0; $x < $n; $x++) {
 		if($tarr[$x]["task_parent"] == $parent && $tarr[$x]["task_parent"] != $tarr[$x]["task_id"]){
-			showtask( $tarr[$x], $level );
-			findchild( $tarr, $tarr[$x]["task_id"], $level);
+		    $is_opened = in_array($tarr[$x]["task_id"], $tasks_opened);
+			showtask( $tarr[$x], $level, $is_opened );
+			if($is_opened || !$tarr[$x]["task_dynamic"]){
+			    findchild( $tarr, $tarr[$x]["task_id"], $level);
+			}
 		}
 	}
 }
@@ -435,6 +482,7 @@ function toggle_users(id){
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
 reset( $projects );
+
 foreach ($projects as $k => $p) {
 	$tnums = count( @$p['tasks'] );
 // don't show project if it has no tasks
@@ -478,14 +526,22 @@ foreach ($projects as $k => $p) {
 		for ($i=0; $i < $tnums; $i++) {
 			$t = $p['tasks'][$i];
 			if ($t["task_parent"] == $t["task_id"]) {
-				showtask( $t );
-				findchild( $p['tasks'], $t["task_id"] );
+			    $is_opened = in_array($t["task_id"], $tasks_opened);
+				showtask( $t, 0, $is_opened );
+				if($is_opened || !$t["task_dynamic"]){
+				    findchild( $p['tasks'], $t["task_id"] );
+				}
 			}
 		}
 // check that any 'orphaned' user tasks are also display
 		for ($i=0; $i < $tnums; $i++) {
 			if ( !in_array( $p['tasks'][$i]["task_id"], $done )) {
-				showtask( $p['tasks'][$i], 1 );
+			    if($p['tasks'][$i]["task_dynamic"] && in_array( $p['tasks'][$i]["task_parent"], $tasks_closed)) {
+			        closeOpenedTask($p['tasks'][$i]["task_id"]);
+			    }
+			    if(in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
+				    showtask( $p['tasks'][$i], 1, false);
+			    }
 			}
 		}
 
@@ -498,5 +554,6 @@ foreach ($projects as $k => $p) {
 		<?php }
 	}
 }
+$AppUI->setState("tasks_opened", $tasks_opened);
 ?>
 </table>
