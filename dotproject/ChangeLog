@@ -1,3 +1,39 @@
+2003-06-30 21:16  (kobudo)
+---------------------------------
+modules/help/en/help.toc.hlp
+- Update help docs.
+
+2003-06-30 21:12  (kobudo)
+---------------------------------
+modules/help/en/help.toc.hlp
+modules/help/en/install.install.hlp
+modules/help/en/install.trouble.hlp
+- Add more help documentation for installation and troubleshooting
+
+2003-06-30 20:33  (kobudo)
+---------------------------------
+docs/install.html
+docs/nav.html
+docs/trouble.html
+- Add maximum file upload size troubleshooting info.
+
+2003-06-27 12:38  (kripper)
+---------------------------------
+index.php
+- admin/viewuser has now public access in order to allow someone to change his
+- passowrd. I suggest to try DP using a user which only has access to the
+- projects module in order to find and correct more permission related bugs.
+
+2003-06-27 09:26  (kobudo)
+---------------------------------
+docs/trouble.html
+- Add php.ini file_uploads = on check for File Module functioning.
+
+2003-06-27 08:15  (kobudo)
+---------------------------------
+ChangeLog
+- Changelog update.
+
 2003-06-27 00:47  (kripper)
 ---------------------------------
 modules/projects/view.php
@@ -23,6 +59,27 @@ includes/permissions.php
 ---------------------------------
 modules/projects/addedit.php
 - Changed calendar picker
+
+2003-06-26 20:02  (eddieajau)
+---------------------------------
+lib/calendar/README
+lib/calendar/calendar-dp.css
+lib/calendar/calendar.js
+lib/calendar/lang/calendar-br.js
+lib/calendar/lang/calendar-ca.js
+lib/calendar/lang/calendar-cs-win.js
+lib/calendar/lang/calendar-da.js
+lib/calendar/lang/calendar-du.js
+lib/calendar/lang/calendar-el.js
+lib/calendar/lang/calendar-en.js
+lib/calendar/lang/calendar-es.js
+lib/calendar/lang/calendar-fr.js
+lib/calendar/lang/calendar-it.js
+lib/calendar/lang/calendar-nl.js
+lib/calendar/lang/calendar-ro.js
+lib/calendar/lang/calendar-sp.js
+lib/calendar/lang/calendar-sw.js
+- Initial upload
 
 2003-06-26 19:35  (eddieajau)
 ---------------------------------
