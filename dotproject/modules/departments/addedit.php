@@ -38,7 +38,7 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	// collect all the departments in the company
 	$depts = array( 0 => '' );
 	if ($company_id) {
-		$sql = "SELECT dept_id,dept_name,dept_parent FROM departments WHERE dept_company=$company_id AND dept_id";
+		$sql = "SELECT dept_id,dept_name,dept_parent FROM departments WHERE dept_company=$company_id AND dept_id != $dept_id";
 		$depts = arrayMerge( array( '0'=>array( 0, '- Select Unit -', -1 ) ), db_loadHashList( $sql, 'dept_id' ));
 	##echo $sql.db_error();##
 	}

@@ -42,6 +42,9 @@ class CDepartment {
 			return 'department id is NULL';
 		}
 		// TODO MORE
+		if ($this->dept_id == $this->dept_parent) {
+		 	return 'cannot make myself my own parent';
+		}
 		return NULL; // object is ok
 	}
 
