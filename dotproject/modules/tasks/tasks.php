@@ -9,6 +9,8 @@ GLOBAL $user_id, $dPconfig;
 	This file contains common task list rendering code used by
 	modules/tasks/index.php and modules/projects/vw_tasks.php
 
+	in
+
 	External used variables:
 
 	* $min_view: hide some elements when active (used in the vw_tasks.php)
@@ -81,7 +83,6 @@ $show_all_assignees = isset($dPconfig['show_all_task_assignees']) ? $dPconfig['s
 $where = '';
 $join = winnow( 'projects', 'project_id', $where );
 
-// pull valid projects and their percent complete information
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
@@ -105,6 +106,7 @@ while ($row = db_fetch_assoc( $prc )) {
 	$projects[$row["project_id"]] = $row;
 }
 
+$join = "";
 // pull tasks
 $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
