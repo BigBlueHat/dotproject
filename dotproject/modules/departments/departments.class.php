@@ -42,8 +42,8 @@ class CDepartment {
 			return 'department id is NULL';
 		}
 		// TODO MORE
-		if ($this->dept_id == $this->dept_parent) {
-		 	return 'cannot make myself my own parent';
+		if ($this->dept_id && $this->dept_id == $this->dept_parent) {
+		 	return "cannot make myself my own parent (" . $this->dept_id . "=" . $this->dept_parent . ")";
 		}
 		return NULL; // object is ok
 	}
@@ -51,7 +51,7 @@ class CDepartment {
 	function store() {
 		$msg = $this->check();
 		if( $msg ) {
-			return get_class( $this )."::store-check failed";
+			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->dept_id ) {
 			$ret = db_updateObject( 'departments', $this, 'dept_id', false );
