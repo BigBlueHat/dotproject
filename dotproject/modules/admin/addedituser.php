@@ -1,11 +1,10 @@
 <?php /* ADMIN $Id$ */
 //add or edit a system user
-$transmit_user_id = $_GET['user_id']; //store originally via get received user_id for permission comparison
 
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
 
 // check permissions
-if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
+if (!$canEdit && $user_id != $AppUI->user_id) {
     $AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -20,7 +19,7 @@ WHERE user_id = $user_id
 ";
 if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=companies", "companies list" );
+	$titleBlock->addCrumb( "?m=admin", "users list" );
 	$titleBlock->show();
 } else {
 // pull companies
