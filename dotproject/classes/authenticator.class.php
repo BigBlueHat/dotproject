@@ -216,7 +216,7 @@
 			if (strlen($password) == 0) return false; // LDAP will succeed binding with no password on AD (defaults to anon bind)
 			if ($this->fallback == true)
 			{
-				if (Parent::authenticate($username, $password)) return true;	
+				if (parent::authenticate($username, $password)) return true;	
 			}
 			// Fallback SQL authentication fails, proceed with LDAP
 
