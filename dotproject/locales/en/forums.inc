@@ -48,7 +48,7 @@
 "forumDeletePost"=>"Are you sure you would like to delete this post?",
 "forumEmailBody"=>"There has been activity in a forum you are watching.",
 "forumEmailFrom"=>"Dotproject forum watch",
-"forumForceWatch"=>"Force forum watch for all users on all forums",
+"forumForceWatch"=>"Force forum watch for all users on all forums (possibly a security issue!; depends on your use of dotproject)",
 "forumEmailSubj"=>"Dotproject forum activity",
 "forumName"=>"Please enter a valid forum name",
 "forumSelectOwner"=>"Please select the owner of this forum",
