@@ -377,6 +377,11 @@ if ($do_cfg || $do_db_cfg){
  <tr>
      <td class="item" align="center" colspan="2"><br/><b><a href="<?php echo $baseUrl.'/index.php?m=system&a=systemconfig';?>">Login and Configure the dotProject System Environment</a></b></td>
   </tr>
+<?php if ($mode == 'install') { ?>
+	<tr>
+		<td class="item" align="center" colspan="2"><p>The Administrator login has been set to <b>admin</b> with a password of <b>passwd</b>. It is a good idea to change this password when you first log in</p></td>
+	</tr>
+<?php } ?>
         </table>
 </body>
 </html>
