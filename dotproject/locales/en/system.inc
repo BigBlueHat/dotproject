@@ -207,7 +207,9 @@ A negative value defines the absence of a limit (index all files).",
 "mail_auth_title"=>"Host requires login?",
 "mail_auth_tooltip"=>"Some SMTP hosts require authentication, if yours does you will need to set this and provide a username and password",
 "mail_defer_title"=>"Queue Email for later sending?",
-"mail_defer_tooltip"=>"Check this to queue email for later sending.  This requires the Event Queue Scanner to be enabled.",
+"mail_defer_tooltip"=>"Check this to queue email for later sending.  An entry will be made in the Event Queue.  You will need to either set the Scan Event Queue option in Session Handling or create a cron job to call:
+
+wget -O- http://your.domain/dotproject/queuescanner.php",
 "mail_group_title"=>"Email Settings",
 "mail_host_title"=>"SMTP Host",
 "mail_host_tooltip"=>"The fully qualified domain name (FQDN) or the IP address of the SMTP host to use for sending email",
