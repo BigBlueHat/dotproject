@@ -30,9 +30,8 @@ GROUP BY
 	fm1.message_title,
 	fm1.message_date,
 	fm1.message_body,
-	fm1.message_published
-ORDER BY message_date DESC
-";
+	fm1.message_published" .
+  ( @$dPconfig['forum_descendent_order'] ? " ORDER BY latest_reply DESC" : "" );
 
 $topics = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();

@@ -8,8 +8,9 @@ SELECT forum_messages.*,
 FROM forum_messages, forums
 LEFT JOIN users ON message_author = users.user_id
 WHERE forum_id = message_forum
-	AND (message_id = $message_id OR message_parent = $message_id)
-";
+	AND (message_id = $message_id OR message_parent = $message_id)" .
+  ( @$dPconfig['forum_descendent_order'] ? " ORDER BY message_date DESC" : "" );
+
 //echo "<pre>$sql</pre>";
 $messages = db_loadList( $sql );
 
