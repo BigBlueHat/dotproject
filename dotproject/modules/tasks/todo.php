@@ -56,17 +56,17 @@ $AppUI->savePlace();
 
 $sql = "
 		 SELECT a.*,
-		 project_name, project_id, project_color_identifier,
-		 parent.task_name as parent_name
-		 FROM projects, tasks AS a, user_tasks
-		 LEFT JOIN tasks AS b ON a.task_id=b.task_parent and a.task_id != b.task_id
-  		 LEFT JOIN tasks AS parent ON a.task_parent = parent.task_id
-		 WHERE user_tasks.task_id = a.task_id
-		 AND b.task_id IS NULL
-		 AND user_tasks.user_id = $user_id
-		 AND ( a.task_percent_complete < 100  OR a.task_percent_complete IS NULL )
-		 AND a.task_start_date != ''
-		 AND a.task_end_date != ''
+		 project_name, project_id, project_color_identifier". 
+//                 , parent.task_name as parent_name
+"		 FROM projects, tasks AS a, user_tasks".
+//		 LEFT JOIN tasks AS b ON a.task_id=b.task_parent and a.task_id != b.task_id
+//  		 LEFT JOIN tasks AS parent ON a.task_parent = parent.task_id
+"		 WHERE user_tasks.task_id = a.task_id".
+//		 AND b.task_id IS NULL
+"		 AND user_tasks.user_id = $user_id
+		 AND ( a.task_percent_complete < 100  OR a.task_percent_complete IS NULL )" . 
+//		 AND a.task_start_date != ''
+"		 AND a.task_end_date != ''
 		 AND a.task_status = '0' 
 		 AND project_id = a.task_project" .  		
   (!$showArcProjs ? " AND project_active = 1" : "") .
