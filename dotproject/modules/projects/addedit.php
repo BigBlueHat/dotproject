@@ -1,5 +1,5 @@
-<?php
-$project_id = defValArr ( $_GET, "project_id", 0 );
+<?php /* PROJECTS $Id$ */
+$project_id = dPgetParam( $_GET, "project_id", 0 );
 
 // check permissions
 $denyEdit = getDenyEdit( $m, $project_id );
@@ -144,7 +144,7 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
 			<td>
-<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', defValArr( $project, "project_owner", $AppUI->user_id ) ) ?>
+<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', dPgetParam( $project, "project_owner", $AppUI->user_id ) ) ?>
 			</td>
 		</tr>
 		<tr>
@@ -246,11 +246,11 @@ function delIt() {
 				</tr>
 				<tr>
 					<td>
-						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?> 
+						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?>
 					</td>
 					<td><strong><?php echo intval(@$project["project_precent_complete"]);?> %</strong></td>
-					<?php 
-					/* CHANGE so default for ADDING/EDITTING Projects is ACTIVE 
+					<?php
+					/* CHANGE so default for ADDING/EDITTING Projects is ACTIVE
 					// ORIGINAL CODE [modified by kobudo 14 Feb 2003]
 					<td><input type=checkbox value=1 name=project_active <?php if($project["project_active"]){?>checked<?php }?>></td>
 					*/
