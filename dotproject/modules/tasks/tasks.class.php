@@ -153,9 +153,7 @@ class CTask extends CDpObject {
 
 		$mail = new Mail;
 		
-		$subj = "$projname::$this->task_name ".$AppUI->_($this->_action);
-		
-		$mail->Subject( $subj );
+		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);
 
 	// c = creator
 	// a = assignee
