@@ -95,7 +95,7 @@ $titleBlock->show();
 
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
-$tabBox->add( 'vw_idx_proposed', $AppUI->_('Proposed Projects') );
+$tabBox->add( 'vw_idx_proposed', 'Proposed Projects' );
 $tabBox->add( 'vw_idx_active'  , 'Active Projects' );
 $tabBox->add( 'vw_idx_complete', 'Completed Projects' );
 $tabBox->add( 'vw_idx_archived', 'Archived Projects' );
