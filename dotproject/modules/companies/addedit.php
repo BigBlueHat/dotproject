@@ -88,57 +88,75 @@ function delIt() {
 	</th>
 </tr>
 <tr>
-	<td align="right">Company Name:</td>
-	<td><input type="text" class="text" name="company_name" value="<?php echo @$crow["company_name"];?>" size=50 maxlength="255"> (required)</td>
+	<td align="right"><?php echo $AppUI->_('Company Name');?>:</td>
+	<td>
+		<input type="text" class="text" name="company_name" value="<?php echo @$crow["company_name"];?>" size=50 maxlength="255"> (<?php echo $AppUI->_('required');?>)
+	</td>
 </tr>
 <tr>
-	<td align="right">Username:</td><td><input type="text" class="text" name="company_username" value="<?php echo @$crow["company_username"];?>" maxlength="30"> Not implemented</td>
+	<td align="right"><?php echo $AppUI->_('Username');?>:</td>
+	<td>
+		<input type="text" class="text" name="company_username" value="<?php echo @$crow["company_username"];?>" maxlength="30"> Not implemented
+	</td>
 </tr>
 <tr>
-	<td align="right">Password:</td><td><input type="text" class="text" name="company_password" value="<?php echo @$crow["company_password"];?>" maxlength="30"> Not implemented</td>
+	<td align="right"><?php echo $AppUI->_('Password');?>:</td>
+	<td>
+		<input type="text" class="text" name="company_password" value="<?php echo @$crow["company_password"];?>" maxlength="30"> Not implemented
+	</td>
 </tr>
 <tr>
-	<td align="right">Phone:</td><td><input type="text" class="text" name="company_phone1" value="<?php echo @$crow["company_phone1"];?>" maxlength="30"></td>
+	<td align="right"><?php echo $AppUI->_('Phone');?>:</td>
+	<td>
+		<input type="text" class="text" name="company_phone1" value="<?php echo @$crow["company_phone1"];?>" maxlength="30">
+	</td>
 </tr>
 <tr>
-	<td align="right">Phone2:</td><td><input type="text" class="text" name="company_phone2" value="<?php echo @$crow["company_phone2"];?>" maxlength="50"> </td>
+	<td align="right"><?php echo $AppUI->_('Phone');?>2:</td>
+	<td>
+		<input type="text" class="text" name="company_phone2" value="<?php echo @$crow["company_phone2"];?>" maxlength="50"> 
+	</td>
 </tr>
 <tr>
-	<td align="right">Fax:</td><td><input type="text" class="text" name="company_fax" value="<?php echo @$crow["company_fax"];?>" maxlength="30"></td>
+	<td align="right"><?php echo $AppUI->_('Fax');?>:</td>
+	<td>
+		<input type="text" class="text" name="company_fax" value="<?php echo @$crow["company_fax"];?>" maxlength="30">
+	</td>
 </tr>
 <tr>
 	<td colspan=2 align="center">
-<img src="images/shim.gif" width="50" height="1">Address<BR>
-<HR width="500" align="center" size=1></td>
+		<img src="images/shim.gif" width="50" height="1" /><?php echo $AppUI->_('Address');?><br />
+		<hr width="500" align="center" size=1 />
+	</td>
 </tr>
 <tr>
-	<td align="right">Address1:</td>
+	<td align="right"><?php echo $AppUI->_('Address');?>1:</td>
 	<td><input type="text" class="text" name="company_address1" value="<?php echo @$crow["company_address1"];?>" size=50 maxlength="255"></td>
 </tr>
 <tr>
-	<td align="right">Address2:</td>
+	<td align="right"><?php echo $AppUI->_('Address');?>2:</td>
 	<td><input type="text" class="text" name="company_address2" value="<?php echo @$crow["company_address2"];?>" size=50 maxlength="255"></td>
 </tr>
 <tr>
-	<td align="right">City:</td>
+	<td align="right"><?php echo $AppUI->_('City');?>:</td>
 	<td><input type="text" class="text" name="company_city" value="<?php echo @$crow["company_city"];?>" size=50 maxlength="50"></td>
 </tr>
 <tr>
-	<td align="right">State:</td>
+	<td align="right"><?php echo $AppUI->_('State');?>:</td>
 	<td><input type="text" class="text" name="company_state" value="<?php echo @$crow["company_state"];?>" maxlength="50"></td>
 </tr>
 <tr>
-	<td align="right">Zip:</td>
+	<td align="right"><?php echo $AppUI->_('Zip');?>:</td>
 	<td><input type="text" class="text" name="company_zip" value="<?php echo @$crow["company_zip"];?>" maxlength="15"></td>
 </tr>
 <tr>
 	<td align="right">
 		URL http://<A name="x"></a></td><td><input type="text" class="text" value="<?php echo @$crow["company_primary_url"];?>" name="company_primary_url" size=50 maxlength="255">
-		<a href="#x" onClick="testURL('CompanyURLOne')">[test]</a>
+		<a href="#x" onClick="testURL('CompanyURLOne')">[<?php echo $AppUI->_('test');?>]</a>
 	</td>
 </tr>
 <tr>
-	<td align="right">Company Owner:</td>
+	<td align="right"><?php echo $AppUI->_('Company Owner');?>:</td>
 	<td>
 <?php
 	echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', @$crow["company_owner"] );
@@ -147,7 +165,7 @@ function delIt() {
 </tr>
 
 <tr>
-	<td align="right">Description:</td>
+	<td align="right"><?php echo $AppUI->_('Description');?>:</td>
 	<td>&nbsp; </td>
 </tr>
 <tr>
@@ -156,8 +174,8 @@ function delIt() {
 	</td>
 </tr>
 <tr>
-	<td><input type="button" value="back" class="button" onClick="javascript:history.back(-1);"></td>
-	<td align="right"><input type="button" value="submit" class="button" onClick="submitIt()"></td>
+	<td><input type="button" value="<?php echo $AppUI->_('back');?>" class="button" onClick="javascript:history.back(-1);"></td>
+	<td align="right"><input type="button" value="<?php echo $AppUI->_('submit');?>" class="button" onClick="submitIt()"></td>
 </tr>
 </form>
 </table>
