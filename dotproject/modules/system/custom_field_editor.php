@@ -58,7 +58,7 @@
 		
 		$sysval_id = db_loadResult("select sysval_id from sysvals where sysval_title = '$current_type'");
 		if(!$sysval_id){
-			$sql = "insert into sysvals (sysval_key_id, sysval_title, sysval_value) value ('2','$current_type','$custom_fields')";
+			$sql = "insert into sysvals (sysval_key_id, sysval_title, sysval_value) values ('2','$current_type','$custom_fields')";
 		} else {
 			$sql = "update sysvals set sysval_key_id = '2', sysval_title = '$current_type', sysval_value='$custom_fields' where sysval_id = '$sysval_id'";
 		}

@@ -38,7 +38,9 @@
 			}
 			
 			$this->row_id = $row_id;
-			$this->_fetchPreviousData();
+			if($this->row_id != 0){
+				$this->_fetchPreviousData();
+			}
 		}
 		
 		function _fetchFields(){
