@@ -72,7 +72,7 @@ class CFile extends CDpObject {
 		@unlink( "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename" );
 	// delete any index entries
 		$q  = new DBQuery;
-		$q->setDeelete('files_index');
+		$q->setDelete('files_index');
 		$q->addQuery('*');
 		$q->addWhere("file_id = $this->file_id");
 		if (!$q->exec()) {
@@ -80,7 +80,7 @@ class CFile extends CDpObject {
 		}
 	// delete the main table reference
 		$q  = new DBQuery;
-		$q->setDeelete('files');
+		$q->setDelete('files');
 		$q->addQuery('*');
 		$q->addWhere("file_id = $this->file_id");
 		if (!$q->exec()) {
