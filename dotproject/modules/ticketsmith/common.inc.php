@@ -232,6 +232,14 @@ function format_field ($value, $type, $ticket = NULL) {
             $output = "<a href=index.php?m=ticketsmith&a=view&ticket=$value>";
             $output .= "<img src=images/icons/pencil.gif border=0></a>";
             break;
+	case "attach":
+	    $output = "<A href=index.php?m=ticketsmith&a=attach&ticket=$value>";
+	    $output .= "Link</a>";
+	    break;
+	case "doattach":
+	    $output = "<A href=index.php?m=ticketsmith&a=attach&newparent=$value&dosql=reattachticket&ticket=$ticket>";
+	    $output .= "Link</a>";
+	    break;
         case "open_date":
             $output = get_time_ago($value);
             if ($CONFIG["warning_active"]) {

@@ -49,9 +49,13 @@ if (@$followup) {
     $cc = stripslashes($cc);
 
 	$mail = new Mail;
-	$mail->From( $author );
+	if (isset($CONFIG['reply_name']) && $CONFIG["reply_name"] != "") {
+		$mail->From($CONFIG["reply_name"] . " <" . $CONFIG["reply_to"] . ">");
+	} else {
+		$mail->From( $author );
+		$mail->ReplyTo( $CONFIG["reply_to"] );
+	}
 	$mail->To( $recipient );
-	$mail->ReplyTo( $CONFIG["reply_to"] );
 	if ($cc) {
 		$mail->Cc( $cc );
 	}

@@ -142,11 +142,28 @@ for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
 $ticket_info["assignment"];
 
 /* output attachment indicator */
-if (query2result("SELECT attachment FROM tickets WHERE ticket = '$ticket'")) {
+$attach_count = query2result("SELECT attachment FROM tickets WHERE ticket = '$ticket'");
+
+if ($attach_count == 1) {
     print("<tr>\n");
     print("<td align=\"left\"><strong>Attachments</strong></td>");
     print("<td align=\"left\">This email had attachments which were removed.</td>\n");
     print("</tr>\n");
+} else if ($attach_count == 2) {
+  $result = do_query("SELECT file_id, file_name from files, tickets where ticket = '$ticket'
+  and file_task = ticket and file_project = 0");
+  if (number_rows($result)) {
+       print("<tr>\n");
+      print("<td align=\"left\"><b>Attachments</b></td>");
+      print("<td align=\"left\">");
+		  while ($row = result2hash($result)) {
+			  echo "<a href='fileviewer.php?file_id=" . $row["file_id"] . "'>";
+			  echo $row["file_name"];
+			echo "</a><br>\n";
+		}
+		print("</td>\n");
+		print("</tr>\n");
+	}
 }
 
 /* output followup navigation */

@@ -8,6 +8,9 @@ if ( ! isset($AppUI->cfg['site_domain']))
   $AppUI->cfg['site_domain'] = "dotproject.net";
 
 $CONFIG["reply_to"] = "support@" . $AppUI->cfg['site_domain'];
+// If you want to hide real addresses behind a bogus 
+// generic email, uncomment the following:
+// $CONFIG["reply_name"] = "Help Desk";
 
 // relative path of the program installation
 // i.e. the part of the URL after the server name
