@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"To",
 "Active",
 "Actual Budget",
 "Actual End Date",
@@ -32,6 +31,7 @@
 "Progress",
 "Project Name",
 "Project Owner",
+"Project Reports",
 "Proposed",
 "Short Name",
 "Size",
@@ -44,6 +44,7 @@
 "Task Creator",
 "Task Name",
 "This month",
+"To",
 "View Project",
 "Work",
 "change color",

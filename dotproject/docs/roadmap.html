@@ -9,8 +9,6 @@
 <link rel="stylesheet" type="text/css" href="../style/default/main.css">
 
 <script language="javascript" type="text/javascript">
-var echo = document.writeln;
-
 var versions = new Array(
 // release name, release date
 	['1.0 beta 1','May 2003'],
@@ -79,6 +77,11 @@ groups['Module::Calendar'] = new Array(
 groups['Module::Companies'] = new Array(
 );
 
+groups['Module::Files'] = new Array(
+	['Future', 'Support virtual folders', ''],
+	['Future', 'Allow files to be stored in a secured directory', '']
+);
+
 groups['Module::Projects'] = new Array(
 );
 
@@ -120,36 +123,36 @@ groups['General Feature Requests'] = new Array(
 	<th width="5%">Responsible</th>
 <script language="javascript" type="text/javascript">
 	for (var i=0; i < nver; i++) {
-		echo( '<th width="5%">'+versions[i][0]+'</th>' );
+		document.writeln( '<th width="5%">'+versions[i][0]+'</th>' );
 	}
-	echo( '</tr>' );
-	echo( '<tr>' );
-	echo( '<td>Nominal Release</td><td></td>' );
+	document.writeln( '</tr>' );
+	document.writeln( '<tr>' );
+	document.writeln( '<td>Nominal Release</td><td></td>' );
 	for (var i=0; i < nver; i++) {
-		echo( '<td align="center">'+versions[i][1]+'</td>' );
+		document.writeln( '<td align="center">'+versions[i][1]+'</td>' );
 	}
-	echo( '</tr>' );
+	document.writeln( '</tr>' );
 // do groups
 	for (key in groups) {
 		grpList = groups[key];
-		echo( '<tr>' );
-		echo( '<td colspan="'+(nver+2)+'"><strong>'+key+'</strong></td>' );
-		echo( '</tr>' );
+		document.writeln( '<tr>' );
+		document.writeln( '<td colspan="'+(nver+2)+'"><strong>'+key+'</strong></td>' );
+		document.writeln( '</tr>' );
 
 		for (var j=0, n=grpList.length; j < n; j++) {
-			echo( '<tr>' );
-			echo( '<td><li>'+grpList[j][1]+'</li></td>' );
-			echo( '<td>'+grpList[j][2]+'</td>' );
+			document.writeln( '<tr>' );
+			document.writeln( '<td><li>'+grpList[j][1]+'</li></td>' );
+			document.writeln( '<td>'+grpList[j][2]+'</td>' );
 
 			for (var k=0; k < nver; k++) {
-				echo( '<td align="center">' );
+				document.writeln( '<td align="center">' );
 				if ( versions[k][0] == grpList[j][0] ) {
-					echo( 'x' );
+					document.writeln( 'x' );
 				}
-				echo( '</td>' );
+				document.writeln( '</td>' );
 			}
 
-			echo( '</tr>' );
+			document.writeln( '</tr>' );
 		}
 	}
 </script>

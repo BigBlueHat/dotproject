@@ -53,7 +53,6 @@
 "Task Name",
 "Task Parent",
 "Time Worked",
-"Total Hours",
 "User",
 "View Task",
 "Web Address",
