@@ -145,6 +145,11 @@ function setTask( key, val ) {
 				<input type="text" name="file_version" value="<?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version : "1";?>" maxlength="10" size="5" />
 			</td>
 		</tr>
+                <tr>
+                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('Category');?>:</td>
+                        <td align="left">
+                                <?php echo arraySelect(dPgetSysVal("FileType"), 'file_category', '', $obj->file_category); ?>
+                        <td>
 
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Project' );?>:</td>

@@ -5,7 +5,14 @@ $AppUI->savePlace();
 if (isset( $_REQUEST['project_id'] )) {
 	$AppUI->setState( 'FileIdxProject', $_REQUEST['project_id'] );
 }
+
 $project_id = $AppUI->getState( 'FileIdxProject' ) !== NULL ? $AppUI->getState( 'FileIdxProject' ) : 0;
+
+if (dPgetParam($_GET, 'tab', -1) != -1 ) {
+        $AppUI->setState( 'FileIdxTab', dPgetParam($_GET, 'tab'));
+}
+$tab = $AppUI->getState( 'FileIdxTab' ) !== NULL ? $AppUI->getState( 'FileIdxTab' ) : 0;
+$active = intval( !$AppUI->getState( 'FileIdxTab' ) );
 
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
@@ -33,14 +40,22 @@ if ($canEdit) {
 	);
 }
 $titleBlock->show();
+
+$file_types = dPgetSysVal("FileType");
+if ( $tab != -1 ) {
+        array_unshift($file_types, "All Files");
+}
+
+$tabBox = new CTabBox( "?m=files", "{$AppUI->cfg['root_dir']}/modules/files/", $tab );
+
+$i = 0;
+
+foreach($file_types as $file_type)
+{
+        $tabBox->add("index_table", $file_type);
+        ++$i;
+}
+                                                                                
+$tabBox->show();
+
 ?>
-<table cellspacing="0" cellpadding="0" border="0" width="100%">
-<tr>
-	<td>
-<?php
-	$showProject = true;
-	require( "{$AppUI->cfg['root_dir']}/modules/files/index_table.php" );
-?>
-	</td>
-</tr>
-</table>

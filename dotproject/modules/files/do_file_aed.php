@@ -12,6 +12,7 @@ if ($file_id) {
 } else {
 	$obj->_message = 'added';
 }
+$obj->file_category = intval( dPgetParam( $_POST, 'file_category', 0 ) );
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );

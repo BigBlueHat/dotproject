@@ -30,6 +30,7 @@ class CFile extends CDpObject {
 	// ensure the integrity of some variables
 		$this->file_id = intval( $this->file_id );
 		$this->file_parent = intval( $this->file_parent );
+                $this->file_category = intval( $this->file_category );
 		$this->file_task = intval( $this->file_task );
 		$this->file_project = intval( $this->file_project );
 
@@ -68,6 +69,7 @@ class CFile extends CDpObject {
 		if (!is_dir("{$AppUI->cfg['root_dir']}/files/$this->file_project")) {
 		    $res = mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
 			 if (!$res) {
+                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
 			     return false;
 			 }
 		}
