@@ -35,7 +35,7 @@ class CTabBox extends CTabBox_core {
 		// flat view, active = -1
 			echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
 			foreach ($this->tabs as $k => $v) {
-				echo "<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>\n";
+				echo "<tr><td><strong>".($v[2] ? $v[1] : $AppUI->_($v[1]))."</strong></td></tr>\n";
 				echo "<tr><td>";
 				$currentTabId = $k;
 				$currentTabName = $v[1];
@@ -68,7 +68,7 @@ class CTabBox extends CTabBox_core {
 					$s .= 'javascript:show_tab(' . $k . ')';
 				else
 					$s .= $this->baseHRef.'tab='.$k;
-				$s .='">'.$AppUI->_($v[1]).'</a>&nbsp;</td>';
+				$s .='">'.($v[2] ? $v[1] : $AppUI->_($v[1])).'</a>&nbsp;</td>';
 				$s .= '<td valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Right.png" width="3" height="28" border="0" alt="" /></td>';
 				$s .= '<td width="3" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td>';
 			}

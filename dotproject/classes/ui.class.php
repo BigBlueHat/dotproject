@@ -885,8 +885,8 @@ the active tab, and the selected tab **/
 * @param string File to include
 * @param The display title/name of the tab
 */
-	function add( $file, $title ) {
-		$this->tabs[] = array( $file, $title );
+	function add( $file, $title, $translated = false ) {
+		$this->tabs[] = array( $file, $title, $translated );
 	}
 
 	function isTabbed() {
@@ -926,7 +926,7 @@ the active tab, and the selected tab **/
 		// flat view, active = -1
 			echo '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
 			foreach ($this->tabs as $k => $v) {
-				echo '<tr><td><strong>'.$AppUI->_($v[1]).'</strong></td></tr>';
+				echo '<tr><td><strong>'.($v[2] ? $v[1] : $AppUI->_($v[1])).'</strong></td></tr>';
 				echo '<tr><td>';
 				$currentTabId = $k;
 				$currentTabName = $v[1];
@@ -957,7 +957,7 @@ the active tab, and the selected tab **/
 					$s .= 'javascript:show_tab(' . $k . ')';
 				else
 					$s .= $this->baseHRef . "tab=$k";
-				$s .= "\">". $AppUI->_($v[1]). "</a>";
+				$s .= "\">". ($v[2] ? $v[1] : $AppUI->_($v[1])). "</a>";
 				$s .= "\n\t</td>";
 			}
 			$s .= "\n\t<td nowrap=\"nowrap\" class=\"tabsp\">&nbsp;</td>";

@@ -281,7 +281,7 @@ foreach($project_types as $project_type){
 
 // tabbed information boxes
 foreach($project_types as $project_type) {
-	$tabBox->add($project_file_type[$project_type], $project_type);
+	$tabBox->add($project_file_type[$project_type], $project_type, true);
 }
 $min_view = true;
 $tabBox->add("viewgantt", "Gantt");
