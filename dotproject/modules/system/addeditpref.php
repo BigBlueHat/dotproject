@@ -130,7 +130,7 @@ function submitIt(){
 	$f = "en_NZ"; $currencies[$f]	= formatCurrency( $currEx, $f );
 	$f = "pt_PT"; $currencies[$f]	= formatCurrency( $currEx, $f );
 	$f = "pt_BR"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	echo arraySelect( $currencies, 'pref_name[CURRENCYFORMAT]', 'class=text size=1', @$prefs['CURRENCYFORMAT'], false );
+	echo arraySelect( $currencies, 'pref_name[CURRENCYFORM]', 'class=text size=1', @$prefs['CURRENCYFORM'], false );
 ?>
 	</td>
 </tr>
