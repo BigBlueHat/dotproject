@@ -224,12 +224,12 @@ class CFile extends CDpObject {
 				//preparing users array
 				$q  = new DBQuery;
 				$q->addTable('tasks', 't');
-				$q->addQuery('t.task_id, ncc.contact_email as creator_email, ncc.contact_first_name as
-						 creator_first_name, ncc.contact_last_name as creator_last_name,
-						 noc.contact_email as owner_email, noc.contact_first_name as owner_first_name,
-						 noc.contact_last_name as owner_last_name, na.user_id as assignee_id, 
-						 nac.contact_email as assignee_email, nac.contact_first_name as
-						 assignee_first_name, nac.contact_last_name as assignee_last_name');
+				$q->addQuery('t.task_id, cc.contact_email as creator_email, cc.contact_first_name as
+						 creator_first_name, cc.contact_last_name as creator_last_name,
+						 oc.contact_email as owner_email, oc.contact_first_name as owner_first_name,
+						 oc.contact_last_name as owner_last_name, a.user_id as assignee_id, 
+						 ac.contact_email as assignee_email, ac.contact_first_name as
+						 assignee_first_name, ac.contact_last_name as assignee_last_name');
 				$q->addJoin('user_tasks', 'u', 'u.task_id = t.task_id');
 				$q->addJoin('users', 'o', 'o.user_id = t.task_owner');
 				$q->addJoin('contacts', 'oc', 'o.user_contact = oc.contact_id');
