@@ -45,7 +45,8 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 			$v=str_replace('&#337;','õ',$v);
 		}
                 else
-                        $v = dPformSafe($v); // The translation function already does this.
+			// commented out as it was producing many errors for german localisation 
+                        //$v = dPformSafe($v); // The translation function already does this.
 		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" .  $v  . "</option>";
 	}
 	$s .= "\n</select>\n";
