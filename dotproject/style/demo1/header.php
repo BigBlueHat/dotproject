@@ -1,44 +1,44 @@
 <?php  /* $Id$ */
 $nav = dPgetMenuModules();
 ?>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-       "http://www.w3.org/TR/html4/loose.dtd">
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-<script language="JavaScript">
-function doBtn() {
-    var oEl = event.srcElement;
-    var doit = event.type;
-
-    while (-1 == oEl.className.indexOf( "Btn" )) {
-        oEl = oEl.parentElement;
-        if (!oEl) {
-            return;
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <script language="JavaScript">
+    function doBtn() {
+        var oEl = event.srcElement;
+        var doit = event.type;
+    
+        while (-1 == oEl.className.indexOf( "Btn" )) {
+            oEl = oEl.parentElement;
+            if (!oEl) {
+                return;
+            }
+        }
+        if (doit == "mouseover" || doit == "mouseup") {
+            oEl.className = "clsBtnOn";
+        } else if (doit == "mousedown") {
+            oEl.className = "clsBtnDown";
+        } else {
+            oEl.className = "clsBtnOff";
         }
     }
-    if (doit == "mouseover" || doit == "mouseup") {
-        oEl.className = "clsBtnOn";
-    } else if (doit == "mousedown") {
-        oEl.className = "clsBtnDown";
-    } else {
-        oEl.className = "clsBtnOff";
+    function tboff(){
+        var oEl = event.srcElement;
+        var doit = event.type;
+        oEl.className = "topBtnOff";
     }
-}
-function tboff(){
-    var oEl = event.srcElement;
-    var doit = event.type;
-    oEl.className = "topBtnOff";
-}
-</script>
-<title><?php echo $AppUI->cfg['page_title'];?></title>
-<link rel="stylesheet" type="text/css" href="./style/demo1/main.css">
+    </script>
+    <title><?php echo $AppUI->cfg['page_title'];?></title>
+    <link rel="stylesheet" type="text/css" href="./style/demo1/main.css" />
 </head>
-<body bgcolor="#f0f0f0" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 
+<body bgcolor="#f0f0f0" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-    <td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><strong>dotproject</strong></a>
+    <td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><strong>dotproject</strong></td>
 </tr>
 <tr>
     <td style="border: #848284 1px outset;background-color:#d5d3ce;color:#000000">
@@ -80,17 +80,17 @@ echo implode( ' | ', $links );
 
     echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
 
-    echo '</td><input type="hidden" name="a" value="addedit">';
+    echo '</td><input type="hidden" name="a" value="addedit" />';
 
 //build URI string
 	if (isset( $company_id )) {
-		echo '<input type="hidden" name="company_id" value="'.$company_id.'">';
+		echo '<input type="hidden" name="company_id" value="'.$company_id.'" />';
 	}
 	if (isset( $task_id )) {
-		echo '<input type="hidden" name="task_parent" value="'.$task_id.'">';
+		echo '<input type="hidden" name="task_parent" value="'.$task_id.'" />';
 	}
 	if (isset( $file_id )) {
-		echo '<input type="hidden" name="file_id" value="'.$file_id.'">';
+		echo '<input type="hidden" name="file_id" value="'.$file_id.'" />';
 	}
 ?>
             </form>
@@ -121,4 +121,3 @@ echo implode( ' | ', $links );
 <?php 
     echo $AppUI->getMsg();
 ?>
-<!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br /> -->

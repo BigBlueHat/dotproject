@@ -100,6 +100,20 @@ textarea.small {
     font-family: verdana,Sans-Serif;
     font-size: 8pt;
 }
+
+/* dotProject Top Banner and Top Nav Customization */
+TH.banner {
+    background-image: URL(/style/dp_ultra_clean/images/titlegrad.jpg);
+    background-color: #a5cbf7;
+    color: #fff
+}
+
+TD.nav {
+    border: 1px solid #848284;
+    background-color: #d5d3ce;
+    color: #000
+}
+
 /*
 **********************************
 Begin IE TD buttonizing

@@ -31,34 +31,35 @@ $nav = dPgetMenuModules();
         oEl.className = "topBtnOff";
     }
     </script>
-<title><?php echo $AppUI->cfg['page_title'];?></title>
+    <title><?php echo $AppUI->cfg['page_title'];?></title>
     <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
     <style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
 </head>
-<body>
 
+<body>
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-    <td background="style/dp_ultra_clean/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><strong>dotproject</strong></a>
+    <th class="banner" align="left"><strong>dotProject UltraClean</strong></th>
 </tr>
 <tr>
-    <td style="border: #848284 1px outset;background-color:#d5d3ce;color:#000000">
-        <table width="100%" cellpadding="1" cellspacing="0" width="100%">
-        <tr>
-            <td>
+    <td class="nav" align="left">
+    <table width="100%" cellpadding="0" cellspacing="0" width="100%">
+    <tr>
+        <td>
+        <?php
+        $links = array();
+        foreach ($nav as $module) {
+            if (!getDenyRead( $module['mod_directory'])) {
+                $links[] = '<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
+            }
+        }
+        echo implode( ' | ', $links );
+        echo "\n";
+        ?>
+        </td>
+        <form name="frm_new" method=GET action="./index.php">
 <?php
-$links = array();
-foreach ($nav as $module) {
-    if (!getDenyRead( $module['mod_directory'])) {
-        $links[] = '<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
-    }
-}
-echo implode( ' | ', $links );
-?>
-            </td>
-            <form name="frm_new" method=GET action="./index.php">
-<?php
-    echo '<td nowrap="nowrap" align="right">';
+    echo '        <td nowrap="nowrap" align="right">';
     $newItem = array( ""=>'- New Item -' );
 
     if ($AppUI->getProject()) {
@@ -81,7 +82,8 @@ echo implode( ' | ', $links );
 
     echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
 
-    echo '</td><input type="hidden" name="a" value="addedit" />';
+    echo "</td>\n";
+    echo "        <input type=\"hidden\" name=\"a\" value=\"addedit\" />\n";
 
 //build URI string
     if (isset( $company_id )) {
@@ -94,10 +96,10 @@ echo implode( ' | ', $links );
         echo '<input type="hidden" name="file_id" value="'.$file_id.'" />';
     }
 ?>
-            </form>
-            </td>
-        </tr>
-        </table>
+        </form>
+        </td>
+    </tr>
+    </table>
     </td>
 </tr>
 <tr>
