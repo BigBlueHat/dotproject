@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 ##
 ## Files modules: index page
 ##
@@ -67,7 +67,7 @@ $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
-<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickProject">
+<form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickProject">
 	<td align="right" width="100%" nowrap="nowrap">
 		<?php echo $AppUI->_( 'Project' );?>: 
 <?php

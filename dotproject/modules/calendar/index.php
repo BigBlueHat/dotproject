@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 // check permissions
 $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
@@ -104,7 +104,7 @@ foreach ($events as $row) {
 ?>
 
 <table width="98%" border=0 cellpadding="0" cellspacing=1>
-<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
+<form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickCompany">
 <tr>
 	<td><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42"></td>
 	<td nowrap><span class="title">Monthly Calendar</span></td>

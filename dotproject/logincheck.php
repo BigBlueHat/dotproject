@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 require_once( "./includes/config.php" );
 require_once( "$root_dir/includes/db_connect.php" );
 require_once( "$root_dir/misc/debug.php" );
@@ -10,8 +10,8 @@ session_register('AppUI');
 $username = isset($_POST['username']) ? $_POST['username'] : '';
 $password = isset($_POST['password']) ? $_POST['password'] : '';
 
-$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
-$AppUI =& $HTTP_SESSION_VARS['AppUI'];
+$_SESSION['AppUI'] = new CAppUI;
+$AppUI =& $_SESSION['AppUI'];
 
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
 

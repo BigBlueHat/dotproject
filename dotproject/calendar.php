@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 require_once( "./includes/config.php" );
 require_once( "$root_dir/classdefs/calendar.php" );
 require_once( "$root_dir/classdefs/ui.php" );
@@ -54,17 +54,17 @@ $this_month->setFormat( "%b" );
 for ($i=0; $i < 12; $i++) {
 	$this_month->setMonth( $i+1 );
 	echo '<td width="8%">'
-		."<a href=\"$SCRIPT_NAME?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
+		."<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
 		.'</td>';
 }
 ?>
 </tr>
 <tr>
 	<td colspan="6" align="left">
-		<?php echo "<a href=\"$SCRIPT_NAME?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>";?>
+		<?php echo "<a href=\"{$_SERVER['$SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>";?>
 	</td>
 	<td colspan="6" align="right">
-		<?php echo "<a href=\"$SCRIPT_NAME?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>";?>
+		<?php echo "<a href=\"{$_SERVER['$SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>";?>
 	</td>
 </table>
 
