@@ -321,13 +321,17 @@ class CTask extends CDpObject {
 *	@param	int		id of the destination project
 *	@return	object	The new record object or null if error
 **/
-	function copy($destProject_id = 0) {
+	function copy($destProject_id = 0, $destTask_id = -1) {
 		$newObj = $this->duplicate();
 
 		// Copy this task to another project if it's specified
 		if ($destProject_id != 0)
 			$newObj->task_project = $destProject_id;
 
+		if ($destTask_id == 0)
+			$newObj->task_parent = $newObj->task_id;
+		else if ($destTask_id > 0)
+			$newObj->task_parent = $destTask_id;
 		if ($newObj->task_parent == $this->task_id)
 			$newObj->task_parent = '';
 
@@ -336,6 +340,47 @@ class CTask extends CDpObject {
 		return $newObj;
 	}// end of copy()
 
+	function deepCopy($destProject_id = 0, $destTask_id = 0) {
+		$newObj = $this->copy($destProject_id, $destTask_id);
+		$new_id = $newObj->task_id;
+		$children = $this->getChildren();
+		if (!empty($children))
+		{
+			$tempTask = & new CTask();
+			foreach ($children as $child)
+			{
+				$tempTask->load($child);
+				$newChild = $tempTask->deepCopy($destProject_id, $new_id);
+				$newChild->store();
+			}
+		}
+		
+		return $newObj;
+	} 
+
+	function move($destProject_id = 0, $destTask_id = -1) {
+		if ($destProject_id != 0)
+			$this->task_project = $destProject_id;
+		if ($destTask_id == 0)
+			$this->task_parent = $this->task_id;
+		else if ($destTask_id > 0)
+			$this->task_parent = $destTask_id;
+	}
+
+	function deepMove($destProject_id = 0, $destTask_id = 0) {
+		$this->move($destProject_id, destTask_id);
+		$children = $this->getDeepChildren();
+		if (!empty($children))
+		{
+			$tempChild = & new $CTask();
+			foreach ($children as $child)
+			{
+				$tempChild->load($child);
+				$tempChild->move($destProject_id);
+				$tempChild->store();
+			}
+		}
+	}
 /**
 * @todo Parent store could be partially used
 */
@@ -348,7 +393,7 @@ class CTask extends CDpObject {
 			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->task_id ) {
-                addHistory('tasks', $this->task_id, 'update', $this->task_name, $this->task_project);
+			addHistory('tasks', $this->task_id, 'update', $this->task_name, $this->task_project);
 			$this->_action = 'updated';
 			// Load the old task from disk
 			$oTsk = new CTask();
@@ -378,7 +423,7 @@ class CTask extends CDpObject {
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
-                        addHistory('tasks', $this->task_id, 'add', $this->task_name, $this->task_project);
+			addHistory('tasks', $this->task_id, 'add', $this->task_name, $this->task_project);
 
 			if (!$this->task_parent) {
 				$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";
@@ -427,7 +472,10 @@ class CTask extends CDpObject {
 		}
 
 		// update dependencies
-		$this->updateDependencies($this->getDependencies());
+		if (!empty($this->task_id))
+			$this->updateDependencies($this->getDependencies());
+		else
+			print_r($this);
 
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
@@ -450,10 +498,11 @@ class CTask extends CDpObject {
 
 		//load it before deleting it because we need info on it to update the parents later on
 		$this->load($this->task_id);
-                addHistory('tasks', $this->task_id, 'delete', $this->task_name, $this->task_project);
+		addHistory('tasks', $this->task_id, 'delete', $this->task_name, $this->task_project);
 		
 		// delete the tasks...what about orphans?
 		// delete task with parent is this task
+		$childrenlist = $this->getDeepChildren();
 		
 		$sql = "DELETE FROM tasks WHERE task_id = $this->task_id";
 		if (!db_exec( $sql )) {
@@ -468,24 +517,30 @@ class CTask extends CDpObject {
 
 		// delete children
 		$sql = "SELECT * FROM tasks WHERE task_parent = $this->task_id";
-		$children_taks = db_loadHashList($sql, "task_id");
 		
-		if(count($children_taks) > 0){
-		     $sql = "DELETE FROM tasks WHERE task_parent = $this->task_id";
-                    	     if (!db_exec( $sql )) {
-			return db_error();
-		      }else{
-		          $this->_action ='deleted whit childs';
-		      }
+		if (!empty($childrenlist)) 
+		{
+			$sql = "DELETE FROM tasks WHERE task_parent IN (" . implode(', ', $childrenlist) . ", $this->task_id)";
+			if (!db_exec( $sql ))
+				return db_error();
+			else
+			{
+				$this->updateDynamics(); // to update after children are deleted (see above)
+				$this->_action ='deleted with children'; // always overriden?
+			}
 		}
 
 		// delete affiliated task_logs
-		$sql = "DELETE FROM task_log WHERE task_log_task = $this->task_id";
-  		if (!db_exec( $sql )) {
+		$sql = "DELETE FROM task_log WHERE task_log_task";
+		if (!empty($childrenlist))
+			$sql .= " IN (" . implode(', ', $childrenlist) . ", $this->task_id)";
+		else
+			$sql .= "=$this->task_id";
+
+		if (!db_exec( $sql ))
 			return db_error();
-		 }else{
-		          $this->_action ='deleted';
-		 }
+		else
+			$this->_action ='deleted';
 
 		 return NULL;
 	}
@@ -528,6 +583,8 @@ class CTask extends CDpObject {
 	*	@return	string	comma delimited list of tasks id's
 	**/
 	function staticGetDependencies ($taskId) {
+		if (empty($taskId))
+			return '';
 		$sql = "
             SELECT dependencies_req_task_id
             FROM task_dependencies td
@@ -947,6 +1004,9 @@ class CTask extends CDpObject {
 		// retrieve dependents tasks 
 		if (!$taskId)
 			$taskId = $this->task_id;
+
+		if (empty($taskId))
+			return '';
 		$sql = "
 			SELECT dependencies_task_id
 			FROM task_dependencies AS td, tasks AS t
@@ -1348,9 +1408,27 @@ class CTask extends CDpObject {
 	function getChildren() {
 		$sql = "select task_id from tasks where task_id != '$this->task_id'
 				and task_parent = '$this->task_id'";
-		return db_loadList($sql);
+		return db_loadColumn($sql);
 	}
 
+	// Returns task deep children IDs
+	function getDeepChildren()
+	{
+		$children = db_loadColumn( "SELECT task_id FROM tasks WHERE task_parent = $this->task_id" );
+		if ($children)
+		{
+			$deep_children = array();
+			$tempTask = &new CTask();
+			foreach ($children as $child)
+			{
+				$tempTask->load($child);
+				$deep_children = array_merge($deep_children, $this->getChildren());
+			}
+				
+			return array_merge($children, $deep_children);
+		}
+		return array();
+	}
 
 	/**
 	* This function, recursively, updates all tasks status

@@ -4,7 +4,7 @@
 $perms =& $AppUI->acl();
 
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
-$date       = intval( dPgetParam( $_GET, 'date', '' ) );
+//$date       = intval( dPgetParam( $_GET, 'date', '' ) );
 $user_id    = $AppUI->user_id;
 $no_modify	= false;
 
@@ -28,92 +28,59 @@ $canEdit = $perms->checkModule( $m, 'edit' );
 $action = dPgetParam( $_POST, 'action', 99 );
 $selected = dPgetParam( $_POST, 'selected', 0 );
 
-//TODO: create getDeepChildren function in the Tasks class.
-function getChildren( $task_id, $deep = 'true' )
-{
-	$children = db_loadColumn( "SELECT task_id FROM tasks WHERE task_parent = $task_id" );
-	if (!$deep)
-		if (!$children)
-			return array();
-		else
-			return $children;
-	if ($children)
-	{
-		$deep_children = array();
-		foreach ($children as $child)
-			$deep_children = array_merge($deep_children, getChildren( $child ));
-			
-		return array_merge($children, $deep_children);
-	}
-	return array();
-}
-
 if ($selected && count( $selected )) {
-	$new_task = dPgetParam( $_POST, 'new_task', '0' );
-	$new_project = dPgetParam( $_POST, 'new_project', '' );
+	$new_task = dPgetParam( $_POST, 'new_task', -1 );
+	$new_project = dPgetParam( $_POST, 'new_project', $project_id );
 
 	foreach ($selected as $key => $val)
 	{
-		if ($new_task == '0')
-			$new_task = $val;
+		$t = &new CTask();
+		$t->load($val);
 		if ( isset($_POST['include_children']) && $_POST['include_children'])
-			$children = getChildren($val);
-		else
-			$children = array();
+			$children = $t->getDeepChildren();
 		if ( $action == 'f') { 										// Mark FINISHED
 			// mark task as completed
-			$childlist = false;
-			if (count($children))
-				$childlist = implode(', ', $children);
-			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id " . ($childlist)?"IN ($childlist, $val)":"=$val";
+			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id";
+			if (isset($children))
+				$sql .= " IN (" . implode(', ', $children) . ", $val)";
+			else
+				$sql .= "=$val";
 		} else if ( $action == 'd' ) { 						// DELETE
 			// delete task
-      $t = &new CTask();
-      if (count($children))
-				foreach($children as $child)
-				{
-					$t->load($child);
-					$t->delete();
-				}
-				//db_loadList( "DELETE FROM tasks WHERE task_id IN ($children)" );
-      $t->load($val);
-			$t->delete();
-			$sql = ''; //"DELETE FROM tasks WHERE task_id=$val";
+      $t->delete();
+// Now task deletion deletes children no matter what.
+			// delete children
+//      if (isset($children))
+//			{
+//				foreach($children as $child)
+//				{
+//					$t->load($child);
+//					$t->delete();
+//				}
+//			}
 		} else if ( $action == 'm' ) { 						// MOVE
-			if (count($children))
-				db_exec( "UPDATE tasks SET task_project=$new_project WHERE task_id IN (" . implode(', ', $children) . " )");
-			$sql = "UPDATE tasks SET task_parent='$new_task', task_project='$new_project' WHERE task_id=$val";
-		} else if ( $action == 'c' ) { 						// COPY
-			$t = &new CTask();
-			$t->load($val);
-			$old_parent = $t->task_id;
-			$t = $t->copy($new_project);
-			if ($new_task != $old_parent)
-				$t->task_parent = $new_task;
-			else // necesary? depends how copy works
-				$t->task_parent = $t->task_id;
+			if (isset($children))
+				$t->deepMove($new_project, $new_task);
+			else
+				$t->move($new_project, $new_task);
+
 			$t->store();
-			$new_id = $t->task_id;
-			if (count($children)) {
-				foreach ($children as $child) {
-					$t->load($child);
-					$t = $t->copy($new_project);
-					// update parent only on top tasks, others stay same
-					if ($t->task_parent == $old_parent) 
-						$t->task_parent = $new_id;
-					$t->store();
-				}
-			}
-			$sql = false;
+		} else if ( $action == 'c' ) { 						// COPY
+			if (isset($children))
+				$t = $t->deepCopy($new_project, $new_task);
+			else
+				$t = $t->copy($new_project, $new_task);
+
+			$t->store();
 		} else if ( $action > -2 && $action < 2 ) { // Set PRIORITY
 			// set priority
       $sql = "UPDATE tasks SET task_priority=$action WHERE task_id";
-      if ($children)
+      if (isset($children))
 				$sql .= " IN (" . implode(',',$children) . ", $val)";
 			else
 				$sql .= "=$val";
 		}
-		if ($sql) {
+		if (isset($sql)) {
 			db_exec( $sql );
 		}
 	}
@@ -264,7 +231,7 @@ function showtask_edit($task, $level=0)
 ?>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<form name="form" method="post" action="index.php?<?php echo "m=$m&a=$a&date=$date";?>">
+<form name="form" method="post" action="index.php?<?php echo "m=$m&a=$a&project_id=$project_id";?>"> <!--&date=$date -->
 <tr>
 	<th width="20" colspan="2"><?php echo $AppUI->_('Progress');?></th>
 	<th width="15" align="center"><?php echo $AppUI->_('P');?></th>
@@ -330,7 +297,7 @@ foreach ($tasks as $task)
 		$ts[$t['task_id']] = $t['task_name'];
 ?>
 
-<input type="checkbox" name="include_children" value='1' />Include Children<br />
+<input type="checkbox" name="include_children" value='1' />Include Children (doesn't apply to delete or move within the same project)<br />
 <table>
   <tr>
     <th>Action: </th>
