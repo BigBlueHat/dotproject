@@ -71,6 +71,7 @@ class CFile {
 	}
 
 	function delete() {
+		global $AppUI;
 	// remove the file from the file system
 		@unlink( "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename" );
 	// delete any index entries
@@ -88,6 +89,7 @@ class CFile {
 
 // move a file from a temporary (uploaded) location to the file system
 	function moveTemp( $upload ) {
+		global $AppUI;
 	// check that directories are created
 		@mkdir( "{$AppUI->cfg['root_dir']}/files", 0777 );
 		@mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
