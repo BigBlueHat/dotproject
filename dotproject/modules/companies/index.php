@@ -46,34 +46,24 @@ if ($canEdit) {
 	);
 }
 $titleBlock->show();
-?>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<td nowrap="nowrap" width="60" align="right">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
-	<th nowrap="nowrap">
-		<a href="?m=companies&orderby=company_name" class="hdr"><?php echo $AppUI->_('Company Name');?></a>
-	</th>
-	<th nowrap="nowrap">
-		<a href="?m=companies&orderby=countp" class="hdr"><?php echo $AppUI->_('Active Projects');?></a>
-	</th>
-	<th nowrap="nowrap">
-		<a href="?m=companies&orderby=inactive" class="hdr"><?php echo $AppUI->_('Archived Projects');?></a>
-	</th>
-	<th nowrap="nowrap">
-		<a href="?m=companies&orderby=company_type" class="hdr"><?php echo $AppUI->_('Type');?></a>
-	</th>
-</tr>
-<?php
-$s = '';
-foreach ($rows as $row) {
-	$s .= $CR . '<tr>';
-	$s .= $CR . '<td>&nbsp;</td>';
-	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '" title="'.$row['company_description'].'">' . $row["company_name"] .'</a></td>';
-	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $row["countp"] . '</td>';
-	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . @$row["inactive"] . '</td>';
-	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $AppUI->_($types[@$row["company_type"]]) . '</td>';
-	$s .= $CR . '</tr>';
+
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'CompaniesIdxTab', $_GET['tab'] );
 }
-echo "$s\n";
+$companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ), 0 );
+
+function getCompanyTypeID($type) {
+	global $types;
+	$arr = array_keys($types, $type);
+	return $arr[0];
+}
+
+$tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
+$companiesType = $tabTypes[$companiesTypeTab];
+
+$tabBox = new CTabBox( "?m=companies", "{$AppUI->cfg['root_dir']}/modules/companies/", $companiesTypeTab );
+$tabBox->add( 'vw_companies', 'Clients' );
+$tabBox->add( 'vw_companies', 'Suppliers' );
+$tabBox->add( 'vw_companies', 'All Companies' );
+$tabBox->show();
 ?>
-</table>
