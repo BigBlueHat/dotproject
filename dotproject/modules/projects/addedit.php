@@ -64,7 +64,7 @@ var calendarField = '';
 function popCalendar( field ){
 	calendarField = field;
 	uts = eval( 'document.AddEdit.project_' + field + '.value' );
-	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'width=250, height=220, scollbars=false' );
+	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
 function setCalendar( uts, fdate ) {
