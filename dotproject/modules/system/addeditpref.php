@@ -92,6 +92,21 @@ function submitIt(){
 </tr>
 
 <tr>
+	<td align="right">Short Date Format:</td>
+	<td>
+<?php
+	$formats = array(
+		"%d/%m/%Y"=>"dd/mm/yyyy   31/12/2002",
+		"%d/%b/%Y"=>"dd/mmm/yyyy  31/Dec/2002",
+		"%m/%d/%Y"=>"mm/dd/yyyy   12/31/2002",
+		"%b/%d/%Y"=>"mmm/dd/yyyy  Dec/31/2002"
+	);
+	echo arraySelect( $formats, 'pref_name[SHDATEFORMAT]', 'class=text size=1', @$prefs['SHDATEFORMAT'], false );
+?>
+	</td>
+</tr>
+
+<tr>
 	<td align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td>
 	<td align="right"><input type=button value="submit" onClick="submitIt()" class=button>&nbsp; &nbsp; &nbsp;</td>
 </tr>

@@ -118,6 +118,7 @@ CREATE TABLE `user_preferences` (
 #
 INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
 INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
+INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
 
 #
 # Table changes 16 Dec 2002
