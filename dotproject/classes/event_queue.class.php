@@ -15,6 +15,7 @@ class EventQueue {
 	var $table = 'event_queue';
 	var $update_list = array();
 	var $delete_list = array();
+	var $event_count = 0;
 
 	function EventQueue()
 	{
@@ -149,6 +150,7 @@ class EventQueue {
 		for ($rid; ! $rid->EOF; $rid->moveNext()) {
 			if ($this->execute($rid->fields)) {
 				$this->update_event($rid->fields);
+				$this->event_count++;
 			}
 		}
 		$q->clear();
