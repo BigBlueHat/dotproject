@@ -1,3 +1,72 @@
+2003-04-22 20:20  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed bug in mailouts that failed to reset the 'to' field
+
+2003-04-22 20:19  (eddieajau)
+---------------------------------
+modules/projects/index.php
+modules/tasks/index.php
+- Updated icons
+
+2003-04-22 20:16  (eddieajau)
+---------------------------------
+modules/companies/companies.class.php
+- Updated documentation
+
+2003-04-22 20:15  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/view.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/files/addedit.php
+modules/files/index.php
+modules/files/index_table.php
+- Updated icons
+
+2003-04-22 20:13  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added support for IE6 to correctly dislpay png images with alpha-transparency
+
+2003-04-22 20:12  (eddieajau)
+---------------------------------
+images/icons/communicate.gif
+modules/forums/view_messages.php
+classes/ui.class.php
+- Updated icons
+
+2003-04-22 20:09  (eddieajau)
+---------------------------------
+classes/dp.class.php
+classes/libmail.class.php
+- Updated documentation
+
+2003-04-22 20:05  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- no message
+
+2003-04-22 19:49  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- no message
+
+2003-04-22 19:14  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- Initial upload
+
+2003-04-21 04:58  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-21 01:01  (eddieajau)
 ---------------------------------
 images/icons/stock_edit-16.png
@@ -429,75 +498,6 @@ misc/index.html
 misc/cvs2cl/index.html
 modules/index.html
 modules/admin/index.html
-modules/calendar/index.html
-modules/companies/index.html
-modules/contacts/index.html
-modules/departments/index.html
-modules/files/index.html
-modules/forums/index.html
-modules/help/index.html
-modules/help/en/index.html
-modules/history/index.html
-modules/projects/index.html
-modules/public/index.html
-modules/system/index.html
-modules/system/images/index.html
-modules/system/roles/index.html
-modules/system/syskeys/index.html
-modules/tasks/index.html
-modules/ticketsmith/index.html
-style/index.html
-style/classic/index.html
-style/classic/images/index.html
-style/default/index.html
-style/default/images/index.html
-style/default/images/obj/index.html
-- Initial upload
-
-2003-04-10 01:23  (eddieajau)
----------------------------------
-modules/projects/view.php
-- Fixed spelling mistake in delete confirmation
-
-2003-04-10 01:22  (eddieajau)
----------------------------------
-locales/en/projects.inc
-- Content updated
-
-2003-04-09 21:58  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Added security fix taht exploits malicious sql in username and password
-
-2003-04-09 21:57  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Initial upload
-
-2003-04-09 18:23  (eddieajau)
----------------------------------
-includes/config-dist.php
-- Updated version
-
-2003-04-09 08:36  (eddieajau)
----------------------------------
-includes/config-dist.php
-- Updated version
-
-2003-04-09 08:27  (eddieajau)
----------------------------------
-modules/files/files.class.php
-- Fixed bug in store/update method
-
-2003-04-09 08:26  (eddieajau)
----------------------------------
-modules/files/do_file_aed.php
-- Added cvs id tag
-
-2003-04-09 08:25  (eddieajau)
----------------------------------
-modules/files/do_file_aed.php
-- Fixed bugs preventing proper update of file information
 ...
 
 (This file has been wrapped)
