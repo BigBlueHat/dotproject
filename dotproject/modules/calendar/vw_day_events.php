@@ -90,6 +90,7 @@ if ($other_users) {
 }
 $html .= "</form>";
 $html .= '<table cellspacing="1" cellpadding="2" border="0" width="100%" class="tbl">';
+$rows = 0;
 for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 	$html .= "\n<tr>";
 	
@@ -121,7 +122,8 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 			$html .= "\n\t</td>";
 		}
 	} else {
-		$html .= "\n\t<td></td>";
+		if (--$rows <= 0)
+			$html .= "\n\t<td></td>";
 	}
 
 	$html .= "\n</tr>";
