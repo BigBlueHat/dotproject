@@ -47,10 +47,15 @@ foreach($all_tasks as $task)
 {
 	if ($task['task_percent_complete'] == 100)
 		$tasks['completed'][] = & $task;
-	else if ($task['task_percent_complete'] == 0)
-		$tasks['pending'][] = & $task;
 	else
-		$tasks['inprogress'][] = & $task;
+	{
+		if ($task['task_end_date'] < date('Y-m-d'))
+			$tasks['overdue'][] = & $task;
+		if ($task['task_percent_complete'] == 0)
+			$tasks['pending'][] = & $task;
+		else
+			$tasks['inprogress'][] = & $task;
+	}
 
 	if (isset($users_per_task[$task['task_id']]))
 	{
@@ -58,10 +63,15 @@ foreach($all_tasks as $task)
 		{
 			if ($task['task_percent_complete'] == 100)
 				$users[$user]['completed'][] = & $task;
-			else if ($task['task_percent_complete'] == 0)
-				$users[$user]['pending'][] = & $task;
 			else
-				$users[$user]['inprogress'][] = & $task;
+			{
+				if ($task['task_end_date'] < date('Y-m-d'))
+					$users[$user]['overdue'][] = & $task;
+				if ($task['task_percent_complete'] == 0)
+					$users[$user]['pending'][] = & $task;
+				else
+					$users[$user]['inprogress'][] = & $task;
+			}
 
 			
 			$users[$user]['hours'] += $users[$user]['all'][$task['task_id']]['work'];
@@ -102,19 +112,19 @@ $files = db_loadResult($sql);
 	<td><?php echo round(count($tasks['inprogress']) / count($all_tasks) * 100); ?>%</td>
 </tr>
 <tr>
+	<td>Not Started:</td>
+	<td><?php echo count($tasks['pending']); ?></td>
+	<td><?php echo round(count($tasks['pending']) / count($all_tasks) * 100); ?>%</td>
+</tr>
+<tr>
 	<td>Past Due:</td>
-	<td><?php echo count($tasks['pending']); ?></td>
-	<td><?php echo round(count($tasks['pending']) / count($all_tasks) * 100); ?>%</td>
+	<td><?php echo count($tasks['overdue']); ?></td>
+	<td><?php echo round(count($tasks['overdue']) / count($all_tasks) * 100); ?>%</td>
 </tr>
 <tr>
-	<td>On Hold:</td>
-	<td><?php echo count($tasks['completed']); ?></td>
-	<td><?php echo round(count($tasks['completed']) / count($all_tasks) * 100); ?>%</td>
-</tr>
-<tr>
-	<td>Pending:</td>
-	<td><?php echo count($tasks['pending']); ?></td>
-	<td><?php echo round(count($tasks['pending']) / count($all_tasks) * 100); ?>%</td>
+	<td>Total:</td>
+	<td><?php echo count($all_tasks); ?></td>
+	<td>100%</td>
 </tr>
 </table>
 <br />
@@ -155,7 +165,7 @@ $files = db_loadResult($sql);
 <tr>
 	<td><?php echo $stats['name']; ?></td>
 	<td><?php echo count($stats['pending']); ?></td>
-	<td><?php echo count($stats['pending']); ?></td>
+	<td><?php echo count($stats['overdue']); ?></td>
 	<td><?php echo count($stats['inprogress']); ?></td>
 	<td><?php echo count($stats['completed']); ?></td>
 	<td><?php echo count($stats['all']); ?></td>
