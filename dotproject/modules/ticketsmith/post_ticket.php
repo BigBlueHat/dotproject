@@ -1,4 +1,4 @@
-<?php
+<?php /* TICKETSMITH $Id$ */
 ##
 ##	Ticketsmith Post Ticket
 ##
@@ -39,7 +39,7 @@ function submitIt() {
 
 <TABLE width="90%" border=0 bgcolor="#f4efe3" cellpadding="0" cellspacing=1>
 <form name="ticket" action="?m=ticketsmith" method="post">
-<input type="hidden" name="dosql" value="ticket_aed">
+<input type="hidden" name="dosql" value="do_ticket_aed">
 
 <TR height="20">
 	<TD bgcolor="#878676" colspan=2>
