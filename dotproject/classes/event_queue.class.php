@@ -115,12 +115,12 @@ class EventQueue {
 
 		if (isset($fields['queue_module_type'])
 		&& $fields['queue_module_type'] == 'system')
-			@include_once $AppUI->getSystemClass($fields['queue_module']);
+			include_once $AppUI->getSystemClass($fields['queue_module']);
 		else
-			@include_once $AppUI->getModuleClass($fields['queue_module']);
+			include_once $AppUI->getModuleClass($fields['queue_module']);
 
 		$args = unserialize($fields['queue_data']);
-		if (strpos('::', $fields['queue_callback']) !== false) {
+		if (strpos($fields['queue_callback'], '::') !== false) {
 			list($class, $method) = explode('::', $fields['queue_callback']);
 			$object = new $class;
 			return $object->$method($fields['queue_module'], $fields['queue_type'], $fields['queue_origin_id'], $fields['queue_owner'], $args);
@@ -167,7 +167,7 @@ class EventQueue {
 		}
 	}
 
-	function commit_updates(&$fields)
+	function commit_updates()
 	{
 		$q = new DBQuery;
 		if (count($this->delete_list)) {
