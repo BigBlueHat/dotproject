@@ -1,3 +1,19 @@
+2004-01-30 00:17  (gnome444)
+---------------------------------
+modules/tasks/tasks.php
+- Fix task sorting icons with register globals off
+
+2004-01-29 20:19  (ajdonnison)
+---------------------------------
+db/dotproject_102.sql
+- Added back-ticks around all table and field names to ensure no
+- ambiguity where reserved words may be used (like the events table).
+
+2004-01-29 11:12  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-29 06:53  (ajdonnison)
 ---------------------------------
 modules/projects/addedit.php
@@ -482,22 +498,6 @@ ChangeLog
 modules/admin/addedituser.php
 - softcoding of selectbox and button
 
-2003-12-25 17:48  (gregorerhardt)
----------------------------------
-locales/en/admin.inc
-- Strings for Permissions Templates
-
-2003-12-25 17:45  (gregorerhardt)
----------------------------------
-modules/admin/vw_usr_perms.php
-- Implemented Copy Permissions from Template User
-
-2003-12-25 17:44  (gregorerhardt)
----------------------------------
-modules/admin/do_perms_cp.php
-- Initial Import for copy permissions from template sqlFile
-
-2003-12-23 09:20  (kripper)
 ...
 
 (This file has been wrapped)
