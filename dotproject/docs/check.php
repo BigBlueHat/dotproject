@@ -66,9 +66,13 @@ echo "<tr><td>session.save_path</td><td>".get_cfg_var( 'session.save_path' )."</
 
 echo "<tr><td>session.serialize_handler</td><td>".get_cfg_var( 'session.serialize_handler' )."</td></tr>";
 
-echo "<tr><td>session.use_cookies</td><td>".get_cfg_var( 'session.use_cookies' )."</td></tr>";
+$cookies = intval( get_cfg_var( 'session.use_cookies' ) );
+$msg = $cookies ? "<td>OK</td>" : "<td class=warning>Try setting to 0 if you are having problems logging in</td>";
+echo "<tr><td>session.use_cookies</td><td>$cookies</td>$msg</tr>";
 
-echo "<tr><td>session.use_trans_sid</td><td>".get_cfg_var( 'session.use_trans_sid' )."</td></tr>";
+$sid = intval( get_cfg_var( 'session.use_trans_sid' ) );
+$msg = $sid ? "<td class=warning>There are security risks with this turned on</td>" : "<td>OK</td>";
+echo "<tr><td>session.use_trans_sid</td><td>$sid</td>$msg</tr>";
 
 echo "</table>";
 
