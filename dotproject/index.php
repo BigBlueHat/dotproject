@@ -154,7 +154,7 @@ if ($AppUI->doLogin()) {
 }
 
 //Function register logout in user_acces_log
-if (isset($_GET['logout'])){
+if (isset($user_id) && isset($_GET['logout'])){
     $AppUI->registerLogout($user_id);
 }
 
@@ -164,7 +164,7 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	$AppUI->setUserLocale();
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
-	setlocale( LC_TIME, $AppUI->user_locale );
+	setlocale( LC_TIME, $AppUI->user_lang );
 	if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
 		require "./includes/sendpass.php";
 		sendNewPass();
@@ -209,7 +209,7 @@ if ($AppUI->doLogin()) {
 	// load basic locale settings
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
-	setlocale( LC_TIME, $AppUI->user_locale );
+	setlocale( LC_TIME, $AppUI->user_lang );
 	$redirect = @$_SERVER['QUERY_STRING'];
 	if (strpos( $redirect, 'logout' ) !== false) {
 		$redirect = '';
@@ -258,16 +258,7 @@ $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
 @include_once( "./locales/core.php" );
 
-$user_locale = $AppUI->user_locale;
-if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    // This is a server using Windows, locales screwed up, not ISO standard
-    switch ($user_locale) {
-    	case "es":
-    		$user_locale = "sp";
-    		break;
-    }
-}
-setlocale( LC_TIME, $user_locale );
+setlocale( LC_TIME, $AppUI->user_lang );
 
 @include_once( "./functions/" . $m . "_func.php" );
 

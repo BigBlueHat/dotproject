@@ -106,7 +106,7 @@ class CAppUI {
 
 		$this->defaultRedirect = "";
 // set up the default preferences
-		$this->user_locale = $this->base_locale;
+		$this->setUserLocale($this->base_locale);
 		$this->user_prefs = array();
 	}
 /**
@@ -271,12 +271,82 @@ class CAppUI {
 */
 	function setUserLocale( $loc='' ) {
 		global $dPconfig;
-		if ($loc) {
-			$this->user_locale = $loc;
-		} else {
-			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $dPconfig['host_locale'];
+
+		$LANGUAGES = $this->loadLanguages();
+
+		if (! $loc) {
+			$loc = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $dPconfig['host_locale'];
+		}
+
+		if (isset($LANGUAGES[$loc]))
+			$lang = $LANGUAGES[$loc];
+		else {
+			// Need to try and find the language the user is using, find the first one
+			// that has this as the language part
+			if (strlen($loc) > 2) {
+				list ($l, $c) = explode('_', $loc);
+				$loc = $this->findLanguage($l, $c);
+			} else {
+				$loc = $this->findLanguage($loc);
+			}
+			$lang = $LANGUAGES[$loc];
+		}
+		$this->user_locale = $lang[0];
+		$this->user_lang = $loc;
+		if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+			$this->user_lang = $lang[3];
 		}
 	}
+
+	function findLanguage($language, $country = false)
+	{
+		$LANGUAGES = $this->loadLanguages();
+		$language = strtolower($language);
+		if ($country) {
+			$country = strtoupper($country);
+			// Try constructing the code again
+			$code = $language . '_' . $country;
+			if (isset($LANGUAGES[$code]))
+				return $code;
+		}
+
+		// Just use the country code and try and find it in the
+		// languages list.
+		$first_entry = null;
+		foreach ($LANGUAGES as $lang => $info) {
+			list($l, $c) = explode('_', $lang);
+			if ($l == $language) {
+				if (! $first_entry)
+					$first_entry = $lang;
+				if ($country && $c == $country)
+					return $lang;
+			}
+		}
+		return $first_entry;
+	}
+
+/**
+ * Load the known language codes for loaded locales
+ *
+ */
+	function loadLanguages() {
+		global $dPconfig;
+
+		if ( isset($_SESSION['LANGUAGES'])) {
+			$LANGUAGES =& $_SESSION['LANGUAGES'];
+		} else {
+			$LANGUAGES = array();
+			$langs = $this->readDirs('locales');
+			foreach ($langs as $lang) {
+				if (file_exists("{$dPconfig['root_dir']}/locales/$lang/lang.php")) {
+					include_once "{$dPconfig['root_dir']}/locales/$lang/lang.php";
+				}
+			}
+			@$_SESSION['LANGUAGES'] =& $LANGUAGES;
+		}
+		return $LANGUAGES;
+	}
+
 /**
 * Translate string to the local language [same form as the gettext abbreviation]
 *

@@ -61,9 +61,12 @@ function submitIt(){
 	<td>
 <?php
 	// read the installed languages
-	$locales = $AppUI->readDirs( 'locales' );
+	$LANGUAGES = $AppUI->loadLanguages();
 	$temp = $AppUI->setWarning( false );
-	echo arraySelect( $locales, 'pref_name[LOCALE]', 'class=text size=1', @$prefs['LOCALE'], true );
+	$langlist = array();
+	foreach ($LANGUAGES as $lang => $langinfo)
+		$langlist[$lang] = $langinfo[1];
+	echo arraySelect( $langlist, 'pref_name[LOCALE]', 'class=text size=1', @$prefs['LOCALE'], true );
 	$AppUI->setWarning( $temp );
 ?>
 	</td>
@@ -119,16 +122,13 @@ function submitIt(){
 	$currencies = array();
 	$currEx = 1234567.89;
 
-    	// This is a server not using Windows
-    	$f = "es_ES"; $currencies[$f]	= formatCurrency( $currEx, $f );
-    	$f = "es_MX"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_GB"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_AU"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_CA"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "en_NZ"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "pt_PT"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "pt_BR"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
+		$is_win = true;
+	else
+		$is_win = false;
+	foreach ($LANGUAGES as $lang => $langinfo) {
+		$currencies[$lang] = formatCurrency($currEx, $is_win ? $langinfo[3] : $lang);
+	}
 	echo arraySelect( $currencies, 'pref_name[CURRENCYFORM]', 'class=text size=1', @$prefs['CURRENCYFORM'], false );
 ?>
 	</td>
