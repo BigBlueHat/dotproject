@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"pn_item_title"=>"PostNuke",
+"session_group_title"=>"Session Handling Settings",
 "Abbreviation",
 "Are you sure you want to delete this?",
 "Are you sure?",
@@ -68,6 +68,7 @@
 "added",
 "admin_username_title"=>"Admin Username",
 "admin_username_tooltip"=>"Username for the admin user",
+"app_item_title"=>"dotProject Extended Sessions",
 "auth_group_title"=>"Authentication Settings",
 "auth_method_title"=>"Authentication Method",
 "auth_method_tooltip"=>"Select the style of authentication to use.",
@@ -185,7 +186,9 @@ A negative value defines the absence of a limit (index all files).",
 "parser_text/html_tooltip"=>"Location for the Html File Indexing Parser, e.g. /usr/bin/strings",
 "password_min_len_title"=>"Minimal Username Length",
 "password_min_len_tooltip"=>"Set minimal password length when creating new users, this can NOT be longer than the length of the column in DB",
+"php_item_title"=>"Default PHP Sessions",
 "pl"=>"Polish",
+"pn_item_title"=>"PostNuke",
 "postnuke_allow_login_title"=>"Postnuke login also allows Standard Login",
 "postnuke_allow_login_tooltip"=>"If PostNuke authentication is in effect, setting this also allows standard dotProject logins.  If not set all logins must be performed via PostNuke.",
 "pt"=>"Portugese",
