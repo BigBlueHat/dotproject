@@ -1,3 +1,14 @@
+2004-09-14 02:06  (cyberhorse)
+---------------------------------
+modules/admin/viewuser.php
+modules/public/chpwd.php
+- mantis #74 - fixed 'change password' link to work for admin.
+
+2004-09-10 04:10  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-09 21:18  (cyberhorse)
 ---------------------------------
 includes/config-dist.php
@@ -486,17 +497,6 @@ includes/db_adodb.php
 - Reload page after attempting to fix db errors, only if the changes successfully got rid of the error.
 
 2004-08-23 20:20  (jcgonz)
----------------------------------
-includes/db_adodb.php
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-- Updated some invalid SQLs
-- Removed location.reload() if an error in a SQL statement appears; it looped dotProject for
-- ever. Sorry if I'm broking someone else's funciontallity. Its a really good idea to try
-- to update the databases if an SQL error appears; the problem is that (for developing)
-- it's a huge problem.
-
-2004-08-23 19:32  (jcgonz)
 ---------------------------------
 ...
 
