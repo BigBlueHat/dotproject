@@ -335,7 +335,7 @@ function setTasksStartDate() {
 }
 
 function popContacts() {
-	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&company_id=<?php echo $company_id; ?>&selected_contacts_id='+selected_contacts_id, 'contacts','left=50,top=50,height=250,width=400,resizable,scrollbars=yes');
+	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
 }
 
 function popCalendar( field ){

@@ -20,15 +20,28 @@
 	}
 	
 	$contacts_id = explode(",", $selected_contacts_id);
-	
-	$sql = "select c.company_name
-	        from companies as c
-	        where company_id = $company_id";
-	$company_name = db_loadResult($sql);
+
+	if ( ! $company_id ) {
+		//  Contacts from all allowed companies
+		require_once( $AppUI->getModuleClass( 'companies' ) );
+		$oCpy = new CCompany ();
+                $aCpies = $oCpy->getAllowedRecords ($AppUI->user_id, "company_id, company_name");
+                $where = 'contact_company = \'\' OR (contact_company IN (\'' .
+                                implode('\',\'' , array_values($aCpies)) .
+                                '\'))';
+		$company_name = $AppUI->_('Allowed Companies');
+	} else {
+		// Contacts for this company only
+		$sql = "select c.company_name
+	        	from companies as c
+	        	where company_id = $company_id";
+		$company_name = db_loadResult($sql);
+		$where = 'contact_company = ' . $company_name;
+	}
 	
 	$sql = "select contact_id, contact_first_name, contact_last_name, contact_department
 	        from contacts
-	        where contact_company = '$company_name'
+	        where $where
 	              and (contact_owner='$AppUI->user_id' or contact_private='0')
 	        group by contact_department, contact_first_name";
 
