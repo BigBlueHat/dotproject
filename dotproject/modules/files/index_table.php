@@ -322,7 +322,7 @@ foreach ($files as $row) {
                 <td width="20%">' . $file['file_description'] . '</td>
                 <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
                 <td width="10%" nowrap="nowrap" align="center">' . $file_types[$file['file_category']] . '</td>
-                <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $row['file_task'] . '">' . $file['task_name'] . '</td>
+                <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $row['file_task'] . '">' . $file['task_name'] . '</a></td>
                 <td width="15%" nowrap="nowrap">' . dPgetUsername($row['file_owner']).'</td>
                 <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
