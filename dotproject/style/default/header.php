@@ -7,37 +7,12 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <head>
 	<meta name="Description" content="Ultra Clean dotProject Style" />
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<script language="JavaScript">
-	function doBtn() {
-		var oEl = event.srcElement;
-		var doit = event.type;
-
-		while (-1 == oEl.className.indexOf( "Btn" )) {
-			oEl = oEl.parentElement;
-			if (!oEl) {
-				return;
-			}
-		}
-		if (doit == "mouseover" || doit == "mouseup") {
-			oEl.className = "clsBtnOn";
-		} else if (doit == "mousedown") {
-			oEl.className = "clsBtnDown";
-		} else {
-			oEl.className = "clsBtnOff";
-		}
-	}
-	function tboff(){
-		var oEl = event.srcElement;
-		var doit = event.type;
-		oEl.className = "topBtnOff";
-	}
-	</script>
 	<title><?php echo $AppUI->cfg['page_title'];?></title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 </head>
 
-<body>
+<body onload="this.focus();">
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
 	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php echo $AppUI->cfg['page_title'];?></strong></th>
@@ -101,8 +76,8 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 			<td width="100%"><?php echo $AppUI->_('Welcome')." $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 			<td nowrap="nowrap">
 				<?php echo dPcontextHelp( 'Help' );?> |
-				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a> |
-				<a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a>
+				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
+				<a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a>
 			</td>
 		</tr>
 		</table>
