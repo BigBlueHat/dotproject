@@ -1,3 +1,59 @@
+2004-08-20 01:42  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Added setDelete method to provide consistency.
+
+2004-08-20 01:39  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Changed join logic to allow join without an alias
+
+2004-08-20 01:20  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- New class for providing table prefix safe queries, with database
+- independent query limiting.
+
+2004-08-19 21:33  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Now the user is able to fold and unfold tasks; only not mile-stone
+- dynamic tasks are able to do such things.
+- Please, if you don't like this feature, don't hesitate to
+- roll back the version; I found it very handy.
+
+2004-08-19 20:57  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- Tasks with no start_date are set to today and now
+- so the gantt graph is not freaked out.
+
+2004-08-19 18:26  (jcgonz)
+---------------------------------
+modules/tasks/view.php
+- Usability issue; compressed a litte bit the Task's view
+- by moving the description field.
+
+2004-08-19 07:44  (gregorerhardt)
+---------------------------------
+index.php
+- fixed error causing installer not to run
+
+2004-08-19 07:09  (gregorerhardt)
+---------------------------------
+index.php
+- fixed error in installe mode
+
+2004-08-19 06:52  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- fixed corruption because of missing values in admin entry in users table
+
+2004-08-19 04:07  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-18 21:04  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasksperuser_sub.php
@@ -442,62 +498,6 @@ modules/tasks/tasks.class.php
 2004-07-28 08:39  (cyberhorse)
 ---------------------------------
 modules/system/viewmods.php
-- Hide Public module
-
-2004-07-28 07:40  (cyberhorse)
----------------------------------
-modules/system/viewmods.php
-- Stops users from assigning negative priorities to modules
-
-2004-07-27 19:58  (ajdonnison)
----------------------------------
-modules/calendar/calendar.class.php
-- Fixed problem in recurring events calculation, was using an invalid offset.
-
-2004-07-27 19:55  (ajdonnison)
----------------------------------
-classes/ui.class.php
-- Fixed problem where locale_warn was not propogated.
-
-2004-07-27 09:25  (gregorerhardt)
----------------------------------
-db/upgrade_latest.sql
-db/dotproject.sql
-- implemented user specific task priority
-
-2004-07-27 09:20  (gregorerhardt)
----------------------------------
-modules/tasks/do_task_assign_aed.php
-modules/tasks/tasks.class.php
-modules/tasks/tasksperuser_sub.php
-locales/en/tasks.inc
-- implemented user specific task priority
-
-2004-07-27 00:28  (ajdonnison)
----------------------------------
-db/dotproject.sql
-- Incorporated fields introduced in upgrade_latest but not copied into here.
-
-2004-07-25 14:15  (gregorerhardt)
----------------------------------
-fileviewer.php
-index.php
-classes/date.class.php
-classes/ui.class.php
-includes/db_adodb.php
-includes/db_connect.php
-includes/main_functions.php
-includes/sendpass.php
-locales/core.php
-misc/debug.php
-modules/admin/index.php
-modules/admin/viewuser.php
-modules/admin/vw_active_usr.php
-modules/admin/vw_inactive_usr.php
-modules/calendar/day_view.php
-modules/calendar/index.php
-modules/calendar/links_tasks.php
-modules/calendar/vw_day_events.php
 ...
 
 (This file has been wrapped)
