@@ -19,7 +19,7 @@ $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : 0;
 $this_month =  new CDate( $uts && $uts > 0 ? $uts : null );
 $this_month->setTime( 0,0,0 );
 
-$uistyle = $AppUI->getPref( 'UISTYLE' );
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
