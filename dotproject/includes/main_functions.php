@@ -411,11 +411,19 @@ function formatTime( $uts ) {
 	return $date->format( $AppUI->getPref('SHDATEFORMAT') );
 }
 
+/**
+ * This function is necessary because Windows likes to
+ * write their own standards.  Nothing that depends on locales
+ * can be trusted in Windows.
+ */
 function formatCurrency( $number, $format ) {
 	if (!$format) {
 		$format = $AppUI->getPref('SHCURRFORMAT');
 	}
-	setlocale(LC_MONETARY, $format);
+	// If the requested locale doesn't work, don't fail,
+	// revert to the system default.
+	if (! setlocale(LC_MONETARY, $format))
+		setlocale(LC_MONETARY, "");
 	if (function_exists('money_format'))
 		return money_format('%i', $number);
 
