@@ -55,9 +55,9 @@ $titleBlock->show();
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="lib/calendar/calendar-dp.css" title="blue" />
 <!-- import the calendar script -->
-<script type="text/javascript" src="<?php echo $AppUI->cfg['base_url'];?>lib/calendar/calendar.js"></script>
+<script type="text/javascript" src="<?php echo $AppUI->cfg['base_url'];?>/lib/calendar/calendar.js"></script>
 <!-- import the language module -->
-<script type="text/javascript" src="<?php echo $AppUI->cfg['base_url'];?>lib/calendar/lang/calendar-<?php echo $AppUI->user_locale; ?>.js"></script>
+<script type="text/javascript" src="<?php echo $AppUI->cfg['base_url'];?>/lib/calendar/lang/calendar-<?php echo $AppUI->user_locale; ?>.js"></script>
 
 <script language="javascript">
 function setColor(color) {
