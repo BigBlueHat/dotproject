@@ -34,7 +34,7 @@ function dPgetIniSize($val) {
             <td class="title" colspan="2">Check for Requirements</td>
 </tr>
 <tr>
- <td class="item">PHP Version >= 4.1</td>
+ <td class="item"><li>PHP Version &gt;= 4.1</li></td>
  <td align="left"><?php echo version_compare(phpversion(), '4.1', '<') ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
 </tr>
 <tr>
@@ -66,8 +66,18 @@ else if ($maxfileuploadsize > 1024)
   <td align="left"><?php echo ini_get('file_uploads') ? '<b class="ok">'.$okImg.'</b><span class="item"> (Max File Upload Size: '. $maxfileuploadsize .')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Upload functionality will not be available</span>';?></td>
 </tr>
 <tr>
-            <td class="item">Session Save Path writable?</td>
-            <td align="left"><?php echo (is_dir( ini_get( 'session.save_path' )) && is_writable( ini_get( 'session.save_path' )) ) ? '<b class="ok">'.$okImg.'</b> <span class="item">('.ini_get( 'session.save_path').')</span>' : '<b class="error">'.$failedImg.' Fatal:</b> <b class="item">'.ini_get( "session.save_path" ).'</b><b class="error"> not existing or not writable</b>';?></td>
+            <td class="item"><li>Session Save Path writable?</li></td>
+            <td align="left">
+<?php 
+	$sspath = ini_get('session.save_path');
+	if (! $sspath) {
+		echo "<b class='error'>$failedImg Fatal:</b> <span class='item'>session.save_path</span> <b class='error'> is not set</b>";
+	} else if (is_dir($sspath) && is_writable($sspath)) {
+		echo "<b class='ok'>$okImg</b> <span class='item'>($sspath)</span>";
+	} else {
+		echo "<b class='error'>$failedImg Fatal:</b> <span class='item'>$sspath</span><b class='error'> not existing or not writable</b>";
+	}
+	?></td>
 </tr>
 <tr>
             <td class="title" colspan="2"><br />Database Connectors</td>
