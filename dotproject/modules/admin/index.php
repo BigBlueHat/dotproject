@@ -79,7 +79,7 @@ $titleBlock->show();
 if ($canDelete) {
 ?>
 function delMe( x, y ) {
-	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('User');?> " + y + "?" )) {
+	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('User');?> " + y + "?" )) {
 		document.frmDelete.user_id.value = x;
 		document.frmDelete.submit();
 	}
