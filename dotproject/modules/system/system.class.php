@@ -159,6 +159,15 @@ class CConfig extends CDpObject {
 		$this->CDpObject( 'config', 'config_id' );
 	}
 
+	function getChildren($id) {
+		$this->_query->clear();
+		$this->_query->addTable('config_list');
+		$this->_query->addOrder('config_list_id');
+		$this->_query->addWhere('config_id = ' . $id);
+		$sql = $this->_query->prepare();
+		$this->_query->clear();
+		return db_loadHashList($sql, 'config_list_id');
+	}
 
 }
 
