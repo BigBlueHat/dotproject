@@ -6,17 +6,23 @@
 */
 
 $module = isset( $HTTP_POST_VARS['module'] ) ? $HTTP_POST_VARS['module'] : 0;
-$lang = isset( $HTTP_POST_VARS['lang'] ) ? $HTTP_POST_VARS['lang'] : 'es';
+$lang = isset( $HTTP_POST_VARS['lang'] ) ? $HTTP_POST_VARS['lang'] : 'en';
 
 $trans = isset( $HTTP_POST_VARS['trans'] ) ? $HTTP_POST_VARS['trans'] : 0;
 //echo '<pre>';print_r( $trans );echo '</pre>';die;
 
 // save to core locales if a translation exists there, otherwise save
-// into the module's local locale area
-if ( file_exists( dpRealPath( "{$dPconfig['root_dir']}/locales/$lang/$module.inc") ) ) {
-	$filename = dpRealPath( "{$dPconfig['root_dir']}/locales/$lang/$module.inc" );
+// into the module's local locale area if it exists.  If not then
+// the core table is updated.
+$core_filename = "$baseDir/locales/$lang/$module.inc";
+if ( file_exists( $core_filename ) ) {
+	$filename = $core_filename;
 } else {
-	$filename = dpRealPath( "{$dPconfig['root_dir']}/modules/$module/locales/$lang.inc" );
+	$mod_locale = "$baseDir/modules/$module/locales";
+	if ( is_dir($mod_locale))
+		$filename = "$baseDir/modules/$module/locales/$lang.inc";
+	else
+		$filename = $core_filename;
 }
 
 $fp = fopen ($filename, "wt");
