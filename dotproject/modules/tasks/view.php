@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 $task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
 
 // check permissions
@@ -8,7 +8,6 @@ $denyEdit = getDenyEdit( $m );
 if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
-$AppUI->savePlace();
 
 $sql = "
 SELECT tasks.*,
@@ -19,7 +18,13 @@ LEFT JOIN users u1 ON u1.user_id = task_owner
 LEFT JOIN projects ON project_id = task_project
 WHERE task_id = $task_id
 ";
-db_loadHash( $sql, $task );
+if (!db_loadHash( $sql, $task )) {
+	// if a task has been deleted, then go the the previous page
+	if ($task_id) {
+		$AppUI->redirect( '', -1 );
+	}
+}
+$AppUI->savePlace();
 
 $AppUI->setState( 'ActiveProject', $task['task_project'] );
 
