@@ -11,6 +11,7 @@ $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 $msg = '';
 $row = new CContact();
 $canDelete = $row->canDelete( $msg, $contact_id );
+$canEdit = $perms->checkModuleItem($m, "edit", $item_id);
 
 if (!$row->load( $contact_id ) && $contact_id > 0) {
 	$AppUI->setMsg( 'Contact' );
@@ -26,6 +27,8 @@ if (!$row->load( $contact_id ) && $contact_id > 0) {
 $ttl = "View Contact";
 $titleBlock = new CTitleBlock( $ttl, 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=contacts", "contacts list" );
+if ($canEdit && $contact_id)
+        $titleBlock->addCrumb( "?m=contacts&a=addedit&contact_id=$contact_id", 'edit' );
 if ($canDelete && $contact_id) {
 	$titleBlock->addCrumbDelete( 'delete contact', $canDelete, $msg );
 }
