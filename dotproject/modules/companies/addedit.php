@@ -69,6 +69,12 @@ function testURL( x ) {
 	</td>
 </tr>
 <tr>
+	<td align="right"><?php echo $AppUI->_('E-mail');?>:</td>
+	<td>
+		<input type="text" class="text" name="company_email" value="<?php echo @$company["company_email"];?>" maxlength="30">
+	</td>
+</tr>	
+<tr>
 	<td align="right"><?php echo $AppUI->_('Phone');?>:</td>
 	<td>
 		<input type="text" class="text" name="company_phone1" value="<?php echo @$company["company_phone1"];?>" maxlength="30">
@@ -118,6 +124,7 @@ function testURL( x ) {
 		<a href="#x" onClick="testURL('CompanyURLOne')">[<?php echo $AppUI->_('test');?>]</a>
 	</td>
 </tr>
+
 <tr>
 	<td align="right"><?php echo $AppUI->_('Company Owner');?>:</td>
 	<td>
@@ -126,13 +133,17 @@ function testURL( x ) {
 ?>
 	</td>
 </tr>
+	
+<tr>
+	<td align="right"><?php echo $AppUI->_('Is a Provider');?>:</td>
+	<td>
+	<input type=checkbox name=company_is_provider value=1 <?php echo (@$company["company_is_provider"] || @$_GET['provider']) ? "checked" : "" ?>>
+	</td>
+</tr>	
 
 <tr>
-	<td align="right"><?php echo $AppUI->_('Description');?>:</td>
-	<td>&nbsp; </td>
-</tr>
-<tr>
-	<td colspan="2" align="center">
+	<td align="right" valign=top><?php echo $AppUI->_('Description');?>:</td>
+	<td align="left">
 		<textarea cols="70" rows="10" class="textarea" name="company_description"><?php echo @$company["company_description"];?></textarea>
 	</td>
 </tr>
