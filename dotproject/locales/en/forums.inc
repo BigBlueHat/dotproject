@@ -54,6 +54,7 @@
 "forums list",
 "forumsDelete"=>"Are you sure you would like to delete this message?",
 "hours",
+"last edited by",
 "minutes",
 "moderated",
 "new forum",
