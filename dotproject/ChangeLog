@@ -1,3 +1,13 @@
+2003-04-26 23:18  (eddieajau)
+---------------------------------
+style/default/login.php
+- Added check for mysql support
+
+2003-04-26 04:47  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-25 07:30  (eddieajau)
 ---------------------------------
 classes/date.class.php
@@ -488,16 +498,6 @@ modules/departments/addedit.php
 - and reduced the string length requirement to 2.
 
 2003-04-15 05:55  (eddieajau)
----------------------------------
-locales/en/departments.inc
-- Content updated
-
-2003-04-15 00:49  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-15 00:18  (kripper)
 ...
 
 (This file has been wrapped)
