@@ -68,7 +68,7 @@ $dPconfig['host_style'] = "default";
 // local settings [DEFAULT example WINDOWS]
 $dPconfig['root_dir'] = "C:/apache/htdocs/dotproject";  // No trailing slash
 $dPconfig['company_name'] = "My Company";
-$dPconfig['page_title'] = "dotProject v1.0 beta 1";
+$dPconfig['page_title'] = "dotProject v1.0";
 $dPconfig['base_url'] = "http://localhost/dotproject";
 $dPconfig['site_domain'] = "dotproject.net";
 
