@@ -1,3 +1,284 @@
+2003-04-08 05:15  (eddieajau)
+---------------------------------
+docs/OLD_CHANGELOG.txt
+docs/CHANGES.txt
+- No longer required
+
+2003-04-08 05:06  (eddieajau)
+---------------------------------
+docs/TODO.txt
+- No longer relevant
+
+2003-04-08 05:04  (eddieajau)
+---------------------------------
+index.php
+- Added license
+
+2003-04-07 04:59  (eddieajau)
+---------------------------------
+includes/config-dist.php
+- Removed duplicate working hours entry
+
+2003-04-07 04:54  (eddieajau)
+---------------------------------
+modules/projects/index.php
+- Companies list only shows those companies in listed projects
+
+2003-04-06 17:31  (eddieajau)
+---------------------------------
+fileviewer.php
+- Fixed another security bypass problem
+
+2003-04-04 19:29  (eddieajau)
+---------------------------------
+modules/files/index.php
+modules/projects/index.php
+- Minor change in deny list function
+
+2003-04-04 19:28  (eddieajau)
+---------------------------------
+fileviewer.php
+- Fixed security bug in denied projects
+
+2003-04-04 19:19  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Reworked incompatible fmod function
+
+2003-04-04 19:15  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Fixed bug if locale_warn not defined in config file
+
+2003-04-04 03:36  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Reworked mail handling.  Reverted back to plain text for now.
+
+2003-04-04 03:34  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Added logged in user email to AppUI class
+
+2003-04-04 03:33  (eddieajau)
+---------------------------------
+classes/libmail.php
+- Initial upload
+
+2003-04-03 21:13  (eddieajau)
+---------------------------------
+modules/projects/view.php
+- no message
+
+2003-04-03 21:10  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed bug in permissions
+
+2003-04-03 21:08  (eddieajau)
+---------------------------------
+modules/companies/view.php
+- Fixed bug in get edit permissions
+
+2003-04-03 21:07  (eddieajau)
+---------------------------------
+modules/admin/index.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+- Updated title block
+
+2003-04-03 21:06  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+- Fixed broken bread-crumb and name of dosql file
+
+2003-04-03 21:04  (eddieajau)
+---------------------------------
+modules/admin/permissions.php
+- No longer used
+
+2003-04-03 21:01  (eddieajau)
+---------------------------------
+modules/calendar/do_event_aed.php
+modules/companies/do_company_aed.php
+modules/contacts/do_contact_aed.php
+modules/departments/do_dept_aed.php
+modules/files/do_file_aed.php
+modules/forums/do_forum_aed.php
+modules/forums/do_post_aed.php
+modules/forums/do_watch_forum.php
+modules/system/do_preference_aed.php
+modules/tasks/do_task_aed.php
+- Updated message handling
+
+2003-04-03 20:57  (eddieajau)
+---------------------------------
+modules/admin/do_user_aed.php
+modules/admin/do_perms_aed.php
+- Updated message handling
+
+2003-04-03 20:56  (eddieajau)
+---------------------------------
+modules/admin/do_user_aed.php
+modules/admin/dosql.php
+- File renamed
+
+2003-04-03 20:54  (eddieajau)
+---------------------------------
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/common.inc
+locales/en/contacts.inc
+locales/en/departments.inc
+locales/en/files.inc
+locales/en/forums.inc
+locales/en/projects.inc
+locales/en/system.inc
+locales/en/tasks.inc
+- Content updated
+
+2003-04-03 15:49  (eddieajau)
+---------------------------------
+modules/tasks/vw_logs.php
+- Fixed significant figures in reporting or hours (increased to 2 dec places)
+
+2003-04-03 15:02  (eddieajau)
+---------------------------------
+modules/public/selector.php
+- Fixed bug in departments selection
+
+2003-04-03 14:01  (kripper)
+---------------------------------
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+- Added optional descendent order in forum
+
+2003-04-03 01:43  (eddieajau)
+---------------------------------
+modules/forums/view_messages.php
+- Comment out debug echo
+
+2003-04-03 01:33  (eddieajau)
+---------------------------------
+modules/forums/post_message.php
+- Fixed form check alerts
+
+2003-04-03 01:21  (eddieajau)
+---------------------------------
+modules/tasks/vw_log_update.php
+modules/tasks/addedit.php
+- Widened the hours/duration fields
+
+2003-04-03 01:18  (eddieajau)
+---------------------------------
+modules/ticketsmith/do_ticket_aed.php
+- Fixed bug in description field
+
+2003-04-02 17:29  (eddieajau)
+---------------------------------
+modules/forums/index.php
+modules/forums/view_messages.php
+modules/forums/viewer.php
+- Fixed bugs in filtering of denied forums and projects
+
+2003-04-02 17:13  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed bug in time printing
+
+2003-04-02 17:06  (eddieajau)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Fixed display of forum name
+
+2003-04-02 12:39  (eddieajau)
+---------------------------------
+locales/en/forums.inc
+- Fixed rouge carriage returns in file
+
+2003-03-31 13:41  (korinek)
+---------------------------------
+modules/ticketsmith/index.php
+- Localisation underway - not yet finished
+
+2003-03-31 02:23  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed typo
+
+2003-03-31 02:18  (eddieajau)
+---------------------------------
+modules/public/selector.php
+- Added security filters to companies, departments and projects
+
+2003-03-31 02:17  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Used db function to get denied companies
+
+2003-03-30 15:18  (eddieajau)
+---------------------------------
+modules/projects/do_project_aed.php
+- Fixed reference to companies
+
+2003-03-30 15:06  (eddieajau)
+---------------------------------
+includes/config-dist.php
+- Set locale warn default to off
+
+2003-03-30 14:56  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Reconfigured locale warning and alert variables.
+
+2003-03-30 13:09  (korinek)
+---------------------------------
+locales/en/common.inc
+- New keys for duration formatting
+
+2003-03-30 13:08  (korinek)
+---------------------------------
+includes/main_functions.php
+modules/tasks/tasks.php
+- Moved duration formatting into separate function and localised it.
+
+2003-03-30 12:54  (korinek)
+---------------------------------
+classes/ui.class.php
+includes/config-dist.php
+- Moved the warn about missing locale setting into the includes/config*
+
+2003-03-25 23:45  (kripper)
+---------------------------------
+db/upgrade_022_to_100.sql
+- Fixed bug in precent/percent typo fix :-)
+
+2003-03-25 23:27  (kripper)
+---------------------------------
+modules/tasks/viewgantt.php
+- Fixed gantt chart width in mozzila/netscape
+
+2003-03-25 16:24  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+- Fixed bug
+
+2003-03-25 16:23  (eddieajau)
+---------------------------------
+includes/config-dist.php
+- no message
+
+2003-03-21 16:49  (eddieajau)
+---------------------------------
+modules/ticketsmith/do_ticket_aed.php
+- Initial upload
+
+2003-03-20 12:22  (kobudo)
+---------------------------------
+ChangeLog
+- Update Changelog.
+
 2003-03-20 12:15  (kobudo)
 ---------------------------------
 db/upgrade_100_alpha1_to_alpha2.sql
@@ -406,19 +687,6 @@ calendar.php
 fileviewer.php
 index.php
 - Changes for moving classes directory
-
-2003-03-07 11:47  (kripper)
----------------------------------
-locales/es/admin.inc
-locales/es/calendar.inc
-locales/es/companies.inc
-locales/es/departments.inc
-locales/es/projects.inc
-locales/es/public.inc
-locales/es/system.inc
-locales/es/tasks.inc
-locales/es/ticketsmith.inc
-- Updated spanish locales
 
 2003-03-07 11:26  (kripper)
 ---------------------------------
@@ -889,17 +1157,6 @@ style/default/header.php
 ---------------------------------
 ChangeLog
 - Updated ChangeLog
-
-2003-02-22 06:08  (kripper)
----------------------------------
-locales/es/admin.inc
-locales/es/common.inc
-locales/es/companies.inc
-locales/es/locales.php
-locales/es/projects.inc
-locales/es/tasks.inc
-- Updated locales
-- Changed charset for es
 
 2003-02-22 02:46  (kripper)
 ---------------------------------
@@ -1689,14 +1946,6 @@ calendar.php
 modules/tasks/gantt.php
 - Hack for suport last changes
 
-2003-02-08 15:57  (kripper)
----------------------------------
-locales/es/help.inc
-locales/es/projects.inc
-locales/es/system.inc
-locales/es/tasks.inc
-- Updated spanish locales
-
 2003-02-07 18:38  (kobudo)
 ---------------------------------
 calendar.php
@@ -1853,8 +2102,6 @@ modules/ticketsmith/view.php
 color_selector.php
 includes/main_functions.php
 lib/jpgraph/src/jpgraph.php
-locales/es/companies.inc
-locales/pt_br/companies.inc
 misc/diagnostics.php
 modules/admin/addeditgroup.php
 modules/admin/permissions.php
@@ -1925,7 +2172,6 @@ includes/db_connect.php
 includes/gateway.pl
 lib/jpgraph/src/jpgraph.php
 lib/jpgraph/src/jpgraph_bar.php
-locales/es/common.inc
 modules/admin/permissions.php
 modules/admin/viewuser.php
 modules/companies/view.php
@@ -2234,7 +2480,6 @@ locales/core.php
 ---------------------------------
 locales/en/styles.inc
 locales/en/system.inc
-locales/es/styles.inc
 - Content updated
 
 2003-01-17 04:22  (eddieajau)
@@ -2254,14 +2499,6 @@ modules/ticketsmith/view.php
 - Changed app_root to a more generic dotproject.net.  Note that this should
 - be completely externalized at some point.
 
-2003-01-16 22:47  (kripper)
----------------------------------
-locales/es/help.inc
-locales/es/projects.inc
-locales/es/tasks.inc
-- Updated spanish locales
-- Added $uistyle to header.php
-
 2003-01-16 22:16  (kripper)
 ---------------------------------
 ChangeLog
@@ -2275,9 +2512,6 @@ modules/admin/permissions.php
 2003-01-16 21:40  (kripper)
 ---------------------------------
 locales/en/styles.inc
-locales/es/calendar.inc
-locales/es/forums.inc
-locales/es/styles.inc
 modules/system/translate.php
 - Added styles locale file for multilanguage style descriptions.
 - Updated spanish translations.
@@ -2601,27 +2835,11 @@ includes/db_connect.php
 
 2003-01-12 15:59  (eddieajau)
 ---------------------------------
-locales/de/locales.php
 locales/en/common.inc
 locales/en/locales.php
 locales/en/projects.inc
 locales/en/tasks.inc
-locales/es/common.inc
-locales/es/locales.php
-locales/pt_br/locales.php
 - Content updated
-
-2003-01-10 14:55  (kripper)
----------------------------------
-locales/es/admin.inc
-locales/es/calendar.inc
-locales/es/contacts.inc
-locales/es/files.inc
-locales/es/forums.inc
-locales/es/projects.inc
-locales/es/system.inc
-locales/es/tasks.inc
-- Added more spanish locales
 
 2003-01-10 14:52  (kripper)
 ---------------------------------
@@ -2631,8 +2849,6 @@ modules/projects/vw_idx_active.php
 2003-01-10 13:29  (kripper)
 ---------------------------------
 locales/en/admin.inc
-locales/es/common.inc
-locales/es/companies.inc
 - Spanish locales updated
 
 2003-01-10 13:18  (kripper)
@@ -2955,8 +3171,6 @@ locales/en/contacts.inc
 locales/en/projects.inc
 locales/en/system.inc
 locales/en/tasks.inc
-locales/es/common.inc
-locales/pt_br/common.inc
 - Content updated
 
 2003-01-03 22:42  (eddieajau)
@@ -3267,11 +3481,6 @@ calendar.php
 index.php
 - Added support for user interface styles
 
-2002-12-31 11:58  (kripper)
----------------------------------
-locales/es/common.inc
-- Locales update
-
 2002-12-31 11:57  (kripper)
 ---------------------------------
 modules/tasks/reorder.php
@@ -3415,35 +3624,12 @@ images/icons/preference.gif
 
 2002-12-18 15:17  (eddieajau)
 ---------------------------------
-locales/es/admin.txt
-locales/es/calendar.txt
-locales/es/contacts.txt
-locales/es/forums.txt
-locales/es/projects.txt
-locales/es/tasks.txt
-locales/pt_br/admin.txt
-locales/pt_br/calendar.txt
-locales/pt_br/companies.txt
-locales/pt_br/contacts.txt
-locales/pt_br/files.txt
-locales/pt_br/forums.txt
-locales/pt_br/general.txt
-locales/pt_br/projects.txt
-locales/pt_br/tasks.txt
-locales/es/files.txt
-- File deleted
-
-2002-12-18 15:17  (eddieajau)
----------------------------------
 locales/en/system.inc
 - Initial upload
 
-2002-12-18 15:13  (eddieajau)
+2002-12-18 15:15  (eddieajau)
 ---------------------------------
-locales/pt_br/locales.php
-locales/es/locales.php
 locales/en/locales.php
-locales/de/locales.php
 - Added support for defining character set in locales
 
 2002-12-18 15:09  (eddieajau)
@@ -3525,12 +3711,6 @@ modules/forums/post_message.php
 modules/companies/index.php
 - Updated user_cookie to AppUI variable
 
-2002-12-16 15:27  (eddieajau)
----------------------------------
-locales/es/companies.txt
-locales/es/general.txt
-- Removed from CVS
-
 2002-12-16 15:24  (eddieajau)
 ---------------------------------
 includes/permissions.php
@@ -3573,8 +3753,6 @@ includes/main_functions.php
 2002-12-16 00:36  (kripper)
 ---------------------------------
 ChangeLog
-locales/es/common.inc
-locales/es/companies.inc
 - Updated Changelog
 - Updated spanish translation
 
@@ -3748,8 +3926,6 @@ db/dotproject_022_to_023.sql
 
 2002-12-11 01:47  (kripper)
 ---------------------------------
-locales/es/common.inc
-locales/es/help.inc
 modules/tasks/gantt.php
 - Added spanish translation for help.inc
 - Some minor chane in common.inc
@@ -3792,8 +3968,6 @@ ChangeLog
 2002-12-10 00:57  (kripper)
 ---------------------------------
 includes/main_functions.php
-locales/es/common.inc
-locales/es/companies.inc
 modules/system/translate.php
 modules/tasks/organizer.php
 modules/tasks/viewgantt.php
@@ -3801,12 +3975,6 @@ modules/tasks/viewgantt.php
 - Removed htmlspecialchars from translate.php (when loading entries)
 - Updated spanish translation
 - Added displaying options to the gantt viewer
-
-2002-12-09 18:19  (eddieajau)
----------------------------------
-locales/pt_br/common.inc
-locales/pt_br/companies.inc
-- Content update
 
 2002-12-09 18:12  (eddieajau)
 ---------------------------------
@@ -3867,11 +4035,6 @@ functions/forums_func.php
 modules/tasks/organizer.php
 - Improved navigation
 
-2002-12-09 10:25  (kripper)
----------------------------------
-locales/es/common.inc
-- Added spanish translation using the translation manager
-
 2002-12-09 10:12  (kripper)
 ---------------------------------
 ChangeLog
@@ -3915,15 +4078,9 @@ logincheck.php
 includes/login.php
 - Change format of error message
 
-2002-12-09 03:59  (eddieajau)
----------------------------------
-locales/pt_br/common.inc
-- Initial upload
-
 2002-12-09 03:57  (eddieajau)
 ---------------------------------
 locales/en/common.inc
-locales/es/common.inc
 - Added to file
 
 2002-12-09 03:54  (eddieajau)
@@ -3956,20 +4113,6 @@ modules/tasks/organizer.php
 modules/tasks/organizer.php
 - Added initial version of the tasks organizer (will not be linked yet
 - and maybe not included in the next release)
-
-2002-12-08 11:25  (kripper)
----------------------------------
-locales/es/admin.txt
-locales/es/calendar.txt
-locales/es/companies.txt
-locales/es/contacts.txt
-locales/es/files.txt
-locales/es/forums.txt
-locales/es/general.txt
-locales/es/locales.php
-locales/es/projects.txt
-locales/es/tasks.txt
-- Added files for spanish translation
 
 2002-12-08 10:53  (kripper)
 ---------------------------------
@@ -4018,11 +4161,6 @@ modules/tasks/index.php
 ChangeLog
 - Updated Changelog
 
-2002-12-06 00:52  (kripper)
----------------------------------
-locales/es/common.inc
-- Fixed spanish translation
-
 2002-12-05 23:11  (eddieajau)
 ---------------------------------
 modules/admin/addedituser.php
@@ -4043,7 +4181,6 @@ style/main.css
 ---------------------------------
 locales/core.php
 locales/en/common.inc
-locales/es/common.inc
 - Added spanish and english prototype language support
 
 2002-12-05 23:04  (eddieajau)
@@ -4706,19 +4843,6 @@ modules/calendar/index.php
 2002-09-03 08:42  (scavazza)
 ---------------------------------
 locales/en/traducao.txt
-- Fisrt version of Portuguese language support
-
-2002-09-03 08:15  (scavazza)
----------------------------------
-locales/pt_br/admin.txt
-locales/pt_br/calendar.txt
-locales/pt_br/companies.txt
-locales/pt_br/contacts.txt
-locales/pt_br/files.txt
-locales/pt_br/forums.txt
-locales/pt_br/general.txt
-locales/pt_br/projects.txt
-locales/pt_br/tasks.txt
 - Fisrt version of Portuguese language support
 
 2002-09-03 07:49  (scavazza)
