@@ -39,7 +39,11 @@ class CAppUI {
 		'pt_br' => 'Portugese-Brazilian'
 	);
 	var $locale_warn = true;	// warn when a translation is not found
-
+// theming
+	var $styles = array(
+		'default' => 'Classic dotproject',
+		'demo1' => 'A demo style'
+	);
 // message handling
 	var $msg = "";
 	var $msgNo = "";
