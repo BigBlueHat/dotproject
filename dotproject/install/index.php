@@ -1,4 +1,6 @@
 <?php // $Id$
+!is_file( "../includes/config.php" )
+	or die("Security Check: dotProject seems to be already configured. Communication broken for Security Reasons!");
 ?>
 <html>
 <head>
@@ -8,25 +10,22 @@
 </head>
 <body>
 <h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;dotProject Installer</h1>
-
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="90%" align="center">
 <tr>
-        <td class="item" colspan="2">Welcome to the dotProject Installer that guides you through the complete Installation
-        Process. Normally all major configuration settings are generated automatically - verified by you! However, depending on your
-        System Environment, errors or information lacks may occur. In some cases a manual installation cannot be avoided.
+        <td class="item" colspan="2">Welcome to the dotProject Installer! It will setup the database for dotProject and create an appropriate config file.
+	In some cases a manual installation cannot be avoided.
         </td>
 </tr>
 <tr>
         <td colspan="2">&nbsp;</td>
 </tr>
 <tr>
-        <td class="title" colspan="2">There is an initial Check for Requirements appended down below for troubleshooting.</td>
+        <td class="title" colspan="2">There is an initial Check for (minimal) Requirements appended down below for troubleshooting. At least a database connection
+	must be available and ../includes/config.php must be writable for the webserver!</td>
 </tr>
 <tr>
-        <td class="title" colspan="2">You will have to log in with an administrators login/password combination soon.</td>
-</tr>
-<tr>
-        <td colspan="2" align="center"><br /><form action="../?m=install" method="post" name="form" id="form"><input class="button" type="submit" name="next" value="Start Installation" /></form></td>
+        <td colspan="2" align="center"><br /><form action="db.php" method="post" name="form" id="form">
+	<input class="button" type="submit" name="next" value="Start Installation" /></form></td>
 </tr>
 </table>
 <br />
