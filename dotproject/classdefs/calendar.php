@@ -258,8 +258,9 @@ class CEvent {
 	}
 
 	function check() {
-		$this->event_private = (int) $this->event_private;
-		$this->event_private = (int) $this->event_private;
+		if (!$this->event_private) {
+			$this->event_private = '0';
+		}
 		// TODO
 		return NULL; // object is ok
 	}
