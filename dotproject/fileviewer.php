@@ -12,7 +12,7 @@ require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
 include "{$AppUI->cfg['root_dir']}/includes/main_functions.php";
 include "{$AppUI->cfg['root_dir']}/includes/permissions.php";
 
-$canRead = !getDenyRead( 'files' );z
+$canRead = !getDenyRead( 'files' );
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
