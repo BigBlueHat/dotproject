@@ -27,9 +27,14 @@ $tf = $AppUI->getPref('TIMEFORMAT');
 
 $dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
-$start = 8;
-$end = 17;
-$inc = 15;
+$start = $AppUI->getConfig('cal_day_start');
+$end = $AppUI->getConfig('cal_day_end');
+$inc = $AppUI->getConfig('cal_day_increment');
+
+if ($start === null ) $start = 8;
+if ($end === null ) $end = 17;
+if ($inc === null) $inc = 15;
+
 
 $this_day->setTime( $start, 0, 0 );
 

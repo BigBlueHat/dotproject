@@ -105,6 +105,12 @@ $dPconfig['debug'] = false;
 // but the interface is a bit clunky.
 $dPconfig['link_tickets_kludge'] = false;
 
+// Calendar settings.
+// Day view start end and increment
+$dPconfig['cal_day_start'] = 8;		// Start hour, in 24 hour format
+$dPconfig['cal_day_end'] = 17;		// End hour in 24 hour format
+$dPconfig['cal_day_increment'] = 15;	// Increment, in minutes
+
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";
