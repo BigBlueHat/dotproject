@@ -47,24 +47,30 @@ class CProject extends CDpObject {
 
 // overload canDelete
 	function canDelete( &$msg, $oid=null ) {
+		// TODO: check if user permissions are considered when deleting a project
+		return true;
+		
+		// NOTE: I uncommented the dependencies check since it is
+		// very anoying having to delete all tasks before being able
+		// to delete a project.
+		
+		/*		
 		$tables[] = array( 'label' => 'Tasks', 'name' => 'tasks', 'idfield' => 'task_id', 'joinfield' => 'task_project' );
-	// call the parent class method to assign the oid
+		// call the parent class method to assign the oid
 		return CDpObject::canDelete( $msg, $oid, $tables );
+		*/
 	}
 
 	function delete() {
-		$sql = "SELECT task_id FROM tasks WHERE task_project = $this->project_id";
-
-		$res = db_exec( $sql );
-		if (db_num_rows( $res )) {
-			return "You cannot delete a project that has tasks associated with it.";
-		} else{
-			$sql = "DELETE FROM projects WHERE project_id = $this->project_id";
-			if (!db_exec( $sql )) {
-				return db_error();
-			} else {
-				return NULL;
-			}
+		$sql = "DELETE FROM tasks WHERE task_project = $this->project_id";
+		echo $sql;
+		//db_exec($sql);
+		die;
+		$sql = "DELETE FROM projects WHERE project_id = $this->project_id";
+		if (!db_exec( $sql )) {
+			return db_error();
+		} else {
+			return NULL;
 		}
 	}
 }
