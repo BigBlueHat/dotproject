@@ -117,7 +117,8 @@ $ttl = $task_id > 0 ? "Edit Task" : "Add Task";
 $titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 $titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
-$titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
+if ($task_id > 0)
+  $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
 $titleBlock->show();
 ?>
 

@@ -49,7 +49,8 @@ $actual_end_date = intval( $row->project_actual_end_date ) ? new CDate( $row->pr
 $ttl = $project_id > 0 ? "Edit Project" : "New Project";
 $titleBlock = new CTitleBlock( $ttl, 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=projects", "projects list" );
-$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+if ($project_id != 0)
+  $titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 $titleBlock->show();
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="lib/calendar/calendar-dp.css" title="blue" />
