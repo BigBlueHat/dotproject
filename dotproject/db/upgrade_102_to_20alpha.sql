@@ -684,7 +684,7 @@ list_value varchar(250)
 # ldap system config variables
 INSERT INTO config VALUES ('', 'auth_method', 'sql', 'auth', 'select'); 
 INSERT INTO config VALUES ('', 'ldap_host', 'localhost', 'ldap', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_port', '387', 'ldap', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_port', '389', 'ldap', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_version', '3', 'ldap', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', 'ldap', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', 'ldap', 'text'); 

@@ -699,7 +699,7 @@ INSERT INTO `config` VALUES ('', 'files_show_versions_edit', 'false', '', 'check
 # ldap system config variables
 INSERT INTO config VALUES ('', 'auth_method', 'sql', 'auth', 'select'); 
 INSERT INTO config VALUES ('', 'ldap_host', 'localhost', '', 'text'); 
-INSERT INTO config VALUES ('', 'ldap_port', '387', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_port', '389', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_version', '3', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text'); 
