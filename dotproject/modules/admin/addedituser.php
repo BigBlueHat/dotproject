@@ -1,6 +1,29 @@
 <?php
 //add or edit a system user
-if(empty($user_id))$user_id = 0;
+$user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
+
+// check permissions to edit
+$psql = "
+select count(*)
+from permissions
+left join users on permission_user = user_id
+where permission_user = $user_cookie and
+	permission_value < 1
+	and (permission_grant_on = 'all'
+		or (permission_grant_on = 'admin' and (permission_item = -1 or permission_item = $user_id))
+	)
+";
+
+$prc = mysql_query($psql);
+$perm = mysql_fetch_array($prc);
+
+if ($perm[0] < 1) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=admin&a=viewuser&user_id='.$user_id.'&message=ACCESS DENIED: You have insufficient permissions to edit this user.";
+	</script>
+';
+}
+
 $usql = "select * from users left join companies on user_company = companies.company_id where user_id = $user_id";
 $prc  = mysql_query($usql);
 $prow = mysql_fetch_array($prc);
@@ -12,94 +35,67 @@ $crc = mysql_query($csql);
 <SCRIPT language="javascript">
 function submitIt(){
 	var form = document.changeuser;
-	if(form.user_username.value.length < 3)
-	{
+	if (form.user_username.value.length < 3) {
 		alert("Please enter a valid user name");
 		form.user_username.focus();
-	}
-	else if(form.user_password.value.length < 4)
-	{
+	} else if (form.user_password.value.length < 4) {
 		alert("Please enter a valid password\n(greater than 4 chars).");
 		form.user_password.focus();
-	}
-	else if(form.user_password.value !=  form.user_password2.value)
-	{
+	} else if (form.user_password.value !=  form.user_password2.value) {
 		alert("Your passwords do not match).");
 		form.user_password.focus();
-	}
-	else if(form.user_email.value.length < 4)
-	{
+	} else if (form.user_email.value.length < 4) {
 		alert("Your email is invalid, please try again.");
 		form.user_email.focus();
-	}
-	else if(form.user_birthday.value.length > 0)
-	{
+	} else if (form.user_birthday.value.length > 0) {
 		dar =form.user_birthday.value.split("-");
-		if(dar.length < 3)
-		{
+		if (dar.length < 3) {
 			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
 			form.user_birthday.focus();
+		} else if (isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(parseInt(dar[2]))) {
+			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			form.user_birthday.focus();
+		} else if (parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12) {
+			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			form.user_birthday.focus();
+		} else if (parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31) {
+			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			form.user_birthday.focus();
+		} else if(parseInt(dar[0]) < 1900 || parseInt(dar[0]) > 2020) {
+			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			form.user_birthday.focus();
+		} else {
+			form.submit();
 		}
-		else if(isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(parseInt(dar[2])))
-		{
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-			form.user_birthday.focus();
-		}
-		else if(parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12)
-		{
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-			form.user_birthday.focus();
-		}
-		else if(parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31)
-		{
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-			form.user_birthday.focus();
-		}
-		else if(parseInt(dar[0]) < 1900 || parseInt(dar[0]) > 2020)
-		{
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-			form.user_birthday.focus();
-		}	
-		else
-		{
+	} else {
 		form.submit();
-		}
 	}
-	else
-	{
-	form.submit();
-	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 }
 </script>
 <?php //------------------------Begin HTML -------------------------------?>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
 	<TD valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
-		
+
 		<TD nowrap><span class="title">
-		<?php if(!$prow["user_id"]){ echo "Add User";}else{echo "View/Edit User";}?></span></td>
+		<?php if(!$prow["user_id"]){ echo "Add User";}else{echo "Edit User";}?></span></td>
 		<TD valign="top" align="right" width="100%">&nbsp;</td>
 	</tr>
 </TABLE>
 
+<table border="0" cellpadding="4" cellspacing="0" width="90%">
+	<TR>
+		<TD width="50%" nowrap>
+		<a href="./index.php?m=admin">Users List</a>
+		<b>:</b> <a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>">View this User</a>
+		</td>
+	</TR>
+</table>
+
 <TABLE width="95%" border=0  bgcolor="#f4efe3" cellpadding="0" cellspacing=1 height="400">
+
 <form name="changeuser" action="./index.php?m=admin&a=dosql" method="post">
-	
-	<input type="hidden" name="user_id" value="<?php echo intval($prow["user_id"]);?>">
-	
+<input type="hidden" name="user_id" value="<?php echo intval($prow["user_id"]);?>">
 
 <TR height="20"><TD valign="top" bgcolor="#878676" colspan=2><font color="white"><b><i>Adding new user to the system</font></i></b></td></tr>
 <tr>
@@ -113,17 +109,21 @@ function submitIt(){
 <tr><TD align="right">Password:</td><TD><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td></tr>
 <tr><TD align="right">Password2:</td><TD><input type="password" class="text" name="user_password2" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td></tr>
 <tr><TD align="right">First Name:</td><TD><input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50"> <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50"></td></tr>
-<tr><TD align="right">Company:</td><TD>
-<select name="user_company">
-<option value=0 <?php if($prow["user_company"]==0)echo " selected ";?>>N/A
-<?php while($crow = mysql_fetch_array($crc)){
-echo '<option value=' . $crow["company_id"];
-if($crow["company_id"] == $prow["user_company"]) echo " selected";
-echo '>' . $crow["company_name"];
-
-}?>
-</select>
-</TD></TR>
+<tr>
+	<TD align="right">Company:</td>
+	<TD>
+		<select name="user_company">
+		<option value=0 <?php if($prow["user_company"]==0)echo " selected ";?>>N/A
+	<?php while($crow = mysql_fetch_array($crc)){
+		echo '<option value=' . $crow["company_id"];
+		if ($crow["company_id"] == $prow["user_company"]) {
+			echo " selected";
+		}
+		echo '>' . $crow["company_name"];
+	}?>
+		</select>
+	</TD>
+</TR>
 <tr><TD align="right">Email:</td><TD><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="50" size=40> </td></tr>
 <tr><TD align="right">Phone:</td><TD><input type="text" class="text" name="user_phone" value="<?php echo $prow["user_phone"];?>" maxlength="50" size=40> </td></tr>
 <tr><TD align="right">Home Phone:</td><TD><input type="text" class="text" name="user_home_phone" value="<?php echo $prow["user_home_phone"];?>" maxlength="50" size=40> </td></tr>
