@@ -77,6 +77,11 @@ class CProject extends CDpObject {
 			db_delete( 'task_dependencies', 'dependencies_req_task_id', $task_id );
 		}
 		db_delete( 'tasks', 'task_project', $this->project_id );
+
+		// remove the project-contacts and project-departments map
+		db_delete( 'project_contacts', 'project_id', $this->project_id );
+		db_delete( 'project_departments', 'project_id', $this->project_id );
+
                 if (!db_delete( 'projects', 'project_id', $this->project_id )) {
 			return db_error();
 		} else {
