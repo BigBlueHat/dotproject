@@ -4,11 +4,12 @@
  *
  *	implements CC, Bcc, Priority headers
  *	@version	1.3
- *
- *	- added ReplyTo( $address ) method
- *	- added Receipt() method - to add a mail receipt
- *	- added optionnal charset parameter to Body() method. this should fix charset problem on some mail clients
- *
+ *	<ul>
+ *	<li>added ReplyTo( $address ) method
+ *	<li>added Receipt() method - to add a mail receipt
+ *	<li>added optionnal charset parameter to Body() method. this should fix charset problem on some mail clients
+ *	</ul>
+ *	Example
  *	<code>
  *	include "libmail.php";
  *
@@ -93,10 +94,11 @@ function Mail()
 */
 function autoCheck( $bool )
 {
-	if( $bool )
+	if( $bool ) {
 		$this->checkAddress = true;
-	else
+	} else {
 		$this->checkAddress = false;
+	}
 }
 
 
@@ -104,8 +106,7 @@ function autoCheck( $bool )
  *	Define the subject line of the email
  *	@param string $subject any monoline string
 */
-function Subject( $subject )
-{
+function Subject( $subject ) {
 	$this->xheaders['Subject'] = strtr( $subject, "\r\n" , "  " );
 }
 
@@ -116,9 +117,7 @@ function Subject( $subject )
 
 */
 
-function From( $from )
-{
-
+function From( $from ) {
 	if( ! is_string($from) ) {
 		echo "Class Mail: error, From is not a string";
 		exit;
@@ -130,14 +129,11 @@ function From( $from )
  *	set the Reply-to header
  *	@param string $email should be an email address
 */
-function ReplyTo( $address )
-{
-
-	if( ! is_string($address) )
+function ReplyTo( $address ) {
+	if (!is_string($address)) {
 		return false;
-
+	}
 	$this->xheaders["Reply-To"] = $address;
-
 }
 
 /**
@@ -146,11 +142,9 @@ function ReplyTo( $address )
  *	@warning this functionality is *not* a standard, thus only some mail clients are compliants.
 */
 
-function Receipt()
-{
+function Receipt() {
 	$this->receipt = 1;
 }
-
 
 /**
  *	set the mail recipient
@@ -162,8 +156,7 @@ function Receipt()
  *	@param boolean $reset resets the current array
 */
 
-function To( $to, $reset=false )
-{
+function To( $to, $reset=false ) {
 
 	// TODO : test validité sur to
 	if( is_array( $to ) ) {
@@ -193,8 +186,7 @@ function To( $to, $reset=false )
  *	$cc : email address(es), accept both array and string
  */
 
-function Cc( $cc )
-{
+function Cc( $cc ) {
 	if( is_array($cc) )
 		$this->acc= $cc;
 	else
@@ -205,15 +197,12 @@ function Cc( $cc )
 
 }
 
-
-
 /**
  *	set the Bcc headers ( blank carbon copy ).
  *	$bcc : email address(es), accept both array and string
  */
 
-function Bcc( $bcc )
-{
+function Bcc( $bcc ) {
 	if( is_array($bcc) ) {
 		$this->abcc = $bcc;
 	} else {
@@ -224,15 +213,13 @@ function Bcc( $bcc )
 		$this->CheckAdresses( $this->abcc );
 }
 
-
 /**
  *		set the body (message) of the mail
  *		define the charset if the message contains extended characters (accents)
  *		default to us-ascii
  *		$mail->Body( "mél en français avec des accents", "iso-8859-1" );
  */
-function Body( $body, $charset="" )
-{
+function Body( $body, $charset="" ) {
 	$this->body = $body;
 
 	if( $charset != "" ) {
@@ -242,17 +229,13 @@ function Body( $body, $charset="" )
 	}
 }
 
-
 /**
  *		set the Organization header
  */
-
-function Organization( $org )
-{
+function Organization( $org ) {
 	if( trim( $org != "" )  )
 		$this->xheaders['Organization'] = $org;
 }
-
 
 /**
  *		set the mail priority
@@ -260,8 +243,7 @@ function Organization( $org )
  *		ex: $mail->Priority(1) ; => Highest
  */
 
-function Priority( $priority )
-{
+function Priority( $priority ) {
 	if( ! intval( $priority ) )
 		return false;
 
@@ -271,9 +253,7 @@ function Priority( $priority )
 	$this->xheaders["X-Priority"] = $this->priorities[$priority-1];
 
 	return true;
-
 }
-
 
 /**
  *	Attach a file to the mail
@@ -282,9 +262,7 @@ function Priority( $priority )
  *	@param string $filetype : MIME-type of the file. default to 'application/x-unknown-content-type'
  *	@param string $disposition : instruct the Mailclient to display the file if possible ("inline") or always as a link ("attachment") possible values are "inline", "attachment"
  */
-
-function Attach( $filename, $filetype = "", $disposition = "inline" )
-{
+function Attach( $filename, $filetype = "", $disposition = "inline" ) {
 	// TODO : si filetype="", alors chercher dans un tablo de MT connus / extension du fichier
 	if( $filetype == "" )
 		$filetype = "application/x-unknown-content-type";
@@ -298,25 +276,24 @@ function Attach( $filename, $filetype = "", $disposition = "inline" )
  *	Build the email message
  *	@access protected
 */
-function BuildMail()
-{
-
-	// build the headers
+function BuildMail() {
+// build the headers
 	$this->headers = "";
 //	$this->xheaders['To'] = implode( ", ", $this->sendto );
 
-	if( count($this->acc) > 0 )
+	if( count($this->acc) > 0 ) {
 		$this->xheaders['CC'] = implode( ", ", $this->acc );
-
-	if( count($this->abcc) > 0 )
+	}
+	if( count($this->abcc) > 0 ) {
 		$this->xheaders['BCC'] = implode( ", ", $this->abcc );
-
+	}
 
 	if( $this->receipt ) {
-		if( isset($this->xheaders["Reply-To"] ) )
+		if( isset($this->xheaders["Reply-To"] ) ) {
 			$this->xheaders["Disposition-Notification-To"] = $this->xheaders["Reply-To"];
-		else
+		} else {
 			$this->xheaders["Disposition-Notification-To"] = $this->xheaders['From'];
+		}
 	}
 
 	if( $this->charset != "" ) {
@@ -339,16 +316,13 @@ function BuildMail()
 		if( $hdr != "Subject" )
 			$this->headers .= "$hdr: $value\n";
 	}
-
-
 }
 
 /**
  *	format and send the mail
  *	@access public
 */
-function Send()
-{
+function Send() {
 	$this->BuildMail();
 
 	$this->strTo = implode( ", ", $this->sendto );
@@ -358,12 +332,13 @@ function Send()
 }
 
 /**
- *		return the whole e-mail , headers + message
- *		can be used for displaying the message in plain text or logging it
+ *	Returns the whole e-mail , headers + message
+ *
+ *	can be used for displaying the message in plain text or logging it
+ *
+ *	@return string
  */
-
-function Get()
-{
+function Get() {
 	$this->BuildMail();
 	$mail = "To: " . $this->strTo . "\n";
 	$mail .= $this->headers . "\n";
@@ -377,16 +352,15 @@ function Get()
  *	@param string $address : email address to check
  *	@return true if email adress is ok
  */
-
-function ValidEmail($address)
-{
+function ValidEmail($address) {
    if( preg_match( "/^(.*)\<(.+)\>$/", $address, $regs ) ) {
       $address = $regs[2];
    }
-   if( preg_match( "/^[^@ ]+@([a-zA-Z0-9\-.]+)$/",$address) )
+   if( preg_match( "/^[^@ ]+@([a-zA-Z0-9\-.]+)$/",$address) ) {
       return true;
-   else
+   } else {
       return false;
+   }
 }
 
 /**
@@ -395,8 +369,7 @@ function ValidEmail($address)
  *	@return if unvalid, output an error message and exit, this may -should- be customized
  */
 
-function CheckAdresses( $aad )
-{
+function CheckAdresses( $aad ) {
 	for($i=0;$i< count( $aad); $i++ ) {
 		if( ! $this->ValidEmail( $aad[$i]) ) {
 			echo "Class Mail, method Mail : invalid address $aad[$i]";
@@ -405,15 +378,11 @@ function CheckAdresses( $aad )
 	}
 }
 
-
 /**
  *	check and encode attach file(s) . internal use only
  *	@access private
 */
-
-function _build_attachement()
-{
-
+function _build_attachement() {
 	$this->xheaders["Content-Type"] = "multipart/mixed;\n boundary=\"$this->boundary\"";
 
 	$this->fullBody = "This is a multi-part message in MIME format.\n--$this->boundary\n";
@@ -426,7 +395,6 @@ function _build_attachement()
 
 	// for each attached file, do...
 	for( $i=0; $i < count( $this->aattach); $i++ ) {
-
 		$filename = $this->aattach[$i];
 		$basename = basename($filename);
 		$ctype = $this->actype[$i];	// content-type
@@ -445,7 +413,6 @@ function _build_attachement()
 	}
 	$this->fullBody .= implode($sep, $ata);
 }
-
 
 } // class Mail
 
