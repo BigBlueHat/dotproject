@@ -20,7 +20,7 @@ ob_start();
 // read language files from module's locale directory preferrably
 	if ( file_exists( "{$AppUI->cfg['root_dir']}/modules/$modules[$module]/locales/en.inc" ) )
 	{
-		@readfile( "{$AppUI->cfg['root_dir']}/modules/$modules[$module]/locales/en.inc" )
+		@readfile( "{$AppUI->cfg['root_dir']}/modules/$modules[$module]/locales/en.inc" );
 	}
 	else
 	{
