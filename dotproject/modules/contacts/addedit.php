@@ -1,5 +1,7 @@
 <?php /* CONTACTS $Id$ */
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
+$company_id = intval( dPgetParam( $_REQUEST, 'company_id', 0 ) );
+$company_name = dPgetParam( $_REQUEST, 'company_name', null );
 
 // check permissions for this record
 $perms =& $AppUI->acl();
@@ -32,6 +34,11 @@ if ($canEdit && $contact_id) {
 $titleBlock->show();
 $company_detail = $row->getCompanyDetails();
 $dept_detail = $row->getDepartmentDetails();
+if ($contact_id == 0 && $company_id > 0) {
+	$company_detail['company_id'] = $company_id;
+	$company_detail['company_name'] = $company_name;
+	echo $company_name;
+}
 ?>
 
 <script language="javascript">
@@ -68,7 +75,7 @@ function setDepartment( key, val ){
 
 function popCompany() {
 //        window.open('./index.php?m=public&a=selector&dialog=1&callback=setCompany&table=companies', 'company','left=50,top=50,height=250,width=400,resizable');
-	window.open("./index.php?m=contacts&a=select_contact_company&dialog=1&table_name=companies", "company", "left=50,top=50,height=250,width=400,resizable");
+	window.open("./index.php?m=contacts&a=select_contact_company&dialog=1&table_name=companies&company_id=<?php echo $company_detail['company_id'];?>", "company", "left=50,top=50,height=250,width=400,resizable");
 }
 
 function setCompany( key, val ){

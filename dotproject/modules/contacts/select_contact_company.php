@@ -78,7 +78,7 @@
 				<td colspan="2">
 			<?php
 				echo $AppUI->_( 'Select' ).' '.$AppUI->_( $selection_string ).':<br />';
-				echo arraySelect( $company_list, $id_field, ' size="10"', 0 );
+				echo arraySelect( $company_list, $id_field, ' size="10"', $company_id );
 			?>
 				</td>
 			</tr>

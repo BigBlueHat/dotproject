@@ -40,7 +40,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 }
 
 	$s .= '<tr><td colspan="3" align="right" valign="top" style="background-color:#ffffff">';
-	$s .= '<input type="button" class=button value="'.$AppUI->_( 'new contact' ).'" onClick="javascript:window.location=\'./index.php?m=contacts&a=addedit\'">';
+	$s .= '<input type="button" class=button value="'.$AppUI->_( 'new contact' ).'" onClick="javascript:window.location=\'./index.php?m=contacts&a=addedit&company_id='.$company_id.'&company_name='.$obj->company_name.'\'">';
 	$s .= '</td></tr>';
 	echo $s;
 	
