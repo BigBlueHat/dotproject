@@ -59,8 +59,11 @@ return false;
 	return $deny;
 }
 
+$user_cookie = isset($HTTP_COOKIE_VARS['user_cookie']) ? $HTTP_COOKIE_VARS['user_cookie'] : 0;
+$thisuser = isset($HTTP_COOKIE_VARS['thisuser']) ? $HTTP_COOKIE_VARS['thisuser'] : 0;
+
 // Logout procedure
-if (empty( $user_cookie ) || isset( $logout )) {
+if ($user_cookie < 1 || $thisuser < 1 || isset( $logout )) {
 	include "./includes/login.php";
 	die;
 }

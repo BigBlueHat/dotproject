@@ -4,7 +4,11 @@ dotproject CHANGELOG (insert latest entries at the top)
 -----------------------------
 module/ticketsmith/index.php
 module/ticketsmith/post_ticket.php
+dosql/ticket_aed.php
 - added functionality to add basic ticket from the browser
+
+includes/permissions.php
+- fixed login pybass security breach
 
 11 September 2002 (AJE):
 -----------------------------
