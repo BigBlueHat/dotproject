@@ -17,6 +17,7 @@ if ($denyEdit) {
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
 db_loadHash( $sql, $task );
 $task_parent = isset( $task['task_parent'] ) ? $task['task_parent'] : $task_parent;
+$task_project = $project_id ? $project_id : $task['task_project'];
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -32,7 +33,7 @@ if ($task["task_end_date"]) {
 }
 
 // pull the related project
-$sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = ".$task['task_project'];
+$sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = $task_project";
 db_loadHash( $sql, $project );
 
 //Pull all users
@@ -52,15 +53,15 @@ WHERE t.task_id =$task_id
 	AND t.user_id = u.user_id
 ";
 $assigned = db_loadHashList( $sql );
-
 // Pull tasks for the parent task list
 $sql="
 SELECT task_id, task_name
 FROM tasks
-WHERE task_project = {$task['task_project']}
+WHERE task_project = $task_project
 	AND task_id <> $task_id
 ORDER BY task_project
 ";
+
 $projTasks = array( "{$task['task_id']}" => 'None' );
 $res = db_exec( $sql );
 while ($row = db_fetch_row( $res )) {
@@ -80,7 +81,7 @@ WHERE td.dependencies_task_id = $task_id
 $taskDep = db_loadHashList( $sql );
 
 $crumbs = array();
-$crumbs["?m=projects&a=view&project_id={$task['task_project']}"] = "view this project";
+$crumbs["?m=projects&a=view&project_id=$task_project"] = "view this project";
 $crumbs["?m=tasks"] = "tasks list";
 $crumbs["?m=tasks&a=view&task_id={$task['task_id']}"] = "view this task";
 ?>
@@ -201,11 +202,11 @@ function delIt() {
 </script>
 
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
-<form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $task['task_project'] ?>" method="post">
+<form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $task_project;?>" method="post">
 <input name="dosql" type="hidden" value="task_aed">
 <input name="del" type="hidden" value="0">
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>">
-<input name="task_project" type="hidden" value="<?php echo $task['task_project'];?>">
+<input name="task_project" type="hidden" value="<?php echo $task_project;?>">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
 	<td align="left" nowrap="nowrap" width="100%">
@@ -407,7 +408,7 @@ function delIt() {
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks&project_id=<?php echo $task['task_project'] ?>';}">
+				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}">
 			</td>
 			<td>
 				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submitIt();">
