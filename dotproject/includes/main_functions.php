@@ -221,12 +221,14 @@ function dPgetMenuModules() {
 ##
 ## function to recussively find an image in a number of places
 ##
-function dPfindImage( $name, $uistyle, $module ) {
-	global $AppUI, $root_dir;
+function dPfindImage( $name, $module ) {
+// uistyle must be declared globally
+	global $AppUI, $root_dir, $uistyle;
+
 	if (file_exists( "$root_dir/style/$uistyle/images/$name" )) {
 		return "./style/$uistyle/images/$name";
-	} else if (file_exists( "$root_dir/$module/images/$name" )) {
-		return "./$module/images/$name";
+	} else if (file_exists( "$root_dir/modules/$module/images/$name" )) {
+		return "./modules/$module/images/$name";
 	} else if (file_exists( "$root_dir/images/icons/$name" )) {
 		return "./images/icons/$name";
 	} else if (file_exists( "$root_dir/images/obj/$name" )) {
