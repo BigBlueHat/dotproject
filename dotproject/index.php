@@ -303,7 +303,7 @@ if (! isset($_SESSION['all_tabs'][$m])) {
 	$_SESSION['all_tabs'][$m] =& $all_tabs;
 	foreach ($AppUI->getActiveModules() as $dir => $module)
 	{
-		$modules_tabs = $AppUI->readFiles('./modules/'.$dir.'/', $m . '_tab.*\.php');
+		$modules_tabs = $AppUI->readFiles('./modules/'.$dir.'/', '^' . $m . '_tab.*\.php');
 		foreach($modules_tabs as $tab)
 		{
 			// Get the name as the subextension
