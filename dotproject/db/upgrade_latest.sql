@@ -575,3 +575,7 @@ CREATE TABLE `sessions` (
 # 20050216
 # Added logging the IP of a user
 ALTER TABLE `user_access_log` ADD `user_ip` VARCHAR( 15 ) NOT NULL AFTER `user_id` ;
+
+# 20050216
+# Added URL for contacts
+ALTER TABLE `contacts` ADD `contact_url` VARCHAR( 255 ) NOT NULL AFTER `contact_icq` ;

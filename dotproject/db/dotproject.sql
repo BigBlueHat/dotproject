@@ -69,6 +69,7 @@ CREATE TABLE `contacts` (
   `contact_type` varchar(20) default NULL,
   `contact_email` varchar(255) default NULL,
   `contact_email2` varchar(255) default NULL,
+  `contact_url` varchar(255) default NULL,
   `contact_phone` varchar(30) default NULL,
   `contact_phone2` varchar(30) default NULL,
   `contact_fax` varchar(30) default NULL,
