@@ -45,7 +45,7 @@
 "adminInvalidDay"=>"The day you have provided is invalid.",
 "adminInvalidEmail"=>"Your email is invalid, please try again.",
 "adminInvalidMonth"=>"The month you provided is invalid (try M instead of MM).",
-"adminInvalidYear"=>"The day you have provided is invalid.",
+"adminInvalidYear"=>"The year you have provided is invalid.",
 "adminPasswordsDiffer"=>"Your passwords do not match.",
 "adminValidPassword"=>"Please enter a valid password(greater then 4 chars).",
 "adminValidUserName"=>"Please enter a valid user name.",

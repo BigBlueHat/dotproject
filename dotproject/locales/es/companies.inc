@@ -1,12 +1,20 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Add Company"=>"Agregar Empresa",
+"Budget"=>"Presupuesto",
 "Company Name"=>"Nombre de la Empresa",
+"Company Owner"=>"Due&#324;o de la Empresa",
 "Company deleted"=>"Empresa eliminada",
 "Company inserted"=>"Empresa agregada",
 "Company updated"=>"Empresa actualizada",
+"Edit Company"=>"Editar Empresa",
+"Started"=>"Comenzó",
+"Status"=>"Estado",
 "View Company/Client"=>"Ver Empresa/Cliente",
 "company list"=>"listado de empresas",
+"companyDelete"=>"¿Está seguro de querer eliminar esta empresa?",
+"companyValidName"=>"Por favor, ingrese un nombre de empresa válido",
 "companyWelcome"=>"<b>Bienvenido %s.</b> Esta página despliega un listado de los clientes actuales y sus proyectos activos.",
 "delete company"=>"eliminar empresa",
 "edit this company"=>"agregar esta empresa",
