@@ -1,3 +1,214 @@
+2004-08-21 04:10  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Added the date of the last update for tasks.
+
+2004-08-21 03:54  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- Preparing history module for new permissions system.
+
+2004-08-21 03:39  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+includes/main_functions.php
+modules/files/files.class.php
+modules/forums/forums.class.php
+modules/history/addedit.php
+modules/history/index.php
+modules/history/setup.php
+modules/projects/projects.class.php
+modules/tasks/tasks.class.php
+- Updated history module (table stores more information now)
+
+2004-08-21 02:26  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- Fixed missing quotes bug.
+
+2004-08-21 02:05  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- Made readable history log messages.
+
+2004-08-21 01:04  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+modules/forums/forums.class.php
+modules/projects/projects.class.php
+- Standardised the history logs.
+
+2004-08-21 00:59  (cyberhorse)
+---------------------------------
+db/upgrade_contacts.php
+- move users details to contacts.
+
+2004-08-21 00:59  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+- upgraded Admin user setup during initial installation.
+
+2004-08-21 00:39  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed a bug from users->contacts move
+- Updated history logging
+
+2004-08-21 00:03  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+modules/forums/forums.class.php
+- Added history logging to files and forums modules
+
+2004-08-20 22:40  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+includes/main_functions.php
+modules/admin/addedituser.php
+modules/admin/admin.class.php
+modules/admin/do_user_aed.php
+modules/admin/index.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_companies.php
+modules/companies/vw_users.php
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+modules/contacts/index.php
+modules/contacts/select_contact_company.php
+modules/contacts/view.php
+modules/files/addedit.php
+modules/files/files.class.php
+modules/files/index_table.php
+modules/forums/addedit.php
+modules/forums/forums.class.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/projects/vw_logs.php
+modules/system/addeditpref.php
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/view.php
+- Moved user information to contact information.
+- Added a fax field for contacts
+- Created two new functions:
+- dPgetUsername($user_id or $user_username) which returns the formatted name of a user (may be slow)
+- dPgetUsers() returns all users in an arrayList
+- Fixed a few other minor things.
+- 
+- To install:
+- create a new db field users.user_contact
+- run upgrade_contacts.php (it is included in upgrade_latest.php)
+- once everything is working fine, remove all fields from users except
+- (user_id, user_contact, user_username, user_password, user_parent, user_type, user_company, user_department, user_signatu
+- re) (note user_company and user_department may not be needed as well).
+
+2004-08-20 18:32  (gregorerhardt)
+---------------------------------
+style/default/header.php
+- Adding a Todo Link
+
+2004-08-20 17:39  (gregorerhardt)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- fixed bug with child tasks
+
+2004-08-20 16:58  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+- Removed restriction of resource over allocation to the
+- status bar of the browser and remove being unable to assign
+- users if they are overallocated.
+
+2004-08-20 15:53  (gregorerhardt)
+---------------------------------
+modules/tasks/view.php
+- also display the tasks that depend on this task
+
+2004-08-20 15:22  (gregorerhardt)
+---------------------------------
+modules/calendar/day_view.php
+includes/config-dist.php
+- config var defining if minicals are shown in day_view or not
+
+2004-08-20 15:06  (gregorerhardt)
+---------------------------------
+index.php
+includes/config-dist.php
+- a more general approach to the default start page feature, sorry adam :)
+
+2004-08-20 15:03  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+- Solved bug with the task_creator field; the new \"load charge\"
+- functionality broke this combobox; fixed.
+
+2004-08-20 14:35  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+- Only active users are shown within the resources list
+
+2004-08-20 14:29  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+db/dotproject.sql
+- added template-ProjectStatus
+
+2004-08-20 14:20  (jcgonz)
+---------------------------------
+images/icons/collapse.gif
+images/icons/expand.gif
+- Croped a little bit images to enhance foldable tasks view
+
+2004-08-20 13:50  (revelation7)
+---------------------------------
+db/dotproject.sql
+- Someone forgot to change the SQL for inserting admin :) , now that user_contact flag is added.
+
+2004-08-20 11:46  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+- fixed assignment for multiple users, assignment now possible by dblclick
+
+2004-08-20 11:43  (gregorerhardt)
+---------------------------------
+locales/en/tasks.inc
+- first part of preventing from user overallocation
+
+2004-08-20 11:34  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+modules/system/addeditpref.php
+- first part of preventing from user overallocation
+
+2004-08-20 11:28  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- first part of preventing from user overallocation
+
+2004-08-20 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-20 01:42  (ajdonnison)
 ---------------------------------
 classes/query.class.php
@@ -287,217 +498,6 @@ modules/system/addeditpref.php
 - Added an extra date format.
 
 2004-08-08 04:10  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-07 19:43  (gregorerhardt)
----------------------------------
-modules/files/do_file_aed.php
-modules/files/files.class.php
-- 0000002: move file on filesystem if project has changed
-
-2004-08-07 18:57  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.class.php
-- 0000033: correct % for parent task
-
-2004-08-07 18:36  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-locales/en/calendar.inc
-modules/calendar/addedit.php
-modules/calendar/calendar.class.php
-modules/calendar/links_events.php
-- 0000086: do not show events on non-working days
-
-2004-08-07 04:09  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-06 23:51  (cyberhorse)
----------------------------------
-modules/public/calendar.php
-- Added a link to clear dates that have been set before.
-
-2004-08-06 18:56  (gregorerhardt)
----------------------------------
-modules/calendar/addedit.php
-modules/projects/addedit.php
-modules/tasks/addedit.php
-modules/tasks/tasksperuser_sub.php
-modules/tasks/view.php
-modules/tasks/viewgantt.php
-modules/tasks/vw_log_update.php
-- 0000071: deleted hardcoded popCalendar position
-
-2004-08-06 18:30  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-08-06 18:19  (gregorerhardt)
----------------------------------
-classes/ui.class.php
-- Converted the installer to module
-
-2004-08-06 18:14  (gregorerhardt)
----------------------------------
-locales/en/install.inc
-index.php
-includes/db_adodb.php
-style/default/header.php
-style/default/main.css
-- Converted the installer to module
-
-2004-08-06 10:41  (cyberhorse)
----------------------------------
-modules/tasks/tasks.class.php
-- corrected misspelled method name (I should learn to spell)
-
-2004-08-06 05:27  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-06 04:13  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-modules/projects/view.php
-modules/tasks/view.php
-- Improved how files listing is hooked up to projects and tasks.
-- Moved files attached to tasks as a tab on the bottom.
-- It reuses the index_table.php file for both now.
-
-2004-08-06 02:57  (cyberhorse)
----------------------------------
-classes/ui.class.php
-- revert back ... I'm just being silly :(
-
-2004-08-06 02:19  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Fixed a few "unresolved variables" issues
-
-2004-08-06 01:24  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Allow setting a project from other files through includes.
-
-2004-08-06 01:22  (cyberhorse)
----------------------------------
-modules/projects/vw_files.php
-- Ops, wrong approach - ignore the previous change.
-
-2004-08-06 01:20  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Default to showing project headers, but allow removing them
-
-2004-08-06 01:19  (cyberhorse)
----------------------------------
-modules/projects/vw_files.php
-- Show only the specific project to show
-
-2004-08-06 01:17  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Allows passing project through GET parameter
-
-2004-08-06 01:09  (cyberhorse)
----------------------------------
-classes/ui.class.php
-- Added possibility for passing parameters to files, included as tabs.
-
-2004-08-06 00:12  (cyberhorse)
----------------------------------
-modules/files/files.class.php
-- added file_category field
-
-2004-08-05 13:54  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Made collapsable menus for versions of the same file (determined as samename + in same project)
-- 
-- Fixed filtering by project
-- Fixed displaying of companies as headers
-- Cleaned up a bit
-
-2004-08-03 08:41  (cyberhorse)
----------------------------------
-modules/tasks/tasks.php
-- Made a colapsable menu for assighed users. When the link (+num_users) is clicked in the assigned users column, it expands to show all users. Pretty nead feature, which also makes the global variable dPconfig['show_all_assignees'] useless to a degree, because you can choose on the spot... (maybe after adding collapse/expand all buttons)
-
-2004-08-03 00:35  (cyberhorse)
----------------------------------
-modules/tasks/tasks.php
-- added sorting by priority.
-
-2004-08-02 23:49  (cyberhorse)
----------------------------------
-modules/system/domodsql.php
-- made it possible to remove (not cleanly) a module from the modules list, which has been deleted the hard way.
-
-2004-08-02 23:37  (cyberhorse)
----------------------------------
-modules/calendar/day_view.php
-- If helpdesk module is installed, show your helpdesk items in today's view.
-
-2004-08-02 20:41  (jcgonz)
----------------------------------
-modules/tasks/todo.php
-- Added up a check in the start date variable before showing it.
-
-2004-08-02 18:09  (ajdonnison)
----------------------------------
-modules/calendar/links_tasks.php
-- Speedup of task length checking.
-
-2004-07-30 02:21  (cyberhorse)
----------------------------------
-modules/contacts/index.php
-modules/contacts/view.php
-- Added view only mode for contacts.
-
-2004-07-28 10:06  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-07-28 09:15  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-- 0000020: taskstatus is sysval now
-
-2004-07-28 09:14  (ajdonnison)
----------------------------------
-index.php
-- Fixed dp.net bug number 16, fatal error on wrong root_dir.  Now tries
-- clearstatcache and if that doesn't work, it sets it to a more appropriate
-- value and sets a warning message.
-
-2004-07-28 09:11  (gregorerhardt)
----------------------------------
-functions/tasks_func.php
-- 0000020: taskstatus is sysval now
-
-2004-07-28 09:02  (cyberhorse)
----------------------------------
-modules/tasks/todo.php
-- showing more tasks in the todo list - everything that has a due date
-
-2004-07-28 08:54  (cyberhorse)
----------------------------------
-classes/dp.class.php
-modules/tasks/tasks.class.php
-- php5 compatibility issues - work in progress
-
-2004-07-28 08:39  (cyberhorse)
----------------------------------
-modules/system/viewmods.php
 ...
 
 (This file has been wrapped)
