@@ -58,7 +58,7 @@ $x = false;
 
 $date = new CDate();
 
-foreach ($messages as $row){
+foreach ($messages as $row) {
 	$date = intval( $row["message_date"] ) ? new CDate( $row["message_date"] ) : null;
 
 	$s = '';
@@ -67,7 +67,7 @@ foreach ($messages as $row){
 	$s .= "<tr>";
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
-	$s .= '<a href="mailto:"'.$row["user_email"].'">';
+	$s .= '<a href="mailto:'.$row["user_email"].'">';
 	$s .= '<font size="2">'.$row["user_first_name"].' '.$row["user_last_name"].'</font></a></td>';
 	$s .= '<td valign="top" style="'.$style.'">';
 	$s .= '<font size="2"><strong>'.$row["message_title"].'</strong><hr size=1>';
