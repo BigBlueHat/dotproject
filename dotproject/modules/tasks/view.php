@@ -6,6 +6,10 @@ $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
 $canRead = !getDenyRead( $m, $task_id );
 $canEdit = !getDenyEdit( $m, $task_id );
 
+// check permissions for this record
+$canReadModule = !getDenyRead( $m );
+
+
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -27,6 +31,7 @@ GROUP BY task_id
 $msg = '';
 $obj = new CTask();
 $canDelete = $obj->canDelete( $msg, $task_id );
+
 
 //$obj = null;
 if (!db_loadObject( $sql, $obj, true )) {
@@ -52,6 +57,9 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 $start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : null;
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
+
+//check permissions for the associated project
+$canReadProject = !getDenyRead( 'projects', $obj->task_project);
 
 // get the users on this task
 $sql = "
@@ -84,8 +92,10 @@ if ($canEdit) {
 	);
 }
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
-if ($canEdit) {
+if ($canReadProject) {
 	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$obj->task_project", "view this project" );
+}
+if ($canEdit) {
 	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", "edit this task" );
 }
 if ($canEdit) {

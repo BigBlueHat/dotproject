@@ -46,6 +46,9 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+//check permissions for the associated project
+$canReadProject = !getDenyRead( 'projects', $obj->task_project);
+
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 // check the document access (public, participant, private)
@@ -116,7 +119,9 @@ $taskDep = db_loadHashList( $sql );
 $ttl = $task_id > 0 ? "Edit Task" : "Add Task";
 $titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
-$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
+if ( $canReadProject ) {
+	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
+}
 if ($task_id > 0)
   $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
 $titleBlock->show();

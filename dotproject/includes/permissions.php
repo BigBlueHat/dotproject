@@ -103,9 +103,11 @@ function isAllowed($perm_type, $mod, $item_id = 0) {
 	}
 		
 	/*** Permission propagations ***/
-			
-	// if we have access on the project => we have access on its tasks
-	if ( $mod == 'tasks' ) {
+
+	// 1.if we have access on the project => we have access on its tasks.
+	// 2.We do not have to check access over projects if we have permissions on that item yet
+	//   else we could destroy given permissions through denied permissions for the project
+	if ( $mod == 'tasks' && !$allowed == 1) {
 		if ( $item_id > 0 ) {			
 			// get task's project id
 			$sql = "SELECT task_project FROM tasks WHERE task_id = $item_id";
