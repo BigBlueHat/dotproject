@@ -476,7 +476,7 @@ INSERT INTO `modules` VALUES("13", "Public", "public", "1.0.0", "", "core", "1",
 DROP TABLE IF EXISTS `syskeys`;
 CREATE TABLE `syskeys` (
   `syskey_id` int(10) unsigned NOT NULL auto_increment,
-  `syskey_name` varchar(48) NOT NULL default '',
+  `syskey_name` varchar(48) NOT NULL default '' unique,
   `syskey_label` varchar(255) NOT NULL default '',
   `syskey_type` int(1) unsigned NOT NULL default '0',
   `syskey_sep1` char(2) default '\n',

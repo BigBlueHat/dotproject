@@ -514,3 +514,14 @@ ALTER TABLE `files`
 
 # Move any old files into the new format
 UPDATE `files` SET `file_version_id` = `file_id` WHERE `file_version_id` = 0;
+
+# 20041027 cyberhorse
+# done to fix double enries in sysvals table
+#' won't be possible until values are manually pruned first ...
+ALTER TABLE `sysvals` ADD UNIQUE (
+`sysval_title`
+)
+
+ALTER TABLE `syskeys` ADD UNIQUE (
+`syskey_name`
+)
