@@ -32,7 +32,7 @@ GROUP BY project_id
 ORDER BY project_short_name
 ";
                                                                                 
-$project_list=array("0"=>"Select Project");
+$project_list=array("0"=> $AppUI->_("Select Project") );
 $ptrc = db_exec($sql);
 $nums=db_num_rows($ptrc);
 echo db_error();
@@ -72,7 +72,7 @@ if (!isset($display_project_name)) $display_project_name = "None"; ?>
 <?php echo $AppUI->_('Selected Project') . ": <b>".$display_project_name."</b>"; ?>
 <form name="changeMe" action="./index.php?m=projects&a=reports" method="post">
 <?php echo $AppUI->_('Projects') . ':';?>
-<?php echo arraySelect( $project_list, 'project_id', 'size="1" class="text" onchange="changeIt();"', $obj->project_status, true );?>
+<?php echo arraySelect( $project_list, 'project_id', 'size="1" class="text" onchange="changeIt();"', $obj->project_status, false );?>
 </form>
 
 <?php
