@@ -55,11 +55,18 @@ if (!db_loadHash( $sql, $dept )) {
 	$titleBlock->show();
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt() {
 	if (confirm( "<?php echo $AppUI->_('departmentDelete');?>" )) {
 		document.frmDelete.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <form name="frmDelete" action="./index.php?m=departments" method="post">
