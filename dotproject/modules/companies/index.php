@@ -45,6 +45,8 @@ WHERE permission_user = $AppUI->user_id
 $rows = db_loadList( $sql );
 */
 
+$search_string = dPformSafe($search_string, true);
+
 // setup the title block
 $titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
 $titleBlock->addCell("<strong>".$AppUI->_('Search').":</strong>");

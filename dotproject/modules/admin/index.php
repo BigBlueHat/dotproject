@@ -59,6 +59,8 @@ $a2z .= "\n</tr>\n</table>";
 // setup the title block
 $titleBlock = new CTitleBlock( 'User Management', 'helix-setup-users.png', $m, "$m.$a" );
 
+$where = dPformSafe( $where, true );
+
 $titleBlock->addCell(
 	'<input type="text" name="where" class="text" size="10" value="'.$where.'" />'
 	. ' <input type="submit" value="'.$AppUI->_( 'search' ).'" class="button" />',

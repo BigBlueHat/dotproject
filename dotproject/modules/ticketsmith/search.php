@@ -39,6 +39,7 @@ print("</td>\n");
 print("</tr>\n");
 
 /* pattern select */
+$search_pattern = dPformSafe( $search_pattern, true );
 print("<tr>\n");
 print("<td align=\"right\"><strong>".$AppUI->_('Pattern')."</strong></td>\n");
 print("<td><input type=\"text\" name=\"search_pattern\" value=\"$search_pattern\"></td>\n");
