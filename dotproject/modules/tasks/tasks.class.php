@@ -647,7 +647,7 @@ class CTask extends CDpObject {
 			);
 		}
 
-		$main_owner = $AppUI->getPref('MAILALL');
+		$mail_owner = $AppUI->getPref('MAILALL');
 
 		foreach ($users as $row) {
 			if ($mail_owner || $row['assignee_id'] != $AppUI->user_id) {
