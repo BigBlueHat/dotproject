@@ -28,7 +28,7 @@ $sql = "SELECT project_id, project_name FROM permissions, projects WHERE project
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)"
 .(count($projDeny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $projDeny ) . ')' : '')
-.($company_id ? "\nAND project_company = $company_id" : '')
+.(isset($company_id) ? "\nAND project_company = $company_id" : '')
 ." ORDER BY project_name";
 $projects = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
