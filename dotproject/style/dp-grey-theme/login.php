@@ -39,7 +39,7 @@
 	<td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
 </tr>
 <tr>
-	<td colspan="2"><a href="#" onclick="f=document.loginform;f.lostpass.value=1;f.submit();"><?php echo $AppUI->_('forgotPassword');?></td>
+	<td colspan="2"><a href="#" onclick="f=document.loginform;f.lostpass.value=1;f.submit();"><?php echo $AppUI->_('forgotPassword');?></a></td>
 </tr>
 </table>
 <?php if (@$AppUI->getVersion()) { ?>
@@ -58,5 +58,6 @@
 	echo $msg;
 ?>
 </div>
+<center>* You must have cookies enabled in your browser</center>
 </body>
 </html>

@@ -71,6 +71,6 @@
 </tr>
 </form>
 </table>
-
+<center>* You must have cookies enabled in your browser</center>
 </body>
 </html>
