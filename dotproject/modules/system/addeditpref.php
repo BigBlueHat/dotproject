@@ -8,10 +8,7 @@ $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
 $denyEdit = getDenyEdit( $m );
 
 if ($denyEdit) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( 'm=help&a=access_denied' );
 }
 
 // load the preferences
