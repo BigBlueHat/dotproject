@@ -1,4 +1,4 @@
-<?
+<?php
 // JBF phpinfo(); exit();
 if(empty($event_id))$event_id=0;
 if(empty($event_project)) $event_project=0;

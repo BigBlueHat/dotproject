@@ -71,30 +71,30 @@ if( $nextMonth > 12 ) { $nextMonth = $nextMonth - 12; $nextYear++; }
 <head>
 <SCRIPT language="javascript">
 function setClose(x,y,z){
-	var form = window.opener.document.<?=$form;?>;
-	var page = "<?=$page;?>";
+	var form = window.opener.document.<?php =$form;?>;
+	var page = "<?php =$page;?>";
 
 	if(page != ""){
-		if ("<?=$date_format;?>"== "1") {
-			form.<?echo $field;?>.value = y + "/" + x + "/" + z;
+		if ("<?php =$date_format;?>"== "1") {
+			form.<?php echo $field;?>.value = y + "/" + x + "/" + z;
 	}
-		else if ("<?=$date_format;?>"=="2") {
-			form.<?echo $field;?>.value = x + "/" + y + "/" + z;
+		else if ("<?php =$date_format;?>"=="2") {
+			form.<?php echo $field;?>.value = x + "/" + y + "/" + z;
 		}
 		else {
-		form.<?echo $field;?>.value = z + "-" + x + "-" + y;
+		form.<?php echo $field;?>.value = z + "-" + x + "-" + y;
 		}
 	}
 	else{
 		z =  z - 1999;
-		if("<?echo $field;?>" != "Actual"){
+		if("<?php echo $field;?>" != "Actual"){
 			x = x-1;
 			y = y-1;
 		}
 	
-		form.<?echo $field;?>MM_int.selectedIndex = x;
-		form.<?echo $field;?>DD_int.selectedIndex = y;
-		form.<?echo $field;?>YYYY_int.selectedIndex = z;
+		form.<?php echo $field;?>MM_int.selectedIndex = x;
+		form.<?php echo $field;?>DD_int.selectedIndex = y;
+		form.<?php echo $field;?>YYYY_int.selectedIndex = z;
 	}
 	window.close();
 }
@@ -113,18 +113,18 @@ function setClose(x,y,z){
 <table border=0 cellspacing=1 cellpadding=2 width="220">
 	<tr>
 		<td align=center>
-			<a href="<? echo($SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+			<a href="<?php echo($SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 		</td>
 		<td colspan=5 align=center bgcolor="#000000">
 			<font face="arial, helvetica" size=2 color="#ffffff"><b>
 			<?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></b></font>
 		</td>
 		<td align=center>
-			<? echo "<a href='" . $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
+			<?php echo "<a href='" . $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
 		</td>
 	</tr>
 	<tr>
-	<?  // print days across top
+	<?php  // print days across top
 	for( $i = 0; $i <= 6; $i++ ) 
 	{
   	echo "<td bgcolor=#ffffff align=center>";
@@ -134,7 +134,7 @@ function setClose(x,y,z){
   	echo "</td>\n";
  	}?>
 	</tr>
-<? 
+<?php 
 $firstDay = date( 'w', mktime( 0, 0, 0, $thisMonth, 1, $thisYear ) );
 $dayRow = 0;
 if( $firstDay > 0 ) 
@@ -194,7 +194,7 @@ if( $firstDay > 0 )
  <tr>
   <td colspan=7 align=right bgcolor="#efefe7">
     <font face='Tahoma, arial, helvetica, sans-serif' size='1'>
-   <A href="<? echo $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay . "&field=" . $field;?>">today</A>
+   <A href="<?php echo $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay . "&field=" . $field;?>">today</A>
    </font>
   </td>
  </tr>

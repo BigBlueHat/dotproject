@@ -1,4 +1,4 @@
-<?
+<?php 
 //define up event array
 $earr = array();
 
@@ -90,16 +90,16 @@ $earr[] = $row;
 <SCRIPT language="javascript">
 function setClose(x,y,z){
 z =  z - 1999;
-if("<?echo $field;?>" != "Actual"){
+if("<?php echo $field;?>" != "Actual"){
 	x = x-1;
 	y = y-1;
 }
 
 
 var form = window.opener.document.AddEdit;
-	form.<?echo $field;?>MM_int.selectedIndex = x;
-	form.<?echo $field;?>DD_int.selectedIndex = y;
-	form.<?echo $field;?>YYYY_int.selectedIndex = z;
+	form.<?php echo $field;?>MM_int.selectedIndex = x;
+	form.<?php echo $field;?>DD_int.selectedIndex = y;
+	form.<?php echo $field;?>YYYY_int.selectedIndex = z;
 	window.close();
 }
 
@@ -111,7 +111,7 @@ var form = window.opener.document.AddEdit;
 
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
-	<TD><img src="./images/icons/calendar.gif" alt="<?echo ptranslate("Calendar");?>" border="0" width="42" height="42"></td>
+	<TD><img src="./images/icons/calendar.gif" alt="<?php echo ptranslate("Calendar");?>" border="0" width="42" height="42"></td>
 		<TD nowrap><span class="title">Day View</span></td>
 		<TD align="right" width="100%">&nbsp;</td>
 	</tr>
@@ -120,13 +120,13 @@ var form = window.opener.document.AddEdit;
 <table border=0 cellspacing=1 cellpadding=2 width="95%" class=bordertable>
 	<tr>
 		<td align=center>
-			<a href="<? echo("./index.php?m=calendar&a=day_view&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+			<a href="<?php  echo("./index.php?m=calendar&a=day_view&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 		</td>
 		<td width="100%">
-			<b><a href="<? echo("./index.php?m=calendar&thisYear=" . $thisYear . "&thisMonth=" . $thisMonth);?>"><?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></a></b>
+			<b><a href="<?php  echo("./index.php?m=calendar&thisYear=" . $thisYear . "&thisMonth=" . $thisMonth);?>"><?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></a></b>
 		</td>
 		<td align=center>
-			<? echo "<a href='./index.php?m=calendar&a=day_view&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
+			<?php  echo "<a href='./index.php?m=calendar&a=day_view&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
 		</td>
 	</tr>
 </table>

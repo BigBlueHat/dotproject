@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($project_active))$project_active =0;
 
 $project_start_date = $StartYYYY_int . "-". $StartMM_int . "-". $StartDD_int . " 00:00:00";

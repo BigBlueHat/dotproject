@@ -1,4 +1,4 @@
-<?
+<?php 
 // Add / Edit event
 if(empty($event_id))$event_id = 0;
 
@@ -51,7 +51,7 @@ function delIt(){
 var form = document.changeevent;
 if(confirm("Are you sure you would like\nto delete this event?"))
 	{
-	form.del.value="<?echo $event_id;?>";
+	form.del.value="<?php echo $event_id;?>";
 	form.submit();
 	}
 }
@@ -60,9 +60,9 @@ if(confirm("Are you sure you would like\nto delete this event?"))
 function popCalendar(x){
 var form = document.changeevent;
 
-	mm = <?echo strftime("%m", time());?>;
-	dd = <?echo strftime("%d", time());?>;
-	yy = <?echo strftime("%Y", time());?>;
+	mm = <?php echo strftime("%m", time());?>;
+	dd = <?php echo strftime("%d", time());?>;
+	yy = <?php echo strftime("%Y", time());?>;
 
 	dar = eval("document.changeevent." + x + ".value.split('-')");
 	if(eval("document.changeevent." + x + ".value.length") > 9){
@@ -97,9 +97,9 @@ var form = document.changeevent;
 	<input type="hidden" name="dosql" value="addeditdel_event">
 	<input type="hidden" name="del" value="0">
 	<input type="hidden" name="event_project" value="0">
-	<input type="hidden" name="event_id" value="<?echo $event_id;?>">
+	<input type="hidden" name="event_id" value="<?php echo $event_id;?>">
 	<TR bgcolor="#878676" height="20" style="border: outset #eeeeee 2px;">
-		<TD valign="top" colspan=2><b><i><?if($event_id == 0){echo "Add";}else{echo "Edit";}?> event </i></b></td>
+		<TD valign="top" colspan=2><b><i><?php if($event_id == 0){echo "Add";}else{echo "Edit";}?> event </i></b></td>
 		<TD align="right" colspan=2>&nbsp;</td>
 	</tr>
 	<TR>
@@ -110,13 +110,13 @@ var form = document.changeevent;
 	<tr>
 		<TD valign=top>
 			<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="black" width=360>
-				<tr bgcolor="#f4efe3"><TD align="right" width="100">Event Name: </td><TD><input type="text" class="text" size=25 name="event_title" value="<?echo @$crow["event_title"];?>" maxlength="255"></td></tr>
+				<tr bgcolor="#f4efe3"><TD align="right" width="100">Event Name: </td><TD><input type="text" class="text" size=25 name="event_title" value="<?php echo @$crow["event_title"];?>" maxlength="255"></td></tr>
 			</table>
 			<img src="images/shim.gif" width=100 height=10 border=0><br>
 			<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 				<tr bgcolor="#eeeeee">
 					<TD align="right">Start Date/Time:</td>
-					<TD nowrap><input type="text" class="text" name="sdate" value="<?echo $sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
+					<TD nowrap><input type="text" class="text" name="sdate" value="<?php echo $sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
 					<TD>
 						<select name="stime">
 						<option value="0:00">12:00 am
@@ -172,7 +172,7 @@ var form = document.changeevent;
 				</tr>
 				<tr bgcolor="#eeeeee">
 					<TD align="right">End Date:</td>
-					<TD><input type="text"  name="edate" value="<?echo $edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
+					<TD><input type="text"  name="edate" value="<?php echo $edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
 					<TD>
 					<select name="stime">
 						<option value="0:00">12:00 am
@@ -241,7 +241,7 @@ var form = document.changeevent;
 						<option>Every Year
 					</select> x</TD>
 				<TD>
-					<input type="text"  name="event_times_recuring" value="<?echo @$crow["event_times_recuring"];?>" maxlength="2" size=3> times
+					<input type="text"  name="event_times_recuring" value="<?php echo @$crow["event_times_recuring"];?>" maxlength="2" size=3> times
 				</td>
 			</tr>
 		</table>
@@ -269,7 +269,7 @@ var form = document.changeevent;
 		<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver">
 			<tr bgcolor="#eeeeee">
 				<TD><b>Description</b><br>
-				<textarea class="textarea" name="event_notes"><?echo @$crow["event_title"];?></textarea></TD>
+				<textarea class="textarea" name="event_notes"><?php echo @$crow["event_title"];?></textarea></TD>
 			</TR>
 		</TABLE>
 	</td>

@@ -1,4 +1,4 @@
-<?
+<?php
 //Config File
 
 //db access information

@@ -1,4 +1,4 @@
-<?
+<?php 
 if(empty($file_id))$file_id =0;
 if(empty($file_task))$file_task =0;
 if(isset($task_id))$file_task=$task_id;
@@ -54,25 +54,25 @@ function uploadFile(){
 <TABLE width="95%" border=0 cellpadding="3" cellspacing=3  bgcolor="#f4efe3">
 <form name="uploadfile" action="./index.php?m=files" enctype="multipart/form-data" method="post">
 	<INPUT TYPE="hidden" name="MAX_FILE_SIZE" value="109605000">
-	<input type="hidden" name="file_task" value="<?echo intval($file_task);?>">
+	<input type="hidden" name="file_task" value="<?php echo intval($file_task);?>">
 	<input type="hidden" name="dosql" value="addfile">
-	<input type="hidden" name="file_id" value="<?echo intval($frow["file_id"]);?>">
+	<input type="hidden" name="file_id" value="<?php echo intval($frow["file_id"]);?>">
 	
 	<TR style="border: outset #eeeeee 2px;">
-		<TD colspan=2 class="mboxhdr"><?if($file_id ==0){?>Adding a new file<?}else{?>Updating a file<?}?></TD>
+		<TD colspan=2 class="mboxhdr"><?php if($file_id ==0){?>Adding a new file<?php }else{?>Updating a file<?php }?></TD>
 	</TR>
 	<TR>
 		<TD width="50%" valign="top">
 			<TABLE border=0>
 			  <TR>
 			    <TD valign=top align=right>File Name:</TD>
-			    <TD><?if(strlen($frow["file_name"])== 0){echo "n/a";}else{ echo $frow["file_name"];}?></TD>
+			    <TD><?php if(strlen($frow["file_name"])== 0){echo "n/a";}else{ echo $frow["file_name"];}?></TD>
 				</TR>
 			  <TR>
 			   <TD valign=top align=right>Project:</TD>
 			    <TD>
 					<select name="file_project" style="width:270px">
-					<?while($row = mysql_fetch_row($prc)){ 
+					<?php while($row = mysql_fetch_row($prc)){ 
 						if($frow["file_project"] ==  $row[1]){
 							echo "<option selected value=" . $row[1] . ">". $row[0]  ;	
 						}
@@ -86,7 +86,7 @@ function uploadFile(){
 				</TR>
 				  <TR>
 			    <TD valign=top align=right>File Description:</TD>
-			    <TD><textarea name="file_description" rows=4 style="width:270px"><?echo $frow["file_description"];?></textarea>
+			    <TD><textarea name="file_description" rows=4 style="width:270px"><?php echo $frow["file_description"];?></textarea>
 					</TD>
 				</TR>
 				<TR>
@@ -105,19 +105,19 @@ function uploadFile(){
 			<table width="100%" border=0>
 				<tr>
 					<td valign=top align=right>Uploaded by:</td>
-					<td width="50%"><?echo $frow["user_username"];?></td>
+					<td width="50%"><?php echo $frow["user_username"];?></td>
 				</tr>
 				<tr valign=top>
 					<td align=right>File Type:</td>
-					<td><?echo $frow["file_type"];?></td>
+					<td><?php echo $frow["file_type"];?></td>
 				</tr>
 				<tr>
 					<td valign=top align=right>File Size:</td>
-					<td><?echo $frow["file_size"];?></td>
+					<td><?php echo $frow["file_size"];?></td>
 				</tr>
 				<tr>
 					<td valign=top align=right>File Version:</td>
-					<td><input type="text" name="file_version" value="<?if(strlen($frow["file_version"])>0){ echo $frow["file_version"]; }else{ echo "1";}?>" maxlength=10 size=5></td>
+					<td><input type="text" name="file_version" value="<?php if(strlen($frow["file_version"])>0){ echo $frow["file_version"]; }else{ echo "1";}?>" maxlength=10 size=5></td>
 				</tr>
 				<tr>
 					<td><BR></td>
@@ -125,11 +125,11 @@ function uploadFile(){
 				</tr>
 				<tr>
 					<td>Click here to download</td>
-					<td><A href="./fileviewer.php?file_id=<?echo $frow["file_id"];?>"><?echo $frow["file_name"];?></a></td>
+					<td><A href="./fileviewer.php?file_id=<?php echo $frow["file_id"];?>"><?php echo $frow["file_name"];?></a></td>
 				</tr>
 			</table>
 		</TD>
 	</TR>
-	<TR><TD colspan=2 align="center"><input type="button" value="<?if($file_id ==0){?>Add file<?}else{?>Update file<?}?>" onclick="uploadFile()"></TD></TR>
+	<TR><TD colspan=2 align="center"><input type="button" value="<?php if($file_id ==0){?>Add file<?php }else{?>Update file<?php }?>" onclick="uploadFile()"></TD></TR>
 </form>
 </TABLE>

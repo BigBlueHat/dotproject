@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($forum_id))$forum_id=0;
 if(empty($forum_moderated))$forum_moderated=0;
 //IF delete

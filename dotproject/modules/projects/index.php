@@ -1,4 +1,4 @@
-<?
+<?php
 //Projects
 
 //First pull perms
@@ -55,23 +55,23 @@ $urow = mysql_fetch_array($urc);
 	<TR>
 	<TD><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
 		<TD nowrap><span class="title">Project Management</span></td>
-		<TD align="right" width="100%"><?include ("./includes/create_new_menu.php");?></td>
+		<TD align="right" width="100%"><?php include ("./includes/create_new_menu.php");?></td>
 	</tr>
 </TABLE>
 <TABLE width="95%" border=0 cellpadding="1" cellspacing=0 bgcolor="#878676">
 	<TR height="20">
 		<TD valign="top" width="100%" valign="bottom" bgcolor="#ffffff">
-			<?if($active <> 0){?>
+			<?php if($active <> 0){?>
 			<span id=""> This page show you a list of <b>active</b> projects.</span>
-			<?}else{?>
+			<?php }else{?>
 			<span id=""> This page show you a list of <B>archived</b> projects.</span>
-			<?}?>
+			<?php }?>
 		</td>
-		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD bgcolor="#f4efe3" align="center"><A href="<?echo $PHP_SELF;?>?m=tasks">Tasks </A></td></table></TD>
+		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD bgcolor="#f4efe3" align="center"><A href="<?php echo $PHP_SELF;?>?m=tasks">Tasks </A></td></table></TD>
 		<TD bgcolor="#ffffff"><img src="images/shim.gif" width="10" height=5 border=0></td>
-		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD <?if($active == 0){?>bgcolor="#f4efe3"<?}?> align="center"><A href="index.php?m=projects&active=1">Active</A></td></table></TD>
+		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD <?php if($active == 0){?>bgcolor="#f4efe3"<?php }?> align="center"><A href="index.php?m=projects&active=1">Active</A></td></table></TD>
 		<TD bgcolor="#ffffff"><img src="images/shim.gif" width="10" height=5 border=0></td>
-		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD <?if($active == 1){?>bgcolor="#f4efe3"<?}?> align="center"><A href="index.php?m=projects&active=0">Archived</a></td></table></td>
+		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD <?php if($active == 1){?>bgcolor="#f4efe3"<?php }?> align="center"><A href="index.php?m=projects&active=0">Archived</a></td></table></td>
 	</tr>
 </TABLE>
 <TABLE width="95%" border=0 cellpadding="1" cellspacing=1 bgcolor="#878676">
@@ -89,11 +89,11 @@ $urow = mysql_fetch_array($urc);
 				
 				
 				
-<? while($row = mysql_fetch_array($cos)){?>
+<?php  while($row = mysql_fetch_array($cos)){?>
 				<TR height=30>
 				
-					<TD bgcolor="#<?echo $row["project_color_identifier"];?>" width="65" align="center" style="border: outset #eeeeee 2px;">
-					<?
+					<TD bgcolor="#<?php echo $row["project_color_identifier"];?>" width="65" align="center" style="border: outset #eeeeee 2px;">
+					<?php
 					$r = hexdec(substr($row["project_color_identifier"], 0, 2)); 
 					$g = hexdec(substr($row["project_color_identifier"], 2, 2)); 
 					$b = hexdec(substr($row["project_color_identifier"], 4, 2)); 
@@ -105,14 +105,14 @@ $urow = mysql_fetch_array($urc);
 					?>
 					
 					
-					<?echo @number_format($row["project_precent_complete"]);?>%</td>
-					<TD><A href="./index.php?m=projects&a=view&project_id=<?echo $row["project_id"];?>"><?echo $row["project_name"];?></A></td>
-					<TD nowrap><?echo $row["user_username"];?></td>
-					<TD nowrap><?echo $row["countmt"];?></td>
-					<TD nowrap><?echo $row["countt"];?></td>
-					<TD nowrap><?echo fromDate(substr($row["project_end_date"], 0, 10));?></td>
+					<?php echo @number_format($row["project_precent_complete"]);?>%</td>
+					<TD><A href="./index.php?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $row["project_name"];?></A></td>
+					<TD nowrap><?php echo $row["user_username"];?></td>
+					<TD nowrap><?php echo $row["countmt"];?></td>
+					<TD nowrap><?php echo $row["countt"];?></td>
+					<TD nowrap><?php echo fromDate(substr($row["project_end_date"], 0, 10));?></td>
 				</tr>
-	<?}?>
+	<?php }?>
 	<TR><TD colspan=6> &nbsp;</td></tr>
 </Table>
 </td></tr>

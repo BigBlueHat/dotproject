@@ -1,4 +1,4 @@
-<?
+<?php
 //addfile sql
 set_time_limit(600);
 ignore_user_abort(1);

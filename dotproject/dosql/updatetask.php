@@ -1,4 +1,4 @@
-<?
+<?php
 //update task
 if(empty($task_id))$task_id = 0;
 if(empty($already_worked))$already_worked = 0;

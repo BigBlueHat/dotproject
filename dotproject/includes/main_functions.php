@@ -1,4 +1,4 @@
-<?
+<?php
 //Main Functions
 
 function ptranslate($word){

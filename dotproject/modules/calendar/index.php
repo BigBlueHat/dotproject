@@ -63,16 +63,16 @@ if( $nextMonth > 12 ) { $nextMonth = $nextMonth - 12; $nextYear++; }
 <SCRIPT language="javascript">
 function setClose(x,y,z){
 z =  z - 1999;
-if("<?echo $field;?>" != "Actual"){
+if("<?php echo $field;?>" != "Actual"){
 	x = x-1;
 	y = y-1;
 }
 
 
 var form = window.opener.document.AddEdit;
-	form.<?echo $field;?>MM_int.selectedIndex = x;
-	form.<?echo $field;?>DD_int.selectedIndex = y;
-	form.<?echo $field;?>YYYY_int.selectedIndex = z;
+	form.<?php echo $field;?>MM_int.selectedIndex = x;
+	form.<?php echo $field;?>DD_int.selectedIndex = y;
+	form.<?php echo $field;?>YYYY_int.selectedIndex = z;
 	window.close();
 }
 
@@ -84,9 +84,9 @@ var form = window.opener.document.AddEdit;
 
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
-	<TD><img src="./images/icons/calendar.gif" alt="<?echo ptranslate("Calendar");?>" border="0" width="42" height="42"></td>
+	<TD><img src="./images/icons/calendar.gif" alt="<?php echo ptranslate("Calendar");?>" border="0" width="42" height="42"></td>
 		<TD nowrap><span class="title">Monthly Calendar</span></td>
-		<TD align="right" width="100%"><?include ("./includes/create_new_menu.php");?></td>
+		<TD align="right" width="100%"><?php include ("./includes/create_new_menu.php");?></td>
 	</tr>
 </TABLE>
 
@@ -94,13 +94,13 @@ var form = window.opener.document.AddEdit;
 <table border=0 cellspacing=1 cellpadding=2 width="95%">
 	<tr>
 		<td align=center>
-			<a href="<? echo("./index.php?m=calendar&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+			<a href="<?php  echo("./index.php?m=calendar&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 		</td>
 		<td width="100%">
 <b><?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></b></font>
 		</td>
 		<td align=center>
-			<? echo "<a href='./index.php?m=calendar&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
+			<?php  echo "<a href='./index.php?m=calendar&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
 		</td>
 	</tr>
 </table>
@@ -108,14 +108,14 @@ var form = window.opener.document.AddEdit;
 <table border=0 cellspacing=1 cellpadding=2 width="95%" bgcolor="#cccccc">
 	<tr>
 	<TD>&nbsp;</TD>
-	<?  // print days across top
+	<?php   // print days across top
 	for( $i = 0; $i <= 6; $i++ ) 
 	{?>
-  	<td align=center width="14%"><b><?echo $dayNamesShort["$i"];?></b></td>
- 	<?}?>
+  	<td align=center width="14%"><b><?php echo $dayNamesShort["$i"];?></b></td>
+ 	<?php }?>
 	</tr>
 
-<? 
+<?php  
 $firstDay = date( 'w', mktime( 0, 0, 0, $thisMonth, 1, $thisYear ) );
 $dayRow = 0;
 echo "<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&day=-" .$firstDay . "&month=". $thisMonth. "&year=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
@@ -159,7 +159,7 @@ if( $firstDay > 0 )
 		
 		?>
 <table width="100%" border=0 cellpadding=0 cellspacing=0>
-<?
+<?php 
 
 		while (list ($key, $val) = each ($items))
 		{
@@ -222,7 +222,7 @@ echo "</td>";
  <tr>
   <td colspan=8 align=right bgcolor="#efefe7">
     <font face='Tahoma, arial, helvetica, sans-serif' size='1'>
-   <A href="<? echo "index.php?thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay;?>">today</A>
+   <A href="<?php  echo "index.php?thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay;?>">today</A>
    </font>
   </td>
  </tr>

@@ -1,4 +1,4 @@
-<?
+<?php
 //Calendar functions
 if(empty($thisMonth)){$thisMonth = date("n", time());}
 if(empty($thisYear)){$thisYear = date("Y", time());}

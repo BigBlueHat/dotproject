@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($return))$return = $REQUEST_URI;
 setcookie("user_cookie", "");
 ?>
@@ -17,12 +17,12 @@ setcookie("user_cookie", "");
 <br>
 <br>
 <br>
-<CENTER><?echo @$message?>&nbsp;</center>
+<CENTER><?php echo @$message?>&nbsp;</center>
 <table align="center" border="0" width="250" cellpadding="4" cellspacing="0" bgcolor="#cccccc" class=bordertable>
 <form action="./logincheck.php" method="post" name="loginform">
-<input type="hidden" name="login" value="<? echo time();?>">
-<input type="hidden" name="return" value="<? echo $return;?>">
-<TR><TD colspan=2 class="headerfontWhite" bgcolor="gray"><b><?echo $company_name;?></b></td></tr>
+<input type="hidden" name="login" value="<?php echo time();?>">
+<input type="hidden" name="return" value="<?php echo $return;?>">
+<TR><TD colspan=2 class="headerfontWhite" bgcolor="gray"><b><?php echo $company_name;?></b></td></tr>
 
 
 

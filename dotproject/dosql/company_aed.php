@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($company_id))$company_id=0;
 if($company_owner ==""){$co = $user_cookie;}else{$co =$company_owner;}
 if(isset($del))
@@ -75,5 +75,5 @@ $company_name = $HTTP_POST_VARS["company_name"];
 }
 
 ?>
-<script language="javascript">window.location="./index.php?m=companies&message=<? echo $message;?>";
+<script language="javascript">window.location="./index.php?m=companies&message=<?php echo $message;?>";
 </script>

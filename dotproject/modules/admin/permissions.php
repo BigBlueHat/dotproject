@@ -1,4 +1,4 @@
-<?
+<?php 
 if(empty($sqlaction))$sqlaction =0;
 if(empty($message))$message ="Viewing Permissions";
 if(empty($permission_id))$permission_id =0;
@@ -130,7 +130,7 @@ function setPItem(){
 	
 	if(x == "companies")
 	{
-		<?
+		<?php 
 		$i=1;
 		while($crow = mysql_fetch_array($crc))
 		{
@@ -142,7 +142,7 @@ function setPItem(){
 	}
 	else if (x == "projects")
 	{
-		<?
+		<?php 
 		$i=1;
 		while($crow = mysql_fetch_array($prc))
 		{
@@ -154,7 +154,7 @@ function setPItem(){
 	}
 	else if (x == "users")
 	{
-		<?
+		<?php 
 		$i=1;
 		while($crow = mysql_fetch_array($u2rc))
 		{
@@ -190,7 +190,7 @@ window.location="./index.php?m=admin&a=permissions&user_id=" + form.change_user[
 		<TD width="100%" align="right">
 		
 		Select user: <Select name="change_user" onchange="changeUser()" style="width: 100px;">
-		<?
+		<?php 
 		mysql_data_seek($u2rc, 0);
 		while($crow = mysql_fetch_array($u2rc))
 		{
@@ -213,7 +213,7 @@ window.location="./index.php?m=admin&a=permissions&user_id=" + form.change_user[
 	</form>
 </TABLE>
 
-<?echo $message;?> for <b><?echo $uname['user_username'];?></b>
+<?php echo $message;?> for <b><?php echo $uname['user_username'];?></b>
 <TABLE width="75%" border=0 bgcolor="#f4efe3" cellpadding="3" cellspacing=1>
 	<TR>
 		<TD width="60"> &nbsp;</td>
@@ -221,7 +221,7 @@ window.location="./index.php?m=admin&a=permissions&user_id=" + form.change_user[
 		<TD class="mboxhdr"><font color="white">Item</font></td>
 		<TD class="mboxhdr"><font color="white">Permission Type</font></td>
 	</tr>
-<?
+<?php 
 if(mysql_num_rows($urc) == 0)
 {
 echo '<TR><TD colspan=4 align=center><B>No permissions for this User</b></td></tr>';
@@ -315,7 +315,7 @@ while($row = mysql_fetch_array($urc)){
 <TR><TD colspan=3 class="mboxhdr">Add or modify permissions</td></tr>
 <form sqlaction="http://smitty.dotmarketing.net/dotproject/index.php" method="post" name="perms">
 
-<input type="hidden" name="user_id" value="<?echo $user_id;?>">
+<input type="hidden" name="user_id" value="<?php echo $user_id;?>">
 <input type="hidden" name="permission_id" value="0">
 <input type="hidden" name="action" value="permissions">
 <input type="hidden" name="module" value="admin">

@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($message_id))$message_id=0;
 if(empty($message_moderated))$message_moderated=0;
 //IF delete

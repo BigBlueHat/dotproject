@@ -1,4 +1,4 @@
-<?
+<?php 
 //Projects
 
 //Set up defaults
@@ -57,12 +57,12 @@ $urow = mysql_fetch_array($urc);
 		<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Type</font></a></td>
 		<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Size:</font></a></td>
 	</tr>
-	<? 
+	<?php  
 	$fp=0;
 	while($row = mysql_fetch_array($frc)){
 		if($fp != $row["file_project"]){?>
-		<TR bgcolor="#f4efe3"><TD colspan="6" bgcolor="#<?echo $row["project_color_identifier"];?>" style="border: outset 2px #eeeeee">
-			<?
+		<TR bgcolor="#f4efe3"><TD colspan="6" bgcolor="#<?php echo $row["project_color_identifier"];?>" style="border: outset 2px #eeeeee">
+			<?php 
 					$r = hexdec(substr($row["project_color_identifier"], 0, 2)); 
 					$g = hexdec(substr($row["project_color_identifier"], 2, 2)); 
 					$b = hexdec(substr($row["project_color_identifier"], 4, 2)); 
@@ -71,17 +71,17 @@ $urow = mysql_fetch_array($urc);
 					{
 					echo "<font color='white'>";
 					};
-					?><?echo $row["project_name"];?></TD></TR>
-		<?}
+					?><?php echo $row["project_name"];?></TD></TR>
+		<?php }
 		$fp = $row["file_project"];
 		?>
 				<TR bgcolor="#f4efe3">
-						<TD nowrap><A href="./index.php?m=files&a=addedit&file_id=<?echo $row["file_id"];?>"><img src="./images/icons/pencil.gif" alt="edit file" border="0" width=12 height=12></a></td>				
-					<TD nowrap><A href="./fileviewer.php?file_id=<?echo $row["file_id"];?>"><?echo $row["file_name"];?></a></td>
-					<TD nowrap><?echo $row["file_owner"];?></td>
-					<TD nowrap><?echo $row["file_date"];?></td>
-					<TD nowrap><?echo $row["file_type"];?></td>
-					<TD nowrap><?echo intval($row["file_size"] / 1024);?>k</td>
+						<TD nowrap><A href="./index.php?m=files&a=addedit&file_id=<?php echo $row["file_id"];?>"><img src="./images/icons/pencil.gif" alt="edit file" border="0" width=12 height=12></a></td>				
+					<TD nowrap><A href="./fileviewer.php?file_id=<?php echo $row["file_id"];?>"><?php echo $row["file_name"];?></a></td>
+					<TD nowrap><?php echo $row["file_owner"];?></td>
+					<TD nowrap><?php echo $row["file_date"];?></td>
+					<TD nowrap><?php echo $row["file_type"];?></td>
+					<TD nowrap><?php echo intval($row["file_size"] / 1024);?>k</td>
 				</tr>
-	<?}?>
+	<?php }?>
 </Table>

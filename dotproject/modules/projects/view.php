@@ -1,4 +1,4 @@
-<?
+<?php
 //pull users;
 $usql="select user_first_name, user_last_name, user_id from users order by user_last_name";
 $urc = mysql_query($usql);
@@ -52,15 +52,15 @@ if(strlen($prow["project_actual_end_date"]) ==0){
 				</TR>
 				<TR>
 					<TD bgcolor="#eeeeee">
-						<?if($prow["project_status"] ==0){?>Not Defined<?}?>
-						<?if($prow["project_status"] ==1){?>Proposed<?}?>
-						<?if($prow["project_status"] ==2){?>In planning<?}?>
-						<?if($prow["project_status"] ==3){?>In progress<?}?>
-						<?if($prow["project_status"] ==4){?>On hold<?}?>
-						<?if($prow["project_status"] ==5){?>Complete<?}?>
+						<?php if($prow["project_status"] ==0){?>Not Defined<?php }?>
+						<?php if($prow["project_status"] ==1){?>Proposed<?php }?>
+						<?php if($prow["project_status"] ==2){?>In planning<?php }?>
+						<?php if($prow["project_status"] ==3){?>In progress<?php }?>
+						<?php if($prow["project_status"] ==4){?>On hold<?php }?>
+						<?php if($prow["project_status"] ==5){?>Complete<?php }?>
 					</TD>
-					<TD bgcolor="#eeeeee"><?echo $prow["project_precent_complete"];?>%</TD>
-					<TD bgcolor="#eeeeee"><?if($prow["project_active"]){?>Yes<?}else{?>No<?}?></TD>
+					<TD bgcolor="#eeeeee"><?php echo $prow["project_precent_complete"];?>%</TD>
+					<TD bgcolor="#eeeeee"><?php if($prow["project_active"]){?>Yes<?php }else{?>No<?php }?></TD>
 				</TR>
 			</TABLE>
 		</td>
@@ -71,23 +71,23 @@ if(strlen($prow["project_actual_end_date"]) ==0){
 	<TR>
 		<TD width="50%" nowrap>
 		<a href="./index.php?m=projects">Project List</a> <b>:</b> 
-		<a href="./index.php?m=projects&a=addedit&project_id=<?echo $prow["project_id"];?>">Edit this Project</a> 
+		<a href="./index.php?m=projects&a=addedit&project_id=<?php echo $prow["project_id"];?>">Edit this Project</a> 
 		</td>
-		<TD width="50%" align="right"><?include ("./includes/create_new_menu.php");?></td>
+		<TD width="50%" align="right"><?php include ("./includes/create_new_menu.php");?></td>
 	</TR>
 </TABLE>
 
 <table border="0" cellpadding="4" cellspacing="0" width="95%">
 	<TR>
-		<TD style="border: outset #eeeeee 2px;" bgcolor="<?echo $prow["project_color_identifier"];?>">
-					<?
+		<TD style="border: outset #eeeeee 2px;" bgcolor="<?php echo $prow["project_color_identifier"];?>">
+					<?php
 					$r = hexdec(substr($prow["project_color_identifier"], 0, 2)); 
 					$g = hexdec(substr($prow["project_color_identifier"], 2, 2)); 
 					$b = hexdec(substr($prow["project_color_identifier"], 4, 2)); 
 					if($r < 128 && $g < 128 || $r < 128 && $b < 128 || $b < 128 && $g < 128) {
 						echo "<font color='white'>";
 					};
-					?><b><?echo $prow["project_name"];?></b>
+					?><b><?php echo $prow["project_name"];?></b>
 		</TD>
 	</tr>
 </TABLE>
@@ -98,53 +98,53 @@ if(strlen($prow["project_actual_end_date"]) ==0){
 			<TABLE width="100%">
 				<TR>
 					<TD><b>Company:</b></TD>
-					<td><?echo $prow["company_name"];?></td>
+					<td><?php echo $prow["company_name"];?></td>
 				</TR>
 				<tr>
 					<td><b>Short Name:</b></td>
-					<td><?echo @$prow["project_short_name"];?></td>
+					<td><?php echo @$prow["project_short_name"];?></td>
 				</tr>
 				<tr>
 					<td><b>Start date:</b></td> 
-					<td><?echo fromDate(substr($prow["project_start_date"], 0,10));?></td>
+					<td><?php echo fromDate(substr($prow["project_start_date"], 0,10));?></td>
 				</tr>
 				<tr>
 					<td><b>Target End Date:</b></td> 
-					<td><?echo fromDate(substr($prow["project_end_date"], 0, 10));?></td>
+					<td><?php echo fromDate(substr($prow["project_end_date"], 0, 10));?></td>
 				</tr>
 				<tr>
 					<td><b>Actual End Date:</b></td> 
-					<td><?echo fromDate(SUBSTR($prow["project_actual_end_date"], 0, 10));?></td>
+					<td><?php echo fromDate(SUBSTR($prow["project_actual_end_date"], 0, 10));?></td>
 				</tr>
 				<tr>
 					<td><b>Target Budget:</b></td>
-					<td>$<?echo @$prow["project_target_budget"];?></td>
+					<td>$<?php echo @$prow["project_target_budget"];?></td>
 				</tr>
 				<tr>
 					<td><b>Project Owner:</b></td>
 					<td>
-						<?
+						<?php
 							while($row = mysql_fetch_array($urc)){
 								if($prow["project_owner"] == $row["user_id"]){
-									echo $row["user_first_name"];?> <?echo $row["user_last_name"];
+									echo $row["user_first_name"];?> <?php echo $row["user_last_name"];
 								}
 							}?>
 					</td>
 				</tr>
 				<tr>
 					<td><b>URL:</b></td>
-					<td><A href="<?echo @$prow["project_url"];?>" target="_new"><?echo @$prow["project_url"];?></A></td>
+					<td><A href="<?php echo @$prow["project_url"];?>" target="_new"><?php echo @$prow["project_url"];?></A></td>
 				</tr>
 				<tr>
 					<td><b>Staging URL:</b></td>
-					<TD><A href="<?echo @$prow["project_demo_url"];?>" target="_new"><?echo @$prow["project_demo_url"];?></A></TD>
+					<TD><A href="<?php echo @$prow["project_demo_url"];?>" target="_new"><?php echo @$prow["project_demo_url"];?></A></TD>
 				</tr>
 			</TABLE>
 		
 		</TD>
 		<td width="50%">
 			<b>Full Description</b><br>
-			<?
+			<?php
 			$newstr = str_replace( chr(10), "<BR>", $prow["project_description"]);
 			echo $newstr;
 			?>
@@ -152,8 +152,8 @@ if(strlen($prow["project_actual_end_date"]) ==0){
 	</TR>
 </table>
 
-<?//------Begin Task Include--------?>		
-<?
+<?php //------Begin Task Include--------?>		
+<?php
 if(empty($project_id))$project_id =0;
 
 $pluarr = array();
@@ -247,10 +247,10 @@ function findchild($parent, $level =0){
 		
 		?>
 		<TR bgcolor="#f4efe3">
-		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
-		<TD align="right"><?echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
+		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+		<TD align="right"><?php echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
 		<TD>
-		<?for($y=0;$y<$level;$y++){
+		<?php for($y=0;$y<$level;$y++){
 			if($y + 1==$level)	{
 				echo "<img src=./images/corner-dots.gif width=16 height=12  border=0>";
 			}
@@ -259,8 +259,8 @@ function findchild($parent, $level =0){
 			}
 		}?>
 		
-		<A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
-				<TD><?
+		<A href="./index.php?m=tasks&a=view&task_id=<?php echo $tarr[$x]["task_id"];?>"><?php echo $tarr[$x]["task_name"];?></a></td>		
+				<TD><?php
 			if($tarr[$x]["task_duration"] > 24 ){
 				$dt = "day";
 				$dur = $tarr[$x]["task_duration"] / 24;
@@ -274,7 +274,7 @@ function findchild($parent, $level =0){
 		
 		echo $dur . " " . $dt ;?></td>
 		</tr>
-		<?
+		<?php
 
 		$str=findchild($tarr[$x]["task_id"], $level);
 		}
@@ -295,7 +295,7 @@ function findchild($parent, $level =0){
 					<TD class="mboxhdr">duration&nbsp;&nbsp;</td>
 				</tr>
 					
-			<?
+			<?php
 			
 			
 			for($x =0;$x < $nums;$x++){
@@ -304,12 +304,12 @@ function findchild($parent, $level =0){
 			
 				if($tarr[$x]["task_parent"] == $tarr[$x]["task_id"]){?>
 					<TR  bgcolor="#f4efe3">
-					<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
-					<TD align="right"><?echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
-					<TD valign="middle" width="100%"><img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?echo $tarr[$x]["task_id"];?>">
-					<map name="arrow<?echo $tarr[$x]["task_id"];?>"><area coords="0,0,10,7" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=u";?>>
-					<area coords="0,8,10,14" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=d";?>></map> <A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
-					<TD nowrap><?
+					<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+					<TD align="right"><?php echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
+					<TD valign="middle" width="100%"><img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $tarr[$x]["task_id"];?>">
+					<map name="arrow<?php echo $tarr[$x]["task_id"];?>"><area coords="0,0,10,7" href=<?php echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=u";?>>
+					<area coords="0,8,10,14" href=<?php echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=d";?>></map> <A href="./index.php?m=tasks&a=view&task_id=<?php echo $tarr[$x]["task_id"];?>"><?php echo $tarr[$x]["task_name"];?></a></td>		
+					<TD nowrap><?php
 						if($tarr[$x]["task_duration"] > 24 ){
 							$dt = "day";
 							$dur = $tarr[$x]["task_duration"] / 24;
@@ -322,18 +322,18 @@ function findchild($parent, $level =0){
 						echo $dur . " " . $dt ;?></td>
 					</tr>
 			
-				<?
+				<?php
 				$order = $tarr[$x]["task_order"];
 				echo findchild($tarr[$x]["task_id"]);
 				}
 			}?>
 			</TABLE>
-		<?//------End Task Include--------?>		
+		<?php //------End Task Include--------?>		
 		</TD>
 		<TD width=50% valign=top>
 		<strong>Forums:</strong>
-		<?//------Begin Forum include --------?>	
-		<?
+		<?php //------Begin Forum include --------?>	
+		<?php
 
 		//Forum index.php
 		$sql = "select forum_id,forum_project,forum_description,forum_owner,user_username,forum_name,forum_create_date,forum_last_date,forum_message_count,forum_moderated, project_name, project_color_identifier, project_id
@@ -350,17 +350,17 @@ function findchild($parent, $level =0){
 		<TD nowrap class="mboxhdr"><A href="#"><font color="white">Messages</font></a></td>
 		<TD nowrap class="mboxhdr"><A href="#"><font color="white">Last Post</font></a></td>
 	</tr>
-<?
+<?php
 while($row = mysql_fetch_array($rc)){?>
 	<TR bgcolor="#f4efe3">
 		<TD nowrap align=center>
-			<?if($row["forum_owner"] == $user_cookie){?>
-				<A href="./index.php?m=forums&a=addedit&forum_id=<?echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width=12 height=12></a>
-			<?}?>
+			<?php if($row["forum_owner"] == $user_cookie){?>
+				<A href="./index.php?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width=12 height=12></a>
+			<?php }?>
 		</td>				
-		<TD nowrap><A href="./index.php?m=forums&a=viewer&forum_id=<?echo $row["forum_id"];?>"><?echo $row["forum_name"];?></a></td>
-		<TD nowrap><?echo $row["forum_message_count"];?></td>
-		<TD nowrap><?if(intval($row["forum_last_date"])>0 ){
+		<TD nowrap><A href="./index.php?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a></td>
+		<TD nowrap><?php echo $row["forum_message_count"];?></td>
+		<TD nowrap><?php if(intval($row["forum_last_date"])>0 ){
 				echo $row["forum_last_date"];
 			}
 			else{
@@ -370,11 +370,11 @@ while($row = mysql_fetch_array($rc)){?>
 	</tr>
 	<TR>
 		<TD></td>
-		<TD colspan=3><?echo $row["forum_description"];?></td>
+		<TD colspan=3><?php echo $row["forum_description"];?></td>
 	</tr>
-<?}?>
+<?php }?>
 </TABLE>
-		<?//------End Forum include --------?>	
+		<?php //------End Forum include --------?>	
 		</TD>
 	</TR>
 </TABLE>

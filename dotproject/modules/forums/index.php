@@ -1,4 +1,4 @@
-<?
+<?php 
 
 //Forum index.php
 $sql = "select forum_id,forum_project,forum_description,forum_owner,user_username,forum_name,forum_create_date,forum_last_date,forum_message_count,forum_moderated, project_name, project_color_identifier, project_id
@@ -37,7 +37,7 @@ $rc= mysql_query($sql);
 		<TD nowrap class="mboxhdr"><A href="#"><font color="white">Created</font></a></td>
 		<TD nowrap class="mboxhdr"><A href="#"><font color="white">Last Post</font></a></td>
 	</tr>
-<?
+<?php 
 $p ="";
 while($row = mysql_fetch_array($rc)){
 	if($p != $row["project_id"]){
@@ -54,23 +54,23 @@ while($row = mysql_fetch_array($rc)){
 			}
 		?>
 		<TR>
-			<TD colspan=6 bgcolor="<?echo $row["project_color_identifier"];?>"><A href="./index.php?m=projects&a=view&project_id=<?echo $row["project_id"];?>"><?echo $font;?><B><?echo $row["project_name"];?></b></span></a></td>
+			<TD colspan=6 bgcolor="<?php echo $row["project_color_identifier"];?>"><A href="./index.php?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $font;?><B><?php echo $row["project_name"];?></b></span></a></td>
 		</tr>
-		<?
+		<?php 
 		$p = $row["project_id"];
 	}?>
 	<TR bgcolor="#f4efe3">
 		<TD nowrap align=center>
-		<?if($row["forum_owner"] == $user_cookie){?>
+		<?php if($row["forum_owner"] == $user_cookie){?>
 		
-		<A href="./index.php?m=forums&a=addedit&forum_id=<?echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width=12 height=12></a>
-		<?}?>
+		<A href="./index.php?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width=12 height=12></a>
+		<?php }?>
 		</td>				
-		<TD nowrap width="330"><span style="font-size:10pt;font-weight:bold"><A href="./index.php?m=forums&a=viewer&forum_id=<?echo $row["forum_id"];?>"><?echo $row["forum_name"];?></a></span></td>
-		<TD nowrap><?echo $row["user_username"];?></td>
-		<TD nowrap><?echo $row["forum_message_count"];?></td>
-		<TD nowrap><?echo substr($row["forum_create_date"], 0, 10);?></td>
-		<TD nowrap><?if(intval($row["forum_last_date"])>0 )
+		<TD nowrap width="330"><span style="font-size:10pt;font-weight:bold"><A href="./index.php?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a></span></td>
+		<TD nowrap><?php echo $row["user_username"];?></td>
+		<TD nowrap><?php echo $row["forum_message_count"];?></td>
+		<TD nowrap><?php echo substr($row["forum_create_date"], 0, 10);?></td>
+		<TD nowrap><?php if(intval($row["forum_last_date"])>0 )
 			{
 			echo $row["forum_last_date"];
 			}
@@ -82,10 +82,10 @@ while($row = mysql_fetch_array($rc)){
 	</tr>
 	<TR>
 		<TD></td>				
-		<TD><?echo $row["forum_description"];?></td>
+		<TD><?php echo $row["forum_description"];?></td>
 		<TD colspan=4></td>
 	</tr>
 	
-<?}?>
+<?php }?>
 <TR><TD colspan=6 height="100%"> &nbsp;</td></tr>
 </TABLE></td></tr></table>

@@ -1,4 +1,4 @@
-<?
+<?php
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
 //error_reporting(E_ALL );
 

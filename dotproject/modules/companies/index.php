@@ -1,4 +1,4 @@
-<?
+<?php 
 //Companies
 
 //First pull perms
@@ -60,7 +60,7 @@ if(confirm("Are you sure you want\nto delete user " + y + "?"))
 </TABLE>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
-	<TD valign="top"><span id=""><b>Welcome <?echo $urow[0];?>.</b>  This page show you a list of current clients and their active projects.</span></td>
+	<TD valign="top"><span id=""><b>Welcome <?php echo $urow[0];?>.</b>  This page show you a list of current clients and their active projects.</span></td>
 	</tr>
 </TABLE>
 <TABLE width="95%" border=0 bgcolor="#f4efe3" cellpadding="0" cellspacing=1 height="400">
@@ -77,14 +77,14 @@ if(confirm("Are you sure you want\nto delete user " + y + "?"))
 				
 				
 				
-<? while($row = mysql_fetch_array($cos)){?>
+<?php  while($row = mysql_fetch_array($cos)){?>
 				<TR>
 				
 				
 					<TD width="60" class="smallNorm" align="right" valign="bottom">&nbsp; </td>
-					<TD><A href="./index.php?m=companies&a=addedit&company_id=<?echo $row["company_id"];?>"><?echo $row["company_name"];?></A></td>
-					<TD><?echo $row["countp"];?></td>
-					<TD><?echo @$row["inactive"];?></td>
+					<TD><A href="./index.php?m=companies&a=addedit&company_id=<?php echo $row["company_id"];?>"><?php echo $row["company_name"];?></A></td>
+					<TD><?php echo $row["countp"];?></td>
+					<TD><?php echo @$row["inactive"];?></td>
 				</tr>
-	<?}?>
+	<?php }?>
 </Table>

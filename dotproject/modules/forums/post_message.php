@@ -1,4 +1,4 @@
-<?
+<?php
 // Add / Edit forum
 if(empty($message_id))$message_id = 0;
 if(empty($message_parent))$message_parent = -1;
@@ -64,7 +64,7 @@ function delIt(){
 var form = document.changeforum;
 if(confirm("Are you sure you would like\nto delete this post?"))
 	{
-	form.del.value="<?echo $message_id;?>";
+	form.del.value="<?php echo $message_id;?>";
 	form.submit();
 	}
 }
@@ -85,25 +85,25 @@ function orderByName(x){
 </script>
 	<TABLE border=0 cellpadding=2 cellspacing=1 width="95%" >
 		<TR>
-		<TD><A href="./index.php?m=forums">All forums</a>::<A href="./index.php?m=forums&a=viewer&forum_id=<?echo $forum_id;?>"><?echo $forum_name;?></a></td>
+		<TD><A href="./index.php?m=forums">All forums</a>::<A href="./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>"><?php echo $forum_name;?></a></td>
 			<TD align="right"></TD></TR>
 		</TABLE>
 <TABLE border=0 bgcolor="#f4efe3" cellpadding="3" cellspacing=0 width="95%">
 
-<form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?echo $forum_id;?>" method="post">
+<form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?php echo $forum_id;?>" method="post">
 <input type="hidden" name="dosql" value="aed_post">
 <input type="hidden" name="del" value="0">
-<input type="hidden" name="message_forum" value="<?echo $forum_id;?>">
-<input type="hidden" name="message_parent" value="<?echo $mp;?>">
-<?if($crow["forum_moderated"]){?>
+<input type="hidden" name="message_forum" value="<?php echo $forum_id;?>">
+<input type="hidden" name="message_parent" value="<?php echo $mp;?>">
+<?php if($crow["forum_moderated"]){?>
 <input type="hidden" name="message_published" value="1">
-<?}else{?>
+<?php }else{?>
 <input type="hidden" name="message_published" value="0">
-<?}?>
-<input type="hidden" name="message_author" value="<?if(intval($mrow["message_author"]) ==0){echo $user_cookie;}else{echo $mrow["message_author"];}?>">
-<input type="hidden" name="message_id" value="<?echo $message_id;?>">
+<?php }?>
+<input type="hidden" name="message_author" value="<?php if(intval($mrow["message_author"]) ==0){echo $user_cookie;}else{echo $mrow["message_author"];}?>">
+<input type="hidden" name="message_id" value="<?php echo $message_id;?>">
 <TR bgcolor="silver">
-	<TD valign="top" colspan=2><b><i><?if($message_id == 0){echo "Add";}else{echo "Edit";}?> Topic </i></b></td>
+	<TD valign="top" colspan=2><b><i><?php if($message_id == 0){echo "Add";}else{echo "Edit";}?> Topic </i></b></td>
 	<TD align="right" colspan=2></td>
 </tr>
 <TR>
@@ -116,11 +116,11 @@ function orderByName(x){
 			<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="black" width="100%">
 					<tr bgcolor="#f4efe3">
 						<TD align="right" width="100" bgcolor=silver>Forum Name: </td>
-						<TD bgcolor="#eeeeee">&nbsp; <b><?echo @$crow["forum_name"];?></b></td>
+						<TD bgcolor="#eeeeee">&nbsp; <b><?php echo @$crow["forum_name"];?></b></td>
 					</tr>
 					<tr bgcolor="#f4efe3">
 						<TD align="right" width="100" bgcolor=silver>Forum Project: </td>
-						<TD bgcolor="#eeeeee">&nbsp; <?echo $crow["project_name"];?></td>
+						<TD bgcolor="#eeeeee">&nbsp; <?php echo $crow["project_name"];?></td>
 					</tr>
 			</table>
 	</TD>
@@ -131,21 +131,21 @@ function orderByName(x){
 				  <tr bgcolor="#eeeeee" height=20>
 						<TD align="right">Subject:</td>
 						<TD>
-						<?if($message_parent > 0){?>
-							<input type="hidden" name="message_title" value="<?echo $mrow["message_title"];?>">
-							<B>Re: <?echo $mrow["message_title"];?> </B>
-						<?}else{?>
+						<?php if($message_parent > 0){?>
+							<input type="hidden" name="message_title" value="<?php echo $mrow["message_title"];?>">
+							<B>Re: <?php echo $mrow["message_title"];?> </B>
+						<?php }else{?>
 						<input type="text" name="message_title" value="" size=50 maxlength=250>
-						<?}?>
+						<?php }?>
 						</td>
 					</tr>
 					<tr bgcolor="#eeeeee" height=20>
 						<TD align="right">Message Author:</td>
-						<TD><?echo @$username;?></td>
+						<TD><?php echo @$username;?></td>
 					</tr>
 					<tr bgcolor="#eeeeee" height=20>
 						<TD align="right">Posting Date:</td>
-						<TD><?if(intval($mrow["message_date"])>0)	{
+						<TD><?php if(intval($mrow["message_date"])>0)	{
 							echo $mrow["message_date"];
 							}
 							else{
@@ -156,11 +156,11 @@ function orderByName(x){
 						<TD colspan=2 align="center"><b>Message</b></TD>
 					</TR>
 					<TR bgcolor="#eeeeee">
-						<TD colspan=2 align="center"><textarea class="textarea" name="message_body" style="height:200px;width:400;"><?echo @$crow["forum_description"];?></textarea></TD>
+						<TD colspan=2 align="center"><textarea class="textarea" name="message_body" style="height:200px;width:400;"><?php echo @$crow["forum_description"];?></textarea></TD>
 					</TR>
 					<tr bgcolor="#eeeeee" height=20>
 						<TD><input type="button" value="back" class=button onClick="javascript:window.location='./index.php?m=forums';"></td>
-						<TD align="right"><?if($user_cookie == $crow["forum_owner"] || $message_id ==0){?><input type="button" value="submit" class=button onClick="submitIt()"><?}?></td>
+						<TD align="right"><?php if($user_cookie == $crow["forum_owner"] || $message_id ==0){?><input type="button" value="submit" class=button onClick="submitIt()"><?php }?></td>
 					</tr>
 			</TABLE>
 	</td>

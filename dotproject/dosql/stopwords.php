@@ -1,4 +1,4 @@
-<?
+<?php
 unset($wordarr["a"]);
 unset($wordarr["about"]);
 unset($wordarr["also"]);

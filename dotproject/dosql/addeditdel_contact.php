@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($contact_id))$contact_id=0;
 
 //IF delete

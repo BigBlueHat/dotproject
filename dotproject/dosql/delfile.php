@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($file_id))$file_id =0;
 $sql = "select file_real_filename, file_project from files where file_id=$file_id";
 $result = MYSQL_QUERY($sql);

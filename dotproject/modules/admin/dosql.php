@@ -1,4 +1,4 @@
-<?
+<?php
 if(empty($user_id))$user_id==0;
 
 //case deleting user
@@ -56,9 +56,9 @@ if(strlen($message2) > 0)$message = $message2;
 
 if(!ereg("admin", $perms) &! ereg("all", $perms)){?>
 <script>
-window.location="./index.php?m=admin&a=addedituser&user_id=<?=$user_id;?>&message=<?echo $message;?>";
+window.location="./index.php?m=admin&a=addedituser&user_id=<?php =$user_id;?>&message=<?php echo $message;?>";
 </script>
-<?die;}?>
+<?php die;}?>
 <script>
-window.location="./index.php?m=admin&message=<?echo $message;?>";
+window.location="./index.php?m=admin&message=<?php echo $message;?>";
 </script>

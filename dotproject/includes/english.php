@@ -1,4 +1,4 @@
-<?
+<?php
 //Language File:
 
 $pt["Logout"] ="Log Out";

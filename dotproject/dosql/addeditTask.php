@@ -1,4 +1,4 @@
-<?
+<?php
 //dosql.sql
 
 //defaults

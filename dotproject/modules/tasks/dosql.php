@@ -1,4 +1,4 @@
-<?
+<?php
 //dosql.sql
 
 //defaults
@@ -144,5 +144,5 @@ if($doassingsql){
 
 ?>
 <script>
-window.location="./index.php?m=tasks&message=<?echo $message;?>";
+window.location="./index.php?m=tasks&message=<?php echo $message;?>";
 </script>

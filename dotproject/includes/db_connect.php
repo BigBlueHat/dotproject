@@ -1,4 +1,4 @@
-<?
+<?php
 //	db_connect.php
 // 	include to connect to the db
 

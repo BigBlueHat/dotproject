@@ -1,4 +1,4 @@
-<?
+<?php
 include "./includes/config.php";
 include "./includes/db_connect.php";
 

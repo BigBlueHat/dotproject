@@ -1,4 +1,4 @@
-<?
+<?php
 
 if(empty($project_id))$project_id =0;
 if(isset($HTTP_COOKIE_VARS["cookie_project"]))$project_id = $HTTP_COOKIE_VARS["cookie_project"];
@@ -91,17 +91,17 @@ function findchild($parent, $level =0){
 		
 		?>
 		<TR bgcolor="#f4efe3">
-		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
-		<TD align="right"><?echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
+		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+		<TD align="right"><?php echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
 		<TD>
-		<?if($tarr[$x]["task_priority"] <0){
+		<?php if($tarr[$x]["task_priority"] <0){
 			echo "<img src='./images/icons/low.gif' width=13 height=16>";
 		}else if($tarr[$x]["task_priority"] >0){
 			echo "<img src='./images/icons/" . $tarr[$x]["task_priority"] .".gif' width=13 height=16>";
 		}?>
 		</td>
 		<TD width=90%>
-		<?for($y=0;$y<$level;$y++){
+		<?php for($y=0;$y<$level;$y++){
 			if($y + 1==$level)	{
 				echo "<img src=./images/corner-dots.gif width=16 height=12  border=0>";
 			}
@@ -110,9 +110,9 @@ function findchild($parent, $level =0){
 			}
 		}?>
 		
-		<A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
-		<TD nowrap><?echo fromDate(substr($tarr[$x]["task_start_date"], 0, 10));?></td>
-				<TD><?
+		<A href="./index.php?m=tasks&a=view&task_id=<?php echo $tarr[$x]["task_id"];?>"><?php echo $tarr[$x]["task_name"];?></a></td>		
+		<TD nowrap><?php echo fromDate(substr($tarr[$x]["task_start_date"], 0, 10));?></td>
+				<TD><?php
 			if($tarr[$x]["task_duration"] > 24 ){
 				$dt = "day";
 				$dur = $tarr[$x]["task_duration"] / 24;
@@ -125,9 +125,9 @@ function findchild($parent, $level =0){
 				
 		
 		echo $dur . " " . $dt ;?></td>
-		<TD nowrap><?echo fromDate(substr($tarr[$x]["task_end_date"], 0, 10));?></td>
+		<TD nowrap><?php echo fromDate(substr($tarr[$x]["task_end_date"], 0, 10));?></td>
 		</tr>
-		<?
+		<?php
 
 		$str=findchild($tarr[$x]["task_id"], $level);
 		}
@@ -138,13 +138,13 @@ function findchild($parent, $level =0){
 ?>
 
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-<form action="<?echo $REQUEST_URI;?>" method="post" name="pickProject">
+<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickProject">
 	<TR>
-	<TD><img src="./images/icons/tasks.gif" alt="<?echo ptranslate("Tasks");?>" border="0" width="44" height="38"></td>
-		<TD nowrap><span class="title">Tasks: <?if($project_id == 0){echo "All";} else {echo @$tarr[0]["project_name"];} ;?></span></td>
+	<TD><img src="./images/icons/tasks.gif" alt="<?php echo ptranslate("Tasks");?>" border="0" width="44" height="38"></td>
+		<TD nowrap><span class="title">Tasks: <?php if($project_id == 0){echo "All";} else {echo @$tarr[0]["project_name"];} ;?></span></td>
 		<TD align="right" width="100%">Project: <select name="cookie_project" onChange="document.pickProject.submit()" style="font-size:8pt;font-family:verdana;">
-		<option value="0" <?if($project_id == 0)echo " selected" ;?> >all
-		<?
+		<option value="0" <?php if($project_id == 0)echo " selected" ;?> >all
+		<?php
 		reset($pluarr);
 		while ( list($key, $val) = each($pluarr) ) { 
 			if($val["project_id"] == $project_id){
@@ -155,12 +155,12 @@ function findchild($parent, $level =0){
 			}
 		}?>
 		</select><br>
-		<?include ("./includes/create_new_menu.php");?>
+		<?php include ("./includes/create_new_menu.php");?>
 		</td>
 	</tr>
 </TABLE>
 
-<?if(isset($message))echo $message;?>
+<?php if(isset($message))echo $message;?>
 <TABLE width="95%" border=0 cellpadding="2" cellspacing=1>
 	<TR style="border: outset #eeeeee 2px;">
 		<TD class="mboxhdr" width="10">id</td>
@@ -173,7 +173,7 @@ function findchild($parent, $level =0){
 	</tr>
 	
 	
-<?
+<?php
 $isproj = 0;
 
 for($x =0;$x < $nums;$x++){
@@ -198,8 +198,8 @@ for($x =0;$x < $nums;$x++){
 		
 			<table width="100%" border=0>
 				<tr>
-					<TD nowrap style="border: outset #eeeeee 2px;" bgcolor="<?echo $pluarr[$tarr[$x]["task_project"]]["project_color_identifier"];?>"><A href="./index.php?m=projects&a=view&project_id=<?echo $tarr[$x]["task_project"];?>"><?echo $font;?><B><?echo $tarr[$x]["project_name"];?></b></span></a></td>
-					<TD width="<?echo (101 - intval($pluarr[$tarr[$x]["task_project"]]["project_precent_complete"]));?>%"> <?echo (intval($pluarr[$tarr[$x]["task_project"]]["project_precent_complete"]));?>%</td>
+					<TD nowrap style="border: outset #eeeeee 2px;" bgcolor="<?php echo $pluarr[$tarr[$x]["task_project"]]["project_color_identifier"];?>"><A href="./index.php?m=projects&a=view&project_id=<?php echo $tarr[$x]["task_project"];?>"><?php echo $font;?><B><?php echo $tarr[$x]["project_name"];?></b></span></a></td>
+					<TD width="<?php echo (101 - intval($pluarr[$tarr[$x]["task_project"]]["project_precent_complete"]));?>%"> <?php echo (intval($pluarr[$tarr[$x]["task_project"]]["project_precent_complete"]));?>%</td>
 
 				</tr>
 			</table>
@@ -207,24 +207,24 @@ for($x =0;$x < $nums;$x++){
 		</td>
 
 	</tr>
-<?}
+<?php }
 
 $isproj = $tarr[$x]["task_project"];
 
 
 	if($tarr[$x]["task_parent"] == $tarr[$x]["task_id"]){?>
 		<TR  bgcolor="#f4efe3">
-		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
-		<TD align="right"><?echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
+		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+		<TD align="right"><?php echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
 		<TD>
-		<?if($tarr[$x]["task_priority"] <>0){echo "<img src='./images/icons/" . $tarr[$x]["task_priority"] .".gif' width=13 height=16>";}?>
+		<?php if($tarr[$x]["task_priority"] <>0){echo "<img src='./images/icons/" . $tarr[$x]["task_priority"] .".gif' width=13 height=16>";}?>
 		
 		</td>
-		<TD valign="middle"><img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?echo $tarr[$x]["task_id"];?>">
-		<map name="arrow<?echo $tarr[$x]["task_id"];?>"><area coords="0,0,10,7" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=u";?>>
-		<area coords="0,8,10,14" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=d";?>></map> <A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
-		<TD><?echo fromDate(substr($tarr[$x]["task_start_date"], 0, 10));?></td>
-		<TD><?
+		<TD valign="middle"><img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $tarr[$x]["task_id"];?>">
+		<map name="arrow<?php echo $tarr[$x]["task_id"];?>"><area coords="0,0,10,7" href=<?php echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=u";?>>
+		<area coords="0,8,10,14" href=<?php echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=d";?>></map> <A href="./index.php?m=tasks&a=view&task_id=<?php echo $tarr[$x]["task_id"];?>"><?php echo $tarr[$x]["task_name"];?></a></td>		
+		<TD><?php echo fromDate(substr($tarr[$x]["task_start_date"], 0, 10));?></td>
+		<TD><?php
 			if($tarr[$x]["task_duration"] > 24 ){
 				$dt = "day";
 				$dur = $tarr[$x]["task_duration"] / 24;
@@ -235,10 +235,10 @@ $isproj = $tarr[$x]["task_project"];
 			}
 			if($dur > 1)$dt.="s";
 			echo $dur . " " . $dt ;?></td>
-		<TD><?if(intval($tarr[$x]["task_end_date"]) >0)echo fromDate(substr($tarr[$x]["task_end_date"], 0, 10));?></td>
+		<TD><?php if(intval($tarr[$x]["task_end_date"]) >0)echo fromDate(substr($tarr[$x]["task_end_date"], 0, 10));?></td>
 		</tr>
 
-	<?
+	<?php
 	$order = $tarr[$x]["task_order"];
 	echo findchild($tarr[$x]["task_id"]);
 	}

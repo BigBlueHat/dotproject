@@ -1,4 +1,4 @@
-<?
+<?php
 srand((double)microtime()*1000000); 
 if($w == "u"){
 	$sql = "select task_id, task_order from tasks where task_project = $task_project and task_parent = task_id and task_order <= $order and task_id != $task_id order by task_order desc";
@@ -38,5 +38,5 @@ else
 	$message.= mysql_error();
 ?>
 <script>
-window.location="./index.php?m=tasks&message=<?echo $message;?>";
+window.location="./index.php?m=tasks&message=<?php echo $message;?>";
 </script>

@@ -1,4 +1,4 @@
-<?
+<?php
 //pull users;
 $usql="select user_first_name, user_last_name, user_id from users order by user_last_name";
 $urc = mysql_query($usql);
@@ -104,10 +104,10 @@ function updateTask(){
 
 <table border="0" cellpadding="0" cellspacing="2" width="95%">
 	<TR>
-		<TD nowrap><A href="./index.php?m=projects&a=view&project_id=<?echo $prow["project_id"];?>"><?echo $prow["project_name"];?></A><b> : </b></TD>
+		<TD nowrap><A href="./index.php?m=projects&a=view&project_id=<?php echo $prow["project_id"];?>"><?php echo $prow["project_name"];?></A><b> : </b></TD>
 		<TD nowrap><A href="./index.php?m=tasks">Task List</a><b> : </b></TD>
-		<TD nowrap><A href="./index.php?m=tasks&a=addedit&task_id=<?echo $prow["task_id"];?>">Edit this task</TD>
-		<TD width="100%" align="right"><?include ("./includes/create_new_menu.php");?>
+		<TD nowrap><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $prow["task_id"];?>">Edit this task</TD>
+		<TD width="100%" align="right"><?php include ("./includes/create_new_menu.php");?>
 </TD>
 	</TR>
 </TABLE>	
@@ -116,8 +116,8 @@ function updateTask(){
 <table border="0" cellpadding="4" cellspacing="0" width="95%">
 	<TR>
 	
-		<TD style="border: outset #eeeeee 2px;" width="50%" bgcolor="<?echo $prow["project_color_identifier"];?>">
-							<?
+		<TD style="border: outset #eeeeee 2px;" width="50%" bgcolor="<?php echo $prow["project_color_identifier"];?>">
+							<?php
 					$r = hexdec(substr($prow["project_color_identifier"], 0, 2)); 
 					$g = hexdec(substr($prow["project_color_identifier"], 2, 2)); 
 					$b = hexdec(substr($prow["project_color_identifier"], 4, 2)); 
@@ -126,7 +126,7 @@ function updateTask(){
 					{
 					echo "<font color='white'>";
 					};
-					?><b>TASK: <?echo @$prow["task_name"];?></b>
+					?><b>TASK: <?php echo @$prow["task_name"];?></b>
 		</TD>
 
 	</tr>
@@ -139,18 +139,18 @@ function updateTask(){
 				<TABLE width="430" cellspacing=1>
 				<TR>
 					<TD align=right>Project:</td>
-					<TD bgcolor="#eeeeee"><?echo @$prow["project_name"];?></td>
+					<TD bgcolor="#eeeeee"><?php echo @$prow["project_name"];?></td>
 				</tr>
 				<TR>
 					<TD align=right>Task:</td>
-					<TD bgcolor="#eeeeee"><?echo @$prow["task_name"];?></td>
+					<TD bgcolor="#eeeeee"><?php echo @$prow["task_name"];?></td>
 				</tr>
 				<TR>
 					<TD align=right>Owner:</td>
-					<TD bgcolor="#eeeeee"> <?echo @$prow["username"];?></td>
+					<TD bgcolor="#eeeeee"> <?php echo @$prow["username"];?></td>
 				</tr>				<TR>
 					<TD align=right>Priority:</td>
-					<TD bgcolor="#eeeeee"><?
+					<TD bgcolor="#eeeeee"><?php
 					if($prow["task_priority"] == 0){
 						echo "Normal";
 					}
@@ -164,19 +164,19 @@ function updateTask(){
 				</tr>
 				<TR>
 					<TD align=right>Web Address:</td>
-					<TD bgcolor="#eeeeee" width="300"><?echo @$prow["task_related_url"];?></td>
+					<TD bgcolor="#eeeeee" width="300"><?php echo @$prow["task_related_url"];?></td>
 				</tr>		
 				<TR>
 					<TD align=right>Milestone:</td>
-					<TD bgcolor="#eeeeee" width="300"><?if($prow["task_milestone"]){echo "Yes";}else{echo "No";}?></td>
+					<TD bgcolor="#eeeeee" width="300"><?php if($prow["task_milestone"]){echo "Yes";}else{echo "No";}?></td>
 				</tr>
 				<TR>
 					<TD align=right>Percent Complete:</td>
-					<TD bgcolor="#eeeeee" width="300"><?echo @$prow["task_precent_complete"];?>%</td>
+					<TD bgcolor="#eeeeee" width="300"><?php echo @$prow["task_precent_complete"];?>%</td>
 				</tr>				
 					<TR>
 					<TD align=right>Time worked:</td>
-					<TD bgcolor="#eeeeee" width="300"><?echo @$prow["task_hours_worked"];?></td>
+					<TD bgcolor="#eeeeee" width="300"><?php echo @$prow["task_hours_worked"];?></td>
 				</tr>				
 				</table>
 			</td>
@@ -187,12 +187,12 @@ function updateTask(){
 			<td width="50%" align="right">
 				<table cellspacing=0 cellpadding=2 width="100%">
 				<form name="update" action="./index.php?m=tasks&a=view" method="post">
-				<input type="hidden" value="<?echo uniqid("");?>" name="uniqueid">
+				<input type="hidden" value="<?php echo uniqid("");?>" name="uniqueid">
 				<input type="hidden" value="updatetask" name="dosql">
-				<input type="hidden" value="<?echo @$prow["task_id"];?>" name="task_id">
-				<input type="hidden" value="<?echo $user_cookie;?>" name="user_id">
-				<input type="hidden" value="Update :<?echo $$prow["task_name"];?>" name="comment_title">
-				<input type="hidden" value="<?echo @$prow["task_hours_worked"];?>" name="already_worked">
+				<input type="hidden" value="<?php echo @$prow["task_id"];?>" name="task_id">
+				<input type="hidden" value="<?php echo $user_cookie;?>" name="user_id">
+				<input type="hidden" value="Update :<?php echo $$prow["task_name"];?>" name="comment_title">
+				<input type="hidden" value="<?php echo @$prow["task_hours_worked"];?>" name="already_worked">
 					<TR>
 						<TD colspan=2><b>Update Task</b></TD>
 						<TD colspan=2>comments:</TD>
@@ -208,27 +208,27 @@ function updateTask(){
 						complete</td>
 						<TD bgcolor="#eeeeee">						
 						<select name="complete">
-						<option value="0" <?if($prow["task_precent_complete"] ==0){?>selected<?}?>>0
-						<option value="5" <?if($prow["task_precent_complete"]==5){?>selected<?}?>>5
-						<option value="10" <?if($prow["task_precent_complete"] ==10){?>selected<?}?>>10
-						<option value="15" <?if($prow["task_precent_complete"]==15){?>selected<?}?>>15
-						<option value="20" <?if($prow["task_precent_complete"] ==20){?>selected<?}?>>20
-						<option value="25 <?if($prow["task_precent_complete"] ==25){?>selected<?}?>">25
-						<option value="30" <?if($prow["task_precent_complete"] ==30){?>selected<?}?>>30
-						<option value="35" <?if($prow["task_precent_complete"]==35){?>selected<?}?>>35
-						<option value="40" <?if($prow["task_precent_complete"] ==40){?>selected<?}?>>40
-						<option value="45" <?if($prow["task_precent_complete"] ==45){?>selected<?}?>>45
-						<option value="50" <?if($prow["task_precent_complete"] ==50){?>selected<?}?>>50
-						<option value="55" <?if($prow["task_precent_complete"] ==55){?>selected<?}?>>55
-						<option value="60" <?if($prow["task_precent_complete"] ==60){?>selected<?}?>>60
-						<option value="65" <?if($prow["task_precent_complete"] ==65){?>selected<?}?>>65
-						<option value="70" <?if($prow["task_precent_complete"] ==70){?>selected<?}?>>70
-						<option value="75" <?if($prow["task_precent_complete"] ==75){?>selected<?}?>>75
-						<option value="80" <?if($prow["task_precent_complete"] ==80){?>selected<?}?>>80
-						<option value="85" <?if($prow["task_precent_complete"] ==85){?>selected<?}?>>85
-						<option value="90" <?if($prow["task_precent_complete"] ==90){?>selected<?}?>>90
-						<option value="95" <?if($prow["task_precent_complete"] ==95){?>selected<?}?>>95
-						<option value="100" <?if($prow["task_precent_complete"] ==100){?>selected<?}?>>100
+						<option value="0" <?php if($prow["task_precent_complete"] ==0){?>selected<?php }?>>0
+						<option value="5" <?php if($prow["task_precent_complete"]==5){?>selected<?php }?>>5
+						<option value="10" <?php if($prow["task_precent_complete"] ==10){?>selected<?php }?>>10
+						<option value="15" <?php if($prow["task_precent_complete"]==15){?>selected<?php }?>>15
+						<option value="20" <?php if($prow["task_precent_complete"] ==20){?>selected<?php }?>>20
+						<option value="25 <?php if($prow["task_precent_complete"] ==25){?>selected<?php }?>">25
+						<option value="30" <?php if($prow["task_precent_complete"] ==30){?>selected<?php }?>>30
+						<option value="35" <?php if($prow["task_precent_complete"]==35){?>selected<?php }?>>35
+						<option value="40" <?php if($prow["task_precent_complete"] ==40){?>selected<?php }?>>40
+						<option value="45" <?php if($prow["task_precent_complete"] ==45){?>selected<?php }?>>45
+						<option value="50" <?php if($prow["task_precent_complete"] ==50){?>selected<?php }?>>50
+						<option value="55" <?php if($prow["task_precent_complete"] ==55){?>selected<?php }?>>55
+						<option value="60" <?php if($prow["task_precent_complete"] ==60){?>selected<?php }?>>60
+						<option value="65" <?php if($prow["task_precent_complete"] ==65){?>selected<?php }?>>65
+						<option value="70" <?php if($prow["task_precent_complete"] ==70){?>selected<?php }?>>70
+						<option value="75" <?php if($prow["task_precent_complete"] ==75){?>selected<?php }?>>75
+						<option value="80" <?php if($prow["task_precent_complete"] ==80){?>selected<?php }?>>80
+						<option value="85" <?php if($prow["task_precent_complete"] ==85){?>selected<?php }?>>85
+						<option value="90" <?php if($prow["task_precent_complete"] ==90){?>selected<?php }?>>90
+						<option value="95" <?php if($prow["task_precent_complete"] ==95){?>selected<?php }?>>95
+						<option value="100" <?php if($prow["task_precent_complete"] ==100){?>selected<?php }?>>100
 					</select> %</td>
 					</tr>
 					<TR>
@@ -247,15 +247,15 @@ function updateTask(){
 				<TABLE width="100%" cellspacing=1>
 					<TR>
 						<TD align=right>Start Date:</TD>
-						<TD bgcolor="#eeeeee" width="300"><?echo fromDate(substr($prow["task_start_date"], 0, 10));?></td>
+						<TD bgcolor="#eeeeee" width="300"><?php echo fromDate(substr($prow["task_start_date"], 0, 10));?></td>
 					</TR>
 					<TR>
 						<TD align=right>End Date:</TD>
-						<TD bgcolor="#eeeeee" width="300"><?if(intval($prow["task_end_date"]) == 0){echo "n/a";}else{echo fromDate(substr($prow["task_end_date"], 0, 10));}?></td>
+						<TD bgcolor="#eeeeee" width="300"><?php if(intval($prow["task_end_date"]) == 0){echo "n/a";}else{echo fromDate(substr($prow["task_end_date"], 0, 10));}?></td>
 					</tr>
 					<TR>
 						<TD align=right>Expected Duration:</td>
-						<TD bgcolor="#eeeeee" width="300"><? 
+						<TD bgcolor="#eeeeee" width="300"><?php
 						$dur = returnDur($prow["task_duration"]);
 						echo $dur["value"] . " " . $dur["type"];
 						
@@ -263,27 +263,27 @@ function updateTask(){
 					</tr>				
 					<TR>
 						<TD align=right>Target Budget:</td>
-						<TD bgcolor="#eeeeee" width="300"><?echo $prow["task_target_budget"];?></td>		
+						<TD bgcolor="#eeeeee" width="300"><?php echo $prow["task_target_budget"];?></td>		
 					</tr>
 				</TABLE>
 			</TD>
 			<td valign="top" rowspan=2>
 				<b>Assigned Users</b>
 				<TABLE width="100%" cellspacing=1 bgcolor="black">
-				<?while($row = mysql_fetch_array($tsql)){?>
-				<TR><TD bgcolor="#f4efe3"><?echo $row["user_username"];?></td><TD bgcolor="#f4efe3"><?echo $row["user_email"];?></td></tr>
-				<?};?>
+				<?php while($row = mysql_fetch_array($tsql)){?>
+				<TR><TD bgcolor="#f4efe3"><?php echo $row["user_username"];?></td><TD bgcolor="#f4efe3"><?php echo $row["user_email"];?></td></tr>
+				<?php };?>
 			</TABLE>
 
 			<TABLE width="100%" cellspacing=0 cellpadding=0>
-			<TR><TD><B>Attached Files</b></td><TD align=right><A href="./index.php?m=files&a=addedit&project_id=<?echo $project_id;?>&task_id=<?echo $task_id;?>">Attach a file<img src="./images/icons/minifile.gif" align=absmiddle width=20 height=28 alt="attach a file to this task" border=0></a></td></tr>
+			<TR><TD><B>Attached Files</b></td><TD align=right><A href="./index.php?m=files&a=addedit&project_id=<?php echo $project_id;?>&task_id=<?php echo $task_id;?>">Attach a file<img src="./images/icons/minifile.gif" align=absmiddle width=20 height=28 alt="attach a file to this task" border=0></a></td></tr>
 			</TABLE>
 			 
 			<TABLE width="100%" cellspacing=1 bgcolor="black">
-				<?if(mysql_num_rows($fsql)==0)echo "<TR><TD bgcolor=#ffffff>none</td></tr>";
+				<?php if(mysql_num_rows($fsql)==0)echo "<TR><TD bgcolor=#ffffff>none</td></tr>";
 				while($row = mysql_fetch_array($fsql)){?>
-				<TR><TD bgcolor="#eeeeee"><A href="./fileviewer.php?file_id=<?echo $row["file_id"];?>"><?echo $row["file_name"];?></a></td><TD bgcolor="#ffffff"><?echo $row["file_type"];?></td><TD bgcolor="#eeeeee"><?echo $row["file_size"];?></td></tr>
-				<?};?>
+				<TR><TD bgcolor="#eeeeee"><A href="./fileviewer.php?file_id=<?php echo $row["file_id"];?>"><?php echo $row["file_name"];?></a></td><TD bgcolor="#ffffff"><?php echo $row["file_type"];?></td><TD bgcolor="#eeeeee"><?php echo $row["file_size"];?></td></tr>
+				<?php };?>
 			</TABLE>
 		</td>
 	</tr>
@@ -292,7 +292,7 @@ function updateTask(){
 			<b>full description</b>
 			<TABLE WIDTH="100%" height="66">
 				<TR>
-					<TD bgcolor="#eeeeee"><?$newstr = str_replace( chr(10), "<BR>", $prow["task_description"]);echo $newstr;?></td>
+					<TD bgcolor="#eeeeee"><?php $newstr = str_replace( chr(10), "<BR>", $prow["task_description"]);echo $newstr;?></td>
 				</tr>
 			</table>
 		</td>
@@ -313,16 +313,16 @@ function updateTask(){
 		<TD width="150" class="mboxhdr">Date</td>
 	
 	</tr>	
-	<?while($row = mysql_fetch_array($crc)){?>
+	<?php while($row = mysql_fetch_array($crc)){?>
 	<TR bgcolor="white">
-		<TD width="100"><?echo $row["comment_title"];?></td>
-		<TD width="100"><?echo $row["user_username"];?></td>
-		<TD><?$newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
-		<TD width="150"><?echo fromDate($row["comment_date"]);?></td>
+		<TD width="100"><?php echo $row["comment_title"];?></td>
+		<TD width="100"><?php echo $row["user_username"];?></td>
+		<TD><?php $newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
+		<TD width="150"><?php echo fromDate($row["comment_date"]);?></td>
 	
 	</tr>
 	
-	<?}?>
+	<?php }?>
 </TABLE>
 </td></tr>
 </TABLE>

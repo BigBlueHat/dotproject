@@ -1,4 +1,4 @@
-<?
+<?php
 // This page sets permissions
 
 //Logout procedure
