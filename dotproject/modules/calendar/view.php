@@ -21,6 +21,20 @@ if (!$obj->load( $event_id )) {
 // load the event types
 $types = dPgetSysVal( 'EventType' );
 
+// load the event recurs types
+$recurs =  array (
+	'Never',
+	'Hourly',
+	'Daily',
+	'Weekly',
+	'Bi-Weekly',
+	'Every Month',
+	'Quarterly',
+	'Every 6 months',
+	'Every Year'
+);
+
+
 if ($obj->event_owner != $AppUI->user_id) {
 	$canEdit = false;
 }
@@ -89,6 +103,10 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Ends');?>:</td>
 			<td class="hilite"><?php echo $end_date ? $end_date->format( "$df $tf" ) : '-';?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Recurs');?>:</td>
+			<td class="hilite"><?php echo $AppUI->_($recurs[$obj->event_recurs])." (".$obj->event_times_recuring."&nbsp;".$AppUI->_('times').")" ;?></td>
 		</tr>
 		</table>
 	</td>

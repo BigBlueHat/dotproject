@@ -387,6 +387,82 @@ class CEvent extends CDpObject {
 	}
 
 /**
+* Calculating if an recurrent date is in the given period
+* @param Date Start date of the period
+* @param Date End date of the period
+* @param Date Start date of the Date Object
+* @param Date End date of the Date Object
+* @param integer Type of Recurrence
+* @param integer Times of Recurrence
+* @param integer Time of Recurrence
+* @return array Calculated Start and End Dates for the recurrent Event for the given Period
+*/
+	function getRecurrentEventforPeriod( $start_date, $end_date, $event_start_date, $event_end_date, $event_recurs, $event_times_recuring, $j ) {
+
+		//this array will be returned
+		$transferredEvent = array();
+
+		//create Date Objects for Event Start and Event End
+		$eventStart = new CDate( $event_start_date );
+		$eventEnd = new CDate( $event_end_date );
+
+		//Time of Recurence = 0 (first occurence of event) has to be checked, too.
+		if ($j>0) {
+			switch ($event_recurs) {
+				case 1:
+					$eventStart->addSpan(new Date_Span(3600));
+					$eventEnd->addSpan(new Date_Span(3600));
+					break;
+				case 2:
+					$eventStart->addDays( 1 );
+					$eventEnd->addDays( 1 );
+					break;
+				case 3:
+					$eventStart->addDays( 7 );
+					$eventEnd->addDays( 7 );
+					break;
+				case 4:
+					$eventStart->addDays( 14 );
+					$eventEnd->addDays( 14 );
+					break;
+				case 5:
+					$eventStart->addMonths( 1 );
+					$eventEnd->addMonths( 1 );
+					break;
+				case 6:
+					$eventStart->addMonths( 3 );
+					$eventEnd->addMonths( 3 );
+					break;
+				case 7:
+					$eventStart->addMonths( 6 );
+					$eventEnd->addMonths( 6);
+					break;
+				case 8:
+					$eventStart->addMonths( 12 );
+					$eventEnd->addMonths( 12 );
+					break;
+				default:
+					break;
+			}
+		}
+
+			//avoid adding events which are out of dateTimePeriod
+			if ( $eventStart->after($start_date) && $eventStart->before($end_date) ){
+
+				$transferredEvent = array($eventStart, $eventEnd);
+
+			}
+
+
+
+
+		// return array with event start and end dates for given period (positive case)
+		// or an empty array (negative case)
+		return $transferredEvent;
+	}
+
+
+/**
 * Utility function to return an array of events with a period
 * @param Date Start date of the period
 * @param Date End date of the period
@@ -394,17 +470,18 @@ class CEvent extends CDpObject {
 */
 	function getEventsForPeriod( $start_date, $end_date ) {
 		global $AppUI;
+
 	// the event times are stored as unix time stamps, just to be different
 
 	// convert to default db time stamp
 		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
 		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
-		
+
 		// Filter events not allowed
 		$where = '';
 		$join = winnow('projects', 'event_project', $where);
 
-	// assemble query
+	// assemble query for non-recursive events
 		$sql = "
 		SELECT *
 		FROM events
@@ -417,10 +494,68 @@ class CEvent extends CDpObject {
 				OR (event_private=1 AND event_owner=$AppUI->user_id)
 			)
 			AND ($where)
+			AND ( event_recurs <= 0 )
 		";
-	// echo "<pre>$sql</pre>";
-	// execute and return
-		return db_loadList( $sql );
+	//echo "<pre>$sql</pre>";
+	// execute
+	$eventList = db_loadList( $sql );
+
+
+	// assemble query for recursive events
+		$sql = "
+		SELECT *
+		FROM events
+		$join
+		WHERE  ( event_private=0  OR (event_private=1 AND event_owner=$AppUI->user_id) )
+			AND ( event_recurs > 0)
+			AND ($where)
+		";
+	//echo "<pre>$sql</pre>";
+
+	// execute
+	$eventListRec = db_loadList( $sql );
+
+	//Calculate the Length of Period (Daily, Weekly, Monthly View)
+	$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
+
+
+	for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
+
+		for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
+
+			//Daily View
+			//show all
+			if ($periodLength == 1){
+			$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+			}
+			//Weekly or Monthly View and Hourly Recurrent Events
+			//only show hourly recurrent event one time and add string 'hourly'
+			elseif ($periodLength > 1 && $eventListRec[$i]['event_recurs'] == 1 && $j==0) {
+			$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+			$eventListRec[$i]['event_title'] = $eventListRec[$i]['event_title']." (".$AppUI->_('Hourly').")";
+			}
+			//Weekly and Monthly View and higher recurrence mode
+			//show all events of recurrence > 1
+			elseif ($periodLength > 1 && $eventListRec[$i]['event_recurs'] > 1) {
+			$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+			}
+			//add values to the eventsArray if check for recurrent event was positive
+			if ( sizeof($recEventDate) > 0 ) {
+				$eventListRec[$i]['event_start_date'] = $recEventDate[0]->format( FMT_DATETIME_MYSQL );
+				$eventListRec[$i]['event_end_date'] = $recEventDate[1]->format( FMT_DATETIME_MYSQL );
+				$eList[0] = $eventListRec[$i];
+ 				$eventList = array_merge($eventList,$eList);
+			}
+			// clear array of positive recurrent events for the case that next loop recEventDate is empty in order to avoid double display
+			$recEventDate = array();
+		}
+
+
+
+	}
+
+		//return a list of non-recurrent and recurrent events
+		return $eventList;
 	}
 }
 

@@ -195,15 +195,15 @@ function setCalendar( idate, fdate ) {
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Time' );?>:</td>
 	<td><?php echo arraySelect( $times, 'end_time', 'size="1" class="text"', $end_date->format( "%H%M%S" ) ); ?></td>
 </tr>
-<?php /* FUNCTIONALITY NOT YET ENABLED ?>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Recurs' );?>:</td>
-	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj['event_recurs'] ); ?></td>
+	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj['event_recurs'], true ); ?></td>
 	<td align="right">x</td>
 	<td>
 		<input type="text"  name="event_times_recuring" value="<?php echo @$obj->event_times_recuring;?>" maxlength="2" size=3> <?php echo $AppUI->_( 'times' );?>
 	</td>
 </tr>
+<?php /* FUNCTIONALITY NOT YET ENABLED ?>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Remind Me' );?>:</td>
 	<td><?php echo arraySelect( $remind, 'event_remind', 'size="1" class="text"', $obj['event_remind'] ); ?> <?php echo $AppUI->_( 'in advance' );?></td>
