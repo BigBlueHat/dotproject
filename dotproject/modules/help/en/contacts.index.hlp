@@ -19,6 +19,10 @@ only able to restrict to specific alphabet letters if there are entries that exi
 	<li>Contact Notes</li>
 </ul>
 
+<p>New contacts are added by clicking on the <strong>New Contact</strong> button. Detailed information about adding
+new contacts, editting existing contacts, or deleting contacts is presented on the <strong>Add, Edit, or Delete</strong>
+ Contacts help page.</p>
+
 <p> Currently, the <strong>contacts module</strong> is not integrated with either the <strong>user module</strong>
 or the <strong>company module</strong>. Furthermore, to date, the data stored in this module has not be used by 
 other modules.</p>
@@ -34,10 +38,11 @@ of <strong>all contact entries</strong>. However, if they try to get details on 
 will encounter a <strong>permission denied</strong> error message. This would occur for all entries, regardless of whether
 marked as a <strong>private entry</strong> or not.</p>
 
-<p>The behavior described above existed in the 15 Mar 2003 CVS version of dotProject 1.0 alpha.</p>.
+<p>[The behavior described above existed in the 15 Mar 2003 CVS version of dotProject 1.0 alpha.]</p>
 
 <p>If you are concerned about other dotProject users viewing the <strong>contacts listing</strong>, you may want to 
-disable this dotproject module in the <strong>System Admin</strong> section.</p>
+<strong>disable</strong> this dotproject module in the <strong>System Admin</strong> section. Alternatively, you 
+could <strong>deny access</strong> to this module to specific users.</p>
 
 <p>To date, the <strong>contacts module</strong> has not received much attention from current development team, and 
 will probably be rewritten as part of an amalgamated <strong>user</strong> or <strong>company</strong> submodule. If you 
