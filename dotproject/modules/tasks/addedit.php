@@ -202,7 +202,7 @@ function delIt() {
 </script>
 
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
-<form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $task_project;?>" method="post">
+<form name="AddEdit" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
 <input name="dosql" type="hidden" value="task_aed">
 <input name="del" type="hidden" value="0">
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>">

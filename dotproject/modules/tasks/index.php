@@ -45,6 +45,6 @@ $AppUI->setState( 'ActiveProject', $project_id );
 
 <?php
 // include the re-usable sub view
-	$min_view = '';
+	$min_view = false;
 	include("$root_dir/modules/tasks/tasks.php");
 ?>
