@@ -4,7 +4,7 @@ $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 // check permissions for this record
 $canEdit = !getDenyEdit( $m, $project_id );
 if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // get a list of permitted companies
@@ -16,28 +16,28 @@ $companies = arrayMerge( array( '0'=>'' ), $companies );
 
 // pull users
 $sql = "SELECT user_id, CONCAT_WS(', ',contact_last_name,contact_first_name)
-        FROM users
-        LEFT JOIN contacts ON contact_id = user_contact
-        ORDER BY contact_last_name";
+FROM users
+LEFT JOIN contacts ON contact_id = user_contact
+ORDER BY contact_last_name";
 $users = db_loadHashList( $sql );
 
 // load the record data
 $row = new CProject();
 
 if (!$row->load( $project_id, false ) && $project_id > 0) {
-	$AppUI->setMsg( 'Project' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
-	$AppUI->redirect();
+$AppUI->setMsg( 'Project' );
+$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+$AppUI->redirect();
 } else if (count( $companies ) < 2 && $project_id == 0) {
-	$AppUI->setMsg( "noCompanies", UI_MSG_ERROR, true );
-	$AppUI->redirect();
+$AppUI->setMsg( "noCompanies", UI_MSG_ERROR, true );
+$AppUI->redirect();
 }
 
 // add in the existing company if for some reason it is dis-allowed
 if ($project_id && !array_key_exists( $row->project_company, $companies )) {
-	$companies[$row->project_company] = db_loadResult(
-		"SELECT company_name FROM companies WHERE company_id=$row->project_company"
-	);
+$companies[$row->project_company] = db_loadResult(
+	"SELECT company_name FROM companies WHERE company_id=$row->project_company"
+);
 }
 
 // get critical tasks (criteria: task_end_date)
@@ -60,7 +60,7 @@ $ttl = $project_id > 0 ? "Edit Project" : "New Project";
 $titleBlock = new CTitleBlock( $ttl, 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=projects", "projects list" );
 if ($project_id != 0)
-  $titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 $titleBlock->show();
 
 //Build display list for departments
@@ -69,9 +69,9 @@ $selected_departments = $row->project_departments != "" ? explode(",", $row->pro
 $departments_count = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
 if($department_selection_list!=""){
-	$department_selection_list = $AppUI->_("Departments")."<br /><select name='dept_ids[]' size='$departments_count' multiple style=''>$department_selection_list</select>";
+$department_selection_list = $AppUI->_("Departments")."<br /><select name='dept_ids[]' size='$departments_count' multiple style=''>$department_selection_list</select>";
 } else {
-	$department_selection_list = "<input type='button' class='button' value='".$AppUI->_("Select department...")."' onclick='javascript:popDepartment();' /><input type=\"hidden\" name=\"project_departments\"";
+$department_selection_list = "<input type='button' class='button' value='".$AppUI->_("Select department...")."' onclick='javascript:popDepartment();' /><input type=\"hidden\" name=\"project_departments\"";
 }
 
 ?>
@@ -83,77 +83,77 @@ if($department_selection_list!=""){
 
 <script language="javascript">
 function setColor(color) {
-	var f = document.editFrm;
-	if (color) {
-		f.project_color_identifier.value = color;
-	}
-	//test.style.background = f.project_color_identifier.value;
-	document.getElementById('test').style.background = '#' + f.project_color_identifier.value; 		//fix for mozilla: does this work with ie? opera ok.
+var f = document.editFrm;
+if (color) {
+	f.project_color_identifier.value = color;
+}
+//test.style.background = f.project_color_identifier.value;
+document.getElementById('test').style.background = '#' + f.project_color_identifier.value; 		//fix for mozilla: does this work with ie? opera ok.
 }
 
 function setShort() {
-	var f = document.editFrm;
-	var x = 10;
-	if (f.project_name.value.length < 11) {
-		x = f.project_name.value.length;
-	}
-	if (f.project_short_name.value.length == 0) {
-		f.project_short_name.value = f.project_name.value.substr(0,x);
-	}
+var f = document.editFrm;
+var x = 10;
+if (f.project_name.value.length < 11) {
+	x = f.project_name.value.length;
+}
+if (f.project_short_name.value.length == 0) {
+	f.project_short_name.value = f.project_name.value.substr(0,x);
+}
 }
 
 var calendarField = '';
 var calWin = null;
 
 function popCalendar( field ){
-	calendarField = field;
-	idate = eval( 'document.editFrm.project_' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=280, height=250, scollbars=false' );
+calendarField = field;
+idate = eval( 'document.editFrm.project_' + field + '.value' );
+window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=280, height=250, scollbars=false' );
 }
 
 /**
- *	@param string Input date in the format YYYYMMDD
- *	@param string Formatted date
- */
+*	@param string Input date in the format YYYYMMDD
+*	@param string Formatted date
+*/
 function setCalendar( idate, fdate ) {
-	fld_date = eval( 'document.editFrm.project_' + calendarField );
-	fld_fdate = eval( 'document.editFrm.' + calendarField );
-	fld_date.value = idate;
-	fld_fdate.value = fdate;
+fld_date = eval( 'document.editFrm.project_' + calendarField );
+fld_fdate = eval( 'document.editFrm.' + calendarField );
+fld_date.value = idate;
+fld_fdate.value = fdate;
 }
 
 function submitIt() {
-	var f = document.editFrm;
-	var msg = '';
+var f = document.editFrm;
+var msg = '';
 
-	if (f.project_name.value.length < 3) {
-		msg += "\n<?php echo $AppUI->_('projectsValidName');?>";
-		f.project_name.focus();
-	}
-	if (f.project_color_identifier.value.length < 3) {
-		msg += "\n<?php echo $AppUI->_('projectsColor');?>";
-		f.project_color_identifier.focus();
-	}
-	if (f.project_company.options[f.project_company.selectedIndex].value < 1) {
-		msg += "\n<?php echo $AppUI->_('projectsBadCompany');?>";
-		f.project_name.focus();
-	}
-	/*
-	if (f.project_end_date.value > 0 && f.project_end_date.value < f.project_start_date.value) {
-		msg += "\n<?php echo $AppUI->_('projectsBadEndDate1');?>";
-	}
-	if (f.project_actual_end_date.value > 0 && f.project_actual_end_date.value < f.project_start_date.value) {
-		msg += "\n<?php echo $AppUI->_('projectsBadEndDate2');?>";
-	}
-	*/
-	if (msg.length < 1) {
-		f.submit();
-	} else {
-		alert(msg);
-	}
+if (f.project_name.value.length < 3) {
+	msg += "\n<?php echo $AppUI->_('projectsValidName');?>";
+	f.project_name.focus();
+}
+if (f.project_color_identifier.value.length < 3) {
+	msg += "\n<?php echo $AppUI->_('projectsColor');?>";
+	f.project_color_identifier.focus();
+}
+if (f.project_company.options[f.project_company.selectedIndex].value < 1) {
+	msg += "\n<?php echo $AppUI->_('projectsBadCompany');?>";
+	f.project_name.focus();
+}
+/*
+if (f.project_end_date.value > 0 && f.project_end_date.value < f.project_start_date.value) {
+	msg += "\n<?php echo $AppUI->_('projectsBadEndDate1');?>";
+}
+if (f.project_actual_end_date.value > 0 && f.project_actual_end_date.value < f.project_start_date.value) {
+	msg += "\n<?php echo $AppUI->_('projectsBadEndDate2');?>";
+}
+*/
+if (msg.length < 1) {
+	f.submit();
+} else {
+	alert(msg);
+}
 }
 
-var selected_contacts_id = "<?= $row->project_contacts; ?>";
+var selected_contacts_id = "<?php echo $row->project_contacts; ?>";
 
 function popContacts() {
 	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
@@ -167,7 +167,7 @@ function setContacts(contact_id_string){
 	selected_contacts_id = contact_id_string;
 }
 
-var selected_departments_id = "<?= $row->project_departments; ?>";
+var selected_departments_id = "<?php echo $row->project_departments; ?>";
 
 function popDepartment() {
         var f = document.editFrm;
@@ -299,7 +299,7 @@ function setDepartment(department_id_string){
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?></td>
 			<td nowrap>
-				<?=arraySelect( $projectPriority, 'project_priority', 'size="1" class="text"', $row->project_priority, true );?> *
+				<?php echo arraySelect( $projectPriority, 'project_priority', 'size="1" class="text"', $row->project_priority, true );?> *
 			</td>
 		</tr>
 		<tr>
@@ -323,7 +323,7 @@ function setDepartment(department_id_string){
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Type');?></td>
 			<td colspan="3">
-				<?=arraySelect( $ptype, 'project_type', 'size="1" class="text"', $row->project_type, true );?> *
+				<?php echo arraySelect( $ptype, 'project_type', 'size="1" class="text"', $row->project_type, true );?> *
 			</td>
 		</tr>
 		<tr>
