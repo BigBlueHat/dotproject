@@ -82,11 +82,6 @@ if ($AppUI->doLogin()) {
 	exit;
 }
 
-// see if a project id has been passed in the url
-if (isset( $_REQUEST['project_id'] )) {
-    $AppUI->setProject( $_REQUEST['project_id'] );
-}
-
 // see if a unix timestamp has been passed in the url;
 if (isset( $_REQUEST['uts'] )) {
     $AppUI->setDaySelected( $_REQUEST['uts'] );
