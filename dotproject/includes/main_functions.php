@@ -23,10 +23,14 @@ function bestColor( $bg, $lt='#ffffff', $dk='#000000' ) {
 ##
 ## returns a select box based on an key,value array where selected is based on key
 ##
-function arraySelect( &$arr, $select_name, $select_attribs, $selected ) {
+function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translate=false ) {
+	GLOBAL $AppUI;
 	reset( $arr );
 	$s = "<select name=\"$select_name\" $select_attribs>";
 	while (list( $k, $v ) = each( $arr)) {
+		if ($translate) {
+			$v = @$AppUI->_( $v );
+		}
 		$s .= '<option value="'.$k.'"'.($k == $selected ? ' selected' : '').'>'.$v;
 	}
 	$s .= '</select>';
