@@ -670,7 +670,14 @@ foreach ($projects as $k => $p) {
          <td colspan="3" align="right" valign="middle">
                 <table width="100%" border="0">
                         <tr>
-                                <td align="center">
+                                <td align="right">
+                                <select name="add_users" style="width:200px" size="2" multiple="multiple" class="text"  ondblclick="javascript:chAssignment('.$user_id.', 0, false)">
+                                <?php foreach ($userAlloc as $v => $u) {
+                                echo "\n\t<option value=\"".$u['user_id']."\">" . dPformSafe( $u['userFC'] ) . "</option>";
+                                }?>
+                                </select>
+                                </td>
+                                 <td align="center">
                                 <?php
                                         echo "<a href='javascript:chAssignment({$p['project_id']}, 0, 0);'>".
                                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a>";
@@ -683,13 +690,6 @@ foreach ($projects as $k => $p) {
                                                 echo "<option ".(($i==30)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                                         }
                                 ?>
-                                </select>
-                                </td>
-                                <td align="right">
-                                <select name="add_users" style="width:200px" size="2" multiple="multiple" class="text"  ondblclick="javascript:chAssignment('.$user_id.', 0, false)">
-                                <?php foreach ($userAlloc as $v => $u) {
-                                echo "\n\t<option value=\"".$u['user_id']."\">" . dPformSafe( $u['userFC'] ) . "</option>";
-                                }?>
                                 </select>
                                 </td>
                         </tr>
