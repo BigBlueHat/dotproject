@@ -17,6 +17,9 @@
 
 <p>Any of the <b>Project Synopsis</b> information (with the exception of <b>Progress</b>) can be updated by clicking on the <b>edit this project</b> link and making the appropriate changes.</p>
 
+<p><b>Worked Hours</b> is a summation of all the task logs applied to tasks that are members of the project.  They represent real world, logged hours that system users have recorded.  <b>Scheduled Hours</b> represent a summation of the durations of the tasks that the project contains.  If you have three tasks, each with a duration of 1 hour, your <b>Scheduled Hours</b> would total 3.  <b>"Project" Hours</b> represent the <b>Scheduled Hours</b> multiplied by the assigned resources.  So, with you same three tasks listed above, if we had a single user assigned 100% to all three tasks, our result would be 3.  If we had two user assigned to each task, the result would be 6 (3 tasks * 1 hour/task * 2 users/task = 6 total project hours).
+</p>
+
 <hr /><br />
 
 <h2>Dependent Module Screens</h2>

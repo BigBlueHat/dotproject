@@ -220,11 +220,11 @@ function delIt() {
 			<td class="hilite" width="100%"><?php echo $worked_hours ?></td>
 		</tr>	
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Total Hours');?>:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Scheduled Hours');?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_hours ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Work');?>:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('"Project" Hours');?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_project_hours ?></td>
 		</tr>				
 		<?php if($obj->project_departments != "") {
