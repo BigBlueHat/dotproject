@@ -11,13 +11,18 @@ if ($denyRead) {
 
 $AppUI->savePlace();
 
+if (isset( $_GET['orderby'] )) {
+	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
+}
+$orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
+
 // get any companies denied from viewing
 $deny = array();
 $sql = "
 SELECT company_id
 FROM companies, permissions
 WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'companies' 
+	AND permission_grant_on = 'companies'
 	AND permission_item = company_id
 	AND permission_value = 0
 ";
@@ -35,7 +40,7 @@ LEFT JOIN projects ON companies.company_id = projects.project_company and projec
 LEFT JOIN users ON companies.company_owner = users.user_id
 LEFT JOIN projects AS projects2 ON companies.company_id = projects2.project_company AND projects2.project_active = 0
 WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0 
+	AND permission_value <> 0
 	AND (
 		(permission_grant_on = 'all')
 		OR (permission_grant_on = 'companies' and permission_item = -1)
@@ -43,7 +48,7 @@ WHERE permission_user = $AppUI->user_id
 		)
 " . (count($deny) > 0 ? 'and company_id not in (' . implode( ',', $deny ) . ')' : '') . "
 GROUP BY company_id
-ORDER BY company_name
+ORDER BY $orderby
 ";
 
 $rows = db_loadList( $sql );
@@ -72,9 +77,15 @@ $rows = db_loadList( $sql );
 <table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<td nowrap="nowrap" width="60" align="right">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
-	<th nowrap="nowrap"><a href="#"><font color="white"><?php echo $AppUI->_('Company Name');?></font></a></th>
-	<th nowrap="nowrap"><a href="#"><font color="white"><?php echo $AppUI->_('Active Projects');?></font></a></th>
-	<th nowrap="nowrap"><a href="#"><font color="white"><?php echo $AppUI->_('Archived Projects');?></font></a></th>
+	<th nowrap="nowrap">
+		<a href="?m=companies&orderby=company_name" class="hdr"><?php echo $AppUI->_('Company Name');?></a>
+	</th>
+	<th nowrap="nowrap">
+		<a href="?m=companies&orderby=countp" class="hdr"><?php echo $AppUI->_('Active Projects');?></a>
+	</th>
+	<th nowrap="nowrap">
+		<a href="?m=companies&orderby=inactive" class="hdr"><?php echo $AppUI->_('Archived Projects');?></a>
+	</th>
 </tr>
 <?php foreach ($rows as $row){?>
 <tr>
