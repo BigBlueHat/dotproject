@@ -25,9 +25,16 @@ if (!$obj->load( $project_id ) && $project_id > 0) {
 	$AppUI->setMsg( 'Project' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
-} else if (count( $companies ) < 2) {
+} else if (count( $companies ) < 2 && $project_id == 0) {
 	$AppUI->setMsg( "noCompanies", UI_MSG_ERROR, true );
 	$AppUI->redirect();
+}
+
+// add in the existing company if for some reason it is dis-allowed
+if (!array_key_exists( $obj->project_company, $companies )) {
+	$companies[$obj->project_company] = db_loadResult(
+		"SELECT company_name FROM companies WHERE company_id=$obj->project_company"
+	);
 }
 
 // format dates
@@ -139,7 +146,7 @@ function submitIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?></td>
 			<td width="100%" nowrap="nowrap">
 <?php
-	echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $obj->project_company );
+		echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $obj->project_company );
 ?> *</td>
 		</tr>
 		<tr>
