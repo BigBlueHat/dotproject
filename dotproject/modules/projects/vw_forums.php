@@ -1,5 +1,5 @@
 <?php
-GLOBAL $project_id;
+GLOBAL $project_id, $user_cookie;
 // Forums mini-table in project view action
 
 $sql = "

@@ -13,6 +13,7 @@ if ($denyRead) {
 
 //Projects
 $company_id = isset($_REQUEST["company_id"]) ? $_REQUEST["company_id"] : $AppUI->user_company;
+$order_by = isset( $_GET['order_by']) ? $_GET['order_by'] : 0;
 
 //Set up defaults
 $orderby = isset($HTTP_GET_VARS["orderby"]) ? $HTTP_GET_VARS["orderby"] : 'project_end_date';
