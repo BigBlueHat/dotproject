@@ -170,6 +170,11 @@ class DBQuery {
     $this->create_definition = $def;
   }
 
+  function setDelete()
+  {
+    $this->type = 'delete';
+  }
+
   /** 
    * Add where sub-clauses.  The where clause can be built up one
    * part at a time and the resultant query will put in the 'and'
