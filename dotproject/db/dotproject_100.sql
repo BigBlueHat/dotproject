@@ -117,7 +117,6 @@ CREATE TABLE files (
   file_name varchar(255) NOT NULL default '',
   file_parent int(11) default '0',
   file_description text,
-  file_content text,
   file_type varchar(100) default NULL,
   file_owner int(11) default '0',
   file_date datetime default NULL,
