@@ -31,7 +31,7 @@ if ($canEdit) {
 
 <table border="0" cellpadding="1" cellspacing="1" width="100%">
 <tr>
-	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
+	<td><img src="./images/icons/money.gif" alt="" border="0" /></td>
 	<td nowrap="nowrap"><h1><?php echo $AppUI->_('View Company/Client');?></h1></td>
 	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
 <form action="?m=companies&a=addedit" method="post">
@@ -39,13 +39,13 @@ if ($canEdit) {
 	<?php echo $canEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
 	</td>
 </form>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_VIEW' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_COMP_VIEW' );?></td>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%">
 <tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
 </tr>
 </table>
 
@@ -55,23 +55,23 @@ if ($canEdit) {
 		<strong><?php echo $AppUI->_('Details');?></strong>
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?>:</td>
 			<td class="hilite" width="100%"><?php echo $row["company_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Phone');?>:</td>
 			<td class="hilite"><?php echo @$row["company_phone1"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>2:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Phone');?>2:</td>
 			<td class="hilite"><?php echo @$row["company_phone2"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Fax');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Fax');?>:</td>
 			<td class="hilite"><?php echo @$row["company_fax"];?></td>
 		</tr>
 		<tr valign=top>
-			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite"><?php
 				echo @$row["company_address1"]
 					.( ($row["company_address2"]) ? '<br />'.$row["company_address2"] : '' )
@@ -82,7 +82,7 @@ if ($canEdit) {
 			?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?>:</td>
 			<td class="hilite">
 				<a href="http://<?php echo @$row["company_primary_url"];?>" target="Company"><?php echo @$row["company_primary_url"];?></a>
 			</td>

@@ -45,14 +45,14 @@ $rows = db_loadList( $sql );
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing="1">
 <tr>
-	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><h1><?php echo $AppUI->_('Clients & Companies');?></h1></td>
+	<td><img src="./images/icons/money.gif" alt="" border="0" /></td>
+	<td nowrap="nowrap"><h1><?php echo $AppUI->_('Clients & Companies');?></h1></td>
 	<td align="right" width="100%">
 	<?php if ($canEdit) { ?>
 		<input type="button" class="button" value="<?php echo $AppUI->_('new company');?>" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
 	<?php } ?>
 	</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_IDX' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_COMP_IDX' );?></td>
 </tr>
 </table>
 

@@ -60,19 +60,19 @@ function delIt() {
 
 <table width="100%" border=0 cellpadding="0" cellspacing=1>
 <tr>
-	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><h1><?php echo $company_id ? $AppUI->_( 'Edit Company' ) : $AppUI->_( 'Add Company' );?></h1></td>
+	<td><img src="./images/icons/money.gif" alt="" border="0" /></td>
+	<td nowrap="nowrap"><h1><?php echo $company_id ? $AppUI->_( 'Edit Company' ) : $AppUI->_( 'Add Company' );?></h1></td>
 	<td align="right" width="100%">&nbsp;</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_EDIT' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_COMP_EDIT' );?></td>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%">
 <tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
 	<td width="50%" align="right">
 	<?php if ($canDelete) {
-		echo '<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0">' . $AppUI->_( 'delete company' ) . '</a>';
+		echo '<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0" />' . $AppUI->_( 'delete company' ) . '</a>';
 	} ?>
 	</td>
 </tr>
