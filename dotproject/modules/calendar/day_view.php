@@ -23,6 +23,9 @@ $dd = $this_day->getDay();
 $mm = $this_day->getMonth();
 $yy = $this_day->getYear();
 
+// get current week
+$this_week = Date_calc::beginOfWeek ($dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY );
+
 // prepare time period for 'events'
 $first_time = $this_day;
 $first_time->setTime( 0, 0, 0 );
@@ -37,7 +40,7 @@ $next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_TIMESTAMP_DATE ) )
 // setup the title block
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=calendar&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "month view" );
-$titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "week view" );
+$titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_week, "week view" );
 $titleBlock->addCell(
 	'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
 	'<form action="?m=calendar&a=addedit&date=' . $this_day->format( FMT_TIMESTAMP_DATE )  . '" method="post">', '</form>'
