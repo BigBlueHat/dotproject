@@ -1,0 +1,30 @@
+<!-- $Id$ -->
+<table cellspacing="2" cellpadding="4" border="0" class="tbl" width="100%">
+<tr>
+	<td width="50%" valign="top">
+		<p>
+			<strong>dotProject 1.0 alpha 1</strong>
+			<br />
+			<br /><a href="?m=help&dialog=1&hid=overview.about">About dotProject</a>
+			<br /><a href="?m=help&dialog=1&hid=overview.features">Features</a>
+			<br /><a href="?m=help&dialog=1&hid=overview.whatsnew">What's New</a>
+			<br /><a href="?m=help&dialog=1&hid=overview.usermods">User Mods</a>
+		</p>
+		<p>
+			<strong>Installation</strong>
+			<br />
+			<br /><a href="?m=help&dialog=1&hid=overview.about">About dotProject</a>
+		</p>
+	</td>
+	<td width="50%" valign="top">
+		<p>
+			<strong>Screen Context Help</strong>
+			<br />
+			<br /><strong>Companies</strong>
+			<br /><a href="?m=help&dialog=1&hid=companies.index">Index</a>
+			<br />
+			<br /><strong>Contacts</strong>
+		</p>
+	</td>
+</tr>
+</table>

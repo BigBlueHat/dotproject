@@ -1,0 +1,13 @@
+<!-- $Id$ -->
+<h2>dotProject Features</h2>
+<ul>
+	<li>Client/Company Management</li>
+	<li>Detailed project information</li>
+	<li>An hierarchial task lists</li>
+	<li>Graphical Gantt charts</li>
+	<li>A repository for project related files</li>
+	<li>A contacts list</li>
+	<li>Calendar with monthly, weekly and daily views</li>
+	<li>A project based discussion forum</li>
+	<li>Detailed user management with resource based permissions</li>
+</ul>
