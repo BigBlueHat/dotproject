@@ -106,9 +106,10 @@ $msg = $iw ? '<td>OK</td>' : '<td class=warning>Warning: you will not be able to
 echo "<tr><td>/files/temp directory writable</td><td>$iw</td>$msg</tr>";
 
 // Now check to see if the supplied root_dir is the same as the called URL.
-$url = preg_replace('/\/docs\/.*$/', '', $_SERVER['PATH_TRANSLATED']);
+$url = strtr(dirname(dirname(__FILE__)), '\\', '/'); // Gets around problems with IIS, Yahoo
 echo "<tr><td>root_dir</td><td>$dPconfig[root_dir]</td>";
-if ($url != $dPconfig['root_dir']) {
+$dproot = strtr($dPconfig['root_dir'], '\\', '/');
+if ($url != $dproot) {
   echo "<td class=error>root_dir seems to be incorrect, probably should be $url</td></tr>";
 } else {
   echo "<td>OK</td></tr>";
