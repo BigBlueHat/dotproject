@@ -17,6 +17,7 @@ $deny = $obj->getDeniedRecords( $AppUI->user_id );
 // Company search by Kist
 $search_string = dPgetParam( $_POST, 'search_string', '' );
 
+$canEdit = !getDenyEdit( $m );
 // retrieve list of records
 /*
  The following query is actually made at vw_companies.php
