@@ -84,6 +84,10 @@ if ($sub_form) {
 		}
 	}
 
+	// Make sure task milestone is set or reset as appropriate
+	if (! isset($_POST['task_milestone']))
+		$obj->task_milestone = false;
+
 	//format hperc_assign user_id=percentage_assignment;user_id=percentage_assignment;user_id=percentage_assignment;
 	$tmp_ar = explode(";", $hperc_assign);
 	$hperc_assign_ar = array();
