@@ -1,3 +1,18 @@
+2003-09-16 19:37  (gregorerhardt)
+---------------------------------
+locales/en/contacts.inc
+- added translation for vCard implementation
+
+2003-09-16 19:09  (ajdonnison)
+---------------------------------
+modules/ticketsmith/comment.php
+- Removed extraneous .gif suffix causing problems loading image (bug 807307)
+
+2003-09-16 04:01  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-15 06:02  (gregorerhardt)
 ---------------------------------
 modules/contacts/index.php
@@ -482,21 +497,6 @@ modules/companies/view.php
 - Moved projects tab to first position (it's the most used one)
 
 2003-08-01 21:30  (kripper)
----------------------------------
-modules/tasks/addedit.php
-- Removed TODO and commented decision and asumption about permissions.
-
-2003-08-01 21:26  (kripper)
----------------------------------
-includes/permissions.php
-- Added some comments
-
-2003-08-01 21:21  (kripper)
----------------------------------
-modules/tasks/addedit.php
-- Fixed permission check for adding tasks to allowed projects
-
-2003-08-01 19:35  (kripper)
 ---------------------------------
 ...
 
