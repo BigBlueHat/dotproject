@@ -41,7 +41,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 <SCRIPT language="javascript">
 function submitIt(){
     var form = document.editFrm;
-   if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len'); ?>) {
+   if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len'); ?> && form.user_username.value != '<?php echo dPgetConfig('admin_username'); ?>') {
         alert("<?php echo $AppUI->_('adminValidUserName')  ;?>"  + <?php echo dPgetConfig('username_min_len'); ?>);
         form.user_username.focus();
     } else if (form.user_password.value.length < <?php echo dPgetConfig('password_min_len'); ?>) {

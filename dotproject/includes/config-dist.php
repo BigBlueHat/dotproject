@@ -89,6 +89,8 @@ $dPconfig['site_domain'] = "dotproject.net";
 
 //Text to be inserted at the beginning of emails sent from dp
 $dPconfig['email_prefix'] = '[dotProject]';
+//Username for the admin user.
+$dPconfig['admin_username'] = 'admin';
 //set minimal user id/password length when creating new users, this can NOT be longer than the length of the column in DB
 $dPconfig['username_min_len'] = "4";
 $dPconfig['password_min_len'] = "4";
