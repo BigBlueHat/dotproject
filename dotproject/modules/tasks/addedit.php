@@ -19,16 +19,6 @@ if ($task_id > 0 && !$obj->load( $task_id )) {
 
 $task_parent = isset($_REQUEST['task_parent'])? $_REQUEST['task_parent'] : $obj->task_parent;
 
-$loadFromTab = 0;
-if (isset($_POST['currentTab']))  {
-	if (isset($_SESSION['tasks_subform'])) {
-		$obj->bind($_SESSION['tasks_subform']);
-		$loadFromTab = 1;
-	}
-} else {
-	unset($_SESSION['tasks_subform']);
-}
-
 // check for a valid project parent
 $task_project = intval( $obj->task_project );
 if (!$task_project) {

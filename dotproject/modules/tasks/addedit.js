@@ -458,33 +458,6 @@ function fd_seed()
 	return copyForm(document.editFrm, this.form);
 }
 
-
-function saveTab(from, to) {
-	// determine the name of the form being processed, and submit it.
-	// Set the "tab" value to the "to" value.
-	if (subForm.length > 0 && from != to) {
-		// we need to create two fields in subForm, currentTab and newTab.
-		// We do this here to ensure that the developer doesn't need to
-		// remember to do this.
-		var h = new HTMLex;
-		// find the form in the subForm array
-		var tabForm = null;
-		for (var i = 0; i < subForm.length; i++) {
-			if (subForm[i].id == from) {
-				tabForm = subForm[i];
-				break;
-			}
-		}
-		if (tabForm) {
-			tabForm.check();
-			tabForm.form.appendChild(h.addHidden('currentTab', from));
-			tabForm.form.appendChild(h.addHidden('newTab', to));
-			tabForm.seed(); // Seed the form from the main form.
-			tabForm.submit();
-		}
-	}
-}
-
 // Sub-form specific functions.
 function checkDates(form) {
 	if (can_edit_time_information && check_task_dates) {

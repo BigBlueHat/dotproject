@@ -29,9 +29,6 @@ for ( $current = $start; $current < $end + 1; $current++ ) {
 
 // Pull tasks dependencies
 $deps = false;
-if ($loadFromTab && isset($_SESSION['tasks_subform']['hdependencies'])) {
-	$deps = trim($_SESSION['tasks_subform']['hdependencies'], " \t\r\n,");
-}
 if ($deps) {
 	$sql = "SELECT task_id, task_name FROM tasks WHERE task_id in ($deps)";
 } else {

@@ -3,8 +3,6 @@
 function setItem($item_name, $defval = null) {
 	if (isset($_POST[$item_name]))
 		return $_POST[$item_name];
-	if (isset($_SESSION['tasks_subform']) && isset($_SESSION['tasks_subform'][$item_name]))
-		return $_SESSION['tasks_subform'][$item_name];
 	return $defval;
 }
 
@@ -29,10 +27,6 @@ if ($sub_form) {
 		$proc = $AppUI->checkFileName($_POST['subform_processor']);
 		include "$root/modules/$mod/$proc.php";
 	} 
-	if (! isset($_SESSION['tasks_subform']))
-		$_SESSION['tasks_subform'] = array();
-	$_SESSION['tasks_subform'] = array_merge($_SESSION['tasks_subform'], $_POST);
-
 } else {
 
 	// Include any files for handling module-specific requirements
@@ -57,9 +51,8 @@ if ($sub_form) {
 	if ($task_id)
 		$obj->load($task_id);
 
-	if ( isset($_SESSION['tasks_subform'])) {
-		$obj->bind($_SESSION['tasks_subform']);
-		unset($_SESSION['tasks_subform']);
+	if ( isset($_POST)) {
+		$obj->bind($_POST);
 	}
 
 	if (! $obj->task_owner)

@@ -1,15 +1,7 @@
 <?php
 global $AppUI, $users, $task_id, $task_project, $obj, $projTasksWithEndDates, $tab, $loadFromTab;
 
-if ($loadFromTab && isset($_SESSION['tasks_subform']['hperc_assign'])) {
-  $assigned_perc = array();
-  foreach (explode(';', $_SESSION['tasks_subform']['hperc_assign']) as $perc) {
-    if ($perc) {
-      list ($uid, $perc) = explode('=', $perc);
-      $assigned_perc[$uid] = $perc;
-    }
-  }
-} else if ( $task_id == 0 ) {
+if ( $task_id == 0 ) {
 	// Add task creator to assigned users by default
 	$assigned_perc = array($AppUI->user_id => "100");	
 } else {
