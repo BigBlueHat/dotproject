@@ -87,4 +87,7 @@ if(confirm("Are you sure you want\nto delete user " + y + "?"))
 					<TD><?php echo @$row["inactive"];?></td>
 				</tr>
 	<?php }?>
+			</TABLE>
+		</td>
+	</tr>
 </Table>
