@@ -1,3 +1,19 @@
+2004-08-30 14:52  (jcgonz)
+---------------------------------
+modules/public/selector.php
+- Added some permissions checking.
+- Improvement made by José Antonio Belizon from Spain
+
+2004-08-30 06:50  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- reverted back to what it used to be. Sorry if it has caused problems - it sneaked into cvs much sooner than it was meant to (part of converting companies to contacts)
+
+2004-08-30 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-29 23:53  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
@@ -482,22 +498,6 @@ includes/db_adodb.php
 
 2004-08-22 00:13  (cyberhorse)
 ---------------------------------
-includes/main_functions.php
-- Prints out debug messages on screen as well as in the error_log file. (!Please set debug setting to less than 10 for troublefree operation - at 10 all sql statements are shown.)
-
-2004-08-21 22:26  (cyberhorse)
----------------------------------
-includes/.cvsignore
-- make cvs ignore the local configuration file.
-
-2004-08-21 22:24  (cyberhorse)
----------------------------------
-files/.cvsignore
-- Make cvs ignore temporary/local files.
-
-2004-08-21 15:27  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
 ...
 
 (This file has been wrapped)
