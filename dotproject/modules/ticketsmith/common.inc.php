@@ -427,7 +427,7 @@ function format_field ($value, $type, $ticket = NULL) {
             $url_replace = "<a href=\"\\1\\2\" target=\"new\">";
             $url_replace .= "<span style=\"font-size: 10pt;\">\\1\\2</span></a>";
             $value = preg_replace($url_find, $url_replace, $value);
-	    $output .= $value;
+	    $output .= stripslashes($value);
             $output .= "\n</pre></tt>\n</td></tr>\n</table>\n";
             break;
         case "followup":
