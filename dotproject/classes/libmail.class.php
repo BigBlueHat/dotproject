@@ -418,14 +418,22 @@ function SMTPSend($to, $subject, $body, &$headers) {
 		else
 			$from = $headers['From'];
 	}
-	$this->socketSend("MAIL FROM: <$from>");
+	$rcv = $this->socketSend("MAIL FROM: <$from>");
+	if (substr($rcv,0,1) != '2') {
+		$AppUI->setMsg("Failed to send email: $rcv", UI_MSG_ERROR);
+		return false;
+	}
 	foreach ($to as $to_address) {
 		if (strpos($to_address, '<') !== false) {
 			preg_match('/^.*<([^@]+\@[a-z0-9\._-]+)>/i', $to_address, $matches);
 			if (isset($matches[1]))
 				$to_address = $matches[1];
 		}
-		$this->socketSend("RCPT TO: <$to_address>");
+		$rcv = $this->socketSend("RCPT TO: <$to_address>");
+		if (substr($rcv,0,1) != '2') {
+			$AppUI->setMsg("Failed to send email: $rcv", UI_MSG_ERROR);
+			return false;
+		}
 	}
 	$this->socketSend("DATA");
 	foreach ($headers as $hdr =>$val) {
