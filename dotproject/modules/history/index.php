@@ -17,6 +17,19 @@ $AppUI->savePlace();
 	
 <table width="100%" cellspacing="1" cellpadding="0" border="0">
 <tr>
+        <td nowrap align="right">
+<form name="filter" action="?m=history" method="post" onChange="document.filter.submit()">
+Changes to:
+        <select name="filter">
+                <option value=""></option>
+                <option value="">Show all</option>
+                <option value="projects">Projects</option>
+                <option value="files">Files</option>
+                <option value="forums">Forums</option>
+                <option value="login">Login/Logouts</option>
+        </select>
+</form>
+        </td>
 	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add history');?>" onclick="window.location='?m=history&a=addedit'"></td>
 </table>
 	
@@ -69,8 +82,12 @@ function show_history($history)
         return $msg;
 }
 
+$filter = '';
+if (!empty($_POST['filter']))
+        $filter = ' AND history_table = \'' . $_POST['filter'] . '\' ';
+
 $psql = 
-"SELECT * from history, users WHERE history_user = user_id ORDER BY history_date DESC";
+"SELECT * from history, users WHERE history_user = user_id $filter ORDER BY history_date DESC";
 $prc = db_exec( $psql );
 echo db_error();
 
