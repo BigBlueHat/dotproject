@@ -12,6 +12,9 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
 
+$sql = "SELECT COUNT(task_id) FROM tasks WHERE task_project = $project_id";
+$canDelete = (db_loadResult( $sql ) < 1);
+
 //pull data
 $sql = "
 SELECT
@@ -27,8 +30,6 @@ WHERE project_id = $project_id
 GROUP BY project_id
 ";
 //echo "<pre>$sql</pre>";
-$sql = "SELECT COUNT(task_id) FROM tasks WHERE task_project = $project_id";
-$canDelete = (db_loadResult( $sql ) < 1);
 
 if (!db_loadHash( $sql, $project )) {
 	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
