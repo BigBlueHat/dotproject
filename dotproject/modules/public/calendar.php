@@ -1,6 +1,6 @@
 <?php /* PUBLIC $Id$ */
-require_once( "./classes/ui.class.php" );
-require_once( "./modules/calendar/calendar.class.php" );
+require_once( "$baseDir/classes/ui.class.php" );
+require_once( "$baseDir/modules/calendar/calendar.class.php" );
 
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 $date = dpGetParam( $_GET, 'date', null );
