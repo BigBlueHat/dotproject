@@ -90,11 +90,11 @@ switch ($f) {
 		break;
 }
 
-if ($sql = winnow( 'projects', 'task_project' )) {
+if ($sql = winnow( 'projects', 'tasks.task_project' )) {
 	$where .= " AND $sql";
 }
 
-if ($sql = winnow( 'tasks', 'task_id' )) {
+if ($sql = winnow( 'tasks', 'tasks.task_id' )) {
 	$where .= " AND $sql";
 }
 
