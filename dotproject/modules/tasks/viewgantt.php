@@ -61,6 +61,7 @@ function scrollPrev() {
 	echo "f.sdate.value='".$new_start->getTimestamp()."';";
 	echo "f.edate.value='".$new_end->getTimestamp()."';";
 ?>
+	document.ganttdate.display_option.value = 'custom';	
 	f.submit()
 }
 
@@ -74,6 +75,7 @@ function scrollNext() {
 	echo "f.sdate.value='" . $new_start->getTimestamp() . "';";
 	echo "f.edate.value='" . $new_end->getTimestamp() . "';";
 ?>
+	document.ganttdate.display_option.value = 'custom';
 	f.submit()
 }
 	
@@ -117,7 +119,7 @@ if (!$min_view) {
 <td align=right valign=bottom><?php echo "<a href='javascript:showThisMonth()'>show this month</a> : <a href='javascript:showFullProject()'>show full project</a><br>"; ?></td>	
 <td align=right width=0>	
   <form name="ganttdate" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
-  <input type=hidden name=display_option>
+  <input type=hidden name=display_option value=<?php echo $display_option ?>>
   <table border="0" cellpadding="1" cellspacing="1">
   <tr>
   <td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'From' );?>:</td>
@@ -175,7 +177,7 @@ $src =
   "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
   ( $display_option == 'all' ? '' : 
 	'&start_date=' . $start_date->toString( "%Y-%m-%d" ) . '&end_date=' . $end_date->toString( "%Y-%m-%d" ) ) .
-  "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 100) + '";
+  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth) - 100) + '";
 
 echo "<script>document.write('<img src=\"$src\">')</script>";
 ?>	
