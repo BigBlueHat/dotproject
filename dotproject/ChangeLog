@@ -1,3 +1,60 @@
+2004-08-16 03:03  (revelation7)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/config-dist.php
+locales/en/admin.inc
+modules/admin/addedituser.php
+modules/contacts/addedit.php
+- Fixed issue #0000049, increased field length and allow admin to set mininum length of the field.
+
+2004-08-15 20:13  (ajdonnison)
+---------------------------------
+index.php
+includes/config-dist.php
+- Added option to set default view to today view.
+
+2004-08-15 10:21  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+- added default addHistory entries on add/update/delete operations.
+
+2004-08-15 10:21  (cyberhorse)
+---------------------------------
+modules/companies/addedit.php
+- Changed the default owner for a newly created company to the current user.
+
+2004-08-15 10:00  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- Added addHistory entries on add/edit/delete projects
+
+2004-08-15 09:54  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed history entries (recording ID as well, so links can be done later).
+
+2004-08-15 09:53  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- Sorting the history entries in reverse order, so newest entry shows on top.
+
+2004-08-15 09:30  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Make history logs for each creation, update and deletion of tasks.
+
+2004-08-15 05:11  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Preparing the database for merging contacts and users information
+
+2004-08-13 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-13 02:30  (ajdonnison)
 ---------------------------------
 index.php
@@ -440,63 +497,6 @@ locales/en/tasks.inc
 - the tasksperuser view no shows orphaned tasks
 
 2004-07-22 21:00  (ajdonnison)
----------------------------------
-includes/db_adodb.php
-- Changed debug to only show errors when no query id in a select statement.
-
-2004-07-22 17:37  (ajdonnison)
----------------------------------
-modules/tasks/tasks.class.php
-- Fixed unitialised error warning when using error_reporting(E_ALL)
-
-2004-07-22 17:24  (ajdonnison)
----------------------------------
-modules/projects/index.php
-- Fixed warning of uninitialised variable when E_ALL is used.
-
-2004-07-22 17:21  (ajdonnison)
----------------------------------
-modules/forums/addedit.php
-- Fixed typo which would trigger errors on trailing blanks instead of
-- completely blank headers.
-
-2004-07-22 13:06  (gnome444)
----------------------------------
-ChangeLog
-- ChangeLog update.
-
-2004-07-22 13:02  (gnome444)
----------------------------------
-modules/projects/projects.class.php
-modules/projects/view.php
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/view.php
-- Automatic updating of task_start_date and task_end_date based on task dependencies.
-
-2004-07-19 07:02  (ajdonnison)
----------------------------------
-modules/forums/addedit.php
-modules/forums/post_message.php
-- Changed javascript checks to check for space-only entries and disallow
-- them.
-
-2004-07-18 15:29  (gregorerhardt)
----------------------------------
-modules/companies/vw_companies.php
-- 940695: companies list problems
-
-2004-07-17 20:25  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser.php
-modules/tasks/tasksperuser_sub.php
-modules/tasks/view.php
-modules/tasks/vw_logs.php
-- fixed a set of javascript security holes
-
-2004-07-17 20:17  (gregorerhardt)
 ---------------------------------
 ...
 
