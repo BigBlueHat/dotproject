@@ -4,22 +4,6 @@ if (!$canAccess) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$type = dPgetParam( $_GET, 'type', '' );
-$column = dPgetParam( $_GET, 'column', 'timestamp' );
-$direction = dPgetParam( $_GET, 'direction', 'DESC' );
-$offset = dPgetParam( $_GET, 'offset', '' );
-$action = dPgetParam( $_REQUEST, 'action', null );
-
-if($type == ''){
-	if($AppUI->getState("ticket_type")){
-		$type = $AppUI->getState("ticket_type");
-	} else {
-		$type = "Open";
-	}
-} else {
-	$AppUI->setState("ticket_type", $_GET["type"]);
-}
-
 // setup the title block
 $titleBlock = new CTitleBlock( 'Trouble Ticket Management', 'gconf-app-icon.png', $m, "$m.$a" );
 if ($canEdit) {
@@ -32,6 +16,28 @@ $titleBlock->show();
 
 require("modules/ticketsmith/config.inc.php");
 require("modules/ticketsmith/common.inc.php");
+
+$column = $CONFIG["order_by"];
+$direction = $CONFIG["message_order"];
+$offset = 0;
+$limit = $CONFIG["view_rows"];
+
+$type = dPgetParam( $_GET, 'type', '' );
+$column = dPgetParam( $_GET, 'column', $column);
+$direction = dPgetParam( $_GET, 'direction', $direction);
+$offset = dPgetParam( $_GET, 'offset', $offset);
+$action = dPgetParam( $_REQUEST, 'action', null );
+
+if($type == ''){
+	if($AppUI->getState("ticket_type")){
+		$type = $AppUI->getState("ticket_type");
+	} else {
+		$type = "Open";
+	}
+} else {
+	$AppUI->setState("ticket_type", $_GET["type"]);
+}
+
 
 /* expunge deleted tickets */
 if (@$action == "expunge") {
@@ -76,10 +82,6 @@ if($type == "my"){
 else{
 	$title = "$type Tickets";
 }
-$column = @$column ? $column : $CONFIG["order_by"];
-$direction = @$direction ? $direction : $CONFIG["message_order"];
-$offset = @$offset ? $offset : 0;
-$limit = @$limit ? $limit : $CONFIG["view_rows"];
 
 /* count tickets */
 $query = "SELECT COUNT(*) FROM tickets WHERE parent = '0'";
