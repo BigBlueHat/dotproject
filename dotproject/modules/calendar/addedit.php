@@ -197,7 +197,7 @@ function setCalendar( idate, fdate ) {
 </tr>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Recurs' );?>:</td>
-	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj['event_recurs'], true ); ?></td>
+	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj->event_recurs, true ); ?></td>
 	<td align="right">x</td>
 	<td>
 		<input type="text"  name="event_times_recuring" value="<?php echo @$obj->event_times_recuring;?>" maxlength="2" size=3> <?php echo $AppUI->_( 'times' );?>

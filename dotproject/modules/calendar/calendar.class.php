@@ -445,16 +445,8 @@ class CEvent extends CDpObject {
 					break;
 			}
 		}
-
-			//avoid adding events which are out of dateTimePeriod
-			if ( $eventStart->after($start_date) && $eventStart->before($end_date) ){
-
-				$transferredEvent = array($eventStart, $eventEnd);
-
-			}
-
-
-
+		// add temporarily moved Event Start and End dates to returnArray
+		$transferredEvent = array($eventStart, $eventEnd);
 
 		// return array with event start and end dates for given period (positive case)
 		// or an empty array (negative case)
@@ -513,46 +505,46 @@ class CEvent extends CDpObject {
 	//echo "<pre>$sql</pre>";
 
 	// execute
-	$eventListRec = db_loadList( $sql );
+		$eventListRec = db_loadList( $sql );
 
 	//Calculate the Length of Period (Daily, Weekly, Monthly View)
-	$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
+		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
 
 
-	for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
+		for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
 
-		for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
+			for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
 
-			//Daily View
-			//show all
-			if ($periodLength == 1){
-			$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+				//Daily View
+				//show all
+				if ($periodLength == 1){
+				$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+				}
+				//Weekly or Monthly View and Hourly Recurrent Events
+				//only show hourly recurrent event one time and add string 'hourly'
+				elseif ($periodLength > 1 && $eventListRec[$i]['event_recurs'] == 1 && $j==0) {
+				$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+				$eventListRec[$i]['event_title'] = $eventListRec[$i]['event_title']." (".$AppUI->_('Hourly').")";
+				}
+				//Weekly and Monthly View and higher recurrence mode
+				//show all events of recurrence > 1
+				elseif ($periodLength > 1 && $eventListRec[$i]['event_recurs'] > 1) {
+				$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
+				}
+				//add values to the eventsArray if check for recurrent event was positive
+				if ( sizeof($recEventDate) > 0 ) {
+					$eventListRec[$i]['event_start_date'] = $recEventDate[0]->format( FMT_DATETIME_MYSQL );
+					$eventListRec[$i]['event_end_date'] = $recEventDate[1]->format( FMT_DATETIME_MYSQL );
+					$eList[0] = $eventListRec[$i];
+					$eventList = array_merge($eventList,$eList);
+				}
+				// clear array of positive recurrent events for the case that next loop recEventDate is empty in order to avoid double display
+				$recEventDate = array();
 			}
-			//Weekly or Monthly View and Hourly Recurrent Events
-			//only show hourly recurrent event one time and add string 'hourly'
-			elseif ($periodLength > 1 && $eventListRec[$i]['event_recurs'] == 1 && $j==0) {
-			$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
-			$eventListRec[$i]['event_title'] = $eventListRec[$i]['event_title']." (".$AppUI->_('Hourly').")";
-			}
-			//Weekly and Monthly View and higher recurrence mode
-			//show all events of recurrence > 1
-			elseif ($periodLength > 1 && $eventListRec[$i]['event_recurs'] > 1) {
-			$recEventDate = CEvent::getRecurrentEventforPeriod( $start_date, $end_date, $eventListRec[$i]['event_start_date'], $eventListRec[$i]['event_end_date'], $eventListRec[$i]['event_recurs'], $eventListRec[$i]['event_times_recuring'], $j );
-			}
-			//add values to the eventsArray if check for recurrent event was positive
-			if ( sizeof($recEventDate) > 0 ) {
-				$eventListRec[$i]['event_start_date'] = $recEventDate[0]->format( FMT_DATETIME_MYSQL );
-				$eventListRec[$i]['event_end_date'] = $recEventDate[1]->format( FMT_DATETIME_MYSQL );
-				$eList[0] = $eventListRec[$i];
- 				$eventList = array_merge($eventList,$eList);
-			}
-			// clear array of positive recurrent events for the case that next loop recEventDate is empty in order to avoid double display
-			$recEventDate = array();
+
+
+
 		}
-
-
-
-	}
 
 		//return a list of non-recurrent and recurrent events
 		return $eventList;
