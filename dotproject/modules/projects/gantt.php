@@ -68,7 +68,7 @@ if ($start_date && $end_date) {
 //$graph->scale->actinfo->SetFont(FF_ARIAL);
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
-$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Project name'), $AppUI->_('Start Date'), $AppUI->_('Finish'), $AppUI->_('Actual End')),array(160,10, 70,70));
+$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Project name', UI_OUTPUT_RAW), $AppUI->_('Start Date', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW), $AppUI->_('Actual End', UI_OUTPUT_RAW)),array(160,10, 70,70));
 
 
 $tableTitle = ($proFilter == '-1') ? $AppUI->_('All Projects') : $projectStatus[$proFilter];
