@@ -32,15 +32,13 @@ if (!$task_project) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = $task["task_start_date"] ? CDate::fromDateTime( $task["task_start_date"] ) : new CDate();
-$start_date->setFormat( $df );
+$ts = db_dateTime2unix( $task["task_start_date"] );
+$start_date = new CDate( ($ts < 0 ? null : $ts), $df );
+$start_date->setTime( 0, 0, 0 );
 
-if ($task["task_end_date"]) {
-	$end_date = CDate::fromDateTime( $task["task_end_date"] );
-	$end_date->setFormat( $df );
-} else {
-	$end_date = null;
-}
+$ts = db_dateTime2unix( $task["task_end_date"] );
+$end_date = new CDate( ($ts < 0 ? null : $ts), $df );
+$end_date->setTime( 0, 0, 0 );
 
 // pull the related project
 $sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = $task_project";
@@ -101,31 +99,35 @@ $titleBlock->show();
 
 <SCRIPT language="JavaScript">
 var calendarField = '';
+var calWin = null;
 
 function popCalendar( field ){
 	calendarField = field;
-	uts = eval( 'document.AddEdit.task_' + field + '.value' );
-	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
+	uts = eval( 'document.editFrm.task_' + field + '.value' );
+	calWin = window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
 function setCalendar( uts, fdate ) {
-	fld_uts = eval( 'document.AddEdit.task_' + calendarField );
-	fld_fdate = eval( 'document.AddEdit.' + calendarField );
+	fld_uts = eval( 'document.editFrm.task_' + calendarField );
+	fld_fdate = eval( 'document.editFrm.' + calendarField );
 	fld_uts.value = uts;
 	fld_fdate.value = fdate;
 }
 
 function submitIt(){
-	var form = document.AddEdit;
+	var form = document.editFrm;
 	var fl = form.assigned.length -1;
 	var dl = form.task_dependencies.length -1;
 
 	if (form.task_name.value.length < 3) {
 		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
-	} else if (form.task_start_date.value.length < 9) {
+	} else if (!form.task_start_date.value) {
 		alert( "<?php echo $AppUI->_('taskValidStartDate');?>" );
 		form.task_start_date.focus();
+	} else if (!form.task_end_date.value) {
+		alert( "<?php echo $AppUI->_('taskValidEndDate');?>" );
+		form.task_end_date.focus();
 	} else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
@@ -142,7 +144,7 @@ function submitIt(){
 }
 
 function addUser() {
-	var form = document.AddEdit;
+	var form = document.editFrm;
 	var fl = form.resources.length -1;
 	var au = form.assigned.length -1;
 	var users = "x";
@@ -163,7 +165,7 @@ function addUser() {
 }
 
 function removeUser() {
-	var form = document.AddEdit;
+	var form = document.editFrm;
 	fl = form.assigned.length -1;
 
 	for (fl; fl > -1; fl--) {
@@ -174,7 +176,7 @@ function removeUser() {
 }
 
 function addTaskDependency() {
-	var form = document.AddEdit;
+	var form = document.editFrm;
 	var at = form.all_tasks.length -1;
 	var td = form.task_dependencies.length -1;
 	var tasks = "x";
@@ -195,7 +197,7 @@ function addTaskDependency() {
 }
 
 function removeTaskDependency() {
-	var form = document.AddEdit;
+	var form = document.editFrm;
 	td = form.task_dependencies.length -1;
 
 	for (td; td > -1; td--) {
@@ -204,10 +206,43 @@ function removeTaskDependency() {
 		}
 	}
 }
+
+var workHours = <?php echo $AppUI->cfg['daily_working_hours'];?>;
+var dayMSecs = 3600*24*1000;
+
+function calcDuration() {
+	var f = document.editFrm;
+
+	var s = new Date( f.task_start_date.value*1000 );
+	var e = new Date( f.task_end_date.value*1000 );
+
+	var durn = (e - s) / dayMSecs;
+	if (f.task_duration_type.value == 'hours') {
+		durn *= workHours;
+	}
+	f.task_duration.value = durn;
+}
+
+function calcFinish() {
+	var f = document.editFrm;
+	var durn = parseFloat(f.task_duration.value);
+
+	var s = new Date( f.task_start_date.value*1000 );
+	var inc = 0;
+
+	inc = (durn-1) * dayMSecs;
+	if (f.task_duration_type.value == 'hours') {
+		inc /= workHours;
+	}
+	var e = new Date( s.getTime() + inc );
+	f.task_end_date.value = (s.getTime() + inc)/1000;
+// this is the easy way out for the moment
+	alert( 'NOTE: Finish date has been updated ['+f.task_end_date.value+'] although the formatted date has not' );
+}
 </script>
 
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
-<form name="AddEdit" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
+<form name="editFrm" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
@@ -222,7 +257,7 @@ function removeTaskDependency() {
 <tr valign="top" width="50%">
 	<td>
 		<?php echo $AppUI->_( 'Task Name' );?> *
-		<br /><input type="text" class="text" name="task_name" value="<?php echo @$task["task_name"];?>" size="40" maxlength="255">
+		<br /><input type="text" class="text" name="task_name" value="<?php echo @$task["task_name"];?>" size="40" maxlength="255" />
 	</td>
 	<td>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
@@ -245,7 +280,7 @@ function removeTaskDependency() {
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Milestone' );?>?</td>
 			<td>
-				<input type=checkbox value=1 name="task_milestone" <?php if($task["task_milestone"]){?>checked<?php }?>>
+				<input type=checkbox value=1 name="task_milestone" <?php if($task["task_milestone"]){?>checked<?php }?> />
 			</td>
 		</tr>
 		</table>
@@ -257,7 +292,7 @@ function removeTaskDependency() {
 		<br />
 	<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($task["task_owner"]) ? $AppUI->user_id : $task["task_owner"] );?>
 		<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
-		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255"">
+		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255" />
 		<br />
 		<table>
 		<tr>
@@ -270,7 +305,7 @@ function removeTaskDependency() {
 				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text"', $task_parent ); ?>
 			</td>
 			<td><img src="./images/shim.gif" width=30 height=1></td>
-			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10"></td>
+			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10" /></td>
 		</tr>
 		</table>
 	</td>
@@ -279,8 +314,8 @@ function removeTaskDependency() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_start_date" value="<?php echo $start_date->getTimestamp();?>">
-					<input type="text" name="start_date" value="<?php echo $start_date->toString();?>" class="text" disabled="disabled">
+					<input type="hidden" name="task_start_date" value="<?php echo $start_date->getTimestamp();?>" />
+					<input type="text" name="start_date" value="<?php echo $start_date->toString();?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('start_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
@@ -289,8 +324,8 @@ function removeTaskDependency() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->getTimestamp() : '-1';?>">
-					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->toString() : '';?>" class="text" disabled="disabled">
+					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->getTimestamp() : '-1';?>" />
+					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->toString() : '';?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('end_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
@@ -299,28 +334,25 @@ function removeTaskDependency() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
-			<?php if (($task["task_duration"]) > 24 ) {
-				$newdir = ($task["task_duration"] / 24);
-				$dir = 24;
-			} else {
-				$newdir = ($task["task_duration"]);
-				$dir = 1;
-			}
-			if ($newdir ==0) {
-				$newdir ="0";
-			}
-			?>
-					<input type="text" class="text" name="task_duration" maxlength=4 size=5 value="<?php echo $newdir;?>">
-					<select name="dayhour" size="1" class="text">
-						<option value="1" <?php  if ($dir ==1) echo "selected";?>>hour(s)
-						<option value="24" <?php  if ($dir ==24) echo "selected";?>>day(s)
-					</select>
+					<input type="text" class="text" name="task_duration" maxlength=4 size=5 value="<?php echo dPgetParam( $task, 'task_duration', 0);?>" />
+				<?php
+					$durns = array( 'hours'=>'hours', 'days'=>'days' );
+					$durnType = dPgetParam( $task, 'task_duration_type', 'days' );
+					echo arraySelect( $durns, 'task_duration_type', 'class="text"', $task["task_duration_type"] );
+				?>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Calculate' );?>:</td>
+				<td nowrap="nowrap">
+					<input type="button" value="<?php echo $AppUI->_('Duration');?>" onclick="calcDuration()" class="button" />
+					<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
 				</td>
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
-					<input type="checkbox" name=task_dynamic value="1" <?php if($task["task_dynamic"]!="0") echo "checked"?>>
+					<input type="checkbox" name="task_dynamic" value="1" <?php if($task["task_dynamic"]!="0") echo "checked"?> />
 				</td>
 			</tr>
 		</table>
@@ -342,8 +374,8 @@ function removeTaskDependency() {
 				</td>
 			</tr>
 			<tr>
-				<td align="right"><input type="button" class="button" value="&gt;" onClick="addTaskDependency()"></td>
-				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeTaskDependency()"></td>
+				<td align="right"><input type="button" class="button" value="&gt;" onClick="addTaskDependency()" /></td>
+				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeTaskDependency()" /></td>
 			</tr>
 		</table>
 	</td>
@@ -361,13 +393,13 @@ function removeTaskDependency() {
 					<?php echo arraySelect( $assigned, 'assigned', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 			<tr>
-				<td align="right"><input type="button" class="button" value="&gt;" onClick="addUser()"></td>
-				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeUser()"></td>
+				<td align="right"><input type="button" class="button" value="&gt;" onClick="addUser()" /></td>
+				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeUser()" /></td>
 			</tr>
 			</tr>
 			<tr>
 				<td colspan=3 align="center">
-					<input type="checkbox" name="notify" value="1"> <?php echo $AppUI->_( 'notifyChange' );?>
+					<input type="checkbox" name="notify" value="1" /> <?php echo $AppUI->_( 'notifyChange' );?>
 				</td>
 			</tr>
 		</table>
@@ -392,18 +424,18 @@ function removeTaskDependency() {
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}">
+				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
 			</td>
 			<td>
-				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submitIt();">
+				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submitIt();" />
 			</td>
 		</tr>
 		</table>
 	</td>
 </tr>
 </table>
-<input type="hidden" name="hassign">
-<input type="hidden" name="hdependencies">
+<input type="hidden" name="hassign" />
+<input type="hidden" name="hdependencies" />
 </form>
 
 </body>
