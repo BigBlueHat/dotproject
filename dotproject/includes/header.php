@@ -1,8 +1,6 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
-
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
 <head>
-<meta http-equiv="pragma" content="no-cache">
 <script language="JavaScript">
 function doBtn() {
 	var oEl = event.srcElement;
@@ -15,11 +13,11 @@ function doBtn() {
 		}
 	}
 	if (doit == "mouseover" || doit == "mouseup") {
-			oEl.className = "clsBtnOn";
+		oEl.className = "clsBtnOn";
 	} else if (doit == "mousedown") {
-			oEl.className = "clsBtnDown";
+		oEl.className = "clsBtnDown";
 	} else {
-			oEl.className = "clsBtnOff";
+		oEl.className = "clsBtnOff";
 	}
 }
 function tboff(){
@@ -32,23 +30,23 @@ function tboff(){
 <link rel="stylesheet" type="text/css" href="./style/main.css">
 </head>
 <body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="images/bground.gif">
-<TABLE width="100%" cellpadding=3 cellspacing=0 bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
-<TR>
-	<TD nowrap width="33%">
+<table width="100%" cellpadding=3 cellspacing=0 bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
+<tr>
+	<td nowrap width="33%">
 		<span id="smallCompanyTitle"><?php echo $company_name;?></SPAN>
-	</TD>
-	<TD nowrap width="34%">
-		<span id="smallCompanyTitle">Current user: <?php echo "$thisuser_first_name $thisuser_last_name"; ?></SPAN>
-	</TD>
-	<TD nowrap width="33%" align="right">
-		<TABLE cellpadding=1 cellspacing=1 width="200">
-		<TR>
-			<TD class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><A href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_cookie;?>" onmouseover="doBtn();">My Info</a></TD>
-			<TD class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><A href="./index.php?logout=-1" onmouseover="doBtn();">Logout</a></TD>
-			<TD class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();">Help</TD>
-			<TD class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><A href="./index.php?m=help&a=about" onmouseover="doBtn();">About</a></TD>
-		</TR>
-		</TABLE>
+	</td>
+	<td nowrap width="34%">
+		<span id="smallCompanyTitle">Current user: <?php echo "$AppUI->user_first_name $AppUI->user_last_name"; ?></SPAN>
+	</td>
+	<td nowrap width="33%" align="right">
+		<table cellpadding=1 cellspacing=1 width="200">
+		<tr>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();">My Info</a></td>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();">Logout</a></td>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();">Help</td>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=help&a=about" onmouseover="doBtn();">About</a></td>
+		</tr>
+		</table>
 	</td>
 	<form name="frm_new" method=GET action="./index.php">
 	<td>
@@ -91,10 +89,10 @@ function tboff(){
 	}
 ?>
 	</form>
-</TR>
-</TABLE>
-<TABLE width="100%" cellpadding=0 cellspacing=0 border=0>
-<TR>
-<TD valign="top"><?php require "./includes/leftnav.php";?></TD>
-<TD valign="top" align="left" width="100%">
-<?php echo @$message;?><img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
+</tr>
+</table>
+<table width="100%" cellpadding=0 cellspacing=0 border=0>
+<tr>
+<td valign="top"><?php require "./includes/leftnav.php";?></td>
+<td valign="top" align="left" width="100%">
+<?php echo @$message;?><!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br> -->

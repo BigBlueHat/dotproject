@@ -14,23 +14,6 @@ function ptranslate($word){
 }
 
 ##
-##
-##
-function drawTabBox( $tabs, $active, $baseHRef, $baseInc ) {
-	$s = '<TABLE width="98%" border=0 cellpadding="3" cellspacing=0><TR>';
-	foreach( $tabs as $k => $v ) {
-		$class = ($k == $active) ? 'tabon' : 'taboff';
-		$s .= '<td nowrap class=tabsp><img src="./images/shim.gif" height=1 width=1></td>';
-		$s .= '<td nowrap class='.$class.'><a href="'.$baseHRef.'&tab='.$k.'">'.$v.'</a></td>';
-	}
-	$s .= '<td nowrap class=tabsp width="100%">&nbsp;</td>';
-	$s .= '</TR><tr><td width="100%" colspan=99 class=tabox>';
-	echo $s;
-	include "$baseInc/vw_$active.php";
-	echo '</td></tr></TABLE>';
-}
-
-##
 ## Returns the best color based on a background color (x is cross-over)
 ##
 function bestColor( $bg, $lt='#ffffff', $dk='#000000' ) {

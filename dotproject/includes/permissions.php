@@ -59,6 +59,7 @@ return false;
 	return $deny;
 }
 
+/*
 $user_cookie = isset($HTTP_COOKIE_VARS['user_cookie']) ? $HTTP_COOKIE_VARS['user_cookie'] : 0;
 $thisuser = isset($HTTP_COOKIE_VARS['thisuser']) ? $HTTP_COOKIE_VARS['thisuser'] : 0;
 
@@ -75,11 +76,12 @@ if ($hash != md5( $thisuser_first_name.$secret.$thisuser_last_name )) {
 	die;
 }
 
+//*** these bits seem to be left over from the creation of the universe
 if (empty( $m )) {
 	$m = "ticketsmith";
 }
 $noworkee =0;
-$ual =0;
+*/
 
 // pull permissions into master array
 $psql = "
@@ -97,6 +99,8 @@ while ($prow = mysql_fetch_array( $prc, MYSQL_ASSOC )) {
 	$perms[$prow['g']][$prow['i']] = $prow['v'];
 }
 
+
+// *** this next bit doesn't seem to have any relevance
 if($ual < 1){
 	setcookie("m", "ticketsmith");
 	setcookie("user_cookie", "0");
