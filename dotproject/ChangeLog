@@ -1,3 +1,15 @@
+2003-09-07 11:18  (gregorerhardt)
+---------------------------------
+modules/forums/addedit.php
+modules/forums/index.php
+modules/forums/view_messages.php
+- BUG#785012 and superuser now is able to edit forums and forum messages
+
+2003-09-07 04:04  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-06 06:51  (ajdonnison)
 ---------------------------------
 modules/tasks/tasks.php
@@ -486,18 +498,6 @@ includes/main_functions.php
 ---------------------------------
 ChangeLog
 - Changelog update
-
-2003-07-08 18:59  (kripper)
----------------------------------
-ChangeLog
-- Updated Changelog
-
-2003-07-08 18:28  (jcgonz)
----------------------------------
-modules/tasks/todo.php
-- Corrected a short php tag <? to <?php
-
-2003-07-08 18:25  (jcgonz)
 ...
 
 (This file has been wrapped)
