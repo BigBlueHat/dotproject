@@ -312,8 +312,8 @@ foreach ($projects as $k => $p) {
 
 		if($tnums && $AppUI->cfg['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
-			<td colspan="8" align=right>
-				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';">
+			<td colspan="8" align="right">
+				<input type="button" class="button" value="see gantt chart" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
 		<?php }
