@@ -253,7 +253,7 @@ CREATE TABLE `task_log` (
   `task_log_date` DATETIME,
   `task_log_costcode` VARCHAR(8) NOT NULL default '',
   `task_log_problem` TINYINT( 1 ) DEFAULT '0',
-  `task_log_reference` TINYINT( 4 ) DEFAULT '0'
+  `task_log_reference` TINYINT( 4 ) DEFAULT '0',
   `task_log_related_url` VARCHAR( 255 ) DEFAULT NULL,
   PRIMARY KEY  (`task_log_id`),
   KEY `idx_log_task` (`task_log_task`)
