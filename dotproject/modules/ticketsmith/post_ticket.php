@@ -76,7 +76,7 @@ function submitIt() {
 </tr>
 <TR>
 	<TD colspan=2 align="center">
-		<textarea cols="70" rows="10" class="textareaclass" name="description"><?php echo @$crow["description"];?></textarea>
+		<textarea cols="70" rows="10" class="textarea" name="description"><?php echo @$crow["description"];?></textarea>
 	</td>
 </tr>
 <TR>
