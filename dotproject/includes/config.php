@@ -18,6 +18,12 @@ $page_title ="TCC DotProject";
 $base_url = "http://buran.toowoomba.qld.gov.au/dotproject";
 $site_domain = "dotproject.net";
 
+// enable if you want to be able to see other users's tasks
+define(SHOW_ALL_TASKS, false);
+ 
+// enable if you want to support gantt charts
+define(ENABLE_GANTT_CHARTS, false);
+
 // Date format, can be one of:
 // 0 = international or yyyy-mm-dd
 // 1 = UK and Australia or dd/mm/yyyy
