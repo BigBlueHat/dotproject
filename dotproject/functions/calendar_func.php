@@ -91,6 +91,8 @@ function getEventsForPeriod( $start_date, $end_date ) {
 
 function addTaskLinks( $tasks, $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 	GLOBAL $AppUI;
+	$durnTypes = dPgetSysVal( 'TaskDurationType' );
+
 	$link = array();
 	// assemble the links for the tasks
 	foreach ($tasks as $row) {
@@ -113,7 +115,7 @@ function addTaskLinks( $tasks, $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 		if ($start->isBetween( $startPeriod, $endPeriod )) {
 			$temp = $link;
-			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_($row['task_duration_type'])."]\n".$link['alt'];
+			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
 			$links[$start->getDay()][] = $temp;
 		}
 		if ($end && $end->isBetween( $startPeriod, $endPeriod ) && $start->daysTo( $end ) != 0) {
@@ -122,12 +124,14 @@ function addTaskLinks( $tasks, $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 			$links[$end->getDay()][] = $temp;
 		}
 	// convert duration to days
-		if ($durnType == 'hours') {
+		if ($durnType < 24.0 ) {
 			if ($durn > $AppUI->cfg['daily_working_hours']) {
 				$durn /= $AppUI->cfg['daily_working_hours'];
 			} else {
 				$durn = 0.0;
 			}
+		} else {
+			$durn *= ($durnType / 24.0);
 		}
 
 	// fill in between start and finish based on duration
