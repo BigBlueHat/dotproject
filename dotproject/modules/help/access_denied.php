@@ -6,12 +6,10 @@
 	</tr>
 </TABLE>
 
-
-
 <p><TABLE width="95%" border=0 cellpadding="5" cellspacing=0>
 <tr valign=top>
 	<td width=50%>
-		<p>You have attemped to access an with without the sufficient permissions to do so.
+		<p>You have attemped to access an item in dotproject without the sufficient permissions to do so.
 
 		<p>Please contact the DotProject System Administrator.
 
