@@ -9,7 +9,9 @@ define( 'PERM_ALL', '-1' );
 function getDenyRead( $mod, $item_id=0 ) {
 	GLOBAL $perms;
 	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ));
-	$deny |= (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY);
+	if (isset( $perms['all'] )) {
+		$deny |= (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY);
+	}
 	if (isset( $perms[$mod] )) {
 		if (isset( $perms[$mod][PERM_ALL] )) {
 			$deny |= ($perms[$mod][PERM_ALL] == PERM_DENY);
@@ -28,7 +30,9 @@ function getDenyRead( $mod, $item_id=0 ) {
 function getDenyEdit( $mod, $item_id=0 ) {
 	GLOBAL $perms;
 	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ));
-	$deny |= (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT);
+	if (isset( $perms['all'] )) {
+		$deny |= (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT);
+	}
 	if (isset( $perms[$mod] )) {
 		if (isset( $perms[$mod][PERM_ALL] )) {
 			$deny |= ($perms[$mod][PERM_ALL] <> PERM_EDIT);
