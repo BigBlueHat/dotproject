@@ -1,3 +1,112 @@
+2002-12-12 20:01  (kripper)
+---------------------------------
+modules/tasks/todo.php
+- Added My ToDo List viewer
+
+2002-12-12 19:47  (kripper)
+---------------------------------
+db/dotproject.sql
+lib/jpgraph/src/jpgraph_gantt.php
+modules/tasks/addedit.php
+modules/tasks/index.php
+modules/tasks/organizer.php
+modules/tasks/view.php
+- Added TODOs in db/dotproject.sql
+- Enhanced jpgraph constrains rendering
+- Added new options to tasks organizer
+- Changed 'task owner' by 'task creator'
+- Some  other minor changes
+
+2002-12-12 19:14  (eddieajau)
+---------------------------------
+dosql/preference_aed.php
+- Initial upload
+
+2002-12-12 03:52  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/en/companies.inc
+- Content update
+
+2002-12-11 19:20  (eddieajau)
+---------------------------------
+includes/config.php
+- Added comment for supported language.
+
+2002-12-11 19:19  (eddieajau)
+---------------------------------
+modules/admin/viewuser.php
+modules/admin/addedituser.php
+modules/admin/dosql.php
+- Moved user locale setting to user preferences.
+- View user links to user preferences
+
+2002-12-11 19:16  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+modules/system/index.php
+- Added support for user preferences.
+
+2002-12-11 19:15  (eddieajau)
+---------------------------------
+modules/projects/vw_tasks.php
+- Fixed bug where additional copies of tasks show.
+- Temporarily adjusted sql to show all tasks until filters are included in this view.
+
+2002-12-11 19:09  (eddieajau)
+---------------------------------
+classdefs/ui.php
+db/dotproject_022_to_023.sql
+- Added support for user preferences.
+
+2002-12-11 19:08  (eddieajau)
+---------------------------------
+classdefs/system.php
+- Initial upload.  Class to support user preferences.
+
+2002-12-11 06:47  (kripper)
+---------------------------------
+locales/es/common.inc
+locales/es/help.inc
+modules/tasks/gantt.php
+- Added spanish translation for help.inc
+- Some minor chane in common.inc
+- Added dependencies rendering in gantt chart
+
+2002-12-11 06:41  (kripper)
+---------------------------------
+lib/jpgraph/QPL.txt
+lib/jpgraph/README
+lib/jpgraph/README.dotproject
+lib/jpgraph/src/jpgraph.php
+lib/jpgraph/src/jpgraph_bar.php
+lib/jpgraph/src/jpgraph_canvas.php
+lib/jpgraph/src/jpgraph_canvtools.php
+lib/jpgraph/src/jpgraph_error.php
+lib/jpgraph/src/jpgraph_gantt.php
+lib/jpgraph/src/jpgraph_line.php
+lib/jpgraph/src/jpgraph_log.php
+- Added sub set of jpgraph package for gantt chart support
+
+2002-12-10 19:24  (eddieajau)
+---------------------------------
+locales/en/admin.txt
+locales/en/calendar.txt
+locales/en/companies.txt
+locales/en/contacts.txt
+locales/en/files.txt
+locales/en/forums.txt
+locales/en/general.txt
+locales/en/locales.php
+locales/en/projects.txt
+locales/en/tasks.txt
+- Clean up of previous language model
+
+2002-12-10 06:01  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2002-12-10 05:57  (kripper)
 ---------------------------------
 includes/main_functions.php
