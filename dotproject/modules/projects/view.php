@@ -12,6 +12,8 @@ if ($denyRead) {
 }
 $AppUI->savePlace();
 
+$AppUI->setState( 'ActiveProject', $project_id );
+
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
 }
