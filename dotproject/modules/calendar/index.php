@@ -143,7 +143,7 @@ for( $i = 0; $i <= 6; $i++ ) { ?>
 	$dayRow = 0;
 
 	if ($firstDay > 0) {
-		echo "<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&day=-" .$firstDay . "&month=". $thisMonth. "&year=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
+		echo "<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&thisDay=-" .$firstDay . "&thisMonth=". $thisMonth. "&thisYear=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
 		while ($dayRow < $firstDay) {
 			echo "<td align=right bgcolor='#ffffff' height='80'>&nbsp;</td>\n";
 			$dayRow += 1;
@@ -154,7 +154,7 @@ for( $i = 0; $i <= 6; $i++ ) { ?>
 		$dayp = $day + 1;
 
 		if (($dayRow % 7) == 0) {
-			echo " </tr>\n<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&day=" .$dayp . "&month=". $thisMonth. "&year=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
+			echo " </tr>\n<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&thisDay=" .$dayp . "&thisMonth=". $thisMonth. "&thisYear=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
 		}
 
 		$datestr = $thisYear ."-" .  $thisMonth ."-" .  $dayp;

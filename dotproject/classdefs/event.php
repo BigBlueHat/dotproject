@@ -1,5 +1,8 @@
 <?php
 
+require_once 'classdefs/date.php';
+require_once 'functions/lib.DB.php';
+
 class dotEvent
 {
 	var $event_id = NULL;
