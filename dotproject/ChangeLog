@@ -1,3 +1,23 @@
+2005-04-01 11:13  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Added explanatory note to the installer for upgrades.
+
+2005-04-01 10:50  (ajdonnison)
+---------------------------------
+docs/nav.html
+- Changed documentation links to docs.dotproject.net.
+
+2005-04-01 10:49  (ajdonnison)
+---------------------------------
+README
+- New README file to point to the documentation sites.
+
+2005-04-01 10:33  (ajdonnison)
+---------------------------------
+ChangeLog
+- Updated in preparation for 2.0 release
+
 2005-04-01 10:28  (ajdonnison)
 ---------------------------------
 db/dotproject.sql
@@ -8241,4 +8261,4 @@ modules/companies/index.php
 modules/projects/projects.class.php
 - Deleting a project was not cleaning up the deps or user_tasks tables. Pointed out by Gerald M.
 
-(truncated).
+(truncated)
