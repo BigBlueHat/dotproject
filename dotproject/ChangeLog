@@ -1,3 +1,13 @@
+2003-08-20 14:08  (jcgonz)
+---------------------------------
+style/classic/login.php
+- Removed the register_globals incompatibility message
+
+2003-08-20 04:00  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-19 13:17  (kripper)
 ---------------------------------
 includes/permissions.php
@@ -488,16 +498,6 @@ modules/help/en/projects.addedit.hlp
 ---------------------------------
 modules/help/en/projects.index.hlp
 - Update Project Index screen documentation.
-
-2003-06-25 21:55  (kobudo)
----------------------------------
-includes/config-dist.php
-- Improve default $dbuser & $dbpass variable values.
-
-2003-06-25 20:53  (kobudo)
----------------------------------
-db/dotproject_100.sql
-- Correct icon reference for FORUM's DotProject Classic display style. Change gconf-app-icon.png to support.png.
 ...
 
 (This file has been wrapped)
