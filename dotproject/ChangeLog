@@ -1,3 +1,14 @@
+2004-01-21 20:18  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- Added character translations for Hungarian.  This is a stopgap and
+- should be replaced with a more general solution.
+
+2004-01-21 03:59  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-21 03:40  (ajdonnison)
 ---------------------------------
 locales/en/system.inc
@@ -487,17 +498,6 @@ modules/files/addedit.php
 modules/ticketsmith/common.inc.php
 modules/ticketsmith/search.php
 modules/ticketsmith/view.php
-- enhanced fix for #845978: Security fixes and Searach aivailybility fo readOnlyUsers; some strings softcoded for translation
-
-2003-12-11 10:53  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Visual improvements for IE, more pending
-
-2003-12-11 10:09  (jcgonz)
----------------------------------
-includes/main_functions.php
-modules/system/addeditpref.php
 ...
 
 (This file has been wrapped)
