@@ -175,19 +175,19 @@ class CAppUI {
 
 		switch( $this->msgNo ) {
 		case UI_MSG_OK:
-			$img = '<img src="./images/obj/tick.gif" width="15" height="15" border="0" alt="">';
+			$img = '<img src="./images/obj/tick.gif" width="15" height="15" border="0" alt="" />';
 			$class = "message";
 			break;
 		case UI_MSG_ALERT:
-			$img = '<img src="./images/obj/alert.gif" width="16" height="11" border="0" alt="">';
+			$img = '<img src="./images/obj/alert.gif" width="16" height="11" border="0" alt="" />';
 			$class = "message";
 			break;
 		case UI_MSG_WARNING:
-			$img = '<img src="./images/obj/warning.gif" width="14" height="14" border="0" alt="">';
+			$img = '<img src="./images/obj/warning.gif" width="14" height="14" border="0" alt="" />';
 			$class = "warning";
 			break;
 		case UI_MSG_ERROR:
-			$img = '<img src="./images/obj/error.gif" width="14" height="14" border="0" alt="">';
+			$img = '<img src="./images/obj/error.gif" width="14" height="14" border="0" alt="" />';
 			$class = "error";
 			break;
 		default:
@@ -313,7 +313,7 @@ class CTabBox_core {
 			if ($extra) {
 				echo '<table border="0" cellpadding="2" cellspacing="0" width="98%"><tr>'.$extra.'</tr></table>';
 			} else {
-				echo '<img src="./images/shim.gif" height="10" width="1">';
+				echo '<img src="./images/shim.gif" height="10" width="1" />';
 			}
 		}
 
@@ -332,7 +332,7 @@ class CTabBox_core {
 			$s = '<table width="98%" border="0" cellpadding="3" cellspacing="0"><tr>';
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
-				$s .= '<td width="1%" nowrap="nowrap" class="tabsp"><img src="./images/shim.gif" height=1 width=1></td>';
+				$s .= '<td width="1%" nowrap="nowrap" class="tabsp"><img src="./images/shim.gif" height="1" width="1" alt="" /></td>';
 				$s .= '<td width="1%" nowrap="nowrap" class="'.$class.'"><a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a></td>';
 			}
 			$s .= '<td nowrap="nowrap" class="tabsp">&nbsp;</td>';
