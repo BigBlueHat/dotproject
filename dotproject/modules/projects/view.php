@@ -325,10 +325,12 @@ $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Tasks' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_forums", 'Forums' );
-$tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_files", 'Files' );
+// $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_files", 'Files' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
 $showProject = false;
+if ($tabBox->loadExtras($m))
+  $tabBox_show = 1;
 //$tabBox->add( "{$dPconfig['root_dir']}/modules/links/index_table", 'Links');
 // settings for tasks
 $f = 'all';
