@@ -8,8 +8,12 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$sql = "SELECT * FROM modules WHERE mod_name<>'Public' ORDER BY mod_ui_order";
-$modules = db_loadList( $sql );
+$q = new DBQuery;
+$q->addQuery('*');
+$q->addTable('modules');
+$q->addWhere("mod_name <> 'Public'");
+$q->addOrder('mod_ui_order');
+$modules = db_loadList( $q->prepare() );
 // get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs( "modules" );
 
