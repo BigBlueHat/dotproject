@@ -166,16 +166,8 @@ if ($do_report) {
 <?php
 	$hours = 0.0;
 	$pdfdata = array();
-	$pdfdata[] = array(
-		$AppUI->_('Created by'),
-		$AppUI->_('Summary'),
-		$AppUI->_('Description'),
-		$AppUI->_('Date'),
-		$AppUI->_('Hours'),
-		$AppUI->_('Cost Code')
-	);
-
-	foreach ($logs as $log) {
+	
+        foreach ($logs as $log) {
 		$date = new CDate( $log['task_log_date'] );
 		$hours += $log['task_log_hours'];
 
@@ -261,11 +253,19 @@ if ($do_report) {
 		}
 		$pdf->ezText( "\n\n" );
 
-		$columns = null;
-		$title = null;
+		$title = 'Task Logs';
+                
+	        $pdfheaders = array(
+		        $AppUI->_('Created by'),
+        		$AppUI->_('Summary'),
+        		$AppUI->_('Description'),
+        		$AppUI->_('Date'),
+        		$AppUI->_('Hours'),
+	        	$AppUI->_('Cost Code')
+        	);
+
 		$options = array(
 			'showLines' => 1,
-			'showHeadings' => 0,
 			'fontSize' => 8,
 			'rowGap' => 2,
 			'colGap' => 5,
@@ -274,7 +274,7 @@ if ($do_report) {
 			'width'=>'500'
 		);
 
-		$pdf->ezTable( $pdfdata, $columns, $title, $options );
+		$pdf->ezTable( $pdfdata, $pdfheaders, $title, $options );
 
 		if ($fp = fopen( "$temp_dir/temp$AppUI->user_id.pdf", 'wb' )) {
 			fwrite( $fp, $pdf->ezOutput() );
