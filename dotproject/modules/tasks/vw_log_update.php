@@ -90,6 +90,7 @@ if ($canEdit) {
 	
 	function timerStart() {
 		if(!timerID){ // this means that it needs to be started
+			timerSet();
 			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Stop');?>";
             UpdateTimer();
 		} else { // timer must be stoped
@@ -113,7 +114,7 @@ if ($canEdit) {
 	}
 
 	function timerSet() {
-		total_minutes = Math.round(document.editFrm.task_log_hours.value * 60);
+		total_minutes = Math.floor(document.editFrm.task_log_hours.value * 60);
 	}
 	
 </script>
@@ -176,7 +177,6 @@ if ($canEdit) {
 		<input type="text" class="text" name="task_log_hours" value="<?php echo $log->task_log_hours;?>" maxlength="8" size="6" /> 
 		<input type='button' class="button" value='<?php echo $AppUI->_('Start');?>' onclick='javascript:timerStart()' name='timerStartStopButton' />
 		<input type='button' class="button" value='<?php echo $AppUI->_('Reset'); ?>' onclick="javascript:timerReset()" name='timerResetButton' /> 
-		<input type='button' class="button" value='<?php echo $AppUI->_('Set'); ?>' onclick="javascript:timerSet()" name='timerSetButton' /> 
 		<span id='timerStatus'></span>
 	</td>
 </tr>
