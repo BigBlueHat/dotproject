@@ -46,12 +46,12 @@ function resource_postsave()
 		$q->setDelete('resource_tasks');
 		$q->addWhere('task_id = ' . $obj->task_id);
 		$q->exec(); 
+		$q->clear();
     if (count($value)) {
+			$q->addTable('resource_tasks');
 			foreach($value as $v)
 			{
-				$q->clear();
-				$q->addTable('resource_tasks');
-				$q->addInsert('task_id, resource_id, percent_allocated', $v, true);
+				$q->addInsert('task_id, resource_id, percent_allocated', substr($v, 1, -1), true);
 				$q->exec();
 			}
 //      $sql = "insert into resource_tasks ( task_id, resource_id, percent_allocated) values " . implode(',', $value);
