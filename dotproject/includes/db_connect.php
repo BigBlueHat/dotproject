@@ -279,6 +279,7 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 * @param [type] $updateNulls
 */
 function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
+	global $locale_char_set;
 	$fmtsql = "UPDATE $table SET %s WHERE %s";
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field
@@ -294,7 +295,7 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 		if( $v == '' ) {
 			$val = "''";
 		} else {
-			$val = "'" . db_escape(htmlentities(strip_tags( $v ))) . "'";
+			$val = "'" . db_escape(htmlentities(strip_tags( $v ), ENT_COMPAT ,$locale_char_set)). "'";
 		}
 		$tmp[] = "$k=$val";
 	}
