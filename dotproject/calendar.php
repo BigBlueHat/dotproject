@@ -73,7 +73,8 @@ function setClose(x,y,z){
 	var form = window.opener.document.<?=$form;?>;
 
 	if("<?=$page;?>"=="events"){
-		form.<?echo $field;?>.value = x + "/" + y + "/" + z;
+		//form.<?echo $field;?>.value = x + "/" + y + "/" + z;
+		form.<?echo $field;?>.value = z + "-" + x + "-" + y;
 	
 	}
 	else if("<?echo $field;?>".indexOf("task") >-1){
@@ -109,14 +110,14 @@ function setClose(x,y,z){
 <table border=0 cellspacing=1 cellpadding=2 width="220">
 	<tr>
 		<td align=center>
-			<a href="<? echo($SCRIPT_NAME . "?thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+			<a href="<? echo($SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 		</td>
 		<td colspan=5 align=center bgcolor="#000000">
 			<font face="arial, helvetica" size=2 color="#ffffff"><b>
 			<?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></b></font>
 		</td>
 		<td align=center>
-			<? echo "<a href='" . $SCRIPT_NAME . "?thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
+			<? echo "<a href='" . $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
 		</td>
 	</tr>
 	<tr>
@@ -190,7 +191,7 @@ if( $firstDay > 0 )
  <tr>
   <td colspan=7 align=right bgcolor="#efefe7">
     <font face='Tahoma, arial, helvetica, sans-serif' size='1'>
-   <A href="<? echo $SCRIPT_NAME . "?thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay;?>">today</A>
+   <A href="<? echo $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay . "&field=" . $field;?>">today</A>
    </font>
   </td>
  </tr>
