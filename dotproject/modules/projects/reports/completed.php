@@ -69,7 +69,7 @@ $q->leftJoin('users', 'b', 'a.task_owner = b.user_id');
 $q->addWhere('task_percent_complete = 100');
 $q->addWhere('task_project = ' . $project_id);
 $q->addWhere("task_end_date between '" . $last_week->format(FMT_DATETIME_MYSQL) . "' and '" . $date->format(FMT_DATETIME_MYSQL) . "'");
-$tasks = db_loadHashList($q->prepare(), 'task_id');
+$tasks = $q->loadHashList('task_id');
 
 if ($err = db_error()) {
 	$AppUI->setMsg($err, UI_MSG_ERROR);

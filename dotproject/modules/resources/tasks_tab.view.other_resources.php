@@ -15,7 +15,7 @@ $q->addTable('resources', 'a');
 $q->leftJoin('resource_tasks', 'b', 'b.resource_id = a.resource_id');
 $q->leftJoin('resource_types', 'c', 'c.resource_type_id = a.resource_type');
 $q->addWhere('b.task_id = ' . $task_id);
-$resources = db_loadHashList($q->prepare(), 'resource_id');
+$resources = $q->loadHashList('resource_id');
 
 // Determine any other clashes.
 $resource_tasks = array();
@@ -29,7 +29,7 @@ if (count($resources)) {
 	$q->addWhere("task_start_date <= '" . $obj->task_end_date . "'");
 	$q->addWhere("task_end_date >= '" . $obj->task_start_date . "'");
 	$q->addGroup("resource_id");
-	$resource_tasks = db_loadHashList($q->prepare());
+	$resource_tasks = $q->loadHashList();
 }
 
 ?>

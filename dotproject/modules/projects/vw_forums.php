@@ -38,5 +38,7 @@ while ($row = db_fetch_assoc( $rc )) { ?>
 	<td></td>
 	<td colspan=3><?php echo $row["forum_description"];?></td>
 </tr>
-<?php }?>
+<?php }
+$q->clear();
+?>
 </table>

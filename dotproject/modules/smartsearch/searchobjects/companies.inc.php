@@ -41,13 +41,15 @@ class companies {
 		$q->addQuery('company_id');
 		$q->addQuery('company_name');
 
-		$sql = '';
+		$sql = array();
 		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
+			$sql[] = "$field LIKE '%$this->keyword%'";
 		}
-		$sql = substr($sql,0,-4);
-		$q->addWhere($sql);
-		return $q->prepare();
+		if (count($sql))
+			$q->addWhere(implode(' OR ', $sql));
+		$result =  $q->prepare();
+		$q->clear();
+		return $result;
 	}
 }
 ?>

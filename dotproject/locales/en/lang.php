@@ -15,5 +15,5 @@ $LANGUAGES['en_AU'] = array ( $dir, 'English (Aus)', 'English (Aus)', 'ena');
 $LANGUAGES['en_CA'] = array ( $dir, 'English (Can)', 'English (Can)', 'enc');
 $LANGUAGES['en_GB'] = array ( $dir, 'English (GB)', 'English (GB)', 'eng');
 $LANGUAGES['en_NZ'] = array ( $dir, 'English (NZ)', 'English (NZ)', 'enz');
-$LANGUAGES['en_US'] = array ( $dir, 'English (US)', 'English (US)', 'enu');
+$LANGUAGES['en_US'] = array ( $dir, 'English (US)', 'English (US)', 'enu', 'ISO8859-15');
 ?>

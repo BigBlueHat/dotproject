@@ -664,6 +664,7 @@ class CAppUI {
 		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
 		$q->addWhere("user_id = $user_id AND user_username = '$username'");
 		$sql = $q->prepare();
+		$q->clear();
 		dprint(__FILE__, __LINE__, 7, "Login SQL: $sql");
 
 		if( !db_loadObject( $sql, $this ) ) {
@@ -805,6 +806,7 @@ class CAppUI {
 		$q->addQuery('mod_active');
 		$q->addWhere("mod_directory = '$module'");
 		$sql = $q->prepare();
+		$q->clear();
 		return db_loadResult($sql);
 	}
 

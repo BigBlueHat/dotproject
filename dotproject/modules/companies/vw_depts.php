@@ -12,6 +12,7 @@ $q->addWhere('dept_company = '.$company_id);
 $q->addGroup('dept_id');
 $q->addOrder('dept_parent, dept_name');
 $sql = $q->prepare();
+$q->clear();
 
 function showchilddept( &$a, $level=0 ) {
 	global $AppUI;

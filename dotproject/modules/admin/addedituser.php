@@ -17,6 +17,7 @@ $q->addJoin('companies', 'com', 'contact_company = company_id');
 $q->addJoin('departments', 'dep', 'dept_id = contact_department');
 $q->addWhere('u.user_id = '.$user_id);
 $sql = $q->prepare();
+$q->clear();
 
 if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );

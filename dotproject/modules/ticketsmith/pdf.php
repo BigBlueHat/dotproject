@@ -35,7 +35,7 @@ if ($type == 'My') {
 $q->addWhere("parent = '0'");
 $q->addOrder(urlencode($column) . " " . $direction);
 
-$ticketlist = db_loadHashList($q->prepare(), 'ticket');
+$ticketlist = $q->loadHashList('ticket');
 if ($err = db_error()) {
 	$AppUI->setMsg($err, UI_MSG_ERR);
 	$AppUI->redirect();

@@ -74,6 +74,7 @@ $carrWidth = 4;
 $carrHeight = 4;
 
 $sql = $q->prepare();
+$q->clear();
 $res = db_exec( $sql );
 if ($res)
 	$rn = db_num_rows( $res );
@@ -199,6 +200,7 @@ $q->addWhere("project_contacts like \"" .$carr[$z][$x]["contact_id"]
 	
  $res = $q->exec();
  $projects_contact = db_fetch_row($res);
+ $q->clear();
  if ($projects_contact[0]>0)
    echo "				&nbsp;<a href=\"\" onClick=\"	window.open('./index.php?m=public&a=selector&dialog=1&callback=goProject&table=projects&user_id=" .$carr[$z][$x]["contact_id"] ."', 'selector', 'left=50,top=50,height=250,width=400,resizable')
 ;return false;\">(Projects)</a>";

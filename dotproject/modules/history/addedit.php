@@ -8,13 +8,13 @@ if (!$canEdit) {
 }
 */
 $action = @$_REQUEST["action"];
+$q = new DBQuery;
 if($action) {
 	$history_description = dPgetParam($_POST, 'history_description', '');
 	$history_project = dPgetParam($_POST, 'history_project', '');
 	$userid = $AppUI->user_id;
 	
 	if( $action == 'add' ) {
-		$q  = new DBQuery;
 		$q->addTable('history');
 		$q->addInsert('history_table', "history");
 		$q->addInsert('history_action', "add");
@@ -24,14 +24,12 @@ if($action) {
 		$q->addInsert('history_project', $history_project);
 		$okMsg = 'History added';
 	} else if ( $action == 'update' ) {
-		$q  = new DBQuery;
 		$q->addTable('history');
 		$q->addUpdate('history_description', $history_description);
 		$q->addUpdate('history_project', $history_project);
 		$q->addWhere('history_id ='.$history_id);
 		$okMsg = 'History updated';
 	} else if ( $action == 'del' ) {
-		$q  = new DBQuery;
 		$q->setDelete('history');
 		$q->addWhere('history_id ='.$history_id);
 		$okMsg = 'History deleted';				
@@ -41,21 +39,22 @@ if($action) {
 	} else {	
 		$AppUI->setMsg( $okMsg );
                 if ($action == 'add')
-			$q  = new DBQuery;
+			$q->clear();
 			$q->addTable('history');
 			$q->addUpdate('history_item = history_id');
 			$q->addWhere('history_table = \'history\'');
 			$okMsg = 'History deleted';
 	}
+	$q->clear();
 	$AppUI->redirect();
 }
 
 // pull the history
-$q  = new DBQuery;
 $q->addTable('history');
 $q->addQuery('*');
 $q->addWhere('history_id ='.$history_id);
 $sql = $q->prepare();
+$q->clear();
 db_loadHash( $sql, $history );
 ?>
 
@@ -90,7 +89,6 @@ db_loadHash( $sql, $history );
 	<td width="60%">
 <?php
 // pull the projects list
-$q  = new DBQuery;
 $q->addTable('projects');
 $q->addQuery('project_id, project_name');
 $q->addOrder('project_name');

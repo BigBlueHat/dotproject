@@ -109,6 +109,7 @@ $q->addOrder('task_priority DESC');
 
 $sql = $q->prepare();
 //echo "<pre>$sql</pre>";
+$q->clear();
 $tasks = db_loadList( $sql );
 
 

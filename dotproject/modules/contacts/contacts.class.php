@@ -79,6 +79,7 @@ class CContact extends CDpObject{
 		$q->addQuery('company_id');
 		$q->addWhere('company_name = '.$this->contact_company);
 		$sql = $q->prepare();
+		$q->clear();
 		$company_id = db_loadResult( $sql );
 		return $company_id;
 	}
@@ -90,6 +91,7 @@ class CContact extends CDpObject{
 		$q->addQuery('company_name');
 		$q->addWhere('company_id = '.$this->contact_company);
 		$sql = $q->prepare();
+		$q->clear();
 		$company_name = db_loadResult( $sql );
 		return $company_name;
  	}
@@ -109,6 +111,7 @@ class CContact extends CDpObject{
 			$q->addWhere('company_id = '.$this->contact_company);
 
 		$sql = $q->prepare();
+		$q->clear();
 		db_loadHash($sql, $result);
 		return $result;
 	}
@@ -128,6 +131,7 @@ class CContact extends CDpObject{
 			$q->addWhere("dept_id = '" . $this->contact_department . "'");
 			
 		$sql = $q->prepare();
+		$q->clear();
 		db_loadHash($sql, $result);
 		return $result;
 	}

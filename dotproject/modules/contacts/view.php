@@ -17,6 +17,7 @@ $q->addTable('users');
 $q->addQuery('user_id');
 $q->addWhere('user_contact = ' . $row->contact_id);
 $sql = $q->prepare();
+$q->clear();
 $tmp_user = db_loadResult($sql);
 if (!empty($tmp_user))
 	$canDelete = false; 

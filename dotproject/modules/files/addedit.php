@@ -70,6 +70,7 @@ if ($obj->file_task) {
 	$q->addQuery('task_name');
 	$q->addWhere("task_id=$file_task");
 	$sql = $q->prepare();
+	$q->clear();
 	$task_name = db_loadResult( $sql );
 } else {
 	$task_name = '';

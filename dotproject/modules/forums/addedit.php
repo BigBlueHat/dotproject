@@ -36,8 +36,7 @@ $q->addOrder('project_name');
 $projObj->setAllowedSQL($AppUI->user_id, $q);
 if (isset($company_id))
 	$q->addWhere("project_company = $company_id");
-$sql = $q->prepare();
-$projects = array( '0' => '' ) + db_loadHashList( $sql );
+$projects = array( '0' => '' ) + $q->loadHashList( $sql );
 echo db_error();
 
 $perms =& $AppUI->acl();

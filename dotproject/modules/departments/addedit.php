@@ -16,6 +16,7 @@ $q->addQuery('dep.*, company_name');
 $q->addJoin('companies', 'com', 'com.company_id = dep.dept_company');
 $q->addWhere('dep.dept_id = '.$dept_id);
 $sql = $q->prepare();
+$q->clear();
 if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
@@ -33,6 +34,7 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$q->addQuery('company_name');
 	$q->addWhere('com.company_id = '.$company_id);
 	$sql = $q->prepare();
+	$q->clear();
 	$company_name = db_loadResult( $sql );
 	if (!$dept_id && $company_name === null) {
 		$AppUI->setMsg( 'badCompany', UI_MSG_ERROR );

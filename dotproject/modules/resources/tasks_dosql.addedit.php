@@ -52,8 +52,9 @@ function resource_postsave()
 			foreach($value as $v)
 			{
 				$q->addInsert('task_id, resource_id, percent_allocated', substr($v, 1, -1), true);
-				$q->exec();
 			}
+			$q->exec();
+			$q->clear();
 //      $sql = "insert into resource_tasks ( task_id, resource_id, percent_allocated) values " . implode(',', $value);
 //      db_exec($sql);
     }

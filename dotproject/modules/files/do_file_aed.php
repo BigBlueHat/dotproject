@@ -98,6 +98,7 @@ if (!$file_id) {
 		$q->addOrder('file_version_id DESC');
 		$q->setLimit(1);
 		$sql = $q->prepare();
+		$q->clear();
 		$latest_file_version = db_loadResult($sql);
 		$obj->file_version_id = $latest_file_version + 1;
 	} else {
@@ -106,6 +107,7 @@ if (!$file_id) {
 		$q->addUpdate('file_checkout', '');
 		$q->addWhere("file_version_id = $obj->file_version_id");
 		$q->exec();
+		$q->clear();
 	}
 }
 

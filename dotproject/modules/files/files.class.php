@@ -76,16 +76,19 @@ class CFile extends CDpObject {
 		$q->addQuery('*');
 		$q->addWhere("file_id = $this->file_id");
 		if (!$q->exec()) {
+			$q->clear();
 			return db_error();
 		}
 	// delete the main table reference
-		$q  = new DBQuery;
+		$q->clear();
 		$q->setDelete('files');
 		$q->addQuery('*');
 		$q->addWhere("file_id = $this->file_id");
 		if (!$q->exec()) {
+			$q->clear();
 			return db_error();
 		}
+		$q->clear();
 		return NULL;
 	}
 
@@ -190,6 +193,7 @@ class CFile extends CDpObject {
 			$q->addInsert("word", $wordarr[$key]['word']);
 			$q->addInsert("word_placement", $wordarr[$key]['wordplace']);
 			$q->exec();
+			$q->clear();
 		}
 
 		db_exec( "UNLOCK TABLES;" );

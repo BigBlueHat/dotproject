@@ -331,7 +331,7 @@ class DBQuery {
    * Prepare a query for execution via db_exec.
    *
    */
-  function prepare()
+  function prepare($clear = false)
   {
     switch ($this->type) {
       case 'select':
@@ -367,6 +367,8 @@ class DBQuery {
 	$q = 'DROP TABLE IF EXISTS ' . $this->_table_prefix . $this->create_table;
 	break;
     }
+		if ($clear)
+			$this->clear();
     return $q;
     dprint(__FILE__, __LINE__, 2, $q);
   }

@@ -27,11 +27,11 @@ $q->addJoin('users', 'u', 'u.user_id = companies.company_owner');
 $q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
 $q->addWhere('companies.company_id = '.$company_id);
 $sql = $q->prepare();
+$q->clear();
 
 $obj = null;
 if (!db_loadObject( $sql, $obj ) && $company_id > 0) {
-	$AppUI->setMsg( '	$qid =& $q->exec();
-Company' );
+	// $AppUI->setMsg( '	$qid =& $q->exec(); Company' ); // What is this for?
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }

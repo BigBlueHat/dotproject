@@ -92,6 +92,7 @@ class CDpObject {
 		$this->_query->addTable($this->_tbl);
 		$this->_query->addWhere("$this->_tbl_key = $oid");
 		$sql = $this->_query->prepare();
+		$this->_query->clear();
 		return db_loadObject( $sql, $this, false, $strip );
 	}
 
@@ -107,6 +108,7 @@ class CDpObject {
 		if ($where)
 		  $this->_query->addWhere($where);
 		$sql = $this->_query->prepare();
+		$this->_query->clear();
 		return db_loadHashList($sql, $this->_tbl_key);
 	}
 
@@ -210,6 +212,7 @@ class CDpObject {
 				$q->addJoin($table['name'], $table['name'], "{$table['joinfield']} = $k");
 			}
 			$sql = $q->prepare();
+			$q->clear();
 
 			$obj = null;
 			if (!db_loadObject( $sql, $obj )) {

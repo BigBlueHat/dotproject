@@ -328,5 +328,6 @@ if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
 	$q->addInsert('visit_forum', $forum_id);
 	$q->addInsert('visit_message', $msg_id);
 	$q->exec();
+	$q->clear();
   }
 ?>

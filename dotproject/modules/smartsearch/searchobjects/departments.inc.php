@@ -47,7 +47,7 @@ class departments {
                 }
                 $sql = substr($sql,0,-4);
                 $q->addWhere($sql);
-                return $q->prepare();
+                return $q->prepare(true);
 	}
 }
 ?>

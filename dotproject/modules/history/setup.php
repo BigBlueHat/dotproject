@@ -42,6 +42,7 @@ class CSetupHistory {
 		$q->createTable('history');
 		$q->createDefinition($sql);
 		$q->exec();
+		$q->clear();
 		return db_error();
 	}
 	
@@ -49,6 +50,7 @@ class CSetupHistory {
 		$q = new DBQuery;
 		$q->dropTable('history');
 		$q->exec();
+		$q->clear();
 		return db_error();
 	}
 	

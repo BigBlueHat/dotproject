@@ -29,6 +29,7 @@ $q->addWhere("user_id = forum_owner
 	AND forum_id = $forum_id 
 	AND forum_project = project_id");
 $sql = $q->prepare();
+$q->clear();
 db_loadHash( $sql, $forum );
 $forum_name = $forum["forum_name"];
 echo db_error();

@@ -63,6 +63,7 @@ class CProject extends CDpObject {
 			$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
 			$q->addWhere(" project_id = $oid");
 			$sql = $q->prepare();
+			$q->clear();
                         $obj->project_percent_complete = db_loadResult($sql);
                         $this->project_percent_complete = db_loadResult($sql);
                 }
@@ -95,40 +96,42 @@ class CProject extends CDpObject {
 		$q->addQuery('task_id');
 		$q->addWhere("task_project = $this->project_id");
 		$sql = $q->prepare();
+		$q->clear();
 		$tasks_to_delete = db_loadColumn ( $sql );
 		foreach ( $tasks_to_delete as $task_id ) {
-			$q = new DBQuery;
 			$q->setDelete('user_tasks');
 			$q->addWhere('task_id ='.$task_id);
 			$q->exec();
-			$q = new DBQuery;
+			$q->clear();
 			$q->setDelete('task_dependencies');
 			$q->addWhere('dependencies_req_task_id ='.$task_id);
 			$q->exec();
+			$q->clear();
 		}
-		$q = new DBQuery;
 		$q->setDelete('tasks');
 		$q->addWhere('task_project ='.$this->project_id);
 		$q->exec();
+		$q->clear();
 
 		// remove the project-contacts and project-departments map
-		$q = new DBQuery;
 		$q->setDelete('project_contacts');
 		$q->addWhere('project_id ='.$this->project_id);
 		$q->exec();
-		$q = new DBQuery;
+		$q->clear();
 		$q->setDelete('project_departments');
 		$q->addWhere('project_id ='.$this->project_id);
 		$q->exec();
-		$q = new DBQuery;
+		$q->clear();
 		$q->setDelete('projects');
 		$q->addWhere('project_id ='.$this->project_id);
 		
                 if (!$q->exec()) {
-			return db_error();
+			$result = db_error();
 		} else {
-			return NULL;
+			$result =  NULL;
 		}
+		$q->clear();
+		return $result;
 	}
 
 	/**	Import tasks from another project
@@ -146,6 +149,7 @@ class CProject extends CDpObject {
 		$q->addQuery('task_id');
 		$q->addWhere('task_project ='.$from_project_id);
 		$sql = $q->prepare();
+		$q->clear();
 		$tasks = array_flip(db_loadColumn ($sql));
 
 		$origDate = new CDate( $origProject->project_start_date );
@@ -271,6 +275,7 @@ class CProject extends CDpObject {
 		If (count($aCpiesAllowed))
 			$q->addWhere("NOT (project_company IN (" . implode (',', array_keys($aCpiesAllowed)) . '))');
 		$sql = $q->prepare();
+		$q->clear();
 		$aBuf2 = db_loadColumn ($sql);
 		
 		return array_merge ($aBuf1, $aBuf2); 
@@ -313,33 +318,34 @@ class CProject extends CDpObject {
 		$q->setDelete('project_departments');
 		$q->addWhere('project_id='.$this->project_id);
 		$q->exec();
+		$q->clear();
                 if ($this->project_departments)
                 {
         		$departments = explode(',',$this->project_departments);
         		foreach($departments as $department){
-				$q = new DBQuery;
 				$q->addTable('project_departments');
 				$q->addInsert('project_id', $this->project_id);
 				$q->addInsert('department_id', $department);
 				$q->exec();
+				$q->clear();
         		}
                 }
 		
 		//split out related contacts and store them seperatly.
-		$q = new DBQuery;
 		$q->setDelete('project_contacts');
 		$q->addWhere('project_id='.$this->project_id);
 		$q->exec();
+		$q->clear();
                 if ($this->project_contacts)
                 {
         		$contacts = explode(',',$this->project_contacts);
         		foreach($contacts as $contact){
 							if ($contact) {
-								$q = new DBQuery;
 								$q->addTable('project_contacts');
 								$q->addInsert('project_id', $this->project_id);
 								$q->addInsert('contact_id', $contact);
 								$q->exec();
+								$q->clear();
 							}
         		}
                 }

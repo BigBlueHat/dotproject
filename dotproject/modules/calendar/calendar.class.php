@@ -615,9 +615,9 @@ class CEvent extends CDpObject {
 		$q->addWhere("event_id = $this->event_id");
 		$q->setDelete('user_events');		
 		$q->exec();
+		$q->clear();
 		
 		if (is_array($assigned) && count($assigned)) {
-			$q  = new DBQuery;
 			$q->addTable('user_events', 'ue');
 			
 			foreach ($assigned as $uid) {
@@ -628,6 +628,7 @@ class CEvent extends CDpObject {
 			}
 			
 			$q->exec();
+			$q->clear();
 			  if ($msg = db_error())
 				$AppUI->setMsg($msg, UI_MSG_ERROR);
 		}
@@ -696,6 +697,7 @@ class CEvent extends CDpObject {
 		$q->addQuery('project_name');
 		$q->addWhere('p.project_id ='.$this->event_project);
 		$sql = $q->prepare();
+		$q->clear();
 		$prj = db_loadHash($sql);
 	  	$body .= $AppUI->_('Project') . ":\t". $prj['project_name'];
 	  }
@@ -762,8 +764,8 @@ class CEvent extends CDpObject {
 	      array_push($clashes, $row['user_id']);
 	  }
 	  $clash = array_unique($clashes);
+		$q->clear();
 	  if (count($clash)) {  
-	    	$q  = new DBQuery;
 		$q->addTable('users','u');
 		$q->addTable('contacts','con');
 		$q->addQuery('user_id');
@@ -803,6 +805,7 @@ class CEvent extends CDpObject {
 	  while ($row = db_fetch_assoc($result)) {
 	    $eventlist[] = $row;
 	  }
+		$q->clear();
 
 	  return $eventlist;
 	}

@@ -51,14 +51,15 @@ class CUser extends CDpObject {
 		if( $msg ) {
 			return get_class( $this )."::store-check failed";
 		}
+		$q  = new DBQuery;
 		if( $this->user_id ) {
 		// save the old password
 			$perm_func = "updateLogin";
-			$q  = new DBQuery;
 			$q->addTable('users', 'u');
 			$q->addQuery('user_password');
 			$q->addWhere("user_id = $this->user_id");
 			$sql = $q->prepare();
+			$q->clear();
 
 			db_loadHash( $sql, $hash );
 			$pwd = $hash['user_password'];	// this will already be encrypted
@@ -66,21 +67,21 @@ class CUser extends CDpObject {
 			$ret = db_updateObject( 'users', $this, 'user_id', false );
 
 		// update password if there has been a change
-			$q  = new DBQuery;
 			$q->addTable('users', 'u');
 			$q->addUpdate('user_password', MD5($this->user_password));
 			$q->addWhere("user_id = $this->user_id");
 			$q->addWhere("user_password != '$pwd'");
 			$q->exec();
+			$q->clear();
 		} else {
 			$perm_func = "addLogin";
 			$ret = db_insertObject( 'users', $this, 'user_id' );
 		// encrypt password
-			$q  = new DBQuery;
 			$q->addTable('users', 'u');
 			$q->addUpdate('user_password', MD5($this->user_password));
 			$q->addWhere("user_id = $this->user_id");
 			$q->exec();
+			$q->clear();
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();

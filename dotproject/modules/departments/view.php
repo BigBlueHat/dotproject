@@ -27,6 +27,7 @@ $q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
 $q->addWhere('dep.dept_id = '.$dept_id);
 $q->addWhere('dep.dept_company = company_id');
 $sql = $q->prepare();
+$q->clear();
 
 if (!db_loadHash( $sql, $dept )) {
 	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );

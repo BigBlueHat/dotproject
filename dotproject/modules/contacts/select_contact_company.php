@@ -34,6 +34,7 @@
 		$q->addQuery('*');
 		$q->addWhere("$id_field=".$_POST[$id_field]);
 		$sql = $q->prepare();
+		$q->clear();
 		db_loadHash($sql, $r_data);
 		
 		$data_update_script = "";

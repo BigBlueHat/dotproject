@@ -12,11 +12,12 @@ if ($watch) {
 	$q->addWhere("watch_$watch IS NOT NULL");
 	if (!$q->exec()) {
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
+		$q->clear();
 	} else {
 		$sql = '';
+		$q->clear();
 		foreach ($_POST as $k => $v) {
 			if (strpos($k, 'forum_') !== FALSE) {
-				$q  = new DBQuery;
 				$q->addTable('forum_watch');
 				$q->addInsert('watch_user', $AppUI->user_id);
 				$q->addInsert('watch_'.$watch, substr( $k, 6 ));
@@ -25,6 +26,7 @@ if ($watch) {
 				} else {
 					$AppUI->setMsg( "Watch updated", UI_MSG_OK );
 				}
+				$q->clear();
 			}
 		}
 	}

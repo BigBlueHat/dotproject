@@ -53,6 +53,7 @@ function show_history($history)
 	$q->addQuery($table_id);
 	$q->addWhere($table_id.' ='.$id);
 	$sql = $q->prepare();
+	$q->clear();
 	if (db_loadResult($sql))
         switch ($module)
         {
@@ -97,13 +98,14 @@ $q->addTable('tasks');
 $q->addQuery('task_id');
 $q->addWhere('task_project = ' . $project_id);
 $sql = $q->prepare();
+$q->clear();
 $project_tasks = '(' . implode(',', db_loadColumn($sql)) . ')';
 
-$q  = new DBQuery;
 $q->addTable('files');
 $q->addQuery('file_id');
 $q->addWhere('file_project = ' . $project_id);
 $sql = $q->prepare();
+$q->clear();
 $project_files = '(' . implode(',', db_loadColumn($sql)) . ')';
 
 	$filter .= " AND ((history_table = 'projects' AND history_item = '$project_id')
@@ -111,7 +113,6 @@ $project_files = '(' . implode(',', db_loadColumn($sql)) . ')';
 	OR (history_table = 'files' AND history_item IN $project_files))";
 }
 
-$q  = new DBQuery;
 $q->addTable('history');
 $q->addTable('users');
 $q->addWhere('history_user = user_id'.$filter);

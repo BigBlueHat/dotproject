@@ -11,6 +11,7 @@
 	$q->addQuery('dep.dept_name');
 	$q->addWhere('dep.dept_id = '.$dept_id);
 	$sql = $q->prepare();
+	$q->clear();
 	$contact_department = db_loadResult($sql);
 	
 	$q  = new DBQuery;

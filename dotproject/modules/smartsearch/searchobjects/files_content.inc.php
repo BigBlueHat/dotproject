@@ -50,7 +50,7 @@ class files_content {
                 $sql = substr($sql,0,-4);
                 $q->addWhere("($sql)");
 		$q->addGroup('files.file_id');
-                return $q->prepare();
+                return $q->prepare(true);
 	}
 }
 ?>

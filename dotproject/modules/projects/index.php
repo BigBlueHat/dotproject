@@ -16,6 +16,7 @@ if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && is
 		$r->addWhere('project_id   = '.$project_id);
 		echo $r->prepare();
 		$r->exec();
+		$r->clear();
 	}
 }
 // End of project status update
@@ -65,6 +66,7 @@ $deny = $obj->getDeniedRecords( $AppUI->user_id );
 $q  = new DBQuery;
 $q->dropTemp('tasks_sum, tasks_summy, tasks_critical, tasks_problems');
 $q->exec();
+$q->clear();
 
 // Task sum table
 // by Pablo Roca (pabloroca@mvps.org)
@@ -73,7 +75,6 @@ $q->exec();
 $working_hours = $dPconfig['daily_working_hours'];
 
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
-$q = new DBQuery;
 $q->createTemp('tasks_sum');
 $q->addTable('tasks');
 $q->addQuery("task_project, COUNT(distinct task_id) AS total_tasks, 
@@ -81,20 +82,20 @@ $q->addQuery("task_project, COUNT(distinct task_id) AS total_tasks,
 		SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete");
 $q->addGroup('task_project');
 $tasks_sum = $q->exec();
+$q->clear();
 
 // temporary My Tasks
 // by Pablo Roca (pabloroca@mvps.org)
 // 16 August 2003
-$q = new DBQuery;
 $q->createTemp('tasks_summy');
 $q->addTable('tasks');
 $q->addQuery('task_project, COUNT(distinct task_id) AS my_tasks');
 $q->addWhere("task_owner = $AppUI->user_id");
 $q->addGroup('task_project');
 $tasks_summy = $q->exec();
+$q->clear();
 
 // temporary critical tasks
-$q = new DBQuery;
 $q->createTemp('tasks_critical');
 $q->addTable('tasks');
 $q->addQuery('task_project, task_id AS critical_task, task_end_date AS project_actual_end_date');
@@ -102,9 +103,9 @@ $q->addJoin('projects', 'p', 'p.project_id = task_project');
 $q->addOrder("task_end_date DESC");
 $q->addGroup('task_project');
 $tasks_critical = $q->exec();
+$q->clear();
 
 // temporary task problem logs
-$q = new DBQuery;
 $q->createTemp('tasks_problems');
 $q->addTable('tasks');
 $q->addQuery('task_project, task_log_problem');
@@ -112,11 +113,11 @@ $q->addJoin('task_log', 'tl', 'tl.task_log_task = task_id');
 $q->addWhere("task_log_problem > '0'");
 $q->addGroup('task_project');
 $tasks_problems = $q->exec();
+$q->clear();
 
 if(isset($department)){
 	//If a department is specified, we want to display projects from the department, and all departments under that, so we need to build that list of departments
 	$dept_ids = array();
-	$q = new DBQuery;
 	$q->addTable('departments');
 	$q->addQuery('dept_id, dept_parent');
 	$q->addOrder('dept_parent,dept_name');
@@ -124,6 +125,7 @@ if(isset($department)){
 	addDeptId($rows, $department);
 	$dept_ids[] = $department;
 }
+$q->clear();
 
 // retrieve list of records
 // modified for speed
@@ -164,7 +166,6 @@ ORDER BY $orderby $orderdir
 ";
 global $projects;
 
-$q = new DBQuery;
 $q->addTable('projects');
 $q->addQuery('projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_color_identifier, project_company, company_name, project_status,
@@ -196,7 +197,7 @@ $projects = $q->loadList();
 $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 
 //get list of all departments, filtered by the list of permitted companies.
-$q = new DBQuery;
+$q->clear();
 $q->addTable('companies');
 $q->addQuery('company_id, company_name, dep.*');
 $q->addJoin('departments', 'dep', 'companies.company_id = dep.dept_company');

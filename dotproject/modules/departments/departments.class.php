@@ -29,6 +29,7 @@ class CDepartment extends CDpObject {
 		$q->addQuery('dep.*');
 		$q->addWhere('dep.dept_id = '.$oid);
 		$sql = $q->prepare();
+		$q->clear();
 		return db_loadObject( $sql, $this );
 	}
 
@@ -77,27 +78,31 @@ class CDepartment extends CDpObject {
 		$res = $q->exec();
 
 		if (db_num_rows( $res )) {
+			$q->clear();
 			return "deptWithSub";
 		}
-		$q  = new DBQuery;
+		$q->clear();
 		$q->addTable('projects','p');
 		$q->addQuery('p.*');
 		$q->addWhere('p.project_department = '.$this->dept_id);
 		$res = $q->exec();
 
 		if (db_num_rows( $res )) {
+			$q->clear();
 			return "deptWithProject";
 		}
-		$sql = "DELETE FROM departments WHERE dept_id = $this->dept_id";
-		$q  = new DBQuery;
+		// $sql = "DELETE FROM departments WHERE dept_id = $this->dept_id";
+		$q->clear();
 		$q->addQuery('*');
 		$q->setDelete('departments');
 		$q->addWhere('dept_id = '.$this->dept_id);
 		if (!$q->exec()) {
-			return db_error();
+			$result = db_error();
 		} else {
-			return NULL;
+			$result = NULL;
 		}
+		$q->clear();
+		return $result;
 	}
 }
 ?>

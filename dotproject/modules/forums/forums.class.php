@@ -65,23 +65,26 @@ class CForum extends CDpObject {
 		$q->setDelete('forum_visits');
 		$q->addWhere('visit_forum = '.$this->forum_id);
 		$q->exec(); // No error if this fails, it is not important.
+		$q->clear();
 		
-		$q  = new DBQuery;
 		$q->setDelete('forums');
 		$q->addWhere('forum_id = '.$this->forum_id);
 		if (!$q->exec()) {
+			$q->clear();
 			return db_error();
 		}
-		$sql = "DELETE FROM forum_messages WHERE message_forum = $this->forum_id";
-		$q  = new DBQuery;
+		// $sql = "DELETE FROM forum_messages WHERE message_forum = $this->forum_id";
+		$q->clear();
 		$q->setDelete('forum_messages');
 		$q->addWhere('message_forum = '.$this->forum_id);
 		if (!$q->exec()) {
-			return db_error();
+			$result =  db_error();
 		} else {
 			addHistory('forums', $this->forum_id, 'delete', $this->forum_name);
-			return NULL;
+			$result =  NULL;
 		}
+		$q->clear();
+		return $result;
 	}
 }
 
@@ -122,20 +125,20 @@ class CForumMessage {
 		if( $msg ) {
 			return "CForumMessage::store-check failed<br />$msg";
 		}
+		$q  = new DBQuery;
 		if( $this->message_id ) {
 			// First we need to remove any forum visits for this message
 			// otherwise nobody will see that it has changed.
-			$q  = new DBQuery;
 			$q->setDelete('forum_visits');
 			$q->addWhere('visit_message = '.$this->message_id);
 			$q->exec(); // No error if this fails, it is not important.
 			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
+			$q->clear();
 		} else {
 			$this->message_date = db_datetime( time() );
 			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
 			echo db_error(); ## TODO handle error better
 
-			$q  = new DBQuery;
 			$q->addTable('forum_messages');
 			$q->addQuery('count(message_id), MAX(message_date)');
 			$q->addWhere('message_forum = '.$this->message_forum);
@@ -143,6 +146,7 @@ class CForumMessage {
 			$res = $q->exec();
 			echo db_error(); ## TODO handle error better
 			$reply = db_fetch_row( $res );
+			$q->clear();
 
 			//update forum descriptor
 			$forum = new CForum();
@@ -168,15 +172,17 @@ class CForumMessage {
 		$q->setDelete('forum_visits');
 		$q->addWhere('visit_message = '.$this->message_id);
 		$q->exec(); // No error if this fails, it is not important.
+		$q->clear();
 		
-		$q  = new DBQuery;
 		$q->setDelete('forum_messages');
 		$q->addWhere('message_id = '.$this->message_id);
 		if (!$q->exec()) {
-			return db_error();
+			$result = db_error();
 		} else {
-			return NULL;
+			$result = NULL;
 		}
+		$q->clear();
+		return $result;
 	}
 
 	function sendWatchMail( $debug=false ) {
@@ -197,7 +203,7 @@ class CForumMessage {
 		  $message_from = "Unknown user";
 		}
 		// Get the forum name;
-		$q  = new DBQuery;
+		$q->clear();
 		$q->addTable('forums');
 		$q->addQuery('forum_name');
 		$q->addWhere("forum_id = '{$this->message_forum}'");
@@ -210,18 +216,19 @@ class CForumMessage {
 
 		// SQL-Query to check if the message should be delivered to all users (forced)
 		// In positive case there will be a (0,0,0) row in the forum_watch table
-		$q  = new DBQuery;
+		$q->clear();
 		$q->addTable('forum_watch');
 		$q->addQuery('*');
 		$q->addWhere('watch_user = 0 AND watch_forum = 0 AND watch_topic = 0');
 		$resAll = $q->exec();
+		$AllCount = db_num_rows($resAll);
 
-		$q  = new DBQuery;
+		$q->clear();
 		$q->addTable('users');
 		$q->addQuery('DISTINCT contact_email, user_id, contact_first_name, contact_last_name');
 		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
 
-		if (db_num_rows( $resAll ) < 1)		//message is only delivered to users that checked the forum watch
+		if ($AllCount < 1)		//message is only delivered to users that checked the forum watch
 		{	
 			$q->addTable('forum_watch');
 			$q->addWhere("user_id = watch_user
@@ -229,6 +236,7 @@ class CForumMessage {
 		}
 
 		if (!($res = $q->exec())) {
+			$q->clear();
 			return;
 		}
 		if (db_num_rows( $res ) < 1) {
@@ -255,6 +263,7 @@ class CForumMessage {
 				$mail->Send();
 			}
 		}
+		$q->clear();
 		return;
 	}
 }

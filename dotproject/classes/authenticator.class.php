@@ -81,20 +81,21 @@
 				die($AppUI->_('Failed to get user details') . ' - error was ' . $db->ErrorMsg());
 			}
 			if ( $rs->RecordCount() < 1) {
+				$q->clear();
 				$this->createsqluser($username, $passwd, $email, $first_name, $last_name);
 			} else {
 				if (! $row = $rs->FetchRow())
 					die($AppUI->_('Failed to retrieve user detail'));
 				// User exists, update the user details.
 				$this->user_id = $row['user_id'];
-				$q  = new DBQuery;
+				$q->clear();
 				$q->addTable('users');
 				$q->addUpdate('user_password', $passwd);
 				$q->addWhere("user_id = {$this->user_id}");
 				if (! $q->exec()) {
 					die($AppUI->_('Could not update user credentials'));
 				}
-				$q  = new DBQuery;
+				$q->clear();
 				$q->addTable('contacts');
 				$q->addUpdate('contact_first_name', $first_name);
 				$q->addUpdate('contact_last_name', $last_name);
@@ -103,6 +104,7 @@
 				if (! $q->exec()) {
 					die($AppUI->_('Could not update user details'));
 				}
+				$q->clear();
 			}
 			return true;
 		}

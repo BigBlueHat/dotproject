@@ -32,6 +32,7 @@ $q->addJoin('users', 'u', 'u.user_id = companies.company_owner');
 $q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
 $q->addWhere('companies.company_id = '.$company_id);
 $sql = $q->prepare();
+$q->clear();
 
 $obj = null;
 if (!db_loadObject( $sql, $obj )) {

@@ -13,6 +13,7 @@ $q->addWhere("forums.forum_id = $forum_id");
 $q->addWhere('forums.forum_project = projects.project_id');
 $res = $q->exec();
 $forum_info = $q->fetchRow();
+$q->clear();
 echo db_error();
 
 //pull message information
@@ -24,11 +25,11 @@ $q->addWhere('message_id = '. ($message_id ? $message_id : $message_parent));
 $res = $q->exec();
 echo db_error();
 $message_info = $q->fetchRow();
+$q->clear();
 
 //pull message information from last response 
 if ($message_parent != -1)
 {
-    	$q  = new DBQuery;
 	$q->addTable('forum_messages');
 	$q->addQuery('forum_messages.*');
 	$q->addWhere('message_parent = '.$message_id ? $message_id : $message_parent);
@@ -43,6 +44,7 @@ if ($message_parent != -1)
     else {
         $last_message_info["message_body"] = str_replace("\n", "\n> ", @$last_message_info["message_body"]);
     }
+		$q->clear();
 }
 
 $crumbs = array();
