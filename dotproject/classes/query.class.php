@@ -380,7 +380,7 @@ class DBQuery {
 
     $q .= ' SET ';
     foreach( $this->update_list as $field => $value) {
-      $q .= "$field = '$value' ";
+      $q .= "$field = " . $this->quote($value) . " ";
     }
     $q .= $this->make_where_clause($this->where);
     return $q;
