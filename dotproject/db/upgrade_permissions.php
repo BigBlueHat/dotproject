@@ -56,6 +56,7 @@ $non_admin_mods = $perms->add_group("non_admin", "Non-Admin Modules", $mod, "axo
 $perms->add_object("sys", "ACL Administration", "acl", 1, 0, "axo");
 $perms->add_object("app", "User Administration", "admin", 1, 0, "axo");
 $perms->add_object("app", "Calendar", "calendar", 2, 0, "axo");
+$perms->add_object("app", "Events", "events", 2, 0, "axo");
 $perms->add_object("app", "Companies", "companies", 3, 0, "axo");
 $perms->add_object("app", "Contacts", "contacts", 4, 0, "axo");
 $perms->add_object("app", "Departments", "departments", 5, 0, "axo");
@@ -74,6 +75,7 @@ $perms->add_object("app", "User Table", "users", 15, 0, "axo");
 $perms->add_group_object($all_mods, "app", "admin", "axo");
 $perms->add_group_object($all_mods, "app", "calendar", "axo");
 $perms->add_group_object($all_mods, "app", "companies", "axo");
+$perms->add_group_object($all_mods, "app", "events", "axo");
 $perms->add_group_object($all_mods, "app", "contacts", "axo");
 $perms->add_group_object($all_mods, "app", "departments", "axo");
 $perms->add_group_object($all_mods, "app", "files", "axo");
@@ -95,6 +97,7 @@ $perms->add_group_object($admin_mods, "app", "users", "axo");
 
 // Non admin groups
 $perms->add_group_object($non_admin_mods, "app", "calendar", "axo");
+$perms->add_group_object($non_admin_mods, "app", "events", "axo");
 $perms->add_group_object($non_admin_mods, "app", "companies", "axo");
 $perms->add_group_object($non_admin_mods, "app", "contacts", "axo");
 $perms->add_group_object($non_admin_mods, "app", "departments", "axo");
