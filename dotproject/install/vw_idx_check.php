@@ -1,11 +1,11 @@
 <?php // $Id$
 
-global $cfgDir, $cfgFile, $failedImg, $filesDir, $locEnDir, $okImg, $tblwidth, $tmpDir;
-$cfgDir = isset($cfgDir) ? $cfgDir : "../includes";
-$cfgFile = isset($cfgFile) ? $cfgFile : "../includes/config.php";
-$filesDir = isset($filesDir) ? $filesDir : "../files";
-$locEnDir = isset($locEnDir) ? $locEnDir : "../locales/en";
-$tmpDir = isset($tmpDir) ? $tmpDir : "../files/temp";
+global $cfgDir, $cfgFile, $failedImg, $filesDir, $locEnDir, $okImg, $tblwidth, $tmpDir, $baseDir;
+$cfgDir = isset($cfgDir) ? $cfgDir : "$baseDir/includes";
+$cfgFile = isset($cfgFile) ? $cfgFile : "$baseDir/includes/config.php";
+$filesDir = isset($filesDir) ? $filesDir : "$baseDir/files";
+$locEnDir = isset($locEnDir) ? $locEnDir : "$baseDir/locales/en";
+$tmpDir = isset($tmpDir) ? $tmpDir : "$baseDir/files/temp";
 $tblwidth = isset($tblwidth) ? $tblwidth :'100%';
 $chmod = '0777';
 ?>
@@ -43,8 +43,8 @@ $chmod = '0777';
             <td class="title" colspan="2"><br />Database Connectors</td>
 </tr>
 <tr>
-            <td class="item" colspan="2">The next tests check for database support compiled with php. We use the ADODB database abstraction layer which comes with drivers for
-     many databases. Consult the ADODB documentation for details. <br />For non-advanced users: MySQL will probably be the database of your choice - make sure MySQL Support
+            <td class="item" colspan="2"><p>The next tests check for database support compiled with php. We use the ADODB database abstraction layer which comes with drivers for
+     many databases. Consult the ADODB documentation for details. <p>For the moment only MySQL is fully supported, so you need to make sure it
      is available.</td>
 </tr>
 <tr>
@@ -95,8 +95,8 @@ $chmod = '0777';
             <td class="title" colspan="2"><br />Check for Directory and File Permissions</td>
 </tr>
 <tr>
-            <td class="item" colspan="2">If there appears a message '777' after a file/directory, then Permissions for this File have been set to 777 (world-writable) for write purposes.
-            Consider that there are Security issues with 777 in a productive environment. Manual efforts for fine grained permissions setting are inevitable.</td>
+            <td class="item" colspan="2">If the message 'World Writable' appears after a file/directory, then Permissions for this File have been set to allow all users to write to this file/directory.
+            Consider changing this to a more restrictive setting to improve security. You will need to do this manually.</td>
 </tr>
 <?php
 if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cfgFile ) && !(is_writable( $cfgDir ))) ) {
@@ -105,7 +105,7 @@ if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cf
         @chmod( $cfgDir, $chmod );
  $filemode = @fileperms($cfgFile);
  if ($filemode & 2)
-         $okMessage="<span class='error'> 777</span>";
+         $okMessage="<span class='error'> World Writable</span>";
 
  }
 ?>
@@ -120,7 +120,7 @@ if (is_writable( $filesDir )) {
         @chmod( $filesDir, $chmod );
  $filemode = @fileperms($filesDir);
  if ($filemode & 2)
-         $okMessage="<span class='error'> 777</span>";
+         $okMessage="<span class='error'> World Writable</span>";
 
  }
 ?>
@@ -135,7 +135,7 @@ if (is_writable( $tmpDir )) {
         @chmod( $tmpDir, $chmod );
  $filemode = @fileperms($tmpDir);
  if ($filemode & 2)
-         $okMessage="<span class='error'> 777</span>";
+         $okMessage="<span class='error'> World Writable</span>";
 
  }
 ?>
@@ -150,7 +150,7 @@ if (is_writable( $locEnDir )) {
         @chmod( $locEnDir, $chmod );
 	$filemode = @fileperms($filesDir);
 	if ($filemode & 2)
-	        $okMessage="<span class='error'> 777</span>";
+	        $okMessage="<span class='error'> World Writable</span>";
 
  }
 ?>
@@ -185,22 +185,31 @@ if (is_writable( $locEnDir )) {
             <td class="title" colspan="2"><br/>Other Recommendations</td>
 </tr>
 <tr>
+            <td class="item" colspan="2">
+						<p>The dotProject team openly recommend Free Open Source software (FOSS).  This is not just
+						because dotProject is a FOSS application, but because we believe that the FOSS development
+						method results in better software, with a lower Total Cost of Ownership (TCO).
+						<p>These recommendations reflect that belief, and the fact that as FOSS developers, we
+						develop on FOSS systems, so they will have better support sooner than other non-FOSS
+						systems.
+						</td>
+</tr>
+<tr>
             <td class="item">Free Operating System?</td>
             <td align="left"><?php echo (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.php_uname().')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
-            It seems as if you were using a propietary operating system. For most extent Freedom and for all known security issues with proprietary things
-            the author of this installer would strongly encourage you to use free software wherever possible.</span>';?></td>
+            It seems you are using a proprietary operating system.  You might want to consider a Free Open Source operating system such as Linux.  dotProject is usually tested on Linux first and will always have better support for Linux than other operating systems.
+            </span>';?></td>
 </tr>
 <tr>
-            <td class="item">Free Web Server?</td>
-            <td align="left"><?php echo (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') == false) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.$_SERVER['SERVER_SOFTWARE'].')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
-            It seems as if you were using a propietary web server. For most extent Freedom and for all known security issues with proprietary things
-            the author of this installer would strongly encourage you to use free software wherever possible.</span>';?></td>
+            <td class="item">Supported Web Server?</td>
+            <td align="left"><?php echo (stristr($_SERVER['SERVER_SOFTWARE'], 'apache') != false) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.$_SERVER['SERVER_SOFTWARE'].')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
+            It seems you are using an unsupported web server.  Only Apache Web server is fully supported by dotProject, and using other web servers may result in unexpected problems.
+            </span>';?></td>
 </tr>
 <tr>
-            <td class="item">Browser is not MSIE?</td>
+            <td class="item">Standards Compliant Browser?</td>
             <td align="left"><?php echo (stristr($_SERVER['HTTP_USER_AGENT'], 'msie') == false) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.$_SERVER['HTTP_USER_AGENT'].')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
-            It seems as if you were using a propietary browser. For most extent Freedom and for all known security and compatibility issues
-            with proprietary things the author of this installer would strongly encourage you to use free software wherever possible.
-            There are some known issues for proprietary browsers.</span>';?></td>
+            It seems you are using Internet Explorer.  This browser has many known security risks and is not standards compliant.  Consider using a browser such as Firefox - the dotProject team in the main develops for Firefox first.
+            </span>';?></td>
 </tr>
 </table>
