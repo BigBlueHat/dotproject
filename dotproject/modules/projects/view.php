@@ -331,8 +331,16 @@ function delIt() {
 </table>
 
 <?php
+// for tab 1 show only inactive tasks
 if ($tab == 1) {
 	$_GET['task_status'] = -1;
+}
+/* for tab 0 show active tasks
+** this condition ensures that the task_status is not overwritten by UI settings in the tasks modules
+** cf. mantis bug #327 where only inactive tasks were listed in tab 0
+*/
+if ($tab == 0) {
+	$_GET['task_status'] = 0;
 }
 $query_string = "?m=projects&a=view&project_id=$project_id";
 // tabbed information boxes
