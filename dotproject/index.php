@@ -30,7 +30,8 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **/
 
-error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING );
+ini_set('display_errors', 1); // Ensure errors get to the user.
+error_reporting( E_ALL & ~E_NOTICE);
 
 // If you experience a 'white screen of death' or other problems,
 // uncomment the following line of code:
