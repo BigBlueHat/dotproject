@@ -73,11 +73,11 @@
 			$passwd = trim($user_data['passwd']);
 			$email = trim($user_data['email']);
 			
-			$sql = "
-			SELECT user_id, user_password, user_contact
-			FROM users
-			WHERE user_username = '$username'";
-			if (! $rs = $db->Execute($sql)) {
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addQuery('user_id, user_password, user_contact');
+			$q->addWhere("user_username = '$username'");
+			if (! $rs = $q->exec()) {
 				die($AppUI->_('Failed to get user details') . ' - error was ' . $db->ErrorMsg());
 			}
 			if ( $rs->RecordCount() < 1) {
@@ -87,19 +87,20 @@
 					die($AppUI->_('Failed to retrieve user detail'));
 				// User exists, update the user details.
 				$this->user_id = $row['user_id'];
-				$sql = "
-				UPDATE users set user_password = '$passwd'
-				WHERE user_id = {$this->user_id}
-				";
-				if (! $db->Execute($sql)) {
+				$q  = new DBQuery;
+				$q->addTable('users');
+				$q->addUpdate('user_password', $passwd);
+				$q->addWhere("user_id = {$this->user_id}");
+				if (! $q->exec()) {
 					die($AppUI->_('Could not update user credentials'));
 				}
-				$sql = "
-				UPDATE contacts set contact_first_name='$first_name',
-				contact_last_name = '$last_name',
-				contact_email = '$email'
-				WHERE contact_id = {$row['user_contact']}";
-				if (! $db->Execute($sql)) {
+				$q  = new DBQuery;
+				$q->addTable('contacts');
+				$q->addUpdate('contact_first_name', $first_name);
+				$q->addUpdate('contact_last_name', $last_name);
+				$q->addUpdate('contact_email', $email);
+				$q->addWhere("contact_id = {$row['user_contact']}");
+				if (! $q->exec()) {
 					die($AppUI->_('Could not update user details'));
 				}
 			}
@@ -123,23 +124,13 @@
 			if (! $c->contact_id)
 				die($AppUI->_('Failed to create user details'));
 
-			$sql = "
-			INSERT INTO users 
-			(
-				user_username, 
-				user_password, 
-				user_type, 
-				user_contact
-			) 
-			VALUES 
-			(
-				'".$username."', 
-				'".$password."', 	
-				1,
-				".$c->contact_id."
-			)
-			";
-			if (! $db->Execute($sql))
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addInsert('user_username',$username );
+			$q->addInsert('user_password', $password);
+			$q->addInsert('user_type', '1');
+			$q->addInsert('user_contact', $c->contact_id);
+			if (! $q->exec())
 				die($AppUI->_('Failed to create user credentials'));
 			$user_id = $db->Insert_ID();
 			$this->user_id = $user_id;
@@ -160,13 +151,11 @@
 
 			$this->username = $username;
 
-			$sql = "
-			SELECT user_id, user_password
-			FROM users
-			WHERE user_username = '$username'
-			";
-
-			if (!$rs = $db->Execute($sql)) return false;
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addQuery('user_id, user_password');
+			$q->addWhere("user_username = '$username'");
+			if (!$rs = $q->exec()) return false;
 			if (!$row = $rs->FetchRow()) return false;
 
 			$this->user_id = $row["user_id"];
@@ -279,8 +268,10 @@
 		function userExists($username)
 		{
 			GLOBAL $db;
-			$sql = "SELECT * FROM users WHERE user_username = '".$username."'";
-			$rs = $db->Execute($sql);
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addWhere("user_username = '$username'");
+			$rs = $q->exec();
 			if ($rs->RecordCount() > 0) return true;
 			return false;
 		}
@@ -288,8 +279,10 @@
 		function userId($username)
 		{
 			GLOBAL $db;
-			$sql = "SELECT * FROM users WHERE user_username = '".$username."'";
-			$rs = $db->Execute($sql);
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addWhere("user_username = '$username'");
+			$rs = $q->exec();
 			$row = $rs->FetchRow();
 			return $row["user_id"];	
 		}
@@ -318,23 +311,13 @@
 			}
 			$contact_id = ($c->contact_id == NULL) ? "NULL" : $c->contact_id;
 
-			$sql = "
-			INSERT INTO users 
-			(
-				user_username, 
-				user_password, 
-				user_type, 
-				user_contact
-			) 
-			VALUES 
-			(
-				'".$username."', 
-				'".$hash_pass."', 	
-				1,
-				".$c->contact_id."
-			)
-			";
-			$db->Execute($sql);
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addInsert('user_username',$username );
+			$q->addInsert('user_password', $hash_pass);
+			$q->addInsert('user_type', '1');
+			$q->addInsert('user_contact', $c->contact_id);
+			$q->exec();
 			$user_id = $db->Insert_ID();
 			$this->user_id = $user_id;
 
