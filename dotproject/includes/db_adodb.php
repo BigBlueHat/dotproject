@@ -9,7 +9,7 @@
 	A generic database layer providing a set of low to middle level functions
 	originally written for WEBO project, see webo source for "real life" usages
 */
-require_once( "{$dPconfig['root_dir']}/lib/adodb/adodb.inc.php" );
+require_once( "$baseDir/lib/adodb/adodb.inc.php" );
 
 $db = NewADOConnection($dPconfig['dbtype']);
 
@@ -68,7 +68,7 @@ function db_exec( $sql ) {
                 dprint(__FILE__, __LINE__, 7, "Error executing: <pre>$sql</pre>");
                 if (dPgetConfig('auto_fields_creation'))
                 {
-                        include_once(dPgetConfig('root_dir') . '/db/create_db_fields.php');
+                        include_once($baseDir . '/db/create_db_fields.php');
                         // Useless statement, but it is being executed only on error, 
                         // and it stops infinite loop.
                         $db->Execute( $sql );
