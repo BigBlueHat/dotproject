@@ -79,6 +79,7 @@ class CForumMessage {
 	var $message_forum = NULL;
 	var $message_parent = NULL;
 	var $message_author = NULL;
+	var $message_editor = NULL;
 	var $message_title = NULL;
 	var $message_date = NULL;
 	var $message_body = NULL;

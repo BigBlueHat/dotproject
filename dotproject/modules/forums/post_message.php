@@ -83,7 +83,8 @@ function orderByName(x){
 	<input type="hidden" name="message_forum" value="<?php echo $forum_id;?>" />
 	<input type="hidden" name="message_parent" value="<?php echo $message_parent;?>" />
 	<input type="hidden" name="message_published" value="<?php echo $forum_info["forum_moderated"] ? '1' : '0';?>" />
-	<input type="hidden" name="message_author" value="<?php echo $AppUI->user_id;?>" />
+	<input type="hidden" name="message_author" value="<?php echo isset($message_info["message_author"]) ? $message_info["message_author"] : $AppUI->user_id;?>" />
+	<input type="hidden" name="message_editor" value="<?php echo isset($message_info["message_author"]) ? $AppUI->user_id : '0';?>" />
 	<input type="hidden" name="message_id" value="<?php echo $message_id;?>" />
 
 <tr>

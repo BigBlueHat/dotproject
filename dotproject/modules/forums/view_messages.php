@@ -59,6 +59,13 @@ $x = false;
 $date = new CDate();
 
 foreach ($messages as $row) {
+	$sql = "
+	SELECT DISTINCT user_first_name, user_last_name, user_email, user_username
+	FROM users, forum_messages
+	WHERE users.user_id = ".$row["message_editor"];
+
+	$editor = db_loadList( $sql );
+
 	$date = intval( $row["message_date"] ) ? new CDate( $row["message_date"] ) : null;
 
 	$s = '';
@@ -68,7 +75,13 @@ foreach ($messages as $row) {
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
 	$s .= '<a href="mailto:'.$row["user_email"].'">';
-	$s .= '<font size="2">'.$row["user_first_name"].' '.$row["user_last_name"].'</font></a></td>';
+	$s .= '<font size="2">'.$row["user_first_name"].' '.$row["user_last_name"].'</font></a>';
+	if (sizeof($editor)>0) {
+		$s .= '<br/>&nbsp;<br/>'.$AppUI->_('last edited by');
+		$s .= ':<br/><a href="mailto:'.$editor[0]["user_email"].'">';
+		$s .= '<font size="1">'.$editor[0]["user_first_name"].' '.$editor[0]["user_last_name"].'</font></a>';
+	}
+	$s .= '</td>';
 	$s .= '<td valign="top" style="'.$style.'">';
 	$s .= '<font size="2"><strong>'.$row["message_title"].'</strong><hr size=1>';
 	$s .= str_replace( chr(13), "&nbsp;<br />", $row["message_body"] );
