@@ -111,7 +111,7 @@ if($do_report){
 	$sql .= "GROUP BY t.task_id";
 	
 	$task_list = db_loadHashList($sql, "task_id");
-	echo $sql;
+	//echo $sql;
 ?>
 
 <table cellspacing="1" cellpadding="4" border="0" class="tbl">
