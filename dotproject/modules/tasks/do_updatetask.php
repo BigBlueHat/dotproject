@@ -83,7 +83,8 @@ $task->check();
 
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
 
-if ($task->task_percent_complete >= 100 && $task->task_end_date == '0000-00-00 00:00:00')
+error_log("Task percent_complete = $task->task_percent_complete, Task end date = $task->task_end_date");
+if ($task->task_percent_complete >= 100 && ( ! $task->task_end_date || $task->task_end_date == '0000-00-00 00:00:00'))
 	$task->task_end_date = $obj->task_log_date;
 
 if (($msg = $task->store())) {
