@@ -33,7 +33,7 @@ class CAppUI {
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // warn when a translation is not found
-	var $locale_warn = false;
+	var $locale_warn;
 // the string appended to untranslated string or unfound keys
 	var $locale_alert = '^';
 // theming
@@ -47,6 +47,11 @@ class CAppUI {
 
 // CAppUI Constructor
 	function CAppUI() {
+	    global $dPconfig;
+	    $this->locale_warn = $dPconfig['locale_warn'];
+	    
+	    $this->locale_alert = $dPconfig['locale_alert'];
+	    
 		$this->state = array();
 
 		$this->user_id = -1;
