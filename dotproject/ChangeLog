@@ -1,3 +1,13 @@
+2003-08-19 13:17  (kripper)
+---------------------------------
+includes/permissions.php
+- Fixed permission bug (overwriting of PERM_EDIT with PERM_READ)
+
+2003-08-19 08:54  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-13 12:16  (kripper)
 ---------------------------------
 modules/tasks/view.php
@@ -488,16 +498,6 @@ includes/config-dist.php
 ---------------------------------
 db/dotproject_100.sql
 - Correct icon reference for FORUM's DotProject Classic display style. Change gconf-app-icon.png to support.png.
-
-2003-06-25 20:13  (kobudo)
----------------------------------
-modules/help/en/general.help.hlp
-modules/help/en/general.topmenu.hlp
-modules/help/en/projects.index.hlp
-- Updates help documentation for DotProject version 1.0.
-
-2003-06-25 13:56  (kobudo)
----------------------------------
 ...
 
 (This file has been wrapped)
