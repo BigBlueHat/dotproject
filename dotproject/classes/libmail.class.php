@@ -154,20 +154,29 @@ function Receipt()
 
 /**
  *	set the mail recipient
+ *
+ *	The optional reset parameter is useful when looping through records to send individual mails.
+ *	This prevents the 'to' array being continually stacked with additional addresses.
+ *
  *	@param string $to email address, accept both a single address or an array of addresses
+ *	@param boolean $reset resets the current array
 */
 
-function To( $to )
+function To( $to, $reset=false )
 {
 
 	// TODO : test validité sur to
 	if( is_array( $to ) ) {
-		$this->sendto= $to;
+		$this->sendto = $to;
 	} else {
 		if ($this->useRawAddress) {
 		   if( preg_match( "/^(.*)\<(.+)\>$/", $to, $regs ) ) {
 			  $to = $regs[2];
 		   }
+		}
+		if ($reset) {
+			unset( $this->sendto );
+			$this->sendto = array();
 		}
 		$this->sendto[] = $to;
 	}
