@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-$project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
+$project_id = dPgetParam( $_GET, "project_id", 0 );
 
 // check permissions for this project
 $canEdit = !getDenyEdit( $m, $project_id );
@@ -27,6 +27,9 @@ WHERE project_id = $project_id
 GROUP BY project_id
 ";
 //echo "<pre>$sql</pre>";
+$sql = "SELECT COUNT(task_id) FROM tasks WHERE task_project = $project_id";
+$canDelete = (db_loadResult( $sql ) < 1);
+
 if (!db_loadHash( $sql, $project )) {
 	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
 	$titleBlock->addCrumb( "?m=projects", "projects list" );
@@ -43,26 +46,43 @@ if (!db_loadHash( $sql, $project )) {
 	$actual_end_date = $project["project_actual_end_date"] ? CDate::fromDateTime( $project["project_actual_end_date"] ) : new CDate();
 	$actual_end_date->setFormat( $df );
 
+// setup the title block
 	$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
-
 	if ($canEdit) {
+		$titleBlock->addCell();
 		$titleBlock->addCell(
-			'align="right" width="100%" nowrap="nowrap"',
-			'<input type="submit" class="button" value="'.$AppUI->_('new task').'">',
-			'<form action="?m=tasks&a=addedit&project_id=' . $project_id . '" method="post">',
-			'</form>'
+			'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
+			'<form action="?m=tasks&a=addedit&project_id=' . $project_id . '" method="post">', '</form>'
 		);
 	}
-
 	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	if ($canEdit) {
 		$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
+		if ($canDelete) {
+			$titleBlock->addCrumbRight(
+				'<a href="javascript:delIt()">'
+					. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
+					. $AppUI->_('delete project') . '</a>'
+			);
+		}
 	}
-
 	$titleBlock->show();
 ?>
+<script language="javascript">
+function delIt() {
+	if (confirm( "<?php echo $AppUI->_('projectsDelete');?>" )) {
+		document.frmDelete.submit();
+	}
+}
+</script>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
+<form name="frmDelete" action="./index.php?m=projects&a=do_project_aed" method="post">
+<input type="hidden" name="del" value="1" />
+<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+</form>
+
 <tr>
 	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $project["project_color_identifier"];?>" colspan="2">
 	<?php

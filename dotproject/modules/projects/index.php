@@ -66,29 +66,18 @@ $projects = db_loadList( $sql );
 $sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
 $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
-
+// setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, 'ID_HELP_PROJ_IDX' );
-
+$titleBlock->addCell( $AppUI->_('Company') . ':' );
 $titleBlock->addCell(
-	'align="right" nowrap="nowrap"',
-	$AppUI->_('Company') . ':',
-	'<form action="?m=projects" method="post" name="pickCompany">'
+	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
+	'<form action="?m=projects" method="post" name="pickCompany">', '</form>'
 );
-$titleBlock->addCell(
-	'',
-	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ),
-	'',
-	'</form>'
-);
-
 $titleBlock->addCell();
-
 if ($canEdit) {
 	$titleBlock->addCell(
-		'nowrap="nowrap"',
-		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">',
-		'<form action="?m=projects&a=addedit" method="post">',
-		'</form>'
+		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">', '',
+		'<form action="?m=projects&a=addedit" method="post">', '</form>'
 	);
 }
 $titleBlock->show();

@@ -11,44 +11,48 @@ if (!$canEdit) {
 $sql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
 $companies = arrayMerge( array( 0 => '' ), db_loadHashList( $sql ) );
 
-/*
-if (count( $companies ) < 0) {
-	$AppUI->setMsg( 'noCompanies', ID_MSG_ALERT );
-	$AppUI->redirect( 'm=companies' );
-}
-*/
-
 // pull users
 $sql = "SELECT user_id, CONCAT( user_last_name, ', ', user_first_name) FROM users ORDER BY user_last_name";
 $users = db_loadHashList( $sql );
 
 // pull the project
 $sql = "SELECT * FROM projects WHERE project_id = $project_id";
-db_loadHash( $sql, $project );
-
-// format dates
-$df = $AppUI->getPref('SHDATEFORMAT');
-
-$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
-$start_date->setFormat( $df );
-
-if ($project["project_end_date"]) {
-	$end_date = CDate::fromDateTime( $project["project_end_date"] );
-	$end_date->setFormat( $df );
+if (!db_loadHash( $sql, $project ) && $project_id > 0) {
+	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_EDIT' );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
+	$titleBlock->show();
+} else if (count( $companies ) < 2) {
+	$titleBlock = new CTitleBlock( 'noCompanies', 'projects.gif', $m, 'ID_HELP_PROJ_EDIT' );
+	$titleBlock->addCrumb( "?m=companies", "companies list" );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
+	$titleBlock->show();
 } else {
-	$end_date = null;
-}
+	// format dates
+	$df = $AppUI->getPref('SHDATEFORMAT');
 
-if ($project["project_actual_end_date"]) {
-	$actual_end_date = CDate::fromDateTime( $project["project_actual_end_date"] );
-	$actual_end_date->setFormat( $df );
-} else {
-	$actual_end_date = null;
-}
+	$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
+	$start_date->setFormat( $df );
 
-$crumbs = array();
-$crumbs["?m=projects"] = "projects list";
-$crumbs["?m=projects&a=view&project_id=$project_id"] = "view this project";
+	if ($project["project_end_date"]) {
+		$end_date = CDate::fromDateTime( $project["project_end_date"] );
+		$end_date->setFormat( $df );
+	} else {
+		$end_date = null;
+	}
+
+	if ($project["project_actual_end_date"]) {
+		$actual_end_date = CDate::fromDateTime( $project["project_actual_end_date"] );
+		$actual_end_date->setFormat( $df );
+	} else {
+		$actual_end_date = null;
+	}
+
+// setup the title block
+	$ttl = $project_id > 0 ? "Edit Project" : "New Project";
+	$titleBlock = new CTitleBlock( $ttl, 'projects.gif', $m, 'ID_HELP_PROJ_EDIT' );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
+	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+	$titleBlock->show();
 ?>
 <script language="javascript">
 function setColor(color) {
@@ -109,42 +113,13 @@ function submitIt() {
 		alert(msg);
 	}
 }
-
-function delIt() {
-	if (confirm( "<?php echo $AppUI->_('projectsDelete');?>" )) {
-		var f = document.frmEditProject;
-		f.del.value=1;
-		f.submit();
-	}
-}
 </script>
 
-<table cellspacing="0" cellpadding="0" border="0" width="98%">
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <form name="frmEditProject" action="./index.php?m=projects&a=do_project_aed" method="post">
-<input type="hidden" name="del" value="0" />
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 <input type="hidden" name="project_creator" value="<?php echo $AppUI->user_id;?>" />
 
-<tr>
-	<td><img src="./images/icons/projects.gif" alt="" border="0" /></td>
-	<td nowrap>
-		<h1><?php echo $AppUI->_(($project_id > 0) ? "Edit Project" : "New Project" ); ?></h1>
-	</td>
-	<td align="right" width="100%">&nbsp;</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_PROJ_EDIT' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td width="50%" align="right">
-		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0" /><?php echo $AppUI->_('delete project');?></a>
-	</td>
-</tr>
-</table>
-
-<table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
 <tr>
 	<td width="50%" valign="top">
 		<table cellspacing="0" cellpadding="2" border="0">
@@ -230,7 +205,7 @@ function delIt() {
 		</table>
 	</td>
 	<td width="50%" valign="top">
-		<table cellspacing="0" cellpadding="2" border="0">
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Short Name');?></td>
 			<td colspan="3">
@@ -284,10 +259,11 @@ function delIt() {
 	<td>
 		<input class=button type="button" name="<?php echo $AppUI->_('cancel');?>" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}" />
 	</td>
-	<td align="right" colspan="2">
+	<td align="right">
 		<input class=button type="Button" name="btnFuseAction" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt();" />
 	</td>
 </tr>
 </form>
 </table>
 * <?php echo $AppUI->_('requiredField');?>
+<?php } ?>
