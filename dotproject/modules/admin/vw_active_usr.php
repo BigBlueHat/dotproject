@@ -12,7 +12,8 @@ $q->addJoin('permissions', 'per', 'user_id = permission_user');
 if ($stub) {
 	$q->addWhere("(UPPER(user_username) LIKE '$stub%' or UPPER(contact_first_name) LIKE '$stub%' OR UPPER(contact_last_name) LIKE '$stub%')");
 } else if ($where) {
-	$q->addWhere("(UPPER(user_username) LIKE '%$where%' or UPPER(contact_first_name) LIKE '%$where%' OR UPPER(contact_last_name) LIKE '%$where%')");
+	$where = $q->quote("%$where%");
+	$q->addWhere("(UPPER(user_username) LIKE $where or UPPER(contact_first_name) LIKE $where OR UPPER(contact_last_name) LIKE $where)");
 }
 
 $q->addGroup('user_id');
