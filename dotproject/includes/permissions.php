@@ -2,6 +2,8 @@
 /*
  * This page handles permissions
  * 
+ * Permissions Theory:
+ * 
  * Since permissions are propagated and overwritten from general
  * to specific items, 3 type of permissions are stored in the DB:
  * - read
@@ -11,6 +13,7 @@
  * This way, if you grant edit permissions on a project and
  * deny access to an item of this project, you will be able
  * to access any item excluding the one you denied.
+ * 
  */
 // Permission flags used in the DB
 define( 'PERM_DENY', '0' );
@@ -88,26 +91,19 @@ function isAllowed($perm_type, $mod, $item_id = 0) {
 	/*** Permission propagations ***/
 			
 	// if we have access on the project => we have access on its tasks
-	if ( $mod == 'tasks' && !$allowed ) {
-		/*
+	if ( $mod == 'tasks' ) {
 		if ( $item_id > 0 ) {			
-			// get tasks project id
+			// get task's project id
 			$sql = "SELECT task_project FROM tasks WHERE task_id = $item_id";
 			$project_id = db_loadResult($sql);
-			$allowed = isAllowed( $perm_type, "projects", $project_id );
-		}
-		*/
 			
-		// HACK: I'm allowing access on the tasks module when having
-		// access on the projects module. Why? I granted someone access
-		// to a project and want to allow him to see its tasks, but
-		// index.php requires access to the tasks module in order
-		// to access sub-modules (&a=view)
-		$allowed = isAllowed( $perm_type, "projects" );
+			// check task's permission
+			$allowed = isAllowed( $perm_type, "projects", $project_id, $allowed );
+		}
 	}
 	
 	/*** TODO: Specificaly denied items ***/
-//	echo "$perm_type $mod $item_id $allowed<br>";
+	// echo "$perm_type $mod $item_id $allowed<br>";
 	
 	return $allowed;
 }
@@ -120,53 +116,24 @@ function getDenyEdit( $mod, $item_id=0 ) {
 	return !isAllowed(PERM_EDIT, $mod, $item_id);
 }
 
-function winnow( $mod, $key ) {
-	GLOBAL $perms;
-
-	$in = array();
-	$out = array();
-	$all_in = false;
-	$all_out = false;
-
-	// do some winnowing
-	if (@$perms[$mod]) {
-		foreach ($perms[$mod] as $k=>$v) {
-			if ($k == PERM_ALL) {
-				if ($v == PERM_DENY) {
-					$all_out = true;
-				} else {
-					$all_in = true;
-				}
-			} else {
-				if ($v == PERM_DENY) {
-					$out[] = $k;
-				} else {
-					$in[] = $k;
-				}
-			}
-		}
-	} else if (@$perms['all']) {
-		if ($perms['all'] == PERM_DENY) {
-			$all_out = true;
-		} else {
-			$all_in = true;
-		}
-	}
-	// now compile as query
-	$where = array();
-	if (count( $out ) > 0) {
-		$where[] = "$key NOT IN (" . implode( ',', $out ).")";
-	}
-	if (count( $in ) > 0) {
-		$where[] = "$key IN (" . implode( ',', $in ).")";
-	}
-	if ($all_in) {
-		$where[] = "$key > 0";
-	}
-	if ($all_out) {
-		$where[] = "$key = 0";
-	}
-	return "(" . implode( ' AND ', $where ). ")";
+/**
+ * Return a join statement and a where clause filtering
+ * all items which for which no explicit read permission is granted.
+ */
+function winnow( $mod, $key, &$where, $alias = 'perm' ) {
+	GLOBAL $AppUI;
+	
+	// TODO: Should we also check empty( $perms['all'] ?
+	if( ! empty( $perms[$mod] ) ) {
+		// We have permissions for specific items => filter items
+		$sql = "\n  LEFT JOIN permissions AS $alias ON $alias.permission_item = $key ";
+		if ($where) $where .= "\n  AND";
+		$where .= " $alias.permission_grant_on = '$mod' AND $alias.permission_value != " . PERM_DENY . " AND $alias.permission_user = " . $AppUI->user_id . " ";
+		return $sql;
+	} else {
+		if (!$where) $where = '1=1';  // dummy for handling 'AND $where' situations
+		return ' ';
+	}		
 }
 
 // pull permissions into master array
