@@ -28,6 +28,10 @@ function bestColor( $bg, $lt='#ffffff', $dk='#000000' ) {
 ##
 function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translate=false ) {
 	GLOBAL $AppUI;
+	if (! is_array($arr)) {
+		dprint(__FILE__, __LINE__, 0, "arraySelect called with no array");
+		return '';
+	}
 	reset( $arr );
 	$s = "\n<select name=\"$select_name\" $select_attribs>";
 	foreach ($arr as $k => $v ) {
@@ -633,6 +637,25 @@ function formatHours($hours)
 	} else {
 		return $daysPart . ' ' . $AppUI->_('days') . ' ' . $hoursPart . ' ' . $AppUI->_('hr');
 	} 
+}
+
+
+/**
+ * Function to return the real pathname for a file,
+ * countering problems with Windows and require_once.
+ */
+function dpRealPath($file)
+{
+	if (! isset($GLOBALS['OS_WIN'])) {
+		$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
+	}
+
+	$file = realpath($file);
+	if ($GLOBALS['OS_WIN']) {
+		return strtolower($file);
+	} else {
+		return $file;
+	}
 }
 
 ?>
