@@ -313,7 +313,7 @@ class CAppUI {
 		}
 		/* stripslashes added to fix #811242 on 2004 Jan 10
 		 * if no problems occur, delete this comment. (gregor) */
-		return stripslashes($str);
+		return addslashes(stripslashes($str));
 	}
 /**
 * Set the display of warning for untranslated strings
