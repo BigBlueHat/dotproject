@@ -148,10 +148,11 @@ WHERE
 $sql = "
 SELECT files.*,
 	project_name, project_color_identifier, project_active,
-	user_first_name, user_last_name
+	user_first_name, user_last_name,task_name,task_id
 FROM files, permissions
 LEFT JOIN projects ON project_id = file_project
 LEFT JOIN users ON user_id = file_owner
+LEFT JOIN tasks on file_task = task_id
 WHERE
 	permission_user = $AppUI->user_id
 	AND permission_value <> 0
@@ -195,6 +196,7 @@ shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'File Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Description' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Version' );?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Task Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Owner' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Size' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Type' );?></a></th>
@@ -237,8 +239,9 @@ foreach ($files as $row) {
 	</td>
 	<td width="20%"><?php echo $row["file_description"];?></td>
 	<td width="5%" nowrap="nowrap" align="center"><?php echo $row["file_version"];?></td>
+	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["task_id"];?>"><?php echo $row["task_name"];?></a></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>
-	<td width="10%" nowrap="nowrap" align="right"><?php echo intval($row["file_size"] / 1024);?> kb</td>
+	<td width="5%" nowrap="nowrap" align="right"><?php echo intval($row["file_size"] / 1024);?> kb</td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
