@@ -26,9 +26,11 @@
 		require_once( $AppUI->getModuleClass( 'companies' ) );
 		$oCpy = new CCompany ();
                 $aCpies = $oCpy->getAllowedRecords ($AppUI->user_id, "company_id, company_name");
-                $where = 'contact_company = \'\' OR (contact_company IN (\'' .
+                $where = "contact_company = '' OR (contact_company IN ('" .
                                 implode('\',\'' , array_values($aCpies)) .
-                                '\'))';
+                                "')) OR ( contact_company IN ('" .
+																implode("','", array_keys($aCpies)) .
+																"'))" ;
 		$company_name = $AppUI->_('Allowed Companies');
 	} else {
 		// Contacts for this company only
@@ -36,16 +38,22 @@
 	        	from companies as c
 	        	where company_id = $company_id";
 		$company_name = db_loadResult($sql);
-		$where = "contact_company = '" . $company_name."'";
+		$where = " ( contact_company = '$company_name' or contact_company = '$company_id' )";
 	}
 	
-	$sql = "select contact_id, contact_first_name, contact_last_name, contact_company, contact_department
-	        from contacts
-	        where $where
-	              and (contact_owner='$AppUI->user_id' or contact_private='0')
-	        order by contact_company, contact_department";
-//	echo $sql;
-	$contacts = db_loadHashList($sql, "contact_id");
+	// This should now work on company ID, but we need to be able to handle both
+	$q =& new DBQuery;
+	$q->addTable('contacts', 'a');
+	$q->leftJoin('companies', 'b', 'company_id = contact_company');
+	$q->leftJoin('departments', 'c', 'dept_id = contact_department');
+	$q->addQuery('contact_id, contact_first_name, contact_last_name, contact_company, contact_department');
+	$q->addQuery('company_name');
+	$q->addQuery('dept_name');
+	$q->addWhere($where);
+	$q->addWhere("(contact_owner = '$AppUI->user_id' or contact_private = '0')");
+	$q->addOrder("company_name, contact_company, dept_name, contact_department"); // May need to review this.
+
+	$contacts = $q->loadHashList("contact_id");
 ?>
 
 <h2><?php echo $AppUI->_('Contacts for'); ?> <?= $company_name ?></h2>
@@ -66,13 +74,18 @@
 	}
 	
 	foreach($contacts as $contact_id => $contact_data){
-		if($contact_data["contact_company"]    != $actual_company){
-			echo "<h4>".$contact_data["contact_company"]."</h4>";
-			$actual_company = $contact_data["contact_company"];
+		if (! $contact_data["company_name"])
+			$contact_company = $contact_data['contact_company'];
+		else
+			$contact_company = $contact_data['company_name'];
+		if($contact_company  && $contact_company != $actual_company){
+			echo "<h4>$contact_company</h4>";
+			$actual_company = $contact_company;
 		}
-		if($contact_data["contact_department"] != $actual_department){
-			echo "<h5>".$contact_data["contact_department"]."</h5>";
-			$actual_department = $contact_data["contact_department"];
+		$contact_department = $contact_data["dept_name"] ? $contact_data["dept_name"] : $contact_data["contact_department"];
+		if($contact_department && $contact_department != $actual_department){
+			echo "<h5>$contact_department</h5>";
+			$actual_department = $contact_department;
 		}
 		$checked = in_array($contact_id, $contacts_id) ? "checked" : "";
 		echo "<input type='checkbox' name='contact_id[]' value='$contact_id' $checked />";
