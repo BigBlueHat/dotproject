@@ -47,7 +47,9 @@
 			<TD>Replies</td>
 			<TD>Last Post</td>
 		</tr>
-		<?for($x=0;$x<count($parr);$x++){?>
+		<?for($x=0;$x<count($parr);$x++){
+//JBF limit displayed messages to first-in-thread
+			if ($parr[$x]["message_parent"]<0) {?>
 			<TR bgcolor="#eeeeee">
 				<TD width="25" bgcolor=white><img src="./images/icons/forum_folder.gif" alt="" border="0" width="20" height="20"></td>
 				<TD><span style="font-size:10pt;"><A href="./index.php?m=forums&a=viewer&forum_id=<?echo $forum_id . "&message_id=" . $parr[$x]["message_id"];?>"><?echo $parr[$x]["message_title"];?></a></span></td>
@@ -55,5 +57,8 @@
 				<TD><?echo  $parr[$x]["replies"];?></td>
 				<TD bgcolor=#dddddd><? if(empty($parr[$x]["latest_reply"])){echo $parr[$x]["message_date"];}else{echo $parr[$x]["latest_reply"];}?></td>
 			</tr>
-		<?}?>
+		<?
+//JBF
+			}
+		}?>
 		</table>

@@ -63,7 +63,7 @@
 		<TR>
 		<TD><A href="./index.php?m=forums">All forums</a>::<A href="./index.php?m=forums&a=viewer&forum_id=<?echo $forum_id;?>"><?echo $forum_name;?></a></td>
 			<TD align="right">
-			<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?echo $forum_id;?>&message_parent=<?echo $message_id;?>';">
+			<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?echo $forum_id;?>&message_parent=<?echo $message_id;?>&post_message=1';">
 			<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?echo $forum_id;?>&message_id=0';"></td>
 			</TR>
 		</TABLE>
