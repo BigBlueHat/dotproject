@@ -18,7 +18,13 @@ require_once( $AppUI->getModuleClass('smartsearch') );
 			</table>
 	</form>
 <script language="JavaScript">
-	document.frmSearch.keyword.focus();
+
+	function focusOnSearchBox(){
+		document.forms.frmSearch.keyword.focus();
+	}
+
+	window.onload = focusOnSearchBox;
+
 </script>
 <?php
 if (isset ($_POST['keyword']))
