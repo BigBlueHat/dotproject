@@ -1,5 +1,7 @@
 <?php /* TASKS $Id$ */
+global $showEditCheckbox;
 
+$showEditCheckbox = true;
 // Project status from sysval, defined as a constant
 $project_on_hold_status = 4;
 $perms =& $AppUI->acl();
