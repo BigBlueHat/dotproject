@@ -30,10 +30,10 @@
 
 // Prefix added to restrict access to these functions to only
 // the original dotproject user.
-$base_dir = dirname(__FILE__)."/../../..";
-require_once "$base_dir/includes/config.php";
-require_once  "$base_dir/classes/ui.class.php";
-require_once "$base_dir/includes/session.php";
+$baseDir = dirname(__FILE__)."/../../..";
+require_once "$baseDir/includes/config.php";
+require_once  "$baseDir/classes/ui.class.php";
+require_once "$baseDir/includes/session.php";
 require_once(dirname(__FILE__).'/../gacl.class.php');
 require_once(dirname(__FILE__).'/../gacl_api.class.php');
 
@@ -77,7 +77,7 @@ if ( $_SESSION['AppUI']->user_id != 1 ) {
 /*
  * Configure the Smarty Class for the administration interface ONLY!
  */
-$smarty_dir = "$base_dir/lib/smarty"; //NO trailing slash!
+$smarty_dir = "$baseDir/lib/smarty"; //NO trailing slash!
 $smarty_template_dir = "$smarty_dir/templates"; //NO trailing slash!
 $smarty_compile_dir = "$smarty_dir/templates_c"; //NO trailing slash!
 
