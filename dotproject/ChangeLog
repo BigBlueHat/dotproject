@@ -1,3 +1,57 @@
+2005-03-04 20:25  (ajdonnison)
+---------------------------------
+db/upgrade_latest.php
+- Fixed minor problems in getting version information stored.
+
+2005-03-04 20:17  (ajdonnison)
+---------------------------------
+db/upgrade_latest.php
+install/do_install_db.php
+- Fixed path/function name clashes.  Removed debug.
+
+2005-03-04 19:04  (ajdonnison)
+---------------------------------
+db/create_db_fields.php
+- Removed db upgrade as it is no longer required.
+
+2005-03-04 19:03  (ajdonnison)
+---------------------------------
+db/upgrade_022_to_100.sql
+db/upgrade_100_alpha1_to_alpha2.sql
+db/upgrade_100_alpha2_to_beta1.sql
+db/upgrade_100_beta1_to_release1.sql
+db/upgrade_100_to_101.sql
+- Removed old upgrade scripts.
+
+2005-03-04 18:56  (ajdonnison)
+---------------------------------
+db/README
+install/db.php
+install/do_install_db.php
+install/index.php
+db/dotproject.sql
+db/upgrade_contacts.php
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_permissions.php
+- Converted installer to be able to do upgrades as well.
+- Changed all db files to match requirements of new installer/upgrader.
+
+2005-03-04 10:39  (ajdonnison)
+---------------------------------
+style/default/main.css
+- Removed CRs
+
+2005-03-04 10:13  (jcgonz)
+---------------------------------
+modules/contacts/addedit.php
+- Added a little extra check to avoid JS errors when no company is selected for the current contact
+
+2005-03-04 08:18  (ajdonnison)
+---------------------------------
+ChangeLog
+- standard update.
+
 2005-03-03 19:07  (ajdonnison)
 ---------------------------------
 modules/tasks/view.php
