@@ -281,8 +281,8 @@ class CDpObject {
 		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedRecords failed" );
-		$deny = $this->getDeniedRecords( $uid );
-		$allow = $perms->getAllowedItems($this->_tbl, $uid);
+		$deny =& $perms->getDeniedItems( $this->_tbl, $uid );
+		$allow =& $perms->getAllowedItems($this->_tbl, $uid);
 		if (! $perms->checkModule($this->_tbl, "view" )) {
 		  if (! count($allow))
 		    return array();	// No access, and no allow overrides, so nothing to show.
@@ -318,8 +318,8 @@ class CDpObject {
 		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );
-		$deny = $this->getDeniedRecords( $uid );
-		$allow = $perms->getAllowedItems($this->_tbl, $uid);
+		$deny =& $perms->getDeniedItems( $this->_tbl, $uid );
+		$allow =& $perms->getAllowedItems($this->_tbl, $uid);
 		if (! $perms->checkModule($this->_tbl, "view" )) {
 		  if (! count($allow))
 		    return array("1=0");	// No access, and no allow overrides, so nothing to show.
