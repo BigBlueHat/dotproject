@@ -194,7 +194,7 @@ function chPriority(user_id) {
                 <?php
                         $system_users = dPgetUsers();
                 ?>
-                <?=arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"', $log_userfilter )?>
+                <?php echo arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"', $log_userfilter ); ?>
 	</td>
 	<td nowrap="nowrap">
                 <!-- // not in use anymore <input type="checkbox" name="log_all_projects" <?php if ($log_all_projects) echo "checked" ?> >

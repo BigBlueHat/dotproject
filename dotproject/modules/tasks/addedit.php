@@ -568,8 +568,8 @@ function removeUser() {
 function checkForTaskDependencyNone(obj){
 	var td = obj.length -1;
 	for (td; td > -1; td--) {
-		if(obj.options[td].value=='<?=$obj->task_id?>'){
-			clearExceptFor(obj, '<?=$obj->task_id?>');
+		if(obj.options[td].value=='<?php echo $obj->task_id; ?>'){
+			clearExceptFor(obj, '<?php echo $obj->task_id; ?>');
 			break;
 		}
 	}
@@ -593,7 +593,7 @@ function addTaskDependency() {
 
 	//Check to see if None is currently in the dependencies list, and if so, remove it.
 
-	if(td>=0 && form.task_dependencies.options[0].value=='<?=$obj->task_id?>'){
+	if(td>=0 && form.task_dependencies.options[0].value=='<?php echo $obj->task_id; ?>'){
 		form.task_dependencies.options[0] = null;
 		td = form.task_dependencies.length -1;
 	}
