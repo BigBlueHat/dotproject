@@ -24,20 +24,19 @@ if ($obj->task_end_date) {
 
 //echo '<pre>';print_r( $hassign );echo '</pre>';die;
 // prepare (and translate) the module name ready for the suffix
-$AppUI->setMsg( 'Task' );
 if ($del) {
 	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
+		$AppUI->setMsg( 'Task deleted' );
 		$AppUI->redirect( '', -1 );
 	}
 } else {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( @$_POST['task_id'] ? 'updated' : 'added', UI_MSG_OK, true );
+		$AppUI->setMsg( @$_POST['task_id'] ? 'Task updated' : 'Task added', UI_MSG_OK);
 	}
 
 	if (isset($hassign)) {
