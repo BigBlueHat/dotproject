@@ -2,7 +2,7 @@
 GLOBAL $m, $a, $project_id, $f, $min_view, $query_string, $durnTypes;
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
-GLOBAL $user_id, $dPconfig;
+GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName;
 /*
 	tasks.php
 
@@ -32,14 +32,6 @@ $cols = 13;
 
 global $tasks_opened;
 global $tasks_closed;
-
-function closeOpenedTask($task_id){
-    global $tasks_opened;
-    global $tasks_closed;
-    
-    unset($tasks_opened[array_search($task_id, $tasks_opened)]);
-    $tasks_closed[] = $task_id;
-}
 
 $tasks_closed = array();
 $tasks_opened = $AppUI->getState("tasks_opened");
@@ -240,8 +232,10 @@ switch ($f) {
 		break;
 }
 
-if ( $min_view )
+if ( $min_view && isset($_GET['task_status']) )
 	$task_status = intval( dPgetParam( $_GET, 'task_status', null ) );
+else if ( stristr($currentTabName, 'inactive') )
+	$task_status = '-1';
 else
 	$task_status = intval( $AppUI->getState( 'inactive' ) );
 
@@ -323,264 +317,6 @@ for ($x=0; $x < $nums; $x++) {
 // get Users with all Allocation info (e.g. their freeCapacity)
 $tempoTask = new CTask();
 $userAlloc = $tempoTask->getAllocation("user_id");
-
-//This kludgy function echos children tasks as threads
-
-if (! function_exists('showtask') ) {
-function showtask( &$a, $level=0, $is_opened = true ) {
-	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
-
-        $now = new CDate();
-	$df = $AppUI->getPref('SHDATEFORMAT');
-	$df .= " " . $AppUI->getPref('TIMEFORMAT');
-
-	$done[] = $a['task_id'];
-
-	$start_date = intval( $a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
-	$end_date = intval( $a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
-        $last_update = isset($a['last_update']) && intval( $a['last_update'] ) ? new CDate( $a['last_update'] ) : null;
-
-        // prepare coloured highlight of task time information
-	$sign = 1;
-        $style = "";
-        if ($start_date) {
-                if (!$end_date) {
-                        $end_date = $start_date;
-                        $end_date->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
-                }
-
-                if ($now->after( $start_date ) && $a["task_percent_complete"] == 0) {
-                        $style = 'background-color:#ffeebb';
-                } else if ($now->after( $start_date ) && $a["task_percent_complete"] < 100) {
-                        $style = 'background-color:#e6eedd';
-                } 
-
-                if ($now->after( $end_date )) {
-                        $sign = -1;
-                        $style = 'background-color:#cc6666;color:#ffffff';
-                }
-                if ($a["task_percent_complete"] == 100){
-                        $style = 'background-color:#aaddaa; color:#00000';
-                }
-
-                $days = $now->dateDiff( $end_date ) * $sign;
-        }
-
-	$s = "\n<tr>";
-// edit icon
-	$s .= "\n\t<td>";
-	$canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
-	if ($canEdit) {
-		$s .= "\n\t\t<a href=\"?m=tasks&a=addedit&task_id={$a['task_id']}\">"
-			. "\n\t\t\t".'<img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12">'
-			. "\n\t\t</a>";
-	}
-	$s .= "\n\t</td>";
-// pinned
-        $pin_prefix = $a['task_pinned']?'':'un';
-        $s .= "\n\t<td>";
-        $s .= "\n\t\t<a href=\"?m=tasks&pin=" . ($a['task_pinned']?0:1) . "&task_id={$a['task_id']}\">"
-                . "\n\t\t\t".'<img src="./images/icons/' . $pin_prefix . 'pin.gif" alt="'.$AppUI->_( $pin_prefix . 'pin Task' ).'" border="0" width="12" height="12">'
-                . "\n\t\t</a>";
-        $s .= "\n\t</td>";
-// New Log
-        if ($a['task_log_problem']>0) {
-                $s .= '<td align="center" valign="middle"><a href="?m=tasks&a=view&task_id='.$a['task_id'].'&tab=0&problem=1">';
-                $s .= dPshowImage( './images/icons/dialog-warning5.png', 16, 16, 'Problem', 'Problem!' );
-                $s .='</a></td>';
-        } else {
-                $s .= "\n\t<td><a href=\"?m=tasks&a=view&task_id=" . $a['task_id'] . '&tab=1">' . $AppUI->_('Log') . '</a></td>';
-        }
-// percent complete
-	$s .= "\n\t<td align=\"right\">".intval( $a["task_percent_complete"] ).'%</td>';
-// priority
-	$s .= "\n\t<td align='center' nowrap='nowrap'>";
-	if ($a["task_priority"] < 0 ) {
-		$s .= "\n\t\t<img src=\"./images/icons/low.gif\" width=13 height=16>";
-	} else if ($a["task_priority"] > 0) {
-		$s .= "\n\t\t<img src=\"./images/icons/" . $a["task_priority"] .'.gif" width=13 height=16>';
-	}
-	$s .= $a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
-	$s .= "</td>";
-// dots
-	$s .= '<td width="90%">';
-	for ($y=0; $y < $level; $y++) {
-		if ($y+1 == $level) {
-			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
-		} else {
-			$s .= '<img src="./images/shim.gif" width="16" height="12"  border="0">';
-		}
-	}
-// name link
-	$alt = htmlspecialchars( $a["task_description"] );
-
-	$open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
-	if ($a["task_milestone"] > 0 ) {
-		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
-	} else if ($a["task_dynamic"] == '1'){
-		$s .= $open_link.'&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b><i>' . $a["task_name"] . '</i></b></a></td>';
-	} else {
-		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
-	}
-// task owner
-	$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
-//	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
-	if ( isset($a['task_assigned_users']) && $assigned_users = $a['task_assigned_users']) {
-		$a_u_tmp_array = array();
-		if($show_all_assignees){
-			$s .= '<td align="center">';
-			foreach ( $assigned_users as $val) {
-				//$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
-                                $aInfo = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'";
-                                $aInfo .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$val['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$val['user_id']]['freeCapacity'].'%'.'">';
-                                $aInfo .= $val['user_username']." (".$val['perc_assignment']."%)</a>";
-				$a_u_tmp_array[] = $aInfo;
-			}
-			$s .= join ( ', ', $a_u_tmp_array );
-			$s .= '</td>';
-		} else {
-			$s .= '<td align="center" nowrap="nowrap">';
-//			$s .= $a['assignee_username'];
-			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'";
-                        $s .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[0]['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[0]['user_id']]['freeCapacity'].'%'.'">';
-                        $s .= $assigned_users[0]['user_username'] .' (' . $assigned_users[0]['perc_assignment'] .'%)</a>';
-			if($a['assignee_count']>1){
-                        $id = $a['task_id'];
-			$s .= " <a href=\"javascript: void(0);\"  onClick=\"toggle_users('users_$id');\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
-                        
-                        $s .= '<span style="display: none" id="users_' . $id . '">';
-
-                                $a_u_tmp_array[] = $assigned_users[0]['user_username'];
-				for ( $i = 1; $i < count( $assigned_users ); $i++) {
-                                        $a_u_tmp_array[] = $assigned_users[$i]['user_username'];
-                                        $s .= '<br /><a href="?m=admin&a=viewuser&user_id=';
-                                        $s .=  $assigned_users[$i]['user_id'] . '" title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[$i]['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[$i]['user_id']]['freeCapacity'].'%'.'">';
-                                        $s .= $assigned_users[$i]['user_username'] .' (' . $assigned_users[$i]['perc_assignment'] .'%)</a>';
-				}
-                        $s .= '</span>';
-			}
-			$s .= '</td>';
-		}
-	} else {
-		// No users asigned to task
-		$s .= '<td align="center">-</td>';
-	}
-	
-	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
-// duration or milestone
-	$s .= '<td align="center" nowrap="nowrap" style="'.$style.'">';
-	if ( $a['task_milestone'] == '0' ) {
-		$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
-	} else {
-		$s .= $AppUI->_("Milestone");
-	}
-	$s .= '</td>';
-	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
-	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
-
-// Assignment checkbox
-        if ($canEdit && dPgetConfig('direct_edit_assignment')) {
-                $s .= "\n\t<td align='center'><input type=\"checkbox\" name=\"task_id{$a['task_id']}\" value=\"{$a['task_id']}\"/></td>";
-        }
-	$s .= '</tr>';
-
-	echo $s;
-}
-
-}
-
-if (! function_exists('findchild') ) {
-function findchild( &$tarr, $parent, $level=0){
-	GLOBAL $projects;
-	global $tasks_opened;
-	
-	$level = $level+1;
-	$n = count( $tarr );
-	
-	for ($x=0; $x < $n; $x++) {
-		if($tarr[$x]["task_parent"] == $parent && $tarr[$x]["task_parent"] != $tarr[$x]["task_id"]){
-		    $is_opened = in_array($tarr[$x]["task_id"], $tasks_opened);
-			showtask( $tarr[$x], $level, $is_opened );
-			if($is_opened || !$tarr[$x]["task_dynamic"]){
-			    findchild( $tarr, $tarr[$x]["task_id"], $level);
-			}
-		}
-	}
-}
-}
-
-/* please throw this in an include file somewhere, its very useful */
-
-function array_csort()   //coded by Ichier2003
-{
-    $args = func_get_args();
-    $marray = array_shift($args);
-	
-	if ( empty( $marray )) return array();
-	
-	$i = 0;
-    $msortline = "return(array_multisort(";
-	$sortarr = array();
-    foreach ($args as $arg) {
-        $i++;
-        if (is_string($arg)) {
-            foreach ($marray as $row) {
-                $sortarr[$i][] = $row[$arg];
-            }
-        } else {
-            $sortarr[$i] = $arg;
-        }
-        $msortline .= "\$sortarr[".$i."],";
-    }
-    $msortline .= "\$marray));";
-
-    eval($msortline);
-    return $marray;
-}
-
-function sort_by_item_title( $title, $item_name, $item_type )
-{
-	global $AppUI,$project_id,$min_view,$m;
-	global $task_sort_item1,$task_sort_type1,$task_sort_order1;
-	global $task_sort_item2,$task_sort_type2,$task_sort_order2;
-
-	if ( $task_sort_item2 == $item_name ) $item_order = $task_sort_order2;
-	if ( $task_sort_item1 == $item_name ) $item_order = $task_sort_order1;
-
-	if ( isset( $item_order ) ) {
-		if ( $item_order == SORT_ASC )
-			echo '<img src="./images/icons/low.gif" width=13 height=16>';
-		else
-			echo '<img src="./images/icons/1.gif" width=13 height=16>';
-	} else
-		$item_order = SORT_DESC;
-
-	/* flip the sort order for the link */
-	$item_order = ( $item_order == SORT_ASC ) ? SORT_DESC : SORT_ASC;
-	if ( $m == 'tasks' )
-		echo '<a href="./index.php?m=tasks';
-	else
-		echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
-
-	echo '&task_sort_item1='.$item_name;
-	echo '&task_sort_type1='.$item_type;
-	echo '&task_sort_order1='.$item_order;
-	if ( $task_sort_item1 == $item_name ) {
-		echo '&task_sort_item2='.$task_sort_item2;
-		echo '&task_sort_type2='.$task_sort_type2;
-		echo '&task_sort_order2='.$task_sort_order2;
-	} else {
-		echo '&task_sort_item2='.$task_sort_item1;
-		echo '&task_sort_type2='.$task_sort_type1;
-		echo '&task_sort_order2='.$task_sort_order1;
-	}
-	echo '" class="hdr">';
-	
-	echo $AppUI->_($title);
-	
-	echo '</a>';
-}
-
 ?>
 
 <script type="text/JavaScript">
