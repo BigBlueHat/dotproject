@@ -308,6 +308,7 @@ class CTask extends CDpObject {
 			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->task_id ) {
+                addHistory('update_task(' . $this->task_name . ')', $this->task_project, 'tasks');
 			$this->_action = 'updated';
 			// Load the old task from disk
 			$oTsk = new CTask();
@@ -335,6 +336,7 @@ class CTask extends CDpObject {
 				$this->shiftDependantTasks();
 			}
 		} else {
+                        addHistory('new_task(' . $this->task_name . ')', $this->task_project, 'tasks');
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
 
@@ -393,6 +395,7 @@ class CTask extends CDpObject {
 
 		//load it before deleting it because we need info on it to update the parents later on
 		$this->load($this->task_id);
+                addHistory('del_task(' . $this->task_name . ')', $this->task_project, 'tasks');
 		
 		// delete the tasks...what about orphans?
 		// delete task with parent is this task
