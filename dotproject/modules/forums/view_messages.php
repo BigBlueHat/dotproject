@@ -12,7 +12,7 @@ LEFT JOIN users ON message_author = users.user_id
 LEFT JOIN contacts ON contact_id = user_contact
 WHERE forum_id = message_forum
 	AND (message_id = $message_id OR message_parent = $message_id)" .
-  ( (@$dPconfig['forum_descendent_order'] || $_REQUEST['sort']) ? " ORDER BY message_date $sort" : "" );
+  ( (@$dPconfig['forum_descendent_order'] || dPgetParam($_REQUEST,'sort',0)) ? " ORDER BY message_date $sort" : "" );
 
 //echo "<pre>$sql</pre>";
 $messages = db_loadList( $sql );
@@ -94,8 +94,7 @@ $thispage = "?m=$m&a=viewer&forum_id=$forum_id&message_id=$message_id&sort=$sort
 </table>
 
 <table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl" align="center">
-<!-- <form name="messageForm" method="POST" action="?m=forums&a=viewposts&forum_id=<?php echo $row['message_forum'];?>"> -->
-<form name="messageForm" method="POST" action="?m=forums&forum_id=<?php echo $row['message_forum'];?>">
+<form name="messageForm" method="POST" action="?m=forums&forum_id=<?php echo $forum_id;?>">
 	<input type="hidden" name="dosql" value="do_post_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="message_id" value="0" />
