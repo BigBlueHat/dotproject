@@ -179,7 +179,7 @@ sub check_attachments {
     # pull out attachments
 	$in_attach_hdrs = 0;
 	$attach_count = 0;
-	for ($i = $#headers + 1; $i <= $#message; $i++) {
+	for ($i = $first_message_line; $i <= $#message; $i++) {
         if ($message[$i] =~ /$boundary/) {
 	    $in_attach_hdrs = 1;
             push @boundary_lines, $i;
