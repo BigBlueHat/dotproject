@@ -157,9 +157,35 @@ $nums = db_num_rows( $ptrc );
 echo db_error();
 
 //pull the tasks into an array
-
+/*
 for ($x=0; $x < $nums; $x++) {
 	$row = db_fetch_assoc( $ptrc );
+	$projects[$row['task_project']]['tasks'][] = $row;
+}
+*/
+for ($x=0; $x < $nums; $x++) {
+	$row = db_fetch_assoc( $ptrc );
+
+	//add information about assigned users into the page output
+	$ausql = "SELECT user_id FROM user_tasks WHERE task_id=".$row['task_id'];
+	//echo "<pre>".$row['task_id']."</pre>\n";
+	
+	$assigned_users = array ();
+	$paurc = db_exec( $ausql );
+	$nnums = db_num_rows( $paurc );
+	echo db_error();
+	for ($xx=0; $xx < $nnums; $xx++) {
+		$row2 = db_fetch_assoc( $paurc );
+		//echo "<pre>".$row2['user_id']."</pre>\n";
+		$usql = "SELECT user_id, user_username, user_email FROM users WHERE user_id=".$row2['user_id'];
+		$purc = db_exec( $usql );
+		echo db_error();
+		if ( db_num_rows( $purc ) > 0 )
+			array_push( $assigned_users, db_fetch_assoc( $purc ));
+	}
+	$row['task_assigned_users'] = $assigned_users;
+
+	//pull the final task row into array
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
@@ -213,6 +239,17 @@ function showtask( &$a, $level=0 ) {
 	}
 // task owner
 	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
+	$s .= '<td nowrap="nowrap" align=left>';
+	if ( $assigned_users = $a['task_assigned_users'] ) {
+		$a_u_tmp_array = array();
+		foreach ( $assigned_users as $val) {
+			//$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
+			$a_u_tmp_array[] = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'>".$val['user_username']."</a>";
+		}
+		$s .= join ( ', ', $a_u_tmp_array );
+	}
+	$s .= '</td>';
+	
 // start date
 //	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->getDate( ) : '-').'</td>';
@@ -330,6 +367,7 @@ function sort_by_item_title( $title, $item_name, $item_type )
 	<th width="15" align="center">&nbsp;</th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned users')?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
