@@ -1,5 +1,5 @@
 <?php /* ADMIN $Id$ */
-include('modules/contacts/contacts.class.php');
+include $AppUI->getModuleClass('contacts');
 $del = isset($_REQUEST['del']) ? $_REQUEST['del'] : FALSE;
 
 $obj = new CUser();
