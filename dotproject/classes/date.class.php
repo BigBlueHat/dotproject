@@ -67,7 +67,7 @@ class CDate extends Date {
 	function addDays( $n ) {
 		$this->setDate( $this->getTime() + 60 * 60 * 24 * $n, DATE_FORMAT_UNIXTIME);
 	}
-	
+
 /**
 * Adds (+/-) a number of months to the current date.
 * @param int Positive or negative number of months
@@ -83,7 +83,7 @@ class CDate extends Date {
 			$this->month -= $months;
 			if ($this->month < 1) {
 				$this->year--;
-				$this->month = 12 - $this->month;
+				$this->month = 12 + $this->month;
 			}
 		} else {
 			$this->year += $years;
