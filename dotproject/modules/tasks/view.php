@@ -401,25 +401,27 @@ function delIt() {
 				$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<b>". $field_options['name']. "</b>" : $field_options['name'] . ":") ."</td>";
 				switch ( $field_options["type"]){
 					case "text":
-						$output .= "<td class='hilite' width='300'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
+						$output .= "<td class='hilite' width='300'>" . dPformSafe(( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
 						break;
 					case "select":
 						$optionarray = explode(",",$field_options["selects"]);
-						$output .= "<td class='hilite' width='300'>". ( isset($custom_field_previous_data[$key]) ? $optionarray[$custom_field_previous_data[$key]] : "") . "</td>";
+						$output .= "<td class='hilite' width='300'>". dPformSafe(( isset($custom_field_previous_data[$key]) ? $optionarray[$custom_field_previous_data[$key]] : "")) . "</td>";
 						break;
 					case "textarea":
-						$output .=  "<td valign='top' class='hilite'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
+						$output .=  "<td valign='top' class='hilite'>" . dPformSafe(( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
 						break;
 					case "checkbox":
-						$output .= "<td class='hilite' width='300'>  ";
-						if (isset($custom_field_previous_data[$key])) {
-							foreach ( $custom_field_previous_data[$key] as $key => $value) {
-								$output .= $value . ", ";
-							}
-							$output = substr($output, 0, -2);
-						}
-						$output .= "</td>";	
-						break;
+						$optionarray = explode(",",$field_options["selects"]);
+                                                $output .= "<td align='left'>";
+                                                foreach ( $optionarray as $option ) {
+                                                        if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
+                                                                $checked = "checked";
+                                                        }
+                                                        $output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' style='border:0' $checked " . $field_options["options"] . ">$option<br />";
+                                                        $checked = "";
+                                                }
+                                                $output .= "</td>";
+                                                break;
 				}
 				$output .= "</tr>";
 			}
