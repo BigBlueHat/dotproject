@@ -40,23 +40,23 @@ echo mysql_error();
 	<TD valign="top">
 		<TABLE border=0 cellpadding=1 cellspacing=1 width="100%" bgcolor="silver">
 			<tr bgcolor="#eeeeee" height=20 width="100">
-				<TD align="right" nowrap>Related Project</td>
+				<TD align="left" nowrap>Related Project:</td>
 				<TD nowrap><b><?php echo $row["project_name"];?></b></td>
 			</tr>
 			<tr bgcolor="#eeeeee" height=20 width="100">
-				<TD align="right">Forum Owner:</td>
+				<TD align="left">Forum Owner:</td>
 				<TD nowrap><?php echo  $row["user_username"];?> <?php if(intval($row["forum_id"])<>0){echo " (moderated) ";}?></td>
 			</tr>
 			<tr bgcolor="#eeeeee" height=20>
-				<TD align="right">Created On</td>
-				<TD nowrap><?php echo @$row["forum_create_date"];?></td>
+				<TD align="left">Created On:</td>
+				<TD nowrap><?php echo fromDate(@$row["forum_create_date"]);?></td>
 			</tr>
 			<tr bgcolor="#eeeeee" height=20>
-				<TD align="right">Last Post:</td>
-				<TD nowrap><?php echo @$row["forum_last_date"];?></td>
+				<TD align="left">Last Post:</td>
+				<TD nowrap><?php echo fromDate(@$row["forum_last_date"]);?></td>
 			</tr>
 			<tr bgcolor="#eeeeee" height=20>
-				<TD align="right" nowrap>Message Count:</td>
+				<TD align="left" nowrap>Message Count:</td>
 				<TD nowrap><?php echo @$row["forum_message_count"];?></td>
 			</tr>
 		</table>
