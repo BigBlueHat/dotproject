@@ -204,9 +204,14 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$progress = $a["task_percent_complete"];
 	$flags = ($a["task_milestone"]?"m":"");
 
+	$cap = "";
+	if(!$start){
+		$start = date("Y-m-d");
+		$cap .= "(no start date)";
+	}
 	if(!$end) {
 		$end = $start;
-		$cap = " (no end date)";
+		$cap .= " (no end date)";
 	} else {
 		$cap = "";
 	}
