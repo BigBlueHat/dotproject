@@ -94,7 +94,6 @@ $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
 $show_all_assignees = isset($dPconfig['show_all_task_assignees']) ? $dPconfig['show_all_task_assignees'] : false;
 
 $where = '';
-$join = winnow( 'projects', 'project_id', $where );
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
 // $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
