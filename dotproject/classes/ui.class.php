@@ -564,7 +564,7 @@ class CAppUI {
 		WHERE user_id = $row->user_id AND user_username = '$username'
 		";
 
-		dprint(__FILE__, __LINE__, 1, "Login SQL: $sql");
+		dprint(__FILE__, __LINE__, 7, "Login SQL: $sql");
 
 		if( !db_loadObject( $sql, $this ) ) {
 			dprint(__FILE__, __LINE__, 1, "Failed to load user information");
