@@ -118,16 +118,18 @@ function submitIt(){
 	<td>
 <?php
 	$currencies = array();
-	$currEx = 123456789;
+	$currEx = 1234567.89;
 
-	if (! function_exists('money_format')) {
-    	// This is a server using Windows, no php money_format capability
-    	$f = "us_US"; $currencies[$f]	= "$ " . $currEx;
-	} else {
     	// This is a server not using Windows
     	$f = "es_ES"; $currencies[$f]	= formatCurrency( $currEx, $f );
-		$f = "us_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	}
+    	$f = "es_MX"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "en_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "en_GB"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "en_AU"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "en_CA"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "en_NZ"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "pt_PT"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "pt_BR"; $currencies[$f]	= formatCurrency( $currEx, $f );
 	echo arraySelect( $currencies, 'pref_name[CURRENCYFORMAT]', 'class=text size=1', @$prefs['CURRENCYFORMAT'], false );
 ?>
 	</td>

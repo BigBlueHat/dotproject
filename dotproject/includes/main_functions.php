@@ -359,10 +359,64 @@ function formatCurrency( $number, $format ) {
 		$format = $AppUI->getPref('SHCURRFORMAT');
 	}
 	setlocale(LC_MONETARY, $format);
+	if (function_exists('money_format'))
+		return money_format('%i', $number);
 
-	// TODO: works only >= 4.3.0...couldn't test it yet :-( [kripper]
-	// NOTE: money_format doesn't work in windows, a work arround was instituted in the calling file addeditpref.php
-	return money_format('%i', $number);
+	// NOTE: This is called if money format doesn't exist.
+	// Money_format only exists on non-windows 4.3.x sites.
+	// This uses localeconv to get the information required
+	// to format the money.  It tries to set reasonable defaults.
+	$mondat = localeconv();
+	if (! isset($mondat['int_frac_digits']))
+		$mondat['int_frac_digits'] = 2;
+	if (! isset($mondat['int_curr_symbol']))
+		$mondat['int_curr_symbol'] = '';
+	if (! isset($mondat['mon_decimal_point']))
+		$mondat['mon_decimal_point'] = '.';
+	if (! isset($mondat['mon_thousands_sep']))
+		$mondat['mon_thousands_sep'] = ',';
+	$numeric_portion = number_format(abs($number),
+		$mondat['int_frac_digits'],
+		$mondat['mon_decimal_point'],
+		$mondat['mon_thousands_sep']);
+	// Not sure, but most countries don't put the sign in if it is positive.
+	$letter='p';
+	$currency_prefix="";
+	$currency_suffix="";
+	$prefix="";
+	$suffix="";
+	if ($number < 0) {
+		$sign = $mondat['negative_sign'];
+		$letter = 'n';
+		switch ($mondat['n_sign_posn']) {
+			case 0:
+				$prefix="(";
+				$suffix=")";
+				break;
+			case 1:
+				$prefix = $sign;
+				break;
+			case 2:
+				$suffix = $sign;
+				break;
+			case 3:
+				$currency_prefix = $sign;
+				break;
+			case 4:
+				$currency_suffix = $sign;
+				break;
+		}
+	}
+	$currency .= $currency_prefix . $mondat['int_curr_symbol'] . $currency_suffix;
+	$space = "";
+	if ($mondat[$letter . "_sep_by_space"])
+		$space = " ";
+	if ($mondat[$letter . "_cs_precedes"]) {
+		$result = "$currency$space$numeric_portion";
+	} else {
+		$result = "$numeric_portion$space$currency";
+	}
+	return $result;
 }
 
 ?>
