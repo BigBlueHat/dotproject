@@ -194,7 +194,7 @@ window.location="./index.php?m=admin&a=permissions&user_id=" + form.change_user[
 		mysql_data_seek($u2rc, 0);
 		while($crow = mysql_fetch_array($u2rc))
 		{
-			if($crow[id] == $user_id)
+			if($crow['id'] == $user_id)
 			{
 				echo "<option value=$crow[id] selected>$crow[name]";
 			}
@@ -234,7 +234,7 @@ echo '<TR><TD colspan=4 align=center><B>No permissions for this User</b></td></t
 $i = 0;
 while($row = mysql_fetch_array($urc)){
 	echo "<TR>";
-	echo "<TD><a href=# onClick=\"editPerm($row[permission_id],'$row[permission_grant_on]',$row[permission_item],$row[permission_value]);\">edit</a> | <a href=\"./index.php?a=permissions&m=admin&sqlaction=-1&user_id=$user_id&permission_id=$row[permission_id]\">del</A></td>";
+	echo "<TD><a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']});\">edit</a> | <a href=\"./index.php?a=permissions&m=admin&sqlaction=-1&user_id={$user_id}&permission_id={$row['permission_id']}\">del</A></td>";
 	if($row['permission_grant_on'] == "all" && $row['permission_item'] == -1 && $row['permission_value'] == -1)
 	{
 		echo "<TD bgcolor=#ffc235>";
@@ -277,7 +277,7 @@ while($row = mysql_fetch_array($urc)){
 	{
 		$value = "read-write";
 	}	
-	else if($row[permission_value] ==1)
+	else if($row['permission_value'] ==1)
 	{
 		$value = "read-only";
 	}	
@@ -313,7 +313,7 @@ while($row = mysql_fetch_array($urc)){
 <tr><td bgcolor="#f4efe3">
 <TABLE width="100%" border=0 cellpadding="2" cellspacing=0 align="center">
 <TR><TD colspan=3 class="mboxhdr">Add or modify permissions</td></tr>
-<form sqlaction="http://smitty.dotmarketing.net/dotproject/index.php" method="post" name="perms">
+<form sqlaction="index.php" method="post" name="perms">
 
 <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
 <input type="hidden" name="permission_id" value="0">
