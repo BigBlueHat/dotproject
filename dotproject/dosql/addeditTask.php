@@ -269,7 +269,7 @@ if ($doassignemail && $notify) {
 if($x = mysql_error())	{
 	$message =  $sql . "<BR>". $x;
 } else {
-	header( "Location: ./index.php?m=tasks&message=" . $message );
+	header( "Location: ./index.php?m=tasks&project_id=" . $project_id . "&message=" . $message );	
 }
 
 ?>
