@@ -1,8 +1,10 @@
 <?php /* TASKS $Id$ */
+
+require "{$AppUI->cfg['root_dir']}/classes/libmail.php";
+
 ##
 ## CTask Class
 ##
-
 class CTask {
 	var $task_id = NULL;
 	var $task_name = NULL;
@@ -151,33 +153,16 @@ class CTask {
 	function notify() {
 		GLOBAL $AppUI;
 
-		$sql = "SELECT user_email, user_first_name, user_last_name"
-		."\nFROM users"
-		."\nWHERE users.user_id = $AppUI->user_id";
-		$editor = db_loadHash( $sql, $editor );
+		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
+		$projname = db_loadResult( $sql );
 
-		$mail_header = "Content-Type: text/html\r\n"
-		. "Content-Transfer-Encoding: 8bit\r\n"
-		. "Mime-Version: 1.0\r\n"
-		. "X-Mailer: Dotproject"
-		;
-		$subject = "Task $this->task_id $this->_action";
-		$mail_body = "<head><title>$subject</title>\n"
-		."<style type=text/css>\n"
-		."body,td,th { font-family: verdana,helvetica,arial,sans-serif; font-size:12px; }\n"
-		."</style>\n"
-		."</head>\n"
-		. "<body>\n"
-		. "<table bgcolor='#ffffff' cellpadding=4 cellspacing=1>\n"
-		. "<tr bgcolor='#eeeeee'><th colspan=2>$subject</th></tr>\n"
-		. "<tr><td>Task ID</td><td><a href='"
-		. $AppUI->cfg['base_url']
-		. "/index.php?m=tasks&a=view&task_id=$this->task_id'>$this->task_id</a></td></tr>\n";
+		$mail = new Mail;
+		$mail->Subject( "$projname::$this->task_name $this->_action" );
 
 	// c = creator
 	// a = assignee
 	// o = owner
-		$sql = "SELECT t.task_id, t.task_name, t.task_description,"
+		$sql = "SELECT t.task_id,"
 		."\nc.user_email as creator_email,"
 		."\nc.user_first_name as creator_first_name,"
 		."\nc.user_last_name as creator_last_name,"
@@ -190,43 +175,38 @@ class CTask {
 		."\na.user_last_name as assignee_last_name"
 		."\nFROM tasks t"
 		."\nLEFT JOIN user_tasks u ON u.task_id = t.task_id"
-		."\nLEFT JOIN users c ON c.user_id = t.task_owner"
-		."\nLEFT JOIN users o ON o.user_id = t.task_creator"
+		."\nLEFT JOIN users o ON o.user_id = t.task_owner"
+		."\nLEFT JOIN users c ON c.user_id = t.task_creator"
 		."\nLEFT JOIN users a ON a.user_id = u.user_id"
 		."\nWHERE t.task_id = $this->task_id";
 		$users = db_loadList( $sql );
 
+		if (count( $users )) {
+			$body = "Project: $projname";
+			$body .= "\nTask:    $this->task_name";
+			$body .= "\nURL:     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
+			$body .= "\n\n" . $AppUI->_('Description') . ":"
+				. "\n$this->task_description";
+			if ($users[0]['creator_email']) {
+				$body .= "\n\n" . $AppUI->_('Creator').":"
+					. "\n" . $users[0]['creator_first_name'] . " " . $users[0]['creator_last_name' ]
+					. ", " . $users[0]['creator_email'];
+			}
+			$body .= "\n\n" . $AppUI->_('Owner').":"
+				. "\n" . $users[0]['owner_first_name'] . " " . $users[0]['owner_last_name' ]
+				. ", " . $users[0]['owner_email'];
+
+			$mail->Body( $body );
+			$mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name 
+				. '" <' . $AppUI->user_email . '>'
+			);
+		}
+
 		foreach ($users as $row) {
 			if ($row['assignee_id'] != $AppUI->user_id) {
-				$mail_text = $mail_body
-				. "<tr><td>Title</td><td>"
-				. $row['task_name']
-				. "&nbsp;</tr>\n<tr><td valign=top>Description</td><td>"
-				. str_replace(chr(10), "<br />", $row['task_description'])
-				. "&nbsp;</td></tr>\n<tr><td>Created by</td><td><a href='mailto:"
-				. $row['creator_email']
-				. "'>"
-				. $row['creator_first_name']
-				. "&nbsp;"
-				. $row['creator_last_name' ]
-				. "</a></tr>\n<tr><td>Owned by</td><td><a href='mailto:"
-				. $row['owner_email']
-				. "'>"
-				. $row['owner_first_name']
-				. "&nbsp;"
-				. $row['owner_last_name']
-				. "</a></tr>\n<tr><td>$this->_action by</td><td><a href='mailto:"
-				. $editor['user_email']
-				. "'>"
-				. $editor['user_first_name']
-				. "&nbsp;"
-				. $editor['user_last_name']
-				. "</a></tr>\n</table></body>\n";
-
-				$from = $row['creator_first_name'] . ' '. $row['creator_last_name'] . ' <' . $row['creator_email'] . '>';
-				if (!mail( $row['assignee_email'], $subject, $mail_text, "From: $from\r\n".$mail_header )) {
-					echo "Mail failed";die;
-					return "Mail failed";
+				if ($mail->ValidEmail($row['assignee_email'])) {
+					$mail->To( $row['assignee_email'] );
+					$mail->Send();
 				}
 			}
 		}
