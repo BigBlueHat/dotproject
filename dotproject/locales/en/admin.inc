@@ -47,6 +47,8 @@
 "adminInvalidMonth"=>"The month you provided is invalid (try M instead of MM).",
 "adminInvalidYear"=>"The year you have provided is invalid.",
 "adminPasswordsDiffer"=>"Your passwords do not match.",
+"adminValidFirstName"=>"Please enter a first name",
+"adminValidLastName"=>"Please enter a last name",
 "adminValidPassword"=>"Please enter a valid password(greater then 4 chars).",
 "adminValidUserName"=>"Please enter a valid user name.",
 "change password",

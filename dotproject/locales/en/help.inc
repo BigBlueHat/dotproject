@@ -14,5 +14,4 @@
 "Saving Your Place",
 "Tabbed Property Boxes",
 "Top Menu",
-"accessDeniedMsg"=>"<p>You have attemped to access an item in dotproject without the sufficient permissions to do so.</p><p>Please contact the dotproject System Administrator.</p>",
 "helpIntro"=>"Here are some quick links to topics in the help file that not directly accessible directly from the context help.",
