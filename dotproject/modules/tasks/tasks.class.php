@@ -82,7 +82,7 @@ class CTask extends CDpObject {
 		GLOBAL $AppUI;
 		$msg = $this->check();
 		if( $msg ) {
-			return get_class( $this )."::store-check failed";
+			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->task_id ) {
 			$this->_action = 'updated';
