@@ -1,6 +1,6 @@
 <?php /* TASKS $Id$ */
 
-require "{$AppUI->cfg['root_dir']}/classes/libmail.php";
+require_once( $AppUI->getSystemClass( 'libmail' ) );
 
 ##
 ## CTask Class
