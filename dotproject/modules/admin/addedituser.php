@@ -62,20 +62,16 @@ function submitIt(){
         if (dar.length < 3) {
             alert("<?php echo $AppUI->_('adminInvalidBirthday');?>");
             form.user_birthday.focus();
-        } else if (isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(parseInt(dar[2]))) {
+        } else if (isNaN(parseInt(dar[0],10)) || isNaN(parseInt(dar[1],10)) || isNaN(parseInt(dar[2],10))) {
             alert("<?php echo $AppUI->_('adminInvalidBirthday');?>");
             form.user_birthday.focus();
-        } else if (parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12) {
-            // There appears to be a bug with this part of the Birthday Validation
-            // Providing the single digit months (i.e. 1-9) in the MM format (01-09)
-            // causes the validation function to fail. Can someone please fix and
-            // remove this comment.  TIA (JRP 30 Aug 2002).
+        } else if (parseInt(dar[1],10) < 1 || parseInt(dar[1],10) > 12) {
             alert("<?php echo $AppUI->_('adminInvalidMonth').' '.$AppUI->_('adminInvalidBirthday');?>");
             form.user_birthday.focus();
-        } else if (parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31) {
+        } else if (parseInt(dar[2],10) < 1 || parseInt(dar[2],10) > 31) {
             alert("<?php echo $AppUI->_('adminInvalidDay').' '.$AppUI->_('adminInvalidBirthday');?>");
             form.user_birthday.focus();
-        } else if(parseInt(dar[0]) < 1900 || parseInt(dar[0]) > 2020) {
+        } else if(parseInt(dar[0],10) < 1900 || parseInt(dar[0],10) > 2020) {
             alert("<?php echo $AppUI->_('adminInvalidYear').' '.$AppUI->_('adminInvalidBirthday');?>");
             form.user_birthday.focus();
         } else {
