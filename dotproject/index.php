@@ -109,21 +109,20 @@ if ($dPrunLevel > 0) {
 	require_once( "./includes/db_connect.php" );
 }
 // check if session has previously been initialised
-$last_insert_id =$AppUI->last_insert_id;
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
-    if (isset($_GET['logout'])){
-        $user_id = $AppUI->user_id;
-    }
-
     if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
     {
         $AppUI =& $_SESSION['AppUI'];
+	$user_id = $AppUI->user_id;
         addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
     }
 
     $_SESSION['AppUI'] = !( $_GET['m'] == 'install' ) ? new CAppUI() : new IAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
+
+$last_insert_id =$AppUI->last_insert_id;
+
 $AppUI->checkStyle();
 if ($config_msg) {
 	$AppUI->setMsg($config_msg, UI_MSG_WARNING);
