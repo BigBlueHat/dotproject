@@ -226,6 +226,33 @@ class CAppUI {
 		return $files;
 	}
 
+
+/**
+* Utility function to check whether a file name is 'safe'
+*
+* Prevents from access to relative directories (eg ../../dealyfile.php);
+* @param string The file name.
+* @return array A named array of the files (the key and value are identical).
+*/
+	function checkFileName( $file ) {
+		global $AppUI;
+
+		// define bad characters and their replacement
+		$bad_chars = ";/\\";
+		$bad_replace = "...."; // Needs the same number of chars as $bad_chars
+
+		// check whether the filename contained bad characters
+		if ( strpos( strtr( $file, $bad_chars, $bad_replace), '.') !== false ) {
+			$AppUI->redirect( "m=public&a=access_denied" );
+		}
+		else {
+			return $file;
+		}
+
+	}
+
+
+
 /**
 * Utility function to make a file name 'safe'
 *

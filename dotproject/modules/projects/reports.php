@@ -25,7 +25,7 @@ if ($report_type) {
 $titleBlock->show();
 
 if ($report_type) {
-	$report_type = $AppUI->makeFileNameSafe( $report_type );
+	$report_type = $AppUI->checkFileName( $report_type );
 	$report_type = str_replace( ' ', '_', $report_type );
 	require( $AppUI->getConfig( 'root_dir' )."/modules/projects/reports/$report_type.php" );
 } else {

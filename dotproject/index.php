@@ -140,12 +140,18 @@ if ($AppUI->doLogin()) {
 require_once( "./includes/permissions.php" );
 
 
-
 // set the module and action from the url
-$m = $AppUI->makeFileNameSafe(dPgetParam( $_GET, 'm', getReadableModule() ));
-$u = $AppUI->makeFileNameSafe(dPgetParam( $_GET, 'u', '' ));
-$a = $AppUI->makeFileNameSafe(dPgetParam( $_GET, 'a', 'index' ));
+$m = $AppUI->checkFileName(dPgetParam( $_GET, 'm', getReadableModule() ));
+$a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', 'index' ));
 
+/* This check for $u implies that a file located in a subdirectory of higher depth than 1
+ * in relation to the module base can't be executed. So it would'nt be possible to
+ * run for example the file module/directory1/directory2/file.php
+ * Also it won't be possible to run modules/module/abc.zyz.class.php for that dots are
+ * not allowed in the request parameters.
+*/
+
+$u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 
 
 
@@ -200,46 +206,6 @@ if (!(
 }
 */
 
-/* Security: Filename Check for Executed Request Information
- *
- * Prevent from executing arbitrary files which webserver can access
- *
- * Check all request parameter containing information about
- * files to execute against regular expressions.
- * Allow only filenames with characters of [a-z] and [_].
- * In particular files containing '../' or '\' are denied.
-*/
-
-if ( isset($_REQUEST['a']) ) {
-	if ( !preg_match("/^[a-z\_]+$/",$_REQUEST['a']) ){
-	$AppUI->redirect( "m=public&a=access_denied" );
-	}
-}
-
-if ( isset($_REQUEST['dosql']) ) {
-	if ( !preg_match("/^[a-z\_]+$/",$_REQUEST['dosql']) ){
-	$AppUI->redirect( "m=public&a=access_denied" );
-	}
-}
-
-if ( isset($_REQUEST['m']) ) {
-	if ( !preg_match("/^[a-z\_]+$/",$_REQUEST['m']) ){
-	$AppUI->redirect( "m=public&a=access_denied" );
-	}
-}
-
-/* This check implies that a file located in a subdirectory of higher depth than 1
- * in relation to the module base can't be executed. So it would'nt be possible to
- * run for example the file module/directory1/directory2/file.php
- * Also it won't be possible to run modules/module/abc.zyz.class.php for that dots are
- * not allowed in the request parameters.
-*/
-if ( isset($_REQUEST['u']) ) {
-	if ( !preg_match("/^[a-z\_]+$/",$_REQUEST['a']) ){
-	$AppUI->redirect( "m=public&a=access_denied" );
-	}
-}
-
 // include the module class file
 @include_once( $AppUI->getModuleClass( $m ) );
 @include_once( "./modules/$m/" . ($u ? "$u/" : "") . "$u.class.php" );
@@ -248,7 +214,7 @@ if ( isset($_REQUEST['u']) ) {
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
 if (isset( $_REQUEST["dosql"]) ) {
     //require("./dosql/" . $_REQUEST["dosql"] . ".php");
-    require ("./modules/$m/" . $AppUI->makeFileNameSafe($_REQUEST["dosql"]) . ".php");
+    require ("./modules/$m/" . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php");
 }
 
 // start output proper
