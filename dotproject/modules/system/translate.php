@@ -16,6 +16,7 @@ $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 $modules = array(
 	'common',
 	'companies',
+	'forums',
 	'help'
 );
 
@@ -123,7 +124,7 @@ foreach ($trans as $k => $langs){
 	?></td>
 	<td><?php 
 		if ($lang != 'en') {
-			$langs['lang'] = htmlspecialchars( $langs['lang'], ENT_QUOTES );
+			$langs['lang'] = htmlspecialchars( @$langs['lang'], ENT_QUOTES );
 			echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\">";
 		}
 	?></td>
