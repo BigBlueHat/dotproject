@@ -1,7 +1,5 @@
 <?php
 //User Managagement
-// view mode = 0 tabbed, 1 flat
-$vm = isset($_GET['vm']) ? $_GET['vm'] : 0;
 $f = isset($_GET['z']) ? $_GET['z'] : '%';
 
 // check permissions
@@ -55,44 +53,15 @@ function delMe( x, y ) {
 		</table>
 	</td>
 </tr>
-<tr>
-	<td colspan="2">
-		<a href="./index.php?m=admin&vm=0">tabbed</a> :
-		<a href="./index.php?m=admin&vm=1">flat</a>
-	</td>
-	<td align="right" width="100%">
-		<!-- <input type="button" class=button value="add group" onClick="javascript:window.location='./index.php?m=admin&a=addeditgroup';">-->
-		<input type="button" class=button value="add user" onClick="javascript:window.location='./index.php?m=admin&a=addedituser';">
-	</td>
-</tr>
 </table>
 
-<table cellpadding="2" cellspacing="1" border="0" width="98%">
-<tr>
-</table>
-
-<?php	
-$tabs = array(
-	'active_usr' => 'Active Users',
-	'inactive_usr' => 'In-Active Users'
-);
-
-if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
 <?php
-	foreach ($tabs as $k => $v) {
-		echo "<tr><td><b>$v</b></td></tr>";
-		echo "<tr><td>";
-		include "vw_$k.php";
-		echo "</td></tr>";
-	}
-?>
-</table>
-<?php 
-} else {
+$extra = '<td align="right" width="100%"><input type="button" class=button value="add user" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';"></td>';
 
-	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'active_usr';
-	drawTabBox( $tabs, $tab, "./index.php?m=admin", "./modules/admin" );
-}
-
+// tabbed information boxes
+$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 0;
+$tabBox = new CTabBox( "?m=admin", "./modules/admin", $tab );
+$tabBox->add( 'vw_active_usr', 'Active Users' );
+$tabBox->add( 'vw_inactive_usr', 'In-Active Users' );
+$tabBox->show( $extra );
 ?>

@@ -12,8 +12,6 @@ if ($denyRead) {
 }
 
 $user_id = isset( $HTTP_GET_VARS['user_id'] ) ? $HTTP_GET_VARS['user_id'] : 0;
-// view mode = 0 tabbed, 1 flat
-$vm = isset($HTTP_GET_VARS['vm']) ? $HTTP_GET_VARS['vm'] : 0;
 
 // pull data
 $usql = "
@@ -140,35 +138,11 @@ $urow = mysql_fetch_array( $urc, MYSQL_ASSOC );
 </tr>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
-<tr>
-	<td>
-		<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>&vm=0">tabbed</a> :
-		<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>&vm=1">flat</a>
-	</td>
-</tr>
-</table>
-
 <?php	
-$tabs = array(
-	'usr_proj' => 'Owned Projects',
-	'usr_perms' => 'Permissions'
-);
-
-if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
-<?php
-	foreach ($tabs as $k => $v) {
-		echo "<tr><td><b>$v</b></td></tr>";
-		echo "<tr><td>";
-		include "vw_$k.php";
-		echo "</td></tr>";
-	}
-?>
-</table>
-<?php 
-} else {
-	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'usr_proj';
-	drawTabBox( $tabs, $tab, "./index.php?m=admin&a=viewuser&user_id=$user_id", "./modules/admin" );
-}
+// tabbed information boxes
+$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 0;
+$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", "./modules/admin", $tab );
+$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
+$tabBox->add( 'vw_usr_perms', 'Permissions' );
+$tabBox->show();
 ?>
