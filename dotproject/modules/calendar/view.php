@@ -76,7 +76,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
-			<td class="hilite" width="100%"><?php echo $types[$obj->event_type];?></td>
+			<td class="hilite" width="100%"><?php echo $AppUI->_($types[$obj->event_type]);?></td>
 		</tr>	
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
