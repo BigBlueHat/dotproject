@@ -63,8 +63,8 @@ while ($row = db_fetch_row( $drc )) {
 
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, task_duration_type,
-task_priority, task_percent_complete, task_order, task_project, task_milestone,
-project_name
+task_priority, task_percent_complete, task_order, task_project, task_milestone, 
+project_name, task_dynamic
 ";
 
 $from = "tasks";
@@ -124,9 +124,9 @@ for ($x=0; $x < $nums; $x++) {
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
-$width = dPgetParam( $_GET, 'width', 600 );
+$width      = dPgetParam( $_GET, 'width', 600 );
 $start_date = dPgetParam( $_GET, 'start_date', 0 );
-$end_date = dPgetParam( $_GET, 'end_date', 0 );
+$end_date   = dPgetParam( $_GET, 'end_date', 0 );
 
 $count = 0;
 $graph = new GanttGraph($width);
@@ -150,9 +150,9 @@ if ($start_date && $end_date) {
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 if ($showWork=='1') {
-	$graph->scale->actinfo->SetColTitles(array('Task name','Work','Start','Finish'),array(160,10, 70,70));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Work'), $AppUI->_('Start'), $AppUI->_('Finish')),array(160,10, 70,70));
 } else {
-	$graph->scale->actinfo->SetColTitles(array('Task name','Duration','Start','Finish'),array(160,10, 70,70));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Dur.'), $AppUI->_('Start'), $AppUI->_('Finish')),array(160,10, 70,70));
 }
 
 $graph->scale->tableTitle->Set($projects[$project_id]["project_name"]);
@@ -214,7 +214,7 @@ if($hide_task_groups) {
 $row = 0;
 for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
-	$a = $gantt_arr[$i][0];
+	$a     = $gantt_arr[$i][0];
 	$level = $gantt_arr[$i][1];
 
 	if($hide_task_groups) $level = 0;
@@ -226,20 +226,22 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		$name = strlen( $a["task_name"] ) > 25 ? substr( $a["task_name"], 0, 22 ).'...' : $a["task_name"] ;	
 	}
 	
+	$name = str_repeat(" ", $level).$name;
+	
 	//using new jpGraph determines using Date object instead of string
 	$start = $a["task_start_date"];
-	$end = $a["task_end_date"];
+	$end   = $a["task_end_date"];
 
 	$end = new CDate($end);	
-	$end->addDays(0);
+//	$end->addDays(0);
 	$end = $end->getDate();
 	
 	$start = new CDate($start);
-	$start->addDays(0);
+//	$start->addDays(0);
 	$start = $start->getDate();
 	
 	$progress = $a["task_percent_complete"];
-	$flags = ($a["task_milestone"]?"m":"");
+	$flags    = ($a["task_milestone"] ? "m" : "");
 
 	$cap = "";
 	if(!$start || $start == "0000-00-00"){
@@ -289,7 +291,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		
 		if ($showWork=='1') {
 			$work_hours = 0;
-			$_days_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_id = ".$a['task_id']." AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
+			$_days_sql  = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_id = ".$a['task_id']." AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
 			$_hours_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_id = ".$a['task_id']." AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
 			$work_hours = db_loadResult($_days_sql) * $dPconfig['daily_working_hours'];
 			$work_hours += db_loadResult($_hours_sql);
@@ -302,14 +304,32 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 			fwrite($handle, $_days_sql);
 			fclose($handle);
 			*/
-			
 		}
 		
 
 		$dur .= " h";
 		
-		$bar = new GanttBar($row++, array($name, $dur, substr($start, 0, 10), substr($end, 0, 10)), $start, $end, $cap);
+		$bar = new GanttBar($row++, array($name, $dur, substr($start, 0, 10), substr($end, 0, 10)), $start, $end, $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
 		$bar->progress->Set($progress/100);
+		
+		$bar->title->SetFont(FF_FONT1,FS_NORMAL,7);
+		
+	    if($a["task_dynamic"] == 1){
+	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 7);		
+    		$bar->rightMark->Show();
+            $bar->rightMark->SetType(MARK_RIGHTTRIANGLE);
+            $bar->rightMark->SetWidth(3);
+            $bar->rightMark->SetColor('black');
+            $bar->rightMark->SetFillColor('black');
+            
+            $bar->leftMark->Show();
+            $bar->leftMark->SetType(MARK_LEFTTRIANGLE);
+            $bar->leftMark->SetWidth(3);
+            $bar->leftMark->SetColor('black');
+            $bar->leftMark->SetFillColor('black');
+            
+            $bar->SetPattern(BAND_SOLID,'black');
+	    }
 	}
 	//adding captions
 	$bar->caption = new TextProperty($caption);
