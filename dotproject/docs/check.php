@@ -118,8 +118,8 @@ $burl = preg_replace('/\/docs\/.*$/', '', $_SERVER['SCRIPT_NAME']);
 preg_match('_^(https?://)([^/]+)(:[0-9]+)?(/.*)$_i', $dPconfig['base_url'], $url_parts);
 echo "<tr><td>base_url</td><td>$dPconfig[base_url]</td>";
 $real_base = $url_parts[1] . $_SERVER['SERVER_NAME'];
-if ($url_parts[3])
-	$real_base .= $url_parts[3];
+if ( $_SERVER['SERVER_PORT'] && $_SERVER['SERVER_PORT'] != 80)
+	$real_base .= ":$_SERVER[SERVER_PORT]";
 $real_base .= $burl;
 if ($url_parts[2] != $_SERVER['SERVER_NAME']
 || $url_parts[4] != $burl ) {
