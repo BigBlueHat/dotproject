@@ -65,4 +65,15 @@ function db_fetch_array( $cur  ) {
 function db_escape( $str ) {
 	return mysql_escape_string( $str );
 }
+
+function db_version() {
+	;
+	if( ($cur = mysql_query( "SELECT VERSION()" )) ) {
+		$row =  mysql_fetch_row( $cur );
+		mysql_free_result( $cur );
+		return $row[0];
+	} else {
+		return 0;
+	}
+}
 ?>
