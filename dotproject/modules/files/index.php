@@ -34,7 +34,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 $sql = "
 SELECT project_id, project_name
 FROM projects, permissions
-WHERE permission_user = $user_cookie
+WHERE permission_user = $AppUI->user_id
 	AND permission_value <> 0
 	AND (
 		(permission_grant_on = 'all')
