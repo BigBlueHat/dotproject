@@ -301,12 +301,15 @@ if($do_report){
 	$task_list_hash 	 = db_loadHashList($sql, "task_id");
 	$task_list      	 = array();
 	$task_assigned_users = array();
+	$user_assigned_tasks = array();
 	$i = 0;
 	foreach($task_list_hash as $task_id => $task_data){
 		$task = new CTask();
 		$task->bind($task_data);
-		$task_assigned_users[$i] = $task->getAssignedUsers();
-		$task->task_assigned_users = $task->getAssignedUsers();
+		$task_users = $task->getAssignedUsers();
+		foreach (array_keys($task_users) as $uid)
+		  $user_assigned_tasks[$uid][] = $task_id;
+		$task->task_assigned_users = $task_users;
 		$task_list[$i] = $task;
 
 		$i+=1;
@@ -461,32 +464,23 @@ return $tmp;
 
 function isMemberOfTask($list,$N,$user_id,$task) {
 
-	for($i=0;$i<$N && $list[$i]->task_id!=$task->task_id;$i++);
-	$users=$task->task_assigned_users;
+	global $user_assigned_tasks;
 
-	foreach($users as $task_user_id => $user_data) {
-		if ($task_user_id==$user_id) { return true; }
+	if (isset($user_assigned_tasks[$user_id])) {
+		if (in_array($task->task_id, $user_assigned_tasks[$user_id]))
+			return true;
+		else if ( $task->task_id != $task->task_parent
+		&& in_array($task->task_parent, $user_assigned_tasks[$user_id]))
+			return true;
 	}
-
-	// check child tasks if any
-
-	for($c=0;$c<$N;$c++) {
-		$ntask=$list[$c];
-		if (($ntask->task_parent==$task->task_id) and isChildTask($ntask)) {
-			// we have a child task
-			if (isMemberOfTask($list,$N,$user_id,$ntask)) {
-				return true;
-			}
-		}
-	}
-return false;
+	return false;
 }
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $user_id) {
 
         global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x;
 	$zi++;
-        $users = $task->getAssignedUsers();
+        $users = $task->task_assigned_users;
 	$task->userPriority = $task->getUserSpecificTaskPriority( $user_id );
         $projects = $task->getProject();
 	$tmp="<tr>";
