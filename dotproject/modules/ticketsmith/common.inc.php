@@ -205,7 +205,7 @@ function format_field ($value, $type, $ticket = NULL) {
             }
             break;
         case "status":
-            $output = create_selectbox("type_toggle", array("Open" => "Open", "Closed" => "Closed", "Deleted" => "Deleted"), $value);
+            $output = create_selectbox("type_toggle", array("Open" => "Open", "Processing" => "Processing", "Closed" => "Closed", "Deleted" => "Deleted"), $value);
             break;
         case "priority_view":
             $priority = $CONFIG["priority_names"][$value];

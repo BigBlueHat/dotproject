@@ -170,7 +170,7 @@ print("<td><br /></td>\n");
 print("<td colspan=" . (count($fields["headings"]) - 1) . " align=right>\n");
 print("<table width=100% border=0 cellspacing=0 cellpadding=0>\n");
 print("<tr height=25><td align=left>");
-$types = array("My","Open","Closed","Deleted","All");
+$types = array("My","Open","Processing","Closed","Deleted","All");
 for ($loop = 0; $loop < count($types); $loop++) {
     $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $types[$loop] . "</a>";
 }
