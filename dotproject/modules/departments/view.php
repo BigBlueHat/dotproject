@@ -72,30 +72,30 @@ function delIt() {
 
 <tr valign="top">
 	<td width="50%">
-		<strong>Details</strong>
+		<strong><?php echo $AppUI->_('Details'); ?></strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td align="right" nowrap>Company:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Company'); ?>:</td>
 			<td bgcolor="#ffffff" width="100%"><?php echo $dept["company_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Department:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Department'); ?>:</td>
 			<td bgcolor="#ffffff" width="100%"><?php echo $dept["dept_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Owner:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Owner'); ?>:</td>
 			<td bgcolor="#ffffff" width="100%"><?php echo @$dept["user_first_name"].' '.@$dept["user_last_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Phone:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Phone'); ?>:</td>
 			<td bgcolor="#ffffff" width="100%"><?php echo @$dept["dept_phone"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Fax:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Fax'); ?>:</td>
 			<td bgcolor="#ffffff" width="100%"><?php echo @$dept["dept_fax"];?></td>
 		</tr>
 		<tr valign=top>
-			<td align="right" nowrap>Address:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Address'); ?>:</td>
 			<td bgcolor="#ffffff"><?php
 				echo @$dept["dept_address1"]
 					.( ($dept["dept_address2"]) ? '<br />'.$dept["dept_address2"] : '' )
@@ -108,7 +108,7 @@ function delIt() {
 		</table>
 	</td>
 	<td width="50%">
-		<strong>Description</strong>
+		<strong><?php echo $AppUI->_('Description'); ?></strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td bgcolor="#ffffff" width="100%"><?php echo str_replace( chr(10), "<br />", $dept["dept_desc"]);?>&nbsp;</td>
