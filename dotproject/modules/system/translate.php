@@ -12,25 +12,9 @@ $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 
 // read the installed modules
 $modules = $AppUI->readDirs( 'modules' );
-/*$modules = array(
-	'admin',
-	'calendar',
-	'common',
-	'contacts',
-	'companies',
-	'departments',
-	'files',
-	'forums',
-	'help',
-	'projects',
-	'styles',
-	'system',
-	'tasks',
-	'ticketsmith'
-);*/
 
 // read the installed modules
-$modules = $AppUI->readDirs( 'modules' );
+$modules = arrayMerge( array( 'common', 'styles' ), $AppUI->readDirs( 'modules' ));
 
 // read the installed languages
 $locales = $AppUI->readDirs( 'locales' );
