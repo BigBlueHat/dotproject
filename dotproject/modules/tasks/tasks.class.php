@@ -1044,8 +1044,9 @@ class CTask extends CDpObject {
                         FROM users u
                         LEFT JOIN user_tasks ut ON ut.user_id = u.user_id
                         LEFT JOIN user_preferences up ON (up.pref_user = u.user_id AND up.pref_name = 'TASKASSIGNMAX')".$where."
-                        GROUP BY u.user_id";
-                //echo "<pre>$sql</pre>";
+                        GROUP BY u.user_id
+                        ORDER BY u.user_first_name, u.user_last_name";
+//                echo "<pre>$sql</pre>";
                 return db_loadHashList($sql, $hash);
         }
 

@@ -67,8 +67,16 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 $project = new CProject();
 $project->load( $task_project );
 
+
 //Pull all users with complete allocation information
-$users = $obj->getAllocation("user_id");
+$sql_active_users = "select user_id
+                     from users,
+                          permissions
+                     where user_id = permission_user
+                     group by user_id";
+$active_users_id  = db_loadColumn($sql_active_users);
+
+$users = $obj->getAllocation("user_id", $active_users_id);
 
 if ( $task_id == 0 ) {
 	// Add task creator to assigned users by default
