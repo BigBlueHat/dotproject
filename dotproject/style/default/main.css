@@ -22,11 +22,15 @@ TR {
 	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
 }
 
-.title {
-	font-size: 18pt; size: 18pt;
+h1, .title {
+	font-size: 18pt;
+	font-weight: normal;
+	margin: 0px;
 }
-.subtitle {
-	font-size: 12pt; size: 12pt;
+h2, .subtitle {
+	font-size: 12pt;
+	font-weight: normal;
+	margin: 0px;
 }
 
 bordertable {
@@ -68,23 +72,23 @@ Begin IE TD buttonizing
 */
 
 TD.clsBtnUp {
-    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
 }
 
 TD.clsBtnDown {
-    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
 }
 
 TD.clsBtnOn {
-    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
+	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
 }
 
 TD.clsBtnOff {
-    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #559999 2px;
+	color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #559999 2px;
 }
 
 TD.topBtnOff {
-    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
+	color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
 }
 TD.nav {
 	color: #FFFFFF;
