@@ -11,11 +11,10 @@ $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
 if ($denyRead) {
-        echo '<script language="javascript">
-        window.location="./index.php?m=help&a=access_denied";
-        </script>
-';
+	$AppUI->redirect( 'm=help&a=access_denied' );
 }
+
+$AppUI->savePlace();
 
 $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 
@@ -27,7 +26,7 @@ SELECT project_id, project_color_identifier, project_name,
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_active <> 0
-	AND permission_user = $thisuser_id
+	AND permission_user = $AppUI->user_id
 	AND permission_value <> 0
 	AND (
 		(permission_grant_on = 'all')
@@ -38,31 +37,26 @@ GROUP BY project_id
 ORDER BY project_name
 ";
 //echo "<pre>$psql</pre>";
-$prc = mysql_query( $psql );
-echo mysql_error();
-$pnums = mysql_num_rows( $prc );
+$prc = db_exec( $psql );
+echo db_error();
+$pnums = db_num_rows( $prc );
 
 $projects = array();
 for ($x=0; $x < $pnums; $x++) {
-	$z = mysql_fetch_array( $prc, MYSQL_ASSOC );
+	$z = db_fetch_assoc( $prc );
 	$projects[$z["project_id"]] = $z;
 }
 
 // get any specifically denied tasks
-$dsql = "
-SELECT task_id
+$sql = "
+SELECT task_id, task_id
 FROM tasks, permissions
-WHERE permission_user = $thisuser_id
+WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'tasks'
 	AND permission_item = task_id
 	AND permission_value = 0
 ";
-$drc = mysql_query( $dsql );
-echo mysql_error();
-$deny = array();
-while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
-        $deny[] = $row[0];
-}
+$deny = db_loadList( $sql );
 
 // pull tasks
 
@@ -81,7 +75,7 @@ switch ($f) {
 		$where .= "\nAND task_status > -1";
 		break;
 	case 'myproj':
-		$where .= "\nAND task_status > -1\n	AND project_owner = $thisuser_id";
+		$where .= "\nAND task_status > -1\n	AND project_owner = $AppUI->user_id";
 		break;
 	case 'mycomp':
 		$where .= "\nAND task_status > -1\n	AND project_company = $thisuser_company";
@@ -90,7 +84,7 @@ switch ($f) {
 		$from .= ", user_tasks";
 		$where .= "
 	AND task_project = projects.project_id
-	AND user_tasks.user_id = $thisuser_id
+	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id
 ";
 		break;
@@ -99,7 +93,7 @@ switch ($f) {
 		$where .= "
 	AND task_status > -1
 	AND task_project = projects.project_id
-	AND user_tasks.user_id = $thisuser_id
+	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id
 ";
 		break;
@@ -108,20 +102,14 @@ switch ($f) {
 $tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
 ##echo "<pre>$tsql</pre>".mysql_error();##
 
-$ptrc = mysql_query( $tsql );
-$nums = mysql_num_rows( $ptrc );
-echo mysql_error();
+$ptrc = db_exec( $tsql );
+$nums = db_num_rows( $ptrc );
+echo db_error();
 $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 
 //pull the tasks into an array
 for ($x=0; $x < $nums; $x++) {
-	$row = mysql_fetch_array( $ptrc, MYSQL_ASSOC );
-	
-        // set blank task_end_date if unset
-        if($row["task_end_date"] == "0000-00-00 00:00:00") {
-	        $row["task_end_date"] = "";
-        }
-	
+	$row = db_fetch_assoc( $ptrc );
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
@@ -134,7 +122,7 @@ function showtask( &$a, $level=0 ) {
 	global $done;
 	$done[] = $a['task_id']; ?>
 	<tr>
-	<td><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+	<td><a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
 	<td align="right"><?php echo intval($a["task_precent_complete"]);?>%</td>
 	<td>
 	<?php if ($a["task_priority"] < 0 ) {
@@ -160,7 +148,7 @@ function showtask( &$a, $level=0 ) {
 		}
 	}?>
 
-	<A href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a></td>
+	<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a></td>
 	<td nowrap><?php echo fromDate(substr($a["task_start_date"], 0, 10));?></td>
 	<td>
 	<?php if ($a["task_duration"] > 24 ) {
@@ -178,13 +166,7 @@ function showtask( &$a, $level=0 ) {
 	?>
 	</td>
 	<td nowrap>
-        <?php 
-        	if($a["task_end_date"]) {
-        		echo fromDate(substr($a["task_end_date"], 0, 10));
-        	} else {
-        		echo "n/a";
-        	}
-        ?>
+        <?php echo fromDate(substr($a["task_end_date"], 0, 10));?>
 	</td>
 	</tr>
 <?php }
@@ -269,7 +251,7 @@ while (list( $k, ) = each( $projects ) ) {
 ?>
 <tr>
 	<td>
-		<a href="index.php?m=tasks&f=<?php; echo $f;?>&project_id=<?php echo $project_id ? 0 : $p["project_id"];?>">
+		<a href="index.php?m=tasks&f=<?php echo $f;?>&project_id=<?php echo $project_id ? 0 : $p["project_id"];?>">
 			<img src="./images/icons/<?php echo $project_id ? 'expand.gif' : 'collapse.gif';?>" width="16" height="16" border="0" alt="<?php echo $project_id ? 'show other projects' : 'show only this project';?>">
 		</a>
 	</td>
@@ -312,7 +294,4 @@ while (list( $k, ) = each( $projects ) ) {
 	}
 }
 ?>
-</table>
-<table height="100%">
-<tr><td>&nbsp;</td></TR>
 </table>
