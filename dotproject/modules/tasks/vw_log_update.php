@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-GLOBAL $AppUI, $task_id, $obj, $percent;
+GLOBAL $AppUI, $task_id, $obj, $percent, $can_edit_time_information;
 
 // check permissions
 $canEdit = !getDenyEdit( 'tasks', $task_id );
@@ -166,6 +166,34 @@ if ($canEdit) {
 		&nbsp;->&nbsp; <input type="text" class="text" name="task_log_costcode" value="<?php echo $log->task_log_costcode;?>" maxlength="8" size="8" />
 	</td>
 </tr>
+<?php
+	if($obj->canUserEditTimeInformation()){
+?>
+	<tr>
+		<td align='right'>
+			<?php echo $AppUI->_("Task's end date"); ?>
+		</td>
+		<td>
+			<script language='javascript'>
+				function popCalendar( field ){
+					calendarField = field;
+					idate = eval( 'document.editFrm.task_' + field + '.value' );
+					window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=251, height=220, scollbars=false' );
+				}
+			</script>
+			<?php
+				$end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
+			?>
+			<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
+			<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
+			<a href="#" onClick="popCalendar('end_date')">
+				<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+			</a>
+		</td>
+	</tr>
+<?php
+	}
+?>
 <tr>
 	<td colspan="4" valign="bottom" align="right">
 		<input type="button" class="button" value="<?php echo $AppUI->_('update task');?>" onclick="updateTask()" />

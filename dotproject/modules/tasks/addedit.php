@@ -270,31 +270,7 @@ for ( $current = 0 + $inc; $current < 60; $current += $inc ) {
 	$minutes[$current] = $current;
 }
 
-// Code to see if the current user is
-// enabled to change time information related to task
-$can_edit_time_information = false;
-// Let's see if all users are able to edit task time information
-if(isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_time_editing']==true && $obj->task_id > 0){
-
-	// Am I the task owner?
-	if($obj->task_owner == $AppUI->user_id){
-		$can_edit_time_information = true;
-	}
-	
-	// Am I the project owner?
-	if($project->project_owner == $AppUI->user_id){
-		$can_edit_time_information = true;
-	}
-	
-	// Am I sys admin?
-	if(!getDenyEdit("admin")){
-		$can_edit_time_information = true;
-	}
-	
-} else if (!isset($dPconfig['restrict_task_time_editing']) || $dPconfig['restrict_task_time_editing']==false || $obj->task_id == 0) { // If all users are able, then don't check anything
-	$can_edit_time_information = true;
-}
-
+$can_edit_time_information = $obj->canUserEditTimeInformation();
 //get list of projects, for task move drop down list.
 $sql = "
 SELECT

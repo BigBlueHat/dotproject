@@ -83,8 +83,13 @@ $task->check();
 
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
 
-if ($task->task_percent_complete >= 100 && ( ! $task->task_end_date || $task->task_end_date == '0000-00-00 00:00:00'))
+if(dPgetParam($_POST, "task_end_date", "") != ""){
+	$task->task_end_date = $_POST["task_end_date"];
+}
+
+if ($task->task_percent_complete >= 100 && ( ! $task->task_end_date || $task->task_end_date == '0000-00-00 00:00:00')){
 	$task->task_end_date = $obj->task_log_date;
+}
 
 if (($msg = $task->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR, true );
@@ -95,5 +100,7 @@ if ($notify_owner) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	}
 }
+
+
 $AppUI->redirect();
 ?>

@@ -767,7 +767,40 @@ class CTask extends CDpObject {
 				$this->updateSubTasksProject($new_project, $id);
 			}
 		}
-	}	
+	}
+	
+	function canUserEditTimeInformation(){
+		global $dPconfig, $AppUI;
+		
+		$project = new CProject();
+		$project->load( $this->task_project );
+		
+		// Code to see if the current user is
+		// enabled to change time information related to task
+		$can_edit_time_information = false;
+		// Let's see if all users are able to edit task time information
+		if(isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_time_editing']==true && $this->task_id > 0){
+		
+			// Am I the task owner?
+			if($this->task_owner == $AppUI->user_id){
+				$can_edit_time_information = true;
+			}
+			
+			// Am I the project owner?
+			if($project->project_owner == $AppUI->user_id){
+				$can_edit_time_information = true;
+			}
+			
+			// Am I sys admin?
+			if(!getDenyEdit("admin")){
+				$can_edit_time_information = true;
+			}
+			
+		} else if (!isset($dPconfig['restrict_task_time_editing']) || $dPconfig['restrict_task_time_editing']==false || $this->task_id == 0) { // If all users are able, then don't check anything
+			$can_edit_time_information = true;
+		}
+		return $can_edit_time_information;
+	}
 }
 
 
