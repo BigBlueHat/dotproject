@@ -19,6 +19,8 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }}}*/
 
+require_once dirname(__FILE__) . "/../lib/adodb/adodb.inc.php";
+
 define('QUERY_STYLE_ASSOC', ADODB_FETCH_ASSOC);
 define('QUERY_STYLE_NUM' , ADODB_FETCH_NUM);
 define('QUERY_STYLE_BOTH', ADODB_FETCH_BOTH);
