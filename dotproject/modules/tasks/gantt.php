@@ -170,6 +170,56 @@ if (is_file( TTF_DIR."arialbd.ttf" ))
 $graph->scale->SetTableTitleBackground("#".$projects[$project_id]["project_color_identifier"]);
 $graph->scale->tableTitle->Show(true);
 
+//-----------------------------------------
+// nice Gantt image
+// if diff(end_date,start_date) > 90 days it shows only
+//week number
+// if diff(end_date,start_date) > 240 days it shows only
+//month number
+//-----------------------------------------
+if ($start_date && $end_date){
+        $min_d_start = new CDate($start_date);
+        $max_d_end = new CDate($end_date);
+        $graph->SetDateRange( $start_date, $end_date );
+} else {
+        // find out DateRange from gant_arr
+        $d_start = new CDate();
+        $d_end = new CDate();
+        for($i = 0; $i < count(@$gantt_arr); $i++ ){
+                $a = $gantt_arr[$i][0];
+                $start = substr($a["task_start_date"], 0, 10);
+                $end = substr($a["task_end_date"], 0, 10);
+
+                $d_start->Date($start);
+                $d_end->Date($end);
+
+                if ($i == 0){
+                        $min_d_start = $d_start;
+                        $max_d_end = $d_end;
+                } else {
+                        if (Date::compare($min_d_start,$d_start)>0){
+                                $min_d_start = $d_start;
+                        }
+                        if (Date::compare($max_d_end,$d_end)<0){
+                                $max_d_end = $d_end;
+                        }
+                }
+        }
+}
+
+// check day_diff and modify Headers
+$day_diff = $min_d_start->dateDiff($max_d_end);
+
+if ($day_diff > 240){
+        //more than 240 days
+        $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH);
+} else if ($day_diff > 90){
+        //more than 90 days and less of 241
+        $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK );
+        $graph->scale->week->SetStyle(WEEKSTYLE_WNBR);
+}
+
+
 //This kludgy function echos children tasks as threads
 
 function showtask( &$a, $level=0 ) {
