@@ -100,7 +100,7 @@ function delIt(){
 			</td>
 		</tr>
 		<tr>
-			<td align="right"><? echo $AppUI->_('Owner');?>:</td>
+			<td align="right"><?php echo $AppUI->_('Owner');?>:</td>
 			<td>
 		<?php
 			echo arraySelect( $users, 'forum_owner', 'size="1" class="text"', $forum_info['forum_owner'] ? $forum_info['forum_owner'] : $AppUI->user_id );
