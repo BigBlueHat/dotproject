@@ -1,6 +1,6 @@
 <?php /* $Id$ */
 
-/**  LICENSE  **
+/**  BSD LICENSE  **
 
 Copyright (c) 2003, The dotProject Development Team sf.net/projects/dotproject
 All rights reserved.
@@ -30,14 +30,15 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 **/
 
-error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
+error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING );
 
 // required includes for start-up
 $dPconfig = array();
 require_once( "./classes/ui.class.php" );
+require_once( "./includes/main_functions.php" );
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
-$suppressHeaders = @$_GET['suppressHeaders'];
+$suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
 
 // manage the session variable(s)
 session_name( 'dotproject' );
@@ -71,8 +72,8 @@ if ($AppUI->doLogin()) {
 
 // check if the user is trying to log in
 if (isset($_POST['login'])) {
-	$username = isset($_POST['username']) ? $_POST['username'] : '';
-	$password = isset($_POST['password']) ? $_POST['password'] : '';
+	$username = dPgetParam( $_POST, 'username', '' );
+	$password = dPgetParam( $_POST, 'password', '' );
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
 		@include_once( "./locales/core.php" );
@@ -119,13 +120,12 @@ if (isset( $_REQUEST['uts'] )) {
 }
 
 // bring in the rest of the support and localisation files
-require_once( "./includes/main_functions.php" );
 require_once( "./includes/permissions.php" );
 
 // set the module and action from the url
-$m = isset( $_GET['m'] ) ? $_GET['m'] : getReadableModule();
-$u = isset( $_GET['u'] ) ? $_GET['u'] : '';
-$a = isset( $_GET['a'] )? $_GET['a'] : 'index';
+$m = dPgetParam( $_GET, 'm', getReadableModule() );
+$u = dPgetParam( $_GET, 'u', '' );
+$a = dPgetParam( $_GET, 'a', 'index' );
 
 @include_once( "./functions/" . $m . "_func.php" );
 // check overall module permissions
@@ -134,9 +134,6 @@ $canRead = !getDenyRead( $m );
 $canEdit = !getDenyEdit( $m );
 $canAuthor = $canEdit;
 $canDelete = $canEdit;
-	// legacy support
-	$denyRead = !$canRead;
-	$denyEdit = !$canEdit;
 
 // load module based locale settings
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
