@@ -1731,7 +1731,7 @@ function array_csort()   //coded by Ichier2003
 
 function sort_by_item_title( $title, $item_name, $item_type )
 {
-	global $AppUI,$project_id,$min_view,$m;
+	global $AppUI,$project_id,$task_id,$min_view,$m;
 	global $task_sort_item1,$task_sort_type1,$task_sort_order1;
 	global $task_sort_item2,$task_sort_type2,$task_sort_order2;
 
@@ -1749,7 +1749,9 @@ function sort_by_item_title( $title, $item_name, $item_type )
 	/* flip the sort order for the link */
 	$item_order = ( $item_order == SORT_ASC ) ? SORT_DESC : SORT_ASC;
 	if ( $m == 'tasks' )
-		echo '<a href="./index.php?m=tasks';
+	{
+		echo '<a href="./index.php?m=tasks&a=view&task_id='.$task_id;
+	}
 	else
 		echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
 
