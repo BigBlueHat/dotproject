@@ -121,37 +121,52 @@ if (!$ok) {
 		window.opener.<?php echo $callback;?>(key,val);
 		window.close();
 	}
-</script>
 
+	window.onresize = window.onload = function setHeight(){
+
+		if (document.compatMode && document.compatMode != "BackCompat" && document.documentElement.clientHeight)
+			var wh = document.documentElement.clientHeight;
+		else
+			var wh = document.all ? document.body.clientHeight : window.innerHeight;
+   
+		var selector = document.getElementById("selector");
+		var count = 0;
+		obj = selector;
+		while(obj!=null){
+			count += obj.offsetTop;
+			obj = obj.offsetParent;
+		}
+		selector.style.height = (wh - count - 5) + "px";
+
+	}
+
+</script>
 <form name="frmSelector">
-<?=$AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':'?>
-<div style="position: absolute;top:40px;bottom:35px;left:0;width: 95%;padding:5px;overflow: auto;" name="selector">
-<table cellspacing="0" cellpadding="3" border="0">
+<b><?=$AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':'?></b>
+<table width="100%">
 <tr>
 	<td>
-<?php
-	if (count( $list ) > 1) {
-//		echo arraySelect( $list, 'list', ' size="8"', 0 );
-		foreach ($list as $key => $val) {
-			echo "<a href=\"javascript:setClose('$key','$val');\">$val</a><br>\n";
-		}
-	} else {
-		echo $AppUI->_( "no$table" );
-	}
-?>
+		<div style="white-space:normal; overflow:auto; "  id="selector">
+		<ul style="padding-left:0px">
+		<?php
+			if (count( $list ) > 1) {
+		//		echo arraySelect( $list, 'list', ' size="8"', 0 );
+				foreach ($list as $key => $val) {
+					echo "<li><a href=\"javascript:setClose('$key','$val');\">$val</a></li>\n";
+				}
+			} else {
+				echo $AppUI->_( "no$table" );
+			}
+		?>
+		</ul>
+		</div>
+	</td>
+	<td valign="bottom">
+				<input type="button" class="button" value="<?php echo $AppUI->_( 'cancel' );?>" onclick="window.close()" />
 	</td>
 </tr>
 </table>
-</div>
-<div style="position: absolute;width: 100%; height: 20px;left:0;bottom:0px;padding:5px;" name="footer">
-<table cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
-<tr>
-	<td align="right">
-		<input type="button" class="button" value="<?php echo $AppUI->_( 'cancel' );?>" onclick="window.close()" />
-	</td>
-</tr>
-</table>
-</div>
 </form>
 
 <?php } ?>
+
