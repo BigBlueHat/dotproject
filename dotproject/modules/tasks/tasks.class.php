@@ -14,6 +14,7 @@ $task_access = array(
 
 // this var is intended to track new status in task
 $new_status = null;
+$new_project = null;
 
 /*
 * CTask Class
@@ -59,7 +60,7 @@ class CTask extends CDpObject {
 
 // overload check
 	function check() {
-		global $new_status;
+		global $new_status, $new_project;
 		
 		if ($this->task_id === NULL) {
 			return 'task id is NULL';
@@ -87,6 +88,12 @@ class CTask extends CDpObject {
 		if($actual_status != $this->task_status){
 			$new_status = $this->task_status;
 		}
+
+		$actual_project = db_loadResult("select task_project from tasks where task_id='$this->task_id'");
+		if($actual_project != $this->task_project){
+			$new_project = $this->task_project;
+		}
+		
 		return NULL;
 	}
 
@@ -183,7 +190,7 @@ class CTask extends CDpObject {
 * @todo Parent store could be partially used
 */
 	function store() {
-		GLOBAL $AppUI, $new_status;
+		GLOBAL $AppUI, $new_status, $new_project;
 
 		$msg = $this->check();
 		if( $msg ) {
@@ -196,6 +203,11 @@ class CTask extends CDpObject {
 			if(!is_null($new_status)){
 				$this->updateSubTasksStatus($new_status);
 			}
+			
+			if(!is_null($new_project)){
+				$this->updateSubTasksProject($new_project);
+			}
+			
 			$this->updateDynamics(true);
 
 			// add to shift dependencies dates
@@ -716,6 +728,31 @@ class CTask extends CDpObject {
 			}
 		}
 	}
+	
+	/**
+	* This function recursively updates all tasks project
+	* to the one passed as parameter
+	*/ 
+	function updateSubTasksProject($new_project , $task_id = null){
+		if(is_null($task_id)){
+			$task_id = $this->task_id;
+		}
+		$sql = "select task_id
+		        from tasks
+		        where task_parent = '$task_id'";
+		
+		$tasks_id = db_loadColumn($sql);
+		if(count($tasks_id) == 0) return true;
+		
+		$sql = "update tasks set task_project = '$new_project' where task_parent = '$task_id'";
+		db_exec($sql);
+
+		foreach($tasks_id as $id){
+			if($id != $task_id){
+				$this->updateSubTasksProject($new_project, $id);
+			}
+		}
+	}	
 }
 
 
