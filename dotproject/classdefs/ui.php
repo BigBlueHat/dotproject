@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 ##
 ##	Application User Interface class
 ##
@@ -36,6 +36,7 @@ class CAppUI {
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // supported languages
 	var $locales = array(
+		'cn' => 'Chinese',
 		'cs' => 'Czech',
 		'de' => 'German',
 		'en' => 'English',
