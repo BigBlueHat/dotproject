@@ -207,7 +207,7 @@ function setDept( key, val ) {
 </tr>
 <tr>
 	<td align="right" valign=top><?php echo $AppUI->_('Email').' '.$AppUI->_('Signature');?>:</td>
-	<td><textarea class="text" cols=50 name="signature" style="height: 50px"><?php echo @$user["user_signature"];?></textarea></td>
+	<td><textarea class="text" cols=50 name="user_signature" style="height: 50px"><?php echo @$user["user_signature"];?></textarea></td>
 </tr>
 
 <tr>
