@@ -111,7 +111,7 @@ foreach ($trans as $k => $langs){
 ?>
 <tr>
 	<td><?php
-		if ($k != $langs['english']) {
+		if ($k != @$langs['english']) {
 			$k = htmlspecialchars( $k, ENT_QUOTES );
 			if ($lang == 'en') {
 				echo "<input type=\"text\" name=\"trans[$index][abbrev]\" value=\"$k\" size=\"20\" class=\"text\">";
@@ -123,7 +123,7 @@ foreach ($trans as $k => $langs){
 		}
 	?></td>
 	<td><?php 
-		$langs['english'] = htmlspecialchars( $langs['english'], ENT_QUOTES );
+		$langs['english'] = htmlspecialchars( @$langs['english'], ENT_QUOTES );
 		if ($lang == 'en') {
 			if (strlen($langs['english']) < 40) {
 				echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\">";
