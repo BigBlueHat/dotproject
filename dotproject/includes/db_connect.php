@@ -8,6 +8,7 @@
 // load the db specific handlers
 //require_once( "{$dPconfig['root_dir']}/includes/db_{$dPconfig['dbtype']}.php" );
 //require_once( "./includes/db_adodb.php" );
+require_once dirname(__FILE__) . "/db_adodb.php";
 
 // make the connection to the db
 db_connect( $dPconfig['dbhost'], $dPconfig['dbname'],
