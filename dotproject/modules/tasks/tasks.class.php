@@ -625,7 +625,7 @@ class CTask extends CDpObject {
 			//Priority not working for some reason, will wait till later
 			//$body .= "\n".$AppUI->_('Priority'). ": $this->task_priority";
 			$body .= "\n".$AppUI->_('Start Date') . ": " . $task_start_date->format( $df );
-			$body .= "\n".$AppUI->_('Finish Date') . ": " . $task_finish_date->format( $df );
+			$body .= "\n".$AppUI->_('Finish Date') . ": " . ($this->task_end_date != "" ? $task_finish_date->format( $df ) : "");
 			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
 			$body .= "\n\n" . $AppUI->_('Description') . ":"
 				. "\n$this->task_description";
