@@ -8,7 +8,7 @@ $email = isset($HTTP_POST_VARS['email']) ? $HTTP_POST_VARS['email'] : '';
 $subject = isset($HTTP_POST_VARS['subject']) ? $HTTP_POST_VARS['subject'] : '';
 $priority = isset($HTTP_POST_VARS['priority']) ? $HTTP_POST_VARS['priority'] : '';
 $description = isset($HTTP_POST_VARS['description']) ? $HTTP_POST_VARS['description'] : '';
-$description = db_escape($description);
+//$description = db_escape($description);
 
 $author = $name . " <" . $email . ">";
 $tsql =
