@@ -110,11 +110,12 @@ switch ($f) {
 }
 
 $task_status = intval( dPgetParam( $_GET, 'task_status', null ) );
-
-if ($task_status === null) {
-	$where .= "\n	AND task_status > -1";
-} else {
-	$where .= "\n	AND task_status = '$task_status'";
+if ($f != 'myinact') {		//separate active from inactive tasks
+	if ($task_status === null) {
+		$where .= "\n	AND task_status > -1";
+	} else {
+		$where .= "\n	AND task_status = '$task_status'";
+	}
 }
 
 // filter tasks considering task and project permissions
