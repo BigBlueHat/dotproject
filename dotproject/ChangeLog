@@ -1,80 +1,165 @@
-2004-03-20 00:56  (gregorerhardt)
+2004-03-31 18:43  (jcgonz)
 ---------------------------------
-modules/contacts/vcardimport.php
-- FIX for the fix
+modules/companies/index.php
+- Updated so tabbed is the default view
 
-2004-03-20 00:13  (gregorerhardt)
+2004-03-31 16:10  (gnome444)
 ---------------------------------
-modules/contacts/vcardimport.php
-- FIX: vCardUpload for register_globals off
+modules/projects/projects.class.php
+- Deleting a project was not cleaning up the deps or user_tasks tables. Pointed out by Gerald M.
 
-2004-03-18 18:52  (gregorerhardt)
+2004-03-30 14:26  (gnome444)
+---------------------------------
+style/classic/main.css
+style/default/main.css
+- css height param caused select boxes to appear too small in Mozilla
+
+2004-03-25 11:16  (kiryl)
+---------------------------------
+modules/tasks/addedit.php
+- [no log message]
+
+2004-03-24 12:00  (kiryl)
+---------------------------------
+modules/tasks/addedit.php
+- [Improvement] new feature added: system is able to automatically set tasks start date after defining parent task or task dependencies
+
+2004-03-23 07:32  (dylan_cuthbert)
+---------------------------------
+modules/tasks/tasks.php
+functions/tasks_func.php
+modules/projects/view.php
+modules/tasks/index.php
+- added search filter to task views based on patch 896155
+- (I extended it to work with the Projects tab view too)
+- also removed NOWRAP on assignees field as it was causing display
+- problems with very long lists of assignees.
+
+2004-03-22 21:23  (eddieajau)
+---------------------------------
+index.php
+includes/sendpass.php
+locales/en/common.inc
+style/default/login.php
+style/default/lostpass.php
+- Added lost password routines to login screen
+
+2004-03-22 15:19  (jcgonz)
+---------------------------------
+includes/permissions.php
+- PHP warning message removed
+
+2004-03-22 06:23  (dylan_cuthbert)
+---------------------------------
+modules/tasks/todo.php
+- fixed bug with display of todo list in "Today" view when user
+- has admin priviledges (SQL error occurred)
+
+2004-03-19 20:18  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - ChangeLog update
 
-2004-03-17 11:30  (kiryl)
+2004-03-19 19:56  (gregorerhardt)
+---------------------------------
+modules/contacts/vcardimport.php
+- FIX for the fix
+
+2004-03-19 19:13  (gregorerhardt)
+---------------------------------
+modules/contacts/vcardimport.php
+- FIX: vCardUpload for register_globals off
+
+2004-03-18 13:52  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2004-03-17 06:30  (kiryl)
 ---------------------------------
 modules/tasks/tasks.php
 - [BugFix] All unfinished tasks filter will not show duplicate tasks anymore
 
-2004-03-16 16:42  (kiryl)
+2004-03-16 11:42  (kiryl)
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - [Improvement] Added user's comment to email notification
 
-2004-03-16 15:25  (kiryl)
+2004-03-16 10:25  (kiryl)
 ---------------------------------
 modules/tasks/addedit.php
 - [BugFix] calcDuration uses daily_working_hours from config, hardcoded 8 hrs removed
 
-2004-03-11 14:45  (kiryl)
+2004-03-16 08:22  (kiryl)
 ---------------------------------
-modules/projects/view.php
-- [BugFix] Total hours and Work was incorrectly displayed
+ChangeLog
+- Changelog update
 
-2004-03-11 10:09  (kiryl)
+2004-03-16 08:20  (kiryl)
+---------------------------------
+style/default/login.php
+style/classic/login.php
+- please leave action argument empty
+
+2004-03-16 08:17  (kiryl)
+---------------------------------
+fileviewer.php
+- [Improvement] Displaying login failed message after unsuccessful login
+- File /style/$uistyle/login.php must not have action attribute set. 
+- Setting attribute value to index.php causes unexpected redirect.
+
+2004-03-15 08:33  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - ChangeLog update
 
-2004-03-11 09:51  (kiryl)
+2004-03-11 10:45  (kiryl)
+---------------------------------
+modules/projects/view.php
+- [BugFix] Total hours and Work was incorrectly displayed
+
+2004-03-11 06:09  (kiryl)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2004-03-11 05:51  (kiryl)
 ---------------------------------
 modules/tasks/tasks.php
 - [Improvement] aplied Andrey Smirnov's patch #906480	(Assigned persons in tasks list)
 
-2004-03-10 22:15  (jcgonz)
+2004-03-10 18:15  (jcgonz)
 ---------------------------------
 modules/tasks/addedit.php
 - Bug with the restrict_task_time_editing feature solved.
 - User was not able to edit time information of new tasks.
 
-2004-03-10 22:06  (jcgonz)
+2004-03-10 18:06  (jcgonz)
 ---------------------------------
 classes/customfieldsparser.class.php
 modules/system/custom_field_editor.php
 - Som bugs solved for custom fields parser.
 - Please help out debugging this feature because it's kind of tricky!
 
-2004-03-10 11:26  (kiryl)
+2004-03-10 07:26  (kiryl)
 ---------------------------------
 ChangeLog
 - [grammatical error in comment] user must be logged to see any uploaded file
 - missed change log update (2004-03-04)
 
-2004-03-10 09:49  (kiryl)
+2004-03-10 05:49  (kiryl)
 ---------------------------------
 fileviewer.php
 - must be logged to show any file!
 
-2004-03-10 09:47  (kiryl)
+2004-03-10 05:47  (kiryl)
 ---------------------------------
 ChangeLog
 - [no log message]
 
-2004-03-10 09:46  (kiryl)
+2004-03-10 05:46  (kiryl)
 ---------------------------------
 modules/files/addedit.php
 modules/files/do_file_aed.php
@@ -82,43 +167,43 @@ modules/files/files.class.php
 - [Improvement] after adding, updating or deleting file depends on task assignment, all users assigned to task or project owner will be notified by email
 - user can decide whether or no notify useres
 
-2004-03-10 06:15  (ajdonnison)
+2004-03-10 02:15  (ajdonnison)
 ---------------------------------
 db/dotproject_100.sql
 db/dotproject_101.sql
 - Removed old install scripts to stop the silly install questions.
 
-2004-03-10 06:03  (ajdonnison)
+2004-03-10 02:03  (ajdonnison)
 ---------------------------------
 docs/upgrade.html
 - Added post 1.0.0 instructions.
 
-2004-03-10 05:59  (ajdonnison)
+2004-03-10 01:59  (ajdonnison)
 ---------------------------------
 docs/install.html
 - Made installation instructions more generic.
 
-2004-03-10 03:05  (robertoibarra)
+2004-03-09 23:05  (robertoibarra)
 ---------------------------------
 modules/tasks/addedit.php
 - FIX: new feature in config restrict_task_time_editing was faulty
 
-2004-03-10 03:03  (gregorerhardt)
+2004-03-09 23:03  (gregorerhardt)
 ---------------------------------
 modules/ticketsmith/search.php
 - softcoded ticket type in search view for translation
 
-2004-03-10 01:14  (robertoibarra)
+2004-03-09 21:14  (robertoibarra)
 ---------------------------------
 modules/system/translate.php
 - FIX: missing ; in syntax
 
-2004-03-10 00:52  (robertoibarra)
+2004-03-09 20:52  (robertoibarra)
 ---------------------------------
 db/upgrade_101_to_102.sql
 - FIX: Missing ; in .sql file
 
-2004-03-09 20:18  (jcgonz)
+2004-03-09 16:18  (jcgonz)
 ---------------------------------
 classes/customfieldsparser.class.php
 db/dotproject_102.sql
@@ -139,7 +224,7 @@ modules/tasks/vw_logs.php
 - 
 - Check changes on upgrade_101_to_102.sql for database changes
 
-2004-03-09 04:20  (dylan_cuthbert)
+2004-03-09 00:20  (dylan_cuthbert)
 ---------------------------------
 locales/core.php
 modules/system/translate.php
@@ -149,25 +234,25 @@ modules/system/translate_save.php
 - can be packaged in the same file with no post-install copy.
 - the filename for languages should be  modules/[module]/locale/[lang].inc
 
-2004-03-05 20:15  (jcgonz)
+2004-03-05 16:15  (jcgonz)
 ---------------------------------
 modules/contacts/addedit.php
 modules/contacts/select_contact_company.php
 - Now when a user selects a company and/or department, he is able to select wether or not
 - to overwrite the contact's address with the one saved in the company or department.
 
-2004-03-05 20:13  (jcgonz)
+2004-03-05 16:13  (jcgonz)
 ---------------------------------
 db/upgrade_101_to_102.sql
 - There was an error in the new sql statement (perc_assignment field). Solved.
 
-2004-03-04 15:03  (kiryl)
+2004-03-04 11:03  (kiryl)
 ---------------------------------
 db/dotproject_102.sql
 db/upgrade_101_to_102.sql
 - [Improvement]   Percentage resource allocation functionality needs new column
 
-2004-03-04 14:58  (kiryl)
+2004-03-04 10:58  (kiryl)
 ---------------------------------
 lib/jpgraph/src/imgdata_diamonds.inc
 lib/jpgraph/src/jpgraph.php
@@ -182,7 +267,7 @@ lib/jpgraph/src/jpgraph_bar.php
 lib/jpgraph/src/jpgraph_gradient.php
 - [Improvement] Upgrade jpGraph to version 1.14. If using non-utf charset tasks names are not converted so are correctly displayed on gant chart
 
-2004-03-04 14:52  (kiryl)
+2004-03-04 10:52  (kiryl)
 ---------------------------------
 modules/tasks/do_task_aed.php
 modules/tasks/addedit.php
@@ -194,12 +279,12 @@ modules/tasks/viewgantt.php
 - [Improvement] More valuable info displayed on gant chart, eg. Gant Chart uses resource allocation information
 - [BugFix] Gant Chart correctly displays task end date
 
-2004-03-04 14:45  (kiryl)
+2004-03-04 10:45  (kiryl)
 ---------------------------------
 modules/projects/view.php
 - [Improvment] Added project work (multiplication of task duration and resource allocation)
 
-2004-03-03 20:43  (jcgonz)
+2004-03-03 16:43  (jcgonz)
 ---------------------------------
 functions/tasks_func.php
 modules/tasks/index.php
@@ -210,17 +295,17 @@ modules/tasks/todo.php
 - 
 - Another interesting feature is for sysadmins; they now are able to "switch" user in the task modules so they can see how another user is performing. Also this sysadmin user is able to go to "My todo" of the selected user. Excellent for everyday user performance monitoring.
 
-2004-03-03 16:55  (gregorerhardt)
+2004-03-03 12:55  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - 907675: creator first name twice in notify mail
 
-2004-03-02 11:02  (gregorerhardt)
+2004-03-02 07:02  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - ChangeLog update
 
-2004-03-02 00:05  (jcgonz)
+2004-03-01 20:05  (jcgonz)
 ---------------------------------
 includes/config-dist.php
 modules/tasks/addedit.php
@@ -232,118 +317,188 @@ modules/tasks/do_task_aed.php
 - 
 - Excellent for controlling real start and due dates! no more "it was due today!! look at dotproject's information! I swear I didn't change it!"
 
-2004-02-26 11:52  (gregorerhardt)
+2004-02-26 07:52  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 - 872985: addMonths 12+(-1)=13?
 
-2004-02-26 11:16  (gregorerhardt)
+2004-02-26 07:16  (gregorerhardt)
 ---------------------------------
 modules/ticketsmith/do_ticket_aed.php
 - 899969: quotes in tickets
 
-2004-02-25 00:47  (ajdonnison)
+2004-02-24 20:47  (ajdonnison)
 ---------------------------------
 modules/ticketsmith/view.php
 - Fixed broken MIME headers.
 
-2004-02-25 00:44  (ajdonnison)
+2004-02-24 20:44  (ajdonnison)
 ---------------------------------
 modules/ticketsmith/view.php
 - Mail not being sent on change of assignment fixed.
 
-2004-02-24 08:20  (gregorerhardt)
+2004-02-24 04:20  (gregorerhardt)
 ---------------------------------
 classes/ui.class.php
 - 897211: renamed bad constructor name in CTabBox_core
 
-2004-02-24 08:12  (gregorerhardt)
+2004-02-24 04:12  (gregorerhardt)
 ---------------------------------
 modules/ticketsmith/common.inc.php
 - 899944: patch for bad word wrap in ticketsmith
 
-2004-02-24 08:04  (gregorerhardt)
+2004-02-24 04:04  (gregorerhardt)
 ---------------------------------
 locales/en/calendar.inc
 - string added
 
-2004-02-24 07:52  (gregorerhardt)
+2004-02-24 03:52  (gregorerhardt)
 ---------------------------------
 modules/companies/index.php
 - 901371: patch from sreindl fixing plain view for companies
 
-2004-02-24 07:44  (gregorerhardt)
+2004-02-24 03:44  (gregorerhardt)
 ---------------------------------
 modules/calendar/vw_day_events.php
 - 902974: patch from sreindl fixing concurrent events problem in day view
 
-2004-02-24 07:35  (gregorerhardt)
+2004-02-24 03:35  (gregorerhardt)
 ---------------------------------
 modules/calendar/do_event_aed.php
 - 903000: patch from sreindl fixing possible events: Start>=End
 
-2004-02-24 07:29  (gregorerhardt)
+2004-02-24 03:29  (gregorerhardt)
 ---------------------------------
 modules/calendar/day_view.php
 - 903011: patch from sreindl fixing start date of week view
 
-2004-02-24 07:24  (gregorerhardt)
+2004-02-24 03:24  (gregorerhardt)
 ---------------------------------
 modules/calendar/calendar.class.php
 - 890967: patch from sreindl fixing day view for recurrent events
 
-2004-02-22 23:56  (ajdonnison)
+2004-02-22 19:56  (ajdonnison)
 ---------------------------------
 modules/tasks/addedit.php
 - Added fix from Matthias Lienau for popup calendar not working on some
 - windows systems  (mainly XP with Norton Internet Security).
 
-2004-02-20 05:21  (robertoibarra)
+2004-02-20 01:21  (robertoibarra)
 ---------------------------------
 modules/projects/index.php
 - Bug fix: When ALL COMPANIES in the projects list not all projects would be displayed
 
-2004-02-17 05:43  (ajdonnison)
+2004-02-17 01:43  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
 - Rework of MIME handling logic to try and cope with all likely sets of
 - MIME combinations.  Should now work with MS Outlook multipart/related
 - with embedded multipart/mime components.
 
-2004-02-07 18:47  (gnome444)
+2004-02-07 14:47  (gnome444)
 ---------------------------------
 modules/tasks/addedit.php
 - Fix for undefined var with E_ALL
 
-2004-02-07 18:16  (gnome444)
+2004-02-07 14:16  (gnome444)
 ---------------------------------
 modules/system/syskeys/index.php
 - Point to new help file
 
-2004-02-07 18:13  (gnome444)
+2004-02-07 14:13  (gnome444)
 ---------------------------------
 modules/help/en/system.syskeys.index.hlp
 - Added system.syskeys.index.hlp with TaskCustomFields help notes
 
-2004-02-05 08:00  (ajdonnison)
+2004-02-05 04:00  (ajdonnison)
 ---------------------------------
 index.php
 - Updated cache control to correctly work with Apache 2
 
-2004-02-04 00:16  (ajdonnison)
+2004-02-03 20:16  (ajdonnison)
 ---------------------------------
 modules/tasks/do_updatetask.php
 - Removed error log.
 
-2004-02-04 00:11  (ajdonnison)
+2004-02-03 20:11  (ajdonnison)
 ---------------------------------
 modules/tasks/do_updatetask.php
 - Fix so that if first task update sets percent complete to 100%, task
 - end date is correctly set.
 
-2004-02-03 01:44  (ajdonnison)
+2004-02-02 21:44  (ajdonnison)
 ---------------------------------
 db/upgrade_101_to_102.sql
 - Removed duplicate fields.
 
-(file wrapped)
+2004-02-02 18:23  (ajdonnison)
+---------------------------------
+ChangeLog
+- Updated to match v1.0.2 release
+
+2004-02-02 18:14  (ajdonnison)
+---------------------------------
+includes/version.php
+- Removed the -alpha suffix for full release.
+
+2004-02-02 08:20  (ajdonnison)
+---------------------------------
+db/upgrade_101_to_102.sql
+- Added line to reset dynamic tasks.
+
+2004-02-02 08:15  (ajdonnison)
+---------------------------------
+locales/en/tasks.inc
+- Added missing strings for 1.0.2 release
+
+2004-02-02 02:13  (robertoibarra)
+---------------------------------
+modules/tasks/gantt.php
+- Gantt chart upgraded to correcty display UTF8 data (accents and other characters) in the task name
+
+2004-02-01 20:14  (gnome444)
+---------------------------------
+modules/system/syskeys/index.php
+- Fix display problems with dPformSafe
+
+2004-02-01 19:41  (gnome444)
+---------------------------------
+modules/tasks/view.php
+- TaskCustomFields checkbox wasn't working and dPformSafe
+
+2004-02-01 11:59  (mkozusnik)
+---------------------------------
+modules/projects/addedit.php
+- Removed the echo from line 287
+
+2004-02-01 11:50  (mkozusnik)
+---------------------------------
+modules/projects/addedit.php
+- Restored inital popCalendar for all three date fields
+
+2004-02-01 05:44  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2004-02-01 05:31  (gregorerhardt)
+---------------------------------
+modules/files/index_table.php
+- softcoded translation for #File(s)# and #Page(s)#
+
+2004-02-01 05:24  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+- softcoded translation for #None#
+
+2004-02-01 04:45  (gregorerhardt)
+---------------------------------
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+- fixed access denied problem with sysvals and syskeys
+
+2004-01-31 19:01  (gnome444)
+...
+
+(This file has been wrapped)
+
