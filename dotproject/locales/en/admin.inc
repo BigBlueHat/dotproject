@@ -42,6 +42,7 @@
 "Mobile",
 "Module",
 "Name(s)",
+"Never Visited",
 "Non-Admin Modules",
 "Not Defined",
 "Online",
