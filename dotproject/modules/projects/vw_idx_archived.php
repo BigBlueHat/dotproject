@@ -33,7 +33,7 @@ foreach ($projects as $row) {
 		$s .= '<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#'
 			. $row["project_color_identifier"] . '">';
 		$s .= $CT . '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
-			. sprintf( "%.1f%%", $row["project_precent_complete"] )
+			. sprintf( "%.1f%%", $row["project_percent_complete"] )
 			. '</font>';
 		$s .= $CR . '</td>';
 		$s .= $CR . '<td width="100%">';

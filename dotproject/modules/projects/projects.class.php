@@ -16,7 +16,7 @@ class CProject {
 	var $project_end_date = NULL;
 	var $project_actual_end_date = NULL;
 	var $project_status = NULL;
-	var $project_precent_complete = NULL;
+	var $project_percent_complete = NULL;
 	var $project_color_identifier = NULL;
 	var $project_description = NULL;
 	var $project_target_budget = NULL;

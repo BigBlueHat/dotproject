@@ -242,7 +242,7 @@ function submitIt() {
 						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?>
 					</td>
 					<td>
-						<strong><?php echo intval(@$project["project_precent_complete"]);?> %</strong>
+						<strong><?php echo intval(@$project["project_percent_complete"]);?> %</strong>
 					</td>
 					<td>
 						<input type=checkbox value=1 name=project_active <?php echo $project["project_active"]||$project_id==0 ? 'checked="checked"' : '';?>>

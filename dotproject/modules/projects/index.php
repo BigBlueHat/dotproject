@@ -41,7 +41,7 @@ SELECT
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
 	user_username,
-	SUM(t1.task_duration*t1.task_precent_complete)/sum(t1.task_duration) as project_precent_complete
+	SUM(t1.task_duration*t1.task_percent_complete)/sum(t1.task_duration) as project_percent_complete
 FROM permissions,projects
 LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project

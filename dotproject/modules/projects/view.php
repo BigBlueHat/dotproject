@@ -21,7 +21,7 @@ SELECT
 	company_name,
 	CONCAT(user_first_name, ' ', user_last_name) user_name,
 	projects.*,
-	SUM(t1.task_duration*t1.task_precent_complete)/SUM(t1.task_duration) AS project_precent_complete
+	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) AS project_percent_complete
 FROM projects
 LEFT JOIN companies ON company_id = project_company
 LEFT JOIN users ON user_id = project_owner
@@ -145,7 +145,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Progress');?>:</td>
-			<td class="hilite" width="100%"><?php printf( "%.1f%%", $project["project_precent_complete"] );?></td>
+			<td class="hilite" width="100%"><?php printf( "%.1f%%", $project["project_percent_complete"] );?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Active');?>:</td>
