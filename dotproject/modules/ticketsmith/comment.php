@@ -9,8 +9,8 @@
 
 /* $Id$ */
 
-require('config.inc.php');
-require('common.inc.php');
+require("modules/ticketsmith/config.inc.php");
+require("modules/ticketsmith/common.inc.php");
 
 /* set title */
 $title = "Post Comment";
@@ -25,7 +25,7 @@ if (@$comment) {
     /* prepare fields */
     list($author_name, $author_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$user_cookie'");
     $subject = addslashes(query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'"));
-    $author = $author_name . " &lt;" . $author_email . "&gt;";
+    $author = $author_name . " <" . $author_email . ">";
     $timestamp = time();
     $body = escape_string($body);
 
@@ -53,7 +53,7 @@ else {
 
 
     /* start table */
-print("<table class=maintable bgcolor=\"#eeeeee\">\n");
+	print("<table class=maintable bgcolor=\"#eeeeee\">\n");
     print("<tr>\n");
 	print("<td colspan=\"2\" align=\"center\"  bgcolor=#878676>\n");
     print("<div class=\"heading\">$title</div>\n");
