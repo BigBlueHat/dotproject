@@ -115,11 +115,16 @@ if ($url != $dPconfig['root_dir']) {
 }
 
 $burl = preg_replace('/\/docs\/.*$/', '', $_SERVER['SCRIPT_NAME']);
-preg_match('_^(https?://)([^/]+)(:[0-9]+)?(/.*)$_i', $dPconfig['base_url'], $url_parts);
+preg_match('_^(https?://)([^/]+)(:[0-9]+)?(/.*)?$_i', $dPconfig['base_url'], $url_parts);
 echo "<tr><td>base_url</td><td>$dPconfig[base_url]</td>";
-$real_base = $url_parts[1] . $_SERVER['SERVER_NAME'];
-if ( $_SERVER['SERVER_PORT'] && $_SERVER['SERVER_PORT'] != 80)
-	$real_base .= ":$_SERVER[SERVER_PORT]";
+$server_port = $_SERVER['SERVER_PORT'];
+$https = isset($_SERVER['HTTPS']);
+if ($https)
+	$https = $_SERVER['HTTPS'] != 'off';
+
+$real_base =  ($https ? 'https://' : 'http://') . $_SERVER['SERVER_NAME'];
+if ( $server_port != 80 && $server_port != 443 )
+	$real_base .= ":$server_port";
 $real_base .= $burl;
 if ($url_parts[2] != $_SERVER['SERVER_NAME']
 || $url_parts[4] != $burl ) {
