@@ -68,10 +68,28 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
 <tr>
             <td class="title" colspan="2"><br/>Check for Directory and File Permissions</td>
 </tr>
+<?php
+$okMessage="";
+if (is_writable( "../includes/config.php" )) {
+
+        changeMode( "../includes/config.php", 777 );
+        $okMessage="Permissions for this File have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive area.";
+
+ }
+?>
 <tr>
             <td class="item">./includes/config.php writable</td>
-            <td align="left"><?php echo !is_writable( "../includes/config.php" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error"><a href="chmod.php?object=config">'.$failedImg.'</a></b> Configuration process can still be continued. Configuration file will be displayed at the end, just copy & paste this and upload.';?></td>
+            <td align="left"><?php echo is_writable( "../includes/config.php" ) ? '<b class="ok">'.$okImg.'</b>'.$okMessage : '<span class="warning"><a href="chmod.php?object=config">'.$failedImg.'</a> Configuration process can still be continued. Configuration file will be displayed at the end, just copy & paste this and upload.</span>';?></td>
 </tr>
+<?php
+$okMessage="";
+if (is_writable( "../includes/config.php" )) {
+
+        changeMode( "../includes/config.php", 777 );
+        $okMessage="Permissions for this File have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive area.";
+
+ }
+?>
 <tr>
             <td class="item">./files writable</td>
             <td align="left"><?php echo is_writable( "../files" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> File upload functionality will be disabled</span>';?></td>
@@ -88,23 +106,23 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
             <td class="title" colspan="2"><br/>Recommended PHP Settings</td>
 </tr>
 <tr>
-            <td class="item">Safe Mode = OFF</td>
+            <td class="item">Safe Mode = OFF?</td>
             <td align="left"><?php echo !get_cfg_var('safe_mode') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"></span>';?></td>
 </tr>
 <tr>
-            <td class="item">Register Globals = OFF</td>
+            <td class="item">Register Globals = OFF?</td>
             <td align="left"><?php echo !get_cfg_var('register_globals') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"></span>';?></td>
 </tr>
 <tr>
-            <td class="item">Session AutoStart = ON</td>
+            <td class="item">Session AutoStart = ON?</td>
             <td align="left"><?php echo get_cfg_var('session.auto_start') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Try setting to ON if you are experiencing a WhiteScreenOfDeath</span>';?></td>
 </tr>
 <tr>
-            <td class="item">Session Use Cookies = ON</td>
+            <td class="item">Session Use Cookies = ON?</td>
             <td align="left"><?php echo get_cfg_var('session.use_cookies') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Try setting to ON if you are experiencing problems to log in</span>';?></td>
 </tr>
 <tr>
-            <td class="item">Session Use Trans Sid = OFF</td>
+            <td class="item">Session Use Trans Sid = OFF?</td>
             <td align="left"><?php echo !get_cfg_var('session.use_cookies') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> There are security risks with this turned ON</span>';?></td>
 </tr>
 <tr>

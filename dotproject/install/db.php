@@ -40,7 +40,7 @@ $dbbackup       = trim( dPgetParam( $_POST, 'dbbackup', true ) );
 <body>
 <span class="error"><?php echo $dbmsg; ?></span>
 <h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;Installer for dotProject <?php echo dPgetVersion();?>: Step 2</h1>
-<form action="pref.php" method="post" name="form" id="form">
+<form action="do_backup.php" method="post" name="form" id="form">
         <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="90%" align="center">
         <tr>
             <td class="title" colspan="2">Database Settings</td>
@@ -72,16 +72,28 @@ $dbbackup       = trim( dPgetParam( $_POST, 'dbbackup', true ) );
             <td align="left"><input type="checkbox" name="dbpersist" value="true" <?php echo ($dbpersist==true) ? 'checked="checked"' : ''; ?> /></td>
           </tr>
           <tr>
-            <td class="item">Drop Existing Tables?</td>
+            <td class="item">Drop Existing Database?</td>
             <td align="left"><input type="checkbox" name="dbdrop" value="true" <?php echo ($dbdrop==true) ? 'checked="checked"' : ''; ?> /></td>
             <td class="item">If checked, existing Data will be lost!</td>
-          </tr>
+        </tr>
           <tr>
-            <td class="item">Backup Tables?</td>
-            <td align="left"><input type="checkbox" name="dbbackup" value="true" <?php echo ($dbbackup==true) ? 'checked="checked"' : ''; ?> /></td>
-
-	        <td align="left" class="item">(existing backup tables will be overwritten)</td>
-          </tr>
+            <td class="title" colspan="2">&nbsp;</td>
+        </tr>
+          <tr>
+            <td class="title" colspan="2">Backup existing Database (Recommended)</td>
+        </tr>
+        <tr>
+            <td class="item" colspan="2">Receive a Backup SQL File containing all Tables for the database entered above
+            by clicking on the Button labeled 'Backup' down below.</td>
+        </tr>
+        <tr>
+            <td class="item">Add 'Drop Tables'-Command in SQL-Script?</td>
+            <td align="left"><input type="checkbox" name="backupdrop" value="false" <?php echo ($backupdrop==true) ? 'checked="checked"' : ''; ?> /></td>
+        </tr>
+        <tr>
+            <td class="item">Receive SQL File</td>
+            <td align="left"><input class="button" type="submit" name="dobackup" value="Backup" /></td>
+        </tr>
           <tr>
             <td colspan="3" align="right"><br /> <input class="button" type="submit" name="next" value="Next" /></td>
           </tr>

@@ -50,19 +50,9 @@ function dPgetVersion() {
         return $dp_version;
 }
 
+function changeMode($object, $value) {
 
-/*
-* Emulation class of the dotProject CAppUI class
-* providing a config array needed by the db abstract layer
-*/
-
-class CAppUI {
-
-        # @var array Config Variable Array
-
-        var $cfg = null;
-
+	return @chmod($object, $value) ? true : false;
 }
+
 ?>
-
-

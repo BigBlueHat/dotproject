@@ -16,10 +16,6 @@
 
 require_once("commonlib.php");
 
-
-// An Instance of the CAppUI class in commonlib.php needed for the dbConnection
-$AppUI = new CAppUI;
-
 // propose some Values
 $propRoot = realpath("../");
 $propBaseUrl = "http://".$_SERVER["SERVER_NAME"].str_replace("install/pref.php", "", $_SERVER["PHP_SELF"]);
@@ -38,7 +34,7 @@ $dbuser                 = trim( dPgetParam( $_POST, 'dbuser', '' ) );
 $dbpass                 = trim( dPgetParam( $_POST, 'dbpass', '' ) );
 $dbport                 = trim( dPgetParam( $_POST, 'dbport', '' ) );
 $dbpersist              = trim( dPgetParam( $_POST, 'dbpersist', false ) );
-$dbdrop                 = trim( dPgetParam( $_POST, 'dbdrop', '' ) );
+$dbdrop                 = trim( dPgetParam( $_POST, 'dbdrop', false ) );
 $dbbackup               = trim( dPgetParam( $_POST, 'dbbackup', true ) );
 $dbcreation             = trim( dPgetParam( $_POST, 'dbcreation', false ) );
 $host_locale            = trim( dPgetParam( $_POST, 'host_locale', 'en' ) );
@@ -89,9 +85,18 @@ if (! $dbcreation == true){
 
         if (!($dbConnect = @mysql_connect($dbhost, $dbuser, $dbpass))) {
 
-        //provide some error info
+        // provide some error info
         $dbmsg .= "Connection to the Database failed: Hostname, Username and/or Password are incorrect and/or empty!\n";
         stepBack($dbmsg);
+        }
+
+        #
+        # IMPLEMENT DROP TABLES FUNCTIONALITY
+        #
+
+        if ($dbdrop == true){
+                $sql = "DROP DATABASE IF EXISTS $dbname";
+                $dbExec = db_exec($sql);
         }
 
         // create the database now
@@ -107,13 +112,6 @@ if (! $dbcreation == true){
         }
 
         $db = mysql_select_db($dbname);
-
-
-        #
-        # IMPLEMENT DROP TABLES FUNCTIONALITY
-        #
-
-
 
 
         populate_db($dbname, $defSqlFilePath);

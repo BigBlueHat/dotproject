@@ -1,10 +1,9 @@
 <?php
-
+//todo: enable dbcreated functionality for reposts ans so on
 //todo: interface: right row more to the left
 //todo: try to set the perms for the directories or files, message management
 //todo: script to read subdirectories for styles and langs (delete empty/superfluous directories in the core distro???)
 //todo: enhanced guiding texts
-//todo  db backup, drop tables!
 //todo: tooltips everywhere
 //todo: implement built-in automatic chmod in check.php
 
