@@ -471,7 +471,7 @@ return false;
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $user_id) {
 
-        global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $z, $zi, $x;
+        global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x;
 	$zi++;
         $users = $task->getAssignedUsers();
         $projects = $task->getProjectName();
@@ -537,10 +537,10 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 }
 		$zm1 = $z - 1;
                 if ($zm1 ==0) $zm1 = 1;
-
+		$assUser = $users[$user_id]['user_first_name']." ".$users[$user_id]['user_last_name'];
+		$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users'), $user_id => "$assUser"));
                 $tmp.="<td valign=\"top\" align=\"center\" nowrap=\"nowrap\" rowspan=\"$zm1\">";
-		Global $system_users;
-		$tmp.= arraySelect( $system_users, 'add_users', 'class="text" STYLE="width: 200px" size="'.($zz-1).'" multiple="multiple"',NULL );
+		$tmp.= arraySelect( $availUsers, 'add_users', 'class="text" STYLE="width: 200px" size="'.($zz-1).'" multiple="multiple"',NULL );
                $tmp .= "</td>";
         }
 
