@@ -742,7 +742,7 @@ class CEvent extends CDpObject {
 	  $end_date =& new CDate($this->event_end_date);
 
 	  // Now build a query to find matching events.
-	  $sql = "SELECT e.event_owner, u.user_id,
+	  $sql = "SELECT e.event_owner, u.user_id, e.event_cwd, 
 	  e.event_id, e.event_start_date, e.event_end_date from
 	  events e
 	  LEFT JOIN user_events u on u.event_id = e.event_id
@@ -782,7 +782,7 @@ class CEvent extends CDpObject {
 	    return false;
 
 	  // Now build a query to find matching events.
-	  $sql = "SELECT e.event_owner, u.user_id,
+	  $sql = "SELECT e.event_owner, u.user_id, e.event_cwd,
 	  e.event_id, e.event_start_date, e.event_end_date
 	  from events e
 	  LEFT JOIN user_events u on u.event_id = e.event_id
