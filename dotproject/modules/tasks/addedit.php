@@ -446,7 +446,7 @@ function calcDuration() {
 	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
 	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
 	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
-	var daily_working_hours = <?php echo $AppUI->getConfig('daily_working_hours'); ?>;	
+	var daily_working_hours = <?php echo $AppUI->getConfig('daily_working_hours'); ?>;
 	
 	var f = document.editFrm;
 	var int_st_date = new String(f.task_start_date.value + f.start_hour.value + f.start_minute.value);
@@ -479,7 +479,7 @@ function calcDuration() {
 
 	if (durnType == 1){
 		var hours = durn % 24;
-		//if hours > daily_working_hours than we need to sum distance between start_hours and cal_day_end AND between end_hours and cal_day_end
+		//if hours > 8 than we need to sum distance between start_hours and cal_day_end AND between end_hours and cal_day_end
 		if (hours > daily_working_hours) {
 			var a = cal_day_end - sDate.getHours();
 			var b = eDate.getHours() - cal_day_start;
@@ -842,11 +842,11 @@ function changeRecordType(value){
 				</td>
 			</tr>
 			</tr>
-			<tr>
+<!-- 			<tr>
 				<td colspan=3 align="center">
-					<input type="checkbox" name="task_notify" value="1" <?php if($obj->task_notify!="0") echo "checked"?> /> <?php echo $AppUI->_( 'notifyChange' );?>
+					<input type="checkbox" name="task_notify" value="1" <?php //if($obj->task_notify!="0") echo "checked"?> /> <?php //echo $AppUI->_( 'notifyChange' );?>
 				</td>
-			</tr>
+			</tr> -->
 		</table>
 	</td>
 </tr>
@@ -857,6 +857,12 @@ function changeRecordType(value){
 		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$obj->task_description;?></textarea>
 	</td>
 	<td align="center">
+		<table><tr><td align="left">
+		<?php echo $AppUI->_( 'Comment' );?>:		
+		<br />
+		<textarea name="email_comment" class="textarea" cols="60" rows="10" wrap="virtual"></textarea><br />
+		<input type="checkbox" name="task_notify" value="1" <?php if($obj->task_notify!="0") echo "checked"?> /> <?php echo $AppUI->_( 'notifyChange' );?>
+		</td></tr></table><br />
 		<?php
 			error_reporting(E_ALL);
 			require_once("./classes/customfieldsparser.class.php");

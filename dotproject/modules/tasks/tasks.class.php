@@ -381,7 +381,8 @@ class CTask extends CDpObject {
 		return '';
 	}
 	
-	function notify() {
+	//additiona comment will be included in email body 
+	function notify( $comment = '' ) {
 		GLOBAL $AppUI, $locale_char_set;
         
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
@@ -428,6 +429,9 @@ class CTask extends CDpObject {
 				. "\n" . $users[0]['owner_first_name'] . " " . $users[0]['owner_last_name' ]
 				. ", " . $users[0]['owner_email'];
 
+			if ($comment != '') {
+				$body .= "\n\n".$comment;
+			}
 			$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );
 			$mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name 
 				. '" <' . $AppUI->user_email . '>'

@@ -5,6 +5,7 @@ $hassign = @$_POST['hassign'];
 $hperc_assign = @$_POST['hperc_assign'];
 $hdependencies = @$_POST['hdependencies'];
 $notify = isset($_POST['task_notify']) ? $_POST['task_notify'] : 0;
+$comment = isset($_POST['email_comment']) ? $_POST['email_comment'] : '';
 
 $obj = new CTask();
 
@@ -70,7 +71,7 @@ if ($del) {
 	}
 	
 	if ($notify) {
-		if ($msg = $obj->notify()) {
+		if ($msg = $obj->notify($comment)) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		}
 	}
