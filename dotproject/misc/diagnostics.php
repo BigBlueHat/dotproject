@@ -11,6 +11,7 @@ body,th,td {
 <b>dotproject diagnostics</b>
 <table cellspacing="0" cellpadding="4" border="1">
 <?php
+/* $Id$ */
 
 echo "<tr><td>Operating System</td><td>".php_uname()."</td></tr>";
 echo "<tr><td>PHP Version</td><td>".phpversion()."</td></tr>";
@@ -41,6 +42,7 @@ $locs['English'] = array( 'english', 'en', 'en_US', 'en_UK', 'english united kin
 $locs['French'] = array( 'french', 'fr', 'fr_FR' );
 $locs['German'] = array( 'german', 'de_DE@euro', 'de_DE', 'de', 'ge' );
 $locs['Spanish'] = array( 'spanish', 'es', 'es_ES', 'sp' );
+$locs['Chinese'] = array( 'chinese', 'cn', 'zh' );
 
 echo '<b>Time locales</b>';
 echo '<table cellspacing="0" cellpadding="4" border="1">';
