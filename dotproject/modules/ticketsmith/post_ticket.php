@@ -2,6 +2,12 @@
 ##
 ##	Ticketsmith Post Ticket
 ##
+
+// setup the title block
+$titleBlock = new CTitleBlock( 'Submit Trouble Ticket', 'ticketsmith.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
+$titleBlock->show();
+
 ?>
 
 <SCRIPT language="javascript">
@@ -29,22 +35,14 @@ function submitIt() {
 }
 </script>
 
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-<TR>
-	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width="42" height="42" /></td>
-	<TD nowrap><h1>Submit Trouble Ticket</h1></td>
-	<TD align="right" width="100%"></td>
-</tr>
-</TABLE>
-
-<TABLE width="90%" border=0 bgcolor="#f4efe3" cellpadding="0" cellspacing=1>
+<TABLE width="100%" border=0 cellpadding="0" cellspacing=1 class="std">
 <form name="ticket" action="?m=ticketsmith" method="post">
 <input type="hidden" name="dosql" value="do_ticket_aed">
 
 <TR height="20">
-	<TD bgcolor="#878676" colspan=2>
+	<Th colspan=2>
 		&nbsp;<font face="verdana,helveitica,arial,sans-serif" color=#ffffff><strong>Trouble Details</strong></font>
-	</td>
+	</th>
 </tr>
 <tr>
 	<TD align="right">Name:</td>
@@ -61,7 +59,7 @@ function submitIt() {
 <tr>
 	<TD align="right">Priority:</td>
 	<TD>
-		<select name="priority">
+		<select name="priority" class="text">
 			<option value="0">Low
 			<option value="1" selected>Normal
 			<option value="2">High
