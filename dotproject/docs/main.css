@@ -1,9 +1,9 @@
 /* dotPROJECT REQUIRED CLASSES */
 BODY {
 	background-color: #f0f0f0;
-	margin-top: 0px;
-	margin-left: 0px;
-	margin-right: 0px;
+	margin-top: 5px;
+	margin-left: 5px;
+	margin-right: 5px;
 	margin-bottom: 10px;
 	font-family: verdana,Sans-Serif;
 	font-size: 10pt;
@@ -17,6 +17,14 @@ em {
 	font-weight: bold;
 	text-decoration: none;
 	font-style: normal;
+}
+
+code {
+	color: #cc0000;
+}
+
+pre {
+	color: #6633CC;
 }
 
 A:link {
