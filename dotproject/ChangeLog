@@ -1,3 +1,13 @@
+2003-12-06 22:15  (jcgonz)
+---------------------------------
+locales/en/locales.php
+- Default encoding changed in locales.php for english language from iso-8859-1 to utf-8. It really doesn't affect anybody using the english locale and typing everything in english. The reason for the change was related to dotmods when users create a new language and had been using the english locale they get screwed up characters in text fields becase of using the iso encoding. UTF-8 rules!
+
+2003-12-06 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-06 00:24  (jcgonz)
 ---------------------------------
 locales/en/companies.inc
@@ -488,16 +498,6 @@ ChangeLog
 ---------------------------------
 modules/tasks/addedit.php
 - Set duration = 1 hour as default.
-- Add task creator as assigned user as default.
-
-2003-09-28 16:38  (kripper)
----------------------------------
-modules/projects/projects.class.php
-- Removed tasks dependencies check before deleting a project.
-
-2003-09-28 16:36  (kripper)
----------------------------------
-modules/projects/projects.class.php
 ...
 
 (This file has been wrapped)
