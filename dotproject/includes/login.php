@@ -10,7 +10,7 @@ $AppUI->user_locale = $host_locale;
 <html>
 <head>
 	<meta http-equiv="Pragma" content="no-cache">
-	<link href="./style/main.css" rel="STYLESHEET" type="text/css">
+	<link href="./style/default/main.css" rel="STYLESHEET" type="text/css">
 </head>
 
 <body bgcolor="white" onload="document.loginform.username.focus();">
