@@ -91,11 +91,11 @@ function updateTask() {
 
 <table cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
-	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
+	<td><img src="./images/icons/tasks.gif" alt="" border="0" /></td>
 	<td nowrap="nowrap"><h1><?php echo $AppUI->_('View Task');?></h1></td>
-	<td nowrap="nowrap"><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+	<td nowrap="nowrap"><img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
 	<td valign="top" align="right" width="100%"></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_TASK_VIEW' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_TASK_VIEW' );?></td>
 </tr>
 </table>
 
@@ -169,7 +169,7 @@ function updateTask() {
 			<td class="hilite" width="300"><?php echo $end_date ? $end_date->toString( $df ) : '-';?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Expected Duration');?>:</td>
+			<td align="right" nowrap="nowrap" valign="top"><?php echo $AppUI->_('Expected Duration');?>:</td>
 			<td class="hilite" width="300"><?php echo $task["task_duration"].' '.$AppUI->_( $task["task_duration_type"] );?></td>
 		</tr>
 		<tr>
@@ -192,18 +192,18 @@ function updateTask() {
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 <?php if (!$denyEdit) { ?>
 		<form name="update" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
-		<input type="hidden" value="<?php echo uniqid("");?>" name="uniqueid">
-		<input type="hidden" value="updatetask" name="dosql">
-		<input type="hidden" value="<?php echo @$task["task_id"];?>" name="task_id">
-		<input type="hidden" value="<?php echo $AppUI->user_id;?>" name="user_id">
-		<input type="hidden" value="Update :<?php echo $$task["task_name"];?>" name="comment_title">
-		<input type="hidden" value="<?php echo @$task["task_hours_worked"];?>" name="already_worked">
+		<input type="hidden" value="<?php echo uniqid("");?>" name="uniqueid" />
+		<input type="hidden" value="updatetask" name="dosql" />
+		<input type="hidden" value="<?php echo @$task["task_id"];?>" name="task_id" />
+		<input type="hidden" value="<?php echo $AppUI->user_id;?>" name="user_id" />
+		<input type="hidden" value="Update :<?php echo $$task["task_name"];?>" name="comment_title" />
+		<input type="hidden" value="<?php echo @$task["task_hours_worked"];?>" name="already_worked" />
 		<tr>
 			<td colspan="3"><strong><?php echo $AppUI->_('Work');?></strong></td>
 		</tr>
 		<tr>
 			<td rowspan="2" valign="bottom" align="left" bgcolor="#e0e0e0">
-				<input type="button" class="button" value="<?php echo $AppUI->_('update task');?>" onclick="updateTask()">
+				<input type="button" class="button" value="<?php echo $AppUI->_('update task');?>" onclick="updateTask()" />
 				<br /><br />
 				<?php echo $AppUI->_('Comments');?>:
 			</td>
@@ -211,7 +211,7 @@ function updateTask() {
 				<?php echo $AppUI->_('hoursWorked');?>
 			</td>
 			<td bgcolor="#e0e0e0">
-				<input type="text" name="worked" maxlength="3" size="4">
+				<input type="text" name="worked" maxlength="3" size="4" />
 			</td>
 		</tr>
 		<tr>
@@ -254,7 +254,7 @@ function updateTask() {
 			<td><strong><?php echo $AppUI->_('Attached Files');?></strong></td>
 			<td colspan="2" align="right">
 			<?php if (!getDenyEdit( 'files' )) { ?>
-				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?><img src="./images/icons/forum_folder.gif" align=absmiddle width=20 height=20 alt="attach a file to this task" border=0></a>
+				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?><img src="./images/icons/forum_folder.gif" align="absmiddle" width="20" height="20" alt="attach a file to this task" border="0" /></a>
 			<?php } ?>
 			</td>
 		</tr>
