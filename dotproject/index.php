@@ -86,6 +86,18 @@ if ($AppUI->doLogin()) {
     $AppUI->loadPrefs( 0 );
 }
 
+// check is the user needs a new password
+if (dPgetParam( $_POST, 'lostpass', 0 )) {
+	$uistyle = $AppUI->cfg['host_style'];
+	if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
+		require "./includes/sendpass.php";
+		sendNewPass();
+	} else {
+		require "./style/$uistyle/lostpass.php";
+	}
+	exit();
+}
+
 // check if the user is trying to log in
 if (isset($_POST['login'])) {
 	$username = dPgetParam( $_POST, 'username', '' );

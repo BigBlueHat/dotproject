@@ -18,28 +18,24 @@
 <br /><br /><br /><br />
 <?//please leave action argument empty ?>
 <!--form action="./index.php" method="post" name="loginform"-->
-<form method="post" name="loginform">
+<form method="post" name="lostpassform">
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
-<input type="hidden" name="login" value="<?php echo time();?>" />
-<input type="hidden" name="lostpass" value="0" />
+<input type="hidden" name="lostpass" value="1" />
 <input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
 <tr>
 	<th colspan="2"><em><?php echo $AppUI->cfg['company_name'];?></em></th>
 </tr>
 <tr>
 	<td align="right" nowrap><?php echo $AppUI->_('Username');?>:</td>
-	<td align="left" nowrap><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
+	<td align="left" nowrap><input type="text" size="25" maxlength="20" name="checkusername" class="text" /></td>
 </tr>
 <tr>
-	<td align="right" nowrap><?php echo $AppUI->_('Password');?>:</td>
-	<td align="left" nowrap><input type="password" size="25" maxlength="32" name="password" class="text" /></td>
+	<td align="right" nowrap><?php echo $AppUI->_('EMail');?>:</td>
+	<td align="left" nowrap><input type="email" size="25" maxlength="32" name="checkemail" class="text" /></td>
 </tr>
 <tr>
 	<td align="left" nowrap><a href="http://www.dotproject.net/"><img src="./style/default/images/dp_icon.gif" width="120" height="20" border="0" alt="dotProject logo" /></a></td>
-	<td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
-</tr>
-<tr>
-	<td colspan="2"><a href="#" onclick="f=document.loginform;f.lostpass.value=1;f.submit();"><?php echo $AppUI->_('forgotPassword');?></td>
+	<td align="right" valign="bottom" nowrap><input type="submit" name="sendpass" value="<?php echo $AppUI->_('send password');?>" class="button" /></td>
 </tr>
 </table>
 <?php if (@$AppUI->getVersion()) { ?>
