@@ -72,6 +72,7 @@ function submitIt(){
 		echo $user_id ? "$user[0] $user[1]" : "Default";
 	?></th>
 </tr>
+
 <tr>
 	<td align="right">Locale:</td>
 	<td>
@@ -105,6 +106,16 @@ function submitIt(){
 ?>
 	</td>
 </tr>
+
+<tr>
+	<td align="right">User Interface Style:</td>
+	<td>
+<?php
+	echo arraySelect( $AppUI->styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'] );
+?>
+	</td>
+</tr>
+
 
 <tr>
 	<td align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td>
