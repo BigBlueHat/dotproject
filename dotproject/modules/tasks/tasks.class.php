@@ -137,7 +137,7 @@ class CTask extends CDpObject {
 		if (array_sum($this_dependencies)) {
 
 			if ( $this->task_dynamic == '1')
-				return $AppUI->_('BadDep_DynNoDep');
+				return 'BadDep_DynNoDep';
 
 			$this_dependents = $this->task_id ? explode(',', $this->dependentTasks()) : array();
 
@@ -154,7 +154,7 @@ class CTask extends CDpObject {
 			$intersect = array_intersect( $this_dependencies, $this_dependents );
 			if (array_sum($intersect)) {
 				$ids = "(".implode(',', $intersect).")";
-				return $AppUI->_('BadDep_CircularDep').$ids;
+				return ('BadDep_CircularDep').$ids;
 			}
 		}
 
@@ -166,11 +166,11 @@ class CTask extends CDpObject {
 			$parents_dependents = explode(',', $this_parent->dependentTasks());
 
 			if (in_array($this_parent->task_id, $this_dependencies))
-				return $AppUI->_('BadDep_CannotDependOnParent');
+				return 'BadDep_CannotDependOnParent';
 
 			// Task parent cannot be child of this task
 			if (in_array($this_parent->task_id, $this_children))
-				return $AppUI->_('BadParent_CircularParent');
+				return 'BadParent_CircularParent';
 
 			if ( $this_parent->task_parent != $this_parent->task_id ) {
 
@@ -196,7 +196,7 @@ class CTask extends CDpObject {
 				// then task's children can not be dependent on parent
 				$intersect = array_intersect( $this_children, $parents_dependents );
 				if (array_sum($intersect))
-					return $AppUI->_('BadParent_ChildDepOnParent');
+					return 'BadParent_ChildDepOnParent';
 			}
 		} // parent
 		
