@@ -9,7 +9,7 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$durTypes = dPgetSysVal( 'TaskDurationType' );
+$durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 // pull the task
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
@@ -341,7 +341,7 @@ function calcFinish() {
 				<td nowrap="nowrap">
 					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo dPgetParam( $task, 'task_duration', 0);?>" />
 				<?php
-					echo arraySelect( $durTypes, 'task_duration_type', 'class="text"', $task["task_duration_type"] );
+					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $task["task_duration_type"] );
 				?>
 				</td>
 			</tr>
