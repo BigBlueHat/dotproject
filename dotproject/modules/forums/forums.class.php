@@ -174,7 +174,7 @@ class CForumMessage {
 		}
 
 		$mail = new Mail;
-		$mail->Subject( "$subj_prefix $this->message_title" );
+		$mail->Subject( "$subj_prefix $this->message_title", isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "");
 
 		$body = "$body_msg";
 		$body .= "\n{$AppUI->cfg['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
