@@ -1,3 +1,126 @@
+2003-04-23 20:41  (eddieajau)
+---------------------------------
+docs/index.html
+docs/nav.html
+docs/roadmap.html
+docs/team.html
+docs/LICENSE.txt
+- Updated docos
+
+2003-04-23 19:49  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/view.php
+modules/companies/vw_depts.php
+modules/contacts/addedit.php
+modules/departments/addedit.php
+modules/departments/view.php
+modules/files/addedit.php
+modules/files/index.php
+modules/forums/index.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/system/addeditpref.php
+modules/system/index.php
+modules/system/translate.php
+modules/system/viewmods.php
+modules/system/roles/index.php
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+modules/tasks/addedit.php
+modules/tasks/organizer.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/view.php
+- Icons updated
+
+2003-04-23 19:45  (eddieajau)
+---------------------------------
+images/icons/1.gif
+images/icons/burst_mail.gif
+images/icons/contacts.gif
+images/icons/folder.gif
+images/icons/forum_folder.gif
+images/icons/groups.gif
+images/icons/i_contact_off.gif
+images/icons/i_controlpanel_off.gif
+images/icons/i_document_off.gif
+images/icons/i_event_off.gif
+images/icons/i_mystatus_big.gif
+images/icons/i_presentation_off.gif
+images/icons/i_projectmanager_off.gif
+images/icons/i_timezones_off.gif
+images/icons/i_todo_off.gif
+images/icons/icn_banner.gif
+images/icons/icn_budgetgraph.gif
+images/icons/icn_comments.gif
+images/icons/icn_doc-read.gif
+images/icons/icn_forum.gif
+images/icons/icn_members.gif
+images/icons/icn_person.gif
+images/icons/icn_project.gif
+images/icons/icn_qc_calendar.gif
+images/icons/icn_qc_file.gif
+images/icons/icn_qc_forum.gif
+images/icons/icn_qc_project.gif
+images/icons/icn_qc_resources.gif
+images/icons/icn_qc_task.gif
+images/icons/icn_qc_todo.gif
+images/icons/icn_view.gif
+images/icons/minicalendar.gif
+images/icons/minicontact.GIF
+images/icons/miniedit.gif
+images/icons/minievent.gif
+images/icons/minifile.gif
+images/icons/miniforum.gif
+images/icons/miniproject.gif
+images/icons/minitask.gif
+images/icons/money.gif
+images/icons/post.gif
+images/icons/preference.gif
+images/icons/project.gif
+images/icons/projects.gif
+images/icons/stock_attach-16.png
+images/icons/system.gif
+images/icons/tasks.gif
+images/icons/world.gif
+db/dotproject_100.sql
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+- Icons updated
+
+2003-04-23 18:31  (eddieajau)
+---------------------------------
+modules/system/images/48_my_computer.png
+modules/system/images/main-settings.png
+modules/system/images/modules.gif
+modules/system/images/myevo-weather.png
+modules/system/images/power-management.png
+modules/system/images/rdf2.png
+- Icons updated
+
+2003-04-23 18:27  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/ticketsmith/index.php
+- Icons updated
+
+2003-04-23 04:15  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-22 20:20  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.class.php
@@ -375,129 +498,6 @@ modules/ticketsmith/comment.php
 modules/ticketsmith/admin.php
 modules/ticketsmith/common.inc.php
 - Removed common header and footer
-
-2003-04-14 07:42  (eddieajau)
----------------------------------
-index.php
-- Updated parameter handling
-
-2003-04-14 07:40  (eddieajau)
----------------------------------
-modules/public/chpwd.php
-- Update password handling to MD5 and ensure password string breaks malicious SQL
-
-2003-04-14 07:39  (eddieajau)
----------------------------------
-modules/history/addedit.php
-modules/history/index.php
-modules/system/translate.php
-fileviewer.php
-- Updated permission handling consistency
-
-2003-04-14 07:36  (eddieajau)
----------------------------------
-modules/help/access_denied.php
-- Moved to public
-
-2003-04-14 07:35  (eddieajau)
----------------------------------
-modules/forums/addedit.php
-- Fixed bad php escaping syntax
-
-2003-04-14 07:34  (eddieajau)
----------------------------------
-modules/departments/addedit.php
-modules/forums/view_messages.php
-modules/forums/view_topics.php
-- Updated permission handling consistency
-
-2003-04-14 07:32  (eddieajau)
----------------------------------
-modules/admin/admin.class.php
-- Update password handling to MD5 and ensure password string breaks malicious SQL
-
-2003-04-14 07:31  (eddieajau)
----------------------------------
-modules/admin/addedituser.php
-modules/admin/vw_usr_perms.php
-modules/contacts/addedit.php
-- Updated permission handling consistency
-
-2003-04-14 07:30  (eddieajau)
----------------------------------
-includes/db_connect.php
-- Modified db_loadObject function to return an object if none passed
-
-2003-04-14 07:29  (eddieajau)
----------------------------------
-includes/config-dist.php
-- Added legacy password switch
-
-2003-04-14 07:27  (eddieajau)
----------------------------------
-db/dotproject_100.sql
-- Widened user password field
-
-2003-04-14 07:26  (eddieajau)
----------------------------------
-db/upgrade_100_alpha2_to_beta1.sql
-- Initial upload
-
-2003-04-14 07:21  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Login now updates the old password to the md5 version
-
-2003-04-13 05:38  (eddieajau)
----------------------------------
-modules/help/en/overview.usermods.hlp
-- Fixed broken link
-
-2003-04-11 20:48  (eddieajau)
----------------------------------
-modules/admin/index.php
-- Fixed A-Z not picking up first and last name letters
-
-2003-04-11 19:50  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed some uninitialised variables
-
-2003-04-11 19:50  (eddieajau)
----------------------------------
-modules/ticketsmith/config.inc.php
-- Fixed site domain
-
-2003-04-11 19:49  (eddieajau)
----------------------------------
-modules/ticketsmith/common.inc.php
-- Added db error msg
-
-2003-04-11 19:46  (eddieajau)
----------------------------------
-modules/files/files.class.php
-- Fixed bug in undeclared variable in indexStrings method
-
-2003-04-10 19:41  (eddieajau)
----------------------------------
-classes/index.html
-db/index.html
-docs/index.html
-files/index.html
-functions/index.html
-images/index.html
-images/icons/index.html
-images/obj/index.html
-includes/index.html
-lib/index.html
-lib/jpgraph/index.html
-lib/jpgraph/src/index.html
-locales/index.html
-locales/en/index.html
-misc/index.html
-misc/cvs2cl/index.html
-modules/index.html
-modules/admin/index.html
 ...
 
 (This file has been wrapped)
