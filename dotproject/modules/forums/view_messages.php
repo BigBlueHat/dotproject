@@ -79,9 +79,10 @@ foreach ($messages as $row){
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
 	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$date->format( "$df $tf" ).'</td>';
 	$s .= '<td valign="top" align="right" style="'.$style.'">';
-	$s .= '<table cellspacing="0" cellpadding="0" border="0"><tr>';
+	
 	
 	if ($canEdit && $AppUI->user_id == $row['forum_moderated']) {
+		$s .= '<table cellspacing="0" cellpadding="0" border="0"><tr>';
 	// edit message
 		$s .= '<td><a href="./index.php?m=forums&a=viewer&post_message=1&forum_id='.$row["message_forum"].'&message_parent='.$row["message_parent"].'&message_id='.$row["message_id"].'" title="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'">';
 		$s .= dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
