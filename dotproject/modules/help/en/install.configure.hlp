@@ -9,7 +9,3 @@
 <p>Change the values of <strong>company_name</strong> (this is shown in the top-left of the screen when you are log in) <strong>page_title</strong> (this is the browser page title).
 <p>Change the <strong>base_url</strong> to the full browser address that would point to the dotproject directory.
 <p>Change the <strong>site_domain</strong> to your domain.</P>
-<h3>Configuring Help</h3>
-<p>Open up modules/help/framed/includes/config.php.
-<p>Change the values for <strong>dbhost</strong>, <strong>db</strong>, <strong>dbuser</strong> and <strong>dbpass</strong> to those you entered above.
-<p>Adjust the root_dir variable so that the path to the dotproject directory suits your local installation.&nbsp; ENSURE that the modules/help/framed remains intact as this will cause errors if it is not correct.</p>
