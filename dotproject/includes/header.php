@@ -30,51 +30,50 @@ function tboff(){
 <link rel="stylesheet" type="text/css" href="./style/main.css">
 </head>
 <body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="images/bground.gif">
-<table width="100%" cellpadding=3 cellspacing=0 bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
+<table width="100%" cellpadding="3" cellspacing="0" bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
 <tr>
-	<td nowrap width="33%">
-		<span id="smallCompanyTitle"><?php echo $company_name;?></SPAN>
-	</td>
+	<td nowrap width="33%"><?php echo $company_name;?></td>
 	<td nowrap width="34%">
-		<span id="smallCompanyTitle">Current user: <?php echo "$AppUI->user_first_name $AppUI->user_last_name"; ?></SPAN>
+		<?php echo $AppUI->_('Current user').": $AppUI->user_first_name $AppUI->user_last_name"; ?>
 	</td>
 	<td nowrap width="33%" align="right">
 		<table cellpadding=1 cellspacing=1 width="200">
 		<tr>
-			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();">My Info</a></td>
-			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();">Logout</a></td>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a></td>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a></td>
 			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><?php echo $AppUI->_('Help');?></td>
 			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=help&a=about" onmouseover="doBtn();"><?php echo $AppUI->_('About');?></a></td>
 		</tr>
 		</table>
 	</td>
 	<form name="frm_new" method=GET action="./index.php">
-	<td>
-		<select name="m" style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();">
-			<option value="">- New Item -
 <?php
+	echo '<td>';
+	$newItem = array( ""=>'- New Item -' );
+
 	if (!empty( $project_id ) && $project_id > 0) {
-		echo '<option value="tasks">Task';
+		$newItem["tasks"] = "Task";
 	} else if (!empty( $task_id ) && $task_id > 0) {
 		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
-		if ($rc = mysql_query( $sql )) {
-			if ($row = mysql_fetch_row( $rc )) {
+		if ($rc = db_exec( $sql )) {
+			if ($row = db_fetch_row( $rc )) {
 				$project_id = $row[0];
-				echo '<option value="tasks">Task';
+				$newItem["tasks"] = "Task";
 			}
 		}
 	}
-?>
-			<option value="projects">Project
-			<option value="companies">Company
-			<option value="files">File
-			<option value="contacts">Contact
-			<option value="calendar">Event
-		</select>
-	</td>
-	<input type="hidden" name="a" value="addedit">
 
-<?php //build URI string
+	$newItem["projects"] = "Project";
+	$newItem["companies"] = "Company";
+	$newItem["files"] = "File";
+	$newItem["contacts"] = "Contact";
+	$newItem["calendar"] = "Event";
+
+	echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
+
+	echo '</td><input type="hidden" name="a" value="addedit">';
+
+//build URI string
 	if (isset( $project_id )) {
 		echo '<input type="hidden" name="project_id" value="'.$project_id.'">';
 	}
