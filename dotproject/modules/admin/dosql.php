@@ -17,6 +17,9 @@ if (isset( $del )) {
 	VALUES
 	('$user_username',PASSWORD('$user_password'), '$user_parent', '$user_type', '$user_first_name', '$user_last_name', '$user_company', '$user_department', '$user_email', '$user_phone','$user_home_phone','$user_mobile', '$user_address1', '$user_address2', '$user_city', '$user_state', '$user_zip', '$user_country', '$user_icq', '$user_aol', '$user_birthday', '$signature')";
 
+	mysql_query( $dsql );
+	$user_id = mysql_insert_id();
+
 	$message = "User Created";
 
 } else {
@@ -45,13 +48,13 @@ if (isset( $del )) {
 	$message = "User Changed";
 	mysql_query( $dsql );
 	$message2 = mysql_error();
+
 	// Fix to stop corruption of password if it is not changed.
 	$dsql = "UPDATE users SET
 	user_password=password('$user_password')
 	where user_id = $user_id and user_password != '$user_password'";
+	mysql_query( $dsql );
 }
-
-mysql_query( $dsql );
 
 $message2 .= mysql_error();
 if (strlen( $message2 ) > 0) {
@@ -64,6 +67,6 @@ if (empty( $perms['all'] ) && empty( $perms['admin'] )) { ?>
 	</script>
 <?php } else { ?>
 	<script>
-	window.location="./index.php?m=admin&message=<?php echo $message;?>";
+	window.location="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>&message=<?php echo $message;?>";
 	</script>
 <?php } ?>

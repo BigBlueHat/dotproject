@@ -21,11 +21,11 @@ $crc = mysql_query( $csql );
 $crow = mysql_fetch_array( $crc, MYSQL_ASSOC );
 
 // collect all the users for the company owner list
-$owners = array();
+$owners = array( '0'=>'');
 $osql = "SELECT user_id,user_first_name,user_last_name FROM users";
 $orc = mysql_query($osql);
-while ($orow = mysql_fetch_array( $orc, MYSQL_ASSOC )) {
-	$owners[] = $orow;
+while ($orow = mysql_fetch_row( $orc )) {
+	$owners[$orow[0]] = "$orow[1] $orow[2]";
 }
 ?>
 
@@ -141,17 +141,8 @@ function delIt() {
 <tr>
 	<td align="right">Company Owner:</td>
 	<td>
-<?
-$n = count( $owners );
-echo '<select class=text name="company_owner" size=1>';
-for ($i=0; $i < $n; $i++) {
-	echo '<option value='.$owners[$i]['user_id'];
-	if ($owners[$i]['user_id'] == $crow["company_owner"]) {
-		echo ' selected';
-	}
-	echo '>'.$owners[$i]['user_first_name'].' '.$owners[$i]['user_last_name'];
-}
-echo '</select>';
+<?php
+	echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', $crow["company_owner"] );
 ?>
 	</td>
 </tr>

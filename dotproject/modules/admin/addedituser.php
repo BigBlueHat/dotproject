@@ -88,7 +88,7 @@ function popDept() {
 }
 </script>
 <?php //------------------------Begin HTML -------------------------------?>
-<table width="95%" border="0" cellpadding="0" cellspacing="1">
+<table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap>
@@ -109,7 +109,7 @@ function popDept() {
 </tr>
 </table>
 
-<table width="95%" border="0" cellpadding="0" cellspacing="1" height="400" class="std">
+<table width="98%" border="0" cellpadding="0" cellspacing="1" height="400" class="std">
 
 <form name="changeuser" action="./index.php?m=admin&a=dosql" method="post">
 <input type="hidden" name="user_id" value="<?php echo intval($prow["user_id"]);?>">
