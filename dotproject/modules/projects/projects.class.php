@@ -190,8 +190,9 @@ class CProject extends CDpObject {
 		// Retrieve which projects are allowed due to the company rules 
 		$aCpiesAllowed = $oCpy->getAllowedRecords ($uid, "company_id,company_name");
 		
-		$sql = "SELECT project_id FROM projects " .
-				"WHERE NOT (project_company IN (" . implode (',', array_keys($aCpiesAllowed)) . '));';
+		$sql = "SELECT project_id FROM projects ";
+		if (count($aCpiesAllowed))
+		   $sql .= "WHERE NOT (project_company IN (" . implode (',', array_keys($aCpiesAllowed)) . '));';
 		$aBuf2 = db_loadColumn ($sql);
 		
 		return array_merge ($aBuf1, $aBuf2); 
