@@ -258,6 +258,7 @@ function delIt() {
 			<td colspan="3">
 			<?php
 				$s = '';
+				$s = count( $users ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
 				foreach($users as $row) {
 					$s .= '<tr>';
 					$s .= '<td class="hilite">'.$row["user_first_name"].' '.$row["user_last_name"].'</td>';
@@ -268,6 +269,34 @@ function delIt() {
 			?>
 			</td>
 		</tr>
+
+		<?php
+			// Pull tasks dependencies
+			$sql = "
+			SELECT t.task_id, t.task_name
+			FROM tasks t, task_dependencies td
+			WHERE td.dependencies_task_id = $task_id
+			AND t.task_id = td.dependencies_req_task_id
+			";
+			$taskDep = db_loadHashList( $sql );
+		?>
+		<tr>
+			<td colspan="3"><strong><?php echo $AppUI->_('Dependencies');?></strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<?php 
+				$s = count( $taskDep ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
+				foreach($taskDep as $key => $value) {
+					$s .= '<tr><td class="hilite">';
+					$s .= '<a href="./index.php?m=tasks&a=view&task_id='.$key.'">'.$value.'</a>';
+					$s .= '</td></tr>';
+				}
+				echo '<table width="100%" cellspacing=1 bgcolor="black">'.$s.'</table>';
+			?>
+			</td>
+		</tr>
+
 	<?php // check access to files module
 		if (!getDenyRead( 'files' )) {
 	?>
