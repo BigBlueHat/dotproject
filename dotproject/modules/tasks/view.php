@@ -138,20 +138,20 @@ if ($canEdit) {
 function updateTask() {
 	var f = document.editFrm;
 	if (f.task_log_description.value.length < 1) {
-		alert( "<?php echo $AppUI->_('tasksComment');?>" );
+		alert( "<?php echo $AppUI->_('tasksComment', UI_OUTPUT_JS);?>" );
 		f.task_log_description.focus();
 	} else if (isNaN( parseInt( f.task_percent_complete.value+0 ) )) {
-		alert( "<?php echo $AppUI->_('tasksPercent');?>" );
+		alert( "<?php echo $AppUI->_('tasksPercent', UI_OUTPUT_JS);?>" );
 		f.task_percent_complete.focus();
 	} else if(f.task_percent_complete.value  < 0 || f.task_percent_complete.value > 100) {
-		alert( "<?php echo $AppUI->_('tasksPercentValue');?>" );
+		alert( "<?php echo $AppUI->_('tasksPercentValue', UI_OUTPUT_JS);?>" );
 		f.task_percent_complete.focus();
 	} else {
 		f.submit();
 	}
 }
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Task').'?';?>" )) {
+	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Task', UI_OUTPUT_JS).'?';?>" )) {
 		document.frmDelete.submit();
 	}
 }
