@@ -105,28 +105,28 @@ function submitIt() {
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'Address' );?>1:</td>
-	<td><input type="text" class="text" name="dept_address1" value="<?php echo @$crow["dept_address1"];?>" size="50" maxlength="255" /></td>
+	<td><input type="text" class="text" name="dept_address1" value="<?php echo @$drow["dept_address1"];?>" size="50" maxlength="255" /></td>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'Address' );?>2:</td>
-	<td><input type="text" class="text" name="dept_address2" value="<?php echo @$crow["dept_address2"];?>" size="50" maxlength="255"></td>
+	<td><input type="text" class="text" name="dept_address2" value="<?php echo @$drow["dept_address2"];?>" size="50" maxlength="255"></td>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'City' );?>:</td>
-	<td><input type="text" class="text" name="dept_city" value="<?php echo @$crow["dept_city"];?>" size="50" maxlength="50"></td>
+	<td><input type="text" class="text" name="dept_city" value="<?php echo @$drow["dept_city"];?>" size="50" maxlength="50"></td>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'State' );?>:</td>
-	<td><input type="text" class="text" name="dept_state" value="<?php echo @$crow["dept_state"];?>" maxlength="50"></td>
+	<td><input type="text" class="text" name="dept_state" value="<?php echo @$drow["dept_state"];?>" maxlength="50"></td>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'Zip' );?>:</td>
-	<td><input type="text" class="text" name="dept_zip" value="<?php echo @$crow["dept_zip"];?>" maxlength="15"></td>
+	<td><input type="text" class="text" name="dept_zip" value="<?php echo @$drow["dept_zip"];?>" maxlength="15"></td>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'URL' );?><A name="x"></a></td>
 	<td>
-		<input type="text" class="text" value="<?php echo @$crow["dept_url"];?>" name="dept_url" size="50" maxlength="255">
+		<input type="text" class="text" value="<?php echo @$drow["dept_url"];?>" name="dept_url" size="50" maxlength="255">
 		<a href="#x" onClick="testURL('dept_url')">[<?php echo $AppUI->_( 'test' );?>]</a>
 	</td>
 </tr>
