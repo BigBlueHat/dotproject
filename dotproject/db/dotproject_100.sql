@@ -279,7 +279,7 @@ CREATE TABLE tickets (
   parent int(10) unsigned NOT NULL default '0',
   activity int(10) unsigned NOT NULL default '0',
   priority tinyint(1) unsigned NOT NULL default '1',
-  cc varchar(100) NOT NULL default '',
+  cc varchar(255) NOT NULL default '',
   body text NOT NULL,
   signature text,
   PRIMARY KEY  (ticket),

@@ -106,6 +106,11 @@ CREATE TABLE task_dependencies (
 ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
 
 #
+# Change to tickets to support longer cc lists
+#
+ALTER TABLE `tickets` CHANGE `cc` `cc` VARCHAR(255) NOT NULL DEFAULT '';
+
+#
 # Prepare support for user localisation
 #
 
