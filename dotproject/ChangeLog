@@ -1,3 +1,142 @@
+2003-05-08 02:55  (eddieajau)
+---------------------------------
+modules/calendar/week_view.php
+- Fixed bug with format
+
+2003-05-08 02:51  (eddieajau)
+---------------------------------
+classes/date.class.php
+- Added back in missing method
+
+2003-05-08 02:47  (eddieajau)
+---------------------------------
+modules/admin/admin.class.php
+modules/admin/do_perms_aed.php
+modules/admin/do_user_aed.php
+- Rework for class abstraction
+
+2003-05-08 02:45  (eddieajau)
+---------------------------------
+modules/companies/vw_active.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/do_event_aed.php
+modules/calendar/index.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/week_view.php
+- Rework for new date handling
+
+2003-05-08 02:45  (eddieajau)
+---------------------------------
+modules/files/addedit.php
+modules/files/do_file_aed.php
+modules/files/files.class.php
+modules/files/index.php
+modules/files/index_table.php
+- Rework for new date handling and class abstraction
+
+2003-05-08 02:43  (eddieajau)
+---------------------------------
+modules/system/domodsql.php
+modules/system/system.class.php
+- Rework for class abstraction
+
+2003-05-08 02:41  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+modules/system/addeditpref.php
+modules/public/calendar.php
+modules/projects/addedit.php
+modules/projects/do_project_aed.php
+modules/projects/view.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/forums/index.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+- Rework for new date handling
+
+2003-05-08 02:40  (eddieajau)
+---------------------------------
+includes/config-dist.php
+modules/tasks/gantt.php
+- Added config variable for jpgraph locale
+
+2003-05-08 02:39  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Removed depracted date handling
+
+2003-05-08 02:37  (eddieajau)
+---------------------------------
+classes/date.class.php
+- Rework to suit latest Pear CVS package
+
+2003-05-08 02:37  (eddieajau)
+---------------------------------
+classes/dp.class.php
+- Added support in getAllowedrecords method for additional sql
+
+2003-05-08 02:35  (eddieajau)
+---------------------------------
+includes/db_connect.php
+includes/main_functions.php
+- Comment updated
+
+2003-05-08 02:30  (eddieajau)
+---------------------------------
+style/classic/header.php
+style/default/header.php
+- Updated head block
+
+2003-05-08 02:27  (eddieajau)
+---------------------------------
+index.php
+- Moved placement of config include
+- Added include for common (Date and DP) classes
+- Removed charset header
+- Removed old uts variable
+
+2003-05-07 18:11  (korinek)
+---------------------------------
+style/default/header.php
+- Setting the meta tag 'Content-Type charset' according to selected locale - please test it for your settings.
+
+2003-05-07 17:42  (korinek)
+---------------------------------
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/help.inc
+locales/en/system.inc
+modules/system/addeditpref.php
+- Tiny translation updates and changes.
+
+2003-05-07 17:39  (korinek)
+---------------------------------
+modules/help/index.php
+- A change to try the help.toc from the user locale before falling back to
+- help.toc from the en locale.
+
+2003-05-07 05:52  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-06 18:58  (eddieajau)
 ---------------------------------
 modules/contacts/addedit.php
@@ -359,145 +498,6 @@ modules/companies/companies.class.php
 - Now using a more abstract canDelete function
 
 2003-04-28 00:37  (eddieajau)
----------------------------------
-modules/calendar/index.php
-- Reworked to use PEAR::Date class and supporting functions
-- Updated to obtain allowed companies list from class method
-
-2003-04-28 00:36  (eddieajau)
----------------------------------
-modules/calendar/calendar.class.php
-- Reworked to use PEAR::Date class and supporting functions
-
-2003-04-28 00:36  (eddieajau)
----------------------------------
-includes/create_new_menu.php
-includes/secret.php
-- Superseded files
-
-2003-04-28 00:34  (eddieajau)
----------------------------------
-images/icons/rc-gui-status-downgr.png
-images/icons/stock_cancel-16.png
-images/icons/stock_trash_full-16.png
-- Initial upload
-
-2003-04-28 00:30  (eddieajau)
----------------------------------
-includes/main_functions.php
-- Updated documentation
-- Added condition to dPshowImage to only do special case with png's in IE6
-
-2003-04-28 00:29  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Added function to find Pear includes.
-- Updated message icons.
-
-2003-04-28 00:28  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Added more generic support in the canDelete method
-
-2003-04-28 00:27  (eddieajau)
----------------------------------
-style/default/header.php
-- Added version to meta information
-
-2003-04-28 00:24  (eddieajau)
----------------------------------
-style/default/main.css
-- Styles updated
-
-2003-04-28 00:23  (eddieajau)
----------------------------------
-style/default/header.php
-- Removed mouseover events on some links
-
-2003-04-27 04:45  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-26 23:18  (eddieajau)
----------------------------------
-style/default/login.php
-- Added check for mysql support
-
-2003-04-26 04:47  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-25 07:30  (eddieajau)
----------------------------------
-classes/date.class.php
-classes/dp.class.php
-classes/libmail.class.php
-classes/ui.class.php
-modules/companies/companies.class.php
-- Updated documentation
-
-2003-04-25 03:40  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-24 15:07  (eddieajau)
----------------------------------
-modules/companies/do_company_aed.php
-modules/system/syskeys/do_sysval_aed.php
-modules/system/syskeys/do_syskey_aed.php
-- Updated error handling
-
-2003-04-24 15:02  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Updated icons
-
-2003-04-24 15:01  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Added internal error handling
-
-2003-04-24 04:07  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-23 20:41  (eddieajau)
----------------------------------
-docs/index.html
-docs/nav.html
-docs/roadmap.html
-docs/team.html
-docs/LICENSE.txt
-- Updated docos
-
-2003-04-23 19:49  (eddieajau)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/view.php
-modules/companies/vw_depts.php
-modules/contacts/addedit.php
-modules/departments/addedit.php
-modules/departments/view.php
-modules/files/addedit.php
-modules/files/index.php
-modules/forums/index.php
-modules/projects/addedit.php
-modules/projects/view.php
-modules/system/addeditpref.php
-modules/system/index.php
-modules/system/translate.php
-modules/system/viewmods.php
-modules/system/roles/index.php
-modules/system/syskeys/index.php
-modules/system/syskeys/keys.php
-modules/tasks/addedit.php
-modules/tasks/organizer.php
-modules/tasks/todo.php
-modules/tasks/view.php
 ...
 
 (This file has been wrapped)
