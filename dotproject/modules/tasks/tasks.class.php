@@ -1444,7 +1444,7 @@ function closeOpenedTask($task_id){
 
 //This kludgy function echos children tasks as threads
 
-function showtask( &$a, $level=0, $is_opened = true ) {
+function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
 
         $now = new CDate();
@@ -1520,7 +1520,10 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 	$s .= $a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
 	$s .= "</td>";
 // dots
-	$s .= '<td width="90%">';
+	if ($today_view)
+		$s .= '<td width="50%">';
+	else
+		$s .= '<td width="90%">';
 	for ($y=0; $y < $level; $y++) {
 		if ($y+1 == $level) {
 			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
@@ -1535,12 +1538,23 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 	if ($a["task_milestone"] > 0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
 	} else if ($a["task_dynamic"] == '1'){
-		$s .= $open_link.'&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b><i>' . $a["task_name"] . '</i></b></a></td>';
+		if (! $today_view)
+			$s .= $open_link;
+
+		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b><i>' . $a["task_name"] . '</i></b></a></td>';
 	} else {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
 	}
+	if ($today_view) { // Show the project name
+		$s .= '<td width="50%">';
+		$s .= '<a href="./index.php?m=projects&a=view&project_id=' . $a['task_project'] . '">';
+		$s .= '<span style="padding:2px;background-color:#' . $a['project_color_identifier'] . ';color:' . bestColor($a['project_color_identifier']) . '">' . $a['project_name'] . '</span>';
+		$s .= '</a></td>';
+	}
 // task owner
-	$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
+	if (! $today_view) {
+		$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
+	}
 //	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
 	if ( isset($a['task_assigned_users']) && $assigned_users = $a['task_assigned_users']) {
 		$a_u_tmp_array = array();
@@ -1578,7 +1592,7 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 			}
 			$s .= '</td>';
 		}
-	} else {
+	} else if (! $today_view) {
 		// No users asigned to task
 		$s .= '<td align="center">-</td>';
 	}
@@ -1593,11 +1607,15 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 	}
 	$s .= '</td>';
 	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
-	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
+	if ($today_view) {
+		$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'. $a['task_due_in'].'</td>';
+	} else {
+		$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
+	}
 
 // Assignment checkbox
         if ($canEdit && dPgetConfig('direct_edit_assignment')) {
-                $s .= "\n\t<td align='center'><input type=\"checkbox\" name=\"task_id{$a['task_id']}\" value=\"{$a['task_id']}\"/></td>";
+                $s .= "\n\t<td align='center'><input type=\"checkbox\" name=\"selected_task[{$a['task_id']}]\" value=\"{$a['task_id']}\"/></td>";
         }
 	$s .= '</tr>';
 	echo $s;

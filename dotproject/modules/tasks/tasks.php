@@ -57,11 +57,13 @@ if (isset($_GET['pin']))
         if (!db_exec( $sql )) {
                 $AppUI->setMsg( "ins/del err", UI_MSG_ERROR, true );
         }
-        $AppUI->redirect("m=tasks");
+        $AppUI->redirect('', -1);
 }
 else if($task_id > 0){
     $_GET["open_task_id"] = $task_id;
 }
+
+$AppUI->savePlace();
 
 if(($open_task_id = dPGetParam($_GET, "open_task_id", 0)) > 0 && !in_array($_GET["open_task_id"], $tasks_opened)) {
     $tasks_opened[] = $_GET["open_task_id"];
@@ -90,6 +92,10 @@ $task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', '' );
 $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
+if (isset($_POST['show_task_options'])) {
+	$AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
+}
+$showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 
 $show_all_assignees = isset($dPconfig['show_all_task_assignees']) ? $dPconfig['show_all_task_assignees'] : false;
 
@@ -229,6 +235,11 @@ switch ($f) {
 	AND user_tasks.user_id = $user_id
 	AND user_tasks.task_id = tasks.task_id";
 		break;
+}
+
+if ($project_id && $showIncomplete) {
+	$where .= "
+	AND ( task_percent_complete < 100 or task_percent_complete is null )";
 }
 
 $task_status = 0;
@@ -408,6 +419,28 @@ function chAssignment(project_id, rmUser, del) {
 </script>
 
 
+<?php if ($project_id) { ?>
+<table width='100%' border='0' cellpadding='1' cellspacing='0'>
+<form name='task_list_options' method='POST' action='<?php echo $query_string; ?>'>
+<input type='hidden' name='show_task_options' value='1'>
+<tr>
+	<td align='right'>
+		<table>
+			<tr>
+				<td><?php echo $AppUI->_('Show');?>:</td>
+				<td>
+					<input type='checkbox' name='show_incomplete' onclick='document.task_list_options.submit();' <?php echo $showIncomplete ? 'checked="checked"' : '';?> />
+				</td>
+				<td>
+					<?php echo $AppUI->_('Incomplete Tasks Only'); ?></td>
+				</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+</form>
+</table>
+<?php } ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">&nbsp;</th>
