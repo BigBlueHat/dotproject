@@ -24,7 +24,7 @@ if ( $companiesType == -1 ){
 		$company_type = trim($company_type);
 		$flip_company_types[$company_type] = $company_key;
 	}
-	$company_type_filter = $flip_company_types[$v[1]];
+	$company_type_filter = $flip_company_types[chop($v[1])];
 } else{
 	//Tabbed view
 	$company_type_filter = $companiesType;
