@@ -545,4 +545,17 @@ function findTabModules($module, $file = null)
 	return array_unique($modlist);
 }
 
+/**
+ * @return void
+ * @param mixed $var
+ * @param char $title
+ * @desc Show an estructure (array/object) formatted
+*/
+function showFVar(&$var, $title = ""){
+    echo "<h1>$title</h1";
+    echo "<pre>";
+    print_r($var);
+    echo "</pre>";
+}
+
 ?>
