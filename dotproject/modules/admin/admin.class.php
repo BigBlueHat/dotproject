@@ -52,6 +52,9 @@ class CUser {
 		if ($this->user_id === NULL) {
 			return 'user id is NULL';
 		}
+		if ($this->user_password !== NULL) {
+			$this->user_password = db_escape( trim( $this->user_password ) );
+		}
 		// TODO MORE
 		return NULL; // object is ok
 	}
@@ -70,13 +73,13 @@ class CUser {
 			$ret = db_updateObject( 'users', $this, 'user_id', false );
 
 		// update password if there has been a change
-			$sql = "UPDATE users SET user_password = password('$this->user_password')"
+			$sql = "UPDATE users SET user_password = MD5('$this->user_password')"
 				."\nWHERE user_id = $this->user_id AND user_password != '$pwd'";
 			db_exec( $sql );
 		} else {
 			$ret = db_insertObject( 'users', $this, 'user_id' );
 		// encrypt password
-			$sql = "UPDATE users SET user_password = password('$this->user_password')"
+			$sql = "UPDATE users SET user_password = MD5('$this->user_password')"
 				."\nWHERE user_id = $this->user_id";
 			db_exec( $sql );
 		}
