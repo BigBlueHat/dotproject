@@ -1,4 +1,5 @@
 <?php /* TASKS $Id$ */
+$notify_owner =  isset($_POST['task_log_notify_owner']) ? $_POST['task_log_notify_owner'] : 0;
 
 $del = dPgetParam( $_POST, 'del', 0 );
 
@@ -45,5 +46,10 @@ if (($msg = $task->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR, true );
 }
 
+if ($notify_owner) {
+	if ($msg = $task->notifyOwner()) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+	}
+}
 $AppUI->redirect();
 ?>

@@ -241,6 +241,64 @@ class CTask extends CDpObject {
 		}
 	}
 
+	function notifyOwner() {
+		GLOBAL $AppUI, $locale_char_set;
+		
+		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
+		$projname = db_loadResult( $sql );
+
+		$mail = new Mail;
+		
+		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);
+
+	// c = creator
+	// a = assignee
+	// o = owner
+		$sql = "SELECT t.task_id,"
+		."\nc.user_email as creator_email,"
+		."\nc.user_first_name as creator_first_name,"
+		."\nc.user_last_name as creator_last_name,"
+		."\no.user_email as owner_email,"
+		."\no.user_first_name as owner_first_name,"
+		."\no.user_last_name as owner_last_name,"
+		."\na.user_id as assignee_id,"
+		."\na.user_email as assignee_email,"
+		."\na.user_first_name as assignee_first_name,"
+		."\na.user_last_name as assignee_last_name"
+		."\nFROM tasks t"
+		."\nLEFT JOIN user_tasks u ON u.task_id = t.task_id"
+		."\nLEFT JOIN users o ON o.user_id = t.task_owner"
+		."\nLEFT JOIN users c ON c.user_id = t.task_creator"
+		."\nLEFT JOIN users a ON a.user_id = u.user_id"
+		."\nWHERE t.task_id = $this->task_id";
+		$users = db_loadList( $sql );
+
+		if (count( $users )) {
+			$body = $AppUI->_('Project').": $projname";
+			$body .= "\n".$AppUI->_('Task').":    $this->task_name";
+			$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
+			$body .= "\n\n" . $AppUI->_('Description') . ":"
+				. "\n$this->task_description";
+			$body .= "\n\n" . $AppUI->_('Creator').":" . $AppUI->user_first_name . " " . $AppUI->user_first_name;
+		
+			$body .= "\n\n" . $AppUI->_('Progress') . ": " . $this->task_percent_complete . "%";
+			$body .= "\n\n" . dPgetParam($_POST, "task_log_description");
+			
+			
+			$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );
+			$mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name 
+				. '" <' . $AppUI->user_email . '>'
+			);
+		}
+		
+		if ($mail->ValidEmail($users[0]['owner_email'])) {
+			$mail->To( $users[0]['owner_email'], true );
+			$mail->Send();
+		}
+		
+		return '';
+	}
+	
 	function notify() {
 		GLOBAL $AppUI, $locale_char_set;
         

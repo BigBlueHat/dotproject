@@ -478,13 +478,16 @@ function calcFinish() {
 				</td>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Time' );?></td>
 				<td>
+					<table><tr>
+						
 				<?php
-					echo arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . " : ";
-					echo arraySelect($minutes, "start_minute",'size="1" class="text"', $start_date ? $start_date->getMinute() : "0" );
+					echo "<td>" . arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . "</td><td>" . " : " . "</td>";
+					echo "<td>" . arraySelect($minutes, "start_minute",'size="1" class="text"', $start_date ? $start_date->getMinute() : "0" ) . "</td>";
 					if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
-						echo '<input type="text" name="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" />';
+						echo '<td><input type="text" name="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
 					}
 				?>
+					</tr></table>
 				</td>
 			</tr>
 			<tr>
@@ -498,13 +501,15 @@ function calcFinish() {
 				</td>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Time' );?></td>
 				<td>
+				<table><tr>
 				<?php
-					echo arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . " : ";
-					echo arraySelect($minutes, "end_minute",'size="1" class="text"', $end_date ? $end_date->getMinute() : "00" );
+					echo "<td>" . arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . "</td><td>" . " : " . "</td>";
+					echo "<td>" .arraySelect($minutes, "end_minute",'size="1" class="text"', $end_date ? $end_date->getMinute() : "00" ) . "</td>";
 					if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
-						echo '<input type="text" name="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" />';
+						echo '<td><input type="text" name="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
 					}
 				?>
+				</tr></table>
 				</td>
 			</tr>
 			<tr>
@@ -614,6 +619,18 @@ function calcFinish() {
 					break;
 				case "textarea":
 					$output .=  "<td><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
+					break;
+				case "checkbox":
+					$options_array = explode(",",$field_options["selects"]);
+					$output .= "<td>";
+					foreach ( $options_array as $option ) {
+						if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
+							$checked = "checked";
+						} 
+						$output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' $checked " . $field_options["options"] . ">$option<br />";
+						$checked = "";
+					}
+					$output .= "</td>";
 					break;
 			}
 			$output .= "</tr>";

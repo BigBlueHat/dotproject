@@ -88,6 +88,7 @@ if ($canEdit) {
 		document.editFrm.task_log_hours.value = "0.00";
         total_minutes = -1;
 	}
+	
 </script>
 <!-- END OF TIMER RELATED SCRIPTS -->
 
@@ -119,9 +120,22 @@ if ($canEdit) {
 <tr>
 	<td align="right"><?php echo $AppUI->_('Progress');?></td>
 	<td>
+		<table>
+		   <tr>
+		      <td>
 <?php
 	echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $obj->task_percent_complete ) . '%';
 ?>
+		      </td>
+		      <td valign="middle" >
+			<?php
+				if ( $obj->task_owner != $AppUI->user_id ){
+					echo "<input type='checkbox' name='task_log_notify_owner' /></td><td valign='middle'>" . $AppUI->_('Notify owner');	
+				}
+			?>		 	
+		     </td>
+		   </tr>
+		</table>
 	</td>
 	<td rowspan="3" align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
 	<td rowspan="3">

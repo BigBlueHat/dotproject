@@ -337,6 +337,16 @@ function delIt() {
 					case "textarea":
 						$output .=  "<td valign='top' class='hilite'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
 						break;
+					case "checkbox":
+						$output .= "<td class='hilite' width='300'>  ";
+						if (isset($custom_field_previous_data[$key])) {
+							foreach ( $custom_field_previous_data[$key] as $key => $value) {
+								$output .= $value . ", ";
+							}
+							$output = substr($output, 0, -2);
+						}
+						$output .= "</td>";	
+						break;
 				}
 				$output .= "</tr>";
 			}
