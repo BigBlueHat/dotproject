@@ -54,7 +54,6 @@
 "projectsBadEndDate1"=>"The Project End Date must be after the Start Date",
 "projectsBadEndDate2"=>"The Actual Project End Date must be after the Start Date",
 "projectsColor"=>"Please select a color to identify this project.",
-"projectsDelete"=>"Are you sure you would like to detele this project?",
 "projectsValidName"=>"Please enter a valid Project Name",
 "refresh",
 "view this project",
