@@ -2,22 +2,6 @@
 //Companies
 
 // check permissions
-
-// debug code, can delete when thoroughly tested
-/*
-echo 'any:';
-echo (empty( $perms['all'] ) & empty($perms['companies'] ));
-echo ' read:';
-echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_EDIT);
-echo (isset( $perms['companies'][PERM_ALL] ) & $perms['companies'][PERM_ALL] == PERM_EDIT);
-echo (isset( $perms['companies'][$company_id] ) & $perms['companies'][$company_id] == PERM_EDIT);
-echo ' edit:';
-echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT);
-echo (isset( $perms['companies'][PERM_ALL] ) & $perms['companies'][PERM_ALL] <> PERM_EDIT);
-echo (isset( $perms['companies'][$company_id] ) & $perms['companies'][$company_id] <> PERM_EDIT);
-echo " denyRead=$denyRead, denyEdit=$denyEdit";
-*/
-
 $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
@@ -27,7 +11,6 @@ if ($denyRead) {
 	</script>
 ';
 }
-
 
 $dsql = "
 select company_id
