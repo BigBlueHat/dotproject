@@ -248,7 +248,7 @@ if($do_report) {
 		<?php
 			$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_usage);
 	
-			echo $AppUI->_("<h4>Total capacity for shown users</h4>");
+			echo '<h4>' . $AppUI->_("Total capacity for shown users") . '</h4>';
 			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
 			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity,2)."<br />";
 			echo $AppUI->_("Percentage used").": ".number_format($allocated_hours_sum/$total_hours_capacity,2)*100 ."%<br />";
@@ -258,7 +258,7 @@ if($do_report) {
 		<?php
 			$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_list);
 	
-			echo $AppUI->_("<h4>Total capacity for all users</h4>");
+			echo '<h4>' . $AppUI->_("Total capacity for all users") . '</h4>';
 			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
 			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity,2)."<br />";
 			echo $AppUI->_("Percentage used").": ".number_format($allocated_hours_sum/$total_hours_capacity,2)*100 ."%<br />";
