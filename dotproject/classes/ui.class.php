@@ -14,9 +14,15 @@ define( 'UI_MSG_ERROR', 4 );
 // global variable holding the translation array
 $GLOBALS['translate'] = array();
 
+define( "UI_CASE_MASK", 0x0F );
 define( "UI_CASE_UPPER", 1 );
 define( "UI_CASE_LOWER", 2 );
 define( "UI_CASE_UPPERFIRST", 3 );
+
+define ("UI_OUTPUT_MASK", 0xF0);
+define ("UI_OUTPUT_HTML", 0);
+define ("UI_OUTPUT_JS", 0x10);
+define ("UI_OUTPUT_RAW", 0x20);
 
 require_once dirname(__FILE__) . "/permissions.class.php";
 /**
@@ -282,10 +288,10 @@ class CAppUI {
 * that a translation is required.
 * </ul>
 * @param string The string to translate
-* @param int Option to change the case of the string
+* @param int Option flags, can be case handling or'd with output styles
 * @return string
 */
-	function _( $str, $case=0 ) {
+	function _( $str, $flags= 0 ) {
 		global $dPconfig;
 		$str = trim($str);
 		if (empty( $str )) {
@@ -301,7 +307,7 @@ class CAppUI {
 				$str .= @$dPconfig['locale_alert'];
 			}
 		}
-		switch ($case) {
+		switch ($flags & UI_CASE_MASK) {
 			case UI_CASE_UPPER:
 				$str = strtoupper( $str );
 				break;
@@ -309,11 +315,33 @@ class CAppUI {
 				$str = strtolower( $str );
 				break;
 			case UI_CASE_UPPERFIRST:
+				$str = ucwords( $str );
 				break;
 		}
-		/* stripslashes added to fix #811242 on 2004 Jan 10
-		 * if no problems occur, delete this comment. (gregor) */
-		return addslashes(stripslashes($str));
+		/* Altered to support multiple styles of output, to fix
+		 * bugs where the same output style cannot be used succesfully
+		 * for both javascript and HTML output.
+		 * PLEASE NOTE: The default is currently UI_OUTPUT_HTML,
+		 * which is different to the previous version (which was
+		 * effectively UI_OUTPUT_RAW).  If this causes problems,
+		 * and they are localised, then use UI_OUTPUT_RAW in the
+		 * offending call.  If they are widespread, change the
+		 * default to UI_OUTPUT_RAW and use the other options
+		 * where appropriate.
+		 * AJD - 2004-12-10
+		 */
+		switch ($flags & UI_OUTPUT_MASK) {
+			case UI_OUTPUT_HTML:
+				$str = htmlentities(stripslashes($str));
+				break;
+			case UI_OUTPUT_JS:
+				$str = addslashes(stripslashes($str));
+				break;
+			case UI_OUTPUT_RAW: 
+				$str = stripslashes($str);
+				break;
+		}
+		return $str;
 	}
 /**
 * Set the display of warning for untranslated strings
