@@ -1,4 +1,8 @@
 <!-- $Id$ -->
-<h2>Getting Help</h2>
-<p>The is a small help icon on each page, usually to the far right of the page title, that will link you to help in the context of the page you are currently on.</p>
-<p>You can also access the help viewer by selecting the About link on the top menu.</p>
+<h1>Getting Help</h1>
+
+<p>There is a small help icon on each page, usually to the far right of the page title, that will open the <b>Help Documentation</b> main index page. You can then navigate to various help documents from this table of contents.</p>
+
+<p>You can also access the <b>Help Documentation</b> by clicking the <b>help</b> link in the navigation menu.</p>
+
+<p>Our help documentation is found in the <code>/modules/help</code> directory. Each individual help file is simply a HTML test file with a <code>.hlp</code> file extension. If you want to customize your help documentation, or create new help documentation, just use one of the existing documentation files as a template.</p>
