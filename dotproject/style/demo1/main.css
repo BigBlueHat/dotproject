@@ -110,6 +110,10 @@ TABLE.std TH {
 	border: outset #D1D1CD 1px;
 }
 
+TABLE.std TD.hilite {
+	background-color: #ffffff;
+}
+
 /* links in header blocks */
 A.hdr:link, A.hdr:active, A.hdr:visited {
 	color: #ffffff;
