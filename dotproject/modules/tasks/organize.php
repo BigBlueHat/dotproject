@@ -385,5 +385,3 @@ foreach ($tasks as $task)
 		frames['thread'].location.href = './index.php?m=tasks&a=listtasks&project=' + proj;
 	}
 </script>
-
-<iframe style="display: none;" name="thread" width="0" height="0" scrolling="yes" src=""></iframe>
