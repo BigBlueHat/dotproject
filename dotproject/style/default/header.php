@@ -15,9 +15,12 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 </head>
 
 <body onload="this.focus();">
-<table width="100%" cellpadding="3" cellspacing="0" border="0">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
+	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
 	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php echo $AppUI->cfg['page_title'];?></strong></th>
+	<th align="right" width='50'><a href='http://www.dotproject.net/'><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border=0></a></th>
+	</tr></table></td>
 </tr>
 <?php if (!$dialog) {
 	// top navigation menu
@@ -25,7 +28,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 ?>
 <tr>
 	<td class="nav" align="left">
-	<table width="100%" cellpadding="0" cellspacing="0" width="100%">
+	<table width="100%" cellpadding="3" cellspacing="0" width="100%">
 	<tr>
 		<td>
 		<?php
