@@ -185,10 +185,11 @@ if ($do_report) {
 			if ($users!=null){
 				$users.=", ";
 			}
-			$sql_user_array = db_exec ("SELECT contact_first_name, contact_last_name 
-			                            FROM users, contacts
-			                            WHERE users.user_contact = contacts.contact_id
-			                                  user_id = ".$Task_User['user_id']);
+			$sql = "SELECT contact_first_name, contact_last_name 
+                        FROM users, contacts
+                        WHERE users.user_contact = contacts.contact_id
+                              AND user_id = ".$Task_User['user_id'];
+			$sql_user_array = db_exec ($sql);
 			$user_list = db_fetch_assoc($sql_user_array);
 			$users .= $user_list['contact_first_name']." ".$user_list['contact_last_name'];
 		}
