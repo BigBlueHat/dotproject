@@ -1,4 +1,4 @@
-<?php
+<?php /* INCLUDES $Id$ */
 require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
 
 db_connect( $AppUI->cfg['dbhost'], $AppUI->cfg['dbname'], $AppUI->cfg['dbuser'], $AppUI->cfg['dbpass'] );
