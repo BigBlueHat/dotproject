@@ -19,7 +19,7 @@ WHERE companies.company_id = $company_id
 ";
 
 if (!db_loadHash( $sql, $row )) {
-	$titleBlock = new CTitleBlock( 'Invalid Company ID', 'money.gif', $m, 'ID_HELP_COMP_EDIT' );
+	$titleBlock = new CTitleBlock( 'Invalid Company ID', 'money.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->show();
 } else {
@@ -30,7 +30,7 @@ if (!db_loadHash( $sql, $row )) {
 	$canDelete = (db_loadResult( $sql ) < 1);
 
 	// setup the title block
-	$titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, 'ID_HELP_COMP_VIEW' );
+	$titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, "$m.$a" );
 	if ($canEdit) {
 		$titleBlock->addCell();
 		$titleBlock->addCell(
@@ -62,7 +62,8 @@ function delIt() {
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
-<form name="frmDelete" action="./index.php?m=companies&a=do_company_aed" method="post">
+<form name="frmDelete" action="./index.php?m=companies" method="post">
+	<input type="hidden" name="dosql" value="do_company_aed">
 	<input type="hidden" name="del" value="1" />
 	<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
 </form>

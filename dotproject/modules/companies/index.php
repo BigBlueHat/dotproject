@@ -46,7 +46,7 @@ ORDER BY $orderby
 $rows = db_loadList( $sql );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Companies', 'money.gif', $m, 'ID_HELP_COMP_IDX' );
+$titleBlock = new CTitleBlock( 'Companies', 'money.gif', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',

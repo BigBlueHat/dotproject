@@ -19,22 +19,18 @@ LEFT JOIN users ON users.user_id = companies.company_owner
 WHERE companies.company_id = $company_id
 ";
 if (!db_loadHash( $sql, $company ) && $company_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid Company ID', 'money.gif', $m, 'ID_HELP_COMP_EDIT' );
+	$titleBlock = new CTitleBlock( 'Invalid Company ID', 'money.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->show();
 } else {
-
 	// collect all the users for the company owner list
 	$owners = array( '0'=>'' );
-	$osql = "SELECT user_id,user_first_name,user_last_name FROM users";
-	$orc = db_exec($osql);
-	while ($orow = db_fetch_row( $orc )) {
-		$owners[$orow[0]] = "$orow[1] $orow[2]";
-	}
+	$sql = "SELECT user_id,CONCAT(user_first_name,' ',user_last_name) FROM users ORDER BY user_first_name";
+	$owners = db_loadHashList( $sql );
 
 // setup the title block
 	$ttl = $company_id > 0 ? "Edit Company" : "Add Company";
-	$titleBlock = new CTitleBlock( $ttl, 'money.gif', $m, 'ID_HELP_COMP_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'money.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 	$titleBlock->show();
@@ -61,8 +57,9 @@ function testURL( x ) {
 </script>
 
 <table cellspacing="1" cellpadding="1" border="0" width="100%" class="std">
-<form name="changeclient" action="?m=companies&a=do_company_aed" method="post">
-<input type="hidden" name="company_id" value="<?php echo $company_id;?>">
+<form name="changeclient" action="?m=companies" method="post">
+	<input type="hidden" name="dosql" value="do_company_aed" />
+	<input type="hidden" name="company_id" value="<?php echo $company_id;?>">
 
 <tr>
 	<td align="right"><?php echo $AppUI->_('Company Name');?>:</td>
