@@ -43,9 +43,9 @@ if (!$obj->canAccess( $AppUI->user_id )) {
 
 // retrieve any state parameters
 if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
+	$AppUI->setState( 'TaskLogVwTab', $_GET['tab'] );
 }
-$tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
+$tab = $AppUI->getState( 'TaskLogVwTab' ) !== NULL ? $AppUI->getState( 'TaskLogVwTab' ) : 0;
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
