@@ -1,3 +1,46 @@
+2004-01-08 02:18  (ajdonnison)
+---------------------------------
+style/default/header.php
+- Added icon and link to main website.
+
+2004-01-08 01:51  (ajdonnison)
+---------------------------------
+docs/nav.html
+- Made dotproject logo a link to dotproject.net
+
+2004-01-08 01:43  (ajdonnison)
+---------------------------------
+docs/check.php
+- Better formatting for locale settings.
+
+2004-01-08 01:06  (ajdonnison)
+---------------------------------
+modules/system/addeditpref.php
+- Changed to detect the absence of the money_format function instead of
+- looking at just the operating system.  This then picks up early versions
+- of PHP as well.
+
+2004-01-08 00:54  (ajdonnison)
+---------------------------------
+modules/companies/vw_companies.php
+- Added missing definition of $CR
+
+2004-01-07 19:50  (ajdonnison)
+---------------------------------
+db/upgrade_101_to_102.sql
+- New upgrade for 101 to 102
+
+2004-01-07 19:35  (ajdonnison)
+---------------------------------
+modules/tasks/view.php
+- Changed ordering on assigned users to last/first name.
+- Changed ordering on files to filename.
+
+2004-01-07 09:17  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-07 04:01  (ajdonnison)
 ---------------------------------
 index.php
@@ -455,49 +498,6 @@ modules/tasks/tasks.class.php
 modules/tasks/view.php
 - Now users can relate departments to tasks. Please check db changes in the .sql file (100 to 101).
 
-2003-12-02 22:05  (gregorerhardt)
----------------------------------
-modules/history/addedit.php
-- softcoded/translation
-
-2003-12-02 21:39  (gregorerhardt)
----------------------------------
-modules/projects/vw_idx_proposed.php
-- translation (softcoding) of project status values
-
-2003-12-02 21:31  (gregorerhardt)
----------------------------------
-modules/departments/addedit.php
-modules/departments/view.php
-- several translations
-
-2003-12-02 20:52  (gregorerhardt)
----------------------------------
-modules/ticketsmith/index.php
-- fixing #848082: sorting problem with REQUIRE_GLOBALS=OFF
-
-2003-12-02 19:55  (jcgonz)
----------------------------------
-modules/projects/vw_idx_proposed.php
-- Updated translation issues with status selector in proposed projects tabs
-
-2003-12-02 19:50  (jcgonz)
----------------------------------
-locales/en/projects.inc
-modules/projects/index.php
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_complete.php
-modules/projects/vw_idx_proposed.php
-- Added dynamic project status tabs at the projects module. Now tabs are the same that all project status from sysval.
-
-2003-12-02 18:21  (jcgonz)
----------------------------------
-docs/install.html
-docs/nav.html
-docs/rfc0001.00.html
-docs/roadmap.html
-docs/team.html
-docs/trouble.html
 ...
 
 (This file has been wrapped)
