@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Page(s)",
+"Notify Assignees of Task or Project Owner by Email",
 "Add File",
 "All Projects",
 "Are you sure you want to cancel?",
@@ -12,8 +12,10 @@
 "File(s)",
 "Filter",
 "New File",
+"Page(s)",
 "Please select a project first!",
 "Size",
+"Task Name",
 "Type",
 "Upload File",
 "Upload file size is zero. Process aborted.",

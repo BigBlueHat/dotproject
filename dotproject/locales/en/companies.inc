@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"new contact",
+"Reset search",
 "Add Company",
 "All Companies",
 "Budget",
@@ -11,6 +11,7 @@
 "Edit Company",
 "Invalid Company ID",
 "No companies available",
+"Owner filter",
 "Started",
 "Status",
 "Suppliers",
@@ -25,4 +26,5 @@
 "edit this company",
 "inserted",
 "new company",
+"new contact",
 "view this company",

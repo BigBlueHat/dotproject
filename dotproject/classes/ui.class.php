@@ -299,6 +299,7 @@ class CAppUI {
 			return '';
 		}
 		$x = @$GLOBALS['translate'][$str];
+		
 		if ($x) {
 			$str = $x;
 		} else if (@$this->cfg['locale_warn']) {

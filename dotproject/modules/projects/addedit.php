@@ -366,7 +366,7 @@ function setDepartment(department_id_string){
 		?>
 		<tr>
 			<td align="left" nowrap="nowrap">
-				<?php echo $AppUI->_('Import tasks from');?>:<br/>
+				<?php   echo $AppUI->_('Import tasks from');?>:<br/>
 			</td>
 			<td colspan="3">
 				<?php echo arraySelect( $importList, 'import_tasks_from', 'size="1" class="text"', null, false ); ?>

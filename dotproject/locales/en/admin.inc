@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"select dept",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
@@ -71,6 +70,7 @@
 "projects list",
 "read only",
 "read-write",
+"select dept",
 "updated",
 "users list",
 "view this user",

@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Messages",
 "- New Item -",
 "About",
 "Active Projects",
