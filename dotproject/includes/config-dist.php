@@ -33,6 +33,8 @@ $dPconfig['site_domain'] = "dotproject.net";
 $dPconfig['show_all_tasks'] = false;
 // enable if you want to support gantt charts
 $dPconfig['enable_gantt_charts'] = true;
+// enable if you want to log changes using the history module
+$dPconfig['log_changes'] = false;
 
 $dPconfig['daily_working_hours'] = 8.0;
 

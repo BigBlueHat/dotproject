@@ -44,9 +44,11 @@ class CForum {
 		}
 		if( $this->forum_id ) {
 			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
+			addHistory("Updated forum '" . $this->forum_name . "'");			
 		} else {
 			$this->forum_create_date = db_datetime( time() );
 			$ret = db_insertObject( 'forums', $this, 'forum_id' );
+			addHistory("Added new forum '" . $this->forum_name . "'");
 		}
 		if( !$ret ) {
 			return "CForum::store failed <br />" . db_error();
@@ -64,8 +66,9 @@ class CForum {
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
+			addHistory("Deleted forum '". $this->forum_name . "'");
 			return NULL;
-		}
+		}		
 	}
 }
 
