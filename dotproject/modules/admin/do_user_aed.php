@@ -1,17 +1,24 @@
 <?php /* ADMIN $Id$ */
-
+include('modules/contacts/contacts.class.php');
 $del = isset($_REQUEST['del']) ? $_REQUEST['del'] : FALSE;
 
 $obj = new CUser();
+$contact = new CContact();
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
+if (!$contact->bind( $_POST )) {
+	$AppUI->setMsg( $contact->getError(), UI_MSG_ERROR );
+	$AppUI->redirect();
+}
+        
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'User' );
 
+// !User's contact information not deleted - left for history.
 if ($del) {
 	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
@@ -51,11 +58,18 @@ if ($del) {
 		$obj->user_owner = $AppUI->user_id;
 	}
 
-	if (($msg = $obj->store())) {
+        if (($msg = $contact->store())) {
+                $AppUI->setMsg( $msg, UI_MSG_ERROR );
+        }
+	else {
+        
+        $obj->user_contact = $contact->contact_id;
+        if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( $isNewUser ? 'added - <b>please setup permissions now.  Without any permissions, user will not be able to log in.</b>' : 'updated', UI_MSG_OK, true );
 	}
-	($isNewUser)?$AppUI->redirect("m=admin&a=viewuser&user_id=". $obj->user_id . "&tab=1"):$AppUI->redirect();
+        }
+//	($isNewUser)?$AppUI->redirect("m=admin&a=viewuser&user_id=". $obj->user_id . "&tab=1"):$AppUI->redirect();
 
 ?>

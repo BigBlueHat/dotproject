@@ -9,7 +9,8 @@ class CUser extends CDpObject {
 	var $user_password = NULL;
 	var $user_parent = NULL;
 	var $user_type = NULL;
-	var $user_first_name = NULL;
+        var $user_contact = NULL;
+/*	var $user_first_name = NULL;
 	var $user_last_name = NULL;
 	var $user_company = NULL;
 	var $user_department = NULL;
@@ -28,7 +29,7 @@ class CUser extends CDpObject {
 	var $user_birthday = NULL;
 	var $user_pic = NULL;
 	var $user_owner = NULL;
-	var $user_signature = NULL;
+	var $user_signature = NULL;*/
 
 	function CUser() {
 		$this->CDpObject( 'users', 'user_id' );

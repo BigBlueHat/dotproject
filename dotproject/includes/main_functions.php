@@ -128,7 +128,24 @@ function dPgetConfig( $key ) {
 	}
 }
 
+function dPgetUsername( $user )
+{
+        $sql = 'SELECT contact_first_name, contact_last_name
+                FROM users LEFT JOIN contacts ON contact_id = user_contact
+                WHERE user_username like \'' . $user . '\' OR user_id = \'' . $user . "'";
+        $r = db_loadList($sql);
+        return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
+}
 
+function dPgetUsers()
+{
+        $usersql = "
+        SELECT user_id, concat(contact_first_name,' ',contact_last_name) as name
+        FROM users
+        LEFT JOIN contacts ON user_contact = contact_id
+        ORDER by contact_last_name,contact_first_name";
+        return arrayMerge( array( 0 => $AppUI->_('All Users') ), db_loadHashList( $usersql ) );
+}
 ##
 ## displays the configuration array of a module for informational purposes
 ##

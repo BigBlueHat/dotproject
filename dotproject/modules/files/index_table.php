@@ -158,10 +158,9 @@ SELECT files.*,
         count(file_version) as file_versions,
         round(max(file_version), 2) as file_lastversion,
 	project_name, project_color_identifier, project_active,
-	user_first_name, user_last_name,task_name,task_id
+	file_owner,task_name,task_id
 FROM files, permissions
 LEFT JOIN projects ON project_id = file_project
-LEFT JOIN users ON user_id = file_owner
 LEFT JOIN tasks on file_task = task_id
 WHERE
 	permission_user = $AppUI->user_id
@@ -182,9 +181,8 @@ GROUP BY project_name, file_name
 ORDER BY project_name, file_name
 LIMIT ' . $xpg_min . ', ' . $xpg_pagesize ;
 
-$sql2 = "SELECT file_id, file_version, file_project, file_name, file_task, file_description, user_username as file_owner, file_size, file_category, file_type, file_date
+$sql2 = "SELECT file_id, file_version, file_project, file_name, file_task, file_description, file_owner, file_size, file_category, file_type, file_date
         FROM files
-        LEFT JOIN users ON user_id = file_owner
         LEFT JOIN tasks on file_task = task_id
         LEFT JOIN projects ON project_id = file_project
 " . 
@@ -325,7 +323,7 @@ foreach ($files as $row) {
                 <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
                 <td width="10%" nowrap="nowrap" align="center">' . $file_types[$file['file_category']] . '</td>
                 <td width="5%" align="center">' . $file['file_task'] . '</td>
-                <td width="15%" nowrap="nowrap">' . $row["user_first_name"].' '.$row["user_last_name"] . '</td>
+                <td width="15%" nowrap="nowrap">' . dPgetUsername($row['file_owner']).'</td>
                 <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
                 <td width="15%" nowrap="nowrap" align="right">' . $file['file_date'] . '</td>
@@ -338,7 +336,7 @@ foreach ($files as $row) {
         </td>
         <td width="10%" nowrap="nowrap" align="center"><?php echo $file_types[$row["file_category"]];?></td> 
 	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["task_id"];?>"><?php echo $row["task_name"];?></a></td>
-	<td width="15%" nowrap="nowrap"><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>
+	<td width="15%" nowrap="nowrap"><?= dPgetUsername($row['file_owner']) ?></td>
 	<td width="5%" nowrap="nowrap" align="right"><?php echo intval($row["file_size"] / 1024);?> kb</td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>

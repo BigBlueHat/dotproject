@@ -19,14 +19,7 @@ WHERE pref_user = $user_id
 $prefs = db_loadHashList( $sql );
 
 // get the user name
-$sql = "
-SELECT user_first_name, user_last_name
-FROM users
-WHERE user_id = $user_id
-";
-$res  = db_exec( $sql );
-echo db_error();
-$user = db_fetch_row( $res );
+$user = dPgetUsername($user_id);
 
 $titleBlock = new CTitleBlock( 'Edit User Preferences', 'myevo-weather.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=system", "system admin" );

@@ -8,10 +8,10 @@
 		<a href="?m=admin&a=index&orderby=user_username" class="hdr"><?php echo $AppUI->_('Login Name');?></a>
 	</th>
 	<th>
-		<a href="?m=admin&a=index&orderby=user_last_name" class="hdr"><?php echo $AppUI->_('Real Name');?></a>
+		<a href="?m=admin&a=index&orderby=contact_last_name" class="hdr"><?php echo $AppUI->_('Real Name');?></a>
 	</th>
 	<th>
-		<a href="?m=admin&a=index&orderby=user_company" class="hdr"><?php echo $AppUI->_('Company');?></a>
+		<a href="?m=admin&a=index&orderby=contact_company" class="hdr"><?php echo $AppUI->_('Company');?></a>
 	</th>
 </tr>
 <?php 
@@ -33,7 +33,7 @@ foreach ($users as $row) {
 				</a>
 			</td>
 			<td>
-				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $row["user_first_name"] . " " . $row["user_last_name"];?>')" title="<?php echo $AppUI->_('delete');?>">
+				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $row["contact_first_name"] . " " . $row["contact_last_name"];?>')" title="<?php echo $AppUI->_('delete');?>">
 					<?php echo dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' ); ?>
 				</a>
 			</td>
@@ -45,11 +45,11 @@ foreach ($users as $row) {
 		<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>"><?php echo $row["user_username"];?></a>
 	</td>
 	<td>
-		<a href="mailto:<?php echo $row["user_email"];?>"><img src="images/obj/email.gif" width="16" height="16" border="0" alt="email"></a>
-		<?php echo $row["user_last_name"].', '.$row["user_first_name"];?>
+		<a href="mailto:<?php echo $row["contact_email"];?>"><img src="images/obj/email.gif" width="16" height="16" border="0" alt="email"></a>
+		<?php echo $row["contact_last_name"].', '.$row["contact_first_name"];?>
 	</td>
 	<td>
-		<a href="./index.php?m=companies&a=view&company_id=<?php echo $row["user_company"];?>"><?php echo $row["company_name"];?></a>
+		<a href="./index.php?m=companies&a=view&company_id=<?php echo $row["contact_company"];?>"><?php echo $row["company_name"];?></a>
 	</td>
 </tr>
 <?php }?>

@@ -17,7 +17,10 @@ $companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name'
 $companies = arrayMerge( array( '0'=>'' ), $companies );
 
 // pull users
-$sql = "SELECT user_id, CONCAT_WS(', ',user_last_name,user_first_name) FROM users ORDER BY user_last_name";
+$sql = "SELECT user_id, CONCAT_WS(', ',contact_last_name,contact_first_name) 
+        FROM users 
+        LEFT JOIN contacts ON contact_id = user_contact
+        ORDER BY contact_last_name";
 $users = db_loadHashList( $sql );
 
 // load the record data

@@ -168,15 +168,17 @@ class CForumMessage {
 		if (db_num_rows( $resAll ) >= 1)	// message has to be sent to all users
 		{
 			$sql = "
-			SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
+			SELECT DISTINCT contact_email, user_id, contact_first_name, contact_last_name
 			FROM users
+                        LEFT JOIN contacts ON user_contact = contact_id
 			";
 		}
 		else 					//message is only delivered to users that checked the forum watch
 		{
 			$sql = "
-			SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
+			SELECT DISTINCT contact_email, user_id, contact_first_name, contact_last_name
 			FROM users, forum_watch
+                        LEFT JOIN contacts ON user_contact = contact_id
 			WHERE user_id = watch_user
 				AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)
 			";

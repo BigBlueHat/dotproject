@@ -5,9 +5,10 @@
 GLOBAL $AppUI, $company_id; 
 
 $sql = "
-SELECT projects.*, users.user_first_name,users.user_last_name
+SELECT projects.*, contact_first_name,contact_last_name
 FROM projects
 LEFT JOIN users ON users.user_id = projects.project_owner
+LEFT JOIN contacts ON user_contact = contact_id
 WHERE project_company = $company_id
 	AND project_active = 0
 ORDER BY project_name
@@ -25,7 +26,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 	foreach ($rows as $row){
 		$s .= '<tr><td>';
 		$s .= '<a href="?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
-		$s .= '<td>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
+		$s .= '<td>'.$row["contact_first_name"].'&nbsp;'.$row["contact_last_name"].'</td>';
 		$s .= '</tr>';
 	}
 }

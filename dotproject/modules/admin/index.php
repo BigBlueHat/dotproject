@@ -29,14 +29,14 @@ $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
     $let .= $L['L'];
 }
-$sql = "SELECT DISTINCT UPPER(SUBSTRING(user_first_name, 1, 1)) AS L FROM users";
+$sql = "SELECT DISTINCT UPPER(SUBSTRING(contact_first_name, 1, 1)) AS L FROM users LEFT JOIN contacts ON contact_id = user_contact";
 $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
     if ($L['L'])
 	$let .= strpos($let, $L['L']) ? '' : $L['L'];
 }
 
-$sql = "SELECT DISTINCT UPPER(SUBSTRING(user_last_name, 1, 1)) AS L FROM users";
+$sql = "SELECT DISTINCT UPPER(SUBSTRING(contact_last_name, 1, 1)) AS L FROM users LEFT JOIN contacts ON contact_id = user_contact";
 $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
     if ($L['L'])

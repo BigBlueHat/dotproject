@@ -86,9 +86,10 @@ if($do_report){
 	// Let's figure out which users we have
 	$sql = "SELECT  u.user_id,
 	 				u.user_username, 
-					u.user_first_name, 
-					u.user_last_name
-	        FROM users AS u";
+					contact_first_name, 
+					contact_last_name
+	        FROM users AS u
+                LEFT JOIN user_contact = contact_id";
 	
 	$user_list = db_loadHashList($sql, "user_id");
 	
@@ -182,7 +183,7 @@ if($do_report){
 				}
 				?>
 				<tr>
-					<td><?php echo "(".$user["user_username"].") </td><td> ".$user["user_first_name"]." ".$user["user_last_name"]; ?></td>
+					<td><?php echo "(".$user["user_username"].") </td><td> ".$user["contact_first_name"]." ".$user["contact_last_name"]; ?></td>
 					<td align='right'><?php echo $total_hours_allocated; ?> </td>
 					<td align='right'><?php echo $total_hours_worked; ?> </td>
 					<td align='right'><?php echo number_format($percentage, 0); ?>% </td>

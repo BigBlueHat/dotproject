@@ -67,7 +67,6 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 $project = new CProject();
 $project->load( $task_project );
 
-
 //Pull all users with complete allocation information
 $sql_active_users = "select user_id
                      from users,
@@ -88,10 +87,11 @@ if ( $task_id == 0 ) {
         }
 } else {
 	// Pull users on this task
-//			 SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
 	$sql = "
-			 SELECT u.user_id, CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',u.user_first_name,u.user_last_name), t.perc_assignment), '%]')
+			 SELECT u.user_id, CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',uc.contact_first_name,uc.contact_last_name), t.perc_assignment), '%]')
 			   FROM users u, user_tasks t
+                         LEFT JOIN contacts uc ON uc.contact_id = u.user_contact
+
 			 WHERE t.task_id =$task_id
 			 AND t.task_id <> 0
 			 AND t.user_id = u.user_id

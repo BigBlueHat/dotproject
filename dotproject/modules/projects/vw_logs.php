@@ -9,7 +9,7 @@
 	$task_log_costcodes = array("" => ""); // Let's add a blank default option
 	$task_log_costcodes = array_merge($task_log_costcodes, db_loadHashList($sql));
 	
-	$sql = "SELECT user_id, concat(user_first_name,' ',user_last_name)  FROM users ORDER BY user_first_name, user_last_name";
+	$sql = "SELECT user_id, concat(contact_first_name,' ',contact_last_name)  FROM users LEFT JOIN contacts ON user_contact = contact_id ORDER BY contact_first_name, contact_last_name";
 	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), db_loadHashList( $sql ) );
 
 	$cost_code = dPgetParam( $_GET, 'cost_code' );

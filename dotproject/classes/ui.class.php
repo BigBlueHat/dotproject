@@ -519,8 +519,9 @@ class CAppUI {
 		}
 
 		$sql = "
-		SELECT user_id, user_first_name, user_last_name, user_company, user_department, user_email, user_type
+		SELECT user_id, contact_first_name as user_first_name, contact_last_name as user_last_name, contact_company as user_company, user_department, contact_email as user_email, user_type
 		FROM users
+                LEFT JOIN contacts ON contact_id = user_contact
 		WHERE user_id = $row->user_id AND user_username = '$username'
 		";
 

@@ -9,9 +9,10 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 $sql = "
 SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
 	project_start_date,
-	users.user_first_name, users.user_last_name
+	contact_first_name, contact_last_name
 FROM projects
 LEFT JOIN users ON users.user_id = projects.project_owner
+LEFT JOIN contacts ON user_contact = contact_id
 WHERE project_company = $company_id
 	AND project_active <> 0
 ORDER BY project_name
@@ -34,7 +35,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 		$s .= '<tr>';
 		$s .= '<td width="100%">';
 		$s .= '<a href="?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a></td>';
-		$s .= '<td nowrap="nowrap">'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
+		$s .= '<td nowrap="nowrap">'.$row["contact_first_name"].'&nbsp;'.$row["contact_last_name"].'</td>';
 		$s .= '<td nowrap="nowrap">'.$start_date->format( $df ).'</td>';
 		$s .= '<td nowrap="nowrap">'.$AppUI->_($pstatus[$row["project_status"]]).'</td>';
 		$s .= '<td nowrap="nowrap" align="right">'.$dPconfig["currency_symbol"].$row["project_target_budget"].'</td>';

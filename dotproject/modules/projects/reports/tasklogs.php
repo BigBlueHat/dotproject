@@ -76,8 +76,9 @@ function setCalendar( idate, fdate ) {
 		
 	<?php
 		$usersql = "
-		SELECT user_id, user_username, user_first_name, user_last_name
+		SELECT user_id, user_username, contact_first_name, contact_last_name
 		FROM users
+                LEFT JOIN contacts ON user_contact = contact_id
 		";
 		
 		if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
@@ -129,9 +130,10 @@ function setCalendar( idate, fdate ) {
 <?php
 if ($do_report) {
 
-	$sql = "SELECT t.*, CONCAT_WS(' ',u.user_first_name,u.user_last_name) AS creator"
+	$sql = "SELECT t.*, CONCAT_WS(' ',contact_first_name,contact_last_name) AS creator"
 		."\nFROM task_log AS t, tasks"
-		."\nLEFT JOIN users AS u ON user_id = task_log_creator"
+		."\nLEFT JOIN users AS u ON user_id = task_log_creatori"
+                ."\nLEFT JOIN contacts ON user_contact = contact_id"
 		."\nWHERE task_log_task = task_id";
 	if (!$log_allprojects)
 	{

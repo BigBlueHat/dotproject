@@ -207,6 +207,12 @@ function companyChange() {
 			</td>
 		</tr>
 		<tr>
+			<td align="right"><?php echo $AppUI->_('Fax');?>:</td>
+			<td>
+				<input type="text" class="text" name="contact_fax" value="<?php echo @$row->contact_fax;?>" maxlength="30" size="25" />
+			</td>
+		</tr>
+		<tr>
 			<td align="right"><?php echo $AppUI->_('Mobile Phone');?>:</td>
 			<td>
 				<input type="text" class="text" name="contact_mobile" value="<?php echo @$row->contact_mobile;?>" maxlength="30" size="25" />
@@ -228,6 +234,12 @@ function companyChange() {
 			<td align="right">ICQ:</td>
 			<td>
 				<input type="text" class="text" name="contact_icq" value="<?php echo @$row->contact_icq;?>" maxlength="20" size="25" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">AOL:</td>
+			<td>
+				<input type="text" class="text" name="contact_aol" value="<?php echo @$row->contact_aol;?>" maxlength="20" size="25" />
 			</td>
 		</tr>
 		<tr>

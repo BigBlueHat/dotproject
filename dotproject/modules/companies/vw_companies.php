@@ -36,12 +36,13 @@ if ( $companiesType == -1 ){
 // retrieve list of records
 $sql = "SELECT company_id, company_name, company_type, company_description,"
 	. "count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,"
-	. "user_first_name, user_last_name"
+	. "contact_first_name, contact_last_name"
 
 	. " FROM permissions, companies"
 
 	. " LEFT JOIN projects ON companies.company_id = projects.project_company and projects.project_active <> 0"
 	. " LEFT JOIN users ON companies.company_owner = users.user_id"
+        . " LEFT JOIN contacts ON users.user_contact = contacts.contact_id"
 	. " LEFT JOIN projects AS projects2 ON companies.company_id = projects2.project_company AND projects2.project_active = 0"
 	. " WHERE permission_user = $AppUI->user_id"
 	. "	AND permission_value <> 0"

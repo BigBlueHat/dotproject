@@ -1,6 +1,9 @@
 <?php /* FILES $Id$ */
 $file_id = intval( dPgetParam( $_GET, 'file_id', 0 ) );
+$ci = dPgetParam($_GET, 'ci', 0) == 1 ? true : false;
  
+
+
 // check permissions for this record
 $canEdit = !getDenyEdit( $m, $file_id );
 if (!$canEdit) {
@@ -17,12 +20,13 @@ $file_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 $sql = "
 SELECT files.*,
 	user_username,
-	user_first_name,
-	user_last_name,
+	contact_first_name as user_first_name,
+	contact_last_name as user_last_name,
 	project_id,
 	task_id, task_name
 FROM files
 LEFT JOIN users ON file_owner = user_id
+LEFT JOIN contacts ON user_contact = contact_id
 LEFT JOIN projects ON project_id = file_project
 LEFT JOIN tasks ON task_id = file_task
 WHERE file_id = $file_id
@@ -41,14 +45,22 @@ if (!db_loadObject( $sql, $obj ) && $file_id > 0) {
 	$AppUI->redirect();
 }
 
+if ($obj->file_checkout != $AppUI->user_id)
+        $ci = false;
+
 // setup the title block
 $ttl = $file_id ? "Edit File" : "Add File";
+$ttl = $ci ? 'Checking in' : $ttl;
 $titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=files", "files list" );
-if ($canEdit && $file_id > 0) {
+if ($canEdit && $file_id > 0 && !$ci) {
 	$titleBlock->addCrumbDelete( 'delete file', $canDelete, $msg );
 }
 $titleBlock->show();
+
+//Clear the file id if checking out so a new version is created.
+if ($ci)
+        $file_id = 0;
 
 if ($obj->file_project) {
 	$file_project = $obj->file_project;
@@ -93,6 +105,21 @@ function popTask() {
         window.open('./index.php?m=public&a=selector&dialog=1&callback=setTask&table=tasks&task_project='
             + f.file_project.options[f.file_project.selectedIndex].value, 'task','left=50,top=50,height=250,width=400,resizable')
     }
+}
+
+function finalCI()
+{
+        var f = document.uploadFrm;
+        if (f.final_ci.value = '1')
+        {
+                f.file_checkout.value = 'final';
+                f.file_co_reason.value = 'Final Version';
+        }
+        else
+        {
+                f.file_checkout.value = '';
+                f.file_co_reason.value = '';
+        }
 }
 
 // Callback function for the generic selector
@@ -142,7 +169,14 @@ function setTask( key, val ) {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Version' );?>:</td>
 			<td align="left">
+                        <?php if ($ci) { ?>
+				<input type="hidden" name="file_checkout" value="" />
+				<input type="hidden" name="file_co_reason" value="" />
+				<input type="hidden" name="file_version" value="<?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version+0.1 : "1";?>" />
+                                <?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version+0.1 : "1";?>
+                        <?php } else { ?>
 				<input type="text" name="file_version" value="<?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version : "1";?>" maxlength="10" size="5" />
+                        <?php } ?>
 			</td>
 		</tr>
                 <tr>
@@ -180,6 +214,13 @@ function setTask( key, val ) {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Upload File' );?>:</td>
 			<td align="left"><input type="File" class="button" name="formfile" style="width:270px"></td>
 		</tr>
+                <?php if ($ci) {
+                ?>
+		<tr>
+			<td align="right" nowrap="nowrap">&nbsp;</td>
+			<td align="left"><input type="checkbox" name="final_ci" onClick="finalCI()"><?php echo $AppUI->_('Final Version'); ?></td>		
+		</tr>
+                <?php } ?>
 		<tr>
 			<td align="right" nowrap="nowrap">&nbsp;</td>
 			<td align="left"><input type="checkbox" name="notify" checked="checked"><?php echo $AppUI->_('Notify Assignees of Task or Project Owner by Email'); ?></td>		

@@ -62,11 +62,12 @@ $canReadProject = !getDenyRead( 'projects', $obj->task_project);
 
 // get the users on this task
 $sql = "
-SELECT u.user_id, u.user_username, u.user_first_name,u.user_last_name, u.user_email
+SELECT u.user_id, u.user_username, contact_email
 FROM users u, user_tasks t
+LEFT JOIN contacts ON user_contact = contact_id
 WHERE t.task_id =$task_id AND
 	t.user_id = u.user_id
-ORDER by u.user_last_name, u.user_first_name
+ORDER by u.user_username
 ";
 $users = db_loadList( $sql );
 
@@ -259,8 +260,8 @@ function delIt() {
 				$s = count( $users ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
 				foreach($users as $row) {
 					$s .= '<tr>';
-					$s .= '<td class="hilite">'.$row["user_first_name"].' '.$row["user_last_name"].'</td>';
-					$s .= '<td class="hilite"><a href="mailto:'.$row["user_email"].'">'.$row["user_email"].'</a></td>';
+					$s .= '<td class="hilite">'.dPgetUsername($row["user_username"]).'</td>';
+					$s .= '<td class="hilite"><a href="mailto:'.$row["contact_email"].'">'.$row["contact_email"].'</a></td>';
 					$s .= '</tr>';
 				}
 				echo '<table width="100%" cellspacing=1 bgcolor="black">'.$s.'</table>';

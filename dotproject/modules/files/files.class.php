@@ -185,21 +185,24 @@ class CFile extends CDpObject {
 				
 				//preparing users array
 				$sql = "SELECT t.task_id,"
-				."\nc.user_email as creator_email,"
-				."\nc.user_first_name as creator_first_name,"
-				."\nc.user_last_name as creator_last_name,"
-				."\no.user_email as owner_email,"
-				."\no.user_first_name as owner_first_name,"
-				."\no.user_last_name as owner_last_name,"
+				."\ncc.contact_email as creator_email,"
+				."\ncc.contact_first_name as creator_first_name,"
+				."\ncc.contact_last_name as creator_last_name,"
+				."\noc.contact_email as owner_email,"
+				."\noc.contact_first_name as owner_first_name,"
+				."\noc.contact_last_name as owner_last_name,"
 				."\na.user_id as assignee_id,"
-				."\na.user_email as assignee_email,"
-				."\na.user_first_name as assignee_first_name,"
-				."\na.user_last_name as assignee_last_name"
+				."\nac.contact_email as assignee_email,"
+				."\nac.contact_first_name as assignee_first_name,"
+				."\nac.contact_last_name as assignee_last_name"
 				."\nFROM tasks t"
 				."\nLEFT JOIN user_tasks u ON u.task_id = t.task_id"
 				."\nLEFT JOIN users o ON o.user_id = t.task_owner"
+                                ."\nLEFT JOIN contacts oc ON o.user_contact = oc.contact_id"
 				."\nLEFT JOIN users c ON c.user_id = t.task_creator"
+                                ."\nLEFT JOIN contacts cc ON c.user_contact = cc.contact_id"
 				."\nLEFT JOIN users a ON a.user_id = u.user_id"
+                                ."\nLEFT JOIN contacts ac ON a.user_contact = ac.contact_id"
 				."\nWHERE t.task_id = ".$this->_task->task_id;
 				$this->_users = db_loadList( $sql );
 			} else {

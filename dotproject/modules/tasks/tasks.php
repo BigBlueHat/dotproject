@@ -239,9 +239,10 @@ for ($x=0; $x < $nums; $x++) {
 
 	//add information about assigned users into the page output
 	$ausql = "SELECT ut.user_id,
-	u.user_username, u.user_email
+	u.user_username, contact_email
 	FROM user_tasks ut
 	LEFT JOIN users u ON u.user_id = ut.user_id
+        LEFT JOIN contacts ON u.user_contact = contact_id
 	WHERE ut.task_id=".$row['task_id'];
 	
 	$assigned_users = array ();

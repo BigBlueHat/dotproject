@@ -35,6 +35,8 @@ UPDATE modules SET permissions_item_table='forums', permissions_item_field='foru
 ALTER TABLE `user_tasks` ADD COLUMN perc_assignment int(11) NOT NULL default '100';
 
 ALTER TABLE `users` ADD `user_contact` int(11) NOT NULL default '0';
+ALTER TABLE `contacts` ADD `contact_fax` varchar(30) NOT NULL default '0';
+ALTER TABLE `contacts` ADD `contact_aol` varchar(30) NOT NULL default '0';
 
 ALTER TABLE `tasks` ADD `task_type` SMALLINT DEFAULT '0' NOT NULL ;
 

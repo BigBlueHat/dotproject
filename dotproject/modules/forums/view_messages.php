@@ -3,10 +3,11 @@ $AppUI->savePlace();
 
 $sql = "
 SELECT forum_messages.*,
-	user_first_name, user_last_name, user_email, user_username,
+	contact_first_name, contact_last_name, contact_email, user_username,
 	forum_moderated
 FROM forum_messages, forums
 LEFT JOIN users ON message_author = users.user_id
+LEFT JOIN contacts ON contact_id = user_contact
 WHERE forum_id = message_forum
 	AND (message_id = $message_id OR message_parent = $message_id)" .
   ( @$dPconfig['forum_descendent_order'] ? " ORDER BY message_date DESC" : "" );
@@ -67,8 +68,9 @@ $date = new CDate();
 
 foreach ($messages as $row) {
 	$sql = "
-	SELECT DISTINCT user_first_name, user_last_name, user_email, user_username
+	SELECT DISTINCT contact_email, user_username
 	FROM users, forum_messages
+        LEFT JOIN contacts ON contact_id = user_contact
 	WHERE users.user_id = ".$row["message_editor"];
 
 	$editor = db_loadList( $sql );
@@ -81,12 +83,12 @@ foreach ($messages as $row) {
 	$s .= "<tr>";
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
-	$s .= '<a href="mailto:'.$row["user_email"].'">';
-	$s .= '<font size="2">'.$row["user_first_name"].' '.$row["user_last_name"].'</font></a>';
+	$s .= '<a href="mailto:'.$row["contact_email"].'">';
+	$s .= '<font size="2">'.dPgetUsername($row['user_username']).'</font></a>';
 	if (sizeof($editor)>0) {
 		$s .= '<br/>&nbsp;<br/>'.$AppUI->_('last edited by');
-		$s .= ':<br/><a href="mailto:'.$editor[0]["user_email"].'">';
-		$s .= '<font size="1">'.$editor[0]["user_first_name"].' '.$editor[0]["user_last_name"].'</font></a>';
+		$s .= ':<br/><a href="mailto:'.$editor[0]["contact_email"].'">';
+		$s .= '<font size="1">'.dPgetUsername($editor[0]['user_username']).'</font></a>';
 	}
 	$s .= '</td>';
 	$s .= '<td valign="top" style="'.$style.'">';

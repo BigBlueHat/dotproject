@@ -102,6 +102,10 @@ function delIt(){
 			<td><?php echo @$row->contact_phone2;?></td>
 		</tr>
 		<tr>
+			<td align="right"><?php echo $AppUI->_('Fax');?>:</td>
+			<td><?php echo @$row->contact_fax;?></td>
+		</tr>
+		<tr>
 			<td align="right"><?php echo $AppUI->_('Mobile Phone');?>:</td>
 			<td><?php echo @$row->contact_mobile;?></td>
 		</tr>
@@ -116,6 +120,10 @@ function delIt(){
 		<tr>
 			<td align="right">ICQ:</td>
 			<td><?php echo @$row->contact_icq;?></td>
+		</tr>
+		<tr>
+			<td align="right">AOL:</td>
+			<td><?php echo @$row->contact_aol;?></td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Birthday');?>:</td>

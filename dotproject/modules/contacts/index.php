@@ -12,7 +12,7 @@ if (isset( $_GET["search_string"] )){
 				// Added the first % in order to find instrings also
 	$additional_filter = "OR contact_first_name like '%{$_GET['search_string']}%'
 	                      OR contact_last_name  like '%{$_GET['search_string']}%'
-						  OR contact_company    like '%{$_GET['search_string']}%'
+						  OR company_name       like '%{$_GET['search_string']}%'
 						  OR contact_notes      like '%{$_GET['search_string']}%'
 						  OR contact_email      like '%{$_GET['search_string']}%'";
 }
@@ -37,7 +37,7 @@ foreach( $arr as $L ) {
 // optional fields shown in the list (could be modified to allow breif and verbose, etc)
 $showfields = array(
 	// "test" => "concat(contact_first_name,' ',contact_last_name) as test",    why do we want the name repeated?
-	"contact_company" => "contact_company",
+	"company_name" => "company_name",
 	"contact_phone" => "contact_phone",
 	"contact_email" => "contact_email"
 );
@@ -49,6 +49,7 @@ foreach ($showfields as $val) {
 }
 $sql.= "contact_first_name, contact_last_name, contact_phone
 FROM contacts
+LEFT JOIN companies ON contact_company = companies.company_id
 WHERE (contact_order_by LIKE '$where%' $additional_filter)
 	AND (contact_private=0
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
@@ -149,7 +150,7 @@ $titleBlock->show();
 		<tr>
 			<td width="100%">
                                 <? $contactid = $carr[$z][$x]['contact_id']; ?>
-				<a href="./index.php?m=contacts&a=view&contact_id=<?= $contactid ?>"><strong><?php echo $carr[$z][$x]["contact_order_by"];?></strong></a>&nbsp;
+				<a href="./index.php?m=contacts&a=view&contact_id=<?= $contactid ?>"><strong><?php echo $carr[$z][$x]['contact_first_name'] . ' ' . $carr[$z][$x]['contact_last_name'];?></strong></a>&nbsp;
 				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?= $contactid ?>" >(vCard)</a>
                                 &nbsp;<a title="<?= $AppUI->_('Edit') ?>" href="?m=contacts&a=addedit&contact_id=<?= $contactid ?>"><?= $AppUI->_('Edit') ?></a>
 			</td>

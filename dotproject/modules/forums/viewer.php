@@ -19,7 +19,7 @@ $tf = $AppUI->getPref('TIMEFORMAT');
 $sql = "
 SELECT forum_id, forum_project,	forum_description, forum_owner, forum_name,
 	forum_create_date, forum_last_date, forum_message_count, forum_moderated,
-	user_first_name, user_last_name,
+	user_username,
 	project_name, project_color_identifier
 FROM forums, users, projects 
 WHERE user_id = forum_owner 
@@ -57,7 +57,7 @@ $titleBlock->show();
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>
 	<td nowrap><?php
-		echo $forum["user_first_name"].' '.$forum["user_last_name"];
+		echo dPgetUsername($forum["user_username"]);
 		if (intval( $forum["forum_id"] ) <> 0) {
 			echo " (".$AppUI->_( 'moderated' ).") ";
 		}?>

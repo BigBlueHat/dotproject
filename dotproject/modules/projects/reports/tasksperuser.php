@@ -65,9 +65,10 @@ function setCalendar( idate, fdate ) {
   
 	   	 	<?php
    		   	  $usersql = "
-   		   	  SELECT user_id, user_username, user_first_name, user_last_name
+   		   	  SELECT user_id, user_username, contact_first_name, contact_last_name
    		   	  FROM users
-			  ORDER by user_last_name,user_first_name
+                        LEFT JOIN contacts ON contacts_id = user_contact
+			  ORDER by contact_last_name,contact_first_name
    		   	  ";
  			 
    		   	  if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
@@ -80,7 +81,7 @@ function setCalendar( idate, fdate ) {
 					  $selected="";
    		   	          if ( $log_userfilter == $row["user_id"]) { $selected=" SELECTED"; }
 					  echo "<OPTION VALUE='".$row["user_id"]."'$selected>".
-                                    $row["user_first_name"]." ".$row["user_last_name"];
+                                    $row["contact_first_name"]." ".$row["contact_last_name"];
    		   	      }
    		   	  }
 		
@@ -136,16 +137,18 @@ if($do_report){
 	// Let's figure out which users we have
 	$sql = "SELECT  u.user_id,
 	 				u.user_username, 
-					u.user_first_name, 
-					u.user_last_name
-	        FROM users AS u";
+					contact_first_name, 
+
+					contact_last_name
+	        FROM users AS u
+                LEFT JOIN contacts ON contact_id = user_contact";
 
 	if ($log_userfilter!=0) {
 			$sql.=" WHERE user_id=".
 						  $log_userfilter
 					      ;//$log_userfilter_users[$log_userfilter]["user_id"];
 	}
-	$sql.=" ORDER by user_last_name, user_first_name";
+	$sql.=" ORDER by contact_last_name, contact_first_name";
 	
 	$user_list = db_loadHashList($sql, "user_id");
 
@@ -250,9 +253,9 @@ if($do_report){
 		foreach($user_list as $user_id => $user_data){
 
 			$tmpuser= "<tr><td align='left' nowrap='nowrap' bgcolor='#D0D0D0'><font color='black'><B>"
-					  .$user_data["user_first_name"]
+					  .$user_data["contact_first_name"]
 				      ." "
-					  .$user_data["user_last_name"]
+					  .$user_data["contact_last_name"]
 					  ."</B></font></td>";
 		    for($w=0;$w<=(1 + ($log_all_projects ? 1 : 0) + weekCells($display_week_hours,$sss,$sse));$w++) {
 				 $tmpuser.="<td bgcolor='#D0D0D0'></td>";

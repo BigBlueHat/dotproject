@@ -42,7 +42,10 @@ $projects = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
 //Pull user Information
-$sql = "SELECT user_id, CONCAT_WS(' ', user_first_name, user_last_name) FROM permissions, users WHERE user_id = $AppUI->user_id OR permission_user = $AppUI->user_id ";
+$sql = "SELECT user_id, CONCAT_WS(' ', contact_first_name, contact_last_name) 
+        FROM permissions, users 
+        LEFT JOIN contacts ON user_contact = contact_id
+        WHERE user_id = $AppUI->user_id OR permission_user = $AppUI->user_id ";
 
 if ( empty($perms['admin']) ) { // if there are no records for the user's permission on 'admin', the users are displayed
 } elseif ( !empty($perms['admin']) && getDenyRead('admin') ) {	// if the user is denied to read on 'admin', other users are not displayed!

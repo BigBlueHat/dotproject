@@ -81,9 +81,10 @@ if($do_report){
 	// Let's figure out which users we have
 	$sql = "SELECT  u.user_id,
 	 				u.user_username, 
-					u.user_first_name, 
-					u.user_last_name
-	        FROM users AS u";
+					contact_first_name, 
+					contact_last_name
+	        FROM users AS u
+                LEFT JOIN contacts ON user_contact = contact_id";
 	
 	$user_list = db_loadHashList($sql, "user_id");
 	
@@ -172,7 +173,7 @@ if($do_report){
 		
 		foreach($user_list as $user_id => $user_data){
 			if(isset($user_usage[$user_id])) {
-				$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["user_first_name"]." ".$user_data["user_last_name"]."</td>";
+				$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["contact_first_name"]." ".$user_data["contact_last_name"]."</td>";
 				$actual_date = $start_date;
 				for($i=0; $i<=$days_difference; $i++){
 					$table_rows .= "<td>";
