@@ -292,13 +292,13 @@ class CTask extends CDpObject {
 
 				$sql = "SELECT COUNT(*) FROM user_tasks WHERE user_id=$user_id AND task_id=$this->task_id";
 				$count = db_loadResult( $sql );
-				return ($owner_company == $user_company && $count > 0);
+				return (($owner_company == $user_company && $count > 0) || $this->task_owner == $user_id);
 				break;
 			case 2:
 				// participant
 				$sql = "SELECT COUNT(*) FROM user_tasks WHERE user_id=$user_id AND task_id=$this->task_id";
 				$count = db_loadResult( $sql );
-				return ($count > 0);
+				return ($count > 0 || $this->task_owner == $user_id);
 				break;
 			case 3:
 				// private
