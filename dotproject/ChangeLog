@@ -1,3 +1,15 @@
+2003-12-13 17:14  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/view.php
+- implemented recurrent events; todo: make working day view of recurrent events, finding bugs
+
+2003-12-13 09:21  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-12 17:15  (gregorerhardt)
 ---------------------------------
 modules/calendar/calendar.class.php
@@ -486,18 +498,6 @@ ChangeLog
 2003-10-30 13:59  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.php
-- My unfinished tasks filter now exclude tasks from a finished or on hold project
-
-2003-10-29 03:41  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-28 19:22  (ajdonnison)
----------------------------------
-classes/ui.class.php
-style/default/overrides.php
-- Fixed problem in tab box display when user preferences are for flat.
 ...
 
 (This file has been wrapped)
