@@ -1,3 +1,35 @@
+2004-04-07 19:56  (gnome444)
+---------------------------------
+modules/projects/vw_idx_complete.php
+- Change projects complete tab so that project status
+- is not dependant on the percent complete. So that projects marked complete always show up on the complete tab
+
+2004-04-07 19:54  (gnome444)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_proposed.php
+- Change projects tab order so that All Projects
+- is the default and first on the left.
+
+2004-04-07 19:50  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Added extra debug.
+- Now emails the admin if there is an error rather than purporting to
+- create a ticket 0.
+- Fixed problem with handling multipart messages (especially those
+- with multipart/related sections).
+
+2004-04-07 15:02  (gnome444)
+---------------------------------
+modules/tasks/addedit.php
+- Minor formatting fixup when depts are available
+
+2004-04-07 03:51  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-04-07 02:37  (ajdonnison)
 ---------------------------------
 db/dotproject.sql
@@ -466,38 +498,6 @@ modules/system/syskeys/index.php
 modules/help/en/system.syskeys.index.hlp
 - Added system.syskeys.index.hlp with TaskCustomFields help notes
 
-2004-02-05 04:00  (ajdonnison)
----------------------------------
-index.php
-- Updated cache control to correctly work with Apache 2
-
-2004-02-03 20:16  (ajdonnison)
----------------------------------
-modules/tasks/do_updatetask.php
-- Removed error log.
-
-2004-02-03 20:11  (ajdonnison)
----------------------------------
-modules/tasks/do_updatetask.php
-- Fix so that if first task update sets percent complete to 100%, task
-- end date is correctly set.
-
-2004-02-02 21:44  (ajdonnison)
----------------------------------
-db/upgrade_101_to_102.sql
-- Removed duplicate fields.
-
-2004-02-02 18:23  (ajdonnison)
----------------------------------
-ChangeLog
-- Updated to match v1.0.2 release
-
-2004-02-02 18:14  (ajdonnison)
----------------------------------
-includes/version.php
-- Removed the -alpha suffix for full release.
-
-2004-02-02 08:20  (ajdonnison)
 ...
 
 (This file has been wrapped)
