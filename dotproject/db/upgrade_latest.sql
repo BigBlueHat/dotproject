@@ -101,7 +101,7 @@ INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");
 #20040820
 # added ProjectStatus of Template
 #
-UPDATE `sysvals` SET `sysval_value` = '0|Not Defined 1|Proposed 2|In Planning 3|In Progress 4|On Hold 5|Complete 6|Template' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1 ;
+UPDATE `sysvals` SET `sysval_value` = '0|Not Defined\n1|Proposed\n2|In Planning\n3|In Progress\n4|On Hold\n5|Complete\n6|Template' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1 ;
 
 #20040823
 # changed over to dynamic project end date
