@@ -69,9 +69,7 @@ $titleBlock->addCell(
 if(!getDenyRead("admin")){
 	$titleBlock->addCell( $AppUI->_("User") . ":" );
 	
-	$sql = "select user_id, user_username
-	        from users GROUP BY user_username";
-	$user_list = db_loadHashList($sql);
+	$user_list = $perms->getPermittedUsers('tasks');
 	$titleBlock->addCell(
 		arraySelect($user_list, "user_id", "size='1' class='text' onChange='document.userIdForm.submit();'", $user_id, false), "",
 		"<form action='?m=tasks' method='post' name='userIdForm'>","</form>"
