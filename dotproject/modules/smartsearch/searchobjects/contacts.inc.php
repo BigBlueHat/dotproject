@@ -37,14 +37,19 @@ class contacts {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT contact_id, contact_first_name, contact_last_name"
-			 . "\nFROM $this->table"
-			 . "\nWHERE";
-		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
-		}
-		$sql = substr($sql,0,-4);
-		return $sql;
+                $q  = new DBQuery;
+                $q->addTable($this->table);
+                $q->addQuery('contact_id');
+                $q->addQuery('contact_first_name');
+                $q->addQuery('contact_last_name');
+
+                $sql = '';
+                foreach($this->search_fields as $field){
+                        $sql.=" $field LIKE '%$this->keyword%' or ";
+                }
+                $sql = substr($sql,0,-4);
+                $q->addWhere($sql);
+                return $q->prepare();
 	}
 }
 ?>

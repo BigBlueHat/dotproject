@@ -35,14 +35,19 @@ class task_log {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT task_log_id, task_log_name, task_log_task"
-			 . "\nFROM $this->table"
-			 . "\nWHERE";
-		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
-		}
-		$sql = substr($sql,0,-4);
-		return $sql;
+                $q  = new DBQuery;
+                $q->addTable($this->table);
+                $q->addQuery('task_log_id');
+                $q->addQuery('task_log_name');
+                $q->addQuery('task_log_task');
+
+                $sql = '';
+                foreach($this->search_fields as $field){
+                        $sql.=" $field LIKE '%$this->keyword%' or ";
+                }
+                $sql = substr($sql,0,-4);
+                $q->addWhere($sql);
+                return $q->prepare();
 	}
 }
 ?>

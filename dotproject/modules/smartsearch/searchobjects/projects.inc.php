@@ -40,14 +40,18 @@ class projects {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT project_id, project_name"
-			 . "\nFROM $this->table"
-			 . "\nWHERE";
-		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
-		}
-		$sql = substr($sql,0,-4);
-		return $sql;
+                $q  = new DBQuery;
+                $q->addTable($this->table);
+                $q->addQuery('project_id');
+                $q->addQuery('project_name');
+
+                $sql = '';
+                foreach($this->search_fields as $field){
+                        $sql.=" $field LIKE '%$this->keyword%' or ";
+                }
+                $sql = substr($sql,0,-4);
+                $q->addWhere($sql);
+                return $q->prepare();
 	}
 }
 ?>

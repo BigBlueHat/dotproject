@@ -35,14 +35,18 @@ class events {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT event_id, event_title"
-			 . "\nFROM $this->table"
-			 . "\nWHERE";
-		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
-		}
-		$sql = substr($sql,0,-4);
-		return $sql;
+                $q  = new DBQuery;
+                $q->addTable($this->table);
+                $q->addQuery('event_id');
+                $q->addQuery('event_title');
+
+                $sql = '';
+                foreach($this->search_fields as $field){
+                        $sql.=" $field LIKE '%$this->keyword%' or ";
+                }
+                $sql = substr($sql,0,-4);
+                $q->addWhere($sql);
+                return $q->prepare();
 	}
 }
 ?>

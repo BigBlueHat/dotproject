@@ -37,15 +37,20 @@ class files_content {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT *"
-			 . "\nFROM $this->table, files"
-			 . "\nWHERE files.file_id = $this->table.file_id AND ";
-		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
-		}
-		$sql = substr($sql,0,-4);
-		$sql .= ' GROUP BY files.file_id';
-		return $sql;
+                $q  = new DBQuery;
+                $q->addTable($this->table);
+		$q->addTable('files');
+                $q->addQuery('*');
+		$q->addWhere("files.file_id = $this->table.file_id");
+
+                $sql = '';
+                foreach($this->search_fields as $field){
+                        $sql.=" $field LIKE '%$this->keyword%' or ";
+                }
+                $sql = substr($sql,0,-4);
+                $q->addWhere($sql);
+		$q->addGroup('files.file_id');
+                return $q->prepare();
 	}
 }
 ?>

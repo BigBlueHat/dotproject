@@ -36,14 +36,18 @@ class forums {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT forum_id, forum_name"
-			 . "\nFROM $this->table"
-			 . "\nWHERE";
-		foreach($this->search_fields as $field){
-			$sql.=" $field LIKE '%$this->keyword%' or ";
-		}
-		$sql = substr($sql,0,-4);
-		return $sql;
+                $q  = new DBQuery;
+                $q->addTable($this->table);
+                $q->addQuery('forum_id');
+                $q->addQuery('forum_name');
+
+                $sql = '';
+                foreach($this->search_fields as $field){
+                        $sql.=" $field LIKE '%$this->keyword%' or ";
+                }
+                $sql = substr($sql,0,-4);
+                $q->addWhere($sql);
+                return $q->prepare();
 	}
 
 }

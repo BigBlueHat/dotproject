@@ -36,14 +36,18 @@ class companies {
 	}
 	
 	function _buildQuery(){
-		$sql = "SELECT company_id, company_name"
-			 . "\nFROM $this->table"
-			 . "\nWHERE";
+		$q  = new DBQuery;
+		$q->addTable($this->table);
+		$q->addQuery('company_id');
+		$q->addQuery('company_name');
+
+		$sql = '';
 		foreach($this->search_fields as $field){
 			$sql.=" $field LIKE '%$this->keyword%' or ";
 		}
 		$sql = substr($sql,0,-4);
-		return $sql;
+		$q->addWhere($sql);
+		return $q->prepare();
 	}
 }
 ?>
