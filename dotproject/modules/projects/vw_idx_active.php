@@ -23,7 +23,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 <?php
 foreach ($projects as $row) {
-	$end_date = CDate::fromDateTime( $row["project_end_date"] );
+	$end_date = $row["project_end_date"] ? new CDate( db_dateTime2unix( $row["project_end_date"] ) ) : null;
 ?>
 <tr>
 	<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#<?php echo $row["project_color_identifier"];?>">
@@ -39,7 +39,7 @@ foreach ($projects as $row) {
 	<td align="center" nowrap>
 		<?php echo $row["total_tasks"].($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');?>
 		</td>
-	<td align="right" nowrap="nowrap"><?php if($end_date) {echo $end_date->toString( $df );}?></td>
+	<td align="right" nowrap="nowrap"><?php echo $end_date ? $end_date->toString( $df ) : '-';?></td>
 </tr>
 <?php }?>
 <tr>
