@@ -1,24 +1,20 @@
 <?php /* COMPANIES $Id$ */
 $AppUI->savePlace();
 
+// retrieve any state parameters
 if (isset( $_GET['orderby'] )) {
 	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
 }
 $orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
 
+// load the company types
 $types = dPgetSysVal( 'CompanyType' );
 
 // get any companies denied from viewing
-$sql = "
-SELECT company_id
-FROM companies, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'companies'
-	AND permission_item = company_id
-	AND permission_value = 0
-";
-$deny = db_loadColumn( $sql );
+$obj = new CCompany();
+$deny = $obj->getDeniedRecords( $AppUI->user_id );
 
+// retrieve list of companies
 $sql = "
 SELECT company_id, company_name, company_type,
 	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
