@@ -195,7 +195,7 @@ class CDpObject {
 			return $msg;
 		}
                 
-                addHistory($this->_tbl . '_delete(' . $this->$k . ')', 0, $this->_tbl);
+                addHistory($this->_tbl, $this->$k, 'delete');
 		$sql = "DELETE FROM $this->_tbl WHERE $this->_tbl_key = '".$this->$k."'";
 		if (!db_exec( $sql )) {
 			return db_error();

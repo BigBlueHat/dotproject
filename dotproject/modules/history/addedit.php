@@ -15,8 +15,8 @@ if($action) {
 	$userid = $AppUI->user_id;
 	
 	if( $action == "add" ) {
-		$sql = "INSERT INTO history (history_date, history_description, history_user, history_project) " .
-		  "VALUES (now(), '$history_description', $userid, $history_project)";
+		$sql = "INSERT INTO history (history_table, history_action, history_date, history_description, history_user, history_project) " .
+		  "VALUES ('history', 'add', now(), '$history_description', $userid, $history_project)";
 		$okMsg = "History added";
 	} else if ( $action == "update" ) {
 		$sql = "UPDATE history SET history_description = '$history_description', history_project = '$history_project' WHERE history_id = $history_id";

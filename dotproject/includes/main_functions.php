@@ -235,7 +235,7 @@ function dPgetParam( &$arr, $name, $def=null ) {
 # add history entries for tracking changes
 #
 
-function addHistory( $description, $project_id = 0, $module_id = 0) {
+function addHistory( $table, $id, $action = 'modify', $description = '', $project_id = 0) {
 	global $AppUI, $dPconfig;
 	/*
 	 * TODO:
@@ -263,8 +263,8 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	}
 
 	$psql =	"INSERT INTO history " .
-			"( history_description, history_user, history_date, history_project, history_module ) " .
-	  		" VALUES ( '$description', " . $AppUI->user_id . ", now(), '$project_id', '$module_id' )";
+			"( history_action, history_item, history_description, history_user, history_date, history_project, history_table ) " .
+	  		" VALUES ( '$action', $id, '$description', " . $AppUI->user_id . ", now(), '$project_id', '$table' )";
 	db_exec($psql);
 	echo db_error();
 }

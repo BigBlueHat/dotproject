@@ -26,42 +26,45 @@ $AppUI->savePlace();
 function show_history($history)
 {
 //        return $history;
-        $limit = strpos($history, '_');
-        $module = substr($history, 0, $limit);
-        $history = substr($history, $limit + 1);
-        $limit = strpos($history, '(');
-        $action = substr($history, 0, $limit);
-        $history = substr($history, $limit + 1);
-        $id = substr($history, 0, -1);
-        $history = substr($history, 0, -1);
+        $id = $history['history_item'];
+        $module = $history['history_table'];        
         
-        if ($action == 'add')
+        if ($history['history_action'] == 'add')
                 $msg = 'Added new ';
-        else if ($action == 'update')
+        else if ($history['history_action'] == 'update')
                 $msg = 'Modified ';
-        else if ($action == 'delete')
-                return 'Deleted (' . $history . ') from ' . $module;
-        
-        if ($module == 'files')
-                $link = '&a=addedit&file_id=';
-        else if ($module == 'tasks')
-                $link = '&a=view&task_id=';
-        else if ($module == 'forum')
-                $link = '&a=viewer&forum_id=';
-        else if ($module == 'projects')
-                $link = '&a=view&project_id=';
-        else if ($module == 'companies')
-                $link = '&a=view&company_id=';
-        else if ($module == 'contacts')
-                $link = '&a=view&contact_id=';
+        else if ($history['history_action'] == 'delete')
+                return 'Deleted "' . $history['history_description'] . '" from ' . $module . ' module.';
 
-        $msg .= '<a href="?m=' . $module . $link . $id . '">item</a> in ';
+
+        switch ($history['history_table'])
+        {
+        case 'files':
+                $link = '&a=addedit&file_id='; break;
+        case 'tasks':
+                $link = '&a=view&task_id='; break;
+        case 'forums':
+                $link = '&a=viewer&forum_id='; break;
+        case 'projects':
+                $link = '&a=view&project_id='; break;
+        case 'companies':
+                $link = '&a=view&company_id='; break;
+        case 'contacts':
+                $link = '&a=view&contact_id='; break;
+        case 'task_log':
+                $module = 'tasks';
+                $link = '&a=view&task_id=170&tab=1&task_log_id=';
+                break;
+        }
+
+        $msg .= 'item <a href="?m=' . $module . $link . $id . '">"' . $history['history_description'] . '"</a> in ';
 
         $msg .= $module . ' module.'; // . $history;
 
         return $msg;
 }
 
+//TODO: Add security
 $psql = 
 "SELECT * from history, users WHERE history_user = user_id ORDER BY history_date DESC";
 $prc = db_exec( $psql );
@@ -83,7 +86,7 @@ while ($row = db_fetch_assoc( $prc )) {
 <tr>	
 	<td><a href='<?php echo "?m=history&a=addedit&history_id=" . $row["history_id"] ?>'><img src="./images/icons/pencil.gif" alt="<?php echo $AppUI->_( 'Edit History' ) ?>" border="0" width="12" height="12"></a></td>
 	<td><?php echo $row["history_date"]?></td>
-	<td><?php echo show_history($row["history_description"]) ?></td>	
+	<td><?php echo show_history($row) ?></td>	
 	<td><?php echo $row["user_username"]?></td>
 </tr>	
 <?php
