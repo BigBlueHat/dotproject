@@ -213,6 +213,7 @@
 			GLOBAL $dPconfig;
 			$this->username = $username;
 
+			if (strlen($password) == 0) return false; // LDAP will succeed binding with no password on AD (defaults to anon bind)
 			if ($this->fallback == true)
 			{
 				if (Parent::authenticate($username, $password)) return true;	
@@ -224,13 +225,15 @@
 				return false;
 			}
 			@ldap_set_option($rs, LDAP_OPT_PROTOCOL_VERSION, $this->ldap_version);
+			@ldap_set_option($rs, LDAP_OPT_REFERRALS, 0);
 
-			$ldap_bind_dn = "cn=".$this->ldap_search_user.",".$this->base_dn;
+			//$ldap_bind_dn = "cn=".$this->ldap_search_user.",".$this->base_dn;
+			$ldap_bind_dn = $this->ldap_search_user;	
 
 			if (!$bindok = @ldap_bind($rs, $ldap_bind_dn, $this->ldap_search_pass))
 			{
 				// Uncomment for LDAP debugging
-				/*
+				/*	
 				$error_msg = ldap_error($rs);
 				die("Couldnt Bind Using ".$ldap_bind_dn."@".$this->ldap_host.":".$this->ldap_port." Because:".$error_msg);
 				*/
@@ -240,6 +243,7 @@
 			{
 				$filter_r = str_replace("%USERNAME%", $username, $this->filter);
 				$result = @ldap_search($rs, $this->base_dn, $filter_r);
+				if (!$result) return false; // ldap search returned nothing or error
 				
 				$result_user = ldap_get_entries($rs, $result);
 				if ($result_user["count"] == 0) return false; // No users match the filter
@@ -252,6 +256,10 @@
 
 				if (!$bind_user = @ldap_bind($rs, $ldap_user_dn, $password))
 				{
+					/*
+					$error_msg = ldap_error($rs);
+					die("Couldnt Bind Using ".$ldap_user_dn."@".$this->ldap_host.":".$this->ldap_port." Because:".$error_msg);
+					*/
 					return false;
 				}
 				else
