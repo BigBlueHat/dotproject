@@ -659,6 +659,155 @@ class CTask extends CDpObject {
 		}
 		return '';
 	}
+
+/**
+ * Email the task log to assignees, task contacts, project contacts, and others
+ * based upon the information supplied by the user.
+*/
+	function email_log(&$log, $assignees, $task_contacts, $project_contacts, $others, $extras)
+	{
+		global $AppUI, $locale_char_set, $dPconfig;
+
+		$mail_recipients = array();
+		$q =& new DBQuery;
+		if (isset($assignees) && $assignees == 'on') {
+			$q->clear();
+			$q->addTable('user_tasks', 'ut');
+			$q->addWhere('ut.task_id = ' . $this->task_id);
+			$q->leftJoin('users', 'ua', 'ua.user_id = ut.user_id');
+			$q->leftJoin('contacts', 'c', 'c.contact_id = ua.user_contact');
+			$q->addQuery('c.contact_email');
+			$q->addQuery('c.contact_first_name');
+			$q->addQuery('c.contact_last_name');
+			$req =& $q->exec(QUERY_STYLE_NUM);
+			for($req; ! $req->EOF; $req->MoveNext()) {
+				list($email, $first, $last) = $req->fields;
+				if (! isset($mail_recipients[$email]))
+					$mail_recipients[$email] = trim($first) . ' ' . trim($last);
+			}
+		}
+		if (isset($task_contacts) && $task_contacts == 'on') {
+			$q->clear();
+			$q->addTable('task_contacts', 'tc');
+			$q->addWhere('tc.task_id = ' . $this->task_id);
+			$q->leftJoin('contacts', 'c', 'c.contact_id = tc.contact_id');
+			$q->addQuery('c.contact_email');
+			$q->addQuery('c.contact_first_name');
+			$q->addQuery('c.contact_last_name');
+			$req =& $q->exec(QUERY_STYLE_NUM);
+			for ($req; ! $req->EOF; $req->MoveNext()) {
+				list($email, $first, $last) = $req->fields;
+				if (! isset($mail_recipients[$email]))
+					$mail_recipients[$email] = $first . ' ' . $last;
+			}
+		}
+		if (isset($project_contacts) && $project_contacts == 'on') {
+			$q->clear();
+			$q->addTable('project_contacts', 'pc');
+			$q->addWhere('pc.project_id = ' . $this->task_project);
+			$q->leftJoin('contacts', 'c', 'c.contact_id = pc.contact_id');
+			$q->addQuery('c.contact_email');
+			$q->addQuery('c.contact_first_name');
+			$q->addQuery('c.contact_last_name');
+			$req =& $q->exec(QUERY_STYLE_NUM);
+			for ($req; ! $req->EOF; $req->MoveNext()) {
+				list($email, $first, $last) = $req->fields;
+				if (! isset($mail_recipients[$email]))
+					$mail_recipients[$email] = $first . ' ' . $last;
+			}
+		}
+		if (isset($others)) {
+			$others = trim($others, " \r\n\t,"); // get rid of empty elements.
+			if (strlen($others) > 0) {
+				$q->clear();
+				$q->addTable('contacts', 'c');
+				$q->addWhere('c.contact_id in (' . $others . ')');
+				$q->addQuery('c.contact_email');
+				$q->addQuery('c.contact_first_name');
+				$q->addQuery('c.contact_last_name');
+				$req =& $q->exec(QUERY_STYLE_NUM);
+				for ($req; ! $req->EOF; $req->MoveNext()) {
+					list($email, $first, $last) = $req->fields;
+					if (! isset($mail_recipients[$email]))
+						$mail_recipients[$email] = $first . ' ' . $last;
+				}
+			}
+		}
+		if (isset($extras) && $extras) {
+			// Search for semi-colons, commas or spaces and allow any to be separators
+			$extra_list = preg_split('/[\s,;]+/', $extras);
+			foreach ($extra_list as $email) {
+				if ($email && ! isset($mail_recipients[$email]) )
+					$mail_recipients[$email] = $email;
+			}
+		}
+		$q->clear(); // Reset to the default state.
+		if (count($mail_recipients) == 0) {
+			return false;
+		}
+
+		// Build the email and send it out.
+		$char_set = isset($locale_char_set) ? $locale_char_set : '';
+		$mail = new Mail;
+		// Grab the subject from user preferences
+		$prefix = $AppUI->getPref('TASKLOGSUBJ');
+		$mail->Subject( $prefix .  ' ' . $log->task_log_name, $char_set);
+
+		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
+		$projname = db_loadResult( $sql );
+
+		$body = $AppUI->_('Project') . ": $projname\n";
+		if ($this->task_parent != $this->task_id) {
+			$q->clear();
+			$q->addTable('tasks');
+			$q->addQuery('task_name');
+			$q->addWhere('task_id = ' . $this->task_parent);
+			$req =& $q->exec(QUERY_STYLE_NUM);
+			if ($req) {
+				$body .= $AppUI->_('Parent Task') . ': ' . $req->fields[0] . "\n";
+			}
+		}
+		$body .= $AppUI->_('Task') . ": $this->task_name\n";
+		$task_types = dPgetSysVal("TaskType");
+		$body .= $AppUI->_('Task Type') . ':' . $task_types[$this->task_type] . "\n";
+		$body .= $AppUI->_('URL') . ": {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id\n\n";
+		$body .= $AppUI->_('Summary') . ": $log->task_log_name\n\n";
+		$body .= $log->task_log_description;
+
+		// Append the user signature to the email - if it exists.
+		$q->clear();
+		$q->addQuery('user_signature');
+		$q->addWhere('user_id = ' . $AppUI->user_id);
+		$q->addTable('users');
+		if ($res = $q->exec()) {
+			if ($res->fields['user_signature'])
+				$body .= "\n--\n" . $res->fields['user_signature'];
+		}
+		
+		$mail->Body( $body, $char_set);
+		$mail->From( "$AppUI->user_first_name $AppUI->user_last_name <$AppUI->user_email>");
+
+		$recipient_list = "";
+		foreach ($mail_recipients as $email => $name) {
+			if ($mail->ValidEmail($email)) {
+				$mail->To($email);
+				$recipient_list .= "$email ($name)\n";
+			} else {
+				$recipient_list .= "Invalid email address $email, not sent\n";
+			}
+		}
+		$q->clear();
+		$mail->Send();
+		// Now update the log
+		$save_email = @$AppUI->getPref('TASKLOGNOTE');
+		if ($save_email) {
+		  $log->task_log_description .= "\nEmailed " . date('d/m/Y H:i:s') . " to:\n$recipient_list";
+			return true;
+		}
+
+		return false; // No update needed.
+	}
+
 /**
 * @param Date Start date of the period
 * @param Date End date of the period

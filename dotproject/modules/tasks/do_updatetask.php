@@ -101,6 +101,17 @@ if ($notify_owner) {
 	}
 }
 
+// Check if we need to email the task log to anyone.
+$email_assignees = dPgetParam($_POST, 'email_assignees', null);
+$email_task_contacts = dPgetParam($_POST, 'email_task_contacts', null);
+$email_project_contacts = dPgetParam($_POST, 'email_project_contacts', null);
+$email_others = dPgetParam($_POST, 'email_others', '');
+$email_extras = dPgetParam($_POST, 'email_extras', null);
+
+if ($task->email_log($obj, $email_assignees, $email_task_contacts, $email_project_contacts, $email_others, $email_extras)) {
+	$obj->store(); // Save the updated message. It is not an error if this fails.
+}
+ 
 
 $AppUI->redirect();
 ?>

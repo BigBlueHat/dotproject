@@ -28,12 +28,17 @@ $titleBlock->show();
 <script language="javascript">
 function submitIt(){
 	var form = document.changeuser;
-	//if (form.user_username.value.length < 3) {
-	//	alert("Please enter a valid user name");
-	//	form.user_username.focus();
-	//} else {
-		form.submit();
-	//}
+	// Collate the checked states of the task log stuff
+	var defs = document.getElementById('task_log_email_defaults');
+	var mask = 0;
+	if (form.tl_assign.checked)
+		mask += 1;
+	if (form.tl_task.checked)
+		mask += 2;
+	if (form.tl_proj.checked)
+		mask += 4;
+	defs.value = mask;
+	form.submit();
 }
 </script>
 
@@ -165,7 +170,7 @@ function submitIt(){
 	</td>
 </tr>
 <tr>
-	<td align="right"><?php echo $AppUI->_('Notification Method');?>:</td>
+	<td align="right"><?php echo $AppUI->_('Task Notification Method');?>:</td>
 	<td>
 <?php
 	$notify_filter = array( 
@@ -176,6 +181,48 @@ function submitIt(){
 	echo arraySelect( $notify_filter, 'pref_name[MAILALL]', 'class=text size=1', @$prefs['MAILALL'], true);
 
 ?>
+	</td>
+</tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('Task Log Email Defaults');?>:</td>
+	<td>
+		<input type='hidden' name='pref_name[TASKLOGEMAIL]' id='task_log_email_defaults' value='<?php echo @$prefs['TASKLOGEMAIL']; ?>'>
+<?php
+	if (! isset($prefs['TASKLOGEMAIL']))
+		$prefs['TASKLOGEMAIL'] = 0;
+
+	$tl_assign = $prefs['TASKLOGEMAIL'] & 1;
+	$tl_task = $prefs['TASKLOGEMAIL'] & 2;
+	$tl_proj = $prefs['TASKLOGEMAIL'] & 4;
+	echo $AppUI->_('Email Assignees') . "&nbsp;<input type='checkbox' name='tl_assign' id='tl_assign' ";
+	if ($tl_assign)
+		echo " checked=checked";
+	echo "><br>";
+	echo $AppUI->_('Email Task Contacts') . "&nbsp;<input type='checkbox' name='tl_task' id='tl_task' ";
+	if ($tl_task)
+		echo " checked=checked";
+	echo "><br>";
+	echo $AppUI->_('Email Project Contacts') . "&nbsp;<input type='checkbox' name='tl_proj' id='tl_proj' ";
+	if ($tl_proj)
+		echo " checked=checked";
+	echo ">";
+?>
+	</td>
+</tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('Task Log Email Subject');?>:</td>
+	<td>
+		<input type='text' name='pref_name[TASKLOGSUBJ]' value='<?php echo @$prefs['TASKLOGSUBJ']; ?>'>
+	</td>
+</tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('Task Log Email Recording Method');?>:</td>
+	<td>
+	<?php
+		$record_method['0'] = 'None';
+		$record_method['1'] = 'Apppend to Log';
+		echo arraySelect( $record_method, 'pref_name[TASKLOGNOTE]', 'class=text size=1', @$prefs['TASKLOGNOTE'], false );
+	?>
 	</td>
 </tr>
 

@@ -94,14 +94,18 @@ if ($canEdit) {
 <!-- END OF TIMER RELATED SCRIPTS -->
 
 
-<table cellspacing="1" cellpadding="2" border="0" width="100%">
-<form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
+<form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post"
+  onsubmit='updateEmailContacts();'>
 	<input type="hidden" name="uniqueid" value="<?php echo uniqid("");?>" />
 	<input type="hidden" name="dosql" value="do_updatetask" />
 	<input type="hidden" name="task_log_id" value="<?php echo $log->task_log_id;?>" />
 	<input type="hidden" name="task_log_task" value="<?php echo $log->task_log_task;?>" />
 	<input type="hidden" name="task_log_creator" value="<?php echo $AppUI->user_id;?>" />
 	<input type="hidden" name="task_log_name" value="Update :<?php echo $log->task_log_name;?>" />
+<table cellspacing="1" cellpadding="2" border="0" width="100%">
+<tr>
+    <td width='40%' valign='top' align='center'>
+      <table width='100%'>
 <tr>
 	<td align="right">
 		<?php echo $AppUI->_('Date');?>
@@ -114,19 +118,6 @@ if ($canEdit) {
 		<a href="#" onClick="popCalendar('log_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
-	</td>
-	<td align="right"><?php echo $AppUI->_('Summary');?>:</td>
-        <td valign="middle">
-                <table width="100%">
-                        <tr>
-                                <td align="left">
-                                        <input type="text" class="text" name="task_log_name" value="<?php echo $log->task_log_name;?>" maxlength="255" size="30" />
-                                </td>
-                                <td align="center"><?php echo $AppUI->_('Problem');?>:
-                                        <input type="checkbox" value="1" name="task_log_problem" <?php if($log->task_log_problem){?>checked="checked"<?php }?> />
-                                </td>
-                        </tr>
-                </table>
 	</td>
 </tr>
 <tr>
@@ -150,10 +141,6 @@ if ($canEdit) {
 		</table>
 	</td>
 
-        <td align="right" valign="middle"><?php echo $AppUI->_('Reference');?>:</td>
-        <td valign="middle">
-                <?php echo arraySelect( $taskLogReference, 'task_log_reference', 'size="1" class="text"', $log->task_log_reference );?>
-	</td>
 </tr>
 <tr>
 	<td align="right">
@@ -165,12 +152,6 @@ if ($canEdit) {
 		<input type='button' class="button" value='<?php echo $AppUI->_('Reset'); ?>' onclick="javascript:timerReset()" name='timerResetButton' /> 
 		<span id='timerStatus'></span>
 	</td>
-        <td align="right">
-		<?php echo $AppUI->_('URL');?>:
-	</td>
-        <td>
-                <input type="text" class="text" name="task_log_related_url" value="<?php echo @$log->task_log_related_url;?>" size="50" maxlength="255" title="<?php echo $AppUI->_('Must in general be entered with protocol name, e.g. http://...');?>"/>
-        </td>
 </tr>
 <tr>
         <td align="right">
@@ -181,10 +162,6 @@ if ($canEdit) {
 		echo arraySelect( $task_log_costcodes, 'task_log_costcodes', 'size="1" class="text" onchange="javascript:task_log_costcode.value = this.options[this.selectedIndex].text;"', '' );
 ?>
 		&nbsp;->&nbsp; <input type="text" class="text" name="task_log_costcode" value="<?php echo $log->task_log_costcode;?>" maxlength="8" size="8" />
-	</td>
-	<td rowspan="2" align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
-	<td rowspan="2">
-		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo $log->task_log_description;?></textarea>
 	</td>
 </tr>
 
@@ -216,12 +193,128 @@ if ($canEdit) {
 <?php
 	}
 ?>
+</table>
+</td>
+<td width='60%' valign='top' align='center'>
+<table width='100%'>
 <tr>
-	<td colspan="4" valign="bottom" align="right">
+	<td align="right"><?php echo $AppUI->_('Summary');?>:</td>
+        <td valign="middle">
+                <table width="100%">
+                        <tr>
+                                <td align="left">
+                                        <input type="text" class="text" name="task_log_name" value="<?php echo $log->task_log_name;?>" maxlength="255" size="30" />
+                                </td>
+                                <td align="center"><?php echo $AppUI->_('Problem');?>:
+                                        <input type="checkbox" value="1" name="task_log_problem" <?php if($log->task_log_problem){?>checked="checked"<?php }?> />
+                                </td>
+                        </tr>
+                </table>
+	</td>
+</tr>
+<tr>
+        <td align="right" valign="middle"><?php echo $AppUI->_('Reference');?>:</td>
+        <td valign="middle">
+                <?php echo arraySelect( $taskLogReference, 'task_log_reference', 'size="1" class="text"', $log->task_log_reference );?>
+	</td>
+</tr>
+<tr>
+        <td align="right">
+		<?php echo $AppUI->_('URL');?>:
+	</td>
+        <td>
+                <input type="text" class="text" name="task_log_related_url" value="<?php echo @$log->task_log_related_url;?>" size="50" maxlength="255" title="<?php echo $AppUI->_('Must in general be entered with protocol name, e.g. http://...');?>"/>
+        </td>
+</tr>
+<tr>
+	<td align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
+	<td>
+		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo $log->task_log_description;?></textarea>
+	</td>
+</tr>
+<tr>
+	<td align="right" valign="top"><?php echo $AppUI->_('Email Log to');?>:</td>
+	<td>
+<?php
+	$tl = $AppUI->getPref('TASKLOGEMAIL');
+	$ta = $tl & 1;
+	$tt = $tl & 2;
+	$tp = $tl & 4;
+?>
+		<input type='checkbox' name='email_assignees' <?php
+		   if ($ta)
+				echo "checked='checked'";
+				?>><?php echo $AppUI->_('Task Assignees');?>
+		<input type='hidden' name='email_task_list' id='email_task_list'
+		  value='<?php
+				$task_email_title = array();
+				$q = new DBQuery;
+				$q->addTable('task_contacts', 'tc');
+				$q->leftJoin('contacts', 'c', 'c.contact_id = tc.contact_id');
+				$q->addWhere("tc.task_id = '$task_id'");
+				$q->addQuery('tc.contact_id');
+				$q->addQuery('c.contact_first_name, c.contact_last_name');
+				$req =& $q->exec();
+				$cid = array();
+				for ($req; ! $req->EOF; $req->MoveNext()) {
+					$cid[] = $req->fields['contact_id'];
+					$task_email_title[] = $req->fields['contact_first_name']
+					. ' ' . $req->fields['contact_last_name'];
+				}
+				echo implode(',', $cid);
+?>'>
+		<input type='checkbox' onmouseover="window.status = '<?php echo addslashes(implode(',',$task_email_title)); ?>';"
+		onmouseout="window.status = '';"
+		name='email_task_contacts' id='email_task_contacts' <?php
+		   if ($tt)
+				echo "checked='checked'";
+				?>><?php echo $AppUI->_('Task Contacts');?>
+		<input type='hidden' name='email_project_list' id='email_project_list'
+		  value='<?php
+				$q->clear();
+				$q->addTable('project_contacts', 'pc');
+				$q->leftJoin('contacts', 'c', 'c.contact_id = pc.contact_id');
+				$q->addWhere("pc.project_id = '$obj->task_project'");
+				$q->addQuery('pc.contact_id');
+				$q->addQuery('c.contact_first_name, c.contact_last_name');
+				$req =& $q->exec();
+				$cid = array();
+				$proj_email_title = array();
+				for ($req; ! $req->EOF; $req->MoveNext()) {
+					if (! in_array($req->fields['contact_id'], $cid)) {
+					  $cid[] = $req->fields['contact_id'];
+					  $proj_email_title[] = $req->fields['contact_first_name']
+					  . ' ' . $req->fields['contact_last_name'];
+					}
+				}
+				echo implode(',', $cid);
+				$q->clear();
+?>'>
+		<input type='checkbox' onmouseover="window.status = '<?php echo addslashes(implode(',', $proj_email_title)); ?>';" 
+		 onmouseout="window.status = '';"
+		 name='email_project_contacts' id='email_project_contacts' <?php
+		   if ($tp)
+				echo "checked='checked'";
+				?>><?php echo $AppUI->_('Project Contacts');?>
+		<input type='hidden' name='email_others' id='email_others' value=''>
+		<input type='button' class='button' value='<?php echo $AppUI->_('Other Contacts...');?>' onclick='javascript:popEmailContacts();' />
+	</td>
+</tr>
+<tr>
+	<td align="right" valign="top"><?php echo $AppUI->_('Extra Recipients');?>:</td>
+	<td>
+		<input type="text" class="text" name="email_extras" maxlength="255" size="30" />
+	</td>
+</tr>
+<tr>
+	<td colspan="2" valign="bottom" align="right">
 		<input type="button" class="button" value="<?php echo $AppUI->_('update task');?>" onclick="updateTask()" />
 	</td>
 </tr>
-
-</form>
+</td>
 </table>
+</td>
+</tr>
+</table>
+</form>
 <?php } ?>
