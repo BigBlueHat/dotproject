@@ -81,7 +81,10 @@ if ($sub_form) {
 	$hperc_assign_ar = array();
 	for ($i = 0; $i < sizeof($tmp_ar); $i++) {
 		$tmp = explode("=", $tmp_ar[$i]);
-		$hperc_assign_ar[$tmp[0]] = $tmp[1];
+		if (count($tmp) > 1)
+			$hperc_assign_ar[$tmp[0]] = $tmp[1];
+		else
+			$hperc_assign_ar[$tmp[0]] = 100;
 	}
 
 	// let's check if there are some assigned departments to task
