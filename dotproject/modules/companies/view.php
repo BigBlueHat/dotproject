@@ -1,7 +1,7 @@
 <?php /* COMPANIES $Id$ */
 $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
-// check permissions for this company
+// check permissions for this record
 $canRead = !getDenyRead( $m, $company_id );
 $canEdit = !getDenyEdit( $m, $company_id );
 
@@ -15,7 +15,7 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
 
-// check if this object has dependancies to prevent deletion
+// check if this record has dependancies to prevent deletion
 $msg = '';
 $obj = new CCompany();
 $canDelete = $obj->canDelete( $msg, $company_id );
@@ -55,13 +55,7 @@ if ($canEdit) {
 	$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
 	
 	if ($canEdit) {
-		$titleBlock->addCrumbRight(
-			'<table cellspacing="0" cellpadding="0" border="0"?<tr><td>'
-			. dPshowImage( './images/icons/'.($canDelete?'stock_delete-16.png':'stock_trash_full-16.png'), '16', '16',  '' )
-			. '</td><td>&nbsp;'
-			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">' . $AppUI->_('delete company') . '</a>'
-			. '</td></tr></table>'
-		);
+		$titleBlock->addCrumbDelete( 'delete company', $canDelete, $msg );
 	}
 }
 $titleBlock->show();
