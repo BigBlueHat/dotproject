@@ -6,22 +6,23 @@ if (!$canEdit) {
 }
 
 
+
 // check whether vCard file should be fetched from source or parsed for vCardKeys; criteria: get parameters
-if ( isset($_REQUEST['vcf']) && !is_null($_REQUEST['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppressHeaders']=='true')) {	//parse and store vCard file
+if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppressHeaders']=='true')) {	//parse and store vCard file
 
-
+	$vcf = $_FILES['vcf'];
 	// include PEAR vCard class
 	require_once( $AppUI->getLibraryClass( 'PEAR/Contact_Vcard_Parse' ) );
 
 
-	if (is_uploaded_file($vcf)) {
+	if (is_uploaded_file($vcf['tmp_name'])) {
 
 		// instantiate a parser object
 		$parse = new Contact_Vcard_Parse();
 
 		// parse a vCard file and store the data
 		// in $cardinfo
-		$cardinfo = $parse->fromFile($vcf);
+		$cardinfo = $parse->fromFile($vcf['tmp_name']);
 
 		// store the card info array
 
