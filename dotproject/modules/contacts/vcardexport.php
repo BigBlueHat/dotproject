@@ -39,6 +39,7 @@ if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 	$vcard->setBirthday($contacts[0]['contact_birthday']);
 
 	// set a note of the contact
+	$contacts[0]['contact_notes'] = str_replace("\r", " ", $contacts[0]['contact_notes'] );
 	$vcard->setNote($contacts[0]['contact_notes']);
 
 	// add an organization
