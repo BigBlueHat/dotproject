@@ -179,7 +179,7 @@ function showcompany($company, $restricted = false)
 		}
 */
                 foreach($task_logs as $task_log)
-                        $project_hours += $task_log['hours'];
+                        $project_hours += $task_log;
 		$project_row .= '<td>' . round($project_hours, 2) . '</td></tr>';
 		$pdfproject[]=round($project_hours, 2);
 		$hours += $project_hours;
@@ -221,7 +221,7 @@ else
 	foreach(db_loadColumn($sql) as $company)
 		$total += showcompany($company, true);
 }
-	
+
 	
 
 echo '<h2>' . $AppUI->_('Total Hours') . ":"; 
