@@ -243,7 +243,7 @@ if(isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_ti
 		$can_edit_time_information = true;
 	}
 	
-} else if (isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_time_editing']==true) { // If all users are able, then don't check anything
+} else if (!isset($dPconfig['restrict_task_time_editing']) || $dPconfig['restrict_task_time_editing']==false) { // If all users are able, then don't check anything
 	$can_edit_time_information = true;
 }
 
@@ -769,21 +769,21 @@ function changeRecordType(value){
 					<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
 				</td>
 			</tr>
-			<?php
-				} else {  
-			?>
-			<tr>
-					<td colspan='2'><?php echo $AppUI->_("Only the task owner, project owner, or system administirator is able to edit time related information"); ?></td>
-				</tr>
-			<?php
-				}// end of can_edit_time_information
-			?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
 					<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic!="0") echo "checked"?> />
 				</td>
 			</tr>
+			<?php
+				} else {  
+			?>
+			<tr>
+					<td colspan='2'><?php echo $AppUI->_("Only the task owner, project owner, or system administrator is able to edit time related information."); ?></td>
+				</tr>
+			<?php
+				}// end of can_edit_time_information
+			?>
 		</table>
 	</td>
 </tr>
