@@ -31,7 +31,8 @@ class CAppUI {
 // supported languages
 	var $locales = array(		
 		'en' => 'English', 
-		'es' => 'Spanish'
+		'es' => 'Spanish',
+		'pt_br' => 'Portugese-Brazilian'
 	);
 	var $locale_warn = true;	// warn when a translation is not found
 
@@ -90,8 +91,8 @@ class CAppUI {
 		return $str;
 	}
 // Save the current url query string
-	function savePlace() {
-		$this->state['SAVEDPLACE'] = $_SERVER['QUERY_STRING'];
+	function savePlace( $query='' ) {
+		$this->state['SAVEDPLACE'] = $query ? $query : $_SERVER['QUERY_STRING'];
 	}
 	function resetPlace() {
 		$this->state['SAVEDPLACE'] = '';
