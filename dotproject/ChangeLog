@@ -1,3 +1,49 @@
+2003-04-16 23:13  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Updated libmail class import
+
+2003-04-16 21:27  (kripper)
+---------------------------------
+includes/main_functions.php
+- Fixed wrong delimiter warning
+
+2003-04-16 21:17  (eddieajau)
+---------------------------------
+modules/ticketsmith/followup.php
+- Updated mail handling
+
+2003-04-16 21:14  (eddieajau)
+---------------------------------
+modules/forums/forums.class.php
+- Updated class importing
+
+2003-04-16 21:13  (eddieajau)
+---------------------------------
+modules/contacts/addedit.php
+- Fixed bug in access control
+
+2003-04-16 21:12  (eddieajau)
+---------------------------------
+classes/libmail.class.php
+classes/libmail.php
+- File renamed
+
+2003-04-16 19:18  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed scope problem with durnTypes variable
+
+2003-04-16 19:17  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Made durnTypes variable name consistent with other modules
+
+2003-04-16 12:26  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-16 08:48  (eddieajau)
 ---------------------------------
 locales/en/common.inc
@@ -452,52 +498,6 @@ docs/CHANGES.txt
 - No longer required
 
 2003-04-08 08:06  (eddieajau)
----------------------------------
-docs/TODO.txt
-- No longer relevant
-
-2003-04-08 08:04  (eddieajau)
----------------------------------
-index.php
-- Added license
-
-2003-04-07 07:59  (eddieajau)
----------------------------------
-includes/config-dist.php
-- Removed duplicate working hours entry
-
-2003-04-07 07:54  (eddieajau)
----------------------------------
-modules/projects/index.php
-- Companies list only shows those companies in listed projects
-
-2003-04-06 20:31  (eddieajau)
----------------------------------
-fileviewer.php
-- Fixed another security bypass problem
-
-2003-04-04 23:29  (eddieajau)
----------------------------------
-modules/files/index.php
-modules/projects/index.php
-- Minor change in deny list function
-
-2003-04-04 23:28  (eddieajau)
----------------------------------
-fileviewer.php
-- Fixed security bug in denied projects
-
-2003-04-04 23:19  (eddieajau)
----------------------------------
-includes/main_functions.php
-- Reworked incompatible fmod function
-
-2003-04-04 23:15  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Fixed bug if locale_warn not defined in config file
-
-2003-04-04 07:36  (eddieajau)
 ...
 
 (This file has been wrapped)
