@@ -26,7 +26,7 @@ $tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab
 $active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
 if (isset( $_POST['company_id'] )) {
-	$AppUI->setState( 'ProjIdxCompany', $_POST['company_id'] );
+	$AppUI->setState( 'ProjIdxCompany', intval( $_POST['company_id'] ) );
 }
 $company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
 
