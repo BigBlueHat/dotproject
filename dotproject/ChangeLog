@@ -1,3 +1,20 @@
+2003-10-28 19:22  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+style/default/overrides.php
+- Fixed problem in tab box display when user preferences are for flat.
+
+2003-10-28 03:50  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+modules/tasks/tasks.php
+- Fix to allow flat display of projects.
+
+2003-10-27 03:42  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-26 21:05  (ajdonnison)
 ---------------------------------
 modules/files/files.class.php
@@ -481,23 +498,6 @@ includes/main_functions.php
 2003-09-09 09:08  (gregorerhardt)
 ---------------------------------
 style/default/favicon.ico
-style/default/header.php
-style/default/login.php
-- added dP-logo favicon to default style
-
-2003-09-09 04:14  (gregorerhardt)
----------------------------------
-locales/en/common.inc
-locales/en/projects.inc
-- sysvals translated
-
-2003-09-09 04:03  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-09 03:57  (gregorerhardt)
----------------------------------
 ...
 
 (This file has been wrapped)
