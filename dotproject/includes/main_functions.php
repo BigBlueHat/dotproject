@@ -234,7 +234,8 @@ function dPformatDuration($x) {
     global $dPconfig;
     global $AppUI;
     $dur_day = floor($x / $dPconfig['daily_working_hours']);
-    $dur_hour = fmod($x, $dPconfig['daily_working_hours']);
+    //$dur_hour = fmod($x, $dPconfig['daily_working_hours']);
+    $dur_hour = $x - $dur_day*$dPconfig['daily_working_hours'];
     $str = '';
     if ($dur_day > 1) {
         $str .= $dur_day .' '. $AppUI->_('days'). ' ';
