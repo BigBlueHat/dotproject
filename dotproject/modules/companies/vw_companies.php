@@ -1,8 +1,11 @@
 <?php /* COMPANIES $Id$ */
 
-global $companiesType;
 global $search_string;
 global $owner_filter_id;
+global $currentTabId;
+global $currentTabName;
+global $tabbed;
+global $type_filter;
 
 // retrieve any state parameters
 if (isset( $_GET['orderby'] )) {
@@ -18,20 +21,13 @@ $types = dPgetSysVal( 'CompanyType' );
 $obj = new CCompany();
 $allowedCompanies = $obj->getAllowedRecords($AppUI->user_id, 'company_id, company_name');
 
-if ( $companiesType == -1 ){
-	//Plain view
-	foreach ($types as $company_key => $company_type){
-		$company_type = trim($company_type);
-		$flip_company_types[$company_type] = $company_key;
-	}
-	$company_type_filter = $flip_company_types[chop($v[1])];
-} else{
-	//Tabbed view
-	$company_type_filter = $companiesType;
-	//Not Defined
-	if ( $companiesType > count($types)-1)
-		$company_type_filter = 0;
-}
+$company_type_filter = $currentTabId;
+//Not Defined
+$companiesType = true;
+if ($currentTabName == "All Companies")
+	$companiesType = false;
+if ($currentTabName == "Not Applicable")
+	$company_type_filter = 0;
 
 // retrieve list of records
 $sql = "SELECT company_id, company_name, company_type, company_description,"

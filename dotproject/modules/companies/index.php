@@ -85,13 +85,23 @@ foreach($types as $type_id => $type){
 // $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
 $companiesType = $companiesTypeTab;
 
+/*
 if ( $companiesTypeTab != -1 ) {
 	$types[0] = "All Companies";
 	$types[] = "Not Applicable";
 }
+*/
 
 $tabBox = new CTabBox( "?m=companies", dPgetConfig('root_dir')."/modules/companies/", $companiesTypeTab );
-foreach($types as $type_name){
+if ($tabbed = $tabBox->isTabbed()) {
+	if (isset($types[0]))
+		$types[] = $types[0];
+	$types[0] = "All Companies";
+	$types[] = "Not Applicable";
+}
+$type_filter = array();
+foreach($types as $type => $type_name){
+	$type_filter[] = $type;
 	$tabBox->add('vw_companies', $type_name);
 }
 
