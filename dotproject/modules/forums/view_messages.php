@@ -2,14 +2,17 @@
 $AppUI->savePlace();
 $sort = dPgetParam($_REQUEST, 'sort', 'asc');
 $viewtype = dPgetParam($_REQUEST, 'viewtype', 'normal');
+$hideEmail = dPgetConfig('hide_email_addresses', false );
 
 $sql = "
 SELECT forum_messages.*,
 	contact_first_name, contact_last_name, contact_email, user_username,
-	forum_moderated
+	forum_moderated, visit_user
 FROM forum_messages, forums
 LEFT JOIN users ON message_author = users.user_id
 LEFT JOIN contacts ON contact_id = user_contact
+LEFT JOIN forum_visits ON visit_user = '{$AppUI->user_id}' AND visit_forum = '$forum_id'
+AND visit_message = forum_messages.message_id
 WHERE forum_id = message_forum
 	AND (message_id = $message_id OR message_parent = $message_id)" .
   ( (@$dPconfig['forum_descendent_order'] || dPgetParam($_REQUEST,'sort',0)) ? " ORDER BY message_date $sort" : "" );
@@ -120,6 +123,9 @@ if ($viewtype == 'single')
 	$s = '';
         $first = true;
 }
+
+$new_messages = array();
+
 foreach ($messages as $row) {
         // Find the parent message - the topic.
         if ($row['message_id'] == $message_id)
@@ -144,12 +150,27 @@ if ($viewtype =='normal')
         $s .= "<tr>";
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
-	$s .= '<a href="mailto:'.$row["contact_email"].'">';
-	$s .= '<font size="2">'.$row['contact_first_name'].' '.$row['contact_last_name'].'</font></a>';
+	if ( ! $hideEmail) {
+			$s .= '<a href="mailto:'.$row["contact_email"].'">';
+	}
+	$s .= '<font size="2">'.$row['contact_first_name'].' '.$row['contact_last_name'].'</font>';
+	if ( ! $hideEmail) {
+		$s .= '</a>';
+	}
 	if (sizeof($editor)>0) {
 		$s .= '<br/>&nbsp;<br/>'.$AppUI->_('last edited by');
-		$s .= ':<br/><a href="mailto:'.$editor[0]["contact_email"].'">';
-		$s .= '<font size="1">'.$editor[0]['contact_first_name'].' '.$editor[0]['contact_last_name'].'</font></a>';
+		$s .= ':<br/>';
+		if ( !$hideEmail) {
+			$s .= '<a href="mailto:'.$editor[0]["contact_email"].'">';
+		}
+		$s .= '<font size="1">'.$editor[0]['contact_first_name'].' '.$editor[0]['contact_last_name'].'</font>';
+		if (! $hideEmail) {
+			$s .= '</a>';
+		}
+	}
+	if ($row['visit_user'] != $AppUI->user_id) {
+		$s .= "<br/>&nbsp;" . dPshowImage('images/icons/stock_new_small.png');
+		$new_messages[] = $row['message_id'];
 	}
 	$s .= '</td>';
 	$s .= '<td valign="top" style="'.$style.'">';
@@ -300,3 +321,11 @@ if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
 	</td>
 </tr>
 </table>
+<?php
+  // Now we need to update the forum visits with the new messages so they don't show again.
+  foreach ($new_messages as $msg_id) {
+    $sql = "insert into forum_visits (visit_user, visit_forum, visit_message)
+    values ( '{$AppUI->user_id}', '$forum_id', '$msg_id')";
+    db_exec($sql);
+	}
+?>

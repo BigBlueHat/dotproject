@@ -201,6 +201,15 @@ CREATE TABLE `forum_watch` (
   `watch_topic` int(10) unsigned default NULL
 ) TYPE=MyISAM COMMENT='Links users to the forums/messages they are watching';
 
+# 20050303
+# New to Version 2.0
+CREATE TABLE `forum_visits` (
+  `visit_user` INT(10) NOT NULL DEFAULT 0,
+  `visit_forum` INT(10) NOT NULL DEFAULT 0,
+  `visit_message` INT(10) NOT NULL DEFAULT 0,
+  `visit_date` TIMESTAMP,
+  KEY `idx_fv` (`visit_user`, `visit_forum`, `visit_message`)
+) TYPE=MyISAM;
 
 CREATE TABLE `permissions` (
   `permission_id` int(11) NOT NULL auto_increment,

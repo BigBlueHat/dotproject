@@ -736,3 +736,13 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
 # 20050303
 # dropped legacy passwords support
 DELETE FROM config WHERE config_name = 'check_legacy_password' LIMIT 1;
+
+# 20050303
+# Added new forum indictator
+CREATE TABLE `forum_visits` (
+  `visit_user` INT(10) NOT NULL DEFAULT 0,
+  `visit_forum` INT(10) NOT NULL DEFAULT 0,
+  `visit_message` INT(10) NOT NULL DEFAULT 0,
+  `visit_date` TIMESTAMP,
+  KEY `idx_fv` (`visit_user`, `visit_forum`, `visit_message`)
+) TYPE=MyISAM;

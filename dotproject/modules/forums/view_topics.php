@@ -7,12 +7,16 @@ SELECT fm1.*,
 	COUNT(fm2.message_id) AS replies,
 	MAX(fm2.message_date) AS latest_reply,
 	user_username, contact_first_name,
-	watch_user
+	watch_user,
+	count(distinct v1.visit_message) as reply_visits,
+	v2.visit_user
 FROM forum_messages fm1
 LEFT JOIN users ON fm1.message_author = users.user_id
 LEFT JOIN contacts ON contact_id = user_contact
 LEFT JOIN forum_messages fm2 ON fm1.message_id = fm2.message_parent
 LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_topic = fm1.message_id
+LEFT JOIN forum_visits v1 ON v1.visit_user = $AppUI->user_id AND v1.visit_message = fm2.message_id
+LEFT JOIN forum_visits v2 ON v2.visit_user = $AppUI->user_id AND v2.visit_message = fm1.message_id
 WHERE fm1.message_forum = $forum_id
 ";
 switch ($f) {
@@ -74,6 +78,11 @@ foreach ($topics as $row) {
 		<input type="checkbox" name="forum_<?php echo $row['message_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?> />
 	</td>
 	<td>
+		<?php
+			if ($row['visit_user'] != $AppUI->user_id || $row['reply_visits'] != $row['replies']) {
+				echo dPshowImage("images/icons/stock_new_small.png", false, false, "You have unread posts in this topic");
+			}
+		?>
 		<span style="font-size:10pt;">
 		<a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id . "&message_id=" . $row["message_id"];?>"><?php echo $row["message_title"];?></a>
 		</span>

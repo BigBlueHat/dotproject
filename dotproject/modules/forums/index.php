@@ -24,12 +24,16 @@ SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, foru
 	LENGTH(l.message_body) message_length,
 	watch_user,
 	l.message_parent,
-	l.message_id
+	l.message_id,
+	count(distinct v.visit_message) as visit_count,
+	count(distinct c.message_id) as message_count
 FROM forums, users, projects
 LEFT JOIN forum_messages t ON t.message_forum = forum_id AND t.message_parent = -1
 LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > -1
 LEFT JOIN forum_messages l ON l.message_id = forum_last_id
+LEFT JOIN forum_messages c ON c.message_forum = forum_id
 LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
+LEFT JOIN forum_visits v ON visit_user = $AppUI->user_id AND visit_forum = forum_id
 WHERE user_id = forum_owner
 	AND project_id = forum_project "
 .(count($allow1) > 0 ? "\nAND forum_project IN (" . implode( ',', array_keys($allow1) ) . ')' : '')
@@ -116,7 +120,11 @@ foreach ($forums as $row) {
 		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>" title="<?php echo $AppUI->_('edit');?>">
 		<?php echo dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' );?>
 		</a>
-	<?php } ?>
+	<?php } 
+		if ( $row['visit_count'] != $row['message_count'] ) {
+			echo "&nbsp;" . dPshowImage('./images/icons/stock_new_small.png',false,false, "You have unread messages in this forum");
+		}
+	?>
 	</td>
 
 	<td nowrap="nowrap" align="center">

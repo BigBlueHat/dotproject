@@ -60,6 +60,8 @@ class CForum extends CDpObject {
 	}
 
 	function delete() {
+		$sql = "DELETE FROM forum_visits WHERE visit_forum = $this->forum_id";
+		db_exec($sql); // No error if this fails, it is not important.
 		$sql = "DELETE FROM forums WHERE forum_id = $this->forum_id";
 		if (!db_exec( $sql )) {
 			return db_error();
@@ -112,6 +114,10 @@ class CForumMessage {
 			return "CForumMessage::store-check failed<br />$msg";
 		}
 		if( $this->message_id ) {
+			// First we need to remove any forum visits for this message
+			// otherwise nobody will see that it has changed.
+			$sql = "DELETE FROM forum_visits where visit_message = $this->message_id";
+			db_exec($sql); // Don't care if it fails.
 			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
 		} else {
 			$this->message_date = db_datetime( time() );
@@ -147,6 +153,8 @@ class CForumMessage {
 	}
 
 	function delete() {
+		$sql = "DELETE FROM forum_visits WHERE visit_message = $this->message_id";
+		db_exec($sql); // No need to check, we don't care.
 		$sql = "DELETE FROM forum_messages WHERE message_id = $this->message_id";
 		if (!db_exec( $sql )) {
 			return db_error();
@@ -159,6 +167,25 @@ class CForumMessage {
 		GLOBAL $AppUI, $debug, $dPconfig;
 		$subj_prefix = $AppUI->_('forumEmailSubj');
 		$body_msg = $AppUI->_('forumEmailBody');
+		
+		// Get the message from details.
+		$sql = "SELECT contact_email, contact_first_name, contact_last_name from users
+			LEFT JOIN contacts ON user_contact = contact_id
+		  WHERE user_id = '{$this->message_author}'";
+		$res = db_exec($sql);
+		if ($row = db_fetch_assoc($res)) {
+		  $message_from = "$row[contact_first_name] $row[contact_last_name] <$row[contact_email]>";
+		} else {
+		  $message_from = "Unknown user";
+		}
+		// Get the forum name;
+		$sql = "SELECT forum_name from forums where forum_id = '{$this->message_forum}'";
+		$res = db_exec($sql);
+		if ($row = db_fetch_assoc($res)) {
+		  $forum_name = $row['forum_name'];
+		} else {
+		  $forum_name = 'Unknown';
+		}
 
 		// SQL-Query to check if the message should be delivered to all users (forced)
 		// In positive case there will be a (0,0,0) row in the forum_watch table
@@ -198,10 +225,13 @@ class CForumMessage {
 		$mail->Subject( "$subj_prefix $this->message_title", isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "");
 
 		$body = "$body_msg";
-		$body .= "\n{$dPconfig['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
-		$body .= "\n\n$this->message_title";
-		$body .= "\n\n$this->message_body";
 
+		$body .= "\n\n" . $AppUI->_('Forum') . ": $forum_name";
+		$body .= "\n" . $AppUI->_('Subject') . ": {$this->message_title}";
+		$body .= "\n" . $AppUI->_('Message From') . ": $message_from";
+		$body .= "\n\n{$dPconfig['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
+		$body .= "\n\n$this->message_body";
+ 
 		$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : ""  );
 		$mail->From( $AppUI->_('forumEmailFrom') );
 
