@@ -33,7 +33,7 @@ $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
 
-$show_all_assignees = $dPconfig['show_all_task_assignees'];
+$show_all_assignees = isset($dPconfig['show_all_task_assignees']) ? $dPconfig['show_all_task_assignees'] : false;
 
 $where = '';
 $join = winnow( 'projects', 'project_id', $where );
@@ -64,7 +64,7 @@ while ($row = db_fetch_assoc( $prc )) {
 
 // pull tasks
 $select = "
-distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
+distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
 assignees.user_username as assignee_username, count(assignees.user_id) as assignee_count
@@ -179,7 +179,7 @@ $tsql = "SELECT $select FROM $from $join WHERE $where" .
   "\nGROUP BY task_id" .
   "\nORDER BY project_id, task_start_date";
 
-//echo "<pre>$tsql</pre>";
+// echo "<pre>$tsql</pre>";
 
 $ptrc = db_exec( $tsql );
 $nums = db_num_rows( $ptrc );
@@ -264,8 +264,10 @@ function showtask( &$a, $level=0 ) {
 // name link
 	$alt = htmlspecialchars( $a["task_description"] );
 
-	if ($a["task_milestone"] > 0) {
+	if ($a["task_milestone"] > 0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
+	} else if ($a["task_dynamic"] > 0){
+		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><i>' . $a["task_name"] . '</i></a></td>';
 	} else {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
 	}
