@@ -21,8 +21,8 @@
 //
 // Date Class
 //
-require_once 'Date/TimeZone.php';
-require_once 'Date/Calc.php';
+require_once( $AppUI->getPearClass( 'Date/TimeZone' ) );
+require_once( $AppUI->getPearClass( 'Date/Calc' ) );
 
 /**
  * "YYYY-MM-DD HH:MM:SS"
