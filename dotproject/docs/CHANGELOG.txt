@@ -1,10 +1,13 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
-25 October 2002 (AJE):
+28 October 2002 (AJE):
 -----------------------------
 modules/files/index.php
 modules/files/addedit.php
 - allowed a file to be attached to all projects (ie, project_id = 0)
+
+modules/tasks/addedit.php
+- fixed bad case in dosql field in AddEdit form
 
 26 Oct 2002 (JRP):
 docs/INSTALL.txt
