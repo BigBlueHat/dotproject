@@ -197,8 +197,10 @@ if ($AppUI->doLogin()) {
 	exit;
 }
 
-// bring in the rest of the support and localisation files
-require_once( "./includes/permissions.php" );
+if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+	// bring in the rest of the support and localisation files
+	require_once( "./includes/permissions.php" );
+}
 
 $def_a = 'index';
 if ( $_GET['m'] == 'install' && $dPrunLevel < 2 ) {	// allow the install module to run without db
