@@ -359,9 +359,15 @@ function calcFinish(f) {
 	if ( durnType==24 ) {
 		fullWorkingDays = Math.ceil(inc);
 		e.setMinutes( 0 );
+
+		// Include start day as a working day (if it is one)
+		if ( isInArray(working_days, e.getDay()) ) fullWorkingDays--;
+
 	 	for (var i = 0; i < fullWorkingDays; i++)
-			if ( isInArray(working_days, e.getDay()) )			
-				e.setDate(e.getDate() + 1);
+		{
+			e.setDate(e.getDate() + 1);
+			if ( !isInArray(working_days, e.getDay()) ) i--;			
+		}
 
 		f.end_hour.value = f.start_hour.value;
 	} else {
