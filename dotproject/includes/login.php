@@ -52,7 +52,7 @@ $AppUI->user_locale = $host_locale;
 
 <p align="center"><?php 
 	echo '<span class="error">'.$AppUI->_( @$message ).'</span>';
-	echo ini_get( 'register_globals') ? '' : '<br><span class="warning">WARNING: dotproject is not supported with register_globals=off</span>';
+	echo ini_get( 'register_globals') ? '' : '<br><span class="warning">WARNING: dotproject is not fully supported with register_globals=off</span>';
 ?></p>
 
 <table align="center" border="0" width="250" cellpadding="4" cellspacing="0">
