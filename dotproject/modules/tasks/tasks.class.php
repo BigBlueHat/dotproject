@@ -211,7 +211,7 @@ class CTask extends CDpObject {
  *	@return any result from the database operation
 */
 
-	function load($oid=null,$strip=true) {
+	function load($oid=null,$strip=false) {
 		// use parent function to load the given object
 		$loaded = parent::load($oid,$strip);
 
