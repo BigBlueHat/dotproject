@@ -7,7 +7,7 @@ $dPconfig = array();
 require_once( "./classdefs/ui.php" );
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
-$no_output = @$_GET['no_output'];
+$suppressHeaders = @$_GET['suppressHeaders'];
 
 // manage the session variable(s)
 session_name( 'dotproject' );
@@ -116,7 +116,7 @@ $canDelete = $canEdit;
 @include_once( "./locales/core.php" );
 setlocale( LC_TIME, $AppUI->user_locale );
 
-if ( !$no_output ) {
+if ( !$suppressHeaders ) {
 	// output the character set header
 	if (isset( $locale_char_set )) {
 		header("Content-type: text/html;charset=$locale_char_set");
@@ -141,11 +141,11 @@ if (isset( $_REQUEST["dosql"]) ) {
 
 // start output proper
 include "./style/$uistyle/overrides.php";
-if(!$no_output) {
+if(!$suppressHeaders) {
 	require "./style/$uistyle/header.php";
 }
 require "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
-if(!$no_output) {
+if(!$suppressHeaders) {
 	require "./style/$uistyle/footer.php";
 }
 ?>
