@@ -39,15 +39,16 @@ class CAppUI {
 		'pt_br' => 'Portugese-Brazilian'
 	);
 	var $locale_warn = true;	// warn when a translation is not found
+	var $locale_alert = '^';
 // theming
 	var $styles = array(
 		'default' => 'Classic dotproject',
 		'demo1' => 'A demo style'
 	);
 // message handling
-	var $msg = "";
-	var $msgNo = "";
-	var $defaultRedirect;
+	var $msg = '';
+	var $msgNo = '';
+	var $defaultRedirect = '';
 
 // CAppUI Constructor
 	function CAppUI() {
@@ -85,17 +86,17 @@ class CAppUI {
 	If this is not the base lang, then return string with a red star appended to show
 	that a translation is required.
 */
-	function _( $str, $case=0, $hide_warn=false ) {
+	function _( $str, $case=0 ) {
 		if (empty( $str )) {
 			return '';
 		}
 		$x = @$GLOBALS['translate'][$str];
 		if ($x) {
 			$str = $x;
-		} else if (!$hide_warn && $this->locale_warn) {
+		} else if ($this->locale_warn) {
 			if ($this->base_locale != $this->user_locale ||
 				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
-				$str .= '<span class="no_">*</span>';
+				$str .= $this->locale_alert;
 			}
 		}
 		switch ($case) {
@@ -293,4 +294,5 @@ class CTabBox {
 		}
 	}
 }
+
 ?>
