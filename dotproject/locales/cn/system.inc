@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Abbreviation"=>"缩写",
+"Date and Time"=>"日期和时间",
+"Default"=>"默认",
+"Default User Preferences"=>"默认用户设置",
+"Language"=>"语言",
+"Language Support"=>"语言支持",
+"Locale"=>"语言",
+"Locales file saved"=>"语言文件已保存",
+"Module"=>"模块",
+"Preferences"=>"参数设置",
+"Short Date Format"=>"日期缩写格式",
+"String"=>"字串",
+"System Administration"=>"系统管理",
+"Tabbed Box View"=>"板块模式",
+"Time Format"=>"时间格式",
+"Translation Management"=>"翻译管理",
+"User Interface Style"=>"用户界面风格",
+"User Preferences"=>"用户参数设置",
