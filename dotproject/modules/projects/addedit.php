@@ -1,5 +1,5 @@
 <?php
-$project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
+$project_id = defVal('$_GET["project_id"]', 0);
 
 // check permissions
 $denyEdit = getDenyEdit( $m, $project_id );
@@ -144,7 +144,7 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
 			<td>
-		<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $project["project_owner"] ); ?>
+<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', defVal( '$project["project_owner"]', $AppUI->user_id ) ) ?>
 			</td>
 		</tr>
 		<tr>
