@@ -79,11 +79,16 @@ switch ($f) {
 		break;
 	case 'myunfinished':
 		$from .= ", user_tasks";
+		// This filter checks all tasks that are not already in 100% 
+		// and the project is not on hold nor completed
 		$where .= "
-	AND task_project = projects.project_id
-	AND user_tasks.user_id = $AppUI->user_id
-	AND user_tasks.task_id = tasks.task_id
-	AND task_percent_complete < '100'";
+					AND task_project             = projects.project_id
+					AND user_tasks.user_id       = $AppUI->user_id
+					AND user_tasks.task_id       = tasks.task_id
+					AND task_percent_complete    < '100'
+					AND projects.project_active  = '1'
+					AND projects.project_status != '4'
+					AND projects.project_status != '5'";
 		break;
 	default:
 		$from .= ", user_tasks";
