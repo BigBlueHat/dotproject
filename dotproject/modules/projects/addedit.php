@@ -159,15 +159,15 @@ var f = document.editFrm;
 var msg = '';
 
 if (f.project_name.value.length < 3) {
-	msg += "\n<?php echo $AppUI->_('projectsValidName');?>";
+	msg += "\n<?php echo $AppUI->_('projectsValidName', UI_OUTPUT_JS);?>";
 	f.project_name.focus();
 }
 if (f.project_color_identifier.value.length < 3) {
-	msg += "\n<?php echo $AppUI->_('projectsColor');?>";
+	msg += "\n<?php echo $AppUI->_('projectsColor', UI_OUTPUT_JS);?>";
 	f.project_color_identifier.focus();
 }
 if (f.project_company.options[f.project_company.selectedIndex].value < 1) {
-	msg += "\n<?php echo $AppUI->_('projectsBadCompany');?>";
+	msg += "\n<?php echo $AppUI->_('projectsBadCompany', UI_OUTPUT_JS);?>";
 	f.project_name.focus();
 }
 /*
