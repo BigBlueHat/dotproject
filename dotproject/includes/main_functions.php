@@ -195,6 +195,14 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	 */
 	if(!$AppUI->cfg['log_changes']) return;
 	$description = str_replace("'", "\'", $description);
+	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
+	$qid = db_exec($hsql);
+
+	if (! $qid || db_num_rows($qid) == 0) {
+	  $AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
+	  return;
+	}
+
 	$psql =	"INSERT INTO history " .
 			"( history_description, history_user, history_date ) " .
 	  		" VALUES ( '$description', " . $AppUI->user_id . ", now() )";
