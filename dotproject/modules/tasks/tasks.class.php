@@ -1532,7 +1532,9 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 		}
 	}
 // name link
-	$alt = htmlspecialchars( str_replace("\r\n", '  ', strlen($a['task_description']) > 80 ? substr($a["task_description"],0,80) . '...' : $a['task_description'] ));
+	$alt = htmlspecialchars( strlen($a['task_description']) > 80 ? substr($a["task_description"],0,80) . '...' : $a['task_description'] );
+	$alt = str_replace("\r", ' ', $alt);
+	$alt = str_replace("\n", ' ', $alt);
 
 	$open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
 	if ($a["task_milestone"] > 0 ) {
