@@ -1,3 +1,47 @@
+2003-08-30 03:53  (ajdonnison)
+---------------------------------
+modules/admin/addeditgroup.php
+modules/admin/addedituser.php
+modules/companies/addedit.php
+modules/contacts/addedit.php
+- Fixed maximum length of email fields to the size of the database columns.
+- Bug 773453
+
+2003-08-30 03:48  (ajdonnison)
+---------------------------------
+db/dotproject_100.sql
+db/upgrade_100_beta1_to_release1.sql
+- Increased sizes of email addresses to allow for long domain names.
+- Bug 773453.
+
+2003-08-30 03:28  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+modules/calendar/vw_day_events.php
+- Moved constraints for start/end and increments for day view to config
+- file.
+
+2003-08-30 02:18  (ajdonnison)
+---------------------------------
+modules/help/en/tasks.index.hlp
+- fixed typo
+
+2003-08-30 02:12  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- History now checks to make sure that history module is loaded and active
+- before logging history.
+
+2003-08-29 09:35  (jcgonz)
+---------------------------------
+modules/projects/index.php
+- Now the default projects tab is 'active projects' not 'proposed projects'
+
+2003-08-28 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-27 14:09  (jcgonz)
 ---------------------------------
 modules/projects/vw_idx_proposed.php
@@ -454,50 +498,6 @@ modules/help/en/install.trouble.hlp
 ---------------------------------
 docs/install.html
 docs/nav.html
-docs/trouble.html
-- Add maximum file upload size troubleshooting info.
-
-2003-06-27 15:38  (kripper)
----------------------------------
-index.php
-- admin/viewuser has now public access in order to allow someone to change his
-- passowrd. I suggest to try DP using a user which only has access to the
-- projects module in order to find and correct more permission related bugs.
-
-2003-06-27 12:26  (kobudo)
----------------------------------
-docs/trouble.html
-- Add php.ini file_uploads = on check for File Module functioning.
-
-2003-06-27 11:15  (kobudo)
----------------------------------
-ChangeLog
-- Changelog update.
-
-2003-06-27 03:47  (kripper)
----------------------------------
-modules/projects/view.php
-- Added total worked hours to project summary
-
-2003-06-27 01:46  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Bug fix in calendar
-
-2003-06-27 01:39  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-- Improved permission winnowing
-
-2003-06-27 01:35  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-includes/permissions.php
-- Improved permission winnowing
-
-2003-06-26 23:03  (eddieajau)
----------------------------------
-modules/projects/addedit.php
 ...
 
 (This file has been wrapped)
