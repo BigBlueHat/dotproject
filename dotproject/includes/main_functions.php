@@ -31,7 +31,7 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 		if ($translate) {
 			$v = @$AppUI->_( $v );
 		}
-		$s .= '<option value="'.$k.'"'.($k == $selected ? ' selected' : '').'>'.$v;
+		$s .= '<option value="'.$k.'"'.($k == $selected ? ' selected' : '').'>' . $v . "</option>";
 	}
 	$s .= '</select>';
 	return $s;
