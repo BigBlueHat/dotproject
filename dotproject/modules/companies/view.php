@@ -5,6 +5,7 @@ $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 $canRead = !getDenyRead( $m, $company_id );
 $canEdit = !getDenyEdit( $m, $company_id );
 
+
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -61,11 +62,18 @@ if ($canEdit) {
 $titleBlock->show();
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt() {
 	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Company').'?';?>" )) {
 		document.frmDelete.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
