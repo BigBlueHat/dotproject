@@ -15,16 +15,24 @@ $showArcProjs = $AppUI->getState( 'TaskDayShowArc' ) !== NULL ? $AppUI->getState
 $showLowTasks = $AppUI->getState( 'TaskDayShowLow' ) !== NULL ? $AppUI->getState( 'TaskDayShowLow' ) : 1;
 
 // if task priority set and items selected, do some work
-$task_priority = intval( dPgetParam( $_POST, 'task_priority', 99 ) );
+$task_priority = dPgetParam( $_POST, 'task_priority', 99 );
 $selected = dPgetParam( $_POST, 'selected', 0 );
 
-if ($task_priority > -2 && $task_priority < 2 && count( $selected )) {
+if ($selected && count( $selected )) {
 	foreach ($selected as $key => $val) {
-		$sql = "UPDATE tasks SET task_priority=$task_priority WHERE task_id=$val";
+		if ( $task_priority == 'c' ) {
+			// mark task as completed
+			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id=$val";
+		} else if ( $task_priority == 'd' ) {
+			// delete task
+			$sql = "DELETE FROM tasks WHERE task_id=$val";
+		} else if ( $task_priority > -2 && $task_priority < 2 ) {
+			// set priority
+			$sql = "UPDATE tasks SET task_priority=$task_priority WHERE task_id=$val";
+		}
 		db_exec( $sql );
-		echo db_error();
+		echo db_error();		
 	}
-	$AppUI->redirect( 'm=tasks&a=todo' );
 }
 
 $AppUI->savePlace();
@@ -179,12 +187,18 @@ foreach ($tasks as $a) {
 </tr>
 <?php } ?>
 <tr>
-	<td colspan="6" align="right" height="30"><?php echo $AppUI->_('update selected tasks priority');?></td>
-	<td colspan="2" align="center">
-		<input type="submit" class="button" value="<? echo $AppUI->_('update');?>">
+	<td colspan="7" align="right" height="30">
+		<input type="submit" class="button" value="<? echo $AppUI->_('update task');?>">
 	</td>
-	<td colspan="2" align="center">
-<?php echo arraySelect( $priorities, 'task_priority', 'size="1" class="text"', '0' ); ?>
+	<td colspan="3" align="center">
+<?php
+foreach($priorities as $k => $v) {
+	$options[$k] = $AppUI->_('set priority to ' . $v);
+}
+$options['c'] = $AppUI->_('mark as finished');
+$options['d'] = $AppUI->_('delete');
+echo arraySelect( $options, 'task_priority', 'size="1" class="text"', '0' );
+?>
 	</td>
 </form>
 </table>
