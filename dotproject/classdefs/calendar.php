@@ -136,10 +136,11 @@ class CMonthCalendar {
 	function _drawDays() {
 		$s = $this->showWeek ? '<th>&nbsp;</th>' : '';
 		$day = new CDate();
-		$day->setFormat( "%A" );
-		$day->setWeekday(0);
-		for ($i=0; $i < 7; $i++) {
-			$s .= '<th width="14%">'.substr( $day->toString(), 0, 3 ).'</th>';
+		$day->setFormat( "%a" );
+		$day->setWeekday( LOCALE_FIRST_DAY );
+		for ($i=LOCALE_FIRST_DAY; $i < 7 + LOCALE_FIRST_DAY; $i++) {
+//		for ($i=0; $i < 7; $i++) {
+			$s .= '<th width="14%">'.$day->toString().'</th>';
 			$day->addDays(1);
 		}
 		return "<tr>$s</tr>";
@@ -173,7 +174,7 @@ class CMonthCalendar {
 				$class = 'weekend';
 			}
 			// start new row
-			if ($day == 0) {
+			if ($day == LOCALE_FIRST_DAY) {
 				$w = $this->showWeek ? $this->_drawWeek( $show_day ) : '';
 				$s .= "<tr>$w";
 			}
@@ -190,7 +191,7 @@ class CMonthCalendar {
 			$s .= "</td>";
 
 			// finish a row
-			if ($day == 6) {
+			if ($day == 6 + LOCALE_FIRST_DAY) {
 				$s .= '</tr>';
 			}
 			$show_day->addDays( 1 );

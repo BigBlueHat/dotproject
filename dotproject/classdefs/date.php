@@ -106,7 +106,7 @@ class CDate
 		if ($sp < 0) {
 			$sp += 7;
 		}
-		return $sp;
+		return $sp - LOCALE_FIRST_DAY;
 	}
 
 	function getYear() {
