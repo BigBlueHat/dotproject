@@ -2,7 +2,7 @@
 ##
 ##	Companies: View Projects sub-table
 ##
-GLOBAL $AppUI, $company_id, $pstatus;
+GLOBAL $AppUI, $company_id, $pstatus, $dPconfig;
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 
@@ -37,7 +37,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 		$s .= '<td nowrap="nowrap">'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
 		$s .= '<td nowrap="nowrap">'.$start_date->format( $df ).'</td>';
 		$s .= '<td nowrap="nowrap">'.$AppUI->_($pstatus[$row["project_status"]]).'</td>';
-		$s .= '<td nowrap="nowrap" align="right">$ '.$row["project_target_budget"].'</td>';
+		$s .= '<td nowrap="nowrap" align="right">'.$dPconfig["currency_symbol"].$row["project_target_budget"].'</td>';
 		$s .= '</tr>';
 	}
 }
