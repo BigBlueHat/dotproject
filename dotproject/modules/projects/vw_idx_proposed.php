@@ -1,8 +1,13 @@
 <?php /* PROJECTS $Id$ */
-GLOBAL $AppUI, $projects, $company_id, $pstatus, $show_all_projects, $project_types, $tab;
+GLOBAL $AppUI, $projects, $company_id, $pstatus, $project_types, $currentTabId, $currentTabName;
+
+$check = $AppUI->_('All Projects');
+$show_all_projects = false;
+if ( stristr($currentTabName, $check) !== false)
+	$show_all_projects = true;
+
 $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
-
 	// Let's check if the user submited the change status form
 	
 ?>
@@ -54,22 +59,11 @@ $CR = "\n";
 $CT = "\n\t";
 $none = true;
 
-// When in plain view, $AppUI->getState( 'ProjIdxTab' ) doesn't contain the selected index for which we want
-// to filter projects, we must get the current box name from the calling file overrides.php variable $v
-if ( $tab == -1 ){
-	//Plain view
-	foreach ($project_types as $project_key => $project_type){
-		$project_type = trim($project_type);
-		$flip_project_types[$project_type] = $project_key;
-	}
-	$project_status_filter = $flip_project_types[$v[1]];
-} else{
-	//Tabbed view
-	$project_status_filter = $tab;
-	//Project not defined
-	if ($tab == count($project_types)-1)
-		$project_status_filter = 0;
-}
+//Tabbed view
+$project_status_filter = $currentTabId;
+//Project not defined
+if ($currentTabId == count($project_types)-1)
+	$project_status_filter = 0;
 
 foreach ($projects as $row) {
 	if (! $perms->checkModuleItem('projects', 'view', $row['project_id'])) {

@@ -247,12 +247,13 @@ $fixed_project_type_file = array(
 // we need to manually add Archived project type because this status is defined by 
 // other field (Active) in the project table, not project_status
 $project_types[] = $AppUI->_('Archived') . ' (' . $archive . ')';
+$project_types[] = $AppUI->_('Not Defined');
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
-if ( $tab != -1 ) {
+$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$dPconfig['root_dir']}/modules/projects/", $tab );
+if ( $tabBox->isTabbed() ) {
 	$project_types[0] = $AppUI->_('All Projects') . ' (' . count($projects) . ')';
-	$project_types[] = $AppUI->_('Not Defined');
 }
 
 /**
@@ -270,10 +271,7 @@ foreach($project_types as $project_type){
 	}
 }
 
-$show_all_projects = false;
-if($tab == 0) $show_all_projects = true;
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$dPconfig['root_dir']}/modules/projects/", $tab );
 foreach($project_types as $project_type) {
 	$tabBox->add($project_file_type[$project_type], $project_type);
 }
