@@ -143,7 +143,7 @@
 "either",
 "filter",
 "flat",
-"forgotPassword"=>"Help! I\'ve forgotten my password!",
+"forgotPassword"=>"Help! I've forgotten my password!",
 "hour",
 "hours",
 "invalidID"=>"ID is invalid.  Unable to display.",
