@@ -321,7 +321,6 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 } else {
 	$all_tabs =& $_SESSION['all_tabs'][$m];
 }
-echo '<iframe name="thread" src="about:blank" width="0" height="0" frameborder="0"></iframe>';
 
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if (file_exists($module_file))
@@ -336,6 +335,7 @@ else
   echo $AppUI->_("Missing file. Possible Module \"$m\" missing!");
 }
 if(!$suppressHeaders) {
+	echo '<iframe name="thread" src="about:blank" width="0" height="0" frameborder="0"></iframe>';
 	require "$baseDir/style/$uistyle/footer.php";
 }
 ob_end_flush();
