@@ -1,11 +1,50 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
-12 November 2002 (AJE):
+15 November 2002 (AJE):
 ---------------------------------
 Added three fields to the events table in the upgrade script
   event_project - deprecates event_parent
   event_owner - to personalise events
   event_private - only visible to me
+
+## CORE ##
+
+./index.php
+- modified $return path syntax to be relative to this file
+
+./includes/login.php
+- tidy up of html
+- $return is set to empty string - the 'return' function needs to be
+  fixed so that you can login from a complete query string (eg
+  pointing to a task)
+
+./includes/header.php
+./includes/footer.php
+- added no-cache parameters
+
+./selector.php
+- generic selector (eg of company names)
+
+./logincheck.php
+./includes/permissions.php
+- added entry in cookie to hold state of user department
+- added debug information to logincheck to help with debugging
+
+## ADMIN/USERS ## modules/admin/
+addedituser.php
+- change dept selector to generic selector
+
+index.php
+vw_active_usr.php
+vw_inactive_usr.php
+vw_usr.php
+- added filter for A-Z of first letter of any of the 3 user names
+
+vw_usr_permissions.php
+- added new style of permissions edit form
+  (using generic selector to give more future flexibility)
+
+## CALENDAR ##
 
 dosql/addeditdel_event.php
 modules/calendar/addedit.php
@@ -13,9 +52,12 @@ modules/calendar/addedit.php
 - table change with assocuiated additional fields on edit form
   (still don't support project id)
 
-./logincheck.php
-./includes/permissions.php
-- added entry in cookie to hold state of user department
+## FORUMS ##
+
+functions/forum_func.php
+- commented debug code and uncommented mail command
+
+## PROJECTS ##
 
 modules/projects/vw_idx_active.php
 modules/projects/vw_idx_archived.php
@@ -25,9 +67,13 @@ modules/projects/addedit.php
 - cosmetic changes
 - tabbed active/archived projects on index page
 
+## TASKS ##
+
 modules/tasks/index.php
 modules/tasks/view.php
 - cosmetic changes
+
+## COMPANIES ##
 
 module/companies/index.php
 module/companies/view.php
