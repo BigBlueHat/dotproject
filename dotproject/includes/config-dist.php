@@ -49,6 +49,9 @@ $dPconfig['dbname'] = "dotproject";
 $dPconfig['dbuser'] = "root";
 $dPconfig['dbpass'] = "";
 
+// set this value to true to use persistent database connections
+$dPconfig['dbpersist'] = false;
+
 // check for legacy password
 // ONLY REQUIRED FOR UPGRADES prior to and including version 1.0 alpha 2
 $dPconfig['check_legacy_password'] = false;

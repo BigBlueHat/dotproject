@@ -10,12 +10,17 @@
 	originally written for WEBO project, see webo source for "real life" usages
 */
 
-function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306' ) {
-	function_exists( 'mysql_pconnect' )
+function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
+	function_exists( 'mysql_connect' )
 		or  die( 'FATAL ERROR: MySQL support not avaiable.  Please check your configuration.' );
 
-	mysql_pconnect( "$host:$port", $user, $passwd )
-		or die( 'FATAL ERROR: Connection to database server failed' );
+	if ($persist) {
+		mysql_pconnect( "$host:$port", $user, $passwd )
+			or die( 'FATAL ERROR: Connection to database server failed' );
+	} else {
+		mysql_connect( "$host:$port", $user, $passwd )
+			or die( 'FATAL ERROR: Connection to database server failed' );
+	}
 
 	if ($dbname) {
 		mysql_select_db( $dbname )
