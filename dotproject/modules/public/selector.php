@@ -1,4 +1,27 @@
 <?php /* PUBLIC $Id$ */
+
+function selPermWhere( $table, $idfld ) {
+	global $AppUI;
+
+	// get any companies denied from viewing
+	$sql = "SELECT $idfld"
+		."\nFROM $table, permissions"
+		."\nWHERE permission_user = $AppUI->user_id"
+		."\n	AND permission_grant_on = '$table'"
+		."\n	AND permission_item = $idfld"
+		."\n	AND permission_value = 0";
+	$deny = db_loadColumn( $sql );
+
+	return "permission_user = $AppUI->user_id"
+		."\nAND permission_value <> 0"
+		."\nAND ("
+		."\n	(permission_grant_on = 'all')"
+		."\n	OR (permission_grant_on = '$table' and permission_item = -1)"
+		."\n	OR (permission_grant_on = '$table' and permission_item = $idfld)"
+		."\n	)"
+		. (count($deny) > 0 ? "\nAND $idfld NOT IN (" . implode( ',', $deny ) . ')' : '');
+}
+
 $debug = false;
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 $table = isset( $_GET['table'] ) ? $_GET['table'] : 0;
@@ -16,15 +39,25 @@ case 'companies':
 	$title = 'Company';
 	$select = 'company_id,company_name';
 	$order = 'company_name';
+	$table .= ", permissions";
+	$where = selPermWhere( 'companies', 'company_id' );
 	break;
 case 'departments':
 	$title = 'Department';
-	$company_id = isset( $_GET['company_id'] ) ? $_GET['company_id'] : '0';
+	$company_id = dPgetParam( $_GET, 'company_id', 0 );
 	//$ok &= $company_id;  // Is it safe to delete this line ??? [kobudo 13 Feb 2003]
+	$where = selPermWhere( 'companies', 'company_id' );
+	$where .= "\nAND dept_company = company_id ";
+	$where .= "\nAND ".selPermWhere( 'departments', 'dept_id' );
 
-	$select = 'dept_id,dept_name';
-	$where = $company_id ? "dept_company = $company_id" : '';
-	$order = 'dept_name';
+	$table .= ", companies, permissions";
+	if ($company_id) {
+		$where .= "\nAND dept_company = $company_id";
+		$order = 'dept_name';
+	} else {
+		$select = "dept_id,CONCAT(company_name,': ', dept_name) AS dept_name";
+		$order = 'company_name,dept_name';
+	}
 	break;
 case 'forums':
 	$title = 'Forum';
@@ -35,7 +68,9 @@ case 'projects':
 	$title = 'Project';
 	$select = 'project_id,project_name';
 	$order = 'project_name';
-	$where = @$project_company ? "project_company = $project_company" : '';
+	$where = selPermWhere( 'projects', 'project_id' );
+	$where .= @$project_company ? "\nAND project_company = $project_company" : '';
+	$table .= ", permissions";
 	break;
 case 'tasks':
 	$title = 'Task';
