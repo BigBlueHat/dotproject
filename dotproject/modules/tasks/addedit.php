@@ -2,9 +2,10 @@
 if(empty($project_id))$project_id =0;
 //pull users;
 if(empty($task_id))$task_id =0;
+if(empty($task_parent))$task_parent =0;
 
 //Pull all users
-$usql="select user_first_name, user_last_name, user_id from users order by user_last_name";
+$usql="select user_first_name, user_last_name, user_id from users order by user_first_name, user_last_name";
 $urc = mysql_query($usql);
 
 //Pull users on this task
@@ -133,9 +134,8 @@ function removeUser(){
 
 }
 
-function delIt(){
-	
-	if(confirm("Are you sure that you would like to delete this task?\n")){
+function delIt() {
+	if (confirm( "Are you sure that you would like to delete this task?\n" )) {
 		var form = document.AddEdit;
 		form.del.value=1;
 		form.submit();
@@ -263,13 +263,12 @@ function delIt(){
 				<TD><img src="./images/shim.gif" width=30 height=1></td>
 				<TD><select name="task_parent" style="width:150px;"><option value="<?php echo $prow["task_id"];?>">None
 						<?php
-						while($row = mysql_fetch_array($atrc)){
-							if($row["task_id"] == $prow["task_parent"]){
-							echo "<option selected value=\"".$row["task_id"]."\">" . $row["task_name"];
+						while ($row = mysql_fetch_array( $atrc )) {
+							echo '<option value="' . $row["task_id"].'"';
+							if ($row["task_id"] == $prow["task_parent"] || $row["task_id"] == $task_parent) {
+								echo ' selected';
 							}
-							else{
-								echo "<option value=\"" . $row["task_id"]."\">".$row["task_name"];
-							}
+							echo '>'.$row["task_name"];
 						}?></select></td>
 			</tr>
 		</table>
