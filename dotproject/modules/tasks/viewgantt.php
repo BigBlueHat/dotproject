@@ -16,11 +16,13 @@ $display_option = defVal( @$_POST['display_option'], 'this_month');
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-if ($display_option == "custom" ) {
+if ($display_option == 'custom') {
+	// custom dates
 	$start_date = new CDate( $sdate );
 	$end_date = new CDate( $edate );
 } else {
-	$start_date = new CDate( $sdate ? $sdate : null );
+	// month
+	$start_date = new CDate( null );
 	$end_date = $start_date;
 	$end_date->addMonths( $scroll_date );
 }
@@ -143,7 +145,7 @@ if (!$min_view) {
   <td>
   </td>
   <td align=left>
-  <input type="submit" class="button" value="<?php echo $AppUI->_( 'submit' );?>">
+  <input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='display_option.value="custom";submit();'>
   </td>
 </tr>
 	
@@ -167,7 +169,7 @@ if (!$min_view) {
 <?php
 }
 ?>
-	<td>
+	<td align=center>
 <?php  
 $src = 
   "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
@@ -175,7 +177,7 @@ $src =
 	'&start_date=' . $start_date->toString( "%Y-%m-%d" ) . '&end_date=' . $end_date->toString( "%Y-%m-%d" ) ) .
   "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 100) + '";
 
-echo "<script>document.write('<img src=\"$src\">')</script>";	
+echo "<script>document.write('<img src=\"$src\">')</script>";
 ?>	
 	</td>
 
