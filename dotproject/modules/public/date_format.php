@@ -11,7 +11,6 @@ $formatted_date = $this_day->format( $df );
 <script language="JavaScript" type="text/javascript">
 <!--
 	window.parent.document.<?php echo $field; ?>.value = '<?php echo $formatted_date; ?>';
-//	window.close();
 //-->
 </script>
 
