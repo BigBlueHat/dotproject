@@ -133,7 +133,7 @@ class Date
             $this->setDate($date,DATE_FORMAT_TIMESTAMP);
         }
         else {
-            $this->setDate($date,DATE_FORMAT_UNIXTIME);
+            $this->setDate($date,$format);
         }
     }
 
@@ -618,10 +618,12 @@ class Date
      * @param object Date $d2 the second date
      * @return int 0 if the dates are equal, -1 if d1 is before d2, 1 if d1 is after d2
      */
-    function compare($d1, $d2)
+    function compare($d1, $d2, $convertTZ=false)
     {
-        $d1->convertTZ(new Date_TimeZone('UTC'));
-        $d2->convertTZ(new Date_TimeZone('UTC'));
+		if ($convertTZ) {
+			$d1->convertTZ(new Date_TimeZone('UTC'));
+			$d2->convertTZ(new Date_TimeZone('UTC'));
+		}
         $days1 = Date_Calc::dateToDays($d1->day, $d1->month, $d1->year);
         $days2 = Date_Calc::dateToDays($d2->day, $d2->month, $d2->year);
         if($days1 < $days2) return -1;
@@ -1086,6 +1088,24 @@ class Date
         } else {
             $this->second = $s;
         }
+    }
+
+    /**
+     * Set the hour, minute and second field of the date object
+     *
+     * Shorthand method to set the hour, minute and second fields of the date object,
+	 * invalid seconds (not 0-59) are set to 0.
+     *
+     * @access public
+     * @param int the hour
+     * @param int the minute
+     * @param int the second
+	 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
+     */
+    function setTime( $h = 0, $m = 0, $s = 0 ) {
+		$this->setHour( $h );
+		$this->setMinute( $m );
+		$this->setSecond( $s );
     }
 
 } // Date
