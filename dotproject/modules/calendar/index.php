@@ -38,7 +38,7 @@ foreach ($events as $row) {
 	$start = new CDate( $row['event_start_date'] );
 
 // the link
-	$link['href'] = "?m=calendar&a=addedit&event_id=".$row['event_id'];
+	$link['href'] = "?m=calendar&a=view&event_id=".$row['event_id'];
 	$link['alt'] = $row['event_description'];
 	$link['text'] = '<img src="./images/obj/event.gif" width="16" height="16" border="0" alt="" />'
 		.'<span class="event">'.$row['event_title'].'</span>';
