@@ -1,8 +1,36 @@
-2005-03-02 18:57  (ajdonnison)
+2005-03-02 22:39  (gregorerhardt)
 ---------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-- Support for select lists in session variables.
+modules/calendar/week_view.php
+- corrected week number for week view starting with today
+
+2005-03-02 22:08  (gregorerhardt)
+---------------------------------
+modules/tasks/ae_desc.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- corrected use of task owner vs. task creator
+
+2005-03-02 21:44  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- default task duration to 1 hour
+
+2005-03-02 21:20  (gregorerhardt)
+---------------------------------
+modules/tasks/ae_desc.php
+- do not provide move task functionality for new task creation
+
+2005-03-02 21:03  (gregorerhardt)
+---------------------------------
+modules/admin/addedituser.php
+modules/system/addeditpref.php
+modules/system/systemconfig.php
+- diverse security enhancements (restricted access)
+
+2005-03-02 20:50  (gregorerhardt)
+---------------------------------
+locales/en/public.inc
+- removed html tags from message
 
 2005-03-02 18:54  (ajdonnison)
 ---------------------------------
