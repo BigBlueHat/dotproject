@@ -314,12 +314,11 @@ function updateTask(){
 	
 	</tr>	
 	<?php while($row = mysql_fetch_array($crc)){?>
-	<TR bgcolor="white">
+	<TR bgcolor="white" valign=top>
 		<TD width="100"><?php echo $row["comment_title"];?></td>
 		<TD width="100"><?php echo $row["user_username"];?></td>
 		<TD><?php $newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
 		<TD width="150"><?php echo fromDate($row["comment_date"]);?></td>
-	
 	</tr>
 	
 	<?php }?>
