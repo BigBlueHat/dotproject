@@ -75,6 +75,7 @@
 "Username",
 "Users",
 "Version",
+"Welcome",
 "Yes",
 "Zip",
 "add",
