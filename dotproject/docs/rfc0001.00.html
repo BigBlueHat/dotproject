@@ -1,0 +1,115 @@
+<!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
+<html>
+<head>
+	<title>dotProject RFC0001.00</title>
+	<meta name="Generator" content="EditPlus">
+	<meta name="Author" content="Andrew Eddie">
+	<meta name="Description" content="dotProject Access Control RFC">
+
+	<link rel="stylesheet" type="text/css" href="../style/default/main.css">
+
+	<style type="text/css">
+	body,td,th {
+		font-size: 8pt;
+	}
+	</style>
+</head>
+
+<body>
+
+<table cellspacing="0" cellpadding="3" border="0" width="100%">
+<tr>
+	<td><h1>dotProject :: Access Control System</h1></td>
+	<td align="right">
+		<table cellspacing="1" cellpadding="3" border="0" class="tbl">
+		<tr>
+			<td>dotProject Development Team</td>
+			<td>$Date$</td>
+		</tr>
+		<tr>
+			<td>Request for Comment 001.00</td>
+			<td>$Revision$</td>
+		</tr>
+		<tr>
+			<td>Status</td>
+			<td>Draft</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<hr>
+
+<p>
+	<h2>Definitions</h2>
+	<dl>
+		<dt>Actions</dt>
+			<dd>An action or operation (depending on the context) is a operation that can be perform that is either allowed or not.</dd>
+		<dt>Policies</dt>
+			<dd>Policies are collections of actions that can be conducted on a type of record or within a module.</dd>
+		<dt>Roles</dt>
+			<dd>A role is a collection of on or more policies.</dd>
+		<dt>Users</dt>
+			<dd>A user.</dd>
+		<dt>User Groups</dt>
+			<dd>A collection of users.</dd>
+	</dl>
+</p>
+
+<p>
+	<h2>1.0 Introduction</h2>
+
+</p>
+
+<p>
+	<h2>2.0 Concepts</h2>
+
+	<p>
+		<h3>2.1 Policies</h3>
+		
+		
+</p>
+
+<p>
+	<h2>3.0 Implementation</h2>
+
+	<p>
+		<h3>3.1 Actions</h3>
+		
+		<p>An action is a single operation, defined by a boolean value, for an operation that can be conducted within the context of its use.</p>
+
+		<p>The system will require system defined actions, that is, those that the core code expects to be avaialable, and user defined actions, that is, those that can be used programmatically for customisation.</p>
+
+		<p>The system defined policies will mirror the appropriate SQL commands in their naming convention.</p>
+
+	</p>
+	<p>
+		<h3>3.2 Policies</h3>
+
+		<p>A policy is assigned a 32-bit mask.  The lower word (the first 16 bits) will be system defined policies, this is, dotProject relies on these being certain values.  The upper word (the last 16 bits) will be able to be defined by the use, for programatic use in customisation.</p>
+
+		<p>The system defined policies will mirror the appropriate SQL commands in their naming convention.</p>
+
+		<p><strong>Masks for System Defined Polices:</strong></p>
+
+		<pre>
+		SELECT    0x0001
+		INSERT    0x0002
+		UPDATE    0x0004
+		DELETE    0x0008
+		GRANT     0x0016
+		</pre>
+
+		<p>A policy can be applied to a record</p>
+	</p>
+
+	<p>
+		<h3>3.3 Roles</h3>
+		
+
+	</p>
+		
+</p>
+
+</body>
+</html>
