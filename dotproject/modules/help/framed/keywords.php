@@ -1,3 +1,4 @@
+<?php /* HELP $Id$ */ ?>
 <html>
 <head>
 	<title>dothelp viewer search form</title>
@@ -8,8 +9,8 @@
 
 <?php
 require_once( "./includes/config.php" );
-require_once( "{$AppUI->cfg['root_dir']}/includes/db_connect.php" );
-require_once( "{$AppUI->cfg['root_dir']}/classes/ui.class.php" );
+require_once( "./includes/db_connect.php" );
+require_once( "./classes/ui.class.php" );
 
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 

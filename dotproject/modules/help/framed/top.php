@@ -1,4 +1,4 @@
-<?php
+<?php /* HELP $Id$ */
 require_once( "./includes/config.php" );
 require_once( "{$dHconfig['root_dir']}/classes/ui.class.php" );
 
@@ -11,6 +11,7 @@ if (isset($_GET['entry_lang'])) {
 
 $m = 'viewer';
 @include_once( "{$dHconfig['root_dir']}/locales/core.php" );
+$entry_lang = isset($_GET['entry_lang']) ? $_GET['entry_lang'] : '';
 ?>
 <html>
 <head>

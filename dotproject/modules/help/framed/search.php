@@ -1,3 +1,4 @@
+<?php /* HELP $Id$ */ ?>
 <html>
 <head>
 	<title>dothelp viewer search form</title>
@@ -37,6 +38,7 @@ WHERE page_content LIKE '%$search_text%'
 ";
 
 $entries = array();
+$n = 0;
 if ($search_text) {
 	if(!($erc = db_exec( $esql ))) {
 		echo '<font color=red>SQL Error:</font> '.db_errno() . ": " . db_error() . "\n";
