@@ -1,5 +1,6 @@
 <?php /* $Id$ */
 require_once( "./classdefs/ui.php" );
+require_once( "./classdefs/calendar.php" );
 
 session_name( 'dotproject' );
 session_start();
