@@ -126,7 +126,7 @@ function popPermItem() {
 		alert( 'No list associated with this Module.' );
 		return;
 	}
-	window.open('./selector.php?callback=setPermItem&table=' + tables[pgo], 'selector', 'left=50,top=50,height=250,width=400,resizable')
+	window.open('./index.php?m=public&a=selector&dialog=1&callback=setPermItem&table=' + tables[pgo], 'selector', 'left=50,top=50,height=250,width=400,resizable')
 }
 
 // Callback function for the generic selector

@@ -78,7 +78,7 @@ function popDept() {
     if (f.selectedIndex == 0) {
         alert( 'Please select a company first!' );
     } else {
-        window.open('./selector.php?callback=setDept&table=departments&company_id='
+        window.open('./index.php?m=public&a=selector&dialog=1&callback=setDept&table=departments&company_id='
             + f.user_company.options[f.user_company.selectedIndex].value
             + '&dept_id='+f.user_department.value,'dept','left=50,top=50,height=250,width=400,resizable')
     }
