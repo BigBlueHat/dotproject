@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"new file"=>"nuevo archivo",
 "Active",
 "Actual Budget",
 "Actual End Date",
