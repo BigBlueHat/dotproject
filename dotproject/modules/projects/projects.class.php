@@ -24,7 +24,6 @@ class CProject extends CDpObject {
 	var $project_demo_url = NULL;
 	var $project_start_date = NULL;
 	var $project_end_date = NULL;
-	var $project_actual_end_date = NULL;
 	var $project_status = NULL;
 	var $project_percent_complete = NULL;
 	var $project_color_identifier = NULL;
@@ -99,9 +98,9 @@ class CProject extends CDpObject {
 		$tasks = array_flip(db_loadColumn ($sql));
 
 		$origDate = new CDate( $origProject->project_start_date );
-		
+
 		$destDate = new CDate ($this->project_start_date);
-		
+
 		$timeOffset = $destDate->getTime() - $origDate->getTime();
 
 		$objTask = new CTask();
@@ -209,6 +208,21 @@ class CProject extends CDpObject {
 		return array_merge ($aBuf1, $aBuf2); 
 		
 	}
+
+        /** Retrieve tasks with latest task_end_dates within given project
+        * @param int Project_id
+        * @param int SQL-limit to limit the number of returned tasks
+        * @return array List of criticalTasks
+        */
+        function getCriticalTasks($project_id = NULL, $limit = 1) {
+                $project_id = !empty($project_id) ? $project_id : $this->project_id;
+                $sql = "SELECT * FROM tasks
+                        WHERE task_project = $project_id
+                        AND !isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'
+                        ORDER BY task_end_date DESC
+                        LIMIT $limit";
+                return db_loadList($sql);
+        }
 
 	function store() {
 

@@ -22,6 +22,9 @@ $msg = '';
 $obj = new CProject();
 $canDelete = $obj->canDelete( $msg, $project_id );
 
+// get critical tasks (criteria: task_end_date)
+$criticalTasks = ($project_id > 0) ? $obj->getCriticalTasks($project_id) : NULL;
+
 // load the record data
 $sql = "
 SELECT
@@ -75,14 +78,14 @@ $total_project_hours = db_loadResult($total_project_days_sql) * $dPconfig['daily
 //due to the round above, we don't want to print decimals unless they really exist
 //$total_project_hours = rtrim($total_project_hours, "0");
 
-
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 // create Date objects from the datetime fields
 $start_date = intval( $obj->project_start_date ) ? new CDate( $obj->project_start_date ) : null;
 $end_date = intval( $obj->project_end_date ) ? new CDate( $obj->project_end_date ) : null;
-$actual_end_date = intval( $obj->project_actual_end_date ) ? new CDate( $obj->project_actual_end_date ) : null;
+$actual_end_date = intval( $criticalTasks[0]['task_end_date'] ) ? new CDate( $criticalTasks[0]['task_end_date'] ) : null;
+$style = (( $actual_end_date > $end_date) && !empty($end_date)) ? 'style="color:red; font-weight:bold"' : '';
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Project', 'applet3-48.png', $m, "$m.$a" );
@@ -177,7 +180,13 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Actual End Date');?>:</td>
-			<td class="hilite"><?php echo $actual_end_date ? $actual_end_date->format( $df ) : '-';?></td>
+			<td class="hilite">
+                                 <?php if ($project_id > 0) { ?>
+                                        <?php echo $actual_end_date ? '<a href="?m=tasks&a=view&task_id='.$criticalTasks[0]['task_id'].'">' : '';?>
+                                        <?php echo $actual_end_date ? '<span '. $style.'>'.$actual_end_date->format( $df ).'</span>' : '-';?>
+                                        <?php echo $actual_end_date ? '</a>' : '';?>
+                                 <?php } else { echo $AppUI->_('Dynamically calculated');} ?>
+                        </td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target Budget');?>:</td>

@@ -17,8 +17,8 @@ $companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name'
 $companies = arrayMerge( array( '0'=>'' ), $companies );
 
 // pull users
-$sql = "SELECT user_id, CONCAT_WS(', ',contact_last_name,contact_first_name) 
-        FROM users 
+$sql = "SELECT user_id, CONCAT_WS(', ',contact_last_name,contact_first_name)
+        FROM users
         LEFT JOIN contacts ON contact_id = user_contact
         ORDER BY contact_last_name";
 $users = db_loadHashList( $sql );
@@ -42,13 +42,17 @@ if ($project_id && !array_key_exists( $row->project_company, $companies )) {
 	);
 }
 
+// get critical tasks (criteria: task_end_date)
+$criticalTasks = ($project_id > 0) ? $row->getCriticalTasks() : NULL;
+
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 $start_date = new CDate( $row->project_start_date );
 
 $end_date = intval( $row->project_end_date ) ? new CDate( $row->project_end_date ) : null;
-$actual_end_date = intval( $row->project_actual_end_date ) ? new CDate( $row->project_actual_end_date ) : null;
+$actual_end_date = intval( $criticalTasks[0]['task_end_date'] ) ? new CDate( $criticalTasks[0]['task_end_date'] ) : null;
+$style = (( $actual_end_date > $end_date) && !empty($end_date)) ? 'style="color:red; font-weight:bold"' : '';
 
 // setup the title block
 $ttl = $project_id > 0 ? "Edit Project" : "New Project";
@@ -258,14 +262,12 @@ function setDepartment(department_id_string){
 		</tr>
 <tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
-			<td nowrap="nowrap">	<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-				<input type="text" class="text" name="actual_end_date" id="date2" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-
-				<a href="#" onClick="popCalendar('actual_end_date', 'actual_end_date');">
-					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
-				</a>
-
-
+			<td nowrap="nowrap">
+                                <?php if ($project_id > 0) { ?>
+                                        <?php echo $actual_end_date ? '<a href="?m=tasks&a=view&task_id='.$criticalTasks[0]['task_id'].'">' : '';?>
+                                        <?php echo $actual_end_date ? '<span '. $style.'>'.$actual_end_date->format( $df ).'</span>' : '-';?>
+                                        <?php echo $actual_end_date ? '</a>' : '';?>
+                                <?php } else { echo $AppUI->_('Dynamically calculated');} ?>
 			</td>
 		</tr>
 		<tr>
@@ -400,7 +402,7 @@ function setDepartment(department_id_string){
 function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
 	global $departments_count;
 	$parsed = '';
-	
+
 	if($departments_count < 6) $departments_count++;
 	$sql = "select dept_id, dept_name
 	        from departments

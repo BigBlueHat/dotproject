@@ -46,9 +46,9 @@ INSERT INTO `sysvals` VALUES (null, 1, 'FileType', '0|Unknown\n1|Document\n2|App
 # Just some TaskTypes examples
 INSERT INTO `sysvals` VALUES (null, 1, 'TaskType', '0|Unknown\n1|Administrative\n2|Operative');
 INSERT INTO `sysvals` VALUES (null, 1, 'ProjectType', '0|Unknown\n1|Administrative\n2|Operative');
-INSERT INTO `syskeys` VALUES (null, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
-INSERT INTO `syskeys` VALUES(null, "ColorSelection", "Hex color values for type=>color association.", "0", "\n", "|");
-INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES(last_insert_id(), "ProjectColors", "Web|FFE0AE\nEngineering|AEFFB2\nHelpDesk|FFFCAE\nSystem Administration|FFAEAE");
+INSERT INTO `syskeys` VALUES (2, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
+INSERT INTO `syskeys` VALUES("3", "ColorSelection", "Hex color values for type=>color association.", "0", "\n", "|");
+INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("3", "ProjectColors", "Web|FFE0AE\nEngineering|AEFFB2\nHelpDesk|FFFCAE\nSystem Administration|FFAEAE");
 
 CREATE TABLE `task_contacts` (
   `task_id` INT(10) NOT NULL,
@@ -102,3 +102,8 @@ INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");
 # added ProjectStatus of Template
 #
 UPDATE `sysvals` SET `sysval_value` = '0|Not Defined 1|Proposed 2|In Planning 3|In Progress 4|On Hold 5|Complete 6|Template' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1 ;
+
+#20040823
+# changed over to dynamic project end date
+#
+ALTER TABLE `projects` DROP `project_actual_end_date`;

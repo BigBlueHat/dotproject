@@ -212,7 +212,6 @@ CREATE TABLE `projects` (
   `project_demo_url` varchar(255) default NULL,
   `project_start_date` datetime default NULL,
   `project_end_date` datetime default NULL,
-  `project_actual_end_date` datetime default NULL,
   `project_status` int(11) default '0',
   `project_percent_complete` tinyint(4) default '0',
   `project_color_identifier` varchar(6) default 'eeeeee',
