@@ -135,8 +135,12 @@ class CMonthCalendar {
 
 	function _drawDays() {
 		$s = $this->showWeek ? '<th>&nbsp;</th>' : '';
+		$day = new CDate();
+		$day->setFormat( "%A" );
+		$day->setWeekday(0);
 		for ($i=0; $i < 7; $i++) {
-			$s .= "<th width=\"14%\">{$this->shDayNames[$i]}</th>";
+			$s .= '<th width="14%">'.substr( $day->toString(), 0, 3 ).'</th>';
+			$day->addDays(1);
 		}
 		return "<tr>$s</tr>";
 	}

@@ -1,4 +1,5 @@
 <?php
+
 // check permissions
 $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
@@ -7,6 +8,8 @@ if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 $AppUI->savePlace();
+
+require_once( "$root_dir/classdefs/date.php" );
 
 // Set up 'filters'
 
@@ -38,14 +41,11 @@ WHERE permission_user = $AppUI->user_id
 ";
 $deny = db_loadList( $sql );
 
-$df = $AppUI->getPref('SHDATEFORMAT');
-
 // pull projects
 $sql = "
 SELECT
 	project_id, project_status, project_color_identifier, project_name,
-	DATE_FORMAT(project_start_date, '$df') proj_start_date, 
-	DATE_FORMAT(project_end_date, '$df') proj_end_date, 
+	project_start_date, project_end_date, 
 	project_color_identifier,
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
