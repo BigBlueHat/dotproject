@@ -98,6 +98,7 @@ TABLE.tbl TD {
 	background-color: #f4efe3;
 }
 
+/* a 'standard' table */
 TABLE.std {
 	border: solid #878676 2px;
 	background: #f4efe3;
@@ -111,6 +112,19 @@ TABLE.std TH {
 }
 
 TABLE.std TD.hilite {
+	background-color: #ffffff;
+}
+
+/* contacts table */
+table.contacts {
+	background-color: #878676;
+}
+
+table.contacts td {
+	background-color: #f4efe3;
+}
+
+table.contacts td.hilite {
 	background-color: #ffffff;
 }
 
