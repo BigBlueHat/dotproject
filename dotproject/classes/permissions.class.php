@@ -201,32 +201,24 @@ class dPacl extends gacl_api {
 
   function getPermittedUsers($module = null) {
     // Not as pretty as I'd like, but we can do it reasonably well.
-		// Check to see if we are allowed to see other users.
-		// If not we can only see ourselves.
-		global $AppUI;
-		$canViewUsers = $this->checkModule('users', 'view');
+    // Check to see if we are allowed to see other users.
+    // If not we can only see ourselves.
+    global $AppUI;
+    $canViewUsers = $this->checkModule('users', 'view');
     $q  = new DBQuery;
     $q->addTable('users');
-    $q->addQuery('user_id');
+    $q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name) as contact_name');
+    $q->addJoin('contacts', 'con', 'contact_id = user_contact');
+    $q->addOrder('contact_first_name');
     $res = $q->exec();
     $userlist = array();
-    while ($row = db_fetch_row($res)) {
+    while ($row = $q->fetchRow()) {
       if ( ($canViewUsers && $this->isUserPermitted($row['user_id'], $module))
 	 || $row['user_id'] == $AppUI->user_id)
-	$userlist[] = $row['user_id'];
+	$userlist[$row['user_id']] = $row['contact_name'];
     }
     //  Now format the userlist as an assoc array.
-    $result = array();
-    if (count($userlist)) { // No point querying if there is no valid user.
-	$q  = new DBQuery;
-	$q->addTable('users');
-	$q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name)');
-	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
-	$q->addWhere("user_id in (". implode(',', $userlist). ")");
-	$q->addOrder('contact_first_name');
-      return $q->loadHashList();
-    }
-    return $result;
+    return $userlist;
   }
 
   function getItemACLs($module, $uid = null) {
