@@ -243,14 +243,6 @@ function delIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task Type');?> :</td>
 			<td class="hilite" width="300"><?php echo $task_types[$obj->task_type];?></td>
 		</tr>
-		<tr>
-			<td nowrap="nowrap" colspan="2"><strong><?php echo $AppUI->_('Description');?></strong></td>
-		</tr>
-		<tr>
-			<td valign="top" height="75" colspan="2" class="hilite">
-				<?php $newstr = str_replace( chr(10), "<br />", $obj->task_description);echo $newstr;?>
-			</td>
-		</tr>
 
 		</table>
 	</td>
@@ -301,6 +293,16 @@ function delIt() {
 				echo '<table width="100%" cellspacing=1 bgcolor="black">'.$s.'</table>';
 			?>
 			</td>
+		</tr>
+		<tr>
+		  <td colspan='3' nowrap="nowrap">
+		     <strong><?php echo $AppUI->_('Description');?></strong><br />
+		  </td>
+		 </tr>
+		 <tr>
+		  <td class='hilite' colspan='3'>
+				<?php $newstr = str_replace( chr(10), "<br />", $obj->task_description);echo $newstr;?>
+		  </td>
 		</tr>
 <?php
 		if($obj->task_departments != "") {
