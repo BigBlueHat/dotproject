@@ -11,10 +11,6 @@ if (isset( $_GET['tab'] )) {
 $tab = $AppUI->getState( 'ConfigIdxTab' ) !== NULL ? $AppUI->getState( 'ConfigIdxTab' ) : 0;
 $active = intval( !$AppUI->getState( 'ConfigIdxTab' ) );
 
-// define image sources for vw_idx_check.php
-$failedImg = '<img src="./images/icons/stock_cancel-16.png" width="16" height="16" align="middle" alt="Failed"/>';
-$okImg = '<img src="./images/icons/stock_ok-16.png" width="16" height="16" align="middle" alt="OK"/>';
-
 $titleBlock = new CTitleBlock('System Configuration', 'control-center.png', $m);
 $titleBlock->show();
 
