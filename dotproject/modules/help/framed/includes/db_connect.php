@@ -1,4 +1,4 @@
-<?php
+<?php /* INCLUDES $Id */
 require_once( "{$dHconfig['root_dir']}/includes/db_{$dHconfig['dbtype']}.php" );
 
 ##
@@ -7,7 +7,7 @@ require_once( "{$dHconfig['root_dir']}/includes/db_{$dHconfig['dbtype']}.php" );
 
 function db_loadObject( $sql, &$object ) {
 	$hash = array();
-	if( !db_loadHash( $sql, &$hash ) ) {
+	if( !db_loadHash( $sql, $hash ) ) {
 		return false;
 	}
 	bindHashToObject( $hash, $object );
