@@ -903,9 +903,8 @@ the active tab, and the selected tab **/
 *
 * @param string Can't remember whether this was useful
 */
-	function show( $extra='' ) {
+	function show( $extra='', $js_tabs = false ) {
 		GLOBAL $AppUI, $currentTabId, $currentTabName;
-$js_tabs = true;
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options
@@ -947,7 +946,10 @@ $js_tabs = true;
 				$s .= "\n\t<td width=\"1%\" nowrap=\"nowrap\" class=\"tabsp\">";
 				$s .= "\n\t\t<img src=\"./images/shim.gif\" height=\"1\" width=\"1\" alt=\"\" />";
 				$s .= "\n\t</td>";
-				$s .= "\n\t<td id=\"toptab_" . $k . "\" width=\"1%\" nowrap=\"nowrap\" class=\"$class\">";
+				$s .= "\n\t<td id=\"toptab_" . $k . "\" width=\"1%\" nowrap=\"nowrap\"";
+				if ($js_tabs)
+					$s .= " class=\"$class\"";
+				$s .= ">";
 				$s .= "\n\t\t<a href=\"";
 				if ($this->javascript)
 					$s .= "javascript:" . $this->javascript . "({$this->active}, $k)";

@@ -341,5 +341,5 @@ var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_depend", "Dependencies");
 	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_resource", "Human Resources");
 	$tabBox->loadExtras('tasks', 'addedit');
-	$tabBox->show();
+	$tabBox->show('', true);
 ?>

@@ -7,10 +7,8 @@ class CTitleBlock extends CTitleBlock_core {
 ##  This overrides the show function of the CTabBox_core function
 ##
 class CTabBox extends CTabBox_core {
-	function show( $extra='' ) {
+	function show( $extra='', $js_tabs = false ) {
 		GLOBAL $AppUI, $dPconfig, $currentTabId, $currentTabName;
-$js_tabs = true;
-
 		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 		if (! $uistyle)
 		  $uistyle = 'default';
@@ -18,7 +16,7 @@ $js_tabs = true;
 		$s = '';
 	// tabbed / flat view options
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
-			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\" onLoad=\"show_tab(".$this->active.")\">\n";
+			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
 			$s .= "<tr>\n";
 			$s .= "<td nowrap=\"nowrap\">";
 			$s .= "<a href=\"".$this->baseHRef."tab=0\">".$AppUI->_('tabbed')."</a> : ";
@@ -58,7 +56,12 @@ $js_tabs = true;
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$sel = ($k == $this->active) ? 'Selected' : '';
 				$s .= '<td height="28" valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt="" /></td>';
-				$s .= '<td id="toptab_'.$k.'" valign="middle" nowrap="nowrap" class="'.$class.'" >&nbsp;<a href="'; //background="./style/' . $uistyle . '/images/tab'.$sel.'Bg.png"
+				$s .= '<td id="toptab_'.$k.'" valign="middle" nowrap="nowrap"';
+				if ($js_tabs)
+					$s .= " class=\"$class\"";
+				else
+					$s .= ' background="./style/'.$uistyle.'/images/tab'.$sel.'Bg.png"';
+				$s .= '>&nbsp;<a href="';
 				if ($this->javascript)
 					$s .= "javascript:" . $this->javascript . "({$this->active}, $k)";
 				else if  ($js_tabs)
