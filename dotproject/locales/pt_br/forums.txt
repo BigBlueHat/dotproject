@@ -1,0 +1,105 @@
+# Forums -> Frm
+# Frm - Index -> I
+   FrmI_Title              = Fóruns de Usuário
+   FrmIc_LnkAdd            = novo fórum
+
+# Frm - Index columns -> Ic
+   FrmIc_Name              = Nome do Fórum
+   FrmIc_Owner             = Dono
+   FrmIc_Messages          = Mensagens
+   FrmIc_Created           = Dt. Criação
+   FrmIc_LastPost          = Últ. Mensagem
+
+# Frm - Edit -> E
+   FrmE_MsgEdit            = Esta página permite Inclusão ou alteração de fóruns de discussão
+   FrmE_TtlAdd             = Inclusão de fórum
+   FrmE_TtlEdit            = Alteração de fórum
+
+   FrmE_ErrName            = Informe o nome do fórum
+   FrmE_ErrProject         = Informe o projeto associado a este fórum
+   FrmE_ErrOwner           = Informe o dono do fórum
+
+   FrmE_MsgConfDel         = Tem certeza que deseja\nexcluir o fórum?\n Nota: Todas a mensagens relacionadas serão excluídas.
+
+# Frm - Edition fields -> Ef
+   FrmEf_Name              = Nome do Fórum
+   FrmEf_Project           = Projeto
+   FrmEf_Owner             = Dono
+   FrmEf_Status            = Situação
+
+   FrmEf_RdoSttOpen        = aberto
+   FrmEf_RdoSttReadOnly    = apenas leitura
+   FrmEf_RdoSttClosed      = fechado
+
+   FrmEf_Moderated         = Moderado
+   FrmEf_CreatedOn         = Dt. Criação
+   FrmEf_LastPost          = Últ. Mensagem
+   FrmEf_MessageCt         = Qt. Mensagens
+   FrmEf_Description       = Descrição
+
+# Frm - Do SQL -> "S"
+   FrmS_Inserted           = Fórum Incluído
+   FrmS_Updated            = Fórum Alterado
+   FrmS_Deleted            = Fórum Excluído<BR>Mensagens Excluídas
+
+# Frm - View -> V
+
+   FrmV_Title              = Fóruns de Usuário
+
+# Frm - View fields-> Vf
+   FrmVf_Project           = Projeto
+   FrmVf_Owner             = Dono:
+   FrmVf_CreatedOn         = Dt. Criação:
+   FrmVf_LastPost          = Últ. Mensagem:
+   FrmVf_MessageCount      = Qt. Mensagens:
+   FrmVf_Description       = Descrição:
+
+
+# Forum Topics -> FTp
+# FTp - View -> V
+   FTpV_LnkAllForums       = Todos fóruns
+   FTpV_BtnAdd             = novo tópico
+
+# FTp - View columns -> Vc
+   FTpVc_Topics            = Tópicos
+   FTpVc_Author            = Autor
+   FTpVc_Replies           = Respostas
+   FTpVc_LastPost          = Últ. Mensagem
+
+
+# Forum Messages -> FMs
+# FMs - Index -> V
+   FMsI_LnkAllForums       = Todos fóruns
+   FMsI_BtnPostReply       = Responder
+   FMsI_BtnNewTopic        = Novo Tópico
+
+   FMsI_LnkAllForums_2     = Todos fóruns
+   FMsI_BtnPostReply_2     = Responder
+   FMsI_BtnNewTopic_2      = Novo Tópico
+
+# FMs - View columns -> Vc
+   FMsVc_Author            = Autor:
+   FMsVc_Message           = Mensagem:
+
+
+# FMs - Edit -> E
+   FMsE_Title              = Inclusão de Tópico
+   FMsE_LnkAllForums       = Todos fóruns
+
+   FMsE_ErrSubject         = Informe o assunto da mensagem
+   FMsE_ErrMessage         = Informe o texto da mensagem
+
+   FMsE_MsgConfDel         = Tem certeza que deseja\nexcluir a mensagem?
+
+# FMs - Edition fields -> Ef
+   FMsEf_ForumName         = Nome do Fórum:
+   FMsEf_ForumProject      = Projeto:
+   FMsEf_Subject           = Assunto:
+   FMsEf_MessageAuthor     = Autor da mensagem:
+   FMsEf_PostingDate       = Dt. Criação:
+   FMsEf_Message           = Mensagem
+
+# FMs - Do SQL -> "S"
+   FMsS_Inserted           = Mensagem Incluída
+   FMsS_Updated            = Mensagem Alterada
+   FMsS_Deleted            = Mensagem Excluída

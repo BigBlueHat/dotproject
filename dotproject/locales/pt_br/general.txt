@@ -1,0 +1,111 @@
+# General -> Gen
+
+# Days, Months etc
+   Gen_LongMonth -> 1      = Janeiro
+   Gen_LongMonth -> 2      = Fevereiro
+   Gen_LongMonth -> 3      = Março
+   Gen_LongMonth -> 4      = Abril
+   Gen_LongMonth -> 5      = Maio
+   Gen_LongMonth -> 6      = Junho
+   Gen_LongMonth -> 7      = Julho
+   Gen_LongMonth -> 8      = Agosto
+   Gen_LongMonth -> 9      = Setembro
+   Gen_LongMonth -> 10     = Outubro
+   Gen_LongMonth -> 11     = Novembro
+   Gen_LongMonth -> 12     = Dezembro
+                           
+   Gen_ShortMonth -> 1     = Jan
+   Gen_ShortMonth -> 2     = Fev
+   Gen_ShortMonth -> 3     = Mar
+   Gen_ShortMonth -> 4     = Abr
+   Gen_ShortMonth -> 5     = Mai
+   Gen_ShortMonth -> 6     = Jun
+   Gen_ShortMonth -> 7     = Jul
+   Gen_ShortMonth -> 8     = Ago
+   Gen_ShortMonth -> 9     = Set
+   Gen_ShortMonth -> 10    = Out
+   Gen_ShortMonth -> 11    = Nov
+   Gen_ShortMonth -> 12    = Dez
+                           
+   Gen_LongWeek -> 1       = Domingo
+   Gen_LongWeek -> 2       = Segunda
+   Gen_LongWeek -> 3       = Terça
+   Gen_LongWeek -> 4       = Quarta
+   Gen_LongWeek -> 5       = Quinta
+   Gen_LongWeek -> 6       = Sexta
+   Gen_LongWeek -> 7       = Sábado
+                           
+   Gen_ShortWeek -> 1      = Dom
+   Gen_ShortWeek -> 2      = Seg
+   Gen_ShortWeek -> 3      = Ter
+   Gen_ShortWeek -> 4      = Qua
+   Gen_ShortWeek -> 5      = Qui
+   Gen_ShortWeek -> 6      = Sex
+   Gen_ShortWeek -> 7      = Sáb
+                           
+# Date Letters             
+   Gen_DateLetters         = dma
+                           
+# Connetion                
+   GenConnError            = erro de conexão (DB)
+
+# All Modules
+   All_SortBy              = &nbsp; ordenar:&nbsp;
+   All_Currency            = '$';
+   All_IndRequField        = campo obrigatório
+   All_RequField           = (obrigatório)
+                           
+   All_BtnBack             = Volta
+   All_BtnSubmit           = Envia
+   All_BtnCancel           = Cancela
+   All_BtnSave             = Salva
+                           
+   All_None                = nada
+                           
+   All_Search              = procura
+
+# Header -> Hdr
+   Hdr_LogOut              = Sair
+   Hdr_Help                = Ajuda
+   Hdr_MyAccount           = Meus Dados
+                           
+# Login -> Lgn             
+   Lgn_Username            = Usuário:
+   Lgn_Password            = Senha:
+   Lgn_BtnLogin            = Entra
+   Lgn_LnkForgPass         = Socorro! Esqueci meu nome de usuário e senha!
+                           
+   Lgn_ErrLoginFail        = Acesso Negado
+                           
+
+# New Menu -> NMn
+   NMn_Title               = Criar Novo:
+   NMn_Task                = tarefa
+   NMn_Project             = projeto
+   NMn_File                = arquivo
+   NMn_Contact             = contato
+   NMn_Event               = evento
+                           
+   NMn_ErrProjBefore       = Selecione uma projeto antes de incluir uma tarefa
+
+
+# Left Nav Bar -> NBr
+   NBr_Companies           = Clientes
+   NBr_Projects            = Projetos
+   NBr_Tasks               = Tarefas
+   NBr_Calendar            = Calendário
+   NBr_Files               = Arquivos
+   NBr_Contacts            = Contatos
+   NBr_Forums              = Fóruns
+   NBr_Tickets             = Tickets
+   NBr_UserAdmin           = Usuários
+
+   NBr_AltCompanies        = Clientes
+   NBr_AltProjects         = Projetos
+   NBr_AltTasks            = Tarefas
+   NBr_AltCalendar         = Calendário
+   NBr_AltFiles            = Arquivos
+   NBr_AltContacts         = Contatos
+   NBr_AltForums           = Fóruns
+   NBr_AltTickets          = Tickets
+   NBr_AltUserAdmin        = Usuários

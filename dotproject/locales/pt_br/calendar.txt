@@ -1,0 +1,42 @@
+# Calendar -> Cld
+   # Cld - Index -> I
+   CldI_Title              = Calendário Mensal
+   CldI_LnkToday           = hoje
+
+   CldI_WeekImg            = ./images/semana.gif width=12 height=60
+
+# Cld - Index columns -> Ic
+# see GenShortWeek in general.txt
+   CldIc_Event             = Evento:
+   CldIc_ProjStart         = Início:
+   CldIc_ProjDue           = Término:
+
+
+# Cld - Edit -> E
+   CldE_Title              = Eventos
+   CldE_Msg                = Esta pág. permite consulta de alterar eventos
+   CldE_TtlAdd             = Inclusão de evento
+   CldE_TtlEdit            = Alteração de evento
+   CldE_BtnDel             = exclui evento
+
+   CldE_ErrTitle           = Informe o nome do evento
+   CldE_ErrStartDate       = Informe a data e início
+   CldE_ErrEndDate         = Informe a data de término
+   CldE_ErrRecur           = Informe a periodicidade com que o evento vai ocorrer.
+
+   CldE_MsgConfDel         = Tem certeza que deseja\nexcluir o evento?
+
+# Cld - Edition fields -> Ef
+   CldEf_EventName         = Nome:
+   CldEf_StartDate         = Data de Início:
+   CldEf_EndDate           = Data de Término:
+   CldEf_Recurs            = Periodicidade:
+   CldEf_RemindMe          = Lembre-me:
+   CldEf_InAdvance         = de antecedência
+   CldEf_Description       = Descrição
+
+# Cld - Do SQL -> "S"
+   CldS_Inserted           = Evento Incluído
+   CldS_Updated            = Evento Alterado
+   CldS_Deleted            = Evento Excluído
+   CldS_ErrTitle           = Nome do evento é obrigatório
