@@ -1,11 +1,12 @@
 <?php /* $Id$ */
 //file viewer
-require_once "./includes/config.php";
-require_once "./includes/main_functions.php";
-require_once "./classes/ui.class.php";
-require_once "./includes/db_adodb.php";
-require_once "./includes/db_connect.php";
-require_once "./includes/session.php";
+$baseDir = dirname(__FILE__);
+require_once "$baseDir/includes/config.php";
+require_once "$baseDir/includes/main_functions.php";
+require_once "$baseDir/classes/ui.class.php";
+require_once "$baseDir/includes/db_adodb.php";
+require_once "$baseDir/includes/db_connect.php";
+require_once "$baseDir/includes/session.php";
 
 $loginFromPage = 'fileviewer.php';
 
@@ -20,7 +21,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 	$AppUI->checkStyle();
 	 
 	require_once( $AppUI->getSystemClass( 'dp' ) );
-	require_once( "./misc/debug.php" );
+	require_once( "$baseDir/misc/debug.php" );
 
 	if ($AppUI->doLogin()) $AppUI->loadPrefs( 0 );
 	// check if the user is trying to log in
@@ -33,7 +34,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 			//display login failed message 
 			$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 			$AppUI->setMsg( 'Login Failed' );
-			require "./style/$uistyle/login.php";
+			require "$baseDir/style/$uistyle/login.php";
 			session_unset();
 			exit;
 		}
@@ -45,14 +46,14 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 	// check if we are logged in
 	if ($AppUI->doLogin()) {
 	    $AppUI->setUserLocale();
-		@include_once( "./locales/$AppUI->user_locale/locales.php" );
-		@include_once( "./locales/core.php" );
+		@include_once( "$baseDir/locales/$AppUI->user_locale/locales.php" );
+		@include_once( "$baseDir/locales/core.php" );
 		setlocale( LC_TIME, $AppUI->user_locale );
 		
 		$redirect = @$_SERVER['QUERY_STRING'];
 		if (strpos( $redirect, 'logout' ) !== false) $redirect = '';	
 		if (isset( $locale_char_set )) header("Content-type: text/html;charset=$locale_char_set");
-		require "./style/$uistyle/login.php";
+		require "$baseDir/style/$uistyle/login.php";
 		session_unset();
 		session_destroy();
 		exit;
