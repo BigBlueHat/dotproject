@@ -1,50 +1,51 @@
 <?php
-
 // check permissions
 $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
 if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+$AppUI->savePlace();
 
-//Projects
-$company_id = isset($_REQUEST["company_id"]) ? $_REQUEST["company_id"] : $AppUI->user_company;
-$order_by = isset( $_GET['order_by']) ? $_GET['order_by'] : 0;
+// Set up 'filters'
 
-//Set up defaults
-$orderby = isset($HTTP_GET_VARS["orderby"]) ? $HTTP_GET_VARS["orderby"] : 'project_end_date';
-// view mode = 0 tabbed, 1 flat
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'ProjIdxTab', $_GET['tab'] );
+}
+$tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
 
-$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 0;
-$active = $tab ? 0 : 1;
+if (isset( $_REQUEST['company_id'] )) {
+	$AppUI->setState( 'ProjIdxCompany', $_REQUEST['company_id'] );
+}
+$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+
+if (isset( $_GET['orderby'] )) {
+	$AppUI->setState( 'ProjIdxOrderBy', $_GET['orderby'] );
+}
+$orderby = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrderBy' ) : 'project_end_date';
+
+$active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
 // get read denied projects
-$dsql = "
+$sql = "
 SELECT project_id
 FROM projects, permissions
-WHERE permission_user = $user_cookie
+WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'projects' 
 	AND permission_item = project_id
 	AND permission_value = 0
 ";
-//echo "<pre>$dsql</pre>";
-$drc = mysql_query($dsql);
-$deny = array();
-while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
-	$deny[] = $row[0];
-}
+$deny = db_loadList( $sql );
+
+$df = $AppUI->getPref('SHDATEFORMAT');
 
 // pull projects
-$projects = array();
-$psql = "
+$sql = "
 SELECT
 	project_id, project_status, project_color_identifier, project_name,
-	DATE_FORMAT(project_start_date, '%d %b %Y') project_start_date, 
-	DATE_FORMAT(project_end_date, '%d %b %Y') project_end_date, 
+	DATE_FORMAT(project_start_date, '$df') proj_start_date, 
+	DATE_FORMAT(project_end_date, '$df') proj_end_date, 
 	project_color_identifier,
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
@@ -58,7 +59,7 @@ LEFT JOIN tasks t2 ON projects.project_id = t2.task_project
 WHERE project_active = $active"
 .($company_id ? "\nAND project_company = $company_id" : '')
 ."
-	AND permission_user = $user_cookie
+	AND permission_user = $AppUI->user_id
 	AND permission_value <> 0 
 	AND (
 		(permission_grant_on = 'all')
@@ -68,39 +69,33 @@ WHERE project_active = $active"
 " . (COUNT($deny) > 0 ? 'AND project_id NOT IN (' . implode( ',', $deny ) . ')' : '') . "
 GROUP BY project_id
 ORDER BY $orderby";
-//echo "<pre>$psql</pre>";
-$prc = mysql_query( $psql );
-while ($row = mysql_fetch_array( $prc, MYSQL_ASSOC )) {
-	$projects[] = $row;
-}
 
-$companies = array( 0 => 'all' );
-$csql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
-$crc = mysql_query($csql);
-while ($row = mysql_fetch_row( $crc )) {
-	$companies[$row[0]] = $row[1];
-}
+$projects = db_loadList( $sql );
+
+$sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
+$companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 ?>
 
-<table width="98%" border=0 cellpadding="0" cellspacing=1>
-<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
+<table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap><span class="title">Project Management</span></td>
+<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
 	<td align="right" width="100%">
 		Company:
 <?php
 	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
 ?>		
 	</td>
-</tr>
 </form>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>
+</tr>
 </table>
 
 <?php	
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&company_id=$company_id&order_by=$order_by", "./modules/projects", $tab );
-$tabBox->add( 'vw_idx_active', 'Active' );
-$tabBox->add( 'vw_idx_archived', 'Archived' );
+$tabBox = new CTabBox( "?m=projects&company_id=$company_id&orderby=$orderby", "./modules/projects", $tab );
+$tabBox->add( 'vw_idx_active', 'Active Projects' );
+$tabBox->add( 'vw_idx_archived', 'Archived Projects' );
 $tabBox->show();
 ?>
