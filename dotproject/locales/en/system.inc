@@ -205,7 +205,7 @@ A negative value defines the absence of a limit (index all files).",
 "parser_default_tooltip"=>"Location for the Default File Indexing Parser, e.g. /usr/bin/strings",
 "parser_text/html_title"=>"Html File Indexing Parser",
 "parser_text/html_tooltip"=>"Location for the Html File Indexing Parser, e.g. /usr/bin/strings",
-"password_min_len_title"=>"Minimal Username Length",
+"password_min_len_title"=>"Minimal Password Length",
 "password_min_len_tooltip"=>"Set minimal password length when creating new users, this can NOT be longer than the length of the column in DB",
 "php_item_title"=>"PHP Default",
 "pl"=>"Polish",
@@ -216,7 +216,7 @@ A negative value defines the absence of a limit (index all files).",
 "pt_br"=>"Portuguese Brazillian",
 "record types",
 "remove",
-"restrict_color_selection_title"=>"Restrict Color Selection?",
+"restrict_color_selection_title"=>"Restrict Colour Selection?",
 "restrict_color_selection_tooltip"=>"Set to true will cause the color selection dialog for projects to only provide a text list of
 selections to choose from, as defined in as sysvalues.
 Set to false will provide a color selection palette for selection of arbitrary colors.
