@@ -1,6 +1,3 @@
-<html>
-<head>
-	<link rel="stylesheet" href="./style/main.css" type="text/css">
 <?php
 $debug = false;
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
@@ -61,18 +58,26 @@ if (!$ok) {
 } else { 
 	require_once './includes/config.php';
 	require_once './includes/db_connect.php';
+	require_once( "$root_dir/classdefs/ui.php" );
 	require_once './includes/main_functions.php';
+
+	session_name( 'dotproject' );
+	session_start();
+	session_register( 'AppUI' );
+
+	$AppUI =& $_SESSION['AppUI'];
+	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
+	@include_once( "$root_dir/locales/core.php" );
 
 	$sql = "SELECT $select FROM $table";
 	$sql .= $where ? " WHERE $where" : ''; 
 	$sql .= $order ? " ORDER BY $order" : '';
-	$rc = mysql_query( $sql );
-	echo mysql_error();
-	$list = array( 0=>'');
-	while ($row = mysql_fetch_array( $rc, MYSQL_NUM )) {
-		$list[$row[0]] = $row[1];
-	}
+	$list = arrayMerge( array( 0=>''), db_loadHashList( $sql ) );
+	echo db_error();
 ?>
+<html>
+<head>
+	<link rel="stylesheet" href="./style/<?php echo $uistyle;?>/main.css" type="text/css">
 	<script language="javascript">
 	function setClose(){
 		var list = document.frmSelector.list;
@@ -82,7 +87,7 @@ if (!$ok) {
 		window.close();
 	}
 	</script>
-<title><?php echo $title;?> Selector</title>
+<title><?php echo $title;?>Selector</title>
 </head>
 
 <body bgcolor="#529c9c" text="#ffffff" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0" onload="this.focus();document.frmSelector.list.focus();">
@@ -93,22 +98,22 @@ if (!$ok) {
 	<td colspan="2">
 <?php
 	if (count( $list ) > 1) {
-		echo "Select $title:<br>";
+		echo $AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':<br>';
 		echo arraySelect( $list, 'list', ' size="8"', 0 );
 ?>
 	</td>
 </tr>
 <tr>
 	<td>
-		<input type="button" class="button" value="select" onclick="setClose()">
-	</td>
-	<td align="right">
-		<input type="button" class="button" value="cancel" onclick="window.close()">
+		<input type="button" class="button" value="<?php echo $AppUI->_( 'cancel' );?>" onclick="window.close()">
 <?php 
 	} else {
-		echo "There are no $table.";
+		echo $AppUI->_( "no$table" );
 	}
 ?>
+	</td>
+	<td align="right">
+		<input type="button" class="button" value="<?php echo $AppUI->_( 'Select', UI_CASE_LOWER );?>" onclick="setClose()">
 	</td>
 </tr>
 </form>
