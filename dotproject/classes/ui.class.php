@@ -794,6 +794,14 @@ the active tab, and the selected tab **/
 	function add( $file, $title ) {
 		$this->tabs[] = array( $file, $title );
 	}
+
+	function isTabbed() {
+		global $AppUI;
+		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 )
+			return false;
+		return true;
+	}
+
 /**
 * Displays the tabbed box
 *
