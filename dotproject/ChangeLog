@@ -1,7 +1,26 @@
-2005-03-09 02:01  (cyberhorse)
+2005-03-09 02:26  (gregorerhardt)
 ---------------------------------
-modules/files/index_table.php
-- fixed file version owners.
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/files.inc
+locales/en/projects.inc
+locales/en/resources.inc
+locales/en/smartsearch.inc
+locales/en/system.inc
+locales/en/tasks.inc
+- translations added
+
+2005-03-09 02:12  (gregorerhardt)
+---------------------------------
+modules/system/billingcode.php
+- translation optimisation
+
+2005-03-09 02:07  (gregorerhardt)
+---------------------------------
+modules/system/addeditpref.php
+- translation optimisation
 
 2005-03-09 01:23  (cyberhorse)
 ---------------------------------
