@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 ##
 ## Calendar functions
 ##
@@ -23,15 +23,27 @@ function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
 
 // exclude read denied projects
 	$sql = "
-	SELECT project_id
+	SELECT project_id, project_id
 	FROM projects, permissions
 	WHERE permission_user = $AppUI->user_id
 		AND permission_grant_on = 'projects'
 		AND permission_item = project_id
 		AND permission_value = 0
 	";
-	$deny = db_loadList( $sql );
-	$where .= count($deny) > 0 ? '\nAND project_id NOT IN (' . implode( ',', $deny ) . ')' : '';
+	$deny = db_loadHashList( $sql );
+	$where .= count($deny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny ) . ')' : '';
+
+// get any specifically denied tasks
+	$sql = "
+	SELECT task_id, task_id
+	FROM tasks, permissions
+	WHERE permission_user = $AppUI->user_id
+		AND permission_grant_on = 'tasks'
+		AND permission_item = task_id
+		AND permission_value = 0
+	";
+	$deny = db_loadHashList( $sql );
+	$where .= count($deny) > 0 ? "\nAND task_id NOT IN (" . implode( ',', $deny ) . ')' : '';
 
 // assemble query
 	$sql = "
@@ -43,7 +55,6 @@ function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
 	FROM tasks, projects
 	WHERE $where
 	";
-
 // execute and return
 	return db_loadList( $sql );
 }
