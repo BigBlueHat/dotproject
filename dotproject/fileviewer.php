@@ -7,6 +7,8 @@ require_once "./includes/db_adodb.php";
 require_once "./includes/db_connect.php";
 require_once "./includes/session.php";
 
+$loginFromPage = 'fileviewer.php';
+
 dPsessionStart();
 
 // check if session has previously been initialised

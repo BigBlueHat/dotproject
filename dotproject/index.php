@@ -45,6 +45,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 * 2 = cfg and db available
 */
 $dPrunLevel = 0;
+$loginFromPage = 'index.php';
 
 $is_installer = false;
 if ( isset($_GET['m']) && $_GET['m'] == 'install' ) {
