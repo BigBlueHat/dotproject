@@ -1,18 +1,10 @@
 <?php /* SYSTEM $Id$ */
 $AppUI->savePlace();
+
+$titleBlock = new CTitleBlock( 'System Administration', 'system.gif', $m, 'ID_HELP_SYS_IDX' );
+$titleBlock->show();
 ?>
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
-<table width="98%" border=0 cellpadding=0 cellspacing=1>
-<tr>
-	<td><img src="./images/icons/system.gif" alt="" border="0"></td>
-	<td nowrap><h1><?php echo $AppUI->_( 'System Administration' );?></h1></td>
-	<td align="right" width="100%">&nbsp;</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_IDX' );?></td>
-</tr>
-</table>
-
-<img src="images/shim.gif" width="1" height="10" alt="" border="0"><br />
-
+<p>
 <table width="50%" border="0" cellpadding="0" cellspacing="5" align="left">
 <tr>
 	<td width="34">
@@ -81,4 +73,4 @@ $AppUI->savePlace();
 </tr>
 
 </table>
-
+</p>

@@ -8,30 +8,10 @@ $modules = db_loadList( $sql );
 // get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs( "modules" );
 
-$crumbs = array();
-$crumbs["?m=system"] = "System Admin";
+$titleBlock = new CTitleBlock( 'Modules', 'modules.gif', $m, 'ID_HELP_SYS_IDX' );
+$titleBlock->addCrumb( "?m=system", "System Admin" );
+$titleBlock->show();
 ?>
-
-<script language="javascript">
-</script>
-
-<table cellspacing="1" cellpadding="1" border="0" width="98%">
-<tr>
-	<td><img src="<?php echo dPfindImage( 'modules.gif', $m );?>" alt="" border="0" /></td>
-	<td nowrap="nowrap"><h1><?php echo $AppUI->_('Modules');?></h1></td>
-	<td nowrap="nowrap"><img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
-	<td valign="top" align="right" width="100%"></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_MODS_VIEW' );?></td>
-</tr>
-</table>
-
-<table cellspacing="0" cellpadding="4" border="0" width="98%">
-<tr>
-	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
-
-<span style="color:red"><strong>Note this function is still in development and testing phase</strong></span>
 
 <table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
 <tr>
