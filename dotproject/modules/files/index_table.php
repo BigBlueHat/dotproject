@@ -265,8 +265,8 @@ foreach ($files as $file_row) {
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
-<?= $hidden_table ?>
 <?php 
+	echo $hidden_table; 
         $hidden_table = ''; 
 }?>
 </table>
