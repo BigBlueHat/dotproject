@@ -199,6 +199,41 @@ class CTask extends CDpObject {
 	}
 
 
+/*
+ *	overload the load function
+ *	We need to update dynamic tasks of type '1' on each load process!
+ *	@param int $oid optional argument, if not specifed then the value of current key is used
+ *	@return any result from the database operation
+*/
+
+	function load($oid=null,$strip=true) {
+		// use parent function to load the given object
+		$loaded = parent::load($oid,$strip);
+
+		/*
+		** Update the values of a dynamic task from
+		** the children's properties each time the
+		** dynamic task is loaded.
+		** Additionally store the values in the db.
+		** Only treat umbrella tasks of dynamics '1'.
+		*/
+		if ($this->task_dynamic == '1') {
+			// update task from children
+			$this->updateDynamics(true);
+
+			/*
+			** Use parent function to store the updated values in the db
+			** instead of store function of this object in order to
+			** prevent from infinite loops.
+			*/
+			parent::store();
+		}
+
+		// return whether the object load process has been successful or not
+		return $loaded;
+	}
+
+
 	function updateDynamics( $fromChildren = false ) {
 		//Has a parent or children, we will check if it is dynamic so that it's info is updated also
 		
