@@ -25,7 +25,7 @@ if (!db_loadHash( $sql, $contact ) && $contact_id > 0) {
 
 // setup the title block
 	$ttl = $contact_id > 0 ? "Edit Contact" : "Add Contact";
-	$titleBlock = new CTitleBlock( $ttl, 'contacts.gif', $m, "$m.$a" );
+	$titleBlock = new CTitleBlock( $ttl, 'monkeychat-48.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=contacts", "contacts list" );
 	if ($canDelete) {
 		$titleBlock->addCrumbRight(

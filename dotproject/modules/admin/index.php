@@ -49,7 +49,7 @@ for ($c=65; $c < 91; $c++) {
 $a2z .= "\n</tr>\n</table>";
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'User Management', 'admin.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'User Management', 'helix-setup-users.png', $m, "$m.$a" );
 $titleBlock->addCell( $a2z );
 $titleBlock->show();
 ?>

@@ -27,7 +27,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
-	$titleBlock = new CTitleBlock( $ttl, 'admin.gif', $m, 'ID_HELP_USER_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, 'ID_HELP_USER_EDIT' );
 	$titleBlock->addCrumb( "?m=admin", "users list" );
 	$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
 	$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );

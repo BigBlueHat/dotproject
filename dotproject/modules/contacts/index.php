@@ -89,7 +89,7 @@ for ($a=65; $a < 91; $a++) {
 $a2z .= "\n</tr>\n</table>";
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Companies', 'contacts.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',

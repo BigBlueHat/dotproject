@@ -3,7 +3,7 @@ $type = dPgetParam( $_GET, 'type', 'Open' );
 $action = dPgetParam( $_REQUEST, 'action', null );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Trouble Ticket Management', 'ticketsmith.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Trouble Ticket Management', 'gconf-app-icon.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new ticket').'">', '',
