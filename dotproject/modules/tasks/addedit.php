@@ -54,7 +54,7 @@ if (isset( $pirow["project_id"] )) {
 	$project_id = $pirow["project_id"];
 }
 
-//Pull tasks for the parent list
+// Pull tasks for the parent and task dependencies list
 $atsql="
 SELECT task_name, task_id, task_project
 FROM tasks
@@ -63,6 +63,16 @@ WHERE task_project = $project_id
 ORDER BY task_project";
 
 $atrc = mysql_query( $atsql );
+
+// Pull tasks dependencies
+$sql = "
+SELECT t.task_id, t.task_name
+FROM tasks t, task_dependencies td
+WHERE td.task_id = $task_id
+	AND t.task_id = td.dep_task_id
+";
+
+$tdrc = mysql_query( $sql );
 
 //------------------------------------ Start Page ----------------------------------------------//
 ?>
@@ -82,7 +92,8 @@ function popCalendar(x){
 function submitIt(){
 	var form = document.AddEdit;
 	var fl = form.assigned.length -1;
-
+	var dl = form.task_dependencies.length -1;
+	
 	if (form.task_name.value.length < 3) {
 		alert( "Please enter a valid task Name" );
 		form.task_name.focus();
@@ -99,6 +110,12 @@ function submitIt(){
 		for (fl; fl > -1; fl--){
 			form.hassign.value = "," + form.hassign.value +","+ form.assigned.options[fl].value
 		}
+		
+		form.hdependencies.value = "";
+		for (dl; dl > -1; dl--){
+			form.hdependencies.value = "," + form.hdependencies.value +","+ form.task_dependencies.options[dl].value
+		}
+				
 		form.submit();
 	}
 }
@@ -312,10 +329,11 @@ function delIt() {
 				</td>
 			</tr>
 			<TR>
-				<TD colspan=2>Expected duration:</td>
+				<TD>Expected duration:</td>				
+				<td>Dynamic Task?</td>
 			</tr>
 			<TR>
-				<TD colspan=2>
+				<TD>
 			<?php if (($prow["task_duration"]) > 24 ) {
 				$newdir = ($prow["task_duration"] / 24);
 				$dir = 24;
@@ -327,12 +345,15 @@ function delIt() {
 				$newdir ="";
 			}
 			?>
-			<input type="text" name="duration" maxlength =4 size=5 value="<?php echo $newdir;?>">
+			<input type="text" name="duration" maxlength=4 size=5 value="<?php echo $newdir;?>">
 			<select name="dayhour">
 				<option value="1" <?php  if ($dir ==1) echo "selected";?>>hour(s)
 				<option value="24" <?php  if ($dir ==24) echo "selected";?>>day(s)
 			</select>
-			</td></tr>
+			</td>
+			
+			<td><input type="checkbox" name=task_dynamic value=1 <?php if($prow["task_dynamic"]) echo "checked"?>></td>
+			</tr>
 		</table>
 	</td>
 </tr>
@@ -362,12 +383,10 @@ function delIt() {
 				<TD>
 					<Select multiple name="task_dependencies" style="width:150px" size="10" style="font-size:9pt;">
 				<?php
-					/*
-					mysql_data_seek( $atrc, 0 );
-					while ($row = mysql_fetch_array( $atrc, MYSQL_ASSOC )) {
+					mysql_data_seek( $tdrc, 0 );
+					while ($row = mysql_fetch_array( $tdrc, MYSQL_ASSOC )) {
 						echo "<option value='".$row["task_id"]."'>". $row["task_name"];
 					}
-					*/
 				?>
 					</select>
 				</td>
@@ -445,6 +464,7 @@ function delIt() {
 </tr>
 </table>
 <input type="hidden" name="hassign">
+<input type="hidden" name="hdependencies">
 </form>
 
 </body>

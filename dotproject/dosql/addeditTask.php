@@ -13,7 +13,9 @@ $message = "";
 $mail_type = "";
 
 if(empty($task_milestone))$task_milestone = 0;
+if(empty($task_dynamic))$task_dynamic = 0;
 if(empty($hassign))$hassign = "";
+if(empty($hdependencies))$dependencies = "";
 
 
 //Delete if $del set
@@ -35,12 +37,12 @@ if ($del) {
 		task_name, task_parent, task_milestone, task_project,  task_start_date,
 		task_end_date, task_duration, task_status, task_priority, 
 		task_precent_complete, task_description, task_target_budget, task_related_url,
-		task_order, task_client_publish, task_owner
+		task_order, task_client_publish, task_owner, task_dynamic
 	) VALUES (
 		'$task_name', '$task_parent', '$task_milestone', '$task_project', '$task_start_date',
 		'$task_end_date', '$task_duration', '$task_status ', '$task_priority ',
 		'$task_precent_complete', '$task_description', '$task_target_budget ', '$task_related_url',
-		'$task_order ', '$task_client_publish', '$task_owner'
+		'$task_order ', '$task_client_publish', '$task_owner', '$task_dynamic'
 	)";
 ##echo "<pre>$tsql</pre>";
 	mysql_query($tsql);
@@ -127,6 +129,7 @@ if ($del) {
 	task_name='$task_name',
 	task_parent='$task_parent',
 	task_milestone='$task_milestone',
+	task_dynamic='$task_dynamic',
 	task_start_date='$task_start_date',
 	task_end_date='$task_end_date',
 	task_duration='$task_duration',
@@ -157,9 +160,16 @@ if ($del) {
 if ($doassingsql) {
 	$cleansql = "DELETE FROM user_tasks WHERE task_id = " .$task_id . " AND user_type = 0";
 	mysql_query( $cleansql );
+		
 	if (mysql_error())
 		$sql = $cleansql;
-	//$message.= mysql_error() ."<BR>";
+		
+	$cleansql = "DELETE FROM task_dependencies WHERE task_id = " .$task_id;
+	mysql_query( $cleansql );
+		
+	if (mysql_error())
+		$sql = $cleansql;
+	
 	$assigees = explode( ",", $hassign );
 	for ($x=0; $x < count( $assigees ); $x++) {
 		if (intval($assigees[$x]) > 0) {
@@ -171,6 +181,14 @@ if ($doassingsql) {
 			//$message.= mysql_error() ."<BR>";
 		}
 	}
+	
+	$dependencies = explode( ",", $hdependencies );
+	for ($x=0; $x < count( $dependencies ); $x++) {
+		if (intval($dependencies[$x]) > 0) {
+			$sql = "REPLACE task_dependencies (task_id, dep_task_id) VALUES ($task_id, $dependencies[$x])";
+			mysql_query($sql);
+		}
+	}	
 }
 
 if ($doassignemail && $notify) {
