@@ -171,6 +171,19 @@ body.popcal {
 	background-color: #f0f0f0;
 }
 
+table.poptitle {
+	background-color: #ffffff;
+}
+table.poptitle td {
+	background-color: #ffffff;
+}
+table.poptitle th {
+	background-color: #ffffff;
+	color: #000000;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
 table.popcal {
 	background-color: #cccccc;
 }
@@ -190,30 +203,20 @@ table.popcal td {
 	text-align: center;
 }
 
-table.popcal td.poppad {
+table.popcal td.empty {
 	background-color: #efefe7;
 }
 
-table.popcal td.popmonth {
-	background-color: #ffffff;
-	color: #000000;
-	font-size: 10pt;
-	font-weight: bold;
+table.mocal td.day  {
+	background-color: #cccccc;
+	text-align: center;
 }
 
-table.popcal td.poparrows {
-	background-color: #ffffff;
-}
-
-table.popcal td.poppad {
-	background-color: #efefe7;
-}
-
-table.popcal td.poptoday {
+table.popcal td.today {
 	background-color: #cccccc;
 }
 
-table.popcal td.popweekend {
+table.popcal td.weekend {
 	background-color: #eeeeee;
 }
 
@@ -223,20 +226,98 @@ table.popcal a:visited {
 	text-decoration: none;
 }
 
-table.popcal a.poptoday:link,
-table.popcal a.poptoday:visited {
+table.popcal a.today:link,
+table.popcal a.today:visited {
 	color: #ff0000;
 	font-weight: bold;
 }
 
-table.popcal a.popweekend:link,
-table.popcal a.popweekend:visited {
+table.popcal a.weekend:link,
+table.popcal a.weekend:visited {
 	color: #777777;
 }
 
-a.popcallinks:link,
-a.popcallinks:visited {
-	font-family: verdana,helvetica,arial,sans-serif;
-	color: #000099;
-	font-size: 8pt;
+/* month calendar - title area */
+table.motitle {
+	background-color: #ffffff;
+}
+table.motitle td {
+	background-color: #ffffff;
+}
+table.motitle th {
+	background-color: #ffffff;
+	font-size: 10pt;
+}
+
+table.mocal {
+	background-color: #cccccc;
+}
+table.mocal th {
+	background-color: #878676;
+	color: #ffffff;
+}
+table.mocal td {
+}
+table.mocal td.week {
+	vertical-align: top;
+	background-color: #878676;
+	height: 80px;
+}
+table.mocal td.empty {
+	background-color: #ffffff;
+	height: 80px;
+}
+table.mocal td.day  {
+	background-color: #f4efe3;
+	color: #333366;
+	text-align: left;
+	vertical-align: top;
+	height: 80px;
+}
+table.mocal td.today {
+	background-color: #878676;
+	color: #ffffff;
+	text-align: left;
+	vertical-align: top;
+}
+
+table.mocal td.weekend {
+	background-color: #efefe7;
+	text-align: left;
+	vertical-align: top;
+}
+
+table.mocal .event {
+}
+
+/* mini calendar - title area */
+table.minititle {
+}
+table.minititle td {
+}
+table.minititle th {
+	font-weight: normal;
+}
+
+table.minical {
+}
+table.minical th {
+	font-weight: normal;
+}
+table.minical td {
+}
+table.minical td.week {
+}
+table.minical td.empty {
+}
+table.minical td.day  {
+	text-align: center;
+}
+table.minical td.today {
+	text-align: center;
+}
+table.minical td.weekend {
+	text-align: center;
+}
+table.minical .event {
 }
