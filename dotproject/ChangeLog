@@ -1,3 +1,121 @@
+2003-04-16 01:23  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/view.php
+- Fixed duration type handling
+
+2003-04-16 01:22  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed check on duration type
+
+2003-04-16 01:22  (eddieajau)
+---------------------------------
+modules/tasks/gantt.php
+- Trimmed unnecessary fields in queires
+
+2003-04-16 01:21  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed task duration issues
+
+2003-04-16 00:57  (eddieajau)
+---------------------------------
+modules/system/index.php
+- Fixed help reference in titleblock
+
+2003-04-16 00:56  (eddieajau)
+---------------------------------
+modules/system/syskeys/syskeys.class.php
+- Updated class to extend generic module class
+
+2003-04-16 00:56  (eddieajau)
+---------------------------------
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+- Updated titleblock
+- Fixed bug in dosql path
+
+2003-04-16 00:54  (eddieajau)
+---------------------------------
+modules/system/syskeys/do_syskey_aed.php
+modules/system/syskeys/do_sysval_aed.php
+- Updated message handling
+
+2003-04-16 00:41  (eddieajau)
+---------------------------------
+modules/projects/index.php
+- Updated to get company list from the company class methods.
+
+2003-04-16 00:41  (eddieajau)
+---------------------------------
+modules/projects/view.php
+- Fixed percent complete calculation for new task duration type
+
+2003-04-16 00:39  (eddieajau)
+---------------------------------
+modules/companies/view.php
+- Changed delete handling
+
+2003-04-16 00:39  (eddieajau)
+---------------------------------
+modules/companies/companies.class.php
+- Updated class to extend the dP generic module class
+- Fixed incomplete checks for validating a delete
+
+2003-04-16 00:37  (eddieajau)
+---------------------------------
+modules/companies/do_company_aed.php
+- Minor changes
+
+2003-04-16 00:36  (eddieajau)
+---------------------------------
+locales/en/common.inc
+- Content updated
+
+2003-04-16 00:33  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Applied changes for the duration type field
+
+2003-04-16 00:30  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Added functions to return the file path of system and module class file.
+- Added function to return a particular configuration parameter.
+
+2003-04-16 00:29  (eddieajau)
+---------------------------------
+classes/dp.class.php
+- Expanded the class to include security based list functions.
+
+2003-04-15 06:05  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+- Tweak username and password max lengths
+
+2003-04-15 06:02  (eddieajau)
+---------------------------------
+style/classic/login.php
+style/default/login.php
+- Set maxlength on password
+
+2003-04-15 05:57  (eddieajau)
+---------------------------------
+modules/departments/addedit.php
+- Fixed reference to Company in invalid name warning
+- and reduced the string length requirement to 2.
+
+2003-04-15 05:55  (eddieajau)
+---------------------------------
+locales/en/departments.inc
+- Content updated
+
+2003-04-15 00:49  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-15 00:18  (kripper)
 ---------------------------------
 ChangeLog
@@ -380,124 +498,6 @@ locales/es/calendar.inc
 locales/es/common.inc
 locales/es/companies.inc
 locales/es/contacts.inc
-locales/es/departments.inc
-locales/es/files.inc
-locales/es/forums.inc
-locales/es/help.inc
-locales/es/locales.php
-locales/es/projects.inc
-locales/es/public.inc
-locales/es/styles.inc
-locales/es/system.inc
-locales/es/tasks.inc
-locales/es/ticketsmith.inc
-- Moved to dotMods
-
-2003-04-04 01:13  (eddieajau)
----------------------------------
-modules/projects/view.php
-- no message
-
-2003-04-04 01:10  (eddieajau)
----------------------------------
-modules/tasks/view.php
-- Fixed bug in permissions
-
-2003-04-04 01:08  (eddieajau)
----------------------------------
-modules/companies/view.php
-- Fixed bug in get edit permissions
-
-2003-04-04 01:07  (eddieajau)
----------------------------------
-modules/admin/index.php
-modules/calendar/day_view.php
-modules/calendar/index.php
-modules/calendar/week_view.php
-- Updated title block
-
-2003-04-04 01:06  (eddieajau)
----------------------------------
-modules/admin/addedituser.php
-- Fixed broken bread-crumb and name of dosql file
-
-2003-04-04 01:04  (eddieajau)
----------------------------------
-modules/admin/permissions.php
-- No longer used
-
-2003-04-04 01:01  (eddieajau)
----------------------------------
-modules/calendar/do_event_aed.php
-modules/companies/do_company_aed.php
-modules/contacts/do_contact_aed.php
-modules/departments/do_dept_aed.php
-modules/files/do_file_aed.php
-modules/forums/do_forum_aed.php
-modules/forums/do_post_aed.php
-modules/forums/do_watch_forum.php
-modules/system/do_preference_aed.php
-modules/tasks/do_task_aed.php
-- Updated message handling
-
-2003-04-04 00:57  (eddieajau)
----------------------------------
-modules/admin/do_user_aed.php
-modules/admin/do_perms_aed.php
-- Updated message handling
-
-2003-04-04 00:56  (eddieajau)
----------------------------------
-modules/admin/do_user_aed.php
-modules/admin/dosql.php
-- File renamed
-
-2003-04-04 00:54  (eddieajau)
----------------------------------
-locales/en/admin.inc
-locales/en/calendar.inc
-locales/en/common.inc
-locales/en/contacts.inc
-locales/en/departments.inc
-locales/en/files.inc
-locales/en/forums.inc
-locales/en/projects.inc
-locales/en/system.inc
-locales/en/tasks.inc
-- Content updated
-
-2003-04-03 19:49  (eddieajau)
----------------------------------
-modules/tasks/vw_logs.php
-- Fixed significant figures in reporting or hours (increased to 2 dec places)
-
-2003-04-03 19:02  (eddieajau)
----------------------------------
-modules/public/selector.php
-- Fixed bug in departments selection
-
-2003-04-03 18:01  (kripper)
----------------------------------
-modules/forums/view_messages.php
-modules/forums/view_topics.php
-- Added optional descendent order in forum
-
-2003-04-03 05:43  (eddieajau)
----------------------------------
-modules/forums/view_messages.php
-- Comment out debug echo
-
-2003-04-03 05:33  (eddieajau)
----------------------------------
-modules/forums/post_message.php
-- Fixed form check alerts
-
-2003-04-03 05:21  (eddieajau)
----------------------------------
-modules/tasks/vw_log_update.php
-modules/tasks/addedit.php
-- Widened the hours/duration fields
-
 ...
 
 (This file has been wrapped)
