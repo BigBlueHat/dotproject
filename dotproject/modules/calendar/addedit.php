@@ -177,6 +177,14 @@ function setCalendar( idate, fdate ) {
 	fld_fdate = eval( 'document.editFrm.' + calendarField );
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
+
+	// set end date automatically with start date if start date is after end date
+	if (calendarField == 'start_date') {
+		if( document.editFrm.end_date.value < idate) {
+			document.editFrm.event_end_date.value = idate;
+			document.editFrm.end_date.value = fdate;
+		}
+	}
 }
 
 function addUser() {
@@ -253,7 +261,7 @@ function removeUser() {
 	echo arraySelect( $projects, 'event_project', 'size="1" class="text"', @$obj->event_project );
 ?>
 	</td>
-</tr>	
+</tr>
 
 
 <tr>

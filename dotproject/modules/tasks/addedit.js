@@ -69,6 +69,16 @@ function setCalendar( idate, fdate ) {
 	fld_date = document.getElementById('task_' + calendarField.name);
 	calendarField.value = fdate;
 	fld_date.value = idate;
+
+	// set end date automatically with start date if start date is after end date
+	e_date = document.getElementById('task_' + 'end_date');
+	e_fdate = document.getElementById('end_date');
+	if (calendarField.name == 'start_date') {
+		if( e_fdate.value < idate) {
+			e_date.value = idate;
+			e_fdate.value = fdate;
+		}
+	}
 }
 
 function setContacts(contact_id_string){

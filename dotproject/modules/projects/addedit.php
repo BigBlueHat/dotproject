@@ -140,10 +140,18 @@ window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date='
 *	@param string Formatted date
 */
 function setCalendar( idate, fdate ) {
-fld_date = eval( 'document.editFrm.project_' + calendarField );
-fld_fdate = eval( 'document.editFrm.' + calendarField );
-fld_date.value = idate;
-fld_fdate.value = fdate;
+	fld_date = eval( 'document.editFrm.project_' + calendarField );
+	fld_fdate = eval( 'document.editFrm.' + calendarField );
+	fld_date.value = idate;
+	fld_fdate.value = fdate;
+
+	// set end date automatically with start date if start date is after end date
+	if (calendarField == 'start_date') {
+		if( document.editFrm.end_date.value < idate) {
+			document.editFrm.project_end_date.value = idate;
+			document.editFrm.end_date.value = fdate;
+		}
+	}
 }
 
 function submitIt() {
