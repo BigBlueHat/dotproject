@@ -23,6 +23,7 @@ class CProject {
 	var $project_actual_budget = NULL;
 	var $project_creator = NULL;
 	var $project_active = NULL;
+	var $project_private = NULL;
 
 	function CProject() {
 		// empty constructor
@@ -32,6 +33,10 @@ class CProject {
 		if (!$this->project_active) {
 			$this->project_active = '0';
 		}
+		if (!$this->project_private) {
+			$this->project_private = '0';
+		}
+
 		// TODO
 		return NULL; // object is ok
 	}
