@@ -32,8 +32,7 @@ function showRow($id=0, $name='', $label='') {
 	GLOBAL $canEdit, $syskey_id, $CR, $AppUI;
 	$s = '<tr>'.$CR;
 	if ($syskey_id == $id && $canEdit) {
-		$s .= '<form name="sysKeyFrm" method="post" action="?m=system&u=syskeys">'.$CR;
-		$s .= '<input type="hidden" name="dosql" value="syskeys/do_syskey_aed" />'.$CR;
+		$s .= '<form name="sysKeyFrm" method="post" action="?m=system&u=syskeys&a=do_syskey_aed">'.$CR;
 		$s .= '<input type="hidden" name="del" value="0" />'.$CR;
 		$s .= '<input type="hidden" name="syskey_id" value="'.$id.'" />'.$CR;
 
