@@ -284,7 +284,7 @@ function submitIt() {
 				//retrieve the number of existing projects
 				$sql = "SELECT COUNT(*) FROM projects";
 				$numProj = db_loadColumn($sql);
-				echo $numProj[0];
+				//echo $numProj[0];
 
 				// Loading project with tasks
 				$sql = 'SELECT DISTINCT p.project_id, p.project_name
