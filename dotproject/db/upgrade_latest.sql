@@ -18,3 +18,8 @@ ALTER TABLE `files_index` CHANGE `word_placement` `word_placement` INT( 11 ) DEF
 ALTER TABLE `files_index` DROP PRIMARY KEY;
 ALTER TABLE `files_index` ADD PRIMARY KEY( `file_id`, `word`, `word_placement`);
 #
+
+# 20050319
+# Remove more configs that are no longer in use
+DELETE FROM `config` where `config_name` = 'forum_descendent_order';
+#
