@@ -208,6 +208,10 @@ function delIt() {
 			<td class="hilite" width="100%" style="background-color:<?=$priority[$obj->project_priority]['color']?>"><?php echo $AppUI->_($priority[$obj->project_priority]['name']);?></td>
 		</tr>
 		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Type');?>:</td>
+			<td class="hilite" width="100%"><?php echo $AppUI->_($ptype[$obj->project_type]);?></td>
+		</tr>
+		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Progress');?>:</td>
 			<td class="hilite" width="100%"><?php printf( "%.1f%%", $obj->project_percent_complete );?></td>
 		</tr>

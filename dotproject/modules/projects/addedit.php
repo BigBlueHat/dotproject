@@ -321,6 +321,12 @@ function setDepartment(department_id_string){
 			</td>
 		</tr>
 		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Type');?></td>
+			<td colspan="3">
+				<?=arraySelect( $ptype, 'project_type', 'size="1" class="text"', $row->project_type, true );?> *
+			</td>
+		</tr>
+		<tr>
 			<td colspan="4">
 				<table width="100%" bgcolor="#cccccc">
 				<tr>

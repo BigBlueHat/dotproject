@@ -1,6 +1,7 @@
 <?php /* FUNCTIONS $Id$ */
 // project statii
 $pstatus = dPgetSysVal( 'ProjectStatus' );
+$ptype = dPgetSysVal( 'ProjectType' );
 
 $priority = array(
  -1 => array(
