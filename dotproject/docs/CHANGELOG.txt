@@ -1,5 +1,11 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+31 October 2002 (JRP):
+---------------------------------
+Changed logic of "strpos" used in "dosql/addfile.php" because of potential problem with "TRUE/FALSE"
+confusion dependent on PHP version 4.03 transition. [Change in response to "safe-mode" problem with 
+file upload utility]. Tested, but not in "safe-mode". Reported behavior not replicated either.
+
 28 October 2002 (AJE):
 -----------------------------
 modules/files/index.php
