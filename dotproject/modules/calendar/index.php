@@ -34,7 +34,7 @@ $titleBlock->addCell(
 $titleBlock->addCell( $AppUI->_('Event Filter') . ':');
 $titleBlock->addCell(
 	arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
-	$event_filter ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
+	$event_filter, true ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
 );
 $titleBlock->show();
 ?>
