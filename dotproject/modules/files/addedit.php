@@ -177,7 +177,11 @@ function setTask( key, val ) {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Upload File' );?>:</td>
 			<td align="left"><input type="File" class="button" name="formfile" style="width:270px"></td>
 		</tr>
-
+		<tr>
+			<td align="right" nowrap="nowrap">&nbsp;</td>
+			<td align="left"><input type="checkbox" name="notify" checked="checked"><?php echo $AppUI->_('Notify Assignees of Task or Project Owner by Email'); ?></td>		
+		</tr>
+		
 		</table>
 	</td>
 </tr>

@@ -2,7 +2,16 @@
 //addfile sql
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 $del = intval( dPgetParam( $_POST, 'del', 0 ) );
+
+$not = dPgetParam( $_POST, 'notify', '0' );
+if ($not!='0') $not='1';
+
 $obj = new CFile();
+if ($file_id) { 
+	$obj->_message = 'updated';
+} else {
+	$obj->_message = 'added';
+}
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
@@ -18,6 +27,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
+		if ($not=='1') $obj->notify();
 		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 		$AppUI->redirect( "m=files" );
 	}
@@ -62,6 +72,8 @@ if (!$file_id) {
 if (($msg = $obj->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 } else {
+	$obj->load($obj->file_id);
+	if ($not=='1') $obj->notify();
 	$AppUI->setMsg( $file_id ? 'updated' : 'added', UI_MSG_OK, true );
 }
 $AppUI->redirect();
