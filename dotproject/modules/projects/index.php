@@ -1,7 +1,7 @@
 <?php
 //Projects
 $company_id = isset($HTTP_GET_VARS["company_id"]) ? $HTTP_GET_VARS["company_id"] : 
-	(isset($HTTP_POST_VARS["company_id"]) ? $HTTP_POST_VARS["company_id"] : '0');
+	(isset($HTTP_POST_VARS["company_id"]) ? $HTTP_POST_VARS["company_id"] : $thisuser_company);
 
 //Set up defaults
 $orderby = isset($HTTP_GET_VARS["orderby"]) ? $HTTP_GET_VARS["orderby"] : 'project_end_date';
