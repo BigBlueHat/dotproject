@@ -57,6 +57,15 @@ Password:
 
 </ul>
 </td></tr>
+<tr>
+	<td align=center>
+		<img src="./images/icons/dp.gif" width="42" height="42" border=0 alt="dotproject">
+		<p>dotproject
+		<p>an open-source
+		<br>project management
+		<br>application
+	</td>
+</tr>
 </TABLE>
 </form>
 
