@@ -61,7 +61,7 @@ CREATE TABLE `contacts` (
   `contact_last_name` varchar(30) default NULL,
   `contact_order_by` varchar(30) NOT NULL default '',
   `contact_title` varchar(50) default NULL,
-  `contact_birthday` datetime default NULL,
+  `contact_birthday` date default NULL,
   `contact_company` varchar(100) NOT NULL default '',
   `contact_department` TINYTEXT,
   `contact_type` varchar(20) default NULL,
@@ -339,10 +339,10 @@ CREATE TABLE `users` (
   `user_password` varchar(32) NOT NULL default '',
   `user_parent` int(11) NOT NULL default '0',
   `user_type` tinyint(3) not null default '0',
-  `user_first_name` varchar(50) default '',
-  `user_last_name` varchar(50) default '',
   `user_company` int(11) default '0',
   `user_department` int(11) default '0',
+/*  `user_first_name` varchar(50) default '',
+  `user_last_name` varchar(50) default '',
   `user_email` varchar(255) default '',
   `user_phone` varchar(30) default '',
   `user_home_phone` varchar(30) default '',
@@ -356,7 +356,7 @@ CREATE TABLE `users` (
   `user_icq` varchar(20) default '',
   `user_aol` varchar(20) default '',
   `user_birthday` datetime default NULL,
-  `user_pic` TEXT,
+  `user_pic` TEXT,*/
   `user_owner` int(11) NOT NULL default '0',
   `user_signature` TEXT,
   PRIMARY KEY  (`user_id`),
@@ -387,7 +387,9 @@ CREATE TABLE `user_preferences` (
 #   New admin email -> replace {admin@localhost}
 #
 
-INSERT INTO `users` VALUES (1,0,'admin',MD5('passwd'),0,1,'Admin','Person',1,0,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
+INSERT INTO `users` VALUES (1,1,'admin',MD5('passwd'),0,1,'');
+INSERT INTO `contacts` (contact_id, contact_first_name, contact_last_name, contact_email) 
+VALUES (1,'Admin','Person','admin@localhost');
 
 INSERT INTO `permissions` VALUES (1,1,"all",-1, -1);
 
