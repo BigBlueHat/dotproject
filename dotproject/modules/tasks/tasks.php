@@ -313,6 +313,7 @@ while (list( $k, ) = each( $projects ) ) {
 <?php } ?>
 
 <?php
+		GLOBAL $done;
 		$done = array();
 		for ($i=0; $i < $tnums; $i++) {
 			$t = $p['tasks'][$i];
