@@ -471,9 +471,9 @@ function addUser() {
 	//Pull selected resources and add them to list
 	for (fl; fl > -1; fl--) {
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
-                        if (perc > provideFreeCapacity(form.resources.value))  {
-                                setPercentAssign(provideFreeCapacity(form.resources.value));
-                                alert('<?php echo $AppUI->_('overAlloc'); ?>');
+                        if (perc > provideFreeCapacity(form.resources.options[fl].value))  {
+                                setPercentAssign(provideFreeCapacity(form.resources.options[fl].value));
+                                alert("<?php echo $AppUI->_('overAlloc'); ?>");
                         } else {
                                 t = form.assigned.length
                                 opt = new Option( stripPercent(form.resources.options[fl].text)+" ["+perc+"%]", form.resources.options[fl].value);
