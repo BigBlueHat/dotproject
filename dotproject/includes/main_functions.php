@@ -584,7 +584,7 @@ function getUsersArray(){
     $usersql = "SELECT user_id, user_username, contact_first_name, contact_last_name
                 FROM users
                 LEFT JOIN contacts ON contact_id = user_contact
-                ORDER by contact_last_name,contact_first_name";
+                ORDER by contact_first_name, contact_last_name";
     
     return db_loadHashList($usersql, "user_id");
     
