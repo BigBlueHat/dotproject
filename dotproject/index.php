@@ -46,9 +46,14 @@ error_reporting( E_ALL & ~E_NOTICE);
 */
 $dPrunLevel = 0;
 
+$is_installer = false;
+if ( isset($_GET['m']) && $_GET['m'] == 'install' ) {
+	$is_installer = true;
+}
+
 if ( is_file( "./includes/config.php" ) ) {	// allow the install module to run without config file
 	$dPrunLevel = 1;
-} elseif (! ($_GET['m'] == 'install') ) {
+} elseif (! $is_installer ) {
 	die( "Fatal Error.  You haven't created a config file yet." );
 }
 
@@ -60,7 +65,7 @@ if ($dPrunLevel > 0) {
 	require_once( "./includes/config.php" );
 }
 
-if ( ($_GET['m'] == 'install') ) {
+if ($is_installer) {
 	include("./modules/install/install.inc.php");
 }
 
@@ -91,7 +96,7 @@ header ("Pragma: no-cache");	// HTTP/1.0
 // If not found, try guessing it.
 $config_file = "{$dPconfig['root_dir']}/includes/config.php";
 $config_msg = false;
-if (! is_file($config_file) && !( $_GET['m'] == 'install') ) {
+if (! is_file($config_file) && !$is_installer ) {
 	// First check that we aren't looking at old data.
 	// We don't do this first as it has performance implications.
 	clearstatcache();
@@ -117,7 +122,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
         addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
     }
 
-    $_SESSION['AppUI'] = !( $_GET['m'] == 'install' ) ? new CAppUI() : new IAppUI();
+	$_SESSION['AppUI'] = $is_installer ? new IAppUI : new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
 
@@ -140,7 +145,7 @@ require_once( "./misc/debug.php" );
 $AppUI->updateLastAction($last_insert_id);
 // load default preferences if not logged in
 if ($AppUI->doLogin()) {
-	if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+	if ( !($is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
     		$AppUI->loadPrefs( 0 );
 	}
 }
@@ -218,13 +223,13 @@ if ($AppUI->doLogin()) {
 	exit;
 }
 
-if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+if ( !( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
 	// bring in the rest of the support and localisation files
 	require_once( "./includes/permissions.php" );
 }
 
 $def_a = 'index';
-if ( $_GET['m'] == 'install' && $dPrunLevel < 2 ) {	// allow the install module to run without db
+if ( $is_installer && $dPrunLevel < 2 ) {	// allow the install module to run without db
 	$m = 'install';
 } else if (! isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
   	$m = $dPconfig['default_view_m'];
@@ -263,7 +268,7 @@ setlocale( LC_TIME, $user_locale );
 
 @include_once( "./functions/" . $m . "_func.php" );
 
-if ( ( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+if ( ( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
 	// present some trivial permission functions
 	function getDenyRead( $m ){ return false; }
 	function getDenyEdit( $m ){ return false; }
@@ -324,7 +329,7 @@ if(!$suppressHeaders) {
 }
 
 
-if (! isset($_SESSION['all_tabs'][$m]) && !( $_GET['m'] == 'install' && $dPrunLevel < 2 )) {
+if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 )) {
 	// For some reason on some systems if you don't set this up
 	// first you get recursive pointers to the all_tabs array, creating
 	// phantom tabs.
