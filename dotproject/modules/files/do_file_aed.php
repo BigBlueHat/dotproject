@@ -2,6 +2,7 @@
 //addfile sql
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 $del = intval( dPgetParam( $_POST, 'del', 0 ) );
+global $db;
 
 $not = dPgetParam( $_POST, 'notify', '0' );
 if ($not!='0') $not='1';
@@ -66,7 +67,7 @@ if (isset( $_FILES['formfile'] )) {
 		$obj->file_name = $upload['name'];
 		$obj->file_type = $upload['type'];
 		$obj->file_size = $upload['size'];
-		$obj->file_date = db_unix2dateTime( time() );
+		$obj->file_date = str_replace("'", '', $db->DBTimeStamp(time()));
 		$obj->file_real_filename = uniqid( rand() );
 
 		$res = $obj->moveTemp( $upload );
