@@ -28,15 +28,49 @@ function bestColor( $bg, $lt='#ffffff', $dk='#000000' ) {
 function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translate=false ) {
 	GLOBAL $AppUI;
 	reset( $arr );
-	$s = "<select name=\"$select_name\" $select_attribs>";
+	$s = "\n<select name=\"$select_name\" $select_attribs>";
 	foreach ($arr as $k => $v ) {
 		if ($translate) {
 			$v = @$AppUI->_( $v );
 		}
-		$s .= '<option value="'.$k.'"'.($k == $selected ? ' selected' : '').'>' . $v . "</option>";
+		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" . $v . "</option>";
 	}
-	$s .= '</select>';
+	$s .= "\n</select>\n";
 	return $s;
+}
+
+##
+## returns a select box based on an key,value array where selected is based on key
+##
+function arraySelectTree( &$arr, $select_name, $select_attribs, $selected, $translate=false ) {
+	GLOBAL $AppUI;
+	reset( $arr );
+
+	$children = array();
+	// first pass - collect children
+	foreach ($arr as $k => $v ) {
+		$id = $v[0];
+		$pt = $v[2];
+		$list = @$children[$pt] ? $children[$pt] : array();
+		array_push($list, $v);
+	    $children[$pt] = $list;
+	}
+
+	$list = tree_recurse($arr[0][2], '', array(), $children);
+	return arraySelect( $list, $select_name, $select_attribs, $selected, $translate );
+}
+
+function tree_recurse($id, $indent, $list, $children) {
+	if (@$children[$id]) {
+		foreach ($children[$id] as $v) {
+			$id = $v[0];
+			$txt = $v[1];
+			$pt = $v[2];
+			$list[$id] = "$indent $txt";
+			$list = tree_recurse($id, "$indent--", $list, $children);
+		}
+	}
+	return $list;
 }
 
 ##
