@@ -210,4 +210,11 @@ function dPgetSysVal( $title ) {
 	return $arr;
 }
 
+function dPuserHasRole( $name ) {
+	global $AppUI;
+	$uid = $AppUI->user_id;
+	$sql = "SELECT r.role_id FROM roles AS r,user_roles AS ur WHERE ur.user_id=$uid AND ur.role_id=r.role_id AND r.role_name='$name'";
+	return db_loadResult( $sql );
+}
+
 ?>
