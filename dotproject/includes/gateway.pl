@@ -1,10 +1,8 @@
 #!c:\programme\perl\bin\perl.exe -w
 # You may have to edit the above line to reflect your system
+# E.g. the typical UNIX/Linux system will require #!/usr/bin/perl
 
 # $Id$ #
-
-# New configuration, gets all config info from the PHP config.php file.
-$dp_root = "/path/to/dotproject";
 
 # send email report upon receipt (1 = yes, 0 = no)
 $send_email_report = 1;
@@ -28,7 +26,7 @@ $skip_mime_preface = 1;
 # dPconfig[site_domain] key.
 
 # address to send report to
-$report_to_address = "you";
+$report_to_address = "admin";
 
 # report from address
 $report_from_address = "support";
@@ -40,11 +38,13 @@ $mailprog = "/usr/sbin/sendmail";
 
 ## First phase, check to see we can configure ourselves based upon
 ## the PHP environment.
+die ("Gateway.pl requires the full path to the dotproject config.php file as its only argument") if ($#ARGV != 0);
 %config = ();
-&check_config();
+&check_config($ARGV[0]);
 
 # Shortcuts for the email code
 $app_root = $config{'base_url'};
+$dp_root = $config{'root_dir'};
 
 # If no domain portion, add the domain from the configuration file.
 if ( $report_to_address !~ /\@/ ) {
@@ -76,7 +76,8 @@ exit();
 ################################################################################
 
 sub check_config() {
-  open (PHPCONFIG, "<$dp_root/includes/config.php")
+  $dp_conf = $_[0];
+  open (PHPCONFIG, "<$dp_conf")
     or die ("Cannot find dotProject configuration file!");
   while (<PHPCONFIG>) {
     if (/^\s*\$dpconfig\[/i) {
@@ -349,7 +350,7 @@ sub insert_attachment($) {
 	close(FH);
 
 	# Change ownership to the web server owner - assumes the files directory is correctly owned
-	system ("chown " . $web_owner . " " . $fname)
+	chown  $fname, $web_owner 
 	 or chmod 0666, $fname;
 
 	# insert the file as user Admin (id=1), Project = 0
