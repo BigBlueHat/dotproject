@@ -18,7 +18,7 @@ $sql = "
 SELECT tasks.*,
 	project_name, project_color_identifier,
 	u1.user_username as username,
-	SUM(task_log_hours) as log_hours_worked
+	ROUND(SUM(task_log_hours),2) as log_hours_worked
 FROM tasks
 LEFT JOIN users u1 ON u1.user_id = task_owner
 LEFT JOIN projects ON project_id = task_project
@@ -53,6 +53,8 @@ $tab = $AppUI->getState( 'TaskLogVwTab' ) !== NULL ? $AppUI->getState( 'TaskLogV
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
+//Also view the time
+$df .= " " . $AppUI->getPref('TIMEFORMAT');
 
 $start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : null;
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
@@ -202,7 +204,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Time Worked');?>:</td>
-			<td class="hilite" width="300"><?php echo (@$obj->task_hours_worked + @$obj->log_hours_worked);?></td>
+			<td class="hilite" width="300"><?php echo (@$obj->task_hours_worked + @rtrim($obj->log_hours_worked, "0"));?></td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap" colspan=2><strong><?php echo $AppUI->_('Dates and Targets');?></strong></td>

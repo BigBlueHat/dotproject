@@ -119,5 +119,13 @@ class CDate extends Date {
 		$this->setMinute( $m );
 		$this->setSecond( $s );
 	}
+	
+	function getAMPM() {
+		if ( $this->getHour() > 11 ) {
+			return "pm";
+		} else {
+			return "am";
+		}
+	}
 }
 ?>

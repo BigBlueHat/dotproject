@@ -164,6 +164,35 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 //Dynamic tasks are by default now off because of dangerous behavior if incorrectly used
 if ( is_null($obj->task_dynamic) ) $obj->task_dynamic = 0 ;
 
+//Time arrays for selects
+$start = $AppUI->getConfig('cal_day_start');
+$end = $AppUI->getConfig('cal_day_end');
+$inc = $AppUI->getConfig('cal_day_increment');
+if ($start === null ) $start = 8;
+if ($end === null ) $end = 17;
+if ($inc === null) $inc = 15;
+$hours = array();
+for ( $current = $start; $current < $end + 1; $current++ ) {
+	if ( $current < 10 ) { 
+		$current_key = "0" . $current;
+	} else {
+		$current_key = $current;
+	}
+	
+	if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ){
+		//User time format in 12hr
+		$hours[$current_key] = ( $current > 12 ? $current-12 : $current );
+	} else {
+		//User time format in 24hr
+		$hours[$current_key] = $current;
+	}
+}
+
+$minutes = array();
+$minutes["00"] = "00";
+for ( $current = 0 + $inc; $current < 60; $current += $inc ) {
+	$minutes[$current] = $current;
+}
 ?>
 
 <SCRIPT language="JavaScript">
@@ -221,6 +250,14 @@ function submitIt(){
 			form.hdependencies.value = "," + form.hdependencies.value +","+ form.task_dependencies.options[dl].value
 		}
 
+		if ( form.task_start_date.value.length > 0 ) {
+			form.task_start_date.value += form.start_hour.value + form.start_minute.value;
+		}
+		
+		if ( form.task_end_date.value.length > 0 ) {
+			form.task_end_date.value += form.end_hour.value + form.end_minute.value;
+		}
+		
 		form.submit();
 	}
 }
@@ -286,6 +323,14 @@ function removeTaskDependency() {
 		if (form.task_dependencies.options[td].selected) {
 			form.task_dependencies.options[td] = null;
 		}
+	}
+}
+
+function setAMPM( field) {
+	if ( field.value > 11 ){
+		document.editFrm[field.name + "_ampm"].value = "pm";
+	} else {
+		document.editFrm[field.name + "_ampm"].value = "am";
 	}
 }
 
@@ -430,6 +475,16 @@ function calcFinish() {
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
 				</td>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Time' );?></td>
+				<td>
+				<?php
+					echo arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . " : ";
+					echo arraySelect($minutes, "start_minute",'size="1" class="text"', $start_date ? $start_date->getMinute() : "0" );
+					if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
+						echo '<input type="text" name="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" />';
+					}
+				?>
+				</td>
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
@@ -439,6 +494,16 @@ function calcFinish() {
 					<a href="#" onClick="popCalendar('end_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
+				</td>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Time' );?></td>
+				<td>
+				<?php
+					echo arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . " : ";
+					echo arraySelect($minutes, "end_minute",'size="1" class="text"', $end_date ? $end_date->getMinute() : "00" );
+					if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
+						echo '<input type="text" name="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" />';
+					}
+				?>
 				</td>
 			</tr>
 			<tr>
