@@ -48,21 +48,25 @@ function submitIt(){
 		alert("Your email is invalid, please try again.");
 		form.user_email.focus();
 	} else if (form.user_birthday.value.length > 0) {
-		dar =form.user_birthday.value.split("-");
+		dar = form.user_birthday.value.split("-");
 		if (dar.length < 3) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			alert("Please enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
 			form.user_birthday.focus();
 		} else if (isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(parseInt(dar[2]))) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			alert("Please enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
 			form.user_birthday.focus();
 		} else if (parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+		    // There appears to be a bug with this part of the Birthday Validation
+		    // Providing the single digit months (i.e. 1-9) in the MM format (01-09)
+		    // causes the validation function to fail. Can someone please fix and 
+		    // remove this comment.  TIA (JRP 30 Aug 2002).
+			alert("The month you have provided is invalid (try M instead of MM).\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
 			form.user_birthday.focus();
 		} else if (parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			alert("The day you have provided is invalid.\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
 			form.user_birthday.focus();
 		} else if(parseInt(dar[0]) < 1900 || parseInt(dar[0]) > 2020) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+			alert("The year you have provided is invalid.\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
 			form.user_birthday.focus();
 		} else {
 			form.submit();
