@@ -257,8 +257,9 @@ if ($do_db || $do_db_cfg) {
 	}
 	@set_magic_quotes_runtime($mqr);
 	$errors = 0;
+	$piece_count = count($pieces);
 
-	for ($i=0; $i<count($pieces); $i++) {
+	for ($i=0; $i<$piece_count; $i++) {
 		$pieces[$i] = trim($pieces[$i]);
 		if(!empty($pieces[$i]) && $pieces[$i] != "#") {
 			if (!$result = $db->Execute($pieces[$i])) {
@@ -268,7 +269,7 @@ if ($do_db || $do_db_cfg) {
 			}
 		}
 	}
-	dPmsg("There were $errors errors in " . count($parts) . " SQL statements");
+	dPmsg("There were $errors errors in $piece_count SQL statements");
 
         if ($dbError <> 0 && $dbError <> 1007) {
 		$dbErr = true;
