@@ -349,12 +349,12 @@ foreach ($files as $row) {
         </td>
         <td width="10%" nowrap="nowrap" align="center"><?php echo $file_types[$row["file_category"]];?></td> 
 	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["task_id"];?>"><?php echo $row["task_name"];?></a></td>
-	<td width="15%" nowrap="nowrap"><?= dPgetUsername($row['file_owner']) ?></td>
+	<td width="15%" nowrap="nowrap"><?php echo dPgetUsername($row['file_owner']); ?></td>
 	<td width="5%" nowrap="nowrap" align="right"><?php echo file_size($row["file_size"]);?></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
-<?= $hidden_table ?>
+<?php echo $hidden_table; ?>
 <?php 
         $hidden_table = ''; 
 }?>
