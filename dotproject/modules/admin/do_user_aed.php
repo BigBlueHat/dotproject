@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* ADMIN $Id$ */
 $del = isset($_REQUEST['del']) ? $_REQUEST['del'] : 0;
 
 $user = new CUser();

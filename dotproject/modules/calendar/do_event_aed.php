@@ -12,11 +12,12 @@ if (($msg = $event->bind( $_POST ))) {
 $event->event_start_date += @$_POST['start_time'] * 60;
 $event->event_end_date += @$_POST['end_time'] * 60;
 
+$AppUI->setMsg( 'Event' );
 if ($del) {
 	if (($msg = $event->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( "Event deleted", UI_MSG_ALERT );
+		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 	}
 	$AppUI->redirect( 'm=calendar' );
 } else {
@@ -27,7 +28,7 @@ if ($del) {
 	if (($msg = $event->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( "Event ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
 	}
 }
 $AppUI->redirect();

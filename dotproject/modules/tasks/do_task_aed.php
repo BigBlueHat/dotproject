@@ -16,12 +16,14 @@ $task->task_start_date = db_unix2DateTime( $task->task_start_date );
 $task->task_end_date = db_unix2DateTime( $task->task_end_date );
 
 //echo '<pre>';print_r( $task );echo '</pre>';die;
+// prepare (and translate) the module name ready for the suffix
+$AppUI->setMsg( 'Task' );
 if ($del) {
 	if (($msg = $task->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "Task deleted", UI_MSG_ALERT );
+		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 		$AppUI->redirect( '', -1 );
 	}
 } else {
@@ -29,7 +31,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['task_id'];
-		$AppUI->setMsg( "Task ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
 	}
 
 	if (isset($hassign)) {

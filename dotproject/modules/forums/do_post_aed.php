@@ -8,12 +8,14 @@ if (($msg = $obj->bind( $_POST ))) {
 	$AppUI->redirect();
 }
 
+// prepare (and translate) the module name ready for the suffix
+$AppUI->setMsg( 'Message' );
 if ($del) {
 	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "Forum message deleted", UI_MSG_ALERT );
+		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 		$AppUI->redirect();
 	}
 } else {
@@ -21,7 +23,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['message_id'];
-		$AppUI->setMsg( "Forum message ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
 	}
 	$AppUI->redirect();
 }

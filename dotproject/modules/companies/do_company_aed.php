@@ -22,7 +22,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['company_id'];
-		$AppUI->setMsg( $isNotNew ? 'added' : 'inserted', UI_MSG_OK, true );
+		$AppUI->setMsg( $isNotNew ? 'added' : 'added', UI_MSG_OK, true );
 	}
 	$AppUI->redirect();
 }
