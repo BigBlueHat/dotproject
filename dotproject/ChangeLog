@@ -1,3 +1,13 @@
+2003-05-31 08:18  (eddieajau)
+---------------------------------
+modules/tasks/todo.php
+- Fixed bug to display tasks with null percent complete
+
+2003-05-30 04:30  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-30 02:46  (eddieajau)
 ---------------------------------
 modules/companies/addedit.php
@@ -487,16 +497,6 @@ ChangeLog
 - Changelog update
 
 2003-05-11 08:29  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Fixed javascript bug in the calculate duration field.
-
-2003-05-11 08:23  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Fixed bug in the task_duration field
-
-2003-05-11 08:19  (eddieajau)
 ---------------------------------
 ...
 
