@@ -164,7 +164,7 @@ if ($doassingsql) {
 	if (mysql_error())
 		$sql = $cleansql;
 		
-	$cleansql = "DELETE FROM task_dependencies WHERE task_id = " .$task_id;
+	$cleansql = "DELETE FROM task_dependencies WHERE dependencies_task_id = " .$task_id;
 	mysql_query( $cleansql );
 		
 	if (mysql_error())
@@ -185,7 +185,7 @@ if ($doassingsql) {
 	$dependencies = explode( ",", $hdependencies );
 	for ($x=0; $x < count( $dependencies ); $x++) {
 		if (intval($dependencies[$x]) > 0) {
-			$sql = "REPLACE task_dependencies (task_id, dep_task_id) VALUES ($task_id, $dependencies[$x])";
+			$sql = "REPLACE task_dependencies (dependencies_task_id, dependencies_req_task_id) VALUES ($task_id, $dependencies[$x])";
 			mysql_query($sql);
 		}
 	}	

@@ -13,14 +13,6 @@
 # Watch out for changes (see above)
 #
 
-CREATE TABLE task_dependencies (
-	task_id int(11) NOT NULL,
-	dep_task_id int(11) NOT NULL,
-	PRIMARY KEY (task_id, dep_task_id)
-);
-
-ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
-
 #
 # Table structure for table 'departments'
 #
@@ -87,3 +79,17 @@ ALTER TABLE `users` CHANGE `user_type` `user_type` TINYINT UNSIGNED DEFAULT "0" 
 ALTER TABLE `events` ADD `event_owner` INT UNSIGNED DEFAULT "0";
 ALTER TABLE `events` ADD `event_project` INT UNSIGNED DEFAULT "0";
 ALTER TABLE `events` ADD `event_private` TINYINT UNSIGNED DEFAULT "0";
+
+#
+# Task dependencies table
+#
+CREATE TABLE task_dependencies (
+	dependencies_task_id int(11) NOT NULL,
+	dependencies_req_task_id int(11) NOT NULL,
+	PRIMARY KEY (dependencies_task_id, dependencies_req_task_id)
+);
+
+#
+# Change to TASKS table for the new dynamic task flag
+#
+ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;

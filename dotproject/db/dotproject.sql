@@ -7,12 +7,6 @@
 # a new installation of dotProject.
 #
 
-CREATE TABLE task_dependencies (
-	task_id int(11) NOT NULL,
-	dep_task_id int(11) NOT NULL,
-	PRIMARY KEY (task_id, dep_task_id)
-);
-
 CREATE TABLE companies (
   company_id smallint(6) NOT NULL auto_increment,
   company_username varchar(20) NOT NULL default '',
@@ -321,6 +315,12 @@ CREATE TABLE logs (
  status int NOT NULL,
  userid varchar(10) DEFAULT NULL,
  dt datetime
+);
+
+CREATE TABLE task_dependencies (
+	dependencies_task_id int(11) NOT NULL,
+	dependencies_req_task_id int(11) NOT NULL,
+	PRIMARY KEY (dependencies_task_id, dependencies_req_task_id)
 );
 
 INSERT INTO localization VALUES 

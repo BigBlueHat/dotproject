@@ -54,7 +54,7 @@ if (isset( $pirow["project_id"] )) {
 	$project_id = $pirow["project_id"];
 }
 
-// Pull tasks for the parent and task dependencies list
+// Pull tasks for the parent task list
 $atsql="
 SELECT task_name, task_id, task_project
 FROM tasks
@@ -68,8 +68,8 @@ $atrc = mysql_query( $atsql );
 $sql = "
 SELECT t.task_id, t.task_name
 FROM tasks t, task_dependencies td
-WHERE td.task_id = $task_id
-	AND t.task_id = td.dep_task_id
+WHERE td.dependencies_task_id = $task_id
+	AND t.task_id = td.dependencies_req_task_id
 ";
 
 $tdrc = mysql_query( $sql );
