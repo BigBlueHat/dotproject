@@ -1,4 +1,4 @@
-<?php
+<?php /* CONTACTS $Id$ */
 
 $canEdit = !getDenyEdit( 'contacts' );
 if (!$canEdit) {
@@ -6,9 +6,8 @@ if (!$canEdit) {
 }
 
 
-
 // check whether vCard file should be fetched from source or parsed for vCardKeys; criteria: get parameters
-if ( isset($vcf) && !($vcf =='none') && isset($_GET['suppressHeaders']) && ($_GET['suppressHeaders']=='true')) {	//parse and store vCard file
+if ( isset($_REQUEST['vcf']) && !is_null($_REQUEST['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppressHeaders']=='true')) {	//parse and store vCard file
 
 
 	// include PEAR vCard class
