@@ -8,8 +8,8 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 	}
 </script>
 <?php
+	$colors = dPgetSysVal( 'ProjectColors' );
 	if($dPconfig['restrict_color_selection']){
-		$colors = dPgetSysVal( 'ProjectColors' );
 ?>
 <table border="0" cellpadding="1" cellspacing="2" width="292" align="center">
 	<tr>
@@ -38,15 +38,13 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 		</td>
 	<form>
 		<td align="right" valign="bottom">
-		<!-- CUSTOMISE THE FOLLOWING COLOURS AND PRESET NAMES FOR YOUR ORGANISATIONAL NEEDS -->
 			<select name="" class="text" onchange="javascript:setClose(this.options[this.selectedIndex].value)">
 				<option value="0">- - <?php echo $AppUI->_('Preset');?> - -</option>
-				<option value="FFCC00" />Administration</option>
-				<option value="333300" />Development</option>
-				<option value="FF6600" />Investigation</option>
-				<option value="0000FF" />Maintenance</option>
-				<option value="FF0000" />Research</option>
-				<option value="33FF00" />Testing</option>
+<?php
+				foreach($colors as $key=>$value){
+					echo "<option value=\"$value\">$key</option>\n";
+				}
+?>
 			</select>
 		</td>
 	</form>
