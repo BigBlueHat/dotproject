@@ -673,6 +673,7 @@ INSERT INTO `config` VALUES ('', 'link_tickets_kludge', 'false', '', 'checkbox')
 INSERT INTO `config` VALUES ('', 'show_all_task_assignees', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'direct_edit_assignment', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'restrict_color_selection', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES ('', 'cal_day_view_show_minical', 'true', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'cal_day_start', '8', '', 'text');
 INSERT INTO `config` VALUES ('', 'cal_day_end', '17', '', 'text');
 INSERT INTO `config` VALUES ('', 'cal_day_increment', '15', '', 'text');

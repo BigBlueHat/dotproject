@@ -82,8 +82,8 @@ $tabBox->add( 'vw_day_events', 'Events' );
 $tabBox->add( 'vw_day_tasks', 'Tasks' );
 $tabBox->show();
 ?>
-
 	</td>
+<?php if ($dPconfig['cal_day_view_show_minical']) { ?>
 	<td valign="top" width="175">
 <?php
 $minical = new CMonthCalendar( $this_day );
@@ -112,5 +112,6 @@ echo '<td align="center" >'.$minical->show().'</td>';
 echo '</tr></table>';
 ?>
 	</td>
+ <?php } ?>
 </tr>
 </table>
