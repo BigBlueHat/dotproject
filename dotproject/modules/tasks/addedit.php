@@ -461,6 +461,7 @@ function calcFinish() {
 							?>
 									<?php echo $AppUI->_("Departments"); ?><br />
 									<?php echo $department_selection_list; ?>
+									<?php echo "<hr />"; ?>
 							<?php
 						}
 						
@@ -472,8 +473,8 @@ function calcFinish() {
 						              and p.project_company = company_id";
 						$company_name = db_loadResult($sql);
 						
-						if($department_selection_list != "" || !is_null($company_name) && $department_selection_list!=""){
-							echo "<hr /><input type='button' class='button' value='".$AppUI->_("Select contacts")."' onclick='javascript:popContacts();' />";
+						if($department_selection_list != "" || !is_null($company_name) ) {
+							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts")."' onclick='javascript:popContacts();' />";
 						}
 					?>
 				</td>

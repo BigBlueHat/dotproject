@@ -54,10 +54,10 @@ $worked_hours = db_loadResult($sql);
 $worked_hours = rtrim($worked_hours, "0");
 
 // total hours
-// same milestone comment as above
-$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 24 AND task_milestone ='0'";
+// same milestone comment as above, also applies to dynamic tasks
+$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 24 AND task_milestone ='0' AND task_dynamic = 0";
 $days = db_loadResult($sql);
-$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0'";
+$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0' AND task_dynamic = 0";
 $hours = db_loadResult($sql);
 $total_hours = $days * $dPconfig['daily_working_hours'] + $hours;
 //due to the round above, we don't want to print decimals unless they really exist
