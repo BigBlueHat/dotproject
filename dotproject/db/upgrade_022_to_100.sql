@@ -268,8 +268,7 @@ INSERT INTO sysvals VALUES("1", "1", "ProjectStatus", "0|Not Defined\r\n1|Propos
 ALTER TABLE companies ADD COLUMN company_type INT(3) NOT NULL DEFAULT 0;
 ALTER TABLE companies ADD COLUMN company_email varchar(30);
 
-INSERT INTO sysvals VALUES("1", "1", "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
-
+INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
 # ROLES TABLES: AJE 26/Feb/2003
 
 #
