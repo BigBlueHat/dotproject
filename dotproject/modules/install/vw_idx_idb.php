@@ -1,10 +1,30 @@
 <?php  // $Id$
 global $AppUI, $db, $Installer, $dPrunLevel, $tab;
 
+if ($GLOBALS["dPrunLevel"] == 0) {   // config.php is not available, nor $dPconfig
+
+	is_file( "./includes/config-dist.php" )
+		or die("./includes/config-dist.php is not available. It is needed for guessing some config values for installation procedure.
+		Therefore you should never delete or modify it. Please restore this file.");
+
+	// include the standard config values
+	include_once( "./includes/config-dist.php" );
+}
+
+
+$dbDrivers = array ( "access" => "access", "ado"=> "ado", "ado_access"=> "ado_access", "ado_mssql"=> "ado_mssql",
+                                "db2" => "db2", "vfp" => "vfp", "fbsql" => "fbsql", "ibase" =>"ibase", "firebird" => "firebird",
+                                "borland_ibase" => "borland_ibase", "informix" => "informix", "informix72" => "informix72",
+                                "ldap" => "ldap", "mssql" =>"mssql", "mssqlpro" =>"mssqlpro", "mysql" => "mysql", "mysqlt" => "mysqlt",
+                                "maxsql" => "maxsql", "oci8" => "oci8", "oci805" => "oci805", "oci8po" => "oci8po", "odbc" => "odbc",
+                                "odbc_mssql" => "odbc_mssql", "odbc_oracle" => "odbc_oracle", "odbt" => "odbt", "odbt_unicode" => "odbt_unicode",
+                                "oracle" => "oracle", "netezza" => "netezza", "postgres" => "postgres", "postgres64" => "postgres64",
+                                "postgres7" => "postgres7", "sapdb" => "sapdb", "sqlanywhere" => "sqlanywhere", "sqlite" => "sqlite",
+                                "sqlitepo" => "sqlitepo", "sybase" => "sybase" );
+
 echo '<form name="instFrm" action="index.php?m=install&tab='.$tab.'" method="post">';
 ?>
 <input type="hidden" name="dosql" value="do_install_db" />
-<input type="hidden" name="various[dummy]" value="NULL" />
         <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="100%" align="center">
 <?php if ($Installer->dbCreated) { ?>
          <tr>
@@ -19,66 +39,41 @@ echo '<form name="instFrm" action="index.php?m=install&tab='.$tab.'" method="pos
         </tr>
          <tr>
             <td class="item"><?php echo $AppUI->_('Database Server Type'); ?></td>
-            <td align="left"><?php echo arraySelect( $Installer->dbDrivers, 'pd[dbtype]', 'size="1" style="width:200px;" class="text"',  $Installer->cfg['dbtype'] );?></td>
+            <td align="left"><?php echo arraySelect( $dbDrivers, 'dbtype', 'size="1" style="width:200px;" class="text"',  $Installer->cfg['dbtype'] );?></td>
   	 </tr>
          <tr>
             <td class="item"><?php echo $AppUI->_('Database Host Name'); ?></td>
-            <td align="left"><input class="button" type="text" name="pd[dbhost]" value="<?php echo $Installer->cfg['dbhost']; ?>" title="The Name of the Host the Database Server is installed on" /></td>
+            <td align="left"><input class="button" type="text" name="dbhost" value="<?php echo $dPconfig['dbhost']; ?>" title="The Name of the Host the Database Server is installed on" /></td>
           </tr>
            <tr>
             <td class="item"><?php echo $AppUI->_('Database Name'); ?></td>
-            <td align="left"><input class="button" type="text" name="pd[dbname]" value="<?php echo $Installer->cfg['dbname']; ?>" title="The Name of the Database dotProject will use and/or install" /></td>
+            <td align="left"><input class="button" type="text" name="dbname" value="<?php echo  $dPconfig['dbname']; ?>" title="The Name of the Database dotProject will use and/or install" /></td>
           </tr>
           <tr>
             <td class="item"><?php echo $AppUI->_('Database User Name'); ?></td>
-            <td align="left"><input class="button" type="text" name="pd[dbuser]" value="<?php echo $Installer->cfg['dbuser']; ?>" title="The Database User that dotProject uses for Database Connection" /></td>
+            <td align="left"><input class="button" type="text" name="dbuser" value="<?php echo $dPconfig['dbuser']; ?>" title="The Database User that dotProject uses for Database Connection" /></td>
           </tr>
           <tr>
             <td class="item"><?php echo $AppUI->_('Database User Password'); ?></td>
-            <td align="left"><input class="button" type="text" name="pd[dbpass]" value="<?php echo $Installer->cfg['dbpass']; ?>" title="The Password according to the above User." /></td>
+            <td align="left"><input class="button" type="text" name="dbpass" value="<?php echo $dPconfig['dbpass']; ?>" title="The Password according to the above User." /></td>
           </tr>
 
           <tr>
             <td class="item"><?php echo $AppUI->_('Database Port'); ?></td>
-            <td align="left"><input class="button" type="text" name="pd[dbport]" value="<?php echo $Installer->cfg['dbport']; ?>" title="The Port the Database Server is listening to. If empty a standard value of 3306 is used." /></td>
+            <td align="left"><input class="button" type="text" name="dbport" value="<?php echo $dPconfig['dbport']; ?>" title="The Port the Database Server is listening to. If empty a standard value of 3306 is used." /></td>
           </tr>
            <tr>
             <td class="item"><?php echo $AppUI->_('Use Persistent Connection'); ?>?</td>
-            <td align="left"><input type="checkbox" name="pd[dbpersist]" value="true" <?php echo ($Installer->cfg['dbpersist']==true) ? 'checked="checked"' : ''; ?> title="Use a persistent Connection to your Database Server." /></td>
+            <td align="left"><input type="checkbox" name="dbpersist" value="true" <?php echo ($dPconfig['dbpersist']==true) ? 'checked="checked"' : ''; ?> title="Use a persistent Connection to your Database Server." /></td>
           </tr>
           <tr>
             <td class="item"><?php echo $AppUI->_('Drop Existing Database'); ?>?</td>
-            <td align="left"><input type="checkbox" name="various[dbdrop]" value="true" <?php echo ($Installer->various['dbdrop']==true) ? 'checked="checked"' : ''; ?> title="Deletes an existing Database before installing a new one. This deletes all data in the given database. Data cannot be restored." /><span class="item"> If checked, existing Data will be lost!</span></td>
+            <td align="left"><input type="checkbox" name="dbdrop" value="true" title="Deletes an existing Database before installing a new one. This deletes all data in the given database. Data cannot be restored." /><span class="item"> If checked, existing Data will be lost!</span></td>
         </tr>
         </tr>
           <tr>
             <td class="title" colspan="2">&nbsp;</td>
         </tr>
-<?php /* ?>
-          <tr>
-            <td class="title" colspan="2"><?php echo $AppUI->_('Populate Database'); ?></td>
-        </tr>
-        <tr>
-            <td class="item" colspan="2">Fill the Database with Structure and/or Content. While filling the database with Structure will be
-            necessary for Installation from Scratch (Install - Add Structure), it is recommended/handy for Upgrades avoiding it and apply
-            the database upgrade scripts distributed with dotProject automatically (Upgrade) or by hand (Manual Installation - Do Nothing).
-            For now,  an automatic Upgrade is only possible from one release step to another (not more than one steps in a time!), otherwise
-            it is very likely that you will experience errors running dotProject. In Case of once Upgrading more than one Release Versions,
-            the only way to go is a manual Application of all necessary upgrade scripts.
-            Furthermore dotProject needs an initial company created for running properly.
-            Fill in an appropriate name or leave empty if you do want to create one</td>
-        </tr>
-         <tr>
-            <td class="item"><?php echo $AppUI->_('Database Installation Mode'); ?></td>
-            <td align="left"><select class="button" size="1" name="db_install_mode" title="Title">
-            <option value="install" <?php echo ($db_install_mode == 'install') ? 'selected="selected"' : '';?>><?php echo $AppUI->_('Install - Add Structure'); ?></option>
-            <option value="upgrade" <?php echo ($db_install_mode == 'upgrade') ? 'selected="selected"' : '';?>><?php echo $AppUI->_('Upgrade'); ?></option>
-            <option value="manual" <?php echo ($db_install_mode == 'manual') ? 'selected="selected"' : '';?>><?php echo $AppUI->_('Manual Installation - Do Nothing'); ?></option></select></td>
-        </tr>
-          <tr>
-            <td class="title" colspan="2">&nbsp;</td>
-        </tr>
-<?php */ ?>
           <tr>
             <td class="title" colspan="2">Backup existing Database (Recommended)</td>
         </tr>
@@ -87,16 +82,14 @@ echo '<form name="instFrm" action="index.php?m=install&tab='.$tab.'" method="pos
             by clicking on the Button labeled 'Backup' down below. Depending on database size and system environment this process can take some time.</td>
         </tr>
         <tr>
-            <td class="item">Add 'Drop Tables'-Command in SQL-Script?</td>
-            <td align="left"><input type="checkbox" name="backupdrop" value="false" <?php echo ($backupdrop==true) ? 'checked="checked"' : ''; ?> title="If this command is added, existing data will be deleted by running the backup script. This can be handy not needing to manually delete existing database tables." /></td>
-        </tr>
-        <tr>
-            <td class="item">Receive SQL File</td>
+            <td class="item">Receive XML Backup Schema File</td>
             <td align="left"><input class="button" type="submit" name="dobackup" value="Backup" title="Click here to retrieve a database backup file that can be stored on your local system." /></td>
         </tr>
           <tr>
-            <td colspan="2" align="right"><br /><input class="button" type="submit" name="do_save_db" value="<?php echo $AppUI->_('save only');?>" title="Save Settings only and DO NOT try to install the database with the given information." />
-            &nbsp;<input class="button" type="submit" name="do_install_db" value="<?php echo $AppUI->_('install');?>" title="Save Settings and try to install the database with the given information." /></td>
+            <td align="left"><br /><input class="button" type="submit" name="do_db" value="<?php echo $AppUI->_('install db only');?>" title="Try to set up the database with the given information." />
+	    &nbsp;<input class="button" type="submit" name="do_cfg" value="<?php echo $AppUI->_('write config file only');?>" title="Write a config file with the details only." /></td>
+	  <td align="right" class="item"><br />(Recommended) &nbsp;<input class="button" type="submit" name="do_db_cfg" value="<?php echo $AppUI->_('install db & write cfg');?>" title="Write config file and setup the database with the given information." />
+   		</td>
           </tr>
         </table>
 </form>

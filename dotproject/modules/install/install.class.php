@@ -25,9 +25,6 @@ var $cfg = array();
 //  @var array List of available ADODB db drivers
 var $dbDrivers = array();
 
-//  @var array Dynamic Container for file parser config data
-var $ft = array();
-
 //  @var array Persistent Container for original configuration data
 var $dPcfg = array();
 
@@ -53,25 +50,19 @@ var $_acl = null;
                         // register config vars of boolean type
                         $this->registerBools();
 
-                        // initialize file parser info
-                        $this->ft = $this->getFTFile();
-
                         // keep a copy of original config data here
                         $this->dPcfg = $this->cfg;
-                        $this->dPft = $this->ft;
 
                         // guess and override some run critical cfg values
                         $this->guessImportantCfg();
 
                         // initialize global config values
                         $this->updateDPcfg( $this->cfg );
-                        $this->updateDPft( $this->ft );
 
                 } else {                                        // config.php available, hence we have $dPconfig
 
                         // we load config values from config.php
                         $this->dPcfg = $this->cfg = $GLOBALS["dPconfig"];
-                        $this->dPft = $this->ft = $GLOBALS["ft"];
 
                         // config.php is already there
                         $this->cfgFileCreated = true;
@@ -126,10 +117,6 @@ var $_acl = null;
                         } else {
 			        $config .= "\$dPconfig['{$k}'] = \"{$this->cfg["$k"]}\";\n";
                         }
-		}
-		$keys = array_keys($this->ft);
-		foreach ($keys as $k) {
-			$config .= "\$ft['{$k}'] = \"{$this->ft["$k"]}\";\n";
 		}
                 $config .= "?>";
 
@@ -190,17 +177,6 @@ var $_acl = null;
 		}
 	}
 
-         /*
-        * bind post data to ft array
-        * @param $data array Array of postdata (of the form ft[key])
-        */
-	function bindToFT( $data = array() ) {
-		$keys = array_keys($data);
-		foreach ($keys as $k) {
-			$this->ft["$k"] = trim($data["$k"]);
-		}
-	}
-
         /*
         * bind post data to config array
         * @param $data array Array of postdata (of the form pd[key])
@@ -237,32 +213,9 @@ var $_acl = null;
 		return $dPconfig;
 	}
 
-        /*
-        * read existing file parser info from config file
-        * @param $file string filename
-        * @return $ft array Config array
-        */
-	function getFTFile( $file = "./includes/config-dist.php" ) {
-
-		is_file( $file )
-		or die("$file is not available. It is needed for guessing some config values for installation procedure.
-		Therefore you should never delete or modify it.Please restore this file.");
-
-		// include the standard config values
-		include( $file );
-
-		return $ft;
-	}
-
-
 	function updateDPcfg ( $data = array() ) {
 		global $dPconfig;
 		$dPconfig = array_merge($dPconfig, $data);
-	}
-
-	function updateDPft ( $data = array() ) {
-		global $ft;
-		$ft = array_merge($ft, $data);
 	}
 
 	function updateDPcfgFromPost ( $data = array() ) {
@@ -273,20 +226,12 @@ var $_acl = null;
 		}
 	}
 
-	function updateDPftFromPost ( $data = array() ) {
-		global $ft;
-		$keys = array_keys($data);
-		foreach ($keys as $k) {
-			$ft["$k"] = trim($data["$k"]);
-		}
-	}
-
         /*
         * override some possibly wrong mission critical config values
         */
 	function guessImportantCfg() {
-		$this->cfg['root_dir'] = realpath("./");
-		$this->cfg['base_url'] = "http://".$_SERVER["SERVER_NAME"].str_replace("/index.php", "", $_SERVER["PHP_SELF"]);
+		//$this->cfg['root_dir'] = realpath("./");
+		//$this->cfg['base_url'] = "http://".$_SERVER["SERVER_NAME"].str_replace("/index.php", "", $_SERVER["PHP_SELF"]);
 	}
 
         /*
@@ -407,24 +352,48 @@ var $_acl = null;
 	}
 
          /*
-        * Generate SQL-File with Structure and Content from Database
-        * @param $sql string SQL-Code
+        * Generate ADODB-XML-Schema-File with Structure and Content from Database
+        * @param $content bool sets whether structure and content (true) should be exported or only structure (false)
         */
-	function generateBackupSchema( $backupdrop = false ) {
+	function generateBackupSchema( $content = true ) {
                 global $db, $dbc;
                 if( !$this->isDBconnected() ) {
 			return false;
+
 		} else {
 
 			require_once( "{$this->cfg['root_dir']}/lib/adodb/adodb-xmlschema.inc.php" );
 
 			$schema = new adoSchema( $db );
 
-			$sql = $schema->ExtractSchema(true);
+			$sql = $schema->ExtractSchema($content);
 
-			header('Content-Disposition: attachment; filename="dPdbBackup.xml"');
+			header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
 			header('Content-Type: text/xml');
 			echo $sql;
+
+			return true;
+		}
+        }
+
+	  /*
+        * apply an ADODB-XML-Schema-File to the Database
+        * @param $file string ADODB-XML-Schema-Filepath
+        */
+	function applyBackupSchema( $file ) {
+                global $db, $dbc;
+                if( !$this->isDBconnected() ) {
+			return false;
+
+		} else {
+
+			require_once( "{$this->cfg['root_dir']}/lib/adodb/adodb-xmlschema.inc.php" );
+
+			$schema = new adoSchema( $db );
+			$schema->ParseSchemaFile( $file );
+			$schema->ExecuteSchema();
+
+			return true;
 		}
         }
 
