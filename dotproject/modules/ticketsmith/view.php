@@ -1,3 +1,9 @@
+<?php
+/* $Id$ */
+$ticket = dPgetParam( $_GET, 'ticket', '' );
+$ticket_type = dPgetParam( $_GET, 'ticket_type', '' );
+
+?>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
 	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width="42" height="42" /></td>
@@ -7,7 +13,6 @@
 </TABLE>
 <?php
 
-/* $Id$ */
 
 require("./modules/ticketsmith/config.inc.php");
 require("./modules/ticketsmith/common.inc.php");
