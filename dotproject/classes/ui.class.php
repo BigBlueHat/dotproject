@@ -33,7 +33,7 @@ class CAppUI {
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // warn when a translation is not found
-	var $locale_warn = true;
+	var $locale_warn = false;
 // the string appended to untranslated string or unfound keys
 	var $locale_alert = '^';
 // theming
@@ -165,15 +165,15 @@ class CAppUI {
 		// has a place been saved
 			$params = !empty($this->state["SAVEDPLACE$hist"]) ? $this->state["SAVEDPLACE$hist"] : $this->defaultRedirect;
 		}
-		//header("Location: index.php?$params"); 
-		echo "<script language=\"javascript\">window.location='index.php?$params'</script>";
-		exit();
+		header("Location: index.php?$params"); 
+		//echo "<script language=\"javascript\">window.location='index.php?$params'</script>";  // old UNSAFE way!
+		exit();	// stop the PHP execution
 	}
 
 // Set the page message (displayed on page construction)
 	function setMsg( $msg, $msgNo=0, $append=false ) {
 		$msg = $this->_( $msg );
-		$this->msg = $append ? $this->msg.$msg : $msg;
+		$this->msg = $append ? $this->msg.' '.$msg : $msg;
 		$this->msgNo = $msgNo;
 	}
 // Display the message, format and display icon
@@ -207,7 +207,11 @@ class CAppUI {
 			$this->msg = '';
 			$this->msgNo = 0;
 		}
-		return $msg ? "$img<span class=\"$class\">$msg</span>" : '';
+		return $msg ? '<table cellspacing="0" cellpadding="1" border="0"><tr>'
+			. "<td>$img</td>"
+			. "<td class=\"$class\">$msg</td>"
+			. '</tr></table>'
+			: '';
 	}
 
 	function setState( $label, $tab ) {
