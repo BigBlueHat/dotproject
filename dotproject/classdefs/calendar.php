@@ -102,7 +102,7 @@ class CMonthCalendar {
 	}
 
 	function _drawTitle() {
-		$qry = $_GET['m'] ? 'm=' . $_GET['m'] : '';
+		$qry = isset( $_GET['m'] ) ? 'm=' . $_GET['m'] : '';
 		$url = $_SERVER['SCRIPT_NAME'] . ($qry ? "?$qry&" : '?');
 
 		//$s = '<table border="0" cellspacing="0" cellpadding="3" width="100%" class="'.$this->styleTitle.'">';
