@@ -65,7 +65,6 @@ ORDER BY $orderby
 
 $projects = db_loadList( $sql );
 
-/*
 $allow = array();
 foreach ($projects as $row) {
 	$allow[$row['project_company']] = $row['project_company'];
@@ -96,14 +95,9 @@ WHERE permission_user = $AppUI->user_id
 .(count($deny) > 0 ? "\nAND company_id NOT IN (" . implode( ',', $deny ) . ')' : '')
 .(count($allow) > 0 ? "\nOR company_id IN (" . implode( ',', $allow ) . ')' : '')
 ."\nORDER BY company_name";
-echo "<pre>$sql</pre>";
-$companies = arrayMerge( array( ), db_loadHashList( $sql ) );
-*/
 
-$companies = array( '0'=>'All' );
-foreach ($projects as $row) {
-	$companies[$row['project_company']] = $row['company_name'];
-}
+//echo "<pre>$sql</pre>";
+$companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, "$m.$a" );
