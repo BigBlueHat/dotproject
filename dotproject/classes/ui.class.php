@@ -2,6 +2,7 @@
 /**
  *	@package dotproject
  *	@subpackage core
+ *	@license http://opensource.org/licenses/bsd-license.php BSD License
 */
 
 require_once( "./classes/date.class.php" );
@@ -95,6 +96,18 @@ class CAppUI {
 		if ($name) {
 			if ($root = $this->getConfig( 'root_dir' )) {
 				return "$root/classes/$name.class.php";
+			}
+		}
+	}
+
+/**
+ *	Loads a php class file from the PEAR classes directory
+ *	@param string $name class name
+ */
+	function getPearClass( $name=null ) {
+		if ($name) {
+			if ($root = $this->getConfig( 'root_dir' )) {
+				return "$root/lib/PEAR/$name.php";
 			}
 		}
 	}
@@ -282,15 +295,15 @@ class CAppUI {
 			$class = "message";
 			break;
 		case UI_MSG_ALERT:
-			$img = dPshowImage( 'obj/alert.gif', 16, 16, '' );
+			$img = dPshowImage( dPfindImage( 'rc-gui-status-downgr.png' ), 16, 16, '' );
 			$class = "message";
 			break;
 		case UI_MSG_WARNING:
-			$img = dPshowImage( 'obj/warning.gif', 16, 16, '' );
+			$img = dPshowImage( dPfindImage( 'rc-gui-status-downgr.png' ), 16, 16, '' );
 			$class = "warning";
 			break;
 		case UI_MSG_ERROR:
-			$img = dPshowImage( 'obj/error.gif', 16, 16, '' );
+			$img = dPshowImage( dPfindImage( 'stock_cancel-16.png' ), 16, 16, '' );
 			$class = "error";
 			break;
 		default:
