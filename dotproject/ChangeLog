@@ -1,3 +1,33 @@
+2003-12-09 22:07  (jcgonz)
+---------------------------------
+db/dotproject_101.sql
+db/upgrade_100_to_101.sql
+modules/departments/view.php
+modules/public/contact_selector.php
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- Now users are able to relate tasks to contacts from the project's owner company. Remember to ALTER TABLE `tasks` ADD `task_contacts` CHAR( 100 ) ; Useful for CRM functionality.
+
+2003-12-09 20:09  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+- New feature, mail task owner your task log by clicking notify owner when adding a task log
+
+2003-12-09 17:39  (jcgonz)
+---------------------------------
+modules/companies/vw_contacts.php
+- Now contacts related to companies can be viewed in a tab inside the company module
+
+2003-12-09 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-09 03:34  (jcgonz)
 ---------------------------------
 classes/date.class.php
@@ -468,36 +498,6 @@ ChangeLog
 ---------------------------------
 locales/en/system.inc
 - Added translation string for Polish
-
-2003-10-16 03:47  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-16 01:38  (kripper)
----------------------------------
-modules/projects/view.php
-- Removed htmlspecialchars conversion to conserve <br> sutitutions.
-
-2003-10-15 16:19  (gregorerhardt)
----------------------------------
-modules/projects/addedit.php
-modules/projects/view.php
-- fixing bug821572: htmspecialchars for quotes
-
-2003-10-15 15:59  (gregorerhardt)
----------------------------------
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_archived.php
-modules/projects/vw_idx_complete.php
-modules/projects/vw_idx_proposed.php
-- fixing bug821572: htmspecialchars for quotes
-
-2003-10-15 14:44  (gregorerhardt)
----------------------------------
-modules/tasks/todo.php
-- fixing bug823989: htmspecialchars for quotes
-
 ...
 
 (This file has been wrapped)
