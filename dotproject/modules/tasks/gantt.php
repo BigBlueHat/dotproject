@@ -219,7 +219,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
 	if($hide_task_groups) $level = 0;
 
-	if ($locale_char_set=='utf-8') {
+	if ( $locale_char_set=='utf-8' && function_exists("utf_decode") ) {
 		$name = strlen( utf8_decode($a["task_name"]) ) > 25 ? substr( utf8_decode($a["task_name"]), 0, 22 ).'...' : utf8_decode($a["task_name"]) ;
 	} else {
 		//while using charset different than UTF-8 we need not to use utf8_deocde
