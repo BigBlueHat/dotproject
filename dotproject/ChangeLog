@@ -1,3 +1,27 @@
+2003-07-15 (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Now uses externally supplied config.php to get config
+- Supports saving of MIME attachments
+- Cleanup of MIME handling
+
+modules/ticketsmith/attach.php
+modules/ticketsmith/reattachticket.php
+- New optional modules for linking orphaned tickets to new parent
+
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/view.php
+- Changes to support file attachments
+- Cleaned up config handling
+
+modules/ticketsmith/README
+modules/ticketsmith/INSTAL
+- Updated to include new config options
+- Made more relevent to dotProject.
+
 2003-07-10 02:01  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.class.php
