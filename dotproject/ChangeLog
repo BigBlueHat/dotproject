@@ -1,3 +1,69 @@
+2003-01-17 02:49  (eddieajau)
+---------------------------------
+classdefs/tasks.php
+- Fixed problem with over-writing of task_parent
+
+2003-01-17 02:44  (kripper)
+---------------------------------
+modules/admin/permissions.php
+- Added missing user_id variable
+
+2003-01-17 02:40  (kripper)
+---------------------------------
+locales/en/styles.inc
+locales/es/calendar.inc
+locales/es/forums.inc
+locales/es/styles.inc
+modules/system/translate.php
+- Added styles locale file for multilanguage style descriptions.
+- Updated spanish translations.
+
+2003-01-17 02:38  (kripper)
+---------------------------------
+classdefs/ui.php
+- Style list is now auto generated during login.
+- If a non existent style is selected in default or user preferences,
+- host_style will be used instead in order to be able to uninstall styles by
+- just deleting its directory.
+- Added multilanguague style descriptions support, using the same
+- locales implementation.
+- If no description (translation) was provided (in the case of styles
+- developed by other people), the style name will be used instead.
+- Added setPref function.
+
+2003-01-16 22:59  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+- Fix to allow tasks to be seen for archvied projects in the project view page
+
+2003-01-16 22:58  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed undeclared project_id variable
+
+2003-01-16 22:57  (eddieajau)
+---------------------------------
+style/demo1/header.php
+- Fixed bug with new project editting the 'active' project
+
+2003-01-16 22:54  (eddieajau)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Fixed flat view showing query results for archived projects only in both tables
+
+2003-01-16 22:23  (kripper)
+---------------------------------
+modules/projects/index.php
+- A very very very strange system dependent bug fix for the
+- $company_id="1company_id=1" issue...no kidding :-)
+
+2003-01-16 18:05  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2003-01-16 06:21  (kobudo)
 ---------------------------------
 locales/en/common.inc
@@ -5,9 +71,6 @@ locales/en/common.inc
 
 2003-01-16 06:19  (kobudo)
 ---------------------------------
-style/default/footer.php
-style/default/header.php
-style/default/login.php
 style/demo1/footer.php
 style/demo1/header.php
 style/demo1/login.php
@@ -15,10 +78,9 @@ style/demo1/login.php
 
 2003-01-16 00:15  (kobudo)
 ---------------------------------
-style/default/login.php
 style/demo1/login.php
-style/default/main.css
 style/demo1/main.css
+style/demo1/images/dp_icon.gif
 - john makes some changes to demo style 1...
 - convert login page to XHTML 1.0 Trans
 - improve main.css formatting
@@ -28,13 +90,11 @@ style/demo1/main.css
 
 2003-01-15 23:58  (eddieajau)
 ---------------------------------
-style/default/header.php
 style/demo1/header.php
 - Change about link to new help index page
 
 2003-01-15 23:57  (eddieajau)
 ---------------------------------
-style/default/login.php
 style/demo1/login.php
 - Added char set to header
 
@@ -159,14 +219,12 @@ fileviewer.php
 
 2003-01-14 00:05  (eddieajau)
 ---------------------------------
-style/default/header.php
 style/demo1/header.php
 - Updated message handling
 - Added timestamp to new event list item
 
 2003-01-14 00:05  (eddieajau)
 ---------------------------------
-style/default/login.php
 style/demo1/login.php
 - Updated message handling
 
@@ -351,14 +409,11 @@ modules/projects/index.php
 
 2003-01-12 21:21  (eddieajau)
 ---------------------------------
-style/default/header.php
-style/default/login.php
-style/default/main.css
-style/default/titlegrad.jpg
 style/demo1/header.php
 style/demo1/login.php
 style/demo1/main.css
 style/demo1/titlegrad.jpg
+style/demo1/images/titlegrad.jpg
 - Moved images to sub-directory and included login page
 
 2003-01-12 21:18  (eddieajau)
@@ -1004,7 +1059,6 @@ classdefs/event.php
 
 2003-01-03 04:02  (eddieajau)
 ---------------------------------
-style/default/main.css
 style/demo1/main.css
 - Updated calendar styles
 
@@ -1103,7 +1157,6 @@ classdefs/files.php
 
 2003-01-02 02:37  (eddieajau)
 ---------------------------------
-style/default/main.css
 style/demo1/main.css
 - Styles added
 
@@ -1214,10 +1267,6 @@ classdefs/companies.php
 2003-01-01 20:31  (eddieajau)
 ---------------------------------
 style/main.css
-style/default/footer.php
-style/default/header.php
-style/default/main.css
-style/default/titlegrad.jpg
 style/demo1/footer.php
 style/demo1/header.php
 style/demo1/main.css
