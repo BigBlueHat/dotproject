@@ -19,9 +19,9 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
 	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
-	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php echo $dPconfig['page_title'];
-	echo "&nbsp;";
-	echo $AppUI->getVersion();?></strong></th>
+	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php
+		echo "<a style='color: white' href='{$dPconfig['base_url']}'>{$dPconfig['page_title']}&nbsp;" . $AppUI->getVersion() . "</a>";
+	?></strong></th>
 	<th align="right" width='50'><a href='http://www.dotproject.net/'><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border=0></a></th>
 	</tr></table></td>
 </tr>

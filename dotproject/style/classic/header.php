@@ -45,7 +45,9 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <body class="mainpage" background="style/classic/images/bground.gif">
 <table class="nav" width="100%" cellpadding="0" cellspacing="2">
 <tr>
-	<td nowrap width="33%"><?php echo $dPconfig['company_name'];?></td>
+	<td nowrap width="33%"><?php 
+	  echo "<a href='{$dPconfig['base_url']}'>{$dPconfig['company_name']}</a>";
+		?></td>
 <?php if (!$dialog) { ?>
 	<td nowrap width="34%"><?php echo $AppUI->_('Current user').": $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 	<td nowrap width="33%" align="right">
