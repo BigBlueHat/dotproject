@@ -70,7 +70,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 $titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, 'ID_HELP_PROJ_IDX' );
 
 $titleBlock->addCell(
-	'align="right" width="100%" nowrap="nowrap"',
+	'align="right" nowrap="nowrap"',
 	$AppUI->_('Company') . ':',
 	'<form action="?m=projects" method="post" name="pickCompany">'
 );

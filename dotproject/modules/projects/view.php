@@ -14,7 +14,7 @@ $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' 
 
 //pull data
 $sql = "
-SELECT 
+SELECT
 	company_name,
 	CONCAT(user_first_name, ' ', user_last_name) user_name,
 	projects.*,
@@ -27,45 +27,50 @@ WHERE project_id = $project_id
 GROUP BY project_id
 ";
 //echo "<pre>$sql</pre>";
-db_loadHash( $sql, $project );
+if (!db_loadHash( $sql, $project )) {
+	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
+	$titleBlock->show();
 
-$df = $AppUI->getPref('SHDATEFORMAT');
+	$crumbsBlock = new CCrumbsBlock();
+	$crumbsBlock->add( "?m=projects", "projects list" );
+	$crumbsBlock->show();
+} else {
+	$df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
-$start_date->setFormat( $df );
+	$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
+	$start_date->setFormat( $df );
 
-$end_date = $project["project_end_date"] ? CDate::fromDateTime( $project["project_end_date"] ) : new CDate();
-$end_date->setFormat( $df );
+	$end_date = $project["project_end_date"] ? CDate::fromDateTime( $project["project_end_date"] ) : new CDate();
+	$end_date->setFormat( $df );
 
-$actual_end_date = $project["project_actual_end_date"] ? CDate::fromDateTime( $project["project_actual_end_date"] ) : new CDate();
-$actual_end_date->setFormat( $df );
+	$actual_end_date = $project["project_actual_end_date"] ? CDate::fromDateTime( $project["project_actual_end_date"] ) : new CDate();
+	$actual_end_date->setFormat( $df );
 
-$crumbs = array();
-$crumbs["?m=projects"] = "projects list";
-if ($canEdit) {
-	$crumbs["?m=projects&a=addedit&project_id=$project_id"] = "edit this project";
-}
+	$crumbs = array();
+	$crumbs["?m=projects"] = "projects list";
+	if ($canEdit) {
+		$crumbs["?m=projects&a=addedit&project_id=$project_id"] = "edit this project";
+	}
+
+	$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
+
+	if ($canEdit) {
+		$titleBlock->addCell(
+			'align="right" width="100%" nowrap="nowrap"',
+			'<input type="submit" class="button" value="'.$AppUI->_('new task').'">',
+			'<form action="?m=tasks&a=addedit&project_id=' . $project_id . '" method="post">',
+			'</form>'
+		);
+	}
+	$titleBlock->show();
+
+	$crumbsBlock = new CCrumbsBlock();
+	$crumbsBlock->add( "?m=projects", "projects list" );
+	if ($canEdit) {
+		$crumbsBlock->add( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
+	}
+	$crumbsBlock->show();
 ?>
-
-<table width="98%" border="0" cellpadding="1" cellspacing="1">
-<tr>
-	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
-	<td nowrap><h1><?php echo $AppUI->_('Manage Project');?></h1></td>
-	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
-<form action="?m=tasks&a=addedit&project_id=<?php echo $project_id;?>" method="post">
-	<td align="right" width="100%">
-	<?php echo $canEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new task').'">' : '';?>
-	</td>
-</form>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
@@ -76,6 +81,7 @@ if ($canEdit) {
 	?>
 	</td>
 </tr>
+
 <tr>
 	<td width="50%" valign="top">
 		<strong><?php echo $AppUI->_('Details');?></strong>
@@ -145,17 +151,18 @@ if ($canEdit) {
 	</td>
 </table>
 
-<?php	
-// tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
+<?php
+	// tabbed information boxes
+	$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
 
-// settings for tasks
-$f = 'all';
-$min_view = true;
+	// settings for tasks
+	$f = 'all';
+	$min_view = true;
 
-$tabBox->show();
+	$tabBox->show();
+}
 ?>
