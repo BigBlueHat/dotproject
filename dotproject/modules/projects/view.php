@@ -29,11 +29,8 @@ GROUP BY project_id
 //echo "<pre>$sql</pre>";
 if (!db_loadHash( $sql, $project )) {
 	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	$titleBlock->show();
-
-	$crumbsBlock = new CCrumbsBlock();
-	$crumbsBlock->add( "?m=projects", "projects list" );
-	$crumbsBlock->show();
 } else {
 	$df = $AppUI->getPref('SHDATEFORMAT');
 
@@ -46,12 +43,6 @@ if (!db_loadHash( $sql, $project )) {
 	$actual_end_date = $project["project_actual_end_date"] ? CDate::fromDateTime( $project["project_actual_end_date"] ) : new CDate();
 	$actual_end_date->setFormat( $df );
 
-	$crumbs = array();
-	$crumbs["?m=projects"] = "projects list";
-	if ($canEdit) {
-		$crumbs["?m=projects&a=addedit&project_id=$project_id"] = "edit this project";
-	}
-
 	$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
 
 	if ($canEdit) {
@@ -62,14 +53,13 @@ if (!db_loadHash( $sql, $project )) {
 			'</form>'
 		);
 	}
-	$titleBlock->show();
 
-	$crumbsBlock = new CCrumbsBlock();
-	$crumbsBlock->add( "?m=projects", "projects list" );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	if ($canEdit) {
-		$crumbsBlock->add( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
+		$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
 	}
-	$crumbsBlock->show();
+
+	$titleBlock->show();
 ?>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
