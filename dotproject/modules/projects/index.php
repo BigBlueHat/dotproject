@@ -186,8 +186,8 @@ foreach ($rows as $row) {
 			$company=$row['company_id'];
 		}
 		if($row["dept_parent"]!=null){
-			showchild( $row );
-			findchild( $rows, $row["dept_id"] );
+			showchilddept( $row );
+			findchilddept( $rows, $row["dept_id"] );
 		}
 	}
 }
@@ -282,7 +282,7 @@ $tabBox->add("viewgantt", "Gantt");
 $tabBox->show();
 
 //writes out a single <option> element for display of departments
-function showchild( &$a, $level=1 ) {
+function showchilddept( &$a, $level=1 ) {
 	Global $buffer, $department;
 	$s = '<option value="'.$a["dept_id"].'"'.(isset($department)&&$department==$a["dept_id"]?'selected="selected"':'').'>';
 
@@ -301,13 +301,13 @@ function showchild( &$a, $level=1 ) {
 }
 
 //recursive function to display children departments.
-function findchild( &$tarr, $parent, $level=1 ){
+function findchilddept( &$tarr, $parent, $level=1 ){
 	$level = $level+1;
 	$n = count( $tarr );
 	for ($x=0; $x < $n; $x++) {
 		if($tarr[$x]["dept_parent"] == $parent && $tarr[$x]["dept_parent"] != $tarr[$x]["dept_id"]){
-			showchild( $tarr[$x], $level );
-			findchild( $tarr, $tarr[$x]["dept_id"], $level);
+			showchilddept( $tarr[$x], $level );
+			findchilddept( $tarr, $tarr[$x]["dept_id"], $level);
 		}
 	}
 }
