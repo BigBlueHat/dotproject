@@ -1,3 +1,766 @@
+2003-02-14 23:22  (kripper)
+---------------------------------
+modules/projects/addedit.php
+- Removed forgotten debug code
+
+2003-02-14 23:06  (kripper)
+---------------------------------
+modules/projects/addedit.php
+includes/main_functions.php
+- Changed defVal() and added defValArr()
+
+2003-02-14 22:43  (kripper)
+---------------------------------
+modules/projects/addedit.php
+- Set default project owner = current user when adding new projects
+
+2003-02-14 22:42  (kripper)
+---------------------------------
+includes/main_functions.php
+- Added function defVal as a proposal for cleaning up the code.
+
+2003-02-14 22:19  (kripper)
+---------------------------------
+.htaccess
+modules/calendar/index.php
+modules/projects/index.php
+- Removed .htaccess which was corrupting headers sent to apache
+- Removed strange hack for bizzare bug related to the .htaccess file problem.
+
+2003-02-14 19:31  (kobudo)
+---------------------------------
+modules/tasks/view.php
+- Remove "task_duration_type" troubleshooting comments.
+- 
+- Sweep and upgrade for XHTML compliance:
+- <input> changed to <input />
+- <img> changed to <img />
+- 
+- All attributes quoted and alt= attributes added to <img /> tags.
+
+2003-02-14 19:26  (kobudo)
+---------------------------------
+classdefs/tasks.php
+- John tries to track the "task_duration_type" variable.
+
+2003-02-14 18:54  (kobudo)
+---------------------------------
+modules/system/viewmods.php
+- Change terminology to make Status and Menu Status
+- reflect current "state"...
+- 
+- Changes commented and old versions present in commented-out state.
+
+2003-02-14 18:31  (kobudo)
+---------------------------------
+modules/system/translate.php
+modules/system/viewmods.php
+- Sweep and upgrade for XHTML compliance:
+- <input> changed to <input />
+- <img> changed to <img />
+- 
+- All attributes quoted and alt= attributes added to <img /> tags.
+
+2003-02-14 18:11  (kobudo)
+---------------------------------
+modules/projects/addedit.php
+- Sweep and upgrade for XHTML compliance:
+- <input> changed to <input />
+- <img> changed to <img />
+- 
+- All attributes quoted and alt= attributes added to <img /> tags.
+
+2003-02-14 18:07  (kobudo)
+---------------------------------
+modules/projects/addedit.php
+- Change default to display "ACTIVE" for new and editted projects.
+
+2003-02-14 17:25  (kobudo)
+---------------------------------
+includes/config-dist.php
+- John adds quickie instructions.
+
+2003-02-14 17:11  (kobudo)
+---------------------------------
+includes/config-dist.php
+- John creates a "config-dist.php" file to replace our config.php file.
+- 
+- This will help reduce opportunity for overwriting config.php files on
+- dotproject upgrades, and make it easier for our development team to
+- checkout dotproject (and check in) without killing local connections.
+
+2003-02-14 16:05  (kobudo)
+---------------------------------
+classdefs/ui.php
+- Sweep for XHTML compliance... add empty tag closing for <img /> tags,
+- and confirm attributes all quoted.
+- 
+- This file could use modification of php echo statements to include line
+- return breaks to improve "View Source" readability and thus improve ability
+- to debug our code.
+
+2003-02-14 15:21  (kobudo)
+---------------------------------
+lib/jpgraph/src/jpgraph.php
+lib/jpgraph/src/jpgraph_bar.php
+- Reset to ORIGINAL jpgraph files to help debug why
+- jpgraph stopped working...
+
+2003-02-14 02:57  (kobudo)
+---------------------------------
+calendar.php
+color_selector.php
+fileviewer.php
+index.php
+logincheck.php
+selector.php
+- John does a sweep of more files... confirms things set for "tabs" and
+- checks for XHTML compliance.
+
+2003-02-14 01:04  (kobudo)
+---------------------------------
+modules/files/index.php
+- File sweeped to add XHTML compliance and confirm tabs used.
+
+2003-02-12 16:07  (kripper)
+---------------------------------
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/index.php
+- Added "processing" status. Should be renamed to "In Process" once we add
+- locale support in ticketsmith module.
+
+2003-02-09 22:56  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Implemented sort by headings
+
+2003-02-09 22:47  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+- Commented out non-functional recur and remind options
+
+2003-02-09 22:31  (eddieajau)
+---------------------------------
+classdefs/calendar.php
+classdefs/date.php
+modules/calendar/index.php
+- Fixed bug in calendar for incorrect calculation of adding months.
+- Fixed bug in next/prev buttons growing the url
+
+2003-02-09 21:42  (eddieajau)
+---------------------------------
+style/demo1/footer.php
+style/demo1/header.php
+style/demo1/login.php
+style/demo1/main.css
+- Header styles updates
+- Files cleaned (converted rogues to unix format, leading spaces to tabs)
+
+2003-02-09 17:51  (kobudo)
+---------------------------------
+calendar.php
+- John adds XHTML compliance, and modifies PHP code
+- to produce clean VIEW SOURCE data when calendar
+- function is called. [helpful in debugging:)]
+
+2003-02-09 17:07  (kobudo)
+---------------------------------
+classdefs/calendar.php
+- John adds XHTML compliance, and modifies PHP code
+- to produce clean VIEW SOURCE data when calendar
+- function is called. [helpful in debugging:)]
+
+2003-02-09 16:30  (kobudo)
+---------------------------------
+calendar.php
+- John fixes the bottom two calls to provide previous and next year
+- support to calendar. This also fixes quick links to different month
+- display issue (all 12 months are now displayed beneath calendar).
+- Also, improve "view source" formatting by adding line returns in
+- PHP code.
+
+2003-02-09 14:53  (kobudo)
+---------------------------------
+fileviewer.php
+- John adds additional header information to correct IE caching bug.
+- Thanks to Jorge for pointing out solution:
+- [http://bugs.php.net/bug.php?id=16173]
+
+2003-02-09 08:43  (kripper)
+---------------------------------
+classdefs/files.php
+- Bug fix
+
+2003-02-09 08:40  (kripper)
+---------------------------------
+fileviewer.php
+- Fixed bug in fileviewer
+
+2003-02-09 00:34  (kripper)
+---------------------------------
+style/demo1/overrides.php
+- BUG FIX: Problem with tabselectedBg.png image due to case sensitive filenames
+- under *nix systems
+
+2003-02-08 21:55  (kripper)
+---------------------------------
+calendar.php
+- BUG FIX: Added required 'require'
+
+2003-02-08 21:15  (kripper)
+---------------------------------
+modules/tasks/gantt.php
+- Hack for suport last changes
+
+2003-02-08 20:57  (kripper)
+---------------------------------
+locales/es/help.inc
+locales/es/projects.inc
+locales/es/system.inc
+locales/es/tasks.inc
+- Updated spanish locales
+
+2003-02-07 23:38  (kobudo)
+---------------------------------
+calendar.php
+color_selector.php
+fileviewer.php
+index.php
+logincheck.php
+selector.php
+- John works at integrating XHTML and CSS stuff...
+
+2003-02-07 22:41  (kobudo)
+---------------------------------
+modules/ticketsmith/comment.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/view.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 22:34  (kobudo)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/index.php
+modules/tasks/organizer.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/files/addedit.php
+modules/files/index.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 22:30  (kobudo)
+---------------------------------
+modules/system/addeditpref.php
+modules/system/index.php
+modules/system/translate.php
+modules/system/viewmods.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 22:24  (kobudo)
+---------------------------------
+modules/help/access_denied.php
+modules/help/index.php
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 22:17  (kobudo)
+---------------------------------
+modules/departments/addedit.php
+modules/departments/view.php
+modules/forums/index.php
+modules/forums/viewer.php
+modules/forums/addedit.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 22:13  (kobudo)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 20:56  (kobudo)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+- John fixes his find & replace screwup:(
+
+2003-02-07 20:48  (kobudo)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/index.php
+modules/admin/addeditgroup.php
+modules/admin/permissions.php
+modules/admin/viewuser.php
+- John changes all instances of <span class="title">*</span>
+- to <h1>*</h1> to improve XHTML and CSS compliance, and
+- add in theme development.
+- 
+- Also looks for instances to add empty tag /> or quote attributes
+
+2003-02-07 20:00  (kobudo)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/index.php
+modules/admin/permissions.php
+modules/admin/viewuser.php
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/departments/addedit.php
+modules/departments/view.php
+modules/files/addedit.php
+modules/files/index.php
+modules/forums/index.php
+modules/forums/viewer.php
+modules/help/access_denied.php
+modules/help/index.php
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+modules/system/index.php
+modules/system/translate.php
+modules/system/viewmods.php
+modules/tasks/addedit.php
+modules/tasks/index.php
+modules/tasks/organizer.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/view.php
+- John changes all instances of <span class="title">*</span>
+- to <h1>*</h1> to improve XHTML and CSS compliance, and
+- add in theme development.
+
+2003-02-07 17:56  (kobudo)
+---------------------------------
+style/demo1/header.php
+style/demo1/login.php
+- John adds DocType and Character Encoding data to all
+- styles to improve XHTML/CSS compliance.
+- 
+- Also did a quick audit of the login.php and header.php files
+- for each style to check things like:
+- 1) attributes quoted
+- 2) empty end tag on <input /> and <img /> tags
+
+2003-02-07 16:41  (kobudo)
+---------------------------------
+modules/admin/addeditgroup.php
+modules/help/framed/toc.php
+modules/help/framed/vw_method.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/view.php
+- John converts all instances of <i></i> to <em></em>
+- to improve XHTML/CSS compliance.
+
+2003-02-07 16:31  (kobudo)
+---------------------------------
+color_selector.php
+classdefs/ui.php
+includes/main_functions.php
+lib/jpgraph/src/jpgraph.php
+locales/es/companies.inc
+locales/pt_br/companies.inc
+misc/diagnostics.php
+modules/admin/addeditgroup.php
+modules/admin/permissions.php
+modules/admin/viewuser.php
+modules/calendar/week_view.php
+modules/companies/view.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/departments/addedit.php
+modules/departments/view.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/viewer.php
+modules/help/index.php
+modules/help/framed/vw_method.php
+modules/help/framed/locales/en/common.inc
+modules/projects/addedit.php
+modules/projects/view.php
+modules/system/viewmods.php
+modules/tasks/addedit.php
+modules/tasks/organizer.php
+modules/tasks/tasks.php
+modules/tasks/view.php
+modules/ticketsmith/admin.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+style/demo1/header.php
+style/demo1/overrides.php
+- John converts all instances of <b></b> to <strong></strong>
+- to improve XHTML/CSS compliance.
+
+2003-02-07 16:08  (kobudo)
+---------------------------------
+db/dotproject_help.sql
+- John puts tags to lowercase for:
+- <STRONG></STRONG>
+- <EM></EM>
+- <P></P>
+- <UL></UL>
+- <OL></OL>
+- <LI></LI>
+
+2003-02-07 15:27  (kobudo)
+---------------------------------
+db/dotproject_help.sql
+- John puts tags to lowercase for:
+- <STRONG></STRONG>
+- <EM></EM>
+- <P></P>
+
+2003-02-07 14:25  (kobudo)
+---------------------------------
+includes/config.php
+- john adds logic to our config.php file to make it easier for dotproject
+- development teams to work on individual platforms.
+
+2003-02-07 13:27  (kobudo)
+---------------------------------
+selector.php
+classdefs/admin.php
+classdefs/calendar.php
+classdefs/companies.php
+classdefs/contacts.php
+classdefs/departments.php
+classdefs/files.php
+classdefs/forums.php
+classdefs/projects.php
+classdefs/tasks.php
+db/dotproject_help.sql
+dosql/updatetask.php
+includes/config.php
+includes/db_connect.php
+includes/gateway.pl
+lib/jpgraph/src/jpgraph.php
+lib/jpgraph/src/jpgraph_bar.php
+locales/es/common.inc
+modules/admin/permissions.php
+modules/admin/viewuser.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_users.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/departments/view.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/help/access_denied.php
+modules/help/framed/search.php
+modules/help/framed/vw_class.php
+modules/help/framed/vw_page.php
+modules/help/framed/includes/db_connect.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/system/index.php
+modules/system/system.class.php
+modules/system/translate.php
+modules/tasks/addedit.php
+modules/tasks/organizer.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/ticketsmith/admin.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+style/demo1/header.php
+- John performs replacement of <br> tags with <br /> for shift to
+- XHTML compliant coding.
+
+2003-02-05 21:13  (eddieajau)
+---------------------------------
+calendar.php
+fileviewer.php
+index.php
+logincheck.php
+selector.php
+classdefs/calendar.php
+classdefs/files.php
+classdefs/forums.php
+classdefs/tasks.php
+classdefs/ui.php
+db/dotproject_100.sql
+db/upgrade_022_to_100.sql
+dosql/ticket_aed.php
+dosql/updatetask.php
+functions/tasks_func.php
+includes/config.php
+includes/db_connect.php
+includes/main_functions.php
+locales/core.php
+misc/debug.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/week_view.php
+modules/companies/view.php
+modules/files/index.php
+modules/files/index_table.php
+modules/forums/index.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/help/framed/keywords.php
+modules/help/framed/main.php
+modules/help/framed/search.php
+modules/help/framed/toc.php
+modules/help/framed/top.php
+modules/help/framed/includes/config.php
+modules/help/framed/includes/db_connect.php
+modules/help/framed/locales/core.php
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+modules/projects/vw_files.php
+modules/system/addeditpref.php
+modules/system/domodsql.php
+modules/system/translate.php
+modules/system/translate_save.php
+modules/tasks/addedit.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/organizer.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+style/demo1/header.php
+style/demo1/login.php
+style/demo1/overrides.php
+- Reconfigured global variables
+
+2003-02-05 14:27  (kobudo)
+---------------------------------
+db/upgrade_022_to_100.sql
+- Jorge catches missing semicolon:) Thanks mate...
+
+2003-01-31 19:22  (kripper)
+---------------------------------
+modules/calendar/index.php
+- Bizarre fix for strange $copmany_id="1company_id=1" bug
+
+2003-01-31 17:15  (kripper)
+---------------------------------
+db/upgrade_022_to_100.sql
+- Added missing fields "contact_country" and "contact_icon" in table "contacts"
+
+2003-01-25 22:45  (kobudo)
+---------------------------------
+locales/en/companies.inc
+- John removes redundant "Welcome {username}" from Company screen (via removing
+- the <b>Welcome %s</b> stuff from 'companyWelcome' entry.
+
+2003-01-25 20:14  (kobudo)
+---------------------------------
+style/demo1/header.php
+- John adds improved DTD information and Character Encoding information.
+
+2003-01-24 22:40  (kobudo)
+---------------------------------
+db/dotproject_100.sql
+- John comments out line 383 (drop table modules;) b/c it will
+- produce an error for a "fresh install".
+
+2003-01-23 23:03  (eddieajau)
+---------------------------------
+style/demo1/header.php
+- Rework to get menu from modules list
+
+2003-01-23 22:58  (eddieajau)
+---------------------------------
+modules/system/domodsql.php
+modules/system/index.php
+modules/system/system.class.php
+modules/system/viewmods.php
+- Added new module support
+
+2003-01-23 22:57  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Updated dPfindImage function
+
+2003-01-23 22:55  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+db/upgrade_022_to_100.sql
+- Added new modules table and data
+
+2003-01-23 22:54  (eddieajau)
+---------------------------------
+classdefs/system.php
+- Moved class to module folder
+
+2003-01-23 22:01  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+- Fixed bug with back button and date shifting
+
+2003-01-23 21:58  (eddieajau)
+---------------------------------
+modules/admin/vw_usr.php
+- Pointed permissions link to view user page with permission tab active
+
+2003-01-23 21:49  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added function to find an image in a number of places to support overriding inmages in styles
+
+2003-01-23 01:20  (kripper)
+---------------------------------
+modules/tasks/todo.php
+- Fixed bug in SQL statement in not selecting tasks with no childrens and no
+- parents.
+- Fixed bug of tasks with no end_date provided
+
+2003-01-22 23:53  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- Use user_id as default task owner when adding new tasks
+
+2003-01-21 21:19  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed errors caused if tasks is only module a user has access to
+
+2003-01-21 21:18  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed bugs in filtering denied tasks
+
+2003-01-21 21:16  (eddieajau)
+---------------------------------
+modules/projects/index.php
+- Fixed bug in filtering denied projects
+
+2003-01-21 21:15  (eddieajau)
+---------------------------------
+modules/files/index.php
+modules/files/index_table.php
+- Fixed bug setting filtering denied projects and added denied tasks
+
+2003-01-21 21:02  (eddieajau)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Fixed bug setting permissions on a specific task
+
+2003-01-21 21:00  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Fixed bug in getting denied projects and added filter for denied tasks
+
+2003-01-21 20:56  (eddieajau)
+---------------------------------
+locales/en/calendar.inc
+- Content updated
+
+2003-01-21 19:41  (eddieajau)
+---------------------------------
+dosql/event_aed.php
+- Fixed bug in delete event
+
+2003-01-21 02:45  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed bug that displayed update form for read-only users
+
+2003-01-20 22:42  (eddieajau)
+---------------------------------
+images/obj/dotgreen.gif
+images/obj/dotgrey.gif
+images/obj/dotredanim.gif
+images/obj/dotyellowanim.gif
+- Initial upload
+
+2003-01-20 22:38  (eddieajau)
+---------------------------------
+index.php
+- Fixed bug if loc_char_set is not set
+- Added preparatory support for new module handling
+- Fixed bug so that dosql can be passed by any method
+
+2003-01-20 22:33  (eddieajau)
+---------------------------------
+locales/en/system.inc
+- Content updated
+
+2003-01-20 22:32  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added function to set the translation warning
+- Fixed bug in readDirs function to return only directories
+- Deprecated locales attribute (now reads those installed on the file system)
+
+2003-01-20 22:27  (eddieajau)
+---------------------------------
+modules/system/translate.php
+- Change locales and modules list to read from directory rather than hardcoded variables
+
+2003-01-20 22:23  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Change locales list to read from directory rather than hardcoded in CAppUI class
+
+2003-01-20 22:18  (eddieajau)
+---------------------------------
+modules/admin/permissions.php
+- Updated db calls and some array handling
+
+2003-01-20 22:18  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed redirect to not return to the view task page if a task has been deleted
+
+2003-01-20 20:55  (eddieajau)
+---------------------------------
+modules/admin/dosql.php
+- Changed all parameter handling to look a $_REQUEST, just in case.
+
+2003-01-20 08:15  (kripper)
+---------------------------------
+ChangeLog
+- Updated changelog
+
 2003-01-19 20:54  (kripper)
 ---------------------------------
 modules/admin/dosql.php
