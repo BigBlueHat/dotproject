@@ -43,7 +43,7 @@ $titleBlock->show();
 function submitIt() {
 	var form = document.changeclient;
 	if (form.company_name.value.length < 3) {
-		alert( "Please enter a valid Company name" );
+		alert( "<?php echo $AppUI->_('companyValidName');?>" );
 		form.company_name.focus();
 	} else {
 		form.submit();
