@@ -48,6 +48,7 @@ if (count($where))
 $q->addGroup('project_id');
 $q->addOrder('project_name, task_end_date DESC');
 $projects = $q->loadList();
+$q->clear();
 
 $width      = dPgetParam( $_GET, 'width', 600 );
 $start_date = dPgetParam( $_GET, 'start_date', 0 );
@@ -222,6 +223,7 @@ foreach($projects as $p) {
  		// insert tasks into Gantt Chart
  		
  		// select for tasks for each project	
+		
  		$q  = new DBQuery;
 		$q->addTable('tasks');
 		$q->addQuery('DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, 			tasks.task_milestone');
@@ -230,6 +232,7 @@ foreach($projects as $p) {
 		$q->addWhere("p.project_id = {$p["project_id"]}");
 		$q->addOrder('tasks.task_end_date ASC');
  		$tasks = $q->loadList();
+		$q->clear();
  		foreach($tasks as $t)
  		{
  			if ($t["task_end_date"] == null)
@@ -258,6 +261,7 @@ foreach($projects as $p) {
 				$q->addWhere("t.task_id = ".$t["task_id"]);
 				$q->addOrder('user_username ASC');
  				$workers = $q->loadList();
+				$q->clear();
  				$workersName = "";
  				foreach($workers as $w)
  				{	
