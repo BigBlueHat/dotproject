@@ -62,5 +62,10 @@ This will capture a password verified under the old encyption scheme and upgrade
 A new <code>temp</code> directory can be found under the <code>files/</code> directory.  This is used for the generation of temporary files (for example, PDF reports).  This directory will need to have permissions to make it writable from the web server.
 <br />
 
+<h3>Upgrading Beyond version 1.0.0</h3>
+All upgrades beyond version 1.0.0 follow the same policy.<br />
+
+Backup the database, then apply the appropriate upgrade_{from_version}_to_{to_version}.sql scripts.  As an example, to upgrade from 1.0 to 1.0.2 you will need to apply <b>both</b> upgrade_100_to_101.sql and upgrade_101_to_102.sql.
+
 </body>
 </html>
