@@ -67,18 +67,17 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 $project = new CProject();
 $project->load( $task_project );
 
-//Pull all users
-$sql = "
-SELECT user_id, CONCAT_WS(' ',user_first_name,user_last_name)
-FROM users
-ORDER BY user_first_name, user_last_name
-";
-$users = db_loadHashList( $sql );
+//Pull all users with complete allocation information
+$users = $obj->getAllocation("user_id");
 
 if ( $task_id == 0 ) {
 	// Add task creator to assigned users by default
-	$assigned = array($AppUI->user_id => "$AppUI->user_first_name $AppUI->user_last_name [100%]");
-	$assigned_perc = array($AppUI->user_id => "100");	
+        if ($users[$AppUI->user_id]['freeCapacity'] > 0) {
+                $assigned = array($AppUI->user_id => "$AppUI->user_first_name $AppUI->user_last_name [{$users[$AppUI->user_id]['freeCapacity']}%]");
+                $assigned_perc = array($AppUI->user_id => "[{$users[$AppUI->user_id]['freeCapacity']}]");
+        } else {
+                $assigned = $assigned_perc = array();
+        }
 } else {
 	// Pull users on this task
 //			 SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
@@ -308,7 +307,7 @@ function setTasksStartDate() {
 	var max_date = new Date("1970", "01", "01");
 	var max_id = -1;
 	
-	if (form.set_task_start_date.checked == true) {	
+	if (form.set_task_start_date.checked == true) {
 		//build array of task dependencies
 		for (td; td > -1; td--) {
 			var i = form.task_dependencies.options[td].value;
@@ -431,6 +430,30 @@ function submitIt( nt ){
 	}
 }
 
+function setPercentAssign(fc){
+        var form = document.editFrm;
+        if (fc > 0) {
+                form.percentage_assignment.value = fc;
+        }
+}
+
+function stripPercent(user) {
+        i = user.indexOf('[');
+        return user.substring(0,i);
+}
+
+function provideFreeCapacity(user) {
+        var a = new Array();
+        <?php
+           foreach($users as $u) {
+                echo "a[".$u['user_id']."] = ".$u['freeCapacity'].";\n\t";
+
+           }
+        ?>
+        return a[user];
+
+}
+
 function addUser() {
 	var form = document.editFrm;
 	var fl = form.resources.length -1;
@@ -448,10 +471,15 @@ function addUser() {
 	//Pull selected resources and add them to list
 	for (fl; fl > -1; fl--) {
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
-			t = form.assigned.length
-			opt = new Option( form.resources.options[fl].text+" ["+perc+"%]", form.resources.options[fl].value);
-			form.hperc_assign.value += form.resources.options[fl].value+"="+perc+";";
-			form.assigned.options[t] = opt
+                        if (perc > provideFreeCapacity(form.resources.value))  {
+                                setPercentAssign(provideFreeCapacity(form.resources.value));
+                                alert('<?php echo $AppUI->_('overAlloc'); ?>');
+                        } else {
+                                t = form.assigned.length
+                                opt = new Option( stripPercent(form.resources.options[fl].text)+" ["+perc+"%]", form.resources.options[fl].value);
+                                form.hperc_assign.value += form.resources.options[fl].value+"="+perc+";";
+                                form.assigned.options[t] = opt
+                        }
 		}
 	}
 }
@@ -642,7 +670,7 @@ function calcDuration() {
 		f.task_duration.value = Math.round(durn);
 }
 /**
-* Get the end of the previous working day 
+* Get the end of the previous working day
 */
 function prev_working_day( dateObj ) {
 	var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
@@ -1038,11 +1066,19 @@ $titleBlock->show();
 				<td><?php echo $AppUI->_( 'Assigned to Task' );?>:</td>
 			</tr>
 			<tr>
+                                <td>    <select name="resources" style="width:220px" size="10" class="text" multiple="multiple">
+					<?php
+                                              foreach ($users as $v => $u) {
+
+                                                echo "\n\t<option value=\"".$u['user_id']."\" ondblclick=\"javascript:addUser()\">" . dPformSafe( $u['userFC'] ) . "</option>";
+
+                                              }
+
+                                        ?>
+                                        </select>
+                                </td>
 				<td>
-					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
-				</td>
-				<td>
-					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
+					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" class="text" multiple="multiple" ondblclick="javascript:removeUser()"', null ); ?>
 				</td>
 			<tr>
 				<td colspan="2" align="center">
@@ -1052,7 +1088,7 @@ $titleBlock->show();
 						<td>
 							<select name="percentage_assignment" class="text">
 							<?php 
-								for ($i = 5; $i <= 100; $i+=5) {
+								for ($i = 5; $i <= 200; $i+=5) {
 									echo "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
 								}
 							?>

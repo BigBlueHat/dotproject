@@ -426,35 +426,6 @@ class CTask extends CDpObject {
 		 return NULL;
 	}
 
-
-         // unassign a user from task
-	function removeAssigned( $user_id ) {
-	// delete all current entries
-		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id AND user_id = $user_id";
-		db_exec( $sql );
-
-	}
-
-	//using user allocation percentage ($perc_assign)
-	function updateAssigned( $cslist, $perc_assign, $del=true ) {
-	// delete all current entries
-                if ($del == true) {
-                        $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
-                        db_exec( $sql );
-                }
-
-	// process assignees
-		$tarr = explode( ",", $cslist );
-		foreach ($tarr as $user_id) {
-			if (intval( $user_id ) > 0) {
-				$perc = $perc_assign[$user_id];
-				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
-				db_exec( $sql );
-			}
-		}
-	}
-
-
 	function updateDependencies( $cslist ) {
 	// delete all current entries
 		$sql = "DELETE FROM task_dependencies WHERE dependencies_task_id = $this->task_id";
@@ -796,7 +767,7 @@ class CTask extends CDpObject {
 		}
 		return;
 
-	} // end of shiftDependantTasks() 
+	} // end of shiftDependantTasks()
 
 	/*
 	 *	Update this task's dates in the DB.
@@ -1015,7 +986,34 @@ class CTask extends CDpObject {
 		if($number_assigned_users == 0) $number_assigned_users = 1;
 		return ($duration/$number_assigned_users) / $number_of_days_worked;
 	}
-	
+
+         // unassign a user from task
+	function removeAssigned( $user_id ) {
+	// delete all current entries
+		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id AND user_id = $user_id";
+		db_exec( $sql );
+
+	}
+
+	//using user allocation percentage ($perc_assign)
+	function updateAssigned( $cslist, $perc_assign, $del=true ) {
+	// delete all current entries
+                if ($del == true) {
+                        $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
+                        db_exec( $sql );
+                }
+
+	// process assignees
+		$tarr = explode( ",", $cslist );
+		foreach ($tarr as $user_id) {
+			if (intval( $user_id ) > 0) {
+				$perc = $perc_assign[$user_id];
+				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
+				db_exec( $sql );
+			}
+		}
+	}
+
 	function getAssignedUsers(){
 		$sql = "select u.*, ut.perc_assignment, ut.user_task_priority
 		        from users as u, user_tasks as ut
@@ -1023,6 +1021,33 @@ class CTask extends CDpObject {
 		              and ut.user_id = u.user_id";
 		return db_loadHashList($sql, "user_id");
 	}
+
+        /**
+        *  Calculate the extent of utilization of user assignments
+        *  @param string hash   a hash for the returned hashList
+        *  @param array users   an array of user_ids calculating their assignment capacity
+        *  @return array        returns hashList of extent of utilization for assignment of the users
+        */
+        function getAllocation( $hash = NULL, $users = NULL ) {
+                // use userlist if available otherwise pull data for all users
+                $where = !empty($users) ? 'WHERE u.user_id IN ('.implode(",", $users).') ' : '';
+                // retrieve the systemwide default preference for the assignment maximum
+                $sql = "SELECT pref_value FROM user_preferences WHERE pref_user = 0 AND pref_name = 'TASKASSIGNMAX'";
+                $result = db_loadHash($sql, $sysChargeMax);
+                $scm = $sysChargeMax['pref_value'];
+                // provide actual assignment charge, individual chargeMax and freeCapacity of users' assignments to tasks
+                $sql = "SELECT u.user_id,
+                        CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',user_first_name,user_last_name), IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
+                        IFNULL(SUM(ut.perc_assignment),0) AS charge, u.user_username,
+                        IFNULL(up.pref_value,$scm) AS chargeMax,
+                        IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0) AS freeCapacity
+                        FROM users u
+                        LEFT JOIN user_tasks ut ON ut.user_id = u.user_id
+                        LEFT JOIN user_preferences up ON (up.pref_user = u.user_id AND up.pref_name = 'TASKASSIGNMAX')".$where."
+                        GROUP BY u.user_id";
+                //echo "<pre>$sql</pre>";
+                return db_loadHashList($sql, $hash);
+        }
 
  	function getUserSpecificTaskPriority( $user_id = 0, $task_id = NULL ) {
 		// use task_id of given object if the optional parameter task_id is empty
@@ -1081,7 +1106,7 @@ class CTask extends CDpObject {
 			}
 		}
 	}
-	
+
 	/**
 	* This function recursively updates all tasks project
 	* to the one passed as parameter
@@ -1109,7 +1134,7 @@ class CTask extends CDpObject {
 	
 	function canUserEditTimeInformation(){
 		global $dPconfig, $AppUI;
-		
+
 		$project = new CProject();
 		$project->load( $this->task_project );
 		

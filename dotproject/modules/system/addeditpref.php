@@ -140,10 +140,25 @@ function submitIt(){
 	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php
+        $uis = $prefs['UISTYLE'] ? $prefs['UISTYLE'] : 'default';
 	$styles = $AppUI->readDirs( 'style' );
 	$temp = $AppUI->setWarning( false );
-	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'], true );
+	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', $uis, true );
 	$AppUI->setWarning( $temp );
+?>
+	</td>
+</tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('User Task Assignment Maximum');?>:</td>
+	<td>
+<?php
+        $tam = ($prefs['TASKASSIGNMAX'] > 0) ? $prefs['TASKASSIGNMAX'] : 100;
+        $taskAssMax = array();
+        for ($i = 5; $i <= 200; $i+=5) {
+                $taskAssMax[$i] = $i.'%';
+        }
+	echo arraySelect( $taskAssMax, 'pref_name[TASKASSIGNMAX]', 'class=text size=1', $tam, false );
+
 ?>
 	</td>
 </tr>
