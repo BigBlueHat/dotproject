@@ -1,34 +1,17 @@
-2004-04-05 12:41  (gregorerhardt)
+2004-04-05 06:44  (gregorerhardt)
 ---------------------------------
-install/check.php
-install/commonlib.php
-install/config.php
-install/db.php
-install/dp.png
-install/index.php
-install/install.css
-install/pref.php
-- Initial Import of a Installer Routine for dotProject
+ChangeLog
+- ChangeLog update
 
-2004-04-03 09:52  (kripper)
+2004-04-03 03:52  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2004-04-02 19:49  (gnome444)
+2004-04-02 13:49  (gnome444)
 ---------------------------------
 modules/tasks/addedit.php
 - Formatting and layout enhancements for task addedit
-
-2004-04-02 17:33  (gnome444)
----------------------------------
-classes/date.class.php
-- WENESDAY typo fix.
-
-2004-04-02 16:57  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Restore date and time format as per user_prefs, and a couple formatting things
 
 2004-04-02 11:33  (gnome444)
 ---------------------------------
@@ -515,16 +498,6 @@ locales/en/tasks.inc
 2004-02-02 02:13  (robertoibarra)
 ---------------------------------
 modules/tasks/gantt.php
-- Gantt chart upgraded to correcty display UTF8 data (accents and other characters) in the task name
-
-2004-02-01 20:14  (gnome444)
----------------------------------
-modules/system/syskeys/index.php
-- Fix display problems with dPformSafe
-
-2004-02-01 19:41  (gnome444)
----------------------------------
-modules/tasks/view.php
 ...
 
 (This file has been wrapped)
