@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Permission updated",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
@@ -17,10 +16,10 @@
 "Owned Projects",
 "Permission deleted",
 "Permission inserted",
+"Permission updated",
 "Permissions",
 "Real Name",
 "Signature",
-"Status",
 "Super User",
 "User Management",
 "User Type",
