@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 ##
 ## add or edit a user preferences
 ##
@@ -110,6 +110,7 @@ function submitIt(){
 	$f = "%d/%b/%Y"; $dates[$f]	= $ex->toString( $f );
 	$f = "%m/%d/%Y"; $dates[$f]	= $ex->toString( $f );
 	$f = "%b/%d/%Y"; $dates[$f]	= $ex->toString( $f );
+	$f = "%d.%m.%Y"; $dates[$f]	= $ex->toString( $f );
 	echo arraySelect( $dates, 'pref_name[SHDATEFORMAT]', 'class=text size=1', @$prefs['SHDATEFORMAT'], false );
 ?>
 	</td>
@@ -123,6 +124,7 @@ function submitIt(){
 	$times = array();
 	$f = "%I:%M %p"; $times[$f]	= $ex->toString( $f );
 	$f = "%H:%M"; $times[$f]	= $ex->toString( $f ).' (24)';
+	$f = "%H:%M:%S"; $times[$f]	= $ex->toString( $f ).' (24)';
 	echo arraySelect( $times, 'pref_name[TIMEFORMAT]', 'class=text size=1', @$prefs['TIMEFORMAT'], false );
 ?>
 	</td>
