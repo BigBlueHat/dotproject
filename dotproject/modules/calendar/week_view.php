@@ -1,5 +1,6 @@
 <?php /* CALENDAR $Id$ */
 $AppUI->savePlace();
+global $locale_char_set;
 
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 
@@ -71,7 +72,7 @@ TD.weekDay  {
 		<a href="<?php echo '?m=calendar&a=week_view&date='.$prev_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 	</td>
 	<th width="100%">
-		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.$first_time->format( "%U - %Y" ); ?></span>
+		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.htmlentities($first_time->format( "%U - %Y" ), ENT_COMPAT, $locale_char_set); ?></span>
 	</th>
 	<td>
 		<a href="<?php echo '?m=calendar&a=week_view&date='.$next_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
@@ -82,7 +83,6 @@ TD.weekDay  {
 <table border="0" cellspacing="1" cellpadding="2" width="100%" style="margin-width:4px;background-color:white">
 <?php
 $column = 0;
-$format = array( "<strong>%d</strong> %A", "%A <strong>%d</strong>" );
 $show_day = $this_week;
 
 $today = new CDate();
@@ -101,11 +101,14 @@ for ($i=0; $i < 7; $i++) {
 	$s .= '<td class="weekDay" style="width:50%;">';
 
 	$s .= '<table style="width:100%;border-spacing:0;">';
-	$s .= '<tr>';
-	$s .= '<td><a href="'.$href.'"><?php echo $day1 ?>';
+	$s .= '<tr><td align="';
+	$s .= ($column == 0) ? 'left' : 'right';
+	$s .= '"><a href="'.$href.'">';
 
 	$s .= $dayStamp == $today ? '<span style="color:red">' : '';
-	$s .= ($column == 0) ? $show_day->format( "<strong>%d</strong> " ).$AppUI->_($show_day->format( "%A" )) :  $AppUI->_($show_day->format( "%A" )).$show_day->format( " <strong>%d</strong>" );
+	$day_string = "<strong>" . htmlentities($show_day->format("%d"), ENT_COMPAT, $locale_char_set) . "</strong>";
+	$day_name = htmlentities($show_day->format("%A"), ENT_COMPAT, $locale_char_set);
+	$s .= ($column == 0) ? "$day_string $day_name" :  "$day_name $day_string";
 	
 	$s .= $dayStamp == $today ? '</span>' : '';
 	$s .= '</a></td></tr>';
