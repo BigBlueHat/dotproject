@@ -52,9 +52,12 @@ $crumbs["?m=projects"] = "projects list";
 $crumbs["?m=projects&a=view&project_id=$project_id"] = "view this project";
 ?>
 <script language="javascript">
-function setColor() {
-	color = document.AddEdit.project_color_identifier.value;
-	test.style.background = color;
+function setColor(color) {
+	var f = document.AddEdit;
+	if (color) {
+		f.project_color_identifier.value = color;
+	}
+	test.style.background = f.project_color_identifier.value;
 }
 
 var calendarField = '';
@@ -230,10 +233,10 @@ function delIt() {
 				<input type="text" name="project_color_identifier" value="<?php echo @$project["project_color_identifier"];?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
 			</td>
 			<td nowrap="nowrap">
-				<a href="#" onClick="newwin=window.open('./color_selector.php', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
+				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
 			</td>
 			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#<?php echo @$project["project_color_identifier"];?>;"><a href="#" onClick="newwin=window.open('./color_selector.php', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
+				<span id="test" title="test" style="background:#<?php echo @$project["project_color_identifier"];?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
 			</td>
 		</tr>
 		<tr>
