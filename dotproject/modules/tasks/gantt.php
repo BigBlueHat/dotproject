@@ -207,7 +207,7 @@ if ($day_diff > 240){
 
 //This kludgy function echos children tasks as threads
 
-function showtask( &$a, $level=0 ) {
+function showgtask( &$a, $level=0 ) {
 	/* Add tasks to gantt chart */
 
 	global $gantt_arr;
@@ -216,14 +216,14 @@ function showtask( &$a, $level=0 ) {
 
 }
 
-function findchild( &$tarr, $parent, $level=0 ){
+function findgchild( &$tarr, $parent, $level=0 ){
 	GLOBAL $projects;
 	$level = $level+1;
 	$n = count( $tarr );
 	for ($x=0; $x < $n; $x++) {
 		if($tarr[$x]["task_parent"] == $parent && $tarr[$x]["task_parent"] != $tarr[$x]["task_id"]){
-			showtask( $tarr[$x], $level );
-			findchild( $tarr, $tarr[$x]["task_id"], $level);
+			showgtask( $tarr[$x], $level );
+			findgchild( $tarr, $tarr[$x]["task_id"], $level);
 		}
 	}
 }
@@ -235,8 +235,8 @@ $tnums = count( $p['tasks'] );
 for ($i=0; $i < $tnums; $i++) {
 	$t = $p['tasks'][$i];
 	if ($t["task_parent"] == $t["task_id"]) {
-		showtask( $t );
-		findchild( $p['tasks'], $t["task_id"] );
+		showgtask( $t );
+		findgchild( $p['tasks'], $t["task_id"] );
 	}
 }
 
