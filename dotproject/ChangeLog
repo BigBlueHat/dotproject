@@ -1,3 +1,48 @@
+2003-09-28 17:23  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- Set duration = 1 hour as default.
+- Add task creator as assigned user as default.
+
+2003-09-28 16:38  (kripper)
+---------------------------------
+modules/projects/projects.class.php
+- Removed tasks dependencies check before deleting a project.
+
+2003-09-28 16:36  (kripper)
+---------------------------------
+modules/projects/projects.class.php
+- Commented out canDelete's dependencies check, since it is very annoying
+- having to delete all tasks in order to be able to delete a project.
+
+2003-09-28 16:27  (kripper)
+---------------------------------
+modules/projects/do_project_aed.php
+- Joined "Project deleted/added/updated" strings.
+
+2003-09-28 16:20  (kripper)
+---------------------------------
+classes/ui.class.php
+- Added warning and note for deprecating the append parameter in setMsg().
+
+2003-09-28 16:16  (kripper)
+---------------------------------
+modules/tasks/do_task_aed.php
+- Joined "task deleted" message string. Reason: atomic-wise translation
+- doesn't work for some languagues.
+- For example (in spanish), "task" = "tarea", "deleted" = "eliminado", "task
+- deleted" = "tarea eliminad_a_".
+
+2003-09-28 16:03  (kripper)
+---------------------------------
+modules/projects/index.php
+- Moved active projects tab to first position (default)
+
+2003-09-26 03:56  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-25 18:09  (gregorerhardt)
 ---------------------------------
 modules/ticketsmith/attach.php
@@ -453,51 +498,6 @@ modules/calendar/links_tasks.php
 
 2003-08-30 07:05  (ajdonnison)
 ---------------------------------
-modules/departments/addedit.php
-modules/departments/departments.class.php
-- Bug 772496 - No longer allows assigning self as parent department.
-
-2003-08-30 06:50  (ajdonnison)
----------------------------------
-modules/companies/addedit.php
-modules/projects/addedit.php
-modules/tasks/addedit.php
-- Bug 771868 - Fixed crumb to view un-created object.
-
-2003-08-30 06:15  (ajdonnison)
----------------------------------
-db/dotproject_100.sql
-db/upgrade_100_beta1_to_release1.sql
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-modules/tasks/tasks.class.php
-- Fix for bug 769725 - notify checkbutton not stored in db.
-
-2003-08-30 04:08  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-08-30 03:53  (ajdonnison)
----------------------------------
-modules/admin/addeditgroup.php
-modules/admin/addedituser.php
-modules/companies/addedit.php
-modules/contacts/addedit.php
-- Fixed maximum length of email fields to the size of the database columns.
-- Bug 773453
-
-2003-08-30 03:48  (ajdonnison)
----------------------------------
-db/dotproject_100.sql
-db/upgrade_100_beta1_to_release1.sql
-- Increased sizes of email addresses to allow for long domain names.
-- Bug 773453.
-
-2003-08-30 03:28  (ajdonnison)
----------------------------------
-includes/config-dist.php
-modules/calendar/vw_day_events.php
 ...
 
 (This file has been wrapped)
