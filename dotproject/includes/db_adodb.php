@@ -14,16 +14,23 @@ require_once( "{$dPconfig['root_dir']}/lib/adodb/adodb.inc.php" );
 $db = NewADOConnection($dPconfig['dbtype']);
 
 function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
-        global $db;
+        global $db, $dPrunLevel;
 
 	if ($persist) {
-                $db->PConnect($host, $user, $passwd, $dbname)
-			or die( 'FATAL ERROR: Connection to database server failed' );
+		if ($db->PConnect($host, $user, $passwd, $dbname)) {
+			$dPrunLevel = 2;
+		} else {
+			($_GET['m']=='install') ? TRUE : die( 'FATAL ERROR: Connection to database server failed');
+		}
+
 	} else {
-                $db->Connect($host, $user, $passwd, $dbname)
-			or die( 'FATAL ERROR: Connection to database server failed' );
+		if ($db->Connect($host, $user, $passwd, $dbname)) {
+			$dPrunLevel = 2;
+		} else {
+			($_GET['m']=='install') ? TRUE : die( 'FATAL ERROR: Connection to database server failed');
+		}
 	}
-        
+
         $ADODB_FETCH_MODE=ADODB_FETCH_ASSOC;
 }
 

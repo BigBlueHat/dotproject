@@ -37,12 +37,33 @@ error_reporting( E_ALL & ~E_NOTICE);
 // uncomment the following line of code:
 //error_reporting( E_ALL );
 
-is_file( "./includes/config.php" )
-	or die( "Fatal Error.  You haven't created a config file yet." );
+
+/**
+* @var int dPrunLevel Container for Information about available Services
+* 0 = no config file available, no database available
+* 1 = config file existing, but no db available
+* 2 = cfg and db available
+*/
+$dPrunLevel = 0;
+
+if ( is_file( "./includes/config.php" ) ) {	// allow the install module to run without config file
+	$dPrunLevel = 1;
+} elseif (! ($_GET['m'] == 'install') ) {
+	die( "Fatal Error.  You haven't created a config file yet." );
+}
+
 
 // required includes for start-up
 $dPconfig = array();
-require_once( "./includes/config.php" );
+// allow the install module to run without config file
+if ($dPrunLevel > 0) {
+	require_once( "./includes/config.php" );
+}
+
+if ( ($_GET['m'] == 'install') ) {
+	include("./modules/install/install.inc.php");
+}
+
 require_once( "./classes/ui.class.php" );
 require_once( "./includes/main_functions.php" );
 
@@ -56,6 +77,7 @@ if (ini_get( 'session.auto_start' ) > 0) {
 }
 session_start();
 session_register( 'AppUI' );
+session_register( 'Installer' );
 
 // write the HTML headers
 header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
@@ -67,7 +89,7 @@ header ("Pragma: no-cache");	// HTTP/1.0
 // If not found, try guessing it.
 $config_file = "{$dPconfig['root_dir']}/includes/config.php";
 $config_msg = false;
-if (! is_file($config_file)) {
+if (! is_file($config_file) && !( $_GET['m'] == 'install') ) {
 	// First check that we aren't looking at old data.
 	// We don't do this first as it has performance implications.
 	clearstatcache();
@@ -79,7 +101,7 @@ if (! is_file($config_file)) {
 }
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
-    $_SESSION['AppUI'] = new CAppUI();
+    $_SESSION['AppUI'] = !( $_GET['m'] == 'install' ) ? new CAppUI() : new IAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
 $AppUI->checkStyle();
@@ -92,12 +114,17 @@ require_once( $AppUI->getSystemClass( 'date' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
 
 // load the db handler
-require_once( "./includes/db_connect.php" );
+// allow the install module to run without config file
+if ($dPrunLevel > 0) {
+	require_once( "./includes/db_connect.php" );
+}
 require_once( "./misc/debug.php" );
 
 // load default preferences if not logged in
 if ($AppUI->doLogin()) {
-    $AppUI->loadPrefs( 0 );
+	if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+    		$AppUI->loadPrefs( 0 );
+	}
 }
 
 // check is the user needs a new password
@@ -116,8 +143,10 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	exit();
 }
 
+
 // check if the user is trying to log in
 if (isset($_POST['login'])) {
+
 	$username = dPgetParam( $_POST, 'username', '' );
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
@@ -128,6 +157,7 @@ if (isset($_POST['login'])) {
 	}
 	$AppUI->redirect( "$redirect" );
 }
+
 
 // supported since PHP 4.2
 // writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
@@ -166,12 +196,19 @@ if ($AppUI->doLogin()) {
 	exit;
 }
 
-// bring in the rest of the support and localisation files
-require_once( "./includes/permissions.php" );
+if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
 
+	// bring in the rest of the support and localisation files
+	require_once( "./includes/permissions.php" );
 
-// set the module and action from the url
-$m = $AppUI->checkFileName(dPgetParam( $_GET, 'm', getReadableModule() ));
+	// set the module from the url
+	$m = $AppUI->checkFileName(dPgetParam( $_GET, 'm', getReadableModule() ));
+
+} else {
+	$m = 'install';
+}
+
+// set the action from the url
 $a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', 'index' ));
 
 /* This check for $u implies that a file located in a subdirectory of higher depth than 1
@@ -199,6 +236,14 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 setlocale( LC_TIME, $user_locale );
 
 @include_once( "./functions/" . $m . "_func.php" );
+
+if ( ( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
+	// present some trivial permission functions
+	function getDenyRead( $m ){ return false; }
+	function getDenyEdit( $m ){ return false; }
+}
+
+
 
 // TODO: canRead/Edit assignements should be moved into each file
 

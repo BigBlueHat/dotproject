@@ -104,6 +104,14 @@ bordertable {
 	/*width: 100px; too small for some translations*/
 }
 
+.item {
+	color: #08245b;
+}
+
+.ok {
+	color: green;
+}
+
 .text{
 	border: 1px black solid;
 	font-family: Osaka,verdana,Sans-Serif;
