@@ -3,7 +3,7 @@ $del = isset($_GET['del']) ? $_GET['del'] : 0;
 
 $user = new CUser();
 
-if (($msg = $user->bind( $_GET ))) {
+if (($msg = $user->bind( $_REQUEST ))) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	$AppUI->redirect();
 }
@@ -17,7 +17,7 @@ if ($del) {
 		$AppUI->redirect( "m=admin" );
 	}
 } else {
-	$isNotNew = @$_POST['user_id'];
+	$isNotNew = @$_REQUEST['user_id'];
 	if (!$isNotNew) {
 		$user->user_owner = $AppUI->user_id;
 	}
