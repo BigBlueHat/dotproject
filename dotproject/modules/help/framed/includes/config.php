@@ -1,20 +1,14 @@
-<?
+<?php
+
 ##
-## dothelp configuration file
+## dothelp configuration file (integrated in dotproject)
 ##
 
-// database access parameters
-$dbtype = "mysql";
-$dbhost = "localhost";
-$dbname = "dotproject";
-$dbuser = "root";
-$dbpass = "";
+require_once( "../../../includes/config.php" );
 
 $dbprefix = "dhlp_";
 
-// default language
-$host_locale = "en";
+$root_dir = "$root_dir/modules/help/framed/";
+$dbname = $db;
 
-// file system parameters
-$root_dir = "d:/apache/htdocs/Projects/dotproject/modules/help/framed"; // filesystem root
 ?>
