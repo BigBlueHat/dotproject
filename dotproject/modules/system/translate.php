@@ -25,7 +25,8 @@ $modules = array(
 	'help',
 	'projects',
 	'system',
-	'tasks'
+	'tasks',
+	'ticketsmith'
 );
 
 ob_start();
