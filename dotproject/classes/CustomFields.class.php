@@ -449,17 +449,20 @@
 
 		function store( $object_id )
 		{
-			foreach ($this->fields as $k => $cf)
+			if (!count($this->fields) == 0)
 			{
-				$result = $this->fields[$k]->store( $object_id );
-				if ($result)
+				foreach ($this->fields as $k => $cf)
 				{
-					$store_errors .= "Error storing custom field ".$k.":".$result;
+					$result = $this->fields[$k]->store( $object_id );
+					if ($result)
+					{
+						$store_errors .= "Error storing custom field ".$k.":".$result;
+					}
 				}
-			}
 
-			//if ($store_errors) return $store_errors;
-			if ($store_errors) echo $store_errors;
+				//if ($store_errors) return $store_errors;
+				if ($store_errors) echo $store_errors;
+			}
 		}
 
 		function deleteField( $field_id )
