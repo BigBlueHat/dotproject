@@ -1,3 +1,46 @@
+2003-06-03 01:30  (eddieajau)
+---------------------------------
+index.php
+- Stamped for beta 2 dev
+
+2003-06-03 00:30  (eddieajau)
+---------------------------------
+index.php
+- Stamped for beta 1 patch 1
+
+2003-06-03 00:10  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+db/upgrade_100_alpha2_to_beta1.sql
+- Fixed bug in event type entry
+
+2003-06-02 23:43  (eddieajau)
+---------------------------------
+fileviewer.php
+- Fixed bug when session auto-start
+
+2003-06-02 23:39  (eddieajau)
+---------------------------------
+modules/calendar/view.php
+- New event would edit the current one
+
+2003-06-02 22:54  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/links_events.php
+- Tidied up good improvements by kripper
+
+2003-06-02 18:48  (eddieajau)
+---------------------------------
+fileviewer.php
+- Fixed stary z character.
+
+2003-06-02 04:28  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-06-02 02:17  (eddieajau)
 ---------------------------------
 docs/install.html
@@ -454,49 +497,6 @@ modules/files/addedit.php
 - Changed the Uploaded By field to show the full name, not just the login name.
 
 2003-05-15 11:31  (korinek)
----------------------------------
-locales/en/files.inc
-- Translatin update
-
-2003-05-15 04:36  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-14 22:54  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Added passing of the object id to the delete method
-
-2003-05-14 22:53  (eddieajau)
----------------------------------
-classes/ui.class.php
-classes/date.class.php
-- Updated documentation
-
-2003-05-14 22:40  (eddieajau)
----------------------------------
-modules/admin/index.php
-modules/admin/vw_active_usr.php
-modules/admin/vw_inactive_usr.php
-- Added a general search box to help find a user
-
-2003-05-14 22:38  (eddieajau)
----------------------------------
-modules/system/domodsql.php
-- Fixed bug when installing a custom module
-
-2003-05-14 22:37  (eddieajau)
----------------------------------
-modules/public/selector.php
-- Fixed bug but leaves a known issue that the selector cannot filter out departments of non-visible companies
-
-2003-05-14 22:32  (eddieajau)
----------------------------------
-style/default/header.php
-- Hide 'Today' link when no permission to calendar module.
-
-2003-05-14 20:13  (korinek)
 ---------------------------------
 ...
 
