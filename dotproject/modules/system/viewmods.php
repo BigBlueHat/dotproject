@@ -66,8 +66,25 @@ foreach ($modules as $row) {
 		$s .= '</a>';
 	}
 	if ($row['mod_type'] != 'core' && $canEdit) {
-		$s .= ' | <a href="'.$query_string . '&cmd=remove">'.$AppUI->_('remove').'</a>';
+		$s .= ' | <a href="'.$query_string . '&cmd=remove" onclick="return window.confirm('."'"
+			.$AppUI->_('This will delete all data associated with the module!')."\\n\\n"
+			.$AppUI->_( 'Are you sure?' )."\\n"
+			."'".');">'.$AppUI->_('remove').'</a>';
 	}
+	
+// check for upgrades
+	
+	$ok = @include_once( "{$AppUI->cfg['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
+	if ( $ok )
+	{
+		if ( $config[ 'mod_version' ] != $row['mod_version'] )
+		{
+			$s .= ' | <a href="'.$query_string . '&cmd=upgrade" onclick="return window.confirm('."'"
+				.$AppUI->_( 'Are you sure?')."'".');" >'.$AppUI->_('upgrade').'</a>';
+		}
+	}
+	
+	
 	$s .= '</td>';
 	$s .= '<td>'.$row['mod_type'].'</td>';
 	$s .= '<td>'.$row['mod_version'].'</td>';

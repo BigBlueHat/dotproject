@@ -65,7 +65,16 @@ switch ($cmd) {
 		$AppUI->setMsg( 'Module removed', UI_MSG_ALERT );
 		break;
 	case 'upgrade':
-		$AppUI->setMsg( $setup->upgrade() );
+		if ( $setup->upgrade( $obj->mod_version ) )	// returns true if upgrade succeeded
+		{
+			$obj->bind( $config );
+			$obj->store();
+			$AppUI->setMsg( 'Module upgraded', UI_MSG_OK );
+		}
+		else
+		{
+			$AppUI->setMsg( 'Module not upgraded', UI_MSG_ERROR );
+		}
 		break;
 	default:
 		$AppUI->setMsg( 'Unknown Command', UI_MSG_ERROR );
