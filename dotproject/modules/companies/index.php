@@ -58,6 +58,9 @@ $titleBlock->addCell("<form name='searchform' action='?m=companies&amp;search_st
 							</tr>
 						</table>
                       </form>");
+
+$search_string = addslashes($search_string);
+
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',
