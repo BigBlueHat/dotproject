@@ -14,6 +14,9 @@ $app_root = "http://host.yourdomain.com/path.to/dotproject";
 # send email report upon receipt (1 = yes, 0 = no)
 $send_email_report = 1;
 
+# Send aknowlegment back to lodger (1 = yes, 0 = no)
+$send_acknowledge = 1;
+
 # address to send report to
 $report_to_address = "you\@yourdomain.com";
 
@@ -39,6 +42,7 @@ while (<STDIN>) {
 &get_body();
 &insert_message();
 &mail_report() if ($send_email_report);
+&mail_acknowledgement() if ($send_acknowledge);
 
 exit();
 
@@ -196,7 +200,7 @@ sub mail_report {
 	print MAIL "From: $report_from_address\n";
 	print MAIL "Subject: New support ticket #$ticket\n";
 	print MAIL "Content-type: text/html\n";
-	print MAIL "Mime-type: 1.0\n\n";
+	print MAIL "Mime-version: 1.0\n\n";
 	print MAIL "<html>";
 	print MAIL "<head>";
 	print MAIL "<style>";
@@ -204,13 +208,18 @@ sub mail_report {
 	print MAIL "	FONT-SIZE: 18pt; SIZE: 18pt;";
 	print MAIL "}";
 	print MAIL "</style>";
-	print MAIL "<title>New Trouble ticket</title>";
+	if ($parent) {
+	    print MAIL "<title>Followup Trouble ticket to ticket #$parent</title>";
+	}
+	else {
+	    print MAIL "<title>New Trouble ticket</title>";
+	}
 	print MAIL "</head>";
 	print MAIL "<body>";
 	print MAIL "";
 	print MAIL "<TABLE border=0 cellpadding=4 cellspacing=1>";
 	print MAIL "	<TR>";
-	print MAIL "	<TD valign=top><img src=" . $app_root . "/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
+	print MAIL "	<TD valign=top><img src=$app_root/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
  
 	print MAIL "		<TD nowrap><span class=title>Trouble Ticket Management</span></td>";
 	print MAIL "		<TD valign=top align=right width=100%>&nbsp;</td>";
@@ -234,7 +243,7 @@ sub mail_report {
 	print MAIL "	</tr>";
 	print MAIL "	<TR>";
 	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>View:</font></TD>";
-	print MAIL "		<TD bgcolor=white nowrap><a href=" . $app_root . "/index.php?m=ticketsmith&a=view&ticket=$ticket><font face=arial,san-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
+	print MAIL "		<TD bgcolor=white nowrap><a href=$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket><font face=arial,san-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
 	print MAIL "	</tr>";
 	print MAIL "</TABLE>";
 	print MAIL "</body>";
@@ -260,9 +269,54 @@ sub mail_acknowledgement {
     open(MAIL, "|$mailprog -t");
 	print MAIL "To: $author\n";
 	print MAIL "From: $report_from_address\n";
-	print MAIL "Subject: Dotmarketing Support Request Received, ticket: #$ticket\n\n";
-	print MAIL "This is an acknowledgement that your support request has been received";
-	print MAIL "by dotmarketing, Inc.  ";
+	print MAIL "Subject: [#$ticket] Your Support Request\n";
+	print MAIL "Content-type: text/html\n";
+	print MAIL "Mime-Version: 1.0\n\n";
+	print MAIL "<html>";
+	print MAIL "<head>";
+	print MAIL "<style>";
+	print MAIL ".title {";
+	print MAIL "	FONT-SIZE: 18pt; SIZE: 18pt;";
+	print MAIL "}";
+	print MAIL "</style>";
+	print MAIL "<title>Your Support Request</title>";
+	print MAIL "</head>";
+	print MAIL "<body>";
+	print MAIL "";
+	print MAIL "<TABLE border=0 cellpadding=4 cellspacing=1>";
+	print MAIL "	<TR>";
+	print MAIL "	<TD valign=top><img src=$app_root/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
+	print MAIL "		<TD nowrap><span class=title>Trouble Ticket Management</span></td>";
+	print MAIL "		<TD valign=top align=right width=100%>&nbsp;</td>";
+	print MAIL "	</tr>";
+	print MAIL "</TABLE>";
+	print MAIL "<TABLE width=600 border=0 cellpadding=4 cellspacing=1 bgcolor=#878676>";
+	print MAIL "	<TR>";
+	print MAIL "		<TD colspan=2><font face=arial,san-serif size=2 color=white>New Ticket Entered</font></TD>";
+	print MAIL "	</tr>";
+	print MAIL "	<TR>";
+	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>Ticket ID:</font></TD>";
+	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>$ticket</font></TD>";
+	print MAIL "	</tr>";
+	print MAIL "	<TR>";
+	print MAIL "		<TD bgcolor=white><font face=arial,san-serif size=2>Author:</font></TD>";
+	print MAIL "		<TD bgcolor=white><font face=arial,san-serif size=2>$author</font></TD>";
+	print MAIL "	</tr>";
+	print MAIL "	<TR>";
+	print MAIL "		<TD bgcolor=white><font face=arial,san-serif size=2>Subject:</font></TD>";
+	print MAIL "		<TD bgcolor=white><font face=arial,san-serif size=2>$subject</font></TD>";
+	print MAIL "	</tr>";
+	print MAIL "	<TR>";
+	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>&nbsp;</font></TD>";
+	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>";
+	print MAIL "This is an acknowledgement that your support request has been logged<br>";
+	print MAIL "by an automated support tracking system. It will be assigned to a<br>";
+	print MAIL "support representative who will be in touch in due course.";
+        print MAIL "            </font></TD>";
+	print MAIL "	</tr>";
+	print MAIL "</TABLE>";
+	print MAIL "</body>";
+	print MAIL "</html>";
 	close(MAIL);
 
 }
