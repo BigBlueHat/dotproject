@@ -118,7 +118,10 @@ $a2z .= "\n</tr>\n<tr><td colspan='28'>$form</td></tr></table>";
 
 
 // setup the title block
-$contact_id = $carr[$z][$x]["contact_id"];
+
+// what purpose is the next line for? Commented out by gregorerhardt, Bug #892912
+// $contact_id = $carr[$z][$x]["contact_id"];
+
 $titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $a2z );
 if ($canEdit) {
