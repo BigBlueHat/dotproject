@@ -21,3 +21,6 @@ ALTER TABLE `companies` CHANGE `company_email` `company_email` VARCHAR(255) DEFA
 ALTER TABLE `contacts` CHANGE `contact_email` `contact_email` VARCHAR(255) default NULL;
 ALTER TABLE `contacts` CHANGE `contact_email2` `contact_email2` VARCHAR(255) default NULL;
 ALTER TABLE `users` CHANGE `user_email` `user_email` VARCHAR(255) default '';
+
+# Add notify column to tasks
+ALTER TABLE `tasks` ADD `task_notify` INT(11) NOT NULL DEFAULT '0';

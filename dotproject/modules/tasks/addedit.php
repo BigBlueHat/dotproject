@@ -446,7 +446,7 @@ function calcFinish() {
 			</tr>
 			<tr>
 				<td colspan=3 align="center">
-					<input type="checkbox" name="notify" value="1" /> <?php echo $AppUI->_( 'notifyChange' );?>
+					<input type="checkbox" name="task_notify" value="1" <?php if($obj->task_notify!="0") echo "checked"?> /> <?php echo $AppUI->_( 'notifyChange' );?>
 				</td>
 			</tr>
 		</table>

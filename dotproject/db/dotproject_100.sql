@@ -260,6 +260,7 @@ CREATE TABLE tasks (
   task_client_publish tinyint(1) NOT NULL default '0',
   task_dynamic tinyint(1) NOT NULL default 0,
   task_access int(11) NOT NULL default '0',
+  task_notify int(11) NOT NULL default '0',
   PRIMARY KEY  (task_id),
   KEY idx_task_parent (task_parent),
   KEY idx_task_project (task_project),

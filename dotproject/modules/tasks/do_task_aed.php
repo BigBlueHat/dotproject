@@ -3,7 +3,7 @@
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 $hassign = @$_POST['hassign'];
 $hdependencies = @$_POST['hdependencies'];
-$notify = isset($_POST['notify']) ? $_POST['notify'] : 0;
+$notify = isset($_POST['task_notify']) ? $_POST['task_notify'] : 0;
 
 $obj = new CTask();
 

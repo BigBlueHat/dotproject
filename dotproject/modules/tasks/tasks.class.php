@@ -43,6 +43,7 @@ class CTask extends CDpObject {
 	var $task_client_publish = NULL;
 	var $task_dynamic = NULL;
 	var $task_access = NULL;
+	var $task_notify = NULL;
 
 	function CTask() {
 		$this->CDpObject( 'tasks', 'task_id' );
@@ -67,6 +68,9 @@ class CTask extends CDpObject {
 		}
 		if (!$this->task_related_url) {
 			$this->task_related_url = '';
+		}
+		if (!$this->task_notify) {
+			$this->task_notify = 0;
 		}
 		return NULL;
 	}
