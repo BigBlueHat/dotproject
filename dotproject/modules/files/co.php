@@ -37,7 +37,11 @@ if ($obj->file_task) {
 	$file_task = $obj->file_task;
 	$task_name = $obj->getTaskName();
 } else if ($file_task) {
-	$sql = "SELECT task_name FROM tasks WHERE task_id=$file_task";
+	$q  = new DBQuery;
+	$q->addTable('tasks');
+	$q->addQuery('task_name');
+	$q->addWhere("task_id=$file_task");
+	$sql = $q->prepare();
 	$task_name = db_loadResult( $sql );
 } else {
 	$task_name = '';

@@ -71,13 +71,19 @@ class CFile extends CDpObject {
 	// remove the file from the file system
 		@unlink( "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename" );
 	// delete any index entries
-		$sql = "DELETE FROM files_index WHERE file_id = $this->file_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDeelete('files_index');
+		$q->addQuery('*');
+		$q->addWhere("file_id = $this->file_id");
+		if (!$q->exec()) {
 			return db_error();
 		}
 	// delete the main table reference
-		$sql = "DELETE FROM files WHERE file_id = $this->file_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDeelete('files');
+		$q->addQuery('*');
+		$q->addWhere("file_id = $this->file_id");
+		if (!$q->exec()) {
 			return db_error();
 		}
 		return NULL;
@@ -177,8 +183,10 @@ class CFile extends CDpObject {
 		}
 	// insert the strings into the table
 		while (list( $key, $val ) = each( $wordarr )) {
-			$sql = "INSERT INTO files_index VALUES ('" . $this->file_id . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "')";
-			db_exec( $sql );
+			$q  = new DBQuery;
+			$q->addTable('files_index');
+			$q->addInsert("','" . $this->file_id . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "'");
+			$q->exec();
 		}
 
 		db_exec( "UNLOCK TABLES;" );
@@ -211,27 +219,23 @@ class CFile extends CDpObject {
 				$body .= "\n" . $AppUI->_('Description') . ":" . "\n".$this->_task->task_description;
 				
 				//preparing users array
-				$sql = "SELECT t.task_id,"
-				."\ncc.contact_email as creator_email,"
-				."\ncc.contact_first_name as creator_first_name,"
-				."\ncc.contact_last_name as creator_last_name,"
-				."\noc.contact_email as owner_email,"
-				."\noc.contact_first_name as owner_first_name,"
-				."\noc.contact_last_name as owner_last_name,"
-				."\na.user_id as assignee_id,"
-				."\nac.contact_email as assignee_email,"
-				."\nac.contact_first_name as assignee_first_name,"
-				."\nac.contact_last_name as assignee_last_name"
-				."\nFROM tasks t"
-				."\nLEFT JOIN user_tasks u ON u.task_id = t.task_id"
-				."\nLEFT JOIN users o ON o.user_id = t.task_owner"
-                                ."\nLEFT JOIN contacts oc ON o.user_contact = oc.contact_id"
-				."\nLEFT JOIN users c ON c.user_id = t.task_creator"
-                                ."\nLEFT JOIN contacts cc ON c.user_contact = cc.contact_id"
-				."\nLEFT JOIN users a ON a.user_id = u.user_id"
-                                ."\nLEFT JOIN contacts ac ON a.user_contact = ac.contact_id"
-				."\nWHERE t.task_id = ".$this->_task->task_id;
-				$this->_users = db_loadList( $sql );
+				$q  = new DBQuery;
+				$q->addTable('tasks', 't');
+				$q->addQuery('t.task_id, ncc.contact_email as creator_email, ncc.contact_first_name as
+						 creator_first_name, ncc.contact_last_name as creator_last_name,
+						 noc.contact_email as owner_email, noc.contact_first_name as owner_first_name,
+						 noc.contact_last_name as owner_last_name, na.user_id as assignee_id, 
+						 nac.contact_email as assignee_email, nac.contact_first_name as
+						 assignee_first_name, nac.contact_last_name as assignee_last_name');
+				$q->addJoin('user_tasks', 'u', 'u.task_id = t.task_id');
+				$q->addJoin('users', 'o', 'o.user_id = t.task_owner');
+				$q->addJoin('contacts', 'oc', 'o.user_contact = oc.contact_id');
+				$q->addJoin('users', 'c', 'c.user_id = t.task_creator');
+				$q->addJoin('contacts', 'cc', 'c.user_contact = cc.contact_id');
+				$q->addJoin('users', 'a', 'a.user_id = u.user_id');
+				$q->addJoin('contacts', 'ac', 'a.user_contact = ac.contact_id');
+				$q->addWhere('t.task_id = '.$this->_task->task_id);
+				$this->_users = $q->loadList();
 			} else {
 				//find project owner and notify him about new or modified file
 				$sql = "select u.* from users u, projects p where p.project_owner = u.user_id and p.project_id = ".$this->file_project;

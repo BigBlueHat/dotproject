@@ -24,11 +24,12 @@ if (!$obj->bind( $_POST )) {
 set_time_limit( 600 );
 ignore_user_abort( 1 );
 
-$sql = 'UPDATE files 
-        SET file_checkout = \'' . $AppUI->user_id . '\', 
-        file_co_reason  = \'' . $_POST['file_co_reason'] . '\' 
-        WHERE file_id = ' . $file_id;
-	db_exec($sql);
+$q  = new DBQuery;
+$q->addTable('files');
+$q->addUpdate('file_checkout', "{$AppUI->user_id}");
+$q->addUpdate('file_co_reason', "{$_POST['file_co_reason']}" );
+$q->addWhere("file_id = $file_id");
+$q->exec();
 
 	// We now have to display the required page
 	// Destroy the post stuff, and allow the page to display index.php again.
