@@ -12,6 +12,7 @@
 "All Companies",
 "All Day Event",
 "All Users",
+"All w/o in progress",
 "Anniversary",
 "Appointment",
 "April",

@@ -31,8 +31,8 @@ if (isset(  $_POST['proFilter'] )) {
 }
 $proFilter = $AppUI->getState( 'ProjectIdxFilter' ) !== NULL ? $AppUI->getState( 'ProjectIdxFilter' ) : '-1';
 
-$projFilter = arrayMerge( array('-1' => $AppUI->_('All Projects', UI_OUTPUT_RAW)), $projectStatus);
-$projFilter = arrayMerge( array( '-2' => $AppUI->_('All w/o in progress')), $projFilter);
+$projFilter = arrayMerge( array('-1' => 'All Projects'), $projectStatus);
+$projFilter = arrayMerge( array( '-2' => 'All w/o in progress'), $projFilter);
 natsort($projFilter);
 
 
