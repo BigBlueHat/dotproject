@@ -1,4 +1,43 @@
-2004-08-06 04:13  (cyberhorse)
+2004-08-07 00:19  (gregorerhardt)
+---------------------------------
+classes/ui.class.php
+- Converted the installer to module
+
+2004-08-07 00:14  (gregorerhardt)
+---------------------------------
+locales/en/install.inc
+index.php
+includes/db_adodb.php
+install/index.php
+style/default/header.php
+style/default/main.css
+- Converted the installer to module
+
+2004-08-07 00:11  (gregorerhardt)
+---------------------------------
+modules/install/do_install_db.php
+modules/install/do_write_cfg.php
+modules/install/index.php
+modules/install/install.class.php
+modules/install/install.inc.php
+modules/install/vw_idx_cfg.php
+modules/install/vw_idx_check.php
+modules/install/vw_idx_idb.php
+modules/install/vw_idx_locale.php
+modules/install/images/control-center.png
+- Converted the installer to module
+
+2004-08-06 16:41  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- corrected misspelled method name (I should learn to spell)
+
+2004-08-06 11:27  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-08-06 10:13  (cyberhorse)
 ---------------------------------
 modules/files/index_table.php
 modules/projects/view.php
@@ -6,6 +45,51 @@ modules/tasks/view.php
 - Improved how files listing is hooked up to projects and tasks.
 - Moved files attached to tasks as a tab on the bottom.
 - It reuses the index_table.php file for both now.
+
+2004-08-06 08:57  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- revert back ... I'm just being silly :(
+
+2004-08-06 08:19  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Fixed a few "unresolved variables" issues
+
+2004-08-06 07:24  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Allow setting a project from other files through includes.
+
+2004-08-06 07:22  (cyberhorse)
+---------------------------------
+modules/projects/vw_files.php
+- Ops, wrong approach - ignore the previous change.
+
+2004-08-06 07:20  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Default to showing project headers, but allow removing them
+
+2004-08-06 07:19  (cyberhorse)
+---------------------------------
+modules/projects/vw_files.php
+- Show only the specific project to show
+
+2004-08-06 07:17  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Allows passing project through GET parameter
+
+2004-08-06 07:09  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- Added possibility for passing parameters to files, included as tabs.
+
+2004-08-06 06:12  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+- added file_category field
 
 2004-08-06 02:57  (cyberhorse)
 ---------------------------------
