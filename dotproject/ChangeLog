@@ -1,3 +1,13 @@
+2004-01-07 04:01  (ajdonnison)
+---------------------------------
+index.php
+- Fixed security hole in passing module parameters
+
+2003-12-26 09:19  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-26 09:05  (gregorerhardt)
 ---------------------------------
 ChangeLog
@@ -488,16 +498,6 @@ docs/rfc0001.00.html
 docs/roadmap.html
 docs/team.html
 docs/trouble.html
-docs/upgrade.html
-modules/companies/index.php
-modules/companies/vw_companies.php
-- Added dynamic companies type tabs at the companies module
-
-2003-11-28 09:24  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
 ...
 
 (This file has been wrapped)
