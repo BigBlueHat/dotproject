@@ -189,7 +189,7 @@ foreach ($tasks as $a) {
 <?php } ?>
 <tr>
 	<td colspan="7" align="right" height="30">
-		<input type="submit" class="button" value="<? echo $AppUI->_('update task');?>">
+		<input type="submit" class="button" value="<?php echo $AppUI->_('update task');?>">
 	</td>
 	<td colspan="3" align="center">
 <?php
