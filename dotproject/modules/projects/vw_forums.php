@@ -1,5 +1,5 @@
 <?php
-GLOBAL $project_id, $user_cookie;
+GLOBAL $AppUI, $project_id;
 // Forums mini-table in project view action
 
 $sql = "
@@ -27,7 +27,7 @@ while ($row = mysql_fetch_array( $rc )) { ?>
 <tr>
 	<td nowrap align=center>
 <?php
-	if ($row["forum_owner"] == $user_cookie) { ?>
+	if ($row["forum_owner"] == $AppUI->user_id) { ?>
 		<A href="./index.php?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width=12 height=12></a>
 <?php } ?>
 	</td>

@@ -1,4 +1,6 @@
 <?php
+require_once( "$root_dir/classdefs/date.php" );
+
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 // check permissions
@@ -6,14 +8,17 @@ $denyRead = getDenyRead( $m, $project_id );
 $denyEdit = getDenyEdit( $m, $project_id );
 
 if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+$AppUI->savePlace();
+
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
+}
+$tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
 
 //pull data
-$psql = "
+$sql = "
 SELECT 
 	company_name,
 	CONCAT(user_first_name, ' ', user_last_name) user_name,
@@ -26,38 +31,25 @@ LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_id = $project_id
 GROUP BY project_id
 ";
-//echo "<pre>$psql</pre>";
-$prc = mysql_query( $psql );
-$prow = mysql_fetch_array( $prc, MYSQL_ASSOC );
+//echo "<pre>$sql</pre>";
+db_loadHash( $sql, $project );
 
-if (strlen( $prow["project_start_date"] ) == 0) {
-	$start_date = date(time());
-} else {
-	$start_date = mktime( 0, 0, 0, substr( $prow["project_start_date"], 5, 2),
-		substr( $prow["project_start_date"], 8, 2 ),
-		substr( $prow["project_start_date"], 0, 4 )
-	);
+$df = $AppUI->getPref('SHDATEFORMAT');
+
+$start_date = $project["project_start_date"] ? CDate::fromDateTime( $project["project_start_date"] ) : new CDate();
+$start_date->setFormat( $df );
+
+$end_date = $project["project_end_date"] ? CDate::fromDateTime( $project["project_end_date"] ) : new CDate();
+$end_date->setFormat( $df );
+
+$actual_end_date = $project["project_actual_end_date"] ? CDate::fromDateTime( $project["project_actual_end_date"] ) : new CDate();
+$actual_end_date->setFormat( $df );
+
+$crumbs = array();
+$crumbs["?m=projects"] = "projects list";
+if (!$denyEdit) {
+	$crumbs["?m=projects&a=addedit&project_id=$project_id"] = "edit this project";
 }
-
-if (strlen( $prow["project_end_date"] ) == 0) {
-	$end_date = date(time()+(3600*24));
-} else {
-	$end_date = mktime( 0, 0, 0, substr( $prow["project_end_date"], 5, 2 ),
-		substr( $prow["project_end_date"], 8, 2),
-		substr($prow["project_end_date"], 0, 4 )
-	);
-	//$end_date = $prow["project_end_date"];
-}
-
-if (strlen( $prow["project_actual_end_date"] ) ==0) {
-	$actual_end_date = 0;
-} else {
-	$actual_end_date = mktime( 0, 0, 0, substr($prow["project_actual_end_date"], 5, 2 ),
-		substr( $prow["project_actual_end_date"], 8, 2),
-		substr( $prow["project_actual_end_date"], 0, 4)
-	);
-}
-
 ?>
 
 <table width="98%" border="0" cellpadding="1" cellspacing="1">
@@ -66,91 +58,86 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 	<td nowrap><span class="title">Manage Project</span></td>
 	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td align="right" width="100%">
-		<table width="225" cellspacing=1 cellpadding=1 class="tbl">
+		<table width="225" cellspacing="1" cellpadding="1" class="tbl">
 		<tr>
-			<th>status</th>
-			<th>Progress</th>
-			<th>Active?</th>
+			<th><?php echo $AppUI->_('Status');?></th>
+			<th><?php echo $AppUI->_('Progress');?></th>
+			<th><?php echo $AppUI->_('Active');?>?</th>
 		</tr>
 		<tr>
-			<td><?php echo $pstatus[$prow["project_status"]]; ?></td>
-			<td align="center"><?php printf( "%.1f%%", $prow["project_precent_complete"] );?></td>
-			<td align="center"><?php if($prow["project_active"]){?>Yes<?php }else{?>No<?php }?></td>
+			<td><?php echo $pstatus[$project["project_status"]]; ?></td>
+			<td align="center"><?php printf( "%.1f%%", $project["project_precent_complete"] );?></td>
+			<td align="center"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>
 		</table>
 	</td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td nowrap>
-	<a href="./index.php?m=projects">Project List</a>
-<?php if (!$denyEdit) { ?>
-	<b>:</b> <a href="./index.php?m=projects&a=addedit&project_id=<?php echo $prow["project_id"];?>">Edit this Project</a>
-<?php } ?>
-
-	</td>
+	<td nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
-	<td style="border: outset #d1d1cd 1px;background-color:<?php echo $prow["project_color_identifier"];?>" colspan="2">
+	<td style="border: outset #d1d1cd 1px;background-color:<?php echo $project["project_color_identifier"];?>" colspan="2">
 	<?php
-		echo '<font color="' . bestColor( $prow["project_color_identifier"] ) . '"><b>'
-			. $prow["project_name"] .'<b></font>';
+		echo '<font color="' . bestColor( $project["project_color_identifier"] ) . '"><b>'
+			. $project["project_name"] .'<b></font>';
 	?>
 	</td>
 </tr>
 <tr>
 	<td width="50%" valign="top">
-		<b>Details</b>
+		<b><?php echo $AppUI->_('Details');?></b>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td align="right" nowrap>Company:</td>
-			<td bgcolor="#ffffff" width="100%"><?php echo $prow["company_name"];?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo $project["company_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Short Name:</td>
-			<td bgcolor="#ffffff"><?php echo @$prow["project_short_name"];?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Short Name');?>:</td>
+			<td bgcolor="#ffffff"><?php echo @$project["project_short_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Start date:</td>
-			<td bgcolor="#ffffff"><?php echo fromDate(substr($prow["project_start_date"], 0,10));?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Start Date');?>:</td>
+			<td bgcolor="#ffffff"><?php echo $start_date->isValid() ? $start_date->toString() : '-';?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Target End Date:</td>
-			<td bgcolor="#ffffff"><?php echo fromDate(substr($prow["project_end_date"], 0, 10));?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Target End Date');?>:</td>
+			<td bgcolor="#ffffff"><?php echo $end_date->isValid() ? $end_date->toString() : '-';?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Actual End Date:</td>
-			<td bgcolor="#ffffff"><?php echo fromDate(SUBSTR($prow["project_actual_end_date"], 0, 10));?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Actual End Date');?>:</td>
+			<td bgcolor="#ffffff"><?php echo $actual_end_date->isValid() ? $actual_end_date->toString() : '-';?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Target Budget:</td>
-			<td bgcolor="#ffffff">$<?php echo @$prow["project_target_budget"];?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Target Budget');?>:</td>
+			<td bgcolor="#ffffff">$<?php echo @$project["project_target_budget"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Project Owner:</td>
-			<td bgcolor="#ffffff"><?php echo $prow["user_name"]; ?></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Project Owner');?>:</td>
+			<td bgcolor="#ffffff"><?php echo $project["user_name"]; ?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>URL:</td>
-			<td bgcolor="#ffffff"><A href="<?php echo @$prow["project_url"];?>" target="_new"><?php echo @$prow["project_url"];?></A></td>
+			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
+			<td bgcolor="#ffffff"><A href="<?php echo @$project["project_url"];?>" target="_new"><?php echo @$project["project_url"];?></A></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Staging URL:</td>
-			<td bgcolor="#ffffff"><A href="<?php echo @$prow["project_demo_url"];?>" target="_new"><?php echo @$prow["project_demo_url"];?></A></td>
+			<td align="right" nowrap><?php echo $AppUI->_('Staging URL');?>:</td>
+			<td bgcolor="#ffffff"><A href="<?php echo @$project["project_demo_url"];?>" target="_new"><?php echo @$project["project_demo_url"];?></A></td>
 		</tr>
 		</table>
 	</td>
 	<td width="50%" rowspan="9" valign="top">
-		<b>Full Description</b><br>
+		<b><?php echo $AppUI->_('Description');?></b><br>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td bgcolor="#ffffff">
-				<?php echo str_replace( chr(10), "<BR>", $prow["project_description"]); ?>&nbsp;
+				<?php echo str_replace( chr(10), "<BR>", $project["project_description"]); ?>&nbsp;
 			</td>
 		</tr>
 		</table>
@@ -159,7 +146,6 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 
 <?php	
 // tabbed information boxes
-$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 0;
 $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "./modules/projects", $tab );
 $tabBox->add( 'vw_tasks', 'Tasks' );
 $tabBox->add( 'vw_forums', 'Forums' );

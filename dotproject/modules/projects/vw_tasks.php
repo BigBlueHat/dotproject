@@ -1,6 +1,6 @@
 <?php
-	GLOBAL $project_id, $AppUI, $m, $a;
+	GLOBAL $project_id, $AppUI, $m, $a, $root_dir;
 	$f = 'all';
 	$min_view = 'y';
-	include("modules/tasks/tasks.php");
+	include("$root_dir/modules/tasks/tasks.php");
 ?>

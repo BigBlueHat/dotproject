@@ -1,5 +1,5 @@
 <?php
-GLOBAL $project_id;
+GLOBAL $AppUI, $project_id;
 // Files mini-table in project view action
 
 $sql="
@@ -29,7 +29,7 @@ while ($row = mysql_fetch_array( $rc )) { ?>
 <tr>
 	<td nowrap align=center>
 <?php
-	if ($row["file_owner"] == $user_cookie) { ?>
+	if ($row["file_owner"] == $AppUI->user_id) { ?>
 		<A href="./index.php?m=files&a=addedit&file_id=<?php echo $row["file_id"];?>"><img src="./images/icons/pencil.gif" alt="expand file" border="0" width=12 height=12></a>
 <?php } ?>
 	</td>

@@ -1,70 +1,32 @@
 <?php
-if (empty( $project_active )) {
-	$project_active = 0;
-}
+$del = isset($_POST['del']) ? $_POST['del'] : 0;
+$isNotNew = @$_POST['project_id'];
 
-$project_start_date = $StartYYYY_int . "-". $StartMM_int . "-". $StartDD_int . " 00:00:00";
-$project_end_date = $TargetYYYY_int . "-". $TargetMM_int . "-". $TargetDD_int . " 00:00:00";
+$project = new CProject();
 
-if( strlen( trim( $ActualMM_int . $ActualDD_int . $ActualYYYY_int ) ) > 0) {
-	$project_actual_end_date = $ActualYYYY_int . "-". $ActualMM_int . "-". $ActualDD_int . " 00:00:00";
-} else {
-	$project_actual_end_date = "0";
+if (($msg = $project->bind( $_POST ))) {
+	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+	$AppUI->redirect();
 }
-/*
-echo $project_start_date ."<BR>";
-echo $project_end_date ."<BR>";
-echo $project_actual_end_date ."<BR>";
-*/
+// convert dates to SQL format first
+$project->project_start_date = db_unix2DateTime( $project->project_start_date );
+$project->project_end_date = db_unix2DateTime( $project->project_end_date );
+$project->project_actual_end_date = db_unix2DateTime( $project->project_actual_end_date );
 
 if ($del) {
-	// test for orphans
-	$tsql = "select task_id from tasks where task_project = $project_id";
-	$trc = mysql_query( $tsql );
-	if (mysql_num_rows( $trc )) {
-		$message = '<b>REQUEST DENIED</b>: You cannot delete a project that has tasks associated with it';
+	if (($msg = $project->delete())) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect();
 	} else {
-		$tsql = "delete from projects where project_id = $project_id";
-		mysql_query( $tsql );
-		$message = mysql_errno() ? mysql_error() : "Project <i>$project_name</i> deleted." ;
+		$AppUI->setMsg( "Project deleted", UI_MSG_ALERT );
+		$AppUI->redirect( "m=projects" );
 	}
-} else if ($project_id > 0) {
-	$pssql = "
-	update projects
-	set
-	project_company=$project_company,
-	project_name='$project_name',
-	project_short_name='$project_short_name',
-	project_owner=$project_owner,
-	project_url='$project_url',
-	project_demo_url='$project_demo_url',
-	project_start_date='$project_start_date',
-	project_end_date='$project_end_date',
-	project_actual_end_date='$project_actual_end_date',
-	project_status=$project_status,
-	project_color_identifier='$project_color_identifier',
-	project_description='$project_description',
-	project_target_budget=$project_target_budget,
-	project_actual_budget=$project_actual_budget,
-	project_active=$project_active
-	where
-	project_id = $project_id";
-
-	mysql_query( $pssql );
-	$message = mysql_error();
-} else if ($project_id == 0) {
-	$pssql="insert into projects
-
-	(project_company, project_name, project_short_name, project_owner, project_url, project_demo_url, project_start_date, project_end_date, project_actual_end_date, project_status, project_color_identifier, project_description, project_target_budget, project_actual_budget, project_creator, project_active)
-	values
-	('$project_company', '$project_name', '$project_short_name', '$project_owner', '$project_url',
-	'$project_demo_url', '$project_start_date', '$project_end_date', '$project_actual_end_date', '$project_status',  '$project_color_identifier', '$project_description', '$project_target_budget', '$project_actual_budget', '$user_cookie', '$project_active') ";
-
-	mysql_query( $pssql );
-	$message = mysql_error();
+} else {
+	if (($msg = $project->store())) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+	} else {
+		$AppUI->setMsg( "Project ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+	}
+	$AppUI->redirect();
 }
-
 ?>
-<script>
-window.location="./index.php?m=projects&message=<?php echo $message;?>";
-</script>

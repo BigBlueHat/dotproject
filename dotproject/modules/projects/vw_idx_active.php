@@ -2,21 +2,21 @@
 GLOBAL $projects, $company_id;
 ?>
 
-<table width="100%" border="0" bgcolor="#f4efe3" cellpadding="3" cellspacing="1" class="tbl">
+<table width="100%" border="0" cellpadding="3" cellspacing="1" class="tbl">
 <tr>
-	<td align="right" width="65" nowrap>&nbsp;sort by:&nbsp;</td>
-	<th nowrap>
-		<A href="index.php?m=projects&orderby=project_name&company_id=<?php echo $company_id;?>"><font color="white">Project Name</font></a>
+	<td align="right" width="65" nowrap="nowrap">&nbsp;sort by:&nbsp;</td>
+	<th nowrap="nowrap">
+		<a href="?m=projects&orderby=project_name" class="hdr"><?php echo $AppUI->_('Name');?></a>
 	</th>
-	<th nowrap>
-		<A href="index.php?m=projects&orderby=user_username&company_id=<?php echo $company_id;?>"><font color="white">Owner</font></a>
+	<th nowrap="nowrap">
+		<a href="?m=projects&orderby=user_username" class="hdr"><?php echo $AppUI->_('Owner');?></a>
 	</th>
-	<th nowrap>
-		<A href="index.php?m=projects&orderby=total_tasks%20desc&company_id=<?php echo $company_id;?>"><font color="white">Tasks</font></a>
-		<A href="index.php?m=projects&orderby=my_tasks%20desc&company_id=<?php echo $company_id;?>"><font color="white">(My)</font></a>
+	<th nowrap="nowrap">
+		<a href="?m=projects&orderby=total_tasks%20desc" class="hdr"><?php echo $AppUI->_('Tasks');?></a>
+		<a href="?m=projects&orderby=my_tasks%20desc" class="hdr">(<?php echo $AppUI->_('My');?>)</a>
 	</th>
-	<th nowrap>
-		<A href="index.php?m=projects&orderby=project_end_date&company_id=<?php echo $company_id;?>"><font color="white">Due Date:</font></a>
+	<th nowrap="nowrap">
+		<a href="?m=projects&orderby=project_end_date" class="hdr">Due Date:</a>
 	</th>
 </tr>
 
@@ -31,16 +31,16 @@ foreach ($projects as $row) {
 		. '</font>';
 	?></td>
 	<td width="100%">
-		<A href="./index.php?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $row["project_name"];?></A>
+		<a href="?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $row["project_name"];?></A>
 	</td>
-	<td nowrap><?php echo $row["user_username"];?></td>
+	<td nowrap="nowrap"><?php echo $row["user_username"];?></td>
 	<td align="center" nowrap>
 		<?php echo $row["total_tasks"].($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');?>
 		</td>
-	<td align="right" nowrap><?php echo $row["proj_end_date"];?></td>
+	<td align="right" nowrap="nowrap"><?php echo $row["proj_end_date"];?></td>
 </tr>
 <?php }?>
 <tr>
-	<td colspan=6>&nbsp;</td>
+	<td colspan="6">&nbsp;</td>
 </tr>
 </table>
