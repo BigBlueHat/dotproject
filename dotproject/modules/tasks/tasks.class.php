@@ -105,7 +105,7 @@ class CTask extends CDpObject {
 			//Update allocated hours based on children
 			$sql = "SELECT SUM( task_duration * task_duration_type ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
 					" and task_id != " . $modified_task->task_id . " GROUP BY task_parent;";
-			$children_allocated_hours = floatval(db_loadResult( $sql ));
+			$children_allocated_hours = (float) db_loadResult( $sql );
 			if ( $modified_task->task_duration_type == 1 ) {
 				$modified_task->task_duration = round($children_allocated_hours,2);
 			} else {
@@ -117,14 +117,14 @@ class CTask extends CDpObject {
 					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .  
 					" AND task_id != " . $modified_task->task_id .
 					" AND task_dynamic = 0";
-			$children_hours_worked = floatval(db_loadResult( $sql ));
+			$children_hours_worked = (float) db_loadResult( $sql );
 			
 			
 			//Update worked hours based on dynamic children tasks
 			$sql = "SELECT sum( task_hours_worked ) FROM tasks
 					WHERE task_dynamic = 1 AND task_parent = " . $modified_task->task_id .
 					" AND task_id != " . $modified_task->task_id;
-			$children_hours_worked += floatval(db_loadResult( $sql ));
+			$children_hours_worked += (float) db_loadResult( $sql );
 			
 			$modified_task->task_hours_worked = $children_hours_worked;
 					
@@ -132,49 +132,49 @@ class CTask extends CDpObject {
 			$sql = "SELECT sum( task_percent_complete )  / count( task_percent_complete ) 
 					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
 					" AND task_id != " . $modified_task->task_id;
-			$modified_task->task_percent_complete = floatval(db_loadResult( $sql ));
-			
+			$modified_task->task_percent_complete = (float) db_loadResult( $sql );
+
 			//Update start date
 			$sql = "SELECT min( task_start_date ) FROM tasks
 					WHERE task_parent = " . $modified_task->task_id .
 					" AND task_id != " . $modified_task->task_id .
 					" AND ! isnull( task_start_date ) AND task_start_date !=  '0000-00-00 00:00:00'";
 			$modified_task->task_start_date = db_loadResult( $sql );
-			
+
 			//Update end date
 			$sql = "SELECT max( task_end_date ) FROM tasks
 					WHERE task_parent = " . $modified_task->task_id .
 					" AND task_id != " . $modified_task->task_id .
 					" AND ! isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'";
 			$modified_task->task_end_date = db_loadResult( $sql );
-			
+
 			//If we are updating a dynamic task from its children we don't want to store() it
 			//when the method exists the next line in the store calling function will do that
 			if ( $fromChildren == false ) $modified_task->store();
 		}
 	}
-	
+
 /**
 *	Copy the current task
 *
 *	@author	handco <handco@users.sourceforge.net>
-*	@param	int		id of the destination project 
+*	@param	int		id of the destination project
 *	@return	object	The new record object or null if error
 **/
 	function copy($destProject_id = 0) {
 		$newObj = $this->clone();
-		
+
 		//Fix the parent task
 		if ($newObj->task_parent == $this->task_id)
 			$newObj->task_parent = $newObj->task_id;
-			
+
 		// Copy this task to another project if it's specified
-		if ($destProject_id != 0) 
+		if ($destProject_id != 0)
 			$newObj->task_project = $destProject_id;
-			
+
 		$msg = $newObj->store();
-		
-		return $newObj; 
+
+		return $newObj;
 	}// end of copy()
 
 /**
@@ -182,23 +182,23 @@ class CTask extends CDpObject {
 */
 	function store() {
 		GLOBAL $AppUI, $new_status;
-		
+
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->task_id ) {
 			$this->_action = 'updated';
-			
+
 			// if task_status chenged, then update subtasks
 			if(!is_null($new_status)){
 				$this->updateSubTasksStatus($new_status);
 			}
 			$this->updateDynamics(true);
-			
+
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
-			
-			
+
+
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
@@ -212,7 +212,7 @@ class CTask extends CDpObject {
 			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
 			db_exec( $sql );
 		}
-		
+
 		if ( $this->task_parent != $this->task_id ){
 			//Has parent
 			$this->updateDynamics();
