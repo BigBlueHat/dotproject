@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 ##
 ## CTask Class
 ##
@@ -75,9 +75,11 @@ class CTask {
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
-		// new task, parent = task id
-			$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";
-			db_exec( $sql );
+			if (!$this->task_parent) {
+			// new task, parent = task id
+				$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";
+				db_exec( $sql );
+			}
 		// insert entry in user tasks	
 			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
 			db_exec( $sql );
