@@ -410,43 +410,48 @@ class CEvent extends CDpObject {
 		if ($j>0) {
 			switch ($event_recurs) {
 				case 1:
-					$eventStart->addSpan(new Date_Span(3600));
-					$eventEnd->addSpan(new Date_Span(3600));
+					$eventStart->addSpan(new Date_Span(3600 * $j));
+					$eventEnd->addSpan(new Date_Span(3600 * $j));
 					break;
 				case 2:
-					$eventStart->addDays( 1 );
-					$eventEnd->addDays( 1 );
+					$eventStart->addDays( $j );
+					$eventEnd->addDays( $j );
 					break;
 				case 3:
-					$eventStart->addDays( 7 );
-					$eventEnd->addDays( 7 );
+					$eventStart->addDays( 7 * $j );
+					$eventEnd->addDays( 7 * $j );
 					break;
 				case 4:
-					$eventStart->addDays( 14 );
-					$eventEnd->addDays( 14 );
+					$eventStart->addDays( 14 * $j );
+					$eventEnd->addDays( 14 * $j );
 					break;
 				case 5:
-					$eventStart->addMonths( 1 );
-					$eventEnd->addMonths( 1 );
+					$eventStart->addMonths( $j );
+					$eventEnd->addMonths( $j );
 					break;
 				case 6:
-					$eventStart->addMonths( 3 );
-					$eventEnd->addMonths( 3 );
+					$eventStart->addMonths( 3 * $j );
+					$eventEnd->addMonths( 3 * $j );
 					break;
 				case 7:
-					$eventStart->addMonths( 6 );
-					$eventEnd->addMonths( 6);
+					$eventStart->addMonths( 6 * $j );
+					$eventEnd->addMonths( 6 * $j );
 					break;
 				case 8:
-					$eventStart->addMonths( 12 );
-					$eventEnd->addMonths( 12 );
+					$eventStart->addMonths( 12 * $j );
+					$eventEnd->addMonths( 12 * $j );
 					break;
 				default:
 					break;
 			}
 		}
+
+		if ($start_date->compare ($start_date, $eventStart) <= 0 &&
+			$end_date->compare ($end_date, $eventEnd) >= 0)
+        {
 		// add temporarily moved Event Start and End dates to returnArray
 		$transferredEvent = array($eventStart, $eventEnd);
+		}
 
 		// return array with event start and end dates for given period (positive case)
 		// or an empty array (negative case)
@@ -533,9 +538,9 @@ class CEvent extends CDpObject {
 				}
 				//add values to the eventsArray if check for recurrent event was positive
 				if ( sizeof($recEventDate) > 0 ) {
-					$eventListRec[$i]['event_start_date'] = $recEventDate[0]->format( FMT_DATETIME_MYSQL );
-					$eventListRec[$i]['event_end_date'] = $recEventDate[1]->format( FMT_DATETIME_MYSQL );
 					$eList[0] = $eventListRec[$i];
+					$eList[0]['event_start_date'] = $recEventDate[0]->format( FMT_DATETIME_MYSQL );
+					$eList[0]['event_end_date'] = $recEventDate[1]->format( FMT_DATETIME_MYSQL );
 					$eventList = array_merge($eventList,$eList);
 				}
 				// clear array of positive recurrent events for the case that next loop recEventDate is empty in order to avoid double display
