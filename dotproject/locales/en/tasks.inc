@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Filter",
 "Action",
 "Add Task",
 "All Tasks",
@@ -19,6 +18,7 @@
 "Dynamic Task",
 "Edit Task",
 "Expected Duration",
+"Filter",
 "Finish Date",
 "Hours",
 "Hours Worked",
@@ -45,13 +45,12 @@
 "Task inserted",
 "Task updated",
 "Time Worked",
-"Total Hours =",
+"Total Hours",
 "User",
 "View Task",
 "Web Address",
 "Work",
 "badTaskProject"=>"Cannot create task.  Task project not set.",
-"days",
 "delete task",
 "due in",
 "duration",
@@ -59,7 +58,6 @@
 "finish date",
 "high",
 "hour",
-"hours",
 "id",
 "low",
 "my todo",

@@ -12,6 +12,7 @@
 "Director",
 "Edit User",
 "Employee",
+"Filter",
 "Home Phone",
 "In planning",
 "In progress",
