@@ -259,7 +259,7 @@ class CMonthCalendar {
 
 		$s = $this->showWeek ? "\n\t\t<th>&nbsp;</th>" : "";
 		foreach( $wk as $day ) {
-			$s .= "\n\t\t<th width=\"14%\">" . htmlentities($day, ENT_COMPAT, $locale_char_set) . "</th>";
+			$s .= "\n\t\t<th width=\"14%\">" . htmlentities(utf8_encode($day), ENT_COMPAT, $locale_char_set) . "</th>";
 		}
 
 		return "\n<tr>$s\n</tr>";
