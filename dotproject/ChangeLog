@@ -1,3 +1,36 @@
+2004-08-27 00:57  (ajdonnison)
+---------------------------------
+index.php
+- Added a check for the $_SESSION['all_tabs'] array and ensured the
+- array linkage to session is the same way around as the later usage.
+- For some reason without doing this some systems seem to generate
+- phantom array pointers with $all_tabs[0] pointing to $all_tabs, etc.
+
+2004-08-26 20:43  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- replaced short tags
+
+2004-08-26 20:37  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- explode wasn't returning null ... couldn't edit tasks.
+
+2004-08-26 19:38  (gregorerhardt)
+---------------------------------
+locales/en/projects.inc
+- fixed translation bug
+
+2004-08-26 09:08  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- minor fix in table column width
+
+2004-08-26 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-25 20:19  (cyberhorse)
 ---------------------------------
 modules/files/index_table.php
@@ -465,39 +498,6 @@ includes/main_functions.php
 
 2004-08-21 02:05  (cyberhorse)
 ---------------------------------
-modules/history/index.php
-- Made readable history log messages.
-
-2004-08-21 01:04  (cyberhorse)
----------------------------------
-modules/files/files.class.php
-modules/forums/forums.class.php
-modules/projects/projects.class.php
-- Standardised the history logs.
-
-2004-08-21 00:59  (cyberhorse)
----------------------------------
-db/upgrade_contacts.php
-- move users details to contacts.
-
-2004-08-21 00:59  (cyberhorse)
----------------------------------
-db/dotproject.sql
-- upgraded Admin user setup during initial installation.
-
-2004-08-21 00:39  (cyberhorse)
----------------------------------
-modules/tasks/tasks.class.php
-- Fixed a bug from users->contacts move
-- Updated history logging
-
-2004-08-21 00:03  (cyberhorse)
----------------------------------
-modules/files/files.class.php
-modules/forums/forums.class.php
-- Added history logging to files and forums modules
-
-2004-08-20 22:40  (cyberhorse)
 ...
 
 (This file has been wrapped)
