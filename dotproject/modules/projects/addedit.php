@@ -250,7 +250,13 @@ function delIt() {
 						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?> 
 					</td>
 					<td><strong><?php echo intval(@$project["project_precent_complete"]);?> %</strong></td>
+					<?php 
+					/* CHANGE so default for ADDING/EDITTING Projects is ACTIVE 
+					// ORIGINAL CODE [modified by kobudo 14 Feb 2003]
 					<td><input type=checkbox value=1 name=project_active <?php if($project["project_active"]){?>checked<?php }?>></td>
+					*/
+					?>
+					<td><input type=checkbox value=1 name=project_active checked /></td>
 				</tr>
 				</table>
 			</td>
