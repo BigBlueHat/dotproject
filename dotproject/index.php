@@ -141,9 +141,10 @@ if ($AppUI->doLogin()) {
 require_once( "./includes/permissions.php" );
 
 // set the module and action from the url
-$m = dPgetParam( $_GET, 'm', getReadableModule() );
-$u = dPgetParam( $_GET, 'u', '' );
-$a = dPgetParam( $_GET, 'a', 'index' );
+$m = $AppUI->makeFileNameSafe(dPgetParam( $_GET, 'm', getReadableModule() ));
+$u = $AppUI->makeFileNameSafe(dPgetParam( $_GET, 'u', '' ));
+$a = $AppUI->makeFileNameSafe(dPgetParam( $_GET, 'a', 'index' ));
+
 
 @include_once( "./functions/" . $m . "_func.php" );
 
@@ -204,7 +205,7 @@ if (!(
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
 if (isset( $_REQUEST["dosql"]) ) {
     //require("./dosql/" . $_REQUEST["dosql"] . ".php");
-    require ("./modules/$m/" . $_REQUEST["dosql"] . ".php");
+    require ("./modules/$m/" . $AppUI->makeFileNameSafe($_REQUEST["dosql"]) . ".php");
 }
 
 // start output proper
