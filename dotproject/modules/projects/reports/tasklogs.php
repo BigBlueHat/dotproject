@@ -102,7 +102,7 @@ if ($do_report) {
 	if ($log_ignore) {
 		$sql .= "\n	AND task_log_hours > 0";
 	}
-	$sql .= " ORDER BY task_start_date";
+	$sql .= " ORDER BY task_log_date";
 
 	//echo "<pre>$sql</pre>";
 
