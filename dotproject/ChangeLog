@@ -1,3 +1,104 @@
+2003-04-30 01:24  (eddieajau)
+---------------------------------
+modules/calendar/view.php
+- Added a link back to the day view based on the starting date
+
+2003-04-30 01:19  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/view.php
+modules/calendar/addedit.php
+- Fixed a couple of minor hiccups if a date of 0000-00-00 00:00:00 was returned.
+
+2003-04-30 01:09  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Whoops.  Fixed a small bug.
+
+2003-04-30 01:07  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/do_event_aed.php
+modules/calendar/index.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/week_view.php
+- Major rework to suit PEAR Date class
+- Added 'diary' style view to the calendar day view
+
+2003-04-30 01:05  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Updated class abstraction
+- Moved getTasksForPeriod function from calendar section
+
+2003-04-30 01:03  (eddieajau)
+---------------------------------
+modules/system/syskeys/index.php
+- Updated icons
+
+2003-04-30 01:03  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/view.php
+- Minor updates
+
+2003-04-30 01:02  (eddieajau)
+---------------------------------
+modules/companies/view.php
+- Updated delete link
+
+2003-04-30 00:58  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Minor changes
+
+2003-04-30 00:56  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added some functions to support benchmarking
+
+2003-04-30 00:55  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Fixed minor problem with zero value fields in db_updateObject method
+
+2003-04-30 00:53  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Code moved to other files
+
+2003-04-30 00:51  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- no message
+
+2003-04-30 00:51  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+db/upgrade_100_alpha2_to_beta1.sql
+- Added support for an event type
+
+2003-04-30 00:50  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Added method for standardised delete link in the Title Block class
+
+2003-04-30 00:49  (eddieajau)
+---------------------------------
+classes/dp.class.php
+- Changed load method to return null if the record was empty
+
+2003-04-29 03:46  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-29 01:28  (eddieajau)
 ---------------------------------
 style/default/login.php
@@ -396,107 +497,6 @@ docs/roadmap.html
 - no message
 
 2003-04-22 19:14  (eddieajau)
----------------------------------
-docs/roadmap.html
-- Initial upload
-
-2003-04-21 04:58  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-21 01:01  (eddieajau)
----------------------------------
-images/icons/stock_edit-16.png
-modules/forums/view_messages.php
-- New icons
-
-2003-04-21 00:55  (eddieajau)
----------------------------------
-modules/forums/forums.class.php
-- Fixed concatenating mail problem
-
-2003-04-21 00:54  (eddieajau)
----------------------------------
-modules/forums/index.php
-modules/forums/viewer.php
-- New icon
-
-2003-04-21 00:53  (eddieajau)
----------------------------------
-modules/forums/addedit.php
-- Updated title block
-
-2003-04-21 00:53  (eddieajau)
----------------------------------
-classes/libmail.class.php
-- Added option to To method to reset the To array
-
-2003-04-21 00:49  (eddieajau)
----------------------------------
-images/icons/stock_delete-16.png
-images/icons/stock_help-16.png
-images/icons/stock_ok-16.png
-- New, replacement icons
-
-2003-04-21 00:48  (eddieajau)
----------------------------------
-images/obj/tick.gif
-- Replaced with gnome icon
-
-2003-04-20 04:37  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-19 17:13  (eddieajau)
----------------------------------
-classes/libmail.class.php
-classes/ui.class.php
-- Added documentation
-
-2003-04-19 03:37  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-18 14:01  (korinek)
----------------------------------
-lib/jpgraph/src/jpgraph.php
-locales/en/projects.inc
-locales/en/public.inc
-locales/en/tasks.inc
-modules/calendar/calendar.class.php
-modules/contacts/addedit.php
-modules/files/addedit.php
-modules/public/color_selector.php
-modules/tasks/addedit.php
-modules/tasks/view.php
-- Translation updates.
-
-2003-04-18 05:53  (korinek)
----------------------------------
-locales/en/calendar.inc
-locales/en/tasks.inc
-modules/projects/addedit.php
-modules/projects/vw_idx_active.php
-modules/tasks/gantt.php
-modules/tasks/tasks.php
-modules/tasks/todo.php
-modules/tasks/viewgantt.php
-- Translations fine tuning.
-
-2003-04-17 04:03  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-16 23:13  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Updated libmail class import
-
-2003-04-16 21:27  (kripper)
 ---------------------------------
 ...
 
