@@ -45,11 +45,12 @@ case 'companies':
 	$where = selPermWhere( 'companies', 'company_id' );
 	break;
 case 'departments':
+// known issue: does not filter out denied companies
 	$title = 'Department';
 	$company_id = dPgetParam( $_GET, 'company_id', 0 );
 	//$ok &= $company_id;  // Is it safe to delete this line ??? [kobudo 13 Feb 2003]
-	$where = selPermWhere( 'companies', 'company_id' );
-	$where .= "\nAND dept_company = company_id ";
+	//$where = selPermWhere( 'companies', 'company_id' );
+	$where = "dept_company = company_id ";
 	$where .= "\nAND ".selPermWhere( 'departments', 'dept_id' );
 
 	$table .= ", companies, permissions";
