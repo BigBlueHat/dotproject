@@ -255,7 +255,7 @@ $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 @include_once "$baseDir/locales/core.php";
 
 setlocale( LC_TIME, $AppUI->user_lang .'.'. $locale_char_set );
-
+$m_config = dPgetConfig($m);
 @include_once "$baseDir/functions/" . $m . "_func.php";
 
 if ( ( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
