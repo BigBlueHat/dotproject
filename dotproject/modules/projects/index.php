@@ -67,7 +67,7 @@ $sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
 $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, 'ID_HELP_PROJ_IDX' );
+$titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Company') . ':' );
 $titleBlock->addCell(
 	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',

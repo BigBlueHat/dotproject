@@ -32,7 +32,7 @@ GROUP BY project_id
 //echo "<pre>$sql</pre>";
 
 if (!db_loadHash( $sql, $project )) {
-	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
+	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'projects.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	$titleBlock->show();
 } else {
@@ -48,12 +48,12 @@ if (!db_loadHash( $sql, $project )) {
 	$actual_end_date->setFormat( $df );
 
 // setup the title block
-	$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, 'ID_HELP_PROJ_VIEW' );
+	$titleBlock = new CTitleBlock( 'View Project', 'projects.gif', $m, "$m.$a" );
 	if ($canEdit) {
 		$titleBlock->addCell();
 		$titleBlock->addCell(
 			'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-			'<form action="?m=tasks&a=addedit&project_id=' . $project_id . '" method="post">', '</form>'
+			'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
 		);
 	}
 	$titleBlock->addCrumb( "?m=projects", "projects list" );

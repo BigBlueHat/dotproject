@@ -49,7 +49,7 @@ if (!db_loadHash( $sql, $project ) && $project_id > 0) {
 
 // setup the title block
 	$ttl = $project_id > 0 ? "Edit Project" : "New Project";
-	$titleBlock = new CTitleBlock( $ttl, 'projects.gif', $m, 'ID_HELP_PROJ_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'projects.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 	$titleBlock->show();
