@@ -27,8 +27,8 @@ if ($obj->event_owner != $AppUI->user_id) {
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$start_date = $obj->event_start_date ? new Date( $obj->event_start_date ) : null;
-$end_date = $obj->event_end_date ? new Date( $obj->event_end_date ) : null;
+$start_date = $obj->event_start_date ? new CDate( $obj->event_start_date ) : null;
+$end_date = $obj->event_end_date ? new CDate( $obj->event_end_date ) : null;
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
@@ -41,7 +41,7 @@ if ($canEdit) {
 }
 $titleBlock->addCrumb( "?m=calendar", "month view" );
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=calendar&a=day_view&date=".$start_date->format( DATE_FORMAT_TIMESTAMP_DATE ), "day view" );
+	$titleBlock->addCrumb( "?m=calendar&a=day_view&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "day view" );
 	$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );
 	if ($canEdit) {
 		$titleBlock->addCrumbDelete( 'delete event', $canDelete, $msg );

@@ -117,7 +117,7 @@ class CTask extends CDpObject {
 
 	function updateAssigned( $cslist ) {
 	// delete all current entries
-		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id AND user_type = 0";
+		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
 		db_exec( $sql );
 
 	// process assignees
@@ -216,8 +216,8 @@ class CTask extends CDpObject {
 	function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
 		GLOBAL $AppUI;
 	// convert to default db time stamp
-		$db_start = $start_date->format( DATE_FORMAT_ISO );
-		$db_end = $end_date->format( DATE_FORMAT_ISO );
+		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
+		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
 
 	// assemble where clause
 		$where = "task_project = project_id"

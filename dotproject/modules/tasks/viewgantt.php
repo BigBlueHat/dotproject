@@ -18,11 +18,11 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 if ($display_option == 'custom') {
 	// custom dates
-	$start_date = intval( $sdate ) ? new Date( "{$sdate}000000" ) : new Date();
-	$end_date = intval( $edate ) ? new Date( "{$edate}000000" ) : new Date();
+	$start_date = intval( $sdate ) ? new CDate( $sdate ) : new CDate();
+	$end_date = intval( $edate ) ? new CDate( $edate ) : new CDate();
 } else {
 	// month
-	$start_date = new Date();
+	$start_date = new CDate();
 	$end_date = $start_date;
 	$end_date->addMonths( $scroll_date );
 }
@@ -62,8 +62,8 @@ function scrollPrev() {
 	$new_end = $end_date;
 	$new_start->addMonths( -$scroll_date );
 	$new_end->addMonths( -$scroll_date );
-	echo "f.sdate.value='".$new_start->format( DATE_FORMAT_TIMESTAMP_DATE )."';";
-	echo "f.edate.value='".$new_end->format( DATE_FORMAT_TIMESTAMP_DATE )."';";
+	echo "f.sdate.value='".$new_start->format( FMT_TIMESTAMP_DATE )."';";
+	echo "f.edate.value='".$new_end->format( FMT_TIMESTAMP_DATE )."';";
 ?>
 	document.editFrm.display_option.value = 'custom';
 	f.submit()
@@ -76,8 +76,8 @@ function scrollNext() {
 	$new_end = $end_date;
 	$new_start->addMonths( $scroll_date );
 	$new_end->addMonths( $scroll_date );
-	echo "f.sdate.value='" . $new_start->format( DATE_FORMAT_TIMESTAMP_DATE ) . "';";
-	echo "f.edate.value='" . $new_end->format( DATE_FORMAT_TIMESTAMP_DATE ) . "';";
+	echo "f.sdate.value='" . $new_start->format( FMT_TIMESTAMP_DATE ) . "';";
+	echo "f.edate.value='" . $new_end->format( FMT_TIMESTAMP_DATE ) . "';";
 ?>
 	document.editFrm.display_option.value = 'custom';
 	f.submit()
@@ -111,14 +111,14 @@ function showFullProject() {
 
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'From' );?>:</td>
 	<td align="left" nowrap="nowrap">
-		<input type="hidden" name="sdate" value="<?php echo $start_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>" />
+		<input type="hidden" name="sdate" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" class="text" name="show_sdate" value="<?php echo $start_date->format( $df );?>" size="12" disabled="disabled" />
 		<a href="javascript:popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
 	</td>
 
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'To' );?>:</td>
 	<td align="left" nowrap="nowrap">
-		<input type="hidden" name="edate" value="<?php echo $end_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>" />
+		<input type="hidden" name="edate" value="<?php echo $end_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" class="text" name="show_edate" value="<?php echo $end_date->format( $df );?>" size="12" disabled="disabled" />
 		<a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
 

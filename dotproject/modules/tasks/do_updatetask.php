@@ -11,8 +11,8 @@ if (!$obj->bind( $_POST )) {
 }
 
 if ($obj->task_log_date) {
-	$date = new Date( $obj->task_log_date, DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->task_log_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->task_log_date );
+	$obj->task_log_date = $date->format( FMT_DATETIME_MYSQL );
 }
 
 // prepare (and translate) the module name ready for the suffix

@@ -24,7 +24,7 @@ $logs = db_loadList( $sql );
 $s = '';
 $hrs = 0;
 foreach ($logs as $row) {
-	$task_log_date = intval( $row['task_log_date'] ) ? new Date( $row['task_log_date'] ) : null;
+	$task_log_date = intval( $row['task_log_date'] ) ? new CDate( $row['task_log_date'] ) : null;
 
 	$s .= '<tr bgcolor="white" valign="top">';
 	$s .= '<td nowrap="nowrap">'.($task_log_date ? $task_log_date->format( $df ) : '-').'</td>';

@@ -13,7 +13,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 	// assemble the links for the events
 	foreach ($events as $row) {
-		$start = new Date( $row['event_start_date'] );
+		$start = new CDate( $row['event_start_date'] );
 
 	// the link
 		$link['href'] = '';
@@ -22,7 +22,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 			. '<td>' . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' )
 			. '</td><td><a href="?m=calendar&a=view&event_id='.$row['event_id'].'"><span class="event">'.$row['event_title'].'</span></a>'
 			. '</td></tr></table>';
-		$links[$start->format( DATE_FORMAT_TIMESTAMP_DATE )][] = $link;
+		$links[$start->format( FMT_TIMESTAMP_DATE )][] = $link;
 	}
 }
 ?>

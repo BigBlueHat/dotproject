@@ -60,14 +60,12 @@ $crumbs["?m=forums"] = "forums list";
 	<th><?php echo $AppUI->_('Last Post');?></th>
 </tr>
 <?php
-$date = new CDate();
-$date->setFormat( "$df $tf" );
+
+$now = new CDate();
 
 foreach ($topics as $row) {
-	if ($row["latest_reply"]) {
-		$date->setTimestamp( db_dateTime2unix( $row['latest_reply'] ) );
-		$message_since = abs( $date->compareTo( new CDate() ) );
-	}
+	$last = intval( $row["latest_reply"] ) ? new CDate( $row["latest_reply"] ) : null;
+	
 //JBF limit displayed messages to first-in-thread
 	if ($row["message_parent"] < 0) { ?>
 <tr>
@@ -81,18 +79,17 @@ foreach ($topics as $row) {
 	</td>
 	<td bgcolor="#dddddd" width="10%"><?php echo $row["user_username"];?></td>
 	<td align="center" width="10%"><?php echo  $row["replies"];?></td>
-	<td bgcolor="#dddddd" width="10%">
+	<td bgcolor="#dddddd" width="150" nowrap="nowrap">
 <?php if ($row["latest_reply"]) {
-		echo $date->toString().'<br /><font color=#999966>(';
-		if ($message_since < 3600) {
-			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
-		} else if ($message_since < 48*3600) {
-			$str = sprintf( "%d ".$AppUI->_( 'hours' ), $message_since/3600 );
-		} else {
-			$str = sprintf( "%d ".$AppUI->_( 'days' ), $message_since/(24*3600) );
-		}
-		printf($AppUI->_('%s ago'), $str);
-		echo ' ago)</font>';
+		echo $last->format( "$df $tf" ).'<br /><font color=#999966>(';
+
+		$span = new Date_Span();
+		$span->setFromDateDiff( $now, $last );
+
+		printf( "%.1f", $span->format( "%d" ) );
+		echo ' '.$AppUI->_('days ago');
+
+		echo ')</font>';
 	} else {
 		echo $AppUI->_("No replies");
 	}

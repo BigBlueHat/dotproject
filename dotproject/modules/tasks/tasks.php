@@ -187,8 +187,8 @@ function showtask( &$a, $level=0 ) {
 	$df = $AppUI->getPref( 'SHDATEFORMAT' );
 	$done[] = $a['task_id'];
 
-	$start_date = intval( $a["task_start_date"] ) ? new Date( $a["task_start_date"] ) : null;
-	$end_date = intval( $a["task_end_date"] ) ? new Date( $a["task_end_date"] ) : null;
+	$start_date = intval( $a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
+	$end_date = intval( $a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
 
 	$s = "\n<tr>";
 // edit icon

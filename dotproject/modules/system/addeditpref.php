@@ -83,11 +83,11 @@ function submitIt(){
 	$ex = new CDate();
 
 	$dates = array();
-	$f = "%d/%m/%Y"; $dates[$f]	= $ex->toString( $f );
-	$f = "%d/%b/%Y"; $dates[$f]	= $ex->toString( $f );
-	$f = "%m/%d/%Y"; $dates[$f]	= $ex->toString( $f );
-	$f = "%b/%d/%Y"; $dates[$f]	= $ex->toString( $f );
-	$f = "%d.%m.%Y"; $dates[$f]	= $ex->toString( $f );
+	$f = "%d/%m/%Y"; $dates[$f]	= $ex->format( $f );
+	$f = "%d/%b/%Y"; $dates[$f]	= $ex->format( $f );
+	$f = "%m/%d/%Y"; $dates[$f]	= $ex->format( $f );
+	$f = "%b/%d/%Y"; $dates[$f]	= $ex->format( $f );
+	$f = "%d.%m.%Y"; $dates[$f]	= $ex->format( $f );
 	echo arraySelect( $dates, 'pref_name[SHDATEFORMAT]', 'class=text size=1', @$prefs['SHDATEFORMAT'], false );
 ?>
 	</td>
@@ -99,9 +99,9 @@ function submitIt(){
 <?php
 	// exmample date
 	$times = array();
-	$f = "%I:%M %p"; $times[$f]	= $ex->toString( $f );
-	$f = "%H:%M"; $times[$f]	= $ex->toString( $f ).' (24)';
-	$f = "%H:%M:%S"; $times[$f]	= $ex->toString( $f ).' (24)';
+	$f = "%I:%M %p"; $times[$f]	= $ex->format( $f );
+	$f = "%H:%M"; $times[$f]	= $ex->format( $f ).' (24)';
+	$f = "%H:%M:%S"; $times[$f]	= $ex->format( $f ).' (24)';
 	echo arraySelect( $times, 'pref_name[TIMEFORMAT]', 'class=text size=1', @$prefs['TIMEFORMAT'], false );
 ?>
 	</td>

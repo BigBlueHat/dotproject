@@ -7,7 +7,7 @@ require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_tasks.php
 getTaskLinks( $first_time, $last_time, $links, 100, $company_id );
 
 $s = '';
-$dayStamp = $this_day->format( DATE_FORMAT_TIMESTAMP_DATE );
+$dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
 echo '<table cellspacing="1" cellpadding="2" border="0" width="100%" class="tbl">';
 

@@ -12,12 +12,12 @@ if (!$obj->bind( $_POST )) {
 
 // configure the date and times to insert into the db table
 if ($obj->event_start_date) {
-	$date = new Date( $obj->event_start_date.$_POST['start_time'], DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->event_start_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->event_start_date.$_POST['start_time'] );
+	$obj->event_start_date = $date->format( FMT_DATETIME_MYSQL );
 }
 if ($obj->event_end_date) {
-	$date = new Date( $obj->event_end_date.$_POST['end_time'], DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->event_end_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->event_end_date.$_POST['end_time'] );
+	$obj->event_end_date = $date->format( FMT_DATETIME_MYSQL );
 }
 
 // prepare (and translate) the module name ready for the suffix

@@ -7,16 +7,16 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 // convert dates to SQL format first
-$date = new Date( $obj->project_start_date, DATE_FORMAT_TIMESTAMP_DATE );
-$obj->project_start_date = $date->format( DATE_FORMAT_ISO );
+$date = new CDate( $obj->project_start_date );
+$obj->project_start_date = $date->format( FMT_DATETIME_MYSQL );
 
 if ($obj->project_end_date) {
-	$date = new Date( $obj->project_end_date, DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->project_end_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->project_end_date );
+	$obj->project_end_date = $date->format( FMT_DATETIME_MYSQL );
 }
 if ($obj->project_actual_end_date) {
-	$date = new Date( $obj->project_actual_end_date, DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->project_actual_end_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->project_actual_end_date );
+	$obj->project_actual_end_date = $date->format( FMT_DATETIME_MYSQL );
 }
 
 $del = dPgetParam( $_POST, 'del', 0 );

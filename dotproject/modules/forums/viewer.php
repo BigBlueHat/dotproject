@@ -30,10 +30,7 @@ db_loadHash( $sql, $forum );
 $forum_name = $forum["forum_name"];
 echo db_error();
 
-$start_date = $forum["forum_create_date"] ? new CDate( db_dateTime2unix( $forum["forum_create_date"] ) ) : 0;
-if ($start_date) {
-	$start_date->setFormat( $df );
-}
+$start_date = intval( $forum["forum_create_date"] ) ? new CDate( $forum["forum_create_date"] ) : null;
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Forum', 'support.png', $m, "$m.$a" );
@@ -52,7 +49,10 @@ $titleBlock->show();
 <tr>
 	<td align="left" nowrap><?php echo $AppUI->_( 'Related Project' );?>:</td>
 	<td nowrap><strong><?php echo $forum["project_name"];?></strong></td>
-	<td valign="top" width="50%" rowspan=99><strong><?php echo $AppUI->_( 'Description' );?>:</strong><br /><?php echo @str_replace(chr(13), "&nbsp;<br />",$forum["forum_description"]);?></td>
+	<td valign="top" width="50%" rowspan="99">
+		<strong><?php echo $AppUI->_( 'Description' );?>:</strong>
+		<br /><?php echo @str_replace(chr(13), "&nbsp;<br />",$forum["forum_description"]);?>
+	</td>
 </tr>
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>
@@ -65,7 +65,7 @@ $titleBlock->show();
 </tr>
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Created On' );?>:</td>
-	<td nowrap><?php echo $start_date ? $start_date->toString() : '-';?></td>
+	<td nowrap><?php echo $start_date ? $start_date->format( $df ) : '-';?></td>
 </tr>
 </table>
 

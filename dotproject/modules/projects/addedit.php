@@ -33,10 +33,10 @@ if (!$obj->load( $project_id ) && $project_id > 0) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = new Date( $obj->project_start_date );
+$start_date = new CDate( $obj->project_start_date );
 
-$end_date = intval( $obj->project_end_date ) ? new Date( $obj->project_end_date ) : null;
-$actual_end_date = intval( $obj->project_actual_end_date ) ? new Date( $obj->project_actual_end_date ) : null;
+$end_date = intval( $obj->project_end_date ) ? new CDate( $obj->project_end_date ) : null;
+$actual_end_date = intval( $obj->project_actual_end_date ) ? new CDate( $obj->project_actual_end_date ) : null;
 
 // setup the title block
 $ttl = $project_id > 0 ? "Edit Project" : "New Project";
@@ -145,7 +145,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></td>
 			<td>
-				<input type="hidden" name="project_start_date" value="<?php echo $start_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>" />
+				<input type="hidden" name="project_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 				<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
 				<a href="#" onClick="popCalendar('start_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
@@ -155,7 +155,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
 			<td>
-				<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>" />
+				<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 				<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 				<a href="#" onClick="popCalendar('end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
@@ -174,7 +174,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
 			<td>
-				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>" />
+				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 				<input type="text" name="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 				<a href="#" onClick="popCalendar('actual_end_date','actual_end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />

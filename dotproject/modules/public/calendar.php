@@ -5,7 +5,10 @@ require_once( "./modules/calendar/calendar.class.php" );
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 $date = dpGetParam( $_GET, 'date', null );
 
-$this_month = new Date( $date ? "{$date}000000" : null );
+// if $date is empty, set to null
+$date = $date !== '' ? $date : null;
+
+$this_month = new CDate( $date );
 
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
 
@@ -34,7 +37,7 @@ echo $cal->show();
 	for ($i=0; $i < 12; $i++) {
 		$this_month->setMonth( $i+1 );
 		echo "\n\t<td width=\"8%\">"
-			."<a href=\"index.php?m=public&a=calendar&dialog=1&callback=$callback&date=".$this_month->format( DATE_FORMAT_TIMESTAMP_DATE ).'" class="">'.substr( $this_month->format( "%b" ), 0, 1)."</a>"
+			."<a href=\"index.php?m=public&a=calendar&dialog=1&callback=$callback&date=".$this_month->format( FMT_TIMESTAMP_DATE ).'" class="">'.substr( $this_month->format( "%b" ), 0, 1)."</a>"
 			."</td>";
 	}
 ?>
@@ -42,10 +45,10 @@ echo $cal->show();
 	<tr>
 <?php
 	echo "\n\t<td colspan=\"6\" align=\"left\">";
-	echo "<a href=\"index.php?m=public&a=calendar&dialog=1&callback=$callback&date=".$cal->prev_year->format( DATE_FORMAT_TIMESTAMP_DATE ).'" class="">'.$cal->prev_year->getYear()."</a>";
+	echo "<a href=\"index.php?m=public&a=calendar&dialog=1&callback=$callback&date=".$cal->prev_year->format( FMT_TIMESTAMP_DATE ).'" class="">'.$cal->prev_year->getYear()."</a>";
 	echo "</td>";
 	echo "\n\t<td colspan=\"6\" align=\"right\">";
-	echo "<a href=\"index.php?m=public&a=calendar&dialog=1&callback=$callback&date=".$cal->next_year->format( DATE_FORMAT_TIMESTAMP_DATE ).'" class="">'.$cal->next_year->getYear()."</a>";
+	echo "<a href=\"index.php?m=public&a=calendar&dialog=1&callback=$callback&date=".$cal->next_year->format( FMT_TIMESTAMP_DATE ).'" class="">'.$cal->next_year->getYear()."</a>";
 	echo "</td>";
 ?>
 	</tr>

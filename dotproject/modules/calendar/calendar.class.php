@@ -84,28 +84,24 @@ class CMonthCalendar {
  * @param [type] $date
  */
 	 function setDate( $date=null ) {
-		if (is_object($date) && (get_class($date) == 'date')) {
-			$this->this_month = new Date( $date );
-		} else {
-			$this->this_month = new Date( $date ? "{$date}000000" : $date );
-		}
+		$this->this_month = new CDate( $date );
 
 		$d = $this->this_month->getDay();
 		$m = $this->this_month->getMonth();
 		$y = $this->this_month->getYear();
 
 		//$date = Date_Calc::beginOfPrevMonth( $d, $m, $y-1, FORMAT_ISO );
-		$this->prev_year = new Date( $date );
+		$this->prev_year = new CDate( $date );
 		$this->prev_year->setYear( $this->prev_year->getYear()-1 );
 
-		$this->next_year = new Date( $date );
+		$this->next_year = new CDate( $date );
 		$this->next_year->setYear( $this->next_year->getYear()+1 );
 
-		$date = Date_Calc::beginOfPrevMonth( $d, $m, $y, DATE_FORMAT_TIMESTAMP_DATE );
-		$this->prev_month = new Date( "{$date}000000" );
+		$date = Date_Calc::beginOfPrevMonth( $d, $m, $y, FMT_TIMESTAMP_DATE );
+		$this->prev_month = new CDate( $date );
 
-		$date = Date_Calc::beginOfNextMonth( $d, $m, $y, DATE_FORMAT_TIMESTAMP_DATE );
-		$this->next_month =  new Date( "{$date}000000" );
+		$date = Date_Calc::beginOfNextMonth( $d, $m, $y, FMT_TIMESTAMP_DATE );
+		$this->next_month =  new CDate( $date );
 
 	}
 
@@ -193,7 +189,7 @@ class CMonthCalendar {
 		$s .= "\n\t<tr>";
 
 		if ($this->showArrows) {
-			$href = $url.'&date='.$this->prev_month->format(DATE_FORMAT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'&date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
 			$s .= "\n\t\t<td align=\"left\">";
 			$s .= '<a href="'.$href.'"><img src="./images/prev.gif" width="16" height="16" alt="'.$AppUI->_('previous month').'" border="0" /></a>';
 			$s .= "</td>";
@@ -205,7 +201,7 @@ class CMonthCalendar {
 		$s .= "</th>";
 
 		if ($this->showArrows) {
-			$href = $url.'&date='.$this->next_month->format(DATE_FORMAT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
 			$s .= "\n\t\t<td align=\"right\">";
 			$s .= '<a href="'.$href.'"><img src="./images/next.gif" width="16" height="16" alt="'.$AppUI->_('next month').'" border="0" /></a>';
 			$s .= "</td>";
@@ -246,7 +242,7 @@ class CMonthCalendar {
  */
 	 function _drawMain() {
 		GLOBAL $AppUI;
-		$today = new Date();
+		$today = new CDate();
 		$today = $today->format( "%Y%m%d%w" );
 
 		$date = $this->this_month;
@@ -269,7 +265,7 @@ class CMonthCalendar {
 			}
 
 			foreach ($week as $day) {
-				$this_day = new Date( "{$day}000000" );
+				$this_day = new CDate( $day );
 				$y = intval( substr( $day, 0, 4 ) );
 				$m = intval( substr( $day, 4, 2 ) );
 				$d = intval( substr( $day, 6, 2 ) );
@@ -393,8 +389,8 @@ class CEvent extends CDpObject {
 	// the event times are stored as unix time stamps, just to be different
 
 	// convert to default db time stamp
-		$db_start = $start_date->format( DATE_FORMAT_ISO );
-		$db_end = $end_date->format( DATE_FORMAT_ISO );
+		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
+		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
 
 	// assemble query
 		$sql = "

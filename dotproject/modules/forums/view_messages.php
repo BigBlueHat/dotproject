@@ -57,10 +57,10 @@ function delIt(id){
 $x = false;
 
 $date = new CDate();
-$date->setFormat( "$df $tf" );
 
 foreach ($messages as $row){
-	$date->setTimestamp( db_dateTime2unix( $row["message_date"] ) );
+	$date = intval( $row["message_date"] ) ? new CDate( $row["message_date"] ) : null;
+
 	$s = '';
 	$style = $x ? 'background-color:#eeeeee' : '';
 
@@ -77,7 +77,7 @@ foreach ($messages as $row){
 	$s .= '</tr><tr>';
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
-	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$date->toString().'</td>';
+	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$date->format( "$df $tf" ).'</td>';
 	$s .= '<td valign="top" align="right" style="'.$style.'">';
 	$s .= '<table cellspacing="0" cellpadding="0" border="0"><tr>';
 	
@@ -107,8 +107,8 @@ foreach ($messages as $row){
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
 	<?php if ($canEdit) { ?>
-		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
-		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
+		<input type="button" class="button" value="<?php echo $AppUI->_('Post Reply');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
+		<input type="button" class="button" value="<?php echo $AppUI->_('New Topic');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
 	<?php } ?>
 	</td>
 </tr>

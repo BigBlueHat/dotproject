@@ -10,7 +10,7 @@ $events = CEvent::getEventsForPeriod( $first_time, $last_time );
 $events2 = array();
 
 foreach ($events as $row) {
-	$start = new Date( $row['event_start_date'] );
+	$start = new CDate( $row['event_start_date'] );
 
 	$events2[$start->format( "%H%M%S" )][] = $row;
 // the link
@@ -19,13 +19,13 @@ foreach ($events as $row) {
 	$link['alt'] = $row['event_description'];
 	$link['text'] = '<img src="./images/obj/event.gif" width="16" height="16" border="0" alt="" />'
 		.'<span class="event">'.$row['event_title'].'</span>';
-	$links[$start->format( DATE_FORMAT_TIMESTAMP_DATE )][] = $link;
+	$links[$start->format( FMT_TIMESTAMP_DATE )][] = $link;
 */
 }
 
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$dayStamp = $this_day->format( DATE_FORMAT_TIMESTAMP_DATE );
+$dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
 $start = 8;
 $end = 17;
@@ -44,7 +44,7 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 	if( @$events2[$timeStamp] ) {
 		$row = $events2[$timeStamp][0];
 
-		$et = new Date( $row['event_end_date'] );
+		$et = new CDate( $row['event_end_date'] );
 		$rows = (($et->getHour()*60 + $et->getMinute()) - ($this_day->getHour()*60 + $this_day->getMinute()))/$inc;
 
 		$href = "?m=calendar&a=view&event_id=".$row['event_id'];

@@ -18,7 +18,7 @@ $tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' 
 $date = dPgetParam( $_GET, 'date', null );
 
 // establish the focus 'date'
-$this_day = new Date( $date ? "{$date}000000" : null );
+$this_day = new CDate( $date );
 $dd = $this_day->getDay();
 $mm = $this_day->getMonth();
 $yy = $this_day->getYear();
@@ -29,13 +29,13 @@ $first_time->setTime( 0, 0, 0 );
 $last_time = $this_day;
 $last_time->setTime( 23, 59, 59 );
 
-$prev_day = new Date( Date_calc::prevDay( $dd, $mm, $yy, DATE_FORMAT_ISO ) );
-$next_day = new Date( Date_calc::nextDay( $dd, $mm, $yy, DATE_FORMAT_ISO ) );
+$prev_day = new CDate( Date_calc::prevDay( $dd, $mm, $yy, FMT_DATETIME_MYSQL ) );
+$next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_DATETIME_MYSQL ) );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=calendar", "month view" );
-$titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_day->format( DATE_FORMAT_TIMESTAMP_DATE ), "week view" );
+$titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "week view" );
 $titleBlock->show();
 ?>
 <script language="javascript">
@@ -56,20 +56,20 @@ table.tbl td.event {
 		<table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
 		<tr>
 			<td>
-				<a href="<?php echo '?m=calendar&a=day_view&date='.$prev_day->format( DATE_FORMAT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
+				<a href="<?php echo '?m=calendar&a=day_view&date='.$prev_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
 			</td>
 			<th width="100%">
 				<?php echo $this_day->format( "%A, %d %B %Y" ); ?>
 			</th>
 			<td>
-				<a href="<?php echo '?m=calendar&a=day_view&date='.$next_day->format( DATE_FORMAT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
+				<a href="<?php echo '?m=calendar&a=day_view&date='.$next_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
 			</td>
 		</tr>
 		</table>
 
 <?php
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( DATE_FORMAT_TIMESTAMP_DATE ),
+$tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_TIMESTAMP_DATE ),
 	"{$AppUI->cfg['root_dir']}/modules/calendar/", $tab );
 $tabBox->add( 'vw_day_events', 'Events' );
 $tabBox->add( 'vw_day_tasks', 'Tasks' );

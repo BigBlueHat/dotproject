@@ -34,8 +34,8 @@ if (!$task_project) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = intval( $obj->task_start_date ) ? new Date( $obj->task_start_date ) : new Date();
-$end_date = intval( $obj->task_end_date ) ? new Date( $obj->task_end_date ) : null;
+$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : new CDate();
+$end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
 
 // pull the related project
 $project = new CProject();
@@ -58,6 +58,7 @@ WHERE t.task_id =$task_id
 	AND t.user_id = u.user_id
 ";
 $assigned = db_loadHashList( $sql );
+
 // Pull tasks for the parent task list
 $sql="
 SELECT task_id, task_name
@@ -214,8 +215,8 @@ var hourMSecs = 3600*1000;
 function calcDuration() {
 	var f = document.editFrm;
 
-	var s = new Date( f.task_start_date.value*1000 );
-	var e = new Date( f.task_end_date.value*1000 );
+	var s = new CDate( f.task_start_date.value*1000 );
+	var e = new CDate( f.task_end_date.value*1000 );
 
 	var durn = (e - s) / hourMSecs;
 	var durnType = parseFloat(f.task_duration_type.value);
@@ -232,13 +233,13 @@ function calcFinish() {
 	var durn = parseFloat(f.task_duration.value);
 	var durnType = parseFloat(f.task_duration_type.value);
 
-	var s = new Date( f.task_start_date.value*1000 );
+	var s = new CDate( f.task_start_date.value*1000 );
 	var inc = (durn) * durnType * hourMSecs;
 
 	if (durnType == 1) {
 		inc /= workHours;
 	}
-	var e = new Date( s.getTime() + inc );
+	var e = new CDate( s.getTime() + inc );
 	f.task_end_date.value = (s.getTime() + inc)/1000;
 // this is the easy way out for the moment
 	alert( 'NOTE: Finish date has been updated ['+f.task_end_date.value+'] although the formatted date has not' );
@@ -318,7 +319,7 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_start_date" value="<?php echo $start_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>" />
+					<input type="hidden" name="task_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 					<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('start_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
@@ -328,7 +329,7 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>" />
+					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('end_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">

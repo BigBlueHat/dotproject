@@ -20,8 +20,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 	$link = array();
 	$sid = 3600*24;
 	// assemble the links for the tasks
-//echo '<br><b>'.$startPeriod->format( DATE_FORMAT_TIMESTAMP_DATE );
-//echo ','.$endPeriod->format( DATE_FORMAT_TIMESTAMP_DATE ).'</b>';
+//echo '<br><b>'.$startPeriod->format( FMT_TIMESTAMP_DATE );
+//echo ','.$endPeriod->format( FMT_TIMESTAMP_DATE ).'</b>';
 
 	foreach ($tasks as $row) {
 	// the link
@@ -36,13 +36,13 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 
 //echo " [".dPgetMicroDiff()."]<sup>1</sup> ";
 	// determine which day(s) to display the task
-		$start = new Date( $row['task_start_date'] );
-		$end = $row['task_end_date'] ? new Date( $row['task_end_date'] ) : null;
+		$start = new CDate( $row['task_start_date'] );
+		$end = $row['task_end_date'] ? new CDate( $row['task_end_date'] ) : null;
 		$durn = $row['task_duration'];
 		$durnType = $row['task_duration_type'];
 
-//echo '$start->format( DATE_FORMAT_TIMESTAMP_DATE );
-//echo ','.$end->format( DATE_FORMAT_TIMESTAMP_DATE );
+//echo '$start->format( FMT_TIMESTAMP_DATE );
+//echo ','.$end->format( FMT_TIMESTAMP_DATE );
 //echo ",$durn,$durnType";
 
 //echo "  ".intval($start->after( $startPeriod ) && $start->before( $endPeriod ));
@@ -50,7 +50,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		if ($start->after( $startPeriod ) && $start->before( $endPeriod )) {
 			$temp = $link;
 			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
-			$links[$start->format( DATE_FORMAT_TIMESTAMP_DATE )][] = $temp;
+			$links[$start->format( FMT_TIMESTAMP_DATE )][] = $temp;
 		}
 		if ($end && $end->after( $startPeriod ) && $end->before( $endPeriod )
 				&& $start->before( $end )) {
@@ -79,7 +79,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 			$target->addSeconds( $durn*$sid );
 
 //echo Date::compare( $target, $startPeriod ) < 0 ? '<font color=red>' : '<font color=green>';
-//echo ','.$target->format( DATE_FORMAT_TIMESTAMP_DATE ).'</font>';
+//echo ','.$target->format( FMT_TIMESTAMP_DATE ).'</font>';
 //echo "  ,".intval(Date::compare( $start, $startPeriod ));
 
 			if (Date::compare( $target, $startPeriod ) < 0) {
@@ -91,7 +91,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 			} else {
 				$temp = $startPeriod;
 			}
-//echo ',temp='.$temp->format( DATE_FORMAT_TIMESTAMP_DATE );
+//echo ',temp='.$temp->format( FMT_TIMESTAMP_DATE );
 //echo "  ,".intval(Date::compare( $endPeriod, $temp ));
 //echo "  ,".intval(Date::compare( $target, $temp ));
 //continue;
@@ -99,7 +99,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 			while (Date::compare( $endPeriod, $temp ) > 0) {
 				if (Date::compare( $target, $temp ) > 0) {
 					if ($end == null || $temp->before($end)) {
-						$links[$temp->format( DATE_FORMAT_TIMESTAMP_DATE )][] = $link;
+						$links[$temp->format( FMT_TIMESTAMP_DATE )][] = $link;
 					}
 				}
 				$temp->addSeconds( $sid );

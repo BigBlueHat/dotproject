@@ -27,8 +27,7 @@ $none = true;
 foreach ($projects as $row) {
 	if ($row["project_active"] < 1) {
 		$none = false;
-		$ts = db_dateTime2unix( $row["project_actual_end_date"] );
-		$end_date = $ts < 0 ? null : new CDate( $ts );
+		$end_date = intval( @$row["project_actual_end_date"] ) ? new CDate( $row["project_actual_end_date"] ) : null;
 		$s = '<tr>';
 		$s .= '<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#'
 			. $row["project_color_identifier"] . '">';
@@ -44,7 +43,7 @@ foreach ($projects as $row) {
 		$s .= $CT . $row["total_tasks"];
 		$s .= $CR . '</td>';
 		$s .= $CR . '<td align="right" nowrap="nowrap">';
-		$s .= $CT . ($end_date ? $end_date->toString( $df ) : '-');
+		$s .= $CT . ($end_date ? $end_date->format( $df ) : '-');
 		$s .= $CR . '</td>';
 		$s .= $CR . '</tr>';
 		echo $s;

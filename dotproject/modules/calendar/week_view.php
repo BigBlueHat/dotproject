@@ -13,17 +13,17 @@ $company_id = $AppUI->getState( 'CalIdxCompany' ) !== NULL ? $AppUI->getState( '
 $date = dPgetParam( $_GET, 'date', null );
 
 // establish the focus 'date'
-$this_week = new Date( $date ? "{$date}000000" : null );
+$this_week = new CDate( $date );
 $dd = $this_week->getDay();
 $mm = $this_week->getMonth();
 $yy = $this_week->getYear();
 
 // prepare time period for 'events'
-$first_time = new Date( Date_calc::beginOfWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
-$last_time = new Date( Date_calc::endOfWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
+$first_time = new CDate( Date_calc::beginOfWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
+$last_time = new CDate( Date_calc::endOfWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
 
-$prev_week = new Date( Date_calc::beginOfPrevWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
-$next_week = new Date( Date_calc::beginOfNextWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
+$prev_week = new CDate( Date_calc::beginOfPrevWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
+$next_week = new CDate( Date_calc::beginOfNextWeek( $dd, $mm, $yy, FMT_DATETIME_MYSQL, LOCALE_FIRST_DAY ) );
 
 $tasks = CTask::getTasksForPeriod( $first_time, $last_time, $company_id );
 $events = CEvent::getEventsForPeriod( $first_time, $last_time );
@@ -58,13 +58,13 @@ TD.weekDay  {
 <table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
 <tr>
 	<td>
-		<a href="<?php echo '?m=calendar&a=week_view&date='.$prev_week->format( DATE_FORMAT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+		<a href="<?php echo '?m=calendar&a=week_view&date='.$prev_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 	</td>
 	<th width="100%">
 		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.$this_week->format( "%U - %Y" ); ?></span>
 	</th>
 	<td>
-		<a href="<?php echo '?m=calendar&a=week_view&date='.$next_week->format( DATE_FORMAT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
+		<a href="<?php echo '?m=calendar&a=week_view&date='.$next_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
 	</td>
 </tr>
 </table>
@@ -75,11 +75,11 @@ $column = 0;
 $format = array( "<strong>%d</strong> %A", "%A <strong>%d</strong>" );
 $show_day = $this_week;
 
-$today = new Date();
-$today = $today->format( DATE_FORMAT_TIMESTAMP_DATE );
+$today = new CDate();
+$today = $today->format( FMT_TIMESTAMP_DATE );
 
 for ($i=0; $i < 7; $i++) {
-	$dayStamp = $show_day->format( DATE_FORMAT_TIMESTAMP_DATE );
+	$dayStamp = $show_day->format( FMT_TIMESTAMP_DATE );
 
 	$day  = $show_day->getDay();
 	$href = "?m=calendar&a=day_view&date=$dayStamp";

@@ -41,7 +41,8 @@ SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, foru
 	SUBSTRING(l.message_body,1,$max_msg_length) message_body,
 	LENGTH(l.message_body) message_length,
 	watch_user,
-	l.message_parent
+	l.message_parent,
+	l.message_id
 FROM forums, users, projects, permissions
 LEFT JOIN forum_messages t ON t.message_forum = forum_id AND t.message_parent = -1
 LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > -1
@@ -118,18 +119,12 @@ $titleBlock->show();
 </tr>
 <?php
 $p ="";
+$now = new CDate();
 foreach ($forums as $row) {
-	$ts = db_dateTime2unix( $row['forum_last_date'] );
-	if ($ts < 0) {
-		$message_date = null;
-	} else {
-		$message_date = new CDate( $ts, "$df $tf" );
-		$message_since = abs( $message_date->compareTo( new CDate() ) );
-	}
+	$message_date = intval( $row['forum_last_date'] ) ? new CDate( $row['forum_last_date'] ) : null;
 
 	if($p != $row["forum_project"]) {
-		$ts = db_dateTime2unix( $row["forum_create_date"], "$df" );
-		$create_date = $ts < 0 ? null : new CDate( $ts );
+		$create_date = intval( $row['forum_create_date'] ) ? new CDate( $row['forum_create_date'] ) : null;
 ?>
 <tr>
 	<td colspan="6" style="background-color:#<?php echo $row["project_color_identifier"];?>">
@@ -161,25 +156,28 @@ foreach ($forums as $row) {
 			<a href="?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a>
 		</span>
 		<br /><?php echo $row["forum_description"];?>
-		<br /><font color=#777777><?php echo $AppUI->_( 'Owner' ).' '.$row["user_username"];?>,
-		<?php echo $AppUI->_( 'Started' ).' '.$create_date->toString();?>
+		<br /><font color="#777777"><?php echo $AppUI->_( 'Owner' ).' '.$row["user_username"];?>,
+		<?php echo $AppUI->_( 'Started' ).' '.$create_date->format( $df );?>
 		</font>
 	</td>
 	<td nowrap="nowrap" align="center"><?php echo $row["forum_topics"];?></td>
 	<td nowrap="nowrap" align="center"><?php echo $row["forum_replies"];?></td>
-	<td width="200">
+	<td width="225">
 <?php
 	if ($message_date !== null) {
-		echo $message_date->toString().'<br /><font color=#999966>(';
-		if ($message_since < 3600) {
-			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
-		} else if ($message_since < 48*3600) {
-			$str = sprintf( "%d ".$AppUI->_( 'hours' ), $message_since/3600 );
-		} else {
-			$str = sprintf( "%d ".$AppUI->_( 'days' ), $message_since/(24*3600) );
-		}
-		printf( $AppUI->_('%s ago'), $str );
-		echo ') </font><br />&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
+		echo $message_date->format( "$df $tf" );
+
+		$last = new Date_Span();
+		$last->setFromDateDiff( $now, $message_date );
+
+		echo '<br /><font color=#999966>(' . $AppUI->_('Last post').' ';
+		printf( "%.1f", $last->format( "%d" ) );
+		echo ' '.$AppUI->_('days ago') . ') </font>';
+
+		$id = $row['message_parent'] < 0 ? $row['message_id'] : $row['message_parent'];
+
+		echo '<br />&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$id.'">';
+		echo '<font color=#777777>'.$row['message_body'];
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
 		echo '</font></a>';
 	} else {
@@ -200,7 +198,7 @@ foreach ($forums as $row) {
 </tr>
 <tr>
 	<td align="left">
-		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>" />
+		<input type="submit" class="button" value="<?php echo $AppUI->_( 'update watches' );?>" />
 	</td>
 </tr>
 </form>

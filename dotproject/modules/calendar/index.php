@@ -43,12 +43,12 @@ function clickWeek( uts, fdate ) {
 <table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
 <?php
 // establish the focus 'date'
-$date = new Date( $date ? "{$date}000000" : null );
+$date = new CDate( $date );
 
 // prepare time period for 'events'
-$first_time = new Date( $date );
+$first_time = new CDate( $date );
 $first_time->setDay( 1 );
-$last_time = new Date( $date );
+$last_time = new CDate( $date );
 $last_time->setDay( $date->getDaysInMonth() );
 
 $links = array();

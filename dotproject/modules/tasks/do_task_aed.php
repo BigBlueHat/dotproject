@@ -14,15 +14,15 @@ if (!$obj->bind( $_POST )) {
 
 // convert dates to SQL format first
 if ($obj->task_start_date) {
-	$date = new Date( $obj->task_start_date, DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->task_start_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->task_start_date );
+	$obj->task_start_date = $date->format( FMT_DATETIME_MYSQL );
 }
 if ($obj->task_end_date) {
-	$date = new Date( $obj->task_end_date, DATE_FORMAT_TIMESTAMP_DATE );
-	$obj->task_end_date = $date->format( DATE_FORMAT_ISO );
+	$date = new CDate( $obj->task_end_date );
+	$obj->task_end_date = $date->format( FMT_DATETIME_MYSQL );
 }
 
-//echo '<pre>';print_r( $task );echo '</pre>';die;
+//echo '<pre>';print_r( $hassign );echo '</pre>';die;
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Task' );
 if ($del) {

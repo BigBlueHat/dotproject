@@ -48,6 +48,7 @@ $priorities = array(
 	'-1' => 'low'
 );
 
+$durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 $titleBlock = new CTitleBlock( 'My Tasks To Do', 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
@@ -78,35 +79,33 @@ $titleBlock->show();
 
 /*** Tasks listing ***/
 $now = new CDate();
-$date_format = $AppUI->getPref('SHDATEFORMAT');
+$df = $AppUI->getPref('SHDATEFORMAT');
 
 foreach ($tasks as $a) {
 	$style = '';
+	$sign = 1;
 	
-	$start = CDate::fromDateTime( $a["task_start_date"] );
-	$start->setFormat( $date_format );
+	$start = intval( @$a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
+	$end = intval( @$a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
 
-	$end = CDate::fromDateTime( $a["task_end_date"] );
-	if ( $end && !$end->isValid() ) {
-		if (@$a["task_duration"]) {
-			$end = $start;
-			$end->addHours( $a["task_duration"] );
-		}
+	if (!$end) {
+		$end = $start;
+		$end->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
 	}
 
-	$days = $now->daysTo( $start );
-	if ($days < 0 && $a["task_percent_complete"] == 0) {
+	if ($now->after( $start ) && $a["task_percent_complete"] == 0) {
 		$style = 'background-color:#ffeebb';
 	}
-	if ($end && $end->isValid()) {
-		$days = $now->daysTo( $end );
-		if ($days < 0) {
-			$style = 'background-color:#cc6666;color:#ffffff';
-		} else if ($now->daysTo( $start ) < 0) {
-			$style = 'background-color:#e6eedd';
-		}
-		$end->setFormat( $date_format );
+
+	if ($now->after( $end )) {
+		$sign = -1;
+		$style = 'background-color:#cc6666;color:#ffffff';
+	} else if ($now->after( $start )) {
+		$style = 'background-color:#e6eedd';
 	}
+
+	$days = $now->dateDiff( $end ) * $sign;
+
 ?>
 <tr>
 	<td>
@@ -134,24 +133,14 @@ foreach ($tasks as $a) {
 			<span style="padding:2px;background-color:#<?php echo $a['project_color_identifier'];?>;color:<?php echo bestColor( $a["project_color_identifier"] );?>"><?php echo $a["project_name"];?></span>
 		</a>
 	</td>
-	<td nowrap style="<?php echo $style;?>"><?php echo $start->toString();?></td>
+	<td nowrap style="<?php echo $style;?>"><?php echo $start->format( $df );?></td>
 	<td style="<?php echo $style;?>">
-	<?php if ($a["task_duration"] > 24 ) {
-		$dt = "day";
-		$dur = $a["task_duration"] / 24;
-	} else {
-		$dt = "hour";
-		$dur = $a["task_duration"];
-	}
-	if ($dur > 1) {
-	       	// FIXME: this won't work for every language!
-		$dt.="s";
-	}
-        echo ($dur!=0)?$dur . " " . $dt:"n/a";
-	?>
+<?php
+	echo $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
+?>
 	</td>
 
-	<td nowrap style="<?php echo $style;?>"><?php echo ($end && $end->isValid()) ? $end->toString() : '-';?></td>
+	<td nowrap style="<?php echo $style;?>"><?php echo $end->format( $df );?></td>
 
 	<td nowrap align="right" style="<?php echo $style;?>">
 		<?php echo $days; ?>

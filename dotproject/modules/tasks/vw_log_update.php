@@ -4,7 +4,7 @@ GLOBAL $AppUI, $canEdit, $task_id, $obj, $percent;
 if ($canEdit) {
 // Task Update Form
 	$df = $AppUI->getPref('SHDATEFORMAT');
-	$log_date = new Date();
+	$log_date = new CDate();
 ?>
 <table cellspacing="1" cellpadding="2" border="0" width="100%">
 <form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
@@ -20,7 +20,7 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Date');?>
 	</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="task_log_date" value="<?php echo $log_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>">
+		<input type="hidden" name="task_log_date" value="<?php echo $log_date->format( FMT_TIMESTAMP_DATE );?>">
 		<input type="text" name="log_date" value="<?php echo $log_date->format( $df );?>" class="text" disabled="disabled">
 		<a href="#" onClick="popCalendar('log_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />

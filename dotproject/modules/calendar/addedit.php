@@ -41,12 +41,12 @@ $titleBlock->show();
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 if ($event_id) {
-	$start_date = intval( $obj->event_start_date ) ? new Date( $obj->event_start_date ) : null;
-	$end_date = intval( $obj->event_end_date ) ? new Date( $obj->event_end_date ) : $start_date;
+	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;
+	$end_date = intval( $obj->event_end_date ) ? new CDate( $obj->event_end_date ) : $start_date;
 } else {
-	$start_date = new Date();
+	$start_date = new CDate();
 	$start_date->setTime( 8,0,0 );
-	$end_date = new Date();
+	$end_date = new CDate();
 	$end_date->setTime( 17,0,0 );
 }
 
@@ -76,7 +76,7 @@ $remind = array (
 
 // build array of times in 30 minute increments
 $times = array();
-$t = new Date();
+$t = new CDate();
 $t->setTime( 0,0,0 );
 for ($m=0; $m < 60; $m++) {
 	$times[$t->format( "%H%M%S" )] = $t->format( "%I:%M %p" );
@@ -161,7 +161,7 @@ function setCalendar( idate, fdate ) {
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?>:</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="event_start_date" value="<?php echo $start_date ? $start_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>">
+		<input type="hidden" name="event_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : '';?>">
 		<input type="text" name="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : '';?>" class="text" disabled="disabled">
 		<a href="#" onClick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
@@ -174,7 +174,7 @@ function setCalendar( idate, fdate ) {
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Date' );?>:</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="event_end_date" value="<?php echo $end_date ? $end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>">
+		<input type="hidden" name="event_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>">
 		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled">
 		<a href="#" onClick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
