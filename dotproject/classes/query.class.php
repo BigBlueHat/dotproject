@@ -177,13 +177,25 @@ class DBQuery {
     $this->type = 'update';
   }
 
-  function createTemp($table)
+  function createTable($table)
+  {
+    $this->type = 'createPermanent';
+    $this->create_table = $table;
+  }
+  
+   function createTemp($table)
   {
     $this->type = 'create';
     $this->create_table = $table;
   }
+  
+  function dropTable($table)
+  {
+    $this->type = 'drop';
+    $this->create_table = $table;
+  }
 
-  function  dropTemp($table)
+  function dropTemp($table)
   {
     $this->type = 'drop';
     $this->create_table = $table;
@@ -310,6 +322,13 @@ class DBQuery {
       case 'create':	// Create a temporary table
         $s = $this->prepareSelect();
 	$q = 'CREATE TEMPORARY TABLE ' . $this->_table_prefix . $this->create_table;
+	if (!empty($this->create_definition))
+	  $q .= ' ' . $this->create_definition;
+	$q .= ' ' . $s;
+	break;
+      case 'createPermanent':	// Create a temporary table
+        $s = $this->prepareSelect();
+	$q = 'CREATE TABLE ' . $this->_table_prefix . $this->create_table;
 	if (!empty($this->create_definition))
 	  $q .= ' ' . $this->create_definition;
 	$q .= ' ' . $s;
