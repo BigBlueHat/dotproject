@@ -10,7 +10,7 @@ FROM departments
 LEFT JOIN users ON user_department = dept_id
 WHERE dept_company = $company_id
 GROUP BY dept_id
-ORDER BY dept_parent
+ORDER BY dept_parent,dept_name
 ";
 ##echo $sql;
 
