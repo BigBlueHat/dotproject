@@ -42,7 +42,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( 'Task deleted' );
+		$AppUI->setMsg( $AppUI->_("Task deleted"));
 		$AppUI->redirect( '', -1 );
 	}
 } else {
@@ -55,14 +55,17 @@ if ($del) {
 	if (isset($hassign)) {
 		$obj->updateAssigned( $hassign );
 	}
+	
 	if (isset($hdependencies)) {
 		$obj->updateDependencies( $hdependencies );
 	}
+	
 	if ($notify) {
 		if ($msg = $obj->notify()) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		}
 	}
+	
 	$AppUI->redirect();
 }
 ?>

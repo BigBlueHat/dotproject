@@ -105,7 +105,7 @@ $res = db_exec( $sql );
 while ($row = db_fetch_row( $res )) {
 	/*
 	if (strlen( $row[1] ) > 30) {
-		$row[1] = substr( $row[1], 0, 27 ).'...';
+	$row[1] = substr( $row[1], 0, 27 ).'...';
 	}
 	*/
 	$projTasks[$row[0]] = $row[1];
@@ -128,7 +128,7 @@ if ( $canReadProject ) {
 	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
 }
 if ($task_id > 0)
-  $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
+$titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
 $titleBlock->show();
 
 // Let's gather all the necessary information from the department table
@@ -156,10 +156,10 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	        where dept_parent      = '$dept_parent'
 	              and dept_company = '$company_id'";
 	$depts_list = db_loadHashList($sql, "dept_id");
-
+	
 	foreach($depts_list as $dept_id => $dept_info){
 		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
-
+		
 		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
 		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
 	}
@@ -179,7 +179,7 @@ if ($end   === null ) $end = 17;
 if ($inc   === null)  $inc = 15;
 $hours = array();
 for ( $current = $start; $current < $end + 1; $current++ ) {
-	if ( $current < 10 ) { 
+	if ( $current < 10 ) {
 		$current_key = "0" . $current;
 	} else {
 		$current_key = $current;
@@ -200,6 +200,34 @@ for ( $current = 0 + $inc; $current < 60; $current += $inc ) {
 	$minutes[$current] = $current;
 }
 
+
+// Code to see if the current user is
+// enabled to change time information related to task
+		$can_edit_time_information = false;
+		// Let's see if all users are able to edit task time information
+		if($AppUI->getConfig('restrict_task_time_editing') && $obj->task_id > 0){
+
+			// Am I the task owner?
+			if($obj->task_owner == $AppUI->user_id){
+				$can_edit_time_information = true;
+			}
+			
+			// Am I the project owner?
+			if($project->project_owner == $AppUI->user_id){
+				$can_edit_time_information = true;
+			}
+			
+			// Am I sys admin?
+			if(!getDenyEdit("admin")){
+				$can_edit_time_information = true;
+			}
+			
+		} else { // If all users are able, then don't check anything
+			$can_edit_time_information = true;
+		}
+		
+
+
 ?>
 
 <SCRIPT language="JavaScript">
@@ -218,9 +246,9 @@ function popCalendar( field ){
 }
 
 /**
- *	@param string Input date in the format YYYYMMDD
- *	@param string Formatted date
- */
+*	@param string Input date in the format YYYYMMDD
+*	@param string Formatted date
+*/
 function setCalendar( idate, fdate ) {
 	fld_date = eval( 'document.editFrm.task_' + calendarField );
 	fld_fdate = eval( 'document.editFrm.' + calendarField );
@@ -240,44 +268,49 @@ function submitIt(){
 	var form = document.editFrm;
 	var fl = form.assigned.length -1;
 	var dl = form.task_dependencies.length -1;
-
+	
 	if (form.task_name.value.length < 3) {
 		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
 	}
-<?php 
-	if ( $AppUI->getConfig( 'check_task_dates' )  ) {
-?>
-	else if (!form.task_start_date.value) {
-		alert( "<?php echo $AppUI->_('taskValidStartDate');?>" );
-		form.task_start_date.focus();
+	<?php
+	if ( $AppUI->getConfig( 'check_task_dates' )  && $can_edit_time_information) {
+		?>
+		else if (!form.task_start_date.value) {
+			alert( "<?php echo $AppUI->_('taskValidStartDate');?>" );
+			form.task_start_date.focus();
+		}
+		else if (!form.task_end_date.value) {
+			alert( "<?php echo $AppUI->_('taskValidEndDate');?>" );
+			form.task_end_date.focus();
+		}
+		<?php
 	}
-	else if (!form.task_end_date.value) {
-		alert( "<?php echo $AppUI->_('taskValidEndDate');?>" );
-		form.task_end_date.focus();
-	}
-<?php
-	}
-?>	
+	?>
 	else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
 			form.hassign.value = "," + form.hassign.value +","+ form.assigned.options[fl].value
 		}
-
+		
 		form.hdependencies.value = "";
 		for (dl; dl > -1; dl--){
 			form.hdependencies.value = "," + form.hdependencies.value +","+ form.task_dependencies.options[dl].value
 		}
-
-		if ( form.task_start_date.value.length > 0 ) {
-			form.task_start_date.value += form.start_hour.value + form.start_minute.value;
-		}
 		
-		if ( form.task_end_date.value.length > 0 ) {
-			form.task_end_date.value += form.end_hour.value + form.end_minute.value;
-		}
-		
+		<?php
+			if($can_edit_time_information){
+				?>
+				if ( form.task_start_date.value.length > 0 ) {
+					form.task_start_date.value += form.start_hour.value + form.start_minute.value;
+				}
+				
+				if ( form.task_end_date.value.length > 0 ) {
+					form.task_end_date.value += form.end_hour.value + form.end_minute.value;
+				}
+				<?php
+			} // can_edit_time_information
+		?>
 		form.submit();
 	}
 }
@@ -287,12 +320,12 @@ function addUser() {
 	var fl = form.resources.length -1;
 	var au = form.assigned.length -1;
 	var users = "x";
-
+	
 	//build array of assiged users
 	for (au; au > -1; au--) {
 		users = users + "," + form.assigned.options[au].value + ","
 	}
-
+	
 	//Pull selected resources and add them to list
 	for (fl; fl > -1; fl--) {
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
@@ -306,7 +339,7 @@ function addUser() {
 function removeUser() {
 	var form = document.editFrm;
 	fl = form.assigned.length -1;
-
+	
 	for (fl; fl > -1; fl--) {
 		if (form.assigned.options[fl].selected) {
 			form.assigned.options[fl] = null;
@@ -319,12 +352,12 @@ function addTaskDependency() {
 	var at = form.all_tasks.length -1;
 	var td = form.task_dependencies.length -1;
 	var tasks = "x";
-
+	
 	//build array of task dependencies
 	for (td; td > -1; td--) {
 		tasks = tasks + "," + form.task_dependencies.options[td].value + ","
 	}
-
+	
 	//Pull selected resources and add them to list
 	for (at; at > -1; at--) {
 		if (form.all_tasks.options[at].selected && tasks.indexOf( "," + form.all_tasks.options[at].value + "," ) == -1) {
@@ -338,7 +371,7 @@ function addTaskDependency() {
 function removeTaskDependency() {
 	var form = document.editFrm;
 	td = form.task_dependencies.length -1;
-
+	
 	for (td; td > -1; td--) {
 		if (form.task_dependencies.options[td].selected) {
 			form.task_dependencies.options[td] = null;
@@ -361,47 +394,47 @@ function calcDuration() {
 	var f = document.editFrm;
 	var int_st_date = new String(f.task_start_date.value);
 	var int_en_date = new String(f.task_end_date.value);
-
+	
 	var s = Date.UTC(int_st_date.substring(0,4),(int_st_date.substring(4,6)-1),int_st_date.substring(6,8));
 	var e = Date.UTC(int_en_date.substring(0,4),(int_en_date.substring(4,6)-1),int_en_date.substring(6,8));
 	var durn = (e - s) / hourMSecs;
 	var durnType = parseFloat(f.task_duration_type.value);
 	durn /= durnType;
-
+	
 	if (durnType == 1)
-		durn *= (workHours / 24);
-
+	durn *= (workHours / 24);
+	
 	if ( s > e )
-		alert( 'End date is before start date!');
+	alert( 'End date is before start date!');
 	else
-		f.task_duration.value = Math.round(durn);
-
+	f.task_duration.value = Math.round(durn);
+	
 }
 
 function calcFinish() {
 	var f = document.editFrm;
 	var int_st_date = new String(f.task_start_date.value);
-
+	
 	var s = new Date(int_st_date.substring(0,4),eval(int_st_date.substring(4,6))-1,int_st_date.substring(6,8));
 	var durn = parseFloat(f.task_duration.value);
 	var durnType = parseFloat(f.task_duration_type.value);
 	var inc = durn;
-
+	
 	if (durnType == 1)
-		inc /= workHours;
-
+	inc /= workHours;
+	
 	var e = s;
 	e.setDate( s.getDate() + Math.round(inc) );
-
+	
 	var tz1 = "";
 	var tz2 = "";
-
+	
 	if ( e.getDate() < 10 ) tz1 = "0";
 	if ( (e.getMonth()+1) < 10 ) tz2 = "0";
-
+	
 	f.task_end_date.value = e.getUTCFullYear()+tz2+(e.getMonth()+1)+tz1+e.getDate();
 	f.end_date.value = tz1+e.getDate()+"/"+tz2+(e.getMonth()+1)+"/"+e.getUTCFullYear();
-
+	
 }
 
 </script>
@@ -457,10 +490,16 @@ function calcFinish() {
 	    <table>
 	    	<tr>
 	    		<td>
-					<?php echo $AppUI->_( 'Task Creator' );?>
-					<br />
-				<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
-					<br />
+	    			<?php
+	    				if($can_edit_time_information){
+	    					?>
+							<?php echo $AppUI->_( 'Task Creator' );?>
+							<br />
+							<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
+							<br />
+						<?php
+	    				} // $can_edit_time_information
+					?>
 					<?php echo $AppUI->_( 'Access' );?>
 					<br />
 					<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
@@ -470,26 +509,26 @@ function calcFinish() {
 				</td>
 				<td>
 					<?php
-						// Let's check if the actual company has departments registered
-						if($department_selection_list != ""){
+					// Let's check if the actual company has departments registered
+					if($department_selection_list != ""){
 							?>
 									<?php echo $AppUI->_("Departments"); ?><br />
 									<?php echo $department_selection_list; ?>
 									<?php echo "<hr />"; ?>
 							<?php
-						}
-						
-						// Let's check if there are available contacts for this company
-						$sql = "select c.company_name
+					}
+					
+					// Let's check if there are available contacts for this company
+					$sql = "select c.company_name
 						        from companies as c, tasks as t, projects as p
 						        where t.task_id = $task_id
 						              and t.task_project = p.project_id
 						              and p.project_company = company_id";
-						$company_name = db_loadResult($sql);
-						
-						if($department_selection_list != "" || !is_null($company_name) ) {
-							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
-						}
+					$company_name = db_loadResult($sql);
+					
+					if($department_selection_list != "" || !is_null($company_name) ) {
+						echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
+					}
 					?>
 				</td>
 			</tr>
@@ -511,65 +550,77 @@ function calcFinish() {
 	</td>
 	<td  align="center" width="50%">
 		<table cellspacing="0" cellpadding="2" border="0">
-			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
-				<td nowrap="nowrap">
-					<input type="hidden" name="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : "" ;?>" />
-					<input type="text" name="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : "" ;?>" class="text" disabled="disabled" />
-					<a href="#" onClick="popCalendar('start_date')">
-						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
-					</a>
-				</td>
-				<td>
-					<table><tr>
-						
-				<?php
+			<?php
+				if($can_edit_time_information){
+			?>
+				<tr>
+					<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
+					<td nowrap="nowrap">
+						<input type="hidden" name="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : "" ;?>" />
+						<input type="text" name="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : "" ;?>" class="text" disabled="disabled" />
+						<a href="#" onClick="popCalendar('start_date')">
+							<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+						</a>
+					</td>
+					<td>
+						<table><tr>
+							
+					<?php
 					echo "<td>" . arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . "</td><td>" . " : " . "</td>";
 					echo "<td>" . arraySelect($minutes, "start_minute",'size="1" class="text"', $start_date ? $start_date->getMinute() : "0" ) . "</td>";
 					if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
 						echo '<td><input type="text" name="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
 					}
-				?>
-					</tr></table>
-				</td>
-			</tr>
-			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
-				<td nowrap="nowrap">
-					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-					<a href="#" onClick="popCalendar('end_date')">
-						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
-					</a>
-				</td>
-				<td>
-				<table><tr>
-				<?php
+					?>
+						</tr></table>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
+					<td nowrap="nowrap">
+						<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
+						<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
+						<a href="#" onClick="popCalendar('end_date')">
+							<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+						</a>
+					</td>
+					<td>
+					<table><tr>
+					<?php
 					echo "<td>" . arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . "</td><td>" . " : " . "</td>";
 					echo "<td>" .arraySelect($minutes, "end_minute",'size="1" class="text"', $end_date ? $end_date->getMinute() : "00" ) . "</td>";
 					if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
 						echo '<td><input type="text" name="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
 					}
-				?>
-				</tr></table>
-				</td>
-			</tr>
-			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
-				<td nowrap="nowrap">
-					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 1;?>" />
-				<?php
+					?>
+					</tr></table>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
+					<td nowrap="nowrap">
+						<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 1;?>" />
+					<?php
 					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
-				?>
-				</td>
-			</tr>
-			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Calculate' );?>:</td>
-				<td nowrap="nowrap">
-					<input type="button" value="<?php echo $AppUI->_('Duration');?>" onclick="calcDuration()" class="button" />
-					<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
-				</td>
-			</tr>
+					?>
+					</td>
+				</tr>
+				<tr>
+					<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Calculate' );?>:</td>
+					<td nowrap="nowrap">
+						<input type="button" value="<?php echo $AppUI->_('Duration');?>" onclick="calcDuration()" class="button" />
+						<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
+					</td>
+				</tr>
+			<?php
+				} else {  
+			?>
+				<tr>
+					<td colspan='2'><?php echo $AppUI->_("Only the task owner, project owner, or system administirator is able to edit time related information"); ?></td>
+				</tr>
+			<?php
+				}// end of can_edit_time_information
+			?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
@@ -577,6 +628,7 @@ function calcFinish() {
 				</td>
 			</tr>
 		</table>
+		
 	</td>
 </tr>
 <tr>
@@ -634,50 +686,50 @@ function calcFinish() {
 	</td>
 	<td align="center">
 <?php
-	$custom_fields = dPgetSysVal("TaskCustomFields");
-	if ( count($custom_fields) > 0 ){
-		//We have custom fields, parse them!
-		//Custom fields are stored in the sysval table under TaskCustomFields, the format is
-		//key|serialized array of ("name", "type", "options", "selects")
-		//Ej: 0|a:3:{s:4:"name";s:22:"Quote number";s:4:"type";s:4:"text";s:7:"options";s:24:"maxlength="12" size="10"";} 
-		if ( $obj->task_custom != "" || !is_null($obj->task_custom))  {
-			//Custom info previously saved, retrieve it
-			$custom_field_previous_data = unserialize($obj->task_custom);
-		}
-		
-		$output = '<table cellspacing="0" cellpadding="2" border="0">';
-		foreach ( $custom_fields as $key => $array) {
-			$output .= "<tr colspan='3' valign='top' id='custom_tr_$key' >";
-			$field_options = unserialize($array);
-			$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) . ":" ."</td>";
-			switch ( $field_options["type"]){
-				case "text":
-					$output .= "<td align='left'><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";
-					break;
-				case "select":
-					$output .= "<td align='left'>". arraySelect(explode(",",$field_options["selects"]), "custom_$key", 'size="1" class="text" ' . $field_options["options"] ,( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
-					break;
-				case "textarea":
-					$output .=  "<td align='left'><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
-					break;
-				case "checkbox":
-					$options_array = explode(",",$field_options["selects"]);
-					$output .= "<td align='left'>";
-					foreach ( $options_array as $option ) {
-						if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
-							$checked = "checked";
-						} 
-						$output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' style='border:0' $checked " . $field_options["options"] . ">$option<br />";
-						$checked = "";
-					}
-					$output .= "</td>";
-					break;
-			}
-			$output .= "</tr>";
-		}
-		$output .= "</table>";
-		echo $output;
+$custom_fields = dPgetSysVal("TaskCustomFields");
+if ( count($custom_fields) > 0 ){
+	//We have custom fields, parse them!
+	//Custom fields are stored in the sysval table under TaskCustomFields, the format is
+	//key|serialized array of ("name", "type", "options", "selects")
+	//Ej: 0|a:3:{s:4:"name";s:22:"Quote number";s:4:"type";s:4:"text";s:7:"options";s:24:"maxlength="12" size="10"";}
+	if ( $obj->task_custom != "" || !is_null($obj->task_custom))  {
+		//Custom info previously saved, retrieve it
+		$custom_field_previous_data = unserialize($obj->task_custom);
 	}
+	
+	$output = '<table cellspacing="0" cellpadding="2" border="0">';
+	foreach ( $custom_fields as $key => $array) {
+		$output .= "<tr colspan='3' valign='top' id='custom_tr_$key' >";
+		$field_options = unserialize($array);
+		$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) . ":" ."</td>";
+		switch ( $field_options["type"]){
+			case "text":
+			$output .= "<td align='left'><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";
+			break;
+			case "select":
+			$output .= "<td align='left'>". arraySelect(explode(",",$field_options["selects"]), "custom_$key", 'size="1" class="text" ' . $field_options["options"] ,( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
+			break;
+			case "textarea":
+			$output .=  "<td align='left'><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
+			break;
+			case "checkbox":
+			$options_array = explode(",",$field_options["selects"]);
+			$output .= "<td align='left'>";
+			foreach ( $options_array as $option ) {
+				if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
+					$checked = "checked";
+				}
+				$output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' style='border:0' $checked " . $field_options["options"] . ">$option<br />";
+				$checked = "";
+			}
+			$output .= "</td>";
+			break;
+		}
+		$output .= "</tr>";
+	}
+	$output .= "</table>";
+	echo $output;
+}
 ?>
 	</td>
 </tr>
