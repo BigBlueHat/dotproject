@@ -49,6 +49,7 @@
 "EMail",
 "Edit",
 "Email",
+"Empty Dates",
 "End Date",
 "Ends",
 "Event",
