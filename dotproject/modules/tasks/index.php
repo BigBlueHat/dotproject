@@ -11,8 +11,6 @@ if (isset( $_GET['project_id'] )) {
 	$AppUI->setState( 'TaskIdxProject', $_GET['project_id'] );
 }
 $project_id = $AppUI->getState( 'TaskIdxProject' ) ? $AppUI->getState( 'TaskIdxProject' ) : 0;
-$AppUI->setState( 'ActiveProject', $project_id );
-
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Tasks', 'tasks.gif', $m, "$m.$a" );
