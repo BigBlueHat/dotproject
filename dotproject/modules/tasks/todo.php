@@ -62,7 +62,7 @@ $tasks = db_loadList( $sql );
 $priorities = array(
 	'1' => 'high',
 	'0' => 'normal',
-	'-1' => 'low'
+        '-1' => 'low'
 );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );

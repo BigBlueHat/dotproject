@@ -81,7 +81,7 @@ if ($canEdit) {
 	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", "edit this task" );
 }
 if ($canEdit) {
-	$titleBlock->addCrumbDelete( $AppUI->_('delete task'), $canDelete, $msg );
+	$titleBlock->addCrumbDelete( 'delete task', $canDelete, $msg );
 }
 $titleBlock->show();
 ?>
