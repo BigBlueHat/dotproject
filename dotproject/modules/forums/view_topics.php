@@ -1,4 +1,4 @@
-<?php
+<?php /* FORUMS $Id$ */
 $AppUI->savePlace();
 
 //Pull All Messages
@@ -19,7 +19,7 @@ switch ($f) {
 		$sql.= " AND watch_user IS NOT NULL";
 		break;
 	case 2:
-		$sql.= " AND NOW() < DATE_ADD(fm2.message_date, INTERVAL 30 DAY)";
+		$sql.= " AND (NOW() < DATE_ADD(fm2.message_date, INTERVAL 30 DAY) OR NOW() < DATE_ADD(fm1.message_date, INTERVAL 30 DAY))";
 		break;
 }
 $sql .= "
@@ -33,6 +33,7 @@ GROUP BY
 	fm1.message_published
 ORDER BY message_date DESC
 ";
+
 $topics = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();
 
