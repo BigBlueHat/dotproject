@@ -4,7 +4,7 @@
 	lib.DB
 	Database abstract layer
 	-----------------------
-	MYSQL VERSION
+	ADODB VERSION
 	-----------------------
 	A generic database layer providing a set of low to middle level functions
 	originally written for WEBO project, see webo source for "real life" usages
@@ -47,7 +47,6 @@ function db_exec( $sql ) {
 
 //        echo "Executing $sql";
 	$qid = $db->Execute( $sql );
-//        print_r($qid->GetAssoc());
 	//if( !$qid ) {
 	//	return false;
 	//}
@@ -67,19 +66,15 @@ function db_num_rows( $qid ) {
 }
 
 function db_fetch_row( &$qid ) {
-//        print_r($qid->GetAssoc());
 	return $qid->FetchRow();
 }
 
 function db_fetch_assoc( &$qid ) {
         return $qid->FetchRow();
-//	return $qid->GetAssoc();
 }
 
 function db_fetch_array( &$qid  ) {
         return $qid->FetchRow();
-        
-//	return $qid->GetArray();
 }
 
 function db_fetch_object( $qid  ) {
