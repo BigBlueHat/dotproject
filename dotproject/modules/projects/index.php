@@ -39,23 +39,51 @@ $orderby = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrde
 $obj = new CProject();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
+// Task sum table
+// by Pablo Roca (pabloroca@mvps.org)
+// 16 August 2003
+
+$sql = "
+CREATE TEMPORARY TABLE tasks_sum
+ SELECT task_project,
+ COUNT(distinct task_id) AS total_tasks,
+ SUM(task_duration*task_duration_type*task_percent_complete)/sum(task_duration*task_duration_type) as project_percent_complete
+ FROM tasks GROUP BY task_project
+";
+
+$tasks_sum = db_exec($sql);
+
+// temporary My Tasks
+// by Pablo Roca (pabloroca@mvps.org)
+// 16 August 2003
+$sql = "
+CREATE TEMPORARY TABLE tasks_summy
+ SELECT task_project, COUNT(distinct task_id) AS my_tasks
+ FROM tasks 
+ WHERE task_owner = $AppUI->user_id GROUP BY task_project
+";
+
+$tasks_summy = db_exec($sql);
+
 // retrieve list of records
+// modified for speed
+// by Pablo Roca (pabloroca@mvps.org)
+// 16 August 2003
 $sql = "
 SELECT
-        project_id, project_active, project_status, project_color_identifier, project_name, project_description,
+	project_id, project_active, project_status, project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_actual_end_date,
 	project_color_identifier,
 	project_company, company_name, project_status,
-	COUNT(distinct t1.task_id) AS total_tasks,
-	COUNT(distinct t2.task_id) AS my_tasks,
-	user_username,
-	SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete)/sum(t1.task_duration*t1.task_duration_type) as project_percent_complete
+	tasks_sum.total_tasks,
+	tasks_summy.my_tasks,
+	tasks_sum.project_percent_complete,
+	user_username
 FROM permissions,projects
 LEFT JOIN companies ON company_id = projects.project_company
 LEFT JOIN users ON projects.project_owner = users.user_id
-LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-LEFT JOIN tasks t2 ON projects.project_id = t2.task_project
-	AND t2.task_owner = $AppUI->user_id
+LEFT JOIN tasks_sum ON projects.project_id = tasks_sum.task_project
+LEFT JOIN tasks_summy ON projects.project_id = tasks_summy.task_project
 WHERE permission_user = $AppUI->user_id
 	AND permission_value <> 0
 	AND (
@@ -68,9 +96,11 @@ WHERE permission_user = $AppUI->user_id
 ."
 GROUP BY project_id
 ORDER BY $orderby
+LIMIT 0,50
 ";
 
 $projects = db_loadList( $sql );
+
 
 // get the list of permitted companies
 $obj = new CCompany();
