@@ -59,20 +59,11 @@ if (!$denyEdit) {
 	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
 	<td nowrap><span class="title"><?php echo $AppUI->_('Manage Project');?></span></td>
 	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+<form action="?m=tasks&a=addedit&project_id=<?php echo $project_id;?>" method="post">
 	<td align="right" width="100%">
-		<table width="225" cellspacing="1" cellpadding="1" class="tbl">
-		<tr>
-			<th><?php echo $AppUI->_('Status');?></th>
-			<th><?php echo $AppUI->_('Progress');?></th>
-			<th><?php echo $AppUI->_('Active');?>?</th>
-		</tr>
-		<tr>
-			<td><?php echo $AppUI->_($pstatus[$project["project_status"]]); ?></td>
-			<td align="center"><?php printf( "%.1f%%", $project["project_precent_complete"] );?></td>
-			<td align="center"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
-		</tr>
-		</table>
+	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new task').'">' : '';?>
 	</td>
+</form>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>
 </tr>
 </table>
@@ -135,6 +126,21 @@ if (!$denyEdit) {
 		</table>
 	</td>
 	<td width="50%" rowspan="9" valign="top">
+		<b><?php echo $AppUI->_('Summary');?></b><br>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Status');?>:</td>
+			<td class="hilite" width="100%"><?php echo $AppUI->_($pstatus[$project["project_status"]]);?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Progress');?>:</td>
+			<td class="hilite" width="100%"><?php printf( "%.1f%%", $project["project_precent_complete"] );?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Active');?>:</td>
+			<td class="hilite" width="100%"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
+		</tr>
+		</table>
 		<b><?php echo $AppUI->_('Description');?></b><br>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
