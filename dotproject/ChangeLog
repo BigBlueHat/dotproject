@@ -1,3 +1,24 @@
+2004-09-06 19:19  (robertoibarra)
+---------------------------------
+modules/tasks/todo.php
+- Can now filter in/out dynamic tasks in the my todo list.
+
+2004-09-06 19:08  (robertoibarra)
+---------------------------------
+modules/calendar/links_events.php
+- events_cwd was incorrectly spelled and caused some notices
+
+2004-09-06 17:24  (jcgonz)
+---------------------------------
+modules/admin/addedituser.php
+- Updated som <?= tags en the use of dPgetConfig insead of using the
+- configuration array directly.
+
+2004-09-03 04:10  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-02 18:18  (ajdonnison)
 ---------------------------------
 fileviewer.php
@@ -477,27 +498,6 @@ db/upgrade_latest.sql
 - Changed to allow syskeys/sysvals inserts to dynamically get the correct
 - ID.
 
-2004-08-22 14:56  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser.php
-modules/tasks/tasksperuser_sub.php
-- added comapnies and projects filters
-
-2004-08-22 13:58  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-modules/tasks/addedit.php
-- allow assignment at 0 percent level
-
-2004-08-22 13:30  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/tasks.php
-- colored highlight of task time info
-
-2004-08-22 10:21  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.php
 ...
 
 (This file has been wrapped)
