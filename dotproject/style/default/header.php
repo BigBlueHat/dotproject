@@ -44,7 +44,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 </tr>
 <?php if (!$dialog) {
 	// top navigation menu
-	$nav = dPgetMenuModules();
+	$nav = $AppUI->getMenuModules();
 ?>
 <tr>
 	<td class="nav" align="left">

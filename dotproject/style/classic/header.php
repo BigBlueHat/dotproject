@@ -94,7 +94,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 			<td rowspan="100"><img src="images/shim.gif" width="10" height="100"></td>
 		</tr>
 	<?php
-		$nav = dPgetMenuModules();
+		$nav = $AppUI->getMenuModules();
 		$s = '';
 		foreach ($nav as $module) {
 			if (!getDenyRead( $module['mod_directory'] )) {
