@@ -291,7 +291,7 @@ var calendarField = '';
 var calWin = null;
 var selected_contacts_id = "<?= $obj->task_contacts; ?>";
 
-<?
+<?php
 echo "var projTasksWithEndDates=new Array();\n";
 $keys = array_keys($projTasksWithEndDates);
 for ($i = 1; $i < sizeof($keys); $i++) {
