@@ -19,6 +19,12 @@ $crumbs["?m=forums"] = "forums list";
 $crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt(id){
 	var form = document.messageForm;
 	if (confirm( "<?php echo $AppUI->_('forumsDelete');?>" )) {
@@ -27,6 +33,7 @@ function delIt(id){
 		form.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <table width="98%" cellspacing="1" cellpadding="2" border="0">

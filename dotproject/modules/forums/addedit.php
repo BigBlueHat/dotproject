@@ -1,6 +1,14 @@
 <?php /* FORUMS $Id$ */
 // Add / Edit forum
 
+$forum_id = intval( dPgetParam( $_GET, 'forum_id', 0 ) );
+
+// check permissions for this record
+$canEdit = !getDenyEdit( $m, $forum_id );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 // load the companies class to retrieved denied projects
 require_once( $AppUI->getModuleClass( 'projects' ) );
 

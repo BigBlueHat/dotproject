@@ -56,6 +56,12 @@ if ($message_parent > -1) {
 }
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function submitIt(){
 	var form = document.changeforum;
 	if (form.message_title.value.length < 1) {
@@ -76,7 +82,7 @@ function delIt(){
 		form.submit();
 	}
 }
-
+<?php } ?>
 function orderByName(x){
 	var form = document.changeforum;
 	if (x == "name") {
