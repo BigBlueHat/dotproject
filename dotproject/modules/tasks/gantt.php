@@ -6,6 +6,7 @@
  */
 
 error_reporting( E_ALL );	// this only for development testing
+
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
@@ -58,7 +59,7 @@ while ($row = db_fetch_row( $drc )) {
 // pull tasks
 
 $select = "
-tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
+tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, 
 task_priority, task_percent_complete, task_order, task_project, task_milestone,
 project_name
 ";
@@ -96,7 +97,7 @@ switch ($f) {
 		break;
 }
 
-$tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
+$tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_start_date";
 ##echo "<pre>$tsql</pre>".mysql_error();##
 
 $ptrc = db_exec( $tsql );
@@ -107,12 +108,16 @@ $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 //pull the tasks into an array
 for ($x=0; $x < $nums; $x++) {
 	$row = db_fetch_assoc( $ptrc );
-
-        // calculate or set blank task_end_date if unset
-        if($row["task_end_date"] == "0000-00-00 00:00:00") {
-        	$row["task_end_date"] = "";
-        }
-
+	
+	// calculate or set blank task_end_date if unset
+	if($row["task_end_date"] == "0000-00-00 00:00:00") {
+		if($row["task_duration"]) {
+			$row["task_end_date"] = formatTime ( db_dateTime2unix( $row["task_start_date"] ) + SECONDS_PER_DAY * convert2days( $row["task_duration"], $row["task_duration_type"] ) );
+		} else {
+			$row["task_end_date"] = "";
+		}
+	}
+		
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 

@@ -106,7 +106,7 @@ $where .= " AND ( ($projects_filter) )";
 // echo "<pre>$where</pre>";
 
 $tsql = "SELECT $select FROM $from $join WHERE $where" .
-  "\nORDER BY project_id, task_percent_complete, task_start_date";
+  "\nORDER BY project_id, task_start_date";
 
 //echo "<pre>$tsql</pre>";
 
