@@ -1,5 +1,6 @@
 <?php
-$tempUserName = $_POST['temp_user_name'];
+$tempUserName = dPgetParam( $_POST, 'temp_user_name', '' );
+$permission_user = dPgetParam( $_POST, 'permission_user', '' );
 
 // pull user_id for unique user_username (templateUser)
 $sql = "SELECT user_id FROM users WHERE user_username = '$tempUserName'";
