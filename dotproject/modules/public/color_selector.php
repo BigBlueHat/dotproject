@@ -7,7 +7,30 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 		window.close();
 	}
 </script>
-
+<?php
+	if($dPconfig['restrict_color_selection']){
+		$colors = dPgetSysVal( 'ProjectColors' );
+?>
+<table border="0" cellpadding="1" cellspacing="2" width="292" align="center">
+	<tr>
+		<td valign="top" colspan="2">
+			<strong><?php echo $AppUI->_('Color Selector');?></strong>
+		</td>
+	</tr>
+	<?php
+		foreach($colors as $key=>$value){
+	?>
+	<tr>
+		<td style="background-color:#<?=$value?>; border: 1px solid black;cursor: pointer;" width="30" onClick="setClose('<?=$value?>')">&nbsp;</td>
+		<td width="300"><a href="javascript:setClose('<?=$value?>')"><?=$key?></a></td>
+	</tr>
+	<?php
+		}
+	?>
+</table>
+<?php
+	} else {
+?>
 <table border="0" cellpadding="1" cellspacing="0" width="292" align="center">
 	<tr>
 		<td valign="top">
@@ -305,3 +328,6 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 	<area coords="258,178,274,194" href="javascript:setClose('CCCC00')">
 	<area coords="274,178,290,194" href="javascript:setClose('CCFF00')">
 </map>
+<?php
+	}
+?>

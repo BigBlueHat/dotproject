@@ -122,6 +122,12 @@ $dPconfig['link_tickets_kludge'] = false;
 //the full list is still available on a mouse over.
 $dPconfig['show_all_task_assignees'] = false;
 
+//set to true will cause the color selection dialog for projects to only provide a text list of 
+// selections to choose from, as defined in as sysvalues.
+//set to false will provide a color selection palette for selection of arbitrary colors.
+//set this to true if you would like to have the project colors correlate with a specific meaning.
+$dPconfig['restrict_color_selection'] = false;
+
 // Calendar settings.
 // Day view start end and increment
 $dPconfig['cal_day_start']     = 8;	  // Start hour, in 24 hour format
