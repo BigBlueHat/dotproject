@@ -14,7 +14,7 @@ $taskLogReferenceImage = dPgetSysVal( 'TaskLogReferenceImage' );
 if ($canEdit) {
 ?>
 function delIt2(id) {
-	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Task Log').'?';?>" )) {
+	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Task Log', UI_OUTPUT_JS).'?';?>" )) {
 		document.frmDelete2.task_log_id.value = id;
 		document.frmDelete2.submit();
 	}
