@@ -1,5 +1,5 @@
 <?php /* COMPANIES $Id$ */
-$company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
+$company_id = dPgetParam( $_GET, "company_id", 0 );
 
 // check permissions for this company
 $canEdit = !getDenyEdit( $m, $company_id );
@@ -22,34 +22,53 @@ db_loadHash( $sql, $row );
 
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 
+$sql = "SELECT COUNT(user_company) FROM users WHERE user_company = $company_id";
+$canDelete = (db_loadResult( $sql ) < 1);
+
+// setup the title block
+$titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, 'ID_HELP_COMP_VIEW' );
+if ($canEdit) {
+	$titleBlock->addCell();
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',
+		'<form action="?m=tasks&a=addedit&company_id=' . $company_id . '" method="post">', '</form>'
+	);
+}
+$titleBlock->addCrumb( "?m=companies", "company list" );
+if ($canEdit) {
+	$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
+	
+	if ($canDelete) {
+		$titleBlock->addCrumbRight(
+			'<a href="javascript:delIt()">'
+				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
+				. $AppUI->_('delete company') . '</a>'
+		);
+	}
+}
+$titleBlock->show();
+
 $crumbs = array();
 $crumbs["?m=companies"] = "company list";
 if ($canEdit) {
 	$crumbs["?m=companies&a=addedit&company_id=$company_id"] = "edit this company";
 }
 ?>
-
-<table border="0" cellpadding="1" cellspacing="1" width="100%">
-<tr>
-	<td><img src="./images/icons/money.gif" alt="" border="0" /></td>
-	<td nowrap="nowrap"><h1><?php echo $AppUI->_('View Company/Client');?></h1></td>
-	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
-<form action="?m=companies&a=addedit" method="post">
-	<td align="right" width="100%">
-	<?php echo $canEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
-	</td>
-</form>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_COMP_VIEW' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="100%">
-<tr>
-	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
+<script language="javascript">
+function delIt() {
+	if (confirm( "<?php echo $AppUI->_('companyDelete');?>" )) {
+		document.frmDelete.submit();
+	}
+}
+</script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
+<form name="frmDelete" action="./index.php?m=companies&a=do_company_aed" method="post">
+<input type="hidden" name="del" value="1" />
+<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
+</form>
+
 <tr>
 	<td valign="top" width="50%">
 		<strong><?php echo $AppUI->_('Details');?></strong>
