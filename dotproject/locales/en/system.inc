@@ -130,6 +130,7 @@ an error, it automatically inserts everything in db/upgrade_latest.sql to try to
 "debug_tooltip"=>"Set debug > 0 to provide more debug information in analysing errors.
 Set this to 1 to provide the best compromise between normal operation and error tracking information.
 Set to 10 to get complete debugging information.",
+"default user preferences",
 "default_view_a_title"=>"Default Submodule",
 "default_view_a_tooltip"=>"If you want to define your own start/default page set this.
 Specifies a subview like shown in the url of dP.",
