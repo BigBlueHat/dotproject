@@ -56,14 +56,6 @@ $rows = db_loadList( $sql );
 </tr>
 </table>
 
-<table width="100%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-	<td valign="top">
-		<?php printf( $AppUI->_('companyWelcome'), $AppUI->user_first_name );?>
-	</td>
-</tr>
-</table>
-
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<td nowrap="nowrap" width="60" align="right">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
