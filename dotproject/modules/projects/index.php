@@ -22,7 +22,7 @@ if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && is
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjIdxTab', $_GET['tab'] );
 }
-$tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 1;
+$tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
 $active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
 if (isset( $_POST['company_id'] )) {
