@@ -30,6 +30,7 @@ class CSetupHistory {
 		  "history_id int(10) unsigned NOT NULL auto_increment," .
 		  "history_user int(10) NOT NULL default '0'," .
                   "history_action varchar(10) NOT NULL default 'modify', " .
+                  "history_item int(10) NOT NULL," .
 		  "history_table varchar(15) NOT NULL default ''," .
 		  "history_project int(10) NOT NULL default '0'," .
 		  "history_date datetime NOT NULL default '0000-00-00 00:00:00'," .
