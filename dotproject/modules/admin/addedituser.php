@@ -134,11 +134,11 @@ function setDept( key, val ) {
     <td align="right"><?php echo $AppUI->_('User Type');?>:</td>
     <td>
 <?php
-    echo arraySelect( $utypes, 'user_type', 'class=text size=1', $user["user_type"] );
+    echo arraySelect( $utypes, 'user_type', 'class=text size=1', $user["user_type"], true );
 ?>
     </td>
 </tr>
-<?php } // End of security 
+<?php } // End of security
 ?>
 <tr>
     <td align="right"><?php echo $AppUI->_('Password');?>:</td>
@@ -167,7 +167,7 @@ function setDept( key, val ) {
     <td>
         <input type="hidden" name="user_department" value="<?php echo @$user["user_department"];?>" />
         <input type="text" class="text" name="dept_name" value="<?php echo @$user["dept_name"];?>" size="40" disabled />
-        <input type="button" class="button" value="select dept..." onclick="popDept()" />
+        <input type="button" class="button" value="<?php echo $AppUI->_('select dept');?>..." onclick="popDept()" />
     </td>
 </tr>
 <tr>
