@@ -220,19 +220,34 @@ class CAppUI {
 	}
 
 	function login( $username, $password ) {
+		$username = trim( db_escape( $username ) );
+		$password = trim( db_escape( $password ) );
+
 		$sql = "
-		SELECT
-			user_id, user_first_name, user_last_name, user_company, user_department, user_email, user_type
+		SELECT user_id, user_password AS pwd1, password('$password') AS pwd2
 		FROM users, permissions
 		WHERE user_username = '$username'
-			AND user_password = password('$password')
 			AND users.user_id = permissions.permission_user
 			AND permission_value <> 0
 		";
 
+		if (!(db_loadHash( $sql, $row ))) {
+			return false;
+		}
+
+		if (strcmp( $row['pwd1'], $row['pwd2'] )) {
+			return false;
+		}
+
+		$sql = "
+		SELECT user_id, user_first_name, user_last_name, user_company, user_department, user_email, user_type
+		FROM users
+		WHERE user_id = {$row['user_id']} AND user_username = '$username'
+		";
+
 		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
-		if( !db_loadObject( $sql, $this ) ) {
+		if( !db_loadObject( $sql, $this ) ) {echo 'failed'; die;
 			return false;
 		}
 
