@@ -1,7 +1,4 @@
-<?php
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
-$isNotNew = @$_POST['project_id'];
-
+<?php /* PROJECTS $Id$ */
 $project = new CProject();
 
 if (($msg = $project->bind( $_POST ))) {
@@ -13,6 +10,7 @@ $project->project_start_date = db_unix2DateTime( $project->project_start_date );
 $project->project_end_date = db_unix2DateTime( $project->project_end_date );
 $project->project_actual_end_date = db_unix2DateTime( $project->project_actual_end_date );
 
+$del = isset($_POST['del']) ? $_POST['del'] : 0;
 if ($del) {
 	if (($msg = $project->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
@@ -25,6 +23,7 @@ if ($del) {
 	if (($msg = $project->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
+		$isNotNew = @$_POST['project_id'];
 		$AppUI->setMsg( "Project ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
 	}
 	$AppUI->redirect();
