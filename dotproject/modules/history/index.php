@@ -36,6 +36,7 @@ function show_history($history)
 //        return $history;
         $id = $history['history_item'];
         $module = $history['history_table'];        
+	$table_id = (substr($module, -1) == 's'?substr($module, 0, -1):$module) . '_id';
         
         if ($module == 'login')
                return 'User "' . $history['history_description'] . '" ' . $history['history_action'] . '.';
@@ -47,8 +48,11 @@ function show_history($history)
         else if ($history['history_action'] == 'delete')
                 return 'Deleted "' . $history['history_description'] . '" from ' . $module . ' module.';
 
-
-        switch ($history['history_table'])
+	$sql = "SELECT $table_id
+		FROM $module 
+		WHERE $table_id = $id";
+	if (db_loadResult($sql))
+        switch ($module)
         {
         case 'history':
                 $link = '&a=addedit&history_id='; break;
@@ -70,9 +74,11 @@ function show_history($history)
                 break;
         }
 
-        $msg .= 'item <a href="?m=' . $module . $link . $id . '">"' . $history['history_description'] . '"</a> in ';
-
-        $msg .= $module . ' module.'; // . $history;
+	if (!empty($link))
+		$link = '<a href="?m='.$module.$link.$id.'">'.$history['history_description'].'</a>';
+	else
+		$link = $history['history_description'];
+        $msg .= "item '$link' in $module module."; // . $history;
 
         return $msg;
 }
@@ -81,13 +87,11 @@ $filter = '';
 if (!empty($_POST['filter']))
         $filter = ' AND history_table = \'' . $_POST['filter'] . '\' ';
 
-$psql = 
-"SELECT * from history, users WHERE history_user = user_id $filter ORDER BY history_date DESC";
-$prc = db_exec( $psql );
-echo db_error();
-
-$history = array();
-
+$sql = "SELECT * from history, users 
+	WHERE history_user = user_id 
+	$filter 
+	ORDER BY history_date DESC";
+$history = db_loadList( $sql );
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
@@ -97,12 +101,12 @@ $history = array();
 	<th nowrap="nowrap"><?php echo $AppUI->_('User');?>&nbsp;&nbsp;</th>
 </tr>
 <?php
-while ($row = db_fetch_assoc( $prc )) {
+foreach($history as $row) {
   $module = $row['history_table'] == 'task_log'?'tasks':$row['history_table'];
   // Checking permissions.
   // TODO: Enable the lines below to activate new permissions.
-//        $perms = & $AppUI->acl();
-  if (true) //$perms->checkModuleItem($module, "access", $row['history_item']))
+  $perms = & $AppUI->acl();
+  if ($module == 'login' || $perms->checkModuleItem($module, "access", $row['history_item']))
   {
 ?>
 <tr>	

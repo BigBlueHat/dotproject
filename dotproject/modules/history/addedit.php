@@ -10,26 +10,42 @@ if (!$canEdit) {
 
 $action = @$_REQUEST["action"];
 if($action) {
-	$history_description = $_POST["history_description"];
-	$history_project = $_POST["history_project"];
+	$history_description = dPgetParam($_POST, 'history_description', '');
+	$history_project = dPgetParam($_POST, 'history_project', '');
 	$userid = $AppUI->user_id;
 	
-	if( $action == "add" ) {
-		$sql = "INSERT INTO history (history_table, history_action, history_date, history_description, history_user, history_project) " .
-		  "VALUES ('history', 'add', now(), '$history_description', $userid, $history_project)";
-		$okMsg = "History added";
-	} else if ( $action == "update" ) {
-		$sql = "UPDATE history SET history_description = '$history_description', history_project = '$history_project' WHERE history_id = $history_id";
-		$okMsg = "History updated";
-	} else if ( $action == "del" ) {
-		$sql = "DELETE FROM history WHERE history_id = $history_id";
-		$okMsg = "History deleted";				
+	if( $action == 'add' ) {
+		$sql = 'INSERT INTO history 
+					(history_table, 
+					history_action, 
+					history_date, 
+					history_description, 
+					history_user, 
+					history_project) ' .
+		  	"VALUES (
+				'history', 
+				'add', 
+				now(), 
+				'$history_description', 
+				$userid, 
+				$history_project)";
+		$okMsg = 'History added';
+	} else if ( $action == 'update' ) {
+		$sql = "UPDATE history 
+			SET history_description = '$history_description', 
+			history_project = '$history_project' 
+			WHERE history_id = $history_id";
+		$okMsg = 'History updated';
+	} else if ( $action == 'del' ) {
+		$sql = "DELETE FROM history 
+			WHERE history_id = $history_id";
+		$okMsg = 'History deleted';				
 	}
 	if(!db_exec($sql)) {
 		$AppUI->setMsg( db_error() );
 	} else {	
 		$AppUI->setMsg( $okMsg );
-                if ($action == "add")
+                if ($action == 'add')
                         db_exec('UPDATE history SET history_item=history_id WHERE history_table = \'history\'');
 	}
 	$AppUI->redirect();
@@ -62,8 +78,8 @@ db_loadHash( $sql, $history );
 	
 <script>
 	function delIt() {
-		AddEdit.action.value = "del";
-		AddEdit.submit();
+		document.AddEdit.action.value = "del";
+		document.AddEdit.submit();
 	}	
 </script>
 	
@@ -72,8 +88,10 @@ db_loadHash( $sql, $history );
 	<td width="60%">
 <?php
 // pull the projects list
-$sql = "SELECT project_id,project_name FROM projects ORDER BY project_name";
-$projects = arrayMerge( array( 0 => '('.$AppUI->_('any').')' ), db_loadHashList( $sql ) );
+$sql = "SELECT project_id,project_name 
+	FROM projects 
+	ORDER BY project_name";
+$projects = arrayMerge( array( 0 => '('.$AppUI->_('any', UI_OUTPUT_RAW).')' ), db_loadHashList( $sql ) );
 echo arraySelect( $projects, 'history_project', 'class="text"', $history["history_project"] );
 ?>
 	</td>
@@ -93,7 +111,7 @@ echo arraySelect( $projects, 'history_project', 'class="text"', $history["histor
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel'); ?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}">
+				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel'); ?>" onClick="javascript:if(confirm('Are you sure you want to cancel.', UI_OUTPUT_JS)){location.href = '?<?php echo $AppUI->getPlace();?>';}">
 			</td>
 			<td>
 				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save'); ?>" onClick="submit()">
