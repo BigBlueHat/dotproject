@@ -33,7 +33,7 @@ $project_id = $AppUI->getState( 'TaskIdxProject' ) ? $AppUI->getState( 'TaskIdxP
 require_once( $AppUI->getModuleClass( 'companies' ) );
 $obj = new CCompany();
 $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
-$filters2 = arrayMerge(  array( 'all' => $AppUI->_('All Companies') ), $companies );
+$filters2 = arrayMerge(  array( 'all' => $AppUI->_('All Companies', UI_OUTPUT_RAW) ), $companies );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Tasks', 'applet-48.png', $m, "$m.$a" );

@@ -141,9 +141,9 @@ if ($start_date && $end_date) {
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 if ($showWork=='1') {
-	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Work'), $AppUI->_('Start'), $AppUI->_('Finish')),array(230,16, 60,60));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name', UI_OUTPUT_RAW), $AppUI->_('Work'), $AppUI->_('Start', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW)),array(230,16, 60,60));
 } else {
-	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Dur.'), $AppUI->_('Start'), $AppUI->_('Finish')),array(230,16, 60,60));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name', UI_OUTPUT_RAW), $AppUI->_('Dur.'), $AppUI->_('Start', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW)),array(230,16, 60,60));
 }
 
 $graph->scale->tableTitle->Set($projects[$project_id]["project_name"]);
