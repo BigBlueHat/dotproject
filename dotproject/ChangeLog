@@ -1,3 +1,13 @@
+2003-09-29 23:18  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- Patch to enable users look gantt graph although some tasks doesnt have start or end date
+
+2003-09-29 03:55  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-28 17:23  (kripper)
 ---------------------------------
 modules/tasks/addedit.php
@@ -487,16 +497,6 @@ ChangeLog
 - updated for v1 release
 
 2003-08-30 07:55  (ajdonnison)
----------------------------------
-includes/main_functions.php
-- Fixed syntax error in define statement.
-
-2003-08-30 07:54  (ajdonnison)
----------------------------------
-modules/calendar/links_tasks.php
-- Fix for tasks on month boundaries.
-
-2003-08-30 07:05  (ajdonnison)
 ---------------------------------
 ...
 
