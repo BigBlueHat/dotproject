@@ -29,7 +29,7 @@ foreach ($comments as $row) {
 	$s .= '<td nowrap="nowrap">'.($task_log_date ? $task_log_date->toString( $df ) : '-').'</td>';
 	$s .= '<td width="30%">'.@$row["task_log_name"].'</td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
-	$s .= '<td width="100" align="right">'.sprintf( "%.1f", $row["task_log_hours"] ) . '</td>';
+	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . '</td>';
 	$s .= '<td width="100">'.$row["task_log_costcode"].'</td>';
 	$s .= '<td>'.str_replace(chr(10), "<br />",$row["task_log_description"]).'</td>';
 	$s .= '</tr>';
@@ -37,7 +37,7 @@ foreach ($comments as $row) {
 }
 $s .= '<tr bgcolor="white" valign="top">';
 $s .= '<td colspan="3" align="right">' . $AppUI->_('Total Hours') . ' =</td>';
-$s .= '<td align="right">' . sprintf( "%.1f", $hrs ) . '</td>';
+$s .= '<td align="right">' . sprintf( "%.2f", $hrs ) . '</td>';
 $s .= '</tr>';
 echo $s;
 ?>
