@@ -1,3 +1,13 @@
+2003-08-23 02:21  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Added MIME version header to try and resolve problems with IE6.
+
+2003-08-22 03:59  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-21 13:33  (jcgonz)
 ---------------------------------
 functions/tasks_func.php
@@ -488,16 +498,6 @@ modules/help/en/projects.view.hlp
 ---------------------------------
 modules/tasks/view.php
 - Read/edit permissions on the project allows now to view the tasks.
-- TODO: Dicuss about denying permission on specific tasks.
-
-2003-06-26 14:52  (kobudo)
----------------------------------
-modules/projects/view.php
-- Fix invisible "Staging URL" issue.
-
-2003-06-26 04:18  (kripper)
----------------------------------
-ChangeLog
 ...
 
 (This file has been wrapped)
