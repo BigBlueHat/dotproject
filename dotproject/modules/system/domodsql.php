@@ -62,14 +62,14 @@ switch ($cmd) {
 		$obj->bind( $config );
 	// add to the installed modules table
 		$obj->install();
-		$AppUI->setMsg( 'Module installed', UI_MSG_OK );
+		$AppUI->setMsg( 'Module installed', UI_MSG_OK, true );
 		break;
 	case 'remove':
 	// do the module specific stuff
 		$AppUI->setMsg( $setup->remove() );
 	// remove from the installed modules table
 		$obj->remove();
-		$AppUI->setMsg( 'Module removed', UI_MSG_ALERT );
+		$AppUI->setMsg( 'Module removed', UI_MSG_ALERT, true );
 		break;
 	case 'upgrade':
 		if ( $setup->upgrade( $obj->mod_version ) )	// returns true if upgrade succeeded
