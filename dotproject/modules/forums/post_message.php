@@ -100,7 +100,7 @@ function orderByName(x){
 <?php }else{?>
 <input type="hidden" name="message_published" value="0">
 <?php }?>
-<input type="hidden" name="message_author" value="<?php if(intval($mrow["message_author"]) ==0){echo $user_cookie;}else{echo $mrow["message_author"];}?>">
+<input type="hidden" name="message_author" value="<?php /*if(intval($mrow["message_author"]) ==0){*/echo $user_cookie;/*}else{echo $mrow["message_author"];}*/?>">
 <input type="hidden" name="message_id" value="<?php echo $message_id;?>">
 <TR bgcolor="silver">
 	<TD valign="top" colspan=2><b><i><?php if($message_id == 0){echo "Add";}else{echo "Edit";}?> Topic </i></b></td>
