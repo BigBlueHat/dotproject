@@ -196,8 +196,8 @@ function submitIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
 			<td>
 				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-				<input type="text" name="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-				<a href="#" onClick="popCalendar('actual_end_date','actual_end_date')">
+				<input type="text" name="actual_end_date" id="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
+				<a href="#" onClick="return showCalendar('actual_end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
 			</td>
