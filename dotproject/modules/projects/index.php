@@ -123,11 +123,43 @@ if ($canEdit) {
 }
 $titleBlock->show();
 
+$project_types = dPgetSysVal("ProjectStatus");
+
+$fixed_project_type_file = array("In Progress" => "vw_idx_active",
+                                 "Complete"    => "vw_idx_complete",
+                                 "Archived"    => "vw_idx_archived");
+// we need to manually add Archived project type because this status is defined by 
+// other field (Active) in the project table, not project_status
+$project_types[] = "Archived";
+$project_types[] = "All";
+
+/**
+* Now, we will figure out which vw_idx file are available
+* for each project type using the $fixed_project_type_file array 
+*/
+$project_type_file = array();
+
+foreach($project_types as $project_type){
+	$project_type = trim($project_type);
+	if(isset($fixed_project_type_file[$project_type])){
+		$project_file_type[$project_type] = $fixed_project_type_file[$project_type];
+	} else { // if there is no fixed vw_idx file, we will use vw_idx_proposed
+		$project_file_type[$project_type] = "vw_idx_proposed";
+	}
+}
+
+$show_all_projects = false;
+if($tab == count($project_types)-1) $show_all_projects = true;
+
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
-$tabBox->add( 'vw_idx_active'  , 'Active Projects' );
+foreach($project_types as $project_type){
+	$project_type = trim($project_type);
+	$tabBox->add($project_file_type[$project_type], $project_type);
+}
+/*$tabBox->add( 'vw_idx_active'  , 'Active Projects' );
 $tabBox->add( 'vw_idx_proposed', 'Proposed Projects' );
 $tabBox->add( 'vw_idx_complete', 'Completed Projects' );
-$tabBox->add( 'vw_idx_archived', 'Archived Projects' );
+$tabBox->add( 'vw_idx_archived', 'Archived Projects' );*/
 $tabBox->show();
 ?>

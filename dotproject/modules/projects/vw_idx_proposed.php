@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-GLOBAL $AppUI, $projects, $company_id, $pstatus;
+GLOBAL $AppUI, $projects, $company_id, $pstatus, $show_all_projects, $project_types;
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 	// Let's check if the user submited the change status form
@@ -25,14 +25,25 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 	<th nowrap="nowrap">
 		<?php echo $AppUI->_('Selection'); ?>
 	</th>
+	<?php
+	if($show_all_projects){
+		?>
+		<th nowrap="nowrap">
+			<?php echo $AppUI->_('Status'); ?>
+		</th>
+		<?php
+	}
+	?>
 </tr>
 
 <?php
 $CR = "\n";
 $CT = "\n\t";
 $none = true;
+
 foreach ($projects as $row) {
-	if ($row["project_active"] > 0 && $row["project_status"] == 1) {
+	if ($show_all_projects || 
+	    ($row["project_active"] > 0 && $row["project_status"] == $AppUI->getState( 'ProjIdxTab' ))) {
 		$none = false;
 		$end_date = intval( @$row["project_end_date"] ) ? new CDate( $row["project_end_date"] ) : null;
 
@@ -53,6 +64,13 @@ foreach ($projects as $row) {
 		$s .= $CR . '<td align="center">';
 		$s .= $CT . '<input type="checkbox" name="project_id[]" value="'.$row["project_id"].'" />';
 		$s .= $CR . '</td>';
+
+		if($show_all_projects){
+			$s .= $CR . '<td align="center">';
+			$s .= $CT . $project_types[$row["project_status"]];
+			$s .= $CR . '</td>';
+		}
+		
 		$s .= $CR . '</tr>';
 		echo $s;
 	}

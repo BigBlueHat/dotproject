@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Archived",
 "Active",
 "Actual Budget",
 "Actual End Date",
