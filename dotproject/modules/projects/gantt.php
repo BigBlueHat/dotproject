@@ -7,9 +7,11 @@ global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $proje
 $filter1 = array();
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
 $projectStatus = arrayMerge( array( '-2' => $AppUI->_('All w/o in progress')), $projectStatus);
+$proFilter = dPgetParam($_REQUEST, 'proFilter', '-1');
+
 if ($proFilter == '-2'){
         $filter1[] = "project_status != 3 ";
-} else if (isset($proFilter) && $proFilter != '-1') {
+} else if ($proFilter != '-1') {
         $filter1[] = "project_status = $proFilter ";
 }
 if ($company_id != 0) {
@@ -125,7 +127,7 @@ if ($day_diff > 240){
 
 $row = 0;
 
-if(sizeof($projects) == 0) {
+if (!is_array($projects) || sizeof($projects) == 0) {
  $d = new CDate();
  $bar = new GanttBar($row++, array(' '.$AppUI->_('No projects found'),  ' ', ' ', ' '), $d->getDate(), $d->getDate(), ' ', 0.6);
  $bar->title->SetCOlor('red');
