@@ -226,7 +226,7 @@ foreach($projects as $p) {
 		
  		$q  = new DBQuery;
 		$q->addTable('tasks');
-		$q->addQuery('DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, 			tasks.task_milestone');
+		$q->addQuery('DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, tasks.task_milestone');
 		$q->addJoin('companies', 'c1', 'p.project_company = c1.company_id');
 		$q->addJoin('projects', 'p', 'p.project_id = tasks.task_project');
 		$q->addWhere("p.project_id = {$p["project_id"]}");
@@ -242,7 +242,7 @@ foreach($projects as $p) {
  			{/*		*/
  				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", ' ', ' '/*substr($t["task_start_date"],  substr($t["task_end_date"], 2, 8)*/, ' '), ' ', ' ', ' '/*chr(32)*/, 0.6);
 // 				$bar2 = new GanttBar($row++, array("   * ".$t["task_name"], $t["task_start_date"], $t["task_end_date"]," "), "0", "0;", 0.6);
-				$bar2->title->SetColor("#".$p['project_color_identifier']);
+				$bar2->title->SetColor( bestColor( '#ffffff', '#'.$p['project_color_identifier'], '#000000' ) );
  				$bar2->SetFillColor("#".$p['project_color_identifier']);		
  				$graph->Add($bar2);
  			}
