@@ -55,6 +55,7 @@
 "adminValidLastName"=>"Please enter a last name",
 "adminValidPassword"=>"Please enter a valid password(greater then 4 chars).",
 "adminValidUserName"=>"Please enter a valid user name.",
+"all",
 "already exists. Try another username.",
 "change password",
 "companies list",
