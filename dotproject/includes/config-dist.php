@@ -35,7 +35,6 @@ $dPconfig['company_name'] = "My Company";
 $dPconfig['page_title'] = "DotProject V1.0 pre-alpha";
 $dPconfig['base_url'] = "http://localhost/dotproject";
 $dPconfig['site_domain'] = "dotproject.net";
-$dPconfig['daily_working_hours'] = 8.0;
 
 // enable if you want to be able to see other users's tasks
 $dPconfig['show_all_tasks'] = false;
