@@ -25,9 +25,9 @@ $q->clear();
 	$assigned_resources = array();
 
 
+$resources = array();
 if ($loadFromTab && isset($_SESSION['tasks_subform']['hresource_assign'])) {
 	$initResAssignment = "";
-	$resources = array();
 	foreach (explode(';', $_SESSION['tasks_subform']['hresource_assign']) as $perc) {
 		if ($perc) {
 			list ($rid, $perc) = explode('=', $perc);
@@ -39,7 +39,6 @@ if ($loadFromTab && isset($_SESSION['tasks_subform']['hresource_assign'])) {
 } else if ($task_id == 0) {
 } else {
 	$initResAssignment = "";
-	$resources = array();
 	// Pull resources on this task
 	$q =& new DBQuery;
 	$q->addTable('resource_tasks');
