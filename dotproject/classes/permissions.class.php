@@ -327,28 +327,23 @@ class dPacl extends gacl_api {
 		return FALSE;
 	}
 
-	$query  = '
-			SELECT		g1.id, g1.name, g1.value, g1.parent_id
-			FROM		'. $table .' g1';
-
+	$q = new DBQuery;
+	$q->addTable($table, 'g1');
+	$q->addQuery('g1.id, g1.name, g1.value, g1.parent_id');
+	$q->addOrder('g1.value');
+	
 	//FIXME-mikeb: Why is group_id in quotes?
 	switch (strtoupper($recurse)) {
 		case 'RECURSE':
-			$query .= '
-			LEFT JOIN 	'. $table .' g2 ON g2.lft<g1.lft AND g2.rgt>g1.rgt
-			WHERE		g2.id='. $group_id;
+			$q->addJoin($table, 'g2', 'g2.lft<g1.lft AND g2.rgt>g1.rgt');
+			$q->addWhere('g2.id='. $group_id);
 			break;
 		default:
-			$query .= '
-			WHERE		g1.parent_id='. $group_id;
+			$q->addWhere('g1.parent_id='. $group_id);
 	}
-
-	$query .= '
-			ORDER BY	g1.value';
-
 	
 	$result = array();
-	if ($rs = $this->db->Execute($query)) {
+	if ($rs = $q->exec()) {
 		while ($row = $rs->FetchRow())
 			$result[] = array(
 			 'id' => $row[0],
@@ -382,8 +377,11 @@ class dPacl extends gacl_api {
     // Check to see if the user ACL exists first.
     $id = $this->get_object_id("user", $user, "aro");
     if (! $id) {
-      $sql = "SELECT user_username from users where user_id = $user";
-      $rq = db_exec($sql);
+      $q = new DBQuery;
+      $q->addTable('users');
+      $q->addQuery('user_username');
+      $q->addWhere("user_id = $user");
+      $rq = $q->exec();
       if (! $rq) {
 	dprint(__FILE__, __LINE__, 0, "Cannot add role, user $user does not exist!<br>" . db_error() );
 	return false;
@@ -475,16 +473,15 @@ class dPacl extends gacl_api {
 		return FALSE;
 	}
 
-	$query  = "
-			SELECT		g1.id, g1.name, g1.value, g1.parent_id
-			FROM		$table g1, $map_table g2
-			WHERE		g1.id = g2.group_id
-			AND		g2.$map_field = $id
-			ORDER BY	g1.value";
+	$q = new DBQuery;
+	$q->addTable($table, 'g1');
+	$q->addTable( $map_table, 'g2');
+	$q->addQuery('g1.id, g1.name, g1.value, g1.parent_id');
+	$q->addWhere("g1.id = g2.group_id AND g2.$map_field = $id");
+	$q->addOrder('g1.value');
 
-	
 	$result = array();
-	if ($rs = $this->db->Execute($query)) {
+	if ($rs = $q->exec()) {
 		while ($row = $rs->FetchRow())
 			$result[] = array(
 			 'id' => $row[0],
@@ -525,27 +522,27 @@ class dPacl extends gacl_api {
 
 		$this->debug_text("get_object(): Section Value: $section_value Object Type: $object_type");
 
-		$query = 'SELECT id, section_value, name, value, order_value, hidden FROM '. $table;
-
-		$where = array();
-
+		$q = new DBQuery;
+		$q->addTable($table);
+		$q->addQuery('id, section_value, name, value, order_value, hidden');
+	
 		if (!empty($value)) {
-		 	$where[] = 'value=' . $this->db->quote($value);
+			$q->addWhere('value=' . $this->db->quote($value));
+
 		}
 
 		if (!empty($section_value)) {
-			$where[] = 'section_value='. $this->db->quote($section_value);
+			$q->addWhere('section_value='. $this->db->quote($section_value));
+
 		}
 
 		if ($return_hidden==0 AND $object_type != 'acl') {
-			$where[] = 'hidden=0';
+			$q->addWhere('hidden=0');
+
 		}
 
-		if (!empty($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}
 
-		$rs = $this->db->Execute($query);
+		$rs = $q->exec();
 		$row = $rs->FetchRow();
 
 		if (!is_array($row)) {
@@ -590,29 +587,25 @@ class dPacl extends gacl_api {
 
 		$this->debug_text("get_objects(): Section Value: $section_value Object Type: $object_type");
 
-		$query = 'SELECT id,section_value,name,value,order_value,hidden FROM '. $table;
-
-		$where = array();
+		$q = new DBQuery;
+		$q->addTable($table);
+		$q->addQuery('id, section_value, name, value, order_value, hidden');
 
 		if (!empty($section_value)) {
-			$where[] = 'section_value='. $this->db->quote($section_value);
+			$q->addWhere('section_value='. $this->db->quote($section_value));
 		}
 
 		if ($return_hidden==0) {
-			$where[] = 'hidden=0';
+			$q->addWhere('hidden=0');
 		}
 
 		if (!empty($limit_clause)) {
-			$where[] = $limit_clause;
+			$q->addWhere($limit_clause);
 		}
 
-		if (!empty($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}
+		$q->addOrder('order_value');
 
-		$query .= ' ORDER BY order_value';
-
-		$rs = $this->db->Execute($query);
+		$rs = $q->exec();
 
 		if (!is_object($rs)) {
 			$this->debug_db('get_objects');
@@ -658,28 +651,29 @@ class dPacl extends gacl_api {
 		$this->debug_text("get_objects(): Section Value: $section_value Object Type: $object_type");
 
 		$query = 'SELECT id, value, name, order_value, hidden FROM '. $table;
+		$q = new DBQuery;
+		$q->addTable($table);
+		$q->addQuery('id, value, name, order_value, hidden');
 
-		$where = array();
 
 		if (!empty($section_value)) {
-			$where[] = 'value='. $this->db->quote($section_value);
+			$q->addWhere('value='. $this->db->quote($section_value));
+
 		}
 
 		if ($return_hidden==0) {
-			$where[] = 'hidden=0';
+			$q->addWhere('hidden=0');
+
 		}
 
 		if (!empty($limit_clause)) {
-			$where[] = $limit_clause;
+			$q->addWhere($limit_clause);
+
 		}
 
-		if (!empty($where)) {
-			$query .= ' WHERE '. implode(' AND ', $where);
-		}
+		$q->addOrder('order_value');
 
-		$query .= ' ORDER BY order_value';
-
-		$rs = $this->db->Execute($query);
+		$rs = $q->exec();
 
 		if (!is_object($rs)) {
 			$this->debug_db('get_object_sections');
