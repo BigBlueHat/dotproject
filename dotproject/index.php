@@ -54,8 +54,8 @@ if (get_cfg_var( 'session.auto_start' ) > 0) {
 	session_write_close();
 }
 session_start();
-session_register( 'AppUI' ); 
-  
+session_register( 'AppUI' );
+
 // write the HTML headers
 header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
 header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modified
@@ -72,7 +72,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 $AppUI =& $_SESSION['AppUI'];
 $AppUI->setConfig( $dPconfig );
 $AppUI->checkStyle();
- 
+
 // load the commonly used classes
 require_once( $AppUI->getSystemClass( 'date' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
@@ -93,6 +93,9 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 		require "./includes/sendpass.php";
 		sendNewPass();
 	} else {
+		@include_once( "./locales/$AppUI->user_locale/locales.php" );
+		@include_once( "./locales/core.php" );
+		setlocale( LC_TIME, $AppUI->user_locale );
 		require "./style/$uistyle/lostpass.php";
 	}
 	exit();
@@ -171,13 +174,13 @@ $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 
 $user_locale = $AppUI->user_locale;
 if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
-    // This is a server using Windows, locales screwed up, not ISO standard 
+    // This is a server using Windows, locales screwed up, not ISO standard
     switch ($user_locale) {
     	case "es":
     		$user_locale = "sp";
     		break;
     }
-} 	
+}
 setlocale( LC_TIME, $user_locale );
 
 @include_once( "./functions/" . $m . "_func.php" );
@@ -190,7 +193,7 @@ $canRead = !getDenyRead( $m );
 $canEdit = !getDenyEdit( $m );
 $canAuthor = $canEdit;
 $canDelete = $canEdit;
- 
+
 if ( !$suppressHeaders ) {
 	// output the character set header
 	if (isset( $locale_char_set )) {
@@ -199,11 +202,11 @@ if ( !$suppressHeaders ) {
 }
 
 /*
- * 
+ *
  * TODO: Permissions should be handled by each file.
  * Denying access from index.php still doesn't asure
  * someone won't access directly skipping this security check.
- * 
+ *
 // bounce the user if they don't have at least read access
 if (!(
 	  // however, some modules are accessible by anyone
