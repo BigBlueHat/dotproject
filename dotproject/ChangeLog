@@ -1,3 +1,14 @@
+2003-09-22 05:55  (gregorerhardt)
+---------------------------------
+modules/tasks/view.php
+modules/tasks/vw_logs.php
+- bug809030:  ro-users cannot anymore access vw_log_update
+
+2003-09-20 03:58  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-19 12:02  (gregorerhardt)
 ---------------------------------
 modules/tasks/addedit.php
@@ -487,17 +498,6 @@ includes/main_functions.php
 2003-08-29 09:35  (jcgonz)
 ---------------------------------
 modules/projects/index.php
-- Now the default projects tab is 'active projects' not 'proposed projects'
-
-2003-08-28 04:09  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-08-27 14:09  (jcgonz)
----------------------------------
-modules/projects/vw_idx_proposed.php
-- Added the"proposed projects" in the projects module. The user is able to activate (change status) the project using the "update projects status" button at the bottom.
 ...
 
 (This file has been wrapped)
