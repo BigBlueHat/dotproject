@@ -118,3 +118,10 @@ CREATE TABLE `user_preferences` (
 #
 INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
 INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
+
+#
+# Table changes 16 Dec 2002
+# Allowing forum_moderated field to hold the user id of the moderator
+#
+ALTER TABLE `forums` CHANGE `forum_moderated` `forum_moderated` INT DEFAULT "0" NOT NULL
+
