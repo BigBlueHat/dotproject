@@ -86,10 +86,17 @@
 		if(!is_array($current_configuration)) $current_configuration = array();
 		?>
 			<script language='javascript'>
+				<?php
+				// security improvement:
+				// some javascript functions may not appear on client side in case of user not having write permissions
+				// else users would be able to arbitrarily run 'bad' functions
+				if ($canEdit) {
+				?>
 				function deleteField(key){
 					document.frmEdit.key_to_delete.value = key;
 					document.frmEdit.submit();
 				}
+				<?php } ?>
 			</script>
 			<h3><?php echo $current_type; ?></h3>
 			<form action='index.php?m=system&a=custom_field_editor&custom_field_type=<?php echo $current_type; ?>' method='post' name='frmEdit'>

@@ -9,6 +9,12 @@ $titleBlock->addCrumb( "?m=system", "System Admin" );
 $titleBlock->show();
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt(id) {
 	if (confirm( 'Are you sure you want to delete this?' )) {
 		f = document.sysKeyFrm;
@@ -17,6 +23,7 @@ function delIt(id) {
 		f.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">

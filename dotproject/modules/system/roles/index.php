@@ -21,6 +21,12 @@ $crumbs["?m=system"] = "System Admin";
 ?>
 
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt(id) {
 	if (confirm( 'Are you sure you want to delete this?' )) {
 		f = document.roleFrm;
@@ -29,6 +35,7 @@ function delIt(id) {
 		f.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <span style="color:red"><strong>Note this function is still in development and testing phase</strong></span>
