@@ -158,6 +158,7 @@ $u = '';
 // check if we are logged in
 if ($AppUI->doLogin()) {
 	// load basic locale settings
+	$AppUI->setUserLocale();
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
 	setlocale( LC_TIME, $AppUI->user_lang );
