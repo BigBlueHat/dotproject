@@ -13,6 +13,7 @@
 "Duration",
 "Edit Event",
 "End Date",
+"Event Cancelled",
 "Event Filter",
 "Event Title",
 "Events",
