@@ -1,3 +1,14 @@
+2003-12-22 16:55  (robertoibarra)
+---------------------------------
+locales/en/admin.inc
+modules/tasks/view.php
+- Text changed: the tab within a task previously named Tasks caused confusion, renamed to Child Tasks
+
+2003-12-22 09:20  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-21 13:04  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.php
@@ -487,17 +498,6 @@ ChangeLog
 ---------------------------------
 modules/ticketsmith/attach.php
 modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
-- securing ticketsmith in order to fix bug845978
-
-2003-11-18 06:46  (kripper)
----------------------------------
-ChangeLog
 ...
 
 (This file has been wrapped)
