@@ -70,42 +70,11 @@ class CAppUI {
 
 		$this->defaultRedirect = "";
 // set up the default preferences
-		$sql = "
-		SELECT pref_name, pref_value
-		FROM user_preferences
-		WHERE pref_user = 0
-		";
-		writeDebug( $sql, 'Default Preferences SQL', __FILE__, __LINE__ );
-
 		$this->user_locale = $this->base_locale;				
-		$this->user_prefs = db_loadHashList( $sql );
+		$this->user_prefs = array();
+		$this->loadPrefs( 0 );
 		
 		$this->checkStyle();
-		
-		// *** generate installed styles array ***
-				
-		GLOBAL $root_dir, $host_locale;
-
-		// load styles description locales
-		ob_start();
-		@readfile( "$root_dir/locales/$host_locale/styles.inc" );
-		eval( "\$GLOBALS['translate']=array(".ob_get_contents()."\n'0');" );
-		ob_end_clean();
-		
-		// read installed styles directory
-		$d = dir("$root_dir/style");
-		while (false !== ($style = $d->read())) {
-			if($style != "." && $style != ".." && $style != "CVS") {
-				$desc = $this->_("description_$style");
-				
-				if(substr($desc, -1) == $this->locale_alert) {
-					// use style name as description when no locale availaible
-					$desc = ucfirst($style);
-				}
-				$this->styles[$style] = $desc;
-			}
-		}
-		$d->close();
 	}
 	
 	function checkStyle() {
@@ -114,15 +83,34 @@ class CAppUI {
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
 		
-		if($uistyle && !is_dir("$root_dir/style/$uistyle")) {
+		if ($uistyle && !is_dir("$root_dir/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
 			$this->setPref( 'UISTYLE', $host_style );
 		}
 	}
+
+	function readDir( $path ) {
+		GLOBAL $root_dir;
+
+		$dirs = array();
+		$d = dir("$root_dir/style");
+		while (false !== ($name = $d->read())) {
+			if($name != "." && $name != ".." && $name != "CVS") {
+				$dirs[$name] = $name;
+			}
+		}
+		$d->close();
+		return $dirs;
+	}
 	
 // localisation
-	function setUserLocale( $loc ) {
-		$this->user_locale = $loc;
+	function setUserLocale( $loc='' ) {
+		GLOBAL $host_locale;
+		if ($loc) {
+			$this->user_locale = $loc;
+		} else {
+			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
+		}
 	}
 /*
 	Translate string to the local language [same form as the gettext abbreviation]
@@ -248,17 +236,9 @@ class CAppUI {
 			return false;
 		}
 // load the user preferences
-		$sql = "
-		SELECT pref_name, pref_value
-		FROM user_preferences
-		WHERE pref_user = $this->user_id
-		";
-		writeDebug( $sql, 'User Preferences SQL', __FILE__, __LINE__ );
-
-		$prefs = db_loadHashList( $sql );
-		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
+		$this->loadPrefs( $this->user_id );
+		$this->setUserLocale();
 		$this->checkStyle();
-		$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
 
 		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
 
@@ -278,9 +258,16 @@ class CAppUI {
 	}
 
 	function setPref( $name, $val ) {
-		@$this->user_prefs[$name] = $val;
+		$this->user_prefs[$name] = $val;
 	}
-	
+
+	function loadPrefs( $uid=0 ) {
+		$sql = "SELECT pref_name, pref_value FROM user_preferences WHERE pref_user = $uid";
+		//writeDebug( $sql, "Preferences for user $uid, SQL", __FILE__, __LINE__ );
+		$prefs = db_loadHashList( $sql );
+		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
+	}
+
 	function getProject() {
 		return $this->project_id;
 	}
