@@ -41,13 +41,13 @@ function tboff(){
 }
 </script>
 <title><?php echo $page_title;?></title>
-<link rel="stylesheet" type="text/css" href="./style/demo1/main.css">
+<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle ?>/main.css">
 </head>
 <body bgcolor="#f0f0f0" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-    <td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
+    <td background="style/<?php echo $uistyle ?>/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
 </tr>
 <tr>
     <td style="border: #848284 1px outset;background-color:#d5d3ce;color:#000000">
