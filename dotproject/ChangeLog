@@ -1,4 +1,69 @@
-2004-08-24 00:53  (gregorerhardt)
+2004-08-24 02:50  (revelation7)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/view.php
+- Fixed issue #0000018: Backslash in text field being stripped out.  Added parameters to obj->load in addedt.php and db_loadObject in view.php for tasks.
+
+2004-08-23 23:08  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Display file size in human readable form.
+
+2004-08-23 23:01  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+- Reload page after attempting to fix db errors, only if the changes successfully got rid of the error.
+
+2004-08-23 20:20  (jcgonz)
+---------------------------------
+includes/db_adodb.php
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+- Updated some invalid SQLs
+- Removed location.reload() if an error in a SQL statement appears; it looped dotProject for
+- ever. Sorry if I'm broking someone else's funciontallity. Its a really good idea to try
+- to update the databases if an SQL error appears; the problem is that (for developing)
+- it's a huge problem.
+
+2004-08-23 19:32  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Created $style var because if no start_date defined, the
+- variable isn't defined neither
+
+2004-08-23 19:17  (jcgonz)
+---------------------------------
+modules/admin/vw_usr_log.php
+- In order to enable admin to see individual access reports
+
+2004-08-23 19:15  (jcgonz)
+---------------------------------
+index.php
+- Solved another session issue.
+- Actually I discovered that the history module and
+- the access log registry are doing more or less the
+- same thing. The only substantial difference is that
+- the access log registry is built in the users module
+- and it calculates the idle time. Those calcultations
+- are shown within the user lists and within the user
+- details.
+
+2004-08-23 19:08  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2004-08-23 19:02  (jcgonz)
+---------------------------------
+index.php
+- Solved a session issue with access log registry
+
+2004-08-23 18:55  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Added a check up to figure out if the last_update variable isset.
+
+2004-08-23 18:53  (gregorerhardt)
 ---------------------------------
 modules/projects/addedit.php
 modules/projects/view.php
@@ -6,19 +71,19 @@ modules/tasks/addedit.php
 modules/tasks/tasksperuser_sub.php
 - project and task priority is sysval now
 
-2004-08-24 00:49  (gregorerhardt)
+2004-08-23 18:49  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
 - project and task priority is sysval now
 
-2004-08-24 00:42  (jcgonz)
+2004-08-23 18:42  (jcgonz)
 ---------------------------------
 index.php
 classes/ui.class.php
 - Fixed a typo
 
-2004-08-24 00:31  (jcgonz)
+2004-08-23 18:31  (jcgonz)
 ---------------------------------
 index.php
 classes/ui.class.php
@@ -32,7 +97,7 @@ modules/admin/vw_usr.php
 - Added user access log and online status distinct(including idle time)
 - Features done by ing_olaf
 
-2004-08-23 23:24  (gregorerhardt)
+2004-08-23 17:24  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
@@ -42,38 +107,26 @@ modules/projects/projects.class.php
 modules/projects/view.php
 - changed over to dynamic project_actual_end_date \ndefined by last task_end_date
 
-2004-08-23 14:50  (cyberhorse)
+2004-08-23 08:50  (cyberhorse)
 ---------------------------------
 modules/files/index_table.php
 - forgot closing link tag
 
-2004-08-23 14:46  (cyberhorse)
+2004-08-23 08:46  (cyberhorse)
 ---------------------------------
 modules/files/index_table.php
 - fixed related tasks displaying on colapsable menu.
 
-2004-08-23 10:10  (kripper)
+2004-08-23 04:10  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2004-08-23 01:42  (ajdonnison)
+2004-08-22 19:42  (ajdonnison)
 ---------------------------------
 db/upgrade_latest.sql
 - Changed to allow syskeys/sysvals inserts to dynamically get the correct
 - ID.
-
-2004-08-22 20:56  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser.php
-modules/tasks/tasksperuser_sub.php
-- added comapnies and projects filters
-
-2004-08-22 19:58  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-modules/tasks/addedit.php
-- allow assignment at 0 percent level
 
 2004-08-22 14:56  (gregorerhardt)
 ---------------------------------
@@ -445,130 +498,6 @@ modules/tasks/view.php
 - Usability issue; compressed a litte bit the Task's view
 - by moving the description field.
 
-2004-08-19 07:44  (gregorerhardt)
----------------------------------
-index.php
-- fixed error causing installer not to run
-
-2004-08-19 07:09  (gregorerhardt)
----------------------------------
-index.php
-- fixed error in installe mode
-
-2004-08-19 06:52  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-- fixed corruption because of missing values in admin entry in users table
-
-2004-08-19 04:07  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-18 21:04  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- removed some nowrap tags
-
-2004-08-18 20:58  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- save session place
-
-2004-08-18 20:51  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- rowspan, SQLsort, filterSelection corrected
-
-2004-08-18 20:04  (gregorerhardt)
----------------------------------
-modules/tasks/index.php
-- usernames in filter should be sorted by username rather than by id
-
-2004-08-18 19:52  (gregorerhardt)
----------------------------------
-modules/tasks/todo.php
-- print day names for dates
-
-2004-08-18 19:43  (gregorerhardt)
----------------------------------
-modules/tasks/todo.php
-- sort by end date is better than by start date :)
-
-2004-08-18 19:28  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-- better approach for the top buttons
-
-2004-08-18 19:04  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-- put buttons twice on page, added button for save and add a new task
-
-2004-08-18 17:59  (gregorerhardt)
----------------------------------
-modules/tasks/view.php
-modules/projects/view.php
-- added a button for new file for projects and tasks
-
-2004-08-18 04:08  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-17 08:00  (ajdonnison)
----------------------------------
-modules/projects/view.php
-- Changed contact link to the view link rather than the edit link
-
-2004-08-16 04:07  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-16 03:03  (revelation7)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-includes/config-dist.php
-locales/en/admin.inc
-modules/admin/addedituser.php
-modules/contacts/addedit.php
-- Fixed issue #0000049, increased field length and allow admin to set mininum length of the field.
-
-2004-08-15 20:13  (ajdonnison)
----------------------------------
-index.php
-includes/config-dist.php
-- Added option to set default view to today view.
-
-2004-08-15 10:21  (cyberhorse)
----------------------------------
-classes/dp.class.php
-- added default addHistory entries on add/update/delete operations.
-
-2004-08-15 10:21  (cyberhorse)
----------------------------------
-modules/companies/addedit.php
-- Changed the default owner for a newly created company to the current user.
-
-2004-08-15 10:00  (cyberhorse)
----------------------------------
-modules/projects/projects.class.php
-- Added addHistory entries on add/edit/delete projects
-
-2004-08-15 09:54  (cyberhorse)
----------------------------------
-modules/tasks/tasks.class.php
-- Fixed history entries (recording ID as well, so links can be done later).
-
-2004-08-15 09:53  (cyberhorse)
----------------------------------
-modules/history/index.php
-- Sorting the history entries in reverse order, so newest entry shows on top.
-
-2004-08-15 09:30  (cyberhorse)
 ...
 
 (This file has been wrapped)
