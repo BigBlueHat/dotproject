@@ -4,15 +4,17 @@
 ##
 GLOBAL $AppUI, $company_id, $pstatus;
 
+$df = $AppUI->getPref('SHDATEFORMAT');
+
 $sql = "
 SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
-	DATE_FORMAT(project_start_date, '%d-%b-%Y' ) project_start_date,
+	DATE_FORMAT(project_start_date, '$df' ) project_start_date,
 	users.user_first_name, users.user_last_name
-from projects
-left join users on users.user_id = projects.project_owner
-where project_company = $company_id
-	and project_active <> 0
-order by project_name
+FROM projects
+LEFT JOIN users ON users.user_id = projects.project_owner
+WHERE project_company = $company_id
+	AND project_active <> 0
+ORDER BY project_name
 ";
 
 $s = '';
@@ -30,7 +32,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 	foreach ($rows as $row) {
 		$s .= '<tr>';
 		$s .= '<td width="100%">';
-		$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a></td>';
+		$s .= '<a href="?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a></td>';
 		$s .= '<td nowrap="nowrap">'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
 		$s .= '<td nowrap="nowrap">'.$row["project_start_date"].'</td>';
 		$s .= '<td nowrap="nowrap">'.$pstatus[$row["project_status"]].'</td>';
