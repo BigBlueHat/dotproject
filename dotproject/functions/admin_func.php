@@ -10,4 +10,7 @@ $utypes = array(
 	6 => 'Supervisor',
 	7 => 'Employee'
 );
+##
+##	NOTE: the user_type field in the users table must be changed to a TINYINT
+##
 ?>
