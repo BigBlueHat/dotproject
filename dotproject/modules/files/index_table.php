@@ -189,7 +189,6 @@ if ($canRead) {
 	$files = $q2->loadList();
 	$file_versions = $q3->loadHashList('file_id');
 }
-
 // counts total recs from selection
 $xpg_totalrecs = count($q->loadList());
 
@@ -308,7 +307,7 @@ foreach ($files as $file_row) {
 	<td width="5%" nowrap="nowrap" align="center">
         <?php
                 $hidden_table = '';
-                echo $row['file_lastversion'];
+                echo $file_row['file_lastversion'];
                 if ($file_row['file_versions'] > 1)
                 {
                  echo ' <a href="#" onClick="expand(\'versions_' . ++$id . '\'); ">(' . $file_row['file_versions'] . ')</a>';
