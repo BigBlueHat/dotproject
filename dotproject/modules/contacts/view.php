@@ -73,6 +73,10 @@ function delIt(){
 	<td valign="top" width="50%">
 		<table border="0" cellpadding="1" cellspacing="1" class="details" width="100%">
 		<tr>
+			<td align="right"><?php echo $AppUI->_('Job Title');?>:</td>
+			<td><?php echo @$row->contact_job;?></td>
+		</tr>
+		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Company');?>:</td>
 			<td nowrap><?php echo @$row->contact_company;?></td>
 		</tr>
@@ -121,12 +125,24 @@ function delIt(){
 			<td nowrap><a href="mailto:<?php echo @$row->contact_email2;?>"><?php echo @$row->contact_email2;?></a></td>
 		</tr>
 		<tr>
+			<td align="right">Jabber:</td>
+			<td><?php echo @$row->contact_jabber;?></td>
+		</tr>
+		<tr>
 			<td align="right">ICQ:</td>
 			<td><?php echo @$row->contact_icq;?></td>
 		</tr>
 		<tr>
 			<td align="right">AOL:</td>
 			<td><?php echo @$row->contact_aol;?></td>
+		</tr>
+		<tr>
+			<td align="right">MSN:</td>
+			<td><?php echo @$row->contact_msn;?></td>
+		</tr>
+		<tr>
+			<td align="right">Yahoo:</td>
+			<td><?php echo @$row->contact_yahoo?></td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Birthday');?>:</td>

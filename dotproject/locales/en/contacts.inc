@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Job Title",
 "Add Contact",
 "Contact Notes",
 "Display Name",

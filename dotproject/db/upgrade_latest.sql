@@ -540,3 +540,10 @@ ALTER TABLE `projects` CHANGE `project_target_budget` `project_target_budget` DE
 ALTER TABLE `projects` CHANGE `project_actual_budget` `project_actual_budget` DECIMAL(10,2) default '0.00';
 ALTER TABLE `tasks` CHANGE `task_target_budget` `task_target_budget` DECIMAL(10,2) default '0.00';
 
+# 20041204
+# Added new fields for contacts
+#
+ALTER TABLE `contacts` ADD `contact_job` VARCHAR( 255 ) NOT NULL ,
+ADD `contact_jabber` VARCHAR( 255 ) NOT NULL ,
+ADD `contact_msn` VARCHAR( 255 ) NOT NULL ,
+ADD `contact_yahoo` VARCHAR( 255 ) NOT NULL ;

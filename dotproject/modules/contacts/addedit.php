@@ -152,6 +152,12 @@ function companyChange() {
 	<td valign="top" width="50%">
 		<table border="0" cellpadding="1" cellspacing="1" class="details" width="100%">
 		<tr>
+			<td align="right" width="100"><?php echo $AppUI->_('Job Title');?>:</td>
+			<td nowrap>
+				<input type="text" class="text" name="contact_job" value="<?php echo @$row->contact_job;?>" maxlength="100" size="25" />
+			</td>
+		</tr>
+		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Company');?>:</td>
 			<td nowrap>
 				<input type="text" class="text" name="contact_company" value="<?php echo @$row->contact_company;?>" maxlength="100" size="25" onChange="companyChange()" />
@@ -231,6 +237,12 @@ function companyChange() {
 			</td>
 		</tr>
 		<tr>
+			<td align="right">Jabber:</td>
+			<td>
+				<input type="text" class="text" name="contact_jabber" value="<?php echo @$row->contact_jabber;?>" maxlength="255" size="25" />
+			</td>
+		</tr>
+		<tr>
 			<td align="right">ICQ:</td>
 			<td>
 				<input type="text" class="text" name="contact_icq" value="<?php echo @$row->contact_icq;?>" maxlength="20" size="25" />
@@ -241,6 +253,19 @@ function companyChange() {
 			<td>
 				<input type="text" class="text" name="contact_aol" value="<?php echo @$row->contact_aol;?>" maxlength="20" size="25" />
 			</td>
+                </tr>
+		<tr>
+			<td align="right">MSN:</td>
+			<td>
+				<input type="text" class="text" name="contact_msn" value="<?php echo @$row->contact_msn;?>" maxlength="255" size="25" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">Yahoo:</td>
+			<td>
+				<input type="text" class="text" name="contact_yahoo" value="<?php echo @$row->contact_yahoo;?>" maxlength="255" size="25" />
+			</td>
+		</tr>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Birthday');?>:</td>
