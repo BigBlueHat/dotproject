@@ -65,8 +65,8 @@ function testURL( x ) {
 
 function submitIt() {
 	var form = document.editFrm;
-	if (form.dept_name.value.length < 3) {
-		alert( "Please enter a valid Company name" );
+	if (form.dept_name.value.length < 2) {
+		alert( '<?php echo $AppUI->_( 'deptValidName' );?>' );
 		form.dept_name.focus();
 	} else {
 		form.submit();
