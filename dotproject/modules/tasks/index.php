@@ -90,6 +90,7 @@ $in = $AppUI->getState( 'inactive' ) == -1 ? '' : 'in';
 
 $titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
 $titleBlock->addCrumb( "?m=tasks&inactive=toggle", "show ".$in."active tasks" );
+$titleBlock->addCrumb( "?m=tasks&a=tasksperuser", "tasks per user" );
 $titleBlock->show();
 
 // include the re-usable sub view

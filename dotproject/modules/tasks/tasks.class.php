@@ -112,10 +112,10 @@ class CTask extends CDpObject {
 			} else {
 				$modified_task->task_duration = round($children_allocated_hours / $modified_task->task_duration_type, 2);
 			}
-			
+
 			//Update worked hours based on children
 			$sql = "SELECT sum( task_log_hours ) FROM tasks, task_log
-					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .  
+					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .
 					" AND task_id != " . $modified_task->task_id .
 					" AND task_dynamic = 0";
 			$children_hours_worked = (float) db_loadResult( $sql );
@@ -257,30 +257,42 @@ class CTask extends CDpObject {
 			return db_error();
 		} else {
 			if ( $this->task_parent != $this->task_id ){
-				// Has parent, run the update sequence, this child will no longer be in the 
-				// database 
+				// Has parent, run the update sequence, this child will no longer be in the
+				// database
 				$this->updateDynamics();
 			}
 			return NULL;
 		}
 	}
-	
-	//using user allocation percentage ($perc_assign)
-	function updateAssigned( $cslist, $perc_assign ) {
+
+
+         // unassign a user from task
+	function removeAssigned( $user_id ) {
 	// delete all current entries
-		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
+		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id AND user_id = $user_id";
 		db_exec( $sql );
+
+	}
+
+	//using user allocation percentage ($perc_assign)
+	function updateAssigned( $cslist, $perc_assign, $del=true ) {
+	// delete all current entries
+                if ($del == true) {
+                        $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
+                        db_exec( $sql );
+                }
 
 	// process assignees
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $user_id) {
 			if (intval( $user_id ) > 0) {
 				$perc = $perc_assign[$user_id];
-				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";				
+				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
 				db_exec( $sql );
 			}
 		}
 	}
+
 
 	function updateDependencies( $cslist ) {
 	// delete all current entries
@@ -340,7 +352,7 @@ class CTask extends CDpObject {
 		$projname = db_loadResult( $sql );
 
 		$mail = new Mail;
-		
+
 		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);
 
 	// c = creator
@@ -397,7 +409,7 @@ class CTask extends CDpObject {
         
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
-		
+
 		$mail = new Mail;
 		
 		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);
@@ -637,12 +649,21 @@ class CTask extends CDpObject {
 	}
 	
 	function getAssignedUsers(){
-		$sql = "select u.*
+		$sql = "select u.*, ut.perc_assignment
 		        from users as u, user_tasks as ut
 		        where ut.task_id = '$this->task_id'
 		              and ut.user_id = u.user_id";
 		return db_loadHashList($sql, "user_id");
 	}
+
+        function getProjectName() {
+                $sql = "SELECT project_name, project_short_name FROM projects WHERE project_id = '$this->task_project'";
+                $proj = db_loadHash($sql, $projects);
+
+                return $projects;
+
+
+        }
 	
 	//Returns task children IDs
 	function getChildren() {
