@@ -1,3 +1,30 @@
+2004-08-11 00:34  (ajdonnison)
+---------------------------------
+index.php
+- Removed overhead of checking for all tab files on each page call by
+- caching the information in the session.
+
+2004-08-11 00:30  (ajdonnison)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- Removed recursive code in isMember function, improved performance
+- dramatically, removed need for extra database calls on each display item.
+
+2004-08-10 17:00  (jcgonz)
+---------------------------------
+locales/en/tasks.inc
+- Added up some strings
+
+2004-08-10 16:57  (jcgonz)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Changed Task's end date due locale system incompatibility
+
+2004-08-10 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-09 10:57  (cyberhorse)
 ---------------------------------
 index.php
@@ -471,33 +498,6 @@ modules/admin/vw_usr_perms.php
 2004-07-14 22:37  (ajdonnison)
 ---------------------------------
 modules/projects/projects.class.php
-- Fixed another instance of a bad SQL call when there is no Company
-- created.
-
-2004-07-14 22:19  (ajdonnison)
----------------------------------
-modules/projects/projects.class.php
-- Fixed broken SQL when no limits are found.
-
-2004-07-14 22:07  (ajdonnison)
----------------------------------
-modules/admin/vw_usr_perms.php
-- Fixed problem where empty fields were causing SQL to break.
-
-2004-07-14 18:34  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Fixed loop detection code.
-
-2004-07-14 12:26  (cyberhorse)
----------------------------------
-modules/files/addedit.php
-modules/files/do_file_aed.php
-modules/files/files.class.php
-modules/files/index.php
-modules/files/index_table.php
-- Added files categories tabs to the files module - controlled by a sysval
-
 ...
 
 (This file has been wrapped)
