@@ -62,7 +62,12 @@ echo "<tr><td>Web Server</td><td>$_SERVER[SERVER_SOFTWARE]</td></tr>";
 
 echo "<tr><td>User Agent</td><td>".$_SERVER['HTTP_USER_AGENT']."</td></tr>";
 
-echo "<tr><td>default locale</td><td>".setlocale( LC_ALL, 0 )."</td></tr>";
+echo "<tr><td>default locale</td><td>";
+$lc_list = explode(";", setlocale( LC_ALL, 0 ));
+foreach ($lc_list as $lc) {
+  echo "$lc<br>";
+}
+echo "</td></tr>";
 
 $msg = get_cfg_var( 'session.auto_start' ) > 0 ? "<td class=warning>Try setting to 0 if you are having problems with WSOD</td>" : "<td>OK</td>";
 echo "<tr><td>session.auto_start</td><td>".get_cfg_var( 'session.auto_start' )."</td>$msg</tr>";
