@@ -1,7 +1,7 @@
 <?php
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
-$hassign = isset($_POST['hassign']) ? $_POST['hassign'] : 0;
-$hdependencies = isset($_POST['hdependencies']) ? $_POST['hdependencies'] : 0;
+$hassign = @$_POST['hassign'];
+$hdependencies = @$_POST['hdependencies'];
 $notify = isset($_POST['notify']) ? $_POST['notify'] : 0;
 $dayhour = isset($_POST['dayhour']) ? $_POST['dayhour'] : 1;
 
@@ -33,10 +33,10 @@ if ($del) {
 		$AppUI->setMsg( "Task ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
 	}
 
-	if ($hassign) {
+	if (isset($hassign)) {
 		$task->updateAssigned( $hassign );
 	}
-	if ($hdependencies) {
+	if (isset($hdependencies)) {
 		$task->updateDependencies( $hdependencies );
 	}
 	if ($notify) {
