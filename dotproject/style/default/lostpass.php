@@ -14,7 +14,7 @@
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
 </head>
 
-<body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
+<body bgcolor="#f0f0f0" onload="document.lostpassform.checkusername.focus();">
 <br /><br /><br /><br />
 <?//please leave action argument empty ?>
 <!--form action="./index.php" method="post" name="loginform"-->
