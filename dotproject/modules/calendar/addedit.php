@@ -34,7 +34,7 @@ function submitIt(){
 		alert("Please enter an end date");
 		form.event_end_date.focus();
 	}
-	if(form.event_recurs.selectedIndex <> 0 && isNaN(parseInt(form.event_times_recuring.value))){
+	if(form.event_recurs.selectedIndex != 0 && isNaN(parseInt(form.event_times_recuring.value))){
 		alert("Please select how often you wish this event to recur.");
 		form.event_times_recuring.focus();
 	}
