@@ -34,53 +34,54 @@ $pstatus = array(
 );
 ?>
 
-<TABLE border=0 cellpadding="1" cellspacing=1>
-	<TR>
-		<TD><img src="./images/icons/money.gif" alt="" border="0"></td>
-		<TD nowrap><span class="title">View Company/Client</span></td>
-		<TD nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
-	</tr>
-</TABLE>
-
-<table border="0" cellpadding="4" cellspacing="0" width="95%">
-	<TR>
-		<TD width="50%" nowrap>
-		<a href="./index.php?m=companies">Companies List</a>
-<?php if (!$denyEdit) { ?>
-		<b>:</b> <a href="./index.php?m=companies&a=addedit&company_id=<?php echo $company_id;?>">Edit this Company</a>
-<?php } ?>
-		</td>
-		<TD align="right" width="100%">
-		<?php if (!$denyEdit) { ?>
-			<input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
-		<?php } ?>
-		</td>
-	</TR>
+<table border=0 cellpadding="1" cellspacing=1>
+<tr>
+	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
+	<td nowrap><span class="title">View Company/Client</span></td>
+	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+</tr>
 </table>
 
-<table border="0" cellpadding="6" cellspacing="0" width="95%" class=std>
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<tr>
+	<td width="50%" nowrap>
+	<a href="./index.php?m=companies">Companies List</a>
+<?php if (!$denyEdit) { ?>
+	<b>:</b> <a href="./index.php?m=companies&a=addedit&company_id=<?php echo $company_id;?>">Edit this Company</a>
+<?php } ?>
+	</td>
+	<td align="right" width="100%">
+	<?php if (!$denyEdit) { ?>
+		<input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
+	<?php } ?>
+	</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="98%" class=std>
 <tr valign="top">
 	<td width="50%">
-		<TABLE width="100%">
-		<TR>
-			<TD><b>Company:</b></TD>
-			<td><?php echo $row["company_name"];?></td>
-		</TR>
+		<b>Details</b>
+		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
-			<td><b>Phone:</b></td>
-			<td><?php echo @$row["company_phone1"];?></td>
+			<td align="right" nowrap>Company:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo $row["company_name"];?></td>
 		</tr>
 		<tr>
-			<td><b>Phone2:</b></td>
-			<td><?php echo @$row["company_phone2"];?></td>
+			<td align="right" nowrap>Phone:</td>
+			<td bgcolor="#ffffff"><?php echo @$row["company_phone1"];?></td>
 		</tr>
 		<tr>
-			<td><b>Fax:</b></td>
-			<td><?php echo @$row["company_fax"];?></td>
+			<td align="right" nowrap>Phone2:</td>
+			<td bgcolor="#ffffff"><?php echo @$row["company_phone2"];?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>Fax:</td>
+			<td bgcolor="#ffffff"><?php echo @$row["company_fax"];?></td>
 		</tr>
 		<tr valign=top>
-			<td><b>Address:</b></td>
-			<td><?php
+			<td align="right" nowrap>Address:</td>
+			<td bgcolor="#ffffff"><?php
 				echo @$row["company_address1"]
 					.( ($row["company_address2"]) ? '<br>'.$row["company_address2"] : '' )
 					.'<br>'.$row["company_city"]
@@ -90,25 +91,29 @@ $pstatus = array(
 			?></td>
 		</tr>
 		<tr>
-			<td><b>URL:</b></td>
-			<td>
+			<td align="right" nowrap>URL:</td>
+			<td bgcolor="#ffffff">
 				<a href="http://<?php echo @$row["company_primary_url"];?>" target="Company"><?php echo @$row["company_primary_url"];?></a>
 			</td>
 		</tr>
-		</TABLE>
+		</table>
 
-	</TD>
-	<td width="50%">
-		<b>Description</b><br>
-		<?php
-		$newstr = str_replace( chr(10), "<BR>", $row["company_description"]);
-		echo $newstr;
-		?>
 	</td>
-</TR>
+	<td width="50%">
+		<b>Description</b>
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td bgcolor="#ffffff">
+				<?php echo str_replace( chr(10), "<BR>", $row["company_description"]);?>&nbsp;
+			</td>
+		</tr>
+		</table>
+
+	</td>
+</tr>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="0" width="95%">
+<table border="0" cellpadding="2" cellspacing="0" width="98%">
 <tr>
 	<td>
 		<a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>&vm=0">tabbed</a> :
@@ -126,7 +131,7 @@ $tabs = array(
 );
 
 if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="95%">
+<table border="0" cellpadding="2" cellspacing="0" width="98%">
 <?php
 	foreach ($tabs as $k => $v) {
 		echo "<tr><td><b>$v</b></td></tr>";
@@ -138,10 +143,8 @@ if ($vm == 1) { ?>
 </table>
 <?php 
 } else {
-
 	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'depts';
 	drawTabBox( $tabs, $tab, "./index.php?m=companies&a=view&company_id=$company_id", "./modules/companies" );
 }
-
 ?>
 

@@ -37,7 +37,7 @@ if(is_array($crow)){
 ?>
 
 
-<SCRIPT language="javascript">
+<script language="javascript">
 function submitIt(){
 	var form = document.changeevent;
 	if (form.event_title.value.length < 1) {
@@ -87,44 +87,50 @@ function popCalendar(x){
 	newwin = window.open('./calendar.php?page=events&form=changeevent&field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false');
 }
 </script>
-<TABLE border=0 cellpadding="0" cellspacing=1 width="91%">
-	<TR>
-		<TD width="44"><img src="./images/icons/calendar.gif" alt="" border="0"></td>
-		<TD width="100%"><span class="title">Events</span></td>
-		<TD valign="bottom">&nbsp;</td>
+<table border=0 cellpadding="0" cellspacing="0" width="98%">
+	<tr>
+		<td width="44"><img src="./images/icons/calendar.gif" alt="" border="0"></td>
+		<td width="100%"><span class="title">Events</span></td>
+		<td valign="bottom">&nbsp;</td>
 	</tr>
-	<TR>
-		<TD colspan=2 nowrap>This page allows you to view and edit an event</td>
-		<TD align="right" nowrap><A href="javascript:delIt()">delete event <img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this event" border="0"></a></td>
+	<tr>
+		<td colspan=2 nowrap>This page allows you to view and edit an event</td>
+		<td align="right" nowrap><A href="javascript:delIt()">delete event <img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this event" border="0"></a></td>
 	</tr>
-</TABLE>
+</table>
 
-<TABLE border=0 bgcolor="#f4efe3" cellpadding="3" cellspacing=0 width="91%">
+<table cellspacing="1" cellpadding="2" border="0" width="98%" class="std">
 <form name="changeevent" action="?m=calendar" method="post">
 <input type="hidden" name="dosql" value="addeditdel_event">
 <input type="hidden" name="del" value="0">
 <input type="hidden" name="event_project" value="0">
 <input type="hidden" name="event_id" value="<?php echo $event_id;?>">
-<TR bgcolor="#878676" height="20" style="border: outset #eeeeee 2px;">
-	<TD valign="top" colspan=2><b><i><?php if($event_id == 0){echo "Add";}else{echo "Edit";}?> event </i></b></td>
-	<TD align="right" colspan=2>&nbsp;</td>
-</tr>
-<TR>
-	<TD rowspan=100><img src="./images/shim.gif" width=10 height=10"></td>
-	<TD colspan=2></td>
-	<TD rowspan=100><img src="./images/shim.gif" width=10 height=10"></td>
+
+<tr>
+	<th colspan="3"><?php if($event_id == 0){echo "Add";}else{echo "Edit";}?> event</th>
 </tr>
 <tr>
-	<TD valign=top>
-		<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="black" width=360>
-		<tr bgcolor="#f4efe3"><TD align="right" width="100">Event Name: </td><TD><input type="text" class="text" size=25 name="event_title" value="<?php echo @$crow["event_title"];?>" maxlength="255"></td></tr>
+	<td valign="top">
+		<table cellspacing="1" cellpadding="1" border="0" width="360">
+		<tr>
+			<td align="right" nowrap>Event Name:</td>
+			<td>
+				<input type="text" class="text" size="25" name="event_title" value="<?php echo @$crow["event_title"];?>" maxlength="255">
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>Make private:</td>
+			<td>
+				<input type="checkbox" value="1" name="event_private" <?php echo (@$crow["event_private"] ? 'checked' : '');?>>
+			</td>
+		</tr>
 		</table>
 		<img src="images/shim.gif" width=100 height=10 border=0><br>
-		<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
+		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 		<tr bgcolor="#eeeeee">
-			<TD align="right">Start Date/Time:</td>
-			<TD nowrap><input type="text" class="text" name="sdate" value="<?php echo @$sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
-			<TD>
+			<td align="right">Start Date/Time:</td>
+			<td nowrap><input type="text" class="text" name="sdate" value="<?php echo @$sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>
+			<td>
 				<select name="stime">
 <?php
 	$hr=0;
@@ -155,9 +161,9 @@ function popCalendar(x){
 			</td>
 		</tr>
 		<tr bgcolor="#eeeeee">
-			<TD align="right">End Date:</td>
-			<TD nowrap><input type="text" class="text" name="edate" value="<?php echo @$edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
-			<TD>
+			<td align="right">End Date:</td>
+			<td nowrap><input type="text" class="text" name="edate" value="<?php echo @$edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>
+			<td>
 				<select name="etime">
 <?php
 	$hr=0;
@@ -188,8 +194,8 @@ function popCalendar(x){
 			</td>
 		</tr>
 		<tr bgcolor="#eeeeee">
-			<TD align="right">Recurs:</td>
-			<TD>
+			<td align="right">Recurs:</td>
+			<td>
 				<select name="event_recurs">
 					<option>Never
 					<option>Hourly
@@ -200,17 +206,17 @@ function popCalendar(x){
 					<option>Quarterly
 					<option>Every 6 months
 					<option>Every Year
-				</select> x</TD>
-			<TD>
+				</select> x</td>
+			<td>
 				<input type="text"  name="event_times_recuring" value="<?php echo @$crow["event_times_recuring"];?>" maxlength="2" size=3> times
 			</td>
 		</tr>
-	</table>
-	<img src="images/shim.gif" width=100 height=10 border=0><br>
-	<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
+		</table>
+		<img src="images/shim.gif" width=100 height=10 border=0><br>
+		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 		<tr bgcolor="#eeeeee">
-			<TD>Remind me:</TD>
-			<TD><Select name="event_remind">
+			<td>Remind me:</td>
+			<td><Select name="event_remind">
 				<option value="900">15 mins.
 				<option value="1800">30 mins.
 				<option value="3600">1 hour
@@ -222,21 +228,17 @@ function popCalendar(x){
 				<option value="172800">2 days
 			
 			
-			</SELECT> in advance</TD>
+			</SELECT> in advance</td>
 		</tr>
-		</TABLE>
-	</TD>
-	<TD valign="top">
-		<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver">
-		<tr bgcolor="#eeeeee">
-			<TD><b>Description</b><br>
-			<textarea class="textarea" name="event_notes"><?php echo @$crow["event_description"];?></textarea></TD>
-		</TR>
-		</TABLE>
+		</table>
 	</td>
-</TR>
-<TR>
-<TD><input type="button" value="back" class=button onClick="javascript:window.location='./index.php?m=events';"></td>
-<TD align="right"><input type="button" value="submit" class=button onClick="submitIt()"></td></tr>
+	<td valign="top">
+		<b>Description</b><br>
+		<textarea class="textarea" name="event_notes"><?php echo @$crow["event_description"];?></textarea></td>
+	</td>
+</tr>
+<tr>
+<td><input type="button" value="back" class=button onClick="javascript:window.location='./index.php?m=events';"></td>
+<td align="right"><input type="button" value="submit" class=button onClick="submitIt()"></td></tr>
 </form>
-</TABLE>
+</table>

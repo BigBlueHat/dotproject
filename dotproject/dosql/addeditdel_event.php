@@ -1,6 +1,7 @@
 <?php
 if(empty($event_id))$event_id=0;
 if(empty($event_project)) $event_project=0;
+$event_private = empty($HTTP_POST_VARS['event_private']) ? 0 : 1;
 
 $start_date = strtotime(toDate($sdate) . " " . $stime);
 $end_date = strtotime(toDate($edate) . " " . $etime);
@@ -24,7 +25,9 @@ elseif($HTTP_POST_VARS["event_id"] > 0){
 	event_description= '$event_notes',
 	event_times_recuring= '$event_times_recuring',
 	event_recurs= '$event_recurs',
-	event_remind= '$event_remind'
+	event_remind= '$event_remind',
+	event_project='$event_project',
+	event_private='$event_private'
 	where
 	event_id = $event_id
 	";
@@ -35,10 +38,10 @@ elseif($HTTP_POST_VARS["event_id"] > 0){
 else{
 
 $sql = "insert into events
-(event_title, event_start_date, event_end_date, event_parent, event_description, event_times_recuring, event_recurs, event_remind)
+(event_title, event_start_date, event_end_date, event_parent, event_description, event_times_recuring, event_recurs, event_remind, event_project, event_owner, event_private)
 values
 
-('$event_title', '$start_date', '$end_date', '$event_project', '$event_notes', '$event_times_recuring', '$event_recurs', '$event_remind')";
+('$event_title', '$start_date', '$end_date', '$event_project', '$event_notes', '$event_times_recuring', '$event_recurs', '$event_remind', 'event_project', $thisuser_id, '$event_private')";
 
 	 mysql_query($sql);
 	$message  ="Event Inserted";

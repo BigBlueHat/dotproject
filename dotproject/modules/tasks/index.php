@@ -131,7 +131,7 @@ function showtask( &$a, $level=0 ) {
 		echo "<img src='./images/icons/" . $a["task_priority"] .".gif' width=13 height=16>";
 	}?>
 	</td>
-	<td width=90%>
+	<td width="90%">
 
 	<?php if ($level == 0) { ?>
 	<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $a["task_id"];?>">
@@ -181,7 +181,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 }
 ?>
 
-<table width="95%" border=0 cellpadding="0" cellspacing=1>
+<table width="98%" border=0 cellpadding="0" cellspacing=1>
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="Tasks" border="0" width="44" height="38"></td>
 	<td nowrap width="100%">
@@ -219,7 +219,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 </table>
 
 <?php if(isset($message))echo $message;?>
-<table width="95%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">id</th>
 	<th width="20">work</th>

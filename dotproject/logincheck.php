@@ -3,13 +3,14 @@ include "./includes/config.php";
 include "./includes/db_connect.php";
 
 //Check Login
-$psql = "select
-user_id, user_first_name, user_last_name, user_company
-from users,  permissions
-where user_username = '$username'
-and user_password = password('$password') 
-and users.user_id = permissions.permission_user
-and permission_value <> 0
+$psql = "
+SELECT
+	user_id, user_first_name, user_last_name, user_company, user_department
+FROM users,  permissions
+WHERE user_username = '$username'
+	AND user_password = password('$password') 
+	AND users.user_id = permissions.permission_user
+	AND permission_value <> 0
 ";
 
 $prc = mysql_query($psql);

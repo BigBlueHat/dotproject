@@ -54,7 +54,7 @@ $urow = mysql_fetch_array($urc, MYSQL_NUM);
 ?>
 
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
-<TABLE width="95%" border=0 cellpadding=0 cellspacing=1>
+<table width="98%" border=0 cellpadding=0 cellspacing=1>
 <TR>
 	<TD><img src="./images/icons/money.gif" alt="" border="0"></td>
 	<TD nowrap><span class="title">Clients and Companies</span></td>
@@ -66,7 +66,7 @@ $urow = mysql_fetch_array($urc, MYSQL_NUM);
 </tr>
 </TABLE>
 
-<TABLE width="95%" border=0 cellpadding=0 cellspacing=1>
+<TABLE width="98%" border=0 cellpadding=0 cellspacing=1>
 <TR>
 	<TD valign="top">
 		<b>Welcome <?php echo $urow[0];?>.</b>  This page show you a list of current clients and their active projects.
@@ -74,7 +74,7 @@ $urow = mysql_fetch_array($urc, MYSQL_NUM);
 </tr>
 </TABLE>
 
-<TABLE width="95%" border=0 cellpadding=2 cellspacing=1 class=tbl>
+<TABLE width="98%" border=0 cellpadding=2 cellspacing=1 class=tbl>
 <TR bgcolor="#878676">
 	<td nowrap width="60" bgcolor="#f4efe3" align="right">&nbsp; sort by:&nbsp; </td>
 	<th nowrap><A href="#"><font color="white">Company Name</font></a></th>

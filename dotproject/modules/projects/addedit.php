@@ -18,7 +18,10 @@ $urc = mysql_query( $usql );
 // Pull companies
 $csql = "select company_name, company_id from companies order by company_name";
 $crc = mysql_query( $csql );
-$cexists = mysql_num_rows( $crc );
+$companies = array( 0 => '' );
+while($crow = mysql_fetch_array( $crc, MYSQL_ASSOC )) {
+	$companies[$crow['company_id']] = $crow['company_name'];
+}
 
 //pull projects
 $psql = "SELECT * FROM projects WHERE project_id = $project_id";
@@ -108,81 +111,55 @@ function delIt() {
 
 </script>
 <?php
-if (!$cexists) {
+if (!count( $companies )) {
 	echo "You add a company or client before creating a new project<br>";
 	echo "<a href=./index.php?m=companies&a=addedit>Click here to add a new Company/Client</A>";
 } else {
 ?>
-<TABLE width="98%" border=0 cellpadding="0" cellspacing=1>
+<table cellspacing="0" cellpadding="0" border="0" width="98%">
 <form name="AddEdit" action="./index.php?m=projects&a=dosql" method="post">
 <input type="hidden" name="del" value="0">
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>">
 
-<TR>
-<TD><img src="./images/icons/projects.gif" alt="" border="0"></td>
-	<TD nowrap>
+<tr>
+	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
+	<td nowrap>
 		<span class="title">
 		<?php echo (($project_id > 0) ? "Edit Existing" : "Create New" ) . " Project"; ?>
 		</span>
 	</td>
-	<TD align="right" width="100%">&nbsp;</td>
+	<td align="right" width="100%">&nbsp;</td>
 </tr>
-</TABLE>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-	<TR>
-		<TD width="50%" nowrap>
-		<a href="./index.php?m=projects">Projects List</a>
-		<b>:</b> <a href="./index.php?m=projects&a=view&project_id=<?php echo $project_id;?>">View this Project</a>
-		</td>
-		<TD width="50%" align="right">
-			<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this project" border="0">delete project</a>
-		</td>
-	</TR>
 </table>
 
-<table border="0" cellpadding="0" cellspacing="0" width="98%" bgcolor="silver">
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td nowrap class="tabBG" valign="top">
-		<img height=4 src="./images/shim.gif" width="1" align="top"><br>
-		<table border="0" cellpadding="4" cellspacing="0" width="100%">
-		<tr>
-			<td class="allFormsTitleHeader" valign="middle">
-				<img src="./images/icons/icn_project.gif" width="16" height="16" alt="" border="0">
-				<b>
-				<?php echo ($project_id > 0) ? "Edit the project using the form below" : "To create a new project complete the form below"; ?>
-				</b>
-			</td>
-			<td align="right" class="viewheader" valign="top">&nbsp;</td>
-		</tr>
-		</table>
+	<td width="50%" nowrap>
+	<a href="./index.php?m=projects">Projects List</a>
+	<b>:</b> <a href="./index.php?m=projects&a=view&project_id=<?php echo $project_id;?>">View this Project</a>
+	</td>
+	<td width="50%" align="right">
+		<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this project" border="0">delete project</a>
 	</td>
 </tr>
 </table>
 
-<table border="0" cellpadding="6" cellspacing="0" width="98%" bgcolor="dddddd">
-<tr class="basic" valign="top">
+<table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
+<tr>
 	<td>
 		<table>
 		<tr>
-			<td valign="bottom">
-				<span id="ccsprojectnamestr"><span class="FormLabel">project name</span>
-				<span class="FormElementRequired">*</span></span>
-				<br><input type="text" name="project_name" value="<?php echo @$prow["project_name"];?>" size="25" maxlength="50" onBlur="setShort();">
+			<td align="right" nowrap>project name</td>
+			<td width="100%">
+				<input type="text" name="project_name" value="<?php echo @$prow["project_name"];?>" size="25" maxlength="50" onBlur="setShort();" class="text">
 			</td>
-			<td>&nbsp;</td>
-			<td valign="bottom">
-				<span id="ccsprojectnamestr"><span class="FormLabel">company name</span>
-				<span class="FormElementRequired">*</span></span>
-				<br><select name="project_company" style="width:200px;">
-			<?php
-				while ($row = mysql_fetch_array( $crc, MYSQL_ASSOC )) {
-					echo '<option value="' . $row["company_id"] . '"'
-						. (($row["company_id"] == $prow["project_company"]) ? ' selected' : '')
-						. '>' . $row["company_name"];
-				}
-			?>
-				</select>
+		</tr>
+		<tr>
+			<td align="right" nowrap>company name</td>
+			<td width="100%">
+<?php
+	echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $prow["user_company"] );
+?> *
 			</td>
 		</tr>
 		</table>
@@ -199,7 +176,7 @@ if (!$cexists) {
 		<span id="test" title="test" style="background:#<?php echo @$prow["project_color_identifier"];?>;"><a href="#" onClick="newwin=window.open('./color_selector.php', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border=1 width="40" height="20"></a></span>
 	</td>
 </tr>
-<tr class="basic" valign="top">
+<tr valign="top">
 	<td>
 		<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -216,27 +193,27 @@ if (!$cexists) {
 		</table>
 	</td>
 	<td colspan="2">
-		<TABLE width="100%" bgcolor="#eeeeee">
-		<TR>
-			<TD><span class="FormLabel">status</span> <span class="FormElementRequired">*</span></TD>
-			<TD nowrap>Percent Complete</TD>
-			<TD>Active?</TD>
-		</TR>
-		<TR>
-			<TD>
+		<table width="100%" bgcolor="#cccccc">
+		<tr>
+			<td><span class="FormLabel">status</span> <span class="FormElementRequired">*</span></td>
+			<td nowrap>Percent Complete</td>
+			<td>Active?</td>
+		</tr>
+		<tr>
+			<td>
 				<?php echo arraySelect( $pstatus, 'project_status', 'size=1', $prow["project_status"] ); ?> 
-			</TD>
-			<TD><b><?php echo intval(@$prow["project_precent_complete"]);?> %</b></TD>
-			<TD><input type=checkbox value=1 name=project_active <?php if($prow["project_active"]){?>checked<?php }?>></TD>
-		</TR>
-		</TABLE>
+			</td>
+			<td><b><?php echo intval(@$prow["project_precent_complete"]);?> %</b></td>
+			<td><input type=checkbox value=1 name=project_active <?php if($prow["project_active"]){?>checked<?php }?>></td>
+		</tr>
+		</table>
 	</td>
 </tr>
-<tr class="basic">
+<tr>
 	<td valign="BOTTOM" height="20" align="Left"><span class="FormInstructionMedium">targets</span></td>
 	<td valign="BOTTOM" height="20" align="Left" colspan="2"><span class="FormInstructionMedium">actuals</span></td>
 </tr>
-<tr class="basic">
+<tr>
 	<td>
 		<table border="0" cellspacing="0" cellpadding="0">
 		<tr>
@@ -269,7 +246,7 @@ if (!$cexists) {
 		</table>
 	</td>
 </tr>
-<tr class="basic">
+<tr>
 	<td valign="middle">
 		<span id="targetbudgetnum"><span class="FormLabel">target budget</span></span><br>
 		<span class="FormLabel">$</span><input type="Text" name="project_target_budget" value="<?php echo @$prow["project_target_budget"];?>" size="10" maxlength="10">
@@ -279,12 +256,12 @@ if (!$cexists) {
 		<span class="FormLabel">$</span><input type="Text" name="project_actual_budget" value="<?php echo @$prow["project_actual_budget"];?>" size="10" maxlength="10"">
 	</td>
 </tr>
-<tr class="basic">
+<tr>
 	<td  colspan="1">
 		<span id="fulldesctext"><span class="formlabel">full description</span></span><br>
 		<textarea name="project_description" cols="38" rows="5" wrap="virtual"><?php echo @$prow["project_description"];?></textarea>
 	</td>
-	<TD colspan=2 valign="top">
+	<td colspan=2 valign="top">
 		Project owner<br>
 		<select name="project_owner" style="width:200px;">
 	<?php
@@ -298,26 +275,16 @@ if (!$cexists) {
 		<br><input type="Text" name="project_demo_url" value="<?php echo @$prow["project_demo_url"];?>" size="50" maxlength="255"">
 	</td>
 </tr>
-</table>
-
-<table border="0" cellspacing="0" cellpadding="3" width="98%">
-<tr class="basic">
-	<td height="40" width="35%">
-		<span class="FormElementRequired">*</span> <span class="FormInstruction">indicates required field</span>
+<tr>
+	<td>
+		<input class=button type="Button" name="Cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}">
 	</td>
-	<td height="40" width="30%">&nbsp;</td>
-	<td  height="40" width="35%" align="right">
-		<table>
-		<tr>
-			<td>
-				<input class=button type="Button" name="Cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}">
-			</td>
-			<td><input class=button type="Button" name="btnFuseAction" value="save" onClick="submitIt();"></td>
-		</tr>
-		</table>
+	<td align="right" colspan="2">
+		<input class=button type="Button" name="btnFuseAction" value="save" onClick="submitIt();">
 	</td>
 </tr>
-</table>
-</center>
 </form>
+</table>
+* indicates required field
+
 <?php }?>

@@ -1,5 +1,39 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+12 November 2002 (AJE):
+---------------------------------
+Added three fields to the events table in the upgrade script
+  event_project - deprecates event_parent
+  event_owner - to personalise events
+  event_private - only visible to me
+
+dosql/addeditdel_event.php
+modules/calendar/addedit.php
+- cosmetic changes
+- table change with assocuiated additional fields on edit form
+  (still don't support project id)
+
+./logincheck.php
+./includes/permissions.php
+- added entry in cookie to hold state of user department
+
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/index.php
+modules/projects/view.php
+modules/projects/addedit.php
+- cosmetic changes
+- tabbed active/archived projects on index page
+
+modules/tasks/index.php
+modules/tasks/view.php
+- cosmetic changes
+
+module/companies/index.php
+module/companies/view.php
+module/companies/addedit.php
+- cosmetic changes
+
 7 November 2002 (AJE):
 ---------------------------------
 styles/main.css

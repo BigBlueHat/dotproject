@@ -17,7 +17,7 @@ function ptranslate($word){
 ##
 ##
 function drawTabBox( $tabs, $active, $baseHRef, $baseInc ) {
-	$s = '<TABLE width="95%" border=0 cellpadding="3" cellspacing=0><TR>';
+	$s = '<TABLE width="98%" border=0 cellpadding="3" cellspacing=0><TR>';
 	foreach( $tabs as $k => $v ) {
 		$class = ($k == $active) ? 'tabon' : 'taboff';
 		$s .= '<td nowrap class=tabsp><img src="./images/shim.gif" height=1 width=1></td>';

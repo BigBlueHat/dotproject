@@ -62,7 +62,7 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 
 ?>
 
-<table width="95%" border="0" cellpadding="1" cellspacing="1">
+<table width="98%" border="0" cellpadding="1" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
 	<td nowrap><span class="title">Manage Project</span></td>
@@ -84,7 +84,7 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="95%">
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
 	<td nowrap>
 	<a href="./index.php?m=projects">Project List</a>
@@ -96,7 +96,7 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 </tr>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="0" width="95%" class="std">
+<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
 	<td style="border: outset #d1d1cd 1px;background-color:<?php echo $prow["project_color_identifier"];?>" colspan="2">
 	<?php
@@ -107,52 +107,59 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 </tr>
 <tr>
 	<td width="50%" valign="top">
-		<table cellspacing="0" cellpadding="2" border="0">
+		<b>Details</b>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td><b>Company:</b></td>
-			<td><?php echo $prow["company_name"];?></td>
+			<td align="right" nowrap>Company:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo $prow["company_name"];?></td>
 		</tr>
 		<tr>
-			<td><b>Short Name:</b></td>
-			<td><?php echo @$prow["project_short_name"];?></td>
+			<td align="right" nowrap>Short Name:</td>
+			<td bgcolor="#ffffff"><?php echo @$prow["project_short_name"];?></td>
 		</tr>
 		<tr>
-			<td><b>Start date:</b></td>
-			<td><?php echo fromDate(substr($prow["project_start_date"], 0,10));?></td>
+			<td align="right" nowrap>Start date:</td>
+			<td bgcolor="#ffffff"><?php echo fromDate(substr($prow["project_start_date"], 0,10));?></td>
 		</tr>
 		<tr>
-			<td><b>Target End Date:</b></td>
-			<td><?php echo fromDate(substr($prow["project_end_date"], 0, 10));?></td>
+			<td align="right" nowrap>Target End Date:</td>
+			<td bgcolor="#ffffff"><?php echo fromDate(substr($prow["project_end_date"], 0, 10));?></td>
 		</tr>
 		<tr>
-			<td><b>Actual End Date:</b></td>
-			<td><?php echo fromDate(SUBSTR($prow["project_actual_end_date"], 0, 10));?></td>
+			<td align="right" nowrap>Actual End Date:</td>
+			<td bgcolor="#ffffff"><?php echo fromDate(SUBSTR($prow["project_actual_end_date"], 0, 10));?></td>
 		</tr>
 		<tr>
-			<td><b>Target Budget:</b></td>
-			<td>$<?php echo @$prow["project_target_budget"];?></td>
+			<td align="right" nowrap>Target Budget:</td>
+			<td bgcolor="#ffffff">$<?php echo @$prow["project_target_budget"];?></td>
 		</tr>
 		<tr>
-			<td><b>Project Owner:</b></td>
-			<td><?php echo $prow["user_name"]; ?></td>
+			<td align="right" nowrap>Project Owner:</td>
+			<td bgcolor="#ffffff"><?php echo $prow["user_name"]; ?></td>
 		</tr>
 		<tr>
-			<td><b>URL:</b></td>
-			<td><A href="<?php echo @$prow["project_url"];?>" target="_new"><?php echo @$prow["project_url"];?></A></td>
+			<td align="right" nowrap>URL:</td>
+			<td bgcolor="#ffffff"><A href="<?php echo @$prow["project_url"];?>" target="_new"><?php echo @$prow["project_url"];?></A></td>
 		</tr>
 		<tr>
-			<td><b>Staging URL:</b></td>
-			<td><A href="<?php echo @$prow["project_demo_url"];?>" target="_new"><?php echo @$prow["project_demo_url"];?></A></td>
+			<td align="right" nowrap>Staging URL:</td>
+			<td bgcolor="#ffffff"><A href="<?php echo @$prow["project_demo_url"];?>" target="_new"><?php echo @$prow["project_demo_url"];?></A></td>
 		</tr>
 		</table>
 	</td>
 	<td width="50%" rowspan="9" valign="top">
 		<b>Full Description</b><br>
-		<?php echo str_replace( chr(10), "<BR>", $prow["project_description"]); ?>
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td bgcolor="#ffffff">
+				<?php echo str_replace( chr(10), "<BR>", $prow["project_description"]); ?>&nbsp;
+			</td>
+		</tr>
+		</table>
 	</td>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="0" width="95%">
+<table border="0" cellpadding="2" cellspacing="0" width="98%">
 <tr>
 	<td>
 		<a href="./index.php?m=projects&a=view&project_id=<?php echo $project_id;?>&vm=0">tabbed</a> :
@@ -169,7 +176,7 @@ $tabs = array(
 );
 
 if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="95%">
+<table border="0" cellpadding="2" cellspacing="0" width="98%">
 <?php
 	foreach ($tabs as $k => $v) {
 		echo "<tr><td><b>$v</b></td></tr>";

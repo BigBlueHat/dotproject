@@ -82,60 +82,55 @@ function updateTask() {
 }
 </script>
 
-<TABLE width="95%" border=0 cellpadding="1" cellspacing=1>
-<TR>
-	<TD><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-		<TD nowrap><span class="title">Manage Task</span></td>
-		<TD nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
-		<TD valign="top" align="right" width="100%"></td>
+<table cellspacing="1" cellpadding="1" border="0" width="98%">
+<tr>
+	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
+	<td nowrap><span class="title">Manage Task</span></td>
+	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+	<td valign="top" align="right" width="100%"></td>
 </tr>
-</TABLE>
+</table>
 
-<table border="0" cellpadding="0" cellspacing="2" width="95%">
-<TR>
-	<TD nowrap>
+<table cellspacing="0" cellpadding="4" border="0" width="98%">
+<tr>
+	<td nowrap>
 		<A href="./index.php?m=projects&a=view&project_id=<?php echo $trow["task_project"];?>"><?php echo $trow["project_name"];?></A>
 		<b> : </b><A href="./index.php?m=tasks">Task List</a>
 <?php if (!$denyEdit) { ?>
 		<b>:</b> <A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $trow["task_id"];?>">Edit this task</a>
 <?php } ?>
-	</TD>
-	<TD width="100%" align="right"><?php include ("./includes/create_new_menu.php");?>
-</TD>
-	</TR>
-</TABLE>
+	</td>
+</tr>
+</table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="95%">
-<TR>
-	<TD style="border: outset #eeeeee 2px;" width="50%" bgcolor="<?php echo $trow["project_color_identifier"];?>">
+<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<tr>
+	<td style="border: outset #eeeeee 1px;background-color:<?php echo $trow["project_color_identifier"];?>" colspan="2">
 		<font color="<?php echo bestColor( $trow["project_color_identifier"] ); ?>">
 			<b>TASK: <?php echo @$trow["task_name"];?></b>
 		</font>
-	</TD>
+	</td>
 </tr>
-</TABLE>
-
-<table border="0" cellpadding="0" cellspacing="6" width="95%" bgcolor="#cccccc">
-<tr bgcolor="#cccccc" valign="top">
+<tr valign="top">
 	<td width="50%">
-		<TABLE width="100%" cellspacing=1>
-		<TR>
-			<TD nowrap colspan=2><b>Details</b></td>
+		<table width="100%" cellspacing=1>
+		<tr>
+			<td nowrap colspan=2><b>Details</b></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Project:</td>
-			<TD bgcolor="#eeeeee"><?php echo @$trow["project_name"];?></td>
+		<tr>
+			<td align=right nowrap>Project:</td>
+			<td bgcolor="#ffffff"><?php echo @$trow["project_name"];?></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Task:</td>
-			<TD bgcolor="#eeeeee"><?php echo @$trow["task_name"];?></td>
+		<tr>
+			<td align=right nowrap>Task:</td>
+			<td bgcolor="#ffffff"><?php echo @$trow["task_name"];?></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Owner:</td>
-			<TD bgcolor="#eeeeee"> <?php echo @$trow["username"];?></td>
-		</tr>				<TR>
-			<TD align=right nowrap>Priority:</td>
-			<TD bgcolor="#eeeeee">
+		<tr>
+			<td align=right nowrap>Owner:</td>
+			<td bgcolor="#ffffff"> <?php echo @$trow["username"];?></td>
+		</tr>				<tr>
+			<td align=right nowrap>Priority:</td>
+			<td bgcolor="#ffffff">
 		<?php
 			if ($trow["task_priority"] == 0) {
 				echo "Normal";
@@ -147,49 +142,49 @@ function updateTask() {
 		?>
 			</td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Web Address:</td>
-			<TD bgcolor="#eeeeee" width="300"><?php echo @$trow["task_related_url"];?></td>
+		<tr>
+			<td align=right nowrap>Web Address:</td>
+			<td bgcolor="#ffffff" width="300"><?php echo @$trow["task_related_url"];?></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Milestone:</td>
-			<TD bgcolor="#eeeeee" width="300"><?php if($trow["task_milestone"]){echo "Yes";}else{echo "No";}?></td>
+		<tr>
+			<td align=right nowrap>Milestone:</td>
+			<td bgcolor="#ffffff" width="300"><?php if($trow["task_milestone"]){echo "Yes";}else{echo "No";}?></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Percent Complete:</td>
-			<TD bgcolor="#eeeeee" width="300"><?php echo @$trow["task_precent_complete"];?>%</td>
+		<tr>
+			<td align=right nowrap>Percent Complete:</td>
+			<td bgcolor="#ffffff" width="300"><?php echo @$trow["task_precent_complete"];?>%</td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Time worked:</td>
-			<TD bgcolor="#eeeeee" width="300"><?php echo @$trow["task_hours_worked"];?></td>
+		<tr>
+			<td align=right nowrap>Time worked:</td>
+			<td bgcolor="#ffffff" width="300"><?php echo @$trow["task_hours_worked"];?></td>
 		</tr>
-		<TR>
-			<TD nowrap colspan=2><b>Dates and Targets</b></td>
+		<tr>
+			<td nowrap colspan=2><b>Dates and Targets</b></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Start Date:</TD>
-			<TD bgcolor="#eeeeee" width="300"><?php echo fromDate(substr($trow["task_start_date"], 0, 10));?></td>
-		</TR>
-		<TR>
-			<TD align=right nowrap>End Date:</TD>
-			<TD bgcolor="#eeeeee" width="300"><?php if(intval($trow["task_end_date"]) == 0){echo "n/a";}else{echo fromDate(substr($trow["task_end_date"], 0, 10));}?></td>
+		<tr>
+			<td align=right nowrap>Start Date:</td>
+			<td bgcolor="#ffffff" width="300"><?php echo fromDate(substr($trow["task_start_date"], 0, 10));?></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Expected Duration:</td>
-			<TD bgcolor="#eeeeee" width="300"><?php
+		<tr>
+			<td align=right nowrap>End Date:</td>
+			<td bgcolor="#ffffff" width="300"><?php if(intval($trow["task_end_date"]) == 0){echo "n/a";}else{echo fromDate(substr($trow["task_end_date"], 0, 10));}?></td>
+		</tr>
+		<tr>
+			<td align=right nowrap>Expected Duration:</td>
+			<td bgcolor="#ffffff" width="300"><?php
 			$dur = returnDur( $trow["task_duration"] );
 			echo $dur["value"] . " " . $dur["type"];
 			?></td>
 		</tr>
-		<TR>
-			<TD align=right nowrap>Target Budget:</td>
-			<TD bgcolor="#eeeeee" width="300"><?php echo $trow["task_target_budget"];?></td>
+		<tr>
+			<td align=right nowrap>Target Budget:</td>
+			<td bgcolor="#ffffff" width="300"><?php echo $trow["task_target_budget"];?></td>
 		</tr>
-		<TR>
-			<TD nowrap colspan=2><b>full description</b></td>
+		<tr>
+			<td nowrap colspan=2><b>full description</b></td>
 		</tr>
-		<TR>
-			<TD valign=top height=75 colspan=2 bgcolor="#eeeeee">
+		<tr>
+			<td valign=top height=75 colspan=2 bgcolor="#ffffff">
 				<?php $newstr = str_replace( chr(10), "<BR>", $trow["task_description"]);echo $newstr;?>
 			</td>
 		</tr>
@@ -206,56 +201,56 @@ function updateTask() {
 		<input type="hidden" value="<?php echo $user_cookie;?>" name="user_id">
 		<input type="hidden" value="Update :<?php echo $$trow["task_name"];?>" name="comment_title">
 		<input type="hidden" value="<?php echo @$trow["task_hours_worked"];?>" name="already_worked">
-		<TR>
-			<TD colspan=2><b>Update Task</b></TD>
-			<TD colspan=2>comments:</TD>
-		</TR>
-		<TR bgcolor="#eeeeee">
-			<TD align="right" nowrap>hours worked<br>since last update
-			 </td>
-			<TD bgcolor="#eeeeee"><input type="text" name="worked" maxlength=3 size=4></td>
-			<TD rowspan=2><textarea name="comments" cols=25 rows=4></textarea></td>
+		<tr>
+			<td colspan=2><b>Update Task</b></td>
+			<td colspan=2>comments:</td>
 		</tr>
-		<TR bgcolor="#eeeeee">
-			<TD bgcolor="#eeeeee" align="right">percent<br>
+		<tr>
+			<td align="right" bgcolor="#cccccc" nowrap>hours worked<br>since last update
+			 </td>
+			<td bgcolor="#cccccc"><input type="text" name="worked" maxlength=3 size=4></td>
+			<td bgcolor="#cccccc" rowspan=2><textarea name="comments" cols=25 rows=4></textarea></td>
+		</tr>
+		<tr>
+			<td bgcolor="#cccccc" align="right">percent<br>
 			complete</td>
-			<TD bgcolor="#eeeeee">
+			<td bgcolor="#cccccc">
 		<?php
 			echo arraySelect( $percent, 'complete', 'size=1', $trow["task_precent_complete"] ) . '%';
 		?>
 			</td>
 		</tr>
-		<TR>
-			<TD colspan=3 ALIGN="CENTER"><input type="button" value="update task" onClick="updateTask()"></td>
+		<tr>
+			<td colspan=3 ALIGN="CENTER"><input type="button" value="update task" onClick="updateTask()"></td>
 		</tr>
 		</form>
 
-		<TR>
-			<TD colspan=3><b>Assigned Users</b></td>
+		<tr>
+			<td colspan=3><b>Assigned Users</b></td>
 		</tr>
-		<TR>
+		<tr>
 			<td colspan=3>
-				<TABLE width="100%" cellspacing=1 bgcolor="black">
+				<table width="100%" cellspacing=1 bgcolor="black">
 				<?php while($row = mysql_fetch_array($usql)){?>
-				<TR><TD bgcolor="#f4efe3"><?php echo $row["user_username"];?></td><TD bgcolor="#f4efe3"><?php echo $row["user_email"];?></td></tr>
+				<tr><td bgcolor="#ffffff"><?php echo $row["user_username"];?></td><td bgcolor="#ffffff"><?php echo $row["user_email"];?></td></tr>
 				<?php };?>
-				</TABLE>
+				</table>
 			</td>
 		</tr>
-		<TR>
+		<tr>
 			<td colspan=2><b>Attached Files</b></td>
-			<TD align=right>
-				<A href="./index.php?m=files&a=addedit&project_id=<?php echo $trow["task_project"];?>&file_task=<?php echo $task_id;?>">Attach a file<img src="./images/icons/minifile.gif" align=absmiddle width=20 height=28 alt="attach a file to this task" border=0></a>
+			<td align=right>
+				<A href="./index.php?m=files&a=addedit&project_id=<?php echo $trow["task_project"];?>&file_task=<?php echo $task_id;?>">Attach a file<img src="./images/icons/forum_folder.gif" align=absmiddle width=20 height=20 alt="attach a file to this task" border=0></a>
 			</td>
 		</tr>
-		<TR>
+		<tr>
 			<td colspan=3>
-				<TABLE width="100%" cellspacing=1 bgcolor="black">
-					<?php if(mysql_num_rows($fsql)==0)echo "<TR><TD bgcolor=#ffffff>none</td></tr>";
+				<table width="100%" cellspacing=1 bgcolor="black">
+					<?php if(mysql_num_rows($fsql)==0)echo "<tr><td bgcolor=#ffffff>none</td></tr>";
 					while($row = mysql_fetch_array($fsql)){?>
-					<TR><TD bgcolor="#eeeeee"><A href="./fileviewer.php?file_id=<?php echo $row["file_id"];?>"><?php echo $row["file_name"];?></a></td><TD bgcolor="#ffffff"><?php echo $row["file_type"];?></td><TD bgcolor="#eeeeee"><?php echo $row["file_size"];?></td></tr>
+					<tr><td bgcolor="#eeeeee"><A href="./fileviewer.php?file_id=<?php echo $row["file_id"];?>"><?php echo $row["file_name"];?></a></td><td bgcolor="#ffffff"><?php echo $row["file_type"];?></td><td bgcolor="#eeeeee"><?php echo $row["file_size"];?></td></tr>
 					<?php };?>
-				</TABLE>
+				</table>
 			</td>
 		</tr>
 		</table>
@@ -263,31 +258,27 @@ function updateTask() {
 </tr>
 </table>
 
-<table border="0" cellpadding="0" cellspacing="4" width="95%" bgcolor="#eeeeee">
-<TR>
-	<TD><B>Task Log and Comments</b></td>
+<B>Task Log and Comments</b>
+
+<table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
+<tr>
+	<td></td>
 </tr>
-<TR>
-	<TD>
-		<table border="0" cellpadding="3" cellspacing="1" width="100%" bgcolor="#cccccc">
-		<TR style="border: outset #eeeeee 2px;">
-			<TD width="100" class="mboxhdr">Action</td>
-			<TD width="100" class="mboxhdr">User</td>
-			<TD class="mboxhdr">Comments</td>
-			<TD width="150" class="mboxhdr">Date</td>
-		</tr>
-	<?php while($row = mysql_fetch_array( $crc, MYSQL_ASSOC )) { ?>
-		<TR bgcolor="white" valign=top>
-			<TD width="100"><?php echo $row["comment_title"];?></td>
-			<TD width="100"><?php echo $row["user_username"];?></td>
-			<TD><?php $newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
-			<TD width="150"><?php echo fromDate($row["comment_date"]);?></td>
-		</tr>
+<tr>
+	<th width="100">Action</th>
+	<th width="100">User</th>
+	<th>Comments</th>
+	<th width="150" class="mboxhdr">Date</th>
+</tr>
+<?php while($row = mysql_fetch_array( $crc, MYSQL_ASSOC )) { ?>
+<tr bgcolor="white" valign=top>
+	<td width="100"><?php echo $row["comment_title"];?></td>
+	<td width="100"><?php echo $row["user_username"];?></td>
+	<td><?php $newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
+	<td width="150"><?php echo fromDate($row["comment_date"]);?></td>
+</tr>
 	<?php }?>
-		</TABLE>
-	</td>
-</tr>
-</TABLE>
+</table>
 
 </body>
 </html>
