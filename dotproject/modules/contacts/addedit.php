@@ -31,7 +31,15 @@ if ($canEdit && $contact_id) {
 }
 $titleBlock->show();
 ?>
+
 <script language="javascript">
+<?php
+	if ( is_numeric($row->getCompanyID()) ){
+		echo "window.company_id=" . $row->getCompanyID() . ";\n";
+		echo "window.company_value='" . $row->contact_company . "';\n";
+	}
+?>
+
 function submitIt() {
 	var form = document.changecontact;
 	if (form.contact_last_name.value.length < 1) {
@@ -43,6 +51,33 @@ function submitIt() {
 	} else {
 		form.submit();
 	}
+}
+
+function popDepartment() {
+        window.open('./index.php?m=public&a=selector&dialog=1&callback=setDepartment&table=departments&hide_company=1&company_id=' + window.company_id, 'department','left=50,top=50,height=250,width=400,resizable');
+}
+
+function setDepartment( key, val ){
+	var f = document.changecontact;
+ 	if (val != '') {
+    	f.contact_department.value = val;
+    }
+}
+
+function popCompany() {
+        window.open('./index.php?m=public&a=selector&dialog=1&callback=setCompany&table=companies', 'company','left=50,top=50,height=250,width=400,resizable');
+}
+
+function setCompany( key, val ){
+	var f = document.changecontact;
+ 	if (val != '') {
+    	f.contact_company.value = val;
+    	if ( window.company_id != key ){
+    		f.contact_department.value = "";
+    	}
+    	window.company_id = key;
+    	window.company_value = val;
+    }
 }
 
 function delIt(){
@@ -61,6 +96,14 @@ function orderByName( x ){
 		form.contact_order_by.value = form.contact_company.value;
 	}
 }
+
+function companyChange() {
+	var f = document.changecontact;
+	if ( f.contact_company.value != window.company_value ){
+		f.contact_department.value = "";
+	} 
+}
+
 </script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
@@ -109,8 +152,17 @@ function orderByName( x ){
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Company');?>:</td>
 			<td nowrap>
-				<input type="text" class="text" name="contact_company" value="<?php echo @$row->contact_company;?>" maxlength="100" size="25" />
-				<a href="#" onClick="orderByName('company')">[<?php echo $AppUI->_('use in display');?>]</a></td>
+				<input type="text" class="text" name="contact_company" value="<?php echo @$row->contact_company;?>" maxlength="100" size="25" onChange="companyChange()" />
+				<input type="button" class="button" value="<?php echo $AppUI->_('select company');?>..." onclick="popCompany()" />
+				<a href="#" onClick="orderByName('company')">[<?php echo $AppUI->_('use in display');?>]</a>
+				</td>
+		</tr>
+		<tr>
+			<td align="right" width="100"><?php echo $AppUI->_('Department');?>:</td>
+			<td nowrap>
+				<input type="text" class="text" name="contact_department" value="<?php echo @$row->contact_department;?>" maxlength="100" size="25" />
+				<input type="button" class="button" value="<?php echo $AppUI->_('select department');?>..." onclick="popDepartment()" />
+				</td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Title');?>:</td>

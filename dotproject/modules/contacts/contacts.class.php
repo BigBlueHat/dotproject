@@ -21,6 +21,7 @@ class CContact extends CDpObject{
 	var $contact_title = NULL;
 	var $contact_birthday = NULL;
 	var $contact_company = NULL;
+	var $contact_department = NULL;
 	var $contact_type = NULL;
 	var $contact_email = NULL;
 	var $contact_email2 = NULL;
@@ -53,5 +54,12 @@ class CContact extends CDpObject{
 		$this->contact_owner = intval( $this->contact_owner );
 		return NULL; // object is ok
 	}
+	
+	function getCompanyID(){
+		$sql = "select company_id from companies where company_name = '" . $this->contact_company . "'";
+		$company_id = db_loadResult( $sql );
+		return $company_id;
+	}
+	
 }
 ?>

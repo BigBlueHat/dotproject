@@ -140,5 +140,6 @@ $tabBox->add( 'vw_active', 'Active Projects' );
 $tabBox->add( 'vw_archived', 'Archived Projects' );
 $tabBox->add( 'vw_depts', 'Departments' );
 $tabBox->add( 'vw_users', 'Users' );
+$tabBox->add( 'vw_contacts', 'Contacts' );
 $tabBox->show();
 ?>

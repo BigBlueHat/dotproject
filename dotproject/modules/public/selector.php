@@ -54,7 +54,12 @@ case 'departments':
 	$where .= "\nAND ".selPermWhere( 'departments', 'dept_id' );
 
 	$table .= ", companies, permissions";
-	$select = "dept_id,CONCAT_WS(': ',company_name,dept_name) AS dept_name";
+	$hide_company = dPgetParam( $_GET, 'hide_company', 0 );
+	if ( $hide_company == 1 ){
+		$select = "dept_id, dept_name";
+	}else{
+		$select = "dept_id,CONCAT_WS(': ',company_name,dept_name) AS dept_name";
+	}
 	if ($company_id) {
 		$where .= "\nAND dept_company = $company_id";
 		$order = 'dept_name';
