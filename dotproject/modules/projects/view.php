@@ -331,21 +331,10 @@ function delIt() {
 </table>
 
 <?php
-// for tab 1 show only inactive tasks
-if ($tab == 1) {
-	$_GET['task_status'] = -1;
-}
-/* for tab 0 show active tasks
-** this condition ensures that the task_status is not overwritten by UI settings in the tasks modules
-** cf. mantis bug #327 where only inactive tasks were listed in tab 0
-*/
-if ($tab == 0) {
-	$_GET['task_status'] = 0;
-}
+$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
 $query_string = "?m=projects&a=view&project_id=$project_id";
 // tabbed information boxes
 // Note that we now control these based upon module requirements.
-$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
 $canViewTask = $perms->checkModule('tasks', 'view');
 if ($canViewTask) {
 	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks' );
