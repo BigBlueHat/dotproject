@@ -1,6 +1,7 @@
 <?php // $Id$
-//todo: enable dbcreated functionality for reposts ans so on
+//todo: enable dbcreated functionality for reposts ans so on  (prevent from double-install)
 //todo: interface: right row more to the left
+//todo: !heavy!: design: have a main site where the steps are linked and where we always come back and do the main work.
 //todo: script to read subdirectories for styles and langs (delete empty/superfluous directories in the core distro???)
 //todo: enhanced guiding texts
 //todo: ask if dotproject.sql should be applied
@@ -11,6 +12,7 @@
 //todo: base_url is wrong in pref.php : do_backup:php
 //todo_ check for config file writable is buggy
 //todo: create an initial company (preventing from sqlerrors after install)
+//todo: GPL possible?
 
 /*
 * dotProject Installer
