@@ -300,9 +300,10 @@ class CAppUI {
 	}
 }
 /*
-	Tabbed box class
+	Tabbed box core class
+	The show function may be overrided by the style
 */
-class CTabBox {
+class CTabBox_core {
 	var $tabs=NULL;
 	var $active=NULL;
 	var $baseHRef=NULL;
@@ -368,5 +369,4 @@ class CTabBox {
 		}
 	}
 }
-
 ?>
