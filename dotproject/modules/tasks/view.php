@@ -309,15 +309,11 @@ function delIt() {
 			?>
 			</td>
 		</tr>
-
-	<?php // check access to files module
-		if (!getDenyRead( 'files' )) {
-	?>
 		<tr>
-			<td width="100%"><strong><?php echo $AppUI->_('Attached Files');?></strong></td>
+			<td width="100%"><strong><?php echo $AppUI->_('Attached Links');?></strong></td>
 			<td align="right" nowrap="nowrap">
-			<?php if (!getDenyEdit( 'files' )) { ?>
-				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $obj->task_project;?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?>
+			<?php if (!getDenyEdit( 'links' )) { ?>
+				<a href="./index.php?m=links&a=addedit&project_id=<?php echo $obj->task_project;?>&link_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a link');?>
 				</a>
 			<?php } ?>
 			</td>
@@ -325,25 +321,7 @@ function delIt() {
 				<?php echo dPshowImage( dPfindImage( 'stock_attach-16.png', $m ), 16, 16, '' ); ?>
 			</td>
 		</tr>
-		<tr>
-			<td colspan="3">
-			<?php
-				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '<tr><th>File Name</th><th>Version</th><th>Date</th><th>Type</th><th>Size</th></tr>';
-				foreach ($files as $row) {
-                                        $file_date = new CDate( $row['file_date'] );
-					$s .= '<tr>';
-					$s .= '<td class="hilite"><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
-                                        $s .= '<td class="hilite">'.$row["file_version"].'</td>';
-                                        $s .= '<td class="hilite">'.$file_date->format( "$df $tf" ).'</td>';
-					$s .= '<td class="hilite">'.$row["file_type"].'</td>';
-					$s .= '<td class="hilite">'.$row["file_size"].'</td>';
-					$s .= '</tr>';
-				}
-				echo '<table width="100%" cellspacing="1" class="tbl" bgcolor="black">'.$s.'</table';
-			?>
-			</td>
-		</tr>
-	<?php } // end files access 
+<?php
 		if($obj->task_departments != "") {
 			?>
 		    <tr>
@@ -444,6 +422,9 @@ if ( count($obj->getChildren()) > 0 ) {
 	$_GET["task_status"] = $obj->task_status;
 	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
-	
+$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_idx_files", 'Files' );
+$showProject = false;
+$project_id = $obj->task_project;
+//$tabBox->add( "{$dPconfig['root_dir']}/modules/links/index_table", 'Links');	
 if ( $tabBox_show == 1)	$tabBox->show();
 ?>

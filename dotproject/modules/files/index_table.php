@@ -7,6 +7,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 
 	GLOBAL $AppUI;
 	$xpg_break = false;
+        $xpg_prev_page = $xpg_next_page = 1;
 	
 	echo "\t<table width='100%' cellspacing='0' cellpadding='0' border=0><tr>";
 
@@ -148,6 +149,7 @@ WHERE
 . (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '')
 . (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '')
 . ($project_id ? "\nAND file_project = $project_id" : '')
+. ($task_id ? "\nAND file_task = $task_id" : '')
 . ' GROUP BY project_name, file_name';
 
 // SETUP FOR FILE LIST
@@ -174,6 +176,7 @@ WHERE
 . (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '') 
 . (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '') 
 . ($project_id ? "\nAND file_project = $project_id" : '')
+. ($task_id ? "\nAND file_task = $task_id" : '')
 . '
 GROUP BY project_name, file_name
 ORDER BY project_name, file_name
@@ -185,7 +188,8 @@ $sql2 = "SELECT file_id, file_version, file_project, file_name, file_task, file_
         LEFT JOIN tasks on file_task = task_id
         LEFT JOIN projects ON project_id = file_project
 " . 
-($project_id ? " AND file_project = $project_id" : '');
+($project_id ? " AND file_project = $project_id" : '') .
+($task_id ? " AND file_task = $task_id" : '');
 
 $files = array();
 $file_versions = array();
@@ -198,9 +202,7 @@ if ($canRead) {
 $xpg_totalrecs = count(db_loadList($xpg_sqlcount));
 
 // How many pages are we dealing with here ??
-if ($xpg_totalrecs > $xpg_pagesize) {
-	$xpg_total_pages = ceil($xpg_totalrecs / $xpg_pagesize);
-}
+$xpg_total_pages = ($xpg_totalrecs > $xpg_pagesize) ? ceil($xpg_totalrecs / $xpg_pagesize) : 1;
 
 shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 
@@ -254,8 +256,9 @@ foreach ($files as $row) {
 		if ($showProject) {
 			$s = '<tr>';
 			$s .= '<td colspan="10" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
-			$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
-			. $row["project_name"] . '</font>';
+			$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">
+<a href="?m=projects&a=view&project_id=' . $row['file_project'] . '">'
+                        . $row["project_name"] . '</a></font>';
 			$s .= '</td></tr>';
 			echo $s;
 		}

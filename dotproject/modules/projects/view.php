@@ -311,7 +311,8 @@ $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_forums", 'Forums' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_files", 'Files' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
 $tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
-
+$showProject = false;
+//$tabBox->add( "{$dPconfig['root_dir']}/modules/links/index_table", 'Links');
 // settings for tasks
 $f = 'all';
 $min_view = true;
