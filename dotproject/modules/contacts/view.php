@@ -31,6 +31,21 @@ if ($canDelete && $contact_id) {
 }
 $titleBlock->show();
 ?>
+<form name="changecontact" action="?m=contacts" method="post">
+        <input type="hidden" name="dosql" value="do_contact_aed" />
+        <input type="hidden" name="del" value="0" />
+        <input type="hidden" name="contact_id" value="<?php echo $contact_id;?>" />
+        <input type="hidden" name="contact_owner" value="<?php echo $row->contact_owner ? $row->contact_owner : $AppUI->user_id;?>" />
+</form>
+<script language="JavaScript">
+function delIt(){
+        var form = document.changecontact;
+        if(confirm( "<?php echo $AppUI->_('contactsDelete');?>" )) {
+                form.del.value = "<?php echo $contact_id;?>";
+                form.submit();
+        }
+}
+</script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
