@@ -115,9 +115,9 @@ Also there a some known problems with Gantt charts and the Calendar Module not h
 	</li>
 
 	<li>File Management Configuration.
-    
+
 	<p>The File Management Module provides users with an opportunity to upload and
-    share files. Several steps are necessary to make sure this module works 
+    share files. Several steps are necessary to make sure this module works
     correctly.</p>
 
 	<ol type="a">
@@ -130,8 +130,8 @@ Also there a some known problems with Gantt charts and the Calendar Module not h
 		</li>
 
 		<li><p>Files Folder Permissions</p>
-		<p>In order for the file upload to function, you will need to provide write priviledges to the file upload folder. The "default" file upload folder is named <code>"files"</code> and contains an <code>".htaccess"</code> file to 
-        prevent unauthorized access.<p>
+		<p>In order for the file upload and generation of pdf reports to function, you will need to provide write priviledges to the file upload folder and its subfolder 'temp'. The "default" file upload folder is named <code>"files"</code> and contains an <code>".htaccess"</code> file to
+        prevent unauthorized access. Users also reported of needing write access for '/lib/ezpdf/fonts' for pdf generation.<p>
 		<p>The safe way to the write permission on a POSIX system is via the following.  Determine what user is running the apache web server with the following system command:
 		<pre>[user@localhost dotproject]# ps -ef | grep httpd</pre>
 		The resulting list will show you the user that is running Apache (probably <code>apache</code>).  Change the owner of the files directory to this user:
@@ -143,16 +143,16 @@ Also there a some known problems with Gantt charts and the Calendar Module not h
 		<li><p>Troubleshooting</p>
 		<p>Failure to specify the proper <code>$root_dir</code> OR failure to provide write permissions on the file upload folder will result in numerous error messages along the lines of:
 		<pre>
-Warning: Unable to create '{$root_dir}/files/0/{rnd #}': 
+Warning: Unable to create '{$root_dir}/files/0/{rnd #}':
 	Permission denied in {$root_dir}/dosql/addfile.php on line 17
 Warning: Unable to move '/tmp/phpt9SeKp' to '{$root_dir}/files/0/{rnd #}'
 	in {$root_dir}/dosql/addfile.php on line 17
-Warning: fopen("{$root_dir}/files/0/{rnd #}","r") - No such file 
+Warning: fopen("{$root_dir}/files/0/{rnd #}","r") - No such file
 	or directory in {$root_dir}/dosql/addfile.php on line 51
 Warning: Supplied argument is not a valid File-Handle resource in
 	{$root_dir}/addfile.php on line 52
-Warning: Cannot add header information - headers already sent by (output 
-	started at {$root_dir}/dosql/addfile.php:17) in 
+Warning: Cannot add header information - headers already sent by (output
+	started at {$root_dir}/dosql/addfile.php:17) in
 	{$root_dir}/dosql/addfile.php on line 92
 		</pre>
 		<p>Even though you may encounter error messages, there will still be an entry made for the various files in the database. However, the contents of the uploaded files will likely be lost. Instead the "files" will contain error messages that may help with troubleshooting.</p>
@@ -182,7 +182,7 @@ deny from all</pre>
 <p>Most distributions have one or more dotproject_{version}.sql files where {version} is the version of dotProject.  You should always choose
 the highest numbered version.  This version number will match the version of the dotProject code.  E.g. dotProject version 1.0.1 uses
 dotproject_101.sql.</p>
-            
+
 <h2>Web trouble ticket email gateway: dotproject/includes/gateway.pl</h2>
 <pre>
 ---------------------------------------------------------------------------
