@@ -211,7 +211,7 @@ function delIt() {
 			<td class="hilite" width="300"><?php echo $obj->task_duration.' '.$AppUI->_( $durnTypes[$obj->task_duration_type] );?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> <?php echo $dPconfig['currency_symbol'] ?>:</td>
 			<td class="hilite" width="300"><?php echo $obj->task_target_budget;?></td>
 		</tr>
 		<tr>

@@ -353,7 +353,7 @@ function calcFinish() {
 				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text"', $task_parent ); ?>
 			</td>
 			<td><img src="./images/shim.gif" width=30 height=1></td>
-			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
+			<td><?php echo $dPconfig['currency_symbol'] ?><input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
 		</tr>
 		</table>
 	</td>

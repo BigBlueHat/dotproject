@@ -62,6 +62,14 @@ $dPconfig['check_legacy_password'] = false;
 */
 $dPconfig['host_locale'] = "en";
 
+/*
+ Localisation of the currency-symbol.
+ For the EURO sign symbol set to ... = "&#8364;";
+ Check http://www.w3.org/TR/html401/sgml/entities.html
+ for information about html special characters.
+*/
+$dPconfig['currency_symbol'] = "$";
+
 // default user interface style
 $dPconfig['host_style'] = "default";
 

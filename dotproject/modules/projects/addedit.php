@@ -163,7 +163,7 @@ function submitIt() {
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> $</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> <?php echo $dPconfig['currency_symbol'] ?></td>
 			<td>
 				<input type="Text" name="project_target_budget" value="<?php echo @$row->project_target_budget;?>" maxlength="10" class="text" />
 			</td>
@@ -182,7 +182,7 @@ function submitIt() {
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Budget');?> $</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Budget');?> <?php echo $dPconfig['currency_symbol'] ?></td>
 			<td>
 				<input type="text" name="project_actual_budget" value="<?php echo @$row->project_actual_budget;?>" size="10" maxlength="10" class="text"/>
 			</td>

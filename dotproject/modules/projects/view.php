@@ -134,7 +134,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target Budget');?>:</td>
-			<td class="hilite">$<?php echo @$obj->project_target_budget;?></td>
+			<td class="hilite"><?php echo $dPconfig['currency_symbol'] ?><?php echo @$obj->project_target_budget;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Project Owner');?>:</td>
