@@ -1,3 +1,39 @@
+2003-12-04 01:16  (jcgonz)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_proposed.php
+- Project plain view wasn't filtering correctly, bug fixed.
+
+2003-12-03 23:51  (jcgonz)
+---------------------------------
+modules/projects/view.php
+modules/tasks/tasks.php
+- Milestones by definition have no duration so the milestone legend is displayed in the task list and they don't add up in the allocated hours.
+- 
+- Also the total hours sums have been fixed with the round function due to an issue with mysql not summing up floats "correctly"
+
+2003-12-03 19:46  (gregorerhardt)
+---------------------------------
+locales/en/tasks.inc
+locales/en/tasks.inc
+- added strings
+
+2003-12-03 19:35  (gregorerhardt)
+---------------------------------
+locales/en/history.inc
+- initial import of translation of historyModule
+
+2003-12-03 19:34  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+locales/en/system.inc
+- added existing strings
+
+2003-12-03 09:23  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-02 23:27  (jcgonz)
 ---------------------------------
 db/dotproject_101.sql
@@ -462,42 +498,6 @@ modules/help/en/contacts.index.hlp
 - added help text for vCards
 
 2003-09-23 03:57  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-22 05:55  (gregorerhardt)
----------------------------------
-modules/tasks/view.php
-modules/tasks/vw_logs.php
-- bug809030:  ro-users cannot anymore access vw_log_update
-
-2003-09-20 03:58  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-19 12:02  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/view.php
-includes/permissions.php
-- bug809030: now there is access to tasks for users with read-write
-
-2003-09-19 03:59  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-19 01:17  (ajdonnison)
----------------------------------
-modules/projects/addedit.php
-- Fixed the calendar popups. Might still need to look at the use of the
-- two different calendars though.
-
-2003-09-19 00:50  (ajdonnison)
----------------------------------
-fileviewer.php
 ...
 
 (This file has been wrapped)
