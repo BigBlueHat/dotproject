@@ -1,5 +1,10 @@
 <?php
 
+/*
+ * TODO:
+ * - add task info showing also parent tasks
+ */
+
 $project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
 
 // check permissions
@@ -28,17 +33,18 @@ $AppUI->savePlace();
 // query my sub-tasks
 
 $sql = "
-SELECT a.*,
-	project_name, project_id, project_color_identifier
-FROM projects, tasks AS a, user_tasks
-LEFT JOIN tasks AS b ON a.task_id=b.task_parent and a.task_id != b.task_id
-WHERE user_tasks.task_id = a.task_id
-	AND b.task_id IS NULL
-	AND user_tasks.user_id = $AppUI->user_id
-	AND a.task_precent_complete != 100
-	AND project_id = a.task_project
-GROUP BY a.task_id
-ORDER BY a.task_start_date, task_priority DESC
+		 SELECT a.*,
+		 project_name, project_id, project_color_identifier
+		 FROM projects, tasks AS a, user_tasks
+		 LEFT JOIN tasks AS b ON a.task_id=b.task_parent and a.task_id != b.task_id
+		 WHERE user_tasks.task_id = a.task_id
+		 AND b.task_id IS NULL
+		 AND user_tasks.user_id = $AppUI->user_id
+		 AND a.task_precent_complete != 100
+		 AND project_id = a.task_project" .
+  (!@$_POST["show_low_tasks"] ? " AND a.task_priority >= 0" : "") .
+  " GROUP BY a.task_id
+	ORDER BY a.task_start_date, task_priority DESC
 ";
 // echo "<pre>$sql</pre>";
 $tasks = db_loadList( $sql );
@@ -60,10 +66,14 @@ $crumbs["?m=tasks"] = "tasks list";
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
+<form name="form_buttons" method="post">		
 <tr>
 	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" width="100%"></td>
+	<td align="right" width="100%">
+<input type=checkbox name="show_low_tasks" <?php echo @$_POST["show_low_tasks"] ? "checked" : "" ?> onclick='submit()'>show low priority tasks
+	</td>
 </tr>
+</form>		
 </table>
 
 <table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
