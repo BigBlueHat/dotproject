@@ -7,8 +7,8 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title><?php echo $AppUI->cfg['company_name'];?> :: dotProject Login</title>
     <meta http-equiv="Pragma" content="no-cache" />
-    <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
-    <style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
+    <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/main.css" media="all" />
+    <style type="text/css" media="all">@import "./style/dp_ultra_clean/main.css";</style>
 </head>
 
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
