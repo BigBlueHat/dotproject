@@ -100,7 +100,7 @@ class CFile {
 
 // parse file for indexing
 	function indexStrings() {
-		GLOBAL $ft;
+		GLOBAL $ft, $AppUI;
 	// get the parser application
 		$parser = @$ft[$this->file_type];
 		if (!$parser) {
