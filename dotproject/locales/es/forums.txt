@@ -1,0 +1,105 @@
+# Forums -> Frm
+# Frm - Index -> I
+   FrmI_Title                  = User Forums
+   FrmIc_LnkAdd                = add new forum
+
+# Frm - Index columns -> Ic
+   FrmIc_Name                  = Forum Name
+   FrmIc_Owner                 = Forum Owner
+   FrmIc_Messages              = Messages
+   FrmIc_Created               = Created
+   FrmIc_LastPost              = Last Post
+
+# Frm - Edit -> E
+   FrmE_MsgEdit                = This page allows you to add or edit a discussion forum
+   FrmE_TtlAdd                 = Add forum
+   FrmE_TtlEdit                = Edit forum
+
+   FrmE_ErrName                = Please enter a valid forum name
+   FrmE_ErrProject             = Please select the project to associate this forum with
+   FrmE_ErrOwner               = Please select the owner of this forum
+
+   FrmE_MsgConfDel             = Are you sure you would like to delete this forum?\n\nNote: This will also delete all posts in this forum.
+
+# Frm - Edition fields -> Ef
+   FrmEf_Name                 = Forum Name
+   FrmEf_Project              = Forum Project
+   FrmEf_Owner                = Forum Owner
+   FrmEf_Status               = Forum Status
+
+   FrmEf_RdoSttOpen           = open for posting
+   FrmEf_RdoSttReadOnly       = read-only
+   FrmEf_RdoSttClosed         = closed
+
+   FrmEf_Moderated            = Forum Moderated
+   FrmEf_CreatedOn            = Created On
+   FrmEf_LastPost             = Last Post
+   FrmEf_MessageCt            = Message Count
+   FrmEf_Description          = Description
+
+# Frm - Do SQL -> "S"
+   FrmS_Inserted              = Forum Inserted
+   FrmS_Updated               = Forum Updated
+   FrmS_Deleted               = Forum Deleted<BR>Messages Deleted
+
+# Frm - View -> V
+
+   FrmV_Title                 = User Forums
+
+# Frm - View fields-> Vf
+   FrmVf_Project              = Related Project
+   FrmVf_Owner                = Forum Owner:
+   FrmVf_CreatedOn            = Created On
+   FrmVf_LastPost             = Last Post:
+   FrmVf_MessageCount         = Message Count:
+   FrmVf_Description          = Description:
+
+
+# Forum Topics -> FTp
+# FTp - View -> V
+   FTpV_LnkAllForums          = All forums
+   FTpV_BtnAdd                = start a new topic
+
+# FTp - View columns -> Vc
+   FTpVc_Topics               = Topics
+   FTpVc_Author               = Author
+   FTpVc_Replies              = Replies
+   FTpVc_LastPost             = Last Post
+
+
+# Forum Messages -> FMs
+# FMs - Index -> V
+   FMsI_LnkAllForums          = All forums
+   FMsI_BtnPostReply          = Post Reply
+   FMsI_BtnNewTopic           = New Topic
+
+   FMsI_LnkAllForums_2        = All forums
+   FMsI_BtnPostReply_2        = Post Reply
+   FMsI_BtnNewTopic_2         = New Topic
+
+# FMs - View columns -> Vc
+   FMsVc_Author               = Author:
+   FMsVc_Message              = Message:
+
+
+# FMs - Edit -> E
+   FMsE_Title                 = Add Topic
+   FMsE_LnkAllForums          = All forums
+
+   FMsE_ErrSubject            = Please enter a valid message subject
+   FMsE_ErrMessage            = Please type a message before posting
+
+   FMsE_MsgConfDel            = Are you sure you would like\nto delete this post?
+
+# FMs - Edition fields -> Ef
+   FMsEf_ForumName            = Forum Name:
+   FMsEf_ForumProject         = Forum Project:
+   FMsEf_Subject              = Subject:
+   FMsEf_MessageAuthor        = Message Author:
+   FMsEf_PostingDate          = Posting Date:
+   FMsEf_Message              = Message
+
+# FMs - Do SQL -> "S"
+   FMsS_Inserted         = Message Posted
+   FMsS_Updated          = Message Updated
+   FMsS_Deleted          = Message Deleted

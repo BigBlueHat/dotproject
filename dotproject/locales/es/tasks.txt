@@ -1,0 +1,133 @@
+# Tasks -> Tsk
+# Tsk - Index -> I
+   TskI_Title            = Tasks:
+   TskI_TtlAllProj       = All
+   TskI_ProjectCombo     = Projet:
+
+# Tsk - Index columns -> Ic
+   TskIc_Id              = id
+   TskIc_Work            = work
+   TskIc_Priority        = p
+   TskIc_Name            = task name
+   TskIc_StartDt         = start date
+   TskIc_Duration        = duration
+   TskIc_FinishDt        = finish date
+
+# Tsk - Edit -> E
+   TskE_TtlAdd           = Create New task for
+   TskE_TtlEdit          = Edit Existing task for
+   TskE_MsgAdd           = To create a new task complete the form below
+   TskE_MsgEdit          = Edit the task using the form below
+
+   TskE_BtnDel           = delete task
+
+   TskE_ErrName          = Please enter a valid task Name
+   TskE_ErrStartDate     = Please enter a valid start date
+   TskE_ErrDuration      = Please enter the duration of this task
+
+   TlgE_MsgConfDel       = Are you sure that you would like to delete this task?\n
+
+# Tsk - Edition fields -> Ef
+   TskEf_TaskName        = task name
+   TskEf_Priority        = priority
+   TskEf_PercComplete    = Percent Complete
+   TskEf_MilestoneAsk    = Milestone?
+
+   TskEf_RdoPrtyLow      = low
+   TskEf_RdoPrtyNormal   = normal
+   TskEf_RdoPrtyHigh     = high
+
+   TskEf_TaskOwner       = task owner
+   TskEf_RelatedURL      = Related URL
+   TskEf_TaskBudget      = Task budget
+   TskEf_TaskParent      = Task Parent:
+
+   TskEf_TaskStartDt     = start date
+   TskEf_TaskFinishDt    = finish date
+   TskEf_ExpecDuration   = Expected duration:
+   TskEf_SelUnitHour     = hour(s)
+   TskEf_SelUnitDay      = day(s)
+
+   TskEf_Instructions    = Instructions:
+
+   TskEf_Resources       = Resources
+   TskEf_AssignedTo      = Assigned to Task
+   TskEf_NotifyByEmail   = Notify Assignees of Task by Email
+
+   TskEf_LnkCalendar     = calendar
+
+# Tsk - Do SQL -> "S"
+   TskS_Inserted         = Task added
+   TskS_Updated          = Task updated
+   TskS_Deleted          = Task Deleted
+   TskS_MailInserted     = Added
+   TskS_MailUpdated      = Edited
+   TskS_MailDeleted      = Deleted
+   TskS_MsgOrphan        = Changing the task parent would orphan the task, falling back to the old parent
+
+# Tsk - Do SQL Mail -> "S
+   TskSm_From            = From: support@saki.com.au\r\n
+   TskSm_Subjec          = Task
+   TskSm_TaskID          = Task ID
+   TskSm_Title           = Title
+   TskSm_Description     = Description
+   TskSm_CreatedBy       = Created by
+
+   TskSm_UpdatedBy       = Updated by
+   TskSm_CommentsAdded   = Comments Added
+
+
+
+# Tsk - View -> V
+   TskV_LnkManageTask    = Manage Task
+   TskV_LnkTaskList      = Task List
+   TskV_LnkEditTask      = Edit this task
+
+# Tsk - View fields-> Vf
+   TskVf_TASK            = TASK:
+   TskVf_TtlDetails      = Details:
+   TskVf_Project         = Project:
+   TskVf_TaskName        = Task:
+   TskVf_TaskOwner       = Task Owner:
+   TskVf_Priority        = Priority:
+   TskVf_WebAddres       = Web Addres:
+   TskVf_Milestone       = Milestone:
+   TskVf_PercentCompl    = Percent Complete:
+   TskVf_TimeWorked      = Time worked:
+
+   TskVf_TtlDtAndTargets = Dates and Targets
+   TskVf_TaskStartDt     = Start Date:
+   TskVf_TaskFinishDt    = End Date:
+   TskVf_ExpecDuration   = Expected Duration:
+   TskVf_TargetBudget    = Target Budget:
+   TskVf_Instructions    = full description
+
+   TskVf_AssignedUsers   = Assigned Users
+   TskVf_AttachedFiles   = Attached Files
+   TskVf_LnkAttachFile   = Attach a file
+
+
+# Task Logs -> TLg
+# TLg - Index -> I
+   TLgI_Title            = Task Log and Comments
+
+# TLg - Index columns -> Ic
+   TlgIc_TaskAction      = Action
+   TlgIc_TaskUser        = User
+   TlgIc_TaskComments    = Comments
+   TlgIc_TaskDate        = Date
+
+# TLg - Edit -> E
+   TlgE_TtlUpdateTask    = Update Task
+
+   TlgE_ErrComment       = Please enter a worthwile commment
+   TlgE_ErrPercInteger   = The percent complete must be a integer
+   TlgE_ErrPercBtw_0_100 = The percent complete must be a value between 0 and 100
+
+
+# TLg - Edition fields -> Ef
+   TlgEf_HoursW_SLU      = hours worked<br>since last update
+   TlgEf_Percent_Compl   = percent<br>complete
+   TlgEf_TaskComments    = Comments:
+
+   TlgEf_BtnUpdate       = update task
