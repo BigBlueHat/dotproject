@@ -1726,7 +1726,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 	}
 // task owner
 	if (! $today_view) {
-		$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
+		$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['contact_last_name']."</a>".'</td>';
 	}
 //	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
 	if ( isset($a['task_assigned_users']) && ($assigned_users = $a['task_assigned_users'])) {
@@ -1737,7 +1737,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 				//$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
                                 $aInfo = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'";
                                 $aInfo .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$val['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$val['user_id']]['freeCapacity'].'%'.'">';
-                                $aInfo .= $val['user_username']." (".$val['perc_assignment']."%)</a>";
+                                $aInfo .= $val['contact_last_name']." (".$val['perc_assignment']."%)</a>";
 				$a_u_tmp_array[] = $aInfo;
 			}
 			$s .= join ( ', ', $a_u_tmp_array );
@@ -1747,7 +1747,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 //			$s .= $a['assignee_username'];
 			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'";
                         $s .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[0]['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[0]['user_id']]['freeCapacity'].'%'.'">';
-                        $s .= $assigned_users[0]['user_username'] .' (' . $assigned_users[0]['perc_assignment'] .'%)</a>';
+                        $s .= $assigned_users[0]['contact_last_name'] .' (' . $assigned_users[0]['perc_assignment'] .'%)</a>';
 			if($a['assignee_count']>1){
                         $id = $a['task_id'];
 			$s .= " <a href=\"javascript: void(0);\"  onClick=\"toggle_users('users_$id');\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
@@ -1759,7 +1759,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                                         $a_u_tmp_array[] = $assigned_users[$i]['user_username'];
                                         $s .= '<br /><a href="?m=admin&a=viewuser&user_id=';
                                         $s .=  $assigned_users[$i]['user_id'] . '" title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[$i]['user_id']]['charge'].'%; '.$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[$i]['user_id']]['freeCapacity'].'%'.'">';
-                                        $s .= $assigned_users[$i]['user_username'] .' (' . $assigned_users[$i]['perc_assignment'] .'%)</a>';
+                                        $s .= $assigned_users[$i]['contact_last_name'] .' (' . $assigned_users[$i]['perc_assignment'] .'%)</a>';
 				}
                         $s .= '</span>';
 			}
