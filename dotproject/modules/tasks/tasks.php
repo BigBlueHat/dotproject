@@ -79,14 +79,6 @@ switch ($f) {
 	case 'mycomp':
 		$where .= "\n	AND project_company = $AppUI->user_company";
 		break;
-	case 'myinact':
-		$from .= ", user_tasks";
-		$where .= "
-	AND task_project = projects.project_id
-	AND user_tasks.user_id = $AppUI->user_id
-	AND user_tasks.task_id = tasks.task_id";
-		$_GET['inactive'] = -1;
-		break;
 	case 'myunfinished':
 		$from .= ", user_tasks";
 		// This filter checks all tasks that are not already in 100% 
@@ -128,6 +120,12 @@ $join .= winnow( 'projects', 'tasks.task_project', $projects_filter, 'perm1' );
 $join .= winnow( 'tasks', 'tasks.task_id', $tasks_filter, 'perm2' );
 $where .= " AND ( ($projects_filter) )";
 // echo "<pre>$where</pre>";
+
+// Filter by company
+if ( ! $min_view && $f2 != 'all' ) {
+	 $join .= "\nLEFT JOIN companies ON company_id = projects.project_company";
+         $where .= "\nAND company_id = $f2  ";
+}
 
 $tsql = "SELECT $select FROM $from $join WHERE $where" .
   "\nORDER BY project_id, task_start_date";
