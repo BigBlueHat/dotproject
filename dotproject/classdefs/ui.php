@@ -137,7 +137,9 @@ class CAppUI {
 	}
 // set the display of warning for untranslated strings
 	function setWarning( $state=true ) {
+		$temp = $this->locale_warn;
 		$this->locale_warn = $state;
+		return $temp;
 	}
 // Save the current url query string
 	function savePlace( $query='' ) {
