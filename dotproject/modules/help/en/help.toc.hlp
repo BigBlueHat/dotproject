@@ -40,11 +40,28 @@
 			<strong>Screen Context Help</strong>
 			<br />
 			<br /><strong>Companies</strong>
-			<br /><a href="?m=help&dialog=1&hid=companies.index">Index</a>
+			<br /><a href="?m=help&dialog=1&hid=companies.index">Index Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=companies.view">View Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=companies.addedit">Add/Edit Screen</a>
 			<br />
 			<br /><strong>Contacts</strong>
 			<br /><a href="?m=help&dialog=1&hid=contacts.index">Index</a>
 			<br /><a href="?m=help&dialog=1&hid=contacts.addedit">Add, Edit or Delete Contacts</a>
+			<br />
+			<br /><strong>Projects</strong>
+			<br /><a href="?m=help&dialog=1&hid=projects.index">Index Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=projects.view">View Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=projects.addedit">Add/Edit Screen</a>
+			<br />
+			<br /><strong>Tasks</strong>
+			<br /><a href="?m=help&dialog=1&hid=tasks.index">Index Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=tasks.view">View Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=tasks.addedit">Add/Edit Screen</a>
+			<br /><a href="?m=help&dialog=1&hid=tasks.todo">To Do Screen</a>
+			<br />
+			<br /><strong>System Administration</strong>
+			<br /><a href="?m=help&dialog=1&hid=system.addeditpref">User Preferences</a>
+			<br />
 		</p>
 	</td>
 </tr>
