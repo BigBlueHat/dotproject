@@ -721,9 +721,6 @@ function changeRecordType(value){
 	    <table>
 	    	<tr>
 	    		<td>
-	    			<table>
-	    				<tr>
-	    					<td>
 				    			<?php
 				    				if($can_edit_time_information){
 				    					?>
@@ -737,7 +734,7 @@ function changeRecordType(value){
 								<?php echo $AppUI->_( 'Access' );?>
 								<br />
 								<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
-								<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
+								<br /><?php echo $AppUI->_( 'Web Address' );?>
 								<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
 								<br />
 							</td>
@@ -745,47 +742,28 @@ function changeRecordType(value){
 								<?php echo $AppUI->_("Task Type"); ?>
 								<br />
 								<?php echo arraySelect(dPgetSysVal("TaskType"), "task_type",  "class='text' onchange='javascript:changeRecordType(this.value);'", $obj->task_type, false); ?>
-							</td>
-						</tr>
-					</table>
-				</td>
-				<td>
+								<br /><br />
 					<?php
+						echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
 						// Let's check if the actual company has departments registered
 						if($department_selection_list != ""){
 							?>
 									<?php echo $AppUI->_("Departments"); ?><br />
 									<?php echo $department_selection_list; ?>
-									<?php echo "<hr />"; ?>
 							<?php
 						}
 						
-						// Let's check if there are available contacts for this company
-						$sql = "select c.company_name
-						        from companies as c, tasks as t, projects as p
-						        where t.task_id = $task_id
-						              and t.task_project = p.project_id
-						              and p.project_company = company_id";
-						$company_name = db_loadResult($sql);
-						
-						if($department_selection_list != "" || !is_null($company_name) ) {
-							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
-						}
 					?>
 				</td>
 			</tr>
-		</table>
-		<table>
 		<tr>
 			<td><?php echo $AppUI->_( 'Task Parent' );?>:</td>
-			<td><img src="./images/shim.gif" width="30" height="1"></td>
 			<td><?php echo $AppUI->_( 'Target Budget' );?></td>
 		</tr>
 		<tr>
 			<td>
 				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text" onchange="javascript:setTasksStartDate()"', $task_parent ); ?>
 			</td>
-			<td><img src="./images/shim.gif" width=30 height=1></td>
 			<td><?php echo $dPconfig['currency_symbol'] ?><input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
 		</tr>
 		</table>
@@ -876,20 +854,20 @@ function changeRecordType(value){
 	<td valign="top" align="center">
 		<table cellspacing="0" cellpadding="2" border="0">
 			<tr>
-				<td><?php echo $AppUI->_( 'All Tasks' );?></td>
-				<td><?php echo $AppUI->_( 'Task Dependencies' );?></td>
+				<td><?php echo $AppUI->_( 'All Tasks' );?>:</td>
+				<td><?php echo $AppUI->_( 'Task Dependencies' );?>:</td>
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:180px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:180px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
 				</td>
 			</tr>
 			<tr>
 				<td colspan="2">
-				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Check if task\'s start date should be set automatically' );?>
+				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Set task start date based on dependancy' );?>
 				</td>
 			</tr>
 			<tr>
@@ -901,15 +879,15 @@ function changeRecordType(value){
 	<td valign="top" align="center">
 		<table cellspacing="0" cellpadding="2" border="0">
 			<tr>
-				<td><?php echo $AppUI->_( 'Resources' );?></td>
-				<td><?php echo $AppUI->_( 'Assigned to Task' );?></td>
+				<td><?php echo $AppUI->_( 'Resources' );?>:</td>
+				<td><?php echo $AppUI->_( 'Assigned to Task' );?>:</td>
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $users, 'resources', 'style="width:180px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $assigned, 'assigned', 'style="width:180px" size="10" style="font-size:9pt;" ', null ); ?>
+					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" style="font-size:9pt;" ', null ); ?>
 				</td>
 			<tr>
 				<td colspan="2" align="center">
@@ -940,12 +918,14 @@ function changeRecordType(value){
 	</td>
 </tr>
 <tr>
-	<td valign="top">
+	<td valign="top" align="center">
+		<table><tr><td align="left">
 		<?php echo $AppUI->_( 'Description' );?>:
 		<br />
 		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$obj->task_description;?></textarea>
+		</td></tr></table><br />
 	</td>
-	<td align="center">
+	<td valign="top" align="center">
 		<table><tr><td align="left">
 		<?php echo $AppUI->_( 'Comment' );?>:		
 		<br />
