@@ -5,6 +5,8 @@ if (!$canEdit) {
     $AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$AppUI->savePlace();
+
 $do_report 		= dPgetParam( $_POST, "do_report", true );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date 	        = dPgetParam( $_POST, "log_end_date", 0 );
