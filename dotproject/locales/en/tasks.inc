@@ -153,6 +153,7 @@
 "none",
 "normal",
 "notifyChange"=>"Notify Assignees of Task by Email",
+"overAlloc"=>"The assignment percentage you chose runs out of user's free capacity. The relevant user has not been assigned.",
 "see gantt chart",
 "set priority to high",
 "set priority to low",
