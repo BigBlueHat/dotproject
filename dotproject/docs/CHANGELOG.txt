@@ -1,5 +1,11 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+25 October 2002 (AJE):
+-----------------------------
+modules/files/index.php
+modules/files/addedit.php
+- allowed a file to be attached to all projects (ie, project_id = 0)
+
 26 Oct 2002 (JRP):
 docs/INSTALL.txt
   start adding discussion of "secret.php" for version 0.2.3 security hardening

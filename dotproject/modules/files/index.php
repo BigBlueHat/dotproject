@@ -19,34 +19,37 @@ if ($denyRead) {
 // SETUP FOR PROJECT LIST BOX
 // projects that are denied access
 $dsql = "
-select project_id
-from projects, permissions
-where
-permission_user = $user_cookie
-and permission_grant_on = 'projects'
-and permission_item = project_id
-and permission_value = 0
+SELECT project_id
+FROM projects, permissions
+WHERE permission_user = $user_cookie
+	AND permission_grant_on = 'projects'
+	AND permission_item = project_id
+	AND permission_value = 0
 ";
-$drc = mysql_query($dsql);
+$drc = mysql_query( $dsql );
 $deny = array();
 while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
 	$deny[] = $row[0];
 }
 
 $psql = "
-select project_id,project_name
-from projects, permissions
-where
-	permission_user = $user_cookie
-	and permission_value <> 0
-	and (
+SELECT project_id, project_name
+FROM projects, permissions
+WHERE permission_user = $user_cookie
+	AND permission_value <> 0
+	AND (
 		(permission_grant_on = 'all')
-		or (permission_grant_on = 'projects' and permission_item = -1)
-		or (permission_grant_on = 'projects' and permission_item = project_id)
+		OR (permission_grant_on = 'projects' AND permission_item = -1)
+		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)
 " . (count($deny) > 0 ? 'and project_id not in (' . implode( ',', $deny ) . ')' : '') . "
-order by project_name";
-$prc = mysql_query($psql);
+ORDER BY project_name";
+$prc = mysql_query( $psql );
+
+$projects = array( '0'=>'all' );
+while ( $row = mysql_fetch_row( $prc ) ) {
+	$projects[$row[0]] = $row[1];
+}
 
 // SETUP FOR FILE LIST
 $fsql = "
@@ -68,7 +71,7 @@ WHERE
 ORDER BY project_id , file_name
 ";
 
-$frc =mysql_query($fsql);
+$frc = mysql_query($fsql);
 echo mysql_error();
 
 $usql = "Select user_first_name, user_last_name from users where user_id = $user_cookie";
@@ -79,23 +82,8 @@ $urow = mysql_fetch_array($urc);
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 <TR>
-	<TD><img src="./images/icons/folder.gif" alt="" border="0" width=42 height=42></td>
-	<TD nowrap><span class="title">File Management</span></td>
-<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickProject">
-	<TD align="right" width="100%" nowrap>
-		Project: <select name="project_id" onChange="document.pickProject.submit()" style="font-size:8pt;font-family:verdana;">
-		<option value="0" <?php if($project_id == 0)echo " selected" ;?> >all
-	<?php
-	while ( $row = mysql_fetch_array( $prc ) ) {
-		echo "<option value=" . $row["project_id"];
-		if ($row["project_id"] == $project_id) {
-			echo " selected";
-		}
-		echo ">" . $row["project_name"] ;
-	}?>
-		</select>
-	</td>
-</form>
+	<TD rowspan="2"><img src="./images/icons/folder.gif" alt="" border="0" width=42 height=42></td>
+	<TD rowspan="2" nowrap><span class="title">File Management</span></td>
 <form name="searcher" action="./index.php?m=files&a=search" method="post">
 <input type=hidden name=dosql value=searchfiles>
 	<TD width="100%" align="right">
@@ -111,24 +99,39 @@ $urow = mysql_fetch_array($urc);
 	<?php } ?>
 	</td>
 </tr>
+<tr>
+<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickProject">
+	<TD colspan="5" align="right" width="100%" nowrap>
+		Project: 
+<?php
+	echo arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" size="1" class="text"', $project_id );
+?>
+	</td>
+<tr>
+</form>
+
 </TABLE>
 
-<TABLE width="95%" border=0 cellpadding="2" cellspacing=1>
-<TR style="border: outset #eeeeee 2px;">
-	<TD nowrap class="mboxhdr"></td>
-	<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Name</font></a></td>
-	<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Owner</font></a></td>
-	<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Date</font></a></td>
-	<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Type</font></a></td>
-	<TD nowrap class="mboxhdr"><A href="#"><font color="white">File Size:</font></a></td>
+<TABLE width="95%" border=0 cellpadding="2" cellspacing="1" class="tbl">
+<TR>
+	<th nowrap>&nbsp;</th>
+	<th nowrap><A href="#">File Name</a></th>
+	<th nowrap><A href="#">File Owner</a></th>
+	<th nowrap><A href="#">File Date</a></th>
+	<th nowrap><A href="#">File Type</a></th>
+	<th nowrap><A href="#">File Size:</a></th>
 </tr>
 <?php
-$fp=0;
+$fp=-1;
 while ($row = mysql_fetch_array( $frc )) {
 	if ($fp != $row["file_project"]) {
+		if (!$row["project_name"]) {
+			$row["project_name"] = 'All Projects';
+			$row["project_color_identifier"] = 'f4efe3';
+		}
 ?>
-<TR bgcolor="#f4efe3">
-	<TD colspan="6" bgcolor="#<?php echo $row["project_color_identifier"];?>" style="border: outset 2px #eeeeee">
+<TR>
+	<TD colspan="6" style="background-color:#<?php echo $row["project_color_identifier"];?>" style="border: outset 2px #eeeeee">
 <?php
 	echo '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
 		. $row["project_name"] . '</font>';
@@ -138,7 +141,7 @@ while ($row = mysql_fetch_array( $frc )) {
 	}
 	$fp = $row["file_project"];
 ?>
-<TR bgcolor="#f4efe3">
+<TR>
 	<TD nowrap>
 	<?php if (!$denyEdit) { ?>
 		<A href="./index.php?m=files&a=addedit&file_id=<?php echo $row["file_id"];?>"><img src="./images/icons/pencil.gif" alt="edit file" border="0" width=12 height=12></a>

@@ -5,7 +5,7 @@
 
 $file_id = isset($HTTP_GET_VARS['file_id']) ? $HTTP_GET_VARS['file_id'] : 0;
 $project_id = isset($HTTP_GET_VARS['project_id']) ? $HTTP_GET_VARS['project_id'] : 0;
-
+ 
 // check permissions
 $denyEdit = getDenyEdit( $m, $file_id );
 
@@ -16,27 +16,34 @@ if ($denyEdit) {
 ';
 }
 
-if(empty($file_task))$file_task =0;
-if(empty($file_parent))$file_parent =0;
+if (empty( $file_task )) {
+	$file_task = 0;
+}
+if (empty( $file_parent )) {
+	$file_parent =0;
+}
 
-$fsql ="
-select files.*, user_username
-from files
-left join users on file_owner = user_id
-where file_id = $file_id
+$fsql = "
+SELECT files.*, user_username
+FROM files
+LEFT JOIN users ON file_owner = user_id
+WHERE file_id = $file_id
 ";
 
 $frc = mysql_query( $fsql );
 echo mysql_error();
-$frow = mysql_fetch_array( $frc );
+$frow = mysql_fetch_array( $frc, MYSQL_ASSOC );
 if ($frow) {
 	$file_task = $frow["file_task"];
 }
 
-$psql = "select project_name, project_id from projects order by project_name";
+$projects = array( '0'=>'- ALL PROJECTS -');
+$psql = "SELECT project_id, project_name  FROM projects ORDER BY project_name";
 $prc = mysql_query( $psql );
-
-$f2sql = "select file_project, file_id, file_name from files order by file_project";
+echo mysql_error();
+while($row = mysql_fetch_row( $prc )){
+	$projects[$row[0]] = $row[1];
+}
 ?>
 
 <SCRIPT LANGUAGE="javascript">
@@ -53,7 +60,7 @@ function delIt() {
 }
 </SCRIPT>
 
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
+<TABLE width="95%" border=0 cellpadding="0" cellspacing="1">
 <TR>
 	<TD><img src="./images/icons/folder.gif" alt="" border="0" width=42 height=42></td>
 	<TD nowrap><span class="title">File Management</span></td>
@@ -70,7 +77,7 @@ function delIt() {
 	</TR>
 </table>
 
-<TABLE width="95%" border=0 cellpadding="3" cellspacing=3  bgcolor="#f4efe3">
+<TABLE width="95%" border=0 cellpadding="3" cellspacing="3" class="std">
 
 <form name="uploadfile" action="./index.php?m=files" enctype="multipart/form-data" method="post">
 <INPUT TYPE="hidden" name="MAX_FILE_SIZE" value="109605000">
@@ -91,16 +98,10 @@ function delIt() {
 		<TR>
 			<TD valign=top align=right>Project:</TD>
 			<TD>
-				<select name="file_project" style="width:270px">
-			<?php 
-			while($row = mysql_fetch_row($prc)){
-				if($frow["file_project"] == $row[1] || $project_id == $row[1]) {
-					echo "<option selected value=" . $row[1] . ">". $row[0]  ;
-				} else {
-					echo "<option value=" . $row[1] . ">". $row[0]  ;
-				}
-			}?>
-				</select>
+			<?php
+				echo arraySelect( $projects, 'file_project', 'size="1" class="text" style="width:270px"',
+					$frow['file_project'] ? $frow['file_project'] : -1  );
+			?>
 			</TD>
 		</TR>
 		<TR>
