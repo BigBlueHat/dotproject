@@ -1,4 +1,10 @@
 <?php  // $Id$
+
+// check permissions
+if (!$canEdit) {
+    $AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $dPcfg = new CConfig();
 
 // retrieve the system configuration data
@@ -12,6 +18,8 @@ $tab = $AppUI->getState( 'ConfigIdxTab' ) !== NULL ? $AppUI->getState( 'ConfigId
 $active = intval( !$AppUI->getState( 'ConfigIdxTab' ) );
 
 $titleBlock = new CTitleBlock('System Configuration', 'control-center.png', $m);
+$titleBlock->addCrumb( "?m=system", "system admin" );
+$titleBlock->addCrumb( "?m=system&a=addeditpref", "default user preferences" );
 $titleBlock->show();
 
 echo $AppUI->_("syscfg_intro");

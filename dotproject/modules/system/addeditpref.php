@@ -26,6 +26,7 @@ $titleBlock = new CTitleBlock( 'Edit User Preferences', 'myevo-weather.png', $m,
 $perms =& $AppUI->acl();
 if ($perms->checkModule('system', 'edit'))
 	$titleBlock->addCrumb( "?m=system", "system admin" );
+	$titleBlock->addCrumb( "?m=system&a=systemconfig", "system configuration" );
 $titleBlock->show();
 ?>
 <script language="javascript">

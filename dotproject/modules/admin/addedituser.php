@@ -31,11 +31,13 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
 	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, "$m.$a" );
-	if ($canEdit) {
-	  $titleBlock->addCrumb( "?m=admin", "users list" );
+	$titleBlock->addCrumb( "?m=admin", "users list" );
+	if ($user_id > 0) {
+		$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
+		if ($canEdit || $user_id == $AppUI->user_id) {
+		$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
+		}
 	}
-	$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
-	$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
 	$titleBlock->show();
 ?>
 <SCRIPT language="javascript">
