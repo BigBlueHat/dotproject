@@ -92,10 +92,10 @@ foreach ($user_roles as $row){
 	</td>
 </tr>
 </table>
+</form>
 
 <?php } ?>
 
 </td>
 </tr>
-</form>
 </table>
