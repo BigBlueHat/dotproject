@@ -7,6 +7,7 @@
 "Edit File",
 "File Name",
 "File could not be written",
+"Filter",
 "New File",
 "Size",
 "Type",
