@@ -327,7 +327,7 @@ CREATE TABLE users (
   user_birthday datetime default NULL,
   user_pic text,
   user_owner int(11) NOT NULL default '0',
-  signature text,
+  user_signature text,
   PRIMARY KEY  (user_id),
   KEY idx_uid (user_username),
   KEY idx_pwd (user_password),

@@ -128,3 +128,23 @@ ALTER TABLE `forums` CHANGE `forum_moderated` `forum_moderated` INT DEFAULT "0" 
 
 # AJE (2/Jan/2003): New preference 
 INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
+
+#
+# AJE (4/Jan/2003)
+#
+
+#
+# Contacts table
+#
+ALTER TABLE `contacts` ADD `contact_owner` INT UNSIGNED DEFAULT "0";
+ALTER TABLE `contacts` ADD `contact_private` TINYINT UNSIGNED DEFAULT "0";
+
+#
+# Projects table
+#
+ALTER TABLE `projects` ADD `project_private` TINYINT UNSIGNED DEFAULT "0";
+
+#
+# Users table
+#
+ALTER TABLE `users` CHANGE `signature` `user_signature` TEXT
