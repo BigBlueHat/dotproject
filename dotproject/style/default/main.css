@@ -9,6 +9,10 @@ BODY {
 	font-size: 10pt;
 }
 
+ul {
+	margin-left: 25px;
+}
+
 em {
 	font-weight: bold;
 	text-decoration: none;
