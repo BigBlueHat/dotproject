@@ -1,3 +1,34 @@
+2004-01-25 18:25  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+- 882030: add project if no project exists yet
+
+2004-01-25 17:24  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- 878171: blank page after addedit tasks
+
+2004-01-25 17:16  (gregorerhardt)
+---------------------------------
+modules/tasks/index.php
+modules/tasks/tasks.php
+- enhancing task filtering
+
+2004-01-25 16:41  (gregorerhardt)
+---------------------------------
+modules/admin/do_perms_cp.php
+- copy perms with register globals off
+
+2004-01-25 16:25  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- 880833: not showing inactive tasks
+
+2004-01-22 03:58  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-21 20:18  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
@@ -467,37 +498,6 @@ modules/calendar/index.php
 modules/tasks/tasks.class.php
 - Now parent tasks status update recursively to all its subtasks
 
-2003-12-12 09:22  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-11 20:03  (jcgonz)
----------------------------------
-modules/projects/view.php
-modules/tasks/addedit.php
-- Minor IE fixes
-
-2003-12-11 17:30  (gregorerhardt)
----------------------------------
-modules/tasks/organizer.php
-- softcoded some strings for translation
-
-2003-12-11 17:01  (gregorerhardt)
----------------------------------
-modules/public/contact_selector.php
-- softcoded string for translation
-
-2003-12-11 16:43  (gregorerhardt)
----------------------------------
-modules/files/addedit.php
-- softcoded string for js confirming of CancelProcess
-
-2003-12-11 16:42  (gregorerhardt)
----------------------------------
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
 ...
 
 (This file has been wrapped)
