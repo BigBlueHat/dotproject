@@ -12,7 +12,7 @@ require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
 include "{$AppUI->cfg['root_dir']}/includes/main_functions.php";
 include "{$AppUI->cfg['root_dir']}/includes/permissions.php";
 
-$canRead = !getDenyRead( 'files' );
+$canRead = !getDenyRead( 'files' );z
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -32,7 +32,7 @@ if ($file_id) {
 	$deny1 = db_loadColumn( $sql );
 
 	$sql = "SELECT *
-	FROM projects, permissions, files
+	FROM permissions, files
 	WHERE file_id=$file_id
 		AND permission_user = $AppUI->user_id
 		AND permission_value <> 0
