@@ -61,7 +61,7 @@ function delIt() {
 <table width="98%" border=0 cellpadding="0" cellspacing=1>
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><span class="title">Clients and Companies</span></td>
+	<td nowrap><span class="title"><?php echo $company_id ? $AppUI->_( 'Edit Company' ) : $AppUI->_( 'Add Company' );?></span></td>
 	<td align="right" width="100%">&nbsp;</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_EDIT' );?></td>
 </tr>
@@ -84,7 +84,7 @@ function delIt() {
 
 <tr height="20">
 	<th colspan="2">
-		<b><i><?php if($company_id == 0){echo $AppUI->_( 'Add' );}else{echo "Edit";}?> Client Company </i></b>
+		<b><i> </i></b>
 	</th>
 </tr>
 <tr>
