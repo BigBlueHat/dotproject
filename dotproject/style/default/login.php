@@ -11,6 +11,7 @@
 	<meta name="Version" content="<?php echo @$AppUI->getConfig( 'version' );?>" />
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
+	<link rel="shortcut icon" href="favicon.ico">
 </head>
 
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">

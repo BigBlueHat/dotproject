@@ -11,6 +11,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<title><?php echo @$AppUI->getConfig( 'page_title' );?></title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
+	<link rel="shortcut icon" href="favicon.ico">
 </head>
 
 <body onload="this.focus();">
