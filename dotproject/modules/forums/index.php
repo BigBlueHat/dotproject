@@ -7,6 +7,10 @@ if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
+require_once( "$root_dir/classdefs/date.php" );
+$df = $AppUI->getPref( 'SHDATEFORMAT' );
+$tf = $AppUI->getPref( 'TIMEFORMAT' );
+
 $AppUI->resetPlace();
 
 $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
@@ -15,14 +19,13 @@ $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 $max_msg_length = 30;
 $sql = "
 SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, forum_moderated,
-	DATE_FORMAT(forum_create_date, '%d %b %Y') forum_create_date,
+	forum_create_date,
 	COUNT(distinct t.message_id) forum_topics, COUNT(distinct r.message_id) forum_replies,
 	user_username,
-	project_name, project_color_identifier, project_id,
-	DATE_FORMAT(l.message_date, '%d %b %Y %h:%i %p') message_date, 
+	project_name, project_color_identifier,
+	l.message_date, 
 	SUBSTRING(l.message_body,1,$max_msg_length) message_body,
 	LENGTH(l.message_body) message_length,
-	UNIX_TIMESTAMP(now())-UNIX_TIMESTAMP(MAX(l.message_date)) message_since,
 	watch_user,
 	l.message_parent
 FROM forums, users, projects
@@ -30,28 +33,28 @@ LEFT JOIN forum_messages t ON t.message_forum = forum_id AND t.message_parent = 
 LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > -1
 LEFT JOIN forum_messages l ON l.message_id = forum_last_id
 LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
-WHERE user_id = forum_owner";
-if (isset($project_id)) {
-	$sql.= " AND forum_project = $project_id";
-}
+WHERE user_id = forum_owner
+	AND  project_id = forum_project
+";
+//if (isset($project_id) && $project_id) {
+//	$sql.= "\nAND forum_project = $project_id";
+//}
 switch ($f) {
 	case 1:
-		$sql.= " AND forum_owner = $AppUI->user_id";
+		$sql.= "\nAND forum_owner = $AppUI->user_id";
 		break;
 	case 2:
-		$sql.= " AND watch_user IS NOT NULL";
+		$sql.= "\nAND watch_user IS NOT NULL";
 		break;
 	case 3:
-		$sql.= " AND project_owner = $AppUI->user_id";
+		$sql.= "\nAND project_owner = $AppUI->user_id";
 		break;
 	case 4:
-		$sql.= " AND project_company = $AppUI->user_company";
+		$sql.= "\nAND project_company = $AppUI->user_company";
 		break;
 }
-$sql .= " AND  project_id = forum_project
-GROUP BY forum_id
-ORDER BY forum_project, forum_name
-";
+$sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";
+
 $rc= db_exec( $sql );
 ##echo "<pre>$sql</pre>".mysql_error();##
 ?>
@@ -97,15 +100,22 @@ $rc= db_exec( $sql );
 <?php
 $p ="";
 while ($row = db_fetch_assoc( $rc )) {
-	if($p != $row["project_id"]){
+	if($p != $row["forum_project"]) {
+		$create_date = CDate::fromDateTime( $row["forum_create_date"] );
+		$create_date->setFormat( "$df" );
+		if ($row["message_date"]) {
+			$message_date = CDate::fromDateTime( $row["message_date"] );
+			$message_date->setFormat( "$df $tf" );
+			$message_since = abs( $message_date->compareTo( new CDate() ) );
+		}
 ?>
 <tr>
 	<td colspan=6 style="background-color: #<?php echo $row["project_color_identifier"];?>">
-		<a href="./index.php?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><font color=<?php echo bestColor( $row["project_color_identifier"] );?>><B><?php echo $row["project_name"];?></b></font></a>
+		<a href="./index.php?m=projects&a=view&project_id=<?php echo $row["forum_project"];?>"><font color=<?php echo bestColor( $row["project_color_identifier"] );?>><B><?php echo $row["project_name"];?></b></font></a>
 	</td>
 </tr>
 	<?php
-		$p = $row["project_id"];
+		$p = $row["forum_project"];
 	}?>
 <tr>
 	<td nowrap align=center>
@@ -121,20 +131,21 @@ while ($row = db_fetch_assoc( $rc )) {
 	<td>
 		<span style="font-size:10pt;font-weight:bold"><a href="?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a></span>
 		<br><?php echo $row["forum_description"];?>
-		<br><font color=#777777>Forum Owned by: <?php echo $row["user_username"];?>,
-		started <?php echo $row["forum_create_date"];?></font>
+		<br><font color=#777777><?php echo $AppUI->_( 'Owner' ).' '.$row["user_username"];?>,
+		<?php echo $AppUI->_( 'Started' ).' '.$create_date->toString();?>
+		</font>
 	</td>
 	<td nowrap align=center><?php echo $row["forum_topics"];?></td>
 	<td nowrap align=center><?php echo $row["forum_replies"];?></td>
 	<td width=200>
 <?php if ($row["message_date"]) {
-		echo $row["message_date"].'<br><font color=#999966>(';
-		if ($row["message_since"] < 3600) {
-			printf( "%d minutes", $row["message_since"]/60 );
-		} else if ($row["message_since"] < 48*3600) {
-			printf( "%d hours", $row["message_since"]/3600 );
+		echo $message_date->toString().'<br><font color=#999966>(';
+		if ($message_since < 3600) {
+			printf( "%d minutes", $message_since/60 );
+		} else if ($message_since < 48*3600) {
+			printf( "%d hours", $message_since/3600 );
 		} else {
-			printf( "%d days", $row["message_since"]/(24*3600) );
+			printf( "%d days", $message_since/(24*3600) );
 		}
 		echo ' ago)</font><br>&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
@@ -157,7 +168,7 @@ while ($row = db_fetch_assoc( $rc )) {
 </tr>
 <tr>
 	<td align="left">
-		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>">
+		<input type="submit" class="button" value="<?php echo $AppUI->_( 'update watches' );?>">
 	</td>
 </tr>
 </form>
