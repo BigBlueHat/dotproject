@@ -2,6 +2,8 @@
 
 function file_size($size)
 {
+	if (empty($size))
+		return '0 B';
         if ($size > 1024*1024*1024)
                 return round($size / 1024 / 1024 / 1024, 2) . ' Gb';
         if ($size > 1024*1024)
@@ -39,10 +41,15 @@ foreach ($users_all as $user)
 	$users[$user['user_id']]['hours'] = 0;
 	$users[$user['user_id']]['completed'] = array();
 	$users[$user['user_id']]['inprogress'] = array();
-	$users[$user['user_id']]['pending'] = array();	
+	$users[$user['user_id']]['pending'] = array();
+	$users[$user['user_id']]['overdue'] = array();		
 }
 
 $tasks['hours'] = 0;
+$tasks['inprogress'] = array();
+$tasks['completed'] = array();
+$tasks['pending'] = array();
+$tasks['overdue'] = array();
 foreach($all_tasks as $task)
 {
 	if ($task['task_percent_complete'] == 100)
@@ -87,7 +94,32 @@ WHERE file_project = ' . $project_id . '
 GROUP BY file_project';
 $files = db_loadResult($sql);
 
+$ontime = round(100 * (1 - (count($tasks['overdue']) / count($all_tasks)) - (count($tasks['completed']) / count($all_tasks))));
 ?>
+
+<table width="100%" border="1" cellpadding="0" cellspacing="0" class="tbl">
+<tr>
+	<th colspan="3">Progress Chart (completed/in progress/pending)</th>
+</tr>
+<tr>
+	<td width="<?php echo round(count($tasks['completed']) / count($all_tasks) * 100); ?>%" style="background: springgreen">completed</td>
+	<td width="<?php echo round(count($tasks['inprogress']) / count($all_tasks) * 100); ?>%" style="background: aquamarine">in progress</td>
+	<td width="<?php echo round(count($tasks['pending']) / count($all_tasks) * 100); ?>%" style="background: gold">pending</td>
+</tr>
+</table>
+<br />
+
+<table width="100%" border="1" cellpadding="0" cellspacing="0" class="tbl">
+<tr>
+	<th colspan="3">Time Chart (completed/on time/overdue)</td>
+</tr>
+<tr>
+	<td width="<?php echo round(count($tasks['completed']) / count($all_tasks) * 100); ?>%" style="background: springgreen">completed</td>
+	<td width="<?php echo $ontime; ?>%" style="background: aquamarine"><div style="display: inline;">on time</div></td>
+	<td width="<?php echo round(count($tasks['overdue']) / count($all_tasks) * 100); ?>%" style="background: tomato">overdue</td>
+</tr>
+</table>
+<br />
 
 <table class="tbl">
 <tr>
