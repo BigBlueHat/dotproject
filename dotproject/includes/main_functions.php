@@ -4,6 +4,7 @@
 ##
 
 $CR = "\n";
+define(SECONDS_PER_DAY, 60 * 60 * 24);
 
 ##
 ## Returns the best color based on a background color (x is cross-over)
@@ -321,6 +322,24 @@ function dPformSafe( $txt, $deslash=false ) {
 		}
 	}
 	return $txt;
+}
+
+function convert2days( $durn, $units ) {
+	global $AppUI;
+	switch ($units) {
+	case 0:
+		return $durn / $AppUI->cfg['daily_working_hours'];
+		break;
+	case 24:
+		return $durn;
+	}
+}
+
+function formatTime($uts) {
+	global $AppUI;
+	$date = new CDate();
+	$date->setDate($uts, DATE_FORMAT_UNIXTIME);	
+	return $date->format( $AppUI->getPref('SHDATEFORMAT') );
 }
 
 ?>
