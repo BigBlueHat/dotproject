@@ -836,3 +836,9 @@ INSERT INTO config VALUES ('', 'ldap_allow_login', 'true', 'ldap', 'checkbox');
 # removed auto fields cfg options
 #
 DELETE FROM config WHERE config_name = 'auto_fields_creation' LIMIT 1;
+
+# 20050311
+# Added indices to forum watch to speed up queries
+#
+CREATE INDEX `idx_fw1` ON `forum_watch` (`watch_user`, `watch_forum`);
+CREATE INDEX `idx_fw2` ON `forum_watch` (`watch_user`, `watch_topic`);

@@ -220,7 +220,9 @@ CREATE TABLE `forums` (
 CREATE TABLE `forum_watch` (
   `watch_user` int(10) unsigned NOT NULL default '0',
   `watch_forum` int(10) unsigned default NULL,
-  `watch_topic` int(10) unsigned default NULL
+  `watch_topic` int(10) unsigned default NULL,
+	KEY `idx_fw1` (`watch_user`, `watch_forum`),
+	KEY `idx_fw2` (`watch_user`, `watch_topic`)
 ) TYPE=MyISAM COMMENT='Links users to the forums/messages they are watching';
 
 # 20050303
