@@ -11,6 +11,9 @@
 */
 
 function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306' ) {
+	function_exists( 'mysql_pconnect' )
+		or  die( 'FATAL ERROR: MySQL support not avaiable.  Please check your configuration.' );
+
 	mysql_pconnect( "$host:$port", $user, $passwd )
 		or die( 'FATAL ERROR: Connection to database server failed' );
 
