@@ -249,10 +249,9 @@
 				if ($result_user["count"] == 0) return false; // No users match the filter
 
 				$first_user = $result_user[0];
-				$first_user_cn = $first_user["cn"][0];
+				$ldap_user_dn = $first_user["dn"];
 
 				// Bind with the dn of the user that matched our filter (only one user should match sAMAccountName or uid etc..)
-				$ldap_user_dn = "CN=".$first_user_cn.",".$this->base_dn;
 
 				if (!$bind_user = @ldap_bind($rs, $ldap_user_dn, $password))
 				{
