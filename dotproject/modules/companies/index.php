@@ -9,7 +9,6 @@ $orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrde
 $types = dPgetSysVal( 'CompanyType' );
 
 // get any companies denied from viewing
-$deny = array();
 $sql = "
 SELECT company_id
 FROM companies, permissions
@@ -18,10 +17,7 @@ WHERE permission_user = $AppUI->user_id
 	AND permission_item = company_id
 	AND permission_value = 0
 ";
-$res = db_exec($sql);
-while ($row = db_fetch_row( $res )) {
-	$deny[] = $row[0];
-}
+$deny = db_loadColumn( $sql );
 
 $sql = "
 SELECT company_id, company_name, company_type,
