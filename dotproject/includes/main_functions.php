@@ -213,11 +213,13 @@ function dPgetSysVal( $title ) {
 	// We use trim() to make sure a numeric that has spaces
 	// is properly treated as a numeric
 	foreach ($temp as $item) {
-		$temp2 = explode( $sep2, $item );
-		if (isset( $temp2[1] )) {
-			$arr[trim($temp2[0])] = $temp2[1];
-		} else {
-			$arr[trim($temp2[0])] = $temp2[0];
+		if($item) {
+			$temp2 = explode( $sep2, $item );
+			if (isset( $temp2[1] )) {
+				$arr[trim($temp2[0])] = $temp2[1];
+			} else {
+				$arr[trim($temp2[0])] = $temp2[0];
+			}
 		}
 	}
 	return $arr;
