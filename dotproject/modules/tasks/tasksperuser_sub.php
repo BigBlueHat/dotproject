@@ -420,8 +420,8 @@ if($do_report){
                         "<a href='javascript:chAssignment($user_id, 0, 0);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
-                        for ($i = 0; $i <= 200; $i+=5) {
-                                        $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
+                        for ($i = 0; $i <= 100; $i+=5) {
+                                        $tmpuser .= "<option ".(($i==30)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
                         $tmpuser .= "<td align=\"center\">".arraySelect( $taskPriority, 'user_task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change User specific Task Priority of selected Tasks').'"', 0, true );
@@ -726,7 +726,7 @@ return false;
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
                         for ($i = 0; $i <= 100; $i+=5) {
-                                        $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
+                                        $tmpuser .= "<option ".(($i==30)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
                         $tmpuser .= "<td align=\"center\">".arraySelect( $taskPriority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );

@@ -1129,8 +1129,8 @@ $titleBlock->show();
 						<td>
 							<select name="percentage_assignment" class="text">
 							<?php 
-								for ($i = 0; $i <= 200; $i+=5) {
-									echo "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
+								for ($i = 0; $i <= 100; $i+=5) {
+									echo "<option ".(($i==30)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
 								}
 							?>
 							</select>
