@@ -113,44 +113,45 @@ if (!$ok) {
 	$sql .= $order ? " ORDER BY $order" : '';
 	//echo "<pre>$sql</pre>";
 
-	$list = arrayMerge( array( 0=>''), db_loadHashList( $sql ) );
+	$list = arrayMerge( array( 0=>$AppUI->_( '[none]' )), db_loadHashList( $sql ) );
 	echo db_error();
 ?>
 <script language="javascript">
-	function setClose(){
-		var list = document.frmSelector.list;
-		var key = list.options[list.selectedIndex].value;
-		var val = list.options[list.selectedIndex].text;
+	function setClose(key, val){
 		window.opener.<?php echo $callback;?>(key,val);
 		window.close();
 	}
 </script>
 
-<table cellspacing="0" cellpadding="3" border="0">
 <form name="frmSelector">
-<tr>
-	<td colspan="2">
-<?php
-	if (count( $list ) > 1) {
-		echo $AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':<br />';
-		echo arraySelect( $list, 'list', ' size="8"', 0 );
-?>
-	</td>
-</tr>
+<?=$AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':'?>
+<div style="position: absolute;top:40px;bottom:35px;left:0;width: 95%;padding:5px;overflow: auto;" name="selector">
+<table cellspacing="0" cellpadding="3" border="0">
 <tr>
 	<td>
-		<input type="button" class="button" value="<?php echo $AppUI->_( 'cancel' );?>" onclick="window.close()" />
 <?php
+	if (count( $list ) > 1) {
+//		echo arraySelect( $list, 'list', ' size="8"', 0 );
+		foreach ($list as $key => $val) {
+			echo "<a href=\"javascript:setClose('$key','$val');\">$val</a><br>\n";
+		}
 	} else {
 		echo $AppUI->_( "no$table" );
 	}
 ?>
 	</td>
+</tr>
+</table>
+</div>
+<div style="position: absolute;width: 100%; height: 20px;left:0;bottom:0px;padding:5px;" name="footer">
+<table cellspacing="0" cellpadding="0" border="0" width="90%" align="center">
+<tr>
 	<td align="right">
-		<input type="button" class="button" value="<?php echo $AppUI->_( 'Select', UI_CASE_LOWER );?>" onclick="setClose()" />
+		<input type="button" class="button" value="<?php echo $AppUI->_( 'cancel' );?>" onclick="window.close()" />
 	</td>
 </tr>
-</form>
 </table>
+</div>
+</form>
 
 <?php } ?>
