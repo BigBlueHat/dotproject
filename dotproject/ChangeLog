@@ -1,3 +1,102 @@
+2003-05-14 22:54  (eddieajau)
+---------------------------------
+classes/dp.class.php
+- Added passing of the object id to the delete method
+
+2003-05-14 22:53  (eddieajau)
+---------------------------------
+classes/ui.class.php
+classes/date.class.php
+- Updated documentation
+
+2003-05-14 22:40  (eddieajau)
+---------------------------------
+modules/admin/index.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+- Added a general search box to help find a user
+
+2003-05-14 22:38  (eddieajau)
+---------------------------------
+modules/system/domodsql.php
+- Fixed bug when installing a custom module
+
+2003-05-14 22:37  (eddieajau)
+---------------------------------
+modules/public/selector.php
+- Fixed bug but leaves a known issue that the selector cannot filter out departments of non-visible companies
+
+2003-05-14 22:32  (eddieajau)
+---------------------------------
+style/default/header.php
+- Hide 'Today' link when no permission to calendar module.
+
+2003-05-14 20:13  (korinek)
+---------------------------------
+modules/files/addedit.php
+modules/tasks/addedit.php
+modules/tasks/view.php
+- Translation/localisation updates
+
+2003-05-14 20:12  (korinek)
+---------------------------------
+modules/calendar/index.php
+- Localisation/translation update
+
+2003-05-14 20:12  (korinek)
+---------------------------------
+modules/calendar/do_event_aed.php
+- Fixed a bug, where event owner was never stored in the database
+
+2003-05-14 20:09  (korinek)
+---------------------------------
+locales/en/calendar.inc
+locales/en/files.inc
+locales/en/tasks.inc
+- Localisation updates
+
+2003-05-14 16:45  (korinek)
+---------------------------------
+images/icons/1.gif
+- Added high priority icon (low priority upside down arrow)
+
+2003-05-14 16:40  (korinek)
+---------------------------------
+locales/en/tasks.inc
+- Checking up with My-todo changes
+
+2003-05-14 16:39  (korinek)
+---------------------------------
+modules/tasks/todo.php
+modules/tasks/view.php
+- Minor translation/localisation updates
+
+2003-05-14 16:21  (korinek)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+- Translatin calls for a few leftover strings.
+
+2003-05-14 16:18  (korinek)
+---------------------------------
+locales/en/forums.inc
+locales/en/projects.inc
+locales/en/public.inc
+locales/en/tasks.inc
+- Translation messages update
+
+2003-05-14 16:17  (korinek)
+---------------------------------
+index.php
+- Turned back on the charset header. Some www servers provide default charset
+- which may confuse the browser. This overrides it.
+
+2003-05-13 04:37  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-11 08:29  (eddieajau)
 ---------------------------------
 modules/tasks/addedit.php
@@ -399,105 +498,6 @@ modules/calendar/addedit.php
 ---------------------------------
 includes/db_connect.php
 - Whoops.  Fixed a small bug.
-
-2003-04-30 01:07  (eddieajau)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/calendar.class.php
-modules/calendar/day_view.php
-modules/calendar/do_event_aed.php
-modules/calendar/index.php
-modules/calendar/links_events.php
-modules/calendar/links_tasks.php
-modules/calendar/view.php
-modules/calendar/vw_day_events.php
-modules/calendar/vw_day_tasks.php
-modules/calendar/week_view.php
-- Major rework to suit PEAR Date class
-- Added 'diary' style view to the calendar day view
-
-2003-04-30 01:05  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Updated class abstraction
-- Moved getTasksForPeriod function from calendar section
-
-2003-04-30 01:03  (eddieajau)
----------------------------------
-modules/system/syskeys/index.php
-- Updated icons
-
-2003-04-30 01:03  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-modules/projects/view.php
-- Minor updates
-
-2003-04-30 01:02  (eddieajau)
----------------------------------
-modules/companies/view.php
-- Updated delete link
-
-2003-04-30 00:58  (eddieajau)
----------------------------------
-modules/companies/index.php
-- Minor changes
-
-2003-04-30 00:56  (eddieajau)
----------------------------------
-includes/main_functions.php
-- Added some functions to support benchmarking
-
-2003-04-30 00:55  (eddieajau)
----------------------------------
-includes/db_connect.php
-- Fixed minor problem with zero value fields in db_updateObject method
-
-2003-04-30 00:53  (eddieajau)
----------------------------------
-functions/calendar_func.php
-- Code moved to other files
-
-2003-04-30 00:51  (eddieajau)
----------------------------------
-docs/roadmap.html
-- no message
-
-2003-04-30 00:51  (eddieajau)
----------------------------------
-db/dotproject_100.sql
-db/upgrade_100_alpha2_to_beta1.sql
-- Added support for an event type
-
-2003-04-30 00:50  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Added method for standardised delete link in the Title Block class
-
-2003-04-30 00:49  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Changed load method to return null if the record was empty
-
-2003-04-29 03:46  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-29 01:28  (eddieajau)
----------------------------------
-style/default/login.php
-- Added version to meta and login screen
-
-2003-04-29 01:23  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-modules/projects/index.php
-modules/projects/projects.class.php
-modules/projects/view.php
-- Updates similar to companies module
-
-2003-04-29 01:21  (eddieajau)
 ...
 
 (This file has been wrapped)
