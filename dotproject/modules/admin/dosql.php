@@ -1,9 +1,9 @@
 <?php
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+$del = isset($_GET['del']) ? $_GET['del'] : 0;
 
 $user = new CUser();
 
-if (($msg = $user->bind( $_POST ))) {
+if (($msg = $user->bind( $_GET ))) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	$AppUI->redirect();
 }
