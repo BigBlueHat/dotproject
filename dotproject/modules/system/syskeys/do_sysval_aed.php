@@ -1,22 +1,22 @@
 <?php /* SYSKEYS $Id$ */
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 
-$sysval = new CSysVal();
+$obj = new CSysVal();
 
-if (($msg = $sysval->bind( $_POST ))) {
-	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 
 $AppUI->setMsg( "System Lookup Values", UI_MSG_ALERT );
 if ($del) {
-	if (($msg = $sysval->delete())) {
+	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 	}
 } else {
-	if (($msg = $sysval->store())) {
+	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( @$_POST['sysval_id'] ? 'updated' : 'inserted', UI_MSG_OK, true );
