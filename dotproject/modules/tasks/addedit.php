@@ -55,7 +55,6 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 if (!$obj->canAccess( $AppUI->user_id )) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
-
 $task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
 
 // format dates
@@ -162,6 +161,9 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	return $parsed;
 }
 
+//Dynamic tasks are by default now off because of dangerous behavior if incorrectly used
+if ( is_null($obj->task_dynamic) ) $obj->task_dynamic = 0 ;
+
 ?>
 
 <SCRIPT language="JavaScript">
@@ -194,7 +196,7 @@ function submitIt(){
 		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
 	}
-<?php
+<?php 
 	if ( $AppUI->getConfig( 'check_task_dates' )  ) {
 ?>
 	else if (!form.task_start_date.value) {

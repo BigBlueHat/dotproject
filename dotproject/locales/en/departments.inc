@@ -1,11 +1,13 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"delete department",
 "Add Department",
 "Department Company",
 "Department Name",
 "Department Parent",
 "Edit Department",
+"View Department",
 "badCompany"=>"This company is invalid. You cannot add a department.",
 "delDept"=>"Are you sure you want to delete this department",
 "deptIndexPage"=>"Please access departments via a company",

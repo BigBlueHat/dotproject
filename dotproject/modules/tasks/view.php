@@ -32,7 +32,6 @@ $msg = '';
 $obj = new CTask();
 $canDelete = $obj->canDelete( $msg, $task_id );
 
-
 //$obj = null;
 if (!db_loadObject( $sql, $obj, true )) {
 	$AppUI->setMsg( 'Task' );

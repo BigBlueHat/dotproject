@@ -94,10 +94,9 @@ if($do_report){
 	// Now which tasks will we need and the real allocated hours (estimated time / number of users)
 	// Also we will use tasks with duration_type = 1 (hours) and those that are not marked
 	// as milstones
-	$sql = "SELECT t.task_id, (t.task_duration/count(ut.task_id)) as hours_allocated
+	$sql = "SELECT t.task_id, round(t.task_duration * t.task_duration_type/count(ut.task_id),2) as hours_allocated
 	        FROM tasks as t, user_tasks as ut
 	        WHERE t.task_id = ut.task_id
-	              AND t.task_duration_type='1'
 				  AND t.task_milestone    ='0'";
 	
 	if(!$log_all_projects){
@@ -112,7 +111,7 @@ if($do_report){
 	$sql .= "GROUP BY t.task_id";
 	
 	$task_list = db_loadHashList($sql, "task_id");
-	
+	echo $sql;
 ?>
 
 <table cellspacing="1" cellpadding="4" border="0" class="tbl">

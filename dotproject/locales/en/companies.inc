@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"No companies available",
+"new contact",
 "Add Company",
 "All Companies",
 "Budget",
@@ -10,6 +10,7 @@
 "Company Owner",
 "Edit Company",
 "Invalid Company ID",
+"No companies available",
 "Started",
 "Status",
 "Suppliers",

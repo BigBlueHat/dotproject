@@ -60,7 +60,7 @@ class CTask extends CDpObject {
 		$this->task_dynamic = intval( $this->task_dynamic );
 		
 		$this->task_percent_complete = intval( $this->task_percent_complete );
-
+	
 		if (!$this->task_duration) {
 			$this->task_duration = '0';
 		}
@@ -76,6 +76,72 @@ class CTask extends CDpObject {
 		return NULL;
 	}
 
+	
+	function updateDynamics( $fromChildren = false ) {
+		//Has a parent or children, we will check if it is dynamic so that it's info is updated also
+		
+		$modified_task = new CTask();
+
+		if ( $fromChildren ){
+			$modified_task = &$this;
+		} else {
+			$modified_task->load($this->task_parent);
+		}
+
+		if ( $modified_task->task_dynamic == 1 ) {
+			//Update allocated hours based on children
+			$sql = "SELECT SUM( task_duration * task_duration_type ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
+					" and task_id != " . $modified_task->task_id . " GROUP BY task_parent;";
+			$children_allocated_hours = floatval(db_loadResult( $sql ));
+			if ( $modified_task->task_duration_type == 1 ) {
+				$modified_task->task_duration = round($children_allocated_hours,2);
+			} else {
+				$modified_task->task_duration = round($children_allocated_hours / $modified_task->task_duration_type, 2);
+			}
+			
+			//Update worked hours based on children
+			$sql = "SELECT sum( task_log_hours ) FROM tasks, task_log
+					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .  
+					" AND task_id != " . $modified_task->task_id .
+					" AND task_dynamic = 0";
+			$children_hours_worked = floatval(db_loadResult( $sql ));
+			
+			
+			//Update worked hours based on dynamic children tasks
+			$sql = "SELECT sum( task_hours_worked ) FROM tasks
+					WHERE task_dynamic = 1 AND task_parent = " . $modified_task->task_id .
+					" AND task_id != " . $modified_task->task_id;
+			$children_hours_worked += floatval(db_loadResult( $sql ));
+			
+			$modified_task->task_hours_worked = $children_hours_worked;
+					
+			//Update percent complete
+			$sql = "SELECT sum( task_percent_complete )  / count( task_percent_complete ) 
+					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
+					" AND task_id != " . $modified_task->task_id . 
+					" GROUP BY task_id";
+			$modified_task->task_percent_complete = floatval(db_loadResult( $sql ));
+			
+			//Update start date
+			$sql = "SELECT min( task_start_date ) FROM tasks
+					WHERE task_parent = " . $modified_task->task_id .
+					" AND task_id != " . $modified_task->task_id .
+					" AND ! isnull( task_start_date ) AND task_start_date !=  '0000-00-00 00:00:00'";
+			$modified_task->task_start_date = db_loadResult( $sql );
+			
+			//Update end date
+			$sql = "SELECT max( task_end_date ) FROM tasks
+					WHERE task_parent = " . $modified_task->task_id .
+					" AND task_id != " . $modified_task->task_id .
+					" AND ! isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'";
+			$modified_task->task_end_date = db_loadResult( $sql );
+			
+			//If we are updating a dynamic task from its children we don't want to store() it
+			//when the method exists the next line in the store calling function will do that
+			if ( $fromChildren == false ) $modified_task->store();
+		}
+	}
+	
 /**
 * @todo Parent store could be partially used
 */
@@ -87,6 +153,7 @@ class CTask extends CDpObject {
 		}
 		if( $this->task_id ) {
 			$this->_action = 'updated';
+			$this->updateDynamics(true);
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
 		} else {
 			$this->_action = 'added';
@@ -101,6 +168,12 @@ class CTask extends CDpObject {
 			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
 			db_exec( $sql );
 		}
+		
+		if ( $this->task_parent != $this->task_id ){
+			//Has parent
+			$this->updateDynamics();
+		}
+
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
@@ -120,11 +193,19 @@ class CTask extends CDpObject {
 			return db_error();
 		}
 
-	// delete the tasks...what about orphans?
+		//load it before deleting it because we need info on it to update the parents later on
+		$this->load($this->task_id);
+		
+		// delete the tasks...what about orphans?
 		$sql = "DELETE FROM tasks WHERE task_id = $this->task_id";
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
+			if ( $this->task_parent != $this->task_id ){
+				// Has parent, run the update sequence, this child will no longer be in the 
+				// database 
+				$this->updateDynamics();
+			}
 			return NULL;
 		}
 	}
