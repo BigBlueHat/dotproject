@@ -115,8 +115,19 @@ $dPconfig['locale_alert'] = '^';
 // the number of 'working' hours in a day
 $dPconfig['daily_working_hours'] = 8.0;
 
-// set debug = true to help analyse errors
+// set debug > 0 to provide more debug information in
+// analysing errors.  Set this to 1 to provide the best
+// compromise between normal operation and error tracking
+// information.
 $dPconfig['debug'] = 1;
+
+// Set to true to display debug messages as well as log them.
+// WARNING: Setting to true can cause dotproject to fail on
+// warnings if the debug level is set greater than 1.
+// Normally errors will be displayed so this should only be
+// set to track warnings and debug messages if you do not
+// have access to the PHP log files.
+$dPconfig['display_debug'] = false;
 
 // set to true if you need to be able to relink tickets to
 // an arbitrary parent.  Useful for email-generated tickets,
