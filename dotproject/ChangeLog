@@ -1,3 +1,48 @@
+2004-09-14 05:08  (gregorerhardt)
+---------------------------------
+modules/help/en/companies.addedit.hlp
+modules/help/en/companies.index.hlp
+modules/help/en/companies.view.hlp
+modules/help/en/contacts.addedit.hlp
+modules/help/en/contacts.index.hlp
+modules/help/en/forums.index.hlp
+modules/help/en/general.breadcrumbs.hlp
+modules/help/en/general.help.hlp
+modules/help/en/general.leftnav.hlp
+modules/help/en/general.saveplace.hlp
+modules/help/en/general.tabbox.hlp
+modules/help/en/general.topmenu.hlp
+modules/help/en/help.toc.hlp
+modules/help/en/install.configure.hlp
+modules/help/en/install.install.hlp
+modules/help/en/install.system.hlp
+modules/help/en/install.trouble.hlp
+modules/help/en/install.upgrade.hlp
+modules/help/en/overview.about.hlp
+modules/help/en/overview.features.hlp
+modules/help/en/overview.license.hlp
+modules/help/en/overview.usermods.hlp
+modules/help/en/overview.whatsnew.hlp
+modules/help/en/projects.addedit.hlp
+modules/help/en/projects.index.hlp
+modules/help/en/projects.view.hlp
+modules/help/en/start.addcomp.hlp
+modules/help/en/start.adduser.hlp
+modules/help/en/start.overview.hlp
+modules/help/en/system.addeditpref.hlp
+modules/help/en/system.index.hlp
+modules/help/en/system.syskeys.index.hlp
+modules/help/en/tasks.addedit.hlp
+modules/help/en/tasks.index.hlp
+modules/help/en/tasks.todo.hlp
+modules/help/en/tasks.view.hlp
+- disabled help system \ in favour of online documentation
+
+2004-09-14 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-14 02:06  (cyberhorse)
 ---------------------------------
 modules/admin/viewuser.php
@@ -453,51 +498,6 @@ modules/tasks/tasks.class.php
 2004-08-24 17:41  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
-- show tasks which are both finished and past in darkgray
-
-2004-08-24 15:30  (jcgonz)
----------------------------------
-db/dotproject.sql
-- Added a colon that wasn't there
-
-2004-08-24 12:16  (gregorerhardt)
----------------------------------
-db/upgrade_latest.sql
-- fixed forgotten line endings problem with project status
-
-2004-08-24 10:40  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-images/icons/stock_print-16.png
-modules/tasks/tasks.class.php
-modules/tasks/vw_log_update.php
-modules/tasks/vw_logs.php
-- new fields for task log
-
-2004-08-24 04:11  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-24 02:50  (revelation7)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/view.php
-- Fixed issue #0000018: Backslash in text field being stripped out.  Added parameters to obj->load in addedt.php and db_loadObject in view.php for tasks.
-
-2004-08-23 23:08  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Display file size in human readable form.
-
-2004-08-23 23:01  (cyberhorse)
----------------------------------
-includes/db_adodb.php
-- Reload page after attempting to fix db errors, only if the changes successfully got rid of the error.
-
-2004-08-23 20:20  (jcgonz)
----------------------------------
 ...
 
 (This file has been wrapped)
