@@ -1,111 +1,58 @@
 <?php
-/*
-	Based on Leo West's (west_leo@yahooREMOVEME.com):
-	lib.DB
-	Database abstract layer - mysql version
-
-	A generic database layer providing a set of low to middle level functions
-	originally written for WEBO project, see webo source for "real life" usages
-*/
-
-//	db_connect.php
-// 	include to connect to the db
-/*
-$rcq = mysql_pconnect( $dbhost, $dbuser, $dbpass);
-if(!$rcq){
-	echo "db connection error";
-	die();
-}
-else{
-	$rcq = mysql_select_db($db);
-	if(!$rcq){
-		echo "db selection error:<BR> unable to select_db()";
-		die();
-	}
-}
-*/
+require_once( "$root_dir/includes/db_$dbtype.php" );
 
 db_connect( $dbhost, $db, $dbuser, $dbpass );
 
-/* DB METHODS */
+##
+##	Generic functions based on library function (that is, non-db specific)
+##
 
-function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306' ) {
-	mysql_pconnect( "$host:$port", $user, $passwd )
-		 or die( 'FATAL ERROR: Connection to database server failed' );
-
-	if ($dbname) {
-		mysql_select_db( $dbname )
-			or die( "FATAL ERROR: Database not found ($dbname)" );
-	} else {
-		die( "FATAL ERROR: Database name not supplied<br />(connection to database server succesful)" );
-	}
-}
-
-function db_error( $errLine='0' ) {
-	$s = '<span class="error">'.mysql_error().'</span>';
-	$s .= ($errLine ? "<br />The SQL error occured at line $errLine" : '');
-	return $s;
-}
-
-function db_errno() {
-	return mysql_errno();
-}
-
-function db_loadObject( $sql, &$object, $errLine='0' ) {
+function db_loadObject( $sql, &$object ) {
 	$hash = array();
-	if( !db_loadHash( $sql, &$hash, $errLine ) ) {
+	if( !db_loadHash( $sql, &$hash ) ) {
 		return false;
 	}
 	bindHashToObject( $hash, $object );
 	return true;
 }
 
-function db_exec( $sql ) {
-	$cur = mysql_query( $sql );
-	if( !$cur ) {
-		return false;
-	}
-	return $cur;
-}
-
-function db_num_rows( $qid ) {
-	return mysql_num_rows( $qid );
-}
-
-function db_loadHash( $sql, &$hash, $errLine='0' ) {
-	$cur = mysql_query( $sql );
-	$cur or exit( db_error( $errLine ) );
-	$hash = mysql_fetch_assoc( $cur );
-	mysql_free_result( $cur );
+function db_loadHash( $sql, &$hash ) {
+	$cur = db_exec( $sql );
+	$cur or exit( db_error() );
+	$hash = db_fetch_assoc( $cur );
+	db_free_result( $cur );
 	if ($hash == false)
 		return false;
 	else
 		return true;
 }
 
-function db_loadHashList( $sql, $errLine='0' ) {
-	$cur = mysql_query( $sql );
-	$cur or exit( db_error( $errLine ) );
+function db_loadHashList( $sql ) {
+	$cur = db_exec( $sql );
+	$cur or exit( db_error() );
 	$hashlist = array();
-	while ($hash = mysql_fetch_array( $cur )) {
+	while ($hash = db_fetch_array( $cur )) {
 		$hashlist[$hash[0]] = $hash[1];
 	}
-	mysql_free_result( $cur );
+	db_free_result( $cur );
 	return $hashlist;
 }
 
-function db_loadList( $sql, $maxrows=NULL, $errLine='0'  ) {
-	$cur = mysql_query( $sql );
-	$cur or exit( '<span class="error">'.db_error().'</span>'.($errLine ? "<br />The SQL error occured at line $errLine" : '') );
+function db_loadList( $sql, $maxrows=NULL ) {
+	GLOBAL $AppUI;
+	if (!($cur = db_exec( $sql ))) {;
+		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
+		return false;
+	}
 	$list = array();
 	$cnt = 0;
-	while ($hash = mysql_fetch_array( $cur, MYSQL_ASSOC )) {
+	while ($hash = db_fetch_assoc( $cur )) {
 		$list[] = $hash;
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
 	}
-	mysql_free_result( $cur );
+	db_free_result( $cur );
 	return $list;
 }
 
@@ -115,21 +62,22 @@ function db_loadList( $sql, $maxrows=NULL, $errLine='0'  ) {
  */
 function db_loadObjectList( $sql, $object, $maxrows = NULL )
 {
-	$cur = mysql_query( $sql );
+	$cur = db_exec( $sql );
 	if (!$cur) {
 		die( "DB_loadObjectList : " . db_error() );
 	}
 	$list = array();
 	$cnt = 0;
-	while ($row = mysql_fetch_array( $cur )) {
+	while ($row = db_fetch_array( $cur )) {
 		$list[] = $object->Load( $row[0] );
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
 	}
-	mysql_free_result( $cur );
+	db_free_result( $cur );
 	return $list;
 }
+
 
 function DB_insertArray( $table, &$hash, $verbose=false ) {
 	$fmtsql = "insert into $table ( %s ) values( %s ) ";
@@ -144,10 +92,10 @@ function DB_insertArray( $table, &$hash, $verbose=false ) {
 
 	( $verbose ) && print "$sql<br>\n";
 
-	if (!mysql_query( $sql )) {
+	if (!db_exec( $sql )) {
 		return false;
 	}
-	$id = mysql_insert_id();
+	$id = db_insert_id();
 	return true;
 }
 
@@ -170,7 +118,7 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
 	( $verbose ) && print "$sql<br>\n";
-	$ret = mysql_query( $sql );
+	$ret = db_exec( $sql );
 	return $ret;
 }
 
@@ -178,8 +126,54 @@ function db_delete( $table, $keyName, $keyValue )
 {
 	$keyName = db_escape( $keyName );
 	$keyValue = db_escape( $keyValue );
-	$ret = mysql_query( "DELETE FROM $table WHERE $keyName='$keyValue'" );
+	$ret = db_exec( "DELETE FROM $table WHERE $keyName='$keyValue'" );
 	return $ret;
+}
+
+
+function db_insertObject( $table, &$object, $keyName = NULL )
+{
+	$fmtsql = "INSERT INTO $table ( %s ) VALUES ( %s ) ";
+	foreach (get_object_vars( $object ) as $k => $v) {
+		if (is_array($v) or is_object($v) or $v == NULL) {
+			continue;
+		}
+		if ($k[0] == '_') { // internal field
+			continue;
+		}
+		$fields[] = $k;
+		$values[] = "'" . mysql_escape_string( $v ) . "'";
+	}
+	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
+	if (!db_exec( $sql )) {
+		return false;
+	}
+	$id = db_insert_id();
+	if ($keyName && $id)
+		$object->$keyName = $id;
+	return true;
+}
+
+function db_updateObject( $table, &$object, $keyName )
+{
+	$fmtsql = "UPDATE $table SET %s WHERE %s";
+	foreach (get_object_vars( $object ) as $k => $v) {
+		if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field
+			continue;
+		}
+		if( $k == $keyName ) { // PK not to be updated
+			$where = "$keyName='" . mysql_escape_string( $v ) . "'";
+			continue;
+		}
+		if( $v == '' ) {
+			$val = 'NULL';
+		} else {
+			$val = "'" . mysql_escape_string( $v ) . "'";
+		}
+		$tmp[] = "$k=$val";
+	}
+	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
+	return db_exec( $sql );
 }
 
 function db_dateConvert( $src, &$dest, $srcFmt )
@@ -201,9 +195,6 @@ function db_datetime( $timestamp = NULL )
 	}
 }
 
-function db_escape( $str ) {
-	return mysql_escape_string( $str );
-}
 
 /*
  *  copy the hash array content into the object as properties
@@ -230,4 +221,6 @@ function bindHashToObject( $hash, &$obj, $prefix=NULL )
 	}
 	//echo "obj="; print_r($obj); exit;
 }
+
+
 ?>
