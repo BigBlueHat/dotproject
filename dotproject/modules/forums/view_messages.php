@@ -69,6 +69,7 @@ function delIt(id){
 $x = false;
 
 $date = new CDate();
+$pdfdata = array();
 
 foreach ($messages as $row) {
 	$sql = "
@@ -126,6 +127,11 @@ foreach ($messages as $row) {
 
 	echo $s;
 	$x = !$x;
+
+        $pdfdata[] = array($row['message_date'], 
+$row['contact_first_name'] . ' ' . $row['contact_last_name'],
+'<b>' . $row['message_title'] . '</b>
+' . $row['message_body']);
 }
 ?>
 </table>
@@ -141,3 +147,41 @@ foreach ($messages as $row) {
 	</td>
 </tr>
 </table>
+
+<?php //PDF Creation
+$font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";
+$temp_dir = $dPconfig['root_dir']."/files/temp";
+$base_url  = $dPconfig['base_url'];
+require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
+
+$pdf = &new Cezpdf($paper='A4',$orientation='portrait');
+$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
+$pdf->selectFont( "$font_dir/Helvetica.afm" );
+$pdf->ezText( 'Forum' );
+
+                $options = array(
+                        'showLines' => 1,
+                        'showHeadings' => 0,
+                        'fontSize' => 8,
+                        'rowGap' => 2,
+                        'colGap' => 5,
+                        'xPos' => 50,
+                        'xOrientation' => 'right',
+                        'width'=>'500'
+                );
+
+$pdf->ezTable( $pdfdata, NULL, NULL, $options );
+
+if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
+                        fwrite( $fp, $pdf->ezOutput() );
+                        fclose( $fp );
+                        echo "<a href=\"$base_url/files/temp/forum_$AppUI->user_id.pdf\" target=\"pdf\">";
+                        echo $AppUI->_( "View PDF File" );
+                        echo "</a>";
+                } else {
+                        echo "Could not open file to save PDF.  ";
+                        if (!is_writable( $temp_dir )) {
+                                "The files/temp directory is not writable.  Check your file system permissions.";
+                        }
+                }
+?>
