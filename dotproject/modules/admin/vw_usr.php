@@ -4,9 +4,11 @@
 	<td width="60" align="right">
 		&nbsp; <?php echo $AppUI->_('sort by');?>:&nbsp;
 	</td>
-	<th width="150">
+	<?php if (dPgetParam($_REQUEST, "tab", 0) == 0){ ?>
+	<th width="125">
 	           <?php echo $AppUI->_('Loged in');?>
 	</th>
+	<?php } ?>
 	<th width="150">
 		<a href="?m=admin&a=index&orderby=user_username" class="hdr"><?php echo $AppUI->_('Login Name');?></a>
 	</th>
@@ -45,6 +47,7 @@ foreach ($users as $row) {
 		</table>
 <?php } ?>
 	</td>
+	<?php if (dPgetParam($_REQUEST, "tab", 0) == 0){ ?>
 	<td>
 	       <?php 
 	           $sql = "select user_access_log_id, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_in ) ) / 3600 as hours,
@@ -57,8 +60,13 @@ foreach ($users as $row) {
 	           $user_logs = db_loadList($sql);
 	           
 	           foreach ($user_logs as $row_log) {
-	               echo $row_log["hours"]." ".$AppUI->_('hrs.'). "( ".$row_log["idle"]." ". $AppUI->_('hrs.')." ".$AppUI->_('idle'). ") - "; if($row_log["online"] == '1') { echo $AppUI->_('Online');} else { echo $AppUI->_('Offline');}
-	} ?>
+	               if ($row_log["online"] == '1'){
+	                   echo $row_log["hours"]." ".$AppUI->_('hrs.'). "( ".$row_log["idle"]." ". $AppUI->_('hrs.')." ".$AppUI->_('idle'). ") - " . $AppUI->_('Online');  
+	               } else {
+	                   echo $AppUI->_('Offline');
+	               }
+	} 
+	}?>
 	</td>
 	<td>
 		<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>"><?php echo $row["user_username"];?></a>
