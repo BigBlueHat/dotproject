@@ -17,6 +17,16 @@ $show_orphaned		= dPgetParam($_POST,"show_orphaned", 0);
 $display_week_hours	= dPgetParam($_POST,"display_week_hours",0);
 $max_levels        	= dPgetParam($_POST,"max_levels","max");
 $log_userfilter		= dPgetParam($_POST,"log_userfilter","");
+$company_id		= dPgetParam($_POST,"company_id","all");
+$project_id		= dPgetParam($_POST,"project_id","all");
+
+// get CProject() to filter tasks by company
+require_once( $AppUI->getModuleClass( 'projects' ) );
+$proj = new CProject();
+// filtering by companies
+$extra = ($company_id != 'all') ? array('where' => " AND project_company = $company_id ") : null;
+$projects = $proj->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
+$projFilter = arrayMerge(  array( 'all' => $AppUI->_('All Projects') ), $projects );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
@@ -166,10 +176,10 @@ function chPriority(user_id) {
 </script>
 <form name="editFrm" action="index.php?m=tasks&a=tasksperuser" method="post">
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
@@ -180,14 +190,11 @@ function chPriority(user_id) {
 		</a>
 	</td>
 	<td nowrap="nowrap">
-	<?php
-		$system_users = dPgetUsers();
-	?>
-	<?=arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"', $log_userfilter )?>
-
-
+                <?php
+                        $system_users = dPgetUsers();
+                ?>
+                <?=arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"', $log_userfilter )?>
 	</td>
-
 	<td nowrap="nowrap">
                 <!-- // not in use anymore <input type="checkbox" name="log_all_projects" <?php if ($log_all_projects) echo "checked" ?> >
 		<?php echo $AppUI->_( 'Log All Projects' );?>
@@ -199,9 +206,7 @@ function chPriority(user_id) {
                 <input type="checkbox" name="use_period" <?php if ($use_period) echo "checked" ?> >
 		<?php echo $AppUI->_( 'Use the period' );?>
 		</input>
-
 	</td>
-
 	<td align="left" width="50%" nowrap="nowrap">
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
@@ -215,18 +220,18 @@ function chPriority(user_id) {
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
-        <td>
-                <?php echo $AppUI->_( 'Levels to display' ); ?>
-		<input type="text" name="max_levels" size="10" maxlength="3" value="<?php echo $max_levels; ?>" />
-
-
+         <td nowrap="nowrap" colspan="1" align="left"><?php echo $AppUI->_( 'Projects' );?>:
+                <?php echo arraySelect( $projFilter, 'project_id', 'size=1 class=text', $project_id, false ); ?>
 	</td>
         <td><input type="checkbox" name="show_orphaned" <?php if ($show_orphaned) echo "checked" ?> >
 		<?php echo $AppUI->_( 'Hide orphaned tasks' );?>
-		</input></td>
-
+		</input>
+        </td>
+        <td>
+                <?php echo $AppUI->_( 'Levels to display' ); ?>
+		<input type="text" name="max_levels" size="10" maxlength="3" value="<?php echo $max_levels; ?>" />
+	</td>
 </tr>
-
 </table>
 </form>
 <?php
@@ -256,8 +261,9 @@ if($do_report){
 	$and=false;
 	$where=false;
 
-	$sql = 	 "SELECT t.* "
-			."FROM tasks AS t ";
+	$sql = "SELECT t.*
+                FROM tasks AS t
+                LEFT JOIN projects AS p ON p.project_id = t.task_project";
 
 	if ($use_period) {
 		if (!$where) { $sql.=" WHERE ";$where=true; }
@@ -276,7 +282,7 @@ if($do_report){
     	if (!$where) { $sql.=" WHERE ";$where=true; }
      	$sql .= " (task_percent_complete < 100)";
      	$and=true;
-	
+
 	        //AND !isnull(task_end_date) AND task_end_date != '0000-00-00 00:00:00'
 	        //AND !isnull(task_start_date) AND task_start_date != '0000-00-00 00:00:00';
 	        //AND task_dynamic   ='0'
@@ -284,15 +290,23 @@ if($do_report){
 	        //AND task_duration  > 0";
 			//;
 
-	if(!$log_all_projects){
+        if($project_id != 'all'){
 		if (!$where) { $sql.=" WHERE ";$where=true; }
 		if ($and) {
 			$sql .= " AND ";
 		}
-		$sql.=" task_project='$project_id' ";
+		$sql.=" t.task_project='$project_id' ";
 	}
 
-	$sql .= " ORDER BY task_project, task_end_date;";
+        if($company_id != 'all'){
+		if (!$where) { $sql.=" WHERE ";$where=true; }
+		if ($and) {
+			$sql .= " AND ";
+		}
+		$sql.=" p.project_company='$company_id' ";
+	}
+
+	$sql .= " ORDER BY task_project, task_end_date, task_start_date;";
 
 //echo "<pre>$sql</pre>";
 	$task_list_hash 	 = db_loadHashList($sql, "task_id");
