@@ -174,23 +174,24 @@ foreach($projects as $p) {
 	$caption = "";
 	if(!$start || $start == "0000-00-00"){
 		$start = !$end ? date("Y-m-d") : $end;
-		$caption .= "(no start date)";
+		$caption .= $AppUI->_("(no start date)");
 	}
 
 	if(!$end) {
 		$end = $start;
-		$caption .= " (no end date)";
+		$caption .= " ".$AppUI->_("(no end date)");
 	} else {
 		$cap = "";
 	}
 
         if ($showLabels){
-                $caption .= $projectStatus[$p['project_status']].", ";
+                $caption .= $AppUI->_($projectStatus[$p['project_status']]).", ";
                 $caption .= $p['project_active'] <> 0 ? $AppUI->_('active') : $AppUI->_('inactive');
         }
 	$enddate = new CDate($end);
 	$startdate = new CDate($start);
 	$actual_enddate = new CDate($actual_end);
+	$actual_enddate = $actual_enddate->after($startdate) ? $actual_enddate : $enddate;
         $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), $actual_enddate->format($df)), $start, $actual_end, $cap, 0.6);
         $bar->progress->Set($progress/100);
 
