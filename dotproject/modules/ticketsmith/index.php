@@ -1,6 +1,16 @@
 <?php  /* TICKETSMITH $Id$ */
-$type = dPgetParam( $_GET, 'type', 'Open' );
+$type = dPgetParam( $_GET, 'type', '' );
 $action = dPgetParam( $_REQUEST, 'action', null );
+
+if($type == ''){
+	if($AppUI->getState("ticket_type")){
+		$type = $AppUI->getState("ticket_type");
+	} else {
+		$type = "Open";
+	}
+} else {
+	$AppUI->setState("ticket_type", $_GET["type"]);
+}
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Trouble Ticket Management', 'gconf-app-icon.png', $m, "$m.$a" );
