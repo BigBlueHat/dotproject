@@ -28,7 +28,7 @@ for ( $current = $start; $current < $end + 1; $current++ ) {
 }
 
 // Pull tasks dependencies
-$dpes = false;
+$deps = false;
 if ($loadFromTab && isset($_SESSION['tasks_subform']['hdependencies'])) {
 	$deps = trim($_SESSION['tasks_subform']['hdependencies'], " \t\r\n,");
 }
