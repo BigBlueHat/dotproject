@@ -277,12 +277,16 @@ function dPformatDuration($x) {
 
 }
 
+/**
+*/
 function dPsetMicroTime() {
 	global $microTimeSet;
 	list($usec, $sec) = explode(" ",microtime());
 	$microTimeSet = (float)$usec + (float)$sec;
 }
 
+/**
+*/
 function dPgetMicroDiff() {
 	global $microTimeSet;
 	$mt = $microTimeSet;
