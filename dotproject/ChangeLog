@@ -1,3 +1,93 @@
+2002-12-10 05:57  (kripper)
+---------------------------------
+includes/main_functions.php
+locales/es/common.inc
+locales/es/companies.inc
+modules/system/translate.php
+modules/tasks/organizer.php
+modules/tasks/viewgantt.php
+- Added functions for converting time/dates from/to mysql/UTS format
+- Removed htmlspecialchars from translate.php (when loading entries)
+- Updated spanish translation
+- Added displaying options to the gantt viewer
+
+2002-12-09 23:19  (eddieajau)
+---------------------------------
+locales/pt_br/common.inc
+locales/pt_br/companies.inc
+- Content update
+
+2002-12-09 23:12  (eddieajau)
+---------------------------------
+locales/en/common.inc
+- Content update
+
+2002-12-09 22:39  (eddieajau)
+---------------------------------
+modules/help/access_denied.php
+- Added pilot language support
+
+2002-12-09 22:38  (eddieajau)
+---------------------------------
+modules/system/translate.php
+- Added help to modules list
+
+2002-12-09 22:36  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/en/help.inc
+- Content update
+
+2002-12-09 22:32  (eddieajau)
+---------------------------------
+modules/companies/index.php
+modules/help/access_denied.php
+- Added pilot language support
+
+2002-12-09 22:29  (eddieajau)
+---------------------------------
+locales/en/companies.inc
+locales/en/common.inc
+- Content update
+
+2002-12-09 22:23  (eddieajau)
+---------------------------------
+includes/header.php
+includes/leftnav.php
+- Added pilot language support
+
+2002-12-09 22:22  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- arraySelect function includes option to translate selection list
+
+2002-12-09 22:18  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Move from thisuser cookie to session variable
+
+2002-12-09 22:11  (eddieajau)
+---------------------------------
+dosql/addeditdel_event.php
+dosql/watch_forum.php
+functions/forums_func.php
+- Move from thisuser cookie to session variable
+
+2002-12-09 16:28  (kripper)
+---------------------------------
+modules/tasks/organizer.php
+- Improved navigation
+
+2002-12-09 15:25  (kripper)
+---------------------------------
+locales/es/common.inc
+- Added spanish translation using the translation manager
+
+2002-12-09 15:12  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2002-12-09 09:13  (eddieajau)
 ---------------------------------
 modules/companies/index.php
