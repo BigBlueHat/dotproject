@@ -1,49 +1,93 @@
-2004-08-25 01:52  (gregorerhardt)
+2004-08-25 03:21  (ajdonnison)
+---------------------------------
+index.php
+- Changed tab logic to use filename only as the source of the tab text.
+- Tab text is now filename minus the module_tab. prefix and .php suffix,
+- with underscores replaced with spaces and each word having the first
+- letter uppercased.
+
+2004-08-25 02:58  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+style/classic/header.php
+style/default/header.php
+- Added support for automatic inclusion of Javascript files.
+
+2004-08-24 23:31  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- changed field order: is more intuitive
+
+2004-08-24 23:25  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser_sub.php
+- lowering default value to 30 percent for assignment percentage
+
+2004-08-24 23:13  (gregorerhardt)
+---------------------------------
+ChangeLog
+includes/config-dist.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_assign_aed.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser_sub.php
+- implemented direct assignment formular in big tasks lists. can be enabled by a config var
+
+2004-08-24 22:39  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Added the same cookie parameters as used in index.php to ensure we
+- don't have clashes requiring a new login.
+
+2004-08-24 19:52  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.php
 - oops, two people had the same idea, removed mine
 
-2004-08-25 01:45  (gregorerhardt)
+2004-08-24 19:45  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.php
 - fixed sql bug, grayed out a finished and past task
 
-2004-08-25 01:34  (jcgonz)
+2004-08-24 19:34  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.php
 - Added a new style for finished tasks
 
-2004-08-25 01:11  (jcgonz)
+2004-08-24 19:11  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.php
 - Solved a cross reference issue in a SQL
 
-2004-08-25 00:01  (gregorerhardt)
+2004-08-24 18:01  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 - for the progress bar gray is better than darkgray
 
-2004-08-24 23:58  (gregorerhardt)
+2004-08-24 17:58  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - sort by last name first rather than by first name
 
-2004-08-24 23:41  (gregorerhardt)
+2004-08-24 17:41  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 - show tasks which are both finished and past in darkgray
 
-2004-08-24 21:30  (jcgonz)
+2004-08-24 15:30  (jcgonz)
 ---------------------------------
 db/dotproject.sql
 - Added a colon that wasn't there
 
-2004-08-24 18:16  (gregorerhardt)
+2004-08-24 12:16  (gregorerhardt)
 ---------------------------------
 db/upgrade_latest.sql
 - fixed forgotten line endings problem with project status
 
-2004-08-24 16:40  (gregorerhardt)
+2004-08-24 10:40  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
@@ -53,26 +97,16 @@ modules/tasks/vw_log_update.php
 modules/tasks/vw_logs.php
 - new fields for task log
 
-2004-08-24 10:11  (kripper)
+2004-08-24 04:11  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2004-08-24 08:50  (revelation7)
+2004-08-24 02:50  (revelation7)
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/view.php
 - Fixed issue #0000018: Backslash in text field being stripped out.  Added parameters to obj->load in addedt.php and db_loadObject in view.php for tasks.
-
-2004-08-24 05:08  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Display file size in human readable form.
-
-2004-08-24 05:01  (cyberhorse)
----------------------------------
-includes/db_adodb.php
-- Reload page after attempting to fix db errors, only if the changes successfully got rid of the error.
 
 2004-08-23 23:08  (cyberhorse)
 ---------------------------------
@@ -464,110 +498,6 @@ modules/tasks/view.php
 - also display the tasks that depend on this task
 
 2004-08-20 15:22  (gregorerhardt)
----------------------------------
-modules/calendar/day_view.php
-includes/config-dist.php
-- config var defining if minicals are shown in day_view or not
-
-2004-08-20 15:06  (gregorerhardt)
----------------------------------
-index.php
-includes/config-dist.php
-- a more general approach to the default start page feature, sorry adam :)
-
-2004-08-20 15:03  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Solved bug with the task_creator field; the new \"load charge\"
-- functionality broke this combobox; fixed.
-
-2004-08-20 14:35  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-- Only active users are shown within the resources list
-
-2004-08-20 14:29  (gregorerhardt)
----------------------------------
-db/upgrade_latest.sql
-db/dotproject.sql
-- added template-ProjectStatus
-
-2004-08-20 14:20  (jcgonz)
----------------------------------
-images/icons/collapse.gif
-images/icons/expand.gif
-- Croped a little bit images to enhance foldable tasks view
-
-2004-08-20 13:50  (revelation7)
----------------------------------
-db/dotproject.sql
-- Someone forgot to change the SQL for inserting admin :) , now that user_contact flag is added.
-
-2004-08-20 11:46  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-- fixed assignment for multiple users, assignment now possible by dblclick
-
-2004-08-20 11:43  (gregorerhardt)
----------------------------------
-locales/en/tasks.inc
-- first part of preventing from user overallocation
-
-2004-08-20 11:34  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-modules/system/addeditpref.php
-- first part of preventing from user overallocation
-
-2004-08-20 11:28  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-- first part of preventing from user overallocation
-
-2004-08-20 04:08  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-20 01:42  (ajdonnison)
----------------------------------
-classes/query.class.php
-- Added setDelete method to provide consistency.
-
-2004-08-20 01:39  (ajdonnison)
----------------------------------
-classes/query.class.php
-- Changed join logic to allow join without an alias
-
-2004-08-20 01:20  (ajdonnison)
----------------------------------
-classes/query.class.php
-- New class for providing table prefix safe queries, with database
-- independent query limiting.
-
-2004-08-19 21:33  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Now the user is able to fold and unfold tasks; only not mile-stone
-- dynamic tasks are able to do such things.
-- Please, if you don't like this feature, don't hesitate to
-- roll back the version; I found it very handy.
-
-2004-08-19 20:57  (jcgonz)
----------------------------------
-modules/tasks/gantt.php
-- Tasks with no start_date are set to today and now
-- so the gantt graph is not freaked out.
-
-2004-08-19 18:26  (jcgonz)
----------------------------------
-modules/tasks/view.php
-- Usability issue; compressed a litte bit the Task's view
-- by moving the description field.
-
 ...
 
 (This file has been wrapped)
