@@ -89,6 +89,7 @@ $minical = new CMonthCalendar( $this_day );
 $minical->setStyles( 'minititle', 'minical' );
 $minical->showArrows = false;
 $minical->showWeek = false;
+$minical->clickMonth = true;
 $minical->setLinkFunctions( 'clickDay' );
 
 $minical->setDate( $minical->prev_month );

@@ -43,6 +43,9 @@ class CMonthCalendar {
 /** @var boolean Show the week link (no pun intended) in the first column */
 	var $showWeek;
 
+/** @var boolean Show the month name as link */
+	var $clickMonth;
+
 /** @var boolean Show events in the calendar boxes */
 	var $showEvents;
 
@@ -196,7 +199,12 @@ class CMonthCalendar {
 
 		}
 
+
 		$s .= "\n\t<th width=\"99%\" align=\"center\">";
+		if ($this->clickMonth) {
+			$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
+			$s .= '<a href="'.$href.'">';
+		}
 		$s .= $this->this_month->format( "%B %Y" );
 		$s .= "</th>";
 
@@ -270,7 +278,7 @@ class CMonthCalendar {
 				$m = intval( substr( $day, 4, 2 ) );
 				$d = intval( substr( $day, 6, 2 ) );
 				$dow = intval( substr( $day, 8, 1 ) );
-				
+
 				if ($m != $this_month) {
 					$class = 'empty';
 				} else if ($day == $today) {

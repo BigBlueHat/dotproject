@@ -78,14 +78,16 @@ $minical = new CMonthCalendar( $cal->prev_month );
 $minical->setStyles( 'minititle', 'minical' );
 $minical->showArrows = false;
 $minical->showWeek = false;
+$minical->clickMonth = true;
+$minical->setLinkFunctions( 'clickDay' );
 
 echo '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>';
-echo '<td align="center" width="200">'.$minical->show().'</td>';
-echo '<td align="center" width="100%">&nbsp;</td>';
+echo '<td valign="top" align="center" width="200">'.$minical->show().'</td>';
+echo '<td valign="top" align="center" width="100%">&nbsp;</td>';
 
 $minical->setDate( $cal->next_month );
 
-echo '<td align="center" width="200">'.$minical->show().'</td>';
+echo '<td valign="top" align="center" width="200">'.$minical->show().'</td>';
 echo '</tr></table>';
 ?>
 </td></tr></table>
