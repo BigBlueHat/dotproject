@@ -175,7 +175,7 @@ $src =
   "?m=tasks&a=gantt&no_output=1&project_id=$project_id" .
   ( $display_option == 'all' ? '' : 
 	'&start_date=' . $start_date->toString( "%Y-%m-%d" ) . '&end_date=' . $end_date->toString( "%Y-%m-%d" ) ) .
-  "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '";
+  "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 100) + '";
 
 echo "<script>document.write('<img src=\"$src\">')</script>";	
 ?>	
