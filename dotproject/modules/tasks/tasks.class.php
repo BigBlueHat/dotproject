@@ -20,6 +20,7 @@ class CTask extends CDpObject {
 	var $task_start_date = NULL;
 	var $task_duration = NULL;
 	var $task_duration_type = NULL;
+/** @deprecated */
 	var $task_hours_worked = NULL;
 	var $task_end_date = NULL;
 	var $task_status = NULL;
@@ -56,9 +57,6 @@ class CTask extends CDpObject {
 		}
 		if (!$this->task_related_url) {
 			$this->task_related_url = '';
-		}
-		if (!$this->task_hours_worked) {
-			$this->task_hours_worked = '0';
 		}
 		return NULL;
 	}
