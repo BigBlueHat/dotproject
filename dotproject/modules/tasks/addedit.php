@@ -308,7 +308,7 @@ function calcFinish() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Status' );?></td>
 			<td>
-				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $obj->task_status, true ) . '%';?>
+				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $obj->task_status, true );?>
 			</td>
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
