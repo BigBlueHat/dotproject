@@ -115,7 +115,7 @@ for ($x=0; $x < $nums; $x++) {
 	if($row["task_start_date"] == "0000-00-00 00:00:00"){
 		$row["task_start_date"] = date("Y-m-d H:i:s");
 	}
-	
+
 	// calculate or set blank task_end_date if unset
 	if($row["task_end_date"] == "0000-00-00 00:00:00") {
 		if($row["task_duration"]) {
@@ -167,7 +167,6 @@ $graph->scale->tableTitle->Set($projects[$project_id]["project_name"]);
 // try commenting out the following two lines if gantt charts do not display
 if (is_file( TTF_DIR."arialbd.ttf" ))
 	$graph->scale->tableTitle->SetFont(FF_ARIAL,FS_BOLD,12);
-
 $graph->scale->SetTableTitleBackground("#".$projects[$project_id]["project_color_identifier"]);
 $graph->scale->tableTitle->Show(true);
 
@@ -238,12 +237,12 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	
 	//using new jpGraph determines using Date object instead of string
 	$start = $a["task_start_date"];
-	$end   = $a["task_end_date"];
+	$end_date   = $a["task_end_date"];
 
-	$end = new CDate($end);	
+	$end_date = new CDate($end_date);
 //	$end->addDays(0);
-	$end = $end->getDate();
-	
+	$end = $end_date->getDate();
+
 	$start = new CDate($start);
 //	$start->addDays(0);
 	$start = $start->getDate();
@@ -284,9 +283,9 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	if($flags == "m") {		
 		$start = new CDate($start);
 		$start->addDays(0);
-		$s = $start->format("%Y-%m-%d");// 		
+		$s = $start->format("%Y-%m-%d");//
 		$bar = new MileStone($row++, array($name, "", substr($s, 0, 10), substr($s, 0, 10)), $s, $s);		
-		//caption of milestone shoud be date 
+		//caption of milestone shoud be date
 		if ($showLabels=='1') {			
 			$caption = $start->format("%Y-%m-%d");		
 		}
@@ -323,13 +322,13 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		$bar->title->SetFont(FF_FONT1,FS_NORMAL,7);
 		
 	    if($a["task_dynamic"] == 1){
-	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 7);		
+	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 7);
     		$bar->rightMark->Show();
             $bar->rightMark->SetType(MARK_RIGHTTRIANGLE);
             $bar->rightMark->SetWidth(3);
             $bar->rightMark->SetColor('black');
             $bar->rightMark->SetFillColor('black');
-            
+
             $bar->leftMark->Show();
             $bar->leftMark->SetType(MARK_LEFTTRIANGLE);
             $bar->leftMark->SetWidth(3);
@@ -341,8 +340,19 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	}
 	//adding captions
 	$bar->caption = new TextProperty($caption);
-	$bar->caption->Align("left","center");		
-	
+	$bar->caption->Align("left","center");
+
+        // show tasks which are both finished and past in darkgray
+        if ($progress >= 100 && $end_date->isPast()) {
+                $bar->caption->SetColor('darkgray');
+                $bar->title->SetColor('darkgray');
+                $bar->SetColor('darkgray');
+                $bar->SetFillColor('darkgray');
+                $bar->SetPattern(BAND_SOLID,'darkgray');
+                $bar->progress->SetFillColor('darkgray');
+                $bar->progress->SetPattern(BAND_SOLID,'darkgray',98);
+        }
+
 	$sql = "SELECT dependencies_task_id FROM task_dependencies WHERE dependencies_req_task_id=" . $a["task_id"];
 	$query = db_exec($sql);
 
