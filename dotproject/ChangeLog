@@ -1,3 +1,33 @@
+2004-01-28 03:27  (ajdonnison)
+---------------------------------
+classes/dp.class.php
+includes/db_connect.php
+modules/projects/addedit.php
+style/default/overrides.php
+- Fix for bug 781200, backslashes stripped in URLs.  This fix should
+- be seen as interim as it highlights a problem in db_loadObject, where
+- if the object exists, slashes are stripped, if not they are not.
+- Need to review the whole use of htmlspecialchars, etc.
+
+2004-01-28 02:47  (ajdonnison)
+---------------------------------
+modules/ticketsmith/admin.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+- Fixed javascript form handling for onChange events. (Bug 806786)
+- This fixes search handling on some browsers.
+
+2004-01-27 03:57  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-26 15:56  (kripper)
 ---------------------------------
 modules/projects/index.php
@@ -468,36 +498,6 @@ ChangeLog
 ---------------------------------
 classes/ui.class.php
 modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/view.php
-style/default/overrides.php
-- Now you can navigate from inside tasks, you can view the tasks parents and children while viewing the task.
-
-2003-12-15 16:37  (gregorerhardt)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/calendar.class.php
-- fixed bug in recurrent events; todo: daily view
-
-2003-12-14 09:21  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-13 17:14  (gregorerhardt)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/calendar.class.php
-modules/calendar/view.php
-- implemented recurrent events; todo: make working day view of recurrent events, finding bugs
-
-2003-12-13 09:21  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-12 17:15  (gregorerhardt)
----------------------------------
 ...
 
 (This file has been wrapped)
