@@ -2,49 +2,43 @@
 //Companies
 
 //First pull perms
-$psql = "	select permission_value, permission_item 
-					from 
-					permissions, users 
-					where 
-					permission_user = user_id and 
-					permission_value <> 0 and
-					(permission_grant_on = 'companies' or permission_grant_on = 'all')
-					order by permission_value";
+$psql = "select permission_value, permission_item 
+	from 
+		permissions, users 
+	where 
+		permission_user = user_id and 
+		permission_value <> 0 and
+		(permission_grant_on = 'companies' or permission_grant_on = 'all')
+	order by permission_value";
 
 $perm =mysql_query($psql);
-$pullperm = mysql_fetch_array($perm);
-
+$pullperm = mysql_fetch_array($perm, MYSQL_NUM);
+$pullperm[0]=1; // JBF - force use of else clause below
 if($pullperm[0] < 0)
-{
+	{
 	$csql = "select company_id, company_name, count(project_id)  as countp, user_first_name, user_last_name 
 		from companies 
 		left join projects on companies.company_id = projects.project_company
 		left join users on companies.company_owner = users.user_id 
 		group by company_id
 		order by company_name";
-}
+	}
 else
-{
+	{
 	$csql = "select company_id, company_name, count(projects.project_id) as countp, count(projects2.project_id) as inactive, user_first_name, user_last_name
-		from permissions, companies
-		left join projects on companies.company_id = projects.project_company and projects.project_active <> 0
-		left join users on companies.company_owner = users.user_id 
-		left join projects as projects2 on companies.company_id = projects2.project_company and projects2.project_active = 0
-		where 
-		(permission_grant_on = 'companies' or permission_grant_on = 'all') and 
-		permission_user = $user_cookie and 
-		(permission_item = company_id or permission_item = -1)
-    group by company_id";
-
-}
-//echo $csql;
+	from permissions, companies
+	left join projects on companies.company_id = projects.project_company and projects.project_active <> 0
+	left join users on companies.company_owner = users.user_id 
+	left join projects as projects2 on companies.company_id = projects2.project_company and projects2.project_active = 0
+	where (permission_value <> 0 and (permission_grant_on = 'all' or (permission_grant_on = 'companies' and permission_item = company_id)) and (permission_user = $user_cookie))
+	group by company_id order by company_name";
+	}
 $cos =mysql_query($csql);
 
 $usql = "Select user_first_name, user_last_name from users where user_id = $user_cookie";
 $urc = mysql_query($usql);
 $urow = mysql_fetch_array($urc);
 ?>
-
 
 <SCRIPT language="javascript">
 function delMe(x, y){
