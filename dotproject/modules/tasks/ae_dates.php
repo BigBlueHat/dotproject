@@ -2,7 +2,7 @@
 // $Id$
 
 global $AppUI, $dPconfig, $task_parent_options, $loadFromTab;
-global $can_edit_time_information, $obj;
+global $can_edit_time_information, $locale_char_set, $obj;
 global $durnTypes, $task_project, $task_id, $tab;
 
 //Time arrays for selects
@@ -41,6 +41,15 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 $start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : new CDate();
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
 
+// convert the numeric calendar_working_days config array value to a human readable output format
+$cwd = explode(',', $dPconfig['cal_working_days']);
+$cwd_conv = array_map( 'cal_work_day_conv', $cwd );
+$cwd_hr = implode(', ', $cwd_conv);
+
+function cal_work_day_conv($val) {
+	GLOBAL $locale_char_set;
+	return htmlentities(jddayofweek($val-1, 2), ENT_COMPAT, $locale_char_set);
+}
 ?>
 <form name="datesFrm" action="?m=tasks&a=addedit&task_project=<?php echo $task_project;?>" method="post">
 <input name="dosql" type="hidden" value="do_task_aed" />
@@ -101,6 +110,8 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 		echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
 	?>
 	</td>
+	<td><?php echo $AppUI->_('Daily Working Hours').': '.$dPconfig['daily_working_hours']; ?></td>
+
 </tr>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Calculate' );?>:</td>
@@ -108,6 +119,7 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 		<input type="button" value="<?php echo $AppUI->_('Duration');?>" onclick="calcDuration(document.datesFrm)" class="button" />
 		<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish(document.datesFrm)" class="button" />
 	</td>
+	<td><?php echo $AppUI->_('Working Days').': '.$cwd_hr; ?></td>
 </tr>
         <?php
         } else {  
