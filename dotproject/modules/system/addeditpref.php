@@ -83,7 +83,11 @@ function submitIt(){
 	<td align="right"><?php echo $AppUI->_('Locale');?>:</td>
 	<td>
 <?php
-	echo arraySelect( $AppUI->locales, 'pref_name[LOCALE]', 'class=text size=1', @$prefs['LOCALE'] );
+	// read the installed languages
+	$locales = $AppUI->readDirs( 'locales' );
+	$AppUI->setWarning( false );
+	echo arraySelect( $locales, 'pref_name[LOCALE]', 'class=text size=1', @$prefs['LOCALE'], true );
+	$AppUI->setWarning( true );
 ?>
 	</td>
 </tr>
@@ -134,10 +138,10 @@ function submitIt(){
 	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php
-	$styles = $AppUI->readDir( 'style' );
-	$AppUI->locale_warn = false;
+	$styles = $AppUI->readDirs( 'style' );
+	$AppUI->setWarning( false );
 	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'], true );
-	$AppUI->locale_warn = true;
+	$AppUI->setWarning( true );
 ?>
 	</td>
 </tr>
