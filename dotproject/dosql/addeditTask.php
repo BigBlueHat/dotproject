@@ -6,6 +6,7 @@ if(empty($task_id))$task_id=0;
 if(empty($task_status ))$task_status =0;
 if(empty($task_order ))$task_order =0;
 if(empty($task_client_publish))$task_client_publish =0;
+if(empty($notify))$notify =0;
 $doassingsql  = 0;
 $doassignemail = 0;
 $message = "";
@@ -164,7 +165,7 @@ if($doassingsql){
 	}
 }
 
-if ($doassignemail) {
+if ($doassignemail && $notify) {
 	$csql = "select user_email, user_first_name, user_last_name
 	from users where users.user_id = $user_cookie";
 	$query = mysql_query($csql);
@@ -199,13 +200,17 @@ if ($doassignemail) {
 	// For each user, email them an update, similar to the update that
 	// ticketsmith uses.
 	$row_count = mysql_num_rows($query);
-	$mail_header = "From: support@saki.com.au\r\n"
-	. "Content-Type: text/html\r\n"
+	$mail_header = "Content-Type: text/html\r\n"
 	. "Content-Transfer-Encoding: 8bit\r\n"
 	. "Mime-Version: 1.0\r\n"
-	. "X-Mailer: Dotproject";
+	. "X-Mailer: Dotproject"
+	;
 	$subject = "Task $task_id $mail_type";
-	$mail_body = "<head><title>$subject</title></head>\n"
+	$mail_body = "<head><title>$subject</title>\n"
+	."<style type=text/css>\n"
+	."body,td,th { font-family: verdana,helvetica,arial,sans-serif; font-size:12px; }\n"
+	."</style>\n"
+	."</head>\n"
 	. "<body>\n"
 	. "<table bgcolor='#ffffff' cellpadding=4 cellspacing=1>\n"
 	. "<tr bgcolor='#eeeeee'><th colspan=2>$subject</th></tr>\n"
@@ -218,7 +223,7 @@ if ($doassignemail) {
 			$mail_text = $mail_body
 			. "<tr><td>Title</td><td>"
 			. $row['task_name']
-			. "&nbsp;</tr>\n<tr><td>Description</td><td>"
+			. "&nbsp;</tr>\n<tr><td valign=top>Description</td><td>"
 			. str_replace(chr(10), "<BR>", $row['task_description'])
 			. "&nbsp;</td></tr>\n<tr><td>Created by</td><td><a href='mailto:"
 			. $row['creator_email']
@@ -239,7 +244,9 @@ if ($doassignemail) {
 			. "&nbsp;"
 			. $editor['user_last_name']
 			. "</a></tr>\n</table></body>\n";
-			mail($row['assignee_email'], $subject, $mail_text, $mail_header);
+
+			$from = $row['creator_first_name'] . ' '. $row['creator_last_name'] . ' <' . $row['creator_email'] . '>';
+			mail($row['assignee_email'], $subject, $mail_text, "From: $from\r\n".$mail_header);
 		}
 	}
 }
