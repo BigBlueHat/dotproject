@@ -121,39 +121,6 @@ function delIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
 			<td class="hilite"><?php echo $AppUI->_($types[@$obj->company_type]);?></td>
 		</tr>
-		<?php
-		$custom_fields = dPgetSysVal("CompanyCustomFields");
-		if ( count($custom_fields) > 0 ) {
-			//We have custom fields, parse them!
-			//Custom fields are stored in the sysval table under TaskCustomFields, the format is
-			//key|serialized array of ("name", "type", "options", "selects")
-			
-			if ( $obj->company_custom != "" || !is_null($obj->company_custom))  {
-				//Custom info previously saved, retrieve it
-				$custom_field_previous_data = unserialize($obj->company_custom);
-			}
-			
-			$output = '';
-			foreach ( $custom_fields as $key => $array) {
-				$output .= "<tr id='custom_tr_$key' >";
-				$field_options = unserialize($array);
-				$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<b>". $field_options['name']. "</b>" : $field_options['name'] . ":") ."</td>";
-				switch ( $field_options["type"]){
-					case "text":
-						$output .= "<td class='hilite' width='300'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
-						break;
-					case "select":
-						$optionarray = explode(",",$field_options["selects"]);
-						$output .= "<td class='hilite' width='300'>". ( isset($custom_field_previous_data[$key]) ? $optionarray[$custom_field_previous_data[$key]] : "") . "</td>";
-						break;
-					case "textarea":
-						$output .=  "<td valign='top' class='hilite'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
-						break;
-				}
-				$output .= "</tr>";
-			}
-			echo $output;
-		} ?>
 		</table>
 
 	</td>
@@ -167,6 +134,13 @@ function delIt() {
 		</tr>
 		
 		</table>
+		<?php
+			error_reporting(E_ALL);
+			require_once("./classes/customfieldsparser.class.php");
+			// let's create the parser
+			$cfp = new CustomFieldsParser("CompanyCustomFields", $obj->company_id);
+			echo $cfp->parseTableForm(false, $cfp->custom_record_types[$obj->company_type]);
+		?>
 	</td>
 </tr>
 </table>

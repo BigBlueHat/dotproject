@@ -106,6 +106,8 @@ if ($canEdit) {
 }
 $titleBlock->show();
 
+$task_types = dPgetSysVal("TaskType");
+
 ?>
 
 <script language="JavaScript">
@@ -236,6 +238,10 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> <?php echo $dPconfig['currency_symbol'] ?>:</td>
 			<td class="hilite" width="300"><?php echo $obj->task_target_budget;?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task Type');?> :</td>
+			<td class="hilite" width="300"><?php echo $task_types[$obj->task_type];?></td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap" colspan="2"><strong><?php echo $AppUI->_('Description');?></strong></td>
@@ -379,56 +385,21 @@ function delIt() {
 			    		?>
 			    	</td>
 			    </tr>
-		 		<?php
+			    <tr>
+			    	<td>
+		 <?php
 			}
 		}
-		
-		$custom_fields = dPgetSysVal("TaskCustomFields");
-		if ( count($custom_fields) > 0 ){
-			//We have custom fields, parse them!
-			//Custom fields are stored in the sysval table under TaskCustomFields, the format is
-			//key|serialized array of ("name", "type", "options", "selects")
-			
-			if ( $obj->task_custom != "" || !is_null($obj->task_custom))  {
-				//Custom info previously saved, retrieve it
-				$custom_field_previous_data = unserialize($obj->task_custom);
-			}
-			
-			$output = '<tr><table cellspacing="1" cellpadding="2" >';
-			foreach ( $custom_fields as $key => $array) {
-				$output .= "<tr id='custom_tr_$key' >";
-				$field_options = unserialize($array);
-				$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<b>". $field_options['name']. "</b>" : $field_options['name'] . ":") ."</td>";
-				switch ( $field_options["type"]){
-					case "text":
-						$output .= "<td class='hilite' width='300'>" . dPformSafe(( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
-						break;
-					case "select":
-						$optionarray = explode(",",$field_options["selects"]);
-						$output .= "<td class='hilite' width='300'>". dPformSafe(( isset($custom_field_previous_data[$key]) ? $optionarray[$custom_field_previous_data[$key]] : "")) . "</td>";
-						break;
-					case "textarea":
-						$output .=  "<td valign='top' class='hilite'>" . dPformSafe(( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
-						break;
-					case "checkbox":
-						$optionarray = explode(",",$field_options["selects"]);
-                                                $output .= "<td align='left'>";
-                                                foreach ( $optionarray as $option ) {
-                                                        if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
-                                                                $checked = "checked";
-                                                        }
-                                                        $output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' style='border:0' $checked " . $field_options["options"] . ">$option<br />";
-                                                        $checked = "";
-                                                }
-                                                $output .= "</td>";
-                                                break;
-				}
-				$output .= "</tr>";
-			}
-			$output .= "</table></tr>";
-			echo $output;
-		}
+		error_reporting(E_ALL);
+		require_once("./classes/customfieldsparser.class.php");
+		$cfp = new CustomFieldsParser("TaskCustomFields", $obj->task_id);
+
+		$record_type = isset($cfp->custom_record_types[$obj->task_type]) ? $cfp->custom_record_types[$obj->task_type] : null;
+		echo $cfp->parseTableForm(false, $record_type);
+		// pendiente agregar tasktype a la bd y hacer el editor de tasks
 	 ?>
+	 		</td>
+	 	</tr>
 		</table>
 	</td>
 </tr>

@@ -50,6 +50,7 @@ class CTask extends CDpObject {
 	var $task_departments = NULL;
 	var $task_contacts = NULL;
 	var $task_custom = NULL;
+	var $task_type   = NULL;
 
 	
 	function CTask() {

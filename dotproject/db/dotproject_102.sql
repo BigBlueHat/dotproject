@@ -265,6 +265,7 @@ CREATE TABLE `tasks` (
   `task_departments` CHAR( 100 ),
   `task_contacts` CHAR( 100 ),
   `task_custom` LONGTEXT,
+  `task_type` SMALLINT DEFAULT '0' NOT NULL,
   PRIMARY KEY  (`task_id`),
   KEY `idx_task_parent` (`task_parent`),
   KEY `idx_task_project` (`task_project`),
@@ -444,10 +445,13 @@ CREATE TABLE `sysvals` (
 #
 
 INSERT INTO `syskeys` VALUES("1", "SelectList", "Enter values for list", "0", "\n", "|");
+INSERT INTO `syskeys` VALUES (2, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
+
 INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
 INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("1", "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
 INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("1", "TaskDurationType", "1|hours\n24|days");
 INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("1", "EventType", "0|General\n1|Appointment\n2|Meeting\n3|All Day Event\n4|Anniversary\n5|Reminder");
+INSERT INTO `sysvals` VALUES (8, 1, 'TaskType', '1|Administrative\r\n2|Operative');
 
 #
 # Table structure for table 'roles'

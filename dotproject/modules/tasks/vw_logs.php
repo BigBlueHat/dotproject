@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-global $AppUI, $task_id, $df, $canEdit;
+global $AppUI, $task_id, $df, $canEdit, $m;
 ?>
 <script language="JavaScript">
 function delIt2(id) {

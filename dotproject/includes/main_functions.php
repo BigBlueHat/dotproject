@@ -252,9 +252,9 @@ function dPgetSysVal( $title ) {
 		if($item) {
 			$temp2 = explode( $sep2, $item );
 			if (isset( $temp2[1] )) {
-				$arr[trim($temp2[0])] = $temp2[1];
+				$arr[trim($temp2[0])] = trim($temp2[1]);
 			} else {
-				$arr[trim($temp2[0])] = $temp2[0];
+				$arr[trim($temp2[0])] = trim($temp2[0]);
 			}
 		}
 	}

@@ -575,6 +575,13 @@ function calcFinish() {
 	f.end_date.value = tz1+e.getDate()+"/"+tz2+(e.getMonth()+1)+"/"+e.getUTCFullYear();
 }
 
+function changeRecordType(value){
+	// if the record type is changed, then hide everything
+	hideAllRows();
+	// and how only those fields needed for the current type
+	eval("show"+task_types[value]+"();");
+}
+
 </script>
 
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
@@ -629,22 +636,33 @@ function calcFinish() {
 	    <table>
 	    	<tr>
 	    		<td>
-	    			<?php
-	    				if($can_edit_time_information){
-	    					?>
-					<?php echo $AppUI->_( 'Task Creator' );?>
-					<br />
-				<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
-					<br />
-						<?php
-	    				} // $can_edit_time_information
-					?>
-					<?php echo $AppUI->_( 'Access' );?>
-					<br />
-					<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
-					<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
-					<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
-					<br />
+	    			<table>
+	    				<tr>
+	    					<td>
+				    			<?php
+				    				if($can_edit_time_information){
+				    					?>
+								<?php echo $AppUI->_( 'Task Creator' );?>
+								<br />
+							<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
+								<br />
+									<?php
+				    				} // $can_edit_time_information
+								?>
+								<?php echo $AppUI->_( 'Access' );?>
+								<br />
+								<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
+								<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
+								<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
+								<br />
+							</td>
+							<td valign='top'>
+								<?php echo $AppUI->_("Task Type"); ?>
+								<br />
+								<?php echo arraySelect(dPgetSysVal("TaskType"), "task_type",  "class='text' onchange='javascript:changeRecordType(this.value);'", $obj->task_type, false); ?>
+							</td>
+						</tr>
+					</table>
 				</td>
 				<td>
 					<?php
@@ -838,52 +856,58 @@ function calcFinish() {
 		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$obj->task_description;?></textarea>
 	</td>
 	<td align="center">
-<?php
-	$custom_fields = dPgetSysVal("TaskCustomFields");
-	if ( count($custom_fields) > 0 ){
-		//We have custom fields, parse them!
-		//Custom fields are stored in the sysval table under TaskCustomFields, the format is
-		//key|serialized array of ("name", "type", "options", "selects")
-		//Ej: 0|a:3:{s:4:"name";s:22:"Quote number";s:4:"type";s:4:"text";s:7:"options";s:24:"maxlength="12" size="10"";} 
-		if ( $obj->task_custom != "" || !is_null($obj->task_custom))  {
-			//Custom info previously saved, retrieve it
-			$custom_field_previous_data = unserialize($obj->task_custom);
-		}
+		<?php
+			error_reporting(E_ALL);
+			require_once("./classes/customfieldsparser.class.php");
+			// let's create the parser
+			$cfp = new CustomFieldsParser("TaskCustomFields", $obj->task_id);
+			
+			// we will need the amount of record types
+			$amount_task_record_types = count($cfp->custom_record_types);
+		?>
 		
-		$output = '<table cellspacing="0" cellpadding="2" border="0">';
-		foreach ( $custom_fields as $key => $array) {
-			$output .= "<tr colspan='3' valign='top' id='custom_tr_$key' >";
-			$field_options = unserialize($array);
-			$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) . ":" ."</td>";
-			switch ( $field_options["type"]){
-				case "text":
-					$output .= "<td align='left'><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";
-					break;
-				case "select":
-					$output .= "<td align='left'>". arraySelect(explode(",",$field_options["selects"]), "custom_$key", 'size="1" class="text" ' . $field_options["options"] ,( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
-					break;
-				case "textarea":
-					$output .=  "<td align='left'><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
-					break;
-				case "checkbox":
-					$options_array = explode(",",$field_options["selects"]);
-					$output .= "<td align='left'>";
-					foreach ( $options_array as $option ) {
-						if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
-							$checked = "checked";
-						} 
-						$output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' style='border:0' $checked " . $field_options["options"] . ">$option<br />";
-						$checked = "";
-					}
-					$output .= "</td>";
-					break;
-			}
-			$output .= "</tr>";
-		}
-		$output .= "</table>";
-		echo $output;
-	}
-?>
+		<?php
+			// let's parse the custom fields form table
+			echo $cfp->parseTableForm(true);
+		?>
+		
+		<script language="javascript">
+		    var task_types;
+		    
+		    // We need to create an array of all the names
+		    // of the record types in JS so we can map the Key to the type name (used in the field filter)
+		    task_types = new Array(<?php echo $amount_task_record_types; ?>);
+		    
+		    <?php
+		    	foreach($cfp->custom_record_types as $key => $record_type){
+		    		echo "task_types[$key] = new String('".$record_type."');\n";
+		    	}
+		    	reset($cfp->custom_record_types);
+		    	if(count($cfp->custom_record_types) == 0){
+		    		$record_type = "";
+		    	} else {
+		    		$record_type = isset($cfp->custom_record_types[$obj->task_type]) ? $cfp->custom_record_types[$obj->task_type] : null;
+		    		if(is_null($record_type)){
+		    			$record_type = current($cfp->custom_record_types);
+		    		}
+		    	}
+		    	
+		    	$actual_record_type = str_replace(" ", "_", $record_type);
+		    	
+		    	// Let's parse all the show functions
+		    	echo $cfp->parseShowFunctions();
+		    ?>
+		    
+		    
+			<?php echo $cfp->showHideAllRowsFunction(); ?>
+			
+			// by default hide everything and show the actual type record
+			<?php echo "\n\nhideAllRows();";
+			      if($actual_record_type != ""){
+				      echo "show$actual_record_type();";
+			      } 
+			?>
+		</script>
 	</td>
 </tr>
 </table>
