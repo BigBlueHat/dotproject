@@ -89,3 +89,9 @@ ALTER TABLE `events` ADD `events_cwd` tinyint(3) default '0';
 ALTER TABLE `contacts` CHANGE `contact_address1` `contact_address1` varchar(60) default null ;
 ALTER TABLE `contacts` CHANGE `contact_address2` `contact_address2` varchar(60) default null ;
 ALTER TABLE `users` CHANGE `user_username` `user_username` varchar(255) default null ;
+
+# 20040819
+# invent task assign maximum
+#
+ALTER TABLE `user_preferences` CHANGE `pref_name` `pref_name` VARCHAR( 72 ) NOT NULL;
+INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");

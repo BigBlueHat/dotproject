@@ -325,7 +325,7 @@ CREATE TABLE `user_tasks` (
   `user_type` tinyint(4) NOT NULL default '0',
   `task_id` int(11) NOT NULL default '0',
   `perc_assignment` int(11) NOT NULL default '100',
-  `user_task_priority` tinyint(4) default '0',
+  `user_task_priority` tinyint(4) default '0',  
   PRIMARY KEY  (`user_id`,`task_id`),
   KEY `user_type` (`user_type`)
 ) TYPE=MyISAM;
@@ -371,7 +371,7 @@ CREATE TABLE `task_dependencies` (
 
 CREATE TABLE `user_preferences` (
   `pref_user` varchar(12) NOT NULL default '',
-  `pref_name` varchar(24) NOT NULL default '',
+  `pref_name` varchar(72) NOT NULL default '',
   `pref_value` varchar(32) NOT NULL default '',
   KEY `pref_user` (`pref_user`,`pref_name`)
 ) TYPE=MyISAM;
@@ -385,7 +385,7 @@ CREATE TABLE `user_preferences` (
 #   New admin email -> replace {admin@localhost}
 #
 
-INSERT INTO `users` VALUES (1,0,'admin',MD5('passwd'),0,1,'Admin','Person',1,0,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
+INSERT INTO `users` VALUES (1,'admin',MD5('passwd'),0,1,'Admin','Person',1,0,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
 
 INSERT INTO `permissions` VALUES (1,1,"all",-1, -1);
 
@@ -394,6 +394,7 @@ INSERT INTO `user_preferences` VALUES("0", "TABVIEW", "0");
 INSERT INTO `user_preferences` VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
 INSERT INTO `user_preferences` VALUES("0", "TIMEFORMAT", "%I:%M %p");
 INSERT INTO `user_preferences` VALUES("0", "UISTYLE", "default");
+INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");
 
 #
 # AJE (24/Jan/2003)
