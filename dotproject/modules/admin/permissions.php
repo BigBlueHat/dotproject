@@ -181,6 +181,13 @@ function clearIt(){
 	setPItem();
 }
 
+function delIt( user_id, perm_id ){
+	if (confirm( 'Are you sure you want to delete this permission?' )) {
+		var form = document.topform;
+		window.location = './index.php?a=permissions&m=admin&sqlaction=-1&user_id='+user_id+'&permission_id='+perm_id;
+	}
+}
+
 function changeUser(){
 	var form = document.topform;
 	window.location = "./index.php?m=admin&a=permissions&user_id=" + form.change_user[form.change_user.selectedIndex].value;
@@ -230,7 +237,9 @@ if(mysql_num_rows($urc) == 0) {
 $i = 0;
 while ($row = mysql_fetch_array( $urc )) {
 	echo "<TR>";
-	echo "<TD><a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']});\">edit</a> | <a href=\"./index.php?a=permissions&m=admin&sqlaction=-1&user_id={$user_id}&permission_id={$row['permission_id']}\">del</A></td>";
+	echo "<TD>"
+		."<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']});\">edit</a> | "
+		."<a href=# onClick=\"delIt({$user_id},{$row['permission_id']})\">del</A></td>";
 
 	if($row['permission_grant_on'] == "all" && $row['permission_item'] == -1 && $row['permission_value'] == -1) {
 		echo "<TD bgcolor=#ffc235>";
