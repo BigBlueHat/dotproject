@@ -41,6 +41,7 @@ if ($canEdit) {
 }
 $titleBlock->addCrumb( "?m=calendar", "month view" );
 if ($canEdit) {
+	$titleBlock->addCrumb( "?m=calendar&a=day_view&date=".$start_date->format( DATE_FORMAT_TIMESTAMP_DATE ), "day view" );
 	$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );
 	if ($canEdit) {
 		$titleBlock->addCrumbDelete( 'delete event', $canDelete, $msg );
