@@ -1,0 +1,6 @@
+dotproject CHANGELOG
+
+10/24/2001: 
+Added this Log!
+Fixed ticketsmith module require path, which will now work if the php_include path = ./
+Updated the popup calendar with code sent to me by Jon Broderick Jon Broderick <jon@jivacreative.com>
