@@ -72,6 +72,9 @@ class CDpObject {
 			$this->$k = intval( $oid );
 		}
 		$oid = $this->$k;
+		if ($oid === null) {
+			return false;
+		}
 		$sql = "SELECT * FROM $this->_tbl WHERE $this->_tbl_key=$oid";
 		return db_loadObject( $sql, $this );
 	}
