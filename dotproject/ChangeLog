@@ -1,3 +1,94 @@
+2003-05-18 19:21  (eddieajau)
+---------------------------------
+docs/trouble.html
+- no message
+
+2003-05-18 19:11  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- no message
+
+2003-05-18 19:03  (eddieajau)
+---------------------------------
+docs/MODULES.txt
+- Deprecated
+
+2003-05-18 19:00  (eddieajau)
+---------------------------------
+docs/check.php
+docs/index.html
+docs/team.html
+- no message
+
+2003-05-18 18:49  (eddieajau)
+---------------------------------
+modules/contacts/index.php
+- Fixed bad link wrongly pointing to admin module
+
+2003-05-18 08:21  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Fixed bug where edit would fail is user only had permissions to projects.
+
+2003-05-18 07:56  (eddieajau)
+---------------------------------
+modules/tasks/gantt.php
+- Fixed problem with tasks related to a milestone
+
+2003-05-18 07:55  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Added support to sum the task log hours
+
+2003-05-18 07:54  (eddieajau)
+---------------------------------
+modules/tasks/do_updatetask.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- Added support to edit and delete a task log
+
+2003-05-18 07:50  (eddieajau)
+---------------------------------
+docs/nav.html
+docs/trouble.html
+- Added upgrade information
+
+2003-05-18 07:49  (eddieajau)
+---------------------------------
+docs/install.html
+docs/upgrade.html
+- Initial upload
+
+2003-05-18 07:49  (eddieajau)
+---------------------------------
+docs/INSTALL.txt
+- Replaced with html file
+
+2003-05-18 07:48  (eddieajau)
+---------------------------------
+docs/LICENSE.txt
+- Included references to licenses for included material
+
+2003-05-18 07:47  (eddieajau)
+---------------------------------
+db/upgrade_100_alpha1_to_alpha2.sql
+- Cleaned comments
+
+2003-05-18 07:47  (eddieajau)
+---------------------------------
+db/upgrade_022_to_100.sql
+- Added in Beta 1 upgrades
+
+2003-05-18 07:46  (eddieajau)
+---------------------------------
+modules/help/en/install.upgrade.hlp
+- Added upgrade info Beta 1
+
+2003-05-16 04:36  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-16 02:07  (eddieajau)
 ---------------------------------
 modules/companies/addedit.php
@@ -407,97 +498,6 @@ modules/tasks/viewgantt.php
 - Added check to see if any tasks exist.
 
 2003-05-06 08:19  (eddieajau)
----------------------------------
-modules/tasks/do_updatetask.php
-- Fixed bug where resetting task end date occurs with the wrong comparison of the task percent complete.
-
-2003-05-06 08:18  (eddieajau)
----------------------------------
-modules/projects/do_project_aed.php
-- Minor update
-
-2003-05-06 08:17  (eddieajau)
----------------------------------
-modules/help/en/companies.addedit.hlp
-modules/help/en/companies.index.hlp
-modules/help/en/companies.view.hlp
-- Content updated
-
-2003-05-06 08:17  (eddieajau)
----------------------------------
-modules/contacts/addedit.php
-modules/contacts/contacts.class.php
-modules/contacts/do_contact_aed.php
-modules/contacts/index.php
-- Updated core code
-
-2003-05-06 08:16  (eddieajau)
----------------------------------
-docs/rfc0001.00.html
-- no message
-
-2003-05-06 08:15  (eddieajau)
----------------------------------
-style/default/main.css
-- Updated the contacts table style to the blues
-
-2003-05-02 06:26  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-01 17:02  (korinek)
----------------------------------
-modules/tasks/tasks.class.php
-- One extra ")" fixed from previous commit :-(
-
-2003-05-01 16:49  (korinek)
----------------------------------
-locales/en/forums.inc
-- Content update
-
-2003-05-01 16:49  (korinek)
----------------------------------
-locales/en/locales.php
-- Corrected the charset value for English to iso-8859-1
-
-2003-05-01 16:48  (korinek)
----------------------------------
-modules/forums/forums.class.php
-- Added the charset field for the body of the outgoing email message.
-
-2003-05-01 16:47  (korinek)
----------------------------------
-modules/tasks/tasks.class.php
-- Translated a few string in the body of the email, included the charset field
-- for the body of the message.
-
-2003-05-01 09:17  (eddieajau)
----------------------------------
-includes/main_functions.php
-- no message
-
-2003-05-01 09:17  (eddieajau)
----------------------------------
-index.php
-- Added check that root directory is valid
-
-2003-05-01 07:36  (eddieajau)
----------------------------------
-docs/rfc0001.00.html
-- Initial upload
-
-2003-05-01 06:51  (eddieajau)
----------------------------------
-includes/db_mysql.php
-- Added error check if mysql support not installed.
-
-2003-05-01 06:00  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-01 00:23  (eddieajau)
 ...
 
 (This file has been wrapped)
