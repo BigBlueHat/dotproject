@@ -1,13 +1,16 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Size",
 "Active",
 "Actual Budget",
 "Actual End Date",
 "Actual Finish Date",
 "Color Identifier",
+"Date",
 "Duration",
 "Edit Project",
+"File Name",
 "Finish Date",
 "Finished",
 "Gantt Chart",
