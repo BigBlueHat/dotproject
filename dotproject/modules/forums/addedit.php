@@ -16,7 +16,7 @@ $projects = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
 //Pull user Information
-$sql = "SELECT user_id, user_username FROM users ORDER BY user_username";
+$sql = "SELECT user_id, CONCAT_WS(' ', user_first_name, user_last_name) FROM users ORDER BY user_username";
 $users = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 

@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"new file",
+"All Projects",
 "Add File",
 "Date",
 "Edit File",
@@ -18,4 +18,5 @@
 "fileIdError"=>"An invalid file handle was passed to the function",
 "files list",
 "filesDelete"=>"Are you sure that you want to delete this file?",
+"new file",
 "select task",

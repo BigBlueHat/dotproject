@@ -65,7 +65,7 @@ foreach ($files as $row) {
 
 	if ($fp != $row["file_project"]) {
 		if (!$row["project_name"]) {
-			$row["project_name"] = 'All Projects';
+			$row["project_name"] = $AppUI->_('All Projects');
 			$row["project_color_identifier"] = 'f4efe3';
 		}
 		if ($showProject) {

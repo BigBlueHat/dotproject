@@ -17,7 +17,7 @@ $extra = array(
 
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
-$projects = arrayMerge( array( '0'=>'All' ), $projects );
+$projects = arrayMerge( array( '0'=>$AppUI->_('All') ), $projects );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, "$m.$a" );
