@@ -8,5 +8,29 @@
 	<li>Apply the upgrade script to the copied db.</li>
 	<li>Test out the new version of dotProject.  If all is well then promote this version to production and archive your old data (just in case).  If there is a problem then let up know.</li>
 </ol>
-<p><strong>Upgrading to Version 1.0</strong>
-<p>Version 1.0 incorporates many additions and modifications to existing database structure.&nbsp; You need to apply the script upgrade_022_to_100.sql to your MySQL database to upgrade from wither version 0.2.1 or 0.2.2.</p>
+
+<h3>Upgrading to Version 1.0</h3>
+Version 1.0 incorporates many additions and modifications to existing database structure.&nbsp; You need to apply the script upgrade_022_to_100.sql to your MySQL database to upgrade from wither version 0.2.1 or 0.2.2.<br />
+<br />
+<br />
+
+<h3>Upgrading DotProject 1.0 alpha 1 to DotProject 1.0 alpha 2</h3>
+The task_log, tasks and projects tables have all changed slightly from alpha 1 to alpha 2. You will need to upgrade your database to take advantage of these improvements.<br />
+<br />
+The example below assumes the following configuration. Please modify the example commands to match your local settings. These commands are executed from the commandline within the dotproject database directory.<br />
+<br />
+<strong>
+$dPconfig['dbname'] = "dp_1_0_alpha";<br />
+$dPconfig['dbuser'] = "dp_user";<br />
+$dPconfig['dbpass'] = "dp_pass";<br />
+</strong>
+<br />
+
+<strong>Backup Existing Database</strong><br />
+<emphasis>mysqldump -udp_user -pdp_pass dp_1_0_alpha > dp_1_0_alpha1_backup.sql</emphasis><br />
+<br />
+
+<strong>Upgrade the Database</strong><br />
+<emphasis>mysql -udp_user -pdp_pass dp_1_0_alpha < upgrade_100_alpha1_to_alpha2.sql</emphasis><br />
+<br />
+
