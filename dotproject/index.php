@@ -40,14 +40,6 @@ $a = isset( $_GET['a'] )? $_GET['a'] : 'index';
 
 setcookie("m", $m, time()+234234532523);
 
-// legacy cookie support
-$user_cookie = $AppUI->user_id;
-$thisuser_id = $AppUI->user_id;
-$thisuser_first_name = $AppUI->user_first_name;
-$thisuser_last_name = $AppUI->user_last_name;
-$thisuser_company = $AppUI->user_company;
-$thisuser_dept = $AppUI->user_department;
-
 require_once( "$root_dir/includes/main_functions.php" );
 require_once( "$root_dir/includes/permissions.php" );
 @include_once( "$root_dir/functions/" . $m . "_func.php" );
