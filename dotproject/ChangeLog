@@ -1,3 +1,65 @@
+2003-09-10 22:47  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+- fixed patch 778969 for mozilla compliant js color picker
+
+2003-09-10 22:30  (gregorerhardt)
+---------------------------------
+modules/calendar/index.php
+modules/calendar/week_view.php
+- fixed patch 783416 show tasks and events in first and last day
+
+2003-09-10 22:24  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php
+- Changed URL generation for loading calendar javascript files.
+
+2003-09-10 22:22  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+- removed orphaned %-symbol after statusBox
+
+2003-09-10 22:04  (gregorerhardt)
+---------------------------------
+modules/calendar/links_tasks.php
+- fixed patch 783437 show tasks in their ending day
+
+2003-09-10 21:34  (gregorerhardt)
+---------------------------------
+locales/en/forums.inc
+- added translation for last edited by
+
+2003-09-10 21:32  (gregorerhardt)
+---------------------------------
+db/dotproject_101.sql
+db/upgrade_100_to_101.sql
+modules/forums/forums.class.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+- forum_message: new field message_editor for last edited by feature
+
+2003-09-10 19:11  (gregorerhardt)
+---------------------------------
+modules/forums/post_message.php
+- admin now is able to submit edited forum message
+
+2003-09-10 06:48  (gregorerhardt)
+---------------------------------
+style/default/images/favicon.ico
+- changing favicon location: add favicon to images
+
+2003-09-10 06:47  (gregorerhardt)
+---------------------------------
+style/default/favicon.ico
+style/default/header.php
+style/default/login.php
+- changing favicon location to images
+
+2003-09-10 04:03  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-10 03:35  (ajdonnison)
 ---------------------------------
 modules/tasks/tasks.class.php
@@ -436,68 +498,6 @@ modules/tasks/tasks.php
 ---------------------------------
 docs/check.php
 - Added mysql version, apache version and check for root_dir validity.
-
-2003-07-16 18:47  (ajdonnison)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-07-16 17:53  (ajdonnison)
----------------------------------
-modules/admin/index.php
-- Fixed warning message when first name is blank for a user
-
-2003-07-15 22:30  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Reinstated missing "return to parent" link to make nav easier.
-- Fixed Mime header on generated email.
-
-2003-07-15 21:55  (ajdonnison)
----------------------------------
-ChangeLog
-- Added ticketsmith changes.
-
-2003-07-15 21:35  (ajdonnison)
----------------------------------
-db/dotproject_100.sql
-db/upgrade_022_to_100.sql
-- Changed cc column in tickets to be 255 characters to handle larger
-- cc lists.
-
-2003-07-15 21:32  (ajdonnison)
----------------------------------
-modules/ticketsmith/INSTALL
-modules/ticketsmith/README
-- Added more detail to allow users to install gateway.pl successfully
-
-2003-07-15 21:31  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Supports extenral passing of dotproject config, requiring less editing.
-
-2003-07-15 05:47  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Removed the debug output.
-
-2003-07-15 05:42  (ajdonnison)
----------------------------------
-modules/ticketsmith/attach.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/reattachticket.php
-modules/ticketsmith/view.php
-- Now supports file attachments on incoming emails.
-- Tickets can be reassigned to another parent if link_tickets_kludge is
-- set.
-
-2003-07-15 05:41  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Cleaned up MIME handling in emails.
 ...
 
 (This file has been wrapped)
