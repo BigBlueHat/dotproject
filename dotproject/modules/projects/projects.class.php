@@ -51,6 +51,22 @@ class CProject extends CDpObject {
 		return NULL; // object is ok
 	}
 
+        function load($oid=null , $strip = true) {
+                $obj = parent::load($oid, $strip);
+                if ($oid)
+                {
+                        $sql = "SELECT
+                                        SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete) / 
+                                        SUM(t1.task_duration*t1.task_duration_type) 
+                                        AS project_percent_complete
+                                FROM projects
+                                LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
+                                WHERE project_id = $oid";
+                        $obj->project_percent_complete = db_loadResult($sql);
+                        $this->project_percent_complete = db_loadResult($sql);
+                }
+                return $obj;
+        }
 // overload canDelete
 	function canDelete( &$msg, $oid=null ) {
 		// TODO: check if user permissions are considered when deleting a project
