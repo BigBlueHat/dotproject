@@ -1,4 +1,8 @@
 <!-- $Id$ -->
-<h2>View Company Screen</h2>
+<h2>View Company Page</h2>
 
-<p>This shows you the company information. </p>
+<p>This page shows you information about and related to the company.  An information box at the top shows you the main details of the company.</p>
+
+<p>Below the company details is a series of tab with information from other modules that is related to the Company.</p>
+
+<p>Use the breadcrumbs to navigate back to the index of Companies or to edit the Company you are viewing.  The "delete company" link will change depending on whether the Company has dependancies with any other module.  A tooltip will be displayed informing you of what those dependancies are if they exist.  You will not be able to delete a company if it has dependancies with other modules.</p>

@@ -1,4 +1,27 @@
 <!-- $Id$ -->
-<h2>Add/Edit Company Screen</h2>
+<h2>Add/Edit Company Page</h2>
 
-<p>This shows you the company form. </p>
+<p>This page allows you to edit information about a new or existing company.</p>
+
+<p>The fields are explained below:</p>
+
+<dl>
+	<dd>Name</dd>
+		<dt>A name for the company.</dt>
+	<dd>Type</dd>
+		<dt>This is a list of types you can assign to the company.</dt>
+	<dd></dd>
+		<dt></dt>
+	<dd></dd>
+		<dt></dt>
+	<dd>Description</dd>
+		<dt>A free text area for you to add any extra information about the company.</dt>
+</dl>
+
+<p>Use the breadcrumbs to back to the Company View page or the Companies Index.</p>
+
+<p>Related Information</p>
+
+<p>
+<a href="?m=help&a=system.sysvals">System Values</a>
+</p>
