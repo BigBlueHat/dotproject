@@ -36,7 +36,7 @@ foreach ($projects as $row) {
 			. '</font>';
 		$s .= $CR . '</td>';
 		$s .= $CR . '<td width="100%">';
-		$s .= $CT . '<a href="?m=projects&a=view&project_id=' . $row["project_id"] . '">' . $row["project_name"] . '</a>';
+		$s .= $CT . '<a href="?m=projects&a=view&project_id=' . $row["project_id"] . '" title="' . $row["project_description"] . '">' . $row["project_name"] . '</a>';
 		$s .= $CR . '</td>';
 		$s .= $CR . '<td nowrap="nowrap">' . $row["user_username"] . '</td>';
 		$s .= $CR . '<td align="center" nowrap="nowrap">';

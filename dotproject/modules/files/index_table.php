@@ -90,7 +90,7 @@ if(count($files)) {
 	?>
 	</td>
 	<td nowrap="nowrap">
-		<?php echo "<a href=\"./fileviewer.php?file_id={$row['file_id']}\">{$row['file_name']}</a>"; ?>
+		<?php echo "<a href=\"./fileviewer.php?file_id={$row['file_id']}\" title=\"{$row['file_description']}\">{$row['file_name']}</a>"; ?>
 	</td>
 	<td width="5%" nowrap="nowrap" align="center"><?php echo $row["file_version"];?></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>

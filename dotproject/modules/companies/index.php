@@ -16,7 +16,7 @@ $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // retrieve list of records
 $sql = "
-SELECT company_id, company_name, company_type,
+SELECT company_id, company_name, company_type, company_description,
 	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
 	user_first_name, user_last_name
 FROM permissions, companies
@@ -68,7 +68,7 @@ $s = '';
 foreach ($rows as $row) {
 	$s .= $CR . '<tr>';
 	$s .= $CR . '<td>&nbsp;</td>';
-	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '">' . $row["company_name"] .'</a></td>';
+	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '" title="'.$row['company_description'].'">' . $row["company_name"] .'</a></td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $row["countp"] . '</td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . @$row["inactive"] . '</td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $types[@$row["company_type"]] . '</td>';
