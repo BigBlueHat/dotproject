@@ -99,7 +99,7 @@ $urow = mysql_fetch_array( $urc, MYSQL_ASSOC );
 					.'<br>'.$urow["user_city"]
 					.'&nbsp;&nbsp;'.$urow["user_state"]
 					.'&nbsp;&nbsp;'.$urow["user_zip"]
-					.'<br>'.$urow["user_coutnry"]
+					.'<br>'.$urow["user_country"]
 					;
 			?></td>
 		</tr>
