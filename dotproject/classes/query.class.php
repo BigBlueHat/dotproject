@@ -183,7 +183,7 @@ class DBQuery {
 			$this->addMap('value_list', $values[$i], $fields[$i]);
 		}
 		else
-    	$this->addMap('value_list', $value, $field);
+    	$this->addMap('value_list', $this->quote($value), $field);
     $this->type = 'insert';
   }
 
@@ -463,7 +463,7 @@ class DBQuery {
       if ($valuelist)
 	$valuelist .= ",";
       $fieldlist .= $field;
-      $valuelist .= $this->quote($value);
+      $valuelist .= $value;
     }
     $q .= "($fieldlist) values ($valuelist)";
     return $q;
