@@ -71,7 +71,7 @@ class CDate
 	 * 2001-08-01T1:30:59 => error
 	 *	timezone code is yet ignored ( not handled )
 	 */
-	function fromDatetime( $datetime )
+	function fromDatetime( $datetime, $format='' )
 	{
 		if( ! preg_match( "/^(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):?(\d{2}):?(\d{2})(.?)$/", $datetime, $a ) ) {
 			return NULL;
@@ -79,6 +79,9 @@ class CDate
 		$obj = new CDate();
 		$obj->setDate( $a[1], $a[2], $a[3] );
 		$obj->setTime( $a[4],$a[5], $a[6] );
+		if ($format) {
+			$obj->setFormat( $format );
+		}
 		return $obj;
 	}
 
