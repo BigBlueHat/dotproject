@@ -56,7 +56,7 @@ $crumbs["?m=tasks"] = "tasks list";
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0" width="44" height="38"></td>
 	<td nowrap width="100%">
-		<span class="title">My Tasks To Do</span>
+		<h1>*</h1>
 	</td>
 </tr>
 </table>

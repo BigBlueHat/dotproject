@@ -107,7 +107,7 @@ foreach ($events as $row) {
 <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickCompany">
 <tr>
 	<td><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42"></td>
-	<td nowrap><span class="title">Monthly Calendar</span></td>
+	<td nowrap><h1>*</h1></td>
 	<td align="right" width="100%">
 		Company:
 <?php

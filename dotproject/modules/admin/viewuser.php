@@ -39,7 +39,7 @@ if (!$denyEdit) {
 <table border="0" cellpadding="1" cellspacing="1" width="98%">
 <tr>
 	<td><img src="./images/icons/admin.gif" alt="" border="0"></td>
-	<td width="100%" nowrap="nowrap"><span class="title"><?php echo $AppUI->_('View User');?></span></td>
+	<td width="100%" nowrap="nowrap"><h1>*</h1></td>
 	<td nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_USER_VIEW' );?></td>
 </tr>

@@ -206,7 +206,7 @@ function delIt() {
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
 	<td align="left" nowrap="nowrap" width="100%">
-		<span class="title"><?php echo $AppUI->_( $task_id ? 'Edit Task' : 'New Task' );?></span>
+		<h1>*</h1>
 	</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_TASK_VIEW' );?></td>
 </tr>

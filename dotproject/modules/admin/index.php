@@ -42,7 +42,7 @@ function delMe( x, y ) {
 <table cellpadding="0" cellspacing="1" border="0" width="98%">
 <tr>
 	<td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
-	<td nowrap><span class="title"><?php echo $AppUI->_('User Management');?></span></td>
+	<td nowrap><h1>*</h1></td>
 
 	<td align="right">
 		<table cellpadding="2" cellspacing="1" border="0">

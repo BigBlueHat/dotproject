@@ -61,7 +61,7 @@ $rc= db_exec( $sql );
 <table width="98%" cellspacing="1" cellpadding="0" border="0">
 <tr>
 	<td><img src="./images/icons/communicate.gif" alt="" border="0" width=42 height=42></td>
-	<td nowrap width="100%"><span class="title"><?php echo $AppUI->_( 'Project' ).' '.$AppUI->_( 'Forums' );?></span></td>
+	<td nowrap width="100%"><h1>*</h1></td>
 <form name="forum_filter" method=GET action="./index.php">
 <input type=hidden name=m value=forums>
 	<td nowrap>

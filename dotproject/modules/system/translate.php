@@ -78,7 +78,7 @@ $crumbs["?m=system"] = "System Admin";
 <form action="?m=system&a=translate" method="post" name="modlang">
 <tr>
 	<td><img src="./images/icons/world.gif" alt="" border="0"></td>
-	<td nowrap valign="top"><span class="title"><?php echo $AppUI->_( 'Translation Management' );?></span></td>
+	<td nowrap valign="top"><h1>*</h1></td>
 	<td align="right" width="100%" nowrap><?php echo $AppUI->_( 'Module' );?>:</span></td>
 	<td><?php
 	echo arraySelect( $modules, 'module', 'size="1" class="text" onchange="document.modlang.submit();"', $module );

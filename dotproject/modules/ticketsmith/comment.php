@@ -1,7 +1,7 @@
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
 	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width=42 height=42></td>
-		<TD nowrap><span class="title">Trouble Ticket Management</span></td>
+		<TD nowrap><h1>*</h1></td>
 		<TD valign="top" align="right" width="100%">&nbsp;</td>
 	</tr>
 </TABLE>

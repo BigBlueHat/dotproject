@@ -55,7 +55,7 @@ if (!$denyEdit) {
 <table width="98%" border="0" cellpadding="1" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
-	<td nowrap><span class="title"><?php echo $AppUI->_('Manage Project');?></span></td>
+	<td nowrap><h1>*</h1></td>
 	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 <form action="?m=tasks&a=addedit&project_id=<?php echo $project_id;?>" method="post">
 	<td align="right" width="100%">

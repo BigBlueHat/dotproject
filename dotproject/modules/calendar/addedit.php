@@ -122,7 +122,7 @@ function setCalendar( uts, fdate ) {
 <tr>
 	<td><img src="./images/icons/calendar.gif" alt="" border="0"></td>
 	<td nowrap>
-		<span class="title"><?php echo $AppUI->_(($event_id > 0) ? "Edit Event" : "New Event" ); ?></span>
+		<h1>*</h1>
 	</td>
 	<td align="right" width="100%">&nbsp;</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_EVENT_EDIT' );?></td>

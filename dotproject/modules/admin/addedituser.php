@@ -102,7 +102,7 @@ function setDept( key, val ) {
 <tr>
 	<td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap>
-		<span class="title"><?php echo $user["user_id"] ? $AppUI->_( 'Edit User' ) : $AppUI->_( 'Add User' );?></span>
+		<h1>*</h1>
 	</td>
 	<td valign="top" align="right" width="100%">&nbsp;</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_USER_EDIT' );?></td>

@@ -210,7 +210,7 @@ function changeUser(){
 <table border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
-	<td nowrap><span class="title">Permissions: <?php echo @$uname['user_username'];?></span></td>
+	<td nowrap><h1>*</h1></td>
 </tr>
 </table>
 

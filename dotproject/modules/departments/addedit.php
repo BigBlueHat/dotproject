@@ -79,7 +79,7 @@ function delIt() {
 <table width="98%" border=0 cellpadding="0" cellspacing=1>
 <tr>
 	<td><img src="./images/icons/users.gif" alt="" border="0"></td>
-		<td nowrap><span class="title"><?php echo $dept_id ? $AppUI->_( 'Edit Department' ) : $AppUI->_( 'Add Department' );?></span></td>
+		<td nowrap><h1>*</h1></td>
 		<td align="right" width="100%">&nbsp;</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_DEPT_EDIT' );?></td>
 </tr>

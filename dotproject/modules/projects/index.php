@@ -77,7 +77,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
-	<td nowrap><span class="title"><?php echo $AppUI->_('Project Management');?></span></td>
+	<td nowrap><h1>*</h1></td>
 <form action="?m=projects" method="post" name="pickCompany">
 	<td align="right" width="100%">
 		<?php echo $AppUI->_('Company');?>:
