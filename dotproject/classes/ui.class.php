@@ -654,8 +654,8 @@ class CTabBox_core {
 * @param string File to include
 * @param The display title/name of the tab
 */
-	function add( $file, $title ) {
-		$this->tabs[] = array( $file, $title );
+	function add( $file, $title, $param='' ) {
+		$this->tabs[] = array( $file, $title, $param );
 	}
 /**
 * Displays the tabbed box
@@ -689,7 +689,7 @@ class CTabBox_core {
 			foreach ($this->tabs as $v) {
 				echo '<tr><td><strong>'.$AppUI->_($v[1]).'</strong></td></tr>';
 				echo '<tr><td>';
-				include $this->baseInc.$v[0].".php";
+				include $this->baseInc.$v[0].".php".$v[2];
 				echo '</td></tr>';
 			}
 			echo '</table>';
