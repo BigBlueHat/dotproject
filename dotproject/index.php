@@ -1,6 +1,6 @@
 <?php /* $Id$ */
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
-error_reporting( E_ALL );
+error_reporting( E_ALL );	// this only for development testing
 
 // required includes for start-up
 $dPconfig = array();
@@ -12,18 +12,19 @@ session_start();
 session_register( 'AppUI' );
 
 // write the HTML headers
-header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                                                      // always modified
-header ("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
-header ("Pragma: no-cache");                          // HTTP/1.0
+header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
+header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modified
+header ("Cache-Control: no-cache, must-revalidate");	// HTTP/1.1
+header ("Pragma: no-cache");	// HTTP/1.0
 
+require_once( "./includes/config.php" );
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
-    require_once( "./includes/config.php" );
-    $_SESSION['AppUI'] = new CAppUI( $dPconfig );
+    $_SESSION['AppUI'] = new CAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
+$AppUI->setConfig( $dPconfig );
+$AppUI->checkStyle();
 
 // load the db handler
 require_once( "./includes/db_connect.php" );
@@ -34,19 +35,16 @@ if ($AppUI->doLogin()) {
     $AppUI->loadPrefs( 0 );
 }
 
-// load some locale settings
-@include_once( "./locales/$AppUI->user_locale/locales.php" );
-@include_once( "./locales/core.php" );
-setlocale( LC_TIME, $AppUI->user_locale );
-
-// output the character set header
-if (isset( $locale_char_set )) {
-    header("Content-type: text/html;charset=$locale_char_set");
-}
-
 // check if the user is trying to log in
 if (isset($_POST['login'])) {
-    require( './logincheck.php' );
+	$username = isset($_POST['username']) ? $_POST['username'] : '';
+	$password = isset($_POST['password']) ? $_POST['password'] : '';
+	$ok = $AppUI->login( $username, $password );
+	if (!$ok) {
+		@include_once( "./locales/core.php" );
+		$AppUI->setMsg( 'Login Failed' );
+		$AppUI->redirect();
+	}
 }
 
 // supported since PHP 4.2
@@ -55,16 +53,31 @@ if (isset($_POST['login'])) {
 // set the default ui style
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
 
+// clear out main url parameters
+$m = '';
+$a = '';
+$u = '';
+
 // check if we are logged in
 if ($AppUI->doLogin()) {
-    // nope, destroy the current session and output login page
-    require "./style/$uistyle/login.php";
-    session_unset();
-    session_destroy();
-    exit;
+	// load basic locale settings
+	@include_once( "./locales/$AppUI->user_locale/locales.php" );
+	@include_once( "./locales/core.php" );
+	setlocale( LC_TIME, $AppUI->user_locale );
+
+	// output the character set header
+	if (isset( $locale_char_set )) {
+		 header("Content-type: text/html;charset=$locale_char_set");
+	}
+
+	require "./style/$uistyle/login.php";
+	// destroy the current session and output login page
+	session_unset();
+	session_destroy();
+	exit;
 }
 
-// see if a project id has been passed in the url;
+// see if a project id has been passed in the url
 if (isset( $_REQUEST['project_id'] )) {
     $AppUI->setProject( $_REQUEST['project_id'] );
 }
@@ -94,6 +107,16 @@ $canDelete = $canEdit;
 	$denyRead = !$canRead;
 	$denyEdit = !$canEdit;
 
+// load module based locale settings
+@include_once( "./locales/$AppUI->user_locale/locales.php" );
+@include_once( "./locales/core.php" );
+setlocale( LC_TIME, $AppUI->user_locale );
+
+// output the character set header
+if (isset( $locale_char_set )) {
+	 header("Content-type: text/html;charset=$locale_char_set");
+}
+
 // bounce the user if they don't have at least read access
 // however, the public module is accessible by anyone
 if (!$canRead && $m != 'public') {
@@ -103,7 +126,6 @@ if (!$canRead && $m != 'public') {
 @include_once( "./classdefs/$m.php" );
 @include_once( "./modules/$m/$m.class.php" );
 @include_once( "./modules/$m/" . ($u ? "$u/" : "") . "$u.class.php" );
-// locales setup
 
 // do some db work if dosql is set
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
@@ -111,7 +133,7 @@ if (isset( $_REQUEST["dosql"]) ) {
     require("./dosql/" . $_REQUEST["dosql"] . ".php");
 }
 
-// start outputting proper
+// start output proper
 include "./style/$uistyle/overrides.php";
 require "./style/$uistyle/header.php";
 require "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
