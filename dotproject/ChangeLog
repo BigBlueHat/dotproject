@@ -1,3 +1,24 @@
+2003-11-13 16:41  (gregorerhardt)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+- fixed bug allowingusers to change the passwords for other users. corrected links if userId is invalid.
+
+2003-11-13 13:42  (kripper)
+---------------------------------
+modules/files/index_table.php
+- Added file description column to file list
+
+2003-11-13 09:34  (kripper)
+---------------------------------
+modules/help/en/tasks.addedit.hlp
+- Added brief 'dynamic tasks' definition.
+
+2003-11-13 06:43  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-12 21:47  (jcgonz)
 ---------------------------------
 modules/companies/vw_companies.php
@@ -477,27 +498,6 @@ modules/projects/addedit.php
 ---------------------------------
 modules/calendar/index.php
 modules/calendar/week_view.php
-- fixed patch 783416 show tasks and events in first and last day
-
-2003-09-10 22:24  (ajdonnison)
----------------------------------
-modules/projects/addedit.php
-- Changed URL generation for loading calendar javascript files.
-
-2003-09-10 22:22  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-- removed orphaned %-symbol after statusBox
-
-2003-09-10 22:04  (gregorerhardt)
----------------------------------
-modules/calendar/links_tasks.php
-- fixed patch 783437 show tasks in their ending day
-
-2003-09-10 21:34  (gregorerhardt)
----------------------------------
-locales/en/forums.inc
-- added translation for last edited by
 ...
 
 (This file has been wrapped)
