@@ -8,7 +8,7 @@
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
        	<title><?php echo $AppUI->cfg['company_name'];?> :: dotProject Login</title>
 	<meta http-equiv="Pragma" content="no-cache" />
-	<meta name="Version" content="<?php echo @$AppUI->getConfig( 'version' );?>" />
+	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
@@ -36,9 +36,9 @@
 	<td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
 </tr>
 </table>
-<?php if (@$AppUI->getConfig( 'version' )) { ?>
+<?php if (@$AppUI->getVersion()) { ?>
 <div align="center">
-	<span style="font-size:7pt">Version <?php echo @$AppUI->getConfig( 'version' );?></span>
+	<span style="font-size:7pt">Version <?php echo @$AppUI->getVersion();?></span>
 </div>
 <?php } ?>
 </form>

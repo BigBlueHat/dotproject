@@ -6,7 +6,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta name="Description" content="dotProject Default Style" />
-	<meta name="Version" content="<?php echo @$AppUI->getConfig( 'version' );?>" />
+	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<title><?php echo @$AppUI->getConfig( 'page_title' );?></title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
@@ -18,7 +18,9 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
 	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
-	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php echo $AppUI->cfg['page_title'];?></strong></th>
+	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php echo $AppUI->cfg['page_title'];
+	echo "&nbsp;";
+	echo $AppUI->getVersion();?></strong></th>
 	<th align="right" width='50'><a href='http://www.dotproject.net/'><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border=0></a></th>
 	</tr></table></td>
 </tr>

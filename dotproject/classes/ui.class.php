@@ -62,6 +62,18 @@ class CAppUI {
 /** @var array Configuration variable array*/
 	var $cfg=null;
 
+/** @var integer Version major */
+	var $version_major = null;
+
+/** @var integer Version minor */
+	var $version_minor = null;
+
+/** @var integer Version patch level */
+	var $version_patch = null;
+
+/** @var string Version string */
+	var $version_string = null;
+
 /**
 * CAppUI Constructor
 */
@@ -141,6 +153,25 @@ class CAppUI {
 		} else {
 			return null;
 		}
+	}
+
+/**
+* Determines the version.
+* @return String value indicating the current dotproject version
+*/
+	function getVersion() {
+		if ( ! isset($this->version_major)) {
+			include_once $this->cfg['root_dir'] . '/includes/version.php';
+			$this->version_major = $dp_version_major;
+			$this->version_minor = $dp_version_minor;
+			$this->version_patch = $dp_version_patch;
+			$this->version_string = $this->version_major . "." . $this->version_minor;
+			if (isset($this->version_patch))
+			  $this->version_string .= "." . $this->version_patch;
+			if (isset($dp_version_prepatch))
+			  $this->version_string .= "-" . $dp_version_prepatch;
+		}
+		return $this->version_string;
 	}
 
 /**
