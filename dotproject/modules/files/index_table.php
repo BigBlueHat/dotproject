@@ -70,7 +70,7 @@ $q2 = new DBQuery;
 $q2->addQuery(array ('f.*',
 	'max(f.file_id) as  latest_id',
 	'count(f.file_version) as file_versions',
-	'round(max(f.file_version),2) as file_lastversion',
+	'round(max(f.file_version),3) as file_lastversion',
 	'project_name',
 	'project_color_identifier',
 	'project_active',
@@ -234,7 +234,7 @@ foreach ($files as $file_row) {
                                 $hidden_table .= '
         <tr>
                 <td nowrap="nowrap" width="20">&nbsp;';
-                                if ($canEdit)
+                                if ($canEdit && $config['show_versions_edit'])
                                 {
                                         $hidden_table .= '
                 <a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">' . dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) . "\n</a>";

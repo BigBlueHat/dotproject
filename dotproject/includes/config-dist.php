@@ -180,6 +180,19 @@ $dPconfig['default_view_tab'] = '1';
 */
 $dPconfig['index_max_file_size'] = -1;
 
+/** 
+ * Keep file attributes during CI operation
+ * If this is true, you won't be able to change file type, 
+ * project or task of a file during CI
+*/
+$dPconfig['files']['ci_preserve_attr'] = true;
+
+/**
+ * Whether to show an edit icon in the html table with the previuos 
+ * file versions
+*/
+$dPconfig['files']['show_versions_edit'] = false;
+
 /* Session Management.  This extends the session handling of PHP to
  * beyond browser-based sessions and stores the session information in the
  * database.  This allows for prolonged sessions with lower overheads.

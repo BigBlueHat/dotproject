@@ -1,7 +1,8 @@
 <?php /* FILES $Id$ */
 $file_id = intval( dPgetParam( $_GET, 'file_id', 0 ) );
 $ci = dPgetParam($_GET, 'ci', 0) == 1 ? true : false;
- 
+$config = dPgetConfig( 'files' ); 
+$preserve = $config['ci_preserve_attr'];
 
 
 // check permissions for this record
@@ -162,45 +163,8 @@ function setTask( key, val ) {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Uploaded By' );?>:</td>
 			<td align="left" class="hilite"><?php echo $obj->getOwner();?></td>
 		</tr>
-	<?php } ?>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Version' );?>:</td>
-			<td align="left">
-                        <?php if ($ci || ($canAdmin && $obj->file_checkout == 'final') ) { ?>
-				<input type="hidden" name="file_checkout" value="" />
-				<input type="hidden" name="file_co_reason" value="" />
-				<?php } if ($ci) { ?>
-				<input type="hidden" name="file_version" value="<?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version+0.1 : "1";?>" />
-                                <?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version+0.1 : "1";?>
-                        <?php } else { ?>
-				<input type="text" name="file_version" value="<?php echo strlen( $obj->file_version ) > 0 ? $obj->file_version : "1";?>" maxlength="10" size="5" />
-                        <?php } ?>
-			</td>
-		</tr>
-                <tr>
-                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_('Category');?>:</td>
-                        <td align="left">
-                                <?php echo arraySelect(dPgetSysVal("FileType"), 'file_category', '', $obj->file_category); ?>
-                        <td>
-
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Project' );?>:</td>
-			<td align="left">
-			<?php
-				echo arraySelect( $projects, 'file_project', 'size="1" class="text" style="width:270px"', $file_project  );
-			?>
-			</td>
-		</tr>
-
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Task' );?>:</td>
-			<td align="left" colspan="2" valign="top">
-				<input type="hidden" name="file_task" value="<?php echo $file_task;?>" />
-				<input type="text" class="text" name="task_name" value="<?php echo $task_name;?>" size="40" disabled />
-				<input type="button" class="button" value="<?php echo $AppUI->_('select task');?>..." onclick="popTask()" />
-			</td>
-		</tr>
-
+	<?php } 
+		echo file_show_attr();?>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Description' );?>:</td>
 			<td align="left">
@@ -237,3 +201,102 @@ function setTask( key, val ) {
 </tr>
 </form>
 </table>
+
+<?php 
+function file_show_attr()
+{
+	global $AppUI, $obj, $ci, $canAdmin, $projects,
+	$file_project, $file_task, $task_name, $preserve;
+
+
+if ($ci) 
+{
+  $str_out = "<tr>" .
+             '<td align="right" nowrap="nowrap">' .
+             $AppUI->_( 'Minor Revision' ) . 
+             "</td>" .
+             "<td>" .
+             '<input type="Radio" name="revision_type" value="minor" checked>' .
+             "</td>" .
+             '<tr>' .
+             '<td align="right" nowrap="nowrap">' .
+             $AppUI->_( 'Major Revision' ) . 
+             "</td>" .
+             "<td>" .
+             '<input type="Radio" name="revision_type" value="major" >' .
+             "</td>";
+}
+else
+{
+  $str_out = "<tr>" .
+             '<td align="right" nowrap="nowrap">' .
+             $AppUI->_( 'Version' ) . ":</td>";
+}
+
+$str_out .= '<td align="left">';
+
+if ($ci || ($canAdmin && $obj->file_checkout == 'final') ) 
+{
+  $str_out .= '<input type="hidden" name="file_checkout" value="" />' .
+				      '<input type="hidden" name="file_co_reason" value="" />';
+}
+
+if ($ci ) 
+{
+  $the_value = (strlen( $obj->file_version ) > 0 ? $obj->file_version+0.001 : "1");
+  $str_out .= '<input type="hidden" name="file_version" value="' . $the_value . '" />';
+}
+else
+{
+  $the_value = (strlen( $obj->file_version ) > 0 ? $obj->file_version : "1");
+  $str_out .= '<input type="text" name="file_version" maxlength="10" size="5" ' .
+              'value="' . $the_value . '" />';
+}
+
+$str_out .= '</td>';
+          
+
+$select_disabled=' ';  
+$onclick_task=' onclick="popTask()" ';
+if ( $ci && $preserve)
+{
+  $select_disabled=' disabled ';  
+  $onclick_task=' ';
+}
+
+
+// Category
+$str_out .= "<tr>" .
+           '<td align="right" nowrap="nowrap">' . $AppUI->_('Category') . ':</td>';
+$str_out .= '<td align="left">' .
+            arraySelect(dPgetSysVal("FileType"), 'file_category', 
+                        '' . $select_disabled, $obj->file_category) . '<td>';
+                        
+                        
+// ---------------------------------------------------------------------------------
+
+// Project
+$str_out .= "<tr>" .
+   			    '<td align="right" nowrap="nowrap">' . $AppUI->_( 'Project' ) . ':</td>';
+$str_out .= '<td align="left">' .
+            arraySelect( $projects, 'file_project', 
+                         'size="1" class="text" style="width:270px"' . $select_disabled,
+                          $file_project  ) . 
+         		'</td></tr>';
+
+// ---------------------------------------------------------------------------------
+
+// Task 
+$str_out .= "<tr>" .
+            '<td align="right" nowrap="nowrap">' . $AppUI->_( 'Task' ) . ':</td>'.
+			      '<td align="left" colspan="2" valign="top">' .
+				    '<input type="hidden" name="file_task" value="' .  $file_task . '" />' .
+				    '<input type="text" class="text" name="task_name" value="' . $task_name. '" size="40" disabled />' .
+				    '<input type="button" class="button" value="' . $AppUI->_('select task') . '..."' .
+				     $onclick_task . '/>' .	'</td></tr>';
+
+
+return ($str_out);
+}
+
+?>

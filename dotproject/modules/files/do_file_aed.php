@@ -17,6 +17,15 @@ if ($file_id) {
 }
 $obj->file_category = intval( dPgetParam( $_POST, 'file_category', 0 ) );
 
+$version = dPgetParam( $_POST, 'file_version', 0 );
+$revision_type   = dPgetParam( $_POST, 'revision_type', 0 );
+
+if ( strcasecmp('major', $revision_type) == 0 )
+{
+  $major_num = strtok($version, ".") + 1;
+  $_POST['file_version']= $major_num;
+}
+
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
