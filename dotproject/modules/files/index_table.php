@@ -29,7 +29,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 		echo "<td align='center' width='70%'>";
 		echo "$xpg_totalrecs " . $AppUI->_('File(s)') . " ($xpg_total_pages " . $AppUI->_('Page(s)') . ")";
 		echo "</td>";
-	
+
 		// right buttoms
 		if ($xpg_next_page <= $xpg_total_pages) {
 			echo "<td align='right' width='15%'>";
@@ -71,7 +71,9 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 		echo "</td></tr>";
 	} else { // or we dont have any files..
 		echo "<td align='center'>";
+		if ($xpg_next_page > $xpg_total_pages) {
 		echo $xpg_sqlrecs . " " . "Files" . " ";
+		}
 		echo "</td></tr>";
 	} 
 	echo "</table>";
@@ -216,7 +218,7 @@ foreach ($files as $row) {
 		}
 		if ($showProject) {
 			$s = '<tr>';
-			$s .= '<td colspan="8" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
+			$s .= '<td colspan="9" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
 			$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
 			. $row["project_name"] . '</font>';
 			$s .= '</td></tr>';
