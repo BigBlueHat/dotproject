@@ -1,7 +1,9 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Clients",
 "Add Company",
+"All Companies",
 "Budget",
 "Company Name",
 "Company Owner",
@@ -9,6 +11,7 @@
 "Invalid Company ID",
 "Started",
 "Status",
+"Suppliers",
 "View Company",
 "cdepartment::store-check failed",
 "companies list",
