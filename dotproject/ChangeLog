@@ -1,7 +1,148 @@
-2004-11-03 22:20  (gregorerhardt)
+2004-11-17 23:33  (gregorerhardt)
 ---------------------------------
-modules/admin/viewuser.php
-- 0000229: viewuser info transformed to contacts table
+lib/PEAR/Date.php
+- #234: NOW REALLY deleted extra line - headers already sent error
+
+2004-11-17 23:29  (gregorerhardt)
+---------------------------------
+modules/system/system.class.php
+- #306: deleted empty line at file end
+
+2004-11-17 23:24  (gregorerhardt)
+---------------------------------
+modules/projects/view.php
+- #327: ensure that only active tasks are listed in tab 0
+
+2004-11-17 23:05  (gregorerhardt)
+---------------------------------
+modules/public/selector.php
+- #336: added the parameters for the files case
+
+2004-11-17 21:03  (gregorerhardt)
+---------------------------------
+modules/projects/projects.class.php
+- #334: completed deletion process by rm contacts and departments info of project
+
+2004-11-17 20:49  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr.php
+- corrected link to the permissions tab 1
+
+2004-11-17 20:30  (gregorerhardt)
+---------------------------------
+lib/PEAR/Date.php
+- #234: deleted extra line - headers already sent error
+
+2004-11-12 15:43  (cyberhorse)
+---------------------------------
+modules/projects/reports/tasklogs.php
+- Fixed reporting of all projects.
+
+2004-11-12 03:42  (jcgonz)
+---------------------------------
+db/upgrade_latest.sql
+- There was a little error at a SQL statement
+
+2004-11-11 20:19  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- overload load function, update dynamic task on load
+
+2004-11-11 15:04  (cyberhorse)
+---------------------------------
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+- Fix users not showing in user admin because of permissions
+- Fix search and alphabetical listing in user admin
+- (both errors from relying on old permissions system)
+
+2004-11-11 01:14  (cyberhorse)
+---------------------------------
+locales/en/common.inc
+- removed extra slash from english translation on login screen.
+
+2004-11-11 00:44  (cyberhorse)
+---------------------------------
+modules/contacts/view.php
+- added an edit crumb to the view only option in the contacts (only if permissions allow).
+
+2004-11-10 21:29  (gregorerhardt)
+---------------------------------
+modules/ticketsmith/common.inc.php
+- 0000199: stripslashes of ticket output
+
+2004-11-10 20:48  (gregorerhardt)
+---------------------------------
+fileviewer.php
+- 0000238: safed filename against spaces and strange characters
+
+2004-11-10 20:18  (gregorerhardt)
+---------------------------------
+modules/tasks/index.php
+- made search field form safe
+
+2004-11-10 19:58  (gregorerhardt)
+---------------------------------
+ChangeLog
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/links_events.php
+modules/projects/reports/overdue.php
+modules/projects/reports/upcoming.php
+modules/ticketsmith/pdf.php
+- reimplementation: hide events from nonworking days, fixed cotnac typos
+
+2004-11-10 07:42  (ajdonnison)
+---------------------------------
+modules/tasks/gantt.php
+- Fixed name clash for showtask/findchild functions.
+
+2004-11-10 07:23  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Bug 134 - budget fields when saved strips off digits after the decimal.
+
+2004-11-09 03:35  (ajdonnison)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_proposed.php
+- Fixed display of tabbed data in flat mode.
+
+2004-11-09 02:18  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Added function to determine tabbed status.
+
+2004-11-09 01:18  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Fixed broken path for inclusion of ADODB classes;
+
+2004-11-09 00:59  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+- Tidy up of functions and code to ensure this can be used in flat view
+- mode as well as tabbed mode.
+
+2004-11-09 00:54  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+style/default/overrides.php
+- Added global identifiers to track current tab id and untranslated tab name.
+- Used by flat view to identify tab state where it is otherwise impossible.
+
+2004-11-09 00:50  (ajdonnison)
+---------------------------------
+modules/projects/index.php
+- Removed name clash with tasks module functions.
+
+2004-11-09 00:49  (ajdonnison)
+---------------------------------
+classes/dp.class.php
+- Fix for potential problem with project listings not generating a valid
+- SQL under some permission circumstances.
 
 2004-11-03 20:04  (gregorerhardt)
 ---------------------------------
