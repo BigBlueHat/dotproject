@@ -116,7 +116,7 @@ if (!$min_view) {
 <?php 	
 }
 ?>
-<td align=right valign=bottom><?php echo "<a href='javascript:showThisMonth()'>show this month</a> : <a href='javascript:showFullProject()'>show full project</a><br>"; ?></td>	
+<td align=right valign=bottom><?php echo "<a href='javascript:showThisMonth()'>".$AppUI->_('show this month')."</a> : <a href='javascript:showFullProject()'>".$AppUI->_('show full project')."</a><br>"; ?></td>	
 <td align=right width=0>	
   <form name="ganttdate" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
   <input type=hidden name=display_option value=<?php echo $display_option ?>>

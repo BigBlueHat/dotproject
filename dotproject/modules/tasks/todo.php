@@ -53,9 +53,9 @@ $titleBlock = new CTitleBlock( 'My Tasks To Do', 'tasks.gif', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 $titleBlock->addCrumbRight(
 	'<input type=checkbox name="showArchivedProjects" ' . (@$_POST["showArchivedProjects"] ? "checked" : "")
-	. 'onclick=\'submit()\'> show archived projects'
+	. 'onclick=\'submit()\'> '.$AppUI->_('show archived projects')
 	. '<input type=checkbox name="show_low_tasks" ' . (@$_POST["show_low_tasks"] ? "checked" : "")
-	. 'onclick=\'submit()\'> show low priority tasks', '',
+	. 'onclick=\'submit()\'> '.$AppUI->_('show low priority tasks'), '',
 	'<form name="form_buttons" method="post">', '</form>' );
 $titleBlock->show();
 ?>
@@ -164,7 +164,7 @@ foreach ($tasks as $a) {
 <tr>
 	<td colspan="6" align="right" height="30"><?php echo $AppUI->_('update selected tasks priority');?></td>
 	<td colspan="2" align="center">
-		<input type="submit" class="button" value="update">
+		<input type="submit" class="button" value="<? echo $AppUI->_('update');?>">
 	</td>
 	<td colspan="2" align="center">
 <?php echo arraySelect( $priorities, 'task_priority', 'size="1" class="text"', '0' ); ?>

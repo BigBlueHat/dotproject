@@ -262,7 +262,7 @@ function submitIt() {
 </tr>
 <tr>
 	<td>
-		<input class=button type="button" name="<?php echo $AppUI->_('cancel');?>" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}" />
+		<input class=button type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}" />
 	</td>
 	<td align="right">
 		<input class=button type="Button" name="btnFuseAction" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt();" />

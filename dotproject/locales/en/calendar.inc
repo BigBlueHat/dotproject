@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"new event",
 "Day View",
 "Edit Event",
 "End Date",

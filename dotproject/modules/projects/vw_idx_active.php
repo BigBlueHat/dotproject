@@ -5,7 +5,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 <table width="100%" border="0" cellpadding="3" cellspacing="1" class="tbl">
 <tr>
-	<td align="right" width="65" nowrap="nowrap">&nbsp;sort by:&nbsp;</td>
+	<td align="right" width="65" nowrap="nowrap">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
 	<th nowrap="nowrap">
 		<a href="?m=projects&orderby=project_name" class="hdr"><?php echo $AppUI->_('Name');?></a>
 	</th>
@@ -17,7 +17,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 		<a href="?m=projects&orderby=my_tasks%20desc" class="hdr">(<?php echo $AppUI->_('My');?>)</a>
 	</th>
 	<th nowrap="nowrap">
-		<a href="?m=projects&orderby=project_end_date" class="hdr">Due Date:</a>
+		<a href="?m=projects&orderby=project_end_date" class="hdr"><?php echo $AppUI->_('Due Date');?>:</a>
 	</th>
 </tr>
 
