@@ -180,7 +180,7 @@ function chPriority(user_id) {
    		   	  ";
 
    		   	  if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
-   		   	  else echo '<OPTION VALUE="0">All users';
+   		   	  else echo '<OPTION VALUE="0">'.$AppUI->_('All users');
 
    		   	  if (($log_userfilter_users = db_loadList( $usersql, NULL )))
    		   	  {
@@ -274,6 +274,15 @@ if($do_report){
 			." ) ";
 		$and=true;
 	}
+
+	if ($and) {
+        	$sql .= " AND ";
+      	}
+
+    	if (!$where) { $sql.=" WHERE ";$where=true; }
+     	$sql .= " (task_percent_complete < 100)";
+     	$and=true;
+	
 	        //AND !isnull(task_end_date) AND task_end_date != '0000-00-00 00:00:00'
 	        //AND !isnull(task_start_date) AND task_start_date != '0000-00-00 00:00:00';
 	        //AND task_dynamic   ='0'
@@ -413,7 +422,6 @@ if($do_report){
 			foreach($task_list as $task) {
 				if (!isChildTask($task)) {
 					if (isMemberOfTask($task_list,$task_assigned_users,$Ntasks,$user_id,$task)) {
-                                                $zi++;
 						$tmptasks.=displayTask($task_list,$task,0,$display_week_hours,$sss,$sse, $user_id);
 						// Get children
 						$tmptasks.=doChildren($task_list,$task_assigned_users,$Ntasks,
@@ -476,6 +484,7 @@ return false;
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $user_id) {
         global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $z, $zi, $x;
+	$zi++;
         $users = $task->getAssignedUsers();
         $projects = $task->getProjectName();
 	$tmp="<tr>";
@@ -501,8 +510,8 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	$tmp.= "<a href='?m=tasks&a=view&task_id=$task->task_id'>".$task->task_name."</a>";
 	if ($task->task_milestone == true) { $tmp.="</B>"; }
 	$tmp.="</td>";
-        $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
-        $tmp.= " <a href='?m=projects&a=view&project_id=$task->task_project'>".$projects['project_short_name']."</a>";
+        $tmp.="<td align=\"center\" nowrap=\"nowrap\" >";
+        $tmp.= "<a href='?m=projects&a=view&project_id=$task->task_project' style='background-color:#".@$projects["project_color_identifier"]."; color:".bestColor(@$projects['project_color_identifier'])."'>".$projects['project_short_name']."</a>";
         $tmp.="</td>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
         $tmp .= $task->task_duration."&nbsp;".$AppUI->_($durnTypes[$task->task_duration_type]);
@@ -523,7 +532,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	}
 	$tmp.="<td>";
         $sep = $us = "";
-        foreach ($users as $row) {
+	foreach ($users as $row) {
                 if ($row["user_id"]) {
                         $us .= "<a href='?m=admin&a=viewuser&user_id=$row[0]'>".$sep.$row['user_username']."&nbsp;(".$row['perc_assignment']."%)</a>";
                         $sep = ", ";
@@ -538,7 +547,10 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 if (sizeof($users) >= 7) {
                         $zz = $zz *2;
                 }
-                $tmp.="<td valign=\"top\" align=\"center\" nowrap=\"nowrap\" rowspan=\"$z-1\">";
+		$zm1 = $z - 1;
+                if ($zm1 ==0) $zm1 = 1;
+
+                $tmp.="<td valign=\"top\" align=\"center\" nowrap=\"nowrap\" rowspan=\"$zm1\">";
                 $tmp.="<select class=\"text\" name='add_users' size='".($zz-1)."' multiple='multiple'>";
 
                 foreach ($log_userfilter_users as $row)

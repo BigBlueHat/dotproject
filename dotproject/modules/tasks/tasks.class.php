@@ -406,7 +406,7 @@ class CTask extends CDpObject {
 	//additiona comment will be included in email body 
 	function notify( $comment = '' ) {
 		GLOBAL $AppUI, $locale_char_set;
-        
+
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
 
@@ -657,7 +657,7 @@ class CTask extends CDpObject {
 	}
 
         function getProjectName() {
-                $sql = "SELECT project_name, project_short_name FROM projects WHERE project_id = '$this->task_project'";
+                $sql = "SELECT project_name, project_short_name, project_color_identifier FROM projects WHERE project_id = '$this->task_project'";
                 $proj = db_loadHash($sql, $projects);
 
                 return $projects;
