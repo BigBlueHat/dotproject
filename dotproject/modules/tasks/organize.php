@@ -299,12 +299,12 @@ foreach ($tasks as $task)
 
 <?php
   $actions = array();
-  $actions['d'] = $AppUI->_('Delete');
-	$actions['f'] = $AppUI->_('Mark as Finished');
-  $actions['m'] = $AppUI->_('Move');
-  $actions['c'] = $AppUI->_('Copy');
+  $actions['d'] = $AppUI->_('Delete', UI_OUTPUT_JS);
+  $actions['f'] = $AppUI->_('Mark as Finished', UI_OUTPUT_JS);
+  $actions['m'] = $AppUI->_('Move', UI_OUTPUT_JS);
+  $actions['c'] = $AppUI->_('Copy', UI_OUTPUT_JS);
 	foreach($priorities as $k => $v)
-		$actions[$k] = $AppUI->_('set priority to ' . $v);
+		$actions[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_JS);
 
   
   $deny = $proj->getDeniedRecords( $AppUI->user_id );
