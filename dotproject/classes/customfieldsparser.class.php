@@ -62,10 +62,11 @@
 		}
 		
 		function _fetchPreviousData(){
-			$sql = "select $this->field_name
-			                           		from $this->table_name
-			                           		where $this->id_field_name = $this->row_id";
-			$previous_data = db_loadResult($sql);
+			$q = new DBQuery;
+			$q->addTable($this->table_name);
+			$q->addQuery($this->field_name);
+			$q->addWhere("{$this->id_field_name} = {$this->row_id}");
+			$previous_data = $q->loadResult();
 			
 			if($previous_data != ""){
 				$previous_data = unserialize($previous_data);

@@ -38,14 +38,11 @@
 		{
 			// Override Load Method for List type Classes
 			GLOBAL $db;
-			$sql = "
-				SELECT	*
-				FROM	custom_fields_values
-				WHERE	value_field_id = ".$this->field_id."
-				AND	value_object_id = ".$object_id."	
-			";	
-
-			$rs = $db->Execute($sql);
+			$q  = new DBQuery;
+			$q->addTable('custom_fields_values');
+			$q->addWhere("value_field_id = ".$this->field_id);
+			$q->addWhere("value_object_id = ".$object_id);
+			$rs = $q->exec();
 			$row = $rs->FetchRow();
 
 			$value_id = $row["value_id"];
@@ -74,37 +71,29 @@
 				if ($this->value_id > 0)
 				{
 
-						$sql = "UPDATE custom_fields_values SET	
-								value_charvalue = '".db_escape(strip_tags( $this->value_charvalue ))."',
-								value_intvalue = ".$ins_intvalue."
-							WHERE
-								value_id = ".$this->value_id."
-						";
+						$q  = new DBQuery;
+						$q->addTable('custom_fields_values');
+						$q->addUpdate('value_charvalue', db_escape(strip_tags( $this->value_charvalue )));
+						$q->addUpdate('value_intvalue', $ins_intvalue);
+						$q->addWhere("value_id = ".$this->value_id);
 				}
 				else
 				{
 						$new_value_id = $db->GenID('custom_fields_values_id', 1 );
 		
-						$sql = "INSERT INTO custom_fields_values (
-								value_id,
-								value_module,
-								value_object_id,
-								value_field_id,
-								value_intvalue,
-								value_charvalue
-							)
-							VALUES (
-								".$new_value_id.",
-								'',
-								".$object_id.",
-								".$this->field_id.",
-								".$ins_intvalue.",	
-								'".db_escape(strip_tags($this->value_charvalue) )."'	
-							)
-						";
+						$q  = new DBQuery;
+						$q->addTable('custom_fields_values');
+						$q->addUpdate('value_id', $new_value_id);
+						$q->addUpdate('value_module', '');
+						$q->addUpdate('value_field_id', $this->field_id);
+						$q->addUpdate('value_object_id', $object_id);
+
+						$q->addUpdate('value_charvalue', db_escape(strip_tags( $this->value_charvalue )));
+						$q->addUpdate('value_intvalue', $ins_intvalue);
+						$q->addWhere("value_id = ".$this->value_id);
 				}
-				if ($sql != NULL) $rs = $db->Execute($sql);
-				if (!$rs) return $db->ErrorMsg()." | SQL: ".$sql;
+				if ($sql != NULL) $rs = $q->exec();
+				if (!$rs) return $db->ErrorMsg()." | SQL: ";
 			}
 		}
 
@@ -309,18 +298,11 @@
 			$this->mode = $mode;
 
 			// Get Custom Fields for this Module
-			$sql = "
-				SELECT  *
-				FROM	custom_fields_struct
-				WHERE	field_module = '".$this->m."'
-				AND	field_page = '".$this->a."'
-				ORDER BY
-					field_order ASC
-			";
-		
-			//echo "<pre>$sql</pre>";
-			
-			$rows = db_loadList($sql);						
+			$q  = new DBQuery;
+			$q->addTable('custom_fields_struct');
+			$q->addWhere("field_module = '".$this->m."' AND	field_page = '".$this->a."'");
+			$q->addOrder('field_order ASC');
+			$rows = $q->loadList();						
 			if ($rows == NULL)
 			{
 				// No Custom Fields Available
@@ -368,28 +350,22 @@
 			$field_order = 1;
 			$field_a = 'addedit';
 
-			$sql = "
-				INSERT
-				INTO	custom_fields_struct (
-						field_id,
-						field_module,
-						field_page,
-						field_htmltype,
-						field_datatype,
-						field_order,
-						field_name,
-						field_description,
-						field_extratags
-				)
-				VALUES
-					(".$next_id.", '".$this->m."', '".$field_a."', '".$field_htmltype."', '".$field_datatype."', ".$field_order.", '".$field_name."', '".$field_description."', '".$field_extratags."');"; 
-
 			// TODO - module pages other than addedit
 			// TODO - validation that field_name doesnt already exist
+			$q  = new DBQuery;
+			$q->addTable('custom_fields_struct');
+			$q->addInsert('field_id', $next_id);
+			$q->addInsert('field_module', $this->m);
+			$q->addInsert('field_page', $field_a);
+			$q->addInsert('field_htmltype', $field_htmltype);
+			$q->addInsert('field_datatype', $field_datatype);
+			$q->addInsert('field_order', $field_order);
+			$q->addInsert('field_name', $field_name);
+			$q->addInsert('field_description', )$field_description;
+			$q->addInsert('field_extratags', $field_extratags);
 
-			//echo $sql;
 
-			if (!$db->Execute($sql))
+			if (!$q->exec())
 			{
 				//return "<pre>".$sql."</pre>";
 				$error_msg = $db->ErrorMsg();
@@ -405,19 +381,15 @@
 		{
 			GLOBAL $db;
 			
-			$sql = "
-				UPDATE custom_fields_struct
-				SET
-					field_name = '".$field_name."',
-					field_description = '".$field_description."',
-					field_htmltype = '".$field_htmltype."',		
-					field_datatype = '".$field_datatype."',
-					field_extratags = '".$field_extratags."'
-				WHERE
-					field_id = ".$field_id."
-			";
-	
-			if (!$db->Execute($sql))
+			$q  = new DBQuery;
+			$q->addTable('custom_fields_struct');
+			$q->addUpdate('field_name', $field_name);
+			$q->addUpdate('field_description', $field_description);
+			$q->addUpdate('field_htmltype', $field_htmltype);
+			$q->addUpdate('field_datatype', $field_datatype);
+			$q->addUpdate('field_extratags', $field_extratags);
+			$q->addWhere("field_id = ".$field_id);
+			if (!$q->exec())
 			{
 				$error_msg = $db->ErrorMsg();
 				return 0;
@@ -472,11 +444,10 @@
 		function deleteField( $field_id )
 		{
 			GLOBAL $db;
-			$sql = "
-				DELETE FROM custom_fields_struct
-				WHERE field_id = $field_id 	
-			";
-			if (!$db->Execute($sql))
+			$q  = new DBQuery;
+			$q->setDelete('custom_fields_struct');
+			$q->addWhere("field_id = $field_id");
+			if (!$q->exec())
 			{
 				return $db->ErrorMsg();
 			}	
@@ -530,12 +501,10 @@
 		{
 			GLOBAL $db;
 	
-			$sql = "
-				SELECT	*
-				FROM	custom_fields_lists
-				WHERE	field_id = ".$this->field_id;
-					
-			if (!$rs = $db->Execute($sql)) return $db->ErrorMsg();		
+			$q  = new DBQuery;
+			$q->addTable('custom_fields_lists');
+			$q->addWhere("field_id = {$this->field_id}");
+			if (!$rs = $q->exec()) return $db->ErrorMsg();		
 
 			$this->options = Array();
 
@@ -553,10 +522,13 @@
 			{
 				$optid = $db->GenID('custom_fields_option_id', 1 );
 
-				$sql = "INSERT INTO custom_fields_lists ( field_id, list_option_id, list_value )
-				VALUES ( ".$this->field_id.", ".$optid.", '".db_escape(strip_tags($opt))."')";
+				$q  = new DBQuery;
+				$q->addTable('custom_fields_lists');
+				$q->addInsert('field_id', $this->field_id);
+				$q->addInsert('list_option_id', $optid);
+				$q->addInsert('list_value', db_escape(strip_tags($opt)));
 
-				if (!$db->Execute($sql)) $insert_error = $db->ErrorMsg();  	
+				if (!$q->exec()) $insert_error = $db->ErrorMsg();  	
 			}	
 
 			return $insert_error;
@@ -564,9 +536,10 @@
 
 		function delete()
 		{
-			GLOBAL $db;
-			$sql = "DELETE FROM custom_fields_lists WHERE field_id = ".$this->field_id;
-			$db->Execute($sql);
+			$q  = new DBQuery;
+			$q->setDelete('custom_fields_lists');
+			$q->addWhere("field_id = {$this->field_id}");
+			$q->exec();
 		}
 
 		function setOptions( $option_array )
