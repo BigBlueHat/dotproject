@@ -6,15 +6,12 @@ $log_end_date 	         = dPgetParam( $_POST, "log_end_date", 0 );
 $log_all_projects 	     = dPgetParam($_POST, "log_all_projects", 0);
 $log_all		         = dPgetParam($_POST, "log_all", 0);
 $use_assigned_percentage = dPgetParam($_POST, "use_assigned_percentage", 0);
-$user_id                 = dPgetParam($_POST, "user_id", 0);
+$user_id                 = dPgetParam($_POST, "user_id", $AppUI->user_id);
 
 // create Date objects from the datetime fields
-$start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();
+$start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate(date("Y-m-01"));
 $end_date   = intval( $log_end_date )   ? new CDate( $log_end_date ) : new CDate();
 
-if (!$log_start_date) {
-	$start_date->subtractSpan( new Date_Span( "14,0,0,0" ) );
-}
 $end_date->setTime( 23, 59, 59 );
 ?>
 
