@@ -324,13 +324,15 @@ function BuildMail() {
 	if( count( $this->aattach ) > 0 ) {
 		$this->_build_attachement();
 	} else {
-		$this->fullBody = $this->body;
+		$sep = "\r\n";
+		$arr = preg_split("/\r?\n/", $this->body);
+		$this->fullBody = implode($sep, $arr);
 	}
 
 	reset($this->xheaders);
 	while( list( $hdr,$value ) = each( $this->xheaders )  ) {
 		if( $hdr != "Subject" )
-			$this->headers .= "$hdr: $value\n";
+			$this->headers .= "$hdr: $value\r\n";
 	}
 }
 
@@ -356,8 +358,8 @@ function Send() {
  */
 function Get() {
 	$this->BuildMail();
-	$mail = "To: " . $this->strTo . "\n";
-	$mail .= $this->headers . "\n";
+	$mail = "To: " . $this->strTo . "\r\n";
+	$mail .= $this->headers . "\r\n";
 	$mail .= $this->fullBody;
 	return $mail;
 }
@@ -399,12 +401,14 @@ function CheckAdresses( $aad ) {
  *	@access private
 */
 function _build_attachement() {
-	$this->xheaders["Content-Type"] = "multipart/mixed;\n boundary=\"$this->boundary\"";
+	$this->xheaders["Content-Type"] = "multipart/mixed;\r\n boundary=\"$this->boundary\"";
 
-	$this->fullBody = "This is a multi-part message in MIME format.\n--$this->boundary\n";
-	$this->fullBody .= "Content-Type: text/plain; charset=$this->charset\nContent-Transfer-Encoding: $this->ctencoding\n\n" . $this->body ."\n";
+	$this->fullBody = "This is a multi-part message in MIME format.\r\n--$this->boundary\r\n";
+	$this->fullBody .= "Content-Type: text/plain; charset=$this->charset\r\nContent-Transfer-Encoding: $this->ctencoding\r\n\r\n";
 
-	$sep= chr(13) . chr(10);
+	$sep= "\r\n";
+	$body = preg_split("/\r?\n/", $this->body);
+	$this->fullBody .= implode($sep, $body) ."\r\n";
 
 	$ata= array();
 	$k=0;
@@ -419,7 +423,7 @@ function _build_attachement() {
 		if( ! file_exists( $filename) ) {
 			echo "Class Mail, method attach : file $filename can't be found"; exit;
 		}
-		$subhdr= "--$this->boundary\nContent-type: $ctype;\n name=\"$basename\"\nContent-Transfer-Encoding: base64\nContent-Disposition: $disposition;\n  filename=\"$basename\"\n";
+		$subhdr= "--$this->boundary\r\nContent-type: $ctype;\n name=\"$basename\"\nContent-Transfer-Encoding: base64\nContent-Disposition: $disposition;\n  filename=\"$basename\"\n";
 		$ata[$k++] = $subhdr;
 		// non encoded line length
 		$linesz= filesize( $filename)+1;
