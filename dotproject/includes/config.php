@@ -8,8 +8,15 @@ $db 	= "dotproject";
 $dbuser = "root";
 $dbpass = "";
 
-// localisation of the host for this dotproject
-// that is, what language will the login screen be in
+/*
+ Localisation of the host for this dotproject,
+ that is, what language will the login screen be in.
+ Supported languages are:
+  en    (English)
+  es    (Spanish)
+  fr    (French)
+  pt_br (Portugese-Brazilian)
+*/
 $host_locale = "en";
 
 $root_dir = "d:/apache/htdocs/Projects/dotproject"; // filesystem root
@@ -22,7 +29,7 @@ $site_domain = "dotproject.net";
 define(SHOW_ALL_TASKS, false);
  
 // enable if you want to support gantt charts
-define(ENABLE_GANTT_CHARTS, false);
+define(ENABLE_GANTT_CHARTS, true);
 
 // disable if you want to allow to add tasks without giving a duration
 define(REQUIRE_TASKS_DURATION, true);
