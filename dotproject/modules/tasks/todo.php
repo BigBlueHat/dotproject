@@ -274,10 +274,10 @@ foreach ($tasks as $task) {
 	<td colspan="3" align="center">
 <?php
 foreach($priorities as $k => $v) {
-	$options[$k] = $AppUI->_('set priority to ' . $v);
+	$options[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_RAW);
 }
-$options['c'] = $AppUI->_('mark as finished');
-$options['d'] = $AppUI->_('delete');
+$options['c'] = $AppUI->_('mark as finished', UI_OUTPUT_RAW);
+$options['d'] = $AppUI->_('delete', UI_OUTPUT_RAW);
 echo arraySelect( $options, 'task_priority', 'size="1" class="text"', '0' );
 ?>
 	</td>
