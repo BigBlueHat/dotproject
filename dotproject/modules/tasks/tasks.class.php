@@ -1116,7 +1116,10 @@ class CTask extends CDpObject {
                 // retrieve the systemwide default preference for the assignment maximum
                 $sql = "SELECT pref_value FROM user_preferences WHERE pref_user = 0 AND pref_name = 'TASKASSIGNMAX'";
                 $result = db_loadHash($sql, $sysChargeMax);
-                $scm = $sysChargeMax['pref_value'];
+								if (! $result)
+									$scm = 0;
+								else
+									$scm = $sysChargeMax['pref_value'];
                 // provide actual assignment charge, individual chargeMax and freeCapacity of users' assignments to tasks
                 $sql = "SELECT u.user_id,
                         CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',contact_first_name,contact_last_name), IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
