@@ -8,7 +8,7 @@ class CTitleBlock extends CTitleBlock_core {
 ##
 class CTabBox extends CTabBox_core {
 	function show( $extra='' ) {
-		GLOBAL $AppUI, $dPconfig;
+		GLOBAL $AppUI, $dPconfig, $currentTabId, $currentTabName;
 		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 		if (! $uistyle)
 		  $uistyle = 'default';
@@ -34,9 +34,11 @@ class CTabBox extends CTabBox_core {
 		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
 		// flat view, active = -1
 			echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
-			foreach ($this->tabs as $v) {
+			foreach ($this->tabs as $k => $v) {
 				echo "<tr><td><strong>".$AppUI->_($v[1])."</strong></td></tr>\n";
 				echo "<tr><td>";
+				$currentTabId = $k;
+				$currentTabName = $v[1];
 				include $this->baseInc.$v[0].".php";
 				echo "</td></tr>\n";
 			}
@@ -67,8 +69,11 @@ class CTabBox extends CTabBox_core {
 			$s .= '<tr><td width="100%" colspan="'.(count($this->tabs)*4 + 1).'" class="tabox">';
 			echo $s;
 			//Will be null if the previous selection tab is not available in the new window eg. Children tasks
-			if ( $this->tabs[$this->active][0] != "" )
+			if ( $this->tabs[$this->active][0] != "" ) {
+				$currentTabId = $this->active;
+				$currentTabName = $this->tabs[$this->active][1];
 				require $this->baseInc.$this->tabs[$this->active][0].'.php';
+			}
 			echo '</td></tr></table>';
 		}
 	}

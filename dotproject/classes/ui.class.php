@@ -802,7 +802,7 @@ the active tab, and the selected tab **/
 * @param string Can't remember whether this was useful
 */
 	function show( $extra='' ) {
-		GLOBAL $AppUI;
+		GLOBAL $AppUI, $currentTabId, $currentTabName;
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options
@@ -823,9 +823,11 @@ the active tab, and the selected tab **/
 		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
 		// flat view, active = -1
 			echo '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
-			foreach ($this->tabs as $v) {
+			foreach ($this->tabs as $k => $v) {
 				echo '<tr><td><strong>'.$AppUI->_($v[1]).'</strong></td></tr>';
 				echo '<tr><td>';
+				$currentTabId = $k;
+				$currentTabName = $v[1];
 				include $this->baseInc.$v[0].".php";
 				echo '</td></tr>';
 			}
@@ -857,8 +859,11 @@ the active tab, and the selected tab **/
 			$s .= '<td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">';
 			echo $s;
 			//Will be null if the previous selection tab is not available in the new window eg. Children tasks
-			if ( $this->baseInc.$this->tabs[$this->active][0] != "" )
+			if ( $this->baseInc.$this->tabs[$this->active][0] != "" ) {
+				$currentTabId = $this->active;
+				$currentTabName = $this->tabs[$this->active][1];
 				require $this->baseInc.$this->tabs[$this->active][0].'.php';
+			}
 			echo "\n</td>\n</tr>\n</table>";
 		}
 	}
