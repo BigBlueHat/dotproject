@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Preferences updated",
 "Abbreviation",
 "Date and Time",
 "Default",
