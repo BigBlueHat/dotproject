@@ -1579,7 +1579,10 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 		}
 	}
 // name link
-	$alt = htmlspecialchars( strlen($a['task_description']) > 80 ? substr($a["task_description"],0,80) . '...' : $a['task_description'] );
+	$alt = strlen($a['task_description']) > 80 ? substr($a["task_description"],0,80) . '...' : $a['task_description'];
+	// instead of the statement below
+	$alt = str_replace("\"", "&quot;", $alt);
+//	$alt = htmlspecialchars($alt); 
 	$alt = str_replace("\r", ' ', $alt);
 	$alt = str_replace("\n", ' ', $alt);
 
