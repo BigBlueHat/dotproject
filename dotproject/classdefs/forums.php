@@ -150,9 +150,9 @@ class CForumMessage {
 
 	function sendWatchMail( $debug=false ) {
 		GLOBAL $base_url, $AppUI, $debug;
-		$subj_prefix = "Dotproject forum activity:";
-		$body_msg = "There has been activity in a forum you are watching.";
-		$from = "Dotproject forum watch";
+		$subj_prefix = $AppUI->_('forumEmailSubj');
+		$body_msg = $AppUI->_('forumEmailBody');
+		$from = $AppUI->_('forumEmailFrom');
 
 		$sql = "
 		SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
@@ -185,18 +185,19 @@ class CForumMessage {
 		. "<p><pre>$this->message_body</pre>\n"
 		. "</body>\n";
 
-		if ($debug) {
+		if (false) {
 			$to = '';
 			while ($row = db_fetch_assoc( $res )) {
 				$to .= '"'.$row['user_first_name'].' '.$row['user_last_name'].'" <'.$row['user_email'].">\n";
 			}
 			$to = htmlspecialchars( $to );
-			echo "<pre>";
-			echo "TO=$to\n";
-			echo "SUBJECT=$subject\n";
-			echo "BODY=$mail_body\n";
-			echo "FROM=$from\n";
-			echo "</pre>";
+			$str = "<pre>";
+			$str .= "TO=$to\n";
+			$str .= "SUBJECT=$subject\n";
+			$str .= "BODY=$mail_body\n";
+			$str .= "FROM=$from\n";
+			$str .= "</pre>";
+			writeDebug($str, 'Sent email', __FILE__, __LINE__);
 			return;
 		}
 
