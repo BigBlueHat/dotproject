@@ -48,9 +48,11 @@ function show_history($history)
         else if ($history['history_action'] == 'delete')
                 return 'Deleted \'' . $history['history_description'] . '\' from ' . $module . ' module.';
 
-	$sql = "SELECT $table_id
-		FROM $module 
-		WHERE $table_id = $id";
+	$q  = new DBQuery;
+	$q->addTable($module);
+	$q->addQuery($table_id);
+	$q->addWhere($table_id.' ='.$id);
+	$sql = $q->prepare();
 	if (db_loadResult($sql))
         switch ($module)
         {
@@ -90,28 +92,31 @@ if (!empty($_REQUEST['project_id']))
 {
 	$project_id = $_REQUEST['project_id'];
 	
-	$sql = '
-SELECT task_id
-FROM tasks
-WHERE task_project = ' . $project_id;
-	$project_tasks = '(' . implode(',', db_loadColumn($sql)) . ')';
+$q  = new DBQuery;
+$q->addTable('tasks');
+$q->addQuery('task_id');
+$q->addWhere('task_project = ' . $project_id);
+$sql = $q->prepare();
+$project_tasks = '(' . implode(',', db_loadColumn($sql)) . ')';
 
-	$sql = '
-SELECT file_id
-FROM files
-WHERE file_project = ' . $project_id;
-	$project_files = '(' . implode(',', db_loadColumn($sql)) . ')';
+$q  = new DBQuery;
+$q->addTable('files');
+$q->addQuery('file_id');
+$q->addWhere('file_project = ' . $project_id);
+$sql = $q->prepare();
+$project_files = '(' . implode(',', db_loadColumn($sql)) . ')';
 
 	$filter .= " AND ((history_table = 'projects' AND history_item = '$project_id')
 	OR (history_table = 'tasks' AND history_item IN $project_tasks)
 	OR (history_table = 'files' AND history_item IN $project_files))";
 }
 
-$sql = "SELECT * from history, users 
-	WHERE history_user = user_id 
-	$filter 
-	ORDER BY history_date DESC";
-$history = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('history');
+$q->addTable('users');
+$q->addWhere('history_user = user_id'.$filter);
+$q->addOrder('history_date DESC');
+$history = $q->loadList();
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>

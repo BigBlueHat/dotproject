@@ -7,7 +7,6 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 */
-
 $action = @$_REQUEST["action"];
 if($action) {
 	$history_description = dPgetParam($_POST, 'history_description', '');
@@ -15,46 +14,49 @@ if($action) {
 	$userid = $AppUI->user_id;
 	
 	if( $action == 'add' ) {
-		$sql = 'INSERT INTO history 
-					(history_table, 
-					history_action, 
-					history_date, 
-					history_description, 
-					history_user, 
-					history_project) ' .
-		  	"VALUES (
-				'history', 
-				'add', 
-				now(), 
-				'$history_description', 
-				$userid, 
-				$history_project)";
+		$q  = new DBQuery;
+		$q->addTable('history');
+		$q->addInsert('history_table', "history");
+		$q->addInsert('history_action', "add");
+		$q->addInsert('history_date', "NOW()");
+		$q->addInsert('history_description', $history_description);
+		$q->addInsert('history_user', $userid);
+		$q->addInsert('history_project', $history_project);
 		$okMsg = 'History added';
 	} else if ( $action == 'update' ) {
-		$sql = "UPDATE history 
-			SET history_description = '$history_description', 
-			history_project = '$history_project' 
-			WHERE history_id = $history_id";
+		$q  = new DBQuery;
+		$q->addTable('history');
+		$q->addUpdate('history_description', $history_description);
+		$q->addUpdate('history_project', $history_project);
+		$q->addWhere('history_id ='.$history_id);
 		$okMsg = 'History updated';
 	} else if ( $action == 'del' ) {
-		$sql = "DELETE FROM history 
-			WHERE history_id = $history_id";
+		$q  = new DBQuery;
+		$q->setDelete('history');
+		$q->addWhere('history_id ='.$history_id);
 		$okMsg = 'History deleted';				
 	}
-	if(!db_exec($sql)) {
+	if(!$q->exec()) {
 		$AppUI->setMsg( db_error() );
 	} else {	
 		$AppUI->setMsg( $okMsg );
                 if ($action == 'add')
-                        db_exec('UPDATE history SET history_item=history_id WHERE history_table = \'history\'');
+			$q  = new DBQuery;
+			$q->addTable('history');
+			$q->addUpdate('history_item = history_id');
+			$q->addWhere('history_table = \'history\'');
+			$okMsg = 'History deleted';
 	}
 	$AppUI->redirect();
 }
 
 // pull the history
-$sql = "SELECT * FROM history WHERE history_id = $history_id";
+$q  = new DBQuery;
+$q->addTable('history');
+$q->addQuery('*');
+$q->addWhere('history_id ='.$history_id);
+$sql = $q->prepare();
 db_loadHash( $sql, $history );
-
 ?>
 
 <form name="AddEdit" method="post">				
@@ -88,10 +90,11 @@ db_loadHash( $sql, $history );
 	<td width="60%">
 <?php
 // pull the projects list
-$sql = "SELECT project_id,project_name 
-	FROM projects 
-	ORDER BY project_name";
-$projects = arrayMerge( array( 0 => '('.$AppUI->_('any', UI_OUTPUT_RAW).')' ), db_loadHashList( $sql ) );
+$q  = new DBQuery;
+$q->addTable('projects');
+$q->addQuery('project_id, project_name');
+$q->addOrder('project_name');
+$projects = arrayMerge( array( 0 => '('.$AppUI->_('any', UI_OUTPUT_RAW).')' ), $q->loadHashList() );
 echo arraySelect( $projects, 'history_project', 'class="text"', $history["history_project"] );
 ?>
 	</td>

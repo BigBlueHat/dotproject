@@ -26,7 +26,7 @@ if (@$a == 'setup') {
 class CSetupHistory {   
 
 	function install() {
-		$sql = "CREATE TABLE history ( " .
+		$sql = " ( " .
 		  "history_id int(10) unsigned NOT NULL auto_increment," .
 		  "history_user int(10) NOT NULL default '0'," .
                   "history_action varchar(10) NOT NULL default 'modify', " .
@@ -38,12 +38,17 @@ class CSetupHistory {
 		  "PRIMARY KEY  (history_id)," .
 		  "UNIQUE KEY history_id (history_id)" .
 		  ") TYPE=MyISAM;";
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->createTable('history');
+		$q->createDefinition($sql);
+		$q->exec();
 		return null;
 	}
 	
 	function remove() {
-		db_exec( "DROP TABLE history" );
+		$q = new DBQuery;
+		$q->dropTable('history');
+		$q->exec();
 		return null;
 	}
 	
@@ -52,5 +57,4 @@ class CSetupHistory {
 	}
 }
 
-?>	
-	
+?>
