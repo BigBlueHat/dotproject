@@ -150,6 +150,19 @@ class CModule extends CDpObject {
 	}
 }
 
+/**
+* Configuration class
+*/
+class CConfig extends CDpObject {
+
+	function CConfig() {
+		$this->CDpObject( 'config', 'config_id' );
+	}
+
+
+}
+
+
 class bcode {
         var $_billingcode_id=NULL;
         var $company_id;

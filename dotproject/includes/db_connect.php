@@ -14,6 +14,26 @@ require_once dirname(__FILE__) . "/db_adodb.php";
 db_connect( $dPconfig['dbhost'], $dPconfig['dbname'],
 	$dPconfig['dbuser'], $dPconfig['dbpass'], $dPconfig['dbport'], $dPconfig['dbpersist'] );
 
+	
+/*
+* Having successfully established the database connection now,
+* we will hurry up to load the system configuration details from the database.
+*/
+if ($dPrunLevel > 1) {
+	$sql = "SELECT config_name, config_value, config_type FROM config";
+	$rs = $db->Execute($sql);
+
+	$rsArr = $rs->GetArray();
+
+	foreach ($rsArr as $c) {
+		if ($c['config_type'] == 'checkbox') {
+			$c['config_value'] = ($c['config_value'] == 'true') ? true : false;
+		}
+		$dPconfig["{$c['config_name']}"] = $c['config_value'];
+	}
+}
+
+
 /**
 * This global function loads the first field of the first row returned by the query.
 *

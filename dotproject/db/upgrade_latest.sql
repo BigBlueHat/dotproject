@@ -579,3 +579,64 @@ ALTER TABLE `user_access_log` ADD `user_ip` VARCHAR( 15 ) NOT NULL AFTER `user_i
 # 20050216
 # Added URL for contacts
 ALTER TABLE `contacts` ADD `contact_url` VARCHAR( 255 ) NOT NULL AFTER `contact_icq` ;
+
+# 20050222
+# moved many config variables from config-php to a new table
+CREATE TABLE `config` (
+  `config_id` int(11) NOT NULL auto_increment,
+  `config_name` varchar(255) NOT NULL default '',
+  `config_value` varchar(255) NOT NULL default '',
+  `config_group` varchar(255) NOT NULL default '',
+  `config_type` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`config_id`),
+  UNIQUE KEY `config_name` (`config_name`)
+) TYPE=MyISAM AUTO_INCREMENT=47 ;
+
+#
+# Dumping data for table `config`
+#
+
+INSERT INTO `config` VALUES (1, 'check_legacy_password', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (2, 'host_locale', 'en', '', 'text');
+INSERT INTO `config` VALUES (3, 'check_overallocation', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (4, 'currency_symbol', '$', '', 'text');
+INSERT INTO `config` VALUES (5, 'host_style', 'default', '', 'text');
+INSERT INTO `config` VALUES (6, 'company_name', 'My Company', '', 'text');
+INSERT INTO `config` VALUES (7, 'page_title', 'dotProject', '', 'text');
+INSERT INTO `config` VALUES (8, 'site_domain', 'dotproject.net', '', 'text');
+INSERT INTO `config` VALUES (9, 'email_prefix', '[dotProject]', '', 'text');
+INSERT INTO `config` VALUES (10, 'admin_username', 'admin', '', 'text');
+INSERT INTO `config` VALUES (11, 'username_min_len', '4', '', 'text');
+INSERT INTO `config` VALUES (12, 'password_min_len', '4', '', 'text');
+INSERT INTO `config` VALUES (13, 'show_all_tasks', 'true', '', 'checkbox');
+INSERT INTO `config` VALUES (14, 'enable_gantt_charts', 'true', '', 'checkbox');
+INSERT INTO `config` VALUES (15, 'jpLocale', '', '', 'text');
+INSERT INTO `config` VALUES (16, 'log_changes', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (17, 'check_tasks_dates', 'true', '', 'checkbox');
+INSERT INTO `config` VALUES (18, 'locale_warn', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (19, 'locale_alert', '^', '', 'text');
+INSERT INTO `config` VALUES (20, 'daily_working_hours', '8.0', '', 'text');
+INSERT INTO `config` VALUES (21, 'display_debug', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (22, 'link_tickets_kludge', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (24, 'show_all_task_assignees', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (25, 'direct_edit_assignment', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (26, 'restrict_color_selection', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (27, 'cal_day_start', '8', '', 'text');
+INSERT INTO `config` VALUES (28, 'cal_day_end', '17', '', 'text');
+INSERT INTO `config` VALUES (29, 'cal_day_increment', '15', '', 'text');
+INSERT INTO `config` VALUES (30, 'cal_working_days', '1,2,3,4,5', '', 'text');
+INSERT INTO `config` VALUES (31, 'cal_day_view_show_minical', 'true', '', 'checkbox');
+INSERT INTO `config` VALUES (32, 'restrict_task_time_editing', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (33, 'default_view_m', 'calendar', '', 'text');
+INSERT INTO `config` VALUES (34, 'default_view_a', 'day_view', '', 'text');
+INSERT INTO `config` VALUES (35, 'default_view_tab', '1', '', 'text');
+INSERT INTO `config` VALUES (36, 'index_max_file_size', '-1', '', 'text');
+INSERT INTO `config` VALUES (37, 'session_handling', 'app', '', 'text');
+INSERT INTO `config` VALUES (38, 'session_idle_time', '2d', '', 'text');
+INSERT INTO `config` VALUES (39, 'session_max_lifetime', '1m', '', 'text');
+INSERT INTO `config` VALUES (40, 'debug', '1', '', 'text');
+INSERT INTO `config` VALUES (41, 'auto_fields_creation', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES (43, 'parser_default', '/usr/bin/strings', '', 'text');
+INSERT INTO `config` VALUES (44, 'parser_application/msword', '/usr/bin/strings', '', 'text');
+INSERT INTO `config` VALUES (45, 'parser_text/html', '/usr/bin/strings', '', 'text');
+INSERT INTO `config` VALUES (46, 'parser_application/pdf', '/usr/bin/pdftotext', '', 'text');

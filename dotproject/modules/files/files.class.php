@@ -131,9 +131,9 @@ class CFile extends CDpObject {
 
 // parse file for indexing
 	function indexStrings() {
-		GLOBAL $ft, $AppUI, $dPconfig;
+		GLOBAL $AppUI, $dPconfig;
 	// get the parser application
-		$parser = @$ft[$this->file_type];
+		$parser = @$dPconfig['parser_'.$this->file_type];
 		if (!$parser) {
 			return false;
 		}

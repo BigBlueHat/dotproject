@@ -75,9 +75,17 @@ if (! isset($GLOBALS['OS_WIN']))
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
 
 // tweak for pathname consistence on windows machines
+require_once "$baseDir/includes/db_adodb.php";
+
+// allow the install module to run without config file
+// load the db handler
+if ($dPrunLevel > 0) {
+	require_once "$baseDir/includes/db_connect.php";
+}
+
+// tweak for pathname consistence on windows machines
 require_once "$baseDir/includes/main_functions.php";
 require_once "$baseDir/classes/ui.class.php";
-require_once "$baseDir/includes/db_adodb.php";
 require_once "$baseDir/classes/permissions.class.php";
 require_once "$baseDir/includes/session.php";
 
@@ -109,11 +117,6 @@ if (! is_file($config_file) && !$is_installer ) {
 }
 
 
-// allow the install module to run without config file
-// load the db handler
-if ($dPrunLevel > 0) {
-	require_once "$baseDir/includes/db_connect.php";
-}
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
