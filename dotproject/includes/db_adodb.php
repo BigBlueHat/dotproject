@@ -66,7 +66,7 @@ function db_exec( $sql ) {
         {
                 global $AppUI;
                 dprint(__FILE__, __LINE__, 7, "Error executing: <pre>$sql</pre>");
-                if (dPconfig('auto_fields_creation'))
+                if (dPgetConfig('auto_fields_creation'))
                 {
                         include_once(dPgetConfig('root_dir') . '/db/create_db_fields.php');
                         // Useless statement, but it is being executed only on error, 
