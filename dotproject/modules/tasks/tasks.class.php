@@ -767,6 +767,7 @@ class CTask extends CDpObject {
 				$body .= $AppUI->_('Parent Task') . ': ' . $req->fields[0] . "\n";
 			}
 		}
+		$q->clear();
 		$body .= $AppUI->_('Task') . ": $this->task_name\n";
 		$task_types = dPgetSysVal("TaskType");
 		$body .= $AppUI->_('Task Type') . ':' . $task_types[$this->task_type] . "\n";
@@ -775,7 +776,6 @@ class CTask extends CDpObject {
 		$body .= $log->task_log_description;
 
 		// Append the user signature to the email - if it exists.
-		$q->clear();
 		$q->addQuery('user_signature');
 		$q->addWhere('user_id = ' . $AppUI->user_id);
 		$q->addTable('users');
@@ -783,6 +783,7 @@ class CTask extends CDpObject {
 			if ($res->fields['user_signature'])
 				$body .= "\n--\n" . $res->fields['user_signature'];
 		}
+		$q->clear();
 		
 		$mail->Body( $body, $char_set);
 		$mail->From( "$AppUI->user_first_name $AppUI->user_last_name <$AppUI->user_email>");
@@ -796,7 +797,6 @@ class CTask extends CDpObject {
 				$recipient_list .= "Invalid email address $email, not sent\n";
 			}
 		}
-		$q->clear();
 		$mail->Send();
 		// Now update the log
 		$save_email = @$AppUI->getPref('TASKLOGNOTE');
