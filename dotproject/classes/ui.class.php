@@ -1,7 +1,5 @@
 <?php /* CLASSES $Id$ */
-##
-##	Application User Interface class
-##
+
 require_once( "./classes/date.class.php" );
 
 // Message No Constants
@@ -17,8 +15,15 @@ define( "UI_CASE_UPPER", 1 );
 define( "UI_CASE_LOWER", 2 );
 define( "UI_CASE_UPPERFIRST", 3 );
 
+/**
+ *	The UI Class.
+ */
 class CAppUI {
-	var $state;		// generic array for holding the state of anything
+/**
+ *	generic array for holding the state of anything
+ *	@var array
+ */
+	var $state;
 // current user parameters
 	var $user_id;
 	var $user_first_name;
@@ -42,7 +47,9 @@ class CAppUI {
 // configuration variable array
 	var $cfg=null;
 
-// CAppUI Constructor
+/**
+ * CAppUI Constructor
+ */
 	function CAppUI() {
 		$this->state = array();
 
@@ -61,20 +68,26 @@ class CAppUI {
 		$this->user_locale = $this->base_locale;
 		$this->user_prefs = array();
 	}
-// loads a php class file from the system classes directory
-	function getSystemClass( $target=null ) {
-		if ($target) {
+/**
+ *	loads a php class file from the system classes directory
+ *	@param string $name class name
+ */
+	function getSystemClass( $name=null ) {
+		if ($name) {
 			if ($root = $this->getConfig( 'root_dir' )) {
-				return "$root/classes/$target.class.php";
+				return "$root/classes/$name.class.php";
 			}
 		}
 	}
 
-// loads a php class file from the module directory
-	function getModuleClass( $target=null ) {
-		if ($target) {
+/**
+ *	loads a php class file from the module directory
+ *	@param string $name class name
+ */
+	function getModuleClass( $name=null ) {
+		if ($name) {
 			if ($root = $this->getConfig( 'root_dir' )) {
-				return "$root/modules/$target/$target.class.php";
+				return "$root/modules/$name/$name.class.php";
 			}
 		}
 	}
