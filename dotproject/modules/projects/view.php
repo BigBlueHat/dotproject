@@ -76,7 +76,7 @@ $titleBlock->show();
 ?>
 <script language="javascript">
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('projectsDelete');?>" )) {
+	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Project').'?';?>" )) {
 		document.frmDelete.submit();
 	}
 }
