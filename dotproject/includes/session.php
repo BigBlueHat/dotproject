@@ -117,6 +117,10 @@ function dPsessionConvertTime($key)
 	global $dPconfig;
 	$key = 'session_' . $key;
 
+	// If the value isn't set, then default to 1 day.
+	if (! isset($dPconfig[$key]))
+		return 86400;
+
 	$numpart = (int) $dPconfig[$key];
 	$modifier = substr($dPconfig[$key], -1);
 	if (! is_numeric($modifier)) {
