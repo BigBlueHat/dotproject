@@ -137,14 +137,14 @@ $a = dPgetParam( $_GET, 'a', 'index' );
 
 @include_once( "./functions/" . $m . "_func.php" );
 
-/*
+// TODO: canRead/Edit assignements should be moved into each file
+
 // check overall module permissions
 // these can be further modified by the included action files
 $canRead = !getDenyRead( $m );
 $canEdit = !getDenyEdit( $m );
 $canAuthor = $canEdit;
 $canDelete = $canEdit;
-*/
  
 // load module based locale settings
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
