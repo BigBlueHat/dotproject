@@ -121,14 +121,14 @@ function scrollNext() {
 </tr>
 
 <tr>
-	<td><input type=radio name=display_option value=month>This Month</td>
+	<td><input type="radio" name="display_option" value="month">This Month</td>
 	<td>&nbsp;</td>
 </tr>
 
 <tr>
-	<td><input type=radio name=display_option value=all>Entire project</td>
-	<td align=right valign=bottom>
-		<input type="submit" class="button" value="refresh">
+	<td><input type="radio" name="display_option" value="all">Entire project</td>
+	<td align="right" valign="bottom">
+		<input type="submit" class="button" value="<?php echo $AppUI->_( 'submit' );?>">
 	</td>
 </tr>
 </form>
@@ -172,7 +172,7 @@ if($display_option!="all") {
 </tr>
 </table>
 <br>
-<input type="button" value="back" class=button onClick="javascript:window.location='?m=tasks'">
+<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onClick="javascript:window.location='?m=tasks'">
 
 </body>
 </html>
