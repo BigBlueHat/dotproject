@@ -40,9 +40,6 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 	2) EDIT "config.php" to include your database connection and other local settings.
 */
 
-// Do not change version for support reasons
-$dPconfig['version'] = "dotProject v1.0 beta 1 [xx-Apr-2003]";
-
 // DATABASE ACCESS INFORMATION [DEFAULT example]
 // Modify these values to suit your local settings
 
