@@ -53,6 +53,9 @@ header ("Pragma: no-cache");	// HTTP/1.0
 
 require_once( "./includes/config.php" );
 
+// Do not change version for support reasons
+$dPconfig['version'] = "1.0 beta 1 [May-2003]";
+
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     $_SESSION['AppUI'] = new CAppUI();
