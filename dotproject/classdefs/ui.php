@@ -9,6 +9,14 @@ define( 'UI_MSG_ALERT', 2 );
 define( 'UI_MSG_WARNING', 3 );
 define( 'UI_MSG_ERROR', 4 );
 
+
+// global variable holding the translation array
+$GLOBALS['translate'] = array();
+
+define( "UI_CASE_UPPER", 1 );
+define( "UI_CASE_LOWER", 2 );
+define( "UI_CASE_UPPERFIRST", 3 );
+
 class CAppUI {
 	var $state;		// generic array for holding the state of anything
 // current user parameters
@@ -17,7 +25,17 @@ class CAppUI {
 	var $user_last_name;
 	var $user_company;
 	var $user_department;
-//
+// localisation
+	var $user_locale;
+	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
+// supported languages
+	var $locales = array(		
+		'en' => 'English', 
+		'es' => 'Spanish'
+	);
+	var $locale_warn = true;	// warn when a translation is not found
+
+// message handling
 	var $msg;
 	var $msgNo;
 	var $defaultRedirect;
@@ -32,11 +50,51 @@ class CAppUI {
 		$this->user_company = 0;
 		$this->user_department = 0;
 
-		$this->defaultRedirect = "m=help&a=about";
+		$this->defaultRedirect = "";
+	}
+// localisation
+	function setUserLocale( $loc ) {
+		$this->user_locale = $loc;
+	}
+/*
+	Translate string to the local language [same form as the gettext abbreviation]
+	This is the order of precedence:
+	If the key exists in the lang array, return the value of the key
+	If no key exists and the base lang is the same as the local lang, just return the string
+	If this is not the base lang, then return string with a red star appended to show
+	that a translation is required.
+*/
+	function _( $str, $case=0 ) {
+		if (empty( $str )) {
+			return '';
+		}
+		$x = @$GLOBALS['translate'][$str];
+		if ($x) {
+			$str = $x;
+		} else if ($this->locale_warn) {
+			if ($this->base_locale != $this->user_locale ||
+				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
+				$str .= '<span class="no_">*</span>';
+			}
+		}
+		switch ($case) {
+			case UI_CASE_UPPER:
+				$str = strtoupper( $str );
+				break;
+			case UI_CASE_LOWER:
+				$str = strtolower( $str );
+				break;
+			case UI_CASE_UPPERFIRST:
+				break;
+		}
+		return $str;
 	}
 // Save the current url query string
 	function savePlace() {
 		$this->state['SAVEDPLACE'] = $_SERVER['QUERY_STRING'];
+	}
+	function resetPlace() {
+		$this->state['SAVEDPLACE'] = '';
 	}
 // Get the saved place (usually one that could contain an edit button)
 	function getPlace() {
@@ -92,7 +150,7 @@ class CAppUI {
 			$this->msg = '';
 			$this->msgNo = 0;
 		}
-		return $msg ? "$img<span class=\"$class\">$msg</span>" : '';
+		return $msg ? "$img<span class=\"$class\">".$this->_( $msg )."</span>" : '';
 	}
 
 	function setState( $label, $tab ) {
@@ -107,7 +165,7 @@ class CAppUI {
 		GLOBAL $secret, $debug;
 		$sql = "
 		SELECT
-			user_id, user_first_name, user_last_name, user_company, user_department
+			user_id, user_first_name, user_last_name, user_company, user_department, user_locale
 		FROM users,  permissions
 		WHERE user_username = '$username'
 			AND user_password = password('$password') 
