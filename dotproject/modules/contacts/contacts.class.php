@@ -1,11 +1,21 @@
 <?php /* CONTACTS $Id$ */
-##
-## CContact Class
-##
+/**
+ *	@package dotProject
+ *	@subpackage modules
+ *	@version $Revision$
+*/
 
-class CContact {
+require_once( $AppUI->getSystemClass ('dp' ) );
+
+/**
+* Contacts class
+*/
+class CContact extends CDpObject{
+/** @var int */
 	var $contact_id = NULL;
+/** @var string */
 	var $contact_first_name = NULL;
+/** @var string */
 	var $contact_last_name = NULL;
 	var $contact_order_by = NULL;
 	var $contact_title = NULL;
@@ -31,59 +41,17 @@ class CContact {
 	var $contact_private = NULL;
 
 	function CContact() {
-		// empty constructor
-	}
-
-	function load( $oid ) {
-		$sql = "SELECT * FROM contacts WHERE .contact_id = $oid";
-		return db_loadObject( $sql, $this );
-	}
-
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
+		$this->CDpObject( 'contacts', 'contact_id' );
 	}
 
 	function check() {
 		if ($this->contact_id === NULL) {
 			return 'contact id is NULL';
 		}
-		if (!$this->contact_private) {
-			$this->contact_private = '0';
-		}
-		$this->contact_owner = (int) $this->contact_owner;
-		// TODO MORE
+	// ensure changes of state in checkboxes is captured
+		$this->contact_private = intval( $this->contact_private );
+		$this->contact_owner = intval( $this->contact_owner );
 		return NULL; // object is ok
-	}
-
-	function store() {
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->contact_id ) {
-			$ret = db_updateObject( 'contacts', $this, 'contact_id' );
-		} else {
-			$ret = db_insertObject( 'contacts', $this, 'contact_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
-	}
-
-	function delete() {
-		$sql = "DELETE FROM contacts WHERE contact_id = $this->contact_id";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
 	}
 }
 ?>

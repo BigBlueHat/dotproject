@@ -1,6 +1,7 @@
 <?php /* $Id$ */
 $AppUI->savePlace();
 
+// retrieve any state parameters
 if (isset( $_GET['where'] )) {
 	$AppUI->setState( 'ContIdxWhere', $_GET['where'] );
 }
@@ -11,15 +12,15 @@ $orderby = 'contact_order_by';
 // Pull First Letters
 $let = ":";
 $sql = "
-SELECT DISTINCT LOWER(SUBSTRING($orderby,1,1)) as L
+SELECT DISTINCT UPPER(SUBSTRING($orderby,1,1)) as L
 FROM contacts
 WHERE contact_private=0
 	OR (contact_private=1 AND contact_owner=$AppUI->user_id)
-	OR contact_owner IS NULL
+	OR contact_owner IS NULL OR contact_owner = 0
 ";
 $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
-	$let .= $L['L'];
+    $let .= $L['L'];
 }
 
 // optional fields shown in the list (could be modified to allow breif and verbose, etc)
@@ -40,7 +41,7 @@ FROM contacts
 WHERE contact_order_by LIKE '$where%'
 	AND (contact_private=0
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
-		OR contact_owner IS NULL
+		OR contact_owner IS NULL OR contact_owner = 0
 	)
 ORDER BY $orderby
 ";
@@ -77,26 +78,28 @@ if ($rn < ($carrWidth * $carrHeight)) {
 
 $tdw = floor( 100 / $carrWidth );
 
-$a2z = $CR . '<table cellspacing="2" cellpadding="1" border="0"><tr>'
-	. $CR . '<td>' . $AppUI->_('Show').':</td>'
-	. $CR . '<td bgcolor="silver"><a href="./index.php?m=contacts&where=0">' . $AppUI->_('All').'</a></td>';
-for ($a=65; $a < 91; $a++) {
-	$cu = chr( $a );
-	$cl = chr( $a+32 );
-	$bg = strpos($let, "$cl") > 0 ? "bgcolor=\"silver\"><a href=\"./index.php?m=contacts&where=$cu\"" : '';
-	$a2z .= "\n\t<td width=\"10\" align=\"center\" $bg>$cu</a></td>";
+$a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
+$a2z .= "\n<tr>";
+$a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
+$a2z .= '<td><a href="./index.php?m=admin&where=0">' . $AppUI->_('All') . '</a></td>';
+for ($c=65; $c < 91; $c++) {
+	$cu = chr( $c );
+	$cell = strpos($let, "$cu") > 0 ?
+		"<a href=\"?m=admin&where=$cu\">$cu</a>" :
+		"<font color=\"#999999\">$cu</font>";
+	$a2z .= "\n\t<td>$cell</td>";
 }
 $a2z .= "\n</tr>\n</table>";
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
+$titleBlock->addCell( $a2z );
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',
 		'<form action="?m=contacts&a=addedit" method="post">', '</form>'
 	);
 }
-$titleBlock->addCrumbRight( $a2z );
 $titleBlock->show();
 ?>
 
