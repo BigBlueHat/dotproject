@@ -22,7 +22,7 @@ $file_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
 $q =& new DBQuery;
 
-// check if this record has dependancies to prevent deletion
+// check if this record has dependencies to prevent deletion
 $msg = '';
 $obj = new CFile();
 $canDelete = $obj->canDelete( $msg, $file_id );

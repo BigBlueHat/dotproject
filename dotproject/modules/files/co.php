@@ -14,7 +14,7 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 
 $file_parent = intval( dPgetParam( $_GET, 'file_parent', 0 ) );
 
-// check if this record has dependancies to prevent deletion
+// check if this record has dependencies to prevent deletion
 $msg = '';
 $obj = new CFile();
 

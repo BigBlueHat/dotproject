@@ -16,7 +16,7 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
 
-// check if this record has dependancies to prevent deletion
+// check if this record has dependencies to prevent deletion
 $msg = '';
 $obj = new CProject();
 // Now check if the proect is editable/viewable.

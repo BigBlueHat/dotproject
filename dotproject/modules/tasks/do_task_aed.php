@@ -66,7 +66,7 @@ if ($sub_form) {
 	if (isset($_POST['new_task_project']))
 		$obj->task_project = $_POST['new_task_project'];
 
-	// Map task_dynamic checkboxes to task_dynamic values for task dependancies.
+	// Map task_dynamic checkboxes to task_dynamic values for task dependencies.
 	if ( $obj->task_dynamic != 1 ) {
 		$task_dynamic_delay = setItem("task_dynamic_nodelay", '0');
 		if (in_array($obj->task_dynamic, $tracking_dynamics)) {

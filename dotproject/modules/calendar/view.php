@@ -5,7 +5,7 @@ $event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
 $perms =& $AppUI->acl();
 $canEdit = $perms->checkModuleItem( $m, "edit", $event_id );
 
-// check if this record has dependancies to prevent deletion
+// check if this record has dependencies to prevent deletion
 $msg = '';
 $obj = new CEvent();
 $canDelete = $obj->canDelete( $msg, $event_id );

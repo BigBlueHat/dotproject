@@ -175,7 +175,7 @@ class CDpObject {
 	}
 
 /**
- *	Generic check for whether dependancies exist for this object in the db schema
+ *	Generic check for whether dependencies exist for this object in the db schema
  *
  *	Can be overloaded/supplemented by the child class
  *	@param string $msg Error message returned

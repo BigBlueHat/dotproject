@@ -25,7 +25,7 @@ $q->addQuery('u1.user_username as username');
 $q->addQuery('ROUND(SUM(task_log_hours),2) as log_hours_worked');
 $q->addGroup('task_id');
 
-// check if this record has dependancies to prevent deletion
+// check if this record has dependencies to prevent deletion
 $msg = '';
 $obj = new CTask();
 $canDelete = $obj->canDelete( $msg, $task_id );

@@ -17,7 +17,7 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
 
-// check if this record has dependancies to prevent deletion
+// check if this record has dependencies to prevent deletion
 $msg = '';
 $obj = new CCompany();
 $canDelete = $obj->canDelete( $msg, $company_id );

@@ -134,19 +134,19 @@ class CTask extends CDpObject {
 			if ( $this->task_dynamic == '1')
 				return $AppUI->_('BadDep_DynNoDep');
 
-			$this_dependants = $this->task_id ? explode(',', $this->dependantTasks()) : array();
+			$this_dependents = $this->task_id ? explode(',', $this->dependentTasks()) : array();
 
-			// If the dependants' have parents add them to list of dependants
-			foreach ($this_dependants as $dependant) {
-				$dependant_task = new CTask();
-				$dependant_task->load($dependant);
-				if ( $dependant_task->task_id != $dependant_task->task_parent )
-					$more_dependants = explode(',', $this->dependantTasks($dependant_task->task_parent));
+			// If the dependents' have parents add them to list of dependents
+			foreach ($this_dependents as $dependent) {
+				$dependent_task = new CTask();
+				$dependent_task->load($dependent);
+				if ( $dependent_task->task_id != $dependent_task->task_parent )
+					$more_dependents = explode(',', $this->dependentTasks($dependent_task->task_parent));
 			}
-			$this_dependants = array_merge($this_dependants, $more_dependants);
+			$this_dependents = array_merge($this_dependents, $more_dependents);
 
-			// Task dependencies can not be dependant on this task
-			$intersect = array_intersect( $this_dependencies, $this_dependants );
+			// Task dependencies can not be dependent on this task
+			$intersect = array_intersect( $this_dependencies, $this_dependents );
 			if (array_sum($intersect)) {
 				$ids = "(".implode(',', $intersect).")";
 				return $AppUI->_('BadDep_CircularDep').$ids;
@@ -158,7 +158,7 @@ class CTask extends CDpObject {
 			$this_children = $this->getChildren();
 			$this_parent = new CTask();
 			$this_parent->load($this->task_parent);
-			$parents_dependants = explode(',', $this_parent->dependantTasks());
+			$parents_dependents = explode(',', $this_parent->dependentTasks());
 
 			if (in_array($this_parent->task_id, $this_dependencies))
 				return $AppUI->_('BadDep_CannotDependOnParent');
@@ -180,16 +180,16 @@ class CTask extends CDpObject {
 			} // grand parent
 
 			if ( $this_parent->task_dynamic == '1' ) {
-				$intersect = array_intersect( $this_dependencies, $parents_dependants );
+				$intersect = array_intersect( $this_dependencies, $parents_dependents );
 				if (array_sum($intersect)) {
 					$ids = "(".implode(',', $intersect).")";
-					return $AppUI->_('BadDep_CircularDepOnParentDependant').$ids;
+					return $AppUI->_('BadDep_CircularDepOnParentDependent').$ids;
 				}
 			}
 
 			if ( $this->task_dynamic == '1' ) {
-				// then task's children can not be dependant on parent
-				$intersect = array_intersect( $this_children, $parents_dependants );
+				// then task's children can not be dependent on parent
+				$intersect = array_intersect( $this_children, $parents_dependents );
 				if (array_sum($intersect))
 					return $AppUI->_('BadParent_ChildDepOnParent');
 			}
@@ -360,7 +360,7 @@ class CTask extends CDpObject {
 			if ( $this->task_dynamic == '1' )
 				$this->updateDynamics(true);
 
-			// shiftDependantTasks needs this done first
+			// shiftDependentTasks needs this done first
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
 
 			// Milestone or task end date, or dynamic status has changed,
@@ -368,7 +368,7 @@ class CTask extends CDpObject {
 			if (($this->task_end_date != $oTsk->task_end_date) ||
 			    ($this->task_dynamic != $oTsk->task_dynamic)   ||
 			    ($this->task_milestone == '1')) {
-				$this->shiftDependantTasks();
+				$this->shiftDependentTasks();
 			}
 		} else {
 			$this->_action = 'added';
@@ -904,18 +904,18 @@ class CTask extends CDpObject {
 	}
 
 	/**
-	*       retrieve tasks are dependant of another.
+	*       retrieve tasks are dependent of another.
 	*       @param  integer         ID of the master task
 	*       @param  boolean         true if is a dep call (recurse call)
 	*       @param  boolean         false for no recursion (needed for calc_end_date)
 	**/
-	function dependantTasks ($taskId = false, $isDep = false, $recurse = true) {
+	function dependentTasks ($taskId = false, $isDep = false, $recurse = true) {
 		static $aDeps = false;
 		// Initialize the dependencies array
 		if (($taskId == false) && ($isDep == false))
 			$aDeps = array();
 
-		// retrieve dependants tasks 
+		// retrieve dependents tasks 
 		if (!$taskId)
 			$taskId = $this->task_id;
 		$sql = "
@@ -930,12 +930,12 @@ class CTask extends CDpObject {
 		//$aBuf = array_values(db_loadColumn ($sql));
 
 		if ($recurse) {
-			// recurse to find sub dependants
+			// recurse to find sub dependents
 			foreach ($aBuf as $depId) {
 				// work around for infinite loop
 				if (!in_array($depId, $aDeps)) {
 					$aDeps[] = $depId;
-					$this->dependantTasks ($depId, true);
+					$this->dependentTasks ($depId, true);
 				}
 			}
 
@@ -949,33 +949,33 @@ class CTask extends CDpObject {
                        
 		return implode (',', $aDeps);
 
-	} // end of dependantTasks()
+	} // end of dependentTasks()
 
 	/*
-	 *       shift dependants tasks dates
+	 *       shift dependents tasks dates
 	 *       @param  integer         time offset in seconds 
 	 *       @return void
 	 */
-	function shiftDependantTasks () {
+	function shiftDependentTasks () {
 		// Get tasks that depend on this task
-		$csDeps = explode( ",", $this->dependantTasks('','',false));
+		$csDeps = explode( ",", $this->dependentTasks('','',false));
 
 		if ($csDeps[0] == '')
 			return;
 
-		// Stage 1: Update dependant task dates (accounting for working hours)
+		// Stage 1: Update dependent task dates (accounting for working hours)
 		foreach( $csDeps as $task_id )
 			$this->update_dep_dates( $task_id );
 
-		// Stage 2: Now shift the dependant tasks' dependants
+		// Stage 2: Now shift the dependent tasks' dependents
 		foreach( $csDeps as $task_id ) {
 			$newTask = new CTask();
 			$newTask->load($task_id);
-			$newTask->shiftDependantTasks();
+			$newTask->shiftDependentTasks();
 		}
 		return;
 
-	} // end of shiftDependantTasks()
+	} // end of shiftDependentTasks()
 
 	/*
 	 *	Update this task's dates in the DB.
