@@ -16,7 +16,7 @@ if ($denyRead) {
 }
 // Pull First Letters
 $let = ":";
-$sql = "SELECT DISTINCT LOWER(SUBSTRING(user_username, 1, 1)) FROM users";
+$sql = "SELECT DISTINCT UPPER(SUBSTRING(user_username, 1, 1)) FROM users";
 $rc = mysql_query( $sql );
 echo mysql_error();
 while ($row = mysql_fetch_row( $rc )) {
@@ -41,13 +41,14 @@ function delMe( x, y ) {
 		<table cellpadding="2" cellspacing="1" border="0">
 		<tr>
 			<td width="100%" align="right">filter: </td>
-			<td align="center" bgcolor="#cccccc"><a href="./index.php?m=admin">all</a></td>
+			<td><a href="./index.php?m=admin">all</a></td>
 <?php
 	for ($a=65; $a < 91; $a++) {
 		$cu = chr( $a );
-		$cl = chr( $a+32 );
-		$bg = strpos($let, "$cl") > 0 ? "bgcolor=\"#cccccc\"><a href=./index.php?m=admin&z=$cu" : '';
-		echo "<TD align=\"center\" $bg>$cu</A></TD>\n";
+		$cell = strpos($let, "$cu") > 0 ?
+			"<a href=\"?m=admin&z=$cu\">$cu</a>" :
+			"<font color=\"#999999\">$cu</font>";
+		echo "<td>$cell</td>";
 	}
 ?>
 		</tr>
