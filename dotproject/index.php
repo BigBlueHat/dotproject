@@ -379,6 +379,6 @@ else
 if(!$suppressHeaders) {
 	require dPrealPath("./style/$uistyle/footer.php");
 }
-echo '<iframe name="thread" src="about:blank" width="0" height="0"></iframe>';
+echo '<iframe name="thread" src="about:blank" width="0" height="0" frameborder="0"></iframe>';
 ob_end_flush();
 ?>
