@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"save & new task",
 "Access",
 "Action",
 "Active",
@@ -159,6 +158,7 @@
 "normal",
 "notifyChange"=>"Notify Assignees of Task by Email",
 "overAlloc"=>"The assignment percentage you chose runs out of user\'s free capacity. The relevant user has not been assigned.",
+"save & new task",
 "see gantt chart",
 "set priority to high",
 "set priority to low",
@@ -174,7 +174,7 @@
 "task name",
 "taskCancel"=>"Are you sure you want to cancel?",
 "taskDelete"=>"Are you sure that you would like to delete this task?",
-"taskDuration"=>"Please enter the duration of this tank",
+"taskDuration"=>"Please enter the duration of this task",
 "taskName"=>"Please enter a valid task Name",
 "taskNameExist"=>"A Root Task (First Level Task) with the same name already exists. Root tasks names should be unique. Please choose another task name.",
 "taskNotify"=>"Notify Assignees of Task by Email",
