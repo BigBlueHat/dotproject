@@ -300,7 +300,7 @@ function sort_by_item_title( $title, $item_name, $item_type )
 		echo '&task_sort_type2='.$task_sort_type1;
 		echo '&task_sort_order2='.$task_sort_order1;
 	}
-	echo '">';
+	echo '" class="hdr">';
 	
 	echo $AppUI->_($title);
 	
