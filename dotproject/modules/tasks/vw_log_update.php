@@ -16,6 +16,15 @@ if ($task_log_id) {
 	$log->task_log_name = $obj->task_name;
 }
 
+// Lets check which cost codes have been used before
+$sql = "select distinct task_log_costcode
+        from task_log
+        where task_log_costcode != ''
+        order by task_log_costcode";
+$task_log_costcodes = array(""); // Let's add a blank default option
+$task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
+
+
 if ($canEdit) {
 // Task Update Form
 	$df = $AppUI->getPref( 'SHDATEFORMAT' );
@@ -76,7 +85,10 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Cost Code');?>
 	</td>
 	<td>
-		<input type="text" class="text" name="task_log_costcode" value="<?php echo $log->task_log_costcode;?>" maxlength="8" size="8" />
+<?php
+		echo arraySelect( $task_log_costcodes, 'task_log_costcodes', 'size="1" class="text" onchange="javascript:task_log_costcode.value = this.options[this.selectedIndex].text;"', '' );
+?>
+		&nbsp;->&nbsp; <input type="text" class="text" name="task_log_costcode" value="<?php echo $log->task_log_costcode;?>" maxlength="8" size="8" />
 	</td>
 </tr>
 <tr>
