@@ -4,6 +4,7 @@ require "./includes/config.php";
 require "$root_dir/includes/db_connect.php";
 require "$root_dir/classdefs/ui.php";
 
+session_name( 'dotproject' );
 session_start();
 $AppUI =& $_SESSION['AppUI'];
 

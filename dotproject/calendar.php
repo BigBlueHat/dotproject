@@ -3,6 +3,7 @@ require_once( "./includes/config.php" );
 require_once( "$root_dir/classdefs/calendar.php" );
 require_once( "$root_dir/classdefs/ui.php" );
 
+session_name( 'dotproject' );
 session_start();
 $AppUI =& $_SESSION['AppUI'];
 
