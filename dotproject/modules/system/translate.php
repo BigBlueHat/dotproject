@@ -19,6 +19,7 @@ $modules = array(
 	'companies',
 	'forums',
 	'help',
+	'projects',
 	'system'
 );
 
