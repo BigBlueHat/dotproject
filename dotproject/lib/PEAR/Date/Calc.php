@@ -1079,7 +1079,7 @@ class Date_Calc
 
             for($counter=0; $counter <= 6; $counter++)
             {
-                $week_array[$counter] = utf8_encode(Date_Calc::daysToDate($curr_day,$format));
+                $week_array[$counter] = Date_Calc::daysToDate($curr_day,$format);
                 $curr_day++;
             }
 
