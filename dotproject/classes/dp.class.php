@@ -200,11 +200,16 @@ class CDpObject {
 		if (is_array( $joins )) {
 			$select = "$k";
 			$join = "";
+			
+			$q  = new DBQuery;
+			$q->addTable($this->_tbl);
+			$q->addWhere("$k = '".$this->$k."'");
+			$q->addGroup($k);
 			foreach( $joins as $table ) {
-				$select .= ",\nCOUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}";
-				$join .= "\nLEFT JOIN {$table['name']} ON {$table['joinfield']} = $k";
+				$q->addQuery("COUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}");
+				$q->addJoin($table['name'], $table['name'], "{$table['joinfield']} = $k");
 			}
-			$sql = "SELECT $select\nFROM $this->_tbl\n$join\nWHERE $k = ".$this->$k." GROUP BY $k";
+			$sql = $q->prepare();
 
 			$obj = null;
 			if (!db_loadObject( $sql, $obj )) {
@@ -246,8 +251,10 @@ class CDpObject {
 		}
                 
                 addHistory($this->_tbl, $this->$k, 'delete');
-		$sql = "DELETE FROM $this->_tbl WHERE $this->_tbl_key = '".$this->$k."'";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDelete($this->_tbl);
+		$q->addWhere("$this->_tbl_key = '".$this->$k."'");
+		if (!$q->exec()) {
 			return db_error();
 		} else {
 			return NULL;
@@ -348,7 +355,7 @@ class CDpObject {
 		if (isset($index)) {
 			if (! $key)
 				$key = substr($this->_tbl, 0, 2);
-			$query->leftJoin($this->_tbl, $key, "$this->_tbl_key = $index");
+			$query->leftJoin($this->_tbl, $key, "$key.$this->_tbl_key = $index");
 		}
 		if (! $perms->checkModule($this->_tbl, "view" )) {
 		  if (! count($allow)) {

@@ -1,18 +1,15 @@
 <?php /* PROJECTS $Id$ */
 GLOBAL $AppUI, $project_id;
 // Forums mini-table in project view action
-
-$sql = "
-SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, forum_message_count,
+$q  = new DBQuery;
+$q->addTable('forums');
+$q->addQuery("forum_id, forum_project, forum_description, forum_owner, forum_name, forum_message_count,
 	DATE_FORMAT(forum_last_date, '%d-%b-%Y %H:%i' ) forum_last_date,
-	project_name, project_color_identifier, project_id
-FROM forums
-LEFT JOIN projects ON project_id = forum_project
-WHERE forum_project = $project_id
-ORDER BY forum_project, forum_name
-";
-//echo "<pre>$sql</pre>";
-$rc = db_exec($sql);
+	project_name, project_color_identifier, project_id");
+$q->addJoin('projects', 'p', 'project_id = forum_project');
+$q->addWhere("forum_project = $project_id");
+$q->addOrder('forum_project, forum_name');
+$rc = $q->exec();
 ?>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">

@@ -2,15 +2,20 @@
 	global $AppUI, $project_id, $df, $canEdit, $m, $tab;
 
 	// Lets check which cost codes have been used before
-	$sql = "select distinct task_log_costcode, task_log_costcode
-        from task_log
-        where task_log_costcode != ''
-        order by task_log_costcode";
+	$q  = new DBQuery;
+	$q->addTable('task_log');
+	$q->addQuery('distinct task_log_costcode, task_log_costcode');
+	$q->addOrder('task_log_costcode');
+	$q->addWhere("task_log_costcode != ''");
 	$task_log_costcodes = array("" => ""); // Let's add a blank default option
-	$task_log_costcodes = array_merge($task_log_costcodes, db_loadHashList($sql));
+	$task_log_costcodes = array_merge($task_log_costcodes, $q->loadHashList());
 	
-	$sql = "SELECT user_id, concat(contact_first_name,' ',contact_last_name)  FROM users LEFT JOIN contacts ON user_contact = contact_id ORDER BY contact_first_name, contact_last_name";
-	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), db_loadHashList( $sql ) );
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addQuery("user_id, concat(contact_first_name,' ',contact_last_name)");
+	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+	$q->addOrder('contact_first_name, contact_last_name');
+	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), $q->loadHashList() );
 
 	$cost_code = dPgetParam( $_GET, 'cost_code' );
 	
@@ -88,29 +93,27 @@ function delIt2(id) {
 // Winnow out the tasks we are not allowed to view.
 $perms =& $AppUI->acl();
 $project =& new CProject;
-$allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'task_project');
-$limitWhere = '';
-if (count($allowedProjects))
-  $limitWhere = " AND " . implode(" AND ", $allowedProjects);
 
 // Pull the task comments
-$sql = "
-SELECT task_log.*, user_username, task_id
-FROM 
-	task_log
-	LEFT JOIN users ON user_id = task_log_creator
-	LEFT JOIN tasks ON task_log_task = tasks.task_id
-	LEFT JOIN projects ON task_project = project_id
-WHERE 
-	task_project = $project_id 
-	$limitWhere ".
-	($user_id>0?" AND task_log_creator=$user_id ":'').
-	($hide_inactive?" AND task_status>=0 ":'').
-	($hide_complete?" AND task_percent_complete < 100 ":'').
-	($cost_code != "" ? "AND task_log_costcode = '$cost_code'" : "" ).
-"ORDER BY task_log_date";
-//print "<pre>$sql</pre>";
-$logs = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('task_log');
+$q->addQuery('task_log.*, user_username, task_id');
+$q->addJoin('users', 'u', 'user_id = task_log_creator');
+$q->addJoin('tasks', 't', 'task_log_task = t.task_id');
+//already included bY the setAllowedSQL function
+//$q->addJoin('projects', 'p', 'task_project = p.project_id');
+$q->addWhere("task_project = $project_id ");
+if ($user_id>0) 
+	$q->addWhere("task_log_creator=$user_id");
+if ($hide_inactive) 
+	$q->addWhere("task_status>=0");
+if ($hide_complete) 
+	$q->addWhere("task_percent_complete < 100");
+if ($cost_code != "") 
+	$q->addWhere("task_log_costcode = '$cost_code'");
+$q->addOrder('task_log_date');
+$project->setAllowedSQL($AppUI->user_id, $q, 'task_project');
+$logs = $q->loadList();
 
 $s = '';
 $hrs = 0;

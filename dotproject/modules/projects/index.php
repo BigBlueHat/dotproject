@@ -9,11 +9,13 @@ if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && is
 	$projects_id = $_GET["project_id"]; // This must be an array
 
 	foreach($projects_id as $project_id){
-		$sql = "UPDATE projects
-		        SET project_status = '{$_GET['project_status']}'
-				WHERE project_id   = '$project_id'";
-		db_exec( $sql );
-		echo db_error();
+	echo $project_id;
+		$r  = new DBQuery;
+		$r->addTable('projects');
+		$r->addUpdate('project_status', "{$_GET['project_status']}");
+		$r->addWhere('project_id   = '.$project_id);
+		echo $r->prepare();
+		$r->exec();
 	}
 }
 // End of project status update
@@ -60,8 +62,9 @@ $obj = new CProject();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // Let's delete temproary tables
-$sql = "DROP TABLE IF EXISTS tasks_sum, tasks_summy, tasks_critical, tasks_problems";
-db_exec($sql);
+$q  = new DBQuery;
+$q->dropTemp('tasks_sum, tasks_summy, tasks_critical, tasks_problems');
+$q->exec();
 
 // Task sum table
 // by Pablo Roca (pabloroca@mvps.org)
@@ -70,58 +73,54 @@ db_exec($sql);
 $working_hours = $dPconfig['daily_working_hours'];
 
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
-$sql = "
-CREATE TEMPORARY TABLE tasks_sum
- SELECT task_project,
- COUNT(distinct task_id) AS total_tasks,
- SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
-		SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete
- FROM tasks GROUP BY task_project
-";
-
-$tasks_sum = db_exec($sql);
+$q = new DBQuery;
+$q->createTemp('tasks_sum');
+$q->addTable('tasks');
+$q->addQuery("task_project, COUNT(distinct task_id) AS total_tasks, 
+		SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
+		SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete");
+$q->addGroup('task_project');
+$tasks_sum = $q->exec();
 
 // temporary My Tasks
 // by Pablo Roca (pabloroca@mvps.org)
 // 16 August 2003
-$sql = "
-CREATE TEMPORARY TABLE tasks_summy
- SELECT task_project, COUNT(distinct task_id) AS my_tasks
- FROM tasks
- WHERE task_owner = $AppUI->user_id GROUP BY task_project
-";
-
-$tasks_summy = db_exec($sql);
+$q = new DBQuery;
+$q->createTemp('tasks_summy');
+$q->addTable('tasks');
+$q->addQuery('task_project, COUNT(distinct task_id) AS my_tasks');
+$q->addWhere("task_owner = $AppUI->user_id");
+$q->addGroup('task_project');
+$tasks_summy = $q->exec();
 
 // temporary critical tasks
-$sql = "
-CREATE TEMPORARY TABLE tasks_critical
- SELECT task_project, task_id AS critical_task, task_end_date AS project_actual_end_date
- FROM tasks
- LEFT JOIN projects ON project_id = task_project
- GROUP BY task_project
- ORDER BY task_end_date DESC
-";
-
-$tasks_critical = db_exec($sql);
+$q = new DBQuery;
+$q->createTemp('tasks_critical');
+$q->addTable('tasks');
+$q->addQuery('task_project, task_id AS critical_task, task_end_date AS project_actual_end_date');
+$q->addJoin('projects', 'p', 'p.project_id = task_project');
+$q->addOrder("task_end_date DESC");
+$q->addGroup('task_project');
+$tasks_critical = $q->exec();
 
 // temporary task problem logs
-$sql = "
-CREATE TEMPORARY TABLE tasks_problems
- SELECT task_project, task_log_problem
- FROM tasks
- LEFT JOIN task_log ON task_log_task = task_id
- WHERE task_log_problem > '0'
- GROUP BY task_project
-";
-
-$tasks_problems = db_exec($sql);
+$q = new DBQuery;
+$q->createTemp('tasks_problems');
+$q->addTable('tasks');
+$q->addQuery('task_project, task_log_problem');
+$q->addJoin('task_log', 'tl', 'tl.task_log_task = task_id');
+$q->addWhere("task_log_problem > '0'");
+$q->addGroup('task_project');
+$tasks_problems = $q->exec();
 
 if(isset($department)){
 	//If a department is specified, we want to display projects from the department, and all departments under that, so we need to build that list of departments
 	$dept_ids = array();
-	$sql = 'SELECT dept_id, dept_parent FROM departments ORDER BY dept_parent, dept_name';
-	$rows = db_loadList( $sql );
+	$q = new DBQuery;
+	$q->addTable('departments');
+	$q->addQuery('dept_id, dept_parent');
+	$q->addOrder('dept_parent,dept_name');
+	$rows = $q->loadList();
 	addDeptId($rows, $department);
 	$dept_ids[] = $department;
 }
@@ -165,21 +164,45 @@ ORDER BY $orderby $orderdir
 ";
 global $projects;
 
-$projects = db_loadList( $sql );
+$q = new DBQuery;
+$q->addTable('projects');
+$q->addQuery('projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
+	project_start_date, project_end_date, project_color_identifier, project_company, company_name, project_status,
+	project_priority, tc.critical_task, tc.project_actual_end_date, tp.task_log_problem, ts.total_tasks, tsy.my_tasks,
+	ts.project_percent_complete, user_username');
+$q->addJoin('companies', 'com', 'projects.project_company = company_id');
+$q->addJoin('users', 'u', 'projects.project_owner = u.user_id');
+$q->addJoin('tasks_critical', 'tc', 'projects.project_id = tc.task_project');
+$q->addJoin('tasks_problems', 'tp', 'projects.project_id = tp.task_project');
+$q->addJoin('tasks_sum', 'ts', 'projects.project_id = ts.task_project');
+$q->addJoin('tasks_summy', 'tsy', 'projects.project_id = tsy.task_project');
+// DO we have to include the above DENY WHERE restriction, too?
+//$q->addJoin('', '', '');
+if (isset($department)) {
+	$q->addJoin('project_departments', 'pd', 'pd.project_id = projects.project_id');
+}
+if (!isset($department) && $company_id) {
+	$q->addWhere("projects.project_company = '$company_id'");
+}
+if (isset($department)) {
+	$q->addWhere("pd.department_id in ( ".implode(',',$dept_ids)." )");
+}
+$q->addGroup('projects.project_id');
+$q->addOrder("$orderby $orderdir");
+$obj->setAllowedSQL($AppUI->user_id, $q);
+$projects = $q->loadList();
 
 // get the list of permitted companies
 $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 
 //get list of all departments, filtered by the list of permitted companies.
-$sql = "
-SELECT company_id, company_name, departments.* 
-FROM companies
-	LEFT JOIN departments ON companies.company_id = departments.dept_company
-WHERE company_id in( ".implode(',',array_keys($companies))." )
-ORDER BY company_name,dept_parent,dept_name
-";
-//echo "<pre>$sql</pre>";
-$rows = db_loadList( $sql, NULL );
+$q = new DBQuery;
+$q->addTable('companies');
+$q->addQuery('company_id, company_name, dep.*');
+$q->addJoin('departments', 'dep', 'companies.company_id = dep.dept_company');
+$q->addOrder('company_name,dept_parent,dept_name');
+$obj->setAllowedSQL($AppUI->user_id, $q);
+$rows = $q->loadList();
 
 //display the select list
 $buffer = '<select name="department" onChange="document.pickCompany.submit()" class="text">';

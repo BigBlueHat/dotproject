@@ -205,8 +205,10 @@ class dPacl extends gacl_api {
 		// If not we can only see ourselves.
 		global $AppUI;
 		$canViewUsers = $this->checkModule('users', 'view');
-    $sql = "select user_id from users";
-    $res = db_exec($sql);
+    $q  = new DBQuery;
+    $q->addTable('users');
+    $q->addQuery('user_id');
+    $res = $q->exec();
     $userlist = array();
     while ($row = db_fetch_row($res)) {
       if ( ($canViewUsers && $this->isUserPermitted($row[0], $module))
@@ -216,12 +218,13 @@ class dPacl extends gacl_api {
     //  Now format the userlist as an assoc array.
     $result = array();
     if (count($userlist)) { // No point querying if there is no valid user.
-      $sql = "select user_id, concat_ws(' ', contact_first_name, contact_last_name)
-        from users
-				left join contacts on contact_id = user_contact
-				where user_id in (". implode(',', $userlist). ")
-	order by contact_first_name";
-      return db_loadHashList($sql);
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name)');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+	$q->addWhere("user_id in (". implode(',', $userlist). ")");
+	$q->addOrder('contact_first_name');
+      return $q->loadHashList();
     }
     return $result;
   }

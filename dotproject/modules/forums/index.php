@@ -21,8 +21,6 @@ $f = dPgetParam( $_POST, 'f', 0 );
 $forum =& new CForum;
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
-$allow1 = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
-$allow2 = $forum->getAllowedRecords($AppUI->user_id, 'forum_id, forum_name');
 
 $max_msg_length = 30;
 $q  = new DBQuery;
@@ -41,11 +39,12 @@ $q->addJoin('forum_messages', 'c', 'c.message_forum = forum_id');
 $q->addJoin('forum_watch', 'w', "watch_user = $AppUI->user_id AND watch_forum = forum_id");
 $q->addJoin('forum_visits', 'v', "visit_user = $AppUI->user_id AND visit_forum = forum_id");
 
+$project->setAllowedSQL($AppUI->user_id, $q);
+$forum->setAllowedSQL($AppUI->user_id, $q);
+
+
 $sql = "user_id = forum_owner
-	AND project_id = forum_project "
-.(count($allow1) > 0 ? "\nAND ( forum_project IN (" . implode( ',', array_keys($allow1) ) . ') OR forum_project = 0 )' : '')
-.(count($allow2) > 0 ? "\nAND forum_id IN (" . implode( ',', array_keys($allow2) ) . ')' : '')
-;
+	AND project_id = forum_project ";
 
 switch ($f) {
 	case 1:

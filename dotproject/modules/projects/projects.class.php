@@ -55,13 +55,14 @@ class CProject extends CDpObject {
                 $obj = parent::load($oid, $strip);
                 if ($oid)
                 {
-                        $sql = "SELECT
-                                        SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete) / 
+			$q = new DBQuery;
+			$q->addTable('projects');
+			$q->addQuery('SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete) / 
                                         SUM(t1.task_duration*t1.task_duration_type) 
-                                        AS project_percent_complete
-                                FROM projects
-                                LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-                                WHERE project_id = $oid";
+                                        AS project_percent_complete');
+			$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+			$q->addWhere(" project_id = $oid");
+			$sql = $q->prepare();
                         $obj->project_percent_complete = db_loadResult($sql);
                         $this->project_percent_complete = db_loadResult($sql);
                 }
@@ -89,19 +90,41 @@ class CProject extends CDpObject {
 	function delete() {
                 $this->load($this->project_id);
 		addHistory('projects', $this->project_id, 'delete', $this->project_name, $this->project_id);
-                $sql = "SELECT task_id FROM tasks WHERE task_project = $this->project_id";
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('task_id');
+		$q->addWhere("task_project = $this->project_id");
+		$sql = $q->prepare();
 		$tasks_to_delete = db_loadColumn ( $sql );
 		foreach ( $tasks_to_delete as $task_id ) {
-			db_delete( 'user_tasks', 'task_id', $task_id );
-			db_delete( 'task_dependencies', 'dependencies_req_task_id', $task_id );
+			$q = new DBQuery;
+			$q->setDelete('user_tasks');
+			$q->addWhere('task_id ='.$task_id);
+			$q->exec();
+			$q = new DBQuery;
+			$q->setDelete('task_dependencies');
+			$q->addWhere('dependencies_req_task_id ='.$task_id);
+			$q->exec();
 		}
-		db_delete( 'tasks', 'task_project', $this->project_id );
+		$q = new DBQuery;
+		$q->setDelete('tasks');
+		$q->addWhere('task_project ='.$this->project_id);
+		$q->exec();
 
 		// remove the project-contacts and project-departments map
-		db_delete( 'project_contacts', 'project_id', $this->project_id );
-		db_delete( 'project_departments', 'project_id', $this->project_id );
-
-                if (!db_delete( 'projects', 'project_id', $this->project_id )) {
+		$q = new DBQuery;
+		$q->setDelete('project_contacts');
+		$q->addWhere('project_id ='.$this->project_id);
+		$q->exec();
+		$q = new DBQuery;
+		$q->setDelete('project_departments');
+		$q->addWhere('project_id ='.$this->project_id);
+		$q->exec();
+		$q = new DBQuery;
+		$q->setDelete('projects');
+		$q->addWhere('project_id ='.$this->project_id);
+		
+                if (!$q->exec()) {
 			return db_error();
 		} else {
 			return NULL;
@@ -118,8 +141,11 @@ class CProject extends CDpObject {
 		// Load the original
 		$origProject = new CProject ();
 		$origProject->load ($from_project_id);
-		$sql = "SELECT task_id FROM tasks WHERE task_project = $from_project_id";
-
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('task_id');
+		$q->addWhere('task_project ='.$from_project_id);
+		$sql = $q->prepare();
 		$tasks = array_flip(db_loadColumn ($sql));
 
 		$origDate = new CDate( $origProject->project_start_date );
@@ -239,9 +265,12 @@ class CProject extends CDpObject {
 		// Retrieve which projects are allowed due to the company rules 
 		$aCpiesAllowed = $oCpy->getAllowedRecords ($uid, "company_id,company_name");
 		
-		$sql = "SELECT project_id FROM projects ";
-		if (count($aCpiesAllowed))
-		   $sql .= "WHERE NOT (project_company IN (" . implode (',', array_keys($aCpiesAllowed)) . '));';
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addQuery('project_id');
+		If (count($aCpiesAllowed))
+			$q->addWhere("NOT (project_company IN (" . implode (',', array_keys($aCpiesAllowed)) . '))');
+		$sql = $q->prepare();
 		$aBuf2 = db_loadColumn ($sql);
 		
 		return array_merge ($aBuf1, $aBuf2); 
@@ -255,12 +284,13 @@ class CProject extends CDpObject {
         */
         function getCriticalTasks($project_id = NULL, $limit = 1) {
                 $project_id = !empty($project_id) ? $project_id : $this->project_id;
-                $sql = "SELECT * FROM tasks
-                        WHERE task_project = $project_id
-                        AND !isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'
-                        ORDER BY task_end_date DESC
-                        LIMIT $limit";
-                return db_loadList($sql);
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addWhere("task_project = $project_id AND !isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'");
+		$q->addOrder('task_end_date DESC');
+		$q->setLimit($limit);
+
+                return $q->loadList();
         }
 
 	function store() {
@@ -279,27 +309,37 @@ class CProject extends CDpObject {
 		}
 		
 		//split out related departments and store them seperatly.
-		$sql = 'DELETE FROM project_departments WHERE project_id='.$this->project_id;
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->setDelete('project_departments');
+		$q->addWhere('project_id='.$this->project_id);
+		$q->exec();
                 if ($this->project_departments)
                 {
         		$departments = explode(',',$this->project_departments);
         		foreach($departments as $department){
-        			$sql = 'INSERT INTO project_departments (project_id, department_id) values ('.$this->project_id.', '.$department.')';
-        			db_exec( $sql );
+				$q = new DBQuery;
+				$q->addTable('project_departments');
+				$q->addInsert('project_id', $this->project_id);
+				$q->addInsert('department_id', $department);
+				$q->exec();
         		}
                 }
 		
 		//split out related contacts and store them seperatly.
-		$sql = 'DELETE FROM project_contacts WHERE project_id='.$this->project_id;
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->setDelete('project_contacts');
+		$q->addWhere('project_id='.$this->project_id);
+		$q->exec();
                 if ($this->project_contacts)
                 {
         		$contacts = explode(',',$this->project_contacts);
         		foreach($contacts as $contact){
 							if ($contact) {
-								$sql = 'INSERT INTO project_contacts (project_id, contact_id) values ('.$this->project_id.', '.$contact.')';
-								db_exec( $sql );
+								$q = new DBQuery;
+								$q->addTable('project_contacts');
+								$q->addInsert('project_id', $this->project_id);
+								$q->addInsert('contact_id', $contact);
+								$q->exec();
 							}
         		}
                 }

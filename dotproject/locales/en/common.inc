@@ -166,6 +166,7 @@
 "Welcome",
 "Yes",
 "You have not removed your install directory, this is a major security risk!",
+"You must have cookies enabled in your browser",
 "Zip",
 "Zip Code",
 "add",

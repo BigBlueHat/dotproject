@@ -145,7 +145,7 @@ function submitIt(){
         $uis = $prefs['UISTYLE'] ? $prefs['UISTYLE'] : 'default';
 	$styles = $AppUI->readDirs( 'style' );
 	$temp = $AppUI->setWarning( false );
-	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', $uis, true );
+	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', $uis, true , true);
 	$AppUI->setWarning( $temp );
 ?>
 	</td>

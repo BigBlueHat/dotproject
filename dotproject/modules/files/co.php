@@ -53,9 +53,6 @@ $extra = array(
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
 $projects = arrayMerge( array( '0'=>$AppUI->_('All') ), $projects );
-
-//$sql = "SELECT project_id, project_name  FROM projects ORDER BY project_name";
-//$projects = arrayMerge( array( '0'=>'- ALL PROJECTS -'), db_loadHashList( $sql ) );
 ?>
 
 <table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">

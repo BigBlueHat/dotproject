@@ -137,31 +137,35 @@ function dPgetConfig( $key, $default = null ) {
 
 function dPgetUsername( $user )
 {
-        $sql = 'SELECT contact_first_name, contact_last_name
-                FROM users LEFT JOIN contacts ON contact_id = user_contact
-                WHERE user_username like \'' . $user . '\' OR user_id = \'' . $user . "'";
-        $r = db_loadList($sql);
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addQuery('contact_first_name, contact_last_name');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+	$q->addWhere('user_username like \'' . $user . '\' OR user_id = \'' . $user . "'");
+        $r = $q->loadList();
         return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
 }
 
 function dPgetUsernameFromID( $user )
 {
-        $sql = 'SELECT contact_first_name, contact_last_name
-                FROM users LEFT JOIN contacts ON contact_id = user_contact
-                WHERE user_id = \'' . $user . "'";
-        $r = db_loadList($sql);
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addQuery('contact_first_name, contact_last_name');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+	$q->addWhere('user_id = \'' . $user . "'");
+        $r = $q->loadList();
         return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
 }
 
 function dPgetUsers()
 {
 global $AppUI;
-        $usersql = "
-        SELECT user_id, concat(contact_first_name,' ',contact_last_name) as name
-        FROM users
-        LEFT JOIN contacts ON user_contact = contact_id
-        ORDER by contact_last_name,contact_first_name";
-        return arrayMerge( array( 0 => $AppUI->_('All Users') ), db_loadHashList( $usersql ) );
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name) as name');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+	$q->addOrder('contact_last_name,contact_first_name');
+        return arrayMerge( array( 0 => $AppUI->_('All Users') ), $q->loadHashList() );
 }
 ##
 ## displays the configuration array of a module for informational purposes
@@ -272,17 +276,26 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 	if(!$dPconfig['log_changes']) return;
 	$description = str_replace("'", "\'", $description);
 	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
-	$qid = db_exec($hsql);
+	$q  = new DBQuery;
+	$q->addTable('modules');
+	$q->addWhere("mod_name = 'History' and mod_active = 1");
+	$qid = $q->exec();
 
 	if (! $qid || db_num_rows($qid) == 0) {
 	  $AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
 	  return;
 	}
 
-	$psql =	"INSERT INTO history " .
-			"( history_action, history_item, history_description, history_user, history_date, history_project, history_table ) " .
-	  		" VALUES ( '$action', $id, '$description', " . $AppUI->user_id . ", now(), '$project_id', '$table' )";
-	db_exec($psql);
+	$q  = new DBQuery;
+	$q->addTable('history');
+	$q->addInsert('history_action', $action);
+	$q->addInsert('history_item', $id);
+	$q->addInsert('history_description', $description);
+	$q->addInsert('history_user', $AppUI->user_id);
+	$q->addInsert('history_date', "now()");
+	$q->addInsert('history_project', $project_id);
+	$q->addInsert('history_table', $table);
+	$q->exec();
 	echo db_error();
 }
 
@@ -290,12 +303,11 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 ## Looks up a value from the SYSVALS table
 ##
 function dPgetSysVal( $title ) {
-	$sql = "
-	SELECT syskey_type, syskey_sep1, syskey_sep2, sysval_value
-	FROM sysvals,syskeys
-	WHERE sysval_title = '$title'
-		AND syskey_id = sysval_key_id
-	";
+	$q  = new DBQuery;
+	$q->addTable('sysvals, syskeys');
+	$q->addQuery('syskey_type, syskey_sep1, syskey_sep2, sysval_value');
+	$q->addWhere("sysval_title = '$title' AND syskey_id = sysval_key_id");
+	$sql = $q->prepare();
 	db_loadHash( $sql, $row );
 // type 0 = list
 	$sep1 = $row['syskey_sep1'];	// item separator
@@ -331,7 +343,12 @@ function dPuserHasRole( $name ) {
 	global $AppUI;
 	$uid = $AppUI->user_id;
 	$sql = "SELECT r.role_id FROM roles AS r,user_roles AS ur WHERE ur.user_id=$uid AND ur.role_id=r.role_id AND r.role_name='$name'";
-	return db_loadResult( $sql );
+	$q  = new DBQuery;
+	$q->addTable('roles', 'r');
+	$q->addTable('user_roles', 'ur');
+	$q->addQuery('r.role_id');
+	$q->addWhere("ur.user_id=$uid AND ur.role_id=r.role_id AND r.role_name='$name'");
+	return $q->loadResult();
 }
 
 function dPformatDuration($x) {
@@ -581,12 +598,12 @@ function showFVar(&$var, $title = ""){
 }
 
 function getUsersArray(){
-    $usersql = "SELECT user_id, user_username, contact_first_name, contact_last_name
-                FROM users
-                LEFT JOIN contacts ON contact_id = user_contact
-                ORDER by contact_first_name, contact_last_name";
-    
-    return db_loadHashList($usersql, "user_id");
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+	$q->addOrder('contact_first_name, contact_last_name');
+    return $q->loadHashList("user_id");
     
 }
 

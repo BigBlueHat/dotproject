@@ -15,25 +15,24 @@ if (!$canRead) {
 $obj = new CProject();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
                                                                                 
-$sql = "
-SELECT
-        project_id, project_active, project_status, project_name, project_description, project_short_name
-FROM permissions,projects
-WHERE permission_user = $AppUI->user_id
+$q = new DBQuery;
+$q->addTable('projects');
+$q->addTable('permissions');
+$q->addQuery('project_id, project_active, project_status, project_name, project_description, project_short_name');                     
+$q->addWhere("permission_user = $AppUI->user_id
         AND permission_value <> 0
         AND (
                 (permission_grant_on = 'all')
                 OR (permission_grant_on = 'projects' AND permission_item = -1)
                 OR (permission_grant_on = 'projects' AND permission_item = project_id)
-                )".
-(count($deny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-."
-GROUP BY project_id
-ORDER BY project_short_name
-";
-                                                                                
+                )");
+if (count($deny) > 0) {
+	$q->addWhere("project_id NOT IN (" . implode( ',', $deny ) . ')');
+}
+$q->addGroup('project_id');
+$q->addOrder('project_short_name');
 $project_list=array("0"=> $AppUI->_("All", UI_OUTPUT_RAW) );
-$ptrc = db_exec($sql);
+$ptrc = $q->exec();
 $nums=db_num_rows($ptrc);
 echo db_error();
 for ($x=0; $x < $nums; $x++) {
