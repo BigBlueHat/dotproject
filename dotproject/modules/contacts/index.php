@@ -148,8 +148,10 @@ $titleBlock->show();
 		<table width="100%" cellspacing="1" cellpadding="1">
 		<tr>
 			<td width="100%">
-				<a href="./index.php?m=contacts&a=addedit&contact_id=<?php echo $carr[$z][$x]["contact_id"];?>"><strong><?php echo $carr[$z][$x]["contact_order_by"];?></strong></a>&nbsp;
-				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href='./index.php?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?php echo $carr[$z][$x]["contact_id"];?>' >(vCard)</a>
+                                <? $contactid = $carr[$z][$x]['contact_id']; ?>
+				<a href="./index.php?m=contacts&a=view&contact_id=<?= $contactid ?>"><strong><?php echo $carr[$z][$x]["contact_order_by"];?></strong></a>&nbsp;
+				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?= $contactid ?>" >(vCard)</a>
+                                &nbsp;<a title="<?= $AppUI->_('Edit') ?>" href="?m=contacts&a=addedit&contact_id=<?= $contactid ?>"><?= $AppUI->_('Edit') ?></a>
 			</td>
 		</tr>
 		<tr>
