@@ -85,6 +85,21 @@ class CDate
 		return strftime( $format ? $format : $this->format, $this->getTimestamp() );
 	}
 
+	// since = reference timestamp
+	function toAgo() {
+		GLOBAL $AppUI;
+
+		$since = abs( $this->compareTo( new CDate() ) );
+		if ($since < 3600) {
+			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $since/60 );
+		} else if ($since < 48*3600) {
+			$str = sprintf( "%d ".$AppUI->_( 'hours' ), $since/3600 );
+		} else {
+			$str = sprintf( "%d ".$AppUI->_( 'days' ), $since/(24*3600) );
+		}
+		return sprintf($AppUI->_('%s ago'), $str);
+	}
+
 	function toSQL()
 	{
 		return strftime( FMT_DATEMYSQL, $this->getTimestamp() );
