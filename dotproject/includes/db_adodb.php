@@ -58,7 +58,7 @@ function db_exec( $sql ) {
 	if ($msg = db_error())
         {
                 global $AppUI;
-                dprint(__FILE__, __LINE__, 7, "Error executing: <pre>$sql</pre>");
+                dprint(__FILE__, __LINE__, 0, "Error executing: <pre>$sql</pre>");
 		// Useless statement, but it is being executed only on error, 
 		// and it stops infinite loop.
 		$db->Execute( $sql );
@@ -101,7 +101,15 @@ function db_fetch_assoc( &$qid ) {
 function db_fetch_array( &$qid  ) {
 	if (! is_object($qid))
 	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_fetch_array");
-        return $qid->FetchRow();
+        $result = $qid->FetchRow();
+	// Ensure there are numerics in the result.
+	if ($result && ! isset($result[0])) {
+	  $ak = array_keys($result);
+	  foreach ($ak as $k => $v) {
+	    $result[$k] = $result[$v];
+	  }
+	}
+	return $result;
 }
 
 function db_fetch_object( $qid  ) {
