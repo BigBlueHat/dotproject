@@ -1,4 +1,4 @@
-<?php
+<?php /* CLASSDEFS $Id$ */
 /*
 	Date class
 	provides an object oriented way to manipulate date and time
@@ -70,8 +70,7 @@ class CDate
 	 */
 	function fromDatetime( $datetime )
 	{
-		if( ! preg_match( "/^(\d{4})-?(\d{2})-?(\d{2}).(\d{2}):?(\d{2}):?(\d{2})(.?)$/", $datetime, $a ) )
-		{
+		if( ! preg_match( "/^(\d{4})-?(\d{2})-?(\d{2}).?(\d{2}):?(\d{2}):?(\d{2})(.?)$/", $datetime, $a ) ) {
 			return NULL;
 		}
 		$obj = new CDate();
