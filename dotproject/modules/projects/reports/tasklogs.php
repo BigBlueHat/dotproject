@@ -3,15 +3,15 @@
 * Generates a report of the task logs for given dates
 */
 error_reporting( E_ALL );
-$do_report = dPgetParam( $_POST, "do_report", 0 );
-$log_all = dPgetParam( $_POST, 'log_all', 0 );
-$log_pdf = dPgetParam( $_POST, 'log_pdf', 0 );
-$log_ignore = dPgetParam( $_POST, 'log_ignore', 0 );
-$log_userfilter = dPgetParam( $_POST, 'log_userfilter', '0' );
-$log_allprojects = dPgetParam( $_POST, 'log_allprojects', '0' );
+$do_report = dPgetParam( $_GET, "do_report", 0 );
+$log_all = dPgetParam( $_GET, 'log_all', 0 );
+$log_pdf = dPgetParam( $_GET, 'log_pdf', 0 );
+$log_ignore = dPgetParam( $_GET, 'log_ignore', 0 );
+$log_userfilter = dPgetParam( $_GET, 'log_userfilter', '0' );
+$log_allprojects = dPgetParam( $_GET, 'log_allprojects', '0' );
 
-$log_start_date = dPgetParam( $_POST, "log_start_date", 0 );
-$log_end_date = dPgetParam( $_POST, "log_end_date", 0 );
+$log_start_date = dPgetParam( $_GET, "log_start_date", 0 );
+$log_end_date = dPgetParam( $_GET, "log_end_date", 0 );
 
 // create Date objects from the datetime fields
 $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();
@@ -46,7 +46,9 @@ function setCalendar( idate, fdate ) {
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 
-<form name="editFrm" action="index.php?m=projects&a=reports" method="post">
+<form name="editFrm" action="" method="GET">
+<input type="hidden" name="m" value="projects" />
+<input type="hidden" name="a" value="reports" />
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
