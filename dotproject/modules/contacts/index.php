@@ -53,28 +53,34 @@ $company =& new CCompany;
 $allowedCompanies = $company->getAllowedSQL($AppUI->user_id);
 
 // assemble the sql statement
-$sql = "SELECT contact_id, contact_order_by, ";
-foreach ($showfields as $val) {
-	$sql.="$val,";
-}
-$sql.= "contact_first_name, contact_last_name, contact_phone
-FROM contacts
-LEFT JOIN companies ON contact_company = companies.company_id
-WHERE (contact_order_by LIKE '$where%' $additional_filter)
-	AND (contact_private=0
+$q = new DBQuery;
+$q->addQuery('contact_id, contact_order_by');
+$q->addQuery($showfields);
+$q->addQuery('contact_first_name, contact_last_name, contact_phone');
+$q->addTable('contacts', 'a');
+$q->leftJoin('companies', 'b', 'a.contact_company = b.company_id');
+$q->addWhere("(contact_order_by LIKE '$where%' $additional_filter)");
+$q->addWhere("
+	(contact_private=0
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
 		OR contact_owner IS NULL OR contact_owner = 0
-	)
-" . (count($allowedCompanies) > 0 ? implode(' AND ', $allowedCompanies) : '') .  "
-ORDER BY $orderby
-";
+	)");
+if (count($allowedCompanies))
+$q->addWhere($allowedCompanies);
+$q->addOrder('contact_order_by');
 
 $carr[] = array();
 $carrWidth = 4;
 $carrHeight = 4;
 
+$sql = $q->prepare();
 $res = db_exec( $sql );
-$rn = db_num_rows( $res );
+if ($res)
+	$rn = db_num_rows( $res );
+else {
+	echo db_error();
+	$rn = 0;
+}
 
 $t = floor( $rn / $carrWidth );
 $r = ($rn % $carrWidth);
