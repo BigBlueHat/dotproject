@@ -45,12 +45,12 @@ class CForum {
 			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
 			if($this->forum_name) {
 				// when adding messages, this functon is called without first setting 'forum_name'
-				addHistory("Updated forum '" . $this->forum_name . "'");
+				addHistory('forums_update(' . $this->forum_id . ', '. $this->forum_name . ')');
 			}
 		} else {
 			$this->forum_create_date = db_datetime( time() );
 			$ret = db_insertObject( 'forums', $this, 'forum_id' );
-			addHistory('forum_add(' . $this->forum_id . ', ' . $this->forum_name . ')');
+			addHistory('forums_add(' . $this->forum_id . ', ' . $this->forum_name . ')');
 		}
 		if( !$ret ) {
 			return "CForum::store failed <br />" . db_error();
@@ -68,7 +68,7 @@ class CForum {
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
-			addHistory('forum_delete('. $this->forum_name . ')');
+			addHistory('forums_delete('. $this->forum_name . ')');
 			return NULL;
 		}
 	}
