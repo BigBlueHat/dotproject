@@ -2,6 +2,7 @@
 // Add / Edit forum
 $message_id = isset( $_GET['message_id'] ) ? $_GET['message_id'] : 0;
 $message_parent = isset( $_GET['message_parent'] ) ? $_GET['message_parent'] : -1;
+$forum_id = dPgetParam($_REQUEST, 'forum_id', 0);
 
 //Pull forum information
 $q  = new DBQuery;
@@ -11,7 +12,7 @@ $q->addQuery('forum_name, forum_owner, forum_moderated, project_name, project_id
 $q->addWhere("forums.forum_id = $forum_id");
 $q->addWhere('forums.forum_project = projects.project_id');
 $res = $q->exec();
-$forum_info = db_fetch_assoc( $res );
+$forum_info = $q->fetchRow();
 echo db_error();
 
 //pull message information
@@ -19,10 +20,10 @@ $q  = new DBQuery;
 $q->addTable('forum_messages');
 $q->addQuery('forum_messages.*, user_username');
 $q->addJoin('users', 'u', 'message_author = u.user_id');
-$q->addWhere('message_id = '.$message_id ? $message_id : $message_parent);
+$q->addWhere('message_id = '. ($message_id ? $message_id : $message_parent));
 $res = $q->exec();
 echo db_error();
-$message_info = db_fetch_assoc($res);
+$message_info = $q->fetchRow();
 
 //pull message information from last response 
 if ($message_parent != -1)
@@ -34,7 +35,7 @@ if ($message_parent != -1)
 	$q->addOrder('forum_messages.message_id DESC'); // fetch last message first
 	$res = $q->exec();
     echo db_error();
-    $last_message_info = db_fetch_assoc($res);
+    $last_message_info = $q->fetchRow();
     if (!$last_message_info) { // if it's first response, use original message
         $last_message_info =& $message_info;
         $last_message_info["message_body"] = wordwrap(@$last_message_info["message_body"], 50, "\n> ");
@@ -117,8 +118,7 @@ function orderByName(x){
 </tr>
 <?php
 if ($message_parent>=0) {	//check if this is a reply-post; if so, printout the original message
-$date = new CDate();
-$date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : null;
+$date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : new CDate();
 ?>
 
 <tr><td align="right"><?php echo $AppUI->_('Author') ?>:</td><td align="left"><?php echo dPgetUsername($message_info['user_username']) ?> (<?php echo $date->format( "$df $tf" );?>)</td></tr>
