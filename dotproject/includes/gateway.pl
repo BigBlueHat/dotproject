@@ -504,8 +504,8 @@ sub mail_report {
     $boundary = "_lkqwkASDHASK89271893712893"; 
 
     # check for possible mail loops
-    if ( $report_to_address == $report_from_address
-    || $author == $report_from_address ) {
+    if ( $report_to_address eq $report_from_address
+    || $author eq $report_from_address ) {
       print("Mail loop detected, not sending report\n");
       return;
     }
@@ -612,7 +612,7 @@ sub mail_acknowledgement {
     $boundary = "_lkqwkASDHASK89271893712893"; 
 
     # Check for mail loops.
-    if ( $author == $report_to_address || $author == $report_from_address) {
+    if ( $author eq $report_to_address || $author eq $report_from_address) {
       print("Detected mail loop, not sending acknowledgment\n");
       return;
     }
