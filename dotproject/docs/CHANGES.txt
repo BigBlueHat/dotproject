@@ -99,5 +99,63 @@ modules/tasks/index.php
 
 modules/tasks/addedit.php
 - added code to auto-populate taks parent
--------------------------------------------------------------------------------
 
+-------------------------------------------------------------------------------
+Update by Andrew Eddie 11 August 2002
+This update includes a reqork of the security model. Security is loaded once in
+includes/permissions.php rather than also in any subsequent module. This
+provides a much more portable method of determining module level permissions
+and cut down on multiple calls to the permissions table.
+Companies and Contacts have been included as test modules in this update. Other
+modules will be included when thoroughly tested.
+Caveat: this method does not check for the case of deny-all as this is the
+assumed default condition.
+
+index.php
+- formatting changes
+
+dosql/aed_post.php
+- encode html special characters in message field
+
+includes/login.php
+- added draft logo/brand
+
+includes/permissions.php
+- rework permissions model (all user permissions loaded itno an array for use 
+  by leftnav and module)
+
+includes/leftnav.php
+- rework permissions
+
+modules/admin/permissions
+- fixed bug when editting individual permission (module and item not properly 
+  selected)
+
+modules/admin/dosql.php
+- encode html special characters in message field
+- update security model for return page
+
+modules/companies/index.php
+- rework permissions
+
+modules/companies/view.php
+- rework permissions
+
+modules/companies/addedit.php
+- rework permissions
+
+modules/help/access_denied.php
+- new page (and denied permissions bounce to this page)
+
+modules/tasks/view.php
+- top align comment cell
+
+modules/contacts/index.php
+- optimise code
+- rework $showfield array handling
+- add permissions
+
+modules/contacts/addedit.php
+- add permissions
+
+-------------------------------------------------------------------------------
