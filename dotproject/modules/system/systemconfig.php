@@ -59,7 +59,7 @@ foreach ($rs as $c) {
 			<td class='item' width='20%'>".$AppUI->_($c['config_name'].'_title')."</td>
             		<td align='left'>
 				$entry
-				<a href='#' onClick=\"javascript:window.open('?m=system&a=systemconfig_help&dialog=1&cn={$c['config_name']}', 'contexthelp', 'width=400, height=200, left=50, top=50, scrollbars=yes, resizable=yes')\">(?)</a>
+				<a href='#' onClick=\"javascript:window.open('?m=system&a=systemconfig_help&dialog=1&cn={$c['config_name']}', 'contexthelp', 'width=400, height=200, left=50, top=50, scrollbars=yes, resizable=yes')\" $tooltip>(?)</a>
 				<input class='button' type='hidden'  name='dPcfgId[{$c['config_name']}]' value='{$c['config_id']}' />
 			</td>
         </tr>
