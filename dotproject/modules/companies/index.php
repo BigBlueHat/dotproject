@@ -71,14 +71,15 @@ $owner_combo = arraySelect($owner_list, "owner_filter_id", "class='text' onchang
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
-$titleBlock->addCell("<strong>".$AppUI->_('Search').":</strong>");
 $titleBlock->addCell("<form name='searchform' action='?m=companies&amp;search_string=$search_string' method='post'>
 						<table>
 							<tr>
-                      			<td><input class='text' type='text' name='search_string' value='$search_string' /><br />
+                      			<td>
+                                    <strong>".$AppUI->_('Search')."</strong>
+                                    <input class='text' type='text' name='search_string' value='$search_string' /><br />
 						<a href='index.php?m=companies&search_string=-1'>".$AppUI->_("Reset search")."</a></td>
-								<td>
-									".$AppUI->_("Owner filter")." $owner_combo
+								<td valign='top'>
+									<strong>".$AppUI->_("Owner filter")."</strong> $owner_combo
 								</td>
 							</tr>
 						</table>
