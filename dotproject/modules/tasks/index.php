@@ -37,7 +37,7 @@ $filters2 = arrayMerge(  array( 'all' => $AppUI->_('All Companies') ), $companie
 // setup the title block
 $titleBlock = new CTitleBlock( 'Tasks', 'applet-48.png', $m, "$m.$a" );
 
-$titleBlock->addCell( $AppUI->_('Company Filter') . ':' );
+$titleBlock->addCell( $AppUI->_('Company') . ':' );
 $titleBlock->addCell(
 	arraySelect( $filters2, 'f2', 'size=1 class=text onChange="document.companyFilter.submit();"', $f2, false ), '',
 	'<form action="?m=tasks" method="post" name="companyFilter">', '</form>'
@@ -49,9 +49,23 @@ $titleBlock->addCell(
 	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>'
 );
 
+// patch 2.12.04 text to search entry box
+if (isset( $_POST['searchtext'] )) {
+	$AppUI->setState( 'searchtext', $_POST['searchtext']);
+}
+
+$search_text = $AppUI->getState('searchtext') ? $AppUI->getState('searchtext'):'';
+$titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Search') . ':' );
+$titleBlock->addCell(
+	'<input type="text" class="text" SIZE="10" name="searchtext" onChange="document.searchfilter.submit();" value=' . "'$search_text'" .
+	'title="'. $AppUI->_('Search in name and description fields') . '"/>
+       	<!--<input type="submit" class="button" value=">" title="'. $AppUI->_('Search in name and description fields') . '"/>-->', '',
+	'<form action="?m=tasks" method="post" id="searchfilter">', '</form>'
+);
+
 // Let's see if this user has admin privileges
 if(!getDenyRead("admin")){
-	$titleBlock->addCell("Tasks for:");
+	$titleBlock->addCell( $AppUI->_("User") . ":" );
 	
 	$sql = "select user_id, user_username
 	        from users";

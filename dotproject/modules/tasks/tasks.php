@@ -40,9 +40,11 @@ $join = winnow( 'projects', 'project_id', $where );
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
-	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete
+	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete,
+	company_name
 FROM projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project" .
+" LEFT JOIN companies ON company_id = project_company" .
 $join .
 "WHERE $where GROUP BY project_id
 ORDER BY project_name
@@ -62,19 +64,35 @@ while ($row = db_fetch_assoc( $prc )) {
 $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
-task_description, task_owner, user_username, task_milestone
+task_description, task_owner, usernames.user_username, task_milestone,
+assignees.user_username as assignee_username, count(assignees.user_id) as assignee_count
 ";
 
 $from = "tasks";
 $join = "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
+// patch 2.12.04 show assignee and count
+$join .= " LEFT JOIN user_tasks ut ON ut.task_id = tasks.task_id";
+$join .= " LEFT JOIN users as assignees ON assignees.user_id = ut.user_id";
+
 $where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
 
 switch ($f) {
 	case 'all':
 		break;
+	case 'myfinished7days':		
+		$where .= " AND user_tasks.user_id = $user_id";
+	case 'allfinished7days':	// patch 2.12.04 tasks finished in the last 7 days
+		$from .= ", user_tasks";
+		$where .= "
+			AND task_project             = projects.project_id
+			AND user_tasks.task_id       = tasks.task_id
+			AND task_percent_complete    = '100'
+		        AND task_end_date >= '" . date("Y-m-d 00:00:00", mktime(0, 0, 0, date("m"), date("d")-7, date("Y"))) . "'";
+		break;		
 	case 'children':
-		$where .= "\n	AND task_parent = $task_id AND task_id != $task_id";	
+	// patch 2.13.04 2, fixed ambigious task_id
+		$where .= "\n	AND task_parent = $task_id AND tasks.task_id != $task_id";	
 		break;
 	case 'myproj':
 		$where .= "\n	AND project_owner = $user_id";
@@ -86,21 +104,24 @@ switch ($f) {
 		$from .= ", user_tasks";
 		// This filter checks all tasks that are not already in 100% 
 		// and the project is not on hold nor completed
+		// patch 2.12.04 finish date required to be consider finish
 		$where .= "
 					AND task_project             = projects.project_id
 					AND user_tasks.user_id       = $user_id
 					AND user_tasks.task_id       = tasks.task_id
-					AND task_percent_complete    < '100'
+					AND (task_percent_complete    < '100' OR task_end_date = '')
 					AND projects.project_active  = '1'
 					AND projects.project_status != '4'
 					AND projects.project_status != '5'";
 		break;
 	case 'allunfinished':
+		// patch 2.12.04 finish date required to be consider finish
+		// patch 2.12.04 2, also show unassigned tasks
 		$from .= ", user_tasks";
 		$where .= "
 					AND task_project             = projects.project_id
-					AND user_tasks.task_id       = tasks.task_id
-					AND task_percent_complete    < '100'
+					AND (user_tasks.task_id      = tasks.task_id OR assignees.user_username IS NULL)
+					AND (task_percent_complete    < '100' OR task_end_date = '')
 					AND projects.project_active  = '1'
 					AND projects.project_status != '4'
 					AND projects.project_status != '5'";
@@ -130,6 +151,10 @@ else
 
 $where .= "\n	AND task_status = '$task_status'";
 
+// patch 2.12.04 text search
+$search_text = $AppUI->getState('searchtext') ? $AppUI->getState('searchtext'):'';
+$where .= "\n AND (task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )";
+
 // filter tasks considering task and project permissions
 $projects_filter = '';
 $tasks_filter = '';
@@ -147,7 +172,9 @@ if ( ! $min_view && $f2 != 'all' ) {
          $where .= "\nAND company_id = $f2  ";
 }
 
+// patch 2.12.04 ADD GROUP BY clause for assignee count
 $tsql = "SELECT $select FROM $from $join WHERE $where" .
+  "\nGROUP BY task_id" .
   "\nORDER BY project_id, task_start_date";
 
 //echo "<pre>$tsql</pre>";
@@ -239,7 +266,7 @@ function showtask( &$a, $level=0 ) {
 	}
 // task owner
 	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
-	$s .= '<td nowrap="nowrap" align=left>';
+	$s .= '<td align=left>';
 	if ( $assigned_users = $a['task_assigned_users'] ) {
 		$a_u_tmp_array = array();
 		foreach ( $assigned_users as $val) {
@@ -251,6 +278,7 @@ function showtask( &$a, $level=0 ) {
 	$s .= '</td>';
 	
 // start date
+// patch 2.12.04 show time
 //	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->getDate( ) : '-').'</td>';
 // duration or milestone
@@ -379,7 +407,8 @@ reset( $projects );
 foreach ($projects as $k => $p) {
 	$tnums = count( @$p['tasks'] );
 // don't show project if it has no tasks
-	if ($tnums) {
+// patch 2.12.04, show project if it is the only project in view
+	if ($tnums > 0 || $project_id == $p['project_id']) {
 //echo '<pre>'; print_r($p); echo '</pre>';
 		if (!$min_view) {
 ?>
@@ -392,9 +421,10 @@ foreach ($projects as $k => $p) {
 	<td colspan="8">
 		<table width="100%" border="0">
 		<tr>
+			<!-- patch 2.12.04 display company name next to project name -->
 			<td nowrap style="border: outset #eeeeee 2px;background-color:#<?php echo @$p["project_color_identifier"];?>">
 				<a href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
-				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><strong><?php echo @$p["project_name"];?></strong></span></a>
+				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><strong><?php echo @$p["company_name"].' :: '.@$p["project_name"];?></strong></span></a>
 			</td>
 			<td width="<?php echo (101 - intval(@$p["project_percent_complete"]));?>%">
 				<?php echo (intval(@$p["project_percent_complete"]));?>%

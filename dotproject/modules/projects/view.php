@@ -83,6 +83,21 @@ $actual_end_date = intval( $obj->project_actual_end_date ) ? new CDate( $obj->pr
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Project', 'applet3-48.png', $m, "$m.$a" );
+
+// patch 2.12.04 text to search entry box
+if (isset( $_POST['searchtext'] )) {
+	$AppUI->setState( 'searchtext', $_POST['searchtext']);
+}
+
+$search_text = $AppUI->getState('searchtext') ? $AppUI->getState('searchtext'):'';
+$titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Search') . ':' );
+$titleBlock->addCell(
+	'<input type="text" class="text" SIZE="10" name="searchtext" onChange="document.searchfilter.submit();" value=' . "'$search_text'" .
+	'title="'. $AppUI->_('Search in name and description fields') . '"/>
+       	<!--<input type="submit" class="button" value=">" title="'. $AppUI->_('Search in name and description fields') . '"/>-->', '',
+	'<form action="?m=projects&a=view&project_id='.$project_id.'" method="post" id="searchfilter">', '</form>'
+);
+
 if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
