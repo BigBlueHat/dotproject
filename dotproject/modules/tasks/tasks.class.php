@@ -451,6 +451,7 @@ class CTask extends CDpObject {
 			}
 		}
 
+		// delete children
 		$sql = "SELECT * FROM tasks WHERE task_parent = $this->task_id";
 		$children_taks = db_loadHashList($sql, "task_id");
 		
@@ -462,7 +463,15 @@ class CTask extends CDpObject {
 		          $this->_action ='deleted whit childs';
 		      }
 		}
-	
+
+		// delete affiliated task_logs
+		$sql = "DELETE FROM task_log WHERE task_log_task = $this->task_id";
+  		if (!db_exec( $sql )) {
+			return db_error();
+		 }else{
+		          $this->_action ='deleted';
+		 }
+
 		 return NULL;
 	}
 
