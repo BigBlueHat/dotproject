@@ -142,7 +142,7 @@ $mods = $AppUI->getActiveModules();
 if (!empty($mods['history']) && !getDenyRead('history'))
 {
         $select .= ", history_date as last_update";
-        $join = "LEFT JOIN history ON history_id = tasks.task_id AND history_table='tasks' ";
+        $join = "LEFT JOIN history ON history_item = tasks.task_id AND history_table='tasks' ";
 }
 $join .= "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
