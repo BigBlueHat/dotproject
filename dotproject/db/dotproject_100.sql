@@ -236,8 +236,7 @@ CREATE TABLE task_log (
   `task_log_date` DATETIME,
   `task_log_costcode` VARCHAR(8) NOT NULL default '',
   PRIMARY KEY  (task_log_id),
-  KEY idx_log_task (task_log_task),
-  KEY idx_log_parent (task_log_parent)
+  KEY idx_log_task (task_log_task)
 ) TYPE=MyISAM;
 
 CREATE TABLE tasks (
