@@ -1,6 +1,6 @@
 <?php
 
-$files = $AppUI->readFiles( $AppUI->getConfig( 'root_dir' )."./modules/smartsearch/searchobjects", "\.php$" );
+$files = $AppUI->readFiles( $AppUI->getConfig( 'root_dir' )."/modules/smartsearch/searchobjects", "\.php$" );
 
 require_once( $AppUI->getModuleClass('smartsearch') );
 ?>
