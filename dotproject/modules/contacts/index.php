@@ -1,11 +1,4 @@
-<?php
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* $Id$ */
 $AppUI->savePlace();
 
 if (isset( $_GET['where'] )) {
@@ -17,7 +10,13 @@ $orderby = 'contact_order_by';
 
 // Pull First Letters
 $let = ":";
-$sql = "SELECT DISTINCT LOWER(SUBSTRING($orderby,1,1)) as L FROM contacts";
+$sql = "
+SELECT DISTINCT LOWER(SUBSTRING($orderby,1,1)) as L
+FROM contacts
+WHERE contact_private=0
+	OR (contact_private=1 AND contact_owner=$AppUI->user_id)
+	OR contact_owner IS NULL
+";
 $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
 	$let .= $L['L'];
@@ -39,6 +38,10 @@ foreach ($showfields as $val) {
 $sql.= "contact_first_name, contact_last_name, contact_phone
 FROM contacts
 WHERE contact_order_by LIKE '$where%'
+	AND (contact_private=0
+		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
+		OR contact_owner IS NULL
+	)
 ORDER BY $orderby
 ";
 
@@ -74,39 +77,30 @@ if ($rn < ($carrWidth * $carrHeight)) {
 
 $tdw = floor( 100 / $carrWidth );
 
+$a2z = $CR . '<table cellspacing="2" cellpadding="1" border="0"><tr>'
+	. $CR . '<td>' . $AppUI->_('Show').':</td>'
+	. $CR . '<td bgcolor="silver"><a href="./index.php?m=contacts&where=0">' . $AppUI->_('All').'</a></td>';
+for ($a=65; $a < 91; $a++) {
+	$cu = chr( $a );
+	$cl = chr( $a+32 );
+	$bg = strpos($let, "$cl") > 0 ? "bgcolor=\"silver\"><a href=\"./index.php?m=contacts&where=$cu\"" : '';
+	$a2z .= "\n\t<td width=\"10\" align=\"center\" $bg>$cu</a></td>";
+}
+$a2z .= "\n</tr>\n</table>";
+
+// setup the title block
+$titleBlock = new CTitleBlock( 'Companies', 'contacts.gif', $m, "$m.$a" );
+if ($canEdit) {
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',
+		'<form action="?m=contacts&a=addedit" method="post">', '</form>'
+	);
+}
+$titleBlock->addCrumbRight( $a2z );
+$titleBlock->show();
 ?>
 
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-	<td><img src="./images/icons/contacts.gif" alt="" border="0"></td>
-	<td nowrap><h1><?php echo $AppUI->_('Contacts');?></h1></td>
-	<td align="right" width="100%">
-	<?php if (!$denyEdit) { ?>
-		<input type="button"  class=button value="<?php echo $AppUI->_('new contact');?>" onClick="javascript:window.location='./index.php?m=contacts&a=addedit'"></td>
-	<?php } ?>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_CONT_IDX' );?></td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="2" cellspacing="1">
-<tr>
-	<td width="100%" align="right"><?php echo $AppUI->_('Show');?>:</td>
-	<td align="center" bgcolor="silver"><a href="./index.php?m=contacts&where=0"><?php echo $AppUI->_('All');?></a></td>
-<?php
-	for ($a=65; $a < 91; $a++) {
-		$cu = chr( $a );
-		$cl = chr( $a+32 );
-		$bg = strpos($let, "$cl") > 0 ? "bgcolor=silver><a href=./index.php?m=contacts&where=$cu" : '';
-		echo "<td align=center $bg>$cu</a></td>\n";
-	}
-?>
-</tr>
-<tr>
-	<td height="3"><img src="./images/shim.gif" width="1" height="1" border="0" alt=""></td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="1" cellspacing="1" height="400" class="contacts">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" height="400" class="contacts">
 <tr>
 <?php 
 	for ($z=0; $z < $carrWidth; $z++) {

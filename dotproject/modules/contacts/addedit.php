@@ -10,21 +10,32 @@ if ($denyEdit) {
 }
 
 //Pull contact information
-$sql = "Select * from contacts where contacts.contact_id = $contact_id";
-db_loadHash( $sql, $contact );
+$sql = "SELECT * FROM contacts WHERE contacts.contact_id=$contact_id";
 
-$crumbs = array();
-$crumbs["?m=contacts"] = "contacts list";
+if (!db_loadHash( $sql, $contact ) && $contact_id > 0) {
+	$titleBlock = new CTitleBlock( 'Invalid Contact ID', 'contacts.gif', $m, "$m.$a" );
+	$titleBlock->addCrumb( "?m=contacts", "contacts list" );
+	$titleBlock->show();
+} else {
+// check only owner can edit
+	if ($contact['contact_private'] && $contact['contact_owner'] != $AppUI->user_id
+		 && $contact['contact_owner'] && $contact_id != 0) {
+		$AppUI->redirect( "m=public&a=access_denied" );
+	}
+
+// setup the title block
+	$ttl = $contact_id > 0 ? "Edit Contact" : "Add Contact";
+	$titleBlock = new CTitleBlock( $ttl, 'contacts.gif', $m, "$m.$a" );
+	$titleBlock->addCrumb( "?m=contacts", "contacts list" );
+	if ($canDelete) {
+		$titleBlock->addCrumbRight(
+			'<a href="javascript:delIt()">'
+				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
+				. $AppUI->_('delete contact') . '</a>'
+		);
+	}
+	$titleBlock->show();
 ?>
-<style type="text/css">
-	table.details {
-		background-color: #aaaaaa;
-	}
-	table.details td {
-		background-color: #f0f0f0;
-	}
-</style>
-
 <script language="javascript">
 function submitIt() {
 	var form = document.changecontact;
@@ -57,23 +68,7 @@ function orderByName( x ){
 }
 </script>
 
-<table border=0 cellpadding="0" cellspacing="1" width="98%">
-<tr>
-	<td width="44"><img src="./images/icons/contacts.gif" alt="" border="0"></td>
-	<td width="100%"><h1><?php echo $AppUI->_(($contact_id > 0) ? "Edit Contact" : "New Contact" ); ?></h1></td>
-	<td>&nbsp;</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_PROJ_EDIT' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" nowrap="nowrap"><A href="javascript:delIt()"><?php echo $AppUI->_('delete contact');?><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this contact" border="0"></a></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
 <form name="changecontact" action="?m=contacts" method="post">
 	<input type="hidden" name="dosql" value="do_contact_aed" />
@@ -208,3 +203,4 @@ function orderByName( x ){
 </tr>
 </form>
 </table>
+<?php } ?>
