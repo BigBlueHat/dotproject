@@ -13,11 +13,10 @@ $trans = isset( $HTTP_POST_VARS['trans'] ) ? $HTTP_POST_VARS['trans'] : 0;
 
 // save to core locales if a translation exists there, otherwise save
 // into the module's local locale area
-
-if ( file_exists( "{$dPconfig['root_dir']}/locales/$lang/$module.inc" ) ) {
-	$filename = "{$dPconfig['root_dir']}/locales/$lang/$module.inc";
+if ( file_exists( dpRealPath( "{$dPconfig['root_dir']}/locales/$lang/$module.inc") ) ) {
+	$filename = dpRealPath( "{$dPconfig['root_dir']}/locales/$lang/$module.inc" );
 } else {
-	$filename = "{$dPconfig['root_dir']}/modules/$module/locales/$lang.inc";
+	$filename = dpRealPath( "{$dPconfig['root_dir']}/modules/$module/locales/$lang.inc" );
 }
 
 $fp = fopen ($filename, "wt");
