@@ -166,13 +166,18 @@ if ($do_db || $do_db_cfg) {
   dPmsg("Applying data modifications");
   // Check for an upgrade script and run it if necessary.
   $to_version = str_replace(array('-', '.'), '', $current_version);
-  if (file_exists("$baseDir/db/upgrade_to_{$to_version}.php")) {
-   include_once "$baseDir/db/upgrade_to_{$to_version}.php";
-   $code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
+  if ($last_version != $current_version) {
+	  if (file_exists("$baseDir/db/upgrade_to_{$to_version}.php")) {
+		 include_once "$baseDir/db/upgrade_to_{$to_version}.php";
+		 
+		 $code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
+		}
   } else if (file_exists("$baseDir/db/upgrade_latest.php")) {
    include_once "$baseDir/db/upgrade_latest.php";
    $code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
-  }
+  } else {
+		dPmsg("No data updates required");
+	}
  } else {
   include_once "$baseDir/db/upgrade_permissions.php"; // Always required on install.
  }
