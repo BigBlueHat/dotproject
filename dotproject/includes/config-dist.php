@@ -110,7 +110,7 @@ $dPconfig['locale_alert'] = '^';
 $dPconfig['daily_working_hours'] = 8.0;
 
 // set debug = true to help analyse errors
-$dPconfig['debug'] = false;
+$dPconfig['debug'] = 1;
 
 // set to true if you need to be able to relink tickets to
 // an arbitrary parent.  Useful for email-generated tickets,

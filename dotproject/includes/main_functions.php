@@ -438,4 +438,37 @@ function formatCurrency( $number, $format ) {
 	return $result;
 }
 
+function format_backtrace($bt, $file, $line, $msg)
+{
+  echo "<pre>\n";
+  echo "ERROR: $file($line): $msg\n";
+  echo "Backtrace:\n";
+  foreach ($bt as $level => $frame) {
+    echo "$level $frame[file]:$frame[line] $frame[function](";
+    $in = false;
+    foreach ($frame['args'] as $arg) {
+      if ($in)
+	echo ",";
+      else
+	$in = true;
+      echo var_export($arg, true);
+    }
+    echo ")\n";
+  }
+}
+
+function dprint($file, $line, $level, $msg)
+{
+  global $dPconfig;
+  $max_level = 0;
+  $max_level = (int)$dPconfig['debug'];
+  if ($level <= $max_level) {
+    error_log("$file($line): $msg");
+    if ($level == 0 && $max_level > 0 && version_compare(phpversion(), "4.3.0") >=0 ) {
+      format_backtrace(debug_backtrace(), $file, $line, $msg);
+    }
+  }
+}
+
+
 ?>

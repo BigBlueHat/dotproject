@@ -29,55 +29,76 @@ function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port
 
 function db_error() {
         global $db;
+	if (! is_object($db))
+	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 	return $db->ErrorMsg();
 }
 
 function db_errno() {
         global $db;
+	if (! is_object($db))
+	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 	return $db->ErrorNo();
 }
 
 function db_insert_id() {
         global $db;
+	if (! is_object($db))
+	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 	return $db->Insert_ID();
 }
 
 function db_exec( $sql ) {
         global $db;
 
+	if (! is_object($db))
+	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 //        echo "Executing $sql";
 	$qid = $db->Execute( $sql );
+	dprint(__FILE__, __LINE__, 7, $sql);
 	//if( !$qid ) {
 	//	return false;
 	//}
 	return $qid;
 }
 
-function db_free_result( $cur ) {
+function db_free_result($cur ) {
         // TODO
         //	mysql_free_result( $cur );
         // Maybe it's done my Adodb
-        ;
+	if (! is_object($cur))
+	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_free_result");
+        $cur->Close();
 }
 
 function db_num_rows( $qid ) {
+	if (! is_object($qid))
+	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_num_rows");
 	return $qid->RecordCount();
         //return $db->Affected_Rows();
 }
 
 function db_fetch_row( &$qid ) {
+	if (! is_object($qid))
+	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_fetch_row");
 	return $qid->FetchRow();
 }
 
 function db_fetch_assoc( &$qid ) {
+	if (! is_object($qid))
+	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_fetch_assoc");
         return $qid->FetchRow();
 }
 
 function db_fetch_array( &$qid  ) {
+	if (! is_object($qid))
+	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_fetch_array");
         return $qid->FetchRow();
 }
 
 function db_fetch_object( $qid  ) {
+	if (! is_object($qid))
+	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_fetch_object");
 	return $qid->FetchNextObject(false);
 }
 
