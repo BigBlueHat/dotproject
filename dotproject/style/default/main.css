@@ -21,9 +21,6 @@ TD {
 TR {
 	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
 }
-FormButton {
-	FONT-FAMILY: Verdana,sans-serif; FONT-SIZE: 9pt; WIDTH: 110px
-}
 
 .title {
 	font-size: 18pt; size: 18pt;
@@ -32,13 +29,8 @@ FormButton {
 	font-size: 12pt; size: 12pt;
 }
 
-bordertable{
+bordertable {
 	border: 1px black solid;
-}
-
-button{
-	border: 1px black solid;
-	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
 }
 
 .bordertable{
@@ -47,13 +39,15 @@ button{
 
 .button{
  border: 1px black solid;
- FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt;
+ font-family: verdana,Sans-Serif;
+ font-size: 8pt;
  width: 100px;
 }
 
 .text{
  border: 1px black solid;
- FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt;
+ font-family: verdana,Sans-Serif;
+ font-size: 8pt;
  height: 20px;
 }
 
@@ -90,6 +84,7 @@ TD.nav {
 TABLE.tbl {
 	background: #ffffff;
 }
+
 TABLE.tbl TH {
 	background-color: #878676;
 	color: white;
@@ -98,6 +93,7 @@ TABLE.tbl TH {
 	border: outset #D1D1CD 1px;
 	font-weight: normal;
 }
+
 TABLE.tbl TD {
 	background-color: #f4efe3;
 }
@@ -113,6 +109,13 @@ TABLE.std TH {
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 }
+
+/* links in header blocks */
+A.hdr:link, A.hdr:active, A.hdr:visited {
+	color: #ffffff;
+}
+
+/* tabbed boxes */
 TD.tabon {
 	background: #ffffff;
 	border-top: outset #cccccc 2px;
@@ -136,26 +139,11 @@ TD.tabox {
 	border-bottom: solid #cccccc 2px;
 }
 
-.mboxhdr {
-   background-color: #878676;
-	color: white;
-	list-style-type: disc;
-	list-style-position: inside;
-	border: outset #D1D1CD 1px;
-}
-.headergr{   background-color: #878676;   color: white;   list-style-type: disc;   list-style-position: inside;border: outset #eeeeee 1px;
-}
-.newmsg{
-   background-color: #dddddd;
-}
-.graybg{
-   background-color: #f4efe3;
+.textarea{
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: 9pt;
 }
 
-.textarea{
-		FONT-FAMILY: verdana,Sans-Serif;
-		FONT-SIZE: 9pt;
-}
 /* Message styles */
 .warning {
 	color: #ff6600;
@@ -171,4 +159,79 @@ TD.tabox {
 .no_ {
 	color: #ff0000;
 	font-weight: bold;
+}
+
+/* popup calendar */
+body.popcal {
+	background-color: #f0f0f0;
+}
+
+table.popcal {
+	background-color: #cccccc;
+}
+
+table.popcal th {
+	background-color: #ffffff;
+	color: #000000;
+	font-family: helvetica,arial,sans-serif;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+table.popcal td {
+	background-color: #e0e0e0;
+	font-family: helvetica,arial,sans-serif;
+	font-size: 8pt;
+	text-align: center;
+}
+
+table.popcal td.poppad {
+	background-color: #efefe7;
+}
+
+table.popcal td.popmonth {
+	background-color: #ffffff;
+	color: #000000;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+table.popcal td.poparrows {
+	background-color: #ffffff;
+}
+
+table.popcal td.poppad {
+	background-color: #efefe7;
+}
+
+table.popcal td.poptoday {
+	background-color: #cccccc;
+}
+
+table.popcal td.popweekend {
+	background-color: #eeeeee;
+}
+
+table.popcal a:link,
+table.popcal a:visited {
+	color: #0000ff;
+	text-decoration: none;
+}
+
+table.popcal a.poptoday:link,
+table.popcal a.poptoday:visited {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+table.popcal a.popweekend:link,
+table.popcal a.popweekend:visited {
+	color: #777777;
+}
+
+a.popcallinks:link,
+a.popcallinks:visited {
+	font-family: verdana,helvetica,arial,sans-serif;
+	color: #000099;
+	font-size: 8pt;
 }

@@ -1,0 +1,238 @@
+BODY {
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 10pt;
+}
+A:link {
+	color : BLUE;
+	text-decoration: none;
+}
+A:visited {
+	color : BLUE;
+	text-decoration: none;
+}
+A:active {
+	color : BLUE;
+	text-decoration: none;
+}
+
+TD {
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+}
+
+TR {
+	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+}
+
+.title {
+	font-size: 18pt; size: 18pt;
+}
+.subtitle {
+	font-size: 12pt; size: 12pt;
+}
+
+bordertable {
+	border: 1px black solid;
+}
+
+.bordertable{
+ border: 1px black solid;
+}
+
+.button{
+ border: 1px black solid;
+ font-family: verdana,Sans-Serif;
+ font-size: 8pt;
+ width: 100px;
+}
+
+.text{
+ border: 1px black solid;
+ font-family: verdana,Sans-Serif;
+ font-size: 8pt;
+ height: 20px;
+}
+
+/*
+**********************************
+Begin IE TD buttonizing
+**********************************
+*/
+
+TD.clsBtnUp {
+    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+}
+
+TD.clsBtnDown {
+    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+}
+
+TD.clsBtnOn {
+    cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
+}
+
+TD.clsBtnOff {
+    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #559999 2px;
+}
+
+TD.topBtnOff {
+    color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
+}
+TD.nav {
+	color: #FFFFFF;
+}
+
+/* Standard table 'spreadsheet' style */
+TABLE.tbl {
+	background: #a5cbf7;
+}
+
+TABLE.tbl TH {
+	background-color: #08245b;
+	color: #ffffff;
+	list-style-type: disc;
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+	font-weight: normal;
+}
+
+TABLE.tbl TD {
+	background-color: #ffffff;
+}
+
+TABLE.std {
+	border: solid #08245b 2px;
+	background: #d6ebff;
+}
+TABLE.std TH {
+	background-color: #878676;
+	color: white;
+	list-style-type: disc;
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+}
+
+/* links in header blocks */
+A.hdr:link, A.hdr:active, A.hdr:visited {
+	color: #ffffff;
+}
+
+/* tabbed boxes */
+TD.tabon {
+	background: #a5cbf7;
+	border-top: outset #cccccc 2px;
+	border-left: outset #cccccc 2px;
+	border-right: outset #cccccc 2px;
+	border-bottom: none;
+}
+TD.taboff {
+	background: #d6ebff;
+	border-top: outset #cccccc 2px;
+	border-left: outset #cccccc 2px;
+	border-right: outset #cccccc 2px;
+	border-bottom: solid #cccccc 2px;
+}
+TD.tabsp {
+	border-bottom: solid #cccccc 2px;
+}
+TD.tabox {
+	background-color: #a5cbf7;
+	border-left: solid #cccccc 2px;
+	border-right: solid #cccccc 2px;
+	border-bottom: solid #cccccc 2px;
+}
+
+.textarea{
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: 9pt;
+}
+
+/* Message styles */
+.warning {
+	color: #ff6600;
+}
+.error {
+	color: #ff0000;
+}
+.message {
+	color: #006600;
+	font-weight: bold;
+}
+
+.no_ {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+/* popup calendar */
+body.popcal {
+	background-color: #f0f0f0;
+}
+
+table.popcal {
+	background-color: #cccccc;
+}
+
+table.popcal th {
+	background-color: #ffffff;
+	color: #000000;
+	font-family: helvetica,arial,sans-serif;
+	font-size: 9pt;
+	font-weight: normal;
+}
+
+table.popcal td {
+	background-color: #e0e0e0;
+	font-family: helvetica,arial,sans-serif;
+	font-size: 8pt;
+	text-align: center;
+}
+
+table.popcal td.poppad {
+	background-color: #efefe7;
+}
+
+table.popcal td.popmonth {
+	background-color: #ffffff;
+	color: #000000;
+	font-size: 10pt;
+	font-weight: bold;
+}
+
+table.popcal td.poparrows {
+	background-color: #ffffff;
+}
+
+table.popcal td.poppad {
+	background-color: #efefe7;
+}
+
+table.popcal td.poptoday {
+	background-color: #cccccc;
+}
+
+table.popcal td.popweekend {
+	background-color: #eeeeee;
+}
+
+table.popcal a:link,
+table.popcal a:visited {
+	color: #0000ff;
+	text-decoration: none;
+}
+
+table.popcal a.poptoday:link,
+table.popcal a.poptoday:visited {
+	color: #ff0000;
+	font-weight: bold;
+}
+
+table.popcal a.popweekend:link,
+table.popcal a.popweekend:visited {
+	color: #777777;
+}
+
+a.popcallinks:link,
+a.popcallinks:visited {
+	font-family: verdana,helvetica,arial,sans-serif;
+	color: #000099;
+	font-size: 8pt;
+}
