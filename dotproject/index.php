@@ -340,8 +340,19 @@ if (! isset($_SESSION['all_tabs'][$m]) && !( $_GET['m'] == 'install' && $dPrunLe
 			// Get the name as the subextension
 			// cut the module_tab. and the .php parts of the filename 
 			// (begining and end)
-			$name = substr($tab, strlen($m) + 5, -4);
-			$all_tabs[ucfirst(str_replace('_',' ',$name))] = substr($dPconfig['root_dir'] . '/modules/' . $dir. '/' . $tab, 0, -4);
+			$nameparts = explode('.', $tab);
+			$filename = substr($tab, 0, -4);
+			if (count($nameparts) > 3) {
+				$file = $nameparts[1];
+				if (! isset($all_tabs[$file]))
+					$all_tabs[$file] = array();
+				$arr =& $all_tabs[$file];
+				$name = $nameparts[2];
+			} else {
+				$arr =& $all_tabs;
+				$name = $nameparts[1];
+			}
+			$arr[ucfirst(str_replace('_', ' ', $name))] = $dPconfig['root_dir'] . '/modules/' . $dir. '/' . $filename;
 		}
 	}
 } else {
