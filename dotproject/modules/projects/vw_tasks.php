@@ -24,8 +24,9 @@ SELECT
 	task_order
 FROM tasks, user_tasks
 WHERE task_project = $project_id
-	AND user_tasks.user_id = $AppUI->user_id
+#	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id
+GROUP BY tasks.task_id
 ORDER BY task_order
 ";
 //echo "<pre>$tsql</pre>";
