@@ -95,6 +95,7 @@
 "Organize Tasks",
 "Orphaned Tasks",
 "Other Contacts...",
+"Other resources",
 "Overdue",
 "P",
 "Parent Task",
