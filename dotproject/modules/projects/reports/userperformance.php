@@ -180,6 +180,7 @@ if($do_report){
 			
 			if($total_hours_allocated > 0 || $total_hours_worked > 0){
 				$percentage = 0;
+				$percentage_e = 0;
 				if($total_hours_worked>0){
 					$percentage = ($total_hours_worked/$total_hours_allocated)*100;
 					$percentage_e = ($hours_allocated_complete/$hours_worked_complete)*100;
