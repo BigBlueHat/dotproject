@@ -1,3 +1,30 @@
+2004-08-09 10:57  (cyberhorse)
+---------------------------------
+index.php
+modules/files/tasks_tab.files.php
+modules/tasks/view.php
+- Added automatic tabs loading in modules from other modules.
+- To include tabs from offering modules, include this after you've created a tab pannel $tabBox:
+- foreach($all_tabs as $name => $tab)
+-         $tabBox->add($tab, $name);
+- 
+- the $all_tabs array is created in index.php and stores all tabs for other modules. Actually, it can be used for the current module as well.
+- 
+- The tabs that are automatically inserted have names as follows:
+- $module_to_be_inserted_in . '_tab.anyname_you_like_for_a_title.php';
+- 
+- For an example, look the bottom of the modules/tasks/view.php file and the modules/files/tasks_tab.files.php files.
+
+2004-08-09 05:13  (cyberhorse)
+---------------------------------
+modules/system/addeditpref.php
+- Added an extra date format.
+
+2004-08-08 04:10  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-07 19:43  (gregorerhardt)
 ---------------------------------
 modules/files/do_file_aed.php
@@ -471,33 +498,6 @@ modules/files/index.php
 modules/files/index_table.php
 - Added files categories tabs to the files module - controlled by a sysval
 
-2004-07-14 12:24  (cyberhorse)
----------------------------------
-db/upgrade_latest.sql
-- Inserted default system values to be used for the file categorization
-
-2004-07-14 12:02  (cyberhorse)
----------------------------------
-db/upgrade_latest.sql
-- add support for file categories into the database
-
-2004-07-14 06:34  (ajdonnison)
----------------------------------
-modules/admin/vw_usr_perms.php
-- Fixed problem with fatal error when no user permissions exist.
-
-2004-07-14 06:32  (ajdonnison)
----------------------------------
-includes/config-dist.php
-includes/db_adodb.php
-includes/main_functions.php
-- New graduated debugging including backtrace on PHP 4.3 or greater.
-
-2004-07-14 04:36  (ajdonnison)
----------------------------------
-docs/about.html
-docs/index.html
-docs/install.html
 ...
 
 (This file has been wrapped)
