@@ -129,7 +129,12 @@ else
 				<?php echo dPcontextHelp( 'Help' );?> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
-	if (!getDenyRead( 'calendar' )) {
+	if ($perms->checkModule('tasks', 'access')) {
+?>
+				<b><a href="./index.php?m=tasks&a=todo"><?php echo $AppUI->_('Todo');?></a></b> |
+<?php
+}
+	if ($perms->checkModule( 'calendar', 'access' )) {
 		$now = new CDate();
 ?>
 				<a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |
