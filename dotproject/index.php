@@ -32,6 +32,10 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING );
 
+// If you experience a 'white screen of death' or other problems,
+// uncomment the following line of code:
+//error_reporting( E_ALL );
+
 // required includes for start-up
 $dPconfig = array();
 require_once( "./includes/config.php" );
@@ -43,6 +47,9 @@ $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
 
 // manage the session variable(s)
 session_name( 'dotproject' );
+if (get_cfg_var( 'session.auto_start' ) > 0) {
+	session_write_close();
+}
 session_start();
 session_register( 'AppUI' ); 
   
@@ -111,11 +118,6 @@ if ($AppUI->doLogin()) {
 	@include_once( "./locales/core.php" );
 	setlocale( LC_TIME, $AppUI->user_locale );
 
-	// output the character set header
-	if (isset( $locale_char_set )) {
-		 header("Content-type: text/html;charset=$locale_char_set");
-	}
-
 	$AppUI->savePlace();
 	require "./style/$uistyle/login.php";
 	// destroy the current session and output login page
@@ -144,13 +146,6 @@ $canDelete = $canEdit;
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
 @include_once( "./locales/core.php" );
 setlocale( LC_TIME, $AppUI->user_locale );
-
-if ( !$suppressHeaders ) {
-	// output the character set header
-	//if (isset( $locale_char_set )) {
-	//	header("Content-type: text/html;charset=$locale_char_set");
-	//}
-}
 
 // bounce the user if they don't have at least read access
 // however, the public module is accessible by anyone
