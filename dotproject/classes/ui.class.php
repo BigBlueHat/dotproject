@@ -631,7 +631,7 @@ class CTabBox_core {
 			}
 		}
 
-		if ($this->active < 0 && @$AppUI->getPref( 'TABVIEW' ) != 2 ) {
+		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
 		// flat view, active = -1
 			echo '<table border="0" cellpadding="2" cellspacing="0" width="100%">';
 			foreach ($this->tabs as $v) {
