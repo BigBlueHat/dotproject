@@ -11,6 +11,8 @@ if ($denyEdit) {
 	$AppUI->redirect( 'm=help&a=access_denied' );
 }
 
+require_once( "$root_dir/classdefs/date.php" );
+
 // load the preferences
 $sql = "
 SELECT pref_name, pref_value
@@ -99,13 +101,28 @@ function submitIt(){
 	<td align="right"><?php echo $AppUI->_('Short Date Format');?>:</td>
 	<td>
 <?php
-	$formats = array(
-		"%d/%m/%Y"=>"dd/mm/yyyy   31/12/2002",
-		"%d/%b/%Y"=>"dd/mmm/yyyy  31/Dec/2002",
-		"%m/%d/%Y"=>"mm/dd/yyyy   12/31/2002",
-		"%b/%d/%Y"=>"mmm/dd/yyyy  Dec/31/2002"
-	);
-	echo arraySelect( $formats, 'pref_name[SHDATEFORMAT]', 'class=text size=1', @$prefs['SHDATEFORMAT'], false );
+	// exmample date
+	$ex = new CDate();
+
+	$dates = array();
+	$f = "%d/%m/%Y"; $dates[$f]	= $ex->toString( $f );
+	$f = "%d/%b/%Y"; $dates[$f]	= $ex->toString( $f );
+	$f = "%m/%d/%Y"; $dates[$f]	= $ex->toString( $f );
+	$f = "%b/%d/%Y"; $dates[$f]	= $ex->toString( $f );
+	echo arraySelect( $dates, 'pref_name[SHDATEFORMAT]', 'class=text size=1', @$prefs['SHDATEFORMAT'], false );
+?>
+	</td>
+</tr>
+
+<tr>
+	<td align="right"><?php echo $AppUI->_('Time Format');?>:</td>
+	<td>
+<?php
+	// exmample date
+	$times = array();
+	$f = "%I:%M %p"; $times[$f]	= $ex->toString( $f );
+	$f = "%H:%M"; $times[$f]	= $ex->toString( $f ).' (24)';
+	echo arraySelect( $times, 'pref_name[TIMEFORMAT]', 'class=text size=1', @$prefs['TIMEFORMAT'], false );
 ?>
 	</td>
 </tr>
