@@ -249,7 +249,7 @@ class Date_TimeZone
      */
     function inDaylightTime($date)
     {
-	return date('I');
+	return date('I', $date->getDate(DATE_FORMAT_UNIXTIME));
     }
 
     /**
