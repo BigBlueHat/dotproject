@@ -183,7 +183,7 @@ if($hide_task_groups) {
 }
 
 $row = 0;
-for($i = 0; $i < count($gantt_arr); $i ++ ) {
+for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
 	$a = $gantt_arr[$i][0];
 	$level = $gantt_arr[$i][1];
