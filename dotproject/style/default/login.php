@@ -45,13 +45,13 @@
 
 <p align="center"><?php 
 	echo '<span class="error">'.$AppUI->getMsg().'</span>';
-	echo ini_get( 'register_globals') ? '' : '<br><span class="warning">WARNING: dotproject is not fully supported with register_globals=off</span>';
+	echo ini_get( 'register_globals') ? '' : '<br /><span class="warning">WARNING: dotproject is not fully supported with register_globals=off</span>';
 ?></p>
 
 <table align="center" border="0" width="250" cellpadding="4" cellspacing="0">
 <tr>
 	<td>
-		<br>
+		<br />
 		<ul type="square">
 			<li>
 				<A href="mailto:<?php echo 'admin@' . $AppUI->cfg['site_domain'];?>"><?php echo $AppUI->_('forgotPassword');?></a>

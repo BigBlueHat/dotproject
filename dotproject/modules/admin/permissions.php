@@ -310,7 +310,7 @@ while ($row = mysql_fetch_array( $urc )) {
 </tr>
 </table>
 
-<br>&nbsp;<br>
+<br />&nbsp;<br />
 <table width="95%" cellpadding="2" border="0" cellspacing="1" class="std">
 <tr>
 	<th colspan="4">Add or modify permissions</th>

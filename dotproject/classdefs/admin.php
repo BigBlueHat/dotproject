@@ -81,7 +81,7 @@ class CUser {
 			db_exec( $sql );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}
@@ -138,7 +138,7 @@ class CPermission {
 			$ret = db_insertObject( 'permissions', $this, 'permission_id' );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}

@@ -81,7 +81,7 @@ for ($i = 0; $i < $row_count; $i++) {
 		. "<tr><td>Title</td><td>"
 		. $row['task_name']
 		. "&nbsp;</tr>\n<tr><td>Description</td><td>"
-		. str_replace(chr(10), "<br>", $row['task_description'])
+		. str_replace(chr(10), "<br />", $row['task_description'])
 		. "&nbsp;</td></tr>\n<tr><td>Created by</td><td><a href='mailto:"
 		. $row['creator_email']
 		. "'>"
@@ -101,7 +101,7 @@ for ($i = 0; $i < $row_count; $i++) {
 		. "&nbsp;"
 		. $editor['user_last_name']
 		. "</a></tr>\n<tr><td>Comments Added</td><td>"
-		. str_replace(chr(10), "<BR>", $comments)
+		. str_replace(chr(10), "<br />", $comments)
 		. "&nbsp;</td></tr>\n</table></body>\n";
 		mail($row['assignee_email'], $subject, $mail_text, $mail_header);
 	}

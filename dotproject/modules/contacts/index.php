@@ -130,7 +130,7 @@ $tdw = floor( 100 / $carrWidth );
 						if($val == "contact_email") {
 						  echo "<A HREF='mailto:{$carr[$z][$x][$key]}' class='mailto'>{$carr[$z][$x][$key]}</a>\n";
 						} else {
-						  echo  $carr[$z][$x][$key]. "<BR>";
+						  echo  $carr[$z][$x][$key]. "<br />";
 						}
 					}
 				}
@@ -138,7 +138,7 @@ $tdw = floor( 100 / $carrWidth );
 			</td>
 		</tr>
 		</table>
-		<br>&nbsp;<br>
+		<br />&nbsp;<br />
 	<?php }?>
 	</td>
 <?php }?>

@@ -1,4 +1,4 @@
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
 <table width="98%" cellspacing="1" cellpadding="0" border="0">
 	<tr>
 	<td><img src="./images/icons/dp.gif" alt="" border="0"></td>

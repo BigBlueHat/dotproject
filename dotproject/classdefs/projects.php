@@ -59,7 +59,7 @@ class CProject {
 			$ret = db_insertObject( 'projects', $this, 'project_id' );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}

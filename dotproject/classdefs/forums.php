@@ -40,7 +40,7 @@ class CForum {
 	function store() {
 		$msg = $this->check();
 		if( $msg ) {
-			return "CForum::store-check failed<br>$msg";
+			return "CForum::store-check failed<br />$msg";
 		}
 		if( $this->forum_id ) {
 			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
@@ -49,7 +49,7 @@ class CForum {
 			$ret = db_insertObject( 'forums', $this, 'forum_id' );
 		}
 		if( !$ret ) {
-			return "CForum::store failed <br>" . db_error();
+			return "CForum::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}
@@ -103,7 +103,7 @@ class CForumMessage {
 	function store() {
 		$msg = $this->check();
 		if( $msg ) {
-			return "CForumMessage::store-check failed<br>$msg";
+			return "CForumMessage::store-check failed<br />$msg";
 		}
 		if( $this->message_id ) {
 			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
@@ -133,7 +133,7 @@ class CForumMessage {
 			return $this->sendWatchMail( false );
 		}
 		if( !$ret ) {
-			return "CForumMessage::store failed <br>" . db_error();
+			return "CForumMessage::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}

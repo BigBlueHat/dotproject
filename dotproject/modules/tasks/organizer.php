@@ -38,25 +38,25 @@ function search_task($task_id) {
 function log_info($msg) {
 	global $option_debug;
 	if($option_debug) {
-		echo "$msg<br>";
+		echo "$msg<br />";
 	}
 }
 
 function log_action($msg) {
 	global $action;
-	echo "&nbsp;&nbsp;<font color=red size=2>$msg</font><br>";
+	echo "&nbsp;&nbsp;<font color=red size=2>$msg</font><br />";
 	$action = true;
 }
 
 function log_error($msg, $fields = "") {
 	global $action;
-	echo "<font color=red size=1>ERROR: $msg</font><br>$fields<hr>";
+	echo "<font color=red size=1>ERROR: $msg</font><br />$fields<hr>";
 	$action = true;
 }
 
 function log_warning($msg, $fields = "") {
 	global $show_warnings;
-	echo "WARNING: $msg<br>$fields<hr>";
+	echo "WARNING: $msg<br />$fields<hr>";
 }
 
 function convert2days( $durn, $units ) {
@@ -203,7 +203,7 @@ function process_dependencies($i) {
 
 	if($tasks[$i]["fixed"]) return;
 
-	log_info("<div style='padding-left: 1em'>Dependecies for '" . $tasks[$i]["task_name"] . "':<br>");
+	log_info("<div style='padding-left: 1em'>Dependecies for '" . $tasks[$i]["task_name"] . "':<br />");
 
 	// query dependencies for this task
 
@@ -281,7 +281,7 @@ function process_dependencies($i) {
 		log_info("no dependencies => ");
 		fixate_task($i, time(), "");
 	}
-	log_info("</div><br>\n");
+	log_info("</div><br />\n");
 }
 ?>
 
@@ -334,7 +334,7 @@ function checkbox($name, $descr, $default = 0, $show = true) {
 	global $$name;
 	if(!isset($$name)) $$name=$default;
 	if($show) {
-		echo "<input type=checkbox name=$name value=1 " . ($$name?"checked":"") . ">$descr<br>";
+		echo "<input type=checkbox name=$name value=1 " . ($$name?"checked":"") . ">$descr<br />";
 	} else {
 		echo "<input type=hidden name=$name value=" . ($$name?"1":"") . ">";
 	}
@@ -354,7 +354,7 @@ checkbox("option_advance_if_possible", "Begin new tasks if dependencies are fini
 			echo "<option value=" . $project["project_id"] . ">" . $project["project_name"] . "</option>";
 		}
 	?>
-</select><br>
+</select><br />
 */
 
 checkbox("option_debug", "Show debug info", 0, $do == "conf");
@@ -363,7 +363,7 @@ if($do == "conf") { ?>
 	</td>
 </tr>
 </table>
-<br>
+<br />
 <?php }
 
 if($do != "conf") {
@@ -418,8 +418,8 @@ if($do != "conf") {
 				if($end_time->getTimestamp() < time()) {
 					if($option_check_delayed_tasks) {
 						log_warning("Task " .task_link($row) . " started on " . $row["task_start_date"] . " and ended on " . $end_time->toString($df) . "." ,
-							"<input type=checkbox name=set_dynamic[" . $row["task_id"] . "] value=1 checked> Set as dynamic task and reorganize<br>" .
-							"<input type=checkbox name=set_priority[" . $row["task_id"] . "] value=1 checked> Set priority to high<br>"
+							"<input type=checkbox name=set_dynamic[" . $row["task_id"] . "] value=1 checked> Set as dynamic task and reorganize<br />" .
+							"<input type=checkbox name=set_priority[" . $row["task_id"] . "] value=1 checked> Set priority to high<br />"
 						);
 					}
 				}
@@ -466,28 +466,28 @@ if($do != "conf") {
 	}
 
 	if(!$action) {
-		echo "<font size=2><b>Tasks are already organized</b></font><br>";
+		echo "<font size=2><b>Tasks are already organized</b></font><br />";
 	}
 
 	echo '</td>';
 	echo '</tr>';
 	echo '</table>';
-	echo '<br>';
+	echo '<br />';
 }
 
 if ($do=="conf" || $action) {
 	if(!$errors) {
 		echo "<input type=hidden name=do value=" . ($do=="ask"?"fixate":"ask") . ">";
 		if($do == "ask") {
-			echo "<font size=2><b>Do you want to accept this changes?</b></font><br>";
+			echo "<font size=2><b>Do you want to accept this changes?</b></font><br />";
 			echo "<input type=button value=accept class=button onClick='javascript:document.form.submit()'>";
 		} else if ($do == "fixate") {
-			echo "<font size=2><b>Tasks has been reorganized</b></font><br>";
+			echo "<font size=2><b>Tasks has been reorganized</b></font><br />";
 		} else if ($do == "conf") {
 				echo "<input type=button value=start class=button onClick='javascript:document.form.submit()'>";
 		}
 	} else {
-		echo "<font size=2><b>Please correct the above errors</b></font><br>";
+		echo "<font size=2><b>Please correct the above errors</b></font><br />";
 		echo "<input type=button value=submit class=button onClick='javascript:document.form.submit()'>";
 	}
 }

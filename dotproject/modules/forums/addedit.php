@@ -109,8 +109,8 @@ function delIt(){
 		<tr>
 			<td align="right" nowrap valign="top">Status:</td>
 			<td valign="top">
-				<input type="radio" value="-1" <?php if($status ==-1)echo " checked";?> name="forum_status">open for posting<br>
-				<input type="radio" value="1" <?php if($status ==1)echo " checked";?> name="forum_status">read-only<br>
+				<input type="radio" value="-1" <?php if($status ==-1)echo " checked";?> name="forum_status">open for posting<br />
+				<input type="radio" value="1" <?php if($status ==1)echo " checked";?> name="forum_status">read-only<br />
 				<input type="radio" value="0" <?php if($status ==0)echo " checked";?> name="forum_status">closed
 			</td>
 		</tr>
@@ -139,7 +139,7 @@ function delIt(){
 		</table>
 	</td>
 	<td valign="top" width="50%">
-		<b>Description</b><br>
+		<b>Description</b><br />
 		<textarea class="textarea" name="forum_description" style="height:150px;"><?php echo @$forum_info["forum_description"];?></textarea>
 	</td>
 </tr>

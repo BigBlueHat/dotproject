@@ -71,7 +71,7 @@ class CContact {
 			$ret = db_insertObject( 'contacts', $this, 'contact_id' );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}

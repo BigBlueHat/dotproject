@@ -118,7 +118,7 @@ function db_insertArray( $table, &$hash, $verbose=false ) {
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 
-	($verbose) && print "$sql<br>\n";
+	($verbose) && print "$sql<br />\n";
 
 	if (!db_exec( $sql )) {
 		return false;
@@ -145,7 +145,7 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 		$tmp[] = "$k=$val";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
-	($verbose) && print "$sql<br>\n";
+	($verbose) && print "$sql<br />\n";
 	$ret = db_exec( $sql );
 	return $ret;
 }
@@ -171,12 +171,12 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 		$values[] = "'" . db_escape( $v ) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
-	($verbose) && print "$sql<br>\n";
+	($verbose) && print "$sql<br />\n";
 	if (!db_exec( $sql )) {
 		return false;
 	}
 	$id = db_insert_id();
-	($verbose) && print "id=[$id]<br>\n";
+	($verbose) && print "id=[$id]<br />\n";
 	if ($keyName && $id)
 		$object->$keyName = $id;
 	return true;

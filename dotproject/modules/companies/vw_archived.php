@@ -15,7 +15,7 @@ ORDER BY project_name
 
 $s = '';
 if (!($rows = db_loadList( $sql, NULL ))) {
-	$s .= $AppUI->_( 'No data available' ).'<br>'.$AppUI->getMsg();
+	$s .= $AppUI->_( 'No data available' ).'<br />'.$AppUI->getMsg();
 } else {
 	$s .= '<tr>'
 		.'<th>'.$AppUI->_( 'Name' ).'</td>'

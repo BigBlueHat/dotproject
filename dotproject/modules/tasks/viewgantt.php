@@ -133,7 +133,7 @@ function scrollNext() {
 </tr>
 </form>
 </table>
-<br>
+<br />
 
 <?php
 if ($display_option != "all") {

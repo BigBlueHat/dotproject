@@ -56,7 +56,7 @@ if ($search_text) {
 <form name="searchForm" method=POST action="<?php $_SERVER['PHP_SELF'];?>">
 <tr>
 	<td nowrap>Search Text:
-		<br><input type="text" name="search_text" class=text value="<?php echo $search_text;?>">
+		<br /><input type="text" name="search_text" class=text value="<?php echo $search_text;?>">
 		<input type="submit" value="go" class=tab>
 	</td>
 </tr>

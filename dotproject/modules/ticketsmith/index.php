@@ -90,7 +90,7 @@ print("<table class=maintable bgcolor=#eeeeee width=95%>\n");
 print("<tr></TD>\n");
 print("<td colspan=" . count($fields["headings"]) . " align=center bgcolor=#878676>");
 print("<table width=100% border=0 cellspacing=1 cellpadding=1>\n");
-print("<tr><td width=1%><br></td><td width=34%><br></td>\n");
+print("<tr><td width=1%><br /></td><td width=34%><br /></td>\n");
 print("<td width=32% align=center><div class=heading>$title</div></td>\n");
 print("<td width=32% align=right valign=middle><div class=paging>");
 if ($ticket_count > $limit) {
@@ -103,7 +103,7 @@ if ($ticket_count > $limit) {
     }
 }
 print("</div></td>\n");
-print("<td width=1%><br></td></tr></table>");
+print("<td width=1%><br /></td></tr></table>");
 print("</td>");
 print("</tr>\n");
 
@@ -166,7 +166,7 @@ else {
 
 /* output action links */
 print("<tr>\n");
-print("<td><br></td>\n");
+print("<td><br /></td>\n");
 print("<td colspan=" . (count($fields["headings"]) - 1) . " align=right>\n");
 print("<table width=100% border=0 cellspacing=0 cellpadding=0>\n");
 print("<tr height=25><td align=left>");

@@ -124,7 +124,7 @@ if (!$denyEdit) {
 		</table>
 	</td>
 	<td width="50%" rowspan="9" valign="top">
-		<b><?php echo $AppUI->_('Summary');?></b><br>
+		<b><?php echo $AppUI->_('Summary');?></b><br />
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Status');?>:</td>
@@ -139,11 +139,11 @@ if (!$denyEdit) {
 			<td class="hilite" width="100%"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>
 		</table>
-		<b><?php echo $AppUI->_('Description');?></b><br>
+		<b><?php echo $AppUI->_('Description');?></b><br />
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo str_replace( chr(10), "<BR>", $project["project_description"]); ?>&nbsp;
+				<?php echo str_replace( chr(10), "<br />", $project["project_description"]); ?>&nbsp;
 			</td>
 		</tr>
 		</table>

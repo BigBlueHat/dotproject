@@ -121,4 +121,4 @@ echo implode( ' | ', $links );
 <?php 
     echo $AppUI->getMsg();
 ?>
-<!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br> -->
+<!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br /> -->

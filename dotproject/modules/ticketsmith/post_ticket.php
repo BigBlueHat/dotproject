@@ -85,4 +85,4 @@ function submitIt() {
 </tr>
 </form>
 </TABLE>
-&nbsp;<br>&nbsp;<br>&nbsp;
+&nbsp;<br />&nbsp;<br />&nbsp;

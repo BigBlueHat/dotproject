@@ -11,7 +11,7 @@ if(!db_loadHash( $sql, $page )) {
 <table width="100%" height="100%" border=0 cellpadding="2" cellspacing=0 >
 <tr valign=top>
 	<td bgcolor=#ffffff>
-		<?php echo ($page["page_show_title"] ? '<h1>'.$page["page_title"].'</h1><br>' : '') .$page["page_content"];?>
+		<?php echo ($page["page_show_title"] ? '<h1>'.$page["page_title"].'</h1><br />' : '') .$page["page_content"];?>
 	</td>
 </tr>
 <tr>
@@ -19,4 +19,4 @@ if(!db_loadHash( $sql, $page )) {
 </tr>
 </table>
 
-&nbsp;<br>&nbsp;<br>&nbsp;
+&nbsp;<br />&nbsp;<br />&nbsp;

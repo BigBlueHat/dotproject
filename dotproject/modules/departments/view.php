@@ -78,8 +78,8 @@ if (!$denyEdit) {
 			<td align="right" nowrap>Address:</td>
 			<td bgcolor="#ffffff"><?php
 				echo @$dept["dept_address1"]
-					.( ($dept["dept_address2"]) ? '<br>'.$dept["dept_address2"] : '' )
-					.'<br>'.$dept["dept_city"]
+					.( ($dept["dept_address2"]) ? '<br />'.$dept["dept_address2"] : '' )
+					.'<br />'.$dept["dept_city"]
 					.'&nbsp;&nbsp;'.$dept["dept_state"]
 					.'&nbsp;&nbsp;'.$dept["dept_zip"]
 					;
@@ -91,7 +91,7 @@ if (!$denyEdit) {
 		<b>Description</b>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td bgcolor="#ffffff" width="100%"><?php echo str_replace( chr(10), "<BR>", $dept["dept_desc"]);?>&nbsp;</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo str_replace( chr(10), "<br />", $dept["dept_desc"]);?>&nbsp;</td>
 		</tr>
 		</table>
 		

@@ -95,11 +95,11 @@ if (!$denyEdit) {
 			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite" width="100%"><?php
 				echo @$user["user_address1"]
-					.( ($user["user_address2"]) ? '<br>'.$user["user_city"] : '' )
-					.'<br>'.$user["user_city"]
+					.( ($user["user_address2"]) ? '<br />'.$user["user_city"] : '' )
+					.'<br />'.$user["user_city"]
 					.'&nbsp;&nbsp;'.$user["user_state"]
 					.'&nbsp;&nbsp;'.$user["user_zip"]
-					.'<br>'.$user["user_country"]
+					.'<br />'.$user["user_country"]
 					;
 			?></td>
 		</tr>
@@ -129,7 +129,7 @@ if (!$denyEdit) {
 		</tr>
 		<tr>
 			<td class="hilite" width="100%" colspan="2">
-				<?php echo str_replace( chr(10), "<BR>", $user["user_signature"]);?>&nbsp;
+				<?php echo str_replace( chr(10), "<br />", $user["user_signature"]);?>&nbsp;
 			</td>
 		</tr>
 		</table>

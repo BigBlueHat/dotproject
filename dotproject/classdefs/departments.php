@@ -56,7 +56,7 @@ class CDepartment {
 			$ret = db_insertObject( 'departments', $this, 'dept_id' );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}

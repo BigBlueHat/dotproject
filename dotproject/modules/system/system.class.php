@@ -29,13 +29,13 @@ class CPreferences {
 	function store() {
 		$msg = $this->check();
 		if( $msg ) {
-			return "CPreference::store-check failed<br>$msg";
+			return "CPreference::store-check failed<br />$msg";
 		}
 		if (($msg = $this->delete())) {
-			return "CPreference::store-delete failed<br>$msg";
+			return "CPreference::store-delete failed<br />$msg";
 		}
 		if (!($ret = db_insertObject( 'user_preferences', $this, 'pref_user' ))) {
-			return "CPreference::store failed <br>" . db_error();
+			return "CPreference::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}
@@ -100,7 +100,7 @@ class CModule {
 			$ret = db_insertObject( 'modules', $this, 'mod_id' );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br>" . db_error();
+			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
 			return NULL;
 		}

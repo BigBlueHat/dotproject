@@ -83,7 +83,7 @@ foreach ($topics as $row) {
 	<td align=center><?php echo  $row["replies"];?></td>
 	<td bgcolor=#dddddd>
 <?php if ($row["latest_reply"]) {
-		echo $date->toString().'<br><font color=#999966>(';
+		echo $date->toString().'<br /><font color=#999966>(';
 		if ($message_since < 3600) {
 			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
 		} else if ($message_since < 48*3600) {

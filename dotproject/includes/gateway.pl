@@ -336,8 +336,8 @@ sub mail_acknowledgement {
 	print MAIL "	<TR>";
 	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>&nbsp;</font></TD>";
 	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>";
-	print MAIL "This is an acknowledgement that your support request has been logged<br>";
-	print MAIL "by an automated support tracking system. It will be assigned to a<br>";
+	print MAIL "This is an acknowledgement that your support request has been logged<br />";
+	print MAIL "by an automated support tracking system. It will be assigned to a<br />";
 	print MAIL "support representative who will be in touch in due course.";
         print MAIL "            </font></TD>";
 	print MAIL "	</tr>";

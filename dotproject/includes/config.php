@@ -4,9 +4,9 @@
 //db access information
 $dPconfig['dbtype'] = "mysql";
 $dPconfig['dbhost'] = "localhost";
-$dPconfig['dbname'] = "dotproject";
-$dPconfig['dbuser'] = "root";
-$dPconfig['dbpass'] = "";
+$dPconfig['dbname'] = "dp_24jan03";
+$dPconfig['dbuser'] = "dp_user";
+$dPconfig['dbpass'] = "dp_pass";
 
 /*
  Localisation of the host for this dotproject,
@@ -17,11 +17,11 @@ $dPconfig['host_locale'] = "en";
 // default user interface style
 $dPconfig['host_style'] = "default";
 
-$dPconfig['root_dir'] = "d:/apache/htdocs/dotproject";
-$dPconfig['company_name'] = "My Company";
-$dPconfig['page_title'] = "DotProject";
-$dPconfig['base_url'] = "http://localhost/dotproject";
-$dPconfig['site_domain'] = "dotproject.net";
+$dPconfig['root_dir'] = "c:/sandbox_sourceforge/dotproject";
+$dPconfig['company_name'] = "dotProject WAMP";
+$dPconfig['page_title'] = "dotProject Development";
+$dPconfig['base_url'] = "http://dp.druid.ca";
+$dPconfig['site_domain'] = "druid.ca";
 
 // enable if you want to be able to see other users's tasks
 $dPconfig['show_all_tasks'] = false;

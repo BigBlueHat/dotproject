@@ -72,7 +72,7 @@ if ($start_date) {
 <tr>
 	<td align="left" nowrap><?php echo $AppUI->_( 'Related Project' );?>:</td>
 	<td nowrap><b><?php echo $forum["project_name"];?></b></td>
-	<td valign="top" width="50%" rowspan=99><b><?php echo $AppUI->_( 'Description' );?>:</b><br><?php echo @str_replace(chr(13), "&nbsp;<BR>",$forum["forum_description"]);?></td>
+	<td valign="top" width="50%" rowspan=99><b><?php echo $AppUI->_( 'Description' );?>:</b><br /><?php echo @str_replace(chr(13), "&nbsp;<br />",$forum["forum_description"]);?></td>
 </tr>
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>

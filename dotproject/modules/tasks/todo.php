@@ -178,5 +178,5 @@ foreach ($tasks as $a) {
 	</td>
 </form>
 </table>
-Quick and Nasty Legend:<br>
+Quick and Nasty Legend:<br />
 clear - future task, green - started and on time, yellow - should have started, red - past due

@@ -257,7 +257,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td colspan="4">
-				<?php echo $AppUI->_('Description');?><br>
+				<?php echo $AppUI->_('Description');?><br />
 				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea"><?php echo @$project["project_description"];?></textarea>
 			</td>
 		</tr>

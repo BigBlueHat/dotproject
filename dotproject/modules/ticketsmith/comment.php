@@ -73,7 +73,7 @@ else {
 
     /* output textarea */
     print("<tr>\n");
-    print("<td align=\"left\"><br></td>");
+    print("<td align=\"left\"><br /></td>");
     print("<td align=\"left\">");
     print("<tt>\n");
     print("<textarea name=\"comment\" wrap=\"hard\" cols=\"72\" rows=\"20\">\n");
@@ -82,11 +82,11 @@ else {
     print("</td>\n");
     
     /* output submit button */
-    print("<tr><td><br></td><td><font size=\"-1\"><input type=\"submit\" class=button value=\"Post Comment\"></font></td></tr>\n");
+    print("<tr><td><br /></td><td><font size=\"-1\"><input type=\"submit\" class=button value=\"Post Comment\"></font></td></tr>\n");
 
     /* footer links */
     print("<tr>\n");
-    print("<td><br></td>");
+    print("<td><br /></td>");
     print("<td><a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>Return to ticket</a> | ");
     print("<a href=index.php>Return to ticket list</a></td>");
     print("</tr>\n");

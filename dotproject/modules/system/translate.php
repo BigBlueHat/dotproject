@@ -73,7 +73,7 @@ $crumbs = array();
 $crumbs["?m=system"] = "System Admin";
 ?>
 
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <form action="?m=system&a=translate" method="post" name="modlang">
 <tr>

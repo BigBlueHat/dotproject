@@ -57,7 +57,7 @@ $sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";
 $rc= db_exec( $sql );
 ##echo "<pre>$sql</pre>".db_error();##
 ?>
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
 <table width="98%" cellspacing="1" cellpadding="0" border="0">
 <tr>
 	<td><img src="./images/icons/communicate.gif" alt="" border="0" width=42 height=42></td>
@@ -129,8 +129,8 @@ while ($row = db_fetch_assoc( $rc )) {
 
 	<td>
 		<span style="font-size:10pt;font-weight:bold"><a href="?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a></span>
-		<br><?php echo $row["forum_description"];?>
-		<br><font color=#777777><?php echo $AppUI->_( 'Owner' ).' '.$row["user_username"];?>,
+		<br /><?php echo $row["forum_description"];?>
+		<br /><font color=#777777><?php echo $AppUI->_( 'Owner' ).' '.$row["user_username"];?>,
 		<?php echo $AppUI->_( 'Started' ).' '.$create_date->toString();?>
 		</font>
 	</td>
@@ -138,7 +138,7 @@ while ($row = db_fetch_assoc( $rc )) {
 	<td nowrap align=center><?php echo $row["forum_replies"];?></td>
 	<td width=200>
 <?php if ($row["message_date"]) {
-		echo $message_date->toString().'<br><font color=#999966>(';
+		echo $message_date->toString().'<br /><font color=#999966>(';
 		if ($message_since < 3600) {
 			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
 		} else if ($message_since < 48*3600) {
@@ -147,7 +147,7 @@ while ($row = db_fetch_assoc( $rc )) {
 			$str = sprintf( "%d ".$AppUI->_( 'days' ), $message_since/(24*3600) );
 		}
 		printf($AppUI->_('%s ago'), $str);
-		echo ') </font><br>&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
+		echo ') </font><br />&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
 		echo '</font></a>';
 	} else {

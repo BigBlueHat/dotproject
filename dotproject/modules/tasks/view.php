@@ -181,7 +181,7 @@ function updateTask() {
 		</tr>
 		<tr>
 			<td valign="top" height="75" colspan="2" class="hilite">
-				<?php $newstr = str_replace( chr(10), "<BR>", $task["task_description"]);echo $newstr;?>
+				<?php $newstr = str_replace( chr(10), "<br />", $task["task_description"]);echo $newstr;?>
 			</td>
 		</tr>
 
@@ -298,7 +298,7 @@ foreach ($comments as $row) {
 	$s .= '<tr bgcolor="white" valign="top">';
 	$s .= '<td width="100">'.$row["comment_title"].'</td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
-	$s .= '<td>'.str_replace(chr(10), "<BR>",$row["comment_body"]).'</td>';
+	$s .= '<td>'.str_replace(chr(10), "<br />",$row["comment_body"]).'</td>';
 	$s .= '<td width="150">'.($comment_date ? $comment_date->toString( $df ) : '-').'</td>';
 	$s .= '</tr>';
 }

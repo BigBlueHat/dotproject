@@ -41,7 +41,7 @@ switch ($action) {
         $content .= "<tr><td><b>Username</b></td><td colspan=\"2\"><font size=\"-1\"><input type=\"text\" name=\"username\" size=\"20\"></font></td></tr>\n";
         $content .= "<tr><td><b>Password</b></td><td colspan=\"2\"><font size=\"-1\"><input type=\"password\" name=\"password\" size=\"20\"></font></td></tr>\n";
         $content .= "<tr><td><b>Signature</b></td><td colspan=\"2\"><tt><textarea name=\"signature\" cols=\"72\" rows=\"3\"></textarea></tt></td></tr>\n";
-        $content .= "<tr><td><br></td><td colspan=\"2\"><font size=\"-1\"><input type=\"submit\" value=\"Create user\"></font></td></tr>\n";
+        $content .= "<tr><td><br /></td><td colspan=\"2\"><font size=\"-1\"><input type=\"submit\" value=\"Create user\"></font></td></tr>\n";
         $content .= "<input type=\"hidden\" name=\"action\" value=\"create\">\n";
         break;
     case "edit":
@@ -51,7 +51,7 @@ switch ($action) {
         $content .= "<tr><td><b>Email</b> </td><td colspan=\"2\"><font size=\"-1\"><input type=\"text\" name=\"email\" size=\"20\" value=\"" . $user_info["email"] . "\"></font></td></tr>\n";
         $content .= "<tr><td><b>Password</b></td><td colspan=\"2\"><font size=\"-1\"><input type=\"password\" name=\"password\" size=\"20\" value=\"" . $user_info["password"] . "\"></font></td></tr>\n";
         $content .= "<tr><td><b>Signature</b></td><td colspan=\"2\"><tt><textarea name=\"signature\" cols=\"72\" rows=\"3\">" . $user_info["signature"] . "</textarea></tt></td></tr>\n";
-        $content .= "<tr><td><br></td><td colspan=\"2\"><font size=\"-1\"><input type=\"submit\" name=\"action\" value=\"Apply changes\"> <input type=\"submit\" name=\"action\" value=\"Delete this user\"></font></td></tr>\n";
+        $content .= "<tr><td><br /></td><td colspan=\"2\"><font size=\"-1\"><input type=\"submit\" name=\"action\" value=\"Apply changes\"> <input type=\"submit\" name=\"action\" value=\"Delete this user\"></font></td></tr>\n";
         $content .= "<input type=\"hidden\" name=\"id\" value=\"" . $user_info["id"] . "\">\n";
         $content .= "<input type=\"hidden\" name=\"old_password\" value=\"" . $user_info["password"] . "\">\n";
         break;
@@ -87,7 +87,7 @@ print($content);
 
 /* output actions */
 print("<tr>\n");
-print("<td align=\"left\" valign=\"top\"><br></td>");
+print("<td align=\"left\" valign=\"top\"><br /></td>");
 print("<td align=\"left\" valign=\"top\" colspan=\"2\">\n");
 print("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
 print("<tr><td align=\"left\">");

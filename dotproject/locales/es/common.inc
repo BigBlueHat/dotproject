@@ -70,7 +70,7 @@
 "forgotPassword"=>"Ayuda.  No recuerdo mi nombre o contraseña.",
 "login"=>"entrar",
 "new department"=>"nuevo departamento",
-"openSource"=>"Un sistema OpenSource<br>para gestión de proyectos",
+"openSource"=>"Un sistema OpenSource<br />para gestión de proyectos",
 "required"=>"obligatorio",
 "requiredField"=>"indica campos obligatorios",
 "save"=>"guardar",

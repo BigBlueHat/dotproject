@@ -16,7 +16,7 @@ require("modules/ticketsmith/common.inc.php");
 $title = "Post Followup";
 
 /* setup fields */
-$fields = array("headings" => array("Subject", "Cc", "<br>"),
+$fields = array("headings" => array("Subject", "Cc", "<br />"),
                 "columns"  => array("subject", "cc", "body"),
                 "types"    => array("subject", "cc", "followup"));
 
@@ -119,11 +119,11 @@ else {
     }
     
     /* output submit button */
-    print("<tr><td><br></td><td><font size=-1><input class=button type=submit value=Post Followup></font></td></tr>\n");
+    print("<tr><td><br /></td><td><font size=-1><input class=button type=submit value=Post Followup></font></td></tr>\n");
 
     /* output actions */
     print("<tr>\n");
-    print("<td align=left valign=top><br></td>");
+    print("<td align=left valign=top><br /></td>");
     print("<td align=left valign=top>\n");
     print("<a href=index.php?m=ticketsmith&a=view&ticket=$ticket");
     print(">Return to ticket</a> | <a href=index.php?m=ticketsmith>Return to ticket list</a></td></td>\n");

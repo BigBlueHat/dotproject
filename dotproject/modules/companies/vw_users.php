@@ -11,7 +11,7 @@ WHERE user_company = $company_id
 ";
 
 if (!($rows = db_loadList( $sql, NULL ))) {
-	echo 'None Available<br>'.$AppUI->getMsg();
+	echo 'None Available<br />'.$AppUI->getMsg();
 } else {
 ?>
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">

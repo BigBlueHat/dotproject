@@ -18,7 +18,7 @@ $rows = db_fetch_assoc( $rc );
 <table width="100%" height="100%" border=0 cellpadding="2" cellspacing=0 >
 <tr valign=top>
 	<td bgcolor=#ffffff>
-		<?echo '<h1>'.$rows["class_title"].'</h1><br>' .$rows["class_content"];?>
+		<?echo '<h1>'.$rows["class_title"].'</h1><br />' .$rows["class_content"];?>
 	</td>
 </tr>
 <tr>
@@ -26,4 +26,4 @@ $rows = db_fetch_assoc( $rc );
 </tr>
 </table>
 
-&nbsp;<br>&nbsp;<br>&nbsp;
+&nbsp;<br />&nbsp;<br />&nbsp;

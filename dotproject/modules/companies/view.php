@@ -87,8 +87,8 @@ if (!$denyEdit) {
 			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite"><?php
 				echo @$row["company_address1"]
-					.( ($row["company_address2"]) ? '<br>'.$row["company_address2"] : '' )
-					.'<br>'.$row["company_city"]
+					.( ($row["company_address2"]) ? '<br />'.$row["company_address2"] : '' )
+					.'<br />'.$row["company_city"]
 					.'&nbsp;&nbsp;'.$row["company_state"]
 					.'&nbsp;&nbsp;'.$row["company_zip"]
 					;
@@ -108,7 +108,7 @@ if (!$denyEdit) {
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo str_replace( chr(10), "<BR>", $row["company_description"]);?>&nbsp;
+				<?php echo str_replace( chr(10), "<br />", $row["company_description"]);?>&nbsp;
 			</td>
 		</tr>
 		</table>

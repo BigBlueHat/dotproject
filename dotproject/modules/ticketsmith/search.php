@@ -81,13 +81,13 @@ print("</tr>\n");
 
 /* submit button */
 print("<tr>\n");
-print("<td><br></td>\n");
+print("<td><br /></td>\n");
 print("<td><input type=\"submit\" value=\"Search\"></td>\n");
 print("</tr>\n");
 
 /* output footer */
 print("<tr>\n");
-print("<td><br></td>\n");
+print("<td><br /></td>\n");
 print("<td><a href=index.php?m=ticketsmith>Return to ticket list</a></td>\n");
 print("</tr>\n");
 

@@ -20,7 +20,7 @@ if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {
     
     $title = "$ticket_type to Ticket #$ticket_parent";
     
-    $fields = array("headings" => array("From", "To", "Subject", "Date", "Cc", "<br>"),
+    $fields = array("headings" => array("From", "To", "Subject", "Date", "Cc", "<br />"),
                     "columns"  => array("author", "recipient", "subject", "timestamp", "cc", "body"), 
                     "types"    => array("email", "original_author", "normal", "elapsed_date", "email", "body"));
 
@@ -29,7 +29,7 @@ elseif ($ticket_type == "Staff Comment") {
 
     $title = "$ticket_type to Ticket #$ticket_parent";
     
-    $fields = array("headings" => array("From", "Date", "<br>"),
+    $fields = array("headings" => array("From", "Date", "<br />"),
                     "columns"  => array("author", "timestamp", "body"), 
                     "types"    => array("email", "elapsed_date", "body"));
 
@@ -39,7 +39,7 @@ else {
     $title = "Ticket #$ticket";
     
     $fields = array("headings" => array("From", "Subject", "Date", "Cc", "Status", 
-                                        "Priority", "Owner", "<br>"),
+                                        "Priority", "Owner", "<br />"),
                     
                     "columns"  => array("author", "subject", "timestamp", "cc", 
                                         "type", "priority", "assignment", "body"),
@@ -260,7 +260,7 @@ else {
 
 /* output action links */
 print("<tr>\n");
-print("<td><br></td>\n");
+print("<td><br /></td>\n");
 print("<td>\n");
 print("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup" || $ticket_type == "Staff Comment") {

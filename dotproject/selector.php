@@ -51,9 +51,9 @@ default:
 if (!$ok) {
 	echo '</head><body bgcolor="#ffffff" text="#ff0000" onload="this.focus();">Incorrect parameters passed';
 	if ($debug) {
-		echo "<br>callback = $callback ";
-		echo "<br>table = $table ";
-		echo "<br>ok = $ok";
+		echo "<br />callback = $callback ";
+		echo "<br />table = $table ";
+		echo "<br />ok = $ok";
 	}
 } else { 
 	require_once './includes/config.php';
@@ -98,7 +98,7 @@ if (!$ok) {
 	<td colspan="2">
 <?php
 	if (count( $list ) > 1) {
-		echo $AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':<br>';
+		echo $AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':<br />';
 		echo arraySelect( $list, 'list', ' size="8"', 0 );
 ?>
 	</td>
