@@ -1,4 +1,4 @@
-<?php
+<?php /* CLASSDEFS $Id$ */
 ##
 ## CCompany Class
 ##
