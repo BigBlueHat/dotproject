@@ -152,8 +152,8 @@ else
 $where .= "\n	AND task_status = '$task_status'";
 
 // patch 2.12.04 text search
-$search_text = $AppUI->getState('searchtext') ? $AppUI->getState('searchtext'):'';
-$where .= "\n AND (task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )";
+if ( $search_text = $AppUI->getState('searchtext') )
+	$where .= "\n AND (task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )";
 
 // filter tasks considering task and project permissions
 $projects_filter = '';
