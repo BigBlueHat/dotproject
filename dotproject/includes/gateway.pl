@@ -17,6 +17,11 @@ $send_email_report = 1;
 # Send aknowlegment back to lodger (1 = yes, 0 = no)
 $send_acknowledge = 1;
 
+# NOTE:  Email addresses should escape the @ symbol as it is
+# a PERL array identifier and will cause this script to break.
+# Alternatively change the double quotes to single quotes, which
+# also escapes the string.
+
 # address to send report to
 $report_to_address = "you\@yourdomain.com";
 
@@ -88,6 +93,11 @@ sub get_headers {
 
     # initialize Cc: header
     $header{'Cc'} = "" if (!$header{'Cc'});
+
+    # Allow the use of Reply-To to insert tickets on behalf of another
+    if ($header{'Reply-To'}) {
+	$header{'From'} = $header{'Reply-To'};
+    }
 
     # fix quoting in email headers
     $header{'From'} =~ s/"/\"/g;
@@ -208,7 +218,11 @@ sub mail_report {
     open(MAIL, "|$mailprog -t");
 	print MAIL "To: $report_to_address\n";
 	print MAIL "From: $report_from_address\n";
-	print MAIL "Subject: New support ticket #$ticket\n";
+	if ($parent) {
+	    print MAIL "Subject: Client followup to trouble ticket #$parent\n";
+	} else {
+	    print MAIL "Subject: New support ticket #$ticket\n";
+	}
 	print MAIL "Content-type: text/html\n";
 	print MAIL "Mime-version: 1.0\n\n";
 	print MAIL "<html>";
@@ -220,8 +234,7 @@ sub mail_report {
 	print MAIL "</style>";
 	if ($parent) {
 	    print MAIL "<title>Followup Trouble ticket to ticket #$parent</title>";
-	}
-	else {
+	} else {
 	    print MAIL "<title>New Trouble ticket</title>";
 	}
 	print MAIL "</head>";
@@ -237,7 +250,11 @@ sub mail_report {
 	print MAIL "</TABLE>";
 	print MAIL "<TABLE width=600 border=0 cellpadding=4 cellspacing=1 bgcolor=#878676>";
 	print MAIL "	<TR>";
-	print MAIL "		<TD colspan=2><font face=arial,san-serif size=2 color=white>New Ticket Entered</font></TD>";
+	if ($parent) {
+	    print MAIL "		<TD colspan=2><font face=arial,san-serif size=2 color=white>Followup Ticket Entered</font></TD>";
+	} else {
+	    print MAIL "		<TD colspan=2><font face=arial,san-serif size=2 color=white>New Ticket Entered</font></TD>";
+	}
 	print MAIL "	</tr>";
 	print MAIL "	<TR>";
 	print MAIL "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>Ticket ID:</font></TD>";
