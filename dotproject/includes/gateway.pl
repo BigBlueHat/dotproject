@@ -10,7 +10,13 @@ $dp_root = "/path/to/dotproject";
 $send_email_report = 1;
 
 # Send aknowlegment back to lodger (1 = yes, 0 = no)
-$send_acknowledge = 0;
+$send_acknowledge = 1;
+
+# Save attachments as files in project 0 (1 = yes, 0 = no, just mark them as removed)
+$save_attachments = 0;
+
+# Skip non-MIME component of MIME emails (usually a warning about non-MIME compliant readers)
+$skip_mime_preface = 1;
 
 # NOTE:  Email addresses should escape the @ symbol as it is
 # a PERL array identifier and will cause this script to break.
@@ -22,7 +28,7 @@ $send_acknowledge = 0;
 # dPconfig[site_domain] key.
 
 # address to send report to
-$report_to_address = "admin";
+$report_to_address = "you";
 
 # report from address
 $report_from_address = "support";
@@ -61,6 +67,7 @@ while (<STDIN>) {
 &check_attachments();
 &get_body();
 &insert_message();
+&insert_attachments() if ($save_attachments);
 &mail_report() if ($send_email_report);
 &mail_acknowledgement() if ($send_acknowledge);
 
@@ -89,25 +96,31 @@ sub get_headers {
 
     # read in headers
 	# First pass, fix up split headers.
+    $first_message_line = 0;
     foreach (@message) {
         last if (/^\s$/ || /^$/);
 		if (/^[\s\t]+/) {
 			$last_hdr = pop @headers;
+			$last_hdr =~ s/[\s\t]*$//;
+			s/[\s\t]*//;
 			$last_hdr .= $_;
 			push @headers, $last_hdr;
 		} else {
 			push @headers, $_;
 		}
+		$first_message_line++;
 	}
 	# Second pass, split out the required headers
+	$attachment = 0;
 	foreach (@headers) {
         if (/oundary=/) {
 	        $attachment_info = $_;
-            $attachment = 1;
+            if ($save_attachments) {
+			    $attachment = 2;
+			} else {
+				$attachment = 1;
+			}
 	    }
-        else {
-            $attachment = 0;
-        }
 	    $_ =~ s/:\s/:/g;
         if (/:/) {
             @vars = split(':', $_, 2);
@@ -157,13 +170,55 @@ sub check_attachments {
 	($i, $boundary) = split(/"/, $attachment_info);
 	return if (!$boundary);
 
+	if ($attachment_info =~ /multipart\/alternative/i) {
+		$mime_alternative = 1;
+	} else {
+		$mime_alternative = 0;
+	}
     # pull out attachments
+	$in_attach_hdrs = 0;
+	$attach_count = 0;
 	for ($i = $#headers + 1; $i <= $#message; $i++) {
         if ($message[$i] =~ /$boundary/) {
+	    $in_attach_hdrs = 1;
             push @boundary_lines, $i;
+	    push @attach_disposition, "";
+	    push @attach_type, "text/plain";
+	    push @attach_encoding, "7bit";
+	    push @attach_realname, "";
+	    $attach_count += 1;
+	} else {
+	    if ($in_attach_hdrs) {
+		if ($message[$i] =~ /^\s*$/) {
+		    $last = pop @boundary_lines;
+		    push @boundary_lines, $i;
+		    push @boundary_end, $last;
+		    $in_attach_hdrs = 0;
+		} else {
+		    @attach_hdr = split(/[:;]/, $message[$i]);
+		    if ($attach_hdr[0] =~ m/content-disposition/i) {
+			    $last = pop @attach_disposition;
+			    push @attach_disposition, $attach_hdr[1];
+		    }
+		    if ($attach_hdr[0] =~ m/content-type/i) {
+			    pop @attach_type;
+			    push @attach_type, $attach_hdr[1];
+		    }
+		    if ($attach_hdr[0] =~ m/content-transfer-encoding/i) {
+			    pop @attach_encoding;
+			    push @attach_encoding, $attach_hdr[1];
+		    }
+		    if ($message[$i] =~ m/name=/i) {
+			    ($x, $f) = split(/"/, $message[$i]);
+			    $x = "";
+			    pop @attach_realname;
+			    push @attach_realname, $f;
+		    }
 		}
+	    }
 	}
-
+    }
+    push @boundary_end, $#message;
 }
 
 ################################################################################
@@ -172,18 +227,23 @@ sub get_body {
 
     # read in message body
 	if (!$attachment_info) {
-		for ($i = $#headers + 1; $i <= $#message; $i++) {
+		for ($i = $first_message_line + 1; $i <= $#message; $i++) {
             $body .= $message[$i];
 		}
 	}
     else {
-		for ($i = $boundary_lines[0] + 1; $i < $boundary_lines[1]; $i++) {
-            if ($past_info) {
-                $body .= $message[$i];
-            }
-            elsif ($message[$i] =~ /^\s+$/) {
-                $past_info = 1;
-            }
+		# Look for the attachment that doesn't have a disposition
+		if ($skip_mime_preface) {
+			$i = 1;
+		} else {
+		    $i = 0;
+		}
+		for (; $i < $#attach_disposition; $i++) {
+			if ( ($mime_alternative == 1 && $attach_type[$i] =~ /text\/plain/i) || ($mime_alternative == 0 && $attach_disposition[$i] =~ /^$/ )) {
+				for ($j = $boundary_lines[$i] + 1; $j < $boundary_end[$i+1]; $j++) {
+					$body .= $message[$j];
+				}
+			}
 		}
 	}
     $body =~ s/^\n//;
@@ -225,6 +285,7 @@ sub insert_message {
     # do insertion
     $insert_query = "INSERT INTO tickets (parent, attachment, timestamp, author, subject, body, type, cc, assignment) ";
     $insert_query .= "VALUES ($db_parent, $attachment, UNIX_TIMESTAMP(), $author, $subject, $body, $type, $cc, $assignment)";
+    print $insert_query . "\n";
     $sth = $dbh->prepare($insert_query);
     $sth->execute();
     $ticket = $sth->{'mysql_insertid'};
@@ -232,6 +293,83 @@ sub insert_message {
     $dbh->disconnect();
 
 }
+
+sub insert_attachments {
+	return if (!$attachment_info);
+
+    $dbh = DBI->connect("DBI:mysql:$config{'dbname'}:$config{'dbhost'}", $config{'dbuser'}, $config{'dbpass'});
+	if ($skip_mime_preface) {
+		$i = 1;
+	} else {
+		$i = 0;
+	}
+	for ($i = 0; $i < $#attach_disposition; $i++) {
+		if ( ( $mime_alternative == 0 && $attach_disposition[$i] !~ /^$/) || ($mime_alternative == 1 && $attach_type[$i] !~ /text\/plain/) ) {
+			insert_attachment($i, $dbh);
+		}
+	}
+	$dbh->disconnect();
+}
+
+sub insert_attachment($) {
+
+	$att = $_[0];
+	$dbh = $_[1];
+
+	# Check that we can write to the required directory and that we know who the
+	# web owner is.
+	$files_dir = $dp_root . "/files";
+	$file_repository = $files_dir . "/0";
+
+	@st = stat $files_dir
+		or	die ("Cannot find file repository");
+	$web_owner = $st[4];
+
+	# If the repository doesn't exist, create it.
+	stat $file_repository
+		or mkdir $file_repository, 0777;
+
+	# Extract the file using mimencode if necessary.
+	$fid = sprintf("%x_%d", time(), $att);
+	# If content encoding is not 7bit, try and determine what it is
+	$fname = $file_repository . "/" . $fid;
+	$freal = ">";
+	$freal = "| mimencode -u -o " if ($attach_encoding[$att] =~ m/base64/i);
+	$freal = "| mimencode -u -q -o " if ($attach_encoding[$att] =~ m/quoted/i);
+	$fout = $freal . $fname;
+	open(FH, $fout);
+	for ($j = $boundary_lines[$att] + 1; $j < $boundary_end[$att+1]; $j++) {
+		print FH $message[$j];
+	}
+	close(FH);
+
+	# Determine the files size
+	open(FH, $fname);
+	seek FH, 0, 2;
+	$filesize = tell FH;
+	close(FH);
+
+	# Change ownership to the web server owner - assumes the files directory is correctly owned
+	system ("chown " . $web_owner . " " . $fname)
+	 or chmod 0666, $fname;
+
+	# insert the file as user Admin (id=1), Project = 0
+	$sql_stmt = "INSERT into files (file_real_filename, file_name, file_type, file_size, file_date, file_description, file_task)  values (";
+	$sql_stmt .= " '" . $fid . "',";
+	$sql_stmt .= " '" . $attach_realname[$att] . "',";
+	$sql_stmt .= " '" . $attach_type[$att] . "', ";
+	$sql_stmt .= sprintf("%d", $filesize);
+	$sql_stmt .= ", NOW() , ";
+	$desc = "File attachment from: " . $header{'From'} . "\nTicket #" . $ticket . "\nSubject: " . $header{'Subject'};
+	$sql_stmt .= $dbh->quote($desc);
+	$sql_stmt .= ", ";
+	$sql_stmt .= $ticket;
+	$sql_stmt .= " )";
+    $sth = $dbh->prepare($sql_stmt);
+    $sth->execute();
+    $sth->finish();
+}
+
 
 ################################################################################
 
