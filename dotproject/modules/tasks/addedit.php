@@ -99,7 +99,8 @@ WHERE task_project = $task_project
 ORDER BY task_project
 ";
 
-$projTasks = array( $obj->task_id => 'None' );
+
+$projTasks = array( $obj->task_id => $AppUI->_('None') );
 $res = db_exec( $sql );
 while ($row = db_fetch_row( $res )) {
 	/*
