@@ -1,3 +1,13 @@
+2004-03-16 13:27  (kiryl)
+---------------------------------
+fileviewer.php
+style/classic/login.php
+style/deafult/login.php
+
+[Improvement] Displaying login failed message after unsuccessful login
+style/$uistyle/login.php must not have action attribute set. 
+Setting attribute value to index.php causes error
+
 2004-03-11 14:45  (kiryl)
 ---------------------------------
 modules/projects/view.php
