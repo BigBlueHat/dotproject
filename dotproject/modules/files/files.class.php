@@ -266,6 +266,41 @@ class CFile extends CDpObject {
 			}
 		}
 	}//notify
+
+	function getOwner()
+	{
+		$owner = '';
+		if (! $this->file_owner)
+			return $owner;
+
+		$this->_query->clear();
+		$this->_query->addTable('users', 'a');
+		$this->_query->leftJoin('contacts', 'b', 'b.contact_id = a.user_contact');
+		$this->_query->addQuery('contact_first_name, contact_last_name');
+		$this->_query->addWhere('a.user_id = ' . $this->file_owner);
+		if ($qid =& $this->_query->exec())
+			$owner = $qid->fields['contact_first_name'] . ' ' . $qid->fields['contact_last_name'];
+		$this->_query->clear();
+		
+		return $owner;
+	}
+
+	function getTaskName()
+	{
+		$taskname = '';
+		if (! $this->file_task)
+			return $taskname;
+
+		$this->_query->clear();
+		$this->_query->addTable('tasks');
+		$this->_query->addQuery('task_name');
+		$this->_query->addWhere('task_id = ' . $this->file_task);
+		if ($qid =& $this->_query->exec())
+			$taskname = $qid->fields['task_name'];
+		$this->_query->clear();
+		return $taskname;
+	}
+
 }
 
 function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)

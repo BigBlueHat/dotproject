@@ -20,20 +20,7 @@ $file_task = intval( dPgetParam( $_GET, 'file_task', 0 ) );
 $file_parent = intval( dPgetParam( $_GET, 'file_parent', 0 ) );
 $file_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
-$sql = "
-SELECT files.*,
-	user_username,
-	contact_first_name as user_first_name,
-	contact_last_name as user_last_name,
-	project_id,
-	task_id, task_name
-FROM files
-LEFT JOIN users ON file_owner = user_id
-LEFT JOIN contacts ON user_contact = contact_id
-LEFT JOIN projects ON project_id = file_project
-LEFT JOIN tasks ON task_id = file_task
-WHERE file_id = $file_id
-";
+$q =& new DBQuery;
 
 // check if this record has dependancies to prevent deletion
 $msg = '';
@@ -41,8 +28,8 @@ $obj = new CFile();
 $canDelete = $obj->canDelete( $msg, $file_id );
 
 // load the record data
-//$obj = null;
-if (!db_loadObject( $sql, $obj ) && $file_id > 0) {
+// $obj = null;
+if ($file_id > 0 && ! $obj->load($file_id)) {
 	$AppUI->setMsg( 'File' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -76,7 +63,7 @@ if ($obj->file_project) {
 }
 if ($obj->file_task) {
 	$file_task = $obj->file_task;
-	$task_name = @$obj->task_name;
+	$task_name = $obj->getTaskName();
 } else if ($file_task) {
 	$sql = "SELECT task_name FROM tasks WHERE task_id=$file_task";
 	$task_name = db_loadResult( $sql );
@@ -173,7 +160,7 @@ function setTask( key, val ) {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Uploaded By' );?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->user_first_name . ' '. $obj->user_last_name;?></td>
+			<td align="left" class="hilite"><?php echo $obj->getOwner();?></td>
 		</tr>
 	<?php } ?>
 		<tr>
