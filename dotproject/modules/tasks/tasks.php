@@ -119,7 +119,7 @@ $mods = $AppUI->getActiveModules();
 if (!empty($mods['history']) && !getDenyRead('history'))
 {
         $select .= ", history_date as last_update";
-        $join = "LEFT JOIN history ON history_item = tasks.task_id AND history_table='tasks' ";
+        $join = "LEFT JOIN history ON history_id = tasks.task_id AND history_table='tasks' ";
 }
 $join .= "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
@@ -302,7 +302,9 @@ function showtask( &$a, $level=0, $is_opened = true ) {
                         $style = 'background-color:#e6eedd';
                 } 
 
-                if ($now->after( $end_date )) {
+                if ($now->after( $end_date ) && $a["task_percent_complete"] >= 100) {
+                        $style = 'background-color:#cccccc';
+                } else if ($now->after( $end_date )) {
                         $sign = -1;
                         $style = 'background-color:#cc6666;color:#ffffff';
                 }
@@ -623,7 +625,8 @@ $AppUI->setState("tasks_opened", $tasks_opened);
 	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Started and on time');?></td>
-	<td>&nbsp; &nbsp;</td>
+        <td bgcolor="#cccccc">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Finished and Past');?></td>
 	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Should have started');?></td>
 	<td>&nbsp; &nbsp;</td>
