@@ -269,7 +269,7 @@ function delIt() {
 	<td width="50%">
 		<?php echo $AppUI->_( 'Task Creator' );?>
 		<br>
-		<?php echo arraySelect( $users, 'task_owner', 'class="text"', $task["task_owner"] );?>
+	<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($task["task_owner"]) ? $AppUI->user_id : $task["task_owner"] );?>
 		<br><br><?php echo $AppUI->_( 'Web Address' );?>
 		<br><input type="text" class="text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255"">
 		<br>
