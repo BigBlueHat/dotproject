@@ -1,3 +1,144 @@
+2002-12-16 03:54  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Included root_dir in the path of the CTabBox includes.
+
+2002-12-16 03:45  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Make use of CAppUI redirect for access denied
+
+2002-12-16 03:45  (eddieajau)
+---------------------------------
+modules/system/translate.php
+- Added forums module to editor scope
+- Fixed undeclared variable
+
+2002-12-16 03:44  (eddieajau)
+---------------------------------
+modules/forums/index.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/forums/addedit.php
+- Cosmetic and code-base improvements
+- Upgrade to support classes
+- Many bug and logic fixes
+- Moderator of a forum can be defined and can edit and delete messages
+- Language support added
+
+2002-12-16 03:42  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_depts.php
+modules/companies/vw_users.php
+- Reworked breadcrumbs
+- Added more language support
+- Fixed undeclared variables
+
+2002-12-16 03:40  (eddieajau)
+---------------------------------
+modules/admin/viewuser.php
+- Fixed syntax error
+
+2002-12-16 03:40  (eddieajau)
+---------------------------------
+logincheck.php
+- Declared username and password variables
+
+2002-12-16 03:39  (eddieajau)
+---------------------------------
+index.php
+- Corrected error in undefined array index.
+
+2002-12-16 03:38  (eddieajau)
+---------------------------------
+style/main.css
+- Removed hardcoded height and width from .textarea style
+- Too restrictive.
+
+2002-12-16 03:37  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/forums.inc
+- Content added
+
+2002-12-16 03:36  (eddieajau)
+---------------------------------
+includes/permissions.php
+- Reduced error reporting from undefined array variables when in a nested context.
+
+2002-12-16 03:35  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added presentation layer function for bread-crumbs.
+- fromDate function returns - if supplied format is invalid
+
+2002-12-16 03:33  (eddieajau)
+---------------------------------
+includes/login.php
+- Minor addition register globals warning.
+- Dependance on state of register_globals is lessening.
+
+2002-12-16 03:32  (eddieajau)
+---------------------------------
+includes/leftnav.php
+- Refashioned icons into an array for printing in a loop
+
+2002-12-16 03:30  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Fixes for db portability and class object binding
+
+2002-12-16 03:28  (eddieajau)
+---------------------------------
+includes/config.php
+- Syntax fixes
+
+2002-12-16 03:27  (eddieajau)
+---------------------------------
+functions/forums_func.php
+- Moved sendWatchMail function to CForumMessages class
+
+2002-12-16 03:25  (eddieajau)
+---------------------------------
+dosql/addeditdelforum.php
+dosql/aed_post.php
+dosql/watch_forum.php
+classdefs/forums.php
+- Upgrade of forums module code base
+
+2002-12-16 03:25  (eddieajau)
+---------------------------------
+dosql/company_aed.php
+- Minor fixes
+
+2002-12-16 03:24  (eddieajau)
+---------------------------------
+db/dotproject_022_to_023.sql
+- Allow forum_moderated field to hold the user_id of the moderator
+
+2002-12-16 03:24  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Bug fix: debug syntax and variable scope
+
+2002-12-15 20:04  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added support for german locales
+
+2002-12-12 20:24  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2002-12-12 20:01  (kripper)
 ---------------------------------
 modules/tasks/todo.php
