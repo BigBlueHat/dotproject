@@ -37,7 +37,11 @@
 <div align="center">
 <?php
 	echo '<span class="error">'.$AppUI->getMsg().'</span>';
-	echo ini_get( 'register_globals') ? '' : '<br /><span class="warning">WARNING: dotproject is not fully supported with register_globals=off</span>';
+
+	$msg = '';
+	$msg .= ini_get( 'register_globals') ? '' : '<br /><span class="warning">WARNING: dotproject has not been fully tested with register_globals=off</span>';
+	$msg .=  phpversion() < '4.1' ? '<br /><span class="warning">WARNING: dotproject is NOT SUPPORT for this PHP Version ('.phpversion().')</span>' : '';
+	echo $msg;
 ?>
 </div>
 </body>
