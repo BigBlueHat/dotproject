@@ -5,4 +5,6 @@
 
 <h3>Dynamic Tasks</h3>
 
-Dynamics tasks are tasks which doesn't have a fixed date and may be scheduled automaticaly by the Tasks Organizer (a still hidden feature).
+Dynamics tasks are tasks which inherit their task properties, ( start date, end date, progress ), from their child tasks. A dynamic task's starting date will be the earliest starting date of its children and its end date will be the last end date of its children.
+
+To use dynamic tasks you must check the dynamic task check box for the dynamic task and then specify the dynamic task as the parent task for each child task.
