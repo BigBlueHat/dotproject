@@ -336,7 +336,7 @@ if (! isset($_SESSION['all_tabs'][$m]) && !( $_GET['m'] == 'install' && $dPrunLe
 			// cut the module_tab. and the .php parts of the filename 
 			// (begining and end)
 			$name = substr($tab, strlen($m) + 5, -4);
-			$all_tabs[$module. ' - ' . $name] = substr($dPconfig['root_dir'] . '/modules/' . $dir. '/' . $tab, 0, -4);
+			$all_tabs[ucfirst(str_replace('_',' ',$name))] = substr($dPconfig['root_dir'] . '/modules/' . $dir. '/' . $tab, 0, -4);
 		}
 	}
 } else {
