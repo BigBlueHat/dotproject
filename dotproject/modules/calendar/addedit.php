@@ -75,7 +75,14 @@ $titleBlock->show();
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 // pull projects
-$sql = "SELECT project_id, project_name FROM projects ORDER BY project_name";
+require_once( $AppUI->getModuleClass( 'projects' ) );
+$q =& new DBQuery;
+$sql = "SELECT project_id, project_name FROM projects ";
+$prj =& new CProject;
+$allowedProjects = $prj->getAllowedSQL($AppUI->user_id);
+if (count($allowedProjects))
+	$sql .= " LEFT JOIN companies cp on cp.company_id = project_company WHERE " . implode(' AND ', $allowedProjects);
+$sql .= " ORDER by project_name";
 $all_projects = '(' . $AppUI->_('All') . ')';
 $projects = arrayMerge( array( 0 => $all_projects ), db_loadHashList( $sql ) );
 

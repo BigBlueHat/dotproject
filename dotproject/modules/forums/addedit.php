@@ -2,9 +2,10 @@
 // Add / Edit forum
 
 $forum_id = intval( dPgetParam( $_GET, 'forum_id', 0 ) );
+$perms =& $AppUI->acl();
 
 // check permissions for this record
-$canEdit = !getDenyEdit( $m, $forum_id );
+$canEdit = $perms->checkModuleItem( $m, 'edit', $forum_id );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -25,18 +26,20 @@ $status = isset( $forum_info["forum_status"] ) ? $forum_info["forum_status"] : -
 
 // get any project records denied from viewing
 $projObj = new CProject();
-$projDeny = $projObj->getDeniedRecords( $AppUI->user_id );
-$projAllow = $projObj->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 
 //Pull project Information
-$sql = "SELECT project_id, project_name FROM projects WHERE project_active <> 0 "
-.(count($projAllow) > 0 ? "\nAND project_id NOT IN (" . implode( ',', array_keys($projAllow) ) . ')' : '')
-.(isset($company_id) ? "\nAND project_company = $company_id" : '')
-." ORDER BY project_name";
+$q =& new DBQuery;
+$q->addTable('projects');
+$q->addQuery('project_id, project_name');
+$q->addWhere('project_active <> 0');
+$q->addOrder('project_name');
+$projObj->setAllowedSQL($AppUI->user_id, $q);
+if (isset($company_id))
+	$q->addWhere("project_company = $company_id");
+$sql = $q->prepare();
 $projects = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
-$sql .= " ORDER BY user_username";
 $perms =& $AppUI->acl();
 $permittedUsers =& $perms->getPermittedUsers();
 if ( !$perms->checkModule("admin", "view"))
