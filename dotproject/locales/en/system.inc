@@ -290,7 +290,7 @@ You can only have 1 character within a string, so 2d4h is NOT valid, but 28h is.
 "show_all_tasks_title"=>"Show Other Users\' Tasks",
 "show_all_tasks_tooltip"=>"Controls viewing of tasks that belong to other users.",
 "site_domain_title"=>"Site Domain",
-"site_domain_tooltip"=>"The Site Domain is used as a visual embelishment in required locations throughout dotProject and is not used as part of the email settings, site settings or any other component.  Set it to match your domain for consistency\'s sake.",
+"site_domain_tooltip"=>"The domain set here is used to generate an email address if an incomplete address has been entered in the user\'s record.",
 "sl"=>"Slovenian",
 "smtp_item_title"=>"SMTP",
 "sql_item_title"=>"Standard dotProject",
