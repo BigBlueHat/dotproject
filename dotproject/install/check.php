@@ -45,10 +45,7 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
 	<td class="item"><li>Server API</li></td>
  	<td align="left"><?php echo (php_sapi_name() != "cgi") ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.php_sapi_name().')</span>' : '<b class="error">'.$failedImg.' CGI mode is likely to have problems</b>';?></td>
 </tr>
-<tr>
-	<td class="item"><li>MYSQL Support</li></td>
- 	<td align="left"><?php echo function_exists( 'mysql_pconnect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.mysql_get_server_info().')</span>' : '<b class="error">'.$failedImg.' Fatal: Check MySQL support is compiled with PHP</b>';?></td>
-</tr>
+
 <tr>
 	<td class="item"><li>GD Support</li></td>
  	<td align="left"><?php echo extension_loaded('gd') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> GANTT Chart functionality may not work correctly.';?></td>
@@ -64,6 +61,58 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
 <tr>
             <td class="item">Session Save Path writable?</td>
             <td align="left"><?php echo (is_dir( get_cfg_var( 'session.save_path' )) && is_writable( get_cfg_var( 'session.save_path' )) ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.' Fatal:</b> <b class="item">'.get_cfg_var( "session.save_path" ).'</b><b class="error"> not existing or not writable</b>';?></td>
+</tr>
+<tr>
+            <td class="title" colspan="2"><br />Database Connectors</td>
+</tr>
+<tr>
+            <td class="item" colspan="2">The next tests check for database support compiled with php. We use the ADODB database abstraction layer which comes with drivers for
+	    many databases. Consult the ADODB documentation for details. <br />For non-advanced users: MySQL will probably be the database of your choice - make sure MySql Support
+	    is available.</td>
+</tr>
+<tr>
+	<td class="item"><li>iBase Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'ibase_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.ibase_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>Informix Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'ifx_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>LDAP Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'ldap_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>mSQL Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'msql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>M$SQL Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'mssql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>MySQL Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'mysql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.mysql_get_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>ODBC Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'odbc_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>Oracle Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'oci_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.ociserverversion().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>PostgreSQL Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'pg_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>SQLite Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'sqlite_open' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.sqlite_libversion().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+</tr>
+<tr>
+	<td class="item"><li>Sybase Support</li></td>
+ 	<td align="left"><?php echo function_exists( 'sybase_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
             <td class="title" colspan="2"><br />Check for Directory and File Permissions</td>
