@@ -2,6 +2,7 @@
 
 global $companiesType;
 global $search_string;
+global $owner_filter_id;
 
 // retrieve any state parameters
 if (isset( $_GET['orderby'] )) {
@@ -55,6 +56,8 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 if($search_string != ""){
 	$sql .= " AND company_name LIKE '%$search_string%' ";
 }
+
+$sql .= $owner_filter_id > 0 ? " AND company_owner = '$owner_filter_id' " : "";
 
 $sql .= " GROUP BY company_id
 		 ORDER BY $orderby";
