@@ -135,13 +135,14 @@ TH.banner {
 }
 
 TD.nav {
-
+	background: url("images/lines_title_shadow.gif") repeat-x bottom;
+	padding-bottom: 5px;
 	color: #000;
 }
 
 TR.nav {
 	background: url("images/lines_title_bar.gif");
-	height: 25px;
+	height: 20px;
 	color: #000;
 }
 
