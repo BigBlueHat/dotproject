@@ -1,10 +1,10 @@
 <?php
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
-//error_reporting(E_ALL );
+//error_reporting( E_ALL );
 
 require_once( "./includes/config.php" );
-require_once( "./includes/db_connect.php" );
-require_once( "./classdefs/ui.php" );
+require_once( "$root_dir/includes/db_connect.php" );
+require_once( "$root_dir/classdefs/ui.php" );
 
 session_start();
 session_register( 'AppUI' );
@@ -15,44 +15,45 @@ header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header ("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
 header ("Pragma: no-cache");                          // HTTP/1.0
 
-if (!isset($HTTP_SESSION_VARS['AppUI']) || isset($HTTP_GET_VARS['logout'])) {
-	$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
+if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
+	$_SESSION['AppUI'] = new CAppUI;
 }
-$AppUI =& $HTTP_SESSION_VARS['AppUI'];
+$AppUI =& $_SESSION['AppUI'];
 if ($AppUI->doLogin()) {
 	session_unset();
 	session_destroy();
-	include "./includes/login.php";
+	include "$root_dir/includes/login.php";
 	exit;
 }
 
-$m = isset( $HTTP_GET_VARS['m'] ) ? $HTTP_GET_VARS['m'] :
-	(isset( $HTTP_COOKIE_VARS['m'] ) ? $HTTP_COOKIE_VARS['m'] : 'companies');
-$a = isset( $HTTP_GET_VARS['a'] )? $HTTP_GET_VARS['a'] : 'index';
+$m = isset( $_GET['m'] ) ? $_GET['m'] :
+	(isset( $_COOKIE['m'] ) ? $_COOKIE['m'] : 'companies');
+$a = isset( $_GET['a'] )? $_GET['a'] : 'index';
 
 setcookie("m", $m, time()+234234532523);
 
-// legacy cookies
-$user_cookie = isset($HTTP_COOKIE_VARS['user_cookie']) ? $HTTP_COOKIE_VARS['user_cookie'] : 0;
-$thisuser = isset($HTTP_COOKIE_VARS['thisuser']) ? $HTTP_COOKIE_VARS['thisuser'] : 0;
-list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company, $thisuser_dept) = explode( '|', $thisuser );
+// legacy cookie support
+$user_cookie = $AppUI->user_id;
+$thisuser_id = $AppUI->user_id;
+$thisuser_first_name = $AppUI->user_first_name;
+$thisuser_last_name = $AppUI->user_last_name;
+$thisuser_company = $AppUI->user_company;
+$thisuser_dept = $AppUI->user_department;
 
-require_once( "./includes/main_functions.php" );
-require_once( "./includes/permissions.php" );
-@include_once( "./functions/" . $m . "_func.php" );
+require_once( "$root_dir/includes/main_functions.php" );
+require_once( "$root_dir/includes/permissions.php" );
+@include_once( "$root_dir/functions/" . $m . "_func.php" );
 @include_once( "$root_dir/classdefs/$m.php" );
 @include_once( "$root_dir/locales/core.php" );
 
 //do some db work if dosql is set
-if (isset( $HTTP_POST_VARS["dosql"]) ) {
-	require("./dosql/" . $HTTP_POST_VARS["dosql"] . ".php");
+if (isset( $_POST["dosql"]) ) {
+	require("$root_dir/dosql/" . $_POST["dosql"] . ".php");
 }
 if (isset( $return )) {
 	header("Location: ./index.php?" . $return);
 }
-
-require "./includes/header.php";
-require "./modules/" . $m . "/" . $a . ".php";
-require "./includes/footer.php";
-
+require "$root_dir/includes/header.php";
+require "$root_dir/modules/" . $m . "/" . $a . ".php";
+require "$root_dir/includes/footer.php";
 ?>

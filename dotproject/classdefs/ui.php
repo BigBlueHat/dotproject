@@ -54,7 +54,7 @@ class CAppUI {
 		$this->user_last_name = '';
 		$this->user_company = 0;
 		$this->user_department = 0;
-		$this->user_type = '';
+		$this->user_type = 0;
 
 		$this->defaultRedirect = "";
 // set up the default preferences
@@ -210,18 +210,11 @@ class CAppUI {
 
 		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
 
-	// handle legacy cookies until they are all crushed
 		$this->logout();
-		setcookie( "user_cookie", $this->user_id );
-		setcookie( "thisuser", "$this->user_id|$this->user_first_name|$this->user_last_name|$this->user_company|$this->user_department" );
-
 		return true;
 	}
 
 	function logout() {
-	// handle legacy cookies until they are all crushed
-		setcookie( 'user_cookie', '', time() - 3600 );
-		setcookie( 'thisuser', '', time() - 3600 );
 	}
 
 	function doLogin() {
