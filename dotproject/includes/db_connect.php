@@ -223,6 +223,15 @@ function db_datetime( $timestamp = NULL ) {
 	}
 }
 
+function db_dateTime2locale( $dateTime, $format ) {
+	if (($ts = db_dateTime2unix( $time )) !== null) {
+		$date = new CDate( $ts, $format );
+		return $date->toString();
+	} else {
+		return null;
+	}
+}
+
 /*
  *  copy the hash array content into the object as properties
  *  only existing properties of object are filled. when undefined in hash, properties wont be deleted
