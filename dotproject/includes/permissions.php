@@ -60,26 +60,17 @@ function getDenyEdit( $mod, $item_id=0 ) {
 }
 
 // pull permissions into master array
-$psql = "
+$sql = "
 SELECT permission_grant_on g, permission_item i, permission_value v
 FROM permissions
 WHERE permission_user = $AppUI->user_id
 ";
 
 $perms = array();
-$prc = db_exec( $psql );
-$ual = 0;
+$res = db_exec( $sql );
 
 // build the master permissions array
-while ($prow = db_fetch_assoc( $prc )) {
-	$perms[$prow['g']][$prow['i']] = $prow['v'];
-	$ual++;
-}
-
-// *** this next bit doesn't seem to have any relevance
-if($ual < 1){
-	setcookie("m", "ticketsmith");
-	include "./includes/login.php";
-	die;
+while ($row = db_fetch_assoc( $res )) {
+	$perms[$row['g']][$row['i']] = $row['v'];
 }
 ?>
