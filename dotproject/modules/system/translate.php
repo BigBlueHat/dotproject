@@ -15,12 +15,17 @@ $lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : 'en';
 $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 
 $modules = array(
+	'admin',
+	'calendar',
 	'common',
+	'contacts',
 	'companies',
+	'files',
 	'forums',
 	'help',
 	'projects',
-	'system'
+	'system',
+	'tasks'
 );
 
 ob_start();
