@@ -1,27 +1,32 @@
-2003-08-30 21:55  (ajdonnison)
+2003-08-30 08:15  (ajdonnison)
+---------------------------------
+ChangeLog
+- updated for v1 release
+
+2003-08-30 07:55  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 - Fixed syntax error in define statement.
 
-2003-08-30 21:54  (ajdonnison)
+2003-08-30 07:54  (ajdonnison)
 ---------------------------------
 modules/calendar/links_tasks.php
 - Fix for tasks on month boundaries.
 
-2003-08-30 21:05  (ajdonnison)
+2003-08-30 07:05  (ajdonnison)
 ---------------------------------
 modules/departments/addedit.php
 modules/departments/departments.class.php
 - Bug 772496 - No longer allows assigning self as parent department.
 
-2003-08-30 20:50  (ajdonnison)
+2003-08-30 06:50  (ajdonnison)
 ---------------------------------
 modules/companies/addedit.php
 modules/projects/addedit.php
 modules/tasks/addedit.php
 - Bug 771868 - Fixed crumb to view un-created object.
 
-2003-08-30 20:15  (ajdonnison)
+2003-08-30 06:15  (ajdonnison)
 ---------------------------------
 db/dotproject_100.sql
 db/upgrade_100_beta1_to_release1.sql
@@ -30,12 +35,12 @@ modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - Fix for bug 769725 - notify checkbutton not stored in db.
 
-2003-08-30 18:08  (kripper)
+2003-08-30 04:08  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-30 17:53  (ajdonnison)
+2003-08-30 03:53  (ajdonnison)
 ---------------------------------
 modules/admin/addeditgroup.php
 modules/admin/addedituser.php
@@ -44,47 +49,47 @@ modules/contacts/addedit.php
 - Fixed maximum length of email fields to the size of the database columns.
 - Bug 773453
 
-2003-08-30 17:48  (ajdonnison)
+2003-08-30 03:48  (ajdonnison)
 ---------------------------------
 db/dotproject_100.sql
 db/upgrade_100_beta1_to_release1.sql
 - Increased sizes of email addresses to allow for long domain names.
 - Bug 773453.
 
-2003-08-30 17:28  (ajdonnison)
+2003-08-30 03:28  (ajdonnison)
 ---------------------------------
 includes/config-dist.php
 modules/calendar/vw_day_events.php
 - Moved constraints for start/end and increments for day view to config
 - file.
 
-2003-08-30 16:18  (ajdonnison)
+2003-08-30 02:18  (ajdonnison)
 ---------------------------------
 modules/help/en/tasks.index.hlp
 - fixed typo
 
-2003-08-30 16:12  (ajdonnison)
+2003-08-30 02:12  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 - History now checks to make sure that history module is loaded and active
 - before logging history.
 
-2003-08-29 23:35  (jcgonz)
+2003-08-29 09:35  (jcgonz)
 ---------------------------------
 modules/projects/index.php
 - Now the default projects tab is 'active projects' not 'proposed projects'
 
-2003-08-28 18:09  (kripper)
+2003-08-28 04:09  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-28 04:09  (jcgonz)
+2003-08-27 14:09  (jcgonz)
 ---------------------------------
 modules/projects/vw_idx_proposed.php
 - Added the"proposed projects" in the projects module. The user is able to activate (change status) the project using the "update projects status" button at the bottom.
 
-2003-08-28 04:06  (jcgonz)
+2003-08-27 14:06  (jcgonz)
 ---------------------------------
 functions/projects_func.php
 modules/help/en/projects.index.hlp
@@ -92,110 +97,98 @@ modules/projects/index.php
 modules/projects/vw_idx_active.php
 - Added the 'proposed projects' in the projects module. The user is able to activate (change status) the project using the 'update projects status' button at the bottom.
 
-2003-08-27 18:09  (kripper)
+2003-08-27 04:09  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-27 05:56  (jcgonz)
+2003-08-26 15:56  (jcgonz)
 ---------------------------------
 modules/help/en/contacts.index.hlp
 - Updated contacts help file to include searching documentation
 
-2003-08-27 05:52  (jcgonz)
+2003-08-26 15:52  (jcgonz)
 ---------------------------------
 modules/contacts/index.php
 - Added search feature to the contacts module
 
-2003-08-23 17:58  (kripper)
+2003-08-23 03:58  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-23 16:21  (ajdonnison)
+2003-08-23 02:21  (ajdonnison)
 ---------------------------------
 fileviewer.php
 - Added MIME version header to try and resolve problems with IE6.
 
-2003-08-22 17:59  (kripper)
+2003-08-22 03:59  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-22 03:33  (jcgonz)
+2003-08-21 13:33  (jcgonz)
 ---------------------------------
 functions/tasks_func.php
 modules/tasks/tasks.php
 - Added My Unfinished Tasks filter to the tasks list
 
-2003-08-21 17:59  (kripper)
+2003-08-21 03:59  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-21 04:08  (jcgonz)
+2003-08-20 14:08  (jcgonz)
 ---------------------------------
 style/classic/login.php
 - Removed the register_globals incompatibility message
 
-2003-08-20 18:00  (kripper)
+2003-08-20 04:00  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-20 03:17  (kripper)
+2003-08-19 13:17  (kripper)
 ---------------------------------
 includes/permissions.php
 - Fixed permission bug (overwriting of PERM_EDIT with PERM_READ)
 
-2003-08-19 22:54  (kripper)
+2003-08-19 08:54  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-08-19 22:41  (kripper)
----------------------------------
-modules/projects/reports/tasklogs.php
-- Changed tasklog order by task_log_date
-
-2003-08-14 02:16  (kripper)
+2003-08-13 12:16  (kripper)
 ---------------------------------
 modules/tasks/view.php
 - Fixed bad tab variable ussage.
 
-2003-08-09 08:53  (kripper)
----------------------------------
-modules/projects/reports/tasklogs.php
-- Reduced font size of PDF reports, preserve checkbox states, some cosmetic
-- changes. TODO: PDF rendering should be done just in one click (remove
-- PDF checkbox, add button).
-
-2003-08-06 07:20  (kripper)
+2003-08-05 17:20  (kripper)
 ---------------------------------
 modules/companies/view.php
 - Moved projects tab to first position (it's the most used one)
 
-2003-08-02 11:30  (kripper)
+2003-08-01 21:30  (kripper)
 ---------------------------------
 modules/tasks/addedit.php
 - Removed TODO and commented decision and asumption about permissions.
 
-2003-08-02 11:26  (kripper)
+2003-08-01 21:26  (kripper)
 ---------------------------------
 includes/permissions.php
 - Added some comments
 
-2003-08-02 11:21  (kripper)
+2003-08-01 21:21  (kripper)
 ---------------------------------
 modules/tasks/addedit.php
 - Fixed permission check for adding tasks to allowed projects
 
-2003-08-02 09:35  (kripper)
+2003-08-01 19:35  (kripper)
 ---------------------------------
 modules/tasks/viewgantt.php
 - Fixed Opera javascript bug
 
-2003-07-31 01:45  (revelation7)
+2003-07-30 11:45  (revelation7)
 ---------------------------------
 modules/calendar/links_events.php
 modules/companies/index.php
@@ -206,94 +199,94 @@ modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_complete.php
 - Added tooltips (descriptions that are displayed on mouse over links) per RFE 770618.  --Ray
 
-2003-07-23 15:18  (kripper)
+2003-07-23 01:18  (kripper)
 ---------------------------------
 modules/tasks/gantt.php
 - Fixed end_dates calculation
 
-2003-07-23 14:28  (kripper)
+2003-07-23 00:28  (kripper)
 ---------------------------------
 includes/main_functions.php
 - Added convert2days and formatTime functions
 
-2003-07-23 14:26  (kripper)
+2003-07-23 00:26  (kripper)
 ---------------------------------
 modules/projects/view.php
 - Added total hours in project view
 
-2003-07-23 14:25  (kripper)
+2003-07-23 00:25  (kripper)
 ---------------------------------
 locales/en/projects.inc
 - Updated locales
 
-2003-07-23 14:24  (kripper)
+2003-07-23 00:24  (kripper)
 ---------------------------------
 classes/date.class.php
 - Added addDays function
 
-2003-07-23 14:23  (kripper)
+2003-07-23 00:23  (kripper)
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/organizer.php
 - Tasks organizer (m=tasks&a=organizer) is working again.
 
-2003-07-23 14:19  (kripper)
+2003-07-23 00:19  (kripper)
 ---------------------------------
 modules/tasks/gantt.php
 modules/tasks/tasks.php
 - Added task_end_dates = task_start_date + task_duration when no end date was
 - specified in gantts.
 
-2003-07-17 10:08  (ajdonnison)
+2003-07-16 20:08  (ajdonnison)
 ---------------------------------
 docs/check.php
 - Added mysql version, apache version and check for root_dir validity.
 
-2003-07-17 08:47  (ajdonnison)
+2003-07-16 18:47  (ajdonnison)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-07-17 07:53  (ajdonnison)
+2003-07-16 17:53  (ajdonnison)
 ---------------------------------
 modules/admin/index.php
 - Fixed warning message when first name is blank for a user
 
-2003-07-16 12:30  (ajdonnison)
+2003-07-15 22:30  (ajdonnison)
 ---------------------------------
 modules/ticketsmith/view.php
 - Reinstated missing "return to parent" link to make nav easier.
 - Fixed Mime header on generated email.
 
-2003-07-16 11:55  (ajdonnison)
+2003-07-15 21:55  (ajdonnison)
 ---------------------------------
 ChangeLog
 - Added ticketsmith changes.
 
-2003-07-16 11:35  (ajdonnison)
+2003-07-15 21:35  (ajdonnison)
 ---------------------------------
 db/dotproject_100.sql
 db/upgrade_022_to_100.sql
 - Changed cc column in tickets to be 255 characters to handle larger
 - cc lists.
 
-2003-07-16 11:32  (ajdonnison)
+2003-07-15 21:32  (ajdonnison)
 ---------------------------------
 modules/ticketsmith/INSTALL
 modules/ticketsmith/README
 - Added more detail to allow users to install gateway.pl successfully
 
-2003-07-16 11:31  (ajdonnison)
+2003-07-15 21:31  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
 - Supports extenral passing of dotproject config, requiring less editing.
 
-2003-07-15 19:47  (ajdonnison)
+2003-07-15 05:47  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
 - Removed the debug output.
 
-2003-07-15 19:42  (ajdonnison)
+2003-07-15 05:42  (ajdonnison)
 ---------------------------------
 modules/ticketsmith/attach.php
 modules/ticketsmith/common.inc.php
@@ -306,35 +299,35 @@ modules/ticketsmith/view.php
 - Tickets can be reassigned to another parent if link_tickets_kludge is
 - set.
 
-2003-07-15 19:41  (ajdonnison)
+2003-07-15 05:41  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
 - Cleaned up MIME handling in emails.
 - Now can save attachments instead of just removing them.
 
-2003-07-15 19:41  (ajdonnison)
+2003-07-15 05:41  (ajdonnison)
 ---------------------------------
 includes/config-dist.php
 - Added new flag to turn on kludge for linking of new tickets to another
 - parent.
 
-2003-07-14 19:54  (ajdonnison)
+2003-07-14 05:54  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
 - Now picks up PHP config, does not need separate configs.
 - Acknowledgement mail now readable in text-only mail clients.
 
-2003-07-10 18:55  (kripper)
+2003-07-10 04:55  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-07-10 16:01  (eddieajau)
+2003-07-10 02:01  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Minor tweak to access canAccess method
 
-2003-07-10 15:54  (eddieajau)
+2003-07-10 01:54  (eddieajau)
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/tasks.class.php
@@ -342,112 +335,112 @@ modules/tasks/tasks.php
 modules/tasks/view.php
 - Added record access control
 
-2003-07-10 15:54  (eddieajau)
+2003-07-10 01:54  (eddieajau)
 ---------------------------------
 db/upgrade_100_beta1_to_release1.sql
 - Initial upload
 
-2003-07-10 15:53  (eddieajau)
+2003-07-10 01:53  (eddieajau)
 ---------------------------------
 db/dotproject_100.sql
 - Added task_access field to tasks table
 
-2003-07-10 15:52  (eddieajau)
+2003-07-10 01:52  (eddieajau)
 ---------------------------------
 includes/db_connect.php
 - Enhance bindobjecttoarray function
 
-2003-07-10 13:49  (eddieajau)
+2003-07-09 23:49  (eddieajau)
 ---------------------------------
 modules/admin/viewuser.php
 - AIM link added
 
-2003-07-10 13:49  (eddieajau)
+2003-07-09 23:49  (eddieajau)
 ---------------------------------
 includes/permissions.php
 modules/tasks/tasks.php
 - Formatting
 
-2003-07-10 13:48  (eddieajau)
+2003-07-09 23:48  (eddieajau)
 ---------------------------------
 includes/main_functions.php
 - Comments added
 
-2003-07-09 18:55  (kripper)
+2003-07-09 04:55  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-07-09 08:59  (kripper)
+2003-07-08 18:59  (kripper)
 ---------------------------------
 ChangeLog
 - Updated Changelog
 
-2003-07-09 08:28  (jcgonz)
+2003-07-08 18:28  (jcgonz)
 ---------------------------------
 modules/tasks/todo.php
 - Corrected a short php tag <? to <?php
 
-2003-07-09 08:25  (jcgonz)
+2003-07-08 18:25  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.php
 - Updated a short php tag <?
 
-2003-07-07 15:24  (kripper)
+2003-07-07 01:24  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-07-07 15:15  (kripper)
+2003-07-07 01:15  (kripper)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/view.php
 - Added project field to events. The project field will be used to filter
 - events in the calendar.
 
-2003-07-07 12:36  (eddieajau)
+2003-07-06 22:36  (eddieajau)
 ---------------------------------
 modules/projects/view.php
 - Added inactive tasks tab
 
-2003-07-07 12:35  (eddieajau)
+2003-07-06 22:35  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.php
 - Added better in-active task support
 
-2003-07-05 06:07  (kripper)
+2003-07-04 16:07  (kripper)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Implemented filtering of not allowed tasks in calendar
 
-2003-07-05 06:06  (kripper)
+2003-07-04 16:06  (kripper)
 ---------------------------------
 includes/permissions.php
 - Fixed bug in winnow
 
-2003-07-05 06:03  (kripper)
+2003-07-04 16:03  (kripper)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Commented sql debugging
 
-2003-07-04 13:58  (eddieajau)
+2003-07-03 23:58  (eddieajau)
 ---------------------------------
 modules/tasks/addedit.php
 - Fixed double quotes in task name problem
 
-2003-07-04 13:48  (eddieajau)
+2003-07-03 23:48  (eddieajau)
 ---------------------------------
 index.php
 style/classic/login.php
 style/default/login.php
 - Allows redirection through login
 
-2003-07-04 13:20  (eddieajau)
+2003-07-03 23:20  (eddieajau)
 ---------------------------------
 docs/trouble.html
 - no message
 
-2003-07-04 13:07  (eddieajau)
+2003-07-03 23:07  (eddieajau)
 ---------------------------------
 modules/contacts/addedit.php
 modules/contacts/do_contact_aed.php
@@ -455,1277 +448,57 @@ modules/help/en/contacts.addedit.hlp
 modules/projects/addedit.php
 - Upgraded contacts assume the owner as the first user to edit the contact
 
-2003-07-04 11:45  (eddieajau)
+2003-07-03 21:45  (eddieajau)
 ---------------------------------
 modules/system/translate.php
 modules/system/translate_save.php
 - Fixed slashes problem
 
-2003-07-04 11:32  (eddieajau)
+2003-07-03 21:32  (eddieajau)
 ---------------------------------
 includes/main_functions.php
 - Added function to make string safe in html tab attirbutes
 
-2003-07-04 11:31  (eddieajau)
+2003-07-03 21:31  (eddieajau)
 ---------------------------------
 includes/permissions.php
 - Fixed constant declaration
 
-2003-07-04 11:12  (eddieajau)
+2003-07-03 21:12  (eddieajau)
 ---------------------------------
 modules/ticketsmith/comment.php
 - Fixed quotes problem
 
-2003-07-04 10:07  (eddieajau)
+2003-07-03 20:07  (eddieajau)
 ---------------------------------
 modules/ticketsmith/comment.php
 - Fixed quotes problem
 
-2003-07-04 06:48  (kripper)
+2003-07-03 16:48  (kripper)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Filter events for not allowed projects in calendar module.
 
-2003-07-04 06:36  (kripper)
+2003-07-03 16:36  (kripper)
 ---------------------------------
 modules/tasks/tasks.php
 - Disabled tasks filtering. Has still some bugs.
 
-2003-07-04 06:23  (kripper)
+2003-07-03 16:23  (kripper)
 ---------------------------------
 index.php
 - Uncommented canEdit/canRead assignements. Should be moved into each php file.
 
-2003-07-03 14:08  (kripper)
+2003-07-03 00:08  (kripper)
 ---------------------------------
 includes/permissions.php
 - Reimplemented a sql friendly winnow function
 
-2003-07-03 14:06  (kripper)
+2003-07-03 00:06  (kripper)
 ---------------------------------
 modules/tasks/tasks.php
 - Reimplemented a sql friendly winnow function.
+...
 
-2003-07-03 10:16  (kripper)
----------------------------------
-modules/files/index_table.php
-- Fixed warning when there are no files.
+(This file has been wrapped)
 
-2003-07-03 10:09  (kripper)
----------------------------------
-modules/tasks/view.php
-- Project permissions are now propagated to tasks from permissions.php
-
-2003-07-03 10:00  (kripper)
----------------------------------
-includes/permissions.php
-- Restructured permissions handling.
-
-2003-07-03 09:58  (kripper)
----------------------------------
-index.php
-- Commented module permissions check. Should be checked in each php file.
-
-2003-07-01 14:20  (kobudo)
----------------------------------
-ChangeLog
-- Update Changelog.
-
-2003-07-01 14:16  (kobudo)
----------------------------------
-modules/help/en/help.toc.hlp
-- Update help docs.
-
-2003-07-01 14:12  (kobudo)
----------------------------------
-modules/help/en/help.toc.hlp
-modules/help/en/install.install.hlp
-modules/help/en/install.trouble.hlp
-- Add more help documentation for installation and troubleshooting
-
-2003-07-01 13:33  (kobudo)
----------------------------------
-docs/install.html
-docs/nav.html
-docs/trouble.html
-- Add maximum file upload size troubleshooting info.
-
-2003-06-28 05:38  (kripper)
----------------------------------
-index.php
-- admin/viewuser has now public access in order to allow someone to change his
-- passowrd. I suggest to try DP using a user which only has access to the
-- projects module in order to find and correct more permission related bugs.
-
-2003-06-28 02:26  (kobudo)
----------------------------------
-docs/trouble.html
-- Add php.ini file_uploads = on check for File Module functioning.
-
-2003-06-28 01:15  (kobudo)
----------------------------------
-ChangeLog
-- Changelog update.
-
-2003-06-27 17:47  (kripper)
----------------------------------
-modules/projects/view.php
-- Added total worked hours to project summary
-
-2003-06-27 15:46  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Bug fix in calendar
-
-2003-06-27 15:39  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-- Improved permission winnowing
-
-2003-06-27 15:35  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-includes/permissions.php
-- Improved permission winnowing
-
-2003-06-27 13:03  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Changed calendar picker
-
-2003-06-27 13:02  (eddieajau)
----------------------------------
-lib/calendar/README
-lib/calendar/calendar-dp.css
-lib/calendar/calendar.js
-lib/calendar/lang/calendar-br.js
-lib/calendar/lang/calendar-ca.js
-lib/calendar/lang/calendar-cs-win.js
-lib/calendar/lang/calendar-da.js
-lib/calendar/lang/calendar-du.js
-lib/calendar/lang/calendar-el.js
-lib/calendar/lang/calendar-en.js
-lib/calendar/lang/calendar-es.js
-lib/calendar/lang/calendar-fr.js
-lib/calendar/lang/calendar-it.js
-lib/calendar/lang/calendar-nl.js
-lib/calendar/lang/calendar-ro.js
-lib/calendar/lang/calendar-sp.js
-lib/calendar/lang/calendar-sw.js
-- Initial upload
-
-2003-06-27 12:35  (eddieajau)
----------------------------------
-docs/phpinfo.php
-- Initial upload
-
-2003-06-27 12:32  (eddieajau)
----------------------------------
-docs/check.php
-docs/nav.html
-- no message
-
-2003-06-27 12:32  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Initialise class variable with null
-
-2003-06-27 08:46  (kobudo)
----------------------------------
-docs/install.html
-modules/help/en/install.install.hlp
-- Update help documentation.
-
-2003-06-27 08:37  (kobudo)
----------------------------------
-modules/help/en/projects.view.hlp
-- Complete Project module help documentation.
-
-2003-06-27 05:16  (kripper)
----------------------------------
-modules/tasks/view.php
-- Read/edit permissions on the project allows now to view the tasks.
-- TODO: Dicuss about denying permission on specific tasks.
-
-2003-06-27 04:52  (kobudo)
----------------------------------
-modules/projects/view.php
-- Fix invisible "Staging URL" issue.
-
-2003-06-26 18:18  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-06-26 17:24  (kobudo)
----------------------------------
-modules/help/en/projects.addedit.hlp
-- Update Project documentation.
-
-2003-06-26 16:07  (kobudo)
----------------------------------
-modules/help/en/projects.index.hlp
-- Update Project Index screen documentation.
-
-2003-06-26 11:55  (kobudo)
----------------------------------
-includes/config-dist.php
-- Improve default $dbuser & $dbpass variable values.
-
-2003-06-26 10:53  (kobudo)
----------------------------------
-db/dotproject_100.sql
-- Correct icon reference for FORUM's DotProject Classic display style. Change gconf-app-icon.png to support.png.
-
-2003-06-26 10:13  (kobudo)
----------------------------------
-modules/help/en/general.help.hlp
-modules/help/en/general.topmenu.hlp
-modules/help/en/projects.index.hlp
-- Updates help documentation for DotProject version 1.0.
-
-2003-06-26 03:56  (kobudo)
----------------------------------
-modules/help/en/general.help.hlp
-modules/help/en/general.leftnav.hlp
-modules/help/en/general.topmenu.hlp
-modules/help/en/install.install.hlp
-modules/help/en/overview.usermods.hlp
-- Update help documentation to DotProject version 1.0.
-
-2003-06-03 18:27  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-06-03 15:30  (eddieajau)
----------------------------------
-index.php
-- Stamped for beta 2 dev
-
-2003-06-03 14:30  (eddieajau)
----------------------------------
-index.php
-- Stamped for beta 1 patch 1
-
-2003-06-03 14:10  (eddieajau)
----------------------------------
-db/dotproject_100.sql
-db/upgrade_100_alpha2_to_beta1.sql
-- Fixed bug in event type entry
-
-2003-06-03 13:43  (eddieajau)
----------------------------------
-fileviewer.php
-- Fixed bug when session auto-start
-
-2003-06-03 13:39  (eddieajau)
----------------------------------
-modules/calendar/view.php
-- New event would edit the current one
-
-2003-06-03 12:54  (eddieajau)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/day_view.php
-modules/calendar/links_events.php
-- Tidied up good improvements by kripper
-
-2003-06-03 08:48  (eddieajau)
----------------------------------
-fileviewer.php
-- Fixed stary z character.
-
-2003-06-02 18:28  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-06-02 16:17  (eddieajau)
----------------------------------
-docs/install.html
-- no message
-
-2003-06-02 15:54  (eddieajau)
----------------------------------
-fileviewer.php
-- Fixed bug in sql that causes an access denied message
-
-2003-06-02 15:44  (eddieajau)
----------------------------------
-docs/install.html
-- Removed files directory security instructions
-
-2003-06-02 15:43  (eddieajau)
----------------------------------
-docs/main.css
-- no message
-
-2003-06-02 13:30  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed problem with base url.
-
-2003-06-02 13:13  (eddieajau)
----------------------------------
-modules/tasks/view.php
-- Fixed website address so that it was a link.
-
-2003-06-02 12:51  (kripper)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/day_view.php
-modules/calendar/links_events.php
-- Added "add event" button in day_view
-- Removed strange "add event" button from addedit
-- Added link also to the event icon in links_events
-- Use current displayed day date when adding events from day_view
-- Change autmatically event end_date when changing start_date and old_start_date = end_date
-
-2003-06-02 12:19  (eddieajau)
----------------------------------
-modules/files/index_table.php
-- Fixed bug that tried to load some classes twice under some circumstances.
-
-2003-06-02 12:15  (eddieajau)
----------------------------------
-index.php
-- Fixed bug that tried to load some classes twice under some circumstances.
-
-2003-06-02 09:00  (eddieajau)
----------------------------------
-docs/roadmap.html
-- no message
-
-2003-06-02 08:59  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Fixed bug where project owner changes
-
-2003-06-01 18:28  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-31 22:18  (eddieajau)
----------------------------------
-modules/tasks/todo.php
-- Fixed bug to display tasks with null percent complete
-
-2003-05-30 18:30  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-30 16:46  (eddieajau)
----------------------------------
-modules/companies/addedit.php
-- Fixed bug when editting the company address 1
-
-2003-05-30 16:44  (eddieajau)
----------------------------------
-modules/calendar/calendar.class.php
-modules/calendar/day_view.php
-modules/calendar/links_events.php
-modules/calendar/view.php
-modules/calendar/week_view.php
-- Added support for events to span their proper time frame (courtesy of James Kist)
-- Also fixed month view links to return to the correct context
-
-2003-05-29 21:18  (eddieajau)
----------------------------------
-index.php
-- Stamp for beta 2 dev
-
-2003-05-29 18:30  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-29 16:24  (eddieajau)
----------------------------------
-modules/help/en/help.toc.hlp
-modules/help/en/system.index.hlp
-- no message
-
-2003-05-29 16:19  (eddieajau)
----------------------------------
-files/tmp
-- no message
-
-2003-05-29 16:08  (eddieajau)
----------------------------------
-docs/install.html
-docs/team.html
-docs/trouble.html
-docs/upgrade.html
-- Final tweaks to the documentation
-
-2003-05-29 15:57  (eddieajau)
----------------------------------
-index.php
-- Version stamp for release
-
-2003-05-29 15:53  (eddieajau)
----------------------------------
-db/upgrade_100_alpha2_to_beta1.sql
-- Added optional removal of file_content field
-
-2003-05-29 15:51  (eddieajau)
----------------------------------
-db/dotproject_100.sql
-- Removed file content text
-
-2003-05-29 15:48  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-- Removed task ordering
-
-2003-05-29 09:02  (eddieajau)
----------------------------------
-lib/PEAR/Date.php
-- Updated libary include
-
-2003-05-29 08:38  (eddieajau)
----------------------------------
-lib/PEAR/Date/Span.php
-- Updated libary include
-
-2003-05-28 18:31  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-28 14:40  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Minor changes
-
-2003-05-28 14:38  (eddieajau)
----------------------------------
-modules/projects/projects.class.php
-modules/projects/reports.php
-modules/projects/view.php
-modules/projects/reports/tasklogs.en.txt
-modules/projects/reports/tasklogs.php
-- Added report handling
-
-2003-05-28 14:36  (eddieajau)
----------------------------------
-modules/calendar/calendar.class.php
-- Update library class include
-
-2003-05-28 14:33  (eddieajau)
----------------------------------
-files/temp/index.html
-lib/ezpdf/class.ezpdf.php
-lib/ezpdf/class.pdf.php
-lib/ezpdf/fonts/Helvetica-Bold.afm
-lib/ezpdf/fonts/Helvetica.afm
-- Initial upload
-
-2003-05-28 14:31  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Changed library include
-- Added function to read files in a directory
-- Added function to make a filename safe from malicious injection
-
-2003-05-28 14:30  (eddieajau)
----------------------------------
-classes/date.class.php
-- Changed library include
-
-2003-05-28 14:29  (eddieajau)
----------------------------------
-locales/en/common.inc
-locales/en/projects.inc
-locales/en/tasks.inc
-docs/check.php
-docs/roadmap.html
-- no message
-
-2003-05-27 21:28  (eddieajau)
----------------------------------
-style/default/main.css
-- no message
-
-2003-05-27 20:28  (eddieajau)
----------------------------------
-modules/help/en/companies.addedit.hlp
-- no message
-
-2003-05-27 20:19  (eddieajau)
----------------------------------
-modules/help/en/companies.view.hlp
-modules/help/en/general.breadcrumbs.hlp
-modules/help/en/projects.index.hlp
-modules/help/en/projects.view.hlp
-- no message
-
-2003-05-27 20:18  (eddieajau)
----------------------------------
-modules/projects/index.php
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_complete.php
-- Added "Completed Project" tab
-
-2003-05-27 20:17  (eddieajau)
----------------------------------
-modules/system/translate_save.php
-- Fixed strange bug in file save operation (seems to have gone away now)
-
-2003-05-27 20:16  (eddieajau)
----------------------------------
-modules/tasks/view.php
-- Added legacy hours worked to total hour count
-
-2003-05-27 20:16  (eddieajau)
----------------------------------
-style/default/main.css
-- Lessen margin on ul tag
-
-2003-05-27 20:15  (eddieajau)
----------------------------------
-locales/en/tasks.inc
-locales/en/common.inc
-- no message
-
-2003-05-24 18:32  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-23 22:07  (eddieajau)
----------------------------------
-style/default/login.php
-- Delete register globals warning
-
-2003-05-23 22:02  (eddieajau)
----------------------------------
-modules/admin/viewuser.php
-- Fixed bug in display of address2
-
-2003-05-23 21:50  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Fixed bug when creating a new project
-
-2003-05-23 21:49  (eddieajau)
----------------------------------
-modules/files/files.class.php
-- Fixed bug in indexStrings method
-
-2003-05-23 21:10  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Removed auto-calc duration buttons until better algorithm devised
-
-2003-05-23 18:32  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-22 21:50  (kripper)
----------------------------------
-modules/tasks/todo.php
-- Fixed bug due to having an empty task's start or end date. Tasks without
-- dates are not displayed in the TODO view.
-
-2003-05-22 18:33  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-22 09:16  (eddieajau)
----------------------------------
-includes/config-dist.php
-includes/db_connect.php
-includes/db_mysql.php
-- Added option to use persistent db connections
-
-2003-05-21 18:33  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-21 14:11  (kripper)
----------------------------------
-includes/config-dist.php
-modules/tasks/addedit.php
-- Added optional task's start and end dates checking.
-
-2003-05-21 10:05  (eddieajau)
----------------------------------
-modules/tasks/vw_logs.php
-- Renamed delIt javascript function as it clashed with the task delete operation
-
-2003-05-21 10:04  (eddieajau)
----------------------------------
-modules/forums/view_messages.php
-- Fixed bug in author mail link
-
-2003-05-21 10:03  (eddieajau)
----------------------------------
-docs/roadmap.html
-docs/trouble.html
-- no message
-
-2003-05-21 10:03  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Enclosed bread-crumb delete icon in a link (as well as the text)
-
-2003-05-21 08:53  (eddieajau)
----------------------------------
-misc/diagnostics.php
-- Moved to docs
-
-2003-05-19 18:35  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-19 09:21  (eddieajau)
----------------------------------
-docs/trouble.html
-- no message
-
-2003-05-19 09:11  (eddieajau)
----------------------------------
-docs/roadmap.html
-- no message
-
-2003-05-19 09:03  (eddieajau)
----------------------------------
-docs/MODULES.txt
-- Deprecated
-
-2003-05-19 09:00  (eddieajau)
----------------------------------
-docs/check.php
-docs/index.html
-docs/team.html
-- no message
-
-2003-05-19 08:49  (eddieajau)
----------------------------------
-modules/contacts/index.php
-- Fixed bad link wrongly pointing to admin module
-
-2003-05-18 22:21  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Fixed bug where edit would fail is user only had permissions to projects.
-
-2003-05-18 21:56  (eddieajau)
----------------------------------
-modules/tasks/gantt.php
-- Fixed problem with tasks related to a milestone
-
-2003-05-18 21:55  (eddieajau)
----------------------------------
-modules/tasks/view.php
-- Added support to sum the task log hours
-
-2003-05-18 21:54  (eddieajau)
----------------------------------
-modules/tasks/do_updatetask.php
-modules/tasks/vw_log_update.php
-modules/tasks/vw_logs.php
-- Added support to edit and delete a task log
-
-2003-05-18 21:50  (eddieajau)
----------------------------------
-docs/nav.html
-docs/trouble.html
-- Added upgrade information
-
-2003-05-18 21:49  (eddieajau)
----------------------------------
-docs/install.html
-docs/upgrade.html
-- Initial upload
-
-2003-05-18 21:49  (eddieajau)
----------------------------------
-docs/INSTALL.txt
-- Replaced with html file
-
-2003-05-18 21:48  (eddieajau)
----------------------------------
-docs/LICENSE.txt
-- Included references to licenses for included material
-
-2003-05-18 21:47  (eddieajau)
----------------------------------
-db/upgrade_100_alpha1_to_alpha2.sql
-- Cleaned comments
-
-2003-05-18 21:47  (eddieajau)
----------------------------------
-db/upgrade_022_to_100.sql
-- Added in Beta 1 upgrades
-
-2003-05-18 21:46  (eddieajau)
----------------------------------
-modules/help/en/install.upgrade.hlp
-- Added upgrade info Beta 1
-
-2003-05-17 02:34  (korinek)
----------------------------------
-lib/PEAR/Date/Span.php
-- A quick patch for implementations which do not support the is_a() function.
-
-2003-05-16 18:36  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-16 16:07  (eddieajau)
----------------------------------
-modules/companies/addedit.php
-modules/departments/addedit.php
-modules/projects/addedit.php
-modules/projects/view.php
-modules/public/selector.php
-modules/tasks/addedit.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-- Updated CONCAT SQL function to CONCAT_WS (safer with null values)
-
-2003-05-16 09:26  (korinek)
----------------------------------
-modules/forums/forums.class.php
-- Updated the class to pass the appropriate encoding to libmail class
-- for Quoted-Printable encoding of subject
-
-2003-05-16 09:24  (korinek)
----------------------------------
-modules/forums/view_messages.php
-- Fixed a bug in html rendering, where inner table with edit/delete icon
-- was never closed and was recursively embedded
-
-2003-05-16 03:05  (korinek)
----------------------------------
-locales/en/files.inc
-locales/en/forums.inc
-modules/files/index.php
-modules/files/index_table.php
-modules/forums/addedit.php
-- Translation update
-
-2003-05-16 01:49  (korinek)
----------------------------------
-modules/files/addedit.php
-- Changed the Uploaded By field to show the full name, not just the login name.
-
-2003-05-16 01:31  (korinek)
----------------------------------
-locales/en/files.inc
-- Translatin update
-
-2003-05-15 18:36  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-15 12:54  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Added passing of the object id to the delete method
-
-2003-05-15 12:53  (eddieajau)
----------------------------------
-classes/ui.class.php
-classes/date.class.php
-- Updated documentation
-
-2003-05-15 12:40  (eddieajau)
----------------------------------
-modules/admin/index.php
-modules/admin/vw_active_usr.php
-modules/admin/vw_inactive_usr.php
-- Added a general search box to help find a user
-
-2003-05-15 12:38  (eddieajau)
----------------------------------
-modules/system/domodsql.php
-- Fixed bug when installing a custom module
-
-2003-05-15 12:37  (eddieajau)
----------------------------------
-modules/public/selector.php
-- Fixed bug but leaves a known issue that the selector cannot filter out departments of non-visible companies
-
-2003-05-15 12:32  (eddieajau)
----------------------------------
-style/default/header.php
-- Hide 'Today' link when no permission to calendar module.
-
-2003-05-15 10:13  (korinek)
----------------------------------
-modules/files/addedit.php
-modules/tasks/addedit.php
-modules/tasks/view.php
-- Translation/localisation updates
-
-2003-05-15 10:12  (korinek)
----------------------------------
-modules/calendar/index.php
-- Localisation/translation update
-
-2003-05-15 10:12  (korinek)
----------------------------------
-modules/calendar/do_event_aed.php
-- Fixed a bug, where event owner was never stored in the database
-
-2003-05-15 10:09  (korinek)
----------------------------------
-locales/en/calendar.inc
-locales/en/files.inc
-locales/en/tasks.inc
-- Localisation updates
-
-2003-05-15 06:45  (korinek)
----------------------------------
-images/icons/1.gif
-- Added high priority icon (low priority upside down arrow)
-
-2003-05-15 06:40  (korinek)
----------------------------------
-locales/en/tasks.inc
-- Checking up with My-todo changes
-
-2003-05-15 06:39  (korinek)
----------------------------------
-modules/tasks/todo.php
-modules/tasks/view.php
-- Minor translation/localisation updates
-
-2003-05-15 06:21  (korinek)
----------------------------------
-modules/projects/addedit.php
-modules/projects/index.php
-modules/projects/view.php
-- Translatin calls for a few leftover strings.
-
-2003-05-15 06:18  (korinek)
----------------------------------
-locales/en/forums.inc
-locales/en/projects.inc
-locales/en/public.inc
-locales/en/tasks.inc
-- Translation messages update
-
-2003-05-15 06:17  (korinek)
----------------------------------
-index.php
-- Turned back on the charset header. Some www servers provide default charset
-- which may confuse the browser. This overrides it.
-
-2003-05-13 18:37  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-11 22:29  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Fixed javascript bug in the calculate duration field.
-
-2003-05-11 22:23  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Fixed bug in the task_duration field
-
-2003-05-11 22:19  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Fixed bug in the 'view this task' link
-- Fixed bug in the task_parent field
-
-2003-05-10 18:38  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-10 08:54  (kripper)
----------------------------------
-modules/tasks/todo.php
-- Added options for deleting and marking tasks as completed in the ToDo view.
-
-2003-05-09 20:25  (eddieajau)
----------------------------------
-modules/tasks/todo.php
-- Added 'min_view' support so this can be included in the calendar
-
-2003-05-09 20:24  (eddieajau)
----------------------------------
-modules/calendar/vw_day_tasks.php
-- Added task todo list
-
-2003-05-09 20:24  (eddieajau)
----------------------------------
-modules/calendar/day_view.php
-modules/calendar/links_tasks.php
-- Fixed bug in task display
-
-2003-05-09 20:23  (eddieajau)
----------------------------------
-style/default/header.php
-- Added today link to calendar day view
-
-2003-05-09 20:22  (eddieajau)
----------------------------------
-calendar.php
-- Moved to public module directory
-
-2003-05-09 19:24  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-09 14:55  (eddieajau)
----------------------------------
-index.php
-- Added patch for systems using session.auto_start = 1
-- Removed character set headers
-
-2003-05-09 12:32  (eddieajau)
----------------------------------
-docs/check.php
-docs/main.css
-docs/nav.html
-docs/trouble.html
-- no message
-
-2003-05-08 22:36  (eddieajau)
----------------------------------
-docs/nav.html
-- Added trouble shooting link
-
-2003-05-08 22:36  (eddieajau)
----------------------------------
-docs/trouble.html
-- Initial upload
-
-2003-05-08 22:25  (korinek)
----------------------------------
-index.php
-locales/en/system.inc
-style/classic/header.php
-style/classic/login.php
-style/default/login.php
-- Charset updates
-
-2003-05-08 20:29  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-08 16:55  (eddieajau)
----------------------------------
-modules/calendar/week_view.php
-- Fixed bug with format
-
-2003-05-08 16:51  (eddieajau)
----------------------------------
-classes/date.class.php
-- Added back in missing method
-
-2003-05-08 16:47  (eddieajau)
----------------------------------
-modules/admin/admin.class.php
-modules/admin/do_perms_aed.php
-modules/admin/do_user_aed.php
-- Rework for class abstraction
-
-2003-05-08 16:45  (eddieajau)
----------------------------------
-modules/companies/vw_active.php
-modules/calendar/addedit.php
-modules/calendar/calendar.class.php
-modules/calendar/day_view.php
-modules/calendar/do_event_aed.php
-modules/calendar/index.php
-modules/calendar/links_events.php
-modules/calendar/links_tasks.php
-modules/calendar/view.php
-modules/calendar/vw_day_events.php
-modules/calendar/vw_day_tasks.php
-modules/calendar/week_view.php
-- Rework for new date handling
-
-2003-05-08 16:45  (eddieajau)
----------------------------------
-modules/files/addedit.php
-modules/files/do_file_aed.php
-modules/files/files.class.php
-modules/files/index.php
-modules/files/index_table.php
-- Rework for new date handling and class abstraction
-
-2003-05-08 16:43  (eddieajau)
----------------------------------
-modules/system/domodsql.php
-modules/system/system.class.php
-- Rework for class abstraction
-
-2003-05-08 16:41  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-modules/tasks/do_updatetask.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/todo.php
-modules/tasks/view.php
-modules/tasks/viewgantt.php
-modules/tasks/vw_log_update.php
-modules/tasks/vw_logs.php
-modules/system/addeditpref.php
-modules/public/calendar.php
-modules/projects/addedit.php
-modules/projects/do_project_aed.php
-modules/projects/view.php
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_archived.php
-modules/forums/index.php
-modules/forums/view_messages.php
-modules/forums/view_topics.php
-modules/forums/viewer.php
-- Rework for new date handling
-
-2003-05-08 16:40  (eddieajau)
----------------------------------
-includes/config-dist.php
-modules/tasks/gantt.php
-- Added config variable for jpgraph locale
-
-2003-05-08 16:39  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Removed depracted date handling
-
-2003-05-08 16:37  (eddieajau)
----------------------------------
-classes/date.class.php
-- Rework to suit latest Pear CVS package
-
-2003-05-08 16:37  (eddieajau)
----------------------------------
-classes/dp.class.php
-- Added support in getAllowedrecords method for additional sql
-
-2003-05-08 16:35  (eddieajau)
----------------------------------
-includes/db_connect.php
-includes/main_functions.php
-- Comment updated
-
-2003-05-08 16:33  (eddieajau)
----------------------------------
-lib/PEAR/Date/Span.php
-- Initial upload
-
-2003-05-08 16:33  (eddieajau)
----------------------------------
-lib/PEAR/Date.php
-lib/PEAR/Date/Human.php
-lib/PEAR/Date/TimeZone.php
-- Updated Date package to latest CVS
-
-2003-05-08 16:30  (eddieajau)
----------------------------------
-style/classic/header.php
-style/default/header.php
-- Updated head block
-
-2003-05-08 16:27  (eddieajau)
----------------------------------
-index.php
-- Moved placement of config include
-- Added include for common (Date and DP) classes
-- Removed charset header
-- Removed old uts variable
-
-2003-05-08 08:11  (korinek)
----------------------------------
-style/default/header.php
-- Setting the meta tag 'Content-Type charset' according to selected locale - please test it for your settings.
-
-2003-05-08 07:42  (korinek)
----------------------------------
-locales/en/admin.inc
-locales/en/calendar.inc
-locales/en/help.inc
-locales/en/system.inc
-modules/system/addeditpref.php
-- Tiny translation updates and changes.
-
-2003-05-08 07:39  (korinek)
----------------------------------
-modules/help/index.php
-- A change to try the help.toc from the user locale before falling back to
-- help.toc from the en locale.
-
-2003-05-07 19:52  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-07 08:58  (eddieajau)
----------------------------------
-modules/contacts/addedit.php
-- Added check to not show the delete link when adding a new contact
-
-2003-05-07 08:16  (eddieajau)
----------------------------------
-modules/public/calendar.php
-- Moved from root directory
-
-2003-05-07 06:25  (korinek)
----------------------------------
-modules/tasks/tasks.class.php
-- Added passing the locale charset to libmail class for correct email formation
-- of non asci email subject and body.
-
-2003-05-07 06:18  (korinek)
----------------------------------
-classes/libmail.class.php
-- Added optional Quoted-Printable encoding of the subject (necessary for non ascii email subjects).
-
-2003-05-06 22:26  (eddieajau)
----------------------------------
-modules/tasks/viewgantt.php
-- Added check to see if any tasks exist.
-
-2003-05-06 22:19  (eddieajau)
----------------------------------
-modules/tasks/do_updatetask.php
-- Fixed bug where resetting task end date occurs with the wrong comparison of the task percent complete.
-
-2003-05-06 22:18  (eddieajau)
----------------------------------
-modules/projects/do_project_aed.php
-- Minor update
-
-2003-05-06 22:17  (eddieajau)
----------------------------------
-modules/help/en/companies.addedit.hlp
-modules/help/en/companies.index.hlp
-modules/help/en/companies.view.hlp
-- Content updated
-
-2003-05-06 22:17  (eddieajau)
----------------------------------
-modules/contacts/addedit.php
-modules/contacts/contacts.class.php
-modules/contacts/do_contact_aed.php
-modules/contacts/index.php
-- Updated core code
-
-2003-05-06 22:16  (eddieajau)
----------------------------------
-docs/rfc0001.00.html
-- no message
-
-2003-05-06 22:15  (eddieajau)
----------------------------------
-style/default/main.css
-- Updated the contacts table style to the blues
-
-2003-05-02 20:26  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-02 07:02  (korinek)
----------------------------------
-modules/tasks/tasks.class.php
-- One extra ")" fixed from previous commit :-(
-
-2003-05-02 06:49  (korinek)
----------------------------------
-locales/en/forums.inc
-- Content update
-
-2003-05-02 06:49  (korinek)
----------------------------------
-locales/en/locales.php
-- Corrected the charset value for English to iso-8859-1
-
-2003-05-02 06:48  (korinek)
----------------------------------
-modules/forums/forums.class.php
-- Added the charset field for the body of the outgoing email message.
-
-2003-05-02 06:47  (korinek)
----------------------------------
-modules/tasks/tasks.class.php
-- Translated a few string in the body of the email, included the charset field
-- for the body of the message.
-
-2003-05-01 23:17  (eddieajau)
----------------------------------
-includes/main_functions.php
-- no message
-
-2003-05-01 23:17  (eddieajau)
----------------------------------
-index.php
-- Added check that root directory is valid
-
-2003-05-01 21:36  (eddieajau)
----------------------------------
-docs/rfc0001.00.html
-- Initial upload
-
-2003-05-01 20:51  (eddieajau)
----------------------------------
-includes/db_mysql.php
-- Added error check if mysql support not installed.
-
-2003-05-01 20:00  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-01 16:44  (eddieajau)
----------------------------------
-lib/PEAR/Date.php
-- Added function to addMonths
-
-2003-05-01 14:23  (eddieajau)
----------------------------------
-modules/tasks/viewgantt.php
-- Updates for PEAR Date Class.
-- Reworked Gantt presentation
-
-2003-05-01 14:22  (eddieajau)
----------------------------------
-modules/projects/view.php
-- Fixed minor bu in project heading
-
-2003-05-01 12:16  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-modules/tasks/do_updatetask.php
-modules/tasks/index.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/view.php
-modules/tasks/vw_log_update.php
-modules/tasks/vw_logs.php
-- Update date handling (to PEAR package) and class abstraction
-
-2003-05-01 12:14  (eddieajau)
----------------------------------
-docs/roadmap.html
-- Added in some task todos
-
-(changelog truncated)
