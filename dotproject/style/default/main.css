@@ -1,47 +1,66 @@
-BODY.mainpage {
-	margin: 0px;
-	background-color: #ffffff; 
-	background-image: URL(/style/default/images/bground.gif);
-	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 10pt;
+/* dotPROJECT REQUIRED CLASSES */
+BODY {
+	background-color: #f0f0f0;
+	margin-top: 0px;
+	margin-left: 0px;
+	margin-right: 0px;
+	margin-bottom: 10px;
+	font-family: verdana,Sans-Serif;
+	font-size: 10pt;
 }
+
+em {
+	font-weight: bold;
+	text-decoration: none;
+	font-style: normal;
+}
+
 A:link {
-	color : BLUE;
-	text-decoration: none;
-}
-A:visited {
-	color : BLUE;
-	text-decoration: none;
-}
-A:active {
-	color : BLUE;
+	color: #08245b;
 	text-decoration: none;
 }
 
-/* Add stuff for presentation abstraction */
-/* TOP NAVIGATION Table Style */
-TABLE.nav {
-	background-color: #ccc;
-	border: 2px outset #eee;
-	/* bgcolor="#cccccc" style="border: outset #eeeeee 2px;" */
+A:visited {
+	color: #08245b;
+	text-decoration: none;
+}
+
+A:active {
+	color: red;
+	text-decoration: none;
+}
+
+A:hover {
+	color: #666666;
+	text-decoration: underline;
 }
 
 TD {
-	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt
 }
 
 TR {
-	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt
 }
 
 h1, .title {
-	font-size: 18pt;
-	font-weight: normal;
-	margin: 0px;
+	font-size: 16px;
+	font-weight: bold;
+	font-family: verdana,Sans-Serif;
+	color: #08245b;
+	margin-bottom: 0px;
+	margin-top: 15px;
 }
+
 h2, .subtitle {
-	font-size: 12pt;
-	font-weight: normal;
-	margin: 0px;
+	font-size: 12px;
+	font-weight: bold;
+	font-family: verdana,Sans-Serif;
+	color: #666;
+	margin-bottom: 0px;
+	margin-top: 15px;
 }
 
 bordertable {
@@ -60,13 +79,18 @@ bordertable {
 }
 
 .text{
- border: 1px black solid;
- font-family: verdana,Sans-Serif;
- font-size: 8pt;
- height: 20px;
+	border: 1px black solid;
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt;
+	height: 12pt;
 }
 
-.textarea{
+TEXTAREA {
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: 9pt;
+}
+
+.textarea {
 	font-family: verdana,helvetica,arial,sans-serif;
 	font-size: 9pt;
 }
@@ -76,6 +100,19 @@ textarea.small {
 	font-family: verdana,Sans-Serif;
 	font-size: 8pt;
 }
+
+/* dotProject Top Banner and Top Nav Customization */
+TH.banner {
+	background-color: #08245b;
+	color: #fff
+}
+
+TD.nav {
+	border: 1px solid #848284;
+	background-color: #d5d3ce;
+	color: #000
+}
+
 /*
 **********************************
 Begin IE TD buttonizing
@@ -83,60 +120,76 @@ Begin IE TD buttonizing
 */
 
 TD.clsBtnUp {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: hand;
+	color: #FFFFFF;
+	padding: 0 3;
+	border: inset 2px;
 }
 
 TD.clsBtnDown {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: hand;
+	color: #FFFFFF;
+	padding: 0 3;
+	border: inset 2px;
 }
 
 TD.clsBtnOn {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
+	cursor: hand;
+	color: #FFFFFF;
+	padding: 0 3;
+	border: outset #eeeeee 2px;
 }
 
 TD.clsBtnOff {
-	color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #559999 2px;
+	color: #FFFFFF;
+	padding: 0 3;
+	tab-index: 0;
+	border: solid #559999 2px;
 }
 
 TD.topBtnOff {
-	color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
+	color: #FFFFFF;
+	padding: 0 3;
+	tab-index: 0;
+	border: solid #cccccc 2px;
 }
+
 TD.nav {
 	color: #FFFFFF;
 }
 
 /* Standard table 'spreadsheet' style */
-TABLE.tbl {
-	background: #ffffff;
+table.tbl {
+	background: #a5cbf7;
 }
 
-TABLE.tbl TH {
-	background-color: #878676;
-	color: white;
+table.tbl TH {
+	background-color: #08245b;
+	color: #ffffff;
 	list-style-type: disc;
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 	font-weight: normal;
 }
 
-TABLE.tbl TD {
-	background-color: #f4efe3;
+table.tbl td {
+	background-color: #ffffff;
 }
 
 /* a 'standard' table */
-TABLE.std {
-	border: solid #878676 2px;
-	background: #f4efe3;
+table.std {
+	border: solid #08245b 2px;
+	background: #d6ebff;
 }
-TABLE.std TH {
-	background-color: #878676;
+table.std TH {
+	background-color: #08245b;
 	color: white;
 	list-style-type: disc;
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 }
 
-TABLE.std TD.hilite {
+table.std td.hilite {
 	background-color: #ffffff;
 }
 
@@ -159,24 +212,25 @@ A.hdr:link, A.hdr:active, A.hdr:visited {
 }
 
 /* tabbed boxes */
-TD.tabon {
-	background: #ffffff;
-	border-top: outset #cccccc 2px;
-	border-left: outset #cccccc 2px;
+td.tabon {
+	background: #a5cbf7;
+	border-top: outset #ffffff 2px;
+	border-left: outset #ffffff 2px;
 	border-right: outset #cccccc 2px;
 	border-bottom: none;
 }
-TD.taboff {
-	background: #f4efe3;
-	border-top: outset #cccccc 2px;
-	border-left: outset #cccccc 2px;
-	border-right: outset #cccccc 2px;
+td.taboff {
+	background: #d6ebff;
+	border-top: solid #cccccc 1px;
+	border-left: solid #cccccc 1px;
+	border-right: solid #cccccc 1px;
 	border-bottom: solid #cccccc 2px;
 }
-TD.tabsp {
+td.tabsp {
 	border-bottom: solid #cccccc 2px;
 }
-TD.tabox {
+td.tabox {
+	background-color: #a5cbf7;
 	border-left: solid #cccccc 2px;
 	border-right: solid #cccccc 2px;
 	border-bottom: solid #cccccc 2px;
@@ -184,19 +238,17 @@ TD.tabox {
 
 /* Message styles */
 .warning {
-	color: #ff6600;
+	color: red
 }
 .error {
-	color: #ff0000;
+	color: red
 }
 .message {
-	color: #006600;
-	font-weight: bold;
+	color: #08245b;
 }
 
 .no_ {
-	color: #ff0000;
-	font-weight: bold;
+	color: red
 }
 
 /* popup calendar */
@@ -272,28 +324,28 @@ table.popcal a.weekend:visited {
 
 /* month calendar - title area */
 table.motitle {
-	background-color: #ffffff;
+	background-color: #777777;
 }
 table.motitle td {
-	background-color: #ffffff;
+	background-color: #f0f0f0;
 }
 table.motitle th {
-	background-color: #ffffff;
+	background-color: #f0f0f0;
 	font-size: 10pt;
 }
 
 table.mocal {
-	background-color: #cccccc;
+	background-color: #777777;
 }
 table.mocal th {
-	background-color: #878676;
+	background-color: #08245b;
 	color: #ffffff;
 }
 table.mocal td {
 }
 table.mocal td.week {
 	vertical-align: top;
-	background-color: #878676;
+	background-color: #08245b;
 	height: 80px;
 }
 table.mocal td.empty {
@@ -301,21 +353,21 @@ table.mocal td.empty {
 	height: 80px;
 }
 table.mocal td.day  {
-	background-color: #f4efe3;
+	background-color: #e0e0e0;
 	color: #333366;
 	text-align: left;
 	vertical-align: top;
 	height: 80px;
 }
 table.mocal td.today {
-	background-color: #878676;
+	background-color: #a5cbf7;
 	color: #ffffff;
 	text-align: left;
 	vertical-align: top;
 }
 
 table.mocal td.weekend {
-	background-color: #efefe7;
+	background-color: #f0f0f0;
 	text-align: left;
 	vertical-align: top;
 }
