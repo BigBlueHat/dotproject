@@ -54,10 +54,9 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 }
 
 // some constants
-$days = array(1=>1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
-$months = array(1=>'Jan','Feb','Mar','Apr','Mar','Jun','Jul','Aug','Sep','Oct','Nov','Dec' );
-$years = array(2000=>2000,2001,2002,2003,2004,2005,2006,2007,2008,2009);
-echo '>'.@date("d", $actual_end_date);
+$days = array('',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
+$months = array('','Jan','Feb','Mar','Apr','Mar','Jun','Jul','Aug','Sep','Oct','Nov','Dec' );
+$years = array('',2000=>2000,2001,2002,2003,2004,2005,2006,2007,2008,2009);
 ?>
 <SCRIPT language="javascript">
 function setColor() {
@@ -258,9 +257,9 @@ if (!$cexists) {
 		<tr>
 			<td>
 				<span class="FormLabel">actual finish date (mm/dd/yy)</span><br>
-				<?php echo arraySelect( $months, 'ActualMM_int', 'size=1', @date("m", $actual_end_date) ); ?> /
-				<?php echo arraySelect( $days, 'ActualDD_int', 'size=1', @date("d", $actual_end_date) ); ?> /
-				<?php echo arraySelect( $years, 'ActualYYYY_int', 'size=1', @date("Y", $actual_end_date) ); ?>
+				<?php echo arraySelect( $months, 'ActualMM_int', 'size=1', ($actual_end_date ? @date("m", $actual_end_date): '') ); ?> /
+				<?php echo arraySelect( $days, 'ActualDD_int', 'size=1', ($actual_end_date ? @date("d", $actual_end_date): '') ); ?> /
+				<?php echo arraySelect( $years, 'ActualYYYY_int', 'size=1', ($actual_end_date ? @date("Y", $actual_end_date): '') ); ?>
 			</td>
 			<td valign="bottom">
 				<a href="#" onClick="popCalendar('Actual')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
