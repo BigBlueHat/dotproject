@@ -15,22 +15,22 @@ function submitIt() {
 	var f = document.ticket;
 	var msg = '';
 	if (f.name.value.length < 3) {
-		msg += "\n- a valid name";
+		msg += "\n- <?php echo $AppUI->_('a valid name'); ?>"
 	}
 	if (f.email.value.length < 3) {
-		msg += "\n- a valid email";
+		msg += "\n- <?php echo $AppUI->_('a valid email'); ?>";
 	}
 	if (f.subject.value.length < 3) {
-		msg += "\n- a valid subject";
+		msg += "\n- <?php echo $AppUI->_('a valid subject'); ?>";
 	}
 	if (f.description.value.length < 3) {
-		msg += "\n- a valid desciption";
+		msg += "\n- <?php echo $AppUI->_('a valid description'); ?>";
 	}
 	
 	if (msg.length < 1) {
 		f.submit();
 	} else {
-		alert( "Please provide the following detail before submitting:" + msg );
+		alert( "<?php echo $AppUI->_('ticketsmithValidDetail'); ?>:" + msg );
 	}
 }
 </script>
