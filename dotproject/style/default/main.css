@@ -108,7 +108,7 @@ bordertable {
 	border: 1px black solid;
 	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt;
-	height: 12pt;
+	/*height: 12pt; Select boxes are too small in Mozilla */
 }
 
 TEXTAREA {
