@@ -23,6 +23,9 @@
 	
 	<li>Is there any white space (including carriage returns) after the closing php brace ?&gt;.  If so, delete them.  This cause the html headers to be sent too early.</li>
 
+	<li>When upgrading, have you set the configuration variable <code>check_legacy_password</code> to <code>true</code>.
+	<pre>$dPconfig['check_legacy_password'] = true;</pre>
+	</li>
 </ol>
 
 
