@@ -173,9 +173,9 @@ foreach ($tarr as $row){
 		$style = 'style="background-color:#ffff99"';
 	}
 
-	$buf .= "<td $style>" . $row['permission_grant_on'] . "</td>";
+	$buf .= "<td $style>" . $AppUI->_(ucfirst($row['permission_grant_on'])) . "</td>";
 
-	$buf .= "<td>" . $row['grant_item'] . "</td><td nowrap>" . $pvs[$row['permission_value']] . "</td>";
+	$buf .= "<td>" . $row['grant_item'] . "</td><td nowrap>" . $AppUI->_($pvs[$row['permission_value']]) . "</td>";
 
 	$buf .= '<td nowrap>';
 	if ($canEdit) {
