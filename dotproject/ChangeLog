@@ -1,3 +1,37 @@
+2004-04-02 13:49  (gnome444)
+---------------------------------
+modules/tasks/addedit.php
+- Formatting and layout enhancements for task addedit
+
+2004-04-02 11:33  (gnome444)
+---------------------------------
+classes/date.class.php
+- WENESDAY typo fix.
+
+2004-04-02 10:57  (gnome444)
+---------------------------------
+modules/tasks/tasks.php
+- Restore date and time format as per user_prefs, and a couple formatting things
+
+2004-04-01 18:23  (gnome444)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/do_project_aed.php
+modules/projects/projects.class.php
+modules/tasks/tasks.class.php
+- Finish merge of Handco's import task, task dependancy patch. This fixes the task importing feature and also allows the importing of task into non-empty projects, shifting the dates of the imported tasks relative to the start date of the project. Dependant tasks, (not dynamic), now have their dates automatically adjusted when the end date of the task they are dependant on changes. It also changes the getAllowedRecords and getDeniedrecords in the projects class to not allow access to projects that are under companies that are denied.
+
+2004-04-01 13:38  (jcgonz)
+---------------------------------
+lib/jpgraph/src/jpgraph_pie.php
+lib/jpgraph/src/jpgraph_pie3d.php
+- Added so a new module (Polls) is able to work
+
+2004-04-01 03:31  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-03-31 18:43  (jcgonz)
 ---------------------------------
 modules/companies/index.php
@@ -464,40 +498,6 @@ modules/system/syskeys/index.php
 2004-02-01 19:41  (gnome444)
 ---------------------------------
 modules/tasks/view.php
-- TaskCustomFields checkbox wasn't working and dPformSafe
-
-2004-02-01 11:59  (mkozusnik)
----------------------------------
-modules/projects/addedit.php
-- Removed the echo from line 287
-
-2004-02-01 11:50  (mkozusnik)
----------------------------------
-modules/projects/addedit.php
-- Restored inital popCalendar for all three date fields
-
-2004-02-01 05:44  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-02-01 05:31  (gregorerhardt)
----------------------------------
-modules/files/index_table.php
-- softcoded translation for #File(s)# and #Page(s)#
-
-2004-02-01 05:24  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-- softcoded translation for #None#
-
-2004-02-01 04:45  (gregorerhardt)
----------------------------------
-modules/system/syskeys/index.php
-modules/system/syskeys/keys.php
-- fixed access denied problem with sysvals and syskeys
-
-2004-01-31 19:01  (gnome444)
 ...
 
 (This file has been wrapped)
