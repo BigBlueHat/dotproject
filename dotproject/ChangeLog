@@ -1,3 +1,97 @@
+2004-05-15 16:25  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+locales/en/common.inc
+locales/en/files.inc
+locales/en/forums.inc
+locales/en/projects.inc
+locales/en/system.inc
+locales/en/tasks.inc
+locales/en/ticketsmith.inc
+- updated translation strings
+
+2004-05-15 16:01  (gregorerhardt)
+---------------------------------
+includes/sendpass.php
+- translate sendpass-email
+
+2004-05-15 15:59  (gregorerhardt)
+---------------------------------
+index.php
+- make sendpass-email ready for translation, too
+
+2004-05-15 14:40  (gregorerhardt)
+---------------------------------
+index.php
+- fixed: sendpw-page didn't display translations
+
+2004-05-07 02:55  (jcgonz)
+---------------------------------
+modules/public/contact_selector.php
+- Solved a bug in the group by statement, it was meant to be order by; added a feature for company/department blocks and also added up a combo to quick select a specified company
+
+2004-05-07 02:32  (ajdonnison)
+---------------------------------
+style/classic/header.php
+- Removed debug.
+
+2004-05-07 02:20  (ajdonnison)
+---------------------------------
+style/classic/header.php
+style/classic/main.css
+- Fixed mouseover/mouseout events.
+
+2004-05-05 06:19  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Added a check to show_all_assignees for backwards compatibility
+- Sent font to italics for dynamic tasks in order to distinguish it from normal tasks
+
+2004-05-05 03:41  (ajdonnison)
+---------------------------------
+db/README
+db/upgrade_latest.sql
+- New upgrade file to handle interim upgrades.
+
+2004-05-04 23:44  (bloaterpaste)
+---------------------------------
+modules/system/contacts_ldap.php
+modules/system/index.php
+- Adding LDAP contact info functionality.
+
+2004-05-04 19:28  (bloaterpaste)
+---------------------------------
+db/dotproject.sql
+includes/config-dist.php
+modules/public/color_selector.php
+- Adding config option for using a defined list of colors, instead of the color palette.  List of colors is pulled out of the sysvals.  Also added some default sysvals.
+
+2004-05-03 22:36  (bloaterpaste)
+---------------------------------
+modules/public/selector.php
+- Now supports IE and Mozilla/Firefox.
+
+2004-05-03 05:15  (ajdonnison)
+---------------------------------
+docs/check.php
+- Moved check for server info after connection attempt (need to be able
+- to connect to determine server info).
+
+2004-05-01 13:13  (gregorerhardt)
+---------------------------------
+includes/config-dist.php
+- wrote a reminder for registration of new config vars with the installer
+
+2004-05-01 13:09  (gregorerhardt)
+---------------------------------
+install/index.php
+- wrote a howto for registering vars with the installer
+
+2004-05-01 12:21  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
 2004-05-01 12:14  (gregorerhardt)
 ---------------------------------
 install/config.php
