@@ -9,6 +9,7 @@ LEFT JOIN contacts ON user_contact = contact_id
 LEFT JOIN permissions ON user_id = permission_user
 LEFT JOIN companies ON company_id = contact_company
 WHERE permission_value IS NOT NULL
+GROUP BY user_id
 ";
 
 if ($stub) {

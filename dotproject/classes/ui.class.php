@@ -74,6 +74,8 @@ class CAppUI {
 /** @var string Version string */
 	var $version_string = null;
 
+/** @var integer for register log ID */
+            var $last_insert_id = null;	
 /**
 * CAppUI Constructor
 */
@@ -537,6 +539,38 @@ class CAppUI {
 		$this->checkStyle();
 		return true;
 	}
+/************************************************************************************************************************	
+/**
+*@Function for regiser log in dotprojet table "user_access_log"
+*/
+           function registerLogin(){
+                $sql = "insert into user_access_log (user_id, date_time_in) values ($this->user_id,now())";
+                db_exec($sql);
+                $this->last_insert_id = db_insert_id();
+           }
+
+/**
+*@Function for register log out in dotproject table "user_acces_log"
+*/
+          function registerLogout($user_id){
+              $sql = "update user_access_log set date_time_out= now() 
+                          where user_id = '$user_id' and (date_time_out='0000-00-00 00:00:00' or isnull(date_time_out)) ";
+              if ($user_id > 0){
+                db_exec($sql);
+              }
+          }
+          
+/**
+*@Function for update table user_acces_log in field date_time_lost_action
+*/
+          function updateLostAction($last_insert_id){
+                $sql = "update user_access_log set date_time_last_action = now()
+                            where user_access_log_id = $last_insert_id";
+                if ($last_insert_id > 0){
+                    db_exec($sql);
+                }
+          }
+/************************************************************************************************************************
 /**
 * @deprecated
 */

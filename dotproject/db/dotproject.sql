@@ -541,3 +541,14 @@ CREATE TABLE `common_notes` (
 ) TYPE=MyISAM; 
 
 
+
+#20040823
+#Added user access log
+CREATE TABLE `user_access_log` (
+`user_access_log_id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`user_id` INT( 10 ) UNSIGNED NOT NULL ,
+`date_time_in` DATETIME DEFAULT '0000-00-00 00:00:00',
+`date_time_out` DATETIME DEFAULT '0000-00-00 00:00:00',
+`date_time_last_action` DATETIME DEFAULT '0000-00-00 00:00:00',
+PRIMARY KEY ( `user_access_log_id` )
+) TYPE = MyISAM;

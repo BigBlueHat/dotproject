@@ -107,3 +107,14 @@ UPDATE `sysvals` SET `sysval_value` = '0|Not Defined 1|Proposed 2|In Planning 3|
 # changed over to dynamic project end date
 #
 ALTER TABLE `projects` DROP `project_actual_end_date`;
+
+#20040823
+#Added user access log
+CREATE TABLE `user_access_log` (
+`user_access_log_id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
+`user_id` INT( 10 ) UNSIGNED NOT NULL ,
+`date_time_in` DATETIME DEFAULT '0000-00-00 00:00:00',
+`date_time_out` DATETIME DEFAULT '0000-00-00 00:00:00',
+`date_time_last_action` DATETIME DEFAULT '0000-00-00 00:00:00',
+PRIMARY KEY ( `user_access_log_id` )
+);

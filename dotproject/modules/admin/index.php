@@ -6,7 +6,6 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'UserIdxTab' ) !== NULL ? $AppUI->getState( 'UserIdxTab' ) : 0;
 
-
 if (isset( $_GET['stub'] )) {
     $AppUI->setState( 'UserIdxStub', $_GET['stub'] );
     $AppUI->setState( 'UserIdxWhere', '' );
@@ -76,7 +75,7 @@ $titleBlock->show();
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
-// else users would be able to arbitrarily run 'bad' functions 
+// else users would be able to arbitrarily run 'bad' functions
 if ($canEdit) {
 ?>
 function delMe( x, y ) {
@@ -95,7 +94,9 @@ $extra = '<td align="right" width="100%"><input type="button" class=button value
 $tabBox = new CTabBox( "?m=admin", "{$dPconfig['root_dir']}/modules/admin/", $tab );
 $tabBox->add( 'vw_active_usr', 'Active Users' );
 $tabBox->add( 'vw_inactive_usr', 'Inactive Users' );
+$tabBox->add( 'vw_usr_log', 'User Log' );
 $tabBox->show( $extra );
+
 ?>
 
 <form name="frmDelete" action="./index.php?m=admin" method="post">

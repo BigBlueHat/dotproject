@@ -113,6 +113,9 @@ function setDept( key, val ) {
 	<input type="hidden" name="user_id" value="<?php echo intval($user["user_id"]);?>" />
 	<input type="hidden" name="contact_id" value="<?php echo intval($user["contact_id"]);?>" />
 	<input type="hidden" name="dosql" value="do_user_aed" />
+	<input type="hidden" name="username_min_len" value="<?php echo dPgetConfig('username_min_len'); ?>)" />
+	<input type="hidden" name="password_min_len" value="<?php echo dPgetConfig('password_min_len'); ?>)" />
+	
 
 <tr>
     <td align="right" width="230"><?php echo $AppUI->_('Login Name');?>:</td>

@@ -142,6 +142,7 @@ function popChgPwd() {
 	$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", "{$dPconfig['root_dir']}/modules/admin/", $tab );
 	$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
 	$tabBox->add( 'vw_usr_perms', 'Permissions' );
+	$tabBox->add( 'vw_usr_log', 'User Log');
 	//$tabBox->add( 'vw_usr_roles', 'Roles' );	// under development
 	$tabBox->show();
 }

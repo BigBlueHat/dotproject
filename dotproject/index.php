@@ -66,6 +66,7 @@ if ( ($_GET['m'] == 'install') ) {
 
 require_once( "./classes/ui.class.php" );
 require_once( "./includes/main_functions.php" );
+require_once("./includes/db_adodb.php");
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
@@ -100,18 +101,26 @@ if (! is_file($config_file) && !( $_GET['m'] == 'install') ) {
 		$config_msg = "Root directory in configuration file probably incorrect";
 	}
 }
+
+
 // allow the install module to run without config file
 // load the db handler
 if ($dPrunLevel > 0) {
 	require_once( "./includes/db_connect.php" );
 }
 // check if session has previously been initialised
+$last_insert_id =$AppUI->last_insert_id;
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
+    if (isset($_GET['logout'])){
+        $user_id         = $AppUI->user_id;
+    }
+
     if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
     {
         $AppUI =& $_SESSION['AppUI'];
         addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
     }
+
 
     $_SESSION['AppUI'] = !( $_GET['m'] == 'install' ) ? new CAppUI() : new IAppUI();
 }
@@ -127,6 +136,13 @@ require_once( $AppUI->getSystemClass( 'dp' ) );
 
 require_once( "./misc/debug.php" );
 
+//Function register logout in user_acces_log
+if (isset($_GET['logout'])){
+    $AppUI->registerLogout($user_id);
+}
+
+//Function for update lost action in user_access_log
+    $AppUI->updateLostAction($last_insert_id);
 // load default preferences if not logged in
 if ($AppUI->doLogin()) {
 	if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
@@ -150,7 +166,6 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	exit();
 }
 
-
 // check if the user is trying to log in
 if (isset($_POST['login'])) {
 
@@ -161,19 +176,19 @@ if (isset($_POST['login'])) {
 	if (!$ok) {
 		@include_once( "./locales/core.php" );
 		$AppUI->setMsg( 'Login Failed' );
+	} else {
+	           //Register login in user_acces_log
+	           $AppUI->registerLogin();
 	}
         addHistory('login', $AppUI->user_id, 'login', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
 	$AppUI->redirect( "$redirect" );
 }
-
 
 // supported since PHP 4.2
 // writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
 
 // set the default ui style
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
-
-
 
 // clear out main url parameters
 $m = '';
@@ -187,7 +202,6 @@ if ($AppUI->doLogin()) {
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
 	setlocale( LC_TIME, $AppUI->user_locale );
-
 	$redirect = @$_SERVER['QUERY_STRING'];
 	if (strpos( $redirect, 'logout' ) !== false) {
 		$redirect = '';

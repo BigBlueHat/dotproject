@@ -5,6 +5,9 @@
 		&nbsp; <?php echo $AppUI->_('sort by');?>:&nbsp;
 	</td>
 	<th width="150">
+	           <?php echo $AppUI->_('Loged in');?>
+	</th>
+	<th width="150">
 		<a href="?m=admin&a=index&orderby=user_username" class="hdr"><?php echo $AppUI->_('Login Name');?></a>
 	</th>
 	<th>
@@ -15,6 +18,7 @@
 	</th>
 </tr>
 <?php 
+
 foreach ($users as $row) {
 ?>
 <tr>
@@ -40,6 +44,21 @@ foreach ($users as $row) {
 		</tr>
 		</table>
 <?php } ?>
+	</td>
+	<td>
+	       <?php 
+	           $sql = "select user_access_log_id, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_in ) ) / 3600 as hours,
+	                                ( unix_timestamp( now( ) ) - unix_timestamp( date_time_last_action ) ) / 3600 as idle,
+	                                if(isnull(date_time_out) or date_time_out ='0000-00-00 00:00:00','1','0') as online
+	                       from user_access_log
+	                       where user_id ='". $row["user_id"]."'
+	                       order by user_access_log_id desc
+	                       limit 1";
+	           $user_logs = db_loadList($sql);
+	           
+	           foreach ($user_logs as $row_log) {
+	               echo $row_log["hours"]." ".$AppUI->_('hrs.'). "( ".$row_log["idle"]." ". $AppUI->_('hrs.')." ".$AppUI->_('idle'). ") - "; if($row_log["online"] == '1') { echo $AppUI->_('Online');} else { echo $AppUI->_('Offline');}
+	} ?>
 	</td>
 	<td>
 		<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>"><?php echo $row["user_username"];?></a>
