@@ -51,12 +51,15 @@ function getReadableModule() {
  */
 function checkFlag($flag, $perm_type, $old_flag) {
 	if($old_flag) {
-		// check if permissions are implicity denied
-		return ($flag == PERM_DENY)?0:1;
+		return (
+				($flag == PERM_DENY) ||	// permission denied
+				($perm_type == PERM_EDIT && $flag == PERM_READ)	// we ask for editing, but are only allowed to read
+				) ? 0 : 1;
 	} else {
 		if($perm_type == PERM_READ) {
 			return ($flag != PERM_DENY)?1:0;
 		} else {
+			// => $perm_type == PERM_EDIT
 			return ($flag == $perm_type)?1:0;
 		}
 	}
@@ -76,8 +79,8 @@ function isAllowed($perm_type, $mod, $item_id = 0) {
 	if ($mod == 'public') return 1;
 	
 	/*** Manually granted permissions ***/
-	
-	// TODO: I didn't understand this.
+
+	// TODO: Check this
 	// If $perms['all'] or $perms[$mod] is not empty we have full permissions???
 	// If we just set a deny on a item we get read/edit permissions on the full module.
 	$allowed = ! empty( $perms['all'] ) | ! empty( $perms[$mod] );
