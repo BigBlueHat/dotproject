@@ -60,8 +60,7 @@ function db_loadList( $sql, $maxrows=NULL ) {
  * class must implement the Load() factory, see examples in Webo classes
  * @note to optimize request, only select object oids in $sql
  */
-function db_loadObjectList( $sql, $object, $maxrows = NULL )
-{
+function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 	$cur = db_exec( $sql );
 	if (!$cur) {
 		die( "DB_loadObjectList : " . db_error() );
@@ -79,18 +78,18 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL )
 }
 
 
-function DB_insertArray( $table, &$hash, $verbose=false ) {
+function db_insertArray( $table, &$hash, $verbose=false ) {
 	$fmtsql = "insert into $table ( %s ) values( %s ) ";
 	foreach ($hash as $k => $v) {
 		if (is_array($v) or is_object($v) or $v == NULL) {
 			continue;
 		}
 		$fields[] = $k;
-		$values[] = "'" . mysql_escape_string( $v ) . "'";
+		$values[] = "'" . db_escape( $v ) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 
-	( $verbose ) && print "$sql<br>\n";
+	($verbose) && print "$sql<br>\n";
 
 	if (!db_exec( $sql )) {
 		return false;
@@ -102,28 +101,27 @@ function DB_insertArray( $table, &$hash, $verbose=false ) {
 function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 	$fmtsql = "UPDATE $table SET %s WHERE %s";
 	foreach ($hash as $k => $v) {
-
 		if( is_array($v) or is_object($v) or $k[0] == '_' ) // internal or NA field
 			continue;
 
 		if( $k == $keyName ) { // PK not to be updated
-			$where = "$keyName='" . mysql_escape_string( $v ) . "'";
+			$where = "$keyName='" . db_escape( $v ) . "'";
 			continue;
 		}
-		if( $v == '' )
+		if ($v == '') {
 			$val = 'NULL';
-		else
-			$val = "'" . mysql_escape_string( $v ) . "'";
+		} else {
+			$val = "'" . db_escape( $v ) . "'";
+		}
 		$tmp[] = "$k=$val";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
-	( $verbose ) && print "$sql<br>\n";
+	($verbose) && print "$sql<br>\n";
 	$ret = db_exec( $sql );
 	return $ret;
 }
 
-function db_delete( $table, $keyName, $keyValue )
-{
+function db_delete( $table, $keyName, $keyValue ) {
 	$keyName = db_escape( $keyName );
 	$keyValue = db_escape( $keyValue );
 	$ret = db_exec( "DELETE FROM $table WHERE $keyName='$keyValue'" );
@@ -131,8 +129,7 @@ function db_delete( $table, $keyName, $keyValue )
 }
 
 
-function db_insertObject( $table, &$object, $keyName = NULL )
-{
+function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 	$fmtsql = "INSERT INTO $table ( %s ) VALUES ( %s ) ";
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if (is_array($v) or is_object($v) or $v == NULL) {
@@ -142,33 +139,37 @@ function db_insertObject( $table, &$object, $keyName = NULL )
 			continue;
 		}
 		$fields[] = $k;
-		$values[] = "'" . mysql_escape_string( $v ) . "'";
+		$values[] = "'" . db_escape( $v ) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
+	($verbose) && print "$sql<br>\n";
 	if (!db_exec( $sql )) {
 		return false;
 	}
 	$id = db_insert_id();
+	($verbose) && print "id=[$id]<br>\n";
 	if ($keyName && $id)
 		$object->$keyName = $id;
 	return true;
 }
 
-function db_updateObject( $table, &$object, $keyName )
-{
+function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 	$fmtsql = "UPDATE $table SET %s WHERE %s";
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field
 			continue;
 		}
 		if( $k == $keyName ) { // PK not to be updated
-			$where = "$keyName='" . mysql_escape_string( $v ) . "'";
+			$where = "$keyName='" . db_escape( $v ) . "'";
+			continue;
+		}
+		if ($v === NULL && !$updateNulls) {
 			continue;
 		}
 		if( $v == '' ) {
 			$val = 'NULL';
 		} else {
-			$val = "'" . mysql_escape_string( $v ) . "'";
+			$val = "'" . db_escape( $v ) . "'";
 		}
 		$tmp[] = "$k=$val";
 	}
@@ -176,15 +177,13 @@ function db_updateObject( $table, &$object, $keyName )
 	return db_exec( $sql );
 }
 
-function db_dateConvert( $src, &$dest, $srcFmt )
-{
+function db_dateConvert( $src, &$dest, $srcFmt ) {
 	$result = strtotime( $src );
 	$dest = $result;
 	return ( $result != 0 );
 }
 
-function db_datetime( $timestamp = NULL )
-{
+function db_datetime( $timestamp = NULL ) {
 	if (!$timestamp) {
 		return NULL;
 	}
@@ -195,32 +194,28 @@ function db_datetime( $timestamp = NULL )
 	}
 }
 
-
 /*
  *  copy the hash array content into the object as properties
  *  only existing properties of object are filled. when undefined in hash, properties wont be deleted
  *  @param obj byref the object to fill of any class
  *  @param hash the input array
  */
-function bindHashToObject( $hash, &$obj, $prefix=NULL )
-{
+function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true ) {
 	is_array( $hash ) or die( "bindHashToObject : hash expected" );
 	is_object( $obj ) or die( "bindHashToObject : object expected" );
 	if ($prefix) {
 		foreach (get_object_vars($obj) as $k => $v) {
 			if (isset($hash[$prefix . $k ])) {
-				$obj->$k = $hash[$k];
+				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
 			}
 		}
 	} else {
 		foreach (get_object_vars($obj) as $k => $v) {
 			if (isset($hash[$k])) {
-				$obj->$k = $hash[$k];
+				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
 			}
 		}
 	}
 	//echo "obj="; print_r($obj); exit;
 }
-
-
 ?>
