@@ -120,12 +120,6 @@ $dPconfig['locale_alert'] = '^';
 // the number of 'working' hours in a day
 $dPconfig['daily_working_hours'] = 8.0;
 
-// set debug > 0 to provide more debug information in
-// analysing errors.  Set this to 1 to provide the best
-// compromise between normal operation and error tracking
-// information.
-$dPconfig['debug'] = 1;
-
 // Set to true to display debug messages as well as log them.
 // WARNING: Setting to true can cause dotproject to fail on
 // warnings if the debug level is set greater than 1.
@@ -192,4 +186,20 @@ $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";
 $ft["text/html"] = "/usr/bin/strings";
 $ft["application/pdf"] = "/usr/bin/pdftotext";
+
+/***************** Configuration for DEVELOPERS use only! ******/
+
+// set debug > 0 to provide more debug information in
+// analysing errors.  Set this to 1 to provide the best
+// compromise between normal operation and error tracking
+// information. Set to 10 to get complete debugging information.
+$dPconfig['debug'] = 1;
+
+// When set to true, if dp makes a query, which ends with
+// and error, it automatically inserts everything in 
+// db/upgrade_latest.sql to try to repair db problems.
+$dPconfig['auto_fields_creation'] = false;
+
+
+
 ?>
