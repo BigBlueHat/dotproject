@@ -17,6 +17,9 @@ define( "UI_CASE_UPPERFIRST", 3 );
 
 /**
  *	The UI Class.
+ *
+ *	@package dotProject
+ *	@author Andrew Eddie
  */
 class CAppUI {
 /**
@@ -219,19 +222,19 @@ class CAppUI {
 
 		switch( $this->msgNo ) {
 		case UI_MSG_OK:
-			$img = '<img src="./images/icons/stock_ok-16.png" width="16" height="16" border="0" alt="" />';
+			$img = dPshowImage( dPfindImage( 'stock_ok-16.png' ), 16, 16, '' );
 			$class = "message";
 			break;
 		case UI_MSG_ALERT:
-			$img = '<img src="./images/obj/alert.gif" width="16" height="11" border="0" alt="" />';
+			$img = dPshowImage( 'obj/alert.gif', 16, 16, '' );
 			$class = "message";
 			break;
 		case UI_MSG_WARNING:
-			$img = '<img src="./images/obj/warning.gif" width="14" height="14" border="0" alt="" />';
+			$img = dPshowImage( 'obj/warning.gif', 16, 16, '' );
 			$class = "warning";
 			break;
 		case UI_MSG_ERROR:
-			$img = '<img src="./images/obj/error.gif" width="14" height="14" border="0" alt="" />';
+			$img = dPshowImage( 'obj/error.gif', 16, 16, '' );
 			$class = "error";
 			break;
 		default:
