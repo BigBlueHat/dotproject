@@ -1,3 +1,15 @@
+2003-05-21 19:16  (eddieajau)
+---------------------------------
+includes/config-dist.php
+includes/db_connect.php
+includes/db_mysql.php
+- Added option to use persistent db connections
+
+2003-05-21 04:33  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-21 00:11  (kripper)
 ---------------------------------
 includes/config-dist.php
@@ -486,18 +498,6 @@ index.php
 2003-05-07 18:11  (korinek)
 ---------------------------------
 style/default/header.php
-- Setting the meta tag 'Content-Type charset' according to selected locale - please test it for your settings.
-
-2003-05-07 17:42  (korinek)
----------------------------------
-locales/en/admin.inc
-locales/en/calendar.inc
-locales/en/help.inc
-locales/en/system.inc
-modules/system/addeditpref.php
-- Tiny translation updates and changes.
-
-2003-05-07 17:39  (korinek)
 ...
 
 (This file has been wrapped)
