@@ -67,12 +67,12 @@ function setCalendar( idate, fdate ) {
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_all" />
+		<input type="checkbox" name="log_all" <?php if ($log_all) echo "checked" ?> />
 		<?php echo $AppUI->_( 'Log All' );?>
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_pdf" />
+		<input type="checkbox" name="log_pdf" <?php if ($log_pdf) echo "checked" ?> />
 		<?php echo $AppUI->_( 'Make PDF' );?>
 	</td>
 
@@ -102,6 +102,7 @@ if ($do_report) {
 	if ($log_ignore) {
 		$sql .= "\n	AND task_log_hours > 0";
 	}
+	$sql .= " ORDER BY task_start_date";
 
 	//echo "<pre>$sql</pre>";
 
@@ -184,12 +185,15 @@ if ($do_report) {
 		$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
 		$pdf->selectFont( "$font_dir/Helvetica.afm" );
 
-		$pdf->ezText( $AppUI->getConfig( 'company_name' ).' :: '.$AppUI->getConfig( 'page_title' ), 12 );
+		$pdf->ezText( $AppUI->getConfig( 'company_name' ), 12 );
+		// $pdf->ezText( $AppUI->getConfig( 'company_name' ).' :: '.$AppUI->getConfig( 'page_title' ), 12 );		
 
-		$pdf->ezText( "\nThis file produced: " . strftime( "%c" ), 8 );
+		$date = new CDate();
+		$pdf->ezText( "\n" . $date->format( $df ) , 8 );
 
 		$pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
-		$pdf->ezText( "\nTASK LOG REPORT for $pname", 16 );
+		$pdf->ezText( "\n" . $AppUI->_('Task Log Report'), 12 );
+		$pdf->ezText( "$pname", 15 );
 		if ($log_all) {
 			$pdf->ezText( "All task log entries", 9 );
 		} else {
@@ -202,7 +206,7 @@ if ($do_report) {
 		$options = array(
 			'showLines' => 1,
 			'showHeadings' => 0,
-			'fontSize' => 10,
+			'fontSize' => 8,
 			'rowGap' => 2,
 			'colGap' => 5,
 			'xPos' => 50,
