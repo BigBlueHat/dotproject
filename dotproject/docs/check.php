@@ -11,7 +11,7 @@
 <body>
 <h1>dotProject System Checks</h1>
 
-<table cellspacing="0" cellpadding="4" border="1" class="tbl">
+<table cellspacing="0" cellpadding="4" border="1" class="tbl" width="100%">
 <?php
 error_reporting( E_ALL );
 
@@ -19,6 +19,7 @@ require "../includes/config.php";
 
 if ($dbok = function_exists( 'mysql_pconnect' )) {
 	echo "<tr><td>MySQL</td><td>Available</td><td>OK</td></tr>";
+	echo "<tr><td>MySQL Server Version</td><td>" . mysql_get_server_info() . "</td></tr>";
 
 	$host = $dPconfig['dbhost'];
 	$port = 3306;
@@ -50,7 +51,14 @@ echo "<tr><td>Operating System</td><td>".php_uname()."</td></tr>";
 $msg = phpversion() < '4.1' ? "<td class=error>To old, upgrade</td>" : "<td>OK</td>";
 echo "<tr><td>PHP Version</td><td>".phpversion()."</td>$msg</tr>";
 
-echo "<tr><td>Server API</td><td>".php_sapi_name()."</td></tr>";
+$sapi = php_sapi_name();
+echo "<tr><td>Server API</td><td>$sapi</td>";
+if ($sapi == "cgi") {
+  echo "<td class=error>CGI mode is likely to have problems</td></tr>";
+} else {
+  echo "</tr>";
+}
+echo "<tr><td>Web Server</td><td>$_SERVER[SERVER_SOFTWARE]</td></tr>";
 
 echo "<tr><td>User Agent</td><td>".$_SERVER['HTTP_USER_AGENT']."</td></tr>";
 
@@ -91,6 +99,15 @@ $iw = is_writable( "{$dPconfig['root_dir']}/files/temp" );
 $msg = $iw ? '<td>OK</td>' : '<td class=warning>Warning: you will not be able to make PDF\'s.  Check the directory permissions.</td>';
 
 echo "<tr><td>/files/temp directory writable</td><td>$iw</td>$msg</tr>";
+
+// Now check to see if the supplied root_dir is the same as the called URL.
+$url = preg_replace('/\/docs\/.*$/', '', $_SERVER['PATH_TRANSLATED']);
+echo "<tr><td>root_dir</td><td>$dPconfig[root_dir]</td>";
+if ($url != $dPconfig['root_dir']) {
+  echo "<td class=error>root_dir seems to be incorrect, probably should be $url</td></tr>";
+} else {
+  echo "<td>OK</td></tr>";
+}
 
 echo "</table>";
 
