@@ -1,3 +1,45 @@
+2004-08-27 19:39  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- Compressed and improved a little bit the presentation
+- of the Gantt graph.
+
+2004-08-27 19:15  (jcgonz)
+---------------------------------
+modules/admin/vw_usr.php
+- Modify archive vw_usr.php for hide column logedin in inactive uses and show in active users
+
+2004-08-27 19:14  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- The script tried to gray out milestons aswell and
+- some warnings appeared. Now it detects if
+- we are talking about a ganttbar object before
+- trying to gray out something.
+
+2004-08-27 17:45  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/tasks/gantt.php
+- patch sf.net 814393: gantt interpolation
+
+2004-08-27 17:02  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/index.php
+modules/projects/viewgantt.php
+- new tab: projects gantt chart
+
+2004-08-27 12:42  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Updated the use of dPconfig array to dPgetConfig() function
+
+2004-08-27 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-27 00:57  (ajdonnison)
 ---------------------------------
 index.php
@@ -456,48 +498,6 @@ modules/history/index.php
 modules/tasks/tasks.php
 - Added ability to deal with tasks even if the history module doesn't exists / is not active. (not tested)
 
-2004-08-21 04:21  (cyberhorse)
----------------------------------
-modules/tasks/tasks.php
-- Added a variable to keep track of columns in the tasks table.
-- Added the ability to create a new log, directly from the task listings (in different modules).
-- TODO: replace the word Log with an icon (for the more artistically inclined).
-
-2004-08-21 04:12  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-21 04:10  (cyberhorse)
----------------------------------
-modules/tasks/tasks.php
-- Added the date of the last update for tasks.
-
-2004-08-21 03:54  (cyberhorse)
----------------------------------
-modules/history/index.php
-- Preparing history module for new permissions system.
-
-2004-08-21 03:39  (cyberhorse)
----------------------------------
-classes/dp.class.php
-includes/main_functions.php
-modules/files/files.class.php
-modules/forums/forums.class.php
-modules/history/addedit.php
-modules/history/index.php
-modules/history/setup.php
-modules/projects/projects.class.php
-modules/tasks/tasks.class.php
-- Updated history module (table stores more information now)
-
-2004-08-21 02:26  (cyberhorse)
----------------------------------
-includes/main_functions.php
-- Fixed missing quotes bug.
-
-2004-08-21 02:05  (cyberhorse)
----------------------------------
 ...
 
 (This file has been wrapped)
