@@ -569,7 +569,7 @@ function toggle_users(id){
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
-if ($canEdit && $dPconfig['direct_edit_assignment']) {
+if (isset($canEdit) && $canEdit && $dPconfig['direct_edit_assignment']) {
 ?>
 function checkAll(project_id) {
         var f = eval( 'document.assFrm' + project_id );
