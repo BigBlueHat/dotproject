@@ -1,3 +1,37 @@
+2003-05-01 00:23  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+- Updates for PEAR Date Class.
+- Reworked Gantt presentation
+
+2003-05-01 00:22  (eddieajau)
+---------------------------------
+modules/projects/view.php
+- Fixed minor bu in project heading
+
+2003-04-30 22:16  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/index.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- Update date handling (to PEAR package) and class abstraction
+
+2003-04-30 22:14  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- Added in some task todos
+
+2003-04-30 03:27  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-30 01:24  (eddieajau)
 ---------------------------------
 modules/calendar/view.php
@@ -464,40 +498,6 @@ modules/companies/addedit.php
 modules/companies/index.php
 modules/companies/view.php
 modules/files/addedit.php
-modules/files/index.php
-modules/files/index_table.php
-- Updated icons
-
-2003-04-22 20:13  (eddieajau)
----------------------------------
-includes/main_functions.php
-- Added support for IE6 to correctly dislpay png images with alpha-transparency
-
-2003-04-22 20:12  (eddieajau)
----------------------------------
-images/icons/communicate.gif
-modules/forums/view_messages.php
-classes/ui.class.php
-- Updated icons
-
-2003-04-22 20:09  (eddieajau)
----------------------------------
-classes/dp.class.php
-classes/libmail.class.php
-- Updated documentation
-
-2003-04-22 20:05  (eddieajau)
----------------------------------
-docs/roadmap.html
-- no message
-
-2003-04-22 19:49  (eddieajau)
----------------------------------
-docs/roadmap.html
-- no message
-
-2003-04-22 19:14  (eddieajau)
----------------------------------
 ...
 
 (This file has been wrapped)
