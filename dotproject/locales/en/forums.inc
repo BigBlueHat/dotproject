@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Forum message inserted",
+"Started",
 "Created On",
 "Forum",
 "Forum Name",
@@ -9,6 +9,7 @@
 "Forum deleted",
 "Forum inserted",
 "Forum message deleted",
+"Forum message inserted",
 "Forum message updated",
 "Forum updated",
 "Last Post Info",
