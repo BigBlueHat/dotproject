@@ -200,7 +200,7 @@ $query_string = "?m=projects&a=view&project_id=$project_id";
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks (In-Active)' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );

@@ -94,6 +94,12 @@ switch ($f) {
 					AND projects.project_status != '4'
 					AND projects.project_status != '5'";
 		break;
+	case 'unassigned':
+		$join .= "\n LEFT JOIN user_tasks ON tasks.task_id = user_tasks.task_id";
+		$where .= "
+					AND task_status > -1
+					AND user_tasks.task_id IS NULL";
+		break;
 	default:
 		$from .= ", user_tasks";
 		$where .= "

@@ -86,7 +86,7 @@ $extra = '<td align="right" width="100%"><input type="button" class=button value
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=admin", "{$AppUI->cfg['root_dir']}/modules/admin/", $tab );
 $tabBox->add( 'vw_active_usr', 'Active Users' );
-$tabBox->add( 'vw_inactive_usr', 'In-Active Users' );
+$tabBox->add( 'vw_inactive_usr', 'Inactive Users' );
 $tabBox->show( $extra );
 ?>
 

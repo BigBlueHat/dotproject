@@ -6,13 +6,14 @@ $filters = array(
 	'myunfinished' => 'My Unfinished Tasks',
 	'myproj'       => 'My Projects',
 	'mycomp'       => 'All Tasks for my Company',
-	'myinact'      => 'My Tasks (show in-active)',
+	'myinact'      => 'My Tasks (show inactive)',
+	'unassigned'   => 'All Tasks (unassigned)',
 	'all'          => 'All Tasks'
 );
 
 $status = array(
  0 => 'Active',
- -1 => 'In-active'
+ -1 => 'Inactive'
 );
 
 $priority = array(

@@ -26,9 +26,9 @@ the other remaining fields at your leisure.</p>
 <p>This will take you back to the user list page.&#160; How come their is only
 the admin user?&#160; When you create a new user they have no rights to any
 module in dotProject.&#160; Therefore they are consider an
-<strong>In-Active</strong> user.</p>
+<strong>Inactive</strong> user.</p>
 
-<p>Click on the <strong>In-Active Users</strong> tab.&#160; You should see the
+<p>Click on the <strong>Inactive Users</strong> tab.&#160; You should see the
 new user you just created.&#160; You can click on the login name link to view
 the user's profile but we want to get straight to giving this person some
 permissions.&#160; Click on the lock icon to the left of the login name.</p>
@@ -63,7 +63,7 @@ to all companies&#160;but is denied access to the&#160;Swodniw company.<br />
 </p>
 
 <p>Now, click on the <strong>user list</strong> bread-crumb in the title
-block.&#160; If the In-Active Users tab is showing (which it probably is;
+block.&#160; If the Inactive Users tab is showing (which it probably is;
 dotProject will generally remember where you were) you will see that Linus no
 longer appears in this list.&#160; Click on the Active Users tab.&#160; You
 should see that Linus now appears in this list.</p>

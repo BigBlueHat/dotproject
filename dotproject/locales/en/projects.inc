@@ -60,6 +60,7 @@
 "Task Name",
 "Task added",
 "Tasks (In-Active)",
+"Tasks (Inactive)",
 "This month",
 "To",
 "Total",

@@ -20,6 +20,7 @@
 "In planning",
 "In progress",
 "In-Active Users",
+"Inactive Users",
 "Invalid Project ID",
 "Invalid User ID",
 "Item",
