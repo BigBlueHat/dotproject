@@ -2,6 +2,7 @@
 
 <html>
 <head>
+<meta http-equiv="pragma" content="no-cache">
 <script language="JavaScript">
 function doBtn() {
 	var oEl = event.srcElement;
