@@ -23,6 +23,45 @@ $AppUI->savePlace();
 
 <?php
 
+function show_history($history)
+{
+//        return $history;
+        $limit = strpos($history, '_');
+        $module = substr($history, 0, $limit);
+        $history = substr($history, $limit + 1);
+        $limit = strpos($history, '(');
+        $action = substr($history, 0, $limit);
+        $history = substr($history, $limit + 1);
+        $id = substr($history, 0, -1);
+        $history = substr($history, 0, -1);
+        
+        if ($action == 'add')
+                $msg = 'Added new ';
+        else if ($action == 'update')
+                $msg = 'Modified ';
+        else if ($action == 'delete')
+                return 'Deleted (' . $history . ') from ' . $module;
+        
+        if ($module == 'files')
+                $link = '&a=addedit&file_id=';
+        else if ($module == 'tasks')
+                $link = '&a=view&task_id=';
+        else if ($module == 'forum')
+                $link = '&a=viewer&forum_id=';
+        else if ($module == 'projects')
+                $link = '&a=view&project_id=';
+        else if ($module == 'companies')
+                $link = '&a=view&company_id=';
+        else if ($module == 'contacts')
+                $link = '&a=view&contact_id=';
+
+        $msg .= '<a href="?m=' . $module . $link . $id . '">item</a> in ';
+
+        $msg .= $module . ' module.'; // . $history;
+
+        return $msg;
+}
+
 $psql = 
 "SELECT * from history, users WHERE history_user = user_id ORDER BY history_date DESC";
 $prc = db_exec( $psql );
@@ -44,7 +83,7 @@ while ($row = db_fetch_assoc( $prc )) {
 <tr>	
 	<td><a href='<?php echo "?m=history&a=addedit&history_id=" . $row["history_id"] ?>'><img src="./images/icons/pencil.gif" alt="<?php echo $AppUI->_( 'Edit History' ) ?>" border="0" width="12" height="12"></a></td>
 	<td><?php echo $row["history_date"]?></td>
-	<td><?php echo $row["history_description"]?></td>	
+	<td><?php echo show_history($row["history_description"]) ?></td>	
 	<td><?php echo $row["user_username"]?></td>
 </tr>	
 <?php
