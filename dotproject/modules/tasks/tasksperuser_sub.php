@@ -396,12 +396,12 @@ if($do_report){
                         dPshowImage(dPfindImage('exchange.png', 'tasks'), 24, 16, 'Hand Over', 'Unassign User from Task and handing-over to selected Users')."</a>&nbsp;".
                         "<a href='javascript:chAssignment($user_id, 0, false);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
-                        $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"Assign Percentage for Users to assign\">";
+                        $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
                         for ($i = 5; $i <= 100; $i+=5) {
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
-                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="Change Priority of selected Tasks"', 0, true );
+                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
                         $tmpuser .= "</td></tr></table></td>";
 
 			$tmpuser.="</tr>";
