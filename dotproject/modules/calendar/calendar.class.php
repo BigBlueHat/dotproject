@@ -204,7 +204,7 @@ class CMonthCalendar {
  *
  */
 	 function _drawTitle() {
-		global $AppUI, $m, $a;
+		global $AppUI, $m, $a, $locale_char_set;
 		$url = "index.php?m=$m";
 		$url .= $a ? "&a=$a" : '';
 		$url .= isset( $_GET['dialog']) ? "&dialog=1" : '';
@@ -226,7 +226,7 @@ class CMonthCalendar {
 			$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
 			$s .= '<a href="'.$href.'">';
 		}
-		$s .= $this->this_month->format( "%B %Y" );
+		$s .= htmlentities($this->this_month->format( "%B %Y" ), ENT_COMPAT, $locale_char_set);
 		$s .= "</th>";
 
 		if ($this->showArrows) {
@@ -249,6 +249,8 @@ class CMonthCalendar {
 * @return string Returns table a row with the day names
 */
 	function _drawDays() {
+		global $locale_char_set;
+
 		$bow = Date_Calc::beginOfWeek( null,null,null,null,LOCALE_FIRST_DAY );
 		$y = substr( $bow, 0, 4 );
 		$m = substr( $bow, 4, 2 );
@@ -257,7 +259,7 @@ class CMonthCalendar {
 
 		$s = $this->showWeek ? "\n\t\t<th>&nbsp;</th>" : "";
 		foreach( $wk as $day ) {
-			$s .= "\n\t\t<th width=\"14%\">$day</th>";
+			$s .= "\n\t\t<th width=\"14%\">" . htmlentities($day, ENT_COMPAT, $locale_char_set) . "</th>";
 		}
 
 		return "\n<tr>$s\n</tr>";
