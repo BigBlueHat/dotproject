@@ -3,6 +3,7 @@
 echo "<pre>\n";
 
 echo "Starting Upgrade\n";
+$baseDir = dirname(__FILE__);
 require_once "../includes/config.php";
 require_once "../includes/main_functions.php";
 require_once "../classes/ui.class.php";
