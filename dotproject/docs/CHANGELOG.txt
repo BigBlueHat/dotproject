@@ -1,5 +1,15 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+3 December 2002 (kripper):
+---------------------------------
+modules/tasks/addedit.php
+db/dotproject.sql
+db/dotproject_022_to_023.sql
+db/dotproject_kripper.sql
+dosql/addeditTask.php
+- Renamed fields in table 'task_dependencies'
+- Removed temp file db/dotproject_kripper.sql
+
 3 December 2002 (AJE):
 ---------------------------------
 styles/main.css
@@ -34,6 +44,50 @@ module/projects/index.php
 module/projects/view.php
 -  uses new CTabBox class
 
+2002-11-29 19:54  (kripper)
+---------------------------------
+modules/tasks/gantt.php
+index.php
+viewgantt.php
+- Added gantt chart viewer
+
+2002-11-29 10:15  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+dosql/addeditTask.php
+- Added task dependencies
+- Added dynamic tasks check box
+
+2002-11-29 10:11  (kripper)
+---------------------------------
+db/dotproject.sql
+dotproject_022_to_023.sql
+dotproject_kripper.sql
+- Added task_dependencies table
+- Added task_dynamic field to tasks table
+
+2002-11-29 08:58  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- Added Task dependencies select box
+
+2002-11-28 06:41  (kripper)
+---------------------------------
+modules/tasks/index.php
+- Display task's durations and finish dates as n/a if not specified
+- Obtain unspecified task's finish dates by adding start_date + duration
+
+2002-11-28 05:57  (kripper)
+---------------------------------
+modules/tasks/gantt.php
+- Added file gantt.php
+
+2002-11-28 05:55  (kripper)
+---------------------------------
+modules/tasks/index.php
+- Fixed project color styling under mozilla browsers
+- Added gantt charts support
+
 25 November 2002 (AJE):
 ---------------------------------
 includes/db_connect.php
@@ -60,6 +114,31 @@ modules/admin/vw_inactive_usr.php
 
 modules/admin/vw_usr_perms.php
 - minor fix: deleted redundant line of code
+
+2002-11-22 03:39  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- Optional tasks duration
+
+2002-11-22 03:32  (kripper)
+---------------------------------
+includes/config.php
+- Added REQUIRE_TASKS_DURATION constant
+
+2002-11-22 03:22  (kripper)
+---------------------------------
+dosql/addeditTask.php
+- Stay in selected project after adding a new task
+
+2002-11-22 02:34  (kripper)
+---------------------------------
+modules/companies/vw_active.php
+- Fixed link to projects
+
+2002-11-22 02:16  (kripper)
+---------------------------------
+includes/config.php
+- Added defines in config.php
 
 19 November 2002 (JCP):
 ---------------------------------
