@@ -644,7 +644,7 @@ class CTabBox_core {
 * @param string The base path to prefix the include file
 * @param int The active tab
 */
-	function CTabBox( $baseHRef='', $baseInc='', $active=0 ) {
+	function CTabBox_core( $baseHRef='', $baseInc='', $active=0 ) {
 		$this->tabs = array();
 		$this->active = $active;
 		$this->baseHRef = ($baseHRef ? "$baseHRef&" : "?");
