@@ -59,7 +59,13 @@ if ($canEdit) {
 	   var   tDiff = tDate.getTime() - tStart.getTime();
 	
 	   tDate.setTime(tDiff);
-	
+
+	   var pre_cero = "";
+	   if(tDate.getSeconds()<10){
+	       pre_cero = "0";
+	   }
+	   
+	   document.getElementById("timerStatus").innerHTML = "("+tDate.getMinutes()+":"+pre_cero+tDate.getSeconds()+")";
 	   // lets put time information in an hour basis
 	   var total_hours  = (tDate.getMinutes())/60;
 	   
@@ -76,7 +82,6 @@ if ($canEdit) {
 	function timerStart() {
 		if(!timerID){ // this means that it needs to be started
 			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Stop');?>";
-			document.getElementById("timerStatus").innerHTML = "<center><?php echo $AppUI->_('timer running');?></center>";
 			timerID  = setTimeout("UpdateTimer()", 1000);
 		} else { // timer must be stoped
 			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Start');?>";
@@ -141,9 +146,9 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Hours Worked');?>
 	</td>
 	<td>
-		<input type="text" class="text" name="task_log_hours" value="<?php echo $log->task_log_hours;?>" maxlength="8" size="6" />
+		<input type="text" class="text" name="task_log_hours" value="<?php echo $log->task_log_hours;?>" maxlength="8" size="6" /> 
 		<input type='button' class="button" value='<?php echo $AppUI->_('Start');?>' onclick='javascript:timerStart()' name='timerStartStopButton' />
-		<input type='button' class="button" value='<?php echo $AppUI->_('Reset'); ?>' onclick="javascript:timerReset()" name='timerResetButton' />
+		<input type='button' class="button" value='<?php echo $AppUI->_('Reset'); ?>' onclick="javascript:timerReset()" name='timerResetButton' /> 
 		<span id='timerStatus'></span>
 	</td>
 </tr>
