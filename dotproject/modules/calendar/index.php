@@ -130,9 +130,9 @@ for( $i = 0; $i <= 6; $i++ ) { ?>
 <?php
 	$firstDay = date( 'w', mktime( 0, 0, 0, $thisMonth, 1, $thisYear ) );
 	$dayRow = 0;
-	echo "<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&day=-" .$firstDay . "&month=". $thisMonth. "&year=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
 
 	if ($firstDay > 0) {
+		echo "<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&day=-" .$firstDay . "&month=". $thisMonth. "&year=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
 		while ($dayRow < $firstDay) {
 			echo "<td align=right bgcolor='#ffffff' height='80'>&nbsp;</td>\n";
 			$dayRow += 1;
@@ -157,7 +157,7 @@ for( $i = 0; $i <= 6; $i++ ) { ?>
 		}
 		$items = eventsForDate( $dayp, $thisMonth, $thisYear );
 
-		echo "<td valign=top bgcolor=$bgcolor><A href='./index.php?m=calendar&a=day_view'>" . $dayp . "</A>";
+		echo "<td valign=top bgcolor=$bgcolor><A href='./index.php?m=calendar&a=day_view&thisMonth=" . $thisMonth . "&thisYear=" . $thisYear . "&thisDay=" . $dayp . "'>" . $dayp . "</A>";
 	?>
 	<table width="100%" border=0 cellpadding=0 cellspacing=0>
 <?php

@@ -1,19 +1,25 @@
-<?php 
+<?php
 // Add / Edit event
 if(empty($event_id))$event_id = 0;
 
 //Pull event information
-$csql = "Select  *
-	from events where events.event_id = $event_id";
+$csql = "Select * from events where events.event_id = $event_id";
 $crc = mysql_query($csql);
 $crow = mysql_fetch_array($crc);
-//Set the starting date and time in format to match Javascript
+
+//Set the starting date and time
 if(is_array($crow)){
-	$sdate = strftime("%m/%d/%Y", $crow["event_start_date"]);
+	$sdate = strftime("%Y-%m-%d", $crow["event_start_date"]);
 	$stime = strftime("%H:%M", $crow["event_start_date"]);
-	$edate = strftime("%m/%d/%Y", $crow["event_end_date"]);
+	$shour = strftime("%H", $crow["event_start_date"]);
+	$smin = strftime("%M", $crow["event_start_date"]);
+	$edate = strftime("%Y-%m-%d", $crow["event_end_date"]);
 	$etime = strftime("%H:%M", $crow["event_end_date"]);
-// echo "|$sdate|$edate|$stime|$etime|"; exit;
+	$ehour = strftime("%H", $crow["event_end_date"]);
+	$emin = strftime("%M", $crow["event_end_date"]);
+
+	$sdate = fromDate($sdate);
+	$edate = fromDate($edate);
 }
 
 
@@ -116,113 +122,67 @@ var form = document.changeevent;
 			<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 				<tr bgcolor="#eeeeee">
 					<TD align="right">Start Date/Time:</td>
-					<TD nowrap><input type="text" class="text" name="sdate" value="<?php echo $sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
+					<TD nowrap><input type="text" class="text" name="sdate" value="<?php echo @$sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
 					<TD>
 						<select name="stime">
-						<option value="0:00">12:00 am
-						<option value="0:30">12:30 am
-						<option value="1:00">1:00 am
-						<option value="1:30">1:30 am
-						<option value="2:00">2:00 am
-						<option value="2:30">2:30 am
-						<option value="3:00">3:00 am
-						<option value="3:30">3:30 am
-						<option value="4:00">4:00 am
-						<option value="4:30">4:30 am
-						<option value="5:00">5:00 am
-						<option value="5:30">5:30 am
-						<option value="6:00">6:00 am
-						<option value="6:30">6:30 am
-						<option value="7:00">7:00 am
-						<option value="7:30">7:30 am
-						<option value="8:00">8:00 am
-						<option value="8:30">8:30 am
-						<option value="9:00">9:00 am
-						<option value="9:30">9:30 am
-						<option value="10:00">10:00 am
-						<option value="10:30">10:30 am
-						<option value="11:00">11:00 am
-						<option value="11:30">11:30 am
-						<option value="12:00">12:00 pm
-						<option value="12:30">12:30 pm
-						<option value="13:00">1:00 pm
-						<option value="13:30">1:30 pm
-						<option value="14:00">2:00 pm
-						<option value="14:30">2:30 pm
-						<option value="15:00">3:00 pm
-						<option value="15:30">3:30 pm
-						<option value="16:00">4:00 pm
-						<option value="16:30">4:30 pm
-						<option value="17:00">5:00 pm
-						<option value="17:30">5:30 pm
-						<option value="18:00">6:00 pm
-						<option value="18:30">6:30 pm
-						<option value="19:00">7:00 pm
-						<option value="19:30">7:30 pm
-						<option value="20:00">8:00 pm
-						<option value="20:30">8:30 pm
-						<option value="21:00">9:00 pm
-						<option value="21:30">9:30 pm
-						<option value="22:00">10:00 pm
-						<option value="22:30">10:30 pm
-						<option value="23:00">11:00 pm
-						<option value="23:30">11:30 pm
+<?php
+	$hr=0;
+	$mn="00";
+	while ($hr < 24) {
+		echo "<option value='$hr:$mn'";
+		if ($hr == $shour && $mn == $smin)
+			echo " selected";
+		echo ">";
+		if ($hr == 0)
+			echo "12:$mn";
+		else
+			echo "$hr:$mn";
+		if ($hr < 12)
+			echo " am";
+		else
+		  echo " pm";
+		echo "</option>\n";
+		if ($mn == "00") {
+			$mn = "30";
+		} else {
+			$mn = "00";
+			$hr++;
+		}
+	}
+?>
 						</select>
 					</td>
 				</tr>
 				<tr bgcolor="#eeeeee">
 					<TD align="right">End Date:</td>
-					<TD><input type="text"  name="edate" value="<?php echo $edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
+					<TD><input type="text"  name="edate" value="<?php echo @$edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
 					<TD>
-					<select name="stime">
-						<option value="0:00">12:00 am
-						<option value="0:30">12:30 am
-						<option value="1:00">1:00 am
-						<option value="1:30">1:30 am
-						<option value="2:00">2:00 am
-						<option value="2:30">2:30 am
-						<option value="3:00">3:00 am
-						<option value="3:30">3:30 am
-						<option value="4:00">4:00 am
-						<option value="4:30">4:30 am
-						<option value="5:00">5:00 am
-						<option value="5:30">5:30 am
-						<option value="6:00">6:00 am
-						<option value="6:30">6:30 am
-						<option value="7:00">7:00 am
-						<option value="7:30">7:30 am
-						<option value="8:00">8:00 am
-						<option value="8:30">8:30 am
-						<option value="9:00">9:00 am
-						<option value="9:30">9:30 am
-						<option value="10:00">10:00 am
-						<option value="10:30">10:30 am
-						<option value="11:00">11:00 am
-						<option value="11:30">11:30 am
-						<option value="12:00">12:00 pm
-						<option value="12:30">12:30 pm
-						<option value="13:00">1:00 pm
-						<option value="13:30">1:30 pm
-						<option value="14:00">2:00 pm
-						<option value="14:30">2:30 pm
-						<option value="15:00">3:00 pm
-						<option value="15:30">3:30 pm
-						<option value="16:00">4:00 pm
-						<option value="16:30">4:30 pm
-						<option value="17:00">5:00 pm
-						<option value="17:30">5:30 pm
-						<option value="18:00">6:00 pm
-						<option value="18:30">6:30 pm
-						<option value="19:00">7:00 pm
-						<option value="19:30">7:30 pm
-						<option value="20:00">8:00 pm
-						<option value="20:30">8:30 pm
-						<option value="21:00">9:00 pm
-						<option value="21:30">9:30 pm
-						<option value="22:00">10:00 pm
-						<option value="22:30">10:30 pm
-						<option value="23:00">11:00 pm
-						<option value="23:30">11:30 pm
+					<select name="etime">
+<?php
+	$hr=0;
+	$mn="00";
+	while ($hr < 24) {
+		echo "<option value='$hr:$mn'";
+		if ($hr == $ehour && $mn == $emin)
+			echo " selected";
+		echo ">";
+		if ($hr == 0)
+			echo "12:$mn";
+		else
+			echo "$hr:$mn";
+		if ($hr < 12)
+			echo " am";
+		else
+		  echo " pm";
+		echo "</option>\n";
+		if ($mn == "00") {
+			$mn = "30";
+		} else {
+			$mn = "00";
+			$hr++;
+		}
+	}
+?>
 					</select>
 				</td>
 			</tr>
@@ -269,7 +229,7 @@ var form = document.changeevent;
 		<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver">
 			<tr bgcolor="#eeeeee">
 				<TD><b>Description</b><br>
-				<textarea class="textarea" name="event_notes"><?php echo @$crow["event_title"];?></textarea></TD>
+				<textarea class="textarea" name="event_notes"><?php echo @$crow["event_description"];?></textarea></TD>
 			</TR>
 		</TABLE>
 	</td>

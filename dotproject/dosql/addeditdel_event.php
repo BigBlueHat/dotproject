@@ -1,12 +1,9 @@
 <?php
-// JBF phpinfo(); exit();
 if(empty($event_id))$event_id=0;
 if(empty($event_project)) $event_project=0;
 
-// JBF strftime("%Y-%m-%d %H:%M:%S", time()) used for new files
-$start_date = strtotime($sdate . " " . $stime);
-$end_date = strtotime($edate . " " . $etime);
-// JBF echo strftime("%Y-%m-%d %H:%M:%S <br />\n", $start_date); exit();
+$start_date = strtotime(toDate($sdate) . " " . $stime);
+$end_date = strtotime(toDate($edate) . " " . $etime);
 
 //IF delete
 if($HTTP_POST_VARS["del"]){
@@ -31,9 +28,8 @@ elseif($HTTP_POST_VARS["event_id"] > 0){
 	where
 	event_id = $event_id
 	";
-	// mysql_query($sql);
-	echo "<br>" . $sql;
-	$message  ="Forum Updated";
+	mysql_query($sql);
+	$message  ="Event Updated";
 }
 //If Insert
 else{
@@ -45,7 +41,6 @@ values
 ('$event_title', '$start_date', '$end_date', '$event_project', '$event_notes', '$event_times_recuring', '$event_recurs', '$event_remind')";
 
 	 mysql_query($sql);
-	// JBF echo "<br>" . $sql;
 	$message  ="Event Inserted";
 }
 
@@ -53,7 +48,6 @@ if($x = mysql_error())	{
 	$message =  $sql . "<BR>". $x;
 }
 else{
-// JBF exit(); // JBF
 	header("Location: ./index.php?m=calendar&message=" . $message);
 }
 ?>
