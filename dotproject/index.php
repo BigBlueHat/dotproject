@@ -93,12 +93,13 @@ if ($AppUI->doLogin()) {
 if (isset($_POST['login'])) {
 	$username = dPgetParam( $_POST, 'username', '' );
 	$password = dPgetParam( $_POST, 'password', '' );
+	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
 		@include_once( "./locales/core.php" );
 		$AppUI->setMsg( 'Login Failed' );
-		$AppUI->redirect();
 	}
+	$AppUI->redirect( "$redirect" );
 }
 
 // supported since PHP 4.2
@@ -120,7 +121,10 @@ if ($AppUI->doLogin()) {
 	@include_once( "./locales/core.php" );
 	setlocale( LC_TIME, $AppUI->user_locale );
 
-	$AppUI->savePlace();
+	$redirect = @$_SERVER['QUERY_STRING'];
+	if (strpos( $redirect, 'logout' ) !== false) {
+		$redirect = '';
+	}
 	require "./style/$uistyle/login.php";
 	// destroy the current session and output login page
 	session_unset();
@@ -131,6 +135,7 @@ if ($AppUI->doLogin()) {
 // bring in the rest of the support and localisation files
 require_once( "./includes/permissions.php" );
 
+// set the module and action from the url
 $m = dPgetParam( $_GET, 'm', getReadableModule() );
 $u = dPgetParam( $_GET, 'u', '' );
 $a = dPgetParam( $_GET, 'a', 'index' );
