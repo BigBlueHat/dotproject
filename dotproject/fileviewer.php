@@ -124,10 +124,17 @@ if ($file_id) {
 		$allowedProjects[0] = 'All Projects';
 	}
 
+	$q = new DBQuery;
+	$q->addTable('files');
+	$project->setAllowedSQL($AppUI->user_id, $q, 'file_project');
+	$q->addWhere("file_id = '$file_id'");
+	/*
 	$sql = "SELECT *
 	FROM files
 	WHERE file_id=$file_id"
 	  . (count( $allowedProjects ) > 0 ? "\nAND file_project IN (" . implode(',', array_keys($allowedProjects) ) . ')' : '');
+	*/
+	$sql = $q->prepare();
 
 	if (!db_loadHash( $sql, $file )) {
 		$AppUI->redirect( "m=public&a=access_denied" );
@@ -146,6 +153,12 @@ if ($file_id) {
 	header("Cache-Control: post-check=0, pre-check=0", false);
 	// END extra headers to resolve IE caching bug
 	*/
+
+	$fname = "$baseDir/files/{$file['file_project']}/{$file['file_real_filename']}";
+	if (! file_exists($fname)) {
+		$AppUI->setMsg("fileIdError", UI_MSG_ERROR);
+		$AppUI->redirect();
+	}
 
 	header("MIME-Version: 1.0");
 	header( "Content-length: {$file['file_size']}" );
