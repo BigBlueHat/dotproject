@@ -22,6 +22,11 @@ $titleBlock->addCrumb( "?m=system", "system admin" );
 $titleBlock->addCrumb( "?m=system&a=addeditpref", "default user preferences" );
 $titleBlock->show();
 
+if (is_dir("$baseDir/install")) {
+	$AppUI->setMsg("You have not removed your install directory, this is a major security risk!", UI_MSG_ALERT);
+	echo "<span class='error'>" . $AppUI->getMsg() . "</span>\n";
+}
+
 echo $AppUI->_("syscfg_intro");
 echo "<br />&nbsp;<br />";
 
