@@ -171,7 +171,7 @@ sub insert_message {
     }
 
     # quote all fields
-    $parent = $dbh->quote($parent);
+    $db_parent = $dbh->quote($parent);
     $attachment = $dbh->quote($attachment);
     $author = $dbh->quote($header{'From'});
     $subject = $dbh->quote($header{'Subject'});
@@ -182,7 +182,7 @@ sub insert_message {
 
     # do insertion
     $insert_query = "INSERT INTO tickets (parent, attachment, timestamp, author, subject, body, type, cc, assignment) ";
-    $insert_query .= "VALUES ($parent, $attachment, UNIX_TIMESTAMP(), $author, $subject, $body, $type, $cc, $assignment)";
+    $insert_query .= "VALUES ($db_parent, $attachment, UNIX_TIMESTAMP(), $author, $subject, $body, $type, $cc, $assignment)";
     $sth = $dbh->prepare($insert_query);
     $sth->execute();
     $ticket = $sth->{'mysql_insertid'};
