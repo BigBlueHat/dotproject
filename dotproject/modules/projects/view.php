@@ -45,6 +45,10 @@ if (!db_loadObject( $sql, $obj )) {
 	$AppUI->savePlace();
 }
 
+// horas totales
+$sql = "SELECT SUM(task_log_hours) FROM task_log, tasks WHERE task_log_task = task_id AND task_project = $project_id";
+$total_hours = db_loadResult($sql);
+
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
@@ -154,6 +158,10 @@ function delIt() {
 			<td align="right" nowrap><?php echo $AppUI->_('Active');?>:</td>
 			<td class="hilite" width="100%"><?php echo $obj->project_active ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>
+		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Total Hours');?>:</td>
+			<td class="hilite" width="100%"><?php echo $total_hours ?></td>
+		</tr>	
 		</table>
 		<strong><?php echo $AppUI->_('Description');?></strong><br />
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
