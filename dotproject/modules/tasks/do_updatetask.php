@@ -35,7 +35,7 @@ $task = new CTask();
 $task->load( $obj->task_log_task );
 $task->check();
 
-if ($task->task_percent_complete < 100) {
+if ($task->task_percent_complete >= 100) {
 	$task->task_end_date = $obj->task_log_date;
 }
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
