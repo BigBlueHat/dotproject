@@ -1,3 +1,24 @@
+2003-05-11 08:29  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed javascript bug in the calculate duration field.
+
+2003-05-11 08:23  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed bug in the task_duration field
+
+2003-05-11 08:19  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed bug in the 'view this task' link
+- Fixed bug in the task_parent field
+
+2003-05-10 04:38  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-09 18:54  (kripper)
 ---------------------------------
 modules/tasks/todo.php
@@ -477,27 +498,6 @@ modules/projects/view.php
 - Updates similar to companies module
 
 2003-04-29 01:21  (eddieajau)
----------------------------------
-includes/config-dist.php
-- Moved version into developer controlled file, index.php
-- (users may not update the configuration file)
-
-2003-04-29 01:21  (eddieajau)
----------------------------------
-index.php
-- Moved version into developer control file
-- (users may not update the configuration file)
-
-2003-04-28 22:07  (eddieajau)
----------------------------------
-modules/companies/companies.class.php
-- Updated documentation
-
-2003-04-28 22:07  (eddieajau)
----------------------------------
-modules/companies/addedit.php
-modules/companies/view.php
-- Changed query result to return an object rather than a hash.
 ...
 
 (This file has been wrapped)
