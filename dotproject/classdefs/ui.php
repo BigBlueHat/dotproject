@@ -176,7 +176,7 @@ class CAppUI {
 	}
 
 	function getState( $label ) {
-		return array_key_exists( $label, $this->state) ? $this->state[$label] : 0;
+		return array_key_exists( $label, $this->state) ? $this->state[$label] : NULL;
 	}
 
 	function login( $username, $password ) {
