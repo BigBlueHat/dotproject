@@ -131,7 +131,10 @@ $fixed_project_type_file = array("In Progress" => "vw_idx_active",
 // we need to manually add Archived project type because this status is defined by 
 // other field (Active) in the project table, not project_status
 $project_types[] = "Archived";
-$project_types[] = "All";
+
+// Only display the All option in tabbed view, in plain mode it would just repeat everything else
+// already in the page
+if ( $tab != -1 ) $project_types[] = "All";
 
 /**
 * Now, we will figure out which vw_idx file are available

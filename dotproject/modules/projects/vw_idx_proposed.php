@@ -3,7 +3,7 @@ GLOBAL $AppUI, $projects, $company_id, $pstatus, $show_all_projects, $project_ty
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 	// Let's check if the user submited the change status form
-
+	
 ?>
 
 <form action='./index.php' method='get'>
@@ -41,9 +41,23 @@ $CR = "\n";
 $CT = "\n\t";
 $none = true;
 
+// When in plain view, $AppUI->getState( 'ProjIdxTab' ) doesn't contain the selected index for which we want
+// to filter projects, we must get the current box name from the calling file overrides.php variable $v
+if ( $this->active == -1 ){
+	//Plain view
+	foreach ($project_types as $project_key => $project_type){
+		$project_type = trim($project_type);
+		$flip_project_types[$project_type] = $project_key;
+	}
+	$project_status_filter = $flip_project_types[$v[1]];
+} else{
+	//Tabbed view
+	$project_status_filter = $AppUI->getState( 'ProjIdxTab' );
+}
+
 foreach ($projects as $row) {
 	if ($show_all_projects || 
-	    ($row["project_active"] > 0 && $row["project_status"] == $AppUI->getState( 'ProjIdxTab' ))) {
+	    ($row["project_active"] > 0 && $row["project_status"] == $project_status_filter)) {
 		$none = false;
 		$end_date = intval( @$row["project_end_date"] ) ? new CDate( $row["project_end_date"] ) : null;
 
