@@ -6,7 +6,9 @@
 
 // this function is used for color changes (when a colored square is clicked)
 function SendColor(color) {
-
+	if (color == 0) {
+		return;
+	}
 	window.opener.document.AddEdit.project_color_identifier.value = color;
 	window.opener.test.style.background = color;
 	window.close();
@@ -19,18 +21,32 @@ function SendColor(color) {
 
 <body bgcolor="#FFFFFF">
 <center>
-<table border=0 cellpadding=0 cellspacing=0 width=292>
+<table border=0 cellpadding=1 cellspacing=0 width=292>
 	<tr>
-		<td valign=bottom><font size=5 face="trebuchetms,verdana,arial"><b>Color Selector</b></font></td>
-		<td align=right valign=bottom><font size=1 face="arial">&nbsp;</font></td>
+		<td valign=top><font style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:18px;"><b>Color Selector</b></font></td>
+		<form>
+		<td align=right valign=bottom>
+		<!-- CUSTOMISE THE FOLLOWING COLOURS AND PRESET NAMES FOR YOUR ORGANISATIONAL NEEDS -->
+			<select name="" onChange="javascript:SendColor(this.options[this.selectedIndex].value)" style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:10px">
+				<option value="0">- - Preset - -
+				<option value="FFCC00">Administration
+				<option value="333300">Development
+				<option value="FF6600">Investigation
+				<option value="0000FF">Maintenance
+				<option value="FF0000">Research
+				<option value="33FF00">Testing
+			</select>
+		</td>
+		</form>
     </tr>
     <tr>
-   		<td colspan=2><a href="webpal.map"><img src="./images/colorchart.gif" width=292 height=196 border=0 alt="" usemap="#map_webpal" ismap></a></td>
+   		<td colspan=2>
+				<a href="webpal.map"><img src="./images/colorchart.gif" width=292 height=196 border=0 alt="" usemap="#map_webpal" ismap></a>
+			</td>
     </tr>
     <tr>
-   		<td colspan=2 align="left"><font size=1 face="trebuchetms,verdana,arial"><br>
-			<p>Choose a color to uniquely identify your selection and close the Color Selector.</p>
-
+		<td colspan=2 align="left"><font size=1 face="trebuchetms,verdana,arial">
+			Choose a color to uniquely identify your selection and close the Color Selector.</p>
 		</td>
     </tr>
 </table>
