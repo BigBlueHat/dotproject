@@ -112,6 +112,7 @@ if ($file_id) {
 	header("MIME-Version: 1.0");
 	header( "Content-length: {$file['file_size']}" );
 	header( "Content-type: {$file['file_type']}" );
+	header( "Content-transfer-encoding: 8bit");
 	header( "Content-disposition: inline; filename=\"{$file['file_name']}\"" );
 	readfile( "{$dPconfig['root_dir']}/files/{$file['file_project']}/{$file['file_real_filename']}" );
 } else {
