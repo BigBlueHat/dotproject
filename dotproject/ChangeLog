@@ -1,3 +1,43 @@
+2003-09-10 03:35  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Added extra information in error message.
+
+2003-09-10 02:53  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Fix for logging in with trans_sid but no cookies.
+
+2003-09-09 19:31  (ajdonnison)
+---------------------------------
+modules/departments/departments.class.php
+- Fixed problem with creating the first department for a company.
+- Updated messages to include the actual error that occurred.
+
+2003-09-09 18:58  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- Removed IE6 hack as it has been causing more problems than it has been
+- solving.
+
+2003-09-09 09:08  (gregorerhardt)
+---------------------------------
+style/default/favicon.ico
+style/default/header.php
+style/default/login.php
+- added dP-logo favicon to default style
+
+2003-09-09 04:14  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+locales/en/projects.inc
+- sysvals translated
+
+2003-09-09 04:03  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-09 03:57  (gregorerhardt)
 ---------------------------------
 modules/companies/vw_active.php
@@ -458,46 +498,6 @@ modules/ticketsmith/view.php
 ---------------------------------
 includes/gateway.pl
 - Cleaned up MIME handling in emails.
-- Now can save attachments instead of just removing them.
-
-2003-07-15 05:41  (ajdonnison)
----------------------------------
-includes/config-dist.php
-- Added new flag to turn on kludge for linking of new tickets to another
-- parent.
-
-2003-07-14 05:54  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Now picks up PHP config, does not need separate configs.
-- Acknowledgement mail now readable in text-only mail clients.
-
-2003-07-10 04:55  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-07-10 02:01  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Minor tweak to access canAccess method
-
-2003-07-10 01:54  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/view.php
-- Added record access control
-
-2003-07-10 01:54  (eddieajau)
----------------------------------
-db/upgrade_100_beta1_to_release1.sql
-- Initial upload
-
-2003-07-10 01:53  (eddieajau)
----------------------------------
-db/dotproject_100.sql
 ...
 
 (This file has been wrapped)
