@@ -26,11 +26,13 @@ $yy = $this_day->getYear();
 // prepare time period for 'events'
 $first_time = $this_day;
 $first_time->setTime( 0, 0, 0 );
+$first_time->subtractSeconds( 1 );
+
 $last_time = $this_day;
 $last_time->setTime( 23, 59, 59 );
 
-$prev_day = new CDate( Date_calc::prevDay( $dd, $mm, $yy, FMT_DATETIME_MYSQL ) );
-$next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_DATETIME_MYSQL ) );
+$prev_day = new CDate( Date_calc::prevDay( $dd, $mm, $yy, FMT_TIMESTAMP_DATE ) );
+$next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_TIMESTAMP_DATE ) );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );

@@ -20,8 +20,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 	$link = array();
 	$sid = 3600*24;
 	// assemble the links for the tasks
-//echo '<br><b>'.$startPeriod->format( FMT_TIMESTAMP_DATE );
-//echo ','.$endPeriod->format( FMT_TIMESTAMP_DATE ).'</b>';
+//echo '<br><b>'.$startPeriod->format( FMT_TIMESTAMP );
+//echo ','.$endPeriod->format( FMT_TIMESTAMP ).'</b>';
 
 	foreach ($tasks as $row) {
 	// the link
@@ -41,8 +41,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		$durn = $row['task_duration'];
 		$durnType = $row['task_duration_type'];
 
-//echo '$start->format( FMT_TIMESTAMP_DATE );
-//echo ','.$end->format( FMT_TIMESTAMP_DATE );
+//echo '<br>'.$start->format( FMT_TIMESTAMP );
+//echo ','.$end->format( FMT_TIMESTAMP );
 //echo ",$durn,$durnType";
 
 //echo "  ".intval($start->after( $startPeriod ) && $start->before( $endPeriod ));
