@@ -229,6 +229,19 @@ function expand(id){
 $fp=-1;
 $file_date = new CDate();
 
+function file_size($size)
+{
+        $k = 1024; // Can be 1000 for telecommunication purposes
+        if ($size > $k*$k*$k)
+                return round($size / $k / $k / $k, 2) . ' Gb';
+        if ($size > $k*$k)
+                return round($size / $k / $k, 2) . ' Mb';
+        if ($size > $k)
+                return round($size / $k, 2) . ' Kb';
+        return $size . ' B';
+}
+                
+
 function last_file($file_versions, $file_name, $file_project)
 {
         $latest = NULL;
@@ -324,7 +337,7 @@ foreach ($files as $row) {
                 <td width="10%" nowrap="nowrap" align="center">' . $file_types[$file['file_category']] . '</td>
                 <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $row['file_task'] . '">' . $file['task_name'] . '</a></td>
                 <td width="15%" nowrap="nowrap">' . dPgetUsername($row['file_owner']).'</td>
-                <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
+                <td width="5%" nowrap="nowrap" align="right">' . file_size($file['file_size']) . '</td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
                 <td width="15%" nowrap="nowrap" align="right">' . $file['file_date'] . '</td>
         </tr>';
@@ -337,7 +350,7 @@ foreach ($files as $row) {
         <td width="10%" nowrap="nowrap" align="center"><?php echo $file_types[$row["file_category"]];?></td> 
 	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["task_id"];?>"><?php echo $row["task_name"];?></a></td>
 	<td width="15%" nowrap="nowrap"><?= dPgetUsername($row['file_owner']) ?></td>
-	<td width="5%" nowrap="nowrap" align="right"><?php echo intval($row["file_size"] / 1024);?> kb</td>
+	<td width="5%" nowrap="nowrap" align="right"><?php echo file_size($row["file_size"]);?></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
