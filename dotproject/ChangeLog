@@ -1,3 +1,14 @@
+2004-01-28 04:06  (ajdonnison)
+---------------------------------
+modules/tasks/do_updatetask.php
+- Fix for 842147 - Task log updates task end date only if
+- end date not already set.
+
+2004-01-28 03:57  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-28 03:27  (ajdonnison)
 ---------------------------------
 classes/dp.class.php
@@ -487,17 +498,6 @@ modules/tasks/vw_log_update.php
 2003-12-16 19:24  (jcgonz)
 ---------------------------------
 modules/departments/vw_contacts.php
-- Now departments can show off contacts related to them
-
-2003-12-16 09:21  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-15 20:54  (robertoibarra)
----------------------------------
-classes/ui.class.php
-modules/tasks/tasks.class.php
 ...
 
 (This file has been wrapped)
