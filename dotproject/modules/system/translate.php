@@ -20,6 +20,7 @@ $modules = array(
 	'common',
 	'contacts',
 	'companies',
+	'departments',
 	'files',
 	'forums',
 	'help',
@@ -77,6 +78,7 @@ $crumbs["?m=system"] = "System Admin";
 	<td><?php
 	echo arraySelect( $AppUI->locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang );
 	?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_TRANS' );?></td>
 </tr>
 </form>
 </table>

@@ -17,8 +17,8 @@ $AppUI->savePlace();
 <tr>
 	<td><img src="./images/icons/system.gif" alt="" border="0"></td>
 	<td nowrap><span class="title"><?php echo $AppUI->_( 'System Administration' );?></span></td>
-	<td align="right" width="100%">
-	</td>
+	<td align="right" width="100%">&nbsp;</td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_IDX' );?></td>
 </tr>
 </table>
 

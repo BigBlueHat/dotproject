@@ -55,6 +55,7 @@ function submitIt(){
 		</span>
 	</td>
 	<td valign="top" align="right" width="100%">&nbsp;</td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_PREFS' );?></td>
 </tr>
 </table>
 
