@@ -73,5 +73,12 @@ $titleBlock->show();
 	</td>
 </tr>
 
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&a=contacts_ldap"><?php echo $AppUI->_('Import Contacts');?></a>
+	</td>
+</tr>
+
 </table>
 </p>
