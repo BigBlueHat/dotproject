@@ -17,6 +17,8 @@ Version 1.0 incorporates many additions and modifications to existing database s
 <h3>Upgrading DotProject 1.0 alpha 1 to DotProject 1.0 alpha 2</h3>
 The task_log, tasks and projects tables have all changed slightly from alpha 1 to alpha 2. You will need to upgrade your database to take advantage of these improvements.<br />
 <br />
+Apply the <code>upgrade_alpha2_to_beta1.sql</code> script to your database copy.<br />
+<br />
 The example below assumes the following configuration. Please modify the example commands to match your local settings. These commands are executed from the commandline within the dotproject database directory.<br />
 <br />
 <strong>
@@ -25,6 +27,18 @@ $dPconfig['dbuser'] = "dp_user";<br />
 $dPconfig['dbpass'] = "dp_pass";<br />
 </strong>
 <br />
+
+<h3>Upgrading DotProject 1.0 alpha 2 to DotProject 1.0 beta 1</h3>
+Beta 1 includes two major security improvements.  Changes were made to prevent a vulnerability caused by malicious injection of SQL into the username and password fields.  The password encryption method was also changed in line with recommendations from MySQL.<br />
+<br />
+Apply the <code>upgrade_alpha2_to_beta1.sql</code> script to your database copy.<br />
+<br />
+There is a configuration variable, <code>check_legacy_password</code>, that also needs to be set to <code>true</code>.
+<pre>$dPconfig['check_legacy_password'] = true;</pre>
+This will capture a password verified under the old encyption scheme and upgrade on the first successful login of the user.<br/>
+<br />
+
+
 
 <strong>Backup Existing Database</strong><br />
 <emphasis>mysqldump -udp_user -pdp_pass dp_1_0_alpha > dp_1_0_alpha1_backup.sql</emphasis><br />
