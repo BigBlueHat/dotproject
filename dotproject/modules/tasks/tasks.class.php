@@ -858,7 +858,7 @@ class CTask extends CDpObject {
 		$where .= count($allow) > 0 ? "\n\tAND " . implode( ' AND ', $allow ) : '';
 
 	// assemble query
-		$sql = "SELECT task_name, task_id, task_start_date, task_end_date,"
+		$sql = "SELECT DISTINCT task_id, task_name, task_start_date, task_end_date,"
 			. "\n\ttask_duration, task_duration_type,"
 			. "\n\tproject_color_identifier AS color,"
 			. "\n\tproject_name"
