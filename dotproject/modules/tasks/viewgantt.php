@@ -1,5 +1,9 @@
 <?php /* TASKS $Id$ */
 GLOBAL $min_view, $m, $a;
+
+// re-set the memory limit for gantt chart drawing acc. to the config value of reset_memory_limit
+ini_set('memory_limit', $dPconfig['reset_memory_limit']);
+
 $min_view = defVal( @$min_view, false);
 
 $project_id = defVal( @$_GET['project_id'], 0);
@@ -179,3 +183,7 @@ if (db_loadResult( "SELECT COUNT(*) FROM tasks WHERE task_project=$project_id" )
 </tr>
 </table>
 <br />
+<?php 
+// reset the php memory limit to the original php.ini value
+ini_restore('memory_limit');
+?>
