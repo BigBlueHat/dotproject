@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"times",
+"Week",
 "April",
 "August",
 "December",
@@ -32,3 +32,7 @@
 "Wednesday",
 "delete event",
 "in advance",
+"month view",
+"times",
+"today",
+"week view",
