@@ -1,9 +1,12 @@
 <?php /* COMPANIES $Id$ */
+
+include_once( $AppUI->getSystemClass ('dp' ) );
+
 ##
 ## CCompany Class
 ##
 
-class CCompany {
+class CCompany extends CDpObject {
 	var $company_id = NULL;
 	var $company_username = NULL;
 	var $company_password = NULL;
@@ -23,7 +26,7 @@ class CCompany {
 	var $company_email = NULL;
 
 	function CCompany() {
-		// empty constructor
+		$this->CDpObject( 'companies', 'company_id' );
 	}
 
 	function load( $oid ) {
@@ -37,15 +40,7 @@ class CCompany {
 		return db_loadObject( $sql, $this );
 	}
 
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
-	}
-
+// overload check
 	function check() {
 		if ($this->company_id === NULL) {
 			return 'company id is NULL';
@@ -54,36 +49,42 @@ class CCompany {
 		return NULL; // object is ok
 	}
 
-	function store() {
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->company_id ) {
-			$ret = db_updateObject( 'companies', $this, 'company_id' );
-		} else {
-			$ret = db_insertObject( 'companies', $this, 'company_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
-	}
+// overload canDelete
+	function canDelete( &$msg, $oid=null ) {
+		global $AppUI;
+	// call the parent class method to assign the oid
+		CDpObject::canDelete( $msg, $oid );
 
-	function delete() {
-		$sql = "SELECT project_id FROM projects WHERE project_company = $this->company_id";
+	// do the specific checks
+		$sql = "SELECT company_id,"
+			. "\nCOUNT(DISTINCT project_id) AS p,"
+			. "\nCOUNT(DISTINCT dept_id) AS d,"
+			. "\nCOUNT(DISTINCT user_id) AS u"
+			. "\nFROM companies"
+			. "\nLEFT JOIN projects ON project_company = company_id"
+			. "\nLEFT JOIN departments ON dept_company = company_id"
+			. "\nLEFT JOIN users ON user_owner = company_id"
+			. "\nWHERE company_id = $this->company_id GROUP BY company_id";
 
-		$res = db_exec( $sql );
-		if (db_num_rows( $res )) {
-			return "You cannot delete a company that has projects associated with it.";
-		} else{
-			$sql = "DELETE FROM companies WHERE company_id = $this->company_id";
-			if (!db_exec( $sql )) {
-				return db_error();
-			} else {
-				return NULL;
-			}
+		$foo = null;
+		$obj = db_loadObject( $sql, $foo );
+
+		$msg = array();
+		if ($obj->p) {
+			$msg[] = $AppUI->_( 'Projects' );
+		}
+		if ($obj->d) {
+			$msg[] = $AppUI->_( 'Departments' );
+		}
+		if ($obj->u) {
+			$msg[] = $AppUI->_( 'Users' );
+		}
+
+		if (count( $msg )) {
+			$msg = $AppUI->_( "noDeleteRecord" ) . ": " . implode( ', ', $msg );
+			return false;
+		} else {
+			return true;
 		}
 	}
 }
