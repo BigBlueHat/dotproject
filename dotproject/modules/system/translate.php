@@ -27,7 +27,7 @@ $modules = $AppUI->readDirs( 'modules' );
 	'forums',
 	'help',
 	'projects',
-	'styles',				 
+	'styles',
 	'system',
 	'tasks',
 	'ticketsmith'
@@ -73,11 +73,11 @@ $crumbs = array();
 $crumbs["?m=system"] = "System Admin";
 ?>
 
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
+<img src="images/shim.gif" width="1" height="5" alt="" border="0" /><br />
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <form action="?m=system&a=translate" method="post" name="modlang">
 <tr>
-	<td><img src="./images/icons/world.gif" alt="" border="0"></td>
+	<td><img src="./images/icons/world.gif" alt="" border="0" /></td>
 	<td nowrap valign="top"><h1><?php echo $AppUI->_( 'Translation Management' );?></h1></td>
 	<td align="right" width="100%" nowrap><?php echo $AppUI->_( 'Module' );?>:</span></td>
 	<td><?php
@@ -89,7 +89,7 @@ $crumbs["?m=system"] = "System Admin";
 	echo arraySelect( $locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang, true );
 	$AppUI->setWarning( false );
 	?></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_TRANS' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_SYS_TRANS' );?></td>
 </tr>
 </form>
 </table>
@@ -108,16 +108,16 @@ $crumbs["?m=system"] = "System Admin";
 	<th width="5%" nowrap><?php echo $AppUI->_( 'delete' );?></th>
 </tr>
 <form action="?m=system&a=translate_save" method="post" name="editlang">
-<input type="hidden" name="module" value="<?php echo $modules[$module];?>">
-<input type="hidden" name="lang" value="<?php echo $lang;?>">
+<input type="hidden" name="module" value="<?php echo $modules[$module];?>" />
+<input type="hidden" name="lang" value="<?php echo $lang;?>" />
 <?php
 $index = 0;
 if ($lang == 'en') { 
-	echo '<tr>';
-	echo "<td><input type=\"text\" name=\"trans[$index][abbrev]\" value=\"\" size=\"20\" class=\"text\"></td>";
-	echo "<td><input type=\"text\" name=\"trans[$index][english]\" value=\"\" size=\"40\" class=\"text\"></td>";
-	echo '<td colspan="2">New Entry</td>';
-	echo '</tr>';
+	echo "<tr>\n";
+	echo "<td><input type=\"text\" name=\"trans[$index][abbrev]\" value=\"\" size=\"20\" class=\"text\" /></td>\n";
+	echo "<td><input type=\"text\" name=\"trans[$index][english]\" value=\"\" size=\"40\" class=\"text\" /></td>\n";
+	echo "<td colspan=\"2\">New Entry</td>\n";
+	echo "</tr>\n";
 }
 
 $index++;
@@ -128,7 +128,7 @@ foreach ($trans as $k => $langs){
 		if ($k != @$langs['english']) {
 			$k = htmlspecialchars( $k, ENT_QUOTES );
 			if ($lang == 'en') {
-				echo "<input type=\"text\" name=\"trans[$index][abbrev]\" value=\"$k\" size=\"20\" class=\"text\">";
+				echo "<input type=\"text\" name=\"trans[$index][abbrev]\" value=\"$k\" size=\"20\" class=\"text\" />";
 			} else {
 				echo $k;
 			}
@@ -140,7 +140,7 @@ foreach ($trans as $k => $langs){
 		$langs['english'] = htmlspecialchars( @$langs['english'], ENT_QUOTES );
 		if ($lang == 'en') {
 			if (strlen($langs['english']) < 40) {
-				echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\">";
+				echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\" />";
 			} else { 
 			  $rows = round(strlen($langs['english']/35)) +1 ;
 			  echo "<textarea name=\"trans[$index][english]\"  cols=\"40\" class=\"small\" rows=\"$rows\">".$langs['english']."</textarea>";
@@ -149,14 +149,14 @@ foreach ($trans as $k => $langs){
 			echo $langs['english'];
 			echo "<input type=\"hidden\" name=\"trans[$index][english]\" value=\""
 				.($k ? $k : $langs['english'])
-				."\" size=\"20\" class=\"text\">";
+				."\" size=\"20\" class=\"text\" />";
 		}
 	?></td>
 	<td><?php 
 		if ($lang != 'en') {
 			$langs['lang'] = htmlspecialchars( @$langs['lang'], ENT_QUOTES );
 			if (strlen($langs['lang']) < 40) {
-				echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\">";
+				echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\" />";
 			} else { 
 			  $rows = round(strlen($langs['lang']/35)) +1 ;
 			  echo "<textarea name=\"trans[$index][lang]\"  cols=\"40\" class=\"small\" rows=\"$rows\">".$langs['lang']."</textarea>";
@@ -171,7 +171,7 @@ foreach ($trans as $k => $langs){
 ?>
 <tr>
 	<td colspan="4" align="right">
-		<input type="submit" value="<?php echo $AppUI->_( 'submit' );?>" class="button">
+		<input type="submit" value="<?php echo $AppUI->_( 'submit' );?>" class="button" />
 	</td>
 </tr>
 </form>
