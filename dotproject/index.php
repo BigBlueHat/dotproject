@@ -297,7 +297,6 @@ if(!$suppressHeaders) {
 	require "./style/$uistyle/header.php";
 }
 
-echo "<pre>"; print_r($_SESSION['all_tabs']); echo "</pre>";
 
 if (! isset($_SESSION['all_tabs'][$m])) {
 	$all_tabs = array();
@@ -317,7 +316,6 @@ if (! isset($_SESSION['all_tabs'][$m])) {
 } else {
 	$all_tabs =& $_SESSION['all_tabs'][$m];
 }
-echo "<pre>"; print_r($_SESSION['all_tabs']); echo "</pre>";
 
 $module_file = "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if (file_exists($module_file))
