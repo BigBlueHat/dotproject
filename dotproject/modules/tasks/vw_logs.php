@@ -76,7 +76,7 @@ foreach ($logs as $row) {
                 $reference_image = $taskLogReference[$row["task_log_reference"]];
             }
         }
-        $s .= '<td align="center" valign="middle">'.(($row['task_log_reference']>0) ? $reference_image . '</td>';
+        $s .= '<td align="center" valign="middle">'.$reference_image.'</td>';
 	$s .= '<td width="30%" style="'.$style.'">'.@$row["task_log_name"].'</td>';
     $s .= !empty($row["task_log_related_url"]) ? '<td><a href="'.@$row["task_log_related_url"].'" title="'.@$row["task_log_related_url"].'">'.$AppUI->_('URL').'</a></td>' : '<td></td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
