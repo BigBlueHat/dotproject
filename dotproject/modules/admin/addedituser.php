@@ -39,11 +39,11 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 <SCRIPT language="javascript">
 function submitIt(){
     var form = document.editFrm;
-    if (form.user_username.value.length < 3) {
-        alert("<?php echo $AppUI->_('adminValidUserName');?>");
+   if (form.user_username.value.length < form.username_min_len.value) {
+        alert("<?php echo $AppUI->_('adminValidUserName')  ;?>"  + form.username_min_len.value);
         form.user_username.focus();
-    } else if (form.user_password.value.length < 4) {
-        alert("<?php echo $AppUI->_('adminValidPassword');?>");
+    } else if (form.user_password.value.length < form.password_min_len.value) {
+        alert("<?php echo $AppUI->_('adminValidPassword');?>" + form.password_min_len.value);
         form.user_password.focus();
     } else if (form.user_password.value !=  form.password_check.value) {
         alert("<?php echo $AppUI->_('adminPasswordsDiffer');?>");
@@ -119,7 +119,7 @@ function setDept( key, val ) {
 		echo '<input type="hidden" class="text" name="user_username" value="' . $user["user_username"] . '" />';
 		echo '<strong>' . $user["user_username"] . '</strong>';
     } else {
-        echo '<input type="text" class="text" name="user_username" value="' . $user["user_username"] . '" maxlength="20" size="20" />';
+        echo '<input type="text" class="text" name="user_username" value="' . $user["user_username"] . '" maxlength="255" size="40" />';
 		echo ' <span class="smallNorm">(' . $AppUI->_('required') . ')</span>';
     }
 ?>

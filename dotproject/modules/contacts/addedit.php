@@ -176,11 +176,11 @@ function companyChange() {
 		</tr>
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Address');?>1:</td>
-			<td><input type="text" class="text" name="contact_address1" value="<?php echo @$row->contact_address1;?>" maxlength="30" size="25" /></td>
+			<td><input type="text" class="text" name="contact_address1" value="<?php echo @$row->contact_address1;?>" maxlength="60" size="25" /></td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Address');?>2:</td>
-			<td><input type="text" class="text" name="contact_address2" value="<?php echo @$row->contact_address2;?>" maxlength="30" size="25" /></td>
+			<td><input type="text" class="text" name="contact_address2" value="<?php echo @$row->contact_address2;?>" maxlength="60" size="25" /></td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('City');?>:</td>

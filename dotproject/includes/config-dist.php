@@ -84,6 +84,10 @@ $dPconfig['page_title'] = "dotProject";
 $dPconfig['base_url'] = "http://localhost/dotproject";
 $dPconfig['site_domain'] = "dotproject.net";
 
+//set minimal user id/password length when creating new users, this can NOT be longer than the length of the column in DB
+$dPconfig['username_min_len'] = "7";
+$dPconfig['password_min_len'] = "7";
+
 // enable if you want to be able to see other users's tasks
 $dPconfig['show_all_tasks'] = false;
 

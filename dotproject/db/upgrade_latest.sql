@@ -82,3 +82,10 @@ INSERT INTO `sysvals` VALUES (null, 1, 'TaskStatus', '0|Active\n-1|Inactive');
 # do not show events on non-working days
 #
 ALTER TABLE `events` ADD `events_cwd` tinyint(3) default '0';
+
+# 20040815
+# increase various field lengths
+#
+ALTER TABLE `contacts` CHANGE `contact_address1` `contact_address1` varchar(60) default null ;
+ALTER TABLE `contacts` CHANGE `contact_address2` `contact_address2` varchar(60) default null ;
+ALTER TABLE `users` CHANGE `user_username` `user_username` varchar(255) default null ;
