@@ -1,3 +1,30 @@
+2003-09-09 03:57  (gregorerhardt)
+---------------------------------
+modules/companies/vw_active.php
+- changed currencysymbol to dPconfig
+
+2003-09-08 19:29  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Fixed issue where translation was inappopriately used in javascript.
+
+2003-09-08 16:25  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/tasks/addedit.php
+- softcoded translation of htmlSelectBoxes via arraySelect
+
+2003-09-08 04:04  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-07 11:18  (gregorerhardt)
 ---------------------------------
 modules/forums/addedit.php
@@ -471,33 +498,6 @@ db/upgrade_100_beta1_to_release1.sql
 2003-07-10 01:53  (eddieajau)
 ---------------------------------
 db/dotproject_100.sql
-- Added task_access field to tasks table
-
-2003-07-10 01:52  (eddieajau)
----------------------------------
-includes/db_connect.php
-- Enhance bindobjecttoarray function
-
-2003-07-09 23:49  (eddieajau)
----------------------------------
-modules/admin/viewuser.php
-- AIM link added
-
-2003-07-09 23:49  (eddieajau)
----------------------------------
-includes/permissions.php
-modules/tasks/tasks.php
-- Formatting
-
-2003-07-09 23:48  (eddieajau)
----------------------------------
-includes/main_functions.php
-- Comments added
-
-2003-07-09 04:55  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
 ...
 
 (This file has been wrapped)
