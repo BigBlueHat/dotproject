@@ -8,6 +8,8 @@
 
 	2) EDIT "config.php" to include your database connection and other local settings.
 */
+// Do not change version for support reasons
+$dPconfig['version'] = "dotProject v1.0 alpha 2 [26-Mar-2003]";
 
 // DATABASE ACCESS INFORMATION [DEFAULT example]
 // Modify these values to suit your local settings
@@ -28,7 +30,7 @@ $dPconfig['host_locale'] = "en";
 $dPconfig['host_style'] = "default";
 
 // local settings [DEFAULT example WINDOWS]
-$dPconfig['root_dir'] = "C:/apache/htdocs/dotproject";
+$dPconfig['root_dir'] = "C:/apache/htdocs/dotproject";  // No trailing slash
 $dPconfig['company_name'] = "My Company";
 $dPconfig['page_title'] = "DotProject V1.0 pre-alpha";
 $dPconfig['base_url'] = "http://localhost/dotproject";
@@ -46,9 +48,6 @@ $dPconfig['log_changes'] = false;
 
 // set debug = true to help analyse errors
 $dPconfig['debug'] = false;
-
-// DotProject Version for debugging and support
-$dPconfig['version'] = "dotProject v1.0 alpha 2 [20-Mar-2003]";
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
