@@ -14,7 +14,8 @@ $send_acknowledge = 1;
 $save_attachments = 0;
 
 # Skip non-MIME component of MIME emails (usually a warning about non-MIME compliant readers)
-$skip_mime_preface = 1;
+# Deprecated - leave at 0 unless you know what you are doing!
+$skip_mime_preface = 0; 
 
 # NOTE:  Email addresses should escape the @ symbol as it is
 # a PERL array identifier and will cause this script to break.
@@ -174,6 +175,23 @@ sub get_headers {
     }
 }
 
+sub mail_error() {
+  my $msg = $_[0];
+  open(MAIL, "|$mailprog -t");
+  print MAIL "From: $report_from_address\n";
+  print MAIL "To: $report_to_address\n";
+  print MAIL "Subject: Error in processing ticket mail\n\n";
+  print MAIL "An error occurred in processing a ticket mail.\n";
+  print MAIL "The error message was:\n";
+  print MAIL "$msg\n";
+  print MAIL "\nMessage Headers:\n";
+  while (($key, $val) = each(%header)) {
+    print MAIL "   $key: $val\n";
+  }
+  close(MAIL);
+  die($msg);
+}
+
 ################################################################################
 
 sub check_attachments($) {
@@ -197,15 +215,19 @@ sub check_attachments($) {
     while ($options =~ m/([_a-z0-9]+)=["']?([^;"']+)["';]?/g) {
 	$name = $1;
 	$name =~ tr/A-Z/a-z/;
-	$option[$name] = $2;
+	$option{$name} = $2;
+	if ($debug) {
+	  print "option[$name] = $2\n";
+	}
     }
-    $boundary = $option['boundary'];
+    $boundary = $option{'boundary'};
     if ($debug) {
 	print "\nAttachment Info\n";
 	print "Original MIME content header is $att\n";
 	print "Content type is $ctype\n";
 	print "Subtype is $subtype\n";
 	print "Boundary is $boundary\n";
+	print "Option list is $options\n";
 	print "Checking from $offset to $end\n";
     }
 
@@ -314,7 +336,7 @@ sub get_body {
 	}
     }
     if (! $body_lines) {
-      die ("No suituable body text found in email");
+      &mail_error("No suituable body text found in email");
     }
     $body =~ s/^\n//;
     $body =~ s/\r\n$/\n/;
@@ -330,6 +352,9 @@ sub insert_message {
 
     if ($debug) {
 	print "insert_message not run, parent = $parent\n";
+	print "author=" . $header{'From'} . "\n";
+	print "subject=" . $header{'Subject'} . "\n";
+	print "cc=" . $header{'Cc'} . "\n";
 	return;
     }
     # connect to database
@@ -447,7 +472,7 @@ sub insert_attachment($) {
 	$sql_stmt .= $ticket;
 	$sql_stmt .= " )";
     $sth = $dbh->prepare($sql_stmt);
-    $sth->execute();
+    $sth->execute() or &mail_error("Failed to insert message in database");
     $sth->finish();
 }
 
