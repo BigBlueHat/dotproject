@@ -30,10 +30,11 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 		$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 		$ok = $AppUI->login( $username, $password );
 		if (!$ok) {
-			//should display login failed info but not now :-[
+			//display login failed message 
+			$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+			$AppUI->setMsg( 'Login Failed' );
+			require "./style/$uistyle/login.php";
 			session_unset();
-			//session_destroy();
-			header ( "Location: fileviewer.php?$redirect" );
 			exit;
 		}
 		header ( "Location: fileviewer.php?$redirect" );
