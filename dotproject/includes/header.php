@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<script>
+<script type="JavaScript">
 function doBtn(){
 	var oEl = event.srcElement;
 	var doit = event.type;
@@ -46,7 +46,7 @@ function tboff(){
 </head>
 <body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="images/bground.gif">
 <TABLE width="100%" cellpadding=3 cellspacing=0 bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
-	<TR height="Black">
+	<TR>
 		<TD nowrap width="100%"><span id="smallCompanyTitle"><?echo $company_name;?></SPAN></TD>
 		<TD align="right">
 			<TABLE cellpadding=1 cellspacing=1 bgcolor="#bbbbbb" width="200">
