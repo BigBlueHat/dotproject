@@ -271,7 +271,7 @@ class CTask extends CDpObject {
 *	@return	object	The new record object or null if error
 **/
 	function copy($destProject_id = 0) {
-		$newObj = $this->dubplicate();
+		$newObj = $this->duplicate();
 
 		// Copy this task to another project if it's specified
 		if ($destProject_id != 0)
