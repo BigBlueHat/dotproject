@@ -79,7 +79,7 @@ function showRow( $role=null ) {
 		$s .= '<td valign="top">'.$modules[$module].'</td>'.$CR;
 		$s .= '<td valign="top" width="16">';
 		if ($canEdit) {
-			$s .= '<a href="#" onclick="return delIt('.$id.')"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="'.$AppUI->_('delete').'" border="0"></a>';
+			$s .= '<a href="javascript:delIt('.$id.')"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="'.$AppUI->_('delete').'" border="0"></a>';
 		}
 		$s .= '</td>'.$CR;
 	}

@@ -52,7 +52,7 @@ function showRow($id=0, $name='', $label='') {
 		$s .= '<td colspan="2">'.$label.'</td>'.$CR;
 		$s .= '<td width="16">';
 		if ($canEdit) {
-			$s .= '<a href="#" onclick="return delIt('.$id.')"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="'.$AppUI->_('delete').'" border="0"></a>';
+			$s .= '<a href="javascript:delIt('.$id.')"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="'.$AppUI->_('delete').'" border="0"></a>';
 		}
 		$s .= '</td>'.$CR;
 	}

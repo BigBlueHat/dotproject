@@ -64,7 +64,7 @@ function showRow($id=0, $key=0, $title='', $value='') {
 		$s .= '<td valign="top" colspan="2">'.$value.'</td>'.$CR;
 		$s .= '<td valign="top" width="16">';
 		if ($canEdit) {
-			$s .= '<a href="#" onclick="return delIt('.$id.')" title="'.$AppUI->_('delete').'">'
+			$s .= '<a href="javascript:delIt('.$id.')" title="'.$AppUI->_('delete').'">'
 				. dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
 				. '</a>';
 		}

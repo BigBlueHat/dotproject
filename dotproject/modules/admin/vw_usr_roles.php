@@ -162,7 +162,7 @@ foreach ($tarr as $row){
 
 	$buf .= '<td nowrap>';
 	if (!$canEdit) {
-		$buf .= "<a href=# onClick=\"delIt({$row['permission_id']});\" title=\"".$AppUI->_('delete')."\">"
+		$buf .= "<a href=\"javascript:delIt({$row['permission_id']});\" title=\"".$AppUI->_('delete')."\">"
 			. dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
 			. "</a>";
 	}
