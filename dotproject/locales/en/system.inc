@@ -73,6 +73,7 @@
 "pt"=>"Portugese",
 "pl"=>"Polish",
 "remove",
+"sl"=>"Slovenian",
 "system admin",
 "updated",
 "visible",
