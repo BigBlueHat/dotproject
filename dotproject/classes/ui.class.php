@@ -787,6 +787,24 @@ class CTabBox_core {
 			echo "\n</td>\n</tr>\n</table>";
 		}
 	}
+
+	function loadExtras($module, $file = null) {
+		if (! isset($_SESSION['all_tabs']) || ! isset($_SESSION['all_tabs'][$module]))
+			return false;
+
+		if ($file) {
+			if (isset($_SESSION['all_tabs'][$module][$file]) && is_array($_SESSION['all_tabs'][$module][$file]))
+				$tab_array =& $_SESSION['all_tabs'][$module][$file];
+			else
+				return false;
+		} else {
+			$tab_array =& $_SESSION['all_tabs'][$module];
+		}
+		foreach ($tab_array as $name => $file) {
+			$this->add($file, $name);
+		}
+		return count($tab_array);
+	}
 }
 
 /**
