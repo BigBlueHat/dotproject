@@ -195,7 +195,7 @@ foreach ($tasks as $task) {
 	</td>
 
 	<td width="50%">
-		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $task["task_id"];?>" title='<?php echo ( isset($task['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($task['parent_name'], ENT_QUOTES) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($task['task_description'], ENT_QUOTES) ?>'><?php echo htmlspecialchars($task["task_name"], ENT_QUOTES);?></a>
+		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $task["task_id"];?>" title="<?php echo ( isset($task['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($task['parent_name'], ENT_QUOTES) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($task['task_description'], ENT_QUOTES) ?>"><?php echo htmlspecialchars($task["task_name"], ENT_QUOTES);?></a>
 	</td>
 	<td width="50%">
 		<a href="./index.php?m=projects&a=view&project_id=<?php echo $task["project_id"];?>">
