@@ -455,7 +455,10 @@ class ADODB_DataDict {
 								break;
 				case 'UNSIGNED': $funsigned = true; break;
 				case 'AUTOINCREMENT':
-				case 'AUTO':	$fautoinc = true; $fnotnull = true; break;
+				case 'AUTO':	$fautoinc = true; $fnotnull = true;
+				  if (substr($this->connection->databaseType,0,5) == 'mysql')
+				     $fprimary = $v;
+				   break;
 				case 'KEY':
 				case 'PRIMARY':	$fprimary = $v; $fnotnull = true; break;
 				case 'DEF':
@@ -489,10 +492,18 @@ class ADODB_DataDict {
 			
 			if ($ty == 'X' || $ty == 'X2' || $ty == 'B') $fnotnull = false; // some blob types do not accept nulls
 			
+
 			if ($fprimary) $pkey[] = $fname;
 			
 			// some databases do not allow blobs to have defaults
 			if ($ty == 'X') $fdefault = false;
+
+			// Mysql doesn't like datetimes with lengths.
+			if ($ty == 'T' && $fsize == 14 && substr($this->connection->databaseType,0,5) == 'mysql')
+				$ftype = 'TIMESTAMP';
+			// VARCHAR with no length is TINYTEXT
+			if ($ftype == 'VARCHAR')
+			 	$ftype = 'TINYTEXT';
 			
 			//--------------------
 			// CONSTRUCT FIELD SQL

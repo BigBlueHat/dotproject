@@ -253,6 +253,17 @@ class dbTable extends dbObject {
 	var $drop_field = array();
 	
 	/**
+	* @var array List of rows of data that needs to be loaded into
+	* table once created.
+	* @access private
+	*/
+	var $row_data = array();
+	var $current_row = 0;
+	var $row_field = 0;
+
+	var $html_table;
+
+	/**
 	* Iniitializes a new table object.
 	*
 	* @param string $prefix DB Object prefix
@@ -261,6 +272,8 @@ class dbTable extends dbObject {
 	function dbTable( &$parent, $attributes = NULL ) {
 		$this->parent =& $parent;
 		$this->name = $this->prefix($attributes['NAME']);
+		$trans_table = get_html_translation_table(HTML_ENTITIES);
+		$this->html_table = array_flip($trans_table);
 	}
 	
 	/**
@@ -304,6 +317,10 @@ class dbTable extends dbObject {
 				
 				$this->addFieldOpt( $this->current_field, $this->currentElement, $attributes['VALUE'] );
 				break;
+			case 'ROW':
+				$this->row_data[$this->current_row] = array();
+				$this->row_field = 0;
+				break;
 			default:
 				// print_r( array( $tag, $attributes ) );
 		}
@@ -321,6 +338,9 @@ class dbTable extends dbObject {
 			// Table option
 			case 'OPT':
 				$this->addTableOpt( $cdata );
+				break;
+			case 'F':
+				$this->addFieldData($cdata);
 				break;
 			default:
 				
@@ -340,6 +360,12 @@ class dbTable extends dbObject {
 				$this->parent->addSQL( $this->create( $this->parent ) );
 				xml_set_object( $parser, $this->parent );
 				$this->destroy();
+				break;
+			case 'ROW':
+				$this->current_row++;
+				break;
+			case 'F':
+				$this->row_field++;
 				break;
 		}
 	}
@@ -443,6 +469,9 @@ class dbTable extends dbObject {
 		return $this->opts;
 	}
 	
+	function addFieldData($data) {
+		$this->row_data[$this->current_row][$this->row_field] = $data;
+	}
 	/**
 	* Generates the SQL that will create the table in the database
 	*
@@ -544,6 +573,24 @@ class dbTable extends dbObject {
 			}
 		}
 		
+		// Before building indexes, load any data
+		foreach ($this->row_data as $row ) {
+		  $fname = array();
+		  $fdata = array();
+		  $fnum = 0;
+		  foreach ($fldarray as $finfo) {
+		    if (isset($row[$fnum])) {
+		      $fname[] = $finfo['NAME'];
+		      $val = $this->unhtml($row[$fnum]);
+		      $val = str_replace('\'', "\'", $val);
+		      $val = str_replace("\r\n", '\n', $val);
+		      $fdata[] = str_replace("\n", '\n', $val);
+		    }
+		    $fnum++;
+		  }
+		  $sql[] = 'INSERT INTO ' . $this->name . '(`' . implode('`,`', $fname) . '`) VALUES (\'' . implode('\',\'', $fdata) . '\')';
+		}
+
 		foreach( $this->indexes as $index ) {
 			$sql[] = $index->create( $xmls );
 		}
@@ -566,6 +613,10 @@ class dbTable extends dbObject {
 			// $this->drop_table = $xmls->dict->DropTableSQL( $this->name );
 			$this->drop_table = TRUE;
 		}
+	}
+
+	function unhtml($string) {
+		return strtr($string, $this->html_table);
 	}
 }
 
@@ -1743,7 +1794,11 @@ class adoSchema {
 						$schema .= '		<data>' . "\n";
 						
 						while( $row = $rs->FetchRow() ) {
-							$schema .= '			<row><f>' . implode( '</f><f>', $row ) . '</f></row>' . "\n";
+							$schema .= '			<row>';
+							foreach ($row as $field) {
+								$schema .= '<f>' . htmlentities($field, ENT_COMPAT) . '</f>';
+							}
+							$schema .= '</row>' . "\n";
 						}
 						
 						$schema .= '		</data>' . "\n";
