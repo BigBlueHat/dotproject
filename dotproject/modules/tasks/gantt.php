@@ -1,4 +1,5 @@
-<?php
+<?php /* TASKS $Id$ */
+error_reporting( E_ALL );	// this only for development testing
 /*
  *
  * Gantt.php - by J. Christopher Pereira
@@ -20,32 +21,17 @@ session_name( 'dotproject' );
 session_start();
 session_register( 'AppUI' );
 
+if (!isset($HTTP_SESSION_VARS['AppUI']) || isset($HTTP_GET_VARS['logout'])) {
+	$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
+}
+$AppUI =& $HTTP_SESSION_VARS['AppUI'];
+
 require_once( "includes/db_connect.php" );
 
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 include ("{$AppUI->cfg['root_dir']}/includes/main_functions.php");
 include ("{$AppUI->cfg['root_dir']}/functions/tasks_func.php");
-
-$gantt_arr = array();
-
-// START: from index.php
-
-
-session_name( 'dotproject' );
-session_start();
-session_register( 'AppUI' );
-
-header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-                                                      // always modified
-header ("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
-header ("Pragma: no-cache");                          // HTTP/1.0
-
-if (!isset($HTTP_SESSION_VARS['AppUI']) || isset($HTTP_GET_VARS['logout'])) {
-	$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
-}
-$AppUI =& $HTTP_SESSION_VARS['AppUI'];
 
 if ($AppUI->doLogin()) {
 	session_unset();
@@ -146,7 +132,7 @@ switch ($f) {
 		break;
 }
 
-$tsql .= "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
+$tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
 ##echo "<pre>$tsql</pre>".mysql_error();##
 
 $ptrc = db_exec( $tsql );
@@ -165,6 +151,10 @@ for ($x=0; $x < $nums; $x++) {
 
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
+
+$width = dPgetParam( $_GET, 'width', 600 );
+$start_date = dPgetParam( $_GET, 'start_date', 0 );
+$end_date = dPgetParam( $_GET, 'end_date', 0 );
 
 $count = 0;
 $graph = new GanttGraph($width);
@@ -213,7 +203,7 @@ for ($i=0; $i < $tnums; $i++) {
 	}
 }
 
-// $hide_task_groups = true;
+$hide_task_groups = false;
 
 if($hide_task_groups) {
 	for($i = 0; $i < count($gantt_arr); $i ++ ) {
