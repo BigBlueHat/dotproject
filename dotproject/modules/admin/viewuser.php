@@ -28,7 +28,7 @@ if (!db_loadHash( $sql, $user )) {
 	$titleBlock = new CTitleBlock( 'View User', 'admin.gif', $m, 'ID_HELP_USER_VIEW' );
 	$titleBlock->addCrumb( "?m=admin", "users list" );
 	if ($canEdit) {
-		$titleBlock->addCrumb( "?m=admin&a=addedit&user_id=$user_id", "edit this user" );
+		$titleBlock->addCrumb( "?m=admin&a=addedituser&user_id=$user_id", "edit this user" );
 		$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
 
 		$titleBlock->addCrumbRight(
