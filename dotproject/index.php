@@ -72,9 +72,10 @@ if ($is_installer) {
 if (! isset($GLOBALS['OS_WIN']))
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
 
+// tweak for pathname consistence on windows machines
 $functions_file = realpath('./includes/main_functions.php');
 if ($GLOBALS['OS_WIN'])
-	$functions_file = strtolower($file);
+	$functions_file = strtolower($functions_file);
 
 require_once $functions_file;
 require_once dpRealPath( "./classes/ui.class.php" );
