@@ -250,7 +250,7 @@ sub check_attachments($) {
 	    $attach_encoding[$attach_count] = "7bit";
 	    $attach_realname[$attach_count] = "";
 	    $attach_content_header[$attach_count] = "content-type: text/plain";
-	    if ($attach_count > 0 && $boundary_end[$attach_count] == 0) {
+	    if ($attach_count > 0 && ! $boundary_end[$attach_count]) {
 		$boundary_end[$attach_count] = $i-1;
 	    }
 	    $attach_count += 1;
@@ -332,6 +332,11 @@ sub get_body {
 		    $body .= $message[$j];
 		    $body_lines += 1;
 		}
+		# Fix for RFC2046 compliance.
+		if (($i+1) < $attach_count && $message[$j] !~ /^\s*$/) {
+		  $body .= $message[$j];
+		  $body_lines += 1;
+		}
 	    }
 	}
     }
@@ -355,6 +360,9 @@ sub insert_message {
 	print "author=" . $header{'From'} . "\n";
 	print "subject=" . $header{'Subject'} . "\n";
 	print "cc=" . $header{'Cc'} . "\n";
+	$author = $header{'From'};
+	$subject = $header{'Subject'};
+	$cc = $header{'Cc'};
 	return;
     }
     # connect to database
