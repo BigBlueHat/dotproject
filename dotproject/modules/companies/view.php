@@ -18,42 +18,39 @@ LEFT JOIN users ON users.user_id = companies.company_owner
 WHERE companies.company_id = $company_id
 ";
 
-db_loadHash( $sql, $row );
+if (!db_loadHash( $sql, $row )) {
+	$titleBlock = new CTitleBlock( 'Invalid Company ID', 'money.gif', $m, 'ID_HELP_COMP_EDIT' );
+	$titleBlock->addCrumb( "?m=companies", "companies list" );
+	$titleBlock->show();
+} else {
+	$pstatus = dPgetSysVal( 'ProjectStatus' );
+	$types = dPgetSysVal( 'CompanyType' );
 
-$pstatus = dPgetSysVal( 'ProjectStatus' );
-$types = dPgetSysVal( 'CompanyType' );
+	$sql = "SELECT COUNT(user_company) FROM users WHERE user_company = $company_id";
+	$canDelete = (db_loadResult( $sql ) < 1);
 
-$sql = "SELECT COUNT(user_company) FROM users WHERE user_company = $company_id";
-$canDelete = (db_loadResult( $sql ) < 1);
-
-// setup the title block
-$titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, 'ID_HELP_COMP_VIEW' );
-if ($canEdit) {
-	$titleBlock->addCell();
-	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',
-		'<form action="?m=tasks&a=addedit&company_id=' . $company_id . '" method="post">', '</form>'
-	);
-}
-$titleBlock->addCrumb( "?m=companies", "company list" );
-if ($canEdit) {
-	$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
-	
-	if ($canDelete) {
-		$titleBlock->addCrumbRight(
-			'<a href="javascript:delIt()">'
-				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-				. $AppUI->_('delete company') . '</a>'
+	// setup the title block
+	$titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, 'ID_HELP_COMP_VIEW' );
+	if ($canEdit) {
+		$titleBlock->addCell();
+		$titleBlock->addCell(
+			'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',
+			'<form action="?m=tasks&a=addedit&company_id=' . $company_id . '" method="post">', '</form>'
 		);
 	}
-}
-$titleBlock->show();
-
-$crumbs = array();
-$crumbs["?m=companies"] = "company list";
-if ($canEdit) {
-	$crumbs["?m=companies&a=addedit&company_id=$company_id"] = "edit this company";
-}
+	$titleBlock->addCrumb( "?m=companies", "company list" );
+	if ($canEdit) {
+		$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
+		
+		if ($canDelete) {
+			$titleBlock->addCrumbRight(
+				'<a href="javascript:delIt()">'
+					. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
+					. $AppUI->_('delete company') . '</a>'
+			);
+		}
+	}
+	$titleBlock->show();
 ?>
 <script language="javascript">
 function delIt() {
@@ -66,8 +63,8 @@ function delIt() {
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
 <form name="frmDelete" action="./index.php?m=companies&a=do_company_aed" method="post">
-<input type="hidden" name="del" value="1" />
-<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
 </form>
 
 <tr>
@@ -129,11 +126,12 @@ function delIt() {
 </table>
 
 <?php
-// tabbed information boxes
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$AppUI->cfg['root_dir']}/modules/companies/", $tab );
-$tabBox->add( 'vw_depts', 'Departments' );
-$tabBox->add( 'vw_active', 'Active Projects' );
-$tabBox->add( 'vw_archived', 'Archived Projects' );
-$tabBox->add( 'vw_users', 'Users' );
-$tabBox->show();
+	// tabbed information boxes
+	$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$AppUI->cfg['root_dir']}/modules/companies/", $tab );
+	$tabBox->add( 'vw_depts', 'Departments' );
+	$tabBox->add( 'vw_active', 'Active Projects' );
+	$tabBox->add( 'vw_archived', 'Archived Projects' );
+	$tabBox->add( 'vw_users', 'Users' );
+	$tabBox->show();
+}
 ?>
