@@ -33,6 +33,12 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 	foreach ($arr as $k => $v ) {
 		if ($translate) {
 			$v = @$AppUI->_( $v );
+			// This is supplied to allow some Hungarian characters to
+			// be translated correctly. There are probably others.
+			// As such a more general approach probably based upon an
+			// array lookup for replacements would be a better approach. AJD.
+			$v=str_replace('&#369;','û',$v);
+			$v=str_replace('&#337;','õ',$v);
 		}
 		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" . dPformSafe( $v ) . "</option>";
 	}
