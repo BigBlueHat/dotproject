@@ -1,12 +1,13 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Projects on Hold",
+"Change Task Project",
 "Access",
 "Action",
 "Active",
 "Add Log",
 "Add Task",
+"Additional Email Comments",
 "All Tasks",
 "All Tasks (inactive)",
 "All Tasks (unassigned)",
@@ -83,6 +84,7 @@
 "Proj.",
 "Project Hours",
 "Project Tasks",
+"Projects on Hold",
 "Reset",
 "Resources",
 "Select contacts",
