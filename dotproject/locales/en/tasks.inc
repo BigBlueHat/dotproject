@@ -1,7 +1,9 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Access",
 "Action",
+"Active",
 "Add Log",
 "Add Task",
 "All Tasks",
@@ -27,6 +29,7 @@
 "Hours",
 "Hours Worked",
 "Id",
+"In-active",
 "Key",
 "Low Priority Tasks",
 "Milestone",
@@ -34,9 +37,11 @@
 "My Tasks",
 "My Tasks (show in-active)",
 "My Tasks To Do",
+"My Unfinished Tasks",
 "New Log",
 "Overdue",
 "P",
+"Parent Task",
 "Priority",
 "Progress",
 "Project Tasks",
@@ -58,6 +63,7 @@
 "Web Address",
 "Work",
 "badTaskProject"=>"Cannot create task.  Task project not set.",
+"days",
 "delete task",
 "due in",
 "duration",

@@ -60,6 +60,7 @@
 "Repeat New Password",
 "Reports Available",
 "Roles",
+"Search",
 "Select",
 "Show",
 "Starts",

@@ -40,6 +40,7 @@
 "days",
 "days ago",
 "delete forum",
+"edit",
 "forumDeleteForum"=>"Are you sure you would like to delete this forum (and all posts in the forum)?",
 "forumDeletePost"=>"Are you sure you would like to delete this post?",
 "forumEmailBody"=>"There has been activity in a forum you are watching.",

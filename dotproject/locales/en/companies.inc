@@ -10,6 +10,7 @@
 "Started",
 "Status",
 "View Company",
+"cdepartment::store-check failed",
 "companies list",
 "company list",
 "companyDelete"=>"Are you sure you want to delete this company?",
