@@ -110,11 +110,15 @@ $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
-assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count, count(distinct files.file_task) as file_count, history_date as last_update
-";
+assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count, count(distinct files.file_task) as file_count";
 
 $from = "tasks";
-$join = "LEFT JOIN history ON history_item = tasks.task_id AND history_table='tasks' ";
+$mods = $AppUI->getActiveModules();
+if (!empty($mods['history']) && !getDenyRead('history'))
+{
+        $select .= ", history_date as last_update";
+        $join = "LEFT JOIN history ON history_item = tasks.task_id AND history_table='tasks' ";
+}
 $join .= "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
 // patch 2.12.04 show assignee and count
