@@ -42,7 +42,7 @@ function db_loadHashList( $sql, $index='' ) {
 	$cur = db_exec( $sql );
 	$cur or exit( db_error() );
 	$hashlist = array();
-	while ($hash = $index ? db_fetch_assoc( $cur ) : db_fetch_array( $cur )) {
+	while ($hash = db_fetch_array( $cur )) {
 		$hashlist[$hash[$index ? $index : 0]] = $index ? $hash : $hash[1];
 	}
 	db_free_result( $cur );
