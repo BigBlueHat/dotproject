@@ -69,7 +69,7 @@ function editPerm( id, gon, it, vl, nm ) {
 //alert( 'id='+id+'\ngon='+gon+'\nit='+it+'\nvalue='+vl+'\nnm='+nm);
 	var f = document.frmPerms;
 
-	f.sqlaction2.value = $AppUI->_("edit");
+	f.sqlaction2.value = "edit";
 	
 	f.permission_id.value = id;
 	f.permission_item.value = it;
@@ -86,7 +86,7 @@ function editPerm( id, gon, it, vl, nm ) {
 
 function clearIt(){
 	var f = document.frmPerms;
-	f.sqlaction2.value = $AppUI->_("add");
+	f.sqlaction2.value = "add";
 	f.permission_id.value = 0;
 	f.permission_grant_on.selectedIndex = 0;
 }
