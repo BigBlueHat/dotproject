@@ -143,7 +143,8 @@ Warning: Cannot add header information - headers already sent by (output
 	{$root_dir}/dosql/addfile.php on line 92
 		</pre>
 		<p>Even though you may encounter error messages, there will still be an entry made for the various files in the database. However, the contents of the uploaded files will likely be lost. Instead the "files" will contain error messages that may help with troubleshooting.</p>
-		<p>If you find that you are accumulating "file" listings, but your contents of the "files" folder is not changing, then you have probably provided an incorrect <code>$root_dir</code> path.
+		<p>If you find that you are accumulating "file" listings, but your contents of the "files" folder is not changing, then you have probably provided an incorrect <code>$root_dir</code> path.</p>
+		<p>You will also want to confirm that your <code>php.ini</code> file is configured to allow file uploading with <code>file_uploads = on</code>.</p>
 		</li>
 
 		<li><p>Improving Security</p>
