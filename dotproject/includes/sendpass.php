@@ -22,7 +22,8 @@ function sendNewPass() {
 	$confirmEmail = strtolower( db_escape( $confirmEmail ) );
 
 	$query = "SELECT user_id FROM users"
-	. "\nWHERE user_username='$checkusername' AND LOWER(user_email)='$confirmEmail'"
+	." LEFT JOIN contacts ON user_contact = contact_id"
+	. "\nWHERE user_username='$checkusername' AND LOWER(contact_email)='$confirmEmail'"
 	;
 	if (!($user_id = db_loadResult($query)) || !$checkusername || !$confirmEmail) {
 		$AppUI->setMsg( 'Invalid username or email.', UI_MSG_ERROR );
