@@ -18,7 +18,7 @@
 				    			<?php
 				    				if($can_edit_time_information){
 				    					?>
-								<?php echo $AppUI->_( 'Task Creator' );?>
+								<?php echo $AppUI->_( 'Task Owner' );?>
 								<br />
 							<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
 								<br />

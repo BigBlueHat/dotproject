@@ -194,7 +194,7 @@ function delIt() {
 		</tr>
 		<?php } ?>
 		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Creator');?>:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Owner');?>:</td>
 			<td class="hilite"> <?php echo @$obj->username;?></td>
 		</tr>				<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Priority');?>:</td>
