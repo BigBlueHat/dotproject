@@ -31,7 +31,9 @@ $AppUI =& $_SESSION['AppUI'];
 
 // load some local settings
 @include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
-header("Content-type: text/html;charset=$locale_char_set");
+if (isset( $locale_char_set )) {
+	header("Content-type: text/html;charset=$locale_char_set");
+}
 
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
 
@@ -62,13 +64,16 @@ if (isset( $_REQUEST['uts'] )) {
 require_once( "$root_dir/includes/main_functions.php" );
 require_once( "$root_dir/includes/permissions.php" );
 @include_once( "$root_dir/functions/" . $m . "_func.php" );
+// include the module classes (check in two places)
 @include_once( "$root_dir/classdefs/$m.php" );
+@include_once( "$root_dir/modules/$m/$m.class.php" );
+// locales setup
 @include_once( "$root_dir/locales/core.php" );
 setlocale( LC_TIME, $AppUI->user_locale );
 
 // do some db work if dosql is set
-if (isset( $_POST["dosql"]) ) {
-	require("$root_dir/dosql/" . $_POST["dosql"] . ".php");
+if (isset( $_REQUEST["dosql"]) ) {
+	require("$root_dir/dosql/" . $_REQUEST["dosql"] . ".php");
 }
 if (isset( $return )) {
 	header("Location: ./index.php?" . $return);
