@@ -405,7 +405,7 @@ if($do_report){
                         "<a href='javascript:chAssignment($user_id, 0, false);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
-                        for ($i = 5; $i <= 200; $i+=5) {
+                        for ($i = 0; $i <= 200; $i+=5) {
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
@@ -710,7 +710,7 @@ return false;
                         "<a href='javascript:chAssignment($user_id, 0, false);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
-                        for ($i = 5; $i <= 100; $i+=5) {
+                        for ($i = 0; $i <= 100; $i+=5) {
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
