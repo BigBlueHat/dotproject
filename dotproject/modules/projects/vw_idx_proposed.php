@@ -33,17 +33,17 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 		<a href="?m=projects&orderby=project_end_date" class="hdr"><?php echo $AppUI->_('End');?></a>
 	</th>
         <th nowrap="nowrap">
-		<a href="?m=projects&orderby=project_actual_end_date DESC" class="hdr"><?php echo $AppUI->_('Actual');?></a>
+		<a href="?m=projects&orderby=project_actual_end_date" class="hdr"><?php echo $AppUI->_('Actual');?></a>
 	</th>
         <th nowrap="nowrap">
-		<a href="?m=projects&orderby=task_log_problem DESC" class="hdr"><?php echo $AppUI->_('P');?></a>
+		<a href="?m=projects&orderby=task_log_problem" class="hdr"><?php echo $AppUI->_('P');?></a>
 	</th>
 	<th nowrap="nowrap">
 		<a href="?m=projects&orderby=user_username" class="hdr"><?php echo $AppUI->_('Owner');?></a>
 	</th>
 	<th nowrap="nowrap">
-		<a href="?m=projects&orderby=total_tasks%20desc" class="hdr"><?php echo $AppUI->_('Tasks');?></a>
-		<a href="?m=projects&orderby=my_tasks%20desc" class="hdr">(<?php echo $AppUI->_('My');?>)</a>
+		<a href="?m=projects&orderby=total_tasks" class="hdr"><?php echo $AppUI->_('Tasks');?></a>
+		<a href="?m=projects&orderby=my_tasks" class="hdr">(<?php echo $AppUI->_('My');?>)</a>
 	</th>
 	<th nowrap="nowrap">
 		<?php echo $AppUI->_('Selection'); ?>

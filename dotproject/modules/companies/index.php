@@ -3,8 +3,12 @@ $AppUI->savePlace();
 
 // retrieve any state parameters
 if (isset( $_GET['orderby'] )) {
+    $orderdir = $AppUI->getState( 'CompIdxOrderDir' ) ? ($AppUI->getState( 'CompIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
 	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
+    $AppUI->setState( 'CompIdxOrderDir', $orderdir);
 }
+$orderby         = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
+$orderdir        = $AppUI->getState( 'CompIdxOrderDir' ) ? $AppUI->getState( 'CompIdxOrderDir' ) : 'asc';
 
 if(isset($_REQUEST["owner_filter_id"])){
 	$AppUI->setState("owner_filter_id", $_REQUEST["owner_filter_id"]);
@@ -16,9 +20,6 @@ if(isset($_REQUEST["owner_filter_id"])){
 		$AppUI->setState('owner_filter_id', $owner_filter_id);
 	}
 }
-
-$orderby         = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
-
 // load the company types
 $types = dPgetSysVal( 'CompanyType' );
 

@@ -6,12 +6,8 @@ global $currentTabId;
 global $currentTabName;
 global $tabbed;
 global $type_filter;
-
-// retrieve any state parameters
-if (isset( $_GET['orderby'] )) {
-	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
-}
-$orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
+global $orderby;
+global $orderdir;
 
 // load the company types
 
@@ -51,8 +47,8 @@ if($search_string != ""){
 $sql .= $owner_filter_id > 0 ? " AND company_owner = '$owner_filter_id' " : "";
 
 $sql .= " GROUP BY company_id
-		 ORDER BY $orderby";
-	
+		 ORDER BY $orderby $orderdir";
+         
 $rows = db_loadList( $sql );
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">

@@ -19,8 +19,8 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 		<a href="?m=projects&orderby=user_username" class="hdr"><?php echo $AppUI->_('Owner');?></a>
 	</th>
 	<th nowrap="nowrap">
-		<a href="?m=projects&orderby=total_tasks%20desc" class="hdr"><?php echo $AppUI->_('Tasks');?></a>
-		<a href="?m=projects&orderby=my_tasks%20desc" class="hdr">(<?php echo $AppUI->_('My');?>)</a>
+		<a href="?m=projects&orderby=total_tasks" class="hdr"><?php echo $AppUI->_('Tasks');?></a>
+		<a href="?m=projects&orderby=my_tasks class="hdr">(<?php echo $AppUI->_('My');?>)</a>
 	</th>
 	<th nowrap="nowrap">
 		<a href="?m=projects&orderby=project_end_date" class="hdr"><?php echo $AppUI->_('Due Date');?>:</a>

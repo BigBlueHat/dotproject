@@ -35,7 +35,6 @@ $company_prefix = 'company_';
 if (isset( $_POST['department'] )) {
 	$AppUI->setState( 'ProjIdxDepartment', $_POST['department'] );
 	
-
 	//if department is set, ignore the company_id field
 	unset($company_id);
 }
@@ -50,10 +49,12 @@ if(!(strpos($department, $company_prefix)===false)){
 }
 
 if (isset( $_GET['orderby'] )) {
-	$AppUI->setState( 'ProjIdxOrderBy', $_GET['orderby'] );
+    $orderdir = $AppUI->getState( 'ProjIdxOrderDir' ) ? ($AppUI->getState( 'ProjIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';    
+    $AppUI->setState( 'ProjIdxOrderBy', $_GET['orderby'] );
+    $AppUI->setState( 'ProjIdxOrderDir', $orderdir);
 }
-$orderby = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrderBy' ) : 'project_end_date';
-
+$orderby  = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrderBy' ) : 'project_end_date';
+$orderdir = $AppUI->getState( 'ProjIdxOrderDir' ) ? $AppUI->getState( 'ProjIdxOrderDir' ) : 'asc';
 // get any records denied from viewing
 $obj = new CProject();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
@@ -160,9 +161,10 @@ WHERE 1 = 1"
 .(isset($department) ? "\nAND project_departments.department_id in ( ".implode(',',$dept_ids)." )" : '')
 ."
 GROUP BY projects.project_id
-ORDER BY $orderby
+ORDER BY $orderby $orderdir	
 ";
 global $projects;
+
 $projects = db_loadList( $sql );
 
 // get the list of permitted companies
