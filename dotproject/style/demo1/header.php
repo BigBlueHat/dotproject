@@ -92,18 +92,15 @@ echo implode( ' | ', $links );
     echo '</td><input type="hidden" name="a" value="addedit">';
 
 //build URI string
-    if ($AppUI->getProject()) {
-        echo '<input type="hidden" name="project_id" value="'.$AppUI->getProject().'">';
-    }
-    if (isset( $company_id )) {
-        echo '<input type="hidden" name="company_id" value="'.$company_id.'">';
-    }
-    if (isset( $task_id )) {
-        echo '<input type="hidden" name="task_parent" value="'.$task_id.'">';
-    }
-    if (isset( $file_id )) {
-        echo '<input type="hidden" name="file_id" value="'.$file_id.'">';
-    }
+	if (isset( $company_id )) {
+		echo '<input type="hidden" name="company_id" value="'.$company_id.'">';
+	}
+	if (isset( $task_id )) {
+		echo '<input type="hidden" name="task_parent" value="'.$task_id.'">';
+	}
+	if (isset( $file_id )) {
+		echo '<input type="hidden" name="file_id" value="'.$file_id.'">';
+	}
 ?>
             </form>
             </td>

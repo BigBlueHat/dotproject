@@ -74,9 +74,6 @@ function tboff(){
 	echo '</td><input type="hidden" name="a" value="addedit">';
 
 //build URI string
-	if ($AppUI->getProject()) {
-		echo '<input type="hidden" name="project_id" value="'.$AppUI->getProject().'">';
-	}
 	if ($AppUI->getDaySelected()) {
 		echo '<input type="hidden" name="uts" value="'.$AppUI->getDaySelected().'">';
 	}
