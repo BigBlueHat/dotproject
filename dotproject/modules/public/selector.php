@@ -1,13 +1,15 @@
 <?php /* PUBLIC $Id$ */
 
-function selPermWhere( $obj, $idfld, $namefield ) {
+function selPermWhere( $obj, $idfld, $namefield, $prefix = '' ) {
 	global $AppUI;
 
 	$allowed  = $obj->getAllowedRecords($AppUI->user_id, "$idfld, $namefield");
-	if (count($allowed))
-		return " $idfld IN (" . implode(",", array_keys($allowed)) . ") ";
-	else
-		return "";
+	if (count($allowed)) {
+		$prfx = $prefix ? "$prefix." : "";
+		return " $prfx$idfld IN (" . implode(",", array_keys($allowed)) . ") ";
+	} else {
+		return null;
+	}
 }
 
 $debug = false;
@@ -18,22 +20,21 @@ $user_id = dPgetParam( $_GET, 'user_id', 0 );
 $ok = $callback & $table;
 
 $title = "Generic Selector";
-$select = '';
-$from = $table;
-$where = '';
-$order = '';
 
 $modclass = $AppUI->getModuleClass($table);
 if ($modclass && file_exists ($modclass))
 	require_once $modclass;
 
+$q =& new DBQuery;
+$q->addTable($table, 'a');
+
 switch ($table) {
 case 'companies':
 	$obj =& new CCompany;
 	$title = 'Company';
-	$select = 'company_id,company_name';
-	$order = 'company_name';
-	$where = selPermWhere( $obj, 'company_id', 'company_name' );
+	$q->addQuery('company_id, company_name');
+	$q->addOrder('company_name');
+	$q->addWhere( selPermWhere( $obj, 'company_id', 'company_name' ));
 	break;
 case 'departments':
 // known issue: does not filter out denied companies
@@ -42,75 +43,72 @@ case 'departments':
 	//$ok &= $company_id;  // Is it safe to delete this line ??? [kobudo 13 Feb 2003]
 	//$where = selPermWhere( 'companies', 'company_id' );
 	$obj =& new CDepartment;
-	$where = selPermWhere( $obj, 'dept_id', 'dept_name' );
-	if ($where)
-		$where .= "\nAND ";
-	$where .= "dept_company = company_id ";
+	$q->addWhere( selPermWhere( $obj, 'dept_id', 'dept_name' ));
+	$q->addWhere( "dept_company = company_id ");
+	$q->addTable('companies', 'b');
 
-	$table .= ", companies";
 	$hide_company = dPgetParam( $_GET, 'hide_company', 0 );
+	$q->addQuery('dept_id');
 	if ( $hide_company == 1 ){
-		$select = "dept_id, dept_name";
+		$q->addQuery("dept_name");
 	}else{
-		$select = "dept_id,CONCAT_WS(': ',company_name,dept_name) AS dept_name";
+		$q->addQuery("CONCAT_WS(': ',company_name,dept_name) AS dept_name");
 	}
 	if ($company_id) {
-		$where .= "\nAND dept_company = $company_id";
-		$order = 'dept_name';
+		$q->addWhere("dept_company = $company_id");
+		$q->addOrder("dept_name");
 	} else {
-		$order = 'company_name,dept_name';
+		$q->addOrder("company_name, dept_name");
 	}
 	break;
 case 'files':
 	$title = 'File';
-	$select = 'file_id,file_name';
-	$order = 'file_name';
+	$q->addQuery( 'file_id,file_name');
+	$q->addOrder('file_name');
 	break;
 case 'forums':
 	$title = 'Forum';
-	$select = 'forum_id,forum_name';
-	$order = 'forum_name';
+	$q->addQuery('forum_id,forum_name');
+	$q->addOrder('forum_name');
 	break;
 case 'projects':
 	$project_company = dPgetParam( $_GET, 'project_company', 0 );
 
 	$title = 'Project';
 	$obj =& new CProject;
-	$select = 'project_id,project_name';
-	$order = 'project_name';
-	$where_clause = array();
+	$q->addQuery('a.project_id, project_name');
+	$q->addOrder('project_name');
 	if ($user_id > 0) {
-		$where_clause[] = " project_contacts regex \",*{$user_id},*\" ";
+		$q->addTable('project_contacts', 'b');
+		$q->addWhere('b.project_id = a.project_id');
+		$q->addWhere("b.contact_id = $user_id");
 	}
-	$pwhere = selPermWhere( $obj, 'project_id', 'project_name' );
-	if ($pwhere) {
-		$where_clause[] = $pwhere;
-	}
+	$q->addWhere( selPermWhere( $obj, 'project_id', 'project_name', 'a' ));
 	if ($project_company) {
-		$where_clause[] = "AND project_company = $project_company";
+		$q->addWhere( "project_company = $project_company");
 	}
-	$where = implode("\nAND ", $where_clause);
 	break;
 	
 case "tasks":
 	$task_project = dPgetParam( $_GET, 'task_project', 0 );
 
 	$title = 'Task';
-	$select = 'task_id,task_name';
-	$order = 'task_name';
-	$where = $task_project ? "task_project = $task_project" : '';
+	$q->addQuery( 'task_id,task_name');
+	$q->addOrder('task_name');
+	if ($task_project)
+		$q->addWhere("task_project = $task_project");
 	break;
 case 'users':
 	$title = 'User';
-	$select = "user_id,CONCAT_WS(' ',contact_first_name,contact_last_name)";
-	$order = 'contact_first_name';
-	$from .= ", contacts";
-	$where .= "user_contact = contact_id";
+	$q->addQuery("user_id,CONCAT_WS(' ',contact_first_name,contact_last_name)");
+	$q->addOrder('contact_first_name');
+	$q->addTable("contacts", 'b');
+	$q->addWhere("user_contact = contact_id");
 	break;
 case 'SGD':
 	$title = 'Document';
-	$select = 'SGD_id, SGD_name';
-	$order = 'SGD_name';
+	$q->addQuery('SGD_id, SGD_name');
+	$q->addOrder('SGD_name');
 	break;
 default:
 	$ok = false;
@@ -125,12 +123,7 @@ if (!$ok) {
 		echo "<br />ok = $ok \n";
 	}
 } else {
-	$sql = "SELECT $select FROM $table";
-	$sql .= $where ? " WHERE $where" : '';
-	$sql .= $order ? " ORDER BY $order" : '';
-	//echo "<pre>$sql</pre>";
-
-	$list = arrayMerge( array( 0=>$AppUI->_( '[none]' )), db_loadHashList( $sql ) );
+	$list = arrayMerge( array( 0=>$AppUI->_( '[none]' )), $q->loadHashList( ) );
 	echo db_error();
 ?>
 <script language="javascript">
