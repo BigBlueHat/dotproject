@@ -24,6 +24,9 @@ define(SHOW_ALL_TASKS, false);
 // enable if you want to support gantt charts
 define(ENABLE_GANTT_CHARTS, false);
 
+// disable if you want to allow to add tasks without giving a duration
+define(REQUIRE_TASKS_DURATION, true);
+
 // Date format, can be one of:
 // 0 = international or yyyy-mm-dd
 // 1 = UK and Australia or dd/mm/yyyy
