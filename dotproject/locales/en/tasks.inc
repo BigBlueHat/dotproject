@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Projects on Hold",
 "Access",
 "Action",
 "Active",
