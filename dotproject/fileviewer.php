@@ -1,7 +1,9 @@
 <?php /* $Id$ */
 //file viewer
-require "./includes/config.php";
-require "./classes/ui.class.php";
+require_once "./includes/config.php";
+require_once "./classes/ui.class.php";
+require_once "./includes/main_functions.php";
+require_once "./includes/db_adodb.php";
 
 session_name( 'dotproject' );
 session_set_cookie_params(0, dirname($_SERVER['SCRIPT_NAME']) . '/');
@@ -20,7 +22,6 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 	 
 	require_once( $AppUI->getSystemClass( 'dp' ) );
 	require_once( "./includes/db_connect.php" );
-	require_once( "./includes/main_functions.php" );
 	require_once( "./misc/debug.php" );
 
 	if ($AppUI->doLogin()) $AppUI->loadPrefs( 0 );
@@ -61,10 +62,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 }
 $AppUI =& $_SESSION['AppUI'];
 
-require "{$dPconfig['root_dir']}/includes/db_connect.php";
-
-include "{$dPconfig['root_dir']}/includes/main_functions.php";
-include "{$dPconfig['root_dir']}/includes/permissions.php";
+require_once "{$dPconfig['root_dir']}/includes/permissions.php";
 
 $canRead = !getDenyRead( 'files' );
 if (!$canRead) {
