@@ -45,7 +45,9 @@
 	}
 	
 	function log_error($msg, $fields = "") {
+		global $action;
 		echo "<font color=red size=1>ERROR: $msg</font><br>$fields<hr>";
+		$action = true;
 	}
 	
 	function log_warning($msg, $fields = "") {
@@ -147,19 +149,19 @@
 		}
 	}
 	
-	function get_last_childrens($task) {
-		// returns the last childrens (leafs) from $task
+	function get_last_children($task) {
+		// returns the last children (leafs) from $task
 		$arr = array();
 		
-		// query childrens from task
+		// query children from task
 		$sql = "select * from tasks where task_parent=" . $task["task_id"];
 		$query = mysql_query($sql);		
 		if(mysql_num_rows($query)) {
-			// has childrens
+			// has children
 			while($row = mysql_fetch_array($query)) {
 				if($row["task_id"] != $task["task_id"]) {
-					// add recursively childrens of childrens to $arr
-					$sub = get_last_childrens($row);
+					// add recursively children of children to $arr
+					$sub = get_last_children($row);
 					array_splice($arr, count($arr), 0, $sub);
 				}
 			}
@@ -206,9 +208,9 @@
 					
 					log_info("- task '" . $row["task_name"] . "' is a task group (processing subtask's dependencies)");
 					
-					$childrens = get_last_childrens($row);															
+					$children = get_last_children($row);															
 					// replace this taskgroup with all its subtasks
-					array_splice($dependencies, $d, 1, $childrens);
+					array_splice($dependencies, $d, 1, $children);
 													
 					continue;
 				}
@@ -307,6 +309,7 @@ if($set_dynamic) {
 		}
 		
 		checkbox("option_check_delayed_tasks", "Check delays for fixed tasks", 1, $do == "conf");
+		checkbox("option_fix_task_group_date_ranges", "Fix date ranges for task groups according to subtasks dates", 1, $do == "conf");
 		checkbox("option_no_end_date_warning", "Warn of fixed tasks without end dates", 0, $do == "conf");
 		
 		/*
@@ -339,31 +342,34 @@ if($set_dynamic) {
 		
 			/**** Add tasks to an array and check conflicts ****/
 		
-			// Select tasks without childrens (sub tasks)
+			// Select tasks without children (sub tasks)
+			
 			$sql = "select a.*,!a.task_dynamic as fixed from tasks as a left join tasks as b on a.task_id = b.task_parent and a.task_id != b.task_id where b.task_id IS NULL or b.task_id = b.task_parent order by a.task_priority desc, a.task_order desc";
 			$dtrc = mysql_query( $sql );
 
 			while ($row = mysql_fetch_array( $dtrc, MYSQL_ASSOC )) {
-			
+						     
+				// check durations
+			     
+				if(!$row["task_duration"]) {
+			        	$row["task_end_date"] = "";
+			        	log_error("Task " .task_link($row) . " has no duration.",
+			        		"Please enter the expected duration: <input class=input type=text name='set_duration[" . $row["task_id"] . "]' size=3>"
+			        	. "<select name='dayhour[" . $row["task_id"] . "]'>
+			        		<option value='1'>hour(s)
+                               			<option value='24'>day(s)
+		                        </select>"
+		                        );
+			        	$errors = true;
+			        }
+			        
 			        // calculate or set blank task_end_date if unset
 			        
 			        if(!$row["task_dynamic"] && $row["task_end_date"] == "0000-00-00 00:00:00") {
-			        	if($row["task_duration"] != 0) {
-				        	$row["task_end_date"] = get_end_date($row["task_start_date"], $row["task_duration"]);
-				        	if($do=="ask" && $option_no_end_date_warning) {
-					        	log_warning("Task " . task_link($row) . " has no end date. Using tasks duration instead.",
-					        	"<input type=checkbox name='set_end_date[" . $row["task_id"] . "]' value=1> Set end date to " . formatTime(strtotime($row["task_end_date"])));
-					        }
-			        	} else {
-				        	$row["task_end_date"] = "";
-				        	log_error("Task " .task_link($row) . " has no duration.",
-				        		"Please enter the expected duration: <input class=input type=text name='dur[" . $row["task_id"] . "]' size=3>"
-				        	. "<select name='dayhour[" . $row["task_id"] . "]'>
-				        		<option value='1'>hour(s)
-                                			<option value='24'>day(s)
-			                        </select>"
-			                        );
-				        	$errors = true;
+			        	$row["task_end_date"] = get_end_date($row["task_start_date"], $row["task_duration"]);
+			        	if($do=="ask" && $option_no_end_date_warning) {
+				        	log_warning("Task " . task_link($row) . " has no end date. Using tasks duration instead.",
+				        	"<input type=checkbox name='set_end_date[" . $row["task_id"] . "]' value=1> Set end date to " . formatTime(strtotime($row["task_end_date"])));
 				        }
 			        }
 			        
@@ -389,6 +395,32 @@ if($set_dynamic) {
 			if(!$errors) {
 				for($i = 0; $i < count($tasks) ; $i++) {
 					process_dependencies($i);
+				}
+			}
+			
+			if($option_fix_task_group_date_ranges) {
+				// query taskgroups
+				$sql = "select distinct a.* from tasks as a, tasks as b where b.task_parent = a.task_id and a.task_id != b.task_id";
+				$taskgroups = mysql_query($sql);
+				while($tg = mysql_fetch_array($taskgroups)) {
+					$children = get_last_children($tg);
+					$min_time = 0;
+					$max_time = 0;
+					foreach($children as $child) {
+						$start_time = dbDate2time($child["task_start_date"]);
+						$end_time = dbDate2time($child["task_end_date"]);
+						if($min_time==0 || $start_time < $min_time) $min_time = $start_time;
+						if($max_time==0 || $end_time > $max_time) $max_time = $end_time;
+					}
+					
+					if(DBdate2time($tg["task_start_date"]) != $min_time || DBdate2time($tg["task_end_date"]) != $max_time) {
+						if ($do == "ask") {
+							log_action("I will set date of task group " . task_link($tg) . " to " . formatTime($min_time) . " - " . formatTime($max_time) . ".");
+						} else if ($do == "fixate") {
+							log_action("Date range of task group " . task_link($tg) . " changed to " . formatTime($min_time) . " - " . formatTime($max_time) . ".");
+							mysql_query("update tasks set task_start_date='" . time2dbDate($min_time) . "', task_end_date='" . time2dbDate($max_time) . "' where task_id=" . $tg["task_id"]);
+						}
+					}
 				}
 			}
 			

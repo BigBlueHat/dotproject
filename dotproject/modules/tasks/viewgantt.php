@@ -23,8 +23,7 @@ function popCalendar(x){
 	$start_date = ($sdate != "")?toDate($sdate):"";
 	$end_date = ($edate != "")?toDate($edate):"";
 			
-	// TODO: Add radio buttons for displaying "entire project", "this month", ...
-	if($start_date == "") {
+	if($display_option=="month" || $start_date == "") {
 		$start_date = date("Y-m-d", strtotime("now()"));
 		$end_date = date("Y-m-d", strtotime("now() + 1 month"));
 	}
@@ -40,21 +39,28 @@ function popCalendar(x){
 </table>
 
 <form name="form" method="post" action="?m=tasks&a=viewgantt&project_id=<?php echo $project_id ?>">
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<table border="0" cellpadding="1" cellspacing="1" width="98%" class=std>
 <tr>
+	<td nowrap width=100><input type=radio name=display_option value=custom >Date range :</td>
 	<td>
 		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 		<tr bgcolor="#eeeeee">
 			<td align="right">Start Date:</td>
-			<td nowrap><input type="text" class="text" name="sdate" value="<?php echo fromDate($start_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>
-		</tr>
-		<tr bgcolor="#eeeeee">
-			<td align="right">End Date:</td>
+			<td nowrap><input type="text" class="text" name="sdate" value="<?php echo fromDate($start_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>										<td align="right">End Date:</td>
 			<td nowrap><input type="text" class="text" name="edate" value="<?php echo fromDate($end_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>
 		</tr>
 		</table>
 	</td>
-	<td align=left valign=bottom>
+	</tr>
+	
+	<tr>
+		<td><input type=radio name=display_option value=month>This month</td>
+		<td>&nbsp;</td>
+	</tr>
+	
+	<tr>
+		<td><input type=radio name=display_option value=all>Entire proyect</td>
+	<td align=right valign=bottom>
 	<input type="button" value="refresh" class=button onClick="javascript:document.form.submit();">
 	</td>
 	</tr>
@@ -62,7 +68,9 @@ function popCalendar(x){
 <br>
 
 <?php
+if($display_option!="all") {
 	$scroll_value = "1 month";
+
 ?>
 
 <table width="98%">
@@ -78,6 +86,7 @@ function popCalendar(x){
         </td>
 </tr>
 </table>
+<?php } ?>
 
 </form>
 
@@ -85,7 +94,7 @@ function popCalendar(x){
 <tr>
 	<td align=center>		
 		<?php					
-			echo "<script>document.write('<img src=modules/tasks/gantt.php?project_id=$project_id&start_date=$start_date&end_date=$end_date&width=' + (window.outerWidth - 200) + '>')</script>";
+			echo "<script>document.write('<img src=modules/tasks/gantt.php?project_id=$project_id" . ($display_option=="all"?"":"&start_date=$start_date&end_date=$end_date") . "&width=' + (window.outerWidth - 200) + '>')</script>";
 		?>
 	</td>
 </tr>

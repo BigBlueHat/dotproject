@@ -3,6 +3,8 @@
 ##
 "- New Item -"=>"",
 "About"=>"Acerca de",
+"Active Projects"=>"Proyectos Activos",
+"Archived Projects"=>"Proyectos Archivados",
 "Calendar"=>"Calendario",
 "Clients & Companies"=>"Clientes y Empresas",
 "Company"=>"Empresa",
@@ -30,5 +32,6 @@
 "openSource"=>"Un sistema de<br>gestión de proyectos OpenSource",
 "password"=>"contraseña",
 "save"=>"guardar",
+"sort by"=>"ordenar por",
 "submit"=>"enviar",
 "username"=>"nombre de usuario",

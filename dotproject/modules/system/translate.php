@@ -43,7 +43,7 @@ if ($lang != 'en') {
 
 	foreach( $locale as $k => $v ) {
 		if ($v != "0") {
-			$trans[$k]['lang'] = htmlspecialchars( $v, ENT_QUOTES );
+			$trans[$k]['lang'] = $v;
 		}
 	}
 }
