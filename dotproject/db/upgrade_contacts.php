@@ -1,9 +1,10 @@
 <?php
-include('../includes/config.php');
-include($dPconfig['root_dir'] . '/includes/main_functions.php');
+include_once('../includes/config.php');
+include_once($dPconfig['root_dir'] . '/includes/main_functions.php');
 require_once( $dPconfig['root_dir']."/includes/db_adodb.php" );
-include($dPconfig['root_dir'] . '/includes/db_connect.php');
+include_once($dPconfig['root_dir'] . '/includes/db_connect.php');
 $users = db_loadList('SELECT * FROM users');
+echo 'Converting users to contacts - ' . count($users) . ' users to be processed\n';
 foreach ($users as $user)
 {
         $sql = 'INSERT INTO contacts(
@@ -46,14 +47,12 @@ foreach ($users as $user)
                 $user['user_owner'] . "')";
 
                 db_exec($sql);
-                echo $sql;
+                echo db_error();
                 $sql = 'UPDATE users 
                         SET user_contact=LAST_INSERT_ID() 
                         WHERE user_id = ' . $user['user_id'];
                 db_exec($sql);
-                echo $sql;
-                
-
+                echo db_error();
 }
 
 
