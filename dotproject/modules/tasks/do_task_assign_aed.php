@@ -45,7 +45,15 @@ for( $i=0; $i <= sizeof($htasks_ar); $i++) {
                         $AppUI->redirect();
                 }
 
-                if ($rm || $del) {
+                if ($rm && $del){
+                        $overAssignment = $obj->updateAssigned( $hassign , $hperc_assign_ar, true, true);
+                        if ($overAssignment) {
+                                $AppUI->setMsg( "Some Users could not be unassigned from Task", UI_MSG_ERROR );
+                        } else {
+                                $AppUI->setMsg( "User(s) unassigned from Task", UI_MSG_OK);
+                                $AppUI->redirect();
+                        }
+                } else if ( ($rm || $del)  ) {
                         if (($msg = $obj->removeAssigned($user_id))) {
                                 $AppUI->setMsg( $msg, UI_MSG_ERROR );
 
@@ -54,7 +62,7 @@ for( $i=0; $i <= sizeof($htasks_ar); $i++) {
                         }
                 }
                 if (isset($hassign) && ! $del == 1) {
-                        $overAssignment = $obj->updateAssigned( $hassign , $hperc_assign_ar, false);
+                        $overAssignment = $obj->updateAssigned( $hassign , $hperc_assign_ar, false, false);
                         //check if OverAssignment occured, database has not been updated in this case
                         if ($overAssignment) {
                                 $AppUI->setMsg( "The following Users have not been assigned in order to prevent from Over-Assignment:", UI_MSG_ERROR );

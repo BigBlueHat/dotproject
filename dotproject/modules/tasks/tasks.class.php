@@ -1008,15 +1008,26 @@ class CTask extends CDpObject {
 
 	//using user allocation percentage ($perc_assign)
         // @return      returns the Names of the concerned Users if there occured an overAssignment, otherwise false
-	function updateAssigned( $cslist, $perc_assign, $del=true ) {
-	// delete all current entries
-                if ($del == true) {
+	function updateAssigned( $cslist, $perc_assign, $del=true, $rmUsers=false ) {
+
+        // process assignees
+		$tarr = explode( ",", $cslist );
+
+	        // delete all current entries from $cslist
+                if ($del == true && $rmUsers == true) {
+                        foreach ($tarr as $user_id) {
+                                $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id
+                                        AND user_id = $user_id";
+                                db_exec( $sql );
+                        }
+
+                         return false;
+
+                } else if ($del == true) {      // delete all on this task for a hand-over of the task
                         $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
                         db_exec( $sql );
                 }
 
-	// process assignees
-		$tarr = explode( ",", $cslist );
 
                 // get Allocation info in order to check if overAssignment occurs
                 $alloc = $this->getAllocation("user_id");

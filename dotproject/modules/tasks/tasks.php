@@ -24,7 +24,7 @@ if (empty($query_string)) {
 }
 
 // Number of columns (used to calculate how many columns to span things through)
-$cols = 11;
+$cols = 12;
 
 /****
 // Let's figure out which tasks are selected
@@ -67,6 +67,7 @@ if(($close_task_id = dPGetParam($_GET, "close_task_id", 0)) > 0) {
 
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
 $task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
@@ -275,7 +276,7 @@ $userAlloc = $tempoTask->getAllocation("user_id");
 
 if (! function_exists('showtask') ) {
 function showtask( &$a, $level=0, $is_opened = true ) {
-	global $AppUI, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
+	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
 
         $now = new CDate();
 	$df = $AppUI->getPref('SHDATEFORMAT');
@@ -412,6 +413,10 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
 	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
 
+// Assignment checkbox
+        if ($canEdit && $dPconfig['direct_edit_assignment']) {
+                $s .= "\n\t<td><input type=\"checkbox\" name=\"task_id{$a['task_id']}\" value=\"{$a['task_id']}\"/></td>";
+        }
 	$s .= '</tr>';
 
 	echo $s;
@@ -518,6 +523,90 @@ function toggle_users(id){
   var element = document.getElementById(id);
   element.style.display = (element.style.display == '' || element.style.display == "none") ? "inline" : "none";
 }
+
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit && $dPconfig['direct_edit_assignment']) {
+?>
+function checkAll(project_id) {
+        var f = eval( 'document.assFrm' + project_id );
+        var cFlag = f.master.checked ? false : true;
+
+        for (var i=0;i< f.elements.length;i++){
+                var e = f.elements[i];
+                // only if it's a checkbox.
+                if(e.type == "checkbox" && e.checked == cFlag && e.name != 'master')
+                {
+                         e.checked = !e.checked;
+                }
+        }
+
+}
+
+function chAssignment(project_id, rmUser, del) {
+        var f = eval( 'document.assFrm' + project_id );
+        var fl = f.add_users.length-1;
+        var c = 0;
+        var a = 0;
+
+        f.hassign.value = "";
+        f.htasks.value = "";
+
+        // harvest all checked checkboxes (tasks to process)
+        for (var i=0;i< f.elements.length;i++){
+                var e = f.elements[i];
+                // only if it's a checkbox.
+                if(e.type == "checkbox" && e.checked == true && e.name != 'master')
+                {
+                         c++;
+                         f.htasks.value = f.htasks.value +","+ e.value;
+                }
+        }
+
+        // harvest all selected possible User Assignees
+        for (fl; fl > -1; fl--){
+                if (f.add_users.options[fl].selected) {
+                        a++;
+                        f.hassign.value = "," + f.hassign.value +","+ f.add_users.options[fl].value;
+                }
+        }
+
+        if (del == true) {
+                        if (c == 0) {
+                                 alert ('<?php echo $AppUI->_('Please select at least one Task!'); ?>');
+                        } else if (a == 0 && rmUser == 1){
+                                alert ('<?php echo $AppUI->_('Please select at least one Assignee!'); ?>');
+                        } else {
+                                if (confirm( '<?php echo $AppUI->_('Are you sure you want to unassign the User from Task(s)?'); ?>' )) {
+                                        f.del.value = 1;
+                                        f.rm.value = rmUser;
+                                        f.project_id.value = project_id;
+                                        f.submit();
+                                }
+                        }
+        } else {
+
+                if (c == 0) {
+                        alert ('<?php echo $AppUI->_('Please select at least one Task!'); ?>');
+                } else {
+
+                        if (a == 0) {
+                                alert ('<?php echo $AppUI->_('Please select at least one Assignee!'); ?>');
+                        } else {
+                                f.rm.value = rmUser;
+                                f.del.value = del;
+                                f.project_id.value = project_id;
+                                f.submit();
+
+                        }
+                }
+        }
+
+
+}
+<?php } ?>
 </script>
 
 
@@ -534,6 +623,7 @@ function toggle_users(id){
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Last Update', 'last_update', SORT_NUMERIC );?></th>
+        <?php if ($dPconfig['direct_edit_assignment']) { echo '<th width="10"></th>'; }?>
 </tr>
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
@@ -546,6 +636,15 @@ foreach ($projects as $k => $p) {
 	if ($tnums > 0 || $project_id == $p['project_id']) {
 //echo '<pre>'; print_r($p); echo '</pre>';
 		if (!$min_view) {
+
+                echo "<form name=\"assFrm{$p['project_id']}\" action=\"index.php?m=$m&a=$a\" method=\"post\">
+                                <input type=\"hidden\" name=\"del\" value=\"1\" />
+                                <input type=\"hidden\" name=\"rm\" value=\"0\" />
+                                <input type=\"hidden\" name=\"store\" value=\"0\" />
+                                <input type=\"hidden\" name=\"dosql\" value=\"do_task_assign_aed\" />
+                                <input type=\"hidden\" name=\"project_id\" value=\"{$p['project_id']}\" />
+                                <input type=\"hidden\" name=\"hassign\" />
+                                <input type=\"hidden\" name=\"htasks\" />"
 ?>
 <tr>
 	<td>
@@ -553,7 +652,7 @@ foreach ($projects as $k => $p) {
 			<img src="./images/icons/<?php echo $project_id ? 'expand.gif' : 'collapse.gif';?>" width="16" height="16" border="0" alt="<?php echo $project_id ? 'show other projects' : 'show only this project';?>">
 		</a>
 	</td>
-	<td colspan="<?= $cols-1 ?>">
+	<td colspan="<?= $dPconfig['direct_edit_assignment'] ? $cols-4 : $cols-1; ?>">
 		<table width="100%" border="0">
 		<tr>
 			<!-- patch 2.12.04 display company name next to project name -->
@@ -566,6 +665,37 @@ foreach ($projects as $k => $p) {
 			</td>
 		</tr>
 		</table>
+        </td>
+        <?php if ($dPconfig['direct_edit_assignment']) { ?>
+         <td colspan="3" align="right" valign="middle">
+                <table width="100%" border="0">
+                        <tr>
+                                <td align="center">
+                                <?php
+                                        echo "<a href='javascript:chAssignment({$p['project_id']}, 0, 0);'>".
+                                        dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a>";
+                                        echo  "&nbsp;<a href='javascript:chAssignment({$p['project_id']}, 1, 1);'>".
+                                        dPshowImage(dPfindImage('remove.png', 'tasks'), 16, 16, 'Unassign Users', 'Unassign Users from Task')."</a>";
+                                ?><br />
+                                <?php
+                                        echo "<select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
+                                        for ($i = 0; $i <= 100; $i+=5) {
+                                                echo "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
+                                        }
+                                ?>
+                                </select>
+                                </td>
+                                <td align="right">
+                                <select name="add_users" style="width:200px" size="2" multiple="multiple" class="text"  ondblclick="javascript:chAssignment('.$user_id.', 0, false)">
+                                <?php foreach ($userAlloc as $v => $u) {
+                                echo "\n\t<option value=\"".$u['user_id']."\">" . dPformSafe( $u['userFC'] ) . "</option>";
+                                }?>
+                                </select>
+                                </td>
+                        </tr>
+                </table>
+         </td>
+         <?php }?>
 </tr>
 <?php
 		}
@@ -607,6 +737,7 @@ foreach ($projects as $k => $p) {
 				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
+                </form>
 		<?php }
 	}
 }

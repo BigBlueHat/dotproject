@@ -121,10 +121,14 @@ $dPconfig['debug'] = 1;
 // but the interface is a bit clunky.
 $dPconfig['link_tickets_kludge'] = false;
 
-//set to true is you want the task lists to show all assignees names
+//set to true if you want the task lists to show all assignees names
 //set to false if you only want to display the first assignee and then a count of the rest
 //the full list is still available on a mouse over.
 $dPconfig['show_all_task_assignees'] = false;
+
+//set to true if you want to be able to directly edit task assignment in the big tasks lists
+//set to false if you only want to have 'clean' staks lists
+$dPconfig['direct_edit_assignment'] = false;
 
 //set to true will cause the color selection dialog for projects to only provide a text list of 
 // selections to choose from, as defined in as sysvalues.

@@ -119,7 +119,7 @@ function chAssignment(user_id, rmUser, del) {
                         } else {
                                 if (confirm( '<?php echo $AppUI->_('Are you sure you want to unassign the User from Task(s)?'); ?>' )) {
                                         f.del.value = 1;
-                                        f.rm.value = 0;
+                                        f.rm.value = rmUser;
                                         f.user_id.value = user_id;
                                         f.submit();
                                 }
@@ -134,7 +134,7 @@ function chAssignment(user_id, rmUser, del) {
                                 alert ('<?php echo $AppUI->_('Please select at least one Assignee!'); ?>');
                         } else {
                                 f.rm.value = rmUser;
-                                f.del.value = 0;
+                                f.del.value = del;
                                 f.user_id.value = user_id;
                                 f.submit();
 
@@ -413,11 +413,11 @@ if($do_report){
 
                         $tmpuser .="<td bgcolor=\"#D0D0D0\"><table width=\"100%\"><tr>";
                         $tmpuser .="<td align=\"left\">
-                        <a href='javascript:chAssignment($user_id, 0, true);'>".
+                        <a href='javascript:chAssignment($user_id, 0, 1);'>".
                         dPshowImage(dPfindImage('remove.png', 'tasks'), 16, 16, 'Unassign User', 'Unassign User from Task')."</a>&nbsp;".
-                        "<a href='javascript:chAssignment($user_id, 1, false);'>".
+                        "<a href='javascript:chAssignment($user_id, 1, 0);'>".
                         dPshowImage(dPfindImage('exchange.png', 'tasks'), 24, 16, 'Hand Over', 'Unassign User from Task and handing-over to selected Users')."</a>&nbsp;".
-                        "<a href='javascript:chAssignment($user_id, 0, false);'>".
+                        "<a href='javascript:chAssignment($user_id, 0, 0);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
                         for ($i = 0; $i <= 200; $i+=5) {
@@ -722,7 +722,7 @@ return false;
 			}
 			$tmpuser .="<td bgcolor=\"#D0D0D0\"><table width=\"100%\"><tr>";
                         $tmpuser .="<td align=\"left\">".
-                        "<a href='javascript:chAssignment($user_id, 0, false);'>".
+                        "<a href='javascript:chAssignment($user_id, 0, 0);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
                         for ($i = 0; $i <= 100; $i+=5) {

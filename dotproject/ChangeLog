@@ -1,8 +1,78 @@
-2004-08-24 02:50  (revelation7)
+2004-08-25 01:52  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- oops, two people had the same idea, removed mine
+
+2004-08-25 01:45  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- fixed sql bug, grayed out a finished and past task
+
+2004-08-25 01:34  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Added a new style for finished tasks
+
+2004-08-25 01:11  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Solved a cross reference issue in a SQL
+
+2004-08-25 00:01  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- for the progress bar gray is better than darkgray
+
+2004-08-24 23:58  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- sort by last name first rather than by first name
+
+2004-08-24 23:41  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- show tasks which are both finished and past in darkgray
+
+2004-08-24 21:30  (jcgonz)
+---------------------------------
+db/dotproject.sql
+- Added a colon that wasn't there
+
+2004-08-24 18:16  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+- fixed forgotten line endings problem with project status
+
+2004-08-24 16:40  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+images/icons/stock_print-16.png
+modules/tasks/tasks.class.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- new fields for task log
+
+2004-08-24 10:11  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-08-24 08:50  (revelation7)
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/view.php
 - Fixed issue #0000018: Backslash in text field being stripped out.  Added parameters to obj->load in addedt.php and db_loadObject in view.php for tasks.
+
+2004-08-24 05:08  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Display file size in human readable form.
+
+2004-08-24 05:01  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+- Reload page after attempting to fix db errors, only if the changes successfully got rid of the error.
 
 2004-08-23 23:08  (cyberhorse)
 ---------------------------------
