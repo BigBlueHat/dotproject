@@ -33,7 +33,7 @@ function delIt(id) {
 
 <span style="color:red"><strong>Note this function is still in development and testing phase</strong></span>
 
-<table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
 <tr>
 	<th>&nbsp;</th>
 	<th><?php echo $AppUI->_('Role Name');?></th>
