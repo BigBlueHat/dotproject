@@ -75,17 +75,13 @@ $sql = "Select event_title, event_id, event_start_date, event_end_date
 		(event_end_date >= $thismorn and event_end_date < $thiseve) 
 		order by event_start_date group by event_id";
 $rc = mysql_query($sql);
+if ( $rc != false) {
 while($row = mysql_fetch_array($rc)){
 $earr[] = $row;
 
 }
 
-
-
-
-
-
-
+}
 
 
 ?>
