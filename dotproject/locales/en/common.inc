@@ -26,7 +26,7 @@
 "Tasks",
 "Tickets",
 "User Admin",
-"accessDenied"=>"<p>You have attemped to access an item in dotproject without the sufficient permissions to do so.</p><p>Please contact the DotProject System Administrator.</p>",
+"accessDeniedMsg"=>"<p>You have attemped to access an item in dotproject without the sufficient permissions to do so.</p><p>Please contact the DotProject System Administrator.</p>",
 "back",
 "cancel",
 "forgotPassword"=>"Help! I've forgotten my username and password!",
