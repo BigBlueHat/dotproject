@@ -86,7 +86,7 @@ var calWin = null;
 function popCalendar( field ){
 	calendarField = field;
 	idate = eval( 'document.editFrm.project_' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=280, height=250, scollbars=false' );
 }
 
 /**
@@ -168,7 +168,6 @@ function submitIt() {
 				<a href="#" onClick="popCalendar( 'start_date', 'start_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
-				yyyy-mm-dd
 			</td>
 		</tr>
 		<tr>
@@ -179,8 +178,6 @@ function submitIt() {
 				<a href="#" onClick="popCalendar('end_date', 'end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
-				yyyy-mm-dd
-
 			</td>
 		</tr>
 		<tr>
@@ -192,14 +189,16 @@ function submitIt() {
 		<tr>
 			<td colspan="2"><hr noshade="noshade" size="1"></td>
 		</tr>
-		<tr>
+<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
-			<td>
-				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-				<input type="text" name="actual_end_date" id="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-				<a href="#" onClick="return showCalendar('actual_end_date')">
+			<td>	<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
+				<input type="text" class="text" name="actual_end_date" id="date2" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
+
+				<a href="#" onClick="popCalendar('actual_end_date', 'actual_end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
+
+
 			</td>
 		</tr>
 		<tr>
