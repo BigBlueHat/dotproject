@@ -2,15 +2,21 @@
 
 include_once( $AppUI->getSystemClass ('dp' ) );
 
-##
-## CCompany Class
-##
-
+/**
+ *	Companies Class
+ *
+ *	@version $Revision$
+*/
 class CCompany extends CDpObject {
+/**
+ *	@var	int
+*/
 	var $company_id = NULL;
-	var $company_username = NULL;
-	var $company_password = NULL;
+/**
+ *	@var	string
+*/
 	var $company_name = NULL;
+
 	var $company_phone1 = NULL;
 	var $company_phone2 = NULL;
 	var $company_fax = NULL;
@@ -19,9 +25,18 @@ class CCompany extends CDpObject {
 	var $company_city = NULL;
 	var $company_state = NULL;
 	var $company_zip = NULL;
+/**
+ *	@var	string
+*/
 	var $company_primary_url = NULL;
+/**
+ *	@var	int
+*/
 	var $company_owner = NULL;
 	var $company_description = NULL;
+/**
+ *	@var	int
+*/
 	var $company_type = null;
 	var $company_email = NULL;
 
@@ -29,23 +44,13 @@ class CCompany extends CDpObject {
 		$this->CDpObject( 'companies', 'company_id' );
 	}
 
-	function load( $oid ) {
-		$sql = "
-		SELECT companies.*,users.user_first_name,users.user_last_name
-		FROM companies
-		LEFT JOIN users ON users.user_id = companies.company_owner
-		WHERE companies.company_id = $oid
-		";
-
-		return db_loadObject( $sql, $this );
-	}
-
 // overload check
 	function check() {
 		if ($this->company_id === NULL) {
 			return 'company id is NULL';
 		}
-		// TODO MORE
+		$this->company_id = intval( $this->company_id );
+
 		return NULL; // object is ok
 	}
 
