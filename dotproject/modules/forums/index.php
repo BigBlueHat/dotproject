@@ -140,7 +140,7 @@ foreach ($forums as $row) {
 	}?>
 <tr>
 	<td nowrap="nowrap" align="center">
-	<?php if ($row["forum_owner"] == $AppUI->user_id) { ?>
+	<?php if ( $row["forum_owner"] == $AppUI->user_id || (!empty($perms['all']) && !getDenyEdit('all')) ) { ?>
 		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>" title="<?php echo $AppUI->_('edit');?>">
 		<?php echo dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' );?>
 		</a>

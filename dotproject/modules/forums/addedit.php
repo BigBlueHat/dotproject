@@ -1,5 +1,9 @@
 <?php /* FORUMS $Id$ */
 // Add / Edit forum
+
+// load the companies class to retrieved denied projects
+require_once( $AppUI->getModuleClass( 'projects' ) );
+
 $forum_id = intval( dPgetParam( $_GET, 'forum_id', 0 ) );
 
 //Pull forum information
@@ -10,13 +14,39 @@ $forum_info = db_fetch_assoc( $res );
 
 $status = isset( $forum_info["forum_status"] ) ? $forum_info["forum_status"] : -1;
 
+
+// get any project records denied from viewing
+$projObj = new CProject();
+$projDeny = $projObj->getDeniedRecords( $AppUI->user_id );
+
 //Pull project Information
-$sql = "SELECT project_id, project_name FROM projects WHERE project_active <> 0 ORDER BY project_name";
+$sql = "SELECT project_id, project_name FROM permissions, projects WHERE project_active <> 0 AND permission_user = $AppUI->user_id
+	AND permission_value <> 0
+	AND (
+		(permission_grant_on = 'all')
+		OR (permission_grant_on = 'projects' AND permission_item = -1)
+		OR (permission_grant_on = 'projects' AND permission_item = project_id)
+		)"
+.(count($projDeny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $projDeny ) . ')' : '')
+.($company_id ? "\nAND project_company = $company_id" : '')
+." ORDER BY project_name";
 $projects = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
 //Pull user Information
-$sql = "SELECT user_id, CONCAT_WS(' ', user_first_name, user_last_name) FROM users ORDER BY user_username";
+$sql = "SELECT user_id, CONCAT_WS(' ', user_first_name, user_last_name) FROM permissions, users WHERE user_id = $AppUI->user_id OR permission_user = $AppUI->user_id ";
+
+if ( empty($perms['admin']) ) { // if there are no records for the user's permission on 'admin', the users are displayed
+} elseif ( !empty($perms['admin']) && getDenyRead('admin') ) {	// if the user is denied to read on 'admin', other users are not displayed!
+	$sql .= "
+	AND permission_value <> 0 AND (
+			(permission_grant_on = 'all')
+			OR (permission_grant_on = 'admin' AND permission_item = -1)
+			OR (permission_grant_on = 'admin' AND permission_item = user_id)
+			) ";
+}
+
+$sql .= " ORDER BY user_username";
 $users = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
