@@ -812,7 +812,7 @@ class CTitleBlock_core {
 		$s .= $CR . '<tr>';
 		if ($this->icon) {
 			$s .= $CR . '<td width="42">';
-			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ), '42', '42' );
+			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ));
 			$s .= '</td>';
 		}
 		$s .= $CR . '<td align="left" width="100%" nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';

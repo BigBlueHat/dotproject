@@ -165,7 +165,18 @@ function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' ) {
 		return "<div style=\"height:{$hgt}px; width:{$wid}px; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$src', sizingMethod='scale');\" ></div>";
 	} else {
 	*/
-		return "<img src=\"$src\" align=\"center\" width=\"$wid\" height=\"$hgt\" alt=\"".$AppUI->_($alt)."\" border=\"0\" title=\"".$AppUI->_($title)."\" />";
+		$result = "<img src='$src' align='center'";
+		if ($wid)
+		  $result .= " width='$wid'";
+		if ($hgt)
+		  $result .= " height='$hgt'";
+		if ($alt)
+		  $result .= " alt='" . $AppUI->_($alt) . "'";
+		if ($title)
+		  $result .= " title='" . $AppUI->_($title) . "'";
+		$result .= " border='0'>";
+
+		return $result;
 	// }
 }
 
