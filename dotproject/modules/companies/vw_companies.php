@@ -76,6 +76,7 @@ $rows = db_loadList( $sql );
 </tr>
 <?php
 $s = '';
+$CR = "\n"; // Why is this needed as a variable?
 
 $none = true;
 foreach ($rows as $row) {
