@@ -9,23 +9,24 @@ $comment = isset($_POST['email_comment']) ? $_POST['email_comment'] : '';
 $sant = isset($_POST['sant']) ? $_POST['sant'] : 0;
 
 $time = 0;
-if ($_POST['reoccur'] > 0) // Daily
+if ($_POST['reoccur'] > 0)
+{
         $time = 24 * 3600;
-if ($_POST['reoccur'] > 1) // Weekly
-        $time *= 7;
-if ($_POST['reoccur'] > 2) // Fortnight
-        $time *= 2;
-if ($_POST['reoccur'] > 3) // Monthly
-        $time *= 2;
-if ($_POST['reoccur'] > 4) // 6 weeks
-        $time *= 1.5;
-if ($_POST['reoccur'] > 3) // 3 months
-        $time *= 2;
-if ($_POST['reoccur'] > 3) // 6 months
-        $time *= 2;
-if ($_POST['reoccur'] > 3) // 1 year
-        $time *= 2;
-
+        if ($_POST['reoccur'] > 7) // 1 year
+                $time *= 365;
+        else if ($_POST['reoccur'] > 6) // 6 months
+                $time *= 182;
+        else if ($_POST['reoccur'] > 5) // 3 months
+                $time *= 91;
+        else if ($_POST['reoccur'] > 4) // 6 weeks
+                $time *= 42;
+        else if ($_POST['reoccur'] > 3) // Monthly
+                $time *= 30;
+        else if ($_POST['reoccur'] > 2) // Fortnight
+                $time *= 14;
+        else if ($_POST['reoccur'] > 1) // Weekly
+                $time *= 7;
+}
 
 $obj = new CTask();
 

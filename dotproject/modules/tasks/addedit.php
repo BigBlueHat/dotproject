@@ -1043,7 +1043,7 @@ $titleBlock->show();
                                                 $ar = array(    0=>'once', 
                                                                 1=>'daily', 
                                                                 2=>'weekly', 
-                                                                3=>'fortnightly';
+                                                                3=>'fortnightly',
                                                                 4=>'monthly',
                                                                 5=>'6 weekly',
                                                                 6=>'3 monthly',
