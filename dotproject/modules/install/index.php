@@ -8,6 +8,12 @@
 //TODO destroy session
 //TODO session: crypt
 //TODO enhanced texts, resumee
+//todo filename backup.xml with current date and time
+//todo install db from xml schema
+//todo move config vars to db
+
+include_once("./modules/install/install.class.php");
+$Installer = new Cinstall();
 
 // reset all config values to 'default' (values loaded from config.php or config-dist.php)
 if (isset( $_GET['refresh'] ) && $_GET['refresh'] == true) {

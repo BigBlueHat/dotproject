@@ -37,7 +37,7 @@ if ($do_install_db) {
 
 } elseif ($dobackup){
 
-        echo $Installer->generateBackupSQL();
+        echo $Installer->generateBackupSchema();
 
 }
 

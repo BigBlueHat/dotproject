@@ -410,114 +410,29 @@ var $_acl = null;
         * Generate SQL-File with Structure and Content from Database
         * @param $sql string SQL-Code
         */
-	function generateBackupSQL( $backupdrop = false ) {
+	function generateBackupSchema( $backupdrop = false ) {
                 global $db, $dbc;
                 if( !$this->isDBconnected() ) {
 			return false;
 		} else {
 
-                        $tables = $db->MetaTables();
-                        $si = $db->ServerInfo();
+			require_once( "{$this->cfg['root_dir']}/lib/adodb/adodb-xmlschema.inc.php" );
 
-                        // generate dbScriptHeader
-                        $output  = '';
-                        $output .= '# Backup of database \'' . $this->cfg['dbname'] . '\'' . "\r\n";
-                        $output .= '# Generated on ' . date('j F Y, H:i:s') . "\r\n";
-                        $output .= "# Generator : dotProject Installer \r\n";
-                        $output .= '# OS: ' . PHP_OS . "\r\n";
-                        $output .= '# PHP version: ' . PHP_VERSION . "\r\n";
-                        $output .= '# SQL Server Type: ' . $this->cfg['dbtype'] . "\r\n";
-                        $output .= '# SQL Server Version: ' . $si['version'] . "\r\n";
-                        $output .= "\r\n";
-                        $output .= "\r\n";
+			$schema = new adoSchema( $db );
 
-                        foreach ($tables as $t) {
-                               /* echo $t;
-                                $rs = $db->Execute("SELECT * FROM $t");
-                                echo $db->GetUpdateSQL($rs, array("id" => "100"));
-                                $output .= $db->GetUpdateSQL($rs, array());*/
+			$sql = $schema->ExtractSchema(true);
 
-                        }
-
-
-                }
-                /*
-                // fetch all tables one by one
-                while ($row = mysql_fetch_row($alltables))
-                {
-                        // introtext for this table
-                        $output .= '# TABLE: ' . $row[0] . "\r\n";
-                        $output .= '# --------------------------' . "\r\n";
-                        $output .= '#' . "\r\n";
-                        $output .= "\r\n";
-
-
-                        if ($backupdrop == true)
-                        {
-                                // drop table
-                                $output .= 'DROP TABLE IF EXISTS `' . $row[0] . '`;' . "\r\n";
-                                $output .= "\r\n";
-                        }
-
-
-
-
-                        // structure of the table
-                        $table = mysql_query('SHOW CREATE TABLE ' . $row[0]);
-                        $create = mysql_fetch_array($table);
-
-                        // replace UNIX enter by Windows Enter for readability in Windows
-                        $output .= str_replace("\n","\r\n",$create[1]).';';
-                        $output .= "\r\n";
-                        $output .= "\r\n";
-
-
-                        $fields = mysql_list_fields($dbname, $row[0]);
-                        $columns = mysql_num_fields($fields);
-
-                        // all data from table
-                        $result = mysql_query('SELECT * FROM '.$row[0]);
-                        while($tablerow = mysql_fetch_array($result))
-                                {
-                                $output .= 'INSERT INTO `'.$row[0].'` (';
-                                for ($i = 0; $i < $columns; $i++)
-                                {
-                                        $output .= '`'.mysql_field_name($fields,$i).'`,';
-                                }
-                                $output = substr($output,0,-1); // remove last comma
-                                $output .= ') VALUES (';
-                                for ($i = 0; $i < $columns; $i++)
-                                {
-                                        // remove all enters from the field-string. MySql statement must be on one line
-                                        $value = str_replace("\r\n",'\n',$tablerow[$i]);
-                                        // replace ' by \'
-                                        $value = str_replace('\'',"\'",$value);
-                                        $output .= '\''.$value.'\',';
-                                }
-                                $output = substr($output,0,-1); // remove last comma
-                                $output .= ');' . "\r\n";
-                                } // while
-                        $output .= "\r\n";
-                        $output .= "\r\n";
-
-                } //end of while clause
-
-                */
-               /* $file = 'backup.sql';
-                $mime_type = 'text/sql';
-                header('Content-Disposition: inline; filename="' . $file . '"');
-                header('Content-Type: ' . $mime_type);
-                echo $output;
-                        */
-
-                //return $output;
+			header('Content-Disposition: attachment; filename="dPdbBackup.xml"');
+			header('Content-Type: text/xml');
+			echo $sql;
+		}
         }
 
-				function & acl() {
-					if (! isset($this->_acl))
-						$this->_acl =& new InstallerPermissions;
-					return $this->_acl;
-				}
+	function & acl() {
+		if (! isset($this->_acl))
+			$this->_acl =& new InstallerPermissions;
+		return $this->_acl;
+	}
 
 }
 
