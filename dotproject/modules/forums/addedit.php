@@ -49,7 +49,7 @@ function delIt(){
 }
 </script>
 
-<table width="98%" cellspacing="1" cellpadding="1" border="0">
+<table width="100%" cellspacing="1" cellpadding="1" border="0">
 <tr>
 	<td><img src="./images/icons/communicate.gif" alt="" border="0" width="42" height="42"></td>
 	<td nowrap width="100%"><h1><?php
@@ -88,7 +88,7 @@ function delIt(){
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Forum Name');?>:</td>
 			<td>
-				<input type="text" class="text" size=25 name="forum_name" value="<?php echo @$forum_info["forum_name"];?>" maxlength="50" style="width:200px;">
+				<input type="text" class="text" size=25 name="forum_name" value="<?php echo @$forum_info["forum_name"];?>" maxlength="50" style="width:200px;" />
 			</td>
 		</tr>
 		<tr>
@@ -110,9 +110,9 @@ function delIt(){
 		<tr>
 			<td align="right" nowrap valign="top">Status:</td>
 			<td valign="top">
-				<input type="radio" value="-1" <?php if($status ==-1)echo " checked";?> name="forum_status"><?php $AppUI->_('open for posting');?><br />
-				<input type="radio" value="1" <?php if($status ==1)echo " checked";?> name="forum_status"><?php $AppUI->_('read-only');?><br />
-				<input type="radio" value="0" <?php if($status ==0)echo " checked";?> name="forum_status"><?php $AppUI->_('closed');?>
+				<input type="radio" value="-1" <?php if($status ==-1) echo " checked";?> name="forum_status" /><?php echo $AppUI->_('open for posting');?><br />
+				<input type="radio" value="1" <?php if($status == 1) echo " checked";?> name="forum_status" /><?php echo $AppUI->_('read-only');?><br />
+				<input type="radio" value="0" <?php if($status ==0) echo " checked";?> name="forum_status" /><?php echo $AppUI->_('closed');?>
 			</td>
 		</tr>
 		<tr>
@@ -148,11 +148,11 @@ function delIt(){
 
 <tr>
 	<td align="left">
-		<input type="button" value="<?php echo $AppUI->_('back');?>" class=button onClick="javascript:window.location='./index.php?m=forums';">
+		<input type="button" value="<?php echo $AppUI->_('back');?>" class=button onclick="javascript:window.location='./index.php?m=forums';" />
 	</td>
 	<td align="right" colspan="2"><?php
 		if ($AppUI->user_id == $forum_info["forum_owner"] || $forum_id ==0) {
-			echo '<input type="button" value="'.$AppUI->_('submit').'" class=button onclick="submitIt()">';
+			echo '<input type="button" value="'.$AppUI->_('submit').'" class=button onclick="submitIt()" />';
 		}?></td>
 </tr>
 </form>
