@@ -116,7 +116,9 @@ for ($c=65; $c < 91; $c++) {
 }
 $a2z .= "\n</tr>\n<tr><td colspan='28'>$form</td></tr></table>";
 
+
 // setup the title block
+$contact_id = $carr[$z][$x]["contact_id"];
 $titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $a2z );
 if ($canEdit) {
@@ -125,12 +127,20 @@ if ($canEdit) {
 		'<form action="?m=contacts&a=addedit" method="post">', '</form>'
 	);
 }
+$titleBlock->addCrumbRight(
+
+		'<a href="./index.php?m=contacts&a=vcardimport&dialog=0">' . $AppUI->_('Import vCard') . '</a>'
+	);
 $titleBlock->show();
 ?>
-
+<script language="javascript">
+function popGetVcf() {
+	window.open( './index.php?m=contacts&a=vcardimport&dialog=1', 'getvcf', 'top=250,left=250,width=400, height=120, scollbars=false' );
+}
+</script>
 <table width="100%" border="0" cellpadding="1" cellspacing="1" height="400" class="contacts">
 <tr>
-<?php 
+<?php
 	for ($z=0; $z < $carrWidth; $z++) {
 ?>
 	<td valign="top" align="left" bgcolor="#f4efe3" width="<?php echo $tdw;?>%">
@@ -167,3 +177,4 @@ $titleBlock->show();
 <?php }?>
 </tr>
 </table>
+<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href='./index.php?m=contacts&a=exportvcard&suppressHeaders=true&contact_id=<?php echo $carr[$z][$x]["contact_id"];?>' >Import vCard</a>
