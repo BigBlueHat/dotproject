@@ -20,16 +20,16 @@ $priority = array(
  1 => 'high'
 );
 
+define( 'DAILY_WORKING_HOURS', 12);
+
 function get_end_date($start_date, $duration) {
-	define(DAYLY_WORKING_HOURS, 12);
-	
-	if(!$duration) return "";
-	
+	if (!$duration) {
+		return "";
+	}
 	if($duration < 24) {
 		// fix durations < 24 according to working hours
-		$duration = ceil($duration / DAYLY_WORKING_HOURS) * 24;
+		$duration = ceil( $duration / DAILY_WORKING_HOURS ) * 24;
 	}
-	return time2YMD(strtotime($start_date . " -1 day + " . $duration . " hours"));
+	return time2YMD( strtotime( $start_date . " -1 day + " . $duration . " hours" ) );
 }
-
 ?>
