@@ -13,5 +13,5 @@
 
 # 11/Sep/2003
 # add forum_message field for 'last edited by'
-ALTER TABLE 'forum_messages' ADD 'message_editor' int(11) NOT NULL default '0';
+ALTER TABLE `forum_messages` ADD `message_editor` int(11) NOT NULL default '0';
 
