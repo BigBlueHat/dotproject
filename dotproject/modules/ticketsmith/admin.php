@@ -61,7 +61,7 @@ switch ($action) {
         $result = do_query("SELECT id, name, email FROM users WHERE username != 'admin' ORDER BY id");
         while ($row = result2hash($result)) {
             $content .= "<tr>";
-            $content .= "<td align=\"center\"><a href=\"index.php?a=ticketsmith&a=edit&id=" . $row["id"] . "\"><img src=/images/posticon.gif\" border=\"0\"></a></td>";
+            $content .= "<td align=\"center\"><a href=\"index.php?a=ticketsmith&a=edit&id=" . $row["id"] . "\"><img src=modules/ticketsmith/images/posticon.gif\" border=\"0\"></a></td>";
             $content .= "<td>" . $row["name"] . "</td>";
             $content .= "<td>" . $row["email"] . "</td>";
             $content .= "</tr>\n";
