@@ -38,7 +38,7 @@ FROM companies
 ORDER BY company_name ASC
 ";
 $company_name="";
-$company_list=array("0"=>"Select Company");
+$company_list=array("0"=> $AppUI->_("Select Company") );
 $ptrc = db_exec($sql);
 $nums=db_num_rows($ptrc);
 echo db_error();
@@ -89,7 +89,7 @@ function delIt2(id) {
 </script>
 
 <form name="changeMe" action="./index.php?m=system&a=billingcode" method="post">
-        <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $obj->task_status, true );?>
+        <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $obj->task_status, false );?>
 </form>
 
 <? echo "<b>$company_name</b>"; ?>

@@ -178,8 +178,8 @@ function submitIt(){
 	<td>
 <?php
 	$notify_filter = array( 
-		0 => $AppUI->_('Do not include task/event owner'),
-		1 => $AppUI->_('Include task/event owner')
+		0 => 'Do not include task/event owner',
+		1 => 'Include task/event owner'
 	);
  
 	echo arraySelect( $notify_filter, 'pref_name[MAILALL]', 'class=text size=1', @$prefs['MAILALL'], true);
