@@ -76,4 +76,16 @@ function db_version() {
 		return 0;
 	}
 }
+
+function db_unix2dateTime( $time ) {
+	// converts a unix time stamp to the default date format
+	return $time > 0 ? date("Y-m-d H:i:s", $time) : null;
+}
+
+function db_dateTime2unix($time) {
+	// converts a DB date to a unix time stamp
+	return strtotime( substr( $time, 0, 10 ) );
+}
+
+
 ?>
