@@ -989,6 +989,7 @@ the active tab, and the selected tab **/
 	}
 
 	function loadExtras($module, $file = null) {
+		global $AppUI;
 		if (! isset($_SESSION['all_tabs']) || ! isset($_SESSION['all_tabs'][$module]))
 			return false;
 
@@ -1002,7 +1003,7 @@ the active tab, and the selected tab **/
 		}
 		$tab_count = 0;
 		foreach ($tab_array as $tab_elem) {
-			if (isset($tab_elem['name'])) {
+			if (isset($tab_elem['name']) && $AppUI->isActiveModule($tab_elem['name'])) {
 				$tab_count++;
 				$this->add($tab_elem['file'], $tab_elem['name']);
 			}
