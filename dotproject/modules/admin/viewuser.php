@@ -5,11 +5,10 @@ $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
 if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+
+$AppUI->savePlace();
 
 $user_id = isset( $HTTP_GET_VARS['user_id'] ) ? $HTTP_GET_VARS['user_id'] : 0;
 
@@ -103,6 +102,10 @@ $urow = mysql_fetch_array( $urc, MYSQL_ASSOC );
 					.'<br>'.$urow["user_coutnry"]
 					;
 			?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>Locale:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo @$urow["user_locale"]." - ".$AppUI->locales[@$urow["user_locale"]];?></td>
 		</tr>
 		</table>
 

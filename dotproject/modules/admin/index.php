@@ -7,11 +7,11 @@ $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
 if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+
+$AppUI->savePlace();
+
 // Pull First Letters
 $let = ":";
 $sql = "SELECT DISTINCT UPPER(SUBSTRING(user_username, 1, 1)) FROM users";
@@ -25,7 +25,7 @@ while ($row = mysql_fetch_row( $rc )) {
 <script language="javascript">
 function delMe( x, y ) {
 	if (confirm( "Are you sure you want\nto delete user " + y + "?" )) {
-		top.location="./index.php?m=admin&a=dosql&del=1&user_id=" + x;
+		top.location="?m=admin&a=dosql&del=1&user_id=" + x;
 	}
 }
 </script>

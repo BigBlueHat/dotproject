@@ -96,6 +96,8 @@ $modules = array(
 	"contacts",
 	"files",
 	"forums",
+	"mcps",
+	"plans",
 	"projects",
 	"tasks",
 	"ticketsmith",
