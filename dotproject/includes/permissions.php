@@ -64,7 +64,6 @@ while ($prow = db_fetch_assoc( $prc )) {
 // *** this next bit doesn't seem to have any relevance
 if($ual < 1){
 	setcookie("m", "ticketsmith");
-	setcookie("user_cookie", "0");
 	include "./includes/login.php";
 	die;
 }
