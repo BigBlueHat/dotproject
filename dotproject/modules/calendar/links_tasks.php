@@ -47,7 +47,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 
 //echo "  ".intval($start->after( $startPeriod ) && $start->before( $endPeriod ));
 //echo intval($end && $end->after( $startPeriod ) && $end->before( $endPeriod )&& $start->before( $end ));
-		if ($start->after( $startPeriod ) && $start->before( $endPeriod )) {
+		if (($start->after( $startPeriod ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
 			$temp = $link;
 			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
 			$links[$start->format( FMT_TIMESTAMP_DATE )][] = $temp;
