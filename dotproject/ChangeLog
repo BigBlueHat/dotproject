@@ -1,36 +1,243 @@
-2005-03-02 22:39  (gregorerhardt)
+2005-03-03 19:07  (ajdonnison)
+---------------------------------
+modules/tasks/view.php
+- Fixed file paths.
+- Removed spurious carriage returns.
+- Delete button only shows up if delete permission is granted.
+
+2005-03-03 19:01  (ajdonnison)
+---------------------------------
+modules/projects/projects.class.php
+modules/projects/view.php
+- Fixed problem where all restrictions on delete were bypassed or ignored.
+
+2005-03-03 18:12  (ajdonnison)
+---------------------------------
+modules/tasks/organize.php
+modules/tasks/tasksperuser_sub.php
+- Removed warning messages, fixed minor problems in moving tasks.
+
+2005-03-03 18:01  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Changed GACL table sizes down so that MySQL 4 doesn't have a fit.
+
+2005-03-03 17:26  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/session.php
+locales/en/system.inc
+- Added support for scanning event queue during the session garbage collection.
+- This allows queue scanning to be semi-random but doesn't require an external
+- process to call the queue scanner.
+
+2005-03-03 17:07  (ajdonnison)
+---------------------------------
+classes/event_queue.class.php
+- Fixed handling of event execution from queue.
+
+2005-03-03 16:55  (ajdonnison)
+---------------------------------
+classes/event_queue.class.php
+classes/libmail.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+- Added support for direct SMTP email, including SMTP using authentication.
+- Also added is support for delayed transmission of emails, using the new
+- event queue.
+
+2005-03-03 15:23  (ajdonnison)
+---------------------------------
+docs/check.php
+- Changed title to be consistent.
+
+2005-03-03 14:11  (ajdonnison)
+---------------------------------
+docs/check.php
+- Changed booleans to use descriptive terms rather than numerics.
+- Removed checks for base directory and url, simply displaying them instead.
+
+2005-03-03 13:39  (ajdonnison)
+---------------------------------
+queuescanner.php
+classes/event_queue.class.php
+- New event queue manager.  Hopefully will form the basis of delayed or
+- timed events, such as delayed email transfers, etc.
+
+2005-03-03 13:16  (ajdonnison)
+---------------------------------
+classes/permissions.class.php
+- Changed getPermittedUsers to only return a complete user list when the
+- user has view permissions on admin.  Instead returns just the current
+- user.
+
+2005-03-03 13:15  (ajdonnison)
+---------------------------------
+modules/forums/addedit.php
+modules/forums/index.php
+- Cleaned up permission handling.
+
+2005-03-03 12:56  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+images/icons/stock_new_small.png
+modules/forums/forums.class.php
+modules/forums/index.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+- Added new topic, new message indicators in forums.
+- Also supports hiding of email addresses if a hide_email_addresses sysconfig
+- is added - although I have held off putting this in the sysconfig table
+- until other modules are modified to support it as well.
+
+2005-03-03 12:29  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+- fixed foreach error in customfields bind method
+
+2005-03-03 11:55  (ajdonnison)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/clash.php
+modules/calendar/do_event_aed.php
+modules/calendar/view.php
+- REgularized file paths.
+
+2005-03-03 11:45  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- removed config db content for legacy pwd support
+
+2005-03-03 10:49  (ajdonnison)
+---------------------------------
+modules/admin/do_user_aed.php
+modules/admin/vw_usr_roles.php
+- Regularized file includes.
+
+2005-03-03 10:45  (ajdonnison)
+---------------------------------
+includes/db_connect.php
+includes/session.php
+- Rationalized file includes.
+
+2005-03-03 10:44  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+- forgot to remove var_export php command for development
+
+2005-03-03 10:39  (ajdonnison)
+---------------------------------
+classes/permissions.class.php
+classes/query.class.php
+classes/ui.class.php
+- Regularized the use of includes.
+
+2005-03-03 10:36  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+- Fixed bug where store would fail if there were no custom fields
+
+2005-03-03 10:15  (gregorerhardt)
+---------------------------------
+modules/contacts/view.php
+modules/projects/addedit.php
+- 483: create new project with contact details
+
+2005-03-03 09:56  (gregorerhardt)
+---------------------------------
+modules/companies/view.php
+modules/projects/addedit.php
+- 483: transport company name and id for new project
+
+2005-03-03 09:40  (gregorerhardt)
+---------------------------------
+modules/companies/vw_contacts.php
+modules/contacts/addedit.php
+modules/contacts/select_contact_company.php
+- 496: company: transport company name and id for new contact
+
+2005-03-03 09:38  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+modules/calendar/addedit.php
+modules/calendar/do_event_aed.php
+modules/calendar/view.php
+modules/companies/view.php
+modules/files/addedit.php
+modules/projects/addedit.php
+modules/projects/do_project_aed.php
+modules/projects/view.php
+modules/system/custom_field_editor.php
+modules/tasks/ae_desc.php
+modules/tasks/do_task_aed.php
+modules/tasks/view.php
+- Fixed a bug with CustomFields class that gave an error when no fields were available.
+- Added custom fields support to calendar events, companies, projects and tasks.
+
+2005-03-03 09:17  (gregorerhardt)
+---------------------------------
+includes/db_adodb.php
+- globalized baseDir variable
+
+2005-03-03 09:11  (gregorerhardt)
+---------------------------------
+ChangeLog
+- CL update
+
+2005-03-03 08:39  (gregorerhardt)
 ---------------------------------
 modules/calendar/week_view.php
 - corrected week number for week view starting with today
 
-2005-03-02 22:08  (gregorerhardt)
+2005-03-03 08:08  (gregorerhardt)
 ---------------------------------
 modules/tasks/ae_desc.php
 modules/tasks/tasks.class.php
 modules/tasks/view.php
 - corrected use of task owner vs. task creator
 
-2005-03-02 21:44  (gregorerhardt)
+2005-03-03 07:44  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - default task duration to 1 hour
 
-2005-03-02 21:20  (gregorerhardt)
+2005-03-03 07:20  (gregorerhardt)
 ---------------------------------
 modules/tasks/ae_desc.php
 - do not provide move task functionality for new task creation
 
-2005-03-02 21:03  (gregorerhardt)
+2005-03-03 07:03  (gregorerhardt)
 ---------------------------------
 modules/admin/addedituser.php
 modules/system/addeditpref.php
 modules/system/systemconfig.php
 - diverse security enhancements (restricted access)
 
-2005-03-02 20:50  (gregorerhardt)
+2005-03-03 06:50  (gregorerhardt)
 ---------------------------------
 locales/en/public.inc
 - removed html tags from message
+
+2005-03-03 03:40  (gregorerhardt)
+---------------------------------
+modules/system/systemconfig.php
+- added tooltip functionality to context help links
+
+2005-03-02 19:00  (ajdonnison)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2005-03-02 18:57  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Support for select lists in session variables.
 
 2005-03-02 18:54  (ajdonnison)
 ---------------------------------
