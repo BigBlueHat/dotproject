@@ -39,12 +39,13 @@ if ($contact_id == 0 && $company_id > 0) {
 	$company_detail['company_name'] = $company_name;
 	echo $company_name;
 }
+
 ?>
 
 <script language="javascript">
 <?php
-	echo "window.company_id=" . $company_detail['company_id'] . ";\n";
-	echo "window.company_value='" . $company_detail['company_name'] . "';\n";
+	echo "window.company_id=" . dPgetParam($company_detail, 'company_id', 0) . ";\n";
+	echo "window.company_value='" . dPgetParam($company_detail, 'company_name', "") . "';\n";
 ?>
 
 function submitIt() {
