@@ -14,12 +14,6 @@
 ALTER TABLE `tasks` ADD `task_departments` CHAR( 100 ) ;
 ALTER TABLE `tasks` ADD `task_contacts` CHAR( 100 ) ;
 
-#add task_access and task_notify to tasks table
-ALTER TABLE `tasks` ADD `task_access` TINYINT(3) NOT NULL
-DEFAULT '0';
-ALTER TABLE `tasks` ADD `task_notify` TINYINT(1) NOT NULL
-DEFAULT '0';
-
 # add contact_department to contacts table
 ALTER TABLE `contacts` ADD `contact_department` TINYTEXT AFTER `contact_company` ;
 
