@@ -49,7 +49,12 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
-
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function checkAll(user_id) {
         var f = eval( 'document.assFrm' + user_id );
         var cFlag = f.master.checked ? false : true;
@@ -153,6 +158,7 @@ function chPriority(user_id) {
                 f.submit();
         }
 }
+<?php } ?>
 </script>
 <form name="editFrm" action="index.php?m=tasks&a=tasksperuser" method="post">
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />

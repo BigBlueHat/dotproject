@@ -1,10 +1,4 @@
 <?php /* TASKS $Id$ */
-//todo: selectbox double
-//todo: aufgabenBenutzerPrioritaet
-//todo: securing
-//todo: uebersetzung
-
-
 $AppUI->savePlace();
 
 $log_all_projects = true; // show tasks for all projects

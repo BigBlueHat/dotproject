@@ -129,6 +129,13 @@ function setCalendar( idate, fdate ) {
 	fld_fdate.value = fdate;
 }
 
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
+
 function updateTask() {
 	var f = document.editFrm;
 	if (f.task_log_description.value.length < 1) {
@@ -149,6 +156,7 @@ function delIt() {
 		document.frmDelete.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
