@@ -1,11 +1,11 @@
 <?php // $Id$
 
 global $cfgDir, $cfgFile, $failedImg, $filesDir, $locEnDir, $okImg, $tblwidth, $tmpDir;
-$cfgDir = isset($cfgDir) ? $cfgDir : "./includes";
-$cfgFile = isset($cfgFile) ? $cfgFile : "./includes/config.php";
-$filesDir = isset($filesDir) ? $filesDir : "./files";
-$locEnDir = isset($locEnDir) ? $locEnDir : "./locales/en";
-$tmpDir = isset($tmpDir) ? $tmpDir : "./files/temp";
+$cfgDir = isset($cfgDir) ? $cfgDir : "../includes";
+$cfgFile = isset($cfgFile) ? $cfgFile : "../includes/config.php";
+$filesDir = isset($filesDir) ? $filesDir : "../files";
+$locEnDir = isset($locEnDir) ? $locEnDir : "../locales/en";
+$tmpDir = isset($tmpDir) ? $tmpDir : "../files/temp";
 $tblwidth = isset($tblwidth) ? $tblwidth :'100%';
 $chmod = '0777';
 ?>
@@ -103,7 +103,7 @@ if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cf
 
         @chmod( $cfgFile, $chmod );
         @chmod( $cfgDir, $chmod );
-	$filemode = fileperms($cfgFile);
+	$filemode = @fileperms($cfgFile);
 	if ($filemode & 2)
 	        $okMessage="<span class='error'> 777</span>";
 
@@ -118,7 +118,7 @@ $okMessage="";
 if (is_writable( $filesDir )) {
 
         @chmod( $filesDir, $chmod );
-	$filemode = fileperms($filesDir);
+	$filemode = @fileperms($filesDir);
 	if ($filemode & 2)
         	$okMessage="<span class='error'> 777</span>";
 
@@ -133,7 +133,7 @@ $okMessage="";
 if (is_writable( $tmpDir )) {
 
         @chmod( $tmpDir, $chmod );
-	$filemode = fileperms($tmpDir);
+	$filemode = @fileperms($tmpDir);
 	if ($filemode & 2)
         	$okMessage="<span class='error'> 777</span>";
 
@@ -148,7 +148,7 @@ $okMessage="";
 if (is_writable( $locEnDir )) {
 
         @chmod( $locEnDir, $chmod );
-	$filemode = fileperms($filesDir);
+	$filemode = @fileperms($filesDir);
 	if ($filemode & 2)
 	        $okMessage="<span class='error'> 777</span>";
 

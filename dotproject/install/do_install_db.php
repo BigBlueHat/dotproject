@@ -57,6 +57,10 @@ function splitSql($sql) {
 ######################################################################################################################
 
 $baseDir = str_replace( DIRECTORY_SEPARATOR.'install', '', dirname(__FILE__));
+$baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
+$baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
+$baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? str_replace( DIRECTORY_SEPARATOR.'install', '', dirname($_SERVER['SCRIPT_NAME'])) : str_replace( DIRECTORY_SEPARATOR.'install', '', dirname(getenv('SCRIPT_NAME')));
+
 $dbMsg = "";
 $cFileMsg = "Not Created";
 $dbErr = false;
@@ -209,7 +213,14 @@ if ($dobackup){
          </tr>
 <?php } ?>
 	<tr>
-	    <td class="item" align="left" colspan="2">TODO: Link to global configuration site</td>
+            <td class="title" valign="top" colspan="2">Upgrade from 1.0.2</td>
+         <tr>
+	<tr>
+	    <td class="item" valign="top">In case of upgrading from 1.0.2 you should run the permissions upgrade script:</td>
+	    <td class="item" align="left"><b><a href="<?php echo $baseUrl.'/db/upgrade_permissions.php';?>">Run permissions upgrade script</a></b></td>
+	 </tr>
+	<tr>
+	    <td class="item" align="center" colspan="2"><br/><b><a href="<?php echo $baseUrl.'/index.php?m=system&a=systemconfig';?>">Login and Configure the dotProject System Environment</a></b></td>
 	 </tr>
         </table>
 </body>
