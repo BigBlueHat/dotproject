@@ -103,8 +103,8 @@ if($do_report) {
 	
 	$user_list = db_loadHashList($sql, "user_id");
 	
-	$sql = "SELECT t.*, ut.*
-			FROM tasks AS t, user_tasks AS ut
+	$sql = "SELECT t.*, ut.*, p.project_name
+			FROM tasks AS t, user_tasks AS ut, projects AS p
 			WHERE (task_start_date
 			   BETWEEN \"".$start_date->format( FMT_DATETIME_MYSQL )."\" 
 	                AND \"".$end_date->format( FMT_DATETIME_MYSQL )."\" 
@@ -114,7 +114,8 @@ if($do_report) {
 	        AND !isnull(task_start_date) AND task_start_date != '0000-00-00 00:00:00'
 	        AND task_dynamic   !='1'
 	        AND task_milestone = '0'
-	        AND task_duration  > 0";
+	        AND task_duration  > 0
+	        AND t.task_project = p.project_id";
     if($user_id){
         $sql .= " AND t.task_owner = '$user_id'";
     }
@@ -136,12 +137,14 @@ if($do_report) {
 		$sql .= " AND " . implode(" AND ", $allowedTasks);
 	}
 	
-	$task_list_hash = db_loadHashList($sql, "task_id");
-	$task_list      = array();
+	$task_list_hash   = db_loadHashList($sql, "task_id");
+	$task_list        = array();
+	$fetched_projects = array();
 	foreach($task_list_hash as $task_id => $task_data){
 		$task = new CTask();
 		$task->bind($task_data);
 		$task_list[] = $task;
+		$fetched_projects[$task->task_project] = $task_data["project_name"];
 	}
 	
 	$user_usage            = array();
@@ -189,12 +192,15 @@ if($do_report) {
 						    $user_tasks_counted_in[$user_id] = array();
 						}
 						
-						if(!array_key_exists($task->task_id, $user_tasks_counted_in[$user_id])){
-						    $user_tasks_counted_in[$user_id][$task->task_id] = 0;
+						if(!array_key_exists($task->task_project, $user_tasks_counted_in[$user_id])) {
+						    $user_tasks_counted_in[$user_id][$task->task_project] = array();
+						}
+						
+						if(!array_key_exists($task->task_id, $user_tasks_counted_in[$user_id][$task->task_project])){
+						    $user_tasks_counted_in[$user_id][$task->task_project][$task->task_id] = 0;
 						}
 						// We add it up
-						$user_tasks_counted_in[$user_id][$task->task_id] += $hours_added;
-//						echo "adding [$user_id] ".$task->task_id." -".$actual_date->format("%Y%m%d")." -  ".$user_usage[$user_id][$actual_date->format("%Y%m%d")]."<br />";
+						$user_tasks_counted_in[$user_id][$task->task_project][$task->task_id] += $hours_added;
 					}
 				}
 				$actual_date->addDays(1);
@@ -286,16 +292,23 @@ if($do_report) {
 	   </table>
 	   </center>
        <?php
-           foreach($user_tasks_counted_in as $user_id => $task_information) {
+           foreach($user_tasks_counted_in as $user_id => $project_information) {
                echo "<b>".$user_names[$user_id]."</b><br /><blockquote>";
-               echo "<table>";
-               foreach($task_information as $task_id => $hours_assigned){
-                   echo "<tr><td>".$task_list_hash[$task_id]["task_name"]."</td><td>".round($hours_assigned,2)." hrs</td></tr>";
+               echo "<table width='50%' border='1' class='std'>";
+               foreach ($project_information as $project_id => $task_information) {
+                   echo "<tr><th colspan='3'><span style='font-weight:bold; font-size:110%'>".$fetched_projects[$project_id]."</span></th></tr>";
+                   
+                   $project_total = 0;
+                   foreach($task_information as $task_id => $hours_assigned){
+                       echo "<tr><td>&nbsp;</td><td>".$task_list_hash[$task_id]["task_name"]."</td><td>".round($hours_assigned,2)." hrs</td></tr>";
+                       $project_total += round($hours_assigned,2);
+                   }
+                   echo "<tr><td colspan='2' align='right'><b>".$AppUI->_("Total assigned")."</b></td><td><b>$project_total hrs</b></td></tr>";
+                   
                }
                echo "</table></blockquote>";
            }
        ?>
-	
 	<?php	
 }
 			?>		
