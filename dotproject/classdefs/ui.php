@@ -31,6 +31,7 @@ class CAppUI {
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // supported languages
 	var $locales = array(
+		'cs' => 'Czech',
 		'de' => 'German',
 		'en' => 'English',
 		'es' => 'Spanish',
