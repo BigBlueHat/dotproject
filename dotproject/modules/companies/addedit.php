@@ -23,7 +23,7 @@ function submitIt(){
 	}
 }
 function testURL(x){
-	var test = "document.changeclient.company_primary_url." + x + ".value";
+	var test = "document.changeclient.company_primary_url.value";
 	test = eval(test);
 	if(test.length > 6)
 	{
@@ -75,7 +75,7 @@ if(confirm("Are you sure you would like\nto delete this company?"))
 <tr><TD align="right">City:</td><TD><input type="text" class="text" name="company_city" value="<?echo @$crow["company_city"];?>" maxlength="50"></td></tr>
 <tr><TD align="right">State:</td><TD><input type="text" class="text" name="company_state" value="<?echo @$crow["company_state"];?>" maxlength="2"></td></tr>
 <tr><TD align="right">Zip:</td><TD><input type="text" class="text" name="company_zip" value="<?echo @$crow["company_zip"];?>" maxlength="15"></td></tr>
-<tr><TD align="right">URL:<A name="x"></a></td><TD><input type="text" class="text" value="<?echo @$crow["company_primary_url"];?>" name="company_primary_url" maxlength="255"> <a href="#x" onClick="testURL('CompanyURLOne')"><span class="smallNorm">[test]</span></a></td></tr>
+<tr><TD align="right">URL http://<A name="x"></a></td><TD><input type="text" class="text" value="<?echo @$crow["company_primary_url"];?>" name="company_primary_url" maxlength="255"> <a href="#x" onClick="testURL('CompanyURLOne')"><span class="smallNorm">[test]</span></a></td></tr>
 <tr><TD align="right">Company Owner:</td><TD><input type="text" class="text" name="company_owner" value="<?echo strval($crow["company_owner"]);?>" maxlength="255"> </td></tr>
 
 <TR><TD align="right">Description:</td><td>&nbsp; </td></tr>
