@@ -1,3 +1,13 @@
+2004-08-17 08:00  (ajdonnison)
+---------------------------------
+modules/projects/view.php
+- Changed contact link to the view link rather than the edit link
+
+2004-08-16 04:07  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-16 03:03  (revelation7)
 ---------------------------------
 db/dotproject.sql
@@ -487,16 +497,6 @@ ChangeLog
 - ChangeLog update
 
 2004-07-24 11:58  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- the tasksperuser view now shows orphaned tasks
-
-2004-07-24 11:57  (gregorerhardt)
----------------------------------
-locales/en/tasks.inc
-- the tasksperuser view no shows orphaned tasks
-
-2004-07-22 21:00  (ajdonnison)
 ---------------------------------
 ...
 
