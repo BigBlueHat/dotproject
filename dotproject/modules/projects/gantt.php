@@ -239,9 +239,14 @@ foreach($projects as $p) {
  				$t["task_end_date"] = $t["task_start_date"];
  				
  			if ($t["task_milestone"] != 1)
- 			{/*		*/
- 				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", ' ', ' '/*substr($t["task_start_date"],  substr($t["task_end_date"], 2, 8)*/, ' '), ' ', ' ', ' '/*chr(32)*/, 0.6);
-// 				$bar2 = new GanttBar($row++, array("   * ".$t["task_name"], $t["task_start_date"], $t["task_end_date"]," "), "0", "0;", 0.6);
+ 			{
+				$tStart = ($t["task_start_date"] > "0000-00-00 00:00:00") ? $t["task_start_date"] : date("Y-m-d H:i:s");
+				$tEnd = ($t["task_end_date"] > "0000-00-00 00:00:00") ? $t["task_end_date"] : date("Y-m-d H:i:s");
+				$tStartObj = new CDate($tStart);
+				$tEndObj = new CDate($tEnd);
+
+				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", $tStartObj->format($df),  $tEndObj->format($df), ' '), $tStart, $tEnd, ' ', 0.6);
+				
 				$bar2->title->SetColor( bestColor( '#ffffff', '#'.$p['project_color_identifier'], '#000000' ) );
  				$bar2->SetFillColor("#".$p['project_color_identifier']);		
  				$graph->Add($bar2);

@@ -1,6 +1,8 @@
 <?php /* TASKS $Id$gantt.php,v 1.30 2004/08/06 22:56:54 gregorerhardt Exp $ */
 GLOBAL  $company_id, $dept_ids, $department, $min_view, $m, $a;
 
+ini_set('memory_limit', $dPconfig['reset_memory_limit']);
+
 $min_view = defVal( @$min_view, false);
 $project_id = defVal( @$_GET['project_id'], 0);
 
@@ -202,3 +204,4 @@ function showFullProject() {
         </td>
 </tr>
 </table>
+<?php ini_restore('memory_limit');?>

@@ -263,6 +263,8 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "pt_br"=>"Portuguese Brazillian",
 "record types",
 "remove",
+"reset_memory_limit_title"=>"Memory Limit for Gantt",
+"reset_memory_limit_tooltip"=>"Experiencing Errors with invisible Gantt Charts use this variable to temporarily expand your PHP Memory Limit for Gantt Chart drawing. Values of 64M, 128M etc. are common.",
 "restrict_color_selection_title"=>"Restrict Project Colour Selection",
 "restrict_color_selection_tooltip"=>"Used in conjuction with the System Value Look up option \"ProjectColors\" you can use this setting to control the project colour selection options accessible by all users on this system.
 
