@@ -119,16 +119,19 @@ function dPshowModuleConfig( $config ) {
 	$s .= '</table>';
 	return ($s);
 }
-##
-## function to recussively find an image in a number of places
-##
-function dPfindImage( $name, $module ) {
+
+/**
+ *	Function to recussively find an image in a number of places
+ *	@param string The name of the image
+ *	@param string Optional name of the current module
+ */
+function dPfindImage( $name, $module=null ) {
 // uistyle must be declared globally
 	global $AppUI, $uistyle;
 
 	if (file_exists( "{$AppUI->cfg['root_dir']}/style/$uistyle/images/$name" )) {
 		return "./style/$uistyle/images/$name";
-	} else if (file_exists( "{$AppUI->cfg['root_dir']}/modules/$module/images/$name" )) {
+	} else if ($module && file_exists( "{$AppUI->cfg['root_dir']}/modules/$module/images/$name" )) {
 		return "./modules/$module/images/$name";
 	} else if (file_exists( "{$AppUI->cfg['root_dir']}/images/icons/$name" )) {
 		return "./images/icons/$name";
@@ -139,8 +142,15 @@ function dPfindImage( $name, $module ) {
 	}
 }
 
+/**
+ *	Workaround to display png images with alpha-transparency in IE6.0
+ *	@param string The name of the image
+ *	@param string The image width
+ *	@param string The image height
+ *	@param string The alt text for the image
+ */
 function dPshowImage( $src, $wid='', $hgt='', $alt='' ) {
-	if (strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0' ) !== false) {
+	if (strpos( $src, '.png' ) > 0 && strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0' ) !== false) {
 		return "<div style=\"height:{$hgt}px; width:{$wid}px; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$src', sizingMethod='scale');\" ></div>";
 	} else {
 		return "<img src=\"$src\" width=\"$wid\" height=\"$hgt\" alt=\"$alt\" border=\"0\" />";
