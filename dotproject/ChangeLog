@@ -1,3 +1,14 @@
+2003-08-21 13:33  (jcgonz)
+---------------------------------
+functions/tasks_func.php
+modules/tasks/tasks.php
+- Added My Unfinished Tasks filter to the tasks list
+
+2003-08-21 03:59  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-20 14:08  (jcgonz)
 ---------------------------------
 style/classic/login.php
@@ -487,17 +498,6 @@ modules/projects/view.php
 2003-06-26 04:18  (kripper)
 ---------------------------------
 ChangeLog
-- Changelog update
-
-2003-06-26 03:24  (kobudo)
----------------------------------
-modules/help/en/projects.addedit.hlp
-- Update Project documentation.
-
-2003-06-26 02:07  (kobudo)
----------------------------------
-modules/help/en/projects.index.hlp
-- Update Project Index screen documentation.
 ...
 
 (This file has been wrapped)
