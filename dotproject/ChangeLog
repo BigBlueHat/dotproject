@@ -1,3 +1,20 @@
+2003-08-31 21:59  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+modules/projects/vw_idx_proposed.php
+- Minor localization fixes.
+
+2003-08-31 21:56  (ajdonnison)
+---------------------------------
+index.php
+includes/config-dist.php
+- Fixed version stamp
+
+2003-08-31 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-30 08:15  (ajdonnison)
 ---------------------------------
 ChangeLog
@@ -481,23 +498,6 @@ modules/calendar/calendar.class.php
 
 2003-07-03 16:36  (kripper)
 ---------------------------------
-modules/tasks/tasks.php
-- Disabled tasks filtering. Has still some bugs.
-
-2003-07-03 16:23  (kripper)
----------------------------------
-index.php
-- Uncommented canEdit/canRead assignements. Should be moved into each php file.
-
-2003-07-03 00:08  (kripper)
----------------------------------
-includes/permissions.php
-- Reimplemented a sql friendly winnow function
-
-2003-07-03 00:06  (kripper)
----------------------------------
-modules/tasks/tasks.php
-- Reimplemented a sql friendly winnow function.
 ...
 
 (This file has been wrapped)
