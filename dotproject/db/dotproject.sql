@@ -387,7 +387,7 @@ CREATE TABLE `user_preferences` (
 #   New admin email -> replace {admin@localhost}
 #
 
-INSERT INTO `users` VALUES (1,1,'admin',MD5('passwd'),0,1,'');
+INSERT INTO `users` VALUES (1,1,'admin',MD5('passwd'),0,1,0,0,0,'');
 INSERT INTO `contacts` (contact_id, contact_first_name, contact_last_name, contact_email) 
 VALUES (1,'Admin','Person','admin@localhost');
 
