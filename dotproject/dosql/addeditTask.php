@@ -17,6 +17,12 @@ if(empty($task_dynamic))$task_dynamic = 0;
 if(empty($hassign))$hassign = "";
 if(empty($hdependencies))$dependencies = "";
 
+if (empty( $task_duration )) {
+	$task_duration = 0;
+}
+$task_duration = ($duration * $dayhour);
+$task_start_date = db_unix2dateTime($task_start_date);
+$task_end_date = db_unix2dateTime($task_end_date);
 
 //Delete if $del set
 if ($del) {
@@ -28,9 +34,6 @@ if ($del) {
 	$mail_type = "Deleted";
 } else if ($task_id ==0 && isset( $task_name )) {
 //insert a new task
-	$task_duration = ($duration * $dayhour);
-	$task_start_date = toDate($task_start_date);
-	$task_end_date = toDate($task_end_date);
 	
 	$tsql = "
 	INSERT INTO tasks ( 
@@ -122,9 +125,6 @@ if ($del) {
 		$task_parent = $old_parent;
 	}
 	
-	$task_duration = ($duration * $dayhour);
-	$task_start_date = toDate( $task_start_date );
-	$task_end_date = toDate( $task_end_date );
 	$tsql = "
 	UPDATE tasks SET
 	task_name='$task_name',
