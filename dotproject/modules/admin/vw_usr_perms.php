@@ -27,7 +27,12 @@ $select_list = array();
 $join_list = array();
 $count = 0;
 foreach ($modules_list as $module){
-	if(isset($module['permissions_item_field']) && isset($module['permissions_item_table']) && isset($module['permissions_item_label'])){
+	if(isset($module['permissions_item_field']) 
+	&& $module['permissions_item_field']
+	&& isset($module['permissions_item_table']) 
+	&& $module['permissions_item_table']
+	&& isset($module['permissions_item_label'])
+	&& $module['permissions_item_label'] ){
 		$label = "t$count";
 		//associates mod dirs with tables;
 		$pgos[$module['mod_directory']] = array('table'=>$module['permissions_item_table'], 'field' => $module['permissions_item_label'], 'label' => $label);
