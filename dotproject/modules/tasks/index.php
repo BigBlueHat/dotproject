@@ -77,13 +77,16 @@ $join = "LEFT JOIN projects ON project_id = task_project";
 $where = "project_active <> 0".($project_id ? "\nAND task_project = $project_id" : '');
 
 switch ($f) {
-	case 1:
+	case 'all':
+		$where .= "\nAND task_status > -1";
+		break;
+	case 'myproj':
 		$where .= "\nAND task_status > -1\n	AND project_owner = $thisuser_id";
 		break;
-	case 2:
+	case 'mycomp':
 		$where .= "\nAND task_status > -1\n	AND project_company = $thisuser_company";
 		break;
-	case 3:
+	case 'myinact':
 		$from .= ", user_tasks";
 		$where .= "
 	AND task_project = projects.project_id
