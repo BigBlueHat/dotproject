@@ -1,3 +1,72 @@
+2003-04-29 01:28  (eddieajau)
+---------------------------------
+style/default/login.php
+- Added version to meta and login screen
+
+2003-04-29 01:23  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/view.php
+- Updates similar to companies module
+
+2003-04-29 01:21  (eddieajau)
+---------------------------------
+includes/config-dist.php
+- Moved version into developer controlled file, index.php
+- (users may not update the configuration file)
+
+2003-04-29 01:21  (eddieajau)
+---------------------------------
+index.php
+- Moved version into developer control file
+- (users may not update the configuration file)
+
+2003-04-28 22:07  (eddieajau)
+---------------------------------
+modules/companies/companies.class.php
+- Updated documentation
+
+2003-04-28 22:07  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/view.php
+- Changed query result to return an object rather than a hash.
+
+2003-04-28 22:06  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Now uses companies class method to get denied companies
+
+2003-04-28 22:04  (eddieajau)
+---------------------------------
+classes/dp.class.php
+classes/ui.class.php
+- Updated for changes in the db_loadObject function
+
+2003-04-28 22:03  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Added skeleton documentation
+- Change the format of the db_loadObject function to always bind the results to the passed object
+
+2003-04-28 21:15  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- Added item for error checking
+
+2003-04-28 20:56  (eddieajau)
+---------------------------------
+functions/companies_func.php
+functions/contacts_func.php
+- Files no longer used
+
+2003-04-28 03:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-28 01:55  (eddieajau)
 ---------------------------------
 docs/roadmap.html
@@ -429,75 +498,6 @@ modules/tasks/tasks.class.php
 
 2003-04-16 21:27  (kripper)
 ---------------------------------
-includes/main_functions.php
-- Fixed wrong delimiter warning
-
-2003-04-16 21:17  (eddieajau)
----------------------------------
-modules/ticketsmith/followup.php
-- Updated mail handling
-
-2003-04-16 21:14  (eddieajau)
----------------------------------
-modules/forums/forums.class.php
-- Updated class importing
-
-2003-04-16 21:13  (eddieajau)
----------------------------------
-modules/contacts/addedit.php
-- Fixed bug in access control
-
-2003-04-16 21:12  (eddieajau)
----------------------------------
-classes/libmail.class.php
-classes/libmail.php
-- File renamed
-
-2003-04-16 19:18  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-- Fixed scope problem with durnTypes variable
-
-2003-04-16 19:17  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Made durnTypes variable name consistent with other modules
-
-2003-04-16 12:26  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-16 08:48  (eddieajau)
----------------------------------
-locales/en/common.inc
-- Content updated
-
-2003-04-16 08:47  (eddieajau)
----------------------------------
-style/default/header.php
-- Translated welcome
-
-2003-04-16 07:58  (eddieajau)
----------------------------------
-db/upgrade_100_alpha2_to_beta1.sql
-db/dotproject_100.sql
-- Updated task duration issues
-
-2003-04-16 05:26  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-16 01:23  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-modules/tasks/view.php
-- Fixed duration type handling
-
-2003-04-16 01:22  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
 ...
 
 (This file has been wrapped)
