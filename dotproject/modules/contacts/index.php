@@ -137,6 +137,21 @@ if ($canEdit) {
 }
 $titleBlock->show();
 ?>
+<script language="javascript">
+// Callback function for the generic selector
+function goProject( key, val ) {
+	var f = document.modProjects;
+	if (val != '') {
+		f.project_id.value = key;
+		f.submit();
+        }
+}
+</script>
+<form action="./index.php" method='get' name="modProjects">
+  <input type='hidden' name='m' value='projects' />
+  <input type='hidden' name='a' value='view' />
+  <input type='hidden' name='project_id' />
+</form>
 <table width="100%" border="0" cellpadding="1" cellspacing="1" height="400" class="contacts">
 <tr>
 <?php
@@ -153,6 +168,18 @@ $titleBlock->show();
 				<a href="./index.php?m=contacts&a=view&contact_id=<?= $contactid ?>"><strong><?php echo $carr[$z][$x]['contact_first_name'] . ' ' . $carr[$z][$x]['contact_last_name'];?></strong></a>&nbsp;
 				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?= $contactid ?>" >(vCard)</a>
                                 &nbsp;<a title="<?= $AppUI->_('Edit') ?>" href="?m=contacts&a=addedit&contact_id=<?= $contactid ?>"><?= $AppUI->_('Edit') ?></a>
+<?php
+ $sql = "select count(*) from projects where project_contacts like \"" .$carr[$z][$x]["contact_id"]
+	.",%\" or project_contacts like \"%," .$carr[$z][$x]["contact_id"] 
+	.",%\" or project_contacts like \"%," .$carr[$z][$x]["contact_id"]
+	."\" or project_contacts like \"" .$carr[$z][$x]["contact_id"] ."\"";
+//echo $sql;
+ $res = db_exec($sql);
+ $projects_contact = db_fetch_row($res);
+ if ($projects_contact[0]>0)
+   echo "				&nbsp;<a href=\"\" onClick=\"	window.open('./index.php?m=public&a=selector&dialog=1&callback=goProject&table=projects&user_id=" .$carr[$z][$x]["contact_id"] ."', 'selector', 'left=50,top=50,height=250,width=400,resizable')
+;return false;\">(Projects)</a>";
+?>
 			</td>
 		</tr>
 		<tr>
