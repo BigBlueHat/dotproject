@@ -342,15 +342,15 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$bar->caption = new TextProperty($caption);
 	$bar->caption->Align("left","center");
 
-        // show tasks which are both finished and past in darkgray
+        // show tasks which are both finished and past in (dark)gray
         if ($progress >= 100 && $end_date->isPast()) {
                 $bar->caption->SetColor('darkgray');
                 $bar->title->SetColor('darkgray');
                 $bar->SetColor('darkgray');
                 $bar->SetFillColor('darkgray');
-                $bar->SetPattern(BAND_SOLID,'darkgray');
+                $bar->SetPattern(BAND_SOLID,'gray');
                 $bar->progress->SetFillColor('darkgray');
-                $bar->progress->SetPattern(BAND_SOLID,'darkgray',98);
+                $bar->progress->SetPattern(BAND_SOLID,'gray',98);
         }
 
 	$sql = "SELECT dependencies_task_id FROM task_dependencies WHERE dependencies_req_task_id=" . $a["task_id"];
