@@ -1,4 +1,4 @@
-<?php
+<?php  /* $Id$ */
 $nav = array(
 	array( 'companies', 'money.gif', 'Companies' ),
 	array( 'projects', 'projects.gif', 'Projects' ),
@@ -117,7 +117,7 @@ echo implode( ' | ', $links );
 		<tr>
 			<td width="100%">Welcome <?php echo "$AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 			<td nowrap="nowrap">
-				<?php echo contextHelp( $AppUI->_('About') );?> |
+				<a href="?m=help"><?php echo $AppUI->_( 'Help' );?></a> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a> |
 				<a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a>
 			</td>

@@ -1,5 +1,6 @@
 <!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
+<?php /* $Id$ */ ?>
 <head>
 <script language="JavaScript">
 function doBtn() {
@@ -41,7 +42,7 @@ function tboff(){
 		<tr>
 			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a></td>
 			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a></td>
-			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><?php echo contextHelp( $AppUI->_('About') );?></td>
+			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="?m=help"><?php echo $AppUI->_( 'Help' );?></a></td>
 		</tr>
 		</table>
 	</td>
