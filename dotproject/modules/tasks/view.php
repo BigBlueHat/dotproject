@@ -287,7 +287,7 @@ function delIt() {
 			</td>
 		</tr>
 	<?php } // end files access 
-		if($obj->task_departments != ""){
+		if($obj->task_departments != "") {
 			?>
 		    <tr>
 		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
@@ -310,6 +310,38 @@ function delIt() {
 		    </tr>
 	 		<?php
 		}
+		
+		if($obj->task_contacts != "") {
+			$contacts = db_loadHashList("select contact_id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_department
+		    			                 from contacts
+		    			                 where contact_id in (".$obj->task_contacts.")
+		    			                       and (contact_owner = '$AppUI->user_id' or contact_private='0')", "contact_id");
+			if(count($contacts)>0){
+				?>
+			    <tr>
+			    	<td><strong><?php echo $AppUI->_("Contacts"); ?></strong></td>
+			    </tr>
+			    <tr>
+			    	<td colspan='3' class="hilite">
+			    		<?php
+			    			echo "<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
+			    			echo "<tr><th>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
+			    			foreach($contacts as $contact_id => $contact_data){
+			    				echo "<tr>";
+			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
+			    				echo "<td class='hilite'>".$contact_data["contact_email"]."</td>";
+			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
+			    				echo "<td class='hilite'>".$contact_data["contact_department"]."</td>";
+			    				echo "</tr>";
+			    			}
+			    			echo "</table>";
+			    		?>
+			    	</td>
+			    </tr>
+		 		<?php
+			}
+		}
+		
 		$custom_fields = dPgetSysVal("TaskCustomFields");
 		if ( count($custom_fields) > 0 ){
 			//We have custom fields, parse them!

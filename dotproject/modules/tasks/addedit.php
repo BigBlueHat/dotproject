@@ -137,14 +137,18 @@ $depts = array( 0 => '' );
 // ALTER TABLE `tasks` ADD `task_departments` CHAR( 100 ) ;
 $company_id                = $project->project_company;
 $selected_departments      = $obj->task_departments != "" ? explode(",", $obj->task_departments) : array();
+$departments_count         = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
 if($department_selection_list!=""){
-	$department_selection_list = "<select name='dept_ids[]' size='10' multiple style='width:15em'>
+	$department_selection_list = "<select name='dept_ids[]' size='$departments_count' multiple style='width:12em'>
 								  $department_selection_list
     	                          </select>";
 }
 
 function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
+	global $departments_count;
+	
+	if($departments_count < 10) $departments_count++;
 	$sql = "select dept_id, dept_name
 	        from departments
 	        where dept_parent      = '$dept_parent'
@@ -166,11 +170,11 @@ if ( is_null($obj->task_dynamic) ) $obj->task_dynamic = 0 ;
 
 //Time arrays for selects
 $start = $AppUI->getConfig('cal_day_start');
-$end = $AppUI->getConfig('cal_day_end');
-$inc = $AppUI->getConfig('cal_day_increment');
+$end   = $AppUI->getConfig('cal_day_end');
+$inc   = $AppUI->getConfig('cal_day_increment');
 if ($start === null ) $start = 8;
-if ($end === null ) $end = 17;
-if ($inc === null) $inc = 15;
+if ($end   === null ) $end = 17;
+if ($inc   === null)  $inc = 15;
 $hours = array();
 for ( $current = $start; $current < $end + 1; $current++ ) {
 	if ( $current < 10 ) { 
@@ -199,6 +203,11 @@ for ( $current = 0 + $inc; $current < 60; $current += $inc ) {
 <SCRIPT language="JavaScript">
 var calendarField = '';
 var calWin = null;
+var selected_contacts_id = "<?= $obj->task_contacts; ?>";
+
+function popContacts() {
+	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&company_id=<?php echo $company_id; ?>&selected_contacts_id='+selected_contacts_id, 'contacts','left=50,top=50,height=250,width=400,resizable,scrollbars=yes');
+}
 
 function popCalendar( field ){
 	calendarField = field;
@@ -215,6 +224,14 @@ function setCalendar( idate, fdate ) {
 	fld_fdate = eval( 'document.editFrm.' + calendarField );
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
+}
+
+function setContacts(contact_id_string){
+	if(!contact_id_string){
+		contact_id_string = "";
+	}
+	document.editFrm.task_contacts.value = contact_id_string;
+	selected_contacts_id = contact_id_string;
 }
 
 function submitIt(){
@@ -380,6 +397,7 @@ function calcFinish() {
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
+	<input name='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
 		<font color="<?php echo bestColor( $project->project_color_identifier ); ?>">
@@ -441,11 +459,22 @@ function calcFinish() {
 						// Let's check if the actual company has departments registered
 						if($department_selection_list != ""){
 							?>
-							
 									<?php echo $AppUI->_("Departments"); ?><br />
 									<?php echo $department_selection_list; ?>
 							<?php
-						}		
+						}
+						
+						// Let's check if there are available contacts for this company
+						$sql = "select c.company_name
+						        from companies as c, tasks as t, projects as p
+						        where t.task_id = $task_id
+						              and t.task_project = p.project_id
+						              and p.project_company = company_id";
+						$company_name = db_loadResult($sql);
+						
+						if($department_selection_list != "" || !is_null($company_name)){
+							echo "<hr /><input type='button' class='button' value='".$AppUI->_("Select contacts")."' onclick='javascript:popContacts();' />";
+						}
 					?>
 				</td>
 			</tr>

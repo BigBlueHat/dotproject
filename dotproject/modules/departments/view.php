@@ -62,14 +62,13 @@ function delIt() {
 }
 </script>
 
-<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
-
 <form name="frmDelete" action="./index.php?m=departments" method="post">
 	<input type="hidden" name="dosql" value="do_dept_aed" />
 	<input type="hidden" name="del" value="1" />
 	<input type="hidden" name="dept_id" value="<?php echo $dept_id;?>" />
 </form>
 
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr valign="top">
 	<td width="50%">
 		<strong><?php echo $AppUI->_('Details'); ?></strong>
@@ -120,5 +119,7 @@ function delIt() {
 <?php
 	// tabbed information boxes
 	$tabBox = new CTabBox( "?m=departments&a=view&dept_id=$dept_id", "{$AppUI->cfg['root_dir']}/modules/departments/", $tab );
+	$tabBox->add("vw_contacts", "Contacts");
+	$tabBox->show();
 }
 ?>
