@@ -139,6 +139,8 @@ function dPsessionConvertTime($key)
 
 function dpSessionStart($start_vars = 'AppUI')
 {
+	global $dPconfig;
+
 	ini_set('session.save_handler', 'user');
 	session_name('dotproject');
 	if (ini_get('session.auto_start') > 0) {
@@ -146,7 +148,11 @@ function dpSessionStart($start_vars = 'AppUI')
 	}
 	session_set_save_handler('dPsessionOpen', 'dPsessionClose', 'dPsessionRead', 'dPsessionWrite', 'dPsessionDestroy', 'dPsessionGC');
 	$max_time = dPsessionConvertTime('max_lifetime');
-	$cookie_dir = dirname($_SERVER['SCRIPT_NAME']);
+	// Try and get the correct path to the base URL.
+	preg_match('_^(https?://)([^/]+)(:0-9]+)?(/.*)?$_i', $dPconfig['base_url'], $url_parts);
+	$cookie_dir = $url_parts[4];
+	if (substr($cookie_dir, 0, 1) != '/')
+		$cookie_dir = '/' . $cookie_dir;
 	if (substr($cookie_dir, -1) != '/')
 		$cookie_dir .= '/';
 	session_set_cookie_params($max_time, $cookie_dir);
