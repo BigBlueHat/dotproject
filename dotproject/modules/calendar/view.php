@@ -36,7 +36,7 @@ if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
-		'<form action="?m=calendar&a=addedit&event_id=' . $event_id . '" method="post">', '</form>'
+		'<form action="?m=calendar&a=addedit" method="post">', '</form>'
 	);
 }
 $titleBlock->addCrumb( "?m=calendar&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "month view" );
