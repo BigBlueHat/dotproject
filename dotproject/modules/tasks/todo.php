@@ -67,6 +67,7 @@ $sql = "
 		 AND ( a.task_percent_complete < 100  OR a.task_percent_complete IS NULL )
 		 AND a.task_start_date != ''
 		 AND a.task_end_date != ''
+		 AND a.task_status = '0' 
 		 AND project_id = a.task_project" .  		
   (!$showArcProjs ? " AND project_active = 1" : "") .
   (!$showLowTasks ? " AND a.task_priority >= 0" : "") .  
