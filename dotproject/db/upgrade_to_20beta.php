@@ -90,6 +90,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 			}
 			include "$baseDir/db/upgrade_contacts.php";
 			include "$baseDir/db/upgrade_permissions.php";
+			include "$baseDir/db/upgrade_contacts_company.php";
 
 			// Fallthrough
 		case '20050304':
