@@ -34,7 +34,7 @@ if (!$task_project) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : new CDate();
+$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : null;
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
 
 // pull the related project
@@ -124,13 +124,22 @@ function submitIt(){
 	if (form.task_name.value.length < 3) {
 		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
-	} else if (!form.task_start_date.value) {
+	}
+<?php
+	if ( $AppUI->getConfig( 'check_task_dates' )  ) {
+?>
+	else if (!form.task_start_date.value) {
 		alert( "<?php echo $AppUI->_('taskValidStartDate');?>" );
 		form.task_start_date.focus();
-	} else if (!form.task_end_date.value) {
+	}
+	else if (!form.task_end_date.value) {
 		alert( "<?php echo $AppUI->_('taskValidEndDate');?>" );
 		form.task_end_date.focus();
-	} else {
+	}
+<?php
+	}
+?>	
+	else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
 			form.hassign.value = "," + form.hassign.value +","+ form.assigned.options[fl].value
@@ -319,8 +328,8 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
-					<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
+					<input type="hidden" name="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : "" ;?>" />
+					<input type="text" name="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : "" ;?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('start_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>

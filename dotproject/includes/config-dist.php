@@ -81,6 +81,10 @@ $dPconfig['jpLocale'] = '';
 // enable if you want to log changes using the history module
 $dPconfig['log_changes'] = false;
 
+// enable if you want to check task's start and end dates
+// disable if you want to be able to leave start or end dates empty
+$dPconfig['check_tasks_dates'] = true;
+
 // warn when a translation is not found (for developers and tranlators)
 $dPconfig['locale_warn'] = false;
 
