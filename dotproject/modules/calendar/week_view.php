@@ -71,7 +71,7 @@ TD.weekDay  {
 		<a href="<?php echo '?m=calendar&a=week_view&date='.$prev_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 	</td>
 	<th width="100%">
-		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.$this_week->format( "%U - %Y" ); ?></span>
+		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.$first_time->format( "%U - %Y" ); ?></span>
 	</th>
 	<td>
 		<a href="<?php echo '?m=calendar&a=week_view&date='.$next_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
