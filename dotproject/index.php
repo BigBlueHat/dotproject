@@ -64,14 +64,28 @@ header ("Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-c
 header ("Pragma: no-cache");	// HTTP/1.0
 
 // Check that the user has correctly set the root directory
-is_file( "{$dPconfig['root_dir']}/includes/config.php" ) or die( "FATAL ERROR: Root directory in configuration file probably incorrect." );
-
+// If not found, try guessing it.
+$config_file = "{$dPconfig['root_dir']}/includes/config.php";
+$config_msg = false;
+if (! is_file($config_file)) {
+	// First check that we aren't looking at old data.
+	// We don't do this first as it has performance implications.
+	clearstatcache();
+	if (! is_file($config_file)) {
+		// Still no good, set it to where we are,
+		$dPconfig['root_dir'] = dirname(__FILE__);
+		$config_msg = "Root directory in configuration file probably incorrect";
+	}
+}
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     $_SESSION['AppUI'] = new CAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
 $AppUI->checkStyle();
+if ($config_msg) {
+	$AppUI->setMsg($config_msg, UI_MSG_WARNING);
+}
 
 // load the commonly used classes
 require_once( $AppUI->getSystemClass( 'date' ) );
