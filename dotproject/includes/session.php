@@ -146,11 +146,11 @@ function dpSessionStart($start_vars = 'AppUI')
 {
 	global $dPconfig;
 
-	ini_set('session.save_handler', 'user');
 	session_name('dotproject');
 	if (ini_get('session.auto_start') > 0) {
 		session_write_close();
 	}
+	ini_set('session.save_handler', 'user');
 	if (isset($dPconfig['session_handling'])
 		&& strtolower($dPconfig['session_handling']) == 'app') {
 		session_set_save_handler(
