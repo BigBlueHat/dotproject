@@ -52,11 +52,13 @@ $titleBlock->addCrumb( "?m=companies", "company list" );
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
 	
-	if ($canDelete) {
+	if ($canEdit) {
 		$titleBlock->addCrumbRight(
-			'<a href="javascript:delIt()">'
-				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-				. $AppUI->_('delete company') . '</a>'
+			'<table cellspacing="0" cellpadding="0" border="0"?<tr><td>'
+			. dPshowImage( './images/icons/'.($canDelete?'stock_delete-16.png':'stock_trash_full-16.png'), '16', '16',  '' )
+			. '</td><td>&nbsp;'
+			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">' . $AppUI->_('delete company') . '</a>'
+			. '</td></tr></table>'
 		);
 	}
 }

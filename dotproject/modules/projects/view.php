@@ -1,4 +1,5 @@
 <?php /* PROJECTS $Id$ */
+
 $project_id = dPgetParam( $_GET, "project_id", 0 );
 
 // check permissions for this project
@@ -9,13 +10,14 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$msg = '';
+$obj = new CProject();
+$canDelete = $obj->canDelete( $msg, $project_id );
+
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
 }
 $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
-
-$sql = "SELECT COUNT(task_id) FROM tasks WHERE task_project = $project_id";
-$canDelete = (db_loadResult( $sql ) < 1);
 
 //pull data
 $sql = "
@@ -43,14 +45,9 @@ if (!db_loadHash( $sql, $project )) {
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$ts = db_dateTime2unix( $project["project_start_date"] );
-$start_date = $ts < 0 ? null : new CDate( $ts, $df );
-
-$ts = db_dateTime2unix( $project["project_end_date"] );
-$end_date = $ts < 0 ? null : new CDate( $ts, $df );
-
-$ts = db_dateTime2unix( $project["project_actual_end_date"] );
-$actual_end_date = $ts < 0 ? null : new CDate( $ts, $df );
+$start_date = $project["project_start_date"] ? new Date( $project["project_start_date"] ) : null;
+$end_date = $project["project_end_date"] ? new Date( $project["project_end_date"] ) : null;
+$actual_end_date = $project["project_actual_end_date"] ? new Date( $project["project_actual_end_date"] ) : null;
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Project', 'applet3-48.png', $m, "$m.$a" );
@@ -64,11 +61,13 @@ if ($canEdit) {
 $titleBlock->addCrumb( "?m=projects", "projects list" );
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
-	if ($canDelete) {
+	if ($canEdit) {
 		$titleBlock->addCrumbRight(
-			'<a href="javascript:delIt()">'
-				. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-				. $AppUI->_('delete project') . '</a>'
+			'<table cellspacing="0" cellpadding="0" border="0"?<tr><td>'
+			. dPshowImage( './images/icons/'.($canDelete?'stock_delete-16.png':'stock_trash_full-16.png'), '16', '16',  '' )
+			. '</td><td>&nbsp;'
+			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">' . $AppUI->_('delete project') . '</a>'
+			. '</td></tr></table>'
 		);
 	}
 }
@@ -113,15 +112,15 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Start Date');?>:</td>
-			<td class="hilite"><?php echo $start_date ? $start_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $start_date ? $start_date->format( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target End Date');?>:</td>
-			<td class="hilite"><?php echo $end_date ? $end_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $end_date ? $end_date->format( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Actual End Date');?>:</td>
-			<td class="hilite"><?php echo $actual_end_date ? $actual_end_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $actual_end_date ? $actual_end_date->format( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target Budget');?>:</td>
