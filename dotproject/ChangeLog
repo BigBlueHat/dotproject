@@ -1,3 +1,34 @@
+2003-04-18 14:01  (korinek)
+---------------------------------
+lib/jpgraph/src/jpgraph.php
+locales/en/projects.inc
+locales/en/public.inc
+locales/en/tasks.inc
+modules/calendar/calendar.class.php
+modules/contacts/addedit.php
+modules/files/addedit.php
+modules/public/color_selector.php
+modules/tasks/addedit.php
+modules/tasks/view.php
+- Translation updates.
+
+2003-04-18 05:53  (korinek)
+---------------------------------
+locales/en/calendar.inc
+locales/en/tasks.inc
+modules/projects/addedit.php
+modules/projects/vw_idx_active.php
+modules/tasks/gantt.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+modules/tasks/viewgantt.php
+- Translations fine tuning.
+
+2003-04-17 04:03  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-16 23:13  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.class.php
@@ -467,37 +498,6 @@ includes/db_mysql.php
 - Added get object function
 
 2003-04-08 21:48  (eddieajau)
----------------------------------
-modules/forums/addedit.php
-- Fixed missing text
-
-2003-04-08 21:43  (eddieajau)
----------------------------------
-modules/help/en/help.toc.hlp
-modules/help/en/start.addcomp.hlp
-modules/help/en/start.adduser.hlp
-- Updated content
-
-2003-04-08 21:23  (eddieajau)
----------------------------------
-index.php
-includes/config-dist.php
-modules/help/en/help.toc.hlp
-modules/help/en/overview.license.hlp
-- Added/updated license
-
-2003-04-08 13:20  (kobudo)
----------------------------------
-ChangeLog
-- Updated ChangeLog.
-
-2003-04-08 08:15  (eddieajau)
----------------------------------
-docs/OLD_CHANGELOG.txt
-docs/CHANGES.txt
-- No longer required
-
-2003-04-08 08:06  (eddieajau)
 ...
 
 (This file has been wrapped)
