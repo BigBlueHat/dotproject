@@ -8,7 +8,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 $sql = "
 SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
-	DATE_FORMAT(project_start_date, '$df' ) project_start_date,
+	project_start_date,
 	users.user_first_name, users.user_last_name
 FROM projects
 LEFT JOIN users ON users.user_id = projects.project_owner
@@ -30,11 +30,13 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 		.'<th>'.$AppUI->_( 'Budget' ).'</th>'
 		.'</tr>';
 	foreach ($rows as $row) {
+		$start_date = CDate::fromDateTime( $row['project_start_date'] );
+		$start_date->setFormat( $df );
 		$s .= '<tr>';
 		$s .= '<td width="100%">';
 		$s .= '<a href="?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a></td>';
 		$s .= '<td nowrap="nowrap">'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
-		$s .= '<td nowrap="nowrap">'.$row["project_start_date"].'</td>';
+		$s .= '<td nowrap="nowrap">'.$start_date->toString().'</td>';
 		$s .= '<td nowrap="nowrap">'.$pstatus[$row["project_status"]].'</td>';
 		$s .= '<td nowrap="nowrap" align="right">$ '.$row["project_target_budget"].'</td>';
 		$s .= '</tr>';

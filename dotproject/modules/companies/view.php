@@ -8,8 +8,9 @@ $denyEdit = getDenyEdit( $m, $company_id );
 if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
-
 $AppUI->savePlace();
+
+require_once( "$root_dir/classdefs/date.php" );
 
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
