@@ -2,24 +2,12 @@
 // Add / Edit Company
 $company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id'] : 0;
 
-// check permissions to edit
-$psql = "
-select count(*)
-from permissions
-left join users on permission_user = user_id
-where permission_user = $user_cookie and
-	permission_value < 1
-	and (permission_grant_on = 'all' 
-		or (permission_grant_on = 'companies' and (permission_item = -1 or permission_item = $company_id))
-	)
-";
+// check permissions
+$denyEdit = getDenyEdit( $m, $company_id );
 
-$prc = mysql_query($psql);
-$perm = mysql_fetch_array($prc);
-
-if ($perm[0] < 1) {
+if ($denyEdit) {
 	echo '<script language="javascript">
-	window.location="./index.php?m=companies&message=ACCESS DENIED: You have insufficient permissions to edit this company.";
+	window.location="./index.php?m=help&a=access_denied";
 	</script>
 ';
 }
@@ -30,13 +18,13 @@ $csql = "Select companies.*,users.user_first_name,users.user_last_name
 	left join users on users.user_id = companies.company_owner
 	where companies.company_id = $company_id";
 $crc = mysql_query($csql);
-$crow = mysql_fetch_array($crc);
+$crow = mysql_fetch_array( $crc, MYSQL_ASSOC );
 
 // collect all the users for the company owner list
 $owners = array();
 $osql = "select user_id,user_first_name,user_last_name from users";
 $orc = mysql_query($osql);
-while ($orow = mysql_fetch_array($orc)) {
+while ($orow = mysql_fetch_array( $orc, MYSQL_ASSOC )) {
 	$owners[] = $orow;
 }
 ?>

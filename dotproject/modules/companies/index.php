@@ -1,6 +1,49 @@
 <?php
 //Companies
 
+// check permissions
+
+// debug code, can delete when thoroughly tested
+/*
+echo 'any:';
+echo (empty( $perms['all'] ) & empty($perms['companies'] ));
+echo ' read:';
+echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_EDIT);
+echo (isset( $perms['companies'][PERM_ALL] ) & $perms['companies'][PERM_ALL] == PERM_EDIT);
+echo (isset( $perms['companies'][$company_id] ) & $perms['companies'][$company_id] == PERM_EDIT);
+echo ' edit:';
+echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT);
+echo (isset( $perms['companies'][PERM_ALL] ) & $perms['companies'][PERM_ALL] <> PERM_EDIT);
+echo (isset( $perms['companies'][$company_id] ) & $perms['companies'][$company_id] <> PERM_EDIT);
+echo " denyRead=$denyRead, denyEdit=$denyEdit";
+*/
+
+$denyRead = getDenyRead( $m );
+$denyEdit = getDenyEdit( $m );
+
+if ($denyRead) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=help&a=access_denied";
+	</script>
+';
+}
+
+
+$dsql = "
+select company_id
+from companies, permissions
+where 
+permission_user = $user_cookie
+and permission_grant_on = 'companies' 
+and permission_item = company_id
+and permission_value = 0
+";
+$drc = mysql_query($dsql);
+$deny = array();
+while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
+	$deny[] = $row[0];
+}
+
 $csql = "
 select company_id, company_name,
 	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
@@ -12,15 +55,21 @@ left join projects as projects2 on companies.company_id = projects2.project_comp
 where
 	permission_user = $user_cookie
 	and permission_value <> 0 
-	and (permission_grant_on = 'all' or permission_grant_on = 'companies' or permission_item = company_id)
+	and (
+		(permission_grant_on = 'all')
+		or (permission_grant_on = 'companies' and permission_item = -1)
+		or (permission_grant_on = 'companies' and permission_item = company_id)
+		)
+" . (count($deny) > 0 ? 'and company_id not in (' . implode( ',', $deny ) . ')' : '') . "
 group by company_id
 order by company_name
 ";
+
 $cos =mysql_query($csql);
 
 $usql = "Select user_first_name, user_last_name from users where user_id = $user_cookie";
 $urc = mysql_query($usql);
-$urow = mysql_fetch_array($urc);
+$urow = mysql_fetch_array($urc, MYSQL_NUM);
 ?>
 
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
@@ -28,7 +77,11 @@ $urow = mysql_fetch_array($urc);
 	<TR>
 	<TD><img src="./images/icons/money.gif" alt="" border="0"></td>
 		<TD nowrap><span class="title">Clients and Companies</span></td>
-		<TD align="right" width="100%"><input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';"></td>
+		<TD align="right" width="100%">
+		<?php if (!$denyEdit) { ?>
+			<input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
+		<?php } ?>
+		</td>
 	</tr>
 </TABLE>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
@@ -46,7 +99,7 @@ $urow = mysql_fetch_array($urc);
 					<TD class="mboxhdr"><A href="#"><font color="white">Active Projects</font></a></td>
 					<TD class="mboxhdr"><A href="#"><font color="white">Archived Projects</font></a></td>
 				</tr>
-<?php while($row = mysql_fetch_array($cos)){?>
+<?php while($row = mysql_fetch_array( $cos, MYSQL_ASSOC )){?>
 				<TR>
 					<TD width="60" class="smallNorm" align="right" valign="bottom">&nbsp; </td>
 					<TD><A href="./index.php?m=companies&a=view&company_id=<?php echo $row["company_id"];?>"><?php echo $row["company_name"];?></A></td>

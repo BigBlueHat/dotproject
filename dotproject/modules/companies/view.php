@@ -1,23 +1,13 @@
 <?php
 $company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id'] : 0;
 
-// check permissions to read
-$psql = "
-select permission_value
-from permissions
-left join users on permission_user = user_id
-where permission_user = $user_cookie and
-	permission_value <> 0
-	and (permission_grant_on = 'all'
-		or (permission_grant_on = 'companies' and (permission_item = -1 or permission_item = $company_id))
-	)
-";
+// check permissions
+$denyRead = getDenyRead( $m, $company_id );
+$denyEdit = getDenyEdit( $m, $company_id );
 
-$prc = mysql_query($psql);
-$perm = mysql_fetch_array($prc);
-if ($perm[0] == 0) {
+if ($denyRead) {
 	echo '<script language="javascript">
-	window.location="./index.php?m=companies&message=ACCESS DENIED: You have insufficient permissions to view this company.";
+	window.location="./index.php?m=help&a=access_denied";
 	</script>
 ';
 }
@@ -29,8 +19,8 @@ from companies
 left join users on users.user_id = companies.company_owner
 where companies.company_id = $company_id
 ";
-$crc = mysql_query($csql);
-$crow = mysql_fetch_array($crc);
+$crc = mysql_query( $csql );
+$crow = mysql_fetch_array( $crc, MYSQL_ASSOC );
 
 $pstatus = array(
 	'Not Defined',
@@ -48,7 +38,7 @@ $pstatus = array(
 		<TD nowrap><span class="title">View Company/Client</span></td>
 		<TD nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 		<TD align="right" width="100%">
-		<?php if ($perm[0] < 0) { ?>
+		<?php if (!$denyEdit) { ?>
 			<input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
 		<?php } ?>
 		</td>
@@ -59,7 +49,7 @@ $pstatus = array(
 	<TR>
 		<TD width="50%" nowrap>
 		<a href="./index.php?m=companies">Companies List</a>
-<?php if ($perm[0] < 0) { ?>
+<?php if (!$denyEdit) { ?>
 		<b>:</b> <a href="./index.php?m=companies&a=addedit&company_id=<?php echo $company_id;?>">Edit this Company</a>
 <?php } ?>
 		</td>
@@ -131,7 +121,7 @@ $nums = mysql_num_rows($prc);
 //pull the projects into an temp array
 $tarr = array();
 for($x=0;$x<$nums;$x++){
-	$tarr[$x] = mysql_fetch_array($prc);
+	$tarr[$x] = mysql_fetch_array( $prc, MYSQL_ASSOC );
 }
 ?>
 
@@ -152,7 +142,7 @@ $nums = mysql_num_rows($prc);
 //pull the projects into an temp array
 $tarr = array();
 for($x=0;$x<$nums;$x++){
-	$tarr[$x] = mysql_fetch_array($prc);
+	$tarr[$x] = mysql_fetch_array( $prc, MYSQL_ASSOC );
 }
 ?>
 			<TABLE width="100%" border=0 cellpadding="2" cellspacing=1>
@@ -219,7 +209,7 @@ $nums = mysql_num_rows($urc);
 //pull the projects into an temp array
 $tarr = array();
 for($x=0;$x<$nums;$x++){
-	$tarr[$x] = mysql_fetch_array($urc);
+	$tarr[$x] = mysql_fetch_array( $urc, MYSQL_ASSOC );
 }
 ?>
 			<TABLE width="100%" border=0 cellpadding="2" cellspacing=1>
