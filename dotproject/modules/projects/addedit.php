@@ -1,6 +1,5 @@
 <?php
 $project_id = defValArr ( $_GET, "project_id", 0 );
-echo $project_id;
 
 // check permissions
 $denyEdit = getDenyEdit( $m, $project_id );
