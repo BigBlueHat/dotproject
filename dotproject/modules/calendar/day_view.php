@@ -82,6 +82,10 @@ $tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_T
 	"{$dPconfig['root_dir']}/modules/calendar/", $tab );
 $tabBox->add( 'vw_day_events', 'Events' );
 $tabBox->add( 'vw_day_tasks', 'Tasks' );
+// TODO: Dirty hack :( Is there a better way to do this? Check if a module is installed/active or not? 
+$modules = $AppUI->getActiveModules();
+if (isset( $modules['helpdesk']))
+  $tabBox->add( '../helpdesk/vw_idx_my', $AppUI->_('My Helpdesk Items') );
 $tabBox->show();
 ?>
 
