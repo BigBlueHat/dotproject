@@ -237,7 +237,18 @@ ob_start();
 if(!$suppressHeaders) {
 	require "./style/$uistyle/header.php";
 }
-require "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
+$module_file = "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
+if (file_exists($module_file))
+  require $module_file;
+else
+{
+// TODO: make this part of the public module? 
+// TODO: internationalise the string.
+  $titleBlock = new CTitleBlock('Warning', 'log-error.gif');
+  $titleBlock->show();
+
+  echo $AppUI->_("Missing file. Possible Module \"$m\" missing!");
+}
 if(!$suppressHeaders) {
 	require "./style/$uistyle/footer.php";
 }
