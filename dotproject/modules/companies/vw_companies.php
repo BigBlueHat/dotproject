@@ -27,6 +27,9 @@ if ( $companiesType == -1 ){
 } else{
 	//Tabbed view
 	$company_type_filter = $companiesType;
+	//Not Defined
+	if ( $companiesType > count($types)-1)
+		$company_type_filter = 0;
 }
 
 // retrieve list of records
@@ -47,7 +50,7 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 		OR (permission_grant_on = 'companies' and permission_item = company_id)
 		)"
 	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
-	. ($companiesType < count($types) ? " AND company_type = $company_type_filter" : "");
+	. ($companiesType ? " AND company_type = $company_type_filter" : "");
 
 if($search_string != ""){
 	$sql .= " AND company_name LIKE '%$search_string%' ";

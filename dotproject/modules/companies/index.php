@@ -80,14 +80,15 @@ foreach($types as $type_id => $type){
 // $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
 $companiesType = $companiesTypeTab;
 
+if ( $companiesTypeTab != -1 ) {
+	$types[0] = "All Companies";
+	$types[] = "Not Defined";
+}
+
 $tabBox = new CTabBox( "?m=companies", "{$AppUI->cfg['root_dir']}/modules/companies/", $companiesTypeTab );
 foreach($types as $type_name){
 	$tabBox->add('vw_companies', $type_name);
 }
-
-// Only display the All option in tabbed view, in plain mode it would just repeat everything else
-// already in the page
-if ( $companiesTypeTab != -1 ) $tabBox->add('vw_companies', 'All Companies');
 
 /*$tabBox->add( 'vw_companies', 'Clients' );
 $tabBox->add( 'vw_companies', 'Suppliers' );
