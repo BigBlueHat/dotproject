@@ -2,10 +2,9 @@
 // Translation Management
 
 // check permissions
-$denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
-if ($denyRead) {
+if ($denyEdit) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
@@ -16,7 +15,8 @@ $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 
 $modules = array(
 	'common',
-	'companies'
+	'companies',
+	'help'
 );
 
 ob_start();
