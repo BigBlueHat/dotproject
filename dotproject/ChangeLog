@@ -1,3 +1,13 @@
+2003-10-20 21:04  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added translation string for Polish
+
+2003-10-16 03:47  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-16 01:38  (kripper)
 ---------------------------------
 modules/projects/view.php
@@ -488,16 +498,6 @@ modules/tasks/vw_log_update.php
 ---------------------------------
 locales/en/admin.inc
 locales/en/calendar.inc
-locales/en/common.inc
-locales/en/companies.inc
-locales/en/contacts.inc
-locales/en/forums.inc
-locales/en/help.inc
-locales/en/projects.inc
-locales/en/public.inc
-locales/en/system.inc
-locales/en/tasks.inc
-locales/en/ticketsmith.inc
 ...
 
 (This file has been wrapped)
