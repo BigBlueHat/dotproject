@@ -315,15 +315,17 @@ class CMonthCalendar {
 					$html .= " style=\"border: 1px solid ".$this->highlightedDays[$day]."\"";
 				}
 				$html .= ">";
-				if ($this->dayFunc) {
+				if ($m == $this_month) {
+				    if ($this->dayFunc) {
 					$html .= "<a href=\"javascript:$this->dayFunc('$day','".$this_day->format( $df )."')\" class=\"$class\">";
 					$html .= "$d";
 					$html .= "</a>";
-				} else {
+				    } else {
 					$html .= "$d";
-				}
-				if ($m == $this_month && $this->showEvents) {
+				  }
+				    if ($this->showEvents) {
 					$html .= $this->_drawEvents( substr( $day, 0, 8 ) );
+				  }
 				}
 				$html .= "\n\t</td>";
 			}
