@@ -47,25 +47,28 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 
 	$timeStamp = $this_day->format( "%H%M%S" );
 	if( @$events2[$timeStamp] ) {
-		$row = $events2[$timeStamp][0];
+		$count = count($events2[$timeStamp]);
+		for ($j = 0; $j < $count; $j++) {
+			$row = $events2[$timeStamp][$j];
 
-		$et = new CDate( $row['event_end_date'] );
-		$rows = (($et->getHour()*60 + $et->getMinute()) - ($this_day->getHour()*60 + $this_day->getMinute()))/$inc;
+			$et = new CDate( $row['event_end_date'] );
+			$rows = (($et->getHour()*60 + $et->getMinute()) - ($this_day->getHour()*60 + $this_day->getMinute()))/$inc;
 
-		$href = "?m=calendar&a=view&event_id=".$row['event_id'];
-		$alt = $row['event_description'];
+			$href = "?m=calendar&a=view&event_id=".$row['event_id'];
+			$alt = $row['event_description'];
 
-		$html .= "\n\t<td class=\"event\" rowspan=\"$rows\" valign=\"top\">";
+			$html .= "\n\t<td class=\"event\" rowspan=\"$rows\" valign=\"top\">";
 
-		$html .= "\n<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr>";
-		$html .= "\n<td>" . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' );
-		$html .= "</td>\n<td>&nbsp;<b>" . $types[$row['event_type']] . "</b></td></tr></table>";
+			$html .= "\n<table cellspacing=\"0\" cellpadding=\"0\" border=\"0\"><tr>";
+			$html .= "\n<td>" . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' );
+			$html .= "</td>\n<td>&nbsp;<b>" . $types[$row['event_type']] . "</b></td></tr></table>";
 
 
-		$html .= $href ? "\n\t\t<a href=\"$href\" class=\"event\" title=\"$alt\">" : '';
-		$html .= "\n\t\t{$row['event_title']}";
-		$html .= $href ? "\n\t\t</a>" : '';
-		$html .= "\n\t</td>";
+			$html .= $href ? "\n\t\t<a href=\"$href\" class=\"event\" title=\"$alt\">" : '';
+			$html .= "\n\t\t{$row['event_title']}";
+			$html .= $href ? "\n\t\t</a>" : '';
+			$html .= "\n\t</td>";
+		}
 	} else {
 		$html .= "\n\t<td></td>";
 	}
