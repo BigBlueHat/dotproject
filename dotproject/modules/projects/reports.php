@@ -13,24 +13,13 @@ if (!$canRead) {
 }
 
 $obj = new CProject();
-$deny = $obj->getDeniedRecords( $AppUI->user_id );
-                                                                                
 $q = new DBQuery;
 $q->addTable('projects');
-$q->addTable('permissions');
 $q->addQuery('project_id, project_active, project_status, project_name, project_description, project_short_name');                     
-$q->addWhere("permission_user = $AppUI->user_id
-        AND permission_value <> 0
-        AND (
-                (permission_grant_on = 'all')
-                OR (permission_grant_on = 'projects' AND permission_item = -1)
-                OR (permission_grant_on = 'projects' AND permission_item = project_id)
-                )");
-if (count($deny) > 0) {
-	$q->addWhere("project_id NOT IN (" . implode( ',', $deny ) . ')');
-}
 $q->addGroup('project_id');
 $q->addOrder('project_short_name');
+$obj->setAllowedSQL($AppUI->user_id, $q);
+
 $project_list=array("0"=> $AppUI->_("All", UI_OUTPUT_RAW) );
 $ptrc = $q->exec();
 $nums=db_num_rows($ptrc);
@@ -82,14 +71,14 @@ if (!empty($report_type_var))
 if ($report_type) {
 	$report_type = $AppUI->checkFileName( $report_type );
 	$report_type = str_replace( ' ', '_', $report_type );
-	require( dPgetConfig( 'root_dir' )."/modules/projects/reports/$report_type.php" );
+	require "$baseDir/modules/projects/reports/$report_type.php";
 } else {
 	echo "<table>";
 	echo "<tr><td><h2>" . $AppUI->_( 'Reports Available' ) . "</h2></td></tr>";
 	foreach ($reports as $v) {
 		$type = str_replace( ".php", "", $v );
-		$desc_file = str_replace( ".php", ".$AppUI->user_locale.txt", $v );
-		$desc = @file( dPgetConfig( 'root_dir' )."/modules/projects/reports/$desc_file" );
+		$desc_file = str_replace( ".php", ".{$AppUI->user_locale}.txt", $v );
+		$desc = @file( "$baseDir/modules/projects/reports/$desc_file");
 
 		echo "\n<tr>";
 		echo "\n	<td><a href=\"index.php?m=projects&a=reports&project_id=$project_id&report_type=$type";
