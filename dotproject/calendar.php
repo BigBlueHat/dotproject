@@ -22,17 +22,17 @@ $this_month->setTime( 0,0,0 );
 $uistyle = $AppUI->getPref( 'UISTYLE' );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-    <link rel="stylesheet" href="./style/<?php echo $uistyle;?>/main.css" type="text/css" />
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <script language="javascript">
-        function clickDay( uts, fdate ) {
-            window.opener.<?php echo $callback;?>(uts,fdate);
-            window.close();
-        }
-    </script>
-    <title>Calendar</title>
+	<link rel="stylesheet" href="./style/<?php echo $uistyle;?>/main.css" type="text/css" />
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<script language="javascript">
+		function clickDay( uts, fdate ) {
+			window.opener.<?php echo $callback;?>(uts,fdate);
+			window.close();
+		}
+	</script>
+	<title>Calendar</title>
 </head>
 
 <body onload="this.focus();" class="popcal" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
@@ -47,27 +47,27 @@ $cal->setLinkFunctions( 'clickDay' );
 echo $cal->show();
 ?>
 <table border="0" cellspacing="0" cellpadding="3" width="100%">
-    <tr>
+	<tr>
 <?php
-        $this_month->setFormat( "%b" );
-        for ($i=0; $i < 12; $i++) {
-            $this_month->setMonth( $i+1 );
-            echo "        <td width=\"8%\">"
-                ."<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
-                ."</td>\n";
-        }
+		$this_month->setFormat( "%b" );
+		for ($i=0; $i < 12; $i++) {
+			$this_month->setMonth( $i+1 );
+			echo "        <td width=\"8%\">"
+				."<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
+				."</td>\n";
+		}
 ?>
-    </tr>
-    <tr>
+	</tr>
+	<tr>
 <?php
-        echo "        <td colspan=\"6\" align=\"left\">";
-        echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>";
-        echo "</td>\n";
-        echo "        <td colspan=\"6\" align=\"right\">";
-        echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>";
-        echo "</td>\n";
+		echo "        <td colspan=\"6\" align=\"left\">";
+		echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>";
+		echo "</td>\n";
+		echo "        <td colspan=\"6\" align=\"right\">";
+		echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>";
+		echo "</td>\n";
 ?>
-    </tr>
+	</tr>
 </table>
 </body>
 </html>
