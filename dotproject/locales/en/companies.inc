@@ -11,11 +11,9 @@
 "Edit Company",
 "Started",
 "Status",
-"View Company/Client",
+"View Company",
 "company list",
-"companyDelete"=>"Are you sure you would like 
-
-to delete this company?",
+"companyDelete"=>"Are you sure you want to delete this company?",
 "companyValidName"=>"Please enter a valid Company name",
 "delete company",
 "edit this company",
