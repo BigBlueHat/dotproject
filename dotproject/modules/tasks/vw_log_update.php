@@ -1,6 +1,8 @@
 <?php /* TASKS $Id$ */
 GLOBAL $AppUI, $task_id, $obj, $percent, $can_edit_time_information;
 
+$perms =& $AppUI->acl();
+
 // check permissions
 $canEdit = !getDenyEdit( 'tasks', $task_id );
 if (!$canEdit) {
@@ -315,7 +317,12 @@ if ($canEdit) {
 				echo "checked='checked'";
 				?>><?php echo $AppUI->_('Project Contacts');?>
 		<input type='hidden' name='email_others' id='email_others' value=''>
+		<?php
+			if ($AppUI->isActiveModule('contacts') && $perms->checkModule('contacts', 'view')) {
+		?>
 		<input type='button' class='button' value='<?php echo $AppUI->_('Other Contacts...');?>' onclick='javascript:popEmailContacts();' />
+
+		<?php } ?>
 	</td>
 </tr>
 <tr>

@@ -12,6 +12,7 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 $q =& new DBQuery;
+$perms =& $AppUI->acl();
 
 $q->addTable('tasks');
 $q->leftJoin('users', 'u1', 'u1.user_id = task_owner');
@@ -364,6 +365,7 @@ function delIt() {
 	 		<?php
 		}
 		
+		if ($AppUI->isActiveModule('contacts') && $perms->checkModule('contacts', 'view')) {
 			$q->addTable('contacts', 'c');
 			$q->leftJoin('task_contacts', 'tc', 'tc.contact_id = c.contact_id');
 			$q->leftJoin('departments', 'd', 'dept_id = contact_department');
@@ -436,6 +438,7 @@ function delIt() {
 		 <?php
 			}
 
+		}
 		require_once("./classes/customfieldsparser.class.php");
 		$cfp = new CustomFieldsParser("TaskCustomFields", $obj->task_id);
 

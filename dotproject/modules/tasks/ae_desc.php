@@ -1,6 +1,8 @@
 <?php
 	global $AppUI, $task_id, $obj, $users, $task_access, $department_selection_list;
 	global $task_parent_options, $dPconfig, $projects, $task_project, $can_edit_time_information, $tab;
+
+	$perms =& $AppUI->acl();
 ?>
 <form action="?m=tasks&a=addedit&task_project=<?php echo $task_project; ?>"
   method="post"  name="detailFrm">
@@ -36,7 +38,9 @@
 								<?php echo arraySelect(dPgetSysVal("TaskType"), "task_type",  "class='text' onchange='javascript:changeRecordType(this.value);'", $obj->task_type, false); ?>
 								<br /><br />
 					<?php
-						echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
+						if ($AppUI->isActiveModule('contacts') && $perms->checkModule('contacts', 'view')) {
+							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
+						}
 						// Let's check if the actual company has departments registered
 						if($department_selection_list != ""){
 							?>
