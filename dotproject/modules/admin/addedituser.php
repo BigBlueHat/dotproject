@@ -2,34 +2,22 @@
 //add or edit a system user
 $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
 
-// check permissions to edit
-$psql = "
-select count(*)
-from permissions
-left join users on permission_user = user_id
-where permission_user = $user_cookie and
-	permission_value < 1
-	and (permission_grant_on = 'all'
-		or (permission_grant_on = 'admin' and (permission_item = -1 or permission_item = $user_id))
-	)
-";
+// check permissions
+$denyEdit = getDenyEdit( $m );
 
-$prc = mysql_query($psql);
-$perm = mysql_fetch_array($prc);
-
-if ($perm[0] < 1) {
+if ($denyEdit) {
 	echo '<script language="javascript">
-	window.location="./index.php?m=admin&a=viewuser&user_id='.$user_id.'&message=ACCESS DENIED: You have insufficient permissions to edit this user.";
+	window.location="./index.php?m=help&a=access_denied";
 	</script>
 ';
 }
 
-$usql = "select * from users left join companies on user_company = companies.company_id where user_id = $user_id";
-$prc  = mysql_query($usql);
-$prow = mysql_fetch_array($prc);
+$usql = "SELECT * FROM users LEFT JOIN companies ON user_company = companies.company_id WHERE user_id = $user_id";
+$prc  = mysql_query( $usql );
+$prow = mysql_fetch_array( $prc, MYSQL_ASSOC );
 
-$csql ="select company_name, company_id from companies order by company_name";
-$crc = mysql_query($csql);
+$csql ="SELECT company_name, company_id FROM companies ORDER BY company_name";
+$crc = mysql_query( $csql );
 
 ?>
 <SCRIPT language="javascript">
@@ -78,22 +66,22 @@ function submitIt(){
 </script>
 <?php //------------------------Begin HTML -------------------------------?>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-	<TR>
-	<TD valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
+<TR>
+<TD valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
 
-		<TD nowrap><span class="title">
-		<?php if(!$prow["user_id"]){ echo "Add User";}else{echo "Edit User";}?></span></td>
-		<TD valign="top" align="right" width="100%">&nbsp;</td>
-	</tr>
+	<TD nowrap><span class="title">
+	<?php if(!$prow["user_id"]){ echo "Add User";}else{echo "Edit User";}?></span></td>
+	<TD valign="top" align="right" width="100%">&nbsp;</td>
+</tr>
 </TABLE>
 
 <table border="0" cellpadding="4" cellspacing="0" width="90%">
-	<TR>
-		<TD width="50%" nowrap>
-		<a href="./index.php?m=admin">Users List</a>
-		<b>:</b> <a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>">View this User</a>
-		</td>
-	</TR>
+<TR>
+	<TD width="50%" nowrap>
+	<a href="./index.php?m=admin">Users List</a>
+	<b>:</b> <a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>">View this User</a>
+	</td>
+</TR>
 </table>
 
 <TABLE width="95%" border=0  bgcolor="#f4efe3" cellpadding="0" cellspacing=1 height="400">
@@ -101,7 +89,11 @@ function submitIt(){
 <form name="changeuser" action="./index.php?m=admin&a=dosql" method="post">
 <input type="hidden" name="user_id" value="<?php echo intval($prow["user_id"]);?>">
 
-<TR height="20"><TD valign="top" bgcolor="#878676" colspan=2><font color="white"><b><i>Adding new user to the system</font></i></b></td></tr>
+<TR height="20">
+	<TD valign="top" bgcolor="#878676" colspan=2>
+		<font color="white"><b><i>Adding new user to the system</font></i></b>
+	</td>
+</tr>
 <tr>
 	<TD align="right" width="230">Username:</td>
 	<TD>
@@ -110,15 +102,24 @@ function submitIt(){
 	<?php }else{?>
 		<input type="text" class="text" name="user_username" value="<?php echo $prow["user_username"];?>" maxlength="50" size=40> 	 <span class="smallNorm">(required)</span>
 	<?php }?></td></tr>
-<tr><TD align="right">Password:</td><TD><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td></tr>
-<tr><TD align="right">Password2:</td><TD><input type="password" class="text" name="user_password2" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td></tr>
-<tr><TD align="right">First Name:</td><TD><input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50"> <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50"></td></tr>
+<tr>
+	<TD align="right">Password:</td>
+	<TD><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
+</tr>
+<tr>
+	<TD align="right">Password2:</td>
+	<TD><input type="password" class="text" name="user_password2" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
+</tr>
+<tr>
+	<TD align="right">First Name:</td>
+	<TD><input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50"> <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50"></td>
+</tr>
 <tr>
 	<TD align="right">Company:</td>
 	<TD>
 		<select name="user_company">
-		<option value=0 <?php if($prow["user_company"]==0)echo " selected ";?>>N/A
-	<?php while($crow = mysql_fetch_array($crc)){
+		<option value=0 <?php if ($prow["user_company"] == 0) echo " selected ";?>>N/A
+	<?php while($crow = mysql_fetch_array( $crc, MYSQL_ASSOC )){
 		echo '<option value=' . $crow["company_id"];
 		if ($crow["company_id"] == $prow["user_company"]) {
 			echo " selected";
@@ -128,20 +129,53 @@ function submitIt(){
 		</select>
 	</TD>
 </TR>
-<tr><TD align="right">Email:</td><TD><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Phone:</td><TD><input type="text" class="text" name="user_phone" value="<?php echo $prow["user_phone"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Home Phone:</td><TD><input type="text" class="text" name="user_home_phone" value="<?php echo $prow["user_home_phone"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Mobile:</td><TD><input type="text" class="text" name="user_mobile" value="<?php echo $prow["user_mobile"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Address1:</td><TD><input type="text" class="text" name="user_address1" value="<?php echo $prow["user_address1"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Address2:</td><TD><input type="text" class="text" name="user_address2" value="<?php echo $prow["user_address2"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">City:</td><TD><input type="text" class="text" name="user_city" value="<?php echo $prow["user_city"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">State:</td><TD><input type="text" class="text" name="user_state" value="<?php echo $prow["user_state"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Zip:</td><TD><input type="text" class="text" name="user_zip" value="<?php echo $prow["user_zip"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">Country:</td><TD><input type="text" class="text" name="user_country" value="<?php echo $prow["user_country"];?>" maxlength="50" size=40> </td></tr>
-<tr><TD align="right">ICQ#:</td><TD><input type="text" class="text" name="user_icq" value="<?php echo $prow["user_icq"];?>" maxlength="50"> AOL Nick: <input type="text" class="text" name="user_aol" value="<?php echo $prow["user_aol"];?>" maxlength="50"> </td></tr>
-<tr><TD align="right">Birthday:</td><TD><input type="text" class="text" name="user_birthday" value="<?php if(intval($prow["user_birthday"])!=0) { echo substr($prow["user_birthday"],0,10);}?>" maxlength="50" size=40> format(YYYY-MM-DD)</td></tr>
-<tr><TD align="right" valign=top>Email Signature:</td><TD><textarea class="text" cols=50 name="signature" style="height: 50px"><?php echo @$prow["signature"];?></textarea></td></tr>
+<tr>
+	<TD align="right">Email:</td>
+	<TD><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="50" size=40> </td>
+</tr>
+<tr>
+	<TD align="right">Phone:</td>
+	<TD><input type="text" class="text" name="user_phone" value="<?php echo $prow["user_phone"];?>" maxlength="50" size=40> </td>
+	</tr>
+<tr>
+	<TD align="right">Home Phone:</td>
+	<TD><input type="text" class="text" name="user_home_phone" value="<?php echo $prow["user_home_phone"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">Mobile:</td>
+	<TD><input type="text" class="text" name="user_mobile" value="<?php echo $prow["user_mobile"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">Address1:</td>
+	<TD><input type="text" class="text" name="user_address1" value="<?php echo $prow["user_address1"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">Address2:</td>
+	<TD><input type="text" class="text" name="user_address2" value="<?php echo $prow["user_address2"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">City:</td>
+	<TD><input type="text" class="text" name="user_city" value="<?php echo $prow["user_city"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">State:</td>
+	<TD><input type="text" class="text" name="user_state" value="<?php echo $prow["user_state"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">Zip:</td>
+	<TD><input type="text" class="text" name="user_zip" value="<?php echo $prow["user_zip"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">Country:</td>
+	<TD><input type="text" class="text" name="user_country" value="<?php echo $prow["user_country"];?>" maxlength="50" size=40> </td></tr>
+<tr>
+	<TD align="right">ICQ#:</td>
+	<TD><input type="text" class="text" name="user_icq" value="<?php echo $prow["user_icq"];?>" maxlength="50"> AOL Nick: <input type="text" class="text" name="user_aol" value="<?php echo $prow["user_aol"];?>" maxlength="50"> </td>
+</tr>
+<tr>
+	<TD align="right">Birthday:</td>
+	<TD><input type="text" class="text" name="user_birthday" value="<?php if(intval($prow["user_birthday"])!=0) { echo substr($prow["user_birthday"],0,10);}?>" maxlength="50" size=40> format(YYYY-MM-DD)</td>
+</tr>
+<tr>
+	<TD align="right" valign=top>Email Signature:</td>
+	<TD><textarea class="text" cols=50 name="signature" style="height: 50px"><?php echo @$prow["signature"];?></textarea></td>
+</tr>
 
-<tr><TD align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td><TD align="right"><input type=button value="submit" onClick="submitIt()" class=button>&nbsp; &nbsp; &nbsp;</td></tr>
-
+<tr>
+	<TD align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td>
+	<TD align="right"><input type=button value="submit" onClick="submitIt()" class=button>&nbsp; &nbsp; &nbsp;</td>
+</tr>
 </TABLE>
