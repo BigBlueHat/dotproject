@@ -32,3 +32,72 @@ Other files added from Leo West (dotproject-leo.0214) include:
 and graphics, /locales/ folder, subfolder and files. 
 
 JRP also added Axel Napolitano's "Documentation of dotproject's plug-in interface" as /docs/MODULES.txt.
+
+-------------------------------------------------------------------------------
+Updates by Andrew Eddie 7 August 2002
+
+color_selector.php
+- added drop-down list for preset colours
+
+logincheck.php
+- add user_full_name cookie
+
+dosql/addedittask.php
+- added nofity support and style block to mail
+- changed mail 'From' to default to the task owner
+
+functions/calendar_func.php
+- added support for filter by company
+
+includes/create_new_menu.php
+- added support to auto-populate the task parent of a new task
+
+includes/header.php
+- added current user display (could be removed later)
+- added link to about page
+
+modules/admin/index.php
+- added link on login name to view user action
+
+modules/admin/addedituser.php
+- change title and add breadcrumbs
+
+modules/admin/viewuser.php
+- new page
+
+modules/calendar/index.php
+- added filter by company
+
+modules/companies/index.php
+- fixed sql for project counts
+
+modules/companies/view.php
+- new page
+
+modules/companies/addedit.php
+- fixed hole in security (anyone could edit regardless of permissions)
+- widen some input boxes, increased max length on state field for non-US countries
+
+modules/forums/post_messages.php
+- commented out code that made the author of any reply the same as the original message
+
+modules/help/about.php
+- new module and file
+
+modules/projects/index.php
+- added filter by company
+
+modules/projects/addedit.php
+- cleaned code layout, added delete project link and breadcrumbs
+
+modules/projects/dosql.php
+- clean code layout and added delete project support
+
+modules/tasks/index.php
+- major re-work to show child tasks assigned to individual users
+- fixed missing closing form tag
+
+modules/tasks/addedit.php
+- added code to auto-populate taks parent
+-------------------------------------------------------------------------------
+
