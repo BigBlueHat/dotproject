@@ -51,6 +51,9 @@ class CTask {
 		if ($this->task_id === NULL) {
 			return 'task id is NULL';
 		}
+		if (!$this->task_milestone) {
+			$this->task_milestone = '0';
+		}
 		if (!$this->task_dynamic) {
 			$this->task_dynamic = '0';
 		}
