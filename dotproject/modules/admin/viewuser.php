@@ -53,6 +53,10 @@ $urow = mysql_fetch_array( $urc, MYSQL_ASSOC );
 			<td><?php echo $urow["user_username"];?></td>
 		</TR>
 		<TR>
+			<TD><b>User Type:</b></TD>
+			<td><?php echo $utypes[$urow["user_type"]];?></td>
+		</TR>
+		<TR>
 			<TD><b>Full Name:</b></TD>
 			<td><?php echo $urow["user_first_name"].' '.$urow["user_last_name"];?></td>
 		</TR>

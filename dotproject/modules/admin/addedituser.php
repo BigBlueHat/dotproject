@@ -18,6 +18,10 @@ $prow = mysql_fetch_array( $prc, MYSQL_ASSOC );
 
 $csql ="SELECT company_name, company_id FROM companies ORDER BY company_name";
 $crc = mysql_query( $csql );
+$companies = array( 0 => '' );
+while($crow = mysql_fetch_array( $crc, MYSQL_ASSOC )) {
+	$companies[$crow['company_id']] = $crow['company_name'];
+}
 
 ?>
 <SCRIPT language="javascript">
@@ -91,7 +95,7 @@ function submitIt(){
 
 <TR height="20">
 	<TD valign="top" bgcolor="#878676" colspan=2>
-		<font color="white"><b><i>Adding new user to the system</font></i></b>
+		<font color="white"><b><i>User Details</font></i></b>
 	</td>
 </tr>
 <tr>
@@ -102,6 +106,14 @@ function submitIt(){
 	<?php }else{?>
 		<input type="text" class="text" name="user_username" value="<?php echo $prow["user_username"];?>" maxlength="50" size=40> 	 <span class="smallNorm">(required)</span>
 	<?php }?></td></tr>
+<tr>
+	<TD align="right">User Type:</td>
+	<TD>
+<?php
+	echo arraySelect( $utypes, 'user_type', 'class=text size=1', $prow["user_type"] );
+?>
+	</TD>
+</TR>
 <tr>
 	<TD align="right">Password:</td>
 	<TD><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
@@ -117,16 +129,9 @@ function submitIt(){
 <tr>
 	<TD align="right">Company:</td>
 	<TD>
-		<select name="user_company">
-		<option value=0 <?php if ($prow["user_company"] == 0) echo " selected ";?>>N/A
-	<?php while($crow = mysql_fetch_array( $crc, MYSQL_ASSOC )){
-		echo '<option value=' . $crow["company_id"];
-		if ($crow["company_id"] == $prow["user_company"]) {
-			echo " selected";
-		}
-		echo '>' . $crow["company_name"];
-	}?>
-		</select>
+<?php
+	echo arraySelect( $companies, 'user_company', 'class=text size=1', $prow["user_company"] );
+?>
 	</TD>
 </TR>
 <tr>

@@ -13,15 +13,16 @@ if (isset( $del )) {
 	$message = "User Deleted";
 
 } else if ($user_id == 0) {
-	$dsql = "Insert into users (user_username , user_password , user_parent , user_type  , user_first_name  , user_last_name  , user_company  , user_email  , user_phone  , user_home_phone  , user_mobile  , user_address1  , user_address2  , user_city  , user_state  , user_zip  , user_country  , user_icq  , user_aol  , user_birthday, signature )
+	$dsql = "Insert into users (user_username , user_password , user_parent , user_type, user_first_name  , user_last_name  , user_company  , user_email  , user_phone  , user_home_phone  , user_mobile  , user_address1  , user_address2  , user_city  , user_state  , user_zip  , user_country  , user_icq  , user_aol  , user_birthday, signature )
 	values
-	('$user_username',password('$user_password'),'$user_parent','$user_type ','$user_first_name ','$user_last_name ','$user_company ','$user_email ','$user_phone ','$user_home_phone ','$user_mobile ','$user_address1 ','$user_address2 ','$user_city ','$user_state ','$user_zip ','$user_country ','$user_icq ','$user_aol ','$user_birthday', '$signature')";
+	('$user_username',password('$user_password'), '$user_parent', '$user_type', '$user_first_name', '$user_last_name', '$user_company', '$user_email', '$user_phone','$user_home_phone','$user_mobile', '$user_address1', '$user_address2', '$user_city', '$user_state', '$user_zip', '$user_country', '$user_icq', '$user_aol', '$user_birthday', '$signature')";
 
 	$message = "User Created";
 
 } else {
 	$dsql = "update users set 
 	user_username='$user_username',
+	user_type='$user_type',
 	user_first_name='$user_first_name',
 	user_last_name='$user_last_name',
 	user_company='$user_company',
