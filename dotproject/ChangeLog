@@ -1,3 +1,93 @@
+2004-09-09 21:18  (cyberhorse)
+---------------------------------
+includes/config-dist.php
+modules/tasks/tasks.class.php
+- Added subject prefix for outgoing mail.
+
+2004-09-09 12:56  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- fixed a javascript bug, stopping users from editing tasks.
+
+2004-09-09 12:47  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+- Added a number of projects contained in each tab (may become redundant after dynamic tabs loading procedures.
+- if that's the case - remember to remove this code).
+
+2004-09-09 11:40  (cyberhorse)
+---------------------------------
+images/icons/pin.gif
+images/icons/unpin.gif
+- Added icons for the pin/unpin addition to tasks. To be replaced with better icons later.
+
+2004-09-09 11:38  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/tasks/index.php
+modules/tasks/tasks.php
+- pinnable tasks (sf patch #927131 modified)
+
+2004-09-09 10:17  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- doh, this has already been done :) reversed changes.
+- Anyway, what I had done is a way to go around having temporary tables (I've seen feature request for that).
+- If anyone things we should move away from them, say so.
+
+2004-09-09 10:05  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- Added indicators for number of tasks in each project.
+
+2004-09-09 09:46  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- couldn't create projects anymore without fixing this. Somebody had assumed all projects have departments and contacts. Something very strange here - this code was over 3 months old, but had some serious problems, like assigning project_id to non-existant task_id fields in some table etc. Why wasn't it giving errors before?!
+
+2004-09-09 08:33  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- fixed dates checking when projects don't have specified dates.
+
+2004-09-09 08:30  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- Added some dates checking:
+- task dates inside project dates
+- no reoccurring tasks if task dates and project end dates are not specified
+
+2004-09-09 07:37  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- Set the start date of new tasks only to the current date (today).
+
+2004-09-09 07:27  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+- fixed a few problems with reoccurring tasks.
+
+2004-09-09 07:10  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+- Reoccurring tasks.
+
+2004-09-09 04:10  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-08 16:39  (jcgonz)
 ---------------------------------
 fileviewer.php
@@ -408,96 +498,6 @@ modules/tasks/tasks.class.php
 
 2004-08-23 19:32  (jcgonz)
 ---------------------------------
-modules/tasks/tasks.php
-- Created $style var because if no start_date defined, the
-- variable isn't defined neither
-
-2004-08-23 19:17  (jcgonz)
----------------------------------
-modules/admin/vw_usr_log.php
-- In order to enable admin to see individual access reports
-
-2004-08-23 19:15  (jcgonz)
----------------------------------
-index.php
-- Solved another session issue.
-- Actually I discovered that the history module and
-- the access log registry are doing more or less the
-- same thing. The only substantial difference is that
-- the access log registry is built in the users module
-- and it calculates the idle time. Those calcultations
-- are shown within the user lists and within the user
-- details.
-
-2004-08-23 19:08  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-08-23 19:02  (jcgonz)
----------------------------------
-index.php
-- Solved a session issue with access log registry
-
-2004-08-23 18:55  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Added a check up to figure out if the last_update variable isset.
-
-2004-08-23 18:53  (gregorerhardt)
----------------------------------
-modules/projects/addedit.php
-modules/projects/view.php
-modules/tasks/addedit.php
-modules/tasks/tasksperuser_sub.php
-- project and task priority is sysval now
-
-2004-08-23 18:49  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-- project and task priority is sysval now
-
-2004-08-23 18:42  (jcgonz)
----------------------------------
-index.php
-classes/ui.class.php
-- Fixed a typo
-
-2004-08-23 18:31  (jcgonz)
----------------------------------
-index.php
-classes/ui.class.php
-db/dotproject.sql
-db/upgrade_latest.sql
-modules/admin/addedituser.php
-modules/admin/index.php
-modules/admin/viewuser.php
-modules/admin/vw_active_usr.php
-modules/admin/vw_usr.php
-- Added user access log and online status distinct(including idle time)
-- Features done by ing_olaf
-
-2004-08-23 17:24  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-modules/projects/addedit.php
-modules/projects/index.php
-modules/projects/projects.class.php
-modules/projects/view.php
-- changed over to dynamic project_actual_end_date \ndefined by last task_end_date
-
-2004-08-23 08:50  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- forgot closing link tag
-
-2004-08-23 08:46  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- fixed related tasks displaying on colapsable menu.
-
 ...
 
 (This file has been wrapped)
