@@ -113,8 +113,6 @@ ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
 #
 # Table changes 12 Dec 2002 (aje)
 #
-ALTER TABLE `users` DROP `user_locale`;
-
 DROP TABLE IF EXISTS user_preferences;
 CREATE TABLE `user_preferences` (
   `pref_user` varchar(12) NOT NULL default '',
@@ -137,7 +135,7 @@ INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
 ALTER TABLE `forums` CHANGE `forum_moderated` `forum_moderated` INT DEFAULT "0" NOT NULL;
 
 # AJE (2/Jan/2003): New preference 
-INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
+#INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 
 #
 # AJE (4/Jan/2003)
@@ -205,16 +203,14 @@ INSERT INTO modules VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "F
 INSERT INTO modules VALUES("8", "Tickets", "ticketsmith", "1.0.0", "", "core", "1", "Tickets", "ticketsmith.gif", "8", "1", "");
 INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "admin.gif", "9", "1", "");
 INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "system.gif", "10", "1", "");
-INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
 INSERT INTO modules VALUES("11", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "");
+INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
+INSERT INTO modules VALUES("13", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "13", "0", "");
 
-# Missing field in contacts
-ALTER TABLE contacts ADD `contact_country` varchar(30) default NULL;
-ALTER TABLE contacts ADD contact_icon varchar(20) default 'obj/contact'
 #
 #  Alter tasks table 1/February/2003
 #
-ALTER TABLE `tasks` ADD `task_duration_type` VARCHAR(6)  DEFAULT "hours" NOT NULL AFTER task_duration;
+ALTER TABLE `tasks` ADD `task_duration_type` VARCHAR(6)  DEFAULT 'hours' NOT NULL AFTER task_duration;
 
 #
 # ! WARNING !

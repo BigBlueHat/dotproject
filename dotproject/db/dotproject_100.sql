@@ -368,7 +368,6 @@ INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
 INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
 INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
 INSERT INTO user_preferences VALUES("0", "TIMEFORMAT", "%I:%M %p");
-INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 
 #
 # AJE (24/Jan/2003)
@@ -411,8 +410,9 @@ INSERT INTO modules VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "F
 INSERT INTO modules VALUES("8", "Tickets", "ticketsmith", "1.0.0", "", "core", "1", "Tickets", "ticketsmith.gif", "8", "1", "");
 INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "admin.gif", "9", "1", "");
 INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "system.gif", "10", "1", "");
-INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
 INSERT INTO modules VALUES("11", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "");
+INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
+INSERT INTO modules VALUES("13", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "13", "0", "");
 
 #
 # Table structure for table 'syskeys'
