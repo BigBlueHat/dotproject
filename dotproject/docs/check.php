@@ -74,6 +74,10 @@ $sid = intval( get_cfg_var( 'session.use_trans_sid' ) );
 $msg = $sid ? "<td class=warning>There are security risks with this turned on</td>" : "<td>OK</td>";
 echo "<tr><td>session.use_trans_sid</td><td>$sid</td>$msg</tr>";
 
+$fup = get_cfg_var( 'file_uploads' );
+$msg = $fup ? "<td>OK</td>" : "<td class=warning>You won't be able to upload files</td>";
+echo "<tr><td>file_uploads</td><td>$fup</td>$msg</tr>";
+
 $iw = is_writable( "{$dPconfig['root_dir']}/locales/en" );
 $msg = $iw ? '<td>OK</td>' : '<td class=warning>Warning: you will not be able to save translation files.  Check the directory permissions.</td>';
 echo "<tr><td>/locales/en directory writable</td><td>$iw</td>$msg</tr>";
