@@ -1,3 +1,48 @@
+2003-12-11 20:03  (jcgonz)
+---------------------------------
+modules/projects/view.php
+modules/tasks/addedit.php
+- Minor IE fixes
+
+2003-12-11 17:30  (gregorerhardt)
+---------------------------------
+modules/tasks/organizer.php
+- softcoded some strings for translation
+
+2003-12-11 17:01  (gregorerhardt)
+---------------------------------
+modules/public/contact_selector.php
+- softcoded string for translation
+
+2003-12-11 16:43  (gregorerhardt)
+---------------------------------
+modules/files/addedit.php
+- softcoded string for js confirming of CancelProcess
+
+2003-12-11 16:42  (gregorerhardt)
+---------------------------------
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+- enhanced fix for #845978: Security fixes and Searach aivailybility fo readOnlyUsers; some strings softcoded for translation
+
+2003-12-11 10:53  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+- Visual improvements for IE, more pending
+
+2003-12-11 10:09  (jcgonz)
+---------------------------------
+includes/main_functions.php
+modules/system/addeditpref.php
+- Note: The function money_format() is only defined if the system has strfmon capabilities. For example, Windows does not, so money_format() is undefined in Windows.
+- FIX: A work arround was written for windows hosts not to crash dP.
+
+2003-12-11 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-10 19:48  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.class.php
@@ -453,51 +498,6 @@ ChangeLog
 modules/files/files.class.php
 - Changed from is_writeable to is_dir in detecting need to create directories.
 
-2003-10-24 03:43  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-24 02:35  (ajdonnison)
----------------------------------
-classes/libmail.class.php
-- Expanded CC processing to allow comma separated list of addresses
-- to comply with ticketsmith incoming email handling.
-
-2003-10-23 19:16  (ajdonnison)
----------------------------------
-modules/projects/index.php
-- Added Pablo Roca's speed enhancement patch.
-
-2003-10-23 03:44  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-23 02:34  (kripper)
----------------------------------
-index.php
-- Fixed bug related to wrong charset in login page
-
-2003-10-23 01:18  (jcgonz)
----------------------------------
-modules/ticketsmith/index.php
-- Now user is able to perserve state at the ticket list page (open, processing, close, deleted)
-
-2003-10-22 23:42  (gregorerhardt)
----------------------------------
-locales/en/admin.inc
-- added translation in process of fixing bug826189
-
-2003-10-22 23:18  (gregorerhardt)
----------------------------------
-modules/admin/do_user_aed.php
-- fixing bug826189: addition of users with existing username
-
-2003-10-22 20:07  (ajdonnison)
----------------------------------
-locales/en/system.inc
-- Added Portugese as distinct from Portugese Brazillian.
 ...
 
 (This file has been wrapped)
