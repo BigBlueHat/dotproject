@@ -185,6 +185,7 @@ if ($task_id) $q3->addWhere("file_task = $task_id");
 $files = array();
 $file_versions = array();
 if ($canRead) {
+	
 	$files = $q2->loadList();
 	$file_versions = $q3->loadHashList('file_id');
 }
@@ -345,7 +346,7 @@ foreach ($files as $file_row) {
                 <td width="20%">' . $file['file_description'] . '</td>
                 <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
                 <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $row['file_task'] . '">' . $file['task_name'] . '</a></td>
-                <td width="15%" nowrap="nowrap">' . $row["contact_first_name"].' '.$row["contact_last_name"] . '</td>
+                <td width="15%" nowrap="nowrap">' . $file_row["contact_first_name"].' '.$file_row["contact_last_name"] . '</td>
                 <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
                 <td width="15%" nowrap="nowrap" align="right">' . $file['file_date'] . '</td>
@@ -357,7 +358,7 @@ foreach ($files as $file_row) {
         ?>
         </td>
 	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["file_task"];?>"><?php echo $row["task_name"];?></a></td>
-	<td width="15%" nowrap="nowrap"><?php echo $row["contact_first_name"].' '.$row["contact_last_name"];?></td>
+	<td width="15%" nowrap="nowrap"><?php echo $file_row["contact_first_name"].' '.$file_row["contact_last_name"];?></td>
 	<td width="5%" nowrap="nowrap" align="right"><?php echo file_size(intval($row["file_size"]));?></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
