@@ -156,7 +156,10 @@ if ($showWork=='1') {
 }
 
 $graph->scale->tableTitle->Set($projects[$project_id]["project_name"]);
+
+// try commenting out the following line if gantt charts do not display
 $graph->scale->tableTitle->SetFont(FF_ARIAL,FS_BOLD,12);
+
 $graph->scale->SetTableTitleBackground("#".$projects[$project_id]["project_color_identifier"]);
 $graph->scale->tableTitle->Show(true);
 
