@@ -9,8 +9,8 @@
 /**
  *	CDpObject Abstract Class.
  *
- *	Parent classes to all database derived objects
- *	@author Andrew Eddie
+ *	Parent class to all database table derived objects
+ *	@author Andrew Eddie <eddieajau@users.sourceforge.net>
  *	@abstract
  */
 class CDpObject {
@@ -45,7 +45,7 @@ class CDpObject {
 		return $this->_error;
 	}
 /**
- *	binds a named array/hash to this object
+ *	Binds a named array/hash to this object
  *
  *	can be overloaded/supplemented by the child class
  *	@param array $hash named array
@@ -62,7 +62,7 @@ class CDpObject {
 	}
 
 /**
- *	binds an array/hash to this object
+ *	Binds an array/hash to this object
  *	@param int $oid optional argument, if not specifed then the value of current key is used
  *	@return any result from the database operation
  */
@@ -80,9 +80,9 @@ class CDpObject {
 	}
 
 /**
- *	generic check method
+ *	Generic check method
  *
- *	can be overloaded/supplemented by the child class
+ *	Can be overloaded/supplemented by the child class
  *	@return null if the object is ok
  */
 	function check() {
@@ -90,19 +90,19 @@ class CDpObject {
 	}
 
 /**
- *	inserts a new row if id is zero or updates an existing row in the database table
+ *	Inserts a new row if id is zero or updates an existing row in the database table
  *
- *	can be overloaded/supplemented by the child class
+ *	Can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns and error message
  */
-	function store() {
+	function store( $updateNulls = false ) {
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed<br />$msg";
 		}
 		$k = $this->_tbl_key;
 		if( $this->$k ) {
-			$ret = db_updateObject( $this->_tbl, $this, $this->_tbl_key, false );
+			$ret = db_updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
 		} else {
 			$ret = db_insertObject( $this->_tbl, $this, $this->_tbl_key );
 		}
@@ -116,7 +116,7 @@ class CDpObject {
 /**
  *	Generic check for whether dependancies exist for this object in the db schema
  *
- *	can be overloaded/supplemented by the child class
+ *	Can be overloaded/supplemented by the child class
  *	@param string $msg Error message returned
  *	@param int Optional key index
  *	@param array Optional array to compiles standard joins: format [label=>'Label',name=>'table name',idfield=>'field',joinfield=>'field']
@@ -164,15 +164,18 @@ class CDpObject {
 /**
  *	Default delete method
  *
- *	can be overloaded/supplemented by the child class
+ *	Can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns and error message
  */
-	function delete() {
+	function delete( $oid=null ) {
+		$k = $this->_tbl_key;
+		if ($oid) {
+			$this->$k = intval( $oid );
+		}
 		if (!$this->canDelete( $msg )) {
 			return $msg;
 		}
 
-		$k = $this->_tbl_key;
 		$sql = "DELETE FROM $this->_tbl WHERE $this->_tbl_key = '".$this->$k."'";
 		if (!db_exec( $sql )) {
 			return db_error();
