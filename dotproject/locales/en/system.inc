@@ -238,6 +238,7 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "mail_transport_tooltip"=>"Select either PHP for standard PHP mail support or SMTP for direct SMTP support",
 "mail_user_title"=>"SMTP Username",
 "mail_user_tooltip"=>"The username to use when authenticating to your SMTP server",
+"no"=>"Norwegian",
 "page_title_title"=>"Page Title",
 "page_title_tooltip"=>"Stipulate what will appear on the top line of the browser - before the browser name. ",
 "parser_application/msword_title"=>"MS Word Indexing Parser",
@@ -294,6 +295,7 @@ You can only have 1 character within a string, so 2d4h is NOT valid, but 28h is.
 "sl"=>"Slovenian",
 "smtp_item_title"=>"SMTP",
 "sql_item_title"=>"Standard dotProject",
+"sv"=>"Swedish",
 "syscfg_intro"=>"The following configuration variables have a direct impact on how your system functions.  
 
 If you adjust any of these options incorrectly this may affect the operation of your installation and restoring the setting may require external action.
