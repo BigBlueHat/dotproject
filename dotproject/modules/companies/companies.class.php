@@ -57,7 +57,7 @@ class CCompany extends CDpObject {
 	function canDelete( &$msg, $oid=null ) {
 		$tables[] = array( 'label' => 'Projects', 'name' => 'projects', 'idfield' => 'project_id', 'joinfield' => 'project_company' );
 		$tables[] = array( 'label' => 'Departments', 'name' => 'departments', 'idfield' => 'dept_id', 'joinfield' => 'dept_company' );
-		$tables[] = array( 'label' => 'Users', 'name' => 'users', 'idfield' => 'user_id', 'joinfield' => 'user_owner' );
+		$tables[] = array( 'label' => 'Users', 'name' => 'users', 'idfield' => 'user_id', 'joinfield' => 'user_company' );
 	// call the parent class method to assign the oid
 		return CDpObject::canDelete( $msg, $oid, $tables );
 	}
