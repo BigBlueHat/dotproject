@@ -217,7 +217,11 @@ $isproj = $tarr[$x]["task_project"];
 		<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $tarr[$x]["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
 		<TD align="right"><?php echo intval($tarr[$x]["task_precent_complete"]);?>%</td>
 		<TD>
-		<?php if($tarr[$x]["task_priority"] <>0){echo "<img src='./images/icons/" . $tarr[$x]["task_priority"] .".gif' width=13 height=16>";}?>
+		<?php if($tarr[$x]["task_priority"] <0){
+			echo "<img src='./images/icons/low.gif' width=13 height=16>";
+		}else if($tarr[$x]["task_priority"] >0){
+			echo "<img src='./images/icons/" . $tarr[$x]["task_priority"] .".gif' width=13 height=16>";
+		}?>
 		
 		</td>
 		<TD valign="middle"><img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $tarr[$x]["task_id"];?>">
