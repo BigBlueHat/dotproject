@@ -262,18 +262,32 @@ function dPformatDuration($x) {
     } elseif ($dur_day == 1) {
         $str .= $dur_day .' '. $AppUI->_('day'). ' ';
     }
-     
+
     if ($dur_hour > 1 ) {
         $str .= $dur_hour .' '. $AppUI->_('hours');
     } elseif ($dur_hour > 0 and $dur_hour <= 1) {
         $str .= $dur_hour .' '. $AppUI->_('hour');
-    } 
-        
+    }
+
     if ($str == '') {
         $str = $AppUI->_("n/a");
     }
-    
+
     return $str;
-    
+
 }
+
+function dPsetMicroTime() {
+	global $microTimeSet;
+	list($usec, $sec) = explode(" ",microtime());
+	$microTimeSet = (float)$usec + (float)$sec;
+}
+
+function dPgetMicroDiff() {
+	global $microTimeSet;
+	$mt = $microTimeSet;
+	dPsetMicroTime();
+	return sprintf( "%.3f", $microTimeSet - $mt );
+}
+
 ?>
