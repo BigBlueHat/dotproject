@@ -40,7 +40,7 @@ if($search_string != ""){
 $search_string = dPformSafe($search_string, true);
 
 $perms =& $AppUI->acl();
-$owner_list = array( 0 => $AppUI->_("All")) + $perms->getPermittedUsers("companies"); // db_loadHashList($sql);
+$owner_list = array( 0 => $AppUI->_("All", UI_OUTPUT_RAW)) + $perms->getPermittedUsers("companies"); // db_loadHashList($sql);
 $owner_combo = arraySelect($owner_list, "owner_filter_id", "class='text' onchange='javascript:document.searchform.submit()'", $owner_filter_id, false);
 
 // setup the title block
