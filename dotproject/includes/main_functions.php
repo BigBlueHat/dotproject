@@ -361,6 +361,7 @@ function formatCurrency( $number, $format ) {
 	setlocale(LC_MONETARY, $format);
 
 	// TODO: works only >= 4.3.0...couldn't test it yet :-( [kripper]
+	// NOTE: money_format doesn't work in windows, a work arround was instituted in the calling file addeditpref.php
 	return money_format('%i', $number);
 }
 

@@ -119,8 +119,15 @@ function submitIt(){
 <?php
 	$currencies = array();
 	$currEx = 123456789;
-	$f = "es_ES"; $currencies[$f]	= formatCurrency( $currEx, $f );
-	$f = "us_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
+
+	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    	// This is a server using Windows, no php money_format capability
+    	$f = "us_US"; $currencies[$f]	= "$ " . $currEx;
+	} else {
+    	// This is a server not using Windows
+    	$f = "es_ES"; $currencies[$f]	= formatCurrency( $currEx, $f );
+		$f = "us_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	}
 	echo arraySelect( $currencies, 'pref_name[CURRENCYFORMAT]', 'class=text size=1', @$prefs['CURRENCYFORMAT'], false );
 ?>
 	</td>
