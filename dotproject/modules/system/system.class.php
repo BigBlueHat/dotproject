@@ -82,6 +82,10 @@ class CModule extends CDpObject {
 			// TODO: check for older version - upgrade
 			return false;
 		}
+                $sql = 'SELECT max(mod_ui_order)
+                        FROM modules';
+                $this->mod_ui_order = db_loadResult($sql) + 1;
+
 		$perms =& $GLOBALS['AppUI']->acl();
 		$perms->addModule($this->mod_directory, $this->mod_name);
 		// Determine if it is an admin module or not, then add it to the correct set
@@ -147,80 +151,39 @@ class CModule extends CDpObject {
 }
 
 class bcode {
-
         var $_billingcode_id=NULL;
-
         var $company_id;
-
         var $billingcode_desc;
-
         var $billingcode_name;
-
         var $billingcode_value;
-
         var $billingcode_status;
 
-
-
         function bcode() {
-
-
-
         }
-
-
 
         function bind( $hash ) {
-
                 if (!is_array($hash)) {
-
                         return "Billing Code::bind failed";
-
                 } else {
-
                         bindHashToObject( $hash, $this );
-
                         return NULL;
-
                 }
-
         }
-
-
 
         function delete() {
-
                 $sql = "update billingcode set billingcode_status=1 where billingcode_id='".$this->_billingcode_id."'";
-
                 if (!db_exec( $sql )) {
-
                         return db_error();
-
                 } else {
-
                         return NULL;
-
                 }
-
         }
-
-
 
         function store() {
-
                 if (!($ret = db_insertObject ( 'billingcode', $this, 'billingcode_id' ))) {
-
                         return "Billing Code::store failed <br />" . db_error();
-
                 } else {
-
                         return NULL;
-
                 }
-
         }
-
-
-
 }
-?>
