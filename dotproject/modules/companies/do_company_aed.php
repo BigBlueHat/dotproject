@@ -7,20 +7,22 @@ if (($msg = $company->bind( $_POST ))) {
 	$AppUI->redirect();
 }
 
+// prepare (and translate) the module name ready for the suffix
+$AppUI->setMsg( 'Company' );
 if ($del) {
 	if (($msg = $company->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "Company deleted", UI_MSG_ALERT );
-		$AppUI->redirect( "m=companies" );
+		$AppUI->setMsg( 'deleted', UI_MSG_ALERT, true );
+		$AppUI->redirect( '', -1 );
 	}
 } else {
 	if (($msg = $company->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['company_id'];
-		$AppUI->setMsg( "Company ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+		$AppUI->setMsg( $isNotNew ? 'added' : 'inserted', UI_MSG_OK, true );
 	}
 	$AppUI->redirect();
 }
