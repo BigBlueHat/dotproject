@@ -8,6 +8,8 @@ include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt; // $showAllGantt == Gantt with tasks and users
 
 
+// get the prefered date format
+$df = $AppUI->getPref('SHDATEFORMAT');
 
 $filter1 = array();
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
@@ -210,7 +212,9 @@ foreach($tasks as $t) {
 
 	if ($t["task_milestone"] != 1)
 	{
-        $bar = new GanttBar($row++, array($name, substr($start, 0, 10), substr($end, 0, 10), /*substr($actual_end, 0, 10))*/" "), $start, $actual_end, $cap, 0.6);
+	$enddate = new CDate($end);
+	$startdate = new CDate($start);
+        $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), /*substr($actual_end, 0, 10))*/" "), $start, $actual_end, $cap, 0.6);
    //     $bar->progress->Set($progress/100);
         $bar->title->SetFont(FF_FONT1,FS_NORMAL,10);
         $bar->SetFillColor("#".$t['project_color_identifier']);

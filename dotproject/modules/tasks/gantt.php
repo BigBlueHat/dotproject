@@ -15,11 +15,14 @@ $f = defVal( @$_REQUEST['f'], 0 );
 global $showLabels;
 global $showWork;
 global $locale_char_set;
+
+// get the prefered date format
+$df = $AppUI->getPref('SHDATEFORMAT');
+
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
 $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 $criticalTasks = ($project_id > 0) ? $project->getCriticalTasks($project_id) : NULL;
-
 // pull valid projects and their percent complete information
 $psql = "
 SELECT project_id, project_color_identifier, project_name, project_start_date, project_end_date
@@ -130,6 +133,7 @@ $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
+//$graph->scale->day->SetStyle(DAYSTYLE_SHORTDATE2);
 
 $jpLocale = dPgetConfig( 'jpLocale' );
 if ($jpLocale) {
@@ -270,7 +274,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		//while using charset different than UTF-8 we need not to use utf8_decode
 		$name = strlen( $a["task_name"] ) > 34 ? substr( $a["task_name"], 0, 33 ).'.' : $a["task_name"] ;	
 	}
-	
+
 	$name = str_repeat(" ", $level).$name;
 	
 	//using new jpGraph determines using Date object instead of string
@@ -300,7 +304,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	} else {
 		$cap = "";
 	}
-	
+
 	$caption = "";
 	if ($showLabels=='1') {
 		$sql = "select ut.task_id, u.user_username, ut.perc_assignment from user_tasks ut, users u where u.user_id = ut.user_id and ut.task_id = ".$a["task_id"];
@@ -353,12 +357,13 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		
 
 		$dur .= " h";
-		
-		$bar = new GanttBar($row++, array($name, $dur, substr($start, 2, 8), substr($end, 2, 8)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
+		$enddate = new CDate($end);
+		$startdate = new CDate($start);
+		$bar = new GanttBar($row++, array($name, $dur, $startdate->format($df), $enddate->format($df)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
 		$bar->progress->Set($progress/100);
-		
+
 		$bar->title->SetFont(FF_FONT1,FS_NORMAL,6);
-		
+
 	    if($a["task_dynamic"] == 1){
 	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 6);
     		$bar->rightMark->Show();

@@ -4,6 +4,9 @@ include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
 global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;//, $showAllGantt;
 
+// get the prefered date format
+$df = $AppUI->getPref('SHDATEFORMAT');
+
 $filter1 = array();
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
 $projectStatus = arrayMerge( array( '-2' => $AppUI->_('All w/o in progress')), $projectStatus);
@@ -185,7 +188,10 @@ foreach($projects as $p) {
                 $caption .= $p['project_active'] <> 0 ? $AppUI->_('active') : $AppUI->_('inactive');
         }
 
-        $bar = new GanttBar($row++, array($name, substr($start, 0, 10), substr($end, 0, 10), substr($actual_end, 0, 10)), $start, $actual_end, $cap, 0.6);
+	$enddate = new CDate($end);
+	$startdate = new CDate($start);
+	$actual_enddate = new CDate($actual_end);
+        $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), $actual_enddate->format($df)), $start, $actual_end, $cap, 0.6);
         $bar->progress->Set($progress/100);
 
         $bar->title->SetFont(FF_FONT1,FS_NORMAL,10);
@@ -230,8 +236,8 @@ foreach($projects as $p) {
  				$t["task_end_date"] = $t["task_start_date"];
  				
  			if ($t["task_milestone"] != 1)
- 			{/*		*/					
- 				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", ' ', ' '/*substr($t["task_start_date"], 2, 8),  substr($t["task_end_date"], 2, 8)*/, ' '), ' ', ' ', ' '/*chr(32)*/, 0.6);							
+ 			{/*		*/
+ 				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", ' ', ' '/*substr($t["task_start_date"],  substr($t["task_end_date"], 2, 8)*/, ' '), ' ', ' ', ' '/*chr(32)*/, 0.6);
 // 				$bar2 = new GanttBar($row++, array("   * ".$t["task_name"], $t["task_start_date"], $t["task_end_date"]," "), "0", "0;", 0.6);
 				$bar2->title->SetColor("#".$p['project_color_identifier']);
  				$bar2->SetFillColor("#".$p['project_color_identifier']);		
