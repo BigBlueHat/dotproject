@@ -159,7 +159,17 @@ $canDelete = $canEdit;
 // load module based locale settings
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
 @include_once( "./locales/core.php" );
-setlocale( LC_TIME, $AppUI->user_locale );
+
+$user_locale = $AppUI->user_locale;
+if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+    // This is a server using Windows, locales screwed up, not ISO standard 
+    switch ($user_locale) {
+    	case "es":
+    		$user_locale = "sp";
+    		break;
+    }
+} 	
+setlocale( LC_TIME, $user_locale );
 
 if ( !$suppressHeaders ) {
 	// output the character set header
