@@ -1,83 +1,100 @@
 <?php
+//	task index
 
-if(empty($project_id))$project_id =0;
-if(isset($HTTP_COOKIE_VARS["cookie_project"]))$project_id = $HTTP_COOKIE_VARS["cookie_project"];
-if(isset($HTTP_GET_VARS["cookie_project"]))$project_id = $HTTP_GET_VARS["cookie_project"];
-if(isset($HTTP_POST_VARS["cookie_project"]))$project_id = $HTTP_POST_VARS["cookie_project"];
+$project_id = isset( $HTTP_GET_VARS['project_id'] ) ? $HTTP_GET_VARS['project_id'] : 0;
+$project_id = isset( $HTTP_COOKIE_VARS['cookie_project'] ) ? $HTTP_COOKIE_VARS['cookie_project'] : $project_id;
+$project_id = isset( $HTTP_GET_VARS['cookie_project'] ) ? $HTTP_GET_VARS['cookie_project'] : $project_id;
+$project_id = isset( $HTTP_POST_VARS['cookie_project'] ) ? $HTTP_POST_VARS['cookie_project'] : $project_id;
 
-$pluarr = array();
-$tarr = array();
-//task index
-$pull_tasks = "Select
-tasks.task_id,
-task_parent,
-task_name,
-task_start_date,
-task_end_date,
-task_priority,
-task_precent_complete,
-task_duration,
-task_order,
-project_name,
-project_precent_complete,
-task_project
-from tasks, projects, user_tasks
-where task_project = projects.project_id
-and user_tasks.user_id = $user_cookie
-and user_tasks.task_id = tasks.task_id
-and project_active <> 0
-";
+// check permissions
+$denyRead = getDenyRead( $m );
+$denyEdit = getDenyEdit( $m );
 
-//Conditional SQL
-if (intval( $project_id > 0 )) {
-	$pull_tasks.= "and task_project = " . $project_id ;
+if ($denyRead) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=help&a=access_denied";
+	</script>
+';
 }
-$pull_tasks.= " order by project_id, task_order";
 
-//echo $pull_tasks;
-$ptrc = mysql_query($pull_tasks);
+// pull valid projects and their percent complete information
+$psql = "
+SELECT project_id, project_color_identifier, project_name,
+	count(t1.task_id) as total_tasks,
+	sum(t1.task_duration*t1.task_precent_complete)/sum(t1.task_duration) as project_precent_complete
+from permissions, projects
+left join tasks t1 on projects.project_id = t1.task_project
+where project_active <> 0
+	and permission_user = $user_cookie
+	and permission_value <> 0 
+	and (
+		(permission_grant_on = 'all')
+		or (permission_grant_on = 'projects' and permission_item = -1)
+		or (permission_grant_on = 'projects' and permission_item = project_id)
+		)
+group by project_id
+order by project_name
+";
+//echo "<pre>$psql</pre>";
+$prc = mysql_query($psql);
+echo mysql_error();
+$pnums = mysql_num_rows($prc);
+
+$projects = array();
+for ($x=0; $x < $pnums; $x++) {
+	$z = mysql_fetch_array( $prc, MYSQL_ASSOC );
+	$projects[$z["project_id"]] = $z;
+}
+
+// get any specifically denied tasks
+$dsql = "
+select task_id
+from tasks, permissions
+where
+permission_user = $user_cookie
+and permission_grant_on = 'tasks'
+and permission_item = task_id
+and permission_value = 0
+";
+$drc = mysql_query($dsql);
+echo mysql_error();
+$deny = array();
+while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
+	$deny[] = $row[0];
+}
+
+// pull tasks
+$tsql = "
+SELECT tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
+	task_priority, task_precent_complete, task_duration, task_order, task_project,
+	project_name
+from tasks, user_tasks
+left join projects on project_id = task_project
+where project_active <> 0"
+.($project_id ? "\nand task_project = $project_id" : '')
+."
+	and task_project = projects.project_id
+	and user_tasks.user_id = $user_cookie
+	and user_tasks.task_id = tasks.task_id"
+."
+order by project_id, task_order
+";
+//echo "<pre>$tsql</pre>";
+
+$ptrc = mysql_query($tsql);
 $nums = mysql_num_rows($ptrc);
-//echo mysql_error();
-$y = 0;
+echo mysql_error();
 $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 
 //pull the tasks into an array
-$projects = array();
 for ($x=0; $x < $nums; $x++) {
-	$tarr = mysql_fetch_array($ptrc);
-	$projects[$tarr['project_name']][] = $tarr;
-}
-
-//Pull projects and their percent complete information
-$ppsql = "select project_id,
-project_color_identifier,
-project_name,
-count(tasks.task_id)  as countt,
-avg(tasks.task_precent_complete)  as project_precent_complete
-from projects
-left join tasks on projects.project_id = tasks.task_project
-where project_active <> 0
-group by project_id
-order by project_name";
-
-$pprc = mysql_query($ppsql);
-//echo mysql_error();
-$pnums = mysql_num_rows($pprc);
-
-for ($x=0; $x < $pnums; $x++) {
-	$z = mysql_fetch_array($pprc);
-	$newper = @intval($z["project_precent_complete"]);
-	$pluarr[$z["project_name"]] = array(
-		"project_color_identifier"=>$z["project_color_identifier"],
-		"countt"=>$z["countt"],
-		"project_precent_complete"=>$newper,
-		"project_id"=>$z["project_id"]
-	);
+	$row = mysql_fetch_array( $ptrc, MYSQL_ASSOC );
+	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
 //This kludgy function echos children tasks as threads
 
-function showtask( &$a, $level=0 ) { 
+function showtask( &$a, $level=0 ) {
 	global $done;
 	$done[] = $a['task_id']; ?>
 	<TR bgcolor="#f4efe3">
@@ -142,79 +159,81 @@ function findchild( &$tarr, $parent, $level=0 ){
 
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 <form action="<?php echo $REQUEST_URI;?>" method="post" name="pickProject">
-	<TR>
+<TR>
 	<TD><img src="./images/icons/tasks.gif" alt="<?php echo ptranslate("Tasks");?>" border="0" width="44" height="38"></td>
-		<TD nowrap><span class="title">Tasks: <?php if($project_id == 0){echo "All";} else {echo @$tarr[0]["project_name"];} ;?></span></td>
-		<TD align="right" width="100%">Project: <select name="cookie_project" onChange="document.pickProject.submit()" style="font-size:8pt;font-family:verdana;">
-		<option value="0" <?php if($project_id == 0)echo " selected" ;?> >all
-		<?php
-		reset($pluarr);
-		while ( list($key, $val) = each($pluarr) ) {
-			echo "<option value=" . $val["project_id"];
-			if ($val["project_id"] == $project_id) {
-				echo " selected";
-			}
-			echo ">" . $key ;
-		}?>
+	<TD nowrap>
+		<span class="title">Tasks: <?php if($project_id == 0){echo "All";} else {echo @$projects[$project_id]["project_name"];} ;?></span>
+	</td>
+	<TD align="right" width="100%">
+		Project:
+		<select name="cookie_project" onChange="document.pickProject.submit()" style="font-size:8pt;font-family:verdana;">
+			<option value="0" <?php if($project_id == 0)echo " selected" ;?> >all
+<?php
+	reset($projects);
+	while ( list($key, $val) = each($projects) ) {
+		echo "<option value=" . $val["project_id"];
+		if ($val["project_id"] == $project_id) {
+			echo " selected";
+		}
+		echo ">" . $val['project_name'];
+} ?>
 		</select><br>
 		<?php include ("./includes/create_new_menu.php");?>
-		</td>
-	</tr>
+	</td>
+</tr>
 </form>
 </TABLE>
 
 <?php if(isset($message))echo $message;?>
 <TABLE width="95%" border=0 cellpadding="2" cellspacing=1>
-	<TR style="border: outset #eeeeee 2px;">
-		<TD class="mboxhdr" width="10">id</td>
-		<TD class="mboxhdr" width="20">work</td>
-		<TD class="mboxhdr" width="15" align="center">p</td>
-		<TD class="mboxhdr" width=200>task name</td>
-		<TD class="mboxhdr">start date</td>
-		<TD class="mboxhdr">duration&nbsp;&nbsp;</td>
-		<TD class="mboxhdr">finish date</td>
-	</tr>
+<TR style="border: outset #eeeeee 2px;">
+	<TD class="mboxhdr" width="10">id</td>
+	<TD class="mboxhdr" width="20">work</td>
+	<TD class="mboxhdr" width="15" align="center">p</td>
+	<TD class="mboxhdr" width=200>task name</td>
+	<TD class="mboxhdr">start date</td>
+	<TD class="mboxhdr">duration&nbsp;&nbsp;</td>
+	<TD class="mboxhdr">finish date</td>
+</tr>
 <?php
-
-while (list( $p, $tarr ) = each( $projects )) {
-	$pci = $pluarr[$p]["project_color_identifier"];
-	$r = hexdec(substr($pci, 0, 2));
-	$g = hexdec(substr($pci, 2, 2));
-	$b = hexdec(substr($pci, 4, 2));
-
-	if ($r < 153 && $g < 153 || $r < 153 && $b < 153 || $b < 153 && $g < 153) {
-		$font = "#ffffff";
-	} else {
-		$font = "#000000";
-	}
+//echo '<pre>'; print_r($projects); echo '</pre>';
+reset( $projects );
+while (list( $k, ) = each( $projects ) ) {
+	$p = &$projects[$k];
+	$tnums = count( $p['tasks'] );
+// don't show project if it has no tasks
+	if ($tnums) {
+//echo '<pre>'; print_r($p); echo '</pre>';
 ?>
-	<TR>
-		<TD colspan=9  bgcolor="#f4efe3">
-
-			<table width="100%" border=0>
-				<tr>
-					<TD nowrap style="border: outset #eeeeee 2px;" bgcolor="<?php echo $pluarr[$p]["project_color_identifier"];?>">
-						<A href="./index.php?m=projects&a=view&project_id=<?php echo $tarr[0]["task_project"];?>"><span style='color:<?php echo $font;?>;text-decoration:none;'><B><?php echo $p;?></b></span></a>
-					</td>
-					<TD width="<?php echo (101 - intval($pluarr[$p]["project_precent_complete"]));?>%">
-						<?php echo (intval($pluarr[$p]["project_precent_complete"]));?>%
-					</td>
-				</tr>
-			</table>
-		</td>
-	</tr>
+<TR>
+	<TD colspan=9  bgcolor="#f4efe3">
+		<table width="100%" border=0>
+		<tr>
+			<TD nowrap style="border: outset #eeeeee 2px;" bgcolor="<?php echo $p["project_color_identifier"];?>">
+				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
+				<span style='color:<?php echo bestColor( $p["project_color_identifier"] ); ?>;text-decoration:none;'><B><?php echo $p["project_name"];?></b></span></a>
+			</td>
+			<TD width="<?php echo (101 - intval($p["project_precent_complete"]));?>%">
+				<?php echo (intval($p["project_precent_complete"]));?>%
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
 <?php
-	$done = array();
-	while (list( , $t ) = each( $tarr )) {
-		if ($t["task_parent"] == $t["task_id"]) {
-			showtask( $t );
-			findchild( $tarr, $t["task_id"] );
+		$done = array();
+		for ($i=0; $i < $tnums; $i++) {
+			$t = $p['tasks'][$i];
+			if ($t["task_parent"] == $t["task_id"]) {
+				showtask( $t );
+				findchild( $p['tasks'], $t["task_id"] );
+			}
 		}
-	}
-	reset( $tarr );
-	while (list( , $t ) = each( $tarr )) {
-		if ( !in_array( $t["task_id"], $done )) {
-			showtask( $t, 1 );
+	// check that any 'orphaned' user tasks are also display
+		for ($i=0; $i < $tnums; $i++) {
+			if ( !in_array( $p['tasks'][$i]["task_id"], $done )) {
+				showtask( $p['tasks'][$i], 1 );
+			}
 		}
 	}
 }
