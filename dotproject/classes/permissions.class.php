@@ -62,6 +62,7 @@ class dPacl extends gacl_api {
   function checkModule($module, $op, $userid = null) {
     if (! $userid)
       $userid = $GLOBALS['AppUI']->user_id;
+      
     $result = $this->acl_check("application", $op, "user", $userid, "app", $module);
     dprint(__FILE__, __LINE__, 2, "checkModule( $module, $op, $userid) returned $result");
     return $result;

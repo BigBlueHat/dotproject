@@ -507,28 +507,29 @@ class DBQuery {
    */
   function &exec($style = ADODB_FETCH_BOTH)
   {
-    global $db;
-		global $ADODB_FETCH_MODE;
+      global $db;
+      global $ADODB_FETCH_MODE;
 
-		if (! isset($this->_old_style))
-			$this->_old_style = $ADODB_FETCH_MODE;
-		$ADODB_FETCH_MODE = $style;
-		$this->clearQuery();
-    if ($q = $this->prepare()) {
-			dprint(__FILE__, __LINE__, 7, "executing query($q)");
-      if (isset($this->limit))
-	$this->_query_id = $db->SelectLimit($q, $this->limit, $this->offset);
-      else
-	$this->_query_id =  $db->Execute($q);
-      if (! $this->_query_id) {
-	$error = $db->ErrorMsg();
-	dprint(__FILE__, __LINE__, 0, "query failed($q) - error was: " . $error);
-	return $this->_query_id;
+      if (! isset($this->_old_style))
+      $this->_old_style = $ADODB_FETCH_MODE;
+      $ADODB_FETCH_MODE = $style;
+      $this->clearQuery();
+      if ($q = $this->prepare()) {
+          dprint(__FILE__, __LINE__, 7, "executing query($q)");
+          if (isset($this->limit)) {
+            $this->_query_id = $db->SelectLimit($q, $this->limit, $this->offset);
+          } else {
+            $this->_query_id =  $db->Execute($q);
+          }
+          if (! $this->_query_id) {
+              $error = $db->ErrorMsg();
+              dprint(__FILE__, __LINE__, 0, "query failed($q) - error was: " . $error);
+              return $this->_query_id;
+          }
+          return $this->_query_id;
+      } else {
+          return $this->_query_id;
       }
-      return $this->_query_id;
-    } else {
-      return $this->_query_id;
-    }
   }
 
 	function fetchRow()

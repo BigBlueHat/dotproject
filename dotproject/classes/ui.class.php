@@ -699,7 +699,7 @@ class CAppUI {
           function registerLogout($user_id){
 		$q  = new DBQuery;
 		$q->addTable('user_access_log');
-		$q->addUpdate('date_time_out', "now()");
+		$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
 		$q->addWhere("user_id = '$user_id' and (date_time_out='0000-00-00 00:00:00' or isnull(date_time_out)) ");
 		if ($user_id > 0){
 			$q->exec();
@@ -713,11 +713,11 @@ class CAppUI {
           function updateLastAction($last_insert_id){
 		$q  = new DBQuery;
 		$q->addTable('user_access_log');
-		$q->addUpdate('date_time_last_action', "now()");
+		$q->addUpdate('date_time_last_action', date("Y-m-d H:i:s"));
 		$q->addWhere("user_access_log_id = $last_insert_id");
                 if ($last_insert_id > 0){
                     $q->exec();
-										$q->clear();
+                    $q->clear();
                 }
           }
 /************************************************************************************************************************

@@ -79,6 +79,9 @@ if ($a = dPgetParam($_REQUEST, "a", "") == ""){
 
 <?php 
 if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) {  
+    $start_date = date("Y-m-d", strtotime(dPgetParam($_REQUEST, "start_date", date("Y-m-d") )));
+    $end_date   = date("Y-m-d 23:59:59", strtotime(dPgetParam($_REQUEST, "end_date", date("Y-m-d") )));
+    
     	$q  = new DBQuery;
 	$q->addTable('user_access_log', 'ual');
 	$q->addTable('users', 'u');
@@ -87,8 +90,8 @@ if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) {
 	$q->addWhere('ual.user_id = u.user_id');
 	$q->addWhere('user_contact = contact_id ');
 	if(user_id != 0) { $q->addWhere("ual.user_id='$user_id'"); }
-	$q->addWhere("ual.date_time_in >=' ".dPgetParam($_REQUEST, "start_date", "")." '");
-	$q->addWhere("ual.date_time_out <='".dPgetParam($_REQUEST, "end_date", "")."'");
+	$q->addWhere("ual.date_time_in >='$start_date'");
+	$q->addWhere("ual.date_time_out <='$end_date'");
 	$q->addGroup('ual.date_time_last_action DESC');
 	$logs = $q->loadList();
 ?>
