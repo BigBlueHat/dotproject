@@ -5,7 +5,6 @@
 */
 
 $task_id = intval( dPgetParam( $_REQUEST, "task_id", 0 ) );
-$task_parent = intval( dPgetParam( $_REQUEST, "task_parent", 0 ) );
 $perms =& $AppUI->acl();
 
 // load the record data
@@ -17,6 +16,12 @@ if ($task_id > 0 && !$obj->load( $task_id )) {
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
+
+// we have to keep tracking of the task_parent
+if (isset( $_REQUEST['task_parent'] )) {
+	$AppUI->setState( 'TaskIdxParent', $_REQUEST['task_parent'] );
+}
+$task_parent = $AppUI->getState( 'TaskIdxParent' ) ? $AppUI->getState( 'TaskIdxParent' ) : $obj->task_parent;
 
 $loadFromTab = 0;
 if (isset($_POST['currentTab']))  {
@@ -63,8 +68,7 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 if (!$obj->canAccess( $AppUI->user_id )) {
 	$AppUI->redirect( "m=public&a=access_denied&err=noaccess" );
 }
-//
-$task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
+
 // pull the related project
 $project = new CProject();
 $project->load( $task_project );
@@ -89,14 +93,14 @@ function getSpaces($amount){
 
 function constructTaskTree($task_data, $depth = 0){
 	global $projTasks, $all_tasks, $parents, $task_parent_options, $task_parent, $task_id;
-	
+
 	$projTasks[$task_data['task_id']] = $task_data['task_name'];
-	
+
 	$selected = $task_data['task_id'] == $task_parent ? "selected='selected'" : "";
 	$task_data['task_name'] = strlen($task_data[1])>45 ? substr($task_data['task_name'],0, 45)."..." : $task_data['task_name'];
-	
+
 	$task_parent_options .= "<option value='".$task_data['task_id']."' $selected>".getSpaces($depth*3).dPFormSafe($task_data['task_name'])."</option>";
-	
+
 	if (isset($parents[$task_data['task_id']])) {
 		foreach ($parents[$task_data['task_id']] as $child_task) {
 			if ($child_task != $task_id)
@@ -118,7 +122,7 @@ function build_date_list(&$date_array, $row) {
 	$sdate = $date->format("%d/%m/%Y");
 	$shour = $date->format("%H");
 	$smin = $date->format("%M");
-		
+
 	$date_array[$row['task_id']] = array($row['task_name'], $sdate, $shour, $smin);
 }
 
@@ -192,7 +196,7 @@ if($department_selection_list!=""){
 function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
 	global $departments_count;
 	$parsed = '';
-	
+
 	if($departments_count < 10) $departments_count++;
 	$sql = "select dept_id, dept_name
 	        from departments
@@ -206,11 +210,11 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 		if(strlen($dept_info["dept_name"]) > 30){
 			$dept_info["dept_name"] = substr($dept_info["dept_name"], 0, 28)."...";
 		}
-		
+
 		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
 		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
 	}
-	
+
 	return $parsed;
 }
 
@@ -236,7 +240,7 @@ $projects = db_loadHashList( $sql );
 var selected_contacts_id = "<?php echo $obj->task_contacts; ?>";
 var task_id = '<?php echo $obj->task_id;?>';
 
-var check_task_dates = <?php 
+var check_task_dates = <?php
   if (isset($dPconfig['check_task_dates']) && $dPconfig['check_task_dates'])
     echo 'true';
   else
@@ -249,10 +253,10 @@ var task_start_msg = "<?php echo $AppUI->_('taskValidStartDate');?>";
 var task_end_msg = "<?php echo $AppUI->_('taskValidEndDate');?>";
 
 var workHours = <?php echo dPgetConfig( 'daily_working_hours' );?>;
-//working days array from config.php	
+//working days array from config.php
 var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
 var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
-var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;		
+var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;
 var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 
 
