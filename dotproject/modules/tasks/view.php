@@ -285,7 +285,31 @@ function delIt() {
 			?>
 			</td>
 		</tr>
-	<?php } // end files access ?>
+	<?php } // end files access 
+		if($obj->task_departments != ""){
+			?>
+		    <tr>
+		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
+		    </tr>
+		    <tr>
+		    	<td colspan='3' class="hilite">
+		    		<?php
+		    			$depts = db_loadHashList("select dept_id, dept_name, dept_phone
+		    			                          from departments
+		    			                          where dept_id in (".$obj->task_departments.")", "dept_id");
+		    			foreach($depts as $dept_id => $dept_info){
+		    				echo "<div>".$dept_info["dept_name"];
+		    				if($dept_info["dept_phone"] != ""){
+		    					echo "( ".$dept_info["dept_phone"]." )";
+		    				}
+		    				echo "</div>";
+		    			}
+		    		?>
+		    	</td>
+		    </tr>
+	 		<?php
+		}
+	 ?>
 		</table>
 	</td>
 </tr>

@@ -130,6 +130,38 @@ if ( $canReadProject ) {
 if ($task_id > 0)
   $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
 $titleBlock->show();
+
+// Let's gather all the necessary information from the department table
+// collect all the departments in the company
+$depts = array( 0 => '' );
+
+// ALTER TABLE `tasks` ADD `task_departments` CHAR( 100 ) ;
+$company_id                = $project->project_company;
+$selected_departments      = $obj->task_departments != "" ? explode(",", $obj->task_departments) : array();
+$department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
+if($department_selection_list!=""){
+	$department_selection_list = "<select name='dept_ids[]' size='10' multiple style='width:15em'>
+								  $department_selection_list
+    	                          </select>";
+}
+
+function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
+	$sql = "select dept_id, dept_name
+	        from departments
+	        where dept_parent      = '$dept_parent'
+	              and dept_company = '$company_id'";
+	$depts_list = db_loadHashList($sql, "dept_id");
+
+	foreach($depts_list as $dept_id => $dept_info){
+		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
+
+		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
+		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
+	}
+	
+	return $parsed;
+}
+
 ?>
 
 <SCRIPT language="JavaScript">
@@ -342,16 +374,34 @@ function calcFinish() {
 </tr>
 <tr valign="top">
 	<td width="50%">
-		<?php echo $AppUI->_( 'Task Creator' );?>
-		<br />
-	<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
-		<br />
-		<?php echo $AppUI->_( 'Access' );?>
-		<br />
-		<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
-		<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
-		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
-		<br />
+	    <table>
+	    	<tr>
+	    		<td>
+					<?php echo $AppUI->_( 'Task Creator' );?>
+					<br />
+				<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
+					<br />
+					<?php echo $AppUI->_( 'Access' );?>
+					<br />
+					<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
+					<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
+					<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
+					<br />
+				</td>
+				<td>
+					<?php
+						// Let's check if the actual company has departments registered
+						if($department_selection_list != ""){
+							?>
+							
+									<?php echo $AppUI->_("Departments"); ?><br />
+									<?php echo $department_selection_list; ?>
+							<?php
+						}		
+					?>
+				</td>
+			</tr>
+		</table>
 		<table>
 		<tr>
 			<td><?php echo $AppUI->_( 'Task Parent' );?>:</td>

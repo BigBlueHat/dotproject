@@ -12,6 +12,9 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
+// let's check if there are some assigned departments to task
+$obj->task_departments = implode(",", dPgetParam($_POST, "dept_ids", array()));
+
 // convert dates to SQL format first
 if ($obj->task_start_date) {
 	$date = new CDate( $obj->task_start_date );
