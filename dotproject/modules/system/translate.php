@@ -9,12 +9,14 @@ if ($denyEdit || $AppUI->user_type != 1) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
-$module = isset( $_REQUEST['module'] ) ? $_REQUEST['module'] : 0;
+$module = isset( $_REQUEST['module'] ) ? $_REQUEST['module'] : 'admin';
 $lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : 'en';
 
 $AppUI->savePlace( "m=system&a=translate&module=$module&lang=$lang" );
 
-$modules = array(
+// read the installed modules
+$modules = $AppUI->readDirs( 'modules' );
+/*$modules = array(
 	'admin',
 	'calendar',
 	'common',
@@ -29,7 +31,13 @@ $modules = array(
 	'system',
 	'tasks',
 	'ticketsmith'
-);
+);*/
+
+// read the installed modules
+$modules = $AppUI->readDirs( 'modules' );
+
+// read the installed languages
+$locales = $AppUI->readDirs( 'locales' );
 
 ob_start();
 	@readfile( "$root_dir/locales/en/$modules[$module].inc" );
@@ -77,7 +85,9 @@ $crumbs["?m=system"] = "System Admin";
 	?></td>
 	<td align="right" width="100%" nowrap>&nbsp;<?php echo $AppUI->_( 'Language' );?>:</span></td>
 	<td><?php
-	echo arraySelect( $AppUI->locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang );
+	$AppUI->setWarning( false );
+	echo arraySelect( $locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang, true );
+	$AppUI->setWarning( false );
 	?></td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_TRANS' );?></td>
 </tr>
@@ -94,7 +104,7 @@ $crumbs["?m=system"] = "System Admin";
 <tr>
 	<th width="15%" nowrap><?php echo $AppUI->_( 'Abbreviation' );?></th>
 	<th width="40%" nowrap>English <?php echo $AppUI->_( 'String' );?></th>
-	<th width="40%" nowrap><?php echo $AppUI->locales[$lang];?> <?php echo $AppUI->_( 'String' );?></th>
+	<th width="40%" nowrap><?php echo $AppUI->_( $locales[$lang] ).' '.$AppUI->_( 'String' );?></th>
 	<th width="5%" nowrap><?php echo $AppUI->_( 'delete' );?></th>
 </tr>
 <form action="?m=system&a=translate_save" method="post" name="editlang">
