@@ -44,11 +44,11 @@ if (!$denyEdit) {
 }
 ?>
 
-<table border=0 cellpadding="1" cellspacing=1>
+<table border="0" cellpadding="1" cellspacing="1" width="98%">
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><span class="title"><?php echo $AppUI->_('View Company/Client');?></span></td>
-	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+	<td nowrap="nowrap"><span class="title"><?php echo $AppUI->_('View Company/Client');?></span></td>
+	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 </tr>
 </table>
 
