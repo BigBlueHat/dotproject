@@ -21,6 +21,9 @@ if (empty($query_string)) {
 	$query_string = "?m=$m&a=$a";
 }
 
+// Number of columns (used to calculate how many columns to span things through)
+$cols = 11;
+
 /****
 // Let's figure out which tasks are selected
 */
@@ -282,6 +285,8 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 			. "\n\t\t</a>";
 	}
 	$s .= "\n\t</td>";
+// New Log
+        $s .= "\n\t<td><a href=\"?m=tasks&a=view&task_id=" . $a['task_id'] . '&tab=1">' . $AppUI->_('Log') . '</a></td>';
 // percent complete
 	$s .= "\n\t<td align=\"right\">".intval( $a["task_percent_complete"] ).'%</td>';
 // priority
@@ -474,6 +479,7 @@ function toggle_users(id){
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">&nbsp;</th>
+	<th width="10"><?= $AppUI->_('New Log') ?></th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
 	<th align='center'><?= sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ) ?></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
@@ -502,7 +508,7 @@ foreach ($projects as $k => $p) {
 			<img src="./images/icons/<?php echo $project_id ? 'expand.gif' : 'collapse.gif';?>" width="16" height="16" border="0" alt="<?php echo $project_id ? 'show other projects' : 'show only this project';?>">
 		</a>
 	</td>
-	<td colspan="9">
+	<td colspan="<?= $cols-1 ?>">
 		<table width="100%" border="0">
 		<tr>
 			<!-- patch 2.12.04 display company name next to project name -->
@@ -552,7 +558,7 @@ foreach ($projects as $k => $p) {
 
 		if($tnums && $dPconfig['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
-			<td colspan="10" align="right">
+			<td colspan="<?= $cols ?>" align="right">
 				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
