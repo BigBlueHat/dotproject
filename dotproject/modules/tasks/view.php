@@ -245,7 +245,7 @@ function updateTask() {
 		<TR>
 			<td colspan=2><b>Attached Files</b></td>
 			<TD align=right>
-				<A href="./index.php?m=files&a=addedit&project_id=<?php echo $trow["task_project"];?>&task_id=<?php echo $task_id;?>">Attach a file<img src="./images/icons/minifile.gif" align=absmiddle width=20 height=28 alt="attach a file to this task" border=0></a>
+				<A href="./index.php?m=files&a=addedit&project_id=<?php echo $trow["task_project"];?>&file_task=<?php echo $task_id;?>">Attach a file<img src="./images/icons/minifile.gif" align=absmiddle width=20 height=28 alt="attach a file to this task" border=0></a>
 			</td>
 		</tr>
 		<TR>
