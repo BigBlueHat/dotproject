@@ -1,5 +1,5 @@
-<?php
-$del = isset($_GET['del']) ? $_GET['del'] : 0;
+<?php /* $Id$ */
+$del = isset($_REQUEST['del']) ? $_REQUEST['del'] : 0;
 
 $user = new CUser();
 
