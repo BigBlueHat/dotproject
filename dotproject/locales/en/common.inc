@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"hour",
 "- New Item -",
 "About",
 "Active Projects",
@@ -84,6 +85,7 @@
 "chgpwValidOld"=>"Please enter a valid old password",
 "chgpwWrongPW"=>"You have entered the wrong old password",
 "clear",
+"day",
 "days",
 "delete",
 "deleted",
