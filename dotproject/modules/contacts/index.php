@@ -178,10 +178,10 @@ function goProject( key, val ) {
 		<table width="100%" cellspacing="1" cellpadding="1">
 		<tr>
 			<td width="100%">
-                                <? $contactid = $carr[$z][$x]['contact_id']; ?>
-				<a href="./index.php?m=contacts&a=view&contact_id=<?= $contactid ?>"><strong><?php echo $carr[$z][$x]['contact_first_name'] . ' ' . $carr[$z][$x]['contact_last_name'];?></strong></a>&nbsp;
-				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?= $contactid ?>" >(vCard)</a>
-                                &nbsp;<a title="<?= $AppUI->_('Edit') ?>" href="?m=contacts&a=addedit&contact_id=<?= $contactid ?>"><?= $AppUI->_('Edit') ?></a>
+                                <?php $contactid = $carr[$z][$x]['contact_id']; ?>
+				<a href="./index.php?m=contacts&a=view&contact_id=<?php echo $contactid; ?>"><strong><?php echo $carr[$z][$x]['contact_first_name'] . ' ' . $carr[$z][$x]['contact_last_name'];?></strong></a>&nbsp;
+				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?php echo $contactid; ?>" >(vCard)</a>
+                                &nbsp;<a title="<?php echo $AppUI->_('Edit'); ?>" href="?m=contacts&a=addedit&contact_id=<?php echo $contactid; ?>"><?php echo $AppUI->_('Edit'); ?></a>
 <?php
  $sql = "select count(*) from projects where project_contacts like \"" .$carr[$z][$x]["contact_id"]
 	.",%\" or project_contacts like \"%," .$carr[$z][$x]["contact_id"] 
