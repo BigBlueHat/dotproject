@@ -9,12 +9,10 @@ if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && is
 	$projects_id = $_GET["project_id"]; // This must be an array
 
 	foreach($projects_id as $project_id){
-	echo $project_id;
 		$r  = new DBQuery;
 		$r->addTable('projects');
 		$r->addUpdate('project_status', "{$_GET['project_status']}");
 		$r->addWhere('project_id   = '.$project_id);
-		echo $r->prepare();
 		$r->exec();
 		$r->clear();
 	}
@@ -248,7 +246,7 @@ foreach($project_types as $key=>$value)
         $counter[$key] = 0;
 	if (is_array($projects)) {
 		foreach ($projects as $p)
-			if ($p['project_status'] == $key)
+			if ($p['project_status'] == $key && $p['project_active'] > 0)
 				++$counter[$key];
 	}
                 
