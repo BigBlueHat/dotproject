@@ -37,6 +37,7 @@ ALTER TABLE `user_tasks` ADD COLUMN perc_assignment int(11) NOT NULL default '10
 ALTER TABLE `tasks` ADD `task_type` SMALLINT DEFAULT '0' NOT NULL ;
 
 ALTER TABLE `files` ADD `file_category` int(11) NOT NULL default '0';
+INSERT INTO `sysvals` VALUES (null, 1, 'FileType', 0|Unknown\n1|Document\n2|Application');
 
 # Just some TaskTypes examples
 INSERT INTO `sysvals` VALUES (null, 1, 'TaskType', '0|Unknown\n1|Administrative\n2|Operative');
