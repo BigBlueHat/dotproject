@@ -571,3 +571,7 @@ CREATE TABLE `sessions` (
 	KEY (`session_updated`),
 	KEY (`session_created`)
 ) TYPE=MyISAM;
+
+# 20050216
+# Added logging the IP of a user
+ALTER TABLE `user_access_log` ADD `user_ip` VARCHAR( 15 ) NOT NULL AFTER `user_id` ;

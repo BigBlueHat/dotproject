@@ -686,7 +686,8 @@ class CAppUI {
 *@Function for regiser log in dotprojet table "user_access_log"
 */
            function registerLogin(){
-                $sql = "insert into user_access_log (user_id, date_time_in) values ($this->user_id,now())";
+                $sql = "INSERT INTO user_access_log (user_id, date_time_in, user_ip) 
+			VALUES ($this->user_id, now(), '{$_SERVER['REMOTE_ADDR']}')";
                 db_exec($sql);
                 $this->last_insert_id = db_insert_id();
            }

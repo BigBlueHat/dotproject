@@ -88,18 +88,21 @@ if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) {
                           and user_contact = contact_id
                           $user_filter
                           and ual.date_time_in >=' ".dPgetParam($_REQUEST, "start_date", "")." ' 
-                          and ual.date_time_out <='".dPgetParam($_REQUEST, "end_date", "")."'";
+                          and ual.date_time_out <='".dPgetParam($_REQUEST, "end_date", "")."'
+		GROUP BY ual.date_time_last_action DESC";
     $logs = db_loadList($sql);
 ?>
 <table align="center" class="tbl" width="50%">
     <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Name(s)');?></th>
     <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Last Name');?></th>
+    <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Internet Address');?></th>
     <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Date Time IN');?></th>
     <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Date Time OUT');?></th>
 <?php foreach ($logs as $detail){?>
 	<tr>
 		<td align="center"><?php echo $detail["contact_first_name"];?></td>
 		<td align="center"><?php echo $detail["contact_last_name"];?></td>
+		<td align="center"><?php echo $detail["user_ip"];?></td>
 		<td align="center"><?php echo $detail["date_time_in"];?></td>
 		<td align="center"><?php echo $detail["date_time_out"];?></td>
 	</tr>

@@ -579,6 +579,7 @@ CREATE TABLE `common_notes` (
 CREATE TABLE `user_access_log` (
 `user_access_log_id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `user_id` INT( 10 ) UNSIGNED NOT NULL ,
+`user_ip` VARCHAR( 15 ) NOT NULL ,
 `date_time_in` DATETIME DEFAULT '0000-00-00 00:00:00',
 `date_time_out` DATETIME DEFAULT '0000-00-00 00:00:00',
 `date_time_last_action` DATETIME DEFAULT '0000-00-00 00:00:00',
