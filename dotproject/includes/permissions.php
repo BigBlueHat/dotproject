@@ -100,40 +100,8 @@ function getDenyEdit( $mod, $item_id=0 ) {
  * all items which for which no explicit read permission is granted.
  */
 function winnow( $mod, $key, &$where, $alias = 'perm' ) {
-	GLOBAL $AppUI, $perms;
-
-	// TODO: Should we also check empty( $perms['all'] ?
-	if( ! empty( $perms[$mod] ) && (!isset($perms[$mod]['-1']) || !$perms[$mod]['-1']) ) {
-		// We have permissions for specific items => filter items
-		$sql = "\n  LEFT JOIN permissions AS $alias ON $alias.permission_item = $key ";
-		if ($where) {
-			$where .= "\n  AND";
-		}
-		$where .= "\n	$alias.permission_grant_on = '$mod'"
-			. "\n	AND $alias.permission_value != " . PERM_DENY
-			. "\n	AND $alias.permission_user = $AppUI->user_id";
-		return $sql;
-	} else {
-		if (!$where) {
-			$where = '1=1';  // dummy for handling 'AND $where' situations
-		}
-		return ' ';
-	}		
-}
-
-// pull permissions into master array
-$sql = "
-SELECT permission_grant_on g, permission_item i, permission_value v
-FROM permissions
-WHERE permission_user = $AppUI->user_id
-";
-
-$perms = array();
-$res = db_exec( $sql );
-
-// build the master permissions array
-while ($row = db_fetch_assoc( $res )) {
-	$perms[$row['g']][$row['i']] = $row['v'];
+	die ("The function winnow() is deprecated.  Check to see that the
+	module/code has been updated to the latest permissions handling<br>");
 }
 
 ?>
