@@ -1,3 +1,21 @@
+--------------------------------
+ dotProject enhanced Ticketsmith
+--------------------------------
+
+Ticketsmith was originally developed by Justin Miller at Voxel.Net to
+be a standalone trouble ticket management system.  It was originally
+incorporated into dotProject although it wasn't well integrated.
+
+Work has since been done to incorporate it more seamlessly into
+dotProject.  This includes not having separate configuration files,
+changing the gateway code to work with the PHP config files, etc.
+
+Check the document INSTALL to see how to install the email gateway
+for dotproject.
+
+The original README from ticketsmith is included here for completeness:
+
+
 --------------------
  Ticketsmith v0.6.3
 --------------------
