@@ -1,10 +1,10 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Company Owner",
 "Add Company",
 "Budget",
 "Company Name",
+"Company Owner",
 "Company deleted",
 "Company inserted",
 "Company updated",
@@ -16,7 +16,7 @@
 "companyDelete"=>"Are you sure you would like 
 to delete this company?",
 "companyValidName"=>"Please enter a valid Company name",
-"companyWelcome"=>"<b>Welcome %s.</b> This page show you a list of current clients and their active projects. ",
+"companyWelcome"=>"This page show you a list of current clients and their active projects. ",
 "delete company",
 "edit this company",
 "new company",
