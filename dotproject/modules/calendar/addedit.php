@@ -6,6 +6,9 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+// get the passed timestamp (today if none)
+$date = dPgetParam( $_GET, 'date', null );
+
 // load the record data
 $obj = new CEvent();
 
@@ -37,9 +40,9 @@ if ($event_id) {
 	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;
 	$end_date = intval( $obj->event_end_date ) ? new CDate( $obj->event_end_date ) : $start_date;
 } else {
-	$start_date = new CDate($_GET['startDate']);
+	$start_date = new CDate( $date );
 	$start_date->setTime( 8,0,0 );
-	$end_date = new CDate( $start_date );
+	$end_date = new CDate( $date );
 	$end_date->setTime( 17,0,0 );
 }
 
@@ -117,12 +120,6 @@ function popCalendar( field ){
  *	@param string Formatted date
  */
 function setCalendar( idate, fdate ) {
-	// set end_date = start_date
-	if ( calendarField == 'start_date' && document.editFrm.start_date.value == document.editFrm.end_date.value) {
-		document.editFrm.event_end_date.value = idate;
-		document.editFrm.end_date.value = fdate;
-	}	
-	
 	fld_date = eval( 'document.editFrm.event_' + calendarField );
 	fld_fdate = eval( 'document.editFrm.' + calendarField );
 	fld_date.value = idate;
