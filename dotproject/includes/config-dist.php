@@ -179,6 +179,13 @@ $dPconfig['default_view_m'] = 'calendar';
 $dPconfig['default_view_a'] = 'day_view';
 $dPconfig['default_view_tab'] = '1';
 
+/* File Indexing for Searching:
+** Large Files may cause timeout problems during exhausting indexing process.
+** Specify an upper filesize limit for indexing in KiloBytes.
+** Have in mind that files greater than the specified value are not indexed!
+** A negative value defines the absence of a limit (index all files).
+*/
+$dPconfig['index_max_file_size'] = -1;
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";

@@ -65,7 +65,16 @@ if (isset( $_FILES['formfile'] )) {
 		    $AppUI->setMsg( 'File could not be written', UI_MSG_ERROR );
 		    $AppUI->redirect();
 		}
-		$obj->indexStrings();
+
+		/* Workaround for indexing large files:
+		** Based on the value defined in config data,
+		** files with file_size greater than specified limit
+		** are not indexed for searching.
+		** Negative value :<=> no filesize limit
+		*/
+		if ($dPconfig['index_max_file_size'] < 0 || $obj->file_size <= $dPconfig['index_max_file_size']*1024) {
+			$obj->indexStrings();
+		}
 	}
 }
 
