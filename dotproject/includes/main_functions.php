@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* INCLUDES $Id$ */
 ##
 ## Global General Purpose Functions
 ##
@@ -127,8 +127,8 @@ function defVal(&$var, $def) {
 # defVal version for arrays
 #
 
-function defValArr(&$arr, $name, $def) {
-	return isset($arr[$name]) ? $arr[$name] : $def;
+function dPgetParam( &$arr, $name, $def ) {
+	return isset( $arr[$name] ) ? $arr[$name] : $def;
 }
 
 #
@@ -136,7 +136,7 @@ function defValArr(&$arr, $name, $def) {
 #
 
 function addHistory( $description, $project_id = 0, $module_id = 0) {
-	global $AppUI;	
+	global $AppUI;
 	/*
 	 * TODO:
 	 * 1) description should be something like:
