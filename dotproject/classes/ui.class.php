@@ -658,13 +658,12 @@ class CAppUI {
 		  return false;
 		}
 
-		$sql = "
-		SELECT user_id, contact_first_name as user_first_name, contact_last_name as user_last_name, contact_company as user_company, user_department, contact_email as user_email, user_type
-		FROM users
-                LEFT JOIN contacts ON contact_id = user_contact
-		WHERE user_id = $user_id AND user_username = '$username'
-		";
-
+		$q  = new DBQuery;
+		$q->addTable('users');
+		$q->addQuery('user_id, contact_first_name as user_first_name, contact_last_name as user_last_name, contact_company as user_company, user_department, contact_email as user_email, user_type');
+		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+		$q->addWhere("user_id = $user_id AND user_username = '$username'");
+		$sql = $q->prepare();
 		dprint(__FILE__, __LINE__, 7, "Login SQL: $sql");
 
 		if( !db_loadObject( $sql, $this ) ) {
@@ -682,10 +681,13 @@ class CAppUI {
 /**
 *@Function for regiser log in dotprojet table "user_access_log"
 */
-           function registerLogin(){
-                $sql = "INSERT INTO user_access_log (user_id, date_time_in, user_ip) 
-			VALUES ($this->user_id, now(), '{$_SERVER['REMOTE_ADDR']}')";
-                db_exec($sql);
+	   function registerLogin(){
+		$q  = new DBQuery;
+		$q->addTable('user_access_log');
+		$q->addInsert('user_id', "$this->user_id");
+		$q->addInsert('date_time_in', "now()");
+		$q->addInsert('user_ip', $_SERVER['REMOTE_ADDR']);
+                $q->exec();
                 $this->last_insert_id = db_insert_id();
            }
 
@@ -693,21 +695,25 @@ class CAppUI {
 *@Function for register log out in dotproject table "user_acces_log"
 */
           function registerLogout($user_id){
-              $sql = "update user_access_log set date_time_out= now() 
-                          where user_id = '$user_id' and (date_time_out='0000-00-00 00:00:00' or isnull(date_time_out)) ";
-              if ($user_id > 0){
-                db_exec($sql);
-              }
+		$q  = new DBQuery;
+		$q->addTable('user_access_log');
+		$q->addUpdate('date_time_out', "now()");
+		$q->addWhere("user_id = '$user_id' and (date_time_out='0000-00-00 00:00:00' or isnull(date_time_out)) ");
+		if ($user_id > 0){
+			$q->exec();
+		}
           }
           
 /**
 *@Function for update table user_acces_log in field date_time_lost_action
 */
           function updateLastAction($last_insert_id){
-                $sql = "update user_access_log set date_time_last_action = now()
-                            where user_access_log_id = $last_insert_id";
+		$q  = new DBQuery;
+		$q->addTable('user_access_log');
+		$q->addUpdate('date_time_last_action', "now()");
+		$q->addWhere("user_access_log_id = $last_insert_id");
                 if ($last_insert_id > 0){
-                    db_exec($sql);
+                    $q->exec();
                 }
           }
 /************************************************************************************************************************
@@ -743,10 +749,12 @@ class CAppUI {
 * @param int User id number
 */
 	function loadPrefs( $uid=0 ) {
-		$sql = "SELECT pref_name, pref_value FROM user_preferences WHERE pref_user = $uid";
-		//writeDebug( $sql, "Preferences for user $uid, SQL", __FILE__, __LINE__ );
-		$prefs = db_loadHashList( $sql );
-		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
+		$q  = new DBQuery;
+		$q->addTable('user_preferences');
+		$q->addQuery('pref_name, pref_value');
+		$q->addWhere("pref_user = $uid");
+		$prefs = $q->loadHashList();
+		$this->user_prefs = array_merge( $this->user_prefs, $prefs );
 	}
 
 // --- Module connectors
@@ -756,25 +764,23 @@ class CAppUI {
 * @return array Named array list in the form 'module directory'=>'module name'
 */
 	function getInstalledModules() {
-		$sql = "
-		SELECT mod_directory, mod_ui_name
-		FROM modules
-		ORDER BY mod_directory
-		";
-		return (db_loadHashList( $sql ));
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addQuery('mod_directory, mod_ui_name');
+		$q->addOrder('mod_directory');
+		return ($q->loadHashList());
 	}
 /**
 * Gets a list of the active modules
 * @return array Named array list in the form 'module directory'=>'module name'
 */
 	function getActiveModules() {
-		$sql = "
-		SELECT mod_directory, mod_ui_name
-		FROM modules
-		WHERE mod_active > 0
-		ORDER BY mod_directory
-		";
-		return (db_loadHashList( $sql ));
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addQuery('mod_directory, mod_ui_name');
+		$q->addWhere('mod_active > 0');
+		$q->addOrder('mod_directory');
+		return ($q->loadHashList());
 	}
 /**
 * Gets a list of the modules that should appear in the menu
@@ -782,17 +788,20 @@ class CAppUI {
 * ['module directory', 'module name', 'module_icon']
 */
 	function getMenuModules() {
-		$sql = "
-		SELECT mod_directory, mod_ui_name, mod_ui_icon
-		FROM modules
-		WHERE mod_active > 0 AND mod_ui_active > 0 AND mod_directory <> 'public'
-		ORDER BY mod_ui_order
-		";
-		return (db_loadList( $sql ));
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addQuery('mod_directory, mod_ui_name, mod_ui_icon');
+		$q->addWhere("mod_active > 0 AND mod_ui_active > 0 AND mod_directory <> 'public'");
+		$q->addOrder('mod_ui_order');
+		return ($q->loadList());
 	}
 
 	function isActiveModule($module) {
-		$sql = "SELECT mod_active from modules where mod_directory = '$module'";
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addQuery('mod_active');
+		$q->addWhere("mod_directory = '$module'");
+		$sql = $q->prepare();
 		return db_loadResult($sql);
 	}
 
