@@ -150,6 +150,9 @@ if($do_report) {
 	$actual_date = $start_date;
 	$days_header = ""; // we will save days title here
 	
+	$user_tasks_counted_in = array();
+	$user_names = array();
+	
 	if ( count($task_list) == 0 ) {
 		echo "<p>" . $AppUI->_( 'No data available' ) ."</p>";
 	}else {
@@ -165,19 +168,33 @@ if($do_report) {
 			
 			for($i = 0; $i<=$day_difference; $i++){
 				if(!$actual_date->before($start_date) && !$actual_date->after($end_date)
-				   && $actual_date->isWorkingDay()){
+				   && $actual_date->isWorkingDay()) {
 	
 					foreach($users as $user_id => $user_data){
 						if(!isset($user_usage[$user_id][$actual_date->format("%Y%m%d")])){
 							$user_usage[$user_id][$actual_date->format("%Y%m%d")] = 0;
 						}
 						$percentage_assigned = $use_assigned_percentage ? ($user_data["perc_assignment"]/100) : 1;
-						$user_usage[$user_id][$actual_date->format("%Y%m%d")] += $task_duration_per_day * $percentage_assigned;
+						$hours_added = $task_duration_per_day * $percentage_assigned;
+						$user_usage[$user_id][$actual_date->format("%Y%m%d")] += $hours_added;
 						if($user_usage[$user_id][$actual_date->format("%Y%m%d")] < 0.005){
 							//We want to show at least 0.01 even when the assigned time is very small so we know
 							//that at that time the user has a running task
 							$user_usage[$user_id][$actual_date->format("%Y%m%d")] += 0.006;
+							$hours_added                                          += 0.006;
 						}
+						
+						// Let's register the tasks counted in for calculation
+						if(!array_key_exists($user_id, $user_tasks_counted_in)){
+						    $user_tasks_counted_in[$user_id] = array();
+						}
+						
+						if(!array_key_exists($task->task_id, $user_tasks_counted_in[$user_id])){
+						    $user_tasks_counted_in[$user_id][$task->task_id] = 0;
+						}
+						// We add it up
+						$user_tasks_counted_in[$user_id][$task->task_id] += $hours_added;
+//						echo "adding [$user_id] ".$task->task_id." -".$actual_date->format("%Y%m%d")." -  ".$user_usage[$user_id][$actual_date->format("%Y%m%d")]."<br />";
 					}
 				}
 				$actual_date->addDays(1);
@@ -202,6 +219,7 @@ if($do_report) {
 		$table_rows = "";
 		
 		foreach($user_list as $user_id => $user_data){
+		    @$user_names[$user_id] = $user_data["user_username"];
 			if(isset($user_usage[$user_id])) {
 				$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["contact_first_name"]." ".$user_data["contact_last_name"]."</td>";
 				$actual_date = $start_date;
@@ -266,7 +284,18 @@ if($do_report) {
 	?>
 	   </td></tr>
 	   </table>
-	</center>
+	   </center>
+       <?php
+           foreach($user_tasks_counted_in as $user_id => $task_information) {
+               echo "<b>".$user_names[$user_id]."</b><br /><blockquote>";
+               echo "<table>";
+               foreach($task_information as $task_id => $hours_assigned){
+                   echo "<tr><td>".$task_list_hash[$task_id]["task_name"]."</td><td>".round($hours_assigned,2)." hrs</td></tr>";
+               }
+               echo "</table></blockquote>";
+           }
+       ?>
+	
 	<?php	
 }
 			?>		
