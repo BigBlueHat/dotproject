@@ -61,11 +61,7 @@ if (count( $rows)) {
 } else {
 	$s .= $AppUI->_('No data available');
 }
-$s .= '<td nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
-if ($canEdit) {
-	$s .= '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onClick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
-}
-$s .= '</td>';
+
 $s .= '</tr>';
 echo $s;
 
@@ -75,5 +71,12 @@ foreach ($rows as $row) {
 		findchild( $rows, $row["dept_id"] );
 	}
 }
+
+echo '<td colspan="3" nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
+if ($canEdit) {
+	echo '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onClick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
+}
+echo '</td>';
+
 echo '</table>';
 ?>

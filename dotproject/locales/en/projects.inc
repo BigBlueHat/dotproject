@@ -1,11 +1,12 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Archived",
+"Log All Projects",
 "Active",
 "Actual Budget",
 "Actual End Date",
 "Actual Finish Date",
+"Archived",
 "Color Identifier",
 "Completed Projects",
 "Cost Code",

@@ -143,7 +143,7 @@ if($do_report){
 		        			FROM task_log
 		        			WHERE task_log_task        = $task_id
 					              AND task_log_creator = $user_id";
-					$hours_worked = db_loadResult($sql);
+					$hours_worked = round(db_loadResult($sql),2);
 					
 					$total_hours_allocated += $task_list[$task_id]["hours_allocated"];
 					$total_hours_worked    += $hours_worked;
@@ -155,8 +155,8 @@ if($do_report){
 			
 			if($total_hours_allocated > 0 || $total_hours_worked > 0){
 				$percentage = 0;
-				if($total_hours_allocated>0){
-					$percentage = ($total_hours_worked/$total_hours_allocated)*100;
+				if($total_hours_worked>0){
+					$percentage = ($total_hours_allocated/$total_hours_worked)*100;
 				}
 				?>
 				<tr>
