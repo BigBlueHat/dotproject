@@ -203,7 +203,7 @@ class CAppUI {
 	function readFiles( $path, $filter='.' ) {
 		$files = array();
 
-		if ($handle = opendir( $path )) {
+		if (is_dir($path) && ($handle = opendir( $path )) ) {
 			while (false !== ($file = readdir( $handle ))) {
 				if ($file != "." && $file != ".." && preg_match( "/$filter/", $file )) { 
 					$files[$file] = $file; 
