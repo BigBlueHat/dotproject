@@ -73,7 +73,7 @@ $okMessage="";
 if (is_writable( "../includes/config.php" )) {
 
         changeMode( "../includes/config.php", 777 );
-        $okMessage="Permissions for this File have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive area.";
+        $okMessage="Permissions for this File have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
 
  }
 ?>
@@ -83,10 +83,10 @@ if (is_writable( "../includes/config.php" )) {
 </tr>
 <?php
 $okMessage="";
-if (is_writable( "../includes/config.php" )) {
+if (is_writable( "../files" )) {
 
-        changeMode( "../includes/config.php", 777 );
-        $okMessage="Permissions for this File have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive area.";
+        changeMode( "../files", 777 );
+        $okMessage="Permissions for this Directory have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
 
  }
 ?>
@@ -94,10 +94,28 @@ if (is_writable( "../includes/config.php" )) {
             <td class="item">./files writable</td>
             <td align="left"><?php echo is_writable( "../files" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> File upload functionality will be disabled</span>';?></td>
 </tr>
+<?php
+$okMessage="";
+if (is_writable( "../files/temp" )) {
+
+        changeMode( "../files/temp", 777 );
+        $okMessage="Permissions for this Directory have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
+
+ }
+?>
 <tr>
             <td class="item">./files/temp writable</td>
             <td align="left"><?php echo is_writable( "../files/temp" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> PDF report generation will be disabled</span>';?></td>
 </tr>
+<?php
+$okMessage="";
+if (is_writable( "../locales/en" )) {
+
+        changeMode( "../locales/en", 777 );
+        $okMessage="Permissions for this Directory have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
+
+ }
+?>
 <tr>
             <td class="item">./locales/en writable</td>
             <td align="left"><?php echo is_writable( "../locales/en" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Translation files cannot be saved. Check /locales and subdirectories for permissions.</span>';?></td>

@@ -47,33 +47,33 @@ $dbbackup       = trim( dPgetParam( $_POST, 'dbbackup', true ) );
         </tr>
          <tr>
             <td class="item">Database Host Name</td>
-            <td align="left"><input class="button" type="text" name="dbhost" value="<?php echo $dbhost; ?>" /></td>
+            <td align="left"><input class="button" type="text" name="dbhost" value="<?php echo $dbhost; ?>" title="The Name of the Host the Database Server is installed on" /></td>
           </tr>
            <tr>
             <td class="item">Database Name</td>
-            <td align="left"><input class="button" type="text" name="dbname" value="<?php echo $dbname; ?>" /></td>
+            <td align="left"><input class="button" type="text" name="dbname" value="<?php echo $dbname; ?>" title="The Name of the Database dotProject will use and/or install" /></td>
           </tr>
           <tr>
             <td class="item">Database User Name</td>
-            <td align="left"><input class="button" type="text" name="dbuser" value="<?php echo "$dbuser"; ?>" /></td>
+            <td align="left"><input class="button" type="text" name="dbuser" value="<?php echo "$dbuser"; ?>" title="The Database User that dotProject uses for Database Connection" /></td>
             <td colspan="2">&nbsp;</td>
           </tr>
           <tr>
             <td class="item">Database User Password</td>
-            <td align="left"><input class="button" type="text" name="dbpass" value="<?php echo "$dbpass"; ?>" /></td>
+            <td align="left"><input class="button" type="text" name="dbpass" value="<?php echo "$dbpass"; ?>" title="The Password according to the above User." /></td>
           </tr>
 
           <tr>
             <td class="item">Database Port Name</td>
-            <td align="left"><input class="button" type="text" name="dbport" value="<?php echo $dbport; ?>" /></td>
+            <td align="left"><input class="button" type="text" name="dbport" value="<?php echo $dbport; ?>" title="The Port the Database Server is listening to. If empty a standard value of 3306 is used." /></td>
           </tr>
            <tr>
             <td class="item">Use Persistent Connection?</td>
-            <td align="left"><input type="checkbox" name="dbpersist" value="true" <?php echo ($dbpersist==true) ? 'checked="checked"' : ''; ?> /></td>
+            <td align="left"><input type="checkbox" name="dbpersist" value="true" <?php echo ($dbpersist==true) ? 'checked="checked"' : ''; ?> title="Use a persistent Connection to your Database Server." /></td>
           </tr>
           <tr>
             <td class="item">Drop Existing Database?</td>
-            <td align="left"><input type="checkbox" name="dbdrop" value="true" <?php echo ($dbdrop==true) ? 'checked="checked"' : ''; ?> /></td>
+            <td align="left"><input type="checkbox" name="dbdrop" value="true" <?php echo ($dbdrop==true) ? 'checked="checked"' : ''; ?> title="Deletes an existing Database before installing a new one. This deletes all data in the given database. Data cannot be restored." /></td>
             <td class="item">If checked, existing Data will be lost!</td>
         </tr>
           <tr>
@@ -88,14 +88,14 @@ $dbbackup       = trim( dPgetParam( $_POST, 'dbbackup', true ) );
         </tr>
         <tr>
             <td class="item">Add 'Drop Tables'-Command in SQL-Script?</td>
-            <td align="left"><input type="checkbox" name="backupdrop" value="false" <?php echo ($backupdrop==true) ? 'checked="checked"' : ''; ?> /></td>
+            <td align="left"><input type="checkbox" name="backupdrop" value="false" <?php echo ($backupdrop==true) ? 'checked="checked"' : ''; ?> title="If this command is added, existing data will be deleted by running the backup script. This can be handy not needing to manually delete existing database tables." /></td>
         </tr>
         <tr>
             <td class="item">Receive SQL File</td>
-            <td align="left"><input class="button" type="submit" name="dobackup" value="Backup" /></td>
+            <td align="left"><input class="button" type="submit" name="dobackup" value="Backup" title="Click here to retrieve a database backup file that can be stored on your local system. " /></td>
         </tr>
           <tr>
-            <td colspan="3" align="right"><br /> <input class="button" type="submit" name="next" value="Next" /></td>
+            <td colspan="3" align="right"><br /> <input class="button" type="submit" name="next" value="Next" title="Save Settings and try to install the database with the given information." /></td>
           </tr>
         </table>
         <?php if ($dbmsg > "") {

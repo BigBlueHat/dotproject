@@ -3,8 +3,9 @@
 //todo: interface: right row more to the left
 //todo: script to read subdirectories for styles and langs (delete empty/superfluous directories in the core distro???)
 //todo: enhanced guiding texts
-//todo: tooltips everywhere
-//todo: implement built-in automatic chmod in check.php
+//todo: ask if dotproject.sql should be applied
+//todo: provide upgrade functionality concerning database
+//todo: add check for incompatible proprietary M$ OS
 
 /*
 * dotProject Installer
