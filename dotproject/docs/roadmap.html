@@ -8,6 +8,50 @@
 
 <link rel="stylesheet" type="text/css" href="../style/default/main.css">
 
+<script language="javascript" type="text/javascript">
+var echo = document.writeln;
+
+var versions = new Array(
+// release name, release date
+	['1.0 beta 1','May 2003'],
+	['1.0 beta 2','Jun 2003'],
+	['1.0 release','Jul 2003'],
+	['1.05','Oct 2003'],
+	['1.10','Jan 2004'],
+	['1.15','Mar 2004'],
+	['1.20','Jun 2004'],	// cassini arrives at Saturn !
+	['Future','2005']
+);
+var nver = versions.length;
+
+var groups = new Array();
+
+groups['Core'] = new Array(
+// version, description, who
+	['1.05', 'Implement database prefix', 'John'],
+	['1.10', 'Move to Role Based Access Control', 'Andrew E' ]
+);
+
+groups['User Documentation'] = new Array(
+);
+
+groups['API Documentation'] = new Array(
+	['1.0 beta 1', 'Move to phpDoc stanard', 'Andrew E'],
+	['1.0 beta 2', 'Cut first working API', 'Andrew E']
+);
+
+groups['Module::Companies'] = new Array(
+);
+
+groups['Module::Projects'] = new Array(
+);
+
+groups['Module::Tasks'] = new Array(
+);
+
+
+</script>
+
 </head>
 
 <body>
@@ -18,7 +62,7 @@
 		<h1>dotProject Development Roadmap</h1>
 	</td>
 	<td align="right">
-		Version: $Revision$
+		$Revision$ $Date$
 	</td>
 </tr>
 </table>
@@ -26,26 +70,43 @@
 <table cellspacing="1" cellpadding="2" border="0" class="tbl" width="100%">
 <tr>
 	<th>Item</th>
-	<th width="5%">1.0 beta 1</th>
-	<th width="5%">1.0 beta 2</th>
-	<th width="5%">1.0 release</th>
-	<th width="5%">1.05</th>
-	<th width="5%">1.10</th>
-	<th width="5%">1.15</th>
-	<th width="5%">1.20</th>
-	<th width="5%">Future</th>
-</tr>
-<tr>
-	<td>Nominal Release</td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-	<td></td>
-</tr>
+	<th width="5%">Responsible</th>
+<script language="javascript" type="text/javascript">
+	for (var i=0; i < nver; i++) {
+		echo( '<th width="5%">'+versions[i][0]+'</th>' );
+	}
+	echo( '</tr>' );
+	echo( '<tr>' );
+	echo( '<td>Nominal Release</td><td></td>' );
+	for (var i=0; i < nver; i++) {
+		echo( '<td align="center">'+versions[i][1]+'</td>' );
+	}
+	echo( '</tr>' );
+// do groups
+	for (key in groups) {
+		grpList = groups[key];
+		echo( '<tr>' );
+		echo( '<td colspan="'+(nver+2)+'"><strong>'+key+'</strong></td>' );
+		echo( '</tr>' );
+
+		for (var j=0, n=grpList.length; j < n; j++) {
+			echo( '<tr>' );
+			echo( '<td><li>'+grpList[j][1]+'</li></td>' );
+			echo( '<td>'+grpList[j][2]+'</td>' );
+
+			for (var k=0; k < nver; k++) {
+				echo( '<td align="center">' );
+				if ( versions[k][0] == grpList[j][0] ) {
+					echo( 'x' );
+				}
+				echo( '</td>' );
+			}
+
+			echo( '</tr>' );
+		}
+	}
+</script>
+
 </table>
 
 </body>
