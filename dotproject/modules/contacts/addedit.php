@@ -153,7 +153,7 @@ function companyChange() {
 			<td align="right" width="100"><?php echo $AppUI->_('Company');?>:</td>
 			<td nowrap>
 				<input type="text" class="text" name="contact_company" value="<?php echo @$row->contact_company;?>" maxlength="100" size="25" onChange="companyChange()" />
-				<input type="button" class="button" value="<?php echo $AppUI->_('select company');?>..." onclick="popCompany()" />
+				<input type="button" class="button" value="<?php echo $AppUI->_('select company...');?>..." onclick="popCompany()" />
 				<a href="#" onClick="orderByName('company')">[<?php echo $AppUI->_('use in display');?>]</a>
 				</td>
 		</tr>
@@ -161,7 +161,7 @@ function companyChange() {
 			<td align="right" width="100"><?php echo $AppUI->_('Department');?>:</td>
 			<td nowrap>
 				<input type="text" class="text" name="contact_department" value="<?php echo @$row->contact_department;?>" maxlength="100" size="25" />
-				<input type="button" class="button" value="<?php echo $AppUI->_('select department');?>..." onclick="popDepartment()" />
+				<input type="button" class="button" value="<?php echo $AppUI->_('select department...');?>..." onclick="popDepartment()" />
 				</td>
 		</tr>
 		<tr>

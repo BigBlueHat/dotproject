@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"select department...",
 "Add Contact",
 "Contact Notes",
 "Display Name",
@@ -17,9 +18,10 @@
 "contactsValidName"=>"Please enter a valid contact name.",
 "delete contact",
 "new contact",
+"select company...",
 "use in display",
-"view this contact",
 "vCard(s) imported",
 "vCardFileUploadError"=>"Trouble while (up)loading the vCard file",
 "vCardImportError"=>"vCard could not be imported: An invalid file handle was passed to the function",
+"view this contact",
 "yyyy-mm-dd",

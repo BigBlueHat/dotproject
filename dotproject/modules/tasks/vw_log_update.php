@@ -130,7 +130,7 @@ if ($canEdit) {
 		      <td valign="middle" >
 			<?php
 				if ( $obj->task_owner != $AppUI->user_id ){
-					echo "<input type='checkbox' name='task_log_notify_owner' /></td><td valign='middle'>" . $AppUI->_('Notify owner');	
+					echo "<input type='checkbox' name='task_log_notify_owner' /></td><td valign='middle'>" . $AppUI->_('Notify creator');	
 				}
 			?>		 	
 		     </td>

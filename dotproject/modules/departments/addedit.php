@@ -155,11 +155,8 @@ if (count( $depts )) {
 	</td>
 </tr>
 <tr>
-	<td align="right" nowrap><?php echo $AppUI->_( 'Description' );?>:</td>
-	<td>&nbsp;</td>
-</tr>
-<tr>
-	<td colspan="2" align="center">
+	<td align="right" valign="top" nowrap><?php echo $AppUI->_( 'Description' );?>:</td>
+	<td align="left">
 		<textarea cols="70" rows="10" class="textarea" name="dept_desc"><?php echo @$drow["dept_desc"];?></textarea>
 	</td>
 </tr>

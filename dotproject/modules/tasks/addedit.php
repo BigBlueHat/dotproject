@@ -474,7 +474,7 @@ function calcFinish() {
 						$company_name = db_loadResult($sql);
 						
 						if($department_selection_list != "" || !is_null($company_name) ) {
-							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts")."' onclick='javascript:popContacts();' />";
+							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
 						}
 					?>
 				</td>
@@ -506,7 +506,6 @@ function calcFinish() {
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
 				</td>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Time' );?></td>
 				<td>
 					<table><tr>
 						
@@ -529,7 +528,6 @@ function calcFinish() {
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
 				</td>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Time' );?></td>
 				<td>
 				<table><tr>
 				<?php

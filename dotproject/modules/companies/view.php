@@ -117,20 +117,9 @@ function delIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
 			<td class="hilite"><?php echo $AppUI->_($types[@$obj->company_type]);?></td>
 		</tr>
-		</table>
-
-	</td>
-	<td width="50%" valign="top">
-		<strong><?php echo $AppUI->_('Description');?></strong>
-		<table cellspacing="0" cellpadding="2" border="0" width="100%">
-		<tr>
-			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br />", $obj->company_description);?>&nbsp;
-			</td>
-		</tr>
 		<?php
 		$custom_fields = dPgetSysVal("CompanyCustomFields");
-		if ( count($custom_fields) > 0 ){
+		if ( count($custom_fields) > 0 ) {
 			//We have custom fields, parse them!
 			//Custom fields are stored in the sysval table under TaskCustomFields, the format is
 			//key|serialized array of ("name", "type", "options", "selects")
@@ -140,7 +129,7 @@ function delIt() {
 				$custom_field_previous_data = unserialize($obj->company_custom);
 			}
 			
-			$output = '<tr><table cellspacing="1" cellpadding="2" >';
+			$output = '';
 			foreach ( $custom_fields as $key => $array) {
 				$output .= "<tr id='custom_tr_$key' >";
 				$field_options = unserialize($array);
@@ -159,10 +148,20 @@ function delIt() {
 				}
 				$output .= "</tr>";
 			}
-			$output .= "</table></tr>";
 			echo $output;
-		}
-		?>
+		} ?>
+		</table>
+
+	</td>
+	<td width="50%" valign="top">
+		<strong><?php echo $AppUI->_('Description');?></strong>
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td class="hilite">
+				<?php echo str_replace( chr(10), "<br />", $obj->company_description);?>&nbsp;
+			</td>
+		</tr>
+		
 		</table>
 	</td>
 </tr>

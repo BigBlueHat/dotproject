@@ -1,8 +1,9 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"All Projects",
+"Please select a project first!",
 "Add File",
+"All Projects",
 "Date",
 "Edit File",
 "File Name",
