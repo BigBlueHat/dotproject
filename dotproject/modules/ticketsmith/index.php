@@ -5,6 +5,9 @@ if (!$canRead) {
 }
 
 $type = dPgetParam( $_GET, 'type', '' );
+$column = dPgetParam( $_GET, 'column', 'timestamp' );
+$direction = dPgetParam( $_GET, 'direction', 'DESC' );
+$offset = dPgetParam( $_GET, 'offset', '' );
 $action = dPgetParam( $_REQUEST, 'action', null );
 
 if($type == ''){
