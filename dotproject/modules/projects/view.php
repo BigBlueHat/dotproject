@@ -231,7 +231,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Project Owner');?>:</td>
-			<td class="hilite"><?php echo htmlspecialchars( $obj->user_name, ENT_QUOTES) ; ?></td>
+			<td class="hilite"><?php echo $obj->user_name; ?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
