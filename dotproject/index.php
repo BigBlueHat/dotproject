@@ -36,7 +36,7 @@ if (isset( $HTTP_POST_VARS["dosql"]) ) {
 	require("./dosql/" . $HTTP_POST_VARS["dosql"] . ".php");
 }
 if (isset( $return )) {
-	header("Location: /" . $return);
+	header("Location: ./index.php?" . $return);
 }
 
 require "./includes/header.php";
