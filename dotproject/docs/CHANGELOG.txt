@@ -1,5 +1,16 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+5 September 2002 (AJE):
+-----------------------------
+modules/calendar/day_view.php
+- added breadcrumb to week view
+- tidied code
+
+modules/calendar/week_view.php
+- fixed bug in table
+- linked actual day hyperlink to day view
+- tidied code
+
 4 September 2002 (AJE):
 -----------------------------
 includes/leftnav.php
