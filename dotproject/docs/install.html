@@ -106,66 +106,59 @@
     
 	<p>The File Management Module provides users with an opportunity to upload and
     share files. Several steps are necessary to make sure this module works 
-    correctly.
-	<pre>
-    a) It is very important that the $root_dir variable is set correctly in 
-        "includes/config.php". $root_dir must provide the full path to the 
-        dotproject installation AND INCLUDE the installation folder name.
-        
+    correctly.</p>
+
+	<ol type="a">
+		<li>It is very important that the $root_dir variable is set correctly in <code>"includes/config.php"</code>. $root_dir must provide the full path to the dotproject installation AND INCLUDE the installation folder name.
+		<pre>
         $root_dir = "/var/www/html/dotproject";     // Example ONE
-        $root_dir = "/wwwroot/dotproject";          // Example TWO
+        $root_dir = "/wwwroot/dotproject";          // Example TWO</pre>
+		</li>
 
-    b) File Folder Permissions
-        In order for the file upload to function, you will need to provide full
-        read-write-execute priviledges to the file upload folder.  The "default" 
-        file upload folder is named "files" and contains an "htaccess" file to 
-        prevent unauthorized access.
-        
-        Navigate to dotproject root directory
-        # chmod -R 777 files
+		<li><p>Files Folder Permissions</p>
+		<p>In order for the file upload to function, you will need to provide write priviledges to the file upload folder. The "default" file upload folder is named <code>"files"</code> and contains an <code>".htaccess"</code> file to 
+        prevent unauthorized access.<p>
+		<p>The safe way to the write permission on a POSIX system is via the following.  Determine what user is running the apache web server with the following system command:
+		<pre>[user@localhost dotproject]# ps -ef | grep httpd</pre>
+		The resulting list will show you the user that is running Apache (probably <code>apache</code>).  Change the owner of the files directory to this user:
+		<pre>[user@localhost dotproject]# chown -R apache files/
+[user@localhost dotproject]# chmod -R 0700 files/</pre>
+		<p>You should not be lazy and just set the permissions on this directory to 777.  While this will work it provides leverage for a malicious attack from a cracker.</p>
+		</li>
 
-        You will also need to provide full read-write-execute priviledges to the
-        files/temp directory to allow the creation of PDF report files.
-        
-    c) Troubleshooting
-        Failure to specify the proper $root_dir OR failure to provide full 
-        read-write-execute permission on the file upload folder will result in 
-        numerous error messages along the lines of:
-       
-        Warning: Unable to create '{$root_dir}/files/0/{rnd #}': 
-            Permission denied in {$root_dir}/dosql/addfile.php on line 17
-        Warning: Unable to move '/tmp/phpt9SeKp' to '{$root_dir}/files/0/{rnd #}'
-            in {$root_dir}/dosql/addfile.php on line 17
-        Warning: fopen("{$root_dir}/files/0/{rnd #}","r") - No such file 
-            or directory in {$root_dir}/dosql/addfile.php on line 51
-        Warning: Supplied argument is not a valid File-Handle resource in
-            {$root_dir}/addfile.php on line 52
-        Warning: Cannot add header information - headers already sent by (output 
-            started at {$root_dir}/dosql/addfile.php:17) in 
-            {$root_dir}/dosql/addfile.php on line 92
+		<li><p>Troubleshooting</p>
+		<p>Failure to specify the proper <code>$root_dir</code> OR failure to provide write permissions on the file upload folder will result in numerous error messages along the lines of:
+		<pre>
+Warning: Unable to create '{$root_dir}/files/0/{rnd #}': 
+	Permission denied in {$root_dir}/dosql/addfile.php on line 17
+Warning: Unable to move '/tmp/phpt9SeKp' to '{$root_dir}/files/0/{rnd #}'
+	in {$root_dir}/dosql/addfile.php on line 17
+Warning: fopen("{$root_dir}/files/0/{rnd #}","r") - No such file 
+	or directory in {$root_dir}/dosql/addfile.php on line 51
+Warning: Supplied argument is not a valid File-Handle resource in
+	{$root_dir}/addfile.php on line 52
+Warning: Cannot add header information - headers already sent by (output 
+	started at {$root_dir}/dosql/addfile.php:17) in 
+	{$root_dir}/dosql/addfile.php on line 92
+		</pre>
+		<p>Even though you may encounter error messages, there will still be an entry made for the various files in the database. However, the contents of the uploaded files will likely be lost. Instead the "files" will contain error messages that may help with troubleshooting.</p>
+		<p>If you find that you are accumulating "file" listings, but your contents of the "files" folder is not changing, then you have probably provided an incorrect <code>$root_dir</code> path.
+		</li>
 
-        Even though you may encounter error messages, there will still be an entry
-        made for the various files. However, the contents of the uploaded files will
-        likely be lost. Instead the "files" will contain error messages that may help
-        with troubleshooting.
-        
-        If you find that you are accumulating "file" listings, but your contents of the 
-        "files" folder is not changing, then you have probably provided an incorrect
-        $root_dir path.
-
-    d) Improving Security
-        The default "files" folder contains an ".htaccess" file containing the following:
-            Options -All
-            deny from all 
-        
-        While this provides basic security, the paranoid can improve security further by:
-            i) Changing the name of the "files" folder to something less obvious.
-            ii) Moving the "files" folder outside of the webroot
-            iii) Both
-            
-            These security improvements will require technical skill, and will make 
-            "upgrading" to future versions of dotproject more challenging.
-	</pre>
+		<li><p>Improving Security</p>
+		<p>The default "files" folder contains an ".htaccess" file containing the following:
+		</pre>
+Options -All
+deny from all</pre>
+		<p>While this provides basic security, the paranoid can improve security further by:
+		<ul>
+			<li>Changing the name of the <code>"files"</code> folder to something less obvious.</li>
+			<li>Moving the <code>"files"</code> folder outside of the webroot</li>
+			<li>Both</li>
+		</ul>
+        <p>These security improvements will require technical skill, and will make "upgrading" to future versions of dotproject more challenging.</p>
+		</li>
+	</ol>
 	</li>
 </ol>
             
