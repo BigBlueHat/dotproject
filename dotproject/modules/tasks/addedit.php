@@ -9,6 +9,8 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$durTypes = dPgetSysVal( 'TaskDurationType' );
+
 // pull the task
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
 
@@ -207,8 +209,8 @@ function removeTaskDependency() {
 	}
 }
 
-var workHours = <?php echo $AppUI->cfg['daily_working_hours'];?>;
-var dayMSecs = 3600*24*1000;
+var workHours = <?php echo $AppUI->getConfig( 'daily_working_hours' );?>;
+var hourMSecs = 3600*1000;
 
 function calcDuration() {
 	var f = document.editFrm;
@@ -216,9 +218,12 @@ function calcDuration() {
 	var s = new Date( f.task_start_date.value*1000 );
 	var e = new Date( f.task_end_date.value*1000 );
 
-	var durn = (e - s) / dayMSecs;
-	if (f.task_duration_type.value == 'hours') {
-		durn *= workHours;
+	var durn = (e - s) / hourMSecs;
+	var durnType = parseFloat(f.task_duration_type.value);
+	durn /= durnType;
+
+	if (durnType == 1) {
+		durn *= (workHours / 24);
 	}
 	f.task_duration.value = durn;
 }
@@ -226,12 +231,12 @@ function calcDuration() {
 function calcFinish() {
 	var f = document.editFrm;
 	var durn = parseFloat(f.task_duration.value);
+	var durnType = parseFloat(f.task_duration_type.value);
 
 	var s = new Date( f.task_start_date.value*1000 );
-	var inc = 0;
+	var inc = (durn) * durnType * hourMSecs;
 
-	inc = (durn-1) * dayMSecs;
-	if (f.task_duration_type.value == 'hours') {
+	if (durnType == 1) {
 		inc /= workHours;
 	}
 	var e = new Date( s.getTime() + inc );
@@ -336,9 +341,7 @@ function calcFinish() {
 				<td nowrap="nowrap">
 					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo dPgetParam( $task, 'task_duration', 0);?>" />
 				<?php
-					$durns = array( 'hours'=>'hours', 'days'=>'days' );
-					$durnType = dPgetParam( $task, 'task_duration_type', 'days' );
-					echo arraySelect( $durns, 'task_duration_type', 'class="text"', $task["task_duration_type"] );
+					echo arraySelect( $durTypes, 'task_duration_type', 'class="text"', $task["task_duration_type"] );
 				?>
 				</td>
 			</tr>
