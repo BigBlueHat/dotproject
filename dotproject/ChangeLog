@@ -1,3 +1,18 @@
+2003-08-26 15:56  (jcgonz)
+---------------------------------
+modules/help/en/contacts.index.hlp
+- Updated contacts help file to include searching documentation
+
+2003-08-26 15:52  (jcgonz)
+---------------------------------
+modules/contacts/index.php
+- Added search feature to the contacts module
+
+2003-08-23 03:58  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-23 02:21  (ajdonnison)
 ---------------------------------
 fileviewer.php
@@ -483,21 +498,6 @@ docs/nav.html
 classes/ui.class.php
 - Initialise class variable with null
 
-2003-06-26 18:46  (kobudo)
----------------------------------
-docs/install.html
-modules/help/en/install.install.hlp
-- Update help documentation.
-
-2003-06-26 18:37  (kobudo)
----------------------------------
-modules/help/en/projects.view.hlp
-- Complete Project module help documentation.
-
-2003-06-26 15:16  (kripper)
----------------------------------
-modules/tasks/view.php
-- Read/edit permissions on the project allows now to view the tasks.
 ...
 
 (This file has been wrapped)
