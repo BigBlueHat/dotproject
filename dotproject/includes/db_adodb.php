@@ -70,7 +70,7 @@ function db_exec( $sql ) {
                 // Useless statement, but it is being executed only on error, 
                 // and it stops infinite loop.
                 $db->Execute( $sql );
-                if (!db_error)
+                if (!db_error())
                         echo '<script language="JavaScript"> location.reload(); </script>';
         }
         if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
