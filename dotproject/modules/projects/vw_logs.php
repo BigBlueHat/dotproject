@@ -8,6 +8,20 @@
 		$AppUI->setState( 'ProjectsTaskLogsUserFilter', $_GET['user_id'] );
 	}
 	$user_id = $AppUI->getState( 'ProjectsTaskLogsUserFilter' ) ? $AppUI->getState( 'ProjectsTaskLogsUserFilter' ) : $AppUI->user_id;
+
+	if (isset( $_GET['hide_inactive'] )) {
+		$AppUI->setState( 'ProjectsTaskLogsHideArchived', true );
+	} else {
+		$AppUI->setState( 'ProjectsTaskLogsHideArchived', false );
+	}
+	$hide_inactive = $AppUI->getState( 'ProjectsTaskLogsHideArchived' );
+
+	if (isset( $_GET['hide_complete'] )) {
+		$AppUI->setState( 'ProjectsTaskLogsHideComplete', true );
+	} else {
+		$AppUI->setState( 'ProjectsTaskLogsHideComplete', false );
+	}
+	$hide_complete = $AppUI->getState( 'ProjectsTaskLogsHideComplete' );
 ?>
 <script language="JavaScript">
 function delIt2(id) {
@@ -25,6 +39,8 @@ function delIt2(id) {
 <input type="hidden" name="tab" value="<?=$tab?>"/>
 <tr>
 	<td width="98%">&nbsp;</td>
+	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_inactive" <?=$hide_inactive?"checked":""?> onchange="document.frmFilter.submit()"><?=$AppUI->_('Hide Inactive')?></td>
+	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_complete" <?=$hide_complete?"checked":""?> onchange="document.frmFilter.submit()"><?=$AppUI->_('Hide 100% Complete')?></td>
 	<td width="1%" nowrap="nowrap"><?=$AppUI->_('User Filter')?></td>
 	<td width="1%"><?=arraySelect( $users, 'user_id', 'size="1" class="text" id="medium" onchange="document.frmFilter.submit()"',
                           $user_id )?></td>
@@ -59,6 +75,8 @@ FROM
 WHERE 
 	task_project = $project_id ".
 	($user_id>0?" AND task_log_creator=$user_id ":'').
+	($hide_inactive?" AND task_status>=0 ":'').
+	($hide_complete?" AND task_percent_complete < 100 ":'').
 "ORDER BY task_log_date
 ";
 //print "<pre>$sql</pre>";
