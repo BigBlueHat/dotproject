@@ -812,7 +812,7 @@ list_value varchar(250)
 DROP TABLE IF EXISTS `gacl_acl`;
 CREATE TABLE `gacl_acl` (
   `id` int(11) NOT NULL default '0',
-  `section_value` varchar(230) NOT NULL default 'system',
+  `section_value` varchar(80) NOT NULL default 'system',
   `allow` int(11) NOT NULL default '0',
   `enabled` int(11) NOT NULL default '0',
   `return_value` longtext,
@@ -836,7 +836,7 @@ CREATE TABLE `gacl_acl` (
 DROP TABLE IF EXISTS `gacl_acl_sections`;
 CREATE TABLE `gacl_acl_sections` (
   `id` int(11) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(230) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
@@ -857,8 +857,8 @@ CREATE TABLE `gacl_acl_sections` (
 DROP TABLE IF EXISTS `gacl_aco`;
 CREATE TABLE `gacl_aco` (
   `id` int(11) NOT NULL default '0',
-  `section_value` varchar(240) NOT NULL default '0',
-  `value` varchar(240) NOT NULL default '',
+  `section_value` varchar(80) NOT NULL default '0',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
@@ -878,8 +878,8 @@ CREATE TABLE `gacl_aco` (
 DROP TABLE IF EXISTS `gacl_aco_map`;
 CREATE TABLE `gacl_aco_map` (
   `acl_id` int(11) NOT NULL default '0',
-  `section_value` varchar(230) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `section_value` varchar(80) NOT NULL default '0',
+  `value` varchar(80) NOT NULL default '',
   PRIMARY KEY  (`acl_id`,`section_value`,`value`)
 ) TYPE=MyISAM;
 # --------------------------------------------------------
@@ -895,7 +895,7 @@ CREATE TABLE `gacl_aco_map` (
 DROP TABLE IF EXISTS `gacl_aco_sections`;
 CREATE TABLE `gacl_aco_sections` (
   `id` int(11) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(230) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
@@ -916,8 +916,8 @@ CREATE TABLE `gacl_aco_sections` (
 DROP TABLE IF EXISTS `gacl_aro`;
 CREATE TABLE `gacl_aro` (
   `id` int(11) NOT NULL default '0',
-  `section_value` varchar(240) NOT NULL default '0',
-  `value` varchar(240) NOT NULL default '',
+  `section_value` varchar(80) NOT NULL default '0',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
@@ -942,7 +942,7 @@ CREATE TABLE `gacl_aro_groups` (
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `value` varchar(255) NOT NULL default '',
+  `value` varchar(80) NOT NULL default '',
   PRIMARY KEY  (`id`,`value`),
   KEY `gacl_parent_id_aro_groups` (`parent_id`),
   KEY `gacl_value_aro_groups` (`value`),
@@ -975,8 +975,8 @@ CREATE TABLE `gacl_aro_groups_map` (
 DROP TABLE IF EXISTS `gacl_aro_map`;
 CREATE TABLE `gacl_aro_map` (
   `acl_id` int(11) NOT NULL default '0',
-  `section_value` varchar(230) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `section_value` varchar(80) NOT NULL default '0',
+  `value` varchar(80) NOT NULL default '',
   PRIMARY KEY  (`acl_id`,`section_value`,`value`)
 ) TYPE=MyISAM;
 # --------------------------------------------------------
@@ -992,7 +992,7 @@ CREATE TABLE `gacl_aro_map` (
 DROP TABLE IF EXISTS `gacl_aro_sections`;
 CREATE TABLE `gacl_aro_sections` (
   `id` int(11) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(230) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
@@ -1013,8 +1013,8 @@ CREATE TABLE `gacl_aro_sections` (
 DROP TABLE IF EXISTS `gacl_axo`;
 CREATE TABLE `gacl_axo` (
   `id` int(11) NOT NULL default '0',
-  `section_value` varchar(240) NOT NULL default '0',
-  `value` varchar(240) NOT NULL default '',
+  `section_value` varchar(80) NOT NULL default '0',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',
@@ -1039,7 +1039,7 @@ CREATE TABLE `gacl_axo_groups` (
   `lft` int(11) NOT NULL default '0',
   `rgt` int(11) NOT NULL default '0',
   `name` varchar(255) NOT NULL default '',
-  `value` varchar(255) NOT NULL default '',
+  `value` varchar(80) NOT NULL default '',
   PRIMARY KEY  (`id`,`value`),
   KEY `gacl_parent_id_axo_groups` (`parent_id`),
   KEY `gacl_value_axo_groups` (`value`),
@@ -1072,8 +1072,8 @@ CREATE TABLE `gacl_axo_groups_map` (
 DROP TABLE IF EXISTS `gacl_axo_map`;
 CREATE TABLE `gacl_axo_map` (
   `acl_id` int(11) NOT NULL default '0',
-  `section_value` varchar(230) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `section_value` varchar(80) NOT NULL default '0',
+  `value` varchar(80) NOT NULL default '',
   PRIMARY KEY  (`acl_id`,`section_value`,`value`)
 ) TYPE=MyISAM;
 # --------------------------------------------------------
@@ -1089,7 +1089,7 @@ CREATE TABLE `gacl_axo_map` (
 DROP TABLE IF EXISTS `gacl_axo_sections`;
 CREATE TABLE `gacl_axo_sections` (
   `id` int(11) NOT NULL default '0',
-  `value` varchar(230) NOT NULL default '',
+  `value` varchar(80) NOT NULL default '',
   `order_value` int(11) NOT NULL default '0',
   `name` varchar(230) NOT NULL default '',
   `hidden` int(11) NOT NULL default '0',

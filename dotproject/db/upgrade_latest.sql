@@ -793,3 +793,23 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
 # 20050303
 # Queue scanning on garbage collection
 INSERT INTO config VALUES (NULL, 'session_gc_scan_queue', 'false', 'session', 'checkbox');
+
+# 20050303
+# Shorten permissions fields to get over MySQL index size problem.
+ALTER TABLE `gacl_acl` CHANGE `section_value` `section_value` varchar(80) NOT NULL default 'system';
+ALTER TABLE `gacl_acl_sections` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_aco` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
+ALTER TABLE `gacl_aco` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_aco_map` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
+ALTER TABLE `gacl_aco_map` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_aco_sections` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_aro` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
+ALTER TABLE `gacl_aro` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_aro_groups` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_aro_map` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
+ALTER TABLE `gacl_aro_sections` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_axo` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
+ALTER TABLE `gacl_axo` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_axo_groups` CHANGE `value` `value` varchar(80) NOT NULL default '';
+ALTER TABLE `gacl_axo_map` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
+ALTER TABLE `gacl_axo_sections` CHANGE `value` `value` varchar(80) NOT NULL default '';
