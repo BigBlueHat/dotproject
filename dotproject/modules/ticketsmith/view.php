@@ -289,6 +289,7 @@ print("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup" || $ticket_type == "Staff Comment") {
     print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>Post followup (email client)</a> | ");
     print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>Post internal comment</a> | ");
+    print("<a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>Return to parent</a> | ");
 }
 else {
     print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>Post followup (emails client)</a> | ");
