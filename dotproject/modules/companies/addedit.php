@@ -1,7 +1,30 @@
 <?php
 // Add / Edit Company
+$company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id'] : 0;
 
-if(empty($company_id))$company_id = 0;
+// check permissions to edit
+$psql = "
+select count(*)
+from permissions
+left join users on permission_user = user_id
+where permission_user = $user_cookie and
+	permission_value < 1
+	and (permission_grant_on = 'all' 
+		or (permission_grant_on = 'companies' and (permission_item = -1 or permission_item = $company_id))
+	)
+";
+
+$prc = mysql_query($psql);
+$perm = mysql_fetch_array($prc);
+
+if ($perm[0] < 1) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=companies&message=ACCESS DENIED: You have insufficient permissions to edit this company.";
+	</script>
+';
+}
+
+// pull data
 $csql = "Select companies.*,users.user_first_name,users.user_last_name
 	from companies
 	left join users on users.user_id = companies.company_owner
@@ -52,20 +75,19 @@ function delIt() {
 		<TD nowrap><span class="title">Clients and Companies</span></td>
 		<TD align="right" width="100%">&nbsp;</td>
 	</tr>
-	<TR>
-		<TD valign="top" align="right" width="100%" colspan=3>
-			<?php if($company_id != 0){?>
-			<TABLE cellpadding=1 cellpadding=1 border=0 bgcolor="#dddddd">
-				<TR>
-					<TD bgcolor="white">
-						<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this comapny" border="0">delete company</a>
-					</td>
-			</tr>
-			</table>
-			<?php }?>
-		</td>
-	</tr>
 </TABLE>
+
+<table border="0" cellpadding="4" cellspacing="0" width="90%">
+	<TR>
+		<TD width="50%" nowrap>
+		<a href="./index.php?m=companies">Companies List</a>
+		<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>">View this Company</a>
+		</td>
+		<TD width="50%" align="right">
+			<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this comapny" border="0">delete company</a>
+		</td>
+	</TR>
+</table>
 
 <TABLE width="90%" border=0 bgcolor="#f4efe3" cellpadding="0" cellspacing=1 height="400">
 <form name="changeclient" action="?m=companies" method="post">
@@ -98,7 +120,7 @@ $n = count( $owners );
 echo '<select class=text name="company_owner" size=1>';
 for ($i=0; $i < $n; $i++) {
 	echo '<option value='.$owners[$i]['user_id'];
-	if ($owners[$i]['user_id'] == $user_cookie) {
+	if ($owners[$i]['user_id'] == $crow["company_owner"]) {
 		echo ' selected';
 	}
 	echo '>'.$owners[$i]['user_first_name'].' '.$owners[$i]['user_last_name'];
