@@ -1,4 +1,11 @@
 <?php
+$denyRead = getDenyRead( $m );
+
+if ($denyRead) {
+	$AppUI->redirect( "m=help&a=access_denied" );
+}
+$AppUI->savePlace();
+
 require_once( "$root_dir/classdefs/date.php" );
 
 // get the passed timestamp (today if none)
@@ -133,9 +140,7 @@ for ($i=0; $i < 7; $i++) {
 ?>
 <tr>
 	<td colspan="2" align="right" bgcolor="#efefe7">
-		<font face='Tahoma, arial, helvetica, sans-serif' size='1'>
-		<A href="./index.php?m=calendar&a=week_view<?php echo "&thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay;?>">Today</A>
-		</font>
+		<a href="./index.php?m=calendar&a=week_view"><?php echo $AppUI->_('today');?></A>
 	</td>
 </tr>
 </table>
