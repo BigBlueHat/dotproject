@@ -252,7 +252,7 @@ foreach ($files as $file_row) {
                 <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $file['file_task'] . '">' . $file['task_name'] . '</a></td>
                 <td width="15%" nowrap="nowrap">' . $file["contact_first_name"].' '.$file["contact_last_name"] . '</td>
                 <td width="5%" nowrap="nowrap" align="right">' . file_size(intval($file['file_size'])) . '</td>
-                <td nowrap="nowrap">' . substr($file['file_type'], 0, strpos($file['file_type'], '/')) . '</td>
+                <td nowrap="nowrap">' . substr($file['file_type'], strpos($file['file_type'], '/')+1) . '</td>
                 <td width="15%" nowrap="nowrap" align="right">' . $hdate->format("$df $tf") . '</td>
         </tr>';
                         }
@@ -264,7 +264,7 @@ foreach ($files as $file_row) {
 	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file["file_task"];?>"><?php echo $latest_file["task_name"];?></a></td>
 	<td width="15%" nowrap="nowrap"><?php echo $latest_file["contact_first_name"].' '.$latest_file["contact_last_name"];?></td>
 	<td width="5%" nowrap="nowrap" align="right"><?php echo file_size(intval($latest_file["file_size"]));?></td>
-	<td nowrap="nowrap"><?php echo $AppUI->_(substr($latest_file['file_type'], 0, strpos($latest_file['file_type'], '/')));?></td>
+	<td nowrap="nowrap"><?php echo $AppUI->_(substr($latest_file['file_type'], strpos($latest_file['file_type'], '/')+1));?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
 <?php 
