@@ -2,6 +2,7 @@
 
 // check permissions
 $denyEdit = getDenyEdit( $m );
+$user_id = $AppUI->user_id;
 
 if ($denyEdit) {
 	echo '<script language="javascript">
