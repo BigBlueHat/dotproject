@@ -1,3 +1,48 @@
+2003-10-16 01:38  (kripper)
+---------------------------------
+modules/projects/view.php
+- Removed htmlspecialchars conversion to conserve <br> sutitutions.
+
+2003-10-15 16:19  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/view.php
+- fixing bug821572: htmspecialchars for quotes
+
+2003-10-15 15:59  (gregorerhardt)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- fixing bug821572: htmspecialchars for quotes
+
+2003-10-15 14:44  (gregorerhardt)
+---------------------------------
+modules/tasks/todo.php
+- fixing bug823989: htmspecialchars for quotes
+
+2003-10-15 14:30  (gregorerhardt)
+---------------------------------
+modules/projects/index.php
+- fixing bug822943:missing intval in session save process
+
+2003-10-15 06:53  (gregorerhardt)
+---------------------------------
+style/default/main.css
+- table headers are now text-align:center
+
+2003-10-15 04:34  (kripper)
+---------------------------------
+includes/main_functions.php
+modules/system/addeditpref.php
+- Added currency formating code to preferences sheet.
+
+2003-10-10 03:50  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-09 14:19  (gregorerhardt)
 ---------------------------------
 modules/system/viewmods.php
@@ -453,51 +498,6 @@ locales/en/public.inc
 locales/en/system.inc
 locales/en/tasks.inc
 locales/en/ticketsmith.inc
-- reviewed and actualized the locales/en/*.inc
-
-2003-09-05 16:12  (gregorerhardt)
----------------------------------
-locales/en/files.inc
-modules/files/do_file_aed.php
-modules/files/files.class.php
-- acc. to patch #782857: warning message added: file could not be written
-
-2003-09-05 10:12  (gregorerhardt)
----------------------------------
-modules/forums/post_message.php
-- RFE 789170: show original forum message when replying
-
-2003-09-05 08:07  (gregorerhardt)
----------------------------------
-includes/config-dist.php
-modules/projects/addedit.php
-modules/projects/view.php
-modules/tasks/addedit.php
-modules/tasks/view.php
-- changed the hardcoded currencsymbol ($) to dPconfig-ConfigVariable
-
-2003-09-05 04:05  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-05 03:03  (gregorerhardt)
----------------------------------
-modules/calendar/addedit.php
-- removed ->_(' ..') which is double
-
-2003-09-05 03:00  (gregorerhardt)
----------------------------------
-modules/projects/index.php
-- removed ->_('Proposed Projects') which is double
-
-2003-09-03 04:06  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-02 20:31  (ajdonnison)
----------------------------------
 ...
 
 (This file has been wrapped)
