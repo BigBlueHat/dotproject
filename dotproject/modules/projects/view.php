@@ -46,15 +46,22 @@ if (!db_loadObject( $sql, $obj )) {
 }
 
 // worked hours
-$sql = "SELECT SUM(task_log_hours) FROM task_log, tasks WHERE task_log_task = task_id AND task_project = $project_id";
+// by definition milestones don't have duration so even if they specified, they shouldn't add up
+// the sums have to be rounded to prevent the sum form having many (unwanted) decimals because of the mysql floating point issue
+// more info on http://www.mysql.com/doc/en/Problems_with_float.html
+$sql = "SELECT ROUND(SUM(task_log_hours),2) FROM task_log, tasks WHERE task_log_task = task_id AND task_project = $project_id AND task_milestone ='0'";
 $worked_hours = db_loadResult($sql);
+$worked_hours = rtrim($worked_hours, "0");
 
 // total hours
-$sql = "SELECT SUM(task_duration) FROM tasks WHERE task_project = $project_id AND task_duration_type = 24";
+// same milestone comment as above
+$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 24 AND task_milestone ='0'";
 $days = db_loadResult($sql);
-$sql = "SELECT SUM(task_duration) FROM tasks WHERE task_project = $project_id AND task_duration_type = 1";
+$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0'";
 $hours = db_loadResult($sql);
 $total_hours = $days * $dPconfig['daily_working_hours'] + $hours;
+//due to the round above, we don't want to print decimals unless they really exist
+$total_hours = rtrim($total_hours, "0");
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');

@@ -52,7 +52,7 @@ while ($row = db_fetch_assoc( $prc )) {
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
-task_description, task_owner, user_username
+task_description, task_owner, user_username, task_milestone
 ";
 
 $from = "tasks";
@@ -181,9 +181,13 @@ function showtask( &$a, $level=0 ) {
 	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
 // start date
 	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
-// duration
+// duration or milestone
 	$s .= '<td align="right">';
-	$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
+	if ( $a['task_milestone'] == '0' ) {
+		$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
+	} else {
+		$s .= $AppUI->_("Milestone");
+	}
 	$s .= '</td>';
 // end date
 	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
