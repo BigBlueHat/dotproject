@@ -1,3 +1,30 @@
+2003-09-02 20:31  (ajdonnison)
+---------------------------------
+db/upgrade_022_to_100.sql
+- Added beta1 to release1 additions.
+
+2003-09-02 20:25  (ajdonnison)
+---------------------------------
+modules/ticketsmith/post_ticket.php
+- Added makemyday's patch to preset the user name and email.
+
+2003-09-02 20:18  (ajdonnison)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+modules/system/addeditpref.php
+- Added gregor's patch to allow users to change their own password.
+
+2003-09-02 19:56  (ajdonnison)
+---------------------------------
+includes/permissions.php
+- Fix for problem with viewing tasks unless admin
+
+2003-09-01 04:07  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-08-31 21:59  (ajdonnison)
 ---------------------------------
 modules/admin/vw_usr_perms.php
@@ -471,33 +498,6 @@ modules/system/translate.php
 modules/system/translate_save.php
 - Fixed slashes problem
 
-2003-07-03 21:32  (eddieajau)
----------------------------------
-includes/main_functions.php
-- Added function to make string safe in html tab attirbutes
-
-2003-07-03 21:31  (eddieajau)
----------------------------------
-includes/permissions.php
-- Fixed constant declaration
-
-2003-07-03 21:12  (eddieajau)
----------------------------------
-modules/ticketsmith/comment.php
-- Fixed quotes problem
-
-2003-07-03 20:07  (eddieajau)
----------------------------------
-modules/ticketsmith/comment.php
-- Fixed quotes problem
-
-2003-07-03 16:48  (kripper)
----------------------------------
-modules/calendar/calendar.class.php
-- Filter events for not allowed projects in calendar module.
-
-2003-07-03 16:36  (kripper)
----------------------------------
 ...
 
 (This file has been wrapped)
