@@ -414,7 +414,7 @@ function sort_by_item_title( $title, $item_name, $item_type )
 <tr>
 	<th width="10">&nbsp;</th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
-	<th align='center'></th>
+	<th align='center'><?= sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ) ?></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned users')?></th>
