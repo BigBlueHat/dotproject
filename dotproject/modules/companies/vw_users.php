@@ -2,7 +2,7 @@
 ##
 ##	Companies: View User sub-table
 ##
-GLOBAL $AppUI, $company_id; 
+GLOBAL $AppUI, $company_id;
 
 $sql = "
 SELECT user_id, user_username, user_first_name, user_last_name
@@ -16,7 +16,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 ?>
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
 <tr>
-	<th><?php echo $AppUI->_( 'username' );?></td>
+	<th><?php echo $AppUI->_( 'Username' );?></td>
 	<th><?php echo $AppUI->_( 'Name' );?></td>
 </tr>
 <?php
