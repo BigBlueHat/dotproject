@@ -1,3 +1,23 @@
+2003-12-15 20:54  (robertoibarra)
+---------------------------------
+classes/ui.class.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/view.php
+style/default/overrides.php
+- Now you can navigate from inside tasks, you can view the tasks parents and children while viewing the task.
+
+2003-12-15 16:37  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+- fixed bug in recurrent events; todo: daily view
+
+2003-12-14 09:21  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-13 17:14  (gregorerhardt)
 ---------------------------------
 modules/calendar/addedit.php
@@ -478,26 +498,6 @@ locales/en/companies.inc
 ---------------------------------
 modules/companies/index.php
 modules/companies/vw_companies.php
-- Added Tab for filtering companies types
-
-2003-11-03 01:36  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-11-01 07:57  (gregorerhardt)
----------------------------------
-modules/forums/post_message.php
-- fixed bug producing wrong author and editor on replying to a post
-
-2003-10-31 03:40  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-30 13:59  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
 ...
 
 (This file has been wrapped)
