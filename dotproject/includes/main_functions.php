@@ -133,7 +133,8 @@ function defValArr(&$arr, $name, $def) {
 # add history entries for tracking changes
 #
 	
-function addHistory( $description, $project_id = 0, $module_id = 0) {	
+function addHistory( $description, $project_id = 0, $module_id = 0) {
+	global $AppUI;	
 	/*
 	 * TODO:
 	 * 1) description should be something like:
@@ -149,7 +150,6 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	 * 
 	 */
 	if(!$AppUI->cfg['log_changes']) return;
-	global $AppUI;
 	$description = str_replace("'", "\'", $description);
 	$psql =	"INSERT INTO history " .
 			"( history_description, history_user, history_date ) " .
