@@ -1,3 +1,41 @@
+2003-12-21 08:57  (gregorerhardt)
+---------------------------------
+modules/forums/configure.php
+modules/forums/setup.php
+- initial import of module specific config and setup file
+
+2003-12-21 08:55  (gregorerhardt)
+---------------------------------
+modules/forums/forums.class.php
+- added forums module specific config functionality: force watch for all users
+
+2003-12-21 08:52  (gregorerhardt)
+---------------------------------
+modules/system/domodsql.php
+modules/system/viewmods.php
+- groundwork for module specific configuration via configure-function and config variable in module's setup.php
+
+2003-12-21 08:49  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/contacts.inc
+locales/en/departments.inc
+locales/en/files.inc
+locales/en/forums.inc
+locales/en/projects.inc
+locales/en/system.inc
+locales/en/tasks.inc
+locales/en/ticketsmith.inc
+- update based on german translation files
+
+2003-12-17 09:21  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-17 00:41  (robertoibarra)
 ---------------------------------
 index.php
@@ -460,44 +498,6 @@ modules/ticketsmith/post_ticket.php
 2003-11-17 18:26  (gregorerhardt)
 ---------------------------------
 modules/companies/addedit.php
-- added translation for companyValidName
-
-2003-11-17 18:21  (gregorerhardt)
----------------------------------
-modules/companies/index.php
-- translation for 'Search'
-
-2003-11-17 18:15  (gregorerhardt)
----------------------------------
-modules/contacts/vcardimport.php
-- added mimeType Information for vCard Upload
-
-2003-11-17 17:51  (gregorerhardt)
----------------------------------
-modules/calendar/view.php
-- made the eventTypeData ready for translation
-
-2003-11-14 06:42  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-11-13 16:41  (gregorerhardt)
----------------------------------
-modules/admin/addedituser.php
-modules/admin/viewuser.php
-- fixed bug allowingusers to change the passwords for other users. corrected links if userId is invalid.
-
-2003-11-13 13:42  (kripper)
----------------------------------
-modules/files/index_table.php
-- Added file description column to file list
-
-2003-11-13 09:34  (kripper)
----------------------------------
-modules/help/en/tasks.addedit.hlp
-- Added brief 'dynamic tasks' definition.
-
 ...
 
 (This file has been wrapped)
