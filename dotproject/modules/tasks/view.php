@@ -268,7 +268,7 @@ function updateTask() {
 	<th width="100">Action</th>
 	<th width="100">User</th>
 	<th>Comments</th>
-	<th width="150" class="mboxhdr">Date</th>
+	<th width="150">Date</th>
 </tr>
 <?php while($row = mysql_fetch_array( $crc, MYSQL_ASSOC )) { ?>
 <tr bgcolor="white" valign=top>

@@ -420,18 +420,18 @@ if($set_dynamic) {
 					$min_time = 0;
 					$max_time = 0;
 					foreach($children as $child) {
-						$start_time = dbDate2time($child["task_start_date"]);
-						$end_time = dbDate2time($child["task_end_date"]);
+						$start_time = db_dateTime2unix($child["task_start_date"]);
+						$end_time = db_dateTime2unix($child["task_end_date"]);
 						if($min_time==0 || $start_time < $min_time) $min_time = $start_time;
 						if($max_time==0 || $end_time > $max_time) $max_time = $end_time;
 					}
 					
-					if(DBdate2time($tg["task_start_date"]) != $min_time || DBdate2time($tg["task_end_date"]) != $max_time) {
+					if(db_dateTime2unix($tg["task_start_date"]) != $min_time || db_dateTime2unix($tg["task_end_date"]) != $max_time) {
 						if ($do == "ask") {
 							log_action("I will set date of task group " . task_link($tg) . " to " . formatTime($min_time) . " - " . formatTime($max_time) . ".");
 						} else if ($do == "fixate") {
 							log_action("Date range of task group " . task_link($tg) . " changed to " . formatTime($min_time) . " - " . formatTime($max_time) . ".");
-							mysql_query("update tasks set task_start_date='" . time2dbDate($min_time) . "', task_end_date='" . time2dbDate($max_time) . "' where task_id=" . $tg["task_id"]);
+							mysql_query("update tasks set task_start_date='" . db_unix2dateTime($min_time) . "', task_end_date='" . db_unix2dateTime($max_time) . "' where task_id=" . $tg["task_id"]);
 						}
 					}
 				}
