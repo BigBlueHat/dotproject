@@ -66,7 +66,23 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 
 // pull the related project
 $project = new CProject();
-$project->load( $task_project );
+$project->load( $task_project?$task_project:$_GET['project_id'] );
+if ($project->project_start_date)
+{
+        $date = new CDate($project->project_start_date);
+        $project_start_date = $date->format( FMT_TIMESTAMP_DATE );
+}
+else
+        $project_start_date = 'null';
+
+if ($project->project_end_date)
+{
+        $date = new CDate($project->project_end_date);
+        $project_end_date = $date->format( FMT_TIMESTAMP_DATE );
+}
+else
+        $project_end_date = 'null';
+
 
 //Pull all users with complete allocation information
 $sql_active_users = "select user_id
@@ -416,6 +432,18 @@ function submitIt( nt ){
 <?php
 	}
 ?>
+        else if (form.task_end_date.value > <?php echo $project_end_date; ?> ||
+                form.task_start_date.value < <?php echo $project_start_date; ?>) {
+                alert( "<?php echo $AppUI->_('task dates outside the project dates'); ?>" );
+        }
+        else if (form.reoccur.value > 0 && 
+                (!form.task_start_date.value ||
+                !form.task_end_date.value ||
+                !<? echo $project_end_date; ?>)) {
+                alert( "<?php echo $AppUI->_('Can\'t have reoccurring tasks with no dates'); ?>" );
+                form.reoccur.value = 0;
+                form.reoccur.focus();
+        }
 	else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
