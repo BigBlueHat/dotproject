@@ -36,7 +36,6 @@ class CContact extends CDpObject{
 	var $contact_zip = NULL;
 	var $contact_icq = NULL;
 	var $contact_aol = NULL;
-        var $contact_birthday = NULL;
 	var $contact_notes = NULL;
 	var $contact_project = NULL;
 	var $contact_country = NULL;
