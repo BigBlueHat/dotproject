@@ -1,5 +1,43 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+25 November 2002 (AJE):
+---------------------------------
+includes/db_connect.php
+dosql/aed_perms.php
+- started re-integrating some of Leo's work in the db library. There are
+  come useful functions here and down the track it will make porting to
+  other db's easier (hopefully).
+
+modules/tasks/index.php
+function/tasks_func.php
+- change filter array to a named hash rather than integer index
+  this will allow easier additions of filters
+  added 'all' tasks filter
+
+modules/projects/addedit.php
+- fixed bug in project_user select box
+
+modules/admin/index.php
+- changed presentation of A-Z
+
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+- bug fix: wouldn't search on user last name
+
+modules/admin/vw_usr_perms.php
+- minor fix: deleted redundant line of code
+
+19 November 2002 (JCP):
+---------------------------------
+includes/config.php
+dosql/addeditTask.php
+modules/tasks/addedit.php
+- Stay in selected project after adding a new task
+- removed the 'expected duration' requirement when adding tasks
+
+modules/companies/vw_active.php
+- added missing project_id to the sql select
+
 15 November 2002 (AJE):
 ---------------------------------
 Added three fields to the events table in the upgrade script
