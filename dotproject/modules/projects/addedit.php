@@ -158,7 +158,7 @@ if (!count( $companies )) {
 			<td align="right" nowrap>company name</td>
 			<td width="100%">
 <?php
-	echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $prow["user_company"] );
+	echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $prow["project_company"] );
 ?> *
 			</td>
 		</tr>
