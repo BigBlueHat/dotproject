@@ -1309,9 +1309,11 @@ class CTask extends CDpObject {
 	        // delete all current entries from $cslist
                 if ($del == true && $rmUsers == true) {
                         foreach ($tarr as $user_id) {
-                                $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id
-                                        AND user_id = $user_id";
-                                db_exec( $sql );
+				if ($user_id > '') {
+					$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id
+						AND user_id = $user_id";
+					db_exec( $sql );
+				}
                         }
 
                          return false;
