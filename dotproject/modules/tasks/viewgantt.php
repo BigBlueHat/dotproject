@@ -1,5 +1,5 @@
 <?php
-require "$root_dir/classdefs/date.php";
+require_once( "$root_dir/classdefs/date.php" );
 
 $project_id = isset( $_GET['sdate'] ) ? $_GET['sdate'] : 0;
 
