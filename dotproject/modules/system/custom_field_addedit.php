@@ -14,6 +14,7 @@
 	$titleBlock->show();
 
 	$field_id = dpGetParam( $_POST, "field_id", NULL ) != NULL ? dpGetParam( $_POST, "field_id", NULL) : dpGetParam( $_GET, "field_id", 0);
+	$delete_field = dpGetParam( $_GET, "delete", 0 );
 	$module = dpGetParam($_GET, "module", NULL ) == NULL ? dpGetParam($_POST, "module", NULL) : dpGetParam($_GET, "module", NULL);
 
 	$select_newitem = dpGetParam($_POST, "select_newitem", NULL);
@@ -44,7 +45,7 @@
 	{	
 		$custom_fields = New CustomFields($module, 'addedit', NULL, 'edit');
 
-		if ($delete)
+		if ($delete_field)
 		{
 			$custom_fields->deleteField( $field_id );
 			$AppUI->redirect();
