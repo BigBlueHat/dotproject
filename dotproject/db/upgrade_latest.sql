@@ -149,7 +149,7 @@ CREATE TABLE `user_task_pin` (
 `task_id` int(10) NOT NULL default '0',
 `task_pinned` tinyint(2) NOT NULL default '1',
 PRIMARY KEY (`user_id`,`task_id`)
-) TYPE=MyISAM
+) TYPE=MyISAM;
 
 # 20041022
 # Permissions, files, resources
