@@ -32,7 +32,7 @@ CREATE TABLE contacts (
   contact_order_by varchar(30) NOT NULL default '',
   contact_title varchar(50) default NULL,
   contact_birthday datetime default NULL,
-  contact_company varchar(100) default NULL,
+  contact_company varchar(100) NOT NULL default '',
   contact_type varchar(20) default NULL,
   contact_email varchar(100) default NULL,
   contact_email2 varchar(100) default NULL,
