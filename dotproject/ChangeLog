@@ -1,3 +1,24 @@
+2003-04-16 08:48  (eddieajau)
+---------------------------------
+locales/en/common.inc
+- Content updated
+
+2003-04-16 08:47  (eddieajau)
+---------------------------------
+style/default/header.php
+- Translated welcome
+
+2003-04-16 07:58  (eddieajau)
+---------------------------------
+db/upgrade_100_alpha2_to_beta1.sql
+db/dotproject_100.sql
+- Updated task duration issues
+
+2003-04-16 05:26  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-16 01:23  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.php
@@ -477,27 +498,6 @@ classes/ui.class.php
 - Fixed bug if locale_warn not defined in config file
 
 2003-04-04 07:36  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Reworked mail handling.  Reverted back to plain text for now.
-
-2003-04-04 07:34  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Added logged in user email to AppUI class
-
-2003-04-04 07:33  (eddieajau)
----------------------------------
-classes/libmail.php
-- Initial upload
-
-2003-04-04 01:14  (eddieajau)
----------------------------------
-locales/es/admin.inc
-locales/es/calendar.inc
-locales/es/common.inc
-locales/es/companies.inc
-locales/es/contacts.inc
 ...
 
 (This file has been wrapped)
