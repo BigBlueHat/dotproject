@@ -5,7 +5,7 @@
 /* program info */
 $program = "Dotproject";
 $version = "0.6.3";
-$xmailer = "dotproject (http://www.dotmarketing.com/)";
+$xmailer = "dotproject (http://dotproject.net/)";
 
 /* error handler */
 function fatal_error ($reason) {

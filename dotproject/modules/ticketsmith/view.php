@@ -98,7 +98,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 		$message .= "</html>";
 
 
-		mail($mailinfo["user_email"], "Trouble ticket #$ticket has been assigned to you", $message, "From: support@dotmarketing.com\nContent-type: text/html\nMime-type: 1.0");
+		mail($mailinfo["user_email"], "Trouble ticket #$ticket has been assigned to you", $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: text/html\nMime-type: 1.0");
 	}
 
 }

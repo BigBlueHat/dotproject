@@ -4,7 +4,10 @@
 
 // reply-to address for staff followups
 // i.e. the address the gateway receives
-$CONFIG["reply_to"] = "support@dotmarketing.com";
+if ( ! isset($site_domain))
+  $site_domain = "dotproject.net";
+
+$CONFIG["reply_to"] = "support@" . $site_domain;
 
 // relative path of the program installation
 // i.e. the part of the URL after the server name

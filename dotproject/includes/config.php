@@ -13,9 +13,11 @@ $language_file = "english.php";
 
 
 $root_dir = "/wwwroot/demo.dotmarketing.org";				//filesystem web root
-$company_name = "dotmarketing, Inc.";		
-$page_title ="dotproject <dotmarketing inc>";
-$base_url = "http://www.dotmarketing.org/dotproject";
+$company_name = "Dotproject";		
+$page_title ="dotproject";
+$base_url = "http://www.dotproject.net";
+$site_domain = "dotproject.net";
+
 // Date format, can be one of:
 // 0 = international or yyyy-mm-dd
 // 1 = UK and Australia or dd/mm/yyyy

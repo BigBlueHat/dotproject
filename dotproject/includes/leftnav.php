@@ -9,7 +9,7 @@ $rcu = mysql_fetch_row($rcu);
 <form name=loginForm method='POST' action='/dotproject/basilix.php'>
 <input type=hidden name=RequestID value=LOGIN>
 <input type=hidden name=username value="<?php echo $rcu[0];?>">
-<input type=hidden name=domain value="dotmarketing.com">
+<input type=hidden name=domain value="<?php echo $site_domain; ?>">
 <input type=hidden name=password value="<?php echo $rcu[1];?>">
 <input type=hidden name=doLogin value=" Login ">
 <TR>
