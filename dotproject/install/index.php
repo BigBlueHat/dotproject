@@ -6,6 +6,11 @@
 //todo: ask if dotproject.sql should be applied
 //todo: provide upgrade functionality concerning database
 //todo: add check for incompatible proprietary M$ OS
+//todo: backuP. check if db exists
+//todo: checkin dp main if installer is deleted after successfull install
+//todo: base_url is wrong in pref.php : do_backup:php
+//todo_ check for config file writable is buggy
+//todo: create an initial company (preventing from sqlerrors after install)
 
 /*
 * dotProject Installer
