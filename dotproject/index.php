@@ -31,7 +31,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 **/
 
 ini_set('display_errors', 1); // Ensure errors get to the user.
-error_reporting( E_ALL & ~E_NOTICE);
+error_reporting("E_ALL ~E_NOTICE");
 
 // If you experience a 'white screen of death' or other problems,
 // uncomment the following line of code:
@@ -129,7 +129,6 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 	$_SESSION['AppUI'] = $is_installer ? new IAppUI : new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
-
 $last_insert_id =$AppUI->last_insert_id;
 
 $AppUI->checkStyle();
@@ -205,7 +204,6 @@ $u = '';
 
 // check if we are logged in
 if ($AppUI->doLogin()) {
-    $AppUI->setUserLocale();
 	// load basic locale settings
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
@@ -225,6 +223,7 @@ if ($AppUI->doLogin()) {
 	session_destroy();
 	exit;
 }
+$AppUI->setUserLocale();
 
 if ( !( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
 	// bring in the rest of the support and localisation files

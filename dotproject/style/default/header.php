@@ -46,7 +46,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 		echo "\n";
 		?>
 		</td>
-<?php if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the installer to run without db ?>
+<?php if ( !( dPgetParam($_GET, 'm') == 'install' && $dPrunLevel < 2 ) ) {	// allow the installer to run without db ?>
 		<form name="frm_new" method=GET action="./index.php">
 <?php
 	echo '        <td nowrap="nowrap" align="right">';
@@ -86,7 +86,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 		<tr>
 			<td width="100%"><?php echo $AppUI->_('Welcome')." $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 			<td nowrap="nowrap">
-			<?php if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the installer to run without db ?>
+			<?php if ( !( dPgetParam($_GET,'m') == 'install' && $dPrunLevel < 2 ) ) {	// allow the installer to run without db ?>
 				<?php echo dPcontextHelp( 'Help' );?> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php

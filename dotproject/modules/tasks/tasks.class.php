@@ -1598,7 +1598,6 @@ function showtask( &$a, $level=0, $is_opened = true ) {
                 $s .= "\n\t<td align='center'><input type=\"checkbox\" name=\"task_id{$a['task_id']}\" value=\"{$a['task_id']}\"/></td>";
         }
 	$s .= '</tr>';
-
 	echo $s;
 }
 

@@ -330,7 +330,6 @@ class CAppUI {
  *
  */
 	function loadLanguages() {
-		global $dPconfig;
 
 		if ( isset($_SESSION['LANGUAGES'])) {
 			$LANGUAGES =& $_SESSION['LANGUAGES'];
@@ -338,8 +337,8 @@ class CAppUI {
 			$LANGUAGES = array();
 			$langs = $this->readDirs('locales');
 			foreach ($langs as $lang) {
-				if (file_exists("{$dPconfig['root_dir']}/locales/$lang/lang.php")) {
-					include_once "{$dPconfig['root_dir']}/locales/$lang/lang.php";
+				if (file_exists(dPgetConfig('root_dir')."/locales/$lang/lang.php")) {
+					include_once dPgetConfig('root_dir')."/locales/$lang/lang.php";
 				}
 			}
 			@$_SESSION['LANGUAGES'] =& $LANGUAGES;
