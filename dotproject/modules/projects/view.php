@@ -1,5 +1,5 @@
 <?php
-$project_id = isset($HTTP_GET_VARS['project_id']) ? $HTTP_GET_VARS['project_id'] : 0;
+$project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 // check permissions
 $denyRead = getDenyRead( $m, $project_id );
@@ -164,5 +164,6 @@ $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "./modules/p
 $tabBox->add( 'vw_tasks', 'Tasks' );
 $tabBox->add( 'vw_forums', 'Forums' );
 $tabBox->add( 'vw_files', 'Files' );
+$tabBox->add( 'vw_gantt', 'Gantt Chart' );
 $tabBox->show();
 ?>
