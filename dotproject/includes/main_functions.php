@@ -455,7 +455,7 @@ function formatCurrency( $number, $format ) {
 	// This uses localeconv to get the information required
 	// to format the money.  It tries to set reasonable defaults.
 	$mondat = localeconv();
-	if (! isset($mondat['int_frac_digits']))
+	if (! isset($mondat['int_frac_digits']) || $mondat['int_frac_digits'] > 100)
 		$mondat['int_frac_digits'] = 2;
 	if (! isset($mondat['int_curr_symbol']))
 		$mondat['int_curr_symbol'] = '';
