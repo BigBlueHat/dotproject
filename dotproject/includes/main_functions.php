@@ -197,14 +197,25 @@ function dPgetSysVal( $title ) {
 	$sep1 = $row['syskey_sep1'];	// item separator
 	$sep2 = $row['syskey_sep2'];	// alias separator
 
+	// A bit of magic to handle newlines and returns as separators
+	// Missing sep1 is treated as a newline.
+	if (!isset($sep1))
+	  $sep1 = "\n";
+	if ($sep1 == "\\n")
+	  $sep1 = "\n";
+	if ($sep1 == "\\r")
+	  $sep1 = "\r";
+
 	$temp = explode( $sep1, $row['sysval_value'] );
 	$arr = array();
+	// We use trim() to make sure a numeric that has spaces
+	// is properly treated as a numeric
 	foreach ($temp as $item) {
 		$temp2 = explode( $sep2, $item );
 		if (isset( $temp2[1] )) {
-			$arr[$temp2[0]] = $temp2[1];
+			$arr[trim($temp2[0])] = $temp2[1];
 		} else {
-			$arr[$temp2[0]] = $temp2[0];
+			$arr[trim($temp2[0])] = $temp2[0];
 		}
 	}
 	return $arr;
