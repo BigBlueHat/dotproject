@@ -1,6 +1,6 @@
 <?php /* FORUMS $Id$ */
 
-require "{$AppUI->cfg['root_dir']}/classes/libmail.php";
+require_once( $AppUI->getSystemClass( 'libmail' ) );
 
 class CForum {
 	var $forum_id = NULL;
