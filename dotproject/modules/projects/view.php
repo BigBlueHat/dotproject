@@ -148,7 +148,7 @@ $titleBlock->show();
 if ($canEdit) {
 ?>
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Project').'?';?>" )) {
+	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Project', UI_OUTPUT_JS).'?';?>" )) {
 		document.frmDelete.submit();
 	}
 }
