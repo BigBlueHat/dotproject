@@ -41,11 +41,11 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 <SCRIPT language="javascript">
 function submitIt(){
     var form = document.editFrm;
-   if (form.user_username.value.length < <?= $dPconfig['username_min_len'] ?>) {
-        alert("<?php echo $AppUI->_('adminValidUserName')  ;?>"  + <?= $dPconfig['username_min_len'] ?>);
+   if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len'); ?>) {
+        alert("<?php echo $AppUI->_('adminValidUserName')  ;?>"  + <?php echo dPgetConfig('username_min_len'); ?>);
         form.user_username.focus();
-    } else if (form.user_password.value.length < <?= $dPconfig['password_min_len'] ?>) {
-        alert("<?php echo $AppUI->_('adminValidPassword');?>" + <?= $dPconfig['password_min_len'] ?>);
+    } else if (form.user_password.value.length < <?php echo dPgetConfig('password_min_len'); ?>) {
+        alert("<?php echo $AppUI->_('adminValidPassword');?>" + <?php echo dPgetConfig('password_min_len'); ?>);
         form.user_password.focus();
     } else if (form.user_password.value !=  form.password_check.value) {
         alert("<?php echo $AppUI->_('adminPasswordsDiffer');?>");
