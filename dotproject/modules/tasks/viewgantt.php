@@ -1,3 +1,23 @@
+<?php
+$project_id = isset( $_GET['sdate'] ) ? $_GET['sdate'] : 0;
+
+$start_date = isset( $_POST['sdate'] ) ? toDate( $_POST['sdate'] ) : '';
+$end_date = isset( $_POST['edate'] ) ? toDate( $_POST['edate'] ) : '';
+
+$display_option = isset( $_POST['display_option'] ) ? $_POST['display_option'] : '';
+
+//$start_date = ($sdate != "")?toDate($sdate):"";
+//$end_date = ($edate != "")?toDate($edate):"";
+		
+if($display_option=="month" || $start_date == "") {
+	$start_date = time2YMD(strtotime("now()"));
+	$end_date = time2YMD(strtotime("now() + 1 month"));
+}
+
+$crumbs = array();
+$crumbs["?m=tasks"] = "tasks list";
+$crumbs["?m=projects&a=view&project_id=$project_id"] = "this project";
+?>
 <script language="javascript">
 function popCalendar(x){
 	var form = document.changeevent;
@@ -19,22 +39,19 @@ function popCalendar(x){
 }
 </script>
 
-<?php
-	$start_date = ($sdate != "")?toDate($sdate):"";
-	$end_date = ($edate != "")?toDate($edate):"";
-			
-	if($display_option=="month" || $start_date == "") {
-		$start_date = time2YMD(strtotime("now()"));
-		$end_date = time2YMD(strtotime("now() + 1 month"));
-	}
-?>
-
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
 	<td nowrap><span class="title">Gantt Chart</span></td>
 	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td valign="top" align="right" width="100%"></td>
+</tr>
+</table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<tr>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<td align="right" width="100%"></td>
 </tr>
 </table>
 
