@@ -1,3 +1,49 @@
+2003-12-09 03:34  (jcgonz)
+---------------------------------
+classes/date.class.php
+includes/config-dist.php
+includes/db_connect.php
+modules/tasks/tasks.class.php
+- New Report!!! Now you can see your user's allocated hours, no more "I work more than you!"
+
+2003-12-08 21:30  (gregorerhardt)
+---------------------------------
+modules/files/addedit.php
+- Added cancelButton
+
+2003-12-08 21:26  (gregorerhardt)
+---------------------------------
+locales/en/forums.inc
+modules/forums/index.php
+- Added translation of 'No posts'
+
+2003-12-08 21:17  (gregorerhardt)
+---------------------------------
+locales/en/files.inc
+modules/files/index.php
+- Added Text String 'Filter' on the left side of the projectsDropDown
+
+2003-12-08 21:09  (gregorerhardt)
+---------------------------------
+modules/files/do_file_aed.php
+- deleted an empty space in Warning Message which could not be translated
+
+2003-12-08 13:06  (jcgonz)
+---------------------------------
+db/dotproject_101.sql
+db/upgrade_100_to_101.sql
+modules/companies/addedit.php
+modules/companies/companies.class.php
+modules/companies/do_company_aed.php
+modules/companies/view.php
+modules/tasks/addedit.php
+- Companies can now have custom fields too! Check the updated sql
+
+2003-12-08 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-08 04:04  (jcgonz)
 ---------------------------------
 db/dotproject_101.sql
@@ -452,52 +498,6 @@ modules/projects/vw_idx_proposed.php
 modules/tasks/todo.php
 - fixing bug823989: htmspecialchars for quotes
 
-2003-10-15 14:30  (gregorerhardt)
----------------------------------
-modules/projects/index.php
-- fixing bug822943:missing intval in session save process
-
-2003-10-15 06:53  (gregorerhardt)
----------------------------------
-style/default/main.css
-- table headers are now text-align:center
-
-2003-10-15 04:34  (kripper)
----------------------------------
-includes/main_functions.php
-modules/system/addeditpref.php
-- Added currency formating code to preferences sheet.
-
-2003-10-10 03:50  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-09 14:19  (gregorerhardt)
----------------------------------
-modules/system/viewmods.php
-- bug 820359 & 811199 hide links for users without rwPerms
-
-2003-10-09 03:50  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-08 10:25  (gregorerhardt)
----------------------------------
-modules/companies/vw_users.php
-- translation of No data available
-
-2003-10-03 03:53  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-02 04:59  (gregorerhardt)
----------------------------------
-modules/admin/vw_usr_perms.php
-modules/admin/vw_usr_roles.php
-modules/system/roles/index.php
 ...
 
 (This file has been wrapped)
