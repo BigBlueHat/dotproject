@@ -24,6 +24,7 @@ $gantt_arr = array();
 // START: from index.php
 
 
+session_name( 'dotproject' );
 session_start();
 session_register( 'AppUI' );
 
@@ -70,13 +71,13 @@ GROUP BY project_id
 ORDER BY project_name
 ";
 // echo "<pre>$psql</pre>";
-$prc = mysql_query( $psql );
-echo mysql_error();
-$pnums = mysql_num_rows( $prc );
+$prc = db_exec( $psql );
+echo db_error();
+$pnums = db_num_rows( $prc );
 
 $projects = array();
 for ($x=0; $x < $pnums; $x++) {
-	$z = mysql_fetch_array( $prc, MYSQL_ASSOC );
+	$z = db_fetch_assoc( $prc );
 	$projects[$z["project_id"]] = $z;
 }
 
@@ -89,10 +90,10 @@ WHERE permission_user = $AppUI->user_id
 	AND permission_item = task_id
 	AND permission_value = 0
 ";
-$drc = mysql_query( $dsql );
-echo mysql_error();
+$drc = db_exec( $dsql );
+echo db_error();
 $deny = array();
-while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
+while ($row = db_fetch_row( $drc )) {
         $deny[] = $row[0];
 }
 
@@ -140,14 +141,14 @@ switch ($f) {
 $tsql .= "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
 ##echo "<pre>$tsql</pre>".mysql_error();##
 
-$ptrc = mysql_query( $tsql );
-$nums = mysql_num_rows( $ptrc );
-echo mysql_error();
+$ptrc = db_exec( $tsql );
+$nums = db_num_rows( $ptrc );
+echo db_error();
 $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 
 //pull the tasks into an array
 for ($x=0; $x < $nums; $x++) {
-	$row = mysql_fetch_array( $ptrc, MYSQL_ASSOC );
+	$row = db_fetch_assoc( $ptrc );
 
         // calculate or set blank task_end_date if unset
         if($row["task_end_date"] == "0000-00-00 00:00:00") {
@@ -245,9 +246,9 @@ for($i = 0; $i < count($gantt_arr); $i ++ ) {
 		$bar->progress->Set($progress/100);
 
 		$sql = "select dependencies_task_id from task_dependencies where dependencies_req_task_id=" . $a["task_id"];
-		$query = mysql_query($sql);
+		$query = db_exec($sql);
 
-		while($dep = mysql_fetch_array($query)) {
+		while($dep = db_fetch_assoc($query)) {
 			// find row num of dependencies
 			for($d = 0; $d < count($gantt_arr); $d++ ) {
 				if($gantt_arr[$d][0]["task_id"] == $dep["dependencies_task_id"]) {

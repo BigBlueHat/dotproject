@@ -1,12 +1,13 @@
 <?php
+GLOBAL $m, $a, $project_id, $f, $min_view;
 /*
 	tasks.php
-	
+
 	This file contains common task list rendering code used by
-	modules/tasks/index.php and modules/projects/vw_tasks.php	
-	
+	modules/tasks/index.php and modules/projects/vw_tasks.php
+
 	External used variables:
-	
+
 	* $min_view: hide some elements when active (used in the vw_tasks.php)
 	* $project_id
 	* $f
@@ -23,69 +24,65 @@ if(isset($movetask)) {
 	if($movetask == "u")
 	{
 		/*
-		// move up tasks with low order 
+		// move up tasks with low order
 		$sql = "update tasks set task_order = task_order - 1 where task_order < $order";
-		mysql_query($sql);
-		echo mysql_error();
-		
+		db_exec($sql);
+		echo db_error();
+
 		// select tasks in same level as the task to be moved
 		$sql = "select task_id, task_order from tasks where task_project = $task_project and task_order = $order order by task_order";
 		$last_task_id = -1;
-		$arr = mysql_query($sql);
-		while($row = mysql_fetch_array($arr)) {
+		$arr = db_exec($sql);
+		while($row = db_fetch_assoc($arr)) {
 			// scroll task
-			mysql_query("update tasks set task_order = task_order - 1 where task_id = " . $row["task_id"]);
-			echo mysql_error();
-			
+			db_exec("update tasks set task_order = task_order - 1 where task_id = " . $row["task_id"]);
+			echo db_error();
+
 			if($row["task_id"] == $task_id) {
 				// we reached the task to be moved
-				
+
 				// move previous task down
 				if($last_task_id != -1) {
-					mysql_query("update tasks set task_order = task_order + 1 where task_id = $last_task_id");
-					echo mysql_error();					
+					db_exec("update tasks set task_order = task_order + 1 where task_id = $last_task_id");
+					echo db_error();
 				}
-				
+
 				// stop scrolling
 				break;
 			}
-			
+
 			$last_task_id = $row["task_id"];
 		}
 		*/
-		
-		$sql = "select task_id, task_order from tasks where task_project = $task_project and task_parent = task_id and task_order <= $order and task_id != $task_id order by task_order desc";
-		$dsql = mysql_query($sql);
-		if($darr = mysql_fetch_array($dsql)){
+
+		$sql = "SELECT task_id, task_order FROM tasks WHERE task_project = $task_project AND task_parent = task_id AND task_order <= $order AND task_id != $task_id ORDER BY task_order desc";
+		$dsql = db_exec( $sql );
+		if ($darr = db_fetch_assoc( $dsql )){
 			$neworder = $darr["task_order"] - 1;
-			
-			$sql = "update tasks set task_order = task_order -1 where task_order <= $neworder";
+
+			$sql = "UPDATE tasks SET task_order = task_order -1 WHERE task_order <= $neworder";
 			//echo $sql;
-			mysql_query($sql);
-			echo mysql_error();
-			
-			
-			$sql = "update tasks set task_order = $neworder where task_id = $task_id";
+			db_exec($sql);
+			echo db_error();
+
+			$sql = "UPDATE tasks SET task_order = $neworder WHERE task_id = $task_id";
 			//echo $sql;
-			mysql_query($sql);
-			echo mysql_error();
+			db_exec($sql);
+			echo db_error();
 		}
-	}
-	else if($movetask == "d")
-	{
-		$sql = "select task_id, task_order from tasks where task_project = $task_project  and task_parent = task_id and task_order >= $order and task_id != $task_id  order by task_order";
-		$dsql = mysql_query($sql);
-		if($darr = mysql_fetch_array($dsql)){
+	} else if($movetask == "d") {
+		$sql = "SELECT task_id, task_order FROM tasks WHERE task_project = $task_project AND task_parent = task_id and task_order >= $order AND task_id != $task_id ORDER BY task_order";
+		$dsql = db_exec( $sql );
+		if ($darr = db_fetch_assoc( $dsql )) {
 			$neworder = $darr["task_order"] + 1;
-			
+
 			$sql = "update tasks set task_order = task_order +1 where task_order >= $neworder";
 			//echo $sql;
-			mysql_query($sql);
-			
-			
+			db_exec( $sql );
+
 			$sql = "update tasks set task_order = $neworder where task_id = $task_id";
 			//echo $sql;
-			mysql_query($sql);
+			db_exec( $sql );
 		}
 	}
 }
@@ -174,7 +171,7 @@ switch ($f) {
 }
 
 $tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
-##echo "<pre>$tsql</pre>".mysql_error();##
+##echo "<pre>$tsql</pre>".db_error();##
 
 $ptrc = db_exec( $tsql );
 $nums = db_num_rows( $ptrc );
@@ -192,39 +189,45 @@ for ($x=0; $x < $nums; $x++) {
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 
 function showtask( &$a, $level=0 ) {
-	global $done, $query_string, $df;
-	$done[] = $a['task_id']; ?>
-	<tr>
-	<td><a href="?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
-	<td align="right"><?php echo intval($a["task_precent_complete"]);?>%</td>
-	<td>
-	<?php if ($a["task_priority"] < 0 ) {
-		echo "<img src='./images/icons/low.gif' width=13 height=16>";
+	global $AppUI, $done, $query_string, $df;
+	$done[] = $a['task_id'];
+
+	$start_date = $a["task_start_date"] ? new CDate( db_dateTime2unix( $a["task_start_date"] ) ) : null;
+	$end_date = $a["task_end_date"] ? new CDate( db_dateTime2unix( $a["task_end_date"] ) ) : null;
+
+	$s = '<tr>';
+// edit icon
+	$s .= '<td><a href="?m=tasks&a=addedit&task_id='.$a["task_id"].'"><img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12"></a></td>';
+// percent complete
+	$s .= '<td align="right">'.intval( $a["task_precent_complete"] ).'%</td>';
+// priority
+	$s .= '<td>';
+	if ($a["task_priority"] < 0 ) {
+		$s .= "<img src='./images/icons/low.gif' width=13 height=16>";
 	} else if ($a["task_priority"] > 0) {
-		echo "<img src='./images/icons/" . $a["task_priority"] .".gif' width=13 height=16>";
-	}?>
-	</td>
-	<td width="90%">
-
-	<?php
-		for ($y=0; $y < $level; $y++) {
-			if ($y+1 == $level) {
-				echo "<img src=./images/corner-dots.gif width=16 height=12  border=0>";
-			} else {
-				echo "<img src=./images/shim.gif width=16 height=12  border=0>";
-			}
+		$s .= '<img src="./images/icons/' . $a["task_priority"] .'.gif" width=13 height=16>';
+	}
+	$s .= '</td>';
+// dots
+	$s .= '<td width="90%">';
+	for ($y=0; $y < $level; $y++) {
+		if ($y+1 == $level) {
+			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
+		} else {
+			$s .= '<img src="./images/shim.gif" width="16" height="12"  border="0">';
 		}
-	?>
-	
-	<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $a["task_id"];?>">
-	<map name="arrow<?php echo $a["task_id"];?>"><area coords="0,0,10,7" href=<?php echo $query_string . "&task_project=" . $a["task_project"] . "&task_id=" . $a["task_id"] . "&order=" . $a["task_order"] . "&movetask=u"; ?>>
-	<area coords="0,8,10,14" href=<?php echo $query_string . "&task_project=" . $a["task_project"] . "&task_id=" . $a["task_id"] . "&order=" . $a["task_order"] . "&movetask=d";?>></map>
-
-
-	<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a></td>
-	<td nowrap><?php echo strftime( $df, db_dateTime2unix( $a["task_start_date"] ) );?></td>
-	<td align="right">
-	<?php if ($a["task_duration"] > 24 ) {
+	}
+// arrows
+	$s .= '<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow'.$a["task_id"].'">';
+	$s .= '<map name="arrow'.$a["task_id"].'"><area coords="0,0,10,7" href="' . $query_string . '&task_project=' . $a["task_project"] . '&task_id=' . $a["task_id"] . '&order=' . $a["task_order"] . '&movetask=u">';
+	$s .= '<area coords="0,8,10,14" href="'.$query_string . '&task_project=' . $a["task_project"] . '&task_id=' . $a["task_id"] . '&order=' . $a["task_order"] . '&movetask=d"></map>';
+// name link
+	$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id='.$a["task_id"].'">'.$a["task_name"].'</a></td>';
+// start date
+	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->toString( $df ) : '-').'</td>';
+// duration
+	$s .= '<td align="right">';
+	if ($a["task_duration"] > 24 ) {
 		$dt = "day";
 		$dur = $a["task_duration"] / 24;
 	} else {
@@ -232,17 +235,18 @@ function showtask( &$a, $level=0 ) {
 		$dur = $a["task_duration"];
 	}
 	if ($dur > 1) {
-	       	// FIXME: this won't work for every language!		
-		$dt.="s";
+		// FIXME: this won't work for every language!
+		$dt .= "s";
 	}
-        echo ($dur!=0)?$dur . " " . $dt:"n/a";
-	?>
-	</td>
-	<td nowrap>
-        <?php echo strftime( $df, db_dateTime2unix( $a["task_end_date"] ) );?>
-	</td>
-	</tr>
-<?php }
+	$s .= ($dur != 0) ? "$dur $dt" : "n/a";
+	$s .= '</td>';
+// end date
+	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->toString( $df ) : '-').'</td>';
+
+	$s .= '</tr>';
+
+	echo $s;
+}
 
 function findchild( &$tarr, $parent, $level=0 ){
 	GLOBAL $projects;
@@ -260,7 +264,7 @@ $crumbs = array();
 $crumbs["?m=tasks&a=todo"] = "my todo";
 ?>
 
-<?php if(!$min_view) { ?>
+<?php if (!$min_view) { ?>
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
 	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
@@ -290,7 +294,7 @@ while (list( $k, ) = each( $projects ) ) {
 //echo '<pre>'; print_r($p); echo '</pre>';
 ?>
 
-<?php if(!$min_view) { ?>
+<?php if (!$min_view) { ?>
 <tr>
 	<td>
 		<a href="index.php?m=tasks&f=<?php echo $f;?>&project_id=<?php echo $project_id ? 0 : $p["project_id"];?>">
@@ -328,12 +332,12 @@ while (list( $k, ) = each( $projects ) ) {
 				showtask( $p['tasks'][$i], 1 );
 			}
 		}
-		
+
 		if($tnums && ENABLE_GANTT_CHARTS && !$min_view) { ?>
 		<tr>
 			<td colspan="8" align=right>
 				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $p["project_id"] ?>';">
-			</td>	
+			</td>
 		</tr>
 		<?php }
 	}
