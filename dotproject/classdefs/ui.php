@@ -357,12 +357,17 @@ class CTitleBlock_core {
 		$this->title = $title;
 		$this->icon = $icon;
 		$this->module = $module;
-		$this->cells = array();
 		$this->helpref = $helpref;
+		$this->cells = array();
+		$this->crumbs = array();
 	}
 
 	function addCell( $attribs='', $data='', $prefix='', $suffix='' ) {
 		$this->cells[] = array( $attribs, $data, $prefix, $suffix );
+	}
+
+	function addCrumb( $link, $label ) {
+		$this->crumbs[$link] = $label;
 	}
 
 	function show() {
@@ -372,9 +377,9 @@ class CTitleBlock_core {
 		$s = $CR . '<table width="100%" border="0" cellpadding="1" cellspacing="1">';
 		$s .= $CR . '<tr>';
 		if ($this->icon) {
-			$s .= $CR . '<td><img src="' . dPFindImage( $this->icon, $this->module ) . '" height="36" alt="" border="0"></td>';
+			$s .= $CR . '<td width="36"><img src="' . dPFindImage( $this->icon, $this->module ) . '" height="36" alt="" border="0"></td>';
 		}
-		$s .= $CR . '<td nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';
+		$s .= $CR . '<td align="left" width="100%" nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';
 		foreach ($this->cells as $c) {
 			$s .= $c[2] ? $CR . $c[2] : '';
 			$s .= $CR . '<td' . ($c[0] ? " $c[0]" : '') . '>';
@@ -387,28 +392,19 @@ class CTitleBlock_core {
 		$s .= $CR . '</td>';
 		$s .= $CR . '</tr>';
 		$s .= $CR . '</table>';
-		echo "$s";
-	}
-}
 
-class CCrumbsBlock_core {
-	var $crumbs=null;
-
-	function CCrumbsBlock_core() {
-		$this->crumbs = array();
-	}
-
-	function addCrumb( $link, $label ) {
-		$this->crumbs[$link] = $label;
-	}
-
-	function show() {
-		global $AppUI;
-		$crumbs = array();
-		foreach ($this->crumbs as $k => $v) {
-			$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
+		if (count( $this->crumbs )) {
+			$crumbs = array();
+			foreach ($this->crumbs as $k => $v) {
+				$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
+			}
+			$s .= $CR . '<table border="0" cellpadding="4" cellspacing="0" width="100%">';
+			$s .= $CR . '<tr>';
+			$s .= $CR . '<td nowrap="nowrap">';
+			$s .= $CT . implode( ' <strong>:</strong> ', $crumbs );
+			$s .= $CR . '</td></tr></table>';
 		}
-		echo implode( ' <strong>:</strong> ', $crumbs );
+		echo "$s";
 	}
 }
 ?>
