@@ -71,7 +71,7 @@ foreach ($topics as $row) {
 //JBF limit displayed messages to first-in-thread
 	if ($row["message_parent"] < 0) { ?>
 <tr>
-	<td nowrap="nowrap" align="center">
+	<td nowrap="nowrap" align="center" width="1%">
 		<input type="checkbox" name="forum_<?php echo $row['message_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?> />
 	</td>
 	<td>
@@ -79,9 +79,9 @@ foreach ($topics as $row) {
 		<a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id . "&message_id=" . $row["message_id"];?>"><?php echo $row["message_title"];?></a>
 		</span>
 	</td>
-	<td bgcolor="#dddddd"><?php echo $row["user_username"];?></td>
-	<td align="center"><?php echo  $row["replies"];?></td>
-	<td bgcolor="#dddddd">
+	<td bgcolor="#dddddd" width="10%"><?php echo $row["user_username"];?></td>
+	<td align="center" width="10%"><?php echo  $row["replies"];?></td>
+	<td bgcolor="#dddddd" width="10%">
 <?php if ($row["latest_reply"]) {
 		echo $date->toString().'<br /><font color=#999966>(';
 		if ($message_since < 3600) {

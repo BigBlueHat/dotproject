@@ -3,7 +3,7 @@
 $forum_id = isset($_GET["forum_id"]) ? $_GET["forum_id"] : 0;
 $message_id = isset($_GET["message_id"]) ? $_GET["message_id"] : 0;
 $post_message = isset($_GET["post_message"]) ? $_GET["post_message"] : 0;
-$f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
+$f = dpGetParam( $_POST, 'f', 0 );
 
 // check permissions
 $canRead = !getDenyRead( $m, $forum_id );
@@ -35,35 +35,15 @@ if ($start_date) {
 	$start_date->setFormat( $df );
 }
 
+// setup the title block
+$titleBlock = new CTitleBlock( 'Forum', 'communicate.gif', $m, "$m.$a" );
+$titleBlock->addCell(
+	arraySelect( $filters, 'f', 'size="1" class="text" onchange="document.filterFrm.submit();"', $f , true), '',
+	'<form action="?m=forums&a=viewer&forum_id='.$forum_id.'" method="post" name="filterFrm">', '</form>'
+);
+$titleBlock->show();
 ?>
-<table width="98%" cellspacing="1" cellpadding="1" border="0">
-<input type=hidden name=dosql value=searchfiles>
-<tr>
-	<td><img src="./images/icons/communicate.gif" alt="" border="0" width="42" height="42"></td>
-	<td nowrap width="100%"><h1><?php echo $AppUI->_( 'Forum' );?></h1></td>
-<form name="forum_filter" method="GET" action="./index.php">
-<input type="hidden" name="m" value="forums">
-<input type="hidden" name="a" value="viewer">
-<input type="hidden" name="forum_id" value="<?php echo $forum_id;?>">
-	<td nowrap>
-<?php
-	echo arraySelect( $filters, 'f', 'size="1" class="text" onchange="document.forum_filter.submit();"', $f , true);
-?>
-	</td>
-</form>
-	<td><img src="images/shim.gif" width=5 height=5></td>
-<form name="searcher" action="./index.php?m=files&a=search" method="post">
-	<td width="100%" align="right">
-		<input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled>
-	</td>
-	<td><img src="images/shim.gif" width="5" height="5"></td>
-	<td><input class="button" type="submit" value="<?php echo $AppUI->_( 'search' );?>" disabled></td>
-	<td><img src="images/shim.gif" width="5" height="5"></td>
-</form>
-</tr>
-</table>
-
-<table width="98%" cellspacing="0" cellpadding="2" border="0" class="std">
+<table width="100%" cellspacing="0" cellpadding="2" border="0" class="std">
 <tr>
 	<td height="20" colspan="3" style="border: outset #D1D1CD 1px;background-color:#<?php echo $forum["project_color_identifier"];?>">
 		<font size="2" color=<?php echo bestColor( $forum["project_color_identifier"] );?>><strong><?php echo @$forum["forum_name"];?></strong></font>
@@ -96,4 +76,5 @@ if($post_message){
 	include("./modules/forums/view_topics.php");
 } else {
 	include("./modules/forums/view_messages.php");
-}?>
+}
+?>
