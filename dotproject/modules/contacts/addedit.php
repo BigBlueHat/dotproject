@@ -54,7 +54,8 @@ function submitIt() {
 }
 
 function popDepartment() {
-        window.open('./index.php?m=public&a=selector&dialog=1&callback=setDepartment&table=departments&hide_company=1&company_id=' + window.company_id, 'department','left=50,top=50,height=250,width=400,resizable');
+//        window.open('./index.php?m=public&a=selector&dialog=1&callback=setDepartment&table=departments&hide_company=1&company_id=' + window.company_id, 'department','left=50,top=50,height=250,width=400,resizable');
+	window.open("./index.php?m=contacts&a=select_contact_company&dialog=1&table_name=departments&company_id="+window.company_id, "company", "left=50,top=50,height=250,width=400,resizable");
 }
 
 function setDepartment( key, val ){
@@ -65,7 +66,8 @@ function setDepartment( key, val ){
 }
 
 function popCompany() {
-        window.open('./index.php?m=public&a=selector&dialog=1&callback=setCompany&table=companies', 'company','left=50,top=50,height=250,width=400,resizable');
+//        window.open('./index.php?m=public&a=selector&dialog=1&callback=setCompany&table=companies', 'company','left=50,top=50,height=250,width=400,resizable');
+	window.open("./index.php?m=contacts&a=select_contact_company&dialog=1&table_name=companies", "company", "left=50,top=50,height=250,width=400,resizable");
 }
 
 function setCompany( key, val ){
@@ -161,7 +163,7 @@ function companyChange() {
 			<td align="right" width="100"><?php echo $AppUI->_('Department');?>:</td>
 			<td nowrap>
 				<input type="text" class="text" name="contact_department" value="<?php echo @$row->contact_department;?>" maxlength="100" size="25" />
-				<input type="button" class="button" value="<?php echo $AppUI->_('select department...');?>..." onclick="popDepartment()" />
+				<input type="button" class="button" value="<?php echo $AppUI->_('select department...');?>" onclick="popDepartment()" />
 				</td>
 		</tr>
 		<tr>
