@@ -121,7 +121,8 @@ foreach ($trans as $k => $langs){
 		}
 	?></td>
 	<td><?php
-		$langs['english'] = htmlspecialchars( @$langs['english'], ENT_QUOTES );
+		//$langs['english'] = htmlspecialchars( @$langs['english'], ENT_QUOTES );
+			$langs['english'] = dPformSafe( @$langs['english'], true );
 		if ($lang == 'en') {
 			if (strlen($langs['english']) < 40) {
 				echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\" />";
