@@ -1,5 +1,5 @@
-<?php
-GLOBAL $m, $a, $project_id, $f, $min_view;
+<?php /* $Id$ */
+GLOBAL $m, $a, $project_id, $f, $min_view, $query_string;
 /*
 	tasks.php
 
@@ -14,7 +14,9 @@ GLOBAL $m, $a, $project_id, $f, $min_view;
 	* $query_string
 */
 
-if(!isset($query_string)) $query_string="./index.php?m=$m&a=$a";
+if (empty($query_string)) {
+	$query_string = "?m=$m&a=$a";
+}
 
 // process reordering actions
 
@@ -186,10 +188,10 @@ for ($x=0; $x < $nums; $x++) {
 }
 
 //This kludgy function echos children tasks as threads
-$df = $AppUI->getPref( 'SHDATEFORMAT' );
 
 function showtask( &$a, $level=0 ) {
-	global $AppUI, $done, $query_string, $df;
+	global $AppUI, $done, $query_string;
+	$df = $AppUI->getPref( 'SHDATEFORMAT' );
 	$done[] = $a['task_id'];
 
 	$start_date = $a["task_start_date"] ? new CDate( db_dateTime2unix( $a["task_start_date"] ) ) : null;
