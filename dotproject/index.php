@@ -147,6 +147,13 @@ $canDelete = $canEdit;
 @include_once( "./locales/core.php" );
 setlocale( LC_TIME, $AppUI->user_locale );
 
+if ( !$suppressHeaders ) {
+	// output the character set header
+	if (isset( $locale_char_set )) {
+		header("Content-type: text/html;charset=$locale_char_set");
+	}
+}
+
 // bounce the user if they don't have at least read access
 // however, the public module is accessible by anyone
 if (!$canRead && $m != 'public') {
