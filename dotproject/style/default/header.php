@@ -79,9 +79,11 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 				<?php echo dPcontextHelp( 'Help' );?> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
-	$now = new CDate();
+	if (!getDenyRead( 'calendar' )) {
+		$now = new CDate();
 ?>
 				<a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |
+<?php } ?>
 				<a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a>
 			</td>
 		</tr>
