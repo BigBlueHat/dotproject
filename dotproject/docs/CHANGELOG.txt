@@ -1,5 +1,11 @@
 dotproject CHANGELOG
 
+7/3/2002:
+Removed trailing <CR> from dosql/updatetask.php to allow Unix patch command
+to work.
+Added tagging for initial release with these modifications
+RELEASE 0.2.1 (RELEASE_0_2_1).
+
 10/24/2001: 
 Added this Log!
 Fixed ticketsmith module require path, which will now work if the php_include path = ./
