@@ -64,6 +64,7 @@ function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
 }
 
 function getEventsForPeriod( $start_date, $end_date ) {
+	global $AppUI;
 // the event times are stored as unix time stamps, just to be different
 
 // convert to default db time stamp
@@ -71,8 +72,15 @@ function getEventsForPeriod( $start_date, $end_date ) {
 	$db_end = $end_date->getTimestamp();
 
 // assemble query
-	$sql = "SELECT * FROM events WHERE event_start_date BETWEEN '$db_start' AND '$db_end'";
-#echo "<pre>$sql</pre>";
+	$sql = "
+	SELECT *
+	FROM events
+	WHERE event_start_date BETWEEN '$db_start' AND '$db_end'
+		AND ( event_private=0
+			OR (event_private=1 AND event_owner=$AppUI->user_id)
+		)
+	";
+//echo "<pre>$sql</pre>";
 // execute and return
 	return db_loadList( $sql );
 }
