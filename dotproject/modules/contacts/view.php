@@ -157,7 +157,7 @@ function delIt(){
 	</td>
 	<td valign="top" width="50%">
 		<strong><?php echo $AppUI->_('Contact Notes');?></strong><br />
-		<?php echo @$row->contact_notes;?>
+		<?php echo @nl2br($row->contact_notes);?>
 	</td>
 </tr>
 <tr>
