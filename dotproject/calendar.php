@@ -74,15 +74,18 @@ function setClose(x,y,z){
 	var form = window.opener.document.<?php echo $form;?>;
 	var page = "<?php echo $page;?>";
 
+	var padX = (x < 10) ? '0' : '';
+	var padY = (y < 10) ? '0' : '';
+
 	if(page != ""){
 		if ("<?php echo $date_format;?>"== "1") {
-			form.<?php echo $field;?>.value = y + "/" + x + "/" + z;
+			form.<?php echo $field;?>.value = padY + (y + "/") + padX + (x + "/") + z;
 	}
 		else if ("<?php echo $date_format;?>"=="2") {
-			form.<?php echo $field;?>.value = x + "/" + y + "/" + z;
+			form.<?php echo $field;?>.value = padX + (x + "/") + padY + (y + "/") + z;
 		}
 		else {
-		form.<?php echo $field;?>.value = z + "-" + x + "-" + y;
+		form.<?php echo $field;?>.value = z + ("-" + padX) + x + ("-" + padY) + y;
 		}
 	}
 	else{
