@@ -1,5 +1,7 @@
 <?php /* $Id$ */
-/**
+
+/**  LICENSE  **
+
 Copyright (c) 2003, The dotProject Development Team sf.net/projects/dotproject
 All rights reserved.
 
@@ -25,9 +27,10 @@ SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
 CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
 OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 **/
+
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
-error_reporting( E_ALL );	// this only for development testing
 
 // required includes for start-up
 $dPconfig = array();
