@@ -120,7 +120,7 @@ if ($canEdit) {
 </script>
 <!-- END OF TIMER RELATED SCRIPTS -->
 
-
+<a name="log"></a>
 <form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post"
   onsubmit='updateEmailContacts();'>
 	<input type="hidden" name="uniqueid" value="<?php echo uniqid("");?>" />

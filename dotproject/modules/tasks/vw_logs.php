@@ -61,7 +61,7 @@ foreach ($logs as $row) {
 	$s .= '<tr bgcolor="white" valign="top">';
 	$s .= "\n\t<td>";
 	if (!getDenyEdit($m, $task_id) ) {
-		$s .= "\n\t\t<a href=\"?m=tasks&a=view&task_id=$task_id&tab=1&task_log_id=".@$row['task_log_id']."\">"
+		 $s .= "\n\t\t<a href=\"?m=tasks&a=view&task_id=$task_id&tab=".$AppUI->getState( 'TaskLogVwTab' )."&task_log_id=".@$row['task_log_id']."#log\">"
 			. "\n\t\t\t". dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' )
 			. "\n\t\t</a>";
 	}
