@@ -32,3 +32,10 @@ ALTER TABLE `companies` ADD `company_custom` LONGTEXT;
 #
 ALTER TABLE `tasks` DROP INDEX `idx_task_owner`;
 ALTER TABLE `tasks` ADD INDEX `idx_task_owner` (`task_owner`);
+
+# IMPORTANT NOTICE #
+# This line will reset all dynamic tasks, and is required due to the
+# changed nature of dynamic tasks.  Please check the release notices
+# for details of the new functionality
+
+UPDATE `tasks` SET `task_dynamic` = 0 WHERE `task_dynamic` = 1;
