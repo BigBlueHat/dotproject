@@ -15,32 +15,28 @@ where project_company = $company_id
 order by project_name
 ";
 
-if (!($rows = db_loadList( $sql, NULL ))) {
-	echo 'None Available<br>'.$AppUI->getMsg();
-} else {
-?>
-<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
-<tr>
-	<th>Name</th>
-	<th>Owner</th>
-	<th>Started</th>
-	<th>Status</th>
-	<th>Budget</th>
-</tr>
-
-<?php
 $s = '';
-foreach ($rows as $row) {
-	$s .= '<tr>';
-	$s .= '<td width="100%">';
-	$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
-	$s .= '<td nowrap>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
-	$s .= '<td nowrap>'.$row["project_start_date"].'</td>';
-	$s .= '<td nowrap>'.$pstatus[$row["project_status"]].'</td>';
-	$s .= '<td nowrap align=right>$ '.$row["project_target_budget"].'</td>';
-	$s .= '</tr>';
+
+if (!($rows = db_loadList( $sql, NULL ))) {
+	$s .= $AppUI->_( 'No data available' ).'<br>'.$AppUI->getMsg();
+} else {
+	$s .= '<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl"><tr>';
+	$s .= '<th>'.$AppUI->_( 'Name' ).'</th>'
+		.'<th>'.$AppUI->_( 'Owner' ).'</th>'
+		.'<th>'.$AppUI->_( 'Started' ).'</th>'
+		.'<th>'.$AppUI->_( 'Status' ).'</th>'
+		.'<th>'.$AppUI->_( 'Budget' ).'</th>'
+		.'</tr>';
+	foreach ($rows as $row) {
+		$s .= '<tr>';
+		$s .= '<td width="100%">';
+		$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
+		$s .= '<td nowrap>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
+		$s .= '<td nowrap>'.$row["project_start_date"].'</td>';
+		$s .= '<td nowrap>'.$pstatus[$row["project_status"]].'</td>';
+		$s .= '<td nowrap align=right>$ '.$row["project_target_budget"].'</td>';
+		$s .= '</tr>';
+	}
 }
-echo $s;
+echo '<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">' . $s . '</table>';
 ?>
-</table>
-<?php } ?>

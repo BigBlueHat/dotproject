@@ -16,8 +16,8 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 ?>
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
 <tr>
-	<th>Login Name</td>
-	<th>User Name</td>
+	<th><?php echo $AppUI->_( 'username' );?></td>
+	<th><?php echo $AppUI->_( 'Name' );?></td>
 </tr>
 <?php
 $s = '';

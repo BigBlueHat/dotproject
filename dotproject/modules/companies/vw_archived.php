@@ -13,25 +13,22 @@ WHERE project_company = $company_id
 ORDER BY project_name
 ";
 
-if (!($rows = db_loadList( $sql, NULL ))) {
-	echo 'None Available<br>'.$AppUI->getMsg();
-} else {
-?>
-<table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th>Name</td>
-	<th>Owner</td>
-</tr>
-
-<?php
 $s = '';
-foreach ($rows as $row){
-	$s .= '<tr><td>';
-	$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
-	$s .= '<td>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
-	$s .= '</tr>';
+if (!($rows = db_loadList( $sql, NULL ))) {
+	$s .= $AppUI->_( 'No data available' ).'<br>'.$AppUI->getMsg();
+} else {
+	$s .= '<tr>'
+		.'<th>'.$AppUI->_( 'Name' ).'</td>'
+		.'<th>'.$AppUI->_( 'Owner' ).'</td>'
+		.'</tr>';
+
+	foreach ($rows as $row){
+		$s .= '<tr><td>';
+		$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
+		$s .= '<td>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
+		$s .= '</tr>';
+	}
 }
-echo $s;
+echo '<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">' . $s . '</table>';
+
 ?>
-</table>
-<?php } ?>

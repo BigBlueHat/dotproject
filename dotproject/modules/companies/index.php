@@ -9,6 +9,8 @@ if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
+$AppUI->savePlace();
+
 // get any companies denied from viewing
 $deny = array();
 $sql = "
@@ -46,7 +48,6 @@ ORDER BY company_name
 
 $rows = db_loadList( $sql );
 ?>
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <table width="98%" border=0 cellpadding=0 cellspacing=1>
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>

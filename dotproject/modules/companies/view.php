@@ -1,5 +1,5 @@
 <?php
-$company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id'] : 0;
+$company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
 
 // check permissions
 $denyRead = getDenyRead( $m, $company_id );
@@ -29,55 +29,57 @@ $pstatus = array(
 	'On hold',
 	'Complete'
 );
+
+
+$crumbs = array();
+$crumbs["?m=companies"] = "company list";
+if (!$denyEdit) {
+	$crumbs["?m=companies&a=addedit&company_id=$company_id"] = "edit this company";
+}
 ?>
 
 <table border=0 cellpadding="1" cellspacing=1>
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><span class="title">View Company/Client</span></td>
+	<td nowrap><span class="title"><?php echo $AppUI->_('View Company/Client');?></span></td>
 	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td width="50%" nowrap>
-	<a href="./index.php?m=companies">Companies List</a>
-<?php if (!$denyEdit) { ?>
-	<b>:</b> <a href="./index.php?m=companies&a=addedit&company_id=<?php echo $company_id;?>">Edit this Company</a>
-<?php } ?>
-	</td>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<form action="?m=companies&a=addedit" method="post">
 	<td align="right" width="100%">
-	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
-	<?php } ?>
+	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
 	</td>
+	</form>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
-<tr valign="top">
-	<td width="50%">
-		<b>Details</b>
+<tr>
+	<td valign="top" width="50%">
+		<b><?php echo $AppUI->_('Details');?></b>
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
-			<td align="right" nowrap>Company:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
 			<td bgcolor="#ffffff" width="100%"><?php echo $row["company_name"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Phone:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>:</td>
 			<td bgcolor="#ffffff"><?php echo @$row["company_phone1"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Phone2:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>2:</td>
 			<td bgcolor="#ffffff"><?php echo @$row["company_phone2"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Fax:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Fax');?>:</td>
 			<td bgcolor="#ffffff"><?php echo @$row["company_fax"];?></td>
 		</tr>
 		<tr valign=top>
-			<td align="right" nowrap>Address:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
 			<td bgcolor="#ffffff"><?php
 				echo @$row["company_address1"]
 					.( ($row["company_address2"]) ? '<br>'.$row["company_address2"] : '' )
@@ -88,7 +90,7 @@ $pstatus = array(
 			?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>URL:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
 			<td bgcolor="#ffffff">
 				<a href="http://<?php echo @$row["company_primary_url"];?>" target="Company"><?php echo @$row["company_primary_url"];?></a>
 			</td>
@@ -97,7 +99,7 @@ $pstatus = array(
 
 	</td>
 	<td width="50%">
-		<b>Description</b>
+		<b><?php echo $AppUI->_('Description');?></b>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td bgcolor="#ffffff">

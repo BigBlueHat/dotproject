@@ -18,8 +18,6 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 } else {
 
 function showchild( &$a, $level=0 ) {
-	global $done;
-	$done[] = $a['task_id']; 
 	$s = '';
 
 	$s .= '<td>';
@@ -59,11 +57,11 @@ function findchild( &$tarr, $parent, $level=0 ){
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th>&nbsp;</th>
-	<th width="100%">Name</th>
-	<th>Users</th>
+	<th width="100%"><?php echo $AppUI->_( 'Name' );?></th>
+	<th><?php echo $AppUI->_( 'Users' );?></th>
 	<td nowrap rowspan="99" align="right" valign="top" style="background-color:#ffffff">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="new department" onClick="javascript:window.location='./index.php?m=departments&a=addedit&company_id=<?php echo $company_id;?>';">
+		<input type="button" class=button value="<?php echo $AppUI->_( 'new department' );?>" onClick="javascript:window.location='./index.php?m=departments&a=addedit&company_id=<?php echo $company_id;?>';">
 	<?php } ?>
 	</td>
 </tr>

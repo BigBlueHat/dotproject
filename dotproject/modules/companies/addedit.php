@@ -1,6 +1,6 @@
 <?php
 // Add / Edit Company
-$company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id'] : 0;
+$company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
 
 // check permissions
 $denyEdit = getDenyEdit( $m, $company_id );
@@ -24,6 +24,10 @@ $orc = db_exec($osql);
 while ($orow = db_fetch_row( $orc )) {
 	$owners[$orow[0]] = "$orow[1] $orow[2]";
 }
+
+$crumbs = array();
+$crumbs["?m=companies"] = "company list";
+$crumbs["?m=companies&a=view&company_id=$company_id"] = "view this company";
 ?>
 
 <script language="javascript">
@@ -64,12 +68,9 @@ function delIt() {
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td width="50%" nowrap>
-		<a href="./index.php?m=companies">Companies List</a>
-		<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>">View this Company</a>
-	</td>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
 	<td width="50%" align="right">
-		<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this comapny" border="0">delete company</a>
+		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0"><?php echo $AppUI->_( 'delete company' );?></a>
 	</td>
 </tr>
 </table>
@@ -82,7 +83,7 @@ function delIt() {
 
 <tr height="20">
 	<th colspan="2">
-		<b><i><?php if($company_id == 0){echo "Add";}else{echo "Edit";}?> Client Company </i></b>
+		<b><i><?php if($company_id == 0){echo $AppUI->_( 'Add' );}else{echo "Edit";}?> Client Company </i></b>
 	</th>
 </tr>
 <tr>
