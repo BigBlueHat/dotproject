@@ -14,14 +14,14 @@ $titleBlock->show();
 <tr>
         <td nowrap align="right">
 <form name="filter" action="?m=history" method="post" onChange="document.filter.submit()">
-Changes to:
+<?php echo $AppUI->_('Changes to'); ?>:
         <select name="filter">
                 <option value=""></option>
-                <option value="">Show all</option>
-                <option value="projects">Projects</option>
-                <option value="files">Files</option>
-                <option value="forums">Forums</option>
-                <option value="login">Login/Logouts</option>
+                <option value=""><?php echo $AppUI->_('Show all'); ?></option>
+                <option value="projects"><?php echo $AppUI->_('Projects'); ?></option>
+                <option value="files"><?php echo $AppUI->_('Files'); ?></option>
+                <option value="forums"><?php echo $AppUI->_('Forums'); ?></option>
+                <option value="login"><?php echo $AppUI->_('Login/Logouts'); ?></option>
         </select>
 </form>
         </td>
@@ -34,6 +34,7 @@ Changes to:
 function show_history($history)
 {
 //        return $history;
+	GLOBAL $AppUI;
         $id = $history['history_item'];
         $module = $history['history_table'];        
 	$table_id = (substr($module, -1) == 's'?substr($module, 0, -1):$module) . '_id';
@@ -42,11 +43,11 @@ function show_history($history)
                return 'User \'' . $history['history_description'] . '\' ' . $history['history_action'] . '.';
         
         if ($history['history_action'] == 'add')
-                $msg = 'Added new ';
+                $msg = $AppUI->_('Added new').' ';
         else if ($history['history_action'] == 'update')
-                $msg = 'Modified ';
+                $msg = $AppUI->_('Modified').' ';
         else if ($history['history_action'] == 'delete')
-                return 'Deleted \'' . $history['history_description'] . '\' from ' . $module . ' module.';
+                return $AppUI->_('Deleted').' \'' . $history['history_description'] . '\' '.$AppUI->_('from').' ' . $AppUI->_($module) . $AppUI->_('module');
 
 	$q  = new DBQuery;
 	$q->addTable($module);
@@ -72,7 +73,7 @@ function show_history($history)
         case 'contacts':
                 $link = '&a=view&contact_id='; break;
         case 'task_log':
-                $module = 'tasks';
+                $module = 'Tasks';
                 $link = '&a=view&task_id=170&tab=1&task_log_id=';
                 break;
         }
@@ -81,7 +82,7 @@ function show_history($history)
 		$link = '<a href="?m='.$module.$link.$id.'">'.$history['history_description'].'</a>';
 	else
 		$link = $history['history_description'];
-        $msg .= "item '$link' in $module module."; // . $history;
+        $msg .= $AppUI->_('item')." '$link' ".$AppUI->_('in').' '.$AppUI->_(ucfirst($module)).' '.$AppUI->_('module'); // . $history;
 
         return $msg;
 }
@@ -139,14 +140,18 @@ foreach($history as $row) {
   // Checking permissions.
   // TODO: Enable the lines below to activate new permissions.
   $perms = & $AppUI->acl();
-  if ($module == 'login' || $perms->checkModuleItem($module, "access", $row['history_item']))
-  {
+  if ($module == 'login' || $perms->checkModuleItem($module, "access", $row['history_item']))  {
+  	$df = $AppUI->getPref('SHDATEFORMAT');
+	$tf = $AppUI->getPref('TIMEFORMAT');
+
+  	$hd = new Date( $row["history_date"] );
+	
 ?>
 <tr>	
 	<td><a href='<?php echo "?m=history&a=addedit&history_id=" . $row["history_id"] ?>'><img src="./images/icons/pencil.gif" alt="<?php echo $AppUI->_( 'Edit History' ) ?>" border="0" width="12" height="12"></a></td>
-	<td><?php echo $row["history_date"]?></td>
+	<td align="center"><?php echo $hd->format ( $df ).' '.$hd->format ( $tf ); ?></td>
 	<td><?php echo show_history($row) ?></td>	
-	<td><?php echo $row["user_username"]?></td>
+	<td align="center"><?php echo $row["user_username"]?></td>
 </tr>	
 <?php
   }
