@@ -1035,6 +1035,24 @@ $titleBlock->show();
 					<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
 				</td>
 			</tr>
+                        <?php if (!$task_id) { ?>
+                        <tr>
+                                <td align="right" nowrap="nowrap">Reoccuring task</td>
+                                <td align="left">
+                                        <?php 
+                                                $ar = array(    0=>'once', 
+                                                                1=>'daily', 
+                                                                2=>'weekly', 
+                                                                3=>'fortnightly';
+                                                                4=>'monthly',
+                                                                5=>'6 weekly',
+                                                                6=>'3 monthly',
+                                                                7=>'6 monthly',
+                                                                8=>'annually');
+                                                echo arraySelect($ar, 'reoccur', 'size="1" class="text"', 0, true); ?>
+                                </td>
+                        </tr>
+                        <?php } ?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
 				<td nowrap="nowrap">

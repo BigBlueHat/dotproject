@@ -8,11 +8,38 @@ $notify = isset($_POST['task_notify']) ? $_POST['task_notify'] : 0;
 $comment = isset($_POST['email_comment']) ? $_POST['email_comment'] : '';
 $sant = isset($_POST['sant']) ? $_POST['sant'] : 0;
 
+$time = 0;
+if ($_POST['reoccur'] > 0) // Daily
+        $time = 24 * 3600;
+if ($_POST['reoccur'] > 1) // Weekly
+        $time *= 7;
+if ($_POST['reoccur'] > 2) // Fortnight
+        $time *= 2;
+if ($_POST['reoccur'] > 3) // Monthly
+        $time *= 2;
+if ($_POST['reoccur'] > 4) // 6 weeks
+        $time *= 1.5;
+if ($_POST['reoccur'] > 3) // 3 months
+        $time *= 2;
+if ($_POST['reoccur'] > 3) // 6 months
+        $time *= 2;
+if ($_POST['reoccur'] > 3) // 1 year
+        $time *= 2;
+
+
 $obj = new CTask();
 
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
+}
+if ($obj->task_project)
+{
+        $sql = "SELECT project_end_date
+                FROM projects
+                WHERE project_id = $obj->task_project";
+        $date = new CDate(db_loadResult($sql));
+        $project_end_date = $date->getDate(DATE_FORMAT_TIMESTAMP);
 }
 
 // Map task_dynamic checkboxes to task_dynamic values for task dependancies.
@@ -85,7 +112,7 @@ if ($del) {
 	}
 	
 	if (isset($hdependencies)) {
-		$obj->updateDependencies( $hdependencies );
+	        $obj->updateDependencies( $hdependencies );
 	}
 	
 	if ($notify) {
@@ -93,6 +120,22 @@ if ($del) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR, true );
 		}
 	}
+
+        $date = new CDate($obj->task_end_date);
+        // echo "$time + " . $date->getDate(DATE_FORMAT_TIMESTAMP) . " < $project_end_date";
+        while ($time && $date->getDate(DATE_FORMAT_TIMESTAMP) + $time < $project_end_date)
+        {
+                $obj->task_id = 0;
+                $date = new CDate($obj->task_start_date);
+                $date->addSeconds($time);
+                $obj->task_start_date = $date->format(FMT_DATETIME_MYSQL);
+                $date = new CDate($obj->task_end_date);
+                $date->addSeconds($time);
+                $obj->task_end_date = $date->format(FMT_DATETIME_MYSQL);
+
+                //$obj->task_end_date += $time;
+                $obj->store();
+        }
 
 	if ($sant == true) {
 		// save and add new task
