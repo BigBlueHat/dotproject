@@ -1,20 +1,16 @@
-<?php
-GLOBAL $denyEdit;
-?>
-
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 <tr>
 	<td width="60" align="right">
 		&nbsp; sort by:&nbsp;
 	</td>
 	<th>
-		<A href="./index.php?m=admin&a=index&orderby=user_username&vm=<?php echo $vm;?>"><font color="white">Login Name</font></a>
+		<A href="./index.php?m=admin&a=index&orderby=user_username&z=<?php echo $z;?>&vm=<?php echo $vm;?>"><font color="white">Login Name</font></a>
 	</th>
 	<th>
-		<A href="./index.php?m=admin&a=index&orderby=user_last_name&vm=<?php echo $vm;?>"><font color="white">Real Name</font></a>
+		<A href="./index.php?m=admin&a=index&orderby=user_last_name&z=<?php echo $z;?>&vm=<?php echo $vm;?>"><font color="white">Real Name</font></a>
 	</th>
 	<th>
-		<A href="./index.php?m=admin&a=index&orderby=user_email&vm=<?php echo $vm;?>"><font color="white">Email</font></a>
+		<A href="./index.php?m=admin&a=index&orderby=user_email&z=<?php echo $z;?>&vm=<?php echo $vm;?>"><font color="white">Email</font></a>
 	</th>
 	<th>Active?</th>
 <?php if (!$denyEdit) { ?>

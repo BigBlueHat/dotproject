@@ -2,6 +2,7 @@
 //User Managagement
 // view mode = 0 tabbed, 1 flat
 $vm = isset($_GET['vm']) ? $_GET['vm'] : 0;
+$f = isset($_GET['z']) ? $_GET['z'] : '%';
 
 // check permissions
 $denyRead = getDenyRead( $m );
@@ -13,7 +14,14 @@ if ($denyRead) {
 	</script>
 ';
 }
-
+// Pull First Letters
+$let = ":";
+$sql = "SELECT DISTINCT LOWER(SUBSTRING(user_username, 1, 1)) FROM users";
+$rc = mysql_query( $sql );
+echo mysql_error();
+while ($row = mysql_fetch_row( $rc )) {
+	$let .= $row[0];
+}
 ?>
 
 <script language="javascript">
@@ -24,13 +32,30 @@ function delMe( x, y ) {
 }
 </script>
 
-<table cellpadding="0" cellspacing="1" border="0" width="95%">
+<table cellpadding="0" cellspacing="1" border="0" width="98%">
 <tr>
 	<td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap><span class="title">User Management</span></td>
+
+	<td align="right">
+		<table cellpadding="2" cellspacing="1" border="0">
+		<tr>
+			<td width="100%" align="right">filter: </td>
+			<td align="center" bgcolor="#cccccc"><a href="./index.php?m=admin">all</a></td>
+<?php
+	for ($a=65; $a < 91; $a++) {
+		$cu = chr( $a );
+		$cl = chr( $a+32 );
+		$bg = strpos($let, "$cl") > 0 ? "bgcolor=\"#cccccc\"><a href=./index.php?m=admin&z=$cu" : '';
+		echo "<TD align=\"center\" $bg>$cu</A></TD>\n";
+	}
+?>
+		</tr>
+		</table>
+	</td>
 </tr>
 <tr>
-	<td colspan="3">
+	<td colspan="2">
 		<a href="./index.php?m=admin&vm=0">tabbed</a> :
 		<a href="./index.php?m=admin&vm=1">flat</a>
 	</td>
@@ -41,6 +66,10 @@ function delMe( x, y ) {
 </tr>
 </table>
 
+<table cellpadding="2" cellspacing="1" border="0" width="98%">
+<tr>
+</table>
+
 <?php	
 $tabs = array(
 	'active_usr' => 'Active Users',
@@ -48,7 +77,7 @@ $tabs = array(
 );
 
 if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="95%">
+<table border="0" cellpadding="2" cellspacing="0" width="98%">
 <?php
 	foreach ($tabs as $k => $v) {
 		echo "<tr><td><b>$v</b></td></tr>";

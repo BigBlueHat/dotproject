@@ -77,15 +77,28 @@ function submitIt(){
 }
 
 function popDept() {
-	f = document.changeuser;
+	var f = document.changeuser;
 	if (f.selectedIndex == 0) {
 		alert( 'Please select a company first!' );
 	} else {
-		window.open('./dept_selector.php?form=changeuser&company_id='
+		window.open('./selector.php?callback=setDept&table=departments&company_id='
 			+ f.user_company.options[f.user_company.selectedIndex].value
 			+ '&dept_id='+f.user_department.value,'dept','left=50,top=50,height=250,width=400,resizable')
 	}
 }
+
+// Callback function for the generic selector
+function setDept( key, val ) {
+	var f = document.changeuser;
+	if (val != '') {
+		f.user_department.value = key;
+		f.dept_name.value = val;
+	} else {
+		f.user_department.value = '0';
+		f.dept_name.value = '';
+	}
+}
+
 </script>
 <?php //------------------------Begin HTML -------------------------------?>
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
