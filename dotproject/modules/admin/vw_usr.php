@@ -65,13 +65,14 @@ foreach ($users as $row) {
                 if ($user_logs)
 	           foreach ($user_logs as $row_log) {
 	               if ($row_log["online"] == '1'){
-	                   echo $row_log["hours"]." ".$AppUI->_('hrs.'). "( ".$row_log["idle"]." ". $AppUI->_('hrs.')." ".$AppUI->_('idle'). ") - " . $AppUI->_('Online');  
+	                   echo '<span style="color: green">'.$row_log["hours"]." ".$AppUI->_('hrs.'). "( ".$row_log["idle"]." ". $AppUI->_('hrs.')." ".$AppUI->_('idle'). ") - " . $AppUI->_('Online');  
 	               } else {
-	                   echo $AppUI->_('Offline');
+	                   echo '<span style="color: red">'.$AppUI->_('Offline');
 	               }
 	} 
                 else
-                        echo $AppUI->_('Never Visited');
+                        echo '<span style="color: grey">'.$AppUI->_('Never Visited');
+        echo '</span>';
 	}?>
 	</td>
 	<td>
