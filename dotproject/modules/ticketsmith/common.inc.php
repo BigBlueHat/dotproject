@@ -91,7 +91,7 @@ function column2array ($query) {
 /* create drop-down box */
 function create_selectbox ($name, $options, $selected) {
 	$output= "";
-	
+
     $output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
 	while(list($key, $val) = each($options)) {
 		$output .= "<option value=\"$key\"";
@@ -119,9 +119,10 @@ function escape_string ($string) {
 
 /* format "time ago" date string */
 function get_time_ago ($timestamp) {
+	global $AppUI;
 
     $elapsed_seconds = time() - $timestamp;
-    
+
     if ($elapsed_seconds < 60) { // seconds ago
         if ($elapsed_seconds) {
             $interval = $elapsed_seconds;
@@ -129,39 +130,42 @@ function get_time_ago ($timestamp) {
         else {
             $interval = 1;
         }
-        $output = "$interval second";
+        $output = "second";
     }
     elseif ($elapsed_seconds < 3600) { // minutes ago
         $interval = round($elapsed_seconds / 60);
-        $output = "$interval minute";
+        $output = "minute";
     }
     elseif ($elapsed_seconds < 86400) { // hours ago
         $interval = round($elapsed_seconds / 3600);
-        $output = "$interval hour";
+        $output = "hour";
     }
     elseif ($elapsed_seconds < 604800) { // days ago
         $interval = round($elapsed_seconds / 86400);
-        $output = "$interval day";
+        $output = "day";
     }
     elseif ($elapsed_seconds < 2419200) { // weeks ago
         $interval = round($elapsed_seconds / 604800);
-        $output = "$interval week";
+        $output = "week";
     }
     elseif ($elapsed_seconds < 29030400) { // months ago
         $interval = round($elapsed_seconds / 2419200);
-        $output = "$interval month";
+        $output = " month";
     }
     else { // years ago
         $interval = round($elapsed_seconds / 29030400);
-        $output = "$interval year";
+        $output = "year";
     }
     
     if ($interval > 1) {
         $output .= "s";
     }
-    
-    $output .= " ago";
-    
+
+    $output = " ".$AppUI->_($output);
+
+    $output .= " ".$AppUI->_('ago');
+
+    $output = $interval.$output;
     return($output);
         
 }
@@ -197,17 +201,19 @@ function format_field ($value, $type, $ticket = NULL) {
             }
             break;
         case "status":
-            $output = create_selectbox("type_toggle", array("Open" => "Open", "Processing" => "Processing", "Closed" => "Closed", "Deleted" => "Deleted"), $value);
+            $output = create_selectbox("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
             break;
         case "priority_view":
             $priority = $CONFIG["priority_names"][$value];
             $color = $CONFIG["priority_colors"][$value];
+	    //$priority = $AppUI->_($priority);
             if ($value == 3) {
                 $priority = "<strong>$priority</strong>";
             }
             if ($value == 4) {
                 $priority = "<blink><strong>$priority</strong></blink>";
             }
+
             $output = "<font color=\"$color\">$priority</font>";
             break;
         case "priority_select":
@@ -250,7 +256,7 @@ function format_field ($value, $type, $ticket = NULL) {
             break;
         case "activity_date":
             if (!$value) {
-                $output = "<em>none</em>";
+                $output = "<em>".$AppUI->_('none')."</em>";
             }
             else {
                 $output = get_time_ago($value);
@@ -326,7 +332,7 @@ function format_field ($value, $type, $ticket = NULL) {
                 $output = htmlspecialchars($value);
             }
             else {
-                $output = "<em>(original ticket author)</em>";
+                $output = "<em>(".$AppUI->_('original ticket author').")</em>";
             }
             break;
         case "email":
@@ -335,11 +341,11 @@ function format_field ($value, $type, $ticket = NULL) {
                 $output = htmlspecialchars($value);
             }
             else {
-                $output = "<em>none</em>";
+                $output = "<em>".$AppUI->_('none')."</em>";
             }
             break;
         default:
-            $output = $value ? htmlspecialchars($value) : "<em>none</em>";
+            $output = $value ? htmlspecialchars($value) : "<em>".$AppUI->_('none')."</em>";
     }
     return($output);
 

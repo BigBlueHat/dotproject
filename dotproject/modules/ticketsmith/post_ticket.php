@@ -41,36 +41,36 @@ function submitIt() {
 
 <TR height="20">
 	<Th colspan=2>
-		&nbsp;<font face="verdana,helveitica,arial,sans-serif" color=#ffffff><strong>Trouble Details</strong></font>
+		&nbsp;<font face="verdana,helveitica,arial,sans-serif" color=#ffffff><strong><?php echo $AppUI->_('Trouble Details'); ?></strong></font>
 	</th>
 </tr>
 <tr>
-	<TD align="right">Name:</td>
-	<TD><input type="text" class="text" name="name" value="<?php echo $AppUI->user_first_name . ' ' . $AppUI->user_last_name; ?>" size=50 maxlength="255"> <span class="smallNorm">(required)</span></td>
+	<TD align="right"><?php echo $AppUI->_('Name'); ?>:</td>
+	<TD><input type="text" class="text" name="name" value="<?php echo $AppUI->user_first_name . ' ' . $AppUI->user_last_name; ?>" size=50 maxlength="255"> <span class="smallNorm">(<?php echo $AppUI->_('required'); ?>)</span></td>
 </tr>
 <tr>
-	<TD align="right">E-Mail:</td>
-	<TD><input type="text" class="text" name="email" value="<?php echo $AppUI->user_email; ?>" size=50 maxlength="50"> <span class="smallNorm">(required)</span></td>
+	<TD align="right"><?php echo $AppUI->_('E-Mail'); ?>:</td>
+	<TD><input type="text" class="text" name="email" value="<?php echo $AppUI->user_email; ?>" size=50 maxlength="50"> <span class="smallNorm">(<?php echo $AppUI->_('required'); ?>)</span></td>
 </tr>
 <tr>
-	<TD align="right">Subject:</td>
-	<TD><input type="text" class="text" name="subject" value="" size=50 maxlength="50"> <span class="smallNorm">(required)</span></td>
+	<TD align="right"><?php echo $AppUI->_('Subject'); ?>:</td>
+	<TD><input type="text" class="text" name="subject" value="" size=50 maxlength="50"> <span class="smallNorm">(<?php echo $AppUI->_('required'); ?>)</span></td>
 </tr>
 <tr>
-	<TD align="right">Priority:</td>
+	<TD align="right"><?php echo $AppUI->_('Priority'); ?>:</td>
 	<TD>
 		<select name="priority" class="text">
-			<option value="0">Low
-			<option value="1" selected>Normal
-			<option value="2">High
-			<option value="3">Highest
-			<option value="4"><strong>911 (Showstopper)</strong>
+			<option value="0"><?php echo $AppUI->_('Low'); ?>
+			<option value="1" selected><?php echo $AppUI->_('Normal'); ?>
+			<option value="2"><?php echo $AppUI->_('High'); ?>
+			<option value="3"><?php echo $AppUI->_('Highest'); ?>
+			<option value="4"><strong><?php echo $AppUI->_('911'); ?> (<?php echo $AppUI->_('Showstopper'); ?>)</strong>
 		</select>
 	</td>
 </tr>
 <TR>
-	<TD align="right">Description of Problem: </td>
-	<td><span class="smallNorm">(required)</span></td>
+	<TD align="right"><?php echo $AppUI->_('Description of Problem'); ?>: </td>
+	<td><span class="smallNorm">(<?php echo $AppUI->_('required'); ?>)</span></td>
 </tr>
 <TR>
 	<TD colspan=2 align="center">
@@ -78,8 +78,8 @@ function submitIt() {
 	</td>
 </tr>
 <TR>
-	<TD><input type="button" value="back" class="button" onClick="javascript:history.back(-1);"></td>
-	<TD align="right"><input type="button" value="submit" class="button" onClick="submitIt()"></td>
+	<TD><input type="button" value="<?php echo $AppUI->_('back'); ?>" class="button" onClick="javascript:history.back(-1);"></td>
+	<TD align="right"><input type="button" value="<?php echo $AppUI->_('submit'); ?>" class="button" onClick="submitIt()"></td>
 </tr>
 </form>
 </TABLE>

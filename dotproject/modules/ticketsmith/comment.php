@@ -55,7 +55,7 @@ if (@$comment) {
 	print("<table class=std bgcolor=\"#eeeeee\" width=\"100%\">\n");
     print("<tr>\n");
 	print("<th colspan=\"2\" align=\"center\" >\n");
-    print("<div class=\"heading\">$title</div>\n");
+    print("<div class=\"heading\">".$AppUI->_($title)."</div>\n");
     print("</th>\n");
     print("</tr>\n");
 
@@ -64,7 +64,7 @@ if (@$comment) {
 
     /* determine poster */
     print("<tr>\n");
-    print("<td align=\"left\"><strong>From</strong></td>");
+    print("<td align=\"left\"><strong>".$AppUI->_('From')."</strong></td>");
     list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     print("<td align=\"left\">" . $author_name . " &lt;" . $author_email . "&gt;</td>\n");
     print("</tr>");
@@ -80,7 +80,7 @@ if (@$comment) {
     print("</td>\n");
 
     /* output submit button */
-    print("<tr><td><br /></td><td><font size=\"-1\"><input type=\"submit\" class=button value=\"Post Comment\"></font></td></tr>\n");
+    print('<tr><td><br /></td><td><font size=\"-1\"><input type="submit" class=button value="'.$AppUI->_('Post Comment').'"></font></td></tr>');
 
     /* footer links */
     print("<tr>\n");

@@ -31,12 +31,12 @@ $CONFIG["warning_color"] = "#ff0000";
 $CONFIG["warning_age"] = "0.5"; // in hours
 
 // priority names (low to high)
-$CONFIG["priority_names"] = array("Low","Normal","High","Highest","911");
+$CONFIG["priority_names"] = array($AppUI->_("Low"),$AppUI->_("Normal"),$AppUI->_("High"),$AppUI->_("Highest"),$AppUI->_("911"));
 
 // priority colors (low to high)
 $CONFIG["priority_colors"] = array("#006600","#000000","#ff0000","#ff0000","#ff0000");
 
-$CONFIG["type_names"] = array("Open" => "Open", "Closed" => "Closed", "Deleted" => "Deleted");
+$CONFIG["type_names"] = array("Open" => $AppUI->_("Open"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted"));
 // number of tickets to see at once
 $CONFIG["view_rows"] = 40;
 

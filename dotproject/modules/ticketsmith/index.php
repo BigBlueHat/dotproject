@@ -148,7 +148,14 @@ if ($parent_count) {
         print("<tr height=25>\n");
         for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
             print("<td  bgcolor=white align=" . $fields["aligns"][$loop] . ">\n");
+
+	    	//translate some information, some not
+	    	if ($fields["headings"][$loop] == "Status"){
+			print($AppUI->_(format_field($row[$fields["columns"][$loop]], $fields["types"][$loop], $row[$fields["columns"][0]])) . "\n");
+		}
+		else {
 	        print(format_field($row[$fields["columns"][$loop]], $fields["types"][$loop], $row[$fields["columns"][0]]) . "\n");
+		}
             print("</td>\n");
         }
         print("</tr>\n");
@@ -157,9 +164,9 @@ if ($parent_count) {
 else {
     print("<tr height=25>\n");
     print("<td align=center colspan=" . count($fields["headings"]) . ">\n");
-    print("There are no ");
-    print($type == "All" ? "" : strtolower($type) . " ");
-    print("tickets.\n");
+    print($AppUI->_('There are no')." ");
+    print($type == "All" ? "" : strtolower($AppUI->_($type)) . " ");
+    print($AppUI->_('tickets').".\n");
     print("</td>\n");
     print("</tr>\n");
 }
@@ -175,7 +182,7 @@ for ($loop = 0; $loop < count($types); $loop++) {
     $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $AppUI->_($types[$loop]) . "</a>";
 }
 print(join(" | ", $toggles));
-print(" Tickets</td>\n");
+print(" ".$AppUI->_('Tickets')."</td>\n");
 if ($type == "Deleted" && $parent_count) {
     print("<td align=center><a href=index.php?m=ticketsmith&type=Deleted&action=expunge>".$AppUI->_('Expunge Deleted')."</a></td>");
 }

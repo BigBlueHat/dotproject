@@ -89,7 +89,7 @@ if (@$followup) {
 	print("<table class=std width=100%>\n");
     print("<tr>\n");
     print("<th colspan=2 align=center>\n");
-    print("<div class=heading>$title</div>\n");
+    print("<div class=heading> ".$AppUI->_($title)."</div>\n");
     print("</th>\n");
     print("</tr>\n");
 
@@ -101,14 +101,14 @@ if (@$followup) {
 
     /* output From: line */
     print("<tr>\n");
-    print("<td align=left><strong>From</strong></td>");
+    print("<td align=left><strong>".$AppUI->_('From')."</strong></td>");
     list($from_name, $from_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     print("<td align=left>" . $from_name . " &lt;" . $from_email . "&gt;</td>\n");
     print("</tr>\n");
 
     /* output To: line */
     print("<tr>\n");
-    print("<td align=left><strong>To</strong></td>");
+    print("<td align=left><strong>".$AppUI->_('To')."</strong></td>");
     $recipient = query2result("SELECT author FROM tickets WHERE ticket = '$ticket_parent'");
     print("<td align=left>" . format_field($recipient, "recipient") . "</td>\n");
     print("</tr>\n");
@@ -116,13 +116,19 @@ if (@$followup) {
     /* output ticket */
     for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
         print("<tr>\n");
+	// do not translate if heading is "<br />"
+	if ( $fields["headings"][$loop] == "<br />") {
+	}
+	else {
+		$fields["headings"][$loop] = $AppUI->_($fields["headings"][$loop]);
+	}
         print("<td align=left><strong>" . $fields["headings"][$loop] . "</strong></td>");
         print("<td align=left>" . format_field($ticket_info[$fields["columns"][$loop]], $fields["types"][$loop]) . "</td>\n");
         print("</tr>\n");
     }
 
     /* output submit button */
-    print("<tr><td><br /></td><td><font size=-1><input class=button type=submit value=\"Post Followup\"></font></td></tr>\n");
+    print('<tr><td><br /></td><td><font size=-1><input class=button type=submit value="'.$AppUI->_('Post Followup').'"></font></td></tr>');
 
     /* output actions */
     print("<tr>\n");

@@ -20,7 +20,7 @@ $app_root = $AppUI->getConfig( 'base_url' );
 /* initialize fields */
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {
 
-    $title = "$ticket_type to Ticket #$ticket_parent";
+    $title = $AppUI->_($ticket_type)." ".$AppUI->_('to Ticket')." #$ticket_parent";
 
     $fields = array("headings" => array("From", "To", "Subject", "Date", "Cc", "<br />"),
                     "columns"  => array("author", "recipient", "subject", "timestamp", "cc", "body"),
@@ -29,7 +29,7 @@ if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {
 }
 elseif ($ticket_type == "Staff Comment") {
 
-    $title = "$ticket_type to Ticket #$ticket_parent";
+    $title = $AppUI->_($ticket_type)." ".$AppUI->_('to Ticket')." #$ticket_parent";
 
     $fields = array("headings" => array("From", "Date", "<br />"),
                     "columns"  => array("author", "timestamp", "body"),
@@ -38,7 +38,7 @@ elseif ($ticket_type == "Staff Comment") {
 }
 else {
 
-    $title = "Ticket #$ticket";
+    $title = $AppUI->_('Ticket')." #$ticket";
 
     $fields = array("headings" => array("From", "Subject", "Date", "Cc", "Status",
                                         "Priority", "Owner", "<br />"),
@@ -135,6 +135,9 @@ print("<input type=\"hidden\" name=\"subject\" value='" . $ticket_info["subject"
 /* output ticket */
 for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
     print("<tr>\n");
+    if ( $fields["headings"][$loop] !== "<br />") {
+	$fields["headings"][$loop] = $AppUI->_($fields["headings"][$loop]);
+    }
     print("<td align=\"right\">" . $fields["headings"][$loop] . "</td>");
     print("<td align=\"left\" class=\"hilite\">" . format_field($ticket_info[$fields["columns"][$loop]], $fields["types"][$loop]) . "</td>\n");
     print("</tr>\n");
@@ -171,7 +174,7 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
 
     /* output followups */
     print("<tr>\n");
-    print("<td align=\"left\" valign=\"top\"><strong>Followups</strong></td>\n");
+    print("<td align=\"left\" valign=\"top\"><strong>".$AppUI->_('Followups')."</strong></td>\n");
     print("<td align=\"left\" valign=\"top\">\n");
 
     /* grab followups */
@@ -199,7 +202,7 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
             print("</td>\n");
 
             /* do type */
-            print("<td bgcolor=\"$color\"><a href=\"index.php?m=ticketsmith&a=view&ticket=" . $row["ticket"] . "\">" . $row["type"] . "</a></td>\n");
+            print("<td bgcolor=\"$color\"><a href=\"index.php?m=ticketsmith&a=view&ticket=" . $row["ticket"] . "\">" . $AppUI->_($row["type"]) . "</a></td>\n");
 
             /* do timestamp */
             print("<td bgcolor=\"$color\">\n");
@@ -214,7 +217,7 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
 
     }
     else {
-        print("<em>none</em>\n");
+        print("<em>".$AppUI->_('none')."</em>\n");
     }
 
     print("</td>\n</tr>\n");
@@ -257,7 +260,7 @@ else {
         /* previous navigator */
         if ($viewed_peer > 0) {
             print("<a href=\"index.php?m=ticketsmith&a=view&ticket=" . $peer_tickets[$viewed_peer - 1] . "\">");
-            print($CONFIG["followup_order"] == "ASC" ?  "older" : "newer");
+            print($CONFIG["followup_order"] == "ASC" ?  $AppUI->_("older") : $AppUI->_("newer"));
             print("</a> | ");
         }
 
@@ -287,16 +290,16 @@ print("<td><br /></td>\n");
 print("<td>\n");
 print("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup" || $ticket_type == "Staff Comment") {
-    print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>Post followup (email client)</a> | ");
-    print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>Post internal comment</a> | ");
-    print("<a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>Return to parent</a> | ");
+    print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>".$AppUI->_("Post followup (emails client)")."</a> | ");
+    print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>".$AppUI->_('Post internal comment')."</a> | ");
+    print("<a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>".$AppUI->_('Return to parent')."</a> | ");
 }
 else {
-    print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>Post followup (emails client)</a> | ");
-    print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>Post internal comment</a> | ");
+    print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>".$AppUI->_("Post followup (emails client)")."</a> | ");
+    print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>".$AppUI->_('Post internal comment')."</a> | ");
 }
 print("</td>");
-print("<td align=\"right\"><a href=\"index.php?m=ticketsmith&a=view&ticket=$ticket\">Back to top</a></td></tr>\n");
+print('<td align="right"><a href="index.php?m=ticketsmith&a=view&ticket='.$ticket.'">'.$AppUI->_('Back to top').'</a></td></tr>');
 print("</table>\n");
 print("</td>");
 print("</tr>\n");
