@@ -72,7 +72,7 @@ if ( $tab == -1 ){
 }
 
 foreach ($projects as $row) {
-	if (! $perms->checkModuleItem('project', 'view', $row['project_id'])) {
+	if (! $perms->checkModuleItem('projects', 'view', $row['project_id'])) {
 		continue;
 	}
 	if ($show_all_projects ||
