@@ -472,7 +472,7 @@ function calcFinish() {
 						              and p.project_company = company_id";
 						$company_name = db_loadResult($sql);
 						
-						if($department_selection_list != "" || !is_null($company_name)){
+						if($department_selection_list != "" || !is_null($company_name) && $department_selection_list!=""){
 							echo "<hr /><input type='button' class='button' value='".$AppUI->_("Select contacts")."' onclick='javascript:popContacts();' />";
 						}
 					?>
@@ -641,22 +641,22 @@ function calcFinish() {
 			$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) . ":" ."</td>";
 			switch ( $field_options["type"]){
 				case "text":
-					$output .= "<td><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";
+					$output .= "<td align='left'><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";
 					break;
 				case "select":
-					$output .= "<td>". arraySelect(explode(",",$field_options["selects"]), "custom_$key", 'size="1" class="text" ' . $field_options["options"] ,( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
+					$output .= "<td align='left'>". arraySelect(explode(",",$field_options["selects"]), "custom_$key", 'size="1" class="text" ' . $field_options["options"] ,( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
 					break;
 				case "textarea":
-					$output .=  "<td><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
+					$output .=  "<td align='left'><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
 					break;
 				case "checkbox":
 					$options_array = explode(",",$field_options["selects"]);
-					$output .= "<td>";
+					$output .= "<td align='left'>";
 					foreach ( $options_array as $option ) {
 						if ( isset($custom_field_previous_data[$key]) && array_key_exists( $option, array_flip($custom_field_previous_data[$key]) ) ) {
 							$checked = "checked";
 						} 
-						$output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' $checked " . $field_options["options"] . ">$option<br />";
+						$output .=  "<input type='checkbox' value='$option' name='custom_" . $key ."[]' class='text' style='border:0' $checked " . $field_options["options"] . ">$option<br />";
 						$checked = "";
 					}
 					$output .= "</td>";
