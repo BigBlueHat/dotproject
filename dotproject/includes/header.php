@@ -95,4 +95,9 @@ function tboff(){
 <tr>
 <td valign="top"><?php require "./includes/leftnav.php";?></td>
 <td valign="top" align="left" width="100%">
-<?php echo @$message;?><!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br> -->
+<?php 
+	echo $AppUI->getMsg();
+// legacy support
+	echo @$message;
+?>
+<!-- <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br> -->
