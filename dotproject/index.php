@@ -35,7 +35,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 // If you experience a 'white screen of death' or other problems,
 // uncomment the following line of code:
-//error_reporting( E_ALL );
+// error_reporting( E_ALL );
 
 
 /**
@@ -73,22 +73,13 @@ require_once( "./classes/ui.class.php" );
 require_once( "./includes/main_functions.php" );
 require_once( "./includes/db_adodb.php" );
 require_once( "./classes/permissions.class.php" );
+require_once( "./includes/session.php" );
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
 
 // manage the session variable(s)
-session_name( 'dotproject' );
-$cookie_dir = dirname($_SERVER['SCRIPT_NAME']);
-if (substr($cookie_dir, -1) != '/')
-	$cookie_dir .= '/';
-session_set_cookie_params(0, $cookie_dir);
-if (ini_get( 'session.auto_start' ) > 0) {
-	session_write_close();
-}
-session_start();
-session_register( 'AppUI' );
-session_register( 'Installer' );
+dPsessionStart(array('AppUI', 'Installer'));
 
 // write the HTML headers
 header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
@@ -327,7 +318,6 @@ ob_start();
 if(!$suppressHeaders) {
 	require "./style/$uistyle/header.php";
 }
-
 
 if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 )) {
 	// For some reason on some systems if you don't set this up

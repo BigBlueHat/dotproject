@@ -181,6 +181,24 @@ $dPconfig['default_view_tab'] = '1';
 */
 $dPconfig['index_max_file_size'] = -1;
 
+/* Session Management.  This extends the session handling of PHP to
+ * beyond browser-based sessions and stores the session information in the
+ * database.  This allows for prolonged sessions with lower overheads.
+ * Values are in seconds unless followed by a letter:
+ * h = hours
+ * d = days
+ * m = months
+ * y = years
+ *
+ * You can only have 1 character within a string, so 2d4h is NOT valid,
+ * but 28h is.
+ */
+// The maximum time a session can have no activity before it is declared dead.
+$dPconfig['session_idle_time'] = '2d';
+// The maximim time a session can exist before it is trashed, regardless of
+// how active it is
+$dPconfig['session_max_lifetime'] = '1m';
+
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";

@@ -194,6 +194,12 @@ class DBQuery {
     $this->create_definition = $def;
   }
 
+	function setDelete($table)
+	{
+		$this->type = 'delete';
+		$this->addMap('table_list', $table, null);
+	}
+
   /** 
    * Add where sub-clauses.  The where clause can be built up one
    * part at a time and the resultant query will put in the 'and'
@@ -361,6 +367,7 @@ class DBQuery {
     $q = 'UPDATE ';
     if (isset($this->table_list)) {
       if (is_array($this->table_list)) {
+			reset($this->table_list);
 	// Grab the first record
 	list($key, $table) = each ($this->table_list);
       } else {
@@ -384,6 +391,7 @@ class DBQuery {
     $q = 'INSERT INTO ';
     if (isset($this->table_list)) {
       if (is_array($this->table_list)) {
+			reset($this->table_list);
 	// Grab the first record
 	list($key, $table) = each ($this->table_list);
       } else {
@@ -396,7 +404,7 @@ class DBQuery {
 
     $fieldlist = '';
     $valuelist = '';
-    foreach( $this->update_list as $field => $value) {
+    foreach( $this->value_list as $field => $value) {
       if ($fieldlist)
 	$fieldlist .= ",";
       if ($valuelist)
@@ -439,6 +447,7 @@ class DBQuery {
 		$ADODB_FETCH_MODE = $style;
 		$this->clearQuery();
     if ($q = $this->prepare()) {
+			dprint(__FILE__, __LINE__, 7, "executing query($q)");
       if (isset($this->limit))
 	$this->_query_id = $db->SelectLimit($q, $this->limit, $this->offset);
       else
@@ -597,6 +606,11 @@ class DBQuery {
   }
   //2}}}
 
+	function quote($string)
+	{
+		global $db;
+		return $db->qstr($string, get_magic_quotes_runtime());
+	}
 }
 //1}}}
 

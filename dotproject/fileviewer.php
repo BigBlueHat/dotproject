@@ -2,16 +2,12 @@
 //file viewer
 require_once "./includes/config.php";
 require_once "./classes/ui.class.php";
+require_once "./includes/main_functions.php";
+require_once "./includes/db_adodb.php";
+require_once "./includes/db_connect.php";
+require_once "./includes/session.php";
 
-session_name( 'dotproject' );
-$cookie_dir = dirname($_SERVER['SCRIPT_NAME']);
-if (substr($cookie_dir, -1) != '/')
-	$cookie_dir .= '/';
-session_set_cookie_params(0, $cookie_dir);
-if (get_cfg_var( 'session.auto_start' ) > 0) {
-	session_write_close();
-}
-session_start();
+dPsessionStart();
 
 // check if session has previously been initialised
 // if no ask for logging and do redirect
@@ -62,9 +58,6 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 }
 $AppUI =& $_SESSION['AppUI'];
 
-require_once "{$dPconfig['root_dir']}/includes/main_functions.php";
-require_once "{$dPconfig['root_dir']}/includes/db_adodb.php";
-require_once "{$dPconfig['root_dir']}/includes/db_connect.php";
 require_once "{$dPconfig['root_dir']}/includes/permissions.php";
 
 $perms =& $AppUI->acl();

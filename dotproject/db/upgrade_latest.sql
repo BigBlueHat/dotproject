@@ -560,3 +560,14 @@ CREATE TABLE `billingcode` (
   PRIMARY KEY  (`billingcode_id`)
 ) TYPE=MyISAM;
 
+# 20050125
+# Session handling table.
+CREATE TABLE `sessions` (
+	`session_id` varchar(40) NOT NULL default '',
+	`session_data` LONGBLOB,
+	`session_updated` TIMESTAMP,
+	`session_created` DATETIME NOT NULL default '0000-00-00 00:00:00',
+	PRIMARY KEY (`session_id`),
+	KEY (`session_updated`),
+	KEY (`session_created`)
+) TYPE=MyISAM;

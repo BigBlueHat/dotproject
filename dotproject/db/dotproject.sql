@@ -956,3 +956,18 @@ INSERT INTO `gacl_phpgacl` (name, value) VALUES ('schema_version', '2.1');
 INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (1, 'system', 1, 'System');
 INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (2, 'user', 2, 'User');
 
+
+#
+# Table structure for table `sessions`
+#
+
+DROP TABLE IF EXISTS `sessions`;
+CREATE TABLE `sessions` (
+	`session_id` varchar(40) NOT NULL default '',
+	`session_data` LONGBLOB,
+	`session_updated` TIMESTAMP,
+	`session_created` DATETIME NOT NULL default '0000-00-00 00:00:00',
+	PRIMARY KEY (`session_id`),
+	KEY (`session_updated`),
+	KEY (`session_created`)
+) TYPE=MyISAM;
