@@ -1,13 +1,16 @@
 <?php
 
-global $resourceTab, $AppUI;
+global $tabbed, $currentTabName, $currentTabId, $AppUI;
 $obj =& new CResource;
 
 $query =& new DBQuery;
 $obj->setAllowedSQL($AppUI->user_id, $query);
 $query->addTable($obj->_tbl);
-if ($resourceTab)
-  $query->addWhere('resource_type = ' . $_SESSION['resource_type_list'][$resourceTab]['resource_type_id']);
+if (!$tabbed)
+	$currentTabId++;
+
+if ($currentTabId)
+  $query->addWhere('resource_type = ' . $_SESSION['resource_type_list'][$currentTabId]['resource_type_id']);
 $res =& $query->exec();
 ?>
 <table width='100%' border='0' cellpadding='2' cellspacing='1' class='tbl'>
@@ -23,24 +26,25 @@ $res =& $query->exec();
   </th>
 </tr>
 <?php
-  while ($row = db_fetch_assoc($res)) {
+  for ($res; ! $res->EOF; $res->MoveNext()) {
 ?>
 <tr>
   <td>
-    <a href="index.php?m=resources&a=view&resource_id=<?php echo $row['resource_id'];?>">
-    <?php echo $row['resource_key']; ?>
+    <a href="index.php?m=resources&a=view&resource_id=<?php echo $res->fields['resource_id'];?>">
+    <?php echo $res->fields['resource_key']; ?>
     </a>
   </td>
   <td>
-    <a href="index.php?m=resources&a=view&resource_id=<?php echo $row['resource_id'];?>">
-    <?php echo $row['resource_name']; ?>
+    <a href="index.php?m=resources&a=view&resource_id=<?php echo $res->fields['resource_id'];?>">
+    <?php echo $res->fields['resource_name']; ?>
 		</a>
   </td>
   <td>
-    <?php echo $row['resource_max_allocation']; ?>
+    <?php echo $res->fields['resource_max_allocation']; ?>
   </td>
 </tr>
 <?php
   }
+$query->clear();
 ?>
 </table>

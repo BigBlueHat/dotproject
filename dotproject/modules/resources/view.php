@@ -42,7 +42,7 @@ if ($canEdit) {
   $titleBlock->addCrumb("?m=resources&a=addedit&resource_id=$resource_id", "edit this resource");
 }
 if ($canDelete) {
-  $titleBlock->addCrumbDelete('delete resource', $canDelete, $msg);
+  $titleBlock->addCrumbDelete('delete resource', $canDelete, 'no delete permission');
 }
 $titleBlock->show();
 

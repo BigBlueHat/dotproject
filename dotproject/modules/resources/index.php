@@ -20,7 +20,10 @@ if (isset($_GET['tab'])) {
 }
 $resourceTab = $AppUI->getState('ResourcesIdxTab', 0);
 $tabBox =& new CTabBox("?m=resources", "{$dPconfig['root_dir']}/modules/resources/", $resourceTab);
+$tabbed = $tabBox->isTabbed();
 foreach ($obj->loadTypes() as $type) {
+	if ($type['resource_type_id'] == 0 && ! $tabbed)
+		continue;
   $tabBox->add('vw_resources', $type['resource_type_name']);
 }
 
