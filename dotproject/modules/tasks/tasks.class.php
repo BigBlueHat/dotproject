@@ -308,7 +308,7 @@ class CTask extends CDpObject {
 			return get_class( $this )."::store-check failed - $msg";
 		}
 		if( $this->task_id ) {
-                addHistory('task_update(' . $this->task_id . ', ' . $this->task_name . ')', $this->task_project, 'tasks');
+                addHistory('tasks_update(' . $this->task_id . ', ' . $this->task_name . ')', $this->task_project, 'tasks');
 			$this->_action = 'updated';
 			// Load the old task from disk
 			$oTsk = new CTask();
@@ -338,7 +338,7 @@ class CTask extends CDpObject {
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
-                        addHistory('task_add(' . $this->task_id . ', ' . $this->task_name . ')', $this->task_project, 'tasks');
+                        addHistory('tasks_add(' . $this->task_id . ', ' . $this->task_name . ')', $this->task_project, 'tasks');
 
 			if (!$this->task_parent) {
 				$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";
@@ -395,7 +395,7 @@ class CTask extends CDpObject {
 
 		//load it before deleting it because we need info on it to update the parents later on
 		$this->load($this->task_id);
-                addHistory('task_delete(' . $this->task_id . ', ' . $this->task_name . ')', $this->task_project, 'tasks');
+                addHistory('tasks_delete(' . $this->task_id . ', ' . $this->task_name . ')', $this->task_project, 'tasks');
 		
 		// delete the tasks...what about orphans?
 		// delete task with parent is this task
@@ -1043,15 +1043,16 @@ class CTask extends CDpObject {
                 $scm = $sysChargeMax['pref_value'];
                 // provide actual assignment charge, individual chargeMax and freeCapacity of users' assignments to tasks
                 $sql = "SELECT u.user_id,
-                        CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',user_first_name,user_last_name), IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
+                        CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',contact_first_name,contact_last_name), IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
                         IFNULL(SUM(ut.perc_assignment),0) AS charge, u.user_username,
                         IFNULL(up.pref_value,$scm) AS chargeMax,
                         IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0) AS freeCapacity
                         FROM users u
+                        LEFT JOIN contacts ON contact_id = user_contact
                         LEFT JOIN user_tasks ut ON ut.user_id = u.user_id
                         LEFT JOIN user_preferences up ON (up.pref_user = u.user_id AND up.pref_name = 'TASKASSIGNMAX')".$where."
                         GROUP BY u.user_id
-                        ORDER BY u.user_first_name, u.user_last_name";
+                        ORDER BY contact_first_name, contact_last_name";
 //                echo "<pre>$sql</pre>";
                 return db_loadHashList($sql, $hash);
         }
