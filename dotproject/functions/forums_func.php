@@ -28,7 +28,7 @@ function sendWatchMail($message_id, $message_parent, $message_forum, $message_ti
 	WHERE user_id = watch_user
 		AND (watch_forum = $message_forum OR watch_topic = $message_parent)
 	";
-	echo "<pre>$sql</pre>";
+##echo "<pre>$sql</pre>";##
 	if (!($rc = mysql_query( $sql ))) {
 		return;
 	}

@@ -19,11 +19,9 @@ if ($HTTP_POST_VARS["del"]) {
 	message_id = $message_id
 	";
 	mysql_query($sql);
-	$message  ="Message Updated";
+	$message = "Message Updated";
 } else {
 // Insert into forums
-	sendWatchMail($message_id, $message_parent, $message_forum, $message_title, $message_body);
-	die;
 	$message_body = htmlspecialchars( $message_body );
 	$sql = "insert into forum_messages
 	(message_forum, message_parent, message_author, message_title, message_date, message_body, message_published)
@@ -51,6 +49,8 @@ if ($HTTP_POST_VARS["del"]) {
 	$rc = mysql_query($sql);
 
 	$message  ="Message Posted";
+
+	sendWatchMail($new_id, $message_parent, $message_forum, $message_title, $message_body);
 }
 
 if($x = mysql_error())	{
