@@ -164,7 +164,7 @@ if($display_option!="all") {
 			$src = "modules/tasks/gantt.php?project_id=$project_id";
 			$src .= ($display_option == 'all') ? '' :
 				'&start_date='.$start_date->toString( "%Y-%m-%d" ).'&end_date='.$end_date->toString( "%Y-%m-%d" );
-			$src .= "&width=' + (window.outerWidth - 200) + '";
+			$src .= "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '";
 
 			echo "<script>document.write('<img src=\"$src\">')</script>";
 		?>

@@ -88,7 +88,7 @@ function popCalendar(x){
 	</td>
 	<td width="1" align="center">
 		<?php					
-			echo "<script>document.write('<img src=./modules/tasks/gantt.php?project_id=$project_id" . ($display_option=="all"?"":"&start_date=$start_date&end_date=$end_date") . "&width=' + (window.outerWidth - 200) + '>')</script>";
+			echo "<script>document.write('<img src=./modules/tasks/gantt.php?project_id=$project_id" . ($display_option=="all"?"":"&start_date=$start_date&end_date=$end_date") . "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '>')</script>";
 		?>
 	</td>
 	<td width="16" align="left">
