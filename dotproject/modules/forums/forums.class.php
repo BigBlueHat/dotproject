@@ -1,4 +1,7 @@
 <?php /* FORUMS $Id$ */
+
+require "{$AppUI->cfg['root_dir']}/classes/libmail.php";
+
 class CForum {
 	var $forum_id = NULL;
 	var $forum_project = NULL;
@@ -155,7 +158,6 @@ class CForumMessage {
 		GLOBAL $AppUI, $debug;
 		$subj_prefix = $AppUI->_('forumEmailSubj');
 		$body_msg = $AppUI->_('forumEmailBody');
-		$from = $AppUI->_('forumEmailFrom');
 
 		$sql = "
 		SELECT DISTINCT user_email, user_id, user_first_name, user_last_name
@@ -170,47 +172,24 @@ class CForumMessage {
 		if (db_num_rows( $res ) < 1) {
 			return;
 		}
-		$mail_header = "Content-Type: text/html\r\n"
-		. "Content-Transfer-Encoding: 8bit\r\n"
-		. "Mime-Version: 1.0\r\n"
-		. "X-Mailer: Dotproject"
-		;
 
-		$subject = "$subj_prefix $this->message_title";
+		$mail = new Mail;
+		$mail->Subject( "$subj_prefix $this->message_title" );
 
-		$mail_body = "<head><title>$this->message_title</title>\n"
-		."<style type=text/css>\n"
-		."body,td,th { font-family: verdana,helvetica,arial,sans-serif; font-size:12px; }\n"
-		."</style>\n"
-		."</head>\n"
-		. "<body>$body_msg\n"
-		. "<p><a href='{$AppUI->cfg['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum'>$this->message_title</a>\n"
-		. "<p><pre>$this->message_body</pre>\n"
-		. "</body>\n";
-
-		if (false) {
-			$to = '';
-			while ($row = db_fetch_assoc( $res )) {
-				$to .= '"'.$row['user_first_name'].' '.$row['user_last_name'].'" <'.$row['user_email'].">\n";
-			}
-			$to = htmlspecialchars( $to );
-			$str = "<pre>";
-			$str .= "TO=$to\n";
-			$str .= "SUBJECT=$subject\n";
-			$str .= "BODY=$mail_body\n";
-			$str .= "FROM=$from\n";
-			$str .= "</pre>";
-			writeDebug($str, 'Sent email', __FILE__, __LINE__);
-			return;
-		}
+		$body = "$body_msg";
+		$body .= "\n{$AppUI->cfg['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
+		$body .= "\n\n$this->message_title";
+		$body .= "\n\n$this->message_body";
+		
+		$mail->Body( $body );
+		$mail->From( $AppUI->_('forumEmailFrom') );
 
 		while ($row = db_fetch_assoc( $res )) {
-			//if ($row['user_id'] != $AppUI->user_id) {
-				$to = '"'.$row['user_first_name'].' '.$row['user_last_name'].'" <'.$row['user_email'].'>';
-				if (!@mail( $to, $subject, $mail_body, "From: $from\r\n".$mail_header )) {
-					return 'CForumMessage::mail failed';
-				}
-			//}
+			if ($mail->ValidEmail( $row['user_email'] )) {
+				$mail->To( $row['user_email'] );
+				$mail->Send();
+				//echo '<textarea cols=80 rows=15>';print_r($mail);echo '</textarea>';die;
+			}
 		}
 		return;
 	}
