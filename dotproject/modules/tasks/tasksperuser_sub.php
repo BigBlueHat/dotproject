@@ -433,7 +433,19 @@ if($do_report){
 						$tmptasks.=doChildren($task_list,$Ntasks,
 											  $task->task_id,$user_id,
 											  1,$max_levels,$display_week_hours,$sss,$sse);
-					}
+					} else {
+                                                // we have to process children task the user
+                                                // is member of, but member of their parent task.
+                                                // Also show the parent task then before the children.
+                                               $tmpChild = '';
+                                               $tmpChild=doChildren($task_list,$Ntasks,
+											  $task->task_id,$user_id,
+											  1,$max_levels,$display_week_hours,$sss,$sse);
+                                               if ($tmpChild > '') {
+                                                 $tmptasks.=displayTask($task_list,$task,0,$display_week_hours,$sss,$sse, $user_id);
+                                                 $tmptasks.=$tmpChild;
+                                               }
+                                        }
 				}
 			}
 			if ($tmptasks != "") {
@@ -471,9 +483,9 @@ function isMemberOfTask($list,$N,$user_id,$task) {
 	if (isset($user_assigned_tasks[$user_id])) {
 		if (in_array($task->task_id, $user_assigned_tasks[$user_id]))
 			return true;
-		else if ( $task->task_id != $task->task_parent
-		&& in_array($task->task_parent, $user_assigned_tasks[$user_id]))
-			return true;
+		// else if ( $task->task_id != $task->task_parent
+		//&& in_array($task->task_parent, $user_assigned_tasks[$user_id]))
+		//	return true;
 	}
 	return false;
 }
