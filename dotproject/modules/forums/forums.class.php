@@ -67,7 +67,7 @@ class CForum {
 		} else {
 			addHistory("Deleted forum '". $this->forum_name . "'");
 			return NULL;
-		}		
+		}
 	}
 }
 
@@ -113,7 +113,7 @@ class CForumMessage {
 			$this->message_date = db_datetime( time() );
 			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
 			echo db_error(); ## TODO handle error better
-		
+
 			$sql = "SELECT count(message_id),
 			MAX(message_date)
 			FROM forum_messages

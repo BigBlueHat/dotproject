@@ -75,13 +75,15 @@ function orderByName(x){
 <table cellspacing="0" cellpadding="3" border="0" width="98%" class="std">
 
 <!-- <form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?php echo $forum_id;?>" method="post"> -->
-<form name="changeforum" action="?m=forums&a=do_post_aed&forum_id=<?php echo $forum_id;?>" method="post">
-<input type="hidden" name="del" value="0">
-<input type="hidden" name="message_forum" value="<?php echo $forum_id;?>">
-<input type="hidden" name="message_parent" value="<?php echo $message_parent;?>">
-<input type="hidden" name="message_published" value="<?php echo $forum_info["forum_moderated"] ? '1' : '0';?>">
-<input type="hidden" name="message_author" value="<?php echo $AppUI->user_id;?>">
-<input type="hidden" name="message_id" value="<?php echo $message_id;?>">
+<form name="changeforum" action="?m=forums&forum_id=<?php echo $forum_id;?>" method="post">
+	<input type="hidden" name="dosql" value="do_post_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="message_forum" value="<?php echo $forum_id;?>" />
+	<input type="hidden" name="message_parent" value="<?php echo $message_parent;?>" />
+	<input type="hidden" name="message_published" value="<?php echo $forum_info["forum_moderated"] ? '1' : '0';?>" />
+	<input type="hidden" name="message_author" value="<?php echo $AppUI->user_id;?>" />
+	<input type="hidden" name="message_id" value="<?php echo $message_id;?>" />
+
 <tr>
 	<th valign="top" colspan="2"><strong><?php
 		echo $AppUI->_( $message_id ? 'Edit Message' : 'Add Message' );

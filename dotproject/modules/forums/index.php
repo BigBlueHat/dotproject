@@ -10,7 +10,7 @@ $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 $max_msg_length = 30;
 $sql = "
 SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, forum_moderated,
-	forum_create_date, forum_last_date, 
+	forum_create_date, forum_last_date,
 	COUNT(distinct t.message_id) forum_topics, COUNT(distinct r.message_id) forum_replies,
 	user_username,
 	project_name, project_color_identifier,
@@ -68,11 +68,16 @@ $forums = db_loadList( $sql );
 	</td>
 </form>
 	<td><img src="images/shim.gif" width=5 height=5></td>
+
 <form name="searcher" action="./index.php?m=files&a=search" method="post">
-<input type="hidden" name="dosql" value="searchfiles">
-	<td align="right"><input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled></td>
+	<input type="hidden" name="dosql" value="do_searchfiles" />
+	<td align="right">
+		<input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled="disabled" />
+	</td>
 	<td><img src="images/shim.gif" width=5 height=5></td>
-	<td><input class=button type="submit" value="<?php echo $AppUI->_( 'search' );?>" disabled></td>
+	<td>
+		<input class=button type="submit" value="<?php echo $AppUI->_( 'search' );?>" disabled="disabled">
+	</td>
 </form>
 	<td><img src="images/shim.gif" width=5 height=5></td>
 	<td align="right">
@@ -158,8 +163,8 @@ foreach ($forums as $row) {
 </table>
 
 <table width="98%" cellspacing="1" cellpadding="0" border="0">
-<input type="hidden" name="dosql" value="watch_forum">
-<input type="hidden" name="watch" value="forum">
+	<input type="hidden" name="dosql" value="do_watch_forum">
+	<input type="hidden" name="watch" value="forum">
 <tr>
 	<td>&nbsp;</td>
 </tr>

@@ -96,7 +96,7 @@ function setTask( key, val ) {
 
 <form name="uploadFrm" action="?m=files" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="max_file_size" value="109605000" />
-	<input type="hidden" name="dosql" value="file_aed" />
+	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="<?php echo $file_id;?>" />
 	<input type="hidden" name="file_task" value="<?php echo $file_task;?>" />

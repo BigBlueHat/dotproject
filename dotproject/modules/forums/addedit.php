@@ -68,10 +68,12 @@ function delIt(){
 </table>
 
 <table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
-<form name="changeforum" action="?m=forums&a=do_forum_aed" method="post">
-<input type="hidden" name="del" value="0">
-<input type="hidden" name="forum_unique_update" value="<?php echo uniqid("");?>">
-<input type="hidden" name="forum_id" value="<?php echo $forum_id;?>">
+<form name="changeforum" action="?m=forums" method="post">
+	<input type="hidden" name="dosql" value="do_forum_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="forum_unique_update" value="<?php echo uniqid("");?>" />
+	<input type="hidden" name="forum_id" value="<?php echo $forum_id;?>" />
+
 <tr height="20">
 	<th valign="top" colspan="3">
 		<strong><?php
@@ -102,7 +104,7 @@ function delIt(){
 			<td>
 		<?php
 			echo arraySelect( $users, 'forum_owner', 'size="1" class="text"', $forum_info['forum_owner'] ? $forum_info['forum_owner'] : $AppUI->user_id );
-		?> 
+		?>
 			</td>
 		</tr>
 		<tr>
@@ -118,7 +120,7 @@ function delIt(){
 			<td>
 		<?php
 			echo arraySelect( $users, 'forum_moderated', 'size="1" class="text"', $forum_info['forum_moderated'] );
-		?> 
+		?>
 			</td>
 		</tr>
 		<?php if ($forum_id) { ?>

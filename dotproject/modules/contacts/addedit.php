@@ -1,4 +1,4 @@
-<?php 
+<?php /* CONTACTS $Id$ */
 // Add / Edit contact
 $contact_id = isset( $HTTP_GET_VARS['contact_id'] ) ? $HTTP_GET_VARS['contact_id'] : 0;
 
@@ -76,11 +76,11 @@ function orderByName( x ){
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 
 <form name="changecontact" action="?m=contacts" method="post">
-<input type="hidden" name="dosql" value="contact_aed">
-<input type="hidden" name="del" value="0">
-<input type="hidden" name="contact_project" value="0">
-<input type="hidden" name="contact_unique_update" value="<?php echo uniqid("");?>">
-<input type="hidden" name="contact_id" value="<?php echo $contact_id;?>">
+	<input type="hidden" name="dosql" value="do_contact_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="contact_project" value="0" />
+	<input type="hidden" name="contact_unique_update" value="<?php echo uniqid("");?>" />
+	<input type="hidden" name="contact_id" value="<?php echo $contact_id;?>" />
 
 <tr>
 	<td colspan="2">

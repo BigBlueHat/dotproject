@@ -75,7 +75,8 @@ function submitIt() {
 </script>
 
 <table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
-<form name="editFrm" action="?m=departments&a=do_dept_aed" method="post">
+<form name="editFrm" action="?m=departments" method="post">
+	<input type="hidden" name="dosql" value="do_dept_aed" />
 	<input type="hidden" name="dept_id" value="<?php echo $dept_id;?>" />
 	<input type="hidden" name="dept_company" value="<?php echo $company_id;?>" />
 
