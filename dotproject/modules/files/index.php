@@ -1,14 +1,4 @@
-<?php /* $Id$ */
-##
-## Files modules: index page
-##
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* FILES $Id$ */
 $AppUI->savePlace();
 
 if (isset( $_REQUEST['project_id'] )) {
@@ -57,11 +47,11 @@ $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 	</td>
 	<td>&nbsp;<input class="button" type="submit" value="<?php echo $AppUI->_('search');?>" disabled="disabled" /></td>
 	</form>
-	<?php if (!$denyEdit) { ?>
+<?php if ($canEdit) { ?>
 	<td align="right">
 		&nbsp;<input type="button" class=button value="<?php echo $AppUI->_( 'add new file' );?>" onClick="javascript:window.location='./index.php?m=files&a=addedit';" />
 	</td>
-	<?php } ?>
+<?php } ?>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help', 'ID_HELP_FILE_IDX' ).'" />' );?></td>
 </tr>
 </table>
@@ -70,7 +60,7 @@ $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <tr>
 <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickProject">
 	<td align="right" width="100%" nowrap="nowrap">
-		<?php echo $AppUI->_( 'Project' );?>: 
+		<?php echo $AppUI->_( 'Project' );?>:
 <?php
 	echo arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" size="1" class="text"', $project_id );
 ?>

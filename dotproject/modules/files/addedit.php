@@ -1,15 +1,11 @@
-<?php
-##
-## Files modules: add new/edit existing file
-##
-
+<?php /* FILES $Id$ */
 $file_id = isset($_GET['file_id']) ? $_GET['file_id'] : 0;
  
-// check permissions
-$denyEdit = getDenyEdit( $m, $file_id );
+// check permissions for this file
+$canEdit = !getDenyEdit( $m, $file_id );
 
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $file_task = isset($_GET['file_task']) ? $_GET['file_task'] : 0;
@@ -52,7 +48,7 @@ function delIt() {
 	<td><img src="./images/icons/folder.gif" alt="" border="0" width="42" height="42" /></td>
 	<td nowrap><h1><?php echo $AppUI->_( ($file_id > 0) ? "Edit File" : "New File" ); ?></h1></td>
 	<td align="right" width="100%"></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help', 'ID_HELP_FILE_EDIT' ).'">' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help', 'ID_HELP_FILE_EDIT' ).'" />' );?></td>
 </tr>
 </table>
 
@@ -62,7 +58,7 @@ function delIt() {
 		<td width="50%" align="right">
 	<?php if ($file_id) { ?>
 			<a href="javascript:delIt()">
-				<img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this file" border="0"><?php echo $AppUI->_( 'delete file' );?>
+				<img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this file" border="0" /><?php echo $AppUI->_( 'delete file' );?>
 			</a>
 	<?php } ?>
 		</td>
