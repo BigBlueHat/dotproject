@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-GLOBAL $AppUI, $projects, $company_id, $pstatus, $show_all_projects, $project_types;
+GLOBAL $AppUI, $projects, $company_id, $pstatus, $show_all_projects, $project_types, $tab;
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 	// Let's check if the user submited the change status form
@@ -43,7 +43,7 @@ $none = true;
 
 // When in plain view, $AppUI->getState( 'ProjIdxTab' ) doesn't contain the selected index for which we want
 // to filter projects, we must get the current box name from the calling file overrides.php variable $v
-if ( $this->active == -1 ){
+if ( $tab == -1 ){
 	//Plain view
 	foreach ($project_types as $project_key => $project_type){
 		$project_type = trim($project_type);
@@ -52,7 +52,7 @@ if ( $this->active == -1 ){
 	$project_status_filter = $flip_project_types[$v[1]];
 } else{
 	//Tabbed view
-	$project_status_filter = $AppUI->getState( 'ProjIdxTab' );
+	$project_status_filter = $tab;
 }
 
 foreach ($projects as $row) {
@@ -91,7 +91,7 @@ foreach ($projects as $row) {
 }
 if ($none) {
 	echo $CR . '<tr><td colspan="6">' . $AppUI->_( 'No projects available' ) . '</td></tr>';
-}
+} else {
 ?>
 <tr>
 	<td colspan="6" align="right">
@@ -100,7 +100,8 @@ if ($none) {
 			echo "<input type='hidden' name='update_project_status' value='1' />";
 			echo "<input type='hidden' name='m' value='projects' />";
 			echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', 2, true );
-			                                                                // 2 will be the next step
+												                                // 2 will be the next step
+}
 		?>
 	</td>
 </tr>

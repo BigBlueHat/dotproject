@@ -13,11 +13,22 @@ $orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrde
 // load the company types
 
 $types = dPgetSysVal( 'CompanyType' );
-
 // get any records denied from viewing
 
 $obj = new CCompany();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
+
+if ( $companiesType == -1 ){
+	//Plain view
+	foreach ($types as $company_key => $company_type){
+		$company_type = trim($company_type);
+		$flip_company_types[$company_type] = $company_key;
+	}
+	$company_type_filter = $flip_company_types[$v[1]];
+} else{
+	//Tabbed view
+	$company_type_filter = $companiesType;
+}
 
 // retrieve list of records
 $sql = "SELECT company_id, company_name, company_type, company_description,"
@@ -37,7 +48,7 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 		OR (permission_grant_on = 'companies' and permission_item = company_id)
 		)"
 	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
-	. ($companiesType < count($types) ? " AND company_type = $companiesType" : "");
+	. ($companiesType < count($types) ? " AND company_type = $company_type_filter" : "");
 	
 if($search_string != ""){
 	$sql .= " AND company_name LIKE '%$search_string%' ";
@@ -67,7 +78,10 @@ $rows = db_loadList( $sql );
 </tr>
 <?php
 $s = '';
+
+$none = true;
 foreach ($rows as $row) {
+	$none = false;
 	$s .= $CR . '<tr>';
 	$s .= $CR . '<td>&nbsp;</td>';
 	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '" title="'.$row['company_description'].'">' . $row["company_name"] .'</a></td>';
@@ -77,5 +91,8 @@ foreach ($rows as $row) {
 	$s .= $CR . '</tr>';
 }
 echo "$s\n";
+if ($none) {
+	echo $CR . '<tr><td colspan="5">' . $AppUI->_( 'No companies available' ) . '</td></tr>';
+}
 ?>
 </table>
