@@ -67,7 +67,7 @@ $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
-assignees.user_username as assignee_username, count(assignees.user_id) as assignee_count
+assignees.user_username as assignee_username, count(assignees.user_id) as assignee_count, count(files.file_task) as file_count
 ";
 
 $from = "tasks";
@@ -76,6 +76,9 @@ $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
 // patch 2.12.04 show assignee and count
 $join .= " LEFT JOIN user_tasks as ut ON ut.task_id = tasks.task_id";
 $join .= " LEFT JOIN users as assignees ON assignees.user_id = ut.user_id";
+
+// to figure out if a file is attached to task
+$join .= " LEFT JOIN files on tasks.task_id = files.file_task";
 
 $where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
 
@@ -254,6 +257,7 @@ function showtask( &$a, $level=0 ) {
 	$s .= "\n\t</td>";
 // dots
 	$s .= '<td width="90%">';
+	$s .= $a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
 	for ($y=0; $y < $level; $y++) {
 		if ($y+1 == $level) {
 			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
