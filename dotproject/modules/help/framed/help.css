@@ -1,0 +1,184 @@
+/* ie specific */
+
+
+
+body,th,td {
+	font-family: verdana,helvetica,arial,sans-serif;
+	FONT-SIZE: 70%;
+}
+
+td.def {
+	border-style: solid;
+	border-color: #000000;
+	border-width: 1px;
+	background-color: #d8e8f5;
+	font-family: monospace;
+	font-size: 13px;
+}
+
+button {
+	border: 1px black solid;
+	font-family: verdana,sans-serif;
+	font-size: 8px;
+}
+.button{
+ border: 1px black solid;
+ FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 8pt;
+ width: 100px;
+}
+
+INPUT.tab {
+	border: 1px black solid;
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: 10px;
+}
+
+.mboxhdr {
+	background-color: #ccccff;
+	color: #000000;
+	list-style-type: disc;
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+}
+
+A:LINK,
+A:VISITED,
+A:ACTIVE {
+	text-decoration: none;
+	color: #000099;
+}
+A:HOVER {
+	COLOR: #9999cc;
+	text-decoration:underline;
+}
+HR {
+	color: #333366;
+}
+
+.text{
+ border: 1px black solid;
+ FONT-FAMILY: verdana,helvetica,arial,sans-Serif; 
+ FONT-SIZE: 10px;
+ height: 20px;
+}
+
+CODE {
+	BACKGROUND: #f0f0f0;
+	COLOR: #000000;
+	CURSOR: text;
+	FONT-SIZE: 11px;
+}
+
+PRE.syntax {
+	BORDER-RIGHT: #333366 1px solid;
+	PADDING-RIGHT: 28px;
+	BORDER-TOP: #333366 1px solid;
+	MARGIN-TOP: 1em;
+	PADDING-LEFT: 8px;
+	MARGIN-BOTTOM: 1em;
+	PADDING-BOTTOM: 4px;
+	BORDER-LEFT: #333366 1px solid;
+	BACKGROUND: #e0e0e0;
+	COLOR: #000000;
+	CURSOR: text;
+	PADDING-TOP: 4px;
+	BORDER-BOTTOM: #333366 1px solid
+	WIDTH: 600px
+}
+
+PRE.code {
+	PADDING-RIGHT: 28px;
+	MARGIN-TOP: 1em;
+	PADDING-LEFT: 8px;
+	MARGIN-BOTTOM: 1em;
+	PADDING-BOTTOM: 4px;
+	BACKGROUND: #f0f0f0;
+	COLOR: #000000;
+	CURSOR: text;
+	PADDING-TOP: 4px;
+	WIDTH: 600px
+}
+
+PRE.output {
+	BORDER-RIGHT: #9999cc 1px solid;
+	PADDING-RIGHT: 28px;
+	BORDER-TOP: #9999cc 1px solid;
+	MARGIN-TOP: 1em;
+	PADDING-LEFT: 8px;
+	MARGIN-BOTTOM: 1em;
+	PADDING-BOTTOM: 4px;
+	BORDER-LEFT: #9999cc 1px solid;
+	BACKGROUND: #f0f0f0;
+	COLOR: #000000;
+	CURSOR: text;
+	PADDING-TOP: 4px;
+	BORDER-BOTTOM: #9999cc 1px solid
+	WIDTH: 600px
+}
+
+H1 {
+	MARGIN-TOP: .4em;
+	FONT-WEIGHT: bold;
+	MARGIN-BOTTOM: 0em;
+	FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+	FONT-SIZE: 120%;
+}
+H4 {
+	MARGIN-TOP: 1em; FONT-WEIGHT: bold; MARGIN-BOTTOM: 0.4em; FONT-FAMILY: Verdana, Arial, Helvetica, sans-serif;
+	FONT-SIZE: 100%;
+	MARGIN-LEFT: -10px;
+	COLOR: #000066;
+}
+
+
+DL P {
+	MARGIN-LEFT: 0em
+}
+DL {
+	MARGIN-TOP: 0em; PADDING-LEFT: 1px
+}
+DD {
+	MARGIN-BOTTOM: 0em; MARGIN-LEFT: 1.5em
+}
+DT {
+	MARGIN-TOP: 0.5em
+}
+
+
+
+TABLE.BANNER {
+	BACKGROUND-COLOR: #CCCCFF;
+	BORDER-BOTTOM: #333366 1px solid;
+	WIDTH: 100%;
+}
+
+P.BANNER {
+	BACKGROUND-COLOR: #99ccff;
+	BORDER-BOTTOM: #888888 1px solid;
+	MARGIN-LEFT: -10px;
+	WIDTH: 100%;
+}
+
+
+TABLE.dtTABLE {
+	BORDER-RIGHT: #888888 1px solid;
+	BORDER-TOP: #888888 1px solid;
+	MARGIN-TOP: 0.6em;
+	MARGIN-BOTTOM: 0.3em;
+	BORDER-LEFT: #888888 0px solid;
+	WIDTH: 600px;
+	BORDER-BOTTOM: #888888 0px solid;
+	BACKGROUND-COLOR: #888888;
+}
+TABLE.dtTABLE TD {
+	BORDER-RIGHT: #888888 0px solid;
+	PADDING-RIGHT: 6px;
+	BORDER-TOP: #888888 0px solid;
+	PADDING-LEFT: 6px;
+	PADDING-BOTTOM: 4px;
+	BORDER-LEFT: #888888 1px solid;
+	PADDING-TOP: 4px;
+	BORDER-BOTTOM: #888888 1px solid;
+	TEXT-ALIGN: left;
+	BACKGROUND: #ffffff; VERTICAL-ALIGN: top
+}
