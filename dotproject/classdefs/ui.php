@@ -46,6 +46,7 @@ class CAppUI {
 
 // CAppUI Constructor
 	function CAppUI() {
+		GLOBAL $debug;
 		$this->state = array();
 
 		$this->user_id = -1;
@@ -189,7 +190,7 @@ class CAppUI {
 		";
 
 		if ($debug) {
-			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$psql</font></pre>";
+			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
 		}
 		if( !db_loadObject( $sql, $this ) ) {
 			return false;
