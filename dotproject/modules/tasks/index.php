@@ -16,7 +16,7 @@ if(!getDenyRead("admin")){ // Only sysadmins are able to change users
 if (isset( $_POST['f'] )) {
 	$AppUI->setState( 'TaskIdxFilter', $_POST['f'] );
 }
-$f = $AppUI->getState( 'TaskIdxFilter' ) ? $AppUI->getState( 'TaskIdxFilter' ) : 'my';
+$f = $AppUI->getState( 'TaskIdxFilter' ) ? $AppUI->getState( 'TaskIdxFilter' ) : 'myunfinished';
 
 if (isset( $_POST['f2'] )) {
 	$AppUI->setState( 'CompanyIdxFilter', $_POST['f2'] );
