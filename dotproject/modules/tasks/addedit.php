@@ -7,14 +7,6 @@
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
 $task_parent = intval( dPgetParam( $_GET, "task_parent", 0 ) );
 
-// check permissions
-$canEdit = !getDenyEdit( $m, $task_id );
-if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
-$durnTypes = dPgetSysVal( 'TaskDurationType' );
-
 // load the record data
 $obj = new CTask();
 
@@ -23,13 +15,6 @@ if (!$obj->load( $task_id ) && $task_id > 0) {
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
-
-// check the document access
-if (!$obj->canAccess( $AppUI->user_id )) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
-$task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
 
 // check for a valid project parent
 $task_project = intval( $obj->task_project );
@@ -40,6 +25,33 @@ if (!$task_project) {
 		$AppUI->redirect();
 	}
 }
+
+// check permissions
+if ( $task_id ) {
+	// we are editing an existing task
+	$canEdit = !getDenyEdit( $m, $task_id );
+} else {
+	// we are trying to add a new task
+	
+	// do we have write access on this project?
+	$canEdit = ( !getDenyEdit( 'projects', $task_project ) );
+
+	// and can we edit tasks at all?
+	// $canEdit = $canEdit && TODO!!!!
+}
+
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+$durnTypes = dPgetSysVal( 'TaskDurationType' );
+
+// check the document access (public, participant, private)
+if (!$obj->canAccess( $AppUI->user_id )) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+$task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
