@@ -11,7 +11,7 @@ function toggle_collapse(item, collapse)
 {
 	var item_image = document.getElementById('image_' + item);
 	if (! item_image) {
-		return;
+		return false;
 	}
 	// Grab the row that belongs to the icon
 	var item_elem = document.getElementById('r_' + item);
@@ -25,7 +25,7 @@ function toggle_collapse(item, collapse)
 	if (bottom == '_0') {
 		// Item is collapsed, expand it.
 		if (collapse) {
-			return;
+			return false;
 		}
 		var orig = saved_rows.find(item);
 		if (orig) {
@@ -79,19 +79,20 @@ function show_tab(i)
 	hide_tabs();
 	var tab = document.getElementById('tab_' + i);
 	tab.style.display = 'block';
-	var tab = document.getElementById('toptab_' + i);
+	tab = document.getElementById('toptab_' + i);
 	tab.className = 'tabon';
 }
 
 function hide_tabs()
 {
 	var tabs = document.getElementsByTagName('td');
-	for(var i = 0; i < tabs.length; i++)
+	var i;
+	for(i = 0; i < tabs.length; i++)
 		if (tabs[i].className == 'tabon')
 			tabs[i].className = 'taboff';
 
-	var tabs = document.getElementsByTagName('div');
-	for(var i = 0; i < tabs.length; i++)
+	tabs = document.getElementsByTagName('div');
+	for(i = 0; i < tabs.length; i++)
 		if (tabs[i].className == 'tab')
 			tabs[i].style.display = 'none';
 } 
