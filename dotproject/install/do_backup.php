@@ -1,6 +1,20 @@
-<?php
-// backup functionality is based on the backup module for dotproject from daniel vijge, http://sf.net/projects/dotmods/
-// based on the work of the phpmyadmin project, www.phpmyadmin.net
+<?php // $Id$
+
+/*
+* dotProject Installer
+* @package dotProject
+* @Copyright (c) 2004, The dotProject Development Team sf.net/projects/dotproject
+* @ All rights reserved
+* @ dotProject is Free Software, released under BSD License
+* @subpackage Installer
+* @ This Installer is released under GNU/GPL License : http://www.gnu.org/copyleft/gpl.html
+* @ Major Parts are based on Code from Mambo Open Source www.mamboserver.com
+* @file do_backup.php
+* @ backup functionality is based on the backup module for dotproject from daniel vijge, http://sf.net/projects/dotmods/
+* @ based on the work of the phpmyadmin project, www.phpmyadmin.net
+* @version $Revision$
+*/
+
 
 require_once("commonlib.php");
 
