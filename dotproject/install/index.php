@@ -1,5 +1,5 @@
 <?php // $Id$
-//todo: enable dbcreated functionality for reposts ans so on  (prevent from double-install)
+//todo: enable dbcreated functionality for reposts and so on  (prevent from double-install)
 //todo: interface: right row more to the left
 //todo: !heavy!: design: have a main site where the steps are linked and where we always come back and do the main work.
 //todo: script to read subdirectories for styles and langs (delete empty/superfluous directories in the core distro???)
@@ -7,7 +7,7 @@
 //todo: enhanced guiding texts
 //todo: read existing config file in case of upgrade
 //todo: require then (config file existing) admin passwd for security check
-//todo: checkin dp main if installer is deleted after successfull install
+//todo: check in dp main if installer is deleted after successfull install
 //todo: change admin passwd?!
 //todo: GPL possible?
 //todo: better error management with displaying what worked well (has been installed) and what went wrong
@@ -15,6 +15,7 @@
 //todo: core: store database version (dp version) in dPdatabase for verifying db upgrade scripts!
 //todo: ask how advanced the user is, do not show advanced config settings in dummy case
 //todo: centralized registration of config vars!
+//todo: bug backup db and then there are no preferred values shown
 
 
 /*
@@ -30,7 +31,7 @@
 */
 
 ### A NOTE FOR DEVELOPERS ###
-### HOWTO REGISTER A NEW (NON-DB RELATED) CONFIG VARIABLE WITH THE INSTALLER (2004 05 01) ###
+### HOWTO REGISTER A NEW (NON-DB RELATED) CONFIG VARIABLE WITH THE INSTALLER (2004 05 01) (modified 2004 06 12) ###
 # 1) Add an appropriate line to the list of input type hidden fallback items in db.php (somewhere at the end of file)
 # 2) Copy the same line to the list of input type hidden fallback items in do_backup.php (somewhere at the end of file)
 # 3) Copy the same line to the list of input type hidden fallback items in config.php (somewhere at the middle of file)
@@ -39,6 +40,7 @@
 # 6) Copy the same line to the list of dPgetParam/POST definitions in pref.php (somewhere at the top of file)
 # 7) Add an appropriate html form field (tag) to pref.php
 # 8) Add an appropriate line to the list of config variables that will be written to the config file in config.php (somewhere more to the end of file)
+# 9) If the variable's field is a checkbox (bool variable), add a suitable line to the section where NULL values are converted to FALSE in config.php
 ### THE REGISTRATION OF THE CONFIG VAR SHOULD NOW BE COMPLETE ###
 ### IN CASE YOU EXPERIENCE PROBLEMS CONTACT THE AUTHOR/MAINTAINER OF THIS INSTALLER ###
 
@@ -59,7 +61,8 @@ require_once("commonlib.php");
 <tr>
         <td class="item" colspan="2">Welcome to the dotProject Installer that guides you through the complete Installation
         Process. Normally all major configuration settings are generated automatically - verified by you! However, depending on your
-        System Environment, errors or information lacks may occur. In some cases a manual installation cannot be avoided.
+        System Environment, errors or information lacks may occur. In some cases a manual installation cannot be avoided.<br />&nbsp;<br/>
+ 	Moving the mouse pointer over a form field will show you a tooltip with information that could be helpful for you!
         </td>
 </tr>
 <tr>

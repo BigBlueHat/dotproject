@@ -312,8 +312,8 @@ function split_sql($sql) {
             <td align="left"><input class="button" type="text" name="cal_day_end" value="<?php echo $cal_day_end; ?>" title="Sets the End Hour of Day View in Calendar." /></td>
         </tr>
         <tr>
-            <td class="item">Hour Incremention</td>
-            <td align="left"><input class="button" type="text" name="cal_day_increment" value="<?php echo $cal_day_increment; ?>" title="Sets the Subdivision Fineness in Day View in Calendar. Data mus be entered in the Format 0.xyz" /></td>
+            <td class="item">Hour Incremention [min]</td>
+            <td align="left"><input class="button" type="text" name="cal_day_increment" value="<?php echo $cal_day_increment; ?>" title="Sets the Subdivision Fineness in Day View in Calendar. Data must be entered in minutes" /></td>
         </tr>
         <tr>
             <td class="item">Working Days</td>

@@ -83,7 +83,7 @@ if (is_writable( "../includes/config.php" )) {
 ?>
 <tr>
             <td class="item">./includes/config.php writable</td>
-            <td align="left"><?php echo is_writable( "../includes/config.php" ) ? '<b class="ok">'.$okImg.'</b>'.$okMessage : '<span class="warning"><a href="chmod.php?object=config">'.$failedImg.'</a> Configuration process can still be continued. Configuration file will be displayed at the end, just copy & paste this and upload.</span>';?></td>
+            <td align="left"><?php echo is_writable( "../includes/config.php" ) ? '<b class="ok">'.$okImg.'</b>'.$okMessage : '<b class="error">'.$failedImg.'</b><span class="warning"> Configuration process can still be continued. Configuration file will be displayed at the end, just copy & paste this and upload.</span>';?></td>
 </tr>
 <?php
 $okMessage="";

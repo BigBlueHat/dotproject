@@ -65,6 +65,7 @@ $ft_application_pdf     = trim( dPgetParam( $_POST, 'ft_application_pdf', '/usr/
 $dbpersist              = defVal($dbpersist, "false");
 $check_legacy_passwords = defVal($check_legacy_passwords, "false");
 $show_all_tasks         = defVal($show_all_tasks, "false");
+$show_all_task_assignees = defVal($show_all_task_assignees, "false");
 $enable_gantt_charts    = defVal($enable_gantt_charts, "false");
 $log_changes            = defVal($log_changes, "false");
 $check_tasks_dates      = defVal($check_tasks_dates, "false");
