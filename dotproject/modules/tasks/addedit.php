@@ -158,10 +158,9 @@ function delIt() {
 </tr>
 </TABLE>
 
-<table border="0" cellpadding="4" cellspacing="0" width="95%" bgcolor="#dddddd">
+<table border="0" cellpadding="4" cellspacing="0" width="95%" >
 <tr>
 	<td class="allFormsTitleHeader" valign="middle">
-		<img src="./images/icons/minitask.gif" alt="" border="0" align="absmiddle">
 		<b><?php	
 			echo $task_id ? 'Edit the task using' : 'To create a new task complete';
 			echo " the form below";
@@ -172,23 +171,31 @@ function delIt() {
 
 <table border="1" cellpadding="6" cellspacing="0" width="95%" bgcolor="#eeeeee">
 <tr class="basic" valign="top" width="50%">
-	<td><span id="ccstasknamestr"><span class="FormLabel">task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$prow["task_name"];?>" size="25" maxlength="50"></td>
+	<td>
+		<span id="ccstasknamestr"><span class="FormLabel">task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$prow["task_name"];?>" size="40" maxlength="255">
+	</td>
 	<td>
 		<TABLE width="100%" bgcolor="#dddddd">
 		<TR>
+			<TD>Status</TD>
 			<TD><span class="FormLabel">priority</span> <span class="FormElementRequired">*</span></TD>
-			<TD nowrap>Percent Complete</TD>
+			<TD nowrap>Complete?</TD>
 			<TD>Milestone?</TD>
 		</TR>
 		<TR>
+			<TD>		
+			<?php
+				echo arraySelect( $status, 'task_status', 'size=1 class=text', $prow["task_status"] ) . '%';
+			?>
+			</TD>
 			<TD nowrap>
-				<input type="radio" name="task_priority" value="-1" <?php if($prow["task_priority"] ==-1){?>checked<?php }?>>low
-				<input type="radio" name="task_priority" value="0" <?php if(intval($prow["task_priority"]) ==0){?>checked<?php }?>>normal
-				<input type="radio" name="task_priority" value="1" <?php if($prow["task_priority"] ==1){?>checked<?php }?>>high
+			<?php
+				echo arraySelect( $priority, 'task_priority', 'size=1 class=text', $prow["task_priority"] );
+			?>
 			</TD>
 			<TD>		
 			<?php
-				echo arraySelect( $percent, 'task_precent_complete', 'size=1', $prow["task_precent_complete"] ) . '%';
+				echo arraySelect( $percent, 'task_precent_complete', 'size=1 class=text', $prow["task_precent_complete"] ) . '%';
 			?>
 			</TD>
 			<TD>
@@ -214,7 +221,7 @@ function delIt() {
 		<?php }?>
 		</select>
 		<br>Related URL
-		<br><input type="Text" name="task_related_url" value="<?php echo @$prow["task_related_url"];?>" size="50" maxlength="255"">
+		<br><input type="Text" name="task_related_url" value="<?php echo @$prow["task_related_url"];?>" size="40" maxlength="255"">
 		<br>
 		<table>
 		<tr>

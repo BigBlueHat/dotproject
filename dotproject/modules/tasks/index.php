@@ -78,12 +78,12 @@ $where = "project_active <> 0".($project_id ? "\nAND task_project = $project_id"
 
 switch ($f) {
 	case 1:
-		$where .= "\n	AND project_owner = $thisuser_id";
+		$where .= "\nAND task_status > -1\n	AND project_owner = $thisuser_id";
 		break;
 	case 2:
-		$where .= "\n	AND project_company = $thisuser_company";
+		$where .= "\nAND task_status > -1\n	AND project_company = $thisuser_company";
 		break;
-	default:
+	case 3:
 		$from .= ", user_tasks";
 		$where .= "
 	AND task_project = projects.project_id
@@ -91,11 +91,19 @@ switch ($f) {
 	AND user_tasks.task_id = tasks.task_id
 ";
 		break;
+	default:
+		$from .= ", user_tasks";
+		$where .= "
+	AND task_status > -1
+	AND task_project = projects.project_id
+	AND user_tasks.user_id = $thisuser_id
+	AND user_tasks.task_id = tasks.task_id
+";
+		break;
 }
 
-
 $tsql .= "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
-##echo "<pre>$tsql</pre>";##
+##echo "<pre>$tsql</pre>".mysql_error();##
 
 $ptrc = mysql_query( $tsql );
 $nums = mysql_num_rows( $ptrc );

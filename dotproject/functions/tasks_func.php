@@ -4,7 +4,19 @@ $percent = array(0=>'0',5=>'5',10=>'10',15=>'15',20=>'20',25=>'25',30=>'30',35=>
 $filters = array(
 	'My Tasks',
 	'My Projects',
-	'All Tasks for my Company'
+	'All Tasks for my Company',
+	'My Tasks (show in-active)'
+);
+
+$status = array(
+ 0 => 'Active',
+ -1 => 'In-active'
+);
+
+$priority = array(
+ -1 => 'low',
+ 0 => 'normal',
+ 1 => 'high'
 );
 
 ?>
