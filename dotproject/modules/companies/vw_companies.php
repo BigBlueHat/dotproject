@@ -35,7 +35,7 @@ $q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
 $q->addJoin('projects', 'p2', 'c.company_id = p2.project_company AND p2.project_active = 0');
 if (count($allowedCompanies) > 0) { $q->addWhere('c.company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')'); }
 if ($companiesType) { $q->addWhere('c.company_type = '.$company_type_filter); }
-if ($search_string != "") { $q->addWhere('c.company_name LIKE '.'%$search_string%'); }
+if ($search_string != "") { $q->addWhere("c.company_name LIKE '%$search_string%'"); }
 if ($owner_filter_id > 0) { $q->addWhere("c.company_owner = $owner_filter_id "); }
 $q->addGroup('c.company_id');
 $q->addOrder($orderby.' '.$orderdir);
