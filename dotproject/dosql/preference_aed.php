@@ -11,16 +11,19 @@ foreach ($_POST['pref_name'] as $name => $value) {
 	if ($del) {
 		if (($msg = $obj->delete())) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
-			$AppUI->redirect();
 		} else {
 			$AppUI->setMsg( "Preferences deleted", UI_MSG_ALERT );
 		}
 	} else {
 		if (($msg = $obj->store())) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
-			$AppUI->redirect();
 		} else {
 			$AppUI->setMsg( "Preferences updated", UI_MSG_OK );
+			if ($obj->pref_user) {
+			// if user preferences, reload them now
+				$AppUI->loadPrefs( $AppUI->user_id );
+				$AppUI->setUserLocale();
+			}
 		}
 	}
 }
