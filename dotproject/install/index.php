@@ -1,5 +1,4 @@
 <?php // $Id$
-
 ?>
 <html>
 <head>
@@ -8,7 +7,6 @@
  	<link rel="stylesheet" type="text/css" href="../style/default/main.css">
 </head>
 <body>
-<h1 class="warning">This Installer is in development. You may try it, but it is likely that it is not properly working!</h1>
 <h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;dotProject Installer</h1>
 
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="90%" align="center">
