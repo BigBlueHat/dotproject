@@ -1,17 +1,7 @@
 <?php
 ##
-## Main Functions
+## Global General Purpose Functions
 ##
-
-function ptranslate($word){
-	global $language_file,$root_dir;
-	require "./includes/" . $language_file;
-	if (empty( $pt[$word] )) {
-		return $word;
-	} else {
-		return $pt[$word];
-	}
-}
 
 ##
 ## Returns the best color based on a background color (x is cross-over)
