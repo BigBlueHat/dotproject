@@ -4,226 +4,154 @@ $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
 if ($denyRead) {
-        echo '<script language="javascript">
-        window.location="./index.php?m=help&a=access_denied";
-        </script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
+}
+$AppUI->savePlace();
+
+// restore/get the company filter if specified
+if (isset( $_REQUEST['company_id'] )) {
+	$AppUI->setState( 'ProjIdxCompany', $_REQUEST['company_id'] );
+}
+$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+
+// get the passed timestamp (today if none)
+$uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
+$this_month = new CDate( $uts );
+
+// pull the companies list
+$sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
+$companies = arrayMerge( array( 0 => 'All' ), db_loadHashList( $sql ) );
+
+// pull the tasks and events for the month
+$first_time = $this_month;
+$first_time->setDay( 1 );
+$first_time->setTime( 0, 0, 0 );
+
+$last_time = $this_month;
+$last_time->setDay( $this_month->daysInMonth() );
+$last_time->setTime( 23, 59, 59 );
+
+$tasks = getTasksForPeriod( $first_time, $last_time, $company_id );
+$events = getEventsForPeriod( $first_time, $last_time );
+//echo '<pre>';print_r($tasks);echo '</pre>';
+
+$links = array();
+$strMaxLen = 20;
+
+// assemble the links for the tasks
+foreach ($tasks as $row) {
+// the link
+	$link['href'] = "?m=tasks&a=view&task_id=".$row['task_id'];
+	$link['alt'] = $row['project_name'].":\n".$row['task_name'];
+
+// the link text
+	if (strlen( $row['task_name'] ) > $strMaxLen) {
+		$row['task_name'] = substr( $row['task_name'], 0, $strMaxLen ).'...';
+	}
+	$link['text'] = '<span style="color:'.bestColor($row['color']).';background-color:#'.$row['color'].'">'.$row['task_name'].'</span>';
+
+// determine which day(s) to display the task
+	$start = new CDate( db_dateTime2unix( $row['task_start_date'] ) );
+	$end = new CDate( db_dateTime2unix( $row['task_end_date'] ) );
+	$durn = $row['task_duration'];
+
+	if ($start->inMonth( $this_month )) {
+		$temp = $link;
+		$temp['alt'] = "START [".($durn < 24 ? $durn.' hours' : floor($durn/24).' days')."]\n".$link['alt'];
+		$links[$start->getDay()][] = $temp;
+	}
+	if ($end->inMonth( $this_month ) && $start->daysTo( $end ) != 0) {
+		$temp = $link;
+		$temp['alt'] = "FINISH\n".$link['alt'];
+		$links[$end->getDay()][] = $temp;
+	}
+// fill in between start and finish based on duration
+	if ($durn > 24) {
+	// notes:
+	// start date is not in a future month, must be this or past month
+	// start date is counted as one days work
+	// business days are not taken into account
+		$target = $start;
+		$target->addDays( (int) ($durn / 24) );
+		$day = $this_month->getDay();			// day of month
+		$dim = $this_month->daysInMonth();		// days in month
+		$d2t = $this_month->daysTo( $target );	// days to target
+		$d2s = $this_month->daysTo( $start );	// days to start date
+		$d2e = $this_month->daysTo( $end );		// days to end date
+
+		$s = max( $d2s + $day + 1, 1 );
+		$e = min( $d2t + $day - 1, $d2e - 1, $dim );
+		
+		for( $i=$s; $i <= $e; $i++ ) {
+			$links[$i][] = $link;
+		}
+	}
 }
 
-// Set Day, Month, Year
-if (empty( $thisMonth )) $thisMonth = date( "n", time() );
-if (empty( $thisYear )) $thisYear = date( "Y", time() );
-if (empty( $thisDay )) $thisDay = date( "d", time() );
-if ($thisDay < 1) $thisDay = 1;
+// assemble the links for the events
+foreach ($events as $row) {
+	$start = new CDate( $row['event_start_date'] );
 
-if (empty( $todaysDay )) $todaysDay = date( "d", time() );
-if (empty( $todaysMonth )) $todaysMonth = intval( date( "m", time() ) );
-if (empty( $todaysYear )) $todaysYear = date( "Y", time());
-if (empty( $field )) $field = "x";
-$day = 0;
-
-// Figure out the last day of the month
-$lastday[1]=31;
-// Check for Leap Years
-if (checkdate( $thisMonth, 29, $thisYear )) {
-        $lastday[2] = 29;
-} else {
-        $lastday[2]=28;
-}
-$lastday[3]=31;
-$lastday[4]=30;
-$lastday[5]=31;
-$lastday[6]=30;
-$lastday[7]=31;
-$lastday[8]=31;
-$lastday[9]=30;
-$lastday[10]=31;
-$lastday[11]=30;
-$lastday[12]=31;
-
-//Short Day names
-$dayNamesShort = array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
-
-if ($thisDay > $lastday["$thisMonth"]) {
-        $thisDay = $lastday["$thisMonth"];
+// the link
+	$link['href'] = "?m=calendar&a=addedit&event_id=".$row['event_id'];
+	$link['alt'] = $row['event_description'];
+	$link['text'] = '<img src="./images/obj/event.gif" width="16" height="16" border="0" alt="">'
+		.'<span class="event">'.$row['event_title'].'</span>';
+	$links[$start->getDay()][] = $link;
 }
 
-$sqldate = $thisYear . "-" . $thisMonth . "-" . $thisDay;
-
-$prevYear = $thisYear;
-$prevMonth = $thisMonth - 1;
-if ($prevMonth < 1) {
-        $prevMonth = $prevMonth + 12; $prevYear--;
-}
-if ($lastday["$prevMonth"] > $thisDay) {
-        $moveday = $thisDay;
-} else {
-        $moveday =$lastday["$prevMonth"];
-}
-
-$nextYear = $thisYear;
-$nextMonth = $thisMonth+1;
-if ($nextMonth > 12) {
-        $nextMonth = $nextMonth - 12;
-        $nextYear++;
-}
+#echo '<pre>';print_r($events);echo '</pre>';
 ?>
 
-<html>
-<head>
-<SCRIPT language="javascript">
-function setClose( x, y, z ) {
-        z =  z - 1999;
-        if ("<?php echo $field;?>" != "Actual") {
-                x = x-1;
-                y = y-1;
-        }
+<table width="98%" border=0 cellpadding="0" cellspacing=1>
+<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
+<tr>
+	<td><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42"></td>
+	<td nowrap><span class="title">Monthly Calendar</span></td>
+	<td align="right" width="100%">
+		Company:
+<?php
+	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
+?>
+	</td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_MOCAL' );?></td>
+</tr>
+</form>
+</table>
 
-        var form = window.opener.document.AddEdit;
-        form.<?php echo $field;?>MM_int.selectedIndex = x;
-        form.<?php echo $field;?>DD_int.selectedIndex = y;
-        form.<?php echo $field;?>YYYY_int.selectedIndex = z;
-        window.close();
+<script language="javascript">
+function clickDay( uts, fdate ) {
+	window.location = './index.php?m=calendar&a=day_view&uts='+uts;
+}
+function clickWeek( uts, fdate ) {
+	window.location = './index.php?m=calendar&a=week_view&uts='+uts;
 }
 </script>
 
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
-<TR>
-        <TD><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42"></td>
-        <TD nowrap><span class="title">Monthly Calendar</span></td>
-        <TD align="right" width="100%">
-                Company: <select name="company_id" onChange="document.pickCompany.submit()" style="font-size:8pt;font-family:verdana;">
-                <option value="0" <?php if($company_id == 0)echo " selected" ;?> >all
-        <?php
-
-        $csql = "select company_id,company_name from companies order by company_name";
-        $crc = mysql_query($csql);
-
-        while ( $row = mysql_fetch_array( $crc ) ) {
-                echo "<option value=" . $row["company_id"];
-                if ($row["company_id"] == $company_id) {
-                        echo " selected";
-                }
-                echo ">" . $row["company_name"] ;
-        }?>
-                </select><br>
-
-                <?php include ("./includes/create_new_menu.php");?>
-        </td>
-</tr>
-</form>
-</TABLE>
-
-<table border=0 cellspacing=1 cellpadding=2 width="95%">
-<tr>
-        <td align=center>
-                <a href="<?php  echo("./index.php?m=calendar&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
-        </td>
-        <td width="100%">
-                <b><?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></b></font>
-        </td>
-        <td align=center>
-                <?php  echo "<a href='./index.php?m=calendar&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
-        </td>
-</tr>
-</table>
-
-<table border=0 cellspacing=1 cellpadding=2 width="95%" bgcolor="#cccccc">
-<tr>
-        <TD>&nbsp;</TD>
-<?php   // print days across top
-for( $i = 0; $i <= 6; $i++ ) { ?>
-        <td align=center width="14%"><b><?php echo $dayNamesShort["$i"];?></b></td>
-<?php } ?>
-</tr>
-
+<table cellspacing="0" cellpadding="0" border="0" width="98%"><tr><td>
 <?php
-        $firstDay = date( 'w', mktime( 0, 0, 0, $thisMonth, 1, $thisYear ) );
-        $dayRow = 0;
+// create the main calendar
+$cal = new CMonthCalendar( $this_month  );
+$cal->setStyles( 'motitle', 'mocal' );
+$cal->setLinkFunctions( 'clickDay', 'clickWeek' );
+$cal->setEvents( $links );
 
-        if ($firstDay > 0) {
-                echo "<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&thisDay=-" .$firstDay . "&thisMonth=". $thisMonth. "&thisYear=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
-                while ($dayRow < $firstDay) {
-                        echo "<td align=right bgcolor='#ffffff' height='80'>&nbsp;</td>\n";
-                        $dayRow += 1;
-                }
-        }
+echo $cal->show();
+//echo '<pre>';print_r($cal);echo '</pre>';
 
-        while ($day < $lastday["$thisMonth"]) {
-                $dayp = $day + 1;
+// create the mini previous and next month calendars under
+$minical = new CMonthCalendar( $cal->prev_month );
+$minical->setStyles( 'minititle', 'minical' );
+$minical->showArrows = false;
+$minical->showWeek = false;
 
-                if (($dayRow % 7) == 0) {
-                        echo " </tr>\n<tr height=80><TD valign=top><A href='./index.php?m=calendar&a=week_view&thisDay=" .$dayp . "&thisMonth=". $thisMonth. "&thisYear=". $thisYear. "'><img src=./images/week.gif width=12 height=39 alt=week view border=0></A></TD>\n";
-                }
+echo '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>';
+echo '<td align="center" width="200">'.$minical->show().'</td>';
+echo '<td align="center" width="100%">&nbsp;</td>';
 
-                $datestr = $thisYear ."-" .  $thisMonth ."-" .  $dayp;
+$minical->setDate( $cal->next_month );
 
-                if ($dayp == $thisDay && empty($drill)) {
-                        $bgcolor = "efefe7";
-                        $txtcolor = "black";
-                } else {
-                        $bgcolor = "#efefe7";
-                        $txtcolor = 'black';
-                }
-                $items = eventsForDate( $dayp, $thisMonth, $thisYear );
-
-                echo "<td valign=top bgcolor=$bgcolor><A href='./index.php?m=calendar&a=day_view&thisMonth=" . $thisMonth . "&thisYear=" . $thisYear . "&thisDay=" . $dayp . "'>" . $dayp . "</A>";
-        ?>
-        <table width="100%" border=0 cellpadding=0 cellspacing=0>
-<?php
-        while (list( $key, $val ) = each( $items )) {
-                $r = hexdec(substr($val["color"], 0, 2));
-                $g = hexdec(substr($val["color"], 2, 2));
-                $b = hexdec(substr($val["color"], 4, 2));
-
-                if ($r < 153 && $g < 153 || $r < 153 && $b < 153 || $b < 153 && $g < 153) {
-                        $font = "#ffffff";
-                } else {
-                        $font = "#272727";
-                }
-
-                echo "<TR><TD bgcolor=" . $val["color"] .">";
-
-                if ($val["type"] == "p") {
-                        echo "<a href=./index.php?m=projects&a=view&project_id=" . $val["id"] ."><B>";
-                } else if ($val["type"] == "t") {
-                        if (intval( $val["priority"] ) <> 0) {
-                                echo "<img src=\"./images/icons/" . $val["priority"] .".gif\" border=0 width=13 height=16 align=absmiddle>";
-                        }
-                        echo "<a href=./index.php?m=tasks&a=view&task_id=" . $val["id"] .">";
-                } else if ($val["type"] == "e") {
-                        echo "<a href=./index.php?m=calendar&a=addedit&event_id=" . $val["id"] ."><i>";
-                }
-                echo '<span style="color:'.$font.';text-decoration:none;">' .  $val["title"] ;
-                echo "</i></span></a></td></tr>";
-                }
+echo '<td align="center" width="200">'.$minical->show().'</td>';
+echo '</tr></table>';
 ?>
-<TR>
-        <TD></td>
-</tr>
-</table>
-
-<?php
-                echo "</td>";
-                $day++;
-                $dayRow++;
-        }
-
-        while ($dayRow % 7) {
-                echo "  <td align=right  bgcolor='#ffffff'>&nbsp;</td>\n";
-                $dayRow += 1;
-        }
-?>
-</tr>
-<tr>
-        <td colspan=8 align=right bgcolor="#efefe7">
-                <font face='verdana, arial, helvetica, sans-serif' size='1'>
-                <A href="<?php  echo "index.php?thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay;?>">today</A>
-                </font>
-        </td>
-</tr>
-</TABLE>
-
-</body>
-</html>
+</td></tr></table>
