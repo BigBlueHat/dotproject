@@ -600,16 +600,10 @@ class CAppUI {
 * <ul>
 * <li>The username and password are trimmed and escaped to prevent malicious
 *     SQL being executed
-* <li>The username and encrypted password are selected from the database but
-*     the comparision is not made by the database, for example
-*     <code>...WHERE user_username = '$username' AND password=MD5('$password')...</code>
-*     to further prevent the injection of malicious SQL
 * </ul>
 * The schema previously used the MySQL PASSWORD function for encryption.  This
-* is not the recommended technique so a procedure was introduced to first check
-* for a match using the PASSWORD function.  If this is successful, then the
-* is upgraded to the MD5 encyption format.  This check can be controlled by the
-* <code>check_legacy_password</code> configuration variable in </code>config.php</code>
+* Method has been deprecated in favour of PHP's MD5() function for database independance.
+* The check_legacy_password option is no longer valid
 *
 * Upon a successful username and password match, several fields from the user
 * table are loaded in this object for convenient reference.  The style, localces
@@ -621,42 +615,23 @@ class CAppUI {
 */
 	function login( $username, $password ) {
 		global $dPconfig;
+		require_once("./classes/authenticator.class.php");
+
+		$auth =& getauth($dPconfig["auth_method"]);
+		
 		$username = trim( db_escape( $username ) );
 		$password = trim( db_escape( $password ) );
 
-		$sql = "
-		SELECT user_id, user_password AS pwd, password('$password') AS pwdpwd, md5('$password') AS pwdmd5
-		FROM users
-		WHERE user_username = '$username'
-		";
-
-		$row = null;
-		if (!db_loadObject( $sql, $row )) {
+		if (!$auth->authenticate($username, $password)) {
 			return false;
 		}
-
-		if (strcmp( $row->pwd, $row->pwdmd5 )) {
-			if ($dPconfig['check_legacy_password']) {
-			/* next check the legacy password */
-				if (strcmp( $row->pwd, $row->pwdpwd )) {
-					/* no match - failed login */
-					return false;
-				} else {
-					/* valid legacy login - update the md5 password */
-					$sql = "UPDATE users SET user_password=MD5('$password') WHERE user_id=$row->user_id";
-					db_exec( $sql ) or die( "Password update failed." );
-					$this->setMsg( 'Password updated', UI_MSG_ALERT );
-				}
-			} else {
-				return false;
-			}
-		}
-
+	
+		$user_id = $auth->userId($username);
 		// Now that the password has been checked, see if they are allowed to
 		// access the system
 		if (! isset($GLOBALS['acl']))
 		  $GLOBALS['acl'] =& new dPacl;
-		if ( ! $GLOBALS['acl']->checkLogin($row->user_id)) {
+		if ( ! $GLOBALS['acl']->checkLogin($user_id)) {
 		  dprint(__FILE__, __LINE__, 1, "Permission check failed");
 		  return false;
 		}
@@ -665,7 +640,7 @@ class CAppUI {
 		SELECT user_id, contact_first_name as user_first_name, contact_last_name as user_last_name, contact_company as user_company, user_department, contact_email as user_email, user_type
 		FROM users
                 LEFT JOIN contacts ON contact_id = user_contact
-		WHERE user_id = $row->user_id AND user_username = '$username'
+		WHERE user_id = $user_id AND user_username = '$username'
 		";
 
 		dprint(__FILE__, __LINE__, 7, "Login SQL: $sql");
