@@ -60,7 +60,7 @@ class CTask {
 			$this->task_duration = '0';
 		}
 		if (!$this->task_duration_type) {
-			$this->task_duration_type = '';
+			$this->task_duration_type = 1;
 		}
 		if (!$this->task_related_url) {
 			$this->task_related_url = '';
