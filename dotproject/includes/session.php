@@ -14,10 +14,10 @@
 * instead of trying to set their own sessions.
 */
 
-require_once dirname(__FILE__) . '/main_functions.php';
-require_once dirname(__FILE__) . '/db_adodb.php';
-require_once dirname(__FILE__) . '/db_connect.php';
-require_once dirname(__FILE__) . '/../classes/query.class.php';
+require_once $baseDir . '/includes/main_functions.php';
+require_once $baseDir . '/includes/db_adodb.php';
+require_once $baseDir . '/includes/db_connect.php';
+require_once $baseDir . '/classes/query.class.php';
 
 function dPsessionOpen($save_path, $session_name)
 {
@@ -69,7 +69,7 @@ function dPsessionWrite($id, $data)
 	$q->addWhere("session_id = '$id'");
 
 	if ( $qid =& $q->exec() 
-	&& ( $qid->fields['row_count'] > 0 || $qid->fields[0] > 0) ) {
+	&& ( @$qid->fields['row_count'] > 0 || @$qid->fields[0] > 0) ) {
 		dprint(__FILE__, __LINE__, 11, "Updating session $id");
 		$q->query = null;
 		$q->addUpdate('session_data', $data);
