@@ -131,19 +131,21 @@ if ($AppUI->doLogin()) {
 // bring in the rest of the support and localisation files
 require_once( "./includes/permissions.php" );
 
-// set the module and action from the url
 $m = dPgetParam( $_GET, 'm', getReadableModule() );
 $u = dPgetParam( $_GET, 'u', '' );
 $a = dPgetParam( $_GET, 'a', 'index' );
 
 @include_once( "./functions/" . $m . "_func.php" );
+
+/*
 // check overall module permissions
 // these can be further modified by the included action files
 $canRead = !getDenyRead( $m );
 $canEdit = !getDenyEdit( $m );
 $canAuthor = $canEdit;
 $canDelete = $canEdit;
-
+*/
+ 
 // load module based locale settings
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
 @include_once( "./locales/core.php" );
@@ -156,6 +158,12 @@ if ( !$suppressHeaders ) {
 	}
 }
 
+/*
+ * 
+ * TODO: Permissions should be handled by each file.
+ * Denying access from index.php still doesn't asure
+ * someone won't access directly skipping this security check.
+ * 
 // bounce the user if they don't have at least read access
 if (!(
 	  // however, some modules are accessible by anyone
@@ -166,6 +174,7 @@ if (!(
 		$AppUI->redirect( "m=public&a=access_denied" );
 	}
 }
+*/
 
 // include the module class file
 @include_once( $AppUI->getModuleClass( $m ) );
