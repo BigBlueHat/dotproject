@@ -1,10 +1,12 @@
-<?php
+<?php /* $Id$ */
 $return = '';
 $AppUI = new CAppUI;
 $AppUI->locale_warn = true;
 $AppUI->user_locale = $host_locale;
 
 @include_once( "$root_dir/locales/core.php" );
+@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
+header("Content-type: text/html;charset=$locale_char_set");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
