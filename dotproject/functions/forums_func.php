@@ -56,12 +56,12 @@ function sendWatchMail($message_id, $message_parent, $message_forum, $message_ti
 	while ($row = mysql_fetch_array( $rc, MYSQL_ASSOC )) {
 		//if ($row['user_id'] != $thisuser_id) {
 			$to = '"'.$row['user_first_name'].' '.$row['user_last_name'].'" <'.$row['user_email'].'>';
-			//mail( $to, $subject, $mail_body, "From: $from\r\n".$mail_header );
-			echo "<pre>";
-			echo "TO=$to\n";
-			echo "SUBJECT=$subject\n";
-			echo "BODY=$mail_body\n";
-			echo "FROM=$from\n";
+			mail( $to, $subject, $mail_body, "From: $from\r\n".$mail_header );
+			//echo "<pre>";
+			//echo "TO=$to\n";
+			//echo "SUBJECT=$subject\n";
+			//echo "BODY=$mail_body\n";
+			//echo "FROM=$from\n";
 		//}
 	}
 /*	
