@@ -31,7 +31,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 
 	if ($AppUI->doLogin()) $AppUI->loadPrefs( 0 );
 	// check if the user is trying to log in
-	if (isset($_POST['login'])) {
+	if (isset($_REQUEST['login'])) {
 		$username = dPgetParam( $_POST, 'username', '' );
 		$password = dPgetParam( $_POST, 'password', '' );
 		$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
