@@ -38,7 +38,9 @@ $sql = "SELECT billingcode_id, billingcode_name
 $task_log_costcodes[0]="None";
 $ptrc = db_exec($sql);
 echo db_error();
-$nums=db_num_rows($ptrc);
+$nums = 0;
+if ($ptrc)
+	$nums=db_num_rows($ptrc);
 for ($x=0; $x < $nums; $x++) {
         $row = db_fetch_assoc( $ptrc );
         $task_log_costcodes[$row["billingcode_id"]] = $row["billingcode_name"];
