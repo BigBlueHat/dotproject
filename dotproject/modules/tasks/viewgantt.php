@@ -1,4 +1,4 @@
-<?php
+<?php /* TASKS $Id$ */
 GLOBAL $min_view, $m, $a;
 $min_view = defVal( @$min_view, false);
 
@@ -172,7 +172,7 @@ if (!$min_view) {
 	<td>
 <?php	
 $src = 
-  "?m=tasks&a=gantt&no_output=1&project_id=$project_id" .
+  "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
   ( $display_option == 'all' ? '' : 
 	'&start_date=' . $start_date->toString( "%Y-%m-%d" ) . '&end_date=' . $end_date->toString( "%Y-%m-%d" ) ) .
   "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 100) + '";
