@@ -179,7 +179,12 @@ function showtask( &$a, $level=0 ) {
 	}
 // name link
 	$alt = htmlspecialchars( $a["task_description"] );
-	$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
+
+	if ($a["task_milestone"] > 0) {
+		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
+	} else {
+		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
+	}
 // task owner
 	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
 // start date
