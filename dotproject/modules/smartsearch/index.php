@@ -12,7 +12,7 @@ require_once( $AppUI->getModuleClass('smartsearch') );
 	<form name="frmSearch" action="?m=smartsearch"  method="POST">
 			<table cellspacing="10" cellpadding="0" border="0">
 				<tr>
-					<td align="left"><INPUT class="text" type="text" id="keyword" name="keyword"></td>
+					<td align="left"><INPUT class="text" type="text" id="keyword" name="keyword" value="<?php echo @$_POST['keyword']; ?>"></td>
 					<td align="left"><input class="button" type="submit" value="<?php echo $AppUI->_('Search')?>"></td>
 				</tr>
 			</table>
