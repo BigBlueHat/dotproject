@@ -341,8 +341,8 @@ class CAppUI {
 			AND permission_value <> 0
 		";
 
-		$foo = null;
-		if (!($row = db_loadObject( $sql, $foo ))) {
+		$row = null;
+		if (!db_loadObject( $sql, $row )) {
 			return false;
 		}
 
@@ -371,7 +371,7 @@ class CAppUI {
 
 		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
-		if( !db_loadObject( $sql, $this ) ) {echo 'failed'; die;
+		if( !db_loadObject( $sql, $this ) ) {
 			return false;
 		}
 

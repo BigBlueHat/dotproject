@@ -134,8 +134,11 @@ class CDpObject {
 			}
 			$sql = "SELECT $select\nFROM $this->_tbl\n$join\nWHERE $k = ".$this->$k." GROUP BY $k";
 
-			$foo = null;
-			$obj = db_loadObject( $sql, $foo );
+			$obj = null;
+			if (!db_loadObject( $sql, $obj )) {
+				$msg = db_error();
+				return false;
+			}
 			$msg = array();
 			foreach( $joins as $table ) {
 				$k = $table['idfield'];
@@ -177,12 +180,12 @@ class CDpObject {
 
 /**
  *	get specifically denied records from a table/module based on a user
- *	@param int $uid user id number
+ *	@param int User id number
  *	@return array
  */
 	function getDeniedRecords( $uid ) {
 		$uid = intval( $uid );
-		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getDeniedRecords failed" );
+		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getDeniedRecords failed, user id = 0" );
 
 		// get read denied projects
 		$deny = array();
