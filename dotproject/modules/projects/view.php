@@ -2,7 +2,12 @@
 $project_id = dPgetParam( $_GET, "project_id", 0 );
 
 // check permissions for this project
+$canRead = !getDenyRead( $m, $project_id );
 $canEdit = !getDenyEdit( $m, $project_id );
+
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
 
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
