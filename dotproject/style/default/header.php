@@ -1,5 +1,9 @@
 <?php /* STYLE/DEFAULT $Id$ */
 $dialog = dPgetParam( $_GET, 'dialog', 0 );
+if ($dialog)
+	$page_title = '';
+else
+	$page_title = $dPconfig['page_title'] . '&nbsp;' . $AppUI->getVersion();
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -20,9 +24,9 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <tr>
 	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
 	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php
-		echo "<a style='color: white' href='{$dPconfig['base_url']}'>{$dPconfig['page_title']}&nbsp;" . $AppUI->getVersion() . "</a>";
+		echo "<a style='color: white' href='{$dPconfig['base_url']}'>$page_title</a>";
 	?></strong></th>
-	<th align="right" width='50'><a href='http://www.dotproject.net/'><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border=0></a></th>
+	<th align="right" width='50'><a href='http://www.dotproject.net/' <?php if ($dialog) echo "target='_blank'"; ?>><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border=0></a></th>
 	</tr></table></td>
 </tr>
 <?php if (!$dialog) {
