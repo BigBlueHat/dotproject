@@ -1,8 +1,4 @@
-<?php
-##
-## CCompany Class
-##
-
+<?php /* FORUMS $Id$ */
 class CForum {
 	var $forum_id = NULL;
 	var $forum_project = NULL;
@@ -117,7 +113,7 @@ class CForumMessage {
 			$this->message_date = db_datetime( time() );
 			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
 			echo db_error(); ## TODO handle error better
-
+		
 			$sql = "SELECT count(message_id),
 			MAX(message_date)
 			FROM forum_messages
@@ -132,12 +128,13 @@ class CForumMessage {
 			$forum->forum_id = $this->message_forum;
 			$forum->forum_message_count = $reply[0];
 			$forum->forum_last_date = $reply[1];
-			$forum->forum_last_id = $new_id;
+			$forum->forum_last_id = $this->message_id;
 
 			$forum->store(); ## TODO handle error now
 
 			return $this->sendWatchMail( false );
 		}
+
 		if( !$ret ) {
 			return "CForumMessage::store failed <br />" . db_error();
 		} else {
