@@ -1,4 +1,12 @@
 <?php
+
+/**
+* This script iterates all contacts and verify if the contact_company 
+* field has a text value; if it does, it searches of the company in the 
+* companies table, if it finds it then the contact is related to it by its id. 
+* If it doesn't find it, the it creates the company (only the name) and then it 
+* relates it to the contact using the new company's id.
+*/
 global $baseDir;
 
 if (! isset($baseDir))
@@ -11,7 +19,7 @@ foreach(db_loadList("SELECT * FROM contacts") as $contact) {
         if(!checkCompanyId($contact_company)){
             dPmsg("Error found in contact_company in the contact ".getContactGeneralInformation($contact));
         }
-    } else {
+    } else if ($contact_company != "") {
         $company_id = fetchCompanyId($contact_company);
         // If we find company_id
         
