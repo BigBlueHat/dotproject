@@ -50,13 +50,15 @@ $sql = "
 		 AND b.task_id IS NULL
 		 AND user_tasks.user_id = $AppUI->user_id
 		 AND a.task_percent_complete != 100
-		 AND project_id = a.task_project" .
+		 AND a.task_start_date != ''
+		 AND a.task_end_date != ''
+		 AND project_id = a.task_project" .  		
   (!$showArcProjs ? " AND project_active = 1" : "") .
   (!$showLowTasks ? " AND a.task_priority >= 0" : "") .  
   " GROUP BY a.task_id
 	ORDER BY a.task_start_date, task_priority DESC
 ";
-// echo "<pre>$sql</pre>";
+//echo "<pre>$sql</pre>";
 $tasks = db_loadList( $sql );
 
 $priorities = array(
@@ -120,10 +122,9 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 foreach ($tasks as $a) {
 	$style = '';
 	$sign = 1;
-	
 	$start = intval( @$a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
 	$end = intval( @$a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
-
+	
 	if (!$end) {
 		$end = $start;
 		$end->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
