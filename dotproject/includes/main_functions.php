@@ -130,16 +130,6 @@ function time2YMD($time) {
 	return date("Y-m-d", $time);
 }
 
-function dbDate2time($dbDate) {
-	// converts a DB date to a unix time stamp (currently only MySql)
-	return strtotime(substr($dbDate, 0, 10));
-}
-
-function time2dbDate($time) {
-	// converts a unix time stamp to a DB date (currently only MySql)
-	return date("Y-m-d H:i:s", $time);
-}
-
 // Return the format required for date entry, for user information display
 function dateFormat() {
 	global $date_format;
