@@ -17,7 +17,7 @@ $max_levels        	= dPgetParam($_POST,"max_levels","max");
 $log_userfilter		= dPgetParam($_POST,"log_userfilter","");
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
-echo $show_orphaned;
+
 $table_header = "";
 $table_rows="";
 
@@ -551,6 +551,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 		$assUser = $users[$user_id]['user_first_name']." ".$users[$user_id]['user_last_name'];
 		if ($user_id == 0) {	// need to handle orphaned tasks different from tasks with existing assignees
 			$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users')));
+			$zm1++;
 		} else {
 			$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users'), $user_id => "$assUser"));
 		}
@@ -691,12 +692,16 @@ return false;
 				$tmpuser.="<td bgcolor='#D0D0D0'></td>";
 			}
 			$tmpuser .="<td bgcolor=\"#D0D0D0\"><table width=\"100%\"><tr>";
-				$tmpuser .="<td align=\"left\">".
-				"<a href='javascript:chAssignment($user_id, 0, false);'>".
-				dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
-				$tmpuser .= "<td align=\"center\"></td>";
-				$tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
-				$tmpuser .= "</td></tr></table></td>";
+                        $tmpuser .="<td align=\"left\">".
+                        "<a href='javascript:chAssignment($user_id, 0, false);'>".
+                        dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
+                        $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
+                        for ($i = 5; $i <= 100; $i+=5) {
+                                        $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
+                        }
+                        $tmpuser .= "</select></td>";
+                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
+                        $tmpuser .= "</td></tr></table></td>";
 
 				$tmpuser.="</tr>";
 
@@ -705,13 +710,15 @@ return false;
 			}
 
 			$orphTasks = array_diff(array_map("getOrphanedTasks",$task_list), array(NULL));
+
+			$tmptasks="";
+			$actual_date = $start_date;
+
+                        $zi=0;
 			foreach($orphTasks as $task) {
-				if (!isChildTask($task)) {
 					$tmptasks.=displayTask($orphTasks,$task,0,$display_week_hours,$sss,$sse, $user_id);
-					// Get children
-					$tmptasks.=doChildren($orphTasks,$Ntasks,$task->task_id,$user_id,
-										1,$max_levels,$display_week_hours,$sss,$sse);
-				}
+					// do we need to get the children?
+					//$tmptasks.=doChildren($orphTasks,$Ntasks,$task->task_id,$user_id,1,$max_levels,$display_week_hours,$sss,$sse);
 			}
 			if ($tmptasks != "") {
 				echo $tmpuser;
