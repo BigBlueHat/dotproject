@@ -583,6 +583,7 @@ PRIMARY KEY ( `user_access_log_id` )
 
 #20040910
 #Pinned tasks
+DROP TABLE IF EXISTS `user_task_pin`;
 CREATE TABLE `user_task_pin` (
 `user_id` int(11) NOT NULL default '0',
 `task_id` int(10) NOT NULL default '0',
