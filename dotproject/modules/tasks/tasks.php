@@ -302,15 +302,12 @@ function showtask( &$a, $level=0, $is_opened = true ) {
                         $style = 'background-color:#e6eedd';
                 } 
 
-                if ($now->after( $end_date ) && $a["task_percent_complete"] >= 100) {
-                        $style = 'background-color:#cccccc';
-                } else if ($now->after( $end_date )) {
+                if ($now->after( $end_date )) {
                         $sign = -1;
                         $style = 'background-color:#cc6666;color:#ffffff';
                 }
-                
-                if ($a["task_percent_complete"] == 100 ){
-                        $style = 'background-color:#aaddaa; color#00000';
+                if ($a["task_percent_complete"] == 100){
+                        $style = 'background-color:#aaddaa; color:#00000';
                 }
 
                 $days = $now->dateDiff( $end_date ) * $sign;
@@ -625,8 +622,6 @@ $AppUI->setState("tasks_opened", $tasks_opened);
 	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Started and on time');?></td>
-        <td bgcolor="#cccccc">&nbsp; &nbsp;</td>
-	<td>=<?php echo $AppUI->_('Finished and Past');?></td>
 	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Should have started');?></td>
 	<td>&nbsp; &nbsp;</td>
