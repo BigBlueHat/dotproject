@@ -37,7 +37,7 @@ class CTabBox extends CTabBox_core {
 			$s = '<table width="98%" border="0" cellpadding="0" cellspacing="0"><tr>';
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
-				$sel = ($k == $this->active) ? 'selected' : '';
+				$sel = ($k == $this->active) ? 'Selected' : '';
 				$s .= '<td height="28" valign="middle" width="1%"><img src="./style/demo1/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt=""></td>';
 				$s .= '<td valign="middle" width="1%" nowrap="nowrap"  background="./style/demo1/images/tab'.$sel.'Bg.png">&nbsp;<a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a>&nbsp;</td>';
 				$s .= '<td valign="middle" width="1%"><img src="./style/demo1/images/tab'.$sel.'Right.png" width="3" height="28" border="0" alt=""></td>';
