@@ -151,18 +151,18 @@ if (!@$min_view) {
 $now = new CDate();
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-foreach ($tasks as $a) {
+foreach ($tasks as $task) {
 	$style = '';
 	$sign = 1;
-	$start = intval( @$a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
-	$end = intval( @$a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
+	$start = intval( @$task["task_start_date"] ) ? new CDate( $task["task_start_date"] ) : null;
+	$end = intval( @$task["task_end_date"] ) ? new CDate( $task["task_end_date"] ) : null;
 	
 	if (!$end) {
 		$end = $start;
-		$end->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
+		$end->addSeconds( @$task["task_duration"]*$task["task_duration_type"]*SEC_HOUR );
 	}
 
-	if ($now->after( $start ) && $a["task_percent_complete"] == 0) {
+	if ($now->after( $start ) && $task["task_percent_complete"] == 0) {
 		$style = 'background-color:#ffeebb';
 	} else if ($now->after( $start )) {
 		$style = 'background-color:#e6eedd';
@@ -179,33 +179,33 @@ foreach ($tasks as $a) {
 <tr>
 	<td>
 <?php if ($canEdit) { ?>
-		<a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>
+		<a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $task["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>
 <?php } ?>
 	</td>
 	<td align="right">
-		<?php echo intval($a["task_percent_complete"]);?>%
+		<?php echo intval($task["task_percent_complete"]);?>%
 	</td>
 
 	<td>
-<?php if ($a["task_priority"] < 0 ) {
+<?php if ($task["task_priority"] < 0 ) {
 	echo "<img src='./images/icons/low.gif' width=13 height=16>";
-} else if ($a["task_priority"] > 0) {
-	echo "<img src='./images/icons/" . $a["task_priority"] .".gif' width=13 height=16>";
+} else if ($task["task_priority"] > 0) {
+	echo "<img src='./images/icons/" . $task["task_priority"] .".gif' width=13 height=16>";
 }?>
 	</td>
 
 	<td width="50%">
-		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>" title='<?php echo ( isset($a['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($a['parent_name'], ENT_QUOTES) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($a['task_description'], ENT_QUOTES) ?>'><?php echo htmlspecialchars($a["task_name"], ENT_QUOTES);?></a>
+		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $task["task_id"];?>" title='<?php echo ( isset($task['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($task['parent_name'], ENT_QUOTES) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($task['task_description'], ENT_QUOTES) ?>'><?php echo htmlspecialchars($task["task_name"], ENT_QUOTES);?></a>
 	</td>
 	<td width="50%">
-		<a href="./index.php?m=projects&a=view&project_id=<?php echo $a["project_id"];?>">
-			<span style="padding:2px;background-color:#<?php echo $a['project_color_identifier'];?>;color:<?php echo bestColor( $a["project_color_identifier"] );?>"><?php echo $a["project_name"];?></span>
+		<a href="./index.php?m=projects&a=view&project_id=<?php echo $task["project_id"];?>">
+			<span style="padding:2px;background-color:#<?php echo $task['project_color_identifier'];?>;color:<?php echo bestColor( $task["project_color_identifier"] );?>"><?php echo $task["project_name"];?></span>
 		</a>
 	</td>
 	<td nowrap style="<?php echo $style;?>"><?php echo $start->format( $df );?></td>
 	<td style="<?php echo $style;?>">
 <?php
-	echo $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
+	echo $task['task_duration'] . ' ' . $AppUI->_( $durnTypes[$task['task_duration_type']] );
 ?>
 	</td>
 
@@ -215,7 +215,7 @@ foreach ($tasks as $a) {
 		<?php echo $days; ?>
 	</td>
 	<td>
-		<input type=checkbox name="selected[]" value="<?php echo $a["task_id"] ?>">
+		<input type=checkbox name="selected[]" value="<?php echo $task["task_id"] ?>">
 	</td>
 </tr>
 <?php } ?>
