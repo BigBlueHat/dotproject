@@ -53,6 +53,9 @@ header ("Pragma: no-cache");	// HTTP/1.0
 
 require_once( "./includes/config.php" );
 
+// Check that the user has correctly set the root directory
+is_file( "{$dPconfig['root_dir']}/includes/config.php" ) or die( "FATAL ERROR: Root directory in configuration file probably incorrect." );
+
 // Do not change version for support reasons
 $dPconfig['version'] = "1.0 beta 1 [May-2003]";
 
