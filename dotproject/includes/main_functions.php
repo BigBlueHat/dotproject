@@ -438,6 +438,8 @@ function formatTime( $uts ) {
  * can be trusted in Windows.
  */
 function formatCurrency( $number, $format ) {
+	global $AppUI;
+
 	if (!$format) {
 		$format = $AppUI->getPref('SHCURRFORMAT');
 	}
