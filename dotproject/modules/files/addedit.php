@@ -1,8 +1,7 @@
 <?php /* FILES $Id$ */
 $file_id = intval( dPgetParam( $_GET, 'file_id', 0 ) );
 $ci = dPgetParam($_GET, 'ci', 0) == 1 ? true : false;
-$config = dPgetConfig( 'files' ); 
-$preserve = $config['ci_preserve_attr'];
+$preserve = $m_config['ci_preserve_attr'];
 
 
 // check permissions for this record

@@ -234,7 +234,7 @@ foreach ($files as $file_row) {
                                 $hidden_table .= '
         <tr>
                 <td nowrap="nowrap" width="20">&nbsp;';
-                                if ($canEdit && $config['show_versions_edit'])
+                                if ($canEdit && $dPconfig['files']['show_versions_edit'])
                                 {
                                         $hidden_table .= '
                 <a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">' . dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) . "\n</a>";

@@ -1,6 +1,4 @@
 <?php /* FILES $Id$ */
-$config = dPgetConfig('files');
-
 $AppUI->savePlace();
 
 // retrieve any state parameters
