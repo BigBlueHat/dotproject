@@ -51,7 +51,7 @@ foreach ($modules as $row) {
 	}
 	$s .= '</td>';
 
-	$s .= '<td width="1%" nowrap="nowrap">'.$row['mod_name'].'</td>';
+	$s .= '<td width="1%" nowrap="nowrap">'.$AppUI->_($row['mod_name']).'</td>';
 	$s .= '<td>';
 	$s .= '<img src="./images/obj/dot'.($row['mod_active'] ? 'green' : 'yellowanim').'.gif" width="12" height="12" />&nbsp;';
 	// John changes Module Terminology to be more descriptive of current Module State... [14 Feb 2003]

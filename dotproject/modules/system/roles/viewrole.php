@@ -26,7 +26,7 @@ if (! is_array($role)) {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Description');?>:</td>
-			<td class="hilite" width="100%"><?php echo $role["name"];?></td>
+			<td class="hilite" width="100%"><?php echo $AppUI->_($role["name"]);?></td>
 		</tr>
 </table>
 

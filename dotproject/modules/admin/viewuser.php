@@ -37,6 +37,7 @@ if (!db_loadHash( $sql, $user )) {
 	      $titleBlock->addCrumbRight(
 			'<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>'
 	      );
+	      $titleBlock->addCell('<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>');
 	}
 	$titleBlock->show();
 ?>

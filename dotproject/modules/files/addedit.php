@@ -284,7 +284,7 @@ $str_out .= "<tr>" .
            '<td align="right" nowrap="nowrap">' . $AppUI->_('Category') . ':</td>';
 $str_out .= '<td align="left">' .
             arraySelect(dPgetSysVal("FileType"), 'file_category', 
-                        '' . $select_disabled, $obj->file_category) . '<td>';
+                        '' . $select_disabled, $obj->file_category, true) . '<td>';
                         
                         
 // ---------------------------------------------------------------------------------

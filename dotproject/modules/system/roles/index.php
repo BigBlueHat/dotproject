@@ -95,7 +95,7 @@ function showRow( $role=null ) {
 		}
 		$s .= "</td>$CR";
 		$s .= '<td valign="top">'.$name.'</td>'.$CR;
-		$s .= '<td valign="top">'.$description.'</td>'.$CR;
+		$s .= '<td valign="top">'.$AppUI->_($description).'</td>'.$CR;
 		$s .= '<td valign="top" width="16">';
 		$s .= "&nbsp;";
 		$s .= '</td>'.$CR;

@@ -23,7 +23,7 @@ $pstatus = dPgetSysVal( 'ProjectStatus' );
 		<a href="?m=projects&a=view&project_id=<?php echo $row["project_id"];?>">
 			<?php echo $row["project_name"];?>
 		</a>
-	<td><?php echo $pstatus[$row["project_status"]]; ?></td>
+	<td><?php echo $AppUI->_($pstatus[$row["project_status"]]); ?></td>
 </tr>
 <?php } ?>
 </table>

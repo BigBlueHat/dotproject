@@ -34,7 +34,7 @@ function clearIt(){
 }
 
 function delIt(id) {
-	if (confirm( 'Are you sure you want to delete this permission?' )) {
+	if (confirm( '<?php echo $AppUI->_('Are you sure you want to delete this permission?', UI_OUTPUT_JS);?>' )) {
 		var f = document.frmPerms;
 		f.del.value = 1;
 		f.permission_id.value = id;
