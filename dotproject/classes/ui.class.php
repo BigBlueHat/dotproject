@@ -5,8 +5,6 @@
  *	@license http://opensource.org/licenses/bsd-license.php BSD License
 */
 
-require_once( "./classes/date.class.php" );
-
 // Message No Constants
 define( 'UI_MSG_OK', 1 );
 define( 'UI_MSG_ALERT', 2 );
@@ -81,7 +79,6 @@ class CAppUI {
 		$this->user_type = 0;
 
 		$this->project_id = 0;
-		$this->day_selected = new CDate();
 
 		$this->defaultRedirect = "";
 // set up the default preferences
@@ -404,15 +401,6 @@ class CAppUI {
 		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
 	}
 
-	function getDaySelected() {
-		return $this->day_selected->getTimestamp();
-	}
-
-	function setDaySelected( $ts=0 ) {
-		$this->day_selected->setTimestamp( $ts );
-	// zero the time so that 'days' can be compared
-		$this->day_selected->setTime( 0, 0, 0 );
-	}
 // --- Module connectors
 	function getInstalledModules() {
 		$sql = "
@@ -499,17 +487,23 @@ class CTabBox_core {
 			echo '</table>';
 		} else {
 		// tabbed view
-			$s = '<table width="100%" border="0" cellpadding="3" cellspacing="0"><tr>';
+			$s = "<table width=\"100%\" border=\"0\" cellpadding=\"3\" cellspacing=\"0\">\n<tr>";
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
-				$s .= '<td width="1%" nowrap="nowrap" class="tabsp"><img src="./images/shim.gif" height="1" width="1" alt="" /></td>';
-				$s .= '<td width="1%" nowrap="nowrap" class="'.$class.'"><a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a></td>';
+				$s .= "\n\t<td width=\"1%\" nowrap=\"nowrap\" class=\"tabsp\">";
+				$s .= "\n\t\t<img src=\"./images/shim.gif\" height=\"1\" width=\"1\" alt=\"\" />";
+				$s .= "\n\t</td>";
+				$s .= "\n\t<td width=\"1%\" nowrap=\"nowrap\" class=\"$class\">";
+				$s .= "\n\t\t<a href=\"{$this->baseHRef}tab=$k\">".$AppUI->_($v[1])."</a>";
+				$s .= "\n\t</td>";
 			}
-			$s .= '<td nowrap="nowrap" class="tabsp">&nbsp;</td>';
-			$s .= '</tr><tr><td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">';
+			$s .= "\n\t<td nowrap=\"nowrap\" class=\"tabsp\">&nbsp;</td>";
+			$s .= "\n</tr>";
+			$s .= "\n<tr>";
+			$s .= '<td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">';
 			echo $s;
 			require $this->baseInc.$this->tabs[$this->active][0].'.php';
-			echo '</td></tr></table>';
+			echo "\n</td>\n</tr>\n</table>";
 		}
 	}
 }
@@ -593,21 +587,21 @@ class CTitleBlock_core {
 				$t .= $AppUI->_( $v[0] );
 				$crumbs[] = "<a href=\"$k\">$t</a>";
 			}
-			$s .= $CR . '<table border="0" cellpadding="4" cellspacing="0" width="100%">';
-			$s .= $CR . '<tr>';
-			$s .= $CR . '<td nowrap="nowrap">';
-			$s .= $CT . implode( ' <strong>:</strong> ', $crumbs );
-			$s .= $CR . '</td>';
+			$s .= "\n<table border=\"0\" cellpadding=\"4\" cellspacing=\"0\" width=\"100%\">";
+			$s .= "\n<tr>";
+			$s .= "\n\t<td nowrap=\"nowrap\">";
+			$s .= "\n\t\t" . implode( ' <strong>:</strong> ', $crumbs );
+			$s .= "\n\t</td>";
 
 			foreach ($this->cells2 as $c) {
-				$s .= $c[2] ? $CR . $c[2] : '';
-				$s .= $CR . '<td align="right" nowrap="nowrap"' . ($c[0] ? " $c[0]" : '') . '>';
-				$s .= $c[1] ? $CT . $c[1] : '&nbsp;';
-				$s .= $CR . '</td>';
-				$s .= $c[3] ? $CR . $c[3] : '';
+				$s .= $c[2] ? "\n$c[2]" : '';
+				$s .= "\n\t<td align=\"right\" nowrap=\"nowrap\"" . ($c[0] ? " $c[0]" : '') . '>';
+				$s .= $c[1] ? "\n\t$c[1]" : '&nbsp;';
+				$s .= "\n\t</td>";
+				$s .= $c[3] ? "\n\t$c[3]" : '';
 			}
 
-			$s .= '</tr></table>';
+			$s .= "\n</tr>\n</table>";
 		}
 		echo "$s";
 	}
