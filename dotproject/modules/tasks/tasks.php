@@ -94,7 +94,7 @@ if($movetask == "u") {
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
-	SUM(t1.task_duration*t1.task_precent_complete)/SUM(t1.task_duration) as project_precent_complete
+	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 GROUP BY project_id
@@ -123,7 +123,7 @@ $deny = db_loadHashList( $sql );
 // pull tasks
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
-task_priority, task_precent_complete, task_duration, task_order, task_project,
+task_priority, task_percent_complete, task_duration, task_order, task_project,
 task_description, task_owner, user_username
 ";
 
@@ -198,7 +198,7 @@ function showtask( &$a, $level=0 ) {
 	}
 	$s .= '</td>';
 // percent complete
-	$s .= '<td align="right">'.intval( $a["task_precent_complete"] ).'%</td>';
+	$s .= '<td align="right">'.intval( $a["task_percent_complete"] ).'%</td>';
 // priority
 	$s .= '<td>';
 	if ($a["task_priority"] < 0 ) {
@@ -297,8 +297,8 @@ foreach ($projects as $k => $p) {
 				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
 				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><strong><?php echo @$p["project_name"];?></strong></span></a>
 			</td>
-			<td width="<?php echo (101 - intval(@$p["project_precent_complete"]));?>%">
-				<?php echo (intval(@$p["project_precent_complete"]));?>%
+			<td width="<?php echo (101 - intval(@$p["project_percent_complete"]));?>%">
+				<?php echo (intval(@$p["project_percent_complete"]));?>%
 			</td>
 		</tr>
 		</table>

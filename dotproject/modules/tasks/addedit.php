@@ -3,17 +3,31 @@ $task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
 $task_parent = isset( $_GET['task_parent'] ) ? $_GET['task_parent'] : 0;
 
 // check permissions
-$denyEdit = getDenyEdit( $m );
+$canEdit = !getDenyEdit( $m );
 
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // pull the task
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
-db_loadHash( $sql, $task );
+
+if (!db_loadHash( $sql, $task ) && $task_id > 0) {
+	$AppUI->setMsg( "Invalid Task ID", UI_MSG_ERROR );
+	$AppUI->redirect();
+}
+
 $task_parent = isset( $task['task_parent'] ) ? $task['task_parent'] : $task_parent;
-$task_project = @$task['task_project'] ? $task['task_project'] : $AppUI->getProject();
+
+// check for a valid project parent
+$task_project = dPgetParam( $task, 'task_project', 0 );
+if (!$task_project) {
+	$task_project = dPgetParam( $_GET, 'task_project', 0 );
+	if (!$task_project) {
+		$AppUI->setMsg( "badTaskProject", UI_MSG_ERROR );
+		$AppUI->redirect();
+	}
+}
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -76,10 +90,13 @@ WHERE td.dependencies_task_id = $task_id
 ";
 $taskDep = db_loadHashList( $sql );
 
-$crumbs = array();
-$crumbs["?m=projects&a=view&project_id=$task_project"] = "view this project";
-$crumbs["?m=tasks"] = "tasks list";
-$crumbs["?m=tasks&a=view&task_id={$task['task_id']}"] = "view this task";
+// setup the title block
+$ttl = $task_id > 0 ? "Edit Task" : "Add Task";
+$titleBlock = new CTitleBlock( $ttl, 'tasks.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
+$titleBlock->addCrumb( "?m=tasks&a=view&task_id={$task['task_id']}", "view this task" );
+$titleBlock->show();
 ?>
 
 <SCRIPT language="JavaScript">
@@ -187,40 +204,13 @@ function removeTaskDependency() {
 		}
 	}
 }
-
-function delIt() {
-	if (confirm( "<?php echo $AppUI->_('taskDelete');?>\n" )) {
-		var form = document.AddEdit;
-		form.del.value=1;
-		form.submit();
-	}
-}
 </script>
 
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
+<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
 <form name="AddEdit" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
 	<input name="dosql" type="hidden" value="do_task_aed" />
-	<input name="del" type="hidden" value="0" />
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
-<tr>
-	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-	<td align="left" nowrap="nowrap" width="100%"><h1><?php echo $AppUI->_( $task_id ? 'Edit Task' : 'New Task' );?></h1></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_TASK_VIEW' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td width="50%" align="right">
-		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0"><?php echo $AppUI->_('delete task');?></a>
-	</td>
-</tr>
-</table>
-
-
-<table border="1" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project["project_color_identifier"];?>" >
 		<font color="<?php echo bestColor( $project["project_color_identifier"] ); ?>">
@@ -250,7 +240,7 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Progress' );?></td>
 			<td>
-				<?php echo arraySelect( $percent, 'task_precent_complete', 'size="1" class="text"', $task["task_precent_complete"] ) . '%';?>
+				<?php echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $task["task_percent_complete"] ) . '%';?>
 			</td>
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Milestone' );?>?</td>
@@ -392,7 +382,7 @@ function delIt() {
 </tr>
 </table>
 
-<table border="0" cellspacing="0" cellpadding="3" width="98%">
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
 <tr>
 	<td height="40" width="35%">
 		* <?php echo $AppUI->_( 'requiredField' );?>

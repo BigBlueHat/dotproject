@@ -20,7 +20,7 @@ class CTask {
 	var $task_end_date = NULL;
 	var $task_status = NULL;
 	var $task_priority = NULL;
-	var $task_precent_complete = NULL;
+	var $task_percent_complete = NULL;
 	var $task_description = NULL;
 	var $task_target_budget = NULL;
 	var $task_related_url = NULL;
@@ -71,6 +71,9 @@ class CTask {
 		}
 		if (!$this->task_hours_worked) {
 			$this->task_hours_worked = '0';
+		}
+		if (!$this->task_percent_complete) {
+			$this->task_percent_complete = 0;
 		}
 		// TODO MORE
 		return NULL; // object is ok
@@ -231,12 +234,74 @@ class CTask {
 					echo "Mail failed";die;
 					return "Mail failed";
 				}
-				die;
 			}
 		}
 		return '';
 	}
 }
 
+##
+## CTask Class
+##
 
+class CTaskLog {
+	var $task_log_id = NULL;
+	var $task_log_task = NULL;
+	var $task_log_name = NULL;
+	var $task_log_description = NULL;
+	var $task_log_creator = NULL;
+	var $task_log_hours = NULL;
+	var $task_log_date = NULL;
+	var $task_log_costcode = NULL;
+
+	function CTaskLog() {
+		// empty constructor
+	}
+
+	function bind( $hash ) {
+		if (!is_array( $hash )) {
+			return get_class( $this )."::bind failed";
+		} else {
+			bindHashToObject( $hash, $this );
+			return NULL;
+		}
+	}
+
+	function check() {
+		$this->task_log_hours = (float) $this->task_log_hours;
+		// TODO MORE
+		return NULL; // object is ok
+	}
+
+	function store() {
+		GLOBAL $AppUI;
+		$msg = $this->check();
+		if( $msg ) {
+			return get_class( $this )."::store-check failed";
+		}
+		if( $this->task_log_id ) {
+			$this->_action = 'updated';
+			$ret = db_updateObject( 'task_log', $this, 'task_log_id', false );
+		} else {
+			$this->_action = 'added';
+			$ret = db_insertObject( 'task_log', $this, 'task_log_id' );
+		}
+		if( !$ret ) {
+			return get_class( $this )."::store failed <br />" . db_error();
+		} else {
+			return NULL;
+		}
+	}
+
+	function delete() {
+		$this->_action = 'deleted';
+	// delete linked user tasks
+		$sql = "DELETE FROM task_log WHERE task_log_id = $this->task_log_id";
+		if (!db_exec( $sql )) {
+			return db_error();
+		} else {
+			return NULL;
+		}
+	}
+}
 ?>

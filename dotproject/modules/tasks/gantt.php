@@ -1,4 +1,4 @@
-<?php
+<?php /* TASKS $Id$ */
 
 /*
  * Gantt.php - by J. Christopher Pereira
@@ -16,7 +16,7 @@ $f = defVal( @$_REQUEST['f'], 0 );
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
-	SUM(t1.task_duration*t1.task_precent_complete)/SUM(t1.task_duration) as project_precent_complete
+	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_active <> 0
@@ -61,7 +61,7 @@ while ($row = db_fetch_row( $drc )) {
 
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
-task_priority, task_precent_complete, task_duration, task_order, task_project, task_milestone,
+task_priority, task_percent_complete, task_duration, task_order, task_project, task_milestone,
 project_name
 ";
 
@@ -193,7 +193,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$name = strlen( $a["task_name"] ) > 25 ? substr( $a["task_name"], 0, 22 ).'...' : $a["task_name"] ;
 	$start = substr($a["task_start_date"], 0, 10);
 	$end = substr($a["task_end_date"], 0, 10);
-	$progress = $a["task_precent_complete"];
+	$progress = $a["task_percent_complete"];
 	$flags = ($a["task_milestone"]?"m":"");
 
 	if(!$end) {

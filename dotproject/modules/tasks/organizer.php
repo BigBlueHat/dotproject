@@ -1,4 +1,4 @@
-<?php
+<?php /* TASKS $Id$ */
 
 /*
  * Dynamic Tasks Organizer - by J. Christopher Pereira
@@ -124,7 +124,7 @@ function fixate_task($task_index, $time, $dep_on_task) {
 		) {
 			// tasks are overlapping
 
-			if(!$option_advance_if_possible || $task2["task_precent_complete"] != 100) {
+			if(!$option_advance_if_possible || $task2["task_percent_complete"] != 100) {
 
 				$t1 = $tasks[$task_index]["task_id"];
 				$t2 = $task2["task_id"];
@@ -253,7 +253,7 @@ function process_dependencies($i) {
 				$all_fixed = false;
 			} else {
 				// ignore dependencies of finished tasks if option is enabled
-				if(!$option_advance_if_possible || $tasks[$index]["task_precent_complete"] != 100) {
+				if(!$option_advance_if_possible || $tasks[$index]["task_percent_complete"] != 100) {
 					// get latest end_date
 					$end_date = new CDate( db_dateTime2unix( $tasks[$index]["task_end_date"] ) );
 
@@ -412,7 +412,7 @@ if($do != "conf") {
 
 		// check delayed tasks
 		if($do == "ask") {
-			if(!$row["task_dynamic"] && $row["task_precent_complete"] == 0) {
+			if(!$row["task_dynamic"] && $row["task_percent_complete"] == 0) {
 				// nothing has be done yet
 				$end_time = new CDate( db_dateTime2unix( $row["task_end_date"] ) );
 				if($end_time->getTimestamp() < time()) {

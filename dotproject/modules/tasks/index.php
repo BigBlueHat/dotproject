@@ -15,7 +15,7 @@ $AppUI->setState( 'ActiveProject', $project_id );
 
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Tasks', 'tasks.gif', $m, 'ID_HELP_TASK_IDX' );
+$titleBlock = new CTitleBlock( 'Tasks', 'tasks.gif', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Filter') . ':' );
 $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',
@@ -25,7 +25,7 @@ $titleBlock->addCell();
 if ($canEdit && $project_id) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-		'<form action="?m=tasks&a=addedit&project_id=' . $project_id . '" method="post">', '</form>'
+		'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
 	);
 }
 $titleBlock->addCrumb( "?m=tasks&a=todo", "my todo" );

@@ -1,14 +1,9 @@
-<?php
+<?php /* TASKS $Id$ */
 
 $project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
 
 // check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->rededirect( 'm=help&a=access_denied' );
-}
+$canEdit = !getDenyEdit( $m );
 
 // if task priority set and items selected, do some work
 $task_priority = isset( $_POST['task_priority'] ) ? $_POST['task_priority'] : 99;
@@ -37,7 +32,7 @@ $sql = "
 		 WHERE user_tasks.task_id = a.task_id
 		 AND b.task_id IS NULL
 		 AND user_tasks.user_id = $AppUI->user_id
-		 AND a.task_precent_complete != 100
+		 AND a.task_percent_complete != 100
 		 AND project_id = a.task_project" .
   (!@$_POST["showArchivedProjects"] ? " AND project_active = 1" : "") .
   (!@$_POST["show_low_tasks"] ? " AND a.task_priority >= 0" : "") .  
@@ -53,39 +48,29 @@ $priorities = array(
 	'-1' => 'low'
 );
 
-$crumbs = array();
-$crumbs["?m=tasks"] = "tasks list";
+
+$titleBlock = new CTitleBlock( 'My Tasks To Do', 'tasks.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+$titleBlock->addCrumbRight(
+	'<input type=checkbox name="showArchivedProjects" ' . (@$_POST["showArchivedProjects"] ? "checked" : "")
+	. 'onclick=\'submit()\'> show archived projects'
+	. '<input type=checkbox name="show_low_tasks" ' . (@$_POST["show_low_tasks"] ? "checked" : "")
+	. 'onclick=\'submit()\'> show low priority tasks', '',
+	'<form name="form_buttons" method="post">', '</form>' );
+$titleBlock->show();
 ?>
-<table width="98%" border=0 cellpadding="0" cellspacing=1>
-<tr>
-	<td><img src="./images/icons/tasks.gif" alt="" border="0" width="44" height="38"></td>
-	<td nowrap width="100%"><h1>My Tasks To Do</h1></td>
-</tr>
-</table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<form name="form_buttons" method="post">		
-<tr>
-	<td nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" nowrap>
-		<input type=checkbox name="showArchivedProjects" <?php echo @$_POST["showArchivedProjects"] ? "checked" : "" ?> onclick='submit()'>show archived projects
-		<input type=checkbox name="show_low_tasks" <?php echo @$_POST["show_low_tasks"] ? "checked" : "" ?> onclick='submit()'>show low priority tasks
-	</td>	
-</tr>
-</form>		
-</table>
-
-<table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <form name="form" method="post">
 <tr>
-	<th width="10">id</th>
-	<th width="20">work</th>
-	<th width="15" align="center">p</th>
-	<th colspan="2">task / project</th>
-	<th nowrap>start date</th>
-	<th nowrap>duration&nbsp;&nbsp;</th>
-	<th nowrap>finish date</th>
-	<th nowrap>due in</th>
+	<th width="10"><?php echo $AppUI->_('Id');?></th>
+	<th width="20"><?php echo $AppUI->_('Progress');?></th>
+	<th width="15" align="center"><?php echo $AppUI->_('P');?></th>
+	<th colspan="2"><?php echo $AppUI->_('Task / Project');?></th>
+	<th nowrap><?php echo $AppUI->_('Start Date');?></th>
+	<th nowrap><?php echo $AppUI->_('Duration');?></th>
+	<th nowrap><?php echo $AppUI->_('Finish Date');?></th>
+	<th nowrap><?php echo $AppUI->_('Due In');?></th>
 	<th width="0">&nbsp;</th>
 </tr>
 
@@ -110,13 +95,13 @@ foreach ($tasks as $a) {
 	}
 
 	$days = $now->daysTo( $start );
-	if ($days < 0 && $a["task_precent_complete"] == 0) {
-		$style = 'background-color:#FFeebb';
+	if ($days < 0 && $a["task_percent_complete"] == 0) {
+		$style = 'background-color:#ffeebb';
 	}
 	if ($end && $end->isValid()) {
 		$days = $now->daysTo( $end );
 		if ($days < 0) {
-			$style = 'background-color:#CC6666;color:#ffffff';
+			$style = 'background-color:#cc6666;color:#ffffff';
 		} else if ($now->daysTo( $start ) < 0) {
 			$style = 'background-color:#e6eedd';
 		}
@@ -125,11 +110,12 @@ foreach ($tasks as $a) {
 ?>
 <tr>
 	<td>
+<?php if ($canEdit) { ?>
 		<a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>
+<?php } ?>
 	</td>
-
 	<td align="right">
-		<?php echo intval($a["task_precent_complete"]);?>%
+		<?php echo intval($a["task_percent_complete"]);?>%
 	</td>
 
 	<td>
@@ -176,7 +162,7 @@ foreach ($tasks as $a) {
 </tr>
 <?php } ?>
 <tr>
-	<td colspan="6" align="right" height="30">update selected tasks priority</td>
+	<td colspan="6" align="right" height="30"><?php echo $AppUI->_('update selected tasks priority');?></td>
 	<td colspan="2" align="center">
 		<input type="submit" class="button" value="update">
 	</td>
@@ -185,5 +171,20 @@ foreach ($tasks as $a) {
 	</td>
 </form>
 </table>
-Quick and Nasty Legend:<br />
-clear - future task, green - started and on time, yellow - should have started, red - past due
+
+<table>
+<tr>
+	<td><?php echo $AppUI->_('Key');?>:</td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Future Task');?></td>
+	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Started and on time');?></td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Should have started');?></td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Overdue');?></td>
+</tr>
+</table>

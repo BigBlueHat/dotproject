@@ -1,4 +1,5 @@
-<?php
+<?php /* TASKS $Id$ */
+
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 $hassign = @$_POST['hassign'];
 $hdependencies = @$_POST['hdependencies'];
@@ -23,7 +24,7 @@ if ($del) {
 		$AppUI->redirect();
 	} else {
 		$AppUI->setMsg( "Task deleted", UI_MSG_ALERT );
-		$AppUI->redirect();
+		$AppUI->redirect( '', -1 );
 	}
 } else {
 	if (($msg = $task->store())) {
