@@ -12,7 +12,7 @@ require_once "$baseDir/includes/db_adodb.php";
 
 // make the connection to the db
 db_connect( $dPconfig['dbhost'], $dPconfig['dbname'],
-	$dPconfig['dbuser'], $dPconfig['dbpass'], $dPconfig['dbport'], $dPconfig['dbpersist'] );
+	$dPconfig['dbuser'], $dPconfig['dbpass'], $dPconfig['dbpersist'] );
 
 	
 /*

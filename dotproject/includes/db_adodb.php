@@ -13,7 +13,7 @@ require_once( "$baseDir/lib/adodb/adodb.inc.php" );
 
 $db = NewADOConnection($dPconfig['dbtype']);
 
-function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
+function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $persist=false ) {
         global $db, $ADODB_FETCH_MODE;
 
 	if ($persist) {

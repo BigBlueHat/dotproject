@@ -39,7 +39,6 @@ $dPconfig['dbhost'] = "localhost";
 $dPconfig['dbname'] = "dotproject";  // Change to match your DotProject Database Name
 $dPconfig['dbuser'] = "dp_user";  // Change to match your MySQL Username
 $dPconfig['dbpass'] = "dp_pass";  // Change to match your MySQL Password
-$dPconfig['dbport'] = "";  // Change to match your Db Port or use the standard value of 3306 if string is empty
 
 // set this value to true to use persistent database connections
 $dPconfig['dbpersist'] = false;
