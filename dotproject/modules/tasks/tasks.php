@@ -134,7 +134,7 @@ $join = "";
 $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic, task_pinned,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
-task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
+task_description, task_owner, task_status, usernames.user_username, usernames.user_id, task_milestone,
 assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count,
 count(distinct files.file_task) as file_count, tlog.task_log_problem";
 
@@ -510,10 +510,16 @@ foreach ($projects as $k => $p) {
 										  , $task_sort_item2, $task_sort_order2, $task_sort_type2 );
 			else $p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1 );
 		}
-		
+
 		for ($i=0; $i < $tnums; $i++) {
 			$t = $p['tasks'][$i];
-			if ($t["task_parent"] == $t["task_id"]) {
+
+			/* 20041118 gregorerhardt bug #311:
+			** added the following task status condition to the if clause in order to make sure inactive children
+			** are shown in the 'inactive view'; their parents are for instance not listed with them.
+			*/
+
+			if ($t["task_parent"] == $t["task_id"] || $p['tasks'][$i]["task_status"] != 0) {
 			    $is_opened = in_array($t["task_id"], $tasks_opened);
 				showtask( $t, 0, $is_opened );
 				if($is_opened || !$t["task_dynamic"]){
@@ -523,11 +529,14 @@ foreach ($projects as $k => $p) {
 		}
 // check that any 'orphaned' user tasks are also display
 		for ($i=0; $i < $tnums; $i++) {
-			if ( !in_array( $p['tasks'][$i]["task_id"], $done )) {
+			if ( !in_array( $p['tasks'][$i]["task_id"], $done ) ) {
 			    if($p['tasks'][$i]["task_dynamic"] && in_array( $p['tasks'][$i]["task_parent"], $tasks_closed)) {
 			        closeOpenedTask($p['tasks'][$i]["task_id"]);
 			    }
 			    if(in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
+				    showtask( $p['tasks'][$i], 1, false);
+			    }
+			     if(in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
 				    showtask( $p['tasks'][$i], 1, false);
 			    }
 			}
