@@ -163,7 +163,7 @@ function setDept( key, val ) {
 </tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('Email');?>:</td>
-    <td><input type="text" class="text" name="user_email" value="<?php echo $user["user_email"];?>" maxlength="50" size="40" /> </td>
+    <td><input type="text" class="text" name="user_email" value="<?php echo $user["user_email"];?>" maxlength="255" size="40" /> </td>
 </tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('Phone');?>:</td>

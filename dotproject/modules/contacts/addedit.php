@@ -161,13 +161,13 @@ function orderByName( x ){
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Email');?>:</td>
 			<td nowrap>
-				<input type="text" class="text" name="contact_email" value="<?php echo @$row->contact_email;?>" maxlength="50" size="25" />
+				<input type="text" class="text" name="contact_email" value="<?php echo @$row->contact_email;?>" maxlength="255" size="25" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Email');?>2:</td>
 			<td>
-				<input type="text" class="text" name="contact_email2" value="<?php echo @$row->contact_email2;?>" maxlength="50" size="25" />
+				<input type="text" class="text" name="contact_email2" value="<?php echo @$row->contact_email2;?>" maxlength="255" size="25" />
 			</td>
 		</tr>
 		<tr>

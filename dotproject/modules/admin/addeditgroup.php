@@ -126,7 +126,7 @@ function submitIt(){
                 </select>
         </td>
     </tr>
-    <tr><td align="right">Email:</td><td><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="50" /> </td></tr>
+    <tr><td align="right">Email:</td><td><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="255" /> </td></tr>
     <tr><td align="right">Phone:</td><td><input type="text" class="text" name="user_phone" value="<?php echo $prow["user_phone"];?>" maxlength="50" /> </td></tr>
     <tr><td align="right">Home Phone:</td><td><input type="text" class="text" name="user_home_phone" value="<?php echo $prow["user_home_phone"];?>" maxlength="50" /> </td></tr>
     <tr><td align="right">Mobile:</td><td><input type="text" class="text" name="user_mobile" value="<?php echo $prow["user_mobile"];?>" maxlength="50" /> </td></tr>

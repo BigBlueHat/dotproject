@@ -72,7 +72,7 @@ function testURL( x ) {
 <tr>
 	<td align="right"><?php echo $AppUI->_('Email');?>:</td>
 	<td>
-		<input type="text" class="text" name="company_email" value="<?php echo @$obj->company_email;?>" size="30" maxlength="30" />
+		<input type="text" class="text" name="company_email" value="<?php echo @$obj->company_email;?>" size="30" maxlength="255" />
 	</td>
 </tr>
 <tr>
