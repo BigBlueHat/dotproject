@@ -210,7 +210,6 @@ switch ($f) {
 	case 'allunfinished':
 		// patch 2.12.04 finish date required to be consider finish
 		// patch 2.12.04 2, also show unassigned tasks
-		$from .= ", user_tasks";
 		$where .= "
 					AND task_project             = projects.project_id
 					AND (task_percent_complete   < '100' OR task_end_date = '')
