@@ -270,7 +270,7 @@ class CAppUI {
 * Looks in the user preferences first.  If this value has not been set by the user it uses the system default set in config.php.
 * @param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
 */
-	function setUserLocale( $loc='' ) {
+	function setUserLocale( $loc='', $set = true ) {
 		global $dPconfig, $locale_char_set;
 
 		$LANGUAGES = $this->loadLanguages();
@@ -292,15 +292,25 @@ class CAppUI {
 			}
 			$lang = $LANGUAGES[$loc];
 		}
-		$this->user_locale = $lang[0];
-		if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-			$this->user_lang = $lang[3];
+		list($base_locale, $english_string, $native_string, $default_language, $lcs) = $lang;
+		if (! isset($lcs))
+			$lcs = (isset($locale_char_set)) ? $locale_char_set : 'utf-8';
+
+		if (version_compare(phpversion(), '4.3.0', 'ge'))
+			$user_lang = array( $loc . '.' . $lcs, $default_language, $loc, $base_locale);
+		else {
+			if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
+				$user_lang = $default_language;
+			} else {
+				$user_lang = $loc . '.' . $lcs;
+			}
+		}
+		if ($set) {
+			$this->user_locale = $base_locale;
+			$this->user_lang = $user_lang;
+			$locale_char_set = $lcs;
 		} else {
-			$this->user_lang = $loc;
-			if (isset($locale_char_set))
-				$this->user_lang .= '.' . $locale_char_set;
-			else
-				$this->user_lang .= '.utf8';
+			return $user_lang;
 		}
 	}
 

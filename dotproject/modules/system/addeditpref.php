@@ -130,8 +130,8 @@ function submitIt(){
 		$is_win = true;
 	else
 		$is_win = false;
-	foreach ($LANGUAGES as $lang => $langinfo) {
-		$currencies[$lang] = formatCurrency($currEx, $is_win ? $langinfo[3] : $lang);
+	foreach (array_keys($LANGUAGES) as $lang) {
+		$currencies[$lang] = formatCurrency($currEx, $AppUI->setUserLocale($lang, false));
 	}
 	echo arraySelect( $currencies, 'pref_name[CURRENCYFORM]', 'class=text size=1', @$prefs['CURRENCYFORM'], false );
 ?>
