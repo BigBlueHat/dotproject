@@ -17,14 +17,14 @@ function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port
         global $db, $dPrunLevel, $ADODB_FETCH_MODE;
 
 	if ($persist) {
-		if ($db->PConnect($host, $user, $passwd, $dbname)) {
+		if (@$db->PConnect($host, $user, $passwd, $dbname)) {
 			$dPrunLevel = 2;
 		} else {
 			($_GET['m']=='install') ? TRUE : die( 'FATAL ERROR: Connection to database server failed');
 		}
 
 	} else {
-		if ($db->Connect($host, $user, $passwd, $dbname)) {
+		if (@$db->Connect($host, $user, $passwd, $dbname)) {
 			$dPrunLevel = 2;
 		} else {
 			($_GET['m']=='install') ? TRUE : die( 'FATAL ERROR: Connection to database server failed');
