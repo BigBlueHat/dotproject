@@ -5,8 +5,6 @@
  * TASKS $Id$
  */
 
-error_reporting( E_ALL );	// this only for development testing
-
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
@@ -144,7 +142,7 @@ if ($start_date && $end_date) {
 	$graph->SetDateRange( $start_date, $end_date );
 }
 
-//$graph->scale->actinfo->SetFont(FF_ARIAL);
+$graph->scale->actinfo->SetFont(FF_ARIAL);
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 if ($showWork=='1') {
@@ -274,12 +272,11 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		//while using charset different than UTF-8 we need not to use utf8_decode
 		$name = strlen( $a["task_name"] ) > 34 ? substr( $a["task_name"], 0, 33 ).'.' : $a["task_name"] ;	
 	}
-
 	$name = str_repeat(" ", $level).$name;
-	
+
 	//using new jpGraph determines using Date object instead of string
 	$start = $a["task_start_date"];
-	$end_date   = $a["task_end_date"];
+	$end_date = $a["task_end_date"];
 
 	$end_date = new CDate($end_date);
 //	$end->addDays(0);
@@ -362,10 +359,10 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		$bar = new GanttBar($row++, array($name, $dur, $startdate->format($df), $enddate->format($df)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
 		$bar->progress->Set($progress/100);
 
-		$bar->title->SetFont(FF_FONT1,FS_NORMAL,6);
+		$bar->title->SetFont(FF_ARIAL,FS_NORMAL,8);
 
 	    if($a["task_dynamic"] == 1){
-	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 6);
+	        $bar->title->SetFont(FF_ARIAL,FS_BOLD, 8);
     		$bar->rightMark->Show();
             $bar->rightMark->SetType(MARK_RIGHTTRIANGLE);
             $bar->rightMark->SetWidth(3);
@@ -411,6 +408,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 }
 $today = date("y-m-d");
 $vline = new GanttVLine($today, $AppUI->_('Today', UI_OUTPUT_RAW));
+$vline->title->SetFont(FF_ARIAL,FS_BOLD,12);
 $graph->Add($vline);
 $graph->Stroke();
 ?>
