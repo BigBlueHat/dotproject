@@ -222,7 +222,9 @@ $dPconfig['debug'] = 1;
 $dPconfig['auto_fields_creation'] = false;
 
 // Root directory is now automatically set to avoid 
-// getting it wrong.
-$dPconfig['root_dir'] = dirname(dirname(__FILE__));
+// getting it wrong. It is also deprecated as $baseDir
+// is now set in top-level files index.php and fileviewer.php.
+// All code should start to use $baseDir instead of root_dir.
+$dPconfig['root_dir'] = $baseDir;
 
 ?>

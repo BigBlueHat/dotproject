@@ -643,22 +643,12 @@ function formatHours($hours)
 
 
 /**
- * Function to return the real pathname for a file,
- * countering problems with Windows and require_once.
+ * This function is now deprecated and will be removed.
+ * In the interim it now does nothing.
  */
 function dpRealPath($file)
 {
-// Done in index.php
-//	if (! isset($GLOBALS['OS_WIN'])) {
-//		$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
-//	}
-
-	$file = realpath($file);
-	if ($GLOBALS['OS_WIN']) {
-		return strtolower($file);
-	} else {
-		return $file;
-	}
+	return $file;
 }
 
 ?>
