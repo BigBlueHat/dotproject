@@ -727,7 +727,7 @@ class dPacl extends gacl_api {
 	if (! $this->get_object_section_section_id(null, $_POST['permission_table'], 'axo')) {
 	  $this->addModuleSection($_POST['permission_table']);
 	}
-	if (! $this->get_object_id($_POST['permission_item'], $_POST['permission_table'],  'axo')) {
+	if (! $this->get_object_id($_POST['permission_table'], $_POST['permission_item'],  'axo')) {
 	  $this->addModuleItem($_POST['permission_table'], $_POST['permission_item'], $_POST['permission_name']);
 	}
       } else {
