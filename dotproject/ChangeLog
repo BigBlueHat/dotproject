@@ -1,3 +1,19 @@
+2004-08-13 02:30  (ajdonnison)
+---------------------------------
+index.php
+- Fixed long standing security issue with multiple instances of dotproject
+- on the one domain.
+
+2004-08-13 00:12  (ajdonnison)
+---------------------------------
+index.php
+- Now anchors search for tabs to stop mis-hits on VIM swap files.
+
+2004-08-12 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-11 19:39  (jcgonz)
 ---------------------------------
 modules/tasks/view.php
@@ -482,22 +498,6 @@ modules/tasks/vw_logs.php
 
 2004-07-17 20:17  (gregorerhardt)
 ---------------------------------
-modules/system/custom_field_editor.php
-modules/system/roles/index.php
-modules/system/syskeys/index.php
-modules/system/syskeys/keys.php
-- fixed a set of javascript security holes
-
-2004-07-17 20:06  (gregorerhardt)
----------------------------------
-modules/projects/view.php
-modules/projects/vw_logs.php
-- fixed a set of javascript security holes
-
-2004-07-17 19:58  (gregorerhardt)
----------------------------------
-modules/forums/addedit.php
-modules/forums/post_message.php
 ...
 
 (This file has been wrapped)
