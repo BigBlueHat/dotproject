@@ -66,6 +66,7 @@
 			</td>
 			<td><?php echo $dPconfig['currency_symbol'] ?><input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
 		</tr>
+	<?php if ($task_id > 0){ ?>
 		<tr>
 			<td>
 				<?php echo $AppUI->_( 'Move this task (and its children), to project' );?>:
@@ -76,6 +77,7 @@
 				<?php echo arraySelect( $projects, 'new_task_project', 'size="1" class="text" id="medium" onchange="submitIt(document.editFrm)"',$task_project ); ?>
 			</td>
 		</tr>
+	<?php } ?>
 		</table>
 	</td>
 	<td valign="top" align="center">
