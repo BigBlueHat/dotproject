@@ -6,11 +6,14 @@ error_reporting( E_ALL );	// this only for development testing
 $dPconfig = array();
 require_once( "./classdefs/ui.php" );
 
+// don't output anything. Usefull for fileviewer.php, gantt.php, etc.
+$no_output = @$_GET['no_output'];
+
 // manage the session variable(s)
 session_name( 'dotproject' );
 session_start();
-session_register( 'AppUI' );
-
+session_register( 'AppUI' ); 
+  
 // write the HTML headers
 header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
 header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modified
@@ -18,6 +21,7 @@ header ("Cache-Control: no-cache, must-revalidate");	// HTTP/1.1
 header ("Pragma: no-cache");	// HTTP/1.0
 
 require_once( "./includes/config.php" );
+
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     $_SESSION['AppUI'] = new CAppUI();
@@ -25,7 +29,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 $AppUI =& $_SESSION['AppUI'];
 $AppUI->setConfig( $dPconfig );
 $AppUI->checkStyle();
-
+ 
 // load the db handler
 require_once( "./includes/db_connect.php" );
 require_once( "./misc/debug.php" );
@@ -112,9 +116,11 @@ $canDelete = $canEdit;
 @include_once( "./locales/core.php" );
 setlocale( LC_TIME, $AppUI->user_locale );
 
-// output the character set header
-if (isset( $locale_char_set )) {
-	 header("Content-type: text/html;charset=$locale_char_set");
+if ( !$no_output ) {
+	// output the character set header
+	if (isset( $locale_char_set )) {
+		header("Content-type: text/html;charset=$locale_char_set");
+	}
 }
 
 // bounce the user if they don't have at least read access
@@ -135,7 +141,11 @@ if (isset( $_REQUEST["dosql"]) ) {
 
 // start output proper
 include "./style/$uistyle/overrides.php";
-require "./style/$uistyle/header.php";
+if(!$no_output) {
+	require "./style/$uistyle/header.php";
+}
 require "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
-require "./style/$uistyle/footer.php";
+if(!$no_output) {
+	require "./style/$uistyle/footer.php";
+}
 ?>
