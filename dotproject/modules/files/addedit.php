@@ -86,7 +86,7 @@ function setTask( key, val ) {
         f.file_task.value = key;
         f.task_name.value = val;
     } else {
-        f.fiel_task.value = '0';
+        f.file_task.value = '0';
         f.task_name.value = '';
     }
 }
@@ -99,7 +99,6 @@ function setTask( key, val ) {
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="<?php echo $file_id;?>" />
-	<input type="hidden" name="file_task" value="<?php echo $file_task;?>" />
 
 <tr>
 	<td width="100%" valign="top" align="center">
