@@ -40,6 +40,8 @@ define( 'REQUIRE_TASKS_DURATION', true );
 // 2 = US or mm/dd/yyyy
 $date_format = 1;
 
+// default template
+define( 'DEFAULT_TEMPLATE', "ep" );
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
