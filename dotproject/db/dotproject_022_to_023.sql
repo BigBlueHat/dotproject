@@ -93,3 +93,10 @@ CREATE TABLE task_dependencies (
 # Change to TASKS table for the new dynamic task flag
 #
 ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
+
+#
+# Prepare support for user localisation
+#
+ALTER TABLE `users` ADD `user_locale` VARCHAR(5)  DEFAULT "en" NOT NULL AFTER user_country
+
+

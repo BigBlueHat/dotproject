@@ -38,6 +38,6 @@ $e = db_error();
 if ($e) {
 	$message .= $e;
 }
-$return .= "&message=" . $message;
+$return .= "&error=" . $message;
 
 ?>
