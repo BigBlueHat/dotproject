@@ -1,3 +1,20 @@
+2004-03-10 10:00  (kiryl)
+---------------------------------
+style/classic/login.php
+style/default/login.php
+fileviewer.php 
+
+must be logged to show any file!
+TO DO: if login failed show "login failed" information 
+
+modules/files/files.class.php
+modules/files/do_file_aed.php
+modules/files/addedit.php
+
+after adding, updating or deleting file depends on task assignment all users assigned to task or project owner will be notified by email
+user can decide whether or no notify useres 
+
+
 2004-03-02 00:05  (jcgonz)
 ---------------------------------
 includes/config-dist.php
