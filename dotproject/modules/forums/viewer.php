@@ -26,10 +26,15 @@ WHERE user_id = forum_owner
 	AND forum_id = $forum_id 
 	AND forum_project = project_id
 ";
-$rc = db_exec( $sql );
-$row = db_fetch_assoc($rc);
-$forum_name = $row["forum_name"];
+db_loadHash( $sql, $forum );
+$forum_name = $forum["forum_name"];
 echo db_error();
+
+$start_date = $forum["forum_create_date"] ? new CDate( db_dateTime2unix( $forum["forum_create_date"] ) ) : 0;
+if ($start_date) {
+	$start_date->setFormat( $df );
+}
+
 ?>
 <table width="98%" cellspacing="1" cellpadding="1" border="0">
 <input type=hidden name=dosql value=searchfiles>
@@ -42,14 +47,14 @@ echo db_error();
 <input type="hidden" name="forum_id" value="<?php echo $forum_id;?>">
 	<td nowrap>
 <?php
-	echo arraySelect( $filters, 'f', 'size="1" class="text" onchange="document.forum_filter.submit();"', $f );
+	echo arraySelect( $filters, 'f', 'size="1" class="text" onchange="document.forum_filter.submit();"', $f , true);
 ?>
 	</td>
 </form>
 	<td><img src="images/shim.gif" width=5 height=5></td>
 <form name="searcher" action="./index.php?m=files&a=search" method="post">
 	<td width="100%" align="right">
-		<input class="button" type="text" name="s" maxlength="30" size="20" value="Not implemented" disabled>
+		<input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled>
 	</td>
 	<td><img src="images/shim.gif" width="5" height="5"></td>
 	<td><input class="button" type="submit" value="<?php echo $AppUI->_( 'search' );?>" disabled></td>
@@ -60,27 +65,27 @@ echo db_error();
 
 <table width="98%" cellspacing="0" cellpadding="2" border="0" class="std">
 <tr>
-	<td height="20" colspan="3" bgcolor="<?php echo $row["project_color_identifier"];?>" style="border: outset #D1D1CD 1px">
-		<font size="2" color=<?php echo bestColor( $row["project_color_identifier"] );?>><b><?php echo @$row["forum_name"];?></b></font>
+	<td height="20" colspan="3" bgcolor="<?php echo $forum["project_color_identifier"];?>" style="border: outset #D1D1CD 1px">
+		<font size="2" color=<?php echo bestColor( $forum["project_color_identifier"] );?>><b><?php echo @$forum["forum_name"];?></b></font>
 	</td>
 </tr>
 <tr>
 	<td align="left" nowrap><?php echo $AppUI->_( 'Related Project' );?>:</td>
-	<td nowrap><b><?php echo $row["project_name"];?></b></td>
-	<td valign="top" width="50%" rowspan=99><b><?php echo $AppUI->_( 'Description' );?>:</b><br><?php echo @str_replace(chr(13), "&nbsp;<BR>",$row["forum_description"]);?></td>
+	<td nowrap><b><?php echo $forum["project_name"];?></b></td>
+	<td valign="top" width="50%" rowspan=99><b><?php echo $AppUI->_( 'Description' );?>:</b><br><?php echo @str_replace(chr(13), "&nbsp;<BR>",$forum["forum_description"]);?></td>
 </tr>
 <tr>
-	<td align="left"><?php echo $AppUI->_( 'Forum Owner' );?>:</td>
+	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>
 	<td nowrap><?php
-		echo $row["user_first_name"].' '.$row["user_last_name"];
-		if (intval( $row["forum_id"] ) <> 0) {
+		echo $forum["user_first_name"].' '.$forum["user_last_name"];
+		if (intval( $forum["forum_id"] ) <> 0) {
 			echo " (".$AppUI->_( 'moderated' ).") ";
 		}?>
 	</td>
 </tr>
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Created On' );?>:</td>
-	<td nowrap><?php echo fromDate(@$row["forum_create_date"]);?></td>
+	<td nowrap><?php echo $start_date ? $start_date->toString() : '-';?></td>
 </tr>
 </table>
 

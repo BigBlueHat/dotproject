@@ -84,7 +84,7 @@ function orderByName(x){
 <input type="hidden" name="message_id" value="<?php echo $message_id;?>">
 <tr>
 	<th valign="top" colspan="2"><b><?php
-		echo $AppUI->_( $message_id ? 'Edit' : 'Add' ).' '.$AppUI->_( 'Message' );
+		echo $AppUI->_( $message_id ? 'Edit Message' : 'Add Message' );
 	?></b></th>
 </tr>
 <tr>
@@ -101,11 +101,11 @@ function orderByName(x){
 </tr>
 <tr>
 	<td>
-		<input type="button" value="back" class=button onclick="javascript:window.location='./index.php?m=forums';">
+		<input type="button" value="<?php echo $AppUI->_('back');?>" class=button onclick="javascript:window.location='./index.php?m=forums';">
 	</td>
 	<td align="right"><?php
 		if ($AppUI->user_id == $forum_info["forum_owner"] || $message_id ==0) {
-			echo '<input type="button" value="submit" class=button onclick="submitIt()">';
+			echo '<input type="button" value="'.$AppUI->_('submit').'" class=button onclick="submitIt()">';
 		}
 	?></td>
 </tr>

@@ -52,11 +52,11 @@ $crumbs["?m=forums"] = "forums list";
 <table width="98%" cellspacing="1" cellpadding="2" border="0" class="tbl">
 <form name="watcher" action="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&f=<?php echo $f;?>" method="post">
 <tr>
-	<th>Watch</th>
-	<th>Topics</th>
-	<th>Author</th>
-	<th>Replies</th>
-	<th>Last Post</th>
+	<th><?php echo $AppUI->_('Watch');?></th>
+	<th><?php echo $AppUI->_('Topics');?></th>
+	<th><?php echo $AppUI->_('Author');?></th>
+	<th><?php echo $AppUI->_('Replies');?></th>
+	<th><?php echo $AppUI->_('Last Post');?></th>
 </tr>
 <?php 
 $date = new CDate();
@@ -84,15 +84,16 @@ foreach ($topics as $row) {
 <?php if ($row["latest_reply"]) {
 		echo $date->toString().'<br><font color=#999966>(';
 		if ($message_since < 3600) {
-			printf( "%d minutes", $message_since/60 );
+			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
 		} else if ($message_since < 48*3600) {
-			printf( "%d hours", $message_since/3600 );
+			$str = sprintf( "%d ".$AppUI->_( 'hours' ), $message_since/3600 );
 		} else {
-			printf( "%d days", $message_since/(24*3600) );
+			$str = sprintf( "%d ".$AppUI->_( 'days' ), $message_since/(24*3600) );
 		}
+		printf($AppUI->_('%s ago'), $str);
 		echo ' ago)</font>';
 	} else {
-		echo "No replies";
+		echo $AppUI->_("No replies");
 	}
 ?>
 	</td>

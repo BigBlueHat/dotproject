@@ -21,7 +21,7 @@ $crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
 <script language="javascript">
 function delIt(id){
 	var form = document.messageForm;
-	if (confirm( "Are you sure you would like to delete this message?" )) {
+	if (confirm( "<?php echo $AppUI->_('forumsDelete');?>" )) {
 		form.del.value = 1;
 		form.message_id.value = id;
 		form.submit();
@@ -34,8 +34,8 @@ function delIt(id){
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
-		<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
+		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
+		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
 	<?php } ?>
 	</td>
 </tr>
@@ -48,13 +48,18 @@ function delIt(id){
 	<input type="hidden" name="dosql" value="aed_post">
 </form>
 <tr>
-	<th nowrap>Author:</th>
-	<th width="100%">Message:</th>
+	<th nowrap><?php echo $AppUI->_('Author');?>:</th>
+	<th width="100%"><?php echo $AppUI->_('Message');?>:</th>
 </tr>
 
 <?php 
 $x = false;
+
+$date = new CDate();
+$date->setFormat( "$df $tf" );
+
 foreach ($messages as $row){
+	$date->setTimestamp( db_dateTime2unix( $row["message_date"] ) );
 	$s = '';
 	$style = $x ? 'background-color:#eeeeee' : '';
 
@@ -71,7 +76,7 @@ foreach ($messages as $row){
 	$s .= '</tr><tr>';
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
-	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$row["message_date"].'</td>';
+	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$date->toString().'</td>';
 	$s .= '<td valign="top" align="right" style="'.$style.'">';
 	
 	if (!$denyEdit && $AppUI->user_id == $row['forum_moderated']) {
@@ -96,8 +101,8 @@ foreach ($messages as $row){
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="Post Reply" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
-		<input type="button" class=button value="New Topic" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
+		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
+		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
 	<?php } ?>
 	</td>
 </tr>

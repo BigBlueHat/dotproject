@@ -67,14 +67,14 @@ $rc= db_exec( $sql );
 <input type=hidden name=m value=forums>
 	<td nowrap>
 <?php
-	echo arraySelect( $filters, 'f', 'size=1 class=text onChange="document.forum_filter.submit();"', $f );
+	echo arraySelect( $filters, 'f', 'size=1 class=text onChange="document.forum_filter.submit();"', $f , true );
 ?>
 	</td>
 </form>
 	<td><img src="images/shim.gif" width=5 height=5></td>
 <form name="searcher" action="./index.php?m=files&a=search" method="post">
 <input type="hidden" name="dosql" value="searchfiles">
-	<td align="right"><input class="button" type="text" name="s" maxlength="30" size="20" value="Not implemented" disabled></td>
+	<td align="right"><input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled></td>
 	<td><img src="images/shim.gif" width=5 height=5></td>
 	<td><input class=button type="submit" value="<?php echo $AppUI->_( 'search' );?>" disabled></td>
 </form>
@@ -141,13 +141,14 @@ while ($row = db_fetch_assoc( $rc )) {
 <?php if ($row["message_date"]) {
 		echo $message_date->toString().'<br><font color=#999966>(';
 		if ($message_since < 3600) {
-			printf( "%d minutes", $message_since/60 );
+			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
 		} else if ($message_since < 48*3600) {
-			printf( "%d hours", $message_since/3600 );
+			$str = sprintf( "%d ".$AppUI->_( 'hours' ), $message_since/3600 );
 		} else {
-			printf( "%d days", $message_since/(24*3600) );
+			$str = sprintf( "%d ".$AppUI->_( 'days' ), $message_since/(24*3600) );
 		}
-		echo ' ago)</font><br>&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
+		printf($AppUI->_('%s ago'), $str);
+		echo ') </font><br>&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
 		echo '</font></a>';
 	} else {
@@ -168,7 +169,7 @@ while ($row = db_fetch_assoc( $rc )) {
 </tr>
 <tr>
 	<td align="left">
-		<input type="submit" class="button" value="<?php echo $AppUI->_( 'update watches' );?>">
+		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>">
 	</td>
 </tr>
 </form>
