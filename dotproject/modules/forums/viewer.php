@@ -25,14 +25,14 @@ $q->addQuery('forum_id, forum_project,	forum_description, forum_owner, forum_nam
 	user_username, contact_first_name, contact_last_name,
 	project_name, project_color_identifier');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
-$q->addWhere("user_id = forum_owner 
-	AND forum_id = $forum_id 
-	AND forum_project = project_id");
-$sql = $q->prepare();
-$q->clear();
-db_loadHash( $sql, $forum );
+$q->addWhere("user_id = forum_owner");
+$q->addWhere("forum_id = $forum_id");
+$q->addWhere("forum_project = project_id");
+$q->exec(ADODB_FETCH_ASSOC);
+$forum = $q->fetchRow();
 $forum_name = $forum["forum_name"];
 echo db_error();
+$q->clear();
 
 $start_date = intval( $forum["forum_create_date"] ) ? new CDate( $forum["forum_create_date"] ) : null;
 

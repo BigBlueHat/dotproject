@@ -13,13 +13,12 @@ $orderdir        = $AppUI->getState( 'ForumVwOrderDir' ) ? $AppUI->getState( 'Fo
 //Pull All Messages
 $q  = new DBQuery;
 $q->addTable('forum_messages', 'fm1');
-$q->addQuery('fm1.*,
-	COUNT(fm2.message_id) AS replies,
-	MAX(fm2.message_date) AS latest_reply,
-	user_username, contact_first_name,
-	watch_user,
-	count(distinct v1.visit_message) as reply_visits,
-	v2.visit_user');
+$q->addQuery('fm1.*');
+$q->addQuery('COUNT(distinct fm2.message_id) AS replies');
+$q->addQuery('MAX(fm2.message_date) AS latest_reply');
+$q->addQuery('user_username, contact_first_name, watch_user');
+$q->addQuery('count(distinct v1.visit_message) as reply_visits');
+$q->addQuery('v2.visit_user');
 $q->addJoin('users', 'u', 'fm1.message_author = u.user_id');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $q->addJoin('forum_messages', 'fm2', 'fm1.message_id = fm2.message_parent');
@@ -27,16 +26,15 @@ $q->addJoin('forum_watch', 'fw', "watch_user = $AppUI->user_id AND watch_topic =
 $q->addJoin('forum_visits', 'v1', "v1.visit_user = $AppUI->user_id AND v1.visit_message = fm2.message_id");
 $q->addJoin('forum_visits', 'v2', "v2.visit_user = $AppUI->user_id AND v2.visit_message = fm1.message_id");
 
-$sql = "fm1.message_forum = $forum_id";
+$q->addWhere("fm1.message_forum = $forum_id");
 switch ($f) {
 	case 1:
-		$sql.= " AND watch_user IS NOT NULL";
+		$q->addWhere("watch_user IS NOT NULL");
 		break;
 	case 2:
-		$sql.= " AND (NOW() < DATE_ADD(fm2.message_date, INTERVAL 30 DAY) OR NOW() < DATE_ADD(fm1.message_date, INTERVAL 30 DAY))";
+		$q->addWhere("(NOW() < DATE_ADD(fm2.message_date, INTERVAL 30 DAY) OR NOW() < DATE_ADD(fm1.message_date, INTERVAL 30 DAY))");
 		break;
 }
-$q->addWhere($sql);
 $q->addGroup('fm1.message_id,
 	fm1.message_parent,
 	fm1.message_author,
