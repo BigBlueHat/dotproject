@@ -238,10 +238,11 @@ class CTask extends CDpObject {
 			$modified_task->task_hours_worked = $children_hours_worked;
 					
 			//Update percent complete
-			$sql = "SELECT sum( task_percent_complete )  / count( task_percent_complete ) 
+			$sql = "SELECT sum(task_percent_complete * task_duration * task_duration_type )
 					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
 					" AND task_id != " . $modified_task->task_id;
-			$modified_task->task_percent_complete = (float) db_loadResult( $sql );
+			$real_children_hours_worked = (float) db_loadResult( $sql );
+			$modified_task->task_percent_complete = $real_children_hours_worked / (float)($modified_task->task_duration * $modified_task->task_duration_type);
 
 			//Update start date
 			$sql = "SELECT min( task_start_date ) FROM tasks
