@@ -81,7 +81,6 @@ $dPconfig['currency_symbol'] = "$";
 $dPconfig['host_style'] = "default";
 
 // local settings [DEFAULT example WINDOWS]
-$dPconfig['root_dir'] = "C:/apache/htdocs/dotproject";  // No trailing slash
 $dPconfig['company_name'] = "My Company";
 $dPconfig['page_title'] = "dotProject";
 $dPconfig['base_url'] = "http://localhost/dotproject";
@@ -218,6 +217,8 @@ $dPconfig['debug'] = 1;
 // db/upgrade_latest.sql to try to repair db problems.
 $dPconfig['auto_fields_creation'] = false;
 
-
+// Root directory is now automatically set to avoid 
+// getting it wrong.
+$dPconfig['root_dir'] = dirname(dirname(__FILE__));
 
 ?>
