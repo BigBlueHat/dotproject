@@ -32,10 +32,6 @@ class CAppUI {
 // localisation
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
-// warn when a translation is not found
-	var $locale_warn;
-// the string appended to untranslated string or unfound keys
-	var $locale_alert = '^';
 // theming
 	var $styles = array();
 // message handling
@@ -47,11 +43,6 @@ class CAppUI {
 
 // CAppUI Constructor
 	function CAppUI() {
-	    global $dPconfig;
-	    $this->locale_warn = $dPconfig['locale_warn'];
-	    
-	    $this->locale_alert = $dPconfig['locale_alert'];
-	    
 		$this->state = array();
 
 		$this->user_id = -1;
@@ -120,10 +111,10 @@ class CAppUI {
 		$x = @$GLOBALS['translate'][$str];
 		if ($x) {
 			$str = $x;
-		} else if ($this->locale_warn) {
+		} else if (@$this->cfg['locale_warn']) {
 			if ($this->base_locale != $this->user_locale ||
 				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
-				$str .= $this->locale_alert;
+				$str .= @$this->cfg['locale_alert'];
 			}
 		}
 		switch ($case) {
@@ -140,8 +131,8 @@ class CAppUI {
 	}
 // set the display of warning for untranslated strings
 	function setWarning( $state=true ) {
-		$temp = $this->locale_warn;
-		$this->locale_warn = $state;
+		$temp = $this->cfg['locale_warn'];
+		$this->cfg['locale_warn'] = $state;
 		return $temp;
 	}
 // Save the current url query string
