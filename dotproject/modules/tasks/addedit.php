@@ -481,13 +481,12 @@ function addUser() {
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
                         if (perc > provideFreeCapacity(form.resources.options[fl].value))  {
                                 setPercentAssign(provideFreeCapacity(form.resources.options[fl].value));
-                                alert("<?php echo $AppUI->_('overAlloc'); ?>");
-                        } else {
-                                t = form.assigned.length
-                                opt = new Option( stripPercent(form.resources.options[fl].text)+" ["+perc+"%]", form.resources.options[fl].value);
-                                form.hperc_assign.value += form.resources.options[fl].value+"="+perc+";";
-                                form.assigned.options[t] = opt
-                        }
+                                window.status = "<?php echo $AppUI->_('overAlloc'); ?>";
+                        } 
+                        t = form.assigned.length
+                        opt = new Option( stripPercent(form.resources.options[fl].text)+" ["+perc+"%]", form.resources.options[fl].value);
+                        form.hperc_assign.value += form.resources.options[fl].value+"="+perc+";";
+                        form.assigned.options[t] = opt;
 		}
 	}
 }
