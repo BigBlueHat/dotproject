@@ -1,3 +1,179 @@
+2005-03-09 02:01  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- fixed file version owners.
+
+2005-03-09 01:23  (cyberhorse)
+---------------------------------
+modules/history/index.php
+modules/history/projects_tab.history.php
+- adding a history tab in project view.
+
+2005-03-08 16:48  (revelation7)
+---------------------------------
+modules/companies/index.php
+modules/companies/vw_companies.php
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- modules/companies/index.php
+- modules/companies/vw_companies.php
+- modules/projects/index.php
+- modules/projects/vw_idx_active.php
+- modules/projects/vw_idx_archived.php
+- modules/projects/vw_idx_complete.php
+- modules/projects/vw_idx_propsed.php
+- enabled sorting, both ascending and descending
+
+2005-03-08 12:39  (ajdonnison)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Fixed off-by-one bug in timer set logic.
+
+2005-03-08 12:36  (ajdonnison)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Changed set timer logic so that a separate button isn't required, simply
+- edit the hours field and hit Start.  It also allows saved task logs to
+- be restarted from where they leave off.
+
+2005-03-08 12:30  (ajdonnison)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Added ability to set the timer to a particular value.
+
+2005-03-08 10:28  (gregorerhardt)
+---------------------------------
+locales/en/system.inc
+- 572: correct misnamed config option name
+
+2005-03-08 10:21  (gregorerhardt)
+---------------------------------
+modules/forums/do_post_aed.php
+- 572: wrong redirect after forum message creation
+
+2005-03-08 00:56  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- fixed date in subversions
+
+2005-03-07 18:46  (ajdonnison)
+---------------------------------
+modules/calendar/day_view.php
+- Now respects the default_tab_view setting in config when called from
+- index.php as default page.
+
+2005-03-07 18:35  (mosen)
+---------------------------------
+classes/authenticator.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/admin.inc
+locales/en/system.inc
+- Rewrote ldap authentication to support windows server based authentication.
+- Added ldap options ldap_allow_login, ldap_search_user, ldap_search_pass
+- Cleaned up ldap authentication class so it wouldnt generate duplicate users
+
+2005-03-07 18:04  (cyberhorse)
+---------------------------------
+style/default/overrides.php
+classes/ui.class.php
+modules/tasks/addedit.php
+- apply js based tabs only for tast -> addedit
+
+2005-03-07 12:57  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- no need to call the savetab function when we have javascript tabs.
+
+2005-03-07 12:54  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+js/collapse.js
+style/default/main.css
+style/default/overrides.php
+- tabs to be javascript based.
+
+2005-03-06 23:19  (gregorerhardt)
+---------------------------------
+install/do_install_db.php
+install/vw_idx_check.php
+- Ask to delete empty spaces and fixed broken check for php4
+
+2005-03-05 21:30  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+- fixed cyrillic in gantt charts (mantis 501 and related).
+
+2005-03-05 21:19  (cyberhorse)
+---------------------------------
+lib/jpgraph/src/jpg-config.inc
+- enable cyrillic translations for the jpgraphs. (be careful with other translations).
+
+2005-03-05 21:17  (cyberhorse)
+---------------------------------
+lib/jpgraph/src/jpgraph.php
+- initialize a new line in the translation, which was causing NOTICEs, which were breaking the image.
+
+2005-03-05 18:22  (cyberhorse)
+---------------------------------
+index.php
+- moved thread iframe to display only when headers are not suppressed (otherwise it breaks gantt charts, etc)
+
+2005-03-05 17:53  (cyberhorse)
+---------------------------------
+index.php
+- moved the thread iframe inside the <body> tag
+
+2005-03-05 17:50  (cyberhorse)
+---------------------------------
+modules/tasks/organize.php
+modules/tasks/tasks.class.php
+- fixed handling moving/copying tasks with children (mantis 532)
+- added deep copy/move functions to tasks class
+- added a few checks to dependency tracking
+
+2005-03-05 16:52  (ajdonnison)
+---------------------------------
+db/upgrade_permissions.php
+includes/db_connect.php
+install/db.php
+install/do_install_db.php
+- Bug fixes from David Gadelha, modification to remove need for config.php
+- in upgrade_permissions, etc.
+
+2005-03-05 15:16  (cyberhorse)
+---------------------------------
+modules/tasks/listtasks.php
+- removed useless commented lines
+
+2005-03-05 15:12  (cyberhorse)
+---------------------------------
+modules/tasks/organize.php
+- removed the thread iframe from this page - already exists in the main index page.
+
+2005-03-05 09:35  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Fixed erorr/count message.
+
+2005-03-05 09:31  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Added message about number of parts, errors in progress list.
+
+2005-03-05 09:27  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Added upgrade_permissions script unconditionally on installs.
+
+2005-03-04 20:31  (ajdonnison)
+---------------------------------
+ChangeLog
+- Standard update
+
 2005-03-04 20:25  (ajdonnison)
 ---------------------------------
 db/upgrade_latest.php
