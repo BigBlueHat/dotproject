@@ -1,11 +1,18 @@
 <?php /* STYLE/DEFAULT $Id$ */
+
+class CTitleBlock extends CTitleBlock_core {
+}
+
+class CCrumbsBlock extends CCrumbsBlock_core {
+}
+
 ##
 ##  This overrides the show function of the CTabBox_core function
 ##
 class CTabBox extends CTabBox_core {
 	function show( $extra='' ) {
 		GLOBAL $AppUI;
-		$uistyle = $AppUI->getPref( 'UISTYLE' );
+		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options

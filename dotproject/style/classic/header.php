@@ -54,24 +54,11 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <?php
 	echo '<td>';
 	$newItem = array( ""=>'- New Item -' );
-
-	if ($AppUI->getProject()) {
-		$newItem["tasks"] = "Task";
-	} else if (!empty( $task_id ) && $task_id > 0) {
-		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
-		if ($rc = db_exec( $sql )) {
-			if ($row = db_fetch_row( $rc )) {
-				$AppUI->setProject( $row[0] );
-				$newItem["tasks"] = "Task";
-			}
-		}
-	}
-
-	$newItem["projects"] = "Project";
 	$newItem["companies"] = "Company";
-	$newItem["files"] = "File";
 	$newItem["contacts"] = "Contact";
 	$newItem["calendar"] = "Event";
+	$newItem["files"] = "File";
+	$newItem["projects"] = "Project";
 
 	echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
 

@@ -40,7 +40,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <body>
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong>dotProject UltraClean</strong></th>
+	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php echo $AppUI->cfg['page_title'];?></strong></th>
 </tr>
 <?php if (!$dialog) {
 	// top navigation menu
@@ -66,24 +66,11 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <?php
 	echo '        <td nowrap="nowrap" align="right">';
 	$newItem = array( ""=>'- New Item -' );
-
-	if ($AppUI->getProject()) {
-		$newItem["tasks"] = "Task";
-	} else if (!empty( $task_id ) && $task_id > 0) {
-		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
-		if ($rc = db_exec( $sql )) {
-			if ($row = db_fetch_row( $rc )) {
-				$AppUI->setProject( $row[0] );
-				$newItem["tasks"] = "Task";
-			}
-		}
-	}
-
-	$newItem["projects"] = "Project";
 	$newItem["companies"] = "Company";
-	$newItem["files"] = "File";
 	$newItem["contacts"] = "Contact";
 	$newItem["calendar"] = "Event";
+	$newItem["files"] = "File";
+	$newItem["projects"] = "Project";
 
 	echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
 
