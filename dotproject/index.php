@@ -7,7 +7,6 @@ require_once( "$root_dir/includes/db_connect.php" );
 require_once( "$root_dir/misc/debug.php" );
 require_once( "$root_dir/classdefs/ui.php" );
 
-
 session_start();
 session_register( 'AppUI' );
 
@@ -21,9 +20,6 @@ if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
 	$_SESSION['AppUI'] = new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
-$template = "$root_dir/templates/" . ($AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : DEFAULT_TEMPLATE);
-$template_html = "templates/" . ($AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : DEFAULT_TEMPLATE);
-
 // supported since PHP 4.2
 // writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
 
@@ -33,7 +29,7 @@ header("Content-type: text/html;charset=$locale_char_set");
 if ($AppUI->doLogin()) {
 	session_unset();
 	session_destroy();
-	include "templates/" . DEFAULT_TEMPLATE . "/login.php";
+	include "$root_dir/includes/login.php";
 	exit;
 }
 
@@ -58,7 +54,8 @@ if (isset( $_POST["dosql"]) ) {
 if (isset( $return )) {
 	header("Location: ./index.php?" . $return);
 }
-require "$template/header.php";
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
+require "$root_dir/style/$uistyle/header.php";
 require "$root_dir/modules/" . $m . "/" . $a . ".php";
-require "$template/footer.php";
+require "$root_dir/style/$uistyle/footer.php";
 ?>

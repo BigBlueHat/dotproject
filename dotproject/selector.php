@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" href="<?php echo "$template/styles/main.css" ?>" type="text/css">
+	<link rel="stylesheet" href="./style/main.css" type="text/css">
 <?php
 $debug = false;
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
@@ -66,7 +66,7 @@ if (!$ok) {
 	$sql = "SELECT $select FROM $table";
 	$sql .= $where ? " WHERE $where" : ''; 
 	$sql .= $order ? " ORDER BY $order" : '';
-	$rc = mysql_query( $sql );echo $sql;
+	$rc = mysql_query( $sql );
 	echo mysql_error();
 	$list = array( 0=>'');
 	while ($row = mysql_fetch_array( $rc, MYSQL_NUM )) {
