@@ -4,8 +4,9 @@
  * 
  * Permissions Theory:
  * 
- * Since permissions are propagated and overwritten from general
- * to specific items, 3 type of permissions are stored in the DB:
+ * Permissions are propagated and overwritten from most general
+ * to most specific items.
+ * 3 type of permissions are stored in the DB:
  * - read
  * - edit
  * - denied
@@ -14,8 +15,18 @@
  * deny access to an item of this project, you will be able
  * to access any item excluding the one you denied.
  * 
+ * Special asumptions:
+ * - if permissions array is empty => a user has no permissions at all (inactive)
+ * - if permissions were granted on a module => the same goes for its items
+ *
+ * Propagations:
+ * - all modules => all modules
+ * - module m => items of m
+ * - project p => tasks, files, events of project p
  */
+
 // Permission flags used in the DB
+
 define( 'PERM_DENY', '0' );
 define( 'PERM_EDIT', '-1' );
 define( 'PERM_READ', '1' );
