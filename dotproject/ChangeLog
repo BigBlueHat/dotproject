@@ -1,33 +1,84 @@
-2003-07-15 (ajdonnison)
+2003-07-17 07:53  (ajdonnison)
+---------------------------------
+modules/admin/index.php
+- Fixed warning message when first name is blank for a user
+
+2003-07-16 12:30  (ajdonnison)
+---------------------------------
+modules/ticketsmith/view.php
+- Reinstated missing "return to parent" link to make nav easier.
+- Fixed Mime header on generated email.
+
+2003-07-16 11:55  (ajdonnison)
+---------------------------------
+ChangeLog
+- Added ticketsmith changes.
+
+2003-07-16 11:35  (ajdonnison)
+---------------------------------
+db/dotproject_100.sql
+db/upgrade_022_to_100.sql
+- Changed cc column in tickets to be 255 characters to handle larger
+- cc lists.
+
+2003-07-16 11:32  (ajdonnison)
+---------------------------------
+modules/ticketsmith/INSTALL
+modules/ticketsmith/README
+- Added more detail to allow users to install gateway.pl successfully
+
+2003-07-16 11:31  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
-- Now uses externally supplied config.php to get config
-- Supports saving of MIME attachments
-- Cleanup of MIME handling
+- Supports extenral passing of dotproject config, requiring less editing.
 
+2003-07-15 19:47  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Removed the debug output.
+
+2003-07-15 19:42  (ajdonnison)
+---------------------------------
 modules/ticketsmith/attach.php
-modules/ticketsmith/reattachticket.php
-- New optional modules for linking orphaned tickets to new parent
-
-modules/ticketsmith/config.inc.php
 modules/ticketsmith/common.inc.php
+modules/ticketsmith/config.inc.php
 modules/ticketsmith/followup.php
 modules/ticketsmith/index.php
+modules/ticketsmith/reattachticket.php
 modules/ticketsmith/view.php
-- Changes to support file attachments
-- Cleaned up config handling
+- Now supports file attachments on incoming emails.
+- Tickets can be reassigned to another parent if link_tickets_kludge is
+- set.
 
-modules/ticketsmith/README
-modules/ticketsmith/INSTAL
-- Updated to include new config options
-- Made more relevent to dotProject.
+2003-07-15 19:41  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Cleaned up MIME handling in emails.
+- Now can save attachments instead of just removing them.
 
-2003-07-10 02:01  (eddieajau)
+2003-07-15 19:41  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+- Added new flag to turn on kludge for linking of new tickets to another
+- parent.
+
+2003-07-14 19:54  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Now picks up PHP config, does not need separate configs.
+- Acknowledgement mail now readable in text-only mail clients.
+
+2003-07-10 18:55  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2003-07-10 16:01  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Minor tweak to access canAccess method
 
-2003-07-10 01:54  (eddieajau)
+2003-07-10 15:54  (eddieajau)
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/tasks.class.php
@@ -35,112 +86,112 @@ modules/tasks/tasks.php
 modules/tasks/view.php
 - Added record access control
 
-2003-07-10 01:54  (eddieajau)
+2003-07-10 15:54  (eddieajau)
 ---------------------------------
 db/upgrade_100_beta1_to_release1.sql
 - Initial upload
 
-2003-07-10 01:53  (eddieajau)
+2003-07-10 15:53  (eddieajau)
 ---------------------------------
 db/dotproject_100.sql
 - Added task_access field to tasks table
 
-2003-07-10 01:52  (eddieajau)
+2003-07-10 15:52  (eddieajau)
 ---------------------------------
 includes/db_connect.php
 - Enhance bindobjecttoarray function
 
-2003-07-09 23:49  (eddieajau)
+2003-07-10 13:49  (eddieajau)
 ---------------------------------
 modules/admin/viewuser.php
 - AIM link added
 
-2003-07-09 23:49  (eddieajau)
+2003-07-10 13:49  (eddieajau)
 ---------------------------------
 includes/permissions.php
 modules/tasks/tasks.php
 - Formatting
 
-2003-07-09 23:48  (eddieajau)
+2003-07-10 13:48  (eddieajau)
 ---------------------------------
 includes/main_functions.php
 - Comments added
 
-2003-07-09 04:55  (kripper)
+2003-07-09 18:55  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-07-08 18:59  (kripper)
+2003-07-09 08:59  (kripper)
 ---------------------------------
 ChangeLog
 - Updated Changelog
 
-2003-07-08 18:28  (jcgonz)
+2003-07-09 08:28  (jcgonz)
 ---------------------------------
 modules/tasks/todo.php
 - Corrected a short php tag <? to <?php
 
-2003-07-08 18:25  (jcgonz)
+2003-07-09 08:25  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.php
 - Updated a short php tag <?
 
-2003-07-07 01:24  (kripper)
+2003-07-07 15:24  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-07-07 01:15  (kripper)
+2003-07-07 15:15  (kripper)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/view.php
 - Added project field to events. The project field will be used to filter
 - events in the calendar.
 
-2003-07-06 22:36  (eddieajau)
+2003-07-07 12:36  (eddieajau)
 ---------------------------------
 modules/projects/view.php
 - Added inactive tasks tab
 
-2003-07-06 22:35  (eddieajau)
+2003-07-07 12:35  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.php
 - Added better in-active task support
 
-2003-07-04 16:07  (kripper)
+2003-07-05 06:07  (kripper)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Implemented filtering of not allowed tasks in calendar
 
-2003-07-04 16:06  (kripper)
+2003-07-05 06:06  (kripper)
 ---------------------------------
 includes/permissions.php
 - Fixed bug in winnow
 
-2003-07-04 16:03  (kripper)
+2003-07-05 06:03  (kripper)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Commented sql debugging
 
-2003-07-03 23:58  (eddieajau)
+2003-07-04 13:58  (eddieajau)
 ---------------------------------
 modules/tasks/addedit.php
 - Fixed double quotes in task name problem
 
-2003-07-03 23:48  (eddieajau)
+2003-07-04 13:48  (eddieajau)
 ---------------------------------
 index.php
 style/classic/login.php
 style/default/login.php
 - Allows redirection through login
 
-2003-07-03 23:20  (eddieajau)
+2003-07-04 13:20  (eddieajau)
 ---------------------------------
 docs/trouble.html
 - no message
 
-2003-07-03 23:07  (eddieajau)
+2003-07-04 13:07  (eddieajau)
 ---------------------------------
 modules/contacts/addedit.php
 modules/contacts/do_contact_aed.php
@@ -148,215 +199,236 @@ modules/help/en/contacts.addedit.hlp
 modules/projects/addedit.php
 - Upgraded contacts assume the owner as the first user to edit the contact
 
-2003-07-03 21:45  (eddieajau)
+2003-07-04 11:45  (eddieajau)
 ---------------------------------
 modules/system/translate.php
 modules/system/translate_save.php
 - Fixed slashes problem
 
-2003-07-03 21:32  (eddieajau)
+2003-07-04 11:32  (eddieajau)
 ---------------------------------
 includes/main_functions.php
 - Added function to make string safe in html tab attirbutes
 
-2003-07-03 21:31  (eddieajau)
+2003-07-04 11:31  (eddieajau)
 ---------------------------------
 includes/permissions.php
 - Fixed constant declaration
 
-2003-07-03 21:12  (eddieajau)
+2003-07-04 11:12  (eddieajau)
 ---------------------------------
 modules/ticketsmith/comment.php
 - Fixed quotes problem
 
-2003-07-03 20:07  (eddieajau)
+2003-07-04 10:07  (eddieajau)
 ---------------------------------
 modules/ticketsmith/comment.php
 - Fixed quotes problem
 
-2003-07-03 16:48  (kripper)
+2003-07-04 06:48  (kripper)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Filter events for not allowed projects in calendar module.
 
-2003-07-03 16:36  (kripper)
+2003-07-04 06:36  (kripper)
 ---------------------------------
 modules/tasks/tasks.php
 - Disabled tasks filtering. Has still some bugs.
 
-2003-07-03 16:23  (kripper)
+2003-07-04 06:23  (kripper)
 ---------------------------------
 index.php
 - Uncommented canEdit/canRead assignements. Should be moved into each php file.
 
-2003-07-03 00:08  (kripper)
+2003-07-03 14:08  (kripper)
 ---------------------------------
 includes/permissions.php
 - Reimplemented a sql friendly winnow function
 
-2003-07-03 00:06  (kripper)
+2003-07-03 14:06  (kripper)
 ---------------------------------
 modules/tasks/tasks.php
 - Reimplemented a sql friendly winnow function.
 
-2003-07-02 20:16  (kripper)
+2003-07-03 10:16  (kripper)
 ---------------------------------
 modules/files/index_table.php
 - Fixed warning when there are no files.
 
-2003-07-02 20:09  (kripper)
+2003-07-03 10:09  (kripper)
 ---------------------------------
 modules/tasks/view.php
 - Project permissions are now propagated to tasks from permissions.php
 
-2003-07-02 20:00  (kripper)
+2003-07-03 10:00  (kripper)
 ---------------------------------
 includes/permissions.php
 - Restructured permissions handling.
 
-2003-07-02 19:58  (kripper)
+2003-07-03 09:58  (kripper)
 ---------------------------------
 index.php
 - Commented module permissions check. Should be checked in each php file.
 
-2003-07-01 00:20  (kobudo)
+2003-07-01 14:20  (kobudo)
 ---------------------------------
 ChangeLog
 - Update Changelog.
 
-2003-07-01 00:16  (kobudo)
+2003-07-01 14:16  (kobudo)
 ---------------------------------
 modules/help/en/help.toc.hlp
 - Update help docs.
 
-2003-07-01 00:12  (kobudo)
+2003-07-01 14:12  (kobudo)
 ---------------------------------
 modules/help/en/help.toc.hlp
 modules/help/en/install.install.hlp
 modules/help/en/install.trouble.hlp
 - Add more help documentation for installation and troubleshooting
 
-2003-06-30 23:33  (kobudo)
+2003-07-01 13:33  (kobudo)
 ---------------------------------
 docs/install.html
 docs/nav.html
 docs/trouble.html
 - Add maximum file upload size troubleshooting info.
 
-2003-06-27 15:38  (kripper)
+2003-06-28 05:38  (kripper)
 ---------------------------------
 index.php
 - admin/viewuser has now public access in order to allow someone to change his
 - passowrd. I suggest to try DP using a user which only has access to the
 - projects module in order to find and correct more permission related bugs.
 
-2003-06-27 12:26  (kobudo)
+2003-06-28 02:26  (kobudo)
 ---------------------------------
 docs/trouble.html
 - Add php.ini file_uploads = on check for File Module functioning.
 
-2003-06-27 11:15  (kobudo)
+2003-06-28 01:15  (kobudo)
 ---------------------------------
 ChangeLog
 - Changelog update.
 
-2003-06-27 03:47  (kripper)
+2003-06-27 17:47  (kripper)
 ---------------------------------
 modules/projects/view.php
 - Added total worked hours to project summary
 
-2003-06-27 01:46  (eddieajau)
+2003-06-27 15:46  (eddieajau)
 ---------------------------------
 modules/projects/addedit.php
 - Bug fix in calendar
 
-2003-06-27 01:39  (eddieajau)
+2003-06-27 15:39  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.php
 - Improved permission winnowing
 
-2003-06-27 01:35  (eddieajau)
+2003-06-27 15:35  (eddieajau)
 ---------------------------------
 modules/tasks/tasks.php
 includes/permissions.php
 - Improved permission winnowing
 
-2003-06-26 23:03  (eddieajau)
+2003-06-27 13:03  (eddieajau)
 ---------------------------------
 modules/projects/addedit.php
 - Changed calendar picker
 
-2003-06-26 22:35  (eddieajau)
+2003-06-27 13:02  (eddieajau)
+---------------------------------
+lib/calendar/README
+lib/calendar/calendar-dp.css
+lib/calendar/calendar.js
+lib/calendar/lang/calendar-br.js
+lib/calendar/lang/calendar-ca.js
+lib/calendar/lang/calendar-cs-win.js
+lib/calendar/lang/calendar-da.js
+lib/calendar/lang/calendar-du.js
+lib/calendar/lang/calendar-el.js
+lib/calendar/lang/calendar-en.js
+lib/calendar/lang/calendar-es.js
+lib/calendar/lang/calendar-fr.js
+lib/calendar/lang/calendar-it.js
+lib/calendar/lang/calendar-nl.js
+lib/calendar/lang/calendar-ro.js
+lib/calendar/lang/calendar-sp.js
+lib/calendar/lang/calendar-sw.js
+- Initial upload
+
+2003-06-27 12:35  (eddieajau)
 ---------------------------------
 docs/phpinfo.php
 - Initial upload
 
-2003-06-26 22:32  (eddieajau)
+2003-06-27 12:32  (eddieajau)
 ---------------------------------
 docs/check.php
 docs/nav.html
 - no message
 
-2003-06-26 22:32  (eddieajau)
+2003-06-27 12:32  (eddieajau)
 ---------------------------------
 classes/ui.class.php
 - Initialise class variable with null
 
-2003-06-26 18:46  (kobudo)
+2003-06-27 08:46  (kobudo)
 ---------------------------------
 docs/install.html
 modules/help/en/install.install.hlp
 - Update help documentation.
 
-2003-06-26 18:37  (kobudo)
+2003-06-27 08:37  (kobudo)
 ---------------------------------
 modules/help/en/projects.view.hlp
 - Complete Project module help documentation.
 
-2003-06-26 15:16  (kripper)
+2003-06-27 05:16  (kripper)
 ---------------------------------
 modules/tasks/view.php
 - Read/edit permissions on the project allows now to view the tasks.
 - TODO: Dicuss about denying permission on specific tasks.
 
-2003-06-26 14:52  (kobudo)
+2003-06-27 04:52  (kobudo)
 ---------------------------------
 modules/projects/view.php
 - Fix invisible "Staging URL" issue.
 
-2003-06-26 04:18  (kripper)
+2003-06-26 18:18  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-06-26 03:24  (kobudo)
+2003-06-26 17:24  (kobudo)
 ---------------------------------
 modules/help/en/projects.addedit.hlp
 - Update Project documentation.
 
-2003-06-26 02:07  (kobudo)
+2003-06-26 16:07  (kobudo)
 ---------------------------------
 modules/help/en/projects.index.hlp
 - Update Project Index screen documentation.
 
-2003-06-25 21:55  (kobudo)
+2003-06-26 11:55  (kobudo)
 ---------------------------------
 includes/config-dist.php
 - Improve default $dbuser & $dbpass variable values.
 
-2003-06-25 20:53  (kobudo)
+2003-06-26 10:53  (kobudo)
 ---------------------------------
 db/dotproject_100.sql
 - Correct icon reference for FORUM's DotProject Classic display style. Change gconf-app-icon.png to support.png.
 
-2003-06-25 20:13  (kobudo)
+2003-06-26 10:13  (kobudo)
 ---------------------------------
 modules/help/en/general.help.hlp
 modules/help/en/general.topmenu.hlp
 modules/help/en/projects.index.hlp
 - Updates help documentation for DotProject version 1.0.
 
-2003-06-25 13:56  (kobudo)
+2003-06-26 03:56  (kobudo)
 ---------------------------------
 modules/help/en/general.help.hlp
 modules/help/en/general.leftnav.hlp
@@ -365,85 +437,85 @@ modules/help/en/install.install.hlp
 modules/help/en/overview.usermods.hlp
 - Update help documentation to DotProject version 1.0.
 
-2003-06-03 04:27  (kripper)
+2003-06-03 18:27  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-06-03 01:30  (eddieajau)
+2003-06-03 15:30  (eddieajau)
 ---------------------------------
 index.php
 - Stamped for beta 2 dev
 
-2003-06-03 00:30  (eddieajau)
+2003-06-03 14:30  (eddieajau)
 ---------------------------------
 index.php
 - Stamped for beta 1 patch 1
 
-2003-06-03 00:10  (eddieajau)
+2003-06-03 14:10  (eddieajau)
 ---------------------------------
 db/dotproject_100.sql
 db/upgrade_100_alpha2_to_beta1.sql
 - Fixed bug in event type entry
 
-2003-06-02 23:43  (eddieajau)
+2003-06-03 13:43  (eddieajau)
 ---------------------------------
 fileviewer.php
 - Fixed bug when session auto-start
 
-2003-06-02 23:39  (eddieajau)
+2003-06-03 13:39  (eddieajau)
 ---------------------------------
 modules/calendar/view.php
 - New event would edit the current one
 
-2003-06-02 22:54  (eddieajau)
+2003-06-03 12:54  (eddieajau)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/day_view.php
 modules/calendar/links_events.php
 - Tidied up good improvements by kripper
 
-2003-06-02 18:48  (eddieajau)
+2003-06-03 08:48  (eddieajau)
 ---------------------------------
 fileviewer.php
 - Fixed stary z character.
 
-2003-06-02 04:28  (kripper)
+2003-06-02 18:28  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-06-02 02:17  (eddieajau)
+2003-06-02 16:17  (eddieajau)
 ---------------------------------
 docs/install.html
 - no message
 
-2003-06-02 01:54  (eddieajau)
+2003-06-02 15:54  (eddieajau)
 ---------------------------------
 fileviewer.php
 - Fixed bug in sql that causes an access denied message
 
-2003-06-02 01:44  (eddieajau)
+2003-06-02 15:44  (eddieajau)
 ---------------------------------
 docs/install.html
 - Removed files directory security instructions
 
-2003-06-02 01:43  (eddieajau)
+2003-06-02 15:43  (eddieajau)
 ---------------------------------
 docs/main.css
 - no message
 
-2003-06-01 23:30  (eddieajau)
+2003-06-02 13:30  (eddieajau)
 ---------------------------------
 modules/ticketsmith/view.php
 - Fixed problem with base url.
 
-2003-06-01 23:13  (eddieajau)
+2003-06-02 13:13  (eddieajau)
 ---------------------------------
 modules/tasks/view.php
 - Fixed website address so that it was a link.
 
-2003-06-01 22:51  (kripper)
+2003-06-02 12:51  (kripper)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/day_view.php
@@ -454,47 +526,47 @@ modules/calendar/links_events.php
 - Use current displayed day date when adding events from day_view
 - Change autmatically event end_date when changing start_date and old_start_date = end_date
 
-2003-06-01 22:19  (eddieajau)
+2003-06-02 12:19  (eddieajau)
 ---------------------------------
 modules/files/index_table.php
 - Fixed bug that tried to load some classes twice under some circumstances.
 
-2003-06-01 22:15  (eddieajau)
+2003-06-02 12:15  (eddieajau)
 ---------------------------------
 index.php
 - Fixed bug that tried to load some classes twice under some circumstances.
 
-2003-06-01 19:00  (eddieajau)
+2003-06-02 09:00  (eddieajau)
 ---------------------------------
 docs/roadmap.html
 - no message
 
-2003-06-01 18:59  (eddieajau)
+2003-06-02 08:59  (eddieajau)
 ---------------------------------
 modules/projects/addedit.php
 - Fixed bug where project owner changes
 
-2003-06-01 04:28  (kripper)
+2003-06-01 18:28  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-05-31 08:18  (eddieajau)
+2003-05-31 22:18  (eddieajau)
 ---------------------------------
 modules/tasks/todo.php
 - Fixed bug to display tasks with null percent complete
 
-2003-05-30 04:30  (kripper)
+2003-05-30 18:30  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-05-30 02:46  (eddieajau)
+2003-05-30 16:46  (eddieajau)
 ---------------------------------
 modules/companies/addedit.php
 - Fixed bug when editting the company address 1
 
-2003-05-30 02:44  (eddieajau)
+2003-05-30 16:44  (eddieajau)
 ---------------------------------
 modules/calendar/calendar.class.php
 modules/calendar/day_view.php
@@ -504,25 +576,24 @@ modules/calendar/week_view.php
 - Added support for events to span their proper time frame (courtesy of James Kist)
 - Also fixed month view links to return to the correct context
 
-2003-05-29 07:18  (eddieajau)
+2003-05-29 21:18  (eddieajau)
 ---------------------------------
 index.php
 - Stamp for beta 2 dev
 
-2003-05-29 04:30  (kripper)
+2003-05-29 18:30  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2003-05-29 02:24  (eddieajau)
+2003-05-29 16:24  (eddieajau)
 ---------------------------------
 modules/help/en/help.toc.hlp
 modules/help/en/system.index.hlp
 - no message
 
-2003-05-29 02:19  (eddieajau)
+2003-05-29 16:19  (eddieajau)
 ---------------------------------
 ...
 
 (This file has been wrapped)
-
