@@ -1,15 +1,246 @@
-2005-01-25 12:45  (ajdonnison)
+2005-02-07 22:22  (gregorerhardt)
 ---------------------------------
-classes/query.class.php
-includes/config-dist.php
-includes/session.php
+lib/jpgraph/src/jpg-config.inc
+lib/jpgraph/src/jpgraph.php
+lib/jpgraph/src/jpgraph_bar.php
+lib/jpgraph/src/jpgraph_canvas.php
+lib/jpgraph/src/jpgraph_canvtools.php
+lib/jpgraph/src/jpgraph_error.php
+lib/jpgraph/src/jpgraph_gantt.php
+lib/jpgraph/src/jpgraph_gradient.php
+lib/jpgraph/src/jpgraph_iconplot.php
+lib/jpgraph/src/jpgraph_line.php
+lib/jpgraph/src/jpgraph_log.php
+lib/jpgraph/src/jpgraph_pie.php
+lib/jpgraph/src/jpgraph_pie3d.php
+lib/jpgraph/src/jpgraph_plotband.php
+lib/jpgraph/README
+lib/jpgraph/README.dotproject
+- jpgraph update to version 1.17
+
+2005-02-07 12:19  (gregorerhardt)
+---------------------------------
+modules/history/index.php
+modules/history/images/stock_book_blue_48.png
+- 342: history icon added
+
+2005-02-06 20:04  (gregorerhardt)
+---------------------------------
+modules/tasks/vw_log_update.php
+- 485: fixed form field with htmlspecialchars
+
+2005-02-06 19:48  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr.php
+- fixed permissions icon link
+
+2005-02-06 19:39  (gregorerhardt)
+---------------------------------
+includes/sendpass.php
+- 375: fixed email users-contact query error
+
+2005-02-06 19:38  (gregorerhardt)
+---------------------------------
+style/default/lostpass.php
+- fixed form field maxlength for long email adresses
+
+2005-02-06 11:21  (gregorerhardt)
+---------------------------------
+modules/projects/reports/overall.php
+- 494: fixed wrong array access
+
+2005-02-04 05:38  (ajdonnison)
+---------------------------------
+modules/files/files.class.php
+- Fixed issue with file edit page not listing details correctly.
+
+2005-02-04 05:37  (ajdonnison)
+---------------------------------
+modules/resources/tasks_tab.addedit.other_resources.php
+- Fixed warning about missing array.
+
+2005-02-04 05:36  (ajdonnison)
+---------------------------------
 index.php
-fileviewer.php
-db/dotproject.sql
-db/upgrade_latest.sql
-- Added new session handling to get around problems with session management
-- that the standard PHP sessions have.  This requires the table sessions
-- to be created.
+classes/ui.class.php
+- Now using the dPrealPath method to ensure that paths are adjusted to
+- try and eliminate Windows issues with require_once/include_once.
+
+2005-02-04 05:31  (ajdonnison)
+---------------------------------
+style/default/header.php
+- Changed Todo link to go to the Todo page rather than the Today Tasks list
+- (minor difference, but requested by a number of people).
+
+2005-02-04 03:04  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- Added function to try and provide some path consistency between windows
+- and other os's.  Trys to get around Windows hassles with require_once.
+
+2005-02-04 02:20  (ajdonnison)
+---------------------------------
+docs/check.php
+- Change to root_dir determination to try and cover problems with IIS and
+- some web hosting companies (particulary Yahoo).
+
+2005-02-04 01:02  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Changed all line terminations to CRLF instead of LF to correctly match
+- expectations of RFC2821 compliant MTAs.
+
+2005-02-03 01:50  (ajdonnison)
+---------------------------------
+lib/PEAR/Date.php
+- Removed extraneous CRs
+
+2005-02-03 01:46  (ajdonnison)
+---------------------------------
+lib/PEAR/Date/Human.php
+- Corrected line endings
+
+2005-02-03 01:43  (ajdonnison)
+---------------------------------
+lib/PEAR/Date/Calc.php
+- Removed extraneous line endings
+
+2005-01-31 01:22  (ajdonnison)
+---------------------------------
+style/classic/header.php
+style/default/header.php
+style/dp-grey-theme/header.php
+- Added link to allow the default page to be redisplayed.
+
+2005-01-28 07:28  (ajdonnison)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Added check to see if the billingcode query fails before attempting
+- to use it.
+
+2005-01-28 07:03  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+- Removed the configurable root_dir and replaced it with an automatically
+- determined version.  This avoids problems like Windows not being able
+- to tell that c:/ and C:/ are the same.
+
+2005-01-27 08:34  (ajdonnison)
+---------------------------------
+includes/db_connect.php
+- Added back in the call for db_adodb.php so that scripts calling don't need
+- to remember to do so.
+
+2005-01-27 08:28  (ajdonnison)
+---------------------------------
+includes/session.php
+- Added default of 1 day when config.php doesn't have session settings.
+
+2005-01-27 08:09  (ajdonnison)
+---------------------------------
+includes/session.php
+- Changed debug level to 11, as the code appears to be quite stable.
+
+2005-01-27 07:33  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Attempt to fix buffering problems on Windows when redirect is called.
+
+2005-01-27 07:22  (ajdonnison)
+---------------------------------
+modules/system/addeditpref.php
+- Fixed permissions to allow a user to edit their own preferences. Bug 450
+
+2005-01-27 07:18  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php
+modules/tasks/ae_desc.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+- Fixes for visibility of contacts when contacts module is not permitted
+- or disabled.  Bug 448
+
+2005-01-27 07:02  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_log.php
+- Fixed Bug 451 where User Log from view user was not returning to the correct
+- page.
+
+2005-01-27 06:54  (ajdonnison)
+---------------------------------
+modules/files/files.class.php
+- Enabled clearing of the query object before returning - Bug 455
+
+2005-01-27 06:52  (ajdonnison)
+---------------------------------
+modules/files/files.class.php
+- Fixed typo as reported in Bug 459.
+
+2005-01-27 06:47  (ajdonnison)
+---------------------------------
+modules/projects/index.php
+- Fixed bug 461: Some tabs not being translated.
+
+2005-01-27 06:41  (ajdonnison)
+---------------------------------
+style/dp-grey-theme/main.css
+- Adjusted table settings so that standard tables with dark backgrounds
+- are correctly displayed.
+
+2005-01-27 06:32  (ajdonnison)
+---------------------------------
+modules/tasks/view.php
+- Changed all queries to use DBQuery class.
+- Added Project contacts.
+- Fixed department, contacts queries to use new tables.
+- Fixed contact queries to use numeric department id.
+
+2005-01-27 05:45  (ajdonnison)
+---------------------------------
+includes/session.php
+- Added handling for phpgacl admin (which appears to change the database
+- mode) so that it doesn't try and create a new cookie needlessly.
+
+2005-01-27 05:26  (ajdonnison)
+---------------------------------
+includes/session.php
+- Modified to use base_url to create session path, so that phpgacl
+- administration will use the same cookie. NOTE: if base_url is not
+- set correctly this could result in login problems.
+
+2005-01-27 05:16  (ajdonnison)
+---------------------------------
+lib/phpgacl/admin/gacl_admin.inc.php
+- Added new session support.
+
+2005-01-27 05:13  (ajdonnison)
+---------------------------------
+db/upgrade_permissions.php
+- Added events permissions as well as calendar.  Probably need a more
+- generic method of handling where the module name and the primary table
+- are not the same.
+
+2005-01-27 05:02  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Made a change to try and reduce liklihood of need for quoted printable
+- encoding of subject.
+
+2005-01-27 01:20  (ajdonnison)
+---------------------------------
+modules/contacts/contacts.class.php
+- Fixed typo
+
+2005-01-26 01:49  (ajdonnison)
+---------------------------------
+modules/calendar/links_tasks.php
+- Removed spurious comments
+
+2005-01-26 01:48  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed query in getTasksForPeriod so that it doesn't return multiples of
+- tasks that match the query.
 
 2005-01-24 17:13  (ajdonnison)
 ---------------------------------
