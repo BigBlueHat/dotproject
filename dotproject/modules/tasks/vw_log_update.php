@@ -106,7 +106,9 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Date');?>
 	</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="task_log_date" value="<?php echo $log_date->format( FMT_TIMESTAMP_DATE );?>">
+	<!-- patch by rowan  bug #890841 against v1.0.2-1   email: bitter at sourceforge dot net -->
+		<input type="hidden" name="task_log_date" value="<?php echo $log_date->format( FMT_DATETIME_MYSQL );?>">
+	<!-- end patch #890841 -->
 		<input type="text" name="log_date" value="<?php echo $log_date->format( $df );?>" class="text" disabled="disabled">
 		<a href="#" onClick="popCalendar('log_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
