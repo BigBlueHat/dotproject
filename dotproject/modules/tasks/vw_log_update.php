@@ -43,8 +43,9 @@ if ($canEdit) {
 	// made by: Nicolas - http://www.javascript-page.com
 	// adapted by: Juan Carlos Gonzalez jcgonz@users.sourceforge.net
 	
-	var timerID = 0;
-	var tStart  = null;
+	var timerID       = 0;
+	var tStart        = null;
+    var total_minutes = -1;
 	
 	function UpdateTimer() {
 	   if(timerID) {
@@ -52,37 +53,22 @@ if ($canEdit) {
 	      clockID  = 0;
 	   }
 	
-	   if(!tStart)
-	      tStart   = new Date();
-	
-	   var   tDate = new Date();
-	   var   tDiff = tDate.getTime() - tStart.getTime();
-	
-	   tDate.setTime(tDiff);
+       // One minute has passed
+       total_minutes = total_minutes+1;
+	   
+	   document.getElementById("timerStatus").innerHTML = "( "+total_minutes+" <?php echo $AppUI->_('minutes elapsed'); ?> )";
 
-	   var pre_cero = "";
-	   if(tDate.getSeconds()<10){
-	       pre_cero = "0";
-	   }
-	   
-	   document.getElementById("timerStatus").innerHTML = "("+tDate.getMinutes()+":"+pre_cero+tDate.getSeconds()+")";
-	   // lets put time information in an hour basis
-	   var total_hours  = (tDate.getMinutes())/60;
-	   
-	   // Lets add up the seconds to the minutes
-	   var total_hours = total_hours + ((tDate.getSeconds())/60)/100;
-	   
 	   // Lets round hours to two decimals
-	   var total_hours   = Math.round( total_hours * 100) / 100;
+	   var total_hours   = Math.round( (total_minutes / 60) * 100) / 100;
 	   document.editFrm.task_log_hours.value = total_hours;
 	   
-	   timerID = setTimeout("UpdateTimer()", 1000);
+	   timerID = setTimeout("UpdateTimer()", 60000);
 	}
 	
 	function timerStart() {
 		if(!timerID){ // this means that it needs to be started
 			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Stop');?>";
-			timerID  = setTimeout("UpdateTimer()", 1000);
+            UpdateTimer();
 		} else { // timer must be stoped
 			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Start');?>";
 			document.getElementById("timerStatus").innerHTML = "";
@@ -94,12 +80,13 @@ if ($canEdit) {
 	   if(timerID) {
 	      clearTimeout(timerID);
 	      timerID  = 0;
+          total_minutes = total_minutes-1;
 	   }
 	}
 	
 	function timerReset() {
 		document.editFrm.task_log_hours.value = "0.00";
-	    tStart = null;
+        total_minutes = -1;
 	}
 </script>
 <!-- END OF TIMER RELATED SCRIPTS -->
