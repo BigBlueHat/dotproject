@@ -1,6 +1,7 @@
 <?php
 if(empty($user_id))$user_id==0;
 
+$message2 = "";
 //case deleting user
 if(isset($del))
 { 
@@ -25,8 +26,6 @@ else
 {
 $dsql = "update users set 
 user_username='$user_username',
-user_password=password('$user_password'),
-
 user_first_name='$user_first_name',
 user_last_name='$user_last_name',
 user_company='$user_company',
@@ -46,11 +45,17 @@ signature='$signature',
 user_birthday='$user_birthday'
 where user_id = $user_id";
 $message = "User Changed";
+mysql_query($dsql);
+$message2 = mysql_error();
+// Fix to stop corruption of password if it is not changed.
+$dsql = "update users set
+user_password=password('$user_password')
+where user_id = $user_id and user_password != '$user_password'";
 }
 
 mysql_query($dsql);
 
-$message2 = mysql_error();
+$message2 .= mysql_error();
 if(strlen($message2) > 0)$message = $message2;
 
 
