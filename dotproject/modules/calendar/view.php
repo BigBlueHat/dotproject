@@ -15,6 +15,9 @@ if (!db_loadHash( $sql, $event )) {
 	$titleBlock->addCrumb( "?m=calendar", "month view" );
 	$titleBlock->show();
 } else {
+	if ($event['event_owner'] != $AppUI->user_id) {
+		$canEdit = false;
+	}
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$tf = $AppUI->getPref('TIMEFORMAT');
 
