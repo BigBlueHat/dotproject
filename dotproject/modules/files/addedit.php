@@ -4,6 +4,7 @@
 ##
 
 $file_id = isset($HTTP_GET_VARS['file_id']) ? $HTTP_GET_VARS['file_id'] : 0;
+$project_id = isset($HTTP_GET_VARS['project_id']) ? $HTTP_GET_VARS['project_id'] : 0;
 
 // check permissions
 $denyEdit = getDenyEdit( $m, $file_id );
@@ -16,7 +17,6 @@ if ($denyEdit) {
 }
 
 if(empty($file_task))$file_task =0;
-if(isset($task_id))$file_task=$task_id;
 if(empty($file_parent))$file_parent =0;
 
 $fsql ="
@@ -94,7 +94,7 @@ function delIt() {
 				<select name="file_project" style="width:270px">
 			<?php 
 			while($row = mysql_fetch_row($prc)){
-				if($frow["file_project"] ==  $row[1]) {
+				if($frow["file_project"] == $row[1] || $project_id == $row[1]) {
 					echo "<option selected value=" . $row[1] . ">". $row[0]  ;
 				} else {
 					echo "<option value=" . $row[1] . ">". $row[0]  ;
