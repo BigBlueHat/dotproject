@@ -1,5 +1,6 @@
 <?php /* PUBLIC $Id$ */
-$user_id = @$AppUI->user_id;
+if (! ($user_id = dPgetParam($_REQUEST, 'user_id', 0)) )
+        $user_id = @$AppUI->user_id;
 
 // check for a non-zero user id
 if ($user_id) {
@@ -8,10 +9,10 @@ if ($user_id) {
 	$new_pwd2 = db_escape( trim( dPgetParam( $_POST, 'new_pwd2', null ) ) );
 
 	// has the change form been posted
-	if ($old_pwd && $new_pwd1 && $new_pwd2 && $new_pwd1 == $new_pwd2 ) {
+	if ($new_pwd1 && $new_pwd2 && $new_pwd1 == $new_pwd2 ) {
 		// check that the old password matches
-		$sql = "SELECT user_id FROM users WHERE user_password = MD5('$old_pwd') AND user_id=$user_id";
-		if (db_loadResult( $sql ) == $user_id) {
+                $sql = "SELECT user_id FROM users WHERE user_password = MD5('$old_pwd') AND user_id=$user_id";
+                if ($AppUI->user_type == 1 || db_loadResult( $sql ) == $user_id) {
 			require_once( "{$dPconfig['root_dir']}/modules/admin/admin.class.php" );
 			$user = new CUser();
 			$user->user_id = $user_id;
@@ -32,10 +33,14 @@ function submitIt() {
 	var f = document.frmEdit;
 	var msg = '';
 
+        <?php if ($AppUI->user_type != 1)
+        {
+        ?>
 	if (f.old_pwd.value.length < 3) {
 		msg += "\n<?php echo $AppUI->_('chgpwValidOld');?>";
 		f.old_pwd.focus();
 	}
+        <?php } ?>
 	if (f.new_pwd1.value.length < 3) {
 		msg += "\n<?php echo $AppUI->_('chgpwValidNew');?>";
 		f.new_pwd1.focus();
@@ -54,10 +59,15 @@ function submitIt() {
 <h1><?php echo $AppUI->_('Change User Password');?></h1>
 <table width="100%" cellspacing="0" cellpadding="4" border="0" class="std">
 <form name="frmEdit" method="post" onsubmit="return false">
+<input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
+<?php if ($AppUI->user_type != 1)
+{
+?>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Current Password');?></td>
 	<td><input type="password" name="old_pwd" class="text"></td>
 </tr>
+<? } ?>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('New Password');?></td>
 	<td><input type="password" name="new_pwd1" class="text"></td>

@@ -46,7 +46,7 @@ if (!db_loadHash( $sql, $user )) {
 if ($canEdit || $user_id == $AppUI->user_id) {
 ?>
 function popChgPwd() {
-	window.open( './index.php?m=public&a=chpwd&dialog=1', 'chpwd', 'top=250,left=250,width=350, height=220, scollbars=false' );
+	window.open( './index.php?m=public&a=chpwd&dialog=1&user_id=<?php echo $user['user_id']; ?>', 'chpwd', 'top=250,left=250,width=350, height=220, scollbars=false' );
 }
 <?php } ?>
 </script>
