@@ -89,13 +89,14 @@ if ($AppUI->doLogin()) {
 // check is the user needs a new password
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	$uistyle = $AppUI->cfg['host_style'];
+	$AppUI->setUserLocale();
+	@include_once( "./locales/$AppUI->user_locale/locales.php" );
+	@include_once( "./locales/core.php" );
+	setlocale( LC_TIME, $AppUI->user_locale );
 	if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
 		require "./includes/sendpass.php";
 		sendNewPass();
 	} else {
-		@include_once( "./locales/$AppUI->user_locale/locales.php" );
-		@include_once( "./locales/core.php" );
-		setlocale( LC_TIME, $AppUI->user_locale );
 		require "./style/$uistyle/lostpass.php";
 	}
 	exit();
