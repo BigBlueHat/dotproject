@@ -7,6 +7,7 @@ $filesDir = isset($filesDir) ? $filesDir : "./files";
 $locEnDir = isset($locEnDir) ? $locEnDir : "./locales/en";
 $tmpDir = isset($tmpDir) ? $tmpDir : "./files/temp";
 $tblwidth = isset($tblwidth) ? $tblwidth :'100%';
+$chmod = '0777';
 ?>
 
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="<?php echo $tblwidth; ?>" align="center">
@@ -100,9 +101,11 @@ $tblwidth = isset($tblwidth) ? $tblwidth :'100%';
 <?php
 if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cfgFile ) && !(is_writable( $cfgDir ))) ) {
 
-        @chmod( $cfgFile, 777 );
-        @chmod( $cfgDir, 777);
-        $okMessage="<span class='error'> 777</span>";
+        @chmod( $cfgFile, $chmod );
+        @chmod( $cfgDir, $chmod );
+	$filemode = fileperms($cfgFile);
+	if ($filemode & 2)
+	        $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
@@ -114,8 +117,10 @@ if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cf
 $okMessage="";
 if (is_writable( $filesDir )) {
 
-        @chmod( $filesDir, 777 );
-        $okMessage="<span class='error'> 777</span>";
+        @chmod( $filesDir, $chmod );
+	$filemode = fileperms($filesDir);
+	if ($filemode & 2)
+        	$okMessage="<span class='error'> 777</span>";
 
  }
 ?>
@@ -127,8 +132,10 @@ if (is_writable( $filesDir )) {
 $okMessage="";
 if (is_writable( $tmpDir )) {
 
-        @chmod( $tmpDir, 777 );
-        $okMessage="<span class='error'> 777</span>";
+        @chmod( $tmpDir, $chmod );
+	$filemode = fileperms($tmpDir);
+	if ($filemode & 2)
+        	$okMessage="<span class='error'> 777</span>";
 
  }
 ?>
@@ -140,8 +147,10 @@ if (is_writable( $tmpDir )) {
 $okMessage="";
 if (is_writable( $locEnDir )) {
 
-        @chmod( $locEnDir, 777 );
-        $okMessage="<span class='error'> 777</span>";
+        @chmod( $locEnDir, $chmod );
+	$filemode = fileperms($filesDir);
+	if ($filemode & 2)
+	        $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
