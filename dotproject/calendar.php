@@ -1,169 +1,146 @@
 <?php
-require 'includes/config.php';
-require 'includes/main_functions.php';
-// Set Day, Month, Year
-if(empty($thisMonth)){$thisMonth = date("n", time());}
-if(empty($thisYear)){$thisYear = date("Y", time());}
-if(empty($thisDay)){$thisDay = date("d", time());}
-if($thisDay < 1){$thisDay = 1;}
+require "./includes/config.php";
+require "$root_dir/classdefs/date.php";
+require "$root_dir/classdefs/ui.php";
+
+session_start();
+$AppUI =& $_SESSION['AppUI'];
+
+$callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
+$uts = isset( $_GET['uts'] ) ? $_GET['uts'] : 0;
+
+$this_month =  new CDate( $uts && $uts > 0 ? $uts : null );
+
+// legacy support
+if (!empty($thisMonth)) { $this_month->setMonth($thisMonth); }
+if (!empty($thisYear)) { $this_month->setYear($thisYear); }
+if (!empty($thisDay)) { $this_month->setDay($thisDay); }
+
+$prev_month = $this_month;
+$prev_month->addMonths( -1 );
+
+$next_month = $this_month;
+$next_month->addMonths( +1 );
+
+$prev_year = $this_month;
+$prev_year->addYears( -1 );
+
+$next_year = $this_month;
+$next_year->addYears( +1 );
+
+//Short Day names
+$dayNamesShort = array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
+$monthLetters = array( 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D' );
+
 if(empty($todaysDay)){$todaysDay = date("d", time());}
 if(empty($todaysMonth)){$todaysMonth = intval(date("m", time()));}
 if(empty($todaysYear)){$todaysYear = date("Y", time());}
 $day=0;
 
-// Figure out the last day of the month
-$lastday[1]=31;
-// Check for Leap Years
-if( checkdate( $thisMonth, 29, $thisYear ) ) { $lastday[2] = 29; }else { $lastday[2]=28; }
-$lastday[3]=31;
-$lastday[4]=30;
-$lastday[5]=31;
-$lastday[6]=30;
-$lastday[7]=31;
-$lastday[8]=31;
-$lastday[9]=30;
-$lastday[10]=31;
-$lastday[11]=30;
-$lastday[12]=31;
-
-//Short Day names
-$dayNamesShort = array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
-
-if ($thisDay > $lastday[$thisMonth]) {
-	$thisDay = $lastday[$thisMonth];
-}
-
-$sqldate = $thisYear . "-" . $thisMonth . "-" . $thisDay;
-
-$prevYear = $thisYear;
-$prevMonth = $thisMonth - 1;
-if ($prevMonth < 1) {
-	$prevMonth = $prevMonth + 12; $prevYear--;
-}
-if ($lastday[$prevMonth] > $thisDay) {
-	$moveday = $thisDay;
-} else {
-	$moveday = $lastday[$prevMonth];
-}
-
-$nextYear = $thisYear;
-$nextMonth = $thisMonth+1;
-if ($nextMonth > 12) {
-	$nextMonth = $nextMonth - 12; $nextYear++;
-}
+$uistyle = $AppUI->getPref( 'UISTYLE' );
 ?>
 <html>
 <head>
-<SCRIPT language="javascript">
-function setClose( x, y, z ){
-	var form = window.opener.document.<?php echo $form;?>;
-	var page = "<?php echo $page;?>";
-
-	var padX = (x < 10) ? '0' : '';
-	var padY = (y < 10) ? '0' : '';
-
-	if (page != "") {
-		if ("<?php echo $date_format;?>"== "1") {
-			form.<?php echo $field;?>.value = padY + (y + "/") + padX + (x + "/") + z;
-		} else if ("<?php echo $date_format;?>"=="2") {
-			form.<?php echo $field;?>.value = padX + (x + "/") + padY + (y + "/") + z;
-		} else {
-			form.<?php echo $field;?>.value = z + ("-" + padX) + x + ("-" + padY) + y;
-		}
-	} else {
-		form.<?php echo $field;?>MM_int.selectedIndex = x;
-		form.<?php echo $field;?>DD_int.selectedIndex = y;
-		form.<?php echo $field;?>YYYY_int.selectedIndex = z - 1999;
+<script language="javascript">
+	function setClose( uts, fdate ){
+		window.opener.<?php echo $callback;?>(uts,fdate);
+		window.close();
 	}
-	window.close();
-}
 </script>
 <title>Calendar</title>
+<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css">
 </head>
 
-<body bgcolor="White" onload="this.focus();">
-<table border=0 cellspacing=1 cellpadding=2 width="220">
+<body onload="this.focus();" class="popcal" leftmargin="0" topmargin="0" marginheight="0" marginwidth="0">
+<table border="0" cellspacing="1" cellpadding="2" width="100%" class="popcal">
 <tr>
-	<td align=center>
-		<a href="<?php echo($SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $prevYear . "&thisMonth=" . $prevMonth . "&thisDay=" . $moveday ."&field=" . $field);?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+	<td align="left" class="poparrows">
+		<a href="<?php echo "$SCRIPT_NAME?callback=$callback&uts=".$prev_month->getTimestamp();?>"><img src="./images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
 	</td>
-	<td colspan=5 align=center bgcolor="#000000">
-		<font face="arial, helvetica" size=2 color="#ffffff"><b>
-		<?php echo strftime("%B", mktime(0,0,0,$thisMonth,1,$thisYear));?> <?php echo $thisYear?></b></font>
+	<td colspan="5" align="center" class="popmonth">
+		<?php echo $this_month->toString( "%B %Y" );?>
 	</td>
-	<td align=center>
-		<?php echo "<a href='" . $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $nextYear . "&thisMonth=" . $nextMonth . "&thisDay=" . $moveday ."&field=" . $field ."'>";?><img src="./images/next.gif" width="16" height="16" alt="next" border="0"></A>
+	<td align="right" class="poparrows">
+		<a href="<?php echo "$SCRIPT_NAME?callback=$callback&uts=".$next_month->getTimestamp();?>"><img src="./images/next.gif" width="16" height="16" alt="pre" border="0"></a>
 	</td>
 </tr>
-<tr>
-<?php  // print days across top
-for ($i=0; $i <= 6; $i++) {
-	echo "<td bgcolor=#ffffff align=center>";
-	echo "<font face='arial, helvetica, sans-serif' size='2'>";
-	echo "<b>" . $dayNamesShort[$i] . "</b>\n";
-	echo "</font>\n";
-	echo "</td>\n";
-}?>
-</tr>
-<?php
-$firstDay = date( 'w', mktime( 0, 0, 0, $thisMonth, 1, $thisYear ) );
-$dayRow = 0;
-if ($firstDay > 0) {
-	while( $dayRow < $firstDay ) {
-		echo "  <td align=right bgcolor='#efefe7'>&nbsp;</td>\n";
-		$dayRow += 1;
+<?php  
+// print days across top
+$s = '<tr>';
+for ($i=0; $i < 7; $i++) {
+	$s .= "<th width=\"14%\">$dayNamesShort[$i]</th>\n";
+}
+$s .= '</tr>';
+
+// pre-pad the calendar
+$pad = $this_month->getStartSpaces();
+$p = '';
+for ($i=0; $i < $pad; $i++) {
+	$p .= '<td class="poppad">&nbsp;</td>';
+}
+$s .= $p ? "<tr>$p" : '';
+
+// fill the calendar
+$show_day = $this_month;
+$show_day->setDay( 1 );
+$show_day->setFormat( $AppUI->getPref( 'SHDATEFORMAT' ) );
+
+$n = $this_month->daysInMonth();
+for ($i=0; $i < $n; $i++) {
+	$day = $show_day->getWeekday();
+	$class = '';
+	if ($show_day->D == $this_month->D) {
+		$class = 'poptoday';
+	} else if ($day < 1 || $day > 5) {
+		$class = 'popweekend';
 	}
+	// start new row
+	if ($day == 0) {
+		$s .= '<tr>';
+	}
+	$href = "javascript:setClose(".$show_day->getTimestamp().",'".$show_day->toString()."')";
+	$s .= "<td class=\"$class\"><a href=\"$href\" class=\"$class\">".$show_day->D.'</a></td>';
+
+	// finish a row
+	if ($day == 6) {
+		$s .= '</tr>';
+	}
+	$show_day->addDays( 1 );
 }
 
-while ($day < $lastday[$thisMonth]) {
-	if (($dayRow % 7) == 0) {
-		echo " </tr>\n<tr>\n";
+// post-pad the calendar
+$pad = 7 - (($pad + $this_month->daysInMonth()) % 7);
+if ($pad < 7) {
+	for ($i=0; $i < $pad; $i++) {
+		$s .= '<td class="poppad">&nbsp;</td>';
 	}
-
-	$dayp = $day + 1;
-
-	$datestr = $thisYear ."-" .  $thisMonth ."-" .  $dayp;
-
-	if ($dayp == $thisDay && empty( $drill )) {
-		$bgcolor = "silver";
-		$txtcolor = "black";
-	} else {
-		$bgcolor = "#efefe7";
-		$txtcolor = 'black';
-	}
+	$s .= '</tr>';
+}
+// print it
+echo $s;
 ?>
-	<td align=center bgcolor="<?php echo $bgcolor?>">
-		<font face='arial, helvetica, sans-serif' size='1'>
-<?php
-	if ($dayp == $todaysDay && $thisMonth == $todaysMonth && $thisYear == $todaysYear) {
-		echo "<b>";
-	}
-	echo "<a href='#' onClick='setClose(".$thisMonth.",".$dayp.",".$thisYear.")'><font color=" . $txtcolor . ">" . $dayp . "</font>";
-	if ($dayp == $todaysDay && $thisMonth == $todaysMonth && $thisYear == $todaysYear) {
-		echo "</b>";
-	}
-	?>
-		</font>
-	</td>
-<?php
-	$day++;
-	$dayRow++;
-}
+</table>
 
-while ($dayRow % 7) {
-	echo "  <td align=right bgcolor=\"" . $bgcolor . "\">&nbsp;</td>\n";
-	$dayRow += 1;
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
+<tr>
+<?php
+$this_month->setFormat( "%b" );
+for ($i=0; $i < 12; $i++) {
+	$this_month->setMonth( $i+1 );
+	echo '<td width="8%">'
+		."<a href=\"$SCRIPT_NAME?callback=$callback&uts=".$this_month->getTimestamp().'" class="popcallinks">'.substr( $this_month->toString(), 0, 1)."</a>"
+		.'</td>';
 }
 ?>
 </tr>
 <tr>
-	<td colspan=7 align=right bgcolor="#efefe7">
-		<font face='verdana, arial, helvetica, sans-serif' size='1'>
-		<A href="<?php echo $SCRIPT_NAME . "?form=" . $form . "&page=" . $page . "&thisYear=" . $todaysYear . "&thisMonth=" . $todaysMonth . "&thisDay=" . $todaysDay . "&field=" . $field;?>">today</A>
-		</font>
+	<td colspan="6" align="left">
+		<?php echo "<a href=\"$SCRIPT_NAME?callback=$callback&uts=".$prev_year->getTimestamp().'" class="popcallinks">'.$prev_year->Y."</a>";?>
 	</td>
-</tr>
-</TABLE>
+	<td colspan="6" align="right">
+		<?php echo "<a href=\"$SCRIPT_NAME?callback=$callback&uts=".$next_year->getTimestamp().'" class="popcallinks">'.$next_year->Y."</a>";?>
+	</td>
+</table>
 
 </body>
 </html>
