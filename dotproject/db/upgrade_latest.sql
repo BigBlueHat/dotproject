@@ -150,3 +150,367 @@ CREATE TABLE `user_task_pin` (
 `task_pinned` tinyint(2) NOT NULL default '1',
 PRIMARY KEY (`user_id`,`task_id`)
 ) TYPE=MyISAM
+
+# 20041022
+# Permissions, files, resources
+#
+# Table structure for table `gacl_acl`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 02:15 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_acl` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default 'system',
+  `allow` int(11) NOT NULL default '0',
+  `enabled` int(11) NOT NULL default '0',
+  `return_value` longtext,
+  `note` longtext,
+  `updated_date` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  KEY `gacl_enabled_acl` (`enabled`),
+  KEY `gacl_section_value_acl` (`section_value`),
+  KEY `gacl_updated_date_acl` (`updated_date`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_acl_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 22, 2004 at 01:04 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_acl_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_acl_sections` (`value`),
+  KEY `gacl_hidden_acl_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aco`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 11:23 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_aco` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(240) NOT NULL default '0',
+  `value` varchar(240) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_section_value_value_aco` (`section_value`,`value`),
+  KEY `gacl_hidden_aco` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aco_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 02:15 PM
+#
+
+CREATE TABLE `gacl_aco_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`acl_id`,`section_value`,`value`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aco_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 23, 2004 at 08:14 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_aco_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_aco_sections` (`value`),
+  KEY `gacl_hidden_aco_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 29, 2004 at 11:38 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_aro` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(240) NOT NULL default '0',
+  `value` varchar(240) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_section_value_value_aro` (`section_value`,`value`),
+  KEY `gacl_hidden_aro` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_groups`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 12:12 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_aro_groups` (
+  `id` int(11) NOT NULL default '0',
+  `parent_id` int(11) NOT NULL default '0',
+  `lft` int(11) NOT NULL default '0',
+  `rgt` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`,`value`),
+  KEY `gacl_parent_id_aro_groups` (`parent_id`),
+  KEY `gacl_value_aro_groups` (`value`),
+  KEY `gacl_lft_rgt_aro_groups` (`lft`,`rgt`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_groups_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 12:26 PM
+#
+
+CREATE TABLE `gacl_aro_groups_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`acl_id`,`group_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 29, 2004 at 11:33 AM
+#
+
+CREATE TABLE `gacl_aro_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`acl_id`,`section_value`,`value`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_aro_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 22, 2004 at 03:04 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_aro_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_aro_sections` (`value`),
+  KEY `gacl_hidden_aro_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 26, 2004 at 06:23 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_axo` (
+  `id` int(11) NOT NULL default '0',
+  `section_value` varchar(240) NOT NULL default '0',
+  `value` varchar(240) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_section_value_value_axo` (`section_value`,`value`),
+  KEY `gacl_hidden_axo` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_groups`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 26, 2004 at 11:00 AM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_axo_groups` (
+  `id` int(11) NOT NULL default '0',
+  `parent_id` int(11) NOT NULL default '0',
+  `lft` int(11) NOT NULL default '0',
+  `rgt` int(11) NOT NULL default '0',
+  `name` varchar(255) NOT NULL default '',
+  `value` varchar(255) NOT NULL default '',
+  PRIMARY KEY  (`id`,`value`),
+  KEY `gacl_parent_id_axo_groups` (`parent_id`),
+  KEY `gacl_value_axo_groups` (`value`),
+  KEY `gacl_lft_rgt_axo_groups` (`lft`,`rgt`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_groups_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 11:24 AM
+#
+
+CREATE TABLE `gacl_axo_groups_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `group_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`acl_id`,`group_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 28, 2004 at 02:15 PM
+#
+
+CREATE TABLE `gacl_axo_map` (
+  `acl_id` int(11) NOT NULL default '0',
+  `section_value` varchar(230) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`acl_id`,`section_value`,`value`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_axo_sections`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 23, 2004 at 03:50 PM
+# Last check: Jul 22, 2004 at 01:00 PM
+#
+
+CREATE TABLE `gacl_axo_sections` (
+  `id` int(11) NOT NULL default '0',
+  `value` varchar(230) NOT NULL default '',
+  `order_value` int(11) NOT NULL default '0',
+  `name` varchar(230) NOT NULL default '',
+  `hidden` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`id`),
+  UNIQUE KEY `gacl_value_axo_sections` (`value`),
+  KEY `gacl_hidden_axo_sections` (`hidden`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_groups_aro_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 29, 2004 at 11:38 AM
+#
+
+CREATE TABLE `gacl_groups_aro_map` (
+  `group_id` int(11) NOT NULL default '0',
+  `aro_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`group_id`,`aro_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_groups_axo_map`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 26, 2004 at 11:01 AM
+#
+
+CREATE TABLE `gacl_groups_axo_map` (
+  `group_id` int(11) NOT NULL default '0',
+  `axo_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`group_id`,`axo_id`)
+) TYPE=MyISAM;
+# --------------------------------------------------------
+
+#
+# Table structure for table `gacl_phpgacl`
+#
+# Creation: Jul 22, 2004 at 01:00 PM
+# Last update: Jul 22, 2004 at 01:03 PM
+#
+
+CREATE TABLE `gacl_phpgacl` (
+  `name` varchar(230) NOT NULL default '',
+  `value` varchar(230) NOT NULL default '',
+  PRIMARY KEY  (`name`)
+) TYPE=MyISAM;
+
+
+INSERT INTO `gacl_phpgacl` (name, value) VALUES ('version', '3.3.2');
+INSERT INTO `gacl_phpgacl` (name, value) VALUES ('schema_version', '2.1');
+
+INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (1, 'system', 1, 'System');
+INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (2, 'user', 2, 'User');
+
+#
+# Indexes to speed up collation of data
+#
+ALTER TABLE `companies` ADD INDEX (`company_owner`);
+ALTER TABLE `events` ADD INDEX (`event_owner`);
+ALTER TABLE `events` ADD INDEX (`event_project`);
+ALTER TABLE `projects` ADD INDEX (`project_company`);
+ALTER TABLE `tasks` ADD INDEX (`task_start_date`);
+ALTER TABLE `tasks` ADD INDEX (`task_end_date`);
+
+# Changes to support assignment of events to users
+ALTER TABLE `events` ADD `event_notify` TINYINT NOT NULL default '0';
+
+CREATE TABLE `user_events` (
+  `user_id` int(11) NOT NULL default '0',
+  `event_id` int(11) NOT NULL default '0',
+  KEY `uek1` (`user_id`, `event_id`),
+  KEY `uek2` (`event_id`, `user_id`)
+) TYPE=MyISAM;
+
+
+# Changes to handle file checkin/checkout support
+ALTER TABLE `files`
+  ADD `file_checkout` VARCHAR(255) NOT NULL DEFAULT '',
+  ADD `file_co_reason` TEXT,
+  ADD `file_version_id` INT NOT NULL DEFAULT 0,
+  ADD INDEX (`file_version_id`);
+
+# Move any old files into the new format
+UPDATE `files` SET `file_version_id` = `file_id` WHERE `file_version_id` = 0;

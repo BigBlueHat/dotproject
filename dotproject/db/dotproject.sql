@@ -131,10 +131,14 @@ CREATE TABLE `files` (
   `file_version` float NOT NULL default '0',
   `file_icon` varchar(20) default 'obj/',
   `file_category` int(11) default '0',
+	`file_checkout` varchar(255) not null default '',
+	`file_co_reason` text,
+	`file_version_id` int(11) not null default '0',
   PRIMARY KEY  (`file_id`),
   KEY `idx_file_task` (`file_task`),
   KEY `idx_file_project` (`file_project`),
-  KEY `idx_file_parent` (`file_parent`)
+  KEY `idx_file_parent` (`file_parent`),
+	KEY `idx_file_vid` (`file_version_id`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `files_index` (
