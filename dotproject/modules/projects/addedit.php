@@ -1,6 +1,7 @@
 <?php /* PROJECTS $Id$ */
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
+$contact_id = intval( dPgetParam( $_GET, "contact_id", 0 ) );
 
 $perms =& $AppUI->acl();
 // check permissions for this record
@@ -102,7 +103,10 @@ if ($project_id) {
 		$selected_contacts[] = $res->fields['contact_id'];
 	$q->clear();
 }
-
+if ($project_id == 0 && $contact_id > 0){
+	$selected_contacts[] = "$contact_id";
+}
+var_export($selected_contacts);
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $dPconfig['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
 <!-- import the calendar script -->

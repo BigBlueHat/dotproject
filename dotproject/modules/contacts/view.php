@@ -41,6 +41,10 @@ $titleBlock = new CTitleBlock( $ttl, 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=contacts", "contacts list" );
 if ($canEdit && $contact_id)
         $titleBlock->addCrumb( "?m=contacts&a=addedit&contact_id=$contact_id", 'edit' );
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new project').'" />', '',
+		'<form action="?m=projects&a=addedit&company_id='.$row->contact_company.'&contact_id='.$contact_id.'" method="post">', '</form>'
+	);
 if ($canDelete && $contact_id) {
 	$titleBlock->addCrumbDelete( 'delete contact', $canDelete, $msg );
 }
