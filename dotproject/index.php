@@ -321,6 +321,7 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 } else {
 	$all_tabs =& $_SESSION['all_tabs'][$m];
 }
+echo '<iframe name="thread" src="about:blank" width="0" height="0" frameborder="0"></iframe>';
 
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if (file_exists($module_file))
@@ -337,6 +338,5 @@ else
 if(!$suppressHeaders) {
 	require "$baseDir/style/$uistyle/footer.php";
 }
-echo '<iframe name="thread" src="about:blank" width="0" height="0" frameborder="0"></iframe>';
 ob_end_flush();
 ?>
