@@ -74,43 +74,43 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 		$message .= "	FONT-SIZE: 18pt; SIZE: 18pt;";
 		$message .= "}";
 		$message .= "</style>";
-		$message .= "<title>Trouble ticket assigned to you</title>";
+		$message .= "<title>".$AppUI->_('Trouble ticket assigned to you')."</title>";
 		$message .= "</head>";
 		$message .= "<body>";
 		$message .= "";
 		$message .= "<TABLE border=0 cellpadding=4 cellspacing=1>";
 		$message .= "	<TR>";
 		$message .= "	<TD valign=top><img src=$app_root/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
-		$message .= "		<TD nowrap><span class=title>Trouble Ticket Management</span></td>";
+		$message .= "		<TD nowrap><span class=title>".$AppUI->_('Trouble Ticket Management')."</span></td>";
 		$message .= "		<TD valign=top align=right width=100%>&nbsp;</td>";
 		$message .= "	</tr>";
 		$message .= "</TABLE>";
 		$message .= "<TABLE width=600 border=0 cellpadding=4 cellspacing=1 bgcolor=#878676>";
 		$message .= "	<TR>";
-		$message .= "		<TD colspan=2><font face=arial,san-serif size=2 color=white>Ticket assigned to you</font></TD>";
+		$message .= "		<TD colspan=2><font face=arial,san-serif size=2 color=white>".$AppUI->_('Ticket assigned to you')."</font></TD>";
 		$message .= "	</tr>";
 		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>Ticket ID:</font></TD>";
+		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>".$AppUI->_('Ticket ID').":</font></TD>";
 		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>$ticket</font></TD>";
 		$message .= "	</tr>";
 		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>Author:</font></TD>";
+		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>".$AppUI->_('Author').":</font></TD>";
 		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>" . str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace('"', '', $author))) . "</font></TD>";
 		$message .= "	</tr>";
 		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>Subject:</font></TD>";
+		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>".$AppUI->_('Subject').":</font></TD>";
 		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>$subject</font></TD>";
 		$message .= "	</tr>";
 		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>View:</font></TD>";
-		$message .= "		<TD bgcolor=white nowrap><a href=\"$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\"><font face=arial,san-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
+		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>".$AppUI->_('View').":</font></TD>";
+		$message .= "		<TD bgcolor=white nowrap><a href=\"$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\"><font face=arial,sans-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
 		$message .= "	</tr>";
 		$message .= "</TABLE>";
 		$message .= "</body>";
 		$message .= "</html>";
 
 
-		mail($mailinfo["user_email"], "Trouble ticket #$ticket has been assigned to you", $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: text/html\nMime-type: 1.0");
+		mail($mailinfo["user_email"], $AppUI->_('Trouble ticket')." #$ticket ".$AppUI->_('has been assigned to you'), $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: text/html\nMime-type: 1.0");
 	}
 
 }

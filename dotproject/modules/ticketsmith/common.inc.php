@@ -88,32 +88,37 @@ function column2array ($query) {
 
 }
 
+/* create read-only output of list values */
+function chooseSelectedValue ($name, $options, $selected) {
+	while(list($key, $val) = each($options)) {
+			if ($key == $selected) {
+				$output = "$val\n";
+			}
+		}
+ return($output);
+
+}
+
 /* create drop-down box */
 function create_selectbox ($name, $options, $selected) {
-	global $canEdit;
 
 	$output= "";
+	$output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
 
-	if ($canEdit) {
-		$output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
-		while(list($key, $val) = each($options)) {
-			$output .= "<option value=\"$key\"";
-			if ($key == $selected) {
-				$output .= " selected";
-			}
-			$output .= ">$val\n";
-			//$loop++;
+	while(list($key, $val) = each($options)) {
+		$output .= "<option value=\"$key\"";
+
+		if ($key == $selected) {
+			$output .= " selected";
 		}
-		$output .= "</select>\n";
+
+		$output .= ">$val\n";
+		//$loop++;
 	}
-	else {
-		while(list($key, $val) = each($options)) {
-			if ($key == $selected) {
-				$output .= "$val\n";
-			}
-		}
-	}
-    
+
+	$output .= "</select>\n";
+
+
     return($output);
 
 }
@@ -203,6 +208,7 @@ function format_field ($value, $type, $ticket = NULL) {
 
     global $CONFIG;
     global $AppUI;
+    global $canEdit;
     switch ($type) {
         case "user":
             if ($value) {
@@ -212,7 +218,12 @@ function format_field ($value, $type, $ticket = NULL) {
             }
             break;
         case "status":
-            $output = create_selectbox("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
+	    if ($canEdit) {
+            	$output = create_selectbox("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
+	    }
+	    else {
+		$output = chooseSelectedValue("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
+	    }
             break;
         case "priority_view":
             $priority = $CONFIG["priority_names"][$value];
@@ -228,7 +239,12 @@ function format_field ($value, $type, $ticket = NULL) {
             $output = "<font color=\"$color\">$priority</font>";
             break;
         case "priority_select":
-            $output = create_selectbox("priority_toggle", $CONFIG["priority_names"], $value);
+	    if ($canEdit) {
+            	$output = create_selectbox("priority_toggle", $CONFIG["priority_names"], $value);
+	    }
+	    else {
+	    	$output = chooseSelectedValue("priority_toggle", $CONFIG["priority_names"], $value);
+	    }
             break;
         case "assignment":
             $options[0] = "-";
@@ -237,7 +253,12 @@ function format_field ($value, $type, $ticket = NULL) {
             while ($row = result2hash($result)) {
                 $options[$row["id"]] = $row["name"];
             }
-            $output = create_selectbox("assignment_toggle", $options, $value);
+	    if ($canEdit) {
+            	$output = create_selectbox("assignment_toggle", $options, $value);
+	    }
+	    else {
+	    	$output = chooseSelectedValue("assignment_toggle", $options, $value);
+	    }
             break;
         case "view":
             if ($CONFIG["index_link"] == "latest") {
