@@ -335,6 +335,10 @@ class CAppUI {
 * The page message is displayed above the title block and then again
 * at the end of the page.
 *
+* IMPORTANT: Please note that append should not be used, since for some
+* languagues atomic-wise translation doesn't work. Append should be
+* deprecated.
+*
 * @param string The (translated) message
 * @param int The type of message
 * @param boolean If true, $msg is appended to the current string otherwise
