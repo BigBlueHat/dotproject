@@ -8,9 +8,13 @@ define( 'PERM_ALL', '-1' );
 
 function getDenyRead( $mod, $item_id=0 ) {
 	GLOBAL $perms;
-	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ))
-		| (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY)
-		| (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] == PERM_DENY);
+	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ));
+	$deny |= (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY);
+	if (isset( $perms[$mod] )) {
+		if (isset( $perms[$mod][PERM_ALL] )) {
+			$deny |= ($perms[$mod][PERM_ALL] == PERM_DENY);
+		}
+	}
 	if ($item_id > 0) {
 		if (isset( $perms[$mod][$item_id] )) {
 			$deny = $perms[$mod][$item_id] == PERM_DENY ? 1 : 0;
@@ -18,26 +22,18 @@ function getDenyRead( $mod, $item_id=0 ) {
 			$deny |= (empty( $perms['all'] ) & empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
 		}
 	}
-/*
-// DEBUG
-echo ' Read:';
-echo (empty( $perms['all'] ) & empty($perms['companies'] ));
-echo (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY);
-echo (isset( $perms['companies'][PERM_ALL] ) & $perms['companies'][PERM_ALL] == PERM_DENY);
-echo (isset( $perms['companies'][$company_id] ) & $perms['companies'][$company_id] == PERM_DENY);
-echo (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
-echo "=$deny";
-return false;
-*/
 	return $deny;
 }
 
 function getDenyEdit( $mod, $item_id=0 ) {
 	GLOBAL $perms;
-
-	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ))
-		| (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT)
-		| (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] <> PERM_EDIT);
+	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ));
+	$deny |= (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT);
+	if (isset( $perms[$mod] )) {
+		if (isset( $perms[$mod][PERM_ALL] )) {
+			$deny |= ($perms[$mod][PERM_ALL] <> PERM_EDIT);
+		}
+	}
 	if ($item_id > 0) {
 		if (isset( $perms[$mod][$item_id] )) {
 			$deny = ($perms[$mod][$item_id] <> PERM_EDIT) ? 1 : 0;
