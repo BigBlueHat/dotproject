@@ -23,12 +23,12 @@ echo mysql_error();
 $sql2 = "insert into task_comments 
 (comment_task ,comment_title, comment_body, comment_user, comment_date, comment_unique_id )
 values
-('$task_id' ,'Status Update', '$comments', $user_cookie, '" . strftime("%Y-%m-%d %H:%M:%S", time()) . "', '$uniqueid')";
+('$task_id' ,'Status Update', '$comments', $AppUI->user_id, '" . strftime("%Y-%m-%d %H:%M:%S", time()) . "', '$uniqueid')";
 mysql_query($sql2);
 //echo mysql_error();
 
 $csql = "select user_email, user_first_name, user_last_name
-from users where users.user_id = $user_cookie";
+from users where users.user_id = $AppUI->user_id";
 $query = mysql_query($csql);
 if (mysql_error())
 	$sql = $csql;
@@ -76,7 +76,7 @@ $mail_body = "<head><title>$subject</title></head>\n"
 . "/index.php?m=tasks&a=view&task_id=$task_id'>$task_id</a></td></tr>\n";
 for ($i = 0; $i < $row_count; $i++) {
 	$row = mysql_fetch_array($query);
-	if ($row['assignee_id'] != $user_cookie) {
+	if ($row['assignee_id'] != $AppUI->user_id) {
 		$mail_text = $mail_body
 		. "<tr><td>Title</td><td>"
 		. $row['task_name']

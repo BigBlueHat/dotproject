@@ -37,12 +37,13 @@ if ($del) {
 		task_name, task_parent, task_milestone, task_project,  task_start_date,
 		task_end_date, task_duration, task_status, task_priority, 
 		task_precent_complete, task_description, task_target_budget, task_related_url,
-		task_order, task_client_publish, task_owner, task_dynamic
+		task_order, task_client_publish, task_owner, task_dynamic, task_creator
 	) VALUES (
 		'$task_name', '$task_parent', '$task_milestone', '$task_project', '$task_start_date',
 		'$task_end_date', '$task_duration', '$task_status ', '$task_priority ',
 		'$task_precent_complete', '$task_description', '$task_target_budget ', '$task_related_url',
-		'$task_order ', '$task_client_publish', '$task_owner', '$task_dynamic'
+		'$task_order ', '$task_client_publish', '$task_owner', '$task_dynamic',
+		'$AppUI->user_id'
 	)";
 ##echo "<pre>$tsql</pre>";
 	mysql_query($tsql);
@@ -59,7 +60,7 @@ if ($del) {
 		}
 		//$message.= mysql_error() ."<BR>";
 	}
-	$tosql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($user_cookie, $id, -1)";
+	$tosql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $id, -1)";
 	mysql_query( $tosql );
 	if (mysql_error()) {
 		$sql = $tosql;
@@ -140,7 +141,6 @@ if ($del) {
 	task_description='$task_description',
 	task_target_budget='$task_target_budget',
 	task_related_url='$task_related_url',
-	task_creator='$task_creator',
 	task_order='$task_order',
 	task_client_publish='$task_client_publish', 
 	task_owner = '$task_owner'
@@ -195,7 +195,7 @@ if ($doassignemail && $notify) {
 	$csql = "
 	SELECT user_email, user_first_name, user_last_name
 	FROM users
-	WHERE users.user_id = $user_cookie
+	WHERE users.user_id = $AppUI->user_id
 	";
 	$query = mysql_query( $csql );
 	if (mysql_error()) {
@@ -252,7 +252,7 @@ if ($doassignemail && $notify) {
 	. "/index.php?m=tasks&a=view&task_id=$task_id'>$task_id</a></td></tr>\n";
 	for ($i=0; $i < $row_count; $i++) {
 		$row = mysql_fetch_array( $query );
-		if ($row['assignee_id'] != $user_cookie) {
+		if ($row['assignee_id'] != $AppUI->user_id) {
 			$mail_text = $mail_body
 			. "<tr><td>Title</td><td>"
 			. $row['task_name']
@@ -288,7 +288,5 @@ if($x = mysql_error())	{
 	$message =  $sql . "<BR>". $x;
 } else {
 	$AppUI->redirect();
-	//header( "Location: ./index.php?m=tasks&project_id=" . $project_id . "&message=" . $message );	
 }
-
 ?>
