@@ -125,7 +125,12 @@ foreach ($trans as $k => $langs){
 	<td><?php 
 		$langs['english'] = htmlspecialchars( $langs['english'], ENT_QUOTES );
 		if ($lang == 'en') {
-			echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\">";
+			if (strlen($langs['english']) < 40) {
+				echo "<input type=\"text\" name=\"trans[$index][english]\" value=\"{$langs['english']}\" size=\"40\" class=\"text\">";
+			} else { 
+			  $rows = round(strlen($langs['english']/35)) +1 ;
+			  echo "<textarea name=\"trans[$index][english]\"  cols=\"40\" class=\"small\" rows=\"$rows\">".$langs['english']."</textarea>";
+			}
 		} else {
 			echo $langs['english'];
 			echo "<input type=\"hidden\" name=\"trans[$index][english]\" value=\""
@@ -136,7 +141,12 @@ foreach ($trans as $k => $langs){
 	<td><?php 
 		if ($lang != 'en') {
 			$langs['lang'] = htmlspecialchars( @$langs['lang'], ENT_QUOTES );
-			echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\">";
+			if (strlen($langs['lang']) < 40) {
+				echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\">";
+			} else { 
+			  $rows = round(strlen($langs['lang']/35)) +1 ;
+			  echo "<textarea name=\"trans[$index][lang]\"  cols=\"40\" class=\"small\" rows=\"$rows\">".$langs['lang']."</textarea>";
+			}
 		}
 	?></td>
 	<td align="center"><?php echo "<input type=\"checkbox\" name=\"trans[$index][del]\" />";?></td>
