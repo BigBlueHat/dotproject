@@ -1,6 +1,12 @@
 <?php /* $Id$ */
 //file viewer
 $baseDir = dirname(__FILE__);
+$baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
+$baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
+$baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : dirname(getenv('SCRIPT_NAME'));
+
+$dPconfig = array();
+
 require_once "$baseDir/includes/config.php";
 require_once "$baseDir/includes/main_functions.php";
 require_once "$baseDir/classes/ui.class.php";
@@ -61,7 +67,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 }
 $AppUI =& $_SESSION['AppUI'];
 
-require_once "{$dPconfig['root_dir']}/includes/permissions.php";
+require_once "$baseDir/includes/permissions.php";
 
 $perms =& $AppUI->acl();
 
