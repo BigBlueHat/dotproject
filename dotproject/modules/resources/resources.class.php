@@ -38,6 +38,7 @@ class CResource extends CDpObject {
       while ($row = db_fetch_assoc($res)) {
 	  $typelist[] = $row;
       }
+      $this->_query->clear();
       $_SESSION['resource_type_list'] =& $typelist;
     }
     return $typelist;
@@ -55,15 +56,16 @@ class CResource extends CDpObject {
 
   function getTypeName()
   {
+    $result = "All Resources";
     $this->_query->clear();
     $this->_query->addTable('resource_types');
     $this->_query->addWhere('resource_type_id = ' . $this->resource_type);
     $res =& $this->_query->exec();
     if ($row = db_fetch_assoc($res)) {
-      return $row['resource_type_name'];
-    } else {
-      return "All Resources";
+      $result = $row['resource_type_name'];
     }
+    $this->_query->clear();
+    return $result;
   }
 }
 

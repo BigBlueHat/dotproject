@@ -52,6 +52,7 @@ class DBQuery {
   var $create_definition;
   var $_table_prefix;
 	var $_query_id = null;
+	var $_old_style = null;
 
   function DBQuery($prefix = null) 
   {
@@ -70,6 +71,11 @@ class DBQuery {
 
   function clear()
   {
+		global $ADODB_FETCH_MODE;
+		if (isset($this->_old_style)) {
+			$ADODB_FETCH_MODE = $this->_old_style;
+			$this->_old_style = null;
+		}
     $this->type = 'select';
     $this->query = null;
     $this->table_list = null;
@@ -428,6 +434,8 @@ class DBQuery {
     global $db;
 		global $ADODB_FETCH_MODE;
 
+		if (! isset($this->_old_style))
+			$this->_old_style = $ADODB_FETCH_MODE;
 		$ADODB_FETCH_MODE = $style;
 		$this->clearQuery();
     if ($q = $this->prepare()) {
@@ -475,6 +483,7 @@ class DBQuery {
 				break;
 		}
 		$this->clearQuery();
+		$this->clear();
 		return $list;
 	}
 
@@ -498,6 +507,7 @@ class DBQuery {
 			}
 		}
 		$this->clearQuery();
+		$this->clear();
 		return $hashlist;
 	}
 

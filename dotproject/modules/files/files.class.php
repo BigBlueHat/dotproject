@@ -47,6 +47,7 @@ class CFile extends CDpObject {
 			if ($row['project_owner'] == $AppUI->user_id)
 				return true;
 		} 
+		$this->_query->clear();
 		return false;
 	}
 

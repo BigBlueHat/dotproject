@@ -20,6 +20,7 @@ while ($row = db_fetch_assoc($res)) {
 	$all_resources[$row['resource_id']] = $resource_types[$row['resource_type']] . ": " . $row['resource_name'];
 	$resource_max[$row['resource_id']] = $row['max_allocation'];
 }
+$q->clear();
 
 	$assigned_resources = array();
 
@@ -50,6 +51,7 @@ if ($loadFromTab && isset($_SESSION['tasks_subform']['hresource_assign'])) {
 		$initResAssignment .= $row['resource_id']."=".$row['percent_allocated'].";";
 		$resources[$row['resource_id']] = $all_resources[$row['resource_id']] . " [" . $row['percent_allocated'] . "%]";
 }
+	$q->clear();
 }
 
 $AppUI->getModuleJS('resources', 'tabs');
