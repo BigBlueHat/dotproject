@@ -1091,22 +1091,48 @@ class Date
     }
 
     /**
-     * Set the hour, minute and second field of the date object
-     *
-     * Shorthand method to set the hour, minute and second fields of the date object,
-	 * invalid seconds (not 0-59) are set to 0.
-     *
-     * @access public
-     * @param int the hour
-     * @param int the minute
-     * @param int the second
-	 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
-     */
+	* Set the hour, minute and second field of the date object
+	*
+	* Shorthand method to set the hour, minute and second fields of the date object,
+	* invalid seconds (not 0-59) are set to 0.
+	*
+	* @access public
+	* @param int the hour
+	* @param int the minute
+	* @param int the second
+	* @author Andrew Eddie <eddieajau@users.sourceforge.net>
+	*/
     function setTime( $h = 0, $m = 0, $s = 0 ) {
 		$this->setHour( $h );
 		$this->setMinute( $m );
 		$this->setSecond( $s );
     }
+
+	/**
+	* @param int
+	* @author Andrew Eddie <eddieajau@users.sourceforge.net>
+	*/
+	function addMonths( $n ) {
+		$an = abs( $n );
+		$years = floor( $an / 12 );
+		$months = $an % 12;
+
+		if ($n < 0) {
+			$this->year -= $years;
+			$this->month -= $months;
+			if ($this->month < 1) {
+				$this->year--;
+				$this->month = 12 - $this->month;
+			}
+		} else {
+			$this->year += $years;
+			$this->month += $months;
+			if ($this->month > 12) {
+				$this->year++;
+				$this->month -= 12;
+			}
+		}
+	}
 
 } // Date
 
