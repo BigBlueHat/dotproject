@@ -1,3 +1,64 @@
+2004-05-01 12:14  (gregorerhardt)
+---------------------------------
+install/config.php
+install/db.php
+install/do_backup.php
+install/pref.php
+- fixed #943764:wrong time increment, added show_all_task_assignees config var
+
+2004-05-01 01:15  (bloaterpaste)
+---------------------------------
+modules/public/selector.php
+- Changed to use DIV instead of a select list.  Looks nicer, and makes it easier to select items.  Still needs fix to work correctly in IE.  Mozilla worx fine.
+
+2004-05-01 00:28  (bloaterpaste)
+---------------------------------
+includes/config-dist.php
+modules/tasks/tasks.php
+- Added "show_all_task_assignees" preference in the config file to control whether or not a full list of assignees is displayed in the task lists.  Also implemented this option in the tasks.php file.
+
+2004-04-30 20:40  (bloaterpaste)
+---------------------------------
+db/dotproject.sql
+db/upgrade_101_to_102.sql
+modules/projects/addedit.php
+modules/projects/do_project_aed.php
+modules/projects/projects.class.php
+modules/projects/view.php
+- Adding project_departments and project_contacts fields to the projects table to support department and contact association with  projects.  This isn't the right way to implement this association, but it's the way that's currently used in tasks, so should be fine for now.  At some point, we should build seperate db table for handle this association, like the task->user association is currently handled.
+- 
+- Added UI support for selection and display of contact and department information.
+
+2004-04-30 20:37  (bloaterpaste)
+---------------------------------
+modules/tasks/view.php
+- adding mailto link to the displayed email address for the listed contacts.
+
+2004-04-26 19:08  (gnome444)
+---------------------------------
+lib/PEAR/Date.php
+- PEAR date bug: DST was hard coded, caused incorrect offset of 1 hour. Took forever to find this
+
+2004-04-23 08:34  (gnome444)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- Update for projects tab ordering fix and nowrap of status field
+
+2004-04-19 04:03  (ajdonnison)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Fix from Rowan Simms for bug 890841 - Timestamps defaulting to 12:00.
+
+2004-04-19 03:59  (ajdonnison)
+---------------------------------
+modules/files/index_table.php
+- Added patch from Rowan Simms for bug 931286
+
+2004-04-16 15:50  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
 2004-04-15 20:14  (jcgonz)
 ---------------------------------
 modules/tasks/view.php
