@@ -52,6 +52,10 @@ if ($canEdit) {
 		'<input type="submit" class="button" value="'.$AppUI->_('new company').'" />', '',
 		'<form action="?m=companies&a=addedit" method="post">', '</form>'
 	);
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new project').'" />', '',
+		'<form action="?m=projects&a=addedit&company_id='.$company_id.'" method="post">', '</form>'
+	);
 }
 $titleBlock->addCrumb( "?m=companies", "company list" );
 if ($canEdit) {

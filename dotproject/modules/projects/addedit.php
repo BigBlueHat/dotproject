@@ -1,5 +1,6 @@
 <?php /* PROJECTS $Id$ */
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
+$company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
 $perms =& $AppUI->acl();
 // check permissions for this record
@@ -32,6 +33,10 @@ $AppUI->redirect();
 } else if (count( $companies ) < 2 && $project_id == 0) {
 $AppUI->setMsg( "noCompanies", UI_MSG_ERROR, true );
 $AppUI->redirect();
+}
+
+if ($project_id == 0 && $company_id > 0) {
+	$row->project_company = $company_id;
 }
 
 // add in the existing company if for some reason it is dis-allowed
