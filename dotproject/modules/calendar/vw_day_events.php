@@ -9,10 +9,21 @@ $links = array();
 $events = CEvent::getEventsForPeriod( $first_time, $last_time );
 $events2 = array();
 
+$start_hour = $AppUI->getConfig('cal_day_start');
+$end_hour = $AppUI->getConfig('cal_day_end');
+
 foreach ($events as $row) {
 	$start = new CDate( $row['event_start_date'] );
+	$end = new CDate( $row['event_end_date'] );
 
 	$events2[$start->format( "%H%M%S" )][] = $row;
+
+	if ($start_hour > $start->format ("%H")) {
+	    $start_hour = $start->format ("%H");
+	}
+	if ($end_hour < $end->format("%H")) {
+	    $end_hour = $end->format("%H");
+	}
 // the link
 /*
 	$link['href'] = "?m=calendar&a=view&event_id=".$row['event_id'];
@@ -27,8 +38,8 @@ $tf = $AppUI->getPref('TIMEFORMAT');
 
 $dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
-$start = $AppUI->getConfig('cal_day_start');
-$end = $AppUI->getConfig('cal_day_end');
+$start = $start_hour;
+$end = $end_hour;
 $inc = $AppUI->getConfig('cal_day_increment');
 
 if ($start === null ) $start = 8;
