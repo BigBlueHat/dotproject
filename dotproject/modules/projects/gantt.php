@@ -11,6 +11,7 @@ $filter1 = array();
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
 $projectStatus = arrayMerge( array( '-2' => $AppUI->_('All w/o in progress')), $projectStatus);
 $proFilter = dPgetParam($_REQUEST, 'proFilter', '-1');
+$company_id = dPgetParam($_REQUEST, 'company_id', 0);
 
 if ($proFilter == '-2'){
         $filter1[] = "project_status != 3 ";
@@ -187,7 +188,6 @@ foreach($projects as $p) {
                 $caption .= $projectStatus[$p['project_status']].", ";
                 $caption .= $p['project_active'] <> 0 ? $AppUI->_('active') : $AppUI->_('inactive');
         }
-
 	$enddate = new CDate($end);
 	$startdate = new CDate($start);
 	$actual_enddate = new CDate($actual_end);
