@@ -432,8 +432,8 @@ function submitIt( nt ){
 <?php
 	}
 ?>
-        else if (form.task_end_date.value > <?php echo $project_end_date; ?> ||
-                form.task_start_date.value < <?php echo $project_start_date; ?>) {
+        else if (<?php echo $project_end_date; ?> && form.task_end_date.value > <?php echo $project_end_date; ?> ||
+                <?php echo $project_start_date; ?> && form.task_start_date.value < <?php echo $project_start_date; ?>) {
                 alert( "<?php echo $AppUI->_('task dates outside the project dates'); ?>" );
         }
         else if (form.reoccur.value > 0 && 
