@@ -20,7 +20,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 		for($i=0; $i <= $start->dateDiff($end); $i++) {
 		// the link
-			if ( ($row['event_cwd'] && (in_array($date->getDayOfWeek(), $cwd ) || !in_array($start->getDayOfWeek(), $cwd))) || !$row['event_cwd'] ) {
+			if ( ($row['events_cwd'] && (in_array($date->getDayOfWeek(), $cwd ) || !in_array($start->getDayOfWeek(), $cwd))) || !$row['events_cwd'] ) {
 				$url = '?m=calendar&a=view&event_id=' . $row['event_id'];
 				$link['href'] = '';
 				$link['alt'] = $row['event_description'];
