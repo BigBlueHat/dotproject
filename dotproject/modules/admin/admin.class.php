@@ -68,7 +68,7 @@ class CUser extends CDpObject {
 		// update password if there has been a change
 			$q  = new DBQuery;
 			$q->addTable('users', 'u');
-			$q->addUpdate('user_password', "MD5('$this->user_password')");
+			$q->addUpdate('user_password', MD5($this->user_password));
 			$q->addWhere("user_id = $this->user_id");
 			$q->addWhere("user_password != '$pwd'");
 			$q->exec();
@@ -78,7 +78,7 @@ class CUser extends CDpObject {
 		// encrypt password
 			$q  = new DBQuery;
 			$q->addTable('users', 'u');
-			$q->addUpdate('user_password', "MD5('$this->user_password')");
+			$q->addUpdate('user_password', MD5($this->user_password));
 			$q->addWhere("user_id = $this->user_id");
 			$q->exec();
 		}
