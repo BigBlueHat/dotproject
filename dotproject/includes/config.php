@@ -2,15 +2,14 @@
 //Config File
 
 //db access information
+$dbtype = "mysql";
 $dbhost = "localhost";
 $db 	= "dotproject";
 $dbuser = "root";
 $dbpass = "";
 
-
 //localization file.  Needs to be fleshed out
 $language_file = "english.php";
-
 
 $root_dir = "d:/apache/htdocs/Projects/dotproject";				//filesystem web root
 $company_name = "BURAN";		
