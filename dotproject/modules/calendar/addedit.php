@@ -26,7 +26,7 @@ if ($obj->event_owner != $AppUI->user_id && $event_id != 0) {
 $types = dPgetSysVal( 'EventType' );
 
 // setup the title block
-$titleBlock = new CTitleBlock( $AppUI->_( $event_id ? "Edit Event" : "Add Event" ), 'myevo-appointments.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( ($event_id ? "Edit Event" : "Add Event") , 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=calendar", "month view" );
 if ($event_id) {
 	$titleBlock->addCrumb( "?m=calendar&a=view&event_id=$event_id", "view this event" );
