@@ -14,6 +14,7 @@ $assignment_toggle = dPgetParam( $_POST, 'assignment_toggle', '' );
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Ticket', 'gconf-app-icon.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );
+$titleBlock->addCrumb( "?m=ticketsmith&type=My", "my tickets" );
 $titleBlock->show();
 
 require("./modules/ticketsmith/config.inc.php");
@@ -67,53 +68,68 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 	{
 		$mailinfo = query2hash("SELECT user_first_name, user_last_name, user_email from users WHERE user_id = $assignment_toggle");
 
-		$message = "<html>";
-		$message .= "<head>";
-		$message .= "<style>";
-		$message .= ".title {";
-		$message .= "	FONT-SIZE: 18pt; SIZE: 18pt;";
-		$message .= "}";
-		$message .= "</style>";
-		$message .= "<title>".$AppUI->_('Trouble ticket assigned to you')."</title>";
-		$message .= "</head>";
-		$message .= "<body>";
-		$message .= "";
-		$message .= "<TABLE border=0 cellpadding=4 cellspacing=1>";
-		$message .= "	<TR>";
-		$message .= "	<TD valign=top><img src=$app_root/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
-		$message .= "		<TD nowrap><span class=title>".$AppUI->_('Trouble Ticket Management')."</span></td>";
-		$message .= "		<TD valign=top align=right width=100%>&nbsp;</td>";
-		$message .= "	</tr>";
-		$message .= "</TABLE>";
-		$message .= "<TABLE width=600 border=0 cellpadding=4 cellspacing=1 bgcolor=#878676>";
-		$message .= "	<TR>";
-		$message .= "		<TD colspan=2><font face=arial,san-serif size=2 color=white>".$AppUI->_('Ticket assigned to you')."</font></TD>";
-		$message .= "	</tr>";
-		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>".$AppUI->_('Ticket ID').":</font></TD>";
-		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>$ticket</font></TD>";
-		$message .= "	</tr>";
-		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>".$AppUI->_('Author').":</font></TD>";
-		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>" . str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace('"', '', $author))) . "</font></TD>";
-		$message .= "	</tr>";
-		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>".$AppUI->_('Subject').":</font></TD>";
-		$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>$subject</font></TD>";
-		$message .= "	</tr>";
-		$message .= "	<TR>";
-		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>".$AppUI->_('View').":</font></TD>";
-		$message .= "		<TD bgcolor=white nowrap><a href=\"$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\"><font face=arial,sans-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
-		$message .= "	</tr>";
-		$message .= "</TABLE>";
-		$message .= "</body>";
-		$message .= "</html>";
+		if (@$mail_info['user_email']) {
+			$boundary = "_lkqwkASDHASK89271893712893";
+			$message = "--$boundary\n";
+			$message .= "Content-disposition: inline\n";
+			$message .= "Content-type: text/plain\n\n";
+			$message .= $AppUI->_('Trouble ticket assigned to you') . ".\n\n";
+			$message .= "Ticket ID: $ticket\n";
+			$message .= "Author   : $author\n";
+			$message .= "Subject  : $subject\n";
+			$message .= "View     : $app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\n";
+			$message .= "\n--$boundary\n";
+			$message .= "Content-disposition: inline\n";
+			$message .= "Content-type: text/html\n\n";
+			$message .= "<html>\n";
+			$message .= "<head>\n";
+			$message .= "<style>\n";
+			$message .= ".title {\n";
+			$message .= "	FONT-SIZE: 18pt; SIZE: 18pt;\n";
+			$message .= "}\n";
+			$message .= "</style>\n";
+			$message .= "<title>".$AppUI->_('Trouble ticket assigned to you')."</title>\n";
+			$message .= "</head>\n";
+			$message .= "<body>\n";
+			$message .= "\n";
+			$message .= "<TABLE border=0 cellpadding=4 cellspacing=1>\n";
+			$message .= "	<TR>\n";
+			$message .= "	<TD valign=top><img src=$app_root/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>\n";
+			$message .= "		<TD nowrap><span class=title>".$AppUI->_('Trouble Ticket Management')."</span></td>\n";
+			$message .= "		<TD valign=top align=right width=100%>&nbsp;</td>\n";
+			$message .= "	</tr>\n";
+			$message .= "</TABLE>\n";
+			$message .= "<TABLE width=600 border=0 cellpadding=4 cellspacing=1 bgcolor=#878676>\n";
+			$message .= "	<TR>\n";
+			$message .= "		<TD colspan=2><font face=arial,san-serif size=2 color=white>".$AppUI->_('Ticket assigned to you')."</font></TD>\n";
+			$message .= "	</tr>\n";
+			$message .= "	<TR>\n";
+			$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>".$AppUI->_('Ticket ID').":</font></TD>\n";
+			$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>$ticket</font></TD>\n";
+			$message .= "	</tr>\n";
+			$message .= "	<TR>\n";
+			$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>".$AppUI->_('Author').":</font></TD>\n";
+			$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>" . str_replace(">", "&gt;", str_replace("<", "&lt;", str_replace('"', '', $author))) . "</font></TD>\n";
+			$message .= "	</tr>\n";
+			$message .= "	<TR>\n";
+			$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>".$AppUI->_('Subject').":</font></TD>\n";
+			$message .= "		<TD bgcolor=white><font face=arial,san-serif size=2>$subject</font></TD>\n";
+			$message .= "	</tr>\n";
+			$message .= "	<TR>\n";
+			$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>".$AppUI->_('View').":</font></TD>\n";
+			$message .= "		<TD bgcolor=white nowrap><a href=\"$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\"><font face=arial,sans-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>\n";
+			$message .= "	</tr>\n";
+			$message .= "</TABLE>\n";
+			$message .= "</body>\n";
+			$message .= "</html>\n";
+			$message .= "\n--$boundary--\n";
 
 
-		mail($mailinfo["user_email"], $AppUI->_('Trouble ticket')." #$ticket ".$AppUI->_('has been assigned to you'), $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: text/html\nMime-type: 1.0");
-	}
+			mail($mailinfo["user_email"], $AppUI->_('Trouble ticket')." #$ticket ".$AppUI->_('has been assigned to you'), $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: text/alternative; boundary=\"$boundary\"\nMime-Version: 1.0");
+		} // End of check for valid email
+	} // End of check for toggle of assignee
 
-}
+} // End of check for change in header fields
 
 /* start table */
 ?>
