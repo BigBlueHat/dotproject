@@ -64,6 +64,7 @@ class CTask {
 	}
 
 	function store() {
+		GLOBAL $AppUI;
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed";
