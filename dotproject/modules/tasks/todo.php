@@ -10,6 +10,8 @@ if ($denyRead) {
 	$AppUI->rededirect( 'm=help&a=access_denied' );
 }
 
+require_once( "$root_dir/classdefs/date.php" );
+
 // if task priority set and items selected, do some work
 $task_priority = isset( $_POST['task_priority'] ) ? $_POST['task_priority'] : 99;
 $selected = isset( $_POST['selected'] ) ? $_POST['selected'] : 0;
@@ -23,21 +25,24 @@ if ($task_priority > -2 && $task_priority < 2 && count( $selected )) {
 	$AppUI->redirect( 'm=tasks&a=todo' );
 }
 
+$AppUI->savePlace();
+
 // query my sub-tasks
 
 $sql = "
 SELECT a.*,
 	project_name, project_id, project_color_identifier
-FROM projects,tasks AS a, user_tasks
+FROM projects, tasks AS a, user_tasks
 LEFT JOIN tasks AS b ON a.task_id=b.task_parent
 WHERE user_tasks.task_id = a.task_id
-	AND b.task_id IS NULL
+#	AND b.task_id IS NULL
 	AND user_tasks.user_id = $AppUI->user_id
 	AND a.task_precent_complete != 100
 	AND project_id = a.task_project
+GROUP BY a.task_id
 ORDER BY a.task_start_date, task_priority DESC
 ";
-
+##echo "<pre>$sql</pre>";##
 $tasks = db_loadList( $sql );
 
 $priorities = array(
@@ -82,10 +87,35 @@ $crumbs["?m=tasks"] = "tasks list";
 <?php
 
 /*** Tasks listing ***/
+$now = new CDate();
+$date_format = $AppUI->getPref('SHDATEFORMAT');
 
 foreach ($tasks as $a) {
-	if($a["task_end_date"] == "0000-00-00 00:00:00") {
-		$a["task_end_date"] = "";
+	$style = '';
+	
+	$start = CDate::fromDateTime( $a["task_start_date"] );
+	$start->setFormat( $date_format );
+
+	$end = CDate::fromDateTime( $a["task_end_date"] );
+	if ( !$end->isValid() ) {
+		if (@$a["task_duration"]) {
+			$end = $start;
+			$end->addHours( $a["task_duration"] );
+		}
+	}
+
+	$days = $now->daysTo( $start );
+	if ($days < 0 && $a["task_precent_complete"] == 0) {
+		$style = 'background-color:#FFeebb';
+	}
+	if ($end->isValid()) {
+		$days = $now->daysTo( $end );
+		if ($days < 0) {
+			$style = 'background-color:#CC6666;color:#ffffff';
+		} else if ($now->daysTo( $start ) < 0) {
+			$style = 'background-color:#e6eedd';
+		}
+		$end->setFormat( $date_format );
 	}
 ?>
 <tr>
@@ -113,8 +143,8 @@ foreach ($tasks as $a) {
 			<span style="padding:2px;background-color:<?php echo $a['project_color_identifier'];?>;color:<?php echo bestColor( $a["project_color_identifier"] );?>"><?php echo $a["project_name"];?></span>
 		</a>
 	</td>
-	<td nowrap><?php echo fromDate(substr($a["task_start_date"], 0, 10));?></td>
-	<td>
+	<td nowrap style="<?php echo $style;?>"><?php echo $start->toString();?></td>
+	<td style="<?php echo $style;?>">
 	<?php if ($a["task_duration"] > 24 ) {
 		$dt = "day";
 		$dur = $a["task_duration"] / 24;
@@ -130,32 +160,10 @@ foreach ($tasks as $a) {
 	?>
 	</td>
 
-	<td nowrap>
-        <?php
-        	if($a["task_end_date"]) {
-        		echo fromDate(substr($a["task_end_date"], 0, 10));
-        	} else {
-        		echo "n/a";
-        	}
-        ?>
-	</td>
+	<td nowrap style="<?php echo $style;?>"><?php echo $end->isValid() ? $end->toString() : '-';?></td>
 
-	<td nowrap>
-	<?php
-		$start_date = time2YMD(dbDate2time($a["task_start_date"]));
-		if ($a["task_duration"]) {
-			$end_date = strtotime( get_end_date($start_date, $a["task_duration"]) );
-
-			$days = floor(($end_date - time())/ 86400);
-			if($days == 0) {
-				echo "<font color=brown>today</font>";
-			} else {
-				if($days<0) echo "<font color=red>";
-				echo "$days days";
-				if($days<0) echo "</font>";
-			}
-		}
-	?>
+	<td nowrap align="right" style="<?php echo $style;?>">
+		<?php echo $days; ?>
 	</td>
 	<td>
 		<input type=checkbox name="selected[]" value="<?php echo $a["task_id"] ?>">
@@ -172,3 +180,5 @@ foreach ($tasks as $a) {
 	</td>
 </form>
 </table>
+Quick and Nasty Legend:<br>
+clear - future task, green - started and on time, yellow - should have started, red - past due
