@@ -1,41 +1,122 @@
-2005-03-31 17:19  (gregorerhardt)
+2005-04-01 10:28  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_20beta_to_20.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_to_20.php
+includes/version.php
+install/do_install_db.php
+- Updated installer code to handle version 2.
+
+2005-04-01 10:13  (ajdonnison)
+---------------------------------
+modules/forums/view_messages.php
+modules/forums/view_pdf.php
+- Fixed bug 630, PDF being always generated to disk. It now outputs it on
+- request direct to screen (no disk file required).
+
+2005-04-01 08:31  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+- addition
+
+2005-04-01 08:31  (gregorerhardt)
+---------------------------------
+modules/tasks/todo.php
+- 698: show tasks with empty dates in todo
+
+2005-04-01 06:51  (gregorerhardt)
+---------------------------------
+modules/forums/addedit.php
+- query class conversion fix
+
+2005-04-01 06:12  (gregorerhardt)
+---------------------------------
+style/dp-grey-theme/login.php
+- fix for the fix
+
+2005-04-01 06:11  (gregorerhardt)
+---------------------------------
+style/default/login.php
+- 695: converted old style config data calls
+
+2005-04-01 06:07  (gregorerhardt)
+---------------------------------
+style/dp-grey-theme/login.php
+- 695: converted old style config data calls
+
+2005-04-01 05:52  (gregorerhardt)
+---------------------------------
+ChangeLog
+- cl update
+
+2005-04-01 05:40  (jcgonz)
+---------------------------------
+modules/calendar/calendar.class.php
+- Needed to utf-8 encode the $day names; en other locales
+- than Enlish it was a problem if it wasn't done this way.
+
+2005-04-01 03:33  (jcgonz)
+---------------------------------
+modules/system/custom_field_addedit.php
+classes/CustomFields.class.php
+- Added two new custom fields types; separator and labels
+
+2005-04-01 03:18  (jcgonz)
+---------------------------------
+modules/tasks/ae_desc.php
+- Removed the onchange detection for task_type; the
+- dynamic custom fields feature was totally removed, this onchange was
+- used by it
+
+2005-04-01 02:42  (jcgonz)
+---------------------------------
+classes/CustomFields.class.php
+modules/projects/addedit.php
+- Custom fields were not saved because the CustomField::store method was
+- using addUpdate (in the query object) when it needed insert method
+- 
+- Also $obj object was used insted of $row object used, intance of CProject object
+
+2005-04-01 01:19  (gregorerhardt)
 ---------------------------------
 modules/projects/addedit.php
 - 691: standard project coulour is white now
 
-2005-03-31 17:12  (gregorerhardt)
+2005-04-01 01:12  (gregorerhardt)
 ---------------------------------
 modules/calendar/calendar.class.php
 - 693: replace newline command with empty space in href alt for tasks
 
-2005-03-31 17:02  (gregorerhardt)
+2005-04-01 01:02  (gregorerhardt)
 ---------------------------------
 modules/calendar/do_event_aed.php
 - fixed issue on clash check when there is an empty assignees list
 
-2005-03-31 16:44  (gregorerhardt)
+2005-04-01 00:44  (gregorerhardt)
 ---------------------------------
 modules/tasks/addedit.js
 - 662: end date calculation now respects non-working days
 
-2005-03-31 12:40  (gregorerhardt)
+2005-03-31 20:40  (gregorerhardt)
 ---------------------------------
 modules/tasks/addedit.js
 - fix for the duration calc fix :)
 
-2005-03-31 12:22  (gregorerhardt)
+2005-03-31 20:22  (gregorerhardt)
 ---------------------------------
 modules/tasks/addedit.js
 - 662: duration calc fixed, now I've to look at the other direction
 
-2005-03-31 03:50  (ajdonnison)
+2005-03-31 11:50  (ajdonnison)
 ---------------------------------
 modules/forums/view_topics.php
 modules/forums/viewer.php
 - Tidied up query class calls.
 - Fixed problem with new topic indicator.
 
-2005-03-31 03:25  (ajdonnison)
+2005-03-31 11:25  (ajdonnison)
 ---------------------------------
 modules/forums/do_post_aed.php
 modules/forums/post_message.php
@@ -43,57 +124,57 @@ modules/forums/post_message.php
 - a list of all posts of all forums, rather than the newly created post.
 - Also added a setLimit to a query that only ever looks at one row.
 
-2005-03-30 16:36  (gregorerhardt)
+2005-03-31 00:36  (gregorerhardt)
 ---------------------------------
 modules/projects/view.php
 - 680: removed htmlspecialchars from user name
 
-2005-03-30 16:11  (gregorerhardt)
+2005-03-31 00:11  (gregorerhardt)
 ---------------------------------
 modules/companies/view.php
 - 690: small address showing corrections
 
-2005-03-30 16:05  (gregorerhardt)
+2005-03-31 00:05  (gregorerhardt)
 ---------------------------------
 modules/admin/admin.class.php
 - 689: user addition crash - forgotten sql query convert in query class move
 
-2005-03-30 15:48  (gregorerhardt)
+2005-03-30 23:48  (gregorerhardt)
 ---------------------------------
 locales/en/common.inc
 - added working hours and working days info
 
-2005-03-30 12:24  (ajdonnison)
+2005-03-30 20:24  (ajdonnison)
 ---------------------------------
 style/default/main.css
 - Changed the style to stop the javascript tabs from looking odd.
 
-2005-03-30 11:23  (gregorerhardt)
+2005-03-30 19:23  (gregorerhardt)
 ---------------------------------
 modules/tasks/ae_dates.php
 - added working hours and working days info
 
-2005-03-30 02:15  (ajdonnison)
+2005-03-30 10:15  (ajdonnison)
 ---------------------------------
 style/dp-grey-theme/header.php
 - Added Todo link to match default view.
 
-2005-03-29 22:02  (jcgonz)
+2005-03-30 06:02  (jcgonz)
 ---------------------------------
 includes/main_functions.php
 - Just a little checkup to avoid warnings in bad formed sysval
 
-2005-03-29 17:32  (gregorerhardt)
+2005-03-30 01:32  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - some task dependency error messages double translation
 
-2005-03-29 16:51  (gregorerhardt)
+2005-03-30 00:51  (gregorerhardt)
 ---------------------------------
 modules/calendar/links_tasks.php
 - 687: start and end blocks erraneously shown for task names in day_view
 
-2005-03-29 13:22  (ajdonnison)
+2005-03-29 21:22  (ajdonnison)
 ---------------------------------
 js/collapse.js
 style/dp-grey-theme/header.php
@@ -101,32 +182,32 @@ style/dp-grey-theme/main.css
 style/dp-grey-theme/overrides.php
 - Fixed tab display and javascript tabs on dp-grey-theme.
 
-2005-03-29 04:12  (gregorerhardt)
+2005-03-29 12:12  (gregorerhardt)
 ---------------------------------
 modules/tasks/index.php
 - visual enhancement of the reordering
 
-2005-03-29 04:01  (gregorerhardt)
+2005-03-29 12:01  (gregorerhardt)
 ---------------------------------
 modules/tasks/index.php
 - reordered filters on task list to prevent from overlong pages
 
-2005-03-29 03:32  (gregorerhardt)
+2005-03-29 11:32  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - task direct unassignment fixed
 
-2005-03-29 03:22  (gregorerhardt)
+2005-03-29 11:22  (gregorerhardt)
 ---------------------------------
 modules/tasks/do_task_assign_aed.php
 - task unassignment fixed
 
-2005-03-29 02:55  (gregorerhardt)
+2005-03-29 10:55  (gregorerhardt)
 ---------------------------------
 modules/projects/index.php
 - projects count corrected for archived projects
 
-2005-03-29 02:01  (ajdonnison)
+2005-03-29 10:01  (ajdonnison)
 ---------------------------------
 classes/authenticator.class.php
 classes/dp.class.php
@@ -194,18 +275,18 @@ modules/ticketsmith/pdf.php
 - not called.  Also reduced number of dbquery class instances where not
 - strictly necessary.
 
-2005-03-29 00:44  (ajdonnison)
+2005-03-29 08:44  (ajdonnison)
 ---------------------------------
 classes/authenticator.class.php
 - Fixed broken if statement.
 
-2005-03-29 00:44  (ajdonnison)
+2005-03-29 08:44  (ajdonnison)
 ---------------------------------
 classes/query.class.php
 - Fixed loadHashList and loadList, making them explicitly set ADODB fetch
 - mode.
 
-2005-03-28 06:41  (ajdonnison)
+2005-03-28 14:41  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 classes/CustomFields.class.php
@@ -220,7 +301,7 @@ modules/tasks/addedit.php
 - Tidy up of use of query class.  Changed query class default mode to
 - be the same as that used by phpgacl.
 
-2005-03-28 05:32  (gregorerhardt)
+2005-03-28 13:32  (gregorerhardt)
 ---------------------------------
 modules/projects/vw_idx_active.php
 modules/projects/vw_idx_archived.php
@@ -228,139 +309,139 @@ modules/projects/vw_idx_complete.php
 modules/projects/vw_idx_proposed.php
 - 682: use Project Name String instead of only Name
 
-2005-03-28 04:49  (gregorerhardt)
+2005-03-28 12:49  (gregorerhardt)
 ---------------------------------
 modules/tasks/view.php
 - corrected tasks dependencies query acc. to hint in 657
 
-2005-03-27 11:20  (ajdonnison)
+2005-03-27 19:20  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 - Now handles localised login.php when checking authentication method.
 
-2005-03-27 08:09  (ajdonnison)
+2005-03-27 16:09  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 - Tidied up query class call in dPgetSysVal.
 - Fixed hanging else in arraySelect.
 
-2005-03-26 23:46  (gregorerhardt)
+2005-03-27 08:46  (gregorerhardt)
 ---------------------------------
 modules/projects/gantt.php
 - 681: utf_decode instead of utf8_decode
 
-2005-03-25 13:30  (gregorerhardt)
+2005-03-25 23:30  (gregorerhardt)
 ---------------------------------
 modules/system/custom_field_addedit.php
 modules/system/custom_field_editor.php
 - translation optimisation
 
-2005-03-25 12:58  (gregorerhardt)
+2005-03-25 22:58  (gregorerhardt)
 ---------------------------------
 includes/main_functions.php
 - commented out double dpformsafe for breaking german translation
 
-2005-03-25 05:59  (ajdonnison)
+2005-03-25 15:59  (ajdonnison)
 ---------------------------------
 modules/projects/reports.php
 - Changed over to new permissions system (how the heck did we miss this one!)
 
-2005-03-25 05:49  (ajdonnison)
+2005-03-25 15:49  (ajdonnison)
 ---------------------------------
 includes/db_adodb.php
 - Changed the db_fetch_array function to check to make sure there are
 - numeric indices in the result.
 
-2005-03-25 05:34  (ajdonnison)
+2005-03-25 15:34  (ajdonnison)
 ---------------------------------
 modules/tasks/addedit.php
 - Fix to get project list to use new query class.
 
-2005-03-25 05:28  (ajdonnison)
+2005-03-25 15:28  (ajdonnison)
 ---------------------------------
 modules/tasks/do_task_aed.php
 - Added catch to ensure an incorrectly set project doesn't cause the
 - task to be lost.
 
-2005-03-25 05:22  (ajdonnison)
+2005-03-25 15:22  (ajdonnison)
 ---------------------------------
 modules/tasks/index.php
 - Moved user list across to getPermittedUsers interface.
 
-2005-03-25 05:16  (gregorerhardt)
+2005-03-25 15:16  (gregorerhardt)
 ---------------------------------
 modules/companies/vw_contacts.php
 - 655: removed erraneously repeated contact details
 
-2005-03-25 05:04  (ajdonnison)
+2005-03-25 15:04  (ajdonnison)
 ---------------------------------
 classes/permissions.class.php
 - Simplified logic in getPermittedUsers to reduce query overhead.
 
-2005-03-25 04:53  (gregorerhardt)
+2005-03-25 14:53  (gregorerhardt)
 ---------------------------------
 classes/permissions.class.php
 - converted to query class
 
-2005-03-25 04:31  (gregorerhardt)
+2005-03-25 14:31  (gregorerhardt)
 ---------------------------------
 modules/projects/addedit.php
 - 666: sprintf instead of printf returning digit number
 
-2005-03-25 04:29  (gregorerhardt)
+2005-03-25 14:29  (gregorerhardt)
 ---------------------------------
 classes/CustomFields.class.php
 - converted to query class
 
-2005-03-25 04:18  (gregorerhardt)
+2005-03-25 14:18  (gregorerhardt)
 ---------------------------------
 classes/customfieldsparser.class.php
 - converted to query class
 
-2005-03-25 04:14  (gregorerhardt)
+2005-03-25 14:14  (gregorerhardt)
 ---------------------------------
 classes/CustomFields.class.php
 - converted to query class
 
-2005-03-25 03:58  (ajdonnison)
+2005-03-25 13:58  (ajdonnison)
 ---------------------------------
 classes/permissions.class.php
 - Fixed problem in getPermittedUsers that was using numeric instead of
 - hash index.
 
-2005-03-25 03:52  (ajdonnison)
+2005-03-25 13:52  (ajdonnison)
 ---------------------------------
 modules/forums/forums.class.php
 modules/forums/index.php
 - Fixed problem where the forums class wasn't properly exteding the CDpObject
 - class, causing setAllowedSQL to fail.
 
-2005-03-25 03:30  (ajdonnison)
+2005-03-25 13:30  (ajdonnison)
 ---------------------------------
 includes/db_connect.php
 - Fixed those functions dependent on numeric row indexes.
 
-2005-03-25 01:47  (gregorerhardt)
+2005-03-25 11:47  (gregorerhardt)
 ---------------------------------
 classes/authenticator.class.php
 - converted to query class
 
-2005-03-24 19:18  (gregorerhardt)
+2005-03-25 05:18  (gregorerhardt)
 ---------------------------------
 modules/forums/do_watch_forum.php
 - 676: fixed query class errors on forum watch
 
-2005-03-24 01:33  (gregorerhardt)
+2005-03-24 11:33  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasksperuser_sub.php
 - removed development code
 
-2005-03-23 23:00  (gregorerhardt)
+2005-03-24 09:00  (gregorerhardt)
 ---------------------------------
 classes/ui.class.php
 - converted to query class
 
-2005-03-23 22:50  (gregorerhardt)
+2005-03-24 08:50  (gregorerhardt)
 ---------------------------------
 classes/dp.class.php
 classes/permissions.class.php
@@ -381,23 +462,23 @@ modules/tasks/tasksperuser_sub.php
 style/classic/login.php
 - converted to query class
 
-2005-03-23 08:16  (ajdonnison)
+2005-03-23 18:16  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 - Added catch for nonsense values from localeconv();
 
-2005-03-23 08:00  (ajdonnison)
+2005-03-23 18:00  (ajdonnison)
 ---------------------------------
 modules/forums/post_message.php
 - Fixed minor problems introduced with query class.
 
-2005-03-23 07:43  (ajdonnison)
+2005-03-23 17:43  (ajdonnison)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Move test for empty user list to after we remove the owner.  Otherwise
 - we cause the SQL to fail.
 
-2005-03-23 07:38  (ajdonnison)
+2005-03-23 17:38  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 modules/system/addeditpref.php
@@ -405,65 +486,65 @@ modules/system/addeditpref.php
 - higher.  Allows an extra field to indicate the locale character set
 - for each language line rather than globally.
 
-2005-03-23 01:31  (ajdonnison)
+2005-03-23 11:31  (ajdonnison)
 ---------------------------------
 modules/history/setup.php
 - Fixed broken SQL.
 
-2005-03-23 01:30  (ajdonnison)
+2005-03-23 11:30  (ajdonnison)
 ---------------------------------
 modules/system/domodsql.php
 - Stopped the install message from overriding SQL error messages.  Need to
 - review this with all modules to ensure that failed SQLs fail the install.
 - Currently it appears to be ignored.
 
-2005-03-23 01:29  (ajdonnison)
+2005-03-23 11:29  (ajdonnison)
 ---------------------------------
 modules/forums/configure.php
 - Fixed parse errors in configuring.
 
-2005-03-21 08:10  (ajdonnison)
+2005-03-21 18:10  (ajdonnison)
 ---------------------------------
 fileviewer.php
 - More error checking so that you don't get heaps of errors if the file
 - has been deleted.
 
-2005-03-21 08:09  (ajdonnison)
+2005-03-21 18:09  (ajdonnison)
 ---------------------------------
 classes/dp.class.php
 - Fixed problem where the query could be left in an awkward state resulting
 - in dodgy results from getAllowedRecords.
 
-2005-03-21 07:01  (ajdonnison)
+2005-03-21 17:01  (ajdonnison)
 ---------------------------------
 js/collapse.js
 - Cleaned up minor issues that could cause warnings to be issued in
 - Javascript Console on mozilla/firefox if strict syntax checking is
 - turned on.
 
-2005-03-21 06:25  (ajdonnison)
+2005-03-21 16:25  (ajdonnison)
 ---------------------------------
 modules/system/translate_save.php
 - Fixed language default.
 - Changed to save to core files if the module doesn't have its own
 - localised translation.
 
-2005-03-20 23:39  (ajdonnison)
+2005-03-21 09:39  (ajdonnison)
 ---------------------------------
 db/dotproject.sql
 - Backported typo fix from head.
 
-2005-03-20 23:36  (ajdonnison)
+2005-03-21 09:36  (ajdonnison)
 ---------------------------------
 db/dotproject.sql
 - Fixed typo in files_index.
 
-2005-03-20 22:35  (ajdonnison)
+2005-03-21 08:35  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 - Defaulted charset to UTF8 when charset not set.
 
-2005-03-19 06:58  (ajdonnison)
+2005-03-19 16:58  (ajdonnison)
 ---------------------------------
 modules/tasks/addedit.js
 modules/tasks/ae_dates.php
@@ -476,16 +557,35 @@ modules/tasks/organize.php
 modules/tasks/view.js
 - Added missing version strings.
 
-2005-03-19 06:47  (ajdonnison)
+2005-03-19 16:47  (ajdonnison)
 ---------------------------------
 locales/en/system.inc
 - More tidy up from Karen.
 
-2005-03-19 06:24  (ajdonnison)
+2005-03-19 16:24  (ajdonnison)
 ---------------------------------
 db/upgrade_latest.sql
 - Removed forum_descendent_order from config as it is now achieved
 - through column-based sorting.
+
+2005-03-18 19:35  (gregorerhardt)
+---------------------------------
+modules/calendar/index.php
+- made the event filter translatable
+
+2005-03-18 18:51  (ajdonnison)
+---------------------------------
+ChangeLog
+- Updated for second beta cut.
+
+2005-03-18 18:44  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_20alpha_to_20beta.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_to_20beta.php
+- Second cut of beta release.
 
 2005-03-18 18:32  (ajdonnison)
 ---------------------------------
@@ -8141,4 +8241,4 @@ modules/companies/index.php
 modules/projects/projects.class.php
 - Deleting a project was not cleaning up the deps or user_tasks tables. Pointed out by Gerald M.
 
-(truncated)
+(truncated).
