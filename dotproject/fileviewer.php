@@ -1,12 +1,13 @@
 <?php
 //file viewer
 require "./includes/config.php";
-require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
-require "{$AppUI->cfg['root_dir']}/classdefs/ui.php";
+require "./classdefs/ui.php";
 
 session_name( 'dotproject' );
 session_start();
 $AppUI =& $_SESSION['AppUI'];
+
+require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
 
 include "{$AppUI->cfg['root_dir']}/includes/main_functions.php";
 include "{$AppUI->cfg['root_dir']}/includes/permissions.php";
