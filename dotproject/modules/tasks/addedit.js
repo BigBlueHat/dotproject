@@ -1,3 +1,4 @@
+// $Id$
 var calendarField = '';
 var calWin = null;
 /**

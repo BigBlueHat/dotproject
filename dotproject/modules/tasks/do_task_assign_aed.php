@@ -1,4 +1,4 @@
-<?php //$Id
+<?php //$Id$
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 $rm = isset($_POST['rm']) ? $_POST['rm'] : 0;
 $hassign = @$_POST['hassign'];
