@@ -1,0 +1,111 @@
+# General -> Gen
+
+# Days, Months etc
+   Gen_LongMonth -> 1    = January
+   Gen_LongMonth -> 2    = February
+   Gen_LongMonth -> 3    = March
+   Gen_LongMonth -> 4    = April
+   Gen_LongMonth -> 5    = May
+   Gen_LongMonth -> 6    = June
+   Gen_LongMonth -> 7    = July
+   Gen_LongMonth -> 8    = August
+   Gen_LongMonth -> 9    = September
+   Gen_LongMonth -> 10   = October
+   Gen_LongMonth -> 11   = November
+   Gen_LongMonth -> 12   = December
+
+   Gen_ShortMonth -> 1   = Jan
+   Gen_ShortMonth -> 2   = Feb
+   Gen_ShortMonth -> 3   = Mar
+   Gen_ShortMonth -> 4   = Apr
+   Gen_ShortMonth -> 5   = May
+   Gen_ShortMonth -> 6   = Jun
+   Gen_ShortMonth -> 7   = Jul
+   Gen_ShortMonth -> 8   = Aug
+   Gen_ShortMonth -> 9   = Sep
+   Gen_ShortMonth -> 10  = Oct
+   Gen_ShortMonth -> 11  = Nov
+   Gen_ShortMonth -> 12  = Dec
+
+   Gen_LongWeek -> 1     = Sunday
+   Gen_LongWeek -> 2     = Monday
+   Gen_LongWeek -> 3     = Tuesday
+   Gen_LongWeek -> 4     = Wednesday
+   Gen_LongWeek -> 5     = Thursday
+   Gen_LongWeek -> 6     = Friday
+   Gen_LongWeek -> 7     = Saturday
+
+   Gen_ShortWeek -> 1    = Sun
+   Gen_ShortWeek -> 2    = Mon
+   Gen_ShortWeek -> 3    = Tue
+   Gen_ShortWeek -> 4    = Wed
+   Gen_ShortWeek -> 5    = Thu
+   Gen_ShortWeek -> 6    = Fri
+   Gen_ShortWeek -> 7    = Sat
+
+# Date Letters
+   Gen_DateLetters       = dmy
+
+# Connetion
+   GenConnError          = db connection error
+
+# All Modules
+   All_SortBy            = &nbsp; sort by:&nbsp;
+   All_Currency          = '$';
+   All_IndRequField      = indicates required field
+   All_RequField         = (required)
+
+   All_BtnBack           = back
+   All_BtnSubmit         = submit
+   All_BtnCancel         = cancel
+   All_BtnSave           = save
+
+   All_None              = none
+
+   All_Search            = search
+
+# Header -> Hdr
+   Hdr_LogOut            = Log Out
+   Hdr_Help              = Help
+   Hdr_MyAccount         = My Info
+
+# Login -> Lgn
+   Lgn_Username          = Username:
+   Lgn_Password          = Password:
+   Lgn_BtnLogin          = Login
+   Lgn_LnkForgPass       = Help! I've forgotten my username and password!
+
+   Lgn_ErrLoginFail      = Login Failed
+
+
+# New Menu -> NMn
+#   NMn_Title             = Create New:
+#   NMn_Task              = task
+#   NMn_Project           = project
+#   NMn_File              = file
+#   NMn_Contact           = contact
+#   NMn_Event             = event
+
+   NMn_ErrProjBefore     = You must select a project before you can add a task
+
+
+# Left Nav Bar -> NBr
+#   NBr_Companies         = Clients &amp; Companies
+#   NBr_Projects          = Projects
+#   NBr_Tasks             = Tasks
+#   NBr_Calendar          = Calendar
+#   NBr_Files             = Files
+#   NBr_Contacts          = Contacts
+#   NBr_Forums            = Forums
+#   NBr_Tickets           = Tickets
+#   NBr_UserAdmin         = User Admin
+
+#   NBr_EchoCompanies     = Companies
+#   NBr_EchoProjects      = Projects
+#   NBr_EchoTasks         = Tasks
+#   NBr_EchoCalendar      = Calendar
+#   NBr_EchoFiles         = Files
+#   NBr_EchoContacts      = Contacts
+#   NBr_EchoForums        = Forums
+#   NBr_EchoTickets       = Tickets
+#   NBr_EchoUserAdmin     = Admin

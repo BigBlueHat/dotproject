@@ -1,0 +1,18 @@
+
+Hdr_MyAccount     = <?php echo ptranslate("My Info");?>
+Hdr_LogOut        = <?php echo ptranslate("Logout");?>
+Hdr_Help          = <?php echo ptranslate("Help");?>
+
+
+NBr_AltCompanies  = <?php echo ptranslate("Companies");?>
+NBr_AltProjects   = <?php echo ptranslate("Projects");?>
+NBr_AltTasks      = <?php echo ptranslate("Tasks");?>
+NBr_AltCalendar   = <?php echo ptranslate("Calendar");?>
+NBr_AltFiles      = <?php echo ptranslate("Files");?>
+NBr_AltContacts   = <?php echo ptranslate("Contacts");?>
+NBr_AltForums     = <?php echo ptranslate("Users and Communication");?>
+NBr_AltTickets    = <?php echo ptranslate("Tickets");?>
+NBr_AltUserAdmin  = <?php echo ptranslate("Admin");?>
+
+
+From: $support_mail = From: suppor

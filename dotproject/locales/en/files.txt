@@ -1,0 +1,40 @@
+# Files -> Fil
+# Fil - Index -> I
+   FilI_Title            = File Management
+   FilI_BtnAdd           = add new file
+   FilI_Msg              =
+
+# Fil - Index columns -> Ic
+   FilI_IcFileName       = File Name
+   FilI_IcFileOwner      = File Owner
+   FilI_IcFileDate       = File Date
+   FilI_IcFileType       = File Type
+   FilI_IcFileSize       = File Size
+
+# Fil - Edit -> E
+   FilE_Title            = File Management
+   FilE_TtlAdd           = Adding a new file
+   FilE_TtlEdit          = Updating a file
+   FilE_BtnDel           = delete this file:
+
+   FilE_MsgConfDel       = Are you sure you would like to delete this file?
+
+# Fil - Edition fields -> Ef
+   FilEf_FileName        = File Name:
+   FilEf_Project         = Project:
+   FilEf_FileDescr       = File Description:
+   FilEf_Uploadfile      = upload a file:
+   FilEf_UploadedBy      = Uploaded by:
+   FilEf_FileType        = File Type:
+   FilEf_FileSize        = File Size:
+   FilEf_FileVersion     = File Version:
+
+   FilE_BtnAdd           = Add file
+   FilE_BtnUpdate        = Update file
+
+   FilE_LnkDownload      = Click here to download
+
+# Fil - Do SQL -> "S"
+   FilS_Uploaded         = File successfully uploaded
+   FilS_ErrUpload        = file upload failed
+   FilS_ErrSearch        = Please enter a search value
