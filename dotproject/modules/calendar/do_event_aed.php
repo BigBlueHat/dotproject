@@ -36,7 +36,7 @@ if ($del) {
 } else {
 	$isNotNew = @$_POST['event_id'];
 	if (!$isNotNew) {
-		$event->event_owner = $AppUI->user_id;
+		$obj->event_owner = $AppUI->user_id;
 	}
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
