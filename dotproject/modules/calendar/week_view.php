@@ -26,7 +26,7 @@ $thisDay=0;
 $tasks = getTasksForPeriod( $this_week, $next_week, $company_id );
 $events = getEventsForPeriod( $this_week, $next_week );
 
-################3echo '<pre>';print_r($tasks);echo '</pre>';
+//echo '<pre>';print_r($tasks);echo '</pre>';
 
 // assemble the links for the events
 $links = array();
@@ -45,8 +45,10 @@ foreach ($events as $row) {
 	$links[$start->getDay()][] = $link;
 }
 
-$crumbs = array();
-$crumbs["?m=calendar"] = "month view";
+// setup the title block
+$titleBlock = new CTitleBlock( 'Week View', 'calendar.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=calendar", "month view" );
+$titleBlock->show();
 ?>
 
 <style type="text/css">
@@ -60,23 +62,7 @@ TD.weekDay  {
 }
 </style>
 
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-	<td><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42"></td>
-	<td nowrap><h1>Week View</h1></td>
-	<td align="right" width="100%">&nbsp;</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_WEEKCAL' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td width="50%" align="right"></td>
-</tr>
-</table>
-
-<table border="0" cellspacing="1" cellpadding="2" width="98%" class="motitle">
+<table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
 <tr>
 	<td>
 		<a href="<?php echo '?m=calendar&a=week_view&uts='.$prev_week->getTimestamp(); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>

@@ -1,11 +1,4 @@
-<?php
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-    $AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* $Id$ */
 $AppUI->savePlace();
 
 if (isset( $_GET['tab'] )) {
@@ -30,39 +23,33 @@ $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
     $let .= $L['L'];
 }
+
+$a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
+$a2z .= "\n<tr>";
+$a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
+$a2z .= '<td><a href="./index.php?m=admin&where=0">' . $AppUI->_('All') . '</a></td>';
+for ($c=65; $c < 91; $c++) {
+	$cu = chr( $c );
+	$cell = strpos($let, "$cu") > 0 ?
+		"<a href=\"?m=admin&where=$cu\">$cu</a>" :
+		"<font color=\"#999999\">$cu</font>";
+	$a2z .= "\n\t<td>$cell</td>";
+}
+$a2z .= "\n</tr>\n</table>";
+
+// setup the title block
+$titleBlock = new CTitleBlock( 'User Management', 'admin.gif', $m, "$m.$a" );
+$titleBlock->addCell( $a2z );
+$titleBlock->show();
 ?>
 <script language="javascript">
 function delMe( x, y ) {
-    if (confirm( "Are you sure you want\nto delete user " + y + "?" )) {
-        top.location="?m=admin&a=dosql&del=1&user_id=" + x;
-    }
+	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('User');?> " + y + "?" )) {
+		document.frmDelete.user_id.value = x;
+		document.frmDelete.submit();
+	}
 }
 </script>
-
-<table cellpadding="0" cellspacing="1" border="0" width="98%">
-<tr>
-    <td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width="42" height="42" /></td>
-    <td nowrap><h1><?php echo $AppUI->_('User Management');?></h1></td>
-    <td align="right">
-        <table cellpadding="2" cellspacing="1" border="0">
-        <tr>
-            <td width="100%" align="right"><?php echo $AppUI->_('Show');?>: </td>
-            <td><a href="./index.php?m=admin&where=0"><?php echo $AppUI->_('All');?></a></td>
-<?php
-    for ($a=65; $a < 91; $a++) {
-        $cu = chr( $a );
-        $cell = strpos($let, "$cu") > 0 ?
-            "<a href=\"?m=admin&where=$cu\">$cu</a>" :
-            "<font color=\"#999999\">$cu</font>";
-        echo "<td>$cell</td>";
-    }
-?>
-        </tr>
-        </table>
-    </td>
-    <td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_USER_IDX' );?></td>
-</tr>
-</table>
 
 <?php
 $extra = '<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>';
@@ -73,3 +60,9 @@ $tabBox->add( 'vw_active_usr', 'Active Users' );
 $tabBox->add( 'vw_inactive_usr', 'In-Active Users' );
 $tabBox->show( $extra );
 ?>
+
+<form name="frmDelete" action="./index.php?m=admin" method="post">
+	<input type="hidden" name="dosql" value="do_user_aed" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="user_id" value="0" />
+</form>

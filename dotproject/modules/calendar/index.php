@@ -46,23 +46,15 @@ foreach ($events as $row) {
 }
 
 #echo '<pre>';print_r($events);echo '</pre>';
+// setup the title block
+$titleBlock = new CTitleBlock( 'Monthly Calendar', 'calendar.gif', $m, "$m.$a" );
+$titleBlock->addCell( $AppUI->_('Company').':' );
+$titleBlock->addCell(
+	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
+	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="pickCompany">', '</form>'
+);
+$titleBlock->show();
 ?>
-
-<table width="98%" border=0 cellpadding="0" cellspacing=1>
-<form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickCompany">
-<tr>
-	<td><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42" /></td>
-	<td nowrap><h1><?php echo $AppUI->_('Monthly Calendar');?></h1></td>
-	<td align="right" width="100%">
-		<?php echo $AppUI->_('Company');?>:
-<?php
-	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
-?>
-	</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="Help"/>', 'ID_HELP_MOCAL' );?></td>
-</tr>
-</form>
-</table>
 
 <script language="javascript">
 function clickDay( uts, fdate ) {
@@ -73,7 +65,7 @@ function clickWeek( uts, fdate ) {
 }
 </script>
 
-<table cellspacing="0" cellpadding="0" border="0" width="98%"><tr><td>
+<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
 <?php
 // create the main calendar
 $cal = new CMonthCalendar( $this_month  );
