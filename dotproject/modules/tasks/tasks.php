@@ -198,24 +198,19 @@ for ($x=0; $x < $nums; $x++) {
 	$row = db_fetch_assoc( $ptrc );
 
 	//add information about assigned users into the page output
-	$ausql = "SELECT user_id FROM user_tasks WHERE task_id=".$row['task_id'];
-	//echo "<pre>".$row['task_id']."</pre>\n";
+	$ausql = "SELECT ut.user_id,
+	u.user_username, u.user_email
+	FROM user_tasks ut
+	LEFT JOIN users u ON u.user_id = ut.user_id
+	WHERE ut.task_id=".$row['task_id'];
 	
 	$assigned_users = array ();
 	$paurc = db_exec( $ausql );
 	$nnums = db_num_rows( $paurc );
 	echo db_error();
 	for ($xx=0; $xx < $nnums; $xx++) {
-		$row2 = db_fetch_assoc( $paurc );
-		//echo "<pre>".$row2['user_id']."</pre>\n";
-		$usql = "SELECT user_id, user_username, user_email FROM users WHERE user_id=".$row2['user_id'];
-		$purc = db_exec( $usql );
-		echo db_error();
-		if ( db_num_rows( $purc ) > 0 )
-			array_push( $assigned_users, db_fetch_assoc( $purc ));
+		$row['task_assigned_users'][] = db_fetch_assoc($paurc);
 	}
-	$row['task_assigned_users'] = $assigned_users;
-
 	//pull the final task row into array
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
