@@ -113,10 +113,10 @@ function fromDate($date) {
 
 function formatTime($time) {
 	// converts a unix time stamp to a user defined date string
-	return fromDate(formatYMDtime($time));
+	return fromDate(time2YMD($time));
 }
 
-function formatYMDTime($time) {
+function time2YMD($time) {
 	return date("Y-m-d", $time);
 }
 
