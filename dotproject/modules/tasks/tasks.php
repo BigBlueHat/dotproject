@@ -260,47 +260,45 @@ function array_csort()   //coded by Ichier2003
 
 function sort_by_item_title( $title, $item_name, $item_type )
 {
-	global $AppUI,$project_id,$min_view;
+	global $AppUI,$project_id,$min_view,$m;
 	global $task_sort_item1,$task_sort_type1,$task_sort_order1;
 	global $task_sort_item2,$task_sort_type2,$task_sort_order2;
-	
-	if ( $min_view )
-	{
-		if ( $task_sort_item2 == $item_name ) $item_order = $task_sort_order2;
-		if ( $task_sort_item1 == $item_name ) $item_order = $task_sort_order1;
-		
-		if ( isset( $item_order ) )
-		{
-			if ( $item_order == SORT_ASC ) echo '<img src="./images/icons/low.gif" width=13 height=16>';
-			else echo '<img src="./images/icons/1.gif" width=13 height=16>';
-		}
-		else $item_order = SORT_DESC;
-		
-	/* flip the sort order for the link */
-		$item_order = ( $item_order == SORT_ASC ) ? SORT_DESC : SORT_ASC;
-		
-		echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
-		echo '&task_sort_item1='.$item_name;
-		echo '&task_sort_type1='.$item_type;
-		echo '&task_sort_order1='.$item_order;
-		if ( $task_sort_item1 == $item_name )
-		{
-			echo '&task_sort_item2='.$task_sort_item2;
-			echo '&task_sort_type2='.$task_sort_type2;
-			echo '&task_sort_order2='.$task_sort_order2;
-		}
+
+	if ( $task_sort_item2 == $item_name ) $item_order = $task_sort_order2;
+	if ( $task_sort_item1 == $item_name ) $item_order = $task_sort_order1;
+
+	if ( isset( $item_order ) ) {
+		if ( $item_order == SORT_ASC )
+			echo '<img src="./images/icons/low.gif" width=13 height=16>';
 		else
-		{
-			echo '&task_sort_item2='.$task_sort_item1;
-			echo '&task_sort_type2='.$task_sort_type1;
-			echo '&task_sort_order2='.$task_sort_order1;
-		}
-		echo '">';
+			echo '<img src="./images/icons/1.gif" width=13 height=16>';
+	} else
+		$item_order = SORT_DESC;
+
+	/* flip the sort order for the link */
+	$item_order = ( $item_order == SORT_ASC ) ? SORT_DESC : SORT_ASC;
+	if ( $m == 'tasks' )
+		echo '<a href="./index.php?m=tasks';
+	else
+		echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
+
+	echo '&task_sort_item1='.$item_name;
+	echo '&task_sort_type1='.$item_type;
+	echo '&task_sort_order1='.$item_order;
+	if ( $task_sort_item1 == $item_name ) {
+		echo '&task_sort_item2='.$task_sort_item2;
+		echo '&task_sort_type2='.$task_sort_type2;
+		echo '&task_sort_order2='.$task_sort_order2;
+	} else {
+		echo '&task_sort_item2='.$task_sort_item1;
+		echo '&task_sort_type2='.$task_sort_type1;
+		echo '&task_sort_order2='.$task_sort_order1;
 	}
+	echo '">';
 	
 	echo $AppUI->_($title);
 	
-	if ( $min_view ) { echo '</a>'; }
+	echo '</a>';
 }
 
 ?>
@@ -361,7 +359,7 @@ foreach ($projects as $k => $p) {
 		}
 		global $done;
 		$done = array();
-		if ( $min_view && $task_sort_item1 != "" )
+		if ( $task_sort_item1 != "" )
 		{
 			if ( $task_sort_item2 != "" && $task_sort_item1 != $task_sort_item2 )
 				$p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1
