@@ -1,19 +1,24 @@
-2004-04-09 16:21  (gregorerhardt)
+2004-04-09 12:48  (gnome444)
 ---------------------------------
-install/check.php
-install/commonlib.php
-install/db.php
-install/do_backup.php
-install/index.php
-install/pref.php
-- Implemented backup and dropDatabase functionality to the installer
+modules/companies/index.php
+- Do not allow a user to add a company that doesn't have edit perms#908369
 
-2004-04-09 09:50  (kripper)
+2004-04-09 12:39  (gnome444)
+---------------------------------
+includes/permissions.php
+- Alert! Security fix in response to #908369 which applies to projects as well and probably others. Do not allow edit perms to modules unless specifically allowed.
+
+2004-04-09 10:25  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2004-04-08 22:39  (gnome444)
+2004-04-09 03:50  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-04-08 16:39  (gnome444)
 ---------------------------------
 modules/companies/index.php
 modules/companies/vw_companies.php
@@ -493,26 +498,6 @@ modules/calendar/calendar.class.php
 - 890967: patch from sreindl fixing day view for recurrent events
 
 2004-02-22 19:56  (ajdonnison)
----------------------------------
-modules/tasks/addedit.php
-- Added fix from Matthias Lienau for popup calendar not working on some
-- windows systems  (mainly XP with Norton Internet Security).
-
-2004-02-20 01:21  (robertoibarra)
----------------------------------
-modules/projects/index.php
-- Bug fix: When ALL COMPANIES in the projects list not all projects would be displayed
-
-2004-02-17 01:43  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Rework of MIME handling logic to try and cope with all likely sets of
-- MIME combinations.  Should now work with MS Outlook multipart/related
-- with embedded multipart/mime components.
-
-2004-02-07 14:47  (gnome444)
----------------------------------
-modules/tasks/addedit.php
 ...
 
 (This file has been wrapped)
