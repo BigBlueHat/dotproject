@@ -291,6 +291,7 @@ class CTask extends CDpObject {
 	function store() {
 		GLOBAL $AppUI;
 
+		$importing_tasks = false;
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed - $msg";
