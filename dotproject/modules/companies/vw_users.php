@@ -2,7 +2,7 @@
 ##
 ##	Companies: View User sub-table
 ##
-GLOBAL $company_id; 
+GLOBAL $AppUI, $company_id; 
 
 $sql = "
 SELECT user_id, user_username, user_first_name, user_last_name
@@ -10,7 +10,9 @@ FROM users
 WHERE user_company = $company_id
 ";
 
-$rows = db_loadList( $sql, NULL, __LINE__ );
+if (!($rows = db_loadList( $sql, NULL ))) {
+	echo 'None Available<br>'.$AppUI->getMsg();
+} else {
 ?>
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
 <tr>
@@ -28,3 +30,4 @@ foreach ($rows as $row){
 echo $s;
 ?>
 </table>
+<?php } ?>

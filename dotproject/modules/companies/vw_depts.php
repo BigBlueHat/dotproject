@@ -2,7 +2,7 @@
 ##
 ##	Companies: View Projects sub-table
 ##
-GLOBAL $company_id, $denyEdit;
+GLOBAL $AppUI, $company_id, $denyEdit;
 
 $sql = "
 SELECT departments.*, COUNT(user_department) dept_users
@@ -13,7 +13,9 @@ GROUP BY dept_id
 ORDER BY dept_parent
 ";
 ##echo $sql;
-$rows = db_loadList( $sql, NULL, __LINE__ );
+if (!($rows = db_loadList( $sql, NULL ))) {
+	echo 'None Available<br>'.$AppUI->getMsg();
+} else {
 
 function showchild( &$a, $level=0 ) {
 	global $done;
@@ -74,3 +76,4 @@ foreach ($rows as $row) {
 }
 ?>
 </table>
+<?php } ?>

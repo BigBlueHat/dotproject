@@ -6,11 +6,10 @@ $denyRead = getDenyRead( $m, $company_id );
 $denyEdit = getDenyEdit( $m, $company_id );
 
 if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+
+$AppUI->savePlace();
 
 // pull data
 $sql = "
@@ -20,7 +19,7 @@ LEFT JOIN users ON users.user_id = companies.company_owner
 WHERE companies.company_id = $company_id
 ";
 
-db_loadHash( $sql, $row, __LINE__ );
+db_loadHash( $sql, $row );
 
 $pstatus = array(
 	'Not Defined',

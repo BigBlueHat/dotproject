@@ -2,7 +2,7 @@
 ##
 ##	Companies: View Projects sub-table
 ##
-GLOBAL $company_id; 
+GLOBAL $AppUI, $company_id;
 
 $sql = "
 SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
@@ -15,7 +15,9 @@ where project_company = $company_id
 order by project_name
 ";
 
-$rows = db_loadList( $sql, NULL, __LINE__ );
+if (!($rows = db_loadList( $sql, NULL ))) {
+	echo 'None Available<br>'.$AppUI->getMsg();
+} else {
 ?>
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 <tr>
@@ -26,8 +28,8 @@ $rows = db_loadList( $sql, NULL, __LINE__ );
 	<th>Budget</th>
 </tr>
 
-<?php 
-$s = '';	
+<?php
+$s = '';
 foreach ($rows as $row) {
 	$s .= '<tr>';
 	$s .= '<td width="100%">';
@@ -41,3 +43,4 @@ foreach ($rows as $row) {
 echo $s;
 ?>
 </table>
+<?php } ?>

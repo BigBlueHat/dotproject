@@ -6,13 +6,12 @@ $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );
 
 if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
-$dsql = "
+// get any companies denied from viewing
+$deny = array();
+$sql = "
 SELECT company_id
 FROM companies, permissions
 WHERE permission_user = $user_cookie
@@ -20,9 +19,8 @@ WHERE permission_user = $user_cookie
 	AND permission_item = company_id
 	AND permission_value = 0
 ";
-$drc = mysql_query($dsql);
-$deny = array();
-while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
+$res = db_exec($sql);
+while ($row = db_fetch_row( $res )) {
 	$deny[] = $row[0];
 }
 
@@ -48,12 +46,6 @@ ORDER BY company_name
 
 $rows = db_loadList( $sql );
 ?>
-<table width="100%" border="0" cellpadding=2 cellspacing=0>
-<tr>
-<td bgcolor=#cccccc>&nbsp;</td>
-</tr>
-</table>
-
 
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <table width="98%" border=0 cellpadding=0 cellspacing=1>

@@ -2,7 +2,7 @@
 ##
 ##	Companies: View Archived Projects sub-table
 ##
-GLOBAL $company_id; 
+GLOBAL $AppUI, $company_id; 
 
 $sql = "
 SELECT projects.*, users.user_first_name,users.user_last_name
@@ -13,7 +13,9 @@ WHERE project_company = $company_id
 ORDER BY project_name
 ";
 
-$rows = db_loadList( $sql, NULL, __LINE__ );
+if (!($rows = db_loadList( $sql, NULL ))) {
+	echo 'None Available<br>'.$AppUI->getMsg();
+} else {
 ?>
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
 <tr>
@@ -32,3 +34,4 @@ foreach ($rows as $row){
 echo $s;
 ?>
 </table>
+<?php } ?>

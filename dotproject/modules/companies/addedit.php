@@ -6,25 +6,22 @@ $company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id']
 $denyEdit = getDenyEdit( $m, $company_id );
 
 if ($denyEdit) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
 // pull data
-$csql = "SELECT companies.*,users.user_first_name,users.user_last_name
+$sql = "SELECT companies.*,users.user_first_name,users.user_last_name
 	FROM companies
 	LEFT JOIN users ON users.user_id = companies.company_owner
 	WHERE companies.company_id = $company_id";
-$crc = mysql_query( $csql );
-$crow = mysql_fetch_array( $crc, MYSQL_ASSOC );
+$res = db_exec( $sql );
+$crow = db_fetch_assoc( $res );
 
 // collect all the users for the company owner list
-$owners = array( '0'=>'');
+$owners = array( '0'=>'' );
 $osql = "SELECT user_id,user_first_name,user_last_name FROM users";
-$orc = mysql_query($osql);
-while ($orow = mysql_fetch_row( $orc )) {
+$orc = db_exec($osql);
+while ($orow = db_fetch_row( $orc )) {
 	$owners[$orow[0]] = "$orow[1] $orow[2]";
 }
 ?>
@@ -142,7 +139,7 @@ function delIt() {
 	<td align="right">Company Owner:</td>
 	<td>
 <?php
-	echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', $crow["company_owner"] );
+	echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', @$crow["company_owner"] );
 ?>
 	</td>
 </tr>
