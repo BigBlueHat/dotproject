@@ -117,7 +117,9 @@ function Subject( $subject, $charset='' ) {
 		$this->charset = strtolower($charset);
 	}
 	
-	if( $this->charset != "us-ascii" and function_exists('imap_8bit')) {
+	global $AppUI;
+	
+	if ( ( $AppUI->user_locale != 'en' || ( $this->charset && $this->charset != 'us-ascii' && $this->charset != 'utf-8') ) && function_exists('imap_8bit')) {
 		$subject = "=?".$this->charset."?Q?".
 			str_replace("=\r\n","",imap_8bit($subject))."?=";		
 	}
