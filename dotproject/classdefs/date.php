@@ -102,7 +102,11 @@ class CDate
 /**************************************************** GETTERS ****/
 	function getStartSpaces() {
 		if( $this->change ) $this->_calc();
-		return ($this->weekday - $this->D % 7) + 1;
+		$sp = ($this->weekday - $this->D % 7) + 1;
+		if ($sp < 0) {
+			$sp += 7;
+		}
+		return $sp;
 	}
 
 	function getYear() {
@@ -173,31 +177,43 @@ class CDate
 		return date( "t", $this->ts );
 	}
 
-	function daysTo( $date )
-	{
-		if( ! is_object($date) || get_class($date) != "cdate" )
-			return false;
-		$deltats = $date->getTimestamp() - $this->getTimestamp();
-		if( $deltats > 0 )
-			return (int) floor( $deltats / SEC_DAY );
-		else
-			return (int) ceil( $deltats / SEC_DAY );
-	}
-
 	function isToday()
 	{
 		// bad guess fixme
 		$today = getdate( time() );
 		return $this->Y == $today['year'] && $this->M == $today['mon'] && $this->D == $today['mday'];
 	}
-
+// comparison functions
 	function compareTo( $date )
 	{
 		if( ! is_object($date) || get_class($date) != "cdate" )
 			return false;
 		return $this->getTimestamp() - $date->getTimestamp();
 	}
+	
+	function inMonth( $date ) {
+		return ($this->M == $date->M && $this->Y == $date->Y);
+	}
 
+	function daysTo( $date, $real=false ) {
+
+		if( ! is_object($date) || get_class($date) != "cdate" ) {
+			return false;
+		}
+		$temp = $this;
+		if (!$real) {
+		// zero times for comparison otherwise comparision is based on 24 hour differences
+			$temp->setTime( 0,0,0 );
+			$date->setTime( 0,0,0 );
+		}
+		$deltats = $date->getTimestamp() - $temp->getTimestamp();
+		if( $deltats > 0 )
+			return (int) floor( $deltats / SEC_DAY );
+		else
+			return (int) ceil( $deltats / SEC_DAY );
+	}
+
+// arithmetic functions
 	function addDays( $numdays )
 	{
 		$this->D += $numdays;
