@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Project updated",
+"Edit Project",
 "Active",
 "Actual Budget",
 "Actual End Date",
@@ -9,11 +9,13 @@
 "Color Identifier",
 "Finished",
 "Gantt Chart",
+"New Project",
 "Progress",
 "Project Name",
 "Project Owner",
 "Project deleted",
 "Project inserted",
+"Project updated",
 "Short Name",
 "Staging URL",
 "Start Date",
