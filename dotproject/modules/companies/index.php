@@ -5,7 +5,15 @@ $AppUI->savePlace();
 if (isset( $_GET['orderby'] )) {
 	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
 }
-$orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
+
+if(isset($_REQUEST["owner_filter_id"])){
+	$AppUI->setState("owner_filter_id", $_REQUEST["owner_filter_id"]);
+	$owner_filter_id = $_REQUEST["owner_filter_id"];
+} else {
+	$owner_filter_id = $AppUI->getState( 'owner_filter_id') ? $AppUI->getState( 'owner_filter_id' ) : $AppUI->user_id;
+}
+
+$orderby         = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
 
 // load the company types
 $types = dPgetSysVal( 'CompanyType' );
@@ -15,7 +23,13 @@ $obj = new CCompany();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // Company search by Kist
-$search_string = dPgetParam( $_POST, 'search_string', '' );
+$search_string = dPgetParam( $_REQUEST, 'search_string', "" );
+if($search_string != ""){
+	$search_string = $search_string == "-1" ? "" : $search_string;
+	$AppUI->setState("search_string", $search_string);
+} else {
+	$search_string = $AppUI->getState("search_string");
+}
 
 $canEdit = !getDenyEdit( $m );
 // retrieve list of records
@@ -45,14 +59,29 @@ WHERE permission_user = $AppUI->user_id
 
 $rows = db_loadList( $sql );
 */
-
 $search_string = dPformSafe($search_string, true);
+
+$sql = "select user_id, concat_ws(' ', user_first_name, user_last_name)
+		from users as u left join permissions as p on u.user_id = p.permission_user
+		where !isnull(p.permission_user)
+		group by user_id
+		order by user_first_name";
+$owner_list = array( 0 => $AppUI->_("All")) + db_loadHashList($sql);
+$owner_combo = arraySelect($owner_list, "owner_filter_id", "class='text' onchange='javascript:document.searchform.submit()'", $owner_filter_id, false);
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
 $titleBlock->addCell("<strong>".$AppUI->_('Search').":</strong>");
 $titleBlock->addCell("<form name='searchform' action='?m=companies&amp;search_string=$search_string' method='post'>
-                      <input type='text' name='search_string' value='$search_string' />
+						<table>
+							<tr>
+                      			<td><input class='text' type='text' name='search_string' value='$search_string' /><br />
+						<a href='index.php?m=companies&search_string=-1'>".$AppUI->_("Reset search")."</a></td>
+								<td>
+									".$AppUI->_("Owner filter")." $owner_combo
+								</td>
+							</tr>
+						</table>
                       </form>");
 if ($canEdit) {
 	$titleBlock->addCell(
