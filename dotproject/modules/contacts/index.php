@@ -126,18 +126,13 @@ if ($canEdit) {
 		'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',
 		'<form action="?m=contacts&a=addedit" method="post">', '</form>'
 	);
-}
-$titleBlock->addCrumbRight(
+	$titleBlock->addCrumbRight(
 
 		'<a href="./index.php?m=contacts&a=vcardimport&dialog=0">' . $AppUI->_('Import vCard') . '</a>'
 	);
+}
 $titleBlock->show();
 ?>
-<script language="javascript">
-function popGetVcf() {
-	window.open( './index.php?m=contacts&a=vcardimport&dialog=1', 'getvcf', 'top=250,left=250,width=400, height=120, scollbars=false' );
-}
-</script>
 <table width="100%" border="0" cellpadding="1" cellspacing="1" height="400" class="contacts">
 <tr>
 <?php
@@ -177,4 +172,3 @@ function popGetVcf() {
 <?php }?>
 </tr>
 </table>
-<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href='./index.php?m=contacts&a=exportvcard&suppressHeaders=true&contact_id=<?php echo $carr[$z][$x]["contact_id"];?>' >Import vCard</a>
