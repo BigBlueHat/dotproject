@@ -69,7 +69,7 @@ switch ($action) {
 }
 
 /* start form */
-print("<form action=\"$PHP_SELF\" method=\"post\">\n");
+print("<form name='ticketform' action=\"$PHP_SELF\" method=\"post\">\n");
 
 /* start table */
 print("<table class=maintable bgcolor=#eeeeee>\n");

@@ -25,7 +25,7 @@ $titleBlock = new CTitleBlock( 'Trouble Ticket Management', 'gconf-app-icon.png'
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new ticket').'">', '',
-		'<form action="?m=ticketsmith&a=post_ticket" method="post">', '</form>'
+		'<form name="ticketform" action="?m=ticketsmith&a=post_ticket" method="post">', '</form>'
 	);
 }
 $titleBlock->show();

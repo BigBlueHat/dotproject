@@ -103,7 +103,7 @@ function chooseSelectedValue ($name, $options, $selected) {
 function create_selectbox ($name, $options, $selected) {
 
 	$output= "";
-	$output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
+	$output .= "<select name=\"$name\" onChange=\"document.ticketform.submit()\" class=\"text\">\n";
 
 	while(list($key, $val) = each($options)) {
 		$output .= "<option value=\"$key\"";

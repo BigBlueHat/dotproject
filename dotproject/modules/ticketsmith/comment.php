@@ -65,7 +65,7 @@ if (@$comment) {
     print("</tr>\n");
 
     /* start form */
-    print("<form action=\"index.php?m=ticketsmith&a=comment&ticket=$ticket\" method=\"post\">\n");
+    print("<form name='ticketform' action=\"index.php?m=ticketsmith&a=comment&ticket=$ticket\" method=\"post\">\n");
 
     /* determine poster */
     print("<tr>\n");

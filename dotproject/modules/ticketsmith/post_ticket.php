@@ -17,7 +17,7 @@ $titleBlock->show();
 
 <SCRIPT language="javascript">
 function submitIt() {
-	var f = document.ticket;
+	var f = document.ticketform;
 	var msg = '';
 	if (f.name.value.length < 3) {
 		msg += "\n- <?php echo $AppUI->_('a valid name'); ?>"
@@ -41,7 +41,7 @@ function submitIt() {
 </script>
 
 <TABLE width="100%" border=0 cellpadding="0" cellspacing=1 class="std">
-<form name="ticket" action="?m=ticketsmith" method="post">
+<form name="ticketform" action="?m=ticketsmith" method="post">
 <input type="hidden" name="dosql" value="do_ticket_aed">
 
 <TR height="20">

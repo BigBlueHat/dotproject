@@ -99,7 +99,7 @@ if (@$followup) {
     print("</tr>\n");
 
     /* start form */
-    print("<form action=\"index.php?m=ticketsmith&a=followup&ticket=$ticket\" method=post>\n");
+    print("<form name='ticketform' action=\"index.php?m=ticketsmith&a=followup&ticket=$ticket\" method=post>\n");
 
     /* get ticket */
     $ticket_info = query2hash("SELECT * FROM tickets WHERE ticket = $ticket");

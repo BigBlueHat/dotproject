@@ -15,7 +15,7 @@ if(empty($sort_column)) $sort_column = "";
 $title = "Search Tickets";
 
 /* start form */
-print("<form action=index.php?m=ticketsmith&a=search method=\"post\">\n");
+print("<form name='ticketform' action=index.php?m=ticketsmith&a=search method=\"post\">\n");
 
 /* start table */
 print("<table class=maintable bgcolor=\"#eeeeee\" width=95%>\n");

@@ -123,7 +123,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 	<th colspan="2" align="center"><?php echo $title;?></th>
 </tr>
 
-<form name="form" action="index.php?m=ticketsmith&a=view&ticket=<?php echo $ticket;?>" method="post">
+<form name="ticketform" action="index.php?m=ticketsmith&a=view&ticket=<?php echo $ticket;?>" method="post">
 <input type="hidden" name="ticket" value="$ticket" />
 
 <?php
