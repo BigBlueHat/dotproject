@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"new event",
+"Events",
 "Day View",
 "Edit Event",
 "End Date",
@@ -20,6 +20,7 @@
 "edit this event",
 "in advance",
 "month view",
+"new event",
 "times",
 "today",
 "view this event",

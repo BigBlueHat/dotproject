@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"index",
 "About Modules",
 "Access Denied",
 "Adding a Company",

@@ -1,10 +1,12 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"system admin",
 "Abbreviation",
 "Date and Time",
 "Default",
 "Default User Preferences",
+"Edit User Preferences",
 "Language",
 "Language Support",
 "Locale",
