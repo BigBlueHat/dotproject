@@ -249,7 +249,7 @@ function db_delete( $table, $keyName, $keyValue ) {
 * @param [type] $verbose
 */
 function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
-	$fmtsql = "INSERT INTO $table ( %s ) VALUES ( %s ) ";
+	$fmtsql = "INSERT INTO `$table` ( %s ) VALUES ( %s ) ";
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if (is_array($v) or is_object($v) or $v == NULL) {
 			continue;
@@ -281,7 +281,7 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 * @param [type] $updateNulls
 */
 function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
-	$fmtsql = "UPDATE $table SET %s WHERE %s";
+	$fmtsql = "UPDATE `$table` SET %s WHERE %s";
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field
 			continue;
