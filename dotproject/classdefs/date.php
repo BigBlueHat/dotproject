@@ -8,8 +8,6 @@
 @VERSION 0.5
 */
 
-define( 'FMT_DATEFR', '%d/%m/%Y' );
-define( 'FMT_DATEUS', '%m/%d/%Y' );
 define( 'FMT_DATEISO', '%Y%m%dT%H%M%S' );
 define( 'FMT_DATELDAP', '%Y%m%d%H%M%SZ' );
 define( 'FMT_DATEMYSQL', '%Y-%m-%d %H:%M:%S' );
@@ -126,7 +124,7 @@ class CDate
 		if ($sp < 0) {
 			$sp += 7;
 		}
-		return $sp - LOCALE_FIRST_DAY;
+		return ($sp - LOCALE_FIRST_DAY) % 7;
 	}
 
 	function getYear() {
