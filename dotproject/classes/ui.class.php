@@ -26,29 +26,29 @@ define( "UI_CASE_UPPERFIRST", 3 );
 */
 class CAppUI {
 /** @var array generic array for holding the state of anything */
-	var $state;
+	var $state=null;
 /** @var int */
-	var $user_id;
+	var $user_id=null;
 /** @var string */
-	var $user_first_name;
+	var $user_first_name=null;
 /** @var string */
-	var $user_last_name;
+	var $user_last_name=null;
 /** @var string */
-	var $user_company;
+	var $user_company=null;
 /** @var int */
-	var $user_department;
+	var $user_department=null;
 /** @var string */
-	var $user_email;
+	var $user_email=null;
 /** @var int */
-	var $user_type;
+	var $user_type=null;
 /** @var array */
-	var $user_prefs;
+	var $user_prefs=null;
 /** @var int Unix time stamp */
-	var $day_selected;
+	var $day_selected=null;
 
 // localisation
 /** @var string */
-	var $user_locale;
+	var $user_locale=null;
 /** @var string */
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 
