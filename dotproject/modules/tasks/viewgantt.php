@@ -1,4 +1,7 @@
 <?php
+GLOBAL $min_view, $m, $a;
+$min_view = isset( $min_view ) ? $min_view : false;
+
 require_once( "$root_dir/classdefs/date.php" );
 
 $project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
@@ -10,9 +13,6 @@ $edate = isset( $_POST['edate'] ) ? $_POST['edate'] : 0;
 $scroll_date = 1;
 
 $display_option = isset( $_POST['display_option'] ) ? $_POST['display_option'] : 'month';
-
-//$start_date = ($sdate != "")?toDate($sdate):"";
-//$end_date = ($edate != "")?toDate($edate):"";
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -76,6 +76,7 @@ function scrollNext() {
 }
 </script>
 
+<?php if (!$min_view) { ?>
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
@@ -91,9 +92,10 @@ function scrollNext() {
 	<td align="right" width="100%"></td>
 </tr>
 </table>
+<?php } ?>
 
-<table border="0" cellpadding="1" cellspacing="1" width="98%" class=std>
-<form name="ganttdate" method="post" action="?m=tasks&a=viewgantt&project_id=<?php echo $project_id ?>">
+<table border="0" cellpadding="1" cellspacing="1" width="500" class=std>
+<form name="ganttdate" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
 <tr>
 	<td nowrap width=100><input type=radio name=display_option value=custom >Date range :</td>
 	<td>
@@ -136,43 +138,31 @@ function scrollNext() {
 <br>
 
 <?php
-if($display_option!="all") {
+if ($display_option != "all") {
 	$scroll_value = "1 month";
 
 ?>
 
-<table width="98%">
+<table width="500">
 <tr>
 	<td align=left>
 		<a href="javascript:scrollPrev()">
-			<img src="./images/prev.gif" width="16" height="16" alt="pre" border="0">
+			<img src="./images/prev.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'previous' );?>" border="0">
 		</a>
 	</td>
 	<td align=right>
 		<a href="javascript:scrollNext()">
-		<img src="./images/next.gif" width="16" height="16" alt="next" border="0"></a>
+		<img src="./images/next.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'next' );?>" border="0"></a>
 	</td>
 </tr>
 </table>
-<?php } ?>
+<?php 
+}
 
+$src = "modules/tasks/gantt.php?project_id=$project_id";
+$src .= ($display_option == 'all') ? '' :
+	'&start_date='.$start_date->toString( "%Y-%m-%d" ).'&end_date='.$end_date->toString( "%Y-%m-%d" );
+$src .= "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '";
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
-<tr>
-	<td align=center>
-		<?php
-			$src = "modules/tasks/gantt.php?project_id=$project_id";
-			$src .= ($display_option == 'all') ? '' :
-				'&start_date='.$start_date->toString( "%Y-%m-%d" ).'&end_date='.$end_date->toString( "%Y-%m-%d" );
-			$src .= "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '";
-
-			echo "<script>document.write('<img src=\"$src\">')</script>";
-		?>
-	</td>
-</tr>
-</table>
-<br>
-<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onClick="javascript:window.location='?m=tasks'">
-
-</body>
-</html>
+echo "<script>document.write('<img src=\"$src\">')</script>";
+?>
