@@ -230,4 +230,29 @@ function dPuserHasRole( $name ) {
 	return db_loadResult( $sql );
 }
 
+function dPformatDuration($x) {
+    global $dPconfig;
+    global $AppUI;
+    $dur_day = floor($x / $dPconfig['daily_working_hours']);
+    $dur_hour = fmod($x, $dPconfig['daily_working_hours']);
+    $str = '';
+    if ($dur_day > 1) {
+        $str .= $dur_day .' '. $AppUI->_('days'). ' ';
+    } elseif ($dur_day == 1) {
+        $str .= $dur_day .' '. $AppUI->_('day'). ' ';
+    }
+     
+    if ($dur_hour > 1 ) {
+        $str .= $dur_hour .' '. $AppUI->_('hours');
+    } elseif ($dur_hour > 0 and $dur_hour <= 1) {
+        $str .= $dur_hour .' '. $AppUI->_('hour');
+    } 
+        
+    if ($str == '') {
+        $str = $AppUI->_("n/a");
+    }
+    
+    return $str;
+    
+}
 ?>

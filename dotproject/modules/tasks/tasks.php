@@ -229,18 +229,7 @@ function showtask( &$a, $level=0 ) {
 	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->toString( $df ) : '-').'</td>';
 // duration
 	$s .= '<td align="right">';
-	if ($a["task_duration"] > 24 ) {
-		$dt = "day";
-		$dur = $a["task_duration"] / 24;
-	} else {
-		$dt = "hour";
-		$dur = $a["task_duration"];
-	}
-	if ($dur > 1) {
-		// FIXME: this won't work for every language!
-		$dt .= "s";
-	}
-	$s .= ($dur != 0) ? "$dur $dt" : "n/a";
+	$s .= dPformatDuration($a['task_duration']);
 	$s .= '</td>';
 // end date
 	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->toString( $df ) : '-').'</td>';
