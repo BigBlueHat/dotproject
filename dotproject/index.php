@@ -35,7 +35,7 @@ error_reporting(E_ALL & ~E_NOTICE);
 
 // If you experience a 'white screen of death' or other problems,
 // uncomment the following line of code:
-// error_reporting( E_ALL );
+//error_reporting( E_ALL );
 
 $loginFromPage = 'index.php';
 $baseDir = dirname(__FILE__);
@@ -83,22 +83,6 @@ header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modifi
 header ("Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-check=0");	// HTTP/1.1
 header ("Pragma: no-cache");	// HTTP/1.0
 
-// Check that the user has correctly set the root directory
-// If not found, try guessing it.
-$config_file = "{$dPconfig['root_dir']}/includes/config.php";
-$config_msg = false;
-if (! is_file($config_file) ) {
-	// First check that we aren't looking at old data.
-	// We don't do this first as it has performance implications.
-	clearstatcache();
-	if (! is_file($config_file)) {
-		// Still no good, set it to where we are,
-		$dPconfig['root_dir'] = $baseDir;
-		$config_msg = "Root directory in configuration file probably incorrect";
-	}
-}
-
-
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
@@ -114,9 +98,6 @@ $AppUI =& $_SESSION['AppUI'];
 $last_insert_id =$AppUI->last_insert_id;
 
 $AppUI->checkStyle();
-if ($config_msg) {
-	$AppUI->setMsg($config_msg, UI_MSG_WARNING);
-}
 
 // load the commonly used classes
 require_once( $AppUI->getSystemClass( 'date' ) );
@@ -154,7 +135,10 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 }
 
 // check if the user is trying to log in
-if (isset($_POST['login'])) {
+// Note the change to REQUEST instead of POST.  This is so that we can
+// support alternative authentication methods such as the PostNuke
+// and HTTP auth methods now supported.
+if (isset($_REQUEST['login'])) {
 
 	$username = dPgetParam( $_POST, 'username', '' );
 	$password = dPgetParam( $_POST, 'password', '' );
@@ -162,7 +146,7 @@ if (isset($_POST['login'])) {
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
 		@include_once "$baseDir/locales/core.php";
-		$AppUI->setMsg( 'Login Failed' );
+		$AppUI->setMsg( 'Login Failed');
 	} else {
 	           //Register login in user_acces_log
 	           $AppUI->registerLogin();
@@ -330,7 +314,7 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 			}
 			$arr[] = array(
 				'name' => ucfirst(str_replace('_', ' ', $name)),
-				'file' => $dPconfig['root_dir'] . '/modules/' . $dir . '/' . $filename,
+				'file' => $baseDir . '/modules/' . $dir . '/' . $filename,
 				'module' => $dir);
 		}
 	}

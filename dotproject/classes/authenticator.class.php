@@ -6,29 +6,158 @@
 	 */
 
 
-	function getAuth($auth_mode)
+	function &getAuth($auth_mode)
 	{
 		switch($auth_mode)
 		{
-		    case null:
-			case "sql":
-				$auth = new SQLAuthenticator();
-				return $auth;
-				break;
 			case "ldap":
 				$auth = new LDAPAuthenticator();
 				return $auth;
 				break;
+			case "pn":
+				$auth = new PostNukeAuthenticator();
+				return $auth;
+				break;
+			default:
+				$auth = new SQLAuthenticator();
+				return $auth;
+				break;
+		}
+	}
+
+	/**
+	 * PostNuke authentication has encoded information
+	 * passed in on the login request.  This needs to 
+	 * be extracted and verified.
+	 */
+	class PostNukeAuthenticator extends SQLAuthenticator
+	{
+
+		function PostNukeAuthenticator()
+		{
+			global $dPconfig;
+			$this->fallback = isset($dPconfig['postnuke_allow_login']) ? $dPconfig['postnuke_allow_login'] : false;
+		}
+
+		function authenticate($username, $password)
+		{
+			global $db, $AppUI;
+			if (!isset($_REQUEST['userdata'])) { // fallback to SQL Authentication if PostNuke fails.
+				if ($this->fallback)
+					return parent::authenticate($username, $password);
+				else {
+					die($AppUI->_('You have not configured your PostNuke site correctly'));
+				}
+			}
+
+			if (! $compressed_data = base64_decode(urldecode($_REQUEST['userdata']))) {
+				die($AppUI->_('The credentials supplied were missing or corrupted') . ' (1)');
+			}
+			if (! $userdata = gzuncompress($compressed_data)) {
+				die($AppUI->_('The credentials supplied were missing or corrupted') . ' (2)');
+			}
+			if (! $_REQUEST['check'] = md5($userdata)) {
+				die ($AppUI->_('The credentials supplied were issing or corrupted') . ' (3)');
+			}
+			$user_data = unserialize($userdata);
+
+			// Now we need to check if the user already exists, if so we just
+			// update.  If not we need to create a new user and add a default
+			// role.
+			$username = trim($user_data['login']);
+			$this->username = $username;
+			$names = explode(' ', trim($user_data['name']));
+			$last_name = array_pop($names);
+			$first_name = implode(' ', $names);
+			$passwd = trim($user_data['passwd']);
+			$email = trim($user_data['email']);
+			
+			$sql = "
+			SELECT user_id, user_password, user_contact
+			FROM users
+			WHERE user_username = '$username'";
+			if (! $rs = $db->Execute($sql)) {
+				die($AppUI->_('Failed to get user details') . ' - error was ' . $db->ErrorMsg());
+			}
+			if ( $rs->RecordCount() < 1) {
+				$this->createsqluser($username, $passwd, $email, $first_name, $last_name);
+			} else {
+				if (! $row = $rs->FetchRow())
+					die($AppUI->_('Failed to retrieve user detail'));
+				// User exists, update the user details.
+				$this->user_id = $row['user_id'];
+				$sql = "
+				UPDATE users set user_password = '$passwd'
+				WHERE user_id = {$this->user_id}
+				";
+				if (! $db->Execute($sql)) {
+					die($AppUI->_('Could not update user credentials'));
+				}
+				$sql = "
+				UPDATE contacts set contact_first_name='$first_name',
+				contact_last_name = '$last_name',
+				contact_email = '$email'
+				WHERE contact_id = {$row['user_contact']}";
+				if (! $db->Execute($sql)) {
+					die($AppUI->_('Could not update user details'));
+				}
+			}
+			return true;
+		}
+
+		function createsqluser($username, $password, $email, $first, $last)
+		{
+			GLOBAL $db, $AppUI;
+
+			require_once($AppUI->getModuleClass("contacts"));
+	
+			$c = New CContact();
+			$c->contact_first_name = $first;
+			$c->contact_last_name = $last;
+			$c->contact_email = $email;
+			$c->contact_order_by = "$last, $first";
+
+			db_insertObject('contacts', $c, 'contact_id');
+			$contact_id = ($c->contact_id == NULL) ? "NULL" : $c->contact_id;
+			if (! $c->contact_id)
+				die($AppUI->_('Failed to create user details'));
+
+			$sql = "
+			INSERT INTO users 
+			(
+				user_username, 
+				user_password, 
+				user_type, 
+				user_contact
+			) 
+			VALUES 
+			(
+				'".$username."', 
+				'".$password."', 	
+				1,
+				".$c->contact_id."
+			)
+			";
+			if (! $db->Execute($sql))
+				die($AppUI->_('Failed to create user credentials'));
+			$user_id = $db->Insert_ID();
+			$this->user_id = $user_id;
+
+			$acl =& $AppUI->acl();
+			$acl->insertUserRole($acl->get_group_id('anon'), $this->user_id);
 		}
 	}
 
 	class SQLAuthenticator
 	{
 		var $user_id;
+		var $username;
 
 		function authenticate($username, $password)
 		{
-			GLOBAL $db;
+			GLOBAL $db, $AppUI;
+
+			$this->username = $username;
 
 			$sql = "
 			SELECT user_id, user_password
@@ -36,12 +165,12 @@
 			WHERE user_username = '$username'
 			";
 
-			if (!$rs = $db->Execute($sql)) return -1;
-			if (!$row = $rs->FetchRow()) return -1;
+			if (!$rs = $db->Execute($sql)) return false;
+			if (!$row = $rs->FetchRow()) return false;
 
 			$this->user_id = $row["user_id"];
-			if (MD5($password) == $row["user_password"]) return 1;
-			return 0;
+			if (MD5($password) == $row["user_password"]) return true;
+			return false;
 		}
 
 		function userId()
@@ -59,6 +188,7 @@
 		var $filter;
 
 		var $user_id;
+		var $username;
 
 		function LDAPAuthenticator()
 		{
@@ -74,6 +204,8 @@
 		function authenticate($username, $password)
 		{
 			GLOBAL $dPconfig;
+
+			$this->username = $username;
 
 			if (!$rs = @ldap_connect($this->ldap_host, $this->ldap_port)) return false;
 			@ldap_set_option($rs, LDAP_OPT_PROTOCOL_VERSION, $this->ldap_version);
@@ -163,7 +295,7 @@
 			$this->user_id = $user_id;
 
 			$acl =& $AppUI->acl();
-			$acl->insertUserRole(11, $this->user_id);
+			$acl->insertUserRole($acl->get_group_id('anon'), $this->user_id);
 		}
 
 	}

@@ -24,7 +24,9 @@ define ("UI_OUTPUT_HTML", 0);
 define ("UI_OUTPUT_JS", 0x10);
 define ("UI_OUTPUT_RAW", 0x20);
 
-require_once dPrealPath(dirname(__FILE__) . "/permissions.class.php");
+// $baseDir is set in index.php and fileviewer.php and is the base directory
+// of the dotproject installation.
+require_once "$baseDir/classes/permissions.class.php";
 /**
 * The Application User Interface Class.
 *
@@ -115,10 +117,9 @@ class CAppUI {
 * @return string The path to the include file
  */
 	function getSystemClass( $name=null ) {
+		global $baseDir;
 		if ($name) {
-			if ($root = dPgetConfig( 'root_dir' )) {
-				return dPRealPath("$root/classes/$name.class.php");
-			}
+			return "$baseDir/classes/$name.class.php";
 		}
 	}
 
@@ -129,10 +130,9 @@ class CAppUI {
 * @return string The path to the include file
 */
 	function getLibraryClass( $name=null ) {
+		global $baseDir;
 		if ($name) {
-			if ($root = dPgetConfig( 'root_dir' )) {
-				return dpRealPath("$root/lib/$name.php");
-			}
+			return "$baseDir/lib/$name.php";
 		}
 	}
 
@@ -142,10 +142,9 @@ class CAppUI {
 * @return string The path to the include file
  */
 	function getModuleClass( $name=null ) {
+		global $baseDir;
 		if ($name) {
-			if ($root = dPgetConfig( 'root_dir' )) {
-				return dpRealPath("$root/modules/$name/$name.class.php");
-			}
+			return "$baseDir/modules/$name/$name.class.php";
 		}
 	}
 
@@ -155,8 +154,9 @@ class CAppUI {
 */
 	function getVersion() {
 		global $dPconfig;
+		global $baseDir;
 		if ( ! isset($this->version_major)) {
-			include_once dPrealPath($dPconfig['root_dir'] . '/includes/version.php');
+			include_once $baseDir . '/includes/version.php';
 			$this->version_major = $dp_version_major;
 			$this->version_minor = $dp_version_minor;
 			$this->version_patch = $dp_version_patch;
@@ -174,10 +174,11 @@ class CAppUI {
 */
 	function checkStyle() {
 		global $dPconfig;
+		global $baseDir;
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
 
-		if ($uistyle && !is_dir("{$dPconfig['root_dir']}/style/$uistyle")) {
+		if ($uistyle && !is_dir("$baseDir/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
 			$this->setPref( 'UISTYLE', $dPconfig['host_style'] );
 		}
@@ -191,11 +192,11 @@ class CAppUI {
 * @return array A named array of the directories (the key and value are identical).
 */
 	function readDirs( $path ) {
-		global $dPconfig;
+		global $baseDir;
 		$dirs = array();
-		$d = dir( "{$dPconfig['root_dir']}/$path" );
+		$d = dir( "$baseDir/$path" );
 		while (false !== ($name = $d->read())) {
-			if(is_dir( "{$dPconfig['root_dir']}/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
+			if(is_dir( "$baseDir/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
 				$dirs[$name] = $name;
 			}
 		}
@@ -330,6 +331,7 @@ class CAppUI {
  *
  */
 	function loadLanguages() {
+		global $baseDir;
 
 		if ( isset($_SESSION['LANGUAGES'])) {
 			$LANGUAGES =& $_SESSION['LANGUAGES'];
@@ -337,8 +339,8 @@ class CAppUI {
 			$LANGUAGES = array();
 			$langs = $this->readDirs('locales');
 			foreach ($langs as $lang) {
-				if (file_exists(dPgetConfig('root_dir')."/locales/$lang/lang.php")) {
-					include_once dPgetConfig('root_dir')."/locales/$lang/lang.php";
+				if (file_exists("$baseDir/locales/$lang/lang.php")) {
+					include_once "$baseDir/locales/$lang/lang.php";
 				}
 			}
 			@$_SESSION['LANGUAGES'] =& $LANGUAGES;
@@ -617,7 +619,10 @@ class CAppUI {
 		global $dPconfig;
 		require_once("./classes/authenticator.class.php");
 
-		$auth =& getauth($dPconfig["auth_method"]);
+		$auth_method = isset($dPconfig['auth_method']) ? $dPconfig['auth_method'] : 'sql';
+		if (@$_POST['login'] != 'login' && $_REQUEST['login'] != $auth_method)
+			die("You have chosen to log in using an unsupported or disabled login method '$_REQUEST[login]'");
+		$auth =& getauth($auth_method);
 		
 		$username = trim( db_escape( $username ) );
 		$password = trim( db_escape( $password ) );
@@ -627,6 +632,7 @@ class CAppUI {
 		}
 	
 		$user_id = $auth->userId($username);
+		$username = $auth->username; // Some authentication schemes may collect username in various ways.
 		// Now that the password has been checked, see if they are allowed to
 		// access the system
 		if (! isset($GLOBALS['acl']))
@@ -790,11 +796,11 @@ class CAppUI {
  * javascript.
  */
 	function loadJS() {
-	  global $m, $a, $dPconfig;
+	  global $m, $a, $dPconfig, $baseDir;
 	  // Search for the javascript files to load.
 	  if (! isset($m))
 	    return;
-	  $root = $dPconfig['root_dir'];
+	  $root = $baseDir;
 	  if (substr($root, -1) != '/')
 	    $root .= '/';
 
@@ -818,8 +824,8 @@ class CAppUI {
 	}
 
 	function getModuleJS($module, $file=null, $load_all = false) {
-		global $dPconfig;
-		$root = $dPconfig['root_dir'];
+		global $dPconfig, $baseDir;
+		$root = $baseDir;
 		if (substr($root, -1) != '/');
 			$root .= '/';
 		$base = $dPconfig['base_url'];
@@ -923,7 +929,7 @@ the active tab, and the selected tab **/
 				echo '<tr><td>';
 				$currentTabId = $k;
 				$currentTabName = $v[1];
-				include dPrealPath($this->baseInc.$v[0].".php");
+				include $this->baseInc.$v[0].".php";
 				echo '</td></tr>';
 			}
 			echo '</table>';
@@ -957,7 +963,7 @@ the active tab, and the selected tab **/
 			if ( $this->baseInc.$this->tabs[$this->active][0] != "" ) {
 				$currentTabId = $this->active;
 				$currentTabName = $this->tabs[$this->active][1];
-				require dPrealPath($this->baseInc.$this->tabs[$this->active][0].'.php');
+				require $this->baseInc.$this->tabs[$this->active][0].'.php';
 			}
 			echo "\n</td>\n</tr>\n</table>";
 		}

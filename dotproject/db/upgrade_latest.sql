@@ -688,3 +688,7 @@ INSERT INTO config VALUES ('', 'ldap_port', '387', '', 'text');
 INSERT INTO config VALUES ('', 'ldap_version', '3', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', '', 'text'); 
 INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text'); 
+
+# 20050302
+# PostNuke authentication variables
+INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', '', 'checkbox');

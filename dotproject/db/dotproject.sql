@@ -666,6 +666,48 @@ INSERT INTO `config` VALUES ('', 'parser_application/pdf', '/usr/bin/pdftotext',
 INSERT INTO `config` VALUES ('', 'files_ci_preserve_attr', 'true', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'files_show_versions_edit', 'false', '', 'checkbox');
 
+# 20050302
+# ldap system config variables
+INSERT INTO config VALUES ('', 'auth_method', 'sql', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_host', 'localhost', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_port', '387', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_version', '3', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text'); 
+
+# 20050302
+# PostNuke authentication variables
+INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', '', 'checkbox');
+
+# 20050302
+# new custom fields
+CREATE TABLE custom_fields_struct (
+field_id integer primary key,
+field_module varchar(30),
+field_page varchar(30),
+field_htmltype varchar(20),
+field_datatype varchar(20),
+field_order integer,
+field_name varchar(100),
+field_extratags varchar(250),
+field_description varchar(250)
+);
+
+CREATE TABLE custom_fields_values (
+value_id integer,
+value_module varchar(30),
+value_object_id integer,
+value_field_id integer,
+value_charvalue varchar(250),
+value_intvalue integer
+);
+
+CREATE TABLE custom_fields_lists (
+field_id integer,
+list_option_id integer,
+list_value varchar(250)
+);
+
 
 #20040920
 # ACL support.
