@@ -116,6 +116,16 @@ $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 //pull the tasks into an array
 for ($x=0; $x < $nums; $x++) {
 	$row = mysql_fetch_array( $ptrc, MYSQL_ASSOC );
+	
+        // calculate or set blank task_end_date if unset
+        if($row["task_end_date"] == "0000-00-00 00:00:00") {
+        	if($row["task_duration"] != 0) {
+	        	$row["task_end_date"] = date("Y-m-d H:i:s", strtotime(substr($row["task_start_date"], 0, 10) . " +" . $row["task_duration"] . " hours"));
+        	} else {
+	        	$row["task_end_date"] = "";
+	        }
+        }	
+	
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
@@ -162,12 +172,21 @@ function showtask( &$a, $level=0 ) {
 		$dur = $a["task_duration"];
 	}
 	if ($dur > 1) {
+	       	// FIXME: this won't work for every language!		
 		$dt.="s";
 	}
-	echo $dur . " " . $dt ;
+        echo ($dur!=0)?$dur . " " . $dt:"n/a";
 	?>
 	</td>
-	<td nowrap><?php echo fromDate(substr($a["task_end_date"], 0, 10));?></td>
+	<td nowrap>
+        <?php 
+        	if($a["task_end_date"]) {
+        		echo fromDate(substr($a["task_end_date"], 0, 10));
+        	} else {
+        		echo "n/a";
+        	}
+        ?>
+	</td>
 	</tr>
 <?php }
 
