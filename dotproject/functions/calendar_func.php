@@ -35,7 +35,7 @@ while ($perow = mysql_fetch_array( $perc )) {
 $dsql = "
 SELECT distinct project_id
 FROM projects, permissions
-WHERE permission_user = $user_cookie
+WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'projects' 
 	AND permission_item = project_id
 	AND permission_value = 0
@@ -50,7 +50,7 @@ while ($row = mysql_fetch_array( $drc, MYSQL_NUM )) {
 $asql = "
 SELECT distinct project_id
 FROM projects, permissions
-WHERE permission_user = $user_cookie
+WHERE permission_user = $AppUI->user_id
 	AND permission_value <> 0 
 	AND (
 		(permission_grant_on = 'all')
