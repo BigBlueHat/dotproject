@@ -79,8 +79,10 @@ $remind = array (
 $times = array();
 $t = new CDate();
 $t->setTime( 0,0,0 );
+if (!defined('LOCALE_TIME_FORMAT'))
+  define('LOCALE_TIME_FORMAT', '%I:%M %p');
 for ($m=0; $m < 60; $m++) {
-	$times[$t->format( "%H%M%S" )] = $t->format( "%I:%M %p" );
+	$times[$t->format( "%H%M%S" )] = $t->format( LOCALE_TIME_FORMAT );
 	$t->addSeconds( 1800 );
 }
 ?>
