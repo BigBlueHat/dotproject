@@ -33,18 +33,22 @@ $dPconfig['company_name'] = "My Company";
 $dPconfig['page_title'] = "DotProject V1.0 pre-alpha";
 $dPconfig['base_url'] = "http://localhost/dotproject";
 $dPconfig['site_domain'] = "dotproject.net";
+$dPconfig['daily_working_hours'] = 8.0;
 
 // enable if you want to be able to see other users's tasks
 $dPconfig['show_all_tasks'] = false;
+
 // enable if you want to support gantt charts
 $dPconfig['enable_gantt_charts'] = true;
+
 // enable if you want to log changes using the history module
 $dPconfig['log_changes'] = false;
 
-$dPconfig['daily_working_hours'] = 8.0;
-
 // set debug = true to help analyse errors
 $dPconfig['debug'] = false;
+
+// DotProject Version for debugging and support
+$dPconfig['version'] = "dotProject v1.0 alpha 2 [20-Mar-2003]";
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
