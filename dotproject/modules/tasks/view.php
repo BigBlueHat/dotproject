@@ -2,12 +2,9 @@
 
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
 
-$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
-$project_id = db_loadResult($sql);
-
 // check permissions for this record
-$canRead = !getDenyRead( "projects", $project_id ) || !getDenyRead( $m, $task_id );
-$canEdit = !getDenyEdit( "projects", $project_id ) || !getDenyEdit( $m, $task_id );
+$canRead = !getDenyRead( $m, $task_id );
+$canEdit = !getDenyEdit( $m, $task_id );
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
