@@ -59,6 +59,55 @@ function getDenyEdit( $mod, $item_id=0 ) {
 	return $deny;
 }
 
+function winnow( $mod, $key ) {
+	GLOBAL $perms;
+
+	$in = array();
+	$out = array();
+	$all_in = false;
+	$all_out = false;
+
+	// do some winnowing
+	if (@$perms[$mod]) {
+		foreach ($perms[$mod] as $k=>$v) {
+			if ($k == PERM_ALL) {
+				if ($v == PERM_DENY) {
+					$all_out = true;
+				} else {
+					$all_in = true;
+				}
+			} else {
+				if ($v == PERM_DENY) {
+					$out[] = $k;
+				} else {
+					$in[] = $k;
+				}
+			}
+		}
+	} else if (@$perms['all']) {
+		if ($perms['all'] == PERM_DENY) {
+			$all_out = true;
+		} else {
+			$all_in = true;
+		}
+	}
+	// now compile as query
+	$where = array();
+	if (count( $out ) > 0) {
+		$where[] = "$key NOT IN (" . implode( ',', $out ).")";
+	}
+	if (count( $in ) > 0) {
+		$where[] = "$key IN (" . implode( ',', $in ).")";
+	}
+	if ($all_in) {
+		$where[] = "$key > 0";
+	}
+	if ($all_out) {
+		$where[] = "$key = 0";
+	}
+	return "(" . implode( ' AND ', $where ). ")";
+}
+
 // pull permissions into master array
 $sql = "
 SELECT permission_grant_on g, permission_item i, permission_value v

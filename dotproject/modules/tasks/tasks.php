@@ -23,13 +23,20 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
 $task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
 
+
+$where = winnow( 'projects', 'project_id' );
+if ($where) {
+	$where = "WHERE $where";
+}
+
 // pull valid projects and their percent complete information
 $psql = "
 SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
 	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete
-FROM permissions, projects
+FROM projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
+$where
 GROUP BY project_id
 ORDER BY project_name
 ";
@@ -41,17 +48,6 @@ $projects = array();
 while ($row = db_fetch_assoc( $prc )) {
 	$projects[$row["project_id"]] = $row;
 }
-
-// get any specifically denied tasks
-$sql = "
-SELECT task_id, task_id
-FROM tasks, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'tasks'
-	AND permission_item = task_id
-	AND permission_value = 0
-";
-$deny = db_loadHashList( $sql );
 
 // pull tasks
 $select = "
@@ -94,11 +90,17 @@ switch ($f) {
 		break;
 }
 
-$where .= count($deny) > 0 ? "\nAND tasks.task_id NOT IN (" . implode( ',', $deny ) . ')' : '';
+if ($sql = winnow( 'projects', 'task_project' )) {
+	$where .= " AND $sql";
+}
+
+if ($sql = winnow( 'tasks', 'task_id' )) {
+	$where .= " AND $sql";
+}
 
 $tsql = "SELECT $select FROM $from $join WHERE $where"
 	. "\nORDER BY project_id, task_percent_complete, task_start_date";
-##echo "<pre>$tsql</pre>".db_error();##
+//echo "<pre>$tsql</pre>".db_error();##
 
 $ptrc = db_exec( $tsql );
 $nums = db_num_rows( $ptrc );
