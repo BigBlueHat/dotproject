@@ -24,23 +24,29 @@ LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > 
 LEFT JOIN forum_messages l ON l.message_id = forum_last_id
 LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
 WHERE user_id = forum_owner
-	AND  project_id = forum_project
+	AND project_id = forum_project
 ";
 //if (isset($project_id) && $project_id) {
 //	$sql.= "\nAND forum_project = $project_id";
 //}
 switch ($f) {
 	case 1:
-		$sql.= "\nAND forum_owner = $AppUI->user_id";
+		$sql .= "\nAND project_active=1 AND forum_owner = $AppUI->user_id";
 		break;
 	case 2:
-		$sql.= "\nAND watch_user IS NOT NULL";
+		$sql .= "\nAND project_active=1 AND watch_user IS NOT NULL";
 		break;
 	case 3:
-		$sql.= "\nAND project_owner = $AppUI->user_id";
+		$sql .= "\nAND project_active=1 AND project_owner = $AppUI->user_id";
 		break;
 	case 4:
-		$sql.= "\nAND project_company = $AppUI->user_company";
+		$sql .= "\nAND project_active=1 AND project_company = $AppUI->user_company";
+		break;
+	case 5:
+		$sql .= "\nAND project_active=0";
+		break;
+	default:
+		$sql .= "\nAND project_active=1";
 		break;
 }
 $sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";

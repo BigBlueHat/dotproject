@@ -1,4 +1,4 @@
-<?php
+<?php /* FUNCTIONS $Id$ */
 $filters = array( '- Filters -' );
 
 if ($a == 'viewer') {
@@ -11,7 +11,8 @@ if ($a == 'viewer') {
 		'My Forums',
 		'My Watched',
 		'My Projects',
-		'My Company'
+		'My Company',
+		'Inactive Projects'
 	);
 }
 ?>
