@@ -12,6 +12,11 @@ if (!db_loadHash( $sql, $event ) && $event_id) {
 	$titleBlock->addCrumb( "?m=calendar", "month view" );
 	$titleBlock->show();
 } else {
+// check only owner can edit
+	if ($event['event_owner'] != $AppUI->user_id) {
+		$AppUI->redirect( "m=public&a=access_denied" );
+	}
+
 // setup the title block
 	$titleBlock = new CTitleBlock( $AppUI->_(($event_id > 0) ? "Edit Event" : "Add Event" ), 'calendar.gif', $m, 'ID_HELP_EVENT_EDIT' );
 	if ($canEdit) {
@@ -30,8 +35,8 @@ if (!db_loadHash( $sql, $event ) && $event_id) {
 // format dates
 	$df = $AppUI->getPref('SHDATEFORMAT');
 
-	$start_date = $event["event_start_date"] ? new CDate( db_dateTime2unix( $event["event_start_date"] ), $df ) : new CDate();
-	$end_date = $event["event_end_date"] ? new CDate( db_dateTime2unix( $event["event_end_date"] ), $df ) : new CDate();
+	$start_date = $event["event_start_date"] ? new CDate( $event["event_start_date"], $df ) : new CDate();
+	$end_date = $event["event_end_date"] ? new CDate( $event["event_end_date"], $df ) : new CDate();
 
 	$start_time = $start_date->getHours() * 60 + $start_date->getMinutes();
 	$start_date->setTime( 0, 0, 0 );
