@@ -18,20 +18,26 @@ LEFT JOIN companies ON user_company = companies.company_id
 LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
 ";
-db_loadHash( $sql, $user );
-
+if (!db_loadHash( $sql, $user ) && $user_id > 0) {
+	$titleBlock = new CTitleBlock( 'Invalid User ID', 'admin.gif', $m, 'ID_HELP_USER_EDIT' );
+	$titleBlock->addCrumb( "?m=companies", "companies list" );
+	$titleBlock->show();
+} else {
 // pull companies
-$sql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
-$companies = arrayMerge( array( 0 => '' ), db_loadHashList( $sql ) );
+	$sql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
+	$companies = arrayMerge( array( 0 => '' ), db_loadHashList( $sql ) );
 
-$crumbs = array();
-$crumbs["?m=admin"] = "users list";
-$crumbs["?m=admin&a=viewuser&user_id=$user_id"] = "view this user";
-$crumbs["?m=admin&a=permissions&user_id=$user_id"] = "edit preferences";
+// setup the title block
+	$ttl = $user_id > 0 ? "Edit User" : "Add User";
+	$titleBlock = new CTitleBlock( $ttl, 'admin.gif', $m, 'ID_HELP_USER_EDIT' );
+	$titleBlock->addCrumb( "?m=admin", "users list" );
+	$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
+	$titleBlock->addCrumb( "?m=admin&a=permissions&user_id=$user_id", "edit preferences" );
+	$titleBlock->show();
 ?>
 <SCRIPT language="javascript">
 function submitIt(){
-    var form = document.changeuser;
+    var form = document.editFrm;
     if (form.user_username.value.length < 3) {
         alert("<?php echo $AppUI->_('adminValidUserName');?>");
         form.user_username.focus();
@@ -41,6 +47,12 @@ function submitIt(){
     } else if (form.user_password.value !=  form.password_check.value) {
         alert("<?php echo $AppUI->_('adminPasswordsDiffer');?>");
         form.user_password.focus();
+    } else if (form.user_first_name.value.length < 1) {
+        alert("<?php echo $AppUI->_('adminValidFirstName');?>");
+        form.user_first_name.focus();
+    } else if (form.user_last_name.value.length < 1) {
+        alert("<?php echo $AppUI->_('adminValidLastName');?>");
+        form.user_last_name.focus();
     } else if (form.user_email.value.length < 4) {
         alert("<?php echo $AppUI->_('adminInvalidEmail');?>");
         form.user_email.focus();
@@ -74,7 +86,7 @@ function submitIt(){
 }
 
 function popDept() {
-    var f = document.changeuser;
+    var f = document.editFrm;
     if (f.selectedIndex == 0) {
         alert( 'Please select a company first!' );
     } else {
@@ -86,7 +98,7 @@ function popDept() {
 
 // Callback function for the generic selector
 function setDept( key, val ) {
-    var f = document.changeuser;
+    var f = document.editFrm;
     if (val != '') {
         f.user_department.value = key;
         f.dept_name.value = val;
@@ -95,39 +107,25 @@ function setDept( key, val ) {
         f.dept_name.value = '';
     }
 }
-
 </script>
-<?php //------------------------Begin HTML -------------------------------?>
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-    <td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width="42" height="42" /></td>
-    <td nowrap>
-        <h1><?php echo $user["user_id"] ? $AppUI->_( 'Edit User' ) : $AppUI->_( 'Add User' );?></h1>
-    </td>
-    <td valign="top" align="right" width="100%">&nbsp;</td>
-    <td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_USER_EDIT' );?></td>
-</tr>
-</table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-    <td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="0" cellspacing="1" height="400" class="std">
-
-<form name="changeuser" action="./index.php?m=admin&a=dosql" method="post">
-<input type="hidden" name="user_id" value="<?php echo intval($user["user_id"]);?>">
+<table width="100%" border="0" cellpadding="0" cellspacing="1" height="400" class="std">
+<form name="editFrm" action="./index.php?m=admin&a=dosql" method="post">
+	<input type="hidden" name="user_id" value="<?php echo intval($user["user_id"]);?>" />
 
 <tr>
     <td align="right" width="230"><?php echo $AppUI->_('Login Name');?>:</td>
     <td>
-    <?php if(@$user["user_username"]){?>
-    <input type="hidden" class="text" name="user_username" value="<?php echo $user["user_username"];?>" /><strong><?php echo $user["user_username"];?></strong>
-    <?php }else{?>
-        <input type="text" class="text" name="user_username" value="<?php echo $user["user_username"];?>" maxlength="50" size="40" /> <span class="smallNorm">(<?php echo $AppUI->_('required');?>)</span>
-    <?php }?></td></tr>
+<?php
+	if (@$user["user_username"]){
+		echo '<input type="hidden" class="text" name="user_username" value="' . $user["user_username"] . '" />';
+		echo '<strong>' . $user["user_username"] . '</strong>';
+    } else {
+        echo '<input type="text" class="text" name="user_username" value="' . $user["user_username"] . '" maxlength="50" size="40" />';
+		echo '<span class="smallNorm">(' . $AppUI->_('required') . ')</span>';
+    }
+?>
+	</td></tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('User Type');?>:</td>
     <td>
@@ -219,3 +217,4 @@ function setDept( key, val ) {
     </td>
 </tr>
 </table>
+<?php } ?>
