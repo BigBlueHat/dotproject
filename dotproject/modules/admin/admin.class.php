@@ -1,9 +1,9 @@
 <?php /* ADMIN $Id$ */
-##
-## CUser Class
-##
 
-class CUser {
+/**
+* User Class
+*/
+class CUser extends CDpObject {
 	var $user_id = NULL;
 	var $user_username = NULL;
 	var $user_password = NULL;
@@ -31,21 +31,7 @@ class CUser {
 	var $user_signature = NULL;
 
 	function CUser() {
-		// empty constructor
-	}
-
-	function load( $oid ) {
-		$sql = "SELECT * FROM users WHERE user_id = $oid";
-		return db_loadObject( $sql, $this );
-	}
-
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
+		$this->CDpObject( 'users', 'user_id' );
 	}
 
 	function check() {
@@ -89,18 +75,12 @@ class CUser {
 			return NULL;
 		}
 	}
-
-	function delete() {
-		$sql = "DELETE FROM users WHERE user_id = $this->user_id";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
-	}
 }
 
-class CPermission {
+/**
+* Permissions class
+*/
+class CPermission extends CDpObject {
 	var $permission_id = NULL;
 	var $permission_user = NULL;
 	var $permission_grant_on = NULL;
@@ -108,52 +88,7 @@ class CPermission {
 	var $permission_value = NULL;
 
 	function CPermission() {
-		// empty constructor
-	}
-
-	function load( $oid ) {
-		$sql = "SELECT * FROM permissions WHERE permission_user = $oid";
-		return db_loadObject( $sql, $this );
-	}
-
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
-	}
-
-	function check() {
-		// TODO MORE
-		return NULL; // object is ok
-	}
-
-	function store() {
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->permission_id ) {
-			$ret = db_updateObject( 'permissions', $this, 'permission_id' );
-		} else {
-			$ret = db_insertObject( 'permissions', $this, 'permission_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
-	}
-
-	function delete() {
-		$sql = "DELETE FROM permissions WHERE permission_id = $this->permission_id";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
+		$this->CDpObject( 'permissions', 'permission_id' );
 	}
 }
 

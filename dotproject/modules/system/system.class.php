@@ -1,8 +1,8 @@
 <?php /* SYSTEM $Id$ */
-##
-## CPreference Class
-##
 
+/**
+* Preferences class
+*/
 class CPreferences {
 	var $pref_user = NULL;
 	var $pref_name = NULL;
@@ -51,10 +51,10 @@ class CPreferences {
 	}
 }
 
-##
-## CModule Class
-##
-class CModule {
+/**
+* Module class
+*/
+class CModule extends CDpObject {
 	var $mod_id=null;
 	var $mod_name=null;
 	var $mod_directory=null;
@@ -69,41 +69,7 @@ class CModule {
 	var $mod_description=null;
 
 	function CModule() {
-		// empty constructor
-	}
-
-	function load( $oid ) {
-		$sql = "SELECT * FROM modules WHERE mod_id = $oid";
-		return db_loadObject( $sql, $this );
-	}
-
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		}
-		bindHashToObject( $hash, $this );
-	}
-
-	function check() {
-		// TODO
-		return NULL; // object is ok
-	}
-
-	function store() {
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->mod_id ) {
-			$ret = db_updateObject( 'modules', $this, 'mod_id', false );
-		} else {
-			$ret = db_insertObject( 'modules', $this, 'mod_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
+		$this->CDpObject( 'modules', 'mod_id' );
 	}
 
 	function install() {
