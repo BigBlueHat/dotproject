@@ -1,14 +1,191 @@
-dotproject CHANGELOG
+dotproject CHANGELOG (insert latest entries at the top)
 
-7/12/2002:
-Convergence of various patches done by John Pritchard. Details of the
-convergence and the extra work done are in the file CHANGES.txt.
+2 September 2002 (AJE):
+-----------------------------
+Fixed up the order of this log (my mistake, call it a sourthern hemi-sphere thing)
 
-7/3/2002:
-Removed trailing <CR> from dosql/updatetask.php to allow Unix patch command
-to work.
-Added tagging for initial release with these modifications
-RELEASE 0.2.1 (RELEASE_0_2_1).
+modules/admin/index.php
+modules/admin/permissions.php
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+- upgraded permissions
+
+./calendar.php
+modules/projects/addedit.php
+- fixed a bug in the month and day select boxes
+
+30 August 2002 (AJE):
+-----------------------------
+dosql/addeditTask.php
+- fixed miss-spelt task_end_date variable
+
+includes/create_new_menu.php
+- added missing TR tag
+
+modules/admin/permissions.php
+- added calendar to module list
+
+modules/tasks/view.php
+- added project_id var (otherwise create new task fails in this view?? was working)
+- fixed return page (form action attribute) for update task
+
+modules/functions/calendar_func.php
+modules/calendar/index.php
+modules/calendar/addedit.php
+modules/calendar/dayview.php
+- added permissions
+
+25 August 2002 (AJE):
+-----------------------------
+Extended permissions to tasks
+
+./index.php
+- delete assignment of cookie_project (redundant)
+
+function/tasks_func.php
+- added constant, deleted unsed class (these can be replaced later but they do
+  not really form part of the current code base)
+
+modules/files/addedit.php
+- fixed project selection from attach file link in view task
+
+modules/tasks/index.php
+modules/tasks/view.php
+modules/tasks/addedit.php
+- added permissions and tidied up code
+
+24 August 2002 (AJE):
+-----------------------------
+Extended permissions to projects, and a couple of bug fixes
+
+function/projects_func.php
+- deleted unused class
+- added common projects constants
+
+includes/permissions.php
+- deleted deprecated code
+
+includes/main_functions.php
+- added color selection function
+- deleted unused getPerms function
+- added select box function (create from array)
+
+modules/admin/permissions.php
+- added confirm delete function
+
+modules/projects/index.php
+- added permissions, fixed 'my tasks' count
+- corrected % complete calculation
+- modularised text color selection on project color background
+
+modules/projects/view.php
+- added permissions
+- many bug fixes in code and sql, corrected % complete calculation
+- cut mini-tables into separate files to improve readability and manageabiliy
+
+modules/projects/vw_forums.php
+modules/projects/vw_tasks.php
+- new files for mini-tables in projects view action
+
+modules/projects/addedit.php
+- added permissions and optimised date selector code
+
+modules/files/index.php
+modules/forums/index.php
+- updated text color selection on project color background
+
+16 August 2002 (AJE):
+-----------------------------
+Extended permissions to forums and files
+
+./logincheck.php
+- added parsing for master cookie
+
+includes/permissions.php
+- logic fix for super user viewing a module
+- added a master cookie
+
+includes/header.php
+- alter user name based on master cookie
+
+includes/leftnav.php
+- couldn't see a read-only forums module
+
+modules/projects/index.php
+- set company filter to default to user company
+
+modules/forums/index.php
+modules/forums/viewer.php
+- added permissions and disabled search buttons
+
+modules/forums/view_topics.php
+modules/forums/view_messages.php
+- added permissions
+
+modules/files/index.php
+- added permissions, filter list box for projects and disabled search buttons
+
+modules/files/addedit.php
+- added permissions and breadcrumbs
+- made delete handling mor consistent with other modules
+
+11 August 2002 (AJE):
+-----------------------------
+This update includes a reqork of the security model. Security is loaded once in
+includes/permissions.php rather than also in any subsequent module. This
+provides a much more portable method of determining module level permissions
+and cut down on multiple calls to the permissions table.
+Companies and Contacts have been included as test modules in this update. Other
+modules will be included when thoroughly tested.
+Caveat: this method does not check for the case of deny-all as this is the
+assumed default condition.
+
+index.php
+- formatting changes
+
+dosql/aed_post.php
+- encode html special characters in message field
+
+includes/login.php
+- added draft logo/brand
+
+includes/permissions.php
+- rework permissions model (all user permissions loaded itno an array for use 
+  by leftnav and module)
+
+includes/leftnav.php
+- rework permissions
+
+modules/admin/permissions
+- fixed bug when editting individual permission (module and item not properly 
+  selected)
+
+modules/admin/dosql.php
+- encode html special characters in message field
+- update security model for return page
+
+modules/companies/index.php
+- rework permissions
+
+modules/companies/view.php
+- rework permissions
+
+modules/companies/addedit.php
+- rework permissions
+
+modules/help/access_denied.php
+- new page (and denied permissions bounce to this page)
+
+modules/tasks/view.php
+- top align comment cell
+
+modules/contacts/index.php
+- optimise code
+- rework $showfield array handling
+- add permissions
+
+modules/contacts/addedit.php
+- add permissions
 
 7 August 2002 (AJE):
 -----------------------------
@@ -76,192 +253,21 @@ modules/tasks/index.php
 modules/tasks/addedit.php
 - added code to auto-populate taks parent
 
-11 August 2002 (AJE):
+07/12/2002:
 -----------------------------
-This update includes a reqork of the security model. Security is loaded once in
-includes/permissions.php rather than also in any subsequent module. This
-provides a much more portable method of determining module level permissions
-and cut down on multiple calls to the permissions table.
-Companies and Contacts have been included as test modules in this update. Other
-modules will be included when thoroughly tested.
-Caveat: this method does not check for the case of deny-all as this is the
-assumed default condition.
+Convergence of various patches done by John Pritchard. Details of the
+convergence and the extra work done are in the file CHANGES.txt.
 
-index.php
-- formatting changes
-
-dosql/aed_post.php
-- encode html special characters in message field
-
-includes/login.php
-- added draft logo/brand
-
-includes/permissions.php
-- rework permissions model (all user permissions loaded itno an array for use 
-  by leftnav and module)
-
-includes/leftnav.php
-- rework permissions
-
-modules/admin/permissions
-- fixed bug when editting individual permission (module and item not properly 
-  selected)
-
-modules/admin/dosql.php
-- encode html special characters in message field
-- update security model for return page
-
-modules/companies/index.php
-- rework permissions
-
-modules/companies/view.php
-- rework permissions
-
-modules/companies/addedit.php
-- rework permissions
-
-modules/help/access_denied.php
-- new page (and denied permissions bounce to this page)
-
-modules/tasks/view.php
-- top align comment cell
-
-modules/contacts/index.php
-- optimise code
-- rework $showfield array handling
-- add permissions
-
-modules/contacts/addedit.php
-- add permissions
-
-16 August 2002 (AJE):
+07/03/2002:
 -----------------------------
-Extended permissions to forums and files
+Removed trailing <CR> from dosql/updatetask.php to allow Unix patch command
+to work.
+Added tagging for initial release with these modifications
+RELEASE 0.2.1 (RELEASE_0_2_1).
 
-./logincheck.php
-- added parsing for master cookie
-
-includes/permissions.php
-- logic fix for super user viewing a module
-- added a master cookie
-
-includes/header.php
-- alter user name based on master cookie
-
-includes/leftnav.php
-- couldn't see a read-only forums module
-
-modules/projects/index.php
-- set company filter to default to user company
-
-modules/forums/index.php
-modules/forums/viewer.php
-- added permissions and disabled search buttons
-
-modules/forums/view_topics.php
-modules/forums/view_messages.php
-- added permissions
-
-modules/files/index.php
-- added permissions, filter list box for projects and disabled search buttons
-
-modules/files/addedit.php
-- added permissions and breadcrumbs
-- made delete handling mor consistent with other modules
-
-24 August 2002 (AJE):
------------------------------
-Extended permissions to projects, and a couple of bug fixes
-
-function/projects_func.php
-- deleted unused class
-- added common projects constants
-
-includes/permissions.php
-- deleted deprecated code
-
-includes/main_functions.php
-- added color selection function
-- deleted unused getPerms function
-- added select box function (create from array)
-
-modules/admin/permissions.php
-- added confirm delete function
-
-modules/projects/index.php
-- added permissions, fixed 'my tasks' count
-- corrected % complete calculation
-- modularised text color selection on project color background
-
-modules/projects/view.php
-- added permissions
-- many bug fixes in code and sql, corrected % complete calculation
-- cut mini-tables into separate files to improve readability and manageabiliy
-
-modules/projects/vw_forums.php
-modules/projects/vw_tasks.php
-- new files for mini-tables in projects view action
-
-modules/projects/addedit.php
-- added permissions and optimised date selector code
-
-modules/files/index.php
-modules/forums/index.php
-- updated text color selection on project color background
-
-10/24/2001: 
+10/12/2001: 
 -----------------------------
 Added this Log!
 Fixed ticketsmith module require path, which will now work if the php_include path = ./
 Updated the popup calendar with code sent to me by Jon Broderick Jon Broderick <jon@jivacreative.com>
 
-25 August 2002 (AJE):
------------------------------
-Extended permissions to tasks
-
-./index.php
-- delete assignment of cookie_project (redundant)
-
-function/tasks_func.php
-- added constant, deleted unsed class (these can be replaced later but they do
-  not really form part of the current code base)
-
-modules/files/addedit.php
-- fixed project selection from attach file link in view task
-
-modules/tasks/index.php
-modules/tasks/view.php
-modules/tasks/addedit.php
-- added permissions and tidied up code
-
-30 August 2002 (AJE):
------------------------------
-dosql/addeditTask.php
-- fixed miss-spelt task_end_date variable
-
-includes/create_new_menu.php
-- added missing TR tag
-
-modules/admin/permissions.php
-- added calendar to module list
-
-modules/tasks/view.php
-- added project_id var (otherwise create new task fails in this view?? was working)
-- fixed return page (form action attribute) for update task
-
-modules/functions/calendar_func.php
-modules/calendar/index.php
-modules/calendar/addedit.php
-modules/calendar/dayview.php
-- added permissions
-
-2 September 2002 (AJE):
------------------------------
-modules/admin/index.php
-modules/admin/permissions.php
-modules/admin/addedituser.php
-modules/admin/viewuser.php
-- upgraded permissions
-
-modules/projects/addedit.php
-- fixed a bug in the month and day select boxes
