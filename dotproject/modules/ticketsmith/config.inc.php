@@ -43,6 +43,12 @@ $CONFIG["view_rows"] = 40;
 // wordwrap badly-formatted messages (PHP >= 4.0.2 only)
 $CONFIG["wordwrap"] = 1; // 0 = inactive, 1 = active
 
+// column to order messages by
+$CONFIG["order_by"] = "timestamp"; // "author", "subject", "timestamp", "activity", "type", "priority", "assignment"
+
+// order in which to display messages
+$CONFIG["message_order"] = "ASC"; // "ASC" or "DESC"
+
 // order in which to display followups
 $CONFIG["followup_order"] = "ASC"; // "ASC" or "DESC"
 
