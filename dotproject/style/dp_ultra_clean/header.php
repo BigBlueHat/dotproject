@@ -1,5 +1,6 @@
 <?php /* $id$ */
 $nav = dPgetMenuModules();
+$dialog = dPgetParam( $_GET, 'dialog', 0 );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -40,8 +41,9 @@ $nav = dPgetMenuModules();
 <body>
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-	<th class="banner" align="left"><strong>dotProject UltraClean</strong></th>
+	<th background="style/dp_ultra_clean/images/titlegrad.jpg" class="banner" align="left"><strong>dotProject UltraClean</strong></th>
 </tr>
+<?php if (!$dialog) { ?>
 <tr>
 	<td class="nav" align="left">
 	<table width="100%" cellpadding="0" cellspacing="0" width="100%">
@@ -117,6 +119,7 @@ $nav = dPgetMenuModules();
 		</table>
 	</td>
 </tr>
+<?php } // END showMenu ?>
 </table>
 
 <table width="100%" cellspacing="0" cellpadding="4" border="0">
