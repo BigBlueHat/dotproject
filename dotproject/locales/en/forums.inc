@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Watch updated",
 "%s ago",
 "- Filters -",
 "Add Message",
