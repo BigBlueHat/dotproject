@@ -19,7 +19,7 @@ function fatal_error ($reason) {
 function do_query ($query) {
 	$result = @mysql_query($query);
 	if (!$result) {
-		fatal_error("A database query error has occurred!");
+		fatal_error("A database query error has occurred!<br>".mysql_error());
 	} else {
 		return($result);
 	}
