@@ -95,3 +95,8 @@ ALTER TABLE `users` CHANGE `user_username` `user_username` varchar(255) default 
 #
 ALTER TABLE `user_preferences` CHANGE `pref_name` `pref_name` VARCHAR( 72 ) NOT NULL;
 INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");
+
+#20040820
+# added ProjectStatus of Template
+#
+UPDATE `sysvals` SET `sysval_value` = '0|Not Defined 1|Proposed 2|In Planning 3|In Progress 4|On Hold 5|Complete 6|Template' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1 ;
