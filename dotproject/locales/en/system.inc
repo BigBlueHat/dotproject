@@ -53,6 +53,7 @@
 "fr"=>"French",
 "install",
 "pt_br"=>"Portuguese Brazillian",
+"pt"=>"Portugese",
 "pl"=>"Polish",
 "remove",
 "system admin",
