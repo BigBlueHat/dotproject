@@ -5,6 +5,21 @@ if(empty($thisYear)){$thisYear = date("Y", time());}
 
 
 //----------------------------------
+//Pull added events with start date in this month
+//----------------------------------
+	$psql = "select 
+	event_title, 
+	event_id,	
+	month(from_unixtime(event_start_date)) as m,
+	DAYOFMONTH(from_unixtime(event_start_date)) as d,
+	year(from_unixtime(event_start_date)) as y
+	from 	events where month(from_unixtime(event_start_date)) = $thisMonth
+	and year(from_unixtime(event_start_date)) = $thisYear";
+	$perc = mysql_query($psql);
+	while($perow = mysql_fetch_array($perc)){
+		$events[] = array("color"=>"blue","type"=>"e","title"=>"Event: " . $perow["event_title"], "d"=> $perow["d"],"m"=>$perow["m"], "y" => $perow["y"], "name"=>$perow["event_title"],"id" =>$perow["event_id"]);
+	}
+//----------------------------------
 //Pull Starting projects for this month
 //----------------------------------
 	$psql = "select 

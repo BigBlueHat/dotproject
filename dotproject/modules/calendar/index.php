@@ -187,6 +187,10 @@ if( $firstDay > 0 )
 			echo "<a href=./index.php?m=tasks&a=view&task_id=" . $val["id"] .">";
 			
 		}
+		elseif($val["type"]=="e")	{
+			echo "<a href=./index.php?m=calendar&a=addedit&event_id=" . $val["id"] ."><i>";
+			
+		}
 		
 		echo $f .  $val["title"] ;
 		echo "</a></td></tr>";

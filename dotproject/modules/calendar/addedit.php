@@ -3,16 +3,17 @@
 if(empty($event_id))$event_id = 0;
 
 //Pull event information
-$csql = "Select * from events where events.event_id = $event_id";
+$csql = "Select  *
+	from events where events.event_id = $event_id";
 $crc = mysql_query($csql);
 $crow = mysql_fetch_array($crc);
-
-//Set the starting date and time
+//Set the starting date and time in format to match Javascript
 if(is_array($crow)){
-	$sdate = strftime("%d/%m/%Y", $crow["$event_start_date"]);
-	$stime = strftime("%h:M", $crow["$event_start_date"]);
-	$edate = strftime("%d/%m/%Y", $crow["$event_end_date"]);
-	$etime = strftime("%h:M", $crow["$event_end_date"]);
+	$sdate = strftime("%m/%d/%Y", $crow["event_start_date"]);
+	$stime = strftime("%H:%M", $crow["event_start_date"]);
+	$edate = strftime("%m/%d/%Y", $crow["event_end_date"]);
+	$etime = strftime("%H:%M", $crow["event_end_date"]);
+// echo "|$sdate|$edate|$stime|$etime|"; exit;
 }
 
 
@@ -115,7 +116,7 @@ var form = document.changeevent;
 			<TABLE border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 				<tr bgcolor="#eeeeee">
 					<TD align="right">Start Date/Time:</td>
-					<TD nowrap><input type="text" class="text" name="sdate" value="<?echo @$crow["sdate"];?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
+					<TD nowrap><input type="text" class="text" name="sdate" value="<?echo $sdate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
 					<TD>
 						<select name="stime">
 						<option value="0:00">12:00 am
@@ -171,7 +172,7 @@ var form = document.changeevent;
 				</tr>
 				<tr bgcolor="#eeeeee">
 					<TD align="right">End Date:</td>
-					<TD><input type="text"  name="edate" value="<?echo @$crow["edate"];?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
+					<TD><input type="text"  name="edate" value="<?echo $edate;?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></TD>
 					<TD>
 					<select name="stime">
 						<option value="0:00">12:00 am
