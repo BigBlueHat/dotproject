@@ -60,6 +60,15 @@ class CDate extends Date {
 
 
 /**
+* Adds (+/-) a number of days to the current date.
+* @param int Positive or negative number of days
+* @author J. Christopher Pereira <kripper@users.sf.net>
+*/
+	function addDays( $n ) {
+		$this->setDate( $this->getTime() + 60 * 60 * 24 * $n, DATE_FORMAT_UNIXTIME);
+	}
+	
+/**
 * Adds (+/-) a number of months to the current date.
 * @param int Positive or negative number of months
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
@@ -84,7 +93,7 @@ class CDate extends Date {
 				$this->month -= 12;
 			}
 		}
-	}
+	}	
 
 /**
 * New method to get the difference in days the stored date
