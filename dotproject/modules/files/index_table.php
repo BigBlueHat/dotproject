@@ -70,20 +70,20 @@ $q2 = new DBQuery;
 $q2->addQuery(array ('f.*',
 	'max(f.file_id) as  latest_id',
 	'count(f.file_version) as file_versions',
-	'round(max(f.file_version),2) as file_lastversion',
-	'project_name',
-	'project_color_identifier',
-	'project_active',
-	'cont.contact_first_name',
-	'cont.contact_last_name',
-	'task_name',
-	'task_id',
-	'cu.user_username as co_user'
+	'round(max(f.file_version),2) as file_lastversion'//,
+//	'project_name',
+//	'project_color_identifier',
+//	'project_active',
+//	'cont.contact_first_name',
+//	'cont.contact_last_name',
+//	'task_name',
+//	'task_id',
+//	'cu.user_username as co_user'
 ));
 $q2->addTable('files', 'f');
-$q2->leftJoin('users', 'cu', 'cu.user_id = f.file_checkout');
-$q2->leftJoin('users', 'u', 'u.user_id = f.file_owner');
-$q2->leftJoin('contacts', 'cont', 'cont.contact_id = u.user_contact');
+//$q2->leftJoin('users', 'cu', 'cu.user_id = f.file_checkout');
+//$q2->leftJoin('users', 'u', 'u.user_id = f.file_owner');
+//$q2->leftJoin('contacts', 'cont', 'cont.contact_id = u.user_contact');
 $project->setAllowedSQL($AppUI->user_id, $q2, 'file_project');
 $task->setAllowedSQL($AppUI->user_id, $q2, 'file_task');
 if ($catsql) $q2->addWhere($catsql);
@@ -98,10 +98,11 @@ $q2->addGroup('project_id');
 $q2->addGroup('file_version_id DESC');
 
 $q3 = new DBQuery;
-$q3->addQuery("file_id, file_version, file_version_id, file_project, file_name, file_task, task_name, file_description, file_checkout, file_co_reason, u.user_username as file_owner, file_size, file_category, file_type, file_date, cu.user_username as co_user, project_name, project_color_identifier, project_active, project_owner");
+$q3->addQuery("file_id, file_version, file_version_id, file_project, file_name, file_task, task_name, file_description, file_checkout, file_co_reason, u.user_username as file_owner, file_size, file_category, file_type, file_date, cu.user_username as co_user, project_name, project_color_identifier, project_active, project_owner, contact_first_name, contact_last_name");
 $q3->addTable('files');
 $q3->leftJoin('users', 'cu', 'cu.user_id = file_checkout');
 $q3->leftJoin('users', 'u', 'u.user_id = file_owner');
+$q3->leftJoin('contacts', 'con', 'con.contact_id = u.user_contact');
 //$q3->leftJoin('tasks', 't', 't.task_id = file_task');
 //$q3->leftJoin('projects', 'p', 'p.project_id = file_project');
 $project->setAllowedSQL($AppUI->user_id, $q3, 'file_project');
@@ -152,61 +153,61 @@ $file_date = new CDate();
 
 $id = 0;
 foreach ($files as $file_row) {
-        $row = $file_versions[$file_row['latest_id']];
-	$file_date = new CDate( $row['file_date'] );
+        $latest_file = $file_versions[$file_row['latest_id']];
+	$file_date = new CDate( $latest_file['file_date'] );
 
-	if ($fp != $row["file_project"]) {
-		if (!$row["project_name"]) {
-			$row["project_name"] = $AppUI->_('All Projects');
-			$row["project_color_identifier"] = 'f4efe3';
+	if ($fp != $latest_file["file_project"]) {
+		if (!$latest_file["project_name"]) {
+			$latest_file["project_name"] = $AppUI->_('All Projects');
+			$latest_file["project_color_identifier"] = 'f4efe3';
 		}
 		if ($showProject) {
-			$style = "background-color:#$row[project_color_identifier];color:" . bestColor($row["project_color_identifier"]);
+			$style = "background-color:#$latest_file[project_color_identifier];color:" . bestColor($row["project_color_identifier"]);
 			$s = '<tr>';
 			$s .= '<td colspan="12" style="border: outset 2px #eeeeee;' . $style . '">';
-			$s .= '<a href="?m=projects&a=view&project_id=' . $row['file_project'] . '">';
-			$s .= '<span style="' . $style . '">' . $row["project_name"] . '</span></a>';
+			$s .= '<a href="?m=projects&a=view&project_id=' . $latest_file['file_project'] . '">';
+			$s .= '<span style="' . $style . '">' . $latest_file["project_name"] . '</span></a>';
 			$s .= '</td></tr>';
 			echo $s;
 		}
 	}
-	$fp = $row["file_project"];
+	$fp = $latest_file["file_project"];
 //        if ($row['file_versions'] > 1)
 //                $file = last_file($file_versions, $row['file_name'], $row['file_project']);
 //        else 
-                $file = $row;
+//                $file = $latest_file;
 ?>
 <tr>
 	<td nowrap="nowrap" width="20">
-	<?php if ($canEdit && ( empty($file['file_checkout']) || ( $file['file_checkout'] == 'final' && ($canAdmin || $file['project_owner'] == $AppUI->user_id) ))) {
-		echo "\n".'<a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">';
+	<?php if ($canEdit && ( empty($latest_file['file_checkout']) || ( $latest_file['file_checkout'] == 'final' && ($canAdmin || $latest_file['project_owner'] == $AppUI->user_id) ))) {
+		echo "\n".'<a href="./index.php?m=files&a=addedit&file_id=' . $latest_file["file_id"] . '">';
 		echo dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
 		echo "\n</a>";
 	}
 	?>
 	</td>
         <td nowrap="nowrap">
-        <?php if ($canEdit && empty($file['file_checkout']) ) {
+        <?php if ($canEdit && empty($latest_file['file_checkout']) ) {
         ?>
-                <a href="?m=files&a=co&file_id=<?= $file['file_id'] ?>">CO</a>
+                <a href="?m=files&a=co&file_id=<?php echo $latest_file['file_id']; ?>">CO</a>
         <?php }
-        else if ($file['file_checkout'] == $AppUI->user_id) { ?>
-                <a href="?m=files&a=addedit&ci=1&file_id=<?= $file['file_id'] ?>">CI</a>
+        else if ($latest_file['file_checkout'] == $AppUI->user_id) { ?>
+                <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $latest_file['file_id']; ?>">CI</a>
         <?php }
         else { 
-                if ($file['file_checkout'] == 'final')
+                if ($latest_file['file_checkout'] == 'final')
                         echo 'final';
                 else
-                        echo $file['co_user']; 
+                        echo $latest_file['co_user']; 
         }
         ?>
                 
         </td>
-        <td width="10%"><?= $file['file_co_reason'] ?></td>
+        <td width="10%"><?php echo $latest_file['file_co_reason']; ?></td>
 	<td nowrap="8%">
-		<?php echo "<a href=\"./fileviewer.php?file_id={$file['file_id']}\" title=\"{$row['file_description']}\">{$row['file_name']}</a>"; ?>
+		<?php echo "<a href=\"./fileviewer.php?file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\">{$latest_file['file_name']}</a>"; ?>
 	</td>
-	<td width="20%"><?php echo $row['file_description'];?></td>
+	<td width="20%"><?php echo $latest_file['file_description'];?></td>
 	<td width="5%" nowrap="nowrap" align="center">
         <?php
                 $hidden_table = '';
@@ -229,7 +230,7 @@ foreach ($files as $file_row) {
 </tr>
 ';
                 foreach($file_versions as $file)
-                        if ($file['file_version_id'] == $row['file_version_id'])
+                        if ($file['file_version_id'] == $latest_file['file_version_id'])
                         {
 				$hdate = new Date($file['file_date']);
                                 $hidden_table .= '
@@ -238,7 +239,7 @@ foreach ($files as $file_row) {
                                 if ($canEdit && $dPconfig['files_show_versions_edit'])
                                 {
                                         $hidden_table .= '
-                <a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">' . dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) . "\n</a>";
+                <a href="./index.php?m=files&a=addedit&file_id=' . $file["file_id"] . '">' . dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) . "\n</a>";
                                 }
                                 $hidden_table .= '
                 </td>
@@ -248,8 +249,8 @@ foreach ($files as $file_row) {
                 </a></td>
                 <td width="20%">' . $file['file_description'] . '</td>
                 <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
-                <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $row['file_task'] . '">' . $file['task_name'] . '</a></td>
-                <td width="15%" nowrap="nowrap">' . $file_row["contact_first_name"].' '.$file_row["contact_last_name"] . '</td>
+                <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $file['file_task'] . '">' . $file['task_name'] . '</a></td>
+                <td width="15%" nowrap="nowrap">' . $file["contact_first_name"].' '.$file["contact_last_name"] . '</td>
                 <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
                 <td width="15%" nowrap="nowrap" align="right">' . $hdate->format("$df $tf") . '</td>
@@ -260,10 +261,10 @@ foreach ($files as $file_row) {
                 }
         ?>
         </td>
-	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["file_task"];?>"><?php echo $row["task_name"];?></a></td>
-	<td width="15%" nowrap="nowrap"><?php echo $file_row["contact_first_name"].' '.$file_row["contact_last_name"];?></td>
-	<td width="5%" nowrap="nowrap" align="right"><?php echo file_size(intval($row["file_size"]));?></td>
-	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
+	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file["file_task"];?>"><?php echo $latest_file["task_name"];?></a></td>
+	<td width="15%" nowrap="nowrap"><?php echo $latest_file["contact_first_name"].' '.$latest_file["contact_last_name"];?></td>
+	<td width="5%" nowrap="nowrap" align="right"><?php echo file_size(intval($latest_file["file_size"]));?></td>
+	<td width="15%" nowrap="nowrap"><?php echo $latest_file["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
 <?php 
