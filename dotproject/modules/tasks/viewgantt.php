@@ -31,8 +31,6 @@ $end_date->setFormat( $df );
 $crumbs = array();
 $crumbs["?m=tasks"] = "tasks list";
 $crumbs["?m=projects&a=view&project_id=$project_id"] = "view this project";
-$crumbs["javascript:showThisMonth()"] = "show this month";
-$crumbs["javascript:showFullProject()"] = "show full project";
 
 ?>
 <script language="javascript">
@@ -114,8 +112,8 @@ if (!$min_view) {
 <?php 	
 }
 ?>
-
-<td align=right>	
+<td align=right valign=bottom><?php echo "<a href='javascript:showThisMonth()'>show this month</a> : <a href='javascript:showFullProject()'>show full project</a><br>"; ?></td>	
+<td align=right width=0>	
   <form name="ganttdate" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
   <input type=hidden name=display_option>
   <table border="0" cellpadding="1" cellspacing="1">
@@ -156,8 +154,9 @@ if (!$min_view) {
 </table>	
 <br>
 
-<table align=center><tr>	
 
+<table align=center width=100%>
+<tr>
 <?php if ($display_option != "all") {
 ?>
 	<td align=left valign=top>
@@ -168,9 +167,8 @@ if (!$min_view) {
 <?php
 }
 ?>
-
 	<td>
-<?php	
+<?php  
 $src = 
   "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
   ( $display_option == 'all' ? '' : 
