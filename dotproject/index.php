@@ -296,18 +296,23 @@ ob_start();
 if(!$suppressHeaders) {
 	require "./style/$uistyle/header.php";
 }
-$all_tabs = array();
-foreach ($AppUI->getActiveModules() as $dir => $module)
-{
-        $modules_tabs = $AppUI->readFiles('./modules/'.$dir.'/', $m . '_tab.*\.php');
-        foreach($modules_tabs as $tab)
-        {
-                // Get the name as the subextension
-                // cut the module_tab. and the .php parts of the filename 
-                // (begining and end)
-                $name = substr($tab, strlen($m) + 5, -4);
-                $all_tabs[$module. ' - ' . $name] = substr($dPconfig['root_dir'] . '/modules/' . $dir. '/' . $tab, 0, -4);
-        }
+if (! isset($_SESSION['all_tabs'])) {
+	$all_tabs = array();
+	$_SESSION['all_tabs'] =& $all_tabs;
+	foreach ($AppUI->getActiveModules() as $dir => $module)
+	{
+		$modules_tabs = $AppUI->readFiles('./modules/'.$dir.'/', $m . '_tab.*\.php');
+		foreach($modules_tabs as $tab)
+		{
+			// Get the name as the subextension
+			// cut the module_tab. and the .php parts of the filename 
+			// (begining and end)
+			$name = substr($tab, strlen($m) + 5, -4);
+			$all_tabs[$module. ' - ' . $name] = substr($dPconfig['root_dir'] . '/modules/' . $dir. '/' . $tab, 0, -4);
+		}
+	}
+} else {
+	$all_tabs =& $_SESSION['all_tabs'];
 }
 
 $module_file = "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
