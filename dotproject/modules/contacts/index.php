@@ -29,7 +29,7 @@ while ($row = mysql_fetch_array( $rc, MYSQL_ASSOC )) {
 }
 
 $showfields = array(
-	"test" => "concat(contact_first_name,' ',contact_last_name) as test",
+	// "test" => "concat(contact_first_name,' ',contact_last_name) as test",    why do we want the name repeated?
 	"contact_company" => "contact_company",
 	"contact_phone" => "contact_phone",
 	"contact_email" => "contact_email"
@@ -97,7 +97,7 @@ echo mysql_error();
 
 <TABLE width="95%" border=0 cellpadding="2" cellspacing=1>
 <TR>
-	<TD valign="bottom" nowrap><span id=""><b>Welcome <?php echo $urow[0];?>.</b>  This page show you a list of current contacts.</span></td>
+	<TD valign="bottom" nowrap><span id=""><b>Welcome <?php echo $urow['user_first_name'];?>.</b>  This page show you a list of current contacts.</span></td>
 	<TD WIDTH="100%" ALIGN=RIGHT>SHOW:</td>
 	<TD align="center" bgcolor="silver"><a href="./index.php?m=contacts">All</A></TD>
 <?php
@@ -132,7 +132,11 @@ echo mysql_error();
 				reset( $showfields );
 				while (list( $key, $val ) = each( $showfields )) {
 					if (strlen( $carr[$z][$x][$key] ) > 0) {
-						echo $carr[$z][$x][$key] . "<BR>";
+						if($val == "contact_email") {
+						  echo "<A HREF='mailto:{$carr[$z][$x][$key]}' class='mailto'>{$carr[$z][$x][$key]}</A>\n";
+						} else {
+						  echo  $carr[$z][$x][$key]. "<BR>";
+						}
 					}
 				}
 			?>
