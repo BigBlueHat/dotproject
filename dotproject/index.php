@@ -157,10 +157,16 @@ if ( !$suppressHeaders ) {
 }
 
 // bounce the user if they don't have at least read access
-// however, the public module is accessible by anyone
-if (!$canRead && $m != 'public') {
-	$AppUI->redirect( "m=public&a=access_denied" );
+if (!(
+	  // however, some modules are accessible by anyone
+	  $m == 'public' ||
+	  ($m == 'admin' && $a == 'viewuser')
+	  )) {
+	if (!$canRead) {
+		$AppUI->redirect( "m=public&a=access_denied" );
+	}
 }
+
 // include the module class file
 @include_once( $AppUI->getModuleClass( $m ) );
 @include_once( "./modules/$m/" . ($u ? "$u/" : "") . "$u.class.php" );
