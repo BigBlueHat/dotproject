@@ -1,3 +1,44 @@
+2003-06-26 03:24  (kobudo)
+---------------------------------
+modules/help/en/projects.addedit.hlp
+- Update Project documentation.
+
+2003-06-26 02:07  (kobudo)
+---------------------------------
+modules/help/en/projects.index.hlp
+- Update Project Index screen documentation.
+
+2003-06-25 21:55  (kobudo)
+---------------------------------
+includes/config-dist.php
+- Improve default $dbuser & $dbpass variable values.
+
+2003-06-25 20:53  (kobudo)
+---------------------------------
+db/dotproject_100.sql
+- Correct icon reference for FORUM's DotProject Classic display style. Change gconf-app-icon.png to support.png.
+
+2003-06-25 20:13  (kobudo)
+---------------------------------
+modules/help/en/general.help.hlp
+modules/help/en/general.topmenu.hlp
+modules/help/en/projects.index.hlp
+- Updates help documentation for DotProject version 1.0.
+
+2003-06-25 13:56  (kobudo)
+---------------------------------
+modules/help/en/general.help.hlp
+modules/help/en/general.leftnav.hlp
+modules/help/en/general.topmenu.hlp
+modules/help/en/install.install.hlp
+modules/help/en/overview.usermods.hlp
+- Update help documentation to DotProject version 1.0.
+
+2003-06-03 04:27  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-06-03 01:30  (eddieajau)
 ---------------------------------
 index.php
@@ -457,47 +498,6 @@ modules/help/en/install.upgrade.hlp
 ChangeLog
 - Changelog update
 
-2003-05-16 02:07  (eddieajau)
----------------------------------
-modules/companies/addedit.php
-modules/departments/addedit.php
-modules/projects/addedit.php
-modules/projects/view.php
-modules/public/selector.php
-modules/tasks/addedit.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-- Updated CONCAT SQL function to CONCAT_WS (safer with null values)
-
-2003-05-15 19:26  (korinek)
----------------------------------
-modules/forums/forums.class.php
-- Updated the class to pass the appropriate encoding to libmail class
-- for Quoted-Printable encoding of subject
-
-2003-05-15 19:24  (korinek)
----------------------------------
-modules/forums/view_messages.php
-- Fixed a bug in html rendering, where inner table with edit/delete icon
-- was never closed and was recursively embedded
-
-2003-05-15 13:05  (korinek)
----------------------------------
-locales/en/files.inc
-locales/en/forums.inc
-modules/files/index.php
-modules/files/index_table.php
-modules/forums/addedit.php
-- Translation update
-
-2003-05-15 11:49  (korinek)
----------------------------------
-modules/files/addedit.php
-- Changed the Uploaded By field to show the full name, not just the login name.
-
-2003-05-15 11:31  (korinek)
----------------------------------
 ...
 
 (This file has been wrapped)
