@@ -1,5 +1,9 @@
 <?php /* $Id$ */
 //Config File
+// INSTALLATION INSTRUCTIONS:
+// You must customize "config-dist.php" to your local system:
+// 1) Copy config-dist.php to "config.php" [if it doesn't exist]
+// 2) Edit "config.php" to include your database connection and other local settings.
 
 //db access information [DEFAULT example]
 $dPconfig['dbtype'] = "mysql";
