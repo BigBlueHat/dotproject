@@ -10,7 +10,6 @@ function selPermWhere( $table, $idfld ) {
 		."\n	AND permission_grant_on = '$table'"
 		."\n	AND permission_item = $idfld"
 		."\n	AND permission_value = 0";
-
 	$deny = db_loadColumn( $sql );
 	echo db_error();
 
@@ -27,6 +26,8 @@ function selPermWhere( $table, $idfld ) {
 $debug = false;
 $callback = dPgetParam( $_GET, 'callback', 0 );
 $table = dPgetParam( $_GET, 'table', 0 );
+$user_id = dPgetParam( $_GET, 'user_id', 0 );
+
 
 $ok = $callback & $table;
 
@@ -78,9 +79,20 @@ case 'projects':
 	$title = 'Project';
 	$select = 'project_id,project_name';
 	$order = 'project_name';
-	$where = selPermWhere( 'projects', 'project_id' );
-	$where .= $project_company ? "\nAND project_company = $project_company" : '';
-	$table .= ", permissions";
+        if ($user_id > 0)
+        {
+         $where =  " project_contacts like \"" .$user_id
+	.",%\" or project_contacts like \"%," .$user_id 
+	.",%\" or project_contacts like \"%," .$user_id
+	."\" or project_contacts like \"" .$user_id ."\"";
+        }
+	else
+	{
+	 $where = selPermWhere( 'projects', 'project_id' );
+	 $where .= $project_company ? "\nAND project_company = $project_company" : '';
+	 $table .= ", permissions";
+        }
+
 	break;
 case 'tasks':
 	$task_project = dPgetParam( $_GET, 'task_project', 0 );
@@ -94,6 +106,11 @@ case 'users':
 	$title = 'User';
 	$select = "user_id,CONCAT_WS(' ',user_first_name,user_last_name)";
 	$order = 'user_first_name';
+	break;
+case 'SGD':
+	$title = 'Document';
+	$select = 'SGD_id,SGD_name';
+	$order = 'SGD_name';
 	break;
 default:
 	$ok = false;
