@@ -125,7 +125,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 			$message .= "\n--$boundary--\n";
 
 
-			mail($mailinfo["user_email"], $AppUI->_('Trouble ticket')." #$ticket ".$AppUI->_('has been assigned to you'), $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: text/alternative; boundary=\"$boundary\"\nMime-Version: 1.0");
+			mail($mailinfo["user_email"], $AppUI->_('Trouble ticket')." #$ticket ".$AppUI->_('has been assigned to you'), $message, "From: " . $CONFIG['reply_to'] . "\nContent-type: multipart/alternative; boundary=\"$boundary\"\nMime-Version: 1.0");
 		} // End of check for valid email
 	} // End of check for toggle of assignee
 
