@@ -34,7 +34,7 @@ function delIt2(id) {
 	<th><?php echo $AppUI->_('Date');?></th>
         <th title="<?php echo $AppUI->_('Reference');?>"><?php echo $AppUI->_('Ref');?></th>
 	<th width="100"><?php echo $AppUI->_('Summary');?></th>
-        <th><?php echo $AppUI->_('URL');?></th>
+    <th><?php echo $AppUI->_('URL');?></th>
 	<th width="100"><?php echo $AppUI->_('User');?></th>
 	<th width="100"><?php echo $AppUI->_('Hours');?></th>
 	<th width="100"><?php echo $AppUI->_('Cost Code');?></th>
@@ -70,7 +70,7 @@ foreach ($logs as $row) {
         //$s .= '<td align="center" valign="middle">'.($row['task_log_problem'] ?  dPshowImage( './images/icons/mark-as-important-16.png', 16, 16, 'Problem', 'Problem' ) : '').'</td>';
         $s .= '<td align="center" valign="middle">'.(($row['task_log_reference']>0) ?  dPshowImage( $taskLogReferenceImage[$row["task_log_reference"]], 16, 16, 'Problem', $taskLogReference[$row["task_log_reference"]] ) : '-').'</td>';
 	$s .= '<td width="30%" style="'.$style.'">'.@$row["task_log_name"].'</td>';
-        $s .= !empty($row["task_log_related_url"]) ? '<td><a href="'.@$row["task_log_related_url"].'" title="'.@$row["task_log_related_url"].'">'.$AppUI->_('URL').'</a></td>' : '';
+    $s .= !empty($row["task_log_related_url"]) ? '<td><a href="'.@$row["task_log_related_url"].'" title="'.@$row["task_log_related_url"].'">'.$AppUI->_('URL').'</a></td>' : '<td></td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
 	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . '</td>';
 	$s .= '<td width="100">'.$row["task_log_costcode"].'</td>';
@@ -103,7 +103,7 @@ foreach ($logs as $row) {
 	$hrs += (float)$row["task_log_hours"];
 }
 $s .= '<tr bgcolor="white" valign="top">';
-$s .= '<td colspan="3" align="right">' . $AppUI->_('Total Hours') . ' =</td>';
+$s .= '<td colspan="6" align="right">' . $AppUI->_('Total Hours') . ' =</td>';
 $s .= '<td align="right">' . sprintf( "%.2f", $hrs ) . '</td>';
 $s .= '</tr>';
 echo $s;
