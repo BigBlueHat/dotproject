@@ -263,7 +263,7 @@ $crumbs["?m=tasks&a=todo"] = "my todo";
 </table>
 <?php } ?>
 
-<table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">&nbsp;</th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
