@@ -3,10 +3,11 @@ Installing dotProject on LAMP System
 REVISION HISTORY
 Original Document:  17 Oct 2002 (dotProject Team)
 Revised:            03 - 08 July 2002 (by JRP)
+Revised:            30 Aug 2002 (by JRP)
 
 	
 SITUATION
-You have access to a functioning WAMP (Windows+Apache+MySQL+PHP) or LAMP (Linux+Apache+MySQL+PHP) web server. You also have the ability to create a MySQL database and tables.
+You have access to a functioning LAMP (Linux+Apache+MySQL+PHP) web server. You also have the ability to create a MySQL database and tables.
 	
 You've decided to install the open-source project management tool called "dotproject".
 	
@@ -21,9 +22,11 @@ EXECUTION
 1) Download the most recent dotproject tarball:
     http://sourceforge.net/projects/dotproject/
 		
+
 2) Unpack the tarball in your web root directory:
     tar -zxvf dotproject_*.tar.gz
     [Note: replace the * with the appropriate version.]
+
 
 3) Database Setup:
     // Customize for your system
@@ -33,42 +36,109 @@ EXECUTION
     Make sure to record the dotproject user's password, {yourpassword}.
 
     // Customize to match your db_name, db_user, and db_pass.
-    mysql> CREATE database dotproject;
+    mysql> CREATE DATABASE dotproject;
     mysql> GRANT ALL PRIVILEGES ON dotproject.* 
             TO dotproject@localhost IDENTIFIED BY
             "yourpassword" WITH GRANT OPTION;
 
-4) Customize your Database Schema Script
+
+4) Customize your Database Schema Script [OPTIONAL]
     Open the file dotproject/db/dotproject.sql with a text editor
     and edit the last section where the default dotproject Admin
     Account is setup (line 352).
     
     We recommend that you specify a new admin username, password, 
-    and email. Save your changes.
+    and email. Save your changes. [Alternatively, this step can 
+    be completed in the "User Admin" section of dotproject after
+    installation].
+
 
 5) Populate Database:
     Utilize the information from the Database Setup and the provided
     "/db/dotproject.sql" script to populate the dotproject database.
     
     #mysql -udotproject -pyourpassword dotproject < dotproject/db/dotproject.sql 
-    
-    If you are installing to a Windows system, exit MySQL and from
-    the command prompt, work your way into the "dotproject/db" folder.
-    Then, run the following command:
-    C:\{path-to-webroot}\dotproject\db> mysql -udotproject -pyourpassword dotproject < dotproject.sql   
+
     
 6) Configuration File Customization:
     Edit dotproject/includes/config.php to use your dbhost, name, username,
     password and web root directory.
+    
+    The following variables MUST be modified to match your setup: $dbhost, $db,
+    $dbname, $dbpass, $root_dir
+    
 
 7) Point your browser to http://yourdomain.com/dotproject/index.php.  If 
         all is well, you should see a login page. 
         Username: admin
         Password: passwd
 
-8) Click on the Users button and change the admin password as soon as possible.
+8) Admin Password and Adding Other Users
+    Click on the "User Admin" button and change the admin password as soon as 
+    possible (if not completed in step four above). You may also add other users
+    with differing levels of access to your dotproject database.
+    
+9) File Management Configuration
+    The File Management Module provides users with an opportunity to upload and
+    share files. Several steps are necessary to make sure this module works 
+    correctly.
+    a) It is very important that the $root_dir variable is set correctly in 
+        "includes/config.php". $root_dir must provide the full path to the 
+        dotproject installation AND INCLUDE the installation folder name.
+        
+        $root_dir = "/var/www/html/dotproject";     // Example ONE
+        $root_dir = "/wwwroot/dotproject";          // Example TWO
 
+    b) File Folder Permissions
+        In order for the file upload to function, you will need to provide full
+        read-write-execute priviledges to the file upload folder.  The "default" 
+        file upload folder is named "files" and contains an "htaccess" file to 
+        prevent unauthorized access.
+        
+        Navigate to dotproject root directory
+        # chmod -R 777 files
+        
+    c) Troubleshooting
+        Failure to specify the proper $root_dir OR failure to provide full 
+        read-write-execute permission on the file upload folder will result in 
+        numerous error messages along the lines of:
+       
+        Warning: Unable to create '{$root_dir}/files/0/{rnd #}': 
+            Permission denied in {$root_dir}/dosql/addfile.php on line 17
+        Warning: Unable to move '/tmp/phpt9SeKp' to '{$root_dir}/files/0/{rnd #}'
+            in {$root_dir}/dosql/addfile.php on line 17
+        Warning: fopen("{$root_dir}/files/0/{rnd #}","r") - No such file 
+            or directory in {$root_dir}/dosql/addfile.php on line 51
+        Warning: Supplied argument is not a valid File-Handle resource in
+            {$root_dir}/addfile.php on line 52
+        Warning: Cannot add header information - headers already sent by (output 
+            started at {$root_dir}/dosql/addfile.php:17) in 
+            {$root_dir}/dosql/addfile.php on line 92
 
+        Even though you may encounter error messages, there will still be an entry
+        made for the various files. However, the contents of the uploaded files will
+        likely be lost. Instead the "files" will contain error messages that may help
+        with troubleshooting.
+        
+        If you find that you are accumulating "file" listings, but your contents of the 
+        "files" folder is not changing, then you have probably provided an incorrect
+        $root_dir path.
+
+    d) Improving Security
+        The default "files" folder contains an ".htaccess" file containing the following:
+            Options -All
+            deny from all 
+        
+        While this provides basic security, the paranoid can improve security further by:
+            i) Changing the name of the "files" folder to something less obvious.
+            ii) Moving the "files" folder outside of the webroot
+            iii) Both
+            
+            These security improvements will require technical skill, and will make 
+            "upgrading" to future versions of dotproject more challenging.  Basically, 
+            you will need to customize the path references for uploading and viewing
+            in /dosql/addfile.php and /dosql/delfile.php.
+            
 ---------------------------------------------------------------------------
 Web trouble ticket email gateway: dotproject/includes/gateway.pl
 ---------------------------------------------------------------------------
