@@ -1,10 +1,10 @@
 <?php
-$del = isset($HTTP_POST_VARS['del']) ? $HTTP_POST_VARS['del'] : 0;
-$isNotNew = @$HTTP_POST_VARS['company_id'];
+$del = isset($_POST['del']) ? $_POST['del'] : 0;
+$isNotNew = @$_POST['company_id'];
 
 $company = new CCompany();
 
-if (($msg = $company->bind( $HTTP_POST_VARS ))) {
+if (($msg = $company->bind( $_POST ))) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	$AppUI->redirect();
 }
