@@ -39,6 +39,10 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['project_id'];
+		
+		if ( $importTask_projectId = dPgetParam( $_POST, 'import_tasks_from', '0' ) )
+			$obj->importTasks ($importTask_projectId);
+
 		$AppUI->setMsg( $isNotNew ? 'Project updated' : 'Project inserted', UI_MSG_OK);
 	}
 	$AppUI->redirect();

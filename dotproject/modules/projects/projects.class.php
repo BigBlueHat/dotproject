@@ -77,5 +77,122 @@ class CProject extends CDpObject {
 			return NULL;
 		}
 	}
+
+	/**	Import tasks from another project
+	*
+	*	@param	int		Project ID of the tasks come from.
+	*	@return	bool	
+	**/
+	function importTasks ($from_project_id) {
+		
+		// Load the original
+		$origProject = new CProject ();
+		$origProject->load ($from_project_id);
+		$sql = "SELECT task_id FROM tasks WHERE task_project = $from_project_id";
+
+		$tasks = array_flip(db_loadColumn ($sql));
+
+		$origDate = new CDate( $origProject->project_start_date );
+		
+		$destDate = new CDate ($this->project_start_date);
+		
+		$timeOffset = $destDate->getTime() - $origDate->getTime();
+
+		$objTask = new CTask();
+		
+		// Dependencies array
+		$deps = array();
+		
+		foreach ($tasks as $orig => $void) {
+			$objTask->load ($orig);
+			$destTask = $objTask->copy($this->project_id);
+			$tasks[$orig] = $destTask;
+			$deps[$orig] = $objTask->getDependencies ();
+		}
+
+		// Fix record integrity 
+		foreach ($tasks as $old_id => $newTask) {
+
+			// Fix parent Task
+			if ($newTask->task_id != $newTask->task_parent)
+				$newTask->task_parent = $tasks[$newTask->task_parent]->task_id;
+
+			// Fix task start date and end date from project start date offset
+			$origDate->setDate ($newTask->task_start_date);
+			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
+			$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);   
+			
+			$origDate->setDate ($newTask->task_end_date);
+			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
+			$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);   
+			
+			// Dependencies
+			if (!empty($deps[$old_id])) {
+				$oldDeps = explode (',', $deps[$old_id]);
+				// New dependencies array
+				$newDeps = array();
+				foreach ($oldDeps as $dep) 
+					$newDeps[] = $tasks[$dep]->task_id;
+					
+				// Update the new task dependencies
+				$csList = implode (',', $newDeps);
+				$newTask->updateDependencies ($csList);
+			} // end of update dependencies 
+
+			// We use direct db updating to prevent time offset problem 
+			db_updateObject( 'tasks', $newTask, 'task_id', false );
+
+		} // end Fix record integrity	
+
+			
+	} // end of importTasks
+
+	/**
+	**	Overload of the dpObject::getAllowedRecords 
+	**	to ensure that the allowed projects are owned by allowed companies.
+	**
+	**	@author	handco <handco@sourceforge.net>
+	**	@see	dpObject::getAllowedRecords
+	**/
+
+	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ){
+		$oCpy = new CCompany ();
+		
+		$aCpies = $oCpy->getAllowedRecords ($uid, "company_id, company_name");
+		$buffer = '(project_company IN (' . 
+				implode(',' , array_keys($aCpies)) . 
+				'))'; 
+
+		if ($extra['where'] != "") 
+			$extra['where'] = $extra['where'] . ' AND ' . $buffer;
+		else
+			$extra['where'] = ' AND ' . $buffer; 
+
+		return parent::getAllowedRecords ($uid, $fields, $orderby, $index, $extra);
+				
+	}
+	
+	/**
+	 *	Overload of the dpObject::getDeniedRecords 
+	 *	to ensure that the projects owned by denied companies are denied.
+	 *
+	 *	@author	handco <handco@sourceforge.net>
+	 *	@see	dpObject::getAllowedRecords
+	 */
+	function getDeniedRecords( $uid ) {
+		$aBuf1 = parent::getDeniedRecords ($uid);
+		
+		$oCpy = new CCompany ();
+		// Retrieve which projects are allowed due to the company rules 
+		$aCpiesAllowed = $oCpy->getAllowedRecords ($uid, "company_id,company_name");
+		
+		$sql = "SELECT project_id FROM projects " .
+				"WHERE NOT (project_company IN (" . implode (',', array_keys($aCpiesAllowed)) . '));';
+		$aBuf2 = db_loadColumn ($sql);
+		
+		return array_merge ($aBuf1, $aBuf2); 
+		
+	}
+
 }
 ?>

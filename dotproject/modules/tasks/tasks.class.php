@@ -165,15 +165,16 @@ class CTask extends CDpObject {
 	function copy($destProject_id = 0) {
 		$newObj = $this->clone();
 
-		//Fix the parent task
-		if ($newObj->task_parent == $this->task_id)
-			$newObj->task_parent = $newObj->task_id;
-
 		// Copy this task to another project if it's specified
 		if ($destProject_id != 0)
 			$newObj->task_project = $destProject_id;
 
 		$msg = $newObj->store();
+
+		if ($newObj->task_parent == $this->task_id) {
+			$newObj->task_parent = $newObj->task_id;
+			$msg = $newObj->store();
+		}
 
 		return $newObj;
 	}// end of copy()
@@ -197,8 +198,17 @@ class CTask extends CDpObject {
 			}
 			$this->updateDynamics(true);
 
-			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
+			// add to shift dependencies dates
+			$oTsk = new CTask();
+			$oTsk->load ($this->task_id);
+			if ($this->task_end_date != $oTsk->task_end_date) {
+				// we need to shift tasks
+				$origDate = new CDate ($oTsk->task_end_date);
+				$destDate = new CDate ($this->task_end_date);
+				$this->shiftDependantTasks ($destDate->getTime() - $origDate->getTime());
+			}
 
+			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
 
 		} else {
 			$this->_action = 'added';
@@ -315,8 +325,8 @@ class CTask extends CDpObject {
             FROM task_dependencies td
             WHERE td.dependencies_task_id = $taskId
 		";
-		$hashList = db_loadHashList ($sql);
-		$result = implode (',', array_keys ($hashList));
+		$list = db_loadColumn ($sql);
+		$result = $list ? implode (',', $list) : '';
 
 		return $result;
 	} // end of staticGetDependencies ()
@@ -537,7 +547,69 @@ class CTask extends CDpObject {
 				break;
 		}
 	}
-	
+
+	/**
+	*       retrieve tasks are dependant of another.
+	*       @param  integer         ID of the master task
+	*       @param  boolean         true if is a dep call (recurse call)
+	**/
+	function dependantTasks ($taskId = false, $isDep = false) {
+		static $aDeps = false;
+
+		// Initialize the dependencies array
+		if (($taskId == false) && ($isDep == false))
+			$aDeps = array();
+
+		// retrieve dependants tasks 
+		if (!$taskId)
+			$taskId = $this->task_id;
+		$sql = "
+			SELECT dependencies_task_id
+			FROM task_dependencies AS td, tasks AS t
+			WHERE td.dependencies_req_task_id = $taskId
+			AND td.dependencies_task_id = t.task_id
+			AND t.task_dynamic = 0
+		";
+		$aBuf = array_values(db_loadColumn ($sql));
+
+		// Recurse to find sub dependancies
+		foreach ($aBuf as $depId) {
+			// work around for infinite loop
+			if (!in_array($depId, $aDeps)) {
+				$aDeps[] = $depId;
+				$this->dependantTasks ($depId, true);
+			}
+		}
+
+		// return if we are in a dependency call
+		if ($isDep)
+			return;
+                       
+		return implode (',', $aDeps);
+
+	} // end of dependantTasks()
+
+	/*
+	 *       shift dependants tasks dates
+	 *       @param  integer         time offset in seconds 
+	 *       @return void
+	 */
+	function shiftDependantTasks ($offset) {
+		$csDeps = $this->dependantTasks();
+
+		if ($csDeps == '')
+			return;
+
+		$sql = "UPDATE tasks
+		SET
+			task_start_date = task_start_date + INTERVAL $offset SECOND ,
+			task_end_date = task_end_date + INTERVAL $offset SECOND
+		WHERE task_id IN ($csDeps)";
+
+		db_exec ($sql);
+
+	} // end of shiftDependantTasks() 
+
 	/**
 	* Function that returns the amount of hours this
 	* task consumes per user each day
