@@ -89,7 +89,7 @@ if($do_report){
 					contact_first_name, 
 					contact_last_name
 	        FROM users AS u
-                LEFT JOIN user_contact = contact_id";
+                LEFT JOIN contacts ON u.user_contact = contact_id";
 	
 	$user_list = db_loadHashList($sql, "user_id");
 	
