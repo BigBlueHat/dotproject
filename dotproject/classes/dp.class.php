@@ -114,15 +114,44 @@ class CDpObject {
  *	generic check for whether dependancies exist for this object in the db schema
  *
  *	can be overloaded/supplemented by the child class
- *	@param string $msg error message returned
- *	@param int $oid optional key index
+ *	@param string $msg Error message returned
+ *	@param int Optional key index
+ *	@param array Optional array to compiles standard joins: format [label=>'Label',name=>'table name',idfield=>'field',joinfield=>'field']
  *	@return true|false
  */
-	function canDelete( &$msg, $oid=null ) {
+	function canDelete( &$msg, $oid=null, $joins=null ) {
+		global $AppUI;
+		$k = $this->_tbl_key;
 		if ($oid) {
-			$k = $this->_tbl_key;
 			$this->$k = intval( $oid );
 		}
+		if (is_array( $joins )) {
+			$select = "$k";
+			$join = "";
+			foreach( $joins as $table ) {
+				$select .= ",\nCOUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}";
+				$join .= "\nLEFT JOIN {$table['name']} ON {$table['joinfield']} = $k";
+			}
+			$sql = "SELECT $select\nFROM $this->_tbl\n$join\nWHERE $k = ".$this->$k." GROUP BY $k";
+
+			$foo = null;
+			$obj = db_loadObject( $sql, $foo );
+			$msg = array();
+			foreach( $joins as $table ) {
+				$k = $table['idfield'];
+				if ($obj->$k) {
+					$msg[] = $AppUI->_( $table['label'] );
+				}
+			}
+
+			if (count( $msg )) {
+				$msg = $AppUI->_( "noDeleteRecord" ) . ": " . implode( ', ', $msg );
+				return false;
+			} else {
+				return true;
+			}
+		}
+
 		return true;
 	}
 
@@ -170,10 +199,10 @@ class CDpObject {
 
 /**
  *	returns a list of records exposed to the user
- *	@param int $uid user id number
- *	@param string $fields optional fields to be returned by the query, default is all
- *	@param string $orderby optional sort order for the query
- *	@param string $index optional name of field to index the returned array
+ *	@param int User id number
+ *	@param string Optional fields to be returned by the query, default is all
+ *	@param string Optional sort order for the query
+ *	@param string Optional name of field to index the returned array
  *	@return array
  */
 // returns a list of records exposed to the user
