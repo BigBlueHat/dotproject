@@ -10,9 +10,8 @@ $denyEdit = getDenyEdit( $m );
 if ($denyEdit) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
-$AppUI->savePlace();
 
-$project_id = $AppUI->getState( 'ActiveProject' ) ? $AppUI->getState( 'ActiveProject' ) : 0;
+//$project_id = $AppUI->getState( 'ActiveProject' ) ? $AppUI->getState( 'ActiveProject' ) : 0;
 
 // pull the task
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
@@ -33,7 +32,7 @@ if ($task["task_end_date"]) {
 }
 
 // pull the related project
-$sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = $project_id";
+$sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = ".$task['task_project'];
 db_loadHash( $sql, $project );
 
 //Pull all users
@@ -58,7 +57,7 @@ $assigned = db_loadHashList( $sql );
 $sql="
 SELECT task_id, task_name
 FROM tasks
-WHERE task_project = $project_id
+WHERE task_project = {$task['task_project']}
 	AND task_id <> $task_id
 ORDER BY task_project
 ";
@@ -78,12 +77,12 @@ FROM tasks t, task_dependencies td
 WHERE td.dependencies_task_id = $task_id
 	AND t.task_id = td.dependencies_req_task_id
 ";
-$taskDep = db_loadList( $sql );
+$taskDep = db_loadHashList( $sql );
 
 $crumbs = array();
 $crumbs["?m=projects&a=view&project_id={$task['task_project']}"] = "view this project";
 $crumbs["?m=tasks"] = "tasks list";
-$crumbs["?m=tasks&a=addedit&task_id={$task['task_id']}"] = "view this task";
+$crumbs["?m=tasks&a=view&task_id={$task['task_id']}"] = "view this task";
 ?>
 
 <SCRIPT language="JavaScript">
@@ -108,10 +107,10 @@ function submitIt(){
 	var dl = form.task_dependencies.length -1;
 	
 	if (form.task_name.value.length < 3) {
-		alert( "Please enter a valid task Name" );
+		alert( "<?php echo $AppUI->_('taskName');?>" );
 		form.task_name.focus();
 	} else if (form.task_start_date.value.length < 9) {
-		alert( "Please enter a valid start date" );
+		alert( "<?php echo $AppUI->_('taskValidStartDate');?>" );
 		form.task_start_date.focus();
 	} else {
 		form.hassign.value = "";
@@ -193,7 +192,7 @@ function removeTaskDependency() {
 }
 
 function delIt() {
-	if (confirm( "Are you sure that you would like to delete this task?\n" )) {
+	if (confirm( "<?php echo $AppUI->_('taskDelete');?>\n" )) {
 		var form = document.AddEdit;
 		form.del.value=1;
 		form.submit();
@@ -202,11 +201,11 @@ function delIt() {
 </script>
 
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
-<form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $project_id ?>" method="post">
-<input name="dosql" type="hidden" value="addeditTask">
+<form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $task['task_project'] ?>" method="post">
+<input name="dosql" type="hidden" value="task_aed">
 <input name="del" type="hidden" value="0">
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>">
-<input name="task_project" type="hidden" value="<?php echo $project_id;?>">
+<input name="task_project" type="hidden" value="<?php echo $task['task_project'];?>">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
 	<td align="left" nowrap="nowrap" width="100%">
@@ -326,7 +325,7 @@ function delIt() {
 				$newdir ="0";
 			}
 			?>
-					<input type="text" class="text" name="duration" maxlength=4 size=5 value="<?php echo $newdir;?>">
+					<input type="text" class="text" name="task_duration" maxlength=4 size=5 value="<?php echo $newdir;?>">
 					<select name="dayhour" size="1" class="text">
 						<option value="1" <?php  if ($dir ==1) echo "selected";?>>hour(s)
 						<option value="24" <?php  if ($dir ==24) echo "selected";?>>day(s)
@@ -408,7 +407,7 @@ function delIt() {
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks&project_id=<?php echo $project_id ?>';}">
+				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks&project_id=<?php echo $task['task_project'] ?>';}">
 			</td>
 			<td>
 				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submitIt();">
