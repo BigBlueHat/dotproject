@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Preferences updated",
 "Abbreviation",
 "Date and Time",
 "Default",
@@ -12,6 +11,7 @@
 "Locales file saved",
 "Module",
 "Preferences",
+"Preferences updated",
 "Short Date Format",
 "String",
 "System Administration",
@@ -20,3 +20,11 @@
 "Translation Management",
 "User Interface Style",
 "User Preferences",
+"cn"=>"Chinese",
+"cs"=>"Czech",
+"de"=>"German",
+"en"=>"English",
+"es"=>"Spanish",
+"fr"=>"French",
+"pt_br"=>"Portuguese Brazillian",
+"zh"=>"Chinese",
