@@ -25,6 +25,7 @@ SELECT u.user_id, u.user_username,
 	pj.project_id, pj.project_name,
 	t.task_id, t.task_name,
 	f.file_id, f.file_name,
+	fm.forum_id, fm.forum_name,
 	u2.user_id, u2.user_username
 FROM users u, permissions p
 LEFT JOIN companies c ON c.company_id = p.permission_item and p.permission_grant_on = 'companies'
