@@ -1,4 +1,4 @@
-<?php
+<?php /* PUBLIC $Id$ */
 $debug = false;
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 $table = isset( $_GET['table'] ) ? $_GET['table'] : 0;
@@ -42,6 +42,11 @@ case 'tasks':
 	$select = 'task_id,task_name';
 	$order = 'task_name';
 	$where = $task_project ? "task_project = $task_project" : '';
+	break;
+case 'users':
+	$title = 'User';
+	$select = "user_id,CONCAT(user_first_name,' ',user_last_name)";
+	$order = 'user_first_name';
 	break;
 default:
 	$ok = false;
