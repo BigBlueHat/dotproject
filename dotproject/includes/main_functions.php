@@ -98,10 +98,7 @@ function breadCrumbs( &$arr ) {
 ## generate link for context help -- old version
 ##
 function contextHelp( $title, $link='' ) {
-	global $AppUI;
-	$dothelpURL = "./modules/help/framed/";
-
-	return "<a href=\"#$link\" onClick=\"javascript:window.open('$dothelpURL?entry_link=$link', 'contexthelp', 'width=700, height=400, left=20, top=20, resizable=yes')\">$title</a>";
+	return dPcontextHelp( $title, $link );
 }
 
 function dPcontextHelp( $title, $link='' ) {
