@@ -1,3 +1,18 @@
+2003-07-08 18:59  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
+2003-07-08 18:28  (jcgonz)
+---------------------------------
+modules/tasks/todo.php
+- Corrected a short php tag <? to <?php
+
+2003-07-08 18:25  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Updated a short php tag <?
+
 2003-07-07 01:24  (kripper)
 ---------------------------------
 ChangeLog
@@ -483,21 +498,6 @@ modules/projects/reports.php
 modules/projects/view.php
 - Added report handling
 
-2003-05-28 00:36  (eddieajau)
----------------------------------
-modules/calendar/calendar.class.php
-- Update library class include
-
-2003-05-28 00:31  (eddieajau)
----------------------------------
-classes/ui.class.php
-- Changed library include
-- Added function to read files in a directory
-- Added function to make a filename safe from malicious injection
-
-2003-05-28 00:30  (eddieajau)
----------------------------------
-classes/date.class.php
 ...
 
 (This file has been wrapped)
