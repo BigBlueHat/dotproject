@@ -1,7 +1,7 @@
 <?php
 require_once( "classdefs/date.php" );
 
-$date = new Date();
+$date = new CDate();
 $date->setDate( $thisYear, $thisMonth, $thisDay );
 $tmpdate = $currentDate = $date;
 if(empty($field))$field = "x";
