@@ -224,7 +224,7 @@ for($i = 0; $i < count($gantt_arr); $i ++ ) {
 
 	if($hide_task_groups) $level = 0;
 
-	$name = $a["task_name"];
+	$name = strlen( $a["task_name"] ) > 25 ? substr( $a["task_name"], 0, 22 ).'...' : $a["task_name"] ;
 	$start = substr($a["task_start_date"], 0, 10);
 	$end = substr($a["task_end_date"], 0, 10);
 	$progress = $a["task_precent_complete"];

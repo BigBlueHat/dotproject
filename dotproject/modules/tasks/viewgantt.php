@@ -1,7 +1,7 @@
 <?php
 require_once( "$root_dir/classdefs/date.php" );
 
-$project_id = isset( $_GET['sdate'] ) ? $_GET['sdate'] : 0;
+$project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
 
 // sdate and edate passed as unix time stamps
 $sdate = isset( $_POST['sdate'] ) ? $_POST['sdate'] : 0;
@@ -31,7 +31,7 @@ $end_date->setFormat( $df );
 
 $crumbs = array();
 $crumbs["?m=tasks"] = "tasks list";
-$crumbs["?m=projects&a=view&project_id=$project_id"] = "this project";
+$crumbs["?m=projects&a=view&project_id=$project_id"] = "view this project";
 ?>
 <script language="javascript">
 var calendarField = '';
@@ -39,7 +39,7 @@ var calendarField = '';
 function popCalendar( field ){
 	calendarField = field;
 	uts = eval( 'document.ganttdate.' + field + '.value' );
-	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'width=250, height=220, scollbars=false' );
+	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250,height=220,scollbars=false' );
 }
 
 function setCalendar( uts, fdate ) {
@@ -49,12 +49,37 @@ function setCalendar( uts, fdate ) {
 	fld_fdate.value = fdate;
 }
 
+function scrollPrev() {
+	f = document.ganttdate;
+<?php 
+	$new_start = $start_date;
+	$new_end = $end_date;
+	$new_start->addMonths( -$scroll_date );
+	$new_end->addMonths( -$scroll_date );
+	echo "f.sdate.value='".$new_start->getTimestamp()."';";
+	echo "f.edate.value='".$new_end->getTimestamp()."';";
+?>
+	f.submit()
+}
+
+function scrollNext() {
+	f = document.ganttdate;
+<?php 
+	$new_start = $start_date;
+	$new_end = $end_date;
+	$new_start->addMonths( $scroll_date );
+	$new_end->addMonths( $scroll_date );
+	echo "f.sdate.value='".$new_start->getTimestamp()."';";
+	echo "f.edate.value='".$new_end->getTimestamp()."';";
+?>
+	f.submit()
+}
 </script>
 
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-	<td nowrap><span class="title">Gantt Chart</span></td>
+	<td nowrap><span class="title"><?php echo $AppUI->_( 'Gantt Chart' );?></span></td>
 	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td valign="top" align="right" width="100%"></td>
 </tr>
@@ -74,7 +99,7 @@ function setCalendar( uts, fdate ) {
 	<td>
 		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 		<tr bgcolor="#eeeeee">
-			<td align="right" nowrap="nowrap">Start Date:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?>:</td>
 			<td nowrap>
 				<input type="hidden" name="sdate" value="<?php echo $start_date->getTimestamp();?>">
 				<input type="text" class="text" name="show_sdate" value="<?php echo $start_date->toString();?>" size="12" disabled="disabled">
@@ -82,7 +107,7 @@ function setCalendar( uts, fdate ) {
 					<img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
 				</a>
 			</td>
-			<td align="right" nowrap="nowrap">End Date:</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Date' );?>:</td>
 			<td nowrap>
 				<input type="hidden" name="edate" value="<?php echo $end_date->getTimestamp();?>">
 				<input type="text" class="text" name="show_edate" value="<?php echo $end_date->toString();?>" size="12" disabled="disabled">
@@ -96,7 +121,7 @@ function setCalendar( uts, fdate ) {
 </tr>
 
 <tr>
-	<td><input type=radio name=display_option value=month>This month</td>
+	<td><input type=radio name=display_option value=month>This Month</td>
 	<td>&nbsp;</td>
 </tr>
 
@@ -118,15 +143,15 @@ if($display_option!="all") {
 
 <table width="98%">
 <tr>
-        <td align=left>
-                <a href="javascript:document.form.sdate.value='<?php echo formatTime(strtotime("$start_date -$scroll_value")) ?>';document.form.edate.value='<?php echo fromDate($start_date) ?>';document.form.submit()">
-                	<img src="./images/prev.gif" width="16" height="16" alt="pre" border="0">
-                </a>
-        </td>
-        <td align=right>
-                <a href="javascript:document.form.sdate.value='<?php echo fromDate($end_date) ?>';document.form.edate.value='<?php echo formatTime(strtotime("$end_date +$scroll_value")) ?>';document.form.submit()">
-                <img src="./images/next.gif" width="16" height="16" alt="next" border="0"></a>
-        </td>
+	<td align=left>
+		<a href="javascript:scrollPrev()">
+			<img src="./images/prev.gif" width="16" height="16" alt="pre" border="0">
+		</a>
+	</td>
+	<td align=right>
+		<a href="javascript:scrollNext()">
+		<img src="./images/next.gif" width="16" height="16" alt="next" border="0"></a>
+	</td>
 </tr>
 </table>
 <?php } ?>
@@ -151,4 +176,3 @@ if($display_option!="all") {
 
 </body>
 </html>
-
