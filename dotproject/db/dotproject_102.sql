@@ -1,4 +1,4 @@
-# 
+#
 # dotproject.sql Database Schema
 #   updated by JRP (08 July 2002)
 #   updated by JCP (29 November 2002)
@@ -270,7 +270,7 @@ CREATE TABLE tasks (
   PRIMARY KEY  (task_id),
   KEY idx_task_parent (task_parent),
   KEY idx_task_project (task_project),
-  KEY idx_task_owner (task_project),
+  KEY idx_task_owner (task_owner),
   KEY task_order (task_order)
 ) TYPE=MyISAM;
 

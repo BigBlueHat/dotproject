@@ -28,3 +28,7 @@ ALTER TABLE `tasks` ADD `task_custom` LONGTEXT;
 
 # custom info on companies
 ALTER TABLE `companies` ADD `company_custom` LONGTEXT;
+
+#
+ALTER TABLE `tasks` DROP INDEX `idx_task_owner`;
+ALTER TABLE `tasks` ADD INDEX `idx_task_owner` (`task_owner`);
