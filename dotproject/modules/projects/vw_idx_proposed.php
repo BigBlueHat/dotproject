@@ -67,7 +67,7 @@ foreach ($projects as $row) {
 
 		if($show_all_projects){
 			$s .= $CR . '<td align="center">';
-			$s .= $CT . $project_types[$row["project_status"]];
+			$s .= $CT . $AppUI->_($project_types[$row["project_status"]]);
 			$s .= $CR . '</td>';
 		}
 		
