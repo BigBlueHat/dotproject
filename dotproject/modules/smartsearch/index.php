@@ -36,6 +36,7 @@ if (isset ($_POST['keyword']))
 	<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <?php
 
+	sort($files);
 	foreach ($files as $tmp){
 		require_once('./modules/smartsearch/searchobjects/'.$tmp);
 		$temp = substr($tmp,0,-8);
