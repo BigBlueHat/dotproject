@@ -42,7 +42,14 @@ foreach ($users as $row) {
 				</a>
 			</td>
 			<td>
-				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo addslashes($row["contact_first_name"] . " " . $row["contact_last_name"]);?>')" title="<?php echo $AppUI->_('delete');?>">
+<?php 
+$user_display = addslashes($row["contact_first_name"] . " " . $row["contact_last_name"]);
+
+$user_display = trim($user_display);
+if (empty($user_display))
+        $user_display = $row['user_username'];
+?>
+				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $user_display;?>')" title="<?php echo $AppUI->_('delete');?>">
 					<?php echo dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' ); ?>
 				</a>
 			</td>
@@ -80,7 +87,12 @@ foreach ($users as $row) {
 	</td>
 	<td>
 		<a href="mailto:<?php echo $row["contact_email"];?>"><img src="images/obj/email.gif" width="16" height="16" border="0" alt="email"></a>
-		<?php echo $row["contact_last_name"].', '.$row["contact_first_name"];?>
+<?php
+if ($row['contact_last_name'] && $row['contact_first_name'])
+        echo $row["contact_last_name"].', '.$row["contact_first_name"];
+else
+        echo '<span style="font-style: italic">unknown</span>';
+?>
 	</td>
 	<td>
 		<a href="./index.php?m=companies&a=view&company_id=<?php echo $row["contact_company"];?>"><?php echo $row["company_name"];?></a>
