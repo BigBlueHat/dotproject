@@ -13,7 +13,7 @@ $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
 
 $this_week = new CDate( $uts );
 $this_week->setTime( 0,0,0 );
-$this_week->setWeekday( 0 );
+$this_week->setWeekday( LOCALE_FIRST_DAY );
 
 $prev_week = $this_week;
 $prev_week->addDays( -7 );

@@ -8,6 +8,11 @@ $AppUI =& $_SESSION['AppUI'];
 
 setlocale( LC_TIME, $AppUI->user_locale );
 
+// by RK
+@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
+header("Content-type: text/html;charset=$locale_char_set");
+// end
+
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : 0;
 
