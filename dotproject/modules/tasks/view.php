@@ -173,6 +173,15 @@ function delIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
 			<td class="hilite"><strong><?php echo @$obj->task_name;?></strong></td>
 		</tr>
+		<?php if ( $obj->task_parent != $obj->task_id ) { 
+			$obj_parent = new CTask();
+			$obj_parent->load($obj->task_parent);
+		?>
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task Parent');?>:</td>
+			<td class="hilite"><a href="<?php echo "./index.php?m=tasks&a=view&task_id=" . @$obj_parent->task_id; ?>"><?php echo @$obj_parent->task_name;?></a></td>
+		</tr>
+		<?php } ?>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Creator');?>:</td>
 			<td class="hilite"> <?php echo @$obj->username;?></td>
@@ -393,11 +402,10 @@ function delIt() {
 
 <?php
 $query_string = "?m=tasks&a=view&task_id=$task_id";
+$tabBox = new CTabBox( "?m=tasks&a=view&task_id=$task_id", "", $tab );
 
-//Todo, perhaps show children tasks here in the future
 if ( $obj->task_dynamic == 0 ) {
 	// tabbed information boxes
-	$tabBox = new CTabBox( "?m=tasks&a=view&task_id=$task_id", "", $tab );
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
 	// fixed bug that dP automatically jumped to access denied if user does not
 	// have read-write permissions on task_id and this tab is opened by default (session_vars)
@@ -405,6 +413,17 @@ if ( $obj->task_dynamic == 0 ) {
 	if (!getDenyEdit( $m, $task_id )) {
 		$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
 	}
-	$tabBox->show();
+	$tabBox_show = 1;
 }
+
+if ( count($obj->getChildren()) > 0 ) {
+	// Has children
+	// settings for tasks
+	$f = 'children';
+	$min_view = true;
+	$tabBox_show = 1;
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
+}
+	
+if ( $tabBox_show == 1)	$tabBox->show();
 ?>

@@ -43,6 +43,11 @@ class CTabBox extends CTabBox_core {
 		// tabbed view
 			$s = '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
 			$s .= '<tr><td><table border="0" cellpadding="0" cellspacing="0">';
+			
+			if ( count($this->tabs)-1 < $this->active ) {
+				//Last selected tab is not available in this view. eg. Child tasks
+				$this->active = 0;
+			}
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$sel = ($k == $this->active) ? 'Selected' : '';
@@ -54,7 +59,9 @@ class CTabBox extends CTabBox_core {
 			$s .= '</table></td></tr>';
 			$s .= '<tr><td width="100%" colspan="'.(count($this->tabs)*4 + 1).'" class="tabox">';
 			echo $s;
-			require $this->baseInc.$this->tabs[$this->active][0].'.php';
+			//Will be null if the previous selection tab is not available in the new window eg. Children tasks
+			if ( $this->baseInc.$this->tabs[$this->active][0] != "" )
+				require $this->baseInc.$this->tabs[$this->active][0].'.php';
 			echo '</td></tr></table>';
 		}
 	}

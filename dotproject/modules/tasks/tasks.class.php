@@ -505,6 +505,14 @@ class CTask extends CDpObject {
 		return db_loadHashList($sql, "user_id");
 	}
 	
+	//Returns task children IDs
+	function getChildren() {
+		$sql = "select task_id from tasks where task_id != '$this->task_id'
+				and task_parent = '$this->task_id'";
+		return db_loadList($sql);
+	}
+		
+	
 	/**
 	* This function, recursively, updates all tasks status
 	* to the one passed as parameter

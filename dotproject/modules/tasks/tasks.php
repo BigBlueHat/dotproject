@@ -63,6 +63,9 @@ $where = $project_id ? "\ntask_project = $project_id" : 'project_active != 0';
 switch ($f) {
 	case 'all':
 		break;
+	case 'children':
+		$where .= "\n	AND task_parent = $task_id AND task_id != $task_id";	
+		break;
 	case 'myproj':
 		$where .= "\n	AND project_owner = $AppUI->user_id";
 		break;
