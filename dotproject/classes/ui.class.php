@@ -723,10 +723,17 @@ class CAppUI {
 	    $base .= '/';
 	  // Load the basic javascript used by all modules.
 	  $jsdir = dir("{$root}js");
+
+	  $js_files = array();
 	  while (($entry = $jsdir->read()) !== false) {
-	    if (substr($entry, -3) == '.js')
-	      echo "<script type=\"text/javascript\" src=\"{$base}js/$entry\"></script>\n";
+	    if (substr($entry, -3) == '.js'){
+		    $js_files[] = $entry;
+	    }
 	  }
+	  asort($js_files);
+	  while(list(,$js_file_name) = each($js_files)){
+		  echo "<script type=\"text/javascript\" src=\"{$base}js/$js_file_name\"></script>\n";
+		  }
 		$this->getModuleJS($m, $a, true);
 	}
 
