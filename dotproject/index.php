@@ -35,7 +35,7 @@ setcookie("m", $m, time()+234234532523);
 // legacy cookies
 $user_cookie = isset($HTTP_COOKIE_VARS['user_cookie']) ? $HTTP_COOKIE_VARS['user_cookie'] : 0;
 $thisuser = isset($HTTP_COOKIE_VARS['thisuser']) ? $HTTP_COOKIE_VARS['thisuser'] : 0;
-list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company, $thisuser_dept, $hash) = explode( '|', $thisuser );
+list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company, $thisuser_dept) = explode( '|', $thisuser );
 
 require_once( "./includes/main_functions.php" );
 require_once( "./includes/permissions.php" );
