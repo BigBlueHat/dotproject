@@ -208,14 +208,6 @@ function setDept( key, val ) {
 	<td><input type="text" class="text" name="user_country" value="<?php echo $prow["user_country"];?>" maxlength="50" size=40> </td>
 </tr>
 <tr>
-	<td align="right">Locales:</td>
-	<td>
-<?php
-	echo arraySelect( $AppUI->locales, 'user_locale', 'class=text size=1', $prow["user_locale"] );
-?>
-	</td>
-</tr>
-<tr>
 	<td align="right">ICQ#:</td>
 	<td><input type="text" class="text" name="user_icq" value="<?php echo $prow["user_icq"];?>" maxlength="50"> AOL Nick: <input type="text" class="text" name="user_aol" value="<?php echo $prow["user_aol"];?>" maxlength="50"> </td>
 </tr>

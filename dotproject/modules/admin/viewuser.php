@@ -40,7 +40,7 @@ $urow = mysql_fetch_array( $urc, MYSQL_ASSOC );
 	<a href="./index.php?m=admin">user list</a>
 <?php if (!$denyEdit) { ?>
 	<b>:</b> <a href="?m=admin&a=addedituser&user_id=<?php echo $user_id;?>">edit this user</a>
-	<b>:</b> <a href="?m=admin&a=permissions&user_id=<?php echo $user_id;?>">edit permissions</a>
+	<b>:</b> <a href="?m=system&a=addeditpref&user_id=<?php echo $user_id;?>">edit preferences</a>
 <?php } ?>
 	</td>
 	<td align="right" width="100%">
@@ -102,10 +102,6 @@ $urow = mysql_fetch_array( $urc, MYSQL_ASSOC );
 					.'<br>'.$urow["user_coutnry"]
 					;
 			?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap>Locale:</td>
-			<td bgcolor="#ffffff" width="100%"><?php echo @$urow["user_locale"]." - ".$AppUI->locales[@$urow["user_locale"]];?></td>
 		</tr>
 		</table>
 
