@@ -1,6 +1,8 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"select task",
+"Add File",
 "Date",
 "Edit File",
 "File Name",

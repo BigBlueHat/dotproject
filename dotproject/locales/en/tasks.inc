@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Low Priority Tasks",
+"none",
 "Action",
 "Add Task",
 "All Tasks",
@@ -28,6 +28,7 @@
 "Hours Worked",
 "Id",
 "Key",
+"Low Priority Tasks",
 "Milestone",
 "My Projects",
 "My Tasks",
@@ -80,6 +81,7 @@
 "show low priority tasks",
 "task for",
 "task name",
+"taskCancel"=>"Are you sure you want to cancel?",
 "taskDelete"=>"Are you sure that you would like to delete this task?",
 "taskDuration"=>"Please enter the duration of this tank",
 "taskName"=>"Please enter a valid task Name",
