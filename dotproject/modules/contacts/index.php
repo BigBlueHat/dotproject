@@ -63,8 +63,10 @@ $q->addWhere("
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
 		OR contact_owner IS NULL OR contact_owner = 0
 	)");
-if (count($allowedCompanies))
-$q->addWhere($allowedCompanies);
+if (count($allowedCompanies)) {
+	$comp_where = implode(' AND ', $allowedCompanies);
+	$q->addWhere( '( (' . $comp_where . ') OR contact_company = 0 )' );
+}
 $q->addOrder('contact_order_by');
 
 $carr[] = array();
