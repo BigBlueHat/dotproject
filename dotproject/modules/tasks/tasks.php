@@ -289,13 +289,20 @@ function showtask( &$a, $level=0 ) {
 			$s .= '</td>';
 		} else {
 			$s .= '<td align="center" nowrap="nowrap">';
-			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'>".$assigned_users[0]['user_username']."</a>";
 //			$s .= $a['assignee_username'];
+			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'>".$assigned_users[0]['user_username'] . '</a>';
 			if($a['assignee_count']>1){
-				foreach ( $assigned_users as $val) {
-					$a_u_tmp_array[] = $val['user_username'];
+                        $id = $a['task_id'];
+			$s .= " <a href=\"javascript: void(0);\"  onClick=\"toggle_users('users_$id');\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
+                        
+                        $s .= '<span style="display: none" id="users_' . $id . '">';
+
+                                $a_u_tmp_array[] = $assigned_users[0]['user_username'];
+				for ( $i = 1; $i < count( $assigned_users ); $i++) {
+					$a_u_tmp_array[] = $assigned_users[$i]['user_username'];
+                                        $s .= '<br /><a href="?m=admin&a=viewuser&user_id="' . $assigned_users[$i]['user_id'] . '">' . $assigned_users[$i]['user_username'] . '</a>';
 				}
-				$s .= " <a href=\"javascript: void(0);\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
+                        $s .= '</span>';
 			}
 			$s .= '</td>';
 		}
@@ -409,6 +416,14 @@ function sort_by_item_title( $title, $item_name, $item_type )
 }
 
 ?>
+
+<script type="text/JavaScript">
+function toggle_users(id){
+  var element = document.getElementById(id);
+  element.style.display = (element.style.display == '' || element.style.display == "none") ? "inline" : "none";
+}
+</script>
+
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
