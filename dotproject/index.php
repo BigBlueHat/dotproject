@@ -61,7 +61,8 @@ if (isset( $_POST["dosql"]) ) {
 if (isset( $return )) {
 	header("Location: ./index.php?" . $return);
 }
-require "$root_dir/includes/header.php";
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : 'default';
+require "$root_dir/style/$uistyle/header.php";
 require "$root_dir/modules/" . $m . "/" . $a . ".php";
-require "$root_dir/includes/footer.php";
+require "$root_dir/style/$uistyle/footer.php";
 ?>
