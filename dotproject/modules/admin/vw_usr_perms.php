@@ -53,7 +53,7 @@ while ($row = db_fetch_assoc( $res )) {
 }
 
 // read the installed modules
-$modules = arrayMerge( array( 'all' ), $AppUI->readDirs( 'modules' ));
+$modules = arrayMerge( array( 'all'=>'all' ), $AppUI->getActiveModules( 'modules' ));
 ?>
 
 <script language="javascript">
@@ -207,7 +207,7 @@ foreach ($tarr as $row){
 </tr>
 <tr>
 	<td nowrap align="right"><?php echo $AppUI->_('Module');?>:</td>
-	<td width="100%"><?php echo arraySelect($modules, 'permission_grant_on', 'size="1" class="text"', 0);?></td>
+	<td width="100%"><?php echo arraySelect($modules, 'permission_grant_on', 'size="1" class="text"', 'all');?></td>
 </tr>
 <tr>
 	<td nowrap align="right"><?php echo $AppUI->_('Item');?>:</td>
