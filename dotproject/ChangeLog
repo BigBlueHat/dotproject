@@ -1,3 +1,115 @@
+2004-06-12 12:50  (gregorerhardt)
+---------------------------------
+install/check.php
+install/config.php
+install/db.php
+install/index.php
+install/pref.php
+- minor bugfixes, enhancements
+
+2004-06-12 01:48  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Improved file attachment icon positioning
+
+2004-06-12 01:39  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+- Task parent and Task dependencies new indents withing select boxes. Some formats were unified (class = text). Please debug the indenting feature.
+- Added also getTaskDepth to task object
+
+2004-06-12 00:41  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+- Added length limit to the "parent task" combo because it was causing plenty of formatting problems
+
+2004-06-12 00:37  (jcgonz)
+---------------------------------
+modules/tasks/todo.php
+- Inactive tasks no longer appear within the todo list
+
+2004-06-12 00:32  (jcgonz)
+---------------------------------
+modules/tasks/index.php
+- Changed the default filter to My Unfinished; in heavy duty
+- companies, the 'All my tasks' default status was very
+- intense for the server (and somehow useless)
+
+2004-06-12 00:27  (jcgonz)
+---------------------------------
+images/clip.png
+modules/tasks/tasks.php
+- An indicator was added to see if a task contains or not attached files
+
+2004-06-11 23:31  (jcgonz)
+---------------------------------
+modules/projects/reports/allocateduserhours.php
+modules/tasks/tasks.class.php
+- Now the allocated hours per user/day report counts the percentage assigned to a user.
+
+2004-06-11 19:18  (robertoibarra)
+---------------------------------
+modules/calendar/view.php
+modules/tasks/addedit.php
+- Some short tags <? where replaced with cool tags <?php
+
+2004-06-11 18:10  (agorski)
+---------------------------------
+modules/system/translate_save.php
+- If a translation file cannot be saved, the path of the file is now printed
+- out to make it easier to track down the permission problem.
+
+2004-06-11 00:04  (robertoibarra)
+---------------------------------
+modules/tasks/tasks.php
+- Fix: Additional assigned users displayed in tasks with the + sign was one number more, it was fixed to the assigned user + additional users
+
+2004-06-10 23:55  (robertoibarra)
+---------------------------------
+modules/tasks/tasks.php
+- Bufix: Tasks with no asigned users wouldn't display a <td></td> in the assigned user column and that would screw up the columns after it
+
+2004-06-10 23:41  (robertoibarra)
+---------------------------------
+modules/files/index_table.php
+- When viewing the filelist in proyects or the file module you can now view to which task the file belongs to.
+
+2004-06-10 22:52  (gregorerhardt)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- reimplementing the fact that main user doesn't need to show up in possible assignees list ...
+
+2004-06-09 19:45  (robertoibarra)
+---------------------------------
+modules/tasks/todo.php
+- My Todo can now filter out tasks from proyects on hold which you might not really have to do if the proyect is stopped.
+
+2004-06-08 20:57  (bloaterpaste)
+---------------------------------
+modules/tasks/addedit.php
+- Changing the label of the "Comments" field to be "Additional Email Comments" to clarify that functionality.
+
+2004-06-05 01:05  (bloaterpaste)
+---------------------------------
+style/default/lostpass.php
+- Fixing JavaScript error that was occuring onload.
+
+2004-06-05 00:56  (bloaterpaste)
+---------------------------------
+modules/tasks/addedit.php
+- Fixing an error that was happening during new item creation.
+
+2004-06-05 00:48  (bloaterpaste)
+---------------------------------
+modules/projects/reports/tasklogs.php
+- Changing post to get to support Excel import.
+
+2004-06-04 16:34  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
 2004-06-04 16:30  (gregorerhardt)
 ---------------------------------
 modules/calendar/vw_day_events.php
