@@ -31,11 +31,12 @@ $start_date = intval( $date_reg) ? new CDate( $date_reg ) : null;
 $end_date = intval( $date_reg) ? new CDate( $date_reg ) : null;
 
 $df = $AppUI->getPref('SHDATEFORMAT');
+global $currentTabId;
 if ($a = dPgetParam($_REQUEST, "a", "") == ""){
-    $a = "&tab=2&showdetails=1";
+    $a = "&tab={$currentTabId}&showdetails=1";
 } else {
     $user_id = dPgetParam($_REQUEST, "user_id", 0);
-    $a = "&a=viewuser&user_id=".$user_id."&tab=2&showdetails=1";
+    $a = "&a=viewuser&user_id={$user_id}&tab={$currentTabId}&showdetails=1";
 }
 
 ?>
