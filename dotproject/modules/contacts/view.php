@@ -78,12 +78,17 @@ function delIt(){
 		</tr>
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Company');?>:</td>
-			<td nowrap><?php echo @$row->contact_company;?></td>
+			<td nowrap><?php echo @$row->getCompanyName();?></td>
 		</tr>
+<?php
+        if (isset($_SESSION['all_tabs']['departments']))
+        {
+?>
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Department');?>:</td>
 			<td nowrap><?php echo @$row->contact_department;?></td>
 		</tr>
+<?php } ?>
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Title');?>:</td>
 			<td><?php echo @$row->contact_title;?></td>
