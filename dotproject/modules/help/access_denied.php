@@ -2,14 +2,14 @@
 <table width="98%" cellspacing="1" cellpadding="0" border="0">
 	<tr>
 	<td><img src="./images/icons/dp.gif" alt="" border="0"></td>
-		<td nowrap="nowrap" width="100%"><span class="title">Access Denied</span></td>
+		<td nowrap="nowrap" width="100%"><span class="title"><?php echo $AppUI->_('Access Denied');?></span></td>
 	</tr>
 </table>
 
 <p>
 <table width="95%" border=0 cellpadding="5" cellspacing=0>
 <tr valign=top>
-	<td width=50%><?php echo $AppUI->_('accessDenied');?></td>
+	<td width=50%><?php echo $AppUI->_('accessDeniedMsg');?></td>
 	<td width=50%>&nbsp;</td>
 </tr>
 </table>
