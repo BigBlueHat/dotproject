@@ -182,4 +182,14 @@ function JScalendarDate( $field ) {
 	echo "  dd = parseInt(dar[" . $dd . "], 10);\n";
 	echo "  }\n}\n";
 }
+
+##
+## generate link for context help
+##
+function contextHelp( $title, $link='' ) {
+	GLOBAL $root_dir;
+	$dothelpURL = "./modules/help/framed/";
+
+	return "<a href=\"#$link\" onClick=\"javascript:window.open('$dothelpURL?entry_link=$link','contexthelp','height=400 width=500 resizable=yes')\">$title</a>";
+}
 ?>
