@@ -24,7 +24,7 @@ $AppUI->savePlace();
 <?php
 
 $psql = 
-"SELECT * from history, users WHERE history_user = user_id ORDER BY history_date";
+"SELECT * from history, users WHERE history_user = user_id ORDER BY history_date DESC";
 $prc = db_exec( $psql );
 echo db_error();
 
