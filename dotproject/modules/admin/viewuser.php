@@ -87,7 +87,7 @@ function popChgPwd() {
 			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite" width="100%"><?php
 				echo @$user["user_address1"]
-					.( ($user["user_address2"]) ? '<br />'.$user["user_city"] : '' )
+					.( ($user["user_address2"]) ? '<br />'.$user["user_address2"] : '' )
 					.'<br />'.$user["user_city"]
 					.'&nbsp;&nbsp;'.$user["user_state"]
 					.'&nbsp;&nbsp;'.$user["user_zip"]
