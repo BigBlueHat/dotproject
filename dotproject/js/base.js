@@ -104,6 +104,7 @@ function Comparable()
   this.find = ca_find;
   this.length = ca_length;
   this.get = ca_get;
+	this.search = ca_search;
   this.count = 0;
 }
 //2}}}
@@ -111,8 +112,13 @@ function Comparable()
 //{{{2 function ca_add
 function ca_add(key, data)
 {
-  this.list[this.count] = new CompItem(key, data);
-  this.count++;
+	var last_id = this.search(key);
+	if (last_id != -1) {
+		this.list[last_id] = new CompItem(key, data);
+	} else {
+		this.list[this.count] = new CompItem(key, data);
+		this.count++;
+	}
   // this.list.push(new CompItem(key, data));
 }
 //2}}}
@@ -128,6 +134,20 @@ function ca_find(key)
       return cp.data;
   }
   return undefined;
+}
+//2}}}
+
+//{{{2 function ca_search
+function ca_search(key)
+{
+  var end = this.list.length;
+  for ( var i = 0; i < end; i++)
+  {
+    cp = this.list[i];
+    if (cp.equals(key))
+      return i;
+  }
+  return -1;
 }
 //2}}}
 
