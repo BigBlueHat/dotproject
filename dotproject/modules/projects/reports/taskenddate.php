@@ -91,8 +91,9 @@ if($do_report){
     $projects_filter = $log_all_projects == "on" ? "" : " and task_project = $project_id ";
     $user_filter     = "";
     
-    $sql = "select t.*, p.project_name
+    $sql = "select t.*, p.project_name, u.user_username
             from tasks as t,
+                 users as u,
                  projects as p";
     if($user_id > 0){
         $sql         .= ", user_tasks as ut";
@@ -103,6 +104,7 @@ if($do_report){
                 and task_end_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'
                 and p.project_id   = t.task_project
                 and t.task_dynamic = '0'
+                and t.task_owner = u.user_id
                 $projects_filter
                 $user_filter
             order by project_name asc, task_end_date asc";
@@ -114,10 +116,11 @@ if($do_report){
     $task_log          = array();
     
     echo "<table class='tbl' width='80%'>";
-    echo "<tr><th>".$AppUI->_("Task name")."</th><th>".$AppUI->_("Task end date")."</th><th>".$AppUI->_("Last activity date")."</th><th>".$AppUI->_("Done")."?</th></tr>";
+    echo "<tr><th>".$AppUI->_("Task name")."</th><th>".$AppUI->_("T.Owner")."</th><th>".$AppUI->_("H.Alloc.")."</th><th>".$AppUI->_("Task end date")."</th><th>".$AppUI->_("Last activity date")."</th><th>".$AppUI->_("Done")."?</th></tr>";
+    $hrs = $AppUI->_("hrs"); // To avoid calling $AppUI each row
     foreach($tasks as $task){
         if($actual_project_id != $task["task_project"]){
-            echo "<tr><td colspan='4'><b>".$task["project_name"]."</b></td>";
+            echo "<tr><td colspan='6'><b>".$task["project_name"]."</b></td>";
             $actual_project_id = $task["task_project"];
         }
         $sql = "select *
@@ -128,7 +131,7 @@ if($do_report){
         db_loadHash($sql, $task_log);
         
         $done_img = $task["task_percent_complete"] == 100 ? "Yes" : "No";
-        echo "<tr><td>&nbsp;&nbsp;&nbsp;".$task["task_name"]."</td><td>".$task["task_end_date"]."</td><td>".$task_log["task_log_date"]."</td><td align='center'>$done_img</td></tr>";
+        echo "<tr><td>&nbsp;&nbsp;&nbsp;".$task["task_name"]."</td><td>".$task["user_username"]."</td><td>".($task["task_duration"]*$task["task_duration_type"])." $hrs</td><td>".$task["task_end_date"]."</td><td>".$task_log["task_log_date"]."</td><td align='center'>$done_img</td></tr>";
     }
 }
 ?>		
