@@ -17,13 +17,13 @@ if($action) {
 	if( $action == "add" ) {
 		$sql = "INSERT INTO history (history_date, history_description, history_user, history_project) " .
 		  "VALUES (now(), '$history_description', $userid, $history_project)";
-		$okMsg = "Historia agregada";
+		$okMsg = "History added";
 	} else if ( $action == "update" ) {
 		$sql = "UPDATE history SET history_description = '$history_description', history_project = '$history_project' WHERE history_id = $history_id";
-		$okMsg = "Historia actualizada";
+		$okMsg = "History updated";
 	} else if ( $action == "del" ) {
 		$sql = "DELETE FROM history WHERE history_id = $history_id";
-		$okMsg = "Historia eliminada";				
+		$okMsg = "History deleted";				
 	}
 	if(!db_exec($sql)) {
 		$AppUI->setMsg( db_error() );
@@ -71,7 +71,7 @@ db_loadHash( $sql, $history );
 <?php
 // pull the projects list
 $sql = "SELECT project_id,project_name FROM projects ORDER BY project_name";
-$projects = arrayMerge( array( 0 => '(any)' ), db_loadHashList( $sql ) );
+$projects = arrayMerge( array( 0 => '('.$AppUI->_('any').')' ), db_loadHashList( $sql ) );
 echo arraySelect( $projects, 'history_project', 'class="text"', $history["history_project"] );
 ?>
 	</td>
@@ -91,10 +91,10 @@ echo arraySelect( $projects, 'history_project', 'class="text"', $history["histor
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}">
+				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel'); ?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}">
 			</td>
 			<td>
-				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submit()">
+				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save'); ?>" onClick="submit()">
 			</td>
 		</tr>
 		</table>
