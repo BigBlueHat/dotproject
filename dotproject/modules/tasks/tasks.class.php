@@ -14,7 +14,6 @@ $task_access = array(
 
 // this var is intended to track new status in task
 $new_status = null;
-$new_project = null;
 
 /*
 * CTask Class
@@ -60,7 +59,7 @@ class CTask extends CDpObject {
 
 // overload check
 	function check() {
-		global $new_status, $new_project;
+		global $new_status;
 		
 		if ($this->task_id === NULL) {
 			return 'task id is NULL';
@@ -88,12 +87,6 @@ class CTask extends CDpObject {
 		if($actual_status != $this->task_status){
 			$new_status = $this->task_status;
 		}
-
-		$actual_project = db_loadResult("select task_project from tasks where task_id='$this->task_id'");
-		if($actual_project != $this->task_project){
-			$new_project = $this->task_project;
-		}
-		
 		return NULL;
 	}
 
@@ -119,10 +112,10 @@ class CTask extends CDpObject {
 			} else {
 				$modified_task->task_duration = round($children_allocated_hours / $modified_task->task_duration_type, 2);
 			}
-
+			
 			//Update worked hours based on children
 			$sql = "SELECT sum( task_log_hours ) FROM tasks, task_log
-					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .
+					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .  
 					" AND task_id != " . $modified_task->task_id .
 					" AND task_dynamic = 0";
 			$children_hours_worked = (float) db_loadResult( $sql );
@@ -172,16 +165,15 @@ class CTask extends CDpObject {
 	function copy($destProject_id = 0) {
 		$newObj = $this->clone();
 
+		//Fix the parent task
+		if ($newObj->task_parent == $this->task_id)
+			$newObj->task_parent = $newObj->task_id;
+
 		// Copy this task to another project if it's specified
 		if ($destProject_id != 0)
 			$newObj->task_project = $destProject_id;
 
 		$msg = $newObj->store();
-
-		if ($newObj->task_parent == $this->task_id) {
-			$newObj->task_parent = $newObj->task_id;
-			$msg = $newObj->store();
-		}
 
 		return $newObj;
 	}// end of copy()
@@ -190,7 +182,7 @@ class CTask extends CDpObject {
 * @todo Parent store could be partially used
 */
 	function store() {
-		GLOBAL $AppUI, $new_status, $new_project;
+		GLOBAL $AppUI, $new_status;
 
 		$msg = $this->check();
 		if( $msg ) {
@@ -203,24 +195,10 @@ class CTask extends CDpObject {
 			if(!is_null($new_status)){
 				$this->updateSubTasksStatus($new_status);
 			}
-			
-			if(!is_null($new_project)){
-				$this->updateSubTasksProject($new_project);
-			}
-			
 			$this->updateDynamics(true);
 
-			// add to shift dependencies dates
-			$oTsk = new CTask();
-			$oTsk->load ($this->task_id);
-			if ($this->task_end_date != $oTsk->task_end_date) {
-				// we need to shift tasks
-				$origDate = new CDate ($oTsk->task_end_date);
-				$destDate = new CDate ($this->task_end_date);
-				$this->shiftDependantTasks ($destDate->getTime() - $origDate->getTime());
-			}
-
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
+
 
 		} else {
 			$this->_action = 'added';
@@ -233,24 +211,6 @@ class CTask extends CDpObject {
 			}
 		// insert entry in user tasks
 			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
-			db_exec( $sql );
-		}
-		
-		//split out related departments and store them seperatly.
-		$sql = 'DELETE FROM task_departments WHERE task_id='.$this->task_id;
-		db_exec( $sql );
-		$departments = explode(',',$this->task_departments);
-		foreach($departments as $department){
-			$sql = 'INSERT INTO task_departments (task_id, department_id) values ('.$this->task_id.', '.$department.')';
-			db_exec( $sql );
-		}
-		
-		//split out related contacts and store them seperatly.
-		$sql = 'DELETE FROM task_contacts WHERE task_id='.$this->task_id;
-		db_exec( $sql );
-		$contacts = explode(',',$this->task_contacts);
-		foreach($contacts as $contact){
-			$sql = 'INSERT INTO task_contacts (task_id, contact_id) values ('.$this->task_id.', '.$contact.')';
 			db_exec( $sql );
 		}
 
@@ -272,7 +232,8 @@ class CTask extends CDpObject {
 */
 	function delete() {
 		$this->_action = 'deleted';
-	// delete linked user tasks
+				
+		// delete linked user tasks
 		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
 		if (!db_exec( $sql )) {
 			return db_error();
@@ -281,48 +242,37 @@ class CTask extends CDpObject {
 		//load it before deleting it because we need info on it to update the parents later on
 		$this->load($this->task_id);
 		
+				
 		// delete the tasks...what about orphans?
 		$sql = "DELETE FROM tasks WHERE task_id = $this->task_id";
 		if (!db_exec( $sql )) {
 			return db_error();
 		} else {
 			if ( $this->task_parent != $this->task_id ){
-				// Has parent, run the update sequence, this child will no longer be in the
-				// database
+				// Has parent, run the update sequence, this child will no longer be in the 
+				// database 
 				$this->updateDynamics();
 			}
 			return NULL;
 		}
 	}
-
-
-         // unassign a user from task
-	function removeAssigned( $user_id ) {
-	// delete all current entries
-		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id AND user_id = $user_id";
-		db_exec( $sql );
-
-	}
-
+	
 	//using user allocation percentage ($perc_assign)
-	function updateAssigned( $cslist, $perc_assign, $del=true ) {
+	function updateAssigned( $cslist, $perc_assign ) {
 	// delete all current entries
-                if ($del == true) {
-                        $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
-                        db_exec( $sql );
-                }
+		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
+		db_exec( $sql );
 
 	// process assignees
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $user_id) {
 			if (intval( $user_id ) > 0) {
 				$perc = $perc_assign[$user_id];
-				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
+				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";				
 				db_exec( $sql );
 			}
 		}
 	}
-
 
 	function updateDependencies( $cslist ) {
 	// delete all current entries
@@ -367,8 +317,8 @@ class CTask extends CDpObject {
             FROM task_dependencies td
             WHERE td.dependencies_task_id = $taskId
 		";
-		$list = db_loadColumn ($sql);
-		$result = $list ? implode (',', $list) : '';
+		$hashList = db_loadHashList ($sql);
+		$result = implode (',', array_keys ($hashList));
 
 		return $result;
 	} // end of staticGetDependencies ()
@@ -382,7 +332,7 @@ class CTask extends CDpObject {
 		$projname = db_loadResult( $sql );
 
 		$mail = new Mail;
-
+		
 		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);
 
 	// c = creator
@@ -433,13 +383,12 @@ class CTask extends CDpObject {
 		return '';
 	}
 	
-	//additiona comment will be included in email body 
-	function notify( $comment = '' ) {
+	function notify() {
 		GLOBAL $AppUI, $locale_char_set;
-
+        
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
-
+		
 		$mail = new Mail;
 		
 		$mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action), $locale_char_set);
@@ -481,9 +430,6 @@ class CTask extends CDpObject {
 				. "\n" . $users[0]['owner_first_name'] . " " . $users[0]['owner_last_name' ]
 				. ", " . $users[0]['owner_email'];
 
-			if ($comment != '') {
-				$body .= "\n\n".$comment;
-			}
 			$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );
 			$mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name 
 				. '" <' . $AppUI->user_email . '>'
@@ -589,69 +535,7 @@ class CTask extends CDpObject {
 				break;
 		}
 	}
-
-	/**
-	*       retrieve tasks are dependant of another.
-	*       @param  integer         ID of the master task
-	*       @param  boolean         true if is a dep call (recurse call)
-	**/
-	function dependantTasks ($taskId = false, $isDep = false) {
-		static $aDeps = false;
-
-		// Initialize the dependencies array
-		if (($taskId == false) && ($isDep == false))
-			$aDeps = array();
-
-		// retrieve dependants tasks 
-		if (!$taskId)
-			$taskId = $this->task_id;
-		$sql = "
-			SELECT dependencies_task_id
-			FROM task_dependencies AS td, tasks AS t
-			WHERE td.dependencies_req_task_id = $taskId
-			AND td.dependencies_task_id = t.task_id
-			AND t.task_dynamic = 0
-		";
-		$aBuf = array_values(db_loadColumn ($sql));
-
-		// Recurse to find sub dependancies
-		foreach ($aBuf as $depId) {
-			// work around for infinite loop
-			if (!in_array($depId, $aDeps)) {
-				$aDeps[] = $depId;
-				$this->dependantTasks ($depId, true);
-			}
-		}
-
-		// return if we are in a dependency call
-		if ($isDep)
-			return;
-                       
-		return implode (',', $aDeps);
-
-	} // end of dependantTasks()
-
-	/*
-	 *       shift dependants tasks dates
-	 *       @param  integer         time offset in seconds 
-	 *       @return void
-	 */
-	function shiftDependantTasks ($offset) {
-		$csDeps = $this->dependantTasks();
-
-		if ($csDeps == '')
-			return;
-
-		$sql = "UPDATE tasks
-		SET
-			task_start_date = task_start_date + INTERVAL $offset SECOND ,
-			task_end_date = task_end_date + INTERVAL $offset SECOND
-		WHERE task_id IN ($csDeps)";
-
-		db_exec ($sql);
-
-	} // end of shiftDependantTasks() 
-
+	
 	/**
 	* Function that returns the amount of hours this
 	* task consumes per user each day
@@ -685,15 +569,6 @@ class CTask extends CDpObject {
 		              and ut.user_id = u.user_id";
 		return db_loadHashList($sql, "user_id");
 	}
-
-        function getProjectName() {
-                $sql = "SELECT project_name, project_short_name, project_color_identifier FROM projects WHERE project_id = '$this->task_project'";
-                $proj = db_loadHash($sql, $projects);
-
-                return $projects;
-
-
-        }
 	
 	//Returns task children IDs
 	function getChildren() {
@@ -728,31 +603,6 @@ class CTask extends CDpObject {
 			}
 		}
 	}
-	
-	/**
-	* This function recursively updates all tasks project
-	* to the one passed as parameter
-	*/ 
-	function updateSubTasksProject($new_project , $task_id = null){
-		if(is_null($task_id)){
-			$task_id = $this->task_id;
-		}
-		$sql = "select task_id
-		        from tasks
-		        where task_parent = '$task_id'";
-		
-		$tasks_id = db_loadColumn($sql);
-		if(count($tasks_id) == 0) return true;
-		
-		$sql = "update tasks set task_project = '$new_project' where task_parent = '$task_id'";
-		db_exec($sql);
-
-		foreach($tasks_id as $id){
-			if($id != $task_id){
-				$this->updateSubTasksProject($new_project, $id);
-			}
-		}
-	}	
 }
 
 

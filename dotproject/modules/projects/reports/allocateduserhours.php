@@ -87,8 +87,8 @@ if($do_report){
 	
 	$user_list = db_loadHashList($sql, "user_id");
 	
-	$sql = "SELECT t.*
-			FROM tasks AS t
+	$sql = "SELECT t.*, ut.*
+			FROM tasks AS t, user_tasks AS ut
 			WHERE (task_start_date
 			   BETWEEN \"".$start_date->format( FMT_DATETIME_MYSQL )."\" 
 	                AND \"".$end_date->format( FMT_DATETIME_MYSQL )."\" 
@@ -104,6 +104,8 @@ if($do_report){
 		$sql .= " AND t.task_project='$project_id'\n";
 	}
 
+	$sql .= " AND t.task_id = ut.task_id";
+	
 	$task_list_hash = db_loadHashList($sql, "task_id");
 	$task_list      = array();
 	foreach($task_list_hash as $task_id => $task_data){
@@ -139,7 +141,7 @@ if($do_report){
 						if(!isset($user_usage[$user_id][$actual_date->format("%Y%m%d")])){
 							$user_usage[$user_id][$actual_date->format("%Y%m%d")] = 0;
 						}
-						$user_usage[$user_id][$actual_date->format("%Y%m%d")] += $task_duration_per_day;
+						$user_usage[$user_id][$actual_date->format("%Y%m%d")] += $task_duration_per_day * ($user_data["perc_assignment"]/100);
 						if($user_usage[$user_id][$actual_date->format("%Y%m%d")] < 0.005){
 							//We want to show at least 0.01 even when the assigned time is very small so we know
 							//that at that time the user has a running task
@@ -192,7 +194,7 @@ if($do_report){
 				}
 				
 				$array_sum = array_sum($user_usage[$user_id]);
-				$average_user_usage   = number_format( ($array_sum/($working_days_count*$AppUI->getConfig("daily_working_hours")))*100, 2);
+				$average_user_usage = number_format( ($array_sum/($working_days_count*$AppUI->getConfig("daily_working_hours")))*100, 2);
 				$allocated_hours_sum += $array_sum;
 				
 				$bar_color = "blue";
@@ -200,8 +202,8 @@ if($do_report){
 					$bar_color = "red";
 					$average_user_usage = 100;
 				}
-				$table_rows .= "<td ><div align='right'>" . round($array_sum, 2) . " hrs. (" . $average_user_usage ;
-				$table_rows .= "%)</div>";
+				$table_rows .= "<td ><div align='right'>". $average_user_usage ;
+				$table_rows .= "%</div>";
 				$table_rows .= "<div align='left' style='height:2px;width:$average_user_usage%; background-color:$bar_color'>&nbsp;</div></td>";
 				$table_rows .= "</tr>";
 				
