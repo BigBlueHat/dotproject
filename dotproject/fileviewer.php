@@ -31,8 +31,18 @@ if ($file_id) {
 	";
 	$deny1 = db_loadColumn( $sql );
 
-	$sql = "SELECT * FROM files WHERE file_id=$file_id"
+	$sql = "SELECT *
+	FROM projects, permissions, files
+	WHERE file_id=$file_id
+		AND permission_user = $AppUI->user_id
+		AND permission_value <> 0
+		AND (
+			(permission_grant_on = 'all')
+			OR (permission_grant_on = 'projects' AND permission_item = -1)
+			OR (permission_grant_on = 'projects' AND permission_item = file_project)
+			)"
 		.(count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '');
+
 	if (!db_loadHash( $sql, $file )) {
 		$AppUI->redirect( "m=public&a=access_denied" );
 	};
