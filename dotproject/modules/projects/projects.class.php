@@ -63,9 +63,7 @@ class CProject extends CDpObject {
 
 	function delete() {
 		$sql = "DELETE FROM tasks WHERE task_project = $this->project_id";
-		echo $sql;
-		//db_exec($sql);
-		die;
+		db_exec($sql);
 		$sql = "DELETE FROM projects WHERE project_id = $this->project_id";
 		if (!db_exec( $sql )) {
 			return db_error();
