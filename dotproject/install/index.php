@@ -3,13 +3,12 @@
 //todo: interface: right row more to the left
 //todo: !heavy!: design: have a main site where the steps are linked and where we always come back and do the main work.
 //todo: script to read subdirectories for styles and langs (delete empty/superfluous directories in the core distro???)
-//todo: and sniff default locale on machine/or browset
+//todo: and sniff default locale on machine/or browser
 //todo: enhanced guiding texts
 //todo: read existing config file in case of upgrade
 //todo: require then (config file existing) admin passwd for security check
 //todo: check in dp main if installer is deleted after successfull install
 //todo: change admin passwd?!
-//todo: GPL possible?
 //todo: better error management with displaying what worked well (has been installed) and what went wrong
 //todo: enable db upgrade functionality if db/upgrade.sql is available
 //todo: core: store database version (dp version) in dPdatabase for verifying db upgrade scripts!
@@ -45,6 +44,12 @@
 ### IN CASE YOU EXPERIENCE PROBLEMS CONTACT THE AUTHOR/MAINTAINER OF THIS INSTALLER ###
 
 require_once("commonlib.php");
+/* test config loading
+if ($configured){
+	loadConfig($defConfigFilePath);
+	require($defUIclass);
+}
+*/
 ?>
 <html>
 <head>
@@ -91,4 +96,3 @@ require_once("commonlib.php");
 </table>
 </body>
 </html>
-

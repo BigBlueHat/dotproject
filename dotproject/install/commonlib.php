@@ -24,6 +24,8 @@ $defDbType = "mysql";
 $defSqlFilePath = "../db/dotproject.sql" ;        // default Path to the File with SQL Database Structure for dotProject;
 $defSqlUpgradeFilePath = "../db/upgrade.sql" ;        // default Path to the File with SQL Database Structure for upgrading dP;
 $defConfigFilePath = "../includes/config.php";
+$defUIclass = "../classes/ui.class.php";
+$configured = is_readable($defConfigFilePath);
 
 
 #
@@ -59,16 +61,25 @@ function changeMode($object, $value) {
 #
 # include existing config file and extract/harvest its config values to config variables.
 #
-/*
-if (is_readable($defConfigFilePath)) {
 
-        include_once($defConfigFilePath);
-        extract($dPconfig, EXTR_OVERWRITE);
-        extract($ft, EXTR_PREFIX_ALL, "ft_");
-        echo $debug;
+function loadConfig($cfp){
+	if (is_readable($cfp)) {
 
+		include_once($cfp);
+		// make all variable names (to which will be extracted) globally available
+		$keys = array_keys($dPconfig);
+		foreach($keys as $k){
+			GLOBAL $$k;
+		}
+		$keys = array_keys($ft);
+		foreach($keys as $k){
+			GLOBAL $$k;
+		}
+		// extract the config array from the config file to their real variable names (here: array keys of the config array)
+		extract($dPconfig, EXTR_OVERWRITE);
+		extract($ft, EXTR_PREFIX_ALL, "ft_");
 
+	}
 
 }
-*/
 ?>
