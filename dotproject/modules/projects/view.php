@@ -66,13 +66,7 @@ $titleBlock->addCrumb( "?m=projects", "projects list" );
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
 	if ($canEdit) {
-		$titleBlock->addCrumbRight(
-			'<table cellspacing="0" cellpadding="0" border="0"?<tr><td>'
-			. dPshowImage( './images/icons/'.($canDelete?'stock_delete-16.png':'stock_trash_full-16.png'), '16', '16',  '' )
-			. '</td><td>&nbsp;'
-			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">' . $AppUI->_('delete project') . '</a>'
-			. '</td></tr></table>'
-		);
+		$titleBlock->addCrumbDelete( 'delete project', $canDelete, $msg );
 	}
 }
 $titleBlock->show();

@@ -35,11 +35,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 $start_date = new Date( $obj->project_start_date );
 
-if ($obj->project_end_date) {
-	$end_date = new Date( $obj->project_end_date );
-} else {
-	$end_date = null;
-}
+$end_date = $obj->project_end_date ? new Date( $obj->project_end_date ) : null;
 
 if ($obj->project_actual_end_date) {
 	$actual_end_date = new Date( $obj->project_actual_end_date );
