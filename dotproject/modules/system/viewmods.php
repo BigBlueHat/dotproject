@@ -2,6 +2,12 @@
 
 $AppUI->savePlace();
 
+$canEdit = !getDenyEdit( $m );
+$canRead = !getDenyRead( $m );
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $sql = "SELECT * FROM modules ORDER BY mod_ui_order";
 $modules = db_loadList( $sql );
 
@@ -37,10 +43,12 @@ foreach ($modules as $row) {
 	// Line returns after </td> tags would be a good start [as well as <tr> and </tr> tags]
 	$s .= '<td>';
 	$s .= '<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow'.$row["mod_id"].'" />';
-	$s .= '<map name="arrow'.$row["mod_id"].'">';
-	$s .= '<area coords="0,0,10,7" href="' . $query_string . '&cmd=moveup">';
-	$s .= '<area coords="0,8,10,14" href="'.$query_string . '&cmd=movedn">';
-	$s .= '</map>';
+	if ($canEdit) {
+		$s .= '<map name="arrow'.$row["mod_id"].'">';
+		$s .= '<area coords="0,0,10,7" href="' . $query_string . '&cmd=moveup">';
+		$s .= '<area coords="0,8,10,14" href="'.$query_string . '&cmd=movedn">';
+		$s .= '</map>';
+	}
 	$s .= '</td>';
 
 	$s .= '<td width="1%" nowrap="nowrap">'.$row['mod_name'].'</td>';
@@ -50,8 +58,14 @@ foreach ($modules as $row) {
 		// Status term "deactivate" changed to "Active"
 		// Status term "activate" changed to "Disabled"
 	//$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('deactivate') : $AppUI->_('activate')).'</a>';
-	$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('active') : $AppUI->_('disabled')).'</a>';
-	if ($row['mod_type'] != 'core') {
+	if ($canEdit) {
+		$s .= '<a href="'.$query_string . '&cmd=toggle&">';
+	}
+	$s .= ($row['mod_active'] ? $AppUI->_('active') : $AppUI->_('disabled'));
+	if ($canEdit) {
+		$s .= '</a>';
+	}
+	if ($row['mod_type'] != 'core' && $canEdit) {
 		$s .= ' | <a href="'.$query_string . '&cmd=remove">'.$AppUI->_('remove').'</a>';
 	}
 	$s .= '</td>';
@@ -67,7 +81,14 @@ foreach ($modules as $row) {
 		// Menu Status term "show" changed to "Visible"
 		// Menu Status term "activate" changed to "Disabled"
 	//$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('hide') : $AppUI->_('show')).'</a></td>';
-	$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('visible') : $AppUI->_('hidden')).'</a></td>';
+	if ($canEdit) {
+		$s .= '<a href="'.$query_string . '&cmd=toggleMenu">';
+	}
+	$s .= ($row['mod_ui_active'] ? $AppUI->_('visible') : $AppUI->_('hidden'));
+	if ($canEdit) {
+		$s .= '</a>';
+	}
+	$s .= '</td>';
 
 	$s .= '<td>'.$row['mod_ui_order'].'</td>';
 
@@ -82,8 +103,14 @@ foreach ($modFiles as $v) {
 		$s .= '<td>'.$v.'</td>';
 		$s .= '<td>';
 		$s .= '<img src="./images/obj/dotgrey.gif" width="12" height="12" />&nbsp;';
-
-		$s .= '<a href="?m=' . $m . '&a=domodsql&cmd=install&mod_directory=' . $v . '">' . $AppUI->_('install') . '</a></td>';
+		if ($canEdit) {
+			$s .= '<a href="?m=' . $m . '&a=domodsql&cmd=install&mod_directory=' . $v . '">';
+		}
+		$s .= $AppUI->_('install');
+		if ($canEdit) {
+			$s .= '</a>';
+		}
+		$s .= '</td>';
 		echo "<tr>$s</tr>";
 	}
 
