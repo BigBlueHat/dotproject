@@ -23,6 +23,17 @@ $arr = db_loadList( $sql );
 foreach( $arr as $L ) {
     $let .= $L['L'];
 }
+$sql = "SELECT DISTINCT UPPER(SUBSTRING(user_first_name, 1, 1)) AS L FROM users";
+$arr = db_loadList( $sql );
+foreach( $arr as $L ) {
+    $let .= strpos($let, $L['L']) ? '' : $L['L'];
+}
+
+$sql = "SELECT DISTINCT UPPER(SUBSTRING(user_last_name, 1, 1)) AS L FROM users";
+$arr = db_loadList( $sql );
+foreach( $arr as $L ) {
+    $let .= strpos($let, $L['L']) ? '' : $L['L'];
+}
 
 $a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
 $a2z .= "\n<tr>";
