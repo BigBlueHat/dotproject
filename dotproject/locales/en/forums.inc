@@ -34,6 +34,7 @@
 "Post Reply",
 "Related Project",
 "Replies",
+"Sort By Date",
 "Started",
 "Subject",
 "Topics",
