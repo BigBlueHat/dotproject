@@ -1,9 +1,15 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+20 September 2002 (AJE):
+-----------------------------
+module/ticketsmith/index.php
+module/ticketsmith/post_ticket.php
+- added functionality to add basic ticket from the browser
+
 11 September 2002 (AJE):
 -----------------------------
 module/dosql/addfile.php
-- declared $woodarr explicitly as this would error in the while array
+- declared $wordarr explicitly as this would error in the while array
 
 module/files/index.php
 - change user id to the full user name
