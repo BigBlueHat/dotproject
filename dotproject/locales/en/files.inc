@@ -3,6 +3,7 @@
 ##
 "Please select a project first!",
 "Add File",
+"Are you sure you want to cancel?",
 "All Projects",
 "Date",
 "Edit File",
@@ -13,6 +14,7 @@
 "Size",
 "Type",
 "Upload File",
+"Upload file size is zero. Process aborted.",
 "Uploaded By",
 "Version",
 "add new file",

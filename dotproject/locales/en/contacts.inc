@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"select department...",
 "Add Contact",
 "Contact Notes",
 "Display Name",
@@ -19,6 +18,7 @@
 "delete contact",
 "new contact",
 "select company...",
+"select department...",
 "use in display",
 "vCard(s) imported",
 "vCardFileUploadError"=>"Trouble while (up)loading the vCard file",

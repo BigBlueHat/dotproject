@@ -21,6 +21,8 @@
 "companyDelete"=>"Are you sure you want to delete this company?",
 "companyValidName"=>"Please enter a valid Company name",
 "delete company",
+"e-mail",
 "edit this company",
+"inserted",
 "new company",
 "view this company",
