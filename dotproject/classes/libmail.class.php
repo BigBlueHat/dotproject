@@ -456,14 +456,17 @@ function SMTPSend($to, $subject, $body, &$headers) {
 
 function socketRead()
 {
-	return fgets($this->socket, 4096);
+	$result = fgets($this->socket, 4096);
+	dprint(__FILE__, __LINE__, 12, "server said: $result");
+	return $result;
 }
 
 function socketSend($msg, $rcv = true)
 {
+	dprint(__FILE__, __LINE__, 12, "sending: $msg");
 	$sent = fputs($this->socket, $msg . "\r\n");
 	if ($rcv)
-		return fgets($this->socket, 4096);
+		return $this->socketRead();
 	else
 		return $sent;
 }
