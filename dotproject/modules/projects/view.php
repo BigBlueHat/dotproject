@@ -114,11 +114,11 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
-			<td class="hilite" width="100%"><?php echo $obj->company_name;?></td>
+			<td class="hilite" width="100%"><?php echo htmlspecialchars( $obj->company_name, ENT_QUOTES) ;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Short Name');?>:</td>
-			<td class="hilite"><?php echo @$obj->project_short_name;?></td>
+			<td class="hilite"><?php echo htmlspecialchars( @$obj->project_short_name, ENT_QUOTES) ;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Start Date');?>:</td>
@@ -138,7 +138,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Project Owner');?>:</td>
-			<td class="hilite"><?php echo $obj->user_name; ?></td>
+			<td class="hilite"><?php echo htmlspecialchars( $obj->user_name, ENT_QUOTES) ; ?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
@@ -178,7 +178,7 @@ function delIt() {
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br />", $obj->project_description); ?>&nbsp;
+				<?php echo htmlspecialchars( str_replace( chr(10), "<br />", $obj->project_description), ENT_QUOTES) ; ?>&nbsp;
 			</td>
 		</tr>
 		</table>
