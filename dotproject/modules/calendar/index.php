@@ -1,8 +1,12 @@
 <?php /* CALENDAR $Id$ */
 $AppUI->savePlace();
-include_once( $AppUI->getModuleClass( 'companies' ) );
 
-// restore/get the company filter if specified
+dPsetMicroTime();
+
+require_once( $AppUI->getModuleClass( 'companies' ) );
+require_once( $AppUI->getModuleClass( 'tasks' ) );
+
+// retrieve any state parameters
 if (isset( $_REQUEST['company_id'] )) {
 	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
 }
@@ -11,43 +15,10 @@ $company_id = $AppUI->getState( 'CalIdxCompany' ) !== NULL ? $AppUI->getState( '
 // get the passed timestamp (today if none)
 $date = dPgetParam( $_GET, 'date', null );
 
-// pull the companies list
+// get the list of visible companies
 $company = new CCompany();
 $companies = $company->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 $companies = arrayMerge( array( '0'=>'All' ), $companies );
-
-
-
-$this_month = new CDate(  );
-// pull the tasks and events for the month
-$first_time = $this_month;
-$first_time->setDay( 1 );
-$first_time->setTime( 0, 0, 0 );
-
-$last_time = $this_month;
-$last_time->setDay( $this_month->daysInMonth() );
-$last_time->setTime( 23, 59, 59 );
-
-$tasks = getTasksForPeriod( $first_time, $last_time, $company_id );
-$events = getEventsForPeriod( $first_time, $last_time );
-//echo '<pre>';print_r($tasks);echo '</pre>';
-
-$links = array();
-
-// assemble the links for the tasks
-addTaskLinks( $tasks, $first_time, $last_time, $links, $strMaxLen );
-
-// assemble the links for the events
-foreach ($events as $row) {
-	$start = new CDate( $row['event_start_date'] );
-
-// the link
-	$link['href'] = "?m=calendar&a=view&event_id=".$row['event_id'];
-	$link['alt'] = $row['event_description'];
-	$link['text'] = '<img src="./images/obj/event.gif" width="16" height="16" border="0" alt="" />'
-		.'<span class="event">'.$row['event_title'].'</span>';
-	$links[$start->getDay()][] = $link;
-}
 
 #echo '<pre>';print_r($events);echo '</pre>';
 // setup the title block
@@ -71,8 +42,26 @@ function clickWeek( uts, fdate ) {
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
 <?php
+// establish the focus 'date'
+$date = new Date( $date ? "{$date}000000" : null );
+
+// prepare time period for 'events'
+$first_time = new Date( $date );
+$first_time->setDay( 1 );
+$last_time = new Date( $date );
+$last_time->setDay( $date->getDaysInMonth() );
+
+$links = array();
+
+// assemble the links for the tasks
+require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+getTaskLinks( $first_time, $last_time, $links, 20, $company_id );
+
+// assemble the links for the events
+require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+getEventLinks( $first_time, $last_time, $links, 20 );
+
 // create the main calendar
-$date = new Date( $date ? "{$date}000000" : $date );
 $cal = new CMonthCalendar( $date  );
 $cal->setStyles( 'motitle', 'mocal' );
 $cal->setLinkFunctions( 'clickDay', 'clickWeek' );

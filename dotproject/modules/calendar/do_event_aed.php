@@ -1,20 +1,33 @@
 <?php /* CALENDAR $Id$ */
+$obj = new CEvent();
+$msg = '';
 
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+$del = dPgetParam( $_POST, 'del', 0 );
 
-$event = new CEvent();
-
-if (($msg = $event->bind( $_POST ))) {
-	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+// bind the POST parameter to the object record
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
-// add the seconds (=minutes * 60) to the date
-$event->event_start_date += @$_POST['start_time'] * 60;
-$event->event_end_date += @$_POST['end_time'] * 60;
 
+// configure the date and times to insert into the db table
+if ($obj->event_start_date) {
+	$date = new Date( $obj->event_start_date.$_POST['start_time'], DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->event_start_date = $date->format( DATE_FORMAT_ISO );
+}
+if ($obj->event_end_date) {
+	$date = new Date( $obj->event_end_date.$_POST['end_time'], DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->event_end_date = $date->format( DATE_FORMAT_ISO );
+}
+
+// prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Event' );
 if ($del) {
-	if (($msg = $event->delete())) {
+	if (!$obj->canDelete( $msg )) {
+		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect();
+	}
+	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
@@ -25,7 +38,7 @@ if ($del) {
 	if (!$isNotNew) {
 		$event->event_owner = $AppUI->user_id;
 	}
-	if (($msg = $event->store())) {
+	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );

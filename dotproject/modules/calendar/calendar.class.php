@@ -7,33 +7,55 @@ require_once( $AppUI->getPearClass( 'Date' ) );
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 /**
- *
- */
+* Displays a configuration month calendar
+*
+* All Date objects are based on the PEAR Date package
+*/
 class CMonthCalendar {
+/**#@+
+* @var Date
+*/
 	var $this_month;
 	var $prev_month;
 	var $next_month;
 	var $prev_year;
 	var $next_year;
+/**#@-*/
 
+/** @var string The css style name of the Title */
 	var $styleTitle;
+
+/** @var string The css style name of the main calendar */
 	var $styleMain;
 
+/** @var string The name of the javascript function that a 'day' link should call when clicked */
 	var $callback;
 
+/** @var boolean Show the heading */
 	var $showHeader;
+
+/** @var boolean Show the previous/next month arrows */
 	var $showArrows;
+
+/** @var boolean Show the day name column headings */
 	var $showDays;
+
+/** @var boolean Show the week link (no pun intended) in the first column */
 	var $showWeek;
+
+/** @var boolean Show events in the calendar boxes */
 	var $showEvents;
 
-	var $shDayNames = array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
-	var $tiMoNames = array( 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D' );
-
+/** @var string */
 	var $dayFunc;
+
+/** @var string */
 	var $weekFunc;
 
-	function CMonthCalendar( $date=null ) {
+/**
+* @param Date $date
+*/
+ function CMonthCalendar( $date=null ) {
 		$this->setDate( $date );
 
 		$this->classes = array();
@@ -53,7 +75,15 @@ class CMonthCalendar {
 		$this->events = array();
 	}
 // setting functions
-	function setDate( $date=null ) {
+
+/**
+ * CMonthCalendar::setDate()
+ *
+ * { Description }
+ *
+ * @param [type] $date
+ */
+	 function setDate( $date=null ) {
 		if (is_object($date) && (get_class($date) == 'date')) {
 			$this->this_month = new Date( $date );
 		} else {
@@ -79,25 +109,57 @@ class CMonthCalendar {
 
 	}
 
-	function setStyles( $title, $main ) {
+/**
+ * CMonthCalendar::setStyles()
+ *
+ * { Description }
+ *
+ */
+	 function setStyles( $title, $main ) {
 		$this->styleTitle = $title;
 		$this->styleMain = $main;
 	}
 
+/**
+ * CMonthCalendar::setLinkFunctions()
+ *
+ * { Description }
+ *
+ * @param string $day
+ * @param string $week
+ */
 	function setLinkFunctions( $day='', $week='' ) {
 		$this->dayFunc = $day;
 		$this->weekFunc = $week;
 	}
 
+/**
+ * CMonthCalendar::setCallback()
+ *
+ * { Description }
+ *
+ */
 	function setCallback( $function ) {
 		$this->callback = $function;
 	}
 
-	function setEvents( $e ) {
+/**
+ * CMonthCalendar::setEvents()
+ *
+ * { Description }
+ *
+ */
+ function setEvents( $e ) {
 		$this->events = $e;
 	}
 // drawing functions
-	function show() {
+/**
+ * CMonthCalendar::show()
+ *
+ * { Description }
+ *
+ */
+	 function show() {
 		$s = '';
 		if ($this->showTitle) {
 			$s .= $this->_drawTitle();
@@ -115,7 +177,13 @@ class CMonthCalendar {
 		return $s;
 	}
 
-	function _drawTitle() {
+/**
+ * CMonthCalendar::_drawTitle()
+ *
+ * { Description }
+ *
+ */
+	 function _drawTitle() {
 		global $AppUI, $m, $a;
 		$url = "index.php?m=$m";
 		$url .= $a ? "&a=$a" : '';
@@ -149,8 +217,12 @@ class CMonthCalendar {
 		return $s;
 	}
 /**
- *	@return string Returns table a row with the day names
- */
+* CMonthCalendar::_drawDays()
+*
+* { Description }
+*
+* @return string Returns table a row with the day names
+*/
 	function _drawDays() {
 		$bow = Date_Calc::beginOfWeek( null,null,null,null,LOCALE_FIRST_DAY );
 		$y = substr( $bow, 0, 4 );
@@ -166,7 +238,13 @@ class CMonthCalendar {
 		return "\n<tr>$s\n</tr>";
 	}
 
-	function _drawMain() {
+/**
+ * CMonthCalendar::_drawMain()
+ *
+ * { Description }
+ *
+ */
+	 function _drawMain() {
 		GLOBAL $AppUI;
 		$today = new Date();
 		$today = $today->format( "%Y%m%d%w" );
@@ -216,7 +294,7 @@ class CMonthCalendar {
 					$html .= "$d";
 				}
 				if ($m == $this_month && $this->showEvents) {
-					$html .= $this->_drawEvents( $d );
+					$html .= $this->_drawEvents( substr( $day, 0, 8 ) );
 				}
 				$html .= "\n\t</td>";
 			}
@@ -225,7 +303,13 @@ class CMonthCalendar {
 		return $html;
 	}
 
-	function _drawWeek( $dateObj ) {
+/**
+ * CMonthCalendar::_drawWeek()
+ *
+ * { Description }
+ *
+ */
+	 function _drawWeek( $dateObj ) {
 		$href = "javascript:$this->weekFunc(".$dateObj->getTimestamp().",'".$dateObj->toString()."')";
 		$w = "        <td class=\"week\">";
 		$w .= $this->dayFunc ? "<a href=\"$href\">" : '';
@@ -235,7 +319,13 @@ class CMonthCalendar {
 		return $w;
 	}
 
-	function _drawEvents( $day ) {
+/**
+ * CMonthCalendar::_drawEvents()
+ *
+ * { Description }
+ *
+ */
+	 function _drawEvents( $day ) {
 		$s = '';
 		if (!isset( $this->events[$day] )) {
 			return '';
@@ -254,14 +344,19 @@ class CMonthCalendar {
 	}
 }
 
-##
-## CEvent Class
-##
+/**
+* Event Class
+*
+* { Description }
+*
+*/
 class CEvent extends CDpObject {
 /** @var int */
 	var $event_id = NULL;
+
 /** @var string The title of the event */
 	var $event_title = NULL;
+
 	var $event_start_date = NULL;
 	var $event_end_date = NULL;
 	var $event_parent = NULL;
@@ -273,14 +368,47 @@ class CEvent extends CDpObject {
 	var $event_owner = NULL;
 	var $event_project = NULL;
 	var $event_private = NULL;
+	var $event_type = NULL;
 
 	function CEvent() {
 		$this->CDpObject( 'events', 'event_id' );
 	}
 
+// overload check operation
 	function check() {
+	// ensure changes to check boxes and select lists are honoured
 		$this->event_private = intval( $this->event_private );
-		return NULL; // object is ok
+		$this->event_type = intval( $this->event_type );
+		return NULL;
+	}
+
+/**
+* Utility function to return an array of events with a period
+* @param Date Start date of the period
+* @param Date End date of the period
+* @return array A list of events
+*/
+	function getEventsForPeriod( $start_date, $end_date ) {
+		global $AppUI;
+	// the event times are stored as unix time stamps, just to be different
+
+	// convert to default db time stamp
+		$db_start = $start_date->format( DATE_FORMAT_ISO );
+		$db_end = $end_date->format( DATE_FORMAT_ISO );
+
+	// assemble query
+		$sql = "
+		SELECT *
+		FROM events
+		WHERE event_start_date BETWEEN '$db_start' AND '$db_end'
+			AND ( event_private=0
+				OR (event_private=1 AND event_owner=$AppUI->user_id)
+			)
+		";
+	//echo "<pre>$sql</pre>";
+	// execute and return
+		return db_loadList( $sql );
 	}
 }
+
 ?>

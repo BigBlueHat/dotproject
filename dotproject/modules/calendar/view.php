@@ -1,50 +1,52 @@
 <?php /* CALENDAR $Id$ */
-$event_id = dPgetParam( $_GET, "event_id", 0 );
+$event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
 
-// check permissions for this event
+// check permissions for this record
 $canEdit = !getDenyEdit( $m, $event_id );
-$AppUI->savePlace();
 
-// pull data
-$sql = "SELECT * FROM events WHERE event_id = $event_id";
-db_loadHash( $sql, $event );
+// check if this record has dependancies to prevent deletion
+$msg = '';
+$obj = new CEvent();
+$canDelete = $obj->canDelete( $msg, $event_id );
 
-// setup the title block
-if (!db_loadHash( $sql, $event )) {
-	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'myevo-appointments.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=calendar", "month view" );
-	$titleBlock->show();
+// load the record data
+if (!$obj->load( $event_id )) {
+	$AppUI->setMsg( 'Event' );
+	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->redirect();
 } else {
-	if ($event['event_owner'] != $AppUI->user_id) {
-		$canEdit = false;
-	}
-	$df = $AppUI->getPref('SHDATEFORMAT');
-	$tf = $AppUI->getPref('TIMEFORMAT');
+	$AppUI->savePlace();
+}
 
-	$start_date = $event["event_start_date"] ? new CDate( $event["event_start_date"], "$df $tf" ) : null;
-	$end_date = $event["event_end_date"] ? new CDate( $event["event_end_date"], "$df $tf" ) : null;
+// load the event types
+$types = dPgetSysVal( 'EventType' );
+
+if ($obj->event_owner != $AppUI->user_id) {
+	$canEdit = false;
+}
+$df = $AppUI->getPref('SHDATEFORMAT');
+$tf = $AppUI->getPref('TIMEFORMAT');
+
+$start_date = $obj->event_start_date ? new Date( $obj->event_start_date ) : null;
+$end_date = $obj->event_end_date ? new Date( $obj->event_end_date ) : null;
 
 // setup the title block
-	$titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
+if ($canEdit) {
+	$titleBlock->addCell();
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
+		'<form action="?m=calendar&a=addedit&event_id=' . $event_id . '" method="post">', '</form>'
+	);
+}
+$titleBlock->addCrumb( "?m=calendar", "month view" );
+if ($canEdit) {
+	$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );
 	if ($canEdit) {
-		$titleBlock->addCell();
-		$titleBlock->addCell(
-			'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
-			'<form action="?m=calendar&a=addedit&event_id=' . $event_id . '" method="post">', '</form>'
-		);
+		$titleBlock->addCrumbDelete( 'delete event', $canDelete, $msg );
 	}
-	$titleBlock->addCrumb( "?m=calendar", "month view" );
-	if ($canEdit) {
-		$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );
-		if ($canDelete) {
-			$titleBlock->addCrumbRight(
-				'<a href="javascript:delIt()">'
-					. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-					. $AppUI->_('delete event') . '</a>'
-			);
-		}
-	}
-	$titleBlock->show();
+}
+$titleBlock->show();
 ?>
 <script language="javascript">
 function delIt() {
@@ -68,15 +70,19 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Event Title');?>:</td>
-			<td class="hilite" width="100%"><?php echo $event["event_title"];?></td>
+			<td class="hilite" width="100%"><?php echo $obj->event_title;?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
+			<td class="hilite" width="100%"><?php echo $types[$obj->event_type];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Starts');?>:</td>
-			<td class="hilite"><?php echo $start_date ? $start_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $start_date ? $start_date->format( "$df $tf" ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Ends');?>:</td>
-			<td class="hilite"><?php echo $end_date ? $end_date->toString() : '-';?></td>
+			<td class="hilite"><?php echo $end_date ? $end_date->format( "$df $tf" ) : '-';?></td>
 		</tr>
 		</table>
 	</td>
@@ -85,7 +91,7 @@ function delIt() {
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br />", $event["event_description"]);?>&nbsp;
+				<?php echo str_replace( chr(10), "<br />", $obj->event_description);?>&nbsp;
 			</td>
 		</tr>
 		</table>
@@ -93,4 +99,3 @@ function delIt() {
 	</td>
 </tr>
 </table>
-<?php } ?>

@@ -1,49 +1,42 @@
 <?php /* CALENDAR $Id$ */
 $AppUI->savePlace();
 
-// restore/get the company filter if specified
-//if (isset( $_REQUEST['company_id'] )) {
-//	$AppUI->setState( 'ProjIdxCompany', $_REQUEST['company_id'] );
-//}
-//$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
-$company_id = $AppUI->user_company;
+require_once( $AppUI->getModuleClass( 'tasks' ) );
+
+// retrieve any state parameters
+if (isset( $_REQUEST['company_id'] )) {
+	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
+}
+$company_id = $AppUI->getState( 'CalIdxCompany' ) !== NULL ? $AppUI->getState( 'CalIdxCompany' ) : $AppUI->user_company;
 
 // get the passed timestamp (today if none)
-$uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
+$date = dPgetParam( $_GET, 'date', null );
 
-$this_week = new CDate( $uts );
-$this_week->setTime( 0,0,0 );
-$this_week->setWeekday( LOCALE_FIRST_DAY );
+// establish the focus 'date'
+$this_week = new Date( $date ? "{$date}000000" : null );
+$dd = $this_week->getDay();
+$mm = $this_week->getMonth();
+$yy = $this_week->getYear();
 
-$prev_week = $this_week;
-$prev_week->addDays( -7 );
+// prepare time period for 'events'
+$first_time = new Date( Date_calc::beginOfWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
+$last_time = new Date( Date_calc::endOfWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
 
-$next_week = $this_week;
-$next_week->addDays( +7 );
+$prev_week = new Date( Date_calc::beginOfPrevWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
+$next_week = new Date( Date_calc::beginOfNextWeek( $dd, $mm, $yy, DATE_FORMAT_ISO, LOCALE_FIRST_DAY ) );
 
-$thisDay=0;
+$tasks = CTask::getTasksForPeriod( $first_time, $last_time, $company_id );
+$events = CEvent::getEventsForPeriod( $first_time, $last_time );
 
-$tasks = getTasksForPeriod( $this_week, $next_week, $company_id );
-$events = getEventsForPeriod( $this_week, $next_week );
-
-//echo '<pre>';print_r($tasks);echo '</pre>';
-
-// assemble the links for the events
 $links = array();
 
-// override standard length
-$strMaxLen = 50;
-addTaskLinks( $tasks, $this_week, $next_week, $links, $strMaxLen );
+// assemble the links for the tasks
+require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+getTaskLinks( $first_time, $last_time, $links, 50, $company_id );
 
-foreach ($events as $row) {
-	$start = new CDate( $row['event_start_date'] );
-// the link
-	$link['href'] = "?m=calendar&a=addedit&event_id=".$row['event_id'];
-	$link['alt'] = $row['event_description'];
-	$link['text'] = '<img src="./images/obj/event.gif" width="16" height="16" border="0" alt="">'
-		.'<span class="event">'.$row['event_title'].'</span>';
-	$links[$start->getDay()][] = $link;
-}
+// assemble the links for the events
+require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+getEventLinks( $first_time, $last_time, $links, 50 );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Week View', 'myevo-appointments.png', $m, "$m.$a" );
@@ -65,26 +58,31 @@ TD.weekDay  {
 <table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
 <tr>
 	<td>
-		<a href="<?php echo '?m=calendar&a=week_view&uts='.$prev_week->getTimestamp(); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
+		<a href="<?php echo '?m=calendar&a=week_view&date='.$prev_week->format( DATE_FORMAT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
 	</td>
 	<th width="100%">
-		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.$this_week->toString( "%U - %Y" ); ?></span>
+		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.$this_week->format( "%U - %Y" ); ?></span>
 	</th>
 	<td>
-		<a href="<?php echo '?m=calendar&a=week_view&uts='.$next_week->getTimestamp(); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
+		<a href="<?php echo '?m=calendar&a=week_view&date='.$next_week->format( DATE_FORMAT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
 	</td>
 </tr>
 </table>
 
-<table border="0" cellspacing="1" cellpadding="2" width="98%" style="margin-width:4px;background-color:white">
+<table border="0" cellspacing="1" cellpadding="2" width="100%" style="margin-width:4px;background-color:white">
 <?php
 $column = 0;
 $format = array( "<strong>%d</strong> %A", "%A <strong>%d</strong>" );
 $show_day = $this_week;
 
+$today = new Date();
+$today = $today->format( DATE_FORMAT_TIMESTAMP_DATE );
+
 for ($i=0; $i < 7; $i++) {
+	$dayStamp = $show_day->format( DATE_FORMAT_TIMESTAMP_DATE );
+
 	$day  = $show_day->getDay();
-	$href = "?m=calendar&a=day_view&uts=" . $show_day->getTimestamp();
+	$href = "?m=calendar&a=day_view&date=$dayStamp";
 
 	$s = '';
 	if ($column == 0) {
@@ -96,15 +94,15 @@ for ($i=0; $i < 7; $i++) {
 	$s .= '<tr>';
 	$s .= '<td><a href="'.$href.'"><?php echo $day1 ?>';
 
-	$s .= $show_day->isToday() ? '<span style="color:red">' : '';
-	$s .= $show_day->toString( $format[$column] );
-	$s .= $show_day->isToday() ? '</span>' : '';
+	$s .= $dayStamp == $today ? '<span style="color:red">' : '';
+	$s .= $show_day->format( $format[$column] );
+	$s .= $dayStamp == $today ? '</span>' : '';
 	$s .= '</a></td></tr>';
 
 	$s .= '<tr><td>';
 
-	if (isset( $links[$day] )) {
-		foreach ($links[$day] as $e) {
+	if (isset( $links[$dayStamp] )) {
+		foreach ($links[$dayStamp] as $e) {
 			$href = isset($e['href']) ? $e['href'] : null;
 			$alt = isset($e['alt']) ? $e['alt'] : null;
 
@@ -124,7 +122,7 @@ for ($i=0; $i < 7; $i++) {
 	$column = 1 - $column;
 
 // select next day
-	$show_day->addDays(1);
+	$show_day->addSeconds( 24*3600 );
 	echo $s;
 }
 ?>
