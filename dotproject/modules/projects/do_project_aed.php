@@ -13,7 +13,7 @@ $project->project_actual_end_date = db_unix2DateTime( $project->project_actual_e
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 
 // prepare (and translate) the module name ready for the suffix
-$AppUI->setMsg( 'Company' );
+$AppUI->setMsg( 'Project' );
 if ($del) {
 	if (($msg = $project->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
