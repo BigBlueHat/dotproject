@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* ADMIN $Id$ */
 GLOBAL $AppUI, $user_id, $denyEdit, $tab;
 
 $pgos = array(
@@ -52,21 +52,8 @@ while ($row = db_fetch_assoc( $res )) {
 	$tarr[] = array_merge( $row, array( 'grant_item'=>$item ) );
 }
 
-$modules = array(
-	'all' => "all",
-	"admin" => "Admin",
-	"calendar" => "Calendar",
-	"companies" => "Companies",
-	"contacts" => "Contacts",
-	"departments" => "Departments",
-	"files" => "Files",
-	"forums" => "Forums",
-	"mcps" => "MCPs",
-	"plans" => "Plans",
-	"projects" => "Projects",
-	"tasks" => "Tasks",
-	"ticketsmith" => "Tickets"
-);
+// read the installed modules
+$modules = arrayMerge( array( 'all' ), $AppUI->readDirs( 'modules' ));
 ?>
 
 <script language="javascript">
