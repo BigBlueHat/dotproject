@@ -347,11 +347,21 @@ function convert2days( $durn, $units ) {
 	}
 }
 
-function formatTime($uts) {
+function formatTime( $uts ) {
 	global $AppUI;
 	$date = new CDate();
 	$date->setDate($uts, DATE_FORMAT_UNIXTIME);	
 	return $date->format( $AppUI->getPref('SHDATEFORMAT') );
+}
+
+function formatCurrency( $number, $format ) {
+	if (!$format) {
+		$format = $AppUI->getPref('SHCURRFORMAT');
+	}
+	setlocale(LC_MONETARY, $format);
+
+	// TODO: works only >= 4.3.0...couldn't test it yet :-( [kripper]
+	return money_format('%i', $number);
 }
 
 ?>

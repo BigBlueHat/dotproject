@@ -114,6 +114,19 @@ function submitIt(){
 </tr>
 
 <tr>
+	<td align="right"><?php echo $AppUI->_('Currency Format');?>:</td>
+	<td>
+<?php
+	$currencies = array();
+	$currEx = 123456789;
+	$f = "es_ES"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	$f = "us_US"; $currencies[$f]	= formatCurrency( $currEx, $f );
+	echo arraySelect( $currencies, 'pref_name[CURRENCYFORMAT]', 'class=text size=1', @$prefs['CURRENCYFORMAT'], false );
+?>
+	</td>
+</tr>
+
+<tr>
 	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php
@@ -124,7 +137,6 @@ function submitIt(){
 ?>
 	</td>
 </tr>
-
 
 <tr>
 	<td align="left"><input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onClick="javascript:history.back(-1);" /></td>
