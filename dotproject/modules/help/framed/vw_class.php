@@ -9,7 +9,7 @@ WHERE class_entry = $entry_id
 ";
 $rc = db_exec($sql);
 if(!$rc) {
-	echo '<font color=red>SQL Error:</font> '.mysql_errno() . ": " . mysql_error() . "\n";
+	echo '<font color=red>SQL Error:</font> '.db_errno() . ": " . db_error() . "\n";
 }
 ##echo "<pre>$sql</pre>";##
 $rows = db_fetch_assoc( $rc );

@@ -37,7 +37,7 @@ LEFT JOIN {$AppUI->project_dbprefix}xmethods on method_entry = entry_id and meth
 if(!($erc = db_exec( $esql ))) {
 	echo '<font color=red>SQL Error:</font> '.db_errno() . ": " . db_error() . "\n";
 }
-##echo "<pre>$esql</pre>".mysql_error();##
+##echo "<pre>$esql</pre>".db_error();##
 
 $entries = array();
 $n = db_num_rows( $erc );

@@ -1,4 +1,4 @@
-<?
+<?php
 // Add / Edit Control Key
 $sql = "SELECT * FROM {$AppUI->project_dbprefix}xpages WHERE page_entry=$entry_id AND page_lang='$AppUI->user_locale'";
 ##echo "<pre>$sql</pre>";##
@@ -11,7 +11,7 @@ if(!db_loadHash( $sql, $page )) {
 <table width="100%" height="100%" border=0 cellpadding="2" cellspacing=0 >
 <tr valign=top>
 	<td bgcolor=#ffffff>
-		<?echo ($page["page_show_title"] ? '<h1>'.$page["page_title"].'</h1><br>' : '') .$page["page_content"];?>
+		<?php echo ($page["page_show_title"] ? '<h1>'.$page["page_title"].'</h1><br>' : '') .$page["page_content"];?>
 	</td>
 </tr>
 <tr>

@@ -37,13 +37,13 @@ WHERE page_content LIKE '%$search_text%'
 
 $entries = array();
 if ($search_text) {
-	if(!($erc = mysql_query( $esql ))) {
-		echo '<font color=red>SQL Error:</font> '.mysql_errno() . ": " . mysql_error() . "\n";
+	if(!($erc = db_exec( $esql ))) {
+		echo '<font color=red>SQL Error:</font> '.db_errno() . ": " . db_error() . "\n";
 	}
-##echo "<pre>$esql</pre>".mysql_error();##
+##echo "<pre>$esql</pre>".db_error();##
 
-	$n = mysql_num_rows( $erc );
-	while ($row = mysql_fetch_array( $erc, MYSQL_ASSOC )) {
+	$n = db_num_rows( $erc );
+	while ($row = db_fetch_assoc( $erc, MYSQL_ASSOC )) {
 		$row['title'] = $row['page_title'];
 		$entries[] = $row;
 	}

@@ -12,7 +12,7 @@ WHERE forum_project = $project_id
 ORDER BY forum_project, forum_name
 ";
 //echo "<pre>$sql</pre>";
-$rc= mysql_query($sql);
+$rc = db_exec($sql);
 ?>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
@@ -23,7 +23,7 @@ $rc= mysql_query($sql);
 	<th nowrap><?php echo $AppUI->_('Last Post');?></th>
 </tr>
 <?php
-while ($row = mysql_fetch_array( $rc )) { ?>
+while ($row = db_fetch_assoc( $rc )) { ?>
 <tr>
 	<td nowrap align=center>
 <?php

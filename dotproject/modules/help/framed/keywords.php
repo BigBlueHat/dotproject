@@ -36,7 +36,7 @@ $keywords = array();
 if(!($erc = db_exec( $esql ))) {
 	echo '<font color=red>SQL Error:</font> '.db_errno() . ": " . db_error() . "\n";
 }
-##echo "<pre>$esql</pre>".mysql_error();##
+##echo "<pre>$esql</pre>".db_error();##
 
 while ($row = db_fetch_assoc( $erc )) {
 	if ($row['page_keywords']) {

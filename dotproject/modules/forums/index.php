@@ -56,7 +56,7 @@ switch ($f) {
 $sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";
 
 $rc= db_exec( $sql );
-##echo "<pre>$sql</pre>".mysql_error();##
+##echo "<pre>$sql</pre>".db_error();##
 ?>
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <table width="98%" cellspacing="1" cellpadding="0" border="0">

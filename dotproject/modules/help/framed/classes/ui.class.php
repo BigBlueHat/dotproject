@@ -76,7 +76,7 @@ class CAppUI {
 		FROM {$dbprefix}projects 
 		WHERE project_id = $id
 		";
-		//echo "<pre>$sql</pre>".mysql_error();
+		//echo "<pre>$sql</pre>".db_error();
 		if (!($res = db_exec( $sql, $dbconn ))) {
 			$this->setMsg = db_error();
 			return false;
