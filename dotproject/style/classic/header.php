@@ -12,8 +12,12 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 
+	<script type="text/javascript" src="js/base.js"></script>
 	<script language="JavaScript">
-	function doBtn(e) {
+	function doBtn(ev) {
+
+		var e = new CommonEvent(ev);
+
 		var oEl = e.target;
 		var doit = e.type;
 	
