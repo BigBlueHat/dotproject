@@ -8,6 +8,7 @@
 "Department Parent",
 "Edit Department",
 "Select Unit",
+"Telephone",
 "View Department",
 "badCompany"=>"This company is invalid. You cannot add a department.",
 "delDept"=>"Are you sure you want to delete this department",

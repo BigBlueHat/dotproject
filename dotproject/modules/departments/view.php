@@ -25,7 +25,7 @@ $q->addQuery('con.contact_last_name');
 $q->addJoin('users', 'u', 'u.user_id = dep.dept_owner');
 $q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
 $q->addWhere('dep.dept_id = '.$dept_id);
-$q->addWhere('dep.dept_company = '.$company_id);
+$q->addWhere('dep.dept_company = company_id');
 $sql = $q->prepare();
 
 if (!db_loadHash( $sql, $dept )) {
