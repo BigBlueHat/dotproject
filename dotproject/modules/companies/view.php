@@ -70,23 +70,23 @@ if (!$denyEdit) {
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
-			<td bgcolor="#ffffff" width="100%"><?php echo $row["company_name"];?></td>
+			<td class="hilite" width="100%"><?php echo $row["company_name"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>:</td>
-			<td bgcolor="#ffffff"><?php echo @$row["company_phone1"];?></td>
+			<td class="hilite"><?php echo @$row["company_phone1"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Phone');?>2:</td>
-			<td bgcolor="#ffffff"><?php echo @$row["company_phone2"];?></td>
+			<td class="hilite"><?php echo @$row["company_phone2"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Fax');?>:</td>
-			<td bgcolor="#ffffff"><?php echo @$row["company_fax"];?></td>
+			<td class="hilite"><?php echo @$row["company_fax"];?></td>
 		</tr>
 		<tr valign=top>
 			<td align="right" nowrap><?php echo $AppUI->_('Address');?>:</td>
-			<td bgcolor="#ffffff"><?php
+			<td class="hilite"><?php
 				echo @$row["company_address1"]
 					.( ($row["company_address2"]) ? '<br>'.$row["company_address2"] : '' )
 					.'<br>'.$row["company_city"]
@@ -97,7 +97,7 @@ if (!$denyEdit) {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
-			<td bgcolor="#ffffff">
+			<td class="hilite">
 				<a href="http://<?php echo @$row["company_primary_url"];?>" target="Company"><?php echo @$row["company_primary_url"];?></a>
 			</td>
 		</tr>
@@ -108,7 +108,7 @@ if (!$denyEdit) {
 		<b><?php echo $AppUI->_('Description');?></b>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td bgcolor="#ffffff">
+			<td class="hilite">
 				<?php echo str_replace( chr(10), "<BR>", $row["company_description"]);?>&nbsp;
 			</td>
 		</tr>
