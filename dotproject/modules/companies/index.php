@@ -71,7 +71,7 @@ foreach ($rows as $row) {
 	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '" title="'.$row['company_description'].'">' . $row["company_name"] .'</a></td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $row["countp"] . '</td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . @$row["inactive"] . '</td>';
-	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $types[@$row["company_type"]] . '</td>';
+	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $AppUI->_($types[@$row["company_type"]]) . '</td>';
 	$s .= $CR . '</tr>';
 }
 echo "$s\n";

@@ -149,7 +149,7 @@ function setCalendar( idate, fdate ) {
 	<td align="right"><?php echo $AppUI->_('Type');?>:</td>
 	<td>
 <?php
-	echo arraySelect( $types, 'event_type', 'size="1" class="text"', @$obj->event_type );
+	echo arraySelect( $types, 'event_type', 'size="1" class="text"', @$obj->event_type, true );
 ?>
 	</td>
 </tr>

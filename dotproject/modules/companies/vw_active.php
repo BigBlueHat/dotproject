@@ -36,7 +36,7 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 		$s .= '<a href="?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a></td>';
 		$s .= '<td nowrap="nowrap">'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
 		$s .= '<td nowrap="nowrap">'.$start_date->format( $df ).'</td>';
-		$s .= '<td nowrap="nowrap">'.$pstatus[$row["project_status"]].'</td>';
+		$s .= '<td nowrap="nowrap">'.$AppUI->_($pstatus[$row["project_status"]]).'</td>';
 		$s .= '<td nowrap="nowrap" align="right">$ '.$row["project_target_budget"].'</td>';
 		$s .= '</tr>';
 	}

@@ -140,7 +140,7 @@ function testURL( x ) {
 	<td align="right"><?php echo $AppUI->_('Type');?>:</td>
 	<td>
 <?php
-	echo arraySelect( $types, 'company_type', 'size="1" class="text"', @$obj->company_type );
+	echo arraySelect( $types, 'company_type', 'size="1" class="text"', @$obj->company_type, true );
 ?>
 	</td>
 </tr>

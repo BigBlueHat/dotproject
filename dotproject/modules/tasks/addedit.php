@@ -338,7 +338,7 @@ function calcFinish() {
 		<br />
 		<?php echo $AppUI->_( 'Access' );?>
 		<br />
-		<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ) );?>
+		<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
 		<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
 		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
 		<br />
@@ -384,7 +384,7 @@ function calcFinish() {
 				<td nowrap="nowrap">
 					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 0;?>" />
 				<?php
-					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type );
+					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
 				?>
 				</td>
 			</tr>

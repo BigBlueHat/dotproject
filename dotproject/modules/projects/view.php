@@ -155,7 +155,7 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Status');?>:</td>
-			<td class="hilite" width="100%"><?php echo $pstatus[$obj->project_status];?></td>
+			<td class="hilite" width="100%"><?php echo $AppUI->_($pstatus[$obj->project_status]);?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Progress');?>:</td>

@@ -115,7 +115,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
-			<td class="hilite"><?php echo $types[@$obj->company_type];?></td>
+			<td class="hilite"><?php echo $AppUI->_($types[@$obj->company_type]);?></td>
 		</tr>
 		</table>
 
