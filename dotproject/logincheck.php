@@ -21,7 +21,7 @@ if(!$row = mysql_fetch_array($prc))
 	}
 
 
-setcookie("user_cookie", $row[0], "session");
+setcookie("user_cookie", $row[0]);
 
 
 ?>
