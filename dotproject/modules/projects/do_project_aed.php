@@ -22,7 +22,6 @@ if ($obj->project_actual_end_date) {
 $del = dPgetParam( $_POST, 'del', 0 );
 
 // prepare (and translate) the module name ready for the suffix
-$AppUI->setMsg( 'Project' );
 if ($del) {
 	if (!$obj->canDelete( $msg )) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
@@ -32,7 +31,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
+		$AppUI->setMsg( "Project deleted", UI_MSG_ALERT);
 		$AppUI->redirect( "", -1 );
 	}
 } else {
@@ -40,7 +39,7 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['project_id'];
-		$AppUI->setMsg( $isNotNew ? 'updated' : 'inserted', UI_MSG_OK, true );
+		$AppUI->setMsg( $isNotNew ? 'Project updated' : 'Project inserted', UI_MSG_OK);
 	}
 	$AppUI->redirect();
 }
