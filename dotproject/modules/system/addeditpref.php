@@ -1,15 +1,8 @@
-<?php /* $Id$ */
+<?php /* SYSTEM $Id$ */
 ##
 ## add or edit a user preferences
 ##
 $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
-
-// check permissions
-$denyEdit = getDenyEdit( $m );
-
-if ($denyEdit) {
-	$AppUI->redirect( 'm=help&a=access_denied' );
-}
 
 // load the preferences
 $sql = "
@@ -63,9 +56,8 @@ function submitIt(){
 
 <table width="98%" border="0" cellpadding="1" cellspacing="1" class="std">
 
-<form name="changeuser" action="./index.php?m=system" method="post">
+<form name="changeuser" action="./index.php?m=system&a=do_preference_aed" method="post">
 <input type="hidden" name="pref_user" value="<?php echo $user_id;?>">
-<input type="hidden" name="dosql" value="preference_aed">
 <input type="hidden" name="del" value="0">
 
 <tr height="20">
