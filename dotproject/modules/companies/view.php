@@ -123,12 +123,12 @@ function delIt() {
 		<tr valign=top>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Address');?>:</td>
 			<td class="hilite"><?php
-				echo @$obj->company_address1
-					.( ($obj->company_address2) ? '<br />'.$obj->company_address2 : '' )
-					.'<br />'.$obj->company_city
-					.'&nbsp;&nbsp;'.$obj->company_state
-					.'&nbsp;&nbsp;'.$obj->company_zip
-					;
+						echo @$obj->company_address1
+							.( ($obj->company_address2) ? '<br />'.$obj->company_address2 : '' )
+							.( ($obj->company_city) ? '<br />'.$obj->company_city : '' )
+							.( ($obj->company_state) ? '<br />'.$obj->company_state : '' )
+							.( ($obj->company_zip) ? '<br />'.$obj->company_zip : '' )
+							;
 			?></td>
 		</tr>
 		<tr>
