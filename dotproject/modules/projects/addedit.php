@@ -339,7 +339,7 @@ function setDepartment(department_id_string){
 						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $row->project_status, true ); ?>
 					</td>
 					<td>
-						<strong><?php echo intval(@$row->project_percent_complete);?> %</strong>
+						<strong><?php echo printf( "%.1f%%", @$row->project_percent_complete);?></strong>
 					</td>
 					<td>
 						<input type="checkbox" value="1" name="project_active" <?php echo $row->project_active||$project_id==0 ? 'checked="checked"' : '';?> />
