@@ -35,9 +35,11 @@ if ( $task_id ) {
 	
 	// do we have write access on this project?
 	$canEdit = ( !getDenyEdit( 'projects', $task_project ) );
-
-	// and can we edit tasks at all?
-	// $canEdit = $canEdit && TODO!!!!
+	
+	// Asumption: if a user has write access on a project, he will also
+	// be able to add tasks, files and events. There is no way for
+	// allowing someone to edit a project information and not editing
+	// its tasks, files and events.
 }
 
 if (!$canEdit) {
