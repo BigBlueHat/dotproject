@@ -174,50 +174,10 @@ function testURL( x ) {
 </td>
 	<td align='left'>
 		<?php
-			error_reporting(E_ALL);
-			require_once("./classes/customfieldsparser.class.php");
-			// let's create the parser
-			$cfp = new CustomFieldsParser("CompanyCustomFields", $obj->company_id);
-			
-			// we will need the amount of record types
-			$amount_custom_record_types = count($cfp->custom_record_types);
-		?>
-		
-		<?php
-			// let's parse the custom fields form table
-			echo $cfp->parseTableForm(true);
-		?>
-		
-		<script language="javascript">
-		    var companies_type;
-		    
-		    // We need to create an array of all the names
-		    // of the record types in JS so we can map the Key to the type name (used in the field filter)
-		    companies_type = new Array(<?php echo $amount_custom_record_types; ?>);
-		    
-		    <?php
-		    	foreach($cfp->custom_record_types as $key => $record_type){
-		    		echo "companies_type[$key] = new String('$record_type');\n";
-		    	}
-		    	reset($cfp->custom_record_types);
-		    	$actual_record_type = str_replace(" ", "_", $cfp->custom_record_types[$obj->company_type]);
-		    	
-		    	// Let's parse all the show functions
-		    	echo $cfp->parseShowFunctions();
-		    ?>
-		    
-		    
-			function changeRecordType(value){
-				// if the record type is changed, then hide everything
-				hideAllRows();
-				// and how only those fields needed for the current type
-				eval("show"+companies_type[value]+"();");
-			}
-				
-			<?php echo $cfp->showHideAllRowsFunction(); ?>
-			// by default hide everything and show the actual type record
-			<?php echo "\n\nhideAllRows(); show$actual_record_type();"; ?>
-		</script>
+ 			require_once("./classes/CustomFields.class.php");
+ 			$custom_fields = New CustomFields( $m, $a, $obj->company_id, "edit" );
+ 			$custom_fields->printHTML();
+		?>		
 	</td>
 </tr>
 <tr>

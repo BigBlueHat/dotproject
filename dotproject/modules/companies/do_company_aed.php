@@ -8,15 +8,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-//Assign custom fields to task_custom for them to be saved
-$custom_fields = dPgetSysVal("CompanyCustomFields");
-$custom_field_data = array();
-if ( count($custom_fields) > 0 ){
-	foreach ( $custom_fields as $key => $array ) {
-		$custom_field_data[$key] = $_POST["custom_$key"];
-	}
-	$obj->company_custom = serialize($custom_field_data);
-}
+require_once("./classes/CustomFields.class.php");
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Company' );
@@ -36,6 +28,9 @@ if ($del) {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
+ 		$custom_fields = New CustomFields( $m, 'addedit', $obj->company_id, "edit" );
+ 		$custom_fields->bind( $_POST );
+ 		$sql = $custom_fields->store( $obj->company_id ); // Store Custom Fields
 		$AppUI->setMsg( @$_POST['company_id'] ? 'updated' : 'added', UI_MSG_OK, true );
 	}
 	$AppUI->redirect();

@@ -680,3 +680,11 @@ list_option_id integer,
 list_value varchar(250)
 );
 
+# 20050302
+# ldap system config variables
+INSERT INTO config VALUES ('', 'auth_method', 'sql', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_host', 'localhost', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_port', '387', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_version', '3', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_base_dn', 'dc=saki,dc=com,dc=au', '', 'text'); 
+INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text'); 
