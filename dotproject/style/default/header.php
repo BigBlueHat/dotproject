@@ -1,4 +1,4 @@
-<?php /* $id$ */
+<?php /* STYLE/DEFAULT $Id$ */
 $dialog = dPgetParam( $_GET, 'dialog', 0 );
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -6,8 +6,9 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
 	<meta name="Description" content="Ultra Clean dotProject Style" />
+	<meta name="Version" content="<?php echo @$AppUI->getConfig( 'version' );?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<title><?php echo $AppUI->cfg['page_title'];?></title>
+	<title><?php echo @$AppUI->getConfig( 'page_title' );?></title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 </head>
