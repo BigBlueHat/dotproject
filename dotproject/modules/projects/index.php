@@ -28,7 +28,10 @@ $active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 if (isset( $_POST['company_id'] )) {
 	$AppUI->setState( 'ProjIdxCompany', intval( $_POST['company_id'] ) );
 }
-$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+
+// BUG FIX: Selecting all companies didn't work
+// $company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+$company_id = $AppUI->getState( 'ProjIdxCompany' );
 
 if (isset( $_GET['orderby'] )) {
 	$AppUI->setState( 'ProjIdxOrderBy', $_GET['orderby'] );
