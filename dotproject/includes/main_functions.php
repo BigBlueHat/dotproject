@@ -92,6 +92,10 @@ function fromDate($date) {
 	return $retstring;
 }
 
+function formatTime($time) {
+	return fromDate(date("Y-m-d", $time));
+}
+
 // Return the format required for date entry, for user information display
 function dateFormat() {
 	global $date_format;
