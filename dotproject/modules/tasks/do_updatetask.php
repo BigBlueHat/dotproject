@@ -81,10 +81,10 @@ $task = new CTask();
 $task->load( $obj->task_log_task );
 $task->check();
 
-if ($task->task_percent_complete >= 100) {
-	$task->task_end_date = $obj->task_log_date;
-}
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
+
+if ($task->task_percent_complete >= 100 && $task->task_end_date == '0000-00-00 00:00:00')
+	$task->task_end_date = $obj->task_log_date;
 
 if (($msg = $task->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR, true );
