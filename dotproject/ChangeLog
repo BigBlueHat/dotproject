@@ -1,3 +1,140 @@
+2003-01-19 20:54  (kripper)
+---------------------------------
+modules/admin/dosql.php
+- BUG FIX: Replaced GET for REQUEST, since the user_id is given by POST when
+- changing the users password. Warning: sometimes the user_id is given by POST
+- and other times by GET.
+
+2003-01-19 20:28  (kripper)
+---------------------------------
+modules/system/addeditpref.php
+- Disabled locale_warn in ui select box when no style name was available in
+- styles.inc
+
+2003-01-19 20:21  (eddieajau)
+---------------------------------
+locales/cs/admin.inc
+locales/cs/calendar.inc
+locales/cs/common.inc
+locales/cs/companies.inc
+locales/cs/contacts.inc
+locales/cs/files.inc
+locales/cs/forums.inc
+locales/cs/help.inc
+locales/cs/locales.php
+locales/cs/projects.inc
+locales/cs/system.inc
+locales/cs/tasks.inc
+- Locales support moved to dotmods project
+
+2003-01-19 19:21  (eddieajau)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed bug with the scope of the query_string variable
+
+2003-01-19 19:20  (eddieajau)
+---------------------------------
+modules/admin/dosql.php
+- Fixed bug in using the POST instead of the GET variable
+
+2003-01-19 19:17  (eddieajau)
+---------------------------------
+locales/fr/locales.php
+- French locales support moved to dotmods site
+
+2003-01-19 19:16  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added added function to display the configuration array of a module
+
+2003-01-19 19:13  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+- Added missing fields to contacts table
+
+2003-01-19 18:57  (kripper)
+---------------------------------
+modules/admin/permissions.php
+- Fixed bug preventing someone to edit another users permissions
+
+2003-01-17 09:29  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added extra support for updateing preferences\nReorganised directory read function
+
+2003-01-17 09:27  (eddieajau)
+---------------------------------
+dosql/preference_aed.php
+- Preferences now refresh when they are updated
+
+2003-01-17 09:25  (eddieajau)
+---------------------------------
+locales/core.php
+- Added inclusion of styles.inc when in system module
+
+2003-01-17 09:24  (eddieajau)
+---------------------------------
+locales/en/styles.inc
+locales/en/system.inc
+locales/es/styles.inc
+- Content updated
+
+2003-01-17 09:22  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Moved the style directory read to this file
+
+2003-01-17 09:20  (eddieajau)
+---------------------------------
+style/demo1/overrides.php
+style/demo1/images/tabBg.png
+style/demo1/images/tabLeft.png
+style/demo1/images/tabRight.png
+style/demo1/images/tabSelectedLeft.png
+- Made acitve tab stand out and fixed tab row height
+
+2003-01-17 05:06  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added support to override the CTabBox class
+
+2003-01-17 05:04  (eddieajau)
+---------------------------------
+style/demo1/images/tabBg.png
+style/demo1/images/tabLeft.png
+style/demo1/images/tabRight.png
+style/demo1/images/tabSelectedBg.png
+style/demo1/images/tabSelectedLeft.png
+style/demo1/images/tabSelectedRight.png
+- Initial upload
+
+2003-01-17 05:00  (eddieajau)
+---------------------------------
+index.php
+style/demo1/main.css
+style/demo1/overrides.php
+- Added support to override ui functions
+
+2003-01-17 03:58  (ajdonnison)
+---------------------------------
+modules/ticketsmith/view.php
+- Changed app_root to a more generic dotproject.net.  Note that this should
+- be completely externalized at some point.
+
+2003-01-17 03:47  (kripper)
+---------------------------------
+locales/es/help.inc
+locales/es/projects.inc
+locales/es/tasks.inc
+style/demo1/header.php
+- Updated spanish locales
+- Added $uistyle to header.php
+
+2003-01-17 03:16  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2003-01-17 02:49  (eddieajau)
 ---------------------------------
 classdefs/tasks.php
