@@ -118,3 +118,13 @@ CREATE TABLE `user_access_log` (
 `date_time_last_action` DATETIME DEFAULT '0000-00-00 00:00:00',
 PRIMARY KEY ( `user_access_log_id` )
 );
+
+#20040823
+# Task Priority, Project Priority are now sysvals
+#
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
+VALUES ("10", '1', 'TaskPriority', '-1|low\n0|normal\n1|high');
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
+VALUES ("11", '1', 'ProjectPriority', '-1|low\n0|normal\n1|high');
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
+VALUES ('12', '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n1|#FFDCB3');

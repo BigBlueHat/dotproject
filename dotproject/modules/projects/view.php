@@ -1,6 +1,4 @@
 <?php /* PROJECTS $Id$ */
-Global $priority;
-
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
 // check permissions for this record
@@ -24,6 +22,10 @@ $canDelete = $obj->canDelete( $msg, $project_id );
 
 // get critical tasks (criteria: task_end_date)
 $criticalTasks = ($project_id > 0) ? $obj->getCriticalTasks($project_id) : NULL;
+
+// get ProjectPriority from sysvals
+$projectPriority = dPgetSysVal( 'ProjectPriority' );
+$projectPriorityColor = dPgetSysVal( 'ProjectPriorityColor' );
 
 // load the record data
 $sql = "
@@ -227,7 +229,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Priority');?>:</td>
-			<td class="hilite" width="100%" style="background-color:<?=$priority[$obj->project_priority]['color']?>"><?php echo $AppUI->_($priority[$obj->project_priority]['name']);?></td>
+			<td class="hilite" width="100%" style="background-color:<?=$projectPriorityColor[$obj->project_priority]?>"><?php echo $AppUI->_($projectPriority[$obj->project_priority]);?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Type');?>:</td>

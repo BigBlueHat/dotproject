@@ -29,6 +29,7 @@ $projects = $proj->getAllowedRecords( $AppUI->user_id, 'project_id,project_name'
 $projFilter = arrayMerge(  array( 'all' => $AppUI->_('All Projects') ), $projects );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 
 $table_header = "";
 $table_rows="";
@@ -423,7 +424,7 @@ if($do_report){
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
-                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'user_task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change User specific Task Priority of selected Tasks').'"', 0, true );
+                        $tmpuser .= "<td align=\"center\">".arraySelect( $taskPriority, 'user_task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change User specific Task Priority of selected Tasks').'"', 0, true );
                         $tmpuser .= "</td></tr></table></td>";
 
 			$tmpuser.="</tr>";
@@ -728,7 +729,7 @@ return false;
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
-                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
+                        $tmpuser .= "<td align=\"center\">".arraySelect( $taskPriority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
                         $tmpuser .= "</td></tr></table></td>";
 
 				$tmpuser.="</tr>";

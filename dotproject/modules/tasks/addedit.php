@@ -50,6 +50,7 @@ if (!$canEdit) {
 $canReadProject = !getDenyRead( 'projects', $obj->task_project);
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 
 // check the document access (public, participant, private)
 if (!$obj->canAccess( $AppUI->user_id )) {
@@ -874,7 +875,7 @@ $titleBlock->show();
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
 			<td nowrap>
-				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $obj->task_priority, true );?>
+				<?php echo arraySelect( $taskPriority, 'task_priority', 'size="1" class="text"', $obj->task_priority, true );?>
 			</td>
 		</tr>
 		<tr>

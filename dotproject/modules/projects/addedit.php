@@ -1,6 +1,4 @@
 <?php /* PROJECTS $Id$ */
-Global $priority;
-
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
 // check permissions for this record
@@ -44,6 +42,9 @@ if ($project_id && !array_key_exists( $row->project_company, $companies )) {
 
 // get critical tasks (criteria: task_end_date)
 $criticalTasks = ($project_id > 0) ? $row->getCriticalTasks() : NULL;
+
+// get ProjectPriority from sysvals
+$projectPriority = dPgetSysVal( 'ProjectPriority' );
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -298,13 +299,7 @@ function setDepartment(department_id_string){
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?></td>
 			<td nowrap>
-				<?php
-					$priorities = array();
-					foreach($priority as $id => $p){
-						$priorities[$id] = $p['name'];
-					}
-				?>
-				<?=arraySelect( $priorities, 'project_priority', 'size="1" class="text"', $row->project_priority, true );?> *
+				<?=arraySelect( $projectPriority, 'project_priority', 'size="1" class="text"', $row->project_priority, true );?> *
 			</td>
 		</tr>
 		<tr>
