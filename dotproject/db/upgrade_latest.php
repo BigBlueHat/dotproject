@@ -57,4 +57,5 @@ foreach ($tasks as $task){
 }
 
 include ('upgrade_contacts.php');
+include ('upgrade_permissions.php');
 ?>
