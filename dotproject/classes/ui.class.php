@@ -2,7 +2,7 @@
 /**
 * @package dotproject
 * @subpackage core
-* @license http://opensource.org/licenses/bsd-license.php BSD License
+* @license http://opensource.org/licenses/gpl-license.php GPL License Version 2
 */
 
 // Message No Constants
