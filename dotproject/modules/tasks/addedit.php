@@ -61,7 +61,7 @@ $task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : null;
+$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : ($obj->task_id ? null : new CDate());
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
 
 // pull the related project
