@@ -171,7 +171,7 @@ $custom_modules = db_loadList($sql);
 foreach($custom_modules as $mod)
 {
   $perms->addModule($mod['mod_directory'], $mod['mod_name']);
-  $perms->addGroupItem($this->mod_directory, "non_admin");
+  $perms->addGroupItem($mod['mod_directory'], "non_admin");
                 
   if (isset($mod['permissions_item_table']) && $mod['permissions_item_table'])
     $perms->addModuleSection($mod['permissions_item_table']);

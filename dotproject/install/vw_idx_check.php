@@ -99,6 +99,7 @@ $chmod = '0777';
             Consider changing this to a more restrictive setting to improve security. You will need to do this manually.</td>
 </tr>
 <?php
+$okMessage="";
 if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cfgFile ) && !(is_writable( $cfgDir ))) ) {
 
         @chmod( $cfgFile, $chmod );
@@ -148,7 +149,7 @@ $okMessage="";
 if (is_writable( $locEnDir )) {
 
         @chmod( $locEnDir, $chmod );
-	$filemode = @fileperms($filesDir);
+	$filemode = @fileperms($locEnDir);
 	if ($filemode & 2)
 	        $okMessage="<span class='error'> World Writable</span>";
 

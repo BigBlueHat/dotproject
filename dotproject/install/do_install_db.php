@@ -283,6 +283,7 @@ if ($do_db || $do_db_cfg) {
  }
  dPmsg("There were $errors errors in $piece_count SQL statements");
 
+				$dbError = $db->ErrorNo();
         if ($dbError <> 0 && $dbError <> 1007) {
   $dbErr = true;
                 $dbMsg .= "A Database Error occurred. Database has probably not been populated completely!<br>".$db->ErrorMsg()."<br>";
