@@ -10,12 +10,6 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// Now check if the proect is editable/viewable.
-$denied = $obj->getDeniedRecords($AppUI->user_id);
-if (in_array($project_id, $denied)) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
 // retrieve any state parameters
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
@@ -25,6 +19,12 @@ $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' 
 // check if this record has dependancies to prevent deletion
 $msg = '';
 $obj = new CProject();
+// Now check if the proect is editable/viewable.
+$denied = $obj->getDeniedRecords($AppUI->user_id);
+if (in_array($project_id, $denied)) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $canDelete = $obj->canDelete( $msg, $project_id );
 
 // get critical tasks (criteria: task_end_date)
@@ -58,6 +58,7 @@ if (!db_loadObject( $sql, $obj )) {
 } else {
 	$AppUI->savePlace();
 }
+
 
 // worked hours
 // by definition milestones don't have duration so even if they specified, they shouldn't add up
