@@ -97,9 +97,14 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 // $xpg_result      - pointer to results from SELECT LIMIT
 // $xpg_resultcount - pointer to results from SELECT COUNT
 
-if (!isset($page)) {
-	$page = 1;
-}
+/* Bug Fix # 931286 for DotProject version 1.0.2-1
+   Coder: Rowan Simms - bitter at sourceforge dot net
+   Date: 14/April/2004 */
+
+$page = dPgetParam( $_GET, "page", 1);
+
+/* end bugfix #931286 */
+
 $xpg_pagesize = 30;
 $xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
 
