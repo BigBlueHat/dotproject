@@ -1,4 +1,5 @@
-<?php
+<?php /* HELP $Id$ */
+error_reporting( E_ALL );	// this only for development testing
 
 ##
 ## dothelp configuration file (integrated in dotproject)
