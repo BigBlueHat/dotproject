@@ -43,7 +43,7 @@ class CFile extends CDpObject {
 		$this->_query->addQuery('project_owner');
 		$this->_query->addWhere('project_id = ' . $this->file_project);
 		$res = $this->_query->exec();
-		if ($res && $row = db_fetch_assoc($row)) {
+		if ($res && $row = db_fetch_assoc($res)) {
 			if ($row['project_owner'] == $AppUI->user_id)
 				return true;
 		} 
