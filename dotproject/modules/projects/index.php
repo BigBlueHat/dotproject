@@ -1,5 +1,6 @@
 <?php  /* PROJECTS $Id$ */
 $AppUI->savePlace();
+include_once( $AppUI->getModuleClass( 'companies' ) );
 
 // Set up 'filters'
 
@@ -42,7 +43,7 @@ SELECT
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
 	user_username,
-	SUM(t1.task_duration*t1.task_percent_complete)/sum(t1.task_duration) as project_percent_complete
+	SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete)/sum(t1.task_duration*t1.task_duration_type) as project_percent_complete
 FROM permissions,projects
 LEFT JOIN companies ON company_id = projects.project_company
 LEFT JOIN users ON projects.project_owner = users.user_id
@@ -65,39 +66,9 @@ ORDER BY $orderby
 
 $projects = db_loadList( $sql );
 
-$allow = array();
-foreach ($projects as $row) {
-	$allow[$row['project_company']] = $row['project_company'];
-}
-
-// get read denied companies
-$deny = array();
-$sql = "
-SELECT company_id
-FROM companies, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'companies'
-	AND permission_item = company_id
-	AND permission_value = 0
-";
-$deny = db_loadColumn( $sql );
-
-$sql = "
-SELECT company_id,company_name
-FROM companies, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'companies' AND permission_item = -1)
-		OR (permission_grant_on = 'companies' AND permission_item = company_id)
-		)"
-.(count($deny) > 0 ? "\nAND company_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-.(count($allow) > 0 ? "\nOR company_id IN (" . implode( ',', $allow ) . ')' : '')
-."\nORDER BY company_name";
-
-//echo "<pre>$sql</pre>";
-$companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
+$company = new CCompany();
+$companies = $company->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$companies = arrayMerge( array( '0'=>'All' ), $companies );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, "$m.$a" );
