@@ -70,7 +70,7 @@ $q2 = new DBQuery;
 $q2->addQuery(array ('f.*',
 	'max(f.file_id) as  latest_id',
 	'count(f.file_version) as file_versions',
-	'round(f.file_version,2) as file_lastversion',
+	'round(max(f.file_version),2) as file_lastversion',
 	'project_name',
 	'project_color_identifier',
 	'project_active',

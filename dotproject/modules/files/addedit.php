@@ -137,7 +137,7 @@ function setTask( key, val ) {
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="<?php echo $file_id;?>" />
-	<input type="hidden" name="file_version_id" value="<?php echo $file_version_id;?>" />
+	<input type="hidden" name="file_version_id" value="<?php echo $obj->file_version_id;?>" />
 
 <tr>
 	<td width="100%" valign="top" align="center">
