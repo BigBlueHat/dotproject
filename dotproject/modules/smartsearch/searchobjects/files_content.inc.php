@@ -48,7 +48,7 @@ class files_content {
                         $sql.=" $field LIKE '%$this->keyword%' or ";
                 }
                 $sql = substr($sql,0,-4);
-                $q->addWhere($sql);
+                $q->addWhere("($sql)");
 		$q->addGroup('files.file_id');
                 return $q->prepare();
 	}

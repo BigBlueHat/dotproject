@@ -47,7 +47,7 @@ class tasks {
                         $sql.=" $field LIKE '%$this->keyword%' or ";
                 }
                 $sql = substr($sql,0,-4);
-                $q->addWhere($sql);
+                $q->addWhere("($sql)");
                 return $q->prepare();
 	}
 }
