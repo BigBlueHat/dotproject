@@ -38,6 +38,10 @@ $next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_TIMESTAMP_DATE ) )
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=calendar&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "month view" );
 $titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "week view" );
+$titleBlock->addCell(
+					 '<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
+					 '<form action="?m=calendar&a=addedit&startDate=' . $this_day->format( FMT_TIMESTAMP_DATE )  . '" method="post">', '</form>'
+					 );	
 $titleBlock->show();
 ?>
 <script language="javascript">
