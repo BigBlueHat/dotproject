@@ -42,7 +42,7 @@ foreach ($users as $row) {
 				</a>
 			</td>
 			<td>
-				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $row["contact_first_name"] . " " . $row["contact_last_name"];?>')" title="<?php echo $AppUI->_('delete');?>">
+				<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo addslashes($row["contact_first_name"] . " " . $row["contact_last_name"]);?>')" title="<?php echo $AppUI->_('delete');?>">
 					<?php echo dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' ); ?>
 				</a>
 			</td>
