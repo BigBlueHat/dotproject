@@ -114,6 +114,20 @@ if ($url != $dPconfig['root_dir']) {
   echo "<td>OK</td></tr>";
 }
 
+$burl = preg_replace('/\/docs\/.*$/', '', $_SERVER['SCRIPT_NAME']);
+preg_match('_^(https?://)([^/]+)(:[0-9]+)?(/.*)$_i', $dPconfig['base_url'], $url_parts);
+echo "<tr><td>base_url</td><td>$dPconfig[base_url]</td>";
+$real_base = $url_parts[1] . $_SERVER['SERVER_NAME'];
+if ($url_parts[3])
+	$real_base .= $url_parts[3];
+$real_base .= $burl;
+if ($url_parts[2] != $_SERVER['SERVER_NAME']
+|| $url_parts[4] != $burl ) {
+	echo "<td class=error>base_dir seems to be incorrect, probably should be $real_base</td></tr>";
+} else {
+	echo "<td>OK</td></tr>";
+}
+
 echo "</table>";
 
 
