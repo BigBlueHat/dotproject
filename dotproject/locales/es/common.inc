@@ -42,7 +42,7 @@
 "cancel"=>"cancelar",
 "delete"=>"eliminar",
 "flat"=>"plano",
-"forgotPassword"=>"Ayuda.  No recuerdo mi nombre o contraseña.",
+"forgotPassword"=>"Ayuda.  No recuerdo mi nombre o contrase&#241;a.",
 "login"=>"entrar",
 "new department"=>"nuevo departamento",
 "openSource"=>"Un sistema OpenSource<br>para gestión de proyectos",
