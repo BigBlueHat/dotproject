@@ -35,7 +35,7 @@ function dPgetIniSize($val) {
 </tr>
 <tr>
  <td class="item">PHP Version >= 4.1</td>
- <td align="left"><?php echo phpversion() < '4.1' ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
+ <td align="left"><?php echo version_compare(phpversion(), '4.1', '<') ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
 </tr>
 <tr>
  <td class="item"><li>Server API</li></td>
@@ -146,14 +146,12 @@ if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cf
 </tr>
 <?php
 $okMessage="";
-if (!is_writable( $filesDir )) {
-
+if (!is_writable( $filesDir ))
         @chmod( $filesDir, $chmod );
- $filemode = @fileperms($filesDir);
- if ($filemode & 2)
-         $okMessage="<span class='error'> World Writable</span>";
 
- }
+$filemode = @fileperms($filesDir);
+if ($filemode & 2)
+         $okMessage="<span class='error'> World Writable</span>";
 ?>
 <tr>
             <td class="item">./files writable?</td>
@@ -161,14 +159,12 @@ if (!is_writable( $filesDir )) {
 </tr>
 <?php
 $okMessage="";
-if (!is_writable( $tmpDir )) {
-
+if (!is_writable( $tmpDir ))
         @chmod( $tmpDir, $chmod );
- $filemode = @fileperms($tmpDir);
- if ($filemode & 2)
-         $okMessage="<span class='error'> World Writable</span>";
 
- }
+$filemode = @fileperms($tmpDir);
+if ($filemode & 2)
+	$okMessage="<span class='error'> World Writable</span>";
 ?>
 <tr>
             <td class="item">./files/temp writable?</td>
@@ -176,14 +172,12 @@ if (!is_writable( $tmpDir )) {
 </tr>
 <?php
 $okMessage="";
-if (!is_writable( $locEnDir )) {
-
+if (!is_writable( $locEnDir ))
         @chmod( $locEnDir, $chmod );
-	$filemode = @fileperms($locEnDir);
-	if ($filemode & 2)
-	        $okMessage="<span class='error'> World Writable</span>";
 
- }
+$filemode = @fileperms($locEnDir);
+if ($filemode & 2)
+	$okMessage="<span class='error'> World Writable</span>";
 ?>
 <tr>
             <td class="item">./locales/en writable?</td>
