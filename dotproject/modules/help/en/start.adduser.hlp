@@ -1,0 +1,69 @@
+<!-- $Id$ -->
+<h2>Adding a User</h2>
+
+<p>The next thing you may want to do is create a couple of users.&#160; Users
+can be given access to the whole of dotProject or be restricted to only certain
+parts.&#160; A fresh install of dotProject will provide you with one
+Administrator user.</p>
+
+<p>Click on the User Admin menu item. You should see one item there, that being
+the admin user you have logged in as.&#160; Click on the <strong>add
+user</strong> button.</p>
+
+<p>You'll see a form to fill out for the user.&#160; Give the user a Login
+Name, a password (and repeat it in the password2 field).&#160; Fill in the
+user's real name.&#160; We'll user <strong class="c1">Linus Soft</strong> as an
+example.</p>
+
+<p>Assign the user to the Xinul Company by selecting it from the drop down
+list.&#160; You must assign a user to a company.&#160; Skip over the Department
+field and fill in an email (it is better to be a real one because a user can be
+notified of certain things in other module of dotProject).&#160; Fill in any of
+the other remaining fields at your leisure.</p>
+
+<p>Click on the <strong>submit</strong> button when you are finished.</p>
+
+<p>This will take you back to the user list page.&#160; How come their is only
+the admin user?&#160; When you create a new user they have no rights to any
+module in dotProject.&#160; Therefore they are consider an
+<strong>In-Active</strong> user.</p>
+
+<p>Click on the <strong>In-Active Users</strong> tab.&#160; You should see the
+new user you just created.&#160; You can click on the login name link to view
+the user's profile but we want to get straight to giving this person some
+permissions.&#160; Click on the lock icon to the left of the login name.</p>
+
+<p>In the upper half of the screen you will see the information you entered
+about the user.&#160; In the bottom half of the screen you will see an area to
+edit the permissions for the user.</p>
+
+<p>We'll be working mostly in the <strong>Add or Edit Permissions</strong> box
+on the right.<br />
+- Select a <strong>Module</strong> from the down down list (say,
+companies).<br />
+- Select a <strong>Level</strong> of <strong>read-write</strong> from the drop
+down list.<br />
+- Click on the <strong>add</strong> button.</p>
+
+<p>When the screen refreshes you that Linus Soft now has read-write permission
+to the companies module.&#160; Linus is a bit of a funny chap though.&#160; We
+don't want to give him access to the Swodniw company (for obvious
+reasons).&#160; To do this:<br />
+- Select a module of Companies.<br />
+- Click on the dialog button next to the item field (the one with the [...] in
+it).<br />
+- In the pop-up dialog box, click on the Swodniw item in the list.<br />
+- Click on the select button in the dialog box.&#160; You will see the Swodniw
+name appear in the Item box.<br />
+- Select a Level of deny.<br />
+- Click on the add button.</p>
+
+<p>When the screen refreshes you will see that Linus has read-write permissions
+to all companies&#160;but is denied access to the&#160;Swodniw company.<br />
+</p>
+
+<p>Now, click on the <strong>user list</strong> bread-crumb in the title
+block.&#160; If the In-Active Users tab is showing (which it probably is;
+dotProject will generally remember where you were) you will see that Linus no
+longer appears in this list.&#160; Click on the Active Users tab.&#160; You
+should see that Linus now appears in this list.</p>

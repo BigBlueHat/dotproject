@@ -1,6 +1,35 @@
 <!-- $Id$ -->
 <h2>Adding a Company</h2>
-<P>The first thing you need to do is to add a company.&nbsp; This will generally be the company that you will be doing your work for (that is, your client).&nbsp; </P>
-<P>Select <STRONG>Companies &amp; Clients</STRONG> from the left navigation menu.&nbsp; o&shy;n your first use all you will see is a table with no results.
-<P>Click o&shy;n the <STRONG>new company</STRONG> button.&nbsp; You will be presented with an input form.&nbsp; Fill in at least the required fields.
-<P>Click o&shy;n&nbsp;the <STRONG>submit</STRONG> button at the bottom of the form.&nbsp; You will be taken back to the Company Index page where you started.&nbsp; There should now be o&shy;ne entry in the list.&nbsp; It will show that your new company has no active or archived projects.<BR><BR><STRONG><FONT color=darkblue>Tip</FONT></STRONG>:&nbsp; You can create a new company at any time by selecting the 'company' option from the 'New Item' drop-down list shown in the top menu.</P>
+<style type="text/css">
+/*<![CDATA[*/
+strong.c1 {color: #0000ff}
+/*]]>*/
+</style>
+
+<p>The first thing you need to do is to add a company.&#160; A company may
+be&#160;one that&#160;you will be doing your work for (that is, your
+client) or it could be the company that you work for.&#160; All users are
+associated with a company as are all projects.</p>
+
+<p>Log in as the Administrator with a username of <strong>admin</strong>
+and a password of <strong>passwd</strong> (this is the default password but
+we recommend that you change it).</p>
+
+<p>Select <strong>Companies &amp; Clients</strong> from the left navigation
+menu. If this is a fresh install&#160;you will see that the results table
+is empty.</p>
+
+<p>Click o&#173;n the <strong>new company</strong> button.&#160; You will
+be presented with an input form.&#160; As an example we'll call this
+company <strong class="c1">Xinul</strong>.&#160; Fill in some of the other
+fields with any sort of information. For the moment, leave the company
+owner as the admin user.</p>
+
+<p>Click o&#173;n&#160;the <strong>submit</strong> button at the bottom of
+the form.&#160; You will be taken back to the Company Index page where you
+started.&#160; There should now be o&#173;ne entry in the list.&#160; It
+will show that your new company has no active or archived projects.</p>
+
+<p>Now create another company.&#160; As an example we'll call it <strong
+class="c1">Swodniw</strong>.
+</p>

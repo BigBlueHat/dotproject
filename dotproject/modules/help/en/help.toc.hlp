@@ -34,6 +34,7 @@
 			<br />
 			<br /><a href="?m=help&dialog=1&hid=start.overview">Overview</a>
 			<br /><a href="?m=help&dialog=1&hid=start.addcomp">Adding a Company</a>
+			<br /><a href="?m=help&dialog=1&hid=start.adduser">Adding a User</a>
 		</p>
 	</td>
 	<td width="50%" valign="top">
