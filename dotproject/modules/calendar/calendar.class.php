@@ -539,7 +539,7 @@ class CEvent extends CDpObject {
 		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
 
 
-		for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
+		for ($i=0; $i < sizeof($eventListRec);  $i++) {
 
 			for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
 
