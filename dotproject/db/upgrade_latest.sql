@@ -650,3 +650,33 @@ INSERT INTO `config` VALUES ('', 'files_show_versions_edit', 'false', '', 'check
 # 20050225
 # forum variable
 INSERT INTO `config` VALUES('', 'forum_descendent_order', 'true', '', 'checkbox');
+
+# 20050302
+# new custom fields
+CREATE TABLE custom_fields_struct (
+field_id integer primary key,
+field_module varchar(30),
+field_page varchar(30),
+field_htmltype varchar(20),
+field_datatype varchar(20),
+field_order integer,
+field_name varchar(100),
+field_extratags varchar(250),
+field_description varchar(250)
+);
+
+CREATE TABLE custom_fields_values (
+value_id integer,
+value_module varchar(30),
+value_object_id integer,
+value_field_id integer,
+value_charvalue varchar(250),
+value_intvalue integer
+);
+
+CREATE TABLE custom_fields_lists (
+field_id integer,
+list_option_id integer,
+list_value varchar(250)
+);
+
