@@ -205,7 +205,7 @@ class CTask {
 		foreach ($users as $row) {
 			if ($row['assignee_id'] != $AppUI->user_id) {
 				if ($mail->ValidEmail($row['assignee_email'])) {
-					$mail->To( $row['assignee_email'] );
+					$mail->To( $row['assignee_email'], true );
 					$mail->Send();
 				}
 			}
