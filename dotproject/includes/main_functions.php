@@ -330,6 +330,7 @@ function dPgetSysVal( $title ) {
 	// is properly treated as a numeric
 	foreach ($temp as $item) {
 		if($item) {
+			$sep2 = empty($sep2) ? "\n" : $sep2;
 			$temp2 = explode( $sep2, $item );
 			if (isset( $temp2[1] )) {
 				$arr[trim($temp2[0])] = trim($temp2[1]);
