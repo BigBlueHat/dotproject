@@ -1,5 +1,4 @@
 <?php /* PROJECTS $Id$ */
-
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
 // check permissions for this record
@@ -62,6 +61,17 @@ $hours = db_loadResult($sql);
 $total_hours = $days * $dPconfig['daily_working_hours'] + $hours;
 //due to the round above, we don't want to print decimals unless they really exist
 $total_hours = rtrim($total_hours, "0");
+
+$total_project_hours = 0;
+//$total_project_days_sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
+//$total_project_hours_sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
+$total_project_days_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
+$total_project_hours_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
+
+$total_project_hours = db_loadResult($total_project_days_sql) * $dPconfig['daily_working_hours'] + db_loadResult($total_project_hours_sql);
+//due to the round above, we don't want to print decimals unless they really exist
+$total_project_hours = rtrim($total_project_hours, "0");
+
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -179,7 +189,11 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Total Hours');?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_hours ?></td>
-		</tr>		
+		</tr>
+		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Work');?>:</td>
+			<td class="hilite" width="100%"><?php echo $total_project_hours ?></td>
+		</tr>				
 		</table>
 		<strong><?php echo $AppUI->_('Description');?></strong><br />
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
