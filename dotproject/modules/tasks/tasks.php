@@ -52,7 +52,7 @@ $join .
 ORDER BY project_name
 ";
 
-// echo "<pre>$psql</pre>";
+//echo "<pre>$psql</pre>";
 
 $prc = db_exec( $psql );
 echo db_error();
@@ -296,6 +296,9 @@ function showtask( &$a, $level=0 ) {
 			}
 			$s .= '</td>';
 		}
+	} else {
+		// No users asigned to task
+		$s .= '<td align="center">-</td>';
 	}
 	
 	$s .= '<td nowrap="nowrap" align="center">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
