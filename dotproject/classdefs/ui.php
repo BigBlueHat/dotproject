@@ -26,6 +26,8 @@ class CAppUI {
 	var $user_department;
 	var $user_type;
 	var $user_prefs;
+// active project
+	var $project_id;
 // localisation
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
@@ -61,6 +63,8 @@ class CAppUI {
 		$this->user_company = 0;
 		$this->user_department = 0;
 		$this->user_type = 0;
+
+		$this->project_id = 0;
 
 		$this->defaultRedirect = "";
 // set up the default preferences
@@ -228,6 +232,14 @@ class CAppUI {
 	function getPref( $name ) {
 		return @$this->user_prefs[$name];
 	}
+
+	function getProject() {
+		return $this->project_id;
+	}
+	
+	function setProject( $id=0 ) {
+		$this->project_id = $id;
+	}
 }
 /*
 	Tabbed box class
@@ -245,6 +257,10 @@ class CTabBox {
 		$this->baseInc = $baseInc;
 	}
 
+	function getTabName( $idx ) {
+		return $this->tabs[$idx][1];
+	}
+	
 	function add( $file, $title ) {
 		$this->tabs[] = array( $file, $title );
 	}
@@ -280,14 +296,14 @@ class CTabBox {
 			echo '</table>';
 		} else {
 		// tabbed view
-			$s = '<table width="98%" border=0 cellpadding="3" cellspacing=0><tr>';
+			$s = '<table width="98%" border="0" cellpadding="3" cellspacing="0"><tr>';
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
-				$s .= '<td nowrap="nowrap" class="tabsp"><img src="./images/shim.gif" height=1 width=1></td>';
-				$s .= '<td nowrap="nowrap" class="'.$class.'"><a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a></td>';
+				$s .= '<td width="1%" nowrap="nowrap" class="tabsp"><img src="./images/shim.gif" height=1 width=1></td>';
+				$s .= '<td width="1%" nowrap="nowrap" class="'.$class.'"><a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a></td>';
 			}
-			$s .= '<td nowrap="nowrap" class="tabsp" width="100%">&nbsp;</td>';
-			$s .= '</tr><tr><td width="100%" colspan="99" class="tabox">';
+			$s .= '<td nowrap="nowrap" class="tabsp">&nbsp;</td>';
+			$s .= '</tr><tr><td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">';
 			echo $s;
 			require $this->baseInc.'/'.$this->tabs[$this->active][0].'.php';
 			echo '</td></tr></table>';
