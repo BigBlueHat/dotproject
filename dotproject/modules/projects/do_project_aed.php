@@ -32,7 +32,7 @@ if ($del) {
 		$AppUI->redirect();
 	} else {
 		$AppUI->setMsg( "Project deleted", UI_MSG_ALERT);
-		$AppUI->redirect( "", -1 );
+		$AppUI->redirect( "m=projects" );
 	}
 } else {
 	if (($msg = $obj->store())) {
