@@ -6,14 +6,13 @@ require_once( "$root_dir/classdefs/ui.php" );
 session_start();
 $AppUI =& $_SESSION['AppUI'];
 
+setlocale( LC_TIME, $AppUI->user_locale );
+
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : 0;
 
 $this_month =  new CDate( $uts && $uts > 0 ? $uts : null );
 $this_month->setTime( 0,0,0 );
-
-//Short Day names
-$monthLetters = array( 'J', 'F', 'M', 'A', 'M', 'J', 'J', 'A', 'S', 'O', 'N', 'D' );
 
 $uistyle = $AppUI->getPref( 'UISTYLE' );
 ?>
