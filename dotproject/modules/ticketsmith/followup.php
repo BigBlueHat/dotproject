@@ -11,6 +11,8 @@ $titleBlock->show();
 require("modules/ticketsmith/config.inc.php");
 require("modules/ticketsmith/common.inc.php");
 
+require_once( $AppUI->getSystemClass( 'libmail' ) );
+
 /* set title */
 $title = "Post Followup";
 
@@ -46,25 +48,23 @@ if (@$followup) {
     $followup = stripslashes($followup);
     $cc = stripslashes($cc);
 
-    /* fix subject */
-    chop($subject);
-    $subject = "[#$ticket_parent] " . $subject;
-
-    /* prepare extra headers */
-    $headers = "From: $author\n";
-    $headers .= "Reply-To: " . $CONFIG["reply_to"];
-    $headers .= $cc ? "\nCc: $cc" : "";
-    $headers .= "\nX-Mailer: $xmailer";
-
-    /* mail the followup */
-    @mail($recipient, $subject, $followup, $headers) || fatal_error("Unable to mail followup.  Quit without recording followup to database.");
+	$mail = new Mail;
+	$mail->From( $author );
+	$mail->To( $recipient );
+	$mail->ReplyTo( $CONFIG["reply_to"] );
+	if ($cc) {
+		$mail->Cc( $cc );
+	}
+	$mail->Subject( "[#$ticket_parent] " . trim( $subject ) );
+	$mail->Body( $followup );
+    $mail->Send() || fatal_error("Unable to mail followup.  Quit without recording followup to database.");
 
     /* escape special characters */
-    $author = addslashes($author);
-    $recipient = addslashes($recipient);
-    $subject = addslashes($subject);
-    $followup = addslashes($followup);
-    $cc = addslashes($cc);
+    $author = db_escape( $author );
+    $recipient = db_escape( $recipient );
+    $subject = db_escape( $subject );
+    $followup = db_escape( $followup );
+    $cc = db_escape( $cc );
 
     /* do database insert */
     $query = "INSERT INTO tickets (author, subject, recipient, body, cc, timestamp, type, assignment, parent) ";
