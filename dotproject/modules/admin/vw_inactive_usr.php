@@ -12,5 +12,5 @@ ORDER by $orderby
 
 $users = db_loadList( $sql );
 
-require "vw_usr.php";
+require "$root_dir/modules/admin/vw_usr.php";
 ?>
