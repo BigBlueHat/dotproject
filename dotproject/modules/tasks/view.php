@@ -1,5 +1,4 @@
 <?php /* $Id$ */
-
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
 
 // check permissions for this record
@@ -70,16 +69,6 @@ WHERE t.task_id =$task_id AND
 ORDER by u.user_last_name, u.user_first_name
 ";
 $users = db_loadList( $sql );
-
-//Pull files on this task
-$sql = "
-SELECT file_id, file_name, file_size,file_type,file_date,file_version
-FROM files
-WHERE file_task = $task_id
-	AND file_task <> 0
-ORDER by file_name
-";
-$files = db_loadList( $sql );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
@@ -372,7 +361,6 @@ function delIt() {
 
 		$record_type = isset($cfp->custom_record_types[$obj->task_type]) ? $cfp->custom_record_types[$obj->task_type] : null;
 		echo $cfp->parseTableForm(false, $record_type);
-		// pendiente agregar tasktype a la bd y hacer el editor de tasks
 	 ?>
 	 		</td>
 	 	</tr>
