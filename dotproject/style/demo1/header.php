@@ -1,16 +1,5 @@
 <?php  /* $Id$ */
-$nav = array(
-    array( 'companies', 'money.gif', 'Companies' ),
-    array( 'projects', 'projects.gif', 'Projects' ),
-    array( 'tasks', 'tasks.gif', 'Tasks' ),
-    array( 'calendar', 'calendar.gif', 'Calendar' ),
-    array( 'files', 'folder.gif', 'Files' ),
-    array( 'contacts', 'contacts.gif', 'Contacts' ),
-    array( 'forums', 'communicate.gif', 'Forums' ),
-    array( 'ticketsmith', 'ticketsmith.gif', 'Tickets' ),
-    array( 'admin', 'admin.gif', 'User Admin' ),
-    array( 'system', 'system.gif', 'System Admin' )
-);
+$nav = dPgetMenuModules();
 ?>
 <!doctype html public "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -41,13 +30,13 @@ function tboff(){
 }
 </script>
 <title><?php echo $page_title;?></title>
-<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle ?>/main.css">
+<link rel="stylesheet" type="text/css" href="./style/demo1/main.css">
 </head>
 <body bgcolor="#f0f0f0" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-    <td background="style/<?php echo $uistyle ?>/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
+    <td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
 </tr>
 <tr>
     <td style="border: #848284 1px outset;background-color:#d5d3ce;color:#000000">
@@ -57,8 +46,8 @@ function tboff(){
 <?php
 $links = array();
 foreach ($nav as $module) {
-    if (isset( $perms['all'] ) || isset( $perms[$module[0]] )) {
-        $links[] = '<a href="?m='.$module[0].'">'.$AppUI->_($module[2]).'</a>';
+    if (!getDenyRead( $module['mod_directory'])) {
+        $links[] = '<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
     }
 }
 echo implode( ' | ', $links );
