@@ -13,7 +13,7 @@
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <table align="center" border="0" width="250" cellpadding="4" cellspacing="0" bgcolor="#cccccc" class="bordertable">
-<?//please leave action argument empty ?>
+<?php //please leave action argument empty ?>
 <!--form action="./index.php" method="post" name="loginform"-->
 <form method="post" action="<?php echo $loginFromPage; ?>" name="loginform">
 <input type="hidden" name="login" value="<?php echo time();?>" />

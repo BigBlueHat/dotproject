@@ -92,7 +92,7 @@ function delIt2(id) {
         <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $obj->task_status, false );?>
 </form>
 
-<? echo "<b>$company_name</b>"; ?>
+<?php echo "<b>$company_name</b>"; ?>
 
 <table width="100%" border="0" cellpadding="1" cellspacing="1" class="std">
 <form name="frmDel" action="./index.php?m=system" method="post">
@@ -104,7 +104,7 @@ function delIt2(id) {
 <form name="changeuser" action="./index.php?m=system" method="post">
         <input type="hidden" name="dosql" value="do_billingcode_aed" />
         <input type="hidden" name="del" value="0" />
-        <input type="hidden" name="company_id" value="<? echo $company_id; ?>" />
+        <input type="hidden" name="company_id" value="<?php echo $company_id; ?>" />
         <input type="hidden" name="billingcode_status" value="0" />
 
 <tr height="20">

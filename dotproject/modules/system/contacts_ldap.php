@@ -83,27 +83,27 @@ if (isset( $_POST['test'] )) {
 <table border="0" cellpadding="2" cellspacing="1" width="600" class="std">
 	<tr>
 		<td align="right" nowrap="nowrap">Server:</td>
-		<td><input type="text" name="server" value="<?=isset($server)?$server:""; ?>" size="50"></td>
+		<td><input type="text" name="server" value="<?php echo isset($server)?$server:""; ?>" size="50"></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap">Port:</td>
-		<td><input type="text" name="port" value="<?=isset($port)?$port:""; ?>" size="4"></td>
+		<td><input type="text" name="port" value="<?php echo isset($port)?$port:""; ?>" size="4"></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap">Bind Name:</td>
-		<td><input type="text" name="bind_name" value="<?=isset($bind_name)?$bind_name:""; ?>" size="50"></td>
+		<td><input type="text" name="bind_name" value="<?php echo isset($bind_name)?$bind_name:""; ?>" size="50"></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap">Bind Password:</td>
-		<td><input type="password" name="bind_password" value="<?=isset($bind_password)?$bind_password:""; ?>" size="25"></td>
+		<td><input type="password" name="bind_password" value="<?php echo isset($bind_password)?$bind_password:""; ?>" size="25"></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap">Base DN:</td>
-		<td><input type="text" name="dn" value="<?=isset($dn)?$dn:""; ?>" size="100"></td>
+		<td><input type="text" name="dn" value="<?php echo isset($dn)?$dn:""; ?>" size="100"></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap">Filter:</td>
-		<td><input type="text" name="filter" value="<?=isset($filter)?$filter:""; ?>" size="100"></td>
+		<td><input type="text" name="filter" value="<?php echo isset($filter)?$filter:""; ?>" size="100"></td>
 	</tr>
 	<tr>
 		<td colspan="2" align="right"><input type="submit" name="test" value="Test Connection and Query"><input type="submit" name="import" value="Import Users"></td>
@@ -195,14 +195,14 @@ print "expression: ".$filter."<br>";
 					//if an email address is not specified in Domino you get a crazy value for this field that looks like FOO/BAR%NAME@domain.com  This'll filter those values out.
 					if(isset($test) && $sql_name=="contact_email" && substr_count($val,"%")>0){
 					?>
-						<td><span style="color:#880000;"><?=$AppUI->_('bad email address')?></span></td>
+						<td><span style="color:#880000;"><?php echo $AppUI->_('bad email address')?></span></td>
 					<?php
 						continue;
 					}
 					$pairs[$sql_name] = $val;
 					if(isset($test)){
 					?>
-						<td><?=$val?></td>
+						<td><?php echo $val?></td>
 					<?php
 					}
 				} else {

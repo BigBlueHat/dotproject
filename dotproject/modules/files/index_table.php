@@ -136,8 +136,8 @@ function expand(id){
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th nowrap="nowrap">&nbsp;</th>
-        <th nowrap="nowrap"><?= $AppUI->_('co') ?></th>
-        <th nowrap="nowrap"><?= $AppUI->_('Checkout Reason') ?></th>
+        <th nowrap="nowrap"><?php echo $AppUI->_('co') ?></th>
+        <th nowrap="nowrap"><?php echo $AppUI->_('Checkout Reason') ?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'File Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Description' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Versions' );?></th>

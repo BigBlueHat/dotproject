@@ -152,7 +152,7 @@ if (!$ok) {
 
 </script>
 <form name="frmSelector">
-<b><?=$AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':'?></b>
+<b><?php echo $AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':'?></b>
 <table width="100%">
 <tr>
 	<td>

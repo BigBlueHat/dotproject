@@ -56,7 +56,7 @@
 	$contacts = $q->loadHashList("contact_id");
 ?>
 
-<h2><?php echo $AppUI->_('Contacts for'); ?> <?= $company_name ?></h2>
+<h2><?php echo $AppUI->_('Contacts for'); ?> <?php echo $company_name ?></h2>
 
 <form action='index.php?m=public&a=contact_selector&dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>company_id=<?php echo $company_id ?>' method='post' name='frmContactSelect'>
 <?php
@@ -95,5 +95,5 @@
 ?>
 <hr />
 <input name='contacts_submited' type='hidden' value='1' />
-<input type='submit' value='<?= $AppUI->_("Continue"); ?>' class='button' />
+<input type='submit' value='<?php echo $AppUI->_("Continue"); ?>' class='button' />
 </form>

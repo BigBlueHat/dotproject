@@ -202,7 +202,7 @@ function showtask_edit($task, $level=0)
 	</td>
 
 	<td width="50%">
-	<? for ($i = 1; $i < $level; $i++)
+	<?php for ($i = 1; $i < $level; $i++)
 							echo '&nbsp;&nbsp;';
 			if ($level > 0)
 				echo '<img src="./images/corner-dots.gif" width="16" height="12" border="0">'; ?>

@@ -16,7 +16,7 @@
 
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
 <br /><br /><br /><br />
-<?//please leave action argument empty ?>
+<?php //please leave action argument empty ?>
 <!--form action="./index.php" method="post" name="loginform"-->
 <form method="post" name="lostpassform">
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">

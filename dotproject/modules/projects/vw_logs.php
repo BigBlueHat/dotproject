@@ -53,19 +53,19 @@ function delIt2(id) {
 <form name="frmFilter" action="./index.php" method="get">
 <tr>
 	<td width="98%">&nbsp;</td>
-	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_inactive" <?=$hide_inactive?"checked":""?> onchange="document.frmFilter.submit()"><?=$AppUI->_('Hide Inactive')?></td>
-	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_complete" <?=$hide_complete?"checked":""?> onchange="document.frmFilter.submit()"><?=$AppUI->_('Hide 100% Complete')?></td>
-	<td width="1%" nowrap="nowrap"><?=$AppUI->_('User Filter')?></td>
-	<td width="1%"><?=arraySelect( $users, 'user_id', 'size="1" class="text" id="medium" onchange="document.frmFilter.submit()"',
+	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_inactive" <?php echo $hide_inactive?"checked":""?> onchange="document.frmFilter.submit()"><?php echo $AppUI->_('Hide Inactive')?></td>
+	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_complete" <?php echo $hide_complete?"checked":""?> onchange="document.frmFilter.submit()"><?php echo $AppUI->_('Hide 100% Complete')?></td>
+	<td width="1%" nowrap="nowrap"><?php echo $AppUI->_('User Filter')?></td>
+	<td width="1%"><?php echo arraySelect( $users, 'user_id', 'size="1" class="text" id="medium" onchange="document.frmFilter.submit()"',
                           $user_id )?></td>
-	<td width="1%" nowrap="nowrap"><?=$AppUI->_('Cost Code Filter')?></td>
-	<td width="1%"><?=arraySelect( $task_log_costcodes, 'cost_code', 'size="1" class="text" onchange="document.frmFilter.submit()"',
+	<td width="1%" nowrap="nowrap"><?php echo $AppUI->_('Cost Code Filter')?></td>
+	<td width="1%"><?php echo arraySelect( $task_log_costcodes, 'cost_code', 'size="1" class="text" onchange="document.frmFilter.submit()"',
                           $cost_code )?></td>
 </tr>
 <input type="hidden" name="m" value="projects"/>
 <input type="hidden" name="a" value="view"/>
-<input type="hidden" name="project_id" value="<?=$project_id?>"/>
-<input type="hidden" name="tab" value="<?=$tab?>"/>
+<input type="hidden" name="project_id" value="<?php echo $project_id?>"/>
+<input type="hidden" name="tab" value="<?php echo $tab?>"/>
 </form>
 </table>
 <table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">

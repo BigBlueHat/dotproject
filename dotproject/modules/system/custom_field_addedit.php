@@ -160,42 +160,42 @@
 <form method="POST" action="?m=system&a=custom_field_editor" id="custform" />
 <table class="std">
 	<th colspan="2">
-		<?=$edit_title?> <?=$AppUI->_('Custom Field In');?> <?=$module?> <?=$AppUI->_('Module') ?>
+		<?php echo $edit_title?> <?php echo $AppUI->_('Custom Field In');?> <?php echo $module?> <?php echo $AppUI->_('Module') ?>
 		<input type="hidden" name="field_id" value="<?php echo $field_id; ?>" />
-		<input type="hidden" name="module" value="<?=$module?>" /> 
+		<input type="hidden" name="module" value="<?php echo $module?>" /> 
 		<input type="hidden" name="dontdosql" id="dosql" value="do_custom_field_aed" />
 	</td></tr>
 	<tr><td>
-		<?=$AppUI->_('Field Name/Identifier')?>:
+		<?php echo $AppUI->_('Field Name/Identifier')?>:
 		<br />
-		<?=$AppUI->_('(No Spaces)')?>
+		<?php echo $AppUI->_('(No Spaces)')?>
 		</td><td>
-		<input type="text" name="field_name" maxlength="100" value="<?=$field_name?>" onblur='this.value=this.value.replace(/[^a-z|^A-Z|^0-9]*/gi,"");' />
+		<input type="text" name="field_name" maxlength="100" value="<?php echo $field_name?>" onblur='this.value=this.value.replace(/[^a-z|^A-Z|^0-9]*/gi,"");' />
 	</td></tr>
 	<tr><td>
-		<?=$AppUI->_('Field Description')?>:
+		<?php echo $AppUI->_('Field Description')?>:
 		</td><td>
-		<input type="text" name="field_description" size="40" maxlength="250" value="<?=$field_description?>" />
+		<input type="text" name="field_description" size="40" maxlength="250" value="<?php echo $field_description?>" />
 	</td></tr>
 	<tr><td>
-		<?=$AppUI->_('Field Display Type')?>:
+		<?php echo $AppUI->_('Field Display Type')?>:
 		</td><td>
 		<?php echo arraySelect( $html_types, 'field_htmltype', 'id="htmltype" onChange="javascript:showAttribs()"', $field_htmltype); ?>
 	</td></tr>
 	<tr><td colspan="2">
 		<hr />
 		<tr><td>
-			<?=$AppUI->_('HTML Tag Options')?>:
+			<?php echo $AppUI->_('HTML Tag Options')?>:
 		</td>
 		<td>
-			<input type="text" name="field_extratags" value="<?=$field_extratags?>" />
+			<input type="text" name="field_extratags" value="<?php echo $field_extratags?>" />
 		</td></tr>
 	</td></tr>
 	<tr><td colspan="2">
-	<div id="div_select" style="<?=$visible_state["div_select"]?>">
+	<div id="div_select" style="<?php echo $visible_state["div_select"]?>">
 		<table id="atbl_select">
 		<tr><td colspan="2">
-			<b><?=$AppUI->_('List of Options')?>:</b> 
+			<b><?php echo $AppUI->_('List of Options')?>:</b> 
 		</td></tr>
 		<tr><td colspan="2">
 			<input type="hidden" name="delete_item" value="0" id="delete_item" />
@@ -212,22 +212,22 @@
 				}
 			?>
 			<tr><td>
-			<li><input type="text" name="select_newitem" /></td><td><input type="button" value="<?=$AppUI->_('Add')?>" onClick="javascript:addSelectItem()" /></li>
+			<li><input type="text" name="select_newitem" /></td><td><input type="button" value="<?php echo $AppUI->_('Add')?>" onClick="javascript:addSelectItem()" /></li>
 			</td></tr>
 			</table>
 		</td></tr>
 		</table>
 		<hr />
 	</div>
-	<div id="div_textinput" style="<?=$visible_state["div_textinput"]?>">
+	<div id="div_textinput" style="<?php echo $visible_state["div_textinput"]?>">
 		<table id="atbl_textinput">
 		</table>
 	</div>
-	<div id="div_textarea" style="<?=$visible_state["div_textarea"]?>">
+	<div id="div_textarea" style="<?php echo $visible_state["div_textarea"]?>">
 		<table id="atbl_textarea">
 		</table>
 	</div>
-	<div id="div_checkbox" style="<?=$visible_state["div_checkbox"]?>">
+	<div id="div_checkbox" style="<?php echo $visible_state["div_checkbox"]?>">
 		<table id="atbl_checkbox">
 		</table>
 	</div>

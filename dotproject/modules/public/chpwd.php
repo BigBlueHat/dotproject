@@ -68,7 +68,7 @@ function submitIt() {
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Current Password');?></td>
 	<td><input type="password" name="old_pwd" class="text"></td>
 </tr>
-<? } ?>
+<?php } ?>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('New Password');?></td>
 	<td><input type="password" name="new_pwd1" class="text"></td>

@@ -125,7 +125,7 @@ $date = new CDate();
 $date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : null;
 ?>
 
-<tr><td align="right"><?php echo $AppUI->_('Author') ?>:</td><td align="left"><?= dPgetUsername($message_info['user_username']) ?> (<?php echo $date->format( "$df $tf" );?>)</td></tr>
+<tr><td align="right"><?php echo $AppUI->_('Author') ?>:</td><td align="left"><?php echo dPgetUsername($message_info['user_username']) ?> (<?php echo $date->format( "$df $tf" );?>)</td></tr>
 <tr><td align="right"><?php echo  $AppUI->_('Subject') ?>:</td><td align="left"><?php echo $message_info['message_title'] ?></td></tr>
 <tr><td align="right" valign="top"><?php echo  $AppUI->_('Message') ?>:</td><td align="left"><textarea name="message_parent_body" cols="60" readonly="readonly" style="height:100px; font-size:8pt"><?php echo $message_info['message_body'];?></textarea></td></tr>
 <tr><td colspan="2" align="left"><hr></td></tr>

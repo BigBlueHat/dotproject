@@ -21,8 +21,8 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 		foreach($colors as $key=>$value){
 	?>
 	<tr>
-		<td style="background-color:#<?=$value?>; border: 1px solid black;cursor: pointer;" width="30" onClick="setClose('<?=$value?>')">&nbsp;</td>
-		<td width="300"><a href="javascript:setClose('<?=$value?>')"><?=$key?></a></td>
+		<td style="background-color:#<?php echo $value?>; border: 1px solid black;cursor: pointer;" width="30" onClick="setClose('<?php echo $value?>')">&nbsp;</td>
+		<td width="300"><a href="javascript:setClose('<?php echo $value?>')"><?php echo $key?></a></td>
 	</tr>
 	<?php
 		}
