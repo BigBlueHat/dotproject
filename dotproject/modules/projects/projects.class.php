@@ -163,14 +163,22 @@ class CProject extends CDpObject {
 		$oCpy = new CCompany ();
 		
 		$aCpies = $oCpy->getAllowedRecords ($uid, "company_id, company_name");
-		$buffer = '(project_company IN (' . 
-				implode(',' , array_keys($aCpies)) . 
-				'))'; 
+		if (count($aCpies)) {
+		  $buffer = '(project_company IN (' . 
+				  implode(',' , array_keys($aCpies)) . 
+				  '))'; 
 
-		if ($extra['where'] != "") 
-			$extra['where'] = $extra['where'] . ' AND ' . $buffer;
-		else
-			$extra['where'] = ' AND ' . $buffer; 
+		  if ($extra['where'] != "") 
+			  $extra['where'] = $extra['where'] . ' AND ' . $buffer;
+		  else
+			  $extra['where'] = ' AND ' . $buffer; 
+		} else {
+		  // There are no allowed companies, so don't allow projects.
+		  if ($extra['where'] != '')
+		    $extra['where'] = $extra['where'] . ' AND 1 = 0 ';
+		  else
+		    $extra['where'] = '1 = 0';
+		}
 
 		return parent::getAllowedRecords ($uid, $fields, $orderby, $index, $extra);
 				
