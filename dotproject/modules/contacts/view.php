@@ -11,6 +11,14 @@ $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 $msg = '';
 $row = new CContact();
 $canDelete = $row->canDelete( $msg, $contact_id );
+// Don't allow to delete contacts, that have a user associated to them.
+$sql = 'SELECT user_id
+				FROM users
+				WHERE user_contact = ' . $row->contact_id;
+$tmp_user = db_loadResult($sql);
+if (!empty($tmp_user))
+	$canDelete = false; 
+
 $canEdit = $perms->checkModuleItem($m, "edit", $contact_id);
 
 if (!$row->load( $contact_id ) && $contact_id > 0) {
@@ -47,7 +55,7 @@ $titleBlock->show();
 <script language="JavaScript">
 function delIt(){
         var form = document.changecontact;
-        if(confirm( "<?php echo $AppUI->_('contactsDelete');?>" )) {
+        if(confirm( "<?php echo $AppUI->_('contactsDelete', UI_OUTPUT_JS);?>" )) {
                 form.del.value = "<?php echo $contact_id;?>";
                 form.submit();
         }
