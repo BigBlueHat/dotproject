@@ -131,6 +131,7 @@ for ($x=0; $x < $nums; $x++) {
 
 //This kludgy function echos children tasks as threads
 
+if (! function_exists('showtask') ) {
 function showtask( &$a, $level=0 ) {
 	global $AppUI, $done, $query_string, $durnTypes;
 	$df = $AppUI->getPref( 'SHDATEFORMAT' );
@@ -187,6 +188,9 @@ function showtask( &$a, $level=0 ) {
 	echo $s;
 }
 
+}
+
+if (! function_exists('findchild') ) {
 function findchild( &$tarr, $parent, $level=0 ){
 	GLOBAL $projects;
 	$level = $level+1;
@@ -197,6 +201,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 			findchild( $tarr, $tarr[$x]["task_id"], $level);
 		}
 	}
+}
 }
 ?>
 

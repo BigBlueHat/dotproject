@@ -637,7 +637,7 @@ class CTabBox_core {
 			foreach ($this->tabs as $v) {
 				echo '<tr><td><strong>'.$AppUI->_($v[1]).'</strong></td></tr>';
 				echo '<tr><td>';
-				include $this->baseInc.$v[0].".php";
+				include_once $this->baseInc.$v[0].".php";
 				echo '</td></tr>';
 			}
 			echo '</table>';
@@ -658,7 +658,7 @@ class CTabBox_core {
 			$s .= "\n<tr>";
 			$s .= '<td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">';
 			echo $s;
-			require $this->baseInc.$this->tabs[$this->active][0].'.php';
+			require_once $this->baseInc.$this->tabs[$this->active][0].'.php';
 			echo "\n</td>\n</tr>\n</table>";
 		}
 	}
