@@ -60,7 +60,7 @@ while ($row = db_fetch_assoc( $prc )) {
 
 // pull tasks
 $select = "
-tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
+distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, user_username, task_milestone
 ";
