@@ -35,13 +35,13 @@ case 'projects':
 	$title = 'Project';
 	$select = 'project_id,project_name';
 	$order = 'project_name';
-	$where = $project_company ? "project_company = $project_company" : '';
+	$where = @$project_company ? "project_company = $project_company" : '';
 	break;
 case 'tasks':
 	$title = 'Task';
 	$select = 'task_id,task_name';
 	$order = 'task_name';
-	$where = $task_project ? "task_project = $task_project" : '';
+	$where = @$task_project ? "task_project = $task_project" : '';
 	break;
 case 'users':
 	$title = 'User';
