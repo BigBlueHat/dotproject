@@ -78,7 +78,7 @@
 		</li>
 	
 	<li>Customize your Database Schema Script [OPTIONAL].
-	<p>Open the file dotproject/db/dotproject_100.sql with a text editor
+	<p>Open the file dotproject/db/dotproject_{version}.sql<a href='#dbversion'>*</a> with a text editor
     and edit the last section where the default dotproject Admin
     Account is setup (line 351).</p>
     
@@ -90,8 +90,8 @@
 
 	<li>Populate the Database.
     Utilize the information from the Database Setup and the provided
-    "/db/dotproject_100.sql" script to populate the dotproject database.
-    <pre>#mysql -udotproject -pyourpassword dotproject < dotproject/db/dotproject_100.sql </pre>
+    "/db/dotproject_{version}.sql"<a href='#dbversion'>*</a> script to populate the dotproject database.
+    <pre>#mysql -udotproject -pyourpassword dotproject &lt; dotproject/db/dotproject_{version}.sql<a href='#dbversion'>*</a> </pre>
 	</li>
     
 	<li>Configuration File Customization. Follow the instructions at the top of the file <code>dotproject/includes/config-dist.php</code></li>
@@ -176,6 +176,11 @@ deny from all</pre>
 	</ol>
 	</li>
 </ol>
+<a name='dbversion'>
+<h2>Which Database Script Do I Use?</h2></a>
+<p>Most distributions have one or more dotproject_{version}.sql files where {version} is the version of dotProject.  You should always choose
+the highest numbered version.  This version number will match the version of the dotProject code.  E.g. dotProject version 1.0.1 uses
+dotproject_101.sql.</p>
             
 <h2>Web trouble ticket email gateway: dotproject/includes/gateway.pl</h2>
 <pre>
