@@ -25,6 +25,8 @@ class CAppUI {
 	var $user_last_name;
 	var $user_company;
 	var $user_department;
+	var $user_type;
+	var $user_prefs;
 // localisation
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
@@ -32,6 +34,7 @@ class CAppUI {
 	var $locales = array(		
 		'en' => 'English', 
 		'es' => 'Spanish',
+		'fr' => 'French',
 		'pt_br' => 'Portugese-Brazilian'
 	);
 	var $locale_warn = true;	// warn when a translation is not found
@@ -50,8 +53,19 @@ class CAppUI {
 		$this->user_last_name = '';
 		$this->user_company = 0;
 		$this->user_department = 0;
+		$this->user_type = '';
 
 		$this->defaultRedirect = "";
+// set up the default preferences
+		$sql = "
+		SELECT pref_name, pref_value
+		FROM user_preferences
+		WHERE pref_user = 0
+		";
+		if ($debug) {
+			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
+		}
+		$this->user_prefs = db_loadHashList( $sql );
 	}
 // localisation
 	function setUserLocale( $loc ) {
@@ -163,11 +177,11 @@ class CAppUI {
 	}
 
 	function login( $username, $password ) {
-		GLOBAL $secret, $debug;
+		GLOBAL $secret, $debug, $host_locale;
 		$sql = "
 		SELECT
-			user_id, user_first_name, user_last_name, user_company, user_department, user_locale
-		FROM users,  permissions
+			user_id, user_first_name, user_last_name, user_company, user_department, user_type
+		FROM users, permissions
 		WHERE user_username = '$username'
 			AND user_password = password('$password') 
 			AND users.user_id = permissions.permission_user
@@ -180,6 +194,19 @@ class CAppUI {
 		if( !db_loadObject( $sql, $this ) ) {
 			return false;
 		}
+// load the user preferences
+		$sql = "
+		SELECT pref_name, pref_value
+		FROM user_preferences
+		WHERE pref_user = $this->user_id
+		";
+		if ($debug) {
+			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
+		}
+		$prefs = db_loadHashList( $sql );
+		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
+		$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
+
 		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
 		
 	// handle legacy cookies until they are all crushed
@@ -198,6 +225,10 @@ class CAppUI {
 
 	function doLogin() {
 		return ($this->user_id < 0) ? true : false;
+	}
+
+	function getPref( $name ) {
+		return @$this->user_prefs[$name];
 	}
 }
 /*
@@ -221,23 +252,28 @@ class CTabBox {
 	}
 
 	function show( $extra='' ) {
+		GLOBAL $AppUI;
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options
-		$s .= '<table border="0" cellpadding="2" cellspacing="0" width="98%"><tr><td nowrap="nowrap">';
-		$s .= '<a href="'.$this->baseHRef.'tab=0">tabbed</a> : ';
-		$s .= '<a href="'.$this->baseHRef.'tab=-1">flat</a>';
-		$s .= '</td>'.$extra.'</tr></table>';
-		echo $s;
+		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
+			$s .= '<table border="0" cellpadding="2" cellspacing="0" width="98%"><tr><td nowrap="nowrap">';
+			$s .= '<a href="'.$this->baseHRef.'tab=0">'.$AppUI->_('tabbed').'</a> : ';
+			$s .= '<a href="'.$this->baseHRef.'tab=-1">'.$AppUI->_('flat').'</a>';
+			$s .= '</td>'.$extra.'</tr></table>';
+			echo $s;
+		} else {
+			echo '<img src="./images/shim.gif" height="10" width="1">';
+		}
 
-		if ($this->active < 0) {
+		if ($this->active < 0 && @$AppUI->getPref( 'TABVIEW' ) != 2 ) {
 		// flat view, active = -1
 			echo '<table border="0" cellpadding="2" cellspacing="0" width="98%">';
 			foreach ($this->tabs as $v) {
-				echo "<tr><td><b>$v[1]</b></td></tr>";
-				echo "<tr><td>";
+				echo '<tr><td><b>'.$AppUI->_($v[1]).'</b></td></tr>';
+				echo '<tr><td>';
 				include "$this->baseInc/$v[0].php";
-				echo "</td></tr>";
+				echo '</td></tr>';
 			}
 			echo '</table>';
 		} else {
@@ -246,7 +282,7 @@ class CTabBox {
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$s .= '<td nowrap="nowrap" class="tabsp"><img src="./images/shim.gif" height=1 width=1></td>';
-				$s .= '<td nowrap="nowrap" class="'.$class.'"><a href="'.$this->baseHRef.'tab='.$k.'">'.$v[1].'</a></td>';
+				$s .= '<td nowrap="nowrap" class="'.$class.'"><a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a></td>';
 			}
 			$s .= '<td nowrap="nowrap" class="tabsp" width="100%">&nbsp;</td>';
 			$s .= '</tr><tr><td width="100%" colspan="99" class="tabox">';

@@ -97,7 +97,24 @@ ALTER TABLE tasks ADD task_dynamic tinyint(1) NOT NULL default 0;
 #
 # Prepare support for user localisation
 #
+
 DROP TABLE `localization`
-ALTER TABLE `users` ADD `user_locale` VARCHAR(5)  DEFAULT "en" NOT NULL AFTER user_country
 
+#
+# Table changes 12 Dec 2002 (aje)
+#
+ALTER TABLE `users` DROP `user_locale`
 
+DROP TABLE IF EXISTS user_preferences;
+CREATE TABLE `user_preferences` (
+  `pref_user` varchar(12) NOT NULL default '',
+  `pref_name` varchar(12) NOT NULL default '',
+  `pref_value` varchar(32) NOT NULL default '',
+  KEY `pref_user` (`pref_user`,`pref_name`)
+) TYPE=MyISAM;
+
+#
+# Dumping data for table 'user_preferences'
+#
+INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
+INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
