@@ -10,12 +10,12 @@
 #
 # TODO
 #
-# * replace "precent" with "percent" (?)
 # * replace "task_owner" with "task_creator"
 #
 
 CREATE TABLE companies (
-  company_id smallint(6) NOT NULL auto_increment,
+  company_id INT(10) NOT NULL auto_increment,
+  company_module INT(10) NOT NULL default 0,
   company_name varchar(100) default '',
   company_phone1 varchar(30) default '',
   company_phone2 varchar(30) default '',
@@ -91,8 +91,8 @@ CREATE TABLE contacts (
 CREATE TABLE events (
   event_id int(11) NOT NULL auto_increment,
   event_title varchar(255) NOT NULL default '',
-  event_start_date bigint(20) unsigned NOT NULL default '0',
-  event_end_date bigint(20) unsigned NOT NULL default '0',
+  event_start_date datetime default null,
+  event_end_date datetime default null,
   event_parent int(11) unsigned NOT NULL default '0',
   event_description text,
   event_times_recuring int(11) unsigned NOT NULL default '0',
@@ -102,6 +102,7 @@ CREATE TABLE events (
   event_owner int(11) default '0',
   event_project int(11) default '0',
   event_private tinyint(3) default '0',
+  event_type tinyint(3) default '0',
   PRIMARY KEY  (event_id),
   KEY id_esd (event_start_date),
   KEY id_eed (event_end_date),
@@ -440,6 +441,7 @@ INSERT INTO syskeys VALUES("1", "SelectList", "Enter values for list", "0", "\n"
 INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
 INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
 INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "TaskDurationType", "1|hours\n24|days");
+INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "EventType", "0|General\n1|Appointment\n2|Meeting\n3|All\nDay Event\n4|Anniversary\n5|Reminder");
 
 #
 # Table structure for table 'roles'
