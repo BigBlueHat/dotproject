@@ -12,10 +12,12 @@ $password = isset($_POST['password']) ? $_POST['password'] : '';
 $HTTP_SESSION_VARS['AppUI'] = new CAppUI;
 $AppUI =& $HTTP_SESSION_VARS['AppUI'];
 
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
+
 $ok = $AppUI->login( $username, $password );
 if (!$ok) {
 	$message = 'Login Failed';
-	include "./includes/login.php";
+	include "$root_dir/style/$uistyle/login.php";
 	die;
 }
 echo '<script language="javascript">window.location = "./index.php";</script>';
