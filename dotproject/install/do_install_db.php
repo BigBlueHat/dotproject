@@ -183,11 +183,9 @@ if ($dobackup){
   header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
   header('Content-Type: text/xml');
   echo $sql;
+	exit;
  } else {
-  $msg = "ERROR: No Database Connection available!";
-  header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
-  header('Content-Type: text/xml');
-  echo $msg;
+  $backupMsg = "ERROR: No Database Connection available! - Backup not performed!";
  }
 }
 
@@ -206,7 +204,7 @@ if ($dobackup){
 <?php
 
 if ($dobackup)
- dPmsg("Backup completed");
+ dPmsg($backupMsg);
 
 if ($do_db || $do_db_cfg) {
 
