@@ -4,11 +4,16 @@
 ##
 GLOBAL $AppUI, $company_id, $obj;
 
+require_once $AppUI->getModuleClass('contacts');
+
 $sql = "
-SELECT contact_id, contact_first_name, contact_last_name, contact_email, contact_department
+SELECT *
 FROM contacts
 WHERE contact_company = '$obj->company_name'
+OR contact_company = '$obj->company_id'
 ";
+
+$contact =& new CContact;
 
 $s = '';
 if (!($rows = db_loadList( $sql, NULL ))) {
@@ -23,10 +28,13 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 </tr>
 <?php
 	foreach ($rows as $row){
+		$contact->bind($row);
+		$dept_detail = $contact->getDepartmentDetails();
+
 		$s .= '<tr><td>';
 		$s .= '<a href="./index.php?m=contacts&a=addedit&contact_id='.$row["contact_id"].'">'.$row["contact_first_name"] . " " . $row["contact_last_name"] .'</a>';
 		$s .= '<td><a href="mailto:'.$row["contact_email"] .'">' .$row["contact_email"] .'</a></td>';
-		$s .= '<td>'.$row["contact_department"] .'</td>';
+		$s .= '<td>'.$dept_detail['dept_name'] .'</td>';
 		$s .= '</tr>';
 	}
 }
