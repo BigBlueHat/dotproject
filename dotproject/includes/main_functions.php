@@ -139,6 +139,14 @@ function dPfindImage( $name, $module ) {
 	}
 }
 
+function dPshowImage( $src, $wid='', $hgt='', $alt='' ) {
+	if (strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0' ) !== false) {
+		return "<div style=\"height:{$hgt}px; width:{$wid}px; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$src', sizingMethod='scale');\" ></div>";
+	} else {
+		return "<img src=\"$src\" width=\"$wid\" height=\"$hgt\" alt=\"$alt\" border=\"0\" />";
+	}
+}
+
 #
 # function to return a default value if a variable is not set
 #
