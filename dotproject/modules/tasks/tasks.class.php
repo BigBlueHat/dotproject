@@ -1,13 +1,18 @@
 <?php /* TASKS $Id$ */
 
 require_once( $AppUI->getSystemClass( 'libmail' ) );
+require_once( $AppUI->getSystemClass( 'dp' ) );
+require_once( $AppUI->getModuleClass( 'projects' ) );
 
-##
-## CTask Class
-##
-class CTask {
+/*
+* CTask Class
+*/
+class CTask extends CDpObject {
+/** @var int */
 	var $task_id = NULL;
+/** @var string */
 	var $task_name = NULL;
+/** @var int */
 	var $task_parent = NULL;
 	var $task_milestone = NULL;
 	var $task_project = NULL;
@@ -29,33 +34,20 @@ class CTask {
 	var $task_dynamic = NULL;
 
 	function CTask() {
-		// empty constructor
+		$this->CDpObject( 'tasks', 'task_id' );
 	}
 
-	function load( $oid ) {
-		$sql = "SELECT * FROM tasks WHERE task_id = $oid";
-		return db_loadObject( $sql, $this );
-	}
-
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
-	}
-
+// overload check
 	function check() {
 		if ($this->task_id === NULL) {
 			return 'task id is NULL';
 		}
-		if (!$this->task_milestone) {
-			$this->task_milestone = '0';
-		}
-		if (!$this->task_dynamic) {
-			$this->task_dynamic = '0';
-		}
+	// ensure changes to checkboxes are honoured
+		$this->task_milestone = intval( $this->task_milestone );
+		$this->task_dynamic = intval( $this->task_dynamic );
+		
+		$this->task_percent_complete = intval( $this->task_percent_complete );
+
 		if (!$this->task_duration) {
 			$this->task_duration = '0';
 		}
@@ -68,13 +60,12 @@ class CTask {
 		if (!$this->task_hours_worked) {
 			$this->task_hours_worked = '0';
 		}
-		if (!$this->task_percent_complete) {
-			$this->task_percent_complete = 0;
-		}
-		// TODO MORE
-		return NULL; // object is ok
+		return NULL;
 	}
 
+/**
+* @todo Parent store could be partially used
+*/
 	function store() {
 		GLOBAL $AppUI;
 		$msg = $this->check();
@@ -103,6 +94,10 @@ class CTask {
 		}
 	}
 
+/**
+* @todo Parent store could be partially used
+* @todo Can't delete a task with children
+*/
 	function delete() {
 		$this->_action = 'deleted';
 	// delete linked user tasks
@@ -212,12 +207,62 @@ class CTask {
 		}
 		return '';
 	}
+/**
+* @param Date Start date of the period
+* @param Date End date of the period
+* @param integer The target company
+*/
+	function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
+		GLOBAL $AppUI;
+	// convert to default db time stamp
+		$db_start = $start_date->format( DATE_FORMAT_ISO );
+		$db_end = $end_date->format( DATE_FORMAT_ISO );
+
+	// assemble where clause
+		$where = "task_project = project_id"
+			."\n\tAND ("
+			. "\n\t\t(task_start_date <= '$db_end' AND task_end_date >= '$db_start')"
+			. "\n\t\tOR task_start_date BETWEEN '$db_start' AND '$db_end'"
+			. "\n\t)";
+	/*
+			OR
+			task_end_date BETWEEN '$db_start' AND '$db_end'
+			OR
+			(DATE_ADD(task_start_date, INTERVAL task_duration HOUR)) BETWEEN '$db_start' AND '$db_end'
+			OR
+			(DATE_ADD(task_start_date, INTERVAL task_duration DAY)) BETWEEN '$db_start' AND '$db_end'
+	*/
+		$where .= $company_id ? "\n\tAND project_company = $company_id" : '';
+
+	// exclude read denied projects
+		$obj = new CProject();
+		$deny = $obj->getDeniedRecords( $AppUI->user_id );
+
+		$where .= count($deny) > 0 ? "\n\tAND task_project NOT IN (" . implode( ',', $deny ) . ')' : '';
+
+	// get any specifically denied tasks
+		$obj = new CTask();
+		$deny = $obj->getDeniedRecords( $AppUI->user_id );
+
+		$where .= count($deny) > 0 ? "\n\tAND task_id NOT IN (" . implode( ',', $deny ) . ')' : '';
+
+	// assemble query
+		$sql = "SELECT task_name, task_id, task_start_date, task_end_date,"
+			. "\n\ttask_duration, task_duration_type,"
+			. "\n\tproject_color_identifier AS color,"
+			. "\n\tproject_name"
+			. "\nFROM tasks,projects"
+			. "\nWHERE $where"
+			. "\nORDER BY task_start_date";
+//echo "<pre>$sql</pre>";
+	// execute and return
+		return db_loadList( $sql );
+	}
 }
 
-##
-## CTask Class
-##
-
+/**
+* CTask Class
+*/
 class CTaskLog {
 	var $task_log_id = NULL;
 	var $task_log_task = NULL;
@@ -232,19 +277,10 @@ class CTaskLog {
 		// empty constructor
 	}
 
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
-	}
-
+// overload check method
 	function check() {
 		$this->task_log_hours = (float) $this->task_log_hours;
-		// TODO MORE
-		return NULL; // object is ok
+		return NULL;
 	}
 
 	function store() {
