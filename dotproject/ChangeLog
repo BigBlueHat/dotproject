@@ -37,13 +37,6 @@ modules/projects/vw_idx_active.php
 modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_complete.php
 modules/projects/vw_idx_proposed.php
-- modules/companies/index.php
-- modules/companies/vw_companies.php
-- modules/projects/index.php
-- modules/projects/vw_idx_active.php
-- modules/projects/vw_idx_archived.php
-- modules/projects/vw_idx_complete.php
-- modules/projects/vw_idx_propsed.php
 - enabled sorting, both ascending and descending
 
 2005-03-08 12:39  (ajdonnison)

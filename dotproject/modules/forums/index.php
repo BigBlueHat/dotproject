@@ -1,6 +1,15 @@
 <?php /* FORUMS $Id$ */
 $AppUI->savePlace();
 
+// retrieve any state parameters
+if (isset( $_GET['orderby'] )) {
+    $orderdir = $AppUI->getState( 'ForumIdxOrderDir' ) ? ($AppUI->getState( 'ForumIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
+	$AppUI->setState( 'ForumIdxOrderBy', $_GET['orderby'] );
+    $AppUI->setState( 'ForumIdxOrderDir', $orderdir);
+}
+$orderby         = $AppUI->getState( 'ForumIdxOrderBy' ) ? $AppUI->getState( 'ForumIdxOrderBy' ) : 'forum_name';
+$orderdir        = $AppUI->getState( 'ForumIdxOrderDir' ) ? $AppUI->getState( 'ForumIdxOrderDir' ) : 'asc';
+
 $perms =& $AppUI->acl();
 
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
@@ -65,7 +74,7 @@ switch ($f) {
 		$sql .= "\nAND project_active=1";
 		break;
 }
-$sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";
+$sql .= "\nGROUP BY forum_id\nORDER BY $orderby $orderdir";
 
 $forums = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();##
@@ -89,11 +98,11 @@ $titleBlock->show();
 <form name="watcher" action="./index.php?m=forums&f=<?php echo $f;?>" method="post">
 <tr>
 	<th nowrap="nowrap">&nbsp;</th>
-	<th nowrap="nowrap" width="25"><?php echo $AppUI->_( 'Watch' );?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_( 'Forum Name' );?></th>
-	<th nowrap="nowrap" width="50" align="center"><?php echo $AppUI->_( 'Topics' );?></th>
-	<th nowrap="nowrap" width="50" align="center"><?php echo $AppUI->_( 'Replies' );?></th>
-	<th nowrap="nowrap" width="200"><?php echo $AppUI->_( 'Last Post Info' );?></th>
+	<th nowrap="nowrap" width="25"><a href="?m=forums&orderby=watch_user" class="hdr"><?php echo $AppUI->_( 'Watch' );?></a></th>
+	<th nowrap="nowrap"><a href="?m=forums&orderby=forum_name" class="hdr"><?php echo $AppUI->_( 'Forum Name' );?></a></th>
+	<th nowrap="nowrap" width="50" align="center"><a href="?m=forums&orderby=forum_topics" class="hdr"><?php echo $AppUI->_( 'Topics' );?></a></th>
+	<th nowrap="nowrap" width="50" align="center"><a href="?m=forums&orderby=forum_replies" class="hdr"><?php echo $AppUI->_( 'Replies' );?></a></th>
+	<th nowrap="nowrap" width="200"><a href="?m=forums&orderby=forum_last_date" class="hdr"><?php echo $AppUI->_( 'Last Post Info' );?></a></th>
 </tr>
 <?php
 $p ="";

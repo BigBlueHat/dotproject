@@ -1,6 +1,15 @@
 <?php /* FORUMS $Id$ */
 $AppUI->savePlace();
 
+// retrieve any state parameters
+if (isset( $_GET['orderby'] )) {
+    $orderdir = $AppUI->getState( 'ForumVwOrderDir' ) ? ($AppUI->getState( 'ForumVwOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
+	$AppUI->setState( 'ForumVwOrderBy', $_GET['orderby'] );
+    $AppUI->setState( 'ForumVwOrderDir', $orderdir);
+}
+$orderby         = $AppUI->getState( 'ForumVwOrderBy' ) ? $AppUI->getState( 'ForumVwOrderBy' ) : 'latest_reply';
+$orderdir        = $AppUI->getState( 'ForumVwOrderDir' ) ? $AppUI->getState( 'ForumVwOrderDir' ) : 'desc';
+
 //Pull All Messages
 $sql = "
 SELECT fm1.*,
@@ -36,8 +45,8 @@ GROUP BY
 	fm1.message_date,
 	fm1.message_body,
 	fm1.message_published" .
-  ( @$dPconfig['forum_descendent_order'] ? " ORDER BY latest_reply DESC" : "" );
-
+ # ( @$dPconfig['forum_descendent_order'] ? " ORDER BY latest_reply DESC" : "" );
+ " ORDER BY $orderby $orderdir";
 $topics = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();
 
@@ -58,11 +67,12 @@ $crumbs["?m=forums"] = "forums list";
 <table width="100%" cellspacing="1" cellpadding="2" border="0" class="tbl">
 <form name="watcher" action="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&f=<?php echo $f;?>" method="post">
 <tr>
-	<th><?php echo $AppUI->_('Watch');?></th>
-	<th><?php echo $AppUI->_('Topics');?></th>
-	<th><?php echo $AppUI->_('Author');?></th>
-	<th><?php echo $AppUI->_('Replies');?></th>
-	<th><?php echo $AppUI->_('Last Post');?></th>
+	<th><a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&orderby=watch_user" class="hdr"><?php echo $AppUI->_('Watch');?></a></th>
+	<th><a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&orderby=message_title" class="hdr"><?php echo $AppUI->_('Topics');?></a></th>
+	<th><a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&orderby=user_username" class="hdr"><?php echo $AppUI->_('Author');?></a></th>
+	<th><a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&orderby=replies" class="hdr"><?php echo $AppUI->_('Replies');?></a></th>
+	<th><a href="?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&orderby=latest_reply" class="hdr"><?php echo $AppUI->_('Last Post');?></a></th>
+
 </tr>
 <?php
 
