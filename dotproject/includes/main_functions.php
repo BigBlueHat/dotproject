@@ -501,6 +501,7 @@ function dprint($file, $line, $level, $msg)
   $max_level = (int)$dPconfig['debug'];
   if ($level <= $max_level) {
     error_log("$file($line): $msg");
+    echo "$file($line): $msg <br />";
     if ($level == 0 && $max_level > 0 && version_compare(phpversion(), "4.3.0") >=0 ) {
       format_backtrace(debug_backtrace(), $file, $line, $msg);
     }
