@@ -107,11 +107,12 @@ $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
-assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count, count(distinct files.file_task) as file_count
+assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count, count(distinct files.file_task) as file_count, history_date as last_update
 ";
 
 $from = "tasks";
-$join = "LEFT JOIN projects ON project_id = task_project";
+$join = "LEFT JOIN history ON history_item = tasks.task_id AND history_table='tasks' ";
+$join .= "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
 // patch 2.12.04 show assignee and count
 $join .= " LEFT JOIN user_tasks as ut ON ut.task_id = tasks.task_id";
@@ -269,6 +270,7 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 
 	$start_date = intval( $a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
 	$end_date = intval( $a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
+        $last_update = intval( $a['last_update'] ) ? new CDate( $a['last_update'] ) : null;
 
 	$s = "\n<tr>";
 // edit icon
@@ -358,6 +360,7 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 	}
 	$s .= '</td>';
 	$s .= '<td nowrap="nowrap" align="center">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
 
 	$s .= '</tr>';
 
@@ -479,6 +482,7 @@ function toggle_users(id){
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
+	<th nowrap="nowrap"><?php sort_by_item_title( 'Last Update', 'last_update', SORT_NUMERIC );?></th>
 </tr>
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
@@ -498,7 +502,7 @@ foreach ($projects as $k => $p) {
 			<img src="./images/icons/<?php echo $project_id ? 'expand.gif' : 'collapse.gif';?>" width="16" height="16" border="0" alt="<?php echo $project_id ? 'show other projects' : 'show only this project';?>">
 		</a>
 	</td>
-	<td colspan="8">
+	<td colspan="9">
 		<table width="100%" border="0">
 		<tr>
 			<!-- patch 2.12.04 display company name next to project name -->
@@ -548,7 +552,7 @@ foreach ($projects as $k => $p) {
 
 		if($tnums && $dPconfig['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
-			<td colspan="9" align="right">
+			<td colspan="10" align="right">
 				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
