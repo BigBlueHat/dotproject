@@ -110,7 +110,7 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
 	<td nowrap="nowrap">
-		<input type="radio" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo "checked"?> />
+		<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo "checked"?> />
 	</td>
 </tr>
         <?php
