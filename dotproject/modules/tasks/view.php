@@ -34,8 +34,11 @@ $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' 
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = $task["task_start_date"] ? new CDate( db_dateTime2unix( $task["task_start_date"] ) ) : null;
-$end_date = $task["task_end_date"] ?  new CDate( db_dateTime2unix( $task["task_end_date"] ) )  : null;
+$ts = db_dateTime2unix( $task["task_start_date"] );
+$start_date = $ts < 0 ? null : new CDate( $ts, $df );
+
+$ts = db_dateTime2unix( $task["task_end_date"] );
+$end_date = $ts < 0 ? null : new CDate( $ts, $df );
 
 //Pull users on this task
 $sql = "
