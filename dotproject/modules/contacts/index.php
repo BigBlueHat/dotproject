@@ -1,9 +1,20 @@
 <?php /* $Id$ */
 $AppUI->savePlace();
 
+// To configure an aditional filter to use in the search string
+$additional_filter = "";
 // retrieve any state parameters
 if (isset( $_GET['where'] )) {
 	$AppUI->setState( 'ContIdxWhere', $_GET['where'] );
+}
+if (isset( $_GET["search_string"] )){
+	$AppUI->setState ('ContIdxWhere', "%".$_GET['search_string']);
+				// Added the first % in order to find instrings also
+	$additional_filter = "OR contact_first_name like '%{$_GET['search_string']}%'
+	                      OR contact_last_name  like '%{$_GET['search_string']}%'
+						  OR contact_company    like '%{$_GET['search_string']}%'
+						  OR contact_notes      like '%{$_GET['search_string']}%'
+						  OR contact_email      like '%{$_GET['search_string']}%'";
 }
 $where = $AppUI->getState( 'ContIdxWhere' ) ? $AppUI->getState( 'ContIdxWhere' ) : '%';
 
@@ -38,7 +49,7 @@ foreach ($showfields as $val) {
 }
 $sql.= "contact_first_name, contact_last_name, contact_phone
 FROM contacts
-WHERE contact_order_by LIKE '$where%'
+WHERE (contact_order_by LIKE '$where%' $additional_filter)
 	AND (contact_private=0
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
 		OR contact_owner IS NULL OR contact_owner = 0
@@ -78,9 +89,23 @@ if ($rn < ($carrWidth * $carrHeight)) {
 
 $tdw = floor( 100 / $carrWidth );
 
+/**
+* Contact search form
+*/
+ // Let's remove the first '%' that we previously added to ContIdxWhere
+$default_search_string = substr($AppUI->getState( 'ContIdxWhere' ), 1, strlen($AppUI->getState( 'ContIdxWhere' )));
+
+$form = "<form action='./index.php' method='get'>".$AppUI->_('Search for')."
+           <input type='text' name='search_string' value='$default_search_string' />
+		   <input type='hidden' name='m' value='contacts' />
+		   <input type='submit' value='>' />
+		   <a href='./index.php?m=contacts&amp;search_string='>".$AppUI->_('Reset search')."</a>
+		 </form>";
+// En of contact search form
+
 $a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
 $a2z .= "\n<tr>";
-$a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
+$a2z .= "<td width='100%' align='right'>" . $AppUI->_('Show'). ": </td>";
 $a2z .= '<td><a href="./index.php?m=contacts&where=0">' . $AppUI->_('All') . '</a></td>';
 for ($c=65; $c < 91; $c++) {
 	$cu = chr( $c );
@@ -89,7 +114,7 @@ for ($c=65; $c < 91; $c++) {
 		"<font color=\"#999999\">$cu</font>";
 	$a2z .= "\n\t<td>$cell</td>";
 }
-$a2z .= "\n</tr>\n</table>";
+$a2z .= "\n</tr>\n<tr><td colspan='28'>$form</td></tr></table>";
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
