@@ -87,7 +87,7 @@ function submitIt() {
 	f.submit();
 }
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('filesDelete');?>" )) {
+	if (confirm( "<?php echo $AppUI->_('filesDelete', UI_OUTPUT_JS);?>" )) {
 		var f = document.uploadFrm;
 		f.del.value='1';
 		f.submit();
