@@ -1,4 +1,5 @@
 <?php /* CALENDAR $Id$ */
+global $tab;
 $AppUI->savePlace();
 
 require_once( $AppUI->getModuleClass( 'tasks' ) );
@@ -11,7 +12,7 @@ $company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
 
 $event_filter = $AppUI->checkPrefState('CalIdxFilter', @$_REQUEST['event_filter'], 'EVENTFILTER', 'my');
 
-$AppUI->setState( 'CompVwTab', dPgetParam($_GET, 'tab') );
+$AppUI->setState( 'CompVwTab', dPgetParam($_GET, 'tab', $tab) );
 $tab = $AppUI->getState( 'CompVwTab' ,'0');
 
 // get the passed timestamp (today if none)
