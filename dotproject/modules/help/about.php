@@ -11,7 +11,7 @@
 <p><TABLE width="95%" border=0 cellpadding="5" cellspacing=0>
 <tr valign=top>
 	<td width=50%>
-		<p><b>Version 0.2.1.5</b>
+		<p><b>Version 0.2.3</b>
 		
 		<p><b>dotproject</b> is a PHP+MySQL beta level web based project management tool that dotmarketing started in Dec. 2000. It is about 70% along to where we think it should be.
 
@@ -22,13 +22,14 @@
 		<p><b>What New in this Version</b>
 
 		<ul type=square>
-			<li>This About Page
-			<li>View Companies (to support read-only permissions)
-			<li>View User (to support read-only permissions)
-			<li>Filtering by Company on Projects list
-			<li>Filtering by Company on Calendar monthly view
+			<li>Ability to watch forums or forum topics
+			<li>Hierarchial Company Departments module
+			<li>Improved filtering of index screens
+			<li>Standardising look-and-feel across modules as well as view enhancements
+			<li>Support for user types
 		</ul>
 
+		<p><b>What New in this Version</b>
 
 	</td>
 	<td width=50%>
