@@ -10,7 +10,7 @@ require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php
 
 // make the connection to the db
 db_connect( $AppUI->cfg['dbhost'], $AppUI->cfg['dbname'],
-	$AppUI->cfg['dbuser'], $AppUI->cfg['dbpass'], null, $AppUI->cfg['dbpersist'] );
+	$AppUI->cfg['dbuser'], $AppUI->cfg['dbpass'], $AppUI->cfg['dbport'], $AppUI->cfg['dbpersist'] );
 
 /**
 * This global function loads the first field of the first row returned by the query.
