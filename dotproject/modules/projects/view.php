@@ -267,7 +267,12 @@ function delIt() {
 			<td align="right" nowrap><?php echo $AppUI->_('Project Hours');?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_project_hours ?></td>
 		</tr>				
-		<?php if($obj->project_departments != "") {
+		<?php
+					$depts = db_loadHashList("select a.dept_id, a.dept_name, a.dept_phone
+																		from departments a, project_departments b
+																		where a.dept_id = b.department_id
+																		and b.project_id = $project_id", "dept_id");
+					if (count($depts) > 0) {
 			?>
 		    <tr>
 		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
@@ -275,9 +280,6 @@ function delIt() {
 		    <tr>
 		    	<td colspan='3' class="hilite">
 		    		<?php
-		    			$depts = db_loadHashList("select dept_id, dept_name, dept_phone
-		    			                          from departments
-		    			                          where dept_id in (".$obj->project_departments.")", "dept_id");
 		    			foreach($depts as $dept_id => $dept_info){
 		    				echo "<div>".$dept_info["dept_name"];
 		    				if($dept_info["dept_phone"] != ""){
@@ -291,10 +293,11 @@ function delIt() {
 	 		<?php
 		}
 		
-		if($obj->project_contacts != "") {
-			$contacts = db_loadHashList("select contact_id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_department
-		    			                 from contacts
-		    			                 where contact_id in (".$obj->project_contacts.")
+			$contacts = db_loadHashList("select a.contact_id, a.contact_first_name, a.contact_last_name,
+								a.contact_email, a.contact_phone, a.contact_department
+		    			                 from contacts a, project_contacts b
+		    			                 where a.contact_id = b.contact_id
+															 and b.project_id = $project_id
 		    			                       and (contact_owner = '$AppUI->user_id' or contact_private='0')", "contact_id");
 			if(count($contacts)>0){
 				?>
@@ -328,7 +331,6 @@ function delIt() {
 			    <tr>
 			    	<td>
 		 <?php
-			}
 		}?>
 		</table>
 	</td>

@@ -1,8 +1,9 @@
 <?php /* PROJECTS $Id$ */
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
+$perms =& $AppUI->acl();
 // check permissions for this record
-$canEdit = !getDenyEdit( $m, $project_id );
+$canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 if (!$canEdit) {
 $AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -65,13 +66,36 @@ $titleBlock->show();
 
 //Build display list for departments
 $company_id = $row->project_company;
-$selected_departments = $row->project_departments != "" ? explode(",", $row->project_departments) : array();
+$selected_departments = array();
+if ($project_id) {
+	$q =& new DBQuery;
+	$q->addTable('project_departments');
+	$q->addQuery('department_id');
+	$q->addWhere('project_id = ' . $project_id);
+	$res =& $q->exec();
+	for ( $res; ! $res->EOF; $res->MoveNext())
+		$selected_departments[] = $res->fields['department_id'];
+	$q->clear();
+}
 $departments_count = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
 if($department_selection_list!=""){
 $department_selection_list = $AppUI->_("Departments")."<br /><select name='dept_ids[]' size='$departments_count' multiple style=''>$department_selection_list</select>";
 } else {
 $department_selection_list = "<input type='button' class='button' value='".$AppUI->_("Select department...")."' onclick='javascript:popDepartment();' /><input type=\"hidden\" name=\"project_departments\"";
+}
+
+// Get contacts list
+$selected_contacts = array();
+if ($project_id) {
+	$q =& new DBQuery;
+	$q->addTable('project_contacts');
+	$q->addQuery('contact_id');
+	$q->addWhere('project_id = ' . $project_id);
+	$res =& $q->exec();
+	for ( $res; ! $res->EOF; $res->MoveNext())
+		$selected_contacts[] = $res->fields['contact_id'];
+	$q->clear();
 }
 
 ?>
@@ -153,7 +177,7 @@ if (msg.length < 1) {
 }
 }
 
-var selected_contacts_id = "<?php echo $row->project_contacts; ?>";
+var selected_contacts_id = "<?php echo implode(',', $selected_contacts); ?>";
 
 function popContacts() {
 	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
@@ -167,7 +191,7 @@ function setContacts(contact_id_string){
 	selected_contacts_id = contact_id_string;
 }
 
-var selected_departments_id = "<?php echo $row->project_departments; ?>";
+var selected_departments_id = "<?php echo implode(',', $selected_departments); ?>";
 
 function popDepartment() {
         var f = document.editFrm;
@@ -196,7 +220,7 @@ function setDepartment(department_id_string){
 	<input type="hidden" name="dosql" value="do_project_aed" />
 	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 	<input type="hidden" name="project_creator" value="<?php echo $AppUI->user_id;?>" />
-	<input name='project_contacts' type='hidden' value="<?php echo $row->project_contacts; ?>" />
+	<input name='project_contacts' type='hidden' value="<?php echo implode(',', $selected_contacts); ?>" />
 
 <tr>
 	<td width="50%" valign="top">
