@@ -27,8 +27,6 @@ class CAppUI {
 	var $user_department;
 	var $user_type;
 	var $user_prefs;
-// active project
-	var $project_id;
 // a selected date
 	var $day_selected;
 // localisation
@@ -143,8 +141,13 @@ class CAppUI {
 	}
 // Save the current url query string
 	function savePlace( $query='' ) {
-		$this->state['SAVEDPLACE-1'] = @$this->state['SAVEDPLACE'];
-		$this->state['SAVEDPLACE'] = $query ? $query : @$_SERVER['QUERY_STRING'];
+		if (!$query) {
+			$query = @$_SERVER['QUERY_STRING'];
+		}
+		if ($query != @$this->state['SAVEDPLACE']) {
+			$this->state['SAVEDPLACE-1'] = @$this->state['SAVEDPLACE'];
+			$this->state['SAVEDPLACE'] = $query;
+		}
 	}
 	function resetPlace() {
 		$this->state['SAVEDPLACE'] = '';
@@ -259,14 +262,6 @@ class CAppUI {
 		//writeDebug( $sql, "Preferences for user $uid, SQL", __FILE__, __LINE__ );
 		$prefs = db_loadHashList( $sql );
 		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
-	}
-
-	function getProject() {
-		return $this->project_id;
-	}
-
-	function setProject( $id=0 ) {
-		$this->project_id = $id;
 	}
 
 	function getDaySelected() {
