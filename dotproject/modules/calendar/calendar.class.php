@@ -410,7 +410,7 @@ class CEvent extends CDpObject {
 			)
 			AND ($where)
 		";
-	echo "<pre>$sql</pre>";
+	// echo "<pre>$sql</pre>";
 	// execute and return
 		return db_loadList( $sql );
 	}
