@@ -25,8 +25,8 @@ function selPermWhere( $table, $idfld ) {
 }
 
 $debug = false;
-$callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
-$table = isset( $_GET['table'] ) ? $_GET['table'] : 0;
+$callback = dPgetParam( $_GET, 'callback', 0 );
+$table = dPgetParam( $_GET, 'table', 0 );
 
 $ok = $callback & $table;
 
@@ -67,18 +67,22 @@ case 'forums':
 	$order = 'forum_name';
 	break;
 case 'projects':
+	$project_company = dPgetParam( $_GET, 'project_company', 0 );
+
 	$title = 'Project';
 	$select = 'project_id,project_name';
 	$order = 'project_name';
 	$where = selPermWhere( 'projects', 'project_id' );
-	$where .= @$project_company ? "\nAND project_company = $project_company" : '';
+	$where .= $project_company ? "\nAND project_company = $project_company" : '';
 	$table .= ", permissions";
 	break;
 case 'tasks':
+	$task_project = dPgetParam( $_GET, 'task_project', 0 );
+
 	$title = 'Task';
 	$select = 'task_id,task_name';
 	$order = 'task_name';
-	$where = @$task_project ? "task_project = $task_project" : '';
+	$where = $task_project ? "task_project = $task_project" : '';
 	break;
 case 'users':
 	$title = 'User';
@@ -101,6 +105,7 @@ if (!$ok) {
 	$sql = "SELECT $select FROM $table";
 	$sql .= $where ? " WHERE $where" : '';
 	$sql .= $order ? " ORDER BY $order" : '';
+	//echo "<pre>$sql</pre>";
 
 	$list = arrayMerge( array( 0=>''), db_loadHashList( $sql ) );
 	echo db_error();
