@@ -33,8 +33,11 @@ if (!db_loadHash( $sql, $row )) {
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 $types = dPgetSysVal( 'CompanyType' );
 
-$sql = "SELECT COUNT(user_company) FROM users WHERE user_company = $company_id";
-$canDelete = (db_loadResult( $sql ) < 1);
+// load the module object
+$obj = new CCompany();
+
+$msg = '';
+$canDelete = $obj->canDelete( $msg, $company_id );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, "$m.$a" );
@@ -42,7 +45,7 @@ if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new company').'" />', '',
-		'<form action="?m=tasks&a=addedit&company_id=' . $company_id . '" method="post">', '</form>'
+		'<form action="?m=companies&a=addedit" method="post">', '</form>'
 	);
 }
 $titleBlock->addCrumb( "?m=companies", "company list" );
