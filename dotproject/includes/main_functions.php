@@ -40,7 +40,9 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 			$v=str_replace('&#369;','û',$v);
 			$v=str_replace('&#337;','õ',$v);
 		}
-		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" . dPformSafe( $v ) . "</option>";
+                else
+                        $v = dPformSafe($v); // The translation function already does this.
+		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" .  $v  . "</option>";
 	}
 	$s .= "\n</select>\n";
 	return $s;
