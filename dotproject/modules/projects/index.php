@@ -126,7 +126,6 @@ SELECT
 	projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_color_identifier,
 	project_company, company_name, project_status, project_priority,
-        count(task_id) as tasks,
         tasks_critical.critical_task, tasks_critical.project_actual_end_date,
         tasks_problems.task_log_problem,
 	tasks_sum.total_tasks,
@@ -135,7 +134,6 @@ SELECT
 	user_username
 FROM permissions,projects
 LEFT JOIN companies ON projects.project_company = company_id
-LEFT JOIN tasks ON projects.project_id = tasks.task_project
 LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks_critical ON projects.project_id = tasks_critical.task_project
 LEFT JOIN tasks_problems ON projects.project_id = tasks_problems.task_project
