@@ -544,6 +544,17 @@ class CTitleBlock_core {
 		$this->cells2[] = array( $attribs, $data, $prefix, $suffix );
 	}
 
+	function addCrumbDelete( $title, $canDelete='', $msg='' ) {
+		global $AppUI;
+		$this->addCrumbRight(
+			'<table cellspacing="0" cellpadding="0" border="0"?<tr><td>'
+			. dPshowImage( './images/icons/'.($canDelete?'stock_delete-16.png':'stock_trash_full-16.png'), '16', '16',  '' )
+			. '</td><td>&nbsp;'
+			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">' . $AppUI->_( $title ) . '</a>'
+			. '</td></tr></table>'
+		);
+	}
+
 	function show() {
 		global $AppUI;
 		$CR = "\n";
