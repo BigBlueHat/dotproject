@@ -15,7 +15,6 @@
 <table align="center" border="0" width="250" cellpadding="4" cellspacing="0" bgcolor="#cccccc" class="bordertable">
 <form action="./index.php" method="post" name="loginform">
 <input type="hidden" name="login" value="<?php echo time();?>" />
-<input type="hidden" name="return" value="<?php echo @$return;?>" />
 <tr>
 	<td colspan="2" class="headerfontWhite" bgcolor="gray">
 		<strong><?php echo $AppUI->cfg['company_name'];?></strong>
@@ -62,9 +61,7 @@
 </tr>
 <tr>
 	<td align=center>
-		<a href="http://www.dotproject.net/">
 		<img src="./images/icons/dp.gif" width="42" height="42" border=0 alt="dotproject" />
-		</a>
 		<p>dotproject</p>
 		<p><?php echo $AppUI->_('openSource');?></p>
 	</td>

@@ -16,7 +16,6 @@
 <form action="./index.php" method="post" name="loginform">
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
 <input type="hidden" name="login" value="<?php echo time();?>" />
-<input type="hidden" name="return" value="<?php echo @$return;?>" />
 <tr>
 	<th colspan="2"><em><?php echo $AppUI->cfg['company_name'];?></em></th>
 </tr>
