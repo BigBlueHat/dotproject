@@ -196,6 +196,7 @@ table.tbl TH {
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 	font-weight: normal;
+	text-align:center;
 }
 
 table.tbl td {
