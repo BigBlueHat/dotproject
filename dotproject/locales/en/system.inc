@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"session_gc_scan_queue_tooltip"=>"If using deferred email or any other event queue, setting this causes the session handler to check the queue when it garbage collects the session.  This is an option to using an external program to call the queue scanner.",
 "Abbreviation",
 "Are you sure you want to delete this?",
 "Are you sure?",
@@ -219,6 +220,7 @@ Set this to true if you would like to have the project colors correlate with a s
 "restrict_task_time_editing_title"=>"Restrict Task Time Editing?",
 "restrict_task_time_editing_tooltip"=>"If you want only to enable task owner, project owner or sysadmin to edit already created task time related information,
 just set to *true*.",
+"session_gc_scan_queue_title"=>"Scan Event Queue on Session Garbage Collection?",
 "session_group_title"=>"Session Handling Settings",
 "session_handling_title"=>"Session Handler",
 "session_handling_tooltip"=>"Which session handling to use, should be either \'php\' for traditional

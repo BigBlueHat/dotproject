@@ -18,6 +18,8 @@ require_once $baseDir . '/includes/main_functions.php';
 require_once $baseDir . '/includes/db_adodb.php';
 require_once $baseDir . '/includes/db_connect.php';
 require_once $baseDir . '/classes/query.class.php';
+require_once $baseDir . '/classes/ui.class.php';
+require_once $baseDir . '/classes/event_queue.class.php';
 
 function dPsessionOpen($save_path, $session_name)
 {
@@ -99,6 +101,9 @@ function dPsessionDestroy($id)
 
 function dPsessionGC($maxlifetime)
 {
+	global $dPconfig;
+	global $AppUI;
+
 	dprint(__FILE__, __LINE__, 11, "Session Garbage collection running");
 	$now = time();
 	$max = dPsessionConvertTime('max_lifetime');
@@ -109,6 +114,17 @@ function dPsessionGC($maxlifetime)
 	$q->addWhere("UNIX_TIMESTAMP() - UNIX_TIMESTAMP(session_updated) > $idle OR UNIX_TIMESTAMP() - UNIX_TIMESTAMP(session_created) > $max");
 	$q->exec();
 	$q->clear();
+	if (isset($dPconfig['session_gc_scan_queue'])
+	  && $dPconfig['session_gc_scan_queue']) {
+		// We need to scan the event queue.  If $AppUI isn't created yet
+		// And it isn't likely that it will be, we create it and run the
+		// queue scanner.
+		if (! isset($AppUI)) {
+			$AppUI = new CAppUI;
+			$queue = new EventQueue;
+			$queue->scan();
+		}
+	}
 	return true;
 }
 

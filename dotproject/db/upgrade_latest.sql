@@ -790,3 +790,6 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
 	FROM config
 	WHERE config_name = 'mail_transport';
 
+# 20050303
+# Queue scanning on garbage collection
+INSERT INTO config VALUES (NULL, 'session_gc_scan_queue', 'false', 'session', 'checkbox');
