@@ -21,15 +21,15 @@ function newTask() {
 <table border="0" cellpadding="0" cellspacing="0">
 <tr>
 	<td align="right" nowrap>Create New: </td>
-	<td><a href="javascript:window.location='#';newTask()"><img src="./images/icons/minitask.gif" width="29" height="36" alt="" border="0" align="absmiddle"></A></td>
+	<td><a href="javascript:window.location='#';newTask()"><img src="./images/icons/minitask.gif" width="29" height="36" alt="" border="0" align="absmiddle"></a></td>
 	<td><img src="./images/shim.gif" width="5" height=5 align="absmiddle"></td>
 	<td><a href="./index.php?m=projects&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/miniproject.gif" width="29" height="36" alt="" border="0" align="absmiddle"></a></td>
 	<td><img src="./images/shim.gif" width="5" height=5 align="absmiddle"></td>
-	<td><a href="./index.php?m=files&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/minifile.gif" width="29" height="36" alt="" border="0" align="absmiddle"></td>
+	<td><a href="./index.php?m=files&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/minifile.gif" width="29" height="36" alt="" border="0" align="absmiddle"></a></td>
 	<td><img src="./images/shim.gif" width="5" height=5 align="absmiddle"></td>
-	<td><a href="./index.php?m=contacts&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/minicontact.GIF" width="29" height="36" alt="" border="0" align="absmiddle"></td>
+	<td><a href="./index.php?m=contacts&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/minicontact.GIF" width="29" height="36" alt="" border="0" align="absmiddle"></a></td>
 	<td><img src="./images/shim.gif" width="5" height=5 align="absmiddle"></td>
-	<td><a href="./index.php?m=calendar&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/minievent.gif" width="21" height="28" alt="" border="0" align="absmiddle"></td>
+	<td><a href="./index.php?m=calendar&a=addedit<?php echo $uri_string;?>"><img src="./images/icons/minievent.gif" width="21" height="28" alt="" border="0" align="absmiddle"></a></td>
 	<td><img src="./images/shim.gif" width="5" height=5 align="absmiddle"></td>
 </tr>
 </table>
