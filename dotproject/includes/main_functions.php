@@ -646,9 +646,10 @@ function formatHours($hours)
  */
 function dpRealPath($file)
 {
-	if (! isset($GLOBALS['OS_WIN'])) {
-		$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
-	}
+// Done in index.php
+//	if (! isset($GLOBALS['OS_WIN'])) {
+//		$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
+//	}
 
 	$file = realpath($file);
 	if ($GLOBALS['OS_WIN']) {
