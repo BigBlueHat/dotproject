@@ -488,7 +488,7 @@ function saveTab(from, to) {
 }
 
 // Sub-form specific functions.
-function checkDepend(form) {
+function checkDates(form) {
 	if (can_edit_time_information && check_task_dates) {
 		if (!form.task_start_date.value) {
 			alert( task_start_msg );
@@ -554,8 +554,7 @@ function copyForm(form, to, extras) {
 	return true;
 }
 
-function saveDepend(form) {
-	var dl = form.task_dependencies.length -1;
+function saveDates(form) {
 	if (can_edit_time_information) {
 		if ( form.task_start_date.value.length > 0 ) {
 			form.task_start_date.value += form.start_hour.value + form.start_minute.value;
@@ -564,13 +563,19 @@ function saveDepend(form) {
 			form.task_end_date.value += form.end_hour.value + form.end_minute.value;
 		}
 	}
-	hd = form.hdependencies;
+	
+
+	return new Array('task_start_date', 'task_end_date');
+}
+
+function saveDepend(form) {
+	var dl = form.task_dependencies.length -1;
+        hd = form.hdependencies;
 	hd.value = "";
 	for (dl; dl > -1; dl--){
 		hd.value = "," + hd.value +","+ form.task_dependencies.options[dl].value;
 	}
-
-	return new Array('hdependencies', 'task_start_date', 'task_end_date');
+        return new Array('hdependencies');;
 }
 
 function checkDetail(form) {

@@ -332,6 +332,7 @@ var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 	$tab = $AppUI->getState('TaskAeTabIdx', 0);
 	$tabBox =& new CTabBox("?m=tasks&a=addedit&task_id=$task_id", "", $tab, "saveTab");
 	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_desc", "Details");
+        $tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_dates", "Dates");
 	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_depend", "Dependencies");
 	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_resource", "Human Resources");
 	$tabBox->loadExtras('tasks', 'addedit');
