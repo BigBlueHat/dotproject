@@ -77,7 +77,7 @@ class Mail
 	var $ctencoding = "7bit";
 	var $receipt = 0;
 	
-
+	var $useRawAddress = true;
 /*
 
 	Mail contructor
@@ -178,10 +178,16 @@ function To( $to )
 {
 
 	// TODO : test validité sur to
-	if( is_array( $to ) )
+	if( is_array( $to ) ) {
 		$this->sendto= $to;
-	else 
+	} else {
+		if ($this->useRawAddress) {
+		   if( preg_match( "/^(.*)\<(.+)\>$/", $to, $regs ) ) {
+			  $to = $regs[2];
+		   }
+		}
 		$this->sendto[] = $to;
+	}
 
 	if( $this->checkAddress == true )
 		$this->CheckAdresses( $this->sendto );
@@ -359,8 +365,7 @@ function Send()
 	$this->strTo = implode( ", ", $this->sendto );
 	
 	// envoie du mailz
-	$res = @mail( $this->strTo, $this->xheaders['Subject'], $this->fullBody, $this->headers );
-
+	return @mail( $this->strTo, $this->xheaders['Subject'], $this->fullBody, $this->headers );
 }
 
 
@@ -389,15 +394,14 @@ function Get()
  
 function ValidEmail($address)
 {
-	if( ereg( ".*<(.+)>", $address, $regs ) ) {
-		$address = $regs[1];
-	}
- 	if(ereg( "^[^@  ]+@([a-zA-Z0-9\-]+\.)+([a-zA-Z0-9\-]{2}|net|com|gov|mil|org|edu|int)\$",$address) ) 
- 		return true;
- 	else
- 		return false;
+   if( preg_match( "/^(.*)\<(.+)\>$/", $address, $regs ) ) {
+      $address = $regs[2];
+   }
+   if( preg_match( "/^[^@ ]+@([a-zA-Z0-9\-.]+)$/",$address) )
+      return true;
+   else
+      return false;
 }
-
 
 /*
 
