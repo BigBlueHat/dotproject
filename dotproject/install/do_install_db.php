@@ -144,6 +144,18 @@ $do_db = isset($_POST['do_db']);
 $do_db_cfg = isset($_POST['do_db_cfg']);
 $do_cfg = isset($_POST['do_cfg']);
 
+// Create a dPconfig array for dependent code
+$dPconfig = array(
+	'dbtype' => $dbtype,
+	'dbhost' => $dbhost,
+	'dbname' => $dbname,
+	'dbpass' => $dbpass,
+	'dbuser' => $dbuser,
+	'dbpersist' => $dbpersist,
+	'root_dir' => $baseDir,
+	'base_url' => $baseUrl
+);
+
 $lastDBUpdate = '';
 
 require_once( "$baseDir/lib/adodb/adodb.inc.php" );
@@ -152,7 +164,7 @@ require_once( "$baseDir/lib/adodb/adodb.inc.php" );
 $db = NewADOConnection($dbtype);
 
 if(!empty($db)) {
-		$dbc = $db->Connect($dbost,$dbuser,$dbpass,$dbname);
+		$dbc = $db->Connect($dbhost,$dbuser,$dbpass,$dbname);
 } else { $dbc = false; }
 
 $current_version = $dp_version_major . '.' . $dp_version_minor;
@@ -332,7 +344,7 @@ $dbMsg = "Not Created";
 	$config = trim($config);
 
 if ($do_cfg || $do_db_cfg){
-	if (is_writable("../includes/config.php") && ($fp = fopen("../includes/config.php", "w"))) {
+	if ( (is_writable("../includes/config.php")  || ! is_file("../includes/config.php") ) && ($fp = fopen("../includes/config.php", "w"))) {
 		fputs( $fp, $config, strlen( $config ) );
 		fclose( $fp );
 		$cFileMsg = "Config file written successfully\n";
@@ -355,7 +367,7 @@ if ($do_cfg || $do_db_cfg){
             <td class="title">Config File Creation Feedback:</td>
 	    <td class="item" align="left"><b style="color:<?php echo $cFileErr ? 'red' : 'green'; ?>"><?php echo $cFileMsg; ?></b></td>
 	 </tr>
-<?php if(!(($do_cfg || $do_db_cfg) && $cFileErr)){ ?>
+<?php if(($do_cfg || $do_db_cfg) && $cFileErr){ ?>
 	<tr>
 	    <td class="item" align="left" colspan="2">The following Content should go to ./includes/config.php. Create that text file manually and copy the following lines in by hand.
 		This file should be readable by the webserver.</td>

@@ -6,7 +6,7 @@ if (! isset($baseDir)) {
 	die('You must not run this script manually.  Instead run the Installer in install/index.php');
 }
 
-require_once "$baseDir/includes/config.php";
+@include_once "$baseDir/includes/config.php";
 require_once "$baseDir/includes/main_functions.php";
 require_once "$baseDir/classes/ui.class.php";
 
