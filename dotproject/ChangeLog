@@ -1,59 +1,163 @@
-2004-07-28 15:15  (gregorerhardt)
+2004-08-06 04:13  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+modules/projects/view.php
+modules/tasks/view.php
+- Improved how files listing is hooked up to projects and tasks.
+- Moved files attached to tasks as a tab on the bottom.
+- It reuses the index_table.php file for both now.
+
+2004-08-06 02:57  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- revert back ... I'm just being silly :(
+
+2004-08-06 02:19  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Fixed a few "unresolved variables" issues
+
+2004-08-06 01:24  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Allow setting a project from other files through includes.
+
+2004-08-06 01:22  (cyberhorse)
+---------------------------------
+modules/projects/vw_files.php
+- Ops, wrong approach - ignore the previous change.
+
+2004-08-06 01:20  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Default to showing project headers, but allow removing them
+
+2004-08-06 01:19  (cyberhorse)
+---------------------------------
+modules/projects/vw_files.php
+- Show only the specific project to show
+
+2004-08-06 01:17  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Allows passing project through GET parameter
+
+2004-08-06 01:09  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- Added possibility for passing parameters to files, included as tabs.
+
+2004-08-06 00:12  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+- added file_category field
+
+2004-08-05 13:54  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Made collapsable menus for versions of the same file (determined as samename + in same project)
+- 
+- Fixed filtering by project
+- Fixed displaying of companies as headers
+- Cleaned up a bit
+
+2004-08-03 08:41  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Made a colapsable menu for assighed users. When the link (+num_users) is clicked in the assigned users column, it expands to show all users. Pretty nead feature, which also makes the global variable dPconfig['show_all_assignees'] useless to a degree, because you can choose on the spot... (maybe after adding collapse/expand all buttons)
+
+2004-08-03 00:35  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- added sorting by priority.
+
+2004-08-02 23:49  (cyberhorse)
+---------------------------------
+modules/system/domodsql.php
+- made it possible to remove (not cleanly) a module from the modules list, which has been deleted the hard way.
+
+2004-08-02 23:37  (cyberhorse)
+---------------------------------
+modules/calendar/day_view.php
+- If helpdesk module is installed, show your helpdesk items in today's view.
+
+2004-08-02 20:41  (jcgonz)
+---------------------------------
+modules/tasks/todo.php
+- Added up a check in the start date variable before showing it.
+
+2004-08-02 18:09  (ajdonnison)
+---------------------------------
+modules/calendar/links_tasks.php
+- Speedup of task length checking.
+
+2004-07-30 02:21  (cyberhorse)
+---------------------------------
+modules/contacts/index.php
+modules/contacts/view.php
+- Added view only mode for contacts.
+
+2004-07-28 10:06  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2004-07-28 09:15  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
 - 0000020: taskstatus is sysval now
 
-2004-07-28 15:14  (ajdonnison)
+2004-07-28 09:14  (ajdonnison)
 ---------------------------------
 index.php
 - Fixed dp.net bug number 16, fatal error on wrong root_dir.  Now tries
 - clearstatcache and if that doesn't work, it sets it to a more appropriate
 - value and sets a warning message.
 
-2004-07-28 15:11  (gregorerhardt)
+2004-07-28 09:11  (gregorerhardt)
 ---------------------------------
 functions/tasks_func.php
 - 0000020: taskstatus is sysval now
 
-2004-07-28 15:02  (cyberhorse)
+2004-07-28 09:02  (cyberhorse)
 ---------------------------------
 modules/tasks/todo.php
 - showing more tasks in the todo list - everything that has a due date
 
-2004-07-28 14:54  (cyberhorse)
+2004-07-28 08:54  (cyberhorse)
 ---------------------------------
 classes/dp.class.php
 modules/tasks/tasks.class.php
 - php5 compatibility issues - work in progress
 
-2004-07-28 14:39  (cyberhorse)
+2004-07-28 08:39  (cyberhorse)
 ---------------------------------
 modules/system/viewmods.php
 - Hide Public module
 
-2004-07-28 13:40  (cyberhorse)
+2004-07-28 07:40  (cyberhorse)
 ---------------------------------
 modules/system/viewmods.php
 - Stops users from assigning negative priorities to modules
 
-2004-07-28 01:58  (ajdonnison)
+2004-07-27 19:58  (ajdonnison)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Fixed problem in recurring events calculation, was using an invalid offset.
 
-2004-07-28 01:55  (ajdonnison)
+2004-07-27 19:55  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 - Fixed problem where locale_warn was not propogated.
 
-2004-07-27 15:25  (gregorerhardt)
+2004-07-27 09:25  (gregorerhardt)
 ---------------------------------
 db/upgrade_latest.sql
 db/dotproject.sql
 - implemented user specific task priority
 
-2004-07-27 15:20  (gregorerhardt)
+2004-07-27 09:20  (gregorerhardt)
 ---------------------------------
 modules/tasks/do_task_assign_aed.php
 modules/tasks/tasks.class.php
@@ -61,12 +165,12 @@ modules/tasks/tasksperuser_sub.php
 locales/en/tasks.inc
 - implemented user specific task priority
 
-2004-07-27 06:28  (ajdonnison)
+2004-07-27 00:28  (ajdonnison)
 ---------------------------------
 db/dotproject.sql
 - Incorporated fields introduced in upgrade_latest but not copied into here.
 
-2004-07-25 20:15  (gregorerhardt)
+2004-07-25 14:15  (gregorerhardt)
 ---------------------------------
 fileviewer.php
 index.php
@@ -102,12 +206,8 @@ modules/projects/index.php
 modules/projects/reports.php
 modules/projects/view.php
 modules/projects/vw_files.php
-modules/projects/reports/allocateduserhours.php
-modules/projects/reports/tasklist.php
-modules/projects/reports/tasklogs.php
 modules/public/calendar.php
 modules/public/chpwd.php
-modules/smartsearch/index.php
 modules/system/domodsql.php
 modules/system/translate.php
 modules/system/translate_save.php
@@ -130,57 +230,56 @@ style/default/lostpass.php
 style/default/overrides.php
 - removed config variables from session data () for security reasons
 
-2004-07-25 13:49  (gregorerhardt)
+2004-07-25 07:49  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasksperuser_sub.php
 - had to fix little issues
 
-2004-07-24 18:04  (gregorerhardt)
+2004-07-24 12:04  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - ChangeLog update
 
-2004-07-24 17:58  (gregorerhardt)
+2004-07-24 11:58  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasksperuser_sub.php
 - the tasksperuser view now shows orphaned tasks
 
-2004-07-24 17:57  (gregorerhardt)
+2004-07-24 11:57  (gregorerhardt)
 ---------------------------------
 locales/en/tasks.inc
 - the tasksperuser view no shows orphaned tasks
 
-2004-07-23 03:00  (ajdonnison)
+2004-07-22 21:00  (ajdonnison)
 ---------------------------------
 includes/db_adodb.php
 - Changed debug to only show errors when no query id in a select statement.
 
-2004-07-22 23:37  (ajdonnison)
+2004-07-22 17:37  (ajdonnison)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Fixed unitialised error warning when using error_reporting(E_ALL)
 
-2004-07-22 23:24  (ajdonnison)
+2004-07-22 17:24  (ajdonnison)
 ---------------------------------
 modules/projects/index.php
 - Fixed warning of uninitialised variable when E_ALL is used.
 
-2004-07-22 23:21  (ajdonnison)
+2004-07-22 17:21  (ajdonnison)
 ---------------------------------
 modules/forums/addedit.php
 - Fixed typo which would trigger errors on trailing blanks instead of
 - completely blank headers.
 
-2004-07-22 19:06  (gnome444)
+2004-07-22 13:06  (gnome444)
 ---------------------------------
 ChangeLog
 - ChangeLog update.
 
-2004-07-22 19:02  (gnome444)
+2004-07-22 13:02  (gnome444)
 ---------------------------------
 modules/projects/projects.class.php
 modules/projects/view.php
-modules/projects/reports/allocateduserhours.php
 modules/tasks/addedit.php
 modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
@@ -188,19 +287,19 @@ modules/tasks/tasks.php
 modules/tasks/view.php
 - Automatic updating of task_start_date and task_end_date based on task dependencies.
 
-2004-07-19 13:02  (ajdonnison)
+2004-07-19 07:02  (ajdonnison)
 ---------------------------------
 modules/forums/addedit.php
 modules/forums/post_message.php
 - Changed javascript checks to check for space-only entries and disallow
 - them.
 
-2004-07-18 21:29  (gregorerhardt)
+2004-07-18 15:29  (gregorerhardt)
 ---------------------------------
 modules/companies/vw_companies.php
 - 940695: companies list problems
 
-2004-07-18 02:25  (gregorerhardt)
+2004-07-17 20:25  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasksperuser.php
 modules/tasks/tasksperuser_sub.php
@@ -208,7 +307,7 @@ modules/tasks/view.php
 modules/tasks/vw_logs.php
 - fixed a set of javascript security holes
 
-2004-07-18 02:17  (gregorerhardt)
+2004-07-17 20:17  (gregorerhardt)
 ---------------------------------
 modules/system/custom_field_editor.php
 modules/system/roles/index.php
@@ -216,105 +315,83 @@ modules/system/syskeys/index.php
 modules/system/syskeys/keys.php
 - fixed a set of javascript security holes
 
-2004-07-18 02:06  (gregorerhardt)
+2004-07-17 20:06  (gregorerhardt)
 ---------------------------------
 modules/projects/view.php
 modules/projects/vw_logs.php
 - fixed a set of javascript security holes
 
-2004-07-18 01:58  (gregorerhardt)
+2004-07-17 19:58  (gregorerhardt)
 ---------------------------------
 modules/forums/addedit.php
 modules/forums/post_message.php
 modules/forums/view_messages.php
 - fixed a set of javascript security holes
 
-2004-07-18 01:46  (gregorerhardt)
+2004-07-17 19:46  (gregorerhardt)
 ---------------------------------
 modules/departments/view.php
 - fixed a set of javascript security holes
 
-2004-07-18 01:41  (gregorerhardt)
+2004-07-17 19:41  (gregorerhardt)
 ---------------------------------
 modules/companies/view.php
 - fixed a set of javascript security holes
 
-2004-07-18 01:31  (gregorerhardt)
+2004-07-17 19:31  (gregorerhardt)
 ---------------------------------
 modules/calendar/view.php
 - fixed a set of javascript security holes
 
-2004-07-18 01:25  (gregorerhardt)
+2004-07-17 19:25  (gregorerhardt)
 ---------------------------------
 modules/admin/viewuser.php
 modules/admin/vw_usr_perms.php
 modules/admin/vw_usr_roles.php
 - fixed a set of javascript security holes
 
-2004-07-17 23:52  (gregorerhardt)
----------------------------------
-install/check.php
-install/index.php
-- updated todo list
-
-2004-07-17 23:22  (gregorerhardt)
----------------------------------
-install/check.php
-- db abstraction: check enhanced for a set of databases
-
-2004-07-17 22:38  (gregorerhardt)
----------------------------------
-install/check.php
-- minor fix: estimate accurate file permission
-
-2004-07-17 22:24  (gregorerhardt)
+2004-07-17 16:24  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - thought it was time updating it again
 
-2004-07-16 22:01  (gnome444)
+2004-07-16 16:01  (gnome444)
 ---------------------------------
 modules/tasks/gantt.php
 - minor workaround for missing TTF in gantt
 
-2004-07-16 21:39  (gnome444)
+2004-07-16 15:39  (gnome444)
 ---------------------------------
 db/upgrade_latest.sql
 - Missing single quote
 
-2004-07-16 18:54  (gregorerhardt)
----------------------------------
-install/do_backup.php
-install/pref.php
-- removed trailing slash in base url
-
-2004-07-15 12:39  (ajdonnison)
+2004-07-15 06:39  (ajdonnison)
 ---------------------------------
 modules/admin/vw_usr_perms.php
 - Fix from RokSteady to limit the permissions list to only valid permissions.
 
-2004-07-15 04:37  (ajdonnison)
+2004-07-14 22:37  (ajdonnison)
 ---------------------------------
 modules/projects/projects.class.php
 - Fixed another instance of a bad SQL call when there is no Company
 - created.
 
-2004-07-15 04:19  (ajdonnison)
+2004-07-14 22:19  (ajdonnison)
 ---------------------------------
 modules/projects/projects.class.php
 - Fixed broken SQL when no limits are found.
 
-2004-07-15 04:07  (ajdonnison)
+2004-07-14 22:07  (ajdonnison)
 ---------------------------------
 modules/admin/vw_usr_perms.php
 - Fixed problem where empty fields were causing SQL to break.
 
-2004-07-15 00:34  (ajdonnison)
+2004-07-14 18:34  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
 - Fixed loop detection code.
 
-2004-07-14 18:26  (cyberhorse)
+2004-07-14 12:26  (cyberhorse)
 ---------------------------------
 modules/files/addedit.php
 modules/files/do_file_aed.php
@@ -323,34 +400,29 @@ modules/files/index.php
 modules/files/index_table.php
 - Added files categories tabs to the files module - controlled by a sysval
 
-2004-07-14 18:24  (cyberhorse)
+2004-07-14 12:24  (cyberhorse)
 ---------------------------------
 db/upgrade_latest.sql
 - Inserted default system values to be used for the file categorization
 
-2004-07-14 18:02  (cyberhorse)
+2004-07-14 12:02  (cyberhorse)
 ---------------------------------
 db/upgrade_latest.sql
 - add support for file categories into the database
 
-2004-07-14 12:34  (ajdonnison)
+2004-07-14 06:34  (ajdonnison)
 ---------------------------------
 modules/admin/vw_usr_perms.php
 - Fixed problem with fatal error when no user permissions exist.
 
-2004-07-14 12:32  (ajdonnison)
+2004-07-14 06:32  (ajdonnison)
 ---------------------------------
 includes/config-dist.php
 includes/db_adodb.php
 includes/main_functions.php
 - New graduated debugging including backtrace on PHP 4.3 or greater.
 
-2004-07-14 10:44  (ajdonnison)
----------------------------------
-install/do_backup.php
-- Fixed problem with Mozilla where it would not trigger submit.
-
-2004-07-14 10:36  (ajdonnison)
+2004-07-14 04:36  (ajdonnison)
 ---------------------------------
 docs/about.html
 docs/index.html
@@ -364,1504 +436,68 @@ docs/upgrade.html
 - Removed old and outdated docs.
 - Added overview that points people to dotproject.net website.
 
-2004-07-14 09:54  (ajdonnison)
----------------------------------
-files/temp/.htaccess
-- Open up access for this directory, otherwise PDF files cannot be read.
-
-2004-07-13 18:58  (robertoibarra)
+2004-07-13 12:58  (robertoibarra)
 ---------------------------------
 modules/projects/vw_logs.php
 - Users sorted first name, last name as shown in the filter by user combo
 
-2004-07-13 03:27  (cyberhorse)
+2004-07-12 21:27  (cyberhorse)
 ---------------------------------
 includes/db_adodb.php
 - clean the file a little ...
 
-2004-07-12 11:49  (ajdonnison)
+2004-07-12 05:49  (ajdonnison)
 ---------------------------------
 index.php
 - Altered error setting so that errors are actually reported! Not sure
 - why this was set so that fatal errors were not reporting.
 
-2004-07-12 10:28  (ajdonnison)
+2004-07-12 04:28  (ajdonnison)
 ---------------------------------
 style/classic/header.php
 - Added browser-independent event handling.
 
-2004-07-12 09:29  (ajdonnison)
----------------------------------
-js/base.js
-- New base-level javascript for handling common javascript tasks.
-
-2004-07-12 09:08  (ajdonnison)
+2004-07-12 03:08  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 classes/ui.class.php
 - Removed need to supply height and width options to dpShowImage.
 
-2004-07-10 18:33  (cyberhorse)
+2004-07-10 12:33  (cyberhorse)
 ---------------------------------
 includes/db_adodb.php
 - bug, caused by case sensitivity ... by default ADODB returns rows as objects in capitals, and dp was expecting them in lower case. This bug was preventing logging on (although once logged in, user could do things as normal - that's why the bug creeped in to begin with)
 - 
 - Sorry guys...
 
-2004-07-10 14:58  (cyberhorse)
+2004-07-10 08:58  (cyberhorse)
 ---------------------------------
 includes/db_adodb.php
 includes/db_connect.php
 - Added ADODB support
 
-2004-07-10 14:55  (cyberhorse)
----------------------------------
-lib/adodb/adodb-csvlib.inc.php
-lib/adodb/adodb-datadict.inc.php
-lib/adodb/adodb-error.inc.php
-lib/adodb/adodb-errorhandler.inc.php
-lib/adodb/adodb-errorpear.inc.php
-lib/adodb/adodb-exceptions.inc.php
-lib/adodb/adodb-iterator.inc.php
-lib/adodb/adodb-lib.inc.php
-lib/adodb/adodb-pager.inc.php
-lib/adodb/adodb-pear.inc.php
-lib/adodb/adodb-perf.inc.php
-lib/adodb/adodb-php4.inc.php
-lib/adodb/adodb-time.inc.php
-lib/adodb/adodb-time.zip
-lib/adodb/adodb-xmlschema.inc.php
-lib/adodb/adodb.inc.php
-lib/adodb/license.txt
-lib/adodb/pivottable.inc.php
-lib/adodb/readme.txt
-lib/adodb/rsfilter.inc.php
-lib/adodb/server.php
-lib/adodb/toexport.inc.php
-lib/adodb/tohtml.inc.php
-lib/adodb/xmlschema.dtd
-lib/adodb/contrib/toxmlrpc.inc.php
-lib/adodb/cute_icons_for_site/adodb.gif
-lib/adodb/cute_icons_for_site/adodb2.gif
-lib/adodb/datadict/datadict-access.inc.php
-lib/adodb/datadict/datadict-db2.inc.php
-lib/adodb/datadict/datadict-firebird.inc.php
-lib/adodb/datadict/datadict-generic.inc.php
-lib/adodb/datadict/datadict-ibase.inc.php
-lib/adodb/datadict/datadict-informix.inc.php
-lib/adodb/datadict/datadict-mssql.inc.php
-lib/adodb/datadict/datadict-mysql.inc.php
-lib/adodb/datadict/datadict-oci8.inc.php
-lib/adodb/datadict/datadict-postgres.inc.php
-lib/adodb/datadict/datadict-sybase.inc.php
-lib/adodb/docs/docs-adodb.htm
-lib/adodb/docs/docs-datadict.htm
-lib/adodb/docs/docs-perf.htm
-lib/adodb/docs/docs-session.htm
-lib/adodb/docs/old-changelog.htm
-lib/adodb/docs/readme.htm
-lib/adodb/docs/tips_portable_sql.htm
-lib/adodb/docs/tute.htm
-lib/adodb/drivers/adodb-access.inc.php
-lib/adodb/drivers/adodb-ado.inc.php
-lib/adodb/drivers/adodb-ado_access.inc.php
-lib/adodb/drivers/adodb-ado_mssql.inc.php
-lib/adodb/drivers/adodb-borland_ibase.inc.php
-lib/adodb/drivers/adodb-csv.inc.php
-lib/adodb/drivers/adodb-db2.inc.php
-lib/adodb/drivers/adodb-fbsql.inc.php
-lib/adodb/drivers/adodb-firebird.inc.php
-lib/adodb/drivers/adodb-ibase.inc.php
-lib/adodb/drivers/adodb-informix.inc.php
-lib/adodb/drivers/adodb-informix72.inc.php
-lib/adodb/drivers/adodb-ldap.inc.php
-lib/adodb/drivers/adodb-mssql.inc.php
-lib/adodb/drivers/adodb-mssqlpo.inc.php
-lib/adodb/drivers/adodb-mysql.inc.php
-lib/adodb/drivers/adodb-mysqli.inc.php
-lib/adodb/drivers/adodb-mysqlt.inc.php
-lib/adodb/drivers/adodb-netezza.inc.php
-lib/adodb/drivers/adodb-oci8.inc.php
-lib/adodb/drivers/adodb-oci805.inc.php
-lib/adodb/drivers/adodb-oci8po.inc.php
-lib/adodb/drivers/adodb-odbc.inc.php
-lib/adodb/drivers/adodb-odbc_mssql.inc.php
-lib/adodb/drivers/adodb-odbc_oracle.inc.php
-lib/adodb/drivers/adodb-odbtp.inc.php
-lib/adodb/drivers/adodb-odbtp_unicode.inc.php
-lib/adodb/drivers/adodb-oracle.inc.php
-lib/adodb/drivers/adodb-pdo.inc.php
-lib/adodb/drivers/adodb-postgres.inc.php
-lib/adodb/drivers/adodb-postgres64.inc.php
-lib/adodb/drivers/adodb-postgres7.inc.php
-lib/adodb/drivers/adodb-proxy.inc.php
-lib/adodb/drivers/adodb-sapdb.inc.php
-lib/adodb/drivers/adodb-sqlanywhere.inc.php
-lib/adodb/drivers/adodb-sqlite.inc.php
-lib/adodb/drivers/adodb-sqlitepo.inc.php
-lib/adodb/drivers/adodb-sybase.inc.php
-lib/adodb/drivers/adodb-vfp.inc.php
-lib/adodb/lang/adodb-bg.inc.php
-lib/adodb/lang/adodb-bgutf8.inc.php
-lib/adodb/lang/adodb-ca.inc.php
-lib/adodb/lang/adodb-cn.inc.php
-lib/adodb/lang/adodb-cz.inc.php
-lib/adodb/lang/adodb-de.inc.php
-lib/adodb/lang/adodb-en.inc.php
-lib/adodb/lang/adodb-es.inc.php
-lib/adodb/lang/adodb-fr.inc.php
-lib/adodb/lang/adodb-it.inc.php
-lib/adodb/lang/adodb-nl.inc.php
-lib/adodb/lang/adodb-pl.inc.php
-lib/adodb/lang/adodb-pt-br.inc.php
-lib/adodb/lang/adodb-ro.inc.php
-lib/adodb/lang/adodb-ru1251.inc.php
-lib/adodb/lang/adodb-sv.inc.php
-lib/adodb/pear/readme.Auth.txt
-lib/adodb/pear/Auth/Container/ADOdb.php
-lib/adodb/perf/perf-db2.inc.php
-lib/adodb/perf/perf-informix.inc.php
-lib/adodb/perf/perf-mssql.inc.php
-lib/adodb/perf/perf-mysql.inc.php
-lib/adodb/perf/perf-oci8.inc.php
-lib/adodb/perf/perf-postgres.inc.php
-lib/adodb/session/adodb-compress-bzip2.php
-lib/adodb/session/adodb-compress-gzip.php
-lib/adodb/session/adodb-cryptsession.php
-lib/adodb/session/adodb-encrypt-mcrypt.php
-lib/adodb/session/adodb-encrypt-md5.php
-lib/adodb/session/adodb-encrypt-secret.php
-lib/adodb/session/adodb-sess.txt
-lib/adodb/session/adodb-session-clob.php
-lib/adodb/session/adodb-session.php
-lib/adodb/session/adodb-sessions.mysql.sql
-lib/adodb/session/adodb-sessions.oracle.clob.sql
-lib/adodb/session/adodb-sessions.oracle.sql
-lib/adodb/session/crypt.inc.php
-lib/adodb/session/old/adodb-cryptsession.php
-lib/adodb/session/old/adodb-session-clob.php
-lib/adodb/session/old/adodb-session.php
-lib/adodb/session/old/crypt.inc.php
-lib/adodb/tests/benchmark.php
-lib/adodb/tests/client.php
-lib/adodb/tests/pdo.php
-lib/adodb/tests/test-datadict.php
-lib/adodb/tests/test-perf.php
-lib/adodb/tests/test-pgblob.php
-lib/adodb/tests/test-php5.php
-lib/adodb/tests/test-xmlschema.php
-lib/adodb/tests/test.php
-lib/adodb/tests/test2.php
-lib/adodb/tests/test3.php
-lib/adodb/tests/test4.php
-lib/adodb/tests/test5.php
-lib/adodb/tests/test_rs_array.php
-lib/adodb/tests/testcache.php
-lib/adodb/tests/testdatabases.inc.php
-lib/adodb/tests/testgenid.php
-lib/adodb/tests/testmssql.php
-lib/adodb/tests/testoci8.php
-lib/adodb/tests/testoci8cursor.php
-lib/adodb/tests/testpaging.php
-lib/adodb/tests/testpear.php
-lib/adodb/tests/testsessions.php
-lib/adodb/tests/time.php
-lib/adodb/tests/tmssql.php
-lib/adodb/tests/xmlschema.xml
-lib/adodb/xsl/convert-0.1-0.2.xsl
-lib/adodb/xsl/convert-0.2-0.1.xsl
-- ADODB package version 4.50 - 6 July 2004
-
-2004-07-10 14:31  (gregorerhardt)
+2004-07-10 08:31  (gregorerhardt)
 ---------------------------------
 modules/admin/index.php
 - fixed major javascript security hole
 
-2004-07-10 14:23  (cyberhorse)
+2004-07-10 08:23  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
 - hide public module (feature request)
 
-2004-07-10 07:43  (cyberhorse)
----------------------------------
-modules/projects/reports/user_tasklist.en.txt
-modules/projects/reports/user_tasklist.php
-- superseded by taskperuser.php report
-
-2004-07-10 07:38  (cyberhorse)
----------------------------------
-modules/projects/reports/user_tasklist.php
-- fixed a global variables related bug
-
-2004-07-10 07:34  (cyberhorse)
----------------------------------
-modules/projects/reports/tasklist.php
-- added buttons to select previous/next day/week/month tasks
-
-2004-07-10 07:32  (cyberhorse)
----------------------------------
-modules/projects/reports/tasklist.en.txt
-modules/projects/reports/tasklist.php
-modules/projects/reports/user_tasklist.en.txt
-modules/projects/reports/user_tasklist.php
-- two new reports
-
-2004-07-09 21:50  (gregorerhardt)
+2004-07-09 15:50  (gregorerhardt)
 ---------------------------------
 modules/files/index_table.php
 - some minor design enhancements
 
-2004-07-09 09:46  (revelation7)
+2004-07-09 03:46  (revelation7)
 ---------------------------------
 modules/system/addeditpref.php
 - Fixed problem with CURRENCY format on user preferences not getting saved.  This was due to a limitation on mySQL for the length of column name.
 
-2004-07-07 05:15  (ajdonnison)
+2004-07-06 23:15  (ajdonnison)
 ---------------------------------
-docs/upgrade.html
-- Fixed a gramatical error.
-
-2004-07-07 05:11  (ajdonnison)
----------------------------------
-docs/upgrade.html
-- Fixed spelling mistake.
-
-2004-07-07 03:06  (robertoibarra)
----------------------------------
-style/default/login.php
-- Removed fixed logo size from login screen, it wasn't fixed anywhere else.
-
-2004-07-05 18:28  (cyberhorse)
----------------------------------
-modules/tasks/todo.php
-- patch [ 823699 ] Todo problems dealing with ' (by alejandro_liu)
-- 
-- fixing a single quote bug in todo view.
-
-2004-07-05 18:19  (cyberhorse)
----------------------------------
-modules/tasks/view.php
-- [ 957078 ] Beefier file list in tasks (by markdrago)
-- 
-- TODO: show a more useful application type.
-
-2004-07-05 17:38  (cyberhorse)
----------------------------------
-index.php
-- Added a check for missing modules.
-- 
-- If an external module is installed and then its folder is deleted, but its entries are left in the database, the module is still showing in the menu. If users clicked on that, it was showing a PHP error message. Now it is showing a Warning message, suggesting that the according module is probably missing.
-- 
-- I wasn't sure if there was a proper warning page (maybe one as part of the public module) so I quickly made one up. If there is any standard for that, this should be changed to comply with it.
-
-2004-07-03 13:00  (cyberhorse)
----------------------------------
-includes/db_mysql.php
-- extended one of the comments - hopefully to make a common mistake easier to avoid.
-
-2004-07-02 10:36  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- The last page wasn't showing as a link on top/bottom - off by one error fixed.
-- (part of patch 953126 on sf)
-
-2004-07-01 21:05  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Additional change to be able to see child tasks from the inactive ones
-
-2004-06-30 20:45  (jcgonz)
----------------------------------
-modules/tasks/view.php
-- Inactive tasks now can also show its child tasks
-
-2004-06-30 20:21  (jcgonz)
----------------------------------
-locales/en/tasks.inc
-- Added up some aditional strings
-
-2004-06-30 20:20  (jcgonz)
----------------------------------
-modules/tasks/gantt.php
-- Changed the appearance of dynamic tasks and enable task's indentation
-
-2004-06-30 19:57  (revelation7)
----------------------------------
-modules/admin/do_user_aed.php
-- When a new user is created, this automatically direct user to permission setup page, with a modified message to alert user they must setup permissions.  This is to address frequent confusion about why newly created users can not login.
-
-2004-06-29 22:42  (jcgonz)
----------------------------------
-modules/tasks/gantt.php
-- Solved a problem with utf8_decode function
-
-2004-06-29 00:46  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Limited to 45 characters task's names in the output to beautify screen output
-
-2004-06-29 00:36  (jcgonz)
----------------------------------
-locales/en/tasks.inc
-- [no log message]
-
-2004-06-29 00:25  (jcgonz)
----------------------------------
-locales/en/projects.inc
-- Added up some strings in the localization
-
-2004-06-29 00:15  (jcgonz)
----------------------------------
-modules/companies/index.php
-- Fixed some formatting issues
-
-2004-06-28 02:29  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Added detection of mail loops.
-
-2004-06-25 21:18  (jcgonz)
----------------------------------
-classes/ui.class.php
-locales/en/admin.inc
-locales/en/common.inc
-locales/en/companies.inc
-locales/en/files.inc
-locales/en/projects.inc
-locales/en/tasks.inc
-modules/projects/addedit.php
-modules/projects/view.php
-- Some localization issues solved
-
-2004-06-23 02:39  (robertoibarra)
----------------------------------
-modules/projects/reports/tasksperuser.php
-modules/tasks/tasks.class.php
-modules/tasks/tasksperuser_sub.php
-- When filtering the tasksperuser report to show all projects, the project name colum appear to show what project the task belonged to, doesn't apply for child tasks, only in parent ones.
-
-2004-06-23 01:36  (robertoibarra)
----------------------------------
-modules/projects/vw_logs.php
-- New: Filter by Cost Code in the Task Log section of a project
-
-2004-06-22 00:18  (ajdonnison)
----------------------------------
-modules/tasks/todo.php
-- Fixed problem where task list was reusing global variable $a and hence
-- causing calendar to malfunction.
-
-2004-06-21 02:46  (ajdonnison)
----------------------------------
-index.php
-- Changed cfg_get_var to ini_get in response to error reported on dp.net
-- forum:
-- http://www.dotproject.net/index.php?name=PNphpBB2&file=viewtopic&p=1768#1768
-
-2004-06-17 02:27  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_updatetask.php
-modules/tasks/tasks.class.php
-modules/tasks/view.php
-modules/tasks/vw_log_update.php
-- Now users allowed to do so can update task's end date directly in the task's log form.
-
-2004-06-17 00:29  (jcgonz)
----------------------------------
-modules/projects/reports/allocateduserhours.php
-- Fixed total amount of allocated hours calculation
-
-2004-06-17 00:21  (jcgonz)
----------------------------------
-modules/companies/vw_companies.php
-- New filter: company_owner
-
-2004-06-17 00:11  (jcgonz)
----------------------------------
-modules/companies/index.php
-- New filter: company_owner
-- Now the search saves it state
-
-2004-06-16 22:38  (jcgonz)
----------------------------------
-modules/tasks/tasks.class.php
-- When a task is deleted or inactivated, that action is cascaded to all its children
-
-2004-06-16 21:34  (gregorerhardt)
----------------------------------
-install/commonlib.php
-install/index.php
-- groundwork for loading existing config data
-
-2004-06-16 20:10  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Solved bugs with the task tree construction (for task parent and task dependencies) and task_parent automatic relation in new tasks.
-
-2004-06-14 23:48  (gregorerhardt)
----------------------------------
-modules/files/addedit.php
-- removed already commented out hardcoded fileuploadmaxsizelimit
-
-2004-06-14 20:51  (robertoibarra)
----------------------------------
-modules/tasks/tasks.php
-- FIX: The assigned user count was incorrect as well as the file count, fixed in the query.
-
-2004-06-12 17:26  (gregorerhardt)
----------------------------------
-fileviewer.php
-- #914075: yet another ie bug
-
-2004-06-12 16:59  (gregorerhardt)
----------------------------------
-modules/calendar/links_tasks.php
-- #909085: server crash, undo this fix if problems reported
-
-2004-06-12 16:07  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-- #891507: db field too short
-
-2004-06-12 15:54  (gregorerhardt)
----------------------------------
-docs/install.html
-docs/nav.html
-- minor docs enhancements: dpHome opens in a new window, explain filesysperms for pdf reports
-
-2004-06-12 12:53  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-06-12 12:50  (gregorerhardt)
----------------------------------
-install/check.php
-install/config.php
-install/db.php
-install/index.php
-install/pref.php
-- minor bugfixes, enhancements
-
-2004-06-12 01:48  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Improved file attachment icon positioning
-
-2004-06-12 01:39  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-- Task parent and Task dependencies new indents withing select boxes. Some formats were unified (class = text). Please debug the indenting feature.
-- Added also getTaskDepth to task object
-
-2004-06-12 00:41  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Added length limit to the "parent task" combo because it was causing plenty of formatting problems
-
-2004-06-12 00:37  (jcgonz)
----------------------------------
-modules/tasks/todo.php
-- Inactive tasks no longer appear within the todo list
-
-2004-06-12 00:32  (jcgonz)
----------------------------------
-modules/tasks/index.php
-- Changed the default filter to My Unfinished; in heavy duty
-- companies, the 'All my tasks' default status was very
-- intense for the server (and somehow useless)
-
-2004-06-12 00:27  (jcgonz)
----------------------------------
-images/clip.png
-modules/tasks/tasks.php
-- An indicator was added to see if a task contains or not attached files
-
-2004-06-11 23:31  (jcgonz)
----------------------------------
-modules/projects/reports/allocateduserhours.php
-modules/tasks/tasks.class.php
-- Now the allocated hours per user/day report counts the percentage assigned to a user.
-
-2004-06-11 19:18  (robertoibarra)
----------------------------------
-modules/calendar/view.php
-modules/tasks/addedit.php
-- Some short tags <? where replaced with cool tags <?php
-
-2004-06-11 18:10  (agorski)
----------------------------------
-modules/system/translate_save.php
-- If a translation file cannot be saved, the path of the file is now printed
-- out to make it easier to track down the permission problem.
-
-2004-06-11 00:04  (robertoibarra)
----------------------------------
-modules/tasks/tasks.php
-- Fix: Additional assigned users displayed in tasks with the + sign was one number more, it was fixed to the assigned user + additional users
-
-2004-06-10 23:55  (robertoibarra)
----------------------------------
-modules/tasks/tasks.php
-- Bufix: Tasks with no asigned users wouldn't display a <td></td> in the assigned user column and that would screw up the columns after it
-
-2004-06-10 23:41  (robertoibarra)
----------------------------------
-modules/files/index_table.php
-- When viewing the filelist in proyects or the file module you can now view to which task the file belongs to.
-
-2004-06-10 22:52  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- reimplementing the fact that main user doesn't need to show up in possible assignees list ...
-
-2004-06-09 19:45  (robertoibarra)
----------------------------------
-modules/tasks/todo.php
-- My Todo can now filter out tasks from proyects on hold which you might not really have to do if the proyect is stopped.
-
-2004-06-08 20:57  (bloaterpaste)
----------------------------------
-modules/tasks/addedit.php
-- Changing the label of the "Comments" field to be "Additional Email Comments" to clarify that functionality.
-
-2004-06-05 01:05  (bloaterpaste)
----------------------------------
-style/default/lostpass.php
-- Fixing JavaScript error that was occuring onload.
-
-2004-06-05 00:56  (bloaterpaste)
----------------------------------
-modules/tasks/addedit.php
-- Fixing an error that was happening during new item creation.
-
-2004-06-05 00:48  (bloaterpaste)
----------------------------------
-modules/projects/reports/tasklogs.php
-- Changing post to get to support Excel import.
-
-2004-06-04 16:34  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-06-04 16:30  (gregorerhardt)
----------------------------------
-modules/calendar/vw_day_events.php
-- 943779: early startdates, late enddates
-
-2004-06-04 15:47  (uid1036151)
----------------------------------
-locales/en/common.inc
-modules/system/translate.php
-modules/system/translate_save.php
-- Fixed the fact that we weren't erroring when a translation file pointer was
-- bad (not writable, for instance). Fixed problem with slashes in the
-- translations, especially noticable in the English common translation.
-
-2004-06-04 14:52  (uid1036151)
----------------------------------
-includes/main_functions.php
-modules/admin/vw_usr_perms.php
-modules/public/selector.php
-- dPshowImage now center-aligns images to text
-- Fixed problem in the selector as well as in user permissions where a
-- company with ' in the name (ex. Jack's Bowling) would produce a JavaScript
-- error because the string was unescaped.
-
-2004-06-01 22:10  (bloaterpaste)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-modules/admin/vw_usr_perms.php
-modules/system/system.class.php
-- Extended permissions system to support custom perms for modules.  Individual setup.php files can now include the following fields:
-- $config['permissions_item_table'] = 'table_name'; ie companies
-- $config['permissions_item_label'] = 'descriptive_field_name'; ie company_name
-- $config['permissions_item_field'] = 'id_field'; ie company_id
-- These are now stored, and can be referred to for pulling perms.  This will allow modules to utilize the currently table type currently supported by selector.php, companies, projects, tasks, files, departments, forums and users for permissions grant and revoke criteria.  modules table was modified to support this functionality.
-
-2004-06-01 20:38  (jcgonz)
----------------------------------
-modules/projects/reports/allocateduserhours.php
-- Added total sum of allocated hours per user
-
-2004-05-27 19:47  (robertoibarra)
----------------------------------
-includes/db_connect.php
-includes/main_functions.php
-- MAYOR update: this updates even my last update. Looking at more code and issues I found that international characters where marked to be saved as entities in the db, this overrides the concept of handling different locales and encodings so I returned it to the previous state where we use encodings to simplify international characters and maintain compatibility with all the language locales all ready working.
-
-2004-05-27 18:53  (robertoibarra)
----------------------------------
-includes/db_connect.php
-- UTF-8 locales didn't save in the database correctly, fixed by adding the locale_char_set parameter to the htmlentities function that created the sql
-
-2004-05-25 20:31  (bloaterpaste)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-functions/projects_func.php
-modules/projects/addedit.php
-modules/projects/projects.class.php
-modules/projects/view.php
-- Adding "Project Type" to projects.
-
-2004-05-25 19:23  (bloaterpaste)
----------------------------------
-modules/projects/vw_logs.php
-- Added additional filters to project task log tab to allow it to filter out the 100% complete tasks and the inactive tasks.
-
-2004-05-25 01:56  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Fix for bug 957310 - problems with HTML
-
-2004-05-25 00:50  (ajdonnison)
----------------------------------
-includes/db_connect.php
-- Fix for bug 943150 - JavaScript injection.
-
-2004-05-21 23:58  (bloaterpaste)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- Trying to optimize.  Functions are killing the performance of this.  Replaced a couple of drop down generations with API.
-
-2004-05-21 23:47  (bloaterpaste)
----------------------------------
-modules/help/en/projects.view.hlp
-modules/projects/view.php
-- Changed the name of a few caculated fields.  Documented what they mean.
-
-2004-05-21 19:02  (bloaterpaste)
----------------------------------
-modules/projects/index.php
-- Oops.  Stuck the form around the wrong cell.  Fixing bug that I created this morning on the company/divisions select drop down.
-
-2004-05-21 18:51  (bloaterpaste)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.php
-db/upgrade_latest.sql
-functions/projects_func.php
-modules/projects/addedit.php
-modules/projects/index.php
-modules/projects/projects.class.php
-modules/projects/view.php
-modules/projects/vw_idx_active.php
-- Adding Priority value to projects.  Color coding is displayed on the project list for active projects.
-
-2004-05-21 17:59  (bloaterpaste)
----------------------------------
-modules/projects/index.php
-- Fixed drop down list so that it is centered properly in it's cell.
-
-2004-05-20 20:35  (bloaterpaste)
----------------------------------
-modules/tasks/addedit.php
-- Making it so tasks can only be moved within a company.
-
-2004-05-20 20:28  (bloaterpaste)
----------------------------------
-modules/tasks/tasks.class.php
-- Moving tasks will now move all of the children tasks as well.
-
-2004-05-20 02:32  (bloaterpaste)
----------------------------------
-modules/tasks/addedit.php
-- Adding the ability for users to move tasks to other projects.  Currently only does the selected task.  PENDING: move all dependant tasks as well.
-
-2004-05-19 23:56  (bloaterpaste)
----------------------------------
-modules/projects/index.php
-- Oops!  Removing debug.
-
-2004-05-19 23:54  (bloaterpaste)
----------------------------------
-modules/projects/index.php
-- Fixed a small problem that was causing the drop down to default to the wrong entry when there were no department projects found.
-
-2004-05-19 23:36  (bloaterpaste)
----------------------------------
-modules/projects/index.php
-- Changed company filter to be Company/Department filter.  In conjunction to my contact/deptartment tables that I just checked in, this will allow a user to winnow projects down by the department(s) they are assigned to.  The company drop down now lists all companies and departments.
-
-2004-05-19 20:57  (bloaterpaste)
----------------------------------
-db/dotproject.sql
-db/upgrade_latest.sql
-modules/projects/projects.class.php
-modules/tasks/tasks.class.php
-- Added project_departments, project_contacts, task_departments and task_contacts tables to store relational data about those relationships.  This does not (at this time) replace the use of the text fields of the same use for tasks and departments.  This is meant to be an interrum step.  But, this will allow better reporting and filtering capabilities throughout the application.  PENDING: upgrade task that will fully populate those four tables based on existing data.  I'll write this as soon and I know where to put it.  If anyone knows where to put a chunk of PHP to be executed on upgrade, please let me know.  For now this change will just affect all projects and tasks edited or created after the point of upgrade.
-- 
-- Added new store() function in the project.class.php file.
-
-2004-05-19 18:14  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.class.php
-modules/tasks/tasksperuser_sub.php
-- fixing minor bugs and adding project color identifier
-
-2004-05-19 01:27  (bloaterpaste)
----------------------------------
-modules/projects/view.php
-modules/projects/vw_logs.php
-- Adding "Task Logs" Tab to the project view.  This will display an overview of all task logs that have been applied to tasks contained within this project.  It also has a user filter so you can easily see who has been doing what.
-
-2004-05-17 22:26  (bloaterpaste)
----------------------------------
-modules/calendar/calendar.class.php
-modules/public/calendar.php
-- The currently selected date will now be highlighted on the calendar popup.  So, if a user had previously clicked on the 10th on the selector, when he/she comes back later and clicks that same popup, the 10th will be highlighted.
-- 
-- Also added to the calendar.class.php the ability to highlight as many days as someone might want by populating it's highlightedDays arrays with name value pairs of dates (20040517) and the hex color for the highlight (#FF0000).
-
-2004-05-17 11:27  (gregorerhardt)
----------------------------------
-locales/en/tasks.inc
-- added strings
-
-2004-05-17 11:27  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- enable translation for arrayselects
-
-2004-05-17 11:16  (gregorerhardt)
----------------------------------
-includes/main_functions.php
-- implement translation for alt and title in dPshowImage
-
-2004-05-17 10:51  (gregorerhardt)
----------------------------------
-modules/tasks/do_task_assign_aed.php
-modules/tasks/index.php
-modules/tasks/tasks.class.php
-modules/tasks/tasksperuser.php
-modules/tasks/tasksperuser_sub.php
-- implement page tasksperuser, easy (un)assignment of users-tasks
-
-2004-05-17 10:46  (gregorerhardt)
----------------------------------
-docs/LICENSE.txt
-- added comment for donated graphics
-
-2004-05-17 10:33  (gregorerhardt)
----------------------------------
-modules/tasks/images/add.png
-modules/tasks/images/exchange.png
-modules/tasks/images/remove.png
-- initial import
-
-2004-05-15 16:28  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-05-15 16:25  (gregorerhardt)
----------------------------------
-locales/en/admin.inc
-locales/en/common.inc
-locales/en/files.inc
-locales/en/forums.inc
-locales/en/projects.inc
-locales/en/system.inc
-locales/en/tasks.inc
-locales/en/ticketsmith.inc
-- updated translation strings
-
-2004-05-15 16:01  (gregorerhardt)
----------------------------------
-includes/sendpass.php
-- translate sendpass-email
-
-2004-05-15 15:59  (gregorerhardt)
----------------------------------
-index.php
-- make sendpass-email ready for translation, too
-
-2004-05-15 14:40  (gregorerhardt)
----------------------------------
-index.php
-- fixed: sendpw-page didn't display translations
-
-2004-05-07 02:55  (jcgonz)
----------------------------------
-modules/public/contact_selector.php
-- Solved a bug in the group by statement, it was meant to be order by; added a feature for company/department blocks and also added up a combo to quick select a specified company
-
-2004-05-07 02:32  (ajdonnison)
----------------------------------
-style/classic/header.php
-- Removed debug.
-
-2004-05-07 02:20  (ajdonnison)
----------------------------------
-style/classic/header.php
-style/classic/main.css
-- Fixed mouseover/mouseout events.
-
-2004-05-05 06:19  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Added a check to show_all_assignees for backwards compatibility
-- Sent font to italics for dynamic tasks in order to distinguish it from normal tasks
-
-2004-05-05 03:41  (ajdonnison)
----------------------------------
-db/README
-db/upgrade_latest.sql
-- New upgrade file to handle interim upgrades.
-
-2004-05-04 23:44  (bloaterpaste)
----------------------------------
-modules/system/contacts_ldap.php
-modules/system/index.php
-- Adding LDAP contact info functionality.
-
-2004-05-04 19:28  (bloaterpaste)
----------------------------------
-db/dotproject.sql
-includes/config-dist.php
-modules/public/color_selector.php
-- Adding config option for using a defined list of colors, instead of the color palette.  List of colors is pulled out of the sysvals.  Also added some default sysvals.
-
-2004-05-03 22:36  (bloaterpaste)
----------------------------------
-modules/public/selector.php
-- Now supports IE and Mozilla/Firefox.
-
-2004-05-03 05:15  (ajdonnison)
----------------------------------
-docs/check.php
-- Moved check for server info after connection attempt (need to be able
-- to connect to determine server info).
-
-2004-05-01 13:13  (gregorerhardt)
----------------------------------
-includes/config-dist.php
-- wrote a reminder for registration of new config vars with the installer
-
-2004-05-01 13:09  (gregorerhardt)
----------------------------------
-install/index.php
-- wrote a howto for registering vars with the installer
-
-2004-05-01 12:21  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-05-01 12:14  (gregorerhardt)
----------------------------------
-install/config.php
-install/db.php
-install/do_backup.php
-install/pref.php
-- fixed #943764:wrong time increment, added show_all_task_assignees config var
-
-2004-05-01 01:15  (bloaterpaste)
----------------------------------
-modules/public/selector.php
-- Changed to use DIV instead of a select list.  Looks nicer, and makes it easier to select items.  Still needs fix to work correctly in IE.  Mozilla worx fine.
-
-2004-05-01 00:28  (bloaterpaste)
----------------------------------
-includes/config-dist.php
-modules/tasks/tasks.php
-- Added "show_all_task_assignees" preference in the config file to control whether or not a full list of assignees is displayed in the task lists.  Also implemented this option in the tasks.php file.
-
-2004-04-30 20:40  (bloaterpaste)
----------------------------------
-db/dotproject.sql
-db/upgrade_101_to_102.sql
-modules/projects/addedit.php
-modules/projects/do_project_aed.php
-modules/projects/projects.class.php
-modules/projects/view.php
-- Adding project_departments and project_contacts fields to the projects table to support department and contact association with  projects.  This isn't the right way to implement this association, but it's the way that's currently used in tasks, so should be fine for now.  At some point, we should build seperate db table for handle this association, like the task->user association is currently handled.
-- 
-- Added UI support for selection and display of contact and department information.
-
-2004-04-30 20:37  (bloaterpaste)
----------------------------------
-modules/tasks/view.php
-- adding mailto link to the displayed email address for the listed contacts.
-
-2004-04-26 19:08  (gnome444)
----------------------------------
-lib/PEAR/Date.php
-- PEAR date bug: DST was hard coded, caused incorrect offset of 1 hour. Took forever to find this
-
-2004-04-23 08:34  (gnome444)
----------------------------------
-modules/projects/vw_idx_proposed.php
-- Update for projects tab ordering fix and nowrap of status field
-
-2004-04-19 04:03  (ajdonnison)
----------------------------------
-modules/tasks/vw_log_update.php
-- Fix from Rowan Simms for bug 890841 - Timestamps defaulting to 12:00.
-
-2004-04-19 03:59  (ajdonnison)
----------------------------------
-modules/files/index_table.php
-- Added patch from Rowan Simms for bug 931286
-
-2004-04-16 15:50  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-04-15 20:14  (jcgonz)
----------------------------------
-modules/tasks/view.php
-- Removed a warning message because a variable was not created
-
-2004-04-15 18:00  (gnome444)
----------------------------------
-modules/public/contact_selector.php
-modules/tasks/addedit.php
-- Tweak contacts selector to allow selecting contacts from all allowed companies, your private contacts or contacts that are not assigned to any company. This is a much requested feature. Why is contacts_company a string and not a company_id?
-
-2004-04-15 17:54  (gnome444)
----------------------------------
-includes/permissions.php
-- Fix my permissions fix. Take into account global perms too. Sorry about that folks.
-
-2004-04-14 13:56  (gregorerhardt)
----------------------------------
-install/check.php
-install/commonlib.php
-install/config.php
-install/db.php
-install/do_backup.php
-install/index.php
-install/pref.php
-- several fixes and new features for the installer, updated todo list
-
-2004-04-14 10:53  (gregorerhardt)
----------------------------------
-modules/forums/post_message.php
-- #934269: show original text in forum message edit mode
-
-2004-04-14 10:04  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-13 20:22  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Performance optimization, no need to query a search string
-- if we aren't searching for anything
-
-2004-04-13 20:05  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Query speed up. This takes this query from 69 secs
-- to 1.3 secs on my old (ass kickin') MySQL 3.? p200 database box.
-
-2004-04-13 17:09  (gregorerhardt)
----------------------------------
-install/index.php
-- just wanted to have the updated todo list versioned :-)
-
-2004-04-13 14:05  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Query speed up. This takes this query from 69 secs
-- to 1.3 secs on my old (ass kickin') MySQL 3.? p200 database box.
-
-2004-04-12 03:52  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-11 08:56  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-04-11 07:19  (gregorerhardt)
----------------------------------
-modules/forums/addedit.php
-- bug #892914: added isset() to an undefined variable
-
-2004-04-11 07:17  (gregorerhardt)
----------------------------------
-modules/contacts/index.php
-- bug #892912: commented out superfluous line with undefined variable
-
-2004-04-11 06:50  (gregorerhardt)
----------------------------------
-docs/install.html
-- added requirement php-xml for calendar
-
-2004-04-11 06:42  (gregorerhardt)
----------------------------------
-docs/install.html
-- added requirement php-xml for gantt charts
-
-2004-04-11 06:37  (gregorerhardt)
----------------------------------
-modules/tasks/gantt.php
-- added a comment out note to a line known for breaking gantt charts frequently
-
-2004-04-10 03:53  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-09 12:48  (gnome444)
----------------------------------
-modules/companies/index.php
-- Do not allow a user to add a company that doesn't have edit perms#908369
-
-2004-04-09 12:39  (gnome444)
----------------------------------
-includes/permissions.php
-- Alert! Security fix in response to #908369 which applies to projects as well and probably others. Do not allow edit perms to modules unless specifically allowed.
-
-2004-04-09 10:25  (gregorerhardt)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-09 03:50  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-08 16:39  (gnome444)
----------------------------------
-modules/companies/index.php
-modules/companies/vw_companies.php
-- Change companies tab order to match projects.
-- All Companies is now on the left and is the default
-
-2004-04-08 03:51  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-07 19:56  (gnome444)
----------------------------------
-modules/projects/vw_idx_complete.php
-- Change projects complete tab so that project status
-- is not dependant on the percent complete. So that projects marked complete always show up on the complete tab
-
-2004-04-07 19:54  (gnome444)
----------------------------------
-modules/projects/index.php
-modules/projects/vw_idx_proposed.php
-- Change projects tab order so that All Projects
-- is the default and first on the left.
-
-2004-04-07 19:50  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Added extra debug.
-- Now emails the admin if there is an error rather than purporting to
-- create a ticket 0.
-- Fixed problem with handling multipart messages (especially those
-- with multipart/related sections).
-
-2004-04-07 15:02  (gnome444)
----------------------------------
-modules/tasks/addedit.php
-- Minor formatting fixup when depts are available
-
-2004-04-07 03:51  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-07 02:37  (ajdonnison)
----------------------------------
-db/dotproject.sql
-db/dotproject_102.sql
-- Removed dotproject_102.sql to dotproject.sql to be consistent with
-- new installer.
-
-2004-04-06 03:51  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-05 06:44  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-04-03 03:52  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-02 13:49  (gnome444)
----------------------------------
-modules/tasks/addedit.php
-- Formatting and layout enhancements for task addedit
-
-2004-04-02 11:33  (gnome444)
----------------------------------
-classes/date.class.php
-- WENESDAY typo fix.
-
-2004-04-02 10:57  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Restore date and time format as per user_prefs, and a couple formatting things
-
-2004-04-01 18:23  (gnome444)
----------------------------------
-modules/projects/addedit.php
-modules/projects/do_project_aed.php
-modules/projects/projects.class.php
-modules/tasks/tasks.class.php
-- Finish merge of Handco's import task, task dependancy patch. This fixes the task importing feature and also allows the importing of task into non-empty projects, shifting the dates of the imported tasks relative to the start date of the project. Dependant tasks, (not dynamic), now have their dates automatically adjusted when the end date of the task they are dependant on changes. It also changes the getAllowedRecords and getDeniedrecords in the projects class to not allow access to projects that are under companies that are denied.
-
-2004-04-01 13:38  (jcgonz)
----------------------------------
-lib/jpgraph/src/jpgraph_pie.php
-lib/jpgraph/src/jpgraph_pie3d.php
-- Added so a new module (Polls) is able to work
-
-2004-04-01 03:31  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-03-31 18:43  (jcgonz)
----------------------------------
-modules/companies/index.php
-- Updated so tabbed is the default view
-
-2004-03-31 16:10  (gnome444)
----------------------------------
-modules/projects/projects.class.php
-- Deleting a project was not cleaning up the deps or user_tasks tables. Pointed out by Gerald M.
-
-2004-03-30 14:26  (gnome444)
----------------------------------
-style/classic/main.css
-style/default/main.css
-- css height param caused select boxes to appear too small in Mozilla
-
-2004-03-25 11:16  (kiryl)
----------------------------------
-modules/tasks/addedit.php
-- [no log message]
-
-2004-03-24 12:00  (kiryl)
----------------------------------
-modules/tasks/addedit.php
-- [Improvement] new feature added: system is able to automatically set task’s start date after defining parent task or task dependencies
-
-2004-03-23 07:32  (dylan_cuthbert)
----------------------------------
-modules/tasks/tasks.php
-functions/tasks_func.php
-modules/projects/view.php
-modules/tasks/index.php
-- added search filter to task views based on patch 896155
-- (I extended it to work with the Projects tab view too)
-- also removed NOWRAP on assignees field as it was causing display
-- problems with very long lists of assignees.
-
-2004-03-22 21:23  (eddieajau)
----------------------------------
-index.php
-includes/sendpass.php
-locales/en/common.inc
-style/default/login.php
-style/default/lostpass.php
-- Added lost password routines to login screen
-
-2004-03-22 15:19  (jcgonz)
----------------------------------
-includes/permissions.php
-- PHP warning message removed
-
-2004-03-22 06:23  (dylan_cuthbert)
----------------------------------
-modules/tasks/todo.php
-- fixed bug with display of todo list in "Today" view when user
-- has admin priviledges (SQL error occurred)
-
-2004-03-19 20:18  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-03-19 19:56  (gregorerhardt)
----------------------------------
-modules/contacts/vcardimport.php
-- FIX for the fix
-
-2004-03-19 19:13  (gregorerhardt)
----------------------------------
-modules/contacts/vcardimport.php
-- FIX: vCardUpload for register_globals off
-
-2004-03-18 13:52  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-03-17 06:30  (kiryl)
----------------------------------
-modules/tasks/tasks.php
-- [BugFix] All unfinished tasks filter will not show duplicate tasks anymore
-
-2004-03-16 11:42  (kiryl)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-modules/tasks/tasks.class.php
-- [Improvement] Added user's comment to email notification
-
-2004-03-16 10:25  (kiryl)
----------------------------------
-modules/tasks/addedit.php
-- [BugFix] calcDuration uses daily_working_hours from config, hardcoded 8 hrs removed
-
-2004-03-16 08:22  (kiryl)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-03-16 08:20  (kiryl)
----------------------------------
-style/default/login.php
-style/classic/login.php
-- please leave action argument empty
-
-2004-03-16 08:17  (kiryl)
----------------------------------
-fileviewer.php
-- [Improvement] Displaying login failed message after unsuccessful login
-- File /style/$uistyle/login.php must not have action attribute set. 
-- Setting attribute value to index.php causes unexpected redirect.
-
-2004-03-15 08:33  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-03-11 10:45  (kiryl)
----------------------------------
-modules/projects/view.php
-- [BugFix] Total hours and Work was incorrectly displayed
-
-2004-03-11 06:09  (kiryl)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-03-11 05:51  (kiryl)
----------------------------------
-modules/tasks/tasks.php
-- [Improvement] aplied Andrey Smirnov's patch #906480	(Assigned persons in tasks list)
-
-2004-03-10 18:15  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Bug with the restrict_task_time_editing feature solved.
-- User was not able to edit time information of new tasks.
-
-2004-03-10 18:06  (jcgonz)
----------------------------------
-classes/customfieldsparser.class.php
-modules/system/custom_field_editor.php
-- Som bugs solved for custom fields parser.
-- Please help out debugging this feature because it's kind of tricky!
-
-2004-03-10 07:26  (kiryl)
----------------------------------
-ChangeLog
-- [grammatical error in comment] user must be logged to see any uploaded file
-- missed change log update (2004-03-04)
-
-2004-03-10 05:49  (kiryl)
----------------------------------
-fileviewer.php
-- must be logged to show any file!
-
-2004-03-10 05:47  (kiryl)
----------------------------------
-ChangeLog
-- [no log message]
-
-2004-03-10 05:46  (kiryl)
----------------------------------
-modules/files/addedit.php
-modules/files/do_file_aed.php
-modules/files/files.class.php
-- [Improvement] after adding, updating or deleting file depends on task assignment, all users assigned to task or project owner will be notified by email
-- user can decide whether or no notify useres
-
-2004-03-10 02:15  (ajdonnison)
----------------------------------
-db/dotproject_100.sql
-db/dotproject_101.sql
-- Removed old install scripts to stop the silly install questions.
-
-2004-03-10 02:03  (ajdonnison)
----------------------------------
-docs/upgrade.html
-- Added post 1.0.0 instructions.
-
-2004-03-10 01:59  (ajdonnison)
----------------------------------
-docs/install.html
-- Made installation instructions more generic.
-
-2004-03-09 23:05  (robertoibarra)
----------------------------------
-modules/tasks/addedit.php
-- FIX: new feature in config restrict_task_time_editing was faulty
-
-2004-03-09 23:03  (gregorerhardt)
----------------------------------
-modules/ticketsmith/search.php
-- softcoded ticket type in search view for translation
-
-2004-03-09 21:14  (robertoibarra)
----------------------------------
-modules/system/translate.php
-- FIX: missing ; in syntax
-
-2004-03-09 20:52  (robertoibarra)
----------------------------------
-db/upgrade_101_to_102.sql
-- FIX: Missing ; in .sql file
-
-2004-03-09 16:18  (jcgonz)
----------------------------------
-classes/customfieldsparser.class.php
-db/dotproject_102.sql
-db/upgrade_101_to_102.sql
-includes/main_functions.php
-modules/companies/addedit.php
-modules/companies/view.php
-modules/system/custom_field_editor.php
-modules/system/index.php
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-modules/tasks/view.php
-modules/tasks/vw_logs.php
-- Custom fields online editor done! now a non-technical user is able to add, remove and adapt custom fields for tasks and companies.
-- Also the user will be able to customize task types and company types. And that's not all!!
-- Depending which type the company or task a record is, some fields will appear or not!
-- Useful for different type of tasks that need different type of information.
-- 
-- Check changes on upgrade_101_to_102.sql for database changes
-
-2004-03-09 00:20  (dylan_cuthbert)
----------------------------------
-locales/core.php
-modules/system/translate.php
-modules/system/translate_save.php
-- added functionality to load translated locales from locale directory underneath
-- the module directory.  This is mainly useful for external modules - the languages
-- can be packaged in the same file with no post-install copy.
-- the filename for languages should be  modules/[module]/locale/[lang].inc
-
-2004-03-05 16:15  (jcgonz)
----------------------------------
-modules/contacts/addedit.php
-modules/contacts/select_contact_company.php
-- Now when a user selects a company and/or department, he is able to select wether or not
-- to overwrite the contact's address with the one saved in the company or department.
-
-2004-03-05 16:13  (jcgonz)
----------------------------------
-db/upgrade_101_to_102.sql
-- There was an error in the new sql statement (perc_assignment field). Solved.
-
-2004-03-04 11:03  (kiryl)
----------------------------------
-db/dotproject_102.sql
-db/upgrade_101_to_102.sql
-- [Improvement]   Percentage resource allocation functionality needs new column
-
-2004-03-04 10:58  (kiryl)
----------------------------------
-lib/jpgraph/src/imgdata_diamonds.inc
-lib/jpgraph/src/jpgraph.php
-lib/jpgraph/src/jpgraph_canvas.php
-lib/jpgraph/src/jpgraph_canvtools.php
-lib/jpgraph/src/jpgraph_error.php
-lib/jpgraph/src/jpgraph_gantt.php
-lib/jpgraph/src/jpgraph_line.php
-lib/jpgraph/src/jpgraph_log.php
-lib/jpgraph/src/jpgraph_plotmark.inc
-lib/jpgraph/src/jpgraph_bar.php
-lib/jpgraph/src/jpgraph_gradient.php
-- [Improvement] Upgrade jpGraph to version 1.14. If using non-utf charset tasks names are not converted so are correctly displayed on gant chart
-
-2004-03-04 10:52  (kiryl)
----------------------------------
-modules/tasks/do_task_aed.php
-modules/tasks/addedit.php
-modules/tasks/gantt.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/viewgantt.php
-- [Improvement] Percentage resource allocation added
-- [Improvement] More valuable info displayed on gant chart, eg. Gant Chart uses resource allocation information
-- [BugFix] Gant Chart correctly displays task end date
-
-2004-03-04 10:45  (kiryl)
----------------------------------
-modules/projects/view.php
-- [Improvment] Added project work (multiplication of task duration and resource allocation)
-
-2004-03-03 16:43  (jcgonz)
----------------------------------
-functions/tasks_func.php
-modules/tasks/index.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/todo.php
-- Now users are able to filter "Task I own" that is different of "My Tasks"; this means that users can check out tasks that they created
-- 
-- Another interesting feature is for sysadmins; they now are able to "switch" user in the task modules so they can see how another user is performing. Also this sysadmin user is able to go to "My todo" of the selected user. Excellent for everyday user performance monitoring.
-
-2004-03-03 12:55  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.class.php
-- 907675: creator first name twice in notify mail
-
-2004-03-02 07:02  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-03-01 20:05  (jcgonz)
----------------------------------
-includes/config-dist.php
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-- New flag in config.php
-- $dPconfig["restrict_task_time_editing"] = false;
-- 
-- Now the sysadmin is able to configure if a normal user is able to change time information from tasks. If this flag is set up to true, the user needs to be the task owner, project owner or sys admin.
-- 
-- Excellent for controlling real start and due dates! no more "it was due today!! look at dotproject's information! I swear I didn't change it!"
-
-2004-02-26 07:52  (gregorerhardt)
----------------------------------
-classes/date.class.php
-- 872985: addMonths 12+(-1)=13?
-
-2004-02-26 07:16  (gregorerhardt)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- 899969: quotes in tickets
 ...
 
 (This file has been wrapped)
