@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"new file"=>"",
+"save & new task",
 "Access",
 "Action",
 "Active",

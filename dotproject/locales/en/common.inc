@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Submit",
+"Todo",
 "- New Item -",
 "About",
 "Active Projects",
@@ -102,6 +102,7 @@
 "Starts",
 "State",
 "Status",
+"Submit",
 "Summary",
 "Supplier",
 "Suppliers",
