@@ -25,9 +25,9 @@
 // dotProject CVS $Id$
 // The following lines are modified to correctly load the libraries
 // from the dotProject distribution
-require_once( $AppUI->getPearClass( 'Date/TimeZone' ) );
-require_once( $AppUI->getPearClass( 'Date/Calc' ) );
-require_once( $AppUI->getPearClass( 'Date/Span' ) );
+require_once( $AppUI->getLibraryClass( 'PEAR/Date/TimeZone' ) );
+require_once( $AppUI->getLibraryClass( 'PEAR/Date/Calc' ) );
+require_once( $AppUI->getLibraryClass( 'PEAR/Date/Span' ) );
 
 /**
 * "YYYY-MM-DD HH:MM:SS"
