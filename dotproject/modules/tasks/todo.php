@@ -1,5 +1,8 @@
 <?php /* TASKS $Id$ */
 
+// Project status from sysval, defined as a constant
+$project_on_hold_status = 4;
+
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 $date       = intval( dPgetParam( $_GET, 'date', '' ) );
 $user_id    = $AppUI->user_id;
@@ -20,9 +23,11 @@ $canEdit = !getDenyEdit( $m );
 if (isset( $_POST['show_form'] )) {
 	$AppUI->setState( 'TaskDayShowArc', dPgetParam( $_POST, 'show_arc_proj', 0 ) );
 	$AppUI->setState( 'TaskDayShowLow', dPgetParam( $_POST, 'show_low_task', 0 ) );
+	$AppUI->setState( 'TaskDayShowHold', dPgetParam($_POST, 'show_hold_proj', 0 ) );
 }
 $showArcProjs = $AppUI->getState( 'TaskDayShowArc' ) !== NULL ? $AppUI->getState( 'TaskDayShowArc' ) : 0;
 $showLowTasks = $AppUI->getState( 'TaskDayShowLow' ) !== NULL ? $AppUI->getState( 'TaskDayShowLow' ) : 1;
+$showHoldProjs = $AppUI->getState( 'TaskDayShowHold' ) !== NULL ? $AppUI->getState( 'TaskDayShowHold' ) : 0;
 
 // if task priority set and items selected, do some work
 $task_priority = dPgetParam( $_POST, 'task_priority', 99 );
@@ -65,6 +70,7 @@ $sql = "
 		 AND project_id = a.task_project" .  		
   (!$showArcProjs ? " AND project_active = 1" : "") .
   (!$showLowTasks ? " AND a.task_priority >= 0" : "") .  
+  (!$showHoldProjs ? " AND project_status != $project_on_hold_status" : "") .
   " GROUP BY a.task_id
 	ORDER BY a.task_start_date, task_priority DESC
 ";
@@ -108,6 +114,12 @@ if (!@$min_view) {
 	</td>
 	<td nowrap="nowrap">
 		<?php echo $AppUI->_('Archived Projects'); ?>
+	</td>
+	<td>
+		<input type=checkbox name="show_hold_proj" onclick="document.form_buttons.submit()" <?php echo $showHoldProjs ? 'checked="checked"' : ""; ?> />
+	</td>
+    <td nowrap="nowrap">
+		<?php echo $AppUI->_('Projects on Hold'); ?>
 	</td>
 	<td>
 		<input type=checkbox name="show_low_task" onclick="document.form_buttons.submit()" <?php echo $showLowTasks ? 'checked="checked"' : ""; ?> />
