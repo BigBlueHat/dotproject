@@ -324,8 +324,8 @@ function delIt() {
 				<TD nowrap>
 					<input type="text" name="task_end_date" value="<?php if(intval($prow["task_end_date"]) > 0) {
 						echo fromDate(substr($prow["task_end_date"], 0, 10));
-					} ?>" size="10" maxlength="10">
-					<a href="#" onClick="popCalendar('task_end_date')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="popCalendar('task_end_date')">calendar</A>
+					} ?>" size="10" maxlength="10" onclick="javascript:document.AddEdit.task_dynamic.checked=false">
+					<a href="#" onClick="javascript:document.AddEdit.task_dynamic.checked=false;popCalendar('task_end_date')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="javascript:document.AddEdit.task_dynamic.checked=false;popCalendar('task_end_date')">calendar</A>
 				</td>
 			</tr>
 			<TR>
@@ -352,7 +352,7 @@ function delIt() {
 			</select>
 			</td>
 			
-			<td><input type="checkbox" name=task_dynamic value=1 <?php if($prow["task_dynamic"]) echo "checked"?>></td>
+			<td><input type="checkbox" name=task_dynamic value=1 <?php if($prow["task_dynamic"]!="0") echo "checked"?>></td>
 			</tr>
 		</table>
 	</td>
