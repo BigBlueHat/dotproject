@@ -192,4 +192,18 @@ function contextHelp( $title, $link='' ) {
 
 	return "<a href=\"#$link\" onClick=\"javascript:window.open('$dothelpURL?entry_link=$link', 'contexthelp', 'width=700, height=400, left=20, top=20, resizable=yes')\">$title</a>";
 }
+
+##
+## displays the configuration array of a module for informational purposes
+##
+function dPshowModuleConfig( $config ) {
+	GLOBAL $AppUI;
+	$s = '<table cellspacing="2" cellpadding="2" border="0" class="std" width="50%">';
+	$s .= '<tr><th colspan="2">'.$AppUI->_( 'Module Configuration' ).'</th></tr>';
+	foreach ($config as $k => $v) {
+		$s .= '<tr><td width="50%">'.$AppUI->_( $k ).'</td><td width="50%" class="hilite">'.$AppUI->_( $v ).'</td></tr>';
+	}
+	$s .= '</table>';
+	return $s;
+}
 ?>
