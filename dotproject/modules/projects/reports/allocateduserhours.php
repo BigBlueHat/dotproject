@@ -166,7 +166,7 @@ if($do_report){
 			}
 			$actual_date->addDays(1);
 		}
-		$table_header .= "<th nowrap='nowrap'>".$AppUI->_("Allocated")."</th></tr>";
+		$table_header .= "<th nowrap='nowrap' colspan='2'>".$AppUI->_("Allocated")."</th></tr>";
 		
 		$table_rows = "";
 		
@@ -202,7 +202,7 @@ if($do_report){
 					$bar_color = "red";
 					$average_user_usage = 100;
 				}
-				$table_rows .= "<td ><div align='right'>". $average_user_usage ;
+				$table_rows .= "<td ><div align='left'>".round($array_sum, 2)." ".$AppUI->_("hours")."</td> <td align='right'> ".$average_user_usage ;
 				$table_rows .= "%</div>";
 				$table_rows .= "<div align='left' style='height:2px;width:$average_user_usage%; background-color:$bar_color'>&nbsp;</div></td>";
 				$table_rows .= "</tr>";
