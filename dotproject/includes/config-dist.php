@@ -100,6 +100,11 @@ $dPconfig['daily_working_hours'] = 8.0;
 // set debug = true to help analyse errors
 $dPconfig['debug'] = false;
 
+// set to true if you need to be able to relink tickets to
+// an arbitrary parent.  Useful for email-generated tickets,
+// but the interface is a bit clunky.
+$dPconfig['link_tickets_kludge'] = false;
+
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";
