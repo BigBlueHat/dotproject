@@ -6,10 +6,16 @@ if (isset( $_GET['tab'] )) {
 }
 $tab = $AppUI->getState( 'UserIdxTab' ) !== NULL ? $AppUI->getState( 'UserIdxTab' ) : 0;
 
-if (isset( $_GET['where'] )) {
-    $AppUI->setState( 'UserIdxWhere', $_GET['where'] );
+
+if (isset( $_GET['stub'] )) {
+    $AppUI->setState( 'UserIdxStub', $_GET['stub'] );
+    $AppUI->setState( 'UserIdxWhere', '' );
+} else if (isset( $_POST['where'] )) { 
+    $AppUI->setState( 'UserIdxWhere', $_POST['where'] );
+    $AppUI->setState( 'UserIdxStub', '' );
 }
-$where = $AppUI->getState( 'UserIdxWhere' ) ? $AppUI->getState( 'UserIdxWhere' ) : '%';
+$stub = $AppUI->getState( 'UserIdxStub' );
+$where = $AppUI->getState( 'UserIdxWhere' );
 
 if (isset( $_GET['orderby'] )) {
     $AppUI->setState( 'UserIdxOrderby', $_GET['orderby'] );
@@ -38,11 +44,11 @@ foreach( $arr as $L ) {
 $a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
 $a2z .= "\n<tr>";
 $a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
-$a2z .= '<td><a href="./index.php?m=admin&where=0">' . $AppUI->_('All') . '</a></td>';
+$a2z .= '<td><a href="./index.php?m=admin&stub=0">' . $AppUI->_('All') . '</a></td>';
 for ($c=65; $c < 91; $c++) {
 	$cu = chr( $c );
 	$cell = strpos($let, "$cu") > 0 ?
-		"<a href=\"?m=admin&where=$cu\">$cu</a>" :
+		"<a href=\"?m=admin&stub=$cu\">$cu</a>" :
 		"<font color=\"#999999\">$cu</font>";
 	$a2z .= "\n\t<td>$cell</td>";
 }
@@ -50,6 +56,14 @@ $a2z .= "\n</tr>\n</table>";
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'User Management', 'helix-setup-users.png', $m, "$m.$a" );
+
+$titleBlock->addCell(
+	'<input type="text" name="where" class="text" size="10" value="'.$where.'" />'
+	. ' <input type="submit" value="'.$AppUI->_( 'search' ).'" class="button" />',
+	'',
+	'<form action="index.php?m=admin" method="post">', '</form>'
+);
+
 $titleBlock->addCell( $a2z );
 $titleBlock->show();
 ?>
