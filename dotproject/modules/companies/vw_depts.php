@@ -14,7 +14,7 @@ ORDER BY dept_parent,dept_name
 ";
 ##echo $sql;
 
-function showchild( &$a, $level=0 ) {
+function showchilddept( &$a, $level=0 ) {
 	global $AppUI;
 	$s = '';
 
@@ -39,13 +39,13 @@ function showchild( &$a, $level=0 ) {
 	echo "<tr>$s</tr>";
 }
 
-function findchild( &$tarr, $parent, $level=0 ){
+function findchilddept( &$tarr, $parent, $level=0 ){
 	$level = $level+1;
 	$n = count( $tarr );
 	for ($x=0; $x < $n; $x++) {
 		if($tarr[$x]["dept_parent"] == $parent && $tarr[$x]["dept_parent"] != $tarr[$x]["dept_id"]){
-			showchild( $tarr[$x], $level );
-			findchild( $tarr, $tarr[$x]["dept_id"], $level);
+			showchilddept( $tarr[$x], $level );
+			findchilddept( $tarr, $tarr[$x]["dept_id"], $level);
 		}
 	}
 }
@@ -67,8 +67,8 @@ echo $s;
 
 foreach ($rows as $row) {
 	if ($row["dept_parent"] == 0) {
-		showchild( $row );
-		findchild( $rows, $row["dept_id"] );
+		showchilddept( $row );
+		findchilddept( $rows, $row["dept_id"] );
 	}
 }
 
