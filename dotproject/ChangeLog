@@ -1,3 +1,17 @@
+2003-12-06 00:24  (jcgonz)
+---------------------------------
+locales/en/companies.inc
+locales/en/departments.inc
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- WARNING!!!!!!! Dynamic tasks have been implemented. This will cause weird behavior if the concept is not understood. A dynamic task is a task that gets its properties from its children like hours and dates, it functions like a GROUP of child tasks. It won't matter what you put in those fields in them since when you save them or save their children, the parent dynamic tasks will be updated. If you don't care about this feature please change your tasks to not being dynamic (the defaults have been changed for new tasks to not be dynamic), otherwise enjoy this feature any project manager should have. Technically, the previously unused task_hours_worked field is now used to save the dynamic tasks duration.
+
+2003-12-05 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-04 23:37  (jcgonz)
 ---------------------------------
 db/dotproject_101.sql
@@ -484,20 +498,6 @@ modules/projects/projects.class.php
 2003-09-28 16:36  (kripper)
 ---------------------------------
 modules/projects/projects.class.php
-- Commented out canDelete's dependencies check, since it is very annoying
-- having to delete all tasks in order to be able to delete a project.
-
-2003-09-28 16:27  (kripper)
----------------------------------
-modules/projects/do_project_aed.php
-- Joined "Project deleted/added/updated" strings.
-
-2003-09-28 16:20  (kripper)
----------------------------------
-classes/ui.class.php
-- Added warning and note for deprecating the append parameter in setMsg().
-
-2003-09-28 16:16  (kripper)
 ...
 
 (This file has been wrapped)
