@@ -7,6 +7,14 @@ db_connect( $dbhost, $db, $dbuser, $dbpass );
 ##	Generic functions based on library function (that is, non-db specific)
 ##
 
+function db_loadResult( $sql ) {
+	$cur = db_exec( $sql );
+	$cur or exit( db_error() );
+	$row = db_fetch_row( $cur );
+	db_free_result( $cur );
+	return $row[0];
+}
+
 function db_loadObject( $sql, &$object ) {
 	$hash = array();
 	if( !db_loadHash( $sql, $hash ) ) {
@@ -48,6 +56,24 @@ function db_loadList( $sql, $maxrows=NULL ) {
 	$cnt = 0;
 	while ($hash = db_fetch_assoc( $cur )) {
 		$list[] = $hash;
+		if( $maxrows && $maxrows == $cnt++ ) {
+			break;
+		}
+	}
+	db_free_result( $cur );
+	return $list;
+}
+
+function db_loadColumn( $sql, $maxrows=NULL ) {
+	GLOBAL $AppUI;
+	if (!($cur = db_exec( $sql ))) {;
+		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
+		return false;
+	}
+	$list = array();
+	$cnt = 0;
+	while ($row = db_fetch_row( $cur )) {
+		$list[] = $row[0];
 		if( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
