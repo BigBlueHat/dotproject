@@ -155,3 +155,7 @@ TD.tabox {
 		width: 300px;
 		height: 300px;
 }
+
+.error {
+	color: #ff0000;   
+}
