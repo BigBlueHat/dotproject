@@ -1,3 +1,13 @@
+2003-10-09 14:19  (gregorerhardt)
+---------------------------------
+modules/system/viewmods.php
+- bug 820359 & 811199 hide links for users without rwPerms
+
+2003-10-09 03:50  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-08 10:25  (gregorerhardt)
 ---------------------------------
 modules/companies/vw_users.php
@@ -487,16 +497,6 @@ ChangeLog
 - Changelog update
 
 2003-09-02 20:31  (ajdonnison)
----------------------------------
-db/upgrade_022_to_100.sql
-- Added beta1 to release1 additions.
-
-2003-09-02 20:25  (ajdonnison)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- Added makemyday's patch to preset the user name and email.
-
-2003-09-02 20:18  (ajdonnison)
 ---------------------------------
 ...
 
