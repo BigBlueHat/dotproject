@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-GLOBAL $AppUI, $projects, $company_id;
+GLOBAL $AppUI, $projects, $company_id, $priority;
 $df = $AppUI->getPref('SHDATEFORMAT');
 ?>
 
@@ -47,7 +47,7 @@ foreach ($projects as $row) {
 		$s .= $CR . '<td align="center" nowrap="nowrap">';
 		$s .= $CT . $row["total_tasks"] . ($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');
 		$s .= $CR . '</td>';
-		$s .= $CR . '<td align="right" nowrap="nowrap">';
+		$s .= $CR . '<td align="right" nowrap="nowrap" style="background-color:'.$priority[$row['project_priority']]['color'].'">';
 		$s .= $CT . ($end_date ? $end_date->format( $df ) : '-');
 		$s .= $CR . '</td>';
 		$s .= $CR . '</tr>';

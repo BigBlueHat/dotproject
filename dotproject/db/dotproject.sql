@@ -220,6 +220,7 @@ CREATE TABLE `projects` (
   `project_private` tinyint(3) unsigned default '0',
   `project_departments` CHAR( 100 ) ,
   `project_contacts` CHAR( 100 ) ,
+  `project_priority` tinyint(4) default '0',
   PRIMARY KEY  (`project_id`),
   KEY `idx_project_owner` (`project_owner`),
   KEY `idx_sdate` (`project_start_date`),

@@ -1,4 +1,6 @@
 <?php /* PROJECTS $Id$ */
+Global $priority;
+
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
 // check permissions for this record
@@ -288,6 +290,18 @@ function setDepartment(department_id_string){
 	</td>
 	<td width="50%" valign="top">
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?></td>
+			<td nowrap>
+				<?php
+					$priorities = array();
+					foreach($priority as $id => $p){
+						$priorities[$id] = $p['name'];
+					}
+				?>
+				<?=arraySelect( $priorities, 'project_priority', 'size="1" class="text"', $row->project_priority, true );?> *
+			</td>
+		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Short Name');?></td>
 			<td colspan="3">

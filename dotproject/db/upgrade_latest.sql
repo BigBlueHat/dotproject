@@ -13,6 +13,7 @@
 # add task_departments and contacts to projects table
 ALTER TABLE `projects` ADD `project_departments` CHAR( 100 ) ;
 ALTER TABLE `projects` ADD `project_contacts` CHAR( 100 ) ;
+ALTER TABLE `projects` ADD `project_priority` tinyint(4) default '0';
 
 #
 #add percentage resource allocation

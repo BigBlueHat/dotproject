@@ -1,4 +1,6 @@
 <?php /* PROJECTS $Id$ */
+Global $priority;
+
 $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
 // check permissions for this record
@@ -200,6 +202,10 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Status');?>:</td>
 			<td class="hilite" width="100%"><?php echo $AppUI->_($pstatus[$obj->project_status]);?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap><?php echo $AppUI->_('Priority');?>:</td>
+			<td class="hilite" width="100%" style="background-color:<?=$priority[$obj->project_priority]['color']?>"><?php echo $AppUI->_($priority[$obj->project_priority]['name']);?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Progress');?>:</td>

@@ -99,7 +99,7 @@ SELECT
 	projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_actual_end_date,
 	project_color_identifier,
-	project_company, company_name, project_status,
+	project_company, company_name, project_status, project_priority,
 	tasks_sum.total_tasks,
 	tasks_summy.my_tasks,
 	tasks_sum.project_percent_complete,
