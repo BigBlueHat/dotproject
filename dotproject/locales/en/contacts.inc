@@ -9,6 +9,7 @@
 "Export vCard for",
 "Fetch vCard(s) File",
 "Import vCard",
+"Overwrite contact address information",
 "Reset search",
 "Search for",
 "contactIdError"=>"An invalid contact handle was passed to the function",
