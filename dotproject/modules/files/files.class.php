@@ -105,7 +105,7 @@ class CFile extends CDpObject {
 		}
 	// insert the strings into the table
 		while (list( $key, $val ) = each( $wordarr )) {
-			$sql = "INSERT INTO files_index VALUES ('" . $filenum . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "')";
+			$sql = "INSERT INTO files_index VALUES ('" . $this->file_id . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "')";
 			db_exec( $sql );
 		}
 
