@@ -137,7 +137,7 @@ function testURL( x ) {
 		<td align="right"><?php echo $AppUI->_('Company Owner');?>:</td>
 		<td>
 	<?php
-		echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', @$obj->company_owner );
+		echo arraySelect( $owners, 'company_owner', 'size="1" class="text"', (isset($obj->company_owner)) ? $obj->company_owner : $AppUI->user_id );
 	?>
 		</td>
 	</tr>
