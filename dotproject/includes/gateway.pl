@@ -34,6 +34,10 @@ $report_from_address = "support";
 # location of sendmail
 $mailprog = "/usr/sbin/sendmail";
 
+# debugging - if set it will report what it finds, but will not add anything
+# to the database
+$debug = 0;
+
 ######################## </CONFIGURATION SECTION> ##############################
 
 ## First phase, check to see we can configure ourselves based upon
@@ -64,7 +68,9 @@ while (<STDIN>) {
 
 # main program
 &get_headers();
-&check_attachments();
+$attach_count = 0;
+$mime_alternative = 0;
+&check_attachments($attachment_info, $first_message_line, $#message);
 &get_body();
 &insert_message();
 &insert_attachments() if ($save_attachments);
@@ -104,30 +110,30 @@ sub get_headers {
 			$last_hdr = pop @headers;
 			$last_hdr =~ s/[\s\t]*$//;
 			s/[\s\t]*//;
-			$last_hdr .= $_;
+			$last_hdr .= " " . $_;
 			push @headers, $last_hdr;
 		} else {
 			push @headers, $_;
 		}
 		$first_message_line++;
-	}
-	# Second pass, split out the required headers
-	$attachment = 0;
-	foreach (@headers) {
-        if (/oundary=/) {
-	        $attachment_info = $_;
-            if ($save_attachments) {
-			    $attachment = 2;
-			} else {
-				$attachment = 1;
-			}
+    }
+    # Second pass, split out the required headers
+    $attachment = 0;
+    foreach (@headers) {
+        if (/content-type:\s+multipart/i) {
+	    $attachment_info = $_;
+	    if ($save_attachments) {
+		$attachment = 2;
+	    } else {
+		$attachment = 1;
 	    }
-	    $_ =~ s/:\s/:/g;
+	}
+	$_ =~ s/:\s/:/g;
         if (/:/) {
             @vars = split(':', $_, 2);
-	        if (@vars) {
-                chop($header{$vars[0]} = $vars[1]);
-	        }
+	    if (@vars) {
+		chop($header{$vars[0]} = $vars[1]);
+	    }
         }
     }
 
@@ -158,104 +164,174 @@ sub get_headers {
         $parent = 0;
     }
 
+    if ($debug) {
+	print "parent=$parent\n";
+	print "attachments=$attachment\n";
+	print "\nHeaders:\n";
+	while (($key, $val) = each(%header)) {
+	    print "$key: $val\n";
+	}
+    }
 }
 
 ################################################################################
 
-sub check_attachments {
+sub check_attachments($) {
+
+    my $att = $_[0];
+    my $offset = $_[1];
+    my $end = $_[2];
+    my $ctype = "";
+    my $boundary = "";
+    my $subtype = "";
+    my %option = ();
+    my $i;
 
     # check for attachment
-	return if (!$attachment_info);
+    return if (!$att);
 
     # determine attachment delimiter
-	($i, $boundary) = split(/"/, $attachment_info);
-	return if (!$boundary);
+    ($ctype, $subtype, $options) = ($att =~ m/content-type:\s*([_a-z0-9]+)\/([_a-z0-9]+);?\s(.*)$/i);
 
-	if ($attachment_info =~ /multipart\/alternative/i) {
-		$mime_alternative = 1;
-	} else {
-		$mime_alternative = 0;
-	}
+    # split the options out
+    while ($options =~ m/([_a-z0-9]+)=["']?([^;"']+)["';]?/g) {
+	$name = $1;
+	$name =~ tr/A-Z/a-z/;
+	$option[$name] = $2;
+    }
+    $boundary = $option['boundary'];
+    if ($debug) {
+	print "\nAttachment Info\n";
+	print "Original MIME content header is $att\n";
+	print "Content type is $ctype\n";
+	print "Subtype is $subtype\n";
+	print "Boundary is $boundary\n";
+	print "Checking from $offset to $end\n";
+    }
+
+    # The subtype should let us know if we are 
+    return if (!$boundary);
+    if ($subtype =~ /alternative/i) {
+	$mime_alternative = 1;
+    }
     # pull out attachments
-	$in_attach_hdrs = 0;
-	$attach_count = 0;
-	for ($i = $first_message_line; $i <= $#message; $i++) {
-        if ($message[$i] =~ /$boundary/) {
+    my $in_attach_hdrs = 0;
+    for ($i = $offset; $i <= $end; $i++) {
+	if ($message[$i] =~ /--$boundary/) {
+	    if ($debug) {
+		print "$attach_count attachment boundary $boundary found at line $i\n";
+	    }
 	    $in_attach_hdrs = 1;
-            push @boundary_lines, $i;
-	    push @attach_disposition, "";
-	    push @attach_type, "text/plain";
-	    push @attach_encoding, "7bit";
-	    push @attach_realname, "";
+	    $boundary_lines[$attach_count] = $i;
+	    $attach_disposition[$attach_count] = "";
+	    $attach_type[$attach_count] = "text/plain";
+	    $attach_encoding[$attach_count] = "7bit";
+	    $attach_realname[$attach_count] = "";
+	    $attach_content_header[$attach_count] = "content-type: text/plain";
+	    if ($attach_count > 0 && $boundary_end[$attach_count] == 0) {
+		$boundary_end[$attach_count] = $i-1;
+	    }
 	    $attach_count += 1;
 	} else {
 	    if ($in_attach_hdrs) {
 		if ($message[$i] =~ /^\s*$/) {
-		    $last = pop @boundary_lines;
-		    push @boundary_lines, $i;
-		    push @boundary_end, $last;
+		    $boundary_lines[$attach_count-1] = $i;
+		    # push @boundary_end, $last;
 		    $in_attach_hdrs = 0;
 		} else {
+		    #  In the header section, find the details
 		    @attach_hdr = split(/[:;]/, $message[$i]);
 		    if ($attach_hdr[0] =~ m/content-disposition/i) {
-			    $last = pop @attach_disposition;
-			    push @attach_disposition, $attach_hdr[1];
+			$attach_disposition[$attach_count-1] = $attach_hdr[1];
 		    }
 		    if ($attach_hdr[0] =~ m/content-type/i) {
-			    pop @attach_type;
-			    push @attach_type, $attach_hdr[1];
+			$attach_type[$attach_count-1] = $attach_hdr[1];
+			$attach_content_header[$attach_count-1] = $message[$i];
+		    }
+		    if ($attach_hdr[0] =~ m/boundary/i) {
+			$attach_content_header[$attach_count-1] .= "; " . $attach_hdr[0];
 		    }
 		    if ($attach_hdr[0] =~ m/content-transfer-encoding/i) {
-			    pop @attach_encoding;
-			    push @attach_encoding, $attach_hdr[1];
+			$attach_encoding[$attach_count-1] = $attach_hdr[1];
 		    }
 		    if ($message[$i] =~ m/name=/i) {
-			    ($x, $f) = split(/"/, $message[$i]);
-			    $x = "";
-			    pop @attach_realname;
-			    push @attach_realname, $f;
+			($x, $f) = split(/"/, $message[$i]);
+			$x = "";
+			$attach_realname[$attach_count-1] = $f;
 		    }
 		}
 	    }
 	}
     }
-    push @boundary_end, $#message;
+    $boundary_end[$attach_count] = $end;
+    # push @boundary_end, $end;
 }
 
 ################################################################################
 
 sub get_body {
 
+    my $i;
+    my $body_lines = 0;
+
+    if ($debug) {
+	print "Attachcount=$attach_count\n";
+    }
     # read in message body
-	if (!$attachment_info) {
-		for ($i = $first_message_line + 1; $i <= $#message; $i++) {
-            $body .= $message[$i];
-		}
+    if (!$attachment_info) {
+	for ($i = $first_message_line + 1; $i <= $#message; $i++) {
+	    $body .= $message[$i];
+	    $body_lines += 1;
 	}
+    }
     else {
-		# Look for the attachment that doesn't have a disposition
-		if ($skip_mime_preface) {
-			$i = 1;
-		} else {
-		    $i = 0;
-		}
-		for (; $i < $#attach_disposition; $i++) {
-			if ( ($mime_alternative == 1 && $attach_type[$i] =~ /text\/plain/i) || ($mime_alternative == 0 && $attach_disposition[$i] =~ /^$/ )) {
-				for ($j = $boundary_lines[$i] + 1; $j < $boundary_end[$i+1]; $j++) {
-					$body .= $message[$j];
-				}
-			}
-		}
+	# Check that the attachments are not in themselves multipart
+	for ($i = 0; $i < $attach_count; $i++) {
+	    if ($attach_type[$i] =~ /multipart\//i) {
+		&check_attachments($attach_content_header[$i], $boundary_lines[$i], $boundary_end[$i+1]);
+	    }
 	}
+	#$boundary_end[$attach_count] = $#message;
+	# Look for the attachment that doesn't have a disposition
+	if ($skip_mime_preface) {
+	    $i = 1;
+	} else {
+	    $i = 0;
+	}
+	for (; $i < $attach_count; $i++) {
+	    if ($debug) {
+		print "$i: mimealt=$mime_alternative, type=$attach_type[$i], disp=$attach_disposition[$i] name=$attach_realname[$i] start=$boundary_lines[$i], end=$boundary_end[$i+1]\n";
+	    }
+	    if ( ($mime_alternative == 1 && $attach_type[$i] =~ /text\/plain/i) || ($mime_alternative == 0 && $attach_type[$i] =~ /text\//i && $attach_disposition[$i] =~ /^$/ )) {
+		if ($debug) {
+		    print "Found suitable body text in attachment $i\n";
+		}
+		for ($j = $boundary_lines[$i] + 1; $j < $boundary_end[$i+1]; $j++) {
+		    $body .= $message[$j];
+		    $body_lines += 1;
+		}
+	    }
+	}
+    }
+    if (! $body_lines) {
+      die ("No suituable body text found in email");
+    }
     $body =~ s/^\n//;
     $body =~ s/\r\n$/\n/;
-
+    if ($debug) {
+	print "\nBody:\n";
+	print $body;
+    }
 }
 
 ################################################################################
 
 sub insert_message {
 
+    if ($debug) {
+	print "insert_message not run, parent = $parent\n";
+	return;
+    }
     # connect to database
     $dbh = DBI->connect("DBI:mysql:$config{'dbname'}:$config{'dbhost'}", $config{'dbuser'}, $config{'dbpass'});
 
@@ -303,8 +379,8 @@ sub insert_attachments {
 	} else {
 		$i = 0;
 	}
-	for ($i = 0; $i < $#attach_disposition; $i++) {
-		if ( ( $mime_alternative == 0 && $attach_disposition[$i] !~ /^$/) || ($mime_alternative == 1 && $attach_type[$i] !~ /text\/plain/) ) {
+	for ($i = 0; $i < $attach_count; $i++) {
+		if ( ( $mime_alternative == 0 && $attach_disposition[$i] !~ /^$/) || ($mime_alternative == 1 && $attach_type[$i] !~ /text\/plain/i && $attach_type[$i] !~ /multipart/i) ) {
 			insert_attachment($i, $dbh);
 		}
 	}
@@ -315,6 +391,11 @@ sub insert_attachment($) {
 
 	$att = $_[0];
 	$dbh = $_[1];
+
+	if ($debug) {
+	    print "insert_attachment called with att=$att, dbh=$dbh\n";
+	    return;
+	}
 
 	# Check that we can write to the required directory and that we know who the
 	# web owner is.
@@ -390,7 +471,13 @@ sub mail_report {
     $boundary = "_lkqwkASDHASK89271893712893"; 
 
     # mail the report
-    open(MAIL, "|$mailprog -t");
+    if ($debug) {
+	print "\nReport Mail:\n";
+	return;
+	# open(MAIL, "|cat");
+    } else {
+	open(MAIL, "|$mailprog -t");
+    }
 	print MAIL "To: $report_to_address\n";
 	print MAIL "From: $report_from_address\n";
 	if ($parent) {
@@ -486,7 +573,14 @@ sub mail_acknowledgement {
     $boundary = "_lkqwkASDHASK89271893712893"; 
 
     # mail the report
-    open(MAIL, "|$mailprog -t");
+    if ($debug) {
+	print "\nAcknowledge Mail:\n";
+	return;
+	# open(MAIL, "|cat");
+    }
+    else {
+	open(MAIL, "|$mailprog -t");
+    }
 	print MAIL "To: $author\n";
 	print MAIL "From: $report_from_address\n";
 	print MAIL "Subject: [#$ticket] Your Support Request\n";
