@@ -56,7 +56,7 @@ function splitSql($sql) {
 }
 ######################################################################################################################
 
-$baseDir = str_replace('/install', '', dirname(__FILE__));
+$baseDir = str_replace( DIRECTORY_SEPARATOR.'install', '', dirname(__FILE__));
 $dbMsg = "";
 $cFileMsg = "Not Created";
 $dbErr = false;
@@ -95,6 +95,7 @@ if ($do_db || $do_db_cfg) {
 
         }
 
+	$db->Execute("USE " . $dbname);
 	$sqlfile = "../db/dotproject.sql";
 
 	$mqr = @get_magic_quotes_runtime();
@@ -139,10 +140,12 @@ $dbMsg = "Not Created";
 	$config .= "\n";
 	$config .= "\$dPconfig['dbtype'] = \"$dbtype\";\n";
 	$config .= "\$dPconfig['dbhost'] = \"$dbhost\";\n";
+	$config .= "\$dPconfig['dbname'] = \"$dbname\";\n";
 	$config .= "\$dPconfig['dbuser'] = \"$dbuser\";\n";
 	$config .= "\$dPconfig['dbpass'] = \"$dbpass\";\n";
 	$config .= "\$dPconfig['dbpersist'] = $dbpersist;\n";
 	$config .= "\$dPconfig['root_dir'] = \$baseDir;\n";
+	$config .= "\$dPconfig['base_url'] = \$baseUrl;\n";
 	$config .= "?>";
 	$config = trim($config);
 
