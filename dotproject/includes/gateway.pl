@@ -27,13 +27,16 @@ $skip_mime_preface = 0;
 # dPconfig[site_domain] key.
 
 # address to send report to
-$report_to_address = "admin";
+$report_to_address = 'admin';
 
 # report from address
-$report_from_address = "support";
+$report_from_address = 'support';
 
 # location of sendmail
 $mailprog = "/usr/sbin/sendmail";
+
+# location of mimencode, some systems call this mmencode
+$mime_encoder = "/usr/bin/mimencode";
 
 # debugging - if set it will report what it finds, but will not add anything
 # to the database
@@ -50,6 +53,26 @@ die ("Gateway.pl requires the full path to the dotproject config.php file as its
 # Shortcuts for the email code
 $app_root = $config{'base_url'};
 $dp_root = $config{'root_dir'};
+
+# Check that the relevant files exist
+@sendmail_st = stat($mailprog);
+if (! @sendmail_st) {
+  if ( $send_email_report || $send_acknowledge ) {
+    die("You have requested email functions, but your mailer does not exist");
+  } else {
+    print "No mailer defined, or mailer not found - will not be able to email error reports\n";
+    print "Continuing anyway\n";
+  }
+}
+
+@mmstat = stat($mime_encoder);
+if (! @mmstat) {
+  if ($save_attachments) {
+    print "You have requested to save attachments, but the mime encoder could not be found\n";
+    print "Continuing, but not saving attachments\n";
+    $save_attachments = 0;
+  }
+}
 
 # If no domain portion, add the domain from the configuration file.
 if ( $report_to_address !~ /\@/ ) {
@@ -406,7 +429,9 @@ sub insert_message {
 sub insert_attachments {
 	return if (!$attachment_info);
 
-    $dbh = DBI->connect("DBI:mysql:$config{'dbname'}:$config{'dbhost'}", $config{'dbuser'}, $config{'dbpass'});
+    if (!$debug) {
+      $dbh = DBI->connect("DBI:mysql:$config{'dbname'}:$config{'dbhost'}", $config{'dbuser'}, $config{'dbpass'});
+    }
 	if ($skip_mime_preface) {
 		$i = 1;
 	} else {
@@ -414,10 +439,16 @@ sub insert_attachments {
 	}
 	for ($i = 0; $i < $attach_count; $i++) {
 		if ( ( $mime_alternative == 0 && $attach_disposition[$i] !~ /^$/) || ($mime_alternative == 1 && $attach_type[$i] !~ /text\/plain/i && $attach_type[$i] !~ /multipart/i) ) {
-			insert_attachment($i, $dbh);
+			if ($debug) {
+			  insert_attachment($i, 0);
+			} else {
+			  insert_attachment($i, $dbh);
+			}
 		}
 	}
-	$dbh->disconnect();
+	if (! $debug) {
+	  $dbh->disconnect();
+	}
 }
 
 sub insert_attachment($) {
@@ -426,12 +457,12 @@ sub insert_attachment($) {
 	$dbh = $_[1];
 
 	if ($debug) {
-	    print "insert_attachment called with att=$att, dbh=$dbh\n";
-	    return;
+	    print "insert_attachment called with att=$att\n";
 	}
 
 	# Check that we can write to the required directory and that we know who the
 	# web owner is.
+	if (! $debug) {
 	$files_dir = $dp_root . "/files";
 	$file_repository = $files_dir . "/0";
 
@@ -440,35 +471,60 @@ sub insert_attachment($) {
 	$web_owner = $st[4];
 
 	# If the repository doesn't exist, create it.
-	stat $file_repository
-		or mkdir $file_repository, 0777;
+	if (! stat $file_repository) {
+		mkdir $file_repository, 0777;
+		# If a umask is set, the mkdir will not correctly set
+		# the modes on the file repository.
+		chmod 0777, $file_repository;
+	}
 
 	# Extract the file using mimencode if necessary.
 	$fid = sprintf("%x_%d", time(), $att);
 	# If content encoding is not 7bit, try and determine what it is
 	$fname = $file_repository . "/" . $fid;
 	$freal = ">";
-	$freal = "| mimencode -u -o " if ($attach_encoding[$att] =~ m/base64/i);
-	$freal = "| mimencode -u -q -o " if ($attach_encoding[$att] =~ m/quoted/i);
+	$freal = "| " . $mime_encoder . " -u -o " if ($attach_encoding[$att] =~ m/base64/i);
+	$freal = "| " . $mime_encoder . " -u -q -o " if ($attach_encoding[$att] =~ m/quoted/i);
 	$fout = $freal . $fname;
-	open(FH, $fout);
-	for ($j = $boundary_lines[$att] + 1; $j < $boundary_end[$att+1]; $j++) {
-		print FH $message[$j];
+	open(FH, $fout)
+	 or &mail_error("Attached file " . $attach_realname[$att] . " could not be saved!\nThis was probably due to a system error in running the command:\n\t'" . $fout . "'" );
 	}
-	close(FH);
+	for ($j = $boundary_lines[$att] + 1; $j < $boundary_end[$att+1]; $j++) {
+		if ($debug) {
+		  print $message[$j];
+		} else {
+		  print FH $message[$j];
+		}
+	}
+	if ($debug) {
+	  return;
+	} else {
+	  close(FH);
+	}
 
 	# Determine the files size
-	open(FH, $fname);
+	open(FH, $fname) or &mail_error("File " . $attach_realname[$att] . " was not created correctly\nThis may be due to permissions errors");
 	seek FH, 0, 2;
 	$filesize = tell FH;
 	close(FH);
+	if ($filesize <= 0) {
+	  &mail_error("Attached file " . $attach_realname[$att] . " has length " . $filesize );
+	}
 
 	# Change ownership to the web server owner - assumes the files directory is correctly owned
 	chown  $fname, $web_owner 
 	 or chmod 0666, $fname;
 
+	# Grab last file version id, and update it.
+	$sql_stmt = "SELECT file_version_id FROM files ORDER BY file_version_id DESC LIMIT 1";
+	@file_version = $dbh->selectrow_array($sql_stmt)
+	  or @file_version = (0);
+
+	$file_version_id = $file_version[0] + 1;
+	
+
 	# insert the file as user Admin (id=1), Project = 0
-	$sql_stmt = "INSERT into files (file_real_filename, file_name, file_type, file_size, file_date, file_description, file_task)  values (";
+	$sql_stmt = "INSERT into files (file_real_filename, file_name, file_type, file_size, file_date, file_description, file_task, file_version, file_version_id)  values (";
 	$sql_stmt .= " '" . $fid . "',";
 	$sql_stmt .= " '" . $attach_realname[$att] . "',";
 	$sql_stmt .= " '" . $attach_type[$att] . "', ";
@@ -478,9 +534,11 @@ sub insert_attachment($) {
 	$sql_stmt .= $dbh->quote($desc);
 	$sql_stmt .= ", ";
 	$sql_stmt .= $ticket;
-	$sql_stmt .= " )";
+	$sql_stmt .= ", '1', '";
+	$sql_stmt .= $file_version_id;
+	$sql_stmt .= "' )";
     $sth = $dbh->prepare($sql_stmt);
-    $sth->execute() or &mail_error("Failed to insert message in database");
+    $sth->execute() or &mail_error("Failed to insert message in database - error was:\n" . $sth->errstr);
     $sth->finish();
 }
 
