@@ -187,30 +187,29 @@ function showtask( &$a, $level=0 ) {
 	$df = $AppUI->getPref( 'SHDATEFORMAT' );
 	$done[] = $a['task_id'];
 
-	$ts = db_dateTime2unix( $a["task_start_date"] );
-	$start_date = $ts < 0 ? null : new CDate( $ts, $df );
+	$start_date = intval( $a["task_start_date"] ) ? new Date( $a["task_start_date"] ) : null;
+	$end_date = intval( $a["task_end_date"] ) ? new Date( $a["task_end_date"] ) : null;
 
-	$ts = db_dateTime2unix( $a["task_end_date"] );
-	$end_date = $ts < 0 ? null : new CDate( $ts, $df );
-
-	$s = '<tr>';
+	$s = "\n<tr>";
 // edit icon
-	$s .= '<td>';
+	$s .= "\n\t<td>";
 	$canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
 	if ($canEdit) {
-		$s .= '<a href="?m=tasks&a=addedit&task_id='.$a["task_id"].'"><img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12"></a>';
+		$s .= "\n\t\t<a href=\"?m=tasks&a=addedit&task_id={$a['task_id']}\">"
+			. "\n\t\t\t".'<img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12">'
+			. "\n\t\t</a>";
 	}
-	$s .= '</td>';
+	$s .= "\n\t</td>";
 // percent complete
-	$s .= '<td align="right">'.intval( $a["task_percent_complete"] ).'%</td>';
+	$s .= "\n\t<td align=\"right\">".intval( $a["task_percent_complete"] ).'%</td>';
 // priority
-	$s .= '<td>';
+	$s .= "\n\t<td>";
 	if ($a["task_priority"] < 0 ) {
-		$s .= "<img src='./images/icons/low.gif' width=13 height=16>";
+		$s .= "\n\t\t<img src=\"./images/icons/low.gif\" width=13 height=16>";
 	} else if ($a["task_priority"] > 0) {
-		$s .= '<img src="./images/icons/' . $a["task_priority"] .'.gif" width=13 height=16>';
+		$s .= "\n\t\t<img src=\"./images/icons/" . $a["task_priority"] .'.gif" width=13 height=16>';
 	}
-	$s .= '</td>';
+	$s .= "\n\t</td>";
 // dots
 	$s .= '<td width="90%">';
 	for ($y=0; $y < $level; $y++) {
@@ -230,13 +229,13 @@ function showtask( &$a, $level=0 ) {
 // task owner
 	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
 // start date
-	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->toString( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration
 	$s .= '<td align="right">';
 	$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
 	$s .= '</td>';
 // end date
-	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->toString( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
 
 	$s .= '</tr>';
 
@@ -287,7 +286,7 @@ foreach ($projects as $k => $p) {
 		<table width="100%" border="0">
 		<tr>
 			<td nowrap style="border: outset #eeeeee 2px;background-color:#<?php echo @$p["project_color_identifier"];?>">
-				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
+				<a href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
 				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><strong><?php echo @$p["project_name"];?></strong></span></a>
 			</td>
 			<td width="<?php echo (101 - intval(@$p["project_percent_complete"]));?>%">
@@ -298,7 +297,7 @@ foreach ($projects as $k => $p) {
 </tr>
 <?php
 		}
-		GLOBAL $done;
+		global $done;
 		$done = array();
 		for ($i=0; $i < $tnums; $i++) {
 			$t = $p['tasks'][$i];

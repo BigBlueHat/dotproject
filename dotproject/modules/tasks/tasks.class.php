@@ -263,7 +263,7 @@ class CTask extends CDpObject {
 /**
 * CTask Class
 */
-class CTaskLog {
+class CTaskLog extends CDpObject {
 	var $task_log_id = NULL;
 	var $task_log_task = NULL;
 	var $task_log_name = NULL;
@@ -274,44 +274,13 @@ class CTaskLog {
 	var $task_log_costcode = NULL;
 
 	function CTaskLog() {
-		// empty constructor
+		$this->CDpObject( 'task_log', 'task_log_id' );
 	}
 
 // overload check method
 	function check() {
 		$this->task_log_hours = (float) $this->task_log_hours;
 		return NULL;
-	}
-
-	function store() {
-		GLOBAL $AppUI;
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->task_log_id ) {
-			$this->_action = 'updated';
-			$ret = db_updateObject( 'task_log', $this, 'task_log_id', false );
-		} else {
-			$this->_action = 'added';
-			$ret = db_insertObject( 'task_log', $this, 'task_log_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
-	}
-
-	function delete() {
-		$this->_action = 'deleted';
-	// delete linked user tasks
-		$sql = "DELETE FROM task_log WHERE task_log_id = $this->task_log_id";
-		if (!db_exec( $sql )) {
-			return db_error();
-		} else {
-			return NULL;
-		}
 	}
 }
 ?>

@@ -1,28 +1,28 @@
 <?php /* TASKS $Id$ */
-$task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
-$task_parent = isset( $_GET['task_parent'] ) ? $_GET['task_parent'] : 0;
+$task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+$task_parent = intval( dPgetParam( $_GET, "task_parent", 0 ) );
 
 // check permissions
-$canEdit = !getDenyEdit( $m );
-
+$canEdit = !getDenyEdit( $m, $task_id );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
-// pull the task
-$sql = "SELECT * FROM tasks WHERE task_id = $task_id";
+// load the record data
+$obj = new CTask();
 
-if (!db_loadHash( $sql, $task ) && $task_id > 0) {
-	$AppUI->setMsg( "Invalid Task ID", UI_MSG_ERROR );
+if (!$obj->load( $task_id ) && $task_id > 0) {
+	$AppUI->setMsg( 'Task' );
+	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
 
-$task_parent = isset( $task['task_parent'] ) ? $task['task_parent'] : $task_parent;
+$task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
 
 // check for a valid project parent
-$task_project = dPgetParam( $task, 'task_project', 0 );
+$task_project = intval( $obj->task_project );
 if (!$task_project) {
 	$task_project = dPgetParam( $_GET, 'task_project', 0 );
 	if (!$task_project) {
@@ -34,17 +34,12 @@ if (!$task_project) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$ts = db_dateTime2unix( $task["task_start_date"] );
-$start_date = new CDate( ($ts < 0 ? null : $ts), $df );
-$start_date->setTime( 0, 0, 0 );
-
-$ts = db_dateTime2unix( $task["task_end_date"] );
-$end_date = new CDate( ($ts < 0 ? null : $ts), $df );
-$end_date->setTime( 0, 0, 0 );
+$start_date = intval( $obj->task_start_date ) ? new Date( $obj->task_start_date ) : new Date();
+$end_date = intval( $obj->task_end_date ) ? new Date( $obj->task_end_date ) : null;
 
 // pull the related project
-$sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = $task_project";
-db_loadHash( $sql, $project );
+$project = new CProject();
+$project->load( $task_project );
 
 //Pull all users
 $sql = "
@@ -72,7 +67,7 @@ WHERE task_project = $task_project
 ORDER BY task_project
 ";
 
-$projTasks = array( "{$task['task_id']}" => 'None' );
+$projTasks = array( "{$obj['task_id']}" => 'None' );
 $res = db_exec( $sql );
 while ($row = db_fetch_row( $res )) {
 	if (strlen( $row[1] ) > 25) {
@@ -95,7 +90,7 @@ $ttl = $task_id > 0 ? "Edit Task" : "Add Task";
 $titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 $titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
-$titleBlock->addCrumb( "?m=tasks&a=view&task_id={$task['task_id']}", "view this task" );
+$titleBlock->addCrumb( "?m=tasks&a=view&task_id={$obj['task_id']}", "view this task" );
 $titleBlock->show();
 ?>
 
@@ -105,14 +100,18 @@ var calWin = null;
 
 function popCalendar( field ){
 	calendarField = field;
-	uts = eval( 'document.editFrm.task_' + field + '.value' );
-	calWin = window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
+	idate = eval( 'document.editFrm.task_' + field + '.value' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
-function setCalendar( uts, fdate ) {
-	fld_uts = eval( 'document.editFrm.task_' + calendarField );
+/**
+ *	@param string Input date in the format YYYYMMDD
+ *	@param string Formatted date
+ */
+function setCalendar( idate, fdate ) {
+	fld_date = eval( 'document.editFrm.task_' + calendarField );
 	fld_fdate = eval( 'document.editFrm.' + calendarField );
-	fld_uts.value = uts;
+	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
 
@@ -252,9 +251,9 @@ function calcFinish() {
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
 <tr>
-	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project["project_color_identifier"];?>" >
-		<font color="<?php echo bestColor( $project["project_color_identifier"] ); ?>">
-			<strong><?php echo $AppUI->_('Project');?>: <?php echo @$project["project_name"];?></strong>
+	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
+		<font color="<?php echo bestColor( $project->project_color_identifier ); ?>">
+			<strong><?php echo $AppUI->_('Project');?>: <?php echo @$project->project_name;?></strong>
 		</font>
 	</td>
 </tr>
@@ -262,30 +261,30 @@ function calcFinish() {
 <tr valign="top" width="50%">
 	<td>
 		<?php echo $AppUI->_( 'Task Name' );?> *
-		<br /><input type="text" class="text" name="task_name" value="<?php echo @$task["task_name"];?>" size="40" maxlength="255" />
+		<br /><input type="text" class="text" name="task_name" value="<?php echo @$obj->task_name;?>" size="40" maxlength="255" />
 	</td>
 	<td>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Status' );?></td>
 			<td>
-				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $task["task_status"], true ) . '%';?>
+				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $obj->task_status, true ) . '%';?>
 			</td>
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
 			<td nowrap>
-				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $task["task_priority"], true );?>
+				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $obj->task_priority, true );?>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Progress' );?></td>
 			<td>
-				<?php echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $task["task_percent_complete"] ) . '%';?>
+				<?php echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $obj->task_percent_complete ) . '%';?>
 			</td>
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Milestone' );?>?</td>
 			<td>
-				<input type=checkbox value=1 name="task_milestone" <?php if($task["task_milestone"]){?>checked<?php }?> />
+				<input type=checkbox value=1 name="task_milestone" <?php if($obj->task_milestone){?>checked<?php }?> />
 			</td>
 		</tr>
 		</table>
@@ -295,9 +294,9 @@ function calcFinish() {
 	<td width="50%">
 		<?php echo $AppUI->_( 'Task Creator' );?>
 		<br />
-	<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($task["task_owner"]) ? $AppUI->user_id : $task["task_owner"] );?>
+	<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
 		<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
-		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255" />
+		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
 		<br />
 		<table>
 		<tr>
@@ -310,7 +309,7 @@ function calcFinish() {
 				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text"', $task_parent ); ?>
 			</td>
 			<td><img src="./images/shim.gif" width=30 height=1></td>
-			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10" /></td>
+			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
 		</tr>
 		</table>
 	</td>
@@ -319,8 +318,8 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_start_date" value="<?php echo $start_date->getTimestamp();?>" />
-					<input type="text" name="start_date" value="<?php echo $start_date->toString();?>" class="text" disabled="disabled" />
+					<input type="hidden" name="task_start_date" value="<?php echo $start_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>" />
+					<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('start_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
@@ -329,8 +328,8 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
 				<td nowrap="nowrap">
-					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->getTimestamp() : '-1';?>" />
-					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->toString() : '';?>" class="text" disabled="disabled" />
+					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->format( DATE_FORMAT_TIMESTAMP_DATE ) : '';?>" />
+					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 					<a href="#" onClick="popCalendar('end_date')">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
@@ -339,9 +338,9 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
-					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo dPgetParam( $task, 'task_duration', 0);?>" />
+					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo dPgetParam( $obj, 'task_duration', 0);?>" />
 				<?php
-					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $task["task_duration_type"] );
+					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type );
 				?>
 				</td>
 			</tr>
@@ -355,7 +354,7 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
-					<input type="checkbox" name="task_dynamic" value="1" <?php if($task["task_dynamic"]!="0") echo "checked"?> />
+					<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic!="0") echo "checked"?> />
 				</td>
 			</tr>
 		</table>
@@ -412,7 +411,7 @@ function calcFinish() {
 	<td  colspan="2" valign="top">
 		<?php echo $AppUI->_( 'Description' );?>:
 		<br />
-		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$task["task_description"];?></textarea>
+		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$obj->task_description;?></textarea>
 	</td>
 </tr>
 </table>

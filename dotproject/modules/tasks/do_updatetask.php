@@ -2,41 +2,44 @@
 
 $del = dPgetParam( $_POST, 'del', 0 );
 $task_hours_worked = dPgetParam( $_POST, 'task_hours_worked', 0 );
-$task_percent_complete =
 
-$log = new CTaskLog();
+$obj = new CTaskLog();
 
-if (($msg = $log->bind( $_POST ))) {
-	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 
-$log->task_log_date = db_unix2DateTime( $log->task_log_date );
+if ($obj->task_log_date) {
+	$date = new Date( $obj->task_log_date, DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->task_log_date = $date->format( DATE_FORMAT_ISO );
+}
 
+// prepare (and translate) the module name ready for the suffix
+$AppUI->setMsg( 'Task Log' );
 if ($del) {
-	if (($msg = $log->delete())) {
+	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( "Task log deleted", UI_MSG_ALERT );
+		$AppUI->setMsg( "deleted", UI_MSG_ALERT );
 	}
 } else {
-	if (($msg = $log->store())) {
+	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$isNotNew = @$_POST['company_id'];
-		$AppUI->setMsg( "Task log ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+		$AppUI->setMsg( @$_POST['task_log_id'] ? 'updated' : 'inserted', UI_MSG_OK, true );
 	}
 }
 
 $task = new CTask();
-$task->load( $log->task_log_task );
+$task->load( $obj->task_log_task );
 $task->check();
 
 if ($task->task_percent_complete < 100) {
-	$task->task_end_date = $log->task_log_date;
+	$task->task_end_date = $obj->task_log_date;
 }
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
-$task->task_hours_worked += $log->task_log_hours;
+$task->task_hours_worked += $obj->task_log_hours;
 
 if (($msg = $task->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR, true );

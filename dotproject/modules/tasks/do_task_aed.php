@@ -5,21 +5,28 @@ $hassign = @$_POST['hassign'];
 $hdependencies = @$_POST['hdependencies'];
 $notify = isset($_POST['notify']) ? $_POST['notify'] : 0;
 
-$task = new CTask();
+$obj = new CTask();
 
-if (($msg = $task->bind( $_POST ))) {
-	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
+
 // convert dates to SQL format first
-$task->task_start_date = db_unix2DateTime( $task->task_start_date );
-$task->task_end_date = db_unix2DateTime( $task->task_end_date );
+if ($obj->task_start_date) {
+	$date = new Date( $obj->task_start_date, DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->task_start_date = $date->format( DATE_FORMAT_ISO );
+}
+if ($obj->task_end_date) {
+	$date = new Date( $obj->task_end_date, DATE_FORMAT_TIMESTAMP_DATE );
+	$obj->task_end_date = $date->format( DATE_FORMAT_ISO );
+}
 
 //echo '<pre>';print_r( $task );echo '</pre>';die;
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Task' );
 if ($del) {
-	if (($msg = $task->delete())) {
+	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
@@ -27,21 +34,20 @@ if ($del) {
 		$AppUI->redirect( '', -1 );
 	}
 } else {
-	if (($msg = $task->store())) {
+	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$isNotNew = @$_POST['task_id'];
-		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
+		$AppUI->setMsg( @$_POST['task_id'] ? 'updated' : 'added', UI_MSG_OK, true );
 	}
 
 	if (isset($hassign)) {
-		$task->updateAssigned( $hassign );
+		$obj->updateAssigned( $hassign );
 	}
 	if (isset($hdependencies)) {
-		$task->updateDependencies( $hdependencies );
+		$obj->updateDependencies( $hdependencies );
 	}
 	if ($notify) {
-		if ($msg = $task->notify()) {
+		if ($msg = $obj->notify()) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		}
 	}

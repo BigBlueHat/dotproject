@@ -19,14 +19,15 @@ LEFT JOIN users ON user_id = task_log_creator
 WHERE task_log_task = $task_id
 ORDER BY task_log_date
 ";
-$comments = db_loadList( $sql );
+$logs = db_loadList( $sql );
 
 $s = '';
 $hrs = 0;
-foreach ($comments as $row) {
-	$task_log_date = $row["task_log_date"] ?  new CDate( db_dateTime2unix( $row["task_log_date"] ) )  : null;
+foreach ($logs as $row) {
+	$task_log_date = intval( $row['task_log_date'] ) ? new Date( $row['task_log_date'] ) : null;
+
 	$s .= '<tr bgcolor="white" valign="top">';
-	$s .= '<td nowrap="nowrap">'.($task_log_date ? $task_log_date->toString( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap">'.($task_log_date ? $task_log_date->format( $df ) : '-').'</td>';
 	$s .= '<td width="30%">'.@$row["task_log_name"].'</td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
 	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . '</td>';

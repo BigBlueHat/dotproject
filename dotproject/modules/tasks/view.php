@@ -1,5 +1,13 @@
 <?php /* $Id$ */
-$task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
+
+$task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+
+// check permissions for this record
+$canRead = !getDenyRead( $m, $task_id );
+$canEdit = !getDenyEdit( $m, $task_id );
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
 
 $sql = "
 SELECT tasks.*,
@@ -11,36 +19,33 @@ LEFT JOIN projects ON project_id = task_project
 WHERE task_id = $task_id
 ";
 
-if (!db_loadHash( $sql, $task )) {
-	$AppUI->setMsg( "Invalid Task ID", UI_MSG_ERROR );
+// check if this record has dependancies to prevent deletion
+$msg = '';
+$obj = new CTask();
+$canDelete = $obj->canDelete( $msg, $task_id );
+
+$obj = null;
+if (!db_loadObject( $sql, $obj )) {
+	$AppUI->setMsg( 'Task' );
+	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
+} else {
+	$AppUI->savePlace();
 }
 
-// check permissions
-$canRead = !getDenyRead( $m, $task_id );
-$canEdit = !getDenyEdit( $m, $task_id );
-
-if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
-$AppUI->savePlace();
-
-// get the active tab
+// retrieve any state parameters
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
 }
 $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
 
+// get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$ts = db_dateTime2unix( $task["task_start_date"] );
-$start_date = $ts < 0 ? null : new CDate( $ts, $df );
+$start_date = intval( $obj->task_start_date ) ? new Date( $obj->task_start_date ) : null;
+$end_date = intval( $obj->task_end_date ) ? new Date( $obj->task_end_date ) : null;
 
-$ts = db_dateTime2unix( $task["task_end_date"] );
-$end_date = $ts < 0 ? null : new CDate( $ts, $df );
-
-//Pull users on this task
+// get the users on this task
 $sql = "
 SELECT u.user_id, u.user_username, u.user_first_name,u.user_last_name, u.user_email
 FROM users u, user_tasks t
@@ -67,20 +72,16 @@ $titleBlock->addCell(
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-		'<form action="?m=tasks&a=addedit&task_project='.$task['task_project'].'&task_parent=' . $task_id . '" method="post">', '</form>'
+		'<form action="?m=tasks&a=addedit&task_project='.$obj->task_project.'&task_parent=' . $task_id . '" method="post">', '</form>'
 	);
 }
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id={$task['task_project']}", "view this project" );
+	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$obj->task_project", "view this project" );
 	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", "edit this task" );
 }
-if ($canDelete) {
-	$titleBlock->addCrumbRight(
-		'<a href="javascript:delIt()">'
-			. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-			. $AppUI->_('delete task') . '</a>'
-	);
+if ($canEdit) {
+	$titleBlock->addCrumbDelete( $AppUI->_('delete task'), $canDelete, $msg );
 }
 $titleBlock->show();
 ?>
@@ -90,19 +91,23 @@ var calendarField = '';
 
 function popCalendar( field ){
 	calendarField = field;
-	uts = eval( 'document.updateFrm.task_' + field + '.value' );
-	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
+	idate = eval( 'document.editFrm.task_' + field + '.value' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
-function setCalendar( uts, fdate ) {
-	fld_uts = eval( 'document.updateFrm.task_' + calendarField );
-	fld_fdate = eval( 'document.updateFrm.' + calendarField );
-	fld_uts.value = uts;
+/**
+ *	@param string Input date in the format YYYYMMDD
+ *	@param string Formatted date
+ */
+function setCalendar( idate, fdate ) {
+	fld_date = eval( 'document.editFrm.task_' + calendarField );
+	fld_fdate = eval( 'document.editFrm.' + calendarField );
+	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
 
 function updateTask() {
-	var f = document.updateFrm;
+	var f = document.editFrm;
 	if (f.task_log_description.value.length < 1) {
 		alert( "<?php echo $AppUI->_('tasksComment');?>" );
 		f.task_log_description.focus();
@@ -139,26 +144,26 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
-			<td style="background-color:#<?php echo $task["project_color_identifier"];?>">
-				<font color="<?php echo bestColor( $task["project_color_identifier"] ); ?>">
-					<?php echo @$task["project_name"];?>
+			<td style="background-color:#<?php echo $obj->project_color_identifier;?>">
+				<font color="<?php echo bestColor( $obj->project_color_identifier ); ?>">
+					<?php echo @$obj->project_name;?>
 				</font>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
-			<td class="hilite"><strong><?php echo @$task["task_name"];?></strong></td>
+			<td class="hilite"><strong><?php echo @$obj->task_name;?></strong></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Creator');?>:</td>
-			<td class="hilite"> <?php echo @$task["username"];?></td>
+			<td class="hilite"> <?php echo @$obj->username;?></td>
 		</tr>				<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Priority');?>:</td>
 			<td class="hilite">
 		<?php
-			if ($task["task_priority"] == 0) {
+			if ($obj->task_priority == 0) {
 				echo $AppUI->_('normal');
-			} else if ($task["task_priority"] < 0){
+			} else if ($obj->task_priority < 0){
 				echo $AppUI->_('low');
 			} else {
 				echo $AppUI->_('high');
@@ -168,45 +173,45 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Web Address');?>:</td>
-			<td class="hilite" width="300"><?php echo @$task["task_related_url"];?></td>
+			<td class="hilite" width="300"><?php echo @$obj->task_related_url;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Milestone');?>:</td>
-			<td class="hilite" width="300"><?php if($task["task_milestone"]){echo $AppUI->_("Yes");}else{echo $AppUI->_("No");}?></td>
+			<td class="hilite" width="300"><?php if($obj->task_milestone){echo $AppUI->_("Yes");}else{echo $AppUI->_("No");}?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Progress');?>:</td>
-			<td class="hilite" width="300"><?php echo @$task["task_percent_complete"];?>%</td>
+			<td class="hilite" width="300"><?php echo @$obj->task_percent_complete;?>%</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Time Worked');?>:</td>
-			<td class="hilite" width="300"><?php echo @$task["task_hours_worked"];?></td>
+			<td class="hilite" width="300"><?php echo @$obj->task_hours_worked;?></td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap" colspan=2><strong><?php echo $AppUI->_('Dates and Targets');?></strong></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?>:</td>
-			<td class="hilite" width="300"><?php echo $start_date ? $start_date->toString( $df ) : '-';?></td>
+			<td class="hilite" width="300"><?php echo $start_date ? $start_date->format( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?>:</td>
-			<td class="hilite" width="300"><?php echo $end_date ? $end_date->toString( $df ) : '-';?></td>
+			<td class="hilite" width="300"><?php echo $end_date ? $end_date->format( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap" valign="top"><?php echo $AppUI->_('Expected Duration');?>:</td>
-			<td class="hilite" width="300"><?php echo $task["task_duration"].' '.$AppUI->_( $durnTypes[$task["task_duration_type"]] );?></td>
+			<td class="hilite" width="300"><?php echo $obj->task_duration.' '.$AppUI->_( $durnTypes[$obj->task_duration_type] );?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?>:</td>
-			<td class="hilite" width="300"><?php echo $task["task_target_budget"];?></td>
+			<td class="hilite" width="300"><?php echo $obj->task_target_budget;?></td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap" colspan="2"><strong><?php echo $AppUI->_('Description');?></strong></td>
 		</tr>
 		<tr>
 			<td valign="top" height="75" colspan="2" class="hilite">
-				<?php $newstr = str_replace( chr(10), "<br />", $task["task_description"]);echo $newstr;?>
+				<?php $newstr = str_replace( chr(10), "<br />", $obj->task_description);echo $newstr;?>
 			</td>
 		</tr>
 
@@ -239,7 +244,7 @@ function delIt() {
 			<td width="100%"><strong><?php echo $AppUI->_('Attached Files');?></strong></td>
 			<td align="right" nowrap="nowrap">
 			<?php if (!getDenyEdit( 'files' )) { ?>
-				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?>
+				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $obj->task_project;?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?>
 				</a>
 			<?php } ?>
 			</td>

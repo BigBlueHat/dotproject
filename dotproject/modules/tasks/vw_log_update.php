@@ -1,28 +1,27 @@
 <?php /* TASKS $Id$ */
-GLOBAL $AppUI, $canEdit, $task_id, $task, $percent;
+GLOBAL $AppUI, $canEdit, $task_id, $obj, $percent;
 
 if ($canEdit) {
 // Task Update Form
 	$df = $AppUI->getPref('SHDATEFORMAT');
-	$log_date = new CDate();
-	$log_date->setFormat( $df );
+	$log_date = new Date();
 ?>
 <table cellspacing="1" cellpadding="2" border="0" width="100%">
-<form name="updateFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
+<form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
 	<input type="hidden" name="uniqueid" value="<?php echo uniqid("");?>" />
 	<input type="hidden" name="dosql" value="do_updatetask" />
-	<input type="hidden" name="task_id" value="<?php echo @$task["task_id"];?>" />
-	<input type="hidden" name="task_log_task" value="<?php echo @$task["task_id"];?>" />
+	<input type="hidden" name="task_id" value="<?php echo @$obj->task_id;?>" />
+	<input type="hidden" name="task_log_task" value="<?php echo @$obj->task_id;?>" />
 	<input type="hidden" name="task_log_creator" value="<?php echo $AppUI->user_id;?>" />
-	<input type="hidden" name="task_log_name" value="Update :<?php echo @$task["task_name"];?>" />
-	<input type="hidden" name="task_hours_worked" value="<?php echo @$task["task_hours_worked"];?>" />
+	<input type="hidden" name="task_log_name" value="Update :<?php echo @$obj->task_name;?>" />
+	<input type="hidden" name="task_hours_worked" value="<?php echo @$obj->task_hours_worked;?>" />
 <tr>
 	<td align="right">
 		<?php echo $AppUI->_('Date');?>
 	</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="task_log_date" value="<?php echo $log_date->getTimestamp();?>">
-		<input type="text" name="log_date" value="<?php echo $log_date->toString();?>" class="text" disabled="disabled">
+		<input type="hidden" name="task_log_date" value="<?php echo $log_date->format( DATE_FORMAT_TIMESTAMP_DATE );?>">
+		<input type="text" name="log_date" value="<?php echo $log_date->format( $df );?>" class="text" disabled="disabled">
 		<a href="#" onClick="popCalendar('log_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
@@ -36,7 +35,7 @@ if ($canEdit) {
 	<td align="right"><?php echo $AppUI->_('Progress');?></td>
 	<td>
 <?php
-	echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $task["task_percent_complete"] ) . '%';
+	echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $obj->task_percent_complete ) . '%';
 ?>
 	</td>
 	<td rowspan="3" align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>

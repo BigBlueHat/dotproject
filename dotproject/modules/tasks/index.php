@@ -1,7 +1,7 @@
 <?php /* TASKS $Id$ */
 $AppUI->savePlace();
 
-// act on passed parameters
+// retrieve any state parameters
 if (isset( $_POST['f'] )) {
 	$AppUI->setState( 'TaskIdxFilter', $_POST['f'] );
 }
