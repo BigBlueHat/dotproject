@@ -305,25 +305,14 @@ function sort_by_item_title( $title, $item_name, $item_type )
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
-<!--
-	<th width="10" STYLE="background: #4aa">&nbsp;</th>
+	<th width="10">&nbsp;</th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
 	<th width="15" align="center">&nbsp;</th>
-	<th width="200"><?php echo $AppUI->_('Task Name');?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Task Creator');?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Duration');?>&nbsp;&nbsp;</th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?></th>
--->
-	<th width="10" STYLE="background: #4aa">&nbsp;</th>
-	<th width="20" STYLE="background: #4aa"><?php echo $AppUI->_('Work');?></th>
-	<th width="15" align="center" STYLE="background: #4aa">&nbsp;</th>
-	<th width="200" STYLE="background: #4aa"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
-	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
-	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
-	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
-	<th nowrap="nowrap" STYLE="background: #4aa"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
-
+	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
+	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
+	<th nowrap="nowrap"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
+	<th nowrap="nowrap"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
+	<th nowrap="nowrap"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
 
 </tr>
 <?php
