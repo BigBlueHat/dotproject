@@ -15,10 +15,7 @@ $filters = array(
 	'myfinished7days'  => 'My Tasks Finished Last 7 Days'
 );
 
-$status = array(
- 0 => 'Active',
- -1 => 'Inactive'
-);
+$status = dPgetSysVal( 'TaskStatus' );
 
 $priority = array(
  -1 => 'low',

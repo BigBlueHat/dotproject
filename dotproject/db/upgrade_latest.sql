@@ -70,3 +70,8 @@ CREATE TABLE `project_departments` (
 # add user specific task priority
 #
 ALTER TABLE `user_tasks` ADD `user_task_priority` tinyint(4) default '0';
+
+# 20040728
+# converted taskstatus to sysvals
+#
+INSERT INTO `sysvals` VALUES (null, 1, 'TaskStatus', '0|Active\n-1|Inactive');
