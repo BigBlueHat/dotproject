@@ -64,10 +64,10 @@ if ($canEdit) {
 ?>
 function submitIt(){
 	var form = document.changeforum;
-	if (form.message_title.value.length < 1) {
+	if (form.message_title.value.search(/^\s*$/) >= 0 ) {
 		alert("<?php echo $AppUI->_('forumSubject');?>");
 		form.message_title.focus();
-	} else if (form.message_body.value.length < 1) {
+	} else if (form.message_body.value.search(/^\s*$/) >= 0) {
 		alert("<?php echo $AppUI->_('forumTypeMessage');?>");
 		form.message_body.focus();
 	} else {
