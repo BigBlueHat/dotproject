@@ -339,7 +339,7 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
-					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo dPgetParam( $obj, 'task_duration', 0);?>" />
+					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 0;?>" />
 				<?php
 					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type );
 				?>
