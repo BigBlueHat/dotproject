@@ -106,7 +106,6 @@ if ($project_id) {
 if ($project_id == 0 && $contact_id > 0){
 	$selected_contacts[] = "$contact_id";
 }
-var_export($selected_contacts);
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $dPconfig['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
 <!-- import the calendar script -->
