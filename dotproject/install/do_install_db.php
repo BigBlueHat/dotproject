@@ -256,18 +256,19 @@ if ($do_db || $do_db_cfg) {
 		$pieces  = InstallSplitSql($query, $db_version['last_db_update']);
 	}
 	@set_magic_quotes_runtime($mqr);
-	$errors = array();
+	$errors = 0;
 
 	for ($i=0; $i<count($pieces); $i++) {
 		$pieces[$i] = trim($pieces[$i]);
 		if(!empty($pieces[$i]) && $pieces[$i] != "#") {
 			if (!$result = $db->Execute($pieces[$i])) {
-				//$errors[] = array ( $db->ErrorMsg(), $pieces[$i] );
+				$errors++;
 				$dbErr = true;
 				$dbMsg .= $db->ErrorMsg().'<br>';
 			}
 		}
 	}
+	dPmsg("There were $errors errors in " . count($parts) . " SQL statements");
 
         if ($dbError <> 0 && $dbError <> 1007) {
 		$dbErr = true;
