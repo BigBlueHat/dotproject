@@ -68,7 +68,15 @@ foreach ($logs as $row) {
         $s .= "\n\t</td>";
 	$s .= '<td nowrap="nowrap">'.($task_log_date ? $task_log_date->format( $df ) : '-').'</td>';
         //$s .= '<td align="center" valign="middle">'.($row['task_log_problem'] ?  dPshowImage( './images/icons/mark-as-important-16.png', 16, 16, 'Problem', 'Problem' ) : '').'</td>';
-        $s .= '<td align="center" valign="middle">'.(($row['task_log_reference']>0) ?  dPshowImage( $taskLogReferenceImage[$row["task_log_reference"]], 16, 16, $taskLogReference[$row["task_log_reference"]], $taskLogReference[$row["task_log_reference"]] ) : '-').'</td>';
+        $reference_image = "-";
+        if($row["task_log_reference"] > 0){
+            if(isset($taskLogReferenceImage[$row["task_log_reference"]])){
+                $reference_image = dPshowImage( $taskLogReferenceImage[$row["task_log_reference"]], 16, 16, $taskLogReference[$row["task_log_reference"]], $taskLogReference[$row["task_log_reference"]] );
+            } else if (isset($taskLogReference[$row["task_log_reference"]])){
+                $reference_image = $taskLogReference[$row["task_log_reference"]];
+            }
+        }
+        $s .= '<td align="center" valign="middle">'.(($row['task_log_reference']>0) ? $reference_image . '</td>';
 	$s .= '<td width="30%" style="'.$style.'">'.@$row["task_log_name"].'</td>';
     $s .= !empty($row["task_log_related_url"]) ? '<td><a href="'.@$row["task_log_related_url"].'" title="'.@$row["task_log_related_url"].'">'.$AppUI->_('URL').'</a></td>' : '<td></td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
