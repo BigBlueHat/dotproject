@@ -1,3 +1,41 @@
+2003-05-09 00:55  (eddieajau)
+---------------------------------
+index.php
+- Added patch for systems using session.auto_start = 1
+- Removed character set headers
+
+2003-05-08 22:32  (eddieajau)
+---------------------------------
+docs/check.php
+docs/main.css
+docs/nav.html
+docs/trouble.html
+- no message
+
+2003-05-08 08:36  (eddieajau)
+---------------------------------
+docs/nav.html
+- Added trouble shooting link
+
+2003-05-08 08:36  (eddieajau)
+---------------------------------
+docs/trouble.html
+- Initial upload
+
+2003-05-08 08:25  (korinek)
+---------------------------------
+index.php
+locales/en/system.inc
+style/classic/header.php
+style/classic/login.php
+style/default/login.php
+- Charset updates
+
+2003-05-08 06:29  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-08 02:55  (eddieajau)
 ---------------------------------
 modules/calendar/week_view.php
@@ -460,44 +498,6 @@ ChangeLog
 
 2003-04-28 01:55  (eddieajau)
 ---------------------------------
-docs/roadmap.html
-- Pulled module abstraction forward
-- Added PEAR Date class implementation
-- Push back generic lookup field
-
-2003-04-28 00:43  (eddieajau)
----------------------------------
-modules/projects/view.php
-- Updated delete icon to change if there are dependancies
-
-2003-04-28 00:43  (eddieajau)
----------------------------------
-modules/projects/projects.class.php
-- Updated class abstraction
-
-2003-04-28 00:42  (eddieajau)
----------------------------------
-modules/projects/addedit.php
-- Updated delete icon to change if there are dependancies
-- Updated date handling to PEAR Date class
-
-2003-04-28 00:40  (eddieajau)
----------------------------------
-modules/companies/view.php
-- Updated delete icon to change if there are dependancies
-
-2003-04-28 00:40  (eddieajau)
----------------------------------
-modules/companies/do_company_aed.php
-modules/projects/do_project_aed.php
-- Updated canDelete handling
-
-2003-04-28 00:39  (eddieajau)
----------------------------------
-modules/companies/companies.class.php
-- Now using a more abstract canDelete function
-
-2003-04-28 00:37  (eddieajau)
 ...
 
 (This file has been wrapped)
