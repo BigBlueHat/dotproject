@@ -87,5 +87,16 @@ class CDate extends Date {
 		);
 	}
 
+/**
+* @param int hour
+* @param int minute
+* @param int second
+* @author Andrew Eddie <eddieajau@users.sourceforge.net>
+*/
+	function setTime( $h=0, $m=0, $s=0 ) {
+		$this->setHour( $h );
+		$this->setMinute( $m );
+		$this->setSecond( $s );
+	}
 }
 ?>
