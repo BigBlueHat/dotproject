@@ -299,6 +299,8 @@ class CAppUI {
 			$this->user_lang = $loc;
 			if (isset($locale_char_set))
 				$this->user_lang .= '.' . $locale_char_set;
+			else
+				$this->user_lang .= '.utf8';
 		}
 	}
 
