@@ -248,16 +248,16 @@ function showtask( &$a, $level=0 ) {
 // percent complete
 	$s .= "\n\t<td align=\"right\">".intval( $a["task_percent_complete"] ).'%</td>';
 // priority
-	$s .= "\n\t<td>";
+	$s .= "\n\t<td align='center' nowrap='nowrap'>";
 	if ($a["task_priority"] < 0 ) {
 		$s .= "\n\t\t<img src=\"./images/icons/low.gif\" width=13 height=16>";
 	} else if ($a["task_priority"] > 0) {
 		$s .= "\n\t\t<img src=\"./images/icons/" . $a["task_priority"] .'.gif" width=13 height=16>';
 	}
-	$s .= "\n\t</td>";
+	$s .= $a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
+	$s .= "</td>";
 // dots
 	$s .= '<td width="90%">';
-	$s .= $a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
 	for ($y=0; $y < $level; $y++) {
 		if ($y+1 == $level) {
 			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
@@ -415,7 +415,7 @@ function sort_by_item_title( $title, $item_name, $item_type )
 <tr>
 	<th width="10">&nbsp;</th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
-	<th width="15" align="center">&nbsp;</th>
+	<th align='center'></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned users')?></th>
