@@ -204,7 +204,7 @@ function Cc( $cc ) {
 	if( is_array($cc) )
 		$this->acc= $cc;
 	else
-		$this->acc[]= $cc;
+		$this->acc= explode(',', $cc);
 
 	if( $this->checkAddress == true )
 		$this->CheckAdresses( $this->acc );
