@@ -112,9 +112,9 @@ if ($AppUI->doLogin()) {
 	setlocale( LC_TIME, $AppUI->user_locale );
 
 	// output the character set header
-	//if (isset( $locale_char_set )) {
-	//	 header("Content-type: text/html;charset=$locale_char_set");
-	//}
+	if (isset( $locale_char_set )) {
+		 header("Content-type: text/html;charset=$locale_char_set");
+	}
 
 	$AppUI->savePlace();
 	require "./style/$uistyle/login.php";

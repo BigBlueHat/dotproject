@@ -1,12 +1,13 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"system admin",
+"edit",
 "Abbreviation",
 "Date and Time",
 "Default",
 "Default User Preferences",
 "Edit User Preferences",
+"Key Type",
 "Language",
 "Language Support",
 "Locale",
@@ -32,6 +33,7 @@
 "User Interface Style",
 "User Preferences",
 "User Roles",
+"Values",
 "View Modules",
 "active",
 "cn"=>"Chinese",
@@ -43,5 +45,6 @@
 "fr"=>"French",
 "pt_br"=>"Portuguese Brazillian",
 "remove",
+"system admin",
 "visible",
 "zh"=>"Chinese",
