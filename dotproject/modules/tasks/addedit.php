@@ -215,8 +215,8 @@ var hourMSecs = 3600*1000;
 function calcDuration() {
 	var f = document.editFrm;
 
-	var s = new CDate( f.task_start_date.value*1000 );
-	var e = new CDate( f.task_end_date.value*1000 );
+	var s = new Date( f.task_start_date.value*1000 );
+	var e = new Date( f.task_end_date.value*1000 );
 
 	var durn = (e - s) / hourMSecs;
 	var durnType = parseFloat(f.task_duration_type.value);
