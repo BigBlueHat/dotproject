@@ -2,6 +2,8 @@
 include "./includes/config.php";
 include "./includes/db_connect.php";
 
+$debug = false;
+
 //Check Login
 $psql = "
 SELECT
@@ -15,9 +17,17 @@ WHERE user_username = '$username'
 
 $prc = mysql_query($psql);
 
+if ($debug) {
+	echo "DEBUGGING:";
+	echo "<br>register_globals=<font color=blue>".ini_get( 'register_globals')."</font>";
+	echo "<br>SQL=<pre><font color=blue>$psql</font></pre>";
+	echo "<br>Query returned [<font color=blue>$prc</font>]";
+	echo "<br>SQL Error [<font color=red>".mysql_error()."</font>]";
+}
 //Pull record, write bad login if exists
 if (!$row = mysql_fetch_array( $prc, MYSQL_NUM )) {
-	$message  = "Login Failed.";
+	$message  = "Login Failed."
+		.(ini_get( 'register_globals') ? '' : '<br>WARNING: dotproject is not supported with register_globals=off');
 	include "./includes/login.php";
 	die;
 }
