@@ -17,6 +17,7 @@ class CForum extends CDpObject {
 
 	function CForum() {
 		// empty constructor
+		parent::CDpObject('forums', 'forum_id');
 	}
 
 	function bind( $hash ) {
