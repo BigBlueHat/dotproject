@@ -24,7 +24,7 @@ function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port
 
 	if ($dbname) {
 		mysql_select_db( $dbname )
-			or die( "FATAL ERROR: Database not found ($dbname)" );
+			or die( "FATAL ERROR: Database not found ($dbname). Please check that the database, user and password set in the configuration file are right and that the user has select, update and delete privileges for that database." );
 	} else {
 		die( "FATAL ERROR: Database name not supplied<br />(connection to database server succesful)" );
 	}
