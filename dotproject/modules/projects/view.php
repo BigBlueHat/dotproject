@@ -1,8 +1,8 @@
 <?php /* PROJECTS $Id$ */
 
-$project_id = dPgetParam( $_GET, "project_id", 0 );
+$project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
-// check permissions for this project
+// check permissions for this record
 $canRead = !getDenyRead( $m, $project_id );
 $canEdit = !getDenyEdit( $m, $project_id );
 
@@ -10,16 +10,18 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$msg = '';
-$obj = new CProject();
-$canDelete = $obj->canDelete( $msg, $project_id );
-
+// retrieve any state parameters
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjVwTab', $_GET['tab'] );
 }
 $tab = $AppUI->getState( 'ProjVwTab' ) !== NULL ? $AppUI->getState( 'ProjVwTab' ) : 0;
 
-//pull data
+// check if this record has dependancies to prevent deletion
+$msg = '';
+$obj = new CProject();
+$canDelete = $obj->canDelete( $msg, $project_id );
+
+// load the record data
 $sql = "
 SELECT
 	company_name,
@@ -33,9 +35,9 @@ LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_id = $project_id
 GROUP BY project_id
 ";
-//echo "<pre>$sql</pre>";
 
-if (!db_loadHash( $sql, $project )) {
+$obj = null;
+if (!db_loadObject( $sql, $obj )) {
 	$AppUI->setMsg( 'Project' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -43,11 +45,13 @@ if (!db_loadHash( $sql, $project )) {
 	$AppUI->savePlace();
 }
 
+// get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = $project["project_start_date"] ? new Date( $project["project_start_date"] ) : null;
-$end_date = $project["project_end_date"] ? new Date( $project["project_end_date"] ) : null;
-$actual_end_date = $project["project_actual_end_date"] ? new Date( $project["project_actual_end_date"] ) : null;
+// create Date objects from the datetime fields
+$start_date = $obj->project_start_date ? new Date( $obj->project_start_date ) : null;
+$end_date = $obj->project_end_date ? new Date( $obj->project_end_date ) : null;
+$actual_end_date = $obj->project_actual_end_date ? new Date( $obj->project_actual_end_date ) : null;
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Project', 'applet3-48.png', $m, "$m.$a" );
@@ -90,10 +94,10 @@ function delIt() {
 </form>
 
 <tr>
-	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $project["project_color_identifier"];?>" colspan="2">
+	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $obj["project_color_identifier"];?>" colspan="2">
 	<?php
-		echo '<font color="' . bestColor( $project["project_color_identifier"] ) . '"><strong>'
-			. $project["project_name"] .'<strong></font>';
+		echo '<font color="' . bestColor( $obj["project_color_identifier"] ) . '"><strong>'
+			. $obj["project_name"] .'<strong></font>';
 	?>
 	</td>
 </tr>
@@ -104,11 +108,11 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
-			<td class="hilite" width="100%"><?php echo $project["company_name"];?></td>
+			<td class="hilite" width="100%"><?php echo $obj->company_name;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Short Name');?>:</td>
-			<td class="hilite"><?php echo @$project["project_short_name"];?></td>
+			<td class="hilite"><?php echo @$obj->project_short_name;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Start Date');?>:</td>
@@ -124,19 +128,19 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Target Budget');?>:</td>
-			<td class="hilite">$<?php echo @$project["project_target_budget"];?></td>
+			<td class="hilite">$<?php echo @$obj->project_target_budget;?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Project Owner');?>:</td>
-			<td class="hilite"><?php echo $project["user_name"]; ?></td>
+			<td class="hilite"><?php echo $obj->user_name; ?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('URL');?>:</td>
-			<td class="hilite"><A href="<?php echo @$project["project_url"];?>" target="_new"><?php echo @$project["project_url"];?></A></td>
+			<td class="hilite"><a href="<?php echo @$obj->project_url;?>" target="_new"><?php echo @$obj->project_url;?></A></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Staging URL');?>:</td>
-			<td class="hilite"><A href="<?php echo @$project["project_demo_url"];?>" target="_new"><?php echo @$project["project_demo_url"];?></A></td>
+			<td class="hilite"><a href="<?php echo @$obj->project_demo_url;?>" target="_new"><?php echo @$obj["project_demo_url"];?></a></td>
 		</tr>
 		</table>
 	</td>
@@ -145,22 +149,22 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Status');?>:</td>
-			<td class="hilite" width="100%"><?php echo $AppUI->_($pstatus[$project["project_status"]]);?></td>
+			<td class="hilite" width="100%"><?php echo $AppUI->_($pstatus[$obj->project_status]);?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Progress');?>:</td>
-			<td class="hilite" width="100%"><?php printf( "%.1f%%", $project["project_percent_complete"] );?></td>
+			<td class="hilite" width="100%"><?php printf( "%.1f%%", $obj->project_percent_complete );?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Active');?>:</td>
-			<td class="hilite" width="100%"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
+			<td class="hilite" width="100%"><?php echo $obj->project_active ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>
 		</table>
 		<strong><?php echo $AppUI->_('Description');?></strong><br />
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br />", $project["project_description"]); ?>&nbsp;
+				<?php echo str_replace( chr(10), "<br />", $obj->project_description); ?>&nbsp;
 			</td>
 		</tr>
 		</table>

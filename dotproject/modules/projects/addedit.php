@@ -1,26 +1,27 @@
 <?php /* PROJECTS $Id$ */
-$project_id = dPgetParam( $_GET, "project_id", 0 );
+$project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 
-require_once( $AppUI->getPearClass( 'Date' ) );
-
-// check permissions for this project
+// check permissions for this record
 $canEdit = !getDenyEdit( $m, $project_id );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-// pull companies
-$sql = "SELECT company_id, company_name FROM companies ORDER BY company_name";
-$companies = arrayMerge( array( 0 => '' ), db_loadHashList( $sql ) );
+// get a list of permitted companies
+require_once( $AppUI->getModuleClass ('companies' ) );
+
+$obj = new CCompany();
+$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$companies = arrayMerge( array( '0'=>'' ), $companies );
 
 // pull users
 $sql = "SELECT user_id, CONCAT( user_last_name, ', ', user_first_name) FROM users ORDER BY user_last_name";
 $users = db_loadHashList( $sql );
 
-// pull the project
-$sql = "SELECT * FROM projects WHERE project_id = $project_id";
+// load the record data
+$obj = new CProject();
 
-if (!db_loadHash( $sql, $project ) && $project_id > 0) {
+if (!$obj->load( $project_id ) && $project_id > 0) {
 	$AppUI->setMsg( 'Project' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -32,16 +33,16 @@ if (!db_loadHash( $sql, $project ) && $project_id > 0) {
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = new Date( $project["project_start_date"] );
+$start_date = new Date( $obj->project_start_date );
 
-if ($project["project_end_date"]) {
-	$end_date = new Date( $project["project_end_date"] );
+if ($obj->project_end_date) {
+	$end_date = new Date( $obj->project_end_date );
 } else {
 	$end_date = null;
 }
 
-if ($project["project_actual_end_date"]) {
-	$actual_end_date = new Date( $project["project_actual_end_date"] );
+if ($obj->project_actual_end_date) {
+	$actual_end_date = new Date( $obj->project_actual_end_date );
 } else {
 	$actual_end_date = null;
 }
@@ -55,7 +56,7 @@ $titleBlock->show();
 ?>
 <script language="javascript">
 function setColor(color) {
-	var f = document.frmEditProject;
+	var f = document.editFrm;
 	if (color) {
 		f.project_color_identifier.value = color;
 	}
@@ -66,7 +67,7 @@ var calendarField = '';
 
 function popCalendar( field ){
 	calendarField = field;
-	idate = eval( 'document.frmEditProject.project_' + field + '.value' );
+	idate = eval( 'document.editFrm.project_' + field + '.value' );
 	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
@@ -75,14 +76,14 @@ function popCalendar( field ){
  *	@param string Formatted date
  */
 function setCalendar( idate, fdate ) {
-	fld_date = eval( 'document.frmEditProject.project_' + calendarField );
-	fld_fdate = eval( 'document.frmEditProject.' + calendarField );
+	fld_date = eval( 'document.editFrm.project_' + calendarField );
+	fld_fdate = eval( 'document.editFrm.' + calendarField );
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
 
 function setShort() {
-	var f = document.frmEditProject;
+	var f = document.editFrm;
 	var x = 10;
 	if (f.project_name.value.length < 11) {
 		x = f.project_name.value.length;
@@ -93,7 +94,7 @@ function setShort() {
 }
 
 function submitIt() {
-	var f = document.frmEditProject;
+	var f = document.editFrm;
 	var msg = '';
 
 	if (f.project_name.value.length < 3) {
@@ -123,7 +124,7 @@ function submitIt() {
 </script>
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-<form name="frmEditProject" action="./index.php?m=projects" method="post">
+<form name="editFrm" action="./index.php?m=projects" method="post">
 	<input type="hidden" name="dosql" value="do_project_aed" />
 	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 	<input type="hidden" name="project_creator" value="<?php echo $AppUI->user_id;?>" />
@@ -134,20 +135,20 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Name');?></td>
 			<td width="100%">
-				<input type="text" name="project_name" value="<?php echo @$project["project_name"];?>" size="25" maxlength="50" onBlur="setShort();" class="text" />
+				<input type="text" name="project_name" value="<?php echo @$obj->project_name;?>" size="25" maxlength="50" onBlur="setShort();" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
 			<td>
-<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', dPgetParam( $project, "project_owner", $AppUI->user_id ) ) ?>
+<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', dPgetParam( $obj, "project_owner", $AppUI->user_id ) ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?></td>
 			<td width="100%" nowrap="nowrap">
 <?php
-	echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $project["project_company"] );
+	echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $obj->project_company );
 ?> *</td>
 		</tr>
 		<tr>
@@ -173,7 +174,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> $</td>
 			<td>
-				<input type="Text" name="project_target_budget" value="<?php echo @$project["project_target_budget"];?>" maxlength="10" class="text" />
+				<input type="Text" name="project_target_budget" value="<?php echo @$obj->project_target_budget;?>" maxlength="10" class="text" />
 			</td>
 		</tr>
 		<tr>
@@ -192,7 +193,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Budget');?> $</td>
 			<td>
-				<input type="text" name="project_actual_budget" value="<?php echo @$project["project_actual_budget"];?>" size="10" maxlength="10" class="text"/>
+				<input type="text" name="project_actual_budget" value="<?php echo @$obj->project_actual_budget;?>" size="10" maxlength="10" class="text"/>
 			</td>
 		</tr>
 		<tr>
@@ -201,13 +202,13 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?></td>
 			<td>
-				<input type="text" name="project_url" value="<?php echo @$project["project_url"];?>" size="40" maxlength="255" class="text" />
+				<input type="text" name="project_url" value="<?php echo @$obj->project_url;?>" size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Staging URL');?></td>
 			<td>
-				<input type="Text" name="project_demo_url" value="<?php echo @$project["project_demo_url"];?>" size="40" maxlength="255" class="text" />
+				<input type="Text" name="project_demo_url" value="<?php echo @$obj->project_demo_url;?>" size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		</table>
@@ -217,19 +218,19 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Short Name');?></td>
 			<td colspan="3">
-				<input type="text" name="project_short_name" value="<?php echo @$project["project_short_name"];?>" size="10" maxlength="10" class="text" /> *
+				<input type="text" name="project_short_name" value="<?php echo @$obj->project_short_name;?>" size="10" maxlength="10" class="text" /> *
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Color Identifier');?></td>
 			<td nowrap="nowrap">
-				<input type="text" name="project_color_identifier" value="<?php echo @$project["project_color_identifier"];?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
+				<input type="text" name="project_color_identifier" value="<?php echo @$obj->project_color_identifier;?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
 			</td>
 			<td nowrap="nowrap">
 				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
 			</td>
 			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#<?php echo @$project["project_color_identifier"];?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
+				<span id="test" title="test" style="background:#<?php echo @$obj->project_color_identifier;?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
 			</td>
 		</tr>
 		<tr>
@@ -242,13 +243,13 @@ function submitIt() {
 				</tr>
 				<tr>
 					<td>
-						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?>
+						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $obj->project_status, true ); ?>
 					</td>
 					<td>
-						<strong><?php echo intval(@$project["project_percent_complete"]);?> %</strong>
+						<strong><?php echo intval(@$obj->project_percent_complete);?> %</strong>
 					</td>
 					<td>
-						<input type=checkbox value=1 name=project_active <?php echo $project["project_active"]||$project_id==0 ? 'checked="checked"' : '';?>>
+						<input type="checkbox" value="1" name="project_active" <?php echo $obj->project_active||$project_id==0 ? 'checked="checked"' : '';?> />
 					</td>
 				</tr>
 				</table>
@@ -257,7 +258,7 @@ function submitIt() {
 		<tr>
 			<td colspan="4">
 				<?php echo $AppUI->_('Description');?><br />
-				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea"><?php echo @$project["project_description"];?></textarea>
+				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea"><?php echo @$obj->project_description;?></textarea>
 			</td>
 		</tr>
 		</table>
@@ -265,10 +266,10 @@ function submitIt() {
 </tr>
 <tr>
 	<td>
-		<input class=button type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}" />
+		<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}" />
 	</td>
 	<td align="right">
-		<input class=button type="Button" name="btnFuseAction" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt();" />
+		<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt();" />
 	</td>
 </tr>
 </form>

@@ -5,7 +5,7 @@
  *	@version $Revision$
 */
 
-include_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getPearClass( 'Date' ) );
 
 /**

@@ -1,13 +1,15 @@
 <?php  /* PROJECTS $Id$ */
 $AppUI->savePlace();
-include_once( $AppUI->getModuleClass( 'companies' ) );
 
-// Set up 'filters'
+// load the companies class to retrieved denied companies
+require_once( $AppUI->getModuleClass( 'companies' ) );
 
+// retrieve any state parameters
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'ProjIdxTab', $_GET['tab'] );
 }
 $tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
+$active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
 if (isset( $_POST['company_id'] )) {
 	$AppUI->setState( 'ProjIdxCompany', $_POST['company_id'] );
@@ -19,21 +21,11 @@ if (isset( $_GET['orderby'] )) {
 }
 $orderby = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrderBy' ) : 'project_end_date';
 
-$active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
+// get any records denied from viewing
+$obj = new CProject();
+$deny = $obj->getDeniedRecords( $AppUI->user_id );
 
-// get read denied projects
-$deny = array();
-$sql = "
-SELECT project_id
-FROM projects, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'projects'
-	AND permission_item = project_id
-	AND permission_value = 0
-";
-$deny = db_loadColumn( $sql );
-
-// pull projects
+// retrieve list of records
 $sql = "
 SELECT
 	project_id, project_active, project_status, project_color_identifier, project_name,
@@ -66,8 +58,9 @@ ORDER BY $orderby
 
 $projects = db_loadList( $sql );
 
-$company = new CCompany();
-$companies = $company->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+// get the list of permitted companies
+$obj = new CCompany();
+$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 $companies = arrayMerge( array( '0'=>'All' ), $companies );
 
 // setup the title block
