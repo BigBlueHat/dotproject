@@ -25,7 +25,7 @@ if ($sqlaction == 1 && $permission_id == 0) {
 	('$user_id', '$permission_grant_on', '$permission_item', '$permission_value')";
 	mysql_query( $apsql );
 
-	$message = "Permission Created ";
+	$AppUI->setMsg( "Permission Created " );
 } else if ($sqlaction == 1 && $permission_id <> 0) {
 	$upsql ="UPDATE permissions
 	SET
@@ -34,15 +34,15 @@ if ($sqlaction == 1 && $permission_id == 0) {
 	permission_value = '$permission_value'
 	WHERE permission_id = $permission_id";
 	mysql_query( $upsql );
-	$message = "Permission Updated ";
+	$AppUI->setMsg( "Permission Updated " );
 } else if ($sqlaction == -1 && $permission_id <> 0) {
 	$dpsql = "delete from permissions where permission_id =" . $permission_id;
 	mysql_query( $dpsql );
-	$message = "Permission Deleted ";
+	$AppUI->setMsg( "Permission Deleted " );
 }
 $e  =mysql_error();
 if (strlen( $e ) > 0) {
-	$message = $e;
+	$AppUI->setMsg( $e );
 }
 //Pull User perms
 $usql = "
