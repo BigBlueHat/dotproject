@@ -128,6 +128,41 @@ function delIt() {
 				<?php echo str_replace( chr(10), "<br />", $obj->company_description);?>&nbsp;
 			</td>
 		</tr>
+		<?php
+		$custom_fields = dPgetSysVal("CompanyCustomFields");
+		if ( count($custom_fields) > 0 ){
+			//We have custom fields, parse them!
+			//Custom fields are stored in the sysval table under TaskCustomFields, the format is
+			//key|serialized array of ("name", "type", "options", "selects")
+			
+			if ( $obj->company_custom != "" || !is_null($obj->company_custom))  {
+				//Custom info previously saved, retrieve it
+				$custom_field_previous_data = unserialize($obj->company_custom);
+			}
+			
+			$output = '<tr><table cellspacing="1" cellpadding="2" >';
+			foreach ( $custom_fields as $key => $array) {
+				$output .= "<tr id='custom_tr_$key' >";
+				$field_options = unserialize($array);
+				$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<b>". $field_options['name']. "</b>" : $field_options['name'] . ":") ."</td>";
+				switch ( $field_options["type"]){
+					case "text":
+						$output .= "<td class='hilite' width='300'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
+						break;
+					case "select":
+						$optionarray = explode(",",$field_options["selects"]);
+						$output .= "<td class='hilite' width='300'>". ( isset($custom_field_previous_data[$key]) ? $optionarray[$custom_field_previous_data[$key]] : "") . "</td>";
+						break;
+					case "textarea":
+						$output .=  "<td valign='top' class='hilite'>" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</td>";
+						break;
+				}
+				$output .= "</tr>";
+			}
+			$output .= "</table></tr>";
+			echo $output;
+		}
+		?>
 		</table>
 	</td>
 </tr>

@@ -604,7 +604,7 @@ function calcFinish() {
 		foreach ( $custom_fields as $key => $array) {
 			$output .= "<tr colspan='3' valign='top' id='custom_tr_$key' >";
 			$field_options = unserialize($array);
-			$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) ."</td>";
+			$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) . ":" ."</td>";
 			switch ( $field_options["type"]){
 				case "text":
 					$output .= "<td><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";

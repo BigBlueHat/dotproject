@@ -36,6 +36,8 @@ class CCompany extends CDpObject {
 	var $company_description = NULL;
 /** @var int */
 	var $company_type = null;
+	
+	var $company_custom = null;
 
 	function CCompany() {
 		$this->CDpObject( 'companies', 'company_id' );

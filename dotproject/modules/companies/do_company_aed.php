@@ -8,6 +8,16 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
+//Assign custom fields to task_custom for them to be saved
+$custom_fields = dPgetSysVal("CompanyCustomFields");
+$custom_field_data = array();
+if ( count($custom_fields) > 0 ){
+	foreach ( $custom_fields as $key => $array ) {
+		$custom_field_data[$key] = $_POST["custom_$key"];
+	}
+	$obj->company_custom = serialize($custom_field_data);
+}
+
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Company' );
 if ($del) {
