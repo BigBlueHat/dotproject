@@ -90,7 +90,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <?php
 	if (!getDenyRead( 'calendar' )) {
 		$now = new CDate();
-?>
+?>                              <b><a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>&tab=1"><?php echo $AppUI->_('Todo');?></a></b> |
 				<a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |
 <?php } ?>
 			<?php } // END allow the installer to run without db ?>
