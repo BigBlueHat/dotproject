@@ -50,7 +50,7 @@ $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
 
 // manage the session variable(s)
 session_name( 'dotproject' );
-if (get_cfg_var( 'session.auto_start' ) > 0) {
+if (ini_get( 'session.auto_start' ) > 0) {
 	session_write_close();
 }
 session_start();
