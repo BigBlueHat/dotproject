@@ -192,6 +192,9 @@ switch ($f) {
 		$where .= "\n	AND project_owner = $user_id";
 		break;
 	case 'mycomp':
+	    if(!$AppUI->user_company){
+	        $AppUI->user_company = 0;
+	    }
 		$where .= "\n	AND project_company = $AppUI->user_company";
 		break;
 	case 'myunfinished':
