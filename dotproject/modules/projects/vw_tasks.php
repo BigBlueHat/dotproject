@@ -1,12 +1,14 @@
-<b>Tasks:</b>
-<br>
-<TABLE width="100%" border=0 cellpadding="2" cellspacing=1>
-<TR style="border: outset #eeeeee 2px;">
-	<TD class="mboxhdr" width="10">&nbsp;</td>
-	<TD class="mboxhdr" width="20">work</td>
-	<TD class="mboxhdr" width="20">p</td>
-	<TD class="mboxhdr" width=200>task</td>
-	<TD class="mboxhdr">duration&nbsp;&nbsp;</td>
+<?php
+GLOBAL $project_id, $thisuser_id;
+?>
+
+<table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+	<th width="10">&nbsp;</th>
+	<th width="20">work</th>
+	<th width="20">p</th>
+	<th width=200>task</th>
+	<th>duration&nbsp;&nbsp;</th>
 </tr>
 <?php
 // Tasks mini-table in project view action
@@ -22,7 +24,7 @@ SELECT
 	task_order
 FROM tasks, user_tasks
 WHERE task_project = $project_id
-	AND user_tasks.user_id = $user_cookie
+	AND user_tasks.user_id = $thisuser_id
 	AND user_tasks.task_id = tasks.task_id
 ORDER BY task_order
 ";
@@ -39,17 +41,17 @@ for ($x=0; $x < $nums; $x++) {
 function showtask( &$a, $level=0 ) { 
 	global $done;
 	$done[] = $a['task_id']; ?>
-<TR bgcolor="#f4efe3">
-	<TD><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
-	<TD align="right"><?php echo intval($a["task_precent_complete"]);?>%</td>
-	<TD>
+<tr>
+	<td><A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+	<td align="right"><?php echo intval($a["task_precent_complete"]);?>%</td>
+	<td>
 	<?php if ($a["task_priority"] < 0 ) {
 		echo "<img src='./images/icons/low.gif' width=13 height=16>";
 	} else if ($a["task_priority"] > 0) {
 		echo "<img src='./images/icons/" . $a["task_priority"] .".gif' width=13 height=16>";
 	}?>
 	</td>
-	<TD width=90%>
+	<td width=90%>
 
 	<?php if ($level == 0) { ?>
 	<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $a["task_id"];?>">
@@ -67,7 +69,7 @@ function showtask( &$a, $level=0 ) {
 	}?>
 
 	<A href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a></td>
-	<TD>
+	<td>
 	<?php if ($a["task_duration"] > 24 ) {
 		$dt = "day";
 		$dur = $a["task_duration"] / 24;
@@ -111,4 +113,4 @@ while (list( , $t ) = each( $tarr )) {
 	}
 }
 ?>
-</TABLE>
+</table>

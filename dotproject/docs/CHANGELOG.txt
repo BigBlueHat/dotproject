@@ -1,5 +1,48 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+7 November 2002 (AJE):
+---------------------------------
+styles/main.css
+- added th style to std table class
+
+module/admin/vw_active_usr.php (new)
+module/admin/vw_inactive_usr.php (new)
+module/admin/vw_usr.php (new)
+module/admin/vw_usr_perms.php (new)
+module/admin/vw_usr_proj.php (new)
+module/admin/addedituser.php
+module/admin/dosql.php
+module/admin/index.php
+module/admin/permissions.php
+module/admin/viewuser.php
+- cosmetic changes for tabbed and flat views on the index page and view user
+- cosmetic update of permissions page, structural update of user list handling
+- standardisation of classes for tables
+- added support for assigning a department to a user
+
+modules/companies/vw_active.php
+modules/companies/vw_depts.php
+- cosmetic updates
+- added count of users in a department
+
+./dept_selector.php
+- dialog box for department selection
+
+includes/create_new_menu.php
+includes/header.php
+- fix for creating new task when in a task
+
+module/projects/view.php
+module/projects/vw_tasks.php
+module/projects/vw_forums.php
+module/projects/vw_files.php (new)
+- cosmetic refresh
+- added tabbed/flat views
+- new files tab
+
+modules/projects/addedit.php
+- May in months array mis-spelt
+
 31 October 2002 (JRP):
 ---------------------------------
 Changed logic of "strpos" used in "dosql/addfile.php" because of potential problem with "TRUE/FALSE"

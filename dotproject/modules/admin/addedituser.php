@@ -12,7 +12,15 @@ if ($denyEdit) {
 ';
 }
 
-$usql = "SELECT * FROM users LEFT JOIN companies ON user_company = companies.company_id WHERE user_id = $user_id";
+$usql = "
+SELECT users.*, 
+	company_id, company_name, 
+	dept_name
+FROM users
+LEFT JOIN companies ON user_company = companies.company_id
+LEFT JOIN departments ON dept_id = user_department
+WHERE user_id = $user_id
+";
 $prc  = mysql_query( $usql );
 $prow = mysql_fetch_array( $prc, MYSQL_ASSOC );
 
@@ -50,7 +58,7 @@ function submitIt(){
 		} else if (parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12) {
 		    // There appears to be a bug with this part of the Birthday Validation
 		    // Providing the single digit months (i.e. 1-9) in the MM format (01-09)
-		    // causes the validation function to fail. Can someone please fix and 
+		    // causes the validation function to fail. Can someone please fix and
 		    // remove this comment.  TIA (JRP 30 Aug 2002).
 			alert("The month you have provided is invalid (try M instead of MM).\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
 			form.user_birthday.focus();
@@ -67,120 +75,139 @@ function submitIt(){
 		form.submit();
 	}
 }
+
+function popDept() {
+	f = document.changeuser;
+	if (f.selectedIndex == 0) {
+		alert( 'Please select a company first!' );
+	} else {
+		window.open('./dept_selector.php?form=changeuser&company_id='
+			+ f.user_company.options[f.user_company.selectedIndex].value
+			+ '&dept_id='+f.user_department.value,'dept','left=50,top=50,height=250,width=400,resizable')
+	}
+}
 </script>
 <?php //------------------------Begin HTML -------------------------------?>
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-<TR>
-<TD valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
-
-	<TD nowrap><span class="title">
-	<?php if(!$prow["user_id"]){ echo "Add User";}else{echo "Edit User";}?></span></td>
-	<TD valign="top" align="right" width="100%">&nbsp;</td>
+<table width="95%" border="0" cellpadding="0" cellspacing="1">
+<tr>
+	<td valign="top"><img src="./images/icons/admin.gif" alt="" border="0" width=42 height=42></td>
+	<td nowrap>
+		<span class="title">
+		<?php if(!$prow["user_id"]){ echo "Add User";}else{echo "Edit User";}?>
+		</span>
+	</td>
+	<td valign="top" align="right" width="100%">&nbsp;</td>
 </tr>
-</TABLE>
+</table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="90%">
-<TR>
-	<TD width="50%" nowrap>
+<tr>
+	<td width="50%" nowrap>
 	<a href="./index.php?m=admin">Users List</a>
 	<b>:</b> <a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $user_id;?>">View this User</a>
 	</td>
-</TR>
+</tr>
 </table>
 
-<TABLE width="95%" border=0  bgcolor="#f4efe3" cellpadding="0" cellspacing=1 height="400">
+<table width="95%" border="0" cellpadding="0" cellspacing="1" height="400" class="std">
 
 <form name="changeuser" action="./index.php?m=admin&a=dosql" method="post">
 <input type="hidden" name="user_id" value="<?php echo intval($prow["user_id"]);?>">
 
-<TR height="20">
-	<TD valign="top" bgcolor="#878676" colspan=2>
-		<font color="white"><b><i>User Details</font></i></b>
-	</td>
+<tr height="20">
+	<th colspan="2">User Details</th>
 </tr>
 <tr>
-	<TD align="right" width="230">Username:</td>
-	<TD>
+	<td align="right" width="230">Username:</td>
+	<td>
 	<?php if(@$prow["user_username"]){?>
 	<input type="hidden" class="text" name="user_username" value="<?php echo $prow["user_username"];?>"><strong><?php echo $prow["user_username"];?></strong>
 	<?php }else{?>
 		<input type="text" class="text" name="user_username" value="<?php echo $prow["user_username"];?>" maxlength="50" size=40> 	 <span class="smallNorm">(required)</span>
 	<?php }?></td></tr>
 <tr>
-	<TD align="right">User Type:</td>
-	<TD>
+	<td align="right">User Type:</td>
+	<td>
 <?php
 	echo arraySelect( $utypes, 'user_type', 'class=text size=1', $prow["user_type"] );
 ?>
-	</TD>
-</TR>
-<tr>
-	<TD align="right">Password:</td>
-	<TD><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
+	</td>
 </tr>
 <tr>
-	<TD align="right">Password2:</td>
-	<TD><input type="password" class="text" name="user_password2" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
+	<td align="right">Password:</td>
+	<td><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
 </tr>
 <tr>
-	<TD align="right">First Name:</td>
-	<TD><input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50"> <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50"></td>
+	<td align="right">Password2:</td>
+	<td><input type="password" class="text" name="user_password2" value="<?php echo $prow["user_password"];?>" maxlength="20" size=40> </td>
 </tr>
 <tr>
-	<TD align="right">Company:</td>
-	<TD>
+	<td align="right">First Name:</td>
+	<td><input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50"> <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50"></td>
+</tr>
+<tr>
+	<td align="right">Company:</td>
+	<td>
 <?php
 	echo arraySelect( $companies, 'user_company', 'class=text size=1', $prow["user_company"] );
 ?>
-	</TD>
-</TR>
-<tr>
-	<TD align="right">Email:</td>
-	<TD><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="50" size=40> </td>
+	</td>
 </tr>
 <tr>
-	<TD align="right">Phone:</td>
-	<TD><input type="text" class="text" name="user_phone" value="<?php echo $prow["user_phone"];?>" maxlength="50" size=40> </td>
+	<td align="right">Department:</td>
+	<td>
+		<input type="hidden" name="user_department" value="<?php echo @$prow["user_department"];?>">
+		<input type="text" class="text" name="dept_name" value="<?php echo @$prow["dept_name"];?>" size="40" disabled>
+		<input type="button" class="button" value="select dept..." onclick="popDept()">
+	</td>
+</tr>
+<tr>
+	<td align="right">Email:</td>
+	<td><input type="text" class="text" name="user_email" value="<?php echo $prow["user_email"];?>" maxlength="50" size=40> </td>
+</tr>
+<tr>
+	<td align="right">Phone:</td>
+	<td><input type="text" class="text" name="user_phone" value="<?php echo $prow["user_phone"];?>" maxlength="50" size=40> </td>
 	</tr>
 <tr>
-	<TD align="right">Home Phone:</td>
-	<TD><input type="text" class="text" name="user_home_phone" value="<?php echo $prow["user_home_phone"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">Home Phone:</td>
+	<td><input type="text" class="text" name="user_home_phone" value="<?php echo $prow["user_home_phone"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">Mobile:</td>
-	<TD><input type="text" class="text" name="user_mobile" value="<?php echo $prow["user_mobile"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">Mobile:</td>
+	<td><input type="text" class="text" name="user_mobile" value="<?php echo $prow["user_mobile"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">Address1:</td>
-	<TD><input type="text" class="text" name="user_address1" value="<?php echo $prow["user_address1"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">Address1:</td>
+	<td><input type="text" class="text" name="user_address1" value="<?php echo $prow["user_address1"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">Address2:</td>
-	<TD><input type="text" class="text" name="user_address2" value="<?php echo $prow["user_address2"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">Address2:</td>
+	<td><input type="text" class="text" name="user_address2" value="<?php echo $prow["user_address2"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">City:</td>
-	<TD><input type="text" class="text" name="user_city" value="<?php echo $prow["user_city"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">City:</td>
+	<td><input type="text" class="text" name="user_city" value="<?php echo $prow["user_city"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">State:</td>
-	<TD><input type="text" class="text" name="user_state" value="<?php echo $prow["user_state"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">State:</td>
+	<td><input type="text" class="text" name="user_state" value="<?php echo $prow["user_state"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">Zip:</td>
-	<TD><input type="text" class="text" name="user_zip" value="<?php echo $prow["user_zip"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">Zip:</td>
+	<td><input type="text" class="text" name="user_zip" value="<?php echo $prow["user_zip"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">Country:</td>
-	<TD><input type="text" class="text" name="user_country" value="<?php echo $prow["user_country"];?>" maxlength="50" size=40> </td></tr>
+	<td align="right">Country:</td>
+	<td><input type="text" class="text" name="user_country" value="<?php echo $prow["user_country"];?>" maxlength="50" size=40> </td></tr>
 <tr>
-	<TD align="right">ICQ#:</td>
-	<TD><input type="text" class="text" name="user_icq" value="<?php echo $prow["user_icq"];?>" maxlength="50"> AOL Nick: <input type="text" class="text" name="user_aol" value="<?php echo $prow["user_aol"];?>" maxlength="50"> </td>
+	<td align="right">ICQ#:</td>
+	<td><input type="text" class="text" name="user_icq" value="<?php echo $prow["user_icq"];?>" maxlength="50"> AOL Nick: <input type="text" class="text" name="user_aol" value="<?php echo $prow["user_aol"];?>" maxlength="50"> </td>
 </tr>
 <tr>
-	<TD align="right">Birthday:</td>
-	<TD><input type="text" class="text" name="user_birthday" value="<?php if(intval($prow["user_birthday"])!=0) { echo substr($prow["user_birthday"],0,10);}?>" maxlength="50" size=40> format(YYYY-MM-DD)</td>
+	<td align="right">Birthday:</td>
+	<td><input type="text" class="text" name="user_birthday" value="<?php if(intval($prow["user_birthday"])!=0) { echo substr($prow["user_birthday"],0,10);}?>" maxlength="50" size=40> format(YYYY-MM-DD)</td>
 </tr>
 <tr>
-	<TD align="right" valign=top>Email Signature:</td>
-	<TD><textarea class="text" cols=50 name="signature" style="height: 50px"><?php echo @$prow["signature"];?></textarea></td>
+	<td align="right" valign=top>Email Signature:</td>
+	<td><textarea class="text" cols=50 name="signature" style="height: 50px"><?php echo @$prow["signature"];?></textarea></td>
 </tr>
 
 <tr>
-	<TD align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td>
-	<TD align="right"><input type=button value="submit" onClick="submitIt()" class=button>&nbsp; &nbsp; &nbsp;</td>
+	<td align="left">&nbsp; &nbsp; &nbsp;<input class=button  type=button value="back" onClick="javascript:history.back(-1);"></td>
+	<td align="right"><input type=button value="submit" onClick="submitIt()" class=button>&nbsp; &nbsp; &nbsp;</td>
 </tr>
-</TABLE>
+</table>

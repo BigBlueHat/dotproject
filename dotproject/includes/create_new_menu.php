@@ -2,6 +2,15 @@
 if (empty( $project_id )) $project_id=0;
 $uri_string="";
 
+switch($m) {
+case "tasks":
+	$project_id = @$trow["task_project"];
+	break;
+case "projects":
+	$project_id = @$prow["project_id"];
+	break;
+}
+
 if (isset( $project_id )) $uri_string = "&project_id=" . $project_id;
 if (isset( $company_id )) $uri_string = "&company_id=" . $company_id;
 if (isset( $task_id )) $uri_string = "&task_id=" . $task_id;

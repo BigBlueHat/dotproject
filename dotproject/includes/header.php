@@ -56,6 +56,14 @@ function tboff(){
 <?php
 	if (!empty( $project_id ) && $project_id > 0) {
 		echo '<option value="tasks">Task';
+	} else if (!empty( $task_id ) && $task_id > 0) {
+		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
+		if ($rc = mysql_query( $sql )) {
+			if ($row = mysql_fetch_row( $rc )) {
+				$project_id = $row[0];
+				echo '<option value="tasks">Task';
+			}
+		}
 	}
 ?>
 			<option value="projects">Project
@@ -75,7 +83,7 @@ function tboff(){
 		echo '<input type="hidden" name="company_id" value="'.$company_id.'">';
 	}
 	if (isset( $task_id )) {
-		echo '<input type="hidden" name="task_id" value="'.$task_id.'">';
+		echo '<input type="hidden" name="task_parent" value="'.$task_id.'">';
 	}
 	if (isset( $file_id )) {
 		echo '<input type="hidden" name="file_id" value="'.$file_id.'">';

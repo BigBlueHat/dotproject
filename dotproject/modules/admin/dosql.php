@@ -7,25 +7,26 @@ $signature = htmlspecialchars( $signature );
 $message2 = "";
 //case deleting user
 if (isset( $del )) { 
-	$dsql = "delete from users where user_id=" . $user_id;
+	$dsql = "DELETE FROM users WHERE user_id=" . $user_id;
 	mysql_query( $dsql );
-	$dsql = "delete from permissions where permission_user=" . $user_id;
+	$dsql = "DELETE FROM permissions WHERE permission_user=" . $user_id;
 	$message = "User Deleted";
 
 } else if ($user_id == 0) {
-	$dsql = "Insert into users (user_username , user_password , user_parent , user_type, user_first_name  , user_last_name  , user_company  , user_email  , user_phone  , user_home_phone  , user_mobile  , user_address1  , user_address2  , user_city  , user_state  , user_zip  , user_country  , user_icq  , user_aol  , user_birthday, signature )
-	values
-	('$user_username',password('$user_password'), '$user_parent', '$user_type', '$user_first_name', '$user_last_name', '$user_company', '$user_email', '$user_phone','$user_home_phone','$user_mobile', '$user_address1', '$user_address2', '$user_city', '$user_state', '$user_zip', '$user_country', '$user_icq', '$user_aol', '$user_birthday', '$signature')";
+	$dsql = "INSERT INTO users (user_username, user_password, user_parent, user_type, user_first_name, user_last_name, user_company, user_department, user_email, user_phone, user_home_phone, user_mobile, user_address1, user_address2, user_city, user_state, user_zip, user_country, user_icq, user_aol, user_birthday, signature )
+	VALUES
+	('$user_username',PASSWORD('$user_password'), '$user_parent', '$user_type', '$user_first_name', '$user_last_name', '$user_company', '$user_department', '$user_email', '$user_phone','$user_home_phone','$user_mobile', '$user_address1', '$user_address2', '$user_city', '$user_state', '$user_zip', '$user_country', '$user_icq', '$user_aol', '$user_birthday', '$signature')";
 
 	$message = "User Created";
 
 } else {
-	$dsql = "update users set 
+	$dsql = "UPDATE users SET 
 	user_username='$user_username',
 	user_type='$user_type',
 	user_first_name='$user_first_name',
 	user_last_name='$user_last_name',
 	user_company='$user_company',
+	user_department='$user_department',
 	user_email='$user_email',
 	user_phone='$user_phone',
 	user_home_phone='$user_home_phone',
@@ -45,7 +46,7 @@ if (isset( $del )) {
 	mysql_query( $dsql );
 	$message2 = mysql_error();
 	// Fix to stop corruption of password if it is not changed.
-	$dsql = "update users set
+	$dsql = "UPDATE users SET
 	user_password=password('$user_password')
 	where user_id = $user_id and user_password != '$user_password'";
 }

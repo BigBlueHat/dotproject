@@ -55,7 +55,7 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 
 // some constants
 $days = array('',1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31);
-$months = array('','Jan','Feb','Mar','Apr','Mar','Jun','Jul','Aug','Sep','Oct','Nov','Dec' );
+$months = array('','Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec' );
 $years = array('',2000=>2000,2001,2002,2003,2004,2005,2006,2007,2008,2009);
 ?>
 <SCRIPT language="javascript">
