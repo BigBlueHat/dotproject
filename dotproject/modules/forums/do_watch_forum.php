@@ -6,15 +6,21 @@ $watch = isset( $_POST['watch'] ) ? $_POST['watch'] : 0;
 
 if ($watch) {
 	// clear existing watches
-	$sql = "DELETE FROM forum_watch WHERE watch_user = $AppUI->user_id AND watch_$watch IS NOT NULL";
-	if (!db_exec($sql)) {
+	$q  = new DBQuery;
+	$q->setDelete('forum_watch');
+	$q->addWhere('watch_user = '.$AppUI->user_id);
+	$q->addWhere("watch_$watch IS NOT NULL");
+	if (!q->exec()) {
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 	} else {
 		$sql = '';
 		foreach ($_POST as $k => $v) {
 			if (strpos($k, 'forum_') !== FALSE) {
-				$sql = "INSERT INTO forum_watch (watch_user,watch_$watch) VALUES ($AppUI->user_id,".substr( $k, 6 ).")";
-				if (!db_exec($sql)) {
+				$q  = new DBQuery;
+				$q->addTable('forum_watch');
+				$q->addInsert('watch_user', $AppUI->user_id);
+				$q->addInsert('watch_'.$watch, substr( $k, 6 ));
+				if (!q->exec()) {
 					$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 				} else {
 					$AppUI->setMsg( "Watch updated", UI_MSG_OK );

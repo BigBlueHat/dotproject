@@ -9,8 +9,12 @@ if (!$canEdit) {
 $AppUI->savePlace();
 
 if (isset( $_POST['forcewatch'] ) && isset( $_POST['forcesubmit'] ) ) {		// insert row into forum_watch for forcing Watch
-	$sql = "INSERT INTO forum_watch (watch_user,watch_forum,watch_topic) VALUES (0,0,0)";
-	if (!db_exec($sql)) {
+	$q  = new DBQuery;
+	$q->addTable('forum_watch');
+	$q->addInsert('watch_user', 0);
+	$q->addInsert('watch_forum', 0);
+	$q->addInsert('watch_topic', 0);
+	if (!q->exec()) {
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( "Watch Forced", UI_MSG_OK );
@@ -19,8 +23,12 @@ if (isset( $_POST['forcewatch'] ) && isset( $_POST['forcesubmit'] ) ) {		// inse
 
 }
 elseif (isset( $_POST['forcesubmit'] ) && !isset( $_POST['forcewatch'] ) ) {	// delete row from forum_watch for unorcing Watch
-	$sql = "DELETE FROM forum_watch WHERE watch_user = 0 AND watch_forum = 0 AND watch_topic = 0";
-	if (!db_exec($sql)) {
+	$q  = new DBQuery;
+	$q->setDelete('forum_watch');
+	$q->addWhere('watch_user = 0');
+	$q->addWhere('watch_forum = 0');
+	$q->addWhere('watch_topic = 0');
+	if (!q->exec()) {
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 	}
 	else {
@@ -32,8 +40,13 @@ elseif (isset( $_POST['forcesubmit'] ) && !isset( $_POST['forcewatch'] ) ) {	// 
 
 
 // SQL-Query to check if the message should be delivered to all users (forced) (checkbox)
-$sql = "SELECT * FROM forum_watch WHERE watch_user = 0 AND watch_forum = 0 AND watch_topic = 0";
-$resAll = db_exec( $sql );
+$q  = new DBQuery;
+$q->addTable('forum_watch');
+$q->addQuery('*');
+$q->addWhere('watch_user = 0');
+$q->addWhere('watch_forum = 0');
+$q->addWhere('watch_topic = 0');
+$resAll = $q->exec();
 
 if (db_num_rows( $resAll ) >= 1)	// message has to be sent to all users
 {
@@ -60,4 +73,3 @@ function submitFrm( frmName ) {
 <input type="checkbox" name="forcewatch" value="dod" <?php echo $watchAll ? 'checked' : '';?> onclick="javascript:submitFrm('frmForceWatch');"/>
 <?php echo $AppUI->_('forumForceWatch');?>
 </form>
-

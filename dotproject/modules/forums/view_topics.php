@@ -11,23 +11,23 @@ $orderby         = $AppUI->getState( 'ForumVwOrderBy' ) ? $AppUI->getState( 'For
 $orderdir        = $AppUI->getState( 'ForumVwOrderDir' ) ? $AppUI->getState( 'ForumVwOrderDir' ) : 'desc';
 
 //Pull All Messages
-$sql = "
-SELECT fm1.*,
+$q  = new DBQuery;
+$q->addTable('forum_messages', 'fm1');
+$q->addQuery('fm1.*,
 	COUNT(fm2.message_id) AS replies,
 	MAX(fm2.message_date) AS latest_reply,
 	user_username, contact_first_name,
 	watch_user,
 	count(distinct v1.visit_message) as reply_visits,
-	v2.visit_user
-FROM forum_messages fm1
-LEFT JOIN users ON fm1.message_author = users.user_id
-LEFT JOIN contacts ON contact_id = user_contact
-LEFT JOIN forum_messages fm2 ON fm1.message_id = fm2.message_parent
-LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_topic = fm1.message_id
-LEFT JOIN forum_visits v1 ON v1.visit_user = $AppUI->user_id AND v1.visit_message = fm2.message_id
-LEFT JOIN forum_visits v2 ON v2.visit_user = $AppUI->user_id AND v2.visit_message = fm1.message_id
-WHERE fm1.message_forum = $forum_id
-";
+	v2.visit_user');
+$q->addJoin('users', 'u', 'fm1.message_author = u.user_id');
+$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+$q->addJoin('forum_messages', 'fm2', 'fm1.message_id = fm2.message_parent');
+$q->addJoin('forum_watch', 'fw', "watch_user = $AppUI->user_id AND watch_topic = fm1.message_id");
+$q->addJoin('forum_visits', 'v1', "v1.visit_user = $AppUI->user_id AND v1.visit_message = fm2.message_id");
+$q->addJoin('forum_visits', 'v2', "v2.visit_user = $AppUI->user_id AND v2.visit_message = fm1.message_id");
+
+$sql = "fm1.message_forum = $forum_id";
 switch ($f) {
 	case 1:
 		$sql.= " AND watch_user IS NOT NULL";
@@ -36,19 +36,16 @@ switch ($f) {
 		$sql.= " AND (NOW() < DATE_ADD(fm2.message_date, INTERVAL 30 DAY) OR NOW() < DATE_ADD(fm1.message_date, INTERVAL 30 DAY))";
 		break;
 }
-$sql .= "
-GROUP BY
-	fm1.message_id,
+$q->addWhere($sql);
+$q->addGroup('fm1.message_id,
 	fm1.message_parent,
 	fm1.message_author,
 	fm1.message_title,
 	fm1.message_date,
 	fm1.message_body,
-	fm1.message_published" .
- # ( @$dPconfig['forum_descendent_order'] ? " ORDER BY latest_reply DESC" : "" );
- " ORDER BY $orderby $orderdir";
-$topics = db_loadList( $sql );
-##echo "<pre>$sql</pre>".db_error();
+	fm1.message_published');
+$q->addOrder("$orderby $orderdir");
+$topics = $q->loadList();
 
 $crumbs = array();
 $crumbs["?m=forums"] = "forums list";

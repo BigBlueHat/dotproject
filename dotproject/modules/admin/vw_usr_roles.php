@@ -81,7 +81,7 @@ foreach ($user_roles as $row){
 	<th colspan='2'><?php echo $AppUI->_('Add Role');?></th>
 </tr>
 <tr>
-	<td colspan='2' width="100%"><?php echo arraySelect($roles_arr, 'user_role', 'size="1" class="text"','');?></td>
+	<td colspan='2' width="100%"><?php echo arraySelect($roles_arr, 'user_role', 'size="1" class="text"','', true);?></td>
 </tr>
 <tr>
 	<td>

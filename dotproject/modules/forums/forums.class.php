@@ -60,14 +60,22 @@ class CForum extends CDpObject {
 	}
 
 	function delete() {
-		$sql = "DELETE FROM forum_visits WHERE visit_forum = $this->forum_id";
-		db_exec($sql); // No error if this fails, it is not important.
-		$sql = "DELETE FROM forums WHERE forum_id = $this->forum_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDelete('forum_visits');
+		$q->addWhere('visit_forum = '.$this->forum_id);
+		$q->exec(); // No error if this fails, it is not important.
+		
+		$q  = new DBQuery;
+		$q->setDelete('forums');
+		$q->addWhere('forum_id = '.$this->forum_id);
+		if (!$q->exec()) {
 			return db_error();
 		}
 		$sql = "DELETE FROM forum_messages WHERE message_forum = $this->forum_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDelete('forum_messages');
+		$q->addWhere('message_forum = '.$this->forum_id);
+		if (!$q->exec()) {
 			return db_error();
 		} else {
 			addHistory('forums', $this->forum_id, 'delete', $this->forum_name);
@@ -116,20 +124,22 @@ class CForumMessage {
 		if( $this->message_id ) {
 			// First we need to remove any forum visits for this message
 			// otherwise nobody will see that it has changed.
-			$sql = "DELETE FROM forum_visits where visit_message = $this->message_id";
-			db_exec($sql); // Don't care if it fails.
+			$q  = new DBQuery;
+			$q->setDelete('forum_visits');
+			$q->addWhere('visit_message = '.$this->message_id);
+			$q->exec(); // No error if this fails, it is not important.
 			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
 		} else {
 			$this->message_date = db_datetime( time() );
 			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
 			echo db_error(); ## TODO handle error better
 
-			$sql = "SELECT count(message_id),
-			MAX(message_date)
-			FROM forum_messages
-			WHERE message_forum = $this->message_forum";
+			$q  = new DBQuery;
+			$q->addTable('forum_messages');
+			$q->addQuery('count(message_id), MAX(message_date)');
+			$q->addWhere('message_forum = '.$this->message_forum);
 
-			$res = db_exec( $sql );
+			$res = $q->exec();
 			echo db_error(); ## TODO handle error better
 			$reply = db_fetch_row( $res );
 
@@ -153,10 +163,15 @@ class CForumMessage {
 	}
 
 	function delete() {
-		$sql = "DELETE FROM forum_visits WHERE visit_message = $this->message_id";
-		db_exec($sql); // No need to check, we don't care.
-		$sql = "DELETE FROM forum_messages WHERE message_id = $this->message_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDelete('forum_visits');
+		$q->addWhere('visit_message = '.$this->message_id);
+		$q->exec(); // No error if this fails, it is not important.
+		
+		$q  = new DBQuery;
+		$q->setDelete('forum_messages');
+		$q->addWhere('message_id = '.$this->message_id);
+		if (!$q->exec()) {
 			return db_error();
 		} else {
 			return NULL;
@@ -169,18 +184,23 @@ class CForumMessage {
 		$body_msg = $AppUI->_('forumEmailBody');
 		
 		// Get the message from details.
-		$sql = "SELECT contact_email, contact_first_name, contact_last_name from users
-			LEFT JOIN contacts ON user_contact = contact_id
-		  WHERE user_id = '{$this->message_author}'";
-		$res = db_exec($sql);
+		$q  = new DBQuery;
+		$q->addTable('users', 'u');
+		$q->addQuery('contact_email, contact_first_name, contact_last_name');
+		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+		$q->addWhere("user_id = '{$this->message_author}'");
+		$res = $q->exec();
 		if ($row = db_fetch_assoc($res)) {
 		  $message_from = "$row[contact_first_name] $row[contact_last_name] <$row[contact_email]>";
 		} else {
 		  $message_from = "Unknown user";
 		}
 		// Get the forum name;
-		$sql = "SELECT forum_name from forums where forum_id = '{$this->message_forum}'";
-		$res = db_exec($sql);
+		$q  = new DBQuery;
+		$q->addTable('forums');
+		$q->addQuery('forum_name');
+		$q->addWhere("forum_id = '{$this->message_forum}'");
+		$res = $q->exec();
 		if ($row = db_fetch_assoc($res)) {
 		  $forum_name = $row['forum_name'];
 		} else {
@@ -189,32 +209,25 @@ class CForumMessage {
 
 		// SQL-Query to check if the message should be delivered to all users (forced)
 		// In positive case there will be a (0,0,0) row in the forum_watch table
-		$sql = "SELECT * FROM forum_watch WHERE watch_user = 0 AND watch_forum = 0 AND watch_topic = 0";
-		$resAll = db_exec( $sql );
+		$q  = new DBQuery;
+		$q->addTable('forum_watch');
+		$q->addQuery('*');
+		$q->addWhere('watch_user = 0 AND watch_forum = 0 AND watch_topic = 0');
+		$resAll = $q->exec();
 
-		if (db_num_rows( $resAll ) >= 1)	// message has to be sent to all users
-		{
-			$sql = "
-			SELECT DISTINCT contact_email, user_id, contact_first_name, contact_last_name
-			FROM users
-                        LEFT JOIN contacts ON user_contact = contact_id
-			";
-		}
-		else 					//message is only delivered to users that checked the forum watch
-		{
-			$sql = "
-			SELECT DISTINCT contact_email, user_id, contact_first_name, contact_last_name
-			FROM users, forum_watch
-                        LEFT JOIN contacts ON user_contact = contact_id
-			WHERE user_id = watch_user
-				AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)
-			";
+		$q  = new DBQuery;
+		$q->addTable('users');
+		$q->addQuery('DISTINCT contact_email, user_id, contact_first_name, contact_last_name');
+		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+
+		if (db_num_rows( $resAll ) < 1)		//message is only delivered to users that checked the forum watch
+		{	
+			$q->addTable('forum_watch');
+			$q->addWhere("user_id = watch_user
+				AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
 		}
 
-
-	##echo "<pre>$sql</pre>";##
-
-		if (!($res = db_exec( $sql ))) {
+		if (!($res = $q->exec())) {
 			return;
 		}
 		if (db_num_rows( $res ) < 1) {

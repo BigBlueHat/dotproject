@@ -4,21 +4,18 @@ $sort = dPgetParam($_REQUEST, 'sort', 'asc');
 $viewtype = dPgetParam($_REQUEST, 'viewtype', 'normal');
 $hideEmail = dPgetConfig('hide_email_addresses', false );
 
-$sql = "
-SELECT forum_messages.*,
-	contact_first_name, contact_last_name, contact_email, user_username,
-	forum_moderated, visit_user
-FROM forum_messages, forums
-LEFT JOIN users ON message_author = users.user_id
-LEFT JOIN contacts ON contact_id = user_contact
-LEFT JOIN forum_visits ON visit_user = '{$AppUI->user_id}' AND visit_forum = '$forum_id'
-AND visit_message = forum_messages.message_id
-WHERE forum_id = message_forum
-	AND (message_id = $message_id OR message_parent = $message_id)" .
-  ( (@$dPconfig['forum_descendent_order'] || dPgetParam($_REQUEST,'sort',0)) ? " ORDER BY message_date $sort" : "" );
+$q  = new DBQuery;
+$q->addTable('forums');
+$q->addTable('forum_messages');
+$q->addQuery('forum_messages.*,	contact_first_name, contact_last_name, contact_email, user_username,
+		forum_moderated, visit_user');
+$q->addJoin('forum_visits', 'v', "visit_user = {$AppUI->user_id} AND visit_forum = $forum_id AND visit_message = 				forum_messages.message_id");
+$q->addJoin('users', 'u', 'message_author = u.user_id');
+$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+$q->addWhere("forum_id = message_forum AND (message_id = $message_id OR message_parent = $message_id)");
+if (@$dPconfig['forum_descendent_order'] || dPgetParam($_REQUEST,'sort',0)) { $q->addOrder("message_date $sort"); }
 
-//echo "<pre>$sql</pre>";
-$messages = db_loadList( $sql );
+$messages = $q->loadList();
 
 $crumbs = array();
 $crumbs["?m=forums"] = "forums list";
@@ -130,13 +127,14 @@ foreach ($messages as $row) {
         // Find the parent message - the topic.
         if ($row['message_id'] == $message_id)
                 $topic = $row['message_title'];
-	$sql = "
-	SELECT DISTINCT contact_email, contact_first_name, contact_last_name, user_username
-	FROM users, forum_messages
-        LEFT JOIN contacts ON contact_id = user_contact
-	WHERE users.user_id = ".$row["message_editor"];
-
-	$editor = db_loadList( $sql );
+		
+	$q  = new DBQuery;
+	$q->addTable('forum_messages');
+	$q->addTable('users');
+	$q->addQuery('DISTINCT contact_email, contact_first_name, contact_last_name, user_username');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+	$q->addWhere('users.user_id = '.$row["message_editor"]);
+	$editor = $q->loadList();
 
 	$date = intval( $row["message_date"] ) ? new CDate( $row["message_date"] ) : null;
 if ($viewtype != 'single')
@@ -324,8 +322,11 @@ if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
 <?php
   // Now we need to update the forum visits with the new messages so they don't show again.
   foreach ($new_messages as $msg_id) {
-    $sql = "insert into forum_visits (visit_user, visit_forum, visit_message)
-    values ( '{$AppUI->user_id}', '$forum_id', '$msg_id')";
-    db_exec($sql);
-	}
+	$q  = new DBQuery;
+	$q->addTable('forum_visits');
+	$q->addInsert('visit_user', $AppUI->user_id);
+	$q->addInsert('visit_forum', $forum_id);
+	$q->addInsert('visit_message', $msg_id);
+	$q->exec();
+  }
 ?>

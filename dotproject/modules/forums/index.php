@@ -25,35 +25,28 @@ $allow1 = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name
 $allow2 = $forum->getAllowedRecords($AppUI->user_id, 'forum_id, forum_name');
 
 $max_msg_length = 30;
-$sql = "
-SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, forum_moderated,
-	forum_create_date, forum_last_date,
-	COUNT(distinct t.message_id) forum_topics, COUNT(distinct r.message_id) forum_replies,
-	user_username,
-	project_name, project_color_identifier,
-	SUBSTRING(l.message_body,1,$max_msg_length) message_body,
-	LENGTH(l.message_body) message_length,
-	watch_user,
-	l.message_parent,
-	l.message_id,
-	count(distinct v.visit_message) as visit_count,
-	count(distinct c.message_id) as message_count
-FROM forums, users, projects
-LEFT JOIN forum_messages t ON t.message_forum = forum_id AND t.message_parent = -1
-LEFT JOIN forum_messages r ON r.message_forum = forum_id AND r.message_parent > -1
-LEFT JOIN forum_messages l ON l.message_id = forum_last_id
-LEFT JOIN forum_messages c ON c.message_forum = forum_id
-LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
-LEFT JOIN forum_visits v ON visit_user = $AppUI->user_id AND visit_forum = forum_id
-WHERE user_id = forum_owner
+$q  = new DBQuery;
+$q->addTable('forums');
+$q->addTable('projects', 'p');
+$q->addTable('users', 'u');
+$q->addQuery("forum_id, forum_project, forum_description, forum_owner, forum_name, forum_moderated, forum_create_date,
+		forum_last_date, COUNT(distinct t.message_id) forum_topics, COUNT(distinct r.message_id) forum_replies,
+		user_username, project_name, project_color_identifier, SUBSTRING(l.message_body,1,$max_msg_length) message_body,
+		LENGTH(l.message_body) message_length, watch_user, l.message_parent, l.message_id, 
+		count(distinct v.visit_message) as visit_count, count(distinct c.message_id) as message_count");
+$q->addJoin('forum_messages', 't', 't.message_forum = forum_id AND t.message_parent = -1');
+$q->addJoin('forum_messages', 'r', 'r.message_forum = forum_id AND r.message_parent > -1');
+$q->addJoin('forum_messages', 'l', 'l.message_id = forum_last_id');
+$q->addJoin('forum_messages', 'c', 'c.message_forum = forum_id');
+$q->addJoin('forum_watch', 'w', "watch_user = $AppUI->user_id AND watch_forum = forum_id");
+$q->addJoin('forum_visits', 'v', "visit_user = $AppUI->user_id AND visit_forum = forum_id");
+
+$sql = "user_id = forum_owner
 	AND project_id = forum_project "
 .(count($allow1) > 0 ? "\nAND ( forum_project IN (" . implode( ',', array_keys($allow1) ) . ') OR forum_project = 0 )' : '')
 .(count($allow2) > 0 ? "\nAND forum_id IN (" . implode( ',', array_keys($allow2) ) . ')' : '')
 ;
 
-//if (isset($project_id) && $project_id) {
-//	$sql.= "\nAND forum_project = $project_id";
-//}
 switch ($f) {
 	case 1:
 		$sql .= "\nAND project_active=1 AND forum_owner = $AppUI->user_id";
@@ -74,10 +67,11 @@ switch ($f) {
 		$sql .= "\nAND project_active=1";
 		break;
 }
-$sql .= "\nGROUP BY forum_id\nORDER BY $orderby $orderdir";
 
-$forums = db_loadList( $sql );
-##echo "<pre>$sql</pre>".db_error();##
+$q->addWhere($sql);
+$q->addGroup('forum_id');
+$q->addOrder("$orderby $orderdir");
+$forums = $q->loadList();
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Forums', 'support.png', $m, "$m.$a" );

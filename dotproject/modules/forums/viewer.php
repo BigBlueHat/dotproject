@@ -16,17 +16,19 @@ if (!$canRead || ($post_message & !$canEdit)) {
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$sql = "
-SELECT forum_id, forum_project,	forum_description, forum_owner, forum_name,
+$q  = new DBQuery;
+$q->addTable('forums');
+$q->addTable('projects', 'p');
+$q->addTable('users', 'u');
+$q->addQuery('forum_id, forum_project,	forum_description, forum_owner, forum_name,
 	forum_create_date, forum_last_date, forum_message_count, forum_moderated,
 	user_username, contact_first_name, contact_last_name,
-	project_name, project_color_identifier
-FROM forums, projects, users
-LEFT JOIN contacts on contact_id = user_contact
-WHERE user_id = forum_owner 
+	project_name, project_color_identifier');
+$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+$q->addWhere("user_id = forum_owner 
 	AND forum_id = $forum_id 
-	AND forum_project = project_id
-";
+	AND forum_project = project_id");
+$sql = $q->prepare();
 db_loadHash( $sql, $forum );
 $forum_name = $forum["forum_name"];
 echo db_error();

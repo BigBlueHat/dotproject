@@ -238,8 +238,13 @@ class CFile extends CDpObject {
 				$this->_users = $q->loadList();
 			} else {
 				//find project owner and notify him about new or modified file
-				$sql = "select u.* from users u, projects p where p.project_owner = u.user_id and p.project_id = ".$this->file_project;
-				$this->_users = db_loadList( $sql );							
+				$q  = new DBQuery;
+				$q->addTable('users', 'u');
+				$q->addTable('projects', 'p');
+				$q->addQuery('u.*');
+				$q->addWhere('p.project_owner = u.user_id');
+				$q->addWhere('p.project_id = '..$this->file_project);
+				$this->_users = $q->loadList();
 			}
 			$body .= "\n\nFile ".$this->file_name." was ".$this->_message." by ".$AppUI->user_first_name . " " . $AppUI->user_last_name;
 			if ($this->_message != "deleted") {
