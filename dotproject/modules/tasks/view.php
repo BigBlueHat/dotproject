@@ -422,7 +422,7 @@ if ( count($obj->getChildren()) > 0 ) {
 	$f = 'children';
 	$min_view = true;
 	$tabBox_show = 1;
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
+	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
 	
 if ( $tabBox_show == 1)	$tabBox->show();

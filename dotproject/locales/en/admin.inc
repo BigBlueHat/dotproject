@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Child Tasks",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
