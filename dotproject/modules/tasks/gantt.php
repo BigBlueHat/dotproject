@@ -112,6 +112,10 @@ $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 for ($x=0; $x < $nums; $x++) {
 	$row = db_fetch_assoc( $ptrc );
 	
+	if($row["task_start_date"] == "0000-00-00 00:00:00"){
+		$row["task_start_date"] = date("Y-m-d H:i:s");
+	}
+	
 	// calculate or set blank task_end_date if unset
 	if($row["task_end_date"] == "0000-00-00 00:00:00") {
 		if($row["task_duration"]) {
@@ -129,6 +133,8 @@ $start_date = dPgetParam( $_GET, 'start_date', 0 );
 $end_date   = dPgetParam( $_GET, 'end_date', 0 );
 
 $count = 0;
+
+
 $graph = new GanttGraph($width);
 $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 //$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY);
