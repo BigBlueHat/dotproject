@@ -41,6 +41,7 @@ require_once( "./includes/main_functions.php" );
 require_once( "./includes/permissions.php" );
 @include_once( "./functions/" . $m . "_func.php" );
 @include_once( "$root_dir/classdefs/$m.php" );
+@include_once( "$root_dir/locales/core.php" );
 
 //do some db work if dosql is set
 if (isset( $HTTP_POST_VARS["dosql"]) ) {
