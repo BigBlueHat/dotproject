@@ -61,6 +61,7 @@ sub get_headers {
 		} else {
 			push @headers, $_;
 		}
+	}
 	# Second pass, split out the required headers
 	foreach (@headers) {
         if (/oundary=/) {
@@ -111,7 +112,7 @@ sub check_attachments {
 	return if (!$attachment_info);
 
     # determine attachment delimiter
-	($i, $boundary) = split("\"", $attachment_info);
+	($i, $boundary) = split(/"/, $attachment_info);
 	return if (!$boundary);
 
     # pull out attachments
