@@ -112,7 +112,7 @@ if ($dPrunLevel > 0) {
 $last_insert_id =$AppUI->last_insert_id;
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     if (isset($_GET['logout'])){
-        $user_id         = $AppUI->user_id;
+        $user_id = $AppUI->user_id;
     }
 
     if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
@@ -120,7 +120,6 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
         $AppUI =& $_SESSION['AppUI'];
         addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
     }
-
 
     $_SESSION['AppUI'] = !( $_GET['m'] == 'install' ) ? new CAppUI() : new IAppUI();
 }
@@ -136,18 +135,20 @@ require_once( $AppUI->getSystemClass( 'dp' ) );
 
 require_once( "./misc/debug.php" );
 
-//Function register logout in user_acces_log
-if (isset($_GET['logout'])){
-    $AppUI->registerLogout($user_id);
-}
+
 
 //Function for update lost action in user_access_log
-    $AppUI->updateLastAction($last_insert_id);
+$AppUI->updateLastAction($last_insert_id);
 // load default preferences if not logged in
 if ($AppUI->doLogin()) {
 	if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
     		$AppUI->loadPrefs( 0 );
 	}
+}
+
+//Function register logout in user_acces_log
+if (isset($_GET['logout'])){
+    $AppUI->registerLogout($user_id);
 }
 
 // check is the user needs a new password
