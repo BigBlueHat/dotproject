@@ -1,5 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"default"=>"Classic style",
+"classic"=>"The Classic dotProject style",
+"default"=>"Default clean style",
 "demo1"=>"A demo style",
