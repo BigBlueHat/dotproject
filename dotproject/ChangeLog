@@ -1,3 +1,69 @@
+2003-06-02 02:17  (eddieajau)
+---------------------------------
+docs/install.html
+- no message
+
+2003-06-02 01:54  (eddieajau)
+---------------------------------
+fileviewer.php
+- Fixed bug in sql that causes an access denied message
+
+2003-06-02 01:44  (eddieajau)
+---------------------------------
+docs/install.html
+- Removed files directory security instructions
+
+2003-06-02 01:43  (eddieajau)
+---------------------------------
+docs/main.css
+- no message
+
+2003-06-01 23:30  (eddieajau)
+---------------------------------
+modules/ticketsmith/view.php
+- Fixed problem with base url.
+
+2003-06-01 23:13  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed website address so that it was a link.
+
+2003-06-01 22:51  (kripper)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/links_events.php
+- Added "add event" button in day_view
+- Removed strange "add event" button from addedit
+- Added link also to the event icon in links_events
+- Use current displayed day date when adding events from day_view
+- Change autmatically event end_date when changing start_date and old_start_date = end_date
+
+2003-06-01 22:19  (eddieajau)
+---------------------------------
+modules/files/index_table.php
+- Fixed bug that tried to load some classes twice under some circumstances.
+
+2003-06-01 22:15  (eddieajau)
+---------------------------------
+index.php
+- Fixed bug that tried to load some classes twice under some circumstances.
+
+2003-06-01 19:00  (eddieajau)
+---------------------------------
+docs/roadmap.html
+- no message
+
+2003-06-01 18:59  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Fixed bug where project owner changes
+
+2003-06-01 04:28  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-31 08:18  (eddieajau)
 ---------------------------------
 modules/tasks/todo.php
@@ -431,72 +497,6 @@ style/default/header.php
 - Hide 'Today' link when no permission to calendar module.
 
 2003-05-14 20:13  (korinek)
----------------------------------
-modules/files/addedit.php
-modules/tasks/addedit.php
-modules/tasks/view.php
-- Translation/localisation updates
-
-2003-05-14 20:12  (korinek)
----------------------------------
-modules/calendar/index.php
-- Localisation/translation update
-
-2003-05-14 20:12  (korinek)
----------------------------------
-modules/calendar/do_event_aed.php
-- Fixed a bug, where event owner was never stored in the database
-
-2003-05-14 20:09  (korinek)
----------------------------------
-locales/en/calendar.inc
-locales/en/files.inc
-locales/en/tasks.inc
-- Localisation updates
-
-2003-05-14 16:45  (korinek)
----------------------------------
-images/icons/1.gif
-- Added high priority icon (low priority upside down arrow)
-
-2003-05-14 16:40  (korinek)
----------------------------------
-locales/en/tasks.inc
-- Checking up with My-todo changes
-
-2003-05-14 16:39  (korinek)
----------------------------------
-modules/tasks/todo.php
-modules/tasks/view.php
-- Minor translation/localisation updates
-
-2003-05-14 16:21  (korinek)
----------------------------------
-modules/projects/addedit.php
-modules/projects/index.php
-modules/projects/view.php
-- Translatin calls for a few leftover strings.
-
-2003-05-14 16:18  (korinek)
----------------------------------
-locales/en/forums.inc
-locales/en/projects.inc
-locales/en/public.inc
-locales/en/tasks.inc
-- Translation messages update
-
-2003-05-14 16:17  (korinek)
----------------------------------
-index.php
-- Turned back on the charset header. Some www servers provide default charset
-- which may confuse the browser. This overrides it.
-
-2003-05-13 04:37  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-11 08:29  (eddieajau)
 ---------------------------------
 ...
 
