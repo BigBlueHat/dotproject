@@ -105,8 +105,9 @@ if (is_file( "../includes/config-dist.php" )){
             <td class="title" colspan="2">Backup existing Database (Recommended)</td>
         </tr>
         <tr>
-            <td class="item" colspan="2">Receive a Backup SQL File containing all Tables for the database entered above
-            by clicking on the Button labeled 'Backup' down below. Depending on database size and system environment this process can take some time.</td>
+            <td class="item" colspan="2">Receive a Backup XML Schema File containing all Tables for the database entered above
+            by clicking on the Button labeled 'Backup' down below. Save this file in a safe place on your client. Depending on database size and system environment this process can take some time.
+	    PLEASE CHECK THE RECEIVED FILE IMMEDIATELY FOR CONTENT AND CONSISTENCE AS ERROR MESSAGES ARE PRINTED INTO THIS FILE.</td>
         </tr>
         <tr>
             <td class="item">Receive XML Backup Schema File</td>

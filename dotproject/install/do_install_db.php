@@ -170,7 +170,10 @@ if ($dobackup){
 		header('Content-Type: text/xml');
 		echo $sql;
 	} else {
-		$msg = "No Database Connection\n";
+		$msg = "ERROR: No Database Connection available!";
+		header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
+		header('Content-Type: text/xml');
+		echo $msg;
 	}
 }
 //echo $msg;
