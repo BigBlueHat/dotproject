@@ -165,11 +165,10 @@ function defVal($var, $def) {
 	return isset($var) ? $var : $def;
 }
 
-#
-# defVal version for arrays
-#
-
-function dPgetParam( &$arr, $name, $def ) {
+/**
+* Utility function to return a value from a named array or a specified default
+*/
+function dPgetParam( &$arr, $name, $def=null ) {
 	return isset( $arr[$name] ) ? $arr[$name] : $def;
 }
 
