@@ -340,7 +340,7 @@ class CDate
 	function _calc()
 	{
 		$this->ts = mktime( $this->h, $this->m, $this->s, $this->M, $this->D, $this->Y );
-		$a = getdate( $this->ts );
+		$a = @getdate( $this->ts );
 		$this->Y = $a['year'];
 		$this->M = $a['mon'];
 		$this->D = $a['mday'];
