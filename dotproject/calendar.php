@@ -46,27 +46,28 @@ $cal->setLinkFunctions( 'clickDay' );
 
 echo $cal->show();
 ?>
-
 <table border="0" cellspacing="0" cellpadding="3" width="100%">
-<tr>
+    <tr>
 <?php
-$this_month->setFormat( "%b" );
-for ($i=0; $i < 12; $i++) {
-    $this_month->setMonth( $i+1 );
-    echo "    <td width=\"8%\">\n"
-        ."        <a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
-        ."\n    </td>\n";
-}
+        $this_month->setFormat( "%b" );
+        for ($i=0; $i < 12; $i++) {
+            $this_month->setMonth( $i+1 );
+            echo "        <td width=\"8%\">"
+                ."<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
+                ."</td>\n";
+        }
 ?>
-</tr>
-<tr>
-    <td colspan="6" align="left">
-        <?php echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>\n";?>
-    </td>
-    <td colspan="6" align="right">
-        <?php echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>\n";?>
-    </td>
+    </tr>
+    <tr>
+<?php
+        echo "        <td colspan=\"6\" align=\"left\">";
+        echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>";
+        echo "</td>\n";
+        echo "        <td colspan=\"6\" align=\"right\">";
+        echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>";
+        echo "</td>\n";
+?>
+    </tr>
 </table>
-
 </body>
 </html>
