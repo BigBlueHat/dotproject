@@ -1,3 +1,38 @@
+2003-11-17 19:55  (gregorerhardt)
+---------------------------------
+locales/en/ticketsmith.inc
+- added various translations
+
+2003-11-17 18:46  (gregorerhardt)
+---------------------------------
+modules/ticketsmith/post_ticket.php
+- added translation for javaScript-Alert
+
+2003-11-17 18:26  (gregorerhardt)
+---------------------------------
+modules/companies/addedit.php
+- added translation for companyValidName
+
+2003-11-17 18:21  (gregorerhardt)
+---------------------------------
+modules/companies/index.php
+- translation for 'Search'
+
+2003-11-17 18:15  (gregorerhardt)
+---------------------------------
+modules/contacts/vcardimport.php
+- added mimeType Information for vCard Upload
+
+2003-11-17 17:51  (gregorerhardt)
+---------------------------------
+modules/calendar/view.php
+- made the eventTypeData ready for translation
+
+2003-11-14 06:42  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-13 16:41  (gregorerhardt)
 ---------------------------------
 modules/admin/addedituser.php
@@ -463,41 +498,6 @@ ChangeLog
 db/upgrade_100_to_101.sql
 - Synced up with main dotproject sql script.
 
-2003-09-12 18:50  (ajdonnison)
----------------------------------
-index.php
-includes/config-dist.php
-- Bug 805212- version numbers wrong - fixed.
-
-2003-09-12 18:47  (ajdonnison)
----------------------------------
-db/upgrade_100_to_101.sql
-- Replaced quotes with backticks on column and table names.
-
-2003-09-12 12:19  (jcgonz)
----------------------------------
-modules/tasks/vw_log_update.php
-- The actual timer is shown, not only the hour converted one
-
-2003-09-12 11:55  (jcgonz)
----------------------------------
-modules/tasks/vw_log_update.php
-- Timer feature added to the new task log tab
-
-2003-09-11 04:03  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-10 22:47  (gregorerhardt)
----------------------------------
-modules/projects/addedit.php
-- fixed patch 778969 for mozilla compliant js color picker
-
-2003-09-10 22:30  (gregorerhardt)
----------------------------------
-modules/calendar/index.php
-modules/calendar/week_view.php
 ...
 
 (This file has been wrapped)
