@@ -76,6 +76,14 @@ switch ($cmd) {
 			$AppUI->setMsg( 'Module not upgraded', UI_MSG_ERROR );
 		}
 		break;
+	case 'configure':
+		if ( $setup->configure() ) 	//returns true if configure succeeded
+		{
+		}
+		else {
+			$AppUI->setMsg( 'Module configuration failed', UI_MSG_ERROR );
+		}
+		break;
 	default:
 		$AppUI->setMsg( 'Unknown Command', UI_MSG_ERROR );
 		break;

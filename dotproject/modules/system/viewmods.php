@@ -71,24 +71,34 @@ foreach ($modules as $row) {
 			.$AppUI->_( 'Are you sure?' )."\\n"
 			."'".');">'.$AppUI->_('remove').'</a>';
 	}
-	
+
 // check for upgrades
-	
+
 	$ok = @include_once( "{$AppUI->cfg['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
 	if ( $ok )
 	{
-		if ( $config[ 'mod_version' ] != $row['mod_version'] )
+		if ( $config[ 'mod_version' ] != $row['mod_version'] && $canEdit )
 		{
 			$s .= ' | <a href="'.$query_string . '&cmd=upgrade" onclick="return window.confirm('."'"
 				.$AppUI->_( 'Are you sure?')."'".');" >'.$AppUI->_('upgrade').'</a>';
 		}
 	}
-	
-	
+
+// check for configuration
+
+	if ( $ok )
+	{
+		if ( $config[ 'mod_config' ] == true && $canEdit )
+		{
+			$s .= ' | <a href="'.$query_string . '&cmd=configure">'.$AppUI->_('configure').'</a>';
+		}
+	}
+
+
 	$s .= '</td>';
 	$s .= '<td>'.$row['mod_type'].'</td>';
 	$s .= '<td>'.$row['mod_version'].'</td>';
-	$s .= '<td>'.$row['mod_ui_name'].'</td>';
+	$s .= '<td>'.$AppUI->_($row['mod_ui_name']).'</td>';
 	$s .= '<td>'.$row['mod_ui_icon'].'</td>';
 
 	$s .= '<td>';
