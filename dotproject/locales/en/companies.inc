@@ -27,4 +27,5 @@
 "inserted",
 "new company",
 "new contact",
+"new project",
 "view this company",
