@@ -48,8 +48,8 @@ $cwd_hr = implode(', ', $cwd_conv);
 
 function cal_work_day_conv($val) {
 	GLOBAL $locale_char_set;
-	$weekDayNames = Array( 0 => 'Sun', 1 => 'Mon', 2 => 'Tue', 3 => 'Wed', 4 => 'Thu', 5 => 'Fri', 6 => 'Sat');
-	return htmlentities($weekDayNames[$val], ENT_COMPAT, $locale_char_set);
+	$wk = Date_Calc::getCalendarWeek( null, null, null, "%a", LOCALE_FIRST_DAY );
+	return htmlentities($wk[$val], ENT_COMPAT, $locale_char_set);
 }
 ?>
 <form name="datesFrm" action="?m=tasks&a=addedit&task_project=<?php echo $task_project;?>" method="post">

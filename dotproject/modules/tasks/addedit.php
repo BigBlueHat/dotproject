@@ -65,11 +65,11 @@ $q->addQuery('user_id, contact_first_name, contact_last_name');
 $q->addTable('users');
 $q->addTable('contacts');
 $q->addWhere('user_contact = contact_id');
-$q->addOrder('contact_first_name, contact_last_name');
+$q->addOrder('contact_last_name, contact_first_name');
 $q->exec();
 $users = array();
 while ( $row = $q->fetchRow()) {
-  $users[$row['user_id']] = $row['contact_first_name'] . ' ' . $row['contact_last_name'];
+  $users[$row['user_id']] = $row['contact_last_name'] . ', ' . $row['contact_first_name'];
 }
 $q->clear();
 
