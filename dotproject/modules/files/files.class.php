@@ -243,7 +243,7 @@ class CFile extends CDpObject {
 				$q->addTable('projects', 'p');
 				$q->addQuery('u.*');
 				$q->addWhere('p.project_owner = u.user_id');
-				$q->addWhere('p.project_id = '..$this->file_project);
+				$q->addWhere('p.project_id = '.$this->file_project);
 				$this->_users = $q->loadList();
 			}
 			$body .= "\n\nFile ".$this->file_name." was ".$this->_message." by ".$AppUI->user_first_name . " " . $AppUI->user_last_name;
