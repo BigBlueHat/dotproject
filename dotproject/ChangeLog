@@ -1,3 +1,8 @@
+2003-07-07 01:24  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-07-07 01:15  (kripper)
 ---------------------------------
 modules/calendar/addedit.php
@@ -493,11 +498,6 @@ classes/ui.class.php
 2003-05-28 00:30  (eddieajau)
 ---------------------------------
 classes/date.class.php
-- Changed library include
-
-2003-05-28 00:29  (eddieajau)
----------------------------------
-locales/en/common.inc
 ...
 
 (This file has been wrapped)
