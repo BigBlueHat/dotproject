@@ -136,10 +136,6 @@ if($display_option!="all") {
 <tr>
 	<td align=center>
 		<?php
-			if ($display_option == 'Entire Project') {
-				$start_date = null;
-				$end_date = null;
-			}
 			$src = "modules/tasks/gantt.php?project_id=$project_id";
 			$src .= ($display_option == 'all') ? '' :
 				'&start_date='.$start_date->toString( "%Y-%m-%d" ).'&end_date='.$end_date->toString( "%Y-%m-%d" );
