@@ -179,7 +179,7 @@ GROUP BY project_name, file_name
 ORDER BY project_name, file_name
 LIMIT ' . $xpg_min . ', ' . $xpg_pagesize ;
 
-$sql2 = "SELECT file_id, file_version, file_project, file_name, file_description, user_username as file_owner, file_size, file_category, file_type, file_date
+$sql2 = "SELECT file_id, file_version, file_project, file_name, file_task, file_description, user_username as file_owner, file_size, file_category, file_type, file_date
         FROM files
         LEFT JOIN users ON user_id = file_owner
         LEFT JOIN tasks on file_task = task_id
@@ -263,6 +263,8 @@ foreach ($files as $row) {
 	$fp = $row["file_project"];
         if ($row['file_versions'] > 1)
                 $file = last_file($file_versions, $row['file_name'], $row['file_project']);
+        else 
+                $file = $row;
 ?>
 <tr>
 	<td nowrap="nowrap" width="20">
@@ -279,6 +281,7 @@ foreach ($files as $row) {
 	<td width="20%"><?php echo $row['file_description'];?></td>
 	<td width="5%" nowrap="nowrap" align="center">
         <?php
+                $hidden_table = '';
                 echo $row['file_lastversion'];
                 if ($row['file_versions'] > 1)
                 {
