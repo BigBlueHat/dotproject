@@ -22,8 +22,8 @@ if ($lang == 'en') {
 // editing the english file
 	foreach ($trans as $langs) {
 		if ( (@$langs['abbrev'] || $langs['english']) && empty($langs['del']) ) {
-			$langs['abbrev'] = stripslashes( @$langs['abbrev'] );
-			$langs['english'] = stripslashes( $langs['english'] );
+			$langs['abbrev'] = addslashes( stripslashes( @$langs['abbrev'] ) );
+			$langs['english'] = addslashes( stripslashes( $langs['english'] ) );
 			if (!empty($langs['abbrev'])) {
 				$txt .= "\"{$langs['abbrev']}\"=>";
 			}
@@ -34,7 +34,8 @@ if ($lang == 'en') {
 // editing the translation
 	foreach ($trans as $langs) {
 		if ( empty($langs['del']) ) {
-			$langs['english'] = stripslashes( $langs['english'] );
+			$langs['english'] = addslashes( stripslashes( $langs['english'] ) );
+			$langs['lang'] = addslashes( stripslashes( $langs['lang'] ) );
 			//fwrite( $fp, "\"{$langs['english']}\"=>\"{$langs['lang']}\",\n" );
 			$txt .= "\"{$langs['english']}\"=>\"{$langs['lang']}\",\n";
 		}

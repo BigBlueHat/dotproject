@@ -94,7 +94,7 @@ foreach ($trans as $k => $langs){
 <tr>
 	<td><?php
 		if ($k != @$langs['english']) {
-			$k = htmlspecialchars( $k, ENT_QUOTES );
+			$k = dPformSafe( $k, true );
 			if ($lang == 'en') {
 				echo "<input type=\"text\" name=\"trans[$index][abbrev]\" value=\"$k\" size=\"20\" class=\"text\" />";
 			} else {
@@ -122,7 +122,7 @@ foreach ($trans as $k => $langs){
 	?></td>
 	<td><?php
 		if ($lang != 'en') {
-			$langs['lang'] = htmlspecialchars( @$langs['lang'], ENT_QUOTES );
+			$langs['lang'] = dPformSafe( @$langs['lang'], true );
 			if (strlen($langs['lang']) < 40) {
 				echo "<input type=\"text\" name=\"trans[$index][lang]\" value=\"{$langs['lang']}\" size=\"40\" class=\"text\" />";
 			} else {
