@@ -493,7 +493,7 @@ class CTask extends CDpObject {
 	//}}}
 
 	function notifyOwner() {
-		GLOBAL $AppUI, $locale_char_set;
+		GLOBAL $AppUI, $dPconfig, $locale_char_set;
 		
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
@@ -527,7 +527,7 @@ class CTask extends CDpObject {
 		if (count( $users )) {
 			$body = $AppUI->_('Project').": $projname";
 			$body .= "\n".$AppUI->_('Task').":    $this->task_name";
-			$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
+			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
 			$body .= "\n\n" . $AppUI->_('Description') . ":"
 				. "\n$this->task_description";
 			$body .= "\n\n" . $AppUI->_('Creator').":" . $AppUI->user_first_name . " " . $AppUI->user_last_name;
@@ -552,7 +552,7 @@ class CTask extends CDpObject {
 	
 	//additiona comment will be included in email body 
 	function notify( $comment = '' ) {
-		GLOBAL $AppUI, $locale_char_set;
+		GLOBAL $AppUI, $dPconfig, $locale_char_set;
 
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
@@ -586,7 +586,7 @@ class CTask extends CDpObject {
 		if (count( $users )) {
 			$body = $AppUI->_('Project').": $projname";
 			$body .= "\n".$AppUI->_('Task').":    $this->task_name";
-			$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
+			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
 			$body .= "\n\n" . $AppUI->_('Description') . ":"
 				. "\n$this->task_description";
 			if ($users[0]['creator_email']) {
@@ -830,19 +830,19 @@ class CTask extends CDpObject {
 	// Return date obj for the start of next working day
 	function next_working_day( $dateObj ) {
 		global $AppUI;
-		while ( ! $dateObj->isWorkingDay() || $dateObj->getHour() >= $AppUI->getConfig( 'cal_day_end' ) ) {
+		while ( ! $dateObj->isWorkingDay() || $dateObj->getHour() >= dPgetConfig( 'cal_day_end' ) ) {
 			$dateObj->addDays(1);
-			$dateObj->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+			$dateObj->setTime(dPgetConfig( 'cal_day_start' ), '0', '0');
 		}
 		return $dateObj;
 	}
 	// Return date obj for the end of the previous working day
 	function prev_working_day( $dateObj ) {
 		global $AppUI;
-		while ( ! $dateObj->isWorkingDay() || ( $dateObj->getHour() < $AppUI->getConfig( 'cal_day_start' ) ) ||
-	      		( $dateObj->getHour() == $AppUI->getConfig( 'cal_day_start' ) && $dateObj->getMinute() == '0' ) ) {
+		while ( ! $dateObj->isWorkingDay() || ( $dateObj->getHour() < dPgetConfig( 'cal_day_start' ) ) ||
+	      		( $dateObj->getHour() == dPgetConfig( 'cal_day_start' ) && $dateObj->getMinute() == '0' ) ) {
 			$dateObj->addDays(-1);
-			$dateObj->setTime($AppUI->getConfig( 'cal_day_end' ), '0', '0');
+			$dateObj->setTime(dPgetConfig( 'cal_day_end' ), '0', '0');
 		}
 		return $dateObj;
 	}
@@ -906,9 +906,9 @@ class CTask extends CDpObject {
 	function calc_end_date( $start_date=null, $durn='8', $durnType='1' ) {
 		GLOBAL $AppUI;
 	
-		$cal_day_start = $AppUI->getConfig( 'cal_day_start' );
-		$cal_day_end = $AppUI->getConfig( 'cal_day_end' );
-		$daily_working_hours = $AppUI->getConfig( 'daily_working_hours' );
+		$cal_day_start = dPgetConfig( 'cal_day_start' );
+		$cal_day_end = dPgetConfig( 'cal_day_end' );
+		$daily_working_hours = dPgetConfig( 'daily_working_hours' );
 
 		$s = new CDate( $start_date );
 		$e = $s;
@@ -923,7 +923,7 @@ class CTask extends CDpObject {
 			$full_working_days = ceil($durn);
 			for ( $i = 0 ; $i < $full_working_days ; $i++ ) {
 				$e->addDays(1);
-				$e->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+				$e->setTime(dPgetConfig( 'cal_day_start' ), '0', '0');
 				if ( !$e->isWorkingDay() )
 					$full_working_days++;
 			}
@@ -946,7 +946,7 @@ class CTask extends CDpObject {
 					while (1) {
 						// Move on to the next workday
 						$e->addDays(1);
-						$e->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+						$e->setTime(dPgetConfig( 'cal_day_start' ), '0', '0');
 						if ( $e->isWorkingDay() )
 							break;
 					}
@@ -959,7 +959,7 @@ class CTask extends CDpObject {
 			// Full days
 			for ( $i = 0 ; $i < $full_working_days ; $i++ ) {
 				$e->addDays(1);
-				$e->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+				$e->setTime(dPgetConfig( 'cal_day_start' ), '0', '0');
 				if ( !$e->isWorkingDay() )
 					$full_working_days++;
 			}

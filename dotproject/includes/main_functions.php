@@ -113,6 +113,22 @@ function dPcontextHelp( $title, $link='' ) {
 	return "<a href=\"#$link\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$link', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">".$AppUI->_($title)."</a>";
 }
 
+
+/**
+* Retrieves a configuration setting.
+* @param string The name of a configuration setting
+* @return The value of the setting, otherwise null if the key is not found in the configuration array
+*/
+function dPgetConfig( $key ) {
+	global $dPconfig;
+	if (array_key_exists( $key, $dPconfig )) {
+		return $dPconfig[$key];
+	} else {
+		return null;
+	}
+}
+
+
 ##
 ## displays the configuration array of a module for informational purposes
 ##
@@ -134,15 +150,15 @@ function dPshowModuleConfig( $config ) {
  */
 function dPfindImage( $name, $module=null ) {
 // uistyle must be declared globally
-	global $AppUI, $uistyle;
+	global $dPconfig, $uistyle;
 
-	if (file_exists( "{$AppUI->cfg['root_dir']}/style/$uistyle/images/$name" )) {
+	if (file_exists( "{$dPconfig['root_dir']}/style/$uistyle/images/$name" )) {
 		return "./style/$uistyle/images/$name";
-	} else if ($module && file_exists( "{$AppUI->cfg['root_dir']}/modules/$module/images/$name" )) {
+	} else if ($module && file_exists( "{$dPconfig['root_dir']}/modules/$module/images/$name" )) {
 		return "./modules/$module/images/$name";
-	} else if (file_exists( "{$AppUI->cfg['root_dir']}/images/icons/$name" )) {
+	} else if (file_exists( "{$dPconfig['root_dir']}/images/icons/$name" )) {
 		return "./images/icons/$name";
-	} else if (file_exists( "{$AppUI->cfg['root_dir']}/images/obj/$name" )) {
+	} else if (file_exists( "{$dPconfig['root_dir']}/images/obj/$name" )) {
 		return "./images/obj/$name";
 	} else {
 		return "./images/$name";
@@ -180,6 +196,9 @@ function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' ) {
 	// }
 }
 
+
+
+
 #
 # function to return a default value if a variable is not set
 #
@@ -200,7 +219,7 @@ function dPgetParam( &$arr, $name, $def=null ) {
 #
 
 function addHistory( $description, $project_id = 0, $module_id = 0) {
-	global $AppUI;
+	global $AppUI, $dPconfig;
 	/*
 	 * TODO:
 	 * 1) description should be something like:
@@ -215,7 +234,7 @@ function addHistory( $description, $project_id = 0, $module_id = 0) {
 	 * 2) project_id and module_id should be provided in order to filter history entries
 	 *
 	 */
-	if(!$AppUI->cfg['log_changes']) return;
+	if(!$dPconfig['log_changes']) return;
 	$description = str_replace("'", "\'", $description);
 	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
 	$qid = db_exec($hsql);
@@ -356,10 +375,10 @@ function dPformSafe( $txt, $deslash=false ) {
 }
 
 function convert2days( $durn, $units ) {
-	global $AppUI;
+	global $dPconfig;
 	switch ($units) {
 	case 0:
-		return $durn / $AppUI->cfg['daily_working_hours'];
+		return $durn / $dPconfig['daily_working_hours'];
 		break;
 	case 24:
 		return $durn;

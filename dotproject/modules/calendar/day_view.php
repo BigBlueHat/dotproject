@@ -79,7 +79,7 @@ table.tbl td.event {
 <?php
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_TIMESTAMP_DATE ),
-	"{$AppUI->cfg['root_dir']}/modules/calendar/", $tab );
+	"{$dPconfig['root_dir']}/modules/calendar/", $tab );
 $tabBox->add( 'vw_day_events', 'Events' );
 $tabBox->add( 'vw_day_tasks', 'Tasks' );
 $tabBox->show();

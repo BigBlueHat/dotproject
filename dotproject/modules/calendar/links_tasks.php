@@ -11,7 +11,7 @@
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_id=0 ) {
-	GLOBAL $AppUI;
+	GLOBAL $AppUI, $dPconfig;
 	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $company_id );
 
 //echo "<br>entering add tasks dt=".dPgetMicroDiff();
@@ -60,8 +60,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		}
 	// convert duration to days
 		if ($durnType < 24.0 ) {
-			if ($durn > $AppUI->cfg['daily_working_hours']) {
-				$durn /= $AppUI->cfg['daily_working_hours'];
+			if ($durn > $dPconfig['daily_working_hours']) {
+				$durn /= $dPconfig['daily_working_hours'];
 			} else {
 				$durn = 0.0;
 			}

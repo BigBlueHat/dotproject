@@ -38,11 +38,11 @@ class CFile extends CDpObject {
 	}
 
 	function delete() {
-		global $AppUI;
+		global $dPconfig;
 		$this->_message = "deleted";
-		
+
 	// remove the file from the file system
-		@unlink( "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename" );
+		@unlink( "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename" );
 	// delete any index entries
 		$sql = "DELETE FROM files_index WHERE file_id = $this->file_id";
 		if (!db_exec( $sql )) {
@@ -58,16 +58,16 @@ class CFile extends CDpObject {
 
 // move a file from a temporary (uploaded) location to the file system
 	function moveTemp( $upload ) {
-		global $AppUI;
+		global $AppUI, $dPconfig;
 	// check that directories are created
-		if (!is_dir("{$AppUI->cfg['root_dir']}/files")) {
-		    $res = mkdir( "{$AppUI->cfg['root_dir']}/files", 0777 );
+		if (!is_dir("{$dPconfig['root_dir']}/files")) {
+		    $res = mkdir( "{$dPconfig['root_dir']}/files", 0777 );
 		    if (!$res) {
 			     return false;
 			 }
 		}
-		if (!is_dir("{$AppUI->cfg['root_dir']}/files/$this->file_project")) {
-		    $res = mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
+		if (!is_dir("{$dPconfig['root_dir']}/files/$this->file_project")) {
+		    $res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
 			 if (!$res) {
                                 $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
 			     return false;
@@ -75,7 +75,7 @@ class CFile extends CDpObject {
 		}
 
 
-		$this->_filepath = "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename";
+		$this->_filepath = "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename";
 	// move it
 		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );
 		if (!$res) {
@@ -86,7 +86,7 @@ class CFile extends CDpObject {
 
 // parse file for indexing
 	function indexStrings() {
-		GLOBAL $ft, $AppUI;
+		GLOBAL $ft, $AppUI, $dPconfig;
 	// get the parser application
 		$parser = @$ft[$this->file_type];
 		if (!$parser) {
@@ -125,7 +125,7 @@ class CFile extends CDpObject {
 		db_exec( "LOCK TABLES files_index WRITE" );
 	// filter out common strings
 		$ignore = array();
-		include "{$AppUI->cfg['root_dir']}/modules/files/file_index_ignore.php";
+		include "{$dPconfig['root_dir']}/modules/files/file_index_ignore.php";
 		foreach ($ignore as $w) {
 			unset( $wordarr[$w] );
 		}
@@ -141,7 +141,7 @@ class CFile extends CDpObject {
 	
 	//function notifies about file changing
 	function notify() {	
-		GLOBAL $AppUI, $locale_char_set;
+		GLOBAL $AppUI, $dPconfig, $locale_char_set;
 		//if no project specified than we will not do anything
 		if ($this->file_project != 0) {
 			$this->_project = new CProject();
@@ -157,11 +157,11 @@ class CFile extends CDpObject {
 			}
 			
 			$body = $AppUI->_('Project').": ".$this->_project->project_name;
-			$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=projects&a=view&project_id=".$this->_project->project_id;
+			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=projects&a=view&project_id=".$this->_project->project_id;
 			
 			if (intval($this->_task->task_id) != 0) {
 				$body .= "\n\n".$AppUI->_('Task').":    ".$this->_task->task_name;
-				$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=".$this->_task->task_id;
+				$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=".$this->_task->task_id;
 				$body .= "\n" . $AppUI->_('Description') . ":" . "\n".$this->_task->task_description;
 				
 				//preparing users array
@@ -190,7 +190,7 @@ class CFile extends CDpObject {
 			}
 			$body .= "\n\nFile ".$this->file_name." was ".$this->_message." by ".$AppUI->user_first_name . " " . $AppUI->user_last_name;
 			if ($this->_message != "deleted") {
-				$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/fileviewer.php?file_id=".$this->file_id;
+				$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/fileviewer.php?file_id=".$this->file_id;
 				$body .= "\n" . $AppUI->_('Description') . ":" . "\n".$this->file_description;	
 			}
 			

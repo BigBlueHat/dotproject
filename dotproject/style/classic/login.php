@@ -20,7 +20,7 @@
 <input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
 <tr>
 	<td colspan="2" class="headerfontWhite" bgcolor="gray">
-		<strong><?php echo $AppUI->cfg['company_name'];?></strong>
+		<strong><?php echo $dPconfig['company_name'];?></strong>
 	</td>
 </tr>
 <tr>
@@ -57,7 +57,7 @@
 		<br />
 		<ul type="square">
 			<li>
-				<A href="mailto:<?php echo 'admin@' . $AppUI->cfg['site_domain'];?>"><?php echo $AppUI->_('forgotPassword');?></a>
+				<A href="mailto:<?php echo 'admin@' . $dPconfig['site_domain'];?>"><?php echo $AppUI->_('forgotPassword');?></a>
 			</li>
 		</ul>
 	</td>

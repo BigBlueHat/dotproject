@@ -422,12 +422,12 @@ $tabBox = new CTabBox( "?m=tasks&a=view&task_id=$task_id", "", $tab );
 $tabBox_show = 0;
 if ( $obj->task_dynamic != 1 ) {
 	// tabbed information boxes
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
+	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
 	// fixed bug that dP automatically jumped to access denied if user does not
 	// have read-write permissions on task_id and this tab is opened by default (session_vars)
 	// only if user has r-w perms on this task, new or edit log is beign showed
 	if (!getDenyEdit( $m, $task_id )) {
-		$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
+		$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
 	}
 	$tabBox_show = 1;
 }
@@ -442,7 +442,7 @@ if ( count($obj->getChildren()) > 0 ) {
 	// $_GET[task_status]; this patch is to be able to see
 	// child tasks withing an inactive task
 	$_GET["task_status"] = $obj->task_status;
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
+	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
 	
 if ( $tabBox_show == 1)	$tabBox->show();

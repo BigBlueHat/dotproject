@@ -13,7 +13,7 @@ if (!$canRead) {
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$reports = $AppUI->readFiles( $AppUI->getConfig( 'root_dir' )."/modules/projects/reports", "\.php$" );
+$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/projects/reports", "\.php$" );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Project Reports', 'applet3-48.png', $m, "$m.$a" );
@@ -27,14 +27,14 @@ $titleBlock->show();
 if ($report_type) {
 	$report_type = $AppUI->checkFileName( $report_type );
 	$report_type = str_replace( ' ', '_', $report_type );
-	require( $AppUI->getConfig( 'root_dir' )."/modules/projects/reports/$report_type.php" );
+	require( dPgetConfig( 'root_dir' )."/modules/projects/reports/$report_type.php" );
 } else {
 	echo "<table>";
 	echo "<tr><td><h2>" . $AppUI->_( 'Reports Available' ) . "</h2></td></tr>";
 	foreach ($reports as $v) {
 		$type = str_replace( ".php", "", $v );
 		$desc_file = str_replace( ".php", ".$AppUI->user_locale.txt", $v );
-		$desc = @file( $AppUI->getConfig( 'root_dir' )."/modules/projects/reports/$desc_file" );
+		$desc = @file( dPgetConfig( 'root_dir' )."/modules/projects/reports/$desc_file" );
 
 		echo "\n<tr>";
 		echo "\n	<td><a href=\"index.php?m=projects&a=reports&project_id=$project_id&report_type=$type\">";

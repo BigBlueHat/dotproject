@@ -46,7 +46,7 @@ if ( $tab != -1 ) {
         array_unshift($file_types, "All Files");
 }
 
-$tabBox = new CTabBox( "?m=files", "{$AppUI->cfg['root_dir']}/modules/files/", $tab );
+$tabBox = new CTabBox( "?m=files", "{$dPconfig['root_dir']}/modules/files/", $tab );
 
 $i = 0;
 

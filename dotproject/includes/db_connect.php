@@ -6,12 +6,12 @@
 */
 
 // load the db specific handlers
-//require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
-require_once( "{$AppUI->cfg['root_dir']}/includes/db_adodb.php" );
+//require_once( "{$dPconfig['root_dir']}/includes/db_{$dPconfig['dbtype']}.php" );
+require_once( "{$dPconfig['root_dir']}/includes/db_adodb.php" );
 
 // make the connection to the db
-db_connect( $AppUI->cfg['dbhost'], $AppUI->cfg['dbname'],
-	$AppUI->cfg['dbuser'], $AppUI->cfg['dbpass'], $AppUI->cfg['dbport'], $AppUI->cfg['dbpersist'] );
+db_connect( $dPconfig['dbhost'], $dPconfig['dbname'],
+	$dPconfig['dbuser'], $dPconfig['dbpass'], $dPconfig['dbport'], $dPconfig['dbpersist'] );
 
 /**
 * This global function loads the first field of the first row returned by the query.

@@ -10,10 +10,10 @@
 // www.mamboserver.com | mosforge.net
 //
 function sendNewPass() {
-	global $AppUI;
+	global $AppUI, $dPconfig;
 
-	$_live_site = $AppUI->cfg['base_url'];
-	$_sitename = $AppUI->cfg['company_name'];
+	$_live_site = $dPconfig['base_url'];
+	$_sitename = $dPconfig['company_name'];
 
 	// ensure no malicous sql gets past
 	$checkusername = trim( dPgetParam( $_POST, 'checkusername', '') );

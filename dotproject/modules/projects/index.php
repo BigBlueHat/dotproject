@@ -213,7 +213,7 @@ $show_all_projects = false;
 if($tab == 0) $show_all_projects = true;
 
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
+$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$dPconfig['root_dir']}/modules/projects/", $tab );
 foreach($project_types as $project_type)
 	$tabBox->add($project_file_type[$project_type], $project_type);
 

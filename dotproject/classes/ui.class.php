@@ -87,6 +87,10 @@ class CAppUI {
 		$this->user_department = 0;
 		$this->user_type = 0;
 
+		// cfg['locale_warn'] is the only cfgVariable stored in session data (for security reasons)
+		// this guarants the functionality of this->setWarning
+		$this->cfg['locale_warn'] = $dPconfig['locale_warn'];
+		
 		$this->project_id = 0;
 
 		$this->defaultRedirect = "";
@@ -101,7 +105,7 @@ class CAppUI {
  */
 	function getSystemClass( $name=null ) {
 		if ($name) {
-			if ($root = $this->getConfig( 'root_dir' )) {
+			if ($root = dPgetConfig( 'root_dir' )) {
 				return "$root/classes/$name.class.php";
 			}
 		}
@@ -115,7 +119,7 @@ class CAppUI {
 */
 	function getLibraryClass( $name=null ) {
 		if ($name) {
-			if ($root = $this->getConfig( 'root_dir' )) {
+			if ($root = dPgetConfig( 'root_dir' )) {
 				return "$root/lib/$name.php";
 			}
 		}
@@ -128,30 +132,9 @@ class CAppUI {
  */
 	function getModuleClass( $name=null ) {
 		if ($name) {
-			if ($root = $this->getConfig( 'root_dir' )) {
+			if ($root = dPgetConfig( 'root_dir' )) {
 				return "$root/modules/$name/$name.class.php";
 			}
-		}
-	}
-
-/**
-* Sets the internal confuration settings array.
-* @param array A named array of configuration variables (usually from config.php)
-*/
-	function setConfig( &$cfg ) {
-		$this->cfg = $cfg;
-	}
-
-/**
-* Retrieves a configuration setting.
-* @param string The name of a configuration setting
-* @return The value of the setting, otherwise null if the key is not found in the configuration array
-*/
-	function getConfig( $key ) {
-		if (array_key_exists( $key, $this->cfg )) {
-			return $this->cfg[$key];
-		} else {
-			return null;
 		}
 	}
 
@@ -160,8 +143,9 @@ class CAppUI {
 * @return String value indicating the current dotproject version
 */
 	function getVersion() {
+		global $dPconfig;
 		if ( ! isset($this->version_major)) {
-			include_once $this->cfg['root_dir'] . '/includes/version.php';
+			include_once $dPconfig['root_dir'] . '/includes/version.php';
 			$this->version_major = $dp_version_major;
 			$this->version_minor = $dp_version_minor;
 			$this->version_patch = $dp_version_patch;
@@ -178,12 +162,13 @@ class CAppUI {
 * Checks that the current user preferred style is valid/exists.
 */
 	function checkStyle() {
+		global $dPconfig;
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
 
-		if ($uistyle && !is_dir("{$this->cfg['root_dir']}/style/$uistyle")) {
+		if ($uistyle && !is_dir("{$dPconfig['root_dir']}/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
-			$this->setPref( 'UISTYLE', $this->cfg['host_style'] );
+			$this->setPref( 'UISTYLE', $dPconfig['host_style'] );
 		}
 	}
 
@@ -195,10 +180,11 @@ class CAppUI {
 * @return array A named array of the directories (the key and value are identical).
 */
 	function readDirs( $path ) {
+		global $dPconfig;
 		$dirs = array();
-		$d = dir( "{$this->cfg['root_dir']}/$path" );
+		$d = dir( "{$dPconfig['root_dir']}/$path" );
 		while (false !== ($name = $d->read())) {
-			if(is_dir( "{$this->cfg['root_dir']}/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
+			if(is_dir( "{$dPconfig['root_dir']}/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
 				$dirs[$name] = $name;
 			}
 		}
@@ -216,7 +202,7 @@ class CAppUI {
 		$files = array();
 
 		if ($handle = opendir( $path )) {
-			while (false !== ($file = readdir( $handle ))) { 
+			while (false !== ($file = readdir( $handle ))) {
 				if ($file != "." && $file != ".." && preg_match( "/$filter/", $file )) { 
 					$files[$file] = $file; 
 				} 
@@ -273,10 +259,11 @@ class CAppUI {
 * @param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
 */
 	function setUserLocale( $loc='' ) {
+		global $dPconfig;
 		if ($loc) {
 			$this->user_locale = $loc;
 		} else {
-			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $this->cfg['host_locale'];
+			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $dPconfig['host_locale'];
 		}
 	}
 /**
@@ -294,6 +281,7 @@ class CAppUI {
 * @return string
 */
 	function _( $str, $case=0 ) {
+		global $dPconfig;
 		$str = trim($str);
 		if (empty( $str )) {
 			return '';
@@ -302,10 +290,10 @@ class CAppUI {
 		
 		if ($x) {
 			$str = $x;
-		} else if (@$this->cfg['locale_warn']) {
+		} else if (@$dPconfig['locale_warn']) {
 			if ($this->base_locale != $this->user_locale ||
 				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
-				$str .= @$this->cfg['locale_alert'];
+				$str .= @$dPconfig['locale_alert'];
 			}
 		}
 		switch ($case) {
@@ -494,6 +482,7 @@ class CAppUI {
 * @return boolean True if successful, false if not
 */
 	function login( $username, $password ) {
+		global $dPconfig;
 		$username = trim( db_escape( $username ) );
 		$password = trim( db_escape( $password ) );
 
@@ -511,7 +500,7 @@ class CAppUI {
 		}
 
 		if (strcmp( $row->pwd, $row->pwdmd5 )) {
-			if ($this->cfg['check_legacy_password']) {
+			if ($dPconfig['check_legacy_password']) {
 			/* next check the legacy password */
 				if (strcmp( $row->pwd, $row->pwdpwd )) {
 					/* no match - failed login */

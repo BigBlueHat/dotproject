@@ -2,7 +2,7 @@
 GLOBAL $m, $a, $project_id, $f, $min_view, $query_string, $durnTypes;
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
-GLOBAL $user_id;
+GLOBAL $user_id, $dPconfig;
 /*
 	tasks.php
 
@@ -479,7 +479,7 @@ foreach ($projects as $k => $p) {
 			}
 		}
 
-		if($tnums && $AppUI->cfg['enable_gantt_charts'] && !$min_view) { ?>
+		if($tnums && $dPconfig['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
 			<td colspan="9" align="right">
 				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />

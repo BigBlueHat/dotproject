@@ -13,7 +13,7 @@ $titleBlock->show();
 require("./modules/ticketsmith/config.inc.php");
 require("./modules/ticketsmith/common.inc.php");
 
-$app_root = $AppUI->getConfig( 'base_url' );
+$app_root = dPgetConfig( 'base_url' );
 
 /* setup table & database field stuff */
 $fields = array("headings" => array("Link", "Author", "Subject", "Date", 

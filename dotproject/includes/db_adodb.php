@@ -9,9 +9,9 @@
 	A generic database layer providing a set of low to middle level functions
 	originally written for WEBO project, see webo source for "real life" usages
 */
-require_once( "{$AppUI->cfg['root_dir']}/lib/adodb/adodb.inc.php" );
+require_once( "{$dPconfig['root_dir']}/lib/adodb/adodb.inc.php" );
 
-$db = NewADOConnection($AppUI->cfg['dbtype']);
+$db = NewADOConnection($dPconfig['dbtype']);
 
 function db_connect( $host='localhost', $dbname, $user='root', $passwd='', $port='3306', $persist=false ) {
         global $db;

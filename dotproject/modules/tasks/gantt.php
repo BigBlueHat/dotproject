@@ -7,8 +7,8 @@
 
 error_reporting( E_ALL );	// this only for development testing
 
-include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph.php");
-include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
+include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph.php");
+include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
 $project_id = defVal( @$_REQUEST['project_id'], 0 );
 $f = defVal( @$_REQUEST['f'], 0 );
@@ -137,7 +137,7 @@ $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
 
-$jpLocale = $AppUI->getConfig( 'jpLocale' );
+$jpLocale = dPgetConfig( 'jpLocale' );
 if ($jpLocale) {
 	$graph->scale->SetDateLocale( $jpLocale );
 }

@@ -71,7 +71,6 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     $_SESSION['AppUI'] = new CAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
-$AppUI->setConfig( $dPconfig );
 $AppUI->checkStyle();
 
 // load the commonly used classes
@@ -89,7 +88,7 @@ if ($AppUI->doLogin()) {
 
 // check is the user needs a new password
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
-	$uistyle = $AppUI->cfg['host_style'];
+	$uistyle = $dPconfig['host_style'];
 	$AppUI->setUserLocale();
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
@@ -120,7 +119,7 @@ if (isset($_POST['login'])) {
 // writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
 
 // set the default ui style
-$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 
 
 

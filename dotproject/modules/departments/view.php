@@ -125,7 +125,7 @@ function delIt() {
 </table>
 <?php
 	// tabbed information boxes
-	$tabBox = new CTabBox( "?m=departments&a=view&dept_id=$dept_id", "{$AppUI->cfg['root_dir']}/modules/departments/", $tab );
+	$tabBox = new CTabBox( "?m=departments&a=view&dept_id=$dept_id", "{$dPconfig['root_dir']}/modules/departments/", $tab );
 	$tabBox->add("vw_contacts", "Contacts");
 	$tabBox->show();
 }

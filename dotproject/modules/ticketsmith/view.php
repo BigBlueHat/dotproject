@@ -21,7 +21,7 @@ require("./modules/ticketsmith/config.inc.php");
 require("./modules/ticketsmith/common.inc.php");
 
 /* Centralize references */
-$app_root = $AppUI->getConfig( 'base_url' );
+$app_root = dPgetConfig( 'base_url' );
 
 /* initialize fields */
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {

@@ -1,5 +1,5 @@
 <?php /* ADMIN $Id$ */
-GLOBAL $AppUI, $canEdit, $stub, $where, $orderby;
+GLOBAL $dPconfig, $canEdit, $stub, $where, $orderby;
 
 $sql = "
 SELECT DISTINCT(user_id), user_username, user_last_name, user_first_name, permission_user, user_email, company_name, user_company
@@ -19,5 +19,5 @@ $sql .= "\nORDER by $orderby";
 
 $users = db_loadList( $sql );
 
-require "{$AppUI->cfg['root_dir']}/modules/admin/vw_usr.php";
+require "{$dPconfig['root_dir']}/modules/admin/vw_usr.php";
 ?>

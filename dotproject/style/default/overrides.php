@@ -8,8 +8,8 @@ class CTitleBlock extends CTitleBlock_core {
 ##
 class CTabBox extends CTabBox_core {
 	function show( $extra='' ) {
-		GLOBAL $AppUI;
-		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+		GLOBAL $AppUI, $dPconfig;
+		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 		if (! $uistyle)
 		  $uistyle = 'default';
 		reset( $this->tabs );

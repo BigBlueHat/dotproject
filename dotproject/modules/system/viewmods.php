@@ -74,7 +74,7 @@ foreach ($modules as $row) {
 
 // check for upgrades
 
-	$ok = @include_once( "{$AppUI->cfg['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
+	$ok = @include_once( "{$dPconfig['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
 	if ( $ok )
 	{
 		if ( $config[ 'mod_version' ] != $row['mod_version'] && $canEdit )

@@ -11,7 +11,7 @@ $date = $date !== '' ? $date : null;
 
 $this_month = new CDate( $date );
 
-$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 
 $cal = new CMonthCalendar( $this_month );
 $cal->setStyles( 'poptitle', 'popcal' );

@@ -31,7 +31,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 		$ok = $AppUI->login( $username, $password );
 		if (!$ok) {
 			//display login failed message 
-			$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+			$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 			$AppUI->setMsg( 'Login Failed' );
 			require "./style/$uistyle/login.php";
 			session_unset();
@@ -41,7 +41,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 		exit;
 	}	
 
-	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 	// check if we are logged in
 	if ($AppUI->doLogin()) {
 	    $AppUI->setUserLocale();
@@ -60,10 +60,10 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 }
 $AppUI =& $_SESSION['AppUI'];
 
-require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
+require "{$dPconfig['root_dir']}/includes/db_connect.php";
 
-include "{$AppUI->cfg['root_dir']}/includes/main_functions.php";
-include "{$AppUI->cfg['root_dir']}/includes/permissions.php";
+include "{$dPconfig['root_dir']}/includes/main_functions.php";
+include "{$dPconfig['root_dir']}/includes/permissions.php";
 
 $canRead = !getDenyRead( 'files' );
 if (!$canRead) {
@@ -118,7 +118,7 @@ if ($file_id) {
 	header( "Content-length: {$file['file_size']}" );
 	header( "Content-type: {$file['file_type']}" );
 	header( "Content-disposition: inline; filename={$file['file_name']}" );
-	readfile( "{$AppUI->cfg['root_dir']}/files/{$file['file_project']}/{$file['file_real_filename']}" );
+	readfile( "{$dPconfig['root_dir']}/files/{$file['file_project']}/{$file['file_real_filename']}" );
 } else {
 	$AppUI->setMsg( "fileIdError", UI_MSG_ERROR );
 	$AppUI->redirect();

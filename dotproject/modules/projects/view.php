@@ -305,12 +305,12 @@ if ($tab == 1) {
 $query_string = "?m=projects&a=view&project_id=$project_id";
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
-$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
+$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Tasks' );
+$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
+$tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_forums", 'Forums' );
+$tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_files", 'Files' );
+$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
+$tabBox->add( "{$dPconfig['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
 
 // settings for tasks
 $f = 'all';

@@ -8,7 +8,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<meta name="Description" content="Classic dotProject Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
         <meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
-      	<title><?php echo @$AppUI->getConfig( 'page_title' );?></title>
+      	<title><?php echo @dPgetConfig( 'page_title' );?></title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 
@@ -45,7 +45,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <body class="mainpage" background="style/classic/images/bground.gif">
 <table class="nav" width="100%" cellpadding="0" cellspacing="2">
 <tr>
-	<td nowrap width="33%"><?php echo $AppUI->cfg['company_name'];?></td>
+	<td nowrap width="33%"><?php echo $dPconfig['company_name'];?></td>
 <?php if (!$dialog) { ?>
 	<td nowrap width="34%"><?php echo $AppUI->_('Current user').": $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 	<td nowrap width="33%" align="right">

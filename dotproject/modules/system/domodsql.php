@@ -13,7 +13,7 @@ if ($mod_id) {
 	$obj->mod_directory = $mod_directory;
 }
 
-$ok = @include_once( "{$AppUI->cfg['root_dir']}/modules/$obj->mod_directory/setup.php" );
+$ok = @include_once( "{$dPconfig['root_dir']}/modules/$obj->mod_directory/setup.php" );
 
 if (!$ok) {
 	if ($obj->mod_type != 'core') {

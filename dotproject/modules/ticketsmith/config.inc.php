@@ -4,10 +4,10 @@
 
 // reply-to address for staff followups
 // i.e. the address the gateway receives
-if ( ! isset($AppUI->cfg['site_domain']))
-  $AppUI->cfg['site_domain'] = "dotproject.net";
+if ( ! isset($dPconfig['site_domain']))
+  $dPconfig['site_domain'] = "dotproject.net";
 
-$CONFIG["reply_to"] = "support@" . $AppUI->cfg['site_domain'];
+$CONFIG["reply_to"] = "support@" . $dPconfig['site_domain'];
 // If you want to hide real addresses behind a bogus 
 // generic email, uncomment the following:
 // $CONFIG["reply_name"] = "Help Desk";

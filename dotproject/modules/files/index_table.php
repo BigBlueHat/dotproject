@@ -81,7 +81,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 
 GLOBAL $AppUI, $deny1, $canRead, $canEdit;
 
-//require_once( $AppUI->getConfig( 'root_dir' )."/modules/files/index_table.lib.php");
+//require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
 
 // ****************************************************************************
 // Page numbering variables

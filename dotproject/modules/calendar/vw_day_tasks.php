@@ -3,7 +3,7 @@ global $this_day, $first_time, $last_time, $company_id, $m, $a;
 
 $links = array();
 // assemble the links for the tasks
-require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
 getTaskLinks( $first_time, $last_time, $links, 100, $company_id );
 
 $s = '';
@@ -28,5 +28,5 @@ echo $s;
 echo '</table>';
 
 $min_view = 1;
-include $AppUI->getConfig( 'root_dir' ).'/modules/tasks/todo.php';
+include dPgetConfig( 'root_dir' ).'/modules/tasks/todo.php';
 ?>

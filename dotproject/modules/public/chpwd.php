@@ -12,7 +12,7 @@ if ($user_id) {
 		// check that the old password matches
 		$sql = "SELECT user_id FROM users WHERE user_password = MD5('$old_pwd') AND user_id=$user_id";
 		if (db_loadResult( $sql ) == $user_id) {
-			require_once( "{$AppUI->cfg['root_dir']}/modules/admin/admin.class.php" );
+			require_once( "{$dPconfig['root_dir']}/modules/admin/admin.class.php" );
 			$user = new CUser();
 			$user->user_id = $user_id;
 			$user->user_password = $new_pwd1;

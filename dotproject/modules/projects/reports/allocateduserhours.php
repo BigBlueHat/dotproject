@@ -179,7 +179,7 @@ if($do_report){
 					if(isset($user_usage[$user_id][$actual_date->format("%Y%m%d")])){
 						$hours       = number_format($user_usage[$user_id][$actual_date->format("%Y%m%d")],2);
 						$table_rows .= $hours;
-						$percentage_used = round($hours/$AppUI->getConfig("daily_working_hours")*100);
+						$percentage_used = round($hours/dPgetConfig("daily_working_hours")*100);
 						$bar_color       = "blue";
 						if($percentage_used > 100){
 							$bar_color = "red";
@@ -194,7 +194,7 @@ if($do_report){
 				}
 				
 				$array_sum = array_sum($user_usage[$user_id]);
-				$average_user_usage = number_format( ($array_sum/($working_days_count*$AppUI->getConfig("daily_working_hours")))*100, 2);
+				$average_user_usage = number_format( ($array_sum/($working_days_count*dPgetConfig("daily_working_hours")))*100, 2);
 				$allocated_hours_sum += $array_sum;
 				
 				$bar_color = "blue";
@@ -215,7 +215,7 @@ if($do_report){
 			</table>
 			<table width="100%"><tr><td align="center">
 		<?php
-			$total_hours_capacity = $working_days_count*$AppUI->getConfig("daily_working_hours")*count($user_usage);
+			$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_usage);
 	
 			echo $AppUI->_("<h4>Total capacity for shown users</h4>");
 			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
@@ -225,7 +225,7 @@ if($do_report){
 			</td>
 			<td align="center">
 		<?php
-			$total_hours_capacity = $working_days_count*$AppUI->getConfig("daily_working_hours")*count($user_list);
+			$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_list);
 	
 			echo $AppUI->_("<h4>Total capacity for all users</h4>");
 			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";

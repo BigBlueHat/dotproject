@@ -33,7 +33,7 @@ if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 		$contacts[0]['contact_title'], '');
 
 	// set the source of the vCard
-	$vcard->setSource($AppUI->cfg['company_name'].' '.$AppUI->cfg['page_title'].': '.$AppUI->cfg['site_domain']);
+	$vcard->setSource($dPconfig['company_name'].' '.$dPconfig['page_title'].': '.$dPconfig['site_domain']);
 
 	// set the birthday of the contact
 	$vcard->setBirthday($contacts[0]['contact_birthday']);

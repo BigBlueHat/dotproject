@@ -155,7 +155,7 @@ function delIt() {
 
 <?php
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$AppUI->cfg['root_dir']}/modules/companies/", $tab );
+$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$dPconfig['root_dir']}/modules/companies/", $tab );
 $tabBox->add( 'vw_active', 'Active Projects' );
 $tabBox->add( 'vw_archived', 'Archived Projects' );
 $tabBox->add( 'vw_depts', 'Departments' );

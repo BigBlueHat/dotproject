@@ -156,7 +156,7 @@ class CForumMessage {
 	}
 
 	function sendWatchMail( $debug=false ) {
-		GLOBAL $AppUI, $debug;
+		GLOBAL $AppUI, $debug, $dPconfig;
 		$subj_prefix = $AppUI->_('forumEmailSubj');
 		$body_msg = $AppUI->_('forumEmailBody');
 
@@ -196,7 +196,7 @@ class CForumMessage {
 		$mail->Subject( "$subj_prefix $this->message_title", isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "");
 
 		$body = "$body_msg";
-		$body .= "\n{$AppUI->cfg['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
+		$body .= "\n{$dPconfig['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
 		$body .= "\n\n$this->message_title";
 		$body .= "\n\n$this->message_body";
 

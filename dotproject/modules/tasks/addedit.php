@@ -247,9 +247,9 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 if ( is_null($obj->task_dynamic) ) $obj->task_dynamic = 0 ;
 
 //Time arrays for selects
-$start = $AppUI->getConfig('cal_day_start');
-$end   = $AppUI->getConfig('cal_day_end');
-$inc   = $AppUI->getConfig('cal_day_increment');
+$start = dPgetConfig('cal_day_start');
+$end   = dPgetConfig('cal_day_end');
+$inc   = dPgetConfig('cal_day_increment');
 if ($start === null ) $start = 8;
 if ($end   === null ) $end = 17;
 if ($inc   === null)  $inc = 15;
@@ -398,7 +398,7 @@ function submitIt(){
 		form.task_name.focus();
 	}
 <?php 
-	if ( $AppUI->getConfig( 'check_task_dates' )  && $can_edit_time_information) {
+	if ( dPgetConfig( 'check_task_dates' )  && $can_edit_time_information) {
 ?>
 	else if (!form.task_start_date.value) {
 		alert( "<?php echo $AppUI->_('taskValidStartDate');?>" );
@@ -559,7 +559,7 @@ function setAMPM( field) {
 	}
 }
 
-var workHours = <?php echo $AppUI->getConfig( 'daily_working_hours' );?>;
+var workHours = <?php echo dPgetConfig( 'daily_working_hours' );?>;
 var hourMSecs = 3600*1000;
 
 /**
@@ -581,10 +581,10 @@ function isInArray(myArray, intValue) {
 function calcDuration() {
 
 	//working days array from config.php	
-	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
-	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
-	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
-	var daily_working_hours = <?php echo $AppUI->getConfig('daily_working_hours'); ?>;
+	var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
+	var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
+	var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;		
+	var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 	
 	var f = document.editFrm;
 	var int_st_date = new String(f.task_start_date.value + f.start_hour.value + f.start_minute.value);
@@ -653,9 +653,9 @@ function calcDuration() {
 * Get the end of the previous working day 
 */
 function prev_working_day( dateObj ) {
-	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
-	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
-	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
+	var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
+	var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
+	var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;		
 
 	while ( ! isInArray(working_days, dateObj.getDay()) || dateObj.getHours() < cal_day_start ||
 	      (	dateObj.getHours() == cal_day_start && dateObj.getMinutes() == 0 ) ){
@@ -671,9 +671,9 @@ function prev_working_day( dateObj ) {
 * Get the start of the next working day 
 */
 function next_working_day( dateObj ) {
-	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
-	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
-	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
+	var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
+	var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
+	var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;		
 
 	while ( ! isInArray(working_days, dateObj.getDay()) || dateObj.getHours() >= cal_day_end ) {
 		dateObj.setDate(dateObj.getDate()+1);
@@ -688,9 +688,9 @@ function next_working_day( dateObj ) {
 */
 function calcFinish() {
 	//working days array from config.php	
-	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
-	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
-	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
+	var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
+	var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
+	var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;		
 	
 	var f = document.editFrm;
 	//var int_st_date = new String(f.task_start_date.value);

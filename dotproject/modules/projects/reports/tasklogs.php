@@ -236,17 +236,17 @@ if ($do_report) {
 		$pname = db_loadResult( $sql );
 		echo db_error();
 
-		$font_dir = $AppUI->getConfig( 'root_dir' )."/lib/ezpdf/fonts";
-		$temp_dir = $AppUI->getConfig( 'root_dir' )."/files/temp";
-		$base_url  = $AppUI->getConfig( 'base_url' );
+		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
+		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
+		$base_url  = dPgetConfig( 'base_url' );
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
 		$pdf =& new Cezpdf();
 		$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
 		$pdf->selectFont( "$font_dir/Helvetica.afm" );
 
-		$pdf->ezText( $AppUI->getConfig( 'company_name' ), 12 );
-		// $pdf->ezText( $AppUI->getConfig( 'company_name' ).' :: '.$AppUI->getConfig( 'page_title' ), 12 );		
+		$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
+		// $pdf->ezText( dPgetConfig( 'company_name' ).' :: '.dPgetConfig( 'page_title' ), 12 );		
 
 		$date = new CDate();
 		$pdf->ezText( "\n" . $date->format( $df ) , 8 );

@@ -95,6 +95,6 @@ $titleBlock->show();
 
 // include the re-usable sub view
 	$min_view = false;
-	include("{$AppUI->cfg['root_dir']}/modules/tasks/tasks.php");
+	include("{$dPconfig['root_dir']}/modules/tasks/tasks.php");
 
 ?>
