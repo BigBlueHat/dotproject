@@ -161,6 +161,7 @@ class CAppUI {
 			$params = !empty($this->state["SAVEDPLACE$hist"]) ? $this->state["SAVEDPLACE$hist"] : $this->defaultRedirect;
 		}
 		echo "<script language=\"javascript\">window.location='index.php?$params'</script>";
+		die;
 	}
 
 // Set the page message (displayed on page construction)
