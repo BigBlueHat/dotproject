@@ -16,7 +16,7 @@ $deny = array();
 $sql = "
 SELECT company_id
 FROM companies, permissions
-WHERE permission_user = $user_cookie
+WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'companies' 
 	AND permission_item = company_id
 	AND permission_value = 0
@@ -34,7 +34,7 @@ FROM permissions, companies
 LEFT JOIN projects ON companies.company_id = projects.project_company and projects.project_active <> 0
 LEFT JOIN users ON companies.company_owner = users.user_id
 LEFT JOIN projects AS projects2 ON companies.company_id = projects2.project_company AND projects2.project_active = 0
-WHERE permission_user = $user_cookie
+WHERE permission_user = $AppUI->user_id
 	AND permission_value <> 0 
 	AND (
 		(permission_grant_on = 'all')
