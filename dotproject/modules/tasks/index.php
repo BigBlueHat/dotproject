@@ -251,7 +251,7 @@ while (list( $k, ) = each( $projects ) ) {
 	<td colspan="8">
 		<table width="100%" border="0">
 		<tr>
-			<td nowrap style="border: outset #eeeeee 2px;" style="background-color:<?php echo $p["project_color_identifier"];?>">
+			<td nowrap style="border: outset #eeeeee 2px;background-color:<?php echo $p["project_color_identifier"];?>">
 				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
 				<span style='color:<?php echo bestColor( $p["project_color_identifier"] ); ?>;text-decoration:none;'><B><?php echo $p["project_name"];?></b></span></a>
 			</td>
@@ -260,7 +260,6 @@ while (list( $k, ) = each( $projects ) ) {
 			</td>
 		</tr>
 		</table>
-	</td>
 </tr>
 <?php
 		$done = array();
@@ -277,6 +276,14 @@ while (list( $k, ) = each( $projects ) ) {
 				showtask( $p['tasks'][$i], 1 );
 			}
 		}
+		
+		if($tnums && ENABLE_GANTT_CHARTS) { ?>
+		<tr>
+			<td colspan="8" align=right>
+				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='modules/tasks/gantt.php?project_id=<?php echo $p["project_id"] ?>';">
+			</td>	
+		</tr>
+		<?php }
 	}
 }
 ?>
