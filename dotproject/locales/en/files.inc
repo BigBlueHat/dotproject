@@ -1,12 +1,10 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"filesDelete"=>"Are you sure that you want to delete this file?",
-"File deleted",
 "Date",
 "Edit File",
-"File Management",
 "File Name",
+"File deleted",
 "File inserted",
 "File updated",
 "New File",
@@ -20,3 +18,4 @@
 "download",
 "fileIdError"=>"An invalid file handle was passed to the function",
 "files list",
+"filesDelete"=>"Are you sure that you want to delete this file?",
