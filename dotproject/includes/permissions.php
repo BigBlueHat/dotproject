@@ -72,26 +72,8 @@ if (empty( $m )) {
 }
 $noworkee =0;
 $ual =0;
-/* deprecated...
-$perms ="xxx";
 
-$psql = "
-Select user_id,
-lower(permission_grant_on)
-from users, permissions
-where user_id = $user_cookie
-and user_id = permission_user";
-
-$prc = mysql_query($psql);
-$ual = mysql_num_rows($prc);
-
-while($prow = mysql_fetch_array($prc))
-{
-	$ual = $prow[0];
-	$perms.= ";" . $prow[1] . ";";
-}
-*/
-// alternative method
+// pull permissions into master array
 $psql = "
 select permission_grant_on g, permission_item i, permission_value v
 from permissions
