@@ -24,7 +24,7 @@ if (empty($query_string)) {
 }
 
 // Number of columns (used to calculate how many columns to span things through)
-$cols = 12;
+$cols = 13;
 
 /****
 // Let's figure out which tasks are selected
@@ -47,8 +47,28 @@ if(!$tasks_opened){
     $tasks_opened = array();
 }
 
-if(dPGetParam($_GET, "task_id", 0) > 0){
-    $_GET["open_task_id"] = $_REQUEST["task_id"];
+$task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+$pinned_only = intval( dPgetParam( $_GET, 'pinned', 0) );
+if (isset($_GET['pin']))
+{
+        $pin = intval( dPgetParam( $_GET, "pin", 0 ) );
+
+        $msg = '';
+
+        // load the record data 
+        if($pin) {
+        $sql = "INSERT INTO user_task_pin (user_id, task_id) VALUES($AppUI->user_id, $task_id)";
+        } else {
+        $sql = "DELETE FROM user_task_pin WHERE user_id=$AppUI->user_id AND task_id=$task_id";
+        }
+        
+        if (!db_exec( $sql )) {
+                $AppUI->setMsg( "ins/del err", UI_MSG_ERROR, true );
+        }
+        $AppUI->redirect("m=tasks");
+}
+else if($task_id > 0){
+    $_GET["open_task_id"] = $task_id;
 }
 
 if(($open_task_id = dPGetParam($_GET, "open_task_id", 0)) > 0 && !in_array($_GET["open_task_id"], $tasks_opened)) {
@@ -70,7 +90,7 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $taskPriority = dPgetSysVal( 'TaskPriority' );
 
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
-$task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
+//$task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
 
 $task_sort_item1 = dPgetParam( $_GET, 'task_sort_item1', '' );
 $task_sort_type1 = dPgetParam( $_GET, 'task_sort_type1', '' );
@@ -110,7 +130,7 @@ while ($row = db_fetch_assoc( $prc )) {
 $join = "";
 // pull tasks
 $select = "
-distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
+distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic, task_pinned,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
 assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count,
@@ -134,8 +154,12 @@ $join .= " LEFT JOIN task_log AS tlog ON tlog.task_log_task = tasks.task_id AND 
 
 // to figure out if a file is attached to task
 $join .= " LEFT JOIN files on tasks.task_id = files.file_task";
+$join .= ' LEFT JOIN user_task_pin as pin ON tasks.task_id = pin.task_id';
 
 $where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
+
+if ($pinned_only)
+        $where .= ' AND task_pinned = 1 ';
 
 switch ($f) {
 	case 'all':
@@ -328,6 +352,13 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 			. "\n\t\t</a>";
 	}
 	$s .= "\n\t</td>";
+// pinned
+        $pin_prefix = $a['task_pinned']?'':'un';
+        $s .= "\n\t<td>";
+        $s .= "\n\t\t<a href=\"?m=tasks&pin=" . ($a['task_pinned']?0:1) . "&task_id={$a['task_id']}\">"
+                . "\n\t\t\t".'<img src="./images/icons/' . $pin_prefix . 'pin.gif" alt="'.$AppUI->_( $pin_prefix . 'pin Task' ).'" border="0" width="12" height="12">'
+                . "\n\t\t</a>";
+        $s .= "\n\t</td>";
 // New Log
         if ($a['task_log_problem']>0) {
                 $s .= '<td align="center" valign="middle"><a href="?m=tasks&a=view&task_id='.$a['task_id'].'&tab=0&problem=1">';
@@ -623,9 +654,10 @@ function chAssignment(project_id, rmUser, del) {
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">&nbsp;</th>
+        <th width="10"><?php echo $AppUI->_('Pin'); ?></th>
 	<th width="10"><?php echo $AppUI->_('New Log'); ?></th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
-	<th align='center'><?php sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ); ?></th>
+	<th align="center"><?php sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ); ?></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned users')?></th>

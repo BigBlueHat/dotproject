@@ -140,3 +140,13 @@ VALUES ('14', '1', 'TaskLogReferenceImage', '0| 1|./images/obj/email.gif 2|./mod
 ALTER TABLE `task_log` ADD `task_log_problem` TINYINT( 1 ) DEFAULT '0';
 ALTER TABLE `task_log` ADD `task_log_reference` TINYINT( 4 ) DEFAULT '0';
 ALTER TABLE `task_log` ADD `task_log_related_url` VARCHAR( 255 ) DEFAULT NULL;
+
+#20040910
+# Pinned tasks
+
+CREATE TABLE `user_task_pin` (
+`user_id` int(11) NOT NULL default '0',
+`task_id` int(10) NOT NULL default '0',
+`task_pinned` tinyint(2) NOT NULL default '1',
+PRIMARY KEY (`user_id`,`task_id`)
+) TYPE=MyISAM

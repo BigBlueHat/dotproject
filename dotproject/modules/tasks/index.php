@@ -89,6 +89,10 @@ if ( dPgetParam( $_GET, 'inactive', '' ) == 'toggle' )
 $in = $AppUI->getState( 'inactive' ) == -1 ? '' : 'in';
 
 $titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
+if ($_GET['pinned'] == 1)
+        $titleBlock->addCrumb( '?m=tasks', 'all tasks' );
+else
+        $titleBlock->addCrumb( '?m=tasks&pinned=1', 'my pinned tasks' );
 $titleBlock->addCrumb( "?m=tasks&inactive=toggle", "show ".$in."active tasks" );
 $titleBlock->addCrumb( "?m=tasks&a=tasksperuser", "tasks per user" );
 $titleBlock->show();

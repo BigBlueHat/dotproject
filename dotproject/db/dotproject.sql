@@ -561,3 +561,13 @@ CREATE TABLE `user_access_log` (
 `date_time_last_action` DATETIME DEFAULT '0000-00-00 00:00:00',
 PRIMARY KEY ( `user_access_log_id` )
 ) TYPE = MyISAM;
+
+#20040910
+#Pinned tasks
+CREATE TABLE `user_task_pin` (
+`user_id` int(11) NOT NULL default '0',
+`task_id` int(10) NOT NULL default '0',
+`task_pinned` tinyint(2) NOT NULL default '1',
+PRIMARY KEY (`user_id`,`task_id`)
+) TYPE=MyISAM
+
