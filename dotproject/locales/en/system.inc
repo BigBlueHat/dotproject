@@ -1,9 +1,9 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Time Format",
 "Abbreviation",
 "Date and Time",
+"Default",
 "Default User Preferences",
 "Language",
 "Language Support",
@@ -15,6 +15,7 @@
 "String",
 "System Administration",
 "Tabbed Box View",
+"Time Format",
 "Translation Management",
 "User Interface Style",
 "User Preferences",

@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"filesDelete"=>"Are you sure that you want to delete this file?",
 "File deleted",
 "Date",
 "Edit File",

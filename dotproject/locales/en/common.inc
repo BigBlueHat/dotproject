@@ -39,6 +39,7 @@
 "Name",
 "No",
 "No data available",
+"Not implemented",
 "Owner",
 "Password",
 "Phone",

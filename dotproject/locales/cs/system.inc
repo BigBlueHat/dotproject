@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Abbreviation"=>"Zkratka",
+"Date and Time"=>"",
+"Default"=>"",
+"Default User Preferences"=>"",
+"Language"=>"Jazyk",
+"Language Support"=>"Podpora jazykù",
+"Locale"=>"Národní prostøedí",
+"Locales file saved"=>"Soubor Locales ulo¾en",
+"Module"=>"Modul",
+"Preferences"=>"",
+"Short Date Format"=>"Formát pro krátké datum",
+"String"=>"øetìzec",
+"System Administration"=>"Systémová administrace",
+"Tabbed Box View"=>"Zobrazení seznamù",
+"Time Format"=>"",
+"Translation Management"=>"Správa pøekladù",
+"User Interface Style"=>"Styl u¾ivatelského rozhraní",
+"User Preferences"=>"U¾ivatelské pøedvolby",

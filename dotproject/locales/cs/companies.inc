@@ -1,12 +1,20 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Add Company"=>"Pøidat spoleènost",
+"Budget"=>"Rozpoèet",
 "Company Name"=>"Jméno spoleènosti",
+"Company Owner"=>"Vlastník spoleènosti",
 "Company deleted"=>"Spoleènost smazána",
 "Company inserted"=>"Spoleènost vlo¾ena",
 "Company updated"=>"Spoleènost aktualizována",
+"Edit Company"=>"Upravit spoleènost",
+"Started"=>"Zahájeno",
+"Status"=>"Status",
 "View Company/Client"=>"Zobrazit spoleènost/klienta",
 "company list"=>"seznam spoleèností",
+"companyDelete"=>"Urèitì chcete tuto spoleènost vymazat?",
+"companyValidName"=>"Prosím vlo¾te platné jméno spoleènosti.",
 "companyWelcome"=>"<b>Vítejte %s.</b> Tato stránka zobrazuje seznam souèasných klientùm a jejich aktivních projektù.",
 "delete company"=>"smazat spoleènost",
 "edit this company"=>"editovat spoleènost",

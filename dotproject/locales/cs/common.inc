@@ -27,6 +27,7 @@
 "My Info"=>"Informace o mì",
 "Name"=>"Jméno",
 "No data available"=>"Data nejsou dostupná",
+"Not implemented"=>"Neimplementováno",
 "Owner"=>"Vlastník",
 "Phone"=>"Telefon",
 "Project"=>"Projekt",
