@@ -1,10 +1,5 @@
 <?php
 
-/*
- * TODO:
- * - add task info showing also parent tasks
- */
-
 $project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
 
 // check permissions
@@ -30,19 +25,22 @@ if ($task_priority > -2 && $task_priority < 2 && count( $selected )) {
 
 $AppUI->savePlace();
 
-// query my sub-tasks
+// query my sub-tasks (ignoring task parents)
 
 $sql = "
 		 SELECT a.*,
-		 project_name, project_id, project_color_identifier
+		 project_name, project_id, project_color_identifier,
+		 parent.task_name as parent_name
 		 FROM projects, tasks AS a, user_tasks
 		 LEFT JOIN tasks AS b ON a.task_id=b.task_parent and a.task_id != b.task_id
+  		 LEFT JOIN tasks AS parent ON a.task_parent = parent.task_id
 		 WHERE user_tasks.task_id = a.task_id
 		 AND b.task_id IS NULL
 		 AND user_tasks.user_id = $AppUI->user_id
 		 AND a.task_precent_complete != 100
 		 AND project_id = a.task_project" .
-  (!@$_POST["show_low_tasks"] ? " AND a.task_priority >= 0" : "") .
+  (!@$_POST["showArchivedProjects"] ? " AND project_active = 1" : "") .
+  (!@$_POST["show_low_tasks"] ? " AND a.task_priority >= 0" : "") .  
   " GROUP BY a.task_id
 	ORDER BY a.task_start_date, task_priority DESC
 ";
@@ -68,10 +66,11 @@ $crumbs["?m=tasks"] = "tasks list";
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <form name="form_buttons" method="post">		
 <tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" width="100%">
-<input type=checkbox name="show_low_tasks" <?php echo @$_POST["show_low_tasks"] ? "checked" : "" ?> onclick='submit()'>show low priority tasks
-	</td>
+	<td nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<td align="right" nowrap>
+		<input type=checkbox name="showArchivedProjects" <?php echo @$_POST["showArchivedProjects"] ? "checked" : "" ?> onclick='submit()'>show archived projects
+		<input type=checkbox name="show_low_tasks" <?php echo @$_POST["show_low_tasks"] ? "checked" : "" ?> onclick='submit()'>show low priority tasks
+	</td>	
 </tr>
 </form>		
 </table>
@@ -142,7 +141,7 @@ foreach ($tasks as $a) {
 	</td>
 
 	<td width="50%">
-		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a>
+		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>" title='<?php echo ( isset($a['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($a['parent_name']) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($a['task_description']) ?>'><?php echo $a["task_name"];?></a>
 	</td>
 	<td width="50%">
 		<a href="./index.php?m=projects&a=view&project_id=<?php echo $a["project_id"];?>">
