@@ -58,6 +58,8 @@ WHERE file_task = $task_id
 ";
 $files = db_loadList( $sql );
 
+$durnTypes = dPgetSysVal( 'TaskDurationType' );
+
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Task', 'tasks.gif', $m, "$m.$a" );
 $titleBlock->addCell(
@@ -193,7 +195,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap" valign="top"><?php echo $AppUI->_('Expected Duration');?>:</td>
-			<td class="hilite" width="300"><?php echo $task["task_duration"].' '.$AppUI->_( $task["task_duration_type"] );?></td>
+			<td class="hilite" width="300"><?php echo $task["task_duration"].' '.$AppUI->_( $durnTypes[$task["task_duration_type"]] );?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?>:</td>
