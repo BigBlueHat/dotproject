@@ -1,3 +1,25 @@
+2003-04-24 15:07  (eddieajau)
+---------------------------------
+modules/companies/do_company_aed.php
+modules/system/syskeys/do_sysval_aed.php
+modules/system/syskeys/do_syskey_aed.php
+- Updated error handling
+
+2003-04-24 15:02  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Updated icons
+
+2003-04-24 15:01  (eddieajau)
+---------------------------------
+classes/dp.class.php
+- Added internal error handling
+
+2003-04-24 04:07  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-23 20:41  (eddieajau)
 ---------------------------------
 docs/index.html
@@ -476,28 +498,6 @@ modules/ticketsmith/post_ticket.php
 modules/ticketsmith/view.php
 modules/ticketsmith/comment.php
 modules/ticketsmith/followup.php
-- Patched several bugs relating to undeclared variables
-
-2003-04-14 08:01  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-- Patched several bugs relating to undeclared variables
-
-2003-04-14 07:44  (eddieajau)
----------------------------------
-modules/ticketsmith/index.php
-modules/ticketsmith/view.php
-- Cosmetic update
-
-2003-04-14 07:43  (eddieajau)
----------------------------------
-modules/ticketsmith/search.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/login.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/admin.php
-modules/ticketsmith/common.inc.php
-- Removed common header and footer
 ...
 
 (This file has been wrapped)
