@@ -49,7 +49,7 @@ function db_insert_id() {
 }
 
 function db_exec( $sql ) {
-        global $db;
+        global $db, $baseDir;
 
 	if (! is_object($db))
 	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
