@@ -23,3 +23,8 @@ SELECT comment_task, comment_title, comment_body, comment_user, comment_date FRO
 
 # uncomment when satisfied data has been copied successfully
 #DROP TABLE task_comments;
+
+# increase the description fields
+ALTER TABLE `companies` CHANGE `company_description` `company_description` TEXT;
+ALTER TABLE `departments` CHANGE `dept_desc` `dept_desc` TEXT;
+ALTER TABLE `files` CHANGE `file_description` `file_description` TEXT;
