@@ -224,25 +224,39 @@ class CAppUI {
 		$password = trim( db_escape( $password ) );
 
 		$sql = "
-		SELECT user_id, user_password AS pwd1, password('$password') AS pwd2
+		SELECT user_id, user_password AS pwd, password('$password') AS pwdpwd, md5('$password') AS pwdmd5
 		FROM users, permissions
 		WHERE user_username = '$username'
 			AND users.user_id = permissions.permission_user
 			AND permission_value <> 0
 		";
 
-		if (!(db_loadHash( $sql, $row ))) {
+		$foo = null;
+		if (!($row = db_loadObject( $sql, $foo ))) {
 			return false;
 		}
 
-		if (strcmp( $row['pwd1'], $row['pwd2'] )) {
-			return false;
+		if (strcmp( $row->pwd, $row->pwdmd5 )) {
+			if ($this->cfg['check_legacy_password']) {
+			/* next check the legacy password */
+				if (strcmp( $row->pwd, $row->pwdpwd )) {
+					/* no match - failed login */
+					return false;
+				} else {
+					/* valid legacy login - update the md5 password */
+					$sql = "UPDATE users SET user_password=MD5('$password') WHERE user_id=$row->user_id";
+					db_exec( $sql ) or die( "Password update failed." );
+					$this->setMsg( 'Password updated', UI_MSG_ALERT );
+				}
+			} else {
+				return false;
+			}
 		}
 
 		$sql = "
 		SELECT user_id, user_first_name, user_last_name, user_company, user_department, user_email, user_type
 		FROM users
-		WHERE user_id = {$row['user_id']} AND user_username = '$username'
+		WHERE user_id = $row->user_id AND user_username = '$username'
 		";
 
 		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
