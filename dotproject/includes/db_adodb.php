@@ -83,12 +83,12 @@ function db_fetch_array( &$qid  ) {
 }
 
 function db_fetch_object( $qid  ) {
-	return $qid->FetchObject();;
+	return $qid->FetchNextObject(false);
 }
 
 function db_escape( $str ) {
         global $db;
-	return $db->qstr( $str );
+	return substr($db->qstr( $str ), 1, -1);
 }
 
 function db_version() {
