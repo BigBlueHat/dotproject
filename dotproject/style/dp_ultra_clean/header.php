@@ -5,35 +5,35 @@ $nav = dPgetMenuModules();
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-<script language="JavaScript">
-function doBtn() {
-    var oEl = event.srcElement;
-    var doit = event.type;
-
-    while (-1 == oEl.className.indexOf( "Btn" )) {
-        oEl = oEl.parentElement;
-        if (!oEl) {
-            return;
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <script language="JavaScript">
+    function doBtn() {
+        var oEl = event.srcElement;
+        var doit = event.type;
+    
+        while (-1 == oEl.className.indexOf( "Btn" )) {
+            oEl = oEl.parentElement;
+            if (!oEl) {
+                return;
+            }
+        }
+        if (doit == "mouseover" || doit == "mouseup") {
+            oEl.className = "clsBtnOn";
+        } else if (doit == "mousedown") {
+            oEl.className = "clsBtnDown";
+        } else {
+            oEl.className = "clsBtnOff";
         }
     }
-    if (doit == "mouseover" || doit == "mouseup") {
-        oEl.className = "clsBtnOn";
-    } else if (doit == "mousedown") {
-        oEl.className = "clsBtnDown";
-    } else {
-        oEl.className = "clsBtnOff";
+    function tboff(){
+        var oEl = event.srcElement;
+        var doit = event.type;
+        oEl.className = "topBtnOff";
     }
-}
-function tboff(){
-    var oEl = event.srcElement;
-    var doit = event.type;
-    oEl.className = "topBtnOff";
-}
-</script>
-<title><?php echo $page_title;?></title>
-<link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
-<style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
+    </script>
+    <title><?php echo $page_title;?></title>
+    <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
+    <style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
 </head>
 <body>
 

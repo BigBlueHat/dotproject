@@ -9,17 +9,15 @@ $AppUI->user_locale = $host_locale;
 header("Content-type: text/html;charset=$locale_char_set");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $host_locale; ?>" lang="<?php echo $host_locale; ?>">
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+
 <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
     <title><?php echo $company_name;?> :: dotProject Login</title>
     <meta http-equiv="Pragma" content="no-cache" />
-    <link rel="stylesheet" href="./style/demo1/main.css" type="text/css" media="all" />
-    <style type="text/css" media="all">
-    <!-- 
-    @import url("./style/demo1/main.css");
-    -->
-    </style>
+    <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
+    <style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
 </head>
 
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
