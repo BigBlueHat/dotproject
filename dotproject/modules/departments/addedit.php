@@ -1,17 +1,15 @@
 <?php
 // Add / Edit Company
-$dept_id = isset($HTTP_GET_VARS['dept_id']) ? $HTTP_GET_VARS['dept_id'] : 0;
+$dept_id = isset($_GET['dept_id']) ? $_GET['dept_id'] : 0;
 $company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
 
 // check permissions
 $denyEdit = getDenyEdit( $m, $dept_id );
 
 if ($denyEdit) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+
 
 // pull data for this department
 $sql = "
@@ -20,48 +18,37 @@ FROM departments
 LEFT JOIN companies ON company_id = dept_company
 WHERE dept_id = $dept_id
 ";
-$drow = array();
-$rc = mysql_query($sql);
-if (mysql_num_rows($rc) < 1) {
-	$sql = "SELECT company_name FROM companies WHERE company_id = $company_id";
-##echo "<p>$sql";##
-	if (!($rc = mysql_query($sql))) {
-		echo '<script language="javascript">
-		window.location="./index.php?m=companies&message=You must have an active company to add a department.";
-		</script>
-		';
-	}
-	$row = mysql_fetch_row($rc);
-	$company_name = $row[0];
-} else {
-	$drow = mysql_fetch_array( $rc, MYSQL_ASSOC );
-##echo $sql.mysql_error();##
-	$company_name = $drow['company_name'];
-	$company_id = $drow['dept_company'];
+db_loadHash( $sql, $drow );
+##echo $sql.db_error();##
+$company_id = $dept_id ? $drow['dept_company'] : $company_id;
+
+// check if valid company
+$sql = "SELECT company_name FROM companies WHERE company_id = $company_id";
+$company_name = db_loadResult( $sql );
+if (!$dept_id && $company_name === null) {
+	$AppUI->setMsg( 'badCompany', UI_MSG_ERROR );
+	$AppUI->redirect();
 }
 
 // collect all the departments in the company
-$depts = array(0 => '');
+$depts = array( 0 => '' );
 if ($company_id) {
 	$sql = "SELECT dept_id,dept_name FROM departments WHERE dept_company = $company_id AND dept_id <> $dept_id";
-	$rc = mysql_query($sql);
-##echo $sql.mysql_error();##
-	while ($row = mysql_fetch_array( $rc, MYSQL_NUM )) {
-		$depts[$row[0]] = $row[1];
-	}
+	$depts = arrayMerge( $depts, db_loadHashList( $sql ) );
+##echo $sql.db_error();##
 }
 
 // collect all the users for the department owner list
-$owners = array( '0'=>'');
-$osql = "SELECT user_id,user_first_name,user_last_name FROM users";
-$orc = mysql_query($osql);
-while ($orow = mysql_fetch_row( $orc )) {
-	$owners[$orow[0]] = "$orow[1] $orow[2]";
-}
+$sql = "SELECT user_id,CONCAT(user_first_name,' ',user_last_name) FROM users";
+$owners = arrayMerge( array( '0'=>'' ), db_loadHashList( $sql ) );
 
+$crumbs = array();
+$crumbs["?m=companies"] = "company list";
+$crumbs["?m=companies&a=view&company_id=$company_id"] = "view this company";
+$crumbs["?m=departments&a=view&dept_id=$dept_id"] = "view this department";
 ?>
 
-<SCRIPT language="javascript">
+<script language="javascript">
 function testURL( x ) {
 	var test = "document.changeform.dept_url.value";
 	test = eval(test);
@@ -81,7 +68,7 @@ function submitIt() {
 }
 
 function delIt() {
-	if (confirm( "Are you sure you would like\nto delete this company?" )) {
+	if (confirm( "<?php echo $AppUI->_( 'delDept' );?>?" )) {
 		var form = document.changeform;
 		form.del.value=1;
 		form.submit();
@@ -90,80 +77,76 @@ function delIt() {
 </script>
 
 <table width="98%" border=0 cellpadding="0" cellspacing=1>
-	<tr>
+<tr>
 	<td><img src="./images/icons/users.gif" alt="" border="0"></td>
-		<td nowrap><span class="title">Company Department</span></td>
+		<td nowrap><span class="title"><?php echo $dept_id ? $AppUI->_( 'Edit Department' ) : $AppUI->_( 'Add Department' );?></span></td>
 		<td align="right" width="100%">&nbsp;</td>
-	</tr>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_DEPT_EDIT' );?></td>
+</tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td width="50%" nowrap>
-	<a href="./index.php?m=companies">companies list</a>
-	<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>">view this Company</a>
-	<b>:</b> <a href="./index.php?m=departments&a=view&dept_id=<?php echo $dept_id;?>">view this Department</a>
-	</td>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
 	<td width="50%" align="right">
-		<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this comapny" border="0">delete department</a>
+		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0"><?php echo $AppUI->_( 'delete' );?></a>
 	</td>
 </tr>
 </table>
 
-<table cellspacing="0" cellpadding="2" border="0" width="98%" class="std">
+<table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
 <form name="changeform" action="?m=departments&a=dosql" method="post">
 <input name="del" type="hidden" value="0">
 <input type="hidden" name="dept_id" value="<?php echo $dept_id;?>">
 <input type="hidden" name="dept_company" value="<?php echo $company_id;?>">
 
 <tr>
-	<th colspan=2>
-		<?php if($dept_id == 0){echo "Add";}else{echo "Edit";}?> Department for <?php echo $company_name;?>
-	</th>
+	<td align="right" nowrap><?php echo $AppUI->_( 'Department Company' );?>:</td>
+	<td ><b><?php echo $company_name;?></b></td>
 </tr>
 <tr>
-	<td align="right" nowrap>Department Name:</td>
+	<td align="right" nowrap><?php echo $AppUI->_( 'Department Name' );?>:</td>
 	<td>
-		<input type="text" class="text" name="dept_name" value="<?php echo @$drow["dept_name"];?>" size=50 maxlength="255"> <span class="smallNorm">(required)</span>
+		<input type="text" class="text" name="dept_name" value="<?php echo @$drow["dept_name"];?>" size=50 maxlength="255"> <span class="smallNorm">(<?php echo $AppUI->_( 'required' );?>)</span>
 	</td>
 </tr>
 <tr>
-	<td align="right" nowrap>Phone:</td>
+	<td align="right" nowrap><?php echo $AppUI->_( 'Phone' );?>:</td>
 	<td>
 		<input type="text" class="text" name="dept_phone" value="<?php echo @$drow["dept_phone1"];?>" maxlength="30">
 	</td>
 </tr>
 <tr>
-	<td align="right" nowrap>Fax:</td>
+	<td align="right" nowrap><?php echo $AppUI->_( 'Fax' );?>:</td>
 	<td>
 		<input type="text" class="text" name="dept_fax" value="<?php echo @$drow["dept_fax"];?>" maxlength="30">
 	</td>
 </tr>
 <tr>
-	<td align="right">Address1:</td>
+	<td align="right"><?php echo $AppUI->_( 'Address' );?>1:</td>
 	<td><input type="text" class="text" name="dept_address1" value="<?php echo @$crow["dept_address1"];?>" size=50 maxlength="255"></td>
 </tr>
 <tr>
-	<td align="right">Address2:</td>
+	<td align="right"><?php echo $AppUI->_( 'Address' );?>2:</td>
 	<td><input type="text" class="text" name="dept_address2" value="<?php echo @$crow["dept_address2"];?>" size=50 maxlength="255"></td>
 </tr>
 <tr>
-	<td align="right">City:</td>
+	<td align="right"><?php echo $AppUI->_( 'City' );?>:</td>
 	<td><input type="text" class="text" name="dept_city" value="<?php echo @$crow["dept_city"];?>" size=50 maxlength="50"></td>
 </tr>
 <tr>
-	<td align="right">State:</td>
+	<td align="right"><?php echo $AppUI->_( 'State' );?>:</td>
 	<td><input type="text" class="text" name="dept_state" value="<?php echo @$crow["dept_state"];?>" maxlength="50"></td>
 </tr>
 <tr>
-	<td align="right">Zip:</td>
+	<td align="right"><?php echo $AppUI->_( 'Zip' );?>:</td>
 	<td><input type="text" class="text" name="dept_zip" value="<?php echo @$crow["dept_zip"];?>" maxlength="15"></td>
 </tr>
 <tr>
-	<td align="right">URL http://<A name="x"></a></td>
+	<td align="right"><?php echo $AppUI->_( 'URL' );?><A name="x"></a></td>
 	<td>
 		<input type="text" class="text" value="<?php echo @$crow["dept_url"];?>" name="dept_url" size=50 maxlength="255">
-		<a href="#x" onClick="testURL('CompanyURLOne')">[test]</a>
+		<a href="#x" onClick="testURL('dept_url')">[<?php echo $AppUI->_( 'test' );?>]</a>
 	</td>
 </tr>
 
@@ -171,7 +154,7 @@ function delIt() {
 if (count( $depts )) {
 ?>
 <tr>
-	<td align="right" nowrap>Department Parent:</td>
+	<td align="right" nowrap><?php echo $AppUI->_( 'Department Parent' );?>:</td>
 	<td>
 <?php
 	echo arraySelect( $depts, 'dept_parent', 'class=text size=1', @$drow["dept_parent"] );
@@ -183,24 +166,33 @@ if (count( $depts )) {
 } 
 ?>
 <tr>
-	<td align="right">Owner:</td>
+	<td align="right"><?php echo $AppUI->_( 'Owner' );?>:</td>
 	<td>
 <?php
-	echo arraySelect( $owners, 'dept_owner', 'size="1" class="text"', $crow["dept_owner"] );
+	echo arraySelect( $owners, 'dept_owner', 'size="1" class="text"', $drow["dept_owner"] );
 ?>
 	</td>
 </tr>
-<tr><td align="right" nowrap>Description:</td><td>&nbsp; </td></tr>
-<tr><td colspan=2 align="center">
-<textarea cols="70" rows="10" class="textarea" name="dept_description">
-<?php echo @$drow["dept_description"];?>
-</textarea>
-</td></tr>
+<tr>
+	<td align="right" nowrap><?php echo $AppUI->_( 'Description' );?>:</td>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td colspan="2" align="center">
+		<textarea cols="70" rows="10" class="textarea" name="dept_desc"><?php echo @$drow["dept_desc"];?></textarea>
+	</td>
+</tr>
 
-<tr><td><input type="button" value="back" class="button" onClick="javascript:history.back(-1);"></td><td align="right"><input type="button" value="submit" class="button" onClick="submitIt()"></td></tr>
+<tr>
+	<td>
+		<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onClick="javascript:history.back(-1);">
+	</td>
+	<td align="right">
+		<input type="button" value="<?php echo $AppUI->_( 'submit' );?>" class="button" onClick="submitIt()">
+	</td>
+</tr>
 </form>
 </table>
-&nbsp;<br>&nbsp;<br>&nbsp;
 
 </body>
 </html>
