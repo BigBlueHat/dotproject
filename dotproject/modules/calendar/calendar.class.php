@@ -3,7 +3,7 @@
 ## Calendar classes
 ##
 
-require_once( $AppUI->getPearClass( 'Date' ) );
+require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 /**
