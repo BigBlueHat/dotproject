@@ -1,6 +1,6 @@
 <?php
 if ( isset($_POST['dept_company']) ) {
-	$company_id =  $_POST['dept_company'];
+	$company_id = $_POST['dept_company'];
 } else {
 	echo '<script language="javascript">window.location="./index.php?m=companies&message=Could not process department without a valid company_id."</script>';
 }
@@ -65,7 +65,7 @@ if ($del) {
 	'$dept_address1',
 	'$dept_address2',
 	'$dept_city',
-	'$dept_state,
+	'$dept_state',
 	'$dept_zip',
 	'$dept_url',
 	'$dept_owner',
