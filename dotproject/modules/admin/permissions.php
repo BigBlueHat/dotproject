@@ -78,6 +78,7 @@ $prc = mysql_query($psql);
 $modules = array(
 	"all",
 	"admin",
+	"calendar",
 	"companies",
 	"contacts",
 	"files",
