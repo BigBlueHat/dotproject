@@ -713,7 +713,6 @@ class CTask extends CDpObject {
 			. "\n\tproject_color_identifier AS color,"
 			. "\n\tproject_name"
 			. "\nFROM tasks,projects"
-		    . "\n$join"
 			. "\nWHERE $where"
 			. "\nORDER BY task_start_date";
 //echo "<pre>$sql</pre>";
