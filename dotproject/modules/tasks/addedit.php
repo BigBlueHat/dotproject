@@ -1,4 +1,6 @@
 <?php
+require_once( "$root_dir/classdefs/date.php" );
+
 $task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
 $task_parent = isset( $_GET['task_parent'] ) ? $_GET['task_parent'] : 0;
 
@@ -16,6 +18,19 @@ $project_id = $AppUI->getState( 'ActiveProject' ) ? $AppUI->getState( 'ActivePro
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
 db_loadHash( $sql, $task );
 $task_parent = isset( $task['task_parent'] ) ? $task['task_parent'] : $task_parent;
+
+// format dates
+$df = $AppUI->getPref('SHDATEFORMAT');
+
+$start_date = $task["task_start_date"] ? CDate::fromDateTime( $task["task_start_date"] ) : new CDate();
+$start_date->setFormat( $df );
+
+if ($task["task_end_date"]) {
+	$end_date = CDate::fromDateTime( $task["task_end_date"] );
+	$end_date->setFormat( $df );
+} else {
+	$end_date = null;
+}
 
 // pull the related project
 $sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = $project_id";
@@ -47,7 +62,14 @@ WHERE task_project = $project_id
 	AND task_id <> $task_id
 ORDER BY task_project
 ";
-$projTasks = arrayMerge( array( "{$task['task_id']}" => 'None' ), db_loadHashList( $sql ) );
+$projTasks = array( "{$task['task_id']}" => 'None' );
+$res = db_exec( $sql );
+while ($row = db_fetch_row( $res )) {
+	if (strlen( $row[1] ) > 25) {
+		$row[1] = substr( $row[1], 0, 22 ).'...';
+	}
+	$projTasks[$row[0]] = $row[1];
+}
 
 // Pull tasks dependencies
 $sql = "
@@ -65,15 +87,19 @@ $crumbs["?m=tasks&a=addedit&task_id={$task['task_id']}"] = "view this task";
 ?>
 
 <SCRIPT language="JavaScript">
-function popCalendar(x){
-	var form = document.AddEdit;
+var calendarField = '';
 
-	mm = <?php echo strftime("%m", time());?>;
-	dd = <?php echo strftime("%d", time());?>;
-	yy = <?php echo strftime("%Y", time());?>;
+function popCalendar( field ){
+	calendarField = field;
+	uts = eval( 'document.AddEdit.task_' + field + '.value' );
+	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
+}
 
-<?php  JScalendarDate("AddEdit"); ?>
-	newwin = window.open( './calendar.php?form=AddEdit&page=tasks&field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false' );
+function setCalendar( uts, fdate ) {
+	fld_uts = eval( 'document.AddEdit.task_' + calendarField );
+	fld_fdate = eval( 'document.AddEdit.' + calendarField );
+	fld_uts.value = uts;
+	fld_fdate.value = fdate;
 }
 
 function submitIt(){
@@ -87,11 +113,6 @@ function submitIt(){
 	} else if (form.task_start_date.value.length < 9) {
 		alert( "Please enter a valid start date" );
 		form.task_start_date.focus();
-<?php if(REQUIRE_TASKS_DURATION) { ?>
-	} else if (form.duration.value.length < 1) {
-		alert( "Please enter the duration of this task" );
-		form.duration.focus();
-<?php } ?>
 	} else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
@@ -205,7 +226,7 @@ function delIt() {
 </table>
 
 
-<table border="1" cellpadding="4" cellspacing="0" width="98%" bgcolor="#eeeeee">
+<table border="1" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:<?php echo $project["project_color_identifier"];?>" >
 		<font color="<?php echo bestColor( $project["project_color_identifier"] ); ?>">
@@ -214,34 +235,31 @@ function delIt() {
 	</td>
 </tr>
 
-<tr class="basic" valign="top" width="50%">
+<tr valign="top" width="50%">
 	<td>
-		<span id="ccstasknamestr"><span class="FormLabel">Task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$task["task_name"];?>" size="40" maxlength="255">
+		<?php echo $AppUI->_( 'Task Name' );?> *
+		<br /><input type="text" class="text" name="task_name" value="<?php echo @$task["task_name"];?>" size="40" maxlength="255">
 	</td>
 	<td>
-		<table width="100%" bgcolor="#dddddd">
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td>Status</td>
-			<td><span class="FormLabel">priority</span> <span class="FormElementRequired">*</span></td>
-			<td nowrap>Complete?</td>
-			<td>Milestone?</td>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Status' );?></td>
+			<td>		
+				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $task["task_status"] ) . '%';?>
+			</td>
+
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
+			<td nowrap>
+				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $task["task_priority"] );?>
+			</td>
 		</tr>
 		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Progress' );?></td>
 			<td>		
-			<?php
-				echo arraySelect( $status, 'task_status', 'size=1 class=text', $task["task_status"] ) . '%';
-			?>
+				<?php echo arraySelect( $percent, 'task_precent_complete', 'size="1" class="text"', $task["task_precent_complete"] ) . '%';?>
 			</td>
-			<td nowrap>
-			<?php
-				echo arraySelect( $priority, 'task_priority', 'size=1 class=text', $task["task_priority"] );
-			?>
-			</td>
-			<td>		
-			<?php
-				echo arraySelect( $percent, 'task_precent_complete', 'size=1 class=text', $task["task_precent_complete"] ) . '%';
-			?>
-			</td>
+
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Milestone' );?>?</td>
 			<td>
 				<input type=checkbox value=1 name="task_milestone" <?php if($task["task_milestone"]){?>checked<?php }?>>
 			</td>
@@ -249,64 +267,54 @@ function delIt() {
 		</table>
 	</td>
 </tr>
-<tr class="basic" valign="top">
+<tr valign="top">
 	<td width="50%">
-		Task creator
+		<?php echo $AppUI->_( 'Task Creator' );?>
 		<br>
-		<?php echo arraySelect( $users, 'task_owner', '"width:200px;"', $task["task_owner"] );?>
-		<br><br>Related URL
-		<br><input type="Text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255"">
+		<?php echo arraySelect( $users, 'task_owner', 'class="text"', $task["task_owner"] );?>
+		<br><br><?php echo $AppUI->_( 'Web Address' );?>
+		<br><input type="text" class="text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255"">
 		<br>
 		<table>
 		<tr>
-			<td>Task Parent:</td>
+			<td><?php echo $AppUI->_( 'Task Parent' );?>:</td>
 			<td><img src="./images/shim.gif" width=30 height=1></td>
-			<td>Task budget</td>
+			<td><?php echo $AppUI->_( 'Target Budget' );?></td>
 		</tr>
 		<tr>
 			<td>
-				<?php echo arraySelect( $projTasks, 'task_parent', '', $task_parent ); ?>
+				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text"', $task_parent ); ?>
 			</td>
 			<td><img src="./images/shim.gif" width=30 height=1></td>			
-			<td>$<input type="Text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10"></td>			
+			<td>$<input type="text" class="text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10"></td>			
 		</tr>
 		</table>
 	</td>
 	<td  align="center" width="50%">
-		<table width="300">
+		<table cellspacing="0" cellpadding="2" border="0">
 			<tr>
-				<td>
-					<span id="startmmint"><span class="FormLabel">Start Date
-					<br>(<?php echo dateFormat()?>)</span></span>
-				</td>
-				<td>
-					<span id="targetmmint"><span class="FormLabel">Finish Date
-					<br>(<?php echo dateFormat()?>)</span>
-				</td>
-			</tr>
-			<tr>
-				<td nowrap>
-					<input type="text" name="task_start_date" value="<?php if(intval($task["task_start_date"]) > 0){
-						echo fromDate(substr($task["task_start_date"], 0, 10));
-					} else {
-						echo fromDate(date("Y", time()) ."-" . date("m", time()) ."-" . date("d", time()));
-					};?>" size="10" maxlength="10">
-					<a href="#" onClick="popCalendar('task_start_date');"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> 
-					<a href="#" onClick="popCalendar('task_start_date');">calendar</A> &nbsp; &nbsp; &nbsp;
-				</td>
-				<td nowrap>
-					<input type="text" name="task_end_date" value="<?php if(intval($task["task_end_date"]) > 0) {
-						echo fromDate(substr($task["task_end_date"], 0, 10));
-					} ?>" size="10" maxlength="10" onclick="javascript:document.AddEdit.task_dynamic.checked=false">
-					<a href="#" onClick="javascript:document.AddEdit.task_dynamic.checked=false;popCalendar('task_end_date')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="javascript:document.AddEdit.task_dynamic.checked=false;popCalendar('task_end_date')">calendar</A>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
+				<td nowrap="nowrap">
+					<input type="hidden" name="task_start_date" value="<?php echo $start_date->getTimestamp();?>">
+					<input type="text" name="start_date" value="<?php echo $start_date->toString();?>" class="text" disabled="disabled">
+					<a href="#" onClick="popCalendar('start_date')">
+						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+					</a>
 				</td>
 			</tr>
 			<tr>
-				<td>Expected duration:</td>				
-				<td>Dynamic Task?</td>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Finish Date' );?></td>
+				<td nowrap="nowrap">
+					<input type="hidden" name="task_end_date" value="<?php echo $end_date ? $end_date->getTimestamp() : '-1';?>">
+					<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->toString() : '';?>" class="text" disabled="disabled">
+					<a href="#" onClick="popCalendar('end_date')">
+						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+					</a>
+				</td>
 			</tr>
 			<tr>
-				<td>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>				
+				<td nowrap="nowrap">
 			<?php if (($task["task_duration"]) > 24 ) {
 				$newdir = ($task["task_duration"] / 24);
 				$dir = 24;
@@ -315,93 +323,95 @@ function delIt() {
 				$dir = 1;
 			}
 			if ($newdir ==0) {
-				$newdir ="";
+				$newdir ="0";
 			}
 			?>
-			<input type="text" name="duration" maxlength=4 size=5 value="<?php echo $newdir;?>">
-			<select name="dayhour">
-				<option value="1" <?php  if ($dir ==1) echo "selected";?>>hour(s)
-				<option value="24" <?php  if ($dir ==24) echo "selected";?>>day(s)
-			</select>
-			</td>
-			
-			<td><input type="checkbox" name=task_dynamic value=1 <?php if($task["task_dynamic"]!="0") echo "checked"?>></td>
+					<input type="text" class="text" name="duration" maxlength=4 size=5 value="<?php echo $newdir;?>">
+					<select name="dayhour" size="1" class="text">
+						<option value="1" <?php  if ($dir ==1) echo "selected";?>>hour(s)
+						<option value="24" <?php  if ($dir ==24) echo "selected";?>>day(s)
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
+				<td nowrap="nowrap">
+					<input type="checkbox" name=task_dynamic value="1" <?php if($task["task_dynamic"]!="0") echo "checked"?>>
+				</td>
 			</tr>
 		</table>
 	</td>
 </tr>
-<tr class="basic">
-	<td>
-		<table>
+<tr>
+	<td valign="top" align="center">
+		<table cellspacing="0" cellpadding="2" border="0">
 			<tr>
-				<td>All tasks</td>
-				<td></td>
-				<td>Task dependencies</td>
+				<td><?php echo $AppUI->_( 'All Tasks' );?></td>
+				<td><?php echo $AppUI->_( 'Task Dependencies' );?></td>
 			</tr>
 			<tr>
 				<td>
 					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
-				<td nowrap>
-					<input type="button" value=" << " onClick="removeTaskDependency()">
-					<input type="button" value=" >> " onClick="addTaskDependency()">
-				</td>
 				<td>
 					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 			</tr>
+			<tr>
+				<td align="right"><input type="button" class="button" value="&gt;" onClick="addTaskDependency()"></td>
+				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeTaskDependency()"></td>
+			</tr>
 		</table>		
 	</td>
-	<td>&nbsp;</td>
-</tr>
-<tr class="basic">
-	<td valign="middle">
-		<span id="fulldesctext"><span class="formlabel">Instructions:</span></span><br>
-		<textarea name="task_description" cols="38" rows="10" wrap="virtual"><?php echo @$task["task_description"];?></textarea>
-	</td>
-	<td valign="middle">
-		<table>
+	<td valign="top" align="center">
+		<table cellspacing="0" cellpadding="2" border="0">
 			<tr>
-				<td>Resources</td>
-				<td></td>
-				<td>Assigned to Task</td>
+				<td><?php echo $AppUI->_( 'Resources' );?></td>
+				<td><?php echo $AppUI->_( 'Assigned to Task' );?></td>
 			</tr>
 			<tr>
 				<td>
 					<?php echo arraySelect( $users, 'resources', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
-				<td nowrap>
-					<input type="button" value=" << " onClick="removeUser()">
-					<input type="button" value=" >> " onClick="addUser()">
-				</td>
 				<td>
 					<?php echo arraySelect( $assigned, 'assigned', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
+			<tr>
+				<td align="right"><input type="button" class="button" value="&gt;" onClick="addUser()"></td>
+				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeUser()"></td>
+			</tr>
 			</tr>
 			<tr>
 				<td colspan=3 align="center">
-					<input type="checkbox" name="notify" value="1"> Notify Assignees of Task by Email
+					<input type="checkbox" name="notify" value="1"> <?php echo $AppUI->_( 'notifyChange' );?>
 				</td>
 			</tr>
 		</table>
 	</td>
 </tr>
+<tr>
+	<td  colspan="2" valign="top">
+		<?php echo $AppUI->_( 'Description' );?>:
+		<br />
+		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$task["task_description"];?></textarea>
+	</td>
+</tr>
 </table>
 
-<table border="0" cellspacing="0" cellpadding="3" width="95%">
-<tr class="basic">
+<table border="0" cellspacing="0" cellpadding="3" width="98%">
+<tr>
 	<td height="40" width="35%">
-		<span class="FormElementRequired">*</span> <span class="FormInstruction">indicates required field</span>
+		* <?php echo $AppUI->_( 'requiredField' );?>
 	</td>
 	<td height="40" width="30%">&nbsp;</td>
 	<td  height="40" width="35%" align="right">
 		<table>
 		<tr>
 			<td>
-				<input class=button type="Button" name="Cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks&project_id=<?php echo $project_id ?>';}">
+				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks&project_id=<?php echo $project_id ?>';}">
 			</td>
 			<td>
-				<input class=button type="Button" name="btnFuseAction" value="save" onClick="submitIt();">
+				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submitIt();">
 			</td>
 		</tr>
 		</table>
