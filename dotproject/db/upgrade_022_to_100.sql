@@ -207,3 +207,7 @@ INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "co
 INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "system.gif", "10", "1", "");
 INSERT INTO modules VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "");
 INSERT INTO modules VALUES("11", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "");
+
+# Missing field in contacts
+ALTER TABLE contacts ADD `contact_country` varchar(30) default NULL;
+ALTER TABLE contacts ADD contact_icon varchar(20) default 'obj/contact'
