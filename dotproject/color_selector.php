@@ -1,53 +1,51 @@
-<html>
-<head>
-<title>Color Selector</title>
-
-<script language="JavaScript">
-
-// this function is used for color changes (when a colored square is clicked)
-function SendColor(color) {
-	if (color == 0) {
-		return;
-	}
-	window.opener.document.AddEdit.project_color_identifier.value = color;
-	window.opener.test.style.background = color;
-	window.close();
-
-} // end of SendColor
-
-</script>
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+    <link rel="stylesheet" href="./style/<?php echo $uistyle;?>/main.css" type="text/css" />
+    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+    <title>Color Selector</title>
+    <script language="JavaScript">
+    // this function is used for color changes (when a colored square is clicked)
+    function SendColor(color) {
+        if (color == 0) {
+            return;
+        }
+        window.opener.document.AddEdit.project_color_identifier.value = color;
+        window.opener.test.style.background = color;
+        window.close();
+    } // end of SendColor
+        </script>
 </head>
 
 <body bgcolor="#FFFFFF">
 <center>
-<table border=0 cellpadding=1 cellspacing=0 width=292>
-	<tr>
-		<td valign=top><font style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:18px;"><strong>Color Selector</strong></font></td>
-		<form>
-		<td align=right valign=bottom>
-		<!-- CUSTOMISE THE FOLLOWING COLOURS AND PRESET NAMES FOR YOUR ORGANISATIONAL NEEDS -->
-			<select name="" onChange="javascript:SendColor(this.options[this.selectedIndex].value)" style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:10px">
-				<option value="0">- - Preset - -
-				<option value="FFCC00">Administration
-				<option value="333300">Development
-				<option value="FF6600">Investigation
-				<option value="0000FF">Maintenance
-				<option value="FF0000">Research
-				<option value="33FF00">Testing
-			</select>
-		</td>
-		</form>
+<table border="0" cellpadding="1" cellspacing="0" width="292">
+    <tr>
+        <td valign="top"><font style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:18px;"><strong>Color Selector</strong></font></td>
+        <form>
+        <td align="right" valign="bottom">
+        <!-- CUSTOMISE THE FOLLOWING COLOURS AND PRESET NAMES FOR YOUR ORGANISATIONAL NEEDS -->
+            <select name="" onChange="javascript:SendColor(this.options[this.selectedIndex].value)" style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:10px">
+                <option value="0">- - Preset - -
+                <option value="FFCC00" />Administration
+                <option value="333300" />Development
+                <option value="FF6600" />Investigation
+                <option value="0000FF" />Maintenance
+                <option value="FF0000" />Research
+                <option value="33FF00" />Testing
+            </select>
+        </td>
+        </form>
     </tr>
     <tr>
-   		<td colspan=2>
-				<a href="webpal.map"><img src="./images/colorchart.gif" width=292 height=196 border=0 alt="" usemap="#map_webpal" ismap></a>
-			</td>
+        <td colspan="2">
+                <a href="webpal.map"><img src="./images/colorchart.gif" width="292" height="196" border="0" alt="color chart" usemap="#map_webpal" ismap /></a>
+            </td>
     </tr>
     <tr>
-		<td colspan=2 align="left"><font size=1 face="trebuchetms,verdana,arial">
-			Choose a color to uniquely identify your selection and close the Color Selector.</p>
-		</td>
+        <td colspan="2" align="left"><font size="1" face="trebuchetms,verdana,arial">
+            Choose a color to uniquely identify your selection and close the Color Selector.</p>
+        </td>
     </tr>
 </table>
 <map name="map_webpal">
