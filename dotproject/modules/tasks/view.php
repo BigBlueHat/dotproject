@@ -196,7 +196,7 @@ function updateTask() {
 		<input type="hidden" value="updatetask" name="dosql" />
 		<input type="hidden" value="<?php echo @$task["task_id"];?>" name="task_id" />
 		<input type="hidden" value="<?php echo $AppUI->user_id;?>" name="user_id" />
-		<input type="hidden" value="Update :<?php echo $$task["task_name"];?>" name="comment_title" />
+		<input type="hidden" value="Update :<?php echo @$task["task_name"];?>" name="comment_title" />
 		<input type="hidden" value="<?php echo @$task["task_hours_worked"];?>" name="already_worked" />
 		<tr>
 			<td colspan="3"><strong><?php echo $AppUI->_('Work');?></strong></td>
