@@ -261,18 +261,21 @@ A.hdr:link, A.hdr:active, A.hdr:visited {
 
 /* tabbed boxes */
 td.tabon {
-	background: #FFFFFF;
+	/*
 	border-top: outset #ffffff 1px;
 	border-left: outset #ffffff 1px;
 	border-right: outset #cccccc 2px;
 	border-bottom: none;
+	*/
+	background: #ffffff url('images/bar_top_Selectedmiddle.gif') repeat-x top;
 }
 td.taboff {
-	background: #FFFFFF;
-	border-top: solid #cccccc 1px;
+	/* border-top: solid #cccccc 1px;
 	border-left: solid #cccccc 1px;
 	border-right: solid #cccccc 1px;
 	border-bottom: solid #cccccc 2px;
+	*/
+	background: #ffffff url('images/bar_top_middle.gif') repeat-x top;
 }
 td.tabsp {
 	border-bottom: solid #cccccc 2px;

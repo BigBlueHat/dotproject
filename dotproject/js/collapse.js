@@ -74,9 +74,16 @@ function collapse_all(parent)
 	}
 }
 
+var show_tab_function = null;
+var hide_tab_function = null;
+
 function show_tab(i)
 {
 	hide_tabs();
+	if (show_tab_function) {
+		show_tab_function(i);
+		return;
+	}
 	var tab = document.getElementById('tab_' + i);
 	tab.style.display = 'block';
 	tab = document.getElementById('toptab_' + i);
@@ -85,6 +92,10 @@ function show_tab(i)
 
 function hide_tabs()
 {
+	if (hide_tab_function) {
+		hide_tab_function();
+		return;
+	}
 	var tabs = document.getElementsByTagName('td');
 	var i;
 	for(i = 0; i < tabs.length; i++)
