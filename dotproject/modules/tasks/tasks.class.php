@@ -198,7 +198,7 @@ class CTask extends CDpObject {
 		return NULL;
 	}
 
-	
+
 	function updateDynamics( $fromChildren = false ) {
 		//Has a parent or children, we will check if it is dynamic so that it's info is updated also
 		
@@ -415,7 +415,7 @@ class CTask extends CDpObject {
 				$this->updateDynamics();
 			}
 		}
-		
+
 		$sql = "SELECT * FROM tasks WHERE task_parent = $this->task_id";
 		$children_taks = db_loadHashList($sql, "task_id");
 		
@@ -1205,9 +1205,15 @@ class CTaskLog extends CDpObject {
 	var $task_log_hours = NULL;
 	var $task_log_date = NULL;
 	var $task_log_costcode = NULL;
+        var $task_log_problem = NULL;
+        var $task_log_reference = NULL;
+        var $task_log_related_url = NULL;
 
 	function CTaskLog() {
 		$this->CDpObject( 'task_log', 'task_log_id' );
+
+                // ensure changes to checkboxes are honoured
+                $this->task_log_problem = intval( $this->task_log_problem );
 	}
 
 // overload check method

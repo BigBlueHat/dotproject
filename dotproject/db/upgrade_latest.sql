@@ -128,3 +128,15 @@ INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval
 VALUES ("11", '1', 'ProjectPriority', '-1|low\n0|normal\n1|high');
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
 VALUES ('12', '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n1|#FFDCB3');
+
+#20040823
+# Task Log is now sysvals, some additional fields
+#
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
+VALUES ('13', '1', 'TaskLogReference', '0|Not Defined\n1|Email\n2|Helpdesk\n3|Phone Call\n4|Fax');
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
+VALUES ('14', '1', 'TaskLogReferenceImage', '0| 1|./images/obj/email.gif 2|./modules/helpdesk/images/helpdesk.png 3|./images/obj/phone.gif 4|./images/icons/stock_print-16.png');
+
+ALTER TABLE `task_log` ADD `task_log_problem` TINYINT( 1 ) DEFAULT '0';
+ALTER TABLE `task_log` ADD `task_log_reference` TINYINT( 4 ) DEFAULT '0';
+ALTER TABLE `task_log` ADD `task_log_related_url` VARCHAR( 255 ) DEFAULT NULL;

@@ -24,6 +24,7 @@ $sql = "select distinct task_log_costcode
 $task_log_costcodes = array(""); // Let's add a blank default option
 $task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
 
+$taskLogReference = dPgetSysVal( 'TaskLogReference' );
 
 if ($canEdit) {
 // Task Update Form
@@ -115,8 +116,17 @@ if ($canEdit) {
 		</a>
 	</td>
 	<td align="right"><?php echo $AppUI->_('Summary');?>:</td>
-	<td>
-		<input type="text" class="text" name="task_log_name" value="<?php echo $log->task_log_name;?>" maxlength="255" size="30" />
+        <td valign="middle">
+                <table width="100%">
+                        <tr>
+                                <td align="left">
+                                        <input type="text" class="text" name="task_log_name" value="<?php echo $log->task_log_name;?>" maxlength="255" size="30" />
+                                </td>
+                                <td align="center"><?php echo $AppUI->_('Problem');?>:
+                                        <input type="checkbox" value="1" name="task_log_problem" <?php if($log->task_log_problem){?>checked="checked"<?php }?> />
+                                </td>
+                        </tr>
+                </table>
 	</td>
 </tr>
 <tr>
@@ -139,9 +149,10 @@ if ($canEdit) {
 		   </tr>
 		</table>
 	</td>
-	<td rowspan="3" align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
-	<td rowspan="3">
-		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo $log->task_log_description;?></textarea>
+
+        <td align="right" valign="middle"><?php echo $AppUI->_('Reference');?>:</td>
+        <td valign="middle">
+                <?php echo arraySelect( $taskLogReference, 'task_log_reference', 'size="1" class="text"', $log->task_log_reference );?>
 	</td>
 </tr>
 <tr>
@@ -154,9 +165,15 @@ if ($canEdit) {
 		<input type='button' class="button" value='<?php echo $AppUI->_('Reset'); ?>' onclick="javascript:timerReset()" name='timerResetButton' /> 
 		<span id='timerStatus'></span>
 	</td>
+        <td align="right">
+		<?php echo $AppUI->_('URL');?>:
+	</td>
+        <td>
+                <input type="text" class="text" name="task_log_related_url" value="<?php echo @$log->task_log_related_url;?>" size="50" maxlength="255" title="<?php echo $AppUI->_('Must in general be entered with protocol name, e.g. http://...');?>"/>
+        </td>
 </tr>
 <tr>
-	<td align="right">
+        <td align="right">
 		<?php echo $AppUI->_('Cost Code');?>
 	</td>
 	<td>
@@ -165,7 +182,12 @@ if ($canEdit) {
 ?>
 		&nbsp;->&nbsp; <input type="text" class="text" name="task_log_costcode" value="<?php echo $log->task_log_costcode;?>" maxlength="8" size="8" />
 	</td>
+	<td rowspan="2" align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
+	<td rowspan="2">
+		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo $log->task_log_description;?></textarea>
+	</td>
 </tr>
+
 <?php
 	if($obj->canUserEditTimeInformation()){
 ?>

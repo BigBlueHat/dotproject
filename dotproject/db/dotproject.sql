@@ -252,6 +252,9 @@ CREATE TABLE `task_log` (
   `task_log_hours` FLOAT DEFAULT "0" NOT NULL,
   `task_log_date` DATETIME,
   `task_log_costcode` VARCHAR(8) NOT NULL default '',
+  `task_log_problem` TINYINT( 1 ) DEFAULT '0',
+  `task_log_reference` TINYINT( 4 ) DEFAULT '0'
+  `task_log_related_url` VARCHAR( 255 ) DEFAULT NULL,
   PRIMARY KEY  (`task_log_id`),
   KEY `idx_log_task` (`task_log_task`)
 ) TYPE=MyISAM;
@@ -326,7 +329,7 @@ CREATE TABLE `user_tasks` (
   `user_type` tinyint(4) NOT NULL default '0',
   `task_id` int(11) NOT NULL default '0',
   `perc_assignment` int(11) NOT NULL default '100',
-  `user_task_priority` tinyint(4) default '0',  
+  `user_task_priority` tinyint(4) default '0',
   PRIMARY KEY  (`user_id`,`task_id`),
   KEY `user_type` (`user_type`)
 ) TYPE=MyISAM;
@@ -496,6 +499,9 @@ INSERT INTO `sysvals` VALUES (null, 1, 'FileType', '0|Unknown\n1|Document\n2|App
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'TaskPriority', '-1|low\n0|normal\n1|high');
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'ProjectPriority', '-1|low\n0|normal\n1|high');
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n1|#FFDCB3');
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'TaskLogReference', '0|Not Defined\n1|Email\n2|Helpdesk\n3|Phone Call\n4|Fax');
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'TaskLogReferenceImage', '0| 1|./images/obj/email.gif 2|./modules/helpdesk/images/helpdesk.png 3|./images/obj/phone.gif 4|./images/icons/stock_print-16.png');
+
 
 #
 # Table structure for table 'roles'
