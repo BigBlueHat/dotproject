@@ -35,12 +35,19 @@
 	
 ?>
 <script language="JavaScript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt2(id) {
 	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Task Log').'?';?>" )) {
 		document.frmDelete2.task_log_id.value = id;
 		document.frmDelete2.submit();
 	}
 }
+<?php } ?>
 </script>
 <table border="0" cellpadding="2" cellspacing="1" width="100%" class="std">
 <form name="frmFilter" action="./index.php" method="get">

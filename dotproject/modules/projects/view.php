@@ -118,11 +118,18 @@ $titleBlock->addCrumb( "?m=projects&a=reports&project_id=$project_id", "reports"
 $titleBlock->show();
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+if ($canEdit) {
+?>
 function delIt() {
 	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Project').'?';?>" )) {
 		document.frmDelete.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
