@@ -43,7 +43,7 @@ if ($a = dPgetParam($_REQUEST, "a", "") == ""){
 <table align="center">
 	<tr>
 		<td>
-			<h1><?php echo $AppUI->_('Logs in dotProject');?></h1>
+			<h1><?php echo $AppUI->_('User Log');?></h1>
 		</td>
 	</tr>
 </table>
