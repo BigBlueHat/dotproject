@@ -764,7 +764,7 @@ class CEvent extends CDpObject {
 	    $sql = "SELECT user_id, CONCAT_WS(' ', contact_first_name, contact_last_name)
 	               FROM users, contacts
 	               WHERE user_id in (" . implode(",", $clash) . ")
-	               AND usert_contact = contact_Id";
+	               AND user_contact = contact_Id";
 	    return db_loadHashList($sql);
 	  } else {
 	    return false;
