@@ -27,7 +27,7 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 	GLOBAL $AppUI;
 	reset( $arr );
 	$s = "<select name=\"$select_name\" $select_attribs>";
-	while (list( $k, $v ) = each( $arr)) {
+	foreach ($arr as $k => $v ) {
 		if ($translate) {
 			$v = @$AppUI->_( $v );
 		}
@@ -35,6 +35,16 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 	}
 	$s .= '</select>';
 	return $s;
+}
+
+##
+## Merges arrays maintaining/overwriting shared numeric indicees
+##
+function arrayMerge( $a1, $a2 ) {
+	foreach ($a2 as $k => $v) {
+		$a1[$k] = $v;
+	}
+	return $a1;
 }
 
 ##
