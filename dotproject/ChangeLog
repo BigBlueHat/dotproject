@@ -1,3 +1,20 @@
+2003-09-25 18:09  (gregorerhardt)
+---------------------------------
+modules/ticketsmith/attach.php
+modules/ticketsmith/common.inc.php
+locales/en/ticketsmith.inc
+- enhancing translation of ticketsmith
+
+2003-09-25 09:51  (gregorerhardt)
+---------------------------------
+modules/help/en/contacts.index.hlp
+- added help text for vCards
+
+2003-09-23 03:57  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-22 05:55  (gregorerhardt)
 ---------------------------------
 modules/tasks/view.php
@@ -481,23 +498,6 @@ db/upgrade_100_beta1_to_release1.sql
 ---------------------------------
 includes/config-dist.php
 modules/calendar/vw_day_events.php
-- Moved constraints for start/end and increments for day view to config
-- file.
-
-2003-08-30 02:18  (ajdonnison)
----------------------------------
-modules/help/en/tasks.index.hlp
-- fixed typo
-
-2003-08-30 02:12  (ajdonnison)
----------------------------------
-includes/main_functions.php
-- History now checks to make sure that history module is loaded and active
-- before logging history.
-
-2003-08-29 09:35  (jcgonz)
----------------------------------
-modules/projects/index.php
 ...
 
 (This file has been wrapped)
