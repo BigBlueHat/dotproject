@@ -4,7 +4,7 @@ $AppUI->savePlace();
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 $tf = $AppUI->getPref( 'TIMEFORMAT' );
 
-$f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
+$f = dPgetParam( $_POST, 'f', 0 );
 
 //Forum index.php
 $max_msg_length = 30;
@@ -53,93 +53,84 @@ $sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";
 
 $forums = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();##
-?>
-<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
-<table width="98%" cellspacing="1" cellpadding="0" border="0">
-<tr>
-	<td><img src="./images/icons/communicate.gif" alt="" border="0" width="42" height="42" /></td>
-	<td nowrap width="100%"><h1><?php echo $AppUI->_( 'Forums' );?></h1></td>
-<form name="forum_filter" method=GET action="./index.php">
-<input type=hidden name=m value=forums>
-	<td nowrap>
-<?php
-	echo arraySelect( $filters, 'f', 'size=1 class=text onChange="document.forum_filter.submit();"', $f , true );
-?>
-	</td>
-</form>
-	<td><img src="images/shim.gif" width=5 height=5></td>
 
-<form name="searcher" action="./index.php?m=files&a=search" method="post">
-	<input type="hidden" name="dosql" value="do_searchfiles" />
-	<td align="right">
-		<input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled="disabled" />
-	</td>
-	<td><img src="images/shim.gif" width=5 height=5></td>
-	<td>
-		<input class=button type="submit" value="<?php echo $AppUI->_( 'search' );?>" disabled="disabled">
-	</td>
-</form>
-	<td><img src="images/shim.gif" width=5 height=5></td>
-	<td align="right">
-	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="<?php echo $AppUI->_( 'add new forum' );?>" onClick="javascript:window.location='./index.php?m=forums&a=addedit';">
-	<?php } ?>
-	</td>
-</tr>
-</table>
+// setup the title block
+$titleBlock = new CTitleBlock( 'Forums', 'communicate.gif', $m, "$m.$a" );
+$titleBlock->addCell(
+	arraySelect( $filters, 'f', 'size="1" class="text" onChange="document.forum_filter.submit();"', $f , true ), '',
+	'<form name="forum_filter" action="?m=forums" method="post">', '</form>'
+);
+if ($canEdit) {
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new forum').'">', '',
+		'<form action="?m=forums&a=addedit" method="post">', '</form>'
+	);
+}
+$titleBlock->show();
+?>
 
-<table width="98%" cellspacing="1" cellpadding="2" border="0" class="tbl">
+<table width="100%" cellspacing="1" cellpadding="2" border="0" class="tbl">
 <form name="watcher" action="./index.php?m=forums&f=<?php echo $f;?>" method="post">
 <tr>
-	<th nowrap>&nbsp;</th>
-	<th nowrap width=25><?php echo $AppUI->_( 'Watch' );?></th>
-	<th nowrap><?php echo $AppUI->_( 'Forum Name' );?></th>
-	<th nowrap width=50 align=center><?php echo $AppUI->_( 'Topics' );?></th>
-	<th nowrap width=50 align=center><?php echo $AppUI->_( 'Replies' );?></th>
-	<th nowrap width=200><?php echo $AppUI->_( 'Last Post Info' );?></th>
+	<th nowrap="nowrap">&nbsp;</th>
+	<th nowrap="nowrap" width="25"><?php echo $AppUI->_( 'Watch' );?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Forum Name' );?></th>
+	<th nowrap="nowrap" width="50" align="center"><?php echo $AppUI->_( 'Topics' );?></th>
+	<th nowrap="nowrap" width="50" align="center"><?php echo $AppUI->_( 'Replies' );?></th>
+	<th nowrap="nowrap" width="200"><?php echo $AppUI->_( 'Last Post Info' );?></th>
 </tr>
 <?php
 $p ="";
 foreach ($forums as $row) {
-	if ($row["forum_last_date"]) {
-		$message_date = CDate::fromDateTime( $row["forum_last_date"] );
-		$message_date->setFormat( "$df $tf" );
+	$ts = db_dateTime2unix( $row['forum_last_date'] );
+	if ($ts < 0) {
+		$message_date = null;
+	} else {
+		$message_date = new CDate( $ts, "$df $tf" );
 		$message_since = abs( $message_date->compareTo( new CDate() ) );
 	}
+
 	if($p != $row["forum_project"]) {
-		$create_date = CDate::fromDateTime( $row["forum_create_date"] );
-		$create_date->setFormat( "$df" );
+		$ts = db_dateTime2unix( $row["forum_create_date"], "$df" );
+		$create_date = $ts < 0 ? null : new CDate( $ts );
 ?>
 <tr>
-	<td colspan=6 style="background-color:#<?php echo $row["project_color_identifier"];?>">
-		<a href="./index.php?m=projects&a=view&project_id=<?php echo $row["forum_project"];?>"><font color=<?php echo bestColor( $row["project_color_identifier"] );?>><strong><?php echo $row["project_name"];?></strong></font></a>
+	<td colspan="6" style="background-color:#<?php echo $row["project_color_identifier"];?>">
+		<a href="?m=projects&a=view&project_id=<?php echo $row["forum_project"];?>">
+			<font color=<?php echo bestColor( $row["project_color_identifier"] );?>>
+			<strong><?php echo $row["project_name"];?></strong>
+			</font>
+		</a>
 	</td>
 </tr>
 	<?php
 		$p = $row["forum_project"];
 	}?>
 <tr>
-	<td nowrap align=center>
-	<?php if($row["forum_owner"] == $AppUI->user_id){?>
-		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width=12 height=12></a>
-	<?php }?>
+	<td nowrap="nowrap" align="center">
+	<?php if ($row["forum_owner"] == $AppUI->user_id) { ?>
+		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>"><img src="./images/icons/pencil.gif" alt="expand forum" border="0" width="12" height="12"></a>
+	<?php } ?>
 	</td>
 
-	<td nowrap align=center>
-		<input type="checkbox" name="forum_<?php echo $row['forum_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?>>
+	<td nowrap="nowrap" align="center">
+		<input type="checkbox" name="forum_<?php echo $row['forum_id'];?>" <?php echo $row['watch_user'] ? 'checked' : '';?> />
 	</td>
 
 	<td>
-		<span style="font-size:10pt;font-weight:bold"><a href="?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a></span>
+		<span style="font-size:10pt;font-weight:bold">
+			<a href="?m=forums&a=viewer&forum_id=<?php echo $row["forum_id"];?>"><?php echo $row["forum_name"];?></a>
+		</span>
 		<br /><?php echo $row["forum_description"];?>
 		<br /><font color=#777777><?php echo $AppUI->_( 'Owner' ).' '.$row["user_username"];?>,
 		<?php echo $AppUI->_( 'Started' ).' '.$create_date->toString();?>
 		</font>
 	</td>
-	<td nowrap align=center><?php echo $row["forum_topics"];?></td>
-	<td nowrap align=center><?php echo $row["forum_replies"];?></td>
-	<td width=200>
-<?php if ($row["forum_last_date"]) {
+	<td nowrap="nowrap" align="center"><?php echo $row["forum_topics"];?></td>
+	<td nowrap="nowrap" align="center"><?php echo $row["forum_replies"];?></td>
+	<td width="200">
+<?php
+	if ($message_date !== null) {
 		echo $message_date->toString().'<br /><font color=#999966>(';
 		if ($message_since < 3600) {
 			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );
@@ -148,7 +139,7 @@ foreach ($forums as $row) {
 		} else {
 			$str = sprintf( "%d ".$AppUI->_( 'days' ), $message_since/(24*3600) );
 		}
-		printf($AppUI->_('%s ago'), $str);
+		printf( $AppUI->_('%s ago'), $str );
 		echo ') </font><br />&gt;&nbsp;<a href="?m=forums&a=viewer&forum_id='.$row['forum_id'].'&message_id='.$row['message_parent'].'"><font color=#777777>'.$row['message_body'];
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
 		echo '</font></a>';
@@ -159,18 +150,18 @@ foreach ($forums as $row) {
 	</td>
 </tr>
 
-<?php }?>
+<?php } ?>
 </table>
 
-<table width="98%" cellspacing="1" cellpadding="0" border="0">
-	<input type="hidden" name="dosql" value="do_watch_forum">
-	<input type="hidden" name="watch" value="forum">
+<table width="100%" cellspacing="1" cellpadding="0" border="0">
+	<input type="hidden" name="dosql" value="do_watch_forum" />
+	<input type="hidden" name="watch" value="forum" />
 <tr>
 	<td>&nbsp;</td>
 </tr>
 <tr>
 	<td align="left">
-		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>">
+		<input type="submit" class=button value="<?php echo $AppUI->_( 'update watches' );?>" />
 	</td>
 </tr>
 </form>
