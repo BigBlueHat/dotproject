@@ -80,7 +80,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap><span class="title"><?php echo $AppUI->_('Project Management');?></span></td>
-<form action="<?php echo $REQUEST_URI;?>" method="post" name="pickCompany">
+<form action="<?php echo $REQUEST_URI;?>" method="get" name="pickCompany">
 	<td align="right" width="100%">
 		<?php echo $AppUI->_('Company');?>:
 <?php
