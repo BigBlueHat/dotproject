@@ -90,12 +90,12 @@ class CDpObject {
 	}
 	
 /**
-*	Clone de current record
+*	Clone the current record
 *
 *	@author	handco <handco@users.sourceforge.net>
 *	@return	object	The new record object or null if error
 **/
-	function clone() {
+	function duplicate() {
 		$_key = $this->_tbl_key;
 		
 		$newObj = $this;
