@@ -123,7 +123,8 @@ $deny = db_loadHashList( $sql );
 // pull tasks
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
-task_priority, task_precent_complete, task_duration, task_order, task_project
+task_priority, task_precent_complete, task_duration, task_order, task_project,
+task_description
 ";
 
 $from = "tasks";
@@ -219,7 +220,8 @@ function showtask( &$a, $level=0 ) {
 	$s .= '<map name="arrow'.$a["task_id"].'"><area coords="0,0,10,7" href="' . $query_string . '&task_project=' . $a["task_project"] . '&task_id=' . $a["task_id"] . '&order=' . $a["task_order"] . '&movetask=u">';
 	$s .= '<area coords="0,8,10,14" href="'.$query_string . '&task_project=' . $a["task_project"] . '&task_id=' . $a["task_id"] . '&order=' . $a["task_order"] . '&movetask=d"></map>';
 // name link
-	$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id='.$a["task_id"].'">'.$a["task_name"].'</a></td>';
+	$alt = htmlspecialchars( $a["task_description"] );
+	$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
 // start date
 	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->toString( $df ) : '-').'</td>';
 // duration
