@@ -882,6 +882,11 @@ class CTask extends CDpObject {
 
 	function canAccess( $user_id ) {
 		//echo intval($this->task_access);
+		// Let's see if this user has admin privileges
+		if(!getDenyRead("admin")){
+			return true;
+		}
+		
 		switch ($this->task_access) {
 			case 0:
 				// public
