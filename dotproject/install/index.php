@@ -3,16 +3,16 @@
 //todo: interface: right row more to the left
 //todo: !heavy!: design: have a main site where the steps are linked and where we always come back and do the main work.
 //todo: script to read subdirectories for styles and langs (delete empty/superfluous directories in the core distro???)
+//todo: and sniff default locale on machine/or browset
 //todo: enhanced guiding texts
-//todo: ask if dotproject.sql should be applied
-//todo: provide upgrade functionality concerning database
-//todo: add check for incompatible proprietary M$ OS
-//todo: backuP. check if db exists
+//todo: read existing config file in case of upgrade
+//todo: require then (config file existing) admin passwd for security check
 //todo: checkin dp main if installer is deleted after successfull install
-//todo: base_url is wrong in pref.php : do_backup:php
-//todo_ check for config file writable is buggy
-//todo: create an initial company (preventing from sqlerrors after install)
+//todo: change admin passwd?!
 //todo: GPL possible?
+//todo: better error management with displaying what worked well (has been installed) and what went wrong
+//todo: enable db upgrade functionality if db/upgrade.sql is available
+//todo: core: store database version (dp version) in dPdatabase for verifying db upgrade scripts!
 
 /*
 * dotProject Installer
@@ -36,7 +36,7 @@ require_once("commonlib.php");
 	<link rel="stylesheet" type="text/css" href="./install.css">
 </head>
 <body>
-
+<h1 class="warning">This Installer is in development. You may try it, but it is likely that it is not properly working!</h1>
 <h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;Installer for dotProject <?php echo dPgetVersion(); ?>: Introduction</h1>
 
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="90%" align="center">

@@ -22,7 +22,8 @@ $defDbName = "dotproject";
 $defDbPort = "3306";
 $defDbType = "mysql";
 $defSqlFilePath = "../db/dotproject.sql" ;        // default Path to the File with SQL Database Structure for dotProject;
-
+$defSqlUpgradeFilePath = "../db/upgrade.sql" ;        // default Path to the File with SQL Database Structure for upgrading dP;
+$defConfigFilePath = "../includes/config.php";
 
 
 #
@@ -55,4 +56,19 @@ function changeMode($object, $value) {
 	return @chmod($object, $value) ? true : false;
 }
 
+#
+# include existing config file and extract/harvest its config values to config variables.
+#
+/*
+if (is_readable($defConfigFilePath)) {
+
+        include_once($defConfigFilePath);
+        extract($dPconfig, EXTR_OVERWRITE);
+        extract($ft, EXTR_PREFIX_ALL, "ft_");
+        echo $debug;
+
+
+
+}
+*/
 ?>

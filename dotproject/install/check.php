@@ -62,18 +62,22 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
  	<td align="left"><?php echo get_cfg_var('file_uploads') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Upload functionality will not be available</span>';?></td>
 </tr>
 <tr>
-            <td class="item">Session Save Path</td>
+            <td class="item">Session Save Path writable?</td>
             <td align="left"><?php echo (is_dir( get_cfg_var( 'session.save_path' )) && is_writable( get_cfg_var( 'session.save_path' )) ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.' Fatal:</b> <b class="item">'.get_cfg_var( "session.save_path" ).'</b><b class="error"> not existing or not writable</b>';?></td>
 </tr>
 <tr>
-            <td class="title" colspan="2"><br/>Check for Directory and File Permissions</td>
+            <td class="title" colspan="2"><br />Check for Directory and File Permissions</td>
+</tr>
+<tr>
+            <td class="item" colspan="2">If there appears a message '777' after a file/directory, then Permissions for this File have been set to 777 (world-writable) for write purposes.
+            Consider that there are Security issues with 777 in a productive environment. Manual efforts for fine grained permissions setting are inevitable.</td>
 </tr>
 <?php
 $okMessage="";
 if (is_writable( "../includes/config.php" )) {
 
         changeMode( "../includes/config.php", 777 );
-        $okMessage="Permissions for this File have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
+        $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
@@ -86,39 +90,39 @@ $okMessage="";
 if (is_writable( "../files" )) {
 
         changeMode( "../files", 777 );
-        $okMessage="Permissions for this Directory have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
+        $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
 <tr>
             <td class="item">./files writable</td>
-            <td align="left"><?php echo is_writable( "../files" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> File upload functionality will be disabled</span>';?></td>
+            <td align="left"><?php echo is_writable( "../files" ) ? '<b class="ok">'.$okImg.'</b>'.$okMessage : '<b class="error">'.$failedImg.'</b><span class="warning"> File upload functionality will be disabled</span>';?></td>
 </tr>
 <?php
 $okMessage="";
 if (is_writable( "../files/temp" )) {
 
         changeMode( "../files/temp", 777 );
-        $okMessage="Permissions for this Directory have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
+        $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
 <tr>
             <td class="item">./files/temp writable</td>
-            <td align="left"><?php echo is_writable( "../files/temp" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> PDF report generation will be disabled</span>';?></td>
+            <td align="left"><?php echo is_writable( "../files/temp" ) ? '<b class="ok">'.$okImg.'</b>'.$okMessage : '<b class="error">'.$failedImg.'</b><span class="warning"> PDF report generation will be disabled</span>';?></td>
 </tr>
 <?php
 $okMessage="";
 if (is_writable( "../locales/en" )) {
 
         changeMode( "../locales/en", 777 );
-        $okMessage="Permissions for this Directory have been set to 777 (world-writable) for write purposes. Please consider that there are Security issues with 777 in a productive environment.";
+        $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
 <tr>
             <td class="item">./locales/en writable</td>
-            <td align="left"><?php echo is_writable( "../locales/en" ) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Translation files cannot be saved. Check /locales and subdirectories for permissions.</span>';?></td>
+            <td align="left"><?php echo is_writable( "../locales/en" ) ? '<b class="ok">'.$okImg.'</b>'.$okMessage : '<b class="error">'.$failedImg.'</b><span class="warning"> Translation files cannot be saved. Check /locales and subdirectories for permissions.</span>';?></td>
 </tr>
 <tr>
             <td class="title" colspan="2"><br/>Recommended PHP Settings</td>
@@ -144,15 +148,34 @@ if (is_writable( "../locales/en" )) {
             <td align="left"><?php echo !get_cfg_var('session.use_cookies') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> There are security risks with this turned ON</span>';?></td>
 </tr>
 <tr>
+            <td class="title" colspan="2"><br/>Other Recommendations</td>
+</tr>
+<tr>
+            <td class="item">Free Operating System?</td>
+            <td align="left"><?php echo (strtoupper(substr(PHP_OS, 0, 3)) != 'WIN') ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.php_uname().')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
+            It seems as if you were using a propietary operating system. For most extent Freedom and for all known security issues with proprietary things
+            the author of this installer would strongly encourage you to use free software wherever possible.</span>';?></td>
+</tr>
+<tr>
+            <td class="item">Free Web Server?</td>
+            <td align="left"><?php echo (stristr($_SERVER['SERVER_SOFTWARE'], 'iis') == false) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.$_SERVER['SERVER_SOFTWARE'].')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
+            It seems as if you were using a propietary web server. For most extent Freedom and for all known security issues with proprietary things
+            the author of this installer would strongly encourage you to use free software wherever possible.</span>';?></td>
+</tr>
+<tr>
+            <td class="item">Browser is not MSIE?</td>
+            <td align="left"><?php echo (stristr($_SERVER['HTTP_USER_AGENT'], 'msie') == false) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.$_SERVER['HTTP_USER_AGENT'].')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning">
+            It seems as if you were using a propietary browser. For most extent Freedom and for all known security and compatibility issues
+            with proprietary things the author of this installer would strongly encourage you to use free software wherever possible.</span>';?></td>
+</tr>
+<tr>
             <td colspan="2" align="right"><br /><form action="db.php" method="post" name="form" id="form"><input class="button" type="submit" name="next" value="Continue" /></form></td>
-          </tr>
+</tr>
+
 <?php
+
+
 /*
-echo "<tr><td>Web Server</td><td colspan='2'>$_SERVER[SERVER_SOFTWARE]</td></tr>";
-echo "<tr><td>Web Server</td><td colspan='2'>$_SERVER[SERVER_SIGNATURE]</td></tr>";
-
-echo "<tr><td>User Agent</td><td>".$_SERVER['HTTP_USER_AGENT']."</td></tr>";
-
 echo "<tr><td>default locale</td><td>";
 $lc_list = explode(";", setlocale( LC_ALL, 0 ));
 foreach ($lc_list as $lc) {
@@ -169,8 +192,7 @@ if ($url != $dPconfig['root_dir']) {
 } else {
   echo "<td>OK</td></tr>";
 }
-echo "<tr><td>Operating System</td><td>".php_uname()."</td></tr>";
-echo "</table>";
+
 
 
 */

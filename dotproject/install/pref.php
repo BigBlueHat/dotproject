@@ -37,7 +37,9 @@ $dbpersist              = trim( dPgetParam( $_POST, 'dbpersist', false ) );
 $dbdrop                 = trim( dPgetParam( $_POST, 'dbdrop', false ) );
 $dbbackup               = trim( dPgetParam( $_POST, 'dbbackup', true ) );
 $dbcreation             = trim( dPgetParam( $_POST, 'dbcreation', false ) );
+$db_install_mode        = trim( dPgetParam( $_POST, 'db_install_mode', false ) );
 $host_locale            = trim( dPgetParam( $_POST, 'host_locale', 'en' ) );
+$initial_company        = trim( dPgetParam( $_POST, 'initial_company', '' ) );
 $host_style             = trim( dPgetParam( $_POST, 'host_style', 'default' ) );
 $jpLocale               = trim( dPgetParam( $_POST, 'jpLocale', '' ) );
 $currency_symbol        = trim( dPgetParam( $_POST, 'currency_symbol', '$' ) );
@@ -64,7 +66,6 @@ $ft_default             = trim( dPgetParam( $_POST, 'ft_default', '/usr/bin/stri
 $ft_application_msword  = trim( dPgetParam( $_POST, 'ft_application_msword', '/usr/bin/strings' ) );
 $ft_text_html           = trim( dPgetParam( $_POST, 'ft_text_html', '/usr/bin/strings' ) );
 $ft_application_pdf     = trim( dPgetParam( $_POST, 'ft_application_pdf', '/usr/bin/pdftotext' ) );
-
 
 
 #
@@ -113,14 +114,39 @@ if (! $dbcreation == true){
 
         $db = mysql_select_db($dbname);
 
+        if ($db_install_mode = 'install') {
 
-        populate_db($dbname, $defSqlFilePath);
+                // populate database with structure from scratch
+                populate_db($dbname, $defSqlFilePath);
+
+                // create Initial Company if entered
+                if ($initial_company > '') {
+
+                        $sql = "INSERT INTO companies SET company_id = '0', company_name = '$initial_company';";
+                        $dbExec = db_exec($sql);
+                        $dbError = db_errno();
+
+                        if ($dbError <> 0){
+
+                        //provide some error info
+                        $dbmsg .= "A Database Error occurred: Initial Company has not been created!\n".mysql_error();
+                        stepBack($dbmsg);
+                        }
+                }
+        } elseif ($db_install_mode = 'upgrade'){
+
+
+                // apply sqlUpgrade script to the database
+                //populate_db($dbname, $defSqlUpgradeFilePath);
+
+
+        }
 
 
 }
 
 function stepBack($dbmsg) {
-global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbmsg,$cfgmsg;
+global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbmsg,$cfgmsg,$db_install_mode;
 
         echo "<form name=\"stepBack\" method=\"post\" action=\"db.php\">
                 <input type=\"hidden\" name=\"dbhost\" value=\"$dbhost\">
@@ -133,6 +159,8 @@ global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbm
                 <input type=\"hidden\" name=\"dbbackup\" value=\"$dbbackup\">
                 <input type=\"hidden\" name=\"dbmsg\" value=\"$dbmsg\">
                 <input type=\"hidden\" name=\"cfgmsg\" value=\"$cfgmsg\">
+                <input type=\"hidden\" name=\"initial_company\" value=\"$initial_company\">
+                <input type=\"hidden\" name=\"db_install_mode\" value=\"$db_install_mode\">
 		</form>";
 	echo "<SCRIPT>document.stepBack.submit(); </SCRIPT>";
 }

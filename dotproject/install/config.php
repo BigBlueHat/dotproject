@@ -32,6 +32,7 @@ $dbport                 = trim( dPgetParam( $_POST, 'dbport', '' ) );
 $dbpersist              = trim( dPgetParam( $_POST, 'dbpersist', false ) );
 $host_locale            = trim( dPgetParam( $_POST, 'host_locale', 'en' ) );
 $host_style             = trim( dPgetParam( $_POST, 'host_style', 'default' ) );
+$initial_company        = trim( dPgetParam( $_POST, 'initial_company', '' ) );
 $jpLocale               = trim( dPgetParam( $_POST, 'jpLocale', '' ) );
 $currency_symbol        = trim( dPgetParam( $_POST, 'currency_symbol', '$' ) );
 $base_url               = trim( dPgetParam( $_POST, 'base_url', '' ) );
@@ -103,6 +104,7 @@ if ($goback){
                 <input type=\"hidden\" name=\"dbpersist\" value=\"$dbpersist\">
                 <input type=\"hidden\" name=\"host_locale\" value=\"$host_locale\">
                 <input type=\"hidden\" name=\"host_style\" value=\"$host_style\">
+                <input type=\"hidden\" name=\"initial_company\" value=\"$initial_company\">
                 <input type=\"hidden\" name=\"jpLocale\" value=\"$jpLocale\">
 		<input type=\"hidden\" name=\"currency_symbol\" value=\"$currency_symbol\">
                 <input type=\"hidden\" name=\"base_url\" value=\"$base_url\">

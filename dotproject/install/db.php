@@ -28,6 +28,9 @@ $dbport         = trim( dPgetParam( $_POST, 'dbport', $propDbPort ) );
 $dbpersist      = trim( dPgetParam( $_POST, 'dbpersist', false ) );
 $dbdrop         = trim( dPgetParam( $_POST, 'dbdrop', false ) );
 $dbbackup       = trim( dPgetParam( $_POST, 'dbbackup', true ) );
+$initial_company= trim( dPgetParam( $_POST, 'initial_company', '' ) );
+$db_install_mode= trim( dPgetParam( $_POST, 'db_install_mode', 'install' ) );
+
 
 ?>
 <html>
@@ -75,6 +78,34 @@ $dbbackup       = trim( dPgetParam( $_POST, 'dbbackup', true ) );
             <td class="item">Drop Existing Database?</td>
             <td align="left"><input type="checkbox" name="dbdrop" value="true" <?php echo ($dbdrop==true) ? 'checked="checked"' : ''; ?> title="Deletes an existing Database before installing a new one. This deletes all data in the given database. Data cannot be restored." /></td>
             <td class="item">If checked, existing Data will be lost!</td>
+        </tr>
+        </tr>
+          <tr>
+            <td class="title" colspan="2">&nbsp;</td>
+        </tr>
+          <tr>
+            <td class="title" colspan="2">Populate Database</td>
+        </tr>
+        <tr>
+            <td class="item" colspan="2">Fill the Database with Structure and/or Content. While filling the database with Structure will be
+            necessary for Installation from Scratch (Install - Add Structure), it is recommended/handy for Upgrades avoiding it and apply
+            the database upgrade scripts distributed with dotProject automatically (Upgrade) or by hand (Manual Installation - Do Nothing).
+            For now,  an automatic Upgrade is only possible from one release step to another (not more than one steps in a time!), otherwise
+            it is very likely that you will experience errors running dotProject. In Case of once Upgrading more than one Release Versions,
+            the only way to go is a manual Application of all necessary upgrade scripts.
+            Furthermore dotProject needs an initial company created for running properly.
+            Fill in an appropriate name or leave empty if you do want to create one</td>
+        </tr>
+         <tr>
+            <td class="item">Database Installation Mode</td>
+            <td align="left"><select class="button" size="1" name="db_install_mode" title="Title">
+            <option value="install" <?php echo ($db_install_mode == 'install') ? 'selected="selected"' : '';?>>Install - Add Structure</option>
+            <option value="upgrade" <?php echo ($db_install_mode == 'upgrade') ? 'selected="selected"' : '';?>>Upgrade</option>
+            <option value="manual" <?php echo ($db_install_mode == 'manual') ? 'selected="selected"' : '';?>>Manual Installation - Do Nothing</option></select></td>
+        </tr>
+        <tr>
+            <td class="item">Create Initial Company</td>
+            <td align="left"><input class="button" type="text" name="initial_company" value="<?php echo $initial_company; ?>" title="Create an Initial Company. Leave empty if you do not want to create a company." /></td>
         </tr>
           <tr>
             <td class="title" colspan="2">&nbsp;</td>

@@ -20,7 +20,7 @@ require_once("commonlib.php");
 
 // propose some Values
 $propRoot = realpath("../");
-$propBaseUrl = "http://".$_SERVER["SERVER_NAME"].str_replace("install/pref.php", "", $_SERVER["PHP_SELF"]);
+$propBaseUrl = "http://".$_SERVER["SERVER_NAME"].str_replace("install/do_backup.php", "", $_SERVER["PHP_SELF"]);
 if ($_SERVER["SERVER_NAME"] == "127.0.0.1" || $_SERVER["SERVER_NAME"] == "localhost") {
         $propCompanyName = "My Organization";
 } else {
@@ -37,12 +37,14 @@ $dbpass                 = trim( dPgetParam( $_POST, 'dbpass', '' ) );
 $dbport                 = trim( dPgetParam( $_POST, 'dbport', '' ) );
 $dbpersist              = trim( dPgetParam( $_POST, 'dbpersist', false ) );
 $dbdrop                 = trim( dPgetParam( $_POST, 'dbdrop', false ) );
+$db_install_mode        = trim( dPgetParam( $_POST, 'db_install_mode', false ) );
 $backupdrop             = trim( dPgetParam( $_POST, 'backupdrop', false ) );
 $dbbackup               = trim( dPgetParam( $_POST, 'dbbackup', true ) );
 $dobackup               = trim( dPgetParam( $_POST, 'dobackup', true ) );
 $dbcreation             = trim( dPgetParam( $_POST, 'dbcreation', false ) );
 $host_locale            = trim( dPgetParam( $_POST, 'host_locale', 'en' ) );
 $host_style             = trim( dPgetParam( $_POST, 'host_style', 'default' ) );
+$initial_company        = trim( dPgetParam( $_POST, 'initial_company', '' ) );
 $jpLocale               = trim( dPgetParam( $_POST, 'jpLocale', '' ) );
 $currency_symbol        = trim( dPgetParam( $_POST, 'currency_symbol', '$' ) );
 $base_url               = trim( dPgetParam( $_POST, 'base_url', $propBaseUrl ) );
@@ -70,7 +72,6 @@ $ft_text_html           = trim( dPgetParam( $_POST, 'ft_text_html', '/usr/bin/st
 $ft_application_pdf     = trim( dPgetParam( $_POST, 'ft_application_pdf', '/usr/bin/pdftotext' ) );
 
 
-
 // keep existing information and go back to last site
 function stepBack($dbmsg) {
 global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbmsg,$cfgmsg;
@@ -82,6 +83,7 @@ global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbm
                 <input type=\"hidden\" name=\"dbpass\" value=\"$dbpass\">
                 <input type=\"hidden\" name=\"dbport\" value=\"$dbport\">
                 <input type=\"hidden\" name=\"dbbackup\" value=\"$dbbackup\">
+                <input type=\"hidden\" name=\"db_install_mode\" value=\"$db_install_mode\">
                 <input type=\"hidden\" name=\"dbmsg\" value=\"$dbmsg\">
 		</form>";
 	echo "<SCRIPT>document.stepBack.submit(); </SCRIPT>";
@@ -104,86 +106,94 @@ if ($dbbackup == true && $dobackup == "Backup" ) {
                 stepBack($dbmsg);
         }
 
-        mysql_select_db($dbname);
-        $alltables = mysql_list_tables($dbname);
+        if (!($dbSelect = @mysql_select_db($dbname))) {
 
-        // generate dbScriptHeader
-        $output  = '';
-        $output .= '# Backup of database \'' . $dbname . '\'' . "\r\n";
-        $output .= '# Generated on ' . date('j F Y, H:i:s') . "\r\n";
-        $output .= "# Generator : dotProject Installer \r\n";
-        $output .= '# OS: ' . PHP_OS . "\r\n";
-        $output .= '# PHP version: ' . PHP_VERSION . "\r\n";
-        $output .= '# MySQL version: ' . mysql_get_server_info() . "\r\n";
-        $output .= "\r\n";
-        $output .= "\r\n";
+                // provide some error info
+                $dbmsg .= "A database with the name ".$dbname." does not exist. Please correct this information!\n";
+                stepBack($dbmsg);
+        } else {
+
+                $alltables = mysql_list_tables($dbname);
 
 
-        // fetch all tables one by one
-        while ($row = mysql_fetch_row($alltables))
-        {
-                // introtext for this table
-                $output .= '# TABLE: ' . $row[0] . "\r\n";
-                $output .= '# --------------------------' . "\r\n";
-                $output .= '#' . "\r\n";
+                // generate dbScriptHeader
+                $output  = '';
+                $output .= '# Backup of database \'' . $dbname . '\'' . "\r\n";
+                $output .= '# Generated on ' . date('j F Y, H:i:s') . "\r\n";
+                $output .= "# Generator : dotProject Installer \r\n";
+                $output .= '# OS: ' . PHP_OS . "\r\n";
+                $output .= '# PHP version: ' . PHP_VERSION . "\r\n";
+                $output .= '# MySQL version: ' . mysql_get_server_info() . "\r\n";
+                $output .= "\r\n";
                 $output .= "\r\n";
 
 
-                if ($backupdrop == true)
+                // fetch all tables one by one
+                while ($row = mysql_fetch_row($alltables))
                 {
-                        // drop table
-                        $output .= 'DROP TABLE IF EXISTS `' . $row[0] . '`;' . "\r\n";
+                        // introtext for this table
+                        $output .= '# TABLE: ' . $row[0] . "\r\n";
+                        $output .= '# --------------------------' . "\r\n";
+                        $output .= '#' . "\r\n";
                         $output .= "\r\n";
-                }
 
 
-
-
-                // structure of the table
-                $table = mysql_query('SHOW CREATE TABLE ' . $row[0]);
-                $create = mysql_fetch_array($table);
-
-                // replace UNIX enter by Windows Enter for readability in Windows
-                $output .= str_replace("\n","\r\n",$create[1]).';';
-                $output .= "\r\n";
-                $output .= "\r\n";
-
-
-                $fields = mysql_list_fields($dbname, $row[0]);
-                $columns = mysql_num_fields($fields);
-
-                // all data from table
-                $result = mysql_query('SELECT * FROM '.$row[0]);
-                while($tablerow = mysql_fetch_array($result))
+                        if ($backupdrop == true)
                         {
-                        $output .= 'INSERT INTO `'.$row[0].'` (';
-                        for ($i = 0; $i < $columns; $i++)
-                        {
-                                $output .= '`'.mysql_field_name($fields,$i).'`,';
+                                // drop table
+                                $output .= 'DROP TABLE IF EXISTS `' . $row[0] . '`;' . "\r\n";
+                                $output .= "\r\n";
                         }
-                        $output = substr($output,0,-1); // remove last comma
-                        $output .= ') VALUES (';
-                        for ($i = 0; $i < $columns; $i++)
-                        {
-                                // remove all enters from the field-string. MySql statement must be on one line
-                                $value = str_replace("\r\n",'\n',$tablerow[$i]);
-                                // replace ' by \'
-                                $value = str_replace('\'',"\'",$value);
-                                $output .= '\''.$value.'\',';
-                        }
-                        $output = substr($output,0,-1); // remove last comma
-                        $output .= ');' . "\r\n";
-                        } // while
-                $output .= "\r\n";
-                $output .= "\r\n";
 
-        } //end of while clause
 
-        $file = 'backup.sql';
-        $mime_type = 'text/sql';
-        header('Content-Disposition: inline; filename="' . $file . '"');
-        header('Content-Type: ' . $mime_type);
-        echo $output;
+
+
+                        // structure of the table
+                        $table = mysql_query('SHOW CREATE TABLE ' . $row[0]);
+                        $create = mysql_fetch_array($table);
+
+                        // replace UNIX enter by Windows Enter for readability in Windows
+                        $output .= str_replace("\n","\r\n",$create[1]).';';
+                        $output .= "\r\n";
+                        $output .= "\r\n";
+
+
+                        $fields = mysql_list_fields($dbname, $row[0]);
+                        $columns = mysql_num_fields($fields);
+
+                        // all data from table
+                        $result = mysql_query('SELECT * FROM '.$row[0]);
+                        while($tablerow = mysql_fetch_array($result))
+                                {
+                                $output .= 'INSERT INTO `'.$row[0].'` (';
+                                for ($i = 0; $i < $columns; $i++)
+                                {
+                                        $output .= '`'.mysql_field_name($fields,$i).'`,';
+                                }
+                                $output = substr($output,0,-1); // remove last comma
+                                $output .= ') VALUES (';
+                                for ($i = 0; $i < $columns; $i++)
+                                {
+                                        // remove all enters from the field-string. MySql statement must be on one line
+                                        $value = str_replace("\r\n",'\n',$tablerow[$i]);
+                                        // replace ' by \'
+                                        $value = str_replace('\'',"\'",$value);
+                                        $output .= '\''.$value.'\',';
+                                }
+                                $output = substr($output,0,-1); // remove last comma
+                                $output .= ');' . "\r\n";
+                                } // while
+                        $output .= "\r\n";
+                        $output .= "\r\n";
+
+                } //end of while clause
+
+                $file = 'backup.sql';
+                $mime_type = 'text/sql';
+                header('Content-Disposition: inline; filename="' . $file . '"');
+                header('Content-Type: ' . $mime_type);
+                echo $output;
+        }
 } else {
 
         echo "<form name=\"gopref\" method=\"post\" action=\"pref.php\">
@@ -197,9 +207,11 @@ if ($dbbackup == true && $dobackup == "Backup" ) {
                 <input type=\"hidden\" name=\"dbpersist\" value=\"$dbpersist\">
                 <input type=\"hidden\" name=\"dbdrop\" value=\"$dbdrop\">
                 <input type=\"hidden\" name=\"dbbackup\" value=\"$dbbackup\">
+                <input type=\"hidden\" name=\"db_install_mode\" value=\"$db_install_mode\">
                 <input type=\"hidden\" name=\"dbmsg\" value=\"$dbmsg\">
                 <input type=\"hidden\" name=\"host_locale\" value=\"$host_locale\">
                 <input type=\"hidden\" name=\"host_style\" value=\"$host_style\">
+                <input type=\"hidden\" name=\"initial_company\" value=\"$initial_company\">
                 <input type=\"hidden\" name=\"jpLocale\" value=\"$jpLocale\">
                 <input type=\"hidden\" name=\"currency_symbol\" value=\"$currency_symbol\">
                 <input type=\"hidden\" name=\"base_url\" value=\"$base_url\">
