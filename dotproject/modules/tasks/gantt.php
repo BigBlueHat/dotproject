@@ -156,9 +156,9 @@ if ($start_date && $end_date) {
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 if ($showWork=='1') {
-	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Work'), $AppUI->_('Start'), $AppUI->_('Finish')),array(160,10, 70,70));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Work'), $AppUI->_('Start'), $AppUI->_('Finish')),array(230,16, 60,60));
 } else {
-	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Dur.'), $AppUI->_('Start'), $AppUI->_('Finish')),array(160,10, 70,70));
+	$graph->scale->actinfo->SetColTitles(array( $AppUI->_('Task name'), $AppUI->_('Dur.'), $AppUI->_('Start'), $AppUI->_('Finish')),array(230,16, 60,60));
 }
 
 $graph->scale->tableTitle->Set($projects[$project_id]["project_name"]);
@@ -276,11 +276,11 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
 	if($hide_task_groups) $level = 0;
 
-	if ( $locale_char_set=='utf-8' && function_exists("utf_decode") ) {
-		$name = strlen( utf8_decode($a["task_name"]) ) > 25 ? substr( utf8_decode($a["task_name"]), 0, 22 ).'...' : utf8_decode($a["task_name"]) ;
+	if ( $locale_char_set=='utf-8' && function_exists("utf8_decode") ) {
+		$name = strlen( $a["task_name"] ) > 34 ? substr( utf8_decode($a["task_name"]), 0, 33 ).'.' : utf8_decode($a["task_name"]) ;
 	} else {
-		//while using charset different than UTF-8 we need not to use utf8_deocde
-		$name = strlen( $a["task_name"] ) > 25 ? substr( $a["task_name"], 0, 22 ).'...' : $a["task_name"] ;	
+		//while using charset different than UTF-8 we need not to use utf8_decode
+		$name = strlen( $a["task_name"] ) > 34 ? substr( $a["task_name"], 0, 33 ).'.' : $a["task_name"] ;	
 	}
 	
 	$name = str_repeat(" ", $level).$name;
@@ -366,13 +366,13 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
 		$dur .= " h";
 		
-		$bar = new GanttBar($row++, array($name, $dur, substr($start, 0, 10), substr($end, 0, 10)), $start, $end, $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
+		$bar = new GanttBar($row++, array($name, $dur, substr($start, 2, 8), substr($end, 2, 8)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
 		$bar->progress->Set($progress/100);
 		
-		$bar->title->SetFont(FF_FONT1,FS_NORMAL,7);
+		$bar->title->SetFont(FF_FONT1,FS_NORMAL,6);
 		
 	    if($a["task_dynamic"] == 1){
-	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 7);
+	        $bar->title->SetFont(FF_FONT1,FS_BOLD, 6);
     		$bar->rightMark->Show();
             $bar->rightMark->SetType(MARK_RIGHTTRIANGLE);
             $bar->rightMark->SetWidth(3);
