@@ -218,13 +218,18 @@ class CTask extends CDpObject {
 	// convert to default db time stamp
 		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
 		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
+		
+		// filter tasks for not allowed projects
+		$tasks_filter = '';
+		$join = winnow('projects', 'task_project', $tasks_filter);
 
 	// assemble where clause
 		$where = "task_project = project_id"
-			."\n\tAND ("
+			. "\n\tAND ("
 			. "\n\t\t(task_start_date <= '$db_end' AND task_end_date >= '$db_start')"
 			. "\n\t\tOR task_start_date BETWEEN '$db_start' AND '$db_end'"
-			. "\n\t)";
+			. "\n\t)"
+		    . "\n\tAND ($tasks_filter)";
 	/*
 			OR
 			task_end_date BETWEEN '$db_start' AND '$db_end'
@@ -253,6 +258,7 @@ class CTask extends CDpObject {
 			. "\n\tproject_color_identifier AS color,"
 			. "\n\tproject_name"
 			. "\nFROM tasks,projects"
+		    . "\n$join"
 			. "\nWHERE $where"
 			. "\nORDER BY task_start_date";
 //echo "<pre>$sql</pre>";
