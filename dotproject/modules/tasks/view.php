@@ -12,11 +12,14 @@ if (!$canRead) {
 $sql = "
 SELECT tasks.*,
 	project_name, project_color_identifier,
-	u1.user_username as username
+	u1.user_username as username,
+	SUM(task_log_hours) as task_hours_worked
 FROM tasks
 LEFT JOIN users u1 ON u1.user_id = task_owner
 LEFT JOIN projects ON project_id = task_project
+LEFT JOIN task_log ON task_log_task=$task_id
 WHERE task_id = $task_id
+GROUP BY task_id
 ";
 
 // check if this record has dependancies to prevent deletion
@@ -122,7 +125,7 @@ function updateTask() {
 	}
 }
 function delIt() {
-	if (confirm( "<?php echo $AppUI->_('taskDelete');?>\n" )) {
+	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Task').'?';?>" )) {
 		document.frmDelete.submit();
 	}
 }
