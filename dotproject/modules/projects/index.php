@@ -30,7 +30,7 @@ WHERE permission_user = $AppUI->user_id
 	AND permission_item = project_id
 	AND permission_value = 0
 ";
-$deny = db_loadHashList( $sql );
+$deny = db_loadColumn( $sql );
 
 // pull projects
 $sql = "
