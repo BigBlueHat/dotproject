@@ -86,7 +86,12 @@ class CUser extends CDpObject {
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
-			db_exec( $pwsql ); // Only execute password change in update/insert works.
+			// Only execute password change in update/insert works.
+			$q->addTable('users', 'u');
+			$q->addUpdate('user_password', MD5($this->user_password));
+			$q->addWhere("user_id = $this->user_id");
+			$q->exec();
+			$q->clear();
 			$acl =& $GLOBALS['AppUI']->acl();
 			$acl->$perm_func($this->user_id, $this->user_username);
 			return NULL;
