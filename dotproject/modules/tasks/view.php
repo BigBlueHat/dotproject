@@ -99,7 +99,7 @@ if ($canReadProject) {
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", "edit this task" );
 }
-if ($canEdit) {
+if ($canDelete) {
 	$titleBlock->addCrumbDelete( 'delete task', $canDelete, $msg );
 }
 $titleBlock->show();
@@ -439,7 +439,7 @@ function delIt() {
 			}
 
 		}
-				require_once("./classes/CustomFields.class.php");
+				require_once  $AppUI->getSystemClass( 'CustomFields' );
 				$custom_fields = New CustomFields( $m, $a, $obj->task_id, "view" );
 				$custom_fields->printHTML();
 	 ?>
