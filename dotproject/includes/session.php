@@ -39,18 +39,18 @@ function dPsessionRead($id)
 	$q->addWhere("session_id = '$id'");
 	$qid =& $q->exec();
 	if (! $qid || $qid->EOF ) {
-		dprint(__FILE__, __LINE__, 1, "Failed to retrieve session $id");
+		dprint(__FILE__, __LINE__, 11, "Failed to retrieve session $id");
 		$data =  "";
 	} else {
 		$max = dPsessionConvertTime('max_lifetime');
 		$idle = dPsessionConvertTime('idle_time');
-		dprint(__FILE__, __LINE__, 1, "Found session $id, max=$max/" . $qid->fields['session_lifespan']
+		dprint(__FILE__, __LINE__, 11, "Found session $id, max=$max/" . $qid->fields['session_lifespan']
 		. ", idle=$idle/" . $qid->fields['session_idle']);
 		// If the idle time or the max lifetime is exceeded, trash the
 		// session.
 		if ($max < $qid->fields['session_lifespan']
 		 || $idle < $qid->fields['session_idle']) {
-			dprint(__FILE__, __LINE__, 1, "session $id expired");
+			dprint(__FILE__, __LINE__, 11, "session $id expired");
 			dPsessionDestroy($id);
 			$data = '';
 		} else {
@@ -68,13 +68,13 @@ function dPsessionWrite($id, $data)
 	$q->addTable('sessions');
 	$q->addWhere("session_id = '$id'");
 
-	if ( $qid =& $q->exec() && ( $qid->fields['row_count'] > 0
-	 || $qid->fields[0] > 0) ) {
-		dprint(__FILE__, __LINE__, 1, "Updating session $id");
+	if ( $qid =& $q->exec() 
+	&& ( $qid->fields['row_count'] > 0 || $qid->fields[0] > 0) ) {
+		dprint(__FILE__, __LINE__, 11, "Updating session $id");
 		$q->query = null;
 		$q->addUpdate('session_data', $data);
 	} else {
-		dprint(__FILE__, __LINE__, 1, "Creating new session $id");
+		dprint(__FILE__, __LINE__, 11, "Creating new session $id");
 		$q->query = null;
 		$q->where = null;
 		$q->addInsert('session_id', $id);
@@ -88,7 +88,7 @@ function dPsessionWrite($id, $data)
 
 function dPsessionDestroy($id)
 {
-	dprint(__FILE__, __LINE__, 1, "Killing session $id");
+	dprint(__FILE__, __LINE__, 11, "Killing session $id");
 	$q = new DBQuery;
 	$q->setDelete('sessions');
 	$q->addWhere("session_id = '$id'");
@@ -99,7 +99,7 @@ function dPsessionDestroy($id)
 
 function dPsessionGC($maxlifetime)
 {
-	dprint(__FILE__, __LINE__, 1, "Session Garbage collection running");
+	dprint(__FILE__, __LINE__, 11, "Session Garbage collection running");
 	$now = time();
 	$max = dPsessionConvertTime('max_lifetime');
 	$idle = dPsessionConvertTime('idle_time');
@@ -147,7 +147,13 @@ function dpSessionStart($start_vars = 'AppUI')
 	if (ini_get('session.auto_start') > 0) {
 		session_write_close();
 	}
-	session_set_save_handler('dPsessionOpen', 'dPsessionClose', 'dPsessionRead', 'dPsessionWrite', 'dPsessionDestroy', 'dPsessionGC');
+	session_set_save_handler(
+		'dPsessionOpen', 
+		'dPsessionClose', 
+		'dPsessionRead', 
+		'dPsessionWrite', 
+		'dPsessionDestroy', 
+		'dPsessionGC');
 	$max_time = dPsessionConvertTime('max_lifetime');
 	// Try and get the correct path to the base URL.
 	preg_match('_^(https?://)([^/]+)(:0-9]+)?(/.*)?$_i', $dPconfig['base_url'], $url_parts);
