@@ -35,6 +35,7 @@ class CAppUI {
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // supported languages
+// <DEPCRECATED>
 	var $locales = array(
 		'cn' => 'Chinese',
 		'cs' => 'Czech',
@@ -44,7 +45,10 @@ class CAppUI {
 		'fr' => 'French',
 		'pt_br' => 'Portugese-Brazilian'
 	);
-	var $locale_warn = true;	// warn when a translation is not found
+//  </DEPCRECATED>
+// warn when a translation is not found
+	var $locale_warn = true;
+// the string appended to untranslated string or unfound keys
 	var $locale_alert = '^';
 // theming
 	var $styles = array();
@@ -52,7 +56,7 @@ class CAppUI {
 	var $msg = '';
 	var $msgNo = '';
 	var $defaultRedirect = '';
-	
+
 // CAppUI Constructor
 	function CAppUI() {
 		GLOBAL $debug;
@@ -70,39 +74,39 @@ class CAppUI {
 
 		$this->defaultRedirect = "";
 // set up the default preferences
-		$this->user_locale = $this->base_locale;				
+		$this->user_locale = $this->base_locale;
 		$this->user_prefs = array();
 		$this->loadPrefs( 0 );
-		
+
 		$this->checkStyle();
 	}
-	
+
 	function checkStyle() {
 		GLOBAL $root_dir, $host_style;
-				
+
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
-		
+
 		if ($uistyle && !is_dir("$root_dir/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
 			$this->setPref( 'UISTYLE', $host_style );
 		}
 	}
 
-	function readDir( $path ) {
+	function readDirs( $path ) {
 		GLOBAL $root_dir;
 
 		$dirs = array();
-		$d = dir("$root_dir/style");
+		$d = dir( "$root_dir/$path" );
 		while (false !== ($name = $d->read())) {
-			if($name != "." && $name != ".." && $name != "CVS") {
+			if(is_dir( "$root_dir/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
 				$dirs[$name] = $name;
 			}
 		}
 		$d->close();
 		return $dirs;
 	}
-	
+
 // localisation
 	function setUserLocale( $loc='' ) {
 		GLOBAL $host_locale;
@@ -145,8 +149,13 @@ class CAppUI {
 		}
 		return $str;
 	}
+// set the display of warning for untranslated strings
+	function setWarning( $state=true ) {
+		$this->locale_warn = $state;
+	}
 // Save the current url query string
 	function savePlace( $query='' ) {
+		$this->state['SAVEDPLACE-1'] = @$this->state['SAVEDPLACE'];
 		$this->state['SAVEDPLACE'] = $query ? $query : @$_SERVER['QUERY_STRING'];
 	}
 	function resetPlace() {
@@ -154,20 +163,18 @@ class CAppUI {
 	}
 // Get the saved place (usually one that could contain an edit button)
 	function getPlace() {
-		return $this->state['SAVEDPLACE'];
+		return @$this->state['SAVEDPLACE'];
 	}
 // redirects to a new page
 // (usually to prevent nasties from doing a browser refresh after a db update)
-	function redirect( $params='' ) {
+	function redirect( $params='', $hist='' ) {
 		session_write_close();
 	// are the params empty
 		if (!$params) {
 		// has a place been saved
-			$params = !empty($this->state['SAVEDPLACE']) ? $this->state['SAVEDPLACE'] : $this->defaultRedirect;
+			$params = !empty($this->state["SAVEDPLACE$hist"]) ? $this->state["SAVEDPLACE$hist"] : $this->defaultRedirect;
 		}
-		echo "<script language=\"javascript\">"
-		. "window.location='index.php?$params'"
-		. "</script>";
+		echo "<script language=\"javascript\">window.location='index.php?$params'</script>";
 	}
 
 // Set the page message (displayed on page construction)
@@ -229,7 +236,7 @@ class CAppUI {
 			AND users.user_id = permissions.permission_user
 			AND permission_value <> 0
 		";
-		
+
 		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
 		if( !db_loadObject( $sql, $this ) ) {
@@ -271,7 +278,7 @@ class CAppUI {
 	function getProject() {
 		return $this->project_id;
 	}
-	
+
 	function setProject( $id=0 ) {
 		$this->project_id = $id;
 	}
@@ -306,7 +313,7 @@ class CTabBox_core {
 	function getTabName( $idx ) {
 		return $this->tabs[$idx][1];
 	}
-	
+
 	function add( $file, $title ) {
 		$this->tabs[] = array( $file, $title );
 	}
