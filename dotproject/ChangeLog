@@ -1,3 +1,18 @@
+2003-12-21 13:04  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- #863238: show milestones bold
+
+2003-12-21 09:55  (gregorerhardt)
+---------------------------------
+locales/en/forums.inc
+- update for force forum watch
+
+2003-12-21 09:20  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-21 08:57  (gregorerhardt)
 ---------------------------------
 modules/forums/configure.php
@@ -483,21 +498,6 @@ modules/ticketsmith/view.php
 2003-11-18 06:46  (kripper)
 ---------------------------------
 ChangeLog
-- Changelog update
-
-2003-11-17 19:55  (gregorerhardt)
----------------------------------
-locales/en/ticketsmith.inc
-- added various translations
-
-2003-11-17 18:46  (gregorerhardt)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- added translation for javaScript-Alert
-
-2003-11-17 18:26  (gregorerhardt)
----------------------------------
-modules/companies/addedit.php
 ...
 
 (This file has been wrapped)
