@@ -393,10 +393,10 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$bar->caption->Align("left","center");
 
         // show tasks which are both finished and past in (dark)gray
-        if ($progress >= 100 && $end_date->isPast()) {
+        if ($progress >= 100 && $end_date->isPast() && get_class($bar) == "ganttbar") {
                 $bar->caption->SetColor('darkgray');
                 $bar->title->SetColor('darkgray');
-                $bar->SetColor('darkgray');
+                $bar->setColor('darkgray');
                 $bar->SetFillColor('darkgray');
                 $bar->SetPattern(BAND_SOLID,'gray');
                 $bar->progress->SetFillColor('darkgray');
