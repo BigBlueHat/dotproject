@@ -5,10 +5,8 @@ require_once( "./classdefs/ui.php" );
 session_start();
 session_register('AppUI');
 
-##
-## set debug = true to help analyse persistent login errors
-##
-$debug = false;
+$username = isset($_POST['username']) ? $_POST['username'] : '';
+$password = isset($_POST['password']) ? $_POST['password'] : '';
 
 $HTTP_SESSION_VARS['AppUI'] = new CAppUI;
 $AppUI =& $HTTP_SESSION_VARS['AppUI'];
@@ -19,5 +17,5 @@ if (!$ok) {
 	include "./includes/login.php";
 	die;
 }
-echo '<script language="JavaScript">window.location = "./index.php";</script>';
+echo '<script language="javascript">window.location = "./index.php";</script>';
 ?>
