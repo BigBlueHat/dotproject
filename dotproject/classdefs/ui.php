@@ -260,7 +260,11 @@ class CTabBox {
 			$s .= '</td>'.$extra.'</tr></table>';
 			echo $s;
 		} else {
-			echo '<img src="./images/shim.gif" height="10" width="1">';
+			if ($extra) {
+				echo '<table border="0" cellpadding="2" cellspacing="0" width="98%"><tr>'.$extra.'</tr></table>';
+			} else {
+				echo '<img src="./images/shim.gif" height="10" width="1">';
+			}
 		}
 
 		if ($this->active < 0 && @$AppUI->getPref( 'TABVIEW' ) != 2 ) {
