@@ -9,7 +9,7 @@ SELECT DISTINCT(user_id), user_username, user_last_name, user_first_name, permis
 FROM users
 LEFT JOIN permissions ON user_id = permission_user
 WHERE permission_value IS NOT NULL
-	AND (user_username LIKE '$f%' or user_first_name LIKE '$f%' OR user_first_name LIKE '$f%')
+	AND (UPPER(user_username) LIKE '$f%' or UPPER(user_first_name) LIKE '$f%' OR UPPER(user_last_name) LIKE '$f%')
 ORDER by $orderby
 ";
 $urow = mysql_query( $usql );

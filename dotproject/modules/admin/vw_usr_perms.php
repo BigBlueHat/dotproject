@@ -35,7 +35,6 @@ WHERE u.user_id = p.permission_user
 ";
 
 $urc = mysql_query($usql);
-$nums = mysql_num_rows($urc);
 
 //pull the projects into an temp array
 $tarr = array();
