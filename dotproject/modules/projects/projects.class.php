@@ -240,22 +240,28 @@ class CProject extends CDpObject {
 		}
 		
 		//split out related departments and store them seperatly.
-		$sql = 'DELETE FROM project_departments WHERE task_id='.$this->project_id;
+		$sql = 'DELETE FROM project_departments WHERE project_id='.$this->project_id;
 		db_exec( $sql );
-		$departments = explode(',',$this->project_departments);
-		foreach($departments as $department){
-			$sql = 'INSERT INTO project_departments (project_id, department_id) values ('.$this->project_id.', '.$department.')';
-			db_exec( $sql );
-		}
+                if ($this->project_departments)
+                {
+        		$departments = explode(',',$this->project_departments);
+        		foreach($departments as $department){
+        			$sql = 'INSERT INTO project_departments (project_id, department_id) values ('.$this->project_id.', '.$department.')';
+        			db_exec( $sql );
+        		}
+                }
 		
 		//split out related contacts and store them seperatly.
-		$sql = 'DELETE FROM project_contacts WHERE task_id='.$this->project_id;
+		$sql = 'DELETE FROM project_contacts WHERE project_id='.$this->project_id;
 		db_exec( $sql );
-		$contacts = explode(',',$this->project_contacts);
-		foreach($contacts as $contact){
-			$sql = 'INSERT INTO project_contacts (project_id, contact_id) values ('.$this->project_id.', '.$contact.')';
-			db_exec( $sql );
-		}
+                if ($this->project_contacts)
+                {
+        		$contacts = explode(',',$this->project_contacts);
+        		foreach($contacts as $contact){
+        			$sql = 'INSERT INTO project_contacts (project_id, contact_id) values ('.$this->project_id.', '.$contact.')';
+        			db_exec( $sql );
+        		}
+                }
 
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
