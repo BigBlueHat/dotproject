@@ -26,7 +26,7 @@ print("</td>\n</tr>\n");
 
 /* field select */
 print("<tr>\n");
-print("<td align=\"right\"><b>Field</b></td>\n");
+print("<td align=\"right\"><strong>Field</strong></td>\n");
 print("<td>");
 $field_choices = array("author"  => "Author", 
                        "body"    => "Body", 
@@ -40,13 +40,13 @@ print("</tr>\n");
 
 /* pattern select */
 print("<tr>\n");
-print("<td align=\"right\"><b>Pattern</b></td>\n");
+print("<td align=\"right\"><strong>Pattern</strong></td>\n");
 print("<td><input type=\"text\" name=\"search_pattern\" value=\"$search_pattern\"></td>\n");
 print("</tr>\n");
 
 /* depth select */
 print("<tr>\n");
-print("<td align=\"right\"><b>Depth</b></td>\n");
+print("<td align=\"right\"><strong>Depth</strong></td>\n");
 print("<td>");
 $depth_choices = array("All"     => "All Tickets", 
                        "Open"    => "Open Parents", 
@@ -61,7 +61,7 @@ print("</tr>\n");
 
 /* sort select */
 print("<tr>\n");
-print("<td align=\"right\"><b>Sort By</b></td>\n");
+print("<td align=\"right\"><strong>Sort By</strong></td>\n");
 print("<td>");
 $sort_choices = array("ticket"     => "Ticket",
                       "author"     => "Author",

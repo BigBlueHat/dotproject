@@ -69,7 +69,7 @@ foreach ($messages as $row){
 	$s .= '<a href="mailto:"'.$row["user_email"].'>';
 	$s .= '<font size="2">'.$row["user_first_name"].' '.$row["user_last_name"].'</font></a></td>';
 	$s .= '<td valign="top" style="'.$style.'">';
-	$s .= '<font size="2"><b>'.$row["message_title"].'</b><hr size=1>';
+	$s .= '<font size="2"><strong>'.$row["message_title"].'</strong><hr size=1>';
 	$s .= str_replace( chr(13), "&nbsp;<br />", $row["message_body"] );
 	$s .= '</font></td>';
 

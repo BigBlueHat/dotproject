@@ -226,7 +226,7 @@ function delIt() {
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project["project_color_identifier"];?>" >
 		<font color="<?php echo bestColor( $project["project_color_identifier"] ); ?>">
-			<b><?php echo $AppUI->_('Project');?>: <?php echo @$project["project_name"];?></b>
+			<strong><?php echo $AppUI->_('Project');?>: <?php echo @$project["project_name"];?></strong>
 		</font>
 	</td>
 </tr>

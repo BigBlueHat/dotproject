@@ -110,7 +110,7 @@ while ($row = db_fetch_assoc( $rc )) {
 ?>
 <tr>
 	<td colspan=6 style="background-color:#<?php echo $row["project_color_identifier"];?>">
-		<a href="./index.php?m=projects&a=view&project_id=<?php echo $row["forum_project"];?>"><font color=<?php echo bestColor( $row["project_color_identifier"] );?>><B><?php echo $row["project_name"];?></b></font></a>
+		<a href="./index.php?m=projects&a=view&project_id=<?php echo $row["forum_project"];?>"><font color=<?php echo bestColor( $row["project_color_identifier"] );?>><strong><?php echo $row["project_name"];?></strong></font></a>
 	</td>
 </tr>
 	<?php

@@ -125,7 +125,7 @@ if (!$denyEdit) {
 			<td class="hilite" width="100%"><?php echo '<a href="mailto:'.@$user["user_email"].'">'.@$user["user_email"].'</a>';?></td>
 		</tr>
 		<tr>
-			<td colspan="2"><b><?php echo $AppUI->_('Signature');?>:</b></td>
+			<td colspan="2"><strong><?php echo $AppUI->_('Signature');?>:</strong></td>
 		</tr>
 		<tr>
 			<td class="hilite" width="100%" colspan="2">

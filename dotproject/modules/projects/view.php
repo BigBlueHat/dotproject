@@ -76,14 +76,14 @@ if (!$denyEdit) {
 <tr>
 	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $project["project_color_identifier"];?>" colspan="2">
 	<?php
-		echo '<font color="' . bestColor( $project["project_color_identifier"] ) . '"><b>'
-			. $project["project_name"] .'<b></font>';
+		echo '<font color="' . bestColor( $project["project_color_identifier"] ) . '"><strong>'
+			. $project["project_name"] .'<strong></font>';
 	?>
 	</td>
 </tr>
 <tr>
 	<td width="50%" valign="top">
-		<b><?php echo $AppUI->_('Details');?></b>
+		<strong><?php echo $AppUI->_('Details');?></strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
@@ -124,7 +124,7 @@ if (!$denyEdit) {
 		</table>
 	</td>
 	<td width="50%" rowspan="9" valign="top">
-		<b><?php echo $AppUI->_('Summary');?></b><br />
+		<strong><?php echo $AppUI->_('Summary');?></strong><br />
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Status');?>:</td>
@@ -139,7 +139,7 @@ if (!$denyEdit) {
 			<td class="hilite" width="100%"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>
 		</table>
-		<b><?php echo $AppUI->_('Description');?></b><br />
+		<strong><?php echo $AppUI->_('Description');?></strong><br />
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">

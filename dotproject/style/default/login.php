@@ -17,7 +17,7 @@
 <input type="hidden" name="return" value="<?php echo $return;?>">
 <tr>
 	<td colspan="2" class="headerfontWhite" bgcolor="gray">
-		<b><?php echo $AppUI->cfg['company_name'];?></b>
+		<strong><?php echo $AppUI->cfg['company_name'];?></strong>
 	</td>
 </tr>
 <tr>

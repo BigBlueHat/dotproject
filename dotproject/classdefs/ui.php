@@ -321,7 +321,7 @@ class CTabBox_core {
 		// flat view, active = -1
 			echo '<table border="0" cellpadding="2" cellspacing="0" width="98%">';
 			foreach ($this->tabs as $v) {
-				echo '<tr><td><b>'.$AppUI->_($v[1]).'</b></td></tr>';
+				echo '<tr><td><strong>'.$AppUI->_($v[1]).'</strong></td></tr>';
 				echo '<tr><td>';
 				include $this->baseInc.$v[0].".php";
 				echo '</td></tr>';

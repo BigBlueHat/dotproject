@@ -66,13 +66,13 @@ if ($start_date) {
 <table width="98%" cellspacing="0" cellpadding="2" border="0" class="std">
 <tr>
 	<td height="20" colspan="3" style="border: outset #D1D1CD 1px;background-color:#<?php echo $forum["project_color_identifier"];?>">
-		<font size="2" color=<?php echo bestColor( $forum["project_color_identifier"] );?>><b><?php echo @$forum["forum_name"];?></b></font>
+		<font size="2" color=<?php echo bestColor( $forum["project_color_identifier"] );?>><strong><?php echo @$forum["forum_name"];?></strong></font>
 	</td>
 </tr>
 <tr>
 	<td align="left" nowrap><?php echo $AppUI->_( 'Related Project' );?>:</td>
-	<td nowrap><b><?php echo $forum["project_name"];?></b></td>
-	<td valign="top" width="50%" rowspan=99><b><?php echo $AppUI->_( 'Description' );?>:</b><br /><?php echo @str_replace(chr(13), "&nbsp;<br />",$forum["forum_description"]);?></td>
+	<td nowrap><strong><?php echo $forum["project_name"];?></strong></td>
+	<td valign="top" width="50%" rowspan=99><strong><?php echo $AppUI->_( 'Description' );?>:</strong><br /><?php echo @str_replace(chr(13), "&nbsp;<br />",$forum["forum_description"]);?></td>
 </tr>
 <tr>
 	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>

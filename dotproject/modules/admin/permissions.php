@@ -219,7 +219,7 @@ function changeUser(){
 	<td nowrap width="100%">
 	<a href="./index.php?m=admin">user list</a>
 <?php if (!$denyEdit) { ?>
-	<b>:</b> <a href="./index.php?m=admin&a=addedituser&user_id=<?php echo $user_id;?>">edit this User</a>
+	<strong>:</strong> <a href="./index.php?m=admin&a=addedituser&user_id=<?php echo $user_id;?>">edit this User</a>
 <?php } ?>
 	</td>
 <form name="topform">
@@ -247,7 +247,7 @@ function changeUser(){
 </tr>
 <?php
 if(mysql_num_rows($urc) == 0) {
-	echo '<tr><td colspan=4 align=center><B>No permissions for this User</b></td></tr>';
+	echo '<tr><td colspan=4 align=center><strong>No permissions for this User</strong></td></tr>';
 };
 
 $i = 0;

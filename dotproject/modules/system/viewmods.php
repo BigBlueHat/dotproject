@@ -40,7 +40,7 @@ $crumbs["?m=system"] = "System Admin";
 </tr>
 </table>
 
-<span style="color:red"><b>Note this function is still in development and testing phase</b></span>
+<span style="color:red"><strong>Note this function is still in development and testing phase</strong></span>
 
 <table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
 <tr>

@@ -129,7 +129,7 @@ print("<input type=\"hidden\" name=\"subject\" value='" . $ticket_info["subject"
 /* output ticket */
 for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
     print("<tr>\n");
-    print("<td align=\"left\"><b>" . $fields["headings"][$loop] . "</b></td>");
+    print("<td align=\"left\"><strong>" . $fields["headings"][$loop] . "</strong></td>");
     print("<td align=\"left\">" . format_field($ticket_info[$fields["columns"][$loop]], $fields["types"][$loop]) . "</td>\n");
     print("</tr>\n");
 }
@@ -138,7 +138,7 @@ $ticket_info["assignment"];
 /* output attachment indicator */
 if (query2result("SELECT attachment FROM tickets WHERE ticket = '$ticket'")) {
     print("<tr>\n");
-    print("<td align=\"left\"><b>Attachments</b></td>");
+    print("<td align=\"left\"><strong>Attachments</strong></td>");
     print("<td align=\"left\">This email had attachments which were removed.</td>\n");
     print("</tr>\n");
 }
@@ -148,7 +148,7 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
 
     /* output followups */
     print("<tr>\n");
-    print("<td align=\"left\" valign=\"top\"><b>Followups</b></td>\n");
+    print("<td align=\"left\" valign=\"top\"><strong>Followups</strong></td>\n");
     print("<td align=\"left\" valign=\"top\">\n");
    
     /* grab followups */
@@ -169,7 +169,7 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
             
             /* do number/author */
             print("<td bgcolor=\"$color\">\n");
-            print("<b>$number</b> : \n");
+            print("<strong>$number</strong> : \n");
             $row["author"] = ereg_replace("\"", "", $row["author"]);
             $row["author"] = htmlspecialchars($row["author"]);
             print($row["author"] . "\n");    
@@ -215,7 +215,7 @@ else {
     
         /* start row */
         print("<tr>\n");
-        print("<td><b>Followups</b></td>\n");
+        print("<td><strong>Followups</strong></td>\n");
     
         /* start cell */
         print("<td valign=\"middle\">");
@@ -224,7 +224,7 @@ else {
         for ($loop = 0; $loop < $peer_count; $loop++) {
             if ($peer_tickets[$loop] == $ticket) {
                 $viewed_peer = $loop;
-                $peer_strings[$loop] = "<b>" . ($loop + 1) . "</b>";
+                $peer_strings[$loop] = "<strong>" . ($loop + 1) . "</strong>";
             }
             else {
                 $peer_strings[$loop] = "<a href=\"index.php?m=ticketsmith&a=view&ticket=$peer_tickets[$loop]\">" . ($loop + 1) . "</a>";

@@ -23,7 +23,7 @@ function SendColor(color) {
 <center>
 <table border=0 cellpadding=1 cellspacing=0 width=292>
 	<tr>
-		<td valign=top><font style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:18px;"><b>Color Selector</b></font></td>
+		<td valign=top><font style="font-family:trebuchetms,verdana,helvetica,arial,sans-serif;font-size:18px;"><strong>Color Selector</strong></font></td>
 		<form>
 		<td align=right valign=bottom>
 		<!-- CUSTOMISE THE FOLLOWING COLOURS AND PRESET NAMES FOR YOUR ORGANISATIONAL NEEDS -->

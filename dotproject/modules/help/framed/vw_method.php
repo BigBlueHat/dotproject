@@ -56,7 +56,7 @@ while ($tok) {
 
 <p><?echo @$rows["method_desc"];?>
 
-<pre class=syntax><B><?
+<pre class=syntax><strong><?
 	echo @$rows["method_returns"];
 	if(@$rows["method_retbyref"])
 		echo ' &';
@@ -66,12 +66,12 @@ while ($tok) {
 	$n=count($params);
 	for($i=0; $i < $n; $i++ ) {
 		echo ($i>0)?",\n":'';
-		echo '   '.$params[$i][0].' </B><I>'.$params[$i][1].'</I><B>';
+		echo '   '.$params[$i][0].' </strong><I>'.$params[$i][1].'</I><strong>';
 		if($params[$i][2] != '')
 			echo ' = '.$params[$i][2];
 	}
 ?>
-);</B></pre>
+);</strong></pre>
 
 <?
 	if($n > 0) {

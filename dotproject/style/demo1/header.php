@@ -38,7 +38,7 @@ function tboff(){
 
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-    <td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
+    <td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><strong>dotproject</strong></a>
 </tr>
 <tr>
     <td style="border: #848284 1px outset;background-color:#d5d3ce;color:#000000">

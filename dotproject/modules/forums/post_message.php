@@ -83,9 +83,9 @@ function orderByName(x){
 <input type="hidden" name="message_author" value="<?php echo $AppUI->user_id;?>">
 <input type="hidden" name="message_id" value="<?php echo $message_id;?>">
 <tr>
-	<th valign="top" colspan="2"><b><?php
+	<th valign="top" colspan="2"><strong><?php
 		echo $AppUI->_( $message_id ? 'Edit Message' : 'Add Message' );
-	?></b></th>
+	?></strong></th>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'Subject' );?>:</td>

@@ -98,14 +98,14 @@ else {
 
     /* output From: line */
     print("<tr>\n");
-    print("<td align=left><b>From</b></td>");
+    print("<td align=left><strong>From</strong></td>");
     list($from_name, $from_email) = query2array("SELECT concat(user_first_name, ' ', user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
     print("<td align=left>" . $from_name . " &lt;" . $from_email . "&gt;</td>\n");
     print("</tr>\n");
 
     /* output To: line */
     print("<tr>\n");
-    print("<td align=left><b>To</b></td>");
+    print("<td align=left><strong>To</strong></td>");
     $recipient = query2result("SELECT author FROM tickets WHERE ticket = '$ticket_parent'");
     print("<td align=left>" . format_field($recipient, "recipient") . "</td>\n");
     print("</tr>\n");
@@ -113,7 +113,7 @@ else {
     /* output ticket */
     for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
         print("<tr>\n");
-        print("<td align=left><b>" . $fields["headings"][$loop] . "</b></td>");
+        print("<td align=left><strong>" . $fields["headings"][$loop] . "</strong></td>");
         print("<td align=left>" . format_field($ticket_info[$fields["columns"][$loop]], $fields["types"][$loop]) . "</td>\n");
         print("</tr>\n");
     }

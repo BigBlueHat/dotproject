@@ -8,7 +8,7 @@ body,th,td {
 </style>
 </head>
 <body>
-<b>dotproject diagnostics</b>
+<strong>dotproject diagnostics</strong>
 <table cellspacing="0" cellpadding="4" border="1">
 <?php
 /* $Id$ */
@@ -44,7 +44,7 @@ $locs['German'] = array( 'german', 'de_DE@euro', 'de_DE', 'de', 'ge' );
 $locs['Spanish'] = array( 'spanish', 'es', 'es_ES', 'sp' );
 $locs['Chinese'] = array( 'chinese', 'cn', 'zh' );
 
-echo '<b>Time locales</b>';
+echo '<strong>Time locales</strong>';
 echo '<table cellspacing="0" cellpadding="4" border="1">';
 
 foreach ($locs as $k => $v) {

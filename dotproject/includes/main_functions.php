@@ -57,7 +57,7 @@ function breadCrumbs( &$arr ) {
 	foreach ($arr as $k => $v) {
 		$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
 	}
-	return implode( ' <b>:</b> ', $crumbs );
+	return implode( ' <strong>:</strong> ', $crumbs );
 }
 ##
 ## generate link for context help

@@ -141,7 +141,7 @@ if ($parent_count) {
             }
         }
         print("&direction=$new_direction");
-        print("><b>" . $fields["headings"][$loop] . "</b></a></td>\n");
+        print("><strong>" . $fields["headings"][$loop] . "</strong></a></td>\n");
     }
     print("</tr>\n");
     while ($row = result2hash($result)) {

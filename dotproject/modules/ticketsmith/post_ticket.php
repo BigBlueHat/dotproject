@@ -43,7 +43,7 @@ function submitIt() {
 
 <TR height="20">
 	<TD bgcolor="#878676" colspan=2>
-		&nbsp;<font face="verdana,helveitica,arial,sans-serif" color=#ffffff><b>Trouble Details</b></font>
+		&nbsp;<font face="verdana,helveitica,arial,sans-serif" color=#ffffff><strong>Trouble Details</strong></font>
 	</td>
 </tr>
 <tr>
@@ -66,7 +66,7 @@ function submitIt() {
 			<option value="1" selected>Normal
 			<option value="2">High
 			<option value="3">Highest
-			<option value="4"><B>911 (Showstopper)</B>
+			<option value="4"><strong>911 (Showstopper)</strong>
 		</select>
 	</td>
 </tr>

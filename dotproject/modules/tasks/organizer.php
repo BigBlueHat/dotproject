@@ -466,7 +466,7 @@ if($do != "conf") {
 	}
 
 	if(!$action) {
-		echo "<font size=2><b>Tasks are already organized</b></font><br />";
+		echo "<font size=2><strong>Tasks are already organized</strong></font><br />";
 	}
 
 	echo '</td>';
@@ -479,15 +479,15 @@ if ($do=="conf" || $action) {
 	if(!$errors) {
 		echo "<input type=hidden name=do value=" . ($do=="ask"?"fixate":"ask") . ">";
 		if($do == "ask") {
-			echo "<font size=2><b>Do you want to accept this changes?</b></font><br />";
+			echo "<font size=2><strong>Do you want to accept this changes?</strong></font><br />";
 			echo "<input type=button value=accept class=button onClick='javascript:document.form.submit()'>";
 		} else if ($do == "fixate") {
-			echo "<font size=2><b>Tasks has been reorganized</b></font><br />";
+			echo "<font size=2><strong>Tasks has been reorganized</strong></font><br />";
 		} else if ($do == "conf") {
 				echo "<input type=button value=start class=button onClick='javascript:document.form.submit()'>";
 		}
 	} else {
-		echo "<font size=2><b>Please correct the above errors</b></font><br />";
+		echo "<font size=2><strong>Please correct the above errors</strong></font><br />";
 		echo "<input type=button value=submit class=button onClick='javascript:document.form.submit()'>";
 	}
 }

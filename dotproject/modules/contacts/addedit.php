@@ -194,7 +194,7 @@ function orderByName( x ){
 		</table>
 	</td>
 	<td valign="top" width="50%">
-		<b><?php echo $AppUI->_('Contact Notes');?></b><br />
+		<strong><?php echo $AppUI->_('Contact Notes');?></strong><br />
 		<textarea class="textarea" name="contact_notes" rows="20" cols="40"><?php echo @$contact["contact_notes"];?></textarea></td>
 	</td>
 </tr>

@@ -287,7 +287,7 @@ class JpGraphErrObject {
     // If aHalt is true then execution can't continue. Typical used for
     // fatal errors
     function Raise($aMsg,$aHalt=true) {
-	$aMsg = "<b>JpGraph Error:</b> ".$aMsg;
+	$aMsg = "<strong>JpGraph Error:</strong> ".$aMsg;
 	if( $aHalt )
 	    die($aMsg);
 	else 
@@ -304,7 +304,7 @@ class JpGraphErrObjectImg {
 	if( headers_sent() ) {
 	    // Special case for headers already sent error. Dont
 	    // return an image since it can't be displayed
-	    die("<b>JpGraph Error:</b> ".$aMsg);		
+	    die("<strong>JpGraph Error:</strong> ".$aMsg);		
 	}
 
 	// Create an image that contains the error text.
@@ -358,7 +358,7 @@ else {
 //user
 //
 if( isset($GLOBALS['php_errormsg']) ) {
-    JpGraphError::Raise("<b>General PHP error:</b><br />".$GLOBALS['php_errormsg']);
+    JpGraphError::Raise("<strong>General PHP error:</strong><br />".$GLOBALS['php_errormsg']);
 }
 
 
@@ -791,7 +791,7 @@ class Graph {
     // Add a plot object to the graph
     function Add(&$aPlot) {
 	if( $aPlot == null )
-	    JpGraphError::Raise("<b></b> Graph::Add() You tried to add a null plot to the graph.");
+	    JpGraphError::Raise("<strong></strong> Graph::Add() You tried to add a null plot to the graph.");
 	if( is_array($aPlot) && count($aPlot) > 0 )
 	    $cl = get_class($aPlot[0]);
 	else
@@ -810,14 +810,14 @@ class Graph {
     // Add plot to second Y-scale
     function AddY2(&$aPlot) {
 	if( $aPlot == null )
-	    JpGraphError::Raise("<b></b> Graph::AddY2() You tried to add a null plot to the graph.");	
+	    JpGraphError::Raise("<strong></strong> Graph::AddY2() You tried to add a null plot to the graph.");	
 	$this->y2plots[] = &$aPlot;
     }
 	
     // Add text object to the graph
     function AddText(&$aTxt) {
 	if( $aTxt == null )
-	    JpGraphError::Raise("<b></b> Graph::AddText() You tried to add a null text to the graph.");		
+	    JpGraphError::Raise("<strong></strong> Graph::AddText() You tried to add a null text to the graph.");		
 	if( is_array($aTxt) ) {
 	    for($i=0; $i < count($aTxt); ++$i )
 		$this->texts[]=&$aTxt[$i];
@@ -829,7 +829,7 @@ class Graph {
     // Add a line object (class PlotLine) to the graph
     function AddLine(&$aLine) {
 	if( $aLine == null )
-	    JpGraphError::Raise("<b></b> Graph::AddLine() You tried to add a null line to the graph.");		
+	    JpGraphError::Raise("<strong></strong> Graph::AddLine() You tried to add a null line to the graph.");		
 	if( is_array($aLine) ) {
 	    for($i=0; $i<count($aLine); ++$i )
 		$this->lines[]=&$aLine[$i];
@@ -855,7 +855,7 @@ class Graph {
     function SetBackgroundImage($aFileName,$aBgType=BGIMG_FILLPLOT,$aImgFormat="auto") {
 
 	if( $GLOBALS['gd2'] && !USE_TRUECOLOR ) {
-	    JpGraphError::Raise("You are using GD 2.x and are trying to use a background images on a non truecolor image. To use background images with GD 2.x you <b>must</b> enable truecolor by setting the USE_TRUECOLOR constant to TRUE. Due to a bug in GD 2.0.1 using any truetype fonts with truecolor images will result in very poor quality fonts.");
+	    JpGraphError::Raise("You are using GD 2.x and are trying to use a background images on a non truecolor image. To use background images with GD 2.x you <strong>must</strong> enable truecolor by setting the USE_TRUECOLOR constant to TRUE. Due to a bug in GD 2.0.1 using any truetype fonts with truecolor images will result in very poor quality fonts.");
 	}
 
 	// Get extension to determine image type
@@ -3422,7 +3422,7 @@ class LinearScale {
 	$this->off=$aStart;
 		
 	if( $this->world_size<=0 ) {
-	    JpGraphError::Raise("<b>JpGraph Fatal Error</b>:<br />
+	    JpGraphError::Raise("<strong>JpGraph Fatal Error</strong>:<br />
 		 You have unfortunately stumbled upon a bug in JpGraph. <br />
 		 It seems like the scale range is ".$this->world_size." [for ".
 				$this->type." scale] <br />
@@ -4124,14 +4124,14 @@ class Image {
 	if( @$GLOBALS['gd2']==true && USE_TRUECOLOR ) {
 	    $this->img = @imagecreatetruecolor($aWidth, $aHeight);
 	    if( $this->img < 1 ) {
-		die("<font color=red><b>JpGraph Error:</b></font> Can't create truecolor image. Check that you really have GD2 library installed.");
+		die("<font color=red><strong>JpGraph Error:</strong></font> Can't create truecolor image. Check that you really have GD2 library installed.");
 	    }
 	    $this->SetAlphaBlending();
 	    imagefilledrectangle($this->img, 0, 0, $aWidth, $aHeight, 0xffffff);
 	} else {
 	    $this->img = @imagecreate($aWidth, $aHeight);	
 	    if( $this->img < 1 ) {
-		die("<font color=red><b>JpGraph Error:</b></font> Can't create image. Check that you really have the GD library installed.");
+		die("<font color=red><strong>JpGraph Error:</strong></font> Can't create image. Check that you really have the GD library installed.");
 	    }
 	}		
     }
@@ -4682,8 +4682,8 @@ class Image {
 	$this->current_color=$this->rgb->allocate($color,$aAlpha);
 	if( $this->current_color == -1 ) {
 	    $tc=imagecolorstotal($this->img);
-	    JpGraphError::Raise("<b> Can't allocate any more colors.</b><br />
-				Image has already allocated maximum of <b>$tc colors</b>. 
+	    JpGraphError::Raise("<strong> Can't allocate any more colors.</strong><br />
+				Image has already allocated maximum of <strong>$tc colors</strong>. 
 				This might happen if you have anti-aliasing turned on
 				together with a background image or perhaps gradient fill 
 				since this requires many, many colors. Try to turn off

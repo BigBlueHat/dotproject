@@ -52,7 +52,7 @@ if (!$denyEdit) {
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr valign="top">
 	<td width="50%">
-		<b>Details</b>
+		<strong>Details</strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap>Company:</td>
@@ -88,7 +88,7 @@ if (!$denyEdit) {
 		</table>
 	</td>
 	<td width="50%">
-		<b>Description</b>
+		<strong>Description</strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td bgcolor="#ffffff" width="100%"><?php echo str_replace( chr(10), "<br />", $dept["dept_desc"]);?>&nbsp;</td>

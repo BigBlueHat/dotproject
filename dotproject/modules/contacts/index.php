@@ -118,7 +118,7 @@ $tdw = floor( 100 / $carrWidth );
 		<table width="100%" cellspacing="1" cellpadding="1">
 		<tr>
 			<td width="100%">
-				<a href="./index.php?m=contacts&a=addedit&contact_id=<?php echo $carr[$z][$x]["contact_id"];?>"><B><?php echo $carr[$z][$x]["contact_order_by"];?></b></a>
+				<a href="./index.php?m=contacts&a=addedit&contact_id=<?php echo $carr[$z][$x]["contact_id"];?>"><strong><?php echo $carr[$z][$x]["contact_order_by"];?></strong></a>
 			</td>
 		</tr>
 		<tr>

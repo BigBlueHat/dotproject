@@ -211,10 +211,10 @@ function format_field ($value, $type, $ticket = NULL) {
             $priority = $CONFIG["priority_names"][$value];
             $color = $CONFIG["priority_colors"][$value];
             if ($value == 3) {
-                $priority = "<b>$priority</b>";
+                $priority = "<strong>$priority</strong>";
             }
             if ($value == 4) {
-                $priority = "<blink><b>$priority</b></blink>";
+                $priority = "<blink><strong>$priority</strong></blink>";
             }
             $output = "<font color=\"$color\">$priority</font>";
             break;
@@ -244,7 +244,7 @@ function format_field ($value, $type, $ticket = NULL) {
             $output = get_time_ago($value);
             if ($CONFIG["warning_active"]) {
                 if (time() - $value > $CONFIG["warning_age"] * 3600) {
-                    $output = "<font color=\"" . $CONFIG["warning_color"] . "\"><xb>" . $output . "</b></font>";
+                    $output = "<font color=\"" . $CONFIG["warning_color"] . "\"><xb>" . $output . "</strong></font>";
                 }
             }
             break;

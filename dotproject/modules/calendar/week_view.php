@@ -87,7 +87,7 @@ TD.weekDay  {
 <table border="0" cellspacing="1" cellpadding="2" width="98%" style="margin-width:4px;background-color:white">
 <?php
 $column = 0;
-$format = array( "<b>%d</b> %A", "%A <b>%d</b>" );
+$format = array( "<strong>%d</strong> %A", "%A <strong>%d</strong>" );
 $show_day = $this_week;
 
 for ($i=0; $i < 7; $i++) {

@@ -23,8 +23,8 @@ print("</td>\n");
 print("</tr>\n");
 
 /* output content */
-print("<tr><td align=\"right\"><b>Username</b></td><td><input type=\"text\" name=\"login_attempt\"></td></tr>\n");
-print("<tr><td align=\"right\"><b>Password</b></td><td><input type=\"password\" name=\"password_attempt\"></td></tr>\n");
+print("<tr><td align=\"right\"><strong>Username</strong></td><td><input type=\"text\" name=\"login_attempt\"></td></tr>\n");
+print("<tr><td align=\"right\"><strong>Password</strong></td><td><input type=\"password\" name=\"password_attempt\"></td></tr>\n");
 print("<tr><td><br /></td><td><input type=\"submit\" value=\"Login\"> <input type=\"reset\" value=\"Clear\"></td></tr>\n");
 
 /* end table */

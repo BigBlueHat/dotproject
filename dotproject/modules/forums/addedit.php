@@ -75,14 +75,14 @@ function delIt(){
 <input type="hidden" name="forum_id" value="<?php echo $forum_id;?>">
 <tr height="20">
 	<th valign="top" colspan="3">
-		<b><?php
+		<strong><?php
 		echo $AppUI->_( $forum_id ? 'Edit' : 'Add' ).' '.$AppUI->_( 'Forum' );
-		?></b>
+		?></strong>
 	</th>
 </tr>
 <tr>
 	<td valign="top" width="50%">
-		<b><?php echo $AppUI->_('Details');?></b>
+		<strong><?php echo $AppUI->_('Details');?></strong>
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" width="100">Forum Name:</td>
@@ -139,7 +139,7 @@ function delIt(){
 		</table>
 	</td>
 	<td valign="top" width="50%">
-		<b>Description</b><br />
+		<strong>Description</strong><br />
 		<textarea class="textarea" name="forum_description" style="height:150px;"><?php echo @$forum_info["forum_description"];?></textarea>
 	</td>
 </tr>

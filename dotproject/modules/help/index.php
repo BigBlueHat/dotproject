@@ -11,7 +11,7 @@
 <table width="98%" cellspacing="1" cellpadding="4" border="0">
 <tr>
 	<td width="33%" valign="top">
-		<p><b><?php echo contextHelp( $AppUI->_( 'Getting Started' ), 'ID_HELP_TUTORIAL' );?></b>
+		<p><strong><?php echo contextHelp( $AppUI->_( 'Getting Started' ), 'ID_HELP_TUTORIAL' );?></strong>
 		<ul>
 			<li><?php echo contextHelp( $AppUI->_( 'Adding a Company' ), 'ID_HELP_TUT_COMP' );?></li>
 			<li><?php echo contextHelp( $AppUI->_( 'Adding a Project' ), 'ID_HELP_TUT_PROJ' );?></li>
@@ -20,7 +20,7 @@
 		</p>
 	</td>
 	<td width="33%" valign="top">
-		<p><b><?php echo contextHelp( $AppUI->_( 'About Modules' ), 'ID_HELP_TUTORIAL' );?></b>
+		<p><strong><?php echo contextHelp( $AppUI->_( 'About Modules' ), 'ID_HELP_TUTORIAL' );?></strong>
 		<ul>
 			<li><?php echo contextHelp( $AppUI->_( 'Companies' ), 'ID_HELP_COMPANIES' );?></li>
 			<li><?php echo contextHelp( $AppUI->_( 'System' ), 'ID_HELP_SYS_IDX' );?></li>
@@ -28,7 +28,7 @@
 		</p>
 	</td>
 	<td width="33%" valign="top">
-		<p><b><?php echo $AppUI->_( 'General Concepts' );?></b>
+		<p><strong><?php echo $AppUI->_( 'General Concepts' );?></strong>
 		<ul>
 			<li><?php echo contextHelp( $AppUI->_( 'Top Menu' ), 'ID_HELP_GEN_TOPMENU' );?></li>
 			<li><?php echo contextHelp( $AppUI->_( 'Left Navigation' ), 'ID_HELP_GEN_LEFTNAV' );?></li>

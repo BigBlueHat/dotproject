@@ -15,7 +15,7 @@
 "company list"=>"listado de empresas",
 "companyDelete"=>"¿Está seguro de querer eliminar esta empresa?",
 "companyValidName"=>"Por favor, ingrese un nombre de empresa válido",
-"companyWelcome"=>"<b>Bienvenido %s.</b> Esta página despliega un listado de los clientes actuales y sus proyectos activos.",
+"companyWelcome"=>"<strong>Bienvenido %s.</strong> Esta página despliega un listado de los clientes actuales y sus proyectos activos.",
 "delete company"=>"eliminar empresa",
 "edit this company"=>"agregar esta empresa",
 "new company"=>"nueva empresa",

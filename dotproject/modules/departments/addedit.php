@@ -102,7 +102,7 @@ function delIt() {
 
 <tr>
 	<td align="right" nowrap><?php echo $AppUI->_( 'Department Company' );?>:</td>
-	<td ><b><?php echo $company_name;?></b></td>
+	<td ><strong><?php echo $company_name;?></strong></td>
 </tr>
 <tr>
 	<td align="right" nowrap><?php echo $AppUI->_( 'Department Name' );?>:</td>

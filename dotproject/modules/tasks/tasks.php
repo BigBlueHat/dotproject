@@ -294,7 +294,7 @@ foreach ($projects as $k => $p) {
 		<tr>
 			<td nowrap style="border: outset #eeeeee 2px;background-color:#<?php echo @$p["project_color_identifier"];?>">
 				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
-				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><B><?php echo @$p["project_name"];?></b></span></a>
+				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><strong><?php echo @$p["project_name"];?></strong></span></a>
 			</td>
 			<td width="<?php echo (101 - intval(@$p["project_precent_complete"]));?>%">
 				<?php echo (intval(@$p["project_precent_complete"]));?>%

@@ -65,7 +65,7 @@ if (!$denyEdit) {
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
 	<td valign="top" width="50%">
-		<b><?php echo $AppUI->_('Details');?></b>
+		<strong><?php echo $AppUI->_('Details');?></strong>
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
@@ -104,7 +104,7 @@ if (!$denyEdit) {
 
 	</td>
 	<td width="50%" valign="top">
-		<b><?php echo $AppUI->_('Description');?></b>
+		<strong><?php echo $AppUI->_('Description');?></strong>
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td class="hilite">

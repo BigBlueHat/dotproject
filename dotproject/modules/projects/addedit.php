@@ -249,7 +249,7 @@ function delIt() {
 					<td>
 						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?> 
 					</td>
-					<td><b><?php echo intval(@$project["project_precent_complete"]);?> %</b></td>
+					<td><strong><?php echo intval(@$project["project_precent_complete"]);?> %</strong></td>
 					<td><input type=checkbox value=1 name=project_active <?php if($project["project_active"]){?>checked<?php }?>></td>
 				</tr>
 				</table>

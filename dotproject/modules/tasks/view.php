@@ -110,7 +110,7 @@ function updateTask() {
 	<td width="50%">
 		<table width="100%" cellspacing="1" cellpadding="2">
 		<tr>
-			<td nowrap="nowrap" colspan=2><b><?php echo $AppUI->_('Details');?></b></td>
+			<td nowrap="nowrap" colspan=2><strong><?php echo $AppUI->_('Details');?></strong></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
@@ -122,7 +122,7 @@ function updateTask() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
-			<td class="hilite"><b><?php echo @$task["task_name"];?></b></td>
+			<td class="hilite"><strong><?php echo @$task["task_name"];?></strong></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Creator');?>:</td>
@@ -158,7 +158,7 @@ function updateTask() {
 			<td class="hilite" width="300"><?php echo @$task["task_hours_worked"];?></td>
 		</tr>
 		<tr>
-			<td nowrap="nowrap" colspan=2><b><?php echo $AppUI->_('Dates and Targets');?></b></td>
+			<td nowrap="nowrap" colspan=2><strong><?php echo $AppUI->_('Dates and Targets');?></strong></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?>:</td>
@@ -177,7 +177,7 @@ function updateTask() {
 			<td class="hilite" width="300"><?php echo $task["task_target_budget"];?></td>
 		</tr>
 		<tr>
-			<td nowrap="nowrap" colspan="2"><b><?php echo $AppUI->_('Description');?></b></td>
+			<td nowrap="nowrap" colspan="2"><strong><?php echo $AppUI->_('Description');?></strong></td>
 		</tr>
 		<tr>
 			<td valign="top" height="75" colspan="2" class="hilite">
@@ -199,7 +199,7 @@ function updateTask() {
 		<input type="hidden" value="Update :<?php echo $$task["task_name"];?>" name="comment_title">
 		<input type="hidden" value="<?php echo @$task["task_hours_worked"];?>" name="already_worked">
 		<tr>
-			<td colspan="3"><b><?php echo $AppUI->_('Work');?></b></td>
+			<td colspan="3"><strong><?php echo $AppUI->_('Work');?></strong></td>
 		</tr>
 		<tr>
 			<td rowspan="2" valign="bottom" align="left" bgcolor="#e0e0e0">
@@ -231,7 +231,7 @@ function updateTask() {
 <?php } ?>
 
 		<tr>
-			<td colspan="3"><b><?php echo $AppUI->_('Assigned Users');?></b></td>
+			<td colspan="3"><strong><?php echo $AppUI->_('Assigned Users');?></strong></td>
 		</tr>
 		<tr>
 			<td colspan="3">
@@ -251,7 +251,7 @@ function updateTask() {
 		if (!getDenyRead( 'files' )) {
 	?>
 		<tr>
-			<td><b><?php echo $AppUI->_('Attached Files');?></b></td>
+			<td><strong><?php echo $AppUI->_('Attached Files');?></strong></td>
 			<td colspan="2" align="right">
 			<?php if (!getDenyEdit( 'files' )) { ?>
 				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?><img src="./images/icons/forum_folder.gif" align=absmiddle width=20 height=20 alt="attach a file to this task" border=0></a>
@@ -279,7 +279,7 @@ function updateTask() {
 </tr>
 </table>
 
-<B><?php echo $AppUI->_('Task Log and Comments');?></b>
+<strong><?php echo $AppUI->_('Task Log and Comments');?></strong>
 
 <table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
 <tr>
