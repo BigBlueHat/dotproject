@@ -6,14 +6,17 @@ define( 'PERM_DENY', '0' );
 define( 'PERM_EDIT', '-1' );
 define( 'PERM_ALL', '-1' );
 
-function getDenyRead( $mod, $item_id=-1 ) {
+function getDenyRead( $mod, $item_id=0 ) {
 	GLOBAL $perms;
 	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ))
 		| (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] == PERM_DENY)
 		| (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] == PERM_DENY);
-	if ($item_id > -1) {
-		$deny |= (isset( $perms[$mod][$item_id] ) & $perms[$mod][$item_id] == PERM_DENY)
-			| (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
+	if ($item_id > 0) {
+		if (isset( $perms[$mod][$item_id] )) {
+			$deny = $perms[$mod][$item_id] == PERM_DENY ? 1 : 0;
+		} else {
+			$deny |= (empty( $perms['all'] ) & empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
+		}
 	}
 /*
 // DEBUG
@@ -29,17 +32,17 @@ return false;
 	return $deny;
 }
 
-function getDenyEdit( $mod, $item_id=-1 ) {
+function getDenyEdit( $mod, $item_id=0 ) {
 	GLOBAL $perms;
 
 	$deny = (empty( $perms['all'] ) & empty( $perms[$mod] ))
 		| (isset( $perms['all'][PERM_ALL] ) & $perms['all'][PERM_ALL] <> PERM_EDIT)
 		| (isset( $perms[$mod][PERM_ALL] ) & $perms[$mod][PERM_ALL] <> PERM_EDIT);
-	if ($item_id > -1) {
+	if ($item_id > 0) {
 		if (isset( $perms[$mod][$item_id] )) {
 			$deny = ($perms[$mod][$item_id] <> PERM_EDIT) ? 1 : 0;
 		} else {
-			$deny |= (empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
+			$deny |= (empty( $perms['all'] ) & empty( $perms[$mod][PERM_ALL] ) & empty( $perms[$mod][$item_id] ));
 		}
 	}
 /*
@@ -61,6 +64,8 @@ if (empty( $user_cookie ) || isset( $logout )) {
 	include "./includes/login.php";
 	die;
 }
+
+list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company) = explode( '|', $thisuser );
 
 if (empty( $m )) {
 	$m = "ticketsmith";
