@@ -69,7 +69,14 @@ if ($is_installer) {
 	include("./modules/install/install.inc.php");
 }
 
-require_once realpath( "./includes/main_functions.php" );
+if (! isset($GLOBALS['OS_WIN']))
+	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
+
+$functions_file = realpath('./includes/main_functions.php');
+if ($GLOBALS['OS_WIN'])
+	$functions_file = strtolower($file);
+
+require_once $functions_file;
 require_once dpRealPath( "./classes/ui.class.php" );
 require_once dpRealPath( "./includes/db_adodb.php" );
 require_once dpRealPath( "./classes/permissions.class.php" );
