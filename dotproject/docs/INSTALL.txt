@@ -8,7 +8,7 @@ Revised:            28 Feb 2003 (eddieajau)
 
     
 SITUATION
-You have access to a functioning LAMP (Linux+Apache+MySQL+PHP) web server.
+You have access to a functioning LAMP (Linux+Apache+MySQL+PHP) or WAMP (Windows+Apache+MySQL+PHP) web server.
 
 You also have the ability to create a MySQL database and tables.
     
@@ -16,7 +16,9 @@ You've decided to install the open-source project management tool called "dotpro
     
 If you've been running "dotproject" already, you might want to refer to our UPGRADING.txt (to be written) document.
 
-You need to have PHP Version 4.1.x or higher (4.0.x or earlier is NO LONGER SUPPORTED).
+You need to have PHP Version 4.1.x or higher (4.0.x or earlier is NO LONGER SUPPORTED) but preferably 4.2.x or higher.
+
+PHP needs to have the GD library installed to allow the Gantt charts to work.  Use the phpinfo() function on your local (or hosted) system to see if this is compiled/installed with PHP.
 
 You will also need a forth generation browser that supports style sheets and javascript
 (IE Version 5.5 or better, Mozilla 1.2, Netscape 7.x, etc)
@@ -24,10 +26,8 @@ You will also need a forth generation browser that supports style sheets and jav
 Apache 2 is considered experimental at present.
 Apache 1.3.20+ implementations have been successfully tested on Windows and Linux.
 
-
 MISSION
 Install a new copy of dotproject on a LAMP system.
-    
 
 EXECUTION
 1) Download the most recent dotproject tarball:
