@@ -317,27 +317,28 @@ function dPgetMicroDiff() {
 * Make text safe to output into double-quote enclosed attirbutes of an HTML tag
 */
 function dPformSafe( $txt, $deslash=false ) {
+	global $locale_char_set;
 	if (is_object( $txt )) {
 		foreach (get_object_vars($txt) as $k => $v) {
 			if ($deslash) {
-				$obj->$k = htmlspecialchars( stripslashes( $v ) );
+				$obj->$k = htmlspecialchars( stripslashes( $v ), ENT_COMPAT, $locale_char_set );
 			} else {
-				$obj->$k = htmlspecialchars( $v );
+				$obj->$k = htmlspecialchars( $v, ENT_COMPAT, $locale_char_set );
 			}
 		}
 	} else if (is_array( $txt )) {
 		foreach ($txt as $k=>$v) {
 			if ($deslash) {
-				$txt[$k] = htmlspecialchars( stripslashes( $v ) );
+				$txt[$k] = htmlspecialchars( stripslashes( $v ), ENT_COMPAT, $locale_char_set );
 			} else {
-				$txt[$k] = htmlspecialchars( $v );
+				$txt[$k] = htmlspecialchars( $v, ENT_COMPAT, $locale_char_set );
 			}
 		}
 	} else {
 		if ($deslash) {
-			$txt = htmlspecialchars( stripslashes( $txt ) );
+			$txt = htmlspecialchars( stripslashes( $txt ), ENT_COMPAT, $locale_char_set );
 		} else {
-			$txt = htmlspecialchars( $txt );
+			$txt = htmlspecialchars( $txt, ENT_COMPAT, $locale_char_set );
 		}
 	}
 	return $txt;

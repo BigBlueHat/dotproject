@@ -182,7 +182,7 @@ function db_insertArray( $table, &$hash, $verbose=false ) {
 			continue;
 		}
 		$fields[] = $k;
-		$values[] = "'" . db_escape(htmlentities(strip_tags( $v ))) . "'";
+		$values[] = "'" . db_escape(strip_tags( $v )) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 
@@ -215,7 +215,7 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 		if ($v == '') {
 			$val = 'NULL';
 		} else {
-			$val = "'" . db_escape(htmlentities(strip_tags( $v ))) . "'";
+			$val = "'" . db_escape(strip_tags( $v )) . "'";
 		}
 		$tmp[] = "$k=$val";
 	}
@@ -257,7 +257,8 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 			continue;
 		}
 		$fields[] = $k;
-		$values[] = "'" . db_escape(htmlentities(strip_tags( $v ))) . "'";
+		//$values[] = "'" . db_escape(htmlentities(strip_tags( $v ), ENT_COMPAT ,$locale_char_set)) . "'";
+		$values[] = "'" . db_escape(strip_tags( $v )) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 	($verbose) && print "$sql<br />\n";
@@ -279,7 +280,6 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 * @param [type] $updateNulls
 */
 function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
-	global $locale_char_set;
 	$fmtsql = "UPDATE $table SET %s WHERE %s";
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field
@@ -295,7 +295,7 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 		if( $v == '' ) {
 			$val = "''";
 		} else {
-			$val = "'" . db_escape(htmlentities(strip_tags( $v ), ENT_COMPAT ,$locale_char_set)). "'";
+			$val = "'" . db_escape(strip_tags( $v )). "'";
 		}
 		$tmp[] = "$k=$val";
 	}
