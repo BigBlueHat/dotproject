@@ -210,10 +210,12 @@ function removeTaskDependency(form) {
 
 function setAMPM( field) {
 	ampm_field = document.getElementById(field.name + "_ampm");
-	if ( field.value > 11 ){
-		ampm_field.value = "pm";
-	} else {
-		ampm_field.value = "am";
+	if (ampm_field) {
+		if ( field.value > 11 ){
+			ampm_field.value = "pm";
+		} else {
+			ampm_field.value = "am";
+		}
 	}
 }
 
