@@ -150,7 +150,7 @@ function delIt() {
 </tr>
 <tr>
 	<td colspan="2" align="center">
-		<textarea cols="70" rows="10" class="textareaclass" name="company_description"><?php echo @$crow["company_description"];?></textarea>
+		<textarea cols="70" rows="10" class="textarea" name="company_description"><?php echo @$crow["company_description"];?></textarea>
 	</td>
 </tr>
 <tr>

@@ -192,7 +192,7 @@ if (count( $depts )) {
 </tr>
 <tr><td align="right" nowrap>Description:</td><td>&nbsp; </td></tr>
 <tr><td colspan=2 align="center">
-<textarea cols="70" rows="10" class="textareaclass" name="dept_description">
+<textarea cols="70" rows="10" class="textarea" name="dept_description">
 <?php echo @$drow["dept_description"];?>
 </textarea>
 </td></tr>

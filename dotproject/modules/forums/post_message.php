@@ -156,7 +156,7 @@ function orderByName(x){
 						<TD colspan=2 align="center"><b>Message</b></TD>
 					</TR>
 					<TR bgcolor="#eeeeee">
-						<TD colspan=2 align="center"><textarea class="textarea" name="message_body" style="height:200px;width:400;"><?php echo @$crow["forum_description"];?></textarea></TD>
+						<TD colspan=2 align="center"><textarea cols=80 class="textarea" name="message_body" style="height:200px"><?php echo @$crow["forum_description"];?></textarea></TD>
 					</TR>
 					<tr bgcolor="#eeeeee" height=20>
 						<TD><input type="button" value="back" class=button onClick="javascript:window.location='./index.php?m=forums';"></td>
