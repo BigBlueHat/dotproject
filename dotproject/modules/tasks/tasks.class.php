@@ -30,6 +30,7 @@ class CTask extends CDpObject {
 	var $task_target_budget = NULL;
 	var $task_related_url = NULL;
 	var $task_creator = NULL;
+/** @deprecated */
 	var $task_order = NULL;
 	var $task_client_publish = NULL;
 	var $task_dynamic = NULL;
@@ -76,6 +77,7 @@ class CTask extends CDpObject {
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
+
 			if (!$this->task_parent) {
 			// new task, parent = task id
 				$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";

@@ -20,77 +20,8 @@ if (empty($query_string)) {
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
-// process reordering actions
-
-// TODO: requires to know the neworder
-$movetask = dPgetParam( $_GET, 'movetask', null );
-$task_project = dPgetParam( $_GET, 'task_project', null );
-$order = dPgetParam( $_GET, 'order', null );
-$task_id = dPgetParam( $_GET, 'task_id', null );
-
-if($movetask == "u") {
-	/*
-	// move up tasks with low order
-	$sql = "update tasks set task_order = task_order - 1 where task_order < $order";
-	db_exec($sql);
-	echo db_error();
-
-	// select tasks in same level as the task to be moved
-	$sql = "select task_id, task_order from tasks where task_project = $task_project and task_order = $order order by task_order";
-	$last_task_id = -1;
-	$arr = db_exec($sql);
-	while($row = db_fetch_assoc($arr)) {
-		// scroll task
-		db_exec("update tasks set task_order = task_order - 1 where task_id = " . $row["task_id"]);
-		echo db_error();
-
-		if($row["task_id"] == $task_id) {
-			// we reached the task to be moved
-
-			// move previous task down
-			if($last_task_id != -1) {
-				db_exec("update tasks set task_order = task_order + 1 where task_id = $last_task_id");
-				echo db_error();
-			}
-
-			// stop scrolling
-			break;
-		}
-
-		$last_task_id = $row["task_id"];
-	}
-	*/
-
-	$sql = "SELECT task_id, task_order FROM tasks WHERE task_project = $task_project AND task_parent = task_id AND task_order <= $order AND task_id != $task_id ORDER BY task_order desc";
-	$dsql = db_exec( $sql );
-	if ($darr = db_fetch_assoc( $dsql )){
-		$neworder = $darr["task_order"] - 1;
-
-		$sql = "UPDATE tasks SET task_order = task_order -1 WHERE task_order <= $neworder";
-		//echo $sql;
-		db_exec($sql);
-		echo db_error();
-
-		$sql = "UPDATE tasks SET task_order = $neworder WHERE task_id = $task_id";
-		//echo $sql;
-		db_exec($sql);
-		echo db_error();
-	}
-} else if($movetask == "d") {
-	$sql = "SELECT task_id, task_order FROM tasks WHERE task_project = $task_project AND task_parent = task_id and task_order >= $order AND task_id != $task_id ORDER BY task_order";
-	$dsql = db_exec( $sql );
-	if ($darr = db_fetch_assoc( $dsql )) {
-		$neworder = $darr["task_order"] + 1;
-
-		$sql = "update tasks set task_order = task_order +1 where task_order >= $neworder";
-		//echo $sql;
-		db_exec( $sql );
-
-		$sql = "update tasks set task_order = $neworder where task_id = $task_id";
-		//echo $sql;
-		db_exec( $sql );
-	}
-}
+$task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
+$task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
 
 // pull valid projects and their percent complete information
 $psql = "
@@ -125,7 +56,7 @@ $deny = db_loadHashList( $sql );
 // pull tasks
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
-task_priority, task_percent_complete, task_duration, task_duration_type, task_order, task_project,
+task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, user_username
 ";
 
@@ -165,13 +96,13 @@ switch ($f) {
 
 $where .= count($deny) > 0 ? "\nAND tasks.task_id NOT IN (" . implode( ',', $deny ) . ')' : '';
 
-$tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_order";
+$tsql = "SELECT $select FROM $from $join WHERE $where"
+	. "\nORDER BY project_id, task_percent_complete, task_start_date";
 ##echo "<pre>$tsql</pre>".db_error();##
 
 $ptrc = db_exec( $tsql );
 $nums = db_num_rows( $ptrc );
 echo db_error();
-$orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 
 //pull the tasks into an array
 
@@ -219,10 +150,6 @@ function showtask( &$a, $level=0 ) {
 			$s .= '<img src="./images/shim.gif" width="16" height="12"  border="0">';
 		}
 	}
-// arrows
-	$s .= '<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow'.$a["task_id"].'">';
-	$s .= '<map name="arrow'.$a["task_id"].'"><area coords="0,0,10,7" href="' . $query_string . '&task_project=' . $a["task_project"] . '&task_id=' . $a["task_id"] . '&order=' . $a["task_order"] . '&movetask=u">';
-	$s .= '<area coords="0,8,10,14" href="'.$query_string . '&task_project=' . $a["task_project"] . '&task_id=' . $a["task_id"] . '&order=' . $a["task_order"] . '&movetask=d"></map>';
 // name link
 	$alt = htmlspecialchars( $a["task_description"] );
 	$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
