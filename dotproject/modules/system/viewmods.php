@@ -45,7 +45,8 @@ foreach ($modules as $row) {
 	$s .= '<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow'.$row["mod_id"].'" />';
 	if ($canEdit) {
 		$s .= '<map name="arrow'.$row["mod_id"].'">';
-		$s .= '<area coords="0,0,10,7" href="' . $query_string . '&cmd=moveup">';
+	        if ($row['mod_ui_order'] > 0)
+               	        $s .= '<area coords="0,0,10,7" href="' . $query_string . '&cmd=moveup">';
 		$s .= '<area coords="0,8,10,14" href="'.$query_string . '&cmd=movedn">';
 		$s .= '</map>';
 	}
