@@ -141,7 +141,7 @@ if($do_report){
 		$percentage_average = number_format($percentage_sum/count($logs), 0);
 		?>
 			<tr>
-				<td colspan='2'>Total</td>
+				<td colspan='2'><?php echo $AppUI->_('Total'); ?></td>
 				<td align='right'><?php echo $hours_allocated_sum; ?></td>
 				<td align='right'><?php echo $hours_worked_sum; ?></td>
 				<td align='right'><?php echo $percentage_average; ?>%</td>
