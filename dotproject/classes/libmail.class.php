@@ -423,7 +423,7 @@ function _build_attachement() {
 		if( ! file_exists( $filename) ) {
 			echo "Class Mail, method attach : file $filename can't be found"; exit;
 		}
-		$subhdr= "--$this->boundary\r\nContent-type: $ctype;\n name=\"$basename\"\nContent-Transfer-Encoding: base64\nContent-Disposition: $disposition;\n  filename=\"$basename\"\n";
+		$subhdr= "--$this->boundary\r\nContent-type: $ctype;\r\n name=\"$basename\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $disposition;\r\n  filename=\"$basename\"\r\n";
 		$ata[$k++] = $subhdr;
 		// non encoded line length
 		$linesz= filesize( $filename)+1;
