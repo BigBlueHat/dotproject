@@ -217,6 +217,7 @@ class dPacl extends gacl_api {
 	 || $row['user_id'] == $AppUI->user_id)
 	$userlist[$row['user_id']] = $row['contact_name'];
     }
+		$q->clear();
     //  Now format the userlist as an assoc array.
     return $userlist;
   }
@@ -335,14 +336,15 @@ class dPacl extends gacl_api {
 	}
 	
 	$result = array();
-	if ($rs = $q->exec()) {
-		while ($row = $rs->FetchRow())
-			$result[] = array(
-			 'id' => $row[0],
-			 'name' => $row[1],
-			 'value' => $row[2],
-			 'parent_id' => $row[3]);
+	$q->exec();
+	while ($row = $q->fetchRow()) {
+		$result[] = array(
+		 'id' => $row[0],
+		 'name' => $row[1],
+		 'value' => $row[2],
+		 'parent_id' => $row[3]);
 	}
+	$q->clear();
 	return $result;
   }
 
@@ -376,12 +378,14 @@ class dPacl extends gacl_api {
       $rq = $q->exec();
       if (! $rq) {
 	dprint(__FILE__, __LINE__, 0, "Cannot add role, user $user does not exist!<br>" . db_error() );
+				$q->clear();
 	return false;
       }
-      $row = db_fetch_assoc($rq);
+      $row = $q->fetchRow();
       if ($row) {
 	$this->addLogin($user, $row['user_username']);
       }
+			$q->clear();
     }
     return $this->add_group_object($role, "user", $user);
   }
@@ -473,14 +477,15 @@ class dPacl extends gacl_api {
 	$q->addOrder('g1.value');
 
 	$result = array();
-	if ($rs = $q->exec()) {
-		while ($row = $rs->FetchRow())
+	$q->exec();
+	while ($row = $q->fetchRow()) {
 			$result[] = array(
 			 'id' => $row[0],
 			 'name' => $row[1],
 			 'value' => $row[2],
 			 'parent_id' => $row[3]);
 	}
+	$q->clear();
 	return $result;
 
   }
@@ -534,8 +539,9 @@ class dPacl extends gacl_api {
 		}
 
 
-		$rs = $q->exec();
-		$row = $rs->FetchRow();
+		$q->exec();
+		$row = $q->fetchRow();
+		$q->clear();
 
 		if (!is_array($row)) {
 			$this->debug_db('get_object');
@@ -597,16 +603,19 @@ class dPacl extends gacl_api {
 
 		$q->addOrder('order_value');
 
+		/*
 		$rs = $q->exec();
 
 		if (!is_object($rs)) {
 			$this->debug_db('get_objects');
 			return FALSE;
 		}
+		*/
 
 		$retarr = array();
 
-		while ($row = $rs->FetchRow()) {
+		$q->exec();
+		while ($row = $q->fetchRow()) {
 			$retarr[] = array(
 			  'id' => $row[0],
 			  'section_value' => $row[1],
@@ -616,6 +625,7 @@ class dPacl extends gacl_api {
 			  'hidden' => $row[5]
 			);
 		}
+		$q->clear();
 
 		// Return objects
 		return $retarr;
@@ -642,7 +652,7 @@ class dPacl extends gacl_api {
 
 		$this->debug_text("get_objects(): Section Value: $section_value Object Type: $object_type");
 
-		$query = 'SELECT id, value, name, order_value, hidden FROM '. $table;
+		// $query = 'SELECT id, value, name, order_value, hidden FROM '. $table;
 		$q = new DBQuery;
 		$q->addTable($table);
 		$q->addQuery('id, value, name, order_value, hidden');
@@ -667,14 +677,16 @@ class dPacl extends gacl_api {
 
 		$rs = $q->exec();
 
+		/*
 		if (!is_object($rs)) {
 			$this->debug_db('get_object_sections');
 			return FALSE;
 		}
+		*/
 
 		$retarr = array();
 
-		while ($row = $rs->FetchRow()) {
+		while ($row = $q->fetchRow()) {
 			$retarr[] = array(
 			  'id' => $row[0],
 			  'value' => $row[1],
@@ -683,6 +695,7 @@ class dPacl extends gacl_api {
 			  'hidden' => $row[4]
 			);
 		}
+		$q->clear();
 
 		// Return objects
 		return $retarr;

@@ -134,6 +134,7 @@
 				die($AppUI->_('Failed to create user credentials'));
 			$user_id = $db->Insert_ID();
 			$this->user_id = $user_id;
+			$q->clear();
 
 			$acl =& $AppUI->acl();
 			$acl->insertUserRole($acl->get_group_id('anon'), $this->user_id);
@@ -155,10 +156,17 @@
 			$q->addTable('users');
 			$q->addQuery('user_id, user_password');
 			$q->addWhere("user_username = '$username'");
-			if (!$rs = $q->exec()) return false;
-			if (!$row = $rs->FetchRow()) return false;
+			if (!$rs = $q->exec()) {
+				$q->clear();
+				return false;
+			}
+			if (!$row = $q->fetchRow()) 
+				$q->clear();
+				return false;
+			}
 
 			$this->user_id = $row["user_id"];
+			$q->clear();
 			if (MD5($password) == $row["user_password"]) return true;
 			return false;
 		}
@@ -269,11 +277,14 @@
 		{
 			GLOBAL $db;
 			$q  = new DBQuery;
+			$result = false;
 			$q->addTable('users');
 			$q->addWhere("user_username = '$username'");
 			$rs = $q->exec();
-			if ($rs->RecordCount() > 0) return true;
-			return false;
+			if ($rs->RecordCount() > 0) 
+			  $result = true;
+			$q->clear();
+			return $result;
 		}
 
 		function userId($username)
@@ -284,6 +295,7 @@
 			$q->addWhere("user_username = '$username'");
 			$rs = $q->exec();
 			$row = $rs->FetchRow();
+			$q->clear();
 			return $row["user_id"];	
 		}
 
@@ -320,6 +332,7 @@
 			$q->exec();
 			$user_id = $db->Insert_ID();
 			$this->user_id = $user_id;
+			$q->clear();
 
 			$acl =& $AppUI->acl();
 			$acl->insertUserRole($acl->get_group_id('anon'), $this->user_id);

@@ -501,7 +501,7 @@ class DBQuery {
   /**
    * Execute the query and return a handle.  Supplants the db_exec query
    */
-  function &exec($style = ADODB_FETCH_ASSOC)
+  function &exec($style = ADODB_FETCH_BOTH)
   {
     global $db;
 		global $ADODB_FETCH_MODE;
@@ -555,7 +555,6 @@ class DBQuery {
 			if ($maxrows && $maxrows == $cnt++)
 				break;
 		}
-		$this->clearQuery();
 		$this->clear();
 		return $list;
 	}
@@ -579,7 +578,6 @@ class DBQuery {
 				$hashlist[$hash[$keys[0]]] = $hash[$keys[1]];
 			}
 		}
-		$this->clearQuery();
 		$this->clear();
 		return $hashlist;
 	}

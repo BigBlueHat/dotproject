@@ -10,6 +10,7 @@ $q->addQuery('mod_id, mod_name, permissions_item_table');
 $q->addWhere('permissions_item_table is not null');
 $q->addWhere("permissions_item_table <> ''");
 $pgo_list = $q->loadHashList('mod_name');
+$q->clear();
 
 // Build an intersection array for the modules and their listing
 $modules = array();

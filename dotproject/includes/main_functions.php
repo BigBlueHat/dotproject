@@ -281,10 +281,11 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 
 	if (! $qid || db_num_rows($qid) == 0) {
 	  $AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
+		$q->clear();
 	  return;
 	}
 
-	$q  = new DBQuery;
+	$q->clear();
 	$q->addTable('history');
 	$q->addInsert('history_action', $action);
 	$q->addInsert('history_item', $id);
@@ -295,6 +296,7 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 	$q->addInsert('history_table', $table);
 	$q->exec();
 	echo db_error();
+	$q->clear();
 }
 
 ##

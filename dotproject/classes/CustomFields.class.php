@@ -43,7 +43,8 @@
 			$q->addWhere("value_field_id = ".$this->field_id);
 			$q->addWhere("value_object_id = ".$object_id);
 			$rs = $q->exec();
-			$row = $rs->FetchRow();
+			$row = $q->fetchRow();
+			$q->clear();
 
 			$value_id = $row["value_id"];
 			$value_charvalue = stripslashes($row["value_charvalue"]);
@@ -93,6 +94,7 @@
 						$q->addWhere("value_id = ".$this->value_id);
 				}
 				if ($sql != NULL) $rs = $q->exec();
+				$q->clear();
 				if (!$rs) return $db->ErrorMsg()." | SQL: ";
 			}
 		}
@@ -369,10 +371,12 @@
 			{
 				//return "<pre>".$sql."</pre>";
 				$error_msg = $db->ErrorMsg();
+				$q->clear();
 				return 0;
 			}
 			else
 			{
+				$q->clear();
 				return $next_id;
 			}
 		} 
@@ -392,10 +396,12 @@
 			if (!$q->exec())
 			{
 				$error_msg = $db->ErrorMsg();
+				$q->clear();
 				return 0;
 			}
 			else
 			{
+				$q->clear();
 				return $field_id;
 			}
 		}
@@ -449,6 +455,7 @@
 			$q->addWhere("field_id = $field_id");
 			if (!$q->exec())
 			{
+				$q->clear();
 				return $db->ErrorMsg();
 			}	
 		}
@@ -504,14 +511,18 @@
 			$q  = new DBQuery;
 			$q->addTable('custom_fields_lists');
 			$q->addWhere("field_id = {$this->field_id}");
-			if (!$rs = $q->exec()) return $db->ErrorMsg();		
+			if (!$rs = $q->exec()) {
+				$q->clear();
+			  return $db->ErrorMsg();		
+			}
 
 			$this->options = Array();
 
-			while ($opt_row = $rs->FetchRow())
+			while ($opt_row = $q->fetchRow())
 			{
 				$this->options[] = $opt_row["list_value"];
 			}
+			$q->clear();
 		}
 
 		function store()
@@ -531,6 +542,7 @@
 				if (!$q->exec()) $insert_error = $db->ErrorMsg();  	
 			}	
 
+			$q->clear();
 			return $insert_error;
 		}
 
@@ -540,6 +552,7 @@
 			$q->setDelete('custom_fields_lists');
 			$q->addWhere("field_id = {$this->field_id}");
 			$q->exec();
+			$q->clear();
 		}
 
 		function setOptions( $option_array )

@@ -254,11 +254,12 @@ class CDpObject {
 		$q  = new DBQuery;
 		$q->setDelete($this->_tbl);
 		$q->addWhere("$this->_tbl_key = '".$this->$k."'");
+		$result = null;
 		if (!$q->exec()) {
-			return db_error();
-		} else {
-			return NULL;
+			$result = db_error();
 		}
+		$q->clear();
+		return $result;
 	}
 
 /**

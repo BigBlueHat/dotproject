@@ -88,6 +88,7 @@ class EventQueue {
 		$q->setDelete($this->table);
 		$q->addWhere("queue_id = '$id'");
 		$q->exec();
+		$q->clear();
 	}
 
 	/**

@@ -689,6 +689,7 @@ class CAppUI {
 		$q->addInsert('user_ip', $_SERVER['REMOTE_ADDR']);
                 $q->exec();
                 $this->last_insert_id = db_insert_id();
+								$q->clear();
            }
 
 /**
@@ -701,6 +702,7 @@ class CAppUI {
 		$q->addWhere("user_id = '$user_id' and (date_time_out='0000-00-00 00:00:00' or isnull(date_time_out)) ");
 		if ($user_id > 0){
 			$q->exec();
+			$q->clear();
 		}
           }
           
@@ -714,6 +716,7 @@ class CAppUI {
 		$q->addWhere("user_access_log_id = $last_insert_id");
                 if ($last_insert_id > 0){
                     $q->exec();
+										$q->clear();
                 }
           }
 /************************************************************************************************************************
