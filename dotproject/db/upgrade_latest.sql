@@ -732,3 +732,7 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
   SELECT config_id, 'php'
 	FROM config
 	WHERE config_name = 'session_handling';
+
+# 20050303
+# dropped legacy passwords support
+DELETE FROM config WHERE config_name = 'check_legacy_password' LIMIT 1;

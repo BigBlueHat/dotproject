@@ -618,7 +618,6 @@ CREATE TABLE `config` (
 # Dumping data for table `config`
 #
 
-INSERT INTO `config` VALUES ('', 'check_legacy_password', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'host_locale', 'en', '', 'text');
 INSERT INTO `config` VALUES ('', 'check_overallocation', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'currency_symbol', '$', '', 'text');
