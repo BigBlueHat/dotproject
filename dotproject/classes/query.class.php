@@ -397,7 +397,7 @@ class DBQuery {
 	    $q .= ",";
 	  else
 	    $intable = true;
-	  $q .= $this->_table_prefix . $table;
+	  $q .= '`' . $this->_table_prefix . $table . '`';
 	  if (! is_numeric($table_id))
 	    $q .= " as $table_id";
 	}
@@ -429,14 +429,14 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= $this->_table_prefix . $table;
+    $q .= '`' . $this->_table_prefix . $table . '`';
 
     $q .= ' SET ';
     $sets = '';
     foreach( $this->update_list as $field => $value) {
       if ($sets)
         $sets .= ", ";
-      $sets .= "$field = " . $this->quote($value);
+      $sets .= "`$field` = " . $this->quote($value);
     }
     $q .= $sets;
     $q .= $this->make_where_clause($this->where);
@@ -457,7 +457,7 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= $this->_table_prefix . $table;
+    $q .= '`' . $this->_table_prefix . $table . '`';
 
     $fieldlist = '';
     $valuelist = '';
@@ -466,7 +466,7 @@ class DBQuery {
 	$fieldlist .= ",";
       if ($valuelist)
 	$valuelist .= ",";
-      $fieldlist .= $field;
+      $fieldlist .= '`' . $field . '`';
       $valuelist .= $value;
     }
     $q .= "($fieldlist) values ($valuelist)";
@@ -486,7 +486,7 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= $this->_table_prefix . $table;
+    $q .= '`' . $this->_table_prefix . $table . '`';
     $q .= $this->make_where_clause($this->where);
     return $q;
   }
@@ -495,7 +495,7 @@ class DBQuery {
 	//definitions: http://dev.mysql.com/doc/mysql/en/alter-table.html
 	function prepareAlter()
 	{
-		$q = 'ALTER TABLE ' . $this->_table_prefix . $this->create_table . ' ';
+		$q = 'ALTER TABLE `' . $this->_table_prefix . $this->create_table . '` ';
 		if (isset($this->create_definition))
 			$q .= 'ADD ' . $this->create_definition;
 
@@ -656,7 +656,7 @@ class DBQuery {
       return $result;
     if (is_array($join_clause)) {
       foreach ($join_clause as $join) {
-	$result .= ' ' . strtoupper($join['type']) . ' JOIN ' . $this->_table_prefix . $join['table'];
+	$result .= ' ' . strtoupper($join['type']) . ' JOIN `' . $this->_table_prefix . $join['table'] . '`';
 	if ($join['alias'])
 	  $result .= ' AS ' . $join['alias'];
 	if (is_array($join['condition'])) {
@@ -666,7 +666,7 @@ class DBQuery {
 	}
       }
     } else {
-      $result .= ' LEFT JOIN ' . $this->_table_prefix . $join_clause;
+      $result .= ' LEFT JOIN `' . $this->_table_prefix . $join_clause . '`';
     }
     return $result;
   }
