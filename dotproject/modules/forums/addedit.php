@@ -52,9 +52,9 @@ function delIt(){
 <table width="98%" cellspacing="1" cellpadding="1" border="0">
 <tr>
 	<td><img src="./images/icons/communicate.gif" alt="" border="0" width="42" height="42"></td>
-	<td nowrap width="100%"><span class="title"><?php
+	<td nowrap width="100%"><h1><?php
 		echo $AppUI->_( 'Project' ).' '.$AppUI->_( 'Forums' );
-	?></span></td>
+	?></h1></td>
 </tr>
 </table>
 

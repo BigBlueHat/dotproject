@@ -2,7 +2,7 @@
 <table width="98%" cellspacing="1" cellpadding="0" border="0">
 	<tr>
 	<td><img src="./images/icons/dp.gif" alt="" border="0"></td>
-		<td nowrap="nowrap" width="100%"><h1>*</h1></td>
+		<td nowrap="nowrap" width="100%"><h1><?php echo $AppUI->_('Help');?></h1></td>
 	</tr>
 </table>
 

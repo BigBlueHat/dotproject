@@ -79,7 +79,7 @@ $tdw = floor( 100 / $carrWidth );
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/contacts.gif" alt="" border="0"></td>
-	<td nowrap><h1>*</h1></td>
+	<td nowrap><h1><?php echo $AppUI->_('Contacts');?></h1></td>
 	<td align="right" width="100%">
 	<?php if (!$denyEdit) { ?>
 		<input type="button"  class=button value="<?php echo $AppUI->_('new contact');?>" onClick="javascript:window.location='./index.php?m=contacts&a=addedit'"></td>

@@ -60,7 +60,7 @@ function orderByName( x ){
 <table border=0 cellpadding="0" cellspacing="1" width="98%">
 <tr>
 	<td width="44"><img src="./images/icons/contacts.gif" alt="" border="0"></td>
-	<td width="100%"><h1>*</h1></td>
+	<td width="100%"><h1><?php echo $AppUI->_(($contact_id > 0) ? "Edit Contact" : "New Contact" ); ?></h1></td>
 	<td>&nbsp;</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_PROJ_EDIT' );?></td>
 </tr>

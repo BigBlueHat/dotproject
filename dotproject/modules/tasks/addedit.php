@@ -205,9 +205,7 @@ function delIt() {
 <input name="task_project" type="hidden" value="<?php echo $task_project;?>">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-	<td align="left" nowrap="nowrap" width="100%">
-		<h1>*</h1>
-	</td>
+	<td align="left" nowrap="nowrap" width="100%"><h1><?php echo $AppUI->_( $task_id ? 'Edit Task' : 'New Task' );?></h1></td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_TASK_VIEW' );?></td>
 </tr>
 </table>

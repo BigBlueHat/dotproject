@@ -49,8 +49,8 @@ function delIt() {
 
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
-	<td><img src="./images/icons/folder.gif" alt="" border="0" width=42 height=42></td>
-	<td nowrap><h1>*</h1></td>
+	<td><img src="./images/icons/folder.gif" alt="" border="0" width="42" height="42" /></td>
+	<td nowrap><h1><?php echo $AppUI->_( ($file_id > 0) ? "Edit File" : "New File" ); ?></h1></td>
 	<td align="right" width="100%"></td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help', 'ID_HELP_FILE_EDIT' ).'">' );?></td>
 </tr>

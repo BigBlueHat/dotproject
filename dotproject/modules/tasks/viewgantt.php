@@ -78,7 +78,7 @@ function scrollNext() {
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-	<td nowrap><h1>*</h1></td>
+	<td nowrap><h1><?php echo $AppUI->_( 'Gantt Chart' );?></h1></td>
 	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td valign="top" align="right" width="100%"></td>
 </tr>

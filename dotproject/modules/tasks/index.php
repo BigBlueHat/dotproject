@@ -28,9 +28,7 @@ $AppUI->setState( 'ActiveProject', $project_id );
 <table width="98%" border="0" cellpadding="0" cellspacing=1>
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="Tasks" border="0" width="44" height="38"></td>
-	<td nowrap width="100%">
-		<h1>*</h1>
-	</td>
+	<td nowrap width="100%"><h1><?php echo $AppUI->_('Project Tasks');?></h1></td>
 <form name="task_filter" method=GET action="./index.php">
 <input type=hidden name=m value=tasks>
 	<td nowrap align=right>

@@ -45,8 +45,8 @@ if (!$denyEdit) {
 <table border="0" cellpadding="1" cellspacing="1" width="98%">
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap="nowrap"><h1>*</h1></td>
-	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+	<td nowrap="nowrap"><h1><?php echo $AppUI->_('View Company/Client');?></h1></td>
+	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
 <form action="?m=companies&a=addedit" method="post">
 	<td align="right" width="100%">
 	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>

@@ -49,7 +49,7 @@ $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td rowspan="2"><img src="./images/icons/folder.gif" alt="" border="0" width="42" height="42"></td>
-	<td rowspan="2" nowrap><h1>*</h1></td>
+	<td rowspan="2" nowrap><h1><?php echo $AppUI->_( 'File Management' );?></h1></td>
 <form name="searcher" action="?m=files&a=search" method="post">
 <input type="hidden" name="dosql" value="searchfiles">
 	<td width="100%" align="right">

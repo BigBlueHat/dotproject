@@ -14,8 +14,8 @@ if ($denyRead) {
 
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
-	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width=42 height=42></td>
-		<TD nowrap><h1>*</h1></td>
+	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width="42" height="42" /></td>
+		<TD nowrap><h1>Trouble Ticket Management</h1></td>
 		<TD align="right" width="100%">
 		<?php if (!$denyEdit) { ?>
 			<input type="button" class=button value="new ticket" onClick="javascript:window.location='./index.php?m=ticketsmith&a=post_ticket';">

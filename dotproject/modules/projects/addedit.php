@@ -115,7 +115,7 @@ function delIt() {
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
 	<td nowrap>
-		<h1>*</h1>
+		<h1><?php echo $AppUI->_(($project_id > 0) ? "Edit Project" : "New Project" ); ?></h1>
 	</td>
 	<td align="right" width="100%">&nbsp;</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_PROJ_EDIT' );?></td>

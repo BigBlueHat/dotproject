@@ -51,7 +51,7 @@ $rows = db_loadList( $sql );
 <table width="98%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><h1>*</h1></td>
+	<td nowrap><h1><?php echo $AppUI->_('Clients & Companies');?></h1></td>
 	<td align="right" width="100%">
 	<?php if (!$denyEdit) { ?>
 		<input type="button" class="button" value="<?php echo $AppUI->_('new company');?>" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
