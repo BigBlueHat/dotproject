@@ -61,9 +61,34 @@ class CAppUI {
 		$this->user_locale = $this->base_locale;
 		$this->user_prefs = array();
 	}
+// loads a php class file from the system classes directory
+	function getSystemClass( $target=null ) {
+		if ($target) {
+			if ($root = $this->getConfig( 'root_dir' )) {
+				return "$root/classes/$target.class.php";
+			}
+		}
+	}
+
+// loads a php class file from the module directory
+	function getModuleClass( $target=null ) {
+		if ($target) {
+			if ($root = $this->getConfig( 'root_dir' )) {
+				return "$root/modules/$target/$target.class.php";
+			}
+		}
+	}
 
 	function setConfig( &$cfg ) {
 		$this->cfg = $cfg;
+	}
+
+	function getConfig( $key ) {
+		if (array_key_exists( $key, $this->cfg )) {
+			return $this->cfg[$key];
+		} else {
+			return null;
+		}
 	}
 
 	function checkStyle() {
