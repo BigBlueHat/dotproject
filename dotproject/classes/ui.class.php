@@ -400,6 +400,10 @@ class CAppUI {
 		 * AJD - 2004-12-10
 		 */
                 global $locale_char_set;
+
+		if (! $locale_char_set) {
+			$locale_char_set = 'utf-8';
+		}
                 
 		switch ($flags & UI_OUTPUT_MASK) {
 			case UI_OUTPUT_HTML:
