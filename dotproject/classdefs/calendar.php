@@ -1,5 +1,4 @@
-<?php
-
+<?php /* $Id$ */
 ##
 ## Calendar classes
 ##
@@ -105,12 +104,13 @@ class CMonthCalendar {
 	}
 
 	function _drawTitle() {
-		GLOBAL $SCRIPT_NAME;
+		$url = $_SERVER['SCRIPT_NAME'] . ($_SERVER['QUERY_STRING'] ? "?{$_SERVER['QUERY_STRING']}&" : '?');
+
 		$s = '<table border="0" cellspacing="0" cellpadding="3" width="100%" class="'.$this->styleTitle.'">';
 		$s .= '<tr>';
 
 		if ($this->showArrows) {
-			$href = $SCRIPT_NAME.'?uts='.$this->prev_month->getTimestamp().($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'uts='.$this->prev_month->getTimestamp().($this->callback ? '&callback='.$this->callback : '');
 			$s .= '<td align="left">';
 			$s .= '<a href="'.$href.'"><img src="./images/prev.gif" width="16" height="16" alt="previous month" border="0"></a>';
 			$s .= '</td>';
@@ -121,7 +121,7 @@ class CMonthCalendar {
 		$s .= '</th>';
 
 		if ($this->showArrows) {
-			$href = $SCRIPT_NAME.'?uts='.$this->next_month->getTimestamp().($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'uts='.$this->next_month->getTimestamp().($this->callback ? '&callback='.$this->callback : '');
 			$s .= '<td align="right">';
 			$s .= '<a href="'.$href.'"><img src="./images/next.gif" width="16" height="16" alt="next month" border="0"></a>';
 			$s .= '</td>';
