@@ -20,7 +20,6 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 		while (! oEl.className || -1 == oEl.className.indexOf( "Btn" )) {
 			oEl = oEl.parentNode;
 			if (!oEl) {
-				window.status = "no parent";
 				return;
 			}
 		}
@@ -32,18 +31,6 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 		} else {
 			oEl.className = basename + "Off";
 		}
-		window.status = "doing " + doit + ", class=" + oEl.className;
-	}
-	function tboff(e){
-		var oEl = e.target;
-		var doit = e.type;
-		while (-1 == oEl.className.indexOf( "Btn" )) {
-			oEl = oEl.parentElement;
-			if (!oEl) {
-				return;
-			}
-		}
-		oEl.className = "topBtnOff";
 	}
 	document.onmouseover = doBtn;
 	document.onmouseout = doBtn;
