@@ -101,7 +101,7 @@ dd = eval("document.AddEdit." + x + "DD_int.value");
 yy = eval("document.AddEdit." + x + "YYYY_int.value");
 
 
-newwin=window.open('./calendar.php?field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false');
+newwin=window.open('./calendar.php?form=AddEdit&field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false');
 
 
 

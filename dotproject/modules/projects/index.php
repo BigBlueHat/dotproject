@@ -24,18 +24,18 @@ project_id,
 project_status, 
 project_color_identifier, 
 project_name, 
-count(t1.task_id)  as countt,  
-count(t2.task_id)  as countmt,  
+count(distinct t1.task_id)  as countt,  
+count(distinct t2.task_owner)  as countmt,  
 project_start_date, 
 project_end_date, 
 project_color_identifier, 
 user_username, 
-avg(t3.task_precent_complete)  as project_precent_complete 
+avg(t1.task_precent_complete)  as project_precent_complete 
 from projects 
 		left join users on projects.project_owner = users.user_id 
 		left join tasks t1 on projects.project_id = t1.task_project 
-		left join tasks t2 on projects.project_id = t2.task_project and t2.task_owner = $user_cookie 
-		left join tasks t3 on projects.project_id = t3.task_project 
+		left join tasks t2 on projects.project_id = t2.task_project
+		and t2.task_owner = $user_cookie
 		where project_active = $active 
 		group by project_id
 		order by $orderby";
@@ -50,7 +50,7 @@ $urow = mysql_fetch_array($urc);
 
 
 
-<img src="/images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
 	<TD><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
@@ -68,9 +68,9 @@ $urow = mysql_fetch_array($urc);
 			<?}?>
 		</td>
 		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD bgcolor="#f4efe3" align="center"><A href="<?echo $PHP_SELF;?>?m=tasks">Tasks </A></td></table></TD>
-		<TD bgcolor="#ffffff"><img src="./images/shim.gif" width="10" height=5 border=0></td>
+		<TD bgcolor="#ffffff"><img src="images/shim.gif" width="10" height=5 border=0></td>
 		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD <?if($active == 0){?>bgcolor="#f4efe3"<?}?> align="center"><A href="index.php?m=projects&active=1">Active</A></td></table></TD>
-		<TD bgcolor="#ffffff"><img src="./images/shim.gif" width="10" height=5 border=0></td>
+		<TD bgcolor="#ffffff"><img src="images/shim.gif" width="10" height=5 border=0></td>
 		<TD><TABLE width="100" height="20" border=0 cellpadding="0" cellspacing=0><TR><TD <?if($active == 1){?>bgcolor="#f4efe3"<?}?> align="center"><A href="index.php?m=projects&active=0">Archived</a></td></table></td>
 	</tr>
 </TABLE>
@@ -80,11 +80,11 @@ $urow = mysql_fetch_array($urc);
 <TABLE width="100%" border=0 bgcolor="#f4efe3" cellpadding="3" cellspacing=1 height="400">
 				<TR bgcolor="#878676" height=20>
 					<TD bgcolor="#f4efe3" align="right" class="smallNorm" width="65">&nbsp; sort by:&nbsp; </td>
-					<TD nowrap><A href="#"><font color="white">Project Name</font></a></td>
-					<TD nowrap><A href="#"><font color="white">Owner</font></a></td>
-					<TD nowrap><A href="#"><font color="white">My Tasks</font></a></td>
-					<TD nowrap><A href="#"><font color="white">All Tasks</font></a></td>
-					<TD nowrap><A href="#"><font color="white">Due Date:</font></a></td>
+					<TD nowrap><A href="index.php?m=projects&orderby=project_name"><font color="white">Project Name</font></a></td>
+					<TD nowrap><A href="index.php?m=projects&orderby=user_username"><font color="white">Owner</font></a></td>
+					<TD nowrap><A href="index.php?m=projects&orderby=countmt%20desc"><font color="white">My Tasks</font></a></td>
+					<TD nowrap><A href="index.php?m=projects&orderby=countt%20desc"><font color="white">All Tasks</font></a></td>
+					<TD nowrap><A href="index.php?m=projects&orderby=project_end_date"><font color="white">Due Date:</font></a></td>
 				</tr>
 				
 				
@@ -110,7 +110,7 @@ $urow = mysql_fetch_array($urc);
 					<TD nowrap><?echo $row["user_username"];?></td>
 					<TD nowrap><?echo $row["countmt"];?></td>
 					<TD nowrap><?echo $row["countt"];?></td>
-					<TD nowrap><?echo substr($row["project_end_date"], 0, 10);?></td>
+					<TD nowrap><?echo fromDate(substr($row["project_end_date"], 0, 10));?></td>
 				</tr>
 	<?}?>
 	<TR><TD colspan=6> &nbsp;</td></tr>

@@ -106,15 +106,15 @@ if(strlen($prow["project_actual_end_date"]) ==0){
 				</tr>
 				<tr>
 					<td><b>Start date:</b></td> 
-					<td><?echo substr($prow["project_start_date"], 0,10);?></td>
+					<td><?echo fromDate(substr($prow["project_start_date"], 0,10));?></td>
 				</tr>
 				<tr>
 					<td><b>Target End Date:</b></td> 
-					<td><?echo substr($prow["project_end_date"], 0, 10);?></td>
+					<td><?echo fromDate(substr($prow["project_end_date"], 0, 10));?></td>
 				</tr>
 				<tr>
 					<td><b>Actual End Date:</b></td> 
-					<td><?echo SUBSTR($prow["project_actual_end_date"], 0, 10);?></td>
+					<td><?echo fromDate(SUBSTR($prow["project_actual_end_date"], 0, 10));?></td>
 				</tr>
 				<tr>
 					<td><b>Target Budget:</b></td>
@@ -261,7 +261,7 @@ function findchild($parent, $level =0){
 		
 		<A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
 				<TD><?
-			if($tarr[$x]["task_duration"] % 24 == 0 ){
+			if($tarr[$x]["task_duration"] > 24 ){
 				$dt = "day";
 				$dur = $tarr[$x]["task_duration"] / 24;
 			}
@@ -292,7 +292,7 @@ function findchild($parent, $level =0){
 					<TD class="mboxhdr" width="10">&nbsp;</td>
 					<TD class="mboxhdr" width="20">work</td>
 					<TD class="mboxhdr" width=200>task</td>		
-					<TD class="mboxhdr">dur.</td>
+					<TD class="mboxhdr">duration&nbsp;&nbsp;</td>
 				</tr>
 					
 			<?
@@ -310,7 +310,7 @@ function findchild($parent, $level =0){
 					<map name="arrow<?echo $tarr[$x]["task_id"];?>"><area coords="0,0,10,7" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=u";?>>
 					<area coords="0,8,10,14" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=d";?>></map> <A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
 					<TD nowrap><?
-						if($tarr[$x]["task_duration"] % 24 == 0 ){
+						if($tarr[$x]["task_duration"] > 24 ){
 							$dt = "day";
 							$dur = $tarr[$x]["task_duration"] / 24;
 						}
