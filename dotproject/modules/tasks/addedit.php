@@ -1,7 +1,7 @@
 <?php /* TASKS $Id$ */
 /**
 * Tasks :: Add/Edit Form
-* @todo Get auto-calculate duration buttons working properly
+*
 */
 
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
@@ -355,41 +355,53 @@ function setAMPM( field) {
 var workHours = <?php echo $AppUI->getConfig( 'daily_working_hours' );?>;
 var hourMSecs = 3600*1000;
 
-/*
-Need to rehash these to cope with the new date format
 function calcDuration() {
 	var f = document.editFrm;
+	var int_st_date = new String(f.task_start_date.value);
+	var int_en_date = new String(f.task_end_date.value);
 
-	var s = new Date( f.task_start_date.value*1000 );
-	var e = new Date( f.task_end_date.value*1000 );
-
+	var s = Date.UTC(int_st_date.substring(0,4),(int_st_date.substring(4,6)-1),int_st_date.substring(6,8));
+	var e = Date.UTC(int_en_date.substring(0,4),(int_en_date.substring(4,6)-1),int_en_date.substring(6,8));
 	var durn = (e - s) / hourMSecs;
 	var durnType = parseFloat(f.task_duration_type.value);
 	durn /= durnType;
 
-	if (durnType == 1) {
+	if (durnType == 1)
 		durn *= (workHours / 24);
-	}
-	f.task_duration.value = durn;
+
+	if ( s > e )
+		alert( 'End date is before start date!');
+	else
+		f.task_duration.value = Math.round(durn);
+
 }
 
 function calcFinish() {
 	var f = document.editFrm;
+	var int_st_date = new String(f.task_start_date.value);
+
+	var s = new Date(int_st_date.substring(0,4),eval(int_st_date.substring(4,6))-1,int_st_date.substring(6,8));
 	var durn = parseFloat(f.task_duration.value);
 	var durnType = parseFloat(f.task_duration_type.value);
+	var inc = durn;
 
-	var s = new CDate( f.task_start_date.value*1000 );
-	var inc = (durn) * durnType * hourMSecs;
-
-	if (durnType == 1) {
+	if (durnType == 1)
 		inc /= workHours;
-	}
-	var e = new CDate( s.getTime() + inc );
-	f.task_end_date.value = (s.getTime() + inc)/1000;
-// this is the easy way out for the moment
-	alert( 'NOTE: Finish date has been updated ['+f.task_end_date.value+'] although the formatted date has not' );
+
+	var e = s;
+	e.setDate( s.getDate() + Math.round(inc) );
+
+	var tz1 = "";
+	var tz2 = "";
+
+	if ( e.getDate() < 10 ) tz1 = "0";
+	if ( (e.getMonth()+1) < 10 ) tz2 = "0";
+
+	f.task_end_date.value = e.getUTCFullYear()+tz2+(e.getMonth()+1)+tz1+e.getDate();
+	f.end_date.value = tz1+e.getDate()+"/"+tz2+(e.getMonth()+1)+"/"+e.getUTCFullYear();
+
 }
-*/
+
 </script>
 
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
@@ -549,7 +561,6 @@ function calcFinish() {
 				?>
 				</td>
 			</tr>
-<?php /* TODO ?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Calculate' );?>:</td>
 				<td nowrap="nowrap">
@@ -557,7 +568,6 @@ function calcFinish() {
 					<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish()" class="button" />
 				</td>
 			</tr>
-<?php */ ?>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
