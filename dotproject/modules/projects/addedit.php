@@ -162,9 +162,9 @@ function submitIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></td>
-			<td>
-				<input type="text" class="text" name="project_start_date" id="date1" value="<?php echo $start_date->format( '%Y-%m-%d' );?>" />
-				
+			<td>	 <input type="hidden" name="project_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
+				<input type="text" class="text" name="start_date" id="date1" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
+
 				<a href="#" onClick="popCalendar( 'start_date', 'start_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
@@ -173,8 +173,8 @@ function submitIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
-			<td>
-				<input type="text" class="text" name="project_end_date" id="date2" value="<?php echo $end_date ? $end_date->format( '%Y-%m-%d' ) : '';?>" />
+			<td>	<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
+				<input type="text" class="text" name="end_date" id="date2" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 
 				<a href="#" onClick="popCalendar('end_date', 'end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
