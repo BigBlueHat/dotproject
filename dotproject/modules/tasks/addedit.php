@@ -243,7 +243,7 @@ if(isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_ti
 		$can_edit_time_information = true;
 	}
 	
-} else if (!isset($dPconfig['restrict_task_time_editing']) || $dPconfig['restrict_task_time_editing']==false) { // If all users are able, then don't check anything
+} else if (!isset($dPconfig['restrict_task_time_editing']) || $dPconfig['restrict_task_time_editing']==false || $obj->task_id == 0) { // If all users are able, then don't check anything
 	$can_edit_time_information = true;
 }
 
