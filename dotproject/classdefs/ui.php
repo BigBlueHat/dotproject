@@ -64,9 +64,8 @@ class CAppUI {
 		FROM user_preferences
 		WHERE pref_user = 0
 		";
-		if ($debug) {
-			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
-		}
+		writeDebug( $sql, 'Default Preferences SQL', __FILE__, __LINE__ );
+
 		$this->user_locale = $this->base_locale;
 		$this->user_prefs = db_loadHashList( $sql );
 	}
@@ -190,10 +189,9 @@ class CAppUI {
 			AND users.user_id = permissions.permission_user
 			AND permission_value <> 0
 		";
+		
+		writeDebug( $sql, 'Login SQL', __FILE__, __LINE__ );
 
-		if ($debug) {
-			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
-		}
 		if( !db_loadObject( $sql, $this ) ) {
 			return false;
 		}
@@ -203,9 +201,8 @@ class CAppUI {
 		FROM user_preferences
 		WHERE pref_user = $this->user_id
 		";
-		if ($debug) {
-			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
-		}
+		writeDebug( $sql, 'User Preferences SQL', __FILE__, __LINE__ );
+
 		$prefs = db_loadHashList( $sql );
 		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
 		$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
