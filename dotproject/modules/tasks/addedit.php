@@ -102,20 +102,47 @@ if ( $task_id == 0 ) {
 
 // Pull tasks for the parent task list
 $sql="
-SELECT task_id, task_name, task_end_date, task_start_date, task_milestone 
+SELECT task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent 
 FROM tasks
 WHERE task_project = $task_project
 	AND task_id <> $task_id
-ORDER BY task_project
+ORDER BY task_parent, task_start_date
 ";
 
 
-$projTasks = array( $obj->task_id => $AppUI->_('None') );
+function getTaskDepth($task_parent, $count = 1){
+	$sql = "select task_parent
+			from tasks
+			where task_id = '$task_parent'";
+	
+	$task_id = db_loadResult($sql);
+	if($task_id == $task_parent){
+		return $count;
+	} else {
+		return getTaskDepth($task_id, ++$count);
+	}
+}
+
+function getSpaces($amount){
+	if($amount == 0) return "";
+	return str_repeat("&nbsp;", $amount);
+}
+
 $res = db_exec( $sql );
+
 while ($row = db_fetch_row( $res )) {
 	if (strlen( $row[1] ) > 60) {
 		$row[1] = substr( $row[1], 0, 57 ).'...';
 	}
+	$depth = 0;
+	if($row[5] != $row[0]){
+		$depth = getTaskDepth($row[5]) * 3;
+	}
+	
+	$selected = $row[0] == $obj->task_parent ? "selected" : "";
+	
+	$task_parent_options .= "<option value='".$row[0]."' $selected>".getSpaces($depth).dPFormSafe($row[1])."</option>";
+	
 	$projTasks[$row[0]] = $row[1];
 }
 
@@ -171,7 +198,7 @@ $selected_departments      = $obj->task_departments != "" ? explode(",", $obj->t
 $departments_count         = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
 if($department_selection_list!=""){
-	$department_selection_list = "<select name='dept_ids[]' size='$departments_count' multiple style='width:12em'>
+	$department_selection_list = "<select name='dept_ids[]' size='$departments_count' multiple class='text'>
 								  $department_selection_list
     	                          </select>";
 }
@@ -202,6 +229,10 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	foreach($depts_list as $dept_id => $dept_info){
 		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
 
+		if(strlen($dept_info["dept_name"]) > 30){
+			$dept_info["dept_name"] = substr($dept_info["dept_name"], 0, 28)."...";
+		}
+		
 		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
 		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
 	}
@@ -287,7 +318,7 @@ $projects = db_loadHashList( $sql );
 <SCRIPT language="JavaScript">
 var calendarField = '';
 var calWin = null;
-var selected_contacts_id = "<?= $obj->task_contacts; ?>";
+var selected_contacts_id = "<?php echo $obj->task_contacts; ?>";
 
 <?php
 echo "var projTasksWithEndDates=new Array();\n";
@@ -805,7 +836,10 @@ function changeRecordType(value){
 		</tr>
 		<tr>
 			<td>
-				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text" onchange="javascript:setTasksStartDate()"', $task_parent ); ?>
+				<select name='task_parent' class='text' onchange="javascript:setTasksStartDate()">
+					<option value='<?php echo $obj->task_id; ?>'><?php echo $AppUI->_('None'); ?></option>
+					<?php echo $task_parent_options; ?>
+				</select>
 			</td>
 			<td><?php echo $dPconfig['currency_symbol'] ?><input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
 		</tr>
@@ -884,7 +918,7 @@ function changeRecordType(value){
 			<tr>
 				<td colspan="2">
 						<br /><?php echo $AppUI->_( 'Change Task Project' );?>
-						<br /><?=arraySelect( $projects, 'task_project', 'size="1" class="text" id="medium" onchange="document.editFrm.submit()"',$task_project )?>
+						<br /><?php echo arraySelect( $projects, 'task_project', 'size="1" class="text" id="medium" onchange="document.editFrm.submit()"',$task_project ); ?>
 				</td>
 			</tr>
 			<?php
@@ -908,10 +942,12 @@ function changeRecordType(value){
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
+					<select name='all_tasks' class="text" style="width:220px" size="10" class="text" multiple="multiple">
+						<?php echo str_replace("selected", "", $task_parent_options); // we need to remove selected added from task_parent options ?>
+					</select>
 				</td>
 				<td>
-					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
+					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
 				</td>
 			</tr>
 			<tr>
@@ -933,10 +969,10 @@ function changeRecordType(value){
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
+					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" style="font-size:9pt;" multiple="multiple" ', null ); ?>
+					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
 				</td>
 			<tr>
 				<td colspan="2" align="center">
@@ -944,7 +980,7 @@ function changeRecordType(value){
 					<tr>
 						<td align="right"><input type="button" class="button" value="&gt;" onClick="addUser()" /></td>
 						<td>
-							<select name="percentage_assignment">
+							<select name="percentage_assignment" class="text">
 							<?php 
 								for ($i = 5; $i <= 100; $i+=5) {
 									echo "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";

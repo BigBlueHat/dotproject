@@ -603,6 +603,29 @@ class CTask extends CDpObject {
 			}
 		}
 	}
+	
+	/**
+	* Returns the task's depth (number of parents until root task)
+	*/
+	function getTaskDepth($task_parent = null, $count = 1){
+		if(is_null($task_parent)){
+			if($this->task_parent == $this->task_id){
+				return 0;
+			}
+			$task_parent = $this->task_parent;
+		}
+		$sql = "select task_parent
+				  from tasks
+				  where task_id = '$task_parent'";
+		$new_task_id = db_loadResult($sql);
+
+		if($new_task_id == $task_parent){
+			return $count;
+		} else {
+			$count += 1;
+			return $this->getTaskDepth($new_task_id, $count);
+		}
+	}
 }
 
 
