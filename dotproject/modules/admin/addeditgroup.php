@@ -101,7 +101,7 @@ function submitIt(){
 	<input type="hidden" name="user_id" value="<?php echo intval($prow["user_id"]);?>">
 	
 
-<TR height="20"><TD valign="top" bgcolor="#878676" colspan=2><font color="white"><strong><i>Adding new user to the system</font></i></strong></td></tr>
+<TR height="20"><TD valign="top" bgcolor="#878676" colspan=2><font color="white"><strong><em>Adding new user to the system</font></em></strong></td></tr>
 <tr><TD align="right" width="230">Username:</td><TD><input type="text" class="text" name="user_username" value="<?php echo $prow["user_username"];?>" maxlength="255"> <span class="smallNorm">(required)</span></td></tr>
 <tr><TD align="right">Password:</td><TD><input type="password" class="text" name="user_password" value="<?php echo $prow["user_password"];?>" maxlength="20"> </td></tr>
 <tr><TD align="right">Password2:</td><TD><input type="password" class="text" name="user_password2" value="<?php echo $prow["user_password"];?>" maxlength="20"> </td></tr>

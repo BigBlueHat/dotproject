@@ -42,7 +42,7 @@ if(!($erc = db_exec( $esql ))) {
 $entries = array();
 $n = db_num_rows( $erc );
 while ($row = db_fetch_assoc( $erc )) {
-	$title = $row['page_title'].'<i>'.$row['label_title'].'</i>'.$row['class_title'].$row['method_name'];
+	$title = $row['page_title'].'<em>'.$row['label_title'].'</em>'.$row['class_title'].$row['method_name'];
 	$row['title'] = $title;
 	$entries[$row['entry_id']] = $row;
 }

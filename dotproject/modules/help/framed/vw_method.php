@@ -66,7 +66,7 @@ while ($tok) {
 	$n=count($params);
 	for($i=0; $i < $n; $i++ ) {
 		echo ($i>0)?",\n":'';
-		echo '   '.$params[$i][0].' </strong><I>'.$params[$i][1].'</I><strong>';
+		echo '   '.$params[$i][0].' </strong><em>'.$params[$i][1].'</em><strong>';
 		if($params[$i][2] != '')
 			echo ' = '.$params[$i][2];
 	}
@@ -77,7 +77,7 @@ while ($tok) {
 	if($n > 0) {
 		echo '<h4>'.$AppUI->_( 'Parameters' ).'</h4><DL>';
 		for($i=0; $i < $n; $i++ ) {
-			echo '<DT><I>'.$params[$i][1].'</I>';
+			echo '<DT><em>'.$params[$i][1].'</em>';
 			echo '<DD>'.$params[$i][3].'</DD>';
 		}
 		echo '</DL>';

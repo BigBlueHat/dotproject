@@ -191,7 +191,7 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
     
     }
     else {
-        print("<i>none</i>\n");
+        print("<em>none</em>\n");
     }
     
     print("</td>\n</tr>\n");

@@ -250,7 +250,7 @@ function format_field ($value, $type, $ticket = NULL) {
             break;
         case "activity_date":
             if (!$value) {
-                $output = "<i>none</i>";
+                $output = "<em>none</em>";
             }
             else {
                 $output = get_time_ago($value);
@@ -264,7 +264,7 @@ function format_field ($value, $type, $ticket = NULL) {
         case "elapsed_date":
             $output = date($CONFIG["date_format"], $value);
             $time_ago = get_time_ago($value);
-            $output .= " <i>($time_ago)</i>";
+            $output .= " <em>($time_ago)</em>";
             break;
         case "body":
             $value = htmlspecialchars($value);
@@ -326,7 +326,7 @@ function format_field ($value, $type, $ticket = NULL) {
                 $output = htmlspecialchars($value);
             }
             else {
-                $output = "<i>(original ticket author)</i>";
+                $output = "<em>(original ticket author)</em>";
             }
             break;
         case "email":
@@ -335,11 +335,11 @@ function format_field ($value, $type, $ticket = NULL) {
                 $output = htmlspecialchars($value);
             }
             else {
-                $output = "<i>none</i>";
+                $output = "<em>none</em>";
             }
             break;
         default:
-            $output = $value ? htmlspecialchars($value) : "<i>none</i>";
+            $output = $value ? htmlspecialchars($value) : "<em>none</em>";
     }
     return($output);
 
