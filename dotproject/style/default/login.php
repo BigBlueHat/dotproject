@@ -45,7 +45,6 @@
 	echo '<span class="error">'.$AppUI->getMsg().'</span>';
 
 	$msg = '';
-	$msg .= ini_get( 'register_globals') ? '' : '<br /><span class="warning">WARNING: dotproject has not been fully tested with register_globals=off</span>';
 	$msg .=  phpversion() < '4.1' ? '<br /><span class="warning">WARNING: dotproject is NOT SUPPORT for this PHP Version ('.phpversion().')</span>' : '';
 	$msg .= function_exists( 'mysql_pconnect' ) ? '': '<br /><span class="warning">WARNING: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</span>';
 	echo $msg;
