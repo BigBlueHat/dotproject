@@ -55,6 +55,9 @@ class CMonthCalendar {
 /** @var string */
 	var $weekFunc;
 
+/** @var boolean Show highlighting in the calendar boxes */
+	var $showHighlightedDays;
+
 /**
 * @param Date $date
 */
@@ -68,6 +71,8 @@ class CMonthCalendar {
 		$this->showDays = true;
 		$this->showWeek = true;
 		$this->showEvents = true;
+		$this->showHighlightedDays = true;
+		
 
 		$this->styleTitle = '';
 		$this->styleMain = '';
@@ -76,7 +81,9 @@ class CMonthCalendar {
 		$this->weekFunc = '';
 
 		$this->events = array();
+		$this->highlightedDays = array();
 	}
+
 // setting functions
 
 /**
@@ -151,6 +158,18 @@ class CMonthCalendar {
  function setEvents( $e ) {
 		$this->events = $e;
 	}
+	
+/**
+ * CMonthCalendar::setHighlightedDays()
+ * ie 	['20040517'] => '#ff0000',
+ *
+ * { Description }
+ *
+ */
+ function setHighlightedDays( $hd ) {
+		$this->highlightedDays = $hd;
+	}
+	
 // drawing functions
 /**
  * CMonthCalendar::show()
@@ -192,7 +211,7 @@ class CMonthCalendar {
 		$s .= "\n\t<tr>";
 
 		if ($this->showArrows) {
-			$href = $url.'&date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'&date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
 			$s .= "\n\t\t<td align=\"left\">";
 			$s .= '<a href="'.$href.'"><img src="./images/prev.gif" width="16" height="16" alt="'.$AppUI->_('previous month').'" border="0" /></a>';
 			$s .= "</td>";
@@ -202,14 +221,14 @@ class CMonthCalendar {
 
 		$s .= "\n\t<th width=\"99%\" align=\"center\">";
 		if ($this->clickMonth) {
-			$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
 			$s .= '<a href="'.$href.'">';
 		}
 		$s .= $this->this_month->format( "%B %Y" );
 		$s .= "</th>";
 
 		if ($this->showArrows) {
-			$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '');
+			$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
 			$s .= "\n\t\t<td align=\"right\">";
 			$s .= '<a href="'.$href.'"><img src="./images/next.gif" width="16" height="16" alt="'.$AppUI->_('next month').'" border="0" /></a>';
 			$s .= "</td>";
@@ -254,9 +273,9 @@ class CMonthCalendar {
 		$today = $today->format( "%Y%m%d%w" );
 
 		$date = $this->this_month;
-		$this_day = $date->getDay();
-		$this_month = $date->getMonth();
-		$this_year = $date->getYear();
+		$this_day = intval($date->getDay());
+		$this_month = intval($date->getMonth());
+		$this_year = intval($date->getYear());
 		$cal = Date_Calc::getCalendarMonth( $this_month, $this_year, "%Y%m%d%w", LOCALE_FIRST_DAY );
 
 		$df = $AppUI->getPref( 'SHDATEFORMAT' );
@@ -289,7 +308,11 @@ class CMonthCalendar {
 					$class = 'day';
 				}
 				$day = substr( $day, 0, 8 );
-				$html .= "\n\t<td class=\"$class\">";
+				$html .= "\n\t<td class=\"$class\"";
+				if($this->showHighlightedDays && isset($this->highlightedDays[$day])){
+					$html .= " style=\"border: 1px solid ".$this->highlightedDays[$day]."\"";
+				}
+				$html .= ">";
 				if ($this->dayFunc) {
 					$html .= "<a href=\"javascript:$this->dayFunc('$day','".$this_day->format( $df )."')\" class=\"$class\">";
 					$html .= "$d";
