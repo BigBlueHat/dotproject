@@ -20,12 +20,15 @@ foreach ($_POST['pref_name'] as $name => $value) {
 		if (($msg = $obj->store())) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		} else {
-			$AppUI->setMsg( "updated", UI_MSG_OK, true );
 			if ($obj->pref_user) {
 			// if user preferences, reload them now
 				$AppUI->loadPrefs( $AppUI->user_id );
 				$AppUI->setUserLocale();
+				include_once dPRealPath( "./locales/$AppUI->user_locale/locales.php" );
+				include dPRealPath( "./locales/core.php" );
+				$AppUI->setMsg( 'Preferences' );
 			}
+			$AppUI->setMsg( "updated", UI_MSG_OK, true );
 		}
 	}
 }
