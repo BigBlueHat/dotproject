@@ -293,6 +293,7 @@ $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
 $tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
 
 // settings for tasks
 $f = 'all';
