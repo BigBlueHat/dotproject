@@ -72,7 +72,7 @@ $from = "tasks";
 $join = "LEFT JOIN projects ON project_id = task_project";
 $join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
 // patch 2.12.04 show assignee and count
-$join .= " LEFT JOIN user_tasks ut ON ut.task_id = tasks.task_id";
+$join .= " LEFT JOIN user_tasks as ut ON ut.task_id = tasks.task_id";
 $join .= " LEFT JOIN users as assignees ON assignees.user_id = ut.user_id";
 
 $where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
@@ -120,8 +120,8 @@ switch ($f) {
 		$from .= ", user_tasks";
 		$where .= "
 					AND task_project             = projects.project_id
-					AND (user_tasks.task_id      = tasks.task_id OR assignees.user_username IS NULL)
-					AND (task_percent_complete    < '100' OR task_end_date = '')
+					AND (user_tasks.task_id      = '0'   OR user_tasks.task_id = tasks.task_id)
+					AND (task_percent_complete   < '100' OR task_end_date = '')
 					AND projects.project_active  = '1'
 					AND projects.project_status != '4'
 					AND projects.project_status != '5'";
