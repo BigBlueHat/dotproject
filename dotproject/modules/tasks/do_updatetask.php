@@ -1,7 +1,6 @@
 <?php /* TASKS $Id$ */
 
 $del = dPgetParam( $_POST, 'del', 0 );
-$task_hours_worked = dPgetParam( $_POST, 'task_hours_worked', 0 );
 
 $obj = new CTaskLog();
 
@@ -23,9 +22,11 @@ if ($del) {
 	} else {
 		$AppUI->setMsg( "deleted", UI_MSG_ALERT );
 	}
+	$AppUI->redirect();
 } else {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect();
 	} else {
 		$AppUI->setMsg( @$_POST['task_log_id'] ? 'updated' : 'inserted', UI_MSG_OK, true );
 	}
@@ -39,7 +40,6 @@ if ($task->task_percent_complete >= 100) {
 	$task->task_end_date = $obj->task_log_date;
 }
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
-$task->task_hours_worked += $obj->task_log_hours;
 
 if (($msg = $task->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR, true );

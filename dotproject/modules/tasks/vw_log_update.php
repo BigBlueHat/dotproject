@@ -1,20 +1,40 @@
 <?php /* TASKS $Id$ */
-GLOBAL $AppUI, $canEdit, $task_id, $obj, $percent;
+GLOBAL $AppUI, $task_id, $obj, $percent;
+
+// check permissions
+$canEdit = !getDenyEdit( 'tasks', $task_id );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+$task_log_id = intval( dPgetParam( $_GET, 'task_log_id', 0 ) );
+$log = new CTaskLog();
+if ($task_log_id) {
+	$log->load( $task_log_id );
+} else {
+	$log->task_log_task = $task_id;
+	$log->task_log_name = $obj->task_name;
+}
 
 if ($canEdit) {
 // Task Update Form
-	$df = $AppUI->getPref('SHDATEFORMAT');
-	$log_date = new CDate();
+	$df = $AppUI->getPref( 'SHDATEFORMAT' );
+	$log_date = new CDate( $log->task_log_date );
+
+	if ($task_log_id) {
+		echo $AppUI->_( "Edit Log" );
+	} else {
+		echo $AppUI->_( "Add Log" );
+	}
 ?>
 <table cellspacing="1" cellpadding="2" border="0" width="100%">
 <form name="editFrm" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
 	<input type="hidden" name="uniqueid" value="<?php echo uniqid("");?>" />
 	<input type="hidden" name="dosql" value="do_updatetask" />
-	<input type="hidden" name="task_id" value="<?php echo @$obj->task_id;?>" />
-	<input type="hidden" name="task_log_task" value="<?php echo @$obj->task_id;?>" />
+	<input type="hidden" name="task_log_id" value="<?php echo $log->task_log_id;?>" />
+	<input type="hidden" name="task_log_task" value="<?php echo $log->task_log_task;?>" />
 	<input type="hidden" name="task_log_creator" value="<?php echo $AppUI->user_id;?>" />
-	<input type="hidden" name="task_log_name" value="Update :<?php echo @$obj->task_name;?>" />
-	<input type="hidden" name="task_hours_worked" value="<?php echo @$obj->task_hours_worked;?>" />
+	<input type="hidden" name="task_log_name" value="Update :<?php echo $log->task_log_name;?>" />
 <tr>
 	<td align="right">
 		<?php echo $AppUI->_('Date');?>
@@ -28,7 +48,7 @@ if ($canEdit) {
 	</td>
 	<td align="right"><?php echo $AppUI->_('Summary');?>:</td>
 	<td>
-		<input type="text" class="text" name="task_log_name" maxlength="255" size="30" />
+		<input type="text" class="text" name="task_log_name" value="<?php echo $log->task_log_name;?>" maxlength="255" size="30" />
 	</td>
 </tr>
 <tr>
@@ -40,7 +60,7 @@ if ($canEdit) {
 	</td>
 	<td rowspan="3" align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
 	<td rowspan="3">
-		<textarea name="task_log_description" class="textarea" cols="50" rows="6"></textarea>
+		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo $log->task_log_description;?></textarea>
 	</td>
 </tr>
 <tr>
@@ -48,7 +68,7 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Hours Worked');?>
 	</td>
 	<td>
-		<input type="text" class="text" name="task_log_hours" maxlength="8" size="6" />
+		<input type="text" class="text" name="task_log_hours" value="<?php echo $log->task_log_hours;?>" maxlength="8" size="6" />
 	</td>
 </tr>
 <tr>
@@ -56,7 +76,7 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Cost Code');?>
 	</td>
 	<td>
-		<input type="text" class="text" name="task_log_costcode" maxlength="8" size="8" />
+		<input type="text" class="text" name="task_log_costcode" value="<?php echo $log->task_log_costcode;?>" maxlength="8" size="8" />
 	</td>
 </tr>
 <tr>
