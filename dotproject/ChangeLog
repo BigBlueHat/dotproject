@@ -1,3 +1,18 @@
+2004-01-21 03:40  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added Italian translation.
+
+2004-01-21 03:33  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added Chinese (Taiwan).
+
+2004-01-18 03:59  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-18 02:07  (mkozusnik)
 ---------------------------------
 modules/admin/addedituser.php
@@ -483,21 +498,6 @@ modules/tasks/addedit.php
 ---------------------------------
 includes/main_functions.php
 modules/system/addeditpref.php
-- Note: The function money_format() is only defined if the system has strfmon capabilities. For example, Windows does not, so money_format() is undefined in Windows.
-- FIX: A work arround was written for windows hosts not to crash dP.
-
-2003-12-11 09:22  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-12-10 19:48  (jcgonz)
----------------------------------
-modules/tasks/tasks.class.php
-- FIX: Percent completed in dynamic parent tasks is now calculated correctly
-
-2003-12-10 09:22  (kripper)
----------------------------------
 ...
 
 (This file has been wrapped)
