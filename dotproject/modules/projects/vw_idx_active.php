@@ -22,28 +22,36 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 </tr>
 
 <?php
+$CR = "\n";
+$CT = "\n\t";
+$none = true;
 foreach ($projects as $row) {
 	if ($row["project_active"] > 0) {
+		$none = false;
 		$end_date = $row["project_end_date"] ? new CDate( db_dateTime2unix( $row["project_end_date"] ) ) : null;
-?>
-<tr>
-	<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#<?php echo $row["project_color_identifier"];?>">
-<?php
-	echo '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
-		. sprintf( "%.1f%%", $row["project_precent_complete"] )
-		. '</font>';
-	?></td>
-	<td width="100%">
-		<a href="?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $row["project_name"];?></A>
-	</td>
-	<td nowrap="nowrap"><?php echo $row["user_username"];?></td>
-	<td align="center" nowrap>
-		<?php echo $row["total_tasks"].($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');?>
-		</td>
-	<td align="right" nowrap="nowrap"><?php echo $end_date ? $end_date->toString( $df ) : '-';?></td>
-</tr>
-<?php
+		$s = '<tr>';
+		$s .= '<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#'
+			. $row["project_color_identifier"] . '">';
+		$s .= $CT . '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
+			. sprintf( "%.1f%%", $row["project_precent_complete"] )
+			. '</font>';
+		$s .= $CR . '</td>';
+		$s .= $CR . '<td width="100%">';
+		$s .= $CT . '<a href="?m=projects&a=view&project_id=' . $row["project_id"] . '">' . $row["project_name"] . '</a>';
+		$s .= $CR . '</td>';
+		$s .= $CR . '<td nowrap="nowrap">' . $row["user_username"] . '</td>';
+		$s .= $CR . '<td align="center" nowrap="nowrap">';
+		$s .= $CT . $row["total_tasks"] . ($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');
+		$s .= $CR . '</td>';
+		$s .= $CR . '<td align="right" nowrap="nowrap">';
+		$s .= $CT . $end_date ? $end_date->toString( $df ) : '-';;
+		$s .= $CR . '</td>';
+		$s .= $CR . '</tr>';
+		echo $s;
 	}
+}
+if ($none) {
+	echo $CR . '<tr><td colspan="6">' . $AppUI->_( 'No projects available' ) . '</td></tr>';
 }
 ?>
 <tr>

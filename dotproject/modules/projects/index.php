@@ -36,7 +36,7 @@ $deny = db_loadHashList( $sql );
 $sql = "
 SELECT
 	project_id, project_active, project_status, project_color_identifier, project_name,
-	project_start_date, project_end_date,
+	project_start_date, project_end_date, project_actual_end_date,
 	project_color_identifier,
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
@@ -93,13 +93,9 @@ if ($canEdit) {
 }
 $titleBlock->show();
 
-if (count( $projects )) {
-	// tabbed information boxes
-	$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
-	$tabBox->add( 'vw_idx_active', 'Active Projects' );
-	$tabBox->add( 'vw_idx_archived', 'Archived Projects' );
-	$tabBox->show();
-} else {
-	echo '<p align="center"><strong>No projects available</strong><br />Use the "New Project" button above to create a project.</p>';
-}
+// tabbed information boxes
+$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
+$tabBox->add( 'vw_idx_active', 'Active Projects' );
+$tabBox->add( 'vw_idx_archived', 'Archived Projects' );
+$tabBox->show();
 ?>
