@@ -1,3 +1,13 @@
+2003-11-01 07:57  (gregorerhardt)
+---------------------------------
+modules/forums/post_message.php
+- fixed bug producing wrong author and editor on replying to a post
+
+2003-10-31 03:40  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-30 13:59  (jcgonz)
 ---------------------------------
 modules/tasks/tasks.php
@@ -488,16 +498,6 @@ ChangeLog
 modules/tasks/tasks.class.php
 - Added extra information in error message.
 
-2003-09-10 02:53  (ajdonnison)
----------------------------------
-classes/ui.class.php
-- Fix for logging in with trans_sid but no cookies.
-
-2003-09-09 19:31  (ajdonnison)
----------------------------------
-modules/departments/departments.class.php
-- Fixed problem with creating the first department for a company.
-- Updated messages to include the actual error that occurred.
 ...
 
 (This file has been wrapped)
