@@ -49,6 +49,7 @@
 "adminPasswordsDiffer"=>"Su contraseña no coincide.",
 "adminValidPassword"=>"Por favor, ingrese una contraseña válida (más de 4 caracteres).",
 "adminValidUserName"=>"Por favor, ingrese un nombre de usuario válido.",
+"change password"=>"",
 "deny"=>"denegado",
 "edit preferences"=>"editar preferencias",
 "edit this user"=>"editar este usuario",

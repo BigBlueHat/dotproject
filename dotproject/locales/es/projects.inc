@@ -39,6 +39,7 @@
 "Staging URL"=>"URL",
 "Start Date"=>"Fecha Inicio",
 "Status"=>"Estado",
+"Summary"=>"Resumen",
 "Target Budget"=>"Presupuesto Tentativo",
 "Target End Date"=>"Fecha de Término Tentativa",
 "Target Finish Date"=>"Fecha de Término Tentativa",

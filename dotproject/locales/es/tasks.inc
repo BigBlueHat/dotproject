@@ -31,7 +31,7 @@
 "Start Date"=>"Fecha de Inicio",
 "Status"=>"Estado",
 "Target Budget"=>"Meta Propuesta",
-"Task Creator"=>"Creador",
+"Task Creator"=>"Responsable",
 "Task Dependencies"=>"Dependencias",
 "Task Log and Comments"=>"Historial y Comentarios",
 "Task Name"=>"Nombre",
