@@ -71,6 +71,19 @@ $_DATE_SPAN_INPUT_FORMAT = DATE_SPAN_INPUT_FORMAT_NNSV;
 * @todo    Get and set default local input and output formats?
 * @access  public
 */
+
+/* Quick patch for implemtations which do not support is_a*/
+
+if (!function_exists('is_a'))
+{
+  function is_a($object, $class_name)
+  {
+     $class_name = strtolower($class_name);
+   if (get_class($object) == $class_name) return TRUE;
+     else return is_subclass_of($object, $class_name);
+  }
+}
+
 class Date_Span {
 
     /**
