@@ -30,8 +30,8 @@ if (isset( $_POST['company_id'] )) {
 }
 
 // BUG FIX: Selecting all companies didn't work
-// $company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
-$company_id = $AppUI->getState( 'ProjIdxCompany' );
+$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+//$company_id = $AppUI->getState( 'ProjIdxCompany' );
 
 if (isset( $_GET['orderby'] )) {
 	$AppUI->setState( 'ProjIdxOrderBy', $_GET['orderby'] );
@@ -83,7 +83,7 @@ SELECT
 	tasks_sum.project_percent_complete,
 	user_username
 FROM permissions,projects
-LEFT JOIN companies ON company_id = projects.project_company
+LEFT JOIN companies ON projects.project_company = company_id
 LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks_sum ON projects.project_id = tasks_sum.task_project
 LEFT JOIN tasks_summy ON projects.project_id = tasks_summy.task_project
@@ -95,12 +95,12 @@ WHERE permission_user = $AppUI->user_id
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)"
 .(count($deny) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-.($company_id ? "\nAND project_company = $company_id" : '')
+.($company_id ? "\nAND projects.project_company = '$company_id'" : '')
 ."
 GROUP BY project_id
 ORDER BY $orderby
-LIMIT 0,50
 ";
+//echo "<pre>$sql</pre>";
 
 $projects = db_loadList( $sql );
 
