@@ -25,7 +25,6 @@ WHERE task_id = $task_id
 $trc = mysql_query( $tsql );
 echo mysql_error();
 $trow = mysql_fetch_array( $trc, MYSQL_ASSOC );
-$project_id = $trow['task_project'];
 
 // Pull the task comments
 $csql = "
@@ -95,7 +94,7 @@ function updateTask() {
 <table border="0" cellpadding="0" cellspacing="2" width="95%">
 <TR>
 	<TD nowrap>
-		<A href="./index.php?m=projects&a=view&project_id=<?php echo $trow["project_id"];?>"><?php echo $trow["project_name"];?></A>
+		<A href="./index.php?m=projects&a=view&project_id=<?php echo $trow["task_project"];?>"><?php echo $trow["project_name"];?></A>
 		<b> : </b><A href="./index.php?m=tasks">Task List</a>
 <?php if (!$denyEdit) { ?>
 		<b>:</b> <A href="./index.php?m=tasks&a=addedit&task_id=<?php echo $trow["task_id"];?>">Edit this task</a>
