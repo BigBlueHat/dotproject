@@ -80,6 +80,8 @@ CREATE TABLE contacts (
   contact_notes text,
   contact_project int(11) NOT NULL default '0',
   contact_icon varchar(20) default 'obj/contact',
+  contact_owner int unsigned default '0',
+  contact_private tinyint unsigned default '0',
   PRIMARY KEY  (contact_id),
   KEY idx_oby (contact_order_by),
   KEY idx_co (contact_company),
