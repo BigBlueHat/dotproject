@@ -10,9 +10,17 @@
  		- task groups start_date = min(children_start_date), end_date = max(children_end_date)
  		- show dependencies (not implemented in jpgraph)
  */
-require_once( "../../includes/config.php" );
-require_once( "{$AppUI->cfg['root_dir']}/includes/db_connect.php" );
-require_once( "{$AppUI->cfg['root_dir']}/classdefs/ui.php" );
+
+chdir("../..");
+require_once( "includes/config.php" );
+require_once( "classdefs/ui.php" );
+
+// manage the session variable(s)
+session_name( 'dotproject' );
+session_start();
+session_register( 'AppUI' );
+
+require_once( "includes/db_connect.php" );
 
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
