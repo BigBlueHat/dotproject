@@ -22,12 +22,15 @@ if ($HTTP_POST_VARS["del"]) {
 	$message  ="Message Updated";
 } else {
 // Insert into forums
+	sendWatchMail($message_id, $message_parent, $message_forum, $message_title, $message_body);
+	die;
 	$message_body = htmlspecialchars( $message_body );
 	$sql = "insert into forum_messages
 	(message_forum, message_parent, message_author, message_title, message_date, message_body, message_published)
 	values 
 	('$message_forum','$message_parent', '$message_author', '$message_title', now(), '$message_body', '$message_published' )";
 	mysql_query($sql);
+	$new_id = mysql_insert_id();
 
 	//pull message count and descriptor
 	$sql = "select count(message_id) as messages,
@@ -38,17 +41,16 @@ if ($HTTP_POST_VARS["del"]) {
 	$latest = mysql_result($rc, 0, 1);
 
 	//update forum descriptor
-	$sql = "update forums set
-	forum_last_date = '$latest', 
-	forum_message_count = $messages
-	where forum_id = $message_forum";
+	$sql = "
+	UPDATE forums 
+	SET
+		forum_last_date = '$latest', 
+		forum_message_count = $messages,
+		forum_last_id = $new_id
+	WHERE forum_id = $message_forum";
 	$rc = mysql_query($sql);
 
-
-
 	$message  ="Message Posted";
-
-
 }
 
 if($x = mysql_error())	{
