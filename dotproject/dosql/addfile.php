@@ -58,11 +58,12 @@ if ($HTTP_POST_FILES['formfile']['size'] > 0) {
 	if (isset( $ft[$HTTP_POST_FILES['formfile']['type']] )) {
 		$parser = $ft[$HTTP_POST_FILES['formfile']['type']];
 		$parser = $parser . " " . $newfile;
-		if (strpos( $parser, "/pdf" )) {
-			$x = `$parser -`;
-		} else {
-			$x = `$parser`;
-		}
+		$pos = strpos($parser, "/pdf");
+              if (FALSE !== $pos) {            
+                    $x = `$parser -`;
+              } else {  
+                    $x = `$parser`;
+              }
 		$x = str_replace( ".", " ", $x );
 		$x = str_replace( ",", " ", $x );
 		$x = str_replace( "!", " ", $x );
