@@ -28,7 +28,7 @@ $AppUI->user_locale = $host_locale;
 </tr>
 <tr>
 	<td bgcolor="#eeeeee" align="right" nowrap width="100">
-		<?php echo $AppUI->_('username');?>:
+		<?php echo $AppUI->_('Username');?>:
 	</td>
 	<td bgcolor="#eeeeee" align=left class="menufontlight" nowrap>
 		<input type="text" size="25" name="username" class=text>
@@ -36,7 +36,7 @@ $AppUI->user_locale = $host_locale;
 </tr>
 <tr>
 	<td bgcolor="#eeeeee" align="right"  nowrap>
-		<?php echo $AppUI->_('password');?>:
+		<?php echo $AppUI->_('Password');?>:
 	</td>
 	<td bgcolor="#eeeeee" align="left" class="menufontlight" nowrap>
 		<input type="password" size="25" name="password" class="text">
