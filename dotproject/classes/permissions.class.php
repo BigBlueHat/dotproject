@@ -211,9 +211,9 @@ class dPacl extends gacl_api {
     $res = $q->exec();
     $userlist = array();
     while ($row = db_fetch_row($res)) {
-      if ( ($canViewUsers && $this->isUserPermitted($row[0], $module))
-	 || $row[0] == $AppUI->user_id)
-	$userlist[] = $row[0];
+      if ( ($canViewUsers && $this->isUserPermitted($row['user_id'], $module))
+	 || $row['user_id'] == $AppUI->user_id)
+	$userlist[] = $row['user_id'];
     }
     //  Now format the userlist as an assoc array.
     $result = array();
