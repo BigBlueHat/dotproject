@@ -50,6 +50,7 @@
 "Key",
 "Last Post",
 "Last Update",
+"Log",
 "Log All",
 "Log All Projects",
 "Make PDF",
