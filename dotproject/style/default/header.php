@@ -29,7 +29,7 @@ function tboff(){
 <title><?php echo $page_title;?></title>
 <link rel="stylesheet" type="text/css" href="./style/default/main.css">
 </head>
-<body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="style/default/bground.gif">
+<body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="style/default/images/bground.gif">
 <table width="100%" cellpadding="3" cellspacing="0" bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
 <tr>
 	<td nowrap width="33%"><?php echo $company_name;?></td>
@@ -50,16 +50,13 @@ function tboff(){
 	echo '<td>';
 	$newItem = array( ""=>'- New Item -' );
 
-	$project_id = $AppUI->getState( 'ActiveProject' ) !== NULL ? $AppUI->getState( 'ActiveProject' ) : 0;
-	$project_id = isset($_REQUEST['project_id']) ? $_REQUEST['project_id'] : $project_id;
-
-	if ($project_id) {
+	if ($AppUI->getProject()) {
 		$newItem["tasks"] = "Task";
 	} else if (!empty( $task_id ) && $task_id > 0) {
 		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
 		if ($rc = db_exec( $sql )) {
 			if ($row = db_fetch_row( $rc )) {
-				$project_id = $row[0];
+				$AppUI->setProject( $row[0] );
 				$newItem["tasks"] = "Task";
 			}
 		}
@@ -76,8 +73,8 @@ function tboff(){
 	echo '</td><input type="hidden" name="a" value="addedit">';
 
 //build URI string
-	if (isset( $project_id )) {
-		echo '<input type="hidden" name="project_id" value="'.$project_id.'">';
+	if ($AppUI->getProject()) {
+		echo '<input type="hidden" name="project_id" value="'.$AppUI->getProject().'">';
 	}
 	if (isset( $company_id )) {
 		echo '<input type="hidden" name="company_id" value="'.$company_id.'">';

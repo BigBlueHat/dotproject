@@ -47,7 +47,7 @@ function tboff(){
 
 <table width="100%" cellpadding="3" cellspacing="0" border="0">
 <tr>
-	<td background="style/demo1/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
+	<td background="style/demo1/images/titlegrad.jpg" style="background-color:#a5cbf7;color:#ffffff"><b>dotproject</b></a>
 </tr>
 <tr>
 	<td style="border: #848284 1px outset;background-color:#d5d3ce;color:#000000">
@@ -69,13 +69,13 @@ echo implode( ' | ', $links );
 	echo '<td nowrap="nowrap" align="right">';
 	$newItem = array( ""=>'- New Item -' );
 
-	if (!empty( $project_id ) && $project_id > 0) {
+	if ($AppUI->getProject()) {
 		$newItem["tasks"] = "Task";
 	} else if (!empty( $task_id ) && $task_id > 0) {
 		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
 		if ($rc = db_exec( $sql )) {
 			if ($row = db_fetch_row( $rc )) {
-				$project_id = $row[0];
+				$AppUI->setProject( $row[0] );
 				$newItem["tasks"] = "Task";
 			}
 		}
@@ -92,8 +92,8 @@ echo implode( ' | ', $links );
 	echo '</td><input type="hidden" name="a" value="addedit">';
 
 //build URI string
-	if (isset( $project_id )) {
-		echo '<input type="hidden" name="project_id" value="'.$project_id.'">';
+	if ($AppUI->getProject()) {
+		echo '<input type="hidden" name="project_id" value="'.$AppUI->getProject().'">';
 	}
 	if (isset( $company_id )) {
 		echo '<input type="hidden" name="company_id" value="'.$company_id.'">';

@@ -38,10 +38,10 @@ bordertable {
 }
 
 .button{
- border: 1px black solid;
- font-family: verdana,Sans-Serif;
- font-size: 8pt;
- width: 100px;
+	border: 1px black solid;
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt;
+	/*width: 100px; too small for some translations*/
 }
 
 .text{
@@ -51,6 +51,16 @@ bordertable {
  height: 20px;
 }
 
+.textarea{
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: 9pt;
+}
+
+textarea.small {
+	border: 1px black solid;
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt;
+}
 /*
 **********************************
 Begin IE TD buttonizing
@@ -98,12 +108,13 @@ TABLE.tbl TD {
 	background-color: #ffffff;
 }
 
+/* a 'standard' table */
 TABLE.std {
 	border: solid #08245b 2px;
 	background: #d6ebff;
 }
 TABLE.std TH {
-	background-color: #878676;
+	background-color: #08245b;
 	color: white;
 	list-style-type: disc;
 	list-style-position: inside;
@@ -111,6 +122,19 @@ TABLE.std TH {
 }
 
 TABLE.std TD.hilite {
+	background-color: #ffffff;
+}
+
+/* contacts table */
+table.contacts {
+	background-color: #878676;
+}
+
+table.contacts td {
+	background-color: #f4efe3;
+}
+
+table.contacts td.hilite {
 	background-color: #ffffff;
 }
 
@@ -142,11 +166,6 @@ TD.tabox {
 	border-left: solid #cccccc 2px;
 	border-right: solid #cccccc 2px;
 	border-bottom: solid #cccccc 2px;
-}
-
-.textarea{
-	font-family: verdana,helvetica,arial,sans-serif;
-	font-size: 9pt;
 }
 
 /* Message styles */
@@ -239,28 +258,28 @@ table.popcal a.weekend:visited {
 
 /* month calendar - title area */
 table.motitle {
-	background-color: #ffffff;
+	background-color: #777777;
 }
 table.motitle td {
-	background-color: #ffffff;
+	background-color: #f0f0f0;
 }
 table.motitle th {
-	background-color: #ffffff;
+	background-color: #f0f0f0;
 	font-size: 10pt;
 }
 
 table.mocal {
-	background-color: #cccccc;
+	background-color: #777777;
 }
 table.mocal th {
-	background-color: #878676;
+	background-color: #08245b;
 	color: #ffffff;
 }
 table.mocal td {
 }
 table.mocal td.week {
 	vertical-align: top;
-	background-color: #878676;
+	background-color: #08245b;
 	height: 80px;
 }
 table.mocal td.empty {
@@ -268,21 +287,21 @@ table.mocal td.empty {
 	height: 80px;
 }
 table.mocal td.day  {
-	background-color: #f4efe3;
+	background-color: #e0e0e0;
 	color: #333366;
 	text-align: left;
 	vertical-align: top;
 	height: 80px;
 }
 table.mocal td.today {
-	background-color: #878676;
+	background-color: #a5cbf7;
 	color: #ffffff;
 	text-align: left;
 	vertical-align: top;
 }
 
 table.mocal td.weekend {
-	background-color: #efefe7;
+	background-color: #f0f0f0;
 	text-align: left;
 	vertical-align: top;
 }
@@ -314,6 +333,7 @@ table.minical td.day  {
 	text-align: center;
 }
 table.minical td.today {
+	background-color: #e0e0e0;
 	text-align: center;
 }
 table.minical td.weekend {
