@@ -9,7 +9,7 @@ db_connect( $dbhost, $db, $dbuser, $dbpass );
 
 function db_loadObject( $sql, &$object ) {
 	$hash = array();
-	if( !db_loadHash( $sql, &$hash ) ) {
+	if( !db_loadHash( $sql, $hash ) ) {
 		return false;
 	}
 	bindHashToObject( $hash, $object );
