@@ -1,3 +1,66 @@
+2003-12-02 23:27  (jcgonz)
+---------------------------------
+db/dotproject_101.sql
+db/upgrade_100_to_101.sql
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- Now users can relate departments to tasks. Please check db changes in the .sql file (100 to 101).
+
+2003-12-02 22:05  (gregorerhardt)
+---------------------------------
+modules/history/addedit.php
+- softcoded/translation
+
+2003-12-02 21:39  (gregorerhardt)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- translation (softcoding) of project status values
+
+2003-12-02 21:31  (gregorerhardt)
+---------------------------------
+modules/departments/addedit.php
+modules/departments/view.php
+- several translations
+
+2003-12-02 20:52  (gregorerhardt)
+---------------------------------
+modules/ticketsmith/index.php
+- fixing #848082: sorting problem with REQUIRE_GLOBALS=OFF
+
+2003-12-02 19:55  (jcgonz)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- Updated translation issues with status selector in proposed projects tabs
+
+2003-12-02 19:50  (jcgonz)
+---------------------------------
+locales/en/projects.inc
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- Added dynamic project status tabs at the projects module. Now tabs are the same that all project status from sysval.
+
+2003-12-02 18:21  (jcgonz)
+---------------------------------
+docs/install.html
+docs/nav.html
+docs/rfc0001.00.html
+docs/roadmap.html
+docs/team.html
+docs/trouble.html
+docs/upgrade.html
+modules/companies/index.php
+modules/companies/vw_companies.php
+- Added dynamic companies type tabs at the companies module
+
+2003-11-28 09:24  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-28 04:51  (dylan_cuthbert)
 ---------------------------------
 modules/system/domodsql.php
@@ -435,69 +498,6 @@ modules/projects/addedit.php
 2003-09-19 00:50  (ajdonnison)
 ---------------------------------
 fileviewer.php
-- Fix for IE6 users, and it doesn't seem to break Mozilla - so it should
-- be a general fix.
-
-2003-09-18 23:36  (ajdonnison)
----------------------------------
-modules/system/domodsql.php
-- Replaced eval code, cleaned up error messages.
-
-2003-09-18 17:38  (gregorerhardt)
----------------------------------
-locales/en/ticketsmith.inc
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
-- translation of ticketsmith
-
-2003-09-18 04:02  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-18 02:04  (ajdonnison)
----------------------------------
-modules/projects/addedit.php
-- Fixed calendar javascript includes to use correct path
-
-2003-09-17 15:40  (gregorerhardt)
----------------------------------
-modules/contacts/index.php
-- forgot to remove superfluous link added in devProcess
-
-2003-09-17 15:10  (gregorerhardt)
----------------------------------
-locales/en/contacts.inc
-- translation added for vCard import implementation
-
-2003-09-17 15:09  (gregorerhardt)
----------------------------------
-modules/contacts/index.php
-- we are now able to import vCards
-
-2003-09-17 15:08  (gregorerhardt)
----------------------------------
-modules/contacts/vcardexport.php
-- fixed contact notes broken because of newline
-
-2003-09-17 15:07  (gregorerhardt)
----------------------------------
-modules/contacts/vcardimport.php
-- Initial Import of vCardImport
-
-2003-09-17 04:01  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-16 19:37  (gregorerhardt)
----------------------------------
 ...
 
 (This file has been wrapped)
