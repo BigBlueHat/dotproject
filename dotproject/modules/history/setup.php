@@ -37,19 +37,19 @@ class CSetupHistory {
 		  "history_description text," .
 		  "PRIMARY KEY  (history_id)," .
 		  "UNIQUE KEY history_id (history_id)" .
-		  ") TYPE=MyISAM;";
+		  ") TYPE=MyISAM";
 		$q = new DBQuery;
 		$q->createTable('history');
 		$q->createDefinition($sql);
 		$q->exec();
-		return null;
+		return db_error();
 	}
 	
 	function remove() {
 		$q = new DBQuery;
 		$q->dropTable('history');
 		$q->exec();
-		return null;
+		return db_error();
 	}
 	
 	function upgrade() {
