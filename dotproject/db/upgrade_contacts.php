@@ -1,10 +1,11 @@
 <?php
-include_once('../includes/config.php');
-include_once($dPconfig['root_dir'] . '/includes/main_functions.php');
-require_once( $dPconfig['root_dir']."/includes/db_adodb.php" );
-include_once($dPconfig['root_dir'] . '/includes/db_connect.php');
+global $baseDir;
+
+if (! isset($baseDir))
+	die('You must not use this file directly, please direct your browser to install/index.php instead');
+
+dPmsg("Converting users to contacts");
 $users = db_loadList('SELECT * FROM users');
-echo 'Converting users to contacts - ' . count($users) . ' users to be processed\n';
 foreach ($users as $user)
 {
         $sql = 'INSERT INTO contacts(
@@ -47,13 +48,16 @@ foreach ($users as $user)
                 $user['user_owner'] . "')";
 
                 db_exec($sql);
-                echo db_error();
+                $msg =  db_error();
+								if ($msg)
+									dPmsg($msg);
                 $sql = 'UPDATE users 
                         SET user_contact=LAST_INSERT_ID() 
                         WHERE user_id = ' . $user['user_id'];
                 db_exec($sql);
-                echo db_error();
+                $msg =  db_error();
+								if ($msg)
+									dPmsg($msg);
 }
-
 
 ?>

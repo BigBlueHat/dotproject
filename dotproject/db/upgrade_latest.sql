@@ -813,3 +813,15 @@ ALTER TABLE `gacl_axo` CHANGE `value` `value` varchar(80) NOT NULL default '';
 ALTER TABLE `gacl_axo_groups` CHANGE `value` `value` varchar(80) NOT NULL default '';
 ALTER TABLE `gacl_axo_map` CHANGE `section_value` `section_value` varchar(80) NOT NULL default '0';
 ALTER TABLE `gacl_axo_sections` CHANGE `value` `value` varchar(80) NOT NULL default '';
+
+# 20050304
+# Version tracking table.  From here on in all updates are done via the installer,
+# which uses this table to manage the upgrade process.
+CREATE TABLE dpversion (
+	code_version varchar(10) not null default '',
+	db_version integer not null default '0',
+	last_db_update date not null default '0000-00-00',
+	last_code_update date not null default '0000-00-00'
+);
+
+INSERT INTO dpversion VALUES ('2.0-alpha', 2, '2005-03-04', '2005-03-04');

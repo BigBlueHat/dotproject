@@ -1175,3 +1175,15 @@ CREATE TABLE `sessions` (
 	KEY (`session_updated`),
 	KEY (`session_created`)
 ) TYPE=MyISAM;
+
+# 20050304
+# Version tracking table.  From here on in all updates are done via the installer,
+# which uses this table to manage the upgrade process.
+CREATE TABLE dpversion (
+	code_version varchar(10) not null default '',
+	db_version integer not null default '0',
+	last_db_update date not null default '0000-00-00',
+	last_code_update date not null default '0000-00-00'
+);
+
+INSERT INTO dpversion VALUES ('2.0-alpha', 2, '2005-03-04', '2005-03-04');

@@ -1,27 +1,25 @@
 <?php
 
-echo "<pre>\n";
+global $baseDir;
 
-echo "Starting Upgrade\n";
-$baseDir = dirname(__FILE__);
-require_once "../includes/config.php";
-require_once "../includes/main_functions.php";
-require_once "../classes/ui.class.php";
-echo "Loaded base classes\n";
+if (! isset($baseDir)) {
+	die('You must not run this script manually.  Instead run the Installer in install/index.php');
+}
+
+require_once "$baseDir/includes/config.php";
+require_once "$baseDir/includes/main_functions.php";
+require_once "$baseDir/classes/ui.class.php";
 
 $AppUI =& new CAppUI;
-//$AppUI->setConfig($dPconfig);
-echo "Configured environment\n";
 
-require_once "../includes/db_adodb.php";
-require_once "../includes/db_connect.php";
-
-echo "Upgrading system ...\n";
+require_once "$baseDir/includes/db_adodb.php";
+require_once "$baseDir/includes/db_connect.php";
 
 
 // Now update the GACL class information.
-require_once dpRealPath(dirname(__FILE__) . "/../classes/permissions.class.php");
+require_once "$baseDir/classes/permissions.class.php";
 
+dPmsg("Creating new Permissions objects");
 $perms =& new dPacl;
 
 // First, create the basic ACL sections.
@@ -145,6 +143,7 @@ $perms->add_acl($access_perms, null, array($anon_role), null, array($non_admin_m
 $perms->add_acl($all_perms, null, array($worker_role), null, array($non_admin_mods), 1, 1, null, null, "user");
 
 
+dPmsg("Converting admin user permissions to Administrator Role");
 // Now we have the basics set up we need to create objects for all users
 
 $sql = "SELECT user_id, user_username, permission_id from users
@@ -162,7 +161,7 @@ if ($res) {
   }
 }
 
-echo 'Setting permissions for user modules:<br />';
+dPmsg("Searching for add-on modules to add to new permissions");
 // Upgrade permissions for custom modules
 $sql = "SELECT mod_directory, mod_name, permissions_item_table
 	FROM modules
@@ -171,7 +170,6 @@ $sql = "SELECT mod_directory, mod_name, permissions_item_table
 $custom_modules = db_loadList($sql);
 foreach($custom_modules as $mod)
 {
-  echo 'Module: ' . $mod['mod_name'] . '<br />';
   $perms->addModule($mod['mod_directory'], $mod['mod_name']);
   $perms->addGroupItem($this->mod_directory, "non_admin");
                 
@@ -179,6 +177,3 @@ foreach($custom_modules as $mod)
     $perms->addModuleSection($mod['permissions_item_table']);
 }
 ?>
-<center>
-  <p><p><h2><a href="../index.php">Upgrade Completed !!! - Click Here to login</a></h2>
-</center>

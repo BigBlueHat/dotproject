@@ -1,6 +1,8 @@
 <?php // $Id$
-!is_file( "../includes/config.php" )
-	or die("Security Check: dotProject seems to be already configured. Communication broken for Security Reasons!");
+$mode = 'install';
+if (is_file( "../includes/config.php" )) {
+	$mode = 'upgrade';
+}
 ?>
 <html>
 <head>
@@ -23,9 +25,18 @@
         <td class="title" colspan="2">There is an initial Check for (minimal) Requirements appended down below for troubleshooting. At least a database connection
 	must be available and ../includes/config.php must be writable for the webserver!</td>
 </tr>
+<?php
+	if ($mode == 'upgrade') {
+?>
+<tr>
+	<td class='title' colspan='2'><p class='error'>It would appear that you already have a dotProject installation. The installar will attempt to upgrade your system, however it is a good idea to take a full backup first!</p></td>
+<?php
+	}
+?>
 <tr>
         <td colspan="2" align="center"><br /><form action="db.php" method="post" name="form" id="form">
-	<input class="button" type="submit" name="next" value="Start Installation" /></form></td>
+	<input class="button" type="submit" name="next" value="Start <?php echo $mode == 'install' ? "Installation" : "Upgrade" ?>" />
+	<input type="hidden" name="mode" value="<?php echo $mode; ?>" /></form></td>
 </tr>
 </table>
 <br />

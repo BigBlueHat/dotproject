@@ -1,7 +1,20 @@
 <?php // $Id$
 
-!is_file( "../includes/config.php" )
-	or die("Security Check: dotProject seems to be already configured. Communication broken for Security Reasons!");
+if ($_POST['mode'] == 'install' && is_file( "../includes/config.php" ) )
+	die("Security Check: dotProject seems to be already configured. Communication broken for Security Reasons!");
+
+#
+# function to output a message
+# currently just outputs it expecting there to be a pre block.
+# but could be changed to format it better - and only needs to be done here.
+# The flush is called so that the user gets progress as it occurs. It depends
+# upon the webserver/browser combination though.
+#
+function dPmsg($msg)
+{
+	echo $msg . "\n";
+	flush();
+}
 
 #
 # function to return a default value if a variable is not set
@@ -18,16 +31,69 @@ function dPgetParam( &$arr, $name, $def=null ) {
 	return isset( $arr[$name] ) ? $arr[$name] : $def;
 }
 
+/**
+* Utility function to get last updated dates/versions for the
+* system.  The default is to 
+*/
+function getVersion($mode, $db) {
+	$result = array(
+		'last_db_update' => '',
+		'last_code_update' => '',
+		'code_version' => '1.0.2',
+		'db_version' => '1'
+	);
+	if ($mode == 'upgrade') {
+		$res = $db->Execute('SELECT * FROM dpversion LIMIT 1');
+		if ($res && $res->RecordCount() > 0) {
+			$row = $res->FetchRow();
+			$result['last_db_update'] = str_replace('-', '', $row['last_db_update']);
+			$result['last_code_update'] = str_replace('-', '', $row['last_code_update']);
+			$result['code_version'] = $row['code_version'] ? $row['code_version'] : '1.0.2';
+			$result['db_version'] = $row['db_version'] ? $row['db_version'] : '1';
+		}
+	}
+	return $result;
+
+}
+
 /*
 * Utility function to split given SQL-Code
 * @param $sql string SQL-Code
+* @param $last_update string last update that has been installed
 */
-function splitSql($sql) {
-	$sql = trim($sql);
-	$sql = ereg_replace("\n#[^\n]*\n", "\n", $sql);
+function splitSql($sql, $last_update) {
+	global $lastDBUpdate;
 
 	$buffer = array();
 	$ret = array();
+
+	$sql = trim($sql);
+
+	if ($last_update && $last_update != '00000000') {
+		// Find the first occurrance of an update that is
+		// greater than the last_update number.
+		dPmsg("Checking for previous updates");
+		if (preg_match_all('/\n#\s*(\d{8})\b/', $sql, $matches)) {
+			$len = count($matches[0]);
+			for ($i = 0; $i < $len; $i++) {
+				if ((int)$last_update < (int)$matches[1][$i]) {
+					// Remove the SQL up to the point found
+					$match = '/^.*' . trim($matches[0][$i]) . '/Us';
+					$sql = preg_replace($match, "", $sql);
+					break;
+				}
+			}
+			// Set the upgrade date - it may be they have an old CVS
+			// so we don't allow it to default to today.
+			$lastDBUpdate = $matches[1][$len-1];
+			// If we run out of indicators, we need to debunk, otherwise we will reinstall
+			if ($i == $len)
+				return $ret;
+		}
+	}
+	die($sql);
+	$sql = ereg_replace("\n#[^\n]*\n", "\n", $sql);
+
 	$in_string = false;
 
 	for($i=0; $i<strlen($sql)-1; $i++) {
@@ -56,10 +122,10 @@ function splitSql($sql) {
 }
 ######################################################################################################################
 
-$baseDir = str_replace( DIRECTORY_SEPARATOR.'install', '', dirname(__FILE__));
+$baseDir = dirname(dirname(__FILE__));
 $baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
 $baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
-$baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? str_replace( DIRECTORY_SEPARATOR.'install', '', dirname($_SERVER['SCRIPT_NAME'])) : str_replace( DIRECTORY_SEPARATOR.'install', '', dirname(getenv('SCRIPT_NAME')));
+$baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? dirname(dirname($_SERVER['SCRIPT_NAME'])) : dirname(dirname(getenv('SCRIPT_NAME')));
 
 $dbMsg = "";
 $cFileMsg = "Not Created";
@@ -71,14 +137,18 @@ $dbhost = trim( dPgetParam( $_POST, 'dbhost', '' ) );
 $dbname = trim( dPgetParam( $_POST, 'dbname', '' ) );
 $dbuser = trim( dPgetParam( $_POST, 'dbuser', '' ) );
 $dbpass = trim( dPgetParam( $_POST, 'dbpass', '' ) );
-$dbdrop = trim( dPgetParam( $_POST, 'dbdrop', false ) );
-//$dbpersist = trim( dPgetParam( $_POST, 'dbpersist', false ) );
+$dbdrop = dPgetParam( $_POST, 'dbdrop', false );
+$mode = dPgetParam( $_POST, 'mode', 'upgrade' );
+$dbpersist = dPgetParam( $_POST, 'dbpersist', false );
+$dobackup = isset($_POST['dobackup']);
+$do_db = isset($_POST['do_db']);
+$do_db_cfg = isset($_POST['do_db_cfg']);
+$do_cfg = isset($_POST['do_cfg']);
 
-//convert values of null to 'false'
-$dbdrop = defVal($dbdrop, "false");
-$dbpersist = defVal($dbpersist, "false");
+$lastDBUpdate = '';
 
 require_once( "$baseDir/lib/adodb/adodb.inc.php" );
+@include_once "$baseDir/includes/version.php";
 
 $db = NewADOConnection($dbtype);
 
@@ -86,28 +156,109 @@ if(!empty($db)) {
 		$dbc = $db->Connect($dbost,$dbuser,$dbpass,$dbname);
 } else { $dbc = false; }
 
+$current_version = $dp_version_major . '.' . $dp_version_minor;
+$current_version .= isset($dp_version_patch) ? ".$dp_version_patch" : '';
+$current_version .= isset($dp_version_prepatch) ? "-$dp_version_prepatch" : '';
+
+if ($dobackup){
+
+	if( $dbc ) {
+		require_once( "$baseDir/lib/adodb/adodb-xmlschema.inc.php" );
+
+		$schema = new adoSchema( $db );
+
+		$sql = $schema->ExtractSchema($content);
+
+		header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
+		header('Content-Type: text/xml');
+		echo $sql;
+	} else {
+		$msg = "ERROR: No Database Connection available!";
+		header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
+		header('Content-Type: text/xml');
+		echo $msg;
+	}
+}
+
+?>
+<html>
+<head>
+	<title>dotProject Installer</title>
+	<meta name="Description" content="dotProject Installer">
+ 	<link rel="stylesheet" type="text/css" href="../style/default/main.css">
+</head>
+<body>
+<h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;dotProject Installer</h1>
+<table cellspacing="0" cellpadding="3" border="0" class="tbl" width="100%" align="left">
+<tr><td>Progress:</td>
+<tr><td><pre>
+<?php
+
+if ($dobackup)
+	dPmsg("Backup completed");
+
 if ($do_db || $do_db_cfg) {
 
-	if ($dbdrop) { $db->Execute("DROP DATABASE IF EXISTS ".$dbname); }
+	if ($mode == 'install') {
+		if ($dbdrop) { 
+			dPmsg("Dropping previous database");
+			$db->Execute("DROP DATABASE IF EXISTS ".$dbname); 
+		}
 
-	$db->Execute("CREATE DATABASE ".$dbname);
-        $dbError = $db->ErrorNo();
+		dPmsg("Creating new Database");
+		$db->Execute("CREATE DATABASE ".$dbname);
+        	$dbError = $db->ErrorNo();
+	
+        	if ($dbError <> 0 && $dbError <> 1007) {
+                	$dbErr = true;
+              		$dbMsg .= "A Database Error occurred. Database has not been created! The provided database details are probably not correct.<br>".$db->ErrorMsg()."<br>";
 
-        if ($dbError <> 0 && $dbError <> 1007) {
-                $dbErr = true;
-              	$dbMsg .= "A Database Error occurred. Database has not been created! The provided database details are probably not correct.<br>".$db->ErrorMsg()."<br>";
-
-        }
+        	}
+	}
 
 	$db->Execute("USE " . $dbname);
-	$sqlfile = "../db/dotproject.sql";
+
+	$db_version = getVersion($mode, $db);
 
 	$mqr = @get_magic_quotes_runtime();
 	@set_magic_quotes_runtime(0);
-	$query = fread(fopen($sqlfile, "r"), filesize($sqlfile));
+	$sqlfile = null;
+	if ($mode == 'upgrade') {
+		dPmsg("Applying database updates");
+		$last_version = $db_version['code_version'];
+		// Convert the code version to a version string.
+		$from_version = str_replace('.', '', $last_version);
+		$from_version = str_replace('-', '', $from_version);
+		$to_version = $dp_version_major . $dp_version_minor . $dp_version_patch . $dp_version_prepatch;
+		if (file_exists('../db/upgrade_latest.sql')) {
+			// CVS upgrade
+			$sqlfile = "../db/upgrade_latest.sql";
+		} else {
+			// Check to see if the database has been upgraded first.
+			// We don't want to double up on this.
+			if ($from_version != $to_version) {
+				// Look for the from and to version
+				$upgrade_sql = "../db/upgrade_{$from_version}_to_{$to_version}.sql";
+				if (file_exists($upgrade_sql)) {
+					$sqlfile = $upgrade_sql;
+				} else {
+					die("There appears to be no upgrade path from $last_version to $current_version\nYou will need to manually upgrade");
+				}
+			}
+		}
+	} else {
+		dPmsg("Installing database");
+		$sqlfile = "../db/dotproject.sql";
+	}
+
+	$pieces = array();
+	if ($sqlfile) {
+		$query = fread(fopen($sqlfile, "r"), filesize($sqlfile));
+		$pieces  = splitSql($query, $db_version['last_db_update']);
+	}
 	@set_magic_quotes_runtime($mqr);
-	$pieces  = splitSql($query);
 	$errors = array();
+
 	for ($i=0; $i<count($pieces); $i++) {
 		$pieces[$i] = trim($pieces[$i]);
 		if(!empty($pieces[$i]) && $pieces[$i] != "#") {
@@ -119,7 +270,6 @@ if ($do_db || $do_db_cfg) {
 		}
 	}
 
-
         if ($dbError <> 0 && $dbError <> 1007) {
 		$dbErr = true;
                 $dbMsg .= "A Database Error occurred. Database has probably not been populated completely!<br>".$db->ErrorMsg()."<br>";
@@ -129,12 +279,37 @@ if ($do_db || $do_db_cfg) {
 	} else {
 		$dbMsg = "Database successfully setup<br>";
 	}
+
+	$code_updated = '';
+	if ($mode == 'upgrade') {
+		dPmsg("Applying data modifications");
+		// Check for an upgrade script and run it if necessary.
+		if (file_exists("$baseDir/db/upgrade_latest.php")) {
+			include_once "$baseDir/db/upgrade_latest.php";
+			$code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
+		} else if (file_exists("$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php") {
+			include_once "$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php";
+			$code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
+		}
+	}
+
+	dPmsg("Updating version information");
+	// No matter what occurs we should update the database version in the dpversion table.
+	$sql = "UPDATE dpversion
+	SET db_version = '$dp_version_major',
+	last_db_update = '$lastDBUpdate',
+	code_version = '$current_version',
+	last_code_update = '$code_updated'
+	WHERE 1";
+	$db->Execute($sql);
+
 } else {
 $dbMsg = "Not Created";
 }
 
 // always create the config file content
 
+	dPmsg("Creating config");
 	$config = "<?php \n";
 	$config .= "### Copyright (c) 2004, The dotProject Development Team dotproject.net and sf.net/projects/dotproject ###\n";
 	$config .= "### All rights reserved. Released under BSD License. For further Information see ./includes/config-dist.php ###\n";
@@ -164,36 +339,10 @@ if ($do_cfg || $do_db_cfg){
 	}
 }
 
-if ($dobackup){
-
-	if( $dbc ) {
-		require_once( "$baseDir/lib/adodb/adodb-xmlschema.inc.php" );
-
-		$schema = new adoSchema( $db );
-
-		$sql = $schema->ExtractSchema($content);
-
-		header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
-		header('Content-Type: text/xml');
-		echo $sql;
-	} else {
-		$msg = "ERROR: No Database Connection available!";
-		header('Content-Disposition: attachment; filename="dPdbBackup'.date("Ymd").date("His").'.xml"');
-		header('Content-Type: text/xml');
-		echo $msg;
-	}
-}
 //echo $msg;
 ?>
-<html>
-<head>
-	<title>dotProject Installer</title>
-	<meta name="Description" content="dotProject Installer">
- 	<link rel="stylesheet" type="text/css" href="../style/default/main.css">
-</head>
-<body>
-<h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;dotProject Installer</h1>
-<form name="instFrm" action="do_install_db.php" method="post">
+</pre></td></tr>
+</table>
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="100%" align="left">
         <tr>
             <td class="title" valign="top">Database Installation Feedback:</td>
