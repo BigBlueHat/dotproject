@@ -45,7 +45,5 @@ for ($x =0; $x < $nums; $x++){
 		<td nowrap><?php echo $pstatus[$tarr[$x]["project_status"]]; ?></td>
 		<td nowrap align=right>$ <?php echo $tarr[$x]["project_target_budget"]; ?></td>
 	</tr>
-<?php
-}
-?>
+<?php } ?>
 </table>
