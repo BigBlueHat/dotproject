@@ -37,53 +37,23 @@ error_reporting(E_ALL & ~E_NOTICE);
 // uncomment the following line of code:
 // error_reporting( E_ALL );
 
-
-/**
-* @var int dPrunLevel Container for Information about available Services
-* 0 = no config file available, no database available
-* 1 = config file existing, but no db available
-* 2 = cfg and db available
-*/
-$dPrunLevel = 0;
 $loginFromPage = 'index.php';
 $baseDir = dirname(__FILE__);
 
-$is_installer = false;
-if ( isset($_GET['m']) && $_GET['m'] == 'install' ) {
-	$is_installer = true;
-}
-
-if ( is_file( "$baseDir/includes/config.php" ) ) {	// allow the install module to run without config file
-	$dPrunLevel = 1;
-} elseif (! $is_installer ) {
-	die( "Fatal Error.  You haven't created a config file yet." );
-}
-
+is_file( "$baseDir/includes/config.php" )
+	or die( "Fatal Error. You haven't created a config file yet." );
 
 // required includes for start-up
 $dPconfig = array();
-// allow the install module to run without config file
-if ($dPrunLevel > 0) {
-	require_once "$baseDir/includes/config.php";
-}
 
-if ($is_installer) {
-	include "$baseDir/modules/install/install.inc.php";
-}
+require_once "$baseDir/includes/config.php";
 
 if (! isset($GLOBALS['OS_WIN']))
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
 
 // tweak for pathname consistence on windows machines
 require_once "$baseDir/includes/db_adodb.php";
-
-// allow the install module to run without config file
-// load the db handler
-if ($dPrunLevel > 0) {
-	require_once "$baseDir/includes/db_connect.php";
-}
-
-// tweak for pathname consistence on windows machines
+require_once "$baseDir/includes/db_connect.php";
 require_once "$baseDir/includes/main_functions.php";
 require_once "$baseDir/classes/ui.class.php";
 require_once "$baseDir/classes/permissions.class.php";
@@ -93,7 +63,7 @@ require_once "$baseDir/includes/session.php";
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
 
 // manage the session variable(s)
-dPsessionStart(array('AppUI', 'Installer'));
+dPsessionStart(array('AppUI'));
 
 // write the HTML headers
 header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
@@ -105,7 +75,7 @@ header ("Pragma: no-cache");	// HTTP/1.0
 // If not found, try guessing it.
 $config_file = "{$dPconfig['root_dir']}/includes/config.php";
 $config_msg = false;
-if (! is_file($config_file) && !$is_installer ) {
+if (! is_file($config_file) ) {
 	// First check that we aren't looking at old data.
 	// We don't do this first as it has performance implications.
 	clearstatcache();
@@ -126,7 +96,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
         addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
     }
 
-	$_SESSION['AppUI'] = $is_installer ? new IAppUI : new CAppUI;
+	$_SESSION['AppUI'] = new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
 $last_insert_id =$AppUI->last_insert_id;
@@ -147,9 +117,7 @@ require_once "$baseDir/misc/debug.php";
 $AppUI->updateLastAction($last_insert_id);
 // load default preferences if not logged in
 if ($AppUI->doLogin()) {
-	if ( !($is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
-    		$AppUI->loadPrefs( 0 );
-	}
+	$AppUI->loadPrefs( 0 );
 }
 
 //Function register logout in user_acces_log
@@ -225,15 +193,13 @@ if ($AppUI->doLogin()) {
 }
 $AppUI->setUserLocale();
 
-if ( !( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
-	// bring in the rest of the support and localisation files
-	require_once "$baseDir/includes/permissions.php";
-}
+
+// bring in the rest of the support and localisation files
+require_once "$baseDir/includes/permissions.php";
+
 
 $def_a = 'index';
-if ( $is_installer && $dPrunLevel < 2 ) {	// allow the install module to run without db
-	$m = 'install';
-} else if (! isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
+if (! isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
   	$m = $dPconfig['default_view_m'];
 	$def_a = !empty($dPconfig['default_view_a']) ? $dPconfig['default_view_a'] : $def_a;
 	$tab = $dPconfig['default_view_tab'];
@@ -260,14 +226,6 @@ $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 setlocale( LC_TIME, $AppUI->user_lang .'.'. $locale_char_set );
 $m_config = dPgetConfig($m);
 @include_once "$baseDir/functions/" . $m . "_func.php";
-
-if ( ( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
-	// present some trivial permission functions
-	function getDenyRead( $m ){ return false; }
-	function getDenyEdit( $m ){ return false; }
-}
-
-
 
 // TODO: canRead/Edit assignements should be moved into each file
 
@@ -328,7 +286,7 @@ if(!$suppressHeaders) {
 	require "$baseDir/style/$uistyle/header.php";
 }
 
-if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 )) {
+if (! isset($_SESSION['all_tabs'][$m]) ) {
 	// For some reason on some systems if you don't set this up
 	// first you get recursive pointers to the all_tabs array, creating
 	// phantom tabs.

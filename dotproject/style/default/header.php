@@ -50,7 +50,6 @@ else
 		echo "\n";
 		?>
 		</td>
-<?php if ( !( dPgetParam($_GET, 'm') == 'install' && $dPrunLevel < 2 ) ) {	// allow the installer to run without db ?>
 		<form name="frm_new" method=GET action="./index.php">
 <?php
 	echo '        <td nowrap="nowrap" align="right">';
@@ -79,7 +78,6 @@ else
 ?>
 		</form>
 		</td>
-<?php } // END allow the installer to run without db ?>
 	</tr>
 	</table>
 	</td>
@@ -90,7 +88,6 @@ else
 		<tr>
 			<td width="100%"><?php echo $AppUI->_('Welcome')." $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 			<td nowrap="nowrap">
-			<?php if ( !( dPgetParam($_GET,'m') == 'install' && $dPrunLevel < 2 ) ) {	// allow the installer to run without db ?>
 				<?php echo dPcontextHelp( 'Help' );?> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
@@ -99,8 +96,7 @@ else
 ?>                              <b><a href="./index.php?m=tasks&a=todo"><?php echo $AppUI->_('Todo');?></a></b> |
 				<a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |
 <?php } ?>
-			<?php } // END allow the installer to run without db ?>
-				<a href="./index.php?logout=-1<?php echo ($m=='install') ? '&m=install' : ''; ?>"><?php echo $AppUI->_('Logout');?></a>
+				<a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a>
 			</td>
 		</tr>
 		</table>

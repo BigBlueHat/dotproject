@@ -1164,53 +1164,5 @@ class CTitleBlock_core {
 		echo "$s";
 	}
 }
-
-
-/**
-* The Application User Interface Class tweaked for the Installer (having no DB available)
-*
-* @author Gregor Erhardt
-*/
-class IAppUI extends CAppUI {
-
-
-	// overload login function (checks login/password without database)
-	function login( $username, $password ) {
-		global $dPconfig, $dPrunLevel;
-		$username = trim( $username );
-		$password = trim( $password );
-
-		/*
-		* prevent from misusing the install module to login with the initial login/passwd combination
-		* when there is a db connection available and the installer module is targeted at login time
-		*/
-		if ($dPrunLevel == 2) {
-			return CAppUI::login($username,$password);
-		}
-
-		if ( $username == "admin" && $password == "passwd") {
-			$this->user_id = 0;
-			return true;
-		} else {
-			return false;
-
-		}
-	}
-
-
-/**
-* Gets a list of the modules that should appear in the menu
-* @return array Named array list in the form
-* ['module directory', 'module name', 'module_icon']
-*/
-	function getMenuModules() {
-		global $dPrunLevel;
-		if ( ( $dPrunLevel == 2 ) ) {
-			return CAppUI::getMenuModules();
-		} else {
-			return array(array( mod_directory => 'install', mod_ui_name => 'install') );
-		}
-	}
-}
 // !! Ensure there is no white space after this close php tag.
 ?>

@@ -1,8 +1,5 @@
 <?php /* $Id$ */
 
-### DEVELOPERS: PLEASE REGISTER NEW CONFIG VARS WITH THE INSTALLER, TOO ###
-### DEVELOPERS: THEREFORE READ THE MINI-HOWTO IN ../install/index.php ###
-
 /**  BSD LICENSE  **
 
 Copyright (c) 2003, The dotProject Development Team sf.net/projects/dotproject

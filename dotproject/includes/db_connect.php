@@ -19,19 +19,19 @@ db_connect( $dPconfig['dbhost'], $dPconfig['dbname'],
 * Having successfully established the database connection now,
 * we will hurry up to load the system configuration details from the database.
 */
-if ($dPrunLevel > 1) {
-	$sql = "SELECT config_name, config_value, config_type FROM config";
-	$rs = $db->Execute($sql);
 
-	$rsArr = $rs->GetArray();
+$sql = "SELECT config_name, config_value, config_type FROM config";
+$rs = $db->Execute($sql);
 
-	foreach ($rsArr as $c) {
-		if ($c['config_type'] == 'checkbox') {
-			$c['config_value'] = ($c['config_value'] == 'true') ? true : false;
-		}
-		$dPconfig["{$c['config_name']}"] = $c['config_value'];
+$rsArr = $rs->GetArray();
+
+foreach ($rsArr as $c) {
+	if ($c['config_type'] == 'checkbox') {
+		$c['config_value'] = ($c['config_value'] == 'true') ? true : false;
 	}
+	$dPconfig["{$c['config_name']}"] = $c['config_value'];
 }
+
 
 
 /**
