@@ -31,8 +31,6 @@ function loadTasks()
     <?php
     }
     ?>
-    //sel.options[0] = new Option('aaa', -1);
-  //parent.document.forms['form'].new_task.options =
   }
   
   loadTasks();
