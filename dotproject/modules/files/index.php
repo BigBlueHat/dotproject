@@ -19,14 +19,14 @@ $project_id = $AppUI->getState( 'FileIdxProject' ) !== NULL ? $AppUI->getState( 
 // SETUP FOR PROJECT LIST BOX
 // projects that are denied access
 $sql = "
-SELECT project_id
+SELECT project_id, project_id
 FROM projects, permissions
 WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'projects'
 	AND permission_item = project_id
 	AND permission_value = 0
 ";
-$deny = db_loadList( $sql );
+$deny1 = db_loadHashList( $sql );
 
 $sql = "
 SELECT project_id, project_name
@@ -37,8 +37,9 @@ WHERE permission_user = $AppUI->user_id
 		(permission_grant_on = 'all')
 		OR (permission_grant_on = 'projects' AND permission_item = -1)
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)
-" . (count($deny) > 0 ? 'and project_id not in (' . implode( ',', $deny ) . ')' : '') . "
+		)"
+.(count( $deny1 ) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny1 ) . ')' : '')
+."
 	AND project_id = file_project
 ORDER BY project_name
 ";

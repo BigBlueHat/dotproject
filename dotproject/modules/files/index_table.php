@@ -1,11 +1,22 @@
-<?php
-##
-## Files modules: index page re-usable sub-table
-##
+<?php /* $Id$ */
+
+// Files modules: index page re-usable sub-table
+GLOBAL $AppUI, $deny1;
 
 require_once( "$root_dir/classdefs/date.php" );
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
+
+// get any specifically denied tasks
+	$sql = "
+	SELECT task_id, task_id
+	FROM tasks, permissions
+	WHERE permission_user = $AppUI->user_id
+		AND permission_grant_on = 'tasks'
+		AND permission_item = task_id
+		AND permission_value = 0
+	";
+	$deny2 = db_loadHashList( $sql );
 
 // SETUP FOR FILE LIST
 $sql = "
@@ -13,8 +24,8 @@ SELECT files.*,
 	project_name, project_color_identifier, project_active, 
 	user_first_name, user_last_name
 FROM files, permissions
-LEFT JOIN projects ON file_project = project_id
-LEFT JOIN users ON file_owner = user_id
+LEFT JOIN projects ON project_id = file_project
+LEFT JOIN users ON user_id = file_owner
 WHERE
 	permission_user = $AppUI->user_id
 	AND permission_value <> 0
@@ -23,8 +34,11 @@ WHERE
 		OR (permission_grant_on = 'projects' AND permission_item = -1)
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)
-" . (count($deny) > 0 ? 'AND project_id NOT IN (' . implode( ',', $deny ) . ')' : '') . "
-".($project_id ? "AND file_project = $project_id" : '')."
+"
+. (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '') 
+. (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '') 
+. ($project_id ? "\nAND file_project = $project_id" : '')
+."
 GROUP BY file_id
 ORDER BY project_name, file_name
 ";
