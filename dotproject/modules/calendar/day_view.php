@@ -88,7 +88,7 @@ if (isset( $modules['helpdesk']))
   $tabBox->add( '../helpdesk/vw_idx_my', $AppUI->_('My Helpdesk Items') );
 $tabBox->show();
 ?>
-
+<?php if ($dPconfig['cal_day_view_show_minical']) { ?>
 	</td>
 	<td valign="top" width="175">
 <?php
@@ -118,5 +118,6 @@ echo '<td align="center" >'.$minical->show().'</td>';
 echo '</tr></table>';
 ?>
 	</td>
+<?php } ?>
 </tr>
 </table>

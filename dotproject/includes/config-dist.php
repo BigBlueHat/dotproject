@@ -138,6 +138,7 @@ $dPconfig['cal_day_start']     = 8;	  // Start hour, in 24 hour format
 $dPconfig['cal_day_end']       = 17;  // End hour in 24 hour format
 $dPconfig['cal_day_increment'] = 15;  // Increment, in minutes
 $dPconfig["cal_working_days"]  = "1,2,3,4,5"; // days of week that the company works 0=Sunday
+$dPconfig['cal_day_view_show_minical'] = true; // defines whether in day view the minicalendars are shown or not
 
 // If you want only to enable task owner, project owner or sysadmin
 // to edit already created task time related information, just
@@ -147,7 +148,7 @@ $dPconfig["restrict_task_time_editing"] = false;
 
 // If you want to define your own start/default page
 // set the following variables.
-// If the value of default_view_m is '' then
+// If the value of default_view_m is '' then the
 // first listed module becomes the default view.
 // default_view_m specifies the module,
 // _a specifies a subview like shown in the url of dP,
