@@ -2,6 +2,9 @@
 
 /**
  *	CDpObject Abstract Class.
+ *
+ *	@package dotProject
+ *	@author Andrew Eddie
  */
 class CDpObject {
 /**
@@ -12,6 +15,10 @@ class CDpObject {
  *	@var string Name of the primary key field in the table
  */
 	var $_tbl_key = '';
+/**
+ *	@var string Error message
+ */
+	var $_error = '';
 
 /**
  *	object constructor to set table and key field
@@ -24,7 +31,12 @@ class CDpObject {
 		$this->_tbl = $table;
 		$this->_tbl_key = $key;
 	}
-
+/**
+ *	@return string Returns the error message
+ */
+	function getError() {
+		return $this->_error;
+	}
 /**
  *	binds a named array/hash to this object
  *
@@ -34,10 +46,11 @@ class CDpObject {
  */
 	function bind( $hash ) {
 		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
+			$this->_error = get_class( $this )."::bind failed.";
+			return false;
 		} else {
 			bindHashToObject( $hash, $this );
-			return NULL;
+			return true;
 		}
 	}
 
