@@ -1,4 +1,4 @@
-<?php
+<?php /* FORUMS $Id$ */
 // Add / Edit forum
 $forum_id = isset( $_GET['forum_id'] ) ? $_GET['forum_id'] : 0;
 
@@ -68,8 +68,7 @@ function delIt(){
 </table>
 
 <table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
-<form name="changeforum" action="?m=forums" method="post">
-<input type="hidden" name="dosql" value="addeditdelforum">
+<form name="changeforum" action="?m=forums&a=do_forum_aed" method="post">
 <input type="hidden" name="del" value="0">
 <input type="hidden" name="forum_unique_update" value="<?php echo uniqid("");?>">
 <input type="hidden" name="forum_id" value="<?php echo $forum_id;?>">

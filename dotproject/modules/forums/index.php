@@ -10,11 +10,10 @@ $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 $max_msg_length = 30;
 $sql = "
 SELECT forum_id, forum_project, forum_description, forum_owner, forum_name, forum_moderated,
-	forum_create_date,
+	forum_create_date, forum_last_date, 
 	COUNT(distinct t.message_id) forum_topics, COUNT(distinct r.message_id) forum_replies,
 	user_username,
 	project_name, project_color_identifier,
-	l.message_date, 
 	SUBSTRING(l.message_body,1,$max_msg_length) message_body,
 	LENGTH(l.message_body) message_length,
 	watch_user,
@@ -46,7 +45,7 @@ switch ($f) {
 }
 $sql .= "\nGROUP BY forum_id\nORDER BY forum_project, forum_name";
 
-$rc= db_exec( $sql );
+$forums = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();##
 ?>
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br />
@@ -90,15 +89,15 @@ $rc= db_exec( $sql );
 </tr>
 <?php
 $p ="";
-while ($row = db_fetch_assoc( $rc )) {
+foreach ($forums as $row) {
+	if ($row["forum_last_date"]) {
+		$message_date = CDate::fromDateTime( $row["forum_last_date"] );
+		$message_date->setFormat( "$df $tf" );
+		$message_since = abs( $message_date->compareTo( new CDate() ) );
+	}
 	if($p != $row["forum_project"]) {
 		$create_date = CDate::fromDateTime( $row["forum_create_date"] );
 		$create_date->setFormat( "$df" );
-		if ($row["message_date"]) {
-			$message_date = CDate::fromDateTime( $row["message_date"] );
-			$message_date->setFormat( "$df $tf" );
-			$message_since = abs( $message_date->compareTo( new CDate() ) );
-		}
 ?>
 <tr>
 	<td colspan=6 style="background-color:#<?php echo $row["project_color_identifier"];?>">
@@ -129,7 +128,7 @@ while ($row = db_fetch_assoc( $rc )) {
 	<td nowrap align=center><?php echo $row["forum_topics"];?></td>
 	<td nowrap align=center><?php echo $row["forum_replies"];?></td>
 	<td width=200>
-<?php if ($row["message_date"]) {
+<?php if ($row["forum_last_date"]) {
 		echo $message_date->toString().'<br /><font color=#999966>(';
 		if ($message_since < 3600) {
 			$str = sprintf( "%d ".$AppUI->_( 'minutes' ), $message_since/60 );

@@ -1,4 +1,4 @@
-<?php
+<?php /* FORUMS $Id$ */
 // Add / Edit forum
 $message_id = isset( $_GET['message_id'] ) ? $_GET['message_id'] : 0;
 $message_parent = isset( $_GET['message_parent'] ) ? $_GET['message_parent'] : -1;
@@ -74,8 +74,8 @@ function orderByName(x){
 
 <table cellspacing="0" cellpadding="3" border="0" width="98%" class="std">
 
-<form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?php echo $forum_id;?>" method="post">
-<input type="hidden" name="dosql" value="aed_post">
+<!-- <form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?php echo $forum_id;?>" method="post"> -->
+<form name="changeforum" action="?m=forums&a=do_post_aed&forum_id=<?php echo $forum_id;?>" method="post">
 <input type="hidden" name="del" value="0">
 <input type="hidden" name="message_forum" value="<?php echo $forum_id;?>">
 <input type="hidden" name="message_parent" value="<?php echo $message_parent;?>">

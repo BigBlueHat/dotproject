@@ -1,4 +1,4 @@
-<?php
+<?php  /* FORUMS $Id$ */
 $AppUI->savePlace();
 
 $sql = "
@@ -42,10 +42,10 @@ function delIt(id){
 </table>
 
 <table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl">
-<form name="messageForm" method="POST" action="?m=forums&a=viewposts&forum_id=<?php echo $row['message_forum'];?>">
+<!-- <form name="messageForm" method="POST" action="?m=forums&a=viewposts&forum_id=<?php echo $row['message_forum'];?>"> -->
+<form name="messageForm" method="POST" action="?m=forums&a=do_post_aed&forum_id=<?php echo $row['message_forum'];?>">
 	<input type="hidden" name="del" value="0">
 	<input type="hidden" name="message_id" value="0">
-	<input type="hidden" name="dosql" value="aed_post">
 </form>
 <tr>
 	<th nowrap><?php echo $AppUI->_('Author');?>:</th>
