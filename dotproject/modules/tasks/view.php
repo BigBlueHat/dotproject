@@ -229,7 +229,7 @@ function delIt() {
 				$s = '';
 				foreach($users as $row) {
 					$s .= '<tr>';
-					$s .= '<td class="hilite">'.$row["user_username"].'</td>';
+					$s .= '<td class="hilite">'.$row["user_first_name"].' '.$row["user_last_name"].'</td>';
 					$s .= '<td class="hilite"><a href="mailto:'.$row["user_email"].'">'.$row["user_email"].'</a></td>';
 					$s .= '</tr>';
 				}
