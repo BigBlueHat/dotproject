@@ -119,9 +119,11 @@ class CDpObject {
 		}
 		$k = $this->_tbl_key;
 		if( $this->$k ) {
+                        addHistory($this->_tbl . '_update(' . $this->$k . ')', 0, $this->_tbl);
 			$ret = db_updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
 		} else {
 			$ret = db_insertObject( $this->_tbl, $this, $this->_tbl_key );
+                        addHistory($this->_tbl . '_add(' . $this->$k . ')', 0, $this->_tbl);
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
@@ -192,7 +194,8 @@ class CDpObject {
 		if (!$this->canDelete( $msg )) {
 			return $msg;
 		}
-
+                
+                addHistory($this->_tbl . '_delete(' . $this->$k . ')', 0, $this->_tbl);
 		$sql = "DELETE FROM $this->_tbl WHERE $this->_tbl_key = '".$this->$k."'";
 		if (!db_exec( $sql )) {
 			return db_error();
