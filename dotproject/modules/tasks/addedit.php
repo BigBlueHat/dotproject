@@ -12,6 +12,7 @@ if ($denyEdit) {
 }
 
 if(empty($project_id))$project_id =0;
+
 //pull users;
 if(empty($task_parent))$task_parent =0;
 
@@ -88,9 +89,11 @@ function submitIt(){
 	} else if (form.task_start_date.value.length < 9) {
 		alert( "Please enter a valid start date" );
 		form.task_start_date.focus();
+<?php if(REQUIRE_TASKS_DURATION) { ?>
 	} else if (form.duration.value.length < 1) {
 		alert( "Please enter the duration of this task" );
 		form.duration.focus();
+<?php } ?>
 	} else {
 		form.hassign.value = "";
 		for (fl; fl > -1; fl--){
@@ -142,7 +145,7 @@ function delIt() {
 </script>
 
 <TABLE width="95%" border="0" cellpadding="0" cellspacing="1">
-<form name="AddEdit" action="./index.php?m=tasks" method="post">
+<form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $project_id ?>" method="post">
 <input name="dosql" type="hidden" value="addeditTask">
 <input name="del" type="hidden" value="0">
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>">
@@ -359,7 +362,7 @@ function delIt() {
 		<table>
 		<tr>
 			<td>
-				<input class=button type="Button" name="Cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks';}">
+				<input class=button type="Button" name="Cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=tasks&project_id=<?php echo $project_id ?>';}">
 			</td>
 			<td>
 				<input class=button type="Button" name="btnFuseAction" value="save" onClick="submitIt();">
