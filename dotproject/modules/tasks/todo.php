@@ -49,7 +49,7 @@ $sql = "
 		 WHERE user_tasks.task_id = a.task_id
 		 AND b.task_id IS NULL
 		 AND user_tasks.user_id = $AppUI->user_id
-		 AND a.task_percent_complete != 100
+		 AND (a.task_percent_complete < 100 OR a.task_percent_complete IS NULL)
 		 AND a.task_start_date != ''
 		 AND a.task_end_date != ''
 		 AND project_id = a.task_project" .  		
