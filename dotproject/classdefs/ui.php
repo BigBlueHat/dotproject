@@ -131,7 +131,7 @@ class CAppUI {
 			$params = !empty($this->state['SAVEDPLACE']) ? $this->state['SAVEDPLACE'] : $this->defaultRedirect;
 		}
 		echo "<script language=\"javascript\">"
-		. "window.location='?$params'"
+		. "window.location='index.php?$params'"
 		. "</script>";
 	}
 
