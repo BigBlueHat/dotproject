@@ -18,13 +18,14 @@ $q->addQuery(array(
 	'timestamp',
 	'type',
 	'assignment',
-	'user_first_name',
-	'user_last_name',
+	'contact_first_name',
+	'contact_last_name',
 	'activity',
 	'priority'
 ));
 $q->addTable('tickets', 'a');
 $q->leftJoin('users', 'b', 'a.assignment = b.user_id');
+$q->leftJoin('contacts', 'c', 'b.user_id = c.contact_id');
 if ($type == 'My') {
 	$q->addWhere("type = 'Open'");
 	$q->addWhere("(assignment = '$AppUI->user_id' OR assignment = '0')");
@@ -102,7 +103,7 @@ foreach ($ticketlist as $ticket) {
 		$row[] = '-';
 	$row[] = $ticket['type'];
 	$row[] = $CONFIG['priority_names'][$ticket['priority']];
-	$row[] = $ticket['user_first_name'] . ' ' . $ticket['user_last_name'];
+	$row[] = $ticket['contact_firt_name'] . ' ' . $ticket['contact_last_name'];
 }
 
 $pdf->ezTable( $pdfdata, $columns, $title, $options );

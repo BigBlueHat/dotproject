@@ -331,6 +331,13 @@ function removeUser() {
 	<td align="left"><?php echo $AppUI->_('Mail Attendees?'); ?> <input type='checkbox' name='mail_invited' checked=true></td>
 </tr>
 <tr>
+	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Show only on Working Days' );?>:</td>
+	<td>
+		<input type="checkbox" value="1" name="event_cwd" <?php echo (@$obj->event_cwd ? 'checked' : '');?>>
+	</td>
+</tr>
+/*
+<tr>
 	<td colspan="2">
 		<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onclick="javascript:history.back();">
 	</td>
@@ -338,5 +345,6 @@ function removeUser() {
 		<input type="button" value="<?php echo $AppUI->_( 'submit' );?>" class="button" onClick="submitIt()">
 	</td>
 </tr>
+*/
 </form>
 </table>

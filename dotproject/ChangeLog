@@ -1,7 +1,799 @@
-2004-09-17 12:15  (cyberhorse)
+2004-11-03 22:20  (gregorerhardt)
+---------------------------------
+modules/admin/viewuser.php
+- 0000229: viewuser info transformed to contacts table
+
+2004-11-03 20:04  (gregorerhardt)
+---------------------------------
+classes/ui.class.php
+- 0000303:added slashes to AppUI->_ translated strings
+
+2004-11-03 19:42  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+- fixed name oft the event_cwd field
+
+2004-11-02 15:11  (cyberhorse)
+---------------------------------
+modules/tasks/ae_depend.php
+- Default the start date to now.
+
+2004-11-02 14:07  (cyberhorse)
+---------------------------------
+modules/tasks/ae_depend.php
+- mantis 262 - spellint mistake.
+
+2004-11-02 13:59  (cyberhorse)
+---------------------------------
+includes/config-dist.php
+modules/admin/addedituser.php
+- mantis 257 - created a configuration value for the admin user, which is not being tested for length, that way avoiding the problem. !NB - don't forget to create the new parameter in your configuration file ($dPconfig['admin_username'] = 'admin';)
+
+2004-11-02 13:15  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+- mantis 242 - project types not translatable fixed
+
+2004-11-01 21:34  (jcgonz)
+---------------------------------
+modules/files/index_table.php
+- Bug trying to get file_lastversion from $row instead of $file_row array
+
+2004-11-01 21:12  (jcgonz)
+---------------------------------
+fileviewer.php
+- Solved plenty of bugs and included non included required libraries.
+
+2004-11-01 19:55  (gregorerhardt)
+---------------------------------
+modules/system/addeditpref.php
+- user name was represented wrong
+
+2004-10-29 22:53  (jcgonz)
+---------------------------------
+modules/calendar/calendar.class.php
+- Solved a typo in a user query
+
+2004-10-27 01:57  (jcgonz)
+---------------------------------
+modules/tasks/ae_desc.php
+modules/tasks/ae_resource.php
+- Fixed the custom fields parser module. It was left in the
+- resources allocation tab, so it didn't work correctly.
+
+2004-10-27 01:24  (jcgonz)
+---------------------------------
+modules/projects/reports/tasklist.php
+- Solved a bug in the users SQL statement
+
+2004-10-27 01:10  (jcgonz)
+---------------------------------
+modules/projects/reports/taskenddate.php
+- Added hours and owner columns
+
+2004-10-27 00:36  (jcgonz)
+---------------------------------
+includes/main_functions.php
+modules/projects/reports/allocateduserhours.php
+- Added two new filters to allocated users
+- Added getUsersArray and getUsersCombo to main_functions
+
+2004-10-26 23:59  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+- clear pins on new install (should fix mantis 213)
+
+2004-10-26 23:49  (cyberhorse)
+---------------------------------
+includes/db_connect.php
+- using `` for table names to escape reserved words.
+
+2004-10-26 23:47  (jcgonz)
+---------------------------------
+includes/main_functions.php
+- Added a check for global locale_char_set in case the user has
+- an invalid locale selected. The default was set to utf-8
+
+2004-10-26 23:30  (cyberhorse)
+---------------------------------
+modules/projects/reports/tasklogs.php
+- Mantis 263
+- spelling mistake in sql query fixed.
+
+2004-10-26 23:16  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Prevent double entries in sysvals and syskeys. Static keys not needed anymore in upgrade_latest
+
+2004-10-26 21:50  (cyberhorse)
+---------------------------------
+modules/history/setup.php
+- Added new field to the creation of the history table.
+
+2004-10-26 21:40  (jcgonz)
+---------------------------------
+includes/config-dist.php
+includes/db_adodb.php
+modules/install/vw_idx_cfg.php
+modules/tasks/tasks.class.php
+- Solved issues when assigning users; overallocation was checked
+- but nothing informed to the user.
+- Added the check_overallocation flag in config-dist.php
+- Added the check_overallocation flag in the install script
+- Implemented check_overallocation flag in the tasks.class.php file
+
+2004-10-26 20:38  (jcgonz)
+---------------------------------
+includes/main_functions.php
+- Added showFVar; use this function instead of
+- echo <pre>  print_r(var)  echo </pre>
+
+2004-10-26 20:37  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Added a check up for user_company within AppUI variable
+- when the filter was 'All tasks for my company'; it caused
+- an error when the user has no company
+
+2004-10-26 10:16  (ajdonnison)
+---------------------------------
+modules/projects/index.php
+- Removed project.project_actual_end_date to match change in db table.
+
+2004-10-25 13:14  (ajdonnison)
+---------------------------------
+modules/calendar/addedit.php
+- Fixed permissions handling for projects list.
+
+2004-10-25 13:10  (ajdonnison)
+---------------------------------
+modules/forums/addedit.php
+- Fixed permissions handling for projects list.
+
+2004-10-25 12:01  (ajdonnison)
+---------------------------------
+modules/files/index_table.php
+- Fixed display of owner in file view.
+
+2004-10-23 08:53  (ajdonnison)
+---------------------------------
+modules/projects/gantt.php
+- Fixed selection criteria, fixed default values.
+
+2004-10-23 08:34  (ajdonnison)
+---------------------------------
+js/base.js
+js/collapse.js
+- New collapse/expand code, primarily for tasks but general enough to be
+- used anywhere.
+
+2004-10-23 08:33  (ajdonnison)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- Fixed spelling error in checking of project view permissions.
+
+2004-10-23 08:32  (ajdonnison)
+---------------------------------
+modules/projects/gantt.php
+- Fixed problem with no projects.
+- Fixed query to corretly handle new permissions.
+
+2004-10-23 07:53  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- Made display of debug messages configurable via $dPconfig['display_debug']
+- parameter.
+
+2004-10-23 07:49  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+- Added config item to control display of debug messages.  You can now
+- get debug to just log messages or to log and display them.
+
+2004-10-23 07:42  (ajdonnison)
+---------------------------------
+modules/projects/index.php
+- Removed warnings when no projects available.
+- Removed clash in field names in query.
+
+2004-10-23 07:36  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Fixed problem where it could ask for a new login when dotProject is
+- installed in the DocumentRoot.
+
+2004-10-23 03:51  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Changed log level for SQL to match other SQL printouts.
+
+2004-10-22 19:50  (jcgonz)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_proposed.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+- Minor coding styles corrections
+
+2004-10-22 07:55  (ajdonnison)
+---------------------------------
+modules/calendar/calendar.class.php
+- Fixed problem where invalid assignment could cause invalid SQL.
+
+2004-10-22 01:41  (jcgonz)
+---------------------------------
+modules/projects/view.php
+- The getDeniedRecords method from CProject was called
+- before the object was created.
+
+2004-10-22 00:47  (jcgonz)
+---------------------------------
+classes/dp.class.php
+db/upgrade_permissions.php
+includes/db_adodb.php
+modules/admin/addeditgroup.php
+modules/admin/viewuser.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_roles.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/index.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/departments/view.php
+modules/files/co.php
+modules/files/index_table.php
+modules/projects/index.php
+modules/projects/view.php
+modules/projects/reports/completed.php
+modules/projects/reports/overall.php
+modules/projects/reports/overdue.php
+modules/projects/reports/taskenddate.php
+modules/projects/reports/tasklist.php
+modules/projects/reports/upcoming.php
+modules/public/selector.php
+modules/smartsearch/searchobjects/users.inc.php
+modules/tasks/addedit.php
+modules/tasks/ae_depend.php
+modules/tasks/todo.php
+modules/ticketsmith/pdf.php
+- -Solved all the getconfig and cfg method and attribute
+- called from AppUI. Now everything its done from dPgetConfig
+- Changed all user first and last name queries to contact first
+- and last name
+- Dropped some temporary tables to avoid SQL errors
+- I need to debug all system in order to solve conflicts generated
+- mainly by the user=>contact issue
+
+2004-10-21 23:55  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Added missing fields for files table.
+- Added all missing tables to upgrade script.
+
+2004-10-21 17:52  (jcgonz)
+---------------------------------
+includes/db_adodb.php
+- The upgrade_latest script is not prepared to be executed each
+- time an SQL error occurs. It deletes information, duplicates
+- some more. It's a very good idea to have an auto-update
+- feature, we need to work on an idea how to solve these issues.
+
+2004-10-19 21:14  (jcgonz)
+---------------------------------
+includes/config-dist.php
+- Changed default minimum login and password lenght to 4 characters.
+- It was contradictorious, admin is less that 7 characters length.
+
+2004-10-19 21:10  (jcgonz)
+---------------------------------
+db/dotproject.sql
+- There was a simple syntax error withing the sql creation statement
+
+2004-10-18 11:35  (ajdonnison)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed lookup for task_contact field when using popup contact finder.
+
+2004-10-15 18:52  (jcgonz)
+---------------------------------
+modules/projects/reports/allocateduserhours.es.txt
+modules/projects/reports/tasklist.es.txt
+modules/projects/reports/tasklogs.es.txt
+modules/projects/reports/userperformance.es.txt
+- Spanish locale for reports description uploaded - Perhaps we should find a way to install
+- this files from the locale distribution
+
+2004-10-15 04:11  (ajdonnison)
+---------------------------------
+db/upgrade_latest.php
+db/upgrade_permissions.php
+- Added permissions upload.
+
+2004-10-15 03:39  (ajdonnison)
+---------------------------------
+images/icons/stock_new.png
+modules/admin/do_userrole_aed.php
+modules/calendar/clash.php
+modules/files/co.php
+modules/files/do_file_co.php
+modules/projects/reports/completed.en.txt
+modules/projects/reports/completed.php
+modules/projects/reports/overdue.en.txt
+modules/projects/reports/overdue.php
+modules/projects/reports/upcoming.en.txt
+modules/projects/reports/upcoming.php
+modules/system/roles/do_perms_aed.php
+modules/system/roles/viewrole.php
+modules/system/roles/vw_role_perms.php
+modules/tasks/addedit.js
+modules/tasks/ae_depend.php
+modules/tasks/ae_desc.php
+modules/tasks/ae_resource.php
+modules/ticketsmith/pdf.php
+- Bulk import of new permissions system, new reports, file checkin/out.
+
+2004-10-15 03:38  (ajdonnison)
+---------------------------------
+modules/resources/addedit.js
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/index.php
+modules/resources/resources.class.php
+modules/resources/setup.php
+modules/resources/tabs.js
+modules/resources/tasks_dosql.addedit.php
+modules/resources/tasks_tab.addedit.other_resources.php
+modules/resources/tasks_tab.view.other_resources.php
+modules/resources/view.js
+modules/resources/view.php
+modules/resources/vw_resources.php
+- New non-human resources module for equipment, tools, etc.
+
+2004-10-15 03:32  (ajdonnison)
+---------------------------------
+fileviewer.php
+index.php
+classes/dp.class.php
+classes/libmail.class.php
+classes/permissions.class.php
+classes/query.class.php
+classes/ui.class.php
+db/dotproject.sql
+includes/db_adodb.php
+includes/main_functions.php
+includes/permissions.php
+includes/version.php
+js/base.js
+modules/admin/admin.class.php
+modules/admin/do_perms_aed.php
+modules/admin/do_user_aed.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/do_event_aed.php
+modules/calendar/index.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_companies.php
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+modules/contacts/index.php
+modules/departments/departments.class.php
+modules/files/addedit.php
+modules/files/do_file_aed.php
+modules/files/files.class.php
+modules/files/index.php
+modules/files/index_table.php
+modules/files/tasks_tab.files.php
+modules/forums/addedit.php
+modules/forums/forums.class.php
+modules/forums/index.php
+modules/forums/view_messages.php
+modules/forums/viewer.php
+modules/install/install.class.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/reports.php
+modules/projects/view.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+modules/projects/vw_logs.php
+modules/projects/reports/allocateduserhours.php
+modules/projects/reports/tasklist.php
+modules/projects/reports/tasklogs.php
+modules/projects/reports/tasksperuser.php
+modules/public/selector.php
+modules/system/addeditpref.php
+modules/system/system.class.php
+modules/system/roles/do_role_aed.php
+modules/system/roles/index.php
+modules/system/roles/roles.class.php
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+modules/ticketsmith/index.php
+style/default/header.php
+style/default/overrides.php
+- Bulk import of new permissions system
+
+2004-10-15 03:06  (ajdonnison)
+---------------------------------
+lib/smarty/Config_File.class.php
+lib/smarty/Smarty.class.php
+lib/smarty/Smarty_Compiler.class.php
+lib/smarty/debug.tpl
+lib/smarty/plugins/block.strip.php
+lib/smarty/plugins/block.textformat.php
+lib/smarty/plugins/compiler.assign.php
+lib/smarty/plugins/function.assign.php
+lib/smarty/plugins/function.assign_debug_info.php
+lib/smarty/plugins/function.config_load.php
+lib/smarty/plugins/function.counter.php
+lib/smarty/plugins/function.cycle.php
+lib/smarty/plugins/function.debug.php
+lib/smarty/plugins/function.eval.php
+lib/smarty/plugins/function.fetch.php
+lib/smarty/plugins/function.html_checkboxes.php
+lib/smarty/plugins/function.html_image.php
+lib/smarty/plugins/function.html_options.php
+lib/smarty/plugins/function.html_radios.php
+lib/smarty/plugins/function.html_select_date.php
+lib/smarty/plugins/function.html_select_time.php
+lib/smarty/plugins/function.html_table.php
+lib/smarty/plugins/function.mailto.php
+lib/smarty/plugins/function.math.php
+lib/smarty/plugins/function.popup.php
+lib/smarty/plugins/function.popup_init.php
+lib/smarty/plugins/modifier.capitalize.php
+lib/smarty/plugins/modifier.cat.php
+lib/smarty/plugins/modifier.count_characters.php
+lib/smarty/plugins/modifier.count_paragraphs.php
+lib/smarty/plugins/modifier.count_sentences.php
+lib/smarty/plugins/modifier.count_words.php
+lib/smarty/plugins/modifier.date_format.php
+lib/smarty/plugins/modifier.debug_print_var.php
+lib/smarty/plugins/modifier.default.php
+lib/smarty/plugins/modifier.escape.php
+lib/smarty/plugins/modifier.indent.php
+lib/smarty/plugins/modifier.lower.php
+lib/smarty/plugins/modifier.nl2br.php
+lib/smarty/plugins/modifier.regex_replace.php
+lib/smarty/plugins/modifier.replace.php
+lib/smarty/plugins/modifier.spacify.php
+lib/smarty/plugins/modifier.string_format.php
+lib/smarty/plugins/modifier.strip.php
+lib/smarty/plugins/modifier.strip_tags.php
+lib/smarty/plugins/modifier.truncate.php
+lib/smarty/plugins/modifier.upper.php
+lib/smarty/plugins/modifier.wordwrap.php
+lib/smarty/plugins/outputfilter.trimwhitespace.php
+lib/smarty/plugins/shared.escape_special_chars.php
+lib/smarty/plugins/shared.make_timestamp.php
+lib/smarty/templates/phpgacl/about.tpl
+lib/smarty/templates/phpgacl/acl_admin.tpl
+lib/smarty/templates/phpgacl/acl_admin_js.tpl
+lib/smarty/templates/phpgacl/acl_debug.tpl
+lib/smarty/templates/phpgacl/acl_list.tpl
+lib/smarty/templates/phpgacl/acl_test.tpl
+lib/smarty/templates/phpgacl/assign_group.tpl
+lib/smarty/templates/phpgacl/debug.tpl
+lib/smarty/templates/phpgacl/edit_group.tpl
+lib/smarty/templates/phpgacl/edit_object_sections.tpl
+lib/smarty/templates/phpgacl/edit_objects.tpl
+lib/smarty/templates/phpgacl/footer.tpl
+lib/smarty/templates/phpgacl/group_admin.tpl
+lib/smarty/templates/phpgacl/header.tpl
+lib/smarty/templates/phpgacl/navigation.tpl
+lib/smarty/templates/phpgacl/object_search.tpl
+lib/smarty/templates/phpgacl/pager.tpl
+- Smarty implementation used by PhpGACL
+
+2004-10-15 03:04  (ajdonnison)
+---------------------------------
+lib/phpgacl/AUTHORS
+lib/phpgacl/CHANGELOG
+lib/phpgacl/COPYING.lib
+lib/phpgacl/CREDITS
+lib/phpgacl/FAQ
+lib/phpgacl/README
+lib/phpgacl/TODO
+lib/phpgacl/example.php
+lib/phpgacl/gacl.class.php
+lib/phpgacl/gacl_api.class.php
+lib/phpgacl/profiler.inc
+lib/phpgacl/schema.xml
+lib/phpgacl/setup.php
+lib/phpgacl/Cache_Lite/Cache_Lite.php
+lib/phpgacl/Cache_Lite/Hashed_Cache_Lite.php
+lib/phpgacl/Cache_Lite/LICENSE
+lib/phpgacl/admin/about.php
+lib/phpgacl/admin/acl_admin.php
+lib/phpgacl/admin/acl_debug.php
+lib/phpgacl/admin/acl_list.php
+lib/phpgacl/admin/acl_test.php
+lib/phpgacl/admin/admin.css
+lib/phpgacl/admin/admin_functions.js
+lib/phpgacl/admin/assign_group.php
+lib/phpgacl/admin/edit_group.php
+lib/phpgacl/admin/edit_object_sections.php
+lib/phpgacl/admin/edit_objects.php
+lib/phpgacl/admin/gacl_admin.inc.php
+lib/phpgacl/admin/group_admin.php
+lib/phpgacl/admin/index.php
+lib/phpgacl/admin/object_search.php
+lib/phpgacl/admin/s.gif
+lib/phpgacl/admin/test.php
+lib/phpgacl/admin/images/bot-l.png
+lib/phpgacl/admin/images/bot-r.png
+lib/phpgacl/admin/images/div-l.png
+lib/phpgacl/admin/images/div-r.png
+lib/phpgacl/admin/images/logo.png
+lib/phpgacl/admin/images/mid-l.png
+lib/phpgacl/admin/images/mid-r.png
+lib/phpgacl/admin/images/spacer.gif
+lib/phpgacl/admin/images/tab-off-l.png
+lib/phpgacl/admin/images/tab-off-r.png
+lib/phpgacl/admin/images/tab-on-l.png
+lib/phpgacl/admin/images/tab-on-r.png
+lib/phpgacl/admin/images/top-l.png
+lib/phpgacl/admin/images/top-r.png
+lib/phpgacl/docs/manual.html
+lib/phpgacl/docs/manual.pdf
+lib/phpgacl/docs/manual.sxw
+lib/phpgacl/docs/manual.txt
+lib/phpgacl/docs/manual_html_7dced6ce.png
+lib/phpgacl/docs/manual_html_m481ab4b3.png
+lib/phpgacl/docs/manual_html_m48c2db5c.png
+lib/phpgacl/docs/manual_html_m6a630ca2.png
+lib/phpgacl/docs/manual_html_m770a5a15.png
+lib/phpgacl/docs/phpgacl-db-schema.png
+lib/phpgacl/docs/phpgacl-db-schema.vsd
+lib/phpgacl/other_languages/perl/perlGACL-check-1.0.tar.gz
+lib/phpgacl/soap/nusoap.php
+lib/phpgacl/soap/server.php
+lib/phpgacl/soap/clients/perl_client.pl
+lib/phpgacl/soap/clients/php_client.php
+lib/phpgacl/soap/clients/python_client.py
+lib/phpgacl/test_suite/acl_tests.php
+lib/phpgacl/test_suite/random_acl_check.php
+lib/phpgacl/test_suite/run.php
+lib/phpgacl/test_suite/stress_test.php
+lib/phpgacl/test_suite/styles.css
+lib/phpgacl/test_suite/unit_tests.php
+lib/phpgacl/test_suite/phpunit/ChangeLog
+lib/phpgacl/test_suite/phpunit/README
+lib/phpgacl/test_suite/phpunit/phpunit.php
+lib/phpgacl/test_suite/phpunit/phpunit_test.php
+lib/phpgacl/test_suite/phpunit/runtests.php
+lib/phpgacl/test_suite/phpunit/runtests2.php
+lib/phpgacl/test_suite/phpunit/stylesheet.css
+lib/smarty/Config_File.class.php
+lib/smarty/Smarty.class.php
+lib/smarty/Smarty_Compiler.class.php
+lib/smarty/debug.tpl
+lib/smarty/plugins/block.strip.php
+lib/smarty/plugins/block.textformat.php
+lib/smarty/plugins/compiler.assign.php
+lib/smarty/plugins/function.assign.php
+lib/smarty/plugins/function.assign_debug_info.php
+lib/smarty/plugins/function.config_load.php
+lib/smarty/plugins/function.counter.php
+lib/smarty/plugins/function.cycle.php
+lib/smarty/plugins/function.debug.php
+lib/smarty/plugins/function.eval.php
+lib/smarty/plugins/function.fetch.php
+lib/smarty/plugins/function.html_checkboxes.php
+lib/smarty/plugins/function.html_image.php
+lib/smarty/plugins/function.html_options.php
+lib/smarty/plugins/function.html_radios.php
+lib/smarty/plugins/function.html_select_date.php
+lib/smarty/plugins/function.html_select_time.php
+lib/smarty/plugins/function.html_table.php
+lib/smarty/plugins/function.mailto.php
+lib/smarty/plugins/function.math.php
+lib/smarty/plugins/function.popup.php
+lib/smarty/plugins/function.popup_init.php
+lib/smarty/plugins/modifier.capitalize.php
+lib/smarty/plugins/modifier.cat.php
+lib/smarty/plugins/modifier.count_characters.php
+lib/smarty/plugins/modifier.count_paragraphs.php
+lib/smarty/plugins/modifier.count_sentences.php
+lib/smarty/plugins/modifier.count_words.php
+lib/smarty/plugins/modifier.date_format.php
+lib/smarty/plugins/modifier.debug_print_var.php
+lib/smarty/plugins/modifier.default.php
+lib/smarty/plugins/modifier.escape.php
+lib/smarty/plugins/modifier.indent.php
+lib/smarty/plugins/modifier.lower.php
+lib/smarty/plugins/modifier.nl2br.php
+lib/smarty/plugins/modifier.regex_replace.php
+lib/smarty/plugins/modifier.replace.php
+lib/smarty/plugins/modifier.spacify.php
+lib/smarty/plugins/modifier.string_format.php
+lib/smarty/plugins/modifier.strip.php
+lib/smarty/plugins/modifier.strip_tags.php
+lib/smarty/plugins/modifier.truncate.php
+lib/smarty/plugins/modifier.upper.php
+lib/smarty/plugins/modifier.wordwrap.php
+lib/smarty/plugins/outputfilter.trimwhitespace.php
+lib/smarty/plugins/shared.escape_special_chars.php
+lib/smarty/plugins/shared.make_timestamp.php
+lib/smarty/templates/phpgacl/about.tpl
+lib/smarty/templates/phpgacl/acl_admin.tpl
+lib/smarty/templates/phpgacl/acl_admin_js.tpl
+lib/smarty/templates/phpgacl/acl_debug.tpl
+lib/smarty/templates/phpgacl/acl_list.tpl
+lib/smarty/templates/phpgacl/acl_test.tpl
+lib/smarty/templates/phpgacl/assign_group.tpl
+lib/smarty/templates/phpgacl/debug.tpl
+lib/smarty/templates/phpgacl/edit_group.tpl
+lib/smarty/templates/phpgacl/edit_object_sections.tpl
+lib/smarty/templates/phpgacl/edit_objects.tpl
+lib/smarty/templates/phpgacl/footer.tpl
+lib/smarty/templates/phpgacl/group_admin.tpl
+lib/smarty/templates/phpgacl/header.tpl
+lib/smarty/templates/phpgacl/navigation.tpl
+lib/smarty/templates/phpgacl/object_search.tpl
+lib/smarty/templates/phpgacl/pager.tpl
+- Initial revision
+
+2004-10-15 03:04  (ajdonnison)
+---------------------------------
+lib/phpgacl/AUTHORS
+lib/phpgacl/CHANGELOG
+lib/phpgacl/COPYING.lib
+lib/phpgacl/CREDITS
+lib/phpgacl/FAQ
+lib/phpgacl/README
+lib/phpgacl/TODO
+lib/phpgacl/example.php
+lib/phpgacl/gacl.class.php
+lib/phpgacl/gacl_api.class.php
+lib/phpgacl/profiler.inc
+lib/phpgacl/schema.xml
+lib/phpgacl/setup.php
+lib/phpgacl/Cache_Lite/Cache_Lite.php
+lib/phpgacl/Cache_Lite/Hashed_Cache_Lite.php
+lib/phpgacl/Cache_Lite/LICENSE
+lib/phpgacl/admin/about.php
+lib/phpgacl/admin/acl_admin.php
+lib/phpgacl/admin/acl_debug.php
+lib/phpgacl/admin/acl_list.php
+lib/phpgacl/admin/acl_test.php
+lib/phpgacl/admin/admin.css
+lib/phpgacl/admin/admin_functions.js
+lib/phpgacl/admin/assign_group.php
+lib/phpgacl/admin/edit_group.php
+lib/phpgacl/admin/edit_object_sections.php
+lib/phpgacl/admin/edit_objects.php
+lib/phpgacl/admin/gacl_admin.inc.php
+lib/phpgacl/admin/group_admin.php
+lib/phpgacl/admin/index.php
+lib/phpgacl/admin/object_search.php
+lib/phpgacl/admin/s.gif
+lib/phpgacl/admin/test.php
+lib/phpgacl/admin/images/bot-l.png
+lib/phpgacl/admin/images/bot-r.png
+lib/phpgacl/admin/images/div-l.png
+lib/phpgacl/admin/images/div-r.png
+lib/phpgacl/admin/images/logo.png
+lib/phpgacl/admin/images/mid-l.png
+lib/phpgacl/admin/images/mid-r.png
+lib/phpgacl/admin/images/spacer.gif
+lib/phpgacl/admin/images/tab-off-l.png
+lib/phpgacl/admin/images/tab-off-r.png
+lib/phpgacl/admin/images/tab-on-l.png
+lib/phpgacl/admin/images/tab-on-r.png
+lib/phpgacl/admin/images/top-l.png
+lib/phpgacl/admin/images/top-r.png
+lib/phpgacl/docs/manual.html
+lib/phpgacl/docs/manual.pdf
+lib/phpgacl/docs/manual.sxw
+lib/phpgacl/docs/manual.txt
+lib/phpgacl/docs/manual_html_7dced6ce.png
+lib/phpgacl/docs/manual_html_m481ab4b3.png
+lib/phpgacl/docs/manual_html_m48c2db5c.png
+lib/phpgacl/docs/manual_html_m6a630ca2.png
+lib/phpgacl/docs/manual_html_m770a5a15.png
+lib/phpgacl/docs/phpgacl-db-schema.png
+lib/phpgacl/docs/phpgacl-db-schema.vsd
+lib/phpgacl/other_languages/perl/perlGACL-check-1.0.tar.gz
+lib/phpgacl/soap/nusoap.php
+lib/phpgacl/soap/server.php
+lib/phpgacl/soap/clients/perl_client.pl
+lib/phpgacl/soap/clients/php_client.php
+lib/phpgacl/soap/clients/python_client.py
+lib/phpgacl/test_suite/acl_tests.php
+lib/phpgacl/test_suite/random_acl_check.php
+lib/phpgacl/test_suite/run.php
+lib/phpgacl/test_suite/stress_test.php
+lib/phpgacl/test_suite/styles.css
+lib/phpgacl/test_suite/unit_tests.php
+lib/phpgacl/test_suite/phpunit/ChangeLog
+lib/phpgacl/test_suite/phpunit/README
+lib/phpgacl/test_suite/phpunit/phpunit.php
+lib/phpgacl/test_suite/phpunit/phpunit_test.php
+lib/phpgacl/test_suite/phpunit/runtests.php
+lib/phpgacl/test_suite/phpunit/runtests2.php
+lib/phpgacl/test_suite/phpunit/stylesheet.css
+- Import from phpgACL package.
+
+2004-09-20 02:47  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- Fixed problem where missing or invalid locales would cause Windows
+- platforms to fail monetary formatting.
+
+2004-09-18 14:08  (gregorerhardt)
+---------------------------------
+install/check.php
+install/commonlib.php
+install/config.php
+install/db.php
+install/do_backup.php
+install/index.php
+install/install.css
+install/pref.php
+- removing old installer files \ prepare welcome site for release
+
+2004-09-18 10:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-09-17 18:15  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.php
 - fixed missing variable error also causing a javascript error.
+
+2004-09-17 17:56  (cyberhorse)
+---------------------------------
+modules/files/projects_tab.files.php
+- Automatic tab of files for projects module.
+
+2004-09-17 17:55  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- converted a few more automatic tabs, added automatic tabs to projects module.
+
+2004-09-17 17:11  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasksperuser_sub.php
+- fixed a few short tags ... <?= to <?php echo
+
+2004-09-17 16:40  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+- Mantis #207 - showing which fields are required for new users registration.
 
 2004-09-17 11:56  (cyberhorse)
 ---------------------------------
