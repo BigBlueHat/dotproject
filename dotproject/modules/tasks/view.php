@@ -278,11 +278,12 @@ function delIt() {
 
 		<?php
 			// Pull tasks dependencies
-			$q->addQuery('t.task_id, t.task_name');
+			$q->addQuery('td.dependencies_req_task_id, t.task_name');
 			$q->addTable('tasks', 't');
 			$q->addTable('task_dependencies', 'td');
-			$q->addWhere('td.dependencies_task_id = t.task_id');
-			$q->addWhere('t.task_id = ' . $task_id);
+			$q->addWhere('td.dependencies_req_task_id = t.task_id');
+			$q->addWhere('td.dependencies_task_id = ' . $task_id);
+			
 			$taskDep = $q->loadHashList();
 			$q->clear();
 		?>
@@ -304,11 +305,11 @@ function delIt() {
 		</tr>
                 <?php
 			// Pull the tasks depending on this Task 
-			$q->addQuery('t.task_id, t.task_name');
+			$q->addQuery('td.dependencies_task_id, t.task_name');
 			$q->addTable('tasks', 't');
 			$q->addTable('task_dependencies', 'td');
-			$q->addWhere('td.dependencies_req_task_id = t.task_id');
-			$q->addWhere('t.task_id = ' . $task_id);
+			$q->addWhere('td.dependencies_task_id = t.task_id');
+			$q->addWhere('td.dependencies_req_task_id = ' . $task_id);
 			$dependingTasks = $q->loadHashList();
 			$q->clear();
 		?>
