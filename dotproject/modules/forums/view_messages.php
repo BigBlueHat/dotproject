@@ -83,9 +83,9 @@ foreach ($messages as $row){
 	if ($canEdit && $AppUI->user_id == $row['forum_moderated']) {
 	// edit message
 		$s .= '<a href="./index.php?m=forums&a=viewer&post_message=1&forum_id='.$row["message_forum"].'&message_parent='.$row["message_parent"].'&message_id='.$row["message_id"].'">';
-		$s .= '<img src="images/icons/pencil.gif" width="12" height="12" border="0" alt="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'"></a>';
+		$s .= '<img src="images/icons/stock_edit-16.png" width="16" height="16" border="0" alt="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'" /></a>';
 	// delete message
-		$s .= '&nbsp;<a href="javascript:delIt('.$row["message_id"].')"><img src="images/icons/trash.gif" width="16" height="16" border="0" alt="'.$AppUI->_( 'delete' ).'"></a>';
+		$s .= '&nbsp;<a href="javascript:delIt('.$row["message_id"].')"><img src="images/icons/stock_delete-16.png" width="16" height="16" border="0" alt="'.$AppUI->_( 'delete' ).'" /></a>';
 
 	}
 	$s .= '</td>';
