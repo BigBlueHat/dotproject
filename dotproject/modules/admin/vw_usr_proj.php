@@ -1,4 +1,4 @@
-<?php
+<?php /* ADMIN $Id$ */
 GLOBAL $AppUI, $user_id;
 
 $sql = "
@@ -10,14 +10,7 @@ ORDER BY project_name
 ";
 $projects = db_loadList( $sql );
 
-$pstatus = array(
-	'Not Defined',
-	'Proposed',
-	'In planning',
-	'In progress',
-	'On hold',
-	'Complete'
-);
+$pstatus = dPgetSysVal( 'ProjectStatus' );
 ?>
 <table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
 <tr>

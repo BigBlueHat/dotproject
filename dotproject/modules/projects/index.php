@@ -1,4 +1,4 @@
-<?php  /* $Id$ */
+<?php  /* PROJECTS $Id$ */
 // check permissions
 $denyRead = getDenyRead( $m );
 $denyEdit = getDenyEdit( $m );

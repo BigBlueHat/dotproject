@@ -1,4 +1,4 @@
-<?php
+<?php /* PROJECTS $Id$ */
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 // check permissions
