@@ -12,7 +12,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 
-	<script type="text/javascript" src="js/base.js"></script>
+	<?php $AppUI->loadJS(); ?>
 	<script language="JavaScript">
 	function doBtn(ev) {
 

@@ -650,6 +650,38 @@ class CAppUI {
 		";
 		return (db_loadList( $sql ));
 	}
+
+/**
+ * Find and add to output the file tags required to load module-specific
+ * javascript.
+ */
+	function loadJS() {
+	  global $m, $a, $dPconfig;
+	  // Search for the javascript files to load.
+	  if (! isset($m))
+	    return;
+	  $root = $dPconfig['root_dir'];
+	  if (substr($root, -1) != '/')
+	    $root .= '/';
+
+	  $base = $dPconfig['base_url'];
+	  if ( substr($base, -1) != '/')
+	    $base .= '/';
+	  // Load the basic javascript used by all modules.
+	  $jsdir = dir("{$root}js");
+	  while (($entry = $jsdir->read()) !== false) {
+	    if (substr($entry, -3) == '.js')
+	      echo "<script type=\"text/javascript\" src=\"{$base}js/$entry\"></script>\n";
+	  }
+
+	  // Check for a default javascript file for the module.
+	  if (file_exists("{$root}modules/$m/$m.module.js"))
+	    echo "<script type=\"text/javascript\" src=\"{$base}modules/$m/$m.module.js\"></script>\n";
+	  // Check for a javascript file that matches the file being called.
+	  if (isset($a) && file_exists("{$root}modules/$m/$a.js"))
+	    echo "<script type=\"text/javascript\" src=\"{$base}modules/$m/$a.js\"></script>\n";
+	}
+
 }
 
 /**
