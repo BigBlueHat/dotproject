@@ -123,7 +123,7 @@ function showFullProject() {
 		<a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
 
 	<td align="left">
-		<input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='display_option.value="custom";submit();'>
+		<input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
 	</td>
 
 	<td align="right" valign="top" width="20">
