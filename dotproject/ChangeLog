@@ -1,7 +1,87 @@
-2004-04-09 12:48  (gnome444)
+2004-04-11 14:47  (gregorerhardt)
+---------------------------------
+install/index.php
+- updating todo list for installer
+
+2004-04-11 13:19  (gregorerhardt)
+---------------------------------
+modules/forums/addedit.php
+- bug #892914: added isset() to an undefined variable
+
+2004-04-11 13:17  (gregorerhardt)
+---------------------------------
+modules/contacts/index.php
+- bug #892912: commented out superfluous line with undefined variable
+
+2004-04-11 12:50  (gregorerhardt)
+---------------------------------
+docs/install.html
+- added requirement php-xml for calendar
+
+2004-04-11 12:42  (gregorerhardt)
+---------------------------------
+docs/install.html
+- added requirement php-xml for gantt charts
+
+2004-04-11 12:37  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- added a comment out note to a line known for breaking gantt charts frequently
+
+2004-04-11 11:57  (gregorerhardt)
+---------------------------------
+install/check.php
+install/db.php
+install/index.php
+- some minor additions and corrections
+
+2004-04-10 09:53  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-04-09 20:05  (gregorerhardt)
+---------------------------------
+install/check.php
+install/db.php
+install/index.php
+- some minor additions and corrections
+
+2004-04-09 18:48  (gnome444)
 ---------------------------------
 modules/companies/index.php
 - Do not allow a user to add a company that doesn't have edit perms#908369
+
+2004-04-09 18:39  (gnome444)
+---------------------------------
+includes/permissions.php
+- Alert! Security fix in response to #908369 which applies to projects as well and probably others. Do not allow edit perms to modules unless specifically allowed.
+
+2004-04-09 18:11  (gregorerhardt)
+---------------------------------
+install/check.php
+install/commonlib.php
+install/config.php
+install/db.php
+install/do_backup.php
+install/index.php
+install/pref.php
+- adding cvs IdTags
+
+2004-04-09 16:25  (gregorerhardt)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-04-09 16:21  (gregorerhardt)
+---------------------------------
+install/check.php
+install/commonlib.php
+install/db.php
+install/do_backup.php
+install/index.php
+install/pref.php
+- Implemented backup and dropDatabase functionality to the installer
 
 2004-04-09 12:39  (gnome444)
 ---------------------------------
