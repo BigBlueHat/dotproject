@@ -42,10 +42,11 @@ $company_name           = trim( dPgetParam( $_POST, 'company_name', $propCompany
 $daily_working_hours    = trim( dPgetParam( $_POST, 'daily_working_hours', '8.0' ) );
 $cal_day_start          = trim( dPgetParam( $_POST, 'cal_day_start', 8 ) );
 $cal_day_end            = trim( dPgetParam( $_POST, 'cal_day_end', 17 ) );
-$cal_day_increment      = trim( dPgetParam( $_POST, 'cal_day_increment', '0.25' ) );
+$cal_day_increment      = trim( dPgetParam( $_POST, 'cal_day_increment', '15' ) );
 $cal_working_days       = trim( dPgetParam( $_POST, 'cal_working_days', '1,2,3,4,5' ) );
 $check_legacy_passwords = trim( dPgetParam( $_POST, 'check_legacy_passwords', false ) );
 $show_all_tasks         = trim( dPgetParam( $_POST, 'show_all_tasks', false ) );
+$show_all_task_assignees = trim( dPgetParam( $_POST, 'show_all_task_assignees', false ) );
 $enable_gantt_charts    = trim( dPgetParam( $_POST, 'enable_gantt_charts', true ) );
 $log_changes            = trim( dPgetParam( $_POST, 'log_changes', false ) );
 $check_tasks_dates      = trim( dPgetParam( $_POST, 'check_tasks_dates', true ) );
@@ -118,6 +119,7 @@ if ($goback){
                 <input type=\"hidden\" name=\"cal_working_days\" value=\"$cal_working_days\">
 		<input type=\"hidden\" name=\"check_legacy_passwords\" value=\"$check_legacy_passwords\">
                 <input type=\"hidden\" name=\"show_all_tasks\" value=\"$show_all_tasks\">
+                <input type=\"hidden\" name=\"show_all_task_assignees\" value=\"$show_all_task_assignees\">
                 <input type=\"hidden\" name=\"enable_gantt_charts\" value=\"$enable_gantt_charts\">
                 <input type=\"hidden\" name=\"log_changes\" value=\"$log_changes\">
                 <input type=\"hidden\" name=\"check_tasks_dates\" value=\"$check_tasks_dates\">
@@ -168,6 +170,7 @@ if (!$goback){
         $config .= "\$dPconfig['base_url'] = '{$base_url}';\n";
         $config .= "\$dPconfig['site_domain'] = '{$site_domain}';\n";
         $config .= "\$dPconfig['show_all_tasks'] = {$show_all_tasks};\n";
+        $config .= "\$dPconfig['show_all_task_assignees'] = {$show_all_task_assignees};\n";
         $config .= "\$dPconfig['enable_gantt_charts'] = {$enable_gantt_charts};\n";
         $config .= "\$dPconfig['jpLocale'] = '{$jpLocale}';\n";
         $config .= "\$dPconfig['log_changes'] = {$log_changes};\n";

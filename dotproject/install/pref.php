@@ -50,10 +50,11 @@ $company_name           = trim( dPgetParam( $_POST, 'company_name', $propCompany
 $daily_working_hours    = trim( dPgetParam( $_POST, 'daily_working_hours', '8.0' ) );
 $cal_day_start          = trim( dPgetParam( $_POST, 'cal_day_start', 8 ) );
 $cal_day_end            = trim( dPgetParam( $_POST, 'cal_day_end', 17 ) );
-$cal_day_increment      = trim( dPgetParam( $_POST, 'cal_day_increment', '0.25' ) );
+$cal_day_increment      = trim( dPgetParam( $_POST, 'cal_day_increment', '15' ) );
 $cal_working_days       = trim( dPgetParam( $_POST, 'cal_working_days', '1,2,3,4,5' ) );
 $check_legacy_passwords = trim( dPgetParam( $_POST, 'check_legacy_passwords', false ) );
 $show_all_tasks         = trim( dPgetParam( $_POST, 'show_all_tasks', false ) );
+$show_all_task_assignees = trim( dPgetParam( $_POST, 'show_all_task_assignees', false ) );
 $enable_gantt_charts    = trim( dPgetParam( $_POST, 'enable_gantt_charts', true ) );
 $log_changes            = trim( dPgetParam( $_POST, 'log_changes', false ) );
 $check_tasks_dates      = trim( dPgetParam( $_POST, 'check_tasks_dates', true ) );
@@ -341,7 +342,11 @@ function split_sql($sql) {
             <td class="item">Show Other Users' Tasks?</td>
             <td align="left"><input type="checkbox" name="show_all_tasks" value="true" <?php echo ($show_all_tasks==true) ? 'checked="checked"' : ''; ?> title="Enable if you want to be able to see other users' tasks." /></td>
           </tr>
-             <tr>
+          <tr>
+            <td class="item">Show all Task Assignees?</td>
+            <td align="left"><input type="checkbox" name="show_all_task_assignees" value="true" <?php echo ($show_all_task_assignees==true) ? 'checked="checked"' : ''; ?> title="Enable if you want the task lists to show all assignees names. Disable if you only want to display the first assignee and then a count of the rest while the full list is still available on a mouse over." /></td>
+          </tr>
+          <tr>
             <td class="item">Enable GANTT Charts?</td>
             <td align="left"><input type="checkbox" name="enable_gantt_charts" value="true" <?php echo ($enable_gantt_charts==true) ? 'checked="checked"' : ''; ?> title="Enable if you want to support GANTT Charts." /></td>
           </tr>

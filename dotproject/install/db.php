@@ -146,6 +146,7 @@ $db_install_mode= trim( dPgetParam( $_POST, 'db_install_mode', 'install' ) );
                 <input type=\"hidden\" name=\"cal_working_days\" value=\"$cal_working_days\">
                 <input type=\"hidden\" name=\"check_legacy_passwords\" value=\"$check_legacy_passwords\">
                 <input type=\"hidden\" name=\"show_all_tasks\" value=\"$show_all_tasks\">
+                <input type=\"hidden\" name=\"show_all_task_assignees\" value=\"$show_all_task_assignees\">
                 <input type=\"hidden\" name=\"enable_gantt_charts\" value=\"$enable_gantt_charts\">
                 <input type=\"hidden\" name=\"log_changes\" value=\"$log_changes\">
                 <input type=\"hidden\" name=\"check_tasks_dates\" value=\"$check_tasks_dates\">
