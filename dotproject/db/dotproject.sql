@@ -123,6 +123,7 @@ CREATE TABLE `files` (
   `file_size` int(11) default '0',
   `file_version` float NOT NULL default '0',
   `file_icon` varchar(20) default 'obj/',
+  `file_category` int(11) default '0',
   PRIMARY KEY  (`file_id`),
   KEY `idx_file_task` (`file_task`),
   KEY `idx_file_project` (`file_project`),
@@ -483,6 +484,7 @@ INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("1"
 INSERT INTO `sysvals` VALUES (null, 1, 'TaskType', '0|Unknown\n1|Administrative\n2|Operative');
 INSERT INTO `sysvals` VALUES (null, 1, 'ProjectType', '0|Unknown\n1|Administrative\n2|Operative');
 INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES("3", "ProjectColors", "Web|FFE0AE\nEngineering|AEFFB2\nHelpDesk|FFFCAE\nSystem Administration|FFAEAE");
+INSERT INTO `sysvals` VALUES (null, 1, 'FileType', '0|Unknown\n1|Document\n2|Application');
 
 #
 # Table structure for table 'roles'
