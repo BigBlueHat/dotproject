@@ -1,19 +1,13 @@
 <?php
-/* 
-
+/*
 	Date class
 	provides an object oriented way to manipulate date and time
-	
-
 @BUGS
 	As Date class uses Unix timetamp underlyingly, Date is only functionning on period :
 	01 Jan 1970 00:00:00 +0000 to 19 Jan 2038 03:14:07 +0000
-	
 @VERSION 0.5
+*/
 
-
- */
- 
 define( 'FMT_DATEFR', '%d/%m/%Y' );
 define( 'FMT_DATEUS', '%m/%d/%Y' );
 define( 'FMT_DATEISO', '%Y%m%dT%H%M%S' );
@@ -35,21 +29,21 @@ define( 'SEC_DAY',    86400 );
 isset($DATE_BANKHOLIDAYS) or $DATE_BANKHOLIDAYS = array();
 
 
-class Date
+class CDate
 {
 	/* unix timestamp */
-	var $ts;	
+	var $ts;
 	var $Y;
 	var $M;
 	var $D;
 	var $h;
 	var $m;
-	var $s; 
+	var $s;
 	/* @scope protected */
 	var $change = 0; // 1 if date needs recalculation
-		
-	function Date( $ts = "" )
-	{
+	var $format;
+
+	function CDate( $ts = "" ) {
 		if( $ts ) {
 			$this->setTimestamp($ts);
 		} else {
@@ -76,26 +70,26 @@ class Date
 	 */
 	function fromDatetime( $datetime )
 	{
-		if( ! preg_match( "/^(\d{4})-?(\d{2})-?(\d{2}).(\d{2}):?(\d{2}):?(\d{2})(.?)$/", $datetime, $a ) ) 
+		if( ! preg_match( "/^(\d{4})-?(\d{2})-?(\d{2}).(\d{2}):?(\d{2}):?(\d{2})(.?)$/", $datetime, $a ) )
 		{
 			return NULL;
 		}
-		$obj = new Date();
+		$obj = new CDate();
 		$obj->setDate( $a[1], $a[2], $a[3] );
 		$obj->setTime( $a[4],$a[5], $a[6] );
 		return $obj;
-	}	
-
-	function toString( $format )
-	{
-		return strftime( $format, $this->getTimestamp() );
 	}
-	
+
+	function toString( $format=null )
+	{
+		return strftime( $format ? $format : $this->format, $this->getTimestamp() );
+	}
+
 	function toSQL()
 	{
 		return strftime( FMT_DATEMYSQL, $this->getTimestamp() );
 	}
-	
+
 	/*
 	 * can use as static form eg: Date::format( "%Y", $ts )
 	 * @static
@@ -107,24 +101,24 @@ class Date
 
 /**************************************************** GETTERS ****/
 
-	function getYear() { 
+	function getYear() {
 		if( $this->change ) $this->_calc();
-		return $this->Y; 
-	}
-	
-	function getMonth() { 
-		if( $this->change ) $this->_calc();
-		return $this->M; 
-	}
-	
-	function getDay() { 
-		if( $this->change ) $this->_calc();
-		return $this->D; 
+		return $this->Y;
 	}
 
-	function getWeekday() { 
+	function getMonth() {
 		if( $this->change ) $this->_calc();
-		return $this->weekday; 
+		return $this->M;
+	}
+
+	function getDay() {
+		if( $this->change ) $this->_calc();
+		return $this->D;
+	}
+
+	function getWeekday() {
+		if( $this->change ) $this->_calc();
+		return $this->weekday;
 	}
 
 	function getYearDay()
@@ -134,50 +128,50 @@ class Date
 		return date( "z", $this->ts );
 	}
 
-	function getHours() { 
+	function getHours() {
 		if( $this->change ) $this->_calc();
-		return $this->h; 
+		return $this->h;
 	}
 
-	function getMinutes() { 
+	function getMinutes() {
 		if( $this->change ) $this->_calc();
-		return $this->m; 
+		return $this->m;
 	}
 
-	function getSeconds() { 
+	function getSeconds() {
 		if( $this->change ) $this->_calc();
-		return $this->s; 
+		return $this->s;
 	}
 
-	function getSecondsInDay() { 
+	function getSecondsInDay() {
 		if( $this->change ) $this->_calc();
 		$ts1 = mktime( 0,0,0, $this->M, $this->D, $this->Y );
-		return $this->ts - $ts1; 
+		return $this->ts - $ts1;
 	}
 
 	// return Unix timestamp (seconds since epoch )
-	function getTimestamp() { 
+	function getTimestamp() {
 		if( $this->change ) $this->_calc();
-		return $this->ts; 
+		return $this->ts;
 	}
-	
+
 	function daysInMonth()
 	{
 		if( $this->change )
 			$this->_calc();
 		return date( "t", $this->ts );
 	}
-	
+
 	function daysInYear()
 	{
 		if( $this->change )
 			$this->_calc();
 		return date( "t", $this->ts );
 	}
-	
-	function DaysTo( $date )
+
+	function daysTo( $date )
 	{
-		if( ! is_object($date) || get_class($date) != "date" )
+		if( ! is_object($date) || get_class($date) != "cdate" )
 			return false;
 		$deltats = $date->getTimestamp() - $this->getTimestamp();
 		if( $deltats > 0 )
@@ -192,14 +186,14 @@ class Date
 		$today = getdate( time() );
 		return $this->Y == $today['year'] && $this->M == $today['mon'] && $this->D == $today['mday'];
 	}
-		
+
 	function compareTo( $date )
 	{
-		if( ! is_object($date) || get_class($date) != "date" )
-			return false;	
+		if( ! is_object($date) || get_class($date) != "cdate" )
+			return false;
 		return $this->getTimestamp() - $date->getTimestamp();
 	}
-	
+
 	function addDays( $numdays )
 	{
 		$this->D += $numdays;
@@ -211,13 +205,13 @@ class Date
 		$this->M += $num;
 		$this->_calc();
 	}
-	
+
 	function addYears( $num )
 	{
 		$this->Y += $num;
 		$this->_calc();
 	}
-	
+
 	function addHours( $num )
 	{
 		$this->h += $num;
@@ -229,15 +223,15 @@ class Date
 		$this->m += $num;
 		$this->_calc();
 	}
-	
+
 	function addSeconds( $num )
 	{
 		$this->s += $num;
 		$this->_calc();
 	}
-			
+
 /**************************************************** SETTERS ****/
-	
+
 	function getBankHoliday()
 	{
 		global $DATE_BANKHOLIDAYS;
@@ -248,7 +242,11 @@ class Date
 		else
 			return NULL;
 	}
-	
+
+	function setFormat( $format=null ) {
+		$this->format = $format;
+	}
+
 	function setTimestamp( $ts )
 	{
 		// TODO : basic validation
@@ -280,25 +278,25 @@ class Date
 		$this->s = $s;
 		$this->change = 1;
 	}
-	
+
 	function setHours( $val )
 	{
 		$this->h = $val;
 		$this->change = 1;
 	}
-	
+
 	function setMinutes( $val )
 	{
 		$this->m = $val;
 		$this->change = 1;
 	}
-	
+
 	function setSeconds( $val )
 	{
 		$this->s = $val;
 		$this->change = 1;
 	}
-	
+
 	function setYear( $val )
 	{
 		$this->Y = $val;
@@ -310,14 +308,14 @@ class Date
 		$this->M = $val;
 		$this->change = 1;
 	}
-	
+
 	function setDay( $val )
 	{
 		$this->D = $val;
 		$this->change = 1;
 	}
 
-	// setWeekday( [0-6] ) 
+	// setWeekday( [0-6] )
 	function setWeekday( $weekday )
 	{
 		$this->_calc();
@@ -330,14 +328,14 @@ class Date
 		if( ! checkdate( $this->M, $this->D, $this->Y ) )
 			return false;
 		if( $this->Y < 1970 || $this->Y > 2038 )
-			return false;			
+			return false;
 		if( $this->h < 0 || $this->h > 23 || $this->m < 0 || $this->m > 59 || $this->s < 0 || $this->s > 59 )
 			return false;
 		return true;
 	}
 
 	/**
-	 *	@protected 
+	 *	@protected
 	 */
 	function _calc()
 	{
@@ -352,7 +350,5 @@ class Date
 		$this->weekday = $a['wday'];
 		$this->change = 0;
 	}
-		
 }
-
 ?>
