@@ -5,7 +5,7 @@ if(empty($already_worked))$already_worked = 0;
 if(empty($worked))$worked = 0;
 if(empty($complete))$complete = 0;
 if(empty($wascomplete))$wascomplete = 0;
-$worked = intval($worked);
+$worked = (float)$worked;
 $realwork = $already_worked + $worked;
 
 $sql1 = "update tasks set 
