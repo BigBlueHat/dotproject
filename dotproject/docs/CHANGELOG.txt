@@ -249,3 +249,8 @@ modules/tasks/view.php
 - added project_id var (otherwise create new task fails in this view?? was working)
 - fixed return page (form action attribute) for update task
 
+modules/functions/calendar_func.php
+modules/calendar/index.php
+modules/calendar/addedit.php
+modules/calendar/dayview.php
+- added permissions
