@@ -186,7 +186,7 @@ class CForumMessage {
 
 		while ($row = db_fetch_assoc( $res )) {
 			if ($mail->ValidEmail( $row['user_email'] )) {
-				$mail->To( $row['user_email'] );
+				$mail->To( $row['user_email'], true );
 				$mail->Send();
 				//echo '<textarea cols=80 rows=15>';print_r($mail);echo '</textarea>';die;
 			}
