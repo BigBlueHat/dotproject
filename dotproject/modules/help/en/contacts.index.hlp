@@ -1,0 +1,44 @@
+<!-- $Id$ -->
+<h2>Contacts Index</h2>
+
+<p>The <strong>Contacts</strong> screen works very much like an address book. You can look up information about existing contacts 
+by clicking on any of the hyperlinked contact names.</p>
+
+<p>You can see all of the available contact listings by choosing the <strong>show all</strong> option. Alternatively, you 
+can restrict the number of visible contacts to those lastnames starting with specific letters of the alphabet. [Note: you are
+only able to restrict to specific alphabet letters if there are entries that exist for those letters].</p>
+
+<p>Under the contacts module you can store and retreive information such as:</p>
+<ul>
+	<li>First Name, Last Name, and Display Name</li>
+	<li>Company, Title, and Type</li>
+	<li>Address 1, Address 2, City, State, Zip</li>
+	<li>Phone 1, Phone 2, Mobile Phone</li>
+	<li>Email 1, Email 2, ICQ</li>
+	<li>Birthday</li>
+	<li>Contact Notes</li>
+</ul>
+
+<p> Currently, the <strong>contacts module</strong> is not integrated with either the <strong>user module</strong>
+or the <strong>company module</strong>. Furthermore, to date, the data stored in this module has not be used by 
+other modules.</p>
+
+<p>The overall objective of the <strong>contacts module</strong> was to create a centralized location where users of 
+the system could access contact information. However, this may not be desireable in some circumstances. For example,
+if you are providing your <strong>clients</strong> with <strong>read access</strong> to your dotproject installation, they
+will be able to view your <strong>contacts listing</strong> and may thereby gain access to your full client list.</p>
+
+<p>The <strong>private entry</strong> does not work as you might expect either. For instance, if you create a user 
+with <strong>read only</strong> permission for the <strong>contacts module</strong>, they will be able to see a listing
+of <strong>all contact entries</strong>. However, if they try to get details on a <strong>specific contact</strong> they 
+will encounter a <strong>permission denied</strong> error message. This would occur for all entries, regardless of whether
+marked as a <strong>private entry</strong> or not.</p>
+
+<p>The behavior described above existed in the 15 Mar 2003 CVS version of dotProject 1.0 alpha.</p>.
+
+<p>If you are concerned about other dotProject users viewing the <strong>contacts listing</strong>, you may want to 
+disable this dotproject module in the <strong>System Admin</strong> section.</p>
+
+<p>To date, the <strong>contacts module</strong> has not received much attention from current development team, and 
+will probably be rewritten as part of an amalgamated <strong>user</strong> or <strong>company</strong> submodule. If you 
+have suggestions on how you think the <strong>contacts module</strong> should function, please send us your ideas.</p>
