@@ -100,7 +100,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 		<tr>
 			<td width="100%">Welcome <?php echo "$AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 			<td nowrap="nowrap">
-				<a href="?m=help"><?php echo $AppUI->_( 'Help' );?></a> |
+				<?php echo dPcontextHelp( 'Help' );?> |
 				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a> |
 				<a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a>
 			</td>
