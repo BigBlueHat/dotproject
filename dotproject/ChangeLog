@@ -1,3 +1,17 @@
+2003-04-25 07:30  (eddieajau)
+---------------------------------
+classes/date.class.php
+classes/dp.class.php
+classes/libmail.class.php
+classes/ui.class.php
+modules/companies/companies.class.php
+- Updated documentation
+
+2003-04-25 03:40  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-24 15:07  (eddieajau)
 ---------------------------------
 modules/companies/do_company_aed.php
@@ -484,20 +498,6 @@ ChangeLog
 - Changelog update
 
 2003-04-15 00:18  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-14 08:27  (eddieajau)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- Cosmetic update
-
-2003-04-14 08:19  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
 ...
 
 (This file has been wrapped)
