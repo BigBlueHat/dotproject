@@ -1,3 +1,25 @@
+2004-09-01 02:20  (jcgonz)
+---------------------------------
+db/create_db_fields.php
+db/upgrade_contacts.php
+includes/db_connect.php
+- Better removed db_adodb inclusion within db_connect and
+- corrected create_db_fields and upgrade_contacts to include
+- the file by them selves. This completly solved the require_once
+- problem with some windows servers.
+
+2004-09-01 02:00  (jcgonz)
+---------------------------------
+includes/db_connect.php
+- Changed de require_once name to match exactly to the one located
+- in index.php; in some Windows installations, the require_once command
+- wasn't detecting the previously required file creating a redeclaration error
+
+2004-08-31 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-30 14:52  (jcgonz)
 ---------------------------------
 modules/public/selector.php
@@ -476,28 +498,6 @@ includes/main_functions.php
 ---------------------------------
 modules/tasks/addedit.php
 modules/tasks/do_task_aed.php
-modules/tasks/tasks.class.php
-- second part of overAssignmentPrevention: server-side
-
-2004-08-22 05:20  (gregorerhardt)
----------------------------------
-locales/en/tasks.inc
-modules/tasks/addedit.php
-- root tasks names are now unique
-
-2004-08-22 04:09  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-22 00:14  (cyberhorse)
----------------------------------
-db/create_db_fields.php
-includes/db_adodb.php
-- Automatically insert missing database fields (based on the upgrade_latest.sql script).
-
-2004-08-22 00:13  (cyberhorse)
----------------------------------
 ...
 
 (This file has been wrapped)
