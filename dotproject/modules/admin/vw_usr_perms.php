@@ -175,7 +175,7 @@ foreach ($tarr as $row){
 
 	$buf .= '<td nowrap>';
 	if ($canEdit) {
-		$buf .= "<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']},'{$row['grant_item']}');\" title=\"".$AppUI->_('edit')."\">"
+		$buf .= "<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']},'".addslashes($row['grant_item'])."');\" title=\"".$AppUI->_('edit')."\">"
 			. dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' )
 			. "</a>";
 	}
