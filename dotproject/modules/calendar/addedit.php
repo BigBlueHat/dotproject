@@ -158,7 +158,7 @@ function setCalendar( uts, fdate ) {
 	<td width="5%"></td>
 </tr>
 <tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Make Private' );?>:</td>
+	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Private Entry' );?>:</td>
 	<td>
 		<input type="checkbox" value="1" name="event_private" <?php echo (@$event["event_private"] ? 'checked' : '');?>>
 	</td>
