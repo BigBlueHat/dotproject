@@ -294,6 +294,32 @@ function delIt() {
 			?>
 			</td>
 		</tr>
+                <?php
+			// Pull the tasks depending on this Task
+			$sql = "
+			SELECT t.task_id, t.task_name
+			FROM tasks t, task_dependencies td
+			WHERE td.dependencies_req_task_id = $task_id
+			AND t.task_id = td.dependencies_task_id
+			";
+			$dependingTasks = db_loadHashList( $sql );
+		?>
+		<tr>
+			<td colspan="3"><strong><?php echo $AppUI->_('Tasks depending on this Task');?></strong></td>
+		</tr>
+		<tr>
+			<td colspan="3">
+			<?php
+				$s = count( $dependingTasks ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
+				foreach($dependingTasks as $key => $value) {
+					$s .= '<tr><td class="hilite">';
+					$s .= '<a href="./index.php?m=tasks&a=view&task_id='.$key.'">'.$value.'</a>';
+					$s .= '</td></tr>';
+				}
+				echo '<table width="100%" cellspacing=1 bgcolor="black">'.$s.'</table>';
+			?>
+			</td>
+		</tr>
 		<tr>
 		  <td colspan='3' nowrap="nowrap">
 		     <strong><?php echo $AppUI->_('Description');?></strong><br />
