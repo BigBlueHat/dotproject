@@ -34,6 +34,9 @@ $company_prefix = 'company_';
 
 if (isset( $_POST['department'] )) {
 	$AppUI->setState( 'ProjIdxDepartment', $_POST['department'] );
+	
+
+	//if department is set, ignore the company_id field
 	unset($company_id);
 }
 $department = $AppUI->getState( 'ProjIdxDepartment' ) !== NULL ? $AppUI->getState( 'ProjIdxDepartment' ) : $company_prefix.$AppUI->user_company;
@@ -164,11 +167,8 @@ $buffer .= '</select>';
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );
-$titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':', '', '<form action="?m=projects" method="post" name="pickCompany">', '</form>' );
-$titleBlock->addCell( $buffer
-//	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
-//	'<form action="?m=projects" method="post" name="pickCompany">', '</form>'
-);
+$titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':');
+$titleBlock->addCell( $buffer, '', '<form action="?m=projects" method="post" name="pickCompany">', '</form>');
 $titleBlock->addCell();
 if ($canEdit) {
 	$titleBlock->addCell(
