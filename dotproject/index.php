@@ -69,11 +69,11 @@ if ($is_installer) {
 	include("./modules/install/install.inc.php");
 }
 
-require_once( "./classes/ui.class.php" );
-require_once( "./includes/main_functions.php" );
-require_once( "./includes/db_adodb.php" );
-require_once( "./classes/permissions.class.php" );
-require_once( "./includes/session.php" );
+require_once realpath( "./includes/main_functions.php" );
+require_once dpRealPath( "./classes/ui.class.php" );
+require_once dpRealPath( "./includes/db_adodb.php" );
+require_once dpRealPath( "./classes/permissions.class.php" );
+require_once dpRealPath( "./includes/session.php" );
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
@@ -106,7 +106,7 @@ if (! is_file($config_file) && !$is_installer ) {
 // allow the install module to run without config file
 // load the db handler
 if ($dPrunLevel > 0) {
-	require_once( "./includes/db_connect.php" );
+	require_once dpRealPath( "./includes/db_connect.php" );
 }
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
@@ -132,7 +132,7 @@ require_once( $AppUI->getSystemClass( 'date' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getSystemClass( 'query' ) );
 
-require_once( "./misc/debug.php" );
+require_once dPRealPath( "./misc/debug.php" );
 
 //Function for update lost action in user_access_log
 $AppUI->updateLastAction($last_insert_id);
@@ -152,14 +152,14 @@ if (isset($user_id) && isset($_GET['logout'])){
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	$uistyle = $dPconfig['host_style'];
 	$AppUI->setUserLocale();
-	@include_once( "./locales/$AppUI->user_locale/locales.php" );
-	@include_once( "./locales/core.php" );
+	@include_once dPRealPath( "./locales/$AppUI->user_locale/locales.php" );
+	@include_once dPRealPath( "./locales/core.php" );
 	setlocale( LC_TIME, $AppUI->user_lang );
 	if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
-		require "./includes/sendpass.php";
+		require  dPRealPath("./includes/sendpass.php");
 		sendNewPass();
 	} else {
-		require "./style/$uistyle/lostpass.php";
+		require  dPRealPath("./style/$uistyle/lostpass.php");
 	}
 	exit();
 }
@@ -172,7 +172,7 @@ if (isset($_POST['login'])) {
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
-		@include_once( "./locales/core.php" );
+		@include_once dPRealPath( "./locales/core.php" );
 		$AppUI->setMsg( 'Login Failed' );
 	} else {
 	           //Register login in user_acces_log
@@ -208,7 +208,7 @@ if ($AppUI->doLogin()) {
 		header("Content-type: text/html;charset=$locale_char_set");
 	}
 
-	require "./style/$uistyle/login.php";
+	require dPrealPath("./style/$uistyle/login.php");
 	// destroy the current session and output login page
 	session_unset();
 	session_destroy();
@@ -218,7 +218,7 @@ $AppUI->setUserLocale();
 
 if ( !( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
 	// bring in the rest of the support and localisation files
-	require_once( "./includes/permissions.php" );
+	require_once dPrealPath( "./includes/permissions.php" );
 }
 
 $def_a = 'index';
@@ -245,12 +245,12 @@ $a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', $def_a));
 $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 
 // load module based locale settings
-@include_once( "./locales/$AppUI->user_locale/locales.php" );
-@include_once( "./locales/core.php" );
+@include_once dPrealPath( "./locales/$AppUI->user_locale/locales.php" );
+@include_once dPrealPath( "./locales/core.php" );
 
 setlocale( LC_TIME, $AppUI->user_lang );
 
-@include_once( "./functions/" . $m . "_func.php" );
+@include_once dPrealPath( "./functions/" . $m . "_func.php" );
 
 if ( ( $is_installer && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
 	// present some trivial permission functions
@@ -303,20 +303,20 @@ $modclass = $AppUI->getModuleClass($m);
 if (file_exists($modclass))
 	include_once( $modclass );
 if ($u && file_exists("./modules/$m/$u/$u.class.php"))
-	include_once( "./modules/$m/$u/$u.class.php" );
+	include_once dPrealPath( "./modules/$m/$u/$u.class.php" );
 
 // do some db work if dosql is set
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
 if (isset( $_REQUEST["dosql"]) ) {
     //require("./dosql/" . $_REQUEST["dosql"] . ".php");
-    require ("./modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php");
+    require  dPrealPath("./modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php");
 }
 
 // start output proper
-include "./style/$uistyle/overrides.php";
+include  dPrealPath("./style/$uistyle/overrides.php");
 ob_start();
 if(!$suppressHeaders) {
-	require "./style/$uistyle/header.php";
+	require dPrealPath("./style/$uistyle/header.php");
 }
 
 if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 )) {
@@ -359,7 +359,7 @@ if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 ))
 
 $module_file = "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if (file_exists($module_file))
-  require $module_file;
+  require dPrealPath($module_file);
 else
 {
 // TODO: make this part of the public module? 
@@ -370,7 +370,7 @@ else
   echo $AppUI->_("Missing file. Possible Module \"$m\" missing!");
 }
 if(!$suppressHeaders) {
-	require "./style/$uistyle/footer.php";
+	require dPrealPath("./style/$uistyle/footer.php");
 }
 ob_end_flush();
 ?>

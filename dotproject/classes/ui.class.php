@@ -24,7 +24,7 @@ define ("UI_OUTPUT_HTML", 0);
 define ("UI_OUTPUT_JS", 0x10);
 define ("UI_OUTPUT_RAW", 0x20);
 
-require_once dirname(__FILE__) . "/permissions.class.php";
+require_once dPrealPath(dirname(__FILE__) . "/permissions.class.php");
 /**
 * The Application User Interface Class.
 *
@@ -117,7 +117,7 @@ class CAppUI {
 	function getSystemClass( $name=null ) {
 		if ($name) {
 			if ($root = dPgetConfig( 'root_dir' )) {
-				return "$root/classes/$name.class.php";
+				return dPRealPath("$root/classes/$name.class.php");
 			}
 		}
 	}
@@ -131,7 +131,7 @@ class CAppUI {
 	function getLibraryClass( $name=null ) {
 		if ($name) {
 			if ($root = dPgetConfig( 'root_dir' )) {
-				return "$root/lib/$name.php";
+				return dpRealPath("$root/lib/$name.php");
 			}
 		}
 	}
@@ -144,7 +144,7 @@ class CAppUI {
 	function getModuleClass( $name=null ) {
 		if ($name) {
 			if ($root = dPgetConfig( 'root_dir' )) {
-				return "$root/modules/$name/$name.class.php";
+				return dpRealPath("$root/modules/$name/$name.class.php");
 			}
 		}
 	}
@@ -156,7 +156,7 @@ class CAppUI {
 	function getVersion() {
 		global $dPconfig;
 		if ( ! isset($this->version_major)) {
-			include_once $dPconfig['root_dir'] . '/includes/version.php';
+			include_once dPrealPath($dPconfig['root_dir'] . '/includes/version.php');
 			$this->version_major = $dp_version_major;
 			$this->version_minor = $dp_version_minor;
 			$this->version_patch = $dp_version_patch;
@@ -947,7 +947,7 @@ the active tab, and the selected tab **/
 				echo '<tr><td>';
 				$currentTabId = $k;
 				$currentTabName = $v[1];
-				include $this->baseInc.$v[0].".php";
+				include dPrealPath($this->baseInc.$v[0].".php");
 				echo '</td></tr>';
 			}
 			echo '</table>';
@@ -981,7 +981,7 @@ the active tab, and the selected tab **/
 			if ( $this->baseInc.$this->tabs[$this->active][0] != "" ) {
 				$currentTabId = $this->active;
 				$currentTabName = $this->tabs[$this->active][1];
-				require $this->baseInc.$this->tabs[$this->active][0].'.php';
+				require dPrealPath($this->baseInc.$this->tabs[$this->active][0].'.php');
 			}
 			echo "\n</td>\n</tr>\n</table>";
 		}
