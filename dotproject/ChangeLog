@@ -1,3 +1,15 @@
+2003-09-19 12:02  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/view.php
+includes/permissions.php
+- bug809030: now there is access to tasks for users with read-write
+
+2003-09-19 03:59  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-19 01:17  (ajdonnison)
 ---------------------------------
 modules/projects/addedit.php
@@ -486,18 +498,6 @@ ChangeLog
 ---------------------------------
 modules/projects/vw_idx_proposed.php
 - Added the"proposed projects" in the projects module. The user is able to activate (change status) the project using the "update projects status" button at the bottom.
-
-2003-08-27 14:06  (jcgonz)
----------------------------------
-functions/projects_func.php
-modules/help/en/projects.index.hlp
-modules/projects/index.php
-modules/projects/vw_idx_active.php
-- Added the 'proposed projects' in the projects module. The user is able to activate (change status) the project using the 'update projects status' button at the bottom.
-
-2003-08-27 04:09  (kripper)
----------------------------------
-ChangeLog
 ...
 
 (This file has been wrapped)
