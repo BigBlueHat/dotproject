@@ -35,7 +35,7 @@ SELECT a.*,
 FROM projects, tasks AS a, user_tasks
 LEFT JOIN tasks AS b ON a.task_id=b.task_parent
 WHERE user_tasks.task_id = a.task_id
-#	AND b.task_id IS NULL
+	AND b.task_id IS NULL
 	AND user_tasks.user_id = $AppUI->user_id
 	AND a.task_precent_complete != 100
 	AND project_id = a.task_project

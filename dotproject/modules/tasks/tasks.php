@@ -10,7 +10,85 @@
 	* $min_view: hide some elements when active (used in the vw_tasks.php)
 	* $project_id
 	* $f
+	* $query_string
 */
+
+if(!isset($query_string)) $query_string="./index.php?m=$m&a=$a";
+
+// process reordering actions
+
+// TODO: requires to know the neworder
+
+if(isset($movetask)) {
+	if($movetask == "u")
+	{
+		/*
+		// move up tasks with low order 
+		$sql = "update tasks set task_order = task_order - 1 where task_order < $order";
+		mysql_query($sql);
+		echo mysql_error();
+		
+		// select tasks in same level as the task to be moved
+		$sql = "select task_id, task_order from tasks where task_project = $task_project and task_order = $order order by task_order";
+		$last_task_id = -1;
+		$arr = mysql_query($sql);
+		while($row = mysql_fetch_array($arr)) {
+			// scroll task
+			mysql_query("update tasks set task_order = task_order - 1 where task_id = " . $row["task_id"]);
+			echo mysql_error();
+			
+			if($row["task_id"] == $task_id) {
+				// we reached the task to be moved
+				
+				// move previous task down
+				if($last_task_id != -1) {
+					mysql_query("update tasks set task_order = task_order + 1 where task_id = $last_task_id");
+					echo mysql_error();					
+				}
+				
+				// stop scrolling
+				break;
+			}
+			
+			$last_task_id = $row["task_id"];
+		}
+		*/
+		
+		$sql = "select task_id, task_order from tasks where task_project = $task_project and task_parent = task_id and task_order <= $order and task_id != $task_id order by task_order desc";
+		$dsql = mysql_query($sql);
+		if($darr = mysql_fetch_array($dsql)){
+			$neworder = $darr["task_order"] - 1;
+			
+			$sql = "update tasks set task_order = task_order -1 where task_order <= $neworder";
+			//echo $sql;
+			mysql_query($sql);
+			echo mysql_error();
+			
+			
+			$sql = "update tasks set task_order = $neworder where task_id = $task_id";
+			//echo $sql;
+			mysql_query($sql);
+			echo mysql_error();
+		}
+	}
+	else if($movetask == "d")
+	{
+		$sql = "select task_id, task_order from tasks where task_project = $task_project  and task_parent = task_id and task_order >= $order and task_id != $task_id  order by task_order";
+		$dsql = mysql_query($sql);
+		if($darr = mysql_fetch_array($dsql)){
+			$neworder = $darr["task_order"] + 1;
+			
+			$sql = "update tasks set task_order = task_order +1 where task_order >= $neworder";
+			//echo $sql;
+			mysql_query($sql);
+			
+			
+			$sql = "update tasks set task_order = $neworder where task_id = $task_id";
+			//echo $sql;
+			mysql_query($sql);
+		}
+	}
+}
 
 // pull valid projects and their percent complete information
 
@@ -116,7 +194,7 @@ $crumbs["?m=tasks&a=todo"] = "my todo";
 //This kludgy function echos children tasks as threads
 
 function showtask( &$a, $level=0 ) {
-	global $done;
+	global $done, $query_string;
 	$done[] = $a['task_id']; ?>
 	<tr>
 	<td><a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
@@ -141,8 +219,8 @@ function showtask( &$a, $level=0 ) {
 	?>
 	
 	<img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?php echo $a["task_id"];?>">
-	<map name="arrow<?php echo $a["task_id"];?>"><area coords="0,0,10,7" href=<?php echo "./index.php?m=tasks&a=reorder&task_project=" . $a["task_project"] . "&task_id=" . $a["task_id"] . "&order=" . $a["task_order"] . "&w=u";?>>
-	<area coords="0,8,10,14" href=<?php echo "./index.php?m=tasks&a=reorder&task_project=" . $a["task_project"] . "&task_id=" . $a["task_id"] . "&order=" . $a["task_order"] . "&w=d";?>></map>
+	<map name="arrow<?php echo $a["task_id"];?>"><area coords="0,0,10,7" href=<?php echo $query_string . "&task_project=" . $a["task_project"] . "&task_id=" . $a["task_id"] . "&order=" . $a["task_order"] . "&movetask=u"; ?>>
+	<area coords="0,8,10,14" href=<?php echo $query_string . "&task_project=" . $a["task_project"] . "&task_id=" . $a["task_id"] . "&order=" . $a["task_order"] . "&movetask=d";?>></map>
 
 
 	<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a></td>
