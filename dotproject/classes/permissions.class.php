@@ -204,7 +204,7 @@ class dPacl extends gacl_api {
 		// Check to see if we are allowed to see other users.
 		// If not we can only see ourselves.
 		global $AppUI;
-		$canViewUsers = $this->checkModule('admin', 'view');
+		$canViewUsers = $this->checkModule('users', 'view');
     $sql = "select user_id from users";
     $res = db_exec($sql);
     $userlist = array();
