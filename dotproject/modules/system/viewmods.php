@@ -8,9 +8,8 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$sql = "SELECT * FROM modules ORDER BY mod_ui_order";
+$sql = "SELECT * FROM modules WHERE mod_name<>'Public' ORDER BY mod_ui_order";
 $modules = db_loadList( $sql );
-
 // get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs( "modules" );
 
@@ -74,8 +73,10 @@ foreach ($modules as $row) {
 	}
 
 // check for upgrades
-
-	$ok = @include_once( "{$dPconfig['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
+        $ok = file_exists( "{$dPconfig['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
+        if ($ok)
+                include_once( "{$dPconfig['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
+//	$ok = @include_once( "{$dPconfig['root_dir']}/modules/".$row['mod_directory']."/setup.php" );
 	if ( $ok )
 	{
 		if ( $config[ 'mod_version' ] != $row['mod_version'] && $canEdit )
