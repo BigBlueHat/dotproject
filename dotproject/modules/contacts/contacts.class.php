@@ -106,7 +106,7 @@ class CContact extends CDpObject{
 		if ($this->is_alpha($this->contact_department))
 			$sql .= " where dept_name = '" . $this->contact_department . "'";
 		else
-			$sql .= " where dept_id = '" . $this->cotnact_department . "'";
+			$sql .= " where dept_id = '" . $this->contact_department . "'";
 		db_loadHash($sql, $result);
 		return $result;
 	}
