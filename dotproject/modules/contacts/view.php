@@ -11,7 +11,7 @@ $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 $msg = '';
 $row = new CContact();
 $canDelete = $row->canDelete( $msg, $contact_id );
-$canEdit = $perms->checkModuleItem($m, "edit", $item_id);
+$canEdit = $perms->checkModuleItem($m, "edit", $contact_id);
 
 if (!$row->load( $contact_id ) && $contact_id > 0) {
 	$AppUI->setMsg( 'Contact' );
@@ -22,6 +22,10 @@ if (!$row->load( $contact_id ) && $contact_id > 0) {
 // check only owner can edit
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+
+// Get the contact details for company and department
+$company_detail = $row->getCompanyDetails();
+$dept_detail = $row->getDepartmentDetails();
 
 // setup the title block
 $ttl = "View Contact";
@@ -78,7 +82,7 @@ function delIt(){
 		</tr>
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Company');?>:</td>
-			<td nowrap><?php echo @$row->getCompanyName();?></td>
+			<td nowrap><?php echo $company_detail['company_name'];?></td>
 		</tr>
 <?php
         if (isset($_SESSION['all_tabs']['departments']))
@@ -86,7 +90,7 @@ function delIt(){
 ?>
 		<tr>
 			<td align="right" width="100"><?php echo $AppUI->_('Department');?>:</td>
-			<td nowrap><?php echo @$row->contact_department;?></td>
+			<td nowrap><?php echo $dept_detail['dept_name'];?></td>
 		</tr>
 <?php } ?>
 		<tr>

@@ -35,9 +35,8 @@
 		$update_address     = isset($_POST["overwrite_address"]);
 			
 		if($table_name == "companies"){
-			$update_fields = array("company_name"     => "contact_company");
 			if($update_address){
-				$update_fields += array("company_address1" => "contact_address1",
+				$update_fields = array("company_address1" => "contact_address1",
 				                       "company_address2" => "contact_address2",
 				                       "company_city"     => "contact_city",
 				                       "company_state"    => "contact_state",
@@ -45,17 +44,18 @@
 				                       "company_phone1"   => "contact_phone",
 				                       "company_phone2"   => "contact_phone2");
 			}
-			$data_update_script = "opener.window.company_id = ".$_POST[$id_field].";";
+			$data_update_script = "opener.setCompany('".$_POST[$id_field]."', '" . $r_data[$name_field] . "');\n";
 		} else if($table_name == "departments"){
 			$update_fields = array("dept_name"     => "contact_department");
 			if($update_address){
-				$update_fields += array("dept_address1" => "contact_address1",
+				$update_fields = array("dept_address1" => "contact_address1",
 				                       "dept_address2" => "contact_address2",
 				                       "dept_city"     => "contact_city",
 				                       "dept_state"    => "contact_state",
 				                       "dept_zip"      => "contact_zip",
 				                       "dept_phone"   => "contact_phone");
 			}
+			$data_update_script = "opener.setDepartment('" . $_POST[$id_field] . "', '" . $r_data[$name_field] . "');\n";
 		}
 	
 		// Let's figure out which fields are going to

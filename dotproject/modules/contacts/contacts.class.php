@@ -61,6 +61,17 @@ class CContact extends CDpObject{
 		return NULL; // object is ok
 	}
 	
+	function is_alpha($val)
+	{
+		// If the field consists solely of numerics, then we return it as an integer
+		// otherwise we return it as an alpha
+
+		$numval = strtr($val, "012345678", "999999999");
+		if (count_chars($numval, 3) == '9')
+			return false;
+		return true;
+	}
+
 	function getCompanyID(){
 		$sql = "select company_id from companies where company_name = '" . $this->contact_company . "'";
 		$company_id = db_loadResult( $sql );
@@ -72,6 +83,33 @@ class CContact extends CDpObject{
 		$company_name = db_loadResult( $sql );
 		return $company_name;
  	}
+
+	function getCompanyDetails() {
+		$result = array('company_id' => 0, 'company_name' => '');
+		if (! $this->contact_company)
+			return $result;
+
+		$sql = "select company_id, company_name from companies";
+		if ($this->is_alpha($this->contact_company))
+			$sql .= " where company_name = '" . $this->contact_company . "'";
+		else
+			$sql .= " where company_id = '" . $this->contact_company . "'";
+		db_loadHash($sql, $result);
+		return $result;
+	}
+
+	function getDepartmentDetails() {
+		$result = array('dept_id' => 0, 'dept_name' => '');
+		if (! $this->contact_department)
+			return $result;
+		$sql = "select dept_id, dept_name from departments";
+		if ($this->is_alpha($this->contact_department))
+			$sql .= " where dept_name = '" . $this->contact_department . "'";
+		else
+			$sql .= " where dept_id = '" . $this->cotnact_department . "'";
+		db_loadHash($sql, $result);
+		return $result;
+	}
 	
 }
 ?>
