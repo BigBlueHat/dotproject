@@ -1,3 +1,38 @@
+2003-12-17 00:41  (robertoibarra)
+---------------------------------
+index.php
+- Windows workaround: Windows doesn´t use standard ISO codes for locales, a switch statement was added to change the locale from the db to something windows understands.
+
+2003-12-16 23:41  (robertoibarra)
+---------------------------------
+locales/en/projects.inc
+modules/companies/vw_depts.php
+- FIX: User performance % was calculated the other way around
+
+2003-12-16 23:03  (robertoibarra)
+---------------------------------
+locales/en/contacts.inc
+locales/en/files.inc
+locales/en/public.inc
+locales/en/tasks.inc
+modules/companies/view.php
+modules/contacts/addedit.php
+modules/departments/addedit.php
+modules/files/addedit.php
+modules/tasks/addedit.php
+modules/tasks/vw_log_update.php
+- Visual fixes
+
+2003-12-16 19:24  (jcgonz)
+---------------------------------
+modules/departments/vw_contacts.php
+- Now departments can show off contacts related to them
+
+2003-12-16 09:21  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-15 20:54  (robertoibarra)
 ---------------------------------
 classes/ui.class.php
@@ -463,41 +498,6 @@ modules/files/index_table.php
 modules/help/en/tasks.addedit.hlp
 - Added brief 'dynamic tasks' definition.
 
-2003-11-13 06:43  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-11-12 21:47  (jcgonz)
----------------------------------
-modules/companies/vw_companies.php
-- Solved a little bug with the search feature
-
-2003-11-12 21:43  (jcgonz)
----------------------------------
-modules/companies/index.php
-modules/companies/vw_companies.php
-- Added search feature to the companies module and solve a problem with a query that ran twice
-
-2003-11-05 05:29  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-11-04 20:13  (ajdonnison)
----------------------------------
-modules/admin/do_user_aed.php
-- Added Tom Reinertson's patch to fix user edit errors.
-
-2003-11-04 20:12  (kripper)
----------------------------------
-locales/en/companies.inc
-- Added company type plurals.
-
-2003-11-04 20:11  (kripper)
----------------------------------
-modules/companies/index.php
-modules/companies/vw_companies.php
 ...
 
 (This file has been wrapped)
