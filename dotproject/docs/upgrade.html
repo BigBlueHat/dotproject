@@ -49,6 +49,7 @@ There is a configuration variable, <code>check_legacy_password</code>, that also
 <pre>$dPconfig['check_legacy_password'] = true;</pre>
 This will capture a password verified under the old encyption scheme and upgrade on the first successful login of the user.<br/>
 <br />
+<br />
 
 <strong>Backup Existing Database</strong><br />
 <emphasis>mysqldump -udp_user -pdp_pass dp_1_0_alpha > dp_1_0_alpha1_backup.sql</emphasis><br />
@@ -57,6 +58,8 @@ This will capture a password verified under the old encyption scheme and upgrade
 <strong>Upgrade the Database</strong><br />
 <emphasis>mysql -udp_user -pdp_pass dp_1_0_alpha < upgrade_100_alpha1_to_alpha2.sql</emphasis><br />
 <emphasis>mysql -udp_user -pdp_pass dp_1_0_alpha < upgrade_100_alpha2_to_beta1.sql</emphasis><br />
+<br />
+A new <code>temp</code> directory can be found under the <code>files/</code> directory.  This is used for the generation of temporary files (for example, PDF reports).  This directory will need to have permissions to make it writable from the web server.
 <br />
 
 </body>
