@@ -507,7 +507,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
         $projects = $task->getProject();
 	$tmp="<tr>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
-        $tmp .= "<input type=\"checkbox\" name=\"task_id$task->task_id\" value=\"$task->task_id\"/>";
+        $tmp .= "<input type=\"checkbox\" name=\"selected_task[$task->task_id]\" value=\"$task->task_id\"/>";
         $tmp.="</td>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
         if ($task->userPriority < 0) {

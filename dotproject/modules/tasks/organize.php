@@ -56,16 +56,20 @@ if ($selected && count( $selected )) {
 	{
 		if ($new_task == '0')
 			$new_task = $val;
-		if ( $_POST['include_children'] )
+		if ( isset($_POST['include_children']) && $_POST['include_children'])
 			$children = getChildren($val);
+		else
+			$children = array();
 		if ( $action == 'f') { 										// Mark FINISHED
 			// mark task as completed
-			$children = implode(', ', $children);
-			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id " . ($children)?"IN ($children, $val)":"=$val";
+			$childlist = false;
+			if (count($children))
+				$childlist = implode(', ', $children);
+			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id " . ($childlist)?"IN ($childlist, $val)":"=$val";
 		} else if ( $action == 'd' ) { 						// DELETE
 			// delete task
       $t = &new CTask();
-      if ($children)
+      if (count($children))
 				foreach($children as $child)
 				{
 					$t->load($child);
@@ -76,9 +80,8 @@ if ($selected && count( $selected )) {
 			$t->delete();
 			$sql = ''; //"DELETE FROM tasks WHERE task_id=$val";
 		} else if ( $action == 'm' ) { 						// MOVE
-			print_r($children);
-			if ($children)
-				db_loadList( "UPDATE tasks SET task_project=$new_project WHERE task_id IN (" . implode(', ', $children) . " )");
+			if (count($children))
+				db_exec( "UPDATE tasks SET task_project=$new_project WHERE task_id IN (" . implode(', ', $children) . " )");
 			$sql = "UPDATE tasks SET task_parent='$new_task', task_project='$new_project' WHERE task_id=$val";
 		} else if ( $action == 'c' ) { 						// COPY
 			$t = &new CTask();
@@ -91,9 +94,8 @@ if ($selected && count( $selected )) {
 				$t->task_parent = $t->task_id;
 			$t->store();
 			$new_id = $t->task_id;
-			if ($children != array())
-				foreach ($children as $child)
-				{
+			if (count($children)) {
+				foreach ($children as $child) {
 					$t->load($child);
 					$t = $t->copy($new_project);
 					// update parent only on top tasks, others stay same
@@ -101,6 +103,7 @@ if ($selected && count( $selected )) {
 						$t->task_parent = $new_id;
 					$t->store();
 				}
+			}
 			$sql = false;
 		} else if ( $action > -2 && $action < 2 ) { // Set PRIORITY
 			// set priority
@@ -110,8 +113,9 @@ if ($selected && count( $selected )) {
 			else
 				$sql .= "=$val";
 		}
-		if ($sql)
+		if ($sql) {
 			db_exec( $sql );
+		}
 	}
 }
 
@@ -142,7 +146,7 @@ if (count($allowedProjects))
 $sql .=   " GROUP BY task_id
 	ORDER BY $sort, task_priority DESC
 ";
-//echo "<pre>$sql</pre>";
+// echo "<pre>$sql</pre>";
 $tasks = db_loadList( $sql );
 
 $priorities = array(
@@ -326,7 +330,7 @@ foreach ($tasks as $task)
 		$ts[$t['task_id']] = $t['task_name'];
 ?>
 
-<input type="checkbox" name="include_children" />Include Children<br />
+<input type="checkbox" name="include_children" value='1' />Include Children<br />
 <table>
   <tr>
     <th>Action: </th>
