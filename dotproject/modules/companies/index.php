@@ -54,7 +54,7 @@ $rows = db_loadList( $sql );
 	<td nowrap><span class="title"><?php echo $AppUI->_('Clients & Companies');?></span></td>
 	<td align="right" width="100%">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class="button" value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
+		<input type="button" class="button" value="<?php echo $AppUI->_('new company');?>" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
 	<?php } ?>
 	</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_IDX' );?></td>

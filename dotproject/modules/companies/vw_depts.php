@@ -14,7 +14,7 @@ ORDER BY dept_parent
 ";
 ##echo $sql;
 if (!($rows = db_loadList( $sql, NULL ))) {
-	echo 'None Available<br>'.$AppUI->getMsg();
+	echo $AppUI->_('No data available').'<br>'.$AppUI->getMsg();
 } else {
 
 function showchild( &$a, $level=0 ) {

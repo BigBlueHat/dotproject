@@ -33,37 +33,37 @@ $crumbs["?m=admin&a=permissions&user_id=$user_id"] = "edit preferences";
 function submitIt(){
 	var form = document.changeuser;
 	if (form.user_username.value.length < 3) {
-		alert("Please enter a valid user name");
+		alert("<?php echo $AppUI->_('adminValidUserName');?>");
 		form.user_username.focus();
 	} else if (form.user_password.value.length < 4) {
-		alert("Please enter a valid password\n(greater than 4 chars).");
+		alert("<?php echo $AppUI->_('adminValidPassword');?>");
 		form.user_password.focus();
 	} else if (form.user_password.value !=  form.password_check.value) {
-		alert("Your passwords do not match).");
+		alert("<?php echo $AppUI->_('adminPasswordsDiffer');?>");
 		form.user_password.focus();
 	} else if (form.user_email.value.length < 4) {
-		alert("Your email is invalid, please try again.");
+		alert("<?php echo $AppUI->_('adminInvalidEmail');?>");
 		form.user_email.focus();
 	} else if (form.user_birthday.value.length > 0) {
 		dar = form.user_birthday.value.split("-");
 		if (dar.length < 3) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
+			alert("<?php echo $AppUI->_('adminInvalidBirthday');?>");
 			form.user_birthday.focus();
 		} else if (isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(parseInt(dar[2]))) {
-			alert("Please enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
+			alert("<?php echo $AppUI->_('adminInvalidBirthday');?>");
 			form.user_birthday.focus();
 		} else if (parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12) {
 		    // There appears to be a bug with this part of the Birthday Validation
 		    // Providing the single digit months (i.e. 1-9) in the MM format (01-09)
 		    // causes the validation function to fail. Can someone please fix and
 		    // remove this comment.  TIA (JRP 30 Aug 2002).
-			alert("The month you have provided is invalid (try M instead of MM).\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
+			alert("<?php echo $AppUI->_('adminInvalidMonth').' '.$AppUI->_('adminInvalidBirthday');?>");
 			form.user_birthday.focus();
 		} else if (parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31) {
-			alert("The day you have provided is invalid.\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
+			alert("<?php echo $AppUI->_('adminInvalidDay').' '.$AppUI->_('adminInvalidBirthday');?>");
 			form.user_birthday.focus();
 		} else if(parseInt(dar[0]) < 1900 || parseInt(dar[0]) > 2020) {
-			alert("The year you have provided is invalid.\n\nPlease enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank");
+			alert("<?php echo $AppUI->_('adminInvalidYear').' '.$AppUI->_('adminInvalidBirthday');?>");
 			form.user_birthday.focus();
 		} else {
 			form.submit();
