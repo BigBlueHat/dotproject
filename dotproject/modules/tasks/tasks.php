@@ -62,13 +62,12 @@ $where = $project_id ? "\ntask_project = $project_id" : 'project_active <> 0';
 
 switch ($f) {
 	case 'all':
-		$where .= "\nAND task_status > -1";
 		break;
 	case 'myproj':
-		$where .= "\nAND task_status > -1\n	AND project_owner = $AppUI->user_id";
+		$where .= "\n	AND project_owner = $AppUI->user_id";
 		break;
 	case 'mycomp':
-		$where .= "\nAND task_status > -1\n	AND project_company = $AppUI->user_company";
+		$where .= "\n	AND project_company = $AppUI->user_company";
 		break;
 	case 'myinact':
 		$from .= ", user_tasks";
@@ -76,15 +75,23 @@ switch ($f) {
 	AND task_project = projects.project_id
 	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id";
+		$_GET['inactive'] = -1;
 		break;
 	default:
 		$from .= ", user_tasks";
 		$where .= "
-	AND task_status > -1
 	AND task_project = projects.project_id
 	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id";
 		break;
+}
+
+$task_status = intval( dPgetParam( $_GET, 'task_status', null ) );
+
+if ($task_status === null) {
+	$where .= "\n	AND task_status > -1";
+} else {
+	$where .= "\n	AND task_status = '$task_status'";
 }
 
 // filter tasks considering task and project permissions
@@ -101,7 +108,7 @@ $where .= " AND ( ($projects_filter) )";
 $tsql = "SELECT $select FROM $from $join WHERE $where" .
   "\nORDER BY project_id, task_percent_complete, task_start_date";
 
-// echo "<pre>$tsql</pre>".db_error();
+//echo "<pre>$tsql</pre>";
 
 $ptrc = db_exec( $tsql );
 $nums = db_num_rows( $ptrc );
@@ -191,7 +198,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
 	<th width="15" align="center">&nbsp;</th>
 	<th width="200"><?php echo $AppUI->_('Task Name');?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Task Creator');?></th>	
+	<th nowrap="nowrap"><?php echo $AppUI->_('Task Creator');?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Duration');?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?></th>
