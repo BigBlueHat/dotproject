@@ -1,9 +1,17 @@
 <?php /* PROJECTS $Id$ */
-##
-## CProject Class
-##
+/**
+ *	@package dotProject
+ *	@subpackage modules
+ *	@version $Revision$
+*/
 
-class CProject {
+include_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getPearClass( 'Date' ) );
+
+/**
+ * The Project Class
+ */
+class CProject extends CDpObject {
 	var $project_id = NULL;
 	var $project_company = NULL;
 	var $project_department = NULL;
@@ -26,42 +34,22 @@ class CProject {
 	var $project_private = NULL;
 
 	function CProject() {
-		// empty constructor
+		$this->CDpObject( 'projects', 'project_id' );
 	}
 
 	function check() {
-		if (!$this->project_active) {
-			$this->project_active = '0';
-		}
-		if (!$this->project_private) {
-			$this->project_private = '0';
-		}
-		// TODO
+	// ensure changes of state in checkboxes is captured
+		$this->project_active = intval( $this->project_active );
+		$this->project_private = intval( $this->project_private );
+
 		return NULL; // object is ok
 	}
 
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		}
-		bindHashToObject( $hash, $this );
-	}
-
-	function store() {
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->project_id ) {
-			$ret = db_updateObject( 'projects', $this, 'project_id', false );
-		} else {
-			$ret = db_insertObject( 'projects', $this, 'project_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
+// overload canDelete
+	function canDelete( &$msg, $oid=null ) {
+		$tables[] = array( 'label' => 'Tasks', 'name' => 'tasks', 'idfield' => 'task_id', 'joinfield' => 'task_project' );
+	// call the parent class method to assign the oid
+		return CDpObject::canDelete( $msg, $oid, $tables );
 	}
 
 	function delete() {
