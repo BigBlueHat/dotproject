@@ -1,3 +1,92 @@
+2003-05-28 00:40  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Minor changes
+
+2003-05-28 00:38  (eddieajau)
+---------------------------------
+modules/projects/projects.class.php
+modules/projects/reports.php
+modules/projects/view.php
+- Added report handling
+
+2003-05-28 00:36  (eddieajau)
+---------------------------------
+modules/calendar/calendar.class.php
+- Update library class include
+
+2003-05-28 00:31  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Changed library include
+- Added function to read files in a directory
+- Added function to make a filename safe from malicious injection
+
+2003-05-28 00:30  (eddieajau)
+---------------------------------
+classes/date.class.php
+- Changed library include
+
+2003-05-28 00:29  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/en/projects.inc
+locales/en/tasks.inc
+docs/check.php
+docs/roadmap.html
+- no message
+
+2003-05-27 07:28  (eddieajau)
+---------------------------------
+style/default/main.css
+- no message
+
+2003-05-27 06:28  (eddieajau)
+---------------------------------
+modules/help/en/companies.addedit.hlp
+- no message
+
+2003-05-27 06:19  (eddieajau)
+---------------------------------
+modules/help/en/companies.view.hlp
+modules/help/en/general.breadcrumbs.hlp
+modules/help/en/projects.index.hlp
+modules/help/en/projects.view.hlp
+- no message
+
+2003-05-27 06:18  (eddieajau)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_complete.php
+- Added "Completed Project" tab
+
+2003-05-27 06:17  (eddieajau)
+---------------------------------
+modules/system/translate_save.php
+- Fixed strange bug in file save operation (seems to have gone away now)
+
+2003-05-27 06:16  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Added legacy hours worked to total hour count
+
+2003-05-27 06:16  (eddieajau)
+---------------------------------
+style/default/main.css
+- Lessen margin on ul tag
+
+2003-05-27 06:15  (eddieajau)
+---------------------------------
+locales/en/tasks.inc
+locales/en/common.inc
+- no message
+
+2003-05-24 04:32  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-23 08:07  (eddieajau)
 ---------------------------------
 style/default/login.php
@@ -409,95 +498,6 @@ docs/trouble.html
 - Initial upload
 
 2003-05-08 08:25  (korinek)
----------------------------------
-index.php
-locales/en/system.inc
-style/classic/header.php
-style/classic/login.php
-style/default/login.php
-- Charset updates
-
-2003-05-08 06:29  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-08 02:55  (eddieajau)
----------------------------------
-modules/calendar/week_view.php
-- Fixed bug with format
-
-2003-05-08 02:51  (eddieajau)
----------------------------------
-classes/date.class.php
-- Added back in missing method
-
-2003-05-08 02:47  (eddieajau)
----------------------------------
-modules/admin/admin.class.php
-modules/admin/do_perms_aed.php
-modules/admin/do_user_aed.php
-- Rework for class abstraction
-
-2003-05-08 02:45  (eddieajau)
----------------------------------
-modules/companies/vw_active.php
-modules/calendar/addedit.php
-modules/calendar/calendar.class.php
-modules/calendar/day_view.php
-modules/calendar/do_event_aed.php
-modules/calendar/index.php
-modules/calendar/links_events.php
-modules/calendar/links_tasks.php
-modules/calendar/view.php
-modules/calendar/vw_day_events.php
-modules/calendar/vw_day_tasks.php
-modules/calendar/week_view.php
-- Rework for new date handling
-
-2003-05-08 02:45  (eddieajau)
----------------------------------
-modules/files/addedit.php
-modules/files/do_file_aed.php
-modules/files/files.class.php
-modules/files/index.php
-modules/files/index_table.php
-- Rework for new date handling and class abstraction
-
-2003-05-08 02:43  (eddieajau)
----------------------------------
-modules/system/domodsql.php
-modules/system/system.class.php
-- Rework for class abstraction
-
-2003-05-08 02:41  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
-modules/tasks/do_updatetask.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/todo.php
-modules/tasks/view.php
-modules/tasks/viewgantt.php
-modules/tasks/vw_log_update.php
-modules/tasks/vw_logs.php
-modules/system/addeditpref.php
-modules/public/calendar.php
-modules/projects/addedit.php
-modules/projects/do_project_aed.php
-modules/projects/view.php
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_archived.php
-modules/forums/index.php
-modules/forums/view_messages.php
-modules/forums/view_topics.php
-modules/forums/viewer.php
-- Rework for new date handling
-
-2003-05-08 02:40  (eddieajau)
----------------------------------
-includes/config-dist.php
 ...
 
 (This file has been wrapped)
