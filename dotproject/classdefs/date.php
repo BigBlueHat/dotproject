@@ -100,6 +100,10 @@ class CDate
 	}
 
 /**************************************************** GETTERS ****/
+	function getStartSpaces() {
+		if( $this->change ) $this->_calc();
+		return ($this->weekday - $this->D % 7) + 1;
+	}
 
 	function getYear() {
 		if( $this->change ) $this->_calc();
