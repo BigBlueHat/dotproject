@@ -154,16 +154,13 @@ function showFullProject() {
                                 <?php echo arraySelect( $projFilter, 'proFilter', 'size=1 class=text', $proFilter, true );?>
                         </td>
                         <td valign="top">
-                                <input type="checkbox" name="showLabels" <?php echo (($showLabels==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show captions' );?>
+                                <input type="checkbox" name="showLabels" value='1' <?php echo (($showLabels==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show captions' );?>
                         </td>
                         <td valign="top">
-                                <input type="checkbox" name="showInactive" <?php echo (($showInactive==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show Inactive' );?>
+                                <input type="checkbox" value='1' name="showInactive" <?php echo (($showInactive==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show Inactive' );?>
                         </td>
                         <td valign="top">
-                                <input type="checkbox" name="showAllGantt" <?php echo (($showAllGantt==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show All Gantt' );?>
-                        </td>
-                        <td valign="top">
-                                <input type="checkbox" name="showTaskGantt" <?php if ($showTaskGantt) echo ("checked=true");?>><?php echo $AppUI->_( 'Show Task Gantt' );?>
+                                <input type="checkbox" value='1' name="showAllGantt" <?php echo (($showAllGantt==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show Tasks' );?>
                         </td>
                         <td align="left">
                                 <input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
@@ -196,24 +193,11 @@ function showFullProject() {
                 "?m=$m&a=gantt&suppressHeaders=1" .
                 ( $display_option == 'all' ? '' :
                         '&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
-                "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=".$showLabels."&proFilter=".$proFilter."&showInactive=".$showInactive."&company_id=".$company_id."&department=".$department."&dept_ids=".$dept_ids;
+                "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=$showLabels&proFilter=$proFilter&showInactive=$showInactive&company_id=$company_id&department=$department&dept_ids=$dept_ids&showAllGantt=$showAllGantt";
                 echo "<script>document.write('<img src=\"$src\">')</script>";
                 ?>
                         </td>
                 </tr>
-				<?php 	
-				if($showTaskGantt)
-				{
-					echo("<tr><td>");
-					$src =
-					"?m=$m&a=gantt2&suppressHeaders=1" .
-					( $display_option == 'all' ? '' :
-							'&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
-					"&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=".$showLabels."&proFilter=".$proFilter."&showInactive=".$showInactive."&company_id=".$company_id."&department=".$department."&dept_ids=".$dept_ids."&showTaskGantt=".$showTaskGantt;
-					echo "<script>document.write('<img src=\"$src\">')</script>";
-					echo("</td></tr>");
-				}
-				?>	
                 </table>
         </td>
 </tr>

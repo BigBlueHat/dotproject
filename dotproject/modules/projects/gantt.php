@@ -2,7 +2,7 @@
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
-global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;//, $showAllGantt;
+global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt;
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -12,6 +12,8 @@ $projectStatus = dPgetSysVal( 'ProjectStatus' );
 $projectStatus = arrayMerge( array( '-2' => $AppUI->_('All w/o in progress')), $projectStatus);
 $proFilter = dPgetParam($_REQUEST, 'proFilter', '-1');
 $company_id = dPgetParam($_REQUEST, 'company_id', 0);
+$showLabels = dPgetParam($_REQUEST, 'showLabels', 0);
+$showInactive = dPgetParam($_REQUEST, 'showInactive', 0);
 
 if ($proFilter == '-2'){
         $filter1[] = "project_status != 3 ";
@@ -216,7 +218,7 @@ foreach($projects as $p) {
 	$graph->Add($bar);
 
  	// If showAllGant checkbox is checked 
- 	if (true)//$showAllGantt)
+ 	if ($showAllGantt)
  	{
  		// insert tasks into Gantt Chart
  		
