@@ -21,6 +21,7 @@ WHERE companies.company_id = $company_id
 db_loadHash( $sql, $row );
 
 $pstatus = dPgetSysVal( 'ProjectStatus' );
+$types = dPgetSysVal( 'CompanyType' );
 
 $sql = "SELECT COUNT(user_company) FROM users WHERE user_company = $company_id";
 $canDelete = (db_loadResult( $sql ) < 1);
@@ -105,6 +106,10 @@ function delIt() {
 			<td class="hilite">
 				<a href="http://<?php echo @$row["company_primary_url"];?>" target="Company"><?php echo @$row["company_primary_url"];?></a>
 			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
+			<td class="hilite"><?php echo $types[@$row["company_type"]];?></td>
 		</tr>
 		</table>
 

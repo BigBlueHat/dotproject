@@ -6,6 +6,8 @@ if (isset( $_GET['orderby'] )) {
 }
 $orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
 
+$types = dPgetSysVal( 'CompanyType' );
+
 // get any companies denied from viewing
 $deny = array();
 $sql = "
@@ -22,7 +24,7 @@ while ($row = db_fetch_row( $res )) {
 }
 
 $sql = "
-SELECT company_id, company_name,
+SELECT company_id, company_name, company_type,
 	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
 	user_first_name, user_last_name
 FROM permissions, companies
@@ -65,6 +67,9 @@ $titleBlock->show();
 	<th nowrap="nowrap">
 		<a href="?m=companies&orderby=inactive" class="hdr"><?php echo $AppUI->_('Archived Projects');?></a>
 	</th>
+	<th nowrap="nowrap">
+		<a href="?m=companies&orderby=company_type" class="hdr"><?php echo $AppUI->_('Type');?></a>
+	</th>
 </tr>
 <?php
 $s = '';
@@ -74,6 +79,7 @@ foreach ($rows as $row) {
 	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '">' . $row["company_name"] .'</a></td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $row["countp"] . '</td>';
 	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . @$row["inactive"] . '</td>';
+	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $types[@$row["company_type"]] . '</td>';
 	$s .= $CR . '</tr>';
 }
 echo "$s\n";

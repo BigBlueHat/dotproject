@@ -9,6 +9,8 @@ if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
+$types = dPgetSysVal( 'CompanyType' );
+
 // pull data
 $sql = "
 SELECT companies.*,users.user_first_name,users.user_last_name
@@ -135,9 +137,11 @@ function testURL( x ) {
 </tr>
 	
 <tr>
-	<td align="right"><?php echo $AppUI->_('Is a Provider');?>:</td>
+	<td align="right"><?php echo $AppUI->_('Type');?>:</td>
 	<td>
-	<input type=checkbox name=company_is_provider value=1 <?php echo (@$company["company_is_provider"] || @$_GET['provider']) ? "checked" : "" ?>>
+<?php
+	echo arraySelect( $types, 'company_type', 'size="1" class="text"', @$company["company_type"] );
+?>
 	</td>
 </tr>	
 
