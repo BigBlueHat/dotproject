@@ -1,7 +1,5 @@
 <?php
 $project_id = isset($HTTP_GET_VARS['project_id']) ? $HTTP_GET_VARS['project_id'] : 0;
-// view mode = 0 tabbed, 1 flat
-$vm = isset($HTTP_GET_VARS['vm']) ? $HTTP_GET_VARS['vm'] : 0;
 
 // check permissions
 $denyRead = getDenyRead( $m, $project_id );
@@ -159,40 +157,12 @@ if (strlen( $prow["project_actual_end_date"] ) ==0) {
 	</td>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
-<tr>
-	<td>
-		<a href="./index.php?m=projects&a=view&project_id=<?php echo $project_id;?>&vm=0">tabbed</a> :
-		<a href="./index.php?m=projects&a=view&project_id=<?php echo $project_id;?>&vm=1">flat</a>
-	</td>
-</tr>
-</table>
-
 <?php	
-$tabs = array(
-	'tasks' => 'Tasks',
-	'forums' => 'Forums',
-	'files' => 'Files'
-);
-
-if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
-<?php
-	foreach ($tabs as $k => $v) {
-		echo "<tr><td><b>$v</b></td></tr>";
-		echo "<tr><td>";
-		include "vw_$k.php";
-		echo "</td></tr>";
-	}
+// tabbed information boxes
+$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 0;
+$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "./modules/projects", $tab );
+$tabBox->add( 'vw_tasks', 'Tasks' );
+$tabBox->add( 'vw_forums', 'Forums' );
+$tabBox->add( 'vw_files', 'Files' );
+$tabBox->show();
 ?>
-</table>
-<?php 
-} else {
-	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'tasks';
-	drawTabBox( $tabs, $tab, "./index.php?m=projects&a=view&project_id=$project_id", "./modules/projects" );
-}
-
-?>
-
-
-

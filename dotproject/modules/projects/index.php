@@ -18,7 +18,8 @@ $company_id = isset($_REQUEST["company_id"]) ? $_REQUEST["company_id"] : $thisus
 $orderby = isset($HTTP_GET_VARS["orderby"]) ? $HTTP_GET_VARS["orderby"] : 'project_end_date';
 // view mode = 0 tabbed, 1 flat
 
-$active = ($tab == 'idx_archived') ? 0 : 1;
+$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 0;
+$active = $tab ? 0 : 1;
 
 // get read denied projects
 $dsql = "
@@ -95,15 +96,10 @@ while ($row = mysql_fetch_row( $crc )) {
 </form>
 </table>
 
-<img src="images/shim.gif" width="1" height="10" alt="" border="0"><br>
-
 <?php	
-$tabs = array(
-	'idx_active' => 'Active',
-	'idx_archived' => 'Archived'
-);
-
-$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'idx_active';
-drawTabBox( $tabs, $tab, "./index.php?m=projects&company_id=$company_id&order_by=$order_by", "./modules/projects" );
-
+// tabbed information boxes
+$tabBox = new CTabBox( "?m=projects&company_id=$company_id&order_by=$order_by", "./modules/projects", $tab );
+$tabBox->add( 'vw_idx_active', 'Active' );
+$tabBox->add( 'vw_idx_archived', 'Archived' );
+$tabBox->show();
 ?>
