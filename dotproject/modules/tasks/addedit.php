@@ -446,6 +446,7 @@ function calcDuration() {
 	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
 	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
 	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
+	var daily_working_hours = <?php echo $AppUI->getConfig('daily_working_hours'); ?>;	
 	
 	var f = document.editFrm;
 	var int_st_date = new String(f.task_start_date.value + f.start_hour.value + f.start_minute.value);
@@ -478,8 +479,8 @@ function calcDuration() {
 
 	if (durnType == 1){
 		var hours = durn % 24;
-		//if hours > 8 than we need to sum distance between start_hours and cal_day_end AND between end_hours and cal_day_end
-		if (hours > 8) {
+		//if hours > daily_working_hours than we need to sum distance between start_hours and cal_day_end AND between end_hours and cal_day_end
+		if (hours > daily_working_hours) {
 			var a = cal_day_end - sDate.getHours();
 			var b = eDate.getHours() - cal_day_start;
 			hours = a + b;
