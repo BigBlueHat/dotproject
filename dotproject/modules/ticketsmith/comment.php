@@ -28,8 +28,8 @@ if (@$comment) {
 
     /* prepare fields */
     list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
-    $subject = addslashes( query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'") );
-	$comment = addslashes( $comment );
+	$subject = db_escape( query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'") );
+	$comment = db_escape( $comment );
     $author = $author_name . " <" . $author_email . ">";
     $timestamp = time();
     $body = escape_string($body);
@@ -37,7 +37,7 @@ if (@$comment) {
     /* prepare query */
     $query = "INSERT INTO tickets (author, subject, body, timestamp, type, parent, assignment) ";
     $query .= "VALUES ('$author','$subject','$comment','$timestamp','Staff Comment','$ticket_parent','9999')";
-echo $query; die;
+
     /* insert comment */
     do_query($query);
 
