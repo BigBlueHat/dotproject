@@ -76,15 +76,20 @@ ORDER BY user_first_name, user_last_name
 ";
 $users = db_loadHashList( $sql );
 
-//Pull users on this task
-$sql = "
-SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
-FROM users u, user_tasks t
-WHERE t.task_id =$task_id
-	AND t.task_id <> 0
-	AND t.user_id = u.user_id
-";
-$assigned = db_loadHashList( $sql );
+if ( $task_id == 0 ) {
+	// Add task creator to assigned users by default
+	$assigned = array($AppUI->user_id => "$AppUI->user_first_name $AppUI->user_last_name");
+} else {
+	// Pull users on this task
+	$sql = "
+			 SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
+			   FROM users u, user_tasks t
+			 WHERE t.task_id =$task_id
+			 AND t.task_id <> 0
+			 AND t.user_id = u.user_id
+			 ";
+	$assigned = db_loadHashList( $sql );
+}
 
 // Pull tasks for the parent task list
 $sql="
@@ -387,7 +392,7 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
-					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 0;?>" />
+					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 1;?>" />
 				<?php
 					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
 				?>
