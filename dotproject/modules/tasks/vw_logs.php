@@ -1,6 +1,7 @@
 <?php /* TASKS $Id$ */
 global $AppUI, $task_id, $df, $canEdit, $m;
 
+$problem = intval( dPgetParam( $_GET, 'problem', null ) );
 // get sysvals
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 $taskLogReferenceImage = dPgetSysVal( 'TaskLogReferenceImage' );
@@ -46,8 +47,8 @@ $sql = "
 SELECT task_log.*, user_username
 FROM task_log
 LEFT JOIN users ON user_id = task_log_creator
-WHERE task_log_task = $task_id
-ORDER BY task_log_date
+WHERE task_log_task = $task_id". ($problem ? " AND task_log_problem > '0'" : '') .
+" ORDER BY task_log_date
 ";
 $logs = db_loadList( $sql );
 
