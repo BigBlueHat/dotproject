@@ -77,6 +77,14 @@ switch ($f) {
 	AND user_tasks.task_id = tasks.task_id";
 		$_GET['inactive'] = -1;
 		break;
+	case 'myunfinished':
+		$from .= ", user_tasks";
+		$where .= "
+	AND task_project = projects.project_id
+	AND user_tasks.user_id = $AppUI->user_id
+	AND user_tasks.task_id = tasks.task_id
+	AND task_percent_complete < '100'";
+		break;
 	default:
 		$from .= ", user_tasks";
 		$where .= "
