@@ -69,6 +69,7 @@ if ($canEdit) {
 		$titleBlock->addCrumbDelete( 'delete project', $canDelete, $msg );
 	}
 }
+$titleBlock->addCrumb( "?m=projects&a=reports&project_id=$project_id", "reports" );
 $titleBlock->show();
 ?>
 <script language="javascript">
