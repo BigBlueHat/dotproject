@@ -31,6 +31,7 @@ CREATE TABLE companies (
   company_owner int(11) NOT NULL default '0',
   company_description tinytext,
   company_is_provider BOOL NOT NULL default 0,
+  company_email varchar(30),
   PRIMARY KEY  (company_id)
 ) TYPE=MyISAM;
 

@@ -260,7 +260,10 @@ INSERT INTO syskeys VALUES("1", "SelectList", "Enter values for list", "0", "\n"
 INSERT INTO sysvals VALUES("1", "1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
 
 #
-# Add "is provider" flag (22/Feb/2003)
+# Add "is provider" flag
+# and "email" in companies table
+# (22/Feb/2003)
 #
 
 alter table companies add column company_is_provider BOOL NOT NULL default 0;
+alter table companies add column company_email varchar(30);
