@@ -49,9 +49,9 @@ if (!db_loadObject( $sql, $obj )) {
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 // create Date objects from the datetime fields
-$start_date = $obj->project_start_date ? new Date( $obj->project_start_date ) : null;
-$end_date = $obj->project_end_date ? new Date( $obj->project_end_date ) : null;
-$actual_end_date = $obj->project_actual_end_date ? new Date( $obj->project_actual_end_date ) : null;
+$start_date = intval( $obj->project_start_date ) ? new Date( $obj->project_start_date ) : null;
+$end_date = intval( $obj->project_end_date ) ? new Date( $obj->project_end_date ) : null;
+$actual_end_date = intval( $obj->project_actual_end_date ) ? new Date( $obj->project_actual_end_date ) : null;
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Project', 'applet3-48.png', $m, "$m.$a" );

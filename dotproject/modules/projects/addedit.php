@@ -35,13 +35,8 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 $start_date = new Date( $obj->project_start_date );
 
-$end_date = $obj->project_end_date ? new Date( $obj->project_end_date ) : null;
-
-if ($obj->project_actual_end_date) {
-	$actual_end_date = new Date( $obj->project_actual_end_date );
-} else {
-	$actual_end_date = null;
-}
+$end_date = intval( $obj->project_end_date ) ? new Date( $obj->project_end_date ) : null;
+$actual_end_date = intval( $obj->project_actual_end_date ) ? new Date( $obj->project_actual_end_date ) : null;
 
 // setup the title block
 $ttl = $project_id > 0 ? "Edit Project" : "New Project";

@@ -41,8 +41,8 @@ $titleBlock->show();
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 if ($event_id) {
-	$start_date = $obj->event_start_date ? new Date( $obj->event_start_date ) : null;
-	$end_date = $obj->event_end_date ? new Date( $obj->event_end_date ) : $start_date;
+	$start_date = intval( $obj->event_start_date ) ? new Date( $obj->event_start_date ) : null;
+	$end_date = intval( $obj->event_end_date ) ? new Date( $obj->event_end_date ) : $start_date;
 } else {
 	$start_date = new Date();
 	$start_date->setTime( 8,0,0 );
