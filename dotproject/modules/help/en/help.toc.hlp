@@ -1,74 +1,25 @@
 <!-- $Id$ -->
 <table cellspacing="2" cellpadding="4" border="0" class="tbl" width="100%">
 <tr>
-	<td width="50%" valign="top">
+	<td width="100%" valign="top">
 		<p>
-			<strong>dotProject 1.0</strong>
+			<strong>dotProject Online Assistance</strong>
 			<br />
-			<br /><a href="?m=help&dialog=1&hid=overview.about">About dotProject</a>
-			<br /><a href="?m=help&dialog=1&hid=overview.license">License</a>
-			<br /><a href="?m=help&dialog=1&hid=overview.features">Features</a>
-			<br /><a href="?m=help&dialog=1&hid=overview.whatsnew">What's New</a>
-			<br /><a href="?m=help&dialog=1&hid=overview.usermods">User Mods</a>
-		</p>
-		<p>
-			<strong>Installation</strong>
+			<br />We have invented five places for your assistance. Please remember that all of these places are not one-way: You can help others as well by contributing.
 			<br />
-			<br /><a href="?m=help&dialog=1&hid=install.upgrade">Upgrading</a>
-			<br /><a href="?m=help&dialog=1&hid=install.system">System Requirements</a>
-			<br /><a href="?m=help&dialog=1&hid=install.install">Installing dotProject</a>
-			<br /><a href="?m=help&dialog=1&hid=install.trouble">Troubleshooting dotProject</a>
-			<br /><a href="?m=help&dialog=1&hid=install.configure">Configuring dotProject</a>
-		</p>
-		<p>
-			<strong>General Concepts</strong>
+			<br />The <a href="http://sites.sakienvirotech.com/dp_docs/tiki/tiki-index.php?page=Introduction" target="_blank">dotProject Online Documentation</a>
+			is intended to provide you with informations about how to use dotProject (e.g. explanation of modules, features ...).
 			<br />
-			<br /><a href="?m=help&dialog=1&hid=general.topmenu">Top Menu</a>
-			<br /><a href="?m=help&dialog=1&hid=general.leftnav">Left Navigation</a>
-			<br /><a href="?m=help&dialog=1&hid=general.help">Getting Help</a>
-			<br /><a href="?m=help&dialog=1&hid=general.saveplace">Saving Your Place</a>
-			<br /><a href="?m=help&dialog=1&hid=general.breadcrumbs">Breadcrumbs</a>
-			<br /><a href="?m=help&dialog=1&hid=general.tabbox">Tabbed Boxes</a>
-		</p>
-		<p>
-			<strong>Getting Started</strong>
+			<br />Further Assistance can be found in the
+			<a href="http://www.dotproject.net/modules.php?op=modload&name=PNphpBB2&file=index" target="_blank">dotProject Support Forums</a>.
 			<br />
-			<br /><a href="?m=help&dialog=1&hid=start.overview">Overview</a>
-			<br /><a href="?m=help&dialog=1&hid=start.addcomp">Adding a Company</a>
-			<br /><a href="?m=help&dialog=1&hid=start.adduser">Adding a User</a>
-		</p>
-	</td>
-	<td width="50%" valign="top">
-		<p>
-			<strong>Screen Context Help</strong>
+			<br />Information about known problems and suggested enhancements can be read and submitted at the
+			<a href="http://www.dotproject.net/mantis/main_page.php" target="_blank">dotProject Bugs&Suggestions</a> site.
 			<br />
-			<br /><strong>Companies</strong>
-			<br /><a href="?m=help&dialog=1&hid=companies.index">Index</a>
-			<br /><a href="?m=help&dialog=1&hid=companies.view">View</a>
-			<br /><a href="?m=help&dialog=1&hid=companies.addedit">Add/Edit</a>
+			<br />If you're looking for Professional Support concerning dotProject, have a look at our
+			<a href="http://www.dotproject.net/modules.php?op=modload&name=Web_Links&file=index&req=viewlink&cid=4" target="_blank">Commercial Support</a> links collection.
 			<br />
-			<br /><strong>Contacts</strong>
-			<br /><a href="?m=help&dialog=1&hid=contacts.index">Index</a>
-			<br /><a href="?m=help&dialog=1&hid=contacts.addedit">Add, Edit or Delete Contacts</a>
-			<br />
-			<br /><strong>Forums</strong>
-			<br /><a href="?m=help&dialog=1&hid=forums.index">Index</a>
-			<br />
-			<br /><strong>Projects</strong>
-			<br /><a href="?m=help&dialog=1&hid=projects.index">Index</a>
-			<br /><a href="?m=help&dialog=1&hid=projects.view">View</a>
-			<br /><a href="?m=help&dialog=1&hid=projects.addedit">Add/Edit</a>
-			<br />
-			<br /><strong>Tasks</strong>
-			<br /><a href="?m=help&dialog=1&hid=tasks.index">Index</a>
-			<br /><a href="?m=help&dialog=1&hid=tasks.view">View</a>
-			<br /><a href="?m=help&dialog=1&hid=tasks.addedit">Add/Edit</a>
-			<br /><a href="?m=help&dialog=1&hid=tasks.todo">To Do</a>
-			<br />
-			<br /><strong>System Administration</strong>
-			<br /><a href="?m=help&dialog=1&hid=system.index">Index Page</a>
-			<br /><a href="?m=help&dialog=1&hid=system.addeditpref">User Preferences</a>
-			<br />
+			<br />If the other places didn't bring the expected results visit our IRC channel at irc.freenode.net: #dotproject.
 		</p>
 	</td>
 </tr>

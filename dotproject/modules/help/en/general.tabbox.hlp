@@ -1,6 +1,0 @@
-<!-- $Id$ -->
-<h2>Tabbed Boxes</h2>
-<p>dotproject uses a system of tabbed boxes (much like tabbed property pages in a dialog box) to present many areas of related information in a convenient way.  Click on the title in each tab to make that tab active. </p>
-<p>You are able to flip between a "tabbed" format and a "flat" format with the "tabbed : flat" breadcrumbs. </p>
-
-<p>You are able to configure for your user whether you see the breadcrumbs or whether you always see information in a tabbed or flat configuration only.  Select 'My Info' from the top menu and then select 'edit preferences'.  See Edit User Preferences for information on how to change your user preferences.</p>
