@@ -44,12 +44,6 @@ $titleBlock->addCell(
 	'<form action="?m=tasks" method="post" name="companyFilter">', '</form>'
 );
 
-$titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Filter') . ':' );
-$titleBlock->addCell(
-	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',
-	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>'
-);
-
 // patch 2.12.04 text to search entry box
 if (isset( $_POST['searchtext'] )) {
 	$AppUI->setState( 'searchtext', $_POST['searchtext']);
@@ -84,9 +78,20 @@ if ($canEdit && $project_id) {
 	);
 }
 
+$titleBlock->show();
+
 if ( dPgetParam( $_GET, 'inactive', '' ) == 'toggle' )
 	$AppUI->setState( 'inactive', $AppUI->getState( 'inactive' ) == -1 ? 0 : -1 );
 $in = $AppUI->getState( 'inactive' ) == -1 ? '' : 'in';
+
+// use a new title block (a new row) to prevent from oversized sites
+$titleBlock = new CTitleBlock('' );
+$titleBlock->showhelp = false;
+$titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Filter') . ':' );
+$titleBlock->addCell(
+	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',
+	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>'
+);
 
 $titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
 if (dPgetParam($_GET, 'pinned') == 1)
@@ -95,6 +100,7 @@ else
         $titleBlock->addCrumb( '?m=tasks&pinned=1', 'my pinned tasks' );
 $titleBlock->addCrumb( "?m=tasks&inactive=toggle", "show ".$in."active tasks" );
 $titleBlock->addCrumb( "?m=tasks&a=tasksperuser", "tasks per user" );
+
 $titleBlock->show();
 
 // include the re-usable sub view
