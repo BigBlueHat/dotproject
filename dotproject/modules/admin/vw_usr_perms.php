@@ -192,16 +192,12 @@ foreach ($tarr as $row){
 
 <table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
 <form name="frmPerms" method="post" action="?m=admin">
-<input type="hidden" name="del" value="0">
-<input type="hidden" name="dosql" value="perms_aed">
-<input type="hidden" name="user_id" value="<?php echo $user_id;?>">
-<input type="hidden" name="permission_user" value="<?php echo $user_id;?>">
-<input type="hidden" name="permission_id" value="0">
-<input type="hidden" name="permission_item" value="-1">
-<?php
-	$return = "m=admin&a=viewuser&user_id=$user_id" . ($tab ? "&tab=$tab" : '');
-?>
-<input type="hidden" name="return" value="<?php echo $return ;?>">
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="dosql" value="do_perms_aed" />
+	<input type="hidden" name="user_id" value="<?php echo $user_id;?>" />
+	<input type="hidden" name="permission_user" value="<?php echo $user_id;?>" />
+	<input type="hidden" name="permission_id" value="0" />
+	<input type="hidden" name="permission_item" value="-1" />
 <tr>
 	<th colspan="2"><?php echo $AppUI->_('Add or Edit Permissions');?></th>
 </tr>

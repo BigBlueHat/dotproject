@@ -120,9 +120,10 @@ function setCalendar( uts, fdate ) {
 </script>
 
 <table cellspacing="1" cellpadding="2" border="0" width="100%" class="std">
-<form name="changeevent" action="?m=calendar&a=do_event_aed" method="post">
-<input type="hidden" name="event_id" value="<?php echo $event_id;?>">
-<input type="hidden" name="event_project" value="0">
+<form name="changeevent" action="?m=calendar" method="post">
+	<input type="hidden" name="dosql" value="do_event_aed" />
+	<input type="hidden" name="event_id" value="<?php echo $event_id;?>" />
+	<input type="hidden" name="event_project" value="0" />
 
 <tr>
 	<td width="33%" align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Event Title' );?>:</td>

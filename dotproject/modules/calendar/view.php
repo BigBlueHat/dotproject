@@ -56,9 +56,10 @@ function delIt() {
 
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
-<form name="frmDelete" action="./index.php?m=calendar&a=do_event_aed" method="post">
-<input type="hidden" name="del" value="1" />
-<input type="hidden" name="event_id" value="<?php echo $event_id;?>" />
+<form name="frmDelete" action="./index.php?m=calendar" method="post">
+	<input type="hidden" name="dosql" value="do_event_aed" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="event_id" value="<?php echo $event_id;?>" />
 </form>
 
 <tr>
