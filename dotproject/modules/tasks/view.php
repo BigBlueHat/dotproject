@@ -247,11 +247,11 @@ function updateTask(){
 				<TABLE width="100%" cellspacing=1>
 					<TR>
 						<TD align=right>Start Date:</TD>
-						<TD bgcolor="#eeeeee" width="300"><?echo substr($prow["task_start_date"], 0, 10);?></td>
+						<TD bgcolor="#eeeeee" width="300"><?echo fromDate(substr($prow["task_start_date"], 0, 10));?></td>
 					</TR>
 					<TR>
 						<TD align=right>End Date:</TD>
-						<TD bgcolor="#eeeeee" width="300"><?if(intval($prow["task_end_date"]) == 0){echo "n/a";}else{echo substr($prow["task_end_date"], 0, 10);}?></td>
+						<TD bgcolor="#eeeeee" width="300"><?if(intval($prow["task_end_date"]) == 0){echo "n/a";}else{echo fromDate(substr($prow["task_end_date"], 0, 10));}?></td>
 					</tr>
 					<TR>
 						<TD align=right>Expected Duration:</td>
@@ -317,8 +317,8 @@ function updateTask(){
 	<TR bgcolor="white">
 		<TD width="100"><?echo $row["comment_title"];?></td>
 		<TD width="100"><?echo $row["user_username"];?></td>
-		<TD><?echo $row["comment_body"];?></td>
-		<TD width="150"><?echo $row["comment_date"];?></td>
+		<TD><?$newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
+		<TD width="150"><?echo fromDate($row["comment_date"]);?></td>
 	
 	</tr>
 	

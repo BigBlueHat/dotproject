@@ -1,4 +1,5 @@
 <?
+
 if(empty($project_id))$project_id =0;
 if(isset($HTTP_COOKIE_VARS["cookie_project"]))$project_id = $HTTP_COOKIE_VARS["cookie_project"];
 if(isset($HTTP_GET_VARS["cookie_project"]))$project_id = $HTTP_GET_VARS["cookie_project"];
@@ -38,7 +39,7 @@ $pull_tasks.= " order by project_id, task_order";
 
 $ptrc = mysql_query($pull_tasks);
 $nums = mysql_num_rows($ptrc);
-echo mysql_error();
+//echo mysql_error();
 $y = 0;
 $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 
@@ -60,7 +61,7 @@ group by project_id
 order by project_name";
 
 $pprc = mysql_query($ppsql);
-echo mysql_error();
+//echo mysql_error();
 $pnums = mysql_num_rows($pprc);
 
 for($x=0;$x<$pnums;$x++){
@@ -74,13 +75,6 @@ for($x=0;$x<$pnums;$x++){
 	);
 	
 	}
-
-
-
-
-
-
-
 
 
 //This kludgy function echos children tasks as threads
@@ -117,9 +111,9 @@ function findchild($parent, $level =0){
 		}?>
 		
 		<A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
-		<TD nowrap><?echo substr($tarr[$x]["task_start_date"], 0, 10);?></td>
+		<TD nowrap><?echo fromDate(substr($tarr[$x]["task_start_date"], 0, 10));?></td>
 				<TD><?
-			if($tarr[$x]["task_duration"] % 24 == 0 ){
+			if($tarr[$x]["task_duration"] > 24 ){
 				$dt = "day";
 				$dur = $tarr[$x]["task_duration"] / 24;
 			}
@@ -131,7 +125,7 @@ function findchild($parent, $level =0){
 				
 		
 		echo $dur . " " . $dt ;?></td>
-		<TD nowrap><?echo substr($tarr[$x]["task_end_date"], 0, 10);?></td>
+		<TD nowrap><?echo fromDate(substr($tarr[$x]["task_end_date"], 0, 10));?></td>
 		</tr>
 		<?
 
@@ -174,7 +168,7 @@ function findchild($parent, $level =0){
 		<TD class="mboxhdr" width="15" align="center">p</td>
 		<TD class="mboxhdr" width=200>task name</td>		
 		<TD class="mboxhdr">start date</td>
-		<TD class="mboxhdr">duration</td>
+		<TD class="mboxhdr">duration&nbsp;&nbsp;</td>
 		<TD class="mboxhdr">finish date</td>
 	</tr>
 	
@@ -229,9 +223,9 @@ $isproj = $tarr[$x]["task_project"];
 		<TD valign="middle"><img src="./images/icons/updown.gif" width="10" height="15" border=0 usemap="#arrow<?echo $tarr[$x]["task_id"];?>">
 		<map name="arrow<?echo $tarr[$x]["task_id"];?>"><area coords="0,0,10,7" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=u";?>>
 		<area coords="0,8,10,14" href=<?echo "./index.php?m=tasks&a=reorder&task_project=" . $tarr[$x]["task_project"] . "&task_id=" . $tarr[$x]["task_id"] . "&order=" . $tarr[$x]["task_order"] . "&w=d";?>></map> <A href="./index.php?m=tasks&a=view&task_id=<?echo $tarr[$x]["task_id"];?>"><?echo $tarr[$x]["task_name"];?></a></td>		
-		<TD><?echo substr($tarr[$x]["task_start_date"], 0, 10);?></td>
+		<TD><?echo fromDate(substr($tarr[$x]["task_start_date"], 0, 10));?></td>
 		<TD><?
-			if($tarr[$x]["task_duration"] % 24 == 0 ){
+			if($tarr[$x]["task_duration"] > 24 ){
 				$dt = "day";
 				$dur = $tarr[$x]["task_duration"] / 24;
 			}
@@ -241,7 +235,7 @@ $isproj = $tarr[$x]["task_project"];
 			}
 			if($dur > 1)$dt.="s";
 			echo $dur . " " . $dt ;?></td>
-		<TD><?if(intval($tarr[$x]["task_end_date"]) >0)echo substr($tarr[$x]["task_end_date"], 0, 10);?></td>
+		<TD><?if(intval($tarr[$x]["task_end_date"]) >0)echo fromDate(substr($tarr[$x]["task_end_date"], 0, 10));?></td>
 		</tr>
 
 	<?

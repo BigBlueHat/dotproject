@@ -63,17 +63,9 @@ var form = document.AddEdit;
 	dd = <?echo strftime("%d", time());?>;
 	yy = <?echo strftime("%Y", time());?>;
 
-	dar = eval("document.AddEdit." + x + ".value.split('-')");
-	if(eval("document.AddEdit." + x + ".value.length") > 9){
-	if(dar.length == 3)
-			{
-			yy = parseInt(dar[0], 10);
-			mm = parseInt(dar[1], 10);
-			dd = parseInt(dar[2], 10);
-			}
-		}
+<? JScalendarDate("AddEdit"); ?>
 	
-	newwin=window.open('./calendar.php?page=tasks&field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false');
+	newwin=window.open('./calendar.php?form=AddEdit&page=tasks&field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false');
 }
 
 
@@ -286,22 +278,22 @@ function delIt(){
 						<TABLE width="300">
 							<TR>
 								<TD><span id="startmmint"><span class="FormLabel">start date<br>
-								(yyyy-mm-dd)</span></span></TD>
+								(<?echo dateFormat()?>)</span></span></TD>
 								<TD><span id="targetmmint"><span class="FormLabel">finish date<br>
-								(yyyy-mm-dd)</span></TD>
+								(<?echo dateFormat()?>)</span></TD>
 							</TR>
 							<TR>
 								<TD nowrap><input type="text" name="task_start_date" value="<?if(intval($prow["task_start_date"]) > 0){
-								echo substr($prow["task_start_date"], 0, 10);
+								echo fromDate(substr($prow["task_start_date"], 0, 10));
 								}
 								else{
-								echo date("Y", time()) ."-" . date("m", time()) ."-" . date("d", time());
+								echo fromDate(date("Y", time()) ."-" . date("m", time()) ."-" . date("d", time()));
 								};?>" size="10" maxlength="10"><a href="#" onClick="popCalendar('task_start_date');"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="popCalendar('task_start_date');">calendar</A> &nbsp; &nbsp; &nbsp;</td>
-								<TD nowrap><input type="text" name="task_end_date" value="<?if(intval($prow["task_end_date"]) > 0)echo substr($prow["task_end_date"], 0, 10);?>" size="10" maxlength="10"><a href="#" onClick="popCalendar('task_end_date')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="popCalendar('task_end_date')">calendar</A></td>
+								<TD nowrap><input type="text" name="task_end_date" value="<?if(intval($prow["task_end_date"]) > 0)echo fromDate(substr($prow["task_end_date"], 0, 10));?>" size="10" maxlength="10"><a href="#" onClick="popCalendar('task_end_date')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="popCalendar('task_end_date')">calendar</A></td>
 							</tr>
 							<TR><TD colspan=2>Expected duration:</td></tr>
 							<TR><TD colspan=2>
-							<? if(($prow["task_duration"]) % 24 ==0){
+							<? if(($prow["task_duration"]) > 24 ){
 								$newdir = ($prow["task_duration"] / 24);
 								$dir = 24;
 								}
