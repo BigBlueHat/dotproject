@@ -1,43 +1,49 @@
-2004-08-07 00:19  (gregorerhardt)
+2004-08-06 23:51  (cyberhorse)
+---------------------------------
+modules/public/calendar.php
+- Added a link to clear dates that have been set before.
+
+2004-08-06 18:56  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+modules/projects/addedit.php
+modules/tasks/addedit.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+- 0000071: deleted hardcoded popCalendar position
+
+2004-08-06 18:30  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
+2004-08-06 18:19  (gregorerhardt)
 ---------------------------------
 classes/ui.class.php
 - Converted the installer to module
 
-2004-08-07 00:14  (gregorerhardt)
+2004-08-06 18:14  (gregorerhardt)
 ---------------------------------
 locales/en/install.inc
 index.php
 includes/db_adodb.php
-install/index.php
 style/default/header.php
 style/default/main.css
 - Converted the installer to module
 
-2004-08-07 00:11  (gregorerhardt)
----------------------------------
-modules/install/do_install_db.php
-modules/install/do_write_cfg.php
-modules/install/index.php
-modules/install/install.class.php
-modules/install/install.inc.php
-modules/install/vw_idx_cfg.php
-modules/install/vw_idx_check.php
-modules/install/vw_idx_idb.php
-modules/install/vw_idx_locale.php
-modules/install/images/control-center.png
-- Converted the installer to module
-
-2004-08-06 16:41  (cyberhorse)
+2004-08-06 10:41  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.class.php
 - corrected misspelled method name (I should learn to spell)
 
-2004-08-06 11:27  (kripper)
+2004-08-06 05:27  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2004-08-06 10:13  (cyberhorse)
+2004-08-06 04:13  (cyberhorse)
 ---------------------------------
 modules/files/index_table.php
 modules/projects/view.php
@@ -45,51 +51,6 @@ modules/tasks/view.php
 - Improved how files listing is hooked up to projects and tasks.
 - Moved files attached to tasks as a tab on the bottom.
 - It reuses the index_table.php file for both now.
-
-2004-08-06 08:57  (cyberhorse)
----------------------------------
-classes/ui.class.php
-- revert back ... I'm just being silly :(
-
-2004-08-06 08:19  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Fixed a few "unresolved variables" issues
-
-2004-08-06 07:24  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Allow setting a project from other files through includes.
-
-2004-08-06 07:22  (cyberhorse)
----------------------------------
-modules/projects/vw_files.php
-- Ops, wrong approach - ignore the previous change.
-
-2004-08-06 07:20  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Default to showing project headers, but allow removing them
-
-2004-08-06 07:19  (cyberhorse)
----------------------------------
-modules/projects/vw_files.php
-- Show only the specific project to show
-
-2004-08-06 07:17  (cyberhorse)
----------------------------------
-modules/files/index_table.php
-- Allows passing project through GET parameter
-
-2004-08-06 07:09  (cyberhorse)
----------------------------------
-classes/ui.class.php
-- Added possibility for passing parameters to files, included as tabs.
-
-2004-08-06 06:12  (cyberhorse)
----------------------------------
-modules/files/files.class.php
-- added file_category field
 
 2004-08-06 02:57  (cyberhorse)
 ---------------------------------
@@ -537,51 +498,6 @@ index.php
 - why this was set so that fatal errors were not reporting.
 
 2004-07-12 04:28  (ajdonnison)
----------------------------------
-style/classic/header.php
-- Added browser-independent event handling.
-
-2004-07-12 03:08  (ajdonnison)
----------------------------------
-includes/main_functions.php
-classes/ui.class.php
-- Removed need to supply height and width options to dpShowImage.
-
-2004-07-10 12:33  (cyberhorse)
----------------------------------
-includes/db_adodb.php
-- bug, caused by case sensitivity ... by default ADODB returns rows as objects in capitals, and dp was expecting them in lower case. This bug was preventing logging on (although once logged in, user could do things as normal - that's why the bug creeped in to begin with)
-- 
-- Sorry guys...
-
-2004-07-10 08:58  (cyberhorse)
----------------------------------
-includes/db_adodb.php
-includes/db_connect.php
-- Added ADODB support
-
-2004-07-10 08:31  (gregorerhardt)
----------------------------------
-modules/admin/index.php
-- fixed major javascript security hole
-
-2004-07-10 08:23  (cyberhorse)
----------------------------------
-classes/ui.class.php
-- hide public module (feature request)
-
-2004-07-09 15:50  (gregorerhardt)
----------------------------------
-modules/files/index_table.php
-- some minor design enhancements
-
-2004-07-09 03:46  (revelation7)
----------------------------------
-modules/system/addeditpref.php
-- Fixed problem with CURRENCY format on user preferences not getting saved.  This was due to a limitation on mySQL for the length of column name.
-
-2004-07-06 23:15  (ajdonnison)
----------------------------------
 ...
 
 (This file has been wrapped)
