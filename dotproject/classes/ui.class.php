@@ -619,7 +619,7 @@ class CAppUI {
 		$sql = "
 		SELECT mod_directory, mod_ui_name, mod_ui_icon
 		FROM modules
-		WHERE mod_active > 0 AND mod_ui_active > 0
+		WHERE mod_active > 0 AND mod_ui_active > 0 AND mod_directory <> 'public'
 		ORDER BY mod_ui_order
 		";
 		return (db_loadList( $sql ));
