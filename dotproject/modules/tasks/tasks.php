@@ -623,9 +623,9 @@ function chAssignment(project_id, rmUser, del) {
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="10">&nbsp;</th>
-	<th width="10"><?= $AppUI->_('New Log') ?></th>
+	<th width="10"><?php echo $AppUI->_('New Log'); ?></th>
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
-	<th align='center'><?= sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ) ?></th>
+	<th align='center'><?php sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ); ?></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned users')?></th>
@@ -662,7 +662,7 @@ foreach ($projects as $k => $p) {
 			<img src="./images/icons/<?php echo $project_id ? 'expand.gif' : 'collapse.gif';?>" width="16" height="16" border="0" alt="<?php echo $project_id ? 'show other projects' : 'show only this project';?>">
 		</a>
 	</td>
-	<td colspan="<?= $dPconfig['direct_edit_assignment'] ? $cols-4 : $cols-1; ?>">
+	<td colspan="<?php echo $dPconfig['direct_edit_assignment'] ? $cols-4 : $cols-1; ?>">
 		<table width="100%" border="0">
 		<tr>
 			<!-- patch 2.12.04 display company name next to project name -->
@@ -743,7 +743,7 @@ foreach ($projects as $k => $p) {
 
 		if($tnums && $dPconfig['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
-			<td colspan="<?= $cols ?>" align="right">
+			<td colspan="<?php echo $cols; ?>" align="right">
 				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
