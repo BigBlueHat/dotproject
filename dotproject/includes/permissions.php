@@ -94,8 +94,13 @@ function isAllowed($perm_type, $mod, $item_id = 0) {
 	if ( isset($perms[$mod]) && isset($perms[$mod][PERM_ALL]) ) {
 		$allowed = checkFlag($perms[$mod][PERM_ALL], $perm_type, $allowed);
 	}
+
+	// Deny PERM_EDIT on this module if not specifically allowed
+	if ( isset($perms[$mod]) && !isset($perms[$mod][PERM_ALL]) && $perm_type == PERM_EDIT ) {
+		$allowed = 0;
+	}
 	
-    // check permision for the item on this module
+	// check permision for the item on this module
 	if ($item_id > 0) {
 		if ( isset($perms[$mod][$item_id]) ) {
 			$allowed = checkFlag($perms[$mod][$item_id], $perm_type, $allowed);
