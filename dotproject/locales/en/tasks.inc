@@ -15,7 +15,6 @@
 "All Tasks I Have Created",
 "All Tasks for my Company",
 "All Unfinished Tasks",
-"All Users",
 "Allow two concurrent tasks when there are no vital users",
 "Are you sure you want to unassign the User from Task(s)?",
 "Assign selected Users to selected Tasks",

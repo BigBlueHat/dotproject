@@ -11,6 +11,7 @@
 "All",
 "All Companies",
 "All Day Event",
+"All Users",
 "Anniversary",
 "Appointment",
 "Archived Projects",
