@@ -1,5 +1,5 @@
 <?php /* COMPANIES $Id$ */
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+$del = dPgetParam( $_POST, 'del', 0 );
 $company = new CCompany();
 
 if (($msg = $company->bind( $_POST ))) {
@@ -21,8 +21,7 @@ if ($del) {
 	if (($msg = $company->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$isNotNew = @$_POST['company_id'];
-		$AppUI->setMsg( $isNotNew ? 'added' : 'added', UI_MSG_OK, true );
+		$AppUI->setMsg( @$_POST['company_id'] ? 'updated' : 'added', UI_MSG_OK, true );
 	}
 	$AppUI->redirect();
 }
