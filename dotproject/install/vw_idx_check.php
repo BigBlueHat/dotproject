@@ -15,25 +15,25 @@ $chmod = '0777';
             <td class="title" colspan="2">Check for Requirements</td>
 </tr>
 <tr>
-	<td class="item">PHP Version >= 4.1</td>
-	<td align="left"><?php echo phpversion() < '4.1' ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
+ <td class="item">PHP Version >= 4.1</td>
+ <td align="left"><?php echo phpversion() < '4.1' ? '<b class="error">'.$failedImg.' ('.phpversion().'): dotProject may not work. Please upgrade!</b>' : '<b class="ok">'.$okImg.'</b><span class="item"> ('.phpversion().')</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>Server API</li></td>
- 	<td align="left"><?php echo (php_sapi_name() != "cgi") ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.php_sapi_name().')</span>' : '<b class="error">'.$failedImg.' CGI mode is likely to have problems</b>';?></td>
+ <td class="item"><li>Server API</li></td>
+  <td align="left"><?php echo (php_sapi_name() != "cgi") ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.php_sapi_name().')</span>' : '<b class="error">'.$failedImg.' CGI mode is likely to have problems</b>';?></td>
 </tr>
 
 <tr>
-	<td class="item"><li>GD Support (for GANTT Charts)</li></td>
- 	<td align="left"><?php echo extension_loaded('gd') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> GANTT Chart functionality may not work correctly.';?></td>
+ <td class="item"><li>GD Support (for GANTT Charts)</li></td>
+  <td align="left"><?php echo extension_loaded('gd') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> GANTT Chart functionality may not work correctly.';?></td>
 </tr>
 <tr>
-	<td class="item"><li>Zlib compression Support</li></td>
- 	<td align="left"><?php echo extension_loaded('zlib') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> Non-core Backup module is working with some minor restrictions.';?></td>
+ <td class="item"><li>Zlib compression Support</li></td>
+  <td align="left"><?php echo extension_loaded('zlib') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> Non-core Backup module is working with some minor restrictions.';?></td>
 </tr>
 <tr>
-	<td class="item"><li>File Uploads</li></td>
- 	<td align="left"><?php echo get_cfg_var('file_uploads') ? '<b class="ok">'.$okImg.'</b><span class="item"> (Max File Upload Size: '. min(ini_get('upload_max_filesize'), ini_get('post_max_size'), ini_get('memory_limit')) .')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Upload functionality will not be available</span>';?></td>
+ <td class="item"><li>File Uploads</li></td>
+  <td align="left"><?php echo get_cfg_var('file_uploads') ? '<b class="ok">'.$okImg.'</b><span class="item"> (Max File Upload Size: '. min(ini_get('upload_max_filesize'), ini_get('post_max_size'), ini_get('memory_limit')) .')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Upload functionality will not be available</span>';?></td>
 </tr>
 <tr>
             <td class="item">Session Save Path writable?</td>
@@ -44,52 +44,52 @@ $chmod = '0777';
 </tr>
 <tr>
             <td class="item" colspan="2">The next tests check for database support compiled with php. We use the ADODB database abstraction layer which comes with drivers for
-	    many databases. Consult the ADODB documentation for details. <br />For non-advanced users: MySQL will probably be the database of your choice - make sure MySQL Support
-	    is available.</td>
+     many databases. Consult the ADODB documentation for details. <br />For non-advanced users: MySQL will probably be the database of your choice - make sure MySQL Support
+     is available.</td>
 </tr>
 <tr>
-	<td class="item"><li>iBase Support</li></td>
- 	<td align="left"><?php echo function_exists( 'ibase_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.ibase_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>iBase Support</li></td>
+  <td align="left"><?php echo ( function_exists( 'ibase_connect' ) && function_exists( 'ibase_server_info' )) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.ibase_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>Informix Support</li></td>
- 	<td align="left"><?php echo function_exists( 'ifx_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>Informix Support</li></td>
+  <td align="left"><?php echo function_exists( 'ifx_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>LDAP Support</li></td>
- 	<td align="left"><?php echo function_exists( 'ldap_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>LDAP Support</li></td>
+  <td align="left"><?php echo function_exists( 'ldap_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>mSQL Support</li></td>
- 	<td align="left"><?php echo function_exists( 'msql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>mSQL Support</li></td>
+  <td align="left"><?php echo function_exists( 'msql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>M$SQL Support</li></td>
- 	<td align="left"><?php echo function_exists( 'mssql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>M$SQL Support</li></td>
+  <td align="left"><?php echo function_exists( 'mssql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>MySQL Support</li></td>
- 	<td align="left"><?php echo function_exists( 'mysql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.mysql_get_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>MySQL Support</li></td>
+  <td align="left"><?php echo function_exists( 'mysql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.mysql_get_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>ODBC Support</li></td>
- 	<td align="left"><?php echo function_exists( 'odbc_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>ODBC Support</li></td>
+  <td align="left"><?php echo function_exists( 'odbc_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>Oracle Support</li></td>
- 	<td align="left"><?php echo function_exists( 'oci_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.ociserverversion().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>Oracle Support</li></td>
+  <td align="left"><?php echo function_exists( 'oci_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.ociserverversion().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>PostgreSQL Support</li></td>
- 	<td align="left"><?php echo function_exists( 'pg_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>PostgreSQL Support</li></td>
+  <td align="left"><?php echo function_exists( 'pg_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>SQLite Support</li></td>
- 	<td align="left"><?php echo function_exists( 'sqlite_open' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.sqlite_libversion().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>SQLite Support</li></td>
+  <td align="left"><?php echo function_exists( 'sqlite_open' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.sqlite_libversion().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
-	<td class="item"><li>Sybase Support</li></td>
- 	<td align="left"><?php echo function_exists( 'sybase_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+ <td class="item"><li>Sybase Support</li></td>
+  <td align="left"><?php echo function_exists( 'sybase_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> </span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
             <td class="title" colspan="2"><br />Check for Directory and File Permissions</td>
@@ -103,9 +103,9 @@ if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cf
 
         @chmod( $cfgFile, $chmod );
         @chmod( $cfgDir, $chmod );
-	$filemode = @fileperms($cfgFile);
-	if ($filemode & 2)
-	        $okMessage="<span class='error'> 777</span>";
+ $filemode = @fileperms($cfgFile);
+ if ($filemode & 2)
+         $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
@@ -118,9 +118,9 @@ $okMessage="";
 if (is_writable( $filesDir )) {
 
         @chmod( $filesDir, $chmod );
-	$filemode = @fileperms($filesDir);
-	if ($filemode & 2)
-        	$okMessage="<span class='error'> 777</span>";
+ $filemode = @fileperms($filesDir);
+ if ($filemode & 2)
+         $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
@@ -133,9 +133,9 @@ $okMessage="";
 if (is_writable( $tmpDir )) {
 
         @chmod( $tmpDir, $chmod );
-	$filemode = @fileperms($tmpDir);
-	if ($filemode & 2)
-        	$okMessage="<span class='error'> 777</span>";
+ $filemode = @fileperms($tmpDir);
+ if ($filemode & 2)
+         $okMessage="<span class='error'> 777</span>";
 
  }
 ?>
