@@ -34,7 +34,7 @@ $sql = "
 SELECT project_id
 FROM projects, permissions
 WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'projects' 
+	AND permission_grant_on = 'projects'
 	AND permission_item = project_id
 	AND permission_value = 0
 ";
@@ -43,8 +43,8 @@ $deny = db_loadList( $sql );
 // pull projects
 $sql = "
 SELECT
-	project_id, project_status, project_color_identifier, project_name,
-	project_start_date, project_end_date, 
+	project_id, project_active, project_status, project_color_identifier, project_name,
+	project_start_date, project_end_date,
 	project_color_identifier,
 	COUNT(distinct t1.task_id) AS total_tasks,
 	COUNT(distinct t2.task_id) AS my_tasks,
@@ -55,17 +55,16 @@ LEFT JOIN users ON projects.project_owner = users.user_id
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 LEFT JOIN tasks t2 ON projects.project_id = t2.task_project
 	AND t2.task_owner = $AppUI->user_id
-WHERE project_active = $active"
-.($company_id ? "\nAND project_company = $company_id" : '')
-."
-	AND permission_user = $AppUI->user_id
-	AND permission_value <> 0 
+WHERE permission_user = $AppUI->user_id
+	AND permission_value <> 0
 	AND (
 		(permission_grant_on = 'all')
 		OR (permission_grant_on = 'projects' AND permission_item = -1)
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)
-" . (COUNT($deny) > 0 ? 'AND project_id NOT IN (' . implode( ',', $deny ) . ')' : '') . "
+		)"
+.(COUNT($deny) > 0 ? '\nAND project_id NOT IN (' . implode( ',', $deny ) . ')' : '')
+.($company_id ? "\nAND project_company = $company_id" : '')
+."
 GROUP BY project_id
 ORDER BY $orderby";
 
@@ -79,14 +78,13 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0" width=42 height=42></td>
 	<td nowrap><span class="title"><?php echo $AppUI->_('Project Management');?></span></td>
-<form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickCompany">
+<form action="?m=projects" method="post" name="pickCompany">
 	<td align="right" width="100%">
 		<?php echo $AppUI->_('Company');?>:
 <?php
 	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
-
-	// Supersticious fix for strange $copmany_id="1company_id=1" bug
-	echo "<input type=hidden name=dummy>";
+// Bizarre fix for strange $copmany_id="1company_id=1" bug
+	echo '<input type="hidden" name="dummy">';
 ?>		
 	</td>
 </form>
@@ -94,7 +92,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 </tr>
 </table>
 
-<?php	
+<?php
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "$root_dir/modules/projects/", $tab );
 $tabBox->add( 'vw_idx_active', 'Active Projects' );

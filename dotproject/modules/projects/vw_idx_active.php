@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 GLOBAL $AppUI, $projects, $company_id;
 $df = $AppUI->getPref('SHDATEFORMAT');
 ?>
@@ -23,7 +23,8 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 <?php
 foreach ($projects as $row) {
-	$end_date = $row["project_end_date"] ? new CDate( db_dateTime2unix( $row["project_end_date"] ) ) : null;
+	if ($row["project_active"] > 0) {
+		$end_date = $row["project_end_date"] ? new CDate( db_dateTime2unix( $row["project_end_date"] ) ) : null;
 ?>
 <tr>
 	<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#<?php echo $row["project_color_identifier"];?>">
@@ -41,7 +42,10 @@ foreach ($projects as $row) {
 		</td>
 	<td align="right" nowrap="nowrap"><?php echo $end_date ? $end_date->toString( $df ) : '-';?></td>
 </tr>
-<?php }?>
+<?php
+	}
+}
+?>
 <tr>
 	<td colspan="6">&nbsp;</td>
 </tr>
