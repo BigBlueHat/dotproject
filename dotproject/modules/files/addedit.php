@@ -242,7 +242,7 @@ if ($ci || ($canAdmin && $obj->file_checkout == 'final') )
 
 if ($ci ) 
 {
-  $the_value = (strlen( $obj->file_version ) > 0 ? $obj->file_version+0.001 : "1");
+  $the_value = (strlen( $obj->file_version ) > 0 ? $obj->file_version+0.01 : "1");
   $str_out .= '<input type="hidden" name="file_version" value="' . $the_value . '" />';
 }
 else
@@ -261,6 +261,9 @@ if ( $ci && $preserve)
 {
   $select_disabled=' disabled ';  
   $onclick_task=' ';
+  // need because when a html is disabled, it's value it's not sent in submit
+  $str_out .= '<input type="hidden" name="file_project" value="' .  $file_project . '" />';
+  $str_out .= '<input type="hidden" name="file_category" value="' .  $obj->file_category . '" />'; 
 }
 
 
