@@ -189,10 +189,10 @@ foreach ($files as $file_row) {
         <td nowrap="nowrap">
         <?php if ($canEdit && empty($latest_file['file_checkout']) ) {
         ?>
-                <a href="?m=files&a=co&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage( './images/icons/co.png', '16', '16' ); ?></a>
+                <a href="?m=files&a=co&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage( './images/icons/co.png', '20', '20' ); ?></a>
         <?php }
         else if ($latest_file['file_checkout'] == $AppUI->user_id) { ?>
-                <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage( './images/icons/ci.png', '16', '16' ); ?></a>
+                <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage( './images/icons/ci.png', '20','20'); ?></a>
         <?php }
         else { 
                 if ($latest_file['file_checkout'] == 'final')
