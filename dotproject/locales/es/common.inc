@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"- New Item -"=>"",
+"- New Item -"=>"- Nuevo Item -",
 "About"=>"Acerca de",
 "Active Projects"=>"Proyectos Activos",
 "Archived Projects"=>"Proyectos Archivados",
@@ -29,7 +29,7 @@
 "cancel"=>"cancelar",
 "forgotPassword"=>"Ayuda.  No recuerdo mi nombre o contraseña.",
 "login"=>"entrar",
-"openSource"=>"Un sistema de<br>gestión de proyectos OpenSource",
+"openSource"=>"Un sistema OpenSource<br>para gestión de proyectos",
 "password"=>"contraseña",
 "save"=>"guardar",
 "sort by"=>"ordenar por",

@@ -5,8 +5,18 @@
  *
  */
  
+ /*
+ 	TODO:
+ 		- task groups start_date = min(children_start_date), end_date = max(children_end_date)
+ 		- show dependencies (not implemented in jpgraph)
+ */
+ 
 include ("../../lib/jpgraph/src/jpgraph.php");
 include ("../../lib/jpgraph/src/jpgraph_gantt.php");
+include ("../../includes/main_functions.php");
+include ("../../functions/tasks_func.php");
+
+$gantt_arr = array();
 
 // START: from index.php
 
@@ -146,12 +156,8 @@ for ($x=0; $x < $nums; $x++) {
 
         // calculate or set blank task_end_date if unset
         if($row["task_end_date"] == "0000-00-00 00:00:00") {
-        	if($row["task_duration"] != 0) {
-	        	$row["task_end_date"] = date("Y-m-d H:i:s", strtotime(substr($row["task_start_date"], 0, 10) . " +" . $row["task_duration"] . " hours"));
-        	} else {
-	        	$row["task_end_date"] = "";
-	        }
-        }	
+        	$row["task_end_date"] = get_end_date($row["task_start_date"], $row["task_duration"]);
+        }
 	
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
@@ -164,37 +170,16 @@ $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
 if($start_date != "" && $end_date != "") $graph->SetDateRange($start_date, $end_date); 
-$row = 0;
 
 //This kludgy function echos children tasks as threads
 
 function showtask( &$a, $level=0 ) {
 	/* Add tasks to gantt chart */
 	
-	global $graph, $row;
+	global $gantt_arr;
 	
-	$name = $a["task_name"];
-	$start = substr($a["task_start_date"], 0, 10);
-	$end = substr($a["task_end_date"], 0, 10);
-	$progress = $a["task_precent_complete"];
-	$flags = ($a["task_milestone"]?"m":"");
-	
-	if(!$end) {
-		$end = $start;
-		$cap = "?";
-	} else {
-		$cap = "";
-	}
-	
-//	echo "$name<br>$flags<br><br>";	
+	$gantt_arr[] = array($a, $level);
 
-	if($flags == "m") {
-		$bar = new MileStone($row++, $name, $start, $start);
-	} else {
-		$bar = new GanttBar($row++, str_repeat("   ", $level) . $name, $start, $end, $cap); 
-		$bar->progress->Set($progress/100);
-	}
-	$graph->Add($bar);
 }
 
 function findchild( &$tarr, $parent, $level=0 ){
@@ -219,6 +204,62 @@ for ($i=0; $i < $tnums; $i++) {
 		showtask( $t );
 		findchild( $p['tasks'], $t["task_id"] );
 	}
+}
+
+// $hide_task_groups = true;
+
+if($hide_task_groups) {
+	for($i = 0; $i < count($gantt_arr); $i ++ ) {
+		// remove task groups
+		if($i != count($gantt_arr)-1 && $gantt_arr[$i + 1][1] > $gantt_arr[$i][1]) {
+			// it's not a leaf => remove
+			array_splice($gantt_arr, $i, 1);
+			continue;
+		}
+	}
+}
+
+$row = 0;
+for($i = 0; $i < count($gantt_arr); $i ++ ) {	
+	
+	$a = $gantt_arr[$i][0];
+	$level = $gantt_arr[$i][1];
+	
+	if($hide_task_groups) $level = 0;
+		
+	$name = $a["task_name"];
+	$start = substr($a["task_start_date"], 0, 10);
+	$end = substr($a["task_end_date"], 0, 10);
+	$progress = $a["task_precent_complete"];
+	$flags = ($a["task_milestone"]?"m":"");
+	
+	if(!$end) {
+		$end = $start;
+		$cap = " (no end date)";
+	} else {
+		$cap = "";
+	}
+	
+	if($flags == "m") {
+		$bar = new MileStone($row++, $name, $start, $start);
+	} else {
+		$bar = new GanttBar($row++, str_repeat("   ", $level) . $name, $start, $end, $cap); 
+		$bar->progress->Set($progress/100);
+		
+		$sql = "select dependencies_task_id from task_dependencies where dependencies_req_task_id=" . $a["task_id"];
+		$query = mysql_query($sql);
+		
+		while($dep = mysql_fetch_array($query)) {
+			// find row num of dependencies
+			for($d = 0; $d < count($gantt_arr); $d++ ) {
+				if($gantt_arr[$d][0]["task_id"] == $dep["dependencies_task_id"]) {
+					$bar->SetConstrain($d, CONSTRAIN_ENDSTART);
+				}
+			}
+		}
+	}
+	
+	$graph->Add($bar);
 }
 
 $graph->Stroke(); 
