@@ -1,4 +1,7 @@
 BODY {
+	margin: 0px;
+	background-color: #ffffff; 
+	background-image: URL(/style/default/images/bground.gif);
 	FONT-FAMILY: verdana,Sans-Serif; FONT-SIZE: 10pt;
 }
 A:link {
@@ -12,6 +15,14 @@ A:visited {
 A:active {
 	color : BLUE;
 	text-decoration: none;
+}
+
+/* Add stuff for presentation abstraction */
+/* TOP NAVIGATION Table Style */
+TABLE.nav {
+	background-color: #ccc;
+	border: 2px outset #eee;
+	/* bgcolor="#cccccc" style="border: outset #eeeeee 2px;" */
 }
 
 TD {

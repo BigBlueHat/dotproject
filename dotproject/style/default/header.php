@@ -33,21 +33,19 @@
 	<title><?php echo $AppUI->cfg['page_title'];?></title>
 	<link rel="stylesheet" type="text/css" href="./style/default/main.css" />
 </head>
-<body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="style/default/images/bground.gif">
-<table width="100%" cellpadding="3" cellspacing="0" bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
+<body>
+<table class="nav" width="100%" cellpadding="0" cellspacing="2">
 <tr>
 	<td nowrap width="33%"><?php echo $AppUI->cfg['company_name'];?></td>
-	<td nowrap width="34%">
-		<?php echo $AppUI->_('Current user').": $AppUI->user_first_name $AppUI->user_last_name"; ?>
-	</td>
+	<td nowrap width="34%"><?php echo $AppUI->_('Current user').": $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 	<td nowrap width="33%" align="right">
-		<table cellpadding="1" cellspacing="1" width="150">
-		<tr>
-			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a></td>
-			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a></td>
-			<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="?m=help"><?php echo $AppUI->_( 'Help' );?></a></td>
-		</tr>
-		</table>
+	<table cellpadding="1" cellspacing="1" width="150">
+	<tr>
+		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a></td>
+		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a></td>
+		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="?m=help"><?php echo $AppUI->_( 'Help' );?></a></td>
+	</tr>
+	</table>
 	</td>
 	<form name="frm_new" method=GET action="./index.php">
 <?php
