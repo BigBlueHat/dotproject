@@ -17,7 +17,7 @@ define( 'FMT_UNIX', '3' );
 define( 'WDAY_SUNDAY',    0 );
 define( 'WDAY_MONDAY',    1 );
 define( 'WDAY_TUESDAY',   2 );
-define( 'WDAY_WENESDAY',  3 );
+define( 'WDAY_WEDNESDAY',  3 );
 define( 'WDAY_THURSDAY',  4 );
 define( 'WDAY_FRIDAY',    5 );
 define( 'WDAY_SATURDAY',  6 );
