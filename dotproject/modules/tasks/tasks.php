@@ -161,7 +161,8 @@ $join .= " LEFT JOIN task_log AS tlog ON tlog.task_log_task = tasks.task_id AND 
 
 // to figure out if a file is attached to task
 $join .= " LEFT JOIN files on tasks.task_id = files.file_task";
-$join .= ' LEFT JOIN user_task_pin as pin ON tasks.task_id = pin.task_id AND pin.user_id = '.$user_id;
+$join .= ' LEFT JOIN user_task_pin as pin ON tasks.task_id = pin.task_id AND pin.user_id = ';
+$join .= $user_id ? $user_id : $AppUI->user_id;
 
 $where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
 
