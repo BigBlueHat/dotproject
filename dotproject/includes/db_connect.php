@@ -290,7 +290,7 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 			continue;
 		}
 		if( $v == '' ) {
-			//$val = 'NULL';
+			$val = "''";
 		} else {
 			$val = "'" . db_escape( $v ) . "'";
 		}
