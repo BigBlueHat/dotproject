@@ -19,6 +19,7 @@ FROM
 	modules 
 WHERE 
 	mod_active=1 
+	AND permissions_item_label <> ''
 ";
 
 $modules_list = db_loadList( $sql);
