@@ -59,7 +59,7 @@
 		
 		if($time < time()) $time = time();
 		
-		$str_start_date = date("Y-m-d", strtotime(date("Y-m-d", $time) . " + 1 day"));
+		$str_start_date = formatYMDtime(strtotime(formatYMDtime($time) . " + 1 day"));
 		$str_end_date = get_end_date($str_start_date, $tasks[$task_index]["task_duration"]);
 		
 		// Complex SQL explanation:
@@ -120,7 +120,10 @@
 		
 		// be quite if nothing will be changed
 		
-		if($tasks[$task_index]["task_start_date"] == $str_start_date && $tasks[$task_index]["task_end_date"] = $str_end_date) return;
+		if(substr($tasks[$task_index]["task_start_date"], 0, 10) == $str_start_date && substr($tasks[$task_index]["task_end_date"], 0, 10) == $str_end_date) {
+			log_info("Nothing changed");
+			return;
+		}
 		
 		$tasks[$task_index]["task_start_date"] = $str_start_date;
 		$tasks[$task_index]["task_end_date"] = $str_end_date;

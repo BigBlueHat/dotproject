@@ -119,13 +119,6 @@ for ($x=0; $x < $nums; $x++) {
 	
         // calculate or set blank task_end_date if unset
         if($row["task_end_date"] == "0000-00-00 00:00:00") {
-        	/*
-        	if($row["task_duration"] != 0) {
-	        	$row["task_end_date"] = date("Y-m-d H:i:s", strtotime(substr($row["task_start_date"], 0, 10) . " +" . $row["task_duration"] . " hours"));
-        	} else {
-	        	$row["task_end_date"] = "";
-	        }
-	        */
 	        $row["task_end_date"] = "";
         }	
 	

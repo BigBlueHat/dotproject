@@ -93,7 +93,11 @@ function fromDate($date) {
 }
 
 function formatTime($time) {
-	return fromDate(date("Y-m-d", $time));
+	return fromDate(formatYMDtime($time));
+}
+
+function formatYMDTime($time) {
+	return date("Y-m-d", $time);
 }
 
 // Return the format required for date entry, for user information display

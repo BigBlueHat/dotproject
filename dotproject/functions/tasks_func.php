@@ -29,8 +29,7 @@ function get_end_date($start_date, $duration) {
 		// fix durations < 24 according to working hours
 		$duration = ceil($duration / DAYLY_WORKING_HOURS) * 24;
 	}
-	
-	return date("Y-m-d", strtotime($start_date . " -1 day + " . $duration . " hours"));
+	return formatYMDtime(strtotime($start_date . " -1 day + " . $duration . " hours"));
 }
 
 ?>
