@@ -291,27 +291,26 @@ table.popcal th {
 }
 
 table.popcal td {
-	background-color: #e0e0e0;
+	background-color: #ffffff;
 	font-family: helvetica,arial,sans-serif;
 	font-size: 8pt;
 	text-align: center;
 }
 
 table.popcal td.empty {
-	background-color: #efefe7;
+	background-color: #e0e0e0;
 }
 
 table.mocal td.day  {
-	background-color: #cccccc;
+	background-color: #ffffff;
 	text-align: center;
 }
 
 table.popcal td.today {
-	background-color: #cccccc;
 }
 
 table.popcal td.weekend {
-	background-color: #eeeeee;
+	background-color: #f0f0f0;
 }
 
 table.popcal a:link,
@@ -328,6 +327,11 @@ table.popcal a.today:visited {
 
 table.popcal a.weekend:link,
 table.popcal a.weekend:visited {
+	color: #0000aa;
+}
+
+table.popcal a.empty:link,
+table.popcal a.empty:visited {
 	color: #777777;
 }
 
@@ -358,11 +362,14 @@ table.mocal td.week {
 	height: 80px;
 }
 table.mocal td.empty {
-	background-color: #ffffff;
+	background-color: #e0e0e0;
+	color: #aaaaaa;
+	text-align: left;
+	vertical-align: top;
 	height: 80px;
 }
 table.mocal td.day  {
-	background-color: #e0e0e0;
+	background-color: #ffffff;
 	color: #333366;
 	text-align: left;
 	vertical-align: top;
@@ -403,6 +410,7 @@ table.minical td {
 table.minical td.week {
 }
 table.minical td.empty {
+	color: #aaaaaa;
 }
 table.minical td.day  {
 	text-align: center;
