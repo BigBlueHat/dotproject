@@ -1,3 +1,20 @@
+2004-04-13 14:22  (gnome444)
+---------------------------------
+modules/tasks/tasks.php
+- Performance optimization, no need to query a search string
+- if we aren't searching for anything
+
+2004-04-13 14:05  (gnome444)
+---------------------------------
+modules/tasks/tasks.php
+- Query speed up. This takes this query from 69 secs
+- to 1.3 secs on my old (ass kickin') MySQL 3.? p200 database box.
+
+2004-04-12 03:52  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-04-11 08:56  (gregorerhardt)
 ---------------------------------
 ChangeLog
@@ -481,23 +498,6 @@ classes/date.class.php
 ---------------------------------
 modules/ticketsmith/do_ticket_aed.php
 - 899969: quotes in tickets
-
-2004-02-24 20:47  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed broken MIME headers.
-
-2004-02-24 20:44  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Mail not being sent on change of assignment fixed.
-
-2004-02-24 04:20  (gregorerhardt)
----------------------------------
-classes/ui.class.php
-- 897211: renamed bad constructor name in CTabBox_core
-
-2004-02-24 04:12  (gregorerhardt)
 ...
 
 (This file has been wrapped)
