@@ -55,15 +55,17 @@ if (1 == 1)
 		// Fields 21- 30
 		$text .= sprintf(",,,,,,,,,,");
 		// Fields 31- 40
+		settype($row['contact_phone'], 'string');
 		$text .= sprintf(",\"%s\",,,,,,,,,",$row['contact_phone']);
 		// Fields 41- 50
-		$text .= sprintf("\"%s\",,,,,,,,\"\",\"0/0/00\",",$row['contact_mobile']);
+		settype($row['contact_mobile'], 'string');
+		$text .= sprintf("\"%s\",,,,,,,,\"\",\"0/0/00\",",''.$row['contact_mobile']);
 		// Fields 51- 60
 		if($row['contact_type'] != "")
 		   $categories = "dotProject; ".$row['contact_type'];
 	  else
 		   $categories = "dotProject;";
-		$text .= sprintf(",,\"0/0/00\",\"%s\",,,\"%s\",\"%s\",\"%s\",,",$categories,$row['contact_email'], "SMTP",$row['contact_first_name']." ".$row['contact_last_name']);
+		$text .= sprintf(",,\"%s\",\"%s\",,,\"%s\",\"%s\",\"%s\",,",$row['contact_birthday'], $categories,$row['contact_email'], "SMTP",$row['contact_first_name']." ".$row['contact_last_name']);
 		// Fields 61- 70
 		$text .= sprintf(",,,,,\"Unspecified\",,,,,");
 		// Fields 71- 80
