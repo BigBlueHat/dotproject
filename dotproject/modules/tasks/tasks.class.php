@@ -733,7 +733,6 @@ class CTask extends CDpObject {
 		// retrieve dependants tasks 
 		if (!$taskId)
 			$taskId = $this->task_id;
-
 		$sql = "
 			SELECT dependencies_task_id
 			FROM task_dependencies AS td, tasks AS t
@@ -1046,11 +1045,11 @@ class CTask extends CDpObject {
                 $alloc = $this->getAllocation("user_id");
                 $overAssignment = false;
 
+                
 		foreach ($tarr as $user_id) {
 			if (intval( $user_id ) > 0) {
 				$perc = $perc_assign[$user_id];
-                                // overAssignment check
-                                if ($perc > $alloc[$user_id]['freeCapacity']) {
+                                if (dPgetConfig("check_overallocation") && $perc > $alloc[$user_id]['freeCapacity']) {
                                         // add Username of the overAssigned User
                                         $overAssignment .= " ".$alloc[$user_id]['userFC'];
                                 } else {

@@ -189,6 +189,10 @@ echo '<form name="cfgFrm" action="index.php?m=install&tab='.$tab.'" method="post
             <td class="item"><?php echo $AppUI->_('Locale Warning String'); ?></td>
             <td align="left"><input class="button" type="text" name="pd[locale_alert]" value="<?php echo $Installer->cfg['locale_alert']; ?>" size="true" title="The string appended to untranslated string or unfound keys." /></td>
           </tr>
+          <tr>
+            <td class="item"><?php echo $AppUI->_('Check overallocation'); ?></td>
+            <td align="left"><input type="checkbox" name="pd[check_overallocation]" value="true" <?php echo ($Installer->cfg['check_overallocation']==true) ? 'checked="checked"' : ''; ?> title="Set to true if you want to activate the user overallocation feature" /></td>
+          </tr>
            </tr>
              <tr>
             <td class="item"><?php echo $AppUI->_('Debug'); ?>?</td>

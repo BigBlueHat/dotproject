@@ -66,6 +66,9 @@ $dPconfig['check_legacy_password'] = false;
 */
 $dPconfig['host_locale'] = "en";
 
+// Enable or disable the overallocation checkup
+$dPconfig['check_overallocation'] = false;
+
 /*
  Localisation of the currency-symbol.
  For the EURO sign symbol set to ... = "&#8364;";
