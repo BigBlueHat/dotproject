@@ -41,7 +41,7 @@ function getReadableModule() {
 function checkFlag($flag, $perm_type, $old_flag) {
 	if($old_flag) {
 		// check if permissions are implicity denied
-		return ($flag == $PERM_DENY)?0:1;
+		return ($flag == PERM_DENY)?0:1;
 	} else {
 		if($perm_type == PERM_READ) {
 			return ($flag != PERM_DENY)?1:0;
