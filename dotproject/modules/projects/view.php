@@ -354,7 +354,7 @@ if ($canViewTask) {
 	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/viewgantt", 'Gantt Chart' );
 	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_logs", 'Task Logs' );
 }
-
+$tabBox->loadExtras($m);
 $f = 'all';
 $min_view = true;
 
