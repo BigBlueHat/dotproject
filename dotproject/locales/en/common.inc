@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"sort by",
 "- New Item -",
 "About",
 "Active Projects",
@@ -26,7 +25,6 @@
 "Tasks",
 "Tickets",
 "User Admin",
-"accessDeniedMsg"=>"<p>You have attemped to access an item in dotproject without the sufficient permissions to do so.</p><p>Please contact the DotProject System Administrator.</p>",
 "back",
 "cancel",
 "forgotPassword"=>"Help! I've forgotten my username and password!",
@@ -34,5 +32,6 @@
 "openSource"=>"an open source<br>project management<br>application",
 "password",
 "save",
+"sort by",
 "submit",
 "username",
