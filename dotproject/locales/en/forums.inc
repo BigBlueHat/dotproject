@@ -25,6 +25,7 @@
 "My Projects",
 "My Watched",
 "New Topic",
+"No posts",
 "No replies",
 "Owner",
 "Post Reply",

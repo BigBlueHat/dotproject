@@ -181,7 +181,7 @@ foreach ($forums as $row) {
 		echo $row['message_length'] > $max_msg_length ? '...' : '';
 		echo '</font></a>';
 	} else {
-		echo "No posts";
+		echo $AppUI->_('No posts');
 	}
 ?>
 	</td>
