@@ -20,8 +20,22 @@ if ($denyRead) {
 $file_id = isset($_GET['file_id']) ? $_GET['file_id'] : 0;
 
 if ($file_id) {
-	$sql = "SELECT * FROM files WHERE file_id=$file_id";
-	db_loadHash( $sql, $file );
+	// projects that are denied access
+	$sql = "
+	SELECT project_id
+	FROM projects, permissions
+	WHERE permission_user = $AppUI->user_id
+		AND permission_grant_on = 'projects'
+		AND permission_item = project_id
+		AND permission_value = 0
+	";
+	$deny1 = db_loadColumn( $sql );
+
+	$sql = "SELECT * FROM files WHERE file_id=$file_id"
+		.(count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '');
+	if (!db_loadHash( $sql, $file )) {
+		$AppUI->redirect( "m=public&a=access_denied" );
+	};
 
 	// BEGIN extra headers to resolve IE caching bug (JRP 9 Feb 2003)
 	// [http://bugs.php.net/bug.php?id=16173]
