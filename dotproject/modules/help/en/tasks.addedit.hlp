@@ -2,3 +2,7 @@
 <h2>Add/Edit Task Screen</h2>
 
 <p>This shows you the add edit form.</p>
+
+<h3>Dynamic Tasks</h3>
+
+Dynamics tasks are tasks which doesn't have a fixed date and may be scheduled automaticaly by the Tasks Organizer (a still hidden feature).
