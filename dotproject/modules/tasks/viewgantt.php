@@ -24,8 +24,8 @@ function popCalendar(x){
 	$end_date = ($edate != "")?toDate($edate):"";
 			
 	if($display_option=="month" || $start_date == "") {
-		$start_date = date("Y-m-d", strtotime("now()"));
-		$end_date = date("Y-m-d", strtotime("now() + 1 month"));
+		$start_date = time2YMD(strtotime("now()"));
+		$end_date = time2YMD(strtotime("now() + 1 month"));
 	}
 ?>
 

@@ -65,7 +65,7 @@
 		
 		if($time < time()) $time = time();
 		
-		$str_start_date = formatYMDtime(strtotime(formatYMDtime($time) . " + 1 day"));
+		$str_start_date = time2YMD(strtotime(time2YMD($time) . " + 1 day"));
 		$str_end_date = get_end_date($str_start_date, $tasks[$task_index]["task_duration"]);
 		
 		// Complex SQL explanation:
