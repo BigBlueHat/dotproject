@@ -269,8 +269,22 @@ if(isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_ti
 	$can_edit_time_information = true;
 }
 
+//get list of projects, for task move drop down list.
+$sql = "
+SELECT
+	project_id, project_name
+FROM permissions,projects
+WHERE permission_user = $AppUI->user_id
+	AND project_active=1
+	AND permission_value <> 0
+	AND (
+		(permission_grant_on = 'all')
+		OR (permission_grant_on = 'projects' AND permission_item = -1)
+		OR (permission_grant_on = 'projects' AND permission_item = projects.project_id)
+		)
+ORDER BY project_name";
+$projects = db_loadHashList( $sql );
 ?>
-
 <SCRIPT language="JavaScript">
 var calendarField = '';
 var calWin = null;
@@ -674,7 +688,7 @@ function changeRecordType(value){
 	<input name="hperc_assign" type="hidden" value="<?php echo $initPercAsignment;?>"/>
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
-	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
+<!--	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />-->
 	<input name='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
@@ -736,7 +750,7 @@ function changeRecordType(value){
 								<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ), true );?>
 								<br /><?php echo $AppUI->_( 'Web Address' );?>
 								<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
-								<br />
+
 							</td>
 							<td valign='top'>
 								<?php echo $AppUI->_("Task Type"); ?>
@@ -837,6 +851,12 @@ function changeRecordType(value){
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
 				<td nowrap="nowrap">
 					<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic!="0") echo "checked"?> />
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+						<br /><?php echo $AppUI->_( 'Change Task Project' );?>
+						<br /><?=arraySelect( $projects, 'task_project', 'size="1" class="text" id="medium" onchange="document.editFrm.submit()"',$task_project )?>
 				</td>
 			</tr>
 			<?php
