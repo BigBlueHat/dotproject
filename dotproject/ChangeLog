@@ -1,3 +1,566 @@
+2004-07-16 22:01  (gnome444)
+---------------------------------
+modules/tasks/gantt.php
+- minor workaround for missing TTF in gantt
+
+2004-07-16 21:39  (gnome444)
+---------------------------------
+db/upgrade_latest.sql
+- Missing single quote
+
+2004-07-16 18:54  (gregorerhardt)
+---------------------------------
+install/do_backup.php
+install/pref.php
+- removed trailing slash in base url
+
+2004-07-15 12:39  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Fix from RokSteady to limit the permissions list to only valid permissions.
+
+2004-07-15 04:37  (ajdonnison)
+---------------------------------
+modules/projects/projects.class.php
+- Fixed another instance of a bad SQL call when there is no Company
+- created.
+
+2004-07-15 04:19  (ajdonnison)
+---------------------------------
+modules/projects/projects.class.php
+- Fixed broken SQL when no limits are found.
+
+2004-07-15 04:07  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Fixed problem where empty fields were causing SQL to break.
+
+2004-07-15 00:34  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Fixed loop detection code.
+
+2004-07-14 18:26  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+modules/files/do_file_aed.php
+modules/files/files.class.php
+modules/files/index.php
+modules/files/index_table.php
+- Added files categories tabs to the files module - controlled by a sysval
+
+2004-07-14 18:24  (cyberhorse)
+---------------------------------
+db/upgrade_latest.sql
+- Inserted default system values to be used for the file categorization
+
+2004-07-14 18:02  (cyberhorse)
+---------------------------------
+db/upgrade_latest.sql
+- add support for file categories into the database
+
+2004-07-14 12:34  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Fixed problem with fatal error when no user permissions exist.
+
+2004-07-14 12:32  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+includes/db_adodb.php
+includes/main_functions.php
+- New graduated debugging including backtrace on PHP 4.3 or greater.
+
+2004-07-14 10:44  (ajdonnison)
+---------------------------------
+install/do_backup.php
+- Fixed problem with Mozilla where it would not trigger submit.
+
+2004-07-14 10:36  (ajdonnison)
+---------------------------------
+docs/about.html
+docs/index.html
+docs/install.html
+docs/nav.html
+docs/roadmap.html
+docs/team.html
+docs/trouble.html
+docs/upgrade.html
+- Revamped documentation links to point to the live documents.
+- Removed old and outdated docs.
+- Added overview that points people to dotproject.net website.
+
+2004-07-14 09:54  (ajdonnison)
+---------------------------------
+files/temp/.htaccess
+- Open up access for this directory, otherwise PDF files cannot be read.
+
+2004-07-13 18:58  (robertoibarra)
+---------------------------------
+modules/projects/vw_logs.php
+- Users sorted first name, last name as shown in the filter by user combo
+
+2004-07-13 03:27  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+- clean the file a little ...
+
+2004-07-12 11:49  (ajdonnison)
+---------------------------------
+index.php
+- Altered error setting so that errors are actually reported! Not sure
+- why this was set so that fatal errors were not reporting.
+
+2004-07-12 10:28  (ajdonnison)
+---------------------------------
+style/classic/header.php
+- Added browser-independent event handling.
+
+2004-07-12 09:29  (ajdonnison)
+---------------------------------
+js/base.js
+- New base-level javascript for handling common javascript tasks.
+
+2004-07-12 09:08  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+classes/ui.class.php
+- Removed need to supply height and width options to dpShowImage.
+
+2004-07-10 18:33  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+- bug, caused by case sensitivity ... by default ADODB returns rows as objects in capitals, and dp was expecting them in lower case. This bug was preventing logging on (although once logged in, user could do things as normal - that's why the bug creeped in to begin with)
+- 
+- Sorry guys...
+
+2004-07-10 14:58  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+includes/db_connect.php
+- Added ADODB support
+
+2004-07-10 14:55  (cyberhorse)
+---------------------------------
+lib/adodb/adodb-csvlib.inc.php
+lib/adodb/adodb-datadict.inc.php
+lib/adodb/adodb-error.inc.php
+lib/adodb/adodb-errorhandler.inc.php
+lib/adodb/adodb-errorpear.inc.php
+lib/adodb/adodb-exceptions.inc.php
+lib/adodb/adodb-iterator.inc.php
+lib/adodb/adodb-lib.inc.php
+lib/adodb/adodb-pager.inc.php
+lib/adodb/adodb-pear.inc.php
+lib/adodb/adodb-perf.inc.php
+lib/adodb/adodb-php4.inc.php
+lib/adodb/adodb-time.inc.php
+lib/adodb/adodb-time.zip
+lib/adodb/adodb-xmlschema.inc.php
+lib/adodb/adodb.inc.php
+lib/adodb/license.txt
+lib/adodb/pivottable.inc.php
+lib/adodb/readme.txt
+lib/adodb/rsfilter.inc.php
+lib/adodb/server.php
+lib/adodb/toexport.inc.php
+lib/adodb/tohtml.inc.php
+lib/adodb/xmlschema.dtd
+lib/adodb/contrib/toxmlrpc.inc.php
+lib/adodb/cute_icons_for_site/adodb.gif
+lib/adodb/cute_icons_for_site/adodb2.gif
+lib/adodb/datadict/datadict-access.inc.php
+lib/adodb/datadict/datadict-db2.inc.php
+lib/adodb/datadict/datadict-firebird.inc.php
+lib/adodb/datadict/datadict-generic.inc.php
+lib/adodb/datadict/datadict-ibase.inc.php
+lib/adodb/datadict/datadict-informix.inc.php
+lib/adodb/datadict/datadict-mssql.inc.php
+lib/adodb/datadict/datadict-mysql.inc.php
+lib/adodb/datadict/datadict-oci8.inc.php
+lib/adodb/datadict/datadict-postgres.inc.php
+lib/adodb/datadict/datadict-sybase.inc.php
+lib/adodb/docs/docs-adodb.htm
+lib/adodb/docs/docs-datadict.htm
+lib/adodb/docs/docs-perf.htm
+lib/adodb/docs/docs-session.htm
+lib/adodb/docs/old-changelog.htm
+lib/adodb/docs/readme.htm
+lib/adodb/docs/tips_portable_sql.htm
+lib/adodb/docs/tute.htm
+lib/adodb/drivers/adodb-access.inc.php
+lib/adodb/drivers/adodb-ado.inc.php
+lib/adodb/drivers/adodb-ado_access.inc.php
+lib/adodb/drivers/adodb-ado_mssql.inc.php
+lib/adodb/drivers/adodb-borland_ibase.inc.php
+lib/adodb/drivers/adodb-csv.inc.php
+lib/adodb/drivers/adodb-db2.inc.php
+lib/adodb/drivers/adodb-fbsql.inc.php
+lib/adodb/drivers/adodb-firebird.inc.php
+lib/adodb/drivers/adodb-ibase.inc.php
+lib/adodb/drivers/adodb-informix.inc.php
+lib/adodb/drivers/adodb-informix72.inc.php
+lib/adodb/drivers/adodb-ldap.inc.php
+lib/adodb/drivers/adodb-mssql.inc.php
+lib/adodb/drivers/adodb-mssqlpo.inc.php
+lib/adodb/drivers/adodb-mysql.inc.php
+lib/adodb/drivers/adodb-mysqli.inc.php
+lib/adodb/drivers/adodb-mysqlt.inc.php
+lib/adodb/drivers/adodb-netezza.inc.php
+lib/adodb/drivers/adodb-oci8.inc.php
+lib/adodb/drivers/adodb-oci805.inc.php
+lib/adodb/drivers/adodb-oci8po.inc.php
+lib/adodb/drivers/adodb-odbc.inc.php
+lib/adodb/drivers/adodb-odbc_mssql.inc.php
+lib/adodb/drivers/adodb-odbc_oracle.inc.php
+lib/adodb/drivers/adodb-odbtp.inc.php
+lib/adodb/drivers/adodb-odbtp_unicode.inc.php
+lib/adodb/drivers/adodb-oracle.inc.php
+lib/adodb/drivers/adodb-pdo.inc.php
+lib/adodb/drivers/adodb-postgres.inc.php
+lib/adodb/drivers/adodb-postgres64.inc.php
+lib/adodb/drivers/adodb-postgres7.inc.php
+lib/adodb/drivers/adodb-proxy.inc.php
+lib/adodb/drivers/adodb-sapdb.inc.php
+lib/adodb/drivers/adodb-sqlanywhere.inc.php
+lib/adodb/drivers/adodb-sqlite.inc.php
+lib/adodb/drivers/adodb-sqlitepo.inc.php
+lib/adodb/drivers/adodb-sybase.inc.php
+lib/adodb/drivers/adodb-vfp.inc.php
+lib/adodb/lang/adodb-bg.inc.php
+lib/adodb/lang/adodb-bgutf8.inc.php
+lib/adodb/lang/adodb-ca.inc.php
+lib/adodb/lang/adodb-cn.inc.php
+lib/adodb/lang/adodb-cz.inc.php
+lib/adodb/lang/adodb-de.inc.php
+lib/adodb/lang/adodb-en.inc.php
+lib/adodb/lang/adodb-es.inc.php
+lib/adodb/lang/adodb-fr.inc.php
+lib/adodb/lang/adodb-it.inc.php
+lib/adodb/lang/adodb-nl.inc.php
+lib/adodb/lang/adodb-pl.inc.php
+lib/adodb/lang/adodb-pt-br.inc.php
+lib/adodb/lang/adodb-ro.inc.php
+lib/adodb/lang/adodb-ru1251.inc.php
+lib/adodb/lang/adodb-sv.inc.php
+lib/adodb/pear/readme.Auth.txt
+lib/adodb/pear/Auth/Container/ADOdb.php
+lib/adodb/perf/perf-db2.inc.php
+lib/adodb/perf/perf-informix.inc.php
+lib/adodb/perf/perf-mssql.inc.php
+lib/adodb/perf/perf-mysql.inc.php
+lib/adodb/perf/perf-oci8.inc.php
+lib/adodb/perf/perf-postgres.inc.php
+lib/adodb/session/adodb-compress-bzip2.php
+lib/adodb/session/adodb-compress-gzip.php
+lib/adodb/session/adodb-cryptsession.php
+lib/adodb/session/adodb-encrypt-mcrypt.php
+lib/adodb/session/adodb-encrypt-md5.php
+lib/adodb/session/adodb-encrypt-secret.php
+lib/adodb/session/adodb-sess.txt
+lib/adodb/session/adodb-session-clob.php
+lib/adodb/session/adodb-session.php
+lib/adodb/session/adodb-sessions.mysql.sql
+lib/adodb/session/adodb-sessions.oracle.clob.sql
+lib/adodb/session/adodb-sessions.oracle.sql
+lib/adodb/session/crypt.inc.php
+lib/adodb/session/old/adodb-cryptsession.php
+lib/adodb/session/old/adodb-session-clob.php
+lib/adodb/session/old/adodb-session.php
+lib/adodb/session/old/crypt.inc.php
+lib/adodb/tests/benchmark.php
+lib/adodb/tests/client.php
+lib/adodb/tests/pdo.php
+lib/adodb/tests/test-datadict.php
+lib/adodb/tests/test-perf.php
+lib/adodb/tests/test-pgblob.php
+lib/adodb/tests/test-php5.php
+lib/adodb/tests/test-xmlschema.php
+lib/adodb/tests/test.php
+lib/adodb/tests/test2.php
+lib/adodb/tests/test3.php
+lib/adodb/tests/test4.php
+lib/adodb/tests/test5.php
+lib/adodb/tests/test_rs_array.php
+lib/adodb/tests/testcache.php
+lib/adodb/tests/testdatabases.inc.php
+lib/adodb/tests/testgenid.php
+lib/adodb/tests/testmssql.php
+lib/adodb/tests/testoci8.php
+lib/adodb/tests/testoci8cursor.php
+lib/adodb/tests/testpaging.php
+lib/adodb/tests/testpear.php
+lib/adodb/tests/testsessions.php
+lib/adodb/tests/time.php
+lib/adodb/tests/tmssql.php
+lib/adodb/tests/xmlschema.xml
+lib/adodb/xsl/convert-0.1-0.2.xsl
+lib/adodb/xsl/convert-0.2-0.1.xsl
+- ADODB package version 4.50 - 6 July 2004
+
+2004-07-10 14:31  (gregorerhardt)
+---------------------------------
+modules/admin/index.php
+- fixed major javascript security hole
+
+2004-07-10 14:23  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- hide public module (feature request)
+
+2004-07-10 07:43  (cyberhorse)
+---------------------------------
+modules/projects/reports/user_tasklist.en.txt
+modules/projects/reports/user_tasklist.php
+- superseded by taskperuser.php report
+
+2004-07-10 07:38  (cyberhorse)
+---------------------------------
+modules/projects/reports/user_tasklist.php
+- fixed a global variables related bug
+
+2004-07-10 07:34  (cyberhorse)
+---------------------------------
+modules/projects/reports/tasklist.php
+- added buttons to select previous/next day/week/month tasks
+
+2004-07-10 07:32  (cyberhorse)
+---------------------------------
+modules/projects/reports/tasklist.en.txt
+modules/projects/reports/tasklist.php
+modules/projects/reports/user_tasklist.en.txt
+modules/projects/reports/user_tasklist.php
+- two new reports
+
+2004-07-09 21:50  (gregorerhardt)
+---------------------------------
+modules/files/index_table.php
+- some minor design enhancements
+
+2004-07-09 09:46  (revelation7)
+---------------------------------
+modules/system/addeditpref.php
+- Fixed problem with CURRENCY format on user preferences not getting saved.  This was due to a limitation on mySQL for the length of column name.
+
+2004-07-07 05:15  (ajdonnison)
+---------------------------------
+docs/upgrade.html
+- Fixed a gramatical error.
+
+2004-07-07 05:11  (ajdonnison)
+---------------------------------
+docs/upgrade.html
+- Fixed spelling mistake.
+
+2004-07-07 03:06  (robertoibarra)
+---------------------------------
+style/default/login.php
+- Removed fixed logo size from login screen, it wasn't fixed anywhere else.
+
+2004-07-05 18:28  (cyberhorse)
+---------------------------------
+modules/tasks/todo.php
+- patch [ 823699 ] Todo problems dealing with ' (by alejandro_liu)
+- 
+- fixing a single quote bug in todo view.
+
+2004-07-05 18:19  (cyberhorse)
+---------------------------------
+modules/tasks/view.php
+- [ 957078 ] Beefier file list in tasks (by markdrago)
+- 
+- TODO: show a more useful application type.
+
+2004-07-05 17:38  (cyberhorse)
+---------------------------------
+index.php
+- Added a check for missing modules.
+- 
+- If an external module is installed and then its folder is deleted, but its entries are left in the database, the module is still showing in the menu. If users clicked on that, it was showing a PHP error message. Now it is showing a Warning message, suggesting that the according module is probably missing.
+- 
+- I wasn't sure if there was a proper warning page (maybe one as part of the public module) so I quickly made one up. If there is any standard for that, this should be changed to comply with it.
+
+2004-07-03 13:00  (cyberhorse)
+---------------------------------
+includes/db_mysql.php
+- extended one of the comments - hopefully to make a common mistake easier to avoid.
+
+2004-07-02 10:36  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- The last page wasn't showing as a link on top/bottom - off by one error fixed.
+- (part of patch 953126 on sf)
+
+2004-07-01 21:05  (jcgonz)
+---------------------------------
+modules/tasks/tasks.php
+- Additional change to be able to see child tasks from the inactive ones
+
+2004-06-30 20:45  (jcgonz)
+---------------------------------
+modules/tasks/view.php
+- Inactive tasks now can also show its child tasks
+
+2004-06-30 20:21  (jcgonz)
+---------------------------------
+locales/en/tasks.inc
+- Added up some aditional strings
+
+2004-06-30 20:20  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- Changed the appearance of dynamic tasks and enable task's indentation
+
+2004-06-30 19:57  (revelation7)
+---------------------------------
+modules/admin/do_user_aed.php
+- When a new user is created, this automatically direct user to permission setup page, with a modified message to alert user they must setup permissions.  This is to address frequent confusion about why newly created users can not login.
+
+2004-06-29 22:42  (jcgonz)
+---------------------------------
+modules/tasks/gantt.php
+- Solved a problem with utf8_decode function
+
+2004-06-29 00:46  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+- Limited to 45 characters task's names in the output to beautify screen output
+
+2004-06-29 00:36  (jcgonz)
+---------------------------------
+locales/en/tasks.inc
+- [no log message]
+
+2004-06-29 00:25  (jcgonz)
+---------------------------------
+locales/en/projects.inc
+- Added up some strings in the localization
+
+2004-06-29 00:15  (jcgonz)
+---------------------------------
+modules/companies/index.php
+- Fixed some formatting issues
+
+2004-06-28 02:29  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Added detection of mail loops.
+
+2004-06-25 21:18  (jcgonz)
+---------------------------------
+classes/ui.class.php
+locales/en/admin.inc
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/files.inc
+locales/en/projects.inc
+locales/en/tasks.inc
+modules/projects/addedit.php
+modules/projects/view.php
+- Some localization issues solved
+
+2004-06-23 02:39  (robertoibarra)
+---------------------------------
+modules/projects/reports/tasksperuser.php
+modules/tasks/tasks.class.php
+modules/tasks/tasksperuser_sub.php
+- When filtering the tasksperuser report to show all projects, the project name colum appear to show what project the task belonged to, doesn't apply for child tasks, only in parent ones.
+
+2004-06-23 01:36  (robertoibarra)
+---------------------------------
+modules/projects/vw_logs.php
+- New: Filter by Cost Code in the Task Log section of a project
+
+2004-06-22 00:18  (ajdonnison)
+---------------------------------
+modules/tasks/todo.php
+- Fixed problem where task list was reusing global variable $a and hence
+- causing calendar to malfunction.
+
+2004-06-21 02:46  (ajdonnison)
+---------------------------------
+index.php
+- Changed cfg_get_var to ini_get in response to error reported on dp.net
+- forum:
+- http://www.dotproject.net/index.php?name=PNphpBB2&file=viewtopic&p=1768#1768
+
+2004-06-17 02:27  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+- Now users allowed to do so can update task's end date directly in the task's log form.
+
+2004-06-17 00:29  (jcgonz)
+---------------------------------
+modules/projects/reports/allocateduserhours.php
+- Fixed total amount of allocated hours calculation
+
+2004-06-17 00:21  (jcgonz)
+---------------------------------
+modules/companies/vw_companies.php
+- New filter: company_owner
+
+2004-06-17 00:11  (jcgonz)
+---------------------------------
+modules/companies/index.php
+- New filter: company_owner
+- Now the search saves it state
+
+2004-06-16 22:38  (jcgonz)
+---------------------------------
+modules/tasks/tasks.class.php
+- When a task is deleted or inactivated, that action is cascaded to all its children
+
+2004-06-16 21:34  (gregorerhardt)
+---------------------------------
+install/commonlib.php
+install/index.php
+- groundwork for loading existing config data
+
+2004-06-16 20:10  (jcgonz)
+---------------------------------
+modules/tasks/addedit.php
+- Solved bugs with the task tree construction (for task parent and task dependencies) and task_parent automatic relation in new tasks.
+
+2004-06-14 23:48  (gregorerhardt)
+---------------------------------
+modules/files/addedit.php
+- removed already commented out hardcoded fileuploadmaxsizelimit
+
+2004-06-14 20:51  (robertoibarra)
+---------------------------------
+modules/tasks/tasks.php
+- FIX: The assigned user count was incorrect as well as the file count, fixed in the query.
+
+2004-06-12 17:26  (gregorerhardt)
+---------------------------------
+fileviewer.php
+- #914075: yet another ie bug
+
+2004-06-12 16:59  (gregorerhardt)
+---------------------------------
+modules/calendar/links_tasks.php
+- #909085: server crash, undo this fix if problems reported
+
+2004-06-12 16:07  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- #891507: db field too short
+
+2004-06-12 15:54  (gregorerhardt)
+---------------------------------
+docs/install.html
+docs/nav.html
+- minor docs enhancements: dpHome opens in a new window, explain filesysperms for pdf reports
+
+2004-06-12 12:53  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog update
+
 2004-06-12 12:50  (gregorerhardt)
 ---------------------------------
 install/check.php
