@@ -24,6 +24,11 @@ if (!$obj->load( $task_id ) && $task_id > 0) {
 	$AppUI->redirect();
 }
 
+// check the document access
+if (!$obj->canAccess( $AppUI->user_id )) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $task_parent = isset( $obj->task_parent ) ? $obj->task_parent : $task_parent;
 
 // check for a valid project parent
@@ -302,7 +307,7 @@ function calcFinish() {
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Milestone' );?>?</td>
 			<td>
-				<input type=checkbox value=1 name="task_milestone" <?php if($obj->task_milestone){?>checked<?php }?> />
+				<input type="checkbox" value=1 name="task_milestone" <?php if($obj->task_milestone){?>checked<?php }?> />
 			</td>
 		</tr>
 		</table>
@@ -313,13 +318,17 @@ function calcFinish() {
 		<?php echo $AppUI->_( 'Task Creator' );?>
 		<br />
 	<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
+		<br />
+		<?php echo $AppUI->_( 'Access' );?>
+		<br />
+		<?php echo arraySelect( $task_access, 'task_access', 'class="text"', intval( $obj->task_access ) );?>
 		<br /><br /><?php echo $AppUI->_( 'Web Address' );?>
 		<br /><input type="text" class="text" name="task_related_url" value="<?php echo @$obj->task_related_url;?>" size="40" maxlength="255" />
 		<br />
 		<table>
 		<tr>
 			<td><?php echo $AppUI->_( 'Task Parent' );?>:</td>
-			<td><img src="./images/shim.gif" width=30 height=1></td>
+			<td><img src="./images/shim.gif" width="30" height="1"></td>
 			<td><?php echo $AppUI->_( 'Target Budget' );?></td>
 		</tr>
 		<tr>

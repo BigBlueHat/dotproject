@@ -4,6 +4,14 @@ require_once( $AppUI->getSystemClass( 'libmail' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
+// user based access
+$task_access = array(
+	'0'=>'Public',
+	'1'=>'Protected',
+	'2'=>'Participant',
+	'3'=>'Private'
+);
+
 /*
 * CTask Class
 */
@@ -30,10 +38,11 @@ class CTask extends CDpObject {
 	var $task_target_budget = NULL;
 	var $task_related_url = NULL;
 	var $task_creator = NULL;
-/** @deprecated */
+
 	var $task_order = NULL;
 	var $task_client_publish = NULL;
 	var $task_dynamic = NULL;
+	var $task_access = NULL;
 
 	function CTask() {
 		$this->CDpObject( 'tasks', 'task_id' );
@@ -264,6 +273,38 @@ class CTask extends CDpObject {
 //echo "<pre>$sql</pre>";
 	// execute and return
 		return db_loadList( $sql );
+	}
+
+	function canAccess( $user_id ) {
+		//echo intval($this->task_access);
+		switch ($this->task_access) {
+			case 0:
+				// public
+				return true;
+				break;
+			case 1:
+				// protected
+				$sql = "SELECT user_company FROM users WHERE user_id=$user_id";
+				$user_company = db_loadResult( $sql );
+				$sql = "SELECT user_company FROM users WHERE user_id=$this->task_owner";
+				$owner_company = db_loadResult( $sql );
+				//echo "$user_company,$owner_company";die;
+
+				$sql = "SELECT COUNT(*) FROM user_tasks WHERE user_id=$user_id AND task_id=$this->task_id";
+				$count = db_loadResult( $sql );
+				return ($owner_company == $user_company && $count > 0);
+				break;
+			case 2:
+				// participant
+				$sql = "SELECT COUNT(*) FROM user_tasks WHERE user_id=$user_id AND task_id=$this->task_id";
+				$count = db_loadResult( $sql );
+				return ($count > 0);
+				break;
+			case 3:
+				// private
+				return ($this->task_owner == $user_id);
+				break;
+		}
 	}
 }
 

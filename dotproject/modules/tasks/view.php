@@ -28,13 +28,17 @@ $msg = '';
 $obj = new CTask();
 $canDelete = $obj->canDelete( $msg, $task_id );
 
-$obj = null;
-if (!db_loadObject( $sql, $obj )) {
+//$obj = null;
+if (!db_loadObject( $sql, $obj, true )) {
 	$AppUI->setMsg( 'Task' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 } else {
 	$AppUI->savePlace();
+}
+
+if (!$obj->canAccess( $AppUI->user_id )) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // retrieve any state parameters

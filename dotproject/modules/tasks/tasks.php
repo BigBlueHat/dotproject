@@ -100,7 +100,7 @@ $tasks_filter = '';
 
 // TODO: Enable tasks filtering
 
-$join .= winnow( 'projects', 'tasks.task_project', $projects_filter, 'perm1' )
+$join .= winnow( 'projects', 'tasks.task_project', $projects_filter, 'perm1' );
 $join .= winnow( 'tasks', 'tasks.task_id', $tasks_filter, 'perm2' );
 $where .= " AND ( ($projects_filter) )";
 // echo "<pre>$where</pre>";
