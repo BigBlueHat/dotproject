@@ -9,7 +9,7 @@
 	$task_log_costcodes = array("" => ""); // Let's add a blank default option
 	$task_log_costcodes = array_merge($task_log_costcodes, db_loadHashList($sql));
 	
-	$sql = "SELECT user_id, concat(user_first_name,' ',user_last_name)  FROM users ORDER BY user_last_name,user_first_name";
+	$sql = "SELECT user_id, concat(user_first_name,' ',user_last_name)  FROM users ORDER BY user_first_name, user_last_name";
 	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), db_loadHashList( $sql ) );
 
 	$cost_code = dPgetParam( $_GET, 'cost_code' );
@@ -43,11 +43,7 @@ function delIt2(id) {
 }
 </script>
 <table border="0" cellpadding="2" cellspacing="1" width="100%" class="std">
-<form name="frmFilter" action="./index.php?m=projects&a=view&project_id=<?=$project_id?>&tab=<?=$tab?>" method="get">
-<input type="hidden" name="m" value="projects"/>
-<input type="hidden" name="a" value="view"/>
-<input type="hidden" name="project_id" value="<?=$project_id?>"/>
-<input type="hidden" name="tab" value="<?=$tab?>"/>
+<form name="frmFilter" action="./index.php" method="get">
 <tr>
 	<td width="98%">&nbsp;</td>
 	<td width="1%" nowrap="nowrap"><input type="checkbox" name="hide_inactive" <?=$hide_inactive?"checked":""?> onchange="document.frmFilter.submit()"><?=$AppUI->_('Hide Inactive')?></td>
@@ -59,6 +55,10 @@ function delIt2(id) {
 	<td width="1%"><?=arraySelect( $task_log_costcodes, 'cost_code', 'size="1" class="text" onchange="document.frmFilter.submit()"',
                           $cost_code )?></td>
 </tr>
+<input type="hidden" name="m" value="projects"/>
+<input type="hidden" name="a" value="view"/>
+<input type="hidden" name="project_id" value="<?=$project_id?>"/>
+<input type="hidden" name="tab" value="<?=$tab?>"/>
 </form>
 </table>
 <table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
