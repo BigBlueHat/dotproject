@@ -431,7 +431,9 @@ if ( count($obj->getChildren()) > 0 ) {
 	$_GET["task_status"] = $obj->task_status;
 	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
-foreach($all_tabs as $name => $tab)
-        $tabBox->add($tab, $name);
+
+if ($tabBox->loadExtras($m))
+  $tabBox_show = 1;
+
 if ( $tabBox_show == 1)	$tabBox->show();
 ?>
