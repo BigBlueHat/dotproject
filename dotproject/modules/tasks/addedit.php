@@ -11,13 +11,11 @@ if ($denyEdit) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
-//$project_id = $AppUI->getState( 'ActiveProject' ) ? $AppUI->getState( 'ActiveProject' ) : 0;
-
 // pull the task
 $sql = "SELECT * FROM tasks WHERE task_id = $task_id";
 db_loadHash( $sql, $task );
 $task_parent = isset( $task['task_parent'] ) ? $task['task_parent'] : $task_parent;
-$task_project = $project_id ? $project_id : $task['task_project'];
+$task_project = @$task['task_project'] ? $task['task_project'] : $AppUI->getProject();
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
