@@ -126,3 +126,5 @@ INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
 #
 ALTER TABLE `forums` CHANGE `forum_moderated` `forum_moderated` INT DEFAULT "0" NOT NULL
 
+# AJE (2/Jan/2003): New preference 
+INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
