@@ -53,8 +53,6 @@ $dPconfig['dbport'] = "";  // Change to match your Db Port or use the standard v
 // set this value to true to use persistent database connections
 $dPconfig['dbpersist'] = false;
 
-$dPconfig['base_url'] = "http://localhost/dotproject";
-
 /***************** Configuration for DEVELOPERS use only! ******/
 // Root directory is now automatically set to avoid
 // getting it wrong. It is also deprecated as $baseDir
@@ -62,4 +60,9 @@ $dPconfig['base_url'] = "http://localhost/dotproject";
 // All code should start to use $baseDir instead of root_dir.
 $dPconfig['root_dir'] = $baseDir;
 
+// Base Url is now automatically set to avoid
+// getting it wrong. It is also deprecated as $baseUrl
+// is now set in top-level files index.php and fileviewer.php.
+// All code should start to use $baseUrl instead of base_url.
+$dPconfig['base_url'] = $baseUrl;
 ?>

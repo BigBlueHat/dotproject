@@ -40,6 +40,11 @@ error_reporting(E_ALL & ~E_NOTICE);
 $loginFromPage = 'index.php';
 $baseDir = dirname(__FILE__);
 
+// automatically define the base url
+$baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
+$baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
+$baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? dirname($_SERVER['SCRIPT_NAME']) : dirname(getenv('SCRIPT_NAME'));
+
 is_file( "$baseDir/includes/config.php" )
 	or die( "Fatal Error. You haven't created a config file yet." );
 
