@@ -72,21 +72,21 @@ function setCalendar( idate, fdate ) {
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
-	
+
 	<TD NOWRAP>
-		<?php echo $AppUI->_('User');?>: 
+		<?php echo $AppUI->_('User');?>:
 		<SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 80px">
-		
+
 	<?php
 		$usersql = "
 		SELECT user_id, user_username, contact_first_name, contact_last_name
 		FROM users
                 LEFT JOIN contacts ON user_contact = contact_id
 		";
-		
+
 		if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
 		else echo '<OPTION VALUE="0">All users';
-		
+
 		if (($rows = db_loadList( $usersql, NULL )))
 		{
 			foreach ($rows as $row)
@@ -99,7 +99,7 @@ function setCalendar( idate, fdate ) {
 		}
 
 	?>
-			
+
 		</SELECT>
 	</TD>
 
@@ -179,7 +179,7 @@ if ($do_report) {
 <?php
 	$hours = 0.0;
 	$pdfdata = array();
-	
+
         foreach ($logs as $log) {
 		$date = new CDate( $log['task_log_date'] );
 		$hours += $log['task_log_hours'];
@@ -237,8 +237,12 @@ if ($do_report) {
 <?php
 	if ($log_pdf) {
 	// make the PDF file
-		$sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
-		$pname = db_loadResult( $sql );
+		 if (!$log_allprojects){
+			$sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
+			$pname = db_loadResult( $sql );
+		}
+		else
+			$pname = "All Projects";
 		echo db_error();
 
 		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
@@ -251,7 +255,7 @@ if ($do_report) {
 		$pdf->selectFont( "$font_dir/Helvetica.afm" );
 
 		$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
-		// $pdf->ezText( dPgetConfig( 'company_name' ).' :: '.dPgetConfig( 'page_title' ), 12 );		
+		// $pdf->ezText( dPgetConfig( 'company_name' ).' :: '.dPgetConfig( 'page_title' ), 12 );
 
 		$date = new CDate();
 		$pdf->ezText( "\n" . $date->format( $df ) , 8 );
@@ -267,7 +271,7 @@ if ($do_report) {
 		$pdf->ezText( "\n\n" );
 
 		$title = 'Task Logs';
-                
+
 	        $pdfheaders = array(
 		        $AppUI->_('Created by'),
         		$AppUI->_('Summary'),
