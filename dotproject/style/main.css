@@ -26,7 +26,10 @@ FormButton {
 }
 
 .title {
-	FONT-SIZE: 18pt; SIZE: 18pt;
+	font-size: 18pt; size: 18pt;
+}
+.subtitle {
+	font-size: 12pt; size: 12pt;
 }
 
 bordertable{
