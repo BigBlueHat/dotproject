@@ -23,11 +23,8 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
 $task_id = intval( dPgetParam( $_GET, 'task_id', null ) );
 
-
-$where = winnow( 'projects', 'project_id' );
-if ($where) {
-	$where = "WHERE $where";
-}
+$where = '';
+$join = winnow( 'projects', 'project_id', $where );
 
 // pull valid projects and their percent complete information
 $psql = "
@@ -35,12 +32,14 @@ SELECT project_id, project_color_identifier, project_name,
 	COUNT(t1.task_id) as total_tasks,
 	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete
 FROM projects
-LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-$where
-GROUP BY project_id
+LEFT JOIN tasks t1 ON projects.project_id = t1.task_project" .
+$join .
+"WHERE $where GROUP BY project_id
 ORDER BY project_name
 ";
-//echo "<pre>$psql</pre>";
+
+// echo "<pre>$psql</pre>";
+
 $prc = db_exec( $psql );
 echo db_error();
 
@@ -76,8 +75,7 @@ switch ($f) {
 		$where .= "
 	AND task_project = projects.project_id
 	AND user_tasks.user_id = $AppUI->user_id
-	AND user_tasks.task_id = tasks.task_id
-";
+	AND user_tasks.task_id = tasks.task_id";
 		break;
 	default:
 		$from .= ", user_tasks";
@@ -85,22 +83,22 @@ switch ($f) {
 	AND task_status > -1
 	AND task_project = projects.project_id
 	AND user_tasks.user_id = $AppUI->user_id
-	AND user_tasks.task_id = tasks.task_id
-";
+	AND user_tasks.task_id = tasks.task_id";
 		break;
 }
 
-if ($sql = winnow( 'projects', 'tasks.task_project' )) {
-	$where .= " AND $sql";
-}
+// filter tasks considering task and project permissions
+$projects_filter = '';
+$tasks_filter = '';
 
-if ($sql = winnow( 'tasks', 'tasks.task_id' )) {
-	$where .= " AND $sql";
-}
+$join .= winnow( 'projects', 'tasks.task_project', $projects_filter, 'perm1' ) .
+  winnow( 'tasks', 'tasks.task_id', $tasks_filter, 'perm2' );
+$where .= " AND ( ($projects_filter) OR ($tasks_filter) )";
 
-$tsql = "SELECT $select FROM $from $join WHERE $where"
-	. "\nORDER BY project_id, task_percent_complete, task_start_date";
-//echo "<pre>$tsql</pre>".db_error();##
+$tsql = "SELECT $select FROM $from $join WHERE $where" .
+  "\nORDER BY project_id, task_percent_complete, task_start_date";
+
+// echo "<pre>$tsql</pre>".db_error();
 
 $ptrc = db_exec( $tsql );
 $nums = db_num_rows( $ptrc );
