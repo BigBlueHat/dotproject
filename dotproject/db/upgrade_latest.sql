@@ -546,4 +546,17 @@ ALTER TABLE `tasks` CHANGE `task_target_budget` `task_target_budget` DECIMAL(10,
 ALTER TABLE `contacts` ADD `contact_job` VARCHAR( 255 ) NOT NULL ,
 ADD `contact_jabber` VARCHAR( 255 ) NOT NULL ,
 ADD `contact_msn` VARCHAR( 255 ) NOT NULL ,
-ADD `contact_yahoo` VARCHAR( 255 ) NOT NULL ;
+ADD `contact_yahoo` VARCHAR( 255 ) NOT NULL;
+
+# 20041209
+# table used for billing.
+CREATE TABLE `billingcode` (
+  `billingcode_id` bigint(20) NOT NULL auto_increment,
+  `billingcode_name` varchar(25) NOT NULL default '',
+  `billingcode_value` float NOT NULL default '0',
+  `billingcode_desc` varchar(255) NOT NULL default '',
+  `billingcode_status` int(1) NOT NULL default '0',
+  `company_id` bigint(20) NOT NULL default '0',
+  PRIMARY KEY  (`billingcode_id`)
+) TYPE=MyISAM;
+

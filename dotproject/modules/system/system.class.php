@@ -145,4 +145,82 @@ class CModule extends CDpObject {
 		return null;
 	}
 }
+
+class bcode {
+
+        var $_billingcode_id=NULL;
+
+        var $company_id;
+
+        var $billingcode_desc;
+
+        var $billingcode_name;
+
+        var $billingcode_value;
+
+        var $billingcode_status;
+
+
+
+        function bcode() {
+
+
+
+        }
+
+
+
+        function bind( $hash ) {
+
+                if (!is_array($hash)) {
+
+                        return "Billing Code::bind failed";
+
+                } else {
+
+                        bindHashToObject( $hash, $this );
+
+                        return NULL;
+
+                }
+
+        }
+
+
+
+        function delete() {
+
+                $sql = "update billingcode set billingcode_status=1 where billingcode_id='".$this->_billingcode_id."'";
+
+                if (!db_exec( $sql )) {
+
+                        return db_error();
+
+                } else {
+
+                        return NULL;
+
+                }
+
+        }
+
+
+
+        function store() {
+
+                if (!($ret = db_insertObject ( 'billingcode', $this, 'billingcode_id' ))) {
+
+                        return "Billing Code::store failed <br />" . db_error();
+
+                } else {
+
+                        return NULL;
+
+                }
+
+        }
+
+
+
+}
 ?>

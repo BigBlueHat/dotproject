@@ -38,6 +38,7 @@ $titleBlock->show();
 		<br /><a href="?m=system&u=syskeys&a=keys"><?php echo $AppUI->_( 'System Lookup Keys' );?></a>
 		<br /><a href="?m=system&u=syskeys"><?php echo $AppUI->_( 'System Lookup Values' );?></a>
 		<br /><a href="?m=system&a=custom_field_editor"><?php echo $AppUI->_( 'Custom Field Editor' );?></a>
+                <br /><a href="?m=system&a=billingcode"><?php echo $AppUI->_( 'Billing Code Table' );?></a>
 	</td>
 </tr>
 

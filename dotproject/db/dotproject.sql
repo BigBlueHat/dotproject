@@ -939,6 +939,16 @@ CREATE TABLE `gacl_phpgacl` (
   PRIMARY KEY  (`name`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `billingcode`;
+CREATE TABLE `billingcode` (
+  `billingcode_id` bigint(20) NOT NULL auto_increment,
+  `billingcode_name` varchar(25) NOT NULL default '',
+  `billingcode_value` float NOT NULL default '0',
+  `billingcode_desc` varchar(255) NOT NULL default '',
+  `billingcode_status` int(1) NOT NULL default '0',
+  `company_id` bigint(20) NOT NULL default '0',
+  PRIMARY KEY  (`billingcode_id`)
+) TYPE=MyISAM;
 
 INSERT INTO `gacl_phpgacl` (name, value) VALUES ('version', '3.3.2');
 INSERT INTO `gacl_phpgacl` (name, value) VALUES ('schema_version', '2.1');

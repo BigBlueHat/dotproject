@@ -17,12 +17,30 @@ if ($task_log_id) {
 }
 
 // Lets check which cost codes have been used before
-$sql = "select distinct task_log_costcode
+/*$sql = "select distinct task_log_costcode
         from task_log
         where task_log_costcode != ''
         order by task_log_costcode";
 $task_log_costcodes = array(""); // Let's add a blank default option
 $task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
+*/
+
+$proj = &new CProject();
+$proj->load($obj->task_project);
+$sql = "SELECT billingcode_id, billingcode_name
+        FROM billingcode
+        WHERE billingcode_status=0
+        AND company_id='$proj->project_company' 
+        ORDER BY billingcode_name";
+
+$task_log_costcodes[0]="None";
+$ptrc = db_exec($sql);
+$nums=db_num_rows($ptrc);
+echo db_error();
+for ($x=0; $x < $nums; $x++) {
+        $row = db_fetch_assoc( $ptrc );
+        $task_log_costcodes[$row["billingcode_id"]] = $row["billingcode_name"];
+}
 
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 
