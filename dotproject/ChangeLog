@@ -1,8 +1,56 @@
-2004-04-13 14:22  (gnome444)
+2004-04-15 20:14  (jcgonz)
+---------------------------------
+modules/tasks/view.php
+- Removed a warning message because a variable was not created
+
+2004-04-15 18:00  (gnome444)
+---------------------------------
+modules/public/contact_selector.php
+modules/tasks/addedit.php
+- Tweak contacts selector to allow selecting contacts from all allowed companies, your private contacts or contacts that are not assigned to any company. This is a much requested feature. Why is contacts_company a string and not a company_id?
+
+2004-04-15 17:54  (gnome444)
+---------------------------------
+includes/permissions.php
+- Fix my permissions fix. Take into account global perms too. Sorry about that folks.
+
+2004-04-14 13:56  (gregorerhardt)
+---------------------------------
+install/check.php
+install/commonlib.php
+install/config.php
+install/db.php
+install/do_backup.php
+install/index.php
+install/pref.php
+- several fixes and new features for the installer, updated todo list
+
+2004-04-14 10:53  (gregorerhardt)
+---------------------------------
+modules/forums/post_message.php
+- #934269: show original text in forum message edit mode
+
+2004-04-14 10:04  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-04-13 20:22  (gnome444)
 ---------------------------------
 modules/tasks/tasks.php
 - Performance optimization, no need to query a search string
 - if we aren't searching for anything
+
+2004-04-13 20:05  (gnome444)
+---------------------------------
+modules/tasks/tasks.php
+- Query speed up. This takes this query from 69 secs
+- to 1.3 secs on my old (ass kickin') MySQL 3.? p200 database box.
+
+2004-04-13 17:09  (gregorerhardt)
+---------------------------------
+install/index.php
+- just wanted to have the updated todo list versioned :-)
 
 2004-04-13 14:05  (gnome444)
 ---------------------------------
