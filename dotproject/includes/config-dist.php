@@ -1,6 +1,6 @@
 <?php /* $Id$ */
 
-/**  LICENSE  **
+/**  BSD LICENSE  **
 
 Copyright (c) 2003, The dotProject Development Team sf.net/projects/dotproject
 All rights reserved.
@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 // Do not change version for support reasons
-$dPconfig['version'] = "dotProject v1.0 alpha 2b [10-Apr-2003]";
+$dPconfig['version'] = "dotProject v1.0 beta 1 [xx-Apr-2003]";
 
 // DATABASE ACCESS INFORMATION [DEFAULT example]
 // Modify these values to suit your local settings
@@ -51,6 +51,10 @@ $dPconfig['dbhost'] = "localhost";
 $dPconfig['dbname'] = "dotproject";
 $dPconfig['dbuser'] = "root";
 $dPconfig['dbpass'] = "";
+
+// check for legacy password
+// ONLY REQUIRED FOR UPGRADES prior to and including version 1.0 alpha 2
+$dPconfig['check_legacy_password'] = false;
 
 /*
  Localisation of the host for this dotproject,
@@ -64,7 +68,7 @@ $dPconfig['host_style'] = "default";
 // local settings [DEFAULT example WINDOWS]
 $dPconfig['root_dir'] = "C:/apache/htdocs/dotproject";  // No trailing slash
 $dPconfig['company_name'] = "My Company";
-$dPconfig['page_title'] = "DotProject V1.0 pre-alpha";
+$dPconfig['page_title'] = "dotProject v1.0 beta 1";
 $dPconfig['base_url'] = "http://localhost/dotproject";
 $dPconfig['site_domain'] = "dotproject.net";
 
