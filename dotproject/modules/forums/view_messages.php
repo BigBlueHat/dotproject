@@ -5,13 +5,12 @@ $sql = "
 SELECT forum_messages.*,
 	user_first_name, user_last_name, user_email, user_username,
 	forum_moderated
-FROM forum_messages
+FROM forum_messages, forums
 LEFT JOIN users ON message_author = users.user_id
-LEFT JOIN forums ON forum_id = message_forum
-WHERE message_id = $message_id
-	OR	message_parent = $message_id
+WHERE forum_id = message_forum
+	AND (message_id = $message_id OR message_parent = $message_id)
 ";
-
+echo "<pre>$sql</pre>";
 $messages = db_loadList( $sql );
 
 $crumbs = array();

@@ -6,11 +6,11 @@ $post_message = isset($_GET["post_message"]) ? $_GET["post_message"] : 0;
 $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 
 // check permissions
-$denyRead = getDenyRead( $m, $forum_id );
-$denyEdit = getDenyEdit( $m, $forum_id );
+$canRead = !getDenyRead( $m, $forum_id );
+$canEdit = !getDenyEdit( $m, $forum_id );
 
-if ($denyRead || ($post_message & $denyEdit)) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canRead || ($post_message & !$canEdit)) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $df = $AppUI->getPref('SHDATEFORMAT');
