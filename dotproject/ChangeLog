@@ -1,3 +1,273 @@
+2003-03-20 12:15  (kobudo)
+---------------------------------
+db/upgrade_100_alpha1_to_alpha2.sql
+- Fix some problems with the "precent_complete" typo correction.
+
+2003-03-20 12:15  (kobudo)
+---------------------------------
+modules/help/en/install.upgrade.hlp
+- Add upgrade from alpha1 to alpha2 information
+
+2003-03-20 11:15  (kobudo)
+---------------------------------
+includes/config-dist.php
+- Add dPconfig['version'] parameter.
+
+2003-03-19 22:05  (eddieajau)
+---------------------------------
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- Fixed duration type issues
+
+2003-03-19 22:05  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Reworked date formatting
+
+2003-03-19 22:04  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Added auto-calc buttons for finish date and duration
+
+2003-03-19 22:03  (eddieajau)
+---------------------------------
+modules/tasks/vw_logs.php
+- Took equal sign out of translated string
+
+2003-03-19 22:02  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/do_project_aed.php
+modules/projects/view.php
+- Reworked call to invalid ID and messaging
+
+2003-03-19 22:00  (eddieajau)
+---------------------------------
+modules/help/en/forums.index.hlp
+modules/help/en/help.toc.hlp
+- Content updated
+
+2003-03-19 21:59  (eddieajau)
+---------------------------------
+modules/forums/view_topics.php
+- Fixed wrong dosql file
+- XHTML compliance
+
+2003-03-19 21:56  (eddieajau)
+---------------------------------
+modules/forums/index.php
+- Updated title block
+- XHTML compliance
+- Fixed bug where forum has no posts
+
+2003-03-19 21:54  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/do_company_aed.php
+modules/companies/view.php
+- Reworked message handling and attempt to view/edit invalid ID
+
+2003-03-19 21:51  (eddieajau)
+---------------------------------
+locales/en/admin.inc
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/tasks.inc
+- Updated content
+
+2003-03-19 21:50  (eddieajau)
+---------------------------------
+includes/db_mysql.php
+- Changed datetime2unix function to return -1 on error
+
+2003-03-19 21:49  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Fixed bugs in selection of tasks and 'filling' tasks over the duration
+
+2003-03-19 21:48  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Added table around icon and system message to improve layout
+- Changed redirect from javascript method to header method (safer)
+
+2003-03-19 15:31  (eddieajau)
+---------------------------------
+modules/ticketsmith/post_ticket.php
+- Fixed bug calling wrong "dosql" file name
+
+2003-03-19 15:13  (korinek)
+---------------------------------
+classes/ui.class.php
+includes/main_functions.php
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/forums.inc
+locales/en/tasks.inc
+modules/admin/index.php
+modules/calendar/index.php
+modules/forums/addedit.php
+modules/forums/post_message.php
+- Localisation leftovers.
+
+2003-03-19 15:00  (korinek)
+---------------------------------
+index.php
+- Fixed a bug that the login page was never displayed in host locale.
+
+2003-03-19 14:49  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+- Fixed bug in task_log table indexes
+
+2003-03-18 22:31  (eddieajau)
+---------------------------------
+modules/departments/addedit.php
+- Fixed bug in phone field
+
+2003-03-18 22:08  (eddieajau)
+---------------------------------
+index.php
+- Removed intercept of project id
+
+2003-03-18 22:06  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/organizer.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- Numerous changes
+- Updated title blocks
+- Added key to todo page
+- Improved redirect when deleting task
+- Improved error handling for bad task id or bad project id
+- Reworked task update system
+
+2003-03-18 22:02  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+- Updated help and new task links
+
+2003-03-18 21:58  (eddieajau)
+---------------------------------
+locales/en/tasks.inc
+- Content updated
+
+2003-03-18 21:58  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Removed storage of project_id in CAppUI class
+
+2003-03-18 21:56  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Disabled old help system
+
+2003-03-18 21:54  (eddieajau)
+---------------------------------
+modules/help/en/companies.addedit.hlp
+modules/help/en/companies.view.hlp
+modules/help/en/help.toc.hlp
+modules/help/en/projects.addedit.hlp
+modules/help/en/projects.index.hlp
+modules/help/en/projects.view.hlp
+modules/help/en/system.addeditpref.hlp
+modules/help/en/tasks.addedit.hlp
+modules/help/en/tasks.index.hlp
+modules/help/en/tasks.todo.hlp
+modules/help/en/tasks.view.hlp
+- Content updated
+
+2003-03-18 21:50  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Updated title block
+
+2003-03-18 19:33  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Fixed mis-spelt percent
+
+2003-03-18 19:31  (eddieajau)
+---------------------------------
+locales/en/tasks.inc
+- Content updated
+
+2003-03-18 19:26  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+db/upgrade_022_to_100.sql
+db/upgrade_100_alpha1_to_alpha2.sql
+- Porting task_comments table to task_log table
+- Fix mis-spelt percent
+
+2003-03-18 15:04  (eddieajau)
+---------------------------------
+docs/INSTALL.txt
+- Added quick note about requirement for GD library for Gantt charts.
+
+2003-03-17 14:31  (eddieajau)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Fixed bug in the date display
+
+2003-03-17 14:23  (eddieajau)
+---------------------------------
+modules/departments/addedit.php
+- Fixed bug caused by misnamed variable
+
+2003-03-16 16:02  (eddieajau)
+---------------------------------
+modules/contacts/addedit.php
+modules/contacts/index.php
+- Updated titleblock
+- Fixed private entry
+
+2003-03-16 16:00  (eddieajau)
+---------------------------------
+modules/help/en/install.configure.hlp
+- Deleted dotHelp configuration
+
+2003-03-15 22:13  (kobudo)
+---------------------------------
+style/default/main.css
+- Add H3 style for Help Documentation.
+
+2003-03-15 22:07  (kobudo)
+---------------------------------
+modules/help/en/contacts.addedit.hlp
+modules/help/en/contacts.index.hlp
+modules/help/en/help.toc.hlp
+- Help documentation.
+
+2003-03-15 21:25  (kobudo)
+---------------------------------
+modules/help/en/install.configure.hlp
+modules/help/en/contacts.index.hlp
+modules/help/en/help.toc.hlp
+- Help documentation.
+
+2003-03-15 20:33  (kobudo)
+---------------------------------
+ChangeLog
+- Updated ChangeLog
+
 2003-03-13 16:53  (eddieajau)
 ---------------------------------
 modules/help/en/general.breadcrumbs.hlp
@@ -317,23 +587,6 @@ modules/departments/dosql.php
 ---------------------------------
 modules/projects/view.php
 - Fixed bug in move task functions in task tab
-
-2003-03-03 14:56  (eddieajau)
----------------------------------
-modules/help/framed/search.php
-modules/help/framed/top.php
-modules/help/framed/keywords.php
-- Fixed undeclared variables
-
-2003-03-03 14:55  (eddieajau)
----------------------------------
-modules/help/framed/includes/db_connect.php
-- Minor update
-
-2003-03-03 14:54  (eddieajau)
----------------------------------
-modules/help/framed/includes/config.php
-- Added maximum error reporting
 
 2003-03-03 14:54  (eddieajau)
 ---------------------------------
@@ -854,11 +1107,6 @@ modules/projects/vw_idx_active.php
 calendar.php
 - Fixed bug in style
 
-2003-02-19 19:48  (eddieajau)
----------------------------------
-modules/help/framed/includes/db_connect.php
-- Fixed pass by reference problem in db_loadHash
-
 2003-02-19 19:42  (eddieajau)
 ---------------------------------
 modules/companies/addedit.php
@@ -981,18 +1229,6 @@ modules/projects/view.php
 modules/admin/vw_usr_perms.php
 modules/admin/addedituser.php
 - Pointed call to selector.php to new public module
-
-2003-02-18 17:57  (eddieajau)
----------------------------------
-modules/help/framed/keywords.php
-modules/help/framed/main.php
-modules/help/framed/search.php
-modules/help/framed/toc.php
-modules/help/framed/top.php
-modules/help/framed/classes/ui.class.php
-modules/help/framed/includes/config.php
-modules/help/framed/includes/db_connect.php
-- Reworked configuration variables to suit new dotProject format
 
 2003-02-18 17:23  (eddieajau)
 ---------------------------------
@@ -1607,8 +1843,6 @@ style/default/login.php
 2003-02-07 11:41  (kobudo)
 ---------------------------------
 modules/admin/addeditgroup.php
-modules/help/framed/toc.php
-modules/help/framed/vw_method.php
 modules/ticketsmith/common.inc.php
 modules/ticketsmith/view.php
 - John converts all instances of <i></i> to <em></em>
@@ -1637,8 +1871,6 @@ modules/forums/post_message.php
 modules/forums/view_messages.php
 modules/forums/viewer.php
 modules/help/index.php
-modules/help/framed/vw_method.php
-modules/help/framed/locales/en/common.inc
 modules/projects/addedit.php
 modules/projects/view.php
 modules/system/viewmods.php
@@ -1709,10 +1941,6 @@ modules/forums/view_messages.php
 modules/forums/view_topics.php
 modules/forums/viewer.php
 modules/help/access_denied.php
-modules/help/framed/search.php
-modules/help/framed/vw_class.php
-modules/help/framed/vw_page.php
-modules/help/framed/includes/db_connect.php
 modules/projects/addedit.php
 modules/projects/view.php
 modules/system/index.php
@@ -1764,14 +1992,6 @@ modules/files/index_table.php
 modules/forums/index.php
 modules/forums/view_topics.php
 modules/forums/viewer.php
-modules/help/framed/keywords.php
-modules/help/framed/main.php
-modules/help/framed/search.php
-modules/help/framed/toc.php
-modules/help/framed/top.php
-modules/help/framed/includes/config.php
-modules/help/framed/includes/db_connect.php
-modules/help/framed/locales/core.php
 modules/projects/addedit.php
 modules/projects/index.php
 modules/projects/view.php
@@ -2243,12 +2463,6 @@ modules/projects/index.php
 2003-01-13 19:00  (eddieajau)
 ---------------------------------
 modules/forums/index.php
-modules/help/framed/keywords.php
-modules/help/framed/search.php
-modules/help/framed/toc.php
-modules/help/framed/vw_class.php
-modules/help/framed/vw_page.php
-modules/help/framed/classes/ui.class.php
 modules/projects/vw_forums.php
 - Upgraded db calls
 
@@ -3070,12 +3284,6 @@ modules/tasks/todo.php
 modules/projects/vw_tasks.php
 - Fixed undefined vars warning
 
-2002-12-30 20:56  (kripper)
----------------------------------
-modules/help/framed/includes/config.php
-- Integrated dotproject's configuration file in dothelp as proposed in
-- my mail.
-
 2002-12-30 20:53  (kripper)
 ---------------------------------
 includes/main_functions.php
@@ -3173,33 +3381,6 @@ images/obj/help.gif
 ---------------------------------
 db/dotproject_help.sql
 - Content added
-
-2002-12-18 22:43  (eddieajau)
----------------------------------
-modules/help/framed/footer.html
-modules/help/framed/help.css
-modules/help/framed/index.php
-modules/help/framed/keywords.php
-modules/help/framed/main.php
-modules/help/framed/search.php
-modules/help/framed/toc.php
-modules/help/framed/top.php
-modules/help/framed/vw_class.php
-modules/help/framed/vw_method.php
-modules/help/framed/vw_page.php
-modules/help/framed/classes/ui.class.php
-modules/help/framed/images/dothelp.gif
-modules/help/framed/images/print_1.gif
-modules/help/framed/includes/config.php
-modules/help/framed/includes/db_connect.php
-modules/help/framed/includes/db_mysql.php
-modules/help/framed/includes/footer.php
-modules/help/framed/includes/header.php
-modules/help/framed/locales/core.php
-modules/help/framed/locales/en/common.inc
-modules/help/framed/locales/en/viewer.inc
-modules/help/framed/uploads/dp.gif
-- Initial upload of help db framework
 
 2002-12-18 22:41  (eddieajau)
 ---------------------------------
