@@ -1,31 +1,16 @@
-<?php
+<?php  /* TICKETSMITH $Id$ */
+$type = dPgetParam( $_GET, 'type', 'Open' );
+$action = dPgetParam( $_REQUEST, 'action', null );
 
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+// setup the title block
+$titleBlock = new CTitleBlock( 'Trouble Ticket Management', 'ticketsmith.gif', $m, "$m.$a" );
+if ($canEdit) {
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new ticket').'">', '',
+		'<form action="?m=ticketsmith&a=post_ticket" method="post">', '</form>'
+	);
 }
-?>
-
-<TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
-	<TR>
-	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width="42" height="42" /></td>
-		<TD nowrap><h1><? echo $AppUI->_('Trouble Ticket Management');?></h1></td>
-		<TD align="right" width="100%">
-		<?php if (!$denyEdit) { ?>
-			<input type="button" class=button value="<? echo $AppUI->_('new ticket');?>" onClick="javascript:window.location='./index.php?m=ticketsmith&a=post_ticket';">
-		<?php } ?>
-		</td>
-	</tr>
-</TABLE>
-<?php
-
-/* $Id$ */
+$titleBlock->show();
 
 require("modules/ticketsmith/config.inc.php");
 require("modules/ticketsmith/common.inc.php");
@@ -54,7 +39,6 @@ $fields = array("headings" => array("View", "Author", "Subject", "Date",
 
 												
 /* set up defaults for viewing */
-$type = @$type ? $type : "Open";
 if($type == "my"){
 	$title = "My Tickets";
 }
@@ -65,10 +49,6 @@ $column = @$column ? $column : "priority";
 $direction = @$direction ? $direction : "DESC";
 $offset = @$offset ? $offset : 0;
 $limit = @$limit ? $limit : $CONFIG["view_rows"];
-
-
-/* start page */
-common_header($title);
 
 /* count tickets */
 $query = "SELECT COUNT(*) FROM tickets WHERE parent = '0'";
@@ -86,13 +66,17 @@ else {
 }
 
 /* start table */
-print("<table class=maintable bgcolor=#eeeeee width=95%>\n");
-print("<tr></TD>\n");
-print("<td colspan=" . count($fields["headings"]) . " align=center bgcolor=#878676>");
-print("<table width=100% border=0 cellspacing=1 cellpadding=1>\n");
-print("<tr><td width=1%><br /></td><td width=34%><br /></td>\n");
-print("<td width=32% align=center><div class=heading>".$AppUI->_($title)."</div></td>\n");
-print("<td width=32% align=right valign=middle><div class=paging>");
+?>
+
+<table class="tbl" width="100%">
+<tr>
+	<td colspan="<?php echo count( $fields["headings"] );?>" align="center">
+		<table width="100%" border="0" cellspacing="1" cellpadding="1">
+		<tr>
+			<td width="33%"></td>
+			<td width="34%" align="center"><strong><?php echo $AppUI->_($title);?></strong></td>
+			<td width="33%" align="right" valign="middle">
+<?php
 if ($ticket_count > $limit) {
     if ($offset - $limit >= 0) {
         print("<a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset - $limit) . "><img src=ltwt.gif border=0></a> | \n");
@@ -102,11 +86,14 @@ if ($ticket_count > $limit) {
         print(" | <a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset + $limit) . "><img src=rtwt.gif border=0></a>\n");
     }
 }
-print("</div></td>\n");
-print("<td width=1%><br /></td></tr></table>");
-print("</td>");
-print("</tr>\n");
+?>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
 
+<?php
 /* form query */
 $select_fields= join(", ", $fields["columns"]);
 $query = "SELECT $select_fields FROM tickets WHERE ";
@@ -126,7 +113,7 @@ $parent_count = number_rows($result);
 if ($parent_count) {
     print("<tr>\n");
     for ($loop = 0; $loop < count($fields["headings"]); $loop++) {
-        print("<td  align=" . $fields["aligns"][$loop] . ">");
+        print("<th align=" . $fields["aligns"][$loop] . ">");
         print("<a href=index.php?m=ticketsmith&type=$type");
         print("&column=" . $fields["columns"][$loop]);
         if ($column != $fields["columns"][$loop]) {
@@ -141,7 +128,7 @@ if ($parent_count) {
             }
         }
         print("&direction=$new_direction");
-        print("><strong>" . $AppUI->_($fields["headings"][$loop]) . "</strong></a></td>\n");
+        print(' class="hdr">' . $AppUI->_($fields["headings"][$loop]) . "</a></th>\n");
     }
     print("</tr>\n");
     while ($row = result2hash($result)) {
@@ -187,8 +174,5 @@ print("</tr>\n");
 
 /* end table */
 print("</table>\n");
-
-/* end page */
-common_footer();
 
 ?>
