@@ -525,3 +525,10 @@ ALTER TABLE `sysvals` ADD UNIQUE (
 ALTER TABLE `syskeys` ADD UNIQUE (
 `syskey_name`
 )
+
+# 20041103
+# fixed naming conevntion for the following
+# do not show events on non-working days
+# see 20040808
+ALTER TABLE `events` DROP `events_cwd;
+ALTER TABLE `events` ADD `event_cwd` tinyint(3) default '0';
