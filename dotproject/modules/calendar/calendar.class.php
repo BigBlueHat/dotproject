@@ -648,6 +648,11 @@ class CEvent extends CDpObject {
 	  if ($mail_owner && ! $owner_is_assigned && $this->event_owner) {
 	  	array_push($assignee_list, $this->event_owner);
 	  }
+		// Remove any empty elements otherwise implode has a problem
+		foreach ($assignee_list as $key => $x) {
+			if (! $x)
+				unset($assignee_list[$key]);
+		}
 	  if (! count($assignee_list))
 	  	return;
 
