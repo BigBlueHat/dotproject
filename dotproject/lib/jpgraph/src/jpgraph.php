@@ -528,6 +528,7 @@ class LanguageConv {
 
     // Translate iso encoding to unicode
     function iso2uni ($isoline){
+	$uniline = '';
 	for ($i=0; $i < strlen($isoline); $i++){
 	    $thischar=substr($isoline,$i,1);
 	    $charcode=ord($thischar);
