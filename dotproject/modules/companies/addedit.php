@@ -82,11 +82,6 @@ function delIt() {
 <input name="del" type="hidden" value="0">
 <input type="hidden" name="company_id" value="<?php echo $company_id;?>">
 
-<tr height="20">
-	<th colspan="2">
-		<b><i> </i></b>
-	</th>
-</tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_('Company Name');?>:</td>
 	<td>
