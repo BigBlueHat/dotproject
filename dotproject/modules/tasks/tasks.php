@@ -266,7 +266,7 @@ if ( count($allowedTasks))
 // Filter by company
 if ( ! $min_view && $f2 != 'all' ) {
 	 $join .= "\nLEFT JOIN companies ON company_id = projects.project_company";
-         $where .= "\nAND company_id = $f2  ";
+         $where .= "\nAND company_id = " . intval($f2) . " ";
 }
 
 // patch 2.12.04 ADD GROUP BY clause for assignee count
