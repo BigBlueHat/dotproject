@@ -2,6 +2,7 @@
 $Installer->bindPost($pd);
 $Installer->bindToVarious($various);
 $Installer->updateDPcfgFromPost($pd);
+$Installer->dbConfigured = true;
 
 include_once("./includes/db_connect.php");
 
@@ -30,7 +31,11 @@ if ($do_install_db) {
 
         $Installer->dbPopulated = true;
         $AppUI->setMsg( "Database successfully created and populated with structure!", UI_MSG_OK);
-} else {
+} elseif ($do_save_db){
+
+        $AppUI->setMsg( "Database informations have been saved for this session!", UI_MSG_OK);
+
+} elseif ($dobackup){
 
         echo $Installer->generateBackupSQL();
 

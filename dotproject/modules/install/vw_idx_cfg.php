@@ -26,10 +26,16 @@ echo '<form name="cfgFrm" action="index.php?m=install&tab='.$tab.'" method="post
         <tr>
             <td class="title" colspan="2"><?php echo $AppUI->_('Database Setup Results'); ?></td>
         </tr>
-<?php if ($Installer->dbCreated) { ?>
+<?php if ($Installer->dbConfigured) { ?>
+        <?php if ($Installer->dbCreated) { ?>
         <tr>
             <td class="item" colspan="2"><?php echo $AppUI->_('dbCreatedValues'); ?>:</td>
         </tr>
+        <?php } else { ?>
+        <tr>
+            <td class="item" colspan="2"><?php echo $AppUI->_('dbConfiguredValues'); ?>:</td>
+        </tr>
+        <?php } ?>
 	 <tr>
             <td class="item" width="20%"><?php echo $AppUI->_('Database Type'); ?></td>
             <td align="left"><input disabled class="button" type="text"  name="pd[dbtype]" value="<?php echo $Installer->cfg['dbtype'];?>" /></td>

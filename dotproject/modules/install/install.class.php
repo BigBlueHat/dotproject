@@ -2,6 +2,9 @@
 class Cinstall {
 
 //  @var bool Did we create the db successfully?
+var $dbConfigured = false;
+
+//  @var bool Did we create the db successfully?
 var $dbCreated = false;
 
 //  @var bool Did we populate the db successfully?

@@ -95,7 +95,8 @@ echo '<form name="instFrm" action="index.php?m=install&tab='.$tab.'" method="pos
             <td align="left"><input class="button" type="submit" name="dobackup" value="Backup" title="Click here to retrieve a database backup file that can be stored on your local system." /></td>
         </tr>
           <tr>
-            <td colspan="3" align="right"><br /><input class="button" type="submit" name="do_install_db" value="<?php echo $AppUI->_('install');?>" title="Save Settings and try to install the database with the given information." /></td>
+            <td colspan="2" align="right"><br /><input class="button" type="submit" name="do_save_db" value="<?php echo $AppUI->_('save only');?>" title="Save Settings only and DO NOT try to install the database with the given information." />
+            &nbsp;<input class="button" type="submit" name="do_install_db" value="<?php echo $AppUI->_('install');?>" title="Save Settings and try to install the database with the given information." /></td>
           </tr>
         </table>
 </form>
