@@ -67,7 +67,7 @@ function setCalendar( idate, fdate ) {
    		   	  $usersql = "
    		   	  SELECT user_id, user_username, contact_first_name, contact_last_name
    		   	  FROM users
-                        LEFT JOIN contacts ON contacts_id = user_contact
+                        LEFT JOIN contacts ON contact_id = user_contact
 			  ORDER by contact_last_name,contact_first_name
    		   	  ";
  			 
