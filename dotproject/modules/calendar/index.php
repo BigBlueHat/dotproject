@@ -48,8 +48,11 @@ $date = new CDate( $date );
 // prepare time period for 'events'
 $first_time = new CDate( $date );
 $first_time->setDay( 1 );
+$first_time->setTime( 0, 0, 0 );
+$first_time->subtractSeconds( 1 );
 $last_time = new CDate( $date );
 $last_time->setDay( $date->getDaysInMonth() );
+$last_time->setTime( 23, 59, 59 );
 
 $links = array();
 
