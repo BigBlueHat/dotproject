@@ -7,6 +7,11 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 <table width="100%" border="0" cellpadding="3" cellspacing="1" class="tbl">
 <tr>
 	<td align="right" width="65" nowrap="nowrap">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
+</tr>
+<tr>
+        <th nowrap="nowrap">
+                <a href="?m=projects&orderby=project_color_identifier" class="hdr"><?php echo $AppUI->_('Color');?></a>
+        </th>
 	<th nowrap>
 		<a href="?m=projects&orderby=project_name" class="hdr"><?php echo $AppUI->_('Name');?></a>
 	</th>
