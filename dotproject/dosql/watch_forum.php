@@ -2,9 +2,7 @@
 ##
 ## Change forum watches
 ##
-
 $watch = isset( $_POST['watch'] ) ? $_POST['watch'] : 0;
-$message = '';
 
 if ($watch) {
 	// clear existing watches

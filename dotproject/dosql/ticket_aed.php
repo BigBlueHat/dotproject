@@ -17,13 +17,10 @@ $tsql =
 $rc = mysql_query($tsql);
 
 if (!mysql_errno()) {
-	$message = mysql_error();
+	$AppUI->setMsg( mysql_error() );
 	// add code to mail to ticket master
 } else {
-	$message = "Ticket added";
+	$AppUI->setMsg( "Ticket added" );
 }
-
+$AppUI->redirect( "m=ticketsmith" );
 ?>
-<script language="javascript">
-	window.location="./index.php?m=ticketsmith&message=<?php echo $message;?>";
-</script>

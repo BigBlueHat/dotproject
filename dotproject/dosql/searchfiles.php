@@ -1,7 +1,7 @@
 <?php
 if(empty($s) || strlen(trim($s)) ==0){
 $a = "index";
-$message = "Please enter a search value";
+$AppUI->setMsg( "Please enter a search value" );
 }
 
 ?>
