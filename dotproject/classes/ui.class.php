@@ -406,7 +406,7 @@ class CAppUI {
 				$str = htmlentities(stripslashes($str), ENT_COMPAT, $locale_char_set);
 				break;
 			case UI_OUTPUT_JS:
-				$str = addslashes(stripslashes($str), ENT_COMPAT, $locale_char_set);
+				$str = addslashes(stripslashes($str)); //, ENT_COMPAT, $locale_char_set);
 				break;
 			case UI_OUTPUT_RAW: 
 				$str = stripslashes($str);

@@ -42,39 +42,39 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 function submitIt(){
     var form = document.editFrm;
    if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len'); ?> && form.user_username.value != '<?php echo dPgetConfig('admin_username'); ?>') {
-        alert("<?php echo $AppUI->_('adminValidUserName')  ;?>"  + <?php echo dPgetConfig('username_min_len'); ?>);
+        alert("<?php echo $AppUI->_('adminValidUserName', UI_OUTPUT_JS)  ;?>"  + <?php echo dPgetConfig('username_min_len'); ?>);
         form.user_username.focus();
     } else if (form.user_password.value.length < <?php echo dPgetConfig('password_min_len'); ?>) {
-        alert("<?php echo $AppUI->_('adminValidPassword');?>" + <?php echo dPgetConfig('password_min_len'); ?>);
+        alert("<?php echo $AppUI->_('adminValidPassword', UI_OUTPUT_JS);?>" + <?php echo dPgetConfig('password_min_len'); ?>);
         form.user_password.focus();
     } else if (form.user_password.value !=  form.password_check.value) {
-        alert("<?php echo $AppUI->_('adminPasswordsDiffer');?>");
+        alert("<?php echo $AppUI->_('adminPasswordsDiffer', UI_OUTPUT_JS);?>");
         form.user_password.focus();
     } else if (form.contact_first_name.value.length < 1) {
-        alert("<?php echo $AppUI->_('adminValidFirstName');?>");
+        alert("<?php echo $AppUI->_('adminValidFirstName', UI_OUTPUT_JS);?>");
         form.contact_first_name.focus();
     } else if (form.contact_last_name.value.length < 1) {
-        alert("<?php echo $AppUI->_('adminValidLastName');?>");
+        alert("<?php echo $AppUI->_('adminValidLastName', UI_OUTPUT_JS);?>");
         form.contact_last_name.focus();
     } else if (form.contact_email.value.length < 4) {
-        alert("<?php echo $AppUI->_('adminInvalidEmail');?>");
+        alert("<?php echo $AppUI->_('adminInvalidEmail', UI_OUTPUT_JS);?>");
         form.contact_email.focus();
     } else if (form.contact_birthday.value.length > 0) {
         dar = form.contact_birthday.value.split("-");
         if (dar.length < 3) {
-            alert("<?php echo $AppUI->_('adminInvalidBirthday');?>");
+            alert("<?php echo $AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
             form.contact_birthday.focus();
         } else if (isNaN(parseInt(dar[0],10)) || isNaN(parseInt(dar[1],10)) || isNaN(parseInt(dar[2],10))) {
-            alert("<?php echo $AppUI->_('adminInvalidBirthday');?>");
+            alert("<?php echo $AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
             form.contact_birthday.focus();
         } else if (parseInt(dar[1],10) < 1 || parseInt(dar[1],10) > 12) {
-            alert("<?php echo $AppUI->_('adminInvalidMonth').' '.$AppUI->_('adminInvalidBirthday');?>");
+            alert("<?php echo $AppUI->_('adminInvalidMonth', UI_OUTPUT_JS).' '.$AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
             form.contact_birthday.focus();
         } else if (parseInt(dar[2],10) < 1 || parseInt(dar[2],10) > 31) {
-            alert("<?php echo $AppUI->_('adminInvalidDay').' '.$AppUI->_('adminInvalidBirthday');?>");
+            alert("<?php echo $AppUI->_('adminInvalidDay', UI_OUTPUT_JS).' '.$AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
             form.contact_birthday.focus();
         } else if(parseInt(dar[0],10) < 1900 || parseInt(dar[0],10) > 2020) {
-            alert("<?php echo $AppUI->_('adminInvalidYear').' '.$AppUI->_('adminInvalidBirthday');?>");
+            alert("<?php echo $AppUI->_('adminInvalidYear', UI_OUTPUT_JS).' '.$AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
             form.contact_birthday.focus();
         } else {
             form.submit();
@@ -87,7 +87,7 @@ function submitIt(){
 function popDept() {
     var f = document.editFrm;
     if (f.selectedIndex == 0) {
-        alert( 'Please select a company first!' );
+        alert('<?php echo $AppUI->_( 'Please select a company first!' ); ?>');
     } else {
         window.open('./index.php?m=public&a=selector&dialog=1&callback=setDept&table=departments&company_id='
             + f.contact_company.options[f.contact_company.selectedIndex].value
