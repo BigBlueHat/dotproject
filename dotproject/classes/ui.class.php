@@ -800,11 +800,14 @@ class CTabBox_core {
 		} else {
 			$tab_array =& $_SESSION['all_tabs'][$module];
 		}
+		$tab_count = 0;
 		foreach ($tab_array as $name => $file) {
-			if (! is_array($file))
+			if (! is_array($file)) {
+				$tab_count++;
 				$this->add($file, $name);
+			}
 		}
-		return count($tab_array);
+		return $tab_count;
 	}
 }
 
