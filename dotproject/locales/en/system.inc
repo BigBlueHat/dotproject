@@ -68,6 +68,7 @@
 "hidden",
 "inserted",
 "install",
+"it"=>"Italian",
 "pt_br"=>"Portuguese Brazillian",
 "pt"=>"Portugese",
 "pl"=>"Polish",
