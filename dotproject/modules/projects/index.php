@@ -243,7 +243,8 @@ if($tab == 0) $show_all_projects = true;
 $tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$dPconfig['root_dir']}/modules/projects/", $tab );
 foreach($project_types as $project_type)
 	$tabBox->add($project_file_type[$project_type], $project_type);
-
+$min_view = true;
+$tabBox->add("viewgantt", "Gantt");
 $tabBox->show();
 
 //writes out a single <option> element for display of departments
