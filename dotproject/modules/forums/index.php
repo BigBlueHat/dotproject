@@ -1,16 +1,8 @@
-<?php
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* FORUMS $Id$ */
+$AppUI->savePlace();
 
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 $tf = $AppUI->getPref( 'TIMEFORMAT' );
-
-$AppUI->resetPlace();
 
 $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 
