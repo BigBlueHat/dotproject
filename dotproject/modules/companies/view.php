@@ -23,13 +23,15 @@ $obj = new CCompany();
 $canDelete = $obj->canDelete( $msg, $company_id );
 
 // load the record data
-$sql = "
-SELECT companies.*,contact_first_name,contact_last_name
-FROM companies
-LEFT JOIN users ON users.user_id = companies.company_owner
-LEFT JOIN contacts ON users.user_contact = contacts.contact_id
-WHERE companies.company_id = $company_id
-";
+$q  = new DBQuery;
+$q->addTable('companies');
+$q->addQuery('companies.*');
+$q->addQuery('con.contact_first_name');
+$q->addQuery('con.contact_last_name');
+$q->addJoin('users', 'u', 'u.user_id = companies.company_owner');
+$q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
+$q->addWhere('companies.company_id = '.$company_id);
+$sql = $q->prepare();
 
 $obj = null;
 if (!db_loadObject( $sql, $obj )) {

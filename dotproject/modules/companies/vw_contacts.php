@@ -5,18 +5,14 @@
 GLOBAL $AppUI, $company_id, $obj;
 
 require_once $AppUI->getModuleClass('contacts');
-
-$sql = "
-SELECT *
-FROM contacts
-WHERE contact_company = '$obj->company_name'
-OR contact_company = '$obj->company_id'
-";
-
+$q  = new DBQuery;
+$q->addTable('contacts');
+$q->addQuery('*');
+$q->addWhere("contact_company = '$obj->company_name' OR contact_company = '$obj->company_id'");
 $contact =& new CContact;
 
 $s = '';
-if (!($rows = db_loadList( $sql, NULL ))) {
+if (!($rows = $q->loadList())) {
 	echo $AppUI->_('No data available').'<br />'.$AppUI->getMsg();
 } else {
 ?>

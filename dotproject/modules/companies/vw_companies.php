@@ -26,30 +26,20 @@ if ($currentTabName == "Not Applicable")
 	$company_type_filter = 0;
 
 // retrieve list of records
-$sql = "SELECT company_id, company_name, company_type, company_description,"
-	. "count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,"
-	. "contact_first_name, contact_last_name"
-
-	. " FROM companies"
-
-	. " LEFT JOIN projects ON companies.company_id = projects.project_company and projects.project_active <> 0"
-	. " LEFT JOIN users ON companies.company_owner = users.user_id"
-        . " LEFT JOIN contacts ON users.user_contact = contacts.contact_id"
-	. " LEFT JOIN projects AS projects2 ON companies.company_id = projects2.project_company AND projects2.project_active = 0"
-	. " WHERE 1=1"
-	. (count($allowedCompanies) > 0 ? ' AND company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')' : '')
-	. ($companiesType ? " AND company_type = $company_type_filter" : "");
-
-if($search_string != ""){
-	$sql .= " AND company_name LIKE '%$search_string%' ";
-}
-
-$sql .= $owner_filter_id > 0 ? " AND company_owner = '$owner_filter_id' " : "";
-
-$sql .= " GROUP BY company_id
-		 ORDER BY $orderby $orderdir";
-         
-$rows = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('companies', 'c');
+$q->addQuery('c.company_id, c.company_name, c.company_type, c.company_description, count(distinct p.project_id) as countp, count(distinct p2.project_id) as inactive, con.contact_first_name, con.contact_last_name');
+$q->addJoin('projects', 'p', 'c.company_id = p.project_company AND p.project_active <> 0');
+$q->addJoin('users', 'u', 'c.company_owner = u.user_id');
+$q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
+$q->addJoin('projects', 'p2', 'c.company_id = p2.project_company AND p2.project_active = 0');
+if (count($allowedCompanies) > 0) { $q->addWhere('c.company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')'); }
+if ($companiesType) { $q->addWhere('c.company_type = '.$company_type_filter); }
+if ($search_string != "") { $q->addWhere('c.company_name LIKE '.'%$search_string%'); }
+if ($owner_filter_id > 0) { $q->addWhere("c.company_owner = $owner_filter_id "); }
+$q->addGroup('c.company_id');
+$q->addOrder($orderby.' '.$orderdir);
+$rows = $q->loadList();
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>

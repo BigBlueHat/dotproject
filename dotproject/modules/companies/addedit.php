@@ -18,28 +18,33 @@ if (!$canEdit) {
 $types = dPgetSysVal( 'CompanyType' );
 
 // load the record data
-$sql = "
-SELECT companies.*, contacts.contact_first_name, contacts.contact_last_name
-FROM companies
-LEFT JOIN users ON users.user_id = companies.company_owner
-LEFT JOIN contacts ON user_contact = contact_id
-WHERE companies.company_id = $company_id
-";
+$q  = new DBQuery;
+$q->addTable('companies');
+$q->addQuery('companies.*');
+$q->addQuery('con.contact_first_name');
+$q->addQuery('con.contact_last_name');
+$q->addJoin('users', 'u', 'u.user_id = companies.company_owner');
+$q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
+$q->addWhere('companies.company_id = '.$company_id);
+$sql = $q->prepare();
 
 $obj = null;
 if (!db_loadObject( $sql, $obj ) && $company_id > 0) {
-	$AppUI->setMsg( 'Company' );
+	$AppUI->setMsg( '	$qid =& $q->exec();
+Company' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
 
 // collect all the users for the company owner list
-$owners = array( '0'=>'' );
-$sql = "SELECT user_id,CONCAT_WS(' ',contact_first_name,contact_last_name) 
-         FROM users, contacts
-         WHERE user_contact = contact_id
-         ORDER BY contact_first_name";
-$owners = db_loadHashList( $sql );
+$q  = new DBQuery;
+$q->addTable('users','u');
+$q->addTable('contacts','con');
+$q->addQuery('user_id');
+$q->addQuery('CONCAT_WS(" ",contact_first_name,contact_last_name)');
+$q->addOrder('contact_first_name');
+$q->addWhere('u.user_contact = con.contact_id');
+$owners = $q->loadHashList();
 
 // setup the title block
 $ttl = $company_id > 0 ? "Edit Company" : "Add Company";

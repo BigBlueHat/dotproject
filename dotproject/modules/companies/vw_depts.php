@@ -4,15 +4,14 @@
 ##
 GLOBAL $AppUI, $company_id, $canEdit;
 
-$sql = "
-SELECT departments.*, COUNT(user_department) dept_users
-FROM departments
-LEFT JOIN users ON user_department = dept_id
-WHERE dept_company = $company_id
-GROUP BY dept_id
-ORDER BY dept_parent,dept_name
-";
-##echo $sql;
+$q  = new DBQuery;
+$q->addTable('departments');
+$q->addQuery('departments.*, COUNT(user_department) dept_users');
+$q->addJoin('users', 'u', 'u.user_department = dept_id');
+$q->addWhere('dept_company = '.$company_id);
+$q->addGroup('dept_id');
+$q->addOrder('dept_parent, dept_name');
+$sql = $q->prepare();
 
 function showchilddept( &$a, $level=0 ) {
 	global $AppUI;
