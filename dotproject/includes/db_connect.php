@@ -19,12 +19,20 @@ function db_loadResult( $sql ) {
 }
 
 function db_loadObject( $sql, &$object ) {
-	$hash = array();
-	if( !db_loadHash( $sql, $hash ) ) {
-		return false;
+	if ($object != null) {
+		$hash = array();
+		if( !db_loadHash( $sql, $hash ) ) {
+			return false;
+		}
+		bindHashToObject( $hash, $object );
+		return true;
+	} else {
+		$cur = db_exec( $sql );
+		$cur or exit( db_error() );
+		$obj = db_fetch_object( $cur );
+		db_free_result( $cur );
+		return $obj;
 	}
-	bindHashToObject( $hash, $object );
-	return true;
 }
 
 function db_loadHash( $sql, &$hash ) {
@@ -32,10 +40,11 @@ function db_loadHash( $sql, &$hash ) {
 	$cur or exit( db_error() );
 	$hash = db_fetch_assoc( $cur );
 	db_free_result( $cur );
-	if ($hash == false)
+	if ($hash == false) {
 		return false;
-	else
+	} else {
 		return true;
+	}
 }
 
 function db_loadHashList( $sql, $index='' ) {
