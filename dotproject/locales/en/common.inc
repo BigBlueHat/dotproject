@@ -131,6 +131,7 @@
 "View PDF File",
 "Welcome",
 "Yes",
+"You have not removed your install directory, this is a major security risk!",
 "Zip",
 "Zip Code",
 "add",
