@@ -3,6 +3,12 @@
 # Upgrade dotProject DB Schema
 # Version 1.0 alpha 1 to alpha 2
 
+# Fix misspelled table field names [modified to specify incorrect field names then new field names]
+ALTER TABLE `tasks` CHANGE `task_precent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
+# This didn't seem correct (below) so I commented it out and put in something more sensible (kobudo 20 Mar 2003)
+#ALTER TABLE `projects` CHANGE `project_precent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
+ALTER TABLE `projects` CHANGE `project_precent_complete` `project_percent_complete` TINYINT(4)  DEFAULT "0";
+
 # Alterations to the task log table
 # This adds better information capture/support for other pluggins to use information
 
@@ -17,8 +23,3 @@ SELECT comment_task, comment_title, comment_body, comment_user, comment_date FRO
 
 # uncomment when satisfied data has been copied successfully
 #DROP TABLE task_comments;
-
-# fix mis-spelt field
-ALTER TABLE `tasks` CHANGE `task_percent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
-ALTER TABLE `projects` CHANGE `project_percent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
-
