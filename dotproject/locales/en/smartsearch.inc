@@ -5,3 +5,4 @@
 "Events",
 "Forum Messages",
 "Task Log",
+"Files Content",
