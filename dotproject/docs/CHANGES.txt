@@ -1,0 +1,34 @@
+/*
+*****************************************
+*** dotProject CHANGES as of 08 July 2002
+*****************************************
+*/
+
+This code begins with dotproject-0.2.1 and has Nicola Fankhauser's (nikee)
+pain-relieving patch for 0.2.1 applied before making additional modifications.
+
+The code was then modified by Adam Donnison and released as dotproject-ajd.0215.
+
+The /includes/gateway.pl and ticketsmith module files of Jim Flowers from
+dotproject-jbf-0213 were then incorporated. These changes included using a
+variable $app_root to remove some hardcoding of links from gateway.pl.
+
+The database logic changes of Leo West from module dotproject-leo.0214 
+were then added.  These database upgrades were further modified by John Pritchard (JRP). Changes and additions to Leo West's modifications include:
+// Consistent Field Naming
+1) RENAME contacts.icon -> contacts.contact_icon, events.icon -> events.event_icon, files.icon -> files.file_icon
+// Consistent VarChar Attributes
+2) CHANGE contacts.contact_company varchar(30) to varchar(100)
+// Increase size of contact_title field further
+3) CHANGE contacts.contact_title varchar(30) to varchar(50)
+
+Other Minor Modifications by John Pritchard include:
+Update install documentation, remove extraneous files (e.g. /docs/dotproject.sql, *.php.orig, etc), modify /style/main.css so 
+that button descriptions fit, review and integrate other Leo 
+West files.
+
+Other files added from Leo West (dotproject-leo.0214) include:
+/functions/*, miscellaneous /images/ files, /images/obj/ folder 
+and graphics, /locales/ folder, subfolder and files. 
+
+JRP also added Axel Napolitano's "Documentation of dotproject's plug-in interface" as /docs/MODULES.txt.

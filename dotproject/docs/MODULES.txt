@@ -1,0 +1,65 @@
+Documentation of dotproject's plug-in interface
+
+Author: Axel Napolitano
+Date: 2001-10-25
+Revision: 0.1
+Status: DRAFT - Subject to change
+Recommended additional Documentations: -none-
+Comments: mailto:nappo@web.de
+
+-------------------------------------------------------------------------------
+
+Due to the massive changes to the code base and functionality of dotproject this documentation is probably out-of-date when you read it, but anyway it is a good point of start to understand how the plug-in system works and how you can get startet in developing plug-ins.
+
+
+1: How the system works:
+
+- When dotproject builds up the navigation menu it will have look into the subdirectory "./modules" there it searches for subdirectories (except: cvs or CVS) and will assume that every folder contains an plug-in. After this first step, dotproject tries to load an file with the name "<foldername>.ini.php" this file contains the description of the plug-in in an windows-.ini-like format (descriptor=value). Every line must end with an semicolon.
+
+- Currently there is no support for comments within the .ini.php-files - but this will change as soon as possible.
+
+- The plug-in system tolerates missing .ini.php files - but you only get an "Unknown" or "???" tag within the navigation and you can't assign an vertical position.
+
+ 
+
+2: Syntax of <foldername>.ini.php
+
+- Currently there is no support for comments within the file. The current option set is very basically and may change if it seems to be necessary (this documentation will then be updated).
+
+Following is an sample .ini.php file which tells dotproject basic information of the plug-in.
+
+module_order=3;
+module_name=Calendar;
+module_description=Calendar;
+module_creator=Unknown;
+module_version=1.0; 
+button_text=Calendar;
+button_action=calendar;
+button_image=calendar.gif;
+tooltip_text=Calendar;
+
+
+Now i try to describe the parameters:
+
+module_order sets the vertical position of the button within the navigation. If there are more than one module with the same position, the system will put it into an alphabetical order. module_order should be an value between 0 (zero) and 65535
+
+module_name sets the internal name of the module. Currently this value is not supported but in an later release the value will be used for administration purposes. It is highly recommended to set this value because later there will be only shown "Unknown" within the adminsitration panels (that looks not fine)
+
+module_description sets an description-text for the module. Here you can write down the purpose of this module. Currently this value is unsupported but this will change immediately. module_description will be displayed at the admin-panels to give the administrator an hint of what the module will do (if the name is not self-explanating)
+
+module_creator tells dotproject the name of the developer of the module. Currently not supported but it will be used.
+
+module_version - what should i write? Sets the version number of the module
+
+button_text sets the caption of the navigation-button. It is highly recommended to set this because you will otherwise only see "???" as caption (looks not so fine)
+
+button_action tells dotproject which file must be called if the user selects the button (currently it should be the name without the extension .php!)
+
+button_image tells dotproject the image that will represent the module on the navigation bar. The image should be placed within the folder "./themes/<your theme>/artwork/icons" or an level deeper if you prefer. Other paths are not supported to ensure an clean and structured folder system
+
+tooltip_text defines the text that will be assigned to the "tooltip"-property of the buttons hyperlink. Currently it is not supported but it is highly recommended to set this parameter.
+
+Finally you've seen that this is currently an very basic set of instructions and there are some unsupportet paramters at the moment. This will chage immediately so it is recommended to set-up all parameters.
+
+
+
