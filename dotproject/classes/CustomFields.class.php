@@ -232,7 +232,7 @@
 			switch($mode)
 			{
 				case "edit":
-					$html = $this->field_description.": </td><td><textarea name=\"".$this->field_name."\" ".$this->field_extratags." />".$this->charValue()."</textarea>";
+					$html = $this->field_description.": </td><td><textarea name=\"".$this->field_name."\" ".$this->field_extratags.">".$this->charValue()."</textarea>";
 					break;
 				case "view":
 					$html = $this->field_description.": </td><td class=\"hilite\" width=\"100%\">".nl2br($this->charValue());
@@ -240,6 +240,34 @@
 			}
 			return $html;
 		}
+	}
+	
+	// CustomFieldLabel - Produces just a non editable label
+	class CustomFieldLabel extends CustomField 
+	{
+	    function CustomFieldLabel($field_id, $field_name, $field_order, $field_description, $field_extratags) {
+    	    $this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+            $this->field_htmltype = 'label';
+	    }
+	    
+	    function getHTML($mode) {
+	    	// We don't really care about its mode
+	    	return "<span $this->field_extratags>$this->field_description</span>";
+	    }
+	}
+	
+	// CustomFieldSeparator - Produces just an horizontal line
+	class CustomFieldSeparator extends CustomField 
+	{
+	    function CustomFieldSeparator($field_id, $field_name, $field_order, $field_description, $field_extratags) {
+    	    $this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+            $this->field_htmltype = 'separator';
+	    }
+	    
+	    function getHTML($mode) {
+	    	// We don't really care about its mode
+	    	return "<hr $this->field_extratags />";
+	    }
 	}
 
 	// CustomFieldSelect - Produces a SELECT list, extends the load method so that the option list can be loaded from a seperate table
@@ -326,6 +354,12 @@
 						case "select":
 							$this->fields[$row["field_name"]] = New CustomFieldSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break;
+					    case "label":
+					        $this->fields[$row["field_name"]] = new CustomFieldLabel( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+					        break;
+					    case "separator":
+					        $this->fields[$row["field_name"]] = new CustomFieldSeparator( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+					        break;    
 						default:
 							$this->fields[$row["field_name"]] = New CustomFieldText( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break; 

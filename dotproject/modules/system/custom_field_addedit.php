@@ -90,7 +90,9 @@
 		'textinput'=>$AppUI->_('Text Input'),
 		'textarea'=>$AppUI->_('Text Area'),
 		'checkbox'=>$AppUI->_('Checkbox'),
-		'select'=>$AppUI->_('Select List')
+		'select'=>$AppUI->_('Select List'),
+		'label' => $AppUI->_('Label'),
+		'separator' => $AppUI->_('Separator')
 	);
 
 	$visible_state = Array();
