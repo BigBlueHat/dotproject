@@ -64,6 +64,7 @@ $u = '';
 
 // check if we are logged in
 if ($AppUI->doLogin()) {
+    $AppUI->setUserLocale();
 	// load basic locale settings
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
