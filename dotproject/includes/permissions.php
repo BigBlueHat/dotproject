@@ -127,11 +127,17 @@ function winnow( $mod, $key, &$where, $alias = 'perm' ) {
 	if( ! empty( $perms[$mod] ) ) {
 		// We have permissions for specific items => filter items
 		$sql = "\n  LEFT JOIN permissions AS $alias ON $alias.permission_item = $key ";
-		if ($where) $where .= "\n  AND";
-		$where .= " $alias.permission_grant_on = '$mod' AND $alias.permission_value != " . PERM_DENY . " AND $alias.permission_user = " . $AppUI->user_id . " ";
+		if ($where) {
+			$where .= "\n  AND";
+		}
+		$where .= "\n	$alias.permission_grant_on = '$mod'"
+			. "\n	AND $alias.permission_value != " . PERM_DENY
+			. "\n	AND $alias.permission_user = $AppUI->user_id";
 		return $sql;
 	} else {
-		if (!$where) $where = '1=1';  // dummy for handling 'AND $where' situations
+		if (!$where) {
+			$where = '1=1';  // dummy for handling 'AND $where' situations
+		}
 		return ' ';
 	}		
 }
