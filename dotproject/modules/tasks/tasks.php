@@ -292,7 +292,7 @@ function showtask( &$a, $level=0 ) {
 				foreach ( $assigned_users as $val) {
 					$a_u_tmp_array[] = $val['user_username'];
 				}
-				$s .= " <a href=\"javascript: void(0);\" title=\"".join ( ', ', $a_u_tmp_array )."\">(+".$a['assignee_count'].")</a>";
+				$s .= " <a href=\"javascript: void(0);\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
 			}
 			$s .= '</td>';
 		}
