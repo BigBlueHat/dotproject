@@ -94,7 +94,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 <?php	
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "./modules/projects", $tab );
+$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "$root_dir/modules/projects/", $tab );
 $tabBox->add( 'vw_idx_active', 'Active Projects' );
 $tabBox->add( 'vw_idx_archived', 'Archived Projects' );
 $tabBox->show();

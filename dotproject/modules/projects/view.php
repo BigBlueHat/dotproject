@@ -154,10 +154,15 @@ if (!$denyEdit) {
 
 <?php	
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "./modules/projects", $tab );
-$tabBox->add( 'vw_tasks', 'Tasks' );
-$tabBox->add( 'vw_forums', 'Forums' );
-$tabBox->add( 'vw_files', 'Files' );
-$tabBox->add( 'vw_gantt', 'Gantt Chart' );
+$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
+$tabBox->add( "$root_dir/modules/tasks/tasks", 'Tasks' );
+$tabBox->add( "$root_dir/modules/projects/vw_forums", 'Forums' );
+$tabBox->add( "$root_dir/modules/projects/vw_files", 'Files' );
+$tabBox->add( "$root_dir/modules/tasks/viewgantt", 'Gantt Chart' );
+
+// settings for tasks
+$f = 'all';
+$min_view = true;
+
 $tabBox->show();
 ?>

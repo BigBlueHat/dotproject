@@ -49,18 +49,18 @@ if (!$denyEdit) {
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
 	<td nowrap="nowrap"><span class="title"><?php echo $AppUI->_('View Company/Client');?></span></td>
 	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+<form action="?m=companies&a=addedit" method="post">
+	<td align="right" width="100%">
+	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
+	</td>
+</form>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_VIEW' );?></td>
 </tr>
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
 	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<form action="?m=companies&a=addedit" method="post">
-	<td align="right" width="100%">
-	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
-	</td>
-	</form>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_VIEW' );?></td>
 </tr>
 </table>
 
@@ -121,7 +121,7 @@ if (!$denyEdit) {
 
 <?php	
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "./modules/companies", $tab );
+$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "$root_dir/modules/companies/", $tab );
 $tabBox->add( 'vw_depts', 'Departments' );
 $tabBox->add( 'vw_active', 'Active Projects' );
 $tabBox->add( 'vw_archived', 'Archived Projects' );
