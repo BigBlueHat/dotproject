@@ -112,12 +112,13 @@ $project_files = '(' . implode(',', db_loadColumn($sql)) . ')';
 	OR (history_table = 'tasks' AND history_item IN $project_tasks)
 	OR (history_table = 'files' AND history_item IN $project_files))";
 }
-
+$q = new DBQuery;
 $q->addTable('history');
 $q->addTable('users');
 $q->addWhere('history_user = user_id'.$filter);
 $q->addOrder('history_date DESC');
 $history = $q->loadList();
+$q->clear();
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
