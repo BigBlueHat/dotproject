@@ -46,7 +46,11 @@ if (isset( $_FILES['formfile'] )) {
 		$obj->file_date = db_unix2dateTime( time() );
 		$obj->file_real_filename = uniqid( rand() );
 
-		$obj->moveTemp( $upload );
+		$res = $obj->moveTemp( $upload );
+		if (!$res) {
+		    $AppUI->setMsg( 'File could not be written', UI_MSG_ERROR );
+		    $AppUI->redirect();
+		}
 		$obj->indexStrings();
 	}
 }

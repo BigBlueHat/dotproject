@@ -6,6 +6,7 @@
 "Date",
 "Edit File",
 "File Name",
+"File could not be written",
 "New File",
 "Size",
 "Type",

@@ -51,11 +51,27 @@ class CFile extends CDpObject {
 	function moveTemp( $upload ) {
 		global $AppUI;
 	// check that directories are created
-		@mkdir( "{$AppUI->cfg['root_dir']}/files", 0777 );
-		@mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
+		if (!is_writable("{$AppUI->cfg['root_dir']}/files")) {
+		    $res = mkdir( "{$AppUI->cfg['root_dir']}/files", 0777 );
+		    if (!$res) {
+			     return false;
+			 }
+		}
+		if (!is_writable("{$AppUI->cfg['root_dir']}/files/$this->file_project")) {
+		    $res = mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
+			 if (!$res) {
+			     return false;
+			 }
+		}
+
+
 		$this->_filepath = "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename";
 	// move it
-		move_uploaded_file( $upload['tmp_name'], $this->_filepath );
+		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );
+		if (!$res) {
+		    return false;
+		}
+		return true;
 	}
 
 // parse file for indexing
