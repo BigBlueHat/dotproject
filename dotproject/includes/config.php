@@ -1,12 +1,20 @@
 <?php /* $Id$ */
 //Config File
 
-//db access information
+//db access information [DEFAULT example]
+//$dPconfig['dbtype'] = "mysql";
+//$dPconfig['dbhost'] = "localhost";
+//$dPconfig['dbname'] = "dotproject";
+//$dPconfig['dbuser'] = "root";
+//$dPconfig['dbpass'] = "";
+
+//db access information [kobudo DEVELOPMENT and TESTING]
 $dPconfig['dbtype'] = "mysql";
 $dPconfig['dbhost'] = "localhost";
 $dPconfig['dbname'] = "dp_24jan03";
 $dPconfig['dbuser'] = "dp_user";
 $dPconfig['dbpass'] = "dp_pass";
+
 
 /*
  Localisation of the host for this dotproject,
@@ -17,6 +25,14 @@ $dPconfig['host_locale'] = "en";
 // default user interface style
 $dPconfig['host_style'] = "default";
 
+// local settings [DEFAULT example]
+//$dPconfig['root_dir'] = "d:/apache/htdocs/dotproject";
+//$dPconfig['company_name'] = "My Company";
+//$dPconfig['page_title'] = "DotProject";
+//$dPconfig['base_url'] = "http://localhost/dotproject";
+//$dPconfig['site_domain'] = "dotproject.net";
+
+// local settings [kobudo DEVELOPMENT and TESTING]
 $dPconfig['root_dir'] = "c:/sandbox_sourceforge/dotproject";
 $dPconfig['company_name'] = "dotProject WAMP";
 $dPconfig['page_title'] = "dotProject Development";
