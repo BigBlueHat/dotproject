@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 //Config File
 
 //db access information
@@ -12,10 +12,10 @@ $dbpass = "";
  Localisation of the host for this dotproject,
  that is, what language will the login screen be in.
  Supported languages are:
+  cn    (Chinese)
+  cz    (Czech)
   en    (English)
   es    (Spanish)
-  fr    (French)
-  pt_br (Portugese-Brazilian)
 */
 $host_locale = "en";
 
