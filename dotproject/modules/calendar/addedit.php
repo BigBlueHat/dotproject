@@ -6,8 +6,6 @@ if ($denyEdit) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
-require_once( "$root_dir/classdefs/date.php" );
-
 $event_id = isset( $_GET['event_id'] ) ? $_GET['event_id'] : 0;
 
 // Pull event information
@@ -16,17 +14,12 @@ db_loadHash( $sql, $event );
 
 //Set the starting date and time
 if(is_array($event)){
-	$sdate = strftime( "%Y-%m-%d", $event["event_start_date"] );
 	$stime = strftime( "%H:%M", $event["event_start_date"] );
 	$shour = strftime( "%H", $event["event_start_date"] );
 	$smin = strftime( "%M", $event["event_start_date"] );
-	$edate = strftime( "%Y-%m-%d", $event["event_end_date"] );
 	$etime = strftime( "%H:%M", $event["event_end_date"] );
 	$ehour = strftime( "%H", $event["event_end_date"] );
 	$emin = strftime( "%M", $event["event_end_date"] );
-
-	$sdate = fromDate( $sdate );
-	$edate = fromDate( $edate );
 }
 
 // format dates

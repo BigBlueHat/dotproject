@@ -10,8 +10,6 @@ if ($denyRead) {
 }
 $AppUI->savePlace();
 
-require_once( "$root_dir/classdefs/date.php" );
-
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
 }
@@ -121,7 +119,7 @@ if (!$denyEdit) {
 
 <?php	
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "$root_dir/modules/companies/", $tab );
+$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$AppUI->cfg['root_dir']}/modules/companies/", $tab );
 $tabBox->add( 'vw_depts', 'Departments' );
 $tabBox->add( 'vw_active', 'Active Projects' );
 $tabBox->add( 'vw_archived', 'Archived Projects' );

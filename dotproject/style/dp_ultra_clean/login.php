@@ -1,20 +1,11 @@
 <?php /* $Id$ */
-$return = '';
-$AppUI = new CAppUI;
-$AppUI->locale_warn = true;
-$AppUI->user_locale = $host_locale;
-
-@include_once( "$root_dir/locales/core.php" );
-@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
-header("Content-type: text/html;charset=$locale_char_set");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<?php echo $AppUI->user_locale; ?>" lang="<?php echo $AppUI->user_locale; ?>">
 
 <head>
-    <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-    <title><?php echo $company_name;?> :: dotProject Login</title>
+    <title><?php echo $AppUI->cfg['company_name'];?> :: dotProject Login</title>
     <meta http-equiv="Pragma" content="no-cache" />
     <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
     <style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
@@ -22,12 +13,12 @@ header("Content-type: text/html;charset=$locale_char_set");
 
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
 <br /><br /><br /><br />
-<form action="./logincheck.php" method="post" name="loginform">
+<form action="./index.php" method="post" name="loginform">
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
 <input type="hidden" name="login" value="<?php echo time();?>" />
 <input type="hidden" name="return" value="<?php echo $return;?>" />
 <tr>
-    <th colspan="2"><em><?php echo $company_name;?></em></th>
+    <th colspan="2"><em><?php echo $AppUI->cfg['company_name'];?></em></th>
 </tr>
 <tr>
     <td align="right" nowrap><?php echo $AppUI->_('Username');?>:</td>
@@ -39,7 +30,7 @@ header("Content-type: text/html;charset=$locale_char_set");
 </tr>
 <tr>
     <td align="left" nowrap><img src="./style/demo1/images/dp_icon.gif" width="120" height="20" border="0" alt="dotProject logo" /></td>
-    <td align="right" valign="bottom" nowrap><input type="submit" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
+    <td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
 </tr>
 </table>
 </form>

@@ -1,6 +1,4 @@
 <?php
-require_once( "$root_dir/classdefs/date.php" );
-
 $task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
 $task_parent = isset( $_GET['task_parent'] ) ? $_GET['task_parent'] : 0;
 
@@ -226,7 +224,7 @@ function delIt() {
 
 <table border="1" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
-	<td colspan="2" style="border: outset #eeeeee 1px;background-color:<?php echo $project["project_color_identifier"];?>" >
+	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project["project_color_identifier"];?>" >
 		<font color="<?php echo bestColor( $project["project_color_identifier"] ); ?>">
 			<b><?php echo $AppUI->_('Project');?>: <?php echo @$project["project_name"];?></b>
 		</font>

@@ -2,59 +2,40 @@
 //Config File
 
 //db access information
-$dbtype = "mysql";
-$dbhost = "localhost";
-$db 	= "dotproject";
-$dbuser = "root";
-$dbpass = "";
+$dPconfig['dbtype'] = "mysql";
+$dPconfig['dbhost'] = "localhost";
+$dPconfig['dbname'] = "dotproject";
+$dPconfig['dbuser'] = "root";
+$dPconfig['dbpass'] = "";
 
 /*
  Localisation of the host for this dotproject,
  that is, what language will the login screen be in.
- Supported languages are:
-  cn    (Chinese)
-  cz    (Czech)
-  en    (English)
-  es    (Spanish)
 */
-$host_locale = "en";
+$dPconfig['host_locale'] = "en";
 
 // default user interface style
-$host_style = "default";
+$dPconfig['host_style'] = "default";
 
-$root_dir = "d:/apache/htdocs/Projects/dotproject"; // filesystem root
-$company_name = "BURAN";		
-$page_title ="TCC DotProject";
-$base_url = "http://buran.toowoomba.qld.gov.au/dotproject";
-$site_domain = "dotproject.net";
+$dPconfig['root_dir'] = "d:/apache/htdocs/dotproject";
+$dPconfig['company_name'] = "My Company";
+$dPconfig['page_title'] = "DotProject";
+$dPconfig['base_url'] = "http://localhost/dotproject";
+$dPconfig['site_domain'] = "dotproject.net";
 
 // enable if you want to be able to see other users's tasks
-define( 'SHOW_ALL_TASKS', false );
- 
+$dPconfig['show_all_tasks'] = false;
 // enable if you want to support gantt charts
-define( 'ENABLE_GANTT_CHARTS', true );
+$dPconfig['enable_gantt_charts'] = true;
 
-// Date format, can be one of:
-// 0 = international or yyyy-mm-dd
-// 1 = UK and Australia or dd/mm/yyyy
-// 2 = US or mm/dd/yyyy
-$date_format = 1;
+$dPconfig['daily_working_hours'] = 8.0;
 
+// set debug = true to help analyse errors
+$dPconfig['debug'] = false;
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
 $ft["application/msword"] = "/usr/bin/strings";
 $ft["text/html"] = "/usr/bin/strings";
 $ft["application/pdf"] = "/usr/bin/pdftotext";
-
-/*
-	WARNING!
-	To harden the security, the secret.php file should be moved outside of the
-	web servers tree and be referenced by it's full path.
-	MAKE SURE YOU CHANGE THE SECRET WORD!!!
-*/
-require "secret.php";
-
-// set debug = true to help analyse errors
-$debug = false;
 ?>

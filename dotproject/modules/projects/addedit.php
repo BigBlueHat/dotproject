@@ -1,6 +1,4 @@
 <?php
-require_once( "$root_dir/classdefs/date.php" );
-
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 // check permissions

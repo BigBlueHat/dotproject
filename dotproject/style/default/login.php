@@ -1,12 +1,4 @@
 <?php /* $Id$ */
-$return = '';
-$AppUI = new CAppUI;
-$AppUI->locale_warn = true;
-$AppUI->user_locale = $host_locale;
-
-@include_once( "$root_dir/locales/core.php" );
-@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
-header("Content-type: text/html;charset=$locale_char_set");
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
@@ -20,12 +12,12 @@ header("Content-type: text/html;charset=$locale_char_set");
 <p>&nbsp;</p>
 <p>&nbsp;</p>
 <table align="center" border="0" width="250" cellpadding="4" cellspacing="0" bgcolor="#cccccc" class="bordertable">
-<form action="./logincheck.php" method="post" name="loginform">
+<form action="./index.php" method="post" name="loginform">
 <input type="hidden" name="login" value="<?php echo time();?>">
 <input type="hidden" name="return" value="<?php echo $return;?>">
 <tr>
 	<td colspan="2" class="headerfontWhite" bgcolor="gray">
-		<b><?php echo $company_name;?></b>
+		<b><?php echo $AppUI->cfg['company_name'];?></b>
 	</td>
 </tr>
 <tr>
@@ -46,7 +38,7 @@ header("Content-type: text/html;charset=$locale_char_set");
 </tr>
 <tr>
 	<td bgcolor="#eeeeee" align="center" class="menufontlight" nowrap colspan="2">
-		<input type="submit" value="<?php echo $AppUI->_('login');?>" class="button"></p>
+		<input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button"></p>
 	</td>
 </tr>
 </table>
@@ -62,7 +54,7 @@ header("Content-type: text/html;charset=$locale_char_set");
 		<br>
 		<ul type="square">
 			<li>
-				<A href="mailto:<?php echo 'admin@' . $site_domain;?>"><?php echo $AppUI->_('forgotPassword');?></a>
+				<A href="mailto:<?php echo 'admin@' . $AppUI->cfg['site_domain'];?>"><?php echo $AppUI->_('forgotPassword');?></a>
 			</li>
 		</ul>
 	</td>

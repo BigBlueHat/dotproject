@@ -31,7 +31,7 @@ $nav = dPgetMenuModules();
         oEl.className = "topBtnOff";
     }
     </script>
-    <title><?php echo $page_title;?></title>
+<title><?php echo $AppUI->cfg['page_title'];?></title>
     <link rel="stylesheet" type="text/css" href="./style/dp_ultra_clean/ultraclean.css" media="all" />
     <style type="text/css" media="all">@import "./style/dp_ultra_clean/ultraclean.css";</style>
 </head>

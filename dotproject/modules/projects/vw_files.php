@@ -2,5 +2,5 @@
 GLOBAL $AppUI, $project_id, $deny, $denyRead, $denyEdit;
 
 $showProject = false;
-require( "$root_dir/modules/files/index_table.php" );
+require( "{$AppUI->cfg['root_dir']}/modules/files/index_table.php" );
 ?>

@@ -11,13 +11,13 @@
  		- show dependencies (not implemented in jpgraph)
  */
 require_once( "../../includes/config.php" );
-require_once( "$root_dir/includes/db_connect.php" );
-require_once( "$root_dir/classdefs/ui.php" );
+require_once( "{$AppUI->cfg['root_dir']}/includes/db_connect.php" );
+require_once( "{$AppUI->cfg['root_dir']}/classdefs/ui.php" );
 
-include ("$root_dir/lib/jpgraph/src/jpgraph.php");
-include ("$root_dir/lib/jpgraph/src/jpgraph_gantt.php");
-include ("$root_dir/includes/main_functions.php");
-include ("$root_dir/functions/tasks_func.php");
+include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph.php");
+include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
+include ("{$AppUI->cfg['root_dir']}/includes/main_functions.php");
+include ("{$AppUI->cfg['root_dir']}/functions/tasks_func.php");
 
 $gantt_arr = array();
 

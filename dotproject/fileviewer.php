@@ -1,15 +1,15 @@
 <?php
 //file viewer
 require "./includes/config.php";
-require "$root_dir/includes/db_connect.php";
-require "$root_dir/classdefs/ui.php";
+require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
+require "{$AppUI->cfg['root_dir']}/classdefs/ui.php";
 
 session_name( 'dotproject' );
 session_start();
 $AppUI =& $_SESSION['AppUI'];
 
-include "$root_dir/includes/main_functions.php";
-include "$root_dir/includes/permissions.php";
+include "{$AppUI->cfg['root_dir']}/includes/main_functions.php";
+include "{$AppUI->cfg['root_dir']}/includes/permissions.php";
 
 $denyRead = getDenyRead( 'files' );
 if ($denyRead) {
@@ -24,7 +24,7 @@ if ($file_id) {
 	header( "Content-length: {$file['file_size']}" );
 	header( "Content-type: {$file['file_type']}" );
 	header( "Content-disposition: attachment; filename={$file['file_name']}" );
-	readfile( "$root_dir/files/{$file['file_project']}/{$file['file_real_filename']}" );
+	readfile( "{$AppUI->cfg['root_dir']}/files/{$file['file_project']}/{$file['file_real_filename']}" );
 } else {
 	$AppUI->setMsg( "fileIdError", UI_MSG_ERROR );
 	$AppUI->redirect();

@@ -139,7 +139,7 @@ class CTask {
 	}
 
 	function notify() {
-		GLOBAL $AppUI, $base_url;
+		GLOBAL $AppUI;
 
 		$sql = "SELECT user_email, user_first_name, user_last_name"
 		."\nFROM users"
@@ -161,7 +161,7 @@ class CTask {
 		. "<table bgcolor='#ffffff' cellpadding=4 cellspacing=1>\n"
 		. "<tr bgcolor='#eeeeee'><th colspan=2>$subject</th></tr>\n"
 		. "<tr><td>Task ID</td><td><a href='"
-		. $base_url
+		. $AppUI->cfg['base_url']
 		. "/index.php?m=tasks&a=view&task_id=$this->task_id'>$this->task_id</a></td></tr>\n";
 	
 	// c = creator

@@ -1,5 +1,5 @@
 <?php
-require_once( "$root_dir/includes/db_$dbtype.php" );
+require_once( "{$AppUI->cfg['root_dir']}/includes/db_$dbtype.php" );
 
 ##
 ##	Generic functions based on library function (that is, non-db specific)

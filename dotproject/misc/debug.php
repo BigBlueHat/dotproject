@@ -1,5 +1,5 @@
 <?php
-$debug_file = "$root_dir/files/debug.log";
+$debug_file = "{$AppUI->cfg['root_dir']}/files/debug.log";
 
 function writeDebug( $s, $t='', $f='?', $l='?' ) {
 	GLOBAL $debug, $debug_file;

@@ -4,7 +4,7 @@
 ##
 class CTabBox extends CTabBox_core {
     function show( $extra='' ) {
-        GLOBAL $AppUI, $root_dir;
+        GLOBAL $AppUI;
         reset( $this->tabs );
         $s = '';
     // tabbed / flat view options

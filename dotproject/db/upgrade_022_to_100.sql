@@ -175,7 +175,7 @@ INSERT INTO user_preferences VALUES("0", "TIMEFORMAT", "%I:%M %p");
 #
 # Table structure for table 'modules'
 #
-DROP TABLE modules;
+DROP TABLE IF EXISTS modules;
 CREATE TABLE `modules` (
   `mod_id` int(11) NOT NULL auto_increment,
   `mod_name` varchar(64) NOT NULL default '',
@@ -211,3 +211,15 @@ INSERT INTO modules VALUES("11", "Departments", "departments", "1.0.0", "", "cor
 # Missing field in contacts
 ALTER TABLE contacts ADD `contact_country` varchar(30) default NULL;
 ALTER TABLE contacts ADD contact_icon varchar(20) default 'obj/contact'
+#
+#  Alter tasks table 1/February/2003
+#
+ALTER TABLE `tasks` ADD `task_duration_type` VARCHAR(6)  DEFAULT "hours" NOT NULL AFTER task_duration;
+
+#
+# ! WARNING !
+# BACKUP DATA BEFORE APPLYING THE NEXT UPDATE INSTRUCTIONS
+# UNCOMMENT AND APPLY WHEN SAFE
+
+# UPDATE tasks SET task_duration_type = 'days' WHERE task_duration >= 24.0;
+# UPDATE tasks SET task_duration = task_duration/24.0 WHERE task_duration >= 24.0;

@@ -2,8 +2,6 @@
 GLOBAL $min_view, $m, $a;
 $min_view = isset( $min_view ) ? $min_view : false;
 
-require_once( "$root_dir/classdefs/date.php" );
-
 $project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
 
 // sdate and edate passed as unix time stamps

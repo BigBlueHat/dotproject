@@ -3,7 +3,6 @@
 // Files modules: index page re-usable sub-table
 GLOBAL $AppUI, $deny1;
 
-require_once( "$root_dir/classdefs/date.php" );
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 

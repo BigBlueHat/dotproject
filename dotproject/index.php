@@ -3,10 +3,8 @@ error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
 error_reporting( E_ALL );
 
 // required includes for start-up
-require_once( "./includes/config.php" );
-require_once( "$root_dir/includes/db_connect.php" );
-require_once( "$root_dir/misc/debug.php" );
-require_once( "$root_dir/classdefs/ui.php" );
+$dPconfig = array();
+require_once( "./classdefs/ui.php" );
 
 // manage the session variable(s)
 session_name( 'dotproject' );
@@ -20,35 +18,55 @@ header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
 header ("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
 header ("Pragma: no-cache");                          // HTTP/1.0
 
-// initialise/retrieve the session variable(s)
-if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
-	$_SESSION['AppUI'] = new CAppUI;
+// check if session has previously been initialised
+if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
+	require_once( "./includes/config.php" );
+	$_SESSION['AppUI'] = new CAppUI( $dPconfig );
 }
 $AppUI =& $_SESSION['AppUI'];
 
-// supported since PHP 4.2
-// writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
+// load the db handler
+require_once( "./includes/db_connect.php" );
+require_once( "./misc/debug.php" );
 
-// load some local settings
-@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
-if (isset( $locale_char_set )) {
-	header("Content-type: text/html;charset=$locale_char_set");
-}
-
-$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
-
-// check if we are logged in
+// load default preferences if not logged in
 if ($AppUI->doLogin()) {
-	// nope, destroy the current session and output login page
-	session_unset();
-	session_destroy();
-	include "$root_dir/style/$uistyle/login.php";
-	exit;
+	$AppUI->loadPrefs( 0 );
 }
 
 // set the module and action from the url
 $m = isset( $_GET['m'] ) ? $_GET['m'] : 'companies';
 $a = isset( $_GET['a'] )? $_GET['a'] : 'index';
+
+// load some locale settings
+@include_once( "./locales/$AppUI->user_locale/locales.php" );
+@include_once( "./locales/core.php" );
+setlocale( LC_TIME, $AppUI->user_locale );
+
+// output the character set header
+if (isset( $locale_char_set )) {
+	header("Content-type: text/html;charset=$locale_char_set");
+}
+
+// check if the user is trying to log in
+if (isset($_POST['login'])) {
+	require( './logincheck.php' );
+}
+
+// supported since PHP 4.2
+// writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
+
+// set the default ui style
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+
+// check if we are logged in
+if ($AppUI->doLogin()) {
+	// nope, destroy the current session and output login page
+	require "./style/$uistyle/login.php";
+	session_unset();
+	session_destroy();
+	exit;
+}
 
 // see if a project id has been passed in the url;
 if (isset( $_REQUEST['project_id'] )) {
@@ -61,27 +79,22 @@ if (isset( $_REQUEST['uts'] )) {
 }
 
 // bring in the rest of the support and localisation files
-require_once( "$root_dir/includes/main_functions.php" );
-require_once( "$root_dir/includes/permissions.php" );
-@include_once( "$root_dir/functions/" . $m . "_func.php" );
+require_once( "./includes/main_functions.php" );
+require_once( "./includes/permissions.php" );
+@include_once( "./functions/" . $m . "_func.php" );
 // include the module classes (check in two places)
-@include_once( "$root_dir/classdefs/$m.php" );
-@include_once( "$root_dir/modules/$m/$m.class.php" );
+@include_once( "./classdefs/$m.php" );
+@include_once( "./modules/$m/$m.class.php" );
 // locales setup
-@include_once( "$root_dir/locales/core.php" );
-setlocale( LC_TIME, $AppUI->user_locale );
 
 // do some db work if dosql is set
 if (isset( $_REQUEST["dosql"]) ) {
-	require("$root_dir/dosql/" . $_REQUEST["dosql"] . ".php");
-}
-if (isset( $return )) {
-	header("Location: ./index.php?" . $return);
+	require("./dosql/" . $_REQUEST["dosql"] . ".php");
 }
 
 // start outputting proper
-include "$root_dir/style/$uistyle/overrides.php";
-require "$root_dir/style/$uistyle/header.php";
-require "$root_dir/modules/" . $m . "/" . $a . ".php";
-require "$root_dir/style/$uistyle/footer.php";
+include "./style/$uistyle/overrides.php";
+require "./style/$uistyle/header.php"; 
+require "./modules/" . $m . "/" . $a . ".php";
+require "./style/$uistyle/footer.php";
 ?>

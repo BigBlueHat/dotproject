@@ -8,8 +8,6 @@ if ($denyRead) {
 }
 $AppUI->savePlace();
 
-require_once( "$root_dir/classdefs/date.php" );
-
 // Set up 'filters'
 
 if (isset( $_GET['tab'] )) {
@@ -96,7 +94,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 
 <?php
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "$root_dir/modules/projects/", $tab );
+$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
 $tabBox->add( 'vw_idx_active', 'Active Projects' );
 $tabBox->add( 'vw_idx_archived', 'Archived Projects' );
 $tabBox->show();

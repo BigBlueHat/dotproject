@@ -11,8 +11,6 @@ if ($denyEdit) {
 	$AppUI->redirect( 'm=help&a=access_denied' );
 }
 
-require_once( "$root_dir/classdefs/date.php" );
-
 // load the preferences
 $sql = "
 SELECT pref_name, pref_value

@@ -1,7 +1,7 @@
 <?php
-require_once( "$root_dir/includes/db_$dbtype.php" );
+require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
 
-db_connect( $dbhost, $db, $dbuser, $dbpass );
+db_connect( $AppUI->cfg['dbhost'], $AppUI->cfg['dbname'], $AppUI->cfg['dbuser'], $AppUI->cfg['dbpass'] );
 
 ##
 ##	Generic functions based on library function (that is, non-db specific)

@@ -12,7 +12,7 @@ $denyEdit = getDenyEdit( $m, $forum_id );
 if ($denyRead || ($post_message & $denyEdit)) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
-require_once( "$root_dir/classdefs/date.php" );
+
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
@@ -65,7 +65,7 @@ if ($start_date) {
 
 <table width="98%" cellspacing="0" cellpadding="2" border="0" class="std">
 <tr>
-	<td height="20" colspan="3" bgcolor="<?php echo $forum["project_color_identifier"];?>" style="border: outset #D1D1CD 1px">
+	<td height="20" colspan="3" style="border: outset #D1D1CD 1px;background-color:#<?php echo $forum["project_color_identifier"];?>">
 		<font size="2" color=<?php echo bestColor( $forum["project_color_identifier"] );?>><b><?php echo @$forum["forum_name"];?></b></font>
 	</td>
 </tr>

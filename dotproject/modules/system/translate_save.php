@@ -6,7 +6,7 @@ $lang = isset( $HTTP_POST_VARS['lang'] ) ? $HTTP_POST_VARS['lang'] : 'es';
 $trans = isset( $HTTP_POST_VARS['trans'] ) ? $HTTP_POST_VARS['trans'] : 0;
 //print_r($trans); die;
 
-if (!($fp = fopen ("$root_dir/locales/$lang/$module.inc", "wt"))) {
+if (!($fp = fopen ("{$AppUI->cfg['root_dir']}/locales/$lang/$module.inc", "wt"))) {
 	$AppUI->setMsg( "Could not open locales file to save.", UI_MSG_ERROR );
 	$AppUI->redirect( "m=system" );
 }

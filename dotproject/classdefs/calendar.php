@@ -2,8 +2,7 @@
 ##
 ## Calendar classes
 ##
-
-require_once( "$root_dir/classdefs/date.php" );
+//require_once( "{$AppUI->cfg['root_dir']}/classdefs/date.php" );
 
 class CMonthCalendar {
 	var $this_month;
@@ -85,7 +84,6 @@ class CMonthCalendar {
 	}
 // drawing functions
 	function show() {
-		
 		$s = '';
 		if ($this->showTitle) {
 			$s .= $this->_drawTitle();

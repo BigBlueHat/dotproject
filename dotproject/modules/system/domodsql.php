@@ -13,7 +13,7 @@ if (($msg = $module->bind( $_GET ))) {
 if ($module->mod_id) {
 	$module->load( $module->mod_id );
 }
-$ok = include_once( "$root_dir/modules/$module->mod_directory/setup.php" );
+$ok = include_once( "{$AppUI->cfg['root_dir']}/modules/$module->mod_directory/setup.php" );
 if (!$ok) {
 	if ($module->mod_type != 'core') {
 		$AppUI->setMsg( 'Module setup file could not be found', UI_MSG_ERROR );

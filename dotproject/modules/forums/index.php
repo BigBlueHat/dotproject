@@ -7,7 +7,6 @@ if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
 }
 
-require_once( "$root_dir/classdefs/date.php" );
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 $tf = $AppUI->getPref( 'TIMEFORMAT' );
 
@@ -110,7 +109,7 @@ while ($row = db_fetch_assoc( $rc )) {
 		}
 ?>
 <tr>
-	<td colspan=6 style="background-color: #<?php echo $row["project_color_identifier"];?>">
+	<td colspan=6 style="background-color:#<?php echo $row["project_color_identifier"];?>">
 		<a href="./index.php?m=projects&a=view&project_id=<?php echo $row["forum_project"];?>"><font color=<?php echo bestColor( $row["project_color_identifier"] );?>><B><?php echo $row["project_name"];?></b></font></a>
 	</td>
 </tr>

@@ -2,7 +2,7 @@
 ##
 ##	Application User Interface class
 ##
-require_once( "$root_dir/classdefs/date.php" );
+require_once( "./classdefs/date.php" );
 
 // Message No Constants
 define( 'UI_MSG_OK', 1 );
@@ -34,18 +34,6 @@ class CAppUI {
 // localisation
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
-// supported languages
-// <DEPCRECATED>
-	var $locales = array(
-		'cn' => 'Chinese',
-		'cs' => 'Czech',
-		'de' => 'German',
-		'en' => 'English',
-		'es' => 'Spanish',
-		'fr' => 'French',
-		'pt_br' => 'Portugese-Brazilian'
-	);
-//  </DEPCRECATED>
 // warn when a translation is not found
 	var $locale_warn = true;
 // the string appended to untranslated string or unfound keys
@@ -56,11 +44,13 @@ class CAppUI {
 	var $msg = '';
 	var $msgNo = '';
 	var $defaultRedirect = '';
+// configuration variable array
+	var $cfg=null;
 
 // CAppUI Constructor
-	function CAppUI() {
-		GLOBAL $debug;
+	function CAppUI( &$cfg ) {
 		$this->state = array();
+		$this->cfg = $cfg;
 
 		$this->user_id = -1;
 		$this->user_first_name = '';
@@ -76,30 +66,25 @@ class CAppUI {
 // set up the default preferences
 		$this->user_locale = $this->base_locale;
 		$this->user_prefs = array();
-		$this->loadPrefs( 0 );
 
 		$this->checkStyle();
 	}
 
 	function checkStyle() {
-		GLOBAL $root_dir, $host_style;
-
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
 
-		if ($uistyle && !is_dir("$root_dir/style/$uistyle")) {
+		if ($uistyle && !is_dir("{$this->cfg['root_dir']}/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
-			$this->setPref( 'UISTYLE', $host_style );
+			$this->setPref( 'UISTYLE', $this->cfg['host_style'] );
 		}
 	}
 
 	function readDirs( $path ) {
-		GLOBAL $root_dir;
-
 		$dirs = array();
-		$d = dir( "$root_dir/$path" );
+		$d = dir( "{$this->cfg['root_dir']}/$path" );
 		while (false !== ($name = $d->read())) {
-			if(is_dir( "$root_dir/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
+			if(is_dir( "{$this->cfg['root_dir']}/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
 				$dirs[$name] = $name;
 			}
 		}
@@ -109,11 +94,10 @@ class CAppUI {
 
 // localisation
 	function setUserLocale( $loc='' ) {
-		GLOBAL $host_locale;
 		if ($loc) {
 			$this->user_locale = $loc;
 		} else {
-			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
+			$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $this->cfg['host_locale'];
 		}
 	}
 /*
@@ -226,7 +210,6 @@ class CAppUI {
 	}
 
 	function login( $username, $password ) {
-		GLOBAL $secret, $debug, $host_locale;
 		$sql = "
 		SELECT
 			user_id, user_first_name, user_last_name, user_company, user_department, user_type
@@ -242,14 +225,11 @@ class CAppUI {
 		if( !db_loadObject( $sql, $this ) ) {
 			return false;
 		}
+
 // load the user preferences
 		$this->loadPrefs( $this->user_id );
 		$this->setUserLocale();
 		$this->checkStyle();
-
-		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
-
-		$this->logout();
 		return true;
 	}
 
@@ -319,7 +299,7 @@ class CTabBox_core {
 	}
 
 	function show( $extra='' ) {
-		GLOBAL $AppUI, $root_dir;
+		GLOBAL $AppUI;
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options

@@ -31,6 +31,7 @@ GROUP BY
 	fm1.message_date,
 	fm1.message_body,
 	fm1.message_published
+ORDER BY message_date DESC
 ";
 $topics = db_loadList( $sql );
 ##echo "<pre>$sql</pre>".db_error();

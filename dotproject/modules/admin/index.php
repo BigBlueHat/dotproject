@@ -69,7 +69,7 @@ function delMe( x, y ) {
 $extra = '<td align="right" width="100%"><input type="button" class=button value="add user" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';"></td>';
 
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=admin", "$root_dir/modules/admin/", $tab );
+$tabBox = new CTabBox( "?m=admin", "{$AppUI->cfg['root_dir']}/modules/admin/", $tab );
 $tabBox->add( 'vw_active_usr', 'Active Users' );
 $tabBox->add( 'vw_inactive_usr', 'In-Active Users' );
 $tabBox->show( $extra );

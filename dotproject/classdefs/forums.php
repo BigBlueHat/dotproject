@@ -149,7 +149,7 @@ class CForumMessage {
 	}
 
 	function sendWatchMail( $debug=false ) {
-		GLOBAL $base_url, $AppUI, $debug;
+		GLOBAL $AppUI, $debug;
 		$subj_prefix = $AppUI->_('forumEmailSubj');
 		$body_msg = $AppUI->_('forumEmailBody');
 		$from = $AppUI->_('forumEmailFrom');
@@ -181,7 +181,7 @@ class CForumMessage {
 		."</style>\n"
 		."</head>\n"
 		. "<body>$body_msg\n"
-		. "<p><a href='$base_url/index.php?m=forums&a=viewer&forum_id=$this->message_forum'>$this->message_title</a>\n"
+		. "<p><a href='{$AppUI->cfg['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum'>$this->message_title</a>\n"
 		. "<p><pre>$this->message_body</pre>\n"
 		. "</body>\n";
 

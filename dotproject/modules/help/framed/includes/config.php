@@ -8,7 +8,7 @@ require_once( "../../../includes/config.php" );
 
 $dbprefix = "dhlp_";
 
-$root_dir = "$root_dir/modules/help/framed/";
+{$AppUI->cfg['root_dir']} = "{$AppUI->cfg['root_dir']}/modules/help/framed/";
 $dbname = $db;
 
 ?>

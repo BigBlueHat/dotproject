@@ -31,7 +31,7 @@ function tboff(){
     oEl.className = "topBtnOff";
 }
 </script>
-<title><?php echo $page_title;?></title>
+<title><?php echo $AppUI->cfg['page_title'];?></title>
 <link rel="stylesheet" type="text/css" href="./style/demo1/main.css">
 </head>
 <body bgcolor="#f0f0f0" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">

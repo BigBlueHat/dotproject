@@ -10,8 +10,6 @@ if ($denyRead) {
 	$AppUI->rededirect( 'm=help&a=access_denied' );
 }
 
-require_once( "$root_dir/classdefs/date.php" );
-
 // if task priority set and items selected, do some work
 $task_priority = isset( $_POST['task_priority'] ) ? $_POST['task_priority'] : 99;
 $selected = isset( $_POST['selected'] ) ? $_POST['selected'] : 0;
@@ -140,7 +138,7 @@ foreach ($tasks as $a) {
 	</td>
 	<td width="50%">
 		<a href="./index.php?m=projects&a=view&project_id=<?php echo $a["project_id"];?>">
-			<span style="padding:2px;background-color:<?php echo $a['project_color_identifier'];?>;color:<?php echo bestColor( $a["project_color_identifier"] );?>"><?php echo $a["project_name"];?></span>
+			<span style="padding:2px;background-color:#<?php echo $a['project_color_identifier'];?>;color:<?php echo bestColor( $a["project_color_identifier"] );?>"><?php echo $a["project_name"];?></span>
 		</a>
 	</td>
 	<td nowrap style="<?php echo $style;?>"><?php echo $start->toString();?></td>

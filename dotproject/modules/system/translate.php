@@ -40,7 +40,7 @@ $modules = $AppUI->readDirs( 'modules' );
 $locales = $AppUI->readDirs( 'locales' );
 
 ob_start();
-	@readfile( "$root_dir/locales/en/$modules[$module].inc" );
+	@readfile( "{$AppUI->cfg['root_dir']}/locales/en/$modules[$module].inc" );
 	eval( "\$english=array(".ob_get_contents()."\n'0');" );
 ob_end_clean();
 
@@ -57,7 +57,7 @@ foreach( $english as $k => $v ) {
 
 if ($lang != 'en') {
 	ob_start();
-		@readfile( "$root_dir/locales/$lang/$modules[$module].inc" );
+		@readfile( "{$AppUI->cfg['root_dir']}/locales/$lang/$modules[$module].inc" );
 		eval( "\$locale=array(".ob_get_contents()."\n'0');" );
 	ob_end_clean();
 

@@ -1,6 +1,4 @@
 <?php
-require_once( "$root_dir/classdefs/date.php" );
-
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 // check permissions
@@ -76,7 +74,7 @@ if (!$denyEdit) {
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
-	<td style="border: outset #d1d1cd 1px;background-color:<?php echo $project["project_color_identifier"];?>" colspan="2">
+	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $project["project_color_identifier"];?>" colspan="2">
 	<?php
 		echo '<font color="' . bestColor( $project["project_color_identifier"] ) . '"><b>'
 			. $project["project_name"] .'<b></font>';
@@ -155,10 +153,10 @@ if (!$denyEdit) {
 <?php	
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
-$tabBox->add( "$root_dir/modules/tasks/tasks", 'Tasks' );
-$tabBox->add( "$root_dir/modules/projects/vw_forums", 'Forums' );
-$tabBox->add( "$root_dir/modules/projects/vw_files", 'Files' );
-$tabBox->add( "$root_dir/modules/tasks/viewgantt", 'Gantt Chart' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
+$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
 
 // settings for tasks
 $f = 'all';

@@ -1,7 +1,5 @@
 <?php /* $Id$ */
-require_once( "./includes/config.php" );
-require_once( "$root_dir/classdefs/calendar.php" );
-require_once( "$root_dir/classdefs/ui.php" );
+require_once( "./classdefs/ui.php" );
 
 session_name( 'dotproject' );
 session_start();
@@ -10,7 +8,7 @@ $AppUI =& $_SESSION['AppUI'];
 setlocale( LC_TIME, $AppUI->user_locale );
 
 // by RK
-@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
+@include_once( "{$AppUI->cfg['root_dir']}/locales/$AppUI->user_locale/locales.php" );
 header("Content-type: text/html;charset=$locale_char_set");
 // end
 

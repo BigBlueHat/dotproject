@@ -84,7 +84,7 @@ $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <tr><td>
 <?php
 	$showProject = true;
-	require( "$root_dir/modules/files/index_table.php" );
+	require( "{$AppUI->cfg['root_dir']}/modules/files/index_table.php" );
 ?>
 </td></tr>
 </table>

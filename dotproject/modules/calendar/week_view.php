@@ -6,8 +6,6 @@ if ($denyRead) {
 }
 $AppUI->savePlace();
 
-require_once( "$root_dir/classdefs/date.php" );
-
 // get the passed timestamp (today if none)
 $uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
 

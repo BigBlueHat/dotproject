@@ -12,6 +12,6 @@ ORDER by $orderby
 
 $users = db_loadList( $sql );
 
-require "$root_dir/modules/admin/vw_usr.php";
+require "{$AppUI->cfg['root_dir']}/modules/admin/vw_usr.php";
 ?>
 

@@ -258,6 +258,7 @@ CREATE TABLE tasks (
   task_owner int(11) NOT NULL default '0',
   task_start_date datetime default NULL,
   task_duration float unsigned default '0',
+  task_duration_type VARCHAR(6) NOT NULL DEFAULT 'hours',
   task_hours_worked float unsigned default '0',
   task_end_date datetime default NULL,
   task_status int(11) default '0',

@@ -27,13 +27,13 @@ function tboff(){
 	oEl.className = "topBtnOff";
 }
 </script>
-<title><?php echo $page_title;?></title>
+<title><?php echo $AppUI->cfg['page_title'];?></title>
 <link rel="stylesheet" type="text/css" href="./style/default/main.css">
 </head>
 <body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="style/default/images/bground.gif">
 <table width="100%" cellpadding="3" cellspacing="0" bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
 <tr>
-	<td nowrap width="33%"><?php echo $company_name;?></td>
+	<td nowrap width="33%"><?php echo $AppUI->cfg['company_name'];?></td>
 	<td nowrap width="34%">
 		<?php echo $AppUI->_('Current user').": $AppUI->user_first_name $AppUI->user_last_name"; ?>
 	</td>
@@ -92,7 +92,7 @@ function tboff(){
 </table>
 <table width="100%" cellpadding=0 cellspacing=0 border=0>
 <tr>
-<td valign="top"><?php require "$root_dir/style/default/leftnav.php";?></td>
+<td valign="top"><?php require "{$AppUI->cfg['root_dir']}/style/default/leftnav.php";?></td>
 <td valign="top" align="left" width="100%">
 <?php 
 	echo $AppUI->getMsg();

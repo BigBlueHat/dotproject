@@ -72,7 +72,7 @@ $mail_body = "<head><title>$subject</title></head>\n"
 . "<table bgcolor='#ffffff' cellpadding=4 cellspacing=1>\n"
 . "<tr bgcolor='#eeeeee'><th colspan=2>$subject</th></tr>\n"
 . "<tr><td>Task ID</td><td><a href='"
-. $base_url
+. $AppUI->cfg['base_url']
 . "/index.php?m=tasks&a=view&task_id=$task_id'>$task_id</a></td></tr>\n";
 for ($i = 0; $i < $row_count; $i++) {
 	$row = mysql_fetch_array($query);

@@ -28,6 +28,11 @@ $AppUI->savePlace();
 
 $AppUI->setState( 'ActiveProject', $task['task_project'] );
 
+$df = $AppUI->getPref('SHDATEFORMAT');
+
+$start_date = $task["task_start_date"] ? new CDate( db_dateTime2unix( $task["task_start_date"] ) ) : null;
+$end_date = $task["task_end_date"] ?  new CDate( db_dateTime2unix( $task["task_end_date"] ) )  : null;
+
 // Pull the task comments
 $sql = "
 SELECT user_username,
@@ -109,7 +114,7 @@ function updateTask() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
-			<td style="background-color:<?php echo $task["project_color_identifier"];?>">
+			<td style="background-color:#<?php echo $task["project_color_identifier"];?>">
 				<font color="<?php echo bestColor( $task["project_color_identifier"] ); ?>">
 					<?php echo @$task["project_name"];?>
 				</font>
@@ -157,18 +162,15 @@ function updateTask() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?>:</td>
-			<td class="hilite" width="300"><?php echo fromDate(substr($task["task_start_date"], 0, 10));?></td>
+			<td class="hilite" width="300"><?php echo $start_date ? $start_date->toString( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?>:</td>
-			<td class="hilite" width="300"><?php if(intval($task["task_end_date"]) == 0){echo "n/a";}else{echo fromDate(substr($task["task_end_date"], 0, 10));}?></td>
+			<td class="hilite" width="300"><?php echo $end_date ? $end_date->toString( $df ) : '-';?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Expected Duration');?>:</td>
-			<td class="hilite" width="300"><?php
-			$dur = returnDur( $task["task_duration"] );
-			echo $dur["value"] . " " . $dur["type"];
-			?></td>
+			<td class="hilite" width="300"><?php echo $task["task_duration"].' '.$AppUI->_( $task["task_duration_type"] );?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?>:</td>
@@ -289,14 +291,19 @@ function updateTask() {
 	<th><?php echo $AppUI->_('Comments');?></th>
 	<th width="150"><?php echo $AppUI->_('Date');?></th>
 </tr>
-<?php foreach ($comments as $row) { ?>
-<tr bgcolor="white" valign=top>
-	<td width="100"><?php echo $row["comment_title"];?></td>
-	<td width="100"><?php echo $row["user_username"];?></td>
-	<td><?php $newstr = str_replace(chr(10), "<BR>",$row["comment_body"]);echo $newstr;?></td>
-	<td width="150"><?php echo fromDate($row["comment_date"]);?></td>
-</tr>
-	<?php }?>
+<?php
+$s = '';
+foreach ($comments as $row) {
+	$comment_date = $row["comment_date"] ?  new CDate( db_dateTime2unix( $row["comment_date"] ) )  : null;
+	$s .= '<tr bgcolor="white" valign="top">';
+	$s .= '<td width="100">'.$row["comment_title"].'</td>';
+	$s .= '<td width="100">'.$row["user_username"].'</td>';
+	$s .= '<td>'.str_replace(chr(10), "<BR>",$row["comment_body"]).'</td>';
+	$s .= '<td width="150">'.($comment_date ? $comment_date->toString( $df ) : '-').'</td>';
+	$s .= '</tr>';
+}
+echo $s;
+?>
 </table>
 
 </body>

@@ -58,7 +58,7 @@ if (!$ok) {
 } else { 
 	require_once './includes/config.php';
 	require_once './includes/db_connect.php';
-	require_once( "$root_dir/classdefs/ui.php" );
+	require_once( "{$AppUI->cfg['root_dir']}/classdefs/ui.php" );
 	require_once './includes/main_functions.php';
 
 	session_name( 'dotproject' );
@@ -66,8 +66,8 @@ if (!$ok) {
 	session_register( 'AppUI' );
 
 	$AppUI =& $_SESSION['AppUI'];
-	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $host_style;
-	@include_once( "$root_dir/locales/core.php" );
+	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+	@include_once( "{$AppUI->cfg['root_dir']}/locales/core.php" );
 
 	$sql = "SELECT $select FROM $table";
 	$sql .= $where ? " WHERE $where" : ''; 

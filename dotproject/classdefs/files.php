@@ -71,9 +71,8 @@ class CFile {
 	}
 
 	function delete() {
-		GLOBAL $root_dir;
 	// remove the file from the file system
-		@unlink( "$root_dir/files/$this->file_project/$this->file_real_filename" );
+		@unlink( "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename" );
 	// delete any index entries
 		$sql = "DELETE FROM files_index WHERE file_id = $this->file_id";
 		if (!db_exec( $sql )) {
@@ -89,18 +88,17 @@ class CFile {
 
 // move a file from a temporary (uploaded) location to the file system
 	function moveTemp( $upload ) {
-		GLOBAL $root_dir;
 	// check that directories are created
-		@mkdir( "$root_dir/files", 0777 );
-		@mkdir( "$root_dir/files/$this->file_project", 0777 );
-		$this->_filepath = "$root_dir/files/$this->file_project/$this->file_real_filename";
+		@mkdir( "{$AppUI->cfg['root_dir']}/files", 0777 );
+		@mkdir( "{$AppUI->cfg['root_dir']}/files/$this->file_project", 0777 );
+		$this->_filepath = "{$AppUI->cfg['root_dir']}/files/$this->file_project/$this->file_real_filename";
 	// move it
 		move_uploaded_file( $upload['tmp_name'], $this->_filepath );
 	}
 
 // parse file for indexing
 	function indexStrings() {
-		GLOBAL $root_dir, $ft;
+		GLOBAL $ft;
 	// get the parser application
 		$parser = @$ft[$this->file_type];
 		if (!$parser) {
@@ -139,7 +137,7 @@ class CFile {
 		db_exec( "LOCK TABLES files_index WRITE" );
 	// filter out common strings
 		$ignore = array();
-		include "$root_dir/dosql/file_index_ignore.php";
+		include "{$AppUI->cfg['root_dir']}/dosql/file_index_ignore.php";
 		foreach ($ignore as $w) {
 			unset( $wordarr[$w] );
 		}

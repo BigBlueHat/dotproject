@@ -292,7 +292,7 @@ foreach ($projects as $k => $p) {
 	<td colspan="8">
 		<table width="100%" border="0">
 		<tr>
-			<td nowrap style="border: outset #eeeeee 2px;background-color:<?php echo @$p["project_color_identifier"];?>">
+			<td nowrap style="border: outset #eeeeee 2px;background-color:#<?php echo @$p["project_color_identifier"];?>">
 				<A href="./index.php?m=projects&a=view&project_id=<?php echo $k;?>">
 				<span style='color:<?php echo bestColor( @$p["project_color_identifier"] ); ?>;text-decoration:none;'><B><?php echo @$p["project_name"];?></b></span></a>
 			</td>
@@ -320,7 +320,7 @@ foreach ($projects as $k => $p) {
 			}
 		}
 
-		if($tnums && ENABLE_GANTT_CHARTS && !$min_view) { ?>
+		if($tnums && $AppUI->cfg['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
 			<td colspan="8" align=right>
 				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';">
