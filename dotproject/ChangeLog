@@ -1,3 +1,50 @@
+2003-09-05 20:59  (jcgonz)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Added the auto-remember task costcode feature
+
+2003-09-05 17:32  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/contacts.inc
+locales/en/forums.inc
+locales/en/help.inc
+locales/en/projects.inc
+locales/en/public.inc
+locales/en/system.inc
+locales/en/tasks.inc
+locales/en/ticketsmith.inc
+- reviewed and actualized the locales/en/*.inc
+
+2003-09-05 16:12  (gregorerhardt)
+---------------------------------
+locales/en/files.inc
+modules/files/do_file_aed.php
+modules/files/files.class.php
+- acc. to patch #782857: warning message added: file could not be written
+
+2003-09-05 10:12  (gregorerhardt)
+---------------------------------
+modules/forums/post_message.php
+- RFE 789170: show original forum message when replying
+
+2003-09-05 08:07  (gregorerhardt)
+---------------------------------
+includes/config-dist.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/tasks/addedit.php
+modules/tasks/view.php
+- changed the hardcoded currencsymbol ($) to dPconfig-ConfigVariable
+
+2003-09-05 04:05  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-05 03:03  (gregorerhardt)
 ---------------------------------
 modules/calendar/addedit.php
@@ -451,53 +498,6 @@ ChangeLog
 - Changelog update
 
 2003-07-07 01:15  (kripper)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/view.php
-- Added project field to events. The project field will be used to filter
-- events in the calendar.
-
-2003-07-06 22:36  (eddieajau)
----------------------------------
-modules/projects/view.php
-- Added inactive tasks tab
-
-2003-07-06 22:35  (eddieajau)
----------------------------------
-modules/tasks/tasks.php
-- Added better in-active task support
-
-2003-07-04 16:07  (kripper)
----------------------------------
-modules/tasks/tasks.class.php
-- Implemented filtering of not allowed tasks in calendar
-
-2003-07-04 16:06  (kripper)
----------------------------------
-includes/permissions.php
-- Fixed bug in winnow
-
-2003-07-04 16:03  (kripper)
----------------------------------
-modules/calendar/calendar.class.php
-- Commented sql debugging
-
-2003-07-03 23:58  (eddieajau)
----------------------------------
-modules/tasks/addedit.php
-- Fixed double quotes in task name problem
-
-2003-07-03 23:48  (eddieajau)
----------------------------------
-index.php
-style/classic/login.php
-style/default/login.php
-- Allows redirection through login
-
-2003-07-03 23:20  (eddieajau)
----------------------------------
-docs/trouble.html
-- no message
 ...
 
 (This file has been wrapped)
