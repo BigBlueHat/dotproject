@@ -40,7 +40,7 @@ getEventLinks( $first_time, $last_time, $links, 50 );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Week View', 'myevo-appointments.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar", "month view" );
+$titleBlock->addCrumb( "?m=calendar&date=".$this_week->format( FMT_TIMESTAMP_DATE ), "month view" );
 $titleBlock->show();
 ?>
 

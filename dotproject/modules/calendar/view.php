@@ -39,7 +39,7 @@ if ($canEdit) {
 		'<form action="?m=calendar&a=addedit&event_id=' . $event_id . '" method="post">', '</form>'
 	);
 }
-$titleBlock->addCrumb( "?m=calendar", "month view" );
+$titleBlock->addCrumb( "?m=calendar&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "month view" );
 if ($canEdit) {
 	$titleBlock->addCrumb( "?m=calendar&a=day_view&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "day view" );
 	$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );

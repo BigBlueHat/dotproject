@@ -396,7 +396,10 @@ class CEvent extends CDpObject {
 		$sql = "
 		SELECT *
 		FROM events
-		WHERE event_start_date BETWEEN '$db_start' AND '$db_end'
+		WHERE (
+				event_start_date <= '$db_end' AND event_end_date >= '$db_start'
+				OR event_start_date BETWEEN '$db_start' AND '$db_end'
+			)
 			AND ( event_private=0
 				OR (event_private=1 AND event_owner=$AppUI->user_id)
 			)

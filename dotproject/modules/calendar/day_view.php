@@ -36,7 +36,7 @@ $next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_TIMESTAMP_DATE ) )
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar", "month view" );
+$titleBlock->addCrumb( "?m=calendar&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "month view" );
 $titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "week view" );
 $titleBlock->show();
 ?>
