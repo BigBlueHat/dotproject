@@ -1,12 +1,4 @@
-<?php
-
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+<?php /* ADMIN $Id$ */
 $AppUI->savePlace();
 
 $user_id = isset( $_GET['user_id'] ) ? $_GET['user_id'] : 0;
@@ -26,32 +18,32 @@ LEFT JOIN companies ON user_company = companies.company_id
 LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
 ";
-db_loadHash( $sql, $user );
+if (!db_loadHash( $sql, $user )) {
+	$titleBlock = new CTitleBlock( 'Invalid Project ID', 'admin.gif', $m, 'ID_HELP_USER_VIEW' );
+	$titleBlock->addCrumb( "?m=projects", "projects list" );
+	$titleBlock->show();
+} else {
 
-$crumbs = array();
-$crumbs["?m=admin"] = "users list";
-if (!$denyEdit) {
-	$crumbs["?m=admin&a=addedituser&user_id=$user_id"] = "edit this user";
-	$crumbs["?m=system&a=addeditpref&user_id=$user_id"] = "edit preferences";
-}
+// setup the title block
+	$titleBlock = new CTitleBlock( 'View User', 'admin.gif', $m, 'ID_HELP_USER_VIEW' );
+	$titleBlock->addCrumb( "?m=admin", "users list" );
+	if ($canEdit) {
+		$titleBlock->addCrumb( "?m=admin&a=addedit&user_id=$user_id", "edit this user" );
+		$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
+
+		$titleBlock->addCrumbRight(
+			'<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>'
+		);
+	}
+	$titleBlock->show();
 ?>
+<script language="javascript">
+function popChgPwd() {
+	window.open( './index.php?m=public&a=chpwd&dialog=1', 'chpwd', 'top=250,left=250,width=350, height=220, scollbars=false' );
+}
+</script>
 
-<table border="0" cellpadding="1" cellspacing="1" width="98%">
-<tr>
-	<td><img src="./images/icons/admin.gif" alt="" border="0"></td>
-	<td width="100%" nowrap="nowrap"><h1><?php echo $AppUI->_('View User');?></h1></td>
-	<td nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_USER_VIEW' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr valign="top">
 	<td width="50%">
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
@@ -138,9 +130,10 @@ if (!$denyEdit) {
 </table>
 
 <?php	
-// tabbed information boxes
-$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", "{$AppUI->cfg['root_dir']}/modules/admin/", $tab );
-$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
-$tabBox->add( 'vw_usr_perms', 'Permissions' );
-$tabBox->show();
+	// tabbed information boxes
+	$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", "{$AppUI->cfg['root_dir']}/modules/admin/", $tab );
+	$tabBox->add( 'vw_usr_proj', 'Owned Projects' );
+	$tabBox->add( 'vw_usr_perms', 'Permissions' );
+	$tabBox->show();
+}
 ?>
