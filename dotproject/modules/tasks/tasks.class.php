@@ -543,9 +543,11 @@ class CTask extends CDpObject {
 		return '';
 	}
 	
-	//additiona comment will be included in email body 
+	//additional comment will be included in email body 
 	function notify( $comment = '' ) {
 		GLOBAL $AppUI, $dPconfig, $locale_char_set;
+		$df = $AppUI->getPref('SHDATEFORMAT');
+		$df .= " " . $AppUI->getPref('TIMEFORMAT');
 
 		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
 		$projname = db_loadResult( $sql );
@@ -580,8 +582,15 @@ class CTask extends CDpObject {
 		$users = db_loadList( $sql );
 
 		if (count( $users )) {
+			$task_start_date       = new CDate($this->task_start_date);
+			$task_finish_date      = new CDate($this->task_end_date);
+			
 			$body = $AppUI->_('Project').": $projname";
 			$body .= "\n".$AppUI->_('Task').":    $this->task_name";
+			//Priority not working for some reason, will wait till later
+			//$body .= "\n".$AppUI->_('Priority'). ": $this->task_priority";
+			$body .= "\n".$AppUI->_('Start Date') . ": " . $task_start_date->format( $df );
+			$body .= "\n".$AppUI->_('Finish Date') . ": " . $task_finish_date->format( $df );
 			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
 			$body .= "\n\n" . $AppUI->_('Description') . ":"
 				. "\n$this->task_description";
