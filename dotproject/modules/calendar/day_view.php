@@ -15,6 +15,9 @@ $event_filter = $AppUI->checkPrefState('CalIdxFilter', @$_REQUEST['event_filter'
 $AppUI->setState( 'CompVwTab', dPgetParam($_GET, 'tab', $tab) );
 $tab = $AppUI->getState( 'CompVwTab' ,'0');
 
+// get the prefered date format
+$df = $AppUI->getPref('SHDATEFORMAT');
+
 // get the passed timestamp (today if none)
 $date = dPgetParam( $_GET, 'date', null );
 
@@ -63,7 +66,7 @@ function clickDay( idate, fdate ) {
 				<a href="<?php echo '?m=calendar&a=day_view&date='.$prev_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
 			</td>
 			<th width="100%">
-				<?php echo $this_day->format( "%A, %d %B %Y" ); ?>
+				<?php echo $AppUI->_($this_day->format( "%A" )).', '.$this_day->format( $df ); ?>
 			</th>
 			<td>
 				<a href="<?php echo '?m=calendar&a=day_view&date='.$next_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>

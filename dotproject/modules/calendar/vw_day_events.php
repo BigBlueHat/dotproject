@@ -65,7 +65,7 @@ $this_day->setTime( $start, 0, 0 );
 
 $html  = "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>";
 $html .= $AppUI->_("Event Filter") . ":" . arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
-	$event_filter );
+	$event_filter, true );
 if ($other_users) {
 	$html .= $AppUI->_("Show Events for") . ":" . "<select name='show_user_events' onchange='document.pickFilter.submit()' class='text'>";
 	$q  = new DBQuery;

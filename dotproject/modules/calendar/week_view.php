@@ -105,7 +105,8 @@ for ($i=0; $i < 7; $i++) {
 	$s .= '<td><a href="'.$href.'"><?php echo $day1 ?>';
 
 	$s .= $dayStamp == $today ? '<span style="color:red">' : '';
-	$s .= $show_day->format( $format[$column] );
+	$s .= ($column == 0) ? $show_day->format( "<strong>%d</strong> " ).$AppUI->_($show_day->format( "%A" )) :  $AppUI->_($show_day->format( "%A" )).$show_day->format( " <strong>%d</strong>" );
+	
 	$s .= $dayStamp == $today ? '</span>' : '';
 	$s .= '</a></td></tr>';
 
