@@ -11,9 +11,9 @@ if (!$canRead) {
 $AppUI->savePlace();
 
 if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
+	$AppUI->setState( 'DeptVwTab', $_GET['tab'] );
 }
-$tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
+$tab = $AppUI->getState( 'DeptVwTab' ) !== NULL ? $AppUI->getState( 'DeptVwTab' ) : 0;
 
 // pull data
 $sql = "
@@ -40,8 +40,8 @@ if (!db_loadHash( $sql, $dept )) {
 		);
 	}
 	$titleBlock->addCrumb( "?m=companies", "company list" );
+	$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 	if ($canEdit) {
-		$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 		$titleBlock->addCrumb( "?m=departments&a=addedit&dept_id=$dept_id", "edit this department" );
 
 		if ($canDelete) {
