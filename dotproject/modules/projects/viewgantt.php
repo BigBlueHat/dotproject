@@ -181,7 +181,7 @@ function showFullProject() {
 
                 <tr>
                         <td align="center" valign="bottom" colspan="12">
-                                <?php echo "<a href='javascript:showThisMonth()'>".$AppUI->_('show all')."</a> : <a href='javascript:showFullProject()'>".$AppUI->_('show this month')."</a><br>"; ?>
+                                <?php echo "<a href='javascript:showThisMonth()'>".$AppUI->_('show this month')."</a> : <a href='javascript:showFullProject()'>".$AppUI->_('show all')."</a><br>"; ?>
                         </td>
                 </tr>
 
