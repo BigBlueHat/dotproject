@@ -293,6 +293,9 @@ function dPgetMicroDiff() {
 	return sprintf( "%.3f", $microTimeSet - $mt );
 }
 
+/**
+* Make text safe to output into double-quote enclosed attirbutes of an HTML tag
+*/
 function dPformSafe( $txt, $deslash=false ) {
 	if (is_object( $txt )) {
 		foreach (get_object_vars($txt) as $k => $v) {
