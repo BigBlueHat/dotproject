@@ -62,4 +62,4 @@ function tboff(){
 <TR>
 <TD valign="top"><?require "./includes/leftnav.php";?></TD>
 <TD valign="top" align="left" width="100%">
-<?echo @$message;?><img src="/images/shim.gif" width="1" height="5" alt="" border="0"><br>	
+<?echo @$message;?><img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>	

@@ -33,7 +33,7 @@ $urow = mysql_fetch_array($urc);
 
 
 
-<img src="/images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 <form name="searcher" action="./index.php?m=files&a=search" method="post">
 <input type=hidden name=dosql value=searchfiles>

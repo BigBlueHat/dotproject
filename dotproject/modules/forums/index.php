@@ -13,7 +13,7 @@ $rc= mysql_query($sql);
 ?>
 
 
-<img src="/images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 <form name="searcher" action="./index.php?m=files&a=search" method="post">
 <input type=hidden name=dosql value=searchfiles>
@@ -21,9 +21,9 @@ $rc= mysql_query($sql);
 	<TD><img src="./images/icons/communicate.gif" alt="" border="0" width=42 height=42></td>
 		<TD nowrap><span class="title">User Forums</span></td>
 		<TD width="100%" align="right"><input class=button type=text name=s maxlength=30 size=20></TD>
-		<TD><img src="./images/shim.gif" width=5 height=5></td>
+		<TD><img src="images/shim.gif" width=5 height=5></td>
 		<TD><input class=button type="submit" value="search"></td>
-		<TD><img src="./images/shim.gif" width=5 height=5></td>
+		<TD><img src="images/shim.gif" width=5 height=5></td>
 		<TD align="right"><input type="button" class=button value="add new forum" onClick="javascript:window.location='./index.php?m=forums&a=addedit';"></td>
 	</tr></form>
 </TABLE>

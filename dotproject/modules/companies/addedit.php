@@ -68,7 +68,7 @@ if(confirm("Are you sure you would like\nto delete this company?"))
 <tr><TD align="right">Phone2:</td><TD><input type="text" class="text" name="company_phone2" value="<?echo @$crow["company_phone2"];?>" maxlength="50"> </td></tr>
 <tr><TD align="right">Fax:</td><TD><input type="text" class="text" name="company_fax" value="<?echo @$crow["company_fax"];?>" maxlength="30"></td></tr>
 <TR><TD colspan=2 align="center">
-<img src="/images/shim.gif" width="50" height="1">Address<BR>
+<img src="images/shim.gif" width="50" height="1">Address<BR>
 <HR width="500" align="center" size=1></td></tr>
 <tr><TD align="right">Address1:</td><TD><input type="text" class="text" name="company_address1" value="<?echo @$crow["company_address1"];?>" maxlength="50"></td></tr>
 <tr><TD align="right">Address2:</td><TD><input type="text" class="text" name="company_address2" value="<?echo @$crow["company_address2"];?>" maxlength="50"></td></tr>

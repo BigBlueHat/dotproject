@@ -95,7 +95,7 @@ if(strpos($perms,"admin")>0 || strpos($perms,"all")>0){?>
 </TR>
 <?}?>
 
-<TR height="100%"><TD>&nbsp;<img src=/images/shim.gif width=7 height=10> </TD></TR>
+<TR height="100%"><TD>&nbsp;<img src=images/shim.gif width=7 height=10> </TD></TR>
 
 </form>
 </TABLE>

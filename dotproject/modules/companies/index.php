@@ -56,7 +56,7 @@ if(confirm("Are you sure you want\nto delete user " + y + "?"))
 }
 
 </script>
-<img src="/images/shim.gif" width="1" height="5" alt="" border="0"><br>
+<img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
 	<TD><img src="./images/icons/money.gif" alt="" border="0"></td>
