@@ -1,3 +1,25 @@
+2004-09-02 18:18  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Reordered includes to ensure db_adodb is included.
+
+2004-09-02 17:44  (jcgonz)
+---------------------------------
+includes/db_adodb.php
+- Updated the lack of () to the db_error function
+
+2004-09-02 11:43  (jcgonz)
+---------------------------------
+modules/contacts/index.php
+- Update by Jose Belizon from Spain
+- Now if a contact has related project, they can be accessed
+- directly from a popup from the contacts list page.
+
+2004-09-01 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-01 02:20  (jcgonz)
 ---------------------------------
 db/create_db_fields.php
@@ -476,28 +498,6 @@ modules/tasks/tasks.php
 2004-08-22 10:21  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.php
-- show user Assignment Info
-
-2004-08-22 08:48  (gregorerhardt)
----------------------------------
-modules/tasks/do_task_assign_aed.php
-modules/tasks/tasksperuser_sub.php
-- prevent from overAssignment in tasks per user view
-
-2004-08-22 07:54  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- corrected sql syntax
-
-2004-08-22 07:44  (gregorerhardt)
----------------------------------
-includes/main_functions.php
-- globalized AppUI var in dPgetUsers
-
-2004-08-22 07:16  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/do_task_aed.php
 ...
 
 (This file has been wrapped)
