@@ -483,6 +483,7 @@ class CAppUI {
 		  else
 		    $params .= "&" . $session_id;
 		}
+		ob_implicit_flush(); // Ensure any buffering is disabled.
 		header( "Location: index.php?$params" );
 		exit();	// stop the PHP execution
 	}
