@@ -73,7 +73,7 @@ $users = db_loadList( $sql );
 
 //Pull files on this task
 $sql = "
-SELECT file_id, file_name, file_size,file_type
+SELECT file_id, file_name, file_size,file_type,file_date,file_version
 FROM files
 WHERE file_task = $task_id
 	AND file_task <> 0
@@ -320,15 +320,18 @@ function delIt() {
 		<tr>
 			<td colspan="3">
 			<?php
-				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
+				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '<tr><th>File Name</th><th>Version</th><th>Date</th><th>Type</th><th>Size</th></tr>';
 				foreach ($files as $row) {
+                                        $file_date = new CDate( $row['file_date'] );
 					$s .= '<tr>';
 					$s .= '<td class="hilite"><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
+                                        $s .= '<td class="hilite">'.$row["file_version"].'</td>';
+                                        $s .= '<td class="hilite">'.$file_date->format( "$df $tf" ).'</td>';
 					$s .= '<td class="hilite">'.$row["file_type"].'</td>';
 					$s .= '<td class="hilite">'.$row["file_size"].'</td>';
 					$s .= '</tr>';
 				}
-				echo '<table width="100%" cellspacing="1" bgcolor="black">'.$s.'</table';
+				echo '<table width="100%" cellspacing="1" class="tbl" bgcolor="black">'.$s.'</table';
 			?>
 			</td>
 		</tr>
