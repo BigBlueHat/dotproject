@@ -224,7 +224,7 @@ function db_datetime( $timestamp = NULL ) {
 }
 
 function db_dateTime2locale( $dateTime, $format ) {
-	if (($ts = db_dateTime2unix( $time )) !== null) {
+	if (($ts = db_dateTime2unix( $dateTime )) !== null) {
 		$date = new CDate( $ts, $format );
 		return $date->toString();
 	} else {
