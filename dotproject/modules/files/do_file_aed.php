@@ -34,7 +34,7 @@ if (isset( $_FILES['formfile'] )) {
 
 	if ($upload['size'] < 1) {
 		if (!$file_id) {
-			$AppUI->setMsg( 'Upload file size is zero.  Process aborted.', UI_MSG_ERROR );
+			$AppUI->setMsg( 'Upload file size is zero. Process aborted.', UI_MSG_ERROR );
 			$AppUI->redirect();
 		}
 	} else {
