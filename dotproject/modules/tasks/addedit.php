@@ -328,7 +328,10 @@ var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 </table>
 </form>
 <?php
-	$AppUI->setState('TaskAeTabIdx', $_GET['tab']);
+	if (isset($_REQUEST['newTab']))
+	  $AppUI->setState('TaskAeTabIdx', $_REQUEST['newTab']);
+	else
+	  $AppUI->setState('TaskAeTabIdx', dPgetParam($_GET, 'tab', 0));
 	$tab = $AppUI->getState('TaskAeTabIdx', 0);
 	$tabBox =& new CTabBox("?m=tasks&a=addedit&task_id=$task_id", "", $tab, "saveTab");
 	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_desc", "Details");
