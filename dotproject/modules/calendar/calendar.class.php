@@ -722,15 +722,16 @@ class CEvent extends CDpObject {
 	  $mail->Body($body, $locale_char_set);
 
 	  foreach ($users as $user) {
-		if (! $mail_owner && $user['user_id'] == $this->event_user)
+		if (! $mail_owner && $user['user_id'] == $this->event_owner)
 			continue;
-	  	$mail->To($user['user_email'], true);
+	  	$mail->To($user['contact_email'], true);
 		$mail->Send();
 	  }
 	}
 
 	function checkClash($userlist = null)
 	{
+	  global $AppUI;
 	  if (! isset($userlist))
 	    return false;
 	  $users = explode(',', $userlist);
