@@ -223,6 +223,24 @@ class CTask extends CDpObject {
 			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
 			db_exec( $sql );
 		}
+		
+		//split out related departments and store them seperatly.
+		$sql = 'DELETE FROM task_departments WHERE task_id='.$this->task_id;
+		db_exec( $sql );
+		$departments = explode(',',$this->task_departments);
+		foreach($departments as $department){
+			$sql = 'INSERT INTO task_departments (task_id, department_id) values ('.$this->task_id.', '.$department.')';
+			db_exec( $sql );
+		}
+		
+		//split out related contacts and store them seperatly.
+		$sql = 'DELETE FROM task_contacts WHERE task_id='.$this->task_id;
+		db_exec( $sql );
+		$contacts = explode(',',$this->task_contacts);
+		foreach($contacts as $contact){
+			$sql = 'INSERT INTO task_contacts (task_id, contact_id) values ('.$this->task_id.', '.$contact.')';
+			db_exec( $sql );
+		}
 
 		if ( $this->task_parent != $this->task_id ){
 			//Has parent

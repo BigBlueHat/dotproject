@@ -228,6 +228,16 @@ CREATE TABLE `projects` (
 
 ) TYPE=MyISAM;
 
+CREATE TABLE `project_contacts` (
+  `project_id` INT(10) NOT NULL,
+  `contact_id` INT(10) NOT NULL
+) TYPE=MyISAM;
+
+CREATE TABLE `project_departments` (
+  `project_id` INT(10) NOT NULL,
+  `department_id` INT(10) NOT NULL
+) TYPE=MyISAM;
+
 CREATE TABLE `task_log` (
   `task_log_id` INT(11) NOT NULL auto_increment,
   `task_log_task` INT(11) NOT NULL default '0',
@@ -274,6 +284,16 @@ CREATE TABLE `tasks` (
   KEY `idx_task_project` (`task_project`),
   KEY `idx_task_owner` (`task_owner`),
   KEY `idx_task_order` (`task_order`)
+) TYPE=MyISAM;
+
+CREATE TABLE `task_contacts` (
+  `task_id` INT(10) NOT NULL,
+  `contact_id` INT(10) NOT NULL
+) TYPE=MyISAM;
+
+CREATE TABLE `task_departments` (
+  `task_id` INT(10) NOT NULL,
+  `department_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
 
 CREATE TABLE `tickets` (
