@@ -38,6 +38,13 @@ case 'projects':
 	$title = 'Project';
 	$select = 'project_id,project_name';
 	$order = 'project_name';
+	$where = $project_company ? "project_company = $project_company" : '';
+	break;
+case 'tasks':
+	$title = 'Task';
+	$select = 'task_id,task_name';
+	$order = 'task_name';
+	$where = $task_project ? "task_project = $task_project" : '';
 	break;
 default:
 	$ok = false;
@@ -59,7 +66,7 @@ if (!$ok) {
 	$sql = "SELECT $select FROM $table";
 	$sql .= $where ? " WHERE $where" : ''; 
 	$sql .= $order ? " ORDER BY $order" : '';
-	$rc = mysql_query( $sql );
+	$rc = mysql_query( $sql );echo $sql;
 	echo mysql_error();
 	$list = array( 0=>'');
 	while ($row = mysql_fetch_array( $rc, MYSQL_NUM )) {
