@@ -57,6 +57,25 @@ $AppUI->savePlace();
 		<a href="?m=system&a=addeditpref"><?php echo $AppUI->_('Default User Preferences');?></a>
 	</td>
 </tr>
+<?php
+	// temporary until tranlated!
+	$AppUI->setWarning( false );
+?>
+<tr>
+	<td>
+		<img src="<?php echo dPfindImage( 'modules.gif', $m );?>" width="32" height="32" border=0 alt="">
+	</td>
+	<td align="left" class="subtitle">
+		<?php echo $AppUI->_('Modules');?>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&a=viewmods"><?php echo $AppUI->_('View Modules');?></a>
+	</td>
+</tr>
 
 </table>
 
