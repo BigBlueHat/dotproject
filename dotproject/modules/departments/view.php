@@ -1,14 +1,19 @@
-<?php
+<?php /* DEPARTMENTS $Id$ */
 $dept_id = isset($_GET['dept_id']) ? $_GET['dept_id'] : 0;
 
 // check permissions
-$denyRead = getDenyRead( $m, $dept_id );
-$denyEdit = getDenyEdit( $m, $dept_id );
+$canRead = !getDenyRead( $m, $dept_id );
+$canEdit = !getDenyEdit( $m, $dept_id );
 
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if ($canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 $AppUI->savePlace();
+
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
+}
+$tab = $AppUI->getState( 'CompVwTab' ) !== NULL ? $AppUI->getState( 'CompVwTab' ) : 0;
 
 // pull data
 $sql = "
@@ -18,38 +23,52 @@ LEFT JOIN users ON user_id = dept_owner
 WHERE dept_id = $dept_id
 	AND dept_company = company_id
 ";
-db_loadHash( $sql, $dept );
-$company_id = $dept['dept_company'];
+if (!db_loadHash( $sql, $dept )) {
+	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, 'ID_HELP_DEPT_VIEW' );
+	$titleBlock->addCrumb( "?m=companies", "companies list" );
+	$titleBlock->show();
+} else {
+	$company_id = $dept['dept_company'];
 
-$crumbs = array();
-$crumbs["?m=companies"] = "company list";
-if (!$denyEdit) {
-	$crumbs["?m=companies&a=view&company_id=$company_id"] = "view this company";
-	$crumbs["?m=departments&a=addedit&dept_id=$dept_id"] = "edit this department";
-}
+	// setup the title block
+	$titleBlock = new CTitleBlock( 'View Department', 'users.gif', $m, 'ID_HELP_DEPT_VIEW' );
+	if ($canEdit) {
+		$titleBlock->addCell();
+		$titleBlock->addCell(
+			'<input type="submit" class="button" value="'.$AppUI->_('new department').'">', '',
+			'<form action="?m=departments&a=addedit&company_id='.$company_id.'&dept_parent='.$dept_id.'" method="post">', '</form>'
+		);
+	}
+	$titleBlock->addCrumb( "?m=companies", "company list" );
+	if ($canEdit) {
+		$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
+		$titleBlock->addCrumb( "?m=departments&a=addedit&dept_id=$dept_id", "edit this department" );
+
+		if ($canDelete) {
+			$titleBlock->addCrumbRight(
+				'<a href="javascript:delIt()">'
+					. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
+					. $AppUI->_('delete department') . '</a>'
+			);
+		}
+	}
+	$titleBlock->show();
 ?>
+<script language="javascript">
+function delIt() {
+	if (confirm( "<?php echo $AppUI->_('departmentDelete');?>" )) {
+		document.frmDelete.submit();
+	}
+}
+</script>
 
-<table border="0" cellpadding="1" cellspacing="1" width="98%">
-<tr>
-	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap="nowrap"><h1><?php echo $AppUI->_('View Department');?></h1></td>
-	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
-	<form action="?m=departments&a=addedit" method="post">
-	<td align="right" width="100%">
-	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new department').'">' : '';?>
-	</td>
-	</form>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_DEPT_VIEW' );?></td>
-</tr>
-</table>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
+<form name="frmDelete" action="./index.php?m=departments&a=do_dept_aed" method="post">
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="dept_id" value="<?php echo $dept_id;?>" />
+</form>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr valign="top">
 	<td width="50%">
 		<strong>Details</strong>
@@ -94,8 +113,11 @@ if (!$denyEdit) {
 			<td bgcolor="#ffffff" width="100%"><?php echo str_replace( chr(10), "<br />", $dept["dept_desc"]);?>&nbsp;</td>
 		</tr>
 		</table>
-		
 	</td>
 </tr>
 </table>
-
+<?php
+	// tabbed information boxes
+	$tabBox = new CTabBox( "?m=departments&a=view&dept_id=$dept_id", "{$AppUI->cfg['root_dir']}/modules/departments/", $tab );
+}
+?>
