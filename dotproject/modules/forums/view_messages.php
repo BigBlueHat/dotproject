@@ -20,6 +20,7 @@ $messages = $q->loadList();
 $crumbs = array();
 $crumbs["?m=forums"] = "forums list";
 $crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
+$crumbs["?m=forums&a=view_pdf&forum_id=$forum_id&message_id=$message_id&sort=$sort&suppressHeaders=1"] = "view PDF file";
 ?>
 <script language="javascript">
 <?php
@@ -112,8 +113,6 @@ echo '
 $x = false;
 
 $date = new CDate();
-$pdfdata = array();
-$pdfhead = array('Date', 'User', 'Message');
 
 if ($viewtype == 'single')
 {
@@ -256,57 +255,11 @@ if ($viewtype != 'single')
 	echo $s;
 	$x = !$x;
 
-        $pdfdata[] = array($row['message_date'],
-$row['contact_first_name'] . ' ' . $row['contact_last_name'],
-'<b>' . $row['message_title'] . '</b>
-' . $row['message_body']);
 }
 if ($viewtype == 'single')
         echo $side . '</td>' . $s;
 ?>
 </table>
-
-
-<?php //PDF Creation
-$font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";
-$temp_dir = $dPconfig['root_dir']."/files/temp";
-$base_url  = $dPconfig['base_url'];
-require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
-
-$pdf = &new Cezpdf($paper='A4',$orientation='portrait');
-$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
-$pdf->selectFont( "$font_dir/Helvetica.afm" );
-$pdf->ezText('Project: ' . $forum['project_name']. '   Forum: '.$forum['forum_name'] );
-$pdf->ezText('Topic: ' . $topic);
-$pdf->ezText('');
-                $options = array(
-                        'showLines' => 1,
-                        'showHeadings' => 1,
-                        'fontSize' => 8,
-                        'rowGap' => 2,
-                        'colGap' => 5,
-                        'xPos' => 50,
-                        'xOrientation' => 'right',
-                        'width'=>'500'
-                );
-
-$pdf->ezTable( $pdfdata, $pdfhead, NULL, $options );
-
-if ($fp = fopen( "$temp_dir/forum_$AppUI->user_id.pdf", 'wb' )) {
-                        fwrite( $fp, $pdf->ezOutput() );
-                        fclose( $fp );
-                        $crumbs["$base_url/files/temp/forum_$AppUI->user_id.pdf"] = "view PDF file";
-                        //echo "<a href=\"$base_url/files/temp/forum_$AppUI->user_id.pdf\" target=\"pdf\">";
-                        //echo $AppUI->_( "View PDF File" );
-                        //echo "</a>";
-                } else {
-                        echo "Could not open file to save PDF.  ";
-                        if (!is_writable( $temp_dir )) {
-                                "The files/temp directory is not writable.  Check your file system permissions.";
-                        }
-                }
-?>
-
 <table border=0 cellpadding=2 cellspacing=1 width="98%" >
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
