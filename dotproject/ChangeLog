@@ -1,3 +1,41 @@
+2003-12-08 04:04  (jcgonz)
+---------------------------------
+db/dotproject_101.sql
+db/upgrade_100_to_101.sql
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- Custom fields in tasks can now be created. A record with serialized data must be added to the sysvals table like: TaskCustomFields->0|a:3:{s:4:"name";s:12:"Quote number";s:4:"type";s:4:"text";s:7:"options";s:24:"maxlength="12" size="10"";}
+- A new text box will be displayed for input with the leyend quote number in the tasks module.
+
+2003-12-07 21:47  (jcgonz)
+---------------------------------
+modules/tasks/view.php
+- Dynamic task's logs have been disabled since dynamic tasks are not really tasks but a group of them. If you wish to have the previous behavior please remember to unset your dynamic tasks.
+
+2003-12-07 21:21  (jcgonz)
+---------------------------------
+classes/date.class.php
+modules/tasks/addedit.php
+modules/tasks/view.php
+- Tasks now have due times for those really efficient organizations out there!
+
+2003-12-07 16:34  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+- made consistent implementation of the original popCalendar
+
+2003-12-07 16:27  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+- fix for #854623; while have now a working calendar again, the current situation with the two JSCalendars is not satisfying
+
+2003-12-07 09:22  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-12-06 22:15  (jcgonz)
 ---------------------------------
 locales/en/locales.php
@@ -460,44 +498,6 @@ ChangeLog
 modules/admin/vw_usr_perms.php
 modules/admin/vw_usr_roles.php
 modules/system/roles/index.php
-modules/system/syskeys/index.php
-modules/system/syskeys/keys.php
-- applied patch 814916 for bug 799390: permission deleting is now available for opera. thanks to kotfu
-
-2003-10-01 03:53  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-10-01 00:53  (jcgonz)
----------------------------------
-modules/tasks/gantt.php
-- There was a bug looking all project in the Gantt Chart when there was a task without start date; solved :)
-
-2003-09-30 18:15  (kripper)
----------------------------------
-modules/projects/index.php
-- Changed default tab to active projects
-
-2003-09-30 03:54  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-29 23:18  (jcgonz)
----------------------------------
-modules/tasks/gantt.php
-- Patch to enable users look gantt graph although some tasks doesnt have start or end date
-
-2003-09-29 03:55  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-28 17:23  (kripper)
----------------------------------
-modules/tasks/addedit.php
-- Set duration = 1 hour as default.
 ...
 
 (This file has been wrapped)
