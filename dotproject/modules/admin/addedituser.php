@@ -118,7 +118,7 @@ function setDept( key, val ) {
 	
 
 <tr>
-    <td align="right" width="230"><?php echo $AppUI->_('Login Name');?>:</td>
+    <td align="right" width="230">* <?php echo $AppUI->_('Login Name');?>:</td>
     <td>
 <?php
 	if (@$user["user_username"]){
@@ -126,14 +126,14 @@ function setDept( key, val ) {
 		echo '<strong>' . $user["user_username"] . '</strong>';
     } else {
         echo '<input type="text" class="text" name="user_username" value="' . $user["user_username"] . '" maxlength="255" size="40" />';
-		echo ' <span class="smallNorm">(' . $AppUI->_('required') . ')</span>';
+	//	echo ' <span class="smallNorm">(' . $AppUI->_('required') . ')</span>';
     }
 ?>
 	</td></tr>
 <?php if ($canEdit) { // prevent users without read-write permissions from seeing and editing user type
 ?>
 <tr>
-    <td align="right"><?php echo $AppUI->_('User Type');?>:</td>
+    <td align="right">* <?php echo $AppUI->_('User Type');?>:</td>
     <td>
 <?php
     echo arraySelect( $utypes, 'user_type', 'class=text size=1', $user["user_type"], true );
@@ -143,20 +143,20 @@ function setDept( key, val ) {
 <?php } // End of security
 ?>
 <tr>
-    <td align="right"><?php echo $AppUI->_('Password');?>:</td>
+    <td align="right">* <?php echo $AppUI->_('Password');?>:</td>
     <td><input type="password" class="text" name="user_password" value="<?php echo $user["user_password"];?>" maxlength="32" size="32" /> </td>
 </tr>
 <tr>
-    <td align="right"><?php echo $AppUI->_('Password');?>2:</td>
+    <td align="right">* <?php echo $AppUI->_('Password');?>2:</td>
     <td><input type="password" class="text" name="password_check" value="<?php echo $user["user_password"];?>" maxlength="32" size="32" /> </td>
 </tr>
 <tr>
-    <td align="right"><?php echo $AppUI->_('First Name');?>:</td>
+    <td align="right">* <?php echo $AppUI->_('Name');?>:</td>
     <td><input type="text" class="text" name="contact_first_name" value="<?php echo $user["contact_first_name"];?>" maxlength="50" /> <input type="text" class="text" name="contact_last_name" value="<?php echo $user["contact_last_name"];?>" maxlength="50" /></td>
 </tr>
 <?php if ($canEdit) { ?>
 <tr>
-    <td align="right"><?php echo $AppUI->_('Company');?>:</td>
+    <td align="right">* <?php echo $AppUI->_('Company');?>:</td>
     <td>
 <?php
     echo arraySelect( $companies, 'contact_company', 'class=text size=1', $user["contact_company"] );
@@ -173,7 +173,7 @@ function setDept( key, val ) {
     </td>
 </tr>
 <tr>
-    <td align="right"><?php echo $AppUI->_('Email');?>:</td>
+    <td align="right">* <?php echo $AppUI->_('Email');?>:</td>
     <td><input type="text" class="text" name="contact_email" value="<?php echo $user["contact_email"];?>" maxlength="255" size="40" /> </td>
 </tr>
 <tr>
@@ -217,7 +217,9 @@ function setDept( key, val ) {
     <td align="right" valign=top><?php echo $AppUI->_('Email').' '.$AppUI->_('Signature');?>:</td>
     <td><textarea class="text" cols=50 name="user_signature" style="height: 50px"><?php echo @$user["user_signature"];?></textarea></td>
 </tr>
-
+<tr>
+    <td align="right">* <?php echo $AppUI->_('Required Fields'); ?></td>
+    <td></td>
 <tr>
     <td align="left">
         <input type="button" value="<?php echo $AppUI->_('back');?>" onClick="javascript:history.back(-1);" class="button" />
