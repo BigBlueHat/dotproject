@@ -1,3 +1,13 @@
+2003-10-08 10:25  (gregorerhardt)
+---------------------------------
+modules/companies/vw_users.php
+- translation of No data available
+
+2003-10-03 03:53  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-02 04:59  (gregorerhardt)
 ---------------------------------
 modules/admin/vw_usr_perms.php
@@ -488,16 +498,6 @@ modules/ticketsmith/post_ticket.php
 
 2003-09-02 20:18  (ajdonnison)
 ---------------------------------
-modules/admin/addedituser.php
-modules/admin/viewuser.php
-modules/system/addeditpref.php
-- Added gregor's patch to allow users to change their own password.
-
-2003-09-02 19:56  (ajdonnison)
----------------------------------
-includes/permissions.php
-- Fix for problem with viewing tasks unless admin
-
 ...
 
 (This file has been wrapped)
