@@ -148,7 +148,7 @@ if ($canEdit) {
 		'<form action="?m=contacts&a=addedit" method="post">', '</form>'
 	);
 	$titleBlock->addCrumbRight(
-
+		'<a href="./index.php?m=contacts&a=csvexport&suppressHeaders=true">' . "CSV Download</a> | " .
 		'<a href="./index.php?m=contacts&a=vcardimport&dialog=0">' . $AppUI->_('Import vCard') . '</a>'
 	);
 }
