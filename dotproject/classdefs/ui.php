@@ -1,8 +1,14 @@
 <?php
+##
+##	Application User Interface class
+##
 
-/*
-	Application User Interface class
-*/
+// Message No Constants
+define( 'UI_MSG_OK', 1 );
+define( 'UI_MSG_ALERT', 2 );
+define( 'UI_MSG_WARNING', 3 );
+define( 'UI_MSG_ERROR', 4 );
+
 class CAppUI {
 	var $state;		// generic array for holding the state of anything
 // current user parameters
@@ -11,7 +17,12 @@ class CAppUI {
 	var $user_last_name;
 	var $user_company;
 	var $user_department;
-	
+//
+	var $msg;
+	var $msgNo;
+	var $defaultRedirect;
+
+// CAppUI Constructor
 	function CAppUI() {
 		$this->state = array();
 
@@ -20,6 +31,68 @@ class CAppUI {
 		$this->user_last_name = '';
 		$this->user_company = 0;
 		$this->user_department = 0;
+
+		$this->defaultRedirect = "m=help&a=about";
+	}
+// Save the current url query string
+	function savePlace() {
+		$this->state['SAVEDPLACE'] = $_SERVER['QUERY_STRING'];
+	}
+// Get the saved place (usually one that could contain an edit button)
+	function getPlace() {
+		return $this->state['SAVEDPLACE'];
+	}
+// redirects to a new page
+// (usually to prevent nasties from doing a browser refresh after a db update)
+	function redirect( $params='' ) {
+		session_write_close();
+	// are the params empty
+		if (!$params) {
+		// has a place been saved
+			$params = !empty($this->state['SAVEDPLACE']) ? $this->state['SAVEDPLACE'] : $this->defaultRedirect;
+		}
+		echo "<script language=\"javascript\">"
+		. "window.location='?$params'"
+		. "</script>";
+	}
+
+// Set the page message (displayed on page construction
+	function setMsg( $msg, $msgNo=0, $append=false ) {
+		$this->msg = $append ? $msg : $this->msg.$msg;
+		$this->msgNo = $msgNo;
+	}
+// Display the message, format and display icon
+	function getMsg( $reset=true ) {
+		$img = '';
+		$class = '';
+		$msg = $this->msg;
+
+		switch( $this->msgNo ) {
+		case UI_MSG_OK:
+			$img = '<img src="./images/obj/tick.gif" width="15" height="15" border="0" alt="">';
+			$class = "message";
+			break;
+		case UI_MSG_ALERT:
+			$img = '<img src="./images/obj/alert.gif" width="16" height="11" border="0" alt="">';
+			$class = "message";
+			break;
+		case UI_MSG_WARNING:
+			$img = '<img src="./images/obj/warning.gif" width="14" height="14" border="0" alt="">';
+			$class = "warning";
+			break;
+		case UI_MSG_ERROR:
+			$img = '<img src="./images/obj/error.gif" width="14" height="14" border="0" alt="">';
+			$class = "error";
+			break;
+		default:
+			$class = "message";
+			break;
+		}
+		if ($reset) {
+			$this->msg = '';
+			$this->msgNo = 0;
+		}
+		return $msg ? "$img<span class=\"$class\">$msg</span>" : '';
 	}
 
 	function setState( $label, $tab ) {
@@ -45,12 +118,12 @@ class CAppUI {
 		if ($debug) {
 			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$psql</font></pre>";
 		}
-		if( !db_loadObject( $sql, $this, __LINE__ ) ) {
+		if( !db_loadObject( $sql, $this ) ) {
 			return false;
 		}
 		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
 		
-	// legacy cookies
+	// handle legacy cookies until they are all crushed
 		$this->logout();
 		setcookie( "user_cookie", $this->user_id );
 		setcookie( "thisuser", "$this->user_id|$this->user_first_name|$this->user_last_name|$this->user_company|$this->user_department" );
@@ -59,7 +132,7 @@ class CAppUI {
 	}
 
 	function logout() {
-	// legacy cookies
+	// handle legacy cookies until they are all crushed
 		setcookie( 'user_cookie', '', time() - 3600 );
 		setcookie( 'thisuser', '', time() - 3600 );
 	}
@@ -68,7 +141,6 @@ class CAppUI {
 		return ($this->user_id < 0) ? true : false;
 	}
 }
-
 /*
 	Tabbed box class
 */
