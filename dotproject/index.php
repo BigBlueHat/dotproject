@@ -5,7 +5,7 @@ error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
 
 if(isset($HTTP_POST_VARS["cookie_project"]))
 {
-	setcookie("cookie_project", $HTTP_POST_VARS["cookie_project"], "session");
+	setcookie("cookie_project", $HTTP_POST_VARS["cookie_project"]);
 }
 
 header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past

@@ -2,7 +2,7 @@
 
 <html>
 <head>
-<script type="JavaScript">
+<script language="JavaScript">
 function doBtn(){
 	var oEl = event.srcElement;
 	var doit = event.type;
