@@ -11,7 +11,7 @@
 "Time"=>"Hora",
 "Week"=>"Semana",
 "delete event"=>"eliminar evento",
-"in advance"=>"en adelante",
+"in advance"=>"antes",
 "month view"=>"vista mensual",
 "times"=>"veces",
 "today"=>"hoy",

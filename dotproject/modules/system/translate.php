@@ -25,6 +25,7 @@ $modules = array(
 	'forums',
 	'help',
 	'projects',
+	'styles',				 
 	'system',
 	'tasks',
 	'ticketsmith'

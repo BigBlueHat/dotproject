@@ -28,7 +28,7 @@
 "New Topic"=>"Nuevo Tópico",
 "No replies"=>"Sin respuestas",
 "Owner"=>"Autor",
-"Post Reply"=>"Publicar Respuesta",
+"Post Reply"=>"Responder",
 "Related Project"=>"Proyecto Relacionado",
 "Replies"=>"Respuestas",
 "Started"=>"Iniciado",
