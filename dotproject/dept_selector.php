@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" href="./style/main.css" type="text/css">
+	<link rel="stylesheet" href="<?php echo TEMPLATE . "/styles/main.css" ?>" type="text/css">
 <?php
 $form = isset( $_GET['form'] ) ? $_GET['form'] : 'all';
 $company_id = isset( $_GET['company_id'] ) ? $_GET['company_id'] : '0';

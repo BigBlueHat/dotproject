@@ -29,7 +29,7 @@ header("Content-type: text/html;charset=$locale_char_set");
 if ($AppUI->doLogin()) {
 	session_unset();
 	session_destroy();
-	include "$root_dir/includes/login.php";
+	include TEMPLATE . "/login.php";
 	exit;
 }
 
