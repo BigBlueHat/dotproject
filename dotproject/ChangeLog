@@ -1,3 +1,19 @@
+2003-10-24 02:35  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Expanded CC processing to allow comma separated list of addresses
+- to comply with ticketsmith incoming email handling.
+
+2003-10-23 19:16  (ajdonnison)
+---------------------------------
+modules/projects/index.php
+- Added Pablo Roca's speed enhancement patch.
+
+2003-10-23 03:44  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-23 02:34  (kripper)
 ---------------------------------
 index.php
@@ -482,22 +498,6 @@ modules/admin/vw_usr_perms.php
 
 2003-09-08 16:25  (gregorerhardt)
 ---------------------------------
-modules/calendar/addedit.php
-modules/companies/addedit.php
-modules/companies/index.php
-modules/companies/view.php
-modules/companies/vw_active.php
-modules/projects/addedit.php
-modules/projects/view.php
-modules/tasks/addedit.php
-- softcoded translation of htmlSelectBoxes via arraySelect
-
-2003-09-08 04:04  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-07 11:18  (gregorerhardt)
 ...
 
 (This file has been wrapped)
