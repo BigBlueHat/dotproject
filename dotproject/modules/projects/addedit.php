@@ -52,6 +52,12 @@ $titleBlock->addCrumb( "?m=projects", "projects list" );
 $titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 $titleBlock->show();
 ?>
+<link rel="stylesheet" type="text/css" media="all" href="lib/calendar/calendar-dp.css" title="blue" />
+<!-- import the calendar script -->
+<script type="text/javascript" src="lib/calendar/calendar.js"></script>
+<!-- import the language module -->
+<script type="text/javascript" src="lib/calendar/lang/calendar-en.js"></script>
+
 <script language="javascript">
 function setColor(color) {
 	var f = document.editFrm;
@@ -59,25 +65,6 @@ function setColor(color) {
 		f.project_color_identifier.value = color;
 	}
 	test.style.background = f.project_color_identifier.value;
-}
-
-var calendarField = '';
-
-function popCalendar( field ){
-	calendarField = field;
-	idate = eval( 'document.editFrm.project_' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
-}
-
-/**
- *	@param string Input date in the format YYYYMMDD
- *	@param string Formatted date
- */
-function setCalendar( idate, fdate ) {
-	fld_date = eval( 'document.editFrm.project_' + calendarField );
-	fld_fdate = eval( 'document.editFrm.' + calendarField );
-	fld_date.value = idate;
-	fld_fdate.value = fdate;
 }
 
 function setShort() {
@@ -107,12 +94,14 @@ function submitIt() {
 		msg += "\n<?php echo $AppUI->_('projectsBadCompany');?>";
 		f.project_name.focus();
 	}
+	/*
 	if (f.project_end_date.value > 0 && f.project_end_date.value < f.project_start_date.value) {
 		msg += "\n<?php echo $AppUI->_('projectsBadEndDate1');?>";
 	}
 	if (f.project_actual_end_date.value > 0 && f.project_actual_end_date.value < f.project_start_date.value) {
 		msg += "\n<?php echo $AppUI->_('projectsBadEndDate2');?>";
 	}
+	*/
 	if (msg.length < 1) {
 		f.submit();
 	} else {
@@ -152,21 +141,24 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></td>
 			<td>
-				<input type="hidden" name="project_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
-				<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
-				<a href="#" onClick="popCalendar('start_date')">
+				<input type="text" class="text" name="project_start_date" value="<?php echo $start_date->format( '%Y-%m-%d' );?>" />
+				
+				<a href="#" onClick="return showCalendar('project_start_date', 'y-mm-dd');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
+				yyyy-mm-dd
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
 			<td>
-				<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-				<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-				<a href="#" onClick="popCalendar('end_date')">
+				<input type="text" class="text" name="project_end_date" value="<?php echo $end_date ? $end_date->format( '%Y-%m-%d' ) : '';?>" />
+				
+				<a href="#" onClick="return showCalendar('project_end_date', 'y-mm-dd');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
+				yyyy-mm-dd
+
 			</td>
 		</tr>
 		<tr>
