@@ -211,7 +211,7 @@ CREATE TABLE projects (
   project_end_date datetime default NULL,
   project_actual_end_date datetime default NULL,
   project_status int(11) default '0',
-  project_precent_complete tinyint(4) default '0',
+  project_percent_complete tinyint(4) default '0',
   project_color_identifier varchar(6) default 'eeeeee',
   project_description text,
   project_target_budget int(11) default '0',
@@ -226,26 +226,15 @@ CREATE TABLE projects (
   KEY project_short_name (project_short_name)
 ) TYPE=MyISAM;
 
-CREATE TABLE task_comments (
-  comment_id int(11) NOT NULL auto_increment,
-  comment_user int(11) NOT NULL default '0',
-  comment_task int(11) NOT NULL default '0',
-  comment_title varchar(255) NOT NULL default '',
-  comment_unique_id varchar(13) NOT NULL default '',
-  comment_body text,
-  comment_date datetime default NULL,
-  PRIMARY KEY  (comment_id),
-  UNIQUE KEY idx_tc (comment_task,comment_unique_id),
-  KEY idx_tc2 (comment_user)
-) TYPE=MyISAM;
-
 CREATE TABLE task_log (
-  task_log_id int(11) NOT NULL auto_increment,
-  task_log_task int(11) NOT NULL default '0',
-  task_log_parent int(11) default '0',
-  task_log_name varchar(255) default NULL,
-  task_log_description text,
-  task_log_creator int(11) NOT NULL default '0',
+  `task_log_id` INT(11) NOT NULL auto_increment,
+  `task_log_task` INT(11) NOT NULL default '0',
+  `task_log_name` VARCHAR(255) default NULL,
+  `task_log_description` TEXT,
+  `task_log_creator` INT(11) NOT NULL default '0',
+  `task_log_hours` FLOAT DEFAULT "0" NOT NULL,
+  `task_log_date` DATETIME,
+  `task_log_costcode` VARCHAR(8) NOT NULL default '',
   PRIMARY KEY  (task_log_id),
   KEY idx_log_task (task_log_task),
   KEY idx_log_parent (task_log_parent)
@@ -265,7 +254,7 @@ CREATE TABLE tasks (
   task_end_date datetime default NULL,
   task_status int(11) default '0',
   task_priority tinyint(4) default '0',
-  task_precent_complete tinyint(4) default '0',
+  task_percent_complete tinyint(4) default '0',
   task_description text,
   task_target_budget int(11) default '0',
   task_related_url varchar(255) default NULL,
