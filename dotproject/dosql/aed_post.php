@@ -57,7 +57,7 @@ if($x = mysql_error())	{
 	$message =  $sql . "<BR>". $x;
 }
 else{
-	header("Location: ./index.php?m=forums&a=viewer&forum_id=$message_forum&message=$message");
+	header("Location: ./index.php?m=forums&a=viewer&forum_id=$message_forum". ($message_parent > 0 ? "&message_id=$message_parent" : "") ."&message=$message");
 }
 ?>
 
