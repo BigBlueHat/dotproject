@@ -87,7 +87,7 @@ $companiesType = $companiesTypeTab;
 
 if ( $companiesTypeTab != -1 ) {
 	$types[0] = "All Companies";
-	$types[] = "Not Defined";
+	$types[] = "Not Applicable";
 }
 
 $tabBox = new CTabBox( "?m=companies", dPgetConfig('root_dir')."/modules/companies/", $companiesTypeTab );
