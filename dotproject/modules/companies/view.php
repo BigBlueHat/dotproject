@@ -1,7 +1,5 @@
 <?php
 $company_id = isset($HTTP_GET_VARS['company_id']) ? $HTTP_GET_VARS['company_id'] : 0;
-// view mode = 0 tabbed, 1 flat
-$vm = isset($HTTP_GET_VARS['vm']) ? $HTTP_GET_VARS['vm'] : 0;
 
 // check permissions
 $denyRead = getDenyRead( $m, $company_id );
@@ -15,14 +13,14 @@ if ($denyRead) {
 }
 
 // pull data
-$csql = "
+$sql = "
 SELECT companies.*,users.user_first_name,users.user_last_name
 FROM companies
 LEFT JOIN users ON users.user_id = companies.company_owner
 WHERE companies.company_id = $company_id
 ";
-$rc = mysql_query( $csql );
-$row = mysql_fetch_array( $rc, MYSQL_ASSOC );
+
+db_loadHash( $sql, $row, __LINE__ );
 
 $pstatus = array(
 	'Not Defined',
@@ -58,7 +56,7 @@ $pstatus = array(
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class=std>
+<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr valign="top">
 	<td width="50%">
 		<b>Details</b>
@@ -113,38 +111,15 @@ $pstatus = array(
 </tr>
 </table>
 
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
-<tr>
-	<td>
-		<a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>&vm=0">tabbed</a> :
-		<a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>&vm=1">flat</a>
-	</td>
-</tr>
-</table>
-
 <?php	
-$tabs = array(
-	'depts' => 'Departments',
-	'active' => 'Active Projects',
-	'archived' => 'Archived Projects',
-	'users' => 'Users'
-);
-
-if ($vm == 1) { ?>
-<table border="0" cellpadding="2" cellspacing="0" width="98%">
-<?php
-	foreach ($tabs as $k => $v) {
-		echo "<tr><td><b>$v</b></td></tr>";
-		echo "<tr><td>";
-		include "vw_$k.php";
-		echo "</td></tr>";
-	}
-?>
-</table>
-<?php 
-} else {
-	$tab = isset( $_GET['tab'] ) ? $_GET['tab'] : 'depts';
-	drawTabBox( $tabs, $tab, "./index.php?m=companies&a=view&company_id=$company_id", "./modules/companies" );
+// tabbed information boxes
+if (isset( $_GET['tab'] )) {
+	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
 }
+$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "./modules/companies", $AppUI->getState( 'CompVwTab' ) );
+$tabBox->add( 'vw_depts', 'Departments' );
+$tabBox->add( 'vw_active', 'Active Projects' );
+$tabBox->add( 'vw_archived', 'Archived Projects' );
+$tabBox->add( 'vw_users', 'Users' );
+$tabBox->show();
 ?>
-

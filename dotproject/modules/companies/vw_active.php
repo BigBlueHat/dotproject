@@ -4,7 +4,7 @@
 ##
 GLOBAL $company_id; 
 
-$psql = "
+$sql = "
 SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
 	DATE_FORMAT(project_start_date, '%d-%b-%Y' ) project_start_date,
 	users.user_first_name, users.user_last_name
@@ -14,14 +14,8 @@ where project_company = $company_id
 	and project_active <> 0
 order by project_name
 ";
-$prc = mysql_query($psql);
-$nums = mysql_num_rows($prc);
 
-//pull the projects into an temp array
-$tarr = array();
-for($x=0;$x<$nums;$x++){
-	$tarr[$x] = mysql_fetch_array( $prc, MYSQL_ASSOC );
-}
+$rows = db_loadList( $sql, NULL, __LINE__ );
 ?>
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 <tr>
@@ -33,17 +27,17 @@ for($x=0;$x<$nums;$x++){
 </tr>
 
 <?php 
-for ($x =0; $x < $nums; $x++){
-	?>
-	<tr>
-		<td width="100%">
-			<a href="./index.php?m=projects&a=view&project_id=<?php echo $tarr[$x]["project_id"];?>">
-				<?php echo $tarr[$x]["project_name"];?>
-			</a>
-		<td nowrap><?php echo $tarr[$x]["user_first_name"].'&nbsp;'.$tarr[$x]["user_last_name"];?></td>
-		<td nowrap><?php echo $tarr[$x]["project_start_date"]; ?></td>
-		<td nowrap><?php echo $pstatus[$tarr[$x]["project_status"]]; ?></td>
-		<td nowrap align=right>$ <?php echo $tarr[$x]["project_target_budget"]; ?></td>
-	</tr>
-<?php } ?>
+$s = '';	
+foreach ($rows as $row) {
+	$s .= '<tr>';
+	$s .= '<td width="100%">';
+	$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
+	$s .= '<td nowrap>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
+	$s .= '<td nowrap>'.$row["project_start_date"].'</td>';
+	$s .= '<td nowrap>'.$pstatus[$row["project_status"]].'</td>';
+	$s .= '<td nowrap align=right>$ '.$row["project_target_budget"].'</td>';
+	$s .= '</tr>';
+}
+echo $s;
+?>
 </table>
