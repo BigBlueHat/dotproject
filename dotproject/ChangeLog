@@ -1,3 +1,18 @@
+2003-09-15 06:02  (gregorerhardt)
+---------------------------------
+modules/contacts/index.php
+- we are now able to export vCards
+
+2003-09-15 06:02  (gregorerhardt)
+---------------------------------
+modules/contacts/vcardexport.php
+- Initial Import of vCardExport
+
+2003-09-15 04:02  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-14 15:48  (jcgonz)
 ---------------------------------
 modules/tasks/vw_log_update.php
@@ -483,21 +498,6 @@ modules/tasks/addedit.php
 
 2003-08-01 19:35  (kripper)
 ---------------------------------
-modules/tasks/viewgantt.php
-- Fixed Opera javascript bug
-
-2003-07-30 11:45  (revelation7)
----------------------------------
-modules/calendar/links_events.php
-modules/companies/index.php
-modules/files/index_table.php
-modules/projects/index.php
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_archived.php
-modules/projects/vw_idx_complete.php
-- Added tooltips (descriptions that are displayed on mouse over links) per RFE 770618.  --Ray
-
-2003-07-23 01:18  (kripper)
 ...
 
 (This file has been wrapped)
