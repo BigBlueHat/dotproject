@@ -3,6 +3,7 @@
 ##
 "edit",
 "Abbreviation",
+"Currency Format",
 "Date and Time",
 "Default",
 "Default User Preferences",
@@ -51,6 +52,7 @@
 "en"=>"English",
 "es"=>"Spanish",
 "fr"=>"French",
+"hidden",
 "install",
 "pt_br"=>"Portuguese Brazillian",
 "pt"=>"Portugese",
