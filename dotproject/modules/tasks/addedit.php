@@ -880,9 +880,20 @@ $titleBlock->show();
 				    			<?php
 				    				if($can_edit_time_information){
 				    					?>
-								<?php echo $AppUI->_( 'Task Creator' );?>
+								<?php 
+								      echo $AppUI->_( 'Task Creator' );
+								      $task_owner = !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner;
+								?>
 								<br />
-							<?php echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );?>
+								<select name='task_owner' class='text'>
+							<?php 
+							      foreach($users as $user_data_id => $user_data){
+							          $selected = $user_data_id == $task_owner ? "selected" : "";
+							          echo "<option value='$user_data_id' $selected>".$user_data["userFC"]."</option>";
+							      }
+//							     echo arraySelect( $users, 'task_owner', 'class="text"', !isset($obj->task_owner) ? $AppUI->user_id : $obj->task_owner );
+							?>
+							    </select>
 								<br />
 									<?php
 				    				} // $can_edit_time_information
