@@ -1,5 +1,5 @@
 <?php /* CALENDAR $Id$ */
-global $this_day, $first_time, $last_time, $company_id;
+global $this_day, $first_time, $last_time, $company_id, $m, $a;
 
 $links = array();
 // assemble the links for the tasks
@@ -26,4 +26,7 @@ if (isset( $links[$dayStamp] )) {
 echo $s;
 
 echo '</table>';
+
+$min_view = 1;
+include $AppUI->getConfig( 'root_dir' ).'/modules/tasks/todo.php';
 ?>
