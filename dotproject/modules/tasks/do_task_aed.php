@@ -9,6 +9,7 @@ function setItem($item_name, $defval = null) {
 }
 
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
+$task_id = setItem('task_id', 0);
 $hassign = setItem('hassign');
 $hperc_assign = setItem('hperc_assign');
 $hdependencies = setItem('hdependencies');
@@ -52,10 +53,17 @@ if ($sub_form) {
 		dprint(__FILE__, __LINE__, 1, "No pre_save functions.");
 	}
 
+	// Find the task if we are set
+	if ($task_id)
+		$obj->load($task_id);
+
 	if ( isset($_SESSION['tasks_subform'])) {
 		$obj->bind($_SESSION['tasks_subform']);
 		unset($_SESSION['tasks_subform']);
 	}
+
+	if (! $obj->task_owner)
+		$obj->task_owner = $AppUI->user_id;
 
 	if (!$obj->bind( $_POST )) {
 		$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
@@ -125,7 +133,7 @@ if ($sub_form) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			$AppUI->redirect(); // Store failed don't continue?
 		} else {
-			$AppUI->setMsg( @$_POST['task_id'] ? 'Task updated' : 'Task added', UI_MSG_OK);
+			$AppUI->setMsg( $task_id ? 'Task updated' : 'Task added', UI_MSG_OK);
 		}
 
 		if (isset($hassign)) {
