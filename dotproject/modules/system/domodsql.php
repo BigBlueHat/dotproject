@@ -4,10 +4,14 @@
 ##
 $cmd = dPgetParam( $_GET, 'cmd', '0' );
 $mod_id = intval( dPgetParam( $_GET, 'mod_id', '0' ) );
+$mod_directory = dPgetParam( $_GET, 'mod_directory', '0' );
 
 $obj = new CModule();
-$obj->load( $mod_id );
-
+if ($mod_id) {
+	$obj->load( $mod_id );
+} else {
+	$obj->mod_directory = $mod_directory;
+}
 
 $ok = include_once( "{$AppUI->cfg['root_dir']}/modules/$obj->mod_directory/setup.php" );
 
