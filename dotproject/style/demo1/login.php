@@ -25,14 +25,14 @@ header("Content-type: text/html;charset=$locale_char_set");
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
 <br /><br /><br /><br />
 <form action="./logincheck.php" method="post" name="loginform">
-<table align="center" border="0" width="250" cellpadding="8" cellspacing="0" class="std">
+<table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
 <input type="hidden" name="login" value="<?php echo time();?>" />
 <input type="hidden" name="return" value="<?php echo $return;?>" />
 <tr>
     <th colspan="2"><em><?php echo $company_name;?></em></th>
 </tr>
 <tr>
-    <td align="right" nowrap width="100"><?php echo $AppUI->_('Username');?>:</td>
+    <td align="right" nowrap><?php echo $AppUI->_('Username');?>:</td>
     <td align="left" nowrap><input type="text" size="25" name="username" class="text" /></td>
 </tr>
 <tr>
