@@ -313,6 +313,7 @@ table.minical td.day  {
 	text-align: center;
 }
 table.minical td.today {
+	background-color: #e0e0e0;
 	text-align: center;
 }
 table.minical td.weekend {
