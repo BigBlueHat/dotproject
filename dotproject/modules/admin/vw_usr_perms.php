@@ -56,7 +56,8 @@ $res = db_exec( $sql );
 
 //pull the projects into an temp array
 $tarr = array();
-while ($row = db_fetch_assoc( $res )) {
+if ($res) {
+  while ($row = db_fetch_assoc( $res )) {
 	$item = @$row[@$pgos[$row['permission_grant_on']]['label'].@$pgos[$row['permission_grant_on']]['field']];
 	if (!$item) {
 		$item = $row['permission_item'];
@@ -65,6 +66,7 @@ while ($row = db_fetch_assoc( $res )) {
 		$item = 'all';
 	}
 	$tarr[] = array_merge( $row, array( 'grant_item'=>$item ) );
+  }
 }
 
 // pull list of users for permission duplication from template user
