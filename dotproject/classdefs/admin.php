@@ -23,7 +23,6 @@ class CUser {
 	var $user_state = NULL;
 	var $user_zip = NULL;
 	var $user_country = NULL;
-	var $user_locale = NULL;
 	var $user_icq = NULL;
 	var $user_aol = NULL;
 	var $user_birthday = NULL;
