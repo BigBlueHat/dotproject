@@ -161,7 +161,7 @@ class CAppUI {
 			$params = !empty($this->state["SAVEDPLACE$hist"]) ? $this->state["SAVEDPLACE$hist"] : $this->defaultRedirect;
 		}
 		echo "<script language=\"javascript\">window.location='index.php?$params'</script>";
-		die;
+		exit();
 	}
 
 // Set the page message (displayed on page construction)
@@ -275,6 +275,35 @@ class CAppUI {
 	// zero the time so that 'days' can be compared
 		$this->day_selected->setTime( 0, 0, 0 );
 	}
+// --- Module connectors
+	function getInstalledModules() {
+		$sql = "
+		SELECT mod_directory, mod_ui_name
+		FROM modules
+		ORDER BY mod_directory
+		";
+		return (db_loadHashList( $sql ));
+	}
+
+	function getActiveModules() {
+		$sql = "
+		SELECT mod_directory, mod_ui_name
+		FROM modules
+		WHERE mod_active > 0
+		ORDER BY mod_directory
+		";
+		return (db_loadHashList( $sql ));
+	}
+
+	function getMenuModules() {
+		$sql = "
+		SELECT mod_directory, mod_ui_name, mod_ui_icon
+		FROM modules
+		WHERE mod_active > 0 AND mod_ui_active > 0
+		ORDER BY mod_ui_order
+		";
+		return (db_loadList( $sql ));
+	}
 }
 /*
 	Tabbed box core class
@@ -362,6 +391,7 @@ class CTitleBlock_core {
 		$this->cells1 = array();
 		$this->cells2 = array();
 		$this->crumbs = array();
+		$this->showhelp = !getDenyRead( 'help' );
 	}
 
 	function addCell( $data='', $attribs='', $prefix='', $suffix='' ) {
@@ -393,9 +423,11 @@ class CTitleBlock_core {
 			$s .= $CR . '</td>';
 			$s .= $c[3] ? $CR . $c[3] : '';
 		}
-		$s .= '<td nowrap="nowrap" width="20" align="right">';
-		$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', $this->helpref );
-		$s .= $CR . '</td>';
+		if ($this->showhelp) {
+			$s .= '<td nowrap="nowrap" width="20" align="right">';
+			$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', $this->helpref );
+			$s .= $CR . '</td>';
+		}
 		$s .= $CR . '</tr>';
 		$s .= $CR . '</table>';
 
@@ -419,7 +451,7 @@ class CTitleBlock_core {
 				$s .= $CR . '</td>';
 				$s .= $c[3] ? $CR . $c[3] : '';
 			}
-			
+
 			$s .= '</tr></table>';
 		}
 		echo "$s";
