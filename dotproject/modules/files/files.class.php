@@ -133,10 +133,11 @@ class CFile extends CDpObject {
 	function indexStrings() {
 		GLOBAL $AppUI, $dPconfig;
 	// get the parser application
-		$parser = @$dPconfig['parser_'.$this->file_type];
+		$parser = @$ft[$this->file_type];
+		if (!$parser)
+			$parser = $ft['default'];
 		if (!$parser) {
 			return false;
-		}
 	// buffer the file
 		$fp = fopen( $this->_filepath, "rb" );
 		$x = fread( $fp, $this->file_size );
