@@ -22,8 +22,9 @@ $res  = db_exec( $sql );
 echo db_error();
 $user = db_fetch_row( $res );
 
-$crumbs = array();
-$crumbs["?m=system"] = "System Admin";
+$titleBlock = new CTitleBlock( 'Edit User Preferences', 'preference.gif', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=system", "system admin" );
+$titleBlock->show();
 ?>
 <script language="javascript">
 function submitIt(){
@@ -37,24 +38,7 @@ function submitIt(){
 }
 </script>
 
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-	<td valign="top"><img src="./images/icons/preference.gif" alt="" border="0" width="32" height="32"></td>
-	<td nowrap>
-		<h1><?php echo count( $prefs ) ? "Edit User Preferences" : "Add User Preferences" ;?></h1>
-	</td>
-	<td valign="top" align="right" width="100%">&nbsp;</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_SYS_PREFS' );?></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-</tr>
-</table>
-
-<table width="98%" border="0" cellpadding="1" cellspacing="1" class="std">
+<table width="100%" border="0" cellpadding="1" cellspacing="1" class="std">
 
 <form name="changeuser" action="./index.php?m=system" method="post">
 	<input type="hidden" name="dosql" value="do_preference_aed" />
