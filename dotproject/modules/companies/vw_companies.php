@@ -19,7 +19,6 @@ $obj = new CCompany();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // retrieve list of records
-
 $sql = "SELECT company_id, company_name, company_type, company_description,"
 	. "count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,"
 	. "user_first_name, user_last_name"
@@ -37,10 +36,16 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 		OR (permission_grant_on = 'companies' and permission_item = company_id)
 		)"
 	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
-	. ($companiesType ? " AND company_type = $companiesType" : "")
-	. " GROUP BY company_id"
-	. " ORDER BY $orderby";
+	. ($companiesType ? " AND company_type = $companiesType" : "");
+	
 
+if($search_string != ""){
+	$sql .= " AND company_name LIKE '%$search_string%' ";
+}
+
+$sql .= " GROUP BY company_id
+		 ORDER BY $orderby";
+	
 $rows = db_loadList( $sql );
 
 ?>

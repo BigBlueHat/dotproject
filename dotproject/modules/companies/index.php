@@ -14,7 +14,15 @@ $types = dPgetSysVal( 'CompanyType' );
 $obj = new CCompany();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
+// Company search by Kist
+$search_string = dPgetParam( $_POST, 'search_string', '' );
+
 // retrieve list of records
+/*
+ The following query is actually made at vw_companies.php
+ It was excuted twice, so I commented out this block
+ - jcgonz
+ 
 $sql = "
 SELECT company_id, company_name, company_type, company_description,
 	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
@@ -30,15 +38,19 @@ WHERE permission_user = $AppUI->user_id
 		OR (permission_grant_on = 'companies' and permission_item = -1)
 		OR (permission_grant_on = 'companies' and permission_item = company_id)
 		)
-" . (count($deny) > 0 ? 'and company_id not in (' . implode( ',', $deny ) . ')' : '') . "
-GROUP BY company_id
-ORDER BY $orderby
-";
+" . (count($deny) > 0 ? 'and company_id not in (' . implode( ',', $deny ) . ')' : '')
+ . "GROUP BY company_id
+    ORDER BY $orderby";
 
 $rows = db_loadList( $sql );
+*/
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
+$titleBlock->addCell('<strong>Search:</strong>');
+$titleBlock->addCell("<form name='searchform' action='?m=companies&amp;search_string=$search_string' method='post'>
+                      <input type='text' name='search_string' value='$search_string' />
+                      </form>");
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',
