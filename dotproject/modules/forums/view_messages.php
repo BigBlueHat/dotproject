@@ -34,8 +34,8 @@ function delIt(id){
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
-		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
+		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
+		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
 	<?php } ?>
 	</td>
 </tr>
@@ -44,8 +44,8 @@ function delIt(id){
 <table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl">
 <!-- <form name="messageForm" method="POST" action="?m=forums&a=viewposts&forum_id=<?php echo $row['message_forum'];?>"> -->
 <form name="messageForm" method="POST" action="?m=forums&a=do_post_aed&forum_id=<?php echo $row['message_forum'];?>">
-	<input type="hidden" name="del" value="0">
-	<input type="hidden" name="message_id" value="0">
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="message_id" value="0" />
 </form>
 <tr>
 	<th nowrap><?php echo $AppUI->_('Author');?>:</th>
@@ -66,7 +66,7 @@ foreach ($messages as $row){
 	$s .= "<tr>";
 
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
-	$s .= '<a href="mailto:"'.$row["user_email"].'>';
+	$s .= '<a href="mailto:"'.$row["user_email"].'">';
 	$s .= '<font size="2">'.$row["user_first_name"].' '.$row["user_last_name"].'</font></a></td>';
 	$s .= '<td valign="top" style="'.$style.'">';
 	$s .= '<font size="2"><strong>'.$row["message_title"].'</strong><hr size=1>';
@@ -101,8 +101,8 @@ foreach ($messages as $row){
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
 	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';">
-		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';">
+		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
+		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
 	<?php } ?>
 	</td>
 </tr>
