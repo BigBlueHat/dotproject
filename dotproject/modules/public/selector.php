@@ -10,7 +10,9 @@ function selPermWhere( $table, $idfld ) {
 		."\n	AND permission_grant_on = '$table'"
 		."\n	AND permission_item = $idfld"
 		."\n	AND permission_value = 0";
+
 	$deny = db_loadColumn( $sql );
+	echo db_error();
 
 	return "permission_user = $AppUI->user_id"
 		."\nAND permission_value <> 0"
@@ -51,11 +53,11 @@ case 'departments':
 	$where .= "\nAND ".selPermWhere( 'departments', 'dept_id' );
 
 	$table .= ", companies, permissions";
+	$select = "dept_id,CONCAT(company_name,': ', dept_name) AS dept_name";
 	if ($company_id) {
 		$where .= "\nAND dept_company = $company_id";
 		$order = 'dept_name';
 	} else {
-		$select = "dept_id,CONCAT(company_name,': ', dept_name) AS dept_name";
 		$order = 'company_name,dept_name';
 	}
 	break;
@@ -99,6 +101,7 @@ if (!$ok) {
 	$sql = "SELECT $select FROM $table";
 	$sql .= $where ? " WHERE $where" : '';
 	$sql .= $order ? " ORDER BY $order" : '';
+
 	$list = arrayMerge( array( 0=>''), db_loadHashList( $sql ) );
 	echo db_error();
 ?>
