@@ -153,19 +153,6 @@ $a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', 'index' ));
 
 $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 
-
-
-@include_once( "./functions/" . $m . "_func.php" );
-
-// TODO: canRead/Edit assignements should be moved into each file
-
-// check overall module permissions
-// these can be further modified by the included action files
-$canRead = !getDenyRead( $m );
-$canEdit = !getDenyEdit( $m );
-$canAuthor = $canEdit;
-$canDelete = $canEdit;
- 
 // load module based locale settings
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
 @include_once( "./locales/core.php" );
@@ -181,6 +168,17 @@ if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
 } 	
 setlocale( LC_TIME, $user_locale );
 
+@include_once( "./functions/" . $m . "_func.php" );
+
+// TODO: canRead/Edit assignements should be moved into each file
+
+// check overall module permissions
+// these can be further modified by the included action files
+$canRead = !getDenyRead( $m );
+$canEdit = !getDenyEdit( $m );
+$canAuthor = $canEdit;
+$canDelete = $canEdit;
+ 
 if ( !$suppressHeaders ) {
 	// output the character set header
 	if (isset( $locale_char_set )) {
