@@ -298,13 +298,17 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 
                 if ($now->after( $start_date ) && $a["task_percent_complete"] == 0) {
                         $style = 'background-color:#ffeebb';
-                } else if ($now->after( $start_date )) {
+                } else if ($now->after( $start_date ) && $a["task_percent_complete"] < 100) {
                         $style = 'background-color:#e6eedd';
-                }
+                } 
 
                 if ($now->after( $end_date )) {
                         $sign = -1;
                         $style = 'background-color:#cc6666;color:#ffffff';
+                }
+                
+                if ($a["task_percent_complete"] == 100 ){
+                        $style = 'background-color:#aaddaa; color#00000';
                 }
 
                 $days = $now->dateDiff( $end_date ) * $sign;
@@ -616,6 +620,7 @@ $AppUI->setState("tasks_opened", $tasks_opened);
 	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Future Task');?></td>
+	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Started and on time');?></td>
 	<td>&nbsp; &nbsp;</td>
@@ -624,5 +629,8 @@ $AppUI->setState("tasks_opened", $tasks_opened);
 	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Overdue');?></td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#aaddaa">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Done');?></td>
 </tr>
 </table>
