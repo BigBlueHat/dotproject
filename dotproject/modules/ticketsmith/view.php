@@ -13,7 +13,7 @@ require("./modules/ticketsmith/config.inc.php");
 require("./modules/ticketsmith/common.inc.php");
 
 /* Centralize references */
-$app_root="http://new.ezo.net/apps/dp";
+$app_root="http://dotproject.net/demo";
 
 /* initialize fields */
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {
