@@ -1,3 +1,69 @@
+2003-05-06 18:58  (eddieajau)
+---------------------------------
+modules/contacts/addedit.php
+- Added check to not show the delete link when adding a new contact
+
+2003-05-06 18:16  (eddieajau)
+---------------------------------
+modules/public/calendar.php
+- Moved from root directory
+
+2003-05-06 16:25  (korinek)
+---------------------------------
+modules/tasks/tasks.class.php
+- Added passing the locale charset to libmail class for correct email formation
+- of non asci email subject and body.
+
+2003-05-06 16:18  (korinek)
+---------------------------------
+classes/libmail.class.php
+- Added optional Quoted-Printable encoding of the subject (necessary for non ascii email subjects).
+
+2003-05-06 08:26  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+- Added check to see if any tasks exist.
+
+2003-05-06 08:19  (eddieajau)
+---------------------------------
+modules/tasks/do_updatetask.php
+- Fixed bug where resetting task end date occurs with the wrong comparison of the task percent complete.
+
+2003-05-06 08:18  (eddieajau)
+---------------------------------
+modules/projects/do_project_aed.php
+- Minor update
+
+2003-05-06 08:17  (eddieajau)
+---------------------------------
+modules/help/en/companies.addedit.hlp
+modules/help/en/companies.index.hlp
+modules/help/en/companies.view.hlp
+- Content updated
+
+2003-05-06 08:17  (eddieajau)
+---------------------------------
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+modules/contacts/do_contact_aed.php
+modules/contacts/index.php
+- Updated core code
+
+2003-05-06 08:16  (eddieajau)
+---------------------------------
+docs/rfc0001.00.html
+- no message
+
+2003-05-06 08:15  (eddieajau)
+---------------------------------
+style/default/main.css
+- Updated the contacts table style to the blues
+
+2003-05-02 06:26  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-01 17:02  (korinek)
 ---------------------------------
 modules/tasks/tasks.class.php
@@ -432,72 +498,6 @@ modules/tasks/addedit.php
 modules/tasks/organizer.php
 modules/tasks/todo.php
 modules/tasks/view.php
-modules/tasks/viewgantt.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/view.php
-- Icons updated
-
-2003-04-23 19:45  (eddieajau)
----------------------------------
-images/icons/1.gif
-images/icons/burst_mail.gif
-images/icons/contacts.gif
-images/icons/folder.gif
-images/icons/forum_folder.gif
-images/icons/groups.gif
-images/icons/i_contact_off.gif
-images/icons/i_controlpanel_off.gif
-images/icons/i_document_off.gif
-images/icons/i_event_off.gif
-images/icons/i_mystatus_big.gif
-images/icons/i_presentation_off.gif
-images/icons/i_projectmanager_off.gif
-images/icons/i_timezones_off.gif
-images/icons/i_todo_off.gif
-images/icons/icn_banner.gif
-images/icons/icn_budgetgraph.gif
-images/icons/icn_comments.gif
-images/icons/icn_doc-read.gif
-images/icons/icn_forum.gif
-images/icons/icn_members.gif
-images/icons/icn_person.gif
-images/icons/icn_project.gif
-images/icons/icn_qc_calendar.gif
-images/icons/icn_qc_file.gif
-images/icons/icn_qc_forum.gif
-images/icons/icn_qc_project.gif
-images/icons/icn_qc_resources.gif
-images/icons/icn_qc_task.gif
-images/icons/icn_qc_todo.gif
-images/icons/icn_view.gif
-images/icons/minicalendar.gif
-images/icons/minicontact.GIF
-images/icons/miniedit.gif
-images/icons/minievent.gif
-images/icons/minifile.gif
-images/icons/miniforum.gif
-images/icons/miniproject.gif
-images/icons/minitask.gif
-images/icons/money.gif
-images/icons/post.gif
-images/icons/preference.gif
-images/icons/project.gif
-images/icons/projects.gif
-images/icons/stock_attach-16.png
-images/icons/system.gif
-images/icons/tasks.gif
-images/icons/world.gif
-db/dotproject_100.sql
-modules/admin/addedituser.php
-modules/admin/viewuser.php
-modules/admin/vw_usr.php
-modules/admin/vw_usr_perms.php
-modules/admin/vw_usr_roles.php
-- Icons updated
-
-2003-04-23 18:31  (eddieajau)
 ...
 
 (This file has been wrapped)
