@@ -1,6 +1,5 @@
 <?php
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
-$isNotNew = @$_POST['company_id'];
 
 $company = new CCompany();
 
@@ -21,6 +20,7 @@ if ($del) {
 	if (($msg = $company->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
+		$isNotNew = @$_POST['company_id'];
 		$AppUI->setMsg( "Company ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
 	}
 	$AppUI->redirect();
