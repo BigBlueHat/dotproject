@@ -88,10 +88,10 @@ function delIt() {
 </form>
 
 <tr>
-	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $obj["project_color_identifier"];?>" colspan="2">
+	<td style="border: outset #d1d1cd 1px;background-color:#<?php echo $obj->project_color_identifier;?>" colspan="2">
 	<?php
-		echo '<font color="' . bestColor( $obj["project_color_identifier"] ) . '"><strong>'
-			. $obj["project_name"] .'<strong></font>';
+		echo '<font color="' . bestColor( $obj->project_color_identifier ) . '"><strong>'
+			. $obj->project_name .'<strong></font>';
 	?>
 	</td>
 </tr>
