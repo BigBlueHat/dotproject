@@ -205,23 +205,23 @@ foreach ($tasks as $task) {
 	$start = intval( @$task["task_start_date"] ) ? new CDate( $task["task_start_date"] ) : null;
 	$end = intval( @$task["task_end_date"] ) ? new CDate( $task["task_end_date"] ) : null;
 	
-	if (!$end) {
+	if (!$end && $start) {
 		$end = $start;
 		$end->addSeconds( @$task["task_duration"]*$task["task_duration_type"]*SEC_HOUR );
 	}
 
-	if ($now->after( $start ) && $task["task_percent_complete"] == 0) {
+	if ($start && $now->after( $start ) && $task["task_percent_complete"] == 0) {
 		$style = 'background-color:#ffeebb';
 	} else if ($now->after( $start )) {
 		$style = 'background-color:#e6eedd';
 	}
 
-	if ($now->after( $end )) {
+	if ($end && $now->after( $end )) {
 		$sign = -1;
 		$style = 'background-color:#cc6666;color:#ffffff';
 	} 
 
-	$days = $now->dateDiff( $end ) * $sign;
+	$days = $end ? $now->dateDiff( $end ) * $sign : null;
 
 ?>
 <tr>
@@ -257,7 +257,7 @@ foreach ($tasks as $task) {
 ?>
 	</td>
 
-	<td nowrap style="<?php echo $style;?>"><?php echo $AppUI->_($end->getDayName(1)).'&nbsp;'.$end->format( $df );?></td>
+	<td nowrap style="<?php echo $style;?>"><?php echo $end ? $AppUI->_($end->getDayName(1)).'&nbsp;'.$end->format( $df ) : "";?></td>
 
 	<td nowrap align="right" style="<?php echo $style;?>">
 		<?php echo $days; ?>

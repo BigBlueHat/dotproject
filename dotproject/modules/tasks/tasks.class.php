@@ -842,7 +842,8 @@ class CTask extends CDpObject {
 			OR
 			(DATE_ADD(task_start_date, INTERVAL task_duration DAY)) BETWEEN '$db_start' AND '$db_end'
 	*/
-		$where .= $company_id ? "\n\tAND project_company = $company_id" : '';
+		$where .= $company_id ? "\n\tAND project_company = company_id 
+		                            AND company_name = '$company_id'" : '';
 
 	// exclude read denied projects
 		$obj = new CProject();
@@ -861,9 +862,10 @@ class CTask extends CDpObject {
 			. "\n\ttask_duration, task_duration_type,"
 			. "\n\tproject_color_identifier AS color,"
 			. "\n\tproject_name"
-			. "\nFROM tasks,projects"
+			. "\nFROM tasks,projects,companies"
 			. "\nWHERE $where"
 			. "\nORDER BY task_start_date";
+			
 //echo "<pre>$sql</pre>";
 	// execute and return
 		return db_loadList( $sql );
