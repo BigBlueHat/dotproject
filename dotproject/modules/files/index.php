@@ -128,16 +128,9 @@ while ($row = mysql_fetch_array( $frc )) {
 <TR bgcolor="#f4efe3">
 	<TD colspan="6" bgcolor="#<?php echo $row["project_color_identifier"];?>" style="border: outset 2px #eeeeee">
 <?php
-		$r = hexdec(substr($row["project_color_identifier"], 0, 2));
-		$g = hexdec(substr($row["project_color_identifier"], 2, 2));
-		$b = hexdec(substr($row["project_color_identifier"], 4, 2));
-
-		if($r < 128 && $g < 128 || $r < 128 && $b < 128 || $b < 128 && $g < 128) {
-			echo "<font color='white'>";
-		};
-		echo $row["project_name"];
-	?>
-	</TD>
+	echo '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
+		. $row["project_name"] . '</font>';
+	?></td>
 </TR>
 <?php
 	}
