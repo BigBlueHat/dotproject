@@ -182,17 +182,9 @@ A.hdr:link, A.hdr:active, A.hdr:visited {
 /* tabbed boxes */
 td.tabon {
     background: #a5cbf7;
-    border-top: outset #cccccc 2px;
-    border-left: outset #cccccc 2px;
-    border-right: outset #cccccc 2px;
-    border-bottom: none;
 }
 td.taboff {
     background: #d6ebff;
-    border-top: outset #cccccc 2px;
-    border-left: outset #cccccc 2px;
-    border-right: outset #cccccc 2px;
-    border-bottom: solid #cccccc 2px;
 }
 td.tabsp {
     border-bottom: solid #cccccc 2px;

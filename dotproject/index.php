@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
 error_reporting( E_ALL );
 
@@ -75,6 +75,7 @@ if (isset( $return )) {
 }
 
 // start outputting proper
+include "$root_dir/style/$uistyle/overrides.php";
 require "$root_dir/style/$uistyle/header.php";
 require "$root_dir/modules/" . $m . "/" . $a . ".php";
 require "$root_dir/style/$uistyle/footer.php";
