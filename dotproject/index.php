@@ -113,7 +113,7 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	$AppUI->setUserLocale();
 	@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
 	@include_once "$baseDir/locales/core.php";
-	setlocale( LC_TIME, $AppUI->user_lang .'.'. $locale_char_set );
+	setlocale( LC_TIME, $AppUI->user_lang );
 	if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
 		require  "$baseDir/includes/sendpass.php";
 		sendNewPass();
@@ -160,7 +160,7 @@ if ($AppUI->doLogin()) {
 	// load basic locale settings
 	@include_once( "./locales/$AppUI->user_locale/locales.php" );
 	@include_once( "./locales/core.php" );
-	setlocale( LC_TIME, $AppUI->user_lang .'.'. $locale_char_set );
+	setlocale( LC_TIME, $AppUI->user_lang );
 	$redirect = @$_SERVER['QUERY_STRING'];
 	if (strpos( $redirect, 'logout' ) !== false) {
 		$redirect = '';
@@ -208,7 +208,7 @@ $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 @include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
 @include_once "$baseDir/locales/core.php";
 
-setlocale( LC_TIME, $AppUI->user_lang .'.'. $locale_char_set );
+setlocale( LC_TIME, $AppUI->user_lang );
 $m_config = dPgetConfig($m);
 @include_once "$baseDir/functions/" . $m . "_func.php";
 

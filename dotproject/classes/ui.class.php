@@ -271,7 +271,7 @@ class CAppUI {
 * @param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
 */
 	function setUserLocale( $loc='' ) {
-		global $dPconfig;
+		global $dPconfig, $locale_char_set;
 
 		$LANGUAGES = $this->loadLanguages();
 
@@ -293,9 +293,12 @@ class CAppUI {
 			$lang = $LANGUAGES[$loc];
 		}
 		$this->user_locale = $lang[0];
-		$this->user_lang = $loc;
 		if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
 			$this->user_lang = $lang[3];
+		} else {
+			$this->user_lang = $loc;
+			if (isset($locale_char_set))
+				$this->user_lang .= '.' . $locale_char_set;
 		}
 	}
 
