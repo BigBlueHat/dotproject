@@ -1,6 +1,5 @@
 <?php
 $return = '';
-setcookie("user_cookie", "");
 $AppUI = new CAppUI;
 $AppUI->locale_warn = true;
 $AppUI->user_locale = $host_locale;
