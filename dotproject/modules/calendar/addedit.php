@@ -13,7 +13,7 @@ if (!db_loadHash( $sql, $event ) && $event_id) {
 	$titleBlock->show();
 } else {
 // check only owner can edit
-	if ($event['event_owner'] != $AppUI->user_id) {
+	if ($event['event_owner'] != $AppUI->user_id && $event_id != 0) {
 		$AppUI->redirect( "m=public&a=access_denied" );
 	}
 
