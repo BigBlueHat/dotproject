@@ -127,7 +127,12 @@ $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
-$graph->scale->SetDateLocale($AppUI->user_locale);
+
+$jpLocale = $AppUI->getConfig( 'jpLocale' );
+if ($jpLocale) {
+	$graph->scale->SetDateLocale( $jpLocale );
+}
+
 if ($start_date && $end_date) {
 	$graph->SetDateRange( $start_date, $end_date );
 }

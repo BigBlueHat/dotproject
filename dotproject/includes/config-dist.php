@@ -75,6 +75,9 @@ $dPconfig['show_all_tasks'] = false;
 // enable if you want to support gantt charts
 $dPconfig['enable_gantt_charts'] = true;
 
+/** Sets the locale for the jpGraph library.  Leave blank if you experience problems */
+$dPconfig['jpLocale'] = '';
+
 // enable if you want to log changes using the history module
 $dPconfig['log_changes'] = false;
 
