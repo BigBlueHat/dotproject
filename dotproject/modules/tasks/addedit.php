@@ -109,7 +109,7 @@ function build_date_list(&$date_array, $row) {
 	global $tracked_dynamics, $project;
 	// if this task_dynamic is not tracked, set end date to proj start date
 	if ( !in_array($row['task_dynamic'], $tracked_dynamics) )
-		$date = new CDate( $project->start_date );
+		$date = new CDate( $project->project_start_date );
 	elseif ($row['task_milestone'] == 0) {
 		$date = new CDate($row['task_end_date']);
 	} else {
