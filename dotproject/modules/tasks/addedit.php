@@ -479,7 +479,7 @@ function checkRootTaskName(task) {
                 if ($task_id == 0) {
                         if(is_array($rooTasks)){
                             foreach($rooTasks as $r) {
-                                    echo "a['$r'] = true;\n\t";
+                                    echo "a['" . stripslashes($r) . "'] = true;\n\t";
                             }
                         }
                 }
