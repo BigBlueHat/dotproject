@@ -41,7 +41,7 @@ $sql = "insert into events
 (event_title, event_start_date, event_end_date, event_parent, event_description, event_times_recuring, event_recurs, event_remind, event_project, event_owner, event_private)
 values
 
-('$event_title', '$start_date', '$end_date', '$event_project', '$event_notes', '$event_times_recuring', '$event_recurs', '$event_remind', 'event_project', $thisuser_id, '$event_private')";
+('$event_title', '$start_date', '$end_date', '$event_project', '$event_notes', '$event_times_recuring', '$event_recurs', '$event_remind', 'event_project', $AppUI->user_id, '$event_private')";
 
 	 mysql_query($sql);
 	$message  ="Event Inserted";

@@ -8,14 +8,14 @@ $message = '';
 
 if ($watch) {
 	// clear existing watches
-	$sql = "DELETE FROM forum_watch WHERE watch_user = $thisuser_id AND watch_$watch IS NOT NULL";
+	$sql = "DELETE FROM forum_watch WHERE watch_user = $AppUI->user_id AND watch_$watch IS NOT NULL";
 	if (!mysql_query($sql)) {
 		$message = 'An error occurred cleaning up the watch table<br>'.mysql_error();
 	} else {
 		$sql = '';
 		foreach ($_POST as $k => $v) {
 			if (strpos($k, 'forum_') !== FALSE) {
-				$sql = "INSERT INTO forum_watch (watch_user,watch_$watch) VALUES ($thisuser_id,".substr( $k, 6 ).")";
+				$sql = "INSERT INTO forum_watch (watch_user,watch_$watch) VALUES ($AppUI->user_id,".substr( $k, 6 ).")";
 				if (!mysql_query($sql)) {
 					$message .= mysql_error().'<br>';
 				}

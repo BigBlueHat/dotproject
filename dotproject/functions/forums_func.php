@@ -17,7 +17,7 @@ if ($a == 'viewer') {
 }
 
 function sendWatchMail($message_id, $message_parent, $message_forum, $message_title, $message_body) {
-	GLOBAL $base_url, $thisuser_id;
+	GLOBAL $base_url, $AppUI;
 	$subj_prefix = "Dotproject forum activity:";
 	$body_msg = "There has been activity in a forum you are watching.";
 	$from = "Dotproject forum watch";
@@ -54,7 +54,7 @@ function sendWatchMail($message_id, $message_parent, $message_forum, $message_ti
 	. "</body>\n";
 
 	while ($row = mysql_fetch_array( $rc, MYSQL_ASSOC )) {
-		//if ($row['user_id'] != $thisuser_id) {
+		//if ($row['user_id'] != $AppUI->user_id) {
 			$to = '"'.$row['user_first_name'].' '.$row['user_last_name'].'" <'.$row['user_email'].'>';
 			mail( $to, $subject, $mail_body, "From: $from\r\n".$mail_header );
 			//echo "<pre>";
