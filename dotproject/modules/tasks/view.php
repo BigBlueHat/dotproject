@@ -6,7 +6,7 @@ $denyRead = getDenyRead( $m, $task_id );
 $denyEdit = getDenyEdit( $m, $task_id );
 
 if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 $sql = "
@@ -73,18 +73,18 @@ if (!$denyEdit) {
 
 <script language="JavaScript">
 function updateTask() {
-	var form = document.update;
-	if (form.comments.value.length < 1) {
+	var f = document.update;
+	if (f.comments.value.length < 1) {
 		alert( "<?php echo $AppUI->_('tasksComment');?>" );
-		form.comments.focus();
-	} else if (isNaN( parseInt( form.complete.value+0 ) )) {
+		f.comments.focus();
+	} else if (isNaN( parseInt( f.complete.value+0 ) )) {
 		alert( "<?php echo $AppUI->_('tasksPercent');?>" );
-		form.complete.focus();
-	} else if(form.complete.value  < 0 || form.complete.value > 100) {
+		f.complete.focus();
+	} else if(f.complete.value  < 0 || f.complete.value > 100) {
 		alert( "<?php echo $AppUI->_('tasksPercentValue');?>" );
-		form.complete.focus();
+		f.complete.focus();
 	} else {
-		form.submit();
+		f.submit();
 	}
 }
 </script>
@@ -264,9 +264,9 @@ function updateTask() {
 				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>none</td></tr>" : '';
 				foreach ($files as $row) { 
 					$s .= '<tr>';
-					$s .= '<td><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
+					$s .= '<td class="hilite"><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
 					$s .= '<td class="hilite">'.$row["file_type"].'</td>';
-					$s .= '<td>'.$row["file_size"].'</td>';
+					$s .= '<td class="hilite">'.$row["file_size"].'</td>';
 					$s .= '</tr>';
 				}
 				echo '<table width="100%" cellspacing="1" bgcolor="black">'.$s.'</table';
@@ -281,31 +281,25 @@ function updateTask() {
 
 <strong><?php echo $AppUI->_('Task Log and Comments');?></strong>
 
-<table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
 <tr>
-	<td></td>
-</tr>
-<tr>
+	<th><?php echo $AppUI->_('Date');?></th>
 	<th width="100"><?php echo $AppUI->_('Action');?></th>
 	<th width="100"><?php echo $AppUI->_('User');?></th>
 	<th><?php echo $AppUI->_('Comments');?></th>
-	<th width="150"><?php echo $AppUI->_('Date');?></th>
 </tr>
 <?php
 $s = '';
 foreach ($comments as $row) {
 	$comment_date = $row["comment_date"] ?  new CDate( db_dateTime2unix( $row["comment_date"] ) )  : null;
 	$s .= '<tr bgcolor="white" valign="top">';
+	$s .= '<td nowrap="nowrap">'.($comment_date ? $comment_date->toString( $df ) : '-').'</td>';
 	$s .= '<td width="100">'.$row["comment_title"].'</td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
 	$s .= '<td>'.str_replace(chr(10), "<br />",$row["comment_body"]).'</td>';
-	$s .= '<td width="150">'.($comment_date ? $comment_date->toString( $df ) : '-').'</td>';
 	$s .= '</tr>';
 }
 echo $s;
 ?>
 </table>
-
-</body>
-</html>
-
+<p></p>
