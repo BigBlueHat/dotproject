@@ -39,7 +39,7 @@ $cfgFile = "../includes/config.php";
 $filesDir = "../files";
 $locEnDir = "../locales/en";
 $tmpDir = "../files/temp";
-include_once("../modules/install/vw_idx_check.php");
+include_once("vw_idx_check.php");
 ?>
 </body>
 </html>
