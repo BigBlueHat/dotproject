@@ -6,6 +6,7 @@ GLOBAL $AppUI, $deny1;
 function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 {
 
+	GLOBAL $AppUI;
 	$xpg_break = false;
 	
 	echo "\t<table width='100%' cellspacing='0' cellpadding='0' border=0><tr>";
@@ -26,7 +27,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 		
 		// central text (files, total pages, ...)
 		echo "<td align='center' width='70%'>";
-		echo "$xpg_totalrecs " . "Files" . " ($xpg_total_pages " . "Pages" . ")";
+		echo "$xpg_totalrecs " . $AppUI->_('File(s)') . " ($xpg_total_pages " . $AppUI->_('Page(s)') . ")";
 		echo "</td>";
 	
 		// right buttoms
@@ -98,7 +99,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 
 if (!isset($page)) {
 	$page = 1;
-} 
+}
 $xpg_pagesize = 30;
 $xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
 
@@ -131,8 +132,8 @@ WHERE
 		OR (permission_grant_on = 'projects' AND permission_item = project_id)
 		)
 "
-. (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '') 
-. (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '') 
+. (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '')
+. (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '')
 . ($project_id ? "\nAND file_project = $project_id" : '');
 
 
@@ -141,7 +142,7 @@ WHERE
 // SETUP FOR FILE LIST
 $sql = "
 SELECT files.*,
-	project_name, project_color_identifier, project_active, 
+	project_name, project_color_identifier, project_active,
 	user_first_name, user_last_name
 FROM files, permissions
 LEFT JOIN projects ON project_id = file_project
