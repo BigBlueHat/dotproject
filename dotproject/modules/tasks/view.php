@@ -13,7 +13,7 @@ $sql = "
 SELECT tasks.*,
 	project_name, project_color_identifier,
 	u1.user_username as username,
-	SUM(task_log_hours) as task_hours_worked
+	SUM(task_log_hours) as log_hours_worked
 FROM tasks
 LEFT JOIN users u1 ON u1.user_id = task_owner
 LEFT JOIN projects ON project_id = task_project
@@ -188,7 +188,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Time Worked');?>:</td>
-			<td class="hilite" width="300"><?php echo @$obj->task_hours_worked;?></td>
+			<td class="hilite" width="300"><?php echo (@$obj->task_hours_worked + @$obj->log_hours_worked);?></td>
 		</tr>
 		<tr>
 			<td nowrap="nowrap" colspan=2><strong><?php echo $AppUI->_('Dates and Targets');?></strong></td>
