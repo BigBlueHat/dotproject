@@ -249,19 +249,25 @@ A.hdr:link, A.hdr:active, A.hdr:visited {
 /* tabbed boxes */
 td.tabon {
 	background: #a5cbf7;
+	/*
 	border-top: outset #ffffff 2px;
 	border-left: outset #ffffff 2px;
 	border-right: outset #cccccc 2px;
 	border-bottom: none;
-	background-image: url('./style/default/images/tabSelectedBg.png');
+	*/
+	/* background-image: url('./style/default/images/tabSelectedBg.png');*/
+	 background-image: url('images/tabSelectedBg.png');
 }
 td.taboff {
 	background: #d6ebff;
+	/*
 	border-top: solid #cccccc 1px;
 	border-left: solid #cccccc 1px;
 	border-right: solid #cccccc 1px;
 	border-bottom: solid #cccccc 2px;
-	background-image: url('./style/default/images/tabBg.png');
+	*/
+	/* background-image: url('./style/default/images/tabBg.png'); */
+	background-image: url('images/tabBg.png');
 }
 td.tabsp {
 	border-bottom: solid #cccccc 2px;
