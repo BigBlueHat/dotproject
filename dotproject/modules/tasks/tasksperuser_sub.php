@@ -187,7 +187,7 @@ function chPriority(user_id) {
 //echo "<pre>$usersql</pre>";
 		$system_users = arrayMerge( array( 0 => $AppUI->_('All Users') ), db_loadHashList( $usersql ) );
 	?>
-	<?=arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"',$company_id )?>
+	<?=arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"', $log_userfilter )?>
 
 
 	</td>
@@ -295,7 +295,7 @@ if($do_report){
 		$sql.=" task_project='$project_id' ";
 	}
 
-	$sql .= " ORDER BY task_end_date;";
+	$sql .= " ORDER BY task_project, task_end_date;";
 
 //echo "<pre>$sql</pre>";
 	$task_list_hash 	 = db_loadHashList($sql, "task_id");
@@ -549,7 +549,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 if (sizeof($users) >= 7) {
                         $zz = $zz *2;
                 }
-		$zm1 = $z - 1;
+		$zm1 = $z - 2;
                 if ($zm1 ==0) $zm1 = 1;
 		$assUser = $users[$user_id]['user_first_name']." ".$users[$user_id]['user_last_name'];
 		if ($user_id == 0) {	// need to handle orphaned tasks different from tasks with existing assignees
