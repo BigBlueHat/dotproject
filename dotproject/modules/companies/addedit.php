@@ -18,7 +18,7 @@ FROM companies
 LEFT JOIN users ON users.user_id = companies.company_owner
 WHERE companies.company_id = $company_id
 ";
-if (!db_loadHash( $sql, $row ) && $company_id > 0) {
+if (!db_loadHash( $sql, $company ) && $company_id > 0) {
 	$AppUI->setMsg( 'Company' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
