@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 /*
 	Based on Leo West's (west_leo@yahooREMOVEME.com):
 	lib.DB
@@ -82,9 +82,9 @@ function db_unix2dateTime( $time ) {
 	return $time > 0 ? date("Y-m-d H:i:s", $time) : null;
 }
 
-function db_dateTime2unix($time) {
+function db_dateTime2unix( $time ) {
 	// converts a DB date to a unix time stamp
-	return strtotime( substr( $time, 0, 10 ) );
+	return $time ? strtotime( substr( $time, 0, 10 ) ) : null;
 }
 
 
