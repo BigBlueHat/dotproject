@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* STYLE/DEFAULT $Id$ */
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
 	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -21,11 +21,11 @@
 </tr>
 <tr>
 	<td align="right" nowrap><?php echo $AppUI->_('Username');?>:</td>
-	<td align="left" nowrap><input type="text" size="25" name="username" class="text" /></td>
+	<td align="left" nowrap><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
 </tr>
 <tr>
 	<td align="right" nowrap><?php echo $AppUI->_('Password');?>:</td>
-	<td align="left" nowrap><input type="password" size="25" name="password" class="text" /></td>
+	<td align="left" nowrap><input type="password" size="25" maxlength="32" name="password" class="text" /></td>
 </tr>
 <tr>
 	<td align="left" nowrap><a href="http://www.dotproject.net/"><img src="./style/default/images/dp_icon.gif" width="120" height="20" border="0" alt="dotProject logo" /></a></td>

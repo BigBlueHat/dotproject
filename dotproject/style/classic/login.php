@@ -25,7 +25,7 @@
 		<?php echo $AppUI->_('Username');?>:
 	</td>
 	<td bgcolor="#eeeeee" align="left" class="menufontlight" nowrap>
-		<input type="text" size="25" name="username" class="text" />
+		<input type="text" size="25" maxlength="32" name="username" class="text" />
 	</td>
 </tr>
 <tr>
@@ -33,7 +33,7 @@
 		<?php echo $AppUI->_('Password');?>:
 	</td>
 	<td bgcolor="#eeeeee" align="left" class="menufontlight" nowrap>
-		<input type="password" size="25" name="password" class="text" />
+		<input type="password" size="25" maxlength="32" name="password" class="text" />
 	</td>
 </tr>
 <tr>
