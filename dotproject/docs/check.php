@@ -19,7 +19,6 @@ require "../includes/config.php";
 
 if ($dbok = function_exists( 'mysql_pconnect' )) {
 	echo "<tr><td>MySQL</td><td>Available</td><td>OK</td></tr>";
-	echo "<tr><td>MySQL Server Version</td><td>" . mysql_get_server_info() . "</td></tr>";
 
 	$host = $dPconfig['dbhost'];
 	$port = 3306;
@@ -28,6 +27,7 @@ if ($dbok = function_exists( 'mysql_pconnect' )) {
 	$dbname = $dPconfig['dbname'];
 
 	if (mysql_pconnect( "$host:$port", $user, $passwd )) {
+		echo "<tr><td>MySQL Server Version</td><td>" . mysql_get_server_info() . "</td></tr>";
 		echo "<tr><td>MySQL Database Connection</td><td>Connected</td><td>OK</td></tr>";
 
 		if ($dbname) {
