@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* TASKS $Id$ */
 GLOBAL $m, $a, $project_id, $f, $min_view, $query_string;
 /*
 	tasks.php
@@ -22,9 +22,8 @@ if (empty($query_string)) {
 
 // TODO: requires to know the neworder
 
-if(isset($movetask)) {
-	if($movetask == "u")
-	{
+if (isset( $movetask )) {
+	if($movetask == "u") {
 		/*
 		// move up tasks with low order
 		$sql = "update tasks set task_order = task_order - 1 where task_order < $order";
@@ -183,11 +182,17 @@ function showtask( &$a, $level=0 ) {
 	$done[] = $a['task_id'];
 
 	$start_date = $a["task_start_date"] ? new CDate( db_dateTime2unix( $a["task_start_date"] ) ) : null;
-	$end_date = $a["task_end_date"] ? new CDate( db_dateTime2unix( $a["task_end_date"] ) ) : null;
+	$ts = db_dateTime2unix( $a["task_end_date"] );
+	$end_date = $ts ? new CDate( $ts ) : null;
 
 	$s = '<tr>';
 // edit icon
-	$s .= '<td><a href="?m=tasks&a=addedit&task_id='.$a["task_id"].'"><img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12"></a></td>';
+	$s .= '<td>';
+	$canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
+	if ($canEdit) {
+		$s .= '<a href="?m=tasks&a=addedit&task_id='.$a["task_id"].'"><img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12"></a>';
+	}
+	$s .= '</td>';
 // percent complete
 	$s .= '<td align="right">'.intval( $a["task_precent_complete"] ).'%</td>';
 // priority
@@ -249,19 +254,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 		}
 	}
 }
-
-$crumbs = array();
-$crumbs["?m=tasks&a=todo"] = "my todo";
 ?>
-
-<?php if (!$min_view) { ?>
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" width="100%"></td>
-</tr>
-</table>
-<?php } ?>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
