@@ -1,4 +1,4 @@
-<?php
+<?php /* $Id$ */
 //view posts
 $forum_id = isset($_GET["forum_id"]) ? $_GET["forum_id"] : 0;
 $message_id = isset($_GET["message_id"]) ? $_GET["message_id"] : 0;
