@@ -291,7 +291,7 @@ function submitIt() {
 				$sql = 'SELECT DISTINCT p.project_id, p.project_name
 						FROM projects AS p , tasks AS t 
 						WHERE ( t.task_project = p.project_id )';
-				if ( $numProj[0] > 0 ) {
+				if ( count($allowedProjects) > 0 ) {
 					$sql .= ' AND (p.project_id IN (' .
 						implode (',', array_keys($allowedProjects)) . ')) ORDER BY p.project_name';
 				}
