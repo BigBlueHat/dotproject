@@ -5,13 +5,13 @@
 		&nbsp; <?php echo $AppUI->_('sort by');?>:&nbsp;
 	</td>
 	<th width="150">
-		<a href="?m=admin&a=index&orderby=user_username"><font color="white"><?php echo $AppUI->_('Login Name');?></font></a>
+		<a href="?m=admin&a=index&orderby=user_username" class="hdr"><?php echo $AppUI->_('Login Name');?></a>
 	</th>
 	<th>
-		<a href="?m=admin&a=index&orderby=user_last_name"><font color="white"><?php echo $AppUI->_('Real Name');?></font></a>
+		<a href="?m=admin&a=index&orderby=user_last_name" class="hdr"><?php echo $AppUI->_('Real Name');?></a>
 	</th>
 	<th>
-		<a href="?m=admin&a=index&orderby=user_company"><font color="white"><?php echo $AppUI->_('Company');?></font></a>
+		<a href="?m=admin&a=index&orderby=user_company" class="hdr"><?php echo $AppUI->_('Company');?></a>
 	</th>
 </tr>
 <?php 
