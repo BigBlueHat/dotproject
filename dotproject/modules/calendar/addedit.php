@@ -36,6 +36,11 @@ $titleBlock->show();
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
+// pull projects
+$sql = "SELECT project_id, project_name FROM projects ORDER BY project_name";
+$all_projects = '(' . $AppUI->_('All') . ')';
+$projects = arrayMerge( array( 0 => $all_projects ), db_loadHashList( $sql ) );
+
 if ($event_id) {
 	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;
 	$end_date = intval( $obj->event_end_date ) ? new CDate( $obj->event_end_date ) : $start_date;
@@ -139,6 +144,7 @@ function setCalendar( idate, fdate ) {
 		<input type="text" class="text" size="25" name="event_title" value="<?php echo @$obj->event_title;?>" maxlength="255">
 	</td>
 </tr>
+
 <tr>
 	<td align="right"><?php echo $AppUI->_('Type');?>:</td>
 	<td>
@@ -147,6 +153,16 @@ function setCalendar( idate, fdate ) {
 ?>
 	</td>
 </tr>
+	
+<tr>
+	<td align="right"><?php echo $AppUI->_('Project');?>:</td>
+	<td>
+<?php
+	echo arraySelect( $projects, 'event_project', 'size="1" class="text"', @$obj->event_project );
+?>
+	</td>
+</tr>	
+
 
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Private Entry' );?>:</td>

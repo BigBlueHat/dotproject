@@ -29,6 +29,7 @@ $tf = $AppUI->getPref('TIMEFORMAT');
 
 $start_date = $obj->event_start_date ? new CDate( $obj->event_start_date ) : null;
 $end_date = $obj->event_end_date ? new CDate( $obj->event_end_date ) : null;
+$event_project = db_LoadResult('SELECT project_name FROM projects where project_id=' . $obj->event_project);
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
@@ -76,6 +77,10 @@ function delIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
 			<td class="hilite" width="100%"><?php echo $types[$obj->event_type];?></td>
+		</tr>	
+		<tr>
+			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
+			<td class="hilite" width="100%"><a href='?m=projects&a=view&project_id=<? echo $obj->event_project ?>'><?php echo $event_project;?></a></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Starts');?>:</td>
