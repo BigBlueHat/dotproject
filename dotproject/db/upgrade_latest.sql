@@ -646,3 +646,7 @@ INSERT INTO `config` VALUES ('', 'parser_application/pdf', '/usr/bin/pdftotext',
 # moved new config variables by cyberhorse from config-php to a new table
 INSERT INTO `config` VALUES ('', 'files_ci_preserve_attr', 'true', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'files_show_versions_edit', 'false', '', 'checkbox');
+
+# 20050225
+# forum variable
+INSERT INTO `config` VALUES('', 'forum_descendent_order', 'true', '', 'checkbox');
