@@ -33,7 +33,7 @@ $sql = "
 SELECT a.*,
 	project_name, project_id, project_color_identifier
 FROM projects, tasks AS a, user_tasks
-LEFT JOIN tasks AS b ON a.task_id=b.task_parent
+LEFT JOIN tasks AS b ON a.task_id=b.task_parent and a.task_id != b.task_id
 WHERE user_tasks.task_id = a.task_id
 	AND b.task_id IS NULL
 	AND user_tasks.user_id = $AppUI->user_id
@@ -42,7 +42,7 @@ WHERE user_tasks.task_id = a.task_id
 GROUP BY a.task_id
 ORDER BY a.task_start_date, task_priority DESC
 ";
-##echo "<pre>$sql</pre>";##
+// echo "<pre>$sql</pre>";
 $tasks = db_loadList( $sql );
 
 $priorities = array(
@@ -97,7 +97,7 @@ foreach ($tasks as $a) {
 	$start->setFormat( $date_format );
 
 	$end = CDate::fromDateTime( $a["task_end_date"] );
-	if ( !$end->isValid() ) {
+	if ( $end && !$end->isValid() ) {
 		if (@$a["task_duration"]) {
 			$end = $start;
 			$end->addHours( $a["task_duration"] );
@@ -108,7 +108,7 @@ foreach ($tasks as $a) {
 	if ($days < 0 && $a["task_precent_complete"] == 0) {
 		$style = 'background-color:#FFeebb';
 	}
-	if ($end->isValid()) {
+	if ($end && $end->isValid()) {
 		$days = $now->daysTo( $end );
 		if ($days < 0) {
 			$style = 'background-color:#CC6666;color:#ffffff';
@@ -160,7 +160,7 @@ foreach ($tasks as $a) {
 	?>
 	</td>
 
-	<td nowrap style="<?php echo $style;?>"><?php echo $end->isValid() ? $end->toString() : '-';?></td>
+	<td nowrap style="<?php echo $style;?>"><?php echo ($end && $end->isValid()) ? $end->toString() : '-';?></td>
 
 	<td nowrap align="right" style="<?php echo $style;?>">
 		<?php echo $days; ?>
