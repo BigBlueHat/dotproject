@@ -67,7 +67,7 @@ $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
 task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
-assignees.user_username as assignee_username, count(assignees.user_id) as assignee_count, count(files.file_task) as file_count
+assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count, count(distinct files.file_task) as file_count
 ";
 
 $from = "tasks";
@@ -422,7 +422,6 @@ function sort_by_item_title( $title, $item_name, $item_type )
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
-
 </tr>
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
