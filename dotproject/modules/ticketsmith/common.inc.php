@@ -18,7 +18,6 @@ function fatal_error ($reason) {
 /* do a MySQL query */
 function do_query ($query) {
 	//echo $query;
-	global $user_cookie;
 	$result = @mysql_query($query);
 	if (!$result) {
 		fatal_error("A database query error has occurred!");
@@ -197,7 +196,7 @@ function smart_wrap ($text, $width) {
 function format_field ($value, $type, $ticket = NULL) {
 
     global $CONFIG;
-    global $user_cookie;
+    global $AppUI;
     switch ($type) {
         case "user":
             if ($value) {
@@ -287,7 +286,7 @@ function format_field ($value, $type, $ticket = NULL) {
         case "followup":
             $output = "\n<tt>\n";
             $output .= "<textarea name=\"followup\" wrap=\"hard\" cols=\"72\" rows=\"20\">\n";
-            $signature = query2result("SELECT signature FROM users WHERE user_id = '$user_cookie'");
+            $signature = query2result("SELECT signature FROM users WHERE user_id = '$AppUI->user_id'");
             if ($signature) {
                 $output .= "\n";
                 $output .= "-- \n";

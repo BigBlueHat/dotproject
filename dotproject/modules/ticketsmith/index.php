@@ -111,7 +111,7 @@ print("</tr>\n");
 $select_fields= join(", ", $fields["columns"]);
 $query = "SELECT $select_fields FROM tickets WHERE ";
 if ($type == "My") {
-    $query .= "type = 'Open' AND (assignment = '$user_cookie' OR assignment = '0') AND ";
+    $query .= "type = 'Open' AND (assignment = '$AppUI->user_id' OR assignment = '0') AND ";
 }
 elseif ($type != "All") {
     $query .= "type = '$type' AND ";
