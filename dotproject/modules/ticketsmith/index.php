@@ -76,8 +76,8 @@ if($type == "my"){
 else{
 	$title = "$type Tickets";
 }
-$column = @$column ? $column : "priority";
-$direction = @$direction ? $direction : "DESC";
+$column = @$column ? $column : $CONFIG["order_by"];
+$direction = @$direction ? $direction : $CONFIG["message_order"];
 $offset = @$offset ? $offset : 0;
 $limit = @$limit ? $limit : $CONFIG["view_rows"];
 
