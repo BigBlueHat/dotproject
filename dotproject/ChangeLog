@@ -1,3 +1,20 @@
+2003-11-22 13:14  (gregorerhardt)
+---------------------------------
+modules/ticketsmith/attach.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+- securing ticketsmith in order to fix bug845978
+
+2003-11-18 06:46  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-11-17 19:55  (gregorerhardt)
 ---------------------------------
 locales/en/ticketsmith.inc
@@ -481,23 +498,6 @@ modules/contacts/vcardexport.php
 2003-09-15 04:02  (kripper)
 ---------------------------------
 ChangeLog
-- Changelog update
-
-2003-09-14 15:48  (jcgonz)
----------------------------------
-modules/tasks/vw_log_update.php
-- Simplified timer implementation
-
-2003-09-13 04:02  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-09-12 18:58  (ajdonnison)
----------------------------------
-db/upgrade_100_to_101.sql
-- Synced up with main dotproject sql script.
-
 ...
 
 (This file has been wrapped)
