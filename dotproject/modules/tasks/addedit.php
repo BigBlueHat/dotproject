@@ -889,7 +889,7 @@ function changeRecordType(value){
 			</tr>
 			<tr>
 				<td colspan="2">
-				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Check if task\'s start date should be set automaticly' );?>
+				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Check if task\'s start date should be set automatically' );?>
 				</td>
 			</tr>
 			<tr>
