@@ -31,4 +31,10 @@ $ft["application/msword"] = "/usr/bin/strings";
 $ft["text/html"] = "/usr/bin/strings";
 $ft["application/pdf"] = "/usr/bin/pdftotext";
 
+/*
+	WARNING!
+	To harden the security, the secret.php file should be moved outside of the
+	web servers tree and be referenced by it's full path.
+*/
+require "secret.php";
 ?>

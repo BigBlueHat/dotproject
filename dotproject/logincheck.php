@@ -21,9 +21,12 @@ if (!$row = mysql_fetch_array( $prc, MYSQL_NUM )) {
 	die;
 }
 
+$row[] = md5( $row[1].$secret.$row[2] );
+
 setcookie( "user_cookie", $row[0] );
 setcookie( "thisuser", implode( '|', $row ) );
 ?>
 <script language="JavaScript">
-window.location = "./index.php"
+window.location = "./index.php";
 </script>
+

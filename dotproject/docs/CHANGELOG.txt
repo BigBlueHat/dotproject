@@ -9,6 +9,13 @@ dosql/ticket_aed.php
 
 includes/permissions.php
 - fixed login pybass security breach
+- added secret word to cookie
+
+includes/secret.php
+- new file for security
+
+./logincheck.php
+- added secret word hash to cookie
 
 11 September 2002 (AJE):
 -----------------------------

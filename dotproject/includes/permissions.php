@@ -68,7 +68,12 @@ if ($user_cookie < 1 || $thisuser < 1 || isset( $logout )) {
 	die;
 }
 
-list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company) = explode( '|', $thisuser );
+list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company, $hash) = explode( '|', $thisuser );
+
+if ($hash != md5( $thisuser_first_name.$secret.$thisuser_last_name )) {
+	include "./includes/login.php";
+	die;
+}
 
 if (empty( $m )) {
 	$m = "ticketsmith";
