@@ -1,5 +1,5 @@
 <?php
-$history_id = defValArr( $_GET, "history_id", 0);
+$history_id = defVal( @$_GET["history_id"], 0);
 
 /*
 // check permissions

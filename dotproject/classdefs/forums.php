@@ -44,7 +44,7 @@ class CForum {
 		}
 		if( $this->forum_id ) {
 			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
-			if(!$this->forum_name) {
+			if($this->forum_name) {
 				// when adding messages, this functon is called without first setting 'forum_name'
 				addHistory("Updated forum '" . $this->forum_name . "'");
 			}
