@@ -46,12 +46,11 @@ ORDER BY company_name
 
 $rows = db_loadList( $sql );
 ?>
-
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
 <table width="98%" border=0 cellpadding=0 cellspacing=1>
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
-	<td nowrap><span class="title">Clients and Companies</span></td>
+	<td nowrap><span class="title"><?php echo $AppUI->_('Clients & Companies');?></span></td>
 	<td align="right" width="100%">
 	<?php if (!$denyEdit) { ?>
 		<input type="button" class=button value="new company" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
@@ -63,17 +62,17 @@ $rows = db_loadList( $sql );
 <table width="98%" border=0 cellpadding=0 cellspacing=1>
 <tr>
 	<td valign="top">
-		<b>Welcome <?php echo $AppUI->user_first_name;?>.</b>  This page show you a list of current clients and their active projects.
+		<?php printf( $AppUI->_('companyWelcome'), $AppUI->user_first_name );?>
 	</td>
 </tr>
 </table>
 
 <table width="98%" border=0 cellpadding=2 cellspacing=1 class="tbl">
 <tr>
-	<td nowrap width="60" align="right">&nbsp; sort by:&nbsp; </td>
-	<th nowrap><a href="#"><font color="white">Company Name</font></a></th>
-	<th nowrap><a href="#"><font color="white">Active Projects</font></a></th>
-	<th nowrap><a href="#"><font color="white">Archived Projects</font></a></th>
+	<td nowrap width="60" align="right">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
+	<th nowrap><a href="#"><font color="white"><?php echo $AppUI->_('Company Name');?></font></a></th>
+	<th nowrap><a href="#"><font color="white"><?php echo $AppUI->_('Active Projects');?></font></a></th>
+	<th nowrap><a href="#"><font color="white"><?php echo $AppUI->_('Archived Projects');?></font></a></th>
 </tr>
 <?php foreach ($rows as $row){?>
 <tr>
