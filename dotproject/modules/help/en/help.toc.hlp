@@ -65,6 +65,7 @@
 			<br /><a href="?m=help&dialog=1&hid=tasks.todo">To Do</a>
 			<br />
 			<br /><strong>System Administration</strong>
+			<br /><a href="?m=help&dialog=1&hid=system.index">Index Page</a>
 			<br /><a href="?m=help&dialog=1&hid=system.addeditpref">User Preferences</a>
 			<br />
 		</p>
