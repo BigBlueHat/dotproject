@@ -82,7 +82,7 @@ foreach ($logs as $row) {
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
 	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . '</td>';
 	$s .= '<td width="100">'.$row["task_log_costcode"].'</td>';
-	$s .= '<td>';
+	$s .= '<td>'.'<a name="tasklog'.@$row['task_log_id'].'"></a>';
 
 // dylan_cuthbert: auto-transation system in-progress, leave these lines
 	$transbrk = "\n[translation]\n";
@@ -113,6 +113,8 @@ foreach ($logs as $row) {
 $s .= '<tr bgcolor="white" valign="top">';
 $s .= '<td colspan="6" align="right">' . $AppUI->_('Total Hours') . ' =</td>';
 $s .= '<td align="right">' . sprintf( "%.2f", $hrs ) . '</td>';
+$s .= '<td align="right" colspan="3"><form action="?m=tasks&a=view&tab=1&task_id=' . $task_id . '" method="post">';
+$s .= '<input type="submit" class="button" value="'.$AppUI->_('new log').'"></form></td>';
 $s .= '</tr>';
 echo $s;
 ?>

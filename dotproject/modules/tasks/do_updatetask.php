@@ -113,5 +113,5 @@ if ($task->email_log($obj, $email_assignees, $email_task_contacts, $email_projec
 }
  
 
-$AppUI->redirect();
+$AppUI->redirect("m=tasks&a=view&task_id={$obj->task_log_task}&tab=0#tasklog{$obj->task_log_id}");
 ?>
