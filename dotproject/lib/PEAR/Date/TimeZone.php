@@ -249,14 +249,7 @@ class Date_TimeZone
      */
     function inDaylightTime($date)
     {
-        $env_tz = "";
-        if(getenv("TZ")) {
-            $env_tz = getenv("TZ");
-        }
-        putenv("TZ=".$this->id);
-        $ltime = localtime($date->getTime(), true);
-        putenv("TZ=".$env_tz);
-        return $ltime['tm_isdst'];
+	return date('I');
     }
 
     /**
