@@ -139,7 +139,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
 			<td>
-<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', dPgetParam( $obj, "project_owner", $AppUI->user_id ) ) ?>
+<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $obj->project_owner? $obj->project_owner : $AppUI->user_id ) ?>
 			</td>
 		</tr>
 		<tr>
