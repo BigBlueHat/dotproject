@@ -1,3 +1,83 @@
+2004-08-25 20:19  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Fixed <?= ?> short tags
+
+2004-08-25 18:29  (robertoibarra)
+---------------------------------
+modules/tasks/tasks.class.php
+- Added start/finish date to notification email
+
+2004-08-25 16:13  (jcgonz)
+---------------------------------
+modules/tasks/vw_logs.php
+- Solved a bug created by another solved bug. Sorry!
+
+2004-08-25 16:10  (jcgonz)
+---------------------------------
+modules/tasks/vw_logs.php
+- Solved a problem when a task reference image has not
+- been yet set.
+
+2004-08-25 15:23  (jcgonz)
+---------------------------------
+locales/en/common.inc
+locales/en/tasks.inc
+- Added up some strings
+
+2004-08-25 15:16  (jcgonz)
+---------------------------------
+locales/en/admin.inc
+locales/en/common.inc
+locales/en/projects.inc
+locales/en/tasks.inc
+- Added up some strings
+
+2004-08-25 15:16  (jcgonz)
+---------------------------------
+modules/admin/vw_usr_log.php
+- Changed some strings for locale compatibility
+
+2004-08-25 14:42  (jcgonz)
+---------------------------------
+modules/calendar/day_view.php
+- Checked for utf-8 encoding in the date shown
+
+2004-08-25 14:07  (jcgonz)
+---------------------------------
+modules/departments/addedit.php
+- Now first name and last name from users are fetched from the contacts table
+
+2004-08-25 12:37  (gregorerhardt)
+---------------------------------
+modules/tasks/vw_logs.php
+- fixed wrong image alt parameter
+
+2004-08-25 12:31  (gregorerhardt)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_proposed.php
+- show warning in projects list if critical tasks or task log problems exist
+
+2004-08-25 12:14  (jcgonz)
+---------------------------------
+modules/tasks/vw_logs.php
+- Solved some issues with data format. Now all information
+- is arranged correctly.
+
+2004-08-25 09:59  (gregorerhardt)
+---------------------------------
+images/icons/dialog-warning5.png
+modules/tasks/tasks.php
+modules/tasks/vw_logs.php
+- show warning in tasks lists if problem logs exist for given task
+
+2004-08-25 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-25 03:21  (ajdonnison)
 ---------------------------------
 index.php
@@ -418,86 +498,6 @@ modules/forums/forums.class.php
 - Added history logging to files and forums modules
 
 2004-08-20 22:40  (cyberhorse)
----------------------------------
-classes/ui.class.php
-db/dotproject.sql
-db/upgrade_latest.php
-db/upgrade_latest.sql
-includes/main_functions.php
-modules/admin/addedituser.php
-modules/admin/admin.class.php
-modules/admin/do_user_aed.php
-modules/admin/index.php
-modules/admin/vw_active_usr.php
-modules/admin/vw_inactive_usr.php
-modules/admin/vw_usr.php
-modules/companies/addedit.php
-modules/companies/index.php
-modules/companies/view.php
-modules/companies/vw_active.php
-modules/companies/vw_archived.php
-modules/companies/vw_companies.php
-modules/companies/vw_users.php
-modules/contacts/addedit.php
-modules/contacts/contacts.class.php
-modules/contacts/index.php
-modules/contacts/select_contact_company.php
-modules/contacts/view.php
-modules/files/addedit.php
-modules/files/files.class.php
-modules/files/index_table.php
-modules/forums/addedit.php
-modules/forums/forums.class.php
-modules/forums/post_message.php
-modules/forums/view_messages.php
-modules/forums/view_topics.php
-modules/forums/viewer.php
-modules/projects/addedit.php
-modules/projects/view.php
-modules/projects/vw_logs.php
-modules/system/addeditpref.php
-modules/tasks/addedit.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/tasksperuser_sub.php
-modules/tasks/view.php
-- Moved user information to contact information.
-- Added a fax field for contacts
-- Created two new functions:
-- dPgetUsername($user_id or $user_username) which returns the formatted name of a user (may be slow)
-- dPgetUsers() returns all users in an arrayList
-- Fixed a few other minor things.
-- 
-- To install:
-- create a new db field users.user_contact
-- run upgrade_contacts.php (it is included in upgrade_latest.php)
-- once everything is working fine, remove all fields from users except
-- (user_id, user_contact, user_username, user_password, user_parent, user_type, user_company, user_department, user_signatu
-- re) (note user_company and user_department may not be needed as well).
-
-2004-08-20 18:32  (gregorerhardt)
----------------------------------
-style/default/header.php
-- Adding a Todo Link
-
-2004-08-20 17:39  (gregorerhardt)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- fixed bug with child tasks
-
-2004-08-20 16:58  (jcgonz)
----------------------------------
-modules/tasks/addedit.php
-- Removed restriction of resource over allocation to the
-- status bar of the browser and remove being unable to assign
-- users if they are overallocated.
-
-2004-08-20 15:53  (gregorerhardt)
----------------------------------
-modules/tasks/view.php
-- also display the tasks that depend on this task
-
-2004-08-20 15:22  (gregorerhardt)
 ...
 
 (This file has been wrapped)
