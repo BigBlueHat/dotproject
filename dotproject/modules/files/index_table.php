@@ -251,7 +251,7 @@ foreach ($files as $file_row) {
                 <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
                 <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $file['file_task'] . '">' . $file['task_name'] . '</a></td>
                 <td width="15%" nowrap="nowrap">' . $file["contact_first_name"].' '.$file["contact_last_name"] . '</td>
-                <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
+                <td width="5%" nowrap="nowrap" align="right">' . file_size(intval($file['file_size'])) . '</td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
                 <td width="15%" nowrap="nowrap" align="right">' . $hdate->format("$df $tf") . '</td>
         </tr>';
