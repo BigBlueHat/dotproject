@@ -1,0 +1,15 @@
+<!-- $Id$ -->
+<h2>Configuring dotProject</h2>
+<P>Now that the code and data is installed you need to customise a number of files.</P>
+<H3>Configuring the Main Application</H3>
+<P>Open up includes/config.php. Adjust the settings for <STRONG>dbhost</STRONG>, <STRONG>db</STRONG>, <STRONG>dbuser</STRONG> and <STRONG>dbpass</STRONG> to suite your existing configuration or the o&shy;ne you just created.&nbsp; Note that o&shy;nly a dbtype of "mysql" is supported at present.
+<P>
+<P>Change the value of the <STRONG>host_locale</STRONG> variable to the base language you want to work in (that is, the language that the login screen will be shown in).
+<P>Adjust the value of the <STRONG>root_dir</STRONG> to where dotproject is installed o&shy;n your file system.
+<P>Change the values of <STRONG>company_name</STRONG> (this is shown in the top-left of the screen when you are log in) <STRONG>page_title</STRONG> (this is the browser page title).
+<P>Change the <STRONG>base_url</STRONG> to the full browser address that would point to the dotproject directory.
+<P>Change the <STRONG>site_domain</STRONG> to your domain.</P>
+<H3>Configuring Help</H3>
+<P>Open up modules/help/framed/includes/config.php.
+<P>Change the values for <STRONG>dbhost</STRONG>, <STRONG>db</STRONG>, <STRONG>dbuser</STRONG> and <STRONG>dbpass</STRONG> to those you entered above.
+<P>Adjust the root_dir variable so that the path to the dotproject directory suits your local installation.&nbsp; ENSURE that the modules/help/framed remains intact as this will cause errors if it is not correct.</P>

@@ -1,0 +1,7 @@
+<!-- $Id$ -->
+<h2>Top Menu</h2>
+The "Top Menu" shows you the title of the particular dotproject implementation and&nbsp;who the current user is.
+<P>Click on the "My Info"&nbsp;link to see the information of the user you are logged in as.
+<P>Click on the "Logout" button to log out of your session.
+<P>Click on the "About" to bring up the dotproject help system.
+<P>The last thing on the Top Menu is a drop-down selection box on the right-hand side.&nbsp; This provides you a convient quick link to add a new item to dotproject.<BR><BR>Please note this is for the Classic dotproject style.&nbsp; Other styles provided by users may not necessarily include these elements.</P>

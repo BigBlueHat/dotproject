@@ -1,0 +1,9 @@
+<!-- $Id$ -->
+<h2>Installing dotProject</h2>
+Here's how to install it.&nbsp; Hopefully in the future this will just say run the install script. But for now you need to build it by hand and here's how:
+<OL>
+<LI>Download the most recent dotproject package from <A href="http://sourceforge.net/projects/dotproject" target=sourceforge.net/projects/dotproject>http://sourceforge.net/projects/dotproject</A>.<BR>&nbsp;</LI>
+<LI>Unpack the package into a directory in your web server's hierarchy.<BR>&nbsp;
+<LI>Create a new MySQL database (for example, called <STRONG>dotproject</STRONG>).<BR><BR>Initially you may connect using a system account, but we strongly recommend you create a new user (for example, called dotproject) to access just this database.<BR><BR>Grant the new user access to the new database, for example:<BR><BR>mysql&gt; CREATE DATABASE dotproject;<BR>mysql&gt; GRANT ALL PRIVILEGES o&shy;n dotproject.*&nbsp;<BR>&nbsp;&nbsp;&nbsp; TO <A href="mailto:dotproject@localhost">dotproject@localhost</A> IDENTIFIED BY<BR>&nbsp;&nbsp;&nbsp; "yourpassword" WITH GRANT OPTION;<BR>&nbsp;</LI>
+<LI>Apply the following scripts (in the /db directory) to your new database:<BR><BR>dotproject.sql<BR>dotproject_help.sql</LI></OL>
+<P><STRONG>dotproject</STRONG> is now installed but it's likely not going to work yet.&nbsp; You now need to edit a couple of configuration files to customise your local settings.</P>

@@ -13,7 +13,26 @@
 		<p>
 			<strong>Installation</strong>
 			<br />
-			<br /><a href="?m=help&dialog=1&hid=overview.about">About dotProject</a>
+			<br /><a href="?m=help&dialog=1&hid=install.upgrade">Upgrading</a>
+			<br /><a href="?m=help&dialog=1&hid=install.system">System Requirements</a>
+			<br /><a href="?m=help&dialog=1&hid=install.install">Installing dotProject</a>
+			<br /><a href="?m=help&dialog=1&hid=install.configure">Configuring dotProject</a>
+		</p>
+		<p>
+			<strong>General Concepts</strong>
+			<br />
+			<br /><a href="?m=help&dialog=1&hid=general.topmenu">Top Menu</a>
+			<br /><a href="?m=help&dialog=1&hid=general.leftnav">Left Navigation</a>
+			<br /><a href="?m=help&dialog=1&hid=general.help">Getting Help</a>
+			<br /><a href="?m=help&dialog=1&hid=general.saveplace">Saving Your Place</a>
+			<br /><a href="?m=help&dialog=1&hid=general.breadcrumbs">Breadcrumbs</a>
+			<br /><a href="?m=help&dialog=1&hid=general.tabbox">Tabbed Boxes</a>
+		</p>
+		<p>
+			<strong>Getting Started</strong>
+			<br />
+			<br /><a href="?m=help&dialog=1&hid=start.overview">Overview</a>
+			<br /><a href="?m=help&dialog=1&hid=start.addcomp">Adding a Company</a>
 		</p>
 	</td>
 	<td width="50%" valign="top">

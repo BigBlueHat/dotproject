@@ -1,0 +1,13 @@
+<!-- $Id$ -->
+<h2>System Requirements</h2>
+<p>To support the dotproject code and data requirements, you need the following components:</p>
+<UL>
+	<li>PHP 4.1 or higher</li>
+	<li>MySQL 3.? or higher</li>
+</ul>
+<p>Please refer to the requirements for these applications specifically for the platform you are installing them on.</p>
+<p>The following browsers will support dotproject but the interface may vary slightly due to the differences in the implemtation of javascript and style sheets:</p>
+<ul>
+	<li>Internet Explorer 5.5 or higher</li>
+	<li>Mozilla 1.2 or higher</li>
+</ul>

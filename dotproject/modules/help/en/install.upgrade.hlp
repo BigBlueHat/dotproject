@@ -1,0 +1,12 @@
+<!-- $Id$ -->
+<h2>Upgrading an Existing Version</h2>
+<p>Here is a general outline of how to upgrade your existing version of dotProject (probably version 0.2.1 or 0.2.2)<p>
+<ol>
+	<li>Download the latest release and follow the install instructions placing it in a new directory.</li>
+	<li>Create a copy of your existing dotProject database.</li>
+	<li>Edit the database parameters in the config.php file to point to this copied db.</li>
+	<li>Apply the upgrade script to the copied db.</li>
+	<li>Test out the new version of dotProject.  If all is well then promote this version to production and archive your old data (just in case).  If there is a problem then let up know.</li>
+</ol>
+<p><strong>Upgrading to Version 1.0</strong>
+<p>Version 1.0 incorporates many additions and modifications to existing database structure.&nbsp; You need to apply the script upgrade_022_to_100.sql to your MySQL database to upgrade from wither version 0.2.1 or 0.2.2.</p>
