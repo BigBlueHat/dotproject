@@ -9,15 +9,21 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
-
 // configure the date and times to insert into the db table
 if ($obj->event_start_date) {
-	$date = new CDate( $obj->event_start_date.$_POST['start_time'] );
-	$obj->event_start_date = $date->format( FMT_DATETIME_MYSQL );
+	$start_date = new CDate( $obj->event_start_date.$_POST['start_time'] );
+	$obj->event_start_date = $start_date->format( FMT_DATETIME_MYSQL );
 }
 if ($obj->event_end_date) {
-	$date = new CDate( $obj->event_end_date.$_POST['end_time'] );
-	$obj->event_end_date = $date->format( FMT_DATETIME_MYSQL );
+	$end_date = new CDate( $obj->event_end_date.$_POST['end_time'] );
+	$obj->event_end_date = $end_date->format( FMT_DATETIME_MYSQL );
+}
+
+if (!$del && $start_date->compare ($start_date, $end_date) >= 0)
+{
+	$AppUI->setMsg( "Start-Date >= End-Date, please correct", UI_MSG_ERROR );
+	$AppUI->redirect();
+	exit;
 }
 
 // prepare (and translate) the module name ready for the suffix
