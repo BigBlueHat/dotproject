@@ -119,6 +119,37 @@ function InstallSplitSql($sql, $last_update) {
  }
  return($ret);
 }
+
+function InstallLoadSQL($sqlfile, $last_update = null)
+{
+ global $dbErr, $dbMsg, $db;
+
+ $mqr = @get_magic_quotes_runtime();
+ @set_magic_quotes_runtime(0);
+
+ $pieces = array();
+ if ($sqlfile) {
+  $query = fread(fopen($sqlfile, "r"), filesize($sqlfile));
+  $pieces  = InstallSplitSql($query, $last_update);
+ }
+
+ @set_magic_quotes_runtime($mqr);
+ $errors = 0;
+ $piece_count = count($pieces);
+
+ for ($i=0; $i<$piece_count; $i++) {
+  $pieces[$i] = trim($pieces[$i]);
+  if(!empty($pieces[$i]) && $pieces[$i] != "#") {
+   if (!$result = $db->Execute($pieces[$i])) {
+    $errors++;
+    $dbErr = true;
+    $dbMsg .= $db->ErrorMsg().'<br>';
+   }
+  }
+ }
+ dPmsg("There were $errors errors in $piece_count SQL statements");
+}
+
 ######################################################################################################################
 
 $baseDir = dirname(dirname(__FILE__));
@@ -229,57 +260,31 @@ if ($do_db || $do_db_cfg) {
 
  $db_version = InstallGetVersion($mode, $db);
 
- $mqr = @get_magic_quotes_runtime();
- @set_magic_quotes_runtime(0);
- $sqlfile = null;
  if ($mode == 'upgrade') {
   dPmsg("Applying database updates");
   $last_version = $db_version['code_version'];
   // Convert the code version to a version string.
-  $from_version = str_replace('.', '', $last_version);
-  $from_version = str_replace('-', '', $from_version);
-  $to_version = $dp_version_major . $dp_version_minor . $dp_version_patch . $dp_version_prepatch;
-  if (file_exists('../db/upgrade_latest.sql')) {
-   // CVS upgrade
-   $sqlfile = "../db/upgrade_latest.sql";
-  } else {
-   // Check to see if the database has been upgraded first.
-   // We don't want to double up on this.
-   if ($from_version != $to_version) {
-    // Look for the from and to version
-    $upgrade_sql = "../db/upgrade_{$from_version}_to_{$to_version}.sql";
-    if (file_exists($upgrade_sql)) {
-     $sqlfile = $upgrade_sql;
-    } else {
-     die("There appears to be no upgrade path from $last_version to $current_version\nYou will need to manually upgrade");
+  if ($last_version != $current_version) {
+    // Check for from and to versions
+    $from_key = array_search($last_version, $versionPath);
+    $to_key = array_search($current_version, $versionPath);
+    for ($i = $from_key; $i < $to_key; $i++) {
+      $from_version = str_replace(array('.','-'), '', $versionPath[$i]);
+      $to_version = str_replace(array('.','-'), '', $versionPath[$i+1]);
+      InstallLoadSql("$baseDir/db/upgrade_{$from_version}_to_{$to_version}.sql");
     }
-   }
+    // After all the updates, find the new version information.
+    $new_version = InstallGetVersion($mode, $db);
+    $lastDBUpdate = $new_version['last_db_update'];
+  } else if (file_exists("$baseDir/db/upgrade_latest.sql")) {
+    // Need to get the installed version again, as it should have been
+    // updated by the from/to stuff.
+    InstallLoadSql("$baseDir/db/upgrade_latest.sql", $db_version['last_db_update']);
   }
  } else {
   dPmsg("Installing database");
-  $sqlfile = "../db/dotproject.sql";
+  InstallLoadSql("$baseDir/db/dotproject.sql");
  }
-
- $pieces = array();
- if ($sqlfile) {
-  $query = fread(fopen($sqlfile, "r"), filesize($sqlfile));
-  $pieces  = InstallSplitSql($query, $db_version['last_db_update']);
- }
- @set_magic_quotes_runtime($mqr);
- $errors = 0;
- $piece_count = count($pieces);
-
- for ($i=0; $i<$piece_count; $i++) {
-  $pieces[$i] = trim($pieces[$i]);
-  if(!empty($pieces[$i]) && $pieces[$i] != "#") {
-   if (!$result = $db->Execute($pieces[$i])) {
-    $errors++;
-    $dbErr = true;
-    $dbMsg .= $db->ErrorMsg().'<br>';
-   }
-  }
- }
- dPmsg("There were $errors errors in $piece_count SQL statements");
 
 				$dbError = $db->ErrorNo();
         if ($dbError <> 0 && $dbError <> 1007) {
@@ -296,11 +301,12 @@ if ($do_db || $do_db_cfg) {
  if ($mode == 'upgrade') {
   dPmsg("Applying data modifications");
   // Check for an upgrade script and run it if necessary.
-  if (file_exists("$baseDir/db/upgrade_latest.php")) {
-   include_once "$baseDir/db/upgrade_latest.php";
+  $to_version = str_replace(array('-', '.'), '', $current_version);
+  if (file_exists("$baseDir/db/upgrade_to_{$to_version}.php")) {
+   include_once "$baseDir/db/upgrade_to_{$to_version}.php";
    $code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
-  } else if (file_exists("$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php")) {
-   include_once "$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php";
+  } else if (file_exists("$baseDir/db/upgrade_latest.php")) {
+   include_once "$baseDir/db/upgrade_latest.php";
    $code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
   }
  } else {
