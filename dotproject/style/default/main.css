@@ -38,10 +38,10 @@ bordertable {
 }
 
 .button{
- border: 1px black solid;
- font-family: verdana,Sans-Serif;
- font-size: 8pt;
- width: 100px;
+	border: 1px black solid;
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt;
+	/*width: 100px; too small for some translations*/
 }
 
 .text{
@@ -51,6 +51,16 @@ bordertable {
  height: 20px;
 }
 
+.textarea{
+	font-family: verdana,helvetica,arial,sans-serif;
+	font-size: 9pt;
+}
+
+textarea.small {
+	border: 1px black solid;
+	font-family: verdana,Sans-Serif;
+	font-size: 8pt;
+}
 /*
 **********************************
 Begin IE TD buttonizing
@@ -155,11 +165,6 @@ TD.tabox {
 	border-left: solid #cccccc 2px;
 	border-right: solid #cccccc 2px;
 	border-bottom: solid #cccccc 2px;
-}
-
-.textarea{
-	font-family: verdana,helvetica,arial,sans-serif;
-	font-size: 9pt;
 }
 
 /* Message styles */
