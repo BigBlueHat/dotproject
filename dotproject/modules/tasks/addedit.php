@@ -102,7 +102,7 @@ if ( $task_id == 0 ) {
 
 // Pull tasks for the parent task list
 $sql="
-SELECT task_id, task_name
+SELECT task_id, task_name, task_end_date, task_start_date, task_milestone 
 FROM tasks
 WHERE task_project = $task_project
 	AND task_id <> $task_id
@@ -119,6 +119,28 @@ while ($row = db_fetch_row( $res )) {
 	}
 	*/
 	$projTasks[$row[0]] = $row[1];
+}
+
+//create array with start and end date of all tasks.
+$sql="
+SELECT task_id, task_name, task_end_date, task_start_date, task_milestone 
+FROM tasks
+WHERE task_project = $task_project
+ORDER BY task_project
+";
+$projTasksWithEndDates = array( $obj->task_id => $AppUI->_('None') );//arrays contains task end date info for setting new task start date as maximum end date of dependenced tasks
+$res = db_exec( $sql );
+while ($row = db_fetch_row( $res )) {
+	if ($row[4] == 0) {
+		$date = new CDate($row[2]);
+	} else {
+		$date = new CDate($row[3]);
+	}
+	$sdate = $date->format("%d/%m/%Y");
+	$shour = $date->format("%H");
+	$smin = $date->format("%M");
+		
+	$projTasksWithEndDates[$row[0]] = array($row[1], $sdate, $shour, $smin);
 }
 
 // Pull tasks dependencies
@@ -253,6 +275,64 @@ if(isset($dPconfig['restrict_task_time_editing']) && $dPconfig['restrict_task_ti
 var calendarField = '';
 var calWin = null;
 var selected_contacts_id = "<?= $obj->task_contacts; ?>";
+
+<?
+echo "var projTasksWithEndDates=new Array();\n";
+$keys = array_keys($projTasksWithEndDates);
+for ($i = 1; $i < sizeof($keys); $i++) {
+	//array[task_is] = end_date, end_hour, end_minutes
+	echo "projTasksWithEndDates[".$keys[$i]."]=new Array(\"".$projTasksWithEndDates[$keys[$i]][1]."\", \"".$projTasksWithEndDates[$keys[$i]][2]."\", \"".$projTasksWithEndDates[$keys[$i]][3]."\");\n";
+}
+?>
+
+/**
+setTasksStartDate sets new task's start date value which is maximum end date of all dependend tasks
+to do: date format should be taken from config
+*/
+function setTasksStartDate() {
+
+	var form = document.editFrm;
+	var td = form.task_dependencies.length -1;
+	var max_date = new Date("1970", "01", "01");
+	var max_id = -1;
+	
+	if (form.set_task_start_date.checked == true) {	
+		//build array of task dependencies
+		for (td; td > -1; td--) {
+			var i = form.task_dependencies.options[td].value;
+			var val = projTasksWithEndDates[i][0]; //format 05/03/2004
+			var sdate = new Date(val.substring(6,10),val.substring(3,5)-1, val.substring(0,2));
+			if (sdate > max_date) {
+				max_date = sdate;
+				max_id = i;
+			}
+		}
+		
+		//check end date of parent task 
+		if (form.task_parent.options.selectedIndex!=0) {
+			var i = form.task_parent.options[form.task_parent.options.selectedIndex].value;	
+			var val = projTasksWithEndDates[i][0]; //format 05/03/2004	
+			var sdate = new Date(val.substring(6,10),val.substring(3,5)-1, val.substring(0,2));
+			if (sdate > max_date) {
+				max_date = sdate;
+				max_id = i;		
+			}
+		}
+		
+		if (max_id != -1) {
+			var hour  = projTasksWithEndDates[max_id][1];
+			var minute = projTasksWithEndDates[max_id][2];
+		
+			form.start_date.value = projTasksWithEndDates[max_id][0];
+			form.start_hour.value = hour;
+			form.start_minute.value = minute;
+			
+			 var d = projTasksWithEndDates[max_id][0];
+			 //hardcoded date format Ymd
+			 form.task_start_date.value = d.substring(6,10) + "" + d.substring(3,5) + "" + d.substring(0,2);	 
+		}	
+	}
+}
 
 function popContacts() {
 	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&company_id=<?php echo $company_id; ?>&selected_contacts_id='+selected_contacts_id, 'contacts','left=50,top=50,height=250,width=400,resizable,scrollbars=yes');
@@ -400,6 +480,8 @@ function addTaskDependency() {
 			form.task_dependencies.options[t] = opt
 		}
 	}
+	
+	setTasksStartDate();
 }
 
 function removeTaskDependency() {
@@ -411,6 +493,8 @@ function removeTaskDependency() {
 			form.task_dependencies.options[td] = null;
 		}
 	}
+	
+	setTasksStartDate();
 }
 
 function setAMPM( field) {
@@ -699,7 +783,7 @@ function changeRecordType(value){
 		</tr>
 		<tr>
 			<td>
-				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text"', $task_parent ); ?>
+				<?php echo arraySelect( $projTasks, 'task_parent', 'class="text" onchange="javascript:setTasksStartDate()"', $task_parent ); ?>
 			</td>
 			<td><img src="./images/shim.gif" width=30 height=1></td>
 			<td><?php echo $dPconfig['currency_symbol'] ?><input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
@@ -801,6 +885,11 @@ function changeRecordType(value){
 				</td>
 				<td>
 					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:180px" size="10" style="font-size:9pt;" ', null ); ?>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2">
+				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Check if task\'s start date should be set automaticly' );?>
 				</td>
 			</tr>
 			<tr>
