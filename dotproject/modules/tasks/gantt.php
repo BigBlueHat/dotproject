@@ -409,6 +409,8 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	}
 	$graph->Add($bar);
 }
-
+$today = date("y-m-d");
+$vline = new GanttVLine($today, "Today");
+$graph->Add($vline);
 $graph->Stroke();
 ?>

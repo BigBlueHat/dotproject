@@ -238,5 +238,8 @@ foreach($tasks as $t) {
 }
 } // End of check for valid projects array.
 
+$today = date("y-m-d");
+$vline = new GanttVLine($today, "Today");
+$graph->Add($vline);
 $graph2->Stroke();
 ?>
