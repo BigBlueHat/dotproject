@@ -1,17 +1,22 @@
 <?php /* $Id$ */
-//Config File
-// INSTALLATION INSTRUCTIONS:
-// You must customize "config-dist.php" to your local system:
-// 1) Copy config-dist.php to "config.php" [if it doesn't exist]
-// 2) Edit "config.php" to include your database connection and other local settings.
+/*
+	* * * INSTALLATION INSTRUCTIONS * * *
 
-//db access information [DEFAULT example]
-$dPconfig['dbtype'] = "mysql";
+	YOU MUST customise "config-dist.php" to your local system:
+
+	1) COPY config-dist.php to "config.php" [if it doesn't exist]
+
+	2) EDIT "config.php" to include your database connection and other local settings.
+*/
+
+// DATABASE ACCESS INFORMATION [DEFAULT example]
+// Modify these values to suit your local settings
+
+$dPconfig['dbtype'] = "mysql";      // ONLY MySQL is supported at present
 $dPconfig['dbhost'] = "localhost";
 $dPconfig['dbname'] = "dotproject";
 $dPconfig['dbuser'] = "root";
 $dPconfig['dbpass'] = "";
-
 
 /*
  Localisation of the host for this dotproject,
@@ -25,7 +30,7 @@ $dPconfig['host_style'] = "default";
 // local settings [DEFAULT example WINDOWS]
 $dPconfig['root_dir'] = "C:/apache/htdocs/dotproject";
 $dPconfig['company_name'] = "My Company";
-$dPconfig['page_title'] = "DotProject";
+$dPconfig['page_title'] = "DotProject V1.0 pre-alpha";
 $dPconfig['base_url'] = "http://localhost/dotproject";
 $dPconfig['site_domain'] = "dotproject.net";
 

@@ -61,12 +61,8 @@ EXECUTION
 
     
 6) Configuration File Customization:
-    Edit dotproject/includes/config.php to use your dbhost, name, username,
-    password and web root directory.
-    
-    The following variables MUST be modified to match your setup: $dbhost, $db,
-    $dbname, $dbpass, $root_dir
-    
+    Follow the instructions at the top of the file:
+    "dotproject/includes/config-dist.php"
 
 6.5) TRANSITIONING for 023
     I'm having problems with "db_connection.php", or
