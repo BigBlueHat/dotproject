@@ -1,4 +1,19 @@
-2004-04-08 16:39  (gnome444)
+2004-04-09 16:21  (gregorerhardt)
+---------------------------------
+install/check.php
+install/commonlib.php
+install/db.php
+install/do_backup.php
+install/index.php
+install/pref.php
+- Implemented backup and dropDatabase functionality to the installer
+
+2004-04-09 09:50  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2004-04-08 22:39  (gnome444)
 ---------------------------------
 modules/companies/index.php
 modules/companies/vw_companies.php
