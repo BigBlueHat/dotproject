@@ -24,12 +24,7 @@ $project_id		= dPgetParam($_POST,"project_id","all");
 require_once( $AppUI->getModuleClass( 'projects' ) );
 $proj = new CProject();
 // filtering by companies
-$extra = ($company_id != 'all') ? array('where' => " AND project_company = $company_id ") : null;
-$g = $proj->getAllowedSQL( $AppUI->user_id );
-
-var_export ($g);
 $projects = $proj->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null );
-var_export($projects);
 $projFilter = arrayMerge(  array( 'all' => $AppUI->_('All Projects') ), $projects );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
