@@ -111,7 +111,8 @@ function setTask( key, val ) {
 <table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 
 <form name="uploadFrm" action="?m=files" enctype="multipart/form-data" method="post">
-	<input type="hidden" name="max_file_size" value="109605000" />
+	<?php /* <input type="hidden" name="max_file_size" value="109605000" />
+		commented out (bug 863402), please delete if no errors and other developers agree */ ?>
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="<?php echo $file_id;?>" />
