@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Country",
 "- New Item -",
 "About",
 "Active Projects",
@@ -17,6 +16,7 @@
 "Company",
 "Contact",
 "Contacts",
+"Country",
 "Department",
 "Departments",
 "Description",
@@ -48,6 +48,7 @@
 "Projects",
 "Show",
 "State",
+"Summary",
 "System Admin",
 "Task",
 "Tasks",
@@ -65,6 +66,7 @@
 "cancel",
 "clear",
 "delete",
+"either",
 "flat",
 "forgotPassword"=>"Help! I've forgotten my username and password!",
 "login",
