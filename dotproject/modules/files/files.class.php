@@ -185,7 +185,10 @@ class CFile extends CDpObject {
 		while (list( $key, $val ) = each( $wordarr )) {
 			$q  = new DBQuery;
 			$q->addTable('files_index');
-			$q->addInsert("','" . $this->file_id . "', '" . $wordarr[$key]['word'] . "', '" . $wordarr[$key]['wordplace'] . "'");
+
+			$q->addInsert("file_id", $this->file_id);
+			$q->addInsert("word", $wordarr[$key]['word']);
+			$q->addInsert("word_placement", $wordarr[$key]['wordplace']);
 			$q->exec();
 		}
 
