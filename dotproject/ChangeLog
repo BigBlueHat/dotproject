@@ -1,87 +1,42 @@
-2004-04-11 14:47  (gregorerhardt)
+2004-04-11 08:56  (gregorerhardt)
 ---------------------------------
-install/index.php
-- updating todo list for installer
+ChangeLog
+- ChangeLog update
 
-2004-04-11 13:19  (gregorerhardt)
+2004-04-11 07:19  (gregorerhardt)
 ---------------------------------
 modules/forums/addedit.php
 - bug #892914: added isset() to an undefined variable
 
-2004-04-11 13:17  (gregorerhardt)
+2004-04-11 07:17  (gregorerhardt)
 ---------------------------------
 modules/contacts/index.php
 - bug #892912: commented out superfluous line with undefined variable
 
-2004-04-11 12:50  (gregorerhardt)
+2004-04-11 06:50  (gregorerhardt)
 ---------------------------------
 docs/install.html
 - added requirement php-xml for calendar
 
-2004-04-11 12:42  (gregorerhardt)
+2004-04-11 06:42  (gregorerhardt)
 ---------------------------------
 docs/install.html
 - added requirement php-xml for gantt charts
 
-2004-04-11 12:37  (gregorerhardt)
+2004-04-11 06:37  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 - added a comment out note to a line known for breaking gantt charts frequently
 
-2004-04-11 11:57  (gregorerhardt)
----------------------------------
-install/check.php
-install/db.php
-install/index.php
-- some minor additions and corrections
-
-2004-04-10 09:53  (kripper)
+2004-04-10 03:53  (kripper)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2004-04-09 20:05  (gregorerhardt)
----------------------------------
-install/check.php
-install/db.php
-install/index.php
-- some minor additions and corrections
-
-2004-04-09 18:48  (gnome444)
+2004-04-09 12:48  (gnome444)
 ---------------------------------
 modules/companies/index.php
 - Do not allow a user to add a company that doesn't have edit perms#908369
-
-2004-04-09 18:39  (gnome444)
----------------------------------
-includes/permissions.php
-- Alert! Security fix in response to #908369 which applies to projects as well and probably others. Do not allow edit perms to modules unless specifically allowed.
-
-2004-04-09 18:11  (gregorerhardt)
----------------------------------
-install/check.php
-install/commonlib.php
-install/config.php
-install/db.php
-install/do_backup.php
-install/index.php
-install/pref.php
-- adding cvs IdTags
-
-2004-04-09 16:25  (gregorerhardt)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-04-09 16:21  (gregorerhardt)
----------------------------------
-install/check.php
-install/commonlib.php
-install/db.php
-install/do_backup.php
-install/index.php
-install/pref.php
-- Implemented backup and dropDatabase functionality to the installer
 
 2004-04-09 12:39  (gnome444)
 ---------------------------------
@@ -222,7 +177,7 @@ modules/tasks/addedit.php
 2004-03-24 12:00  (kiryl)
 ---------------------------------
 modules/tasks/addedit.php
-- [Improvement] new feature added: system is able to automatically set taskÂ’s start date after defining parent task or task dependencies
+- [Improvement] new feature added: system is able to automatically set task’s start date after defining parent task or task dependencies
 
 2004-03-23 07:32  (dylan_cuthbert)
 ---------------------------------
@@ -543,41 +498,6 @@ classes/ui.class.php
 - 897211: renamed bad constructor name in CTabBox_core
 
 2004-02-24 04:12  (gregorerhardt)
----------------------------------
-modules/ticketsmith/common.inc.php
-- 899944: patch for bad word wrap in ticketsmith
-
-2004-02-24 04:04  (gregorerhardt)
----------------------------------
-locales/en/calendar.inc
-- string added
-
-2004-02-24 03:52  (gregorerhardt)
----------------------------------
-modules/companies/index.php
-- 901371: patch from sreindl fixing plain view for companies
-
-2004-02-24 03:44  (gregorerhardt)
----------------------------------
-modules/calendar/vw_day_events.php
-- 902974: patch from sreindl fixing concurrent events problem in day view
-
-2004-02-24 03:35  (gregorerhardt)
----------------------------------
-modules/calendar/do_event_aed.php
-- 903000: patch from sreindl fixing possible events: Start>=End
-
-2004-02-24 03:29  (gregorerhardt)
----------------------------------
-modules/calendar/day_view.php
-- 903011: patch from sreindl fixing start date of week view
-
-2004-02-24 03:24  (gregorerhardt)
----------------------------------
-modules/calendar/calendar.class.php
-- 890967: patch from sreindl fixing day view for recurrent events
-
-2004-02-22 19:56  (ajdonnison)
 ...
 
 (This file has been wrapped)
