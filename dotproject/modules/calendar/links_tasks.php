@@ -41,13 +41,17 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		if (($start->after( $startPeriod ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
 			$temp = $link;
 			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
+			$temp['text'] = dPshowImage(dPfindImage('block-start-16.png')).$temp['text'];
 			$links[$start->format( FMT_TIMESTAMP_DATE )][] = $temp;
 		}
 		if ($end && $end->after( $startPeriod ) && $end->before( $endPeriod )
 				&& $start->before( $end )) {
+
 			$temp = $link;
 			$temp['alt'] = "FINISH\n".$link['alt'];
+			$temp['text'] = $temp['text'].dPshowImage(dPfindImage('block-end-16.png'));
 			$links[$end->format( FMT_TIMESTAMP_DATE )][] = $temp;
+
 		}
 	// convert duration to days
 		if ($durnType < 24.0 ) {
