@@ -4,6 +4,9 @@ require "./includes/config.php";
 require "./classes/ui.class.php";
 
 session_name( 'dotproject' );
+if (get_cfg_var( 'session.auto_start' ) > 0) {
+	session_write_close();
+}
 session_start();
 $AppUI =& $_SESSION['AppUI'];
 
