@@ -40,11 +40,13 @@ $assigned = array();
 if ($is_clash) {
 	$assignee_list = $_SESSION['add_event_attendees'];
 	if (isset($assignee_list) && $assignee_list) {
-	  $sql = "SELECT user_id, CONCAT_WS(' ' , contact_first_name, contact_last_name)
-	           FROM users, contacts
-	           WHERE user_id in ($assignee_list)
-	                 user_contact = contact_id";
-	  $assigned = db_loadHashList($sql);
+		$q  = new DBQuery;
+		$q->addTable('users', 'u');
+		$q->addTable('contacts', 'con');
+		$q->addQuery('user_id, CONCAT_WS(" " , contact_first_name, contact_last_name)');
+		$q->addWhere("user_id in ($assignee_list)");
+		$q->addWhere("user_contact = contact_id");
+		$assigned = $q->loadHashList();
 	} else {
 	}
 } else if ( $event_id == 0 ) {
@@ -77,14 +79,20 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 // pull projects
 require_once( $AppUI->getModuleClass( 'projects' ) );
 $q =& new DBQuery;
-$sql = "SELECT project_id, project_name FROM projects ";
+$q->addTable('projects', 'p');
+$q->addQuery('p.project_id, p.project_name');
+
 $prj =& new CProject;
 $allowedProjects = $prj->getAllowedSQL($AppUI->user_id);
-if (count($allowedProjects))
-	$sql .= " LEFT JOIN companies cp on cp.company_id = project_company WHERE " . implode(' AND ', $allowedProjects);
-$sql .= " ORDER by project_name";
+
+if (count($allowedProjects)) { 
+	$q->addJoin('companies', 'com', 'com.company_id = p.project_company');
+	$q->addWhere(implode(' AND ', $allowedProjects));
+}
+$q->addOrder('project_name');
+
 $all_projects = '(' . $AppUI->_('All', UI_OUTPUT_RAW) . ')';
-$projects = arrayMerge( array( 0 => $all_projects ), db_loadHashList( $sql ) );
+$projects = arrayMerge( array( 0 => $all_projects ), $q->loadHashList() );
 
 if ($event_id || $is_clash) {
 	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;

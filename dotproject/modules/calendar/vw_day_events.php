@@ -68,14 +68,13 @@ $html .= $AppUI->_("Event Filter") . ":" . arraySelect($event_filter_list, 'even
 	$event_filter );
 if ($other_users) {
 	$html .= $AppUI->_("Show Events for") . ":" . "<select name='show_user_events' onchange='document.pickFilter.submit()' class='text'>";
-	$usersql = "
-	  SELECT user_id, user_username, contact_first_name, contact_last_name
-                FROM users, contacts
-	            WHERE user_contact = contact_id
-	           
-                ";
-
-	if (($rows = db_loadList( $usersql, NULL )))
+	$q  = new DBQuery;
+	$q->addTable('users', 'u');
+	$q->addTable('contacts', 'con');
+	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
+	$q->addWhere("user_contact = contact_id");
+			
+	if (($rows = $q->loadList()))
 	{
 		foreach ($rows as $row)
 		{

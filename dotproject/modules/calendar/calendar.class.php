@@ -506,63 +506,44 @@ class CEvent extends CDpObject {
 		if (! isset($user_id))
 		  $user_id = $AppUI->user_id;
 
-		// Filter events not allowed
-		$where = '';
-		// $join = winnow('projects', 'event_project', $where);
-		$join = '';
 		$project =& new CProject;
 		$allowedProjects = $project->getAllowedSQL($user_id, 'event_project');
+		
+		$q  = new DBQuery;
+		$q->addTable('events', 'e');
+		$q->addQuery('e.*');
+		
 		if (count ($allowedProjects)) {
-		  $where = 'AND ( ( ' . implode(' AND ', $allowedProjects) . ") OR event_project = 0 ) ";
-		  $join  = "LEFT join projects ON project_id = event_project";
+		  $q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ") OR event_project = 0 )");
+		  $q->addJoin('projects', 'p', 'p.project_id = e.event_project');
 		}
 
 		switch ($filter) {
 			case 'my':
-				$join .= "\nLEFT join user_events ev ON ev.event_id = events.event_id AND ev.user_id = $user_id";
-				$where .= " AND ( ( event_private = 0 AND ev.user_id = $user_id )
-				OR event_owner=$user_id )";
+				$q->addJoin('user_events', 'ue', 'ue.event_id = e.event_id AND ue.user_id ='.$user_id);
+				$q->addWhere("( ( event_private = 0 AND ue.user_id = $user_id )
+						OR event_owner=$user_id )");
 				break;
 			case 'own':
-				$where .= " AND ( event_owner = $user_id )";
+				$q->addWhere("( event_owner = $user_id )");
 				break;
 			case 'all':
-				$where .= " AND ( event_private=0
-				OR (event_private=1 AND event_owner=$user_id)
-				)";
+				$q->addWhere("( event_private=0 OR (event_private=1 AND event_owner=$user_id) )");
 				break;
 		}
+		$q->addWhere("( event_start_date <= '$db_end' AND event_end_date >= '$db_start'
+				OR event_start_date BETWEEN '$db_start' AND '$db_end')");
+		// duplicate query object for recursive events;
+		$r = $q;
+		
+		// assemble query for non-recursive events
+		$q->addWhere('( event_recurs <= 0 )');
+		$eventList = $q->loadList();
 
 
-	// assemble query for non-recursive events
-		$sql = "
-		SELECT events.*
-		FROM events
-		$join
-		WHERE (
-				event_start_date <= '$db_end' AND event_end_date >= '$db_start'
-				OR event_start_date BETWEEN '$db_start' AND '$db_end'
-			)
-			$where
-			AND ( event_recurs <= 0 )
-		";
-	// echo "<pre>$sql</pre>";
-	// execute
-	$eventList = db_loadList( $sql );
-
-
-	// assemble query for recursive events
-		$sql = "
-		SELECT *
-		FROM events
-		$join
-		WHERE event_recurs > 0
-			$where
-		";
-	// echo "<pre>$sql</pre>";
-
-	// execute
-		$eventListRec = db_loadList( $sql );
+		// assemble query for recursive events
+		$r->addWhere('( event_recurs > 0 )');
+		$eventListRec = $r->loadList();
 
 	//Calculate the Length of Period (Daily, Weekly, Monthly View)
 		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
@@ -612,13 +593,15 @@ class CEvent extends CDpObject {
 
 
 	function &getAssigned() {
-		$sql = "SELECT u.user_id, CONCAT_WS(' ',contact_first_name, contact_last_name)
-			   FROM users u, user_events e, contacts
-			 WHERE e.event_id = $this->event_id
-		          AND user_contact = contact_id
-			      AND e.user_id = u.user_id
-			 ";
-		$assigned = db_loadHashList( $sql );
+		$q  = new DBQuery;
+		$q->addTable('users', 'u');
+		$q->addTable('user_events', 'ue');
+		$q->addTable('contacts', 'con');
+		$q->addQuery('u.user_id, CONCAT_WS(" ",contact_first_name, contact_last_name)');
+		$q->addWhere("ue.event_id = $this->event_id");
+		$q->addWhere('user_contact = contact_id');
+		$q->addWhere('ue.user_id = u.user_id');
+		$assigned = $q->loadHashList();
 		return $assigned;
 	}
 
@@ -626,24 +609,25 @@ class CEvent extends CDpObject {
 		// First remove the assigned from the user_events table
 		global $AppUI;
 		$sql = "DELETE from user_events WHERE event_id = $this->event_id";
-		db_exec($sql);
+		$q  = new DBQuery;
+		$q->addWhere("event_id = $this->event_id");
+		$q->setDelete('user_events');		
+		$q->exec();
+		
 		if (is_array($assigned) && count($assigned)) {
-			$sql = "INSERT into user_events ( event_id, user_id ) VALUES ";
-			$first = false;
+			$q  = new DBQuery;
+			$q->addTable('user_events', 'ue');
+			
 			foreach ($assigned as $uid) {
 			    if ($uid) {
-				if ($first)
-				  $sql .= ",";
-				else
-				  $first = true;
-				$sql .= "( $this->event_id, $uid )";
+				$q->addInsert('event_id', $this->event_id);
+				$q->addInsert('user_id', $uid);
 			    }
 			}
-			if ($first) {
-			  db_exec($sql);
+			
+			$q->exec();
 			  if ($msg = db_error())
 				$AppUI->setMsg($msg, UI_MSG_ERROR);
-			}
 		}
 	}
 
@@ -663,13 +647,15 @@ class CEvent extends CDpObject {
 		}
 	  if (! count($assignee_list))
 	  	return;
-
-	  $sql = "select user_id, contact_first_name, contact_last_name, contact_email
-	           from users, contacts
-	           where user_id in ( " . implode(',', $assignee_list) . ")
-	                 and user_contact = contact_id";
-
-	  $users = db_loadHashList($sql, 'user_id');
+		
+		$q  = new DBQuery;
+		$q->addTable('users','u');
+		$q->addTable('contacts','con');
+		$q->addQuery('user_id, contact_first_name,contact_last_name, contact_email');
+		$q->addWhere('u.user_contact = con.contact_id');
+		$q->addWhere("user_id in ( " . implode(',', $assignee_list) . ")");
+		$users = $q->loadHashList('user_id');
+	
 	  $date_format = $AppUI->getPref('SHDATEFORMAT');
 	  $time_format = $AppUI->getPref('TIMEFORMAT');
 	  $fmt = "$date_format $time_format";
@@ -703,7 +689,12 @@ class CEvent extends CDpObject {
 	  // Find the project name.
 	  if ($this->event_project) {
 		$prj = array();
-		db_loadHash("select project_name from projects where project_id = " . $this->event_project, $prj);
+		$q  = new DBQuery;
+		$q->addTable('projects','p');
+		$q->addQuery('project_name');
+		$q->addWhere('p.project_id ='.$this->event_project);
+		$sql = $q->prepare();
+		$prj = db_loadHash($sql);
 	  	$body .= $AppUI->_('Project') . ":\t". $prj['project_name'];
 	  }
 
@@ -749,16 +740,15 @@ class CEvent extends CDpObject {
 	  $end_date =& new CDate($this->event_end_date);
 
 	  // Now build a query to find matching events.
-	  $sql = "SELECT e.event_owner, u.user_id, e.event_cwd, 
-	  e.event_id, e.event_start_date, e.event_end_date from
-	  events e
-	  LEFT JOIN user_events u on u.event_id = e.event_id
-	  WHERE event_start_date <= '" . $end_date->format(FMT_DATETIME_MYSQL)
-	  . "' AND event_end_date >= '" . $start_date->format(FMT_DATETIME_MYSQL)
-	  . "' AND ( e.event_owner in (" . implode(",", $users) . ")
-	  OR u.user_id in (" . implode(",", $users) .") )";
+	$q  = new DBQuery;
+	$q->addTable('events', 'e');
+	$q->addQuery('e.event_owner, ue.user_id, e.event_cwd, e.event_id, e.event_start_date, e.event_end_date');
+	$q->addJoin('user_events', 'ue', 'ue.event_id = e.event_id');
+	$q->addWhere("event_start_date <= '" . $end_date->format(FMT_DATETIME_MYSQL) . "'");
+	$q->addWhere("event_end_date >= '" . $start_date->format(FMT_DATETIME_MYSQL) . "'");
+	$q->addWhere("( e.event_owner in (" . implode(',', $users) . ") OR ue.user_id in (" . implode(',', $users) .") )");
 
-	  $result = db_exec($sql);
+	$result = $q->exec();
 	  if (! $result)
 	    return false;
 
@@ -769,12 +759,15 @@ class CEvent extends CDpObject {
 	      array_push($clashes, $row['user_id']);
 	  }
 	  $clash = array_unique($clashes);
-	  if (count($clash)) {
-	    $sql = "SELECT user_id, CONCAT_WS(' ', contact_first_name, contact_last_name)
-	               FROM users, contacts
-	               WHERE user_id in (" . implode(",", $clash) . ")
-	               AND user_contact = contact_Id";
-	    return db_loadHashList($sql);
+	  if (count($clash)) {  
+	    	$q  = new DBQuery;
+		$q->addTable('users','u');
+		$q->addTable('contacts','con');
+		$q->addQuery('user_id');
+		$q->addQuery('CONCAT_WS(" ",contact_first_name,contact_last_name)');
+		$q->addWhere("user_id in (" . implode(",", $clash) . ")");
+		$q->addWhere('user_contact = contact_id');
+		return $q->loadHashList();
 	  } else {
 	    return false;
 	  }
@@ -788,19 +781,18 @@ class CEvent extends CDpObject {
 	  if (! count($users))
 	    return false;
 
-	  // Now build a query to find matching events.
-	  $sql = "SELECT e.event_owner, u.user_id, e.event_cwd,
-	  e.event_id, e.event_start_date, e.event_end_date
-	  from events e
-	  LEFT JOIN user_events u on u.event_id = e.event_id
-	  WHERE event_start_date >= '$start_date'
-	  AND event_end_date <= '$end_date'
-	  AND EXTRACT(HOUR_MINUTE FROM e.event_end_date) >= '$start_time'
-	  AND EXTRACT(HOUR_MINUTE FROM e.event_start_date) <= '$end_time'
-	  AND ( e.event_owner in (" . implode(",", $users) . ")
-	  OR u.user_id in (" . implode(",", $users) .") )";
-
-	  $result = db_exec($sql);
+	  // Now build a query to find matching events. 
+	$q  = new DBQuery;
+	$q->addTable('events', 'e');
+	$q->addQuery('e.event_owner, ue.user_id, e.event_cwd, e.event_id, e.event_start_date, e.event_end_date');
+	$q->addJoin('user_events', 'ue', 'ue.event_id = e.event_id');
+	$q->addWhere("event_start_date >= '$start_date'
+	  		AND event_end_date <= '$end_date'
+	  		AND EXTRACT(HOUR_MINUTE FROM e.event_end_date) >= '$start_time'
+	  		AND EXTRACT(HOUR_MINUTE FROM e.event_start_date) <= '$end_time'
+	  		AND ( e.event_owner in (" . implode(",", $users) . ")
+	 		OR ue.user_id in (" . implode(",", $users) .") )");
+	$result = $q->exec();
 	  if (! $result)
 	    return false;
 
