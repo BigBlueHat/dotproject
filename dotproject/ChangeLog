@@ -1,0 +1,1773 @@
+2002-12-04 01:58  (kripper)
+---------------------------------
+docs/CHANGELOG.txt
+docs/OLD_CHANGELOG.txt
+- Renamed CHANGELOG.txt to OLD_CHANGELOG.txt
+
+2002-12-04 01:51  (kripper)
+---------------------------------
+modules/tasks/gantt.php
+- Added headers from index.php for session support
+
+2002-12-03 19:53  (eddieajau)
+---------------------------------
+modules/projects/index.php
+modules/projects/view.php
+- Uses new CTabBox class
+
+2002-12-03 19:50  (eddieajau)
+---------------------------------
+logincheck.php
+index.php
+- Introducing sessions.
+
+2002-12-03 18:53  (kripper)
+---------------------------------
+docs/CHANGELOG.txt
+- Updated Changelog
+
+2002-12-03 17:03  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+db/dotproject.sql
+db/dotproject_022_to_023.sql
+db/dotproject_kripper.sql
+dosql/addeditTask.php
+- Renamed fields in table 'task_dependencies'
+- Removed temp file db/dotproject_kripper.sql
+
+2002-12-02 20:09  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest changes
+
+2002-12-02 19:54  (eddieajau)
+---------------------------------
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_depts.php
+modules/companies/vw_users.php
+- New Tab Box class and db functions
+
+2002-12-02 19:53  (eddieajau)
+---------------------------------
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_usr.php
+- New Tab Box class
+
+2002-12-02 19:52  (eddieajau)
+---------------------------------
+images/obj/email.gif
+- Initial upload
+
+2002-12-02 19:48  (eddieajau)
+---------------------------------
+includes/header.php
+includes/main_functions.php
+includes/permissions.php
+- Changes for sessions based UI
+
+2002-12-02 19:43  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Modifications.  See CHANGELOG
+
+2002-12-02 19:40  (eddieajau)
+---------------------------------
+style/main.css
+- Added style for standard error
+
+2002-12-02 19:39  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Initial upload
+
+2002-11-29 19:54  (kripper)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/viewgantt.php
+- Added gantt chart viewer
+
+2002-11-29 10:15  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+dosql/addeditTask.php
+- Added task dependencies
+- Added dynamic tasks check box
+
+2002-11-29 10:11  (kripper)
+---------------------------------
+db/dotproject.sql
+db/dotproject_022_to_023.sql
+db/dotproject_kripper.sql
+- Added task_dependencies table
+- Added task_dynamic field to tasks table
+
+2002-11-29 08:58  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- Added Task dependencies select box
+
+2002-11-28 06:41  (kripper)
+---------------------------------
+modules/tasks/index.php
+- Display task's durations and finish dates as n/a if not specified
+- Obtain unspecified task's finish dates by adding start_date + duration
+
+2002-11-28 05:57  (kripper)
+---------------------------------
+modules/tasks/gantt.php
+- Added file gantt.php
+
+2002-11-28 05:55  (kripper)
+---------------------------------
+modules/tasks/index.php
+- Fixed project color styling under mozilla browsers
+- Added gantt charts support
+
+2002-11-25 03:01  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest changes
+
+2002-11-25 03:00  (eddieajau)
+---------------------------------
+includes/db_connect.php
+dosql/aed_perms.php
+- Added Leo's db handling functions
+
+2002-11-25 02:58  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Added select all filter
+
+2002-11-25 02:58  (eddieajau)
+---------------------------------
+functions/tasks_func.php
+- Changed filter array to named hash
+
+2002-11-25 02:56  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Bug fix, see CHANGELOG
+
+2002-11-25 02:55  (eddieajau)
+---------------------------------
+modules/admin/index.php
+- Reformatted A-Z presentation
+
+2002-11-25 02:55  (eddieajau)
+---------------------------------
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr_perms.php
+- Minor fixes, see CHANGELOG
+
+2002-11-25 02:55  (eddieajau)
+---------------------------------
+modules/companies/vw_active.php
+- Change ot Unix file format
+
+2002-11-22 03:39  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- Optional tasks duration
+
+2002-11-22 03:32  (kripper)
+---------------------------------
+includes/config.php
+- Added REQUIRE_TASKS_DURATION constant
+
+2002-11-22 03:22  (kripper)
+---------------------------------
+dosql/addeditTask.php
+- Stay in selected project after adding a new task
+
+2002-11-22 02:34  (kripper)
+---------------------------------
+modules/companies/vw_active.php
+- Fixed link to projects
+
+2002-11-22 02:16  (kripper)
+---------------------------------
+includes/config.php
+- Added defines in config.php
+
+2002-11-15 02:32  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest changes
+
+2002-11-15 02:32  (eddieajau)
+---------------------------------
+functions/forums_func.php
+- Comment debug code, restore mail out call
+
+2002-11-15 02:31  (eddieajau)
+---------------------------------
+db/dotproject_022_to_023.sql
+- Extra event fields
+
+2002-11-15 02:30  (eddieajau)
+---------------------------------
+index.php
+- Minor change
+
+2002-11-15 02:30  (eddieajau)
+---------------------------------
+logincheck.php
+- Added debug info
+
+2002-11-15 02:29  (eddieajau)
+---------------------------------
+includes/footer.php
+includes/header.php
+includes/login.php
+- Minor changes
+
+2002-11-15 02:29  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/index.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_perms.php
+- Index A-Z, new permission in view user tab
+
+2002-11-15 02:27  (eddieajau)
+---------------------------------
+selector.php
+dosql/aed_perms.php
+images/icons/graph.gif
+- Initial upload
+
+2002-11-12 03:25  (eddieajau)
+---------------------------------
+images/icons/trash.gif
+- Make background transparent
+
+2002-11-12 03:01  (eddieajau)
+---------------------------------
+modules/departments/dosql.php
+- Bug fix
+
+2002-11-12 02:15  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/viewuser.php
+modules/companies/addedit.php
+- Cosmetic changes
+
+2002-11-12 02:14  (eddieajau)
+---------------------------------
+modules/departments/addedit.php
+modules/departments/dosql.php
+modules/departments/view.php
+- Expanding display and input fields
+
+2002-11-11 22:21  (eddieajau)
+---------------------------------
+modules/help/about.php
+- MInor change to whats new
+
+2002-11-11 22:16  (eddieajau)
+---------------------------------
+logincheck.php
+docs/CHANGELOG.txt
+dosql/addeditdel_event.php
+includes/main_functions.php
+includes/permissions.php
+modules/calendar/addedit.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+modules/tasks/index.php
+modules/tasks/view.php
+- Costmetica updates and other changes (see change log)
+
+2002-11-11 22:15  (eddieajau)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Initial upload
+
+2002-11-07 01:00  (eddieajau)
+---------------------------------
+images/icons/users.gif
+- Initial upload
+
+2002-11-06 23:08  (eddieajau)
+---------------------------------
+classdefs/date.php
+docs/CHANGELOG.txt
+includes/create_new_menu.php
+includes/header.php
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/index.php
+modules/admin/permissions.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_proj.php
+modules/companies/vw_active.php
+modules/companies/vw_depts.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/projects/vw_files.php
+modules/projects/vw_forums.php
+modules/projects/vw_tasks.php
+- Many cosmetic changes.  See CHANGELOG.TXT
+
+2002-11-05 04:15  (eddieajau)
+---------------------------------
+style/main.css
+- Minor addition
+
+2002-11-05 04:14  (eddieajau)
+---------------------------------
+dept_selector.php
+- Initial upload
+
+2002-11-05 02:20  (eddieajau)
+---------------------------------
+images/icons/milestone.gif
+- Initial upload
+
+2002-10-31 20:25  (kobudo)
+---------------------------------
+docs/CHANGELOG.txt
+- John changed "dosql/addfile.php".
+
+2002-10-31 14:39  (kobudo)
+---------------------------------
+dosql/addfile.php
+- John Pritchard updates addfile.php code to use alternative "strpos" logic.
+- Lines (61-65).
+
+2002-10-29 19:20  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Put the bug back
+
+2002-10-28 02:11  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+modules/tasks/addedit.php
+- Bug fix
+
+2002-10-28 02:03  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+modules/files/addedit.php
+modules/files/index.php
+- Added support to attach files to all projects
+
+2002-10-27 23:23  (kobudo)
+---------------------------------
+docs/INSTALL.txt
+docs/CHANGELOG.txt
+- John expands "install.txt" to include discussion of Andrew's "secret.php"
+- security hardening.
+
+2002-10-25 02:28  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest changes
+
+2002-10-25 02:02  (eddieajau)
+---------------------------------
+functions/tasks_func.php
+modules/tasks/addedit.php
+modules/tasks/dosql.php
+modules/tasks/index.php
+- Added task status handling
+
+2002-10-25 01:03  (eddieajau)
+---------------------------------
+dosql/aed_post.php
+- Returns post reply to topic
+
+2002-10-25 00:48  (eddieajau)
+---------------------------------
+dosql/aed_post.php
+functions/forums_func.php
+- Remove testing code
+
+2002-10-25 00:38  (eddieajau)
+---------------------------------
+db/dotproject_022_to_023.sql
+- Table upgrades from version 022 to 023 - initial release
+
+2002-10-25 00:36  (eddieajau)
+---------------------------------
+dosql/aed_post.php
+- Added watch mail sending
+
+2002-10-25 00:35  (eddieajau)
+---------------------------------
+modules/help/about.php
+- Revised for versino 023
+
+2002-10-25 00:33  (eddieajau)
+---------------------------------
+dosql/updatetask.php
+- Allowed float hours worked
+
+2002-10-25 00:32  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Revised filters
+
+2002-10-25 00:30  (eddieajau)
+---------------------------------
+modules/forums/index.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+- Added watch support
+
+2002-10-25 00:29  (eddieajau)
+---------------------------------
+modules/departments/addedit.php
+modules/departments/dosql.php
+modules/departments/view.php
+- New module for version 023
+
+2002-10-25 00:27  (eddieajau)
+---------------------------------
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_depts.php
+modules/companies/vw_users.php
+- Presentation changes
+
+2002-10-25 00:25  (eddieajau)
+---------------------------------
+functions/tasks_func.php
+- Added task filters
+
+2002-10-25 00:22  (eddieajau)
+---------------------------------
+dosql/watch_forum.php
+functions/forums_func.php
+- Initial upload
+
+2002-10-25 00:21  (eddieajau)
+---------------------------------
+style/main.css
+- Consolidating styles
+
+2002-10-25 00:20  (eddieajau)
+---------------------------------
+includes/header.php
+includes/leftnav.php
+includes/main_functions.php
+- Structural changes and revised create shortcuts
+
+2002-10-25 00:18  (eddieajau)
+---------------------------------
+images/bground.gif
+images/icons/collapse.gif
+images/icons/expand.gif
+- Background revision and new icons
+
+2002-10-23 20:50  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+- Changed characteristics of index field to make it not null.
+
+2002-10-18 01:13  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+modules/forums/post_message.php
+modules/forums/view_messages.php
+- Allowed editting of forum reply subject
+
+2002-10-17 03:58  (eddieajau)
+---------------------------------
+functions/admin_func.php
+- Added table change comment
+
+2002-10-17 03:56  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/viewuser.php
+- Added support to edit user type
+
+2002-10-17 03:55  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest changes
+
+2002-10-17 03:54  (eddieajau)
+---------------------------------
+functions/admin_func.php
+- Initial upload
+
+2002-09-23 20:57  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Reply-To header now overrides From header to allow proxy tickets.
+- Extra documentation about the use of '@' in email addresses.
+- Email to admin now correctly displays followups.
+
+2002-09-20 01:12  (eddieajau)
+---------------------------------
+includes/config.php
+- Added security hash to cookie
+
+2002-09-20 01:08  (eddieajau)
+---------------------------------
+logincheck.php
+docs/CHANGELOG.txt
+includes/config.php
+includes/permissions.php
+includes/secret.php
+- Added security hash to cookie
+
+2002-09-19 23:43  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+includes/permissions.php
+- Patched security hole
+
+2002-09-19 23:27  (eddieajau)
+---------------------------------
+dosql/ticket_aed.php
+- Add new ticket from browser
+
+2002-09-19 23:16  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+modules/ticketsmith/index.php
+modules/ticketsmith/post_ticket.php
+- Add ticket included in browser
+
+2002-09-17 00:58  (eddieajau)
+---------------------------------
+classdefs/project.php
+classdefs/task.php
+- Initial upload
+
+2002-09-05 18:46  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed link to add file
+
+2002-09-05 18:45  (eddieajau)
+---------------------------------
+modules/files/index.php
+- Shows full user name rather than id number
+
+2002-09-05 18:44  (eddieajau)
+---------------------------------
+dosql/addfile.php
+- Declared wordarr explicitly as an array
+
+2002-09-05 18:43  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest updates
+
+2002-09-05 01:34  (eddieajau)
+---------------------------------
+modules/calendar/week_view.php
+- Fixed table alignment bug; day links to day view
+
+2002-09-05 01:33  (eddieajau)
+---------------------------------
+modules/calendar/day_view.php
+- added week view breadcrumb
+
+2002-09-05 01:31  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest updates
+
+2002-09-04 03:07  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest updates
+
+2002-09-04 03:06  (eddieajau)
+---------------------------------
+includes/leftnav.php
+- Removed legacy code
+
+2002-09-03 13:33  (scavazza)
+---------------------------------
+includes/header.php
+includes/leftnav.php
+modules/tasks/index.php
+modules/calendar/week_view.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+- ptranslate removed
+
+2002-09-03 11:42  (scavazza)
+---------------------------------
+locales/en/traducao.txt
+- Fisrt version of Portuguese language support
+
+2002-09-03 11:15  (scavazza)
+---------------------------------
+locales/pt_br/admin.txt
+locales/pt_br/calendar.txt
+locales/pt_br/companies.txt
+locales/pt_br/contacts.txt
+locales/pt_br/files.txt
+locales/pt_br/forums.txt
+locales/pt_br/general.txt
+locales/pt_br/projects.txt
+locales/pt_br/tasks.txt
+- Fisrt version of Portuguese language support
+
+2002-09-03 10:49  (scavazza)
+---------------------------------
+locales/en/admin.txt
+locales/en/calendar.txt
+locales/en/companies.txt
+locales/en/contacts.txt
+locales/en/files.txt
+locales/en/forums.txt
+locales/en/general.txt
+locales/en/projects.txt
+locales/en/tasks.txt
+locales/en/traducao.txt
+- Fisrt version of English language support
+
+2002-09-03 08:25  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest updates
+
+2002-09-03 08:06  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed broken project link
+
+2002-09-02 19:38  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest updates
+
+2002-09-02 19:34  (eddieajau)
+---------------------------------
+calendar.php
+modules/projects/addedit.php
+- Fixed bug in calendar select boxes
+
+2002-09-02 07:10  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest updates
+
+2002-09-02 07:01  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Bug fix in month and day select boxes
+
+2002-09-02 05:56  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/index.php
+modules/admin/permissions.php
+modules/admin/viewuser.php
+- Upgraded permissions
+
+2002-09-01 00:36  (eddieajau)
+---------------------------------
+includes/create_new_menu.php
+- Added missing closing a tags
+
+2002-08-30 19:37  (kobudo)
+---------------------------------
+docs/INSTALL.txt
+- John adds a little tidbit to help people reconfigure the
+- "Help! I forgot my password" mailto link...
+
+2002-08-30 19:18  (kobudo)
+---------------------------------
+modules/projects/addedit.php
+- John makes change to line 59... fixes drop-down year selection for 2007.
+- (previously specified as "207").
+
+2002-08-30 18:25  (kobudo)
+---------------------------------
+docs/INSTALL.txt
+- John updates the installation document.  Improves description of how to
+- configure file upload module correctly.
+
+2002-08-30 16:22  (kobudo)
+---------------------------------
+modules/admin/addedituser.php
+- There is a bug with the BIRTHDAY date validation on addedituser.php.
+- I have increased commenting of validation failure to assist with troubleshooting.
+- Basically, the month field can NOT be in MM format for months 01-09, or the
+- form submission will fail.
+
+2002-08-30 06:22  (ajdonnison)
+---------------------------------
+classdefs/event.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+- First cut of getting a week view using some of Leo's class definitions.
+
+2002-08-30 03:03  (ajdonnison)
+---------------------------------
+includes/login.php
+- Removed hard-coded email address.
+
+2002-08-30 02:49  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Attempt to fix followup ticket emails.
+
+2002-08-30 00:50  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+- Updated permissions
+
+2002-08-30 00:43  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+- Latest changes
+
+2002-08-30 00:42  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Updated permissions
+
+2002-08-29 23:28  (eddieajau)
+---------------------------------
+modules/admin/permissions.php
+- Added calendar to module list
+
+2002-08-29 23:21  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Fixed update return page and add new task
+
+2002-08-29 23:20  (eddieajau)
+---------------------------------
+includes/create_new_menu.php
+- Added missing tr tag
+
+2002-08-29 23:19  (eddieajau)
+---------------------------------
+dosql/addeditTask.php
+- Fixed mis-spelt variable
+
+2002-08-29 23:16  (eddieajau)
+---------------------------------
+docs/CHANGELOG.txt
+docs/CHANGES.txt
+- Moved content
+
+2002-08-28 05:42  (ajdonnison)
+---------------------------------
+includes/config.php
+includes/leftnav.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/view.php
+- Removed last (hopefully) of hardcoded entries, changed dotmarketing.org to
+- dotproject.net.
+
+2002-08-25 22:41  (ajdonnison)
+---------------------------------
+classdefs/date.php
+classdefs/event.php
+classdefs/smartfolder.php
+functions/calendar_func_LEO.php
+functions/class.smartfolder.php
+- Moved class definitions into a separate folder - classdefs - to aid in
+- the move to a more OO design in future releases.
+
+2002-08-25 00:58  (eddieajau)
+---------------------------------
+docs/CHANGES.txt
+- Latest updates
+
+2002-08-25 00:57  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/index.php
+modules/tasks/view.php
+- Added permissions, tidied code
+
+2002-08-25 00:56  (eddieajau)
+---------------------------------
+modules/files/addedit.php
+- Fixed project selection
+
+2002-08-25 00:54  (eddieajau)
+---------------------------------
+functions/tasks_func.php
+- Added constant, deleted unused class
+
+2002-08-25 00:53  (eddieajau)
+---------------------------------
+index.php
+- Deleted redundant variable
+
+2002-08-24 08:06  (eddieajau)
+---------------------------------
+docs/CHANGES.txt
+- Latest updates
+
+2002-08-24 08:04  (eddieajau)
+---------------------------------
+includes/permissions.php
+- Deleted deprecated code
+
+2002-08-24 08:03  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added new and deleted unused functions
+
+2002-08-24 08:01  (eddieajau)
+---------------------------------
+functions/projects_func.php
+- Deleted unused class, added projects constants
+
+2002-08-24 08:00  (eddieajau)
+---------------------------------
+modules/admin/permissions.php
+- Added confirm to delete permission
+
+2002-08-24 07:59  (eddieajau)
+---------------------------------
+modules/files/index.php
+modules/forums/index.php
+- Update to text color selector
+
+2002-08-24 07:57  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+- Permissions and bug fixes
+
+2002-08-24 07:56  (eddieajau)
+---------------------------------
+modules/projects/vw_forums.php
+modules/projects/vw_tasks.php
+- New files.  Separated mini-tables
+
+2002-08-24 05:45  (ajdonnison)
+---------------------------------
+dosql/addeditdel_event.php
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+- Events can now be added and edited correctly.
+- Day view now shows current events and left/right arrows move a day at
+- a time.  Heading on day view shows current date.
+- Main (monthly) view now correctly seeds day view with the day clicked
+- rather than the current day.
+
+2002-08-16 12:59  (ottenhoffs)
+---------------------------------
+modules/contacts/index.php
+- made the contact's email address a mailto link and got rid of the name being repeated as a header and as a line item
+
+2002-08-15 22:37  (eddieajau)
+---------------------------------
+docs/CHANGES.txt
+- Latest updates
+
+2002-08-15 22:32  (eddieajau)
+---------------------------------
+modules/forums/index.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/files/addedit.php
+modules/files/index.php
+- Added permissions
+
+2002-08-15 22:30  (eddieajau)
+---------------------------------
+modules/projects/index.php
+- Set company filter default to user company
+
+2002-08-15 22:29  (eddieajau)
+---------------------------------
+includes/leftnav.php
+- Fix for forums
+
+2002-08-15 22:28  (eddieajau)
+---------------------------------
+includes/header.php
+- Changes for master cookie
+
+2002-08-15 22:27  (eddieajau)
+---------------------------------
+includes/permissions.php
+- Logic fix, added master cookie
+
+2002-08-15 22:26  (eddieajau)
+---------------------------------
+logincheck.php
+- Parse master cookie
+
+2002-08-11 19:46  (eddieajau)
+---------------------------------
+includes/permissions.php
+- Fixed logic, added debug code
+
+2002-08-11 19:45  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Deleted permissions debug code
+
+2002-08-11 05:27  (eddieajau)
+---------------------------------
+docs/CHANGES.txt
+- Updates
+
+2002-08-11 05:27  (eddieajau)
+---------------------------------
+modules/contacts/addedit.php
+- Add permissions
+
+2002-08-11 05:26  (eddieajau)
+---------------------------------
+modules/contacts/index.php
+- Optimise code, add permissions
+
+2002-08-11 05:25  (eddieajau)
+---------------------------------
+modules/tasks/view.php
+- Top align comment cell
+
+2002-08-11 05:24  (eddieajau)
+---------------------------------
+modules/help/access_denied.php
+- Typo fix
+
+2002-08-11 05:23  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+- Rework permissions
+
+2002-08-11 05:22  (eddieajau)
+---------------------------------
+modules/admin/dosql.php
+- Encode html special chars, update permissions for return page
+
+2002-08-11 05:21  (eddieajau)
+---------------------------------
+modules/admin/permissions.php
+- Fixed bug in editting
+
+2002-08-11 05:19  (eddieajau)
+---------------------------------
+includes/permissions.php
+includes/leftnav.php
+- Rework permissions
+
+2002-08-11 05:18  (eddieajau)
+---------------------------------
+includes/login.php
+- Added draft logo/brand
+
+2002-08-11 05:17  (eddieajau)
+---------------------------------
+dosql/aed_post.php
+- encode html special chars
+
+2002-08-11 05:16  (eddieajau)
+---------------------------------
+index.php
+- Formatting changes
+
+2002-08-08 20:57  (eddieajau)
+---------------------------------
+modules/help/access_denied.php
+- Initial upload
+
+2002-08-08 19:24  (eddieajau)
+---------------------------------
+images/icons/dp.gif
+- Initial upload. Open to better suggestions.
+
+2002-08-08 00:20  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Fixed missing brace in header extraction code.
+
+2002-08-08 00:00  (ajdonnison)
+---------------------------------
+modules/admin/dosql.php
+- Fixed corruption of password if it isn't changed but the user is otherwise
+- edited.
+
+2002-08-07 19:56  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- Added auto-populate task parent
+
+2002-08-07 19:55  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Fixed missing child task display for some users
+
+2002-08-07 19:53  (eddieajau)
+---------------------------------
+modules/projects/dosql.php
+- Added delete project support
+
+2002-08-07 19:53  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Added delete project
+
+2002-08-07 19:52  (eddieajau)
+---------------------------------
+modules/projects/index.php
+- Added filter
+
+2002-08-07 19:51  (eddieajau)
+---------------------------------
+modules/forums/post_message.php
+- Fixed author for replies
+
+2002-08-07 19:50  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+- Patched security
+
+2002-08-07 19:49  (eddieajau)
+---------------------------------
+modules/companies/view.php
+- Initial upload
+
+2002-08-07 19:48  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Fixed project counts
+
+2002-08-07 19:47  (eddieajau)
+---------------------------------
+modules/calendar/index.php
+- Added filter
+
+2002-08-07 19:46  (eddieajau)
+---------------------------------
+modules/admin/viewuser.php
+- New
+
+2002-08-07 19:45  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+- Title change and added breadcrumbs, patched security
+
+2002-08-07 19:44  (eddieajau)
+---------------------------------
+modules/admin/index.php
+- Added link to new view user page
+
+2002-08-07 19:42  (eddieajau)
+---------------------------------
+includes/header.php
+- Display current user, added about link
+
+2002-08-07 19:41  (eddieajau)
+---------------------------------
+includes/create_new_menu.php
+- Added support to auto-populate task parent
+
+2002-08-07 19:40  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Added filter
+
+2002-08-07 19:39  (eddieajau)
+---------------------------------
+docs/CHANGES.txt
+- Updates
+
+2002-08-07 19:38  (eddieajau)
+---------------------------------
+dosql/addeditTask.php
+- Corrected nofity assignees
+
+2002-08-07 19:36  (eddieajau)
+---------------------------------
+logincheck.php
+- Added cookie for user full name
+
+2002-08-07 19:34  (eddieajau)
+---------------------------------
+color_selector.php
+- Added list for preset colours
+
+2002-08-07 19:01  (eddieajau)
+---------------------------------
+modules/help/about.php
+- New file
+
+2002-08-05 10:38  (scavazza)
+---------------------------------
+includes/main_functions.php
+- inserted "break" on the case of dateFormat() function
+
+2002-08-01 06:44  (eddieajau)
+---------------------------------
+dosql/company_aed.php
+modules/companies/addedit.php
+- Fixed delete function
+
+2002-08-01 06:43  (eddieajau)
+---------------------------------
+calendar.php
+- Added zero padding to month and day
+
+2002-07-30 22:55  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Fixed support for headers that are split across multiple lines.
+
+2002-07-26 16:35  (ottenhoffs)
+---------------------------------
+modules/forums/viewer.php
+- fixed some alignment, date inconsistencies.  still need someone to fix search funcitonality
+
+2002-07-25 20:10  (ajdonnison)
+---------------------------------
+modules/companies/index.php
+- Fixed missing end of table that causes netscape to fail to display page.
+
+2002-07-18 15:36  (ottenhoffs)
+---------------------------------
+modules/admin/permissions.php
+- fixed a number of errors with array references, they need to be single quoted or double quoted
+- also got rid of a hard-coded reference to "smitty.dotmarketing.org" as the form action
+
+2002-07-17 01:59  (ajdonnison)
+---------------------------------
+calendar.php
+modules/admin/addedituser.php
+modules/admin/dosql.php
+- Fixed spurious = instead of echo.
+
+2002-07-16 23:52  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Fixed low priority icon display in parent task
+
+2002-07-16 23:30  (ajdonnison)
+---------------------------------
+images/obj/contact.gif
+images/obj/event-attendees.gif
+images/obj/event.gif
+images/obj/folder-shared.gif
+images/obj/folder.gif
+images/obj/lock.gif
+images/obj/palette.gif
+images/obj/phone.gif
+- New icons from code merge missed in initial upload.
+
+2002-07-16 21:34  (ajdonnison)
+---------------------------------
+index.php
+includes/header.php
+- Minor fixes to remove errors in IE, PHP4.2.x
+
+2002-07-14 19:28  (ajdonnison)
+---------------------------------
+calendar.php
+fileviewer.php
+index.php
+logincheck.php
+dosql/addeditTask.php
+dosql/addeditdel_contact.php
+dosql/addeditdel_event.php
+dosql/addeditdelforum.php
+dosql/addfile.php
+dosql/aed_post.php
+dosql/company_aed.php
+dosql/delfile.php
+dosql/searchfiles.php
+dosql/stopwords.php
+dosql/updatetask.php
+functions/calendar_func.php
+functions/calendar_func_LEO.php
+includes/config.php
+includes/create_new_menu.php
+includes/db_connect.php
+includes/english.php
+includes/header.php
+includes/leftnav.php
+includes/login.php
+includes/main_functions.php
+includes/permissions.php
+modules/admin/addeditgroup.php
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/index.php
+modules/admin/permissions.php
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/files/addedit.php
+modules/files/index.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/projects/addedit.php
+modules/projects/dosql.php
+modules/projects/index.php
+modules/projects/view.php
+modules/tasks/addedit.php
+modules/tasks/dosql.php
+modules/tasks/index.php
+modules/tasks/reorder.php
+modules/tasks/view.php
+- Changed all occurrences of <? with <?php.
+
+2002-07-14 18:39  (ajdonnison)
+---------------------------------
+files/.htaccess
+- Fix for bug #494427, security issue.  The .htaccess file does not
+- allow HTML browsing on a compliant (i.e. Apache) server.
+
+2002-07-14 18:37  (ajdonnison)
+---------------------------------
+docs/CHANGES.txt
+docs/MODULES.txt
+- New documentation files for merged codebase
+
+2002-07-14 02:54  (jbflowers)
+---------------------------------
+modules/companies/addedit.php
+- corrected url test per bug report 520619
+
+2002-07-13 17:39  (jbflowers)
+---------------------------------
+modules/companies/index.php
+- revised logic to limit companies displayed to logged on users with RO or RW permissions.
+
+2002-07-13 15:09  (jbflowers)
+---------------------------------
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+- corrected forum lower nav bar post reply button action
+
+2002-07-13 12:45  (jbflowers)
+---------------------------------
+dosql/addeditdel_event.php
+functions/calendar_func.php
+modules/calendar/addedit.php
+modules/calendar/index.php
+- modifications to allow add/edit/delete and display of events on calendar
+
+2002-07-13 12:25  (jbflowers)
+---------------------------------
+color_selector.php
+docs/TODO.txt
+dosql/delfile.php
+dosql/searchfiles.php
+dosql/stopwords.php
+functions/calendar_func.php
+includes/english.php
+includes/footer.php
+misc/mime.types
+- removed trailing <CR>
+
+2002-07-12 14:45  (ottenhoffs)
+---------------------------------
+includes/header.php
+- trying to make more HTML 4.0 transitional compliant
+- script take needs a type
+- tr height=black made no sense
+
+2002-07-12 03:01  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Re-added the followup code that got lost in the last update.
+- Changed Mime-Type headers to the correct Mime-Version.
+
+2002-07-12 02:35  (ajdonnison)
+---------------------------------
+db/dotproject-upgrade.sql
+db/dotproject.sql
+docs/CHANGELOG.txt
+docs/INSTALL.txt
+docs/dotproject.sql
+dosql/addeditTask.php
+dosql/updatetask.php
+functions/calendar_func_LEO.php
+functions/class.smartfolder.php
+functions/companies_func.php
+functions/contacts_func.php
+functions/lib.DB.php
+functions/projects_func.php
+functions/tasks_func.php
+images/arrow-down.gif
+images/arrow-right.gif
+images/log-error.gif
+images/log-info.gif
+images/log-notice.gif
+images/smartfolder.gif
+images/view.week.gif
+includes/config.php
+includes/gateway.pl
+locales/en/locales.php
+locales/fr/locales.php
+locales/holidays/fr
+locales/holidays/uk
+modules/ticketsmith/view.php
+- Changes required to merge the current list of disparate releases
+- into a single, unified code base.
+
+2002-07-08 11:48  (ottenhoffs)
+---------------------------------
+logincheck.php
+- fixed the setcookie call by removing the third param ("session").  the third param should be the expiration time (an int).
+- http://www.php.net/manual/en/function.setcookie.php
+
+2002-07-05 06:47  (ajdonnison)
+---------------------------------
+includes/header.php
+includes/leftnav.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/files/index.php
+modules/forums/index.php
+modules/forums/viewer.php
+- Changes to remove absolute paths so that dotproject can be installed
+- at any location.
+
+2002-07-05 06:45  (ajdonnison)
+---------------------------------
+includes/config.php
+- New config items to support date format control, admin email address,
+- and to centralise site-specific details.
+
+2002-07-05 06:44  (ajdonnison)
+---------------------------------
+calendar.php
+includes/main_functions.php
+- Added configurable date formatting.  Based upon config.php item.
+
+2002-07-05 06:42  (ajdonnison)
+---------------------------------
+modules/calendar/day_view.php
+- No longer reports an error when no events on day view.
+
+2002-07-05 06:41  (ajdonnison)
+---------------------------------
+modules/calendar/addedit.php
+- Broken javascript fixed to work on both IE and Netscape.
+
+2002-07-05 06:40  (ajdonnison)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/index.php
+modules/tasks/view.php
+- Date formats now controlled by config.php value.
+- Durations now correctly calculated.
+- Comments now shown correctly if they have embedded newlines.
+
+2002-07-05 06:37  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/view.php
+- Date formatting now controlled by config.php item.
+- Task counts now correct on front page.
+
+2002-07-05 06:33  (ajdonnison)
+---------------------------------
+dosql/addeditTask.php
+dosql/updatetask.php
+- Edit task no longer returns spurious database error message.
+- Initial assignments of users now works.
+- Blank screen now fixed.
+- Email is now sent to all assignees, except the editor, for updates, adds,
+- deletes and edits.
+
+2002-07-05 06:30  (ajdonnison)
+---------------------------------
+includes/gateway.pl
+- Notification email now differentiates between new tickets and followups.
+- Originator now gets a more detailed email that includes a subject that
+- supports immediate followups.
+
+2002-07-05 06:22  (ajdonnison)
+---------------------------------
+dosql/aed_post.php
+- Forum posts no longer return an empty page, but return to the forum.
+
+2002-07-04 13:53  (jbflowers)
+---------------------------------
+docs/CHANGELOG.txt
+dosql/updatetask.php
+- Minor changes and update CHANGELOG.txt
+
+2001-12-20 23:37  (simgar)
+---------------------------------
+modules/ticketsmith/comment.php
+- Fixed bug #495698 (corrected path for include) and fixed author_email (remmoved html special characters and replaced
+- with <>)
+
+2001-10-24 22:47  (wezell)
+---------------------------------
+docs/CHANGELOG.txt
+- added changelog
+
+2001-10-24 22:41  (wezell)
+---------------------------------
+modules/ticketsmith/admin.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/search.php
+modules/ticketsmith/view.php
+- fixed ticketsmith include path
+
+2001-10-24 22:32  (wezell)
+---------------------------------
+calendar.php
+- Jon Broderick
+-  fixed calendar bugs
+
+2001-10-18 03:53  (wezell)
+---------------------------------
+.htaccess
+fileviewer.php
+index.php
+calendar.php
+color_selector.php
+logincheck.php
+modules/ticketsmith/CHANGELOG
+modules/ticketsmith/admin.php
+modules/ticketsmith/comment.php
+style/main.css
+modules/tasks/addedit.php
+modules/tasks/dosql.php
+modules/tasks/index.php
+modules/tasks/reorder.php
+modules/ticketsmith/CREDITS
+modules/ticketsmith/LICENSE
+modules/ticketsmith/README
+modules/ticketsmith/TODO
+modules/ticketsmith/UPGRADE
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/ltwt.gif
+modules/ticketsmith/posticon.gif
+modules/ticketsmith/rtwt.gif
+modules/ticketsmith/search.php
+modules/ticketsmith/style.css
+modules/ticketsmith/table.schema
+modules/ticketsmith/view.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/projects/addedit.php
+modules/projects/dosql.php
+modules/projects/index.php
+modules/projects/view.php
+modules/tasks/view.php
+modules/admin/addeditgroup.php
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/files/addedit.php
+modules/files/index.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+images/bground.gif
+images/calendar.gif
+images/colorchart.gif
+images/corner-dots.gif
+images/next.gif
+images/prev.gif
+images/shim.gif
+images/trash_small.gif
+images/week.gif
+images/icons/1.gif
+images/icons/admin.gif
+includes/.htaccess
+includes/config.php
+includes/create_new_menu.php
+includes/db_connect.php
+includes/english.php
+includes/footer.php
+includes/gateway.pl
+includes/header.php
+includes/leftnav.php
+includes/login.php
+includes/main_functions.php
+includes/permissions.php
+misc/mime.types
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/index.php
+modules/admin/permissions.php
+dosql/addeditTask.php
+dosql/addeditdel_contact.php
+dosql/addeditdelforum.php
+dosql/addfile.php
+dosql/aed_post.php
+dosql/company_aed.php
+dosql/delfile.php
+dosql/searchfiles.php
+dosql/stopwords.php
+dosql/updatetask.php
+functions/calendar_func.php
+images/icons/burst_mail.gif
+images/icons/calendar.gif
+images/icons/communicate.gif
+images/icons/companies.gif
+images/icons/contacts.gif
+images/icons/folder.gif
+images/icons/forum_folder.gif
+images/icons/groups.gif
+images/icons/i_contact_off.gif
+images/icons/i_controlpanel_off.gif
+images/icons/i_document_off.gif
+images/icons/i_event_off.gif
+images/icons/i_mystatus_big.gif
+images/icons/i_presentation_off.gif
+images/icons/i_projectmanager_off.gif
+images/icons/i_timezones_off.gif
+images/icons/i_todo_off.gif
+images/icons/icn_banner.gif
+images/icons/icn_budgetgraph.gif
+images/icons/icn_comments.gif
+images/icons/icn_doc-read.gif
+images/icons/icn_forum.gif
+images/icons/icn_members.gif
+images/icons/icn_person.gif
+images/icons/icn_project.gif
+images/icons/icn_qc_calendar.gif
+images/icons/icn_qc_file.gif
+images/icons/icn_qc_forum.gif
+images/icons/icn_qc_project.gif
+images/icons/icn_qc_resources.gif
+images/icons/icn_qc_task.gif
+images/icons/icn_qc_todo.gif
+images/icons/icn_view.gif
+images/icons/low.gif
+images/icons/mail.gif
+images/icons/minicalendar.gif
+images/icons/minicontact.GIF
+images/icons/miniedit.gif
+images/icons/minievent.gif
+images/icons/minifile.gif
+images/icons/miniforum.gif
+images/icons/miniproject.gif
+images/icons/minitask.gif
+images/icons/money.gif
+images/icons/pencil.gif
+images/icons/post.gif
+images/icons/posticon.gif
+images/icons/project.gif
+images/icons/projects.gif
+images/icons/shim.gif
+images/icons/tasks.gif
+images/icons/ticketsmith.gif
+images/icons/trash.gif
+images/icons/updown.gif
+db/dotproject.sql
+docs/INSTALL.txt
+docs/TODO.txt
+docs/dotproject.sql
+files/tmp
+- Initial revision
+
+2001-10-18 03:53  (wezell)
+---------------------------------
+.htaccess
+fileviewer.php
+index.php
+calendar.php
+color_selector.php
+logincheck.php
+modules/ticketsmith/CHANGELOG
+modules/ticketsmith/admin.php
+modules/ticketsmith/comment.php
+style/main.css
+modules/tasks/addedit.php
+modules/tasks/dosql.php
+modules/tasks/index.php
+modules/tasks/reorder.php
+modules/ticketsmith/CREDITS
+modules/ticketsmith/LICENSE
+modules/ticketsmith/README
+modules/ticketsmith/TODO
+modules/ticketsmith/UPGRADE
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/ltwt.gif
+modules/ticketsmith/posticon.gif
+modules/ticketsmith/rtwt.gif
+modules/ticketsmith/search.php
+modules/ticketsmith/style.css
+modules/ticketsmith/table.schema
+modules/ticketsmith/view.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/projects/addedit.php
+modules/projects/dosql.php
+modules/projects/index.php
+modules/projects/view.php
+modules/tasks/view.php
+modules/admin/addeditgroup.php
+modules/calendar/addedit.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/contacts/addedit.php
+modules/contacts/index.php
+modules/files/addedit.php
+modules/files/index.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+images/bground.gif
+images/calendar.gif
+images/colorchart.gif
+images/corner-dots.gif
+images/next.gif
+images/prev.gif
+images/shim.gif
+images/trash_small.gif
+images/week.gif
+images/icons/1.gif
+images/icons/admin.gif
+includes/.htaccess
+includes/config.php
+includes/create_new_menu.php
+includes/db_connect.php
+includes/english.php
+includes/footer.php
+includes/gateway.pl
+includes/header.php
+includes/leftnav.php
+includes/login.php
+includes/main_functions.php
+includes/permissions.php
+misc/mime.types
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/index.php
+modules/admin/permissions.php
+dosql/addeditTask.php
+dosql/addeditdel_contact.php
+dosql/addeditdelforum.php
+dosql/addfile.php
+dosql/aed_post.php
+dosql/company_aed.php
+dosql/delfile.php
+dosql/searchfiles.php
+dosql/stopwords.php
+dosql/updatetask.php
+functions/calendar_func.php
+images/icons/burst_mail.gif
+images/icons/calendar.gif
+images/icons/communicate.gif
+images/icons/companies.gif
+images/icons/contacts.gif
+images/icons/folder.gif
+images/icons/forum_folder.gif
+images/icons/groups.gif
+images/icons/i_contact_off.gif
+images/icons/i_controlpanel_off.gif
+images/icons/i_document_off.gif
+images/icons/i_event_off.gif
+images/icons/i_mystatus_big.gif
+images/icons/i_presentation_off.gif
+images/icons/i_projectmanager_off.gif
+images/icons/i_timezones_off.gif
+images/icons/i_todo_off.gif
+images/icons/icn_banner.gif
+images/icons/icn_budgetgraph.gif
+images/icons/icn_comments.gif
+images/icons/icn_doc-read.gif
+images/icons/icn_forum.gif
+images/icons/icn_members.gif
+images/icons/icn_person.gif
+images/icons/icn_project.gif
+images/icons/icn_qc_calendar.gif
+images/icons/icn_qc_file.gif
+images/icons/icn_qc_forum.gif
+images/icons/icn_qc_project.gif
+images/icons/icn_qc_resources.gif
+images/icons/icn_qc_task.gif
+images/icons/icn_qc_todo.gif
+images/icons/icn_view.gif
+images/icons/low.gif
+images/icons/mail.gif
+images/icons/minicalendar.gif
+images/icons/minicontact.GIF
+images/icons/miniedit.gif
+images/icons/minievent.gif
+images/icons/minifile.gif
+images/icons/miniforum.gif
+images/icons/miniproject.gif
+images/icons/minitask.gif
+images/icons/money.gif
+images/icons/pencil.gif
+images/icons/post.gif
+images/icons/posticon.gif
+images/icons/project.gif
+images/icons/projects.gif
+images/icons/shim.gif
+images/icons/tasks.gif
+images/icons/ticketsmith.gif
+images/icons/trash.gif
+images/icons/updown.gif
+db/dotproject.sql
+docs/INSTALL.txt
+docs/TODO.txt
+docs/dotproject.sql
+files/tmp
+- Initial import
+
