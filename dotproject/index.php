@@ -132,9 +132,11 @@ if (isset($_REQUEST['login'])) {
 	$username = dPgetParam( $_POST, 'username', '' );
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
+	$AppUI->setUserLocale();
+	@include_once( "$baseDir/locales/$AppUI->user_locale/locales.php" );
+	@include_once "$baseDir/locales/core.php";
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
-		@include_once "$baseDir/locales/core.php";
 		$AppUI->setMsg( 'Login Failed');
 	} else {
 	           //Register login in user_acces_log
