@@ -39,7 +39,7 @@ foreach ($projects as $row) {
 	<td align="center" nowrap>
 		<?php echo $row["total_tasks"].($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');?>
 		</td>
-	<td align="right" nowrap="nowrap"><?php echo $end_date->toString( $df );?></td>
+	<td align="right" nowrap="nowrap"><?php if($end_date) {echo $end_date->toString( $df );}?></td>
 </tr>
 <?php }?>
 <tr>
