@@ -801,7 +801,8 @@ class CTabBox_core {
 			$tab_array =& $_SESSION['all_tabs'][$module];
 		}
 		foreach ($tab_array as $name => $file) {
-			$this->add($file, $name);
+			if (! is_array($file))
+				$this->add($file, $name);
 		}
 		return count($tab_array);
 	}
