@@ -1,14 +1,10 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Day View
-",
+"Day View",
 "Edit Event",
 "End Date",
 "Event Title",
-"Event deleted",
-"Event inserted",
-"Event updated",
 "Monthly Calendar",
 "New Event",
 "Recurs",

@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"hour",
 "- New Item -",
 "About",
 "Active Projects",
@@ -34,11 +33,13 @@
 "File",
 "Files",
 "First Name",
+"Forum",
 "Forums",
 "Help",
 "Last Name",
 "Login Failed",
 "Logout",
+"Message",
 "Mobile Phone",
 "Modules",
 "My",
@@ -50,6 +51,7 @@
 "Not implemented",
 "Owner",
 "Password",
+"Permission",
 "Phone",
 "Private Entry",
 "Project",
@@ -94,6 +96,7 @@
 "filter",
 "flat",
 "forgotPassword"=>"Help! I've forgotten my username and password!",
+"hour",
 "hours",
 "invalidID"=>"ID is invalid.  Unable to display.",
 "login",

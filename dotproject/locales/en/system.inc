@@ -15,7 +15,6 @@
 "Module",
 "Module state changed",
 "Preferences",
-"Preferences updated",
 "Role Name",
 "Role deleted",
 "Role inserted",

@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"add user",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
@@ -27,9 +26,6 @@
 "Not Defined",
 "On hold",
 "Owned Projects",
-"Permission deleted",
-"Permission inserted",
-"Permission updated",
 "Permissions",
 "Proposed",
 "Real Name",
@@ -38,10 +34,8 @@
 "Supervisor",
 "User Management",
 "User Type",
-"User deleted",
-"User inserted",
-"User updated",
 "View User",
+"add user",
 "adminInvalidBirthday"=>"Please enter a valid Birthday dateformat: (YYYY-MM-DD)or leave the field blank.",
 "adminInvalidDay"=>"The day you have provided is invalid.",
 "adminInvalidEmail"=>"Your email is invalid, please try again.",
