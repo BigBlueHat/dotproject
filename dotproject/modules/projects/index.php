@@ -61,7 +61,7 @@ $projects = db_loadList( $sql );
 // get the list of permitted companies
 $obj = new CCompany();
 $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
-$companies = arrayMerge( array( '0'=>'All' ), $companies );
+$companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );

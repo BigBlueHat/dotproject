@@ -234,7 +234,7 @@ function submitIt() {
 				</tr>
 				<tr>
 					<td>
-						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $obj->project_status, true ); ?>
+						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $obj->project_status, false ); ?>
 					</td>
 					<td>
 						<strong><?php echo intval(@$obj->project_percent_complete);?> %</strong>
