@@ -1,17 +1,17 @@
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 <tr>
 	<td width="60" align="right">
-		&nbsp; sort by:&nbsp;
+		&nbsp; <?php echo $AppUI->_('sort by');?>:&nbsp;
 	</td>
 	<th width="150">
-		<a href="?m=admin&a=index&orderby=user_username&z=<?php echo $z;?>"><font color="white">Login Name</font></a>
+		<a href="?m=admin&a=index&orderby=user_username"><font color="white"><?php echo $AppUI->_('Login Name');?></font></a>
 	</th>
 	<th>
-		<a href="?m=admin&a=index&orderby=user_last_name&z=<?php echo $z;?>"><font color="white">Real Name</font></a>
+		<a href="?m=admin&a=index&orderby=user_last_name"><font color="white"><?php echo $AppUI->_('Real Name');?></font></a>
 	</th>
 </tr>
 <?php 
-while ($row = mysql_fetch_array( $urow, MYSQL_ASSOC )) {
+foreach ($users as $row) {
 ?>
 <tr>
 	<td align="right" nowrap="nowrap">

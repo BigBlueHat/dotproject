@@ -1,5 +1,5 @@
 <?php
-GLOBAL $user_id, $denyEdit, $tab;
+GLOBAL $AppUI, $user_id, $denyEdit, $tab;
 
 $pgos = array(
 	'files' => 'file_name',
@@ -17,7 +17,7 @@ $pvs = array(
 
 
 //Pull User perms
-$usql = "
+$sql = "
 SELECT u.user_id, u.user_username,
 	p.permission_item, p.permission_id, p.permission_grant_on, p.permission_value,
 	c.company_id, c.company_name,
@@ -34,11 +34,11 @@ WHERE u.user_id = p.permission_user
 	AND u.user_id = $user_id
 ";
 
-$urc = mysql_query($usql);
+$res = db_exec( $sql );
 
 //pull the projects into an temp array
 $tarr = array();
-while ($row = mysql_fetch_array( $urc, MYSQL_ASSOC )) {
+while ($row = db_fetch_assoc( $res )) {
 	$item = @$row[@$pgos[$row['permission_grant_on']]];
 	if (!$item) {
 		$item = $row['permission_item'];
@@ -64,7 +64,6 @@ $modules = array(
 	"tasks" => "Tasks",
 	"ticketsmith" => "Tickets"
 );
-
 ?>
 
 <script language="javascript">
@@ -138,7 +137,6 @@ function setPermItem( key, val ) {
 		f.permission_item_name.value = 'all';
 	}
 }
-
 </script>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
@@ -146,11 +144,11 @@ function setPermItem( key, val ) {
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
-	<th>E</th>
-	<th nowrap>Module</th>
-	<th width="100%">Item</th>
-	<th nowrap>Type</th>
-	<th>D</th>
+	<th>&nbsp;</th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Module');?></th>
+	<th width="100%"><?php echo $AppUI->_('Item');?></th>
+	<th nowrap><?php echo $AppUI->_('Type');?></th>
+	<th>&nbsp;</th>
 </tr>
 
 <?php
@@ -162,8 +160,6 @@ foreach ($tarr as $row){
 		$buf .= "<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']},'{$row['grant_item']}');\"><img src=\"./images/icons/pencil.gif\" alt=\"edit permissions\" border=\"0\" width='12' height='12'></a>";
 	}
 	$buf .= '</td>';
-	
-
 
 	$style = '';
 	if($row['permission_grant_on'] == "all" && $row['permission_item'] == -1 && $row['permission_value'] == -1) {
@@ -178,7 +174,7 @@ foreach ($tarr as $row){
 
 	$buf .= '<td nowrap>';
 	if (!$denyEdit) {
-		$buf .= "<a href=# onClick=\"delIt({$row['permission_id']});\"><img align='absmiddle' src='./images/icons/trash.gif' width='16' height='16' alt='Delete this item' border='0'></a>";
+		$buf .= "<a href=# onClick=\"delIt({$row['permission_id']});\"><img align='absmiddle' src='./images/icons/trash.gif' width='16' height='16' alt='".$AppUI->_('delete permission')."' border='0'></a>";
 	}
 	$buf .= '</td>';
 	
@@ -189,13 +185,13 @@ foreach ($tarr as $row){
 
 <table>
 <tr>
-	<td>Key:</td>
+	<td><?php echo $AppUI->_('Key');?>:</td>
 	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#ffc235">&nbsp; &nbsp;</td>
-	<td>=SuperUser</td>
+	<td>=<?php echo $AppUI->_('Super User');?></td>
 	<td>&nbsp; &nbsp;</td>
 	<td bgcolor="#ffff99">&nbsp; &nbsp;</td>
-	<td>=full access to module</td>
+	<td>=<?php echo $AppUI->_('full access to module');?></td>
 </tr>
 </table>
 
@@ -207,8 +203,9 @@ foreach ($tarr as $row){
 <table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
 <form name="frmPerms" method="post" action="?m=admin">
 <input type="hidden" name="del" value="0">
-<input type="hidden" name="dosql" value="aed_perms">
+<input type="hidden" name="dosql" value="perms_aed">
 <input type="hidden" name="user_id" value="<?php echo $user_id;?>">
+<input type="hidden" name="permission_user" value="<?php echo $user_id;?>">
 <input type="hidden" name="permission_id" value="0">
 <input type="hidden" name="permission_item" value="-1">
 <?php
@@ -216,29 +213,29 @@ foreach ($tarr as $row){
 ?>
 <input type="hidden" name="return" value="<?php echo $return ;?>">
 <tr>
-	<th colspan="2">Add or Edit Permissions</th>
+	<th colspan="2"><?php echo $AppUI->_('Add or Edit Permissions');?></th>
 </tr>
 <tr>
-	<td nowrap align="right">Module:</td>
+	<td nowrap align="right"><?php echo $AppUI->_('Module');?>:</td>
 	<td width="100%"><?php echo arraySelect($modules, 'permission_grant_on', 'size="1" class="text"', 0);?></td>
 </tr>
 <tr>
-	<td nowrap align="right">Item:</td>
+	<td nowrap align="right"><?php echo $AppUI->_('Item');?>:</td>
 	<td>
 		<input type="text" name="permission_item_name" class="text" size="30" value="all" disabled>
 		<input type="button" name="" class="text" value="..." onclick="popPermItem();">
 	</td>
 </tr>
 <tr>
-	<td nowrap align="right">Level:</td>
+	<td nowrap align="right"><?php echo $AppUI->_('Level');?>:</td>
 	<td><?php echo arraySelect($pvs, 'permission_value', 'size="1" class="text"', 0);?></td>
 </tr>
 <tr>
 	<td>
-		<input type="reset" value="clear" style="font-size:9px;width:100px;" name="sqlaction" onClick="clearIt();">
+		<input type="reset" value="<?php echo $AppUI->_('clear');?>" class="button" name="sqlaction" onClick="clearIt();">
 	</td>
 	<td align="right">
-		<input type="submit" value="add" style="font-size:9px;width:100px;" name="sqlaction2">
+		<input type="submit" value="<?php echo $AppUI->_('add');?>" class="button" name="sqlaction2">
 	</td>
 </tr>
 </table>

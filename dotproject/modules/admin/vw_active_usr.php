@@ -1,18 +1,16 @@
 <?php
-GLOBAL $vm, $denyEdit, $f, $z;
+GLOBAL $AppUI, $denyEdit, $where, $orderby;
 
-//set defaults
-$orderby = isset( $_GET['orderby'] ) ? $_GET['orderby'] : 'user_username';
-
-$usql = "
+$sql = "
 SELECT DISTINCT(user_id), user_username, user_last_name, user_first_name, permission_user, user_email
 FROM users
 LEFT JOIN permissions ON user_id = permission_user
 WHERE permission_value IS NOT NULL
-	AND (UPPER(user_username) LIKE '$f%' or UPPER(user_first_name) LIKE '$f%' OR UPPER(user_last_name) LIKE '$f%')
+	AND (UPPER(user_username) LIKE '$where%' or UPPER(user_first_name) LIKE '$where%' OR UPPER(user_last_name) LIKE '$where%')
 ORDER by $orderby
 ";
-$urow = mysql_query( $usql );
+
+$users = db_loadList( $sql );
 
 require "vw_usr.php";
 ?>
