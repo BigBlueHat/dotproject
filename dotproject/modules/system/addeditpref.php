@@ -28,6 +28,9 @@ WHERE user_id = $user_id
 $res  = db_exec( $sql );
 echo db_error();
 $user = db_fetch_row( $res );
+
+$crumbs = array();
+$crumbs["?m=system"] = "System Admin";
 ?>
 <script language="javascript">
 function submitIt(){
@@ -55,7 +58,7 @@ function submitIt(){
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td nowrap><a href="?m=system">System Admin</a></td>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
 </tr>
 </table>
 
@@ -67,14 +70,14 @@ function submitIt(){
 <input type="hidden" name="del" value="0">
 
 <tr height="20">
-	<th colspan="2">User Preferences:
+	<th colspan="2"><?php echo $AppUI->_('User Preferences');?>:
 	<?php
 		echo $user_id ? "$user[0] $user[1]" : "Default";
 	?></th>
 </tr>
 
 <tr>
-	<td align="right">Locale:</td>
+	<td align="right"><?php echo $AppUI->_('Locale');?>:</td>
 	<td>
 <?php
 	echo arraySelect( $AppUI->locales, 'pref_name[LOCALE]', 'class=text size=1', @$prefs['LOCALE'] );
@@ -83,7 +86,7 @@ function submitIt(){
 </tr>
 
 <tr>
-	<td align="right">Tabbed box view:</td>
+	<td align="right"><?php echo $AppUI->_('Tabbed Box View');?>:</td>
 	<td>
 <?php
 	$tabview = array( 'either', 'tabbed', 'flat' );
@@ -93,7 +96,7 @@ function submitIt(){
 </tr>
 
 <tr>
-	<td align="right">Short Date Format:</td>
+	<td align="right"><?php echo $AppUI->_('Short Date Format');?>:</td>
 	<td>
 <?php
 	$formats = array(
@@ -108,7 +111,7 @@ function submitIt(){
 </tr>
 
 <tr>
-	<td align="right">User Interface Style:</td>
+	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php
 	echo arraySelect( $AppUI->styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'] );

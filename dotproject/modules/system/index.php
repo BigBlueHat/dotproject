@@ -38,7 +38,7 @@ $AppUI->savePlace();
 	<td>&nbsp;</td>
 	<td align="left">
 		<a href="?m=system&a=translate"><?php echo $AppUI->_( 'Translation Management' );?></a>
-		<br /><a href="#">Date and Time</a>
+		<br /><a href="#"><?php echo $AppUI->_('Date and Time');?></a>
 	</td>
 </tr>
 
@@ -47,14 +47,14 @@ $AppUI->savePlace();
 		<img src="./images/icons/preference.gif" width="32" height="32" border="0" alt="">
 	</td>
 	<td align="left" class="subtitle">
-		Preferences
+		<?php echo $AppUI->_('Preferences');?>
 	</td>
 </tr>
 
 <tr>
 	<td>&nbsp;</td>
 	<td align="left">
-		<a href="?m=system&a=addeditpref">Default User Preferences</a>
+		<a href="?m=system&a=addeditpref"><?php echo $AppUI->_('Default User Preferences');?></a>
 	</td>
 </tr>
 

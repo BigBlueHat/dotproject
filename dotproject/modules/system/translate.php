@@ -57,6 +57,9 @@ if ($lang != 'en') {
 	}
 }
 ksort($trans);
+
+$crumbs = array();
+$crumbs["?m=system"] = "System Admin";
 ?>
 
 <img src="images/shim.gif" width="1" height="5" alt="" border="0"><br>
@@ -79,7 +82,7 @@ ksort($trans);
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
-	<td nowrap><a href="?m=system"><?php echo $AppUI->_( 'System Admin' );?></a></td>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
 </tr>
 </table>
 
