@@ -73,3 +73,25 @@ function collapse_all(parent)
 		}
 	}
 }
+
+function show_tab(i)
+{
+	hide_tabs();
+	var tab = document.getElementById('tab_' + i);
+	tab.style.display = 'block';
+	var tab = document.getElementById('toptab_' + i);
+	tab.className = 'tabon';
+}
+
+function hide_tabs()
+{
+	var tabs = document.getElementsByTagName('td');
+	for(var i = 0; i < tabs.length; i++)
+		if (tabs[i].className == 'tabon')
+			tabs[i].className = 'taboff';
+
+	var tabs = document.getElementsByTagName('div');
+	for(var i = 0; i < tabs.length; i++)
+		if (tabs[i].className == 'tab')
+			tabs[i].style.display = 'none';
+} 

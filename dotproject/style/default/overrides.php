@@ -9,6 +9,8 @@ class CTitleBlock extends CTitleBlock_core {
 class CTabBox extends CTabBox_core {
 	function show( $extra='' ) {
 		GLOBAL $AppUI, $dPconfig, $currentTabId, $currentTabName;
+$js_tabs = true;
+
 		$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 		if (! $uistyle)
 		  $uistyle = 'default';
@@ -16,7 +18,7 @@ class CTabBox extends CTabBox_core {
 		$s = '';
 	// tabbed / flat view options
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
-			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
+			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\" onLoad=\"show_tab(".$this->active.")\">\n";
 			$s .= "<tr>\n";
 			$s .= "<td nowrap=\"nowrap\">";
 			$s .= "<a href=\"".$this->baseHRef."tab=0\">".$AppUI->_('tabbed')."</a> : ";
@@ -56,9 +58,11 @@ class CTabBox extends CTabBox_core {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$sel = ($k == $this->active) ? 'Selected' : '';
 				$s .= '<td height="28" valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt="" /></td>';
-				$s .= '<td valign="middle" nowrap="nowrap"  background="./style/' . $uistyle . '/images/tab'.$sel.'Bg.png">&nbsp;<a href="';
+				$s .= '<td id="toptab_'.$k.'" valign="middle" nowrap="nowrap" class="'.$class.'" >&nbsp;<a href="'; //background="./style/' . $uistyle . '/images/tab'.$sel.'Bg.png"
 				if ($this->javascript)
 					$s .= "javascript:" . $this->javascript . "({$this->active}, $k)";
+				else if  ($js_tabs)
+					$s .= 'javascript:show_tab(' . $k . ')';
 				else
 					$s .= $this->baseHRef.'tab='.$k;
 				$s .='">'.$AppUI->_($v[1]).'</a>&nbsp;</td>';
@@ -72,7 +76,25 @@ class CTabBox extends CTabBox_core {
 			if ( $this->tabs[$this->active][0] != "" ) {
 				$currentTabId = $this->active;
 				$currentTabName = $this->tabs[$this->active][1];
-				require $this->baseInc.$this->tabs[$this->active][0].'.php';
+				if (!$js_tabs)
+					require $this->baseInc.$this->tabs[$this->active][0].'.php';
+			}
+			if ($js_tabs)
+			{
+				foreach( $this->tabs as $k => $v ) 
+				{
+					echo '<div class="tab" id="tab_'.$k.'">';
+					$currentTabId = $k;
+					$currentTabName = $v[1];
+					require $this->baseInc.$v[0].'.php';
+					echo '</div>';
+					echo '<script language="JavaScript" type="text/javascript">
+<!--
+show_tab('.$this->active.');
+//-->
+</script>';
+
+				}
 			}
 			echo '</td></tr></table>';
 		}

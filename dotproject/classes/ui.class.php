@@ -905,6 +905,7 @@ the active tab, and the selected tab **/
 */
 	function show( $extra='' ) {
 		GLOBAL $AppUI, $currentTabId, $currentTabName;
+$js_tabs = true;
 		reset( $this->tabs );
 		$s = '';
 	// tabbed / flat view options
@@ -946,10 +947,12 @@ the active tab, and the selected tab **/
 				$s .= "\n\t<td width=\"1%\" nowrap=\"nowrap\" class=\"tabsp\">";
 				$s .= "\n\t\t<img src=\"./images/shim.gif\" height=\"1\" width=\"1\" alt=\"\" />";
 				$s .= "\n\t</td>";
-				$s .= "\n\t<td width=\"1%\" nowrap=\"nowrap\" class=\"$class\">";
+				$s .= "\n\t<td id=\"toptab_" . $k . "\" width=\"1%\" nowrap=\"nowrap\" class=\"$class\">";
 				$s .= "\n\t\t<a href=\"";
 				if ($this->javascript)
 					$s .= "javascript:" . $this->javascript . "({$this->active}, $k)";
+				else if ($js_tabs)
+					$s .= 'javascript:show_tab(' . $k . ')';
 				else
 					$s .= $this->baseHRef . "tab=$k";
 				$s .= "\">". $AppUI->_($v[1]). "</a>";
@@ -964,7 +967,17 @@ the active tab, and the selected tab **/
 			if ( $this->baseInc.$this->tabs[$this->active][0] != "" ) {
 				$currentTabId = $this->active;
 				$currentTabName = $this->tabs[$this->active][1];
-				require $this->baseInc.$this->tabs[$this->active][0].'.php';
+				if (!$js_tabs)
+					require $this->baseInc.$this->tabs[$this->active][0].'.php';
+			}
+			if ($js_tabs)
+			{
+				foreach( $this->tabs as $k => $v ) 
+				{
+					echo '<div class="tab" id="tab_'.$k.'">';
+					require $this->baseInc.$v[0].'.php';
+					echo '</div>';
+				}
 			}
 			echo "\n</td>\n</tr>\n</table>";
 		}

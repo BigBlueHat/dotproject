@@ -253,6 +253,7 @@ td.tabon {
 	border-left: outset #ffffff 2px;
 	border-right: outset #cccccc 2px;
 	border-bottom: none;
+	background-image: url('./style/default/images/tabSelectedBg.png');
 }
 td.taboff {
 	background: #d6ebff;
@@ -260,6 +261,7 @@ td.taboff {
 	border-left: solid #cccccc 1px;
 	border-right: solid #cccccc 1px;
 	border-bottom: solid #cccccc 2px;
+	background-image: url('./style/default/images/tabBg.png');
 }
 td.tabsp {
 	border-bottom: solid #cccccc 2px;
