@@ -43,8 +43,8 @@ class CDate
 	var $change = 0; // 1 if date needs recalculation
 	var $format;
 
-	function CDate( $ts = "" ) {
-		if( $ts ) {
+	function CDate( $ts = null ) {
+		if( $ts !== null ) {
 			$this->setTimestamp($ts);
 		} else {
 			$this->setTimestamp(time());
