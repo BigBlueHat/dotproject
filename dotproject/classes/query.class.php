@@ -494,7 +494,9 @@ class DBQuery {
       return $result;
     if (is_array($join_clause)) {
       foreach ($join_clause as $join) {
-	$result .= ' ' . strtoupper($join['type']) . ' JOIN ' . $this->_table_prefix . $join['table'] . ' AS ' . $join['alias'];
+	$result .= ' ' . strtoupper($join['type']) . ' JOIN ' . $this->_table_prefix . $join['table'];
+	if ($join['alias'])
+	  $result .= ' AS ' . $join['alias'];
 	if (is_array($join['condition'])) {
 	  $result .= ' USING (' . implode(',', $join_condition) . ')';
 	} else {
