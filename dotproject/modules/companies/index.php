@@ -10,11 +10,11 @@ $orderby = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrde
 // load the company types
 $types = dPgetSysVal( 'CompanyType' );
 
-// get any companies denied from viewing
+// get any records denied from viewing
 $obj = new CCompany();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
-// retrieve list of companies
+// retrieve list of records
 $sql = "
 SELECT company_id, company_name, company_type,
 	count(distinct projects.project_id) as countp, count(distinct projects2.project_id) as inactive,
