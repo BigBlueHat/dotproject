@@ -226,7 +226,7 @@ foreach($project_types as $key=>$value)
 				++$counter[$key];
 	}
                 
-        $project_types[$key] .= ' (' . $counter[$key] . ')';
+        $project_types[$key] = $AppUI->_($project_types[$key], UI_OUTPUT_RAW) . ' (' . $counter[$key] . ')';
 }
 
 
