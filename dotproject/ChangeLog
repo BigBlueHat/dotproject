@@ -1,3 +1,36 @@
+2004-09-16 20:48  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed single quote issue (proposed by Maillequeule)
+
+2004-09-16 19:44  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Commented out the debug code that was breaking tasks.
+
+2004-09-16 19:36  (ajdonnison)
+---------------------------------
+index.php
+- Tidied up logic for detecting installer, to sort out problems where
+- display_errors is set to On.
+
+2004-09-16 19:20  (ajdonnison)
+---------------------------------
+modules/contacts/contacts.class.php
+- Removed extra copy of the var $contact_birthday that was causing sites
+- with display_errors on to crash.
+
+2004-09-16 05:33  (gregorerhardt)
+---------------------------------
+locales/en/tasks.inc
+modules/tasks/addedit.php
+- 0000206: fixed typo
+
+2004-09-15 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-14 05:08  (gregorerhardt)
 ---------------------------------
 modules/help/en/companies.addedit.hlp
@@ -465,39 +498,6 @@ fileviewer.php
 - Added the same cookie parameters as used in index.php to ensure we
 - don't have clashes requiring a new login.
 
-2004-08-24 19:52  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.php
-- oops, two people had the same idea, removed mine
-
-2004-08-24 19:45  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.php
-- fixed sql bug, grayed out a finished and past task
-
-2004-08-24 19:34  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Added a new style for finished tasks
-
-2004-08-24 19:11  (jcgonz)
----------------------------------
-modules/tasks/tasks.php
-- Solved a cross reference issue in a SQL
-
-2004-08-24 18:01  (gregorerhardt)
----------------------------------
-modules/tasks/gantt.php
-- for the progress bar gray is better than darkgray
-
-2004-08-24 17:58  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.class.php
-- sort by last name first rather than by first name
-
-2004-08-24 17:41  (gregorerhardt)
----------------------------------
-modules/tasks/gantt.php
 ...
 
 (This file has been wrapped)
