@@ -25,11 +25,10 @@
 			<li>Ability to watch forums or forum topics
 			<li>Hierarchial Company Departments module
 			<li>Improved filtering of index screens
-			<li>Standardising look-and-feel across modules as well as view enhancements
+			<li>Standardising look-and-feel across modules as well as view enhancements (tabbed and flat views)
 			<li>Support for user types
+			<li>Individualise events with the ability to mark as private
 		</ul>
-
-		<p><b>What New in this Version</b>
 
 	</td>
 	<td width=50%>
