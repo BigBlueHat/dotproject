@@ -13,29 +13,42 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 
 	<script language="JavaScript">
-	function doBtn() {
-		var oEl = event.srcElement;
-		var doit = event.type;
+	function doBtn(e) {
+		var oEl = e.target;
+		var doit = e.type;
 	
+		while (! oEl.className || -1 == oEl.className.indexOf( "Btn" )) {
+			oEl = oEl.parentNode;
+			if (!oEl) {
+				window.status = "no parent";
+				return;
+			}
+		}
+		var basename = oEl.className.substr(0,6);
+		if (doit == "mouseover" || doit == "mouseup") {
+			oEl.className = basename + "On";
+		} else if (doit == "mousedown") {
+			oEl.className = basename + "Down";
+		} else {
+			oEl.className = basename + "Off";
+		}
+		window.status = "doing " + doit + ", class=" + oEl.className;
+	}
+	function tboff(e){
+		var oEl = e.target;
+		var doit = e.type;
 		while (-1 == oEl.className.indexOf( "Btn" )) {
 			oEl = oEl.parentElement;
 			if (!oEl) {
 				return;
 			}
 		}
-		if (doit == "mouseover" || doit == "mouseup") {
-			oEl.className = "clsBtnOn";
-		} else if (doit == "mousedown") {
-			oEl.className = "clsBtnDown";
-		} else {
-			oEl.className = "clsBtnOff";
-		}
-	}
-	function tboff(){
-		var oEl = event.srcElement;
-		var doit = event.type;
 		oEl.className = "topBtnOff";
 	}
+	document.onmouseover = doBtn;
+	document.onmouseout = doBtn;
+	document.onmousedown = doBtn;
+	document.onmouseup = doBtn;
 	</script>
 </head>
 <body class="mainpage" background="style/classic/images/bground.gif">
@@ -47,9 +60,9 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 	<td nowrap width="33%" align="right">
 	<table cellpadding="1" cellspacing="1" width="150">
 	<tr>
-		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>" onmouseover="doBtn();"><?php echo $AppUI->_('My Info');?></a></td>
-		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><a href="./index.php?logout=-1" onmouseover="doBtn();"><?php echo $AppUI->_('Logout');?></a></td>
-		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"  onmouseover="doBtn();" onmouseout="tboff();" onmousedown="doBtn();" onmouseup="doBtn();"><?php echo dPcontextHelp( 'Help' );?></td>
+		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"><a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a></td>
+		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"><a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a></td>
+		<td class="topBtnOff" nowrap bgcolor="#cccccc" align="center"><?php echo dPcontextHelp( 'Help' );?></td>
 	</tr>
 	</table>
 	</td>
@@ -101,7 +114,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 				$s .= '<tr><td align="center" valign="middle" class="nav">'
 					.'<table cellspacing=0 cellpadding=0 border=0><tr><td class="clsBtnOff">'
 					.'<a href="?m='.$module['mod_directory'].'">'
-					.'<img src="'.dPfindImage( $module['mod_ui_icon'], $module['mod_directory'] ).'" onmouseover="doBtn();" onmouseout="doBtn();" onmousedown="doBtn();" onmouseup="doBtn();" alt="" border="0" width="30" height="30"></a></td></tr></table>'
+					.'<img src="'.dPfindImage( $module['mod_ui_icon'], $module['mod_directory'] ).'" alt="" border="0" width="30" height="30"></a></td></tr></table>'
 					.$AppUI->_($module['mod_ui_name'])
 					."</td></tr>\n";
 			}
