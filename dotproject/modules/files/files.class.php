@@ -136,7 +136,7 @@ class CFile extends CDpObject {
 		$parser = @$ft[$this->file_type];
 		if (!$parser)
 			$parser = $ft['default'];
-		if (!$parser) {
+		if (!$parser) 
 			return false;
 	// buffer the file
 		$fp = fopen( $this->_filepath, "rb" );
