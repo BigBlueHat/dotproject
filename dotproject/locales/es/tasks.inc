@@ -10,7 +10,7 @@
 "Attach a file"=>"Adjuntar archivo",
 "Attached Files"=>"Archivos adjuntos",
 "Comments"=>"Comentarios",
-"Creator"=>"Creador",
+"Creator"=>"Responsable",
 "Date"=>"Fecha",
 "Dates and Targets"=>"Fecha y Objetivos",
 "Duration"=>"Duración",

@@ -29,7 +29,7 @@
 "Progress"=>"En Progreso",
 "Project Management"=>"Administración del Proyecto",
 "Project Name"=>"Nombre del Proyecto",
-"Project Owner"=>"Creador del Proyecto",
+"Project Owner"=>"Responsable del Proyecto",
 "Project deleted"=>"Proyecto eliminado",
 "Project inserted"=>"Proyecto agregado",
 "Project updated"=>"Proyecto actualizado",
