@@ -1,3 +1,13 @@
+2003-10-26 21:05  (ajdonnison)
+---------------------------------
+modules/files/files.class.php
+- Changed from is_writeable to is_dir in detecting need to create directories.
+
+2003-10-24 03:43  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-10-24 02:35  (ajdonnison)
 ---------------------------------
 classes/libmail.class.php
@@ -487,16 +497,6 @@ ChangeLog
 - Changelog update
 
 2003-09-09 03:57  (gregorerhardt)
----------------------------------
-modules/companies/vw_active.php
-- changed currencysymbol to dPconfig
-
-2003-09-08 19:29  (ajdonnison)
----------------------------------
-modules/admin/vw_usr_perms.php
-- Fixed issue where translation was inappopriately used in javascript.
-
-2003-09-08 16:25  (gregorerhardt)
 ---------------------------------
 ...
 
