@@ -1,7 +1,7 @@
 <?php /* SYSTEM $Id$ */
 $AppUI->savePlace();
 
-$titleBlock = new CTitleBlock( 'System Administration', 'system.gif', $m, 'ID_HELP_SYS_IDX' );
+$titleBlock = new CTitleBlock( 'System Administration', 'system.gif', $m, "$m.$a" );
 $titleBlock->show();
 ?>
 <p>
