@@ -7,14 +7,9 @@
 ## 
 
 $AppUI->savePlace();
+$titleBlock = new CTitleBlock( 'History', 'stock_book_blue_48.png', $m, "$m.$a" );
+$titleBlock->show();
 ?>
-<table width="100%" border="0" cellpadding="0" cellspacing=1>
-<tr>
-	<td><img src="./images/icons/tasks.gif" alt="Tasks" border="0" width="44" height="38"></td>
-	<td nowrap width="100%"><h1><?php echo $AppUI->_('History');?></h1></td>
-</tr>
-</table>
-	
 <table width="100%" cellspacing="1" cellpadding="0" border="0">
 <tr>
         <td nowrap align="right">
@@ -32,7 +27,7 @@ Changes to:
         </td>
 	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add history');?>" onclick="window.location='?m=history&a=addedit'"></td>
 </table>
-	
+
 
 <?php
 
