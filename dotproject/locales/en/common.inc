@@ -102,6 +102,7 @@
 "login",
 "new department",
 "next",
+"noDeleteRecord"=>"You cannot delete this record. The following modules are associated with it",
 "nodepartments"=>"There are no departments",
 "openSource"=>"an open source project management application",
 "previous",
