@@ -1,6 +1,7 @@
 <?php /* COMPANIES $Id$ */
 
 global $companiesType;
+global $search_string;
 
 // retrieve any state parameters
 
@@ -38,7 +39,6 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
 	. ($companiesType ? " AND company_type = $companiesType" : "");
 	
-
 if($search_string != ""){
 	$sql .= " AND company_name LIKE '%$search_string%' ";
 }
