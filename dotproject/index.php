@@ -162,7 +162,7 @@ if (!$canRead && $m != 'public') {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 // include the module class file
-@include_once( "./modules/$m/$m.class.php" );
+@include_once( $AppUI->getModuleClass( $m ) );
 @include_once( "./modules/$m/" . ($u ? "$u/" : "") . "$u.class.php" );
 
 // do some db work if dosql is set

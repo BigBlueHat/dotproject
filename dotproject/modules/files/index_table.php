@@ -4,8 +4,8 @@
 GLOBAL $AppUI, $deny1;
 
 // load the following classes to retrieved denied records
-require_once( $AppUI->getModuleClass( 'projects' ) );
-require_once( $AppUI->getModuleClass( 'tasks' ) );
+include_once( $AppUI->getModuleClass( 'projects' ) );
+include_once( $AppUI->getModuleClass( 'tasks' ) );
 
 $project = new CProject();
 $deny1 = $project->getDeniedRecords( $AppUI->user_id );
