@@ -17,6 +17,19 @@ ALTER TABLE `projects` ADD `project_priority` tinyint(4) default '0';
 ALTER TABLE `projects` ADD `project_type` SMALLINT DEFAULT '0' NOT NULL;
 
 #
+#Add permissions selection criteria for each module.  
+#
+ALTER TABLE `modules` ADD `permissions_item_table` CHAR( 100 ) ;
+ALTER TABLE `modules` ADD `permissions_item_field` CHAR( 100 ) ;
+ALTER TABLE `modules` ADD `permissions_item_label` CHAR( 100 ) ;
+UPDATE modules SET permissions_item_table='files', permissions_item_field='file_id', permissions_item_label='file_name' WHERE mod_directory='files';
+UPDATE modules SET permissions_item_table='users', permissions_item_field='user_id', permissions_item_label='user_username' WHERE mod_directory='users';
+UPDATE modules SET permissions_item_table='projects', permissions_item_field='project_id', permissions_item_label='project_name' WHERE mod_directory='projects';
+UPDATE modules SET permissions_item_table='tasks', permissions_item_field='task_id', permissions_item_label='task_name' WHERE mod_directory='tasks';
+UPDATE modules SET permissions_item_table='companies', permissions_item_field='company_id', permissions_item_label='company_name' WHERE mod_directory='companies';
+UPDATE modules SET permissions_item_table='forums', permissions_item_field='forum_id', permissions_item_label='forum_name' WHERE mod_directory='forums';
+
+#
 #add percentage resource allocation
 #
 ALTER TABLE `user_tasks` ADD COLUMN perc_assignment int(11) NOT NULL default '100';

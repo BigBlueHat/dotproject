@@ -67,6 +67,9 @@ class CModule extends CDpObject {
 	var $mod_ui_order=null;
 	var $mod_ui_active=null;
 	var $mod_description=null;
+	var $permissions_item_label=null;
+	var $permissions_item_field=null;
+	var $permissions_item_table=null;
 
 	function CModule() {
 		$this->CDpObject( 'modules', 'mod_id' );

@@ -1,49 +1,63 @@
 <?php /* ADMIN $Id$ */
 GLOBAL $AppUI, $user_id, $canEdit, $tab;
 
-$pgos = array(
-	'files' => 'file_name',
-	'users' => 'user_username',
-	'projects' => 'project_name',
-	'tasks' => 'task_name',
-	'companies' => 'company_name',
-	'forums' => 'forum_name'
-);
-
 $pvs = array(
 '-1' => 'read-write',
 '0' => 'deny',
 '1' => 'read only'
 );
 
+//Go through all the currently installed modules, and pull out the permissions field/table information, build the sql query and build the modules drop down list..
+$sql = "
+SELECT 
+	mod_name, 
+	mod_directory, 
+	permissions_item_label, 
+	permissions_item_field, 
+	permissions_item_table 
+FROM 
+	modules 
+WHERE 
+	mod_active=1 
+";
+
+$modules_list = db_loadList( $sql);
+$pgos = array();
+$select_list = array();
+$join_list = array();
+$count = 0;
+foreach ($modules_list as $module){
+	if(isset($module['permissions_item_field']) && isset($module['permissions_item_table']) && isset($module['permissions_item_label'])){
+		$label = "t$count";
+		//associates mod dirs with tables;
+		$pgos[$module['mod_directory']] = array('table'=>$module['permissions_item_table'], 'field' => $module['permissions_item_label'], 'label' => $label);
+		//sql selects
+		$select_list[] = "\t$label.".$module['permissions_item_field']." as $label".$module['permissions_item_field'].", $label.".$module['permissions_item_label']." as $label".$module['permissions_item_label']."";
+		//sql joins
+		$join_list[] = "\tLEFT JOIN ".$module['permissions_item_table']." $label ON $label.".$module['permissions_item_field']." = p.permission_item and p.permission_grant_on = '".$module['mod_directory']."'";
+		$count++;
+	}
+}
+
+$selects = implode(",\n", $select_list);
+$joins = implode("\n", $join_list);
 
 //Pull User perms
 $sql = "
 SELECT u.user_id, u.user_username,
 	p.permission_item, p.permission_id, p.permission_grant_on, p.permission_value,
-	c.company_id, c.company_name,
-	pj.project_id, pj.project_name,
-	t.task_id, t.task_name,
-	f.file_id, f.file_name,
-	fm.forum_id, fm.forum_name,
-	u2.user_id, u2.user_username
+$selects
 FROM users u, permissions p
-LEFT JOIN companies c ON c.company_id = p.permission_item and p.permission_grant_on = 'companies'
-LEFT JOIN projects pj ON pj.project_id = p.permission_item and p.permission_grant_on = 'projects'
-LEFT JOIN tasks t ON t.task_id = p.permission_item and p.permission_grant_on = 'tasks'
-LEFT JOIN files f ON f.file_id = p.permission_item and p.permission_grant_on = 'files'
-LEFT JOIN users u2 ON u2.user_id = p.permission_item and p.permission_grant_on = 'users'
-LEFT JOIN forums fm ON fm.forum_id = p.permission_item and p.permission_grant_on = 'forums'
+$joins
 WHERE u.user_id = p.permission_user
 	AND u.user_id = $user_id
 ";
-
 $res = db_exec( $sql );
 
 //pull the projects into an temp array
 $tarr = array();
 while ($row = db_fetch_assoc( $res )) {
-	$item = @$row[@$pgos[$row['permission_grant_on']]];
+	$item = @$row[@$pgos[$row['permission_grant_on']]['label'].@$pgos[$row['permission_grant_on']]['field']];
 	if (!$item) {
 		$item = $row['permission_item'];
 	}
@@ -113,15 +127,16 @@ function delIt(id) {
 }
 
 var tables = new Array;
-tables['companies'] = 'companies';
-tables['departments'] = 'departments';
-tables['projects'] = 'projects';
-tables['tasks'] = 'tasks';
-tables['forums'] = 'forums';
+<?php
+	foreach ($pgos as $key=>$value){
+		echo "tables['$key'] = '".$value['table']."';\n";
+	}
+?>
 
 function popPermItem() {
 	var f = document.frmPerms;
 	var pgo = f.permission_grant_on.options[f.permission_grant_on.selectedIndex].value;
+
 	if (!(pgo in tables)) {
 		alert( 'No list associated with this Module.' );
 		return;
