@@ -111,6 +111,8 @@ function constructTaskTree($task_data, $depth = 0){
 	$projTasks[$task_data[0]] = $task_data[1];
 	
 	$selected = $task_data[0] == $task_parent ? "selected" : "";
+	$task_data[1] = strlen($task_data[1])>45 ? substr($task_data[1],0, 45)."..." : $task_data[1];
+	
 	$task_parent_options .= "<option value='".$task_data[0]."' $selected>".getSpaces($depth*3).dPFormSafe($task_data[1])."</option>";
 	
 	$sql = "select task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent
