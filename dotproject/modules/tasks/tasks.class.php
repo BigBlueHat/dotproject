@@ -91,7 +91,7 @@ class CTask extends CDpObject {
 		$this->task_percent_complete = intval( $this->task_percent_complete );
 	
 		if (!$this->task_duration) {
-			$this->task_duration = '0';
+			$this->task_duration = '1';
 		}
 		if (!$this->task_duration_type) {
 			$this->task_duration_type = 1;
