@@ -147,4 +147,9 @@ ALTER TABLE `projects` ADD `project_private` TINYINT UNSIGNED DEFAULT "0";
 #
 # Users table
 #
-ALTER TABLE `users` CHANGE `signature` `user_signature` TEXT
+ALTER TABLE `users` CHANGE `signature` `user_signature` TEXT;
+
+#
+# AJE (6/Jan/2003)
+#
+INSERT INTO user_preferences VALUES("0", "TIMEFORMAT", "%I:%M %p");

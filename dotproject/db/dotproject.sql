@@ -388,5 +388,6 @@ INSERT INTO permissions VALUES (1,1,"all",-1, -1);
 INSERT INTO user_preferences VALUES("0", "LOCALE", "en");
 INSERT INTO user_preferences VALUES("0", "TABVIEW", "0");
 INSERT INTO user_preferences VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
+INSERT INTO user_preferences VALUES("0", "TIMEFORMAT", "%I:%M %p");
 INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 
