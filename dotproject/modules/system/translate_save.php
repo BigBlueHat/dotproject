@@ -1,28 +1,33 @@
 <?php /* SYSTEM $Id$ */
+/**
+* Processes the entries in the translation form.
+* @version $Revision$
+* @author Andrew Eddie <users.sourceforge.net>
+*/
 
 $module = isset( $HTTP_POST_VARS['module'] ) ? $HTTP_POST_VARS['module'] : 0;
 $lang = isset( $HTTP_POST_VARS['lang'] ) ? $HTTP_POST_VARS['lang'] : 'es';
 
 $trans = isset( $HTTP_POST_VARS['trans'] ) ? $HTTP_POST_VARS['trans'] : 0;
-//print_r($trans); die;
+//echo '<pre>';print_r( $trans );echo '</pre>';die;
 
 if (!($fp = fopen ("{$AppUI->cfg['root_dir']}/locales/$lang/$module.inc", "wt"))) {
 	$AppUI->setMsg( "Could not open locales file to save.", UI_MSG_ERROR );
 	$AppUI->redirect( "m=system" );
 }
 
-fwrite( $fp, "##\n## DO NOT MODIFY THIS FILE BY HAND!\n##\n" );
+$txt = "##\n## DO NOT MODIFY THIS FILE BY HAND!\n##\n";
 
 if ($lang == 'en') {
 // editing the english file
 	foreach ($trans as $langs) {
-		if ( ($langs['abbrev'] || $langs['english']) && empty($langs['del']) ) {
-			$langs['abbrev'] = stripslashes( $langs['abbrev'] );
+		if ( (@$langs['abbrev'] || $langs['english']) && empty($langs['del']) ) {
+			$langs['abbrev'] = stripslashes( @$langs['abbrev'] );
 			$langs['english'] = stripslashes( $langs['english'] );
 			if (!empty($langs['abbrev'])) {
-				fwrite( $fp, "\"{$langs['abbrev']}\"=>" );
+				$txt .= "\"{$langs['abbrev']}\"=>";
 			}
-			fwrite( $fp, "\"{$langs['english']}\",\n" );
+			$txt .= "\"{$langs['english']}\",\n";
 		}
 	}
 } else {
@@ -30,14 +35,15 @@ if ($lang == 'en') {
 	foreach ($trans as $langs) {
 		if ( empty($langs['del']) ) {
 			$langs['english'] = stripslashes( $langs['english'] );
-			fwrite( $fp, "\"{$langs['english']}\"=>\"{$langs['lang']}\",\n" );
+			//fwrite( $fp, "\"{$langs['english']}\"=>\"{$langs['lang']}\",\n" );
+			$txt .= "\"{$langs['english']}\"=>\"{$langs['lang']}\",\n";
 		}
 	}
 }
-
-fclose($fp);
+//echo "<pre>$txt</pre>";
+fwrite( $fp, $txt );
+fclose( $fp );
 
 $AppUI->setMsg( "Locales file saved", UI_MSG_OK );
 $AppUI->redirect();
-
 ?>
