@@ -73,3 +73,4 @@
 "this topic",
 "topics for this forum",
 "update watches",
+"view PDF file",
