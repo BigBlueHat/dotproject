@@ -1,0 +1,223 @@
+Version: $Id$
+
+README FOR JPGRAPH
+==================
+
+This is JpGraph 1.9.1 an Object Oriented PHP4 Graph Plotting library.
+The whole libray is Copyright (C) 2001,2002 Johan Persson and
+released under QPL 1.0
+
+Included files
+--------------
+README	                This file
+QPL.txt                 QPL 1.0  Licensee
+
+/src
+  Changelog               Changelog
+  jpgraph.php             Base library
+  jpgraph_log.php         Extension: logarithmic scales
+  jpgraph_line.php        Extension: line plots 
+  jpgraph_bar.php         Extension: bar plots
+  jpgraph_error.php       Extension: error plots
+  jpgraph_scatter.php     Extension: scatter/impuls plots
+  jpgraph_radar.php       Extension: radar plots
+  jpgraph_pie.php         Extension: pie plots
+  jpgraph_canvas.php      Extension: drawing canvas
+  jpgraph_canvtools.php	  Extension: utility classes for working with canvas
+  jpgraph_pie3d.php	  Extension: 3D pie plots
+  jpgraph_gantt.php	  Extension: Gantt chart
+
+/src/utils/misc		Various _unsupported_ small utilities to do 
+                        image manipulation, create background images
+                        and help create graphical DB schema.
+
+/src/Examples		A directory with around 210 example graphs with source.
+			Run jpgraph_testsuit.php to get a list of all
+			files and you can easily click on a file to
+			see the code and the resulting image.
+		
+/docs/manual/html/	Manual
+
+/docs/manual/ref/	Class reference
+
+			
+Requirements:
+-------------
+Miminum:
+* PHP 4.04 or higher
+* GD 1.8.x or higher
+
+Recommended:
+* PHP 4.2.2 
+* GD 1.8.x or higher
+
+CAVEAT:
+To get background images working with GD 2.0.1 you MUST enable
+Truecolor images by setting the constant USE_TRUECOLOR to true. If you
+don't fo this the background images will just be a black rectangle.
+The bad thing with this is that the antialias for Truetypes is broken
+using truecolor images in GD 2.0.1. This means you can't have 
+background and TTF fonts in the same image.
+
+You can find a bug fix for GD 2.01 and the TTF problem together
+with Truecolor images at
+
+   http://www.coupin.net/gd-freetype/
+
+NOTE: This bug fix has _nothing_ to do with JpGraph and I can't
+guarantee anything nor answer any questions regarding this 
+specific fix.
+
+
+Installation
+------------
+0. Make sure your PHP is AT LEAST 4.04 (preferrable 4.2.2) 
+   and that you have compiled support for GD library. 
+   You must make aboslutely sure that you have GD working. 
+   Please run phpinfo() to check if GD library
+   is supported in your installation. Please not that JpGraph only
+   fully supports GD 1.x. There are known issues with GD 2.0.1 as
+   described in CAVEAT 2 above.
+   
+1. Unzip and copy the files to a directory of your choice.
+
+2. Set up the directory paths in jpgraph.php where the cache directory
+   should be and where your TTF directory is. Note that Apache/PHP must
+   have write permission in your cache directory. 
+
+4. Check that all rest of the DEFINE in the top of JpGraph.php 
+   is setup to your preference. The default should be fine
+   for most users. (See also Note 5. below)
+   Specifically check that the settings of USE_GD2_LIBRARY reflects
+   your installation, (should be true if you have GD2 installed,
+   false otherwise).
+   
+3. Make sure PHP have write privileges to your cache directory if 
+   you plan on using the cache feature.
+
+4. Some windows installations seems to have a problem with a PHP
+   script ending in a newline (This newline seems to be sent to the
+   browser and will cause a Header already sent error). 
+   If you have this problem try remove all trailing newlines in the
+   jpgraph* files 
+
+5. It has been reported that PHP 4.06 under IIS has problem correctly
+   interpreting file paths. This can be solved by hardcoding the
+   CACHE_DIRECTORY and FONT_DIRECTORY const ants directly in the code
+   instead of using the defined constants. 
+
+6. Read (really!) the FAQ on http://www.aditus.nu/jpgraph/jpg_faq.php.
+
+
+Troubleshooting
+---------------
+1. Any PHP errors about function "imagecreate" does not exist indicates that
+   your PHP installation does not include the GD library. This must be present.
+
+2. Any error about "parent::" undefined means that you are not using PHP 4.02 or
+   above. You _NEED_ PHP 4.02 or higher. This problem has also been
+   reported to sometimes occur under Windows. This problem has also
+   been reported by people running Zend-cache and is a bug in Zend. A
+   workaround is to move all files into one single file.
+
+3. If you don't get any background images (but rather a solid black
+   box) you are using GD 2.x but have forgotten to enable truecolor
+   support. Correct this by enabling the USE_TRUECOLOR define.
+
+4. If background images does not work make sure the settings of 
+   USE_GD2_LIBRARY corresponds to your installation, i.e. If you
+   don't have GD2 then this define must be false!
+
+5. If you are running PHP 4.06 and get an error saying "GD was not
+   built with truetype support" you should know that this is a known
+   problem with GD+PHP 4.06. There are some workarounds (search the
+   net!) but it is really recommended that you instead upgrade to at least
+   PHP 4.1.1 and configure PHP with --with-gd-native-ttf 
+   (Please also note that the built in TTF uses point size for fonts
+   whereas Truetype 2 uses pixels.)
+   Please DON't ask me how to resolve the GD Font problem. All mail
+   regarding this will go straight to /dev/null. Upgrade to 4.1.1!
+
+6. If you are running IIS and Win2k and get the error "Can't find
+   font' when trying to use TTF fonts then try to change you paths
+   to UNIX style, i.e. "/usr/local/fonts/ttf/". Remember that the
+   path is absolute and not relative to the htdocs catalogue.
+
+7. If you are using the cache please make sure that you have
+   set the permissions correctly for the cache directory so that
+   Apache/PHP can write to that directory.
+
+8. If you have problem building GD 2.0.1 for PHP you might want 
+   to try the following tip from Rasmus L.
+
+   ----< QUOTE >----
+
+   Build GD 2.0.1 with these two lines in your GD2 Makefile
+
+   CFLAGS=-g -DHAVE_LIBPNG -DHAVE_LIBJPEG -DHAVE_LIBFREETYPE
+   LIBS=libgd.a -lpng -lz -ljpeg -freetype -lm
+
+   Don't install the lib anywhere, just leave it in the GD-2.1.1
+   directory.
+
+   Then build PHP using a minimum of:
+
+   --with-gd=/home/<your_dir>/gd-2.0.1
+   --with-freetype-dir=/use
+   --enable-gd-native-ttf
+   --enable-gd-imgstrttf
+   --with-jpeg-dir=/usr
+   --with-png-dir=/usr
+   --with-xpm-dir=/usr/X11R6
+
+   The above assumes you have freetype2 installed along with the
+   libjpeg and libpng libs under /usr
+
+   ----< END QUOTE >----
+
+
+Known problem
+-------------
+1. Image maps does not work with rotated images they assume that the
+   image is located at 0 degrees.
+
+Bug reports and suggestions
+---------------------------
+Should be sent to (jpgraph aditus nu) [insert at and dot]
+
+Change history:
+------------------------------------------------------------------------
+Date        Ver        Comment
+------------------------------------------------------------------------
+2002-10-30  1.9.1      Fixed glitch in 1.9
+2002-10-25  1.9        TTF font change. Many small additional improvements
+2002-09-17  1.8	       Documentation update.
+2002-09-09  1.8 BETA   Functional improvements.
+2002-07-05  1.7        Functional improvements. Rotated bar graphs.
+2002-06-17  1.7 BETA   Functional improvements.        
+2002-05-15  1.6.3      Enhancements to Gantt graphs anbd minor bug fixes.
+2002-04-19  1.6.2      Addition of image maps for line and scatter plot
+2002-04-07  1.6.1      Bug fixes for 3D pies and image maps for pie's
+2002-04-01  1.6	       Functional improvments
+2002-04-01  1.6 BETA   Beta candidate for 1.6
+2002-03-01  1.5.3      Fix minor release problem in 1.5.2
+2002-02-29  1.5.2      Minor bug fixes.
+2002-02-11  1.5.1      Minor bug fixes.
+2002-01-27  1.5	       Functional improvements. Gantt charts.
+2002-01-17  1.5-BETA2  Functional improvements, bug fixes
+2001-12-16  1.5-BETA   Functional improvements, gantt-charts, bug fixes.
+2001-11-12  1.4        Functional improvements, bug fixes.
+2001-09-23  1.3.1      Minor bug fixes
+2001-09-13  1.3        Major functional enhancements and minor bugfixes
+2001-04-29  1.2.2      Minor bug fixes. Addded background image support 
+2001-03-29  1.2.1      Minor bug fixes. Experimental support for 3D pie plots
+2001-03-18  1.2        Second release see changes.txt
+2001-02-18  1.1        Second release see changes.txt
+2001-02-04  1.0        First public release
+
+-------------------------------------------------------------------------
+
+Stockholm/London 2002-10-30
+Johan Persson (jpgraph  aditus nu) [insert at and dot]
+
+<EOF>
