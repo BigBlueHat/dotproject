@@ -78,6 +78,12 @@ EXECUTION
     possible (if not completed in step four above). You may also add other users
     with differing levels of access to your dotproject database.
     
+    If you would like to provide an alternative email address for the login 
+    screen's "Help! I've forgotten my username and password" mailto link, edit line 
+    56 (or thereabouts) of /includes/login.php.  The default entry is:
+        <?php echo 'admin@' . $site_domain;?>
+    
+    
 9) File Management Configuration
     The File Management Module provides users with an opportunity to upload and
     share files. Several steps are necessary to make sure this module works 
