@@ -1,3 +1,47 @@
+2003-04-21 01:01  (eddieajau)
+---------------------------------
+images/icons/stock_edit-16.png
+modules/forums/view_messages.php
+- New icons
+
+2003-04-21 00:55  (eddieajau)
+---------------------------------
+modules/forums/forums.class.php
+- Fixed concatenating mail problem
+
+2003-04-21 00:54  (eddieajau)
+---------------------------------
+modules/forums/index.php
+modules/forums/viewer.php
+- New icon
+
+2003-04-21 00:53  (eddieajau)
+---------------------------------
+modules/forums/addedit.php
+- Updated title block
+
+2003-04-21 00:53  (eddieajau)
+---------------------------------
+classes/libmail.class.php
+- Added option to To method to reset the To array
+
+2003-04-21 00:49  (eddieajau)
+---------------------------------
+images/icons/stock_delete-16.png
+images/icons/stock_help-16.png
+images/icons/stock_ok-16.png
+- New, replacement icons
+
+2003-04-21 00:48  (eddieajau)
+---------------------------------
+images/obj/tick.gif
+- Replaced with gnome icon
+
+2003-04-20 04:37  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-04-19 17:13  (eddieajau)
 ---------------------------------
 classes/libmail.class.php
@@ -454,50 +498,6 @@ modules/files/do_file_aed.php
 ---------------------------------
 modules/files/do_file_aed.php
 - Fixed bugs preventing proper update of file information
-
-2003-04-09 08:24  (eddieajau)
----------------------------------
-modules/files/addedit.php
-- Fixed javascript syntax error and duplicate file_task field entry
-
-2003-04-09 08:21  (eddieajau)
----------------------------------
-modules/projects/index.php
-- Fixed bug in logic for selecting companies.
-
-2003-04-09 08:19  (eddieajau)
----------------------------------
-modules/public/selector.php
-- Fixed bug when displaying list for specific tasks and projects
-
-2003-04-09 08:16  (eddieajau)
----------------------------------
-modules/tasks/view.php
-- Fixed bug in date display
-
-2003-04-09 01:08  (eddieajau)
----------------------------------
-includes/config-dist.php
-- Updated release date
-
-2003-04-09 00:46  (eddieajau)
----------------------------------
-modules/forums/viewer.php
-- Added cvs id
-
-2003-04-09 00:44  (eddieajau)
----------------------------------
-modules/forums/view_topics.php
-modules/forums/viewer.php
-- Cosmetic changes
-
-2003-04-09 00:10  (eddieajau)
----------------------------------
-db/dotproject_100.sql
-db/upgrade_022_to_100.sql
-db/upgrade_100_alpha1_to_alpha2.sql
-- Rationalised description field of companies, departments and files tables.
-
 ...
 
 (This file has been wrapped)
