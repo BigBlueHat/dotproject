@@ -507,6 +507,7 @@ class CEvent extends CDpObject {
 		// Filter events not allowed
 		$where = '';
 		// $join = winnow('projects', 'event_project', $where);
+		$join = '';
 		$project =& new CProject;
 		$allowedProjects = $project->getAllowedSQL($user_id, 'event_project');
 		if (count ($allowedProjects)) {
@@ -565,7 +566,10 @@ class CEvent extends CDpObject {
 		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
 
 
-		for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
+		// AJD: Should this be going off the end of the array?  I don't think so.
+		// If it should then a comment to that effect would be nice.
+		// for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
+		for ($i=0; $i < sizeof($eventListRec);  $i++) {
 
 			for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
 
