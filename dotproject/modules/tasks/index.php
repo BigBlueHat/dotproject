@@ -299,7 +299,7 @@ while (list( $k, ) = each( $projects ) ) {
 		if($tnums && ENABLE_GANTT_CHARTS) { ?>
 		<tr>
 			<td colspan="8" align=right>
-				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='modules/tasks/gantt.php?project_id=<?php echo $p["project_id"] ?>';">
+				<input type="button" class=button value="see gant chart" onClick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $p["project_id"] ?>';">
 			</td>	
 		</tr>
 		<?php }

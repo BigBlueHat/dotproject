@@ -140,12 +140,13 @@ for ($x=0; $x < $nums; $x++) {
 }
 
 $count = 0;
-$graph = new GanttGraph();
+$graph = new GanttGraph($width);
 $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 //$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY);
 $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
+if($start_date != "" && $end_date != "") $graph->SetDateRange($start_date, $end_date); 
 $row = 0;
 
 //This kludgy function echos children tasks as threads
