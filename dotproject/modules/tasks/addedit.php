@@ -81,9 +81,11 @@ ORDER BY task_project
 $projTasks = array( $obj->task_id => 'None' );
 $res = db_exec( $sql );
 while ($row = db_fetch_row( $res )) {
-	if (strlen( $row[1] ) > 25) {
-		$row[1] = substr( $row[1], 0, 22 ).'...';
+	/*
+	if (strlen( $row[1] ) > 30) {
+		$row[1] = substr( $row[1], 0, 27 ).'...';
 	}
+	*/
 	$projTasks[$row[0]] = $row[1];
 }
 
@@ -398,10 +400,10 @@ function calcFinish() {
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
+					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:180px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
+					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:180px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 			</tr>
 			<tr>
@@ -418,10 +420,10 @@ function calcFinish() {
 			</tr>
 			<tr>
 				<td>
-					<?php echo arraySelect( $users, 'resources', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
+					<?php echo arraySelect( $users, 'resources', 'style="width:180px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 				<td>
-					<?php echo arraySelect( $assigned, 'assigned', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
+					<?php echo arraySelect( $assigned, 'assigned', 'style="width:180px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 			<tr>
 				<td align="right"><input type="button" class="button" value="&gt;" onClick="addUser()" /></td>
