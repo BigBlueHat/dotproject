@@ -2,6 +2,7 @@
 if (file_exists('../includes/config.php'))
 {
         include_once('../includes/config.php');
+        require_once( $dPconfig['root_dir']."/includes/db_adodb.php" );
         include_once('../includes/db_connect.php');
         include_once('../includes/main_functions.php');
 }

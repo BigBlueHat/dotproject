@@ -1,6 +1,7 @@
 <?php
 include('../includes/config.php');
 include($dPconfig['root_dir'] . '/includes/main_functions.php');
+require_once( $dPconfig['root_dir']."/includes/db_adodb.php" );
 include($dPconfig['root_dir'] . '/includes/db_connect.php');
 $users = db_loadList('SELECT * FROM users');
 foreach ($users as $user)
