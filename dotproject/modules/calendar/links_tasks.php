@@ -97,12 +97,11 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 //echo "  ,".intval(Date::compare( $target, $temp ));
 //continue;
 
-			while (Date::compare( $endPeriod, $temp ) > 0) {
-				if (Date::compare( $target, $temp ) > 0) {
-					if ($end == null || $temp->before($end)) {
-						$links[$temp->format( FMT_TIMESTAMP_DATE )][] = $link;
-					}
-				}
+			// Reformatted to speed up calendar display
+			while (Date::compare( $endPeriod, $temp ) > 0
+			    && Date::compare( $target, $temp ) > 0
+			    && ($end == null || $temp->before($end)) ) {
+				$links[$temp->format( FMT_TIMESTAMP_DATE )][] = $link;
 				$temp->addSeconds( $sid );
 			}
 		//}				// commented out this line on 20040612 by gregorerhardt in order to fix #909085
