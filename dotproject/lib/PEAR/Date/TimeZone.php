@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2002 The PHP Group                                |
+// | Copyright (c) 1997-2003 The PHP Group                                |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 2.02 of the PHP license,      |
 // | that is bundled with this package in the file LICENSE, and is        |
@@ -17,34 +17,34 @@
 // |                                                                      |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// PEAR CVS Id: TimeZone.php,v 1.3 2003/01/04 11:54:54 mj Exp
 //
 // Date_TimeZone Class
 //
 
 /**
- * TimeZone representation class, along with time zone information data.
- *
- * TimeZone representation class, along with time zone information data.
- * The default timezone is set from the first valid timezone id found
- * in one of the following places, in this order: <br>
- * 1) global $_DATE_TIMEZONE_DEFAULT<br>
- * 2) system environment variable PHP_TZ<br>
- * 3) system environment variable TZ<br>
- * 4) the result of date('T')<br>
- * If no valid timezone id is found, the default timezone is set to 'UTC'.
- * You may also manually set the default timezone by passing a valid id to
- * Date_TimeZone::setDefault().<br>
- *
- * This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
- *
- * 
- * @author Baba Buehler <baba@babaz.com>
- * @package Date
- * @access public
- * @version 1.0
- */
-class Date_TimeZone 
+* TimeZone representation class, along with time zone information data.
+*
+* TimeZone representation class, along with time zone information data.
+* The default timezone is set from the first valid timezone id found
+* in one of the following places, in this order: <br>
+* 1) global $_DATE_TIMEZONE_DEFAULT<br>
+* 2) system environment variable PHP_TZ<br>
+* 3) system environment variable TZ<br>
+* 4) the result of date('T')<br>
+* If no valid timezone id is found, the default timezone is set to 'UTC'.
+* You may also manually set the default timezone by passing a valid id to
+* Date_TimeZone::setDefault().<br>
+*
+* This class includes time zone data (from zoneinfo) in the form of a global array, $_DATE_TIMEZONE_DATA.
+*
+*
+* @author Baba Buehler <baba@babaz.com>
+* @package Date
+* @access public
+* @version 1.0
+*/
+class Date_TimeZone
 {
     /**
      * Time Zone ID of this time zone
@@ -81,14 +81,14 @@ class Date_TimeZone
      * @var int
      */
     var $offset;
-    
+
     /**
      * System Default Time Zone
      * @var object Date_TimeZone
      */
     var $default;
 
-    
+
     /**
      * Constructor
      *
@@ -100,7 +100,7 @@ class Date_TimeZone
      * @param string $id the time zone id
      * @return object Date_TimeZone the new Date_TimeZone object
      */
-    function Date_TimeZone($id) 
+    function Date_TimeZone($id)
     {
         global $_DATE_TIMEZONE_DATA;
         if(Date_TimeZone::isValidID($id)) {
@@ -125,7 +125,7 @@ class Date_TimeZone
             $this->offset = $_DATE_TIMEZONE_DATA[$this->id]['offset'];
         }
     }
-    
+
     /**
      * Return a TimeZone object representing the system default time zone
      *
@@ -135,12 +135,12 @@ class Date_TimeZone
      * @access public
      * @return object Date_TimeZone the default time zone
      */
-    function getDefault() 
+    function getDefault()
     {
         global $default;
         return new Date_TimeZone($default);
     }
-    
+
     /**
      * Sets the system default time zone to the time zone in $id
      *
@@ -152,10 +152,11 @@ class Date_TimeZone
     function setDefault($id)
     {
         global $default;
-        if(Date_TimeZone::isValidID($id))
+        if(Date_TimeZone::isValidID($id)) {
             $default = $id;
+        }
     }
-    
+
     /**
      * Tests if given id is represented in the $_DATE_TIMEZONE_DATA time zone data
      *
@@ -168,12 +169,13 @@ class Date_TimeZone
     function isValidID($id)
     {
         global $_DATE_TIMEZONE_DATA;
-        if(isset($_DATE_TIMEZONE_DATA[$id]))
+        if(isset($_DATE_TIMEZONE_DATA[$id])) {
             return true;
-        else 
+        } else {
             return false;
+        }
     }
-    
+
     /**
      * Is this time zone equal to another
      *
@@ -186,12 +188,13 @@ class Date_TimeZone
      */
     function isEqual($tz)
     {
-        if(strcasecmp($this->id, $tz->id) == 0)
+        if(strcasecmp($this->id, $tz->id) == 0) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
-    
+
     /**
      * Is this time zone equivalent to another
      *
@@ -209,10 +212,11 @@ class Date_TimeZone
      */
     function isEquivalent($tz)
     {
-        if($this->offset == $tz->offset && $this->hasdst == $tz->hasdst)
+        if($this->offset == $tz->offset && $this->hasdst == $tz->hasdst) {
             return true;
-        else
+        } else {
             return false;
+        }
     }
 
     /**
@@ -227,36 +231,37 @@ class Date_TimeZone
     {
         return $this->hasdst;
     }
-    
+
     /**
      * Is the given date/time in DST for this time zone
-     * 
+     *
      * Attempts to determine if a given Date object represents a date/time
      * that is in DST for this time zone.  WARNINGS: this basically attempts to
      * "trick" the system into telling us if we're in DST for a given time zone.
      * This uses putenv() which may not work in safe mode, and relies on unix time
-     * which is only valid for dates from 1970 to ~2038.  This relies on the 
+     * which is only valid for dates from 1970 to ~2038.  This relies on the
      * underlying OS calls, so it may not work on Windows or on a system where
      * zoneinfo is not installed or configured properly.
      *
      * @access public
      * @param object Date $date the date/time to test
      * @return boolean true if this date is in DST for this time zone
-     */   
+     */
     function inDaylightTime($date)
     {
         $env_tz = "";
-        if(getenv("TZ"))
+        if(getenv("TZ")) {
             $env_tz = getenv("TZ");
+        }
         putenv("TZ=".$this->id);
         $ltime = localtime($date->getTime(), true);
         putenv("TZ=".$env_tz);
         return $ltime['tm_isdst'];
     }
-    
+
     /**
      * Get the DST offset for this time zone
-     * 
+     *
      * Returns the DST offset of this time zone, in milliseconds,
      * if the zone observes DST, zero otherwise.  Currently the
      * DST offset is hard-coded to one hour.
@@ -266,17 +271,18 @@ class Date_TimeZone
      */
     function getDSTSavings()
     {
-        if($this->hasdst)
+        if($this->hasdst) {
             return 3600000;
-        else 
+        } else {
             return 0;
+        }
     }
 
     /**
      * Get the DST-corrected offset to UTC for the given date
      *
      * Attempts to get the offset to UTC for a given date/time, taking into
-     * account daylight savings time, if the time zone observes it and if 
+     * account daylight savings time, if the time zone observes it and if
      * it is in effect.  Please see the WARNINGS on Date::TimeZone::inDaylightTime().
      *
      *
@@ -292,7 +298,7 @@ class Date_TimeZone
             return $this->offset;
         }
     }
-     
+
     /**
      * Returns the list of valid time zone id strings
      *
@@ -306,7 +312,7 @@ class Date_TimeZone
         global $_DATE_TIMEZONE_DATA;
         return array_keys($_DATE_TIMEZONE_DATA);
     }
-    
+
     /**
      * Returns the id for this time zone
      *
@@ -319,7 +325,7 @@ class Date_TimeZone
     {
         return $this->id;
     }
-    
+
     /**
      * Returns the long name for this time zone
      *
@@ -333,7 +339,7 @@ class Date_TimeZone
     {
         return $this->longname;
     }
-    
+
     /**
      * Returns the short name for this time zone
      *
@@ -346,7 +352,7 @@ class Date_TimeZone
     {
         return $this->shortname;
     }
-    
+
     /**
      * Returns the DST long name for this time zone
      *
@@ -359,10 +365,10 @@ class Date_TimeZone
     {
         return $this->dstlongname;
     }
-    
+
     /**
      * Returns the DST short name for this time zone
-     * 
+     *
      * Returns the DST short name for this time zone, i.e. "CDT"
      *
      * @access public
@@ -372,7 +378,7 @@ class Date_TimeZone
     {
         return $this->dstshortname;
     }
-    
+
     /**
      * Returns the raw (non-DST-corrected) offset from UTC/GMT for this time zone
      *
@@ -385,7 +391,7 @@ class Date_TimeZone
     {
         return $this->offset;
     }
-    
+
 } // Date_TimeZone
 
 
@@ -3620,17 +3626,19 @@ $GLOBALS['_DATE_TIMEZONE_DATA'] = array(
 //  First try _DATE_TIMEZONE_DEFAULT global,
 //  then PHP_TZ environment var, then TZ environment var
 //
-if(isset($_DATE_TIMEZONE_DEFAULT) && Date_TimeZone::isValidID($_DATE_TIMEZONE_DEFAULT))
+if(isset($_DATE_TIMEZONE_DEFAULT) 
+    && Date_TimeZone::isValidID($_DATE_TIMEZONE_DEFAULT)
+) {
     Date_TimeZone::setDefault($_DATE_TIMEZONE_DEFAULT);
-elseif (getenv('PHP_TZ') && Date_TimeZone::isValidID(getenv('PHP_TZ')))
+} elseif (getenv('PHP_TZ') && Date_TimeZone::isValidID(getenv('PHP_TZ'))) {
     Date_TimeZone::setDefault(getenv('PHP_TZ'));
-elseif (getenv('TZ') && Date_TimeZone::isValidID(getenv('TZ')))
+} elseif (getenv('TZ') && Date_TimeZone::isValidID(getenv('TZ'))) {
     Date_TimeZone::setDefault(getenv('TZ'));
-elseif (Date_TimeZone::isValidID(date('T')))
-    Date_TimeZone::setDefault(date('T'));    
-else 
+} elseif (Date_TimeZone::isValidID(date('T'))) {
+    Date_TimeZone::setDefault(date('T'));
+} else {
     Date_TimeZone::setDefault('UTC');
-
+}
 //
 // END
 ?>

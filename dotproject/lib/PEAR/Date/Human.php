@@ -3,7 +3,7 @@
 // +----------------------------------------------------------------------+
 // | PHP Version 4                                                        |
 // +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2002 The PHP Group                                |
+// | Copyright (c) 1997-2003 The PHP Group                                |
 // +----------------------------------------------------------------------+
 // | This source file is subject to version 2.0 of the PHP license,       |
 // | that is bundled with this package in the file LICENSE, and is        |
@@ -16,25 +16,25 @@
 // | Author: Allan Kent <allan@lodestone.co.za>                           |
 // +----------------------------------------------------------------------+
 //
-// $Id$
+// PEAR CVS Id: Human.php,v 1.3 2003/01/04 11:54:54 mj Exp
 //
 
 /**
- * Class to convert date strings between Gregorian and Human calendar formats.
- * The Human Calendar format has been proposed by Scott Flansburg and can be
- * explained as follows:
- *  The year is made up of 13 months
- *  Each month has 28 days
- *  Counting of months starts from 0 (zero) so the months will run from 0 to 12
- *  New Years day (00) is a monthless day
- *  Note: Leap Years are not yet accounted for in the Human Calendar system
- * 
- * @since PHP 4.0.4
- * @author Allan Kent <allan@lodestone.co.za>
- */
+* Class to convert date strings between Gregorian and Human calendar formats.
+* The Human Calendar format has been proposed by Scott Flansburg and can be
+* explained as follows:
+*  The year is made up of 13 months
+*  Each month has 28 days
+*  Counting of months starts from 0 (zero) so the months will run from 0 to 12
+*  New Years day (00) is a monthless day
+*  Note: Leap Years are not yet accounted for in the Human Calendar system
+*
+* @since PHP 4.0.4
+* @author Allan Kent <allan@lodestone.co.za>
+*/
 class Date_Human
 {
-    
+
     /**
      * Returns an associative array containing the converted date information
      * in 'Human Calendar' format.
@@ -62,7 +62,7 @@ class Date_Human
      *  Since 0 is a valid month number under the Human Calendar, I have left
      *  the month as -1 for New Years Day.
      */
-    function gregorianToHuman($day=0, $month=0, $year=0) 
+    function gregorianToHuman($day=0, $month=0, $year=0)
     {
         /**
          * Check to see if any of the arguments are empty
@@ -142,7 +142,7 @@ class Date_Human
                      "hwoy" => $humanWeekOfYear,
                      "hmoy" => $humanMonthOfYear );
     }
-    
+
     /**
      * Returns unix timestamp for a given Human Calendar date
      *
@@ -183,6 +183,6 @@ class Date_Human
         $GregorianTimeStamp = mktime(0, 0, 0, 1, $DayOfYear, $year);
         return $GregorianTimeStamp;
     }
-    
+
 }
 ?>
