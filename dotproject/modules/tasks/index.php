@@ -35,7 +35,7 @@ $AppUI->setState( 'ActiveProject', $project_id );
 <input type=hidden name=m value=tasks>
 	<td nowrap align=right>
 <?php
-	echo arraySelect( $filters, 'f', 'size=1 class=text onChange="document.task_filter.submit();"', $f );
+	echo arraySelect( $filters, 'f', 'size=1 class=text onChange="document.task_filter.submit();"', $f, true );
 ?>
 	</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_TASK_IDX' );?></td>

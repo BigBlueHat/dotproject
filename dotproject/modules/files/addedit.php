@@ -39,7 +39,7 @@ function submitIt() {
 	f.submit();
 }
 function delIt() {
-	if (confirm( "Are you sure you would like to delete this file?" )) {
+	if (confirm( "<?php echo $AppUI->_('filesDelete');?>" )) {
 		var f = document.uploadfile;
 		f.del.value='1';
 		f.submit();

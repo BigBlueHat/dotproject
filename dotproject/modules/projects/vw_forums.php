@@ -18,9 +18,9 @@ $rc= mysql_query($sql);
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th nowrap>&nbsp;</th>
-	<th nowrap width="100%">Forum Name</th>
-	<th nowrap>Messages</th>
-	<th nowrap>Last Post</th>
+	<th nowrap width="100%"><?php echo $AppUI->_('Forum Name');?></th>
+	<th nowrap><?php echo $AppUI->_('Messages');?></th>
+	<th nowrap><?php echo $AppUI->_('Last Post');?></th>
 </tr>
 <?php
 while ($row = mysql_fetch_array( $rc )) { ?>

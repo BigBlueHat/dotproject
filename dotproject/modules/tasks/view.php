@@ -65,13 +65,13 @@ if (!$denyEdit) {
 function updateTask() {
 	var form = document.update;
 	if (form.comments.value.length < 1) {
-		alert( "Please enter a worthwile commment" );
+		alert( "<?php echo $AppUI->_('tasksComment');?>" );
 		form.comments.focus();
 	} else if (isNaN( parseInt( form.complete.value+0 ) )) {
-		alert( "The percent complete must be a integer" );
+		alert( "<?php echo $AppUI->_('tasksPercent');?>" );
 		form.complete.focus();
 	} else if(form.complete.value  < 0 || form.complete.value > 100) {
-		alert( "The percent complete must be a value between 0 and 100" );
+		alert( "<?php echo $AppUI->_('tasksPercentValue');?>" );
 		form.complete.focus();
 	} else {
 		form.submit();
@@ -125,11 +125,11 @@ function updateTask() {
 			<td class="hilite">
 		<?php
 			if ($task["task_priority"] == 0) {
-				echo "Normal";
+				echo $AppUI->_('normal');
 			} else if ($task["task_priority"] < 0){
-				echo "Low";
+				echo $AppUI->_('low');
 			} else {
-				echo "High";
+				echo $AppUI->_('high');
 			}
 		?>
 			</td>

@@ -57,7 +57,7 @@ if (!$denyEdit) {
 <table width="98%" border="0" cellpadding="1" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/projects.gif" alt="" border="0"></td>
-	<td nowrap><span class="title">Manage Project</span></td>
+	<td nowrap><span class="title"><?php echo $AppUI->_('Manage Project');?></span></td>
 	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td align="right" width="100%">
 		<table width="225" cellspacing="1" cellpadding="1" class="tbl">
@@ -67,7 +67,7 @@ if (!$denyEdit) {
 			<th><?php echo $AppUI->_('Active');?>?</th>
 		</tr>
 		<tr>
-			<td><?php echo $pstatus[$project["project_status"]]; ?></td>
+			<td><?php echo $AppUI->_($pstatus[$project["project_status"]]); ?></td>
 			<td align="center"><?php printf( "%.1f%%", $project["project_precent_complete"] );?></td>
 			<td align="center"><?php echo $project["project_active"] ? $AppUI->_('Yes') : $AppUI->_('No');?></td>
 		</tr>

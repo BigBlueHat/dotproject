@@ -89,10 +89,10 @@ function submitIt() {
 	var form = document.AddEdit;
 
 	if (form.project_name.value.length < 3) {
-		alert( "Please enter a valid Project Name" );
+		alert("<?php echo $AppUI->_('projectsValidName');?>");
 		form.project_name.focus();
 	} else if (form.project_color_identifier.value.length < 3) {
-		alert( "Please select a color to identify this project" );
+		alert( "<?php echo $AppUI->_('projectsColor');?>");
 		form.project_color_identifier.focus();
 	} else {
 		form.submit();
@@ -100,7 +100,7 @@ function submitIt() {
 }
 
 function delIt() {
-	if (confirm( "Are you sure that you would like to delete this project?\n" )) {
+	if (confirm( "<?php echo $AppUI->_('projectsDelete');?>" )) {
 		var form = document.AddEdit;
 		form.del.value=1;
 		form.submit();
@@ -249,7 +249,7 @@ function delIt() {
 				</tr>
 				<tr>
 					<td>
-						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"] ); ?> 
+						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $project["project_status"], true ); ?> 
 					</td>
 					<td><b><?php echo intval(@$project["project_precent_complete"]);?> %</b></td>
 					<td><input type=checkbox value=1 name=project_active <?php if($project["project_active"]){?>checked<?php }?>></td>
@@ -268,10 +268,10 @@ function delIt() {
 </tr>
 <tr>
 	<td>
-		<input class=button type="Button" name="Cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}">
+		<input class=button type="button" name="<?php echo $AppUI->_('cancel');?>" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}">
 	</td>
 	<td align="right" colspan="2">
-		<input class=button type="Button" name="btnFuseAction" value="save" onClick="submitIt();">
+		<input class=button type="Button" name="btnFuseAction" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt();">
 	</td>
 </tr>
 </form>

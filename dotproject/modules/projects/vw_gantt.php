@@ -52,11 +52,11 @@ function popCalendar(x){
 	<td>
 		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 		<tr bgcolor="#eeeeee">
-			<td align="right">Start Date:</td>
+			<td align="right"><?php echo $AppUI->_('Start Date');?>:</td>
 			<td nowrap>
 				<input type="text" class="text" name="sdate" value="<?php echo fromDate($start_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
 			</td>
-			<td align="right">End Date:</td>
+			<td align="right"><?php echo $AppUI->_('End Date');?>:</td>
 			<td nowrap>
 				<input type="text" class="text" name="edate" value="<?php echo fromDate($end_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
 			</td>
@@ -66,14 +66,14 @@ function popCalendar(x){
 </tr>
 
 <tr>
-	<td><input type=radio name=display_option value=month>This month</td>
+	<td><input type=radio name=display_option value=month><?php echo $AppUI->_('This month');?></td>
 	<td>&nbsp;</td>
 </tr>
 
 <tr>
-	<td><input type=radio name=display_option value=all>Entire proyect</td>
+	<td><input type=radio name=display_option value=all><?php echo $AppUI->_('Entire project');?></td>
 	<td align=right valign=bottom>
-		<input type="button" value="refresh" class=button onClick="javascript:document.form.submit();">
+		<input type="button" value="<?php echo $AppUI->_('refresh');?>" class=button onClick="javascript:document.form.submit();">
 	</td>
 </tr>
 </form>

@@ -52,13 +52,13 @@ $projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 <form name="searcher" action="?m=files&a=search" method="post">
 <input type="hidden" name="dosql" value="searchfiles">
 	<td width="100%" align="right">
-		<input class="button" type="text" name="s" maxlength="30" size="20" value="Not implemented" disabled="disabled">
+		<input class="button" type="text" name="s" maxlength="30" size="20" value="<?php echo $AppUI->_('Not implemented');?>" disabled="disabled">
 	</td>
-	<td>&nbsp;<input class="button" type="submit" value="search" disabled="disabled"></td>
+	<td>&nbsp;<input class="button" type="submit" value="<?php echo $AppUI->_('search');?>" disabled="disabled"></td>
 </form>
 	<?php if (!$denyEdit) { ?>
 	<td align="right">
-		&nbsp;<input type="button" class=button value="<?php echo $AppUI->_( 'add new file', 0, true );?>" onClick="javascript:window.location='./index.php?m=files&a=addedit';">
+		&nbsp;<input type="button" class=button value="<?php echo $AppUI->_( 'add new file' );?>" onClick="javascript:window.location='./index.php?m=files&a=addedit';">
 	</td>
 	<?php } ?>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help', 'ID_HELP_FILE_IDX' ).'">' );?></td>

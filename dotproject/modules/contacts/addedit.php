@@ -29,10 +29,10 @@ $crumbs["?m=contacts"] = "contacts list";
 function submitIt() {
 	var form = document.changecontact;
 	if (form.contact_last_name.value.length < 1) {
-		alert( "Please enter a valid contact name" );
+		alert( "<?php echo $AppUI->_('contactsValidName');?>" );
 		form.contact_last_name.focus();
 	} else if (form.contact_order_by.value.length < 1) {
-		alert( "Please enter a order by value" );
+		alert( "<?php echo $AppUI->_('contactsOrderBy');?>" );
 		form.contact_order_by.focus();
 	} else {
 		form.submit();
@@ -41,7 +41,7 @@ function submitIt() {
 
 function delIt(){
 	var form = document.changecontact;
-	if(confirm( "Are you sure you would like\nto delete this contact?" )) {
+	if(confirm( "<?php echo $AppUI->_('contactsDelete');?>" )) {
 		form.del.value = "<?php echo $contact_id;?>";
 		form.submit();
 	}
@@ -69,7 +69,7 @@ function orderByName( x ){
 <table border="0" cellpadding="4" cellspacing="0" width="98%">
 <tr>
 	<td width="50%" nowrap="nowrap"><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" nowrap="nowrap"><A href="javascript:delIt()">delete contact <img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this contact" border="0"></a></td>
+	<td align="right" nowrap="nowrap"><A href="javascript:delIt()"><?php echo $AppUI->_('delete contact');?><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this contact" border="0"></a></td>
 </tr>
 </table>
 
@@ -199,8 +199,12 @@ function orderByName( x ){
 	</td>
 </tr>
 <tr>
-	<td><input type="button" value="back" class=button onClick="javascript:window.location='./index.php?m=contacts';"></td>
-	<td align="right"><input type="button" value="submit" class=button onClick="submitIt()"></td>
+	<td>
+		<input type="button" value="<?php echo $AppUI->_('back');?>" class=button onClick="javascript:window.location='./index.php?m=contacts';">
+	</td>
+	<td align="right">
+		<input type="button" value="<?php echo $AppUI->_('submit');?>" class=button onClick="submitIt()">
+	</td>
 </tr>
 </form>
 </table>
