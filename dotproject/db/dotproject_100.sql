@@ -29,7 +29,7 @@ CREATE TABLE companies (
   company_owner int(11) NOT NULL default '0',
   company_description text NOT NULL default '',
   company_type int(3) NOT NULL DEFAULT '0',
-  company_email varchar(30),
+  company_email varchar(255),
   PRIMARY KEY (company_id)
 ) TYPE=MyISAM;
 
@@ -65,8 +65,8 @@ CREATE TABLE contacts (
   contact_birthday datetime default NULL,
   contact_company varchar(100) NOT NULL default '',
   contact_type varchar(20) default NULL,
-  contact_email varchar(100) default NULL,
-  contact_email2 varchar(100) default NULL,
+  contact_email varchar(255) default NULL,
+  contact_email2 varchar(255) default NULL,
   contact_phone varchar(30) default NULL,
   contact_phone2 varchar(30) default NULL,
   contact_mobile varchar(30) default NULL,
@@ -305,7 +305,7 @@ CREATE TABLE users (
   user_last_name varchar(50) default '',
   user_company int(11) default '0',
   user_department int(11) default '0',
-  user_email varchar(60) default '',
+  user_email varchar(255) default '',
   user_phone varchar(30) default '',
   user_home_phone varchar(30) default '',
   user_mobile varchar(30) default '',
