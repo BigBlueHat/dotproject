@@ -9,7 +9,7 @@ if(!getDenyRead("admin")){ // let's see if the user has sysadmin access
 		$user_id = dPgetParam($_GET, "user_id", $user_id);
 		$AppUI->setState("user_id", $user_id);
 	} else {
-		$user_id = $AppUI->getState("user_id");
+//		$user_id = $AppUI->getState("user_id");
 	}
 }
 
@@ -59,7 +59,7 @@ $sql = "
 		 WHERE user_tasks.task_id = a.task_id
 		 AND b.task_id IS NULL
 		 AND user_tasks.user_id = $user_id
-		 AND (a.task_percent_complete < 100 OR a.task_percent_complete IS NULL)
+		 AND ( a.task_percent_complete < 100  OR a.task_percent_complete IS NULL )
 		 AND a.task_start_date != ''
 		 AND a.task_end_date != ''
 		 AND project_id = a.task_project" .  		
@@ -70,6 +70,7 @@ $sql = "
 ";
 //echo "<pre>$sql</pre>";
 $tasks = db_loadList( $sql );
+
 
 $priorities = array(
 	'1' => 'high',
