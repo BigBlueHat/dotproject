@@ -1,10 +1,12 @@
 <?php
 
-$do_report 		    = dPgetParam( $_POST, "do_report", 0 );
-$log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
-$log_end_date 	    = dPgetParam( $_POST, "log_end_date", 0 );
-$log_all_projects 	= dPgetParam($_POST, "log_all_projects", 0);
-$log_all		    = dPgetParam($_POST, "log_all", 0);
+$do_report 		         = dPgetParam( $_POST, "do_report", 0 );
+$log_start_date          = dPgetParam( $_POST, "log_start_date", 0 );
+$log_end_date 	         = dPgetParam( $_POST, "log_end_date", 0 );
+$log_all_projects 	     = dPgetParam($_POST, "log_all_projects", 0);
+$log_all		         = dPgetParam($_POST, "log_all", 0);
+$use_assigned_percentage = dPgetParam($_POST, "use_assigned_percentage", 0);
+$user_id                 = dPgetParam($_POST, "user_id", 0);
 
 // create Date objects from the datetime fields
 $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();
@@ -67,6 +69,19 @@ function setCalendar( idate, fdate ) {
 		<?php echo $AppUI->_( 'Log All Projects' );?>
 	</td>
 	
+	<td nowrap='nowrap'>
+	   <input type="checkbox" name="use_assigned_percentage" <?php if ($use_assigned_percentage) echo "checked" ?> />
+	   <?php echo $AppUI->_( 'Use assigned percentage' );?>
+	</td>
+	
+	<td nowrap='nowrap'>
+	   <?php 
+	       echo $AppUI->_( 'Tasks created by' );
+	       echo " ";
+	       echo getUsersCombo($user_id);
+	   ?>
+	</td>
+	
 	<td align="right" width="50%" nowrap="nowrap">
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
@@ -100,7 +115,9 @@ if($do_report) {
 	        AND task_dynamic   !='1'
 	        AND task_milestone = '0'
 	        AND task_duration  > 0";
-
+    if($user_id){
+        $sql .= " AND t.task_owner = '$user_id'";
+    }
 	if(!$log_all_projects){
 		$sql .= " AND t.task_project='$project_id'\n";
 	}
@@ -154,7 +171,8 @@ if($do_report) {
 						if(!isset($user_usage[$user_id][$actual_date->format("%Y%m%d")])){
 							$user_usage[$user_id][$actual_date->format("%Y%m%d")] = 0;
 						}
-						$user_usage[$user_id][$actual_date->format("%Y%m%d")] += $task_duration_per_day * ($user_data["perc_assignment"]/100);
+						$percentage_assigned = $use_assigned_percentage ? ($user_data["perc_assignment"]/100) : 1;
+						$user_usage[$user_id][$actual_date->format("%Y%m%d")] += $task_duration_per_day * $percentage_assigned;
 						if($user_usage[$user_id][$actual_date->format("%Y%m%d")] < 0.005){
 							//We want to show at least 0.01 even when the assigned time is very small so we know
 							//that at that time the user has a running task

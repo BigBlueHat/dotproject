@@ -563,4 +563,29 @@ function showFVar(&$var, $title = ""){
     echo "</pre>";
 }
 
+function getUsersArray(){
+    $usersql = "SELECT user_id, user_username, contact_first_name, contact_last_name
+                FROM users
+                LEFT JOIN contacts ON contact_id = user_contact
+                ORDER by contact_last_name,contact_first_name";
+    
+    return db_loadHashList($usersql, "user_id");
+    
+}
+
+function getUsersCombo($default_user_id = 0, $first_option = 'All users') {
+    global $AppUI;
+    
+    $parsed = "<select name='user_id' class='text'>";
+    if($first_option != ""){
+        $parsed .= "<option value='0' ".(!$default_user_id ? "selected" : "").">".$AppUI->_($first_option)."</option>";
+    }
+    foreach(getUsersArray() as $user_id => $user){
+        $selected = $user_id == $default_user_id ? "selected" : "";
+        $parsed .= "<option value='$user_id' $selected>".$user["contact_first_name"]." ".$user["contact_last_name"]."</option>";
+    }
+    $parsed .= "</select>";
+    return $parsed;
+}
+
 ?>
