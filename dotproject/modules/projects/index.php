@@ -145,7 +145,6 @@ ORDER BY company_name,dept_parent,dept_name
 $rows = db_loadList( $sql, NULL );
 
 //display the select list
-$buffer = '<form action="?m=projects" method="post" name="pickCompany">';
 $buffer .= '<select name="department" onChange="document.pickCompany.submit()" class="text">';
 $buffer .= '<option value="company_0" style="font-weight:bold;">'.$AppUI->_('All').'</option>'."\n";
 $company = '';
@@ -161,11 +160,11 @@ foreach ($rows as $row) {
 		}
 	}
 }
-$buffer .= "</select></form>";
+$buffer .= '</select>';
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );
-$titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':' );
+$titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':', '', '<form action="?m=projects" method="post" name="pickCompany">', '</form>' );
 $titleBlock->addCell( $buffer
 //	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
 //	'<form action="?m=projects" method="post" name="pickCompany">', '</form>'
