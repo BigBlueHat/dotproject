@@ -16,7 +16,9 @@
 
 <body bgcolor="#f0f0f0" onload="document.loginform.username.focus();">
 <br /><br /><br /><br />
-<form action="./index.php" method="post" name="loginform">
+<?//please leave action argument empty ?>
+<!--form action="./index.php" method="post" name="loginform"-->
+<form method="post" name="loginform">
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">
 <input type="hidden" name="login" value="<?php echo time();?>" />
 <input type="hidden" name="redirect" value="<?php echo $redirect;?>" />
