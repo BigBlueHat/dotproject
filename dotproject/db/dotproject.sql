@@ -323,7 +323,8 @@ CREATE TABLE `user_tasks` (
   `user_id` int(11) NOT NULL default '0',
   `user_type` tinyint(4) NOT NULL default '0',
   `task_id` int(11) NOT NULL default '0',
-  `perc_assignment` int(11) NOT NULL default '100',  
+  `perc_assignment` int(11) NOT NULL default '100',
+  `user_task_priority` tinyint(4) default '0',  
   PRIMARY KEY  (`user_id`,`task_id`),
   KEY `user_type` (`user_type`)
 ) TYPE=MyISAM;

@@ -65,3 +65,8 @@ CREATE TABLE `project_departments` (
   `project_id` INT(10) NOT NULL,
   `department_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
+
+# 20040727
+# add user specific task priority
+#
+ALTER TABLE `user_tasks` ADD `user_task_priority` tinyint(4) default '0';

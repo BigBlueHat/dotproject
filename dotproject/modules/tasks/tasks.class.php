@@ -472,7 +472,7 @@ class CTask extends CDpObject {
 
 	//{{{ staticGetDependencies ()
 	/**
-	*	Retrieve the tasks dependencies 
+	*	Retrieve the tasks dependencies
 	*
 	*	@author	handco	<handco@users.sourceforge.net>
 	*	@param	integer	ID of the task we want dependencies
@@ -1003,11 +1003,26 @@ class CTask extends CDpObject {
 	}
 	
 	function getAssignedUsers(){
-		$sql = "select u.*, ut.perc_assignment
+		$sql = "select u.*, ut.perc_assignment, ut.user_task_priority
 		        from users as u, user_tasks as ut
 		        where ut.task_id = '$this->task_id'
 		              and ut.user_id = u.user_id";
 		return db_loadHashList($sql, "user_id");
+	}
+
+ 	function getUserSpecificTaskPriority( $user_id = 0, $task_id = NULL ) {
+		// use task_id of given object if the optional parameter task_id is empty
+		$task_id = empty($task_id) ? $this->task_id : $task_id;
+		$sql = "SELECT user_task_priority FROM user_tasks WHERE user_id = $user_id AND task_id = $task_id";
+		$prio = db_loadHash($sql, $priority);
+		return $prio ? $priority['user_task_priority'] : NULL;
+	}
+	
+	function updateUserSpecificTaskPriority( $user_task_priority = 0, $user_id = 0, $task_id = NULL ) {
+		// use task_id of given object if the optional parameter task_id is empty
+		$task_id = empty($task_id) ? $this->task_id : $task_id;
+		$sql = "REPLACE INTO user_tasks (user_id, task_id, user_task_priority) VALUES ($user_id, $task_id, $user_task_priority)";
+		db_exec( $sql );
 	}
 
     function getProject() {
@@ -1015,19 +1030,19 @@ class CTask extends CDpObject {
      $proj = db_loadHash($sql, $projects);
      return $projects;
     }
-	
+
 	//Returns task children IDs
 	function getChildren() {
 		$sql = "select task_id from tasks where task_id != '$this->task_id'
 				and task_parent = '$this->task_id'";
 		return db_loadList($sql);
 	}
-		
-	
+
+
 	/**
 	* This function, recursively, updates all tasks status
 	* to the one passed as parameter
-	*/ 
+	*/
 	function updateSubTasksStatus($new_status, $task_id = null){
 		if(is_null($task_id)){
 			$task_id = $this->task_id;
@@ -1099,7 +1114,7 @@ class CTask extends CDpObject {
 			if($project->project_owner == $AppUI->user_id){
 				$can_edit_time_information = true;
 			}
-			
+
 			// Am I sys admin?
 			if(!getDenyEdit("admin")){
 				$can_edit_time_information = true;

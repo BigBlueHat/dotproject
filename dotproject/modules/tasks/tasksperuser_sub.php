@@ -154,7 +154,8 @@ function chPriority(user_id) {
         } else {
                 f.rm.value = 0;
                 f.del.value = 0;
-                f.store.value = 1;
+                f.store.value = 0;
+		f.chUTP.value = 1;
                 f.user_id.value = user_id;
                 f.submit();
         }
@@ -233,6 +234,7 @@ function chPriority(user_id) {
 </table>
 </form>
 <?php
+echo $AppUI->_('P')."&nbsp;=&nbsp;".$AppUI->_('User specific Task Priority');
 if($do_report){
 	// Let's figure out which users we have
 	$sql = "SELECT  u.user_id,
@@ -375,6 +377,7 @@ if($do_report){
 			}
 
 			$tmpuser= "<form name=\"assFrm$user_id\" action=\"index.php?m=tasks&a=tasksperuser\" method=\"post\">
+				<input type=\"hidden\" name=\"chUTP\" value=\"0\" />
                                 <input type=\"hidden\" name=\"del\" value=\"1\" />
                                 <input type=\"hidden\" name=\"rm\" value=\"0\" />
                                 <input type=\"hidden\" name=\"store\" value=\"0\" />
@@ -408,7 +411,7 @@ if($do_report){
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
-                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
+                        $tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'user_task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change User specific Task Priority of selected Tasks').'"', 0, true );
                         $tmpuser .= "</td></tr></table></td>";
 
 			$tmpuser.="</tr>";
@@ -461,7 +464,6 @@ function isMemberOfTask($list,$N,$user_id,$task) {
 	for($i=0;$i<$N && $list[$i]->task_id!=$task->task_id;$i++);
 	$users=$task->task_assigned_users;
 
-	//$users=$Lusers[$task->getAssignedUsers();
 	foreach($users as $task_user_id => $user_data) {
 		if ($task_user_id==$user_id) { return true; }
 	}
@@ -485,16 +487,17 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
         global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x;
 	$zi++;
         $users = $task->getAssignedUsers();
+	$task->userPriority = $task->getUserSpecificTaskPriority( $user_id );
         $projects = $task->getProject();
 	$tmp="<tr>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
         $tmp .= "<input type=\"checkbox\" name=\"task_id$task->task_id\" value=\"$task->task_id\"/>";
         $tmp.="</td>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
-        if ($task->task_priority > 0) {
+        if ($task->userPriority > 0) {
                 $tmp .= "<img src=\"./images/icons/1.gif\" width=13 height=16 alt=\"high\">";
         }
-        elseif ($task->task_priority < 0) {
+        elseif ($task->userPriority < 0) {
                 $tmp .= "<img src=\"./images/icons/low.gif\" width=13 height=16 alt=\"low\">";
         }
         $tmp.="</td>";
@@ -508,6 +511,12 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	if ($level >= 1) { $tmp.= dPshowImage(dPfindImage('corner-dots.gif', 'tasks'), 16, 12, 'Subtask')."&nbsp;"; }
 	$tmp.= "<a href='?m=tasks&a=view&task_id=$task->task_id'>".$task->task_name."</a>";
 	if ($task->task_milestone == true) { $tmp.="</B>"; }
+	 if ($task->task_priority > 0) {
+                $tmp .= "&nbsp;(<img src=\"./images/icons/1.gif\" width=13 height=16 alt=\"high\">)";
+        }
+        elseif ($task->task_priority < 0) {
+                $tmp .= "&nbsp;(<img src=\"./images/icons/low.gif\" width=13 height=16 alt=\"low\">)";
+        }
 	$tmp.="</td>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\" >";
         $tmp.= "<a href='?m=projects&a=view&project_id=$task->task_project' style='background-color:#".@$projects["project_color_identifier"]."; color:".bestColor(@$projects['project_color_identifier'])."'>".$projects['project_short_name']."</a>";

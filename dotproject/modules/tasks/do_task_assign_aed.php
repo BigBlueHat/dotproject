@@ -4,6 +4,7 @@ $rm = isset($_POST['rm']) ? $_POST['rm'] : 0;
 $hassign = @$_POST['hassign'];
 $htasks = @$_POST['htasks'];
 $store = dPgetParam($_POST, 'store', 0);
+$chUTP = dPgetParam($_POST, 'chUTP', 0);
 $percentage_assignment = @$_POST['percentage_assignment'];
 
 // prepare the percentage of assignment per user as required by CTask::updateAssigned()
@@ -57,6 +58,12 @@ for( $i=0; $i <= sizeof($htasks_ar); $i++) {
                         $AppUI->setMsg( "User(s) assigned to Task", UI_MSG_OK);
 
                 }
+		// process the user specific task priority
+		if ($chUTP == 1) {
+			$obj->updateUserSpecificTaskPriority($user_task_priority, $user_id);
+			 $AppUI->setMsg( "User specific Task Priority updated", UI_MSG_OK);
+		}
+
                 if ($store == 1) {
                         if (($msg = $obj->store())) {
                                 $AppUI->setMsg( $msg, UI_MSG_ERROR );
