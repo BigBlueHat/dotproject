@@ -50,7 +50,10 @@ function tboff(){
 	echo '<td>';
 	$newItem = array( ""=>'- New Item -' );
 
-	if (!empty( $project_id ) && $project_id > 0) {
+	$project_id = $AppUI->getState( 'ActiveProject' ) !== NULL ? $AppUI->getState( 'ActiveProject' ) : 0;
+	$project_id = isset($_REQUEST['project_id']) ? $_REQUEST['project_id'] : $project_id;
+
+	if ($project_id) {
 		$newItem["tasks"] = "Task";
 	} else if (!empty( $task_id ) && $task_id > 0) {
 		$sql = "SELECT task_project FROM tasks WHERE task_id = $task_id";
