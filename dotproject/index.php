@@ -34,11 +34,6 @@ if ($AppUI->doLogin()) {
     $AppUI->loadPrefs( 0 );
 }
 
-// set the module and action from the url
-$m = isset( $_GET['m'] ) ? $_GET['m'] : 'companies';
-$u = isset( $_GET['u'] ) ? $_GET['u'] : '';
-$a = isset( $_GET['a'] )? $_GET['a'] : 'index';
-
 // load some locale settings
 @include_once( "./locales/$AppUI->user_locale/locales.php" );
 @include_once( "./locales/core.php" );
@@ -84,15 +79,7 @@ require_once( "./includes/main_functions.php" );
 require_once( "./includes/permissions.php" );
 
 // set the module and action from the url
-if ( isset( $_GET['m'] ) ) {
-	$m = $_GET['m'];
-} else {
-	if( !getDenyRead( $m ) ) {
-		$m = 'companies';
-	} else {
-		$m = getReadableModule();
-	}
-}
+$m = isset( $_GET['m'] ) ? $_GET['m'] : getReadableModule();
 $u = isset( $_GET['u'] ) ? $_GET['u'] : '';
 $a = isset( $_GET['a'] )? $_GET['a'] : 'index';
 
