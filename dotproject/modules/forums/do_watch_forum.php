@@ -10,7 +10,7 @@ if ($watch) {
 	$q->setDelete('forum_watch');
 	$q->addWhere('watch_user = '.$AppUI->user_id);
 	$q->addWhere("watch_$watch IS NOT NULL");
-	if (!q->exec()) {
+	if (!$q->exec()) {
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 	} else {
 		$sql = '';
@@ -20,7 +20,7 @@ if ($watch) {
 				$q->addTable('forum_watch');
 				$q->addInsert('watch_user', $AppUI->user_id);
 				$q->addInsert('watch_'.$watch, substr( $k, 6 ));
-				if (!q->exec()) {
+				if (!$q->exec()) {
 					$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 				} else {
 					$AppUI->setMsg( "Watch updated", UI_MSG_OK );
