@@ -15,67 +15,90 @@ if ($denyRead) {
 
 // pull data
 $sql = "
-SELECT *
-FROM departments
+SELECT departments.*,company_name, user_first_name, user_last_name
+FROM departments, companies
+LEFT JOIN users ON user_id = dept_owner
 WHERE dept_id = $dept_id
+	AND dept_company = company_id
 ";
 $rc = mysql_query( $sql );
 $row = mysql_fetch_array( $rc, MYSQL_ASSOC );
 
 ?>
 
-<TABLE border=0 cellpadding="1" cellspacing=1>
-<TR>
-	<TD><img src="./images/icons/users.gif" alt="" border="0"></td>
-	<TD nowrap><span class="title">View Department</span></td>
-	<TD nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
+<table border=0 cellpadding="1" cellspacing=1>
+<tr>
+	<td><img src="./images/icons/users.gif" alt="" border="0"></td>
+	<td nowrap><span class="title">View Department</span></td>
+	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 </tr>
-</TABLE>
+</table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="95%">
-	<TR>
-		<TD width="50%" nowrap>
-		<a href="./index.php?m=companies">Companies List</a>
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+	<tr>
+		<td width="50%" nowrap>
+		<a href="./index.php?m=companies">companies list</a>
 <?php if (!$denyEdit) { ?>
-		<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $row['dept_company'];?>">View this Company</a>
-		<b>:</b> <a href="./index.php?m=departments&a=addedit&dept_id=<?php echo $dept_id;?>">Edit this Department</a>
+		<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $row['dept_company'];?>">view this company</a>
+		<b>:</b> <a href="./index.php?m=departments&a=addedit&dept_id=<?php echo $dept_id;?>">edit this department</a>
 <?php } ?>
 		</td>
-		<TD align="right" width="100%">
+		<td align="right" width="100%">
 		<?php if (!$denyEdit) { ?>
 			<input type="button" class=button value="new department" onClick="javascript:window.location='./index.php?m=departments&a=addedit&company_id=<?php echo $row['dept_company'];?>';">
 		<?php } ?>
 		</td>
-	</TR>
+	</tr>
 </table>
 
-<table border="0" cellpadding="6" cellspacing="0" width="95%" class=std>
+<table border="0" cellpadding="6" cellspacing="0" width="98%" class="std">
 <tr valign="top">
 	<td width="50%">
-		<TABLE width="100%">
-		<TR>
-			<TD><b>Department:</b></TD>
-			<td><?php echo $row["dept_name"];?></td>
-		</TR>
+		<b>Details</b>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td><b>Phone:</b></td>
-			<td><?php echo @$row["dept_phone"];?></td>
+			<td align="right" nowrap>Company:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo $row["company_name"];?></td>
 		</tr>
 		<tr>
-			<td><b>Fax:</b></td>
-			<td><?php echo @$row["dept_fax"];?></td>
+			<td align="right" nowrap>Department:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo $row["dept_name"];?></td>
 		</tr>
-		</TABLE>
-
-	</TD>
-	<td width="50%">
-		<b>Description</b><br>
-		<?php
-		$newstr = str_replace( chr(10), "<BR>", $row["dept_desc"]);
-		echo $newstr;
-		?>
+		<tr>
+			<td align="right" nowrap>Owner:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo @$row["user_first_name"].' '.@$row["user_last_name"];?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>Phone:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo @$row["dept_phone"];?></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>Fax:</td>
+			<td bgcolor="#ffffff" width="100%"><?php echo @$row["dept_fax"];?></td>
+		</tr>
+		<tr valign=top>
+			<td align="right" nowrap>Address:</td>
+			<td bgcolor="#ffffff"><?php
+				echo @$row["dept_address1"]
+					.( ($row["dept_address2"]) ? '<br>'.$row["dept_address2"] : '' )
+					.'<br>'.$row["dept_city"]
+					.'&nbsp;&nbsp;'.$row["dept_state"]
+					.'&nbsp;&nbsp;'.$row["dept_zip"]
+					;
+			?></td>
+		</tr>
+		</table>
 	</td>
-</TR>
+	<td width="50%">
+		<b>Description</b>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td bgcolor="#ffffff" width="100%"><?php echo str_replace( chr(10), "<BR>", $row["dept_desc"]);?>&nbsp;</td>
+		</tr>
+		</table>
+		
+	</td>
+</tr>
 </table>
 
 

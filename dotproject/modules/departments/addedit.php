@@ -50,9 +50,26 @@ if ($company_id) {
 		$depts[$row[0]] = $row[1];
 	}
 }
+
+// collect all the users for the department owner list
+$owners = array( '0'=>'');
+$osql = "SELECT user_id,user_first_name,user_last_name FROM users";
+$orc = mysql_query($osql);
+while ($orow = mysql_fetch_row( $orc )) {
+	$owners[$orow[0]] = "$orow[1] $orow[2]";
+}
+
 ?>
 
 <SCRIPT language="javascript">
+function testURL( x ) {
+	var test = "document.changeform.dept_url.value";
+	test = eval(test);
+	if (test.length > 6) {
+		newwin = window.open( "http://" + test, 'newwin', '' );
+	}
+}
+
 function submitIt() {
 	var form = document.changeform;
 	if (form.dept_name.value.length < 3) {
@@ -72,54 +89,81 @@ function delIt() {
 }
 </script>
 
-<TABLE width="90%" border=0 cellpadding="0" cellspacing=1>
-	<TR>
-	<TD><img src="./images/icons/users.gif" alt="" border="0"></td>
-		<TD nowrap><span class="title">Company Department</span></td>
-		<TD align="right" width="100%">&nbsp;</td>
+<table width="98%" border=0 cellpadding="0" cellspacing=1>
+	<tr>
+	<td><img src="./images/icons/users.gif" alt="" border="0"></td>
+		<td nowrap><span class="title">Company Department</span></td>
+		<td align="right" width="100%">&nbsp;</td>
 	</tr>
-</TABLE>
-
-<table border="0" cellpadding="4" cellspacing="0" width="95%">
-	<TR>
-		<TD width="50%" nowrap>
-		<a href="./index.php?m=companies">Companies List</a>
-		<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>">View this Company</a>
-		<b>:</b> <a href="./index.php?m=departments&a=view&dept_id=<?php echo $dept_id;?>">View this Department</a>
-		</td>
-		<TD width="50%" align="right">
-			<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this comapny" border="0">delete department</a>
-		</td>
-	</TR>
 </table>
 
-<TABLE width="95%" border=0 bgcolor="#f4efe3" cellpadding="0" cellspacing=1>
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<tr>
+	<td width="50%" nowrap>
+	<a href="./index.php?m=companies">companies list</a>
+	<b>:</b> <a href="./index.php?m=companies&a=view&company_id=<?php echo $company_id;?>">view this Company</a>
+	<b>:</b> <a href="./index.php?m=departments&a=view&dept_id=<?php echo $dept_id;?>">view this Department</a>
+	</td>
+	<td width="50%" align="right">
+		<A href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this comapny" border="0">delete department</a>
+	</td>
+</tr>
+</table>
+
+<table cellspacing="0" cellpadding="2" border="0" width="98%" class="std">
 <form name="changeform" action="?m=departments&a=dosql" method="post">
 <input name="del" type="hidden" value="0">
 <input type="hidden" name="dept_id" value="<?php echo $dept_id;?>">
 <input type="hidden" name="dept_company" value="<?php echo $company_id;?>">
 
-<TR height="20">
-	<TD bgcolor="#878676" valign="top" colspan=2>
-		<b><i><?php if($dept_id == 0){echo "Add";}else{echo "Edit";}?> Department for <?php echo $company_name;?> </i></b>
-	</td>
+<tr>
+	<th colspan=2>
+		<?php if($dept_id == 0){echo "Add";}else{echo "Edit";}?> Department for <?php echo $company_name;?>
+	</th>
 </tr>
 <tr>
-	<TD align="right">Department Name:</td>
-	<TD>
+	<td align="right" nowrap>Department Name:</td>
+	<td>
 		<input type="text" class="text" name="dept_name" value="<?php echo @$drow["dept_name"];?>" size=50 maxlength="255"> <span class="smallNorm">(required)</span>
 	</td>
 </tr>
 <tr>
-	<TD align="right">Phone:</td>
-	<TD>
+	<td align="right" nowrap>Phone:</td>
+	<td>
 		<input type="text" class="text" name="dept_phone" value="<?php echo @$drow["dept_phone1"];?>" maxlength="30">
 	</td>
 </tr>
 <tr>
-	<TD align="right">Fax:</td>
-	<TD>
+	<td align="right" nowrap>Fax:</td>
+	<td>
 		<input type="text" class="text" name="dept_fax" value="<?php echo @$drow["dept_fax"];?>" maxlength="30">
+	</td>
+</tr>
+<tr>
+	<td align="right">Address1:</td>
+	<td><input type="text" class="text" name="dept_address1" value="<?php echo @$crow["dept_address1"];?>" size=50 maxlength="255"></td>
+</tr>
+<tr>
+	<td align="right">Address2:</td>
+	<td><input type="text" class="text" name="dept_address2" value="<?php echo @$crow["dept_address2"];?>" size=50 maxlength="255"></td>
+</tr>
+<tr>
+	<td align="right">City:</td>
+	<td><input type="text" class="text" name="dept_city" value="<?php echo @$crow["dept_city"];?>" size=50 maxlength="50"></td>
+</tr>
+<tr>
+	<td align="right">State:</td>
+	<td><input type="text" class="text" name="dept_state" value="<?php echo @$crow["dept_state"];?>" maxlength="50"></td>
+</tr>
+<tr>
+	<td align="right">Zip:</td>
+	<td><input type="text" class="text" name="dept_zip" value="<?php echo @$crow["dept_zip"];?>" maxlength="15"></td>
+</tr>
+<tr>
+	<td align="right">URL http://<A name="x"></a></td>
+	<td>
+		<input type="text" class="text" value="<?php echo @$crow["dept_url"];?>" name="dept_url" size=50 maxlength="255">
+		<a href="#x" onClick="testURL('CompanyURLOne')">[test]</a>
 	</td>
 </tr>
 
@@ -127,8 +171,8 @@ function delIt() {
 if (count( $depts )) {
 ?>
 <tr>
-	<TD align="right">Department Parent:</td>
-	<TD>
+	<td align="right" nowrap>Department Parent:</td>
+	<td>
 <?php
 	echo arraySelect( $depts, 'dept_parent', 'class=text size=1', @$drow["dept_parent"] );
 ?>
@@ -138,16 +182,24 @@ if (count( $depts )) {
 	echo '<input type="hidden" name="dept_parent" value="0">';
 } 
 ?>
-<TR><TD align="right">Description:</td><td>&nbsp; </td></tr>
-<TR><TD colspan=2 align="center">
+<tr>
+	<td align="right">Owner:</td>
+	<td>
+<?php
+	echo arraySelect( $owners, 'dept_owner', 'size="1" class="text"', $crow["dept_owner"] );
+?>
+	</td>
+</tr>
+<tr><td align="right" nowrap>Description:</td><td>&nbsp; </td></tr>
+<tr><td colspan=2 align="center">
 <textarea cols="70" rows="10" class="textareaclass" name="dept_description">
 <?php echo @$drow["dept_description"];?>
 </textarea>
 </td></tr>
 
-<TR><TD><input type="button" value="back" class="button" onClick="javascript:history.back(-1);"></td><TD align="right"><input type="button" value="submit" class="button" onClick="submitIt()"></td></tr>
+<tr><td><input type="button" value="back" class="button" onClick="javascript:history.back(-1);"></td><td align="right"><input type="button" value="submit" class="button" onClick="submitIt()"></td></tr>
 </form>
-</TABLE>
+</table>
 &nbsp;<br>&nbsp;<br>&nbsp;
 
 </body>
