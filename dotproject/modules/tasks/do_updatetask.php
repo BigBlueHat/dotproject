@@ -26,7 +26,8 @@ function cleanText($text){
                  'ú'=>'u','ù'=>'u',
                  'ü'=>'u','û'=>'u',
                  'Ú'=>'U','Ù'=>'U',
-                 'Ü'=>'U','Û'=>'U');
+                 'Ü'=>'U','Û'=>'U',
+                 'Ñ'=>'N','ñ'=>'n');
     $text = strtr($text,$trade);
 	$text = utf8_encode($text);
 
