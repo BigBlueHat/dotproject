@@ -78,13 +78,9 @@ $active_users_id  = db_loadColumn($sql_active_users);
 $users = $obj->getAllocation("user_id", $active_users_id);
 
 if ( $task_id == 0 ) {
-	// Add task creator to assigned users by default
-        if ($users[$AppUI->user_id]['freeCapacity'] > 0) {
-                $assigned = array($AppUI->user_id => "$AppUI->user_first_name $AppUI->user_last_name [{$users[$AppUI->user_id]['freeCapacity']}%]");
-                $assigned_perc = array($AppUI->user_id => "[{$users[$AppUI->user_id]['freeCapacity']}]");
-        } else {
-                $assigned = $assigned_perc = array();
-        }
+	// DO NOT add task creator to assigned users by default ANYMORE
+        // for that assignment is now limited per user
+        $assigned = $assigned_perc = array();
 } else {
 	// Pull users on this task
 	$sql = "
@@ -481,12 +477,13 @@ function addUser() {
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
                         if (perc > provideFreeCapacity(form.resources.options[fl].value))  {
                                 setPercentAssign(provideFreeCapacity(form.resources.options[fl].value));
-                                window.status = "<?php echo $AppUI->_('overAlloc'); ?>";
-                        } 
-                        t = form.assigned.length
-                        opt = new Option( stripPercent(form.resources.options[fl].text)+" ["+perc+"%]", form.resources.options[fl].value);
-                        form.hperc_assign.value += form.resources.options[fl].value+"="+perc+";";
-                        form.assigned.options[t] = opt;
+                                alert("<?php echo $AppUI->_('overAlloc'); ?>");
+                        } else {
+                                t = form.assigned.length
+                                opt = new Option( stripPercent(form.resources.options[fl].text)+" ["+perc+"%]", form.resources.options[fl].value);
+                                form.hperc_assign.value += form.resources.options[fl].value+"="+perc+";";
+                                form.assigned.options[t] = opt;
+                        }
 		}
 	}
 }
@@ -827,7 +824,7 @@ if ($task_id > 0)
   $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
   $titleBlock->addCrumbRight( '<input class="button" type="button" name="cancel" value="'.$AppUI->_('cancel').'" onClick="javascript:if(confirm(\''.$AppUI->_('taskCancel').'\')){location.href = \'?'.$AppUI->getPlace().'\';}" />
  				&nbsp;<input class="button" type="button" name="btnFuseAction" value="'.$AppUI->_('save').'" onClick="submitIt(0);" />&nbsp;
-				<input class="button" type="button" name="saveNewTask" value="'.$AppUI->_('save &&amp; new task').'" onClick="submitIt(1);" />' );
+				<input class="button" type="button" name="saveNewTask" value="'.$AppUI->_('save & new task').'" onClick="submitIt(1);" />' );
 $titleBlock->show();
 ?>
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
@@ -1213,7 +1210,7 @@ $titleBlock->show();
 				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt(0);" />
 			</td>
 			<td>
-				<input class="button" type="button" name="saveNewTask" value="<?php echo $AppUI->_("save &&amp; new task");?>" onClick="submitIt(1);" />
+				<input class="button" type="button" name="saveNewTask" value="<?php echo $AppUI->_("save & new task");?>" onClick="submitIt(1);" />
 			</td>
 		</tr>
 		</table>
