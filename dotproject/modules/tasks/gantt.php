@@ -14,6 +14,7 @@ global $showLabels;
 global $showWork;
 global $locale_char_set;
 
+$showLabels = dPgetParam($_REQUEST, 'showLabels', false);
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
