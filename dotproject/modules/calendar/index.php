@@ -1,20 +1,35 @@
 <?php
-// Set Day, Month, Year
-if(empty($thisMonth))$thisMonth = date("n", time());
-if(empty($thisYear))$thisYear = date("Y", time());
-if(empty($thisDay))$thisDay = date("d", time());
-if($thisDay < 1)$thisDay = 1;
+// check permissions
+$denyRead = getDenyRead( $m );
+$denyEdit = getDenyEdit( $m );
 
-if(empty($todaysDay))$todaysDay = date("d", time());
-if(empty($todaysMonth))$todaysMonth = intval(date("m", time()));
-if(empty($todaysYear))$todaysYear = date("Y", time());
-if(empty($field))$field = "x";
-$day=0;
+if ($denyRead) {
+	echo '<script language="javascript">
+	window.location="./index.php?m=help&a=access_denied";
+	</script>
+';
+}
+
+// Set Day, Month, Year
+if (empty( $thisMonth )) $thisMonth = date( "n", time() );
+if (empty( $thisYear )) $thisYear = date( "Y", time() );
+if (empty( $thisDay )) $thisDay = date( "d", time() );
+if ($thisDay < 1) $thisDay = 1;
+
+if (empty( $todaysDay )) $todaysDay = date( "d", time() );
+if (empty( $todaysMonth )) $todaysMonth = intval( date( "m", time() ) );
+if (empty( $todaysYear )) $todaysYear = date( "Y", time());
+if (empty( $field )) $field = "x";
+$day = 0;
 
 // Figure out the last day of the month
 $lastday[1]=31;
 // Check for Leap Years
-if( checkdate( $thisMonth, 29, $thisYear ) ) { $lastday[2] = 29; }else { $lastday[2]=28; }
+if (checkdate( $thisMonth, 29, $thisYear )) {
+	$lastday[2] = 29; 
+} else {
+	$lastday[2]=28; 
+}
 $lastday[3]=31;
 $lastday[4]=30;
 $lastday[5]=31;
@@ -27,15 +42,11 @@ $lastday[11]=30;
 $lastday[12]=31;
 
 //Short Day names
-$dayNamesShort[0] = "Sun";
-$dayNamesShort[1] = "Mon";
-$dayNamesShort[2] = "Tue";
-$dayNamesShort[3] = "Wed";
-$dayNamesShort[4] = "Thu";
-$dayNamesShort[5] = "Fri";
-$dayNamesShort[6] = "Sat";
+$dayNamesShort = array( "Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat" );
 
-if($thisDay > $lastday["$thisMonth"]){$thisDay = $lastday["$thisMonth"];}
+if ($thisDay > $lastday["$thisMonth"]) {
+	$thisDay = $lastday["$thisMonth"];
+}
 
 $sqldate = $thisYear . "-" . $thisMonth . "-" . $thisDay;
 
