@@ -290,6 +290,8 @@ if ($do_db || $do_db_cfg) {
 			include_once "$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php";
 			$code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
 		}
+	} else {
+		include_once "$baseDir/db/upgrade_permissions.php"; // Always required on install.
 	}
 
 	dPmsg("Updating version information");
