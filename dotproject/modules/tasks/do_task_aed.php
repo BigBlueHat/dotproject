@@ -75,7 +75,13 @@ if ($del) {
 	}
 
 	if (isset($hassign)) {
-		$obj->updateAssigned( $hassign , $hperc_assign_ar);
+                // returns the userNames of the concerning users if OverAssignment detected, otherwise false
+		$overAssignment = $obj->updateAssigned( $hassign , $hperc_assign_ar);
+                //check if OverAssignment occured, database has not been updated in this case
+                if ($overAssignment) {
+                        $AppUI->setMsg( "The following Users have not been assigned in order to prevent from Over-Assignment:", UI_MSG_ERROR );
+                        $AppUI->setMsg( "<br>".$overAssignment, UI_MSG_ERROR, true );
+                }
 	}
 	
 	if (isset($hdependencies)) {
@@ -84,7 +90,7 @@ if ($del) {
 	
 	if ($notify) {
 		if ($msg = $obj->notify($comment)) {
-			$AppUI->setMsg( $msg, UI_MSG_ERROR );
+			$AppUI->setMsg( $msg, UI_MSG_ERROR, true );
 		}
 	}
 

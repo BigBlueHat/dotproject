@@ -14,6 +14,8 @@ if (!$obj->load( $task_id ) && $task_id > 0) {
 	$AppUI->setMsg( 'Task' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
+} else {
+	$AppUI->savePlace();
 }
 
 // check for a valid project parent

@@ -1002,6 +1002,7 @@ class CTask extends CDpObject {
 	}
 
 	//using user allocation percentage ($perc_assign)
+        // @return      returns the Names of the concerned Users if there occured an overAssignment, otherwise false
 	function updateAssigned( $cslist, $perc_assign, $del=true ) {
 	// delete all current entries
                 if ($del == true) {
@@ -1011,13 +1012,25 @@ class CTask extends CDpObject {
 
 	// process assignees
 		$tarr = explode( ",", $cslist );
+
+                // get Allocation info in order to check if overAssignment occurs
+                $alloc = $this->getAllocation("user_id");
+                $overAssignment = false;
+
 		foreach ($tarr as $user_id) {
 			if (intval( $user_id ) > 0) {
 				$perc = $perc_assign[$user_id];
-				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
-				db_exec( $sql );
+                                // overAssignment check
+                                if ($perc > $alloc[$user_id]['freeCapacity']) {
+                                        // add Username of the overAssigned User
+                                        $overAssignment .= " ".$alloc[$user_id]['userFC'];
+                                } else {
+                                        $sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
+                                        db_exec( $sql );
+                                }
 			}
 		}
+                return $overAssignment;
 	}
 
 	function getAssignedUsers(){
@@ -1053,7 +1066,7 @@ class CTask extends CDpObject {
                         LEFT JOIN user_preferences up ON (up.pref_user = u.user_id AND up.pref_name = 'TASKASSIGNMAX')".$where."
                         GROUP BY u.user_id
                         ORDER BY contact_first_name, contact_last_name";
-//                echo "<pre>$sql</pre>";
+//               echo "<pre>$sql</pre>";
                 return db_loadHashList($sql, $hash);
         }
 
