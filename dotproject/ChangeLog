@@ -1,3 +1,69 @@
+2004-08-22 00:14  (cyberhorse)
+---------------------------------
+db/create_db_fields.php
+includes/db_adodb.php
+- Automatically insert missing database fields (based on the upgrade_latest.sql script).
+
+2004-08-22 00:13  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- Prints out debug messages on screen as well as in the error_log file. (!Please set debug setting to less than 10 for troublefree operation - at 10 all sql statements are shown.)
+
+2004-08-21 22:26  (cyberhorse)
+---------------------------------
+includes/.cvsignore
+- make cvs ignore the local configuration file.
+
+2004-08-21 22:24  (cyberhorse)
+---------------------------------
+files/.cvsignore
+- Make cvs ignore temporary/local files.
+
+2004-08-21 15:27  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+- reinvented the wheel
+
+2004-08-21 14:42  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- like ever (smile)
+
+2004-08-21 13:16  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed double click adding user (removing user was still working)
+
+2004-08-21 05:39  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- Added filter to the history module.
+
+2004-08-21 05:20  (cyberhorse)
+---------------------------------
+index.php
+modules/history/addedit.php
+modules/history/index.php
+- Added login/logout history.
+- Fixed manual history adding.
+
+2004-08-21 04:34  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Added ability to deal with tasks even if the history module doesn't exists / is not active. (not tested)
+
+2004-08-21 04:21  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Added a variable to keep track of columns in the tasks table.
+- Added the ability to create a new log, directly from the task listings (in different modules).
+- TODO: replace the word Log with an icon (for the more artistically inclined).
+
+2004-08-21 04:12  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-21 04:10  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.php
@@ -432,72 +498,6 @@ modules/tasks/tasks.class.php
 - In that case; we will use the average of the percent_complete
 - of the child tasks to figure out the actual percentage of
 - the dynamic task.
-
-2004-08-11 10:42  (cyberhorse)
----------------------------------
-modules/contacts/view.php
-- Fixed deleting a contact from view only mode.
-
-2004-08-11 07:26  (ajdonnison)
----------------------------------
-modules/tasks/tasks.php
-- Simplified loop to find assigned users to improve performance.
-
-2004-08-11 04:08  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-11 00:34  (ajdonnison)
----------------------------------
-index.php
-- Removed overhead of checking for all tab files on each page call by
-- caching the information in the session.
-
-2004-08-11 00:30  (ajdonnison)
----------------------------------
-modules/tasks/tasksperuser_sub.php
-- Removed recursive code in isMember function, improved performance
-- dramatically, removed need for extra database calls on each display item.
-
-2004-08-10 17:00  (jcgonz)
----------------------------------
-locales/en/tasks.inc
-- Added up some strings
-
-2004-08-10 16:57  (jcgonz)
----------------------------------
-modules/tasks/vw_log_update.php
-- Changed Task's end date due locale system incompatibility
-
-2004-08-10 04:08  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2004-08-09 10:57  (cyberhorse)
----------------------------------
-index.php
-modules/files/tasks_tab.files.php
-modules/tasks/view.php
-- Added automatic tabs loading in modules from other modules.
-- To include tabs from offering modules, include this after you've created a tab pannel $tabBox:
-- foreach($all_tabs as $name => $tab)
--         $tabBox->add($tab, $name);
-- 
-- the $all_tabs array is created in index.php and stores all tabs for other modules. Actually, it can be used for the current module as well.
-- 
-- The tabs that are automatically inserted have names as follows:
-- $module_to_be_inserted_in . '_tab.anyname_you_like_for_a_title.php';
-- 
-- For an example, look the bottom of the modules/tasks/view.php file and the modules/files/tasks_tab.files.php files.
-
-2004-08-09 05:13  (cyberhorse)
----------------------------------
-modules/system/addeditpref.php
-- Added an extra date format.
-
-2004-08-08 04:10  (kripper)
 ...
 
 (This file has been wrapped)
