@@ -3,19 +3,18 @@
 // Files modules: index page re-usable sub-table
 GLOBAL $AppUI, $deny1;
 
+// load the following classes to retrieved denied records
+require_once( $AppUI->getModuleClass( 'projects' ) );
+require_once( $AppUI->getModuleClass( 'tasks' ) );
+
+$project = new CProject();
+$deny1 = $project->getDeniedRecords( $AppUI->user_id );
+
+$task = new CTask();
+$deny2 = $task->getDeniedRecords( $AppUI->user_id );
+
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
-
-// get any specifically denied tasks
-	$sql = "
-	SELECT task_id, task_id
-	FROM tasks, permissions
-	WHERE permission_user = $AppUI->user_id
-		AND permission_grant_on = 'tasks'
-		AND permission_item = task_id
-		AND permission_value = 0
-	";
-	$deny2 = db_loadHashList( $sql );
 
 // SETUP FOR FILE LIST
 $sql = "
@@ -60,10 +59,9 @@ if ($canRead) {
 <?php
 $fp=-1;
 $file_date = new CDate();
-$file_date->setFormat( "$df $tf" );
 
 foreach ($files as $row) {
-	$file_date->setTimestamp( db_dateTime2unix( $row['file_date'] ) );
+	$file_date = new CDate( $row['file_date'] );
 
 	if ($fp != $row["file_project"]) {
 		if (!$row["project_name"]) {
@@ -97,7 +95,7 @@ foreach ($files as $row) {
 	<td width="15%" nowrap="nowrap"><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>
 	<td width="10%" nowrap="nowrap" align="right"><?php echo intval($row["file_size"] / 1024);?> kb</td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
-	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->toString();?></td>
+	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
 <?php }?>
 </table>

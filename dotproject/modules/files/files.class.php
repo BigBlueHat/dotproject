@@ -1,9 +1,8 @@
 <?php /* FILES $Id$ */
-##
-## CFile Class
-##
-
-class CFile {
+/**
+* File Class
+*/
+class CFile extends CDpObject {
 	var $file_id = NULL;
 	var $file_project = NULL;
 	var $file_real_filename = NULL;
@@ -18,56 +17,17 @@ class CFile {
 	var $file_version = NULL;
 
 	function CFile() {
-		// empty constructor
-	}
-
-	function load( $oid ) {
-		$sql = "SELECT * FROM files WHERE file_id = $oid";
-		return db_loadObject( $sql, $this );
-	}
-
-	function bind( $hash ) {
-		if (!is_array( $hash )) {
-			return get_class( $this )."::bind failed";
-		} else {
-			bindHashToObject( $hash, $this );
-			return NULL;
-		}
+		$this->CDpObject( 'files', 'file_id' );
 	}
 
 	function check() {
 	// ensure the integrity of some variables
-		if (!isset( $this->file_id )) {
-			$this->file_id = 0;
-		}
-		if (!isset( $this->file_parent )) {
-			$this->file_parent = 0;
-		}
-		if (!isset( $this->file_task )) {
-			$this->file_task = 0;
-		}
-		if (!isset( $this->file_project )) {
-			$this->file_project = 0;
-		}
-	// TODO MORE
-		return NULL; // object is ok
-	}
+		$this->file_id = intval( $this->file_id );
+		$this->file_parent = intval( $this->file_parent );
+		$this->file_task = intval( $this->file_task );
+		$this->file_project = intval( $this->file_project );
 
-	function store() {
-		$msg = $this->check();
-		if( $msg ) {
-			return get_class( $this )."::store-check failed";
-		}
-		if( $this->file_id ) {
-			$ret = db_updateObject( 'files', $this, 'file_id', false );
-		} else {
-			$ret = db_insertObject( 'files', $this, 'file_id' );
-		}
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
-		}
+		return NULL; // object is ok
 	}
 
 	function delete() {

@@ -1,11 +1,11 @@
 <?php /* FILES $Id$ */
 //addfile sql
-$file_id = dPgetParam( $_POST, 'file_id', 0 );
-$del = dPgetParam( $_POST, 'del', 0 );
-$file = new CFile();
+$file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
+$del = intval( dPgetParam( $_POST, 'del', 0 ) );
+$obj = new CFile();
 
-if (($msg = $file->bind( $_POST ))) {
-	$AppUI->setMsg( $msg, UI_MSG_ERROR );
+if (!$obj->bind( $_POST )) {
+	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 
@@ -13,8 +13,8 @@ if (($msg = $file->bind( $_POST ))) {
 $AppUI->setMsg( 'File' );
 // delete the file
 if ($del) {
-	$file->load( $file_id );
-	if (($msg = $file->delete())) {
+	$obj->load( $file_id );
+	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
@@ -40,22 +40,22 @@ if (isset( $_FILES['formfile'] )) {
 	} else {
 
 	// store file with a unique name
-		$file->file_name = $upload['name'];
-		$file->file_type = $upload['type'];
-		$file->file_size = $upload['size'];
-		$file->file_date = db_unix2dateTime( time() );
-		$file->file_real_filename = uniqid( rand() );
+		$obj->file_name = $upload['name'];
+		$obj->file_type = $upload['type'];
+		$obj->file_size = $upload['size'];
+		$obj->file_date = db_unix2dateTime( time() );
+		$obj->file_real_filename = uniqid( rand() );
 
-		$file->moveTemp( $upload );
-		$file->indexStrings();
+		$obj->moveTemp( $upload );
+		$obj->indexStrings();
 	}
 }
 
 if (!$file_id) {
-	$file->file_owner = $AppUI->user_id;
+	$obj->file_owner = $AppUI->user_id;
 }
 
-if (($msg = $file->store())) {
+if (($msg = $obj->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 } else {
 	$AppUI->setMsg( $file_id ? 'updated' : 'added', UI_MSG_OK, true );

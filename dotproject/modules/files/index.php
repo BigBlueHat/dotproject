@@ -1,40 +1,23 @@
 <?php /* FILES $Id$ */
 $AppUI->savePlace();
 
+// retrieve any state parameters
 if (isset( $_REQUEST['project_id'] )) {
 	$AppUI->setState( 'FileIdxProject', $_REQUEST['project_id'] );
 }
 $project_id = $AppUI->getState( 'FileIdxProject' ) !== NULL ? $AppUI->getState( 'FileIdxProject' ) : 0;
 
-// SETUP FOR PROJECT LIST BOX
-// projects that are denied access
-$sql = "
-SELECT project_id
-FROM projects, permissions
-WHERE permission_user = $AppUI->user_id
-	AND permission_grant_on = 'projects'
-	AND permission_item = project_id
-	AND permission_value = 0
-";
-$deny1 = db_loadColumn( $sql );
+require_once( $AppUI->getModuleClass( 'projects' ) );
 
-$sql = "
-SELECT project_id, project_name
-FROM projects, permissions, files
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)"
-.(count( $deny1 ) > 0 ? "\nAND project_id NOT IN (" . implode( ',', $deny1 ) . ')' : '')
-."
-	AND project_id = file_project
-ORDER BY project_name
-";
+// get the list of visible companies
+$extra = array(
+	'from' => 'files',
+	'where' => 'AND project_id = file_project'
+);
 
-$projects = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
+$project = new CProject();
+$projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
+$projects = arrayMerge( array( '0'=>'All' ), $projects );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, "$m.$a" );
