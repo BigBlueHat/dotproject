@@ -110,11 +110,11 @@ else {
 <?php
 if ($ticket_count > $limit) {
     if ($offset - $limit >= 0) {
-        print("<a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset - $limit) . "><img src=ltwt.gif border=0></a> | \n");
+        print("<a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset - $limit) . ">&lt;</a> | \n");
     }
     print($AppUI->_("$page_string")."\n");
     if ($offset + $limit < $ticket_count) {
-        print(" | <a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset + $limit) . "><img src=rtwt.gif border=0></a>\n");
+        print(" | <a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset + $limit) . ">&gt;</a>\n");
     }
 }
 ?>
