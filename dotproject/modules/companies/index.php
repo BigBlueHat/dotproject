@@ -71,44 +71,25 @@ if (isset( $_GET['tab'] )) {
 }
 $companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ),  0 );
 
-/*function getCompanyTypeID($type) {
-	global $types;
-	$arr = array_keys($types, $type);
-	return $arr[0];
-}
-
-$tabTypes = array();
-foreach($types as $type_id => $type){
-	$tabTypes[] = $type_id;
-}
-*/
 // $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
 $companiesType = $companiesTypeTab;
 
-/*
-if ( $companiesTypeTab != -1 ) {
-	$types[0] = "All Companies";
-	$types[] = "Not Applicable";
-}
-*/
-
 $tabBox = new CTabBox( "?m=companies", dPgetConfig('root_dir')."/modules/companies/", $companiesTypeTab );
 if ($tabbed = $tabBox->isTabbed()) {
-	if (isset($types[0]))
+	$add_na = true;
+	if (isset($types[0])) { // They have a Not Applicable entry.
+		$add_na = false;
 		$types[] = $types[0];
+	}
 	$types[0] = "All Companies";
-	$types[] = "Not Applicable";
+	if ($add_na)
+		$types[] = "Not Applicable";
 }
 $type_filter = array();
 foreach($types as $type => $type_name){
 	$type_filter[] = $type;
 	$tabBox->add('vw_companies', $type_name);
 }
-
-/*$tabBox->add( 'vw_companies', 'Clients' );
-$tabBox->add( 'vw_companies', 'Suppliers' );
-$tabBox->add( 'vw_companies', 'All Companies' );
-*/
 
 $tabBox->show();
 ?>
