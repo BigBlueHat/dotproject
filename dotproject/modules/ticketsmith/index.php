@@ -15,10 +15,10 @@ if ($denyRead) {
 <TABLE width="95%" border=0 cellpadding="0" cellspacing=1>
 	<TR>
 	<TD valign="top"><img src="./images/icons/ticketsmith.gif" alt="" border="0" width="42" height="42" /></td>
-		<TD nowrap><h1>Trouble Ticket Management</h1></td>
+		<TD nowrap><h1><? echo $AppUI->_('Trouble Ticket Management');?></h1></td>
 		<TD align="right" width="100%">
 		<?php if (!$denyEdit) { ?>
-			<input type="button" class=button value="new ticket" onClick="javascript:window.location='./index.php?m=ticketsmith&a=post_ticket';">
+			<input type="button" class=button value="<? echo $AppUI->_('new ticket');?>" onClick="javascript:window.location='./index.php?m=ticketsmith&a=post_ticket';">
 		<?php } ?>
 		</td>
 	</tr>
@@ -91,13 +91,13 @@ print("<tr></TD>\n");
 print("<td colspan=" . count($fields["headings"]) . " align=center bgcolor=#878676>");
 print("<table width=100% border=0 cellspacing=1 cellpadding=1>\n");
 print("<tr><td width=1%><br /></td><td width=34%><br /></td>\n");
-print("<td width=32% align=center><div class=heading>$title</div></td>\n");
+print("<td width=32% align=center><div class=heading>".$AppUI->_($title)."</div></td>\n");
 print("<td width=32% align=right valign=middle><div class=paging>");
 if ($ticket_count > $limit) {
     if ($offset - $limit >= 0) {
         print("<a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset - $limit) . "><img src=ltwt.gif border=0></a> | \n");
     }
-    print("$page_string\n");
+    print($AppUI->_("$page_string")."\n");
     if ($offset + $limit < $ticket_count) {
         print(" | <a href=index.php?m=ticketsmith&type=$type&column=$column&direction=$direction&offset=" . ($offset + $limit) . "><img src=rtwt.gif border=0></a>\n");
     }
@@ -141,7 +141,7 @@ if ($parent_count) {
             }
         }
         print("&direction=$new_direction");
-        print("><strong>" . $fields["headings"][$loop] . "</strong></a></td>\n");
+        print("><strong>" . $AppUI->_($fields["headings"][$loop]) . "</strong></a></td>\n");
     }
     print("</tr>\n");
     while ($row = result2hash($result)) {
@@ -172,15 +172,15 @@ print("<table width=100% border=0 cellspacing=0 cellpadding=0>\n");
 print("<tr height=25><td align=left>");
 $types = array("My","Open","Processing","Closed","Deleted","All");
 for ($loop = 0; $loop < count($types); $loop++) {
-    $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $types[$loop] . "</a>";
+    $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $AppUI->_($types[$loop]) . "</a>";
 }
 print(join(" | ", $toggles));
 print(" Tickets</td>\n");
 if ($type == "Deleted" && $parent_count) {
-    print("<td align=center><a href=index.php?m=ticketsmith&type=Deleted&action=expunge>Expunge Deleted</a></td>");
+    print("<td align=center><a href=index.php?m=ticketsmith&type=Deleted&action=expunge>".$AppUI->_('Expunge Deleted')."</a></td>");
 }
-print("<td align=right><a href=index.php?m=ticketsmith&a=search>Search</a> | 
-<a href=index.php?m=ticketsmith&type=$type>Back to top</a></td></tr>\n");
+print("<td align=right><a href=index.php?m=ticketsmith&a=search>".$AppUI->_('Search')."</a> | 
+<a href=index.php?m=ticketsmith&type=$type>".$AppUI->_('Back to top')."</a></td></tr>\n");
 print("</table>\n");
 print("</td>\n");
 print("</tr>\n");    
