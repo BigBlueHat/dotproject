@@ -2,7 +2,12 @@
 $company_id = dPgetParam( $_GET, "company_id", 0 );
 
 // check permissions for this company
+$canRead = !getDenyRead( $m, $company_id );
 $canEdit = !getDenyEdit( $m, $company_id );
+
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
 
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'CompVwTab', $_GET['tab'] );
