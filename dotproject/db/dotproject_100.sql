@@ -248,7 +248,7 @@ CREATE TABLE tasks (
   task_owner int(11) NOT NULL default '0',
   task_start_date datetime default NULL,
   task_duration float unsigned default '0',
-  task_duration_type VARCHAR(6) NOT NULL DEFAULT 'hours',
+  task_duration_type int(11) NOT NULL DEFAULT 1,
   task_hours_worked float unsigned default '0',
   task_end_date datetime default NULL,
   task_status int(11) default '0',
@@ -441,6 +441,7 @@ CREATE TABLE sysvals (
 INSERT INTO syskeys VALUES("1", "SelectList", "Enter values for list", "0", "\n", "|");
 INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete");
 INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
+INSERT INTO sysvals (sysval_key_id,sysval_title,sysval_value) VALUES("1", "TaskDurationType", "1|hours\n24|days");
 
 #
 # Table structure for table 'roles'
