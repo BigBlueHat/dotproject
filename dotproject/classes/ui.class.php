@@ -1,8 +1,8 @@
 <?php /* CLASSES $Id$ */
 /**
- *	@package dotproject
- *	@subpackage core
- *	@license http://opensource.org/licenses/bsd-license.php BSD License
+* @package dotproject
+* @subpackage core
+* @license http://opensource.org/licenses/bsd-license.php BSD License
 */
 
 // Message No Constants
@@ -19,16 +19,13 @@ define( "UI_CASE_LOWER", 2 );
 define( "UI_CASE_UPPERFIRST", 3 );
 
 /**
- *	The Application User Interface Class.
- *
- *	@author Andrew Eddie
- *	@version $Revision$
- */
+* The Application User Interface Class.
+*
+* @author Andrew Eddie <eddieajau@users.sourceforge.net>
+* @version $Revision$
+*/
 class CAppUI {
-/**
- *	generic array for holding the state of anything
- *	@var array
- */
+/** @var array generic array for holding the state of anything */
 	var $state;
 /** @var int */
 	var $user_id;
@@ -66,8 +63,8 @@ class CAppUI {
 	var $cfg=null;
 
 /**
- * CAppUI Constructor
- */
+* CAppUI Constructor
+*/
 	function CAppUI() {
 		$this->state = array();
 
@@ -86,8 +83,9 @@ class CAppUI {
 		$this->user_prefs = array();
 	}
 /**
- *	loads a php class file from the system classes directory
- *	@param string $name class name
+* Used to load a php class file from the system classes directory
+* @param string $name The class root file name (excluding .class.php)
+* @return string The path to the include file
  */
 	function getSystemClass( $name=null ) {
 		if ($name) {
@@ -98,9 +96,14 @@ class CAppUI {
 	}
 
 /**
- *	Loads a php class file from the PEAR classes directory
- *	@param string $name class name
- */
+* Used to load a php class file from the PEAR classes directory
+*
+* This is the PEAR directory supplied with the distribution as it is
+* slightly modified to account for minor bugs or incompatibilities in the
+* PEAR package.
+* @param string $name The class root file name (excluding .class.php)
+* @return string The path to the include file
+*/
 	function getPearClass( $name=null ) {
 		if ($name) {
 			if ($root = $this->getConfig( 'root_dir' )) {
@@ -110,8 +113,9 @@ class CAppUI {
 	}
 
 /**
- *	loads a php class file from the module directory
- *	@param string $name class name
+* Used to load a php class file from the module directory
+* @param string $name The class root file name (excluding .class.php)
+* @return string The path to the include file
  */
 	function getModuleClass( $name=null ) {
 		if ($name) {
@@ -122,17 +126,18 @@ class CAppUI {
 	}
 
 /**
- *	loads a php class file from the module directory
- *	@param array A named array of configuration variables (usually from config.php)
- */
+* Sets the internal confuration settings array.
+* @param array A named array of configuration variables (usually from config.php)
+*/
 	function setConfig( &$cfg ) {
 		$this->cfg = $cfg;
 	}
 
 /**
- *	@param string The name of a configuration setting
- *	@return The value of the setting, otherwise null if the key is not found in the configuration array
- */
+* Retrieves a configuration setting.
+* @param string The name of a configuration setting
+* @return The value of the setting, otherwise null if the key is not found in the configuration array
+*/
 	function getConfig( $key ) {
 		if (array_key_exists( $key, $this->cfg )) {
 			return $this->cfg[$key];
@@ -141,6 +146,9 @@ class CAppUI {
 		}
 	}
 
+/**
+* Checks that the current user preferred style is valid/exists.
+*/
 	function checkStyle() {
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
@@ -152,12 +160,12 @@ class CAppUI {
 	}
 
 /**
- *	Utility function to read the 'directories' under 'path'
- *
- *	This function is used to read the modules or locales installed on the file system.
- *	@param string The path to read.
- *	@return array A named array of the directories (the key and value are identical).
- */
+* Utility function to read the 'directories' under 'path'
+*
+* This function is used to read the modules or locales installed on the file system.
+* @param string The path to read.
+* @return array A named array of the directories (the key and value are identical).
+*/
 	function readDirs( $path ) {
 		$dirs = array();
 		$d = dir( "{$this->cfg['root_dir']}/$path" );
@@ -171,11 +179,11 @@ class CAppUI {
 	}
 
 /**
- *	Sets the user locale.
- *
- *	Looks in the user preferences first.  If this value has not been set by the user it uses the system default set in config.php.
- *	@param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
- */
+* Sets the user locale.
+*
+* Looks in the user preferences first.  If this value has not been set by the user it uses the system default set in config.php.
+* @param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
+*/
 	function setUserLocale( $loc='' ) {
 		if ($loc) {
 			$this->user_locale = $loc;
@@ -184,19 +192,19 @@ class CAppUI {
 		}
 	}
 /**
- *	Translate string to the local language [same form as the gettext abbreviation]
- *
- *	This is the order of precedence:
- *	<ul>
- *	<li>If the key exists in the lang array, return the value of the key
- *	<li>If no key exists and the base lang is the same as the local lang, just return the string
- *	<li>If this is not the base lang, then return string with a red star appended to show
- *	that a translation is required.
- *	</ul>
- *	@param string The string to translate
- *	@param int Option to change the case of the string
- *	@return string
- */
+* Translate string to the local language [same form as the gettext abbreviation]
+*
+* This is the order of precedence:
+* <ul>
+* <li>If the key exists in the lang array, return the value of the key
+* <li>If no key exists and the base lang is the same as the local lang, just return the string
+* <li>If this is not the base lang, then return string with a red star appended to show
+* that a translation is required.
+* </ul>
+* @param string The string to translate
+* @param int Option to change the case of the string
+* @return string
+*/
 	function _( $str, $case=0 ) {
 		$str = trim($str);
 		if (empty( $str )) {
@@ -224,20 +232,22 @@ class CAppUI {
 		return $str;
 	}
 /**
- *	Set the display of warning for untranslated strings
- *	@param string
- */
+* Set the display of warning for untranslated strings
+* @param string
+*/
 	function setWarning( $state=true ) {
 		$temp = @$this->cfg['locale_warn'];
 		$this->cfg['locale_warn'] = $state;
 		return $temp;
 	}
 /**
- *	Save the url query string
- *
- *	Also saves one level of history.  This is useful for returning from a delete operation where the record more not now exist.  Returning to a view page would be a nonsense in this case.
- *	@param string If not set then the current url query string is used
- */
+* Save the url query string
+*
+* Also saves one level of history.  This is useful for returning from a delete
+* operation where the record more not now exist.  Returning to a view page
+* would be a nonsense in this case.
+* @param string If not set then the current url query string is used
+*/
 	function savePlace( $query='' ) {
 		if (!$query) {
 			$query = @$_SERVER['QUERY_STRING'];
@@ -248,20 +258,28 @@ class CAppUI {
 		}
 	}
 /**
- *	Resets the internal variable
- */
+* Resets the internal variable
+*/
 	function resetPlace() {
 		$this->state['SAVEDPLACE'] = '';
 	}
 /**
- *	Get the saved place (usually one that could contain an edit button)
- *	@return string
- */
+* Get the saved place (usually one that could contain an edit button)
+* @return string
+*/
 	function getPlace() {
 		return @$this->state['SAVEDPLACE'];
 	}
-// redirects to a new page
-// (usually to prevent nasties from doing a browser refresh after a db update)
+/**
+* Redirects the browser to a new page.
+*
+* Mostly used in conjunction with the savePlace method. It is generally used
+* to prevent nasties from doing a browser refresh after a db update.  The
+* method deliberately does not use javascript to effect the redirect.
+*
+* @param string The URL query string to append to the URL
+* @param string A marker for a historic 'place, only -1 or an empty string is valid.
+*/
 	function redirect( $params='', $hist='' ) {
 		session_write_close();
 	// are the params empty
@@ -269,18 +287,29 @@ class CAppUI {
 		// has a place been saved
 			$params = !empty($this->state["SAVEDPLACE$hist"]) ? $this->state["SAVEDPLACE$hist"] : $this->defaultRedirect;
 		}
-		header("Location: index.php?$params"); 
-		//echo "<script language=\"javascript\">window.location='index.php?$params'</script>";  // old UNSAFE way!
+		header( "Location: index.php?$params" ); 
 		exit();	// stop the PHP execution
 	}
-
-// Set the page message (displayed on page construction)
+/**
+* Set the page message.
+*
+* The page message is displayed above the title block and then again
+* at the end of the page.
+*
+* @param string The (translated) message
+* @param int The type of message
+* @param boolean If true, $msg is appended to the current string otherwise
+* the existing message is overwritten with $msg.
+*/
 	function setMsg( $msg, $msgNo=0, $append=false ) {
 		$msg = $this->_( $msg );
 		$this->msg = $append ? $this->msg.' '.$msg : $msg;
 		$this->msgNo = $msgNo;
 	}
-// Display the message, format and display icon
+/**
+* Display the formatted message and icon
+* @param boolean If true the current message state is cleared.
+*/
 	function getMsg( $reset=true ) {
 		$img = '';
 		$class = '';
@@ -317,15 +346,49 @@ class CAppUI {
 			. '</tr></table>'
 			: '';
 	}
-
-	function setState( $label, $tab ) {
-		$this->state[$label] = $tab;
+/**
+* Set the value of a temporary state variable.
+*
+* The state is only held for the duration of a session.  It is not stored in the database.
+* @param string The label or key of the state variable
+* @param mixed Value to assign to the label/key
+*/
+	function setState( $label, $value ) {
+		$this->state[$label] = $value;
 	}
-
+/**
+* Get the value of a temporary state variable.
+* @return mixed
+*/
 	function getState( $label ) {
 		return array_key_exists( $label, $this->state) ? $this->state[$label] : NULL;
 	}
-
+/**
+* Login function
+*
+* A number of things are done in this method to prevent illegal entry:
+* <ul>
+* <li>The username and password are trimmed and escaped to prevent malicious
+*     SQL being executed
+* <li>The username and encrypted password are selected from the database but
+*     the comparision is not made by the database, for example
+*     <code>...WHERE user_username = '$username' AND password=MD5('$password')...</code>
+*     to further prevent the injection of malicious SQL
+* </ul>
+* The schema previously used the MySQL PASSWORD function for encryption.  This
+* is not the recommended technique so a procedure was introduced to first check
+* for a match using the PASSWORD function.  If this is successful, then the
+* is upgraded to the MD5 encyption format.  This check can be controlled by the
+* <code>check_legacy_password</code> configuration variable in </code>config.php</code>
+*
+* Upon a successful username and password match, several fields from the user
+* table are loaded in this object for convenient reference.  The style, localces
+* and preferences are also loaded at this time.
+*
+* @param string The user login name
+* @param string The user password
+* @return boolean True if successful, false if not
+*/
 	function login( $username, $password ) {
 		$username = trim( db_escape( $username ) );
 		$password = trim( db_escape( $password ) );
@@ -378,22 +441,37 @@ class CAppUI {
 		$this->checkStyle();
 		return true;
 	}
-
+/**
+* @deprecated
+*/
 	function logout() {
 	}
-
+/**
+* Checks whether there is any user logged in.
+*/
 	function doLogin() {
 		return ($this->user_id < 0) ? true : false;
 	}
-
+/**
+* Gets the value of the specified user preference
+* @param string Name of the preference
+*/
 	function getPref( $name ) {
 		return @$this->user_prefs[$name];
 	}
-
+/**
+* Sets the value of a user preference specified by name
+* @param string Name of the preference
+* @param mixed The value of the preference
+*/
 	function setPref( $name, $val ) {
 		$this->user_prefs[$name] = $val;
 	}
-
+/**
+* Loads the stored user preferences from the database into the internal
+* preferences variable.
+* @param int User id number
+*/
 	function loadPrefs( $uid=0 ) {
 		$sql = "SELECT pref_name, pref_value FROM user_preferences WHERE pref_user = $uid";
 		//writeDebug( $sql, "Preferences for user $uid, SQL", __FILE__, __LINE__ );
@@ -402,6 +480,11 @@ class CAppUI {
 	}
 
 // --- Module connectors
+
+/**
+* Gets a list of the installed modules
+* @return array Named array list in the form 'module directory'=>'module name'
+*/
 	function getInstalledModules() {
 		$sql = "
 		SELECT mod_directory, mod_ui_name
@@ -410,7 +493,10 @@ class CAppUI {
 		";
 		return (db_loadHashList( $sql ));
 	}
-
+/**
+* Gets a list of the active modules
+* @return array Named array list in the form 'module directory'=>'module name'
+*/
 	function getActiveModules() {
 		$sql = "
 		SELECT mod_directory, mod_ui_name
@@ -420,7 +506,11 @@ class CAppUI {
 		";
 		return (db_loadHashList( $sql ));
 	}
-
+/**
+* Gets a list of the modules that should appear in the menu
+* @return array Named array list in the form
+* ['module directory', 'module name', 'module_icon']
+*/
 	function getMenuModules() {
 		$sql = "
 		SELECT mod_directory, mod_ui_name, mod_ui_icon
@@ -431,31 +521,54 @@ class CAppUI {
 		return (db_loadList( $sql ));
 	}
 }
-/*
-	Tabbed box core class
-	The show function may be overrided by the style
+
+/**
+* Tabbed box abstract class
 */
 class CTabBox_core {
+/** @var array */
 	var $tabs=NULL;
+/** @var int The active tab */
 	var $active=NULL;
+/** @var string The base URL query string to prefix tab links */
 	var $baseHRef=NULL;
+/** @var string The base path to prefix the include file */
 	var $baseInc;
 
+/**
+* Constructor
+* @param string The base URL query string to prefix tab links
+* @param string The base path to prefix the include file
+* @param int The active tab
+*/
 	function CTabBox( $baseHRef='', $baseInc='', $active=0 ) {
 		$this->tabs = array();
 		$this->active = $active;
 		$this->baseHRef = ($baseHRef ? "$baseHRef&" : "?");
 		$this->baseInc = $baseInc;
 	}
-
+/**
+* Gets the name of a tab
+* @return string
+*/
 	function getTabName( $idx ) {
 		return $this->tabs[$idx][1];
 	}
-
+/**
+* Adds a tab to the object
+* @param string File to include
+* @param The display title/name of the tab
+*/
 	function add( $file, $title ) {
 		$this->tabs[] = array( $file, $title );
 	}
-
+/**
+* Displays the tabbed box
+*
+* This function may be overridden
+*
+* @param string Can't remember whether this was useful
+*/
 	function show( $extra='' ) {
 		GLOBAL $AppUI;
 		reset( $this->tabs );
@@ -508,13 +621,27 @@ class CTabBox_core {
 	}
 }
 
+/**
+* Title box abstract class
+*/
 class CTitleBlock_core {
+/** @var string The main title of the page */
 	var $title='';
+/** @var string The name of the icon used to the left of the title */
 	var $icon='';
+/** @var string The name of the module that this title block is displaying in */
 	var $module='';
+/** @var array An array of the table 'cells' to the right of the title block and for bread-crumbs */
 	var $cells=null;
+/** @var string The reference for the context help system */
 	var $helpref='';
-
+/**
+* The constructor
+*
+* Assigns the title, icon, module and help reference.  If the user does not
+* have permission to view the help module, then the context help icon is
+* not displayed.
+*/
 	function CTitleBlock_core( $title, $icon='', $module='', $helpref='' ) {
 		$this->title = $title;
 		$this->icon = $icon;
@@ -525,19 +652,33 @@ class CTitleBlock_core {
 		$this->crumbs = array();
 		$this->showhelp = !getDenyRead( 'help' );
 	}
-
+/**
+* Adds a table 'cell' beside the Title string
+*
+* Cells are added from left to right.
+*/
 	function addCell( $data='', $attribs='', $prefix='', $suffix='' ) {
 		$this->cells1[] = array( $attribs, $data, $prefix, $suffix );
 	}
-
+/**
+* Adds a table 'cell' to left-aligned bread-crumbs
+*
+* Cells are added from left to right.
+*/
 	function addCrumb( $link, $label, $icon='' ) {
 		$this->crumbs[$link] = array( $label, $icon );
 	}
-
+/**
+* Adds a table 'cell' to the right-aligned bread-crumbs
+*
+* Cells are added from left to right.
+*/
 	function addCrumbRight( $data='', $attribs='', $prefix='', $suffix='' ) {
 		$this->cells2[] = array( $attribs, $data, $prefix, $suffix );
 	}
-
+/**
+* Creates a standarised, right-aligned delete bread-crumb and icon.
+*/
 	function addCrumbDelete( $title, $canDelete='', $msg='' ) {
 		global $AppUI;
 		$this->addCrumbRight(
@@ -548,7 +689,9 @@ class CTitleBlock_core {
 			. '</td></tr></table>'
 		);
 	}
-
+/**
+* The drawing function
+*/
 	function show() {
 		global $AppUI;
 		$CR = "\n";
@@ -606,4 +749,5 @@ class CTitleBlock_core {
 		echo "$s";
 	}
 }
+// !! Ensure there is no white space after this close php tag.
 ?>

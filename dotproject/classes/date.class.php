@@ -1,7 +1,7 @@
 <?php /* CLASSES $Id$ */
 /**
- *	@package dotproject
- *	@subpackage utilites
+* @package dotproject
+* @subpackage utilites
 */
 
 require_once( $AppUI->getPearClass( 'Date' ) );
@@ -27,9 +27,18 @@ define( 'SEC_DAY',    86400 );
 
 /**
 * dotProject implementation of the Pear Date class
+*
+* This provides customised extensions to the Date class to leave the
+* Date package as 'pure' as possible
 */
 class CDate extends Date {
 
+/**
+* Overloaded compare method
+*
+* The convertTZ calls are time intensive calls.  When a compare call is
+* made in a recussive loop the lag can be significant.
+*/
     function compare($d1, $d2, $convertTZ=false)
     {
 		if ($convertTZ) {
@@ -51,7 +60,8 @@ class CDate extends Date {
 
 
 /**
-* @param int
+* Adds (+/-) a number of months to the current date.
+* @param int Positive or negative number of months
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 	function addMonths( $n ) {
@@ -77,7 +87,8 @@ class CDate extends Date {
 	}
 
 /**
-* @param Date
+* New method to get the difference in days the stored date
+* @param Date The date to compare to
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 	function dateDiff( $when ) {
@@ -88,6 +99,7 @@ class CDate extends Date {
 	}
 
 /**
+* New method that sets hour, minute and second in a single call
 * @param int hour
 * @param int minute
 * @param int second
