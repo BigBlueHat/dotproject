@@ -532,3 +532,11 @@ ALTER TABLE `syskeys` ADD UNIQUE (
 # see 20040808
 ALTER TABLE `events` DROP `events_cwd;
 ALTER TABLE `events` ADD `event_cwd` tinyint(3) default '0';
+
+# 20041110
+# Fix for stripping of decimals in budget figures
+#
+ALTER TABLE `projects` CHANGE `project_target_budget` `project_target_budget` DECIMAL(10,2) default '0.00';
+ALTER TABLE `projects` CHANGE `project_actual_budget` `project_actual_budget` DECIMAL(10,2) default '0.00';
+ALTER TABLE `tasks` CHANGE `task_target_budget` `task_target_budget` DECIMAL(10,2) default '0.00';
+
