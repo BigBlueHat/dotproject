@@ -1,5 +1,5 @@
 <?php /* CALENDAR $Id$ */
-global $tab;
+global $tab, $locale_char_set;
 $AppUI->savePlace();
 
 require_once( $AppUI->getModuleClass( 'tasks' ) );
@@ -66,7 +66,7 @@ function clickDay( idate, fdate ) {
 				<a href="<?php echo '?m=calendar&a=day_view&date='.$prev_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
 			</td>
 			<th width="100%">
-				<?php echo $AppUI->_($this_day->format( "%A" )).', '.$this_day->format( $df ); ?>
+				<?php echo htmlentities($this_day->format( "%A" ), ENT_COMPAT, $locale_char_set).', '.$this_day->format( $df ); ?>
 			</th>
 			<td>
 				<a href="<?php echo '?m=calendar&a=day_view&date='.$next_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
