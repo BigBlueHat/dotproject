@@ -13,9 +13,6 @@ GROUP BY dept_id
 ORDER BY dept_parent
 ";
 ##echo $sql;
-if (!($rows = db_loadList( $sql, NULL ))) {
-	echo $AppUI->_('No data available').'<br>'.$AppUI->getMsg();
-} else {
 
 function showchild( &$a, $level=0 ) {
 	$s = '';
@@ -53,25 +50,29 @@ function findchild( &$tarr, $parent, $level=0 ){
 }
 
 
-?>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th>&nbsp;</th>
-	<th width="100%"><?php echo $AppUI->_( 'Name' );?></th>
-	<th><?php echo $AppUI->_( 'Users' );?></th>
-	<td nowrap rowspan="99" align="right" valign="top" style="background-color:#ffffff">
-	<?php if (!$denyEdit) { ?>
-		<input type="button" class=button value="<?php echo $AppUI->_( 'new department' );?>" onClick="javascript:window.location='./index.php?m=departments&a=addedit&company_id=<?php echo $company_id;?>';">
-	<?php } ?>
-	</td>
-</tr>
-<?php
+$s = '<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">';
+$s .= '<tr>';
+$rows = db_loadList( $sql, NULL );
+if (count( $rows)) {
+	$s .= '<th>&nbsp;</th>';
+	$s .= '<th width="100%">'.$AppUI->_( 'Name' ).'</th>';
+	$s .= '<th>'.$AppUI->_( 'Users' ).'</th>';
+} else {
+	$s .= $AppUI->_('No data available');
+}
+$s .= '<td nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
+if (!$denyEdit) {
+	$s .= '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onClick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
+}
+$s .= '</td>';
+$s .= '</tr>';
+echo $s;
+
 foreach ($rows as $row) {
 	if ($row["dept_parent"] == 0) {
 		showchild( $row );
 		findchild( $rows, $row["dept_id"] );
 	}
 }
+echo '</table>';
 ?>
-</table>
-<?php } ?>
