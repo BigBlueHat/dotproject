@@ -38,21 +38,20 @@ $working_hours = $dPconfig['daily_working_hours'];
 
 // load the record data
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
-$sql = "
-SELECT
-	company_name,
+$q  = new DBQuery;
+$q->addTable('projects');
+$q->addQuery("company_name,
 	CONCAT_WS(' ',contact_first_name,contact_last_name) user_name,
 	projects.*,
 	SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type))/
-		SUM(t1.task_duration * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type)) AS project_percent_complete
-FROM projects
-LEFT JOIN companies ON company_id = project_company
-LEFT JOIN users ON user_id = project_owner
-LEFT JOIN contacts ON contact_id = user_contact
-LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-WHERE project_id = $project_id
-GROUP BY project_id
-";
+		SUM(t1.task_duration * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type)) AS project_percent_complete");
+$q->addJoin('companies', 'com', 'company_id = project_company');
+$q->addJoin('users', 'u', 'user_id = project_owner');
+$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+$q->addWhere('project_id = '.$project_id);
+$q->addGroup('project_id');
+$sql = $q->prepare();
 
 $obj = null;
 if (!db_loadObject( $sql, $obj )) {
@@ -68,25 +67,47 @@ if (!db_loadObject( $sql, $obj )) {
 // by definition milestones don't have duration so even if they specified, they shouldn't add up
 // the sums have to be rounded to prevent the sum form having many (unwanted) decimals because of the mysql floating point issue
 // more info on http://www.mysql.com/doc/en/Problems_with_float.html
-$sql = "SELECT ROUND(SUM(task_log_hours),2) FROM task_log, tasks WHERE task_log_task = task_id AND task_project = $project_id AND task_milestone ='0'";
+$q  = new DBQuery;
+$q->addTable('task_log');
+$q->addTable('tasks');
+$q->addQuery('ROUND(SUM(task_log_hours),2)');
+$q->addWhere("task_log_task = task_id AND task_project = $project_id AND task_milestone ='0'");
+$sql = $q->prepare();
 $worked_hours = db_loadResult($sql);
 $worked_hours = rtrim($worked_hours, "0");
 
 // total hours
 // same milestone comment as above, also applies to dynamic tasks
-$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 24 AND task_milestone ='0' AND task_dynamic != 1";
+$q  = new DBQuery;
+$q->addTable('tasks');
+$q->addQuery('ROUND(SUM(task_duration),2)');
+$q->addWhere("task_project = $project_id AND task_duration_type = 24 AND task_milestone ='0' AND task_dynamic != 1");
+$sql = $q->prepare();
 $days = db_loadResult($sql);
-$sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks WHERE task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0' AND task_dynamic != 1";
+
+$q  = new DBQuery;
+$q->addTable('tasks');
+$q->addQuery('ROUND(SUM(task_duration),2)');
+$q->addWhere("task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0' AND task_dynamic != 1");
+$sql = $q->prepare();
 $hours = db_loadResult($sql);
 $total_hours = $days * $dPconfig['daily_working_hours'] + $hours;
-//due to the round above, we don't want to print decimals unless they really exist
-//$total_hours = rtrim($total_hours, "0");
 
 $total_project_hours = 0;
-//$total_project_days_sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
-//$total_project_hours_sql = "SELECT ROUND(SUM(task_duration),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
-$total_project_days_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic != 1";
-$total_project_hours_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic != 1";
+
+$q  = new DBQuery;
+$q->addTable('tasks', 't');
+$q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2)');
+$q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
+$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic != 1");
+$total_project_days_sql = $q->prepare();
+
+$q  = new DBQuery;
+$q->addTable('tasks', 't');
+$q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2)');
+$q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
+$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic != 1");
+$total_project_hours_sql = $q->prepare();
 
 $total_project_hours = db_loadResult($total_project_days_sql) * $dPconfig['daily_working_hours'] + db_loadResult($total_project_hours_sql);
 //due to the round above, we don't want to print decimals unless they really exist
@@ -278,12 +299,14 @@ function delIt() {
 			<td class="hilite" width="100%"><?php echo $total_project_hours ?></td>
 		</tr>				
 		<?php
-					$depts = db_loadHashList("select a.dept_id, a.dept_name, a.dept_phone
-																		from departments a, project_departments b
-																		where a.dept_id = b.department_id
-																		and b.project_id = $project_id", "dept_id");
-					if (count($depts) > 0) {
-			?>
+		$q  = new DBQuery;
+		$q->addTable('departments', 'a');
+		$q->addTable('project_departments', 'b');
+		$q->addQuery('a.dept_id, a.dept_name, a.dept_phone');
+		$q->addWhere("a.dept_id = b.department_id and b.project_id = $project_id");
+		$depts = $q->loadHashList("dept_id");
+		if (count($depts) > 0) {
+		?>
 		    <tr>
 		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
 		    </tr>
@@ -303,12 +326,15 @@ function delIt() {
 	 		<?php
 		}
 		
-			$contacts = db_loadHashList("select a.contact_id, a.contact_first_name, a.contact_last_name,
-								a.contact_email, a.contact_phone, a.contact_department
-		    			                 from contacts a, project_contacts b
-		    			                 where a.contact_id = b.contact_id
-															 and b.project_id = $project_id
-		    			                       and (contact_owner = '$AppUI->user_id' or contact_private='0')", "contact_id");
+			$q  = new DBQuery;
+			$q->addTable('contacts', 'a');
+			$q->addTable('project_contacts', 'b');
+			$q->addQuery('a.contact_id, a.contact_first_name, a.contact_last_name,
+					a.contact_email, a.contact_phone, a.contact_department');
+			$q->addWhere("a.contact_id = b.contact_id and b.project_id = $project_id
+					and (contact_owner = '$AppUI->user_id' or contact_private='0')");
+
+			$contacts = $q->loadHashList("contact_id");
 			if(count($contacts)>0){
 				?>
 			    <tr>

@@ -34,22 +34,20 @@ $working_hours = $dPconfig['daily_working_hours'];
 
 // pull valid projects and their percent complete information
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
-$sql = "
-SELECT DISTINCT project_id, project_color_identifier, project_name, project_start_date, project_end_date, max(t1.task_end_date) AS project_actual_end_date,
- SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
-		SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete,
-project_status, project_active
-FROM projects
-LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-LEFT JOIN companies c1 ON projects.project_company = c1.company_id";
+$q  = new DBQuery;
+$q->addTable('projects', 'p');
+$q->addQuery("DISTINCT project_id, project_color_identifier, project_name, project_start_date, project_end_date,
+		max(t1.task_end_date) AS project_actual_end_date, SUM(task_duration * task_percent_complete *
+		IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/ SUM(task_duration * 
+		IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete,
+		project_status, project_active");
+$q->addJoin('tasks', 't1', 'p.project_id = t1.task_project');
+$q->addJoin('companies', 'c1', 'p.project_company = c1.company_id');
 if (count($where))
-	$sql .= " WHERE " . implode( " AND ", $where);
-$sql .= "
-GROUP BY project_id
-ORDER BY project_name, task_end_date DESC
-";
-// echo "<pre>$psql</pre>";
-$projects = db_loadList( $sql );
+	$q->addWhere( implode( " AND ", $where) );
+$q->addGroup('project_id');
+$q->addOrder('project_name, task_end_date DESC');
+$projects = $q->loadList();
 
 $width      = dPgetParam( $_GET, 'width', 600 );
 $start_date = dPgetParam( $_GET, 'start_date', 0 );
@@ -223,15 +221,14 @@ foreach($projects as $p) {
  		// insert tasks into Gantt Chart
  		
  		// select for tasks for each project	
- 		$sqlTasks = "	SELECT DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, tasks.task_milestone
-               		FROM tasks
-               		LEFT JOIN projects ON projects.project_id = tasks.task_project
-               		LEFT JOIN companies c1 ON projects.project_company = c1.company_id
-               		WHERE projects.project_id = {$p["project_id"]} 
-               		ORDER BY tasks.task_end_date ASC";
- 		// End of select for tasks for each project
- 		
- 		$tasks = db_loadList( $sqlTasks );
+ 		$q  = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, 			tasks.task_milestone');
+		$q->addJoin('companies', 'c1', 'p.project_company = c1.company_id');
+		$q->addJoin('projects', 'p', 'p.project_id = tasks.task_project');
+		$q->addWhere("p.project_id = {$p["project_id"]}");
+		$q->addOrder('tasks.task_end_date ASC');
+ 		$tasks = $q->loadList();
  		foreach($tasks as $t)
  		{
  			if ($t["task_end_date"] == null)
@@ -253,15 +250,13 @@ foreach($projects as $p) {
  			}				
  				
  				// Insert workers for each task into Gantt Chart 
- 				$sqlWorkers = "
-                 				SELECT DISTINCT  user_username, t.task_id
-                 				FROM user_tasks t
-                 				LEFT JOIN users ON users.user_id = t.user_id
-                 				WHERE t.task_id = ";
-                 				$sqlWorkers .=  $t["task_id"] . " 
-                 				ORDER BY user_username ASC";
- 				
- 				$workers = db_loadList($sqlWorkers);
+ 				$q  = new DBQuery;
+				$q->addTable('user_tasks', 't');
+				$q->addQuery('DISTINCT user_username, t.task_id');
+				$q->addJoin('users', 'u', 'u.user_id = t.user_id');
+				$q->addWhere("t.task_id = ".$t["task_id"]);
+				$q->addOrder('user_username ASC');
+ 				$workers = $q->loadList();
  				$workersName = "";
  				foreach($workers as $w)
  				{	

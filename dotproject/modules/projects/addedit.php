@@ -18,11 +18,14 @@ $companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name'
 $companies = arrayMerge( array( '0'=>'' ), $companies );
 
 // pull users
-$sql = "SELECT user_id, CONCAT_WS(', ',contact_last_name,contact_first_name)
-FROM users
-LEFT JOIN contacts ON contact_id = user_contact
-ORDER BY contact_last_name";
-$users = db_loadHashList( $sql );
+$q  = new DBQuery;
+$q->addTable('users','u');
+$q->addTable('contacts','con');
+$q->addQuery('user_id');
+$q->addQuery('CONCAT_WS(", ",contact_last_name,contact_first_name)');
+$q->addOrder('contact_last_name');
+$q->addWhere('u.user_contact = con.contact_id');
+$users = $q->loadHashList();
 
 // load the record data
 $row = new CProject();
@@ -42,9 +45,12 @@ if ($project_id == 0 && $company_id > 0) {
 
 // add in the existing company if for some reason it is dis-allowed
 if ($project_id && !array_key_exists( $row->project_company, $companies )) {
-$companies[$row->project_company] = db_loadResult(
-	"SELECT company_name FROM companies WHERE company_id=$row->project_company"
-);
+	$q  = new DBQuery;
+	$q->addTable('companies');
+	$q->addQuery('company_name');
+	$q->addWhere('companies.company_id = '.$row->project_company);
+	$sql = $q->prepare();
+	$companies[$row->project_company] = db_loadResult($sql);
 }
 
 // get critical tasks (criteria: task_end_date)
@@ -403,16 +409,19 @@ function setDepartment(department_id_string){
 			// Retrieve projects that the user can access
 			$objProject = new CProject();
 			$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
-			// Loading project with tasks
-			$sql = 'SELECT DISTINCT p.project_id, p.project_name
-				FROM projects AS p , tasks AS t 
-				WHERE ( t.task_project = p.project_id )';
+			
+			$q  = new DBQuery;
+			$q->addTable('projects', 'p');
+			$q->addTable('tasks', 't');
+			$q->addQuery('p.project_id, p.project_name');
+			$q->addWhere('t.task_project = p.project_id');
 			if ( count($allowedProjects) > 0 ) {
-				$sql .= ' AND (p.project_id IN (' .
-				implode (',', array_keys($allowedProjects)) . ')) ORDER BY p.project_name';
+				$q->addWhere('(p.project_id IN (' .
+				implode (',', array_keys($allowedProjects)) . '))');
 			}
-
-			$importList = db_loadHashList ($sql);
+			$q->addOrder('p.project_name');
+			
+			$importList = $q->loadHashList ();
 			$importList = arrayMerge( array( '0'=> $AppUI->_('none') ), $importList);
 		?>
 		<tr>
@@ -450,11 +459,12 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$parsed = '';
 
 	if($departments_count < 6) $departments_count++;
-	$sql = "select dept_id, dept_name
-	        from departments
-	        where dept_parent      = '$dept_parent'
-	              and dept_company = '$company_id'";
-	$depts_list = db_loadHashList($sql, "dept_id");
+	
+	$q  = new DBQuery;
+	$q->addTable('departments');
+	$q->addQuery('dept_id, dept_name');
+	$q->addWhere("dept_parent = '$dept_parent' and dept_company = '$company_id'");
+	$depts_list = $q->loadHashList("dept_id");
 
 	foreach($depts_list as $dept_id => $dept_info){
 		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
