@@ -120,8 +120,8 @@ function setDept( key, val ) {
 		echo '<input type="hidden" class="text" name="user_username" value="' . $user["user_username"] . '" />';
 		echo '<strong>' . $user["user_username"] . '</strong>';
     } else {
-        echo '<input type="text" class="text" name="user_username" value="' . $user["user_username"] . '" maxlength="50" size="40" />';
-		echo '<span class="smallNorm">(' . $AppUI->_('required') . ')</span>';
+        echo '<input type="text" class="text" name="user_username" value="' . $user["user_username"] . '" maxlength="20" size="20" />';
+		echo ' <span class="smallNorm">(' . $AppUI->_('required') . ')</span>';
     }
 ?>
 	</td></tr>
@@ -135,11 +135,11 @@ function setDept( key, val ) {
 </tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('Password');?>:</td>
-    <td><input type="password" class="text" name="user_password" value="<?php echo $user["user_password"];?>" maxlength="20" size="40" /> </td>
+    <td><input type="password" class="text" name="user_password" value="<?php echo $user["user_password"];?>" maxlength="32" size="32" /> </td>
 </tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('Password');?>2:</td>
-    <td><input type="password" class="text" name="password_check" value="<?php echo $user["user_password"];?>" maxlength="20" size="40" /> </td>
+    <td><input type="password" class="text" name="password_check" value="<?php echo $user["user_password"];?>" maxlength="32" size="32" /> </td>
 </tr>
 <tr>
     <td align="right"><?php echo $AppUI->_('First Name');?>:</td>
