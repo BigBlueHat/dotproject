@@ -1553,7 +1553,7 @@ function canDelete( &$msg, $oid=null, $joins=null ) {
 
 		// First things first.  Are we allowed to delete?
 		$acl =& $AppUI->acl();
-		if ( ! $acl->checkModuleItem('tasks', "delete", $oid)) {
+		if ( ! $acl->checkModuleItem('task_log', "delete", $oid)) {
 		  $msg = $AppUI->_( "noDeletePermission" );
 		  return false;
 		}
@@ -1612,6 +1612,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         $now = new CDate();
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$df .= " " . $AppUI->getPref('TIMEFORMAT');
+	$perms =& $AppUI->acl();
 
 	$done[] = $a['task_id'];
 
@@ -1649,6 +1650,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 // edit icon
 	$s .= "\n\t<td>";
 	$canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
+	$canViewLog = $perms->checkModuleItem('task_log', 'view', $a['task_id']);
 	if ($canEdit) {
 		$s .= "\n\t\t<a href=\"?m=tasks&a=addedit&task_id={$a['task_id']}\">"
 			. "\n\t\t\t".'<img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12">'
@@ -1667,9 +1669,11 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                 $s .= '<td align="center" valign="middle"><a href="?m=tasks&a=view&task_id='.$a['task_id'].'&tab=0&problem=1">';
                 $s .= dPshowImage( './images/icons/dialog-warning5.png', 16, 16, 'Problem', 'Problem!' );
                 $s .='</a></td>';
-        } else {
+        } else if ($canViewLog) {
                 $s .= "\n\t<td><a href=\"?m=tasks&a=view&task_id=" . $a['task_id'] . '&tab=1">' . $AppUI->_('Log') . '</a></td>';
-        }
+        } else {
+                $s .= "\n\t<td></td>";
+				}
 // percent complete
 	$s .= "\n\t<td align=\"right\">".intval( $a["task_percent_complete"] ).'%</td>';
 // priority

@@ -459,20 +459,22 @@ $tabBox = new CTabBox( "?m=tasks&a=view&task_id=$task_id", "", $tab );
 $tabBox_show = 0;
 if ( $obj->task_dynamic != 1 ) {
 	// tabbed information boxes
-	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
-	// fixed bug that dP automatically jumped to access denied if user does not
-	// have read-write permissions on task_id and this tab is opened by default (session_vars)
-	// only if user has r-w perms on this task, new or edit log is beign showed
-	if (!getDenyEdit( $m, $task_id )) {
-		if ($task_log_id == 0) {
-			$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
+	if ($perms->checkModuleItem('task_log', 'view', $task_id)) {
+		$tabBox_show = 1;
+		$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
+		// fixed bug that dP automatically jumped to access denied if user does not
+		// have read-write permissions on task_id and this tab is opened by default (session_vars)
+		// only if user has r-w perms on this task, new or edit log is beign showed
+		if ($perms->checkModuleItem( 'task_log', 'edit', $task_id )) {
+			if ($task_log_id == 0) {
+				if ($perms->checkModuleItem('task_log', 'add', $task_id))
+					$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
+			} else if ($perms->checkModuleItem('task_log', 'edit', $task_id)) {
+				$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'Edit Log' );
 
-		} else {
-			$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'Edit Log' );
-
+			}
 		}
 	}
-	$tabBox_show = 1;
 }
 
 if ( count($obj->getChildren()) > 0 ) {

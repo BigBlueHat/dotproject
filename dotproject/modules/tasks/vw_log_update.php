@@ -4,16 +4,18 @@ GLOBAL $AppUI, $task_id, $obj, $percent, $can_edit_time_information;
 $perms =& $AppUI->acl();
 
 // check permissions
-$canEdit = !getDenyEdit( 'tasks', $task_id );
-if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
+$canEdit = $perms->checkModuleItem( 'task_log', 'edit', $task_id );
+$canAdd = $perms->checkModuleItem( 'task_log', 'add', $task_id );
 
 $task_log_id = intval( dPgetParam( $_GET, 'task_log_id', 0 ) );
 $log = new CTaskLog();
 if ($task_log_id) {
+	if (! $canEdit)
+		$AppUI->redirect("m=public&a=access_denied");
 	$log->load( $task_log_id );
 } else {
+	if (! $canAdd)
+		$AppUI->redirect("m=public&a=access_denied");
 	$log->task_log_task = $task_id;
 	$log->task_log_name = $obj->task_name;
 }
@@ -48,7 +50,6 @@ for ($x=0; $x < $nums; $x++) {
 
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 
-if ($canEdit) {
 // Task Update Form
 	$df = $AppUI->getPref( 'SHDATEFORMAT' );
 	$log_date = new CDate( $log->task_log_date );
@@ -343,4 +344,3 @@ if ($canEdit) {
 </tr>
 </table>
 </form>
-<?php } ?>

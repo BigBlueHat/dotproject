@@ -1,6 +1,11 @@
 <?php /* TASKS $Id$ */
 global $AppUI, $task_id, $df, $canEdit, $m;
 
+$perms =& $AppUI->acl();
+if (! $perms->checkModuleItem('task_log', 'view', $task_id)) {
+	$AppUI->redirect("m=public&a=access_denied");
+}
+
 $problem = intval( dPgetParam( $_GET, 'problem', null ) );
 // get sysvals
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
@@ -11,7 +16,8 @@ $taskLogReferenceImage = dPgetSysVal( 'TaskLogReferenceImage' );
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
-if ($canEdit) {
+$canDelete = $perms->checkModuleItem('task_log', 'delete', $task_id);
+if ($canDelete) {
 ?>
 function delIt2(id) {
 	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Task Log', UI_OUTPUT_JS).'?';?>" )) {
@@ -60,7 +66,7 @@ foreach ($logs as $row) {
 
 	$s .= '<tr bgcolor="white" valign="top">';
 	$s .= "\n\t<td>";
-	if (!getDenyEdit($m, $task_id) ) {
+	if ($perms->checkModuleItem('task_log', 'edit', $task_id)) {
 		if ($tab == -1) {
 		 	$s .= "\n\t\t<a href=\"?m=tasks&a=view&task_id=$task_id&tab=".$AppUI->getState( 'TaskLogVwTab' );
 		} else {
@@ -107,7 +113,7 @@ foreach ($logs as $row) {
 			
 	$s .= '</td>';
 	$s .= "\n\t<td>";
-	if ($canEdit) {
+	if ($canDelete) {
 		$s .= "\n\t\t<a href=\"javascript:delIt2({$row['task_log_id']});\" title=\"".$AppUI->_('delete log')."\">"
 			. "\n\t\t\t". dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
 			. "\n\t\t</a>";
