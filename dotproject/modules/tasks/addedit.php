@@ -17,11 +17,7 @@ if ($task_id > 0 && !$obj->load( $task_id )) {
 	$AppUI->redirect();
 }
 
-// we have to keep tracking of the task_parent
-if (isset( $_REQUEST['task_parent'] )) {
-	$AppUI->setState( 'TaskIdxParent', $_REQUEST['task_parent'] );
-}
-$task_parent = $AppUI->getState( 'TaskIdxParent' ) ? $AppUI->getState( 'TaskIdxParent' ) : $obj->task_parent;
+$task_parent = isset($_REQUEST['task_parent'])? $_REQUEST['task_parent'] : $obj->task_parent;
 
 $loadFromTab = 0;
 if (isset($_POST['currentTab']))  {
