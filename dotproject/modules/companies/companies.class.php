@@ -51,41 +51,11 @@ class CCompany extends CDpObject {
 
 // overload canDelete
 	function canDelete( &$msg, $oid=null ) {
-		global $AppUI;
+		$tables[] = array( 'label' => 'Projects', 'name' => 'projects', 'idfield' => 'project_id', 'joinfield' => 'project_company' );
+		$tables[] = array( 'label' => 'Departments', 'name' => 'departments', 'idfield' => 'dept_id', 'joinfield' => 'dept_company' );
+		$tables[] = array( 'label' => 'Users', 'name' => 'users', 'idfield' => 'user_id', 'joinfield' => 'user_owner' );
 	// call the parent class method to assign the oid
-		CDpObject::canDelete( $msg, $oid );
-
-	// do the specific checks
-		$sql = "SELECT company_id,"
-			. "\nCOUNT(DISTINCT project_id) AS p,"
-			. "\nCOUNT(DISTINCT dept_id) AS d,"
-			. "\nCOUNT(DISTINCT user_id) AS u"
-			. "\nFROM companies"
-			. "\nLEFT JOIN projects ON project_company = company_id"
-			. "\nLEFT JOIN departments ON dept_company = company_id"
-			. "\nLEFT JOIN users ON user_owner = company_id"
-			. "\nWHERE company_id = $this->company_id GROUP BY company_id";
-
-		$foo = null;
-		$obj = db_loadObject( $sql, $foo );
-
-		$msg = array();
-		if ($obj->p) {
-			$msg[] = $AppUI->_( 'Projects' );
-		}
-		if ($obj->d) {
-			$msg[] = $AppUI->_( 'Departments' );
-		}
-		if ($obj->u) {
-			$msg[] = $AppUI->_( 'Users' );
-		}
-
-		if (count( $msg )) {
-			$msg = $AppUI->_( "noDeleteRecord" ) . ": " . implode( ', ', $msg );
-			return false;
-		} else {
-			return true;
-		}
+		return CDpObject::canDelete( $msg, $oid, $tables );
 	}
 }
 ?>
