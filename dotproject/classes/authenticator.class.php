@@ -10,6 +10,7 @@
 	{
 		switch($auth_mode)
 		{
+		    case null:
 			case "sql":
 				$auth = new SQLAuthenticator();
 				return $auth;
