@@ -3,6 +3,12 @@
 ## add or edit a user preferences
 ##
 $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
+// Why does this need to be different to $user_id?
+$transmit_user_id = $_GET['user_id'];
+// Check permissions
+if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
+  $AppUI->redirect("m=public&a=access_denied" );
+}
 
 // load the preferences
 $sql = "

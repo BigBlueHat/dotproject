@@ -2,6 +2,7 @@
 $AppUI->savePlace();
 
 $user_id = isset( $_GET['user_id'] ) ? $_GET['user_id'] : 0;
+$transmit_user_id = $_GET['user_id'];
 
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'UserVwTab', $_GET['tab'] );
@@ -26,10 +27,12 @@ if (!db_loadHash( $sql, $user )) {
 
 // setup the title block
 	$titleBlock = new CTitleBlock( 'View User', 'helix-setup-user.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=admin", "users list" );
-	if ($canEdit) {
-		$titleBlock->addCrumb( "?m=admin&a=addedituser&user_id=$user_id", "edit this user" );
-		$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
+	if ($canRead) {
+	  $titleBlock->addCrumb( "?m=admin", "users list" );
+	}
+	if ($canEdit || $transmit_user_id == $AppUI->user_id) {
+	      $titleBlock->addCrumb( "?m=admin&a=addedituser&user_id=$user_id", "edit this user" );
+	      $titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
 
 	}
 	$titleBlock->addCrumbRight(

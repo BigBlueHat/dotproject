@@ -1,9 +1,11 @@
 <?php /* ADMIN $Id$ */
 //add or edit a system user
+$transmit_user_id = $_GET['user_id']; //store originally via get received user_id for permission comparison
+
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
 
 // check permissions
-if (!$canEdit) {
+if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
     $AppUI->redirect( "m=public&a=access_denied" );
 }
 
@@ -28,7 +30,9 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
 	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=admin", "users list" );
+	if ($canEdit) {
+	  $titleBlock->addCrumb( "?m=admin", "users list" );
+	}
 	$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
 	$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
 	$titleBlock->show();
@@ -125,6 +129,8 @@ function setDept( key, val ) {
     }
 ?>
 	</td></tr>
+<?php if ($canEdit) { // prevent users without read-write permissions from seeing and editing user type
+?>
 <tr>
     <td align="right"><?php echo $AppUI->_('User Type');?>:</td>
     <td>
@@ -133,6 +139,8 @@ function setDept( key, val ) {
 ?>
     </td>
 </tr>
+<?php } // End of security 
+?>
 <tr>
     <td align="right"><?php echo $AppUI->_('Password');?>:</td>
     <td><input type="password" class="text" name="user_password" value="<?php echo $user["user_password"];?>" maxlength="32" size="32" /> </td>
@@ -145,6 +153,7 @@ function setDept( key, val ) {
     <td align="right"><?php echo $AppUI->_('First Name');?>:</td>
     <td><input type="text" class="text" name="user_first_name" value="<?php echo $user["user_first_name"];?>" maxlength="50" /> <input type="text" class="text" name="user_last_name" value="<?php echo $user["user_last_name"];?>" maxlength="50" /></td>
 </tr>
+<?php if ($canEdit) { ?>
 <tr>
     <td align="right"><?php echo $AppUI->_('Company');?>:</td>
     <td>
@@ -153,6 +162,7 @@ function setDept( key, val ) {
 ?>
     </td>
 </tr>
+<?php } ?>
 <tr>
     <td align="right"><?php echo $AppUI->_('Department');?>:</td>
     <td>
