@@ -169,10 +169,7 @@ function delIt() {
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
 	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
-	if(!getDenyRead("finanzas")) {
-		$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/finanzas/vw_accounts", 'Accounts' );
-	}
-	
+
 	// settings for tasks
 	$f = 'all';
 	$min_view = true;
