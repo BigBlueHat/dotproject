@@ -325,8 +325,13 @@ if(!$suppressHeaders) {
 
 
 if (! isset($_SESSION['all_tabs'][$m]) && !( $_GET['m'] == 'install' && $dPrunLevel < 2 )) {
-	$all_tabs = array();
-	$_SESSION['all_tabs'][$m] =& $all_tabs;
+	// For some reason on some systems if you don't set this up
+	// first you get recursive pointers to the all_tabs array, creating
+	// phantom tabs.
+	if (! isset($_SESSION['all_tabs']))
+		$_SESSION['all_tabs'] = array();
+	$_SESSION['all_tabs'][$m] = array();
+	$all_tabs =& $_SESSION['all_tabs'][$m];
 	foreach ($AppUI->getActiveModules() as $dir => $module)
 	{
 		$modules_tabs = $AppUI->readFiles('./modules/'.$dir.'/', '^' . $m . '_tab.*\.php');
