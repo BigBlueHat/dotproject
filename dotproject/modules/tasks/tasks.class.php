@@ -277,7 +277,7 @@ class CTask extends CDpObject {
 					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
 					" AND task_id != " . $modified_task->task_id;
 			$real_children_hours_worked = (float) db_loadResult( $sql );
-			
+
 			$total_hours_allocated = (float)($modified_task->task_duration * $modified_task->task_duration_type);
 			if($total_hours_allocated > 0){
 			    $modified_task->task_percent_complete = $real_children_hours_worked / $total_hours_allocated;
@@ -352,11 +352,11 @@ class CTask extends CDpObject {
 			// if task_status changed, then update subtasks
 			if ($this->task_status != $oTsk->task_status)
 				$this->updateSubTasksStatus($this->task_status);
-			
+
 			// Moving this task to another project?
 			if ($this->task_project != $oTsk->task_project)
 				$this->updateSubTasksProject($this->task_project);
-			
+
 			if ( $this->task_dynamic == '1' )
 				$this->updateDynamics(true);
 
@@ -413,6 +413,14 @@ class CTask extends CDpObject {
 
 		if ( !$importing_tasks && $this->task_parent != $this->task_id )
 			$this->updateDynamics();
+
+		// if is child update parent task
+
+		if ( $this->task_parent != $this->task_id ) {
+     			$pTask = new CTask();
+			$pTask->load($this->task_parent);
+			$pTask->updateDynamics(true);
+		}
 
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
