@@ -242,7 +242,17 @@ class CTask extends CDpObject {
 					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
 					" AND task_id != " . $modified_task->task_id;
 			$real_children_hours_worked = (float) db_loadResult( $sql );
-			$modified_task->task_percent_complete = $real_children_hours_worked / (float)($modified_task->task_duration * $modified_task->task_duration_type);
+			
+			$total_hours_allocated = (float)($modified_task->task_duration * $modified_task->task_duration_type);
+			if($total_hours_allocated > 0){
+			    $modified_task->task_percent_complete = $real_children_hours_worked / $total_hours_allocated;
+			} else {
+			    $sql = "SELECT avg(task_percent_complete)
+    					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
+    					" AND task_id != " . $modified_task->task_id;
+			    $modified_task->task_percent_complete = db_loadResult($sql);
+			}
+
 
 			//Update start date
 			$sql = "SELECT min( task_start_date ) FROM tasks
