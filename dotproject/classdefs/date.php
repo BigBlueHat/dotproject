@@ -205,7 +205,7 @@ class CDate
 			return false;
 		return $this->getTimestamp() - $date->getTimestamp();
 	}
-	
+
 	function inMonth( $date ) {
 		return ($this->M == $date->M && $this->Y == $date->Y);
 	}
@@ -229,38 +229,39 @@ class CDate
 	}
 
 // arithmetic functions
-	function addDays( $numdays )
-	{
+	function addDays( $numdays ) {
 		$this->D += $numdays;
 		$this->_calc();
 	}
 
-	function addMonths( $num )
-	{
+	function addMonths( $num ) {
+	// need to trap adding month from longer month to shorter month
+	// eg, adding 1 month to Jan 31 will actually push the date into March
+		$temp = $this->D;
+		$this->D = 1;
 		$this->M += $num;
+		$this->_calc();
+	// fix up the day
+		$this->D = min( $temp, $this->daysInMonth() );
 		$this->_calc();
 	}
 
-	function addYears( $num )
-	{
+	function addYears( $num ) {
 		$this->Y += $num;
 		$this->_calc();
 	}
 
-	function addHours( $num )
-	{
+	function addHours( $num ) {
 		$this->h += $num;
 		$this->_calc();
 	}
 
-	function addMinutes( $num )
-	{
+	function addMinutes( $num ) {
 		$this->m += $num;
 		$this->_calc();
 	}
 
-	function addSeconds( $num )
-	{
+	function addSeconds( $num ) {
 		$this->s += $num;
 		$this->_calc();
 	}
