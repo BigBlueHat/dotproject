@@ -2,8 +2,8 @@
 $task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
 
 // check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
+$denyRead = getDenyRead( $m, $task_id );
+$denyEdit = getDenyEdit( $m, $task_id );
 
 if ($denyRead) {
 	$AppUI->redirect( "m=help&a=access_denied" );
@@ -101,13 +101,6 @@ function updateTask() {
 </table>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
-<tr>
-	<td style="border: outset #eeeeee 1px;background-color:<?php echo $task["project_color_identifier"];?>" colspan="2">
-		<font color="<?php echo bestColor( $task["project_color_identifier"] ); ?>">
-			<b><?php echo $AppUI->_('Task');?>: <?php echo @$task["task_name"];?></b>
-		</font>
-	</td>
-</tr>
 <tr valign="top">
 	<td width="50%">
 		<table width="100%" cellspacing="1" cellpadding="2">
@@ -116,11 +109,15 @@ function updateTask() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project');?>:</td>
-			<td class="hilite"><?php echo @$task["project_name"];?></td>
+			<td style="background-color:<?php echo $task["project_color_identifier"];?>">
+				<font color="<?php echo bestColor( $task["project_color_identifier"] ); ?>">
+					<?php echo @$task["project_name"];?>
+				</font>
+			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
-			<td class="hilite"><?php echo @$task["task_name"];?></td>
+			<td class="hilite"><b><?php echo @$task["task_name"];?></b></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Creator');?>:</td>
@@ -236,29 +233,45 @@ function updateTask() {
 		</tr>
 		<tr>
 			<td colspan="3">
-				<table width="100%" cellspacing=1 bgcolor="black">
-				<?php foreach($users as $row){?>
-				<tr><td class="hilite"><?php echo $row["user_username"];?></td><td class="hilite"><?php echo $row["user_email"];?></td></tr>
-				<?php };?>
-				</table>
+			<?php
+				$s = '';
+				foreach($users as $row) {
+					$s .= '<tr>';
+					$s .= '<td class="hilite">'.$row["user_username"].'</td>';
+					$s .= '<td class="hilite"><a href="mailto:'.$row["user_email"].'">'.$row["user_email"].'</a></td>';
+					$s .= '</tr>';
+				}
+				echo '<table width="100%" cellspacing=1 bgcolor="black">'.$s.'</table>';
+			?>
 			</td>
 		</tr>
+	<?php // check access to files module
+		if (!getDenyRead( 'files' )) {
+	?>
 		<tr>
 			<td><b><?php echo $AppUI->_('Attached Files');?></b></td>
 			<td colspan="2" align="right">
-				<A href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?><img src="./images/icons/forum_folder.gif" align=absmiddle width=20 height=20 alt="attach a file to this task" border=0></a>
+			<?php if (!getDenyEdit( 'files' )) { ?>
+				<a href="./index.php?m=files&a=addedit&project_id=<?php echo $task["task_project"];?>&file_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a file');?><img src="./images/icons/forum_folder.gif" align=absmiddle width=20 height=20 alt="attach a file to this task" border=0></a>
+			<?php } ?>
 			</td>
 		</tr>
 		<tr>
 			<td colspan="3">
-				<table width="100%" cellspacing=1 bgcolor="black">
-					<?php if(count($files)==0)echo "<tr><td bgcolor=#ffffff>none</td></tr>";
-					foreach ($files as $row){?>
-					<tr><td bgcolor="#eeeeee"><A href="./fileviewer.php?file_id=<?php echo $row["file_id"];?>"><?php echo $row["file_name"];?></a></td><td class="hilite"><?php echo $row["file_type"];?></td><td bgcolor="#eeeeee"><?php echo $row["file_size"];?></td></tr>
-					<?php };?>
-				</table>
+			<?php
+				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>none</td></tr>" : '';
+				foreach ($files as $row) { 
+					$s .= '<tr>';
+					$s .= '<td><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
+					$s .= '<td class="hilite">'.$row["file_type"].'</td>';
+					$s .= '<td>'.$row["file_size"].'</td>';
+					$s .= '</tr>';
+				}
+				echo '<table width="100%" cellspacing="1" bgcolor="black">'.$s.'</table';
+			?>
 			</td>
 		</tr>
+	<?php } // end files access ?>
 		</table>
 	</td>
 </tr>
