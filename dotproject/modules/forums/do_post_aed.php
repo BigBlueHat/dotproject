@@ -25,6 +25,6 @@ if ($del) {
 		$isNotNew = @$_POST['message_id'];
 		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
 	}
-	$AppUI->redirect("m=forums&a=viewer&forum_id=1&message_id=$obj->message_parent");
+	$AppUI->redirect("m=forums&a=viewer&forum_id=$obj->message_forum&message_id=$obj->message_parent");
 }
 ?>
