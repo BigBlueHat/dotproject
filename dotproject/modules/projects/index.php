@@ -130,14 +130,9 @@ $obj = new CCompany();
 $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 if(count($companies) == 0) $companies = array(0);
 
-// TODO: decide why there are two project_actual_end_date fields in this query and
-// decide which is to be used, that based on the critical tasks, or that in the
-// projects table.  For the moment I've removed the ambiguity by aliasing the
-// one from the projects table.
-// 23rd Oct. 2004, Adam Donnison.
 $sql = "
 SELECT
-	projects.project_id, project_active, project_status, projects.project_actual_end_date as expected_end_date,
+	projects.project_id, project_active, project_status,
 	project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_color_identifier,
 	project_company, company_name, project_status, project_priority,
