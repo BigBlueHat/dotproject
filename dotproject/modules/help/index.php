@@ -1,43 +1,18 @@
-<?php /* $Id$ */ ?>
-<table width="98%" cellspacing="1" cellpadding="0" border="0">
-	<tr>
-	<td><img src="./images/icons/dp.gif" alt="" border="0"></td>
-		<td nowrap="nowrap" width="100%"><h1><?php echo $AppUI->_('Help');?></h1></td>
-	</tr>
-</table>
+<?php /* $Id$ */
 
-<p><?php echo $AppUI->_( 'helpIntro' );?></p>
+$hid = dPgetParam( $_GET, 'hid', 'help.toc' );
 
-<table width="98%" cellspacing="1" cellpadding="4" border="0">
-<tr>
-	<td width="33%" valign="top">
-		<p><strong><?php echo contextHelp( $AppUI->_( 'Getting Started' ), 'ID_HELP_TUTORIAL' );?></strong>
-		<ul>
-			<li><?php echo contextHelp( $AppUI->_( 'Adding a Company' ), 'ID_HELP_TUT_COMP' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Adding a Project' ), 'ID_HELP_TUT_PROJ' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Adding a Task' ), 'ID_HELP_TUT_TASK' );?></li>
-		</ul>
-		</p>
-	</td>
-	<td width="33%" valign="top">
-		<p><strong><?php echo contextHelp( $AppUI->_( 'About Modules' ), 'ID_HELP_TUTORIAL' );?></strong>
-		<ul>
-			<li><?php echo contextHelp( $AppUI->_( 'Companies' ), 'ID_HELP_COMPANIES' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'System' ), 'ID_HELP_SYS_IDX' );?></li>
-		</ul>
-		</p>
-	</td>
-	<td width="33%" valign="top">
-		<p><strong><?php echo $AppUI->_( 'General Concepts' );?></strong>
-		<ul>
-			<li><?php echo contextHelp( $AppUI->_( 'Top Menu' ), 'ID_HELP_GEN_TOPMENU' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Left Navigation' ), 'ID_HELP_GEN_LEFTNAV' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Context Help' ), 'ID_HELP_GEN_HELP' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Saving Your Place' ), 'ID_HELP_GEN_SAVING' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Breadcrumbs' ), 'ID_HELP_GEN_CRUMBS' );?></li>
-			<li><?php echo contextHelp( $AppUI->_( 'Tabbed Property Boxes' ), 'ID_HELP_GEN_TABS' );?></li>
-		</ul>
-		</p>
-	</td>
-</tr>
-</table>
+$inc = "{$AppUI->cfg['root_dir']}/modules/help/{$AppUI->user_locale}/$hid.hlp";
+
+if (!file_exists( $inc )) {
+	$inc = "{$AppUI->cfg['root_dir']}/modules/help/en/$hid.hlp";
+	if (!file_exists( $inc )) {
+		$hid = "help.toc";
+		$inc = "{$AppUI->cfg['root_dir']}/modules/help/en/$hid.hlp";
+	}
+}
+if ($hid != 'help.toc') {
+	echo '<a href="?m=help&dialog=1">' . $AppUI->_( 'index' ) . '</a>';
+}
+readfile( $inc );
+?>
