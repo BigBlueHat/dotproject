@@ -62,6 +62,10 @@ function db_fetch_array( $cur  ) {
 	return mysql_fetch_array( $cur );
 }
 
+function db_fetch_object( $cur  ) {
+	return mysql_fetch_object( $cur );
+}
+
 function db_escape( $str ) {
 	return mysql_escape_string( $str );
 }
