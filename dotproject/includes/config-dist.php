@@ -46,12 +46,13 @@ $dPconfig['enable_gantt_charts'] = true;
 // enable if you want to log changes using the history module
 $dPconfig['log_changes'] = false;
 
-// warn when a translation is not found
-$dPconfig['locale_warn'] = true;
+// warn when a translation is not found (for developers and tranlators)
+$dPconfig['locale_warn'] = false;
 
 // the string appended to untranslated string or unfound keys
 $dPconfig['locale_alert'] = '^';
 
+// the number of 'working' hours in a day
 $dPconfig['daily_working_hours'] = 8.0;
 
 // set debug = true to help analyse errors
