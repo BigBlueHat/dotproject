@@ -46,11 +46,11 @@ function submitIt() {
 </tr>
 <tr>
 	<TD align="right">Name:</td>
-	<TD><input type="text" class="text" name="name" value="<?php echo @$crow["name"];?>" size=50 maxlength="255"> <span class="smallNorm">(required)</span></td>
+	<TD><input type="text" class="text" name="name" value="<?php echo $AppUI->user_first_name . ' ' . $AppUI->user_last_name; ?>" size=50 maxlength="255"> <span class="smallNorm">(required)</span></td>
 </tr>
 <tr>
 	<TD align="right">E-Mail:</td>
-	<TD><input type="text" class="text" name="email" value="" size=50 maxlength="50"> <span class="smallNorm">(required)</span></td>
+	<TD><input type="text" class="text" name="email" value="<?php echo $AppUI->user_email; ?>" size=50 maxlength="50"> <span class="smallNorm">(required)</span></td>
 </tr>
 <tr>
 	<TD align="right">Subject:</td>
