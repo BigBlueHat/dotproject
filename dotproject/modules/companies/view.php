@@ -160,11 +160,14 @@ function delIt() {
 
 <?php
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$dPconfig['root_dir']}/modules/companies/", $tab );
-$tabBox->add( 'vw_active', 'Active Projects' );
-$tabBox->add( 'vw_archived', 'Archived Projects' );
-$tabBox->add( 'vw_depts', 'Departments' );
-$tabBox->add( 'vw_users', 'Users' );
-$tabBox->add( 'vw_contacts', 'Contacts' );
+$moddir = $dPconfig['root_dir'] . '/modules/companies/';
+$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "", $tab );
+$tabBox->add( $moddir . 'vw_active', 'Active Projects' );
+$tabBox->add( $moddir . 'vw_archived', 'Archived Projects' );
+$tabBox->add( $moddir . 'vw_depts', 'Departments' );
+$tabBox->add( $moddir . 'vw_users', 'Users' );
+$tabBox->add( $moddir . 'vw_contacts', 'Contacts' );
+$tabBox->loadExtras($m);
 $tabBox->show();
+
 ?>

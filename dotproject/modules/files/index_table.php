@@ -79,7 +79,8 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 	echo "</table>";
 }
 
-GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $project_id, $task_id;
+GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin;
+global $company_id, $project_id, $task_id;
 
 //require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
 
@@ -133,6 +134,7 @@ $q = new DBQuery;
 $q->addQuery('count(file_id)');
 $q->addTable('files', 'f');
 if ($catsql) $q->addWhere($catsql);
+if ($company_id) $q->addWhere("project_company = $company_id");
 if ($project_id) $q->addWhere("file_project = $project_id");
 if ($task_id) $q->addWhere("file_task = $task_id");
 $q->addGroup("file_version_id");
@@ -161,6 +163,7 @@ $q2->leftJoin('contacts', 'cont', 'cont.contact_id = u.user_contact');
 $project->setAllowedSQL($AppUI->user_id, $q2, 'file_project');
 $task->setAllowedSQL($AppUI->user_id, $q2, 'file_task');
 if ($catsql) $q2->addWhere($catsql);
+if ($company_id) $q2->addWhere("project_company = $company_id");
 if ($project_id) $q2->addWhere("file_project = $project_id");
 if ($task_id) $q2->addWhere("file_task = $task_id");
 $q2->setLimit($xpg_pagesize, $xpg_min);
