@@ -36,7 +36,7 @@ foreach ($comments as $row) {
 	$hrs += (float)$row["task_log_hours"];
 }
 $s .= '<tr bgcolor="white" valign="top">';
-$s .= '<td colspan="3" align="right">' . $AppUI->_('Total Hours =') . '</td>';
+$s .= '<td colspan="3" align="right">' . $AppUI->_('Total Hours') . ' =</td>';
 $s .= '<td align="right">' . sprintf( "%.1f", $hrs ) . '</td>';
 $s .= '</tr>';
 echo $s;
