@@ -80,6 +80,15 @@ if (isset( $perms['all'] ) || isset( $perms['admin'] )) { ?>
 		User Admin
 	</TD>
 </TR>
+
+<?php }
+if (isset( $perms['all'] ) || isset( $perms['system'] )) { ?>
+<TR>
+	<TD align="center" valign=middle class=nav>
+		<table cellspacing=0 cellpadding=0 border=0><tr><td class="clsBtnOff"><A href="?m=system"><img src="./images/icons/system.gif" alt="System Administration" border="0" width="30" height="30" onmouseover="doBtn();" onmouseout="doBtn();" onmousedown="doBtn();" onmouseup="doBtn();" ></a></td></tr></table>
+		System Admin
+	</TD>
+</TR>
 <?php }?>
 
 <TR height="100%">
