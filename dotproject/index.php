@@ -9,6 +9,7 @@ require_once( "$root_dir/misc/debug.php" );
 require_once( "$root_dir/classdefs/ui.php" );
 
 // manage the session variable(s)
+session_name( 'dotproject' );
 session_start();
 session_register( 'AppUI' );
 
@@ -24,7 +25,6 @@ if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
 	$_SESSION['AppUI'] = new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
-
 
 // supported since PHP 4.2
 // writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
@@ -51,6 +51,11 @@ $a = isset( $_GET['a'] )? $_GET['a'] : 'index';
 // see if a project id has been passed in the url;
 if (isset( $_REQUEST['project_id'] )) {
 	$AppUI->setProject( $_REQUEST['project_id'] );
+}
+
+// see if a unix timestamp has been passed in the url;
+if (isset( $_REQUEST['uts'] )) {
+	$AppUI->setDaySelected( $_REQUEST['uts'] );
 }
 
 // bring in the rest of the support and localisation files
