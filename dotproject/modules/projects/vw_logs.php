@@ -1,9 +1,19 @@
 <?php /* TASKS $Id$ */
 	global $AppUI, $project_id, $df, $canEdit, $m, $tab;
 
+	// Lets check which cost codes have been used before
+	$sql = "select distinct task_log_costcode, task_log_costcode
+        from task_log
+        where task_log_costcode != ''
+        order by task_log_costcode";
+	$task_log_costcodes = array("" => ""); // Let's add a blank default option
+	$task_log_costcodes = array_merge($task_log_costcodes, db_loadHashList($sql));
+	
 	$sql = "SELECT user_id, concat(user_first_name,' ',user_last_name)  FROM users ORDER BY user_last_name,user_first_name";
 	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), db_loadHashList( $sql ) );
 
+	$cost_code = dPgetParam( $_GET, 'cost_code' );
+	
 	if (isset( $_GET['user_id'] )) {
 		$AppUI->setState( 'ProjectsTaskLogsUserFilter', $_GET['user_id'] );
 	}
@@ -22,6 +32,7 @@
 		$AppUI->setState( 'ProjectsTaskLogsHideComplete', false );
 	}
 	$hide_complete = $AppUI->getState( 'ProjectsTaskLogsHideComplete' );
+	
 ?>
 <script language="JavaScript">
 function delIt2(id) {
@@ -44,6 +55,9 @@ function delIt2(id) {
 	<td width="1%" nowrap="nowrap"><?=$AppUI->_('User Filter')?></td>
 	<td width="1%"><?=arraySelect( $users, 'user_id', 'size="1" class="text" id="medium" onchange="document.frmFilter.submit()"',
                           $user_id )?></td>
+	<td width="1%" nowrap="nowrap"><?=$AppUI->_('Cost Code Filter')?></td>
+	<td width="1%"><?=arraySelect( $task_log_costcodes, 'cost_code', 'size="1" class="text" onchange="document.frmFilter.submit()"',
+                          $cost_code )?></td>
 </tr>
 </form>
 </table>
@@ -77,8 +91,8 @@ WHERE
 	($user_id>0?" AND task_log_creator=$user_id ":'').
 	($hide_inactive?" AND task_status>=0 ":'').
 	($hide_complete?" AND task_percent_complete < 100 ":'').
-"ORDER BY task_log_date
-";
+	($cost_code != "" ? "AND task_log_costcode = '$cost_code'" : "" ).
+"ORDER BY task_log_date";
 //print "<pre>$sql</pre>";
 $logs = db_loadList( $sql );
 
