@@ -47,6 +47,7 @@
 "To",
 "View Project",
 "Work",
+"Worked Hours",
 "change color",
 "delete project",
 "edit this project",
