@@ -134,7 +134,8 @@ function submitIt(){
 	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php
-	echo arraySelect( $AppUI->styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'] );
+	$styles = $AppUI->readDir( 'style' );
+	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'], true );
 ?>
 	</td>
 </tr>
