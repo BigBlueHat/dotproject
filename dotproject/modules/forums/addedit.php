@@ -62,13 +62,13 @@ $titleBlock->show();
 function submitIt(){
 	var form = document.changeforum;
 	if(form.forum_name.value.search(/^\s*$/) >= 0 ) {
-		alert("<?php echo $AppUI->_('forumName');?>");
+		alert("<?php echo $AppUI->_('forumName', UI_OUTPUT_JS);?>");
 		form.forum_name.focus();
 	} else if(form.forum_project.selectedIndex < 1) {
-		alert("<?php echo $AppUI->_('forumSelectProject');?>");
+		alert("<?php echo $AppUI->_('forumSelectProject', UI_OUTPUT_JS);?>");
 		form.forum_project.focus();
 	} else if(form.forum_owner.selectedIndex < 1) {
-		alert("<?php echo $AppUI->_('forumSelectOwner');?>");
+		alert("<?php echo $AppUI->_('forumSelectOwner', UI_OUTPUT_JS);?>");
 		form.forum_owner.focus();
 	} else {
 		form.submit();
@@ -77,7 +77,7 @@ function submitIt(){
 
 function delIt(){
 	var form = document.changeforum;
-	if (confirm( "<?php echo $AppUI->_('forumDeleteForum');?>" )) {
+	if (confirm( "<?php echo $AppUI->_('forumDeleteForum', UI_OUTPUT_JS);?>" )) {
 		form.del.value="<?php echo $forum_id;?>";
 		form.submit();
 	}

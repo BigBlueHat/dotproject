@@ -18,7 +18,7 @@ function setCalendar( idate, fdate ) {
 
 function checkDate(){
            if (document.frmDate.log_start_date.value == "" || document.frmDate.log_end_date.value== ""){
-                alert("<?php echo $AppUI->_('You must fill fields') ?>");
+                alert("<?php echo $AppUI->_('You must fill fields', UI_OUTPUT_JS) ?>");
                 return false;
            } 
            return true;

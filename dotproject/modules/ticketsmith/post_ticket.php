@@ -35,7 +35,7 @@ function submitIt() {
 	if (msg.length < 1) {
 		f.submit();
 	} else {
-		alert( "<?php echo $AppUI->_('ticketsmithValidDetail'); ?>:" + msg );
+		alert( "<?php echo $AppUI->_('ticketsmithValidDetail', UI_OUTPUT_JS); ?>:" + msg );
 	}
 }
 </script>

@@ -14,62 +14,46 @@ function submitIt(){
     var form = document.changeuser;
     if(form.user_username.value.length < 3)
     {
-        alert("Please enter a valid user name");
+        alert('<?php echo $AppUI->_('Please enter a valid user name', UI_OUTPUT_JS); ?>');
         form.user_username.focus();
     }
     else if(form.user_password.value.length < 4)
     {
-        alert("Please enter a valid password\n(greater than 4 chars).");
+        alert('<?php echo $AppUI->_("Please enter a valid password\n(greater than 4 chars).", UI_OUTPUT_JS); ?>');
         form.user_password.focus();
     }
     else if(form.user_password.value !=  form.user_password2.value)
     {
-        alert("Your passwords do not match).");
+        alert('<?php echo $AppUI->_("Your passwords do not match).", UI_OUTPUT_JS); ?>');
         form.user_password.focus();
     }
     else if(form.user_email.value.length < 4)
     {
-        alert("Your email is invalid, please try again.");
+        alert('<?php echo $AppUI->_("Your email is invalid, please try again.", UI_OUTPUT_JS); ?>');
         form.user_email.focus();
     }
     else if(form.user_birthday.value.length > 0)
     {
+	var d = new Date();
+	var currentYear = d.getFullYear();
         dar =form.user_birthday.value.split("-");
-        if(dar.length < 3)
+        if (dar.length < 3 ||
+	isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(pars
+eInt(dar[2])) ||
+	parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31 || // check day
+	parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12 || // check month
+	parseInt(dar[0]) < 1900 || parseInt(dar[0]) > currentYear // check year
+	)
+
         {
-            alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
+            alert('<?php echo $AppUI->_("Please enter a valid Birthday date\nformat: (YYYY-MM-DD)\nor leave the field blank", UI_OUTPUT_JS); ?>');
             form.user_birthday.focus();
         }
-        else if(isNaN(parseInt(dar[0])) || isNaN(parseInt(dar[1])) || isNaN(parseInt(dar[2])))
-        {
-            alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-            form.user_birthday.focus();
-        }
-        else if(parseInt(dar[1]) < 1 || parseInt(dar[1]) > 12)
-        {
-            alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-            form.user_birthday.focus();
-        }
-        else if(parseInt(dar[2]) < 1 || parseInt(dar[2]) > 31)
-        {
-            alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-            form.user_birthday.focus();
-        }
-        else if(parseInt(dar[0]) < 1900 || parseInt(dar[0]) > 2020)
-        {
-            alert("Please enter a valid Birthday date\nformat: (YYYY-MM_DD)\nor leave the field blank");
-            form.user_birthday.focus();
-        }   
         else
-        {
-        form.submit();
-        }
+        	form.submit();
     }
     else
-    {
-    form.submit();
-    }
-    
+    	form.submit();
 }
 </script>
 <?php //------------------------Begin HTML -------------------------------?>

@@ -65,10 +65,10 @@ if ($canEdit) {
 function submitIt(){
 	var form = document.changeforum;
 	if (form.message_title.value.search(/^\s*$/) >= 0 ) {
-		alert("<?php echo $AppUI->_('forumSubject');?>");
+		alert("<?php echo $AppUI->_('forumSubject', UI_OUTPUT_JS);?>");
 		form.message_title.focus();
 	} else if (form.message_body.value.search(/^\s*$/) >= 0) {
-		alert("<?php echo $AppUI->_('forumTypeMessage');?>");
+		alert("<?php echo $AppUI->_('forumTypeMessage', UI_OUTPUT_JS);?>");
 		form.message_body.focus();
 	} else {
 		form.submit();
@@ -77,7 +77,7 @@ function submitIt(){
 
 function delIt(){
 	var form = document.changeforum;
-	if (confirm( "<?php echo $AppUI->_('forumDeletePost');?>" )) {
+	if (confirm( "<?php echo $AppUI->_('forumDeletePost', UI_OUTPUT_JS);?>" )) {
 		form.del.value="<?php echo $message_id;?>";
 		form.submit();
 	}

@@ -89,7 +89,7 @@ function popPermItem() {
 	var pgo = f.permission_module.selectedIndex;
 
 	if (!(pgo in tables)) {
-		alert( 'No list associated with this Module.' );
+		alert( '<?php echo $AppUI->_('No list associated with this Module.', UI_OUTPUT_JS); ?>' );
 		return;
 	}
 	f.permission_table.value = tables[pgo];

@@ -70,7 +70,7 @@ function testURL( x ) {
 function submitIt() {
 	var form = document.editFrm;
 	if (form.dept_name.value.length < 2) {
-		alert( '<?php echo $AppUI->_( 'deptValidName' );?>' );
+		alert( '<?php echo $AppUI->_( 'deptValidName', UI_OUTPUT_JS );?>' );
 		form.dept_name.focus();
 	} else {
 		form.submit();

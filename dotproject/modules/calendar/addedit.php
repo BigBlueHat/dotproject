@@ -136,15 +136,15 @@ for ($m=0; $m < 60; $m++) {
 function submitIt(){
 	var form = document.editFrm;
 	if (form.event_title.value.length < 1) {
-		alert("Please enter a valid event title");
+		alert('<?php echo $AppUI->_('Please enter a valid event title',  UI_OUTPUT_JS); ?>');
 		form.event_title.focus();
 	}
 	if (form.event_start_date.value.length < 1){
-		alert("Please enter a start date");
+		alert('<?php echo $AppUI->_("Please enter a start date", UI_OUTPUT_JS); ?>');
 		form.event_start_date.focus();
 	}
 	if (form.event_end_date.value.length < 1){
-		alert("Please enter an end date");
+		alert('<?php echo $AppUI->_("Please enter an end date", UI_OUTPUT_JS); ?>');
 		form.event_end_date.focus();
 	}
 	// Ensure that the assigned values are selected before submitting.

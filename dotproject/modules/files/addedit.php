@@ -96,7 +96,7 @@ function delIt() {
 function popTask() {
     var f = document.uploadFrm;
     if (f.file_project.selectedIndex == 0) {
-        alert( "<?php echo $AppUI->_('Please select a project first!');?>" );
+        alert( "<?php echo $AppUI->_('Please select a project first!', UI_OUTPUT_JS);?>" );
     } else {
         window.open('./index.php?m=public&a=selector&dialog=1&callback=setTask&table=tasks&task_project='
             + f.file_project.options[f.file_project.selectedIndex].value, 'task','left=50,top=50,height=250,width=400,resizable')

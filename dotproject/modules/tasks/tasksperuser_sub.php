@@ -115,7 +115,7 @@ function chAssignment(user_id, rmUser, del) {
 
         if (del == true) {
                         if (c == 0) {
-                                 alert ('<?php echo $AppUI->_('Please select at least one Task!'); ?>');
+                                 alert ('<?php echo $AppUI->_('Please select at least one Task!', UI_OUTPUT_JS); ?>');
                         } else {
                                 if (confirm( '<?php echo $AppUI->_('Are you sure you want to unassign the User from Task(s)?'); ?>' )) {
                                         f.del.value = 1;
@@ -127,11 +127,11 @@ function chAssignment(user_id, rmUser, del) {
         } else {
 
                 if (c == 0) {
-                        alert ('<?php echo $AppUI->_('Please select at least one Task!'); ?>');
+                        alert ('<?php echo $AppUI->_('Please select at least one Task!', UI_OUTPUT_JS); ?>');
                 } else {
 
                         if (a == 0) {
-                                alert ('<?php echo $AppUI->_('Please select at least one Assignee!'); ?>');
+                                alert ('<?php echo $AppUI->_('Please select at least one Assignee!', UI_OUTPUT_JS); ?>');
                         } else {
                                 f.rm.value = rmUser;
                                 f.del.value = del;
@@ -163,7 +163,7 @@ function chPriority(user_id) {
         }
 
         if (c == 0) {
-                alert ('<?php echo $AppUI->_('Please select at least one Task!'); ?>');
+                alert ('<?php echo $AppUI->_('Please select at least one Task!', UI_OUTPUT_JS); ?>');
         } else {
                 f.rm.value = 0;
                 f.del.value = 0;

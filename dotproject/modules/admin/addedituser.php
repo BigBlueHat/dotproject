@@ -87,7 +87,7 @@ function submitIt(){
 function popDept() {
     var f = document.editFrm;
     if (f.selectedIndex == 0) {
-        alert('<?php echo $AppUI->_( 'Please select a company first!' ); ?>');
+        alert('<?php echo $AppUI->_( 'Please select a company first!', UI_OUTPUT_JS ); ?>');
     } else {
         window.open('./index.php?m=public&a=selector&dialog=1&callback=setDept&table=departments&company_id='
             + f.contact_company.options[f.contact_company.selectedIndex].value
