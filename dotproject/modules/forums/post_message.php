@@ -135,7 +135,7 @@ $date = intval( $message_info["message_date"] ) ? new CDate( $message_info["mess
 <tr>
 	<td align="right" valign="top"><?php echo $AppUI->_( 'Message' );?>:</td>
 	<td align="left" valign="top">
-       <textarea cols="60" name="message_body" style="height:200px"><?php echo (($message_id == 0) and ($message_parent != -1)) ? '> ' .  $last_message_info["message_body"] . "\n" : '';?></textarea>
+       <textarea cols="60" name="message_body" style="height:200px"><?php echo (($message_id == 0) and ($message_parent != -1)) ? "\n>"  .  $last_message_info["message_body"] . "\n" : $message_info["message_body"];?></textarea>
 	</td>
 </tr>
 <tr>
