@@ -57,6 +57,24 @@ class CFile extends CDpObject {
 		return NULL;
 	}
 
+	// move the file if the affiliated project was changed
+	function moveFile( $oldProj, $realname ) {
+		global $AppUI, $dPconfig;
+		if (!is_dir("{$dPconfig['root_dir']}/files/$this->file_project")) {
+		    $res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
+			 if (!$res) {
+                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
+			     return false;
+			 }
+		}
+		$res = rename("{$dPconfig['root_dir']}/files/$oldProj/$realname", "{$dPconfig['root_dir']}/files/$this->file_project/$realname");
+
+		if (!$res) {
+		    return false;
+		}
+		return true;
+	}
+
 // move a file from a temporary (uploaded) location to the file system
 	function moveTemp( $upload ) {
 		global $AppUI, $dPconfig;

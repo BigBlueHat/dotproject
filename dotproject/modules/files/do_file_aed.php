@@ -9,6 +9,9 @@ if ($not!='0') $not='1';
 $obj = new CFile();
 if ($file_id) { 
 	$obj->_message = 'updated';
+	$oldObj = new CFile();
+	$oldObj->load( $file_id );
+
 } else {
 	$obj->_message = 'added';
 }
@@ -63,6 +66,15 @@ if (isset( $_FILES['formfile'] )) {
 		    $AppUI->redirect();
 		}
 		$obj->indexStrings();
+	}
+}
+
+// move the file on filesystem if the affiliated project was changed
+if ($file_id && ($obj->file_project != $oldObj->file_project) ) {
+	$res = $obj->moveFile( $oldObj->file_project, $oldObj->file_real_filename );
+	if (!$res) {
+		$AppUI->setMsg( 'File could not be moved', UI_MSG_ERROR );
+		$AppUI->redirect();
 	}
 }
 
