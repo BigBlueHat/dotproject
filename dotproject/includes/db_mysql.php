@@ -87,5 +87,10 @@ function db_dateTime2unix( $time ) {
 	return $time ? strtotime( substr( $time, 0, 10 ) ) : null;
 }
 
+function db_dateTime2myDate( $time ) {
+	// converts a DB date to the locale date format
+	global $AppUI;
+	return strftime($AppUI->getPref('SHDATEFORMAT'), db_DateTime2unix($time) );
+}
 
 ?>
