@@ -55,7 +55,6 @@ function arraySelectTree( &$arr, $select_name, $select_attribs, $selected, $tran
 		array_push($list, $v);
 	    $children[$pt] = $list;
 	}
-
 	$list = tree_recurse($arr[0][2], '', array(), $children);
 	return arraySelect( $list, $select_name, $select_attribs, $selected, $translate );
 }
@@ -96,12 +95,18 @@ function breadCrumbs( &$arr ) {
 	return implode( ' <strong>:</strong> ', $crumbs );
 }
 ##
-## generate link for context help
+## generate link for context help -- old version
 ##
 function contextHelp( $title, $link='' ) {
+	global $AppUI;
 	$dothelpURL = "./modules/help/framed/";
 
 	return "<a href=\"#$link\" onClick=\"javascript:window.open('$dothelpURL?entry_link=$link', 'contexthelp', 'width=700, height=400, left=20, top=20, resizable=yes')\">$title</a>";
+}
+
+function dPcontextHelp( $title, $link='' ) {
+	global $AppUI;
+	return "<a href=\"#$link\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$link', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">$title</a>";
 }
 
 ##
