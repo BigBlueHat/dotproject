@@ -181,7 +181,7 @@ class CForumMessage {
 		$body .= "\n\n$this->message_title";
 		$body .= "\n\n$this->message_body";
 		
-		$mail->Body( $body );
+		$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : ""  );
 		$mail->From( $AppUI->_('forumEmailFrom') );
 
 		while ($row = db_fetch_assoc( $res )) {
