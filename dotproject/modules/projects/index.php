@@ -240,18 +240,19 @@ if (is_array($projects)) {
         }
 }
 
-$fixed_project_type_file = array("In Progress ($active)" => "vw_idx_active",
-                                 "Complete ($complete)"    => "vw_idx_complete",
-                                 "Archived ($archive)"    => "vw_idx_archived");
+$fixed_project_type_file = array(
+        $AppUI->_('In Progress') . ' (' . $active . ')' => "vw_idx_active",
+        $AppUI->_('Complete') . ' (' . $complete . ')'    => "vw_idx_complete",
+        $AppUI->_('Archived') . ' (' . $archive . ')'    => "vw_idx_archived");
 // we need to manually add Archived project type because this status is defined by 
 // other field (Active) in the project table, not project_status
-$project_types[] = "Archived ($archive)";
+$project_types[] = $AppUI->_('Archived') . ' (' . $archive . ')';
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
 if ( $tab != -1 ) {
-	$project_types[0] = "All Projects (" . count($projects) . ')';
-	$project_types[] = "Not Defined";
+	$project_types[0] = $AppUI->_('All Projects') . ' (' . count($projects) . ')';
+	$project_types[] = $AppUI->_('Not Defined');
 }
 
 /**
