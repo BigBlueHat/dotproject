@@ -34,6 +34,7 @@ error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING );
 
 // required includes for start-up
 $dPconfig = array();
+require_once( "./includes/config.php" );
 require_once( "./classes/ui.class.php" );
 require_once( "./includes/main_functions.php" );
 
@@ -51,7 +52,6 @@ header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modifi
 header ("Cache-Control: no-cache, must-revalidate");	// HTTP/1.1
 header ("Pragma: no-cache");	// HTTP/1.0
 
-require_once( "./includes/config.php" );
 
 // Check that the user has correctly set the root directory
 is_file( "{$dPconfig['root_dir']}/includes/config.php" ) or die( "FATAL ERROR: Root directory in configuration file probably incorrect." );
@@ -67,6 +67,10 @@ $AppUI =& $_SESSION['AppUI'];
 $AppUI->setConfig( $dPconfig );
 $AppUI->checkStyle();
  
+// load the commonly used classes
+require_once( $AppUI->getSystemClass( 'date' ) );
+require_once( $AppUI->getSystemClass( 'dp' ) );
+
 // load the db handler
 require_once( "./includes/db_connect.php" );
 require_once( "./misc/debug.php" );
@@ -108,9 +112,9 @@ if ($AppUI->doLogin()) {
 	setlocale( LC_TIME, $AppUI->user_locale );
 
 	// output the character set header
-	if (isset( $locale_char_set )) {
-		 header("Content-type: text/html;charset=$locale_char_set");
-	}
+	//if (isset( $locale_char_set )) {
+	//	 header("Content-type: text/html;charset=$locale_char_set");
+	//}
 
 	$AppUI->savePlace();
 	require "./style/$uistyle/login.php";
@@ -118,11 +122,6 @@ if ($AppUI->doLogin()) {
 	session_unset();
 	session_destroy();
 	exit;
-}
-
-// see if a unix timestamp has been passed in the url;
-if (isset( $_REQUEST['uts'] )) {
-    $AppUI->setDaySelected( $_REQUEST['uts'] );
 }
 
 // bring in the rest of the support and localisation files
@@ -148,9 +147,9 @@ setlocale( LC_TIME, $AppUI->user_locale );
 
 if ( !$suppressHeaders ) {
 	// output the character set header
-	if (isset( $locale_char_set )) {
-		header("Content-type: text/html;charset=$locale_char_set");
-	}
+	//if (isset( $locale_char_set )) {
+	//	header("Content-type: text/html;charset=$locale_char_set");
+	//}
 }
 
 // bounce the user if they don't have at least read access
