@@ -296,8 +296,12 @@ class CFile extends CDpObject {
 		$this->_query->addTable('tasks');
 		$this->_query->addQuery('task_name');
 		$this->_query->addWhere('task_id = ' . $this->file_task);
-		if ($qid =& $this->_query->exec())
-			$taskname = $qid->fields['task_name'];
+		if ($qid =& $this->_query->exec()) {
+			if ($qid->fields['task_name'])
+				$taskname = $qid->fields['task_name'];
+			else
+				$taskname = $qid->fields[0];
+		}
 		$this->_query->clear();
 		return $taskname;
 	}
