@@ -33,6 +33,8 @@ $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
 
+$show_all_assignees = $dPconfig['show_all_task_assignees'];
+
 $where = '';
 $join = winnow( 'projects', 'project_id', $where );
 
@@ -64,7 +66,7 @@ while ($row = db_fetch_assoc( $prc )) {
 $select = "
 distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
 task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
-task_description, task_owner, usernames.user_username, task_milestone,
+task_description, task_owner, usernames.user_username, usernames.user_id, task_milestone,
 assignees.user_username as assignee_username, count(assignees.user_id) as assignee_count
 ";
 
@@ -220,7 +222,7 @@ for ($x=0; $x < $nums; $x++) {
 
 if (! function_exists('showtask') ) {
 function showtask( &$a, $level=0 ) {
-	global $AppUI, $done, $query_string, $durnTypes;
+	global $AppUI, $done, $query_string, $durnTypes, $show_all_assignees;
 
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$df .= " " . $AppUI->getPref('TIMEFORMAT');
@@ -268,17 +270,31 @@ function showtask( &$a, $level=0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
 	}
 // task owner
-	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
-	$s .= '<td align="center">';
-	if ( $assigned_users = $a['task_assigned_users'] ) {
+	$s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&a=viewuser&user_id=".$a['user_id']."'>".$a['user_username']."</a>".'</td>';
+//	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
+	if ( $assigned_users = $a['task_assigned_users']) {
 		$a_u_tmp_array = array();
-		foreach ( $assigned_users as $val) {
-			//$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
-			$a_u_tmp_array[] = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'>".$val['user_username']."</a>";
+		if($show_all_assignees){
+			$s .= '<td align="center">';
+			foreach ( $assigned_users as $val) {
+				//$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
+				$a_u_tmp_array[] = "<a href='?m=admin&a=viewuser&user_id=".$val['user_id']."'>".$val['user_username']."</a>";
+			}
+			$s .= join ( ', ', $a_u_tmp_array );
+			$s .= '</td>';
+		} else {
+			$s .= '<td align="center" nowrap="nowrap">';
+			$s .= "<a href='?m=admin&a=viewuser&user_id=".$assigned_users[0]['user_id']."'>".$assigned_users[0]['user_username']."</a>";
+//			$s .= $a['assignee_username'];
+			if($a['assignee_count']>1){
+				foreach ( $assigned_users as $val) {
+					$a_u_tmp_array[] = $val['user_username'];
+				}
+				$s .= " <a href=\"javascript: void(0);\" title=\"".join ( ', ', $a_u_tmp_array )."\">(+".$a['assignee_count'].")</a>";
+			}
+			$s .= '</td>';
 		}
-		$s .= join ( ', ', $a_u_tmp_array );
 	}
-	$s .= '</td>';
 	
 	$s .= '<td nowrap="nowrap" align="center">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration or milestone

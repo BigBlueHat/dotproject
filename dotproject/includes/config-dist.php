@@ -114,6 +114,11 @@ $dPconfig['debug'] = false;
 // but the interface is a bit clunky.
 $dPconfig['link_tickets_kludge'] = false;
 
+//set to true is you want the task lists to show all assignees names
+//set to false if you only want to display the first assignee and then a count of the rest
+//the full list is still available on a mouse over.
+$dPconfig['show_all_task_assignees'] = false;
+
 // Calendar settings.
 // Day view start end and increment
 $dPconfig['cal_day_start']     = 8;	  // Start hour, in 24 hour format
