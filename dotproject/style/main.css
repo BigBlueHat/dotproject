@@ -56,7 +56,7 @@ button{
 
 /*
 **********************************
-Begin IE TD buttonizing 
+Begin IE TD buttonizing
 **********************************
 */
 
@@ -80,7 +80,7 @@ TD.topBtnOff {
     color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
 }
 TD.nav {
-	color: #FFFFFF; 
+	color: #FFFFFF;
 }
 
 /* Standard table 'spreadsheet' style */
@@ -88,15 +88,15 @@ TABLE.tbl {
 	background: #ffffff;
 }
 TABLE.tbl TH {
-	background-color: #878676;   
-	color: white;   
-	list-style-type: disc;   
+	background-color: #878676;
+	color: white;
+	list-style-type: disc;
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 	font-weight: normal;
 }
 TABLE.tbl TD {
-	background-color: #f4efe3;   
+	background-color: #f4efe3;
 }
 
 TABLE.std {
@@ -104,9 +104,9 @@ TABLE.std {
 	background: #f4efe3;
 }
 TABLE.std TH {
-	background-color: #878676;   
-	color: white;   
-	list-style-type: disc;   
+	background-color: #878676;
+	color: white;
+	list-style-type: disc;
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 }
@@ -134,9 +134,9 @@ TD.tabox {
 }
 
 .mboxhdr {
-   background-color: #878676;   
-	color: white;   
-	list-style-type: disc;   
+   background-color: #878676;
+	color: white;
+	list-style-type: disc;
 	list-style-position: inside;
 	border: outset #D1D1CD 1px;
 }
@@ -150,12 +150,19 @@ TD.tabox {
 }
 
 .textarea{
-		FONT-FAMILY: verdana,Sans-Serif; 
-		FONT-SIZE: 9pt; 
+		FONT-FAMILY: verdana,Sans-Serif;
+		FONT-SIZE: 9pt;
 		width: 300px;
 		height: 300px;
 }
-
+/* Message styles */
+.warning {
+	color: #ff6600;
+}
 .error {
-	color: #ff0000;   
+	color: #ff0000;
+}
+.message {
+	color: #006600;
+	font-weight: bold;
 }
