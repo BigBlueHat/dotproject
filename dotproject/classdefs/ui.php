@@ -345,4 +345,70 @@ class CTabBox_core {
 		}
 	}
 }
+
+class CTitleBlock_core {
+	var $title='';
+	var $icon='';
+	var $module='';
+	var $cells=null;
+	var $helpref='';
+
+	function CTitleBlock_core( $title, $icon='', $module='', $helpref='' ) {
+		$this->title = $title;
+		$this->icon = $icon;
+		$this->module = $module;
+		$this->cells = array();
+		$this->helpref = $helpref;
+	}
+
+	function addCell( $attribs='', $data='', $prefix='', $suffix='' ) {
+		$this->cells[] = array( $attribs, $data, $prefix, $suffix );
+	}
+
+	function show() {
+		global $AppUI;
+		$CR = "\n";
+		$CT = "\n\t";
+		$s = $CR . '<table width="100%" border="0" cellpadding="1" cellspacing="1">';
+		$s .= $CR . '<tr>';
+		if ($this->icon) {
+			$s .= $CR . '<td><img src="' . dPFindImage( $this->icon, $this->module ) . '" height="36" alt="" border="0"></td>';
+		}
+		$s .= $CR . '<td nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';
+		foreach ($this->cells as $c) {
+			$s .= $c[2] ? $CR . $c[2] : '';
+			$s .= $CR . '<td' . ($c[0] ? " $c[0]" : '') . '>';
+			$s .= $c[1] ? $CT . $c[1] : '&nbsp;';
+			$s .= $CR . '</td>';
+			$s .= $c[3] ? $CR . $c[3] : '';
+		}
+		$s .= '<td nowrap="nowrap" width="20" align="right">';
+		$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', $this->helpref );
+		$s .= $CR . '</td>';
+		$s .= $CR . '</tr>';
+		$s .= $CR . '</table>';
+		echo "$s";
+	}
+}
+
+class CCrumbsBlock_core {
+	var $crumbs=null;
+
+	function CCrumbsBlock_core() {
+		$this->crumbs = array();
+	}
+
+	function addCrumb( $link, $label ) {
+		$this->crumbs[$link] = $label;
+	}
+
+	function show() {
+		global $AppUI;
+		$crumbs = array();
+		foreach ($this->crumbs as $k => $v) {
+			$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
+		}
+		echo implode( ' <strong>:</strong> ', $crumbs );
+	}
+}
 ?>

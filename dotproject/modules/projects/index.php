@@ -65,28 +65,41 @@ $projects = db_loadList( $sql );
 
 $sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
 $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
-?>
 
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
-<tr>
-	<td><img src="./images/icons/projects.gif" alt="" border="0" width="42" height="42" /></td>
-	<td nowrap><h1><?php echo $AppUI->_('Project Management');?></h1></td>
-<form action="?m=projects" method="post" name="pickCompany">
-	<td align="right" width="100%">
-		<?php echo $AppUI->_('Company');?>:
-<?php
-	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
-?>
-	</td>
-</form>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>
-</tr>
-</table>
 
-<?php
-// tabbed information boxes
-$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
-$tabBox->add( 'vw_idx_active', 'Active Projects' );
-$tabBox->add( 'vw_idx_archived', 'Archived Projects' );
-$tabBox->show();
+$titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, 'ID_HELP_PROJ_IDX' );
+
+$titleBlock->addCell(
+	'align="right" width="100%" nowrap="nowrap"',
+	$AppUI->_('Company') . ':',
+	'<form action="?m=projects" method="post" name="pickCompany">'
+);
+$titleBlock->addCell(
+	'',
+	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ),
+	'',
+	'</form>'
+);
+
+$titleBlock->addCell();
+
+if ($canEdit) {
+	$titleBlock->addCell(
+		'nowrap="nowrap"',
+		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">',
+		'<form action="?m=projects&a=addedit" method="post">',
+		'</form>'
+	);
+}
+$titleBlock->show();
+
+if (count( $projects )) {
+	// tabbed information boxes
+	$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$AppUI->cfg['root_dir']}/modules/projects/", $tab );
+	$tabBox->add( 'vw_idx_active', 'Active Projects' );
+	$tabBox->add( 'vw_idx_archived', 'Archived Projects' );
+	$tabBox->show();
+} else {
+	echo '<p align="center"><strong>No projects available</strong><br />Use the "New Project" button above to create a project.</p>';
+}
 ?>
