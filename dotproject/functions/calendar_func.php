@@ -8,7 +8,7 @@ if (empty( $thisYear )) {
 }
 
 $company_id = isset($HTTP_GET_VARS["company_id"]) ? $HTTP_GET_VARS["company_id"] :
-	(isset($HTTP_POST_VARS["company_id"]) ? $HTTP_POST_VARS["company_id"] : $thisuser_company);
+	(isset($HTTP_POST_VARS["company_id"]) ? $HTTP_POST_VARS["company_id"] : $AppUI->user_company);
 
 $pwhere = $company_id ? "and project_company = $company_id" : '';
 //----------------------------------
