@@ -10,12 +10,12 @@ if (!$canEdit) {
 }
 
 // pull data for this department
-$sql = "
-SELECT departments.*, company_name
-FROM departments
-LEFT JOIN companies ON company_id = dept_company
-WHERE dept_id = $dept_id
-";
+$q  = new DBQuery;
+$q->addTable('departments','dep');
+$q->addQuery('dep.*, company_name');
+$q->addJoin('companies', 'com', 'com.company_id = dep.dept_company');
+$q->addWhere('dep.dept_id = '.$dept_id);
+$sql = $q->prepare();
 if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
@@ -28,7 +28,11 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$company_id = $dept_id ? $drow['dept_company'] : $company_id;
 
 	// check if valid company
-	$sql = "SELECT company_name FROM companies WHERE company_id = $company_id";
+	$q  = new DBQuery;
+	$q->addTable('companies','com');
+	$q->addQuery('company_name');
+	$q->addWhere('com.company_id = '.$company_id);
+	$sql = $q->prepare();
 	$company_name = db_loadResult( $sql );
 	if (!$dept_id && $company_name === null) {
 		$AppUI->setMsg( 'badCompany', UI_MSG_ERROR );
@@ -38,18 +42,24 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	// collect all the departments in the company
 	$depts = array( 0 => '' );
 	if ($company_id) {
-		$sql = "SELECT dept_id,dept_name,dept_parent FROM departments WHERE dept_company=$company_id AND dept_id != $dept_id";
-		$depts = arrayMerge( array( '0'=>array( 0, '- '.$AppUI->_('Select Unit').' -', -1 ) ), db_loadHashList( $sql, 'dept_id' ));
-	##echo $sql.db_error();##
+		$q  = new DBQuery;
+		$q->addTable('departments','dep');
+		$q->addQuery('dept_id, dept_name, dept_parent');
+		$q->addWhere('dep.dept_company = '.$company_id);
+		$q->addWhere('dep.dept_id != '.$dept_id);
+		$depts = arrayMerge( array( '0'=>array( 0, '- '.$AppUI->_('Select Unit').' -', -1 ) ), $q->loadHashList('dept_id'));
 	}
 
 	// collect all the users for the department owner list
-	$sql = "SELECT user_id,CONCAT_WS(' ',contact_first_name,contact_last_name) 
-			FROM users,
-				contacts
-			where users.user_contact = contacts.contact_id
-			ORDER BY contact_first_name,contact_last_name";
-	$owners = arrayMerge( array( '0'=>'' ), db_loadHashList( $sql ) );
+	$q  = new DBQuery;
+	$q->addTable('users','u');
+	$q->addTable('contacts','con');
+	$q->addQuery('user_id');
+	$q->addQuery('CONCAT_WS(" ",contact_first_name,contact_last_name)');
+	$q->addOrder('contact_first_name');
+	$q->addWhere('u.user_contact = con.contact_id');
+	$q->addOrder('contact_first_name, contact_last_name');
+	$owners = arrayMerge( array( '0'=>'' ), $q->loadHashList() );
 
 // setup the title block
 	$ttl = $company_id > 0 ? "Edit Department" : "Add Department";

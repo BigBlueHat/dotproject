@@ -24,7 +24,11 @@ class CDepartment extends CDpObject {
 	}
 
 	function load( $oid ) {
-		$sql = "SELECT * FROM departments WHERE dept_id = $oid";
+		$q  = new DBQuery;
+		$q->addTable('departments','dep');
+		$q->addQuery('dep.*');
+		$q->addWhere('dep.dept_id = '.$oid);
+		$sql = $q->prepare();
 		return db_loadObject( $sql, $this );
 	}
 
@@ -66,20 +70,30 @@ class CDepartment extends CDpObject {
 	}
 
 	function delete() {
-		$sql = "SELECT * FROM departments WHERE dept_parent = $this->dept_id";
+		$q  = new DBQuery;
+		$q->addTable('departments','dep');
+		$q->addQuery('dep.*');
+		$q->addWhere('dep.dept_parent = '.$this->dept_id);
+		$res = $q->exec();
 
-		$res = db_exec( $sql );
 		if (db_num_rows( $res )) {
 			return "deptWithSub";
 		}
-		$sql = "SELECT * FROM projects WHERE project_department = $this->dept_id";
+		$q  = new DBQuery;
+		$q->addTable('projects','p');
+		$q->addQuery('p.*');
+		$q->addWhere('p.project_department = '.$this->dept_id);
+		$res = $q->exec();
 
-		$res = db_exec( $sql );
 		if (db_num_rows( $res )) {
 			return "deptWithProject";
 		}
 		$sql = "DELETE FROM departments WHERE dept_id = $this->dept_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->addQuery('*');
+		$q->setDelete('departments');
+		$q->addWhere('dept_id = '.$this->dept_id);
+		if (!$q->exec()) {
 			return db_error();
 		} else {
 			return NULL;

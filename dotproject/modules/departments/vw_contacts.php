@@ -6,16 +6,21 @@
 <?php
 	echo "<tr><th>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Telephone")."</th></tr>";
 	
-	$contact_department = db_loadResult("select dept_name
-	                                     from departments
-	                                     where dept_id='$dept_id'");
+	$q  = new DBQuery;
+	$q->addTable('departments', 'dep');
+	$q->addQuery('dep.dept_name');
+	$q->addWhere('dep.dept_id = '.$dept_id);
+	$sql = $q->prepare();
+	$contact_department = db_loadResult($sql);
 	
-	$sql = "select contact_id, contact_first_name, contact_last_name, contact_email, contact_phone
-	        from contacts
-	        where contact_department='$contact_department'
-	              and (contact_owner = '$AppUI->user_id' or contact_private = '0')
-	        order by contact_first_name";
-	$contacts = db_loadHashList($sql, "contact_id");
+	$q  = new DBQuery;
+	$q->addTable('contacts', 'con');
+	$q->addQuery('contact_id, con.contact_first_name');
+	$q->addQuery('con.contact_last_name, contact_email, contact_phone');
+	$q->addWhere("contact_department='$contact_department'");
+	$q->addWhere("(contact_owner = '$AppUI->user_id' or contact_private = '0')");
+	$q->addOrder('contact_first_name');
+	$contacts = $q->loadHashList("contact_id");
 	
 	foreach($contacts as $contact_id => $contact_data){
 		echo "<tr><td>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</td>";

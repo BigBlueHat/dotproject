@@ -16,14 +16,18 @@ if (isset( $_GET['tab'] )) {
 $tab = $AppUI->getState( 'DeptVwTab' ) !== NULL ? $AppUI->getState( 'DeptVwTab' ) : 0;
 
 // pull data
-$sql = "
-SELECT departments.*,company_name, contact_first_name, contact_last_name
-FROM departments, companies
-LEFT JOIN users ON user_id = dept_owner
-LEFT JOIN contacts ON user_contact = contact_id
-WHERE dept_id = $dept_id
-	AND dept_company = company_id
-";
+$q  = new DBQuery;
+$q->addTable('companies', 'com');
+$q->addTable('departments', 'dep');
+$q->addQuery('dep.*, company_name');
+$q->addQuery('con.contact_first_name');
+$q->addQuery('con.contact_last_name');
+$q->addJoin('users', 'u', 'u.user_id = dep.dept_owner');
+$q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
+$q->addWhere('dep.dept_id = '.$dept_id);
+$q->addWhere('dep.dept_company = '.$company_id);
+$sql = $q->prepare();
+
 if (!db_loadHash( $sql, $dept )) {
 	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
