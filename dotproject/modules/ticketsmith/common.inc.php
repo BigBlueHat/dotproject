@@ -298,7 +298,7 @@ function format_field ($value, $type, $ticket = NULL) {
                 $output .= $signature;
             }
             $output .= "\n\n";
-            $output .= "---- Original message ----\n\n";
+            $output .= "---- ".$AppUI->_('Original message')." ----\n\n";
             if ($CONFIG["wordwrap"]) {
                 $value = smart_wrap($value, 70);
             }

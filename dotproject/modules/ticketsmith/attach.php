@@ -112,7 +112,7 @@ if ($parent_count) {
             }
         }
         print("&direction=$new_direction");
-        print("><b>" . $fields["headings"][$loop] . "</b></a></td>\n");
+        print("><b>" . $AppUI->_($fields["headings"][$loop]) . "</b></a></td>\n");
     }
     print("</tr>\n");
     while ($row = result2hash($result)) {
@@ -125,12 +125,12 @@ if ($parent_count) {
         print("</tr>\n");
     }
 }
-else {
+ else {
     print("<tr height=25>\n");
     print("<td align=center colspan=" . count($fields["headings"]) . ">\n");
-    print("There are no ");
-    print($type == "All" ? "" : strtolower($type) . " ");
-    print("tickets.\n");
+    print($AppUI->_('There are no')." ");
+    print($type == "All" ? "" : strtolower($AppUI->_($type)) . " ");
+    print($AppUI->_('tickets').".\n");
     print("</td>\n");
     print("</tr>\n");
 }
@@ -143,15 +143,15 @@ print("<table width=100% border=0 cellspacing=0 cellpadding=0>\n");
 print("<tr height=25><td align=left>");
 $types = array("My","Open","Closed","Deleted","All");
 for ($loop = 0; $loop < count($types); $loop++) {
-    $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $types[$loop] . "</a>";
+    $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $AppUI->_($types[$loop]) . "</a>";
 }
 print(join(" | ", $toggles));
-print(" Tickets</td>\n");
+print(" ".$AppUI->_('Tickets')."</td>\n");
 if ($type == "Deleted" && $parent_count) {
-    print("<td align=center><a href=index.php?m=ticketsmith&type=Deleted&action=expunge>Expunge Deleted</a></td>");
+    print("<td align=center><a href=index.php?m=ticketsmith&type=Deleted&action=expunge>".$AppUI->_('Expunge Deleted')."</a></td>");
 }
-print("<td align=right><a href=index.php?m=ticketsmith&a=search>Search</a> | 
-<a href=index.php?m=ticketsmith&type=$type>Back to top</a></td></tr>\n");
+print("<td align=right><a href=index.php?m=ticketsmith&a=search>".$AppUI->_('Search')."</a> |
+<a href=index.php?m=ticketsmith&type=$type>".$AppUI->_('Back to top')."</a></td></tr>\n");
 print("</table>\n");
 print("</td>\n");
 print("</tr>\n");    
