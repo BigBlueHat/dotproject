@@ -44,7 +44,7 @@ foreach ($projects as $row) {
 		$s .= $CT . $row["total_tasks"] . ($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');
 		$s .= $CR . '</td>';
 		$s .= $CR . '<td align="right" nowrap="nowrap">';
-		$s .= $CT . $end_date ? $end_date->toString( $df ) : '-';;
+		$s .= $CT . ($end_date ? $end_date->toString( $df ) : '-');
 		$s .= $CR . '</td>';
 		$s .= $CR . '</tr>';
 		echo $s;
