@@ -9,8 +9,11 @@
 
 /* $Id$ */
 
-require("modules/ticketsmith/config.inc.php");
-require("modules/ticketsmith/common.inc.php");
+require("./modules/ticketsmith/config.inc.php");
+require("./modules/ticketsmith/common.inc.php");
+
+/* Centralize references */
+$app_root="http://new.ezo.net/apps/dp";
 
 /* initialize fields */
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup") {
@@ -65,7 +68,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 		$message .= "";
 		$message .= "<TABLE border=0 cellpadding=4 cellspacing=1>";
 		$message .= "	<TR>";
-		$message .= "	<TD valign=top><img src=http://staging.dotmarketing.net/dotproject/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
+		$message .= "	<TD valign=top><img src=$app_root/images/icons/ticketsmith.gif alt= border=0 width=42 height=42></td>";
 		$message .= "		<TD nowrap><span class=title>Trouble Ticket Management</span></td>";
 		$message .= "		<TD valign=top align=right width=100%>&nbsp;</td>";
 		$message .= "	</tr>";
@@ -88,7 +91,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
 		$message .= "	</tr>";
 		$message .= "	<TR>";
 		$message .= "		<TD bgcolor=white nowrap><font face=arial,san-serif size=2>View:</font></TD>";
-		$message .= "		<TD bgcolor=white nowrap><a href='http://staging.dotmarketing.net/dotproject/index.php?m=ticketsmith&a=view&ticket=$ticket'><font face=arial,san-serif size=2>http://staging.dotmarketing.net/dotproject/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
+		$message .= "		<TD bgcolor=white nowrap><a href=\"$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\"><font face=arial,san-serif size=2>$app_root/index.php?m=ticketsmith&a=view&ticket=$ticket</font></a></TD>";
 		$message .= "	</tr>";
 		$message .= "</TABLE>";
 		$message .= "</body>";

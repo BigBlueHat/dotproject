@@ -1,11 +1,9 @@
-# MySQL dump 8.14
 #
-# Host: localhost    Database: dotproject
-#--------------------------------------------------------
-# Server version	3.23.41
-
+# dotproject.sql Database Schema
+# 	updated by JRP (08 July 2002)
 #
-# Table structure for table 'companies'
+# Use this schema for creating your database for 
+# a new installation of dotProject.
 #
 
 CREATE TABLE companies (
@@ -27,18 +25,14 @@ CREATE TABLE companies (
   PRIMARY KEY  (company_id)
 ) TYPE=MyISAM;
 
-#
-# Table structure for table 'contacts'
-#
-
 CREATE TABLE contacts (
   contact_id int(11) NOT NULL auto_increment,
   contact_first_name varchar(30) default NULL,
   contact_last_name varchar(30) default NULL,
   contact_order_by varchar(30) NOT NULL default '',
-  contact_title varchar(20) default NULL,
+  contact_title varchar(50) default NULL,
   contact_birthday datetime default NULL,
-  contact_company varchar(30) default NULL,
+  contact_company varchar(100) default NULL,
   contact_type varchar(20) default NULL,
   contact_email varchar(100) default NULL,
   contact_email2 varchar(100) default NULL,
@@ -50,18 +44,16 @@ CREATE TABLE contacts (
   contact_city varchar(30) default NULL,
   contact_state varchar(30) default NULL,
   contact_zip varchar(11) default NULL,
+  contact_country varchar(30) default NULL,
   contact_icq varchar(20) default NULL,
   contact_notes text,
   contact_project int(11) NOT NULL default '0',
+  contact_icon varchar(20) default 'obj/contact',
   PRIMARY KEY  (contact_id),
   KEY idx_oby (contact_order_by),
   KEY idx_co (contact_company),
   KEY idx_prp (contact_project)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'events'
-#
 
 CREATE TABLE events (
   event_id int(11) NOT NULL auto_increment,
@@ -73,15 +65,12 @@ CREATE TABLE events (
   event_times_recuring int(11) unsigned NOT NULL default '0',
   event_recurs int(11) unsigned NOT NULL default '0',
   event_remind int(10) unsigned NOT NULL default '0',
+  event_icon varchar(20) default 'obj/event',
   PRIMARY KEY  (event_id),
   KEY id_esd (event_start_date),
   KEY id_eed (event_end_date),
   KEY id_evp (event_parent)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'files'
-#
 
 CREATE TABLE files (
   file_id int(11) NOT NULL auto_increment,
@@ -97,15 +86,12 @@ CREATE TABLE files (
   file_date datetime default NULL,
   file_size int(11) default '0',
   file_version float NOT NULL default '0',
+  file_icon varchar(20) default 'obj/',
   PRIMARY KEY  (file_id),
   KEY idx_file_task (file_task),
   KEY idx_file_project (file_project),
   KEY idx_file_parent (file_parent)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'files_index'
-#
 
 CREATE TABLE files_index (
   file_id int(11) NOT NULL default '0',
@@ -115,10 +101,6 @@ CREATE TABLE files_index (
   KEY idx_fwrd (word),
   KEY idx_wcnt (word_placement)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'forum_messages'
-#
 
 CREATE TABLE forum_messages (
   message_id int(11) NOT NULL auto_increment,
@@ -134,10 +116,6 @@ CREATE TABLE forum_messages (
   KEY idx_mdate (message_date),
   KEY idx_mforum (message_forum)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'forums'
-#
 
 CREATE TABLE forums (
   forum_id int(11) NOT NULL auto_increment,
@@ -156,10 +134,6 @@ CREATE TABLE forums (
   KEY forum_status (forum_status)
 ) TYPE=MyISAM;
 
-#
-# Table structure for table 'permissions'
-#
-
 CREATE TABLE permissions (
   permission_id int(11) NOT NULL auto_increment,
   permission_user int(11) NOT NULL default '0',
@@ -171,10 +145,6 @@ CREATE TABLE permissions (
   KEY idx_puser (permission_user),
   KEY idx_pvalue (permission_value)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'projects'
-#
 
 CREATE TABLE projects (
   project_id int(11) NOT NULL auto_increment,
@@ -202,10 +172,6 @@ CREATE TABLE projects (
   KEY project_short_name (project_short_name)
 ) TYPE=MyISAM;
 
-#
-# Table structure for table 'task_comments'
-#
-
 CREATE TABLE task_comments (
   comment_id int(11) NOT NULL auto_increment,
   comment_user int(11) NOT NULL default '0',
@@ -219,10 +185,6 @@ CREATE TABLE task_comments (
   KEY idx_tc2 (comment_user)
 ) TYPE=MyISAM;
 
-#
-# Table structure for table 'task_log'
-#
-
 CREATE TABLE task_log (
   task_log_id int(11) NOT NULL auto_increment,
   task_log_task int(11) NOT NULL default '0',
@@ -234,10 +196,6 @@ CREATE TABLE task_log (
   KEY idx_log_task (task_log_task),
   KEY idx_log_parent (task_log_parent)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'tasks'
-#
 
 CREATE TABLE tasks (
   task_id int(11) NOT NULL auto_increment,
@@ -266,10 +224,6 @@ CREATE TABLE tasks (
   KEY task_order (task_order)
 ) TYPE=MyISAM;
 
-#
-# Table structure for table 'tickets'
-#
-
 CREATE TABLE tickets (
   ticket int(10) unsigned NOT NULL auto_increment,
   author varchar(100) NOT NULL default '',
@@ -290,10 +244,6 @@ CREATE TABLE tickets (
   KEY type (type)
 ) TYPE=MyISAM;
 
-#
-# Table structure for table 'user_tasks'
-#
-
 CREATE TABLE user_tasks (
   user_id int(11) NOT NULL default '0',
   user_type tinyint(4) NOT NULL default '0',
@@ -301,10 +251,6 @@ CREATE TABLE user_tasks (
   PRIMARY KEY  (user_id,task_id),
   KEY user_type (user_type)
 ) TYPE=MyISAM;
-
-#
-# Table structure for table 'users'
-#
 
 CREATE TABLE users (
   user_id int(11) NOT NULL auto_increment,
@@ -337,6 +283,72 @@ CREATE TABLE users (
   KEY idx_user_parent (user_parent)
 ) TYPE=MyISAM;
 
-INSERT INTO users VALUES (1,'admin',password('passwd'),0,'','Admin','Person',1,'admin@dotmarketing.com','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
-INSERT INTO permissions VALUES (1,1,"all",-1, -1);
+CREATE TABLE eventlog (
+  objecturl varchar(30) NOT NULL default 'unknown',
+  actiontype varchar(30) default 'unknown',
+  status int(11) NOT NULL default '0',
+  userid int(11) NOT NULL default '0',
+  dt datetime NOT NULL default '0000-00-00 00:00:00'
+) TYPE=MyISAM;
 
+CREATE TABLE localization (
+  lang varchar(5) NOT NULL,
+  name varchar(255) NOT NULL,
+  value varchar(255) default NULL,
+  PRIMARY KEY (lang,name)
+) TYPE=MyISAM;
+    
+CREATE TABLE attendees (
+  event_id int(11) NOT NULL,
+  attendee_id int(11) NOT NULL,
+  attendee_status smallint,
+  attendee_reminder smallint,
+  PRIMARY KEY(event_id,attendee_id),
+  FOREIGN KEY(event_id) REFERENCES events(event_id)
+);
+
+CREATE TABLE logs (
+ objecturl varchar(50) NOT NULL,
+ actiontype varchar(20) NOT NULL,
+ status int NOT NULL,
+ userid varchar(10) DEFAULT NULL,
+ dt datetime
+);
+
+INSERT INTO localization VALUES 
+('fr','Calendar','Agenda'),
+('fr','Projects','Projets'),
+('fr','Files','Documents'),
+('fr','Forums','Forums'),
+('fr','Localization','Traductions'),
+('fr','Module','Module'),
+('fr','Permission Type','Type de permission'),
+('fr','Select user','Choisir utilisateur'),
+('fr','Tasks','Tâches'),
+('fr','Tickets','Tickets'),
+('fr','Translation','Traduction'),
+('fr','User Admin','Admin utilisateurs'),
+('fr','deny','interdire'),
+('fr','read-only','lecture seule'),
+('fr','read-write','lecture-écriture'),
+('fr','Locale key','Clé'),
+('fr','sort by','trier par'),
+('fr','Admin','Administration'),
+('fr','All','Tout'),
+('fr','Clients & Companies','Clients & Sociétés'),
+('fr','Companies','Sociétés'),
+('fr','Contacts','Contacts'),
+('fr','No permissions for this User','Pas de permissions pour cet utilisateur');
+
+#
+# ATTENTION: 
+# Customize this section for your installation.
+# Recommended changes include:
+#   New admin username -> replace {admin}
+#   New admin password -> replace {passwd]
+#   New admin email -> replace {admin@localhost}
+#
+
+INSERT INTO users VALUES (1,'admin',password('passwd'),0,'','Admin','Person',1,'admin@localhost','','','','','','','','','','','','0000-00-00 00:00:00',NULL,0,'');
+
+INSERT INTO permissions VALUES (1,1,"all",-1, -1);

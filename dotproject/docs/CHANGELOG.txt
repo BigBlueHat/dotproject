@@ -1,5 +1,9 @@
 dotproject CHANGELOG
 
+7/12/2002:
+Convergence of various patches done by John Pritchard. Details of the
+convergence and the extra work done are in the file CHANGES.txt.
+
 7/3/2002:
 Removed trailing <CR> from dosql/updatetask.php to allow Unix patch command
 to work.
@@ -10,3 +14,5 @@ RELEASE 0.2.1 (RELEASE_0_2_1).
 Added this Log!
 Fixed ticketsmith module require path, which will now work if the php_include path = ./
 Updated the popup calendar with code sent to me by Jon Broderick Jon Broderick <jon@jivacreative.com>
+
+

@@ -199,7 +199,7 @@ if ($doassignemail) {
 	// For each user, email them an update, similar to the update that
 	// ticketsmith uses.
 	$row_count = mysql_num_rows($query);
-	$mail_header = "From: " . $admin_email . "\r\n"
+	$mail_header = "From: support@saki.com.au\r\n"
 	. "Content-Type: text/html\r\n"
 	. "Content-Transfer-Encoding: 8bit\r\n"
 	. "Mime-Version: 1.0\r\n"

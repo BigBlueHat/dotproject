@@ -1,42 +1,72 @@
-Installing dotproject- hopefully an easy process
+Installing dotProject on LAMP System
 
-This document assumes that you have a working web server 
-running apache+php+MYSQL and access to a MySQL database.
-
-1) 	Download the dotproject tarball from www.dotmarketing.org:
-		http://www.dotmarketing.org/dotproject/dotproject_02.tar.gz
-	
-2) 	Unpack the tarball in your web root directory:
-		tar -zxvf dotproject_02.tar.gz
-	
-3) 	Create a new mysql database called dotproject, create a 
-		new user called dotproject and grant access to user dotproject 
-		on the new dotproject database.
-	
-		mysql> CREATE database dotproject;
-		mysql> GRANT ALL PRIVILEGES ON dotproject.* TO dotproject@'localhost' IDENTIFIED 
-			BY 'yourpassword' WITH GRANT OPTION;
-	
-4) 	Slurp up the db schema and check your permissions at the same time: 
-		mysql -udotproject -pyourpassword dotproject < dotproject/db/dotproject.sql 
+REVISION HISTORY
+Original Document:  17 Oct 2002 (dotProject Team)
+Revised:            03 - 08 July 2002 (by JRP)
 
 	
-5) 	Edit the config file dotproject/includes/config.php and 
-		make the appropiate changes to db host, name, username, 
-		password and web root directory
+SITUATION
+You have access to a functioning WAMP (Windows+Apache+MySQL+PHP) or LAMP (Linux+Apache+MySQL+PHP) web server. You also have the ability to create a MySQL database and tables.
+	
+You've decided to install the open-source project management tool called "dotproject".
+	
+If you've been running "dotproject" already, you might want to refer to our UPGRADING.txt (to be written) document.
+	
 
-6) 	Point your browser to http://yourdomain.com/dotproject/index.php.  If 
-		all is well, you should see a login page. 
-		Username: admin
-		Password: passwd
+MISSION
+Install a new copy of dotproject on a LAMP system.
+	
+
+EXECUTION
+1) Download the most recent dotproject tarball:
+    http://sourceforge.net/projects/dotproject/
 		
-7)		Click on the Users button and change the admin password as soon as possible.
+2) Unpack the tarball in your web root directory:
+    tar -zxvf dotproject_*.tar.gz
+    [Note: replace the * with the appropriate version.]
 
-8) 	Have fun and send us the bug fixes!
+3) Database Setup:
+    // Customize for your system
+    Create a new mysql database called {dotproject}.
+    Create a new user called {dotproject}.
+    Grant access to user {dotproject} on the {dotproject} database.
+    Make sure to record the dotproject user's password, {yourpassword}.
 
+    // Customize to match your db_name, db_user, and db_pass.
+    mysql> CREATE database dotproject;
+    mysql> GRANT ALL PRIVILEGES ON dotproject.* 
+            TO dotproject@localhost IDENTIFIED BY
+            "yourpassword" WITH GRANT OPTION;
 
--dotmarketing team.
+4) Customize your Database Schema Script
+    Open the file dotproject/db/dotproject.sql with a text editor
+    and edit the last section where the default dotproject Admin
+    Account is setup (line 352).
+    
+    We recommend that you specify a new admin username, password, 
+    and email. Save your changes.
 
+5) Populate Database:
+    Utilize the information from the Database Setup and the provided
+    "/db/dotproject.sql" script to populate the dotproject database.
+    
+    #mysql -udotproject -pyourpassword dotproject < dotproject/db/dotproject.sql 
+    
+    If you are installing to a Windows system, exit MySQL and from
+    the command prompt, work your way into the "dotproject/db" folder.
+    Then, run the following command:
+    C:\{path-to-webroot}\dotproject\db> mysql -udotproject -pyourpassword dotproject < dotproject.sql   
+    
+6) Configuration File Customization:
+    Edit dotproject/includes/config.php to use your dbhost, name, username,
+    password and web root directory.
+
+7) Point your browser to http://yourdomain.com/dotproject/index.php.  If 
+        all is well, you should see a login page. 
+        Username: admin
+        Password: passwd
+
+8) Click on the Users button and change the admin password as soon as possible.
 
 
 ---------------------------------------------------------------------------
