@@ -96,18 +96,15 @@ class CAppUI {
 	}
 
 /**
-* Used to load a php class file from the PEAR classes directory
+* Used to load a php class file from the lib directory
 *
-* This is the PEAR directory supplied with the distribution as it is
-* slightly modified to account for minor bugs or incompatibilities in the
-* PEAR package.
 * @param string $name The class root file name (excluding .class.php)
 * @return string The path to the include file
 */
-	function getPearClass( $name=null ) {
+	function getLibraryClass( $name=null ) {
 		if ($name) {
 			if ($root = $this->getConfig( 'root_dir' )) {
-				return "$root/lib/PEAR/$name.php";
+				return "$root/lib/$name.php";
 			}
 		}
 	}
@@ -176,6 +173,39 @@ class CAppUI {
 		}
 		$d->close();
 		return $dirs;
+	}
+
+/**
+* Utility function to read the 'files' under 'path'
+* @param string The path to read.
+* @param string A regular expression to filter by.
+* @return array A named array of the files (the key and value are identical).
+*/
+	function readFiles( $path, $filter='.' ) {
+		$files = array();
+
+		if ($handle = opendir( $path )) {
+			while (false !== ($file = readdir( $handle ))) { 
+				if ($file != "." && $file != ".." && preg_match( "/$filter/", $file )) { 
+					$files[$file] = $file; 
+				} 
+			}
+			closedir($handle); 
+		}
+		return $files;
+	}
+
+/**
+* Utility function to make a file name 'safe'
+*
+* Strips out mallicious insertion of relative directories (eg ../../dealyfile.php);
+* @param string The file name.
+* @return array A named array of the files (the key and value are identical).
+*/
+	function makeFileNameSafe( $file ) {
+		$file = str_replace( '../', '', $file );
+		$file = str_replace( '..\\', '', $file );
+		return $file;
 	}
 
 /**
