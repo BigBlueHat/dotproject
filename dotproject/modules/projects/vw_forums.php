@@ -1,4 +1,4 @@
-<?php
+<?php /* PROJECTS $Id$ */
 GLOBAL $AppUI, $project_id;
 // Forums mini-table in project view action
 

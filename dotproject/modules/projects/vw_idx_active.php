@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* PROJECTS $Id$ */
 GLOBAL $AppUI, $projects, $company_id;
 $df = $AppUI->getPref('SHDATEFORMAT');
 ?>

@@ -1,13 +1,8 @@
 <?php /* PROJECTS $Id$ */
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
-// check permissions
-$denyRead = getDenyRead( $m, $project_id );
-$denyEdit = getDenyEdit( $m, $project_id );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+// check permissions for this project
+$canEdit = !getDenyEdit( $m, $project_id );
 $AppUI->savePlace();
 
 $AppUI->setState( 'ActiveProject', $project_id );
@@ -47,7 +42,7 @@ $actual_end_date->setFormat( $df );
 
 $crumbs = array();
 $crumbs["?m=projects"] = "projects list";
-if (!$denyEdit) {
+if ($canEdit) {
 	$crumbs["?m=projects&a=addedit&project_id=$project_id"] = "edit this project";
 }
 ?>
@@ -59,7 +54,7 @@ if (!$denyEdit) {
 	<td nowrap> <img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 <form action="?m=tasks&a=addedit&project_id=<?php echo $project_id;?>" method="post">
 	<td align="right" width="100%">
-	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new task').'">' : '';?>
+	<?php echo $canEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new task').'">' : '';?>
 	</td>
 </form>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>

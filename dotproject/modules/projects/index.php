@@ -1,11 +1,4 @@
 <?php  /* PROJECTS $Id$ */
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
 $AppUI->savePlace();
 
 // Set up 'filters'
@@ -83,7 +76,7 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 		<?php echo $AppUI->_('Company');?>:
 <?php
 	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
-?>		
+?>
 	</td>
 </form>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">' );?></td>

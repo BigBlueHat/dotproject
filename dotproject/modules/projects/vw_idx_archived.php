@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* PROJECTS $Id$ */
 GLOBAL $AppUI, $projects, $company_id;
 $df = $AppUI->getPref('SHDATEFORMAT');
 ?>
@@ -33,7 +33,7 @@ foreach ($projects as $row) {
 		. '</font>';
 	?></td>
 	<td width="100%">
-		<A href="?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $row["project_name"];?></A>
+		<a href="?m=projects&a=view&project_id=<?php echo $row["project_id"];?>"><?php echo $row["project_name"];?></a>
 	</td>
 	<td nowrap="nowrap"><?php echo $row["user_username"];?></td>
 	<td align="center" nowrap="nowrap"><?php echo $row["total_tasks"];?></td>

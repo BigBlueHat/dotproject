@@ -1,4 +1,4 @@
-<?php /* $Id$ */
+<?php /* FILES $Id$ */
 
 // Files modules: index page re-usable sub-table
 GLOBAL $AppUI, $deny1;
@@ -43,7 +43,7 @@ ORDER BY project_name, file_name
 ";
 
 $file = array();
-if (!$denyRead) {
+if ($canRead) {
 	$files = db_loadList( $sql );
 }
 ?>
@@ -82,7 +82,7 @@ foreach ($files as $row) {
 ?>
 <tr>
 	<td nowrap="nowrap" width="20">
-	<?php if (!$denyEdit) { ?>
+	<?php if ($canEdit) { ?>
 		<a href="./index.php?m=files&a=addedit&file_id=<?php echo $row["file_id"];?>"><img src="./images/icons/pencil.gif" alt="edit file" border="0" width=12 height=12></a>
 	<?php } ?>
 	</td>
