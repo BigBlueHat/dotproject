@@ -116,10 +116,6 @@ foreach ($events as $row) {
 	</td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_MOCAL' );?></td>
 </tr>
-<?php
-	// Bizarre fix for strange $copmany_id="1company_id=1" bug
-	echo '<input type="hidden" name="dummy">';
-?>
 </form>
 </table>
 

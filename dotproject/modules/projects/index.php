@@ -83,8 +83,6 @@ $companies = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
 		<?php echo $AppUI->_('Company');?>:
 <?php
 	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
-// Bizarre fix for strange $copmany_id="1company_id=1" bug
-	echo '<input type="hidden" name="dummy">';
 ?>		
 	</td>
 </form>
