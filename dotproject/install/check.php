@@ -74,7 +74,7 @@ $okImg = '<img src="../images/icons/stock_ok-16.png" width="16" height="16" alig
 </tr>
 <?php
 $okMessage="";
-if (is_writable( "../includes/config.php" )) {
+if ( (file_exists("../includes/config.php") && is_writable( "../includes/config.php" )) || (is_writable( "../includes" )) ) {
 
         changeMode( "../includes/config.php", 777 );
         $okMessage="<span class='error'> 777</span>";
