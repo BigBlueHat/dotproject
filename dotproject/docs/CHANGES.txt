@@ -159,3 +159,38 @@ modules/contacts/addedit.php
 - add permissions
 
 -------------------------------------------------------------------------------
+Update by Andrew Eddie 16 August 2002
+Extended permissions to forums and files
+
+./logincheck.php
+- added parsing for master cookie
+
+includes/permissions.php
+- logic fix for super user viewing a module
+- added a master cookie
+
+includes/header.php
+- alter user name based on master cookie
+
+includes/leftnav.php
+- couldn't see a read-only forums module
+
+modules/projects/index.php
+- set company filter to default to user company
+
+modules/forums/index.php
+modules/forums/viewer.php
+- added permissions and disabled search buttons
+
+modules/forums/view_topics.php
+modules/forums/view_messages.php
+- added permissions
+
+modules/files/index.php
+- added permissions, filter list box for projects and disabled search buttons
+
+modules/files/addedit.php
+- added permissions and breadcrumbs
+- made delete handling mor consistent with other modules
+
+-------------------------------------------------------------------------------
