@@ -1,4 +1,12 @@
 <?php
+include_once('../includes/config.php');
+include_once($dPconfig['root_dir'] . '/includes/main_functions.php');
+require_once($dPconfig['root_dir']."/includes/db_adodb.php" );
+include_once($dPconfig['root_dir'] . '/includes/db_connect.php');
+
+/** Insert upgrade_latest.sql file in db
+*/
+include_once(dPgetConfig('root_dir') . '/db/create_db_fields.php');
 
 /**
  *  This segment will extract all the project/department and project/contact relational info and populate the project_departments and project_contacts tables.
