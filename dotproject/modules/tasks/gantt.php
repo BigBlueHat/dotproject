@@ -205,17 +205,18 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$flags = ($a["task_milestone"]?"m":"");
 
 	$cap = "";
-	if(!$start){
-		$start = date("Y-m-d");
+	if(!$start || $start == "0000-00-00"){
+		$start = !$end ? date("Y-m-d") : $end;
 		$cap .= "(no start date)";
 	}
+	
 	if(!$end) {
 		$end = $start;
 		$cap .= " (no end date)";
 	} else {
 		$cap = "";
 	}
-
+	
 	if($flags == "m") {
 		$bar = new MileStone($row++, $name, $start, $start);
 	} else {
