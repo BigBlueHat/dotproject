@@ -96,7 +96,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 			break;
 	}
 	
-	return $last_update;
+	return $latest_update;
 }
  
 ?>
