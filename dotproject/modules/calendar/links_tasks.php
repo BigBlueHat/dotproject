@@ -11,8 +11,7 @@
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_id=0 ) {
-	GLOBAL $AppUI;
-	GLOBAL $dPconfig;
+	GLOBAL $a, $AppUI, $dPconfig;
 	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $company_id );
 
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
@@ -41,7 +40,9 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		if (($start->after( $startPeriod ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
 			$temp = $link;
 			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
-			$temp['text'] = dPshowImage(dPfindImage('block-start-16.png')).$temp['text'];
+			if ($a != 'day_view') {
+				$temp['text'] = dPshowImage(dPfindImage('block-start-16.png')).$temp['text'];
+			}
 			$links[$start->format( FMT_TIMESTAMP_DATE )][] = $temp;
 		}
 		if ($end && $end->after( $startPeriod ) && $end->before( $endPeriod )
@@ -49,7 +50,9 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 
 			$temp = $link;
 			$temp['alt'] = "FINISH\n".$link['alt'];
-			$temp['text'] = $temp['text'].dPshowImage(dPfindImage('block-end-16.png'));
+			if ($a != 'day_view') {
+				$temp['text'].= dPshowImage(dPfindImage('block-end-16.png'));
+			}
 			$links[$end->format( FMT_TIMESTAMP_DATE )][] = $temp;
 
 		}
