@@ -1,7 +1,5 @@
-<?php /* SYSKEYS $Id */
+<?php /* SYSKEYS $Id$ */
 $AppUI->savePlace();
-// temporary until tranlated!
-$AppUI->setWarning( false );
 
 // pull all the key types
 $sql = "SELECT syskey_id,syskey_name FROM syskeys ORDER BY syskey_name";

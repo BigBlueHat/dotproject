@@ -1,7 +1,4 @@
 <?php /* SYSKEYS $Id$*/
-// temporary until tranlated!
-$AppUI->setWarning( false );
-
 $sql = "SELECT * FROM syskeys ORDER BY syskey_name";
 $keys = db_loadList( $sql );
 

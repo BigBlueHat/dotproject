@@ -2,9 +2,6 @@
 
 $AppUI->savePlace();
 
-// temporary until tranlated!
-$AppUI->setWarning( false );
-
 $sql = "SELECT * FROM modules ORDER BY mod_ui_order";
 $modules = db_loadList( $sql );
 
@@ -73,7 +70,7 @@ foreach ($modules as $row) {
 		// Status term "deactivate" changed to "Active"
 		// Status term "activate" changed to "Disabled"
 	//$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('deactivate') : $AppUI->_('activate')).'</a>';
-	$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('Active') : $AppUI->_('Disabled')).'</a>';
+	$s .= '<a href="'.$query_string . '&cmd=toggle&">'.($row['mod_active'] ? $AppUI->_('active') : $AppUI->_('disabled')).'</a>';
 	if ($row['mod_type'] != 'core') {
 		$s .= ' | <a href="'.$query_string . '&cmd=remove">'.$AppUI->_('remove').'</a>';
 	}
@@ -90,7 +87,7 @@ foreach ($modules as $row) {
 		// Menu Status term "show" changed to "Visible"
 		// Menu Status term "activate" changed to "Disabled"
 	//$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('hide') : $AppUI->_('show')).'</a></td>';
-	$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('Visible') : $AppUI->_('Hidden')).'</a></td>';
+	$s .= '<a href="'.$query_string . '&cmd=toggleMenu">'.($row['mod_ui_active'] ? $AppUI->_('visible') : $AppUI->_('hidden')).'</a></td>';
 
 	$s .= '<td>'.$row['mod_ui_order'].'</td>';
 

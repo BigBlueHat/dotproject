@@ -62,9 +62,9 @@ $crumbs["?m=system"] = "System Admin";
 	?></td>
 	<td align="right" width="100%" nowrap>&nbsp;<?php echo $AppUI->_( 'Language' );?>:</span></td>
 	<td><?php
-	$AppUI->setWarning( false );
+	$temp = $AppUI->setWarning( false );
 	echo arraySelect( $locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang, true );
-	$AppUI->setWarning( false );
+	$AppUI->setWarning( $temp );
 	?></td>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_SYS_TRANS' );?></td>
 </tr>
