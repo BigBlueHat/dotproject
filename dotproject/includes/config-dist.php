@@ -41,7 +41,7 @@ OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 // Do not change version for support reasons
-$dPconfig['version'] = "dotProject v1.0 alpha 2a [10-Apr-2003]";
+$dPconfig['version'] = "dotProject v1.0 alpha 2b [10-Apr-2003]";
 
 // DATABASE ACCESS INFORMATION [DEFAULT example]
 // Modify these values to suit your local settings
