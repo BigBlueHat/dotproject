@@ -202,14 +202,14 @@ foreach ($tasks as $task) {
 			<span style="padding:2px;background-color:#<?php echo $task['project_color_identifier'];?>;color:<?php echo bestColor( $task["project_color_identifier"] );?>"><?php echo $task["project_name"];?></span>
 		</a>
 	</td>
-	<td nowrap style="<?php echo $style;?>"><?php if($start)echo $start->format( $df );?></td>
+	<td nowrap style="<?php echo $style;?>"><?php if($start)echo $AppUI->_($start->getDayName(1)).'&nbsp;'.$start->format( $df );?></td>
 	<td style="<?php echo $style;?>">
 <?php
 	echo $task['task_duration'] . ' ' . $AppUI->_( $durnTypes[$task['task_duration_type']] );
 ?>
 	</td>
 
-	<td nowrap style="<?php echo $style;?>"><?php echo $end->format( $df );?></td>
+	<td nowrap style="<?php echo $style;?>"><?php echo $AppUI->_($end->getDayName(1)).'&nbsp;'.$end->format( $df );?></td>
 
 	<td nowrap align="right" style="<?php echo $style;?>">
 		<?php echo $days; ?>
