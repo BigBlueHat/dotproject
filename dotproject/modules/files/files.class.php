@@ -59,7 +59,7 @@ class CFile {
 			return get_class( $this )."::store-check failed";
 		}
 		if( $this->file_id ) {
-			$ret = db_updateObject( 'files', $this, 'file_id' );
+			$ret = db_updateObject( 'files', $this, 'file_id', false );
 		} else {
 			$ret = db_insertObject( 'files', $this, 'file_id' );
 		}
