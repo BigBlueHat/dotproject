@@ -36,6 +36,9 @@ error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING );
 // uncomment the following line of code:
 //error_reporting( E_ALL );
 
+is_file( "./includes/config.php" )
+	or die( "Fatal Error.  You haven't created a config file yet." );
+
 // required includes for start-up
 $dPconfig = array();
 require_once( "./includes/config.php" );
@@ -59,12 +62,11 @@ header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modifi
 header ("Cache-Control: no-cache, must-revalidate");	// HTTP/1.1
 header ("Pragma: no-cache");	// HTTP/1.0
 
-
 // Check that the user has correctly set the root directory
 is_file( "{$dPconfig['root_dir']}/includes/config.php" ) or die( "FATAL ERROR: Root directory in configuration file probably incorrect." );
 
 // Do not change version for support reasons
-$dPconfig['version'] = "1.0 beta 1 [May-2003]";
+$dPconfig['version'] = "1.0 beta 1 release [29-May-2003]";
 
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
