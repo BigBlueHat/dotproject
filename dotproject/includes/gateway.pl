@@ -3,35 +3,50 @@
 
 # $Id$ #
 
-%config = (database_host => 'localhost',
-           database_name => 'dotproject',
-           database_user => 'dotproject',
-           database_pass => 'yourpassword');
-
-# centralize some of the hard coding JBF
-$app_root = "http://host.yourdomain.com/path.to/dotproject";
+# New configuration, gets all config info from the PHP config.php file.
+$dp_root = "/path/to/dotproject";
 
 # send email report upon receipt (1 = yes, 0 = no)
 $send_email_report = 1;
 
 # Send aknowlegment back to lodger (1 = yes, 0 = no)
-$send_acknowledge = 1;
+$send_acknowledge = 0;
 
 # NOTE:  Email addresses should escape the @ symbol as it is
 # a PERL array identifier and will cause this script to break.
 # Alternatively change the double quotes to single quotes, which
 # also escapes the string.
 
+# NOTE 2: If your dotProject PHP environment is correctly set up
+# you don't need to add the @ and domain, it will get it from
+# dPconfig[site_domain] key.
+
 # address to send report to
-$report_to_address = "you\@yourdomain.com";
+$report_to_address = "admin";
 
 # report from address
-$report_from_address = "support\@yourdomain.com";
+$report_from_address = "support";
 
 # location of sendmail
 $mailprog = "/usr/sbin/sendmail";
 
 ######################## </CONFIGURATION SECTION> ##############################
+
+## First phase, check to see we can configure ourselves based upon
+## the PHP environment.
+%config = ();
+&check_config();
+
+# Shortcuts for the email code
+$app_root = $config{'base_url'};
+
+# If no domain portion, add the domain from the configuration file.
+if ( $report_to_address !~ /\@/ ) {
+  $report_to_address .= '@' . $config{'site_domain'};
+}
+if ( $report_from_address !~ /\@/ ) {
+  $report_from_address .= '@' . $config{'site_domain'};
+}
 
 # database bindings
 use DBI;
@@ -52,6 +67,23 @@ while (<STDIN>) {
 exit();
 
 ################################################################################
+
+sub check_config() {
+  open (PHPCONFIG, "<$dp_root/includes/config.php")
+    or die ("Cannot find dotProject configuration file!");
+  while (<PHPCONFIG>) {
+    if (/^\s*\$dpconfig\[/i) {
+      s/\s*;.*$//;
+      # Now split the conf line up.
+      @confs = split /\s*=\s*/;
+      # First part is the name
+      $confs[0] =~ s/^.*\[['"](.*)['"]\]/$1/;
+      $confs[1] =~ s/['"\r\n]//g;
+      # add to the config array
+      $config{$confs[0]} = $confs[1];
+    }
+  }
+}
 
 sub get_headers {
 
@@ -164,7 +196,7 @@ sub get_body {
 sub insert_message {
 
     # connect to database
-    $dbh = DBI->connect("DBI:mysql:$config{'database_name'}:$config{'database_host'}", $config{'database_user'}, $config{'database_pass'});
+    $dbh = DBI->connect("DBI:mysql:$config{'dbname'}:$config{'dbhost'}", $config{'dbuser'}, $config{'dbpass'});
 
     # update parent activity
     if ($parent) {
@@ -213,6 +245,7 @@ sub mail_report {
 
     # remove ticket number
     $subject =~ s/\[\#\d+\](.*)/$1/;
+    $boundary = "_lkqwkASDHASK89271893712893"; 
 
     # mail the report
     open(MAIL, "|$mailprog -t");
@@ -223,8 +256,23 @@ sub mail_report {
 	} else {
 	    print MAIL "Subject: New support ticket #$ticket\n";
 	}
-	print MAIL "Content-type: text/html\n";
-	print MAIL "Mime-version: 1.0\n\n";
+	print MAIL "Content-type: multipart/alternative; boundary=\"$boundary\"\n";
+	print MAIL "Mime-Version: 1.0\n\n";
+	print MAIL "--$boundary\n";
+	print MAIL "Content-disposition: inline\n";
+	print MAIL "Content-type: text/plain\n\n";
+	if ($parent) {
+	  print MAIL "Followup Trouble ticket to ticket #$parent\n\n";
+	} else {
+	  print MAIL "New Trouble Ticket\n\n";
+	}
+	print MAIL "Ticket ID: $ticket\n";
+	print MAIL "Author   : $author\n";
+	print MAIL "Subject  : $subject\n";
+	print MAIL "View     : $app_root/index.php?m=ticketsmith&a=view&ticket=$ticket\n";
+	print MAIL "\n--$boundary\n";
+	print MAIL "Content-disposition: inline\n";
+	print MAIL "Content-type: text/html\n\n";
 	print MAIL "<html>";
 	print MAIL "<head>";
 	print MAIL "<style>";
@@ -275,6 +323,7 @@ sub mail_report {
 	print MAIL "</TABLE>";
 	print MAIL "</body>";
 	print MAIL "</html>";
+	print MAIL "\n--$boundary--\n";
 	close(MAIL);
 
 }
@@ -291,14 +340,28 @@ sub mail_acknowledgement {
 
     # remove ticket number
     $subject =~ s/\[\#\d+\](.*)/$1/;
+    $boundary = "_lkqwkASDHASK89271893712893"; 
 
     # mail the report
     open(MAIL, "|$mailprog -t");
 	print MAIL "To: $author\n";
 	print MAIL "From: $report_from_address\n";
 	print MAIL "Subject: [#$ticket] Your Support Request\n";
-	print MAIL "Content-type: text/html\n";
+	print MAIL "Content-type: multipart/alternative; boundary=\"$boundary\"\n";
 	print MAIL "Mime-Version: 1.0\n\n";
+	print MAIL "--$boundary\n";
+	print MAIL "Content-disposition: inline\n";
+	print MAIL "Content-type: text/plain\n\n";
+	print MAIL "This is an acknowledgement that your support request has been logged\n";
+	print MAIL "by an automated support tracking system. It will be assigned to a\n";
+	print MAIL "support representative who will be in touch in due course.\n\n";
+	print MAIL "Details of support request:\n";
+	print MAIL "Ticket ID: $ticket\n";
+	print MAIL "Author   : $author\n";
+	print MAIL "Subject  : $subject\n";
+	print MAIL "\n--$boundary\n";
+	print MAIL "Content-disposition: inline\n";
+	print MAIL "Content-type: text/html\n\n";
 	print MAIL "<html>";
 	print MAIL "<head>";
 	print MAIL "<style>";
@@ -344,6 +407,7 @@ sub mail_acknowledgement {
 	print MAIL "</TABLE>";
 	print MAIL "</body>";
 	print MAIL "</html>";
+	print MAIL "\n--$boundary--\n";
 	close(MAIL);
 
 }
