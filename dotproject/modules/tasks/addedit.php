@@ -143,7 +143,7 @@ function delIt() {
 
 <TABLE width="95%" border="0" cellpadding="0" cellspacing="1">
 <form name="AddEdit" action="./index.php?m=tasks" method="post">
-<input name="dosql" type="hidden" value="addedittask">
+<input name="dosql" type="hidden" value="addeditTask">
 <input name="del" type="hidden" value="0">
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>">
 <input name="task_project" type="hidden" value="<?php echo $project_id;?>">
