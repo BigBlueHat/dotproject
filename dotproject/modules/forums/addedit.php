@@ -1,6 +1,6 @@
 <?php /* FORUMS $Id$ */
 // Add / Edit forum
-$forum_id = isset( $_GET['forum_id'] ) ? $_GET['forum_id'] : 0;
+$forum_id = intval( dPgetParam( $_GET, 'forum_id', 0 ) );
 
 //Pull forum information
 $sql = "SELECT * FROM forums WHERE forums.forum_id = $forum_id";
@@ -20,8 +20,17 @@ $sql = "SELECT user_id, user_username FROM users ORDER BY user_username";
 $users = array( '0' => '' ) + db_loadHashList( $sql );
 echo db_error();
 
-$crumbs = array();
-$crumbs["?m=forums"] = "forums list";
+// setup the title block
+$ttl = $forum_id > 0 ? "Edit Forum" : "Add Forum";
+$titleBlock = new CTitleBlock( $ttl, 'support.png', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=forums", "forums list" );
+if ($canDelete) {
+	$titleBlock->addCrumbRight(
+		'<a href="javascript:delIt()">' . $AppUI->_('delete forum')
+			. '&nbsp;<img align="absmiddle" src="' . dPfindImage( 'stock_delete-16.png', $m ) . '" width="16" height="16" alt="" border="0" /></a>'
+	);
+}
+$titleBlock->show();
 ?>
 <script language="javascript">
 function submitIt(){
@@ -49,25 +58,7 @@ function delIt(){
 }
 </script>
 
-<table width="100%" cellspacing="1" cellpadding="1" border="0">
-<tr>
-	<td><img src="./images/icons/communicate.gif" alt="" border="0" width="42" height="42"></td>
-	<td nowrap width="100%"><h1><?php
-		echo $AppUI->_( 'Project' ).' '.$AppUI->_( 'Forums' );
-	?></h1></td>
-</tr>
-</table>
-
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
-<tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td width="50%" align="right">
-		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0"><?php echo $AppUI->_( 'delete forum' );?></a>
-	</td>
-</tr>
-</table>
-
-<table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <form name="changeforum" action="?m=forums" method="post">
 	<input type="hidden" name="dosql" value="do_forum_aed" />
 	<input type="hidden" name="del" value="0" />
