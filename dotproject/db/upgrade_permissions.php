@@ -19,7 +19,7 @@ echo "Upgrading system ...\n";
 
 
 // Now update the GACL class information.
-require_once dirname(__FILE__) . "/../classes/permissions.class.php";
+require_once dpRealPath(dirname(__FILE__) . "/../classes/permissions.class.php");
 
 $perms =& new dPacl;
 
@@ -160,5 +160,4 @@ if ($res) {
     }
   }
 }
-
 ?>
