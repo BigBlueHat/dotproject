@@ -181,7 +181,7 @@ GROUP BY project_name, file_name
 ORDER BY project_name, file_name
 LIMIT ' . $xpg_min . ', ' . $xpg_pagesize ;
 
-$sql2 = "SELECT file_id, file_version, file_project, file_name, file_task, file_description, file_owner, file_size, file_category, file_type, file_date
+$sql2 = "SELECT file_id, file_version, file_project, file_name, file_task, task_name, file_description, file_owner, file_size, file_category, file_type, file_date
         FROM files
         LEFT JOIN tasks on file_task = task_id
         LEFT JOIN projects ON project_id = file_project
@@ -322,7 +322,7 @@ foreach ($files as $row) {
                 <td width="20%">' . $file['file_description'] . '</td>
                 <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
                 <td width="10%" nowrap="nowrap" align="center">' . $file_types[$file['file_category']] . '</td>
-                <td width="5%" align="center">' . $file['file_task'] . '</td>
+                <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=' . $row['file_task'] . '">' . $file['task_name'] . '</td>
                 <td width="15%" nowrap="nowrap">' . dPgetUsername($row['file_owner']).'</td>
                 <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
