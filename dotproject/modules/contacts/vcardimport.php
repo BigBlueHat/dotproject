@@ -93,7 +93,7 @@ $titleBlock->show();
 		<input type="hidden" name="max_file_size" value="109605000" />
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Fetch vCard(s) File' );?>:</td>
-		<td align="left"><input type="File" class="button" name="vcf" style="width:280px"></td>
+		<td align="left"><input type="File" class="button" name="vcf" style="width:280px" accept="text/x-vcard"></td>
 	</tr>
 	<tr>
 		<td align="right" colspan="2" nowrap="nowrap"><input type="submit" class="button" value="<?php echo $AppUI->_('submit'); ?>"/></td>
