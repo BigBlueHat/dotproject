@@ -47,15 +47,12 @@ class CAppUI {
 	var $locale_warn = true;	// warn when a translation is not found
 	var $locale_alert = '^';
 // theming
-	var $styles = array(
-		'default' => 'Classic dotproject',
-		'demo1' => 'A demo style'
-	);
+	var $styles = array();
 // message handling
 	var $msg = '';
 	var $msgNo = '';
 	var $defaultRedirect = '';
-
+	
 // CAppUI Constructor
 	function CAppUI() {
 		GLOBAL $debug;
@@ -80,9 +77,49 @@ class CAppUI {
 		";
 		writeDebug( $sql, 'Default Preferences SQL', __FILE__, __LINE__ );
 
-		$this->user_locale = $this->base_locale;
+		$this->user_locale = $this->base_locale;				
 		$this->user_prefs = db_loadHashList( $sql );
+		
+		$this->checkStyle();
+		
+		// *** generate installed styles array ***
+				
+		GLOBAL $root_dir, $host_locale;
+
+		// load styles description locales
+		ob_start();
+		@readfile( "$root_dir/locales/$host_locale/styles.inc" );
+		eval( "\$GLOBALS['translate']=array(".ob_get_contents()."\n'0');" );
+		ob_end_clean();
+		
+		// read installed styles directory
+		$d = dir("$root_dir/style");
+		while (false !== ($style = $d->read())) {
+			if($style != "." && $style != ".." && $style != "CVS") {
+				$desc = $this->_("description_$style");
+				
+				if(substr($desc, -1) == $this->locale_alert) {
+					// use style name as description when no locale availaible
+					$desc = ucfirst($style);
+				}
+				$this->styles[$style] = $desc;
+			}
+		}
+		$d->close();
 	}
+	
+	function checkStyle() {
+		GLOBAL $root_dir, $host_style;
+				
+		// check if default user's uistyle is installed
+		$uistyle = $this->getPref("UISTYLE");
+		
+		if($uistyle && !is_dir("$root_dir/style/$uistyle")) {
+			// fall back to host_style if user style is not installed
+			$this->setPref( 'UISTYLE', $host_style );
+		}
+	}
+	
 // localisation
 	function setUserLocale( $loc ) {
 		$this->user_locale = $loc;
@@ -220,6 +257,7 @@ class CAppUI {
 
 		$prefs = db_loadHashList( $sql );
 		$this->user_prefs = array_merge( $this->user_prefs, db_loadHashList( $sql ) );
+		$this->checkStyle();
 		$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
 
 		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
@@ -239,6 +277,10 @@ class CAppUI {
 		return @$this->user_prefs[$name];
 	}
 
+	function setPref( $name, $val ) {
+		@$this->user_prefs[$name] = $val;
+	}
+	
 	function getProject() {
 		return $this->project_id;
 	}
