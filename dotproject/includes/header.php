@@ -33,7 +33,7 @@ function tboff(){
 <TABLE width="100%" cellpadding=3 cellspacing=0 bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
 	<TR>
 		<TD nowrap width="33%"><span id="smallCompanyTitle"><?php echo $company_name;?></SPAN></TD>
-		<TD nowrap width="34%"><span id="smallCompanyTitle">Current user: <?php echo "$user_full_name"; ?></SPAN></TD>
+		<TD nowrap width="34%"><span id="smallCompanyTitle">Current user: <?php echo "$thisuser_first_name $thisuser_last_name"; ?></SPAN></TD>
 		<TD nowrap width="33%" align="right">
 			<TABLE cellpadding=1 cellspacing=1 width="200">
 				<TR>
