@@ -18,7 +18,7 @@ require_once("commonlib.php");
 
 // propose some Values
 $propRoot = realpath("../");
-$propBaseUrl = "http://".$_SERVER["SERVER_NAME"].str_replace("install/pref.php", "", $_SERVER["PHP_SELF"]);
+$propBaseUrl = "http://".$_SERVER["SERVER_NAME"].str_replace("/install/pref.php", "", $_SERVER["PHP_SELF"]);
 if ($_SERVER["SERVER_NAME"] == "127.0.0.1" || $_SERVER["SERVER_NAME"] == "localhost") {
         $propCompanyName = "My Organization";
 } else {
