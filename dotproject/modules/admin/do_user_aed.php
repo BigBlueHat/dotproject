@@ -55,7 +55,7 @@ if ($del) {
 			$AppUI->redirect( );
 		}
 
-		$obj->user_owner = $AppUI->user_id;
+		$contact->contact_owner = $AppUI->user_id;
 	}
 
         if (($msg = $contact->store())) {
