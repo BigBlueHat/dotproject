@@ -180,17 +180,6 @@ WHERE td.dependencies_task_id = $task_id
 ";
 $taskDep = db_loadHashList( $sql );
 
-// setup the title block
-$ttl = $task_id > 0 ? "Edit Task" : "Add Task";
-$titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=tasks", "tasks list" );
-if ( $canReadProject ) {
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
-}
-if ($task_id > 0)
-  $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
-$titleBlock->show();
-
 // Let's gather all the necessary information from the department table
 // collect all the departments in the company
 $depts = array( 0 => '' );
@@ -255,12 +244,12 @@ if ($end   === null ) $end = 17;
 if ($inc   === null)  $inc = 15;
 $hours = array();
 for ( $current = $start; $current < $end + 1; $current++ ) {
-	if ( $current < 10 ) { 
+	if ( $current < 10 ) {
 		$current_key = "0" . $current;
 	} else {
 		$current_key = $current;
 	}
-	
+
 	if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ){
 		//User time format in 12hr
 		$hours[$current_key] = ( $current > 12 ? $current-12 : $current );
@@ -335,7 +324,7 @@ function setTasksStartDate() {
 		// Why? Parent task is for updating dynamics or angle icon
 		if ( 0 && form.task_parent.options.selectedIndex!=0) {
 			var i = form.task_parent.options[form.task_parent.options.selectedIndex].value;	
-			var val = projTasksWithEndDates[i][0]; //format 05/03/2004	
+			var val = projTasksWithEndDates[i][0]; //format 05/03/2004
 			var sdate = new Date(val.substring(6,10),val.substring(3,5)-1, val.substring(0,2));
 			if (sdate > max_date) {
 				max_date = sdate;
@@ -595,7 +584,7 @@ function calcDuration() {
 
 	var sDate = new Date(int_st_date.substring(0,4),(int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10), int_st_date.substring(10,12));
 	var eDate = new Date(int_en_date.substring(0,4),(int_en_date.substring(4,6)-1),int_en_date.substring(6,8), int_en_date.substring(8,10), int_en_date.substring(10,12));
-	
+
 	var s = Date.UTC(int_st_date.substring(0,4),(int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10), int_st_date.substring(10,12));
 	var e = Date.UTC(int_en_date.substring(0,4),(int_en_date.substring(4,6)-1),int_en_date.substring(6,8), int_en_date.substring(8,10), int_en_date.substring(10,12));
 	var durn = (e - s) / hourMSecs; //hours absolute diff start and end
@@ -742,7 +731,7 @@ function calcFinish() {
 						break;
 					}
 				}		
-			} 
+			}
 		}
 		e.setHours(e.getHours()+hoursToAddToFirstDay);
 
@@ -791,29 +780,21 @@ function changeRecordType(value){
 <!--	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />-->
 	<input name='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
 	<input name="sant" type="hidden" value="0" />
-<table border="0" cellspacing="0" cellpadding="0" width="100%">
-<tr>
- 	<td height="40" width="35%">
-		* <?php echo $AppUI->_( 'requiredField' );?>
-	</td>
-	<td height="40" width="30%">&nbsp;</td>
-	<td  height="40" width="35%" align="right">
-		<table>
-		<tr>
-			<td>
-				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('<?php echo $AppUI->_('taskCancel');?>')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
-			</td>
-			<td>
-				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt(0);" />
-			</td>
-			<td>
-				<input class="button" type="button" name="saveNewTask" value="<?php echo $AppUI->_('save &&amp; new task');?>" onClick="submitIt(1);" />
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-</table>
+<?php
+// setup the title block
+$ttl = $task_id > 0 ? "Edit Task" : "Add Task";
+$titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+if ( $canReadProject ) {
+	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
+}
+if ($task_id > 0)
+  $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
+  $titleBlock->addCrumbRight( '<input class="button" type="button" name="cancel" value="'.$AppUI->_('cancel').'" onClick="javascript:if(confirm(\''.$AppUI->_('taskCancel').'\')){location.href = \'?'.$AppUI->getPlace().'\';}" />
+ 				&nbsp;<input class="button" type="button" name="btnFuseAction" value="'.$AppUI->_('save').'" onClick="submitIt(0);" />&nbsp;
+				<input class="button" type="button" name="saveNewTask" value="'.$AppUI->_('save &&amp; new task').'" onClick="submitIt(1);" />' );
+$titleBlock->show();
+?>
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
