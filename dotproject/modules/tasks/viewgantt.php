@@ -7,6 +7,15 @@ $project_id = defVal( @$_GET['project_id'], 0);
 // sdate and edate passed as unix time stamps
 $sdate = dPgetParam( $_POST, 'sdate', 0 );
 $edate = dPgetParam( $_POST, 'edate', 0 );
+$showLabels = dPgetParam( $_POST, 'showLabels', '0' );
+//if set GantChart includes user labels as captions of every GantBar
+if ($showLabels!='0') {
+    $showLabels='1';
+}
+$showWork = dPgetParam( $_POST, 'showWork', '0' );
+if ($showWork!='0') {
+    $showWork='1';
+}
 
 // months to scroll
 $scroll_date = 1;
@@ -121,7 +130,12 @@ function showFullProject() {
 		<input type="hidden" name="edate" value="<?php echo $end_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" class="text" name="show_edate" value="<?php echo $end_date->format( $df );?>" size="12" disabled="disabled" />
 		<a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
-
+	<td valign="top">
+		<input type="checkbox" name="showLabels" <?php echo (($showLabels==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show captions' );?>
+	</td>
+	<td valign="top">
+		<input type="checkbox" name="showWork" <?php echo (($showWork==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show work instead of duration' );?>
+	</td>	
 	<td align="left">
 		<input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
 	</td>
@@ -154,7 +168,7 @@ if (db_loadResult( "SELECT COUNT(*) FROM tasks WHERE task_project=$project_id" )
 	  "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
 	  ( $display_option == 'all' ? '' :
 		'&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
-	  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '";
+	  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=".$showLabels."&showWork=".$showWork;
 
 	echo "<script>document.write('<img src=\"$src\">')</script>";
 } else {

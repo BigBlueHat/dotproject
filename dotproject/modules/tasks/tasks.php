@@ -214,7 +214,8 @@ function showtask( &$a, $level=0 ) {
 // task owner
 	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
 // start date
-	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
+//	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->getDate( ) : '-').'</td>';
 // duration or milestone
 	$s .= '<td align="right">';
 	if ( $a['task_milestone'] == '0' ) {
@@ -224,7 +225,8 @@ function showtask( &$a, $level=0 ) {
 	}
 	$s .= '</td>';
 // end date
-	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
+//	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->getDate( ) : '-').'</td>';
 
 	$s .= '</tr>';
 

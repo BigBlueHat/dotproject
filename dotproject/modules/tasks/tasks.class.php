@@ -253,8 +253,9 @@ class CTask extends CDpObject {
 			return NULL;
 		}
 	}
-
-	function updateAssigned( $cslist ) {
+	
+	//using user allocation percentage ($perc_assign)
+	function updateAssigned( $cslist, $perc_assign ) {
 	// delete all current entries
 		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
 		db_exec( $sql );
@@ -263,7 +264,8 @@ class CTask extends CDpObject {
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $user_id) {
 			if (intval( $user_id ) > 0) {
-				$sql = "REPLACE INTO user_tasks (user_id, task_id) VALUES ($user_id, $this->task_id)";
+				$perc = $perc_assign[$user_id];
+				$sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";				
 				db_exec( $sql );
 			}
 		}
@@ -278,7 +280,7 @@ class CTask extends CDpObject {
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $task_id) {
 			if (intval( $task_id ) > 0) {
-				$sql = "REPLACE INTO task_dependencies (dependencies_task_id, dependencies_req_task_id) VALUES ($this->task_id, $task_id)";
+				$sql = "REPLACE INTO task_dependencies (dependencies_task_id, dependencies_req_task_id) VALUES ($this->task_id, $task_id)";				
 				db_exec($sql);
 			}
 		}

@@ -2,6 +2,7 @@
 
 $del = isset($_POST['del']) ? $_POST['del'] : 0;
 $hassign = @$_POST['hassign'];
+$hperc_assign = @$_POST['hperc_assign'];
 $hdependencies = @$_POST['hdependencies'];
 $notify = isset($_POST['task_notify']) ? $_POST['task_notify'] : 0;
 
@@ -10,6 +11,14 @@ $obj = new CTask();
 if (!$obj->bind( $_POST )) {
 	$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
+}
+
+//format hperc_assign user_id=percentage_assignment;user_id=percentage_assignment;user_id=percentage_assignment;
+$tmp_ar = explode(";", $hperc_assign);
+$hperc_assign_ar = array();
+for ($i = 0; $i < sizeof($tmp_ar); $i++) {
+	$tmp = explode("=", $tmp_ar[$i]);
+	$hperc_assign_ar[$tmp[0]] = $tmp[1];
 }
 
 // let's check if there are some assigned departments to task
@@ -53,7 +62,7 @@ if ($del) {
 	}
 
 	if (isset($hassign)) {
-		$obj->updateAssigned( $hassign );
+		$obj->updateAssigned( $hassign , $hperc_assign_ar);
 	}
 	
 	if (isset($hdependencies)) {
