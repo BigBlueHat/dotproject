@@ -358,7 +358,7 @@ class CTask extends CDpObject {
 			$body .= "\n".$AppUI->_('URL').":     {$AppUI->cfg['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
 			$body .= "\n\n" . $AppUI->_('Description') . ":"
 				. "\n$this->task_description";
-			$body .= "\n\n" . $AppUI->_('Creator').":" . $AppUI->user_first_name . " " . $AppUI->user_first_name;
+			$body .= "\n\n" . $AppUI->_('Creator').":" . $AppUI->user_first_name . " " . $AppUI->user_last_name;
 		
 			$body .= "\n\n" . $AppUI->_('Progress') . ": " . $this->task_percent_complete . "%";
 			$body .= "\n\n" . dPgetParam($_POST, "task_log_description");
