@@ -1,8 +1,7 @@
-<?php /* $Id$ */
+<?php /* CLASSDEFS $Id$ */
 ##
 ## Calendar classes
 ##
-//require_once( "{$AppUI->cfg['root_dir']}/classdefs/date.php" );
 
 class CMonthCalendar {
 	var $this_month;
@@ -103,7 +102,7 @@ class CMonthCalendar {
 
 	function _drawTitle() {
 		$qry = isset( $_GET['m'] ) ? 'm=' . $_GET['m'] : '';
-		$url = $_SERVER['SCRIPT_NAME'] . ($qry ? "?$qry&" : '?');
+		$url = $_SERVER['PHP_SELF'] . ($qry ? "?$qry&" : '?');
 
 		//$s = '<table border="0" cellspacing="0" cellpadding="3" width="100%" class="'.$this->styleTitle.'">';
 		$s = "<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" width=\"100%\" class=\"" . $this->styleTitle . "\">\n";
