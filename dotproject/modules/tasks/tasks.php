@@ -221,7 +221,10 @@ for ($x=0; $x < $nums; $x++) {
 if (! function_exists('showtask') ) {
 function showtask( &$a, $level=0 ) {
 	global $AppUI, $done, $query_string, $durnTypes;
-	$df = $AppUI->getPref( 'SHDATEFORMAT' );
+
+	$df = $AppUI->getPref('SHDATEFORMAT');
+	$df .= " " . $AppUI->getPref('TIMEFORMAT');
+
 	$done[] = $a['task_id'];
 
 	$start_date = intval( $a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
@@ -265,8 +268,8 @@ function showtask( &$a, $level=0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
 	}
 // task owner
-	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
-	$s .= '<td align=left>';
+	$s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
+	$s .= '<td align="center">';
 	if ( $assigned_users = $a['task_assigned_users'] ) {
 		$a_u_tmp_array = array();
 		foreach ( $assigned_users as $val) {
@@ -277,21 +280,16 @@ function showtask( &$a, $level=0 ) {
 	}
 	$s .= '</td>';
 	
-// start date
-// patch 2.12.04 show time
-//	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
-	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->getDate( ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration or milestone
-	$s .= '<td align="right">';
+	$s .= '<td align="center">';
 	if ( $a['task_milestone'] == '0' ) {
 		$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
 	} else {
 		$s .= $AppUI->_("Milestone");
 	}
 	$s .= '</td>';
-// end date
-//	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
-	$s .= '<td nowrap="nowrap">'.($end_date ? $end_date->getDate( ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
 
 	$s .= '</tr>';
 
@@ -460,8 +458,8 @@ foreach ($projects as $k => $p) {
 
 		if($tnums && $AppUI->cfg['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
-			<td colspan="8" align="right">
-				<input type="button" class="button" value="<?php echo $AppUI->_('see gantt chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
+			<td colspan="9" align="right">
+				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
 		<?php }
