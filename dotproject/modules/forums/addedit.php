@@ -16,8 +16,10 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 $forum_id = intval( dPgetParam( $_GET, 'forum_id', 0 ) );
 
 //Pull forum information
-$sql = "SELECT * FROM forums WHERE forums.forum_id = $forum_id";
-$res = db_exec( $sql );
+$q =& new DBQuery;
+$q->addTable('forums');
+$q->addWhere("forums.forum_id = $forum_id");
+$res = $q->exec();
 echo db_error();
 $forum_info = db_fetch_assoc( $res );
 
@@ -36,7 +38,7 @@ $q->addOrder('project_name');
 $projObj->setAllowedSQL($AppUI->user_id, $q);
 if (isset($company_id))
 	$q->addWhere("project_company = $company_id");
-$projects = array( '0' => '' ) + $q->loadHashList( $sql );
+$projects = array( '0' => '' ) + $q->loadHashList();
 echo db_error();
 
 $perms =& $AppUI->acl();
