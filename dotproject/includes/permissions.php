@@ -138,7 +138,7 @@ function winnow( $mod, $key, &$where, $alias = 'perm' ) {
 	GLOBAL $AppUI, $perms;
 
 	// TODO: Should we also check empty( $perms['all'] ?
-	if( ! empty( $perms[$mod] ) ) {
+	if( ! empty( $perms[$mod] ) && ! $perms[$mod]['-1'] ) {
 		// We have permissions for specific items => filter items
 		$sql = "\n  LEFT JOIN permissions AS $alias ON $alias.permission_item = $key ";
 		if ($where) {
