@@ -193,6 +193,7 @@ $minutes["00"] = "00";
 for ( $current = 0 + $inc; $current < 60; $current += $inc ) {
 	$minutes[$current] = $current;
 }
+
 ?>
 
 <SCRIPT language="JavaScript">
@@ -581,10 +582,46 @@ function calcFinish() {
 	</td>
 </tr>
 <tr>
-	<td  colspan="2" valign="top">
+	<td valign="top">
 		<?php echo $AppUI->_( 'Description' );?>:
 		<br />
 		<textarea name="task_description" class="textarea" cols="60" rows="10" wrap="virtual"><?php echo @$obj->task_description;?></textarea>
+	</td>
+	<td align="center">
+<?php
+	$custom_fields = dPgetSysVal("TaskCustomFields");
+	if ( count($custom_fields) > 0 ){
+		//We have custom fields, parse them!
+		//Custom fields are stored in the sysval table under TaskCustomFields, the format is
+		//key|serialized array of ("name", "type", "options", "selects")
+		//Ej: 0|a:3:{s:4:"name";s:22:"Quote number";s:4:"type";s:4:"text";s:7:"options";s:24:"maxlength="12" size="10"";} 
+		if ( $obj->task_custom != "" || !is_null($obj->task_custom))  {
+			//Custom info previously saved, retrieve it
+			$custom_field_previous_data = unserialize($obj->task_custom);
+		}
+		
+		$output = '<table cellspacing="0" cellpadding="2" border="0">';
+		foreach ( $custom_fields as $key => $array) {
+			$output .= "<tr colspan='3' valign='top' id='custom_tr_$key' >";
+			$field_options = unserialize($array);
+			$output .= "<td align='right' nowrap='nowrap' >". ($field_options["type"] == "label" ? "<strong>". $field_options['name']. "</strong>" : $field_options['name']) ."</td>";
+			switch ( $field_options["type"]){
+				case "text":
+					$output .= "<td><input type='text' name='custom_$key' class='text'" . $field_options["options"] . "value='" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "' /></td>";
+					break;
+				case "select":
+					$output .= "<td>". arraySelect(explode(",",$field_options["selects"]), "custom_$key", 'size="1" class="text" ' . $field_options["options"] ,( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "")) . "</td>";
+					break;
+				case "textarea":
+					$output .=  "<td><textarea name='custom_$key' class='textarea'" . $field_options["options"] . ">" . ( isset($custom_field_previous_data[$key]) ? $custom_field_previous_data[$key] : "") . "</textarea></td>";
+					break;
+			}
+			$output .= "</tr>";
+		}
+		$output .= "</table>";
+		echo $output;
+	}
+?>
 	</td>
 </tr>
 </table>

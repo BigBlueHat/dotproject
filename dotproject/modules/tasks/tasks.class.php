@@ -45,6 +45,7 @@ class CTask extends CDpObject {
 	var $task_access = NULL;
 	var $task_notify = NULL;
 	var $task_departments = NULL;
+	var $task_custom = NULL;
 
 	function CTask() {
 		$this->CDpObject( 'tasks', 'task_id' );

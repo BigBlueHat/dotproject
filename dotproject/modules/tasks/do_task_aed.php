@@ -15,6 +15,16 @@ if (!$obj->bind( $_POST )) {
 // let's check if there are some assigned departments to task
 $obj->task_departments = implode(",", dPgetParam($_POST, "dept_ids", array()));
 
+//Assign custom fields to task_custom for them to be saved
+$custom_fields = dPgetSysVal("TaskCustomFields");
+$custom_field_data = array();
+if ( count($custom_fields) > 0 ){
+	foreach ( $custom_fields as $key => $array ) {
+		$custom_field_data[$key] = $_POST["custom_$key"];
+	}
+	$obj->task_custom = serialize($custom_field_data);
+}
+
 // convert dates to SQL format first
 if ($obj->task_start_date) {
 	$date = new CDate( $obj->task_start_date );
