@@ -232,17 +232,20 @@ function chPriority(user_id) {
 <?php
 echo $AppUI->_('P')."&nbsp;=&nbsp;".$AppUI->_('User specific Task Priority');
 if($do_report){
-	// Let's figure out which users we have
-	$sql = "SELECT u.user_id, u.user_username
-	        FROM users AS u
-                LEFT JOIN contacts uc ON uc.contact_id = u.user_contact";
+        // get Users with all Allocation info (e.g. their freeCapacity)
+        $tempoTask = new CTask();
+        $userAlloc = $tempoTask->getAllocation("user_id");
+
+        // Let's figure out which users we have
+	$sql = "SELECT  u.user_id,u.user_username
+	        FROM users AS u";
 
 	if ($log_userfilter!=0) {
-			$sql.=" WHERE u.user_id=".
+			$sql.=" WHERE user_id=".
 						  $log_userfilter
 					      ;//$log_userfilter_users[$log_userfilter]["user_id"];
 	}
-	$sql.=" ORDER by u.user_username";
+	$sql.=" ORDER by user_username";
 
 //echo "<pre>$sql</pre>";
 	$user_list = db_loadHashList($sql, "user_id");
@@ -387,7 +390,7 @@ if($do_report){
                                 <td colspan='2' align='left' nowrap='nowrap' bgcolor='#D0D0D0'>
                                 <font color='black'>
                                 <B><a href='index.php?m=calendar&a=day_view&user_id=$user_id&tab=1'>"
-					  .dPgetUsername($user_data["user_username"])
+					  .$userAlloc[$user_id]['userFC']
 					  ."</a></B></font></td>";
 		    for($w=0;$w<=(4+weekCells($display_week_hours,$sss,$sse));$w++) {
 				 $tmpuser.="<td bgcolor='#D0D0D0'></td>";
@@ -402,7 +405,7 @@ if($do_report){
                         "<a href='javascript:chAssignment($user_id, 0, false);'>".
                         dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
                         $tmpuser .= "<td align=\"center\"><select class=\"text\" name=\"percentage_assignment\" title=\"".$AppUI->_('Assign with Percentage')."\">";
-                        for ($i = 5; $i <= 100; $i+=5) {
+                        for ($i = 5; $i <= 200; $i+=5) {
                                         $tmpuser .= "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
                         }
                         $tmpuser .= "</select></td>";
@@ -482,7 +485,7 @@ function isMemberOfTask($list,$N,$user_id,$task) {
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $user_id) {
 
-        global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x;
+        global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x, $userAlloc;
 	$zi++;
         $users = $task->task_assigned_users;
 	$task->userPriority = $task->getUserSpecificTaskPriority( $user_id );
@@ -555,15 +558,19 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 }
 		$zm1 = $z - 2;
                 if ($zm1 ==0) $zm1 = 1;
-		$assUser = dPgetUsername($users[$user_id]['user_username']);
-		if ($user_id == 0) {	// need to handle orphaned tasks different from tasks with existing assignees
-			$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users')));
+		$assUser = $userAlloc[$user_id]['userFC'];
+                if ($user_id == 0) {	// need to handle orphaned tasks different from tasks with existing assignees
 			$zm1++;
-		} else {
-			$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users'), $user_id => "$assUser"));
 		}
                 $tmp.="<td valign=\"top\" align=\"center\" nowrap=\"nowrap\" rowspan=\"$zm1\">";
-		$tmp.= arraySelect( $availUsers, 'add_users', 'class="text" STYLE="width: 200px" size="'.($zz-1).'" multiple="multiple"',NULL );
+                $tmp .= '<select name="add_users" style="width:200px" size="'.($zz-1).'" class="text" multiple="multiple" ondblclick="javascript:chAssignment('.$user_id.', 0, false)">';
+                foreach ($userAlloc as $v => $u) {
+
+                        $tmp .= "\n\t<option value=\"".$u['user_id']."\">" . dPformSafe( $u['userFC'] ) . "</option>";
+
+                }
+                $tmp .='</select>';
+		//$tmp.= arraySelect( $user_list, 'add_users', 'class="text" STYLE="width: 200px" size="'.($zz-1).'" multiple="multiple"',NULL );
                $tmp .= "</td>";
         }
 

@@ -54,22 +54,28 @@ for( $i=0; $i <= sizeof($htasks_ar); $i++) {
                         }
                 }
                 if (isset($hassign) && ! $del == 1) {
-                        $obj->updateAssigned( $hassign , $hperc_assign_ar, false);
-                        $AppUI->setMsg( "User(s) assigned to Task", UI_MSG_OK);
+                        $overAssignment = $obj->updateAssigned( $hassign , $hperc_assign_ar, false);
+                        //check if OverAssignment occured, database has not been updated in this case
+                        if ($overAssignment) {
+                                $AppUI->setMsg( "The following Users have not been assigned in order to prevent from Over-Assignment:", UI_MSG_ERROR );
+                                $AppUI->setMsg( "<br>".$overAssignment, UI_MSG_ERROR, true );
+                        } else {
+                                $AppUI->setMsg( "User(s) assigned to Task", UI_MSG_OK);
+                        }
 
                 }
 		// process the user specific task priority
 		if ($chUTP == 1) {
 			$obj->updateUserSpecificTaskPriority($user_task_priority, $user_id);
-			 $AppUI->setMsg( "User specific Task Priority updated", UI_MSG_OK);
+			 $AppUI->setMsg( "User specific Task Priority updated", UI_MSG_OK, true);
 		}
 
                 if ($store == 1) {
                         if (($msg = $obj->store())) {
-                                $AppUI->setMsg( $msg, UI_MSG_ERROR );
+                                $AppUI->setMsg( $msg, UI_MSG_ERROR, true );
 
                         } else {
-                                $AppUI->setMsg( "Task(s) updated", UI_MSG_OK);
+                                $AppUI->setMsg( "Task(s) updated", UI_MSG_OK, true);
                         }
 
                 }
