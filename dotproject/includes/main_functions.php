@@ -33,7 +33,7 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 		if ($translate) {
 			$v = @$AppUI->_( $v );
 		}
-		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" . $v . "</option>";
+		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" . dPformSafe( $v ) . "</option>";
 	}
 	$s .= "\n</select>\n";
 	return $s;
@@ -291,6 +291,33 @@ function dPgetMicroDiff() {
 	$mt = $microTimeSet;
 	dPsetMicroTime();
 	return sprintf( "%.3f", $microTimeSet - $mt );
+}
+
+function dPformSafe( $txt, $deslash=false ) {
+	if (is_object( $txt )) {
+		foreach (get_object_vars($txt) as $k => $v) {
+			if ($deslash) {
+				$obj->$k = htmlspecialchars( stripslashes( $v ) );
+			} else {
+				$obj->$k = htmlspecialchars( $v );
+			}
+		}
+	} else if (is_array( $txt )) {
+		foreach ($txt as $k=>$v) {
+			if ($deslash) {
+				$txt[$k] = htmlspecialchars( stripslashes( $v ) );
+			} else {
+				$txt[$k] = htmlspecialchars( $v );
+			}
+		}
+	} else {
+		if ($deslash) {
+			$txt = htmlspecialchars( stripslashes( $txt ) );
+		} else {
+			$txt = htmlspecialchars( $txt );
+		}
+	}
+	return $txt;
 }
 
 ?>
