@@ -231,6 +231,7 @@ foreach ($files as $file_row) {
                 foreach($file_versions as $file)
                         if ($file['file_version_id'] == $row['file_version_id'])
                         {
+				$hdate = new Date($file['file_date']);
                                 $hidden_table .= '
         <tr>
                 <td nowrap="nowrap" width="20">&nbsp;';
@@ -251,7 +252,7 @@ foreach ($files as $file_row) {
                 <td width="15%" nowrap="nowrap">' . $file_row["contact_first_name"].' '.$file_row["contact_last_name"] . '</td>
                 <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
                 <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
-                <td width="15%" nowrap="nowrap" align="right">' . $file['file_date'] . '</td>
+                <td width="15%" nowrap="nowrap" align="right">' . $hdate->format("$df $tf") . '</td>
         </tr>';
                         }
                 $hidden_table .= '</table>';
