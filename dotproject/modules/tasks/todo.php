@@ -163,7 +163,7 @@ foreach ($tasks as $a) {
 	</td>
 
 	<td width="50%">
-		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>" title='<?php echo ( isset($a['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($a['parent_name']) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($a['task_description']) ?>'><?php echo $a["task_name"];?></a>
+		<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>" title='<?php echo ( isset($a['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($a['parent_name'], ENT_QUOTES) . "\n\n" : '' ) . '*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($a['task_description'], ENT_QUOTES) ?>'><?php echo htmlspecialchars($a["task_name"], ENT_QUOTES);?></a>
 	</td>
 	<td width="50%">
 		<a href="./index.php?m=projects&a=view&project_id=<?php echo $a["project_id"];?>">
