@@ -35,7 +35,7 @@ class CAppUI {
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // warn when a translation is not found
-	var $locale_warn = true;
+	var $locale_warn = false;
 // the string appended to untranslated string or unfound keys
 	var $locale_alert = '^';
 // theming
