@@ -17,6 +17,8 @@ $file_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 $sql = "
 SELECT files.*,
 	user_username,
+	user_first_name,
+	user_last_name,
 	project_id,
 	task_id, task_name
 FROM files
@@ -135,7 +137,7 @@ function setTask( key, val ) {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Uploaded By' );?>:</td>
-			<td align="left" class="hilite"><?php echo $obj->user_username;?></td>
+			<td align="left" class="hilite"><?php echo $obj->user_first_name . ' '. $obj->user_last_name;?></td>
 		</tr>
 	<?php } ?>
 		<tr>
