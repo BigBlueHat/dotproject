@@ -1,7 +1,8 @@
 <?php
+// $Id$
 
 /**
- * Copyright 2004, Adam Donnison <adam@saki.com.au>
+ * Copyright 2005, the dotProject Team.
  *
  * This file is part of dotProject and is released under the same license.
  * Check the file index.php in the top level dotproject directory for license

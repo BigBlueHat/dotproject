@@ -1,4 +1,6 @@
 <?php
+	// $Id$
+
 	class CustomFieldsParser{
 		var $fields_array        = array();
 		var $custom_record_type;

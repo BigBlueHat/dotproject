@@ -1,4 +1,5 @@
 <?php
+// $Id$
 
 /**
  * Event handling queue class.
