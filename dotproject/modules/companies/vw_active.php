@@ -2,7 +2,7 @@
 ##
 ##	Companies: View Projects sub-table
 ##
-GLOBAL $AppUI, $company_id;
+GLOBAL $AppUI, $company_id, $pstatus;
 
 $sql = "
 SELECT project_id, project_name, project_start_date, project_status, project_target_budget,
@@ -20,7 +20,7 @@ $s = '';
 if (!($rows = db_loadList( $sql, NULL ))) {
 	$s .= $AppUI->_( 'No data available' ).'<br>'.$AppUI->getMsg();
 } else {
-	$s .= '<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl"><tr>';
+	$s .= '<tr>';
 	$s .= '<th>'.$AppUI->_( 'Name' ).'</th>'
 		.'<th>'.$AppUI->_( 'Owner' ).'</th>'
 		.'<th>'.$AppUI->_( 'Started' ).'</th>'
@@ -30,11 +30,11 @@ if (!($rows = db_loadList( $sql, NULL ))) {
 	foreach ($rows as $row) {
 		$s .= '<tr>';
 		$s .= '<td width="100%">';
-		$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a>';
-		$s .= '<td nowrap>'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
-		$s .= '<td nowrap>'.$row["project_start_date"].'</td>';
-		$s .= '<td nowrap>'.$pstatus[$row["project_status"]].'</td>';
-		$s .= '<td nowrap align=right>$ '.$row["project_target_budget"].'</td>';
+		$s .= '<a href="./index.php?m=projects&a=view&project_id='.$row["project_id"].'">'.$row["project_name"].'</a></td>';
+		$s .= '<td nowrap="nowrap">'.$row["user_first_name"].'&nbsp;'.$row["user_last_name"].'</td>';
+		$s .= '<td nowrap="nowrap">'.$row["project_start_date"].'</td>';
+		$s .= '<td nowrap="nowrap">'.$pstatus[$row["project_status"]].'</td>';
+		$s .= '<td nowrap="nowrap" align="right">$ '.$row["project_target_budget"].'</td>';
 		$s .= '</tr>';
 	}
 }
