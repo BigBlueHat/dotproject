@@ -7,7 +7,26 @@ $filesDir = isset($filesDir) ? $filesDir : "$baseDir/files";
 $locEnDir = isset($locEnDir) ? $locEnDir : "$baseDir/locales/en";
 $tmpDir = isset($tmpDir) ? $tmpDir : "$baseDir/files/temp";
 $tblwidth = isset($tblwidth) ? $tblwidth :'100%';
-$chmod = '0777';
+$chmod = 0777;
+
+function dPgetIniSize($val) {
+   $val = trim($val);
+   if (strlen($val <= 1)) return $val;
+   $last = $val{strlen($val)-1};
+   switch($last) {
+       case 'k':
+       case 'K':
+           return (int) $val * 1024;
+           break;
+       case 'm':
+       case 'M':
+           return (int) $val * 1048576;
+           break;
+       default:
+           return $val;
+   }
+}
+
 ?>
 
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="<?php echo $tblwidth; ?>" align="center">
@@ -29,15 +48,26 @@ $chmod = '0777';
 </tr>
 <tr>
  <td class="item"><li>Zlib compression Support</li></td>
-  <td align="left"><?php echo extension_loaded('zlib') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> Non-core Backup module is working with some minor restrictions.';?></td>
+  <td align="left"><?php echo extension_loaded('zlib') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b> Some non-core modules such as Backup may have restricted operation.';?></td>
 </tr>
+<?php
+$maxfileuploadsize = min(dPgetIniSize(ini_get('upload_max_filesize')), dPgetIniSize(ini_get('post_max_size')));
+$memory_limit = dPgetIniSize(ini_get('memory_limit'));
+if ($memory_limit > 0 && $memory_limit < $maxfileuploadsize) $maxfileuploadsize = $memory_limit;
+// Convert back to human readable numbers
+if ($maxfileuploadsize > 1048576)
+	$maxfileuploadsize = (int)($maxfileuploadsize / 1048576) . 'M';
+else if ($maxfileuploadsize > 1024)
+	$maxfileuploadsize = (int)($maxfileuploadsize / 1024) . 'K';
+?>
+
 <tr>
  <td class="item"><li>File Uploads</li></td>
-  <td align="left"><?php echo get_cfg_var('file_uploads') ? '<b class="ok">'.$okImg.'</b><span class="item"> (Max File Upload Size: '. min(ini_get('upload_max_filesize'), ini_get('post_max_size'), ini_get('memory_limit')) .')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Upload functionality will not be available</span>';?></td>
+  <td align="left"><?php echo ini_get('file_uploads') ? '<b class="ok">'.$okImg.'</b><span class="item"> (Max File Upload Size: '. $maxfileuploadsize .')</span>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Upload functionality will not be available</span>';?></td>
 </tr>
 <tr>
             <td class="item">Session Save Path writable?</td>
-            <td align="left"><?php echo (is_dir( get_cfg_var( 'session.save_path' )) && is_writable( get_cfg_var( 'session.save_path' )) ) ? '<b class="ok">'.$okImg.'</b> <span class="item">('.get_cfg_var( 'session.save_path').')</span>' : '<b class="error">'.$failedImg.' Fatal:</b> <b class="item">'.get_cfg_var( "session.save_path" ).'</b><b class="error"> not existing or not writable</b>';?></td>
+            <td align="left"><?php echo (is_dir( ini_get( 'session.save_path' )) && is_writable( ini_get( 'session.save_path' )) ) ? '<b class="ok">'.$okImg.'</b> <span class="item">('.ini_get( 'session.save_path').')</span>' : '<b class="error">'.$failedImg.' Fatal:</b> <b class="item">'.ini_get( "session.save_path" ).'</b><b class="error"> not existing or not writable</b>';?></td>
 </tr>
 <tr>
             <td class="title" colspan="2"><br />Database Connectors</td>
@@ -64,12 +94,12 @@ $chmod = '0777';
   <td align="left"><?php echo function_exists( 'msql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
- <td class="item"><li>M$SQL Support</li></td>
+ <td class="item"><li>MSSQL Server Support</li></td>
   <td align="left"><?php echo function_exists( 'mssql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"></span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
  <td class="item"><li>MySQL Support</li></td>
-  <td align="left"><?php echo function_exists( 'mysql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.mysql_get_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
+  <td align="left"><?php echo function_exists( 'mysql_connect' ) ? '<b class="ok">'.$okImg.'</b><span class="item"> ('.@mysql_get_server_info().')</span>' : '<span class="warning">'.$failedImg.' Not available</span>';?></td>
 </tr>
 <tr>
  <td class="item"><li>ODBC Support</li></td>
@@ -116,7 +146,7 @@ if ( (file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cf
 </tr>
 <?php
 $okMessage="";
-if (is_writable( $filesDir )) {
+if (!is_writable( $filesDir )) {
 
         @chmod( $filesDir, $chmod );
  $filemode = @fileperms($filesDir);
@@ -131,7 +161,7 @@ if (is_writable( $filesDir )) {
 </tr>
 <?php
 $okMessage="";
-if (is_writable( $tmpDir )) {
+if (!is_writable( $tmpDir )) {
 
         @chmod( $tmpDir, $chmod );
  $filemode = @fileperms($tmpDir);
@@ -146,7 +176,7 @@ if (is_writable( $tmpDir )) {
 </tr>
 <?php
 $okMessage="";
-if (is_writable( $locEnDir )) {
+if (!is_writable( $locEnDir )) {
 
         @chmod( $locEnDir, $chmod );
 	$filemode = @fileperms($locEnDir);
@@ -164,23 +194,23 @@ if (is_writable( $locEnDir )) {
 </tr>
 <tr>
             <td class="item">Safe Mode = OFF?</td>
-            <td align="left"><?php echo !get_cfg_var('safe_mode') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"></span>';?></td>
+            <td align="left"><?php echo !ini_get('safe_mode') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"></span>';?></td>
 </tr>
 <tr>
             <td class="item">Register Globals = OFF?</td>
-            <td align="left"><?php echo !get_cfg_var('register_globals') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"></span>';?></td>
+            <td align="left"><?php echo !ini_get('register_globals') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> There are security risks with this turned ON</span>';?></td>
 </tr>
 <tr>
             <td class="item">Session AutoStart = ON?</td>
-            <td align="left"><?php echo get_cfg_var('session.auto_start') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Try setting to ON if you are experiencing a WhiteScreenOfDeath</span>';?></td>
+            <td align="left"><?php echo ini_get('session.auto_start') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Try setting to ON if you are experiencing a WhiteScreenOfDeath</span>';?></td>
 </tr>
 <tr>
             <td class="item">Session Use Cookies = ON?</td>
-            <td align="left"><?php echo get_cfg_var('session.use_cookies') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Try setting to ON if you are experiencing problems to log in</span>';?></td>
+            <td align="left"><?php echo ini_get('session.use_cookies') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> Try setting to ON if you are experiencing problems logging in</span>';?></td>
 </tr>
 <tr>
             <td class="item">Session Use Trans Sid = OFF?</td>
-            <td align="left"><?php echo !get_cfg_var('session.use_cookies') ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> There are security risks with this turned ON</span>';?></td>
+            <td align="left"><?php echo (!ini_get('session.use_only_cookies') && !ini_get('session.use_trans_sid')) ? '<b class="ok">'.$okImg.'</b>' : '<b class="error">'.$failedImg.'</b><span class="warning"> There are security risks with this turned ON</span>';?></td>
 </tr>
 <tr>
             <td class="title" colspan="2"><br/>Other Recommendations</td>
