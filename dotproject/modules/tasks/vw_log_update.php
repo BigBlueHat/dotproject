@@ -52,12 +52,6 @@ if ($canEdit) {
 // Task Update Form
 	$df = $AppUI->getPref( 'SHDATEFORMAT' );
 	$log_date = new CDate( $log->task_log_date );
-
-	if ($task_log_id) {
-		echo $AppUI->_( "Edit Log" );
-	} else {
-		echo $AppUI->_( "Add Log" );
-	}
 ?>
 
 <!-- TIMER RELATED SCRIPTS -->

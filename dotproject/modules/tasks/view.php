@@ -1,5 +1,7 @@
 <?php /* $Id$ */
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+$task_log_id = intval( dPgetParam( $_GET, "task_log_id", 0 ) );
+
 
 // check permissions for this record
 $canRead = !getDenyRead( $m, $task_id );
@@ -462,7 +464,13 @@ if ( $obj->task_dynamic != 1 ) {
 	// have read-write permissions on task_id and this tab is opened by default (session_vars)
 	// only if user has r-w perms on this task, new or edit log is beign showed
 	if (!getDenyEdit( $m, $task_id )) {
-		$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
+		if ($task_log_id == 0) {
+			$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
+
+		} else {
+			$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'Edit Log' );
+
+		}
 	}
 	$tabBox_show = 1;
 }
