@@ -41,8 +41,8 @@ class CAppUI {
 	var $locale_warn = true;	// warn when a translation is not found
 
 // message handling
-	var $msg;
-	var $msgNo;
+	var $msg = "";
+	var $msgNo = "";
 	var $defaultRedirect;
 
 // CAppUI Constructor
