@@ -42,9 +42,6 @@ echo db_error();
 
 $perms =& $AppUI->acl();
 $permittedUsers =& $perms->getPermittedUsers();
-if ( !$perms->checkModule("admin", "view"))
-  $permittedUsers = array();
-
 $users = array( '0' => '' ) + $permittedUsers;
 // setup the title block
 $ttl = $forum_id > 0 ? "Edit Forum" : "Add Forum";

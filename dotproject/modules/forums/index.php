@@ -1,6 +1,8 @@
 <?php /* FORUMS $Id$ */
 $AppUI->savePlace();
 
+$perms =& $AppUI->acl();
+
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 $tf = $AppUI->getPref( 'TIMEFORMAT' );
 
@@ -36,7 +38,7 @@ LEFT JOIN forum_watch ON watch_user = $AppUI->user_id AND watch_forum = forum_id
 LEFT JOIN forum_visits v ON visit_user = $AppUI->user_id AND visit_forum = forum_id
 WHERE user_id = forum_owner
 	AND project_id = forum_project "
-.(count($allow1) > 0 ? "\nAND forum_project IN (" . implode( ',', array_keys($allow1) ) . ')' : '')
+.(count($allow1) > 0 ? "\nAND ( forum_project IN (" . implode( ',', array_keys($allow1) ) . ') OR forum_project = 0 )' : '')
 .(count($allow2) > 0 ? "\nAND forum_id IN (" . implode( ',', array_keys($allow2) ) . ')' : '')
 ;
 
@@ -116,7 +118,7 @@ foreach ($forums as $row) {
 	}?>
 <tr>
 	<td nowrap="nowrap" align="center">
-	<?php if ( $row["forum_owner"] == $AppUI->user_id || (!empty($perms['all']) && !getDenyEdit('all')) ) { ?>
+	<?php if ( $row["forum_owner"] == $AppUI->user_id || $perms->checkModuleItem('forums', 'edit', $row['forum_id']) ) { ?>
 		<a href="?m=forums&a=addedit&forum_id=<?php echo $row["forum_id"];?>" title="<?php echo $AppUI->_('edit');?>">
 		<?php echo dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' );?>
 		</a>
