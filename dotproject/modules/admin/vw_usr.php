@@ -19,7 +19,7 @@ foreach ($users as $row) {
 <?php if (!$denyEdit) { ?>
 		<a href="./index.php?m=admin&a=addedituser&user_id=<?php echo $row["user_id"];?>"><img src="images/icons/pencil.gif" width="12" height="12" border="0" alt="edit information"></a>
 
-		<a href="?m=admin&a=permissions&user_id=<?php echo $row["user_id"];?>"><img src="images/obj/lock.gif" width="16" height="16" border="0" alt="edit permissions"></a>
+		<a href="?m=admin&a=viewuser&user_id=<?php echo $row["user_id"];?>&tab=1"><img src="images/obj/lock.gif" width="16" height="16" border="0" alt="edit permissions"></a>
 
 		<a href="javascript:delMe(<?php echo $row["user_id"];?>, '<?php echo $row["user_first_name"] . " " . $row["user_last_name"];?>')"><img src="images/icons/trash.gif" width="16" height="16" border="0" alt="delete"></a>
 <?php } ?>
