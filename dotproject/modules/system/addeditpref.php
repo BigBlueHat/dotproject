@@ -135,7 +135,9 @@ function submitIt(){
 	<td>
 <?php
 	$styles = $AppUI->readDir( 'style' );
+	$AppUI->locale_warn = false;
 	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', @$prefs['UISTYLE'], true );
+	$AppUI->locale_warn = true;
 ?>
 	</td>
 </tr>
