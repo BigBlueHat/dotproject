@@ -1,12 +1,19 @@
-2004-03-16 13:27  (kiryl)
+2004-03-17 11:30  (kiryl)
 ---------------------------------
-fileviewer.php
-style/classic/login.php
-style/deafult/login.php
+modules/tasks/tasks.php
+- [BugFix] All unfinished tasks filter will not show duplicate tasks anymore
 
-[Improvement] Displaying login failed message after unsuccessful login
-style/$uistyle/login.php must not have action attribute set. 
-Setting attribute value to index.php causes error
+2004-03-16 16:42  (kiryl)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- [Improvement] Added user's comment to email notification
+
+2004-03-16 15:25  (kiryl)
+---------------------------------
+modules/tasks/addedit.php
+- [BugFix] calcDuration uses daily_working_hours from config, hardcoded 8 hrs removed
 
 2004-03-11 14:45  (kiryl)
 ---------------------------------
