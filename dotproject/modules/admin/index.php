@@ -70,14 +70,22 @@ $titleBlock->addCell(
 
 $titleBlock->addCell( $a2z );
 $titleBlock->show();
+
 ?>
 <script language="javascript">
+<?php
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions 
+if ($canEdit) {
+?>
 function delMe( x, y ) {
 	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('User');?> " + y + "?" )) {
 		document.frmDelete.user_id.value = x;
 		document.frmDelete.submit();
 	}
 }
+<?php } ?>
 </script>
 
 <?php
