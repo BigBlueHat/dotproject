@@ -173,7 +173,7 @@ CREATE TABLE `files_index` (
   `word` varchar(50) NOT NULL default '',
   `word_placement` int(11) NOT NULL default '0',
   PRIMARY KEY  (`file_id`,`word`, `word_placement`),
-  KEY `idx_fwrd` (`word`),
+  KEY `idx_fwrd` (`word`)
 ) TYPE=MyISAM;
 
 CREATE TABLE `forum_messages` (
