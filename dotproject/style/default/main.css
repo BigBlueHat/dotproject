@@ -452,3 +452,12 @@ table.minical td.weekend {
 }
 table.minical .event {
 }
+
+/* daily calendar */
+table.tbl td.event {
+        background-color: #fff0b0;
+}
+
+table.tbl td.event td {
+	background-color: #fff0b0;
+}

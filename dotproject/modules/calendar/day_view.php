@@ -54,12 +54,6 @@ function clickDay( idate, fdate ) {
 }
 </script>
 
-<style type="text/css">
-table.tbl td.event {
-	background-color: #f0f0f0;
-}
-</style>
-
 <table width="100%" cellspacing="0" cellpadding="4">
 <tr>
 	<td valign="top">
