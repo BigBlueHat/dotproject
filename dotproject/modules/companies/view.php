@@ -1,5 +1,5 @@
 <?php /* COMPANIES $Id$ */
-$company_id = dPgetParam( $_GET, "company_id", 0 );
+$company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
 // check permissions for this company
 $canRead = !getDenyRead( $m, $company_id );
@@ -40,7 +40,7 @@ $msg = '';
 $canDelete = $obj->canDelete( $msg, $company_id );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'View Company', 'money.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'View Company', 'handshake.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(

@@ -42,7 +42,7 @@ ORDER BY $orderby
 $rows = db_loadList( $sql );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Companies', 'money.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',

@@ -11,7 +11,7 @@ db_loadHash( $sql, $event );
 
 // setup the title block
 if (!db_loadHash( $sql, $event )) {
-	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'calendar.gif', $m, 'ID_HELP_EVENT_VIEW' );
+	$titleBlock = new CTitleBlock( 'Invalid Event ID', 'myevo-appointments.png', $m, 'ID_HELP_EVENT_VIEW' );
 	$titleBlock->addCrumb( "?m=calendar", "month view" );
 	$titleBlock->show();
 } else {

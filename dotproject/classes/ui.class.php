@@ -219,7 +219,7 @@ class CAppUI {
 
 		switch( $this->msgNo ) {
 		case UI_MSG_OK:
-			$img = '<img src="./images/obj/tick.gif" width="15" height="15" border="0" alt="" />';
+			$img = '<img src="./images/icons/stock_ok-16.png" width="16" height="16" border="0" alt="" />';
 			$class = "message";
 			break;
 		case UI_MSG_ALERT:
@@ -479,7 +479,9 @@ class CTitleBlock_core {
 		$s = $CR . '<table width="100%" border="0" cellpadding="1" cellspacing="1">';
 		$s .= $CR . '<tr>';
 		if ($this->icon) {
-			$s .= $CR . '<td width="36"><img src="' . dPFindImage( $this->icon, $this->module ) . '" height="36" alt="" border="0" /></td>';
+			$s .= $CR . '<td width="42">';
+			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ), '42', '42' );
+			$s .= '</td>';
 		}
 		$s .= $CR . '<td align="left" width="100%" nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';
 		foreach ($this->cells1 as $c) {
@@ -493,13 +495,13 @@ class CTitleBlock_core {
 			$s .= '<td nowrap="nowrap" width="20" align="right">';
 			//$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', $this->helpref );
 
-			$s .= "\n\t<a href=\"#$this->helpref\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$this->helpref', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">"
-				. $CT . '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />'
-				. $CT . "</a>";
-			$s .= $CR . '</td>';
+			$s .= "\n\t<a href=\"#$this->helpref\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$this->helpref', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\" title=\"".$AppUI->_( 'Help' )."\">";
+			$s .= "\n\t\t" . dPshowImage( './images/icons/stock_help-16.png', '16', '16', $AppUI->_( 'Help' ) );
+			$s .= "\n\t</a>";
+			$s .= "\n</td>";
 		}
-		$s .= $CR . '</tr>';
-		$s .= $CR . '</table>';
+		$s .= "\n</tr>";
+		$s .= "\n</table>";
 
 		if (count( $this->crumbs ) || count( $this->cells2 )) {
 			$crumbs = array();

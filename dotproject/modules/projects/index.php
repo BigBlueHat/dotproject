@@ -71,7 +71,7 @@ $companies = $company->getAllowedRecords( $AppUI->user_id, 'company_id,company_n
 $companies = arrayMerge( array( '0'=>'All' ), $companies );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Projects', 'projects.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Company') . ':' );
 $titleBlock->addCell(
 	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',

@@ -83,9 +83,12 @@ foreach ($files as $row) {
 ?>
 <tr>
 	<td nowrap="nowrap" width="20">
-	<?php if ($canEdit) { ?>
-		<a href="./index.php?m=files&a=addedit&file_id=<?php echo $row["file_id"];?>"><img src="./images/icons/pencil.gif" alt="edit file" border="0" width=12 height=12></a>
-	<?php } ?>
+	<?php if ($canEdit) {
+		echo "\n".'<a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">';
+		echo dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
+		echo "\n</a>";
+	}
+	?>
 	</td>
 	<td nowrap="nowrap">
 		<?php echo "<a href=\"./fileviewer.php?file_id={$row['file_id']}\">{$row['file_name']}</a>"; ?>

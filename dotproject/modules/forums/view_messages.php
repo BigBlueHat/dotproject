@@ -79,13 +79,18 @@ foreach ($messages as $row){
 	$s .= '<td valign="top" style="'.$style.'" nowrap="nowrap">';
 	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$date->toString().'</td>';
 	$s .= '<td valign="top" align="right" style="'.$style.'">';
+	$s .= '<table cellspacing="0" cellpadding="0" border="0"><tr>';
 	
 	if ($canEdit && $AppUI->user_id == $row['forum_moderated']) {
 	// edit message
-		$s .= '<a href="./index.php?m=forums&a=viewer&post_message=1&forum_id='.$row["message_forum"].'&message_parent='.$row["message_parent"].'&message_id='.$row["message_id"].'">';
-		$s .= '<img src="images/icons/stock_edit-16.png" width="16" height="16" border="0" alt="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'" /></a>';
+		$s .= '<td><a href="./index.php?m=forums&a=viewer&post_message=1&forum_id='.$row["message_forum"].'&message_parent='.$row["message_parent"].'&message_id='.$row["message_id"].'" title="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'">';
+		$s .= dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
+		$s .= '</td><td>';
 	// delete message
-		$s .= '&nbsp;<a href="javascript:delIt('.$row["message_id"].')"><img src="images/icons/stock_delete-16.png" width="16" height="16" border="0" alt="'.$AppUI->_( 'delete' ).'" /></a>';
+		$s .= '<a href="javascript:delIt('.$row["message_id"].')" title="'.$AppUI->_( 'delete' ).'">';
+		$s .= dPshowImage( './images/icons/stock_delete-16.png', '16', '16' );
+		$s .= '</a>';
+		$s .= '</td></tr></table>';
 
 	}
 	$s .= '</td>';

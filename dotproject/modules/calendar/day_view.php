@@ -34,7 +34,7 @@ foreach ($events as $row) {
 }
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Day View', 'calendar.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=calendar", "month view" );
 $titleBlock->addCrumb( "?m=calendar&a=week_view&uts=$uts", "week view" );
 $titleBlock->show();

@@ -18,7 +18,7 @@ if (!db_loadHash( $sql, $event ) && $event_id) {
 	}
 
 // setup the title block
-	$titleBlock = new CTitleBlock( $AppUI->_(($event_id > 0) ? "Edit Event" : "Add Event" ), 'calendar.gif', $m, 'ID_HELP_EVENT_EDIT' );
+	$titleBlock = new CTitleBlock( $AppUI->_(($event_id > 0) ? "Edit Event" : "Add Event" ), 'myevo-appointments.png', $m, 'ID_HELP_EVENT_EDIT' );
 	if ($canEdit) {
 		$titleBlock->addCell();
 		$titleBlock->addCell(

@@ -13,7 +13,7 @@ if (isset( $_GET['project_id'] )) {
 $project_id = $AppUI->getState( 'TaskIdxProject' ) ? $AppUI->getState( 'TaskIdxProject' ) : 0;
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Tasks', 'tasks.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Tasks', 'applet-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Filter') . ':' );
 $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',

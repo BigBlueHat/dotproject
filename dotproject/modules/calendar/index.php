@@ -47,7 +47,7 @@ foreach ($events as $row) {
 
 #echo '<pre>';print_r($events);echo '</pre>';
 // setup the title block
-$titleBlock = new CTitleBlock( 'Monthly Calendar', 'calendar.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Monthly Calendar', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Company').':' );
 $titleBlock->addCell(
 	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',

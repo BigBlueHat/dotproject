@@ -31,7 +31,7 @@ $owners = db_loadHashList( $sql );
 
 // setup the title block
 $ttl = $company_id > 0 ? "Edit Company" : "Add Company";
-$titleBlock = new CTitleBlock( $ttl, 'money.gif', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( $ttl, 'handshake.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=companies", "companies list" );
 $titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 $titleBlock->show();

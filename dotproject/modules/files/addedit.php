@@ -30,7 +30,7 @@ if (!db_loadHash( $sql, $file ) && $file_id > 0) {
 } else {
 // setup the title block
 	$ttl = $file_id > 0 ? "Edit File" : "Add File";
-	$titleBlock = new CTitleBlock( $ttl, 'folder.gif', $m, 'ID_HELP_COMP_EDIT' );
+	$titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, 'ID_HELP_COMP_EDIT' );
 	$titleBlock->addCrumb( "?m=files", "files list" );
 	if ($canDelete) {
 		$titleBlock->addCrumbRight(
