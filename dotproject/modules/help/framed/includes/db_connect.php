@@ -1,4 +1,4 @@
-<?php /* INCLUDES $Id */
+<?php /* INCLUDES $Id$ */
 require_once( "{$dHconfig['root_dir']}/includes/db_{$dHconfig['dbtype']}.php" );
 
 ##
