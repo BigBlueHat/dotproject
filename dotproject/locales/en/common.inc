@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Current user",
 "- New Item -",
 "About",
 "Active Projects",
