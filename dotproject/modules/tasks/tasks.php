@@ -275,6 +275,7 @@ if (! function_exists('showtask') ) {
 function showtask( &$a, $level=0, $is_opened = true ) {
 	global $AppUI, $done, $query_string, $durnTypes, $show_all_assignees, $userAlloc;
 
+        $now = new CDate();
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$df .= " " . $AppUI->getPref('TIMEFORMAT');
 
@@ -283,6 +284,29 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 	$start_date = intval( $a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
 	$end_date = intval( $a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
         $last_update = intval( $a['last_update'] ) ? new CDate( $a['last_update'] ) : null;
+
+        // prepare coloured highlight of task time information
+	$sign = 1;
+
+        if ($start_date) {
+                if (!$end_date) {
+                        $end_date = $start_date;
+                        $end_date->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
+                }
+
+                if ($now->after( $start_date ) && $a["task_percent_complete"] == 0) {
+                        $style = 'background-color:#ffeebb';
+                } else if ($now->after( $start_date )) {
+                        $style = 'background-color:#e6eedd';
+                }
+
+                if ($now->after( $end_date )) {
+                        $sign = -1;
+                        $style = 'background-color:#cc6666;color:#ffffff';
+                }
+
+                $days = $now->dateDiff( $end_date ) * $sign;
+        }
 
 	$s = "\n<tr>";
 // edit icon
@@ -371,17 +395,17 @@ function showtask( &$a, $level=0, $is_opened = true ) {
 		$s .= '<td align="center">-</td>';
 	}
 	
-	$s .= '<td nowrap="nowrap" align="center">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration or milestone
-	$s .= '<td align="center" nowrap="nowrap">';
+	$s .= '<td align="center" nowrap="nowrap" style="'.$style.'">';
 	if ( $a['task_milestone'] == '0' ) {
 		$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
 	} else {
 		$s .= $AppUI->_("Milestone");
 	}
 	$s .= '</td>';
-	$s .= '<td nowrap="nowrap" align="center">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
-	$s .= '<td nowrap="nowrap" align="center">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
 
 	$s .= '</tr>';
 
@@ -583,4 +607,20 @@ foreach ($projects as $k => $p) {
 }
 $AppUI->setState("tasks_opened", $tasks_opened);
 ?>
+</table>
+<table>
+<tr>
+	<td><?php echo $AppUI->_('Key');?>:</td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Future Task');?></td>
+	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Started and on time');?></td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Should have started');?></td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Overdue');?></td>
+</tr>
 </table>
