@@ -20,9 +20,8 @@ echo db_error();
 $sql = "
 SELECT forum_messages.*
 FROM forum_messages
-WHERE message_id = $message_id
-	OR message_id = $message_parent
-";
+WHERE message_id = ";
+$sql .= $message_id ? $message_id : $message_parent;
 $res = db_exec( $sql );
 echo db_error();
 $message_info = db_fetch_assoc($res);
@@ -79,7 +78,7 @@ function orderByName(x){
 <input type="hidden" name="dosql" value="aed_post">
 <input type="hidden" name="del" value="0">
 <input type="hidden" name="message_forum" value="<?php echo $forum_id;?>">
-<input type="text" name="message_parent" value="<?php echo $message_parent;?>">
+<input type="hidden" name="message_parent" value="<?php echo $message_parent;?>">
 <input type="hidden" name="message_published" value="<?php echo $forum_info["forum_moderated"] ? '1' : '0';?>">
 <input type="hidden" name="message_author" value="<?php echo $AppUI->user_id;?>">
 <input type="hidden" name="message_id" value="<?php echo $message_id;?>">
