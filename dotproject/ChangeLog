@@ -1,4 +1,285 @@
-2005-03-09 02:26  (gregorerhardt)
+2005-03-11 16:07  (ajdonnison)
+---------------------------------
+includes/version.php
+- Updated to beta.
+
+2005-03-11 16:03  (ajdonnison)
+---------------------------------
+db/upgrade_102_to_20alpha.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_to_20beta.php
+install/do_install_db.php
+- Converted files across to standard installer format, added blank files
+- for future updates.
+
+2005-03-11 15:49  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Added indices to forum_watch table to improve forum display speed.
+
+2005-03-11 15:18  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+modules/projects/index.php
+style/default/overrides.php
+style/dp-grey-theme/overrides.php
+- Added support for pre-translated tabs.
+
+2005-03-11 15:01  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+modules/tasks/addedit.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_resource.php
+modules/tasks/do_task_aed.php
+- mantis 580 - get rid of session variable used for tasks addedit
+
+2005-03-11 14:54  (ajdonnison)
+---------------------------------
+modules/files/index_table.php
+- Changed new icons to 20x20 to give a compromise between clarity and size.
+
+2005-03-11 14:42  (cyberhorse)
+---------------------------------
+images/icons/ci.png
+images/icons/co.png
+modules/files/index_table.php
+- added icons for CI/CO
+
+2005-03-11 14:30  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_roles.php
+- Moved end of form into conditional block with beginning of same form.
+
+2005-03-11 13:32  (cyberhorse)
+---------------------------------
+modules/projects/reports/stats.php
+- fixed layout a bit
+
+2005-03-11 13:07  (cyberhorse)
+---------------------------------
+modules/projects/reports/stats.en.txt
+- translation for the new statistics report
+
+2005-03-11 12:40  (ajdonnison)
+---------------------------------
+LICENSE
+fileviewer.php
+queuescanner.php
+- Updated notice to indicate that libraries may be differently licensed.
+
+2005-03-11 12:35  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Changed license to GPL.
+
+2005-03-11 12:34  (ajdonnison)
+---------------------------------
+COPYING
+LICENSE
+includes/config-dist.php
+index.php
+- Changed license from BSD to GPL.
+
+2005-03-11 11:46  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/db_adodb.php
+locales/en/system.inc
+modules/admin/addeditgroup.php
+modules/admin/addedituser.php
+modules/admin/admin.class.php
+modules/admin/do_user_aed.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_proj.php
+- remove rests of auto fields creation, move to query class
+
+2005-03-11 11:14  (cyberhorse)
+---------------------------------
+modules/contacts/csvexport.php
+- fixed a few problems with export, added birthday date.
+
+2005-03-11 10:42  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Added a reports button at the bottom of projects
+
+2005-03-11 10:38  (cyberhorse)
+---------------------------------
+locales/en/tasks.inc
+- Added 'Log' to translation
+
+2005-03-11 10:35  (cyberhorse)
+---------------------------------
+locales/en/system.inc
+- Added translation for Bulgarian language
+
+2005-03-11 10:17  (ajdonnison)
+---------------------------------
+queuescanner.php
+- Added Id tag for reporting
+
+2005-03-11 10:15  (ajdonnison)
+---------------------------------
+classes/CustomFields.class.php
+classes/authenticator.class.php
+classes/customfieldsparser.class.php
+classes/event_queue.class.php
+classes/permissions.class.php
+- Added Id tag for reporting purposes.
+
+2005-03-11 09:35  (cyberhorse)
+---------------------------------
+modules/smartsearch/searchobjects/files_content.inc.php
+- added functionality to search through files' content
+
+2005-03-11 00:26  (cyberhorse)
+---------------------------------
+modules/projects/reports.php
+- fixed project selection combo box to keep the report you are in and to disable reports for all projects (where supported).
+
+2005-03-11 00:24  (cyberhorse)
+---------------------------------
+modules/projects/reports/stats.php
+- added progress charts
+
+2005-03-10 23:09  (cyberhorse)
+---------------------------------
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+- mantis 573 - dynamic task checkbox doesn't work fixed
+
+2005-03-10 22:48  (cyberhorse)
+---------------------------------
+modules/projects/reports/stats.php
+- fixed report for overdue tasks ...
+
+2005-03-10 22:40  (cyberhorse)
+---------------------------------
+modules/projects/reports/stats.php
+- initial version of the project statistics report.
+
+2005-03-10 20:20  (ajdonnison)
+---------------------------------
+modules/tasks/do_task_aed.php
+- Fixed problem with clearing of milestone flag.
+
+2005-03-10 18:47  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- made filesize displaying for subversions the same as the latest version display.
+
+2005-03-10 18:38  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- removed saving the task parent as a state (not needed with js tabs)
+- this fixes mantis 279
+
+2005-03-10 17:47  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Fixed problem where backup wasn't backing up data.
+
+2005-03-10 17:41  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Better solution for multi-version updates. Should now handle them and
+- inter-version upgrades much more easily.
+
+2005-03-10 16:45  (ajdonnison)
+---------------------------------
+modules/public/color_selector.php
+- ProjectColors SysVal now provides list of presets in colour picker for
+- both restricted view and full view preset dropdown.
+
+2005-03-10 13:08  (gregorerhardt)
+---------------------------------
+locales/en/system.inc
+- translations added
+
+2005-03-10 13:07  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Added display of default login and password when install mode is detected.
+
+2005-03-10 11:58  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added explanatory notes to email deferring.
+
+2005-03-10 11:40  (revelation7)
+---------------------------------
+ChangeLog
+modules/forums/index.php
+modules/forums/view_topics.php
+- enabled sorting on forum module, both ascending and descending
+
+2005-03-10 10:59  (ajdonnison)
+---------------------------------
+classes/event_queue.class.php
+- Fixed event counter.
+
+2005-03-10 10:49  (gregorerhardt)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_companies.php
+modules/companies/vw_contacts.php
+modules/companies/vw_depts.php
+modules/companies/vw_users.php
+- moved over to query class
+
+2005-03-10 09:46  (ajdonnison)
+---------------------------------
+install/vw_idx_check.php
+- Incorporated most of changes suggested in bug 579.
+
+2005-03-10 08:24  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+- translations added
+
+2005-03-09 19:13  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Fixes along the lines of bug 576
+
+2005-03-09 19:03  (ajdonnison)
+---------------------------------
+install/vw_idx_check.php
+- Fixes based partly on bug 575.
+
+2005-03-09 18:30  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+db/upgrade_permissions.php
+install/vw_idx_check.php
+- Fixes for various bugs described by rsleegers on dotproject.net forums.
+
+2005-03-09 16:33  (ajdonnison)
+---------------------------------
+install/vw_idx_check.php
+- Made some of the language a little clearer, and a bit less technical.
+- Added explanatory notes to the other recommendations, made them a bit
+- more pointed.
+
+2005-03-09 12:34  (gregorerhardt)
+---------------------------------
+ChangeLog
+- CL update
+
+2005-03-09 12:26  (gregorerhardt)
 ---------------------------------
 locales/en/admin.inc
 locales/en/calendar.inc
@@ -12,15 +293,35 @@ locales/en/system.inc
 locales/en/tasks.inc
 - translations added
 
-2005-03-09 02:12  (gregorerhardt)
+2005-03-09 12:12  (gregorerhardt)
 ---------------------------------
 modules/system/billingcode.php
 - translation optimisation
 
-2005-03-09 02:07  (gregorerhardt)
+2005-03-09 12:07  (gregorerhardt)
 ---------------------------------
 modules/system/addeditpref.php
 - translation optimisation
+
+2005-03-09 11:25  (gregorerhardt)
+---------------------------------
+modules/projects/reports.php
+- translation optimisation
+
+2005-03-09 11:13  (ajdonnison)
+---------------------------------
+ChangeLog
+- standard update
+
+2005-03-09 11:12  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- uppercased users string
+
+2005-03-09 02:01  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- fixed file version owners.
 
 2005-03-09 01:23  (cyberhorse)
 ---------------------------------
@@ -37,6 +338,13 @@ modules/projects/vw_idx_active.php
 modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_complete.php
 modules/projects/vw_idx_proposed.php
+- modules/companies/index.php
+- modules/companies/vw_companies.php
+- modules/projects/index.php
+- modules/projects/vw_idx_active.php
+- modules/projects/vw_idx_archived.php
+- modules/projects/vw_idx_complete.php
+- modules/projects/vw_idx_propsed.php
 - enabled sorting, both ascending and descending
 
 2005-03-08 12:39  (ajdonnison)
