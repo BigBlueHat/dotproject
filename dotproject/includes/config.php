@@ -19,6 +19,9 @@ $dbpass = "";
 */
 $host_locale = "en";
 
+// default user interface style
+$host_style = "default";
+
 $root_dir = "d:/apache/htdocs/Projects/dotproject"; // filesystem root
 $company_name = "BURAN";		
 $page_title ="TCC DotProject";
@@ -31,17 +34,12 @@ define( 'SHOW_ALL_TASKS', false );
 // enable if you want to support gantt charts
 define( 'ENABLE_GANTT_CHARTS', true );
 
-// disable if you want to allow to add tasks without giving a duration
-define( 'REQUIRE_TASKS_DURATION', true );
-
 // Date format, can be one of:
 // 0 = international or yyyy-mm-dd
 // 1 = UK and Australia or dd/mm/yyyy
 // 2 = US or mm/dd/yyyy
 $date_format = 1;
 
-// default template
-define( 'DEFAULT_TEMPLATE', "ep" );
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
