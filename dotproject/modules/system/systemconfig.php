@@ -47,7 +47,7 @@ foreach ($rs as $c) {
 			$children = $dPcfg->getChildren($c['config_id']);
 			foreach ($children as $child) {
 				$entry .= "<option value='{$child['config_list_name']}'";
-				if ($child['config_list_name'] == $c['config_name'])
+				if ($child['config_list_name'] == $c['config_value'])
 					$entry  .= " selected='selected'";
 				$entry .= ">" . $AppUI->_($child['config_list_name'] . '_item_title') . "</option>\n";
 			}
