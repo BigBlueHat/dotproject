@@ -1,5 +1,9 @@
 <?php
 
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 /* $Id$ */
 
 require("modules/ticketsmith/config.inc.php");

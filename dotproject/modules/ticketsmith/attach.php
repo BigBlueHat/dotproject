@@ -1,4 +1,9 @@
 <?php
+
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $ticket = dPgetParam( $_GET, 'ticket', '');
 
 $titleBlock = new CTitleBlock( 'Link Ticket', 'gconf-app-icon.php', $m, "$m.$a");

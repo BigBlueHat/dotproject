@@ -1,4 +1,9 @@
 <?php /* $Id$ */
+
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $ticket = dPgetParam( $_GET, 'ticket', '' );
 $ticket_type = dPgetParam( $_GET, 'ticket_type', '' );
 
@@ -290,13 +295,21 @@ print("<td><br /></td>\n");
 print("<td>\n");
 print("<table width=\"100%\" border=\"0\" cellspacing=\"0\" cellpadding=\"0\">\n");
 if ($ticket_type == "Staff Followup" || $ticket_type == "Client Followup" || $ticket_type == "Staff Comment") {
-    print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>".$AppUI->_("Post followup (emails client)")."</a> | ");
-    print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>".$AppUI->_('Post internal comment')."</a> | ");
-    print("<a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>".$AppUI->_('Return to parent')."</a> | ");
+	if ($canEdit) {
+		print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>".$AppUI->_("Post followup (emails client)")."</a> | ");
+		print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>".$AppUI->_('Post internal comment')."</a> | ");
+		print("<a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>".$AppUI->_('Return to parent')."</a> | ");
+	}
+	else {
+	print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=view&ticket=$ticket_parent>".$AppUI->_('Return to parent')."</a>");
+	}
+
 }
 else {
-    print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>".$AppUI->_("Post followup (emails client)")."</a> | ");
-    print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>".$AppUI->_('Post internal comment')."</a> | ");
+	if ($canEdit) {
+		print("<tr><td align=\"left\"><a href=index.php?m=ticketsmith&a=followup&ticket=$ticket>".$AppUI->_("Post followup (emails client)")."</a> | ");
+		print("<a href=index.php?m=ticketsmith&a=comment&ticket=$ticket>".$AppUI->_('Post internal comment')."</a> | ");
+	}
 }
 print("</td>");
 print('<td align="right"><a href="index.php?m=ticketsmith&a=view&ticket='.$ticket.'">'.$AppUI->_('Back to top').'</a></td></tr>');

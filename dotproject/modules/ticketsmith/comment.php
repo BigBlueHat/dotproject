@@ -1,4 +1,9 @@
 <?php /* TICKETSMITH $Id$ */
+
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $ticket = dPgetParam( $_GET, 'ticket', '' );
 $ticket_type = dPgetParam( $_GET, 'ticket_type', '' );
 

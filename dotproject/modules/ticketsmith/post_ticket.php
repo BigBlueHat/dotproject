@@ -3,6 +3,11 @@
 ##	Ticketsmith Post Ticket
 ##
 
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+
 // setup the title block
 $titleBlock = new CTitleBlock( 'Submit Trouble Ticket', 'gconf-app-icon.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=ticketsmith", "tickets list" );

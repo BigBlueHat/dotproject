@@ -1,4 +1,9 @@
 <?php  /* TICKETSMITH $Id$ */
+
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $type = dPgetParam( $_GET, 'type', '' );
 $action = dPgetParam( $_REQUEST, 'action', null );
 

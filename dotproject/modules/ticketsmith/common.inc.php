@@ -90,18 +90,29 @@ function column2array ($query) {
 
 /* create drop-down box */
 function create_selectbox ($name, $options, $selected) {
+	global $canEdit;
+
 	$output= "";
 
-    $output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
-	while(list($key, $val) = each($options)) {
-		$output .= "<option value=\"$key\"";
-		if ($key == $selected) {
-			$output .= " selected";
+	if ($canEdit) {
+		$output .= "<select name=\"$name\" onChange=\"document.form.submit()\" class=\"text\">\n";
+		while(list($key, $val) = each($options)) {
+			$output .= "<option value=\"$key\"";
+			if ($key == $selected) {
+				$output .= " selected";
+			}
+			$output .= ">$val\n";
+			//$loop++;
 		}
-		$output .= ">$val\n";
-		//$loop++;
+		$output .= "</select>\n";
 	}
-	$output .= "</select>\n";
+	else {
+		while(list($key, $val) = each($options)) {
+			if ($key == $selected) {
+				$output .= "$val\n";
+			}
+		}
+	}
     
     return($output);
 
@@ -167,7 +178,7 @@ function get_time_ago ($timestamp) {
 
     $output = $interval.$output;
     return($output);
-        
+
 }
 
 /* smart word wrapping */
