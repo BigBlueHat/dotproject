@@ -1084,11 +1084,11 @@ $titleBlock->show();
 				<td><?php echo $AppUI->_( 'Assigned to Task' );?>:</td>
 			</tr>
 			<tr>
-                                <td>    <select name="resources" style="width:220px" size="10" class="text" multiple="multiple">
+                                <td>    <select name="resources" style="width:220px" size="10" class="text" multiple="multiple" ondblclick="javascript:addUser()">
 					<?php
                                               foreach ($users as $v => $u) {
 
-                                                echo "\n\t<option value=\"".$u['user_id']."\" ondblclick=\"javascript:addUser()\">" . dPformSafe( $u['userFC'] ) . "</option>";
+                                                echo "\n\t<option value=\"".$u['user_id']."\">" . dPformSafe( $u['userFC'] ) . "</option>";
 
                                               }
 
