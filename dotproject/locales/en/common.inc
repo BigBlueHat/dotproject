@@ -1,13 +1,34 @@
-// ENTER IN THE FORM
-// "key"=>"translation"
-// * * * THIS IS THE ENGLISH FILE * * *
-
-"username",
-"password",
-"login",
-"loginFailed"=>"<span class=\"error\">login failed</span>",
-"openSource"=>"an open source<br>project management<br>application",
-"forgotPassword"=>"Help! I've forgotten my username and password!",
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"- New Item -",
+"About",
+"Calendar",
+"Clients & Companies",
+"Company",
+"Contact",
+"Contacts",
+"Event",
+"File",
+"Files",
+"Forums",
 "Help",
-
-// ALWAYS PUT A COMMA (,) AFTER THE LAST ENTRY
+"Login Failed",
+"Logout",
+"My Info",
+"Project",
+"Projects",
+"System Admin",
+"Task",
+"Tasks",
+"Tickets",
+"User Admin",
+"back",
+"cancel",
+"forgotPassword"=>"Help! I've forgotten my username and password!",
+"login",
+"openSource"=>"an open source<br>project management<br>application",
+"password",
+"save",
+"submit",
+"username",
