@@ -18,8 +18,9 @@ echo db_error();
 
 //pull message information
 $sql = "
-SELECT forum_messages.*
+SELECT forum_messages.*, user_first_name, user_last_name
 FROM forum_messages
+LEFT JOIN users ON message_author = users.user_id
 WHERE message_id = ";
 $sql .= $message_id ? $message_id : $message_parent;
 $res = db_exec( $sql );
@@ -75,6 +76,7 @@ function orderByName(x){
 <table cellspacing="0" cellpadding="3" border="0" width="98%" class="std">
 
 <!-- <form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?php echo $forum_id;?>" method="post"> -->
+
 <form name="changeforum" action="?m=forums&forum_id=<?php echo $forum_id;?>" method="post">
 	<input type="hidden" name="dosql" value="do_post_aed" />
 	<input type="hidden" name="del" value="0" />
@@ -89,6 +91,19 @@ function orderByName(x){
 		echo $AppUI->_( $message_id ? 'Edit Message' : 'Add Message' );
 	?></strong></th>
 </tr>
+<?php
+if ($message_parent>=0) {	//check if this is a reply-post
+$date = new CDate();
+$date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : null;
+?>
+
+<tr><td align="right"><?php echo $AppUI->_('Author') ?>:</td><td align="left"><?php echo $message_info['user_first_name']." ".$message_info['user_last_name'];?> (<?php echo $date->format( "$df $tf" );?>)</td></tr>
+<tr><td align="right"><?php echo  $AppUI->_('Subject') ?>:</td><td align="left"><?php echo $message_info['message_title'] ?></td></tr>
+<tr><td align="right" valign="top"><?php echo  $AppUI->_('Message') ?>:</td><td align="left"><?php echo $message_info['message_body'];?></td></tr>
+<tr><td colspan="2" align="left"><hr></td></tr>
+<?php
+}
+?>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'Subject' );?>:</td>
 	<td>
