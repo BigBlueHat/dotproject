@@ -1,11 +1,10 @@
 <?php /* PROJECTS $Id$ */
 $project_id = dPgetParam( $_GET, "project_id", 0 );
 
-// check permissions
-$denyEdit = getDenyEdit( $m, $project_id );
-
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+// check permissions for this project
+$canEdit = !getDenyEdit( $m, $project_id );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // pull companies
@@ -53,7 +52,7 @@ $crumbs["?m=projects&a=view&project_id=$project_id"] = "view this project";
 ?>
 <script language="javascript">
 function setColor(color) {
-	var f = document.AddEdit;
+	var f = document.frmEditProject;
 	if (color) {
 		f.project_color_identifier.value = color;
 	}
@@ -64,53 +63,64 @@ var calendarField = '';
 
 function popCalendar( field ){
 	calendarField = field;
-	uts = eval( 'document.AddEdit.project_' + field + '.value' );
+	uts = eval( 'document.frmEditProject.project_' + field + '.value' );
 	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'top=250,left=250,width=250, height=220, scollbars=false' );
 }
 
 function setCalendar( uts, fdate ) {
-	fld_uts = eval( 'document.AddEdit.project_' + calendarField );
-	fld_fdate = eval( 'document.AddEdit.' + calendarField );
+	fld_uts = eval( 'document.frmEditProject.project_' + calendarField );
+	fld_fdate = eval( 'document.frmEditProject.' + calendarField );
 	fld_uts.value = uts;
 	fld_fdate.value = fdate;
 }
 
 function setShort() {
-	var form = document.AddEdit;
+	var f = document.frmEditProject;
 	var x = 10;
-	if (form.project_name.value.length < 11) {
-		x = form.project_name.value.length;
+	if (f.project_name.value.length < 11) {
+		x = f.project_name.value.length;
 	}
-	if (form.project_short_name.value.length == 0) {
-		form.project_short_name.value = form.project_name.value.substr(0,x);
+	if (f.project_short_name.value.length == 0) {
+		f.project_short_name.value = f.project_name.value.substr(0,x);
 	}
 }
 
 function submitIt() {
-	var form = document.AddEdit;
+	var f = document.frmEditProject;
+	var msg = '';
 
-	if (form.project_name.value.length < 3) {
-		alert("<?php echo $AppUI->_('projectsValidName');?>");
-		form.project_name.focus();
-	} else if (form.project_color_identifier.value.length < 3) {
-		alert( "<?php echo $AppUI->_('projectsColor');?>");
-		form.project_color_identifier.focus();
+	if (f.project_name.value.length < 3) {
+		msg += "\n<?php echo $AppUI->_('projectsValidName');?>";
+		f.project_name.focus();
+	}
+	if (f.project_color_identifier.value.length < 3) {
+		msg += "\n<?php echo $AppUI->_('projectsColor');?>";
+		f.project_color_identifier.focus();
+	}
+	if (f.project_end_date.value > 0 && f.project_end_date.value < f.project_start_date.value) {
+		msg += "\n<?php echo $AppUI->_('projectsBadEndDate1');?>";
+	}
+	if (f.project_actual_end_date.value > 0 && f.project_actual_end_date.value < f.project_start_date.value) {
+		msg += "\n<?php echo $AppUI->_('projectsBadEndDate2');?>";
+	}
+	if (msg.length < 1) {
+		f.submit();
 	} else {
-		form.submit();
+		alert(msg);
 	}
 }
 
 function delIt() {
 	if (confirm( "<?php echo $AppUI->_('projectsDelete');?>" )) {
-		var form = document.AddEdit;
-		form.del.value=1;
-		form.submit();
+		var f = document.frmEditProject;
+		f.del.value=1;
+		f.submit();
 	}
 }
 </script>
 
 <table cellspacing="0" cellpadding="0" border="0" width="98%">
-<form name="AddEdit" action="./index.php?m=projects&a=dosql" method="post">
+<form name="frmEditProject" action="./index.php?m=projects&a=do_project_aed" method="post">
 <input type="hidden" name="del" value="0" />
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 <input type="hidden" name="project_creator" value="<?php echo $AppUI->user_id;?>" />
@@ -191,7 +201,7 @@ function delIt() {
 			<td>
 				<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->getTimestamp() : '-1';?>" />
 				<input type="text" name="actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->toString() : '';?>" class="text" disabled="disabled" />
-				<a href="#" onClick="popCalendar('project_actual_end_date','actual_end_date')">
+				<a href="#" onClick="popCalendar('actual_end_date','actual_end_date')">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
 			</td>
