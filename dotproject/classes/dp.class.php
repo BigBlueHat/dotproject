@@ -310,8 +310,7 @@ class CDpObject {
 		if ($orderby)
 		  $this->_query->addOrder($orderby);
 
-		$sql = $this->_query->prepare();
-		return db_loadHashList( $sql, $index );
+		return $this->_query->loadHashList( $index );
 	}
 
 	function getAllowedSQL( $uid, $index = null ) {
