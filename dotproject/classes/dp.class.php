@@ -114,7 +114,7 @@ class CDpObject {
 	}
 
 /**
- *	generic check for whether dependancies exist for this object in the db schema
+ *	Generic check for whether dependancies exist for this object in the db schema
  *
  *	can be overloaded/supplemented by the child class
  *	@param string $msg Error message returned
@@ -162,7 +162,7 @@ class CDpObject {
 	}
 
 /**
- *	default delete method
+ *	Default delete method
  *
  *	can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns and error message
@@ -182,7 +182,7 @@ class CDpObject {
 	}
 
 /**
- *	get specifically denied records from a table/module based on a user
+ *	Get specifically denied records from a table/module based on a user
  *	@param int User id number
  *	@return array
  */
@@ -204,30 +204,41 @@ class CDpObject {
 	}
 
 /**
- *	returns a list of records exposed to the user
+ *	Returns a list of records exposed to the user
  *	@param int User id number
  *	@param string Optional fields to be returned by the query, default is all
  *	@param string Optional sort order for the query
  *	@param string Optional name of field to index the returned array
+ *	@param array Optional array of additional sql parameters (from and where supported)
  *	@return array
  */
 // returns a list of records exposed to the user
-	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null ) {
+	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) {
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedRecords failed" );
 		$deny = $this->getDeniedRecords( $uid );
 
 		$sql = "SELECT $fields"
-			. "\nFROM $this->_tbl, permissions"
-			. "\nWHERE permission_user = $uid"
+			. "\nFROM $this->_tbl, permissions";
+
+		if (@$extra['from']) {
+			$sql .= ',' . $extra['from'];
+		}
+		
+		$sql .= "\nWHERE permission_user = $uid"
 			. "\n	AND permission_value <> 0"
 			. "\n	AND ("
 			. "\n		(permission_grant_on = 'all')"
 			. "\n		OR (permission_grant_on = '$this->_tbl' AND permission_item = -1)"
 			. "\n		OR (permission_grant_on = '$this->_tbl' AND permission_item = $this->_tbl_key)"
 			. "\n	)"
-			. (count($deny) > 0 ? "\nAND $this->_tbl_key NOT IN (" . implode( ',', $deny ) . ')' : '')
-			. ($orderby ? "\nORDER BY $orderby" : '');
+			. (count($deny) > 0 ? "\n\tAND $this->_tbl_key NOT IN (" . implode( ',', $deny ) . ')' : '');
+		
+		if (@$extra['where']) {
+			$sql .= "\n\t" . $extra['where'];
+		}
+
+		$sql .= ($orderby ? "\nORDER BY $orderby" : '');
 
 		return db_loadHashList( $sql, $index );
 	}
