@@ -171,7 +171,7 @@ if ($canEdit) {
 ?>
 	<tr>
 		<td align='right'>
-			<?php echo $AppUI->_("Task's end date"); ?>
+			<?php echo $AppUI->_("Task end date"); ?>
 		</td>
 		<td>
 			<script language='javascript'>
