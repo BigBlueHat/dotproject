@@ -35,17 +35,38 @@
 <h2>Adding New Projects</h2>
 <p>New Projects can be added by either clicking the <b>new project</b> button in the <b>Projects</b> module Top Menu, or by choosing <b>Project</b> from the Main Navigation Menu's <b> - New Item - </b> drop-down list.</p>
 
-<p>More information on adding <b>New Projects</b> is on a subsequent help documentation page.</p>
+<p>More information on adding <b>New Projects</b> and related <b>Tasks</b> is available on subsequent help documentation pages.</p>
 
-<hr /><br />
+<p>You will need to have a few projects setup before descriptions of the following items below will be applicable.</p>
+
+<hr /><br /><br />
+
+
+<h1>Active, Completed and Archived Projects Screens</h1>
+<p>When you first launch a new installation of DotProject, there will not be any entries for <b>Active, Completed</b> or <b>Archived Projects.</b> This is expected because you haven't created any <b>Projects</b> or <b>Project Tasks</b> yet.</p>
+
+<p>However, once you begin creating <b>Projects</b> and <b>Tasks</b>, the fields for each of the <b>Project Screens</b> will fill with data. In the following descriptions, we assume you have created series of <b>Projects</b> and associated <b>Tasks</b>.</p>
+
+<br />
 
 
 <h2>Active Projects</h2>
+<p>The <b>Active Projects Screen</b> lists the "Progress", "Name", "Owner", "Tasks (My)", and "Due Date" for all of the <b>Active Projects</b>. By default, the <b>Projects</b> are listed in the order that they are created. However, you can easily <b>sort</b> the <b>Projects</b> by clicking on the <b>Name, Owner, Tasks (My), </b> or <b>Due Date</b> headings.</p>
 
+<p>Clicking on any individual <b>Project Name</b> will open the <b>View Project</b> screen for the selected project. This will give access to detailed information about the project, the ability to edit the project, and create project reports. In addition, you will have access to screens describing the <b>Tasks, Forums, Files</b> and <b>Gnatt Charts</b> for the individual project. The <b>View Project</b> screen is described in more detail on a seperate <b>Help Documentation</b> page.</p>
 
-<p>The "percentage complete" is shown to the left of the Project Name in a box with the background of the project colour.  Click on the Project Name to view more information about the project.</p>
+<hr /><br />
 
-<p>A list box is provided for you to filter the projects listed by the Comany they are associated with.</p>
+<h2>Completed Projects</h2>
+<p>Projects become listed in the <b>Completed Projects</b> section when they reach <b>Progress of 100%</b>. Something to keep in mind is that the <b>Progress Calculation</b> is based on the <b>Duration</b> and <b>Progress</b> of the individual <b>Tasks</b> that compose each <b>Project</b>.</p>
 
-<p>Click on the "<strong>new company</strong>" button to add a new company to your database.</p>
+<p>So, if you have <b>Tasks</b> with a <b>Duration of ZERO</b> they will <b>not apply to the calculation of Progress</b>, and it is possible for a <b>Project</b> to list as <b>Completed</b> even though individual tasks may not be finished.</p>
 
+<p>To avoid this issue, you should always assign an <b>Expected Duration</b> to every <b>Task</b>.</p>
+
+<hr /><br />
+
+<h2>Archived Projects</h2>
+<p>Projects become listed in the <b>Archived Projects</b> section when the <b>Active?</b> checkbox is unchecked. This checkbox is located on the <b>Edit Project</b> screen for individual projects.</p>
+
+<p>The <b>Archived Projects</b> screen lists the "Progress", "Name", "Owner", "Tasks", and "Finished" date for each of the <b>Archived Projects</b>. As with both <b>Active</b> and <b>Completed Projects</b>, you can <b>sort</b> by clicking on any of the <b>Archived Projects</b> column headings.</p>
