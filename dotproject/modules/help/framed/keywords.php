@@ -14,6 +14,7 @@ require_once( "{$AppUI->cfg['root_dir']}/classes/ui.class.php" );
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 $AppUI = new CAppUI;
+$AppUI->setConfig( $dHconfig );
 
 $AppUI->setProject( $project_id );
 

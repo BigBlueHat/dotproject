@@ -6,9 +6,13 @@
 
 require_once( "../../../includes/config.php" );
 
-$dbprefix = "dhlp_";
+$dHconfig['root_dir'] = "{$dPconfig['root_dir']}/modules/help/framed/";
 
-{$AppUI->cfg['root_dir']} = "{$AppUI->cfg['root_dir']}/modules/help/framed/";
-$dbname = $db;
+$dHconfig['dbtype'] = $dPconfig['dbtype'];
+$dHconfig['dbhost'] = $dPconfig['dbhost'];
+$dHconfig['dbname'] = $dPconfig['dbname'];
+$dHconfig['dbuser'] = $dPconfig['dbuser'];
+$dHconfig['dbpass'] = $dPconfig['dbpass'];
 
+$dHconfig['dbprefix'] = "dhlp_";
 ?>

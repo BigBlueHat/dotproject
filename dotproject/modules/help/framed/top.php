@@ -1,15 +1,16 @@
 <?php
 require_once( "./includes/config.php" );
-require_once( "{$AppUI->cfg['root_dir']}/classes/ui.class.php" );
+require_once( "{$dHconfig['root_dir']}/classes/ui.class.php" );
 
 $AppUI = new CAppUI;
+$AppUI->setConfig( $dHconfig );
 
 if (isset($_GET['entry_lang'])) {
 	$AppUI->user_locale = $_GET['entry_lang'];
 }
 
 $m = 'viewer';
-@include_once( "{$AppUI->cfg['root_dir']}/locales/core.php" );
+@include_once( "{$dHconfig['root_dir']}/locales/core.php" );
 ?>
 <html>
 <head>

@@ -8,12 +8,13 @@
 
 <?php
 require_once( "./includes/config.php" );
-require_once( "{$AppUI->cfg['root_dir']}/includes/db_connect.php" );
-require_once( "{$AppUI->cfg['root_dir']}/classes/ui.class.php" );
+require_once( "./includes/db_connect.php" );
+require_once( "./classes/ui.class.php" );
 
 $project_id = isset($_GET['project_id']) ? $_GET['project_id'] : 0;
 
 $AppUI = new CAppUI;
+$AppUI->setConfig( $dHconfig );
 
 $AppUI->setProject( $project_id );
 
@@ -22,7 +23,7 @@ if (isset($_GET['entry_lang'])) {
 }
 
 $m = 'viewer';
-@include_once( "{$AppUI->cfg['root_dir']}/locales/core.php" );
+@include_once( "./locales/core.php" );
 
 db_connect( $AppUI->project_dbhost, $AppUI->project_dbname, $AppUI->project_dbuser, $AppUI->project_dbpass );
 

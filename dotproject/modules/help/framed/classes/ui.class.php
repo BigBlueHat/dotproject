@@ -19,14 +19,14 @@ define( "UI_CASE_UPPERFIRST", 3 );
 class CAppUI {
 	var $state;		// generic array for holding the state of anything
 // state parameters
-	var $project_id;
-	var $project_name;
+	var $project_id=0;
+	var $project_name='';
 
-	var $project_dbhost;
-	var $project_dbname;
-	var $project_dbuser;
-	var $project_dbpass;
-	var $project_dbprefix;
+	var $project_dbhost='';
+	var $project_dbname='';
+	var $project_dbuser='';
+	var $project_dbpass='';
+	var $project_dbprefix='';
 // localisation
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
@@ -45,35 +45,35 @@ class CAppUI {
 	var $msgNo;
 	var $defaultRedirect;
 
+	var $cfg=null;
+
 // CAppUI Constructor
 	function CAppUI() {
 		GLOBAL $debug, $page_title, $dbhost, $dbname, $dbuser, $dbpass, $dbprefix;
 		$this->state = array();
-
-		$this->project_id = 0;
-		$this->project_name = $page_title;
-		$this->project_dbhost = $dbhost;
-		$this->project_dbname = $dbname;
-		$this->project_dbprefix = $dbprefix;
-		$this->project_dbuser = $dbuser;
-		$this->project_dbpass = $dbpass;
-
 		$this->user_locale = $this->base_locale;
-
 		$this->defaultRedirect = "";
 	}
 
-	function setProject( $id ) {
-		GLOBAL $dbhost, $dbname, $dbuser, $dbpass, $dbprefix;
+	function setConfig( &$cfg ) {
+		$this->cfg = $cfg;
+	// project initially inherits system defaults
+		$this->project_dbhost = $this->cfg['dbhost'];
+		$this->project_dbname = $this->cfg['dbname'];
+		$this->project_dbuser = $this->cfg['dbuser'];
+		$this->project_dbpass = $this->cfg['dbpass'];
+		$this->project_dbprefix = $this->cfg['dbprefix'];
+	}
 
+	function setProject( $id ) {
 		if (!$id) {
 			return;
 		}
-		$dbconn = db_connect( $dbhost, $dbname, $dbuser, $dbpass );
+		$dbconn = db_connect( $this->cfg['dbhost'], $this->cfg['dbname'], $this->cfg['dbuser'], $this->cfg['dbpass'] );
 
 		$sql = "
 		SELECT *
-		FROM {$dbprefix}projects 
+		FROM {$this->cfg['dbprefix']}projects 
 		WHERE project_id = $id
 		";
 		//echo "<pre>$sql</pre>".db_error();
@@ -83,19 +83,19 @@ class CAppUI {
 		}
 		if ($row = db_fetch_assoc( $res )) {
 			if (!$row['project_dbhost']) {
-				$row['project_dbhost'] = $dbhost;
+				$row['project_dbhost'] = $this->cfg['dbhost'];
 			}
 			if (!$row['project_dbname']) {
-				$row['project_dbname'] = $dbname;
+				$row['project_dbname'] = $this->cfg['dbname'];
 			}
 			if (!$row['project_dbprefix']) {
-				$row['project_dbprefix'] = $dbprefix;
+				$row['project_dbprefix'] = $this->cfg['dbprefix'];
 			}
 			if (!$row['project_dbuser']) {
-				$row['project_dbuser'] = $dbuser;
+				$row['project_dbuser'] = $this->cfg['dbuser'];
 			}
 			if (!$row['project_dbpass']) {
-				$row['project_dbpass'] = $dbpass;
+				$row['project_dbpass'] = $this->cfg['dbpass'];
 			}
 			bindHashToObject( $row, $this );
 			return true;
