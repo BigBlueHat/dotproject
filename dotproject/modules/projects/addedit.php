@@ -369,13 +369,13 @@ function setDepartment(department_id_string){
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Color Identifier');?></td>
 			<td nowrap="nowrap">
-				<input type="text" name="project_color_identifier" value="<?php echo @$row->project_color_identifier;?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
+				<input type="text" name="project_color_identifier" value="<?php echo (@$row->project_color_identifier) ? @$row->project_color_identifier : 'FFFFFF';?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
 			</td>
 			<td nowrap="nowrap" align="right">
 				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
 			</td>
 			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#<?php echo @$row->project_color_identifier;?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
+				<span id="test" title="test" style="background:#<?php echo (@$row->project_color_identifier) ? @$row->project_color_identifier : 'FFFFFF';?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
 			</td>
 		</tr>
 		<tr>
