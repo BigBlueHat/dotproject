@@ -85,7 +85,7 @@ if ($none) {
 			echo "<input type='submit' class='button' value='".$AppUI->_('Update projects status')."' />";
 			echo "<input type='hidden' name='update_project_status' value='1' />";
 			echo "<input type='hidden' name='m' value='projects' />";
-			echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', 2, false );
+			echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', 2, true );
 			                                                                // 2 will be the next step
 		?>
 	</td>
