@@ -31,10 +31,10 @@ if (!db_loadHash( $sql, $user )) {
 		$titleBlock->addCrumb( "?m=admin&a=addedituser&user_id=$user_id", "edit this user" );
 		$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
 
-		$titleBlock->addCrumbRight(
-			'<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>'
-		);
 	}
+	$titleBlock->addCrumbRight(
+		'<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>'
+	);
 	$titleBlock->show();
 ?>
 <script language="javascript">
