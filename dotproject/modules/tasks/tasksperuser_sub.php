@@ -170,32 +170,17 @@ function chPriority(user_id) {
 		</a>
 	</td>
 	<td nowrap="nowrap">
-        <SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 200px">
+	<?php
+		  $usersql = "
+		  SELECT user_id, concat(user_first_name,' ',user_last_name) as name
+		  FROM users
+		  ORDER by user_last_name,user_first_name
+		  ";
+//echo "<pre>$usersql</pre>";
+		$system_users = arrayMerge( array( 0 => $AppUI->_('All Users') ), db_loadHashList( $usersql ) );
+	?>
+	<?=arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"',$company_id )?>
 
-	   	 	<?php
-   		   	  $usersql = "
-   		   	  SELECT user_id, user_username, user_first_name, user_last_name
-   		   	  FROM users
-			  ORDER by user_last_name,user_first_name
-   		   	  ";
-
-   		   	  if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
-   		   	  else echo '<OPTION VALUE="0">'.$AppUI->_('All users');
-
-   		   	  if (($log_userfilter_users = db_loadList( $usersql, NULL )))
-   		   	  {
-   		   	      foreach ($log_userfilter_users as $row)
-   		   	      {
-					  $selected="";
-   		   	          if ( $log_userfilter == $row["user_id"]) { $selected=" SELECTED"; }
-					  echo "<OPTION VALUE='".$row["user_id"]."'$selected>".
-                                    $row["user_first_name"]." ".$row["user_last_name"]."</option>";
-   		   	      }
-   		   	  }
-
-		    ?>
-
-   	     </SELECT>
 
 	</td>
 
@@ -254,6 +239,7 @@ if($do_report){
 	}
 	$sql.=" ORDER by user_last_name, user_first_name";
 
+//echo "<pre>$sql</pre>";
 	$user_list = db_loadHashList($sql, "user_id");
 
 	$ss="'".$start_date->format( FMT_DATETIME_MYSQL )."'";
@@ -300,6 +286,7 @@ if($do_report){
 
 	$sql .= " ORDER BY task_end_date;";
 
+//echo "<pre>$sql</pre>";
 	$task_list_hash 	 = db_loadHashList($sql, "task_id");
 	$task_list      	 = array();
 	$task_assigned_users = array();
@@ -483,6 +470,7 @@ return false;
 }
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $user_id) {
+
         global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $z, $zi, $x;
 	$zi++;
         $users = $task->getAssignedUsers();
@@ -551,17 +539,9 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
                 if ($zm1 ==0) $zm1 = 1;
 
                 $tmp.="<td valign=\"top\" align=\"center\" nowrap=\"nowrap\" rowspan=\"$zm1\">";
-                $tmp.="<select class=\"text\" name='add_users' size='".($zz-1)."' multiple='multiple'>";
-
-                foreach ($log_userfilter_users as $row)
-                {
-                   if ($row["user_id"] != $user_id) {
-                        $selected="";
-                        $tmp .= "<OPTION VALUE='".$row["user_id"]."'$selected>".$row["user_first_name"]." ".$row["user_last_name"]."</option>";
-                   }
-                }
-
-               $tmp .= "</select></td>";
+		Global $system_users;
+		$tmp.= arraySelect( $system_users, 'add_users', 'class="text" STYLE="width: 200px" size="'.($zz-1).'" multiple="multiple"',NULL );
+               $tmp .= "</td>";
         }
 
 
@@ -654,6 +634,7 @@ function getBeginWeek($d) {
 }
 
 function getEndWeek($d) {
+
 	$dn=intval($d->Format("%w"));
 	if ($dn>0) { $dn=7-$dn; }
 	$dd=new CDate($d);
