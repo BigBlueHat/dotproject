@@ -373,6 +373,16 @@ function calcFinish(f) {
 	var hoursToAddToFirstDay = durn;
 	var fullWorkingDays = 0;
 
+	// calculate the number of non-working days
+	var k = 7 - working_days.length;
+	
+	// jump over to the first working day
+	for (var i = 0; i < k; i++){
+		if ( !isInArray(working_days, e.getDay()) ) {
+			e.setDate(e.getDate() + 1);
+		}
+	}
+		
 	if ( durnType==24 ) {
 		fullWorkingDays = Math.ceil(inc);
 		e.setMinutes( 0 );
@@ -385,9 +395,10 @@ function calcFinish(f) {
 			e.setDate(e.getDate() + 1);
 			if ( !isInArray(working_days, e.getDay()) ) i--;			
 		}
-
+		
 		f.end_hour.value = f.start_hour.value;
 	} else {
+		
 		hoursToAddToFirstDay = inc;
 		if ( e.getHours() + inc > cal_day_end )
 			hoursToAddToFirstDay = cal_day_end - e.getHours();
@@ -404,14 +415,25 @@ function calcFinish(f) {
 			e.setHours(cal_day_start+hoursToAddToLastDay);
 			e.setDate(e.getDate() + 1);
 		}
-		if (fullWorkingDays > 0)
-			e.setDate(e.getDate() + 1);
-
+		
 		e.setMinutes( 0 );
-	 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++)
-			if ( isInArray(working_days, e.getDay()) )
+		
+		// boolean for setting later if we just found a non-working day
+		// and therefore do not have to add a day in the next loop
+		// (which would have caused to not respecting multiple non-working days after each other)
+		var g = false;
+	 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++){
+			if (!g) {
 				e.setDate(e.getDate() + 1);
-
+			}
+			g = false;
+			// calculate overriden non-working days
+			if ( !isInArray(working_days, e.getDay()) ) {
+				e.setDate(e.getDate() + 1);
+				i--;
+				g = true;
+			}
+		}
 		f.end_hour.value = (e.getHours() < 10 ? "0"+e.getHours() : e.getHours());
 	}
 	
