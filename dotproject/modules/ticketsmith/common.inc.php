@@ -305,6 +305,11 @@ while(list(, $thisline) = each($t_lines)) {
 		else $outlines .= $thisline."\n";
 		$leftover = "";
 	}
+	
+	// If we're processing the last line and there's leftover text, add a blank line to hold the leftover
+	if (key($t_lines) == count($t_lines) - 1 && strlen($leftover) > 0) {
+		$t_lines[] = "";
+	}
 }
 return $outlines;
 }
