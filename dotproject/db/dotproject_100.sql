@@ -1,7 +1,7 @@
 #
 # dotproject.sql Database Schema
-# 	updated by JRP (08 July 2002)
-#	updated by JCP (29 November 2002)
+#   updated by JRP (08 July 2002)
+#   updated by JCP (29 November 2002)
 #
 # Use this schema for creating your database for 
 # a new installation of dotProject.
@@ -338,9 +338,9 @@ CREATE TABLE users (
 ) TYPE=MyISAM;
 
 CREATE TABLE task_dependencies (
-	dependencies_task_id int(11) NOT NULL,
-	dependencies_req_task_id int(11) NOT NULL,
-	PRIMARY KEY (dependencies_task_id, dependencies_req_task_id)
+    dependencies_task_id int(11) NOT NULL,
+    dependencies_req_task_id int(11) NOT NULL,
+    PRIMARY KEY (dependencies_task_id, dependencies_req_task_id)
 );
 
 CREATE TABLE `user_preferences` (
@@ -380,7 +380,7 @@ INSERT INTO user_preferences VALUES("0", "UISTYLE", "default");
 #
 # Table structure for table 'modules'
 #
-DROP TABLE modules;
+#DROP TABLE modules;
 CREATE TABLE `modules` (
   `mod_id` int(11) NOT NULL auto_increment,
   `mod_name` varchar(64) NOT NULL default '',
