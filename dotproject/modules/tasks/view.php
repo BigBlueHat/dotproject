@@ -14,11 +14,17 @@ WHERE task_id = $task_id
 if (!db_loadHash( $sql, $task )) {
 	$AppUI->setMsg( "Invalid Task ID", UI_MSG_ERROR );
 	$AppUI->redirect();
-} else {
-	$AppUI->savePlace();
 }
+
 // check permissions
+$canRead = !getDenyRead( $m, $task_id );
 $canEdit = !getDenyEdit( $m, $task_id );
+
+if (!$canRead) {
+	$AppUI->redirect( "m=public&a=access_denied" );
+}
+
+$AppUI->savePlace();
 
 // get the active tab
 if (isset( $_GET['tab'] )) {
