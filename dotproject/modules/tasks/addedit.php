@@ -211,16 +211,14 @@ $can_edit_time_information = $obj->canUserEditTimeInformation();
 //get list of projects, for task move drop down list.
 //require_once $AppUI->getModuleClass('projects');
 //$project =& new CProject;
-$allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
-$sql = "
-SELECT
-	project_id, project_name
-FROM projects
-WHERE project_company=$company_id
-	AND project_active=1
-" . (count($allowedProjects) ? 'AND project_id in (' . implode(',', array_keys($allowedProjects)) .')' :'') ."
-ORDER BY project_name";
-$projects = db_loadHashList( $sql );
+$pq = new DBQuery;
+$pq->addQuery('project_id, project_name');
+$pq->addTable('projects');
+$pq->addWhere("project_company = '$company_id'");
+$pq->addWhere('project_active = 1');
+$pq->addOrder('project_name');
+$project->setAllowedSQL($AppUI->user_id, $pq);
+$projects = $pq->loadHashList();
 ?>
 <SCRIPT language="JavaScript">
 var selected_contacts_id = "<?php echo $obj->task_contacts; ?>";
