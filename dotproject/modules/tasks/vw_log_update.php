@@ -114,7 +114,7 @@ if ($canEdit) {
 	}
 
 	function timerSet() {
-		total_minutes = Math.floor(document.editFrm.task_log_hours.value * 60);
+		total_minutes = Math.round(document.editFrm.task_log_hours.value * 60) -1;
 	}
 	
 </script>
