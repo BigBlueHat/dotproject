@@ -1,3 +1,40 @@
+2003-05-21 00:11  (kripper)
+---------------------------------
+includes/config-dist.php
+modules/tasks/addedit.php
+- Added optional task's start and end dates checking.
+
+2003-05-20 20:05  (eddieajau)
+---------------------------------
+modules/tasks/vw_logs.php
+- Renamed delIt javascript function as it clashed with the task delete operation
+
+2003-05-20 20:04  (eddieajau)
+---------------------------------
+modules/forums/view_messages.php
+- Fixed bug in author mail link
+
+2003-05-20 20:03  (eddieajau)
+---------------------------------
+docs/roadmap.html
+docs/trouble.html
+- no message
+
+2003-05-20 20:03  (eddieajau)
+---------------------------------
+classes/ui.class.php
+- Enclosed bread-crumb delete icon in a link (as well as the text)
+
+2003-05-20 18:53  (eddieajau)
+---------------------------------
+misc/diagnostics.php
+- Moved to docs
+
+2003-05-19 04:35  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-18 19:21  (eddieajau)
 ---------------------------------
 docs/trouble.html
@@ -461,43 +498,6 @@ modules/system/addeditpref.php
 - Tiny translation updates and changes.
 
 2003-05-07 17:39  (korinek)
----------------------------------
-modules/help/index.php
-- A change to try the help.toc from the user locale before falling back to
-- help.toc from the en locale.
-
-2003-05-07 05:52  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-06 18:58  (eddieajau)
----------------------------------
-modules/contacts/addedit.php
-- Added check to not show the delete link when adding a new contact
-
-2003-05-06 18:16  (eddieajau)
----------------------------------
-modules/public/calendar.php
-- Moved from root directory
-
-2003-05-06 16:25  (korinek)
----------------------------------
-modules/tasks/tasks.class.php
-- Added passing the locale charset to libmail class for correct email formation
-- of non asci email subject and body.
-
-2003-05-06 16:18  (korinek)
----------------------------------
-classes/libmail.class.php
-- Added optional Quoted-Printable encoding of the subject (necessary for non ascii email subjects).
-
-2003-05-06 08:26  (eddieajau)
----------------------------------
-modules/tasks/viewgantt.php
-- Added check to see if any tasks exist.
-
-2003-05-06 08:19  (eddieajau)
 ...
 
 (This file has been wrapped)
