@@ -28,17 +28,39 @@ var groups = new Array();
 
 groups['Core'] = new Array(
 // version, description, who
-	['1.0 beta 1', 'Update to Gnome icons', ''],
+	['1.0 beta 1', 'Update to Gnome icons', 'Andrew E'],
+	['1.0 beta 1', 'Add groundwork for generic lookup support field to all module tables: &lt;table_name&gt;_module', 'Andrew E'],
+	['1.0 beta 2', 'Upgrade module class abstration', 'Andrew E'],
 	['1.05', 'Implement database prefix', 'John'],
+	['1.05', 'Research appropriate PEAR implementation', 'All'],
 	['1.10', 'Move to Role Based Access Control', 'Andrew E' ]
 );
 
 groups['User Documentation'] = new Array(
+	['1.0 beta 2', 'Finish user documentation', 'All' ]
 );
 
 groups['API Documentation'] = new Array(
-	['1.0 beta 1', 'Move to phpDoc stanard', 'Andrew E'],
+	['1.0 beta 1', 'Move to phpDocumentor standard', 'Andrew E'],
 	['1.0 beta 2', 'Cut first working API', 'Andrew E']
+);
+
+groups['Conceptual::Project Management'] = new Array(
+	['1.05', 'Add stages to project and give ability to assign task to a stage', 'AE,AZ,JP'],
+	['1.05', 'Groundwork for critical path &amp; chain analysis', 'AE,AZ']
+);
+
+groups['Conceptual::CRM'] = new Array(
+	['1.15', 'Improved CRM support', '']
+);
+
+groups['Conceptual::Cross-module Support'] = new Array(
+	['1.05', 'Attach notes to any module record', ''],
+	['1.05', 'Implement many-to-many relationship handling', '']
+);
+
+groups['Conceptual::User-Interface'] = new Array(
+	['1.10', 'Support ability for dynamic tabs, ie, one module can provide a tab for another module, eg project companies, etc', '']
 );
 
 groups['Module::Companies'] = new Array(
@@ -50,8 +72,12 @@ groups['Module::Projects'] = new Array(
 groups['Module::Tasks'] = new Array(
 );
 
+groups['Module::System::Translation Management'] = new Array(
+	['1.05', 'Add support for translator to quickly review changed strings', 'Richard,Alexei']
+);
+
 groups['General Feature Requests'] = new Array(
-	['Future', 'Add stages to project and give ability to assign task to a stage', '']
+	['Future', 'Some feature', '']
 );
 
 
