@@ -64,10 +64,14 @@ class CProject extends CDpObject {
 	}
 
 	function delete() {
-		$sql = "DELETE FROM tasks WHERE task_project = $this->project_id";
-		db_exec($sql);
-		$sql = "DELETE FROM projects WHERE project_id = $this->project_id";
-		if (!db_exec( $sql )) {
+		$sql = "SELECT task_id FROM tasks WHERE task_project = $this->project_id";
+		$tasks_to_delete = db_loadColumn ( $sql );
+		foreach ( $tasks_to_delete as $task_id ) {
+			db_delete( 'user_tasks', 'task_id', $task_id );
+			db_delete( 'task_dependencies', 'dependencies_req_task_id', $task_id );
+		}
+		db_delete( 'tasks', 'task_project', $this->project_id );
+                if (!db_delete( 'projects', 'project_id', $this->project_id )) {
 			return db_error();
 		} else {
 			return NULL;
