@@ -53,6 +53,18 @@ while ($row = db_fetch_assoc( $res )) {
 	$tarr[] = array_merge( $row, array( 'grant_item'=>$item ) );
 }
 
+// pull list of users for permission duplication from template user
+// prevent from copying from users with no permissions
+$sql = "SELECT DISTINCT(user_id), user_username FROM users, permissions
+	WHERE user_id != $user_id AND permission_user = user_id ORDER BY user_username";
+$res = db_loadList( $sql );
+
+//create temp array of users
+$tUsers = array();
+foreach ( $res as $row ) {
+	$tUsers = array_merge( $tUsers, array( $row['user_username']=>$row['user_username'] ) );
+}
+
 // read the installed modules
 $modules = arrayMerge( array( 'all'=>'all' ), $AppUI->getActiveModules( 'modules' ));
 ?>
@@ -229,11 +241,42 @@ foreach ($tarr as $row){
 		<input type="submit" value="<?php echo $AppUI->_('add');?>" class="button" name="sqlaction2">
 	</td>
 </tr>
+</form>
 </table>
-
+<br />
+<table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
+<form name="cpPerms" method="post" action="?m=admin">
+	<input type="hidden" name="dosql" value="do_perms_cp" />
+	<input type="hidden" name="user_id" value="<?php echo $user_id;?>" />
+	<input type="hidden" name="permission_user" value="<?php echo $user_id;?>" />
+<tr>
+	<th colspan="2"><?php echo $AppUI->_('Copy Permissions from Template');?></th>
+</tr>
+<tr>
+	<td nowrap align="left"><?php echo $AppUI->_('Copy Permissions from User');?>:
+	<?php echo arraySelect($tUsers, 'temp_user_name', 'size="1" class="text"', 6);?></td>
+</tr>
+<tr>
+	<td colspan="2">
+		<input type="checkbox" name="delPerms" class="text" value="true" checked="checked">
+		<?php echo $AppUI->_('adminDeleteTemplate');?>
+	</td>
+</tr>
+<tr>
+	<td align="center" colspan="2">
+		<input type="submit" value="<?php echo $AppUI->_('Copy from Template');?>" class="button" name="cptempperms">
+	</td>
+</tr>
+</form>
+</table>
 <?php } ?>
 
 </td>
+
 </tr>
-</form>
+
+
+
+</tr>
+
 </table>
