@@ -275,6 +275,7 @@ SELECT
 	project_id, project_name
 FROM permissions,projects
 WHERE permission_user = $AppUI->user_id
+	AND project_company=$company_id
 	AND project_active=1
 	AND permission_value <> 0
 	AND (
