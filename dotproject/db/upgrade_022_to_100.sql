@@ -295,3 +295,7 @@ CREATE TABLE user_roles (
   role_id int(10) unsigned NOT NULL default '0'
 ) TYPE=MyISAM;
 
+# 28/Feb/2003 eddieajau
+# Give company address a bit more room
+ALTER TABLE `companies` CHANGE `company_address1` `company_address1` VARCHAR(50) DEFAULT "";
+ALTER TABLE `companies` CHANGE `company_address2` `company_address2` VARCHAR(50) DEFAULT "";
