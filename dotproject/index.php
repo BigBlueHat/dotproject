@@ -66,7 +66,7 @@ header ("Pragma: no-cache");	// HTTP/1.0
 is_file( "{$dPconfig['root_dir']}/includes/config.php" ) or die( "FATAL ERROR: Root directory in configuration file probably incorrect." );
 
 // Do not change version for support reasons
-$dPconfig['version'] = "1.0 beta 2 dev [Jun-2003]";
+$dPconfig['version'] = "1.0 beta 1 patch 1 [3-Jun-2003]";
 
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
