@@ -225,7 +225,7 @@ if ($canEdit) {
                 <table width="100%">
                         <tr>
                                 <td align="left">
-                                        <input type="text" class="text" name="task_log_name" value="<?php echo $log->task_log_name;?>" maxlength="255" size="30" />
+                                        <input type="text" class="text" name="task_log_name" value="<?php echo htmlspecialchars($log->task_log_name);?>" maxlength="255" size="30" />
                                 </td>
                                 <td align="center"><?php echo $AppUI->_('Problem');?>:
                                         <input type="checkbox" value="1" name="task_log_problem" <?php if($log->task_log_problem){?>checked="checked"<?php }?> />
@@ -245,13 +245,13 @@ if ($canEdit) {
 		<?php echo $AppUI->_('URL');?>:
 	</td>
         <td>
-                <input type="text" class="text" name="task_log_related_url" value="<?php echo @$log->task_log_related_url;?>" size="50" maxlength="255" title="<?php echo $AppUI->_('Must in general be entered with protocol name, e.g. http://...');?>"/>
+                <input type="text" class="text" name="task_log_related_url" value="<?php echo @htmlspecialchars($log->task_log_related_url);?>" size="50" maxlength="255" title="<?php echo $AppUI->_('Must in general be entered with protocol name, e.g. http://...');?>"/>
         </td>
 </tr>
 <tr>
 	<td align="right" valign="top"><?php echo $AppUI->_('Description');?>:</td>
 	<td>
-		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo $log->task_log_description;?></textarea>
+		<textarea name="task_log_description" class="textarea" cols="50" rows="6"><?php echo htmlspecialchars($log->task_log_description);?></textarea>
 	</td>
 </tr>
 <tr>
