@@ -7,10 +7,9 @@
 
 	require_once("./classes/CustomFields.class.php");
 		
-	$title_heading = $AppUI->_('Custom Fields - Add/Edit');
-	$titleBlock = new CTitleBlock($title_heading, "", "admin", "admin.custom_field_addedit");
-	$titleBlock->addCrumb( "?m=system", $AppUI->_("system admin") );
-	$titleBlock->addCrumb( "?m=system&a=custom_field_editor", $AppUI->_("custom fields") );
+	$titleBlock = new CTitleBlock('Custom Fields - Add/Edit', "", "admin", "admin.custom_field_addedit");
+	$titleBlock->addCrumb( "?m=system", 'system admin' );
+	$titleBlock->addCrumb( "?m=system&a=custom_field_editor", 'custom fields' );
 	$titleBlock->show();
 
 	$field_id = dpGetParam( $_POST, "field_id", NULL ) != NULL ? dpGetParam( $_POST, "field_id", NULL) : dpGetParam( $_GET, "field_id", 0);
@@ -71,15 +70,15 @@
 		else
 		{
 			//No such field exists with this ID
-			$AppUI->setMsg($AppUI->_('Couldnt load the Custom Field, It might have been deleted somehow.')); 
+			$AppUI->setMsg('Couldnt load the Custom Field, It might have been deleted somehow.'); 
 			$AppUI->redirect();
 		}
 
-		$edit_title = $AppUI->_("Edit"); 
+		$edit_title = $AppUI->_("Edit Custom Field In"); 
 	}
 	else
 	{
-		$edit_title = $AppUI->_("New");
+		$edit_title = $AppUI->_("New Custom Field In");
 
 		$field_name = dpGetParam( $_POST, "field_name", NULL );
 		$field_description = dpGetParam( $_POST, "field_description", NULL );
@@ -161,7 +160,7 @@
 <form method="POST" action="?m=system&a=custom_field_editor" id="custform" />
 <table class="std">
 	<th colspan="2">
-		<?php echo $edit_title?> <?php echo $AppUI->_('Custom Field In');?> <?php echo $module?> <?php echo $AppUI->_('Module') ?>
+		<?php echo $edit_title?> <?php echo $AppUI->_($module)?> <?php echo $AppUI->_('Module') ?>
 		<input type="hidden" name="field_id" value="<?php echo $field_id; ?>" />
 		<input type="hidden" name="module" value="<?php echo $module?>" /> 
 		<input type="hidden" name="dontdosql" id="dosql" value="do_custom_field_aed" />

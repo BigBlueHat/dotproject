@@ -8,8 +8,7 @@
 
 	require_once("./classes/CustomFields.class.php");
 
-	$title_header = $AppUI->_('Custom field editor');
-	$titleBlock = new CTitleBlock($title_header, "customfields.png", "admin", "admin.custom_field_editor");
+	$titleBlock = new CTitleBlock('Custom field editor', "customfields.png", "admin", "admin.custom_field_editor");
 	$titleBlock->addCrumb( "?m=system", "system admin" );
 
 	$edit_field_id = dpGetParam( $_POST, "field_id", NULL );
@@ -24,11 +23,11 @@
 	foreach ($modules as $module)
 	{
 		echo "<tr><td colspan=\"4\">";
-		echo "<h3>".$module["mod_name"]."</h3>";
+		echo "<h3>".$AppUI->_($module["mod_name"])."</h3>";
 		echo "</td></tr>";
 
 		echo "<tr><td colspan=\"4\">";
-		echo "<a href=\"?m=system&a=custom_field_addedit&module=".$module["mod_name"]."\"><img src='./images/icons/stock_new.png' align='center' width='16' height='16' border='0'>Add a new Custom Field to this Module</a><br /><br />";
+		echo "<a href=\"?m=system&a=custom_field_addedit&module=".$module["mod_name"]."\"><img src='./images/icons/stock_new.png' align='center' width='16' height='16' border='0'>".$AppUI->_('Add a new Custom Field to this Module')."</a><br /><br />";
 		echo "</td></tr>";
 
 		$sql = "SELECT * FROM custom_fields_struct WHERE field_module = '".strtolower($module["mod_name"])."'";
@@ -46,4 +45,3 @@
 		}
 	}
 ?>
-
