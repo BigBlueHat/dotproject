@@ -46,7 +46,7 @@ $pdf =& new Cezpdf($paper='A4',$orientation='landscape');
 $pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
 $pdf->selectFont( "$font_dir/Helvetica.afm" );
 
-$pdf->ezText( $AppUI->getConfig( 'company_name' ), 12 );
+$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
 
 $date = new CDate();
 $pdf->ezText( "\n" . $date->format( $df) , 8 );

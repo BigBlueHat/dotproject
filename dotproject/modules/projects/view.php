@@ -339,16 +339,16 @@ $query_string = "?m=projects&a=view&project_id=$project_id";
 $tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
 $canViewTask = $perms->checkModule('tasks', 'view');
 if ($canViewTask) {
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks' );
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/tasks", 'Tasks (Inactive)' );
+	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks' );
+	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks (Inactive)' );
 }
 if ($perms->checkModule('forums', 'view'))
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_forums", 'Forums' );
+	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_forums", 'Forums' );
 if ($perms->checkModule('files', 'view'))
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_files", 'Files' );
+	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_files", 'Files' );
 if ($canViewTask) {
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/tasks/viewgantt", 'Gantt Chart' );
-	$tabBox->add( "{$AppUI->cfg['root_dir']}/modules/projects/vw_logs", 'Task Logs' );
+	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/viewgantt", 'Gantt Chart' );
+	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_logs", 'Task Logs' );
 }
 
 $f = 'all';

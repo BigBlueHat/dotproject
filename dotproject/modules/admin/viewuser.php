@@ -10,10 +10,11 @@ $tab = $AppUI->getState( 'UserVwTab' ) !== NULL ? $AppUI->getState( 'UserVwTab' 
 
 // pull data
 $sql = "
-SELECT users.*, 
+SELECT users.*, contacts.*
 	company_id, company_name, 
 	dept_name, dept_id
 FROM users
+LEFT JOIN contacts on user_contact = contact_id
 LEFT JOIN companies ON user_company = companies.company_id
 LEFT JOIN departments ON dept_id = user_department
 WHERE user_id = $user_id
@@ -65,7 +66,7 @@ function popChgPwd() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Real Name');?>:</td>
-			<td class="hilite" width="100%"><?php echo $user["user_first_name"].' '.$user["user_last_name"];?></td>
+			<td class="hilite" width="100%"><?php echo $user["contact_first_name"].' '.$user["contact_last_name"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>

@@ -1,8 +1,7 @@
 <?php 
 class users {
 	var $table = 'users';
-	var $search_fields = array ("user_username", "user_first_name", "user_last_name", "user_email", "user_address1", "user_address2", "user_city",
-	 							"user_state","user_zip","user_country","user_pic","user_signature");
+	var $search_fields = array ("user_username", "user_signature");
 	
 	var $keyword = null;
 	

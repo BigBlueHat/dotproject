@@ -3,7 +3,7 @@ GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab;
 
 //$roles
 // Create the roles class container
-require_once "{$AppUI->cfg['root_dir']}/modules/system/roles/roles.class.php";
+require_once dPgetConfig('root_dir')."/modules/system/roles/roles.class.php";
 
 $perms =& $AppUI->acl();
 $user_roles = $perms->getUserRoles($user_id);

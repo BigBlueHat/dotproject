@@ -14,7 +14,7 @@ $pdf =& new Cezpdf($paper='A4',$orientation='landscape');
 $pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
 $pdf->selectFont( "$font_dir/Helvetica.afm" );
 
-$pdf->ezText( $AppUI->getConfig( 'company_name' ), 12 );
+$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
 
 $date = new CDate();
 $pdf->ezText( "\n" . $date->format( $df ) , 8 );
@@ -84,9 +84,10 @@ foreach ($task_list as $tid)
 
 if (count($tasks)) {
 	$q->clear();
-	$q->addQuery('a.task_id, a.perc_assignment, b.*');
+	$q->addQuery('a.task_id, a.perc_assignment, b.*, c.*');
 	$q->addTable('user_tasks', 'a');
 	$q->leftJoin('users', 'b', 'a.user_id = b.user_id');
+	$q->leftJoin('contacts', 'c', 'b.user_contact = c.contact_id');
 	$q->addWhere('a.task_id in (' . implode(',', $task_list) . ')');
 	$res = $q->exec();
 	if (! $res) {
@@ -95,7 +96,7 @@ if (count($tasks)) {
 	}
 	while ($row = db_fetch_assoc($res)) {
 		$assigned_users[$row['task_id']][$row['user_id']] 
-		= "$row[user_first_name] $row[user_last_name] [$row[perc_assignment]%]";
+		= "$row[contact_first_name] $row[cotnact_last_name] [$row[perc_assignment]%]";
 	}
 }
 

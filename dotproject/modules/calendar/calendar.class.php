@@ -604,10 +604,11 @@ class CEvent extends CDpObject {
 
 
 	function &getAssigned() {
-		$sql = "SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
-			   FROM users u, user_events e
+		$sql = "SELECT u.user_id, CONCAT_WS(' ',contact_first_name, contact_last_name)
+			   FROM users u, user_events e, contacts
 			 WHERE e.event_id = $this->event_id
-			 AND e.user_id = u.user_id
+		          AND user_contact = contact_id
+			      AND e.user_id = u.user_id
 			 ";
 		$assigned = db_loadHashList( $sql );
 		return $assigned;
@@ -650,8 +651,10 @@ class CEvent extends CDpObject {
 	  if (! count($assignee_list))
 	  	return;
 
-	  $sql = "select user_id, user_first_name, user_last_name, user_email
-	  from users where user_id in ( " . implode(',', $assignee_list) . ")";
+	  $sql = "select user_id, contact_first_name, contact_last_name, cotnact_email
+	           from users, contacts
+	           where user_id in ( " . implode(',', $assignee_list) . ")
+	                 and user_contact = contact_id";
 
 	  $users = db_loadHashList($sql, 'user_id');
 	  $date_format = $AppUI->getPref('SHDATEFORMAT');
@@ -701,7 +704,7 @@ class CEvent extends CDpObject {
 			$body .=",";
 		else
 			$start = true;
-	  	$body .= "$user[user_first_name] $user[user_last_name]";
+	  	$body .= "$user[contact_first_name] $user[contact_last_name]";
 	  }
 	  $body .= "\n\n" . $this->event_description . "\n";
 
@@ -753,8 +756,10 @@ class CEvent extends CDpObject {
 	  }
 	  $clash = array_unique($clashes);
 	  if (count($clash)) {
-	    $sql = "SELECT user_id, CONCAT_WS(' ', user_first_name, user_last_name)
-	    FROM users WHERE user_id in (" . implode(",", $clash) . ")";
+	    $sql = "SELECT user_id, CONCAT_WS(' ', contact_first_name, contact_last_name)
+	               FROM users, contacts
+	               WHERE user_id in (" . implode(",", $clash) . ")
+	               AND usert_contact = contact_Id";
 	    return db_loadHashList($sql);
 	  } else {
 	    return false;

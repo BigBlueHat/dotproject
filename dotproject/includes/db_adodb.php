@@ -61,6 +61,7 @@ function db_exec( $sql ) {
 	if (! is_object($db))
 	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 	$qid = $db->Execute( $sql );
+	echo mysql_error();
 	dprint(__FILE__, __LINE__, 10, $sql);
 	if ($msg = db_error())
         {

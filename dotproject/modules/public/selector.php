@@ -75,7 +75,7 @@ case 'projects':
 	$order = 'project_name';
 	$where_clause = array();
 	if ($user_id > 0) {
-		$where_clause[] " project_contacts regex \",*{$user_id},*\" ";
+		$where_clause[] = " project_contacts regex \",*{$user_id},*\" ";
 	}
 	$pwhere = selPermWhere( $obj, 'project_id', 'project_name' );
 	if ($pwhere) {
@@ -83,9 +83,11 @@ case 'projects':
 	}
 	if ($project_company) {
 		$where_clause[] = "AND project_company = $project_company";
+	}
 	$where = implode("\nAND ", $where_clause);
 	break;
-case 'tasks':
+	
+case "tasks":
 	$task_project = dPgetParam( $_GET, 'task_project', 0 );
 
 	$title = 'Task';
@@ -95,8 +97,10 @@ case 'tasks':
 	break;
 case 'users':
 	$title = 'User';
-	$select = "user_id,CONCAT_WS(' ',user_first_name,user_last_name)";
-	$order = 'user_first_name';
+	$select = "user_id,CONCAT_WS(' ',contact_first_name,contact_last_name)";
+	$order = 'contact_first_name';
+	$from .= ", contacts";
+	$where .= "user_contact = contact_id";
 	break;
 case 'SGD':
 	$title = 'Document';

@@ -1,5 +1,23 @@
 <?php
 
+echo "<pre>\n";
+
+echo "Starting Upgrade\n";
+require_once "../includes/config.php";
+require_once "../classes/ui.class.php";
+echo "Loaded base classes\n";
+
+$AppUI =& new CAppUI;
+//$AppUI->setConfig($dPconfig);
+echo "Confiugured environment\n";
+
+require_once "../includes/main_functions.php";
+require_once "../includes/db_adodb.php";
+require_once "../includes/db_connect.php";
+
+echo "Upgrading system ...\n";
+
+
 // Now update the GACL class information.
 require_once dirname(__FILE__) . "/../classes/permissions.class.php";
 

@@ -79,10 +79,12 @@ if ($a = dPgetParam($_REQUEST, "a", "") == ""){
 <?php 
 if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) {  
     $user_filter = $user_id == 0 ? "" : "and ual.user_id='$user_id'";
-    $sql = "select ual.*, u.*
+    $sql = "select ual.*, u.*, c.*
                 from user_access_log as ual,
-                        users as u
+                        users as u,
+                        contacts as c
                 where ual.user_id = u.user_id
+                          and user_contact = contact_id
                           $user_filter
                           and ual.date_time_in >=' ".dPgetParam($_REQUEST, "start_date", "")." ' 
                           and ual.date_time_out <='".dPgetParam($_REQUEST, "end_date", "")."'";
@@ -95,8 +97,8 @@ if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) {
     <th nowrap="nowrap"  STYLE="background: #08245b"><?php echo $AppUI->_('Date Time OUT');?></th>
 <?php foreach ($logs as $detail){?>
 	<tr>
-		<td align="center"><?php echo $detail["user_first_name"];?></td>
-		<td align="center"><?php echo $detail["user_last_name"];?></td>
+		<td align="center"><?php echo $detail["contact_first_name"];?></td>
+		<td align="center"><?php echo $detail["contact_last_name"];?></td>
 		<td align="center"><?php echo $detail["date_time_in"];?></td>
 		<td align="center"><?php echo $detail["date_time_out"];?></td>
 	</tr>

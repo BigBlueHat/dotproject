@@ -71,14 +71,15 @@ $project->load( $task_project );
 
 //Pull all users
 $sql = "
-SELECT user_id, user_first_name, user_last_name
-FROM users
-ORDER BY user_first_name, user_last_name
+SELECT user_id, contact_first_name, contact_last_name
+FROM users, contacts
+WHERE user_contact = contact_id
+ORDER BY contact_first_name, contact_last_name
 ";
 $user_list = db_exec($sql);
 $users = array();
 while ( $user_list && $row = db_fetch_assoc($user_list)) {
-  $users[$row['user_id']] = $row['user_first_name'] . ' ' . $row['user_last_name'];
+  $users[$row['user_id']] = $row['contact_first_name'] . ' ' . $row['contact_last_name'];
 }
 
 function getSpaces($amount){
@@ -247,12 +248,12 @@ var task_name_msg = "<?php echo $AppUI->_('taskName');?>";
 var task_start_msg = "<?php echo $AppUI->_('taskValidStartDate');?>";
 var task_end_msg = "<?php echo $AppUI->_('taskValidEndDate');?>";
 
-var workHours = <?php echo $AppUI->getConfig( 'daily_working_hours' );?>;
+var workHours = <?php echo dPgetConfig( 'daily_working_hours' );?>;
 //working days array from config.php	
-var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
-var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
-var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
-var daily_working_hours = <?php echo $AppUI->getConfig('daily_working_hours'); ?>;
+var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
+var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
+var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;		
+var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
 
 
 </script>

@@ -343,7 +343,7 @@ class CDpObject {
 		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );
-		$deny =& $this->getDeniedItems($this->_tbl, $uid );
+		$deny =& $perms->getDeniedItems($this->_tbl, $uid );
 		$allow =& $perms->getAllowedItems($this->_tbl, $uid);
 		// Make sure that we add the table otherwise dependencies break
 		if (isset($index)) {

@@ -17,9 +17,10 @@ $tab = $AppUI->getState( 'DeptVwTab' ) !== NULL ? $AppUI->getState( 'DeptVwTab' 
 
 // pull data
 $sql = "
-SELECT departments.*,company_name, user_first_name, user_last_name
+SELECT departments.*,company_name, contact_first_name, contact_last_name
 FROM departments, companies
 LEFT JOIN users ON user_id = dept_owner
+LEFT JOIN contacts ON user_contact = contact_id
 WHERE dept_id = $dept_id
 	AND dept_company = company_id
 ";
@@ -90,7 +91,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Owner'); ?>:</td>
-			<td bgcolor="#ffffff" width="100%"><?php echo @$dept["user_first_name"].' '.@$dept["user_last_name"];?></td>
+			<td bgcolor="#ffffff" width="100%"><?php echo @$dept["contact_first_name"].' '.@$dept["contact_last_name"];?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Phone'); ?>:</td>

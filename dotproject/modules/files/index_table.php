@@ -148,8 +148,8 @@ $q2->addQuery(array ('f.*',
 	'project_name',
 	'project_color_identifier',
 	'project_active',
-	'co.contact_first_name',
-	'co.contact_last_name',
+	'cont.contact_first_name',
+	'cont.contact_last_name',
 	'task_name',
 	'task_id',
 	'cu.user_username as co_user'
@@ -157,7 +157,7 @@ $q2->addQuery(array ('f.*',
 $q2->addTable('files', 'f');
 $q2->leftJoin('users', 'cu', 'cu.user_id = f.file_checkout');
 $q2->leftJoin('users', 'u', 'u.user_id = f.file_owner');
-$q2->leftJoin('contacts', 'co', 'co.contact_id = u.user_contact');
+$q2->leftJoin('contacts', 'cont', 'cont.contact_id = u.user_contact');
 $project->setAllowedSQL($AppUI->user_id, $q2, 'file_project');
 $task->setAllowedSQL($AppUI->user_id, $q2, 'file_task');
 if ($catsql) $q2->addWhere($catsql);

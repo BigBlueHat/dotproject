@@ -109,8 +109,8 @@ function submitIt(){
     <tr>
         <td align="right">First Name:</td>
         <td>
-            <input type="text" class="text" name="user_first_name" value="<?php echo $prow["user_first_name"];?>" maxlength="50" /> 
-            <input type="text" class="text" name="user_last_name" value="<?php echo $prow["user_last_name"];?>" maxlength="50" />
+            <input type="text" class="text" name="contact_first_name" value="<?php echo $prow["contact_first_name"];?>" maxlength="50" /> 
+            <input type="text" class="text" name="contact_last_name" value="<?php echo $prow["contact_last_name"];?>" maxlength="50" />
         </td>
     </tr>
     <tr>

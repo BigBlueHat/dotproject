@@ -36,11 +36,11 @@ $events = CEvent::getEventsForPeriod( $first_time, $last_time );
 $links = array();
 
 // assemble the links for the tasks
-require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
 getTaskLinks( $first_time, $last_time, $links, 50, $company_id );
 
 // assemble the links for the events
-require_once( $AppUI->getConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
 getEventLinks( $first_time, $last_time, $links, 50 );
 
 // setup the title block

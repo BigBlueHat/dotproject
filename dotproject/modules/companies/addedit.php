@@ -19,9 +19,10 @@ $types = dPgetSysVal( 'CompanyType' );
 
 // load the record data
 $sql = "
-SELECT companies.*,users.user_first_name,users.user_last_name
+SELECT companies.*, contacts.contact_first_name, contacts.contact_last_name
 FROM companies
 LEFT JOIN users ON users.user_id = companies.company_owner
+LEFT JOIN contacts ON user_contact = contact_id
 WHERE companies.company_id = $company_id
 ";
 
@@ -34,7 +35,10 @@ if (!db_loadObject( $sql, $obj ) && $company_id > 0) {
 
 // collect all the users for the company owner list
 $owners = array( '0'=>'' );
-$sql = "SELECT user_id,CONCAT_WS(' ',user_first_name,user_last_name) FROM users ORDER BY user_first_name";
+$sql = "SELECT user_id,CONCAT_WS(' ',contact_first_name,contact_last_name) 
+         FROM users, contacts
+         WHERE user_contact = contact_id
+         ORDER BY contact_first_name";
 $owners = db_loadHashList( $sql );
 
 // setup the title block

@@ -69,8 +69,9 @@ function setCalendar( idate, fdate ) {
 	
 	<td nowrap='nowrap'>
 	   <?php
-	       $sql = "select user_id, concat_ws(' ', user_first_name, user_last_name)
+	       $sql = "select user_id, concat_ws(' ', contact_first_name, contact_last_name)
 	               from users left join permissions on (user_id = permission_user)
+	                          left join contacts on (user_contact = contact_id)
 	               where !isnull(permission_user)";
 	       $users = array(0 => $AppUI->_("All")) + db_loadHashList($sql);
 	       echo arraySelect($users, "user_id", "class='text'", $user_id);

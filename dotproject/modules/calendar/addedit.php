@@ -40,8 +40,10 @@ $assigned = array();
 if ($is_clash) {
 	$assignee_list = $_SESSION['add_event_attendees'];
 	if (isset($assignee_list) && $assignee_list) {
-	  $sql = "SELECT user_id, CONCAT_WS(' ' , user_first_name, user_last_name)
-	  FROM users WHERE user_id in ($assignee_list)";
+	  $sql = "SELECT user_id, CONCAT_WS(' ' , contact_first_name, contact_last_name)
+	           FROM users, contacts
+	           WHERE user_id in ($assignee_list)
+	                 user_contact = contact_id";
 	  $assigned = db_loadHashList($sql);
 	} else {
 	}

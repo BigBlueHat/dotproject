@@ -129,8 +129,9 @@ if (!@$min_view) {
 		<select name="show_user_todo" onchange="document.form_buttons.submit()">
 <?php
                 $usersql = "
-                SELECT user_id, user_username, user_first_name, user_last_name
-                FROM users
+                SELECT user_id, user_username, cotnact_first_name, contact_last_name
+                FROM users, contacts
+                WHERE user_contact = contact_id
                 ";
 
 

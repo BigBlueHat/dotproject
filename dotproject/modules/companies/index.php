@@ -90,7 +90,7 @@ if ( $companiesTypeTab != -1 ) {
 	$types[] = "Not Defined";
 }
 
-$tabBox = new CTabBox( "?m=companies", "{$AppUI->cfg['root_dir']}/modules/companies/", $companiesTypeTab );
+$tabBox = new CTabBox( "?m=companies", dPgetConfig('root_dir')."/modules/companies/", $companiesTypeTab );
 foreach($types as $type_name){
 	$tabBox->add('vw_companies', $type_name);
 }

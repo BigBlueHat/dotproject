@@ -58,6 +58,10 @@ $orderby = $AppUI->getState( 'ProjIdxOrderBy' ) ? $AppUI->getState( 'ProjIdxOrde
 $obj = new CProject();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
+// Let's delete temproary tables
+$sql = "DROP TABLE IF EXISTS tasks_sum, tasks_summy, tasks_critical, tasks_problems";
+db_exec($sql);
+
 // Task sum table
 // by Pablo Roca (pabloroca@mvps.org)
 // 16 August 2003
@@ -124,6 +128,7 @@ if(isset($department)){
 // get the list of permitted companies
 $obj = new CCompany();
 $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+if(count($companies) == 0) $companies = array(0);
 
 $sql = "
 SELECT
@@ -153,9 +158,7 @@ WHERE 1 = 1"
 GROUP BY projects.project_id
 ORDER BY $orderby
 ";
- //echo "<pre>$sql</pre>";
 $projects = db_loadList( $sql );
-
 
 // get the list of permitted companies
 $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );

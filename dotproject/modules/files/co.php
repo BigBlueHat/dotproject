@@ -17,12 +17,13 @@ $file_parent = intval( dPgetParam( $_GET, 'file_parent', 0 ) );
 $sql = "
 SELECT files.*,
 	user_username,
-	user_first_name,
-	user_last_name,
+	contact_first_name,
+	contact_last_name,
 	project_id,
 	task_id, task_name
 FROM files
 LEFT JOIN users ON file_owner = user_id
+LEFT JOIN contacts ON users.user_contact = contacts.contact_id
 LEFT JOIN projects ON project_id = file_project
 LEFT JOIN tasks ON task_id = file_task
 WHERE file_id = $file_id
@@ -75,8 +76,8 @@ $projects = arrayMerge( array( '0'=>$AppUI->_('All') ), $projects );
 	<input type="hidden" name="dosql" value="do_file_co" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="<?php echo $file_id;?>" />
-        <input type="hidden" name="file_checkout" value="<?= $AppUI->user_id ?>">
-        <input type="hidden" name="file_version_id" value="<?= $obj->file_version_id ?>">
+        <input type="hidden" name="file_checkout" value="<?php echo $AppUI->user_id; ?>">
+        <input type="hidden" name="file_version_id" value="<?php echo $obj->file_version_id; ?>">
         
 
 <tr>

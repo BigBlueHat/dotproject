@@ -23,8 +23,8 @@ if ($perms->checkModule("admin", "view")) {
 $events = CEvent::getEventsForPeriod( $first_time, $last_time, $event_filter, $user_id );
 $events2 = array();
 
-$start_hour = $AppUI->getConfig('cal_day_start');
-$end_hour = $AppUI->getConfig('cal_day_end');
+$start_hour = dPgetConfig('cal_day_start');
+$end_hour   = dPgetConfig('cal_day_end');
 
 foreach ($events as $row) {
 	$start = new CDate( $row['event_start_date'] );
@@ -54,7 +54,7 @@ $dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
 $start = $start_hour;
 $end = $end_hour;
-$inc = $AppUI->getConfig('cal_day_increment');
+$inc = dPgetConfig('cal_day_increment');
 
 if ($start === null ) $start = 8;
 if ($end === null ) $end = 17;
@@ -69,8 +69,10 @@ $html .= $AppUI->_("Event Filter") . ":" . arraySelect($event_filter_list, 'even
 if ($other_users) {
 	$html .= $AppUI->_("Show Events for") . ":" . "<select name='show_user_events' onchange='document.pickFilter.submit()' class='text'>";
 	$usersql = "
-	  SELECT user_id, user_username, user_first_name, user_last_name
-                FROM users
+	  SELECT user_id, user_username, contact_first_name, contact_last_name
+                FROM users, contacts
+	            WHERE user_contact = contact_id
+	           
                 ";
 
 	if (($rows = db_loadList( $usersql, NULL )))
