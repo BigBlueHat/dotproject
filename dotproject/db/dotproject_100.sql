@@ -395,7 +395,7 @@ INSERT INTO modules VALUES("3", "Tasks", "tasks", "1.0.0", "", "core", "1", "Tas
 INSERT INTO modules VALUES("4", "Calendar", "calendar", "1.0.0", "", "core", "1", "Calendar", "myevo-appointments.png", "4", "1", "");
 INSERT INTO modules VALUES("5", "Files", "files", "1.0.0", "", "core", "1", "Files", "folder5.png", "5", "1", "");
 INSERT INTO modules VALUES("6", "Contacts", "contacts", "1.0.0", "", "core", "1", "Contacts", "monkeychat-48.png", "6", "1", "");
-INSERT INTO modules VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "Forums", "gconf-app-icon.png", "7", "1", "");
+INSERT INTO modules VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "Forums", "support.png", "7", "1", "");
 INSERT INTO modules VALUES("8", "Tickets", "ticketsmith", "1.0.0", "", "core", "1", "Tickets", "ticketsmith.gif", "8", "1", "");
 INSERT INTO modules VALUES("9", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "helix-setup-users.png", "9", "1", "");
 INSERT INTO modules VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "48_my_computer.png", "10", "1", "");
