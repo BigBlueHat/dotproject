@@ -34,6 +34,8 @@ class CProject extends CDpObject {
 	var $project_creator = NULL;
 	var $project_active = NULL;
 	var $project_private = NULL;
+	var $project_departments= NULL;
+	var $project_contacts = NULL;
 
 	function CProject() {
 		$this->CDpObject( 'projects', 'project_id' );

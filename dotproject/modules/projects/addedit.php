@@ -52,6 +52,18 @@ $titleBlock->addCrumb( "?m=projects", "projects list" );
 if ($project_id != 0)
   $titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
 $titleBlock->show();
+
+//Build display list for departments
+$company_id = $row->project_company;
+$selected_departments = $row->project_departments != "" ? explode(",", $row->project_departments) : array();
+$departments_count = 0;
+$department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
+if($department_selection_list!=""){
+	$department_selection_list = $AppUI->_("Departments")."<br /><select name='dept_ids[]' size='$departments_count' multiple style=''>$department_selection_list</select>";
+} else {
+	$department_selection_list = "<input type='button' class='button' value='".$AppUI->_("Select department...")."' onclick='javascript:popDepartment();' /><input type=\"hidden\" name=\"project_departments\"";
+}
+
 ?>
 <link rel="stylesheet" type="text/css" media="all" href="<?php echo $AppUI->cfg['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
 <!-- import the calendar script -->
@@ -130,6 +142,43 @@ function submitIt() {
 		alert(msg);
 	}
 }
+
+var selected_contacts_id = "<?= $row->project_contacts; ?>";
+
+function popContacts() {
+	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
+}
+
+function setContacts(contact_id_string){
+	if(!contact_id_string){
+		contact_id_string = "";
+	}
+	document.editFrm.project_contacts.value = contact_id_string;
+	selected_contacts_id = contact_id_string;
+}
+
+var selected_departments_id = "<?= $row->project_departments; ?>";
+
+function popDepartment() {
+        var f = document.editFrm;
+	var url = './index.php?m=public&a=selector&dialog=1&callback=setDepartment&table=departments&company_id='
+            + f.project_company.options[f.project_company.selectedIndex].value
+            + '&dept_id='
+            + selected_departments_id;
+//prompt('',url);
+        window.open(url,'dept','left=50,top=50,height=250,width=400,resizable');
+
+//	window.open('./index.php?m=public&a=selector&dialog=1&call_back=setDepartment&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
+}
+
+function setDepartment(department_id_string){
+	if(!department_id_string){
+		department_id_string = "";
+	}
+	document.editFrm.project_departments.value = department_id_string;
+	selected_departments_id = department_id_string;
+}
+
 </script>
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
@@ -137,42 +186,55 @@ function submitIt() {
 	<input type="hidden" name="dosql" value="do_project_aed" />
 	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 	<input type="hidden" name="project_creator" value="<?php echo $AppUI->user_id;?>" />
+	<input name='project_contacts' type='hidden' value="<?php echo $row->project_contacts; ?>" />
 
 <tr>
 	<td width="50%" valign="top">
 		<table cellspacing="0" cellpadding="2" border="0">
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Name');?></td>
-			<td width="100%">
+			<td width="100%" colspan="2">
 				<input type="text" name="project_name" value="<?php echo dPformSafe( $row->project_name );?>" size="25" maxlength="50" onBlur="setShort();" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
-			<td>
+			<td colspan="2">
 <?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $row->project_owner? $row->project_owner : $AppUI->user_id ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?></td>
-			<td width="100%" nowrap="nowrap">
+			<td width="100%" nowrap="nowrap" colspan="2">
 <?php
 		echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $row->project_company );
 ?> *</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></td>
-			<td>	 <input type="hidden" name="project_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
+			<td nowrap="nowrap">	 <input type="hidden" name="project_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 				<input type="text" class="text" name="start_date" id="date1" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
 
 				<a href="#" onClick="popCalendar( 'start_date', 'start_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
 			</td>
+			<td rowspan="6" valign="top">
+					<?php
+						echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
+						// Let's check if the actual company has departments registered
+						if($department_selection_list != ""){
+							?>
+								<br />
+								<?php echo $department_selection_list; ?>
+							<?php
+						}
+					?>
+			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
-			<td>	<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
+			<td nowrap="nowrap">	<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 				<input type="text" class="text" name="end_date" id="date2" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 
 				<a href="#" onClick="popCalendar('end_date', 'end_date');">
@@ -191,7 +253,7 @@ function submitIt() {
 		</tr>
 <tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
-			<td>	<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
+			<td nowrap="nowrap">	<input type="hidden" name="project_actual_end_date" value="<?php echo $actual_end_date ? $actual_end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 				<input type="text" class="text" name="actual_end_date" id="date2" value="<?php echo $actual_end_date ? $actual_end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 
 				<a href="#" onClick="popCalendar('actual_end_date', 'actual_end_date');">
@@ -208,17 +270,17 @@ function submitIt() {
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2"><hr noshade="noshade" size="1"></td>
+			<td colspan="3"><hr noshade="noshade" size="1"></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?></td>
-			<td>
+			<td colspan="2">
 				<input type="text" name="project_url" value='<?php echo @$row->project_url;?>' size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Staging URL');?></td>
-			<td>
+			<td colspan="2">
 				<input type="Text" name="project_demo_url" value='<?php echo @$row->project_demo_url;?>' size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
@@ -237,7 +299,7 @@ function submitIt() {
 			<td nowrap="nowrap">
 				<input type="text" name="project_color_identifier" value="<?php echo @$row->project_color_identifier;?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
 			</td>
-			<td nowrap="nowrap">
+			<td nowrap="nowrap" align="right">
 				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
 			</td>
 			<td nowrap="nowrap">
@@ -286,7 +348,7 @@ function submitIt() {
 			<td align="left" nowrap="nowrap">
 				<?php echo $AppUI->_('Import tasks from');?>:<br/>
 			</td>
-			<td colspan="1">
+			<td colspan="3">
 				<?php echo arraySelect( $importList, 'import_tasks_from', 'size="1" class="text"', null, false ); ?>
 			</td>
 		</tr>
@@ -310,3 +372,26 @@ function submitIt() {
 </form>
 </table>
 * <?php echo $AppUI->_('requiredField');?>
+
+<?php
+function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
+	global $departments_count;
+	$parsed = '';
+	
+	if($departments_count < 6) $departments_count++;
+	$sql = "select dept_id, dept_name
+	        from departments
+	        where dept_parent      = '$dept_parent'
+	              and dept_company = '$company_id'";
+	$depts_list = db_loadHashList($sql, "dept_id");
+
+	foreach($depts_list as $dept_id => $dept_info){
+		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
+
+		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
+		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
+	}
+	
+	return $parsed;
+}
+?>

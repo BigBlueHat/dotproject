@@ -180,6 +180,18 @@ function delIt() {
 			<td align="right" nowrap><?php echo $AppUI->_('Staging URL');?>:</td>
 			<td class="hilite"><a href="<?php echo @$obj->project_demo_url;?>" target="_new"><?php echo @$obj->project_demo_url;?></a></td>
 		</tr>
+		<tr>
+			<td colspan="2">
+			<strong><?php echo $AppUI->_('Description');?></strong><br />
+			<table cellspacing="0" cellpadding="2" border="0" width="100%">
+			<tr>
+				<td class="hilite">
+					<?php echo str_replace( chr(10), "<br>", $obj->project_description) ; ?>&nbsp;
+				</td>
+			</tr>
+			</table>
+			</td>
+		</tr>
 		</table>
 	</td>
 	<td width="50%" rowspan="9" valign="top">
@@ -209,14 +221,62 @@ function delIt() {
 			<td align="right" nowrap><?php echo $AppUI->_('Work');?>:</td>
 			<td class="hilite" width="100%"><?php echo $total_project_hours ?></td>
 		</tr>				
-		</table>
-		<strong><?php echo $AppUI->_('Description');?></strong><br />
-		<table cellspacing="0" cellpadding="2" border="0" width="100%">
-		<tr>
-			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br>", $obj->project_description) ; ?>&nbsp;
-			</td>
-		</tr>
+		<?php if($obj->project_departments != "") {
+			?>
+		    <tr>
+		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
+		    </tr>
+		    <tr>
+		    	<td colspan='3' class="hilite">
+		    		<?php
+		    			$depts = db_loadHashList("select dept_id, dept_name, dept_phone
+		    			                          from departments
+		    			                          where dept_id in (".$obj->project_departments.")", "dept_id");
+		    			foreach($depts as $dept_id => $dept_info){
+		    				echo "<div>".$dept_info["dept_name"];
+		    				if($dept_info["dept_phone"] != ""){
+		    					echo "( ".$dept_info["dept_phone"]." )";
+		    				}
+		    				echo "</div>";
+		    			}
+		    		?>
+		    	</td>
+		    </tr>
+	 		<?php
+		}
+		
+		if($obj->project_contacts != "") {
+			$contacts = db_loadHashList("select contact_id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_department
+		    			                 from contacts
+		    			                 where contact_id in (".$obj->project_contacts.")
+		    			                       and (contact_owner = '$AppUI->user_id' or contact_private='0')", "contact_id");
+			if(count($contacts)>0){
+				?>
+			    <tr>
+			    	<td><strong><?php echo $AppUI->_("Contacts"); ?></strong></td>
+			    </tr>
+			    <tr>
+			    	<td colspan='3' class="hilite">
+			    		<?php
+			    			echo "<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
+			    			echo "<tr><th>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
+			    			foreach($contacts as $contact_id => $contact_data){
+			    				echo "<tr>";
+			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
+			    				echo "<td class='hilite'><a href='mailto: ".$contact_data["contact_email"]."'>".$contact_data["contact_email"]."</a></td>";
+			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
+			    				echo "<td class='hilite'>".$contact_data["contact_department"]."</td>";
+			    				echo "</tr>";
+			    			}
+			    			echo "</table>";
+			    		?>
+			    	</td>
+			    </tr>
+			    <tr>
+			    	<td>
+		 <?php
+			}
+		}?>
 		</table>
 	</td>
 </table>

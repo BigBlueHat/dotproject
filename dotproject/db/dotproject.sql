@@ -218,11 +218,14 @@ CREATE TABLE `projects` (
   `project_creator` int(11) default '0',
   `project_active` tinyint(4) default '1',
   `project_private` tinyint(3) unsigned default '0',
+  `project_departments` CHAR( 100 ) ,
+  `project_contacts` CHAR( 100 ) ,
   PRIMARY KEY  (`project_id`),
   KEY `idx_project_owner` (`project_owner`),
   KEY `idx_sdate` (`project_start_date`),
   KEY `idx_edate` (`project_end_date`),
   KEY `project_short_name` (`project_short_name`)
+
 ) TYPE=MyISAM;
 
 CREATE TABLE `task_log` (

@@ -19,6 +19,11 @@ if ($obj->project_actual_end_date) {
 	$obj->project_actual_end_date = $date->format( FMT_DATETIME_MYSQL );
 }
 
+// let's check if there are some assigned departments to project
+if(!dPgetParam($_POST, "project_departments", 0)){
+	$obj->project_departments = implode(",", dPgetParam($_POST, "dept_ids", array()));
+}
+
 $del = dPgetParam( $_POST, 'del', 0 );
 
 // prepare (and translate) the module name ready for the suffix
