@@ -43,7 +43,7 @@ $crumbs["?m=forums"] = "forums list";
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
-	<?php if (!$denyEdit) { ?>
+	<?php if ($canEdit) { ?>
 		<input type="button" class=button style="width:120;" value="<?php echo $AppUI->_( 'start a new topic' );?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&post_message=1';">
 	<?php } ?>
 	</td>

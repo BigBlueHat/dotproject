@@ -1,4 +1,4 @@
-<?php
+<?php /* HISTORY $Id$ */
 ##
 ## History module
 ## (c) Copyright
@@ -6,15 +6,6 @@
 ## IMATRONIX
 ## 
 
-/*
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( 'm=help&a=access_denied' );
-}
-*/
 $AppUI->savePlace();
 ?>
 <table width="100%" border="0" cellpadding="0" cellspacing=1>

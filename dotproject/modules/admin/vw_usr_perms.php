@@ -1,5 +1,5 @@
 <?php /* ADMIN $Id$ */
-GLOBAL $AppUI, $user_id, $denyEdit, $tab;
+GLOBAL $AppUI, $user_id, $canEdit, $tab;
 
 $pgos = array(
 	'files' => 'file_name',
@@ -147,7 +147,7 @@ foreach ($tarr as $row){
 	$buf = '';
 
 	$buf .= '<td nowrap>';
-	if (!$denyEdit) {
+	if ($canEdit) {
 		$buf .= "<a href=# onClick=\"editPerm({$row['permission_id']},'{$row['permission_grant_on']}',{$row['permission_item']},{$row['permission_value']},'{$row['grant_item']}');\"><img src=\"./images/icons/pencil.gif\" alt=\"edit permissions\" border=\"0\" width='12' height='12'></a>";
 	}
 	$buf .= '</td>';
@@ -164,7 +164,7 @@ foreach ($tarr as $row){
 	$buf .= "<td>" . $row['grant_item'] . "</td><td nowrap>" . $pvs[$row['permission_value']] . "</td>";
 
 	$buf .= '<td nowrap>';
-	if (!$denyEdit) {
+	if ($canEdit) {
 		$buf .= "<a href=# onClick=\"delIt({$row['permission_id']});\"><img align='absmiddle' src='./images/icons/trash.gif' width='16' height='16' alt='".$AppUI->_('delete permission')."' border='0'></a>";
 	}
 	$buf .= '</td>';
@@ -189,7 +189,7 @@ foreach ($tarr as $row){
 
 </td><td width="50%" valign="top">
 
-<?php if (!$denyEdit) {?>
+<?php if ($canEdit) {?>
 
 <table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
 <form name="frmPerms" method="post" action="?m=admin">

@@ -3,10 +3,10 @@
 $contact_id = isset( $HTTP_GET_VARS['contact_id'] ) ? $HTTP_GET_VARS['contact_id'] : 0;
 
 // check permissions
-$denyEdit = getDenyEdit( $m, $contact_id );
+$canEdit = getDenyEdit( $m, $contact_id );
 
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 //Pull contact information

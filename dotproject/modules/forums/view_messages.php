@@ -33,7 +33,7 @@ function delIt(id){
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
-	<?php if (!$denyEdit) { ?>
+	<?php if ($canEdit) { ?>
 		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
 		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
 	<?php } ?>
@@ -80,7 +80,7 @@ foreach ($messages as $row){
 	$s .= '<img src="./images/icons/posticon.gif" alt="date posted" border="0" width="14" height="11">'.$date->toString().'</td>';
 	$s .= '<td valign="top" align="right" style="'.$style.'">';
 	
-	if (!$denyEdit && $AppUI->user_id == $row['forum_moderated']) {
+	if ($canEdit && $AppUI->user_id == $row['forum_moderated']) {
 	// edit message
 		$s .= '<a href="./index.php?m=forums&a=viewer&post_message=1&forum_id='.$row["message_forum"].'&message_parent='.$row["message_parent"].'&message_id='.$row["message_id"].'">';
 		$s .= '<img src="images/icons/pencil.gif" width="12" height="12" border="0" alt="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'"></a>';
@@ -101,7 +101,7 @@ foreach ($messages as $row){
 <tr>
 	<td><?php echo breadCrumbs( $crumbs );?></td>
 	<td align="right">
-	<?php if (!$denyEdit) { ?>
+	<?php if ($canEdit) { ?>
 		<input type="button" class=button value="<?php echo $AppUI->_('Post Reply');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_parent=<?php echo $message_id;?>&post_message=1';" />
 		<input type="button" class=button value="<?php echo $AppUI->_('New Topic');?>" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id=<?php echo $forum_id;?>&message_id=0&post_message=1';" />
 	<?php } ?>

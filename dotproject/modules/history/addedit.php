@@ -1,12 +1,10 @@
-<?php
+<?php /* $Id$ */
 $history_id = defVal( @$_GET["history_id"], 0);
 
 /*
 // check permissions
-$denyEdit = getDenyEdit( $m );
-
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 */
 
