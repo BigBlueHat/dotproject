@@ -1,5 +1,10 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+3 September 2002 (AJE):
+-----------------------------
+modules/tasks/view.php
+- fixed a broken link to the project in the breadcrumbs
+
 2 September 2002 (AJE):
 -----------------------------
 Fixed up the order of this log (my mistake, call it a sourthern hemi-sphere thing)
