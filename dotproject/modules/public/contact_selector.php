@@ -35,7 +35,7 @@
 	$contacts = db_loadHashList($sql, "contact_id");
 ?>
 
-<h2>Contacts for <?= $company_name ?></h2>
+<h2><?php echo $AppUI->_('Contacts for'); ?> <?= $company_name ?></h2>
 
 <form action='index.php?m=public&a=contact_selector&dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>company_id=<?= $company_id ?>' method='post'>
 <?php
