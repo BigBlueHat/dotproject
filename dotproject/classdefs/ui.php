@@ -9,7 +9,6 @@ define( 'UI_MSG_ALERT', 2 );
 define( 'UI_MSG_WARNING', 3 );
 define( 'UI_MSG_ERROR', 4 );
 
-
 // global variable holding the translation array
 $GLOBALS['translate'] = array();
 
@@ -31,8 +30,9 @@ class CAppUI {
 	var $user_locale;
 	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
 // supported languages
-	var $locales = array(		
-		'en' => 'English', 
+	var $locales = array(
+		'de' => 'German',
+		'en' => 'English',
 		'es' => 'Spanish',
 		'fr' => 'French',
 		'pt_br' => 'Portugese-Brazilian'
@@ -183,7 +183,7 @@ class CAppUI {
 			user_id, user_first_name, user_last_name, user_company, user_department, user_type
 		FROM users, permissions
 		WHERE user_username = '$username'
-			AND user_password = password('$password') 
+			AND user_password = password('$password')
 			AND users.user_id = permissions.permission_user
 			AND permission_value <> 0
 		";
@@ -208,7 +208,7 @@ class CAppUI {
 		$this->user_locale = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $host_locale;
 
 		$this->secret = md5( $this->user_first_name.$secret.$this->user_last_name );
-		
+
 	// handle legacy cookies until they are all crushed
 		$this->logout();
 		setcookie( "user_cookie", $this->user_id );
