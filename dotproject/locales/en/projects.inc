@@ -1,11 +1,13 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Log All Projects",
+"Milestone",
 "Active",
 "Actual Budget",
 "Actual End Date",
 "Actual Finish Date",
+"All Projects",
+"All users",
 "Archived",
 "Color Identifier",
 "Completed Projects",
@@ -30,6 +32,7 @@
 "Ignore 0 hours",
 "Last Post",
 "Log All",
+"Log All Projects",
 "Make PDF",
 "Manage Project",
 "Messages",
@@ -65,9 +68,9 @@
 "To",
 "Total",
 "Total Hours",
+"Update projects status",
 "User",
 "View PDF File",
-"Update projects status",
 "View Project",
 "Work",
 "Worked Hours",

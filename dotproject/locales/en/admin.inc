@@ -1,13 +1,14 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Child Tasks",
+"select dept",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
 "Administrator",
 "Branch Manager",
 "CEO",
+"Child Tasks",
 "Complete",
 "Copy Permissions from Template",
 "Copy Permissions from User",

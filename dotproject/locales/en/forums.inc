@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"Watch Unforced",
 "%s ago",
 "- Filters -",
 "Add Forum",
@@ -37,6 +38,7 @@
 "Subject",
 "Topics",
 "Watch",
+"Watch Forced",
 "Watch updated",
 "add new forum",
 "closed",
@@ -48,8 +50,8 @@
 "forumDeletePost"=>"Are you sure you would like to delete this post?",
 "forumEmailBody"=>"There has been activity in a forum you are watching.",
 "forumEmailFrom"=>"Dotproject forum watch",
-"forumForceWatch"=>"Force forum watch for all users on all forums (possibly a security issue!; depends on your use of dotproject)",
 "forumEmailSubj"=>"Dotproject forum activity",
+"forumForceWatch"=>"Force forum watch for all users on all forums (possibly a security issue!; depends on your use of dotproject)",
 "forumName"=>"Please enter a valid forum name",
 "forumSelectOwner"=>"Please select the owner of this forum",
 "forumSelectProject"=>"Please select the project to associate this forum with",

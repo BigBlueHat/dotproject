@@ -1,16 +1,18 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Please select a project first!",
+"Page(s)",
 "Add File",
-"Are you sure you want to cancel?",
 "All Projects",
+"Are you sure you want to cancel?",
 "Date",
 "Edit File",
 "File Name",
 "File could not be written",
+"File(s)",
 "Filter",
 "New File",
+"Please select a project first!",
 "Size",
 "Type",
 "Upload File",

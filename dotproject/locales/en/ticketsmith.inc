@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"911",
+"my tickets",
 "Activity",
 "All",
 "All Tickets",
@@ -35,9 +35,9 @@
 "Highest",
 "Link",
 "Link Ticket",
+"Low",
 "My",
 "My Tickets",
-"Low",
 "Normal",
 "Open",
 "Open Parents",
@@ -85,10 +85,10 @@
 "hour",
 "hours",
 "in the given search",
-"month",
-"months",
 "minute",
 "minutes",
+"month",
+"months",
 "new ticket",
 "newer",
 "no results",
@@ -107,3 +107,4 @@
 "weeks",
 "year",
 "years",
+"911",

@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Inventory",
+"send password",
 "- New Item -",
 "About",
 "Active Projects",
@@ -37,6 +37,7 @@
 "Departments",
 "Description",
 "Details",
+"EMail",
 "Edit",
 "Email",
 "Ends",
@@ -54,6 +55,7 @@
 "In Planning",
 "In Progress",
 "Internal",
+"Invalid username or email.",
 "Inventory",
 "Last Name",
 "Login Failed",
@@ -66,6 +68,7 @@
 "My Info",
 "Name",
 "New Password",
+"New User Password created and emailed to you",
 "No",
 "No data available",
 "Not Applicable",
@@ -121,7 +124,7 @@
 "added",
 "back",
 "cancel",
-"chgpwNoMatch"=>"The new password don't match",
+"chgpwNoMatch"=>"The new password don\\\\\\\'t match",
 "chgpwUpdated"=>"Your password has been updated",
 "chgpwValidNew"=>"Please enter a valid new password",
 "chgpwValidOld"=>"Please enter a valid old password",
@@ -135,7 +138,7 @@
 "either",
 "filter",
 "flat",
-"forgotPassword"=>"Help! I've forgotten my password!",
+"forgotPassword"=>"Help! I\\\\\\\'ve forgotten my password!",
 "hour",
 "hours",
 "invalidID"=>"ID is invalid.  Unable to display.",
@@ -152,6 +155,14 @@
 "requiredField"=>"indicates required field",
 "save",
 "search",
+"sendpass0"=>"The user account",
+"sendpass1"=>"has this email associated with it.
+ A web user from",
+"sendpass2"=>"has just requested that a new password be sent.
+
+ Your New Password is:",
+"sendpass3"=>"If you didn\\\\\\\'t ask for this, don\\\\\\\'t worry. You are seeing this message, not them. If this was an error just login with your new password and then change your password to what you would like it to be.",
+"sendpass4"=>"New password for",
 "sort by",
 "submit",
 "tabbed",
