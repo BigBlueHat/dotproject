@@ -1,4 +1,4 @@
-<?php
+<?php /* PROJECTS $Id$ */
 ##
 ## CProject Class
 ##
@@ -36,7 +36,6 @@ class CProject {
 		if (!$this->project_private) {
 			$this->project_private = '0';
 		}
-
 		// TODO
 		return NULL; // object is ok
 	}
