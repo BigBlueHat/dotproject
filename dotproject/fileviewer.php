@@ -62,8 +62,9 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 }
 $AppUI =& $_SESSION['AppUI'];
 
-require_once "{$dPconfig['root_dir']}/includes/db_connect.php";
 require_once "{$dPconfig['root_dir']}/includes/main_functions.php";
+require_once "{$dPconfig['root_dir']}/includes/db_adodb.php";
+require_once "{$dPconfig['root_dir']}/includes/db_connect.php";
 require_once "{$dPconfig['root_dir']}/includes/permissions.php";
 
 $perms =& $AppUI->acl();
@@ -76,7 +77,9 @@ if (!$canRead) {
 $file_id = isset($_GET['file_id']) ? $_GET['file_id'] : 0;
 
 if ($file_id) {
-	// projects that are denied access
+	// projects tat are denied access
+	require_once($AppUI->getModuleClass("projects"));
+	require_once($AppUI->getModuleClass("files"));
 	$project =& new CProject;
 	$allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 	$fileclass =& new CFile;
