@@ -76,3 +76,4 @@
 "updated",
 "visible",
 "zh"=>"Chinese",
+"zh_tw"=>"Chinese (Taiwan)",
