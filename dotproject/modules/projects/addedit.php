@@ -101,6 +101,10 @@ function submitIt() {
 		msg += "\n<?php echo $AppUI->_('projectsColor');?>";
 		f.project_color_identifier.focus();
 	}
+	if (f.project_company.options[f.project_company.selectedIndex].value < 1) {
+		msg += "\n<?php echo $AppUI->_('projectsBadCompany');?>";
+		f.project_name.focus();
+	}
 	if (f.project_end_date.value > 0 && f.project_end_date.value < f.project_start_date.value) {
 		msg += "\n<?php echo $AppUI->_('projectsBadEndDate1');?>";
 	}
