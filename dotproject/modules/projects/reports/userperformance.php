@@ -1,9 +1,10 @@
 <?php
-$do_report 		= dPgetParam( $_POST, "do_report", 0 );
+$do_report 		    = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
-$log_end_date 	= dPgetParam( $_POST, "log_end_date", 0 );
+$log_end_date 	    = dPgetParam( $_POST, "log_end_date", 0 );
 $log_all_projects 	= dPgetParam($_POST["log_all_projects"], 0);
-$log_all		= dPgetParam($_POST["log_all"], 0);
+$log_all		    = dPgetParam($_POST["log_all"], 0);
+$group_by_unit      = dPgetParam($_POST["group_by_unit"],"day");
 
 // create Date objects from the datetime fields
 $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();

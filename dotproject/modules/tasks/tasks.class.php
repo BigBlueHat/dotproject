@@ -393,6 +393,40 @@ class CTask extends CDpObject {
 				break;
 		}
 	}
+	
+	/**
+	* Function that returns the amount of hours this
+	* task consumes per user each day
+	*/
+	function getTaskDurationPerDay(){
+		$duration              = $this->task_duration*$this->task_duration_type;
+		$task_start_date       = new CDate($this->task_start_date);
+		$task_finish_date      = new CDate($this->task_end_date);
+		$number_assigned_users = count($this->getAssignedUsers());
+		
+		$day_diff              = $task_finish_date->dateDiff($task_start_date);
+		$number_of_days_worked = 0;
+		$actual_date           = $task_start_date;
+
+		for($i=0; $i<=$day_diff; $i++){
+			if($actual_date->isWorkingDay()){
+				$number_of_days_worked++;
+			}
+			$actual_date->addDays(1);
+		}
+		// May be it was a Sunday task
+		if($number_of_days_worked == 0) $number_of_days_worked = 1;
+		if($number_assigned_users == 0) $number_assigned_users = 1;
+		return ($duration/$number_assigned_users) / $number_of_days_worked;
+	}
+	
+	function getAssignedUsers(){
+		$sql = "select u.*
+		        from users as u, user_tasks as ut
+		        where ut.task_id = '$this->task_id'
+		              and ut.user_id = u.user_id";
+		return db_loadHashList($sql, "user_id");
+	}
 }
 
 /**

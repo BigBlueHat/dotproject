@@ -115,9 +115,10 @@ $dPconfig['link_tickets_kludge'] = false;
 
 // Calendar settings.
 // Day view start end and increment
-$dPconfig['cal_day_start'] = 8;		// Start hour, in 24 hour format
-$dPconfig['cal_day_end'] = 17;		// End hour in 24 hour format
-$dPconfig['cal_day_increment'] = 15;	// Increment, in minutes
+$dPconfig['cal_day_start']     = 8;	  // Start hour, in 24 hour format
+$dPconfig['cal_day_end']       = 17;  // End hour in 24 hour format
+$dPconfig['cal_day_increment'] = 15;  // Increment, in minutes
+$dPconfig["cal_working_days"]  = "1,2,3,4,5"; // days of week that the company works 0=Sunday
 
 //File parsers to return indexing information about uploaded files
 $ft["default"] = "/usr/bin/strings";
