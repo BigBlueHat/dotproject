@@ -75,3 +75,8 @@ ALTER TABLE `user_tasks` ADD `user_task_priority` tinyint(4) default '0';
 # converted taskstatus to sysvals
 #
 INSERT INTO `sysvals` VALUES (null, 1, 'TaskStatus', '0|Active\n-1|Inactive');
+
+# 20040808
+# do not show events on non-working days
+#
+ALTER TABLE `events` ADD `events_cwd` tinyint(3) default '0';

@@ -103,6 +103,7 @@ CREATE TABLE `events` (
   `event_project` int(11) default '0',
   `event_private` tinyint(3) default '0',
   `event_type` tinyint(3) default '0',
+  `event_cwd` tinyint(3) default '0',
   PRIMARY KEY  (`event_id`),
   KEY `id_esd` (`event_start_date`),
   KEY `id_eed` (`event_end_date`),

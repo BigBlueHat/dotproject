@@ -198,6 +198,12 @@ function setCalendar( idate, fdate ) {
 	<td><?php echo arraySelect( $times, 'end_time', 'size="1" class="text"', $end_date->format( "%H%M%S" ) ); ?></td>
 </tr>
 <tr>
+	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Show only on Working Days' );?>:</td>
+	<td>
+		<input type="checkbox" value="1" name="event_cwd" <?php echo (@$obj->event_cwd ? 'checked' : '');?>>
+	</td>
+</tr>
+<tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Recurs' );?>:</td>
 	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj->event_recurs, true ); ?></td>
 	<td align="right">x</td>

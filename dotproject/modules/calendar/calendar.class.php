@@ -396,6 +396,7 @@ class CEvent extends CDpObject {
 	var $event_project = NULL;
 	var $event_private = NULL;
 	var $event_type = NULL;
+	var $event_cwd = NULL;
 
 	function CEvent() {
 		$this->CDpObject( 'events', 'event_id' );
@@ -406,6 +407,7 @@ class CEvent extends CDpObject {
 	// ensure changes to check boxes and select lists are honoured
 		$this->event_private = intval( $this->event_private );
 		$this->event_type = intval( $this->event_type );
+		$this->event_cwd = intval( $this->event_cwd );
 		return NULL;
 	}
 
