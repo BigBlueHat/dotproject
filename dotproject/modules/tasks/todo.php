@@ -33,12 +33,16 @@ if (isset( $_POST['show_form'] )) {
 	$AppUI->setState( 'TaskDayShowHold', dPgetParam($_POST, 'show_hold_proj', 0 ) );
 	$AppUI->setState( 'TaskDayShowDyn', dPgetParam($_POST, 'show_dyn_task', 0) );
 	$AppUI->setState( 'TaskDayShowPin', dPgetParam($_POST, 'show_pinned', 0));
+	$AppUI->setState( 'TaskDayShowEmptyDate', dPgetParam($_POST, 'show_empty_date', 0));
+
 }
 $showArcProjs = $AppUI->getState( 'TaskDayShowArc', 0 );
 $showLowTasks = $AppUI->getState( 'TaskDayShowLow', 1);
 $showHoldProjs = $AppUI->getState( 'TaskDayShowHold', 0);
 $showDynTasks = $AppUI->getState('TaskDayShowDyn', 0);
 $showPinned = $AppUI->getState('TaskDayShowPin', 0);
+$showEmptyDate = $AppUI->getState('TaskDayShowEmptyDate', 0);
+
 
 // if task priority set and items selected, do some work
 $task_priority = dPgetParam( $_POST, 'task_priority', 99 );
@@ -83,7 +87,6 @@ $q->leftJoin('user_task_pin', 'tp', 'tp.task_id = ta.task_id and tp.user_id = ' 
 $q->addWhere('ut.task_id = ta.task_id');
 $q->addWhere("ut.user_id = '$user_id'");
 $q->addWhere('( ta.task_percent_complete < 100 or ta.task_percent_complete is null)');
-$q->addWhere("ta.task_end_date != ''");
 $q->addWhere("ta.task_status = '0'");
 $q->addWhere("pr.project_id = ta.task_project");
 if (!$showArcProjs)
@@ -96,6 +99,9 @@ if (!$showDynTasks)
 	$q->addWhere('task_dynamic = 0');
 if ($showPinned)
 	$q->addWhere('task_pinned = 1');
+if (!$showEmptyDate)
+	$q->addWhere("ta.task_end_date != '' AND ta.task_end_date != '0000-00-00 00:00:00'");
+
 
 if (count($allowedTasks))
 	$q->addWhere($allowedTasks);
@@ -195,6 +201,12 @@ if (!@$min_view) {
 	</td>
 	<td nowrap="nowrap">
 		<?php echo $AppUI->_('Low Priority Tasks'); ?>
+	</td>
+	<td>
+		<input type=checkbox name="show_empty_date" onclick="document.form_buttons.submit()" <?php echo $showEmptyDate ? 'checked="checked"' : ""; ?> />
+	</td>
+	<td nowrap="nowrap">
+		<?php echo $AppUI->_('Empty Dates'); ?>
 	</td>
 </tr>
 </form>
