@@ -180,7 +180,7 @@ function set_clash_action(action) {
  */
 function clash_process()
 {
-  global $AppUI, $do_include;
+  global $AppUI, $do_include, $baseDir;
 
   $obj =& new CEvent;
   $obj->bind($_SESSION['add_event_post']);
@@ -217,7 +217,7 @@ function clash_process()
     $AppUI->setMsg('No clashes in suggested timespan', UI_MSG_OK);
     $_SESSION['event_is_clash'] = true;
     $_GET['event_id'] = $obj->event_id;
-    $do_include = dirname(__FILE__) . "/addedit.php";
+    $do_include = "$baseDir/modules/calendar/addedit.php";
     return;
   }
 
@@ -296,7 +296,7 @@ function clash_process()
 	$AppUI->setMsg('First available time slot', UI_MSG_OK);
 	$_SESSION['event_is_clash'] = true;
 	$_GET['event_id'] = $obj->event_id;
-	$do_include = dirname(__FILE__) . "/addedit.php";
+	$do_include = "$baseDir/modules/calendar/addedit.php";
 	return;
       }
     }

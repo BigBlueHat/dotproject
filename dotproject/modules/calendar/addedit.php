@@ -351,7 +351,7 @@ function removeUser() {
 	<td colspan="2" align="right">
 			<?php
 				// $m does not equal 'calendar' here???
-				require_once("./classes/CustomFields.class.php");
+				require_once $AppUI->getSystemClass("CustomFields");
 				$custom_fields = New CustomFields( 'calendar', 'addedit', $obj->event_id, "edit" );
 				$custom_fields->printHTML();
 			?>

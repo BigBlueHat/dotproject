@@ -145,7 +145,7 @@ function delIt() {
 		</tr>
 		</table>
 		<?php
-				require_once("./classes/CustomFields.class.php");
+				require_once $AppUI->getSystemClass("CustomFields");
 				$custom_fields = New CustomFields( $m, $a, $obj->event_id, "view" );
 				$custom_fields->printHTML();
 		?>
