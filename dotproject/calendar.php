@@ -53,18 +53,18 @@ echo $cal->show();
 $this_month->setFormat( "%b" );
 for ($i=0; $i < 12; $i++) {
     $this_month->setMonth( $i+1 );
-    echo '<td width="8%">'
-        ."<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
-        .'</td>';
+    echo "    <td width=\"8%\">\n"
+        ."        <a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$this_month->getTimestamp().'" class="">'.substr( $this_month->toString(), 0, 1)."</a>"
+        ."\n    </td>\n";
 }
 ?>
 </tr>
 <tr>
     <td colspan="6" align="left">
-        <?php echo "<a href=\"{$_SERVER['$SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>";?>
+        <?php echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->prev_year->getTimestamp().'" class="">'.$cal->prev_year->getYear()."</a>\n";?>
     </td>
     <td colspan="6" align="right">
-        <?php echo "<a href=\"{$_SERVER['$SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>";?>
+        <?php echo "<a href=\"{$_SERVER['SCRIPT_NAME']}?callback=$callback&uts=".$cal->next_year->getTimestamp().'" class="">'.$cal->next_year->getYear()."</a>\n";?>
     </td>
 </table>
 
