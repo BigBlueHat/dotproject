@@ -23,6 +23,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$titleBlock->addCrumb( "?m=admin", "users list" );
 	$titleBlock->show();
 } else {
+	 if ( $user_id == 0)
         $user['contact_id'] = 0;
 // pull companies
 	$q = new DBQuery;
