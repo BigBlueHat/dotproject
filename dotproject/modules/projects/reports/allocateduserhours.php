@@ -161,7 +161,7 @@ if($do_report) {
 			$actual_date      = $task_start_date;
 	
 			$users                 = $task->getAssignedUsers();
-			$task_duration_per_day = $task->getTaskDurationPerDay();
+			$task_duration_per_day = $task->getTaskDurationPerDay($use_assigned_percentage);
 			
 			for($i = 0; $i<=$day_difference; $i++){
 				if(!$actual_date->before($start_date) && !$actual_date->after($end_date)
