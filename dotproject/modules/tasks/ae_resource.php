@@ -46,7 +46,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 	<td valign="top" align="center">
 		<table cellspacing="0" cellpadding="2" border="0">
 			<tr>
-				<td><?php echo $AppUI->_( 'Resources' );?>:</td>
+				<td><?php echo $AppUI->_( 'Human Resources' );?>:</td>
 				<td><?php echo $AppUI->_( 'Assigned to Task' );?>:</td>
 			</tr>
 			<tr>
