@@ -10,7 +10,7 @@ $task_parent = intval( dPgetParam( $_GET, "task_parent", 0 ) );
 // load the record data
 $obj = new CTask();
 
-if (!$obj->load( $task_id ) && $task_id > 0) {
+if (!$obj->load( $task_id, false ) && $task_id > 0) {
 	$AppUI->setMsg( 'Task' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();

@@ -31,7 +31,7 @@ $obj = new CTask();
 $canDelete = $obj->canDelete( $msg, $task_id );
 
 //$obj = null;
-if (!db_loadObject( $sql, $obj, true )) {
+if (!db_loadObject( $sql, $obj, true, false )) {
 	$AppUI->setMsg( 'Task' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
