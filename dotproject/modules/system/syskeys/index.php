@@ -54,7 +54,9 @@ function showRow($id=0, $key=0, $title='', $value='') {
 	} else {
 		$s .= '<td width="12" valign="top">';
 		if ($canEdit) {
-			$s .= '<a href="?m=system&u=syskeys&sysval_id='.$id.'"><img src="./images/icons/pencil.gif" alt="edit" border="0" width="12" height="12"></a>';
+			$s .= '<a href="?m=system&u=syskeys&sysval_id='.$id.'" title="'.$AppUI->_('edit').'">'
+				. dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' )
+				. '</a>';
 			$s .= '</td>'.$CR;
 		}
 		$s .= '<td valign="top">'.$keys[$key].'</td>'.$CR;
@@ -62,7 +64,9 @@ function showRow($id=0, $key=0, $title='', $value='') {
 		$s .= '<td valign="top" colspan="2">'.$value.'</td>'.$CR;
 		$s .= '<td valign="top" width="16">';
 		if ($canEdit) {
-			$s .= '<a href="#" onclick="return delIt('.$id.')"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="'.$AppUI->_('delete').'" border="0"></a>';
+			$s .= '<a href="#" onclick="return delIt('.$id.')" title="'.$AppUI->_('delete').'">'
+				. dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
+				. '</a>';
 		}
 		$s .= '</td>'.$CR;
 	}
