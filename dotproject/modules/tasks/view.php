@@ -190,8 +190,8 @@ function updateTask() {
 	</td>
 
 	<td width="50%">
-		<b><?php echo $AppUI->_('Work');?></b>:
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+<?php if (!$denyEdit) { ?>
 		<form name="update" action="?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
 		<input type="hidden" value="<?php echo uniqid("");?>" name="uniqueid">
 		<input type="hidden" value="updatetask" name="dosql">
@@ -199,6 +199,9 @@ function updateTask() {
 		<input type="hidden" value="<?php echo $AppUI->user_id;?>" name="user_id">
 		<input type="hidden" value="Update :<?php echo $$task["task_name"];?>" name="comment_title">
 		<input type="hidden" value="<?php echo @$task["task_hours_worked"];?>" name="already_worked">
+		<tr>
+			<td colspan="3"><b><?php echo $AppUI->_('Work');?></b></td>
+		</tr>
 		<tr>
 			<td rowspan="2" valign="bottom" align="left" bgcolor="#e0e0e0">
 				<input type="button" class="button" value="<?php echo $AppUI->_('update task');?>" onclick="updateTask()">
@@ -226,6 +229,7 @@ function updateTask() {
 			</td>
 		</tr>
 		</form>
+<?php } ?>
 
 		<tr>
 			<td colspan="3"><b><?php echo $AppUI->_('Assigned Users');?></b></td>
