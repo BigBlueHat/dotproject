@@ -59,7 +59,7 @@ while ($row = db_fetch_row( $drc )) {
 // pull tasks
 
 $select = "
-tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, 
+tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, task_duration_type,
 task_priority, task_percent_complete, task_order, task_project, task_milestone,
 project_name
 ";
@@ -112,7 +112,7 @@ for ($x=0; $x < $nums; $x++) {
 	// calculate or set blank task_end_date if unset
 	if($row["task_end_date"] == "0000-00-00 00:00:00") {
 		if($row["task_duration"]) {
-			$row["task_end_date"] = formatTime ( db_dateTime2unix( $row["task_start_date"] ) + SECONDS_PER_DAY * convert2days( $row["task_duration"], $row["task_duration_type"] ) );
+			$row["task_end_date"] = db_unix2dateTime ( db_dateTime2unix( $row["task_start_date"] ) + SECONDS_PER_DAY * convert2days( $row["task_duration"], $row["task_duration_type"] ) );
 		} else {
 			$row["task_end_date"] = "";
 		}
