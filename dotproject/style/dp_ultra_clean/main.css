@@ -238,19 +238,17 @@ td.tabox {
 
 /* Message styles */
 .warning {
-	color: #ff6600;
+	color: red
 }
 .error {
-	color: #ff0000;
+	color: red
 }
 .message {
-	color: #006600;
-	font-weight: bold;
+	color: #08245b;
 }
 
 .no_ {
-	color: #ff0000;
-	font-weight: bold;
+	color: red
 }
 
 /* popup calendar */
