@@ -10,12 +10,13 @@ if (!$canEdit) {
 }
 
 // pull data
-$sql = "SELECT companies.*,users.user_first_name,users.user_last_name
-	FROM companies
-	LEFT JOIN users ON users.user_id = companies.company_owner
-	WHERE companies.company_id = $company_id";
-$res = db_exec( $sql );
-if (!($company = db_fetch_assoc( $res ))) {
+$sql = "
+SELECT companies.*,users.user_first_name,users.user_last_name
+FROM companies
+LEFT JOIN users ON users.user_id = companies.company_owner
+WHERE companies.company_id = $company_id
+";
+if (!db_loadHash( $sql, $company ) && $company_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid Company ID', 'money.gif', $m, 'ID_HELP_COMP_EDIT' );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->show();
@@ -30,7 +31,7 @@ if (!($company = db_fetch_assoc( $res ))) {
 	}
 
 // setup the title block
-	$ttl = $company_id > 0 ? "Edit Company" : "New Company";
+	$ttl = $company_id > 0 ? "Edit Company" : "Add Company";
 	$titleBlock = new CTitleBlock( $ttl, 'money.gif', $m, 'ID_HELP_COMP_EDIT' );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
