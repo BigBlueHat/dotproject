@@ -13,7 +13,10 @@ function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
 
 // assemble where clause
 	$where = "task_project = project_id"
-		."\nAND (task_start_date <= '$db_end' AND task_end_date >= '$db_start')";
+		."\nAND ("
+		. "\n\t(task_start_date <= '$db_end' AND task_end_date >= '$db_start')"
+		. "\n\tOR task_start_date BETWEEN '$db_start' AND '$db_end'"
+		. "\n)";
 /*
 		OR
 		task_end_date BETWEEN '$db_start' AND '$db_end'
@@ -59,6 +62,7 @@ function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
 	WHERE $where
 	ORDER BY task_start_date
 	";
+//echo "<pre>$sql</pre>";
 // execute and return
 	return db_loadList( $sql );
 }
@@ -102,16 +106,17 @@ function addTaskLinks( $tasks, $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 	// determine which day(s) to display the task
 		$start = new CDate( db_dateTime2unix( $row['task_start_date'] ) );
-		$end = new CDate( db_dateTime2unix( $row['task_end_date'] ) );
+		$ts = db_dateTime2unix( $row['task_end_date'] );
+		$end = $ts < 0 ? null : new CDate( $ts );
 		$durn = $row['task_duration'];
 		$durnType = $row['task_duration_type'];
 
 		if ($start->isBetween( $startPeriod, $endPeriod )) {
 			$temp = $link;
-			$temp['alt'] = "START [".($durn < 24 ? $durn.' hours' : floor($durn/24).' days')."]\n".$link['alt'];
+			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_($row['task_duration_type'])."]\n".$link['alt'];
 			$links[$start->getDay()][] = $temp;
 		}
-		if ($end->isBetween( $startPeriod, $endPeriod ) && $start->daysTo( $end ) != 0) {
+		if ($end && $end->isBetween( $startPeriod, $endPeriod ) && $start->daysTo( $end ) != 0) {
 			$temp = $link;
 			$temp['alt'] = "FINISH\n".$link['alt'];
 			$links[$end->getDay()][] = $temp;
@@ -127,8 +132,7 @@ function addTaskLinks( $tasks, $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 	// fill in between start and finish based on duration
 		if ($durn > 1) {
-			
-		// notes:
+	// notes:
 		// start date is not in a future month, must be this or past month
 		// start date is counted as one days work
 		// business days are not taken into account
@@ -144,7 +148,7 @@ function addTaskLinks( $tasks, $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 			while ($endPeriod->compareTo( $temp ) > 0) {
 				if ($target->compareTo( $temp ) > 0) {
-					if ($temp->daysTo($end) > 1) {
+					if ($end == null || $temp->daysTo($end) >= 1) {
 						$links[$temp->getDay()][] = $link;
 					}
 				}
