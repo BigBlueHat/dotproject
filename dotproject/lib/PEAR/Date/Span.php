@@ -22,8 +22,8 @@
 // dotProject CVS $Id$
 // The following lines are modified to correctly load the libraries
 // from the dotProject distribution
-require_once( $AppUI->getPearClass( 'Date' ) );
-require_once( $AppUI->getPearClass( 'Date/Calc' ) );
+require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
+require_once( $AppUI->getLibraryClass( 'PEAR/Date/Calc' ) );
 
 /**
 * Non Numeric Separated Values (NNSV) Input Format.
