@@ -37,10 +37,10 @@ if ($message_parent > -1) {
 function submitIt(){
 	var form = document.changeforum;
 	if (form.message_title.value.length < 1) {
-		alert("Please enter a valid message subject");
+		alert("<?php echo $AppUI->_('forumTypeMessage');?>");
 		form.message_title.focus();
 	} else if (form.message_body.value.length < 1) {
-		alert("Please type a message before posting");
+		alert("forumType");
 		form.message_body.focus();
 	} else {
 		form.submit();
@@ -49,7 +49,7 @@ function submitIt(){
 
 function delIt(){
 	var form = document.changeforum;
-	if (confirm( "Are you sure you would like\nto delete this post?" )) {
+	if (confirm( "<?php echo $AppUI->_('forumDeletePost');?>" )) {
 		form.del.value="<?php echo $message_id;?>";
 		form.submit();
 	}

@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"add user",
 "Active Users",
 "Add User",
 "Add or Edit Permissions",
@@ -11,7 +12,6 @@
 "Director",
 "Edit User",
 "Employee",
-"Filter",
 "Home Phone",
 "In planning",
 "In progress",

@@ -27,13 +27,13 @@ $crumbs["?m=forums"] = "forums list";
 function submitIt(){
 	var form = document.changeforum;
 	if(form.forum_name.value.length < 1) {
-		alert("Please enter a valid forum name");
+		alert("<?php echo $AppUI->_('forumName');?>");
 		form.forum_name.focus();
 	} else if(form.forum_project.selectedIndex < 1) {
-		alert("Please select the project to associate this forum with");
+		alert("<?php echo $AppUI->_('forumSelectProject');?>");
 		form.forum_project.focus();
 	} else if(form.forum_owner.selectedIndex < 1) {
-		alert("Please select the owner of this forum");
+		alert("<?php echo $AppUI->_('forumSelectOwner');?>");
 		form.forum_owner.focus();
 	} else {
 		form.submit();
@@ -42,7 +42,7 @@ function submitIt(){
 
 function delIt(){
 	var form = document.changeforum;
-	if (confirm( "Are you sure you would like to delete this forum?\n\nNote: This will also delete all posts in this forum." )) {
+	if (confirm( "<?php echo $AppUI->_('forumDeleteForum');?>" )) {
 		form.del.value="<?php echo $forum_id;?>";
 		form.submit();
 	}
@@ -86,13 +86,13 @@ function delIt(){
 		<strong><?php echo $AppUI->_('Details');?></strong>
 		<table cellspacing="1" cellpadding="2" width="100%">
 		<tr>
-			<td align="right" width="100">Forum Name:</td>
+			<td align="right" width="100"><?php echo $AppUI->_('Forum Name');?>:</td>
 			<td>
 				<input type="text" class="text" size=25 name="forum_name" value="<?php echo @$forum_info["forum_name"];?>" maxlength="50" style="width:200px;">
 			</td>
 		</tr>
 		<tr>
-			<td align="right">Related Project</td>
+			<td align="right"><?php echo $AppUI->_('Related Project');?></td>
 			<td>
 		<?php
 			echo arraySelect( $projects, 'forum_project', 'size="1" class="text"', $forum_info['forum_project'] );
@@ -100,7 +100,7 @@ function delIt(){
 			</td>
 		</tr>
 		<tr>
-			<td align="right">Owner:</td>
+			<td align="right"><? echo $AppUI->_('Owner');?>:</td>
 			<td>
 		<?php
 			echo arraySelect( $users, 'forum_owner', 'size="1" class="text"', $forum_info['forum_owner'] ? $forum_info['forum_owner'] : $AppUI->user_id );
@@ -110,13 +110,13 @@ function delIt(){
 		<tr>
 			<td align="right" nowrap valign="top">Status:</td>
 			<td valign="top">
-				<input type="radio" value="-1" <?php if($status ==-1)echo " checked";?> name="forum_status">open for posting<br />
-				<input type="radio" value="1" <?php if($status ==1)echo " checked";?> name="forum_status">read-only<br />
-				<input type="radio" value="0" <?php if($status ==0)echo " checked";?> name="forum_status">closed
+				<input type="radio" value="-1" <?php if($status ==-1)echo " checked";?> name="forum_status"><?php $AppUI->_('open for posting');?><br />
+				<input type="radio" value="1" <?php if($status ==1)echo " checked";?> name="forum_status"><?php $AppUI->_('read-only');?><br />
+				<input type="radio" value="0" <?php if($status ==0)echo " checked";?> name="forum_status"><?php $AppUI->_('closed');?>
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Moderator:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Moderator');?>:</td>
 			<td>
 		<?php
 			echo arraySelect( $users, 'forum_moderated', 'size="1" class="text"', $forum_info['forum_moderated'] );
@@ -125,22 +125,22 @@ function delIt(){
 		</tr>
 		<?php if ($forum_id) { ?>
 		<tr>
-			<td align="right">Created On</td>
+			<td align="right"><?php echo $AppUI->_('Created On');?></td>
 			<td bgcolor="#ffffff"><?php echo @$forum_info["forum_create_date"];?></td>
 		</tr>
 		<tr>
-			<td align="right">Last Post:</td>
+			<td align="right"><?php echo $AppUI->_('Last Post');?>:</td>
 			<td bgcolor="#ffffff"><?php echo @$forum_info["forum_last_date"];?></td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>Message Count:</td>
+			<td align="right" nowrap><?php echo $AppUI->_('Message Count');?>:</td>
 			<td bgcolor="#ffffff"><?php echo @$forum_info["forum_message_count"];?></td>
 		</tr>
 		<?php } ?>
 		</table>
 	</td>
 	<td valign="top" width="50%">
-		<strong>Description</strong><br />
+		<strong><?php echo $AppUI->_('Description');?></strong><br />
 		<textarea class="textarea" name="forum_description" style="height:150px;"><?php echo @$forum_info["forum_description"];?></textarea>
 	</td>
 </tr>
@@ -148,14 +148,12 @@ function delIt(){
 
 <tr>
 	<td align="left">
-		<input type="button" value="back" class=button onClick="javascript:window.location='./index.php?m=forums';">
+		<input type="button" value="<?php echo $AppUI->_('back');?>" class=button onClick="javascript:window.location='./index.php?m=forums';">
 	</td>
 	<td align="right" colspan="2"><?php
 		if ($AppUI->user_id == $forum_info["forum_owner"] || $forum_id ==0) {
-			echo '<input type="button" value="submit" class=button onclick="submitIt()">';
+			echo '<input type="button" value="'.$AppUI->_('submit').'" class=button onclick="submitIt()">';
 		}?></td>
 </tr>
 </form>
 </table>
-
-

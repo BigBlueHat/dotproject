@@ -13,7 +13,7 @@ $this_month = new CDate( $uts );
 
 // pull the companies list
 $sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
-$companies = arrayMerge( array( 0 => 'All' ), db_loadHashList( $sql ) );
+$companies = arrayMerge( array( 0 => $AppUI->_('All') ), db_loadHashList( $sql ) );
 
 // pull the tasks and events for the month
 $first_time = $this_month;
@@ -52,14 +52,14 @@ foreach ($events as $row) {
 <form action="<?php echo $_SERVER['REQUEST_URI'];?>" method="post" name="pickCompany">
 <tr>
 	<td><img src="./images/icons/calendar.gif" alt="Calendar" border="0" width="42" height="42" /></td>
-	<td nowrap><h1>Monthly Calendar</h1></td>
+	<td nowrap><h1><?php echo $AppUI->_('Monthly Calendar');?></h1></td>
 	<td align="right" width="100%">
-		Company:
+		<?php echo $AppUI->_('Company');?>:
 <?php
 	echo arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id );
 ?>
 	</td>
-	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', 'ID_HELP_MOCAL' );?></td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="Help"/>', 'ID_HELP_MOCAL' );?></td>
 </tr>
 </form>
 </table>

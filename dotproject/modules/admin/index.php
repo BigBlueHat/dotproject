@@ -65,7 +65,7 @@ function delMe( x, y ) {
 </table>
 
 <?php
-$extra = '<td align="right" width="100%"><input type="button" class=button value="add user" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>';
+$extra = '<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>';
 
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=admin", "{$AppUI->cfg['root_dir']}/modules/admin/", $tab );

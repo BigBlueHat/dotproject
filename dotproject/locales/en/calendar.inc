@@ -1,19 +1,23 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"View Event",
+"Day View
+",
 "Edit Event",
 "End Date",
 "Event Title",
 "Event deleted",
 "Event inserted",
 "Event updated",
+"Monthly Calendar",
 "New Event",
 "Recurs",
 "Remind Me",
 "Start Date",
 "Time",
+"View Event",
 "Week",
+"Week View",
 "delete event",
 "deleteEvent"=>"Are you sure you want to delete this event",
 "edit this event",
