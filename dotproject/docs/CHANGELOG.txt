@@ -1,5 +1,16 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+11 September 2002 (AJE):
+-----------------------------
+module/dosql/addfile.php
+- declared $woodarr explicitly as this would error in the while array
+
+module/files/index.php
+- change user id to the full user name
+
+modules/tasks/view.php
+- change link to addfile to reference file_task rather than file_id
+
 5 September 2002 (AJE):
 -----------------------------
 modules/calendar/day_view.php
