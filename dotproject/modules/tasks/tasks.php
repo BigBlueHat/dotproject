@@ -139,7 +139,7 @@ project_name
 
 $from = "tasks";
 $join = "LEFT JOIN projects ON project_id = task_project";
-$where = "project_active <> 0".($project_id ? "\nAND task_project = $project_id" : '');
+$where = $project_id ? "\ntask_project = $project_id" : 'project_active <> 0';
 
 switch ($f) {
 	case 'all':
