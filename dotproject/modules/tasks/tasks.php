@@ -577,6 +577,7 @@ foreach ($projects as $k => $p) {
 		if($tnums && $dPconfig['enable_gantt_charts'] && !$min_view) { ?>
 		<tr>
 			<td colspan="<?php echo $cols; ?>" align="right">
+				<input type="button" class="button" value="<?php echo $AppUI->_('Reports');?>" onclick="javascript:window.location='index.php?m=projects&a=reports&project_id=<?php echo $k;?>';" />
 				<input type="button" class="button" value="<?php echo $AppUI->_('Gantt Chart');?>" onclick="javascript:window.location='index.php?m=tasks&a=viewgantt&project_id=<?php echo $k;?>';" />
 			</td>
 		</tr>
