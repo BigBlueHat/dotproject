@@ -64,7 +64,6 @@
 "Operative",
 "Overdue",
 "P",
-"Pin",
 "Priority",
 "Progress",
 "Project Hours",

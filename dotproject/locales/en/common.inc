@@ -84,6 +84,7 @@
 "Password",
 "Password updated",
 "Permission",
+"Pin",
 "Phone",
 "Pinned Only",
 "Postcode",

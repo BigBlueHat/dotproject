@@ -40,7 +40,6 @@
 "Overdue",
 "P",
 "Parent Task",
-"Pin",
 "Progress",
 "Quarterly",
 "Recurs",

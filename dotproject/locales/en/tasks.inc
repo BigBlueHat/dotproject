@@ -93,7 +93,6 @@
 "Overdue",
 "P",
 "Parent Task",
-"Pin",
 "Pinned Only",
 "Please correct the above errors",
 "Please select at least one Assignee!",
