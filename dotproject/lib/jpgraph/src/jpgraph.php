@@ -357,9 +357,9 @@ else {
 //Check if there were any warnings, perhaps some wrong includes by the
 //user
 //
-if( isset($GLOBALS['php_errormsg']) ) {
-    JpGraphError::Raise("<b>General PHP error:</b><br>".$GLOBALS['php_errormsg']);
-}
+//if( isset($GLOBALS['php_errormsg']) ) {
+//    JpGraphError::Raise("<b>General PHP error:</b><br>".$GLOBALS['php_errormsg']);
+//}
 
 
 //

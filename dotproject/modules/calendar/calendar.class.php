@@ -101,6 +101,7 @@ class CMonthCalendar {
 	}
 
 	function _drawTitle() {
+	        global $AppUI;
 		$qry = isset( $_GET['m'] ) ? 'm=' . $_GET['m'] : '';
 		$url = $_SERVER['PHP_SELF'] . ($qry ? "?$qry&" : '?');
 
@@ -111,7 +112,7 @@ class CMonthCalendar {
 		if ($this->showArrows) {
 			$href = $url.'uts='.$this->prev_month->getTimestamp().($this->callback ? '&callback='.$this->callback : '');
 			$s .= "        <td align=\"left\">";
-			$s .= '<a href="'.$href.'"><img src="./images/prev.gif" width="16" height="16" alt="previous month" border="0" /></a>';
+			$s .= '<a href="'.$href.'"><img src="./images/prev.gif" width="16" height="16" alt="'.$AppUI->_('previous month').'" border="0" /></a>';
 			$s .= "</td>\n";
 
 		}
@@ -123,7 +124,7 @@ class CMonthCalendar {
 		if ($this->showArrows) {
 			$href = $url.'uts='.$this->next_month->getTimestamp().($this->callback ? '&callback='.$this->callback : '');
 			$s .= "        <td align=\"right\">";
-			$s .= '<a href="'.$href.'"><img src="./images/next.gif" width="16" height="16" alt="next month" border="0" /></a>';
+			$s .= '<a href="'.$href.'"><img src="./images/next.gif" width="16" height="16" alt="'.$AppUI->_('next month').'" border="0" /></a>';
 			$s .= "</td>\n";
 		}
 

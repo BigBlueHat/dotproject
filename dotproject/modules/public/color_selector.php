@@ -11,13 +11,13 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 <table border="0" cellpadding="1" cellspacing="0" width="292" align="center">
 	<tr>
 		<td valign="top">
-			<strong>Color Selector</strong>
+			<strong><?php echo $AppUI->_('Color Selector');?></strong>
 		</td>
 	<form>
 		<td align="right" valign="bottom">
 		<!-- CUSTOMISE THE FOLLOWING COLOURS AND PRESET NAMES FOR YOUR ORGANISATIONAL NEEDS -->
 			<select name="" class="text" onchange="javascript:setClose(this.options[this.selectedIndex].value)">
-				<option value="0">- - Preset - -</option>
+				<option value="0">- - <?php echo $AppUI->_('Preset');?> - -</option>
 				<option value="FFCC00" />Administration</option>
 				<option value="333300" />Development</option>
 				<option value="FF6600" />Investigation</option>
@@ -37,7 +37,7 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 	</tr>
 	<tr>
 		<td colspan="2" align="left"><font size="1" face="trebuchetms,verdana,arial">
-			Choose a color to uniquely identify your selection and close the Color Selector.</p>
+			<?php echo $AppUI->_('colorLegend');?></p>
 		</td>
 	</tr>
 </table>

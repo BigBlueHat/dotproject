@@ -183,7 +183,7 @@ function orderByName( x ){
 		<tr>
 			<td align="right"><?php echo $AppUI->_('Birthday');?>:</td>
 			<td nowrap>
-				<input type="text" class="text" name="contact_birthday" value="<?php echo @substr($contact["contact_birthday"], 0, 10);?>" maxlength="10" size=25>(yyyy-mm-dd)
+				<input type="text" class="text" name="contact_birthday" value="<?php echo @substr($contact["contact_birthday"], 0, 10);?>" maxlength="10" size=25>(<?php echo $AppUI->_('yyyy-mm-dd');?>)
 			</td>
 		</tr>
 		</table>

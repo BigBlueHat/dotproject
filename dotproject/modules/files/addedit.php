@@ -146,7 +146,7 @@ function setTask( key, val ) {
 			<td align="left" colspan="2" valign="top">
 				<input type="hidden" name="file_task" value="<?php echo $file_task;?>" />
 				<input type="text" class="text" name="task_name" value="<?php echo $task_name;?>" size="40" disabled />
-				<input type="button" class="button" value="select task..." onclick="popTask()" />
+				<input type="button" class="button" value="<?php echo $AppUI->_('select task');?>..." onclick="popTask()" />
 			</td>
 		</tr>
 

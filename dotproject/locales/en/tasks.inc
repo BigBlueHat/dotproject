@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Due In",
+"Id",
 "Action",
 "Add Task",
 "All Tasks",
@@ -10,11 +10,13 @@
 "Assigned to Task",
 "Attach a file",
 "Attached Files",
+"Calculate",
 "Comments",
 "Cost Code",
 "Creator",
 "Date",
 "Dates and Targets",
+"Due In",
 "Duration",
 "Dynamic Task",
 "Edit Task",

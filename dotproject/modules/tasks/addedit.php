@@ -269,12 +269,12 @@ function calcFinish() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Status' );?></td>
 			<td>
-				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $task["task_status"] ) . '%';?>
+				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $task["task_status"], true ) . '%';?>
 			</td>
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
 			<td nowrap>
-				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $task["task_priority"] );?>
+				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $task["task_priority"], true );?>
 			</td>
 		</tr>
 		<tr>
@@ -427,10 +427,10 @@ function calcFinish() {
 		<table>
 		<tr>
 			<td>
-				<input class="button" type="button" name="cancel" value="cancel" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
+				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
 			</td>
 			<td>
-				<input class="button" type="button" name="btnFuseAction" value="save" onClick="submitIt();" />
+				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt();" />
 			</td>
 		</tr>
 		</table>

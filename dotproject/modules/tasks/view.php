@@ -172,7 +172,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Milestone');?>:</td>
-			<td class="hilite" width="300"><?php if($task["task_milestone"]){echo "Yes";}else{echo "No";}?></td>
+			<td class="hilite" width="300"><?php if($task["task_milestone"]){echo $AppUI->_("Yes");}else{echo $AppUI->_("No");}?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Progress');?>:</td>
@@ -246,7 +246,7 @@ function delIt() {
 		<tr>
 			<td colspan="3">
 			<?php
-				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>none</td></tr>" : '';
+				$s = count( $files ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
 				foreach ($files as $row) {
 					$s .= '<tr>';
 					$s .= '<td class="hilite"><a href="./fileviewer.php?file_id='.$row["file_id"].'">'.$row["file_name"].'</a></td>';
