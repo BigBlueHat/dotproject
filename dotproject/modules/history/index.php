@@ -29,6 +29,9 @@ function show_history($history)
         $id = $history['history_item'];
         $module = $history['history_table'];        
         
+        if ($module == 'login')
+               return 'User "' . $history['history_description'] . '" ' . $history['history_action'] . '.';
+        
         if ($history['history_action'] == 'add')
                 $msg = 'Added new ';
         else if ($history['history_action'] == 'update')
@@ -39,6 +42,8 @@ function show_history($history)
 
         switch ($history['history_table'])
         {
+        case 'history':
+                $link = '&a=addedit&history_id='; break;
         case 'files':
                 $link = '&a=addedit&file_id='; break;
         case 'tasks':

@@ -29,6 +29,8 @@ if($action) {
 		$AppUI->setMsg( db_error() );
 	} else {	
 		$AppUI->setMsg( $okMsg );
+                if ($action == "add")
+                        db_exec('UPDATE history SET history_item=history_id WHERE history_table = \'history\'');
 	}
 	$AppUI->redirect();
 }

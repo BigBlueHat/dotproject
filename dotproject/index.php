@@ -100,8 +100,19 @@ if (! is_file($config_file) && !( $_GET['m'] == 'install') ) {
 		$config_msg = "Root directory in configuration file probably incorrect";
 	}
 }
+// allow the install module to run without config file
+// load the db handler
+if ($dPrunLevel > 0) {
+	require_once( "./includes/db_connect.php" );
+}
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
+    if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
+    {
+        $AppUI =& $_SESSION['AppUI'];
+        addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+    }
+
     $_SESSION['AppUI'] = !( $_GET['m'] == 'install' ) ? new CAppUI() : new IAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
@@ -114,11 +125,6 @@ if ($config_msg) {
 require_once( $AppUI->getSystemClass( 'date' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
 
-// load the db handler
-// allow the install module to run without config file
-if ($dPrunLevel > 0) {
-	require_once( "./includes/db_connect.php" );
-}
 require_once( "./misc/debug.php" );
 
 // load default preferences if not logged in
@@ -156,6 +162,7 @@ if (isset($_POST['login'])) {
 		@include_once( "./locales/core.php" );
 		$AppUI->setMsg( 'Login Failed' );
 	}
+        addHistory('login', $AppUI->user_id, 'login', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
 	$AppUI->redirect( "$redirect" );
 }
 
