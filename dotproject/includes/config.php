@@ -8,10 +8,11 @@ $db 	= "dotproject";
 $dbuser = "root";
 $dbpass = "";
 
-//localization file.  Needs to be fleshed out
-$language_file = "english.php";
+// localisation of the host for this dotproject
+// that is, what language will the login screen be in
+$host_locale = "en";
 
-$root_dir = "d:/apache/htdocs/Projects/dotproject";				//filesystem web root
+$root_dir = "d:/apache/htdocs/Projects/dotproject"; // filesystem root
 $company_name = "BURAN";		
 $page_title ="TCC DotProject";
 $base_url = "http://buran.toowoomba.qld.gov.au/dotproject";
