@@ -1,31 +1,48 @@
 <?php
-
 /*
  *
  * Gantt.php - by J. Christopher Pereira
  *
  */
-
+ 
 include ("../../lib/jpgraph/src/jpgraph.php");
 include ("../../lib/jpgraph/src/jpgraph_gantt.php");
 
-require "../../includes/config.php";
-require "../../includes/db_connect.php";
-require "../../includes/main_functions.php";
-require "../../includes/permissions.php";
+// START: from index.php
+
+require_once( "../../includes/config.php" );
+require_once( "../../includes/db_connect.php" );
+require_once( "../../classdefs/ui.php" );
+
+session_start();
+session_register( 'AppUI' );
+
+header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
+                                                      // always modified
+header ("Cache-Control: no-cache, must-revalidate");  // HTTP/1.1
+header ("Pragma: no-cache");                          // HTTP/1.0
+
+if (!isset($HTTP_SESSION_VARS['AppUI']) || isset($HTTP_GET_VARS['logout'])) {
+	$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
+}
+$AppUI =& $HTTP_SESSION_VARS['AppUI'];
+
+if ($AppUI->doLogin()) {
+	session_unset();
+	session_destroy();
+	include "./includes/login.php";
+	exit;
+}
+
+// legacy cookies
+$user_cookie = isset($HTTP_COOKIE_VARS['user_cookie']) ? $HTTP_COOKIE_VARS['user_cookie'] : 0;
+$thisuser = isset($HTTP_COOKIE_VARS['thisuser']) ? $HTTP_COOKIE_VARS['thisuser'] : 0;
+list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company, $thisuser_dept, $hash) = explode( '|', $thisuser );
+
+// END: from index.php
 
 $project_id = isset( $HTTP_GET_VARS['project_id'] ) ? $HTTP_GET_VARS['project_id'] : 0;
-
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-        echo '<script language="javascript">
-        window.location="./index.php?m=help&a=access_denied";
-        </script>
-';
-}
 
 $f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
 
@@ -47,7 +64,7 @@ WHERE project_active <> 0
 GROUP BY project_id
 ORDER BY project_name
 ";
-//echo "<pre>$psql</pre>";
+// echo "<pre>$psql</pre>";
 $prc = mysql_query( $psql );
 echo mysql_error();
 $pnums = mysql_num_rows( $prc );
