@@ -1,4 +1,5 @@
 <?php
+	// $Id$
 	// Function to scan the event queue and execute any functions required.
 	$baseDir = dirname(__FILE__);
 	require_once "$baseDir/includes/config.php";
