@@ -86,7 +86,6 @@ $prj =& new CProject;
 $allowedProjects = $prj->getAllowedSQL($AppUI->user_id);
 
 if (count($allowedProjects)) { 
-	$q->addJoin('companies', 'com', 'com.company_id = p.project_company');
 	$prj->setAllowedSQL($AppUI->user_id, $q);
 }
 $q->addOrder('project_name');
