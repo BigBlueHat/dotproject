@@ -2,7 +2,7 @@
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
-global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;
+global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;//, $showAllGantt;
 
 $filter1 = array();
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
@@ -48,6 +48,9 @@ $projects = db_loadList( $sql );
 $width      = dPgetParam( $_GET, 'width', 600 );
 $start_date = dPgetParam( $_GET, 'start_date', 0 );
 $end_date   = dPgetParam( $_GET, 'end_date', 0 );
+
+$showAllGantt = dPgetParam( $_REQUEST, 'showAllGantt', '0' );
+//$showTaskGantt = dPgetParam( $_GET, 'showTaskGantt', '0' );
 
 $graph = new GanttGraph($width);
 $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
@@ -205,6 +208,67 @@ foreach($projects as $p) {
         }
 
 	$graph->Add($bar);
+
+ 	// If showAllGant checkbox is checked 
+ 	if (true)//$showAllGantt)
+ 	{
+ 		// insert tasks into Gantt Chart
+ 		
+ 		// select for tasks for each project	
+ 		$sqlTasks = "	SELECT DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, tasks.task_milestone
+               		FROM tasks
+               		LEFT JOIN projects ON projects.project_id = tasks.task_project
+               		LEFT JOIN companies c1 ON projects.project_company = c1.company_id
+               		WHERE projects.project_id = {$p["project_id"]} 
+               		ORDER BY tasks.task_end_date ASC";
+ 		// End of select for tasks for each project
+ 		
+ 		$tasks = db_loadList( $sqlTasks );
+ 		foreach($tasks as $t)
+ 		{
+ 			if ($t["task_end_date"] == null)
+ 				$t["task_end_date"] = $t["task_start_date"];
+ 				
+ 			if ($t["task_milestone"] != 1)
+ 			{/*		*/					
+ 				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", ' ', ' '/*substr($t["task_start_date"], 2, 8),  substr($t["task_end_date"], 2, 8)*/, ' '), ' ', ' ', ' '/*chr(32)*/, 0.6);							
+// 				$bar2 = new GanttBar($row++, array("   * ".$t["task_name"], $t["task_start_date"], $t["task_end_date"]," "), "0", "0;", 0.6);
+				$bar2->title->SetColor("#".$p['project_color_identifier']);
+ 				$bar2->SetFillColor("#".$p['project_color_identifier']);		
+ 				$graph->Add($bar2);
+ 			}
+ 			else
+ 			{
+ 				$bar2  = new MileStone ($row++, "-- " . $t["task_name"], $t["task_start_date"], (substr($t["task_start_date"], 0, 10)));
+ 				$bar2->title->SetColor("#CC0000");
+ 				$graph->Add($bar2);
+ 			}				
+ 				
+ 				// Insert workers for each task into Gantt Chart 
+ 				$sqlWorkers = "
+                 				SELECT DISTINCT  user_username, t.task_id
+                 				FROM user_tasks t
+                 				LEFT JOIN users ON users.user_id = t.user_id
+                 				WHERE t.task_id = ";
+                 				$sqlWorkers .=  $t["task_id"] . " 
+                 				ORDER BY user_username ASC";
+ 				
+ 				$workers = db_loadList($sqlWorkers);
+ 				$workersName = "";
+ 				foreach($workers as $w)
+ 				{	
+ 					$workersName .= " ".$w["user_username"];
+ 				
+ 					$bar3 = new GanttBar($row++, array("   * ".$w["user_username"], " ", " "," "), "0", "0;", 0.6);							
+ 					$bar3->title->SetColor("#".$p['project_color_identifier']);
+ 					$bar3->SetFillColor("#".$p['project_color_identifier']);		
+ 					$graph->Add($bar3);
+ 				}
+ 				// End of insert workers for each task into Gantt Chart  				
+ 		}
+ 		// End of insert tasks into Gantt Chart 
+ 	}			
+ 	// End of if showAllGant checkbox is checked
 }
 } // End of check for valid projects array.
 

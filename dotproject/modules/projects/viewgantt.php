@@ -10,6 +10,9 @@ $edate = dPgetParam( $_POST, 'edate', 0 );
 $showInactive = dPgetParam( $_POST, 'showInactive', '0' );
 $showLabels = dPgetParam( $_POST, 'showLabels', '0' );
 
+$showAllGantt = dPgetParam( $_POST, 'showAllGantt', '0' );
+$showTaskGantt = dPgetParam( $_POST, 'showTaskGantt', '0' );
+
 //if set GantChart includes user labels as captions of every GantBar
 if ($showLabels!='0') {
     $showLabels='1';
@@ -17,6 +20,9 @@ if ($showLabels!='0') {
 if ($showInactive!='0') {
     $showInactive='1';
 }
+
+if ($showAllGantt!='0')
+     $showAllGantt='1';
 
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
 
@@ -153,6 +159,12 @@ function showFullProject() {
                         <td valign="top">
                                 <input type="checkbox" name="showInactive" <?php echo (($showInactive==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show Inactive' );?>
                         </td>
+                        <td valign="top">
+                                <input type="checkbox" name="showAllGantt" <?php echo (($showAllGantt==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show All Gantt' );?>
+                        </td>
+                        <td valign="top">
+                                <input type="checkbox" name="showTaskGantt" <?php if ($showTaskGantt) echo ("checked=true");?>><?php echo $AppUI->_( 'Show Task Gantt' );?>
+                        </td>
                         <td align="left">
                                 <input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
                         </td>
@@ -169,7 +181,7 @@ function showFullProject() {
                 </form>
 
                 <tr>
-                        <td align="center" valign="bottom" colspan="10">
+                        <td align="center" valign="bottom" colspan="12">
                                 <?php echo "<a href='javascript:showThisMonth()'>".$AppUI->_('show all')."</a> : <a href='javascript:showFullProject()'>".$AppUI->_('show this month')."</a><br>"; ?>
                         </td>
                 </tr>
@@ -189,6 +201,19 @@ function showFullProject() {
                 ?>
                         </td>
                 </tr>
+				<?php 	
+				if($showTaskGantt)
+				{
+					echo("<tr><td>");
+					$src =
+					"?m=$m&a=gantt2&suppressHeaders=1" .
+					( $display_option == 'all' ? '' :
+							'&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
+					"&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=".$showLabels."&proFilter=".$proFilter."&showInactive=".$showInactive."&company_id=".$company_id."&department=".$department."&dept_ids=".$dept_ids."&showTaskGantt=".$showTaskGantt;
+					echo "<script>document.write('<img src=\"$src\">')</script>";
+					echo("</td></tr>");
+				}
+				?>	
                 </table>
         </td>
 </tr>
