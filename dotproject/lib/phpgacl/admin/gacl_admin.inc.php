@@ -33,11 +33,12 @@
 $base_dir = dirname(__FILE__)."/../../..";
 require_once "$base_dir/includes/config.php";
 require_once  "$base_dir/classes/ui.class.php";
+require_once "$base_dir/includes/session.php";
 require_once(dirname(__FILE__).'/../gacl.class.php');
 require_once(dirname(__FILE__).'/../gacl_api.class.php');
 
-session_name('dotproject');
-session_start();
+dPsessionStart();
+
 $gacl_options = array(
 								'debug' => FALSE,
 								'items_per_page' => 100,
