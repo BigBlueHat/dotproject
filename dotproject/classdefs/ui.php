@@ -110,6 +110,7 @@ class CAppUI {
 	that a translation is required.
 */
 	function _( $str, $case=0 ) {
+		$str = trim($str);
 		if (empty( $str )) {
 			return '';
 		}
