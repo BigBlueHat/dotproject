@@ -84,8 +84,28 @@ function show_history($history)
 }
 
 $filter = '';
-if (!empty($_POST['filter']))
-        $filter = ' AND history_table = \'' . $_POST['filter'] . '\' ';
+if (!empty($_REQUEST['filter']))
+        $filter = ' AND history_table = \'' . $_REQUEST['filter'] . '\' ';
+if (!empty($_REQUEST['project_id']))
+{
+	$project_id = $_REQUEST['project_id'];
+	
+	$sql = '
+SELECT task_id
+FROM tasks
+WHERE task_project = ' . $project_id;
+	$project_tasks = '(' . implode(',', db_loadColumn($sql)) . ')';
+
+	$sql = '
+SELECT file_id
+FROM files
+WHERE file_project = ' . $project_id;
+	$project_files = '(' . implode(',', db_loadColumn($sql)) . ')';
+
+	$filter .= " AND ((history_table = 'projects' AND history_item = '$project_id')
+	OR (history_table = 'tasks' AND history_item IN $project_tasks)
+	OR (history_table = 'files' AND history_item IN $project_files))";
+}
 
 $sql = "SELECT * from history, users 
 	WHERE history_user = user_id 
