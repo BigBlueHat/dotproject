@@ -78,6 +78,8 @@ class CAppUI {
 * CAppUI Constructor
 */
 	function CAppUI() {
+		global $dPconfig;
+
 		$this->state = array();
 
 		$this->user_id = -1;
