@@ -10,7 +10,7 @@ echo "Loaded base classes\n";
 
 $AppUI =& new CAppUI;
 //$AppUI->setConfig($dPconfig);
-echo "Confiugured environment\n";
+echo "Configured environment\n";
 
 require_once "../includes/db_adodb.php";
 require_once "../includes/db_connect.php";
