@@ -83,14 +83,13 @@ function db_unix2dateTime( $time ) {
 }
 
 function db_dateTime2unix( $time ) {
-	// converts a DB date to a unix time stamp
-	return $time ? strtotime( substr( $time, 0, 10 ) ) : null;
+	if ($time == '0000-00-00 00:00:00') {
+		return null;
+	}
+	if( ! preg_match( "/^(\d{4})-(\d{2})-(\d{2}) (\d{2}):(\d{2}):(\d{2})(.?)$/", $time, $a ) ) {
+		return NULL;
+	} else {
+		return mktime( $a[4], $a[5], $a[6], $a[2], $a[3], $a[1] );
+	}
 }
-
-function db_dateTime2myDate( $time ) {
-	// converts a DB date to the locale date format
-	global $AppUI;
-	return strftime($AppUI->getPref('SHDATEFORMAT'), db_DateTime2unix($time) );
-}
-
 ?>
