@@ -4,7 +4,6 @@ global $companiesType;
 global $search_string;
 
 // retrieve any state parameters
-
 if (isset( $_GET['orderby'] )) {
 	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
 }
@@ -49,7 +48,7 @@ $sql = "SELECT company_id, company_name, company_type, company_description,"
 		)"
 	. (count($deny) > 0 ? ' AND company_id NOT IN (' . implode( ',', $deny ) . ')' : '')
 	. ($companiesType < count($types) ? " AND company_type = $company_type_filter" : "");
-	
+
 if($search_string != ""){
 	$sql .= " AND company_name LIKE '%$search_string%' ";
 }
@@ -58,7 +57,6 @@ $sql .= " GROUP BY company_id
 		 ORDER BY $orderby";
 	
 $rows = db_loadList( $sql );
-
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>

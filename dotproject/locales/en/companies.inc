@@ -1,10 +1,11 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Clients",
+"No companies available",
 "Add Company",
 "All Companies",
 "Budget",
+"Clients",
 "Company Name",
 "Company Owner",
 "Edit Company",

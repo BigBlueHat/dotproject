@@ -637,7 +637,7 @@ class CTabBox_core {
 			foreach ($this->tabs as $v) {
 				echo '<tr><td><strong>'.$AppUI->_($v[1]).'</strong></td></tr>';
 				echo '<tr><td>';
-				include_once $this->baseInc.$v[0].".php";
+				include $this->baseInc.$v[0].".php";
 				echo '</td></tr>';
 			}
 			echo '</table>';
