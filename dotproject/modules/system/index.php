@@ -47,10 +47,7 @@ $AppUI->savePlace();
 		<br /><a href="?m=system&u=syskeys"><?php echo $AppUI->_( 'System Lookup Values' );?></a>
 	</td>
 </tr>
-<?php
-	// temporary until tranlated!
-	$AppUI->setWarning( false );
-?>
+
 <tr>
 	<td>
 		<img src="<?php echo dPfindImage( 'modules.gif', $m );?>" width="32" height="32" border=0 alt="">
@@ -64,6 +61,22 @@ $AppUI->savePlace();
 	<td>&nbsp;</td>
 	<td align="left">
 		<a href="?m=system&a=viewmods"><?php echo $AppUI->_('View Modules');?></a>
+	</td>
+</tr>
+
+<tr>
+	<td>
+		<img src="<?php echo dPfindImage( 'users.gif', $m );?>" width="32" height="32" border=0 alt="">
+	</td>
+	<td align="left" class="subtitle">
+		<?php echo $AppUI->_('Administration');?>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&u=roles"><?php echo $AppUI->_('User Roles');?></a>
 	</td>
 </tr>
 
