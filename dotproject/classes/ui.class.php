@@ -563,7 +563,7 @@ class CAppUI {
 /**
 *@Function for update table user_acces_log in field date_time_lost_action
 */
-          function updateLostAction($last_insert_id){
+          function updateLastAction($last_insert_id){
                 $sql = "update user_access_log set date_time_last_action = now()
                             where user_access_log_id = $last_insert_id";
                 if ($last_insert_id > 0){

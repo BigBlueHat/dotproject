@@ -142,7 +142,7 @@ if (isset($_GET['logout'])){
 }
 
 //Function for update lost action in user_access_log
-    $AppUI->updateLostAction($last_insert_id);
+    $AppUI->updateLastAction($last_insert_id);
 // load default preferences if not logged in
 if ($AppUI->doLogin()) {
 	if ( !( $_GET['m'] == 'install' && $dPrunLevel < 2 ) ) {	// allow the install module to run without db
