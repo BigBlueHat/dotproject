@@ -40,7 +40,7 @@ if ($task_id ==0 && isset( $task_name )) {
 		mysql_query( $tpsql );
 		$message .= mysql_error() ."<BR>";
 	}
-	$tosql  ="INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($user_cookie, $id, -1)";
+	$tosql  ="INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $id, -1)";
 	mysql_query( $tosql );
 	$message .= mysql_error() ."<BR>";
 

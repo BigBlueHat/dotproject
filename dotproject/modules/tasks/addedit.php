@@ -1,68 +1,53 @@
 <?php
-$task_id = isset( $HTTP_GET_VARS['task_id'] ) ? $HTTP_GET_VARS['task_id'] : 0;
+$task_id = isset( $_GET['task_id'] ) ? $_GET['task_id'] : 0;
+$task_parent = isset( $_GET['task_parent'] ) ? $_GET['task_parent'] : 0;
 
 // check permissions
 $denyEdit = getDenyEdit( $m );
 
 if ($denyEdit) {
-	echo '<script language="javascript">
-	window.location="./index.php?m=help&a=access_denied";
-	</script>
-';
+	$AppUI->redirect( "m=help&a=access_denied" );
 }
+$AppUI->savePlace();
 
-if(empty($project_id))$project_id =0;
+$project_id = $AppUI->getState( 'ActiveProject' ) ? $AppUI->getState( 'ActiveProject' ) : 0;
 
-//pull users;
-if(empty($task_parent))$task_parent =0;
+// pull the task
+$sql = "SELECT * FROM tasks WHERE task_id = $task_id";
+db_loadHash( $sql, $task );
+$task_parent = isset( $task['task_parent'] ) ? $task['task_parent'] : $task_parent;
+
+// pull the related project
+$sql = "SELECT project_name, project_id, project_color_identifier FROM projects WHERE project_id = $project_id";
+db_loadHash( $sql, $project );
 
 //Pull all users
-$usql = "
-SELECT user_first_name, user_last_name, user_id
+$sql = "
+SELECT user_id, CONCAT( user_first_name, ' ', user_last_name)
 FROM users
 ORDER BY user_first_name, user_last_name
 ";
-
-$urc = mysql_query( $usql );
+$users = db_loadHashList( $sql );
 
 //Pull users on this task
-$tsql = "
-SELECT t.task_id,
-	u.user_id, u.user_username, u.user_first_name, u.user_last_name
+$sql = "
+SELECT u.user_id, CONCAT( u.user_first_name, ' ', u.user_last_name )
 FROM users u, user_tasks t
 WHERE t.task_id =$task_id
 	AND t.task_id <> 0
 	AND t.user_id = u.user_id
 ";
-
-$trc = mysql_query( $tsql );
-
-$psql = "Select * from tasks where task_id = $task_id";
-$prc = mysql_query( $psql );
-if ($prow = mysql_fetch_array( $prc, MYSQL_ASSOC )) {
-	//Pull specific project information
-	$pisql="select project_name, project_id from projects where project_id =". $prow["task_project"];
-	$pirc = mysql_query( $pisql );
-	$pirow = mysql_fetch_array( $pirc, MYSQL_ASSOC );
-} else {
-	//Pull project information
-	$pisql="select project_name, project_id from projects where project_id = $project_id";
-	$pirc = mysql_query($pisql);
-	$pirow = mysql_fetch_array( $pirc, MYSQL_ASSOC );
-}
-if (isset( $pirow["project_id"] )) {
-	$project_id = $pirow["project_id"];
-}
+$assigned = db_loadHashList( $sql );
 
 // Pull tasks for the parent task list
-$atsql="
-SELECT task_name, task_id, task_project
+$sql="
+SELECT task_id, task_name
 FROM tasks
 WHERE task_project = $project_id
 	AND task_id <> $task_id
-ORDER BY task_project";
-
-$atrc = mysql_query( $atsql );
+ORDER BY task_project
+";
+$projTasks = arrayMerge( array( "{$task['task_id']}" => 'None' ), db_loadHashList( $sql ) );
 
 // Pull tasks dependencies
 $sql = "
@@ -71,10 +56,12 @@ FROM tasks t, task_dependencies td
 WHERE td.dependencies_task_id = $task_id
 	AND t.task_id = td.dependencies_req_task_id
 ";
+$taskDep = db_loadList( $sql );
 
-$tdrc = mysql_query( $sql );
-
-//------------------------------------ Start Page ----------------------------------------------//
+$crumbs = array();
+$crumbs["?m=projects&a=view&project_id={$task['task_project']}"] = "view this project";
+$crumbs["?m=tasks"] = "tasks list";
+$crumbs["?m=tasks&a=addedit&task_id={$task['task_id']}"] = "view this task";
 ?>
 
 <SCRIPT language="JavaScript">
@@ -193,152 +180,138 @@ function delIt() {
 }
 </script>
 
-<TABLE width="95%" border="0" cellpadding="0" cellspacing="1">
+<table width="98%" border="0" cellpadding="0" cellspacing="1">
 <form name="AddEdit" action="./index.php?m=tasks&project_id=<?php echo $project_id ?>" method="post">
 <input name="dosql" type="hidden" value="addeditTask">
 <input name="del" type="hidden" value="0">
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>">
 <input name="task_project" type="hidden" value="<?php echo $project_id;?>">
-<TR>
-	<TD><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-	<TD nowrap><span class="title"><?php
-		echo $task_id ? 'Edit Existing' : 'Create New';
-		echo " task for ". $pirow['project_name'];
-	?></span>
-	</td>
-	<TD align="right" width="100%" valign="bottom"><?php if($task_id){?><A href="javascript:delIt()">delete task<img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="Delete this task" border="0"></a><?php }?></td>
-</tr>
-</TABLE>
-
-<table border="0" cellpadding="4" cellspacing="0" width="95%" >
 <tr>
-	<td class="allFormsTitleHeader" valign="middle">
-		<b><?php	
-			echo $task_id ? 'Edit the task using' : 'To create a new task complete';
-			echo " the form below";
-		?></b>
+	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
+	<td align="left" nowrap="nowrap" width="100%">
+		<span class="title"><?php echo $AppUI->_( $task_id ? 'Edit Task' : 'New Task' );?></span>
+	</td>
+	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_TASK_VIEW' );?></td>
+</tr>
+</table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<tr>
+	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
+	<td width="50%" align="right">
+		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0"><?php echo $AppUI->_('delete task');?></a>
 	</td>
 </tr>
 </table>
 
-<table border="1" cellpadding="6" cellspacing="0" width="95%" bgcolor="#eeeeee">
+
+<table border="1" cellpadding="4" cellspacing="0" width="98%" bgcolor="#eeeeee">
+<tr>
+	<td colspan="2" style="border: outset #eeeeee 1px;background-color:<?php echo $project["project_color_identifier"];?>" >
+		<font color="<?php echo bestColor( $project["project_color_identifier"] ); ?>">
+			<b><?php echo $AppUI->_('Project');?>: <?php echo @$project["project_name"];?></b>
+		</font>
+	</td>
+</tr>
+
 <tr class="basic" valign="top" width="50%">
 	<td>
-		<span id="ccstasknamestr"><span class="FormLabel">Task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$prow["task_name"];?>" size="40" maxlength="255">
+		<span id="ccstasknamestr"><span class="FormLabel">Task name</span> <span class="FormElementRequired">*</span></span><br><input type="text" name="task_name" value="<?php echo @$task["task_name"];?>" size="40" maxlength="255">
 	</td>
 	<td>
-		<TABLE width="100%" bgcolor="#dddddd">
-		<TR>
-			<TD>Status</TD>
-			<TD><span class="FormLabel">priority</span> <span class="FormElementRequired">*</span></TD>
-			<TD nowrap>Complete?</TD>
-			<TD>Milestone?</TD>
-		</TR>
-		<TR>
-			<TD>		
+		<table width="100%" bgcolor="#dddddd">
+		<tr>
+			<td>Status</td>
+			<td><span class="FormLabel">priority</span> <span class="FormElementRequired">*</span></td>
+			<td nowrap>Complete?</td>
+			<td>Milestone?</td>
+		</tr>
+		<tr>
+			<td>		
 			<?php
-				echo arraySelect( $status, 'task_status', 'size=1 class=text', $prow["task_status"] ) . '%';
+				echo arraySelect( $status, 'task_status', 'size=1 class=text', $task["task_status"] ) . '%';
 			?>
-			</TD>
-			<TD nowrap>
+			</td>
+			<td nowrap>
 			<?php
-				echo arraySelect( $priority, 'task_priority', 'size=1 class=text', $prow["task_priority"] );
+				echo arraySelect( $priority, 'task_priority', 'size=1 class=text', $task["task_priority"] );
 			?>
-			</TD>
-			<TD>		
+			</td>
+			<td>		
 			<?php
-				echo arraySelect( $percent, 'task_precent_complete', 'size=1 class=text', $prow["task_precent_complete"] ) . '%';
+				echo arraySelect( $percent, 'task_precent_complete', 'size=1 class=text', $task["task_precent_complete"] ) . '%';
 			?>
-			</TD>
-			<TD>
-				<input type=checkbox value=1 name="task_milestone" <?php if($prow["task_milestone"]){?>checked<?php }?>>
-			</TD>
-		</TR>
-		</TABLE>
+			</td>
+			<td>
+				<input type=checkbox value=1 name="task_milestone" <?php if($task["task_milestone"]){?>checked<?php }?>>
+			</td>
+		</tr>
+		</table>
 	</td>
 </tr>
 <tr class="basic" valign="top">
-	<TD width="50%">
+	<td width="50%">
 		Task creator
-		<br><select name="task_owner" style="width:200px;">
-
-		<?php while ($row = mysql_fetch_array( $urc )) { ?>
-			<option value="<?php echo $row["user_id"];?>"
-		<?php
-		if ($task_id == 0 && $row["user_id"] == $user_cookie) {
-			echo "selected";
-		} else if ($prow["task_owner"] == $row["user_id"]) {
-			echo "selected";
-		}?>><?php echo $row["user_first_name"];?> <?php echo $row["user_last_name"];?>
-		<?php }?>
-		</select>
+		<br>
+		<?php echo arraySelect( $users, 'task_owner', '"width:200px;"', $task["task_owner"] );?>
 		<br><br>Related URL
-		<br><input type="Text" name="task_related_url" value="<?php echo @$prow["task_related_url"];?>" size="40" maxlength="255"">
+		<br><input type="Text" name="task_related_url" value="<?php echo @$task["task_related_url"];?>" size="40" maxlength="255"">
 		<br>
 		<table>
 		<tr>
-			<TD>Task Parent:</td>
-			<TD><img src="./images/shim.gif" width=30 height=1></td>
-			<TD>Task budget</td>
+			<td>Task Parent:</td>
+			<td><img src="./images/shim.gif" width=30 height=1></td>
+			<td>Task budget</td>
 		</tr>
 		<tr>
-			<TD>
-				<select name="task_parent" style="width:150px;"><option value="<?php echo $prow["task_id"];?>">None
-					<?php
-					while ($row = mysql_fetch_array( $atrc )) {
-						echo '<option value="' . $row["task_id"].'"';
-						if ($row["task_id"] == $prow["task_parent"] || $row["task_id"] == $task_parent) {
-							echo ' selected';
-						}
-						echo '>'.$row["task_name"];
-					}?>
-				</select>
+			<td>
+				<?php echo arraySelect( $projTasks, 'task_parent', '', $task_parent ); ?>
 			</td>
-			<TD><img src="./images/shim.gif" width=30 height=1></td>			
-			<TD>$<input type="Text" name="task_target_budget" value="<?php echo @$prow["task_target_budget"];?>" size="10" maxlength="10"></td>			
+			<td><img src="./images/shim.gif" width=30 height=1></td>			
+			<td>$<input type="Text" name="task_target_budget" value="<?php echo @$task["task_target_budget"];?>" size="10" maxlength="10"></td>			
 		</tr>
 		</table>
 	</td>
 	<td  align="center" width="50%">
-		<TABLE width="300">
-			<TR>
-				<TD>
-					<span id="startmmint"><span class="FormLabel">start date
+		<table width="300">
+			<tr>
+				<td>
+					<span id="startmmint"><span class="FormLabel">Start Date
 					<br>(<?php echo dateFormat()?>)</span></span>
-				</TD>
-				<TD>
-					<span id="targetmmint"><span class="FormLabel">finish date
+				</td>
+				<td>
+					<span id="targetmmint"><span class="FormLabel">Finish Date
 					<br>(<?php echo dateFormat()?>)</span>
-				</TD>
-			</TR>
-			<TR>
-				<TD nowrap>
-					<input type="text" name="task_start_date" value="<?php if(intval($prow["task_start_date"]) > 0){
-						echo fromDate(substr($prow["task_start_date"], 0, 10));
+				</td>
+			</tr>
+			<tr>
+				<td nowrap>
+					<input type="text" name="task_start_date" value="<?php if(intval($task["task_start_date"]) > 0){
+						echo fromDate(substr($task["task_start_date"], 0, 10));
 					} else {
 						echo fromDate(date("Y", time()) ."-" . date("m", time()) ."-" . date("d", time()));
 					};?>" size="10" maxlength="10">
 					<a href="#" onClick="popCalendar('task_start_date');"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> 
 					<a href="#" onClick="popCalendar('task_start_date');">calendar</A> &nbsp; &nbsp; &nbsp;
 				</td>
-				<TD nowrap>
-					<input type="text" name="task_end_date" value="<?php if(intval($prow["task_end_date"]) > 0) {
-						echo fromDate(substr($prow["task_end_date"], 0, 10));
+				<td nowrap>
+					<input type="text" name="task_end_date" value="<?php if(intval($task["task_end_date"]) > 0) {
+						echo fromDate(substr($task["task_end_date"], 0, 10));
 					} ?>" size="10" maxlength="10" onclick="javascript:document.AddEdit.task_dynamic.checked=false">
 					<a href="#" onClick="javascript:document.AddEdit.task_dynamic.checked=false;popCalendar('task_end_date')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a> <a href="#" onClick="javascript:document.AddEdit.task_dynamic.checked=false;popCalendar('task_end_date')">calendar</A>
 				</td>
 			</tr>
-			<TR>
-				<TD>Expected duration:</td>				
+			<tr>
+				<td>Expected duration:</td>				
 				<td>Dynamic Task?</td>
 			</tr>
-			<TR>
-				<TD>
-			<?php if (($prow["task_duration"]) > 24 ) {
-				$newdir = ($prow["task_duration"] / 24);
+			<tr>
+				<td>
+			<?php if (($task["task_duration"]) > 24 ) {
+				$newdir = ($task["task_duration"] / 24);
 				$dir = 24;
 			} else {
-				$newdir = ($prow["task_duration"]);
+				$newdir = ($task["task_duration"]);
 				$dir = 1;
 			}
 			if ($newdir ==0) {
@@ -352,43 +325,29 @@ function delIt() {
 			</select>
 			</td>
 			
-			<td><input type="checkbox" name=task_dynamic value=1 <?php if($prow["task_dynamic"]!="0") echo "checked"?>></td>
+			<td><input type="checkbox" name=task_dynamic value=1 <?php if($task["task_dynamic"]!="0") echo "checked"?>></td>
 			</tr>
 		</table>
 	</td>
 </tr>
 <tr class="basic">
 	<td>
-		<TABLE>
-			<TR>
-				<TD>All tasks</td>
-				<TD></td>
-				<TD>Task dependencies</td>
-			</TR>
-			<TR>
-				<TD>
-					<Select multiple name="all_tasks" style="width:150px" size="10" style="font-size:9pt;">
-				<?php
-					mysql_data_seek( $atrc, 0 );
-					while ($row = mysql_fetch_array( $atrc)) {
-						echo "<option value='".$row["task_id"]."'>". $row["task_name"];
-					}
-				?>
-					</select>
+		<table>
+			<tr>
+				<td>All tasks</td>
+				<td></td>
+				<td>Task dependencies</td>
+			</tr>
+			<tr>
+				<td>
+					<?php echo arraySelect( $projTasks, 'all_tasks', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
-				<TD nowrap>
+				<td nowrap>
 					<input type="button" value=" << " onClick="removeTaskDependency()">
 					<input type="button" value=" >> " onClick="addTaskDependency()">
 				</td>
-				<TD>
-					<Select multiple name="task_dependencies" style="width:150px" size="10" style="font-size:9pt;">
-				<?php
-					mysql_data_seek( $tdrc, 0 );
-					while ($row = mysql_fetch_array( $tdrc, MYSQL_ASSOC )) {
-						echo "<option value='".$row["task_id"]."'>". $row["task_name"];
-					}
-				?>
-					</select>
+				<td>
+					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 			</tr>
 		</table>		
@@ -398,43 +357,29 @@ function delIt() {
 <tr class="basic">
 	<td valign="middle">
 		<span id="fulldesctext"><span class="formlabel">Instructions:</span></span><br>
-		<textarea name="task_description" cols="38" rows="10" wrap="virtual"><?php echo @$prow["task_description"];?></textarea>
+		<textarea name="task_description" cols="38" rows="10" wrap="virtual"><?php echo @$task["task_description"];?></textarea>
 	</td>
 	<td valign="middle">
-		<TABLE>
-			<TR>
-				<TD>Resources</td>
-				<TD></td>
-				<TD>Assigned to Task</td>
-			</TR>
-			<TR>
-				<TD>
-					<Select multiple name="resources" style="width:150px" size="10" style="font-size:9pt;">
-				<?php
-					mysql_data_seek( $urc, 0 );
-					while ($row = mysql_fetch_array( $urc, MYSQL_ASSOC )) {
-						echo "<option value=\"".$row["user_id"]."\">". $row["user_first_name"] ." " . $row["user_last_name"];
-					}
-				?>
-					</select>
+		<table>
+			<tr>
+				<td>Resources</td>
+				<td></td>
+				<td>Assigned to Task</td>
+			</tr>
+			<tr>
+				<td>
+					<?php echo arraySelect( $users, 'resources', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
-				<TD nowrap>
+				<td nowrap>
 					<input type="button" value=" << " onClick="removeUser()">
 					<input type="button" value=" >> " onClick="addUser()">
 				</td>
-				<TD>
-					<Select multiple name="assigned" style="width:150px" size="10" style="font-size:9pt;">
-				<?php
-					mysql_data_seek( $urc, 0 );
-					while ($row = mysql_fetch_array( $trc, MYSQL_ASSOC )) {
-						echo "<option value=\"".$row["user_id"]."\">" . $row["user_first_name"] ." " .$row["user_last_name"];
-					}
-				?>
-					</select>
+				<td>
+					<?php echo arraySelect( $assigned, 'assigned', 'style="width:150px" size="10" style="font-size:9pt;" multiple="multiple"', null ); ?>
 				</td>
 			</tr>
-			<TR>
-				<TD colspan=3 align="center">
+			<tr>
+				<td colspan=3 align="center">
 					<input type="checkbox" name="notify" value="1"> Notify Assignees of Task by Email
 				</td>
 			</tr>

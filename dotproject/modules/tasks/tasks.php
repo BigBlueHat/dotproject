@@ -152,7 +152,7 @@ switch ($f) {
 		$where .= "\nAND task_status > -1\n	AND project_owner = $AppUI->user_id";
 		break;
 	case 'mycomp':
-		$where .= "\nAND task_status > -1\n	AND project_company = $thisuser_company";
+		$where .= "\nAND task_status > -1\n	AND project_company = $AppUI->user_company";
 		break;
 	case 'myinact':
 		$from .= ", user_tasks";
@@ -188,16 +188,14 @@ for ($x=0; $x < $nums; $x++) {
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
-$crumbs = array();
-$crumbs["?m=tasks&a=todo"] = "my todo";
-
 //This kludgy function echos children tasks as threads
+$df = $AppUI->getPref( 'SHDATEFORMAT' );
 
 function showtask( &$a, $level=0 ) {
-	global $done, $query_string;
+	global $done, $query_string, $df;
 	$done[] = $a['task_id']; ?>
 	<tr>
-	<td><a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
+	<td><a href="?m=tasks&a=addedit&task_id=<?php echo $a["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a></td>
 	<td align="right"><?php echo intval($a["task_precent_complete"]);?>%</td>
 	<td>
 	<?php if ($a["task_priority"] < 0 ) {
@@ -224,8 +222,8 @@ function showtask( &$a, $level=0 ) {
 
 
 	<a href="./index.php?m=tasks&a=view&task_id=<?php echo $a["task_id"];?>"><?php echo $a["task_name"];?></a></td>
-	<td nowrap><?php echo fromDate(substr($a["task_start_date"], 0, 10));?></td>
-	<td>
+	<td nowrap><?php echo strftime( $df, db_dateTime2unix( $a["task_start_date"] ) );?></td>
+	<td align="right">
 	<?php if ($a["task_duration"] > 24 ) {
 		$dt = "day";
 		$dur = $a["task_duration"] / 24;
@@ -241,7 +239,7 @@ function showtask( &$a, $level=0 ) {
 	?>
 	</td>
 	<td nowrap>
-        <?php echo fromDate(substr($a["task_end_date"], 0, 10));?>
+        <?php echo strftime( $df, db_dateTime2unix( $a["task_end_date"] ) );?>
 	</td>
 	</tr>
 <?php }
@@ -257,6 +255,9 @@ function findchild( &$tarr, $parent, $level=0 ){
 		}
 	}
 }
+
+$crumbs = array();
+$crumbs["?m=tasks&a=todo"] = "my todo";
 ?>
 
 <?php if(!$min_view) { ?>
@@ -270,13 +271,13 @@ function findchild( &$tarr, $parent, $level=0 ){
 
 <table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
-	<th width="10">id</th>
-	<th width="20">work</th>
-	<th width="15" align="center">p</th>
-	<th width="200">task name</th>
-	<th>start date</th>
-	<th>duration&nbsp;&nbsp;</th>
-	<th>finish date</th>
+	<th width="10">&nbsp;</th>
+	<th width="20"><?php echo $AppUI->_('Work');?></th>
+	<th width="15" align="center">&nbsp;</th>
+	<th width="200"><?php echo $AppUI->_('Task Name');?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Duration');?>&nbsp;&nbsp;</th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?></th>
 </tr>
 <?php
 //echo '<pre>'; print_r($projects); echo '</pre>';
