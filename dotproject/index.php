@@ -1,6 +1,6 @@
 <?php
 error_reporting( E_PARSE | E_CORE_ERROR | E_WARNING);
-//error_reporting( E_ALL );
+error_reporting( E_ALL );
 
 require_once( "./includes/config.php" );
 require_once( "$root_dir/includes/db_connect.php" );
@@ -19,12 +19,17 @@ if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
 	$_SESSION['AppUI'] = new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
+
+@include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
+header("Content-type: text/html;charset=$locale_char_set");
+
 if ($AppUI->doLogin()) {
 	session_unset();
 	session_destroy();
 	include "$root_dir/includes/login.php";
 	exit;
 }
+
 
 $m = isset( $_GET['m'] ) ? $_GET['m'] :
 	(isset( $_COOKIE['m'] ) ? $_COOKIE['m'] : 'companies');
