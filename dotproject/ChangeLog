@@ -1,3 +1,54 @@
+2003-05-01 17:02  (korinek)
+---------------------------------
+modules/tasks/tasks.class.php
+- One extra ")" fixed from previous commit :-(
+
+2003-05-01 16:49  (korinek)
+---------------------------------
+locales/en/forums.inc
+- Content update
+
+2003-05-01 16:49  (korinek)
+---------------------------------
+locales/en/locales.php
+- Corrected the charset value for English to iso-8859-1
+
+2003-05-01 16:48  (korinek)
+---------------------------------
+modules/forums/forums.class.php
+- Added the charset field for the body of the outgoing email message.
+
+2003-05-01 16:47  (korinek)
+---------------------------------
+modules/tasks/tasks.class.php
+- Translated a few string in the body of the email, included the charset field
+- for the body of the message.
+
+2003-05-01 09:17  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- no message
+
+2003-05-01 09:17  (eddieajau)
+---------------------------------
+index.php
+- Added check that root directory is valid
+
+2003-05-01 07:36  (eddieajau)
+---------------------------------
+docs/rfc0001.00.html
+- Initial upload
+
+2003-05-01 06:51  (eddieajau)
+---------------------------------
+includes/db_mysql.php
+- Added error check if mysql support not installed.
+
+2003-05-01 06:00  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-01 00:23  (eddieajau)
 ---------------------------------
 modules/tasks/viewgantt.php
@@ -447,57 +498,6 @@ modules/admin/vw_usr_roles.php
 - Icons updated
 
 2003-04-23 18:31  (eddieajau)
----------------------------------
-modules/system/images/48_my_computer.png
-modules/system/images/main-settings.png
-modules/system/images/modules.gif
-modules/system/images/myevo-weather.png
-modules/system/images/power-management.png
-modules/system/images/rdf2.png
-- Icons updated
-
-2003-04-23 18:27  (eddieajau)
----------------------------------
-modules/admin/addedituser.php
-modules/admin/index.php
-modules/admin/viewuser.php
-modules/contacts/addedit.php
-modules/contacts/index.php
-modules/ticketsmith/index.php
-- Icons updated
-
-2003-04-23 04:15  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-04-22 20:20  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Fixed bug in mailouts that failed to reset the 'to' field
-
-2003-04-22 20:19  (eddieajau)
----------------------------------
-modules/projects/index.php
-modules/tasks/index.php
-- Updated icons
-
-2003-04-22 20:16  (eddieajau)
----------------------------------
-modules/companies/companies.class.php
-- Updated documentation
-
-2003-04-22 20:15  (eddieajau)
----------------------------------
-modules/calendar/addedit.php
-modules/calendar/day_view.php
-modules/calendar/index.php
-modules/calendar/view.php
-modules/calendar/week_view.php
-modules/companies/addedit.php
-modules/companies/index.php
-modules/companies/view.php
-modules/files/addedit.php
 ...
 
 (This file has been wrapped)
