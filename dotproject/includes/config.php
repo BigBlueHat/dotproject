@@ -26,13 +26,13 @@ $base_url = "http://buran.toowoomba.qld.gov.au/dotproject";
 $site_domain = "dotproject.net";
 
 // enable if you want to be able to see other users's tasks
-define(SHOW_ALL_TASKS, false);
+define( 'SHOW_ALL_TASKS', false );
  
 // enable if you want to support gantt charts
-define(ENABLE_GANTT_CHARTS, true);
+define( 'ENABLE_GANTT_CHARTS', true );
 
 // disable if you want to allow to add tasks without giving a duration
-define(REQUIRE_TASKS_DURATION, true);
+define( 'REQUIRE_TASKS_DURATION', true );
 
 // Date format, can be one of:
 // 0 = international or yyyy-mm-dd
@@ -55,4 +55,6 @@ $ft["application/pdf"] = "/usr/bin/pdftotext";
 */
 require "secret.php";
 
+// set debug = true to help analyse errors
+$debug = false;
 ?>
