@@ -9,8 +9,6 @@ $q  = new DBQuery;
 $q->addTable('contacts');
 $q->addQuery('*');
 $q->addWhere("contact_company = '$obj->company_name' OR contact_company = '$obj->company_id'");
-$contact =& new CContact;
-
 $s = '';
 if (!($rows = $q->loadList())) {
 	echo $AppUI->_('No data available').'<br />'.$AppUI->getMsg();
@@ -24,6 +22,7 @@ if (!($rows = $q->loadList())) {
 </tr>
 <?php
 	foreach ($rows as $row){
+		$contact =& new CContact;
 		$contact->bind($row);
 		$dept_detail = $contact->getDepartmentDetails();
 
