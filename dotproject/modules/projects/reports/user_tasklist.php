@@ -12,6 +12,7 @@ $list_start_date = dPgetParam( $_POST, "list_start_date", 0 );
 $list_end_date = dPgetParam( $_POST, "list_end_date", 0 );
 $all_projects = dPgetParam ( $_POST, "all_projects", 0);
 
+$person_responsible = dPgetParam( $_POST, "person_responsible" );
 // create Date objects from the datetime fields
 $start_date = intval( $list_start_date ) ? new CDate( $list_start_date ) : new CDate();
 $end_date = intval( $list_end_date ) ? new CDate( $list_end_date ) : new CDate();
