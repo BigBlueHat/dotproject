@@ -121,6 +121,28 @@ CREATE TABLE `events` (
 	KEY `idx_ev2` (`event_project`)
 ) TYPE=MyISAM;
 
+# 20050303
+#
+CREATE TABLE `event_queue` (
+  `queue_id` int(11) NOT NULL auto_increment,
+  `queue_start` int(11) NOT NULL default '0',
+  `queue_type` varchar(40) NOT NULL default '',
+  `queue_repeat_interval` int(11) NOT NULL default '0',
+  `queue_repeat_count` int(11) NOT NULL default '0',
+  `queue_data` longblob NOT NULL,
+  `queue_callback` varchar(127) NOT NULL default '',
+  `queue_owner` int(11) NOT NULL default '0',
+  `queue_origin_id` int(11) NOT NULL default '0',
+  `queue_module` varchar(40) NOT NULL default '',
+  `queue_module_type` varchar(20) NOT NULL default '',
+  PRIMARY KEY  (`queue_id`),
+  KEY `queue_start` (`queue_start`),
+  KEY `queue_module` (`queue_module`),
+  KEY `queue_type` (`queue_type`),
+  KEY `queue_origin_id` (`queue_origin_id`)
+) TYPE=MyISAM;
+
+
 CREATE TABLE `files` (
   `file_id` int(11) NOT NULL auto_increment,
   `file_real_filename` varchar(255) NOT NULL default '',
@@ -721,6 +743,27 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
   SELECT config_id, 'php'
 	FROM config
 	WHERE config_name = 'session_handling';
+
+# 20050303
+# New mail handling options
+INSERT INTO config VALUES (NULL, 'mail_transport', 'php', 'mail', 'select');
+INSERT INTO config VALUES (NULL, 'mail_host', 'localhost', 'mail', 'text');
+INSERT INTO config VALUES (NULL, 'mail_port', '25', 'mail', 'text');
+INSERT INTO config VALUES (NULL, 'mail_auth', 'false', 'mail', 'checkbox');
+INSERT INTO config VALUES (NULL, 'mail_user', '', 'mail', 'text');
+INSERT INTO config VALUES (NULL, 'mail_pass', '', 'mail', 'text');
+INSERT INTO config VALUES (NULL, 'mail_defer', 'false', 'mail', 'checkbox');
+INSERT INTO config VALUES (NULL, 'mail_timeout', '30', 'mail', 'text');
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'php'
+	FROM config
+	WHERE config_name = 'mail_transport';
+
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'smtp'
+	FROM config
+	WHERE config_name = 'mail_transport';
 
 # 20050302
 # new custom fields

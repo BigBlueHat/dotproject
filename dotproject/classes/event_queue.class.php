@@ -35,7 +35,7 @@ class EventQueue {
 	 * @param integer $repeat_count number of times to repeat
 	 * @return integer queue id
 	 */
-	function add($callback, &$args, $module, $id = 0, $type = '', $date = 0, $repeat_interval = 0, $repeat_count = 1)
+	function add($callback, &$args, $module, $sysmodule = false, $id = 0, $type = '', $date = 0, $repeat_interval = 0, $repeat_count = 1)
 	{
 		global $AppUI;
 
@@ -64,6 +64,10 @@ class EventQueue {
 		$q->addInsert('queue_module', $module);
 		$q->addInsert('queue_type', $type);
 		$q->addInsert('queue_origin_id', $id);
+		if ($sysmodule)
+			$q->addInsert('queue_module_type', 'system');
+		else
+			$q->addInsert('queue_module_type', 'module');
 		if ($q->exec())
 			$return =  db_insert_id();
 		else
@@ -109,7 +113,11 @@ class EventQueue {
 	{
 		global $AppUI;
 
-		@include_once $AppUI->get_module_class($fields['queue_module']);
+		if (isset($fields['queue_module_type'])
+		&& $fields['queue_module_type'] == 'system')
+			@include_once $AppUI->getSystemClass($fields['queue_module']);
+		else
+			@include_once $AppUI->getModuleClass($fields['queue_module']);
 
 		$args = unserialize($fields['queue_data']);
 		if (strpos('::', $fields['queue_callback']) !== false) {

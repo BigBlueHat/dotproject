@@ -78,13 +78,32 @@ class Mail
 
 	var $useRawAddress = true;
 
+	var $host;
+	var $port;
+	var $sasl;
+	var $username;
+	var $password;
+	var $transport;
+	var $defer;
+
 /**
  *	Mail constructor
 */
 function Mail()
 {
+	global $dPconfig;
+
 	$this->autoCheck( true );
 	$this->boundary= "--" . md5( uniqid("myboundary") );
+	// Grab the current mail handling options
+	$this->transport = isset($dPconfig['mail_transport']) ? $dPconfig['mail_transport'] : 'php';
+	$this->host = isset($dPconfig['mail_host']) ? $dPconfig['mail_host'] : 'localhost';
+	$this->port = isset($dPconfig['mail_port']) ? $dPconfig['mail_port'] : '25';
+	$this->sasl = isset($dPconfig['mail_auth']) ? $dPconfig['mail_auth'] : false;
+	$this->username = @$dPconfig['mail_user'];
+	$this->password = @$dPconfig['mail_pass'];
+	$this->defer = @$dPconfig['mail_defer'];
+	$this->timeout = isset($dPconfig['mail_timeout']) ? $dPconfig['mail_timeout'] : 0;
 }
 
 
@@ -294,6 +313,8 @@ function Attach( $filename, $filetype = "", $disposition = "inline" ) {
 */
 function BuildMail() {
 // build the headers
+	global $AppUI;
+
 	$this->headers = "";
 //	$this->xheaders['To'] = implode( ", ", $this->sendto );
 
@@ -318,7 +339,7 @@ function BuildMail() {
 		$this->xheaders["Content-Transfer-Encoding"] = $this->ctencoding;
 	}
 
-	$this->xheaders["X-Mailer"] = "Php/libMailv1.3";
+	$this->xheaders["X-Mailer"] = "dotProject v" . $AppUI->getVersion();
 
 	// include attached files
 	if( count( $this->aattach ) > 0 ) {
@@ -345,8 +366,127 @@ function Send() {
 
 	$this->strTo = implode( ", ", $this->sendto );
 
-	// envoie du mailz
-	return @mail( $this->strTo, $this->xheaders['Subject'], $this->fullBody, $this->headers );
+	if ($this->defer)
+		return $this->QueueMail();
+	else if ($this->transport == 'smtp')
+		return $this->SMTPSend( $this->sendto, $this->xheaders['Subject'], $this->fullBody, $this->xheaders );
+	else
+		return @mail( $this->strTo, $this->xheaders['Subject'], $this->fullBody, $this->headers );
+}
+
+/**
+ * Send email via an SMTP connection.
+ *
+ * Work based loosly on that of Bugs Genie, which appears to be in turn based on something from 'Ninebirds'
+ *
+ * @access public
+ */
+function SMTPSend($to, $subject, $body, &$headers) {
+	global $AppUI, $dPconfig;
+
+	// Start the connection to the server
+	$error_number = 0;
+	$error_message = '';
+	$this->socket = fsockopen($this->host, $this->port, $error_number, $error_message, $this->timeout);
+	if (! $this->socket) {
+		dprint(__FILE__, __LINE__, 1, "Error on connecting to host {$this->host} at port {$this->port}: $error_message ($error_number)");
+		$AppUI->setMsg("Cannot connect to SMTP Host: $error_message ($error_number)");
+		return false;
+	}
+	// Read the opening stuff;
+	$this->socketRead();
+	// Send the protocol start
+	$this->socketSend("HELO " . $_SERVER['HTTP_HOST']);
+	if ($this->auth && $this->username) {
+		$this->socketSend("AUTH LOGIN");
+		$this->socketSend(base64_encode($this->username));
+		$rcv = $this->socketSend(base64_encode($this->password));
+		if (strpos($rcv, '235') !== 0) {
+			dprint(__FILE__, __LINE__, 1, "Authentication failed on server: $rcv");
+			$AppUI->setMsg("Failed to login to SMTP server: $rcv");
+			fclose($this->socket);
+			return false;
+		}
+	}
+	// Determine the mail from address.
+	if ( ! isset($headers['From'])) {
+		$from = $dPconfig['admin_user'] . '@' . $dPconfig['site_domain'];
+	} else {
+		// Search for the parts of the email address
+		if (preg_match('/.*<([^@]+@[a-z0-9\._-]+)>/i', $headers['From'], $matches))
+			$from = $matches[1];
+		else
+			$from = $headers['From'];
+	}
+	$this->socketSend("MAIL FROM: <$from>");
+	foreach ($to as $to_address) {
+		if (strpos($to_address, '<') !== false) {
+			preg_match('/^.*<([^@]+\@[a-z0-9\._-]+)>/i', $to_address, $matches);
+			if (isset($matches[1]))
+				$to_address = $matches[1];
+		}
+		$this->socketSend("RCPT TO: <$to_address>");
+	}
+	$this->socketSend("DATA");
+	foreach ($headers as $hdr =>$val) {
+		$this->socketSend("$hdr: $val", false);
+	}
+	// Now build the To Headers as well.
+	$this->socketSend("To: " . implode(', ', $to), false);
+	$this->socketSend("Date: " . date('r'), false);
+	$this->socketSend("", false);
+	$this->socketSend($body, false);
+	$result = $this->socketSend(".\r\nQUIT");
+	if (strpos($result, '250') === 0)
+		return true;
+	else {
+		dprint(__FILE__, __LINE__, 1, "Failed to send email from $from to $to_address: $result");
+		$AppUI->setMsg("Failed to send email: $result");
+		return false;
+	}
+}
+
+function socketRead()
+{
+	return fgets($this->socket, 4096);
+}
+
+function socketSend($msg, $rcv = true)
+{
+	$sent = fputs($this->socket, $msg . "\r\n");
+	if ($rcv)
+		return fgets($this->socket, 4096);
+	else
+		return $sent;
+}
+
+/**
+ * Queue mail to allow the queue manager to trigger
+ * the email transfer.
+ *
+ * @access private
+ */
+function QueueMail() {
+	global $AppUI;
+
+	require_once $AppUI->getSystemClass('event_queue');
+	$ec = new EventQueue;
+	$vars = get_object_vars($this);
+	return $ec->add(array('Mail', 'SendQueuedMail'), $vars, 'libmail', true);
+}
+
+/**
+ * Dequeue the email and transfer it.  Called from the queue manager.
+ *
+ * @access private
+ */
+function SendQueuedMail($mod, $type, $originator, $owner, &$args) {
+	extract($args);
+	if ($this->transport == 'smtp') {
+		return $this->SMTPSend($sendto, $xheaders['Subject'], $fullBody, $xheaders);
+	} else {
+		return @mail( $strTo, $xheaders['Subject'], $fullBody, $headers );
+	}
 }
 
 /**
