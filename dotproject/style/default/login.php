@@ -29,7 +29,7 @@
 	<td align="left" nowrap><input type="password" size="25" name="password" class="text" /></td>
 </tr>
 <tr>
-	<td align="left" nowrap><img src="./style/default/images/dp_icon.gif" width="120" height="20" border="0" alt="dotProject logo" /></td>
+	<td align="left" nowrap><a href="http://www.dotproject.net/"><img src="./style/default/images/dp_icon.gif" width="120" height="20" border="0" alt="dotProject logo" /></a></td>
 	<td align="right" valign="bottom" nowrap><input type="submit" name="login" value="<?php echo $AppUI->_('login');?>" class="button" /></td>
 </tr>
 </table>

@@ -62,7 +62,9 @@
 </tr>
 <tr>
 	<td align=center>
+		<a href="http://www.dotproject.net/">
 		<img src="./images/icons/dp.gif" width="42" height="42" border=0 alt="dotproject" />
+		</a>
 		<p>dotproject</p>
 		<p><?php echo $AppUI->_('openSource');?></p>
 	</td>
