@@ -65,13 +65,13 @@ if (!db_loadObject( $sql, $obj )) {
 
 
 // worked hours
-// by definition milestones don't have duration so even if they specified, they shouldn't add up
+// now milestones are summed up, too, for consistence with the tasks duration sum
 // the sums have to be rounded to prevent the sum form having many (unwanted) decimals because of the mysql floating point issue
 // more info on http://www.mysql.com/doc/en/Problems_with_float.html
 $q->addTable('task_log');
 $q->addTable('tasks');
 $q->addQuery('ROUND(SUM(task_log_hours),2)');
-$q->addWhere("task_log_task = task_id AND task_project = $project_id AND task_milestone ='0'");
+$q->addWhere("task_log_task = task_id AND task_project = $project_id");
 $sql = $q->prepare();
 $q->clear();
 $worked_hours = db_loadResult($sql);
@@ -81,14 +81,14 @@ $worked_hours = rtrim($worked_hours, "0");
 // same milestone comment as above, also applies to dynamic tasks
 $q->addTable('tasks');
 $q->addQuery('ROUND(SUM(task_duration),2)');
-$q->addWhere("task_project = $project_id AND task_duration_type = 24 AND task_milestone ='0' AND task_dynamic != 1");
+$q->addWhere("task_project = $project_id AND task_duration_type = 24 AND task_dynamic != 1");
 $sql = $q->prepare();
 $q->clear();
 $days = db_loadResult($sql);
 
 $q->addTable('tasks');
 $q->addQuery('ROUND(SUM(task_duration),2)');
-$q->addWhere("task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0' AND task_dynamic != 1");
+$q->addWhere("task_project = $project_id AND task_duration_type = 1 AND task_dynamic != 1");
 $sql = $q->prepare();
 $q->clear();
 $hours = db_loadResult($sql);
@@ -99,14 +99,14 @@ $total_project_hours = 0;
 $q->addTable('tasks', 't');
 $q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2)');
 $q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
-$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic != 1");
+$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_dynamic != 1");
 $total_project_days_sql = $q->prepare();
 $q->clear();
 
 $q->addTable('tasks', 't');
 $q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2)');
 $q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
-$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic != 1");
+$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 1 AND t.task_dynamic != 1");
 $total_project_hours_sql = $q->prepare();
 $q->clear();
 
