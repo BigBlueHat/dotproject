@@ -64,15 +64,21 @@ $taskDep = db_loadHashList( $sql );
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Off' );?></td>
-				<td nowrap="nowrap">
+				<td id="no_dyn" nowrap="nowrap">
 					<input type="radio" name="task_dynamic" value="0" <?php if($obj->task_dynamic == '0' || $obj->task_dynamic == '11') echo "checked"?> />
 				</td>
 </tr>
 <tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Do not track this task' );?>
-				
-					<input type="checkbox" name="task_dynamic_nodelay" value="1" <?php if(($obj->task_dynamic > '10') && ($obj->task_dynamic < 30)) echo "checked"?> />
-				</td>
+	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
+	<td nowrap="nowrap">
+		<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo "checked"?> />
+	</td>
+</tr>
+<tr>
+	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Do not track this task' );?></td>
+	<td>
+		<input type="checkbox" name="task_dynamic_nodelay" value="1" <?php if(($obj->task_dynamic > '10') && ($obj->task_dynamic < 30)) echo "checked"?> />
+	</td>
 			</tr>
 			<?php
 				} else {  

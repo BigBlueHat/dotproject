@@ -107,12 +107,6 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 		<input type="button" value="<?php echo $AppUI->_('Finish Date');?>" onclick="calcFinish(document.datesFrm)" class="button" />
 	</td>
 </tr>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
-	<td nowrap="nowrap">
-		<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo "checked"?> />
-	</td>
-</tr>
         <?php
         } else {  
         ?>
