@@ -25,6 +25,7 @@ WHERE task_id = $task_id
 $trc = mysql_query( $tsql );
 echo mysql_error();
 $trow = mysql_fetch_array( $trc, MYSQL_ASSOC );
+$project_id = $trow['task_project'];
 
 // Pull the task comments
 $csql = "
@@ -199,7 +200,7 @@ function updateTask() {
 
 	<td width="50%" align="right">
 		<table cellspacing=0 cellpadding=2 width="100%">
-		<form name="update" action="./index.php?m=tasks&a=view" method="post">
+		<form name="update" action="./index.php?m=tasks&a=view&task_id=<?php echo $task_id;?>" method="post">
 		<input type="hidden" value="<?php echo uniqid("");?>" name="uniqueid">
 		<input type="hidden" value="updatetask" name="dosql">
 		<input type="hidden" value="<?php echo @$trow["task_id"];?>" name="task_id">
