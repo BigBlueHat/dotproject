@@ -100,50 +100,47 @@ if ( $task_id == 0 ) {
 	$assigned_perc = db_loadHashList( $sql );	
 }
 
-// Pull tasks for the parent task list
-$sql="
-SELECT task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent 
-FROM tasks
-WHERE task_project = $task_project
-	AND task_id <> $task_id
-ORDER BY task_parent, task_start_date
-";
-
-
-function getTaskDepth($task_parent, $count = 1){
-	$sql = "select task_parent
-			from tasks
-			where task_id = '$task_parent'";
-	
-	$task_id = db_loadResult($sql);
-	if($task_id == $task_parent){
-		return $count;
-	} else {
-		return getTaskDepth($task_id, ++$count);
-	}
-}
-
 function getSpaces($amount){
 	if($amount == 0) return "";
 	return str_repeat("&nbsp;", $amount);
 }
 
-$res = db_exec( $sql );
+function constructTaskTree($task_data, $depth = 0){
+	global $projTasks, $task_parent_options, $task_parent, $task_id;
+	
+	$projTasks[$task_data[0]] = $task_data[1];
+	
+	$selected = $task_data[0] == $task_parent ? "selected" : "";
+	$task_parent_options .= "<option value='".$task_data[0]."' $selected>".getSpaces($depth*3).dPFormSafe($task_data[1])."</option>";
+	
+	$sql = "select task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent
+			from tasks
+			where task_parent = '".$task_data[0]."'
+				  and task_id != task_parent
+				  and task_id != '$task_id'
+			order by task_start_date";
+	$child_tasks = db_exec($sql);
+	while($child_task = db_fetch_row($child_tasks)){
+		constructTaskTree($child_task, ($depth+1));
+	}
+}
 
-while ($row = db_fetch_row( $res )) {
-	if (strlen( $row[1] ) > 60) {
-		$row[1] = substr( $row[1], 0, 57 ).'...';
-	}
-	$depth = 0;
-	if($row[5] != $row[0]){
-		$depth = getTaskDepth($row[5]) * 3;
-	}
-	
-	$selected = $row[0] == $obj->task_parent ? "selected" : "";
-	
-	$task_parent_options .= "<option value='".$row[0]."' $selected>".getSpaces($depth).dPFormSafe($row[1])."</option>";
-	
-	$projTasks[$row[0]] = $row[1];
+// let's get root tasks
+$sql = "select task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent
+		from tasks
+		where task_project = '$task_project'
+			  and task_id  = task_parent
+		      and task_id  != '$task_id'
+        order by task_start_date";
+
+$root_tasks = db_exec($sql);
+
+$projTasks           = array();
+$task_parent_options = "";
+
+// let's iterate root tasks
+while ($root_task = db_fetch_row( $root_tasks )) {
+	constructTaskTree($root_task);
 }
 
 //create array with start and end date of all tasks.
