@@ -1,4 +1,676 @@
-2005-02-07 22:22  (gregorerhardt)
+2005-02-24 03:00  (gregorerhardt)
+---------------------------------
+includes/db_adodb.php
+- moved over to baseDir instead of dPconfig var
+
+2005-02-24 01:53  (gregorerhardt)
+---------------------------------
+modules/projects/reports/userperformance.php
+- 545: undefined var
+
+2005-02-24 00:10  (gregorerhardt)
+---------------------------------
+modules/install/do_install_db.php
+modules/install/index.php
+modules/install/install.class.php
+modules/install/vw_idx_idb.php
+- eased up the installer
+
+2005-02-23 20:39  (gregorerhardt)
+---------------------------------
+modules/files/addedit.php
+modules/files/index_table.php
+- moved new config vars by cyberhorse to db
+
+2005-02-23 20:35  (gregorerhardt)
+---------------------------------
+locales/en/system.inc
+- moved new config vars by cyberhorse to db
+
+2005-02-23 20:30  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- moved new config vars by cyberhorse to db
+
+2005-02-23 17:51  (revelation7)
+---------------------------------
+modules/tasks/tasks.class.php
+- modules/tasks/tasks.class.php
+- 885-889: Fixed Mantis bug 308 - Admin cannot access non-public tasks
+
+2005-02-23 12:32  (gregorerhardt)
+---------------------------------
+index.php
+- moved many config vars to db
+
+2005-02-23 12:27  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+db/dotproject.sql
+- moved many config vars to db
+
+2005-02-23 12:22  (gregorerhardt)
+---------------------------------
+locales/en/system.inc
+modules/files/files.class.php
+- moved many config vars to db
+
+2005-02-23 12:19  (gregorerhardt)
+---------------------------------
+modules/system/do_systemconfig_aed.php
+modules/system/index.php
+modules/system/system.class.php
+modules/system/systemconfig.php
+modules/system/systemconfig_help.php
+modules/system/images/control-center.png
+includes/config-dist.php
+includes/db_connect.php
+- moved many config vars to db
+
+2005-02-23 01:05  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_assign_aed.php
+- smallest performance tweak
+
+2005-02-22 21:12  (gregorerhardt)
+---------------------------------
+modules/install/do_install_db.php
+modules/install/index.php
+modules/install/install.class.php
+- moved over to db backup via axml schema
+
+2005-02-22 18:03  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed problem with missing variables when showtask used in today view.
+
+2005-02-22 17:47  (ajdonnison)
+---------------------------------
+modules/projects/reports/allocateduserhours.php
+modules/tasks/tasks.class.php
+- As per bug 533, when using percentages it wasn't apportioning the
+- tasks per day correctly.
+
+2005-02-22 14:17  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+modules/files/index.php
+modules/files/index_table.php
+- update the place where to get some config values from. using new module array in dPconfig
+
+2005-02-22 14:15  (cyberhorse)
+---------------------------------
+modules/files/do_file_co.php
+- open a new window for download file on CO
+
+2005-02-22 14:09  (cyberhorse)
+---------------------------------
+index.php
+- populate $m_config with module specific configurations (taken from $dPconfig[$m]. That way module specific configuration can be separated in its own arrays for better organization, ie $dPconfig['files']['ci'] = false and $dPconfig['tasks']['dynamic_tasks'] = true or similar.
+
+2005-02-22 13:58  (cyberhorse)
+---------------------------------
+modules/files/index.php
+modules/files/index_table.php
+includes/config-dist.php
+modules/files/addedit.php
+modules/files/do_file_aed.php
+- extended file versions minor number to 999 from 9
+- applied changes contributed by francisco.mancardi@gruppotesi.com
+-   - configuration for keeping CI attributes
+-   - specifying whether major or minor version should be updated
+
+2005-02-22 13:39  (ajdonnison)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/viewgantt.php
+- Now honours company filter, and checkboxes for gantt options.
+- No longer loads gantt2 for user gantts.
+- Changed Show All Gantt to Show Tasks to clarify usage.
+
+2005-02-21 14:40  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Fixed quote problem that was causing database to spit it when there
+- were single quotes in the AppUI->msg field.
+
+2005-02-21 10:22  (ajdonnison)
+---------------------------------
+modules/projects/gantt.php
+- Now honours company filter.
+- Removed spurious CRs.
+
+2005-02-19 16:28  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+- fixed some translations
+
+2005-02-19 11:25  (cyberhorse)
+---------------------------------
+modules/projects/addedit.php
+- javascript translation issue fixed.
+
+2005-02-19 10:10  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+- Added a today line to the gantt charts (thanks pedroa)
+
+2005-02-19 01:45  (cyberhorse)
+---------------------------------
+includes/db_mysql.php
+- not needed anymore - superceded by db_adodb.php
+
+2005-02-17 19:57  (cyberhorse)
+---------------------------------
+index.php
+- Mantis 535 - fixed a location with more than one character sets.
+
+2005-02-17 19:41  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+- Mantis 325 - fixed an ugly error message when database is down.
+
+2005-02-17 19:14  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Mantis 534 - fixed sorting children tasks in tasks module
+
+2005-02-17 11:17  (ajdonnison)
+---------------------------------
+lib/phpgacl/admin/gacl_admin.inc.php
+- Now uses newer consitent path naming scheme.
+
+2005-02-17 11:15  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+includes/main_functions.php
+- Recoded dPrealPath function to do nothing as it is now replaced by more
+- consitant and automated root directory determination.
+
+2005-02-17 10:54  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Made pathnames consistent with index.php.
+
+2005-02-17 10:52  (ajdonnison)
+---------------------------------
+index.php
+- Backed out dPrealPath hack, as it was not working anyway and was causing
+- more problems than it was fixing.
+
+2005-02-16 22:33  (cyberhorse)
+---------------------------------
+db/upgrade_permissions.php
+- Mantis 518 - upgrade permissions in user modules as well in the upgrade_permissions.php script
+
+2005-02-16 22:05  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/contacts/contacts.class.php
+modules/contacts/addedit.php
+modules/contacts/view.php
+- Mantis 390 - added url to contact
+
+2005-02-16 21:30  (cyberhorse)
+---------------------------------
+modules/companies/index.php
+- fixed translation issue in fields.
+
+2005-02-16 21:26  (cyberhorse)
+---------------------------------
+modules/companies/index.php
+- Mantis 320 - companies searching for projects containing single quotes.
+
+2005-02-16 20:47  (cyberhorse)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- Mantis 431 - sort projects by colour.
+
+2005-02-16 19:34  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+modules/files/index_table.php
+- fixed ci/co functionality
+
+2005-02-16 18:21  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+modules/admin/vw_usr_log.php
+db/dotproject.sql
+db/upgrade_latest.sql
+- Mantis 467 - added logging for client's IP addresses - showing them in user admin
+- ordering access log by last date of action
+
+2005-02-16 17:47  (ajdonnison)
+---------------------------------
+style/default/header.php
+style/dp-grey-theme/header.php
+- Fix for bug 231 where long page titles can cause popup calendar to
+- drop lower parts.
+
+2005-02-16 17:26  (ajdonnison)
+---------------------------------
+modules/ticketsmith/index.php
+- Fix for bug#36 as outlined by iexposure - corrected use of defaults for
+- sort order.
+
+2005-02-16 17:14  (ajdonnison)
+---------------------------------
+index.php
+- Fix for bug#505, permissions ignored for automatically loaded tabs.
+- Now checks that the user has at least access permissions to the module
+- offering the tab.
+
+2005-02-16 16:49  (ajdonnison)
+---------------------------------
+fileviewer.php
+index.php
+style/classic/login.php
+style/default/login.php
+style/dp-grey-theme/login.php
+- Added a loginFromPage variable to both index.php and fileviewer.php so
+- that the login form will get the appropriate action.  Fixed bug 259.
+
+2005-02-16 03:27  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+- don't let to submit an event, if a required field is not filled in.
+
+2005-02-16 02:49  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+- Translation issue
+
+2005-02-16 02:29  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- fixed global variable missing (win issue)
+
+2005-02-15 16:53  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- replaced double quotes with single quotes
+
+2005-02-15 16:50  (cyberhorse)
+---------------------------------
+modules/history/addedit.php
+modules/history/index.php
+- linking to items only if they still exist
+- fixed a js translation issue
+- fixed a javascript error - missine element
+- a few other optimizations
+
+2005-02-15 15:08  (cyberhorse)
+---------------------------------
+modules/system/translate_save.php
+- fixed problems with saving translations through aliases
+
+2005-02-15 09:44  (jcgonz)
+---------------------------------
+modules/smartsearch/index.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- Now smartsearch module checks for permissions
+- for each item before adding it up to a result list.
+- I need to generalize a little bit the searchobjects and check wheater
+- there are listed results or not, but right
+- now it's working as it have been since its creation. Any
+- help will be appreciated (PLENTY OF WORK!)
+
+2005-02-15 05:50  (gregorerhardt)
+---------------------------------
+index.php
+- 526: corrected functions_file variable name
+
+2005-02-15 05:41  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- 524: delete task_logs with tasks
+
+2005-02-15 04:41  (gregorerhardt)
+---------------------------------
+index.php
+- made that awful black box called thread-iframe borderless
+
+2005-02-15 04:29  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- fixed broken subview with pinned sql code
+
+2005-02-14 19:32  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+- fixed js translation issue
+
+2005-02-14 17:34  (cyberhorse)
+---------------------------------
+includes/session.php
+- change the session module type to 'user' only if the configuration is set to use dp session handling
+
+2005-02-14 17:24  (cyberhorse)
+---------------------------------
+modules/calendar/view.php
+modules/contacts/addedit.php
+modules/departments/view.php
+modules/files/addedit.php
+modules/files/co.php
+modules/projects/vw_logs.php
+modules/tasks/addedit.php
+modules/tasks/tasksperuser_sub.php
+- fixed js related translation problems.
+
+2005-02-14 17:13  (cyberhorse)
+---------------------------------
+modules/admin/addeditgroup.php
+modules/admin/addedituser.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/calendar/addedit.php
+modules/companies/addedit.php
+modules/contacts/addedit.php
+modules/departments/addedit.php
+modules/files/addedit.php
+modules/forums/addedit.php
+modules/forums/post_message.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser_sub.php
+modules/ticketsmith/post_ticket.php
+- fixed js related translation issues
+
+2005-02-14 16:18  (cyberhorse)
+---------------------------------
+modules/tasks/do_task_aed.php
+- removed double translation.
+
+2005-02-14 16:15  (cyberhorse)
+---------------------------------
+modules/tasks/view.php
+- fixed translation messages
+
+2005-02-14 14:05  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Removed DOS line endings. CVS should handle this automatically, but
+- somehow we are getting files converted to DOS format, and this is causing
+- problems when they are re-loaded into the CVS by some UNIX clients.
+
+2005-02-14 13:42  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Fixed last of the bare linefeeds.
+
+2005-02-14 07:41  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- 381: made pinning user based
+
+2005-02-14 06:45  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+modules/projects/addedit.php
+modules/tasks/addedit.js
+- 394: automatically update end date with start date
+
+2005-02-13 04:04  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- commented out code, that is performed in the index.php file.
+- NB: possible problems with the fileviewer.php file but very doubtful.
+
+2005-02-13 01:36  (cyberhorse)
+---------------------------------
+db/upgrade_permissions.php
+- fixed realpath issues
+
+2005-02-13 01:01  (cyberhorse)
+---------------------------------
+index.php
+- fixed the realpath issue with the initial import - also fixes bestcolor() redeclared, etc.
+
+2005-02-12 23:47  (cyberhorse)
+---------------------------------
+includes/session.php
+- call ini_set after making sure the session is stopped - otherwise it doesn't work.
+
+2005-02-12 07:58  (gregorerhardt)
+---------------------------------
+classes/dp.class.php
+- removed extra line at EOF
+
+2005-02-12 07:25  (gregorerhardt)
+---------------------------------
+modules/forums/do_post_aed.php
+- 513: forum post message redirect corrected
+
+2005-02-12 06:32  (gregorerhardt)
+---------------------------------
+modules/contacts/csvexport.php
+modules/contacts/index.php
+- sf1102802: added csv export patch
+
+2005-02-12 02:59  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- removed extra line at EOF
+
+2005-02-11 17:24  (cyberhorse)
+---------------------------------
+modules/tasks/organize.php
+- fix translations in combobox
+
+2005-02-11 16:40  (ajdonnison)
+---------------------------------
+modules/projects/view.php
+modules/tasks/organize.php
+- Added reciprocal links between task organizer and project view.
+
+2005-02-11 16:39  (ajdonnison)
+---------------------------------
+modules/tasks/do_task_aed.php
+- Fix for missing task owner if new task created when first tab is
+- not highlighted.
+
+2005-02-11 16:06  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Added 8 bit header to try and get around problems with some files being
+- truncated.  If this doesn't work we may need to use base 64 encoding.
+
+2005-02-11 05:47  (gregorerhardt)
+---------------------------------
+modules/admin/addedituser.php
+modules/contacts/addedit.php
+- 509: posctode and zip code
+
+2005-02-11 05:46  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+- added strings for posctode and zip code
+
+2005-02-11 05:37  (gregorerhardt)
+---------------------------------
+modules/forums/view_messages.php
+- 341: forum message author is now allowed to edit hisHer message
+
+2005-02-11 04:51  (cyberhorse)
+---------------------------------
+modules/system/do_preference_aed.php
+- fixed message language after changing the language of a user ... it is converted to the new language.
+
+2005-02-11 04:04  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixed another translation issue in links titles.
+
+2005-02-11 03:48  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+modules/calendar/view.php
+modules/companies/view.php
+modules/files/addedit.php
+modules/files/co.php
+modules/projects/view.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- changed dependancy to dependency
+
+2005-02-11 03:26  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+- fixed calcFinish dates calculations
+
+2005-02-11 02:10  (cyberhorse)
+---------------------------------
+modules/tasks/vw_logs.php
+- fixed some translations in js
+
+2005-02-11 02:07  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixed permissions for tasklogs, so they inherit permissions of tasks.
+
+2005-02-10 21:30  (cyberhorse)
+---------------------------------
+modules/admin/do_user_aed.php
+- remove <b> tag, which wasn't displaying correctly (<b> is deprecated anyway)
+
+2005-02-10 21:00  (cyberhorse)
+---------------------------------
+modules/contacts/view.php
+- fixed the delete message translation and deleting contact with associated user.
+
+2005-02-10 20:57  (cyberhorse)
+---------------------------------
+modules/admin/index.php
+- still translation bugs
+
+2005-02-10 20:51  (cyberhorse)
+---------------------------------
+modules/admin/index.php
+- fixed a translation for deleting a user
+
+2005-02-10 20:29  (cyberhorse)
+---------------------------------
+modules/tasks/vw_logs.php
+- fixed mantis 384 - task_log descriptions not html escaped.
+
+2005-02-10 20:21  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- better new line handling for title
+
+2005-02-10 20:12  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixed new lines not displaying properly in "title" tag - replacing them with a space.
+
+2005-02-10 19:27  (cyberhorse)
+---------------------------------
+modules/public/date_format.php
+- remove a commented line.
+
+2005-02-10 19:02  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+- fixed mantis 7 (calcFinish not respecting user date format)
+
+2005-02-10 19:00  (cyberhorse)
+---------------------------------
+modules/public/date_format.php
+- to be used in a thread to fill in a field with the user formatted date.
+
+2005-02-10 18:59  (cyberhorse)
+---------------------------------
+index.php
+- added an iframe for doing threads in dotproject
+
+2005-02-10 18:00  (ajdonnison)
+---------------------------------
+modules/tasks/listtasks.php
+modules/tasks/organize.php
+- New task organizer commissioned by MessageMakers and implemented by
+- cyberhorse.
+
+2005-02-10 08:23  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+- 34: gantt respecting preferred date format
+
+2005-02-10 07:01  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- 445: gantt : consider p end date and critical task
+
+2005-02-09 21:05  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_log.php
+- 506: geryed user log calendar fields
+
+2005-02-09 11:11  (ajdonnison)
+---------------------------------
+includes/config-dist.php
+includes/session.php
+- Added config item to support choice of old-style or new style session
+- management.
+
+2005-02-09 02:19  (cyberhorse)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/viewgantt.php
+- fixed some issues and added new functionality to the gantt charts
+
+2005-02-08 16:14  (ajdonnison)
+---------------------------------
+modules/contacts/index.php
+- Fixed bug where SQL could be incorrect if permissions constraints imposed.
+
+2005-02-08 12:20  (ajdonnison)
+---------------------------------
+fileviewer.php
+- Fixed order of includes.
+
+2005-02-08 10:07  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Shortened the alt text (title) of task link so that large descriptions
+- don't cause slow loading of the page.
+
+2005-02-08 08:32  (gregorerhardt)
+---------------------------------
+ChangeLog
+- cl update
+
+2005-02-08 08:28  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+- Made showtask reusable by todo page, changed todo page to use it.
+
+2005-02-08 08:22  (gregorerhardt)
 ---------------------------------
 lib/jpgraph/src/jpg-config.inc
 lib/jpgraph/src/jpgraph.php
@@ -18,140 +690,140 @@ lib/jpgraph/README
 lib/jpgraph/README.dotproject
 - jpgraph update to version 1.17
 
-2005-02-07 12:19  (gregorerhardt)
+2005-02-07 22:19  (gregorerhardt)
 ---------------------------------
 modules/history/index.php
 modules/history/images/stock_book_blue_48.png
 - 342: history icon added
 
-2005-02-06 20:04  (gregorerhardt)
+2005-02-07 06:04  (gregorerhardt)
 ---------------------------------
 modules/tasks/vw_log_update.php
 - 485: fixed form field with htmlspecialchars
 
-2005-02-06 19:48  (gregorerhardt)
+2005-02-07 05:48  (gregorerhardt)
 ---------------------------------
 modules/admin/vw_usr.php
 - fixed permissions icon link
 
-2005-02-06 19:39  (gregorerhardt)
+2005-02-07 05:39  (gregorerhardt)
 ---------------------------------
 includes/sendpass.php
 - 375: fixed email users-contact query error
 
-2005-02-06 19:38  (gregorerhardt)
+2005-02-07 05:38  (gregorerhardt)
 ---------------------------------
 style/default/lostpass.php
 - fixed form field maxlength for long email adresses
 
-2005-02-06 11:21  (gregorerhardt)
+2005-02-06 21:21  (gregorerhardt)
 ---------------------------------
 modules/projects/reports/overall.php
 - 494: fixed wrong array access
 
-2005-02-04 05:38  (ajdonnison)
+2005-02-04 15:38  (ajdonnison)
 ---------------------------------
 modules/files/files.class.php
 - Fixed issue with file edit page not listing details correctly.
 
-2005-02-04 05:37  (ajdonnison)
+2005-02-04 15:37  (ajdonnison)
 ---------------------------------
 modules/resources/tasks_tab.addedit.other_resources.php
 - Fixed warning about missing array.
 
-2005-02-04 05:36  (ajdonnison)
+2005-02-04 15:36  (ajdonnison)
 ---------------------------------
 index.php
 classes/ui.class.php
 - Now using the dPrealPath method to ensure that paths are adjusted to
 - try and eliminate Windows issues with require_once/include_once.
 
-2005-02-04 05:31  (ajdonnison)
+2005-02-04 15:31  (ajdonnison)
 ---------------------------------
 style/default/header.php
 - Changed Todo link to go to the Todo page rather than the Today Tasks list
 - (minor difference, but requested by a number of people).
 
-2005-02-04 03:04  (ajdonnison)
+2005-02-04 13:04  (ajdonnison)
 ---------------------------------
 includes/main_functions.php
 - Added function to try and provide some path consistency between windows
 - and other os's.  Trys to get around Windows hassles with require_once.
 
-2005-02-04 02:20  (ajdonnison)
+2005-02-04 12:20  (ajdonnison)
 ---------------------------------
 docs/check.php
 - Change to root_dir determination to try and cover problems with IIS and
 - some web hosting companies (particulary Yahoo).
 
-2005-02-04 01:02  (ajdonnison)
+2005-02-04 11:02  (ajdonnison)
 ---------------------------------
 classes/libmail.class.php
 - Changed all line terminations to CRLF instead of LF to correctly match
 - expectations of RFC2821 compliant MTAs.
 
-2005-02-03 01:50  (ajdonnison)
+2005-02-03 11:50  (ajdonnison)
 ---------------------------------
 lib/PEAR/Date.php
 - Removed extraneous CRs
 
-2005-02-03 01:46  (ajdonnison)
+2005-02-03 11:46  (ajdonnison)
 ---------------------------------
 lib/PEAR/Date/Human.php
 - Corrected line endings
 
-2005-02-03 01:43  (ajdonnison)
+2005-02-03 11:43  (ajdonnison)
 ---------------------------------
 lib/PEAR/Date/Calc.php
 - Removed extraneous line endings
 
-2005-01-31 01:22  (ajdonnison)
+2005-01-31 11:22  (ajdonnison)
 ---------------------------------
 style/classic/header.php
 style/default/header.php
 style/dp-grey-theme/header.php
 - Added link to allow the default page to be redisplayed.
 
-2005-01-28 07:28  (ajdonnison)
+2005-01-28 17:28  (ajdonnison)
 ---------------------------------
 modules/tasks/vw_log_update.php
 - Added check to see if the billingcode query fails before attempting
 - to use it.
 
-2005-01-28 07:03  (ajdonnison)
+2005-01-28 17:03  (ajdonnison)
 ---------------------------------
 includes/config-dist.php
 - Removed the configurable root_dir and replaced it with an automatically
 - determined version.  This avoids problems like Windows not being able
 - to tell that c:/ and C:/ are the same.
 
-2005-01-27 08:34  (ajdonnison)
+2005-01-27 18:34  (ajdonnison)
 ---------------------------------
 includes/db_connect.php
 - Added back in the call for db_adodb.php so that scripts calling don't need
 - to remember to do so.
 
-2005-01-27 08:28  (ajdonnison)
+2005-01-27 18:28  (ajdonnison)
 ---------------------------------
 includes/session.php
 - Added default of 1 day when config.php doesn't have session settings.
 
-2005-01-27 08:09  (ajdonnison)
+2005-01-27 18:09  (ajdonnison)
 ---------------------------------
 includes/session.php
 - Changed debug level to 11, as the code appears to be quite stable.
 
-2005-01-27 07:33  (ajdonnison)
+2005-01-27 17:33  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 - Attempt to fix buffering problems on Windows when redirect is called.
 
-2005-01-27 07:22  (ajdonnison)
+2005-01-27 17:22  (ajdonnison)
 ---------------------------------
 modules/system/addeditpref.php
 - Fixed permissions to allow a user to edit their own preferences. Bug 450
 
-2005-01-27 07:18  (ajdonnison)
+2005-01-27 17:18  (ajdonnison)
 ---------------------------------
 modules/projects/addedit.php
 modules/tasks/ae_desc.php
@@ -160,34 +832,34 @@ modules/tasks/vw_log_update.php
 - Fixes for visibility of contacts when contacts module is not permitted
 - or disabled.  Bug 448
 
-2005-01-27 07:02  (ajdonnison)
+2005-01-27 17:02  (ajdonnison)
 ---------------------------------
 modules/admin/vw_usr_log.php
 - Fixed Bug 451 where User Log from view user was not returning to the correct
 - page.
 
-2005-01-27 06:54  (ajdonnison)
+2005-01-27 16:54  (ajdonnison)
 ---------------------------------
 modules/files/files.class.php
 - Enabled clearing of the query object before returning - Bug 455
 
-2005-01-27 06:52  (ajdonnison)
+2005-01-27 16:52  (ajdonnison)
 ---------------------------------
 modules/files/files.class.php
 - Fixed typo as reported in Bug 459.
 
-2005-01-27 06:47  (ajdonnison)
+2005-01-27 16:47  (ajdonnison)
 ---------------------------------
 modules/projects/index.php
 - Fixed bug 461: Some tabs not being translated.
 
-2005-01-27 06:41  (ajdonnison)
+2005-01-27 16:41  (ajdonnison)
 ---------------------------------
 style/dp-grey-theme/main.css
 - Adjusted table settings so that standard tables with dark backgrounds
 - are correctly displayed.
 
-2005-01-27 06:32  (ajdonnison)
+2005-01-27 16:32  (ajdonnison)
 ---------------------------------
 modules/tasks/view.php
 - Changed all queries to use DBQuery class.
@@ -195,52 +867,81 @@ modules/tasks/view.php
 - Fixed department, contacts queries to use new tables.
 - Fixed contact queries to use numeric department id.
 
-2005-01-27 05:45  (ajdonnison)
+2005-01-27 15:45  (ajdonnison)
 ---------------------------------
 includes/session.php
 - Added handling for phpgacl admin (which appears to change the database
 - mode) so that it doesn't try and create a new cookie needlessly.
 
-2005-01-27 05:26  (ajdonnison)
+2005-01-27 15:26  (ajdonnison)
 ---------------------------------
 includes/session.php
 - Modified to use base_url to create session path, so that phpgacl
 - administration will use the same cookie. NOTE: if base_url is not
 - set correctly this could result in login problems.
 
-2005-01-27 05:16  (ajdonnison)
+2005-01-27 15:16  (ajdonnison)
 ---------------------------------
 lib/phpgacl/admin/gacl_admin.inc.php
 - Added new session support.
 
-2005-01-27 05:13  (ajdonnison)
+2005-01-27 15:13  (ajdonnison)
 ---------------------------------
 db/upgrade_permissions.php
 - Added events permissions as well as calendar.  Probably need a more
 - generic method of handling where the module name and the primary table
 - are not the same.
 
-2005-01-27 05:02  (ajdonnison)
+2005-01-27 15:02  (ajdonnison)
 ---------------------------------
 classes/libmail.class.php
 - Made a change to try and reduce liklihood of need for quoted printable
 - encoding of subject.
 
-2005-01-27 01:20  (ajdonnison)
+2005-01-27 11:20  (ajdonnison)
 ---------------------------------
 modules/contacts/contacts.class.php
 - Fixed typo
 
-2005-01-26 01:49  (ajdonnison)
+2005-01-26 11:49  (ajdonnison)
 ---------------------------------
 modules/calendar/links_tasks.php
 - Removed spurious comments
 
-2005-01-26 01:48  (ajdonnison)
+2005-01-26 11:48  (ajdonnison)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Fixed query in getTasksForPeriod so that it doesn't return multiples of
 - tasks that match the query.
+
+2005-01-25 14:16  (ajdonnison)
+---------------------------------
+includes/session.php
+- Fixed queries that were returning invalid data.
+- Added extensive debugging for initial testing.
+
+2005-01-25 13:57  (ajdonnison)
+---------------------------------
+includes/session.php
+- Fixed typo in garbage collector.
+
+2005-01-25 13:26  (ajdonnison)
+---------------------------------
+ChangeLog
+- Updated changelog.
+
+2005-01-25 12:45  (ajdonnison)
+---------------------------------
+classes/query.class.php
+includes/config-dist.php
+includes/session.php
+index.php
+fileviewer.php
+db/dotproject.sql
+db/upgrade_latest.sql
+- Added new session handling to get around problems with session management
+- that the standard PHP sessions have.  This requires the table sessions
+- to be created.
 
 2005-01-24 17:13  (ajdonnison)
 ---------------------------------
@@ -5520,263 +6221,4 @@ modules/tasks/do_task_aed.php
 - 
 - Excellent for controlling real start and due dates! no more "it was due today!! look at dotproject's information! I swear I didn't change it!"
 
-2004-02-26 21:52  (gregorerhardt)
----------------------------------
-classes/date.class.php
-- 872985: addMonths 12+(-1)=13?
-
-2004-02-26 21:16  (gregorerhardt)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- 899969: quotes in tickets
-
-2004-02-25 10:47  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed broken MIME headers.
-
-2004-02-25 10:44  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Mail not being sent on change of assignment fixed.
-
-2004-02-24 18:20  (gregorerhardt)
----------------------------------
-classes/ui.class.php
-- 897211: renamed bad constructor name in CTabBox_core
-
-2004-02-24 18:12  (gregorerhardt)
----------------------------------
-modules/ticketsmith/common.inc.php
-- 899944: patch for bad word wrap in ticketsmith
-
-2004-02-24 18:04  (gregorerhardt)
----------------------------------
-locales/en/calendar.inc
-- string added
-
-2004-02-24 17:52  (gregorerhardt)
----------------------------------
-modules/companies/index.php
-- 901371: patch from sreindl fixing plain view for companies
-
-2004-02-24 17:44  (gregorerhardt)
----------------------------------
-modules/calendar/vw_day_events.php
-- 902974: patch from sreindl fixing concurrent events problem in day view
-
-2004-02-24 17:35  (gregorerhardt)
----------------------------------
-modules/calendar/do_event_aed.php
-- 903000: patch from sreindl fixing possible events: Start>=End
-
-2004-02-24 17:29  (gregorerhardt)
----------------------------------
-modules/calendar/day_view.php
-- 903011: patch from sreindl fixing start date of week view
-
-2004-02-24 17:24  (gregorerhardt)
----------------------------------
-modules/calendar/calendar.class.php
-- 890967: patch from sreindl fixing day view for recurrent events
-
-2004-02-23 09:56  (ajdonnison)
----------------------------------
-modules/tasks/addedit.php
-- Added fix from Matthias Lienau for popup calendar not working on some
-- windows systems  (mainly XP with Norton Internet Security).
-
-2004-02-20 15:21  (robertoibarra)
----------------------------------
-modules/projects/index.php
-- Bug fix: When ALL COMPANIES in the projects list not all projects would be displayed
-
-2004-02-17 15:43  (ajdonnison)
----------------------------------
-includes/gateway.pl
-- Rework of MIME handling logic to try and cope with all likely sets of
-- MIME combinations.  Should now work with MS Outlook multipart/related
-- with embedded multipart/mime components.
-
-2004-02-08 04:47  (gnome444)
----------------------------------
-modules/tasks/addedit.php
-- Fix for undefined var with E_ALL
-
-2004-02-08 04:16  (gnome444)
----------------------------------
-modules/system/syskeys/index.php
-- Point to new help file
-
-2004-02-08 04:13  (gnome444)
----------------------------------
-modules/help/en/system.syskeys.index.hlp
-- Added system.syskeys.index.hlp with TaskCustomFields help notes
-
-2004-02-05 18:00  (ajdonnison)
----------------------------------
-index.php
-- Updated cache control to correctly work with Apache 2
-
-2004-02-04 10:16  (ajdonnison)
----------------------------------
-modules/tasks/do_updatetask.php
-- Removed error log.
-
-2004-02-04 10:11  (ajdonnison)
----------------------------------
-modules/tasks/do_updatetask.php
-- Fix so that if first task update sets percent complete to 100%, task
-- end date is correctly set.
-
-2004-02-03 11:44  (ajdonnison)
----------------------------------
-db/upgrade_101_to_102.sql
-- Removed duplicate fields.
-
-2004-02-03 08:23  (ajdonnison)
----------------------------------
-ChangeLog
-- Updated to match v1.0.2 release
-
-2004-02-03 08:14  (ajdonnison)
----------------------------------
-includes/version.php
-- Removed the -alpha suffix for full release.
-
-2004-02-02 22:20  (ajdonnison)
----------------------------------
-db/upgrade_101_to_102.sql
-- Added line to reset dynamic tasks.
-
-2004-02-02 22:15  (ajdonnison)
----------------------------------
-locales/en/tasks.inc
-- Added missing strings for 1.0.2 release
-
-2004-02-02 16:13  (robertoibarra)
----------------------------------
-modules/tasks/gantt.php
-- Gantt chart upgraded to correcty display UTF8 data (accents and other characters) in the task name
-
-2004-02-02 10:14  (gnome444)
----------------------------------
-modules/system/syskeys/index.php
-- Fix display problems with dPformSafe
-
-2004-02-02 09:41  (gnome444)
----------------------------------
-modules/tasks/view.php
-- TaskCustomFields checkbox wasn't working and dPformSafe
-
-2004-02-02 01:59  (mkozusnik)
----------------------------------
-modules/projects/addedit.php
-- Removed the echo from line 287
-
-2004-02-02 01:50  (mkozusnik)
----------------------------------
-modules/projects/addedit.php
-- Restored inital popCalendar for all three date fields
-
-2004-02-02 01:40  (mkozusnik)
----------------------------------
-lib/calendar/calendar.js
-- Fixed dropdown year to include every year
-
-2004-02-01 19:44  (gregorerhardt)
----------------------------------
-ChangeLog
-- ChangeLog update
-
-2004-02-01 19:31  (gregorerhardt)
----------------------------------
-modules/files/index_table.php
-- softcoded translation for #File(s)# and #Page(s)#
-
-2004-02-01 19:24  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-- softcoded translation for #None#
-
-2004-02-01 18:45  (gregorerhardt)
----------------------------------
-modules/system/syskeys/index.php
-modules/system/syskeys/keys.php
-- fixed access denied problem with sysvals and syskeys
-
-2004-02-01 09:01  (gnome444)
----------------------------------
-modules/tasks/addedit.php
-- Fix calc task duration and finish date buttons
-
-2004-02-01 08:58  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-functions/tasks_func.php
-- Remove myinact filter and add allunfinished filter
-
-2004-02-01 08:53  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Fix task active / inactive toggle
-
-2004-02-01 04:54  (gnome444)
----------------------------------
-modules/help/en/tasks.addedit.hlp
-- Update help docs to reflect change in dynamic task behaviour
-
-2004-02-01 03:45  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Really fix table header colour
-
-2004-01-31 20:38  (ajdonnison)
----------------------------------
-modules/files/index_table.php
-- Added Patch 790504 from proca - Multi-page support for files module.
-
-2004-01-31 20:24  (ajdonnison)
----------------------------------
-functions/tasks_func.php
-locales/en/admin.inc
-locales/en/projects.inc
-locales/en/tasks.inc
-modules/admin/index.php
-modules/help/en/start.adduser.hlp
-modules/projects/view.php
-modules/tasks/tasks.php
-- Added patch 787097 from proca to show all unassigned tasks.
-- Resolved 868798 (RFE, was bug) by dflora - incorrect spelling of inactive.
-
-2004-01-31 16:04  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Fix table header colour
-
-2004-01-31 15:43  (ajdonnison)
----------------------------------
-modules/ticketsmith/admin.php
-modules/ticketsmith/attach.php
-modules/ticketsmith/index.php
-modules/ticketsmith/ltwt.gif
-modules/ticketsmith/posticon.gif
-modules/ticketsmith/rtwt.gif
-modules/ticketsmith/images/ltwt.gif
-modules/ticketsmith/images/posticon.gif
-modules/ticketsmith/images/rtwt.gif
-- Patch 790596 from proca to support standard navigation icons.
-
-2004-01-31 15:40  (ajdonnison)
----------------------------------
-images/navfirst.gif
-images/navlast.gif
-images/navleft.gif
-images/navright.gif
-- Standard navigation icons supplied by proca as part of patch 790596
-
-2004-01-31 09:54  (gnome444)
----------------------------------
-modules/tasks/tasks.php
-- Enable sorting of tasks in task view
-
+[truncated]
