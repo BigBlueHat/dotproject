@@ -120,7 +120,7 @@ function submitIt(){
 	$currencies = array();
 	$currEx = 123456789;
 
-	if (strtoupper(substr(PHP_OS, 0, 3)) === 'WIN') {
+	if (! function_exists('money_format')) {
     	// This is a server using Windows, no php money_format capability
     	$f = "us_US"; $currencies[$f]	= "$ " . $currEx;
 	} else {
