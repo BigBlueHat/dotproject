@@ -270,7 +270,7 @@ Calendar.showYearsCombo = function (fwd) {
 			yr.style.display = "none";
 		}
 		yr = yr.nextSibling;
-		Y += fwd ? 2 : -2;
+		Y += fwd ? 1 : -1;
 	}
 	if (show) {
 		yc.style.left = cd.offsetLeft + "px";
