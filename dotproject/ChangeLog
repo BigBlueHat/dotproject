@@ -1,3 +1,14 @@
+2003-05-22 07:50  (kripper)
+---------------------------------
+modules/tasks/todo.php
+- Fixed bug due to having an empty task's start or end date. Tasks without
+- dates are not displayed in the TODO view.
+
+2003-05-22 04:33  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-05-21 19:16  (eddieajau)
 ---------------------------------
 includes/config-dist.php
@@ -487,17 +498,6 @@ style/classic/header.php
 style/default/header.php
 - Updated head block
 
-2003-05-08 02:27  (eddieajau)
----------------------------------
-index.php
-- Moved placement of config include
-- Added include for common (Date and DP) classes
-- Removed charset header
-- Removed old uts variable
-
-2003-05-07 18:11  (korinek)
----------------------------------
-style/default/header.php
 ...
 
 (This file has been wrapped)
