@@ -47,7 +47,7 @@ $rows = db_loadList( $sql );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
-$titleBlock->addCell('<strong>Search:</strong>');
+$titleBlock->addCell("<strong>".$AppUI->_('Search').":</strong>");
 $titleBlock->addCell("<form name='searchform' action='?m=companies&amp;search_string=$search_string' method='post'>
                       <input type='text' name='search_string' value='$search_string' />
                       </form>");
