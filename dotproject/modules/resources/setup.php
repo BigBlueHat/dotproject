@@ -43,31 +43,28 @@ class SResource {
 			resource_type_note text,
 			primary key (resource_type_id)
 		)";
-		$q->createTable('resources_types');
+		$q->createTable('resource_types');
 		$q->createDefinition($sql);
 		$ok = $ok && $q->exec();
 		$q->clear();
 
 
-		$sql = "CREATE TABLE resource_tasks (
+		$sql = "(
 			resource_id integer not null default 0,
 			task_id integer not null default 0,
 			percent_allocated integer not null default 100,
 			key (resource_id),
 			key (task_id, resource_id)
 		)";
-		$q->createTable('resources_tasks');
+		$q->createTable('resource_tasks');
 		$q->createDefinition($sql);
 		$ok = $ok && $q->exec();
 		$q->clear();
-		$sql = "INSERT INTO resource_types (resource_type_name)
-		VALUES
-		  ('Equipment'),
-			('Tool'),
-			('Venue')"))
 		$q->addTable('resource_types');
 		$q->addInsert('resource_type_name', 'Equipment');
+		$q->exec();
 		$q->addInsert('resource_type_name', 'Tool');
+		$q->exec();
 		$q->addInsert('resource_type_name', 'Venue');
 		$ok = $ok && $q->exec();
 		
