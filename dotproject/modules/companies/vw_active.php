@@ -1,4 +1,4 @@
-<?php
+<?php /* COMPANIES $Id$ */
 ##
 ##	Companies: View Projects sub-table
 ##

@@ -1,8 +1,8 @@
-<?php
+<?php /* COMPANIES $Id$ */
 ##
 ##	Companies: View Projects sub-table
 ##
-GLOBAL $AppUI, $company_id, $denyEdit;
+GLOBAL $AppUI, $company_id, $canEdit;
 
 $sql = "
 SELECT departments.*, COUNT(user_department) dept_users
@@ -61,7 +61,7 @@ if (count( $rows)) {
 	$s .= $AppUI->_('No data available');
 }
 $s .= '<td nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
-if (!$denyEdit) {
+if ($canEdit) {
 	$s .= '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onClick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
 }
 $s .= '</td>';

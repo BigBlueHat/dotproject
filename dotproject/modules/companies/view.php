@@ -1,13 +1,8 @@
-<?php
+<?php /* COMPANIES $Id$ */
 $company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
 
-// check permissions
-$denyRead = getDenyRead( $m, $company_id );
-$denyEdit = getDenyEdit( $m, $company_id );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
+// check permissions for this company
+$canEdit = !getDenyEdit( $m, $company_id );
 $AppUI->savePlace();
 
 if (isset( $_GET['tab'] )) {
@@ -25,44 +20,36 @@ WHERE companies.company_id = $company_id
 
 db_loadHash( $sql, $row );
 
-$pstatus = array(
-	'Not Defined',
-	'Proposed',
-	'In planning',
-	'In progress',
-	'On hold',
-	'Complete'
-);
-
+$pstatus = dPgetSysVal( 'ProjectStatus' );
 
 $crumbs = array();
 $crumbs["?m=companies"] = "company list";
-if (!$denyEdit) {
+if ($canEdit) {
 	$crumbs["?m=companies&a=addedit&company_id=$company_id"] = "edit this company";
 }
 ?>
 
-<table border="0" cellpadding="1" cellspacing="1" width="98%">
+<table border="0" cellpadding="1" cellspacing="1" width="100%">
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
 	<td nowrap="nowrap"><h1><?php echo $AppUI->_('View Company/Client');?></h1></td>
 	<td width="100%" nowrap="nowrap"> <img src="./images/shim.gif" width="16" height="16" alt="" border="0" /></td>
 <form action="?m=companies&a=addedit" method="post">
 	<td align="right" width="100%">
-	<?php echo !$denyEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
+	<?php echo $canEdit ? '<input type="submit" class="button" value="'.$AppUI->_('new company').'">' : '';?>
 	</td>
 </form>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_COMP_VIEW' );?></td>
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
 <tr>
 	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
 	<td valign="top" width="50%">
 		<strong><?php echo $AppUI->_('Details');?></strong>
@@ -117,7 +104,7 @@ if (!$denyEdit) {
 </tr>
 </table>
 
-<?php	
+<?php
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "{$AppUI->cfg['root_dir']}/modules/companies/", $tab );
 $tabBox->add( 'vw_depts', 'Departments' );

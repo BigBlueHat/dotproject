@@ -1,14 +1,4 @@
-<?php
-//Companies
-
-// check permissions
-$denyRead = getDenyRead( $m );
-$denyEdit = getDenyEdit( $m );
-
-if ($denyRead) {
-	$AppUI->redirect( "m=help&a=access_denied" );
-}
-
+<?php /* COMPANIES $Id$ */
 $AppUI->savePlace();
 
 if (isset( $_GET['orderby'] )) {
@@ -53,12 +43,12 @@ ORDER BY $orderby
 
 $rows = db_loadList( $sql );
 ?>
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
 	<td nowrap><h1><?php echo $AppUI->_('Clients & Companies');?></h1></td>
 	<td align="right" width="100%">
-	<?php if (!$denyEdit) { ?>
+	<?php if ($canEdit) { ?>
 		<input type="button" class="button" value="<?php echo $AppUI->_('new company');?>" onClick="javascript:window.location='./index.php?m=companies&a=addedit';">
 	<?php } ?>
 	</td>
@@ -66,7 +56,7 @@ $rows = db_loadList( $sql );
 </tr>
 </table>
 
-<table width="98%" border="0" cellpadding="0" cellspacing="1">
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
 <tr>
 	<td valign="top">
 		<?php printf( $AppUI->_('companyWelcome'), $AppUI->user_first_name );?>
@@ -74,7 +64,7 @@ $rows = db_loadList( $sql );
 </tr>
 </table>
 
-<table width="98%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<td nowrap="nowrap" width="60" align="right">&nbsp;<?php echo $AppUI->_('sort by');?>:&nbsp;</td>
 	<th nowrap="nowrap">
@@ -87,12 +77,16 @@ $rows = db_loadList( $sql );
 		<a href="?m=companies&orderby=inactive" class="hdr"><?php echo $AppUI->_('Archived Projects');?></a>
 	</th>
 </tr>
-<?php foreach ($rows as $row){?>
-<tr>
-	<td>&nbsp;</td>
-	<td><a href="./index.php?m=companies&a=view&company_id=<?php echo $row["company_id"];?>"><?php echo $row["company_name"];?></A></td>
-	<td width="125" align="center" nowrap="nowrap"><?php echo $row["countp"];?></td>
-	<td width="125" align="center" nowrap="nowrap"><?php echo @$row["inactive"];?></td>
-</tr>
-<?php }?>
+<?php
+$s = '';
+foreach ($rows as $row) {
+	$s .= $CR . '<tr>';
+	$s .= $CR . '<td>&nbsp;</td>';
+	$s .= $CR . '<td><a href="./index.php?m=companies&a=view&company_id=' . $row["company_id"] . '">' . $row["company_name"] .'</a></td>';
+	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . $row["countp"] . '</td>';
+	$s .= $CR . '<td width="125" align="center" nowrap="nowrap">' . @$row["inactive"] . '</td>';
+	$s .= $CR . '</tr>';
+}
+echo "$s\n";
+?>
 </table>

@@ -1,12 +1,12 @@
-<?php
+<?php /* COMPANIES $Id$ */
 // Add / Edit Company
 $company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
 
-// check permissions
-$denyEdit = getDenyEdit( $m, $company_id );
+// check permissions for this company
+$canEdit = !getDenyEdit( $m, $company_id );
 
-if ($denyEdit) {
-	$AppUI->redirect( "m=help&a=access_denied" );
+if (!$canEdit) {
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
 // pull data
@@ -58,7 +58,7 @@ function delIt() {
 }
 </script>
 
-<table width="98%" border=0 cellpadding="0" cellspacing=1>
+<table width="100%" border=0 cellpadding="0" cellspacing=1>
 <tr>
 	<td><img src="./images/icons/money.gif" alt="" border="0"></td>
 	<td nowrap><h1><?php echo $company_id ? $AppUI->_( 'Edit Company' ) : $AppUI->_( 'Add Company' );?></h1></td>
@@ -67,16 +67,18 @@ function delIt() {
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
 <tr>
 	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
 	<td width="50%" align="right">
-		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0"><?php echo $AppUI->_( 'delete company' );?></a>
+	<?php if ($canDelete) {
+		echo '<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0">' . $AppUI->_( 'delete company' ) . '</a>';
+	} ?>
 	</td>
 </tr>
 </table>
 
-<table cellspacing="1" cellpadding="1" border="0" width="98%" class="std">
+<table cellspacing="1" cellpadding="1" border="0" width="100%" class="std">
 <form name="changeclient" action="?m=companies" method="post">
 <input type="hidden" name="dosql" value="company_aed">
 <input name="del" type="hidden" value="0">
@@ -109,7 +111,7 @@ function delIt() {
 <tr>
 	<td align="right"><?php echo $AppUI->_('Phone');?>2:</td>
 	<td>
-		<input type="text" class="text" name="company_phone2" value="<?php echo @$crow["company_phone2"];?>" maxlength="50"> 
+		<input type="text" class="text" name="company_phone2" value="<?php echo @$crow["company_phone2"];?>" maxlength="50">
 	</td>
 </tr>
 <tr>
