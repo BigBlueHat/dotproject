@@ -23,7 +23,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 		<a href="?m=projects&orderby=my_tasks%20desc" class="hdr">(<?php echo $AppUI->_('My');?>)</a>
 	</th>
 	<th nowrap="nowrap">
-		Selection
+		<?php echo $AppUI->_('Selection'); ?>
 	</th>
 </tr>
 
