@@ -141,8 +141,9 @@ if ($jpLocale) {
 if ($start_date && $end_date) {
 	$graph->SetDateRange( $start_date, $end_date );
 }
-
-$graph->scale->actinfo->SetFont(FF_ARIAL);
+if (is_file( TTF_DIR."arialbd.ttf" )){
+	$graph->scale->actinfo->SetFont(FF_ARIAL);
+}
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 if ($showWork=='1') {
@@ -358,11 +359,13 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		$startdate = new CDate($start);
 		$bar = new GanttBar($row++, array($name, $dur, $startdate->format($df), $enddate->format($df)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a["task_dynamic"] == 1 ? 0.1 : 0.6);
 		$bar->progress->Set($progress/100);
-
-		$bar->title->SetFont(FF_ARIAL,FS_NORMAL,8);
-
+		if (is_file( TTF_DIR."arialbd.ttf" )) {
+			$bar->title->SetFont(FF_ARIAL,FS_NORMAL,8);
+		}
 	    if($a["task_dynamic"] == 1){
-	        $bar->title->SetFont(FF_ARIAL,FS_BOLD, 8);
+	    	if (is_file( TTF_DIR."arialbd.ttf" )){
+	        	$bar->title->SetFont(FF_ARIAL,FS_BOLD, 8);
+		}
     		$bar->rightMark->Show();
             $bar->rightMark->SetType(MARK_RIGHTTRIANGLE);
             $bar->rightMark->SetWidth(3);
@@ -408,7 +411,9 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 }
 $today = date("y-m-d");
 $vline = new GanttVLine($today, $AppUI->_('Today', UI_OUTPUT_RAW));
-$vline->title->SetFont(FF_ARIAL,FS_BOLD,12);
+if (is_file( TTF_DIR."arialbd.ttf" )) {
+	$vline->title->SetFont(FF_ARIAL,FS_BOLD,12);
+}
 $graph->Add($vline);
 $graph->Stroke();
 ?>
