@@ -14,37 +14,42 @@ $q->addOrder('resource_type', 'resource_name');
 $res = $q->exec();
 $all_resources = array();
 $resource_max = array();
+
 while ($row = db_fetch_assoc($res)) {
 	$type = $row['resource_type'];
 	$all_resources[$row['resource_id']] = $resource_types[$row['resource_type']] . ": " . $row['resource_name'];
 	$resource_max[$row['resource_id']] = $row['max_allocation'];
 }
 
-if ($loadFromTab && isset($_SESSION['tasks_subform']['hresources'])) {
 	$assigned_resources = array();
-	foreach (explode(';', $_SESSION['tasks_subform']['hresources']) as $perc) {
+
+
+if ($loadFromTab && isset($_SESSION['tasks_subform']['hresource_assign'])) {
+	$initResAssignment = "";
+	$resources = array();
+	foreach (explode(';', $_SESSION['tasks_subform']['hresource_assign']) as $perc) {
 		if ($perc) {
 			list ($rid, $perc) = explode('=', $perc);
 			$assigned_resources[$rid] = $perc;
+			$initResAssignment .= "$rid=$perc;";
+			$resources[$rid] = $all_resources[$rid] . " [" . $perc . "%]";
 		}
 	}
 } else if ($task_id == 0) {
-  $assigned_resources = array();
 } else {
+	$initResAssignment = "";
+	$resources = array();
 	// Pull resources on this task
 	$q =& new DBQuery;
 	$q->addTable('resource_tasks');
 	$q->addQuery('resource_id, percent_allocated');
 	$q->addWhere('task_id = ' . $task_id);
-	$sql = $q->prepare();
-	$assigned_resources = db_loadHashList( $sql );	
+	$sql = $q->prepareSelect();
+	$assigned_res = $q->exec();
+	while ($row = db_fetch_assoc($assigned_res)) {
+		$initResAssignment .= $row['resource_id']."=".$row['percent_allocated'].";";
+		$resources[$row['resource_id']] = $all_resources[$row['resource_id']] . " [" . $row['percent_allocated'] . "%]";
 }
-
-$initResAssignment = "";
-$resources = array();
-foreach ($assigned_resources as $k => $v) {
-	$initResAssignment .= "$k=$v;";
-	$resources[$k] = $all_resources[$k] . " [" . $v . "%]";
 }
 
 $AppUI->getModuleJS('resources', 'tabs');

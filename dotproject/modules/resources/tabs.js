@@ -32,7 +32,8 @@ function addResource(form)
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
 			t = form.assigned.length
 			opt = new Option( form.resources.options[fl].text+" ["+perc+"%]", form.resources.options[fl].value);
-			form.hresources.value += form.resources.options[fl].value+"="+perc+";";
+			form.hresource_assign.value += form.resources.options[fl].value+"="+perc+";";
+			form.hresources.value = form.hresource_assign.value;
 			form.assigned.options[t] = opt
 		}
 	}
@@ -46,13 +47,13 @@ function removeResource(form)
 			//remove from hperc_assign
 			var selValue = form.assigned.options[fl].value;			
 			var re = ".*("+selValue+"=[0-9]*;).*";
-			var hiddenValue = form.hresources.value;
+			var hiddenValue = form.hresource_assign.value;
 			if (hiddenValue) {
 				var b = hiddenValue.match(re);
 				if (b[1]) {
 					hiddenValue = hiddenValue.replace(b[1], '');
 				}
-				form.hresources.value = hiddenValue;
+				form.hresource_assign.value = hiddenValue;
 				form.assigned.options[fl] = null;
 			}
 //alert(form.hperc_assign.value);
