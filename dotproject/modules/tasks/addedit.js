@@ -280,8 +280,8 @@ function calcDuration(f) {
 	// check if the last day is a weekendDay
 	// if so we subtracted some hours too much before, 
 	// we have to fill up the last working day until cal_day_start + daily_working_hours
-	if ( !isInArray(working_days, eDate.getDay())) {
-		durn = durn + (cal_day_start + daily_working_hours - eDate.getHours());
+	if ( !isInArray(working_days, eDate.getDay()) && eDate.getHours() != cal_day_start) {
+		durn = durn + Math.max(0, (cal_day_start + daily_working_hours - eDate.getHours()));
 	}
 	
 	//could be 1 or 24 (based on TaskDurationType value)
@@ -310,8 +310,11 @@ function calcDuration(f) {
 		// Total working hours
 		durn = Math.floor(full_work_days) * daily_working_hours + partial_day_hours;
 		
-		if ( !isInArray(working_days, eDate.getDay())) {
-			durn = durn + (cal_day_start + daily_working_hours - eDate.getHours());
+		// check if the last day is a weekendDay
+		// if so we subtracted some hours too much before, 
+		// we have to fill up the last working day until cal_day_start + daily_working_hours
+		if ( !isInArray(working_days, eDate.getDay()) && eDate.getHours() != cal_day_start) {
+			durn = durn + Math.max(0, (cal_day_start + daily_working_hours - eDate.getHours()));
 		}
 
 	} else if (durnType == 24 ) {
