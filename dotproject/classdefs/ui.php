@@ -67,6 +67,7 @@ class CAppUI {
 		if ($debug) {
 			echo "DEBUGGING:<br>SQL=<pre><font color=blue>$sql</font></pre>";
 		}
+		$this->user_locale = $this->base_locale;
 		$this->user_prefs = db_loadHashList( $sql );
 	}
 // localisation
