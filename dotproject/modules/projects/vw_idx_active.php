@@ -28,7 +28,8 @@ $none = true;
 foreach ($projects as $row) {
 	if ($row["project_active"] > 0) {
 		$none = false;
-		$end_date = $row["project_end_date"] ? new CDate( db_dateTime2unix( $row["project_end_date"] ) ) : null;
+		$ts = db_dateTime2unix( $row["project_end_date"] );
+		$end_date = $ts < 0 ? null : new CDate( $ts );
 		$s = '<tr>';
 		$s .= '<td width="65" align="center" style="border: outset #eeeeee 2px;background-color:#'
 			. $row["project_color_identifier"] . '">';
