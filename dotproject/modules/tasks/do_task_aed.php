@@ -125,7 +125,7 @@ if ($sub_form) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			$AppUI->redirect();
 		} else {
-			$AppUI->setMsg( $AppUI->_("Task deleted"));
+			$AppUI->setMsg( 'Task deleted');
 			$AppUI->redirect( '', -1 );
 		}
 	} else {
