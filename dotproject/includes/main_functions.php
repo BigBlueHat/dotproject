@@ -144,6 +144,8 @@ function dPfindImage( $name, $module=null ) {
 }
 
 /**
+ *	Workaround removed due to problems in Opera and other issues
+ *	with IE6.
  *	Workaround to display png images with alpha-transparency in IE6.0
  *	@param string The name of the image
  *	@param string The image width
@@ -151,11 +153,13 @@ function dPfindImage( $name, $module=null ) {
  *	@param string The alt text for the image
  */
 function dPshowImage( $src, $wid='', $hgt='', $alt='' ) {
+	/*
 	if (strpos( $src, '.png' ) > 0 && strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0' ) !== false) {
 		return "<div style=\"height:{$hgt}px; width:{$wid}px; filter:progid:DXImageTransform.Microsoft.AlphaImageLoader(src='$src', sizingMethod='scale');\" ></div>";
 	} else {
+	*/
 		return "<img src=\"$src\" width=\"$wid\" height=\"$hgt\" alt=\"$alt\" border=\"0\" />";
-	}
+	// }
 }
 
 #
