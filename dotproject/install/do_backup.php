@@ -77,6 +77,7 @@ $ft_application_pdf     = trim( dPgetParam( $_POST, 'ft_application_pdf', '/usr/
 function stepBack($dbmsg) {
 global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbmsg,$cfgmsg;
 
+	echo "<body onload='document.stepBack.submit();'>";
         echo "<form name=\"stepBack\" method=\"post\" action=\"db.php\">
                 <input type=\"hidden\" name=\"dbhost\" value=\"$dbhost\">
                 <input type=\"hidden\" name=\"dbname\" value=\"$dbname\">
@@ -86,8 +87,8 @@ global $dbhost,$dbname,$dbuser,$dbpass,$dbport,$dbpersist,$dbdrop,$dbbackup,$dbm
                 <input type=\"hidden\" name=\"dbbackup\" value=\"$dbbackup\">
                 <input type=\"hidden\" name=\"db_install_mode\" value=\"$db_install_mode\">
                 <input type=\"hidden\" name=\"dbmsg\" value=\"$dbmsg\">
-		</form>";
-	echo "<SCRIPT>document.stepBack.submit(); </SCRIPT>";
+		</form>
+		</body>";
 }
 
 if ($dbbackup == true && $dobackup == "Backup" ) {
@@ -197,6 +198,7 @@ if ($dbbackup == true && $dobackup == "Backup" ) {
         }
 } else {
 
+	echo "<body onload='document.gopref.submit();'>\n";
         echo "<form name=\"gopref\" method=\"post\" action=\"pref.php\">
                 <input type=\"hidden\" name=\"root_dir\" value=\"$root_dir\">
                 <input type=\"hidden\" name=\"dbhost\" value=\"$dbhost\">
@@ -241,6 +243,7 @@ if ($dbbackup == true && $dobackup == "Backup" ) {
                 <input type=\"hidden\" name=\"ft_application_pdf\" value=\"$ft_application_pdf\">
                 <input type=\"hidden\" name=\"cfgmsg\" value=\"$cfgmsg\">
                 </form>";
-        echo "<SCRIPT>document.gopref.submit(); </SCRIPT>";
+        //echo "<SCRIPT>document.gopref.submit(); </SCRIPT>";
+	echo "</body>\n";
 }
 ?>
