@@ -10,7 +10,7 @@ LEFT JOIN users ON message_author = users.user_id
 WHERE forum_id = message_forum
 	AND (message_id = $message_id OR message_parent = $message_id)
 ";
-echo "<pre>$sql</pre>";
+//echo "<pre>$sql</pre>";
 $messages = db_loadList( $sql );
 
 $crumbs = array();
