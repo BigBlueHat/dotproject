@@ -1,3 +1,33 @@
+2004-08-29 23:53  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Fixed tab count calculation in loadExtras
+
+2004-08-29 23:45  (ajdonnison)
+---------------------------------
+modules/tasks/view.php
+- Changed to use new loadExtras method in tabBox.
+
+2004-08-29 23:44  (ajdonnison)
+---------------------------------
+index.php
+- New format for handling module/file tabs.
+
+2004-08-29 23:36  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Added catch to not try and load file-tabs when loading module tabs.
+
+2004-08-29 23:33  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Added support function for adding file and module based extra tabs.
+
+2004-08-28 04:09  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-08-27 19:39  (jcgonz)
 ---------------------------------
 modules/tasks/gantt.php
@@ -468,36 +498,6 @@ files/.cvsignore
 2004-08-21 15:27  (gregorerhardt)
 ---------------------------------
 modules/tasks/addedit.php
-- reinvented the wheel
-
-2004-08-21 14:42  (gregorerhardt)
----------------------------------
-db/dotproject.sql
-- like ever (smile)
-
-2004-08-21 13:16  (cyberhorse)
----------------------------------
-modules/tasks/addedit.php
-- Fixed double click adding user (removing user was still working)
-
-2004-08-21 05:39  (cyberhorse)
----------------------------------
-modules/history/index.php
-- Added filter to the history module.
-
-2004-08-21 05:20  (cyberhorse)
----------------------------------
-index.php
-modules/history/addedit.php
-modules/history/index.php
-- Added login/logout history.
-- Fixed manual history adding.
-
-2004-08-21 04:34  (cyberhorse)
----------------------------------
-modules/tasks/tasks.php
-- Added ability to deal with tasks even if the history module doesn't exists / is not active. (not tested)
-
 ...
 
 (This file has been wrapped)
