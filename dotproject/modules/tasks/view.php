@@ -81,6 +81,10 @@ if ($canEdit) {
 		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
 		'<form action="?m=tasks&a=addedit&task_project='.$obj->task_project.'&task_parent=' . $task_id . '" method="post">', '</form>'
 	);
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
+		'<form action="?m=files&a=addedit&project_id=' . $obj->task_project . '&file_task=' . $obj->task_id . '" method="post">', '</form>'
+	);
 }
 $titleBlock->addCrumb( "?m=tasks", "tasks list" );
 if ($canReadProject) {

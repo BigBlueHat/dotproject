@@ -106,6 +106,11 @@ if ($canEdit) {
 		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
 		'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
 	);
+	$titleBlock->addCell();
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
+		'<form action="?m=files&a=addedit&project_id=' . $project_id . '" method="post">', '</form>'
+	);
 }
 $titleBlock->addCrumb( "?m=projects", "projects list" );
 if ($canEdit) {
