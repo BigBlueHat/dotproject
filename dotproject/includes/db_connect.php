@@ -6,7 +6,8 @@
 */
 
 // load the db specific handlers
-require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
+//require_once( "{$AppUI->cfg['root_dir']}/includes/db_{$AppUI->cfg['dbtype']}.php" );
+require_once( "{$AppUI->cfg['root_dir']}/includes/db_adodb.php" );
 
 // make the connection to the db
 db_connect( $AppUI->cfg['dbhost'], $AppUI->cfg['dbname'],
