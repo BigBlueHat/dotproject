@@ -391,11 +391,16 @@ class CEvent extends CDpObject {
 	// convert to default db time stamp
 		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
 		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
+		
+		// Filter events not allowed
+		$where = '';
+		$join = winnow('projects', 'event_project', $where);
 
 	// assemble query
 		$sql = "
 		SELECT *
 		FROM events
+		$join
 		WHERE (
 				event_start_date <= '$db_end' AND event_end_date >= '$db_start'
 				OR event_start_date BETWEEN '$db_start' AND '$db_end'
@@ -403,8 +408,9 @@ class CEvent extends CDpObject {
 			AND ( event_private=0
 				OR (event_private=1 AND event_owner=$AppUI->user_id)
 			)
+			AND ($where)
 		";
-	//echo "<pre>$sql</pre>";
+	echo "<pre>$sql</pre>";
 	// execute and return
 		return db_loadList( $sql );
 	}
