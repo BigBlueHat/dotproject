@@ -1,10 +1,10 @@
-2004-03-10 10:00  (kiryl)
+2004-03-10 11:24  (kiryl)
 ---------------------------------
 style/classic/login.php
 style/default/login.php
 fileviewer.php 
 
-must be logged to show any file!
+(grammatical error) must be logged to see any file!
 TO DO: if login failed show "login failed" information 
 
 modules/files/files.class.php
@@ -14,6 +14,25 @@ modules/files/addedit.php
 after adding, updating or deleting file depends on task assignment all users assigned to task or project owner will be notified by email
 user can decide whether or no notify useres 
 
+2004-03-04 13:52  (kiryl)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+modules/tasks/gant.php
+modules/tasks/viewgant.php
+
+more valuable information on gant chart
+task's end date uses working days info
+percentage resources allocation added
+
+lib/jpgraph
+
+upgrade jpgraph to version 1.14 
+
+modules/projects/view.php
+
+project work added as multiplication of allocated resources and task duration
 
 2004-03-02 00:05  (jcgonz)
 ---------------------------------
