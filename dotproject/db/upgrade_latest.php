@@ -25,6 +25,7 @@ include_once "$baseDir/includes/db_connect.php";
 function dPupgrade($from_version, $to_version, $last_updated)
 {
 
+	global $baseDir;
 	$latest_update = '20050304'; // Set to the latest upgrade date.
 
 	/**
@@ -87,7 +88,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 				}
 			}
 			include "$baseDir/db/upgrade_contacts.php";
-			include "$baseDir/upgrade_permissions.php";
+			include "$baseDir/db/upgrade_permissions.php";
 
 			// Fallthrough
 		case '20050304':

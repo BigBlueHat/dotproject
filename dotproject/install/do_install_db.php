@@ -20,14 +20,14 @@ function dPmsg($msg)
 # function to return a default value if a variable is not set
 #
 
-function defVal($var, $def) {
+function InstallDefVal($var, $def) {
 	return isset($var) ? $var : $def;
 }
 
 /**
 * Utility function to return a value from a named array or a specified default
 */
-function dPgetParam( &$arr, $name, $def=null ) {
+function dPInstallGetParam( &$arr, $name, $def=null ) {
 	return isset( $arr[$name] ) ? $arr[$name] : $def;
 }
 
@@ -35,7 +35,7 @@ function dPgetParam( &$arr, $name, $def=null ) {
 * Utility function to get last updated dates/versions for the
 * system.  The default is to 
 */
-function getVersion($mode, $db) {
+function InstallGetVersion($mode, $db) {
 	$result = array(
 		'last_db_update' => '',
 		'last_code_update' => '',
@@ -61,7 +61,7 @@ function getVersion($mode, $db) {
 * @param $sql string SQL-Code
 * @param $last_update string last update that has been installed
 */
-function splitSql($sql, $last_update) {
+function InstallSplitSql($sql, $last_update) {
 	global $lastDBUpdate;
 
 	$buffer = array();
@@ -91,7 +91,6 @@ function splitSql($sql, $last_update) {
 				return $ret;
 		}
 	}
-	die($sql);
 	$sql = ereg_replace("\n#[^\n]*\n", "\n", $sql);
 
 	$in_string = false;
@@ -132,14 +131,14 @@ $cFileMsg = "Not Created";
 $dbErr = false;
 $cFileErr = false;
 
-$dbtype = trim( dPgetParam( $_POST, 'dbtype', 'mysql' ) );
-$dbhost = trim( dPgetParam( $_POST, 'dbhost', '' ) );
-$dbname = trim( dPgetParam( $_POST, 'dbname', '' ) );
-$dbuser = trim( dPgetParam( $_POST, 'dbuser', '' ) );
-$dbpass = trim( dPgetParam( $_POST, 'dbpass', '' ) );
-$dbdrop = dPgetParam( $_POST, 'dbdrop', false );
-$mode = dPgetParam( $_POST, 'mode', 'upgrade' );
-$dbpersist = dPgetParam( $_POST, 'dbpersist', false );
+$dbtype = trim( dPInstallGetParam( $_POST, 'dbtype', 'mysql' ) );
+$dbhost = trim( dPInstallGetParam( $_POST, 'dbhost', '' ) );
+$dbname = trim( dPInstallGetParam( $_POST, 'dbname', '' ) );
+$dbuser = trim( dPInstallGetParam( $_POST, 'dbuser', '' ) );
+$dbpass = trim( dPInstallGetParam( $_POST, 'dbpass', '' ) );
+$dbdrop = dPInstallGetParam( $_POST, 'dbdrop', false );
+$mode = dPInstallGetParam( $_POST, 'mode', 'upgrade' );
+$dbpersist = dPInstallGetParam( $_POST, 'dbpersist', false );
 $dobackup = isset($_POST['dobackup']);
 $do_db = isset($_POST['do_db']);
 $do_db_cfg = isset($_POST['do_db_cfg']);
@@ -190,7 +189,7 @@ if ($dobackup){
 <body>
 <h1><img src="dp.png" align="middle" alt="dotProject Logo"/>&nbsp;dotProject Installer</h1>
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="100%" align="left">
-<tr><td>Progress:</td>
+<tr class='title'><td>Progress:</td></tr>
 <tr><td><pre>
 <?php
 
@@ -218,7 +217,7 @@ if ($do_db || $do_db_cfg) {
 
 	$db->Execute("USE " . $dbname);
 
-	$db_version = getVersion($mode, $db);
+	$db_version = InstallGetVersion($mode, $db);
 
 	$mqr = @get_magic_quotes_runtime();
 	@set_magic_quotes_runtime(0);
@@ -254,7 +253,7 @@ if ($do_db || $do_db_cfg) {
 	$pieces = array();
 	if ($sqlfile) {
 		$query = fread(fopen($sqlfile, "r"), filesize($sqlfile));
-		$pieces  = splitSql($query, $db_version['last_db_update']);
+		$pieces  = InstallSplitSql($query, $db_version['last_db_update']);
 	}
 	@set_magic_quotes_runtime($mqr);
 	$errors = array();
@@ -287,7 +286,7 @@ if ($do_db || $do_db_cfg) {
 		if (file_exists("$baseDir/db/upgrade_latest.php")) {
 			include_once "$baseDir/db/upgrade_latest.php";
 			$code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
-		} else if (file_exists("$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php") {
+		} else if (file_exists("$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php")) {
 			include_once "$baseDir/db/upgrade_{$from_version}_to_{$to_version}.php";
 			$code_updated = dPupgrade($db_version['code_version'], $current_version, $db_version['last_code_update']);
 		}
@@ -322,7 +321,7 @@ $dbMsg = "Not Created";
 	$config .= "\$dPconfig['dbname'] = \"$dbname\";\n";
 	$config .= "\$dPconfig['dbuser'] = \"$dbuser\";\n";
 	$config .= "\$dPconfig['dbpass'] = \"$dbpass\";\n";
-	$config .= "\$dPconfig['dbpersist'] = $dbpersist;\n";
+	$config .= "\$dPconfig['dbpersist'] = " . ($dbpersist ? 'true' : 'false') . ";\n";
 	$config .= "\$dPconfig['root_dir'] = \$baseDir;\n";
 	$config .= "\$dPconfig['base_url'] = \$baseUrl;\n";
 	$config .= "?>";
@@ -342,7 +341,7 @@ if ($do_cfg || $do_db_cfg){
 //echo $msg;
 ?>
 </pre></td></tr>
-</table>
+</table><br/>
 <table cellspacing="0" cellpadding="3" border="0" class="tbl" width="100%" align="left">
         <tr>
             <td class="title" valign="top">Database Installation Feedback:</td>
@@ -361,13 +360,6 @@ if ($do_cfg || $do_db_cfg){
             <td align="center" colspan="2"><textarea class="button" name="dbhost" cols="100" rows="20" title="Content of config.php for manual creation." /><?php echo $msg.$config; ?></textarea></td>
          </tr>
 <?php } ?>
-	<tr>
-            <td class="title" valign="top" colspan="2">Upgrade from 1.0.2</td>
-         <tr>
-	<tr>
-	    <td class="item" valign="top">In case of upgrading from 1.0.2 you should run the permissions upgrade script:</td>
-	    <td class="item" align="left"><b><a href="<?php echo $baseUrl.'/db/upgrade_permissions.php';?>">Run permissions upgrade script</a></b></td>
-	 </tr>
 	<tr>
 	    <td class="item" align="center" colspan="2"><br/><b><a href="<?php echo $baseUrl.'/index.php?m=system&a=systemconfig';?>">Login and Configure the dotProject System Environment</a></b></td>
 	 </tr>
