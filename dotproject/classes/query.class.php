@@ -543,7 +543,7 @@ class DBQuery {
 		global $db;
 		global $AppUI;
 
-		if (! $this->exec()) {
+		if (! $this->exec(ADODB_FETCH_ASSOC)) {
 			$AppUI->setMsg($db->ErrorMsg(), UI_MSG_ERROR);
 			return false;
 		}
@@ -562,7 +562,7 @@ class DBQuery {
 	function loadHashList($index = null) {
 		global $db;
 
-		if (! $this->exec()) {
+		if (! $this->exec(ADODB_FETCH_ASSOC)) {
 			exit ($db->ErrorMsg());
 		}
 		$hashlist = array();
