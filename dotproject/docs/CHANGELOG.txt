@@ -1,5 +1,39 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+3 December 2002 (AJE):
+---------------------------------
+styles/main.css
+- added style for standard error
+
+includes/db_connect.php
+- added better error information to loadHash and loadList functions
+  An optional line number is added to the function calls to allow
+  for finding which sql call caused the problem.
+
+classdefs/ui.php (new)
+./index.php
+./logincheck.php
+./includes/header.php
+./includes/main_functions.php
+./includes/permissions.php
+- new classes for user interface handling (encapsulated login function)
+- included in index.php
+- CTabBox class deprecates the drawTabBox function
+
+modules/companies/*.php
+- port sql calls to standard db functions
+
+module/admin/index.php
+module/admin/viewuser.php
+- uses new CTabBox class
+
+module/admin/vw_usr.php
+- icon-ised some textual information in the table
+
+module/projects/index.php
+module/projects/view.php
+-  uses new CTabBox class
+
 25 November 2002 (AJE):
 ---------------------------------
 includes/db_connect.php
