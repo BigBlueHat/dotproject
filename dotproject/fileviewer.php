@@ -4,7 +4,10 @@ require_once "./includes/config.php";
 require_once "./classes/ui.class.php";
 
 session_name( 'dotproject' );
-session_set_cookie_params(0, dirname($_SERVER['SCRIPT_NAME']) . '/');
+$cookie_dir = dirname($_SERVER['SCRIPT_NAME']);
+if (substr($cookie_dir, -1) != '/')
+	$cookie_dir .= '/';
+session_set_cookie_params(0, $cookie_dir);
 if (get_cfg_var( 'session.auto_start' ) > 0) {
 	session_write_close();
 }
