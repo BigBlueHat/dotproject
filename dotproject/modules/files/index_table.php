@@ -44,7 +44,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 		echo "<tr><td colspan=\"3\" align=\"center\">";
 		echo " [ ";
 	
-		for($n = $page > 16 ? $page-16 : 1; $n < $xpg_total_pages; $n++) {
+		for($n = $page > 16 ? $page-16 : 1; $n <= $xpg_total_pages; $n++) {
 			if ($n == $page) {
 				echo "<b>$n</b></a>";
 			} else {
@@ -54,7 +54,7 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 			if ($n >= 30+$page-15) {
 				$xpg_break = true;
 				break;
-			} else {
+			} else if ($n < $xpg_total_pages) {
 				echo " | ";
 			} 
 		} 
