@@ -76,7 +76,6 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 		echo "</td></tr>";
 	} 
 	echo "</table>";
-
 }
 
 GLOBAL $AppUI, $deny1, $canRead, $canEdit;
@@ -101,20 +100,14 @@ GLOBAL $AppUI, $deny1, $canRead, $canEdit;
 // $xpg_sqlcount    - SELECT for the COUNT total
 // $xpg_sqlquery    - SELECT for the SELECT LIMIT
 // $xpg_result      - pointer to results from SELECT LIMIT
-// $xpg_resultcount - pointer to results from SELECT COUNT
-
-/* Bug Fix # 931286 for DotProject version 1.0.2-1
-   Coder: Rowan Simms - bitter at sourceforge dot net
-   Date: 14/April/2004 */
 
 $tab = $AppUI->getState( 'FileIdxTab' ) !== NULL ? $AppUI->getState( 'FileIdxTab' ) : 0;
 $page = dPgetParam( $_GET, "page", 1);
-
-/* end bugfix #931286 */
+$project_id = dPgetParam( $_POST, 'project_id', 0);
+$showProject = true;
 
 $xpg_pagesize = 30;
 $xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
-
 
 // load the following classes to retrieved denied records
 include_once( $AppUI->getModuleClass( 'projects' ) );
@@ -136,7 +129,7 @@ else
         $catsql = " AND file_category = " . --$tab ;
 // SQL text for count the total recs from the selected option
 $xpg_sqlcount = "
-SELECT COUNT(files.file_id)
+SELECT count(files.file_id)
 FROM files, permissions
 LEFT JOIN projects ON project_id = file_project
 LEFT JOIN users ON user_id = file_owner
@@ -152,15 +145,14 @@ WHERE
 "
 . (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '')
 . (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '')
-. ($project_id ? "\nAND file_project = $project_id" : '');
-
-
-//echo $xpg_sqlcount."<br><br>";
-
+. ($project_id ? "\nAND file_project = $project_id" : '')
+. ' GROUP BY project_name, file_name';
 
 // SETUP FOR FILE LIST
 $sql = "
 SELECT files.*,
+        count(file_version) as file_versions,
+        round(max(file_version), 2) as file_lastversion,
 	project_name, project_color_identifier, project_active,
 	user_first_name, user_last_name,task_name,task_id
 FROM files, permissions
@@ -180,22 +172,28 @@ WHERE
 . (count( $deny1 ) > 0 ? "\nAND file_project NOT IN (" . implode( ',', $deny1 ) . ')' : '') 
 . (count( $deny2 ) > 0 ? "\nAND file_task NOT IN (" . implode( ',', $deny2 ) . ')' : '') 
 . ($project_id ? "\nAND file_project = $project_id" : '')
-."
-GROUP BY file_id
+. '
+GROUP BY project_name, file_name
 ORDER BY project_name, file_name
-LIMIT ".$xpg_min.",".$xpg_pagesize;
+LIMIT ' . $xpg_min . ', ' . $xpg_pagesize ;
 
-//echo $sql;
+$sql2 = "SELECT file_id, file_version, file_project, file_name, file_description, user_username as file_owner, file_size, file_category, file_type, file_date
+        FROM files
+        LEFT JOIN users ON user_id = file_owner
+        LEFT JOIN tasks on file_task = task_id
+        LEFT JOIN projects ON project_id = file_project
+" . 
+($project_id ? " AND file_project = $project_id" : '');
 
 $files = array();
+$file_versions = array();
 if ($canRead) {
 	$files = db_loadList( $sql );
+        $file_versions = db_loadList($sql2);
 }
 
 // counts total recs from selection
-$xpg_resultcount = db_exec($xpg_sqlcount);
-$row = db_fetch_row($xpg_resultcount);
-$xpg_totalrecs = $row[0];
+$xpg_totalrecs = count(db_loadList($xpg_sqlcount));
 
 // How many pages are we dealing with here ??
 if ($xpg_totalrecs > $xpg_pagesize) {
@@ -205,12 +203,19 @@ if ($xpg_totalrecs > $xpg_pagesize) {
 shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 
 ?>
+<script type="text/JavaScript">
+function expand(id){
+  var element = document.getElementById(id);
+  element.style.display = (element.style.display == '' || element.style.display == "none") ? "block" : "none";
+}
+</script>
+
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th nowrap="nowrap">&nbsp;</th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'File Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Description' );?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_( 'Version' );?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Versions' );?></th>
         <th nowrap="nowrap"><?php echo $AppUI->_( 'Category' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Task Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Owner' );?></th>
@@ -222,6 +227,20 @@ shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 $fp=-1;
 $file_date = new CDate();
 
+function last_file($file_versions, $file_name, $file_project)
+{
+        $latest = NULL;
+        //global $file_versions;
+        if (isset($file_versions))
+        foreach ($file_versions as $file_version)
+                if ($file_version['file_name'] == $file_name && $file_version['file_project'] == $file_project)
+                        if ($latest == NULL || $latest['file_version'] < $file_version['file_version'])
+                                $latest = $file_version;
+
+        return $latest;
+}
+
+$id = 0;
 foreach ($files as $row) {
 	$file_date = new CDate( $row['file_date'] );
 
@@ -232,7 +251,7 @@ foreach ($files as $row) {
 		}
 		if ($showProject) {
 			$s = '<tr>';
-			$s .= '<td colspan="9" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
+			$s .= '<td colspan="10" style="background-color:#'.$row["project_color_identifier"].'" style="border: outset 2px #eeeeee">';
 			$s .= '<font color="' . bestColor( $row["project_color_identifier"] ) . '">'
 			. $row["project_name"] . '</font>';
 			$s .= '</td></tr>';
@@ -240,6 +259,8 @@ foreach ($files as $row) {
 		}
 	}
 	$fp = $row["file_project"];
+        if ($row['file_versions'] > 1)
+                $file = last_file($file_versions, $row['file_name'], $row['file_project']);
 ?>
 <tr>
 	<td nowrap="nowrap" width="20">
@@ -251,10 +272,62 @@ foreach ($files as $row) {
 	?>
 	</td>
 	<td nowrap="8%">
-		<?php echo "<a href=\"./fileviewer.php?file_id={$row['file_id']}\" title=\"{$row['file_description']}\">{$row['file_name']}</a>"; ?>
+		<?php echo "<a href=\"./fileviewer.php?file_id={$file['file_id']}\" title=\"{$row['file_description']}\">{$row['file_name']}</a>"; ?>
 	</td>
-	<td width="20%"><?php echo $row["file_description"];?></td>
-	<td width="5%" nowrap="nowrap" align="center"><?php echo $row["file_version"];?></td>
+	<td width="20%"><?php echo $row['file_description'];?></td>
+	<td width="5%" nowrap="nowrap" align="center">
+        <?php
+                echo $row['file_lastversion'];
+                if ($row['file_versions'] > 1)
+                {
+                 echo ' <a href="#" onClick="expand(\'versions_' . ++$id . '\'); ">(' . $row['file_versions'] . ')</a>';
+                 $hidden_table = '<tr><td colspan="10">
+<table style="display: none" id="versions_' . $id++ . '" width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+        <th nowrap="nowrap">&nbsp;</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'File Name' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Description' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Versions' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Category' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Task Name' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Owner' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Size' ) . '</th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Type' ) . '</a></th>
+        <th nowrap="nowrap">' . $AppUI->_( 'Date' ) . '</th>
+</tr>
+';
+                foreach($file_versions as $file)
+                        if ($file['file_name'] == $row['file_name'] && $file['file_project'] == $row['file_project'])
+                        {
+                                $hidden_table .= '
+        <tr>
+                <td nowrap="nowrap" width="20">&nbsp;';
+                                if ($canEdit)
+                                {
+                                        $hidden_table .= '
+                <a href="./index.php?m=files&a=addedit&file_id=' . $row["file_id"] . '">' . dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) . "\n</a>";
+                                }
+                                $hidden_table .= '
+                </td>
+                <td nowrap="8%"><a href="./fileviewer.php?file_id=' . $file['file_id'] . '" 
+                        title="' . $file['file_description'] . '">' . 
+                        $file['file_name'] . '
+                </a></td>
+                <td width="20%">' . $file['file_description'] . '</td>
+                <td width="5%" nowrap="nowrap" align="center">' . $file['file_version'] . '</td>
+                <td width="10%" nowrap="nowrap" align="center">' . $file_types[$file['file_category']] . '</td>
+                <td width="5%" align="center">' . $file['file_task'] . '</td>
+                <td width="15%" nowrap="nowrap">' . $row["user_first_name"].' '.$row["user_last_name"] . '</td>
+                <td width="5%" nowrap="nowrap" align="right">' . intval($file['file_size']/1024) . 'kb </td>
+                <td width="15%" nowrap="nowrap">' . $file['file_type'] . '</td>
+                <td width="15%" nowrap="nowrap" align="right">' . $file['file_date'] . '</td>
+        </tr>';
+                        }
+                $hidden_table .= '</table>';
+                //$hidden_table .= '</span>';
+                }
+        ?>
+        </td>
         <td width="10%" nowrap="nowrap" align="center"><?php echo $file_types[$row["file_category"]];?></td> 
 	<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $row["task_id"];?>"><?php echo $row["task_name"];?></a></td>
 	<td width="15%" nowrap="nowrap"><?php echo $row["user_first_name"].' '.$row["user_last_name"];?></td>
@@ -262,7 +335,10 @@ foreach ($files as $row) {
 	<td width="15%" nowrap="nowrap"><?php echo $row["file_type"];?></td>
 	<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format( "$df $tf" );?></td>
 </tr>
-<?php }?>
+<?= $hidden_table ?>
+<?php 
+        $hidden_table = ''; 
+}?>
 </table>
 <?php
 shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
