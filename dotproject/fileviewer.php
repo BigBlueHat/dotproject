@@ -8,6 +8,55 @@ if (get_cfg_var( 'session.auto_start' ) > 0) {
 	session_write_close();
 }
 session_start();
+
+// check if session has previously been initialised
+// if no ask for logging and do redirect
+if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
+    $_SESSION['AppUI'] = new CAppUI();
+	$AppUI =& $_SESSION['AppUI'];
+	$AppUI->setConfig( $dPconfig );
+	$AppUI->checkStyle();
+	 
+	require_once( $AppUI->getSystemClass( 'dp' ) );
+	require_once( "./includes/db_connect.php" );
+	require_once( "./includes/main_functions.php" );
+	require_once( "./misc/debug.php" );
+
+	if ($AppUI->doLogin()) $AppUI->loadPrefs( 0 );
+	// check if the user is trying to log in
+	if (isset($_POST['login'])) {
+		$username = dPgetParam( $_POST, 'username', '' );
+		$password = dPgetParam( $_POST, 'password', '' );
+		$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
+		$ok = $AppUI->login( $username, $password );
+		if (!$ok) {
+			//should display login failed info but not now :-[
+			session_unset();
+			//session_destroy();
+			header ( "Location: fileviewer.php?$redirect" );
+			exit;
+		}
+		header ( "Location: fileviewer.php?$redirect" );
+		exit;
+	}	
+
+	$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $AppUI->cfg['host_style'];
+	// check if we are logged in
+	if ($AppUI->doLogin()) {
+	    $AppUI->setUserLocale();
+		@include_once( "./locales/$AppUI->user_locale/locales.php" );
+		@include_once( "./locales/core.php" );
+		setlocale( LC_TIME, $AppUI->user_locale );
+		
+		$redirect = @$_SERVER['QUERY_STRING'];
+		if (strpos( $redirect, 'logout' ) !== false) $redirect = '';	
+		if (isset( $locale_char_set )) header("Content-type: text/html;charset=$locale_char_set");
+		require "./style/$uistyle/login.php";
+		session_unset();
+		session_destroy();
+		exit;
+	}	
+}
 $AppUI =& $_SESSION['AppUI'];
 
 require "{$AppUI->cfg['root_dir']}/includes/db_connect.php";
