@@ -1,3 +1,15 @@
+2004-04-07 02:37  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/dotproject_102.sql
+- Removed dotproject_102.sql to dotproject.sql to be consistent with
+- new installer.
+
+2004-04-06 03:51  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-04-05 06:44  (gregorerhardt)
 ---------------------------------
 ChangeLog
@@ -486,18 +498,6 @@ includes/version.php
 - Removed the -alpha suffix for full release.
 
 2004-02-02 08:20  (ajdonnison)
----------------------------------
-db/upgrade_101_to_102.sql
-- Added line to reset dynamic tasks.
-
-2004-02-02 08:15  (ajdonnison)
----------------------------------
-locales/en/tasks.inc
-- Added missing strings for 1.0.2 release
-
-2004-02-02 02:13  (robertoibarra)
----------------------------------
-modules/tasks/gantt.php
 ...
 
 (This file has been wrapped)
