@@ -4,7 +4,7 @@ error_reporting( E_ALL );	// this only for development testing
 
 // required includes for start-up
 $dPconfig = array();
-require_once( "./classdefs/ui.php" );
+require_once( "./classes/ui.class.php" );
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = @$_GET['suppressHeaders'];
@@ -74,6 +74,7 @@ if ($AppUI->doLogin()) {
 		 header("Content-type: text/html;charset=$locale_char_set");
 	}
 
+	$AppUI->savePlace();
 	require "./style/$uistyle/login.php";
 	// destroy the current session and output login page
 	session_unset();
@@ -128,19 +129,20 @@ if ( !$suppressHeaders ) {
 if (!$canRead && $m != 'public') {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
-// include the module classes (check in two places)
-@include_once( "./classdefs/$m.php" );
+// include the module class file
 @include_once( "./modules/$m/$m.class.php" );
 @include_once( "./modules/$m/" . ($u ? "$u/" : "") . "$u.class.php" );
 
 // do some db work if dosql is set
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
 if (isset( $_REQUEST["dosql"]) ) {
-    require("./dosql/" . $_REQUEST["dosql"] . ".php");
+    //require("./dosql/" . $_REQUEST["dosql"] . ".php");
+    require ("./modules/$m/" . $_REQUEST["dosql"] . ".php");
 }
 
 // start output proper
 include "./style/$uistyle/overrides.php";
+ob_start();
 if(!$suppressHeaders) {
 	require "./style/$uistyle/header.php";
 }
@@ -148,4 +150,5 @@ require "./modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if(!$suppressHeaders) {
 	require "./style/$uistyle/footer.php";
 }
+ob_end_flush();
 ?>
