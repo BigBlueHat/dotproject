@@ -72,7 +72,8 @@ if (isset( $_FILES['formfile'] )) {
 		** are not indexed for searching.
 		** Negative value :<=> no filesize limit
 		*/
-		if ($dPconfig['index_max_file_size'] < 0 || $obj->file_size <= $dPconfig['index_max_file_size']*1024) {
+		$index_max_file_size = dPgetConfig('index_max_file_size', 0);
+		if ($index_max_file_size < 0 || $obj->file_size <= $index_max_file_size*1024) {
 			$obj->indexStrings();
 		}
 	}
