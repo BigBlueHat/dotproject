@@ -3,9 +3,6 @@
 class CTitleBlock extends CTitleBlock_core {
 }
 
-class CCrumbsBlock extends CCrumbsBlock_core {
-}
-
 ##
 ##  This overrides the show function of the CTabBox_core function
 ##
@@ -48,12 +45,12 @@ class CTabBox extends CTabBox_core {
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$sel = ($k == $this->active) ? 'Selected' : '';
-				$s .= '<td height="28" valign="middle" width="1%"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt="" /></td>';
+				$s .= '<td height="28" valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt="" /></td>';
 				$s .= '<td valign="middle" width="1%" nowrap="nowrap"  background="./style/' . $uistyle . '/images/tab'.$sel.'Bg.png">&nbsp;<a href="'.$this->baseHRef.'tab='.$k.'">'.$AppUI->_($v[1]).'</a>&nbsp;</td>';
-				$s .= '<td valign="middle" width="1%"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Right.png" width="3" height="28" border="0" alt="" /></td>';
-				$s .= '<td width="1%" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td>';
+				$s .= '<td valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Right.png" width="3" height="28" border="0" alt="" /></td>';
+				$s .= '<td width="3" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td>';
 			}
-			$s .= '<td nowrap="nowrap" class="tabsp">&nbsp;</td>';
+			$s .= '<td width="100%" nowrap="nowrap" class="tabsp">&nbsp;</td>';
 			$s .= '</tr><tr><td width="100%" colspan="'.(count($this->tabs)*4 + 1).'" class="tabox">';
 			echo $s;
 			require $this->baseInc.$this->tabs[$this->active][0].'.php';

@@ -5,4 +5,7 @@
 ##
 class CTabBox extends CTabBox_core {
 }
+
+class CTitleBlock extends CTitleBlock_core {
+}
 ?>
