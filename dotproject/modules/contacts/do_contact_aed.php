@@ -22,9 +22,7 @@ if ($del) {
 	}
 } else {
 	$isNotNew = @$_POST['contact_id'];
-	if (!$isNotNew) {
-		$obj->contact_owner = $AppUI->user_id;
-	}
+
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {

@@ -10,8 +10,8 @@ if (!$canEdit) {
 // get a list of permitted companies
 require_once( $AppUI->getModuleClass ('companies' ) );
 
-$obj = new CCompany();
-$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$row = new CCompany();
+$companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 $companies = arrayMerge( array( '0'=>'' ), $companies );
 
 // pull users
@@ -19,9 +19,9 @@ $sql = "SELECT user_id, CONCAT_WS(', ',user_last_name,user_first_name) FROM user
 $users = db_loadHashList( $sql );
 
 // load the record data
-$obj = new CProject();
+$row = new CProject();
 
-if (!$obj->load( $project_id ) && $project_id > 0) {
+if (!$row->load( $project_id ) && $project_id > 0) {
 	$AppUI->setMsg( 'Project' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -31,19 +31,19 @@ if (!$obj->load( $project_id ) && $project_id > 0) {
 }
 
 // add in the existing company if for some reason it is dis-allowed
-if ($project_id && !array_key_exists( $obj->project_company, $companies )) {
-	$companies[$obj->project_company] = db_loadResult(
-		"SELECT company_name FROM companies WHERE company_id=$obj->project_company"
+if ($project_id && !array_key_exists( $row->project_company, $companies )) {
+	$companies[$row->project_company] = db_loadResult(
+		"SELECT company_name FROM companies WHERE company_id=$row->project_company"
 	);
 }
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = new CDate( $obj->project_start_date );
+$start_date = new CDate( $row->project_start_date );
 
-$end_date = intval( $obj->project_end_date ) ? new CDate( $obj->project_end_date ) : null;
-$actual_end_date = intval( $obj->project_actual_end_date ) ? new CDate( $obj->project_actual_end_date ) : null;
+$end_date = intval( $row->project_end_date ) ? new CDate( $row->project_end_date ) : null;
+$actual_end_date = intval( $row->project_actual_end_date ) ? new CDate( $row->project_actual_end_date ) : null;
 
 // setup the title block
 $ttl = $project_id > 0 ? "Edit Project" : "New Project";
@@ -122,20 +122,20 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Name');?></td>
 			<td width="100%">
-				<input type="text" name="project_name" value="<?php echo @$obj->project_name;?>" size="25" maxlength="50" onBlur="setShort();" class="text" />
+				<input type="text" name="project_name" value="<?php echo dPformSafe( $row->project_name );?>" size="25" maxlength="50" onBlur="setShort();" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
 			<td>
-<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $obj->project_owner? $obj->project_owner : $AppUI->user_id ) ?>
+<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $row->project_owner? $row->project_owner : $AppUI->user_id ) ?>
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?></td>
 			<td width="100%" nowrap="nowrap">
 <?php
-		echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $obj->project_company );
+		echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $row->project_company );
 ?> *</td>
 		</tr>
 		<tr>
@@ -164,7 +164,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> $</td>
 			<td>
-				<input type="Text" name="project_target_budget" value="<?php echo @$obj->project_target_budget;?>" maxlength="10" class="text" />
+				<input type="Text" name="project_target_budget" value="<?php echo @$row->project_target_budget;?>" maxlength="10" class="text" />
 			</td>
 		</tr>
 		<tr>
@@ -183,7 +183,7 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Budget');?> $</td>
 			<td>
-				<input type="text" name="project_actual_budget" value="<?php echo @$obj->project_actual_budget;?>" size="10" maxlength="10" class="text"/>
+				<input type="text" name="project_actual_budget" value="<?php echo @$row->project_actual_budget;?>" size="10" maxlength="10" class="text"/>
 			</td>
 		</tr>
 		<tr>
@@ -192,13 +192,13 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?></td>
 			<td>
-				<input type="text" name="project_url" value="<?php echo @$obj->project_url;?>" size="40" maxlength="255" class="text" />
+				<input type="text" name="project_url" value="<?php echo @$row->project_url;?>" size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Staging URL');?></td>
 			<td>
-				<input type="Text" name="project_demo_url" value="<?php echo @$obj->project_demo_url;?>" size="40" maxlength="255" class="text" />
+				<input type="Text" name="project_demo_url" value="<?php echo @$row->project_demo_url;?>" size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		</table>
@@ -208,19 +208,19 @@ function submitIt() {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Short Name');?></td>
 			<td colspan="3">
-				<input type="text" name="project_short_name" value="<?php echo @$obj->project_short_name;?>" size="10" maxlength="10" class="text" /> *
+				<input type="text" name="project_short_name" value="<?php echo @$row->project_short_name;?>" size="10" maxlength="10" class="text" /> *
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Color Identifier');?></td>
 			<td nowrap="nowrap">
-				<input type="text" name="project_color_identifier" value="<?php echo @$obj->project_color_identifier;?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
+				<input type="text" name="project_color_identifier" value="<?php echo @$row->project_color_identifier;?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
 			</td>
 			<td nowrap="nowrap">
 				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
 			</td>
 			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#<?php echo @$obj->project_color_identifier;?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
+				<span id="test" title="test" style="background:#<?php echo @$row->project_color_identifier;?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
 			</td>
 		</tr>
 		<tr>
@@ -233,13 +233,13 @@ function submitIt() {
 				</tr>
 				<tr>
 					<td>
-						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $obj->project_status, false ); ?>
+						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $row->project_status, false ); ?>
 					</td>
 					<td>
-						<strong><?php echo intval(@$obj->project_percent_complete);?> %</strong>
+						<strong><?php echo intval(@$row->project_percent_complete);?> %</strong>
 					</td>
 					<td>
-						<input type="checkbox" value="1" name="project_active" <?php echo $obj->project_active||$project_id==0 ? 'checked="checked"' : '';?> />
+						<input type="checkbox" value="1" name="project_active" <?php echo $row->project_active||$project_id==0 ? 'checked="checked"' : '';?> />
 					</td>
 				</tr>
 				</table>
@@ -248,7 +248,7 @@ function submitIt() {
 		<tr>
 			<td colspan="4">
 				<?php echo $AppUI->_('Description');?><br />
-				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea"><?php echo @$obj->project_description;?></textarea>
+				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea"><?php echo @$row->project_description;?></textarea>
 			</td>
 		</tr>
 		</table>
