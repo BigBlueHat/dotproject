@@ -616,8 +616,9 @@ class CAppUI {
 * @return boolean True if successful, false if not
 */
 	function login( $username, $password ) {
-		global $dPconfig;
-		require_once("./classes/authenticator.class.php");
+		global $dPconfig, $baseDir;
+
+		require_once "$baseDir/classes/authenticator.class.php";
 
 		$auth_method = isset($dPconfig['auth_method']) ? $dPconfig['auth_method'] : 'sql';
 		if (@$_POST['login'] != 'login' && $_REQUEST['login'] != $auth_method)

@@ -15,18 +15,14 @@
  * the main dP environment.
  */
 
-$_mydir = dirname(__FILE__);
-// Now drop the last part again.
-$_libdir = dirname($_mydir) . "/lib";  // This gives us the parent directory.
-
 // Set the ADODB directory
 if (! defined('ADODB_DIR')) {
-  define('ADODB_DIR', "$_libdir/adodb");
+  define('ADODB_DIR', "$baseDir/lib/adodb");
 }
  
 // Include the PHPGACL library
-require_once "$_libdir/phpgacl/gacl.class.php";
-require_once "$_libdir/phpgacl/gacl_api.class.php";
+require_once "$baseDir/lib/phpgacl/gacl.class.php";
+require_once "$baseDir/lib/phpgacl/gacl_api.class.php";
 // Include the db_connections 
 
 // Now extend the class
