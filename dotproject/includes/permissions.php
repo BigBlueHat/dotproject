@@ -11,7 +11,7 @@ function getReadableModule() {
 	$modules = db_loadColumn( $sql );
 	foreach ($modules as $mod) {
 		if (!getDenyRead($mod)) {
-			return $mod;
+			return strtolower($mod);
 		}
 	}
 	return null;
