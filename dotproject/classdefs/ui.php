@@ -358,16 +358,21 @@ class CTitleBlock_core {
 		$this->icon = $icon;
 		$this->module = $module;
 		$this->helpref = $helpref;
-		$this->cells = array();
+		$this->cells1 = array();
+		$this->cells2 = array();
 		$this->crumbs = array();
 	}
 
-	function addCell( $attribs='', $data='', $prefix='', $suffix='' ) {
-		$this->cells[] = array( $attribs, $data, $prefix, $suffix );
+	function addCell( $data='', $attribs='', $prefix='', $suffix='' ) {
+		$this->cells1[] = array( $attribs, $data, $prefix, $suffix );
 	}
 
-	function addCrumb( $link, $label ) {
-		$this->crumbs[$link] = $label;
+	function addCrumb( $link, $label, $icon='' ) {
+		$this->crumbs[$link] = array( $label, $icon );
+	}
+
+	function addCrumbRight( $data='', $attribs='', $prefix='', $suffix='' ) {
+		$this->cells2[] = array( $attribs, $data, $prefix, $suffix );
 	}
 
 	function show() {
@@ -377,32 +382,44 @@ class CTitleBlock_core {
 		$s = $CR . '<table width="100%" border="0" cellpadding="1" cellspacing="1">';
 		$s .= $CR . '<tr>';
 		if ($this->icon) {
-			$s .= $CR . '<td width="36"><img src="' . dPFindImage( $this->icon, $this->module ) . '" height="36" alt="" border="0"></td>';
+			$s .= $CR . '<td width="36"><img src="' . dPFindImage( $this->icon, $this->module ) . '" height="36" alt="" border="0" /></td>';
 		}
 		$s .= $CR . '<td align="left" width="100%" nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';
-		foreach ($this->cells as $c) {
+		foreach ($this->cells1 as $c) {
 			$s .= $c[2] ? $CR . $c[2] : '';
-			$s .= $CR . '<td' . ($c[0] ? " $c[0]" : '') . '>';
+			$s .= $CR . '<td align="right" nowrap="nowrap"' . ($c[0] ? " $c[0]" : '') . '>';
 			$s .= $c[1] ? $CT . $c[1] : '&nbsp;';
 			$s .= $CR . '</td>';
 			$s .= $c[3] ? $CR . $c[3] : '';
 		}
 		$s .= '<td nowrap="nowrap" width="20" align="right">';
-		$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', $this->helpref );
+		$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', $this->helpref );
 		$s .= $CR . '</td>';
 		$s .= $CR . '</tr>';
 		$s .= $CR . '</table>';
 
-		if (count( $this->crumbs )) {
+		if (count( $this->crumbs ) || count( $this->cells2 )) {
 			$crumbs = array();
 			foreach ($this->crumbs as $k => $v) {
-				$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
+				$t = $v[1] ? '<img src="' . dPfindImage( $v[1], $this->module ) . '" border="" alt="" />&nbsp;' : '';
+				$t .= $AppUI->_( $v[0] );
+				$crumbs[] = "<a href=\"$k\">$t</a>";
 			}
 			$s .= $CR . '<table border="0" cellpadding="4" cellspacing="0" width="100%">';
 			$s .= $CR . '<tr>';
 			$s .= $CR . '<td nowrap="nowrap">';
 			$s .= $CT . implode( ' <strong>:</strong> ', $crumbs );
-			$s .= $CR . '</td></tr></table>';
+			$s .= $CR . '</td>';
+
+			foreach ($this->cells2 as $c) {
+				$s .= $c[2] ? $CR . $c[2] : '';
+				$s .= $CR . '<td align="right" nowrap="nowrap"' . ($c[0] ? " $c[0]" : '') . '>';
+				$s .= $c[1] ? $CT . $c[1] : '&nbsp;';
+				$s .= $CR . '</td>';
+				$s .= $c[3] ? $CR . $c[3] : '';
+			}
+			
+			$s .= '</tr></table>';
 		}
 		echo "$s";
 	}
