@@ -6,29 +6,34 @@
 			$id_field          = "company_id";
 			$name_field        = "company_name";
 			$selection_string  = "Company";
-			$filter            = "";
+			$filter            = null;
 			$additional_get_information = "";
 			break;
 		case "departments":
 			$id_field          = "dept_id";
 			$name_field        = "dept_name";
 			$selection_string  = "Department";
-			$filter            = "where dept_company = ".$_GET["company_id"];
+			$filter            = "dept_company = ".$_GET["company_id"];
 			$additional_get_information = "company_id=".$_GET["company_id"];
 			break;
 	}
 	
-	$sql = "select $id_field, $name_field
-	        from $table_name
-			$filter
-			order by $name_field";
-	$company_list = array("0" => "") + db_loadHashList($sql);
+	$q  = new DBQuery;
+	$q->addTable($table_name);
+	$q->addQuery("$id_field, $name_field");
+	if ($filter != null) { $q->addWhere($filter); }
+	$q->addOrder($name_field);
+	$company_list = array("0" => "") + $q->loadHashList();
 
 ?>
 
 <?php
 	if(dPgetParam($_POST, $id_field, 0) != 0){
-		$sql    = "select * from $table_name where $id_field=".$_POST[$id_field];
+		$q  = new DBQuery;
+		$q->addTable($table_name);
+		$q->addQuery('*');
+		$q->addWhere("$id_field=".$_POST[$id_field]);
+		$sql = $q->prepare();
 		db_loadHash($sql, $r_data);
 		
 		$data_update_script = "";

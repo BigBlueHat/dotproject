@@ -12,9 +12,11 @@ $msg = '';
 $row = new CContact();
 $canDelete = $row->canDelete( $msg, $contact_id );
 // Don't allow to delete contacts, that have a user associated to them.
-$sql = 'SELECT user_id
-				FROM users
-				WHERE user_contact = ' . $row->contact_id;
+$q  = new DBQuery;
+$q->addTable('users');
+$q->addQuery('user_id');
+$q->addWhere('user_contact = ' . $row->contact_id);
+$sql = $q->prepare();
 $tmp_user = db_loadResult($sql);
 if (!empty($tmp_user))
 	$canDelete = false; 

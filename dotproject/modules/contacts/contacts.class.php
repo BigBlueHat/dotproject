@@ -74,13 +74,22 @@ class CContact extends CDpObject{
 	}
 
 	function getCompanyID(){
-		$sql = "select company_id from companies where company_name = '" . $this->contact_company . "'";
+		$q  = new DBQuery;
+		$q->addTable('companies');
+		$q->addQuery('company_id');
+		$q->addWhere('company_name = '.$this->contact_company);
+		$sql = $q->prepare();
 		$company_id = db_loadResult( $sql );
 		return $company_id;
 	}
 
 	function getCompanyName(){
 		$sql = "select company_name from companies where company_id = '" . $this->contact_company . "'";
+		$q  = new DBQuery;
+		$q->addTable('companies');
+		$q->addQuery('company_name');
+		$q->addWhere('company_id = '.$this->contact_company);
+		$sql = $q->prepare();
 		$company_name = db_loadResult( $sql );
 		return $company_name;
  	}
@@ -89,12 +98,17 @@ class CContact extends CDpObject{
 		$result = array('company_id' => 0, 'company_name' => '');
 		if (! $this->contact_company)
 			return $result;
-
-		$sql = "select company_id, company_name from companies";
+			
+		$q  = new DBQuery;
+		$q->addTable('companies');
+		$q->addQuery('company_id, company_name');
 		if ($this->is_alpha($this->contact_company))
-			$sql .= " where company_name = '" . $this->contact_company . "'";
+			$q->addWhere('company_name = '.$this->contact_company);
+
 		else
-			$sql .= " where company_id = '" . $this->contact_company . "'";
+			$q->addWhere('company_id = '.$this->contact_company);
+
+		$sql = $q->prepare();
 		db_loadHash($sql, $result);
 		return $result;
 	}
@@ -104,10 +118,16 @@ class CContact extends CDpObject{
 		if (! $this->contact_department)
 			return $result;
 		$sql = "select dept_id, dept_name from departments";
+		$q  = new DBQuery;
+		$q->addTable('departments');
+		$q->addQuery('dept_id, dept_name');
 		if ($this->is_alpha($this->contact_department))
-			$sql .= " where dept_name = '" . $this->contact_department . "'";
+			$q->addWhere("dept_name = '" . $this->contact_department . "'");
+
 		else
-			$sql .= " where dept_id = '" . $this->contact_department . "'";
+			$q->addWhere("dept_id = '" . $this->contact_department . "'");
+			
+		$sql = $q->prepare();
 		db_loadHash($sql, $result);
 		return $result;
 	}

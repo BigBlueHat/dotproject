@@ -10,8 +10,11 @@ if (!$canRead) {
 if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 
 	//pull data for this contact
-	$sql = "SELECT * FROM contacts WHERE contact_id = $contact_id";
-	$contacts = db_loadList( $sql );
+	$q  = new DBQuery;
+	$q->addTable('contacts');
+	$q->addQuery('*');
+	$q->addWhere("contact_id = $contact_id");
+	$contacts = $q->loadList();
 
 	//foreach ($contacts as $row) {
 	//echo $row['contact_id'];

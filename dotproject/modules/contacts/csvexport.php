@@ -44,8 +44,10 @@ if (1 == 1)
 		$text .= sprintf("%s","\"Private\",\"Profession\",\"Referred By\",\"Sensitivity\",\"Spouse\",");
 		// Fields 86 - 90
 		$text .= sprintf("%s\r\n","\"User 1\",\"User 2\",\"User 3\",\"User 4\",\"Web Page\"");
-	 	$sql = "SELECT * FROM contacts";
-		$contacts = db_loadList( $sql );
+		$q  = new DBQuery;
+		$q->addTable('contacts');
+		$q->addQuery('*');
+		$contacts = $q->loadList();
 		foreach ($contacts as $row) {
 		// Fields 1- 10
 		$text .= sprintf("\"\",\"%s\",\"\",\"%s\",\"\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",",$row['contact_first_name'],$row['contact_last_name'],$row['contact_company'],$row['contact_department'],$row['contact_title'],$row['contact_address1'],$row['contact_address2']);
@@ -88,7 +90,7 @@ if (1 == 1)
 
 	header("MIME-Version: 1.0");
 	header("Content-Type: text/x-csv");
-	header("Content-Disposition: attachment; filename=csvexport.csv");
+	header("Content-Disposition: attachment; filename=\"{$dPconfig['company_name']}Contacts.csv\"");
 	print_r($text);
 } else {
 $AppUI->setMsg( "contactIdError", UI_MSG_ERROR );

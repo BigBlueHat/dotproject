@@ -28,14 +28,12 @@ $orderby = 'contact_order_by';
 
 // Pull First Letters
 $let = ":";
-$sql = "
-SELECT DISTINCT UPPER(SUBSTRING($orderby,1,1)) as L
-FROM contacts
-WHERE contact_private=0
-	OR (contact_private=1 AND contact_owner=$AppUI->user_id)
-	OR contact_owner IS NULL OR contact_owner = 0
-";
-$arr = db_loadList( $sql );
+$q  = new DBQuery;
+$q->addTable('contacts');
+$q->addQuery("DISTINCT UPPER(SUBSTRING($orderby,1,1)) as L");
+$q->addWhere("contact_private=0 OR (contact_private=1 AND contact_owner=$AppUI->user_id)
+		OR contact_owner IS NULL OR contact_owner = 0");
+$arr = $q->loadList();
 foreach( $arr as $L ) {
     $let .= $L['L'];
 }
@@ -189,12 +187,15 @@ function goProject( key, val ) {
 				&nbsp;<a  title="<?php echo $AppUI->_('Export vCard for').' '.$carr[$z][$x]["contact_first_name"].' '.$carr[$z][$x]["contact_last_name"]; ?>" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id=<?php echo $contactid; ?>" >(vCard)</a>
                                 &nbsp;<a title="<?php echo $AppUI->_('Edit'); ?>" href="?m=contacts&a=addedit&contact_id=<?php echo $contactid; ?>"><?php echo $AppUI->_('Edit'); ?></a>
 <?php
- $sql = "select count(*) from projects where project_contacts like \"" .$carr[$z][$x]["contact_id"]
+$q  = new DBQuery;
+$q->addTable('projects');
+$q->addQuery('count(*)');
+$q->addWhere("project_contacts like \"" .$carr[$z][$x]["contact_id"]
 	.",%\" or project_contacts like \"%," .$carr[$z][$x]["contact_id"] 
 	.",%\" or project_contacts like \"%," .$carr[$z][$x]["contact_id"]
-	."\" or project_contacts like \"" .$carr[$z][$x]["contact_id"] ."\"";
-//echo $sql;
- $res = db_exec($sql);
+	."\" or project_contacts like \"" .$carr[$z][$x]["contact_id"] ."\"");
+	
+ $res = $q->exec();
  $projects_contact = db_fetch_row($res);
  if ($projects_contact[0]>0)
    echo "				&nbsp;<a href=\"\" onClick=\"	window.open('./index.php?m=public&a=selector&dialog=1&callback=goProject&table=projects&user_id=" .$carr[$z][$x]["contact_id"] ."', 'selector', 'left=50,top=50,height=250,width=400,resizable')
