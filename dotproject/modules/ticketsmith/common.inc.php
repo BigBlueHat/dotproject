@@ -324,7 +324,7 @@ function format_field ($value, $type, $ticket = NULL) {
     switch ($type) {
         case "user":
             if ($value) {
-                $output = query2result("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name FROM users WHERE user_id = '$value'");
+	    	$output = query2result("SELECT CONCAT_WS(' ',contact_first_name,contact_last_name) as name FROM users u LEFT JOIN contacts ON u.user_contact = contact_id WHERE user_id = '$value'");
             } else {
                 $output = "-";
             }
@@ -360,7 +360,7 @@ function format_field ($value, $type, $ticket = NULL) {
             break;
         case "assignment":
             $options[0] = "-";
-            $query = "SELECT user_id as id, CONCAT_WS(' ',user_first_name,user_last_name) as name FROM users";
+	    $query = "SELECT user_id as id, CONCAT_WS(' ',contact_first_name,contact_last_name) as name FROM users u LEFT JOIN contacts ON u.user_contact = contact_id";
             $result = do_query($query);
             while ($row = result2hash($result)) {
                 $options[$row["id"]] = $row["name"];

@@ -32,9 +32,9 @@ $body = dPgetParam( $_POST, 'body', '' );
 if (@$comment) {
 
     /* prepare fields */
-    list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
-	$subject = db_escape( query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'") );
-	$comment = db_escape( $comment );
+    list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',contact_first_name,contact_last_name) as name, contact_email as email FROM users u LEFT JOIN contacts ON u.user_contact = contact_id WHERE user_id = '$AppUI->user_id'");
+    $subject = db_escape( query2result("SELECT subject FROM tickets WHERE ticket = '$ticket_parent'") );
+    $comment = db_escape( $comment );
     $author = $author_name . " <" . $author_email . ">";
     $timestamp = time();
     $body = escape_string($body);
@@ -70,7 +70,7 @@ if (@$comment) {
     /* determine poster */
     print("<tr>\n");
     print("<td align=\"left\"><strong>".$AppUI->_('From')."</strong></td>");
-    list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',user_first_name,user_last_name) as name, user_email as email FROM users WHERE user_id = '$AppUI->user_id'");
+    list($author_name, $author_email) = query2array("SELECT CONCAT_WS(' ',contact_first_name,contact_last_name) as name, contact_email as email FROM users u LEFT JOIN contacts ON u.user_contact = contact_id WHERE user_id = '$AppUI->user_id'");
     print("<td align=\"left\">" . $author_name . " &lt;" . $author_email . "&gt;</td>\n");
     print("</tr>");
 

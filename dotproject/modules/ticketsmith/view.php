@@ -66,7 +66,7 @@ if (@$type_toggle || @$priority_toggle || @$assignment_toggle) {
     do_query("UPDATE tickets SET type = '$type_toggle', priority = '$priority_toggle', assignment = '$assignment_toggle' WHERE ticket = '$ticket'");
 	if(@$assignment_toggle != @$orig_assignment)
 	{
-		$mailinfo = query2hash("SELECT user_first_name, user_last_name, user_email from users WHERE user_id = $assignment_toggle");
+		$mailinfo = query2hash("SELECT contact_first_name, contact_last_name, contact_email from users u LEFT JOIN contacts ON u.user_contact = contact_id WHERE user_id = $assignment_toggle");
 
 		if (@$mailinfo['user_email']) {
 			$boundary = "_lkqwkASDHASK89271893712893";
