@@ -1,5 +1,5 @@
 <?php
-	$company_id           = dPgetParam($_GET, "company_id", 0);
+	$company_id           = dPgetParam($_REQUEST, "company_id", 0);
 	$contact_id           = dPgetParam($_POST, "contact_id", 0);
 	$call_back            = dPgetParam($_GET, "call_back", null);
 	$contacts_submited    = dPgetParam($_POST, "contacts_submited", 0);
@@ -13,7 +13,7 @@
 		$call_back_string = !is_null($call_back) ? "window.opener.$call_back('$contacts_id');" : "";
 		?>
 			<script language="javascript">
-				<?= $call_back_string ?>
+				<?php echo $call_back_string ?>
 				self.close();
 			</script>
 		<?php
@@ -36,25 +36,40 @@
 	        	from companies as c
 	        	where company_id = $company_id";
 		$company_name = db_loadResult($sql);
-		$where = 'contact_company = ' . $company_name;
+		$where = "contact_company = '" . $company_name."'";
 	}
 	
-	$sql = "select contact_id, contact_first_name, contact_last_name, contact_department
+	$sql = "select contact_id, contact_first_name, contact_last_name, contact_company, contact_department
 	        from contacts
 	        where $where
 	              and (contact_owner='$AppUI->user_id' or contact_private='0')
-	        group by contact_department, contact_first_name";
-
+	        order by contact_company, contact_department";
+//	echo $sql;
 	$contacts = db_loadHashList($sql, "contact_id");
 ?>
 
 <h2><?php echo $AppUI->_('Contacts for'); ?> <?= $company_name ?></h2>
 
-<form action='index.php?m=public&a=contact_selector&dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>company_id=<?= $company_id ?>' method='post'>
+<form action='index.php?m=public&a=contact_selector&dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>company_id=<?php echo $company_id ?>' method='post' name='frmContactSelect'>
 <?php
 	$actual_department = "";
-
+	$actual_company    = "";
+	
+	if(!$company_id){
+		
+		$companies_names = array(0 => $AppUI->_("Select a company")) + $aCpies;
+		echo arraySelect($companies_names, "company_id", "onchange=\"document.frmContactSelect.contacts_submited.value=0; document.frmContactSelect.submit();\"", 0)."<hr />";
+	} else {
+		?>
+			<a href='index.php?m=public&a=contact_selector&dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>'><?php echo $AppUI->_("View all allowed companies"); ?></a>
+		<?php
+	}
+	
 	foreach($contacts as $contact_id => $contact_data){
+		if($contact_data["contact_company"]    != $actual_company){
+			echo "<h4>".$contact_data["contact_company"]."</h4>";
+			$actual_company = $contact_data["contact_company"];
+		}
 		if($contact_data["contact_department"] != $actual_department){
 			echo "<h5>".$contact_data["contact_department"]."</h5>";
 			$actual_department = $contact_data["contact_department"];
