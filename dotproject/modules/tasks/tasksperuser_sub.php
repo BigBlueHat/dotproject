@@ -510,11 +510,11 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
         $tmp .= "<input type=\"checkbox\" name=\"task_id$task->task_id\" value=\"$task->task_id\"/>";
         $tmp.="</td>";
         $tmp.="<td align=\"center\" nowrap=\"nowrap\">";
-        if ($task->userPriority > 0) {
-                $tmp .= "<img src=\"./images/icons/1.gif\" width=13 height=16 alt=\"high\">";
+        if ($task->userPriority < 0) {
+                $tmp .= "<img src=\"./images/icons/priority-". -$task->userPriority . ".gif\" width=13 height=16>";
         }
-        elseif ($task->userPriority < 0) {
-                $tmp .= "<img src=\"./images/icons/low.gif\" width=13 height=16 alt=\"low\">";
+        elseif ($task->userPriority > 0) {
+                $tmp .= "<img src=\"./images/icons/priority+". $task->userPriority . ".gif\" width=13 height=16>";
         }
         $tmp.="</td>";
 	$tmp.="<td>";
@@ -527,11 +527,11 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	if ($level >= 1) { $tmp.= dPshowImage(dPfindImage('corner-dots.gif', 'tasks'), 16, 12, 'Subtask')."&nbsp;"; }
 	$tmp.= "<a href='?m=tasks&a=view&task_id=$task->task_id'>".$task->task_name."</a>";
 	if ($task->task_milestone == true) { $tmp.="</B>"; }
-	 if ($task->task_priority > 0) {
-                $tmp .= "&nbsp;(<img src=\"./images/icons/1.gif\" width=13 height=16 alt=\"high\">)";
+	 if ($task->task_priority < 0) {
+                $tmp .= "&nbsp;(<img src=\"./images/icons/priority-". -$task->task_priority . ".gif\" width=13 height=16>)";
         }
-        elseif ($task->task_priority < 0) {
-                $tmp .= "&nbsp;(<img src=\"./images/icons/low.gif\" width=13 height=16 alt=\"low\">)";
+        elseif ($task->task_priority > 0) {
+                $tmp .= "&nbsp;(<img src=\"./images/icons/priority+". $task->task_priority . ".gif\" width=13 height=16>)";
         }
 	$tmp.="</td>";
         $tmp.="<td align=\"center\">";

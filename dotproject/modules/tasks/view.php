@@ -260,7 +260,7 @@ function delIt() {
 				$s = count( $users ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
 				foreach($users as $row) {
 					$s .= '<tr>';
-					$s .= '<td class="hilite">'.dPgetUsername($row["user_username"]).'</td>';
+					$s .= '<td class="hilite">'.dPgetUsernameFromID($row["user_id"]).'</td>';
 					$s .= '<td class="hilite"><a href="mailto:'.$row["contact_email"].'">'.$row["contact_email"].'</a></td>';
 					$s .= '</tr>';
 				}

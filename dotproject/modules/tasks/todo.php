@@ -236,9 +236,9 @@ foreach ($tasks as $task) {
 
 	<td>
 <?php if ($task["task_priority"] < 0 ) {
-	echo "<img src='./images/icons/low.gif' width=13 height=16>";
+	echo "<img src='./images/icons/priority-". -$task["task_priority"] .".gif' width=13 height=16>";
 } else if ($task["task_priority"] > 0) {
-	echo "<img src='./images/icons/" . $task["task_priority"] .".gif' width=13 height=16>";
+	echo "<img src='./images/icons/priority+" . $task["task_priority"] .".gif' width=13 height=16>";
 }?>
 	</td>
 

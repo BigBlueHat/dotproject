@@ -138,6 +138,15 @@ function dPgetUsername( $user )
         return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
 }
 
+function dPgetUsernameFromID( $user )
+{
+        $sql = 'SELECT contact_first_name, contact_last_name
+                FROM users LEFT JOIN contacts ON contact_id = user_contact
+                WHERE user_id = \'' . $user . "'";
+        $r = db_loadList($sql);
+        return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
+}
+
 function dPgetUsers()
 {
 global $AppUI;
@@ -586,6 +595,42 @@ function getUsersCombo($default_user_id = 0, $first_option = 'All users') {
     }
     $parsed .= "</select>";
     return $parsed;
+}
+
+/**
+ * Function to format hours into useful numbers.
+ * Supplied by GrahamJB.
+ */
+function formatHours($hours)
+{
+	global $AppUI, $dPconfig;
+
+	$hours = (int)$hours;
+	$working_hours = $dPconfig['daily_working_hours'];
+
+	if ($hours < $working_hours) {
+		if ($hours == 1) {
+			return '1 ' . $AppUI->_('hour');
+		} else {
+			return $hours . ' ' . $AppUI->_('hours');
+		}
+	}
+
+	$hoursPart = $hours % $working_hours;
+	$daysPart = (int)($hours / $working_hours);
+	if ($hoursPart == 0) {
+		if ($daysPart == 1) {
+			return '1 ' . $AppUI->_('day');
+		} else {
+			return $daysPart . ' ' . $AppUI->_('days');
+		}
+	}
+
+	if ($daysPart == 1) {
+		return '1 ' . $AppUI->_('day') . ' ' . $hoursPart . ' ' . $AppUI->_('hr');
+	} else {
+		return $daysPart . ' ' . $AppUI->_('days') . ' ' . $hoursPart . ' ' . $AppUI->_('hr');
+	} 
 }
 
 ?>

@@ -66,11 +66,15 @@ db_exec($sql);
 // by Pablo Roca (pabloroca@mvps.org)
 // 16 August 2003
 
+$working_hours = $dPconfig['daily_working_hours'];
+
+// GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 $sql = "
 CREATE TEMPORARY TABLE tasks_sum
  SELECT task_project,
  COUNT(distinct task_id) AS total_tasks,
- SUM(task_duration*task_duration_type*task_percent_complete)/sum(task_duration*task_duration_type) as project_percent_complete
+ SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
+		SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete
  FROM tasks GROUP BY task_project
 ";
 
