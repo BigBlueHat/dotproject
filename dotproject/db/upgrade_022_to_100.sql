@@ -1,4 +1,4 @@
-#
+# $Id$
 # dotproject_022_to_023.sql 
 #     Database Schema Update Script
 #
@@ -230,6 +230,7 @@ ALTER TABLE `tasks` ADD `task_duration_type` VARCHAR(6)  DEFAULT "hours" NOT NUL
 # Table structure for table 'syskeys'
 #
 
+DROP TABLE IF EXISTS syskeys;
 CREATE TABLE `syskeys` (
   `syskey_id` int(10) unsigned NOT NULL auto_increment,
   `syskey_name` varchar(48) NOT NULL default '',
