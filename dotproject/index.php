@@ -20,7 +20,8 @@ if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
 	$_SESSION['AppUI'] = new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
-writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
+// supported since PHP 4.2
+// writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
 
 @include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
 header("Content-type: text/html;charset=$locale_char_set");
