@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"File deleted",
+"Date",
+"Edit File",
+"File Management",
+"File Name",
+"File inserted",
+"File updated",
+"New File",
+"Size",
+"Type",
+"Upload File",
+"Uploaded By",
+"Version",
+"add new file",
+"delete file",
+"download",
+"fileIdError"=>"An invalid file handle was passed to the function",
+"files list",
