@@ -124,11 +124,12 @@ $deny = db_loadHashList( $sql );
 $select = "
 tasks.task_id, task_parent, task_name, task_start_date, task_end_date,
 task_priority, task_precent_complete, task_duration, task_order, task_project,
-task_description
+task_description, task_owner, user_username
 ";
 
 $from = "tasks";
 $join = "LEFT JOIN projects ON project_id = task_project";
+$join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
 $where = $project_id ? "\ntask_project = $project_id" : 'project_active <> 0';
 
 switch ($f) {
@@ -222,6 +223,8 @@ function showtask( &$a, $level=0 ) {
 // name link
 	$alt = htmlspecialchars( $a["task_description"] );
 	$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';
+// task owner
+	$s .= '<td nowrap="nowrap" align=center>'. $a["user_username"] .'</td>';
 // start date
 	$s .= '<td nowrap="nowrap">'.($start_date ? $start_date->toString( $df ) : '-').'</td>';
 // duration
@@ -266,6 +269,7 @@ function findchild( &$tarr, $parent, $level=0 ){
 	<th width="20"><?php echo $AppUI->_('Work');?></th>
 	<th width="15" align="center">&nbsp;</th>
 	<th width="200"><?php echo $AppUI->_('Task Name');?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Task Creator');?></th>	
 	<th nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Duration');?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php echo $AppUI->_('Finish Date');?></th>
