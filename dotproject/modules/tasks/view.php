@@ -309,18 +309,6 @@ function delIt() {
 			?>
 			</td>
 		</tr>
-		<tr>
-			<td width="100%"><strong><?php echo $AppUI->_('Attached Links');?></strong></td>
-			<td align="right" nowrap="nowrap">
-			<?php if (!getDenyEdit( 'links' )) { ?>
-				<a href="./index.php?m=links&a=addedit&project_id=<?php echo $obj->task_project;?>&link_task=<?php echo $task_id;?>"><?php echo $AppUI->_('Attach a link');?>
-				</a>
-			<?php } ?>
-			</td>
-			<td width="20">
-				<?php echo dPshowImage( dPfindImage( 'stock_attach-16.png', $m ), 16, 16, '' ); ?>
-			</td>
-		</tr>
 <?php
 		if($obj->task_departments != "") {
 			?>
@@ -422,9 +410,7 @@ if ( count($obj->getChildren()) > 0 ) {
 	$_GET["task_status"] = $obj->task_status;
 	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
-$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_idx_files", 'Files' );
-$showProject = false;
-$project_id = $obj->task_project;
-//$tabBox->add( "{$dPconfig['root_dir']}/modules/links/index_table", 'Links');	
+foreach($all_tabs as $name => $tab)
+        $tabBox->add($tab, $name);
 if ( $tabBox_show == 1)	$tabBox->show();
 ?>
