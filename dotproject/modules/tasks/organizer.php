@@ -15,6 +15,8 @@
 		
  	$errors = false;
 	$tasks = array();
+	$actions = false;
+	
 	if(!$do) $do="conf";
 	
 	function task_link($task) {
@@ -37,7 +39,9 @@
 	}	
 	
 	function log_action($msg) {
+		global $action;
 		echo "&nbsp;&nbsp;<font color=red size=2>$msg</font><br>";
+		$action = true;
 	}
 	
 	function log_error($msg, $fields = "") {
@@ -243,14 +247,14 @@
 			log_info("no dependencies => ");
 			fixate_task($i, time(), "");
 		}
-		echo "</div><br>\n";
+		log_info("</div><br>\n");
 	}
 ?>
 
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
-	<td nowrap><span class="title">Taks Organizer</span></td>
+	<td nowrap><span class="title">Tasks Organizer Wizard</span></td>
 	<td nowrap><img src="./images/shim.gif" width="16" height="16" alt="" border="0"></td>
 	<td valign="top" align="right" width="100%"></td>
 </tr>
@@ -285,18 +289,27 @@ if($set_dynamic) {
 
 <form name="form" method="post">
 
-<?php
-	// default options
-	if(!isset($option_check_delayed_tasks)) $option_check_delayed_tasks=1;
-	if(!isset($option_no_end_date_warning)) $option_no_end_date_warning=0;
-	if(!isset($option_debug)) $option_debug=0;
-?>
-<table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
+<?php if($do == "conf") { ?>
+<table border="0" cellpadding="4" cellspacing="0" width="98%" class="tbl">
 <tr>
 	<td>
-		<input type=checkbox name=option_check_delayed_tasks value=1 <?php echo $option_check_delayed_tasks?"checked":"" ?>>Check delayed fixed tasks<br>
-		<input type=checkbox name=option_no_end_date_warning value=1 <?php echo $option_no_end_date_warning?"checked":"" ?>>Warn of fixed tasks withoud end dates<br>
-		<?php /*
+<?php } ?>
+
+	<?php
+		function checkbox($name, $descr, $default = 0, $show = true) {
+			global $$name;
+			if(!isset($$name)) $$name=$default;
+			if($show) {
+				echo "<input type=checkbox name=$name value=1 " . ($$name?"checked":"") . ">$descr<br>";
+			} else {
+				echo "<input type=hidden name=$name value=" . ($$name?"1":"") . ">";
+			}
+		}
+		
+		checkbox("option_check_delayed_tasks", "Check delays for fixed tasks", 1, $do == "conf");
+		checkbox("option_no_end_date_warning", "Warn of fixed tasks without end dates", 0, $do == "conf");
+		
+		/*
 		<input type=checkbox name=option_project value=1 <?php echo $option_project?"checked":"" ?>>Organize tasks belonging only to <select name=option_project_id>
 			<?php
 				$sql = "select project_id, project_name from projects";
@@ -306,12 +319,17 @@ if($set_dynamic) {
 				}
 			?>
 		</select><br>
-		*/ ?>
-		<input type=checkbox name=option_debug value=1 <?php echo $option_debug?"checked":"" ?>>Show debug info<br>
+		*/
+		
+		checkbox("option_debug", "Show debug info", 0, $do == "conf");
+	?>
+	
+<?php if($do == "conf") { ?>
 	</td>
 </tr>
 </table>
 <br>
+<?php } ?>
 
 <?php if($do != "conf") { ?>
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
@@ -373,6 +391,10 @@ if($set_dynamic) {
 					process_dependencies($i);
 				}
 			}
+			
+			if(!$action) {
+				echo "<font size=2><b>Tasks are already organized</b></font><br>";
+			}
 		?>	
 
 	</td>
@@ -382,19 +404,21 @@ if($set_dynamic) {
 <?php } ?>
 
 <?php
-if(!$errors) {
-	echo "<input type=hidden name=do value=" . ($do=="ask"?"fixate":"ask") . ">";
-	if($do == "ask") {
-		echo "<font size=2><b>Do you want to accept this changes?</b></font><br>";
-		echo "<input type=button value=accept class=button onClick='javascript:document.form.submit()'>";
-	} else if ($do == "fixate") {
-		echo "<font size=2><b>Tasks has been reorganized</b></font><br>";
-	} else if ($do == "conf") {
-		echo "<input type=button value=start class=button onClick='javascript:document.form.submit()'>";
+if($do=="conf" || $action) {
+	if(!$errors) {
+		echo "<input type=hidden name=do value=" . ($do=="ask"?"fixate":"ask") . ">";
+		if($do == "ask") {
+			echo "<font size=2><b>Do you want to accept this changes?</b></font><br>";
+			echo "<input type=button value=accept class=button onClick='javascript:document.form.submit()'>";
+		} else if ($do == "fixate") {
+			echo "<font size=2><b>Tasks has been reorganized</b></font><br>";
+		} else if ($do == "conf") {
+				echo "<input type=button value=start class=button onClick='javascript:document.form.submit()'>";
+		}
+	} else {
+		echo "<font size=2><b>Please correct the above errors</b></font><br>";
+		echo "<input type=button value=submit class=button onClick='javascript:document.form.submit()'>";
 	}
-} else {
-	echo "<font size=2><b>Please correct the above errors</b></font><br>";
-	echo "<input type=button value=submit class=button onClick='javascript:document.form.submit()'>";
 }
 ?>
 
