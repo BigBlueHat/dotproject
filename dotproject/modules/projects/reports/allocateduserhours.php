@@ -96,7 +96,7 @@ if($do_report){
 	                AND \"".$end_date->format( FMT_DATETIME_MYSQL )."\")
 	        AND !isnull(task_end_date) AND task_end_date != '0000-00-00 00:00:00'
 	        AND !isnull(task_start_date) AND task_start_date != '0000-00-00 00:00:00'
-	        AND task_dynamic   ='0'
+	        AND task_dynamic   !='1'
 	        AND task_milestone = '0'
 	        AND task_duration  > 0";
 

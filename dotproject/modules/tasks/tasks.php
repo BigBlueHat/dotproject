@@ -269,7 +269,7 @@ function showtask( &$a, $level=0 ) {
 
 	if ($a["task_milestone"] > 0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a></td>';
-	} else if ($a["task_dynamic"] > 0){
+	} else if ($a["task_dynamic"] == '1'){
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><i>' . $a["task_name"] . '</i></a></td>';
 	} else {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '">' . $a["task_name"] . '</a></td>';

@@ -147,15 +147,19 @@ while ($root_task = db_fetch_row( $root_tasks )) {
 
 //create array with start and end date of all tasks.
 $sql="
-SELECT task_id, task_name, task_end_date, task_start_date, task_milestone 
+SELECT task_id, task_name, task_end_date, task_start_date, task_milestone, task_dynamic
 FROM tasks
 WHERE task_project = $task_project
 ORDER BY task_project
 ";
 $projTasksWithEndDates = array( $obj->task_id => $AppUI->_('None') );//arrays contains task end date info for setting new task start date as maximum end date of dependenced tasks
 $res = db_exec( $sql );
+
 while ($row = db_fetch_row( $res )) {
-	if ($row[4] == 0) {
+	// if this task_dynamic is not tracked, set end date to proj start date
+	if ( !in_array($row[5], $tracked_dynamics) )
+		$date = new CDate( $project->start_date );
+	elseif ($row[4] == 0) {
 		$date = new CDate($row[2]);
 	} else {
 		$date = new CDate($row[3]);
@@ -328,7 +332,8 @@ function setTasksStartDate() {
 		}
 		
 		//check end date of parent task 
-		if (form.task_parent.options.selectedIndex!=0) {
+		// Why? Parent task is for updating dynamics or angle icon
+		if ( 0 && form.task_parent.options.selectedIndex!=0) {
 			var i = form.task_parent.options[form.task_parent.options.selectedIndex].value;	
 			var val = projTasksWithEndDates[i][0]; //format 05/03/2004	
 			var sdate = new Date(val.substring(6,10),val.substring(3,5)-1, val.substring(0,2));
@@ -350,6 +355,7 @@ function setTasksStartDate() {
 			 //hardcoded date format Ymd
 			 form.task_start_date.value = d.substring(6,10) + "" + d.substring(3,5) + "" + d.substring(0,2);	 
 		}	
+		setAMPM(form.start_hour);
 	}
 }
 
@@ -589,49 +595,94 @@ function calcDuration() {
 	
 	var s = Date.UTC(int_st_date.substring(0,4),(int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10), int_st_date.substring(10,12));
 	var e = Date.UTC(int_en_date.substring(0,4),(int_en_date.substring(4,6)-1),int_en_date.substring(6,8), int_en_date.substring(8,10), int_en_date.substring(10,12));
-	var durn = (e - s) / hourMSecs; //hours
+	var durn = (e - s) / hourMSecs; //hours absolute diff start and end
 
 	//now we should subtract non-working days from durn variable
 	var duration = durn  / 24;
-	var weekDays = 0; //full working days
-	for (var i = 0; i < duration; i++) {
+	var weekendDays = 0;
 		var myDate = new Date(int_st_date.substring(0,4), (int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10));
+	for (var i = 0; i < duration; i++) {
+		//var myDate = new Date(int_st_date.substring(0,4), (int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10));
 		var myDay = myDate.getDate();
 		myDate.setDate(myDay + i);
 		if ( !isInArray(working_days, myDate.getDay()) ) {
-			weekDays++;
+			weekendDays++;
 		}
 	}
 	
 	//calculating correct durn value
-	durn = durn - weekDays*24;	//[hours]
+	durn = durn - weekendDays*24;	// total hours minus non-working days (work day hours)
 	//could be 1 or 24 (based on TaskDurationType value)
 	var durnType = parseFloat(f.task_duration_type.value);	
 	durn /= durnType;
 
 	if (durnType == 1){
-		var hours = durn % 24;
-		//if hours > 8 than we need to sum distance between start_hours and cal_day_end AND between end_hours and cal_day_end
-		if (hours > daily_working_hours) {
-			var a = cal_day_end - sDate.getHours();
-			var b = eDate.getHours() - cal_day_start;
-			hours = a + b;
-		}
-		var wrkdays = (durn - hours) / 24;
-		durn = Math.floor(wrkdays) * workHours  + hours;
+		// durn is absolute weekday hours
+
+		// Hours worked on the first day
+		var first_day_hours = cal_day_end - sDate.getHours();
+		if (first_day_hours > daily_working_hours)
+			first_day_hours = daily_working_hours;
+
+		// Hours worked on the last day
+		var last_day_hours = eDate.getHours() - cal_day_start;
+		if (last_day_hours > daily_working_hours)
+			last_day_hours = daily_working_hours;
+
+		// Total partial day hours
+		var partial_day_hours = first_day_hours + last_day_hours;
+
+		// Full work days
+		var full_work_days = (durn - partial_day_hours) / 24;
+
+		// Total working hours
+		durn = Math.floor(full_work_days) * daily_working_hours + partial_day_hours;
+
 	} else if (durnType == 24 ) {
 		//we should talk about working days so task duration equals 41 hrs means 6 (NOT 5) days!!!
-		if (durn > Math.round(durn)) {
+		if (durn > Math.round(durn))
 			durn++;
 		}
-	}
 
 	if ( s > e )
 		alert( 'End date is before start date!');
 	else
 		f.task_duration.value = Math.round(durn);
 }
+/**
+* Get the end of the previous working day 
+*/
+function prev_working_day( dateObj ) {
+	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
+	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
+	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
 
+	while ( ! isInArray(working_days, dateObj.getDay()) || dateObj.getHours() < cal_day_start ||
+	      (	dateObj.getHours() == cal_day_start && dateObj.getMinutes() == 0 ) ){
+
+		dateObj.setDate(dateObj.getDate()-1);
+		dateObj.setHours( cal_day_end );
+		dateObj.setMinutes( 0 );
+	}
+
+	return dateObj;
+}
+/**
+* Get the start of the next working day 
+*/
+function next_working_day( dateObj ) {
+	var working_days = new Array(<?php echo $AppUI->getConfig( 'cal_working_days' );?>);
+	var cal_day_start = <?php echo $AppUI->getConfig( 'cal_day_start' );?>;
+	var cal_day_end = <?php echo $AppUI->getConfig( 'cal_day_end' );?>;		
+
+	while ( ! isInArray(working_days, dateObj.getDay()) || dateObj.getHours() >= cal_day_end ) {
+		dateObj.setDate(dateObj.getDate()+1);
+		dateObj.setHours( cal_day_start );
+		dateObj.setMinutes( 0 );
+	}
+
+	return dateObj;
+}
 /**
 * @modify reason calcFinish does not use time info and working_days array 
 */
@@ -650,6 +701,8 @@ function calcFinish() {
 	var durn = parseFloat(f.task_duration.value);//hours
 	var durnType = parseFloat(f.task_duration_type.value); //1 or 24
 
+	// goto start of next working day
+	s = next_working_day ( s );
 	//temporary variables
 	var inc = durn;
 	var e = s;
@@ -661,6 +714,7 @@ function calcFinish() {
 		fullWorkingDays = Math.ceil(inc);
 	 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++) {
 			e.setDate(s.getDate() + 1);
+			e.setMinutes( 0 );
 			if ( !isInArray(working_days, e.getDay()) ) {
 				fullWorkingDays++;
 			}		
@@ -669,6 +723,8 @@ function calcFinish() {
 	} else {
 		if ( s.getHours() + inc > cal_day_end ) {
 			hoursToAddToFirstDay = cal_day_end - s.getHours();
+			if ( hoursToAddToFirstDay > workHours )
+				hoursToAddToFirstDay = workHours;
 			inc -= hoursToAddToFirstDay;
 			hoursToAddToLastDay = inc % workHours;
 			fullWorkingDays = Math.round((inc - hoursToAddToLastDay) / workHours);
@@ -678,6 +734,7 @@ function calcFinish() {
 				//we should to check if this non-working day
 				while ( true ) {
 					e.setDate(e.getDate()+1);
+					e.setMinutes( 0 );
 					if (isInArray(working_days, e.getDay())) {					
 						break;
 					}
@@ -688,6 +745,7 @@ function calcFinish() {
 		
 	 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++) {
 			e.setDate(s.getDate() + 1);
+			e.setMinutes( 0 );
 			if ( !isInArray(working_days, e.getDay()) ) {
 				fullWorkingDays++;
 			}		
@@ -695,6 +753,11 @@ function calcFinish() {
 		if (!(fullWorkingDays == 0 && hoursToAddToLastDay == 0)) {
 			e.setHours(cal_day_start+hoursToAddToLastDay);
 		}
+		// Do not end at start of day
+		//if ( e.getDate() != s.getDate() )
+		if ( durn != 0 )
+			e = prev_working_day( e );
+
 		f.end_hour.value = (e.getHours() < 10 ? "0"+e.getHours() : e.getHours());
 	}
 	
@@ -705,7 +768,9 @@ function calcFinish() {
 	if ( (e.getMonth()+1) < 10 ) tz2 = "0";
 
 	f.task_end_date.value = e.getUTCFullYear()+tz2+(e.getMonth()+1)+tz1+e.getDate();
-	f.end_date.value = tz1+e.getDate()+"/"+tz2+(e.getMonth()+1)+"/"+e.getUTCFullYear();
+	//f.end_date.value = tz2+(e.getMonth()+1)+"/"+tz1+e.getDate()+"/"+e.getUTCFullYear(); // MM/DD/YY
+	f.end_date.value = tz1+e.getDate()+"/"+tz2+(e.getMonth()+1)+"/"+e.getUTCFullYear(); // DD/MM/YY
+	setAMPM(f.end_hour);
 }
 
 function changeRecordType(value){
@@ -766,7 +831,7 @@ function changeRecordType(value){
 </tr>
 <tr valign="top">
 	<td width="50%">
-	    <table>
+	    <table border="0">
 	    	<tr>
 	    		<td>
 				    			<?php
@@ -807,7 +872,7 @@ function changeRecordType(value){
 			</tr>
 		<tr>
 			<td><?php echo $AppUI->_( 'Task Parent' );?>:</td>
-			<td><?php echo $AppUI->_( 'Target Budget' );?></td>
+			<td><?php echo $AppUI->_( 'Target Budget' );?>:</td>
 		</tr>
 		<tr>
 			<td>
@@ -817,6 +882,16 @@ function changeRecordType(value){
 				</select>
 			</td>
 			<td><?php echo $dPconfig['currency_symbol'] ?><input type="text" class="text" name="task_target_budget" value="<?php echo @$obj->task_target_budget;?>" size="10" maxlength="10" /></td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo $AppUI->_( 'Move this task (and its children), to project' );?>:
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<?php echo arraySelect( $projects, 'task_project', 'size="1" class="text" id="medium" onchange="document.editFrm.submit()"',$task_project ); ?>
+			</td>
 		</tr>
 		</table>
 	</td>
@@ -871,7 +946,7 @@ function changeRecordType(value){
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
-					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $obj->task_duration ? $obj->task_duration : 1;?>" />
+					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo isset($obj->task_duration) ? $obj->task_duration : 1;?>" />
 				<?php
 					echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
 				?>
@@ -885,15 +960,28 @@ function changeRecordType(value){
 				</td>
 			</tr>
 			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?>?</td>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
 				<td nowrap="nowrap">
-					<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic!="0") echo "checked"?> />
+					<input type="radio" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo "checked"?> />
 				</td>
 			</tr>
 			<tr>
-				<td colspan="2">
-						<br /><?php echo $AppUI->_( 'Change Task Project' );?>
-						<br /><?php echo arraySelect( $projects, 'task_project', 'size="1" class="text" id="medium" onchange="document.editFrm.submit()"',$task_project ); ?>
+				<td align="center" nowrap="nowrap" colspan="3"><b><?php echo $AppUI->_( 'Dependancy Tracking' );?></b></td>
+			</tr>
+			<tr>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'On' );?></td>
+				<td nowrap="nowrap">
+					<input type="radio" name="task_dynamic" value="31" <?php if($obj->task_dynamic > '20') echo "checked"?> />
+				</td>
+			</tr>
+			<tr>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Off' );?></td>
+				<td nowrap="nowrap">
+					<input type="radio" name="task_dynamic" value="0" <?php if($obj->task_dynamic == '0' || $obj->task_dynamic == '11') echo "checked"?> />
+				</td>
+				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Do not track this task' );?>
+				
+					<input type="checkbox" name="task_dynamic_nodelay" value="1" <?php if(($obj->task_dynamic > '10') && ($obj->task_dynamic < 30)) echo "checked"?> />
 				</td>
 			</tr>
 			<?php

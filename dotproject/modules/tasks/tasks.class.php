@@ -12,9 +12,28 @@ $task_access = array(
 	'3'=>'Private'
 );
 
-// this var is intended to track new status in task
-$new_status = null;
-$new_project = null;
+/*
+ * TASK DYNAMIC VALUE:
+ * 0  = default(OFF), no dep tracking of others, others do track
+ * 1  = dynamic, umbrella task, no dep tracking, others do track
+ * 11 = OFF, no dep tracking, others do not track
+ * 21 = FEATURE, dep tracking, others do not track
+ * 31 = ON, dep tracking, others do track
+ */
+
+// When calculating a task's start date only consider
+// end dates of tasks with these dynamic values.
+$tracked_dynamics = array(
+        '0' => '0',
+        '1' => '1',
+        '2' => '31'
+);
+// Tasks with these dynamics have their dates updated when
+// one of their dependencies changes. (They track dependencies)
+$tracking_dynamics = array(
+        '0' => '21',
+        '1' => '31'
+);
 
 /*
 * CTask Class
@@ -60,11 +79,11 @@ class CTask extends CDpObject {
 
 // overload check
 	function check() {
-		global $new_status, $new_project;
+		global $AppUI;
 		
-		if ($this->task_id === NULL) {
+		if ($this->task_id === NULL)
 			return 'task id is NULL';
-		}
+
 	// ensure changes to checkboxes are honoured
 		$this->task_milestone = intval( $this->task_milestone );
 		$this->task_dynamic   = intval( $this->task_dynamic );
@@ -84,15 +103,97 @@ class CTask extends CDpObject {
 			$this->task_notify = 0;
 		}
 		
-		$actual_status = db_loadResult("select task_status from tasks where task_id='$this->task_id' or task_parent='$this->task_id'");
-		if($actual_status != $this->task_status){
-			$new_status = $this->task_status;
+		/*
+		 * Check for bad or circular task relationships (dep or child-parent).
+		 * These checks are definately not exhaustive it is still quite possible
+		 * to get things in a knot.
+		 * Note: some of these checks may be problematic and might have to be removed
+		 */
+		static $addedit;
+		if (!isset($addedit))
+			$addedit = dPgetParam($_POST, 'dosql', '') == 'do_task_aed' ? true : false;
+		$this_dependencies = array();
+
+		/*
+		 * If we are called from addedit then we want to use the incoming
+		 * list of dependencies and attempt to stop bad deps from being created
+		 */
+		if ($addedit) {
+			$hdependencies = dPgetParam($_POST, 'hdependencies', '0');
+			if ($hdependencies)
+				$this_dependencies = explode(',', $hdependencies);
+		} else {
+			$this_dependencies = explode(',', $this->getDependencies());
+		}
+		// Set to false for recursive updateDynamic calls etc.
+		$addedit = false;
+
+		// Have deps
+		if (array_sum($this_dependencies)) {
+
+			if ( $this->task_dynamic == '1')
+				return $AppUI->_('BadDep_DynNoDep');
+
+			$this_dependants = $this->task_id ? explode(',', $this->dependantTasks()) : array();
+
+			// If the dependants' have parents add them to list of dependants
+			foreach ($this_dependants as $dependant) {
+				$dependant_task = new CTask();
+				$dependant_task->load($dependant);
+				if ( $dependant_task->task_id != $dependant_task->task_parent )
+					$more_dependants = explode(',', $this->dependantTasks($dependant_task->task_parent));
+			}
+			$this_dependants = array_merge($this_dependants, $more_dependants);
+
+			// Task dependencies can not be dependant on this task
+			$intersect = array_intersect( $this_dependencies, $this_dependants );
+			if (array_sum($intersect)) {
+				$ids = "(".implode(',', $intersect).")";
+				return $AppUI->_('BadDep_CircularDep').$ids;
+			}
 		}
 
-		$actual_project = db_loadResult("select task_project from tasks where task_id='$this->task_id'");
-		if($actual_project != $this->task_project){
-			$new_project = $this->task_project;
-		}
+		// Has a parent
+		if ( $this->task_id && $this->task_id != $this->task_parent ) {
+			$this_children = $this->getChildren();
+			$this_parent = new CTask();
+			$this_parent->load($this->task_parent);
+			$parents_dependants = explode(',', $this_parent->dependantTasks());
+
+			if (in_array($this_parent->task_id, $this_dependencies))
+				return $AppUI->_('BadDep_CannotDependOnParent');
+
+			// Task parent cannot be child of this task
+			if (in_array($this_parent->task_id, $this_children))
+				return $AppUI->_('BadParent_CircularParent');
+
+			if ( $this_parent->task_parent != $this_parent->task_id ) {
+
+				// ... or parent's parent, cannot be child of this task. Could go on ...
+				if (in_array($this_parent->task_parent, $this_children))
+					return $AppUI->_('BadParent_CircularGrandParent')."(".$this_parent->task_parent.")";
+
+				// parent's parent cannot be one of this task's dependencies
+				if (in_array($this_parent->task_parent, $this_dependencies))
+					return $AppUI->_('BadDep_CircularGrandParent')."(".$this_parent->task_parent.")";;
+
+			} // grand parent
+
+			if ( $this_parent->task_dynamic == '1' ) {
+				$intersect = array_intersect( $this_dependencies, $parents_dependants );
+				if (array_sum($intersect)) {
+					$ids = "(".implode(',', $intersect).")";
+					return $AppUI->_('BadDep_CircularDepOnParentDependant').$ids;
+				}
+			}
+
+			if ( $this->task_dynamic == '1' ) {
+				// then task's children can not be dependant on parent
+				$intersect = array_intersect( $this_children, $parents_dependants );
+				if (array_sum($intersect))
+					return $AppUI->_('BadParent_ChildDepOnParent');
+			}
+		} // parent
 		
 		return NULL;
 	}
@@ -109,7 +210,7 @@ class CTask extends CDpObject {
 			$modified_task->load($this->task_parent);
 		}
 
-		if ( $modified_task->task_dynamic == 1 ) {
+		if ( $modified_task->task_dynamic == '1' ) {
 			//Update allocated hours based on children
 			$sql = "SELECT SUM( task_duration * task_duration_type ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
 					" and task_id != " . $modified_task->task_id . " GROUP BY task_parent;";
@@ -124,7 +225,7 @@ class CTask extends CDpObject {
 			$sql = "SELECT sum( task_log_hours ) FROM tasks, task_log
 					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .
 					" AND task_id != " . $modified_task->task_id .
-					" AND task_dynamic = 0";
+					" AND task_dynamic != 1";
 			$children_hours_worked = (float) db_loadResult( $sql );
 			
 			
@@ -176,12 +277,10 @@ class CTask extends CDpObject {
 		if ($destProject_id != 0)
 			$newObj->task_project = $destProject_id;
 
-		$msg = $newObj->store();
+		if ($newObj->task_parent == $this->task_id)
+			$newObj->task_parent = '';
 
-		if ($newObj->task_parent == $this->task_id) {
-			$newObj->task_parent = $newObj->task_id;
-			$msg = $newObj->store();
-		}
+		$newObj->store();
 
 		return $newObj;
 	}// end of copy()
@@ -190,7 +289,7 @@ class CTask extends CDpObject {
 * @todo Parent store could be partially used
 */
 	function store() {
-		GLOBAL $AppUI, $new_status, $new_project;
+		GLOBAL $AppUI;
 
 		$msg = $this->check();
 		if( $msg ) {
@@ -198,40 +297,44 @@ class CTask extends CDpObject {
 		}
 		if( $this->task_id ) {
 			$this->_action = 'updated';
-
-			// if task_status chenged, then update subtasks
-			if(!is_null($new_status)){
-				$this->updateSubTasksStatus($new_status);
-			}
-			
-			if(!is_null($new_project)){
-				$this->updateSubTasksProject($new_project);
-			}
-			
-			$this->updateDynamics(true);
-
-			// add to shift dependencies dates
+			// Load the old task from disk
 			$oTsk = new CTask();
 			$oTsk->load ($this->task_id);
-			if ($this->task_end_date != $oTsk->task_end_date) {
-				// we need to shift tasks
-				$origDate = new CDate ($oTsk->task_end_date);
-				$destDate = new CDate ($this->task_end_date);
-				$this->shiftDependantTasks ($destDate->getTime() - $origDate->getTime());
-			}
 
+			// if task_status changed, then update subtasks
+			if ($this->task_status != $oTsk->task_status)
+				$this->updateSubTasksStatus($this->task_status);
+			
+			// Moving this task to another project?
+			if ($this->task_project != $oTsk->task_project)
+				$this->updateSubTasksProject($this->task_project);
+			
+			if ( $this->task_dynamic == '1' )
+				$this->updateDynamics(true);
+
+			// shiftDependantTasks needs this done first
 			$ret = db_updateObject( 'tasks', $this, 'task_id', false );
 
+			// Milestone or task end date, or dynamic status has changed,
+			// shift the dates of the tasks that depend on this task
+			if (($this->task_end_date != $oTsk->task_end_date) ||
+			    ($this->task_dynamic != $oTsk->task_dynamic)   ||
+			    ($this->task_milestone == '1')) {
+				$this->shiftDependantTasks();
+			}
 		} else {
 			$this->_action = 'added';
 			$ret = db_insertObject( 'tasks', $this, 'task_id' );
 
 			if (!$this->task_parent) {
-			// new task, parent = task id
 				$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";
 				db_exec( $sql );
+			} else {
+				// importing tasks do not update dynamics
+				$importing_tasks = true;
 			}
-		// insert entry in user tasks
+
+			// insert entry in user tasks
 			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
 			db_exec( $sql );
 		}
@@ -254,10 +357,8 @@ class CTask extends CDpObject {
 			db_exec( $sql );
 		}
 
-		if ( $this->task_parent != $this->task_id ){
-			//Has parent
+		if ( !$importing_tasks && $this->task_parent != $this->task_id )
 			$this->updateDynamics();
-		}
 
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
@@ -609,8 +710,9 @@ class CTask extends CDpObject {
 	*       retrieve tasks are dependant of another.
 	*       @param  integer         ID of the master task
 	*       @param  boolean         true if is a dep call (recurse call)
+	*       @param  boolean         false for no recursion (needed for calc_end_date)
 	**/
-	function dependantTasks ($taskId = false, $isDep = false) {
+	function dependantTasks ($taskId = false, $isDep = false, $recurse = true) {
 		static $aDeps = false;
 
 		// Initialize the dependencies array
@@ -620,22 +722,31 @@ class CTask extends CDpObject {
 		// retrieve dependants tasks 
 		if (!$taskId)
 			$taskId = $this->task_id;
+
 		$sql = "
 			SELECT dependencies_task_id
 			FROM task_dependencies AS td, tasks AS t
 			WHERE td.dependencies_req_task_id = $taskId
 			AND td.dependencies_task_id = t.task_id
-			AND t.task_dynamic = 0
 		";
-		$aBuf = array_values(db_loadColumn ($sql));
+		// AND t.task_dynamic != 1   dynamics are not updated but they are considered
 
-		// Recurse to find sub dependancies
-		foreach ($aBuf as $depId) {
-			// work around for infinite loop
-			if (!in_array($depId, $aDeps)) {
-				$aDeps[] = $depId;
-				$this->dependantTasks ($depId, true);
+		$aBuf = db_loadColumn($sql);
+		$aBuf = !empty($aBuf) ? $aBuf : array();
+		//$aBuf = array_values(db_loadColumn ($sql));
+
+		if ($recurse) {
+			// recurse to find sub dependants
+			foreach ($aBuf as $depId) {
+				// work around for infinite loop
+				if (!in_array($depId, $aDeps)) {
+					$aDeps[] = $depId;
+					$this->dependantTasks ($depId, true);
+				}
 			}
+
+		} else {
+			$aDeps = $aBuf;
 		}
 
 		// return if we are in a dependency call
@@ -651,21 +762,218 @@ class CTask extends CDpObject {
 	 *       @param  integer         time offset in seconds 
 	 *       @return void
 	 */
-	function shiftDependantTasks ($offset) {
-		$csDeps = $this->dependantTasks();
+	function shiftDependantTasks () {
+		// Get tasks that depend on this task
+		$csDeps = explode( ",", $this->dependantTasks('','',false));
 
-		if ($csDeps == '')
+		if ($csDeps[0] == '')
 			return;
+
+		// Stage 1: Update dependant task dates (accounting for working hours)
+		foreach( $csDeps as $task_id )
+			$this->update_dep_dates( $task_id );
+
+		// Stage 2: Now shift the dependant tasks' dependants
+		foreach( $csDeps as $task_id ) {
+			$newTask = new CTask();
+			$newTask->load($task_id);
+			$newTask->shiftDependantTasks();
+		}
+		return;
+
+	} // end of shiftDependantTasks() 
+
+	/*
+	 *	Update this task's dates in the DB.
+	 *	start date: 	based on max dependency end date
+	 *	end date:   	based on start date + working duration
+	 *
+	 *	@param		integer task_id of task to update
+	 */
+	function update_dep_dates( $task_id ) {
+		GLOBAL $tracking_dynamics;
+
+		$destDate = new CDate();
+		$newTask = new CTask();
+
+		$newTask->load($task_id);
+
+		// Do not update tasks that are not tracking dependencies
+		if (!in_array($newTask->task_dynamic, $tracking_dynamics))
+			return;
+
+		// start date, based on maximal dep end date
+		$destDate->setDate( $this->get_deps_max_end_date( $newTask ) );
+		$destDate = $this->next_working_day( $destDate );
+		$new_start_date = $destDate->format( FMT_DATETIME_MYSQL );
+
+		// end date, based on start date and work duration
+		$newTask->task_start_date = $new_start_date;
+		$newTask->calc_task_end_date();
+		$new_end_date = $newTask->task_end_date;
 
 		$sql = "UPDATE tasks
 		SET
-			task_start_date = task_start_date + INTERVAL $offset SECOND ,
-			task_end_date = task_end_date + INTERVAL $offset SECOND
-		WHERE task_id IN ($csDeps)";
+				task_start_date = '$new_start_date',
+				task_end_date = '$new_end_date'
+			WHERE 	task_dynamic != '1' AND task_id = $task_id
+		";
 
-		db_exec ($sql);
+		db_exec( $sql );
 
-	} // end of shiftDependantTasks() 
+		if ( $newTask->task_parent != $newTask->task_id )
+			$newTask->updateDynamics();
+		return;
+	}
+
+	// Return date obj for the start of next working day
+	function next_working_day( $dateObj ) {
+		global $AppUI;
+		while ( ! $dateObj->isWorkingDay() || $dateObj->getHour() >= $AppUI->getConfig( 'cal_day_end' ) ) {
+			$dateObj->addDays(1);
+			$dateObj->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+		}
+		return $dateObj;
+	}
+	// Return date obj for the end of the previous working day
+	function prev_working_day( $dateObj ) {
+		global $AppUI;
+		while ( ! $dateObj->isWorkingDay() || ( $dateObj->getHour() < $AppUI->getConfig( 'cal_day_start' ) ) ||
+	      		( $dateObj->getHour() == $AppUI->getConfig( 'cal_day_start' ) && $dateObj->getMinute() == '0' ) ) {
+			$dateObj->addDays(-1);
+			$dateObj->setTime($AppUI->getConfig( 'cal_day_end' ), '0', '0');
+		}
+		return $dateObj;
+	}
+
+	/*
+
+	 Get the last end date of all of this task's dependencies
+
+	 @param Task object
+	 returns FMT_DATETIME_MYSQL date
+
+	 */
+
+	function get_deps_max_end_date( $taskObj ) {
+		global $tracked_dynamics;
+
+		$deps = $taskObj->getDependencies();
+		$obj = new CTask();
+
+		// Don't respect end dates of excluded tasks
+		if ($tracked_dynamics) {
+			$track_these = implode(',', $tracked_dynamics);
+			$sql = "SELECT MAX(task_end_date) FROM tasks
+				WHERE task_id IN ($deps) AND task_dynamic IN ($track_these)";
+		}
+
+		$last_end_date = db_loadResult( $sql );
+
+		if ( !$last_end_date ) {
+			// Set to project start date
+			$id = $taskObj->task_project;
+			$sql = "SELECT project_start_date FROM projects
+				WHERE project_id = $id";
+			$last_end_date = db_loadResult( $sql );
+		}
+
+		return $last_end_date;
+	}
+
+	/*
+	* Calculate this task obj's end date. Based on start date
+	* and the task duration and duration type.
+	*/
+	function calc_task_end_date() {
+		$e = $this->calc_end_date( $this->task_start_date, $this->task_duration, $this->task_duration_type );
+		$this->task_end_date = $e->format( FMT_DATETIME_MYSQL );
+	}
+
+	/*
+
+	 Calculate end date given start date and work time.
+	 Accounting for (non)working days and working hours.
+
+	 @param date obj or mysql time - start date
+	 @param int - number
+	 @param int - durnType 24=days, 1=hours
+	 returns date obj
+
+	*/
+
+	function calc_end_date( $start_date=null, $durn='8', $durnType='1' ) {
+		GLOBAL $AppUI;
+	
+		$cal_day_start = $AppUI->getConfig( 'cal_day_start' );
+		$cal_day_end = $AppUI->getConfig( 'cal_day_end' );
+		$daily_working_hours = $AppUI->getConfig( 'daily_working_hours' );
+
+		$s = new CDate( $start_date );
+		$e = $s;
+		$inc = $durn;
+		$full_working_days = 0;
+		$hours_to_add_to_last_day = 0;
+		$hours_to_add_to_first_day = $durn;
+
+		// Calc the end date
+		if ( $durnType == 24 ) { // Units are full days
+
+			$full_working_days = ceil($durn);
+			for ( $i = 0 ; $i < $full_working_days ; $i++ ) {
+				$e->addDays(1);
+				$e->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+				if ( !$e->isWorkingDay() )
+					$full_working_days++;
+			}
+			$e->setHour( $s->getHour() );
+
+		} else {  // Units are hours
+
+			// First partial day
+			if (( $s->getHour() + $inc ) > $cal_day_end ) {
+				// Account hours for partial work day
+				$hours_to_add_to_first_day = $cal_day_end - $s->getHour();	
+				if ( $hours_to_add_to_first_day > $daily_working_hours )
+					$hours_to_add_to_first_day = $daily_working_hours;
+				$inc -= $hours_to_add_to_first_day;
+				$hours_to_add_to_last_day = $inc % $daily_working_hours;
+				// number of full working days remaining
+				$full_working_days = round(($inc - $hours_to_add_to_last_day) / $daily_working_hours);
+
+				if ( $hours_to_add_to_first_day != 0 ) {	
+					while (1) {
+						// Move on to the next workday
+						$e->addDays(1);
+						$e->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+						if ( $e->isWorkingDay() )
+							break;
+					}
+				}
+			} else {
+				// less than one day's work, update the hour and be done..
+				$e->setHour( $e->getHour() + $hours_to_add_to_first_day );
+			}
+
+			// Full days
+			for ( $i = 0 ; $i < $full_working_days ; $i++ ) {
+				$e->addDays(1);
+				$e->setTime($AppUI->getConfig( 'cal_day_start' ), '0', '0');
+				if ( !$e->isWorkingDay() )
+					$full_working_days++;
+			}
+			// Last partial day
+			if ( !($full_working_days == 0 && $hours_to_add_to_last_day == 0) )
+				$e->setHour( $cal_day_start + $hours_to_add_to_last_day );
+
+		}
+		// Go to start of prev work day if current work day hasn't begun
+		if ( $durn != 0 )
+			$e = $this->prev_working_day( $e );
+
+		return $e;
+
+	} // End of calc_end_date
 
 	/**
 	* Function that returns the amount of hours this
@@ -724,6 +1032,7 @@ class CTask extends CDpObject {
 			$task_id = $this->task_id;
 		}
 		
+		// get children
 		$sql = "select task_id
 		        from tasks
 		        where task_parent = '$task_id'";
@@ -731,9 +1040,11 @@ class CTask extends CDpObject {
 		$tasks_id = db_loadColumn($sql);
 		if(count($tasks_id) == 0) return true;
 		
+		// update status of children
 		$sql = "update tasks set task_status = '$new_status' where task_parent = '$task_id'";
 
 		db_exec($sql);
+		// update status of children's children
 		foreach($tasks_id as $id){
 			if($id != $task_id){
 				$this->updateSubTasksStatus($new_status, $id);

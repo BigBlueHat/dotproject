@@ -107,6 +107,7 @@ class CProject extends CDpObject {
 		// Dependencies array
 		$deps = array();
 		
+		// Copy each task into this project and get their deps
 		foreach ($tasks as $orig => $void) {
 			$objTask->load ($orig);
 			$destTask = $objTask->copy($this->project_id);
@@ -118,17 +119,18 @@ class CProject extends CDpObject {
 		foreach ($tasks as $old_id => $newTask) {
 
 			// Fix parent Task
+			// This task had a parent task, adjust it to new parent task_id
 			if ($newTask->task_id != $newTask->task_parent)
 				$newTask->task_parent = $tasks[$newTask->task_parent]->task_id;
 
-			// Fix task start date and end date from project start date offset
+			// Fix task start date from project start date offset
 			$origDate->setDate ($newTask->task_start_date);
 			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
+			$destDate = $newTask->next_working_day( $destDate );
 			$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);   
 			
-			$origDate->setDate ($newTask->task_end_date);
-			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-			$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);   
+			// Fix task end date from start date + work duration
+			$newTask->calc_task_end_date();
 			
 			// Dependencies
 			if (!empty($deps[$old_id])) {
@@ -143,8 +145,7 @@ class CProject extends CDpObject {
 				$newTask->updateDependencies ($csList);
 			} // end of update dependencies 
 
-			// We use direct db updating to prevent time offset problem 
-			db_updateObject( 'tasks', $newTask, 'task_id', false );
+			$newTask->store();
 
 		} // end Fix record integrity	
 

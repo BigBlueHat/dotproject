@@ -14,6 +14,16 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
+// Map task_dynamic checkboxes to task_dynamic values for task dependancies.
+if ( $obj->task_dynamic != 1 ) {
+	$task_dynamic_delay = dPgetParam($_POST, "task_dynamic_nodelay", '0');
+	if (in_array($obj->task_dynamic, $tracking_dynamics)) {
+		$obj->task_dynamic = $task_dynamic_delay ? 21 : 31;
+	} else {
+		$obj->task_dynamic = $task_dynamic_delay ? 11 : 0;
+	}
+}
+
 //format hperc_assign user_id=percentage_assignment;user_id=percentage_assignment;user_id=percentage_assignment;
 $tmp_ar = explode(";", $hperc_assign);
 $hperc_assign_ar = array();
@@ -58,6 +68,7 @@ if ($del) {
 } else {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
+		$AppUI->redirect(); // Store failed don't continue?
 	} else {
 		$AppUI->setMsg( @$_POST['task_id'] ? 'Task updated' : 'Task added', UI_MSG_OK);
 	}
