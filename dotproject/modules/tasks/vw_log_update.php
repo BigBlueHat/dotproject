@@ -49,7 +49,7 @@ if ($canEdit) {
 		<?php echo $AppUI->_('Hours Worked');?>
 	</td>
 	<td>
-		<input type="text" class="text" name="task_log_hours" maxlength="3" size="8" />
+		<input type="text" class="text" name="task_log_hours" maxlength="8" size="6" />
 	</td>
 </tr>
 <tr>

@@ -334,7 +334,7 @@ function calcFinish() {
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 				<td nowrap="nowrap">
-					<input type="text" class="text" name="task_duration" maxlength=4 size=5 value="<?php echo dPgetParam( $task, 'task_duration', 0);?>" />
+					<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo dPgetParam( $task, 'task_duration', 0);?>" />
 				<?php
 					$durns = array( 'hours'=>'hours', 'days'=>'days' );
 					$durnType = dPgetParam( $task, 'task_duration_type', 'days' );
