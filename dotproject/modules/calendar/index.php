@@ -1,20 +1,24 @@
 <?php /* CALENDAR $Id$ */
 $AppUI->savePlace();
+include_once( $AppUI->getModuleClass( 'companies' ) );
 
 // restore/get the company filter if specified
 if (isset( $_REQUEST['company_id'] )) {
-	$AppUI->setState( 'ProjIdxCompany', $_REQUEST['company_id'] );
+	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
 }
-$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
+$company_id = $AppUI->getState( 'CalIdxCompany' ) !== NULL ? $AppUI->getState( 'CalIdxCompany' ) : $AppUI->user_company;
 
 // get the passed timestamp (today if none)
-$uts = isset( $_GET['uts'] ) ? $_GET['uts'] : null;
-$this_month = new CDate( $uts );
+$date = dPgetParam( $_GET, 'date', null );
 
 // pull the companies list
-$sql = "SELECT company_id,company_name FROM companies ORDER BY company_name";
-$companies = arrayMerge( array( 0 => $AppUI->_('All') ), db_loadHashList( $sql ) );
+$company = new CCompany();
+$companies = $company->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$companies = arrayMerge( array( '0'=>'All' ), $companies );
 
+
+
+$this_month = new CDate(  );
 // pull the tasks and events for the month
 $first_time = $this_month;
 $first_time->setDay( 1 );
@@ -58,17 +62,18 @@ $titleBlock->show();
 
 <script language="javascript">
 function clickDay( uts, fdate ) {
-	window.location = './index.php?m=calendar&a=day_view&uts='+uts;
+	window.location = './index.php?m=calendar&a=day_view&date='+uts;
 }
 function clickWeek( uts, fdate ) {
-	window.location = './index.php?m=calendar&a=week_view&uts='+uts;
+	window.location = './index.php?m=calendar&a=week_view&date='+uts;
 }
 </script>
 
 <table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
 <?php
 // create the main calendar
-$cal = new CMonthCalendar( $this_month  );
+$date = new Date( $date ? "{$date}000000" : $date );
+$cal = new CMonthCalendar( $date  );
 $cal->setStyles( 'motitle', 'mocal' );
 $cal->setLinkFunctions( 'clickDay', 'clickWeek' );
 $cal->setEvents( $links );
