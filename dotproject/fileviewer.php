@@ -117,7 +117,13 @@ if ($file_id) {
 	header( "Content-type: {$file['file_type']}" );
 	header( "Content-transfer-encoding: 8bit");
 	header( "Content-disposition: inline; filename=\"{$file['file_name']}\"" );
-	readfile( "{$dPconfig['root_dir']}/files/{$file['file_project']}/{$file['file_real_filename']}" );
+
+	// read and output the file in chunks to bypass limiting settings in php.ini
+	$handle = fopen("{$dPconfig['root_dir']}/files/{$file['file_project']}/{$file['file_real_filename']}", 'rb');
+	while ( !feof($handle) ) {
+		print fread($handle, 8192);
+	}
+	fclose($handle);
 } else {
 	$AppUI->setMsg( "fileIdError", UI_MSG_ERROR );
 	$AppUI->redirect();
