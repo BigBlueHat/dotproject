@@ -1,3 +1,13 @@
+2003-09-14 15:48  (jcgonz)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Simplified timer implementation
+
+2003-09-13 04:02  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-09-12 18:58  (ajdonnison)
 ---------------------------------
 db/upgrade_100_to_101.sql
@@ -488,16 +498,6 @@ modules/projects/vw_idx_complete.php
 - Added tooltips (descriptions that are displayed on mouse over links) per RFE 770618.  --Ray
 
 2003-07-23 01:18  (kripper)
----------------------------------
-modules/tasks/gantt.php
-- Fixed end_dates calculation
-
-2003-07-23 00:28  (kripper)
----------------------------------
-includes/main_functions.php
-- Added convert2days and formatTime functions
-
-2003-07-23 00:26  (kripper)
 ...
 
 (This file has been wrapped)
