@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"View Event",
 "Edit Event",
 "End Date",
 "Event Title",
@@ -14,8 +15,11 @@
 "Time",
 "Week",
 "delete event",
+"deleteEvent"=>"Are you sure you want to delete this event",
+"edit this event",
 "in advance",
 "month view",
 "times",
 "today",
+"view this event",
 "week view",
