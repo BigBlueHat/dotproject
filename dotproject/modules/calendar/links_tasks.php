@@ -15,14 +15,11 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 	GLOBAL $dPconfig;
 	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $company_id );
 
-//echo "<br>entering add tasks dt=".dPgetMicroDiff();
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 	$link = array();
 	$sid = 3600*24;
 	// assemble the links for the tasks
-//echo '<br><b>'.$startPeriod->format( FMT_TIMESTAMP );
-//echo ','.$endPeriod->format( FMT_TIMESTAMP ).'</b>';
 
 	foreach ($tasks as $row) {
 	// the link
@@ -35,19 +32,12 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		}
 		$link['text'] = '<span style="color:'.bestColor($row['color']).';background-color:#'.$row['color'].'">'.$row['task_name'].'</span>';
 
-//echo " [".dPgetMicroDiff()."]<sup>1</sup> ";
 	// determine which day(s) to display the task
 		$start = new CDate( $row['task_start_date'] );
 		$end = $row['task_end_date'] ? new CDate( $row['task_end_date'] ) : null;
 		$durn = $row['task_duration'];
 		$durnType = $row['task_duration_type'];
 
-//echo '<br>'.$start->format( FMT_TIMESTAMP );
-//echo ','.$end->format( FMT_TIMESTAMP );
-//echo ",$durn,$durnType";
-
-//echo "  ".intval($start->after( $startPeriod ) && $start->before( $endPeriod ));
-//echo intval($end && $end->after( $startPeriod ) && $end->before( $endPeriod )&& $start->before( $end ));
 		if (($start->after( $startPeriod ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
 			$temp = $link;
 			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
@@ -69,20 +59,13 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 		} else {
 			$durn *= ($durnType / 24.0);
 		}
-//echo "   -- durn=$durn";
 	// fill in between start and finish based on duration
-		//if ($durn > 1) {		// commented out this line on 20040612 by gregorerhardt in order to fix #909085
-						// seems not breaking something
 	// notes:
 		// start date is not in a future month, must be this or past month
 		// start date is counted as one days work
 		// business days are not taken into account
 			$target = $start;
 			$target->addSeconds( $durn*$sid );
-
-//echo Date::compare( $target, $startPeriod ) < 0 ? '<font color=red>' : '<font color=green>';
-//echo ','.$target->format( FMT_TIMESTAMP_DATE ).'</font>';
-//echo "  ,".intval(Date::compare( $start, $startPeriod ));
 
 			if (Date::compare( $target, $startPeriod ) < 0) {
 				continue;
@@ -93,10 +76,6 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 			} else {
 				$temp = $startPeriod;
 			}
-//echo ',temp='.$temp->format( FMT_TIMESTAMP_DATE );
-//echo "  ,".intval(Date::compare( $endPeriod, $temp ));
-//echo "  ,".intval(Date::compare( $target, $temp ));
-//continue;
 
 			// Optimised for speed, AJD.
 			while (Date::compare( $endPeriod, $temp ) > 0 
@@ -105,8 +84,6 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 				$links[$temp->format( FMT_TIMESTAMP_DATE )][] = $link;
 				$temp->addSeconds( $sid );
 			}
-		//}				// commented out this line on 20040612 by gregorerhardt in order to fix #909085
-						// seems not breaking something
 	}
 }
 ?>
