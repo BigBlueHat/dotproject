@@ -73,7 +73,7 @@ $sql = "
   (!$showLowTasks ? " AND a.task_priority >= 0" : "") .  
   (!$showHoldProjs ? " AND project_status != $project_on_hold_status" : "") .
   " GROUP BY a.task_id
-	ORDER BY a.task_start_date, task_priority DESC
+	ORDER BY a.task_end_date, task_priority DESC
 ";
 //echo "<pre>$sql</pre>";
 $tasks = db_loadList( $sql );
