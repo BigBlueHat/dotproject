@@ -1,16 +1,17 @@
 <?php
 GLOBAL $min_view, $m, $a;
-$min_view = isset( $min_view ) ? $min_view : false;
+$min_view = defVal( @$min_view, false);
 
-$project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
+$project_id = defVal( @$_GET['project_id'], 0);
 
 // sdate and edate passed as unix time stamps
-$sdate = isset( $_POST['sdate'] ) ? $_POST['sdate'] : 0;
-$edate = isset( $_POST['edate'] ) ? $_POST['edate'] : 0;
+$sdate = defVal( @$_POST['sdate'], 0);
+$edate = defVal( @$_POST['edate'], 0);
+
 // months to scroll
 $scroll_date = 1;
 
-$display_option = isset( $_POST['display_option'] ) ? $_POST['display_option'] : 'month';
+$display_option = defVal( @$_POST['display_option'], 'this_month');
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -30,6 +31,9 @@ $end_date->setFormat( $df );
 $crumbs = array();
 $crumbs["?m=tasks"] = "tasks list";
 $crumbs["?m=projects&a=view&project_id=$project_id"] = "view this project";
+$crumbs["javascript:showThisMonth()"] = "show this month";
+$crumbs["javascript:showFullProject()"] = "show full project";
+
 ?>
 <script language="javascript">
 var calendarField = '';
@@ -67,14 +71,28 @@ function scrollNext() {
 	$new_end = $end_date;
 	$new_start->addMonths( $scroll_date );
 	$new_end->addMonths( $scroll_date );
-	echo "f.sdate.value='".$new_start->getTimestamp()."';";
-	echo "f.edate.value='".$new_end->getTimestamp()."';";
+	echo "f.sdate.value='" . $new_start->getTimestamp() . "';";
+	echo "f.edate.value='" . $new_end->getTimestamp() . "';";
 ?>
 	f.submit()
 }
+	
+function showThisMonth() {
+	document.ganttdate.display_option.value = "this_month";
+	document.ganttdate.submit();
+}
+	
+function showFullProject() {
+	document.ganttdate.display_option.value = "all";
+	document.ganttdate.submit();
+}	
+	
 </script>
 
-<?php if (!$min_view) { ?>
+<?php
+if (!$min_view) {
+	// Normal view (not inserted in tabbox)
+?>
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
 <tr>
 	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
@@ -84,83 +102,95 @@ function scrollNext() {
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
 <tr>
-	<td width="50%" nowrap><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right" width="100%"></td>
-</tr>
-</table>
-<?php } ?>
+	<td nowrap valign=top><?php echo breadCrumbs( $crumbs );?></td>
+<?php
+} else {
+	// Minimal view (inserted in tabbox)
+?>
+	<table width=100%>
+	<tr>
+<?php 	
+}
+?>
 
-<table border="0" cellpadding="1" cellspacing="1" width="500" class=std>
-<form name="ganttdate" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
-<tr>
-	<td nowrap width=100><input type=radio name=display_option value=custom >Date range :</td>
-	<td>
-		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
-		<tr bgcolor="#eeeeee">
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?>:</td>
-			<td nowrap>
-				<input type="hidden" name="sdate" value="<?php echo $start_date->getTimestamp();?>">
-				<input type="text" class="text" name="show_sdate" value="<?php echo $start_date->toString();?>" size="12" disabled="disabled">
-				<a href="javascript:popCalendar('sdate')">
-					<img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
-				</a>
-			</td>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Date' );?>:</td>
-			<td nowrap>
-				<input type="hidden" name="edate" value="<?php echo $end_date->getTimestamp();?>">
-				<input type="text" class="text" name="show_edate" value="<?php echo $end_date->toString();?>" size="12" disabled="disabled">
-				<a href="javascript:popCalendar('edate')">
-					<img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
-				</a>
-			</td>
-		</tr>
-		</table>
-	</td>
+<td align=right>	
+  <form name="ganttdate" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
+  <input type=hidden name=display_option>
+  <table border="0" cellpadding="1" cellspacing="1">
+  <tr>
+  <td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'From' );?>:</td>
+  <td align=left nowrap>
+  <input type="hidden" name="sdate" value="<?php echo $start_date->getTimestamp();?>">
+  <input type="text" class="text" name="show_sdate" value="<?php echo $start_date->toString();?>" size="12" disabled="disabled">
+  <a href="javascript:popCalendar('sdate')">
+  <img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
+  </a>
+  </td>
+  </tr>
+  
+  <tr>
+  <td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'To' );?>:</td>
+  <td align=left nowrap>
+  <input type="hidden" name="edate" value="<?php echo $end_date->getTimestamp();?>">
+  <input type="text" class="text" name="show_edate" value="<?php echo $end_date->toString();?>" size="12" disabled="disabled">
+  <a href="javascript:popCalendar('edate')">
+  <img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
+  </a>
+  </td>
+  </tr>
+  
+  <tr>
+  <td>
+  </td>
+  <td align=left>
+  <input type="submit" class="button" value="<?php echo $AppUI->_( 'submit' );?>">
+  </td>
 </tr>
-
-<tr>
-	<td><input type="radio" name="display_option" value="month">This Month</td>
-	<td>&nbsp;</td>
-</tr>
-
-<tr>
-	<td><input type="radio" name="display_option" value="all">Entire project</td>
-	<td align="right" valign="bottom">
-		<input type="submit" class="button" value="<?php echo $AppUI->_( 'submit' );?>">
-	</td>
-</tr>
+	
 </form>
 </table>
-<br />
+	
+</tr>
+</table>	
+<br>
 
+<table align=center><tr>	
+
+<?php if ($display_option != "all") {
+?>
+	<td align=left valign=top>
+		<a href="javascript:scrollPrev()">
+			<img src="./images/prev.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'previous' );?>" border="0">	  
+		</a>
+	</td>   
 <?php
-if ($display_option != "all") {
-	$scroll_value = "1 month";
-
+}
 ?>
 
-<table width="500">
-<tr>
-	<td align=left>
-		<a href="javascript:scrollPrev()">
-			<img src="./images/prev.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'previous' );?>" border="0">
-		</a>
+	<td>
+<?php	
+$src = 
+  "?m=tasks&a=gantt&no_output=1&project_id=$project_id" .
+  ( $display_option == 'all' ? '' : 
+	'&start_date=' . $start_date->toString( "%Y-%m-%d" ) . '&end_date=' . $end_date->toString( "%Y-%m-%d" ) ) .
+  "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '";
+
+echo "<script>document.write('<img src=\"$src\">')</script>";	
+?>	
 	</td>
-	<td align=right>
-		<a href="javascript:scrollNext()">
-		<img src="./images/next.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'next' );?>" border="0"></a>
+
+<?php if ($display_option != "all") {
+?>
+	<td align=right valign=top>
+	  <a href="javascript:scrollNext()">
+	  	<img src="./images/next.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'next' );?>" border="0">
+	  </a>
 	</td>
 </tr>
-</table>
-<?php 
+<?php
 }
+?>	  
+</table>
 
-$src = "modules/tasks/gantt.php?project_id=$project_id";
-$src .= ($display_option == 'all') ? '' :
-	'&start_date='.$start_date->toString( "%Y-%m-%d" ).'&end_date='.$end_date->toString( "%Y-%m-%d" );
-$src .= "&width=' + (navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth - 200) + '";
-
-echo "<script>document.write('<img src=\"$src\">')</script>";
-?>

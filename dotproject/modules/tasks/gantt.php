@@ -1,50 +1,16 @@
-<?php /* TASKS $Id$ */
-error_reporting( E_ALL );	// this only for development testing
+<?php
+
 /*
- *
  * Gantt.php - by J. Christopher Pereira
- *
+ * TASKS $Id$
  */
 
- /*
- 	TODO:
- 		- task groups start_date = min(children_start_date), end_date = max(children_end_date)
- 		- show dependencies (not implemented in jpgraph)
- */
-
-chdir("../..");
-require_once( "includes/config.php" );
-require_once( "classdefs/ui.php" );
-
-// manage the session variable(s)
-session_name( 'dotproject' );
-session_start();
-session_register( 'AppUI' );
-
-if (!isset($HTTP_SESSION_VARS['AppUI']) || isset($HTTP_GET_VARS['logout'])) {
-	$HTTP_SESSION_VARS['AppUI'] = new CAppUI;
-}
-$AppUI =& $HTTP_SESSION_VARS['AppUI'];
-
-require_once( "includes/db_connect.php" );
-
+error_reporting( E_ALL );	// this only for development testing
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$AppUI->cfg['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
-include ("{$AppUI->cfg['root_dir']}/includes/main_functions.php");
-include ("{$AppUI->cfg['root_dir']}/functions/tasks_func.php");
 
-if ($AppUI->doLogin()) {
-	session_unset();
-	session_destroy();
-	include "./includes/login.php";
-	exit;
-}
-
-// END: from index.php
-
-$project_id = isset( $HTTP_GET_VARS['project_id'] ) ? $HTTP_GET_VARS['project_id'] : 0;
-
-$f = isset( $_GET['f'] ) ? $_GET['f'] : 0;
+$project_id = defVal( @$_REQUEST['project_id'], 0 );
+$f = defVal( @$_REQUEST['f'], 0 );
 
 // pull valid projects and their percent complete information
 $psql = "
@@ -146,7 +112,7 @@ for ($x=0; $x < $nums; $x++) {
 
         // calculate or set blank task_end_date if unset
         if($row["task_end_date"] == "0000-00-00 00:00:00") {
-        	$row["task_end_date"] = get_end_date($row["task_start_date"], $row["task_duration"]);
+        	$row["task_end_date"] = "";
         }
 
 	$projects[$row['task_project']]['tasks'][] = $row;
