@@ -53,6 +53,7 @@
 "new task",
 "noCompanies"=>"Please create a Company first",
 "projects list",
+"projectsBadCompany"=>"Please select a company",
 "projectsBadEndDate1"=>"The Project End Date must be after the Start Date",
 "projectsBadEndDate2"=>"The Actual Project End Date must be after the Start Date",
 "projectsColor"=>"Please select a color to identify this project.",

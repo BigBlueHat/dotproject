@@ -78,6 +78,7 @@
 "clear",
 "delete",
 "either",
+"filter",
 "flat",
 "forgotPassword"=>"Help! I've forgotten my username and password!",
 "login",

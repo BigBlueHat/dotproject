@@ -1,6 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
+"new task",
 "Action",
 "Add Task",
 "All Tasks",
