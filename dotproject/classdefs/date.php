@@ -32,27 +32,25 @@ isset($DATE_BANKHOLIDAYS) or $DATE_BANKHOLIDAYS = array();
 class CDate
 {
 	/* unix timestamp */
-	var $ts;
-	var $Y;
-	var $M;
-	var $D;
-	var $h;
-	var $m;
-	var $s;
+	var $ts=0;
+	var $Y=0;
+	var $M=0;
+	var $D=0;
+	var $h=0;
+	var $m=0;
+	var $s=0;
 	/* @scope protected */
 	var $change = 0; // 1 if date needs recalculation
 	var $format;
 
-	function CDate( $ts = null ) {
-		global $AppUI;
-		if(@$AppUI) {
-			$this->format = $AppUI->getPref('SHDATEFORMAT');
-		}
-		
+	function CDate( $ts=null, $format='' ) {
 		if( $ts !== null ) {
 			$this->setTimestamp($ts);
 		} else {
 			$this->setTimestamp(time());
+		}
+		if ($format) {
+			$this->format = $format;
 		}
 	}
 
@@ -209,7 +207,7 @@ class CDate
 	function inMonth( $date ) {
 		return ($this->M == $date->M && $this->Y == $date->Y);
 	}
-	
+
 	function isBetween( $start, $end ) {
 		$ts = $this->getTimestamp();
 		return ($start->getTimestamp() <= $ts && $ts <= $end->getTimestamp());
