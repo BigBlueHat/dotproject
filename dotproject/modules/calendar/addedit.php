@@ -83,7 +83,7 @@ $allowedProjects = $prj->getAllowedSQL($AppUI->user_id);
 if (count($allowedProjects))
 	$sql .= " LEFT JOIN companies cp on cp.company_id = project_company WHERE " . implode(' AND ', $allowedProjects);
 $sql .= " ORDER by project_name";
-$all_projects = '(' . $AppUI->_('All') . ')';
+$all_projects = '(' . $AppUI->_('All', UI_OUTPUT_RAW) . ')';
 $projects = arrayMerge( array( 0 => $all_projects ), db_loadHashList( $sql ) );
 
 if ($event_id || $is_clash) {
