@@ -1,3 +1,670 @@
+2005-03-18 18:44  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_20alpha_to_20beta.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_to_20beta.php
+- Second cut of beta release.
+
+2005-03-18 18:32  (ajdonnison)
+---------------------------------
+modules/forums/addedit.php
+- Removed non-functioning forum status.  Should probably put it back in
+- when we work out what it was supposed to do.
+
+2005-03-18 18:10  (ajdonnison)
+---------------------------------
+modules/calendar/week_view.php
+- Removed double translation of date strings, changed alignment of date
+- string to match the format of the string itself.
+
+2005-03-18 17:59  (ajdonnison)
+---------------------------------
+modules/calendar/day_view.php
+- Changed to use htmlentities rather than full translation so that the
+- date isn't double translated.
+
+2005-03-18 17:15  (ajdonnison)
+---------------------------------
+classes/permissions.class.php
+- Altered GetPermittedUsers to only require view access on Users, not Admin (bug 631).
+
+2005-03-18 16:57  (ajdonnison)
+---------------------------------
+modules/files/do_file_aed.php
+- Fixed bug 621 - dates incorrect in file uploads.
+
+2005-03-18 10:06  (mosen)
+---------------------------------
+classes/authenticator.class.php
+- LDAP Authenticator uses subtree scope properly and binds to users in nested ous
+
+2005-03-18 06:33  (jcgonz)
+---------------------------------
+db/upgrade_contacts_company.php
+- Script to update contact's company's in order to relate them
+- using company_id not company_name
+
+2005-03-18 06:26  (jcgonz)
+---------------------------------
+db/upgrade_contacts_company.php
+db/upgrade_to_20beta.php
+- Script to update contact's company's in order to relate them
+- using company_id not company_name
+
+2005-03-17 23:03  (mosen)
+---------------------------------
+modules/tasks/addedit.js
+- Fixed task duration calculation in addedit.js, calculates only working days (start day inclusive)
+
+2005-03-17 16:14  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added Swedish and Norwegian to the language list.
+
+2005-03-17 14:48  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Updates to system config variables.
+
+2005-03-17 12:28  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Added debug to server communications.  If you set debug to 12 or higher,
+- the entire conversation with the SMTP server is logged.
+
+2005-03-17 11:08  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/view.php
+- converted to query class
+
+2005-03-17 09:19  (ajdonnison)
+---------------------------------
+classes/authenticator.class.php
+- Changed Parent to parent, as it would appear some versions of PHP are
+- case sensitive on this.
+
+2005-03-17 08:29  (gregorerhardt)
+---------------------------------
+modules/tasks/ae_resource.php
+- fixed minor translations conflict between resources and human resources
+
+2005-03-17 06:09  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- 641: deleted superfluous line
+
+2005-03-17 06:04  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- 641: allunfinished tasks filter now user-assignment-independent
+
+2005-03-17 04:45  (gregorerhardt)
+---------------------------------
+classes/ui.class.php
+- 620: automatic tab inclusion restricted to active modules
+
+2005-03-17 04:28  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+modules/projects/viewgantt.php
+- removed double translation of gantt projects filter
+
+2005-03-17 03:59  (jcgonz)
+---------------------------------
+style/default/login.php
+- The cookies enable message wasn't escaped with the \"_\" ui's function
+
+2005-03-17 03:59  (jcgonz)
+---------------------------------
+index.php
+- The default locale was not loaded at the login screen. Added up
+- the $AppUI->setUserLocale() when the login screen is shoed.
+
+2005-03-17 03:03  (gregorerhardt)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- removed double translation of project types
+
+2005-03-16 23:40  (mosen)
+---------------------------------
+modules/tasks/tasks.class.php
+- Changed task::load() strip parameter default to false - DB already strips slashes on insert (Tested with Mysql 3.x/4.x)
+
+2005-03-16 17:20  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Cleanup of some of the desciptions to better match the config variable usage.
+
+2005-03-16 17:11  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Removed config items that were no longer used in code.
+
+2005-03-16 16:51  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+- Removed checkbox when not in full tasks list, as there is nothing to edit.
+
+2005-03-16 16:08  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+- Fixed problem where show_all_task_assignees wasn't being honoured.
+
+2005-03-16 13:03  (cyberhorse)
+---------------------------------
+classes/query.class.php
+- fixed query class - inserting lists of fields and values
+
+2005-03-16 13:02  (cyberhorse)
+---------------------------------
+modules/resources/tasks_dosql.addedit.php
+- fixed values being inserted with brackets ...
+
+2005-03-16 12:52  (cyberhorse)
+---------------------------------
+modules/resources/setup.php
+- fixed an sql error.
+
+2005-03-16 12:40  (cyberhorse)
+---------------------------------
+modules/resources/setup.php
+classes/query.class.php
+modules/resources/tasks_dosql.addedit.php
+- converted resources module to query class
+- added some additional functionality to query class
+
+2005-03-16 12:12  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+modules/calendar/day_view.php
+modules/calendar/vw_day_events.php
+modules/calendar/week_view.php
+- 639: calendar translation
+
+2005-03-16 11:11  (ajdonnison)
+---------------------------------
+modules/calendar/calendar.class.php
+- Fixed problem with translations of day/month names.
+
+2005-03-16 10:41  (ajdonnison)
+---------------------------------
+index.php
+classes/ui.class.php
+- Fix for a problem found with locales on windows and calendars not working.
+- Basically moved the addition of locale_char_set to the user_lang into
+- the CAppUI class so that it can be done selectively.
+
+2005-03-16 09:05  (mosen)
+---------------------------------
+classes/authenticator.class.php
+- Fixed Active Directory bind with no password problem which allowed users to login with no password
+- Fixed Active Directory 2003 Problem binding - set LDAP referrals off
+- Changed LDAP search user to be full DN so users directory could be seperate to the search user directory
+
+2005-03-16 08:56  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+- translations added
+
+2005-03-16 08:28  (gregorerhardt)
+---------------------------------
+modules/history/addedit.php
+modules/history/index.php
+modules/history/setup.php
+- converted to query class
+
+2005-03-16 08:21  (gregorerhardt)
+---------------------------------
+classes/query.class.php
+- query class now is able to create permanent tables
+
+2005-03-16 07:46  (gregorerhardt)
+---------------------------------
+classes/query.class.php
+- query class now handling many updates at once
+
+2005-03-16 06:28  (gregorerhardt)
+---------------------------------
+locales/en/smartsearch.inc
+- translations added
+
+2005-03-15 18:25  (ajdonnison)
+---------------------------------
+modules/system/systemconfig.php
+- Fix for bug 623. config list variables not being displayed correctly.
+
+2005-03-15 17:13  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+- fixed a global_registered problem. missing variable
+
+2005-03-15 17:07  (cyberhorse)
+---------------------------------
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+- put OR  clauses in () to protect them from AND clauses
+
+2005-03-15 17:01  (cyberhorse)
+---------------------------------
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- applied DBQuery to smartsearch
+
+2005-03-15 11:09  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+locales/en/tasks.inc
+- translations added
+
+2005-03-15 11:02  (gregorerhardt)
+---------------------------------
+modules/files/files.class.php
+- 626: typo in query class move
+
+2005-03-15 10:59  (gregorerhardt)
+---------------------------------
+modules/files/files.class.php
+- 624: wrong table aliases
+
+2005-03-14 22:27  (mosen)
+---------------------------------
+modules/files/files.class.php
+- fixed improper usage of DBQuery object in indexStrings function that caused an error adding files
+
+2005-03-14 22:06  (mosen)
+---------------------------------
+modules/files/files.class.php
+- Syntax error in files class fixed
+
+2005-03-14 21:48  (mosen)
+---------------------------------
+modules/system/custom_field_addedit.php
+- Custom fields can now be deleted: fixed a bug where the delete variable was undeclared
+
+2005-03-14 17:16  (ajdonnison)
+---------------------------------
+modules/admin/addedituser.php
+- Fixed bug 612 so that changing a user details doesn't create a new contact.
+
+2005-03-14 16:59  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Added check on From and To to see if there are errors before continuing
+- to send email.  Fixes bug 611.
+
+2005-03-14 15:59  (ajdonnison)
+---------------------------------
+db/upgrade_permissions.php
+db/upgrade_latest.php
+- Removed task_log permissions from admin group.
+- Added task_log permissions to general permissions setup script.
+
+2005-03-14 15:56  (ajdonnison)
+---------------------------------
+style/dp-grey-theme/main.css
+style/dp-grey-theme/images/lines_title_bar.gif
+style/dp-grey-theme/images/lines_title_shadow.gif
+- Fixed bottom shadow so that if links wrap it still looks OK.
+
+2005-03-14 15:17  (ajdonnison)
+---------------------------------
+modules/calendar/day_view.php
+style/classic/main.css
+style/default/main.css
+style/dp-grey-theme/main.css
+- Fix for style issues from bug 587.
+
+2005-03-14 14:29  (ajdonnison)
+---------------------------------
+modules/contacts/index.php
+- Fix for bug 594, where contacts with no company were not displaying if the
+- user was denied access to ANY company.
+
+2005-03-14 14:10  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Back ported fix from bug 593
+
+2005-03-14 14:06  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fix for bug 593, tasks not showing in calendar unless All Companies selected.
+
+2005-03-14 13:46  (gregorerhardt)
+---------------------------------
+locales/en/forums.inc
+- translations added
+
+2005-03-14 13:42  (gregorerhardt)
+---------------------------------
+locales/en/forums.inc
+- translations added
+
+2005-03-14 13:28  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_roles.php
+modules/files/files.class.php
+modules/forums/configure.php
+modules/forums/do_watch_forum.php
+modules/forums/forums.class.php
+modules/forums/index.php
+modules/forums/post_message.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+- converted to query class
+
+2005-03-14 13:18  (ajdonnison)
+---------------------------------
+db/upgrade_latest.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- Added task log permissions as a separate permission to tasks.
+
+2005-03-14 13:15  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Fixed problem where upgrade_latest.php was not run correctly.
+
+2005-03-14 09:41  (gregorerhardt)
+---------------------------------
+locales/en/tasks.inc
+- translations added
+
+2005-03-13 23:07  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+- translations added
+
+2005-03-13 22:48  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+- translations added
+
+2005-03-13 22:38  (gregorerhardt)
+---------------------------------
+modules/files/index_table.php
+modules/forums/post_message.php
+modules/projects/view.php
+modules/projects/vw_logs.php
+modules/public/chpwd.php
+modules/public/color_selector.php
+modules/public/contact_selector.php
+modules/public/selector.php
+modules/system/billingcode.php
+modules/system/contacts_ldap.php
+modules/system/custom_field_addedit.php
+modules/tasks/organize.php
+style/classic/login.php
+style/default/login.php
+style/default/lostpass.php
+style/dp-grey-theme/login.php
+style/dp-grey-theme/lostpass.php
+- 606: <? and ?= fixes from elfking :)
+
+2005-03-13 22:08  (gregorerhardt)
+---------------------------------
+includes/config-dist.php
+includes/db_adodb.php
+includes/db_connect.php
+- consistently removed deprecated dbport cfg var
+
+2005-03-13 21:46  (gregorerhardt)
+---------------------------------
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- 603: task log tab name corrected
+
+2005-03-13 21:23  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+locales/en/projects.inc
+locales/en/tasks.inc
+- translations added
+
+2005-03-13 21:20  (gregorerhardt)
+---------------------------------
+modules/tasks/do_updatetask.php
+modules/tasks/vw_logs.php
+- 604: task log edit redirect
+
+2005-03-13 20:40  (gregorerhardt)
+---------------------------------
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- 602: preserver task log state in flat mode
+
+2005-03-13 07:21  (gregorerhardt)
+---------------------------------
+locales/en/system.inc
+- removed transl for legacy pwds
+
+2005-03-13 07:17  (gregorerhardt)
+---------------------------------
+locales/en/install.inc
+- translations for deprecated install module removed
+
+2005-03-13 03:32  (gregorerhardt)
+---------------------------------
+locales/en/calendar.inc
+locales/en/common.inc
+locales/en/projects.inc
+locales/en/tasks.inc
+- translations added
+
+2005-03-13 03:21  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+- translations added
+
+2005-03-13 02:50  (gregorerhardt)
+---------------------------------
+locales/en/calendar.inc
+locales/en/system.inc
+- translations added
+
+2005-03-13 02:19  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+- translations added
+
+2005-03-13 00:29  (gregorerhardt)
+---------------------------------
+locales/en/departments.inc
+modules/departments/view.php
+- 600: error in convertion to query classs
+
+2005-03-12 18:47  (ajdonnison)
+---------------------------------
+classes/permissions.class.php
+- Fix to support always showing the current user in user filter.
+
+2005-03-12 16:31  (cyberhorse)
+---------------------------------
+modules/companies/vw_users.php
+- user_company -> contact_company
+
+2005-03-12 12:50  (gregorerhardt)
+---------------------------------
+locales/en/tasks.inc
+- translations added
+
+2005-03-12 12:42  (gregorerhardt)
+---------------------------------
+modules/projects/gantt2.php
+modules/tasks/gantt.php
+- 599: check arial file consistently in gantt
+
+2005-03-12 12:32  (gregorerhardt)
+---------------------------------
+locales/en/common.inc
+- translations added
+
+2005-03-12 12:26  (gregorerhardt)
+---------------------------------
+locales/en/files.inc
+locales/en/projects.inc
+locales/en/public.inc
+- translations added
+
+2005-03-12 12:25  (gregorerhardt)
+---------------------------------
+modules/files/addedit.php
+modules/files/co.php
+modules/files/do_file_aed.php
+modules/files/do_file_co.php
+modules/files/files.class.php
+- converted to query class
+
+2005-03-12 11:24  (gregorerhardt)
+---------------------------------
+modules/departments/addedit.php
+modules/departments/departments.class.php
+modules/departments/view.php
+modules/departments/vw_contacts.php
+- converted to query class
+
+2005-03-12 11:10  (ajdonnison)
+---------------------------------
+db/upgrade_latest.php
+db/upgrade_permissions.php
+db/upgrade_to_20beta.php
+install/do_install_db.php
+install/index.php
+install/install.inc.php
+- Backported fixes for installer failure on upgrades
+
+2005-03-12 11:06  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+install/index.php
+install/install.inc.php
+db/upgrade_latest.php
+db/upgrade_permissions.php
+db/upgrade_to_20beta.php
+- Fixes for missing $AppUI, missing upgrade files.
+
+2005-03-12 10:59  (gregorerhardt)
+---------------------------------
+locales/en/contacts.inc
+- another transl added
+
+2005-03-12 10:36  (gregorerhardt)
+---------------------------------
+modules/contacts/contacts.class.php
+modules/contacts/csvexport.php
+modules/contacts/index.php
+modules/contacts/select_contact_company.php
+modules/contacts/vcardexport.php
+modules/contacts/view.php
+- converted to query class
+
+2005-03-12 10:35  (gregorerhardt)
+---------------------------------
+locales/en/contacts.inc
+- another transl added
+
+2005-03-12 10:12  (ajdonnison)
+---------------------------------
+modules/public/chpwd.php
+- Backport of md5 fix
+
+2005-03-12 10:11  (ajdonnison)
+---------------------------------
+modules/admin/admin.class.php
+- Backport of md5 fix.
+
+2005-03-12 10:10  (ajdonnison)
+---------------------------------
+modules/admin/admin.class.php
+modules/public/chpwd.php
+- Fixed problem with changing passwords using deprecated database MD5.
+
+2005-03-12 09:39  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/vw_day_events.php
+- converted to query class
+
+2005-03-12 09:28  (gregorerhardt)
+---------------------------------
+locales/en/calendar.inc
+- another transl added
+
+2005-03-12 09:15  (gregorerhardt)
+---------------------------------
+locales/en/calendar.inc
+- another transl added
+
+2005-03-12 09:12  (gregorerhardt)
+---------------------------------
+locales/en/calendar.inc
+- transl added
+
+2005-03-12 07:13  (gregorerhardt)
+---------------------------------
+modules/companies/vw_companies.php
+- 589: wrong where query clause
+
+2005-03-11 19:10  (ajdonnison)
+---------------------------------
+modules/system/systemconfig.php
+- Rolled install directory warning in from HEAD branch.
+
+2005-03-11 19:09  (ajdonnison)
+---------------------------------
+modules/system/systemconfig.php
+- Added warning about install directory still in existance.
+
+2005-03-11 19:06  (ajdonnison)
+---------------------------------
+install/vw_idx_check.php
+- Changed default permissions to 775.
+
+2005-03-11 18:03  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- shortened the file type description (using only the first part)
+
+2005-03-11 17:06  (ajdonnison)
+---------------------------------
+install/vw_idx_check.php
+- Merged changes from HEAD branch
+
+2005-03-11 17:01  (ajdonnison)
+---------------------------------
+install/vw_idx_check.php
+- Fix for missing session.save_path as per bug 585
+
+2005-03-11 16:11  (ajdonnison)
+---------------------------------
+ChangeLog
+- updated for beta release
+
 2005-03-11 16:07  (ajdonnison)
 ---------------------------------
 includes/version.php
