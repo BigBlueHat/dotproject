@@ -42,11 +42,20 @@ function resource_postsave()
     }
 		// first delete any elements already there, then replace with this
 		// list.
-		$sql = "delete from resource_tasks where task_id = '" . $obj->task_id . "'";
-		db_exec($sql);
+		$q = new DBQuery;
+		$q->setDelete('resource_tasks');
+		$q->addWhere('task_id = ' . $obj->task_id);
+		$q->exec(); 
     if (count($value)) {
-      $sql = "insert into resource_tasks ( task_id, resource_id, percent_allocated) values " . implode(',', $value);
-      db_exec($sql);
+			foreach($value as $v)
+			{
+				$q->clear();
+				$q->addTable('resource_tasks');
+				$q->addInsert('task_id, resource_id, percent_allocated', $v, true);
+				$q->exec();
+			}
+//      $sql = "insert into resource_tasks ( task_id, resource_id, percent_allocated) values " . implode(',', $value);
+//      db_exec($sql);
     }
   }
 }

@@ -19,7 +19,9 @@ if (@$a == 'setup') {
 
 class SResource {
 	function install() {
-		if (! db_exec("CREATE TABLE resources (
+		$ok = true;
+		$q = new DBQuery;
+		$sql = "(
 			resource_id integer not null auto_increment,
 			resource_name varchar(255) not null default '',
 			resource_key varchar(64) not null default '',
@@ -29,42 +31,73 @@ class SResource {
 			primary key (resource_id),
 			key (resource_name),
 			key (resource_type)
-		)"))
-			return db_error();
-		if (! db_exec("CREATE TABLE resource_types (
+		)";
+		$q->createTable('resources');
+		$q->createDefinition($sql);
+		$ok = $ok && $q->exec();
+		$q->clear();
+
+		$sql = "(
 			resource_type_id integer not null auto_increment,
 			resource_type_name varchar(255) not null default '',
 			resource_type_note text,
 			primary key (resource_type_id)
-		)"))
-			return db_error();
-		if (! db_exec("CREATE TABLE resource_tasks (
+		)";
+		$q->createTable('resources_types');
+		$q->createDefinition($sql);
+		$ok = $ok && $q->exec();
+		$q->clear();
+
+
+		$sql = "CREATE TABLE resource_tasks (
 			resource_id integer not null default 0,
 			task_id integer not null default 0,
 			percent_allocated integer not null default 100,
 			key (resource_id),
 			key (task_id, resource_id)
-		)"))
-			return db_error();
-		if (! db_exec("INSERT INTO resource_types (resource_type_name)
+		)";
+		$q->createTable('resources_tasks');
+		$q->createDefinition($sql);
+		$ok = $ok && $q->exec();
+		$q->clear();
+		$sql = "INSERT INTO resource_types (resource_type_name)
 		VALUES
 		  ('Equipment'),
 			('Tool'),
 			('Venue')"))
-			return db_error();
+		$q->addTable('resource_types');
+		$q->addInsert('resource_type_name', 'Equipment');
+		$q->addInsert('resource_type_name', 'Tool');
+		$q->addInsert('resource_type_name', 'Venue');
+		$ok = $ok && $q->exec();
+		
+		if (!$ok)
+			return false;
 		return null;
 	}
 
 	function remove() {
-		db_exec("DROP TABLE resources");
-		db_exec("DROP TABLE resource_tasks");
-		db_exec("DROP TABLE resource_types");
+		$q = new DBQuery;
+		$q->dropTable('resources');
+		$q->exec();
+		$q->clear();
+		$q->dropTable('resource_tasks');
+		$q->exec();
+		$q->clear();
+		$q->dropTable('resource_types');
+		$q->exec();
+
+		return null;
 	}
 
 	function upgrade($old_version) {
 		switch ($old_version) {
 			case "1.0":
-			db_exec("ALTER TABLE resources ADD resource_key varchar(64) not null default ''");
+			$q = new DBQuery;
+			$q->addTable('resources');
+			$q->addField('resource_key', "varchar(64) not null default ''");
+			$q->exec();
+//			db_exec("ALTER TABLE resources ADD resource_key varchar(64) not null default ''");
 			if ( db_error())
 				return false;
 				// FALLTHROUGH

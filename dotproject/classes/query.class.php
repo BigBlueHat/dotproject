@@ -165,9 +165,25 @@ class DBQuery {
     $this->addClause('query', $query);
   }
 
-  function addInsert($field, $value)
+  function addInsert($field, $value, $set = false)
   {
-    $this->addMap('value_list', $value, $field);
+		if ($set)
+		{
+			if (is_array($field))
+				$fields = $field;
+			else
+				$fields = explode(',', $field);
+
+			if (is_array($value))
+				$values = $value;
+			else
+				$values = explode(',', $value);
+
+			for($i = 0; $i < count($fields); $i++)
+			$this->addMap('value_list', $values[$i], $fields[$i]);
+		}
+		else
+    	$this->addMap('value_list', $value, $field);
     $this->type = 'insert';
   }
 
@@ -183,7 +199,7 @@ class DBQuery {
     $this->create_table = $table;
   }
   
-   function createTemp($table)
+  function createTemp($table)
   {
     $this->type = 'create';
     $this->create_table = $table;
@@ -200,6 +216,17 @@ class DBQuery {
     $this->type = 'drop';
     $this->create_table = $table;
   }
+
+	function alterTable($table)
+	{
+		$this->create_table = $table;
+		$this->type = 'alter';
+	}
+
+	function addField($name, $type)
+	{
+		$this->create_definition = $name . ' ' . $type;
+	}
 
   function createDefinition($def)
   {
@@ -308,7 +335,7 @@ class DBQuery {
   {
     switch ($this->type) {
       case 'select':
-	$q = $this->prepareSelect();
+      $q = $this->prepareSelect();
 	break;
       case 'update':
         $q = $this->prepareUpdate();
@@ -317,7 +344,7 @@ class DBQuery {
         $q = $this->prepareInsert();
 	break;
       case 'delete':
-	$q = $this->prepareDelete();
+      $q = $this->prepareDelete();
 	break;
       case 'create':	// Create a temporary table
         $s = $this->prepareSelect();
@@ -326,6 +353,9 @@ class DBQuery {
 	  $q .= ' ' . $this->create_definition;
 	$q .= ' ' . $s;
 	break;
+      case 'alter':
+        $q = $this->prepareAlter();
+  break;
       case 'createPermanent':	// Create a temporary table
         $s = $this->prepareSelect();
 	$q = 'CREATE TABLE ' . $this->_table_prefix . $this->create_table;
@@ -456,6 +486,17 @@ class DBQuery {
     $q .= $this->make_where_clause($this->where);
     return $q;
   }
+
+	//TODO: add ALTER DROP/CHANGE/MODIFY/IMPORT/DISCARD/...
+	//definitions: http://dev.mysql.com/doc/mysql/en/alter-table.html
+	function prepareAlter()
+	{
+		$q = 'ALTER TABLE ' . $this->_table_prefix . $this->create_table . ' ';
+		if (isset($this->create_definition))
+			$q .= 'ADD ' . $this->create_definition;
+
+		return $q; 
+	}
 
   /**
    * Execute the query and return a handle.  Supplants the db_exec query
