@@ -1,3 +1,40 @@
+2002-12-08 15:48  (kripper)
+---------------------------------
+modules/tasks/viewgantt.php
+- Added buttons for scrolling gantt chart's time range
+
+2002-12-08 15:29  (kripper)
+---------------------------------
+modules/ticketsmith/post_ticket.php
+- Fixed reference to unexistent css style 'textcareaclass'
+
+2002-12-07 16:49  (kripper)
+---------------------------------
+modules/companies/addedit.php
+modules/departments/addedit.php
+modules/forums/post_message.php
+- Fixed reference to unexistent style class "textareaclass"
+- Added cols=80 to textarea int post_message
+
+2002-12-06 20:50  (kripper)
+---------------------------------
+modules/tasks/addedit.php
+- New tasks are now dynamic by default, but ff end_date is entered, the
+- checkbox will disable.
+
+2002-12-06 20:17  (kripper)
+---------------------------------
+functions/tasks_func.php
+modules/tasks/index.php
+- Improved end_dates calculation when field is not specified
+- Disabled automatic end_dates calculation from tasks/index.php (will be
+- implemented in tasks organizer)
+
+2002-12-06 08:59  (kripper)
+---------------------------------
+ChangeLog
+- Updated Changelog
+
 2002-12-06 05:52  (kripper)
 ---------------------------------
 locales/es/common.inc
