@@ -45,6 +45,7 @@
 "Never Visited",
 "Non-Admin Modules",
 "Not Defined",
+"Offline",
 "Online",
 "On hold",
 "Owned Projects",
