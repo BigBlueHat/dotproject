@@ -31,7 +31,7 @@ if (!$obj->load( $project_id ) && $project_id > 0) {
 }
 
 // add in the existing company if for some reason it is dis-allowed
-if (!array_key_exists( $obj->project_company, $companies )) {
+if ($project_id && !array_key_exists( $obj->project_company, $companies )) {
 	$companies[$obj->project_company] = db_loadResult(
 		"SELECT company_name FROM companies WHERE company_id=$obj->project_company"
 	);
