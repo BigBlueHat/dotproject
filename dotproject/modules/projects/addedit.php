@@ -282,11 +282,19 @@ function submitIt() {
 				$objProject = new CProject();
 				$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
 
+				//retrieve the number of existing projects
+				$sql = "SELECT COUNT(*) FROM projects";
+				$numProj = db_loadColumn($sql);
+				echo $numProj[0];
+
 				// Loading project with tasks
 				$sql = 'SELECT DISTINCT p.project_id, p.project_name
 						FROM projects AS p , tasks AS t 
-						WHERE ( t.task_project = p.project_id ) AND (p.project_id IN (' .
+						WHERE ( t.task_project = p.project_id )';
+				if ( $numProj[0] > 0 ) {
+					$sql .= ' AND (p.project_id IN (' .
 						implode (',', array_keys($allowedProjects)) . ')) ORDER BY p.project_name';
+				}
 
 				$importList = db_loadHashList ($sql);
 				$importList = arrayMerge( array( '0'=> $AppUI->_('none') ), $importList);
