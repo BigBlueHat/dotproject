@@ -1,5 +1,10 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+4 September 2002 (AJE):
+-----------------------------
+includes/leftnav.php
+- removed legacy code (form wrapping the main table)
+
 3 September 2002 (AJE):
 -----------------------------
 modules/tasks/view.php
