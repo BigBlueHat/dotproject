@@ -11,12 +11,13 @@ $log_end_date 	        = dPgetParam( $_POST, "log_end_date", 0 );
 $log_all		= dPgetParam($_POST,"log_all", true);
 $log_all_projects       = dPgetParam($_POST,"log_all_projects", true);
 $use_period		= dPgetParam($_POST,"use_period",0);
+$show_orphaned		= dPgetParam($_POST,"show_orphaned", 0);
 $display_week_hours	= dPgetParam($_POST,"display_week_hours",0);
 $max_levels        	= dPgetParam($_POST,"max_levels","max");
 $log_userfilter		= dPgetParam($_POST,"log_userfilter","");
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
-
+echo $show_orphaned;
 $table_header = "";
 $table_rows="";
 
@@ -202,7 +203,6 @@ function chPriority(user_id) {
 		<?php echo $AppUI->_( 'Use the period' );?>
 		</input>
 
-
 	</td>
 
 	<td align="left" width="50%" nowrap="nowrap">
@@ -222,8 +222,11 @@ function chPriority(user_id) {
                 <?php echo $AppUI->_( 'Levels to display' ); ?>
 		<input type="text" name="max_levels" size="10" maxlength="3" value="<?php echo $max_levels; ?>" />
 
+
 	</td>
-        <td></td>
+        <td><input type="checkbox" name="show_orphaned" <?php if ($show_orphaned) echo "checked" ?> >
+		<?php echo $AppUI->_( 'Hide orphaned tasks' );?>
+		</input></td>
 
 </tr>
 
@@ -300,8 +303,10 @@ if($do_report){
 	foreach($task_list_hash as $task_id => $task_data){
 		$task = new CTask();
 		$task->bind($task_data);
-		$task_list[$i] = $task;
 		$task_assigned_users[$i] = $task->getAssignedUsers();
+		$task->task_assigned_users = $task->getAssignedUsers();
+		$task_list[$i] = $task;
+
 		$i+=1;
 	}
 	$Ntasks=$i;
@@ -366,7 +371,7 @@ if($do_report){
                         // count tasks per user;
                         $z=0;
                         foreach($task_list as $task) {
-		                if (isMemberOfTask($task_list,$task_assigned_users,$Ntasks,$user_id,$task)) { $z++; }
+		                if (isMemberOfTask($task_list,$Ntasks,$user_id,$task)) { $z++; }
 			}
 
 			$tmpuser= "<form name=\"assFrm$user_id\" action=\"index.php?m=tasks&a=tasksperuser\" method=\"post\">
@@ -414,10 +419,10 @@ if($do_report){
                         $zi=0;
 			foreach($task_list as $task) {
 				if (!isChildTask($task)) {
-					if (isMemberOfTask($task_list,$task_assigned_users,$Ntasks,$user_id,$task)) {
+					if (isMemberOfTask($task_list,$Ntasks,$user_id,$task)) {
 						$tmptasks.=displayTask($task_list,$task,0,$display_week_hours,$sss,$sse, $user_id);
 						// Get children
-						$tmptasks.=doChildren($task_list,$task_assigned_users,$Ntasks,
+						$tmptasks.=doChildren($task_list,$Ntasks,
 											  $task->task_id,$user_id,
 											  1,$max_levels,$display_week_hours,$sss,$sse);
 					}
@@ -432,16 +437,16 @@ if($do_report){
 	}
 }
 
-function doChildren($list,$Lusers,$N,$id,$uid,$level,$maxlevels,$display_week_hours,$ss,$se) {
+function doChildren($list,$N,$id,$uid,$level,$maxlevels,$display_week_hours,$ss,$se) {
 	$tmp="";
 	if ($maxlevels==-1 || $level<$maxlevels) {
 		for($c=0;$c<$N;$c++) {
 			$task=$list[$c];
 			if (($task->task_parent==$id) and isChildTask($task)) {
 				// we have a child, do we have the user as a member?
-				if (isMemberOfTask($list,$Lusers,$N,$uid,$task)) {
+				if (isMemberOfTask($list,$N,$uid,$task)) {
 					$tmp.=displayTask($list,$task,$level,$display_week_hours,$ss,$se, $uid);
-					$tmp.=doChildren($list,$Lusers,$N,$task->task_id,
+					$tmp.=doChildren($list,$N,$task->task_id,
                                      $uid,$level+1,$maxlevels,
                                      $display_week_hours,$ss,$se);
 				}
@@ -451,10 +456,10 @@ function doChildren($list,$Lusers,$N,$id,$uid,$level,$maxlevels,$display_week_ho
 return $tmp;
 }
 
-function isMemberOfTask($list,$Lusers,$N,$user_id,$task) {
+function isMemberOfTask($list,$N,$user_id,$task) {
 
 	for($i=0;$i<$N && $list[$i]->task_id!=$task->task_id;$i++);
-	$users=$Lusers[$i];
+	$users=$task->task_assigned_users;
 
 	//$users=$Lusers[$task->getAssignedUsers();
 	foreach($users as $task_user_id => $user_data) {
@@ -467,7 +472,7 @@ function isMemberOfTask($list,$Lusers,$N,$user_id,$task) {
 		$ntask=$list[$c];
 		if (($ntask->task_parent==$task->task_id) and isChildTask($ntask)) {
 			// we have a child task
-			if (isMemberOfTask($list,$Lusers,$N,$user_id,$ntask)) {
+			if (isMemberOfTask($list,$N,$user_id,$ntask)) {
 				return true;
 			}
 		}
@@ -544,7 +549,11 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 		$zm1 = $z - 1;
                 if ($zm1 ==0) $zm1 = 1;
 		$assUser = $users[$user_id]['user_first_name']." ".$users[$user_id]['user_last_name'];
-		$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users'), $user_id => "$assUser"));
+		if ($user_id == 0) {	// need to handle orphaned tasks different from tasks with existing assignees
+			$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users')));
+		} else {
+			$availUsers = array_diff( $system_users, array( 0 => $AppUI->_('All Users'), $user_id => "$assUser"));
+		}
                 $tmp.="<td valign=\"top\" align=\"center\" nowrap=\"nowrap\" rowspan=\"$zm1\">";
 		$tmp.= arraySelect( $availUsers, 'add_users', 'class="text" STYLE="width: 200px" size="'.($zz-1).'" multiple="multiple"',NULL );
                $tmp .= "</td>";
@@ -659,7 +668,57 @@ return false;
 
 <center>
 	<table width="100%" border="0" cellpadding="2" cellspacing="1" class="std">
-		<?php echo $table_header . $table_rows; ?>
+		<?php echo $table_header . $table_rows;		//show tasks with existing assignees
+
+		// show orphaned tasks
+		if (!$show_orphaned) {
+			$user_id = 0;	//reset user id to zero (create new object - no user)
+			$tmpuser = "<form name=\"assFrm$user_id\" action=\"index.php?m=tasks&a=tasksperuser\" method=\"post\">
+				<input type=\"hidden\" name=\"del\" value=\"1\" />
+				<input type=\"hidden\" name=\"rm\" value=\"0\" />
+				<input type=\"hidden\" name=\"store\" value=\"0\" />
+				<input type=\"hidden\" name=\"dosql\" value=\"do_task_assign_aed\" />
+				<input type=\"hidden\" name=\"user_id\" value=\"$user_id\" />
+				<input type=\"hidden\" name=\"hassign\" />
+				<input type=\"hidden\" name=\"htasks\" />
+				<tr>";
+			$tmpuser .= "<td bgcolor='#D0D0D0'><input onclick=\"javascript:checkAll($user_id);\" type=\"checkbox\" name=\"master\" value=\"true\"/></td>
+				<td colspan='2' align='left' nowrap='nowrap' bgcolor='#D0D0D0'>
+				<font color='black'>
+				<B><a href='index.php?m=calendar&a=day_view&user_id=$user_id&tab=1'>".$AppUI->_('Orphaned Tasks')."</a></B></font></td>";
+
+			for($w=0;$w<=(4+weekCells($display_week_hours,$sss,$sse));$w++) {
+				$tmpuser.="<td bgcolor='#D0D0D0'></td>";
+			}
+			$tmpuser .="<td bgcolor=\"#D0D0D0\"><table width=\"100%\"><tr>";
+				$tmpuser .="<td align=\"left\">".
+				"<a href='javascript:chAssignment($user_id, 0, false);'>".
+				dPshowImage(dPfindImage('add.png', 'tasks'), 16, 16, 'Assign Users', 'Assign selected Users to selected Tasks')."</a></td>";
+				$tmpuser .= "<td align=\"center\"></td>";
+				$tmpuser .= "<td align=\"center\">".arraySelect( $priority, 'task_priority', 'onchange="javascript:chPriority('.$user_id.');" size="1" class="text" title="'.$AppUI->_('Change Priority of selected Tasks').'"', 0, true );
+				$tmpuser .= "</td></tr></table></td>";
+
+				$tmpuser.="</tr>";
+
+			function getOrphanedTasks($tval) {
+				return (sizeof($tval->task_assigned_users) > 0) ? NULL : $tval;
+			}
+
+			$orphTasks = array_diff(array_map("getOrphanedTasks",$task_list), array(NULL));
+			foreach($orphTasks as $task) {
+				if (!isChildTask($task)) {
+					$tmptasks.=displayTask($orphTasks,$task,0,$display_week_hours,$sss,$sse, $user_id);
+					// Get children
+					$tmptasks.=doChildren($orphTasks,$Ntasks,$task->task_id,$user_id,
+										1,$max_levels,$display_week_hours,$sss,$sse);
+				}
+			}
+			if ($tmptasks != "") {
+				echo $tmpuser;
+				echo $tmptasks."</form>";
+			}
+
+		}	// end of show orphaned tasks
+		?>
 	</table>
 </center>
-
