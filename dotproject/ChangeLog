@@ -1,3 +1,27 @@
+2004-01-14 00:11  (dylan_cuthbert)
+---------------------------------
+classes/dp.class.php
+locales/en/common.inc
+locales/en/system.inc
+modules/projects/addedit.php
+modules/projects/projects.class.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/view.php
+modules/tasks/vw_logs.php
+style/classic/main.css
+style/default/login.php
+style/default/main.css
+- auto-login system test
+- task sorting
+- project template patch
+
+2004-01-12 17:29  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-01-11 22:39  (gregorerhardt)
 ---------------------------------
 modules/admin/vw_usr_perms.php
@@ -474,30 +498,6 @@ modules/tasks/tasks.class.php
 modules/tasks/view.php
 - Custom fields in tasks can now be created. A record with serialized data must be added to the sysvals table like: TaskCustomFields->0|a:3:{s:4:"name";s:12:"Quote number";s:4:"type";s:4:"text";s:7:"options";s:24:"maxlength="12" size="10"";}
 - A new text box will be displayed for input with the leyend quote number in the tasks module.
-
-2003-12-07 21:47  (jcgonz)
----------------------------------
-modules/tasks/view.php
-- Dynamic task's logs have been disabled since dynamic tasks are not really tasks but a group of them. If you wish to have the previous behavior please remember to unset your dynamic tasks.
-
-2003-12-07 21:21  (jcgonz)
----------------------------------
-classes/date.class.php
-modules/tasks/addedit.php
-modules/tasks/view.php
-- Tasks now have due times for those really efficient organizations out there!
-
-2003-12-07 16:34  (gregorerhardt)
----------------------------------
-modules/projects/addedit.php
-- made consistent implementation of the original popCalendar
-
-2003-12-07 16:27  (gregorerhardt)
----------------------------------
-modules/projects/addedit.php
-- fix for #854623; while have now a working calendar again, the current situation with the two JSCalendars is not satisfying
-
-2003-12-07 09:22  (kripper)
 ...
 
 (This file has been wrapped)
