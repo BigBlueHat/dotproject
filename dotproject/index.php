@@ -4,6 +4,7 @@ error_reporting( E_ALL );
 
 require_once( "./includes/config.php" );
 require_once( "$root_dir/includes/db_connect.php" );
+require_once( "$root_dir/misc/debug.php" );
 require_once( "$root_dir/classdefs/ui.php" );
 
 session_start();
@@ -19,6 +20,7 @@ if (!isset($_SESSION['AppUI']) || isset($_GET['logout'])) {
 	$_SESSION['AppUI'] = new CAppUI;
 }
 $AppUI =& $_SESSION['AppUI'];
+writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
 
 @include_once( "$root_dir/locales/$AppUI->user_locale/locales.php" );
 header("Content-type: text/html;charset=$locale_char_set");

@@ -1,7 +1,8 @@
 <?php
 require_once( "./includes/config.php" );
-require_once( "./includes/db_connect.php" );
-require_once( "./classdefs/ui.php" );
+require_once( "$root_dir/includes/db_connect.php" );
+require_once( "$root_dir/misc/debug.php" );
+require_once( "$root_dir/classdefs/ui.php" );
 session_start();
 session_register('AppUI');
 
