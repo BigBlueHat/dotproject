@@ -35,7 +35,7 @@
 		$update_address     = isset($_POST["overwrite_address"]);
 			
 		if($table_name == "companies"){
-//			$update_fields = array("company_name"     => "contact_company");
+			$update_fields = array("company_name"     => "contact_company");
 			if($update_address){
 				$update_fields += array("company_address1" => "contact_address1",
 				                       "company_address2" => "contact_address2",
