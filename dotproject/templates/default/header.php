@@ -27,9 +27,9 @@ function tboff(){
 }
 </script>
 <title><?php echo $page_title;?></title>
-<link rel="stylesheet" href="<?php echo TEMPLATE . "/styles/main.css" ?>" type="text/css">
+<link rel="stylesheet" href="<?php echo $template_html . "/styles/main.css" ?>" type="text/css">
 </head>
-<body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="<?php echo TEMPLATE . "/images/bground.gif"; ?>">
+<body bgcolor="#ffffff" topmargin="0" leftmargin="0" marginheight=0 marginwidth=0 background="<?php echo "$template_html/images/bground.gif"; ?>">
 <table width="100%" cellpadding="3" cellspacing="0" bgcolor="#cccccc" style="border: outset #eeeeee 2px;">
 <tr>
 	<td nowrap width="33%"><?php echo $company_name;?></td>

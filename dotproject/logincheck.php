@@ -15,7 +15,7 @@ $AppUI =& $HTTP_SESSION_VARS['AppUI'];
 $ok = $AppUI->login( $username, $password );
 if (!$ok) {
 	$message = 'Login Failed';
-	include TEMPLATE . "/login.php";
+	include "$template/login.php";
 	die;
 }
 echo '<script language="javascript">window.location = "./index.php";</script>';

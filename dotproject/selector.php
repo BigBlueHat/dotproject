@@ -1,6 +1,6 @@
 <html>
 <head>
-	<link rel="stylesheet" href="<?php echo TEMPLATE . "/styles/main.css" ?>" type="text/css">
+	<link rel="stylesheet" href="<?php echo "$template/styles/main.css" ?>" type="text/css">
 <?php
 $debug = false;
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;

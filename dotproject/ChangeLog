@@ -1,3 +1,976 @@
+2003-01-07 20:23  (kripper)
+---------------------------------
+includes/config.php
+- Added DEFAULT_TEMPLATE define
+
+2003-01-07 19:36  (kripper)
+---------------------------------
+templates/default/header.php
+templates/default/images/bground.gif
+templates/default/styles/main.css
+- Added default template
+
+2003-01-07 18:09  (kripper)
+---------------------------------
+tools/README
+tools/cvs2cl.pl
+- Added cvs2cl script used to generate DP's Changelog
+
+2003-01-07 18:02  (kripper)
+---------------------------------
+dept_selector.php
+index.php
+logincheck.php
+selector.php
+- Templates integration
+
+2003-01-07 01:07  (eddieajau)
+---------------------------------
+db/dotproject.sql
+db/dotproject_022_to_023.sql
+- Added time format preference
+
+2003-01-07 01:05  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+- Fixed bug in project id and prev,next arrows
+
+2003-01-07 00:58  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+- File upgraded to new code-base, etc
+
+2003-01-07 00:55  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+modules/tasks/gantt.php
+- Trimmed task name to 25 characters to improve view
+
+2003-01-07 00:53  (eddieajau)
+---------------------------------
+locales/en/tasks.inc
+locales/en/admin.inc
+- Content update
+
+2003-01-07 00:41  (eddieajau)
+---------------------------------
+dosql/addeditTask.php
+- Patched date formats (interim solution only)
+
+2003-01-07 00:40  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Modified db_loadHashList to allow storage of whole hash
+
+2003-01-07 00:39  (eddieajau)
+---------------------------------
+locales/en/projects.inc
+- Content update
+
+2003-01-07 00:38  (eddieajau)
+---------------------------------
+modules/forums/view_topics.php
+modules/forums/viewer.php
+- Based date display on locale
+
+2003-01-06 23:23  (eddieajau)
+---------------------------------
+modules/files/index.php
+modules/files/index_table.php
+- Split index file so that project files tab could reuse the same code to display the table
+
+2003-01-06 23:19  (eddieajau)
+---------------------------------
+modules/projects/vw_files.php
+- Removed code duplication.  Now uses common include from files module.
+
+2003-01-06 22:24  (eddieajau)
+---------------------------------
+modules/files/index.php
+- Changed date formatting according to locales.
+- Limited the projects selection list to only those projects that have files.
+
+2003-01-06 01:44  (eddieajau)
+---------------------------------
+locales/en/forums.inc
+locales/en/system.inc
+- Content updated
+
+2003-01-06 01:43  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Reorganised the display of date and time formatting
+
+2003-01-06 01:42  (eddieajau)
+---------------------------------
+modules/companies/view.php
+modules/companies/vw_active.php
+- Added support for formatting dates based on locale
+
+2003-01-06 01:41  (eddieajau)
+---------------------------------
+calendar.php
+- Locales support
+
+2003-01-06 01:14  (eddieajau)
+---------------------------------
+selector.php
+- Added in task support and added company filter to project selection
+
+2003-01-05 22:59  (eddieajau)
+---------------------------------
+modules/forums/index.php
+- Date formatting adjusted to suit locale
+
+2003-01-05 21:45  (eddieajau)
+---------------------------------
+classdefs/calendar.php
+index.php
+- Date formatting adjusted to suit locale
+
+2003-01-05 21:45  (eddieajau)
+---------------------------------
+classdefs/project.php
+- File now redundant
+
+2003-01-05 21:43  (eddieajau)
+---------------------------------
+locales/en/calendar.inc
+- Content updated
+
+2003-01-05 21:42  (eddieajau)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Date formatting adjusted to suit locale
+
+2003-01-04 03:56  (eddieajau)
+---------------------------------
+dosql/addeditTask.php
+dosql/updatetask.php
+- Now uses session variable instead of user cookie
+
+2003-01-04 03:54  (eddieajau)
+---------------------------------
+dosql/contact_aed.php
+dosql/perms_aed.php
+- Renamed and updated to new code-base
+
+2003-01-04 03:53  (eddieajau)
+---------------------------------
+dosql/addeditdel_contact.php
+dosql/aed_perms.php
+- Files renamed
+
+2003-01-04 03:50  (eddieajau)
+---------------------------------
+classdefs/calendar.php
+- Fixed bug in assignment of private field before storing
+
+2003-01-04 03:49  (eddieajau)
+---------------------------------
+classdefs/projects.php
+- New field to mark a project as private
+
+2003-01-04 03:49  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Minor change to handling of 'extra' text in tabbed box class
+
+2003-01-04 03:48  (eddieajau)
+---------------------------------
+classdefs/admin.php
+classdefs/contacts.php
+- Initial upload
+
+2003-01-04 03:47  (eddieajau)
+---------------------------------
+db/dotproject.sql
+db/dotproject_022_to_023.sql
+- Upgrades for table changes
+
+2003-01-04 03:46  (eddieajau)
+---------------------------------
+includes/permissions.php
+- Deleted user cookie
+
+2003-01-04 03:45  (eddieajau)
+---------------------------------
+includes/login.php
+- Minor change to text
+
+2003-01-04 03:44  (eddieajau)
+---------------------------------
+locales/cs/common.inc
+locales/en/admin.inc
+locales/en/calendar.inc
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/contacts.inc
+locales/en/projects.inc
+locales/en/system.inc
+locales/en/tasks.inc
+locales/es/common.inc
+locales/pt_br/common.inc
+- Content updated
+
+2003-01-04 03:42  (eddieajau)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/dosql.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_proj.php
+- Module upgraded to new code-base, etc
+
+2003-01-04 03:41  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+- Minor alteration to text
+
+2003-01-04 03:40  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+- Added language support
+
+2003-01-04 03:39  (eddieajau)
+---------------------------------
+modules/contacts/addedit.php
+modules/contacts/index.php
+- Module upgraded to new code-base, etc
+
+2003-01-04 03:38  (eddieajau)
+---------------------------------
+modules/files/index.php
+- Updated user cookie with session variable
+
+2003-01-04 03:37  (eddieajau)
+---------------------------------
+modules/projects/view.php
+- Assigns project id to session variable when viewing project
+
+2003-01-04 03:36  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+modules/system/index.php
+modules/system/translate.php
+- Updated language support and bread crumbs
+
+2003-01-04 03:35  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/dosql.php
+modules/tasks/index.php
+modules/tasks/tasks.php
+modules/tasks/view.php
+- Partial upgrade to new code-base
+
+2003-01-04 03:34  (eddieajau)
+---------------------------------
+modules/ticketsmith/comment.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.php
+- User id now based on session variable
+
+2003-01-04 03:28  (eddieajau)
+---------------------------------
+index.php
+- Finally got rid of the cookies...crunch
+
+2003-01-03 07:05  (eddieajau)
+---------------------------------
+locales/en/calendar.inc
+- Content updated
+
+2003-01-03 07:04  (eddieajau)
+---------------------------------
+modules/calendar/day_view.php
+- Upgrade db, code-base, language and cosmetics
+
+2003-01-03 07:03  (eddieajau)
+---------------------------------
+modules/calendar/week_view.php
+- Added security check
+
+2003-01-03 04:18  (eddieajau)
+---------------------------------
+locales/en/calendar.inc
+- Initial upload
+
+2003-01-03 04:12  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+- Minor change to require statement
+
+2003-01-03 04:11  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Changed placement of calendar popup
+
+2003-01-03 04:11  (eddieajau)
+---------------------------------
+modules/companies/view.php
+modules/projects/view.php
+- Styling changes
+
+2003-01-03 04:10  (eddieajau)
+---------------------------------
+modules/calendar/week_view.php
+- Refurbished to fit in with new codebase and changes to the CDate class
+
+2003-01-03 04:10  (eddieajau)
+---------------------------------
+modules/calendar/index.php
+- Month calendar rebuilt around new CMonthCalendar class
+
+2003-01-03 04:09  (eddieajau)
+---------------------------------
+modules/calendar/addedit.php
+- Upgraded db, language support, popup calendar and cosmetic changes
+
+2003-01-03 04:08  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Major overhaul.
+- Reduced to two reusable functions that search for tasks and events within a date period.
+
+2003-01-03 04:07  (eddieajau)
+---------------------------------
+dosql/event_aed.php
+- Original file rebadged and updated to new codebase
+
+2003-01-03 04:06  (eddieajau)
+---------------------------------
+dosql/addeditdel_event.php
+- Renamed to event_aed
+
+2003-01-03 04:05  (eddieajau)
+---------------------------------
+classdefs/date.php
+- Added new comparison functions
+
+2003-01-03 04:05  (eddieajau)
+---------------------------------
+classdefs/calendar.php
+- Provides new CMonthCalendar class used by the main month calendar and popup calendar.
+- Includes CEvent class
+
+2003-01-03 04:03  (eddieajau)
+---------------------------------
+classdefs/event.php
+- Replaced by calendar class file
+
+2003-01-03 04:02  (eddieajau)
+---------------------------------
+calendar.php
+- Converted to using month calendar class
+
+2003-01-02 04:13  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+- Garbage removal
+
+2003-01-02 04:12  (eddieajau)
+---------------------------------
+classdefs/date.php
+- Update to handle priming a date with the zero unix time
+
+2003-01-02 04:07  (eddieajau)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/viewgantt.php
+- Update popcalendar handling
+
+2003-01-02 04:05  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Minor modification to calendar handling
+
+2003-01-02 02:49  (eddieajau)
+---------------------------------
+modules/files/addedit.php
+modules/files/index.php
+- Upgrade code-base, language support and cosmetic changes.
+
+2003-01-02 02:48  (eddieajau)
+---------------------------------
+modules/projects/addedit.php
+- Added missing call to AppUI->_
+
+2003-01-02 02:47  (eddieajau)
+---------------------------------
+modules/system/translate.php
+- Added support for all modules
+- (not all may be converted yet, though)
+
+2003-01-02 02:45  (eddieajau)
+---------------------------------
+locales/en/files.inc
+- Initial upload
+
+2003-01-02 02:45  (eddieajau)
+---------------------------------
+locales/en/projects.inc
+- Content updated
+
+2003-01-02 02:44  (eddieajau)
+---------------------------------
+dosql/file_index_ignore.php
+- Renamed from stopwords
+- Reformatted into plain array so that the function including this file does to operation on each word
+- (rather than the user having to know what is done)
+
+2003-01-02 02:43  (eddieajau)
+---------------------------------
+dosql/file_aed.php
+- Combined addfile.php and delfile.php
+- Upgraded to new codebase
+- Upload file moving and indexing now done as a part of the CFile class
+
+2003-01-02 02:41  (eddieajau)
+---------------------------------
+dosql/stopwords.php
+- Renamed to file_index_ignore.php
+
+2003-01-02 02:40  (eddieajau)
+---------------------------------
+dosql/addfile.php
+dosql/delfile.php
+- Files merged into file_aed.php
+
+2003-01-02 02:39  (eddieajau)
+---------------------------------
+includes/english.php
+- File redundant
+
+2003-01-02 02:38  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Fixed bug in redirect method
+
+2003-01-02 02:38  (eddieajau)
+---------------------------------
+classdefs/files.php
+- Initial upload of CFiles class
+
+2003-01-02 02:36  (eddieajau)
+---------------------------------
+fileviewer.php
+- Updated for new code-base
+
+2003-01-01 22:19  (eddieajau)
+---------------------------------
+modules/tasks/organizer.php
+modules/tasks/view.php
+- Minor fixes
+
+2003-01-01 20:55  (eddieajau)
+---------------------------------
+images/bground.gif
+- Backgrond image is now handled in the style directory
+
+2003-01-01 20:50  (eddieajau)
+---------------------------------
+modules/projects/vw_tasks.php
+modules/projects/addedit.php
+modules/projects/dosql.php
+modules/projects/view.php
+modules/projects/vw_files.php
+modules/projects/vw_forums.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Upgrade of db function calls, language support, costmetic changes and calendar handling
+
+2003-01-01 20:49  (eddieajau)
+---------------------------------
+modules/system/addeditpref.php
+- Added support for user interface style
+
+2003-01-01 20:48  (eddieajau)
+---------------------------------
+modules/system/translate.php
+- Added projects to supported modules
+
+2003-01-01 20:47  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+- Title was not language supported
+
+2003-01-01 20:46  (eddieajau)
+---------------------------------
+locales/en/common.inc
+locales/en/companies.inc
+locales/en/projects.inc
+locales/en/system.inc
+- Content update
+
+2003-01-01 20:45  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Moved db specific time conversion functions
+
+2003-01-01 20:45  (eddieajau)
+---------------------------------
+includes/login.php
+- Changes relating to styles
+
+2003-01-01 20:44  (eddieajau)
+---------------------------------
+includes/footer.php
+includes/header.php
+includes/leftnav.php
+- Header, footer and nav files moved to style sub-directory
+
+2003-01-01 20:43  (eddieajau)
+---------------------------------
+includes/db_mysql.php
+- Added db specific date conversion support functions
+
+2003-01-01 20:42  (eddieajau)
+---------------------------------
+db/dotproject_022_to_023.sql
+- Added UISTYLE user preference
+
+2003-01-01 20:40  (eddieajau)
+---------------------------------
+db/dotproject.sql
+- Changed admin person to type 1 (administrator)
+- Added UISTYLE user preference
+
+2003-01-01 20:37  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added support for user interface styles
+
+2003-01-01 20:37  (eddieajau)
+---------------------------------
+classdefs/projects.php
+- Upgrade db function calls, language support, cosmetic changes and calendar functions
+
+2003-01-01 20:35  (eddieajau)
+---------------------------------
+classdefs/date.php
+- Added method to get the number of 'blank spaces' at the start of the standard grid calendar
+
+2003-01-01 20:33  (eddieajau)
+---------------------------------
+classdefs/companies.php
+- Changes to use get_class function rather than hard-coded class name in some message returns
+
+2003-01-01 20:26  (eddieajau)
+---------------------------------
+calendar.php
+- Major re-write
+- Calendar is passed and returns the unix time stamp and a 'callback' in the parent window handles all the form logic.
+
+2003-01-01 20:25  (eddieajau)
+---------------------------------
+index.php
+- Added support for user interface styles
+
+2002-12-31 16:58  (kripper)
+---------------------------------
+locales/es/common.inc
+- Locales update
+
+2002-12-31 16:57  (kripper)
+---------------------------------
+modules/tasks/reorder.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+- Moved tasks reordering code from 'reorder.php' into 'tasks.php'.
+
+2002-12-31 09:30  (kripper)
+---------------------------------
+modules/projects/vw_tasks.php
+- Fixed undefined vars warning
+
+2002-12-31 01:56  (kripper)
+---------------------------------
+modules/help/framed/includes/config.php
+- Integrated dotproject's configuration file in dothelp as proposed in
+- my mail.
+
+2002-12-31 01:53  (kripper)
+---------------------------------
+includes/main_functions.php
+- Changed dothelp's default window size
+
+2002-12-31 01:52  (kripper)
+---------------------------------
+index.php
+- Commented out 'var_export' function (not supported before PHP 4.2)
+
+2002-12-31 01:49  (kripper)
+---------------------------------
+modules/projects/vw_tasks.php
+modules/tasks/index.php
+modules/tasks/tasks.php
+- Added tasks.php with common code for displaying tasks. This file will
+- be used by modules/tasks/index.php and modules/projects/vw_tasks.php.
+
+2002-12-29 09:26  (eddieajau)
+---------------------------------
+modules/companies/vw_archived.php
+- Minor reformatting
+
+2002-12-29 09:25  (eddieajau)
+---------------------------------
+modules/companies/vw_active.php
+- Added user date format and minor reformatting
+
+2002-12-29 09:19  (eddieajau)
+---------------------------------
+index.php
+logincheck.php
+- Added debug loggingfor some things
+
+2002-12-29 09:18  (eddieajau)
+---------------------------------
+misc/debug.php
+- Initial upload of debug logging handler
+
+2002-12-29 09:14  (eddieajau)
+---------------------------------
+includes/db_mysql.php
+- Added db version function
+
+2002-12-29 09:13  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Improved debugging
+
+2002-12-29 09:12  (eddieajau)
+---------------------------------
+classdefs/forums.php
+- Fix undeclared variable
+
+2002-12-29 09:11  (eddieajau)
+---------------------------------
+classdefs/date.php
+- Minor fix to prevent error in getdate function return
+
+2002-12-25 17:36  (kripper)
+---------------------------------
+classdefs/ui.php
+- Fixed warning due to undefined msg and nomsg vars after logging in
+
+2002-12-24 03:35  (eddieajau)
+---------------------------------
+misc/diagnostics.php
+- Initial upload
+
+2002-12-20 01:17  (eddieajau)
+---------------------------------
+db/dotproject.sql
+- Included all the upgrade statements
+
+2002-12-20 01:05  (eddieajau)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+- Fixed bug in sort by project end date
+
+2002-12-20 01:04  (eddieajau)
+---------------------------------
+modules/projects/index.php
+- Added context help
+- Added saving state of tab, orderby, etc
+
+2002-12-20 01:03  (eddieajau)
+---------------------------------
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+- Added context help
+
+2002-12-20 01:03  (eddieajau)
+---------------------------------
+modules/companies/vw_active.php
+- Fixed undeclared variable
+
+2002-12-20 01:01  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added a merge array function
+
+2002-12-20 01:01  (eddieajau)
+---------------------------------
+includes/header.php
+- Change help back to about.  Help now linked in context
+
+2002-12-20 01:00  (eddieajau)
+---------------------------------
+images/obj/help.gif
+- Initial upload
+
+2002-12-20 00:59  (eddieajau)
+---------------------------------
+db/dotproject_help.sql
+- Content added
+
+2002-12-20 00:58  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Minor fix to the return value of the getState method
+
+2002-12-19 03:43  (eddieajau)
+---------------------------------
+modules/help/framed/footer.html
+modules/help/framed/help.css
+modules/help/framed/index.php
+modules/help/framed/keywords.php
+modules/help/framed/main.php
+modules/help/framed/search.php
+modules/help/framed/toc.php
+modules/help/framed/top.php
+modules/help/framed/vw_class.php
+modules/help/framed/vw_method.php
+modules/help/framed/vw_page.php
+modules/help/framed/classes/ui.class.php
+modules/help/framed/images/dothelp.gif
+modules/help/framed/images/print_1.gif
+modules/help/framed/includes/config.php
+modules/help/framed/includes/db_connect.php
+modules/help/framed/includes/db_mysql.php
+modules/help/framed/includes/footer.php
+modules/help/framed/includes/header.php
+modules/help/framed/locales/core.php
+modules/help/framed/locales/en/common.inc
+modules/help/framed/locales/en/viewer.inc
+modules/help/framed/uploads/dp.gif
+- Initial upload of help db framework
+
+2002-12-19 03:41  (eddieajau)
+---------------------------------
+db/dotproject_help.sql
+- Started help database
+
+2002-12-19 03:37  (eddieajau)
+---------------------------------
+modules/help/about.php
+- Help has taken over the job of this file.  Farewell faithful servant
+
+2002-12-19 03:36  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Added function to link context help
+
+2002-12-19 03:32  (eddieajau)
+---------------------------------
+includes/header.php
+- About link dropped, help activated
+
+2002-12-19 03:31  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Default user_locale set on ui object creation
+
+2002-12-18 20:23  (eddieajau)
+---------------------------------
+modules/system/index.php
+modules/system/translate.php
+- Added support for system module translation
+
+2002-12-18 20:22  (eddieajau)
+---------------------------------
+images/icons/preference.gif
+- Initial upload
+
+2002-12-18 20:21  (eddieajau)
+---------------------------------
+classdefs/ui.php
+- Added Czech language support
+
+2002-12-18 20:17  (eddieajau)
+---------------------------------
+locales/es/admin.txt
+locales/es/calendar.txt
+locales/es/contacts.txt
+locales/es/forums.txt
+locales/es/projects.txt
+locales/es/tasks.txt
+locales/pt_br/admin.txt
+locales/pt_br/calendar.txt
+locales/pt_br/companies.txt
+locales/pt_br/contacts.txt
+locales/pt_br/files.txt
+locales/pt_br/forums.txt
+locales/pt_br/general.txt
+locales/pt_br/projects.txt
+locales/pt_br/tasks.txt
+locales/es/files.txt
+- File deleted
+
+2002-12-18 20:16  (eddieajau)
+---------------------------------
+locales/cs/common.inc
+locales/cs/companies.inc
+locales/cs/forums.inc
+locales/cs/help.inc
+locales/en/system.inc
+- Initial upload
+
+2002-12-18 20:13  (eddieajau)
+---------------------------------
+locales/pt_br/locales.php
+locales/fr/locales.php
+locales/es/locales.php
+locales/en/locales.php
+locales/de/locales.php
+locales/cs/locales.php
+- Added support for defining character set in locales
+
+2002-12-18 20:09  (eddieajau)
+---------------------------------
+index.php
+- Added support for defining character set in locales
+
+2002-12-17 03:09  (eddieajau)
+---------------------------------
+modules/tasks/todo.php
+- Added colour gradient
+- Based date calculation on CDate object
+
+2002-12-17 03:08  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Update db function calls and AppUI functions
+
+2002-12-17 03:06  (eddieajau)
+---------------------------------
+modules/calendar/week_view.php
+- Date to CDate
+
+2002-12-17 03:04  (eddieajau)
+---------------------------------
+dosql/addeditTask.php
+- Quick fix to add saved redirect
+
+2002-12-17 03:03  (eddieajau)
+---------------------------------
+db/dotproject_022_to_023.sql
+modules/system/addeditpref.php
+- Added short date format default
+
+2002-12-17 03:02  (eddieajau)
+---------------------------------
+classdefs/date.php
+- Rename to CDate (to distinguish as custom class)
+- Added format property
+
+2002-12-16 23:43  (eddieajau)
+---------------------------------
+modules/tasks/todo.php
+- Patched variable scope and declaration
+- Added breadcrumbs
+- Cosmetic code-base upgrades
+
+2002-12-16 23:42  (eddieajau)
+---------------------------------
+modules/tasks/viewgantt.php
+- Patched variable scope and declaration
+- Added breadcrumbs
+
+2002-12-16 23:41  (eddieajau)
+---------------------------------
+modules/tasks/index.php
+- Patched variable scope and declaration
+- Added link to todo page
+
+2002-12-16 23:36  (eddieajau)
+---------------------------------
+modules/projects/view.php
+modules/projects/vw_gantt.php
+- Added gantt tab
+
+2002-12-16 23:35  (eddieajau)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_forums.php
+modules/projects/vw_tasks.php
+- Patch variable scope and declaration
+
+2002-12-16 23:34  (eddieajau)
+---------------------------------
+functions/tasks_func.php
+- Patch scope of work hours constant
+
+2002-12-16 20:30  (eddieajau)
+---------------------------------
+modules/system/translate.php
+- Restricted security to users of type Administrator (1) only
+
+2002-12-16 20:29  (eddieajau)
+---------------------------------
+modules/forums/post_message.php
+- Fixed bug in subject
+
+2002-12-16 20:28  (eddieajau)
+---------------------------------
+modules/companies/index.php
+- Updated user_cookie to AppUI variable
+
+2002-12-16 20:27  (eddieajau)
+---------------------------------
+locales/es/companies.txt
+locales/es/general.txt
+- Removed from CVS
+
+2002-12-16 20:24  (eddieajau)
+---------------------------------
+includes/permissions.php
+- Update user_cookie to AppUI variable
+
+2002-12-16 20:24  (eddieajau)
+---------------------------------
+includes/login.php
+- Deleted cookie
+
+2002-12-16 20:23  (eddieajau)
+---------------------------------
+functions/calendar_func.php
+- Updated user_cookie to AppUI variable
+
+2002-12-16 20:22  (eddieajau)
+---------------------------------
+functions/admin_func.php
+- Added comments
+
+2002-12-16 20:20  (eddieajau)
+---------------------------------
+index.php
+classdefs/ui.php
+- Removed cookies and emulated legacy cookie vars
+
+2002-12-16 07:53  (kripper)
+---------------------------------
+modules/tasks/organizer.php
+modules/tasks/todo.php
+modules/tasks/viewgantt.php
+- Added "due in" in Todo
+- Use new date conversion functions
+
+2002-12-16 07:51  (kripper)
+---------------------------------
+functions/tasks_func.php
+includes/main_functions.php
+- Standarized date formating functions
+
+2002-12-16 05:36  (kripper)
+---------------------------------
+ChangeLog
+locales/es/common.inc
+locales/es/companies.inc
+- Updated Changelog
+- Updated spanish translation
+
 2002-12-16 03:54  (eddieajau)
 ---------------------------------
 classdefs/ui.php
@@ -55,12 +1028,6 @@ logincheck.php
 ---------------------------------
 index.php
 - Corrected error in undefined array index.
-
-2002-12-16 03:38  (eddieajau)
----------------------------------
-style/main.css
-- Removed hardcoded height and width from .textarea style
-- Too restrictive.
 
 2002-12-16 03:37  (eddieajau)
 ---------------------------------
@@ -398,11 +1365,6 @@ images/icons/system.gif
 images/icons/world.gif
 - Initial upload
 
-2002-12-09 08:53  (eddieajau)
----------------------------------
-style/main.css
-- Added sub-title style
-
 2002-12-09 08:23  (kripper)
 ---------------------------------
 functions/tasks_func.php
@@ -499,11 +1461,6 @@ modules/admin/viewuser.php
 - added locale selection box in addedituser form
 - displays user locale in viewuser form
 - demonstrates save place when editting (eg from index page or view page)
-
-2002-12-06 04:08  (eddieajau)
----------------------------------
-style/main.css
-- Added style for no language support
 
 2002-12-06 04:07  (eddieajau)
 ---------------------------------
@@ -612,11 +1569,6 @@ classdefs/ui.php
 - Added - functions to save your place (to get bakc from editting something)
 - functions for messages (including icons for different types)
 
-2002-12-05 03:52  (eddieajau)
----------------------------------
-style/main.css
-- Added styles for messages
-
 2002-12-05 03:51  (eddieajau)
 ---------------------------------
 index.php
@@ -703,11 +1655,6 @@ includes/permissions.php
 ---------------------------------
 includes/db_connect.php
 - Modifications.  See CHANGELOG
-
-2002-12-02 19:40  (eddieajau)
----------------------------------
-style/main.css
-- Added style for standard error
 
 2002-12-02 19:39  (eddieajau)
 ---------------------------------
@@ -959,11 +1906,6 @@ modules/projects/vw_forums.php
 modules/projects/vw_tasks.php
 - Many cosmetic changes.  See CHANGELOG.TXT
 
-2002-11-05 04:15  (eddieajau)
----------------------------------
-style/main.css
-- Minor addition
-
 2002-11-05 04:14  (eddieajau)
 ---------------------------------
 dept_selector.php
@@ -1093,11 +2035,6 @@ functions/tasks_func.php
 dosql/watch_forum.php
 functions/forums_func.php
 - Initial upload
-
-2002-10-25 00:21  (eddieajau)
----------------------------------
-style/main.css
-- Consolidating styles
 
 2002-10-25 00:20  (eddieajau)
 ---------------------------------
@@ -2101,7 +3038,6 @@ logincheck.php
 modules/ticketsmith/CHANGELOG
 modules/ticketsmith/admin.php
 modules/ticketsmith/comment.php
-style/main.css
 modules/tasks/addedit.php
 modules/tasks/dosql.php
 modules/tasks/index.php
@@ -2256,7 +3192,6 @@ logincheck.php
 modules/ticketsmith/CHANGELOG
 modules/ticketsmith/admin.php
 modules/ticketsmith/comment.php
-style/main.css
 modules/tasks/addedit.php
 modules/tasks/dosql.php
 modules/tasks/index.php

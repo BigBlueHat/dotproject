@@ -82,7 +82,7 @@ $tdw = floor( 100 / $carrWidth );
 	<td nowrap><span class="title"><?php echo $AppUI->_('Contacts');?></span></td>
 	<td align="right" width="100%">
 	<?php if (!$denyEdit) { ?>
-		<input type="button"  class=button value="<?php echo $AppUI->_('new contact');?>" onClick="javascript:window.location='./index.php?m=contacts&a=addedit'"></td>
+		<input type="button"  class=button value="<?php echo $AppUI->_('new contact', 0, true);?>" onClick="javascript:window.location='./index.php?m=contacts&a=addedit'"></td>
 	<?php } ?>
 	<td nowrap="nowrap" width="20" align="right"><?php echo contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'">', 'ID_HELP_CONT_IDX' );?></td>
 </tr>

@@ -85,14 +85,14 @@ class CAppUI {
 	If this is not the base lang, then return string with a red star appended to show
 	that a translation is required.
 */
-	function _( $str, $case=0 ) {
+	function _( $str, $case=0, $hide_warn=false ) {
 		if (empty( $str )) {
 			return '';
 		}
 		$x = @$GLOBALS['translate'][$str];
 		if ($x) {
 			$str = $x;
-		} else if ($this->locale_warn) {
+		} else if (!$hide_warn && $this->locale_warn) {
 			if ($this->base_locale != $this->user_locale ||
 				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
 				$str .= '<span class="no_">*</span>';
@@ -293,5 +293,4 @@ class CTabBox {
 		}
 	}
 }
-
 ?>
