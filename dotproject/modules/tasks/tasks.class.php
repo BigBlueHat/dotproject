@@ -12,10 +12,7 @@ class CTask {
 	var $task_owner = NULL;
 	var $task_start_date = NULL;
 	var $task_duration = NULL;
-	// BEGIN debug
-	// Added by kobudo 14 Feb 2003 to correct Undefined Index issue ['task_duration_type'] on /modules/tasks/view.php line 180
 	var $task_duration_type = NULL;
-	// END debug
 	var $task_hours_worked = NULL;
 	var $task_end_date = NULL;
 	var $task_status = NULL;
@@ -60,12 +57,9 @@ class CTask {
 		if (!$this->task_duration) {
 			$this->task_duration = '0';
 		}
-		// BEGIN debug
-		// Added by kobudo 14 Feb 2003 to correct Undefined Index issue ['task_duration_type'] on /modules/tasks/view.php line 180
 		if (!$this->task_duration_type) {
 			$this->task_duration_type = '';
 		}
-		// END debug
 		if (!$this->task_related_url) {
 			$this->task_related_url = '';
 		}

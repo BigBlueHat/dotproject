@@ -4,7 +4,6 @@ $del = isset($_POST['del']) ? $_POST['del'] : 0;
 $hassign = @$_POST['hassign'];
 $hdependencies = @$_POST['hdependencies'];
 $notify = isset($_POST['notify']) ? $_POST['notify'] : 0;
-$dayhour = isset($_POST['dayhour']) ? $_POST['dayhour'] : 1;
 
 $task = new CTask();
 
@@ -15,7 +14,6 @@ if (($msg = $task->bind( $_POST ))) {
 // convert dates to SQL format first
 $task->task_start_date = db_unix2DateTime( $task->task_start_date );
 $task->task_end_date = db_unix2DateTime( $task->task_end_date );
-$task->task_duration = $task->task_duration ? $task->task_duration * $dayhour : '0';
 
 //echo '<pre>';print_r( $task );echo '</pre>';die;
 if ($del) {
