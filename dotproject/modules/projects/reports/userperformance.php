@@ -82,34 +82,37 @@ function setCalendar( idate, fdate ) {
 <?php
 if($do_report){
 	
-	$sql = "SELECT u.user_username, 
-			u.user_first_name, 
-			u.user_last_name, 
-			sum( t.task_duration ) as hours_allocated ,
-			sum( tl.task_log_hours )  as hours_worked
-		FROM users AS u, 
-		         user_tasks AS ut, 
-		         tasks AS t 
-			LEFT  JOIN task_log AS tl ON ( tl.task_log_task = t.task_id ) 
-		WHERE ut.user_id = u.user_id 
-			AND ut.task_id = t.task_id";
-
+	// Let's figure out which users we have
+	$sql = "SELECT  u.user_id,
+	 				u.user_username, 
+					u.user_first_name, 
+					u.user_last_name
+	        FROM users AS u";
+	
+	$user_list = db_loadHashList($sql, "user_id");
+	
+	// Now which tasks will we need and the real allocated hours (estimated time / number of users)
+	// Also we will use tasks with duration_type = 1 (hours) and those that are not marked
+	// as milstones
+	$sql = "SELECT t.task_id, (t.task_duration/count(ut.task_id)) as hours_allocated
+	        FROM tasks as t, user_tasks as ut
+	        WHERE t.task_id = ut.task_id
+	              AND t.task_duration_type='1'
+				  AND t.task_milestone    ='0'";
+	
 	if(!$log_all_projects){
 		$sql .= " AND t.task_project='$project_id'\n";
 	}
 	
 	if(!$log_all){
 		$sql .= " AND t.task_start_date >= \"".$start_date->format( FMT_DATETIME_MYSQL )."\"
-		              AND t.task_start_date <= \"".$end_date->format( FMT_DATETIME_MYSQL )."\"";
-			   //AND tl.task_log_date >= \"".$start_date->format( FMT_DATETIME_MYSQL )."\"
-		              //AND tl.task_log_date <= \"".$end_date->format( FMT_DATETIME_MYSQL )."\"";
+		          AND t.task_start_date <= \"".$end_date->format( FMT_DATETIME_MYSQL )."\"";
 	}
 	
-	$sql .= " GROUP  BY u.user_id";
+	$sql .= "GROUP BY t.task_id";
 	
-	//echo "<pre>$sql</pre>";
-	$logs = db_loadlist($sql);
-	echo db_error();
+	$task_list = db_loadHashList($sql, "task_id");
+	
 ?>
 
 <table cellspacing="1" cellpadding="4" border="0" class="tbl">
@@ -121,33 +124,68 @@ if($do_report){
 	</tr>
 
 <?php
-	if($logs){
+	if(count($user_list)){
 		$percentage_sum = $hours_allocated_sum = $hours_worked_sum = 0;
+		$sum_total_hours_allocated = $sum_total_hours_worked = 0;
 		
-		foreach($logs as $log){
-			$percentage = $log["hours_allocated"]>0 ? ($log["hours_worked"]*100)/$log["hours_allocated"] : 100;
-			$percentage_sum += $percentage;
-			$hours_allocated_sum += number_format($log["hours_allocated"], 2);
-			$hours_worked_sum   += number_format($log["hours_worked"],2);
-			?>
-			<tr>
-				<td><?php echo "(".$log["user_username"].") </td><td> ".$log["user_first_name"]." ".$log["user_last_name"]; ?></td>
-				<td align='right'><?php echo number_format($log["hours_allocated"],2); ?> </td>
-				<td align='right'><?php echo number_format($log["hours_worked"],2); ?> </td>
-				<td align='right'> <?php echo number_format($percentage,0); ?>% </td>
-			</tr>
-			<?php
+		foreach($user_list as $user_id => $user){
+			$sql = "SELECT task_id
+			        FROM user_tasks
+			        where user_id = $user_id";
+			$tasks_id = db_loadColumn($sql);
+
+			$total_hours_allocated = $total_hours_worked = 0;
+			
+			foreach($tasks_id as $task_id){
+				if(isset($task_list[$task_id])){
+					// Now let's figure out how many time did the user spent in this task
+					$sql = "SELECT sum(task_log_hours)
+		        			FROM task_log
+		        			WHERE task_log_task        = $task_id
+					              AND task_log_creator = $user_id";
+					$hours_worked = db_loadResult($sql);
+					
+					$total_hours_allocated += $task_list[$task_id]["hours_allocated"];
+					$total_hours_worked    += $hours_worked;
+				}
+			}
+			
+			$sum_total_hours_allocated += $total_hours_allocated;
+			$sum_total_hours_worked    += $total_hours_worked;
+			
+			if($total_hours_allocated > 0 || $total_hours_worked > 0){
+				$percentage = 0;
+				if($total_hours_allocated>0){
+					$percentage = ($total_hours_worked/$total_hours_allocated)*100;
+				}
+				?>
+				<tr>
+					<td><?php echo "(".$user["user_username"].") </td><td> ".$user["user_first_name"]." ".$user["user_last_name"]; ?></td>
+					<td align='right'><?php echo $total_hours_allocated; ?> </td>
+					<td align='right'><?php echo $total_hours_worked; ?> </td>
+					<td align='right'> <?php echo number_format($percentage,0); ?>% </td>
+				</tr>
+				<?php
+			}
 		}
-		$percentage_average = number_format($percentage_sum/count($logs), 0);
+		$sum_percentage = 0;
+		if($sum_total_hours_allocated > 0){
+			$sum_percentage = ($sum_total_hours_worked/$sum_total_hours_allocated)*100;
+		}
 		?>
 			<tr>
 				<td colspan='2'><?php echo $AppUI->_('Total'); ?></td>
-				<td align='right'><?php echo $hours_allocated_sum; ?></td>
-				<td align='right'><?php echo $hours_worked_sum; ?></td>
-				<td align='right'><?php echo $percentage_average; ?>%</td>
+				<td align='right'><?php echo $sum_total_hours_allocated; ?></td>
+				<td align='right'><?php echo $sum_total_hours_worked; ?></td>
+				<td align='right'><?php echo number_format($sum_percentage,0); ?>%</td>
 			</tr>
 		<?php
 	} else {
+		?>
+		<tr>
+		    <td><p><?php echo $AppUI->_('There are no tasks that fulfill selected filters');?></p></td>
+		</tr>
+		<?php
 	}
 }
 ?>
