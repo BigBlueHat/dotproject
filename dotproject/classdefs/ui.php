@@ -48,9 +48,8 @@ class CAppUI {
 	var $cfg=null;
 
 // CAppUI Constructor
-	function CAppUI( &$cfg ) {
+	function CAppUI() {
 		$this->state = array();
-		$this->cfg = $cfg;
 
 		$this->user_id = -1;
 		$this->user_first_name = '';
@@ -66,8 +65,10 @@ class CAppUI {
 // set up the default preferences
 		$this->user_locale = $this->base_locale;
 		$this->user_prefs = array();
+	}
 
-		$this->checkStyle();
+	function setConfig( &$cfg ) {
+		$this->cfg = $cfg;
 	}
 
 	function checkStyle() {
