@@ -1,13 +1,22 @@
 <?php /* TASKS $Id$ */
 
-$project_id = isset( $_GET['project_id'] ) ? $_GET['project_id'] : 0;
+$project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
+$date = intval( dPgetParam( $_GET, 'date', '' ) );
 
 // check permissions
 $canEdit = !getDenyEdit( $m );
 
+// retrieve any state parameters
+if (isset( $_POST['show_form'] )) {
+	$AppUI->setState( 'TaskDayShowArc', dPgetParam( $_POST, 'show_arc_proj', 0 ) );
+	$AppUI->setState( 'TaskDayShowLow', dPgetParam( $_POST, 'show_low_task', 0 ) );
+}
+$showArcProjs = $AppUI->getState( 'TaskDayShowArc' ) !== NULL ? $AppUI->getState( 'TaskDayShowArc' ) : 0;
+$showLowTasks = $AppUI->getState( 'TaskDayShowLow' ) !== NULL ? $AppUI->getState( 'TaskDayShowLow' ) : 1;
+
 // if task priority set and items selected, do some work
-$task_priority = isset( $_POST['task_priority'] ) ? $_POST['task_priority'] : 99;
-$selected = isset( $_POST['selected'] ) ? $_POST['selected'] : 0;
+$task_priority = intval( dPgetParam( $_POST, 'task_priority', 99 ) );
+$selected = dPgetParam( $_POST, 'selected', 0 );
 
 if ($task_priority > -2 && $task_priority < 2 && count( $selected )) {
 	foreach ($selected as $key => $val) {
@@ -34,8 +43,8 @@ $sql = "
 		 AND user_tasks.user_id = $AppUI->user_id
 		 AND a.task_percent_complete != 100
 		 AND project_id = a.task_project" .
-  (!@$_POST["showArchivedProjects"] ? " AND project_active = 1" : "") .
-  (!@$_POST["show_low_tasks"] ? " AND a.task_priority >= 0" : "") .  
+  (!$showArcProjs ? " AND project_active = 1" : "") .
+  (!$showLowTasks ? " AND a.task_priority >= 0" : "") .  
   " GROUP BY a.task_id
 	ORDER BY a.task_start_date, task_priority DESC
 ";
@@ -50,22 +59,41 @@ $priorities = array(
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
-$titleBlock = new CTitleBlock( 'My Tasks To Do', 'applet-48.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=tasks", "tasks list" );
-$titleBlock->addCrumbRight(
-	'<input type=checkbox name="showArchivedProjects" ' . (@$_POST["showArchivedProjects"] ? "checked" : "")
-	. 'onclick=\'submit()\'> '.$AppUI->_('show archived projects')
-	. '<input type=checkbox name="show_low_tasks" ' . (@$_POST["show_low_tasks"] ? "checked" : "")
-	. 'onclick=\'submit()\'> '.$AppUI->_('show low priority tasks'), '',
-	'<form name="form_buttons" method="post">', '</form>' );
-$titleBlock->show();
+if (!@$min_view) {
+	$titleBlock = new CTitleBlock( 'My Tasks To Do', 'applet-48.png', $m, "$m.$a" );
+	$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+	$titleBlock->show();
+}
 ?>
 
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<form name="form" method="post">
+<table width="100%" border="0" cellpadding="1" cellspacing="0">
+<form name="form_buttons" method="post" action="index.php?<?php echo "m=$m&a=$a&date=$date";?>">
+<input type="hidden" name="show_form" value="1" />
+
 <tr>
-	<th width="10"><?php echo $AppUI->_('Id');?></th>
-	<th width="20"><?php echo $AppUI->_('Progress');?></th>
+	<td align="right" width="100%">
+		<?php echo $AppUI->_('Show'); ?>:
+	</td>
+	<td>
+		<input type=checkbox name="show_arc_proj" onclick="document.form_buttons.submit()" <?php echo $showArcProjs ? 'checked="checked"' : ""; ?> />
+	</td>
+	<td nowrap="nowrap">
+		<?php echo $AppUI->_('Archived Projects'); ?>
+	</td>
+	<td>
+		<input type=checkbox name="show_low_task" onclick="document.form_buttons.submit()" <?php echo $showLowTasks ? 'checked="checked"' : ""; ?> />
+	</td>
+	<td nowrap="nowrap">
+		<?php echo $AppUI->_('Low Priority Tasks'); ?>
+	</td>
+</tr>
+</form>
+</table>
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<form name="form" method="post" action="index.php?<?php echo "m=$m&a=$a&date=$date";?>">
+<tr>
+	<th width="20" colspan="2"><?php echo $AppUI->_('Progress');?></th>
 	<th width="15" align="center"><?php echo $AppUI->_('P');?></th>
 	<th colspan="2"><?php echo $AppUI->_('Task / Project');?></th>
 	<th nowrap><?php echo $AppUI->_('Start Date');?></th>
