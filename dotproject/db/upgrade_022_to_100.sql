@@ -317,6 +317,6 @@ SELECT comment_task, comment_title, comment_body, comment_user, comment_date FRO
 #DROP TABLE task_comments;
 
 # fix mis-spelt field
-ALTER TABLE `tasks` CHANGE `task_percent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
-ALTER TABLE `projects` CHANGE `project_percent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
+ALTER TABLE `tasks` CHANGE `task_precent_complete` `task_percent_complete` TINYINT(4)  DEFAULT "0";
+ALTER TABLE `projects` CHANGE `project_precent_complete` `project_percent_complete` TINYINT(4)  DEFAULT "0";
 
