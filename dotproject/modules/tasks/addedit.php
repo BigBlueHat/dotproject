@@ -262,7 +262,7 @@ var daily_working_hours = <?php echo $AppUI->getConfig('daily_working_hours'); ?
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
-	<input name='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
+	<input name='task_contacts' id='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
 		<font color="<?php echo bestColor( $project->project_color_identifier ); ?>">
