@@ -7,7 +7,7 @@ $dialog = dPgetParam( $_GET, 'dialog', 0 );
 <head>
 	<meta name="Description" content="Ultra Clean dotProject Style" />
 	<meta name="Version" content="<?php echo @$AppUI->getConfig( 'version' );?>" />
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set:'UTF-8';?>" />
 	<title><?php echo @$AppUI->getConfig( 'page_title' );?></title>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
