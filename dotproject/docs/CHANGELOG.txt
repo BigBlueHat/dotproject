@@ -1,5 +1,68 @@
 dotproject CHANGELOG (insert latest entries at the top)
 
+25 October 2002 (AJE):
+-----------------------------
+images/bground.gif
+images/icons/expand.gif
+images/icons/collapse.gif
+- darkened the background a bit to give it more contrast under white text
+- new icons for tasks index page
+
+db/dotproject_022_to_023.sql
+- outlines the table changes for new features in version 023
+
+style/main.css
+- consolidating style changes into the style sheet so that
+  future 'theming' will be easier to support
+
+dosql/aed_post.php
+dosql/watch_forum.php
+functions/forums_func.php
+modules/forums/index.php
+modules/forums/viewer.php
+modules/forums/view_topics.php
+- added watch handling for forums
+  A user can watch the activity of either a topic or a whole forum
+- added filters to the forum index and topic index pages
+- a post reply returns to the topic rather than the topic list
+
+includes/header.php
+- shifted create new functions to header
+
+includes/main_functions.php
+- added drawTabBox function.  Most of these functions should be encapsulated
+  in a dotproject UI class in the future
+
+includes/leftnav.php
+- tidy up styles logic and structural layout (visually should be the same)
+  The button class was applied to an outer cell so that was giving you
+  funny borders everytime you changed the background colour.
+
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_users.php
+modules/companies/vw_depts.php
+- modified layout for company view
+  provides for tabbed and flat styles
+
+modules/departments/view.php
+modules/departments/addedit.php
+modules/departments/dosql.php
+- new departments module, still under development
+
+functions/tasks_func.php
+modules/tasks/index.php
+modules/tasks/addedit.php
+- improved (hopefully?) the filtering
+- added icons beside the project name to collapse to a single project
+  and expand back to the list
+- activate the status field in tasks with -1 being in-active
+
+dosql/updatetask.php
+- hours worked field altered to float so minor change here to
+  allow the float entry in the db
+
 18 October 2002 (AJE):
 -----------------------------
 functions/post_message.php
