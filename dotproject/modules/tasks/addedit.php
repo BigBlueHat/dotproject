@@ -388,10 +388,13 @@ function setContacts(contact_id_string){
 	selected_contacts_id = contact_id_string;
 }
 
-function submitIt(){
+function submitIt( nt ){
 	var form = document.editFrm;
 	var fl = form.assigned.length -1;
 	var dl = form.task_dependencies.length -1;
+
+	// set wether we save only or we save and add a new task (redirect)
+	form.sant.value = nt;
 
 	if (form.task_name.value.length < 3) {
 		alert( "<?php echo $AppUI->_('taskName');?>" );
@@ -470,7 +473,7 @@ function removeUser() {
 	for (fl; fl > -1; fl--) {
 		if (form.assigned.options[fl].selected) {
 			//remove from hperc_assign
-			var selValue = form.assigned.options[fl].value;			
+			var selValue = form.assigned.options[fl].value;
 			var re = ".*("+selValue+"=[0-9]*;).*";
 			var hiddenValue = form.hperc_assign.value;
 			if (hiddenValue) {
@@ -730,7 +733,7 @@ function calcFinish() {
 			fullWorkingDays = Math.round((inc - hoursToAddToLastDay) / workHours);
 			if (hoursToAddToFirstDay != 0) {
 				e = s;
-				//we need to carefully add one day 
+				//we need to carefully add one day
 				//we should to check if this non-working day
 				while ( true ) {
 					e.setDate(e.getDate()+1);
@@ -742,7 +745,7 @@ function calcFinish() {
 			} 
 		}
 		e.setHours(e.getHours()+hoursToAddToFirstDay);
-		
+
 	 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++) {
 			e.setDate(s.getDate() + 1);
 			e.setMinutes( 0 );
@@ -781,14 +784,37 @@ function changeRecordType(value){
 }
 
 </script>
-
-<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
 <form name="editFrm" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
 	<input name="hperc_assign" type="hidden" value="<?php echo $initPercAsignment;?>"/>
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 <!--	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />-->
 	<input name='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
+	<input name="sant" type="hidden" value="0" />
+<table border="0" cellspacing="0" cellpadding="0" width="100%">
+<tr>
+ 	<td height="40" width="35%">
+		* <?php echo $AppUI->_( 'requiredField' );?>
+	</td>
+	<td height="40" width="30%">&nbsp;</td>
+	<td  height="40" width="35%" align="right">
+		<table>
+		<tr>
+			<td>
+				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('<?php echo $AppUI->_('taskCancel');?>')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
+			</td>
+			<td>
+				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt(0);" />
+			</td>
+			<td>
+				<input class="button" type="button" name="saveNewTask" value="<?php echo $AppUI->_('save &&amp; new task');?>" onClick="submitIt(1);" />
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
 		<font color="<?php echo bestColor( $project->project_color_identifier ); ?>">
@@ -985,7 +1011,7 @@ function changeRecordType(value){
 				</td>
 			</tr>
 			<?php
-				} else {  
+				} else {
 			?>
 			<tr>
 					<td colspan='2'><?php echo $AppUI->_("Only the task owner, project owner, or system administrator is able to edit time related information."); ?></td>
@@ -1121,7 +1147,7 @@ function changeRecordType(value){
 		    	// Let's parse all the show functions
 		    	echo $cfp->parseShowFunctions();
 		    ?>
-		    
+
 		    
 			<?php echo $cfp->showHideAllRowsFunction(); ?>
 			
@@ -1149,7 +1175,10 @@ function changeRecordType(value){
 				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('<?php echo $AppUI->_('taskCancel');?>')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
 			</td>
 			<td>
-				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt();" />
+				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt(0);" />
+			</td>
+			<td>
+				<input class="button" type="button" name="saveNewTask" value="<?php echo $AppUI->_("save &&amp; new task");?>" onClick="submitIt(1);" />
 			</td>
 		</tr>
 		</table>

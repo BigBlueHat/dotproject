@@ -6,6 +6,7 @@ $hperc_assign = @$_POST['hperc_assign'];
 $hdependencies = @$_POST['hdependencies'];
 $notify = isset($_POST['task_notify']) ? $_POST['task_notify'] : 0;
 $comment = isset($_POST['email_comment']) ? $_POST['email_comment'] : '';
+$sant = isset($_POST['sant']) ? $_POST['sant'] : 0;
 
 $obj = new CTask();
 
@@ -86,7 +87,14 @@ if ($del) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		}
 	}
-	
-	$AppUI->redirect();
+
+	if ($sant == true) {
+		// save and add new task
+		$redTarget = 'm=tasks&a=addedit&task_project='.$obj->task_project.'&task_parent='.$obj->task_id;
+	} else {
+		// save and go back to default place
+		$redTarget = NULL;
+	}
+	$AppUI->redirect( $redTarget );
 }
 ?>
