@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Date"=>"Fecha",
+"Edit File"=>"Editar Archivo",
+"File Management"=>"Administración de Archivos",
+"File Name"=>"Nombre de Archivo",
+"File deleted"=>"Archivo eliminado",
+"File inserted"=>"Archivo agregado",
+"File updated"=>"Archivo actualizado",
+"New File"=>"Nuevo Archivo",
+"Size"=>"Tama&#324;o",
+"Type"=>"Tipo",
+"Upload File"=>"Adjuntar Archivo",
+"Uploaded By"=>"Archivado por",
+"Version"=>"Versión",
+"add new file"=>"agregar nuevo archivo",
+"delete file"=>"eliminar archivo",
+"download"=>"descargar",
+"fileIdError"=>"Se ha pasado un controlador de archivos incorrectos a esta función",
+"files list"=>"listado de archivos",
+"filesDelete"=>"¿Está seguro de querer eliminar este archivo?",

@@ -1,0 +1,21 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"Abbreviation"=>"Abreviación",
+"Date and Time"=>"Fecha y Hora",
+"Default"=>"Por defecto",
+"Default User Preferences"=>"Preferencias de Usuario por defecto",
+"Language"=>"Idioma",
+"Language Support"=>"Soporte de Idiomas",
+"Locale"=>"Configuración regional",
+"Locales file saved"=>"Archivo de términos almacenado",
+"Module"=>"Módulo",
+"Preferences"=>"Preferencias",
+"Short Date Format"=>"Formato de Fechas simple",
+"String"=>"Cadena",
+"System Administration"=>"Administración del Sistema",
+"Tabbed Box View"=>"Vista tabulada",
+"Time Format"=>"Formate de hora",
+"Translation Management"=>"Administración de Traducciones",
+"User Interface Style"=>"Estilo de la Interfaz de Usuario",
+"User Preferences"=>"Preferencias de Usuario",
