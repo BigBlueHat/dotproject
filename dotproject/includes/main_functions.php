@@ -2,147 +2,150 @@
 //Main Functions
 
 function ptranslate($word){
-	global $language_file,$root_dir;
-	require "./includes/" . $language_file;
-	if(empty($pt[$word]))
-	{
-		return $word;
-	}
-	else
-	{
-		return $pt[$word];
-	}
+        global $language_file,$root_dir;
+        require "./includes/" . $language_file;
+        if(empty($pt[$word]))
+        {
+                return $word;
+        }
+        else
+        {
+                return $pt[$word];
+        }
 }
 
 
 //return Duration returns an array that
 function returnDur($x){
-	if($x > 24){
-		$value= ($x / 24);
-		$mulitpule = 24;
-		if($value > 1){
-			$type = "days";
-		}
-		else{
-			$type = "day";
-		}
-	}
-	else{
-		$value = ($x);
-		$mulitpule = 1;
-		if($value > 1){
-			$type = "hours";
-		}
-		else{
-			$type = "hour";
-		}
+        if($x > 24){
+                $value= ($x / 24);
+                $mulitpule = 24;
+                if($value > 1){
+                        $type = "days";
+                }
+                else{
+                        $type = "day";
+                }
+        }
+        else{
+                $value = ($x);
+                $mulitpule = 1;
+                if($value > 1){
+                        $type = "hours";
+                }
+                else{
+                        $type = "hour";
+                }
 
-	}
-	return array("value"=>$value, "mulitpule"=>$mulitpule, "type"=>$type);
+        }
+        return array("value"=>$value, "mulitpule"=>$mulitpule, "type"=>$type);
 }
 
 
 function getPerms($module, $uid){
-	global $user_cookie;
-	$rp = array();
-	$sql = "select permission_value, permission_item 
-					from 
-					permissions
-					where 
-					permission_user  = $uid and
-					(permission_grant_on = '$module' or permission_grant_on = 'all')
-					order by permission_value, permission_item";
-	$perm =mysql_query($sql);
-	while($row = mysql_fetch_array($perm)){
-		$rp[] = $row;
-	}
-	
-	return $rp;
+        global $user_cookie;
+        $rp = array();
+        $sql = "select permission_value, permission_item
+                                        from
+                                        permissions
+                                        where
+                                        permission_user  = $uid and
+                                        (permission_grant_on = '$module' or permission_grant_on = 'all')
+                                        order by permission_value, permission_item";
+        $perm =mysql_query($sql);
+        while($row = mysql_fetch_array($perm)){
+                $rp[] = $row;
+        }
+
+        return $rp;
 
 }
 
-// Take the date entered, parse it to the correct value 
+// Take the date entered, parse it to the correct value
 function toDate($date) {
-	global $date_format;
+        global $date_format;
 
-	switch ($date_format) {
-		case 1:
-			list($day, $mon, $yr) = explode('/', $date);
-			return $yr . "-" . $mon . "-" . $day;
-		case 2:
-			list($mon, $day, $yr) = explode('/', $date);
-			return $yr . "-" . $mon . "-" . $day;
-		default:
-			return $date;
-	}
+        switch ($date_format) {
+                case 1:
+                        list($day, $mon, $yr) = explode('/', $date);
+                        return $yr . "-" . $mon . "-" . $day;
+                case 2:
+                        list($mon, $day, $yr) = explode('/', $date);
+                        return $yr . "-" . $mon . "-" . $day;
+                default:
+                        return $date;
+        }
 }
 
 function fromDate($date) {
-	global $date_format;
+        global $date_format;
 
-	$parts = preg_split("/[-: ]+/", $date);
+        $parts = preg_split("/[-: ]+/", $date);
 
-	switch ($date_format) {
-		case 1:
-			$retstring = $parts[2] . "/" . $parts[1] . "/" . $parts[0];
-			break;
-		case 2:
-			$retstring = $parts[1] . "/" . $parts[2] . "/" . $parts[0];
-			break;
-		default:
-			$retstring =  $parts[0] . "-" . $parts[1] . "-" . $parts[2];
-			break;
-	}
-	if (count($parts) > 3)
-		$retstring .= " " . $parts[3] . ":" . $parts[4] . ":" . $parts[5];
-	return $retstring;
+        switch ($date_format) {
+                case 1:
+                        $retstring = $parts[2] . "/" . $parts[1] . "/" . $parts[0];
+                        break;
+                case 2:
+                        $retstring = $parts[1] . "/" . $parts[2] . "/" . $parts[0];
+                        break;
+                default:
+                        $retstring =  $parts[0] . "-" . $parts[1] . "-" . $parts[2];
+                        break;
+        }
+        if (count($parts) > 3)
+                $retstring .= " " . $parts[3] . ":" . $parts[4] . ":" . $parts[5];
+        return $retstring;
 }
 
 // Return the format required for date entry, for user information display
 function dateFormat() {
-	global $date_format;
+        global $date_format;
 
-	switch ($date_format) {
-		case 1:
-			return "dd/mm/yyyy";
-		case 2:
-			return "mm/dd/yyyy";
-		default:
-			return "yyyy-mm-dd";
-	}
+        switch ($date_format) {
+                case 1:
+                        return "dd/mm/yyyy";
+                        break;
+                case 2:
+                        return "mm/dd/yyyy";
+                        break;
+                default:
+                        return "yyyy-mm-dd";
+                        break;
+        }
 }
 
 function JScalendarDate($field) {
-	global $date_format;
+        global $date_format;
 
-	echo "dar = eval(\"document." . $field . ".\" + x + \".value.split('";
-	if ($date_format > 0) echo "/";
-	else echo "-";
-	echo "')\");\n";
-	echo "if(eval(\"document." . $field . ".\" + x + \".value.length\") > 9) {\n";
-	echo "if(dar.length == 3)\n";
-	echo "  {\n";
-	switch ($date_format) {
-		case 1:
-			$dd = 0;
-			$mm = 1;
-			$yy = 2;
-			break;
-		case 2:
-			$mm = 0;
-			$dd = 1;
-			$yy = 2;
-			break;
-		default:
-			$yy = 0;
-			$mm = 1;
-			$dd = 2;
-			break;
-	}
-	echo "  yy = parseInt(dar[" . $yy . "], 10);\n";
-	echo "  mm = parseInt(dar[" . $mm . "], 10);\n";
-	echo "  dd = parseInt(dar[" . $dd . "], 10);\n";
-	echo "  }\n}\n";
+        echo "dar = eval(\"document." . $field . ".\" + x + \".value.split('";
+        if ($date_format > 0) echo "/";
+        else echo "-";
+        echo "')\");\n";
+        echo "if(eval(\"document." . $field . ".\" + x + \".value.length\") > 9) {\n";
+        echo "if(dar.length == 3)\n";
+        echo "  {\n";
+        switch ($date_format) {
+                case 1:
+                        $dd = 0;
+                        $mm = 1;
+                        $yy = 2;
+                        break;
+                case 2:
+                        $mm = 0;
+                        $dd = 1;
+                        $yy = 2;
+                        break;
+                default:
+                        $yy = 0;
+                        $mm = 1;
+                        $dd = 2;
+                        break;
+        }
+        echo "  yy = parseInt(dar[" . $yy . "], 10);\n";
+        echo "  mm = parseInt(dar[" . $mm . "], 10);\n";
+        echo "  dd = parseInt(dar[" . $dd . "], 10);\n";
+        echo "  }\n}\n";
 }
 
 ?>
