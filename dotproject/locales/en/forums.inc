@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Watch updated",
+"Last Post",
 "%s ago",
 "- Filters -",
 "Add Message",
@@ -11,8 +11,8 @@
 "Forum",
 "Forum Name",
 "Last 30 days",
-"Last Post",
 "Last Post Info",
+"Last post",
 "Message",
 "Messages",
 "My Company",
@@ -29,8 +29,10 @@
 "Subject",
 "Topics",
 "Watch",
+"Watch updated",
 "add new forum",
 "days",
+"days ago",
 "delete forum",
 "forumDeleteForum"=>"Are you sure you would like to delete this forum (and all posts in the forum)?",
 "forumDeletePost"=>"Are you sure you would like to delete this post?",

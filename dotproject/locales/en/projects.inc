@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Task Creator",
+"To",
 "Active",
 "Actual Budget",
 "Actual End Date",
@@ -18,6 +18,7 @@
 "Finish Date",
 "Finished",
 "Forum Name",
+"From",
 "Gantt Chart",
 "In Planning",
 "In Progress",
@@ -40,6 +41,7 @@
 "Target Budget",
 "Target End Date",
 "Target Finish Date",
+"Task Creator",
 "Task Name",
 "This month",
 "View Project",
@@ -57,4 +59,6 @@
 "projectsColor"=>"Please select a color to identify this project.",
 "projectsValidName"=>"Please enter a valid Project Name",
 "refresh",
+"show full project",
+"show this month",
 "view this project",

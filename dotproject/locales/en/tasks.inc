@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Id",
+"update",
 "Action",
 "Add Task",
 "All Tasks",
@@ -26,6 +26,7 @@
 "Future Task",
 "Hours",
 "Hours Worked",
+"Id",
 "Key",
 "Milestone",
 "My Projects",
@@ -34,6 +35,7 @@
 "My Tasks To Do",
 "New Log",
 "Overdue",
+"P",
 "Priority",
 "Progress",
 "Project Tasks",
@@ -70,6 +72,8 @@
 "normal",
 "notifyChange"=>"Notify Assignees of Task by Email",
 "see gantt chart",
+"show archived projects",
+"show low priority tasks",
 "task for",
 "task name",
 "taskDelete"=>"Are you sure that you would like to delete this task?",
@@ -81,6 +85,7 @@
 "tasksComment"=>"Please enter a worthwhile comment.",
 "tasksPercent"=>"The percent complete must be an integer.",
 "tasksPercentValue"=>"The percent complete must be a value between 0 and 100.",
+"update selected tasks priority",
 "update task",
 "view this project",
 "view this task",
