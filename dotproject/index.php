@@ -338,6 +338,8 @@ if (! isset($_SESSION['all_tabs'][$m]) && !( $is_installer && $dPrunLevel < 2 ))
 	$all_tabs =& $_SESSION['all_tabs'][$m];
 	foreach ($AppUI->getActiveModules() as $dir => $module)
 	{
+		if (! $perms->checkModule($dir, 'access'))
+			continue;
 		$modules_tabs = $AppUI->readFiles('./modules/'.$dir.'/', '^' . $m . '_tab.*\.php');
 		foreach($modules_tabs as $tab)
 		{
