@@ -1,3 +1,52 @@
+2003-07-10 02:01  (eddieajau)
+---------------------------------
+modules/tasks/tasks.class.php
+- Minor tweak to access canAccess method
+
+2003-07-10 01:54  (eddieajau)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/view.php
+- Added record access control
+
+2003-07-10 01:54  (eddieajau)
+---------------------------------
+db/upgrade_100_beta1_to_release1.sql
+- Initial upload
+
+2003-07-10 01:53  (eddieajau)
+---------------------------------
+db/dotproject_100.sql
+- Added task_access field to tasks table
+
+2003-07-10 01:52  (eddieajau)
+---------------------------------
+includes/db_connect.php
+- Enhance bindobjecttoarray function
+
+2003-07-09 23:49  (eddieajau)
+---------------------------------
+modules/admin/viewuser.php
+- AIM link added
+
+2003-07-09 23:49  (eddieajau)
+---------------------------------
+includes/permissions.php
+modules/tasks/tasks.php
+- Formatting
+
+2003-07-09 23:48  (eddieajau)
+---------------------------------
+includes/main_functions.php
+- Comments added
+
+2003-07-09 04:55  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2003-07-08 18:59  (kripper)
 ---------------------------------
 ChangeLog
@@ -449,55 +498,6 @@ modules/help/en/system.index.hlp
 
 2003-05-29 02:19  (eddieajau)
 ---------------------------------
-files/tmp
-- no message
-
-2003-05-29 02:08  (eddieajau)
----------------------------------
-docs/install.html
-docs/team.html
-docs/trouble.html
-docs/upgrade.html
-- Final tweaks to the documentation
-
-2003-05-29 01:57  (eddieajau)
----------------------------------
-index.php
-- Version stamp for release
-
-2003-05-29 01:53  (eddieajau)
----------------------------------
-db/upgrade_100_alpha2_to_beta1.sql
-- Added optional removal of file_content field
-
-2003-05-29 01:51  (eddieajau)
----------------------------------
-db/dotproject_100.sql
-- Removed file content text
-
-2003-05-29 01:48  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-- Removed task ordering
-
-2003-05-28 04:31  (kripper)
----------------------------------
-ChangeLog
-- Changelog update
-
-2003-05-28 00:40  (eddieajau)
----------------------------------
-modules/tasks/tasks.class.php
-- Minor changes
-
-2003-05-28 00:38  (eddieajau)
----------------------------------
-modules/projects/projects.class.php
-modules/projects/reports.php
-modules/projects/view.php
-- Added report handling
-
 ...
 
 (This file has been wrapped)
