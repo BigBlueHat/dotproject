@@ -37,7 +37,7 @@ class ErrorPlot extends Plot {
 	}
 	$graph->xaxis->scale->ticks->SetXLabelOffset($a);
 	$graph->SetTextScaleOff($b);						
-	$graph->xaxis->scale->ticks->SupressMinorTickMarks();
+	//$graph->xaxis->scale->ticks->SupressMinorTickMarks();
     }
 	
     // Method description
@@ -79,18 +79,20 @@ class ErrorPlot extends Plot {
 //===================================================
 // CLASS ErrorLinePlot
 // Description: Combine a line and error plot
+// THIS IS A DEPRECATED PLOT TYPE JUST KEPT FOR
+// BACKWARD COMPATIBILITY
 //===================================================
 class ErrorLinePlot extends ErrorPlot {
     var $line=null;
 //---------------
 // CONSTRUCTOR
     function ErrorLinePlot(&$datay,$datax=false) {
-	$this->ErrorPlot($datay);
+	$this->ErrorPlot($datay,$datax);
 	// Calculate line coordinates as the average of the error limits
 	for($i=0; $i < count($datay); $i+=2 ) {
 	    $ly[]=($datay[$i]+$datay[$i+1])/2;
 	}		
-	$this->line=new LinePlot($ly);
+	$this->line=new LinePlot($ly,$datax);
     }
 
 //---------------
@@ -106,6 +108,47 @@ class ErrorLinePlot extends ErrorPlot {
 	$this->line->Stroke($img,$xscale,$yscale);
     }
 } // Class
+
+
+//===================================================
+// CLASS LineErrorPlot
+// Description: Combine a line and error plot
+//===================================================
+class LineErrorPlot extends ErrorPlot {
+    var $line=null;
+//---------------
+// CONSTRUCTOR
+    // Data is (val, errdeltamin, errdeltamax)
+    function LineErrorPlot(&$datay,$datax=false) {
+	$ly=array(); $ey=array();
+	$n = count($datay);
+	if( $n % 3 != 0 ) {
+	    JpGraphError::Raise('Error in input data to LineErrorPlot.'.
+		'Number of data points must be a multiple of 3');
+	}
+	for($i=0; $i < count($datay); $i+=3 ) {
+	    $ly[]=$datay[$i];
+	    $ey[]=$datay[$i]+$datay[$i+1];
+	    $ey[]=$datay[$i]+$datay[$i+2];
+	}		
+	$this->ErrorPlot($ey,$datax);
+	$this->line=new LinePlot($ly,$datax);
+    }
+
+//---------------
+// PUBLIC METHODS
+    function Legend(&$graph) {
+	if( $this->legend != "" )
+	    $graph->legend->Add($this->legend,$this->color);
+	$this->line->Legend($graph);
+    }
+			
+    function Stroke(&$img,&$xscale,&$yscale) {
+	parent::Stroke($img,$xscale,$yscale);
+	$this->line->Stroke($img,$xscale,$yscale);
+    }
+} // Class
+
 
 /* EOF */
 ?>

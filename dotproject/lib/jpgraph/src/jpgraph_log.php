@@ -27,20 +27,25 @@ class LogScale extends LinearScale {
     function LogScale($min,$max,$type="y") {
 	$this->LinearScale($min,$max,$type);
 	$this->ticks = new LogTicks();
+	$this->name = 'log';
     }
 
 //----------------
 // PUBLIC METHODS	
 
     // Translate between world and screen
-    function	Translate($a) {
+    function Translate($a) {
+	if( !is_numeric($a) ) {
+	    if( $a != '' && $a != '-' ) 
+		JpGraphError::Raise('Your data contains non-numeric values.');
+	}
 	if( $a < 0 ) {
 	    JpGraphError::Raise("Negative data values can not be used in a log scale.");
 	    exit(1);
 	}
 	if( $a==0 ) $a=1;
 	$a=log10($a);
-	return floor($this->off + ($a*1.0 - $this->scale[0]) * $this->scale_factor); 
+	return ceil($this->off + ($a*1.0 - $this->scale[0]) * $this->scale_factor); 
     }
 
     // Relative translate (don't include offset) usefull when we just want
@@ -48,7 +53,7 @@ class LogScale extends LinearScale {
     function RelTranslate($a) {
 	if( $a==0 ) $a=1;
 	$a=log10($a);
-	return ($a*1.0 - $this->scale[0]) * $this->scale_factor; 
+	return round(($a*1.0 - $this->scale[0]) * $this->scale_factor); 
     }
 		
     // Use bcpow() for increased precision
@@ -73,7 +78,10 @@ class LogScale extends LinearScale {
     // signature as the linear counterpart.
     function AutoScale(&$img,$min,$max,$dummy) {
 	if( $min==0 ) $min=1;
-	assert($max>0);		
+	
+	if( $max <= 0 ) {
+	    JpGraphError::Raise('Scale error for logarithmic scale. You have a problem with your data values. The max value must be greater than 0. It is mathematically impossible to have 0 in a logarithmic scale.');
+	}
 	$smin = floor(log10($min));
 	$smax = ceil(log10($max));
 	$this->Update($img,$smin,$smax);					
@@ -144,7 +152,7 @@ class LogTicks extends Ticks{
 	    else {
 		if( $this->label_formfunc != '' ) {
 		    $f = $this->label_formfunc;
-		    $this->maj_ticks_label[0]=$f($start);	
+		    $this->maj_ticks_label[0]=call_user_func($f,$start);	
 		}
 		elseif( $this->label_logtype == LOGLABELS_PLAIN )
 		    $this->maj_ticks_label[0]=$start;	
@@ -170,7 +178,7 @@ class LogTicks extends Ticks{
 		    
 		    if( $this->label_formfunc != '' ) {
 			$f = $this->label_formfunc;
-			$this->maj_ticks_label[$i]=$f($nextMajor);	
+			$this->maj_ticks_label[$i]=call_user_func($f,$nextMajor);	
 		    }
 		    elseif( $this->label_logtype == 0 )
 			$this->maj_ticks_label[$i]=$nextMajor;	
@@ -196,8 +204,16 @@ class LogTicks extends Ticks{
 	    $this->maj_ticklabels_pos[0]=$scale->Translate($start);
 	    if( $this->supress_first )
 		$this->maj_ticks_label[0]="";
-	    else
-		$this->maj_ticks_label[0]=$start;	
+	    else {
+		if( $this->label_formfunc != '' ) {
+		    $f = $this->label_formfunc;
+		    $this->maj_ticks_label[0]=call_user_func($f,$start);	
+		}
+		elseif( $this->label_logtype == 0 )
+		    $this->maj_ticks_label[0]=$start;	
+		else
+		    $this->maj_ticks_label[0]='10^'.round(log10($start));
+	    }
 	    $i=1;			
 	    for($x=$start; $x<=$limit; $x+=$step,++$count  ) {
 		$xs=$scale->Translate($x);	
@@ -207,8 +223,16 @@ class LogTicks extends Ticks{
 		    $img->Line($xs,$pos,$xs,$a2);
 		    $this->maj_ticks_pos[$i]=$xs;
 		    $this->maj_ticklabels_pos[$i]=$xs;
-		    $this->maj_ticks_label[$i]=$nextMajor;	
-		    ++$i;								
+
+		    if( $this->label_formfunc != '' ) {
+			$f = $this->label_formfunc;
+			$this->maj_ticks_label[$i]=call_user_func($f,$nextMajor);	
+		    }
+		    elseif( $this->label_logtype == 0 )
+			$this->maj_ticks_label[$i]=$nextMajor;	
+		    else
+			$this->maj_ticks_label[$i]='10^'.round(log10($nextMajor));
+		    ++$i;
 		    $nextMajor *= 10;
 		    $step *= 10;	
 		    $count=1; 				

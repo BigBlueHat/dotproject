@@ -29,6 +29,8 @@ class LinePlot extends Plot{
     var $line_style=1;	// Default to solid
     var $filledAreas = array(); // array of arrays(with min,max,col,filled in them)
     var $barcenter=false;  // When we mix line and bar. Should we center the line in the bar.
+    var $fillFromMin = false ;
+    var $fillgrad=false,$fillgrad_fromcolor='navy',$fillgrad_tocolor='silver',$fillgrad_numcolors=100;
 
 //---------------
 // CONSTRUCTOR
@@ -60,9 +62,21 @@ class LinePlot extends Plot{
 	parent::SetColor($aColor);
     }
 	
+    function SetFillFromYMin($f=true) {
+	$this->fillFromMin = $f ;
+    }
+    
     function SetFillColor($aColor,$aFilled=true) {
 	$this->fill_color=$aColor;
 	$this->filled=$aFilled;
+    }
+
+    function SetFillGradient($aFromColor,$aToColor,$aNumColors=100,$aFilled=true) {
+	$this->fillgrad_fromcolor = $aFromColor;
+	$this->fillgrad_tocolor   = $aToColor;
+	$this->fillgrad_numcolors = $aNumColors;
+	$this->filled = $aFilled;
+	$this->fillgrad = true;
     }
 	
     function Legend(&$graph) {
@@ -106,7 +120,7 @@ class LinePlot extends Plot{
 	    }
 	    $graph->xaxis->scale->ticks->SetXLabelOffset($a);
 	    $graph->SetTextScaleOff($b);						
-	    $graph->xaxis->scale->ticks->SupressMinorTickMarks();
+	    //$graph->xaxis->scale->ticks->SupressMinorTickMarks();
 	}
     }
 	
@@ -126,41 +140,52 @@ class LinePlot extends Plot{
 	else
 	    $textadj = 0;
 
+	// Find the first numeric data point
+	$startpoint=0;
+	while( $startpoint < $numpoints && !is_numeric($this->coords[0][$startpoint]) )
+	    ++$startpoint;
+
+	// Bail out if no data points
+	if( $startpoint == $numpoints ) 
+	    return;
+
 	if( $exist_x )
-	    $xs=$this->coords[1][0];
+	    $xs=$this->coords[1][$startpoint];
 	else
-	    $xs= $textadj;
+	    $xs= $textadj+$startpoint;
 
 	$img->SetStartPoint($xscale->Translate($xs),
-	                    $yscale->Translate($this->coords[0][0]));
+			    $yscale->Translate($this->coords[0][$startpoint]));
+
 		
 	if( $this->filled ) {
 	    $cord[] = $xscale->Translate($xs);
 	    $min = $yscale->GetMinVal();
-	    if( $min > 0 )
+	    if( $min > 0 || $this->fillFromMin )
 		$cord[] = $yscale->Translate($min);
 	    else
 		$cord[] = $yscale->Translate(0);
 	}
 	$xt = $xscale->Translate($xs);
-	$yt = $yscale->Translate($this->coords[0][0]);
+	$yt = $yscale->Translate($this->coords[0][$startpoint]);
 	$cord[] = $xt;
 	$cord[] = $yt;
 	$yt_old = $yt;
 
-	$this->value->Stroke($img,$this->coords[0][0],$xt,$yt);
+	$this->value->Stroke($img,$this->coords[0][$startpoint],$xt,$yt);
 
 	$img->SetColor($this->color);
 	$img->SetLineWeight($this->weight);
 	$img->SetLineStyle($this->line_style);
-	for( $pnts=1; $pnts<$numpoints; ++$pnts) {
+	for( $pnts=$startpoint+1; $pnts<$numpoints; ++$pnts) {
 	    
 	    if( $exist_x ) $x=$this->coords[1][$pnts];
 	    else $x=$pnts+$textadj;
 	    $xt = $xscale->Translate($x);
 	    $yt = $yscale->Translate($this->coords[0][$pnts]);
 	    
-	    if( $this->step_style ) {
+	    $y=$this->coords[0][$pnts];
+	    if( $this->step_style && is_numeric($y) ) {
 		$img->StyleLineTo($xt,$yt_old);
 		$img->StyleLineTo($xt,$yt);
 
@@ -172,7 +197,6 @@ class LinePlot extends Plot{
 
 	    }
 	    else {
-		$y=$this->coords[0][$pnts];
 		if( is_numeric($y) || (is_string($y) && $y != "-") ) {
 		    $tmp1=$this->coords[0][$pnts];
 		    $tmp2=$this->coords[0][$pnts-1]; 		 			
@@ -182,7 +206,6 @@ class LinePlot extends Plot{
 		    else {
 			$img->SetStartPoint($xt,$yt);
 		    }
-
 		    if( is_numeric($tmp1)  && 
 			(is_numeric($tmp2) || $tmp2=="-" || ($this->filled && $tmp2=='') ) ) { 
 			$cord[] = $xt;
@@ -193,20 +216,31 @@ class LinePlot extends Plot{
 	    $yt_old = $yt;
 
 	    $this->StrokeDataValue($img,$this->coords[0][$pnts],$xt,$yt);
-
 	}	
 
-	if( $this->filled ) {
+	if( $this->filled  ) {
 	    $cord[] = $xt;
-	    if( $min > 0 )
+	    if( $min > 0 || $this->fillFromMin )
 		$cord[] = $yscale->Translate($min);
 	    else
 		$cord[] = $yscale->Translate(0);
-	    $img->SetColor($this->fill_color);	
-	    $img->FilledPolygon($cord);
-	    $img->SetColor($this->color);
-	    $img->Polygon($cord);
+	    if( $this->fillgrad ) {
+		$img->SetLineWeight(1);
+		$grad = new Gradient($img);
+		$grad->SetNumColors($this->fillgrad_numcolors);
+		$grad->FilledFlatPolygon($cord,$this->fillgrad_fromcolor,$this->fillgrad_tocolor);
+		$img->SetLineWeight($this->weight);
+	    }
+	    else {
+		$img->SetColor($this->fill_color);	
+		$img->FilledPolygon($cord);
+	    }
+	    if( $this->line_weight > 0 ) {
+		$img->SetColor($this->color);
+		$img->Polygon($cord);
+	    }
 	}
+
 	if(!empty($this->filledAreas)) {
 
 	    $minY = $yscale->Translate($yscale->GetMinVal());
@@ -231,8 +265,17 @@ class LinePlot extends Plot{
 		    $img->FilledPolygon($areaCoords);
 		    $img->SetColor($this->color);
 		}
-	    
-		$img->Polygon($areaCoords);
+		// Check if we should draw the frame.
+		// If not we still re-draw the line since it might have been
+		// partially overwritten by the filled area and it doesn't look
+		// very good.
+		// TODO: The behaviour is undefined if the line does not have
+		// any line at the position of the area.
+		if( $this->filledAreas[$i][4] )
+		    $img->Polygon($areaCoords);
+		else
+	    	    $img->Polygon($cord);
+
 		$areaCoords = array();
 	    }
 	}	
@@ -252,7 +295,11 @@ class LinePlot extends Plot{
 		    $this->mark->SetCSIMTarget($this->csimtargets[$pnts]);
 		    $this->mark->SetCSIMAlt($this->csimalts[$pnts]);
 		}
-		$this->mark->SetCSIMAltVal($this->coords[0][$pnts]);
+		if( $exist_x )
+		    $x=$this->coords[1][$pnts];
+		else
+		    $x=$pnts;
+		$this->mark->SetCSIMAltVal($this->coords[0][$pnts],$x);
 		$this->mark->Stroke($img,$xt,$yt);	
 		$this->csimareas .= $this->mark->GetCSIMAreas();
 		$this->StrokeDataValue($img,$this->coords[0][$pnts],$xt,$yt);
@@ -282,7 +329,7 @@ class AccLinePlot extends Plot {
 // PUBLIC METHODS	
     function Legend(&$graph) {
 	foreach( $this->plots as $p )
-	    $p->Legend($graph);
+	    $p->DoLegend($graph);
     }
 	
     function Max() {
@@ -336,6 +383,28 @@ class AccLinePlot extends Plot {
 	return array($xmin,$ymin);
     }
 
+    // Gets called before any axis are stroked
+    function PreStrokeAdjust(&$graph) {
+
+	// If another plot type have already adjusted the
+	// offset we don't touch it.
+	// (We check for empty in case the scale is  a log scale 
+	// and hence doesn't contain any xlabel_offset)
+	
+	if( empty($graph->xaxis->scale->ticks->xlabel_offset) ||
+	    $graph->xaxis->scale->ticks->xlabel_offset == 0 ) {
+	    if( $this->center ) {
+		++$this->numpoints;
+		$a=0.5; $b=0.5;
+	    } else {
+		$a=0; $b=0;
+	    }
+	    $graph->xaxis->scale->ticks->SetXLabelOffset($a);
+	    $graph->SetTextScaleOff($b);						
+	    $graph->xaxis->scale->ticks->SupressMinorTickMarks();
+	}
+	
+    }
 
     // To avoid duplicate of line drawing code here we just
     // change the y-values for each plot and then restore it
@@ -345,6 +414,7 @@ class AccLinePlot extends Plot {
     // since this method would have a side effect.
     function Stroke(&$img,&$xscale,&$yscale) {
 	$img->SetLineWeight($this->weight);
+	$this->numpoints = count($this->plots[0]->coords[0]);
 	// Allocate array
 	$coords[$this->nbrplots][$this->numpoints]=0;
 	for($i=0; $i<$this->numpoints; $i++) {
