@@ -1,11 +1,19 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Language",
 "Abbreviation",
+"Date and Time",
+"Default User Preferences",
+"Language",
 "Language Support",
+"Locale",
 "Locales file saved",
 "Module",
+"Preferences",
+"Short Date Format",
 "String",
 "System Administration",
+"Tabbed Box View",
 "Translation Management",
+"User Interface Style",
+"User Preferences",

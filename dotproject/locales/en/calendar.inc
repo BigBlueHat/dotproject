@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Week",
 "April",
 "August",
 "December",
@@ -13,7 +12,6 @@
 "January",
 "July",
 "June",
-"Make Private",
 "March",
 "May",
 "Monday",
@@ -30,6 +28,7 @@
 "Time",
 "Tuesday",
 "Wednesday",
+"Week",
 "delete event",
 "in advance",
 "month view",

@@ -1,12 +1,14 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Edit Project",
 "Active",
 "Actual Budget",
 "Actual End Date",
 "Actual Finish Date",
 "Color Identifier",
+"Duration",
+"Edit Project",
+"Finish Date",
 "Finished",
 "Gantt Chart",
 "New Project",
@@ -23,6 +25,8 @@
 "Target Budget",
 "Target End Date",
 "Target Finish Date",
+"Task Name",
+"Work",
 "change color",
 "delete project",
 "edit this project",

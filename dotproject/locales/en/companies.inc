@@ -1,13 +1,14 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Edit Company",
+"Company Owner",
 "Add Company",
 "Budget",
 "Company Name",
 "Company deleted",
 "Company inserted",
 "Company updated",
+"Edit Company",
 "Started",
 "Status",
 "View Company/Client",
