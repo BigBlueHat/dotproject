@@ -1,3 +1,34 @@
+2004-09-17 12:15  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- fixed missing variable error also causing a javascript error.
+
+2004-09-17 11:56  (cyberhorse)
+---------------------------------
+modules/files/projects_tab.files.php
+- Automatic tab of files for projects module.
+
+2004-09-17 11:55  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- converted a few more automatic tabs, added automatic tabs to projects module.
+
+2004-09-17 11:11  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/tasksperuser_sub.php
+- fixed a few short tags ... <?= to <?php echo
+
+2004-09-17 10:40  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+- Mantis #207 - showing which fields are required for new users registration.
+
+2004-09-17 04:08  (kripper)
+---------------------------------
+ChangeLog
+- Changelog update
+
 2004-09-16 20:48  (cyberhorse)
 ---------------------------------
 modules/tasks/addedit.php
@@ -467,37 +498,6 @@ index.php
 classes/ui.class.php
 style/classic/header.php
 style/default/header.php
-- Added support for automatic inclusion of Javascript files.
-
-2004-08-24 23:31  (gregorerhardt)
----------------------------------
-modules/tasks/tasks.php
-- changed field order: is more intuitive
-
-2004-08-24 23:25  (gregorerhardt)
----------------------------------
-modules/tasks/addedit.php
-modules/tasks/tasks.php
-modules/tasks/tasksperuser_sub.php
-- lowering default value to 30 percent for assignment percentage
-
-2004-08-24 23:13  (gregorerhardt)
----------------------------------
-ChangeLog
-includes/config-dist.php
-modules/tasks/do_task_aed.php
-modules/tasks/do_task_assign_aed.php
-modules/tasks/tasks.class.php
-modules/tasks/tasks.php
-modules/tasks/tasksperuser_sub.php
-- implemented direct assignment formular in big tasks lists. can be enabled by a config var
-
-2004-08-24 22:39  (ajdonnison)
----------------------------------
-fileviewer.php
-- Added the same cookie parameters as used in index.php to ensure we
-- don't have clashes requiring a new login.
-
 ...
 
 (This file has been wrapped)
