@@ -438,11 +438,14 @@
 
 		function bind( &$formvars )
 		{
-			foreach ($this->fields as $k => $v)
+			if (!count($this->fields) == 0)
 			{
-				if ($formvars[$k] != NULL)
+				foreach ($this->fields as $k => $v)
 				{
-					$this->fields[$k]->setValue($formvars[$k]);
+					if ($formvars[$k] != NULL)
+					{
+						$this->fields[$k]->setValue($formvars[$k]);
+					}
 				}
 			}
 		}
