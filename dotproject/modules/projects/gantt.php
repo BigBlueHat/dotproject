@@ -4,38 +4,35 @@ include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
 global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;
 
+$filter1 = array();
 $projectStatus = dPgetSysVal( 'ProjectStatus' );
 $projectStatus = arrayMerge( array( '-2' => $AppUI->_('All w/o in progress')), $projectStatus);
-if ($proFilter == '-1'){
-        $filter1 = '';
-} elseif ($proFilter == '-2'){
-        //$proFilter = '-1';
-        $filter1 = " AND project_status != 3 ";
-} else {
-        $filter1 = " AND project_status = $proFilter ";
+if ($proFilter == '-2'){
+        $filter1[] = "project_status != 3 ";
+} else if (isset($proFilter) && $proFilter != '-1') {
+        $filter1[] = "project_status = $proFilter ";
 }
 if ($company_id != 0) {
-        $filter1 .= " AND project_company = $company_id ";
+        $filter1[] = "project_company = $company_id ";
 }
 //$filter1 = ($proFilter == '-1') ? '' : " AND project_status = $proFilter ";
-$filter1 .= ($showInactive == '1') ? '' : " AND project_active <> 0 ";
+if ($showInactive != '1')
+	$filter1[] = "project_active <> 0 ";
+$pjobj =& new CProject;
+$allowed_projects = $pjobj->getAllowedSQL($AppUI->user_id);
+$where = array_merge($filter1, $allowed_projects);
 
 // pull valid projects and their percent complete information
 $sql = "
 SELECT DISTINCT project_id, project_color_identifier, project_name, project_start_date, project_end_date, t1.task_end_date AS project_actual_end_date,
 SUM(task_duration*task_duration_type*task_percent_complete)/sum(task_duration*task_duration_type) as project_percent_complete,
 project_status, project_active
-FROM permissions, projects
+FROM projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-WHERE permission_user = $AppUI->user_id
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)".
-        $filter1
-."
+LEFT JOIN companies c1 ON projects.project_company = c1.company_id";
+if (count($where))
+	$sql .= " WHERE " . implode( " AND ", $where);
+$sql .= "
 GROUP BY project_id
 ORDER BY project_name, task_end_date DESC
 ";
@@ -135,6 +132,7 @@ if(sizeof($projects) == 0) {
  $graph->Add($bar);
 }
 
+if (is_array($projects)) {
 foreach($projects as $p) {
 
 	if ( $locale_char_set=='utf-8' && function_exists("utf_decode") ) {
@@ -202,6 +200,7 @@ foreach($projects as $p) {
 
 	$graph->Add($bar);
 }
+} // End of check for valid projects array.
 
 $graph->Stroke();
 ?>
