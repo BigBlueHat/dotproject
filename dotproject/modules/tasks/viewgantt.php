@@ -1,42 +1,54 @@
 <?php
+require "$root_dir/classdefs/date.php";
+
 $project_id = isset( $_GET['sdate'] ) ? $_GET['sdate'] : 0;
 
-$start_date = isset( $_POST['sdate'] ) ? toDate( $_POST['sdate'] ) : '';
-$end_date = isset( $_POST['edate'] ) ? toDate( $_POST['edate'] ) : '';
+// sdate and edate passed as unix time stamps
+$sdate = isset( $_POST['sdate'] ) ? $_POST['sdate'] : 0;
+$edate = isset( $_POST['edate'] ) ? $_POST['edate'] : 0;
+// months to scroll
+$scroll_date = 1;
 
-$display_option = isset( $_POST['display_option'] ) ? $_POST['display_option'] : '';
+$display_option = isset( $_POST['display_option'] ) ? $_POST['display_option'] : 'month';
 
 //$start_date = ($sdate != "")?toDate($sdate):"";
 //$end_date = ($edate != "")?toDate($edate):"";
-		
-if($display_option=="month" || $start_date == "") {
-	$start_date = time2YMD(strtotime("now()"));
-	$end_date = time2YMD(strtotime("now() + 1 month"));
+
+// format dates
+$df = $AppUI->getPref('SHDATEFORMAT');
+
+if ($display_option == "custom" ) {
+	$start_date = new CDate( $sdate );
+	$end_date = new CDate( $edate );
+} else {
+	$start_date = new CDate( $sdate ? $sdate : null );
+	$end_date = $start_date;
+	$end_date->addMonths( $scroll_date );
 }
+
+$start_date->setFormat( $df );
+$end_date->setFormat( $df );
 
 $crumbs = array();
 $crumbs["?m=tasks"] = "tasks list";
 $crumbs["?m=projects&a=view&project_id=$project_id"] = "this project";
 ?>
 <script language="javascript">
-function popCalendar(x){
-	var form = document.changeevent;
+var calendarField = '';
 
-	mm = <?php echo strftime("%m", time());?>;
-	dd = <?php echo strftime("%d", time());?>;
-	yy = <?php echo strftime("%Y", time());?>;
-
-	dar = eval( "document.form." + x + ".value.split('-')" );
-	if (eval( "document.form." + x + ".value.length" ) > 9){
-	if (dar.length == 3) {
-		yy = parseInt(dar[0], 10);
-		mm = parseInt(dar[1], 10);
-		dd = parseInt(dar[2], 10);
-		}
-	}
-	
-	newwin = window.open('./calendar.php?page=events&form=form&field=' + x + '&thisYear=' + yy + '&thisMonth=' + mm + '&thisDay=' + dd, 'calwin', 'width=250, height=220, scollbars=false');
+function popCalendar( field ){
+	calendarField = field;
+	uts = eval( 'document.ganttdate.' + field + '.value' );
+	window.open( './calendar.php?callback=setCalendar&uts=' + uts, 'calwin', 'width=250, height=220, scollbars=false' );
 }
+
+function setCalendar( uts, fdate ) {
+	fld_uts = eval( 'document.ganttdate.' + calendarField );
+	fld_fdate = eval( 'document.ganttdate.show_' + calendarField );
+	fld_uts.value = uts;
+	fld_fdate.value = fdate;
+}
+
 </script>
 
 <table name="table" cellspacing="1" cellpadding="1" border="0" width="98%">
@@ -55,32 +67,46 @@ function popCalendar(x){
 </tr>
 </table>
 
-<form name="form" method="post" action="?m=tasks&a=viewgantt&project_id=<?php echo $project_id ?>">
 <table border="0" cellpadding="1" cellspacing="1" width="98%" class=std>
+<form name="ganttdate" method="post" action="?m=tasks&a=viewgantt&project_id=<?php echo $project_id ?>">
 <tr>
 	<td nowrap width=100><input type=radio name=display_option value=custom >Date range :</td>
 	<td>
 		<table border=0 cellpadding=1 cellspacing=1 bgcolor="silver" width=360>
 		<tr bgcolor="#eeeeee">
-			<td align="right">Start Date:</td>
-			<td nowrap><input type="text" class="text" name="sdate" value="<?php echo fromDate($start_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>										<td align="right">End Date:</td>
-			<td nowrap><input type="text" class="text" name="edate" value="<?php echo fromDate($end_date);?>" maxlength="10" size=12><a href="#" onClick="popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a></td>
+			<td align="right" nowrap="nowrap">Start Date:</td>
+			<td nowrap>
+				<input type="hidden" name="sdate" value="<?php echo $start_date->getTimestamp();?>">
+				<input type="text" class="text" name="show_sdate" value="<?php echo $start_date->toString();?>" size="12" disabled="disabled">
+				<a href="javascript:popCalendar('sdate')">
+					<img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
+				</a>
+			</td>
+			<td align="right" nowrap="nowrap">End Date:</td>
+			<td nowrap>
+				<input type="hidden" name="edate" value="<?php echo $end_date->getTimestamp();?>">
+				<input type="text" class="text" name="show_edate" value="<?php echo $end_date->toString();?>" size="12" disabled="disabled">
+				<a href="javascript:popCalendar('edate')">
+					<img src="./images/calendar.gif" width="24" height="12" alt="" border="0">
+				</a>
+			</td>
 		</tr>
 		</table>
 	</td>
-	</tr>
-	
-	<tr>
-		<td><input type=radio name=display_option value=month>This month</td>
-		<td>&nbsp;</td>
-	</tr>
-	
-	<tr>
-		<td><input type=radio name=display_option value=all>Entire proyect</td>
+</tr>
+
+<tr>
+	<td><input type=radio name=display_option value=month>This month</td>
+	<td>&nbsp;</td>
+</tr>
+
+<tr>
+	<td><input type=radio name=display_option value=all>Entire project</td>
 	<td align=right valign=bottom>
-	<input type="button" value="refresh" class=button onClick="javascript:document.form.submit();">
+		<input type="submit" class="button" value="refresh">
 	</td>
-	</tr>
+</tr>
+</form>
 </table>
 <br>
 
@@ -105,13 +131,21 @@ if($display_option!="all") {
 </table>
 <?php } ?>
 
-</form>
 
 <table border="0" cellpadding="4" cellspacing="0" width="98%" class="std">
 <tr>
-	<td align=center>		
-		<?php					
-			echo "<script>document.write('<img src=modules/tasks/gantt.php?project_id=$project_id" . ($display_option=="all"?"":"&start_date=$start_date&end_date=$end_date") . "&width=' + (window.outerWidth - 200) + '>')</script>";
+	<td align=center>
+		<?php
+			if ($display_option == 'Entire Project') {
+				$start_date = null;
+				$end_date = null;
+			}
+			$src = "modules/tasks/gantt.php?project_id=$project_id";
+			$src .= ($display_option == 'all') ? '' :
+				'&start_date='.$start_date->toString( "%Y-%m-%d" ).'&end_date='.$end_date->toString( "%Y-%m-%d" );
+			$src .= "&width=' + (window.outerWidth - 200) + '";
+
+			echo "<script>document.write('<img src=\"$src\">')</script>";
 		?>
 	</td>
 </tr>

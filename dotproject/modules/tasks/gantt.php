@@ -4,25 +4,25 @@
  * Gantt.php - by J. Christopher Pereira
  *
  */
- 
+
  /*
  	TODO:
  		- task groups start_date = min(children_start_date), end_date = max(children_end_date)
  		- show dependencies (not implemented in jpgraph)
  */
- 
-include ("../../lib/jpgraph/src/jpgraph.php");
-include ("../../lib/jpgraph/src/jpgraph_gantt.php");
-include ("../../includes/main_functions.php");
-include ("../../functions/tasks_func.php");
+require_once( "../../includes/config.php" );
+require_once( "$root_dir/includes/db_connect.php" );
+require_once( "$root_dir/classdefs/ui.php" );
+
+include ("$root_dir/lib/jpgraph/src/jpgraph.php");
+include ("$root_dir/lib/jpgraph/src/jpgraph_gantt.php");
+include ("$root_dir/includes/main_functions.php");
+include ("$root_dir/functions/tasks_func.php");
 
 $gantt_arr = array();
 
 // START: from index.php
 
-require_once( "../../includes/config.php" );
-require_once( "../../includes/db_connect.php" );
-require_once( "../../classdefs/ui.php" );
 
 session_start();
 session_register( 'AppUI' );
@@ -45,11 +45,6 @@ if ($AppUI->doLogin()) {
 	exit;
 }
 
-// legacy cookies
-$user_cookie = isset($HTTP_COOKIE_VARS['user_cookie']) ? $HTTP_COOKIE_VARS['user_cookie'] : 0;
-$thisuser = isset($HTTP_COOKIE_VARS['thisuser']) ? $HTTP_COOKIE_VARS['thisuser'] : 0;
-list($thisuser_id, $thisuser_first_name, $thisuser_last_name, $thisuser_company, $thisuser_dept, $hash) = explode( '|', $thisuser );
-
 // END: from index.php
 
 $project_id = isset( $HTTP_GET_VARS['project_id'] ) ? $HTTP_GET_VARS['project_id'] : 0;
@@ -64,7 +59,7 @@ SELECT project_id, project_color_identifier, project_name,
 FROM permissions, projects
 LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
 WHERE project_active <> 0
-	AND permission_user = $thisuser_id
+	AND permission_user = $AppUI->user_id
 	AND permission_value <> 0
 	AND (
 		(permission_grant_on = 'all')
@@ -89,7 +84,7 @@ for ($x=0; $x < $pnums; $x++) {
 $dsql = "
 SELECT task_id
 FROM tasks, permissions
-WHERE permission_user = $thisuser_id
+WHERE permission_user = $AppUI->user_id
 	AND permission_grant_on = 'tasks'
 	AND permission_item = task_id
 	AND permission_value = 0
@@ -118,16 +113,16 @@ switch ($f) {
 		$where .= "\nAND task_status > -1";
 		break;
 	case 'myproj':
-		$where .= "\nAND task_status > -1\n	AND project_owner = $thisuser_id";
+		$where .= "\nAND task_status > -1\n	AND project_owner = $AppUI->user_id";
 		break;
 	case 'mycomp':
-		$where .= "\nAND task_status > -1\n	AND project_company = $thisuser_company";
+		$where .= "\nAND task_status > -1\n	AND project_company = $AppUI->user_company";
 		break;
 	case 'myinact':
 		$from .= ", user_tasks";
 		$where .= "
 	AND task_project = projects.project_id
-	AND user_tasks.user_id = $thisuser_id
+	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id
 ";
 		break;
@@ -136,7 +131,7 @@ switch ($f) {
 		$where .= "
 	AND task_status > -1
 	AND task_project = projects.project_id
-	AND user_tasks.user_id = $thisuser_id
+	AND user_tasks.user_id = $AppUI->user_id
 	AND user_tasks.task_id = tasks.task_id
 ";
 		break;
@@ -158,7 +153,7 @@ for ($x=0; $x < $nums; $x++) {
         if($row["task_end_date"] == "0000-00-00 00:00:00") {
         	$row["task_end_date"] = get_end_date($row["task_start_date"], $row["task_duration"]);
         }
-	
+
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
@@ -169,15 +164,17 @@ $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
-if($start_date != "" && $end_date != "") $graph->SetDateRange($start_date, $end_date); 
+if ($start_date && $end_date) {
+	$graph->SetDateRange( $start_date, $end_date );
+}
 
 //This kludgy function echos children tasks as threads
 
 function showtask( &$a, $level=0 ) {
 	/* Add tasks to gantt chart */
-	
+
 	global $gantt_arr;
-	
+
 	$gantt_arr[] = array($a, $level);
 
 }
@@ -220,35 +217,35 @@ if($hide_task_groups) {
 }
 
 $row = 0;
-for($i = 0; $i < count($gantt_arr); $i ++ ) {	
-	
+for($i = 0; $i < count($gantt_arr); $i ++ ) {
+
 	$a = $gantt_arr[$i][0];
 	$level = $gantt_arr[$i][1];
-	
+
 	if($hide_task_groups) $level = 0;
-		
+
 	$name = $a["task_name"];
 	$start = substr($a["task_start_date"], 0, 10);
 	$end = substr($a["task_end_date"], 0, 10);
 	$progress = $a["task_precent_complete"];
 	$flags = ($a["task_milestone"]?"m":"");
-	
+
 	if(!$end) {
 		$end = $start;
 		$cap = " (no end date)";
 	} else {
 		$cap = "";
 	}
-	
+
 	if($flags == "m") {
 		$bar = new MileStone($row++, $name, $start, $start);
 	} else {
-		$bar = new GanttBar($row++, str_repeat("   ", $level) . $name, $start, $end, $cap); 
+		$bar = new GanttBar($row++, str_repeat("   ", $level) . $name, $start, $end, $cap);
 		$bar->progress->Set($progress/100);
-		
+
 		$sql = "select dependencies_task_id from task_dependencies where dependencies_req_task_id=" . $a["task_id"];
 		$query = mysql_query($sql);
-		
+
 		while($dep = mysql_fetch_array($query)) {
 			// find row num of dependencies
 			for($d = 0; $d < count($gantt_arr); $d++ ) {
@@ -258,9 +255,9 @@ for($i = 0; $i < count($gantt_arr); $i ++ ) {
 			}
 		}
 	}
-	
+
 	$graph->Add($bar);
 }
 
-$graph->Stroke(); 
+$graph->Stroke();
 ?>
