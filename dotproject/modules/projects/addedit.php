@@ -165,7 +165,7 @@ function submitIt() {
 			<td>
 				<input type="text" class="text" name="project_start_date" id="date1" value="<?php echo $start_date->format( '%Y-%m-%d' );?>" />
 				
-				<a href="#" onClick="return showCalendar('date1', 'y-mm-dd');">
+				<a href="#" onClick="popCalendar( 'start_date', 'start_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
 				yyyy-mm-dd
@@ -175,8 +175,8 @@ function submitIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
 			<td>
 				<input type="text" class="text" name="project_end_date" id="date2" value="<?php echo $end_date ? $end_date->format( '%Y-%m-%d' ) : '';?>" />
-				
-				<a href="#" onClick="return showCalendar('date2', 'y-mm-dd');">
+
+				<a href="#" onClick="popCalendar('end_date', 'end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 				</a>
 				yyyy-mm-dd
