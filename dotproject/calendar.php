@@ -1,5 +1,6 @@
 <?php
-//test
+require 'includes/config.php';
+require 'includes/main_functions.php';
 // Set Day, Month, Year
 if(empty($thisMonth)){$thisMonth = date("n", time());}
 if(empty($thisYear)){$thisYear = date("Y", time());}
@@ -71,15 +72,18 @@ if( $nextMonth > 12 ) { $nextMonth = $nextMonth - 12; $nextYear++; }
 <SCRIPT language="javascript">
 function setClose(x,y,z){
 	var form = window.opener.document.<?=$form;?>;
+	var page = "<?=$page;?>";
 
-	if("<?=$page;?>"=="events"){
-		//form.<?echo $field;?>.value = x + "/" + y + "/" + z;
-		form.<?echo $field;?>.value = z + "-" + x + "-" + y;
-	
+	if(page != ""){
+		if ("<?=$date_format;?>"== "1") {
+			form.<?echo $field;?>.value = y + "/" + x + "/" + z;
 	}
-	else if("<?echo $field;?>".indexOf("task") >-1){
+		else if ("<?=$date_format;?>"=="2") {
+			form.<?echo $field;?>.value = x + "/" + y + "/" + z;
+		}
+		else {
 		form.<?echo $field;?>.value = z + "-" + x + "-" + y;
-	
+		}
 	}
 	else{
 		z =  z - 1999;
@@ -91,7 +95,6 @@ function setClose(x,y,z){
 		form.<?echo $field;?>MM_int.selectedIndex = x;
 		form.<?echo $field;?>DD_int.selectedIndex = y;
 		form.<?echo $field;?>YYYY_int.selectedIndex = z;
-		
 	}
 	window.close();
 }
