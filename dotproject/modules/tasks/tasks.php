@@ -451,7 +451,7 @@ function chAssignment(project_id, rmUser, del) {
 	<th align="center"><?php sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ); ?></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned users')?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_('Assigned Users')?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );?>&nbsp;&nbsp;</th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );?></th>
