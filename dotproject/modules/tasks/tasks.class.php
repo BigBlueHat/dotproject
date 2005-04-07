@@ -240,6 +240,7 @@ class CTask extends CDpObject {
 
 
 	function updateDynamics( $fromChildren = false ) {
+		GLOBAL $dPconfig;
 		//Has a parent or children, we will check if it is dynamic so that it's info is updated also
 		
 		$modified_task = new CTask();
@@ -251,10 +252,25 @@ class CTask extends CDpObject {
 		}
 
 		if ( $modified_task->task_dynamic == '1' ) {
-			//Update allocated hours based on children
-			$sql = "SELECT SUM( task_duration * task_duration_type ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
-					" and task_id != " . $modified_task->task_id . " GROUP BY task_parent;";
-			$children_allocated_hours = (float) db_loadResult( $sql );
+			//Update allocated hours based on children with duration type of 'hours'
+			$sql1 = "SELECT SUM( task_duration * task_duration_type ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
+					" and task_id != " . $modified_task->task_id . 
+					" AND task_duration_type = 1 " .
+					" GROUP BY task_parent;";
+			$children_allocated_hours1 = (float) db_loadResult( $sql1 );
+			
+			//Update allocated hours based on children with duration type of 'days'
+			// use here the daily working hours instead of the full 24 hours to calculate dynamic task duration!
+			$sql2 = "SELECT SUM( task_duration * ".$dPconfig['daily_working_hours']." ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
+					" and task_id != " . $modified_task->task_id . 
+					" AND task_duration_type > 1" .
+					" GROUP BY task_parent;";
+			$children_allocated_hours2 = (float) db_loadResult( $sql2 );
+			
+			// sum up the two distinct duration values for the children with duration type 'hrs' 
+			// and for those with the duration type 'day'
+			$children_allocated_hours = $children_allocated_hours1 + $children_allocated_hours2;
+			
 			if ( $modified_task->task_duration_type == 1 ) {
 				$modified_task->task_duration = round($children_allocated_hours,2);
 			} else {
