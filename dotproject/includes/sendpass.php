@@ -5,6 +5,8 @@
 * @license http://opensource.org/licenses/bsd-license.php BSD License
 */
 
+require_once( $AppUI->getSystemClass( 'libmail' ) );
+
 //
 // New password code based oncode from Mambo Open Source Core
 // www.mamboserver.com | mosforge.net
@@ -33,13 +35,13 @@ function sendNewPass() {
  $newpass = makePass();
  $message = $AppUI->_('sendpass0', UI_OUTPUT_RAW)." $checkusername ". $AppUI->_('sendpass1', UI_OUTPUT_RAW) . " $_live_site  ". $AppUI->_('sendpass2', UI_OUTPUT_RAW) ." $newpass ". $AppUI->_('sendpass3', UI_OUTPUT_RAW);
  $subject = "$_sitename :: ".$AppUI->_('sendpass4', UI_OUTPUT_RAW)." - $checkusername";
- $headers = "";
- $headers .= "From: dotproject\r\n";
- //$headers .= "Reply-To: <".$adminEmail.">\r\n";
- $headers .= "X-Priority: 3\r\n";
- $headers .= "X-MSMail-Priority: Low\r\n";
- $headers .= "X-Mailer: dotproject\r\n";
- mail( $confirmEmail, $subject, $message, $headers );
+ 
+ $m= new Mail; // create the mail
+ $m->From( "dotProject" );
+ $m->To( $confirmEmail );
+ $m->Subject( $subject );
+ $m->Body( $message, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );	// set the body
+ $m->Send();	// send the mail
 
  $newpass = md5( $newpass );
  $sql = "UPDATE users SET user_password='$newpass' WHERE user_id='$user_id'";
