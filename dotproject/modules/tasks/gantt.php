@@ -134,10 +134,12 @@ $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
 //$graph->scale->day->SetStyle(DAYSTYLE_SHORTDATE2);
 
+/* This configuration variable is obsolete
 $jpLocale = dPgetConfig( 'jpLocale' );
 if ($jpLocale) {
 	$graph->scale->SetDateLocale( $jpLocale );
-}
+}*/
+$graph->scale->SetDateLocale( $AppUI->user_locale );
 
 if ($start_date && $end_date) {
 	$graph->SetDateRange( $start_date, $end_date );
@@ -268,14 +270,13 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
 	if($hide_task_groups) $level = 0;
 
+	$name = $a["task_name"];
 	if ( $locale_char_set=='utf-8' && function_exists("utf8_decode") ) {
-		$name = strlen( $a["task_name"] ) > 34 ? substr( utf8_decode($a["task_name"]), 0, 33 ).'.' : utf8_decode($a["task_name"]) ;
-	} else {
-		//while using charset different than UTF-8 we need not to use utf8_decode
-		$name = strlen( $a["task_name"] ) > 34 ? substr( $a["task_name"], 0, 33 ).'.' : $a["task_name"] ;	
+		$name = utf8_decode($name);
 	}
+	$name = strlen( $name ) > 34 ? substr( $name, 0, 33 ).'.' : $name ;	
 	$name = str_repeat(" ", $level).$name;
-
+    
 	//using new jpGraph determines using Date object instead of string
 	$start = $a["task_start_date"];
 	$end_date = $a["task_end_date"];

@@ -5,7 +5,7 @@ var calWin = null;
 setTasksStartDate sets new task's start date value which is maximum end date of all dependend tasks
 to do: date format should be taken from config
 */
-function setTasksStartDate(form) {
+function setTasksStartDate(form, datesForm) {
 
 	var td = form.task_dependencies.length -1;
 	var max_date = new Date("1970", "01", "01");
@@ -39,15 +39,15 @@ function setTasksStartDate(form) {
 			var hour  = projTasksWithEndDates[max_id][1];
 			var minute = projTasksWithEndDates[max_id][2];
 		
-			form.start_date.value = projTasksWithEndDates[max_id][0];
-			form.start_hour.value = hour;
-			form.start_minute.value = minute;
+			datesForm.start_date.value = projTasksWithEndDates[max_id][0];
+			datesForm.start_hour.value = hour;
+			datesForm.start_minute.value = minute;
 			
 			 var d = projTasksWithEndDates[max_id][0];
 			 //hardcoded date format Ymd
-			 form.task_start_date.value = d.substring(6,10) + "" + d.substring(3,5) + "" + d.substring(0,2);	 
+			 datesForm.task_start_date.value = d.substring(6,10) + "" + d.substring(3,5) + "" + d.substring(0,2);	 
 		}	
-		setAMPM(form.start_hour);
+		setAMPM(datesForm.start_hour);
 	}
 }
 
@@ -177,7 +177,7 @@ function clearExceptFor(obj, id){
 	}
 }
 
-function addTaskDependency(form) {
+function addTaskDependency(form, datesForm) {
 	var at = form.all_tasks.length -1;
 	var td = form.task_dependencies.length -1;
 	var tasks = "x";
@@ -204,10 +204,10 @@ function addTaskDependency(form) {
 	}
 	
 	checkForTaskDependencyNone(form.task_dependencies);
-	setTasksStartDate(form);
+	setTasksStartDate(form, datesForm);
 }
 
-function removeTaskDependency(form) {
+function removeTaskDependency(form, datesForm) {
 	td = form.task_dependencies.length -1;
 
 	for (td; td > -1; td--) {
@@ -216,7 +216,7 @@ function removeTaskDependency(form) {
 		}
 	}
 	
-	setTasksStartDate(form);
+	setTasksStartDate(form, datesForm);
 }
 
 function setAMPM( field) {

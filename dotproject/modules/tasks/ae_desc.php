@@ -60,7 +60,7 @@
 		</tr>
 		<tr>
 			<td>
-				<select name='task_parent' class='text' onchange="javascript:setTasksStartDate()">
+				<select name='task_parent' class='text'>
 					<option value='<?php echo $obj->task_id; ?>'><?php echo $AppUI->_('None'); ?></option>
 					<?php echo $task_parent_options; ?>
 				</select>
