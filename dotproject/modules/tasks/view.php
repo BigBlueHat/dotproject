@@ -491,7 +491,7 @@ if ( count($obj->getChildren()) > 0 ) {
 	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
 }
 
-if ($tabBox->loadExtras($m))
+if ($tabBox->loadExtras($m, $a))
   $tabBox_show = 1;
 
 if ( $tabBox_show == 1)	$tabBox->show();
