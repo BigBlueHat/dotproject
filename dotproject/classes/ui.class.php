@@ -1020,16 +1020,17 @@ the active tab, and the selected tab **/
 			return false;
 
 		if ($file) {
-			if (isset($_SESSION['all_tabs'][$module][$file]) && is_array($_SESSION['all_tabs'][$module][$file]))
+			if (isset($_SESSION['all_tabs'][$module][$file]) && is_array($_SESSION['all_tabs'][$module][$file])) {
 				$tab_array =& $_SESSION['all_tabs'][$module][$file];
-			else
+			} else {
 				return false;
+			}
 		} else {
 			$tab_array =& $_SESSION['all_tabs'][$module];
 		}
 		$tab_count = 0;
 		foreach ($tab_array as $tab_elem) {
-			if (isset($tab_elem['name']) && $AppUI->isActiveModule($tab_elem['name'])) {
+			if (isset($tab_elem['module']) && $AppUI->isActiveModule($tab_elem['module'])) {
 				$tab_count++;
 				$this->add($tab_elem['file'], $tab_elem['name']);
 			}
