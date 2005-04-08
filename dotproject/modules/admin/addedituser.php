@@ -3,6 +3,12 @@
 
 $user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
 
+if ($user_id == 0)
+	$canEdit = $canAuthor;
+
+if ($canEdit)
+	$canEdit = $perms->checkModuleItem('users', ($user_id ? 'edit' : 'add'), $user_id);
+
 // check permissions
 if (!$canEdit && $user_id != $AppUI->user_id) {
     $AppUI->redirect( "m=public&a=access_denied" );
@@ -36,7 +42,8 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
 	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=admin", "users list" );
+	if ($perms->checkModule('admin', 'view') && $perms->checkModule('users', 'view'))
+		$titleBlock->addCrumb( "?m=admin", "users list" );
 	if ($user_id > 0) {
 		$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
 		if ($canEdit || $user_id == $AppUI->user_id) {

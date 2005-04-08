@@ -1,7 +1,13 @@
 <?php /* ADMIN $Id$ */
-$AppUI->savePlace();
 
 $user_id = isset( $_GET['user_id'] ) ? $_GET['user_id'] : 0;
+
+if ($user_id != $AppUI->user_id 
+&& ( ! $perms->checkModuleItem('admin', 'view', $user_id) 
+|| ! $perms->checkModuleItem('users', 'view', $user_id) ) )
+	$AppUI->redirect('m=public&a=access_denied');
+
+$AppUI->savePlace();
 
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'UserVwTab', $_GET['tab'] );
