@@ -109,16 +109,16 @@ else
             <td class="title" colspan="2">&nbsp;</td>
         </tr>
           <tr>
-            <td class="title" colspan="2">Backup existing Database (Recommended)</td>
+            <td class="title" colspan="2">Download existing Data (Recommended)</td>
         </tr>
         <tr>
-            <td class="item" colspan="2">Receive a Backup XML Schema File containing all Tables for the database entered above
-            by clicking on the Button labeled 'Backup' down below. Save this file in a safe place on your client. Depending on database size and system environment this process can take some time.
-	    PLEASE CHECK THE RECEIVED FILE IMMEDIATELY FOR CONTENT AND CONSISTENCE AS ERROR MESSAGES ARE PRINTED INTO THIS FILE.</td>
+            <td class="item" colspan="2">Download a XML Schema File containing all Tables for the database entered above
+            by clicking on the Button labeled 'Download XML' below. This file can be used with the Backup module to restore a previous system. Depending on database size and system environment this process can take some time.
+	    <br/>PLEASE CHECK THE RECEIVED FILE IMMEDIATELY FOR CONTENT AND CONSISTENCY AS ERROR MESSAGES ARE PRINTED INTO THIS FILE.<br/><br /><b>THIS FILE CAN ONLY BE RESTORED WITH A WORKING DOTPROJECT 2.x SYSTEM WITH THE BACKUP MODULE INSTALLED. DO NOT RELY ON THIS AS YOUR ONLY BACKUP.</b></td>
         </tr>
         <tr>
             <td class="item">Receive XML Backup Schema File</td>
-            <td align="left"><input class="button" type="submit" name="dobackup" value="Backup" title="Click here to retrieve a database backup file that can be stored on your local system." /></td>
+            <td align="left"><input class="button" type="submit" name="dobackup" value="Download XML" title="Click here to retrieve a XML file containing your data that can be stored on your local system." /></td>
         </tr>
           <tr>
             <td align="left"><br /><input class="button" type="submit" name="do_db" value="<?php echo $_POST['mode']; ?> db only" title="Try to set up the database with the given information." />
