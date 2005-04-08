@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'History';
-$config['mod_version'] = '0.1';
+$config['mod_version'] = '0.3';
 $config['mod_directory'] = 'history';
 $config['mod_setup_class'] = 'CSetupHistory';
 $config['mod_type'] = 'user';
@@ -54,8 +54,25 @@ class CSetupHistory {
 		return db_error();
 	}
 	
-	function upgrade() {
-		return null;
+	function upgrade($old_version) {
+		$q = new DBQuery;
+		switch ($old_version) {
+			case '0.1':
+				$q->alterTable('history');
+				$q->addField('history_table', 'varchar(15) NOT NULL default \'\'');
+				$q->addField('history_action', 'varchar(10) NOT NULL default \'modify\'');
+				$q->dropField('history_module');
+				$q->exec();
+				$q->clear();
+			case '0.2':
+				$q->alterTable('history');
+				$q->addField('history_item', 'int(10) NOT NULL');
+				$q->exec();
+				$q->clear();
+			case '0.3':
+				break;
+		}
+		return db_error();
 	}
 }
 
