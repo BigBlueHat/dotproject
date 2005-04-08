@@ -240,9 +240,9 @@ var task_end_msg = "<?php echo $AppUI->_('taskValidEndDate');?>";
 var workHours = <?php echo dPgetConfig( 'daily_working_hours' );?>;
 //working days array from config.php
 var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
-var cal_day_start = <?php echo dPgetConfig( 'cal_day_start' );?>;
-var cal_day_end = <?php echo dPgetConfig( 'cal_day_end' );?>;
-var daily_working_hours = <?php echo dPgetConfig('daily_working_hours'); ?>;
+var cal_day_start = <?php echo intval(dPgetConfig( 'cal_day_start' ));?>;
+var cal_day_end = <?php echo intval(dPgetConfig( 'cal_day_end' ));?>;
+var daily_working_hours = <?php echo intval(dPgetConfig('daily_working_hours')); ?>;
 
 
 </script>

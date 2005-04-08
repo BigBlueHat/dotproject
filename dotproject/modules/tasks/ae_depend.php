@@ -5,9 +5,9 @@ global $can_edit_time_information, $obj;
 global $durnTypes, $task_project, $task_id, $tab;
 
 //Time arrays for selects
-$start = dPgetConfig('cal_day_start');
-$end   = dPgetConfig('cal_day_end');
-$inc   = dPgetConfig('cal_day_increment');
+$start = intval(dPgetConfig('cal_day_start'));
+$end   = intval(dPgetConfig('cal_day_end'));
+$inc   = intval(dPgetConfig('cal_day_increment'));
 if ($start === null ) $start = 8;
 if ($end   === null ) $end = 17;
 if ($inc   === null)  $inc = 15;
