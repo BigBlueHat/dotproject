@@ -557,7 +557,8 @@ function copyForm(form, to, extras) {
 				to.appendChild(h.addHidden(elem.name, elem.value));
 				break;
 			case 'select-one':
-				to.appendChild(h.addHidden(elem.name, elem.options[elem.selectedIndex].value));
+				if (elem.options.length > 0)
+					to.appendChild(h.addHidden(elem.name, elem.options[elem.selectedIndex].value));
 				break;
 			case 'select-multiple':
 				var sel = to.appendChild(h.addSelect(elem.name, false, true));
