@@ -538,6 +538,7 @@
 		function CustomOptionList( $field_id )
 		{
 			$this->field_id = $field_id;
+			$this->options = array();
 		}
 
 		function load()
@@ -565,6 +566,9 @@
 		{
 			GLOBAL $db;
 
+			if (! is_array($this->options))
+				$this->options = array();
+
 			foreach($this->options as $opt)
 			{
 				$optid = $db->GenID('custom_fields_option_id', 1 );
@@ -576,9 +580,9 @@
 				$q->addInsert('list_value', db_escape(strip_tags($opt)));
 
 				if (!$q->exec()) $insert_error = $db->ErrorMsg();  	
+				$q->clear();
 			}	
 
-			$q->clear();
 			return $insert_error;
 		}
 
