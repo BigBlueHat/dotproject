@@ -148,7 +148,7 @@ if (!@$min_view) {
   <?php
   // Tabbed information boxes
   $tabBox = new CTabBox( "?m=tasks&a=todo", "{$dPconfig['root_dir']}/modules/", $tab );
-  $tabBox->add( 'tasks/todo_tasks_sub', $AppUI->_('My Tasks') );
+  $tabBox->add( 'tasks/todo_tasks_sub', 'My Tasks' );
   if ($AppUI->isActiveModule('helpdesk')){ 
   $tabBox->add( 'helpdesk/vw_idx_my', 'My Open Requests' );
   }
