@@ -20,6 +20,12 @@ if ($task_log_id) {
 	$log->task_log_name = $obj->task_name;
 }
 
+// Check that the user is at least assigned to a task
+$task = new CTask;
+$task->load($task_id);
+if (! $task->canAccess($AppUI->user_id))
+	$AppUI->redirect('m=public&a=access_denied');
+
 // Lets check which cost codes have been used before
 /*$sql = "select distinct task_log_costcode
         from task_log
