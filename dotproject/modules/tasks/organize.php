@@ -236,17 +236,17 @@ function showtask_edit($task, $level=0)
 	<th width="20" colspan="2"><?php echo $AppUI->_('Progress');?></th>
 	<th width="15" align="center"><?php echo $AppUI->_('P');?></th>
 	<th>
-		<a style="color: white;" href="index.php?m=tasks&a=organize&sort=task_name">
+		<a class="hdr" href="index.php?m=tasks&a=organize&sort=task_name">
 		<?php echo $AppUI->_('Task');?>
 		</a>
 	</th>
 	<th nowrap>
-		<a style="color: white;" href="index.php?m=tasks&a=organize&sort=task_duration">
+		<a class="hdr" href="index.php?m=tasks&a=organize&sort=task_duration">
 		<?php echo $AppUI->_('Duration');?>
 		</a>
 	</th>
 	<th nowrap>
-		<a style="color: white;" href="index.php?m=tasks&a=organize&sort=task_end_date">
+		<a class="hdr" href="index.php?m=tasks&a=organize&sort=task_end_date">
 		<?php echo $AppUI->_('Due In');?>
 		</a>
 	</th>
