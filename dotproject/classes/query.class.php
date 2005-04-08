@@ -652,6 +652,21 @@ class DBQuery {
 		return $hashlist;
 	}
 
+	function loadArrayList($index = 0) {
+		global $db;
+
+		if (! $this->exec(ADODB_FETCH_NUM)) {
+			exit ($db->ErrorMsg());
+		}
+		$hashlist = array();
+		$keys = null;
+		while ($hash = $this->fetchRow()) {
+			$hashlist[$hash[$index]] = $hash;
+		}
+		$this->clear();
+		return $hashlist;
+	}
+
   /** {{{2 function loadResult
    * Load a single column result from a single row
    */
