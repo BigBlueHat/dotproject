@@ -208,9 +208,9 @@ class dPacl extends gacl_api {
     $canViewUsers = $this->checkModule('users', 'view');
     $q  = new DBQuery;
     $q->addTable('users');
-    $q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name) as contact_name');
+    $q->addQuery('user_id, concat_ws(", ", contact_last_name, contact_first_name) as contact_name');
     $q->addJoin('contacts', 'con', 'contact_id = user_contact');
-    $q->addOrder('contact_first_name');
+    $q->addOrder('contact_last_name');
     $res = $q->exec();
     $userlist = array();
     while ($row = $q->fetchRow()) {
