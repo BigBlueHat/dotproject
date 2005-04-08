@@ -13,9 +13,9 @@ $titleBlock->show();
 <table width="100%" cellspacing="1" cellpadding="0" border="0">
 <tr>
         <td nowrap align="right">
-<form name="filter" action="?m=history" method="post" onChange="document.filter.submit()">
+<form name="filter" action="?m=history" method="post" >
 <?php echo $AppUI->_('Changes to'); ?>:
-        <select name="filter">
+        <select name="filter" onChange="document.filter.submit()">
                 <option value=""></option>
                 <option value=""><?php echo $AppUI->_('Show all'); ?></option>
                 <option value="projects"><?php echo $AppUI->_('Projects'); ?></option>
@@ -87,9 +87,9 @@ function show_history($history)
         return $msg;
 }
 
-$filter = '';
+$filter = array();
 if (!empty($_REQUEST['filter']))
-        $filter = ' AND history_table = \'' . $_REQUEST['filter'] . '\' ';
+        $filter[] = 'history_table = \'' . $_REQUEST['filter'] . '\' ';
 if (!empty($_REQUEST['project_id']))
 {
 	$project_id = $_REQUEST['project_id'];
@@ -98,34 +98,32 @@ $q  = new DBQuery;
 $q->addTable('tasks');
 $q->addQuery('task_id');
 $q->addWhere('task_project = ' . $project_id);
-$sql = $q->prepare();
-$q->clear();
-$project_tasks = implode(',', db_loadColumn($sql));
+$project_tasks = implode(',', $q->loadColumn());
 if (!empty($project_tasks))
 	$project_tasks = "OR (history_table = 'tasks' AND history_item IN ($project_tasks))";
 
 $q->addTable('files');
 $q->addQuery('file_id');
 $q->addWhere('file_project = ' . $project_id);
-$sql = $q->prepare();
-$q->clear();
-$project_files = implode(',', db_loadColumn($sql));
+$project_files = implode(',', $q->loadColumn());
 if (!empty($project_files))
 	$project_files = "OR (history_table = 'files' AND history_item IN ($project_files))";
 
-	$filter .= " AND (
+	$filter[] = "(
 	(history_table = 'projects' AND history_item = '$project_id')
 	$project_tasks
 	$project_files
 	)";
 }
-$q = new DBQuery;
+
+$q  = new DBQuery;
 $q->addTable('history');
 $q->addTable('users');
-$q->addWhere('history_user = user_id'.$filter);
+$q->addWhere('history_user = user_id';
+$q->addWhere($filter);
 $q->addOrder('history_date DESC');
 $history = $q->loadList();
-$q->clear();
+
 ?>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
