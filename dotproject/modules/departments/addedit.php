@@ -49,7 +49,8 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 		$q->addQuery('dept_id, dept_name, dept_parent');
 		$q->addWhere('dep.dept_company = '.$company_id);
 		$q->addWhere('dep.dept_id != '.$dept_id);
-		$depts = arrayMerge( array( '0'=>array( 0, '- '.$AppUI->_('Select Unit').' -', -1 ) ), $q->loadHashList('dept_id'));
+		$depts = $q->loadArrayList();
+		$depts['0']  = array( 0, '- '.$AppUI->_('Select Unit').' -', -1 );
 	}
 
 	// collect all the users for the department owner list
