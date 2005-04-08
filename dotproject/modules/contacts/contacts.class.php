@@ -104,12 +104,11 @@ class CContact extends CDpObject{
 		$q  = new DBQuery;
 		$q->addTable('companies');
 		$q->addQuery('company_id, company_name');
-		if ($this->is_alpha($this->contact_company))
+		if ($this->is_alpha($this->contact_company)) {
 			$q->addWhere('company_name = '.$this->contact_company);
-
-		else
+		} else {
 			$q->addWhere('company_id = '.$this->contact_company);
-
+		}
 		$sql = $q->prepare();
 		$q->clear();
 		db_loadHash($sql, $result);
