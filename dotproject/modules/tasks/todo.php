@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-global $showEditCheckbox;
+global $showEditCheckbox, $date, $other_users;
 
 $showEditCheckbox = true;
 // Project status from sysval, defined as a constant
@@ -41,6 +41,9 @@ if (isset( $_POST['show_form'] )) {
 	$AppUI->setState( 'TaskDayShowEmptyDate', dPgetParam($_POST, 'show_empty_date', 0));
 
 }
+// Required for today view.
+global $showArcProjs, $showLowTasks, $showHoldProjs,$showDynTasks,$showPinned, $showEmptyDate;
+
 $showArcProjs = $AppUI->getState( 'TaskDayShowArc', 0 );
 $showLowTasks = $AppUI->getState( 'TaskDayShowLow', 1);
 $showHoldProjs = $AppUI->getState( 'TaskDayShowHold', 0);
@@ -121,9 +124,11 @@ $q->addOrder('task_priority DESC');
 $sql = $q->prepare();
 //echo "<pre>$sql</pre>";
 $q->clear();
+global $tasks;
 $tasks = db_loadList( $sql );
 
 
+global $priorities;
 $priorities = array(
 	'1' => 'high',
 	'0' => 'normal',
@@ -139,6 +144,10 @@ if (!@$min_view) {
 	$titleBlock->show();
 }
 
+// If we are called from anywhere but directly, we would end up with
+// double rows of tabs that would not work correctly, and since we
+// are called from the day view of calendar, we need to prevent this
+if ($m == 'tasks' && $a == 'todo') {
 ?>
 
 
@@ -149,6 +158,8 @@ if (!@$min_view) {
   // Tabbed information boxes
   $tabBox = new CTabBox( "?m=tasks&a=todo", "{$dPconfig['root_dir']}/modules/", $tab );
   $tabBox->add( 'tasks/todo_tasks_sub', 'My Tasks' );
+	// Wouldn't it be better to user $tabBox->loadExtras('tasks', 'todo'); and then
+	// add tasks_tab.todo.my_open_requests.php in helpdesk?  
   if ($AppUI->isActiveModule('helpdesk')){ 
   $tabBox->add( 'helpdesk/vw_idx_my', 'My Open Requests' );
   }
@@ -157,3 +168,8 @@ if (!@$min_view) {
 	</td>
 </tr>
 </table>
+<?php
+} else {
+	include $dPconfig['root_dir'] . '/modules/tasks/todo_tasks_sub.php';
+}
+?>
