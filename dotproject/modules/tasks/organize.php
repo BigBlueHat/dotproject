@@ -250,7 +250,7 @@ function showtask_edit($task, $level=0)
 		<?php echo $AppUI->_('Due In');?>
 		</a>
 	</th>
-	<th width="0">Select</th>
+	<th width="0"><?php echo $AppUI->_('Select');?></th>
 </tr>
 
 <?php
@@ -284,20 +284,20 @@ foreach ($tasks as $task)
 	if ($deny)
 		$sql .= "\nWHERE project_id NOT IN (" . implode( ',', $deny ) . ')';
   $projects = db_loadHashList($sql, 'project_id');
-	$p[0] = '[none]';
+	$p[0] = $AppUI->_('[none]');
 	foreach($projects as $proj)
 		$p[$proj[0]] = $proj[1];
 	if ($project_id)
-		$p[$project_id] = '[same project]';
+		$p[$project_id] = $AppUI->_('[same project]');
 		
 	$projects = $p;
 	
-	$ts[0] = '[top task]';
+	$ts[0] = $AppUI->_('[top task]');
 	foreach($tasks as $t)
 		$ts[$t['task_id']] = $t['task_name'];
 ?>
 
-<input type="checkbox" name="include_children" value='1' />Include Children (doesn't apply to delete or move within the same project)<br />
+<input type="checkbox" name="include_children" value='1' /><?php echo $AppUI->_('Include Children (doesn\'t apply to delete or move within the same project)');?><br />
 <table>
   <tr>
     <th>Action: </th>
