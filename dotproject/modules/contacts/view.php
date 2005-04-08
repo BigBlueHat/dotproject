@@ -1,5 +1,6 @@
 <?php /* CONTACTS $Id$ */
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
+$AppUI->savePlace();
 
 // check permissions for this record
 //$canEdit = !getDenyEdit( $m, $contact_id );
