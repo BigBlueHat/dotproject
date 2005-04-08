@@ -45,12 +45,16 @@ if (1 == 1)
 		// Fields 86 - 90
 		$text .= sprintf("%s\r\n","\"User 1\",\"User 2\",\"User 3\",\"User 4\",\"Web Page\"");
 		$q  = new DBQuery;
-		$q->addTable('contacts');
-		$q->addQuery('*');
+		$q->addTable('contacts', 'con');
+		$q->leftJoin('companies', 'co', 'co.company_id = con.contact_company');
+		$q->leftJoin('departments', 'de', 'de.dept_id = con.contact_department');
+		$q->addQuery('con.*');
+		$q->addQuery('co.company_name');
+		$q->addQuery('de.dept_name');
 		$contacts = $q->loadList();
 		foreach ($contacts as $row) {
 		// Fields 1- 10
-		$text .= sprintf("\"\",\"%s\",\"\",\"%s\",\"\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",",$row['contact_first_name'],$row['contact_last_name'],$row['contact_company'],$row['contact_department'],$row['contact_title'],$row['contact_address1'],$row['contact_address2']);
+		$text .= sprintf("\"\",\"%s\",\"\",\"%s\",\"\",\"%s\",\"%s\",\"%s\",\"%s\",\"%s\",",$row['contact_first_name'],$row['contact_last_name'],$row['company_name'],$row['dept_name'],$row['contact_title'],$row['contact_address1'],$row['contact_address2']);
 		// Fields 11- 20
 		//$text .= sprintf("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",");
 		$text .= sprintf(",\"%s\",\"%s\",\"%s\",,,,,,,",$row['contact_city'],$row['contact_state'],$row['contact_zip']);
