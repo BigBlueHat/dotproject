@@ -102,7 +102,7 @@ if ($dobackup){
 if ($dobackup)
  dPmsg($backupMsg);
 
-if ($do_db || $do_db_cfg) {
+if ($dbc && ($do_db || $do_db_cfg)) {
 
  if ($mode == 'install') {
   if ($dbdrop) { 
@@ -194,7 +194,11 @@ if ($do_db || $do_db_cfg) {
  $db->Execute($sql);
 
 } else {
-$dbMsg = "Not Created";
+	$dbMsg = "Not Created";
+	if (! $dbc) {
+		$dbErr=1;
+		$dbMsg .= "<br/>No Database Connection available! "  . ($db ? $db->ErrorMsg() : '');
+	}
 }
 
 // always create the config file content
