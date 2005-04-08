@@ -162,7 +162,7 @@ foreach ($files as $file_row) {
 			$latest_file["project_color_identifier"] = 'f4efe3';
 		}
 		if ($showProject) {
-			$style = "background-color:#$latest_file[project_color_identifier];color:" . bestColor($row["project_color_identifier"]);
+			$style = "background-color:#$latest_file[project_color_identifier];color:" . bestColor($latest_file["project_color_identifier"]);
 			$s = '<tr>';
 			$s .= '<td colspan="12" style="border: outset 2px #eeeeee;' . $style . '">';
 			$s .= '<a href="?m=projects&a=view&project_id=' . $latest_file['file_project'] . '">';
