@@ -49,7 +49,8 @@ $versionPath = array(
 	'1.0.2',
 	'2.0-alpha',
 	'2.0-beta',
-	'2.0'
+	'2.0',
+	'2.0.1'
 );
 
 $lastDBUpdate = '';
