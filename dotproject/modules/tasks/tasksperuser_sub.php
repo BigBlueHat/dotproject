@@ -242,15 +242,14 @@ if($do_report){
         $userAlloc = $tempoTask->getAllocation("user_id");
 
         // Let's figure out which users we have
-	$sql = "SELECT  u.user_id,u.user_username
-	        FROM users AS u";
+	$sql = "SELECT  u.user_id,u.user_username FROM users AS u";
 
 	if ($log_userfilter!=0) {
-			$sql.=" WHERE user_id=".
+			$sql.=" WHERE u.user_id=".
 						  $log_userfilter
 					      ;//$log_userfilter_users[$log_userfilter]["user_id"];
 	}
-	$sql.=" ORDER by user_username";
+	$sql.=" ORDER by u.user_username";
 
 //echo "<pre>$sql</pre>";
 	$user_list = db_loadHashList($sql, "user_id");
@@ -557,7 +556,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
         $sep = $us = "";
 	foreach ($users as $row) {
                 if ($row["user_id"]) {
-                        $us .= "<a href='?m=admin&a=viewuser&user_id=$row[0]'>".$sep.$row['user_username']."&nbsp;(".$row['perc_assignment']."%)</a>";
+                        $us .= "<a href='?m=admin&a=viewuser&user_id=$row[0]'>".$sep.$row['contact_last_name']."&nbsp;(".$row['perc_assignment']."%)</a>";
                         $sep = ", ";
                 }
         }
