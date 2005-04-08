@@ -227,7 +227,47 @@ class DBQuery {
 
 	function addField($name, $type)
 	{
-		$this->create_definition = $name . ' ' . $type;
+		if (! is_array($this->create_definition))
+			$this->create_definition = array();
+		$this->create_definition[] = array('action' => 'ADD',
+			'type' => '',
+			'spec' => $name . ' ' . $type);
+	}
+
+	function dropField($name)
+	{
+		if (! is_array($this->create_definition))
+			$this->create_definition = array();
+		$this->create_definition[] = array('action' => 'DROP',
+			'type' => '',
+			'spec' => $name);
+	}
+
+	function addIndex($name, $type)
+	{
+		if (! is_array($this->create_definition))
+			$this->create_definition = array();
+		$this->create_definition[] = array('action' => 'ADD',
+			'type' => 'INDEX',
+			'spec' => $name . ' ' . $type);
+	}
+
+	function dropIndex($name)
+	{
+		if (! is_array($this->create_definition))
+			$this->create_definition = array();
+		$this->create_definition[] = array('action' => 'DROP',
+			'type' => 'INDEX',
+			'spec' => $name);
+	}
+
+	function dropPrimary()
+	{
+		if (! is_array($this->create_definition))
+			$this->create_definition = array();
+		$this->create_definition[] = array('action' => 'DROP',
+			'type' => 'PRIMARY KEY',
+			'spec' => '');
 	}
 
   function createDefinition($def)
@@ -496,8 +536,20 @@ class DBQuery {
 	function prepareAlter()
 	{
 		$q = 'ALTER TABLE `' . $this->_table_prefix . $this->create_table . '` ';
-		if (isset($this->create_definition))
-			$q .= 'ADD ' . $this->create_definition;
+		if (isset($this->create_definition)) {
+		  if (is_array($this->create_definition)) {
+		    $first = true;
+		    foreach ($this->create_definition as $def) {
+		      if ($first)
+			$first = false;
+		      else
+			$q .= ', ';
+		      $q .= $def['action'] . ' ' . $def['type'] . ' ' . $def['spec'];
+		    }
+		  } else {
+		    $q .= 'ADD ' . $this->create_definition;
+		  }
+		}
 
 		return $q; 
 	}
@@ -505,7 +557,7 @@ class DBQuery {
   /**
    * Execute the query and return a handle.  Supplants the db_exec query
    */
-  function &exec($style = ADODB_FETCH_BOTH)
+  function &exec($style = ADODB_FETCH_BOTH, $debug = false)
   {
       global $db;
       global $ADODB_FETCH_MODE;
@@ -516,6 +568,18 @@ class DBQuery {
       $this->clearQuery();
       if ($q = $this->prepare()) {
           dprint(__FILE__, __LINE__, 7, "executing query($q)");
+	  if ($debug) {
+	    // Before running the query, explain the query and return the details.
+	    $qid = $db->Execute('EXPLAIN ' . $q);
+	    if ($qid) {
+	      $res = array();
+	      while ($row = $this->fetchRow()) {
+		$res[] = $row;
+	      }
+	      dprint(__FILE__, __LINE__, 0, "QUERY DEBUG: " . var_export($res, true));
+	      $qid->Close();
+	    }
+	  }
           if (isset($this->limit)) {
             $this->_query_id = $db->SelectLimit($q, $this->limit, $this->offset);
           } else {
@@ -550,6 +614,7 @@ class DBQuery {
 
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
 			$AppUI->setMsg($db->ErrorMsg(), UI_MSG_ERROR);
+			$this->clear();
 			return false;
 		}
 
@@ -586,6 +651,25 @@ class DBQuery {
 		$this->clear();
 		return $hashlist;
 	}
+
+  /** {{{2 function loadResult
+   * Load a single column result from a single row
+   */
+  function loadResult()
+  {
+    global $AppUI;
+
+    $result = false;
+
+    if (! $this->exec(ADODB_FETCH_NUM)) {
+      $AppUI->setMsg($db->ErrorMsg(), UI_MSG_ERROR);
+    } else if ($data = $this->fetchRow()) {
+      $result =  $data[0];
+    }
+    $this->clear();
+    return $result;
+  }
+  //2}}}
 
   /** {{{2 function make_where_clause
    * Create a where clause based upon supplied field.
@@ -681,5 +765,5 @@ class DBQuery {
 }
 //1}}}
 
-// vim600: fdm=marker sw=2 ai:
+// vim600: fdm=marker sw=2 ts=8 ai:
 ?>
