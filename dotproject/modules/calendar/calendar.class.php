@@ -618,17 +618,17 @@ class CEvent extends CDpObject {
 		$q->clear();
 		
 		if (is_array($assigned) && count($assigned)) {
-			$q->addTable('user_events', 'ue');
 			
 			foreach ($assigned as $uid) {
 			    if ($uid) {
+				$q->addTable('user_events', 'ue');
 				$q->addInsert('event_id', $this->event_id);
 				$q->addInsert('user_id', $uid);
+				$q->exec();
+				$q->clear();
 			    }
 			}
 			
-			$q->exec();
-			$q->clear();
 			  if ($msg = db_error())
 				$AppUI->setMsg($msg, UI_MSG_ERROR);
 		}
