@@ -378,6 +378,17 @@ class CAppUI {
 * @return string
 */
 	function _( $str, $flags= 0 ) {
+		if (is_array($str)) {
+			$translated = array();
+			foreach ($str as $s)
+				$translated[] = $this->__($s, $flags);
+			return implode(' ', $translated);
+		} else {
+			return $this->__($str, $flags);
+		}
+	}
+
+	function __( $str, $flags = 0) {
 		global $dPconfig;
 		$str = trim($str);
 		if (empty( $str )) {
@@ -514,7 +525,7 @@ class CAppUI {
 * languagues atomic-wise translation doesn't work. Append should be
 * deprecated.
 *
-* @param string The (translated) message
+* @param mixed The (untranslated) message
 * @param int The type of message
 * @param boolean If true, $msg is appended to the current string otherwise
 * the existing message is overwritten with $msg.
