@@ -154,7 +154,7 @@ class CTask extends CDpObject {
 			$intersect = array_intersect( $this_dependencies, $this_dependents );
 			if (array_sum($intersect)) {
 				$ids = "(".implode(',', $intersect).")";
-				return ('BadDep_CircularDep').$ids;
+				return array('BadDep_CircularDep', $ids);
 			}
 		}
 
@@ -176,11 +176,11 @@ class CTask extends CDpObject {
 
 				// ... or parent's parent, cannot be child of this task. Could go on ...
 				if (in_array($this_parent->task_parent, $this_children))
-					return $AppUI->_('BadParent_CircularGrandParent')."(".$this_parent->task_parent.")";
+					return array('BadParent_CircularGrandParent', '('.$this_parent->task_parent.')');
 
 				// parent's parent cannot be one of this task's dependencies
 				if (in_array($this_parent->task_parent, $this_dependencies))
-					return $AppUI->_('BadDep_CircularGrandParent')."(".$this_parent->task_parent.")";;
+					return array('BadDep_CircularGrandParent', '('.$this_parent->task_parent.')');
 
 			} // grand parent
 
@@ -188,7 +188,7 @@ class CTask extends CDpObject {
 				$intersect = array_intersect( $this_dependencies, $parents_dependents );
 				if (array_sum($intersect)) {
 					$ids = "(".implode(',', $intersect).")";
-					return $AppUI->_('BadDep_CircularDepOnParentDependent').$ids;
+					return array('BadDep_CircularDepOnParentDependent', $ids);
 				}
 			}
 
@@ -406,7 +406,13 @@ class CTask extends CDpObject {
 		$importing_tasks = false;
 		$msg = $this->check();
 		if( $msg ) {
-			return get_class( $this )."::store-check failed - $msg";
+			$return_msg = array(get_class($this) . '::store-check',  'failed',  '-');
+			if (is_array($msg))
+				return array_merge($return_msg, $msg);
+			else {
+				array_push($return_msg, $msg);
+				return $return_msg;
+			}
 		}
 		if( $this->task_id ) {
 			addHistory('tasks', $this->task_id, 'update', $this->task_name, $this->task_project);
