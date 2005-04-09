@@ -61,8 +61,11 @@ require_once( "$baseDir/lib/adodb/adodb.inc.php" );
 $db = NewADOConnection($dbtype);
 
 if(!empty($db)) {
-  $dbc = $db->Connect($dbhost,$dbuser,$dbpass,$dbname);
+  $dbc = $db->Connect($dbhost,$dbuser,$dbpass);
+  if ($dbc)
+    $existing_db = $db->SelectDB($dbname);
 } else { $dbc = false; }
+
 
 $current_version = $dp_version_major . '.' . $dp_version_minor;
 $current_version .= isset($dp_version_patch) ? ".$dp_version_patch" : '';
@@ -106,13 +109,16 @@ if ($dobackup)
 if ($dbc && ($do_db || $do_db_cfg)) {
 
  if ($mode == 'install') {
+
   if ($dbdrop) { 
    dPmsg("Dropping previous database");
    $db->Execute("DROP DATABASE IF EXISTS ".$dbname); 
+	 $existing_db = false;
   }
 
-  dPmsg("Creating new Database");
-  $db->Execute("CREATE DATABASE ".$dbname);
+  if (! $existing_db) {
+		dPmsg("Creating new Database");
+		$db->Execute("CREATE DATABASE ".$dbname);
          $dbError = $db->ErrorNo();
  
          if ($dbError <> 0 && $dbError <> 1007) {
@@ -120,10 +126,11 @@ if ($dbc && ($do_db || $do_db_cfg)) {
                 $dbMsg .= "A Database Error occurred. Database has not been created! The provided database details are probably not correct.<br>".$db->ErrorMsg()."<br>";
 
          }
+   }
  }
 
- $db->Execute("USE " . $dbname);
-
+ // For some reason a db->SelectDB call here doesn't work.
+ $db->Execute('USE ' . $dbname);
  $db_version = InstallGetVersion($mode, $db);
 
  if ($mode == 'upgrade') {
