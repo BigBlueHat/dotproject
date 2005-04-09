@@ -55,43 +55,25 @@ class CUser extends CDpObject {
 		if( $this->user_id ) {
 		// save the old password
 			$perm_func = "updateLogin";
-			$q->addTable('users', 'u');
+			$q->addTable('users');
 			$q->addQuery('user_password');
 			$q->addWhere("user_id = $this->user_id");
-			$sql = $q->prepare();
-			$q->clear();
-
-			db_loadHash( $sql, $hash );
-			$pwd = $hash['user_password'];	// this will already be encrypted
+			$pwd = $q->loadResult();
+			if ($pwd != $this->user_password) {
+				$this->user_password = md5($this->user_password);
+			} else {
+				$this->user_password = null;
+			}
 
 			$ret = db_updateObject( 'users', $this, 'user_id', false );
-
-		// update password if there has been a change
-			$q->addTable('users', 'u');
-			$q->addUpdate('user_password', MD5($this->user_password));
-			$q->addWhere("user_id = $this->user_id");
-			$q->addWhere("user_password != '$pwd'");
-			$q->exec();
-			$q->clear();
 		} else {
 			$perm_func = "addLogin";
+			$this->user_password = md5($this->user_password);
 			$ret = db_insertObject( 'users', $this, 'user_id' );
-		// encrypt password
-			$q->addTable('users', 'u');
-			$q->addUpdate('user_password', MD5($this->user_password));
-			$q->addWhere("user_id = $this->user_id");
-			$q->exec();
-			$q->clear();
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
-			// Only execute password change in update/insert works.
-			$q->addTable('users', 'u');
-			$q->addUpdate('user_password', MD5($this->user_password));
-			$q->addWhere("user_id = $this->user_id");
-			$q->exec();
-			$q->clear();
 			$acl =& $GLOBALS['AppUI']->acl();
 			$acl->$perm_func($this->user_id, $this->user_username);
 			return NULL;
