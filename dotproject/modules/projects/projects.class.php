@@ -52,8 +52,8 @@ class CProject extends CDpObject {
 	}
 
         function load($oid=null , $strip = true) {
-                $obj = parent::load($oid, $strip);
-                if ($oid)
+                $result = parent::load($oid, $strip);
+                if ($result && $oid)
                 {
 			$q = new DBQuery;
 			$q->addTable('projects');
@@ -62,12 +62,9 @@ class CProject extends CDpObject {
                                         AS project_percent_complete');
 			$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
 			$q->addWhere(" project_id = $oid");
-			$sql = $q->prepare();
-			$q->clear();
-                        $obj->project_percent_complete = db_loadResult($sql);
-                        $this->project_percent_complete = db_loadResult($sql);
+                        $this->project_percent_complete = $q->loadResult();
                 }
-                return $obj;
+                return $result;
         }
 // overload canDelete
 	function canDelete( &$msg, $oid=null ) {
