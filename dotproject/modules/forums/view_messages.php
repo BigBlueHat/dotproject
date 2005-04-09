@@ -182,7 +182,8 @@ if ($viewtype =='normal')
 	$s .= '<td valign="top" align="right" style="'.$style.'">';
 
 	//the following users are allowed to edit/delete a forum message: 1. the forum creator  2. a superuser with read-write access to 'all' 3. the message author
-	if ( ($canEdit && $AppUI->user_id == $row['forum_moderated']) || (!empty($perms['all']) && !getDenyEdit('all')) || ($canEdit && $AppUI->user_id == $row['message_author'])) {
+	$canEdit = $perms->checkModuleItem('forums', 'edit', $row['message_id']);
+	if ( $canEdit && ( $AppUI->user_id == $row['forum_moderated'] || $AppUI->user_id == $row['message_author'] || $perms->checkModule('admin', 'edit'))) {
 		$s .= '<table cellspacing="0" cellpadding="0" border="0"><tr>';
 	// edit message
 		$s .= '<td><a href="./index.php?m=forums&a=viewer&post_message=1&forum_id='.$row["message_forum"].'&message_parent='.$row["message_parent"].'&message_id='.$row["message_id"].'" title="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Message' ).'">';
