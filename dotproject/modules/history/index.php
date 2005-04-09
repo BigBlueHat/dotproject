@@ -119,7 +119,7 @@ if (!empty($project_files))
 $q  = new DBQuery;
 $q->addTable('history');
 $q->addTable('users');
-$q->addWhere('history_user = user_id';
+$q->addWhere('history_user = user_id');
 $q->addWhere($filter);
 $q->addOrder('history_date DESC');
 $history = $q->loadList();
