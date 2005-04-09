@@ -341,8 +341,12 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 		}
 		$tmp[] = "$k=$val";
 	}
-	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
-	return db_exec( $sql );
+	if (count ($tmp)) {
+		$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
+		return db_exec( $sql );
+	} else {
+		return true;
+	}
 }
 
 /**
