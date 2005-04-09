@@ -139,9 +139,6 @@ if ($dbc && ($do_db || $do_db_cfg)) {
       $to_version = str_replace(array('.','-'), '', $versionPath[$i+1]);
       InstallLoadSql("$baseDir/db/upgrade_{$from_version}_to_{$to_version}.sql");
     }
-    // After all the updates, find the new version information.
-    $new_version = InstallGetVersion($mode, $db);
-    $lastDBUpdate = $new_version['last_db_update'];
   } else if (file_exists("$baseDir/db/upgrade_latest.sql")) {
     // Need to get the installed version again, as it should have been
     // updated by the from/to stuff.
@@ -150,6 +147,9 @@ if ($dbc && ($do_db || $do_db_cfg)) {
  } else {
   dPmsg("Installing database");
   InstallLoadSql("$baseDir/db/dotproject.sql");
+  // After all the updates, find the new version information.
+  $new_version = InstallGetVersion($mode, $db);
+  $lastDBUpdate = $new_version['last_db_update'];
  }
 
 				$dbError = $db->ErrorNo();

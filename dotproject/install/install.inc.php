@@ -76,12 +76,19 @@ function InstallSplitSql($sql, $last_update) {
 
  $sql = trim($sql);
 
+ $matched =  preg_match_all('/\n#\s*(\d{8})\b/', $sql, $matches);
+ if ($matched) {
+	 // Used for updating from previous versions, even if the update
+	 // is not correctly set.
+	 $len = count($matches[0]);
+   $lastDBUpdate = $matches[1][$len-1];
+ }
+ 
  if ($last_update && $last_update != '00000000') {
   // Find the first occurrance of an update that is
   // greater than the last_update number.
   dPmsg("Checking for previous updates");
-  if (preg_match_all('/\n#\s*(\d{8})\b/', $sql, $matches)) {
-   $len = count($matches[0]);
+  if ($matched) {
    for ($i = 0; $i < $len; $i++) {
     if ((int)$last_update < (int)$matches[1][$i]) {
      // Remove the SQL up to the point found
@@ -90,9 +97,6 @@ function InstallSplitSql($sql, $last_update) {
      break;
     }
    }
-   // Set the upgrade date - it may be they have an old CVS
-   // so we don't allow it to default to today.
-   $lastDBUpdate = $matches[1][$len-1];
    // If we run out of indicators, we need to debunk, otherwise we will reinstall
    if ($i == $len)
     return $ret;
