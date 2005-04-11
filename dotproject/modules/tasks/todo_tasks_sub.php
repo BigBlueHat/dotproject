@@ -1,6 +1,6 @@
 <?php
 global $showEditCheckbox, $tasks, $priorities;
-GLOBAL $m, $a, $date, $other_users, $showPinned, $showArcProjs, $showHoldProjs, $showDynTasks, $showLowTasks, $showEmptyDate;
+GLOBAL $m, $a, $date, $other_users, $showPinned, $showArcProjs, $showHoldProjs, $showDynTasks, $showLowTasks, $showEmptyDate, $user_id;
 ?>
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
 <form name="form_buttons" method="post" action="index.php?<?php echo "m=$m&a=$a&date=$date";?>">
