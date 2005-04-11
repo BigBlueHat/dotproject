@@ -134,12 +134,12 @@ $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
 //$graph->scale->day->SetStyle(DAYSTYLE_SHORTDATE2);
 
-/* This configuration variable is obsolete
+// This configuration variable is obsolete
 $jpLocale = dPgetConfig( 'jpLocale' );
 if ($jpLocale) {
 	$graph->scale->SetDateLocale( $jpLocale );
-}*/
-$graph->scale->SetDateLocale( $AppUI->user_locale );
+}
+//$graph->scale->SetDateLocale( $AppUI->user_locale );
 
 if ($start_date && $end_date) {
 	$graph->SetDateRange( $start_date, $end_date );

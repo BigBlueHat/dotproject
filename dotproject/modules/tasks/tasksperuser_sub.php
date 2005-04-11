@@ -36,6 +36,7 @@ $table_rows="";
 // create Date objects from the datetime fields
 $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();
 $end_date   = intval( $log_end_date )   ? new CDate( $log_end_date ) : new CDate();
+$now = new CDate();
 
 if (!$log_start_date) {
 	$start_date->subtractSpan( new Date_Span( "14,0,0,0" ) );
@@ -256,7 +257,7 @@ if($do_report){
 
 	$ss="'".$start_date->format( FMT_DATETIME_MYSQL )."'";
 	$se="'".$end_date->format( FMT_DATETIME_MYSQL )."'";
-
+	
 	$and=false;
 	$where=false;
 
@@ -498,7 +499,7 @@ function isMemberOfTask($list,$N,$user_id,$task) {
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $user_id) {
 
-        global $AppUI, $df, $durnTypes, $log_userfilter_users, $priority, $system_users, $z, $zi, $x, $userAlloc;
+        global $AppUI, $df, $durnTypes, $log_userfilter_users, $now, $priority, $system_users, $z, $zi, $x, $userAlloc;
 	$zi++;
         $users = $task->task_assigned_users;
 	$task->userPriority = $task->getUserSpecificTaskPriority( $user_id );
@@ -544,7 +545,6 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	$tmp.="&#160&#160&#160</td>";
 	$tmp.="<td align=\"center\" nowrap=\"nowrap\">";
 	$ed=new CDate($task->task_end_date);
-        $now=new CDate();
         $dt=$now->dateDiff($ed);
         $sgn = $now->compare($ed,$now);
 	$tmp.=($dt*$sgn);
@@ -607,11 +607,15 @@ function weekDates($display_allocated_hours,$fromPeriod,$toPeriod) {
 	$s=new CDate($fromPeriod);
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s);
-	$ew=getEndWeek($e); //intval($e->Format("%U"));
-
+	//$ew=getEndWeek($e); //intval($e->Format("%U"));
+	$dw = ceil($e->dateDiff($s)/7);
+	$ew = $sw + $dw;
 	$row="";
 	for($i=$sw;$i<=$ew;$i++) {
-		$row.="<th nowrap=\"nowrap\">".$s->getWeekofYear()."</th>";
+		$wn = $s->getWeekofYear() % 52;
+		$wn = ($wn != 0) ? $wn : 52;
+
+		$row.="<th title='".$s->getYear()."' nowrap=\"nowrap\">".$wn."</th>";
 		$s->addSeconds(168*3600);	// + one week
 	}
 return $row;
@@ -626,7 +630,9 @@ function weekCells($display_allocated_hours,$fromPeriod,$toPeriod) {
 	$s=new CDate($fromPeriod);
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s); //intval($s->Format("%U"));
-	$ew=getEndWeek($e); //intval($e->Format("%U"));
+	//$ew=getEndWeek($e); //intval($e->Format("%U"));
+	$dw = ceil($e->dateDiff($s)/7);
+	$ew = $sw + $dw;
 
 return $ew-$sw+1;
 }
@@ -643,12 +649,16 @@ function displayWeeks($list,$task,$level,$fromPeriod,$toPeriod) {
 	$s=new CDate($fromPeriod);
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s); 	//intval($s->Format("%U"));
-	$ew=getEndWeek($e); //intval($e->Format("%U"));
+	//$ew=getEndWeek($e); //intval($e->Format("%U"));
+	$dw = ceil($e->dateDiff($s)/7);
+	$ew = $sw + $dw;
 
 	$st=new CDate($task->task_start_date);
 	$et=new CDate($task->task_end_date);
 	$stw=getBeginWeek($st); //intval($st->Format("%U"));
-	$etw=getEndWeek($et); //intval($et->Format("%U"));
+	//$etw=getEndWeek($et); //intval($et->Format("%U"));
+	$dtw = ceil($et->dateDiff($st)/7);
+	$etw = $stw + $dtw;
 
 	//print "week from: $stw, to: $etw<br>\n";
 
