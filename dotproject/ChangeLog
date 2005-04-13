@@ -1,3 +1,93 @@
+2005-04-13 11:09  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Added XML support to enable modules to load schemas using XML for
+- database independence.
+
+2005-04-13 10:31  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Added name to invalid email report.
+
+2005-04-12 16:05  (gregorerhardt)
+---------------------------------
+modules/history/addedit.php
+- 785 missing php echo output
+
+2005-04-12 09:51  (ajdonnison)
+---------------------------------
+modules/projects/reports.php
+- Bug 799: suppressHeaders was not being checked when outputting project
+- selection form and javascript.
+
+2005-04-12 09:50  (ajdonnison)
+---------------------------------
+modules/projects/reports/overdue.php
+- Bug 799: Fixes typo in setting assignment array.
+
+2005-04-12 08:11  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/tasksperuser_sub.php
+- corrected multiple year week number calculation
+
+2005-04-12 05:29  (gregorerhardt)
+---------------------------------
+modules/tasks/todo_tasks_sub.php
+- 791 796 missing globalizing of form variable causing to reset form values
+
+2005-04-11 12:27  (ajdonnison)
+---------------------------------
+includes/session.php
+- Converting the time string now handles where it is left blank.
+
+2005-04-10 09:45  (ajdonnison)
+---------------------------------
+modules/history/index.php
+- Fix for bug 780, missing closing bracket.
+
+2005-04-09 14:52  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Fixed problem where database connection fails if the database doesn't
+- exist.  Now connects and selects the database separately.
+
+2005-04-09 14:50  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Hopefully final fixes to get database install working on bare system.
+
+2005-04-09 14:07  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+install/install.inc.php
+- Fix for last_db_update field from 2.0.1 release.
+
+2005-04-09 14:04  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+install/install.inc.php
+- Fixed issues with last_db_update not being set correctly.
+
+2005-04-09 13:51  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Fixed problem where last db update wasn't set properly, resulting in
+- it always being set to 0.
+
+2005-04-09 13:42  (ajdonnison)
+---------------------------------
+db/upgrade_to_201.php
+- Fixed problem where upgrade would report errors if the department
+- details were invalid or already updated.
+- Changed logic so that upgrades to permissions and contacts only occur
+- when needed.
+
+2005-04-09 13:21  (ajdonnison)
+---------------------------------
+ChangeLog
+- update for 2.0.1 release
+
 2005-04-09 13:17  (ajdonnison)
 ---------------------------------
 db/dotproject.sql
@@ -527,5 +617,10 @@ docs/nav.html
 ---------------------------------
 docs/nav.html
 - Fixed problem with links to documentation site.
+
+2005-04-01 11:20  (ajdonnison)
+---------------------------------
+ChangeLog
+- Final changelog for 2.0 release
 
 (truncated)
