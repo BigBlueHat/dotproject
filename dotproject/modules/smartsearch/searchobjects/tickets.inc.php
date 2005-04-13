@@ -19,7 +19,7 @@ class tickets {
 			    if($permissions->checkModuleItem($this->table, "view", $records["ticket"])){
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=ticketsmith&a=view&ticket=".$records["ticket"]."\">".$records["subject"]."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=ticketsmith&a=view&ticket=".$records["ticket"]."\">".highlight($records["subject"], $this->keyword)."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}

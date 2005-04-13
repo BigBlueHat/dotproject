@@ -19,7 +19,7 @@ class forums {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["forum_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=forums&a=viewer&forum_id=".$records["forum_id"]."\">".$records["forum_name"]."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=forums&a=viewer&forum_id=".$records["forum_id"]."\">".highlight($records["forum_name"], $this->keyword)."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}

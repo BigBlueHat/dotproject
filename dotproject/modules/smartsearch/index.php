@@ -1,5 +1,10 @@
 <?php
 
+function highlight($text, $key)
+{
+	return str_replace($key, '<span style="background: yellow">'.$key.'</span>', $text);
+}
+
 $files = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/smartsearch/searchobjects", "\.php$" );
 
 require_once( $AppUI->getModuleClass('smartsearch') );
