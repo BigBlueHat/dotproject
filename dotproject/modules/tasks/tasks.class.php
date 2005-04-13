@@ -897,7 +897,7 @@ class CTask extends CDpObject {
 				$mail->To($email);
 				$recipient_list .= "$email ($name)\n";
 			} else {
-				$recipient_list .= "Invalid email address $email, not sent\n";
+				$recipient_list .= "Invalid email address '$email' for $name, not sent\n";
 			}
 		}
 		$mail->Send();
