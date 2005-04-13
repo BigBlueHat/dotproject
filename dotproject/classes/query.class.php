@@ -680,6 +680,29 @@ class DBQuery {
 		return $result;
 	}
 
+	/**
+	 * Using an XML string, build or update a table.
+	 */
+	function execXML($xml, $mode = 'REPLACE') {
+		global $db, $baseDir, $AppUI;
+
+		include_once $baseDir.'/lib/adodb/adodb-xmlschema.inc.php';
+		$schema = new adoSchema($db);
+		$schema->setUpgradeMode($mode);
+		if (isset($this->_table_prefix) && $this->_table_prefix) {
+			$schema->setPrefix($this->_table_prefix, false);
+		}
+		$schema->ContinueOnError(true);
+		if (($sql = $scheme->ParseSchemaString($xml)) == false) {
+			$AppUI->setMsg(array('Error in XML Schema', 'Error', $db->ErrorMsg()), UI_MSG_ERR);
+			return false;
+		}
+		if ($schema->ExecuteSchema($sql, true))
+			return true;
+		else
+			return false;
+	}
+
   /** {{{2 function loadResult
    * Load a single column result from a single row
    */
