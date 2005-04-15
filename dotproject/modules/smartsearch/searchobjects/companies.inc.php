@@ -19,7 +19,7 @@ class companies {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["company_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=companies&a=view&company_id=".$records["company_id"]."\">".$records["company_name"]."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=companies&a=view&company_id=".$records["company_id"]."\">".highlight($records["company_name"], $this->keyword)."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}

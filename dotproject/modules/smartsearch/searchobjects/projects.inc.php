@@ -22,7 +22,7 @@ class projects {
                     if (!in_array($records["project_id"], $obj->getDeniedRecords($AppUI->user_id))) {
         				$outstring .= "<tr>";
         				$outstring .= "<td>";
-        				$outstring .= "<a href = \"index.php?m=projects&a=view&project_id=".$records["project_id"]."\">".$records["project_name"]."</a>\n";
+        				$outstring .= "<a href = \"index.php?m=projects&a=view&project_id=".$records["project_id"]."\">".highlight($records["project_name"], $this->keyword)."</a>\n";
         				$outstring .= "</td>\n";
                     }
 			    }
