@@ -47,7 +47,7 @@
 			$q->clear();
 
 			$value_id = $row["value_id"];
-			$value_charvalue = stripslashes($row["value_charvalue"]);
+			$value_charvalue = $row["value_charvalue"];
 			$value_intvalue = $row["value_intvalue"];
 
 			if ($value_id != NULL)
@@ -74,7 +74,7 @@
 
 						$q  = new DBQuery;
 						$q->addTable('custom_fields_values');
-						$q->addUpdate('value_charvalue', db_escape(strip_tags( $this->value_charvalue )));
+						$q->addUpdate('value_charvalue', $this->value_charvalue );
 						$q->addUpdate('value_intvalue', $ins_intvalue);
 						$q->addWhere("value_id = ".$this->value_id);
 				}
@@ -89,7 +89,7 @@
 						$q->addInsert('value_field_id', $this->field_id);
 						$q->addInsert('value_object_id', $object_id);
 
-						$q->addInsert('value_charvalue', db_escape(strip_tags( $this->value_charvalue )));
+						$q->addInsert('value_charvalue', $this->value_charvalue );
 						$q->addInsert('value_intvalue', $ins_intvalue);
 				}
 //				if ($sql != NULL) $rs = $q->exec();
