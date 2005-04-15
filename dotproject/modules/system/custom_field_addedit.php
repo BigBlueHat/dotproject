@@ -115,8 +115,8 @@
 		var selobj = document.getElementById('htmltype');
 		for (i = 0; i < selobj.options.length; i++)
 		{
-			var atbl = document.getElementById('atbl_'+selobj.options(i).value);
-			var adiv = document.getElementById('div_'+selobj.options(i).value);
+			var atbl = document.getElementById('atbl_'+selobj.options[i].value);
+			var adiv = document.getElementById('div_'+selobj.options[i].value);
 
 			atbl.style.visibility = 'hidden';
 			adiv.style.display = 'none';
@@ -128,7 +128,7 @@
 		hideAll();
 
 		var selobj = document.getElementById('htmltype');
-		var seltype = selobj.options(selobj.selectedIndex).value;
+		var seltype = selobj.options[selobj.selectedIndex].value;
 		
 		var atbl = document.getElementById('atbl_'+seltype);
 		var adiv = document.getElementById('div_'+seltype);
