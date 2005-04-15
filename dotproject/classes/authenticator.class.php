@@ -317,8 +317,11 @@
 				$c->contact_email = $ldap_attribs["mail"][0];
 				$c->contact_phone = $ldap_attribs["telephonenumber"][0];
 				$c->contact_mobile = $ldap_attribs["mobile"][0];
-				$c->contact_city = $ldap_attribs["city"][0];
+				$c->contact_city = $ldap_attribs["l"][0];
 				$c->contact_country = $ldap_attribs["country"][0];
+				$c->contact_state = $ldap_attribs["st"][0];
+				$c->contact_zip = $ldap_attribs["postalcode"][0];
+				$c->contact_job = $ldap_attribs["title"][0];
 
 				//print_r($c); die();
 				db_insertObject('contacts', $c, 'contact_id');
