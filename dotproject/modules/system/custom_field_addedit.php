@@ -233,6 +233,14 @@
 		<table id="atbl_checkbox">
 		</table>
 	</div>
+	<div id="div_label" style="<?php echo $visible_state["div_label"]?>">
+		<table id="atbl_label">
+		</table>
+	</div>
+	<div id="div_separator" style="<?php echo $visible_state["div_separator"]?>">
+		<table id="atbl_separator">
+		</table>
+	</div>
 	</td></tr>
 	<tr><td colspan="2" align="right">
 		<input type="button" value="Cancel" onClick="location = '?m=system&a=custom_field_editor';" />
