@@ -18,7 +18,7 @@ class files {
 			    if ($permissions->checkModuleItem($this->table, "edit", $records["file_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=files&a=addedit&file_id=".$records["file_id"]."\">".$records["file_name"]."</a>".' &nbsp -- &nbsp '.highlight($records["file_description"], $this->keyword);
+    				$outstring .= "<a href = \"index.php?m=files&a=addedit&file_id=".$records["file_id"]."\">".$records["file_name"]."</a>".' &nbsp -- &nbsp '.$records["file_description"];
     				$outstring .= "</td>\n";
 			    }
 			}

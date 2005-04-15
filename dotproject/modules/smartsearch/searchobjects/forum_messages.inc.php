@@ -18,7 +18,7 @@ class forum_messages {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["message_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=forums&a=view&forum_id=".$records["message_forum"]."&message_id=".$records["message_id"]."\">".highlight($records["message_title"], $this->keyword)."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=forums&a=view&forum_id=".$records["message_forum"]."&message_id=".$records["message_id"]."\">".$records["message_title"]."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}

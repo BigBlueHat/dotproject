@@ -21,7 +21,7 @@ class files_content {
    			$outstring .= "<td>";
 				if ($permissions->checkModuleItem('files', "edit", $records["file_id"]))
     			$outstring .= "<a href = \"index.php?m=files&a=addedit&file_id=".$records["file_id"]."\">". dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) .'</a>';
-				$outstring .= '<a href="'.$this->follow_up_link.$records['file_id'].'">'.$records["file_name"].' v.' . $records['file_version'] ."</a> (word {$records['word_placement']})".' &nbsp -- &nbsp '.highlight($records["file_description"], $this->keyword);
+				$outstring .= '<a href="'.$this->follow_up_link.$records['file_id'].'">'.$records["file_name"].' v.' . $records['file_version'] ."</a> (word {$records['word_placement']})".' &nbsp -- &nbsp '.$records["file_description"];
    			$outstring .= "</td>\n";
 				$outstring .= "</tr>";
 			}

@@ -18,7 +18,7 @@ class events {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["event_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=calendar&a=view&event_id=".$records["event_id"]."\">".highlight($records["event_title"], $this->keyword)."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=calendar&a=view&event_id=".$records["event_id"]."\">".$records["event_title"]."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}

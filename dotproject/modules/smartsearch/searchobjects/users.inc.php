@@ -19,7 +19,7 @@ class users {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["user_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=admin&a=viewuser&user_id=".$records["user_id"]."\">".highlight($records["user_username"], $this->keyword)."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=admin&a=viewuser&user_id=".$records["user_id"]."\">".$records["user_username"]."</a>\n";
     				$outstring .= "</td>";
 			    }
 			}

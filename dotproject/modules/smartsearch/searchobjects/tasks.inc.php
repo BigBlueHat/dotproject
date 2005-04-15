@@ -19,7 +19,7 @@ class tasks {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["task_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_id"]."\">".highlight($records["task_name"], $this->keyword)."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_id"]."\">".$records["task_name"]."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}

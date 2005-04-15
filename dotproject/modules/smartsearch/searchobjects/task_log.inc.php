@@ -18,7 +18,7 @@ class task_log {
 			    if ($permissions->checkModuleItem("tasks", "view", $records["task_log_task"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_log_task"]."&tab=1&task_log_id=".$records["task_log_id"]. "\">".highlight($records["task_log_name"], $this->keyword)."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=tasks&a=view&task_id=".$records["task_log_task"]."&tab=1&task_log_id=".$records["task_log_id"]. "\">".$records["task_log_name"]."</a>\n";
     				$outstring .= "</td>";
 			    }
 			}

@@ -19,7 +19,7 @@ class departments {
 			    if ($permissions->checkModuleItem($this->table, "view", $records["dept_id"])) {
     				$outstring .= "<tr>";
     				$outstring .= "<td>";
-    				$outstring .= "<a href = \"index.php?m=departments&a=view&dept_id=".$records["dept_id"]."\">".highlight($records["dept_name"], $this->keyword)."</a>\n";
+    				$outstring .= "<a href = \"index.php?m=departments&a=view&dept_id=".$records["dept_id"]."\">".$records["dept_name"]."</a>\n";
     				$outstring .= "</td>\n";
 			    }
 			}
