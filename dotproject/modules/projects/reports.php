@@ -31,7 +31,7 @@ for ($x=0; $x < $nums; $x++) {
 }
 $q->clear();
 
-if (! @$suppressHeaders) {
+if (! $suppressHeaders) {
 ?>
 <script language="javascript">
                                                                                 
@@ -57,12 +57,16 @@ if (! $suppressHeaders) {
 		$titleBlock->addCrumb( "?m=projects&a=reports&project_id=$project_id", "reports index" );
 	}
 	$titleBlock->show();
+}
 
-if (!isset($display_project_name)) $display_project_name = "None"; ?>
-<?php echo $AppUI->_('Selected Project') . ": <b>".$display_project_name."</b>"; 
 $report_type_var = dPgetParam($_GET, 'report_type', '');
 if (!empty($report_type_var))
 	$report_type_var = '&report_type=' . $report_type;
+
+if (! $suppressHeaders) {
+if (!isset($display_project_name)) 
+	$display_project_name = "None";
+echo $AppUI->_('Selected Project') . ": <b>".$display_project_name."</b>"; 
 ?>
 <form name="changeMe" action="./index.php?m=projects&a=reports<?php echo $report_type_var; ?>" method="post">
 <?php echo $AppUI->_('Projects') . ':';?>
