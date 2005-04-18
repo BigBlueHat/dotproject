@@ -103,9 +103,7 @@ class EventQueue {
 		$q->addWhere("queue_type = '$type'");
 		if (isset($id))
 			$q->addWhere("queue_origin_id = '$id'");
-		$found = $q->loadHashList();
-		$q->clear();
-		return $found;
+		return $q->loadHashList('queue_id');
 	}
 
 	/**
@@ -185,7 +183,7 @@ class EventQueue {
 		foreach ($this->update_list as $fields) {
 			$q->addTable($this->table);
 			$q->addUpdate('queue_repeat_count', $fields['queue_repeat_count']);
-			$q->addUpdate('queue_repeat_interval', $fields['queue_repeat_interval']);
+			$q->addUpdate('queue_start', $fields['queue_start']);
 			$q->addWhere('queue_id = ' . $fields['queue_id']);
 			$q->exec();
 			$q->clear();
