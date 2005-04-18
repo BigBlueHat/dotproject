@@ -388,7 +388,7 @@ class CTask extends CDpObject {
 		$children = $this->getDeepChildren();
 		if (!empty($children))
 		{
-			$tempChild = & new $CTask();
+			$tempChild = & new CTask();
 			foreach ($children as $child)
 			{
 				$tempChild->load($child);
