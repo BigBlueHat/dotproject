@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-global $showEditCheckbox, $date, $other_users;
+global $showEditCheckbox, $date, $other_users, $baseDir, $dPconfig;
 
 $showEditCheckbox = true;
 // Project status from sysval, defined as a constant
