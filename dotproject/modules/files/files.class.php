@@ -148,6 +148,7 @@ class CFile extends CDpObject {
 		if (!$parser) 
 			return false;
 	// buffer the file
+		$this->_filepath = "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename";
 		$fp = fopen( $this->_filepath, "rb" );
 		$x = fread( $fp, $this->file_size );
 		fclose( $fp );
