@@ -190,6 +190,8 @@ function setDept( key, val ) {
     <td align="right">* <?php echo $AppUI->_('Email');?>:</td>
     <td><input type="text" class="text" name="contact_email" value="<?php echo $user["contact_email"];?>" maxlength="255" size="40" /> </td>
 </tr>
+<?php
+/*
 <tr>
     <td align="right"><?php echo $AppUI->_('Phone');?>:</td>
     <td><input type="text" class="text" name="contact_phone" value="<?php echo $user["contact_phone"];?>" maxlength="50" size="40" /> </td>
@@ -227,9 +229,14 @@ function setDept( key, val ) {
     <td align="right"><?php echo $AppUI->_('Birthday');?>:</td>
     <td><input type="text" class="text" name="contact_birthday" value="<?php if(intval($user["contact_birthday"])!=0) { echo substr($user["contact_birthday"],0,10);}?>" maxlength="50" size="40" /> format(YYYY-MM-DD)</td>
 </tr>
+*/?>
 <tr>
     <td align="right" valign=top><?php echo $AppUI->_('Email').' '.$AppUI->_('Signature');?>:</td>
     <td><textarea class="text" cols=50 name="user_signature" style="height: 50px"><?php echo @$user["user_signature"];?></textarea></td>
+</tr>
+<tr>
+	<td align="right"><a href="?m=contacts&a=addedit&contact_id=<?php echo $user['user_contact']; ?>"><?php echo $AppUI->_(array('edit', 'contact info')); ?></a></td>
+	<td>&nbsp;</td>
 </tr>
 <tr>
     <td align="right">* <?php echo $AppUI->_('Required Fields'); ?></td>
