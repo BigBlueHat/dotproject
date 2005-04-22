@@ -1885,11 +1885,26 @@ function sort_by_item_title( $title, $item_name, $item_type )
 	$item_order = ( $item_order == SORT_ASC ) ? SORT_DESC : SORT_ASC;
 	if ( $m == 'tasks' )
 	{
-		echo '<a href="./index.php?m=tasks&a=view&task_id='.$task_id;
+		if ( $task_id > 0 )
+		{
+			echo '<a href="./index.php?m=tasks&a=view&task_id='.$task_id;
+		}
+		else
+		{
+			echo '<a href="./index.php?m=tasks';
+		}
 	}
 	else
-		echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
-
+	{
+		if ( $project_id > 0 )
+		{
+			echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
+		}
+		else
+		{
+			echo '<a href="./index.php?m=projects';
+		}
+	}
 	echo '&task_sort_item1='.$item_name;
 	echo '&task_sort_type1='.$item_type;
 	echo '&task_sort_order1='.$item_order;
