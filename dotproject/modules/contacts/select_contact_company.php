@@ -36,11 +36,11 @@
 		$sql = $q->prepare();
 		$q->clear();
 		db_loadHash($sql, $r_data);
-		
 		$data_update_script = "";
 		$update_address     = isset($_POST["overwrite_address"]);
 			
 		if($table_name == "companies"){
+			$update_fields = array();
 			if($update_address){
 				$update_fields = array("company_address1" => "contact_address1",
 				                       "company_address2" => "contact_address2",
@@ -50,7 +50,7 @@
 				                       "company_phone1"   => "contact_phone",
 				                       "company_phone2"   => "contact_phone2");
 			}
-			$data_update_script = "opener.setCompany('".$_POST[$id_field]."', '" . $r_data[$name_field] . "');\n";
+			$data_update_script = "opener.setCompany('".$_POST[$id_field]."', '" . db_escape($r_data[$name_field]) . "');\n";
 		} else if($table_name == "departments"){
 			$update_fields = array("dept_name"     => "contact_department");
 			if($update_address){
