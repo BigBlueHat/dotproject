@@ -26,19 +26,32 @@
 		require_once( $AppUI->getModuleClass( 'companies' ) );
 		$oCpy = new CCompany ();
                 $aCpies = $oCpy->getAllowedRecords ($AppUI->user_id, "company_id, company_name");
+		$aCpies_esc = array();
+		foreach ($aCpies as $key => $company)
+		{
+			$aCpies_esc[$key] = db_escape($company);
+		}
                 $where = "contact_company = '' OR (contact_company IN ('" .
-                                implode('\',\'' , array_values($aCpies)) .
+                                implode('\',\'' , array_values($aCpies_esc)) .
                                 "')) OR ( contact_company IN ('" .
-																implode("','", array_keys($aCpies)) .
-																"'))" ;
+				implode(",", array_keys($aCpies_esc)) .
+		"'))" ;
 		$company_name = $AppUI->_('Allowed Companies');
 	} else {
 		// Contacts for this company only
+		$q =& new DBQuery;
+		$q->addTable('companies', 'c');
+		$q->addQuery('c.company_name');
+		$q->addWhere('company_id = '.$company_id);
+		$company_name = $q->loadResult();
+		/*
 		$sql = "select c.company_name
 	        	from companies as c
 	        	where company_id = $company_id";
 		$company_name = db_loadResult($sql);
-		$where = " ( contact_company = '$company_name' or contact_company = '$company_id' )";
+		*/
+		$company_name_sql = db_escape($company_name);
+		$where = " ( contact_company = '$company_name_sql' or contact_company = '$company_id' )";
 	}
 	
 	// This should now work on company ID, but we need to be able to handle both
