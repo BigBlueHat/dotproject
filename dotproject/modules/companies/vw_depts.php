@@ -6,8 +6,8 @@ GLOBAL $AppUI, $company_id, $canEdit;
 
 $q  = new DBQuery;
 $q->addTable('departments');
-$q->addQuery('departments.*, COUNT(user_department) dept_users');
-$q->addJoin('users', 'u', 'u.user_department = dept_id');
+$q->addQuery('departments.*, COUNT(contact_department) dept_users');
+$q->addJoin('contacts', 'c', 'c.contact_department = dept_id');
 $q->addWhere('dept_company = '.$company_id);
 $q->addGroup('dept_id');
 $q->addOrder('dept_parent, dept_name');
