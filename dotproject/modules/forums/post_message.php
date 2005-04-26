@@ -31,9 +31,8 @@ $q->clear();
 if ($message_parent != -1)
 {
 	$q->addTable('forum_messages');
-	$q->addQuery('forum_messages.*');
-	$q->addWhere('message_parent = '.$message_id ? $message_id : $message_parent);
-	$q->addOrder('forum_messages.message_id DESC'); // fetch last message first
+	$q->addWhere('message_parent = '. ($message_id ? $message_id : $message_parent));
+	$q->addOrder('message_id DESC'); // fetch last message first
 	$q->setLimit(1);
 	$res = $q->exec();
     echo db_error();
