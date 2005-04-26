@@ -22,7 +22,7 @@ if ($del) {
 		$AppUI->redirect();
 	} else {
 		$AppUI->setMsg( 'deleted', UI_MSG_ALERT, true );
-		$AppUI->redirect( '', -1 );
+		$AppUI->redirect( 'm=companies' );
 	}
 } else {
 	if (($msg = $obj->store())) {
