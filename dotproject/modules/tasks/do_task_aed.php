@@ -67,6 +67,12 @@ if ($sub_form) {
 	if (isset($_POST['new_task_project']) && $_POST['new_task_project'])
 		$obj->task_project = $_POST['new_task_project'];
 
+		
+    // Let's check if task_dynamic is unchecked
+    if( !array_key_exists("task_dynamic", $_POST) ){
+        $obj->task_dynamic = false;
+    }
+		
 	// Map task_dynamic checkboxes to task_dynamic values for task dependencies.
 	if ( $obj->task_dynamic != 1 ) {
 		$task_dynamic_delay = setItem("task_dynamic_nodelay", '0');
