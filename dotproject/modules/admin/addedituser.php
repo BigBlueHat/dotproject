@@ -73,7 +73,7 @@ function submitIt(){
     } else if (form.contact_email.value.length < 4) {
         alert("<?php echo $AppUI->_('adminInvalidEmail', UI_OUTPUT_JS);?>");
         form.contact_email.focus();
-    } else if (form.contact_birthday.value.length > 0) {
+    } else if (form.contact_birthday && form.contact_birthday.value.length > 0) {
         dar = form.contact_birthday.value.split("-");
         if (dar.length < 3) {
             alert("<?php echo $AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
