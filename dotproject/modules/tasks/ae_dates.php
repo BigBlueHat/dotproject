@@ -43,13 +43,19 @@ $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : n
 
 // convert the numeric calendar_working_days config array value to a human readable output format
 $cwd = explode(',', $dPconfig['cal_working_days']);
+
 $cwd_conv = array_map( 'cal_work_day_conv', $cwd );
 $cwd_hr = implode(', ', $cwd_conv);
 
 function cal_work_day_conv($val) {
 	GLOBAL $locale_char_set;
 	$wk = Date_Calc::getCalendarWeek( null, null, null, "%a", LOCALE_FIRST_DAY );
-	return htmlentities($wk[$val], ENT_COMPAT, $locale_char_set);
+	
+	$day_name = $wk[$val];
+	if ($locale_char_set == "utf-8" && function_exists("utf8_encode")) {
+	    $day_name = utf8_encode($day_name);
+	}
+	return htmlentities($day_name, ENT_COMPAT, $locale_char_set);
 }
 ?>
 <form name="datesFrm" action="?m=tasks&a=addedit&task_project=<?php echo $task_project;?>" method="post">
