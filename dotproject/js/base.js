@@ -143,7 +143,7 @@ function ca_search(key)
   var end = this.list.length;
   for ( var i = 0; i < end; i++)
   {
-    cp = this.list[i];
+    var cp = this.list[i];
     if (cp.equals(key))
       return i;
   }
