@@ -512,12 +512,16 @@ class CTask extends CDpObject {
 */
 	function delete() {
 		$this->_action = 'deleted';
-	// delete linked user tasks
+		// delete linked user tasks
 		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
 		if (!db_exec( $sql )) {
 			return db_error();
 		}
-
+		//delete dependencies
+		$sql = "DELETE FROM task_dependencies WHERE dependencies_req_task_id = $this->task_id or dependencies_task_id = $this->task_id";
+		if (!db_exec( $sql )) {
+			return db_error();
+		}
 		//load it before deleting it because we need info on it to update the parents later on
 		$this->load($this->task_id);
 		addHistory('tasks', $this->task_id, 'delete', $this->task_name, $this->task_project);

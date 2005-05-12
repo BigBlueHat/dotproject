@@ -8,7 +8,7 @@ $rs = db_loadResult($sql);
 
 foreach ($_POST['dPcfg'] as $name => $value) {
 	$obj->config_name = $name;
-	$obj->config_value = $value;
+	$obj->config_value =  get_magic_quotes_gpc() ? $value : addslashes( $value ) ;
 
 	// grab the appropriate id for the object in order to ensure
 	// that the db is updated well (config_name must be unique)

@@ -96,7 +96,11 @@ class CProject extends CDpObject {
 		$q->clear();
 		$tasks_to_delete = db_loadColumn ( $sql );
 		foreach ( $tasks_to_delete as $task_id ) {
-			$q->setDelete('user_tasks');
+			$task = new CTask();
+			$task->task_id = $task_id;
+			$task->delete();
+			//NOTE: I've commented this out as this logic already resides in Task class -Revelation7
+			/*$q->setDelete('user_tasks');
 			$q->addWhere('task_id ='.$task_id);
 			$q->exec();
 			$q->clear();
@@ -104,11 +108,16 @@ class CProject extends CDpObject {
 			$q->addWhere('dependencies_req_task_id ='.$task_id);
 			$q->exec();
 			$q->clear();
+			$q->setDelete('task_log');
+			$q->addWhere('task_log_task ='.$task_id);
+			$q->exec();
+			$q->clear();*/
 		}
-		$q->setDelete('tasks');
+		//NOTE: I've commented this out as this logic already resides in Task class -Revelation7
+		/*$q->setDelete('tasks');
 		$q->addWhere('task_project ='.$this->project_id);
 		$q->exec();
-		$q->clear();
+		$q->clear();*/
 
 		// remove the project-contacts and project-departments map
 		$q->setDelete('project_contacts');

@@ -59,8 +59,8 @@ foreach ($rs as $c) {
 			// allow to fallthrough
 		default:
 			if (! $value)
-				$value = $c['config_value'];
-			$entry = "<input class='button' type='{$c['config_type']}' name='dPcfg[{$c['config_name']}]' value='$value' $tooltip $extra/>";
+				$value = get_magic_quotes_gpc() ? $c['config_value'] : stripslashes( $c['config_value']);	
+			$entry = "<input class='button' type='{$c['config_type']}' name='dPcfg[{$c['config_name']}]' value=\"$value\" $tooltip $extra/>";
 			break;
 	}
 
