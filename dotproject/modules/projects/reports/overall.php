@@ -107,17 +107,32 @@ function showcompany($company, $restricted = false)
                 $company_billingcodes[$row['billingcode_id']]=$row['billingcode_name'];
         }
 */
-	$sql = "SELECT project_id, project_name
+	$obj = new CProject();
+	$q = new DBQuery;
+	$q->addTable('projects');
+	$q->addQuery('project_id, project_name');                     
+	$q->addwhere("project_company='$company'");
+	$obj->setAllowedSQL($AppUI->user_id, $q);	
+	$sql = $q->prepare();
+	$projects = db_loadHashList($sql);	
+	/*$sql = "SELECT project_id, project_name
 		FROM projects
 		WHERE project_company = $company";
-
-	$projects = db_loadHashList($sql);
   
 	$sql = "SELECT company_name
 		FROM companies
 		WHERE company_id = $company";
-	$company_name = db_loadResult($sql);                                                                                                                       
+	$company_name = db_loadResult($sql);      */                                                                                                                 
 
+	$obj = new CCompany();
+	$q = new DBQuery;
+	$q->addTable('companies');
+	$q->addQuery('company_name');                     
+	$q->addwhere("company_id='$company'");
+	$obj->setAllowedSQL($AppUI->user_id, $q);	
+	$sql = $q->prepare();
+	$company_name = db_loadResult($sql);
+		
         $table = '<h2>Company: ' . $company_name . '</h2>
         <table cellspacing="1" cellpadding="4" border="0" class="tbl">';
 	$project_row = '
@@ -145,20 +160,38 @@ function showcompany($company, $restricted = false)
 		$pdfproject[] = $name;
 		$project_hours = 0;
 		$project_row = "<tr><td>$name</td>";
-		$sql = "SELECT task_log_costcode, sum(task_log_hours) as hours
+		
+		$obj = new CTaskLog();
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addTable('tasks');
+		$q->addTable('task_log');
+		$q->addQuery('task_log_costcode, sum(task_log_hours) as hours');                     
+		$q->addwhere("project_id='$project'");
+		
+		/*$sql = "SELECT 
 			FROM projects, tasks, task_log
-			WHERE project_id = $project";
+			WHERE project_id = $project";*/
 		if ($log_start_date != 0 && !$log_all)
-			$sql .= " AND task_log_date >= $log_start_date";
+			//$sql .= " AND task_log_date >= $log_start_date";
+			$q->addwhere("task_log_date >= '$log_start_date'");
 		if ($log_end_date != 0 && !$log_all)
-			$sql .= " AND task_log_date <= $log_end_date";
+			//$sql .= " AND task_log_date <= $log_end_date";
+			$q->addwhere("task_log_date <= '$log_end_date'");
 		if ($restricted)
-			$sql .= " AND task_log_creator = '" . $AppUI->user_id . "'";
+			//$sql .= " AND task_log_creator = '" . $AppUI->user_id . "'";
+			$q->addwhere("task_log_creator = '$AppUI->user_id'");
 			
-		$sql .= " AND project_id = task_project
+		/*$sql .= " AND project_id = task_project
 			AND task_id = task_log_task
-			GROUP BY project_id"; //task_log_costcode";
-
+			GROUP BY project_id"; //task_log_costcode";*/
+		$q->addwhere("project_id = task_project");					
+		$q->addwhere("task_id = task_log_task");								
+		$q->addgroup('project_id');
+		
+		$obj->setAllowedSQL($AppUI->user_id, $q);			
+		$sql = $q->prepare();
+		
 		$task_logs = db_loadHashList($sql);
 
 /*		if (isset($company_billingcodes))
