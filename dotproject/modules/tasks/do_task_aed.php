@@ -48,8 +48,11 @@ if ($sub_form) {
 	}
 
 	// Find the task if we are set
-	if ($task_id)
+	$task_end_date = null;
+	if ($task_id) {
 		$obj->load($task_id);
+		$task_end_date = new CDate($obj->task_end_date);
+	}
 
 	if ( isset($_POST)) {
 		$obj->bind($_POST);
@@ -106,9 +109,10 @@ if ($sub_form) {
 		$date = new CDate( $obj->task_start_date );
 		$obj->task_start_date = $date->format( FMT_DATETIME_MYSQL );
 	}
+	$end_date = null;
 	if ($obj->task_end_date) {
-		$date = new CDate( $obj->task_end_date );
-		$obj->task_end_date = $date->format( FMT_DATETIME_MYSQL );
+		$end_date = new CDate( $obj->task_end_date );
+		$obj->task_end_date = $end_date->format( FMT_DATETIME_MYSQL );
 	}
 
 
@@ -132,6 +136,11 @@ if ($sub_form) {
  			$custom_fields->bind( $_POST );
  			$sql = $custom_fields->store( $obj->task_id ); // Store Custom Fields
 
+			// Now add any task reminders
+			// If there wasn't a task, but there is one now, and
+			// that task date is set, we need to set a reminder.
+			if (empty($task_end_date) || (! empty($end_date) && $task_end_date->dateDiff($end_date)) )
+				$obj->addReminder();
 			$AppUI->setMsg( $task_id ? 'Task updated' : 'Task added', UI_MSG_OK);
 		}
 

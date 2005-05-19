@@ -80,6 +80,7 @@ if ($del) {
 $task = new CTask();
 $task->load( $obj->task_log_task );
 $task->check();
+$task_end_date = new CDate($task->task_end_date);
 
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
 
@@ -94,6 +95,10 @@ if ($task->task_percent_complete >= 100 && ( ! $task->task_end_date || $task->ta
 if (($msg = $task->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR, true );
 }
+
+$new_task_end = new CDate($task->task_end_date);
+if ($new_task_end->dateDiff($task_end_date))
+	$task->addReminder();
 
 if ($notify_owner) {
 	if ($msg = $task->notifyOwner()) {

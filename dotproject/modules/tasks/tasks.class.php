@@ -3,6 +3,8 @@
 require_once( $AppUI->getSystemClass( 'libmail' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getModuleClass( 'projects' ) );
+require_once $AppUI->getSystemClass('event_queue');
+require_once $AppUI->getSystemClass('date');
 
 // user based access
 $task_access = array(
@@ -1547,6 +1549,202 @@ class CTask extends CDpObject {
 			$can_edit_time_information = true;
 		}
 		return $can_edit_time_information;
+	}
+
+	/**
+	 * Injects a reminder event into the event queue.
+	 * Repeat interval is one day, repeat count
+	 * and days to trigger before event overdue is
+	 * set in the system config.
+	 */
+	function addReminder()
+	{
+	  global $dPconfig;
+	  $day = 86400;
+
+	  if (! isset($dPconfig['task_reminder_control'])
+	  || ! $dPconfig['task_reminder_control'])
+	    return;
+
+	  if (! $this->task_end_date) // No end date, can't do anything.
+	    return $this->clearReminder(true); // Also no point if it is changed to null
+
+	  if ($this->task_percent_complete >= 100)
+	    return $this->clearReminder(true);
+
+	  $eq = new EventQueue;
+	  $pre_charge = isset($dPconfig['task_reminder_days_before']) ?
+	    $dPconfig['task_reminder_days_before'] : 1;
+	  $repeat = isset($dPconfig['task_reminder_repeat'])
+	    ? $dPconfig['task_reminder_repeat'] : 100;
+
+	  // If we don't need any arguments (and we don't)
+	  // then we set this to null.  We can't just put null in the
+	  // call to add as it is passed by reference.
+	  $args = null;
+
+	  // Find if we have a reminder on this task already
+	  $old_reminders = $eq->find('tasks', 'remind', $this->task_id);
+	  if (count($old_reminders)) {
+	    // It shouldn't be possible to have more than one reminder,
+	    // but if we do, we may as well clean them up now.
+	    foreach ($old_reminders as $old_id => $old_data)
+	      $eq->remove($old_id);
+	  }
+
+	  // Find the end date of this task, then subtract the
+	  // required number of days.
+	  $date = new CDate($this->task_end_date);
+	  $today = new CDate(date('Y-m-d'));
+	  if (CDate::compare($date, $today) < 0) {
+	    $start_day = time();
+	  } else {
+	    $start_day = $date->getDate(DATE_FORMAT_UNIXTIME);
+	    $start_day -= ($day * $pre_charge);
+	  }
+
+	  $eq->add(array($this, 'remind'), $args, 'tasks', false, $this->task_id, 'remind', $start_day, $day, $repeat);
+	}
+
+	/**
+	 * Called by the Event Queue processor to process a reminder
+	 * on a task.
+	 * @access	public
+	 * @param	string	$module	Module name (not used)
+	 * @param	string	$type Type of event (not used)
+	 * @param	integer	$id ID of task being reminded
+	 * @param	integer	$owner	Originator of event
+	 * @param	mixed	$args event-specific arguments.
+	 * @return	mixed	true, dequeue event, false, event stays in queue.
+	  -1, event is destroyed.
+	 */
+	function remind($module, $type, $id, $owner, &$args)
+	{
+	  global $locale_char_set, $AppUI, $baseUrl;
+	  $df = $AppUI->getPref('SHDATEFORMAT');
+	  $tf = $AppUI->getPref('TIMEFORMAT');
+	  // If we don't have preferences set for these, use ISO defaults.
+	  if (! $df)
+	    $df = '%Y-%m-%d';
+	  if (! $tf)
+	    $tf = '%H:%m';
+	  $df .= ' ' . $tf;
+
+	  // At this stage we won't have an object yet
+	  if (! $this->load($id))
+	    return -1; // No point it trying again later.
+
+	  // Only remind on working days.
+	  $today = new CDate();
+	  if (! $today->isWorkingDay())
+	    return true;
+
+	  // Check if the task is completed
+	  if ($this->task_percent_complete == 100)
+	    return -1;
+
+	  // Grab the assignee list
+	  $q = new DBQuery;
+	  $q->addQuery('c.contact_id, contact_first_name, contact_last_name');
+	  $q->addQuery('contact_email');
+	  $q->addTable('user_tasks', 'ut');
+	  $q->leftJoin('users', 'u', 'u.user_id = ut.user_id');
+	  $q->leftJoin('contacts', 'c', 'c.contact_id = u.user_contact');
+	  $q->addWhere('ut.task_id = ' . $id);
+	  $contacts = $q->loadHashList('contact_id');
+
+	  // Now we also check the owner of the task, as we will need
+	  // to notify them as well.
+	  $owner_is_not_assignee = false;
+	  $q->clear();
+	  $q->addQuery('c.contact_id, contact_first_name, contact_last_name');
+	  $q->addQuery('contact_email');
+	  $q->addTable('users', 'u');
+	  $q->leftJoin('contacts', 'c', 'c.contact_id = u.user_contact');
+	  $q->addWhere('u.user_id = ' . $this->task_owner);
+	  if ($q->exec(ADODB_FETCH_NUM)) {
+	    list($owner_contact, $owner_first_name, $owner_last_name, $owner_email) = $q->fetchRow();
+	    if (! isset($contacts[$owner_contact])) {
+	      $owner_is_not_assignee = true;
+	      $contacts[$owner_contact] = array(
+		'contact_id' => $owner_contact,
+		'contact_first_name' => $owner_first_name,
+		'contact_last_name' => $owner_last_name,
+		'contact_email' => $owner_email
+	      );
+	    }
+	  }
+	  $q->clear();
+
+	  // build the subject line, based on how soon the
+	  // task will be overdue.
+	  $expires = new CDate($this->task_end_date);
+	  $now = new CDate();
+	  $diff = $expires->dateDiff($now);
+	  $diff *= CDate::compare($expires, $now);
+	  $prefix = $AppUI->_('Task Due');
+	  if ($diff == 0) {
+	    $msg = $AppUI->_('TODAY');
+	  } else if ($diff == 1) {
+	    $msg = $AppUI->_('TOMORROW');
+	  } else if ($diff < 0) {
+	    $msg = $AppUI->_(array('OVERDUE',abs($diff), 'DAYS'));
+	    $prefix = $AppUI->_('Task');
+	  } else {
+	    $msg = $AppUI->_(array($diff, 'DAYS'));
+	  }
+
+	  $q->clear();
+	  $q->addTable('projects');
+	  $q->addQuery('project_name');
+	  $q->addWhere('project_id = ' . $this->task_project);
+	  $project_name = $q->loadResult();
+
+	  $subject = $prefix . ' ' .$msg . ' ' . $this->task_name . '::' . $project_name;
+
+	  $body = $AppUI->_('Task Due') . ': ' . $msg . "\n";
+	  $body .= $AppUI->_('Project') . ': ' . $project_name . "\n";
+	  $body .= $AppUI->_('Task') . ': ' . $this->task_name . "\n";
+
+	  $starts = new CDate($this->task_start_date);
+	  $body .= $AppUI->_('Start Date') . ': ' . $starts->format($df) . "\n";
+	  $body .= $AppUI->_('Finish Date') . ': ' . $expires->format($df) . "\n";
+	  $body .= $AppUI->_('URL') . ': ' . $baseUrl . '/index.php?m=tasks&a=view&task_id=' . $this->task_id . '&reminded=1' . "\n";
+	  $body .= "\n" . $AppUI->_('Resources') . ":\n";
+	  foreach ($contacts as $contact) {
+	    if ( ! $owner_is_assignee
+	    || $contact['contact_id'] != $owner_contact) {
+	      $body .= $contact['contact_first_name'] . ' ' . $contact['contact_last_name'] . '<' . $contact['contact_email'] . ">\n";
+	    }
+	  }
+	  $body .= "\n" . $AppUI->_('Description') . ":\n";
+	  $body .= $this->task_description . "\n";
+
+	  $mail = new Mail;
+	  foreach ($contacts as $contact) {
+	    if ($mail->ValidEmail($contact['contact_email']))
+	      $mail->To($contact['contact_email']);
+	  }
+	  $mail->From($owner_email);
+	  $mail->Subject($subject, $locale_char_set);
+	  $mail->Body($body, $locale_char_set);
+	  return $mail->Send();
+	}
+
+	/**
+	 *
+	 */
+	function clearReminder($dont_check = false)
+	{
+	  $ev = new EventQueue;
+
+	  $event_list = $ev->find('tasks', 'remind', $this->id);
+	  if (count($event_list)) {
+	    foreach ($event_list as $id => $data) {
+	      if ($dont_check || $this->task_percent_complete >= 100)
+		$ev->remove($id);
+	    }
+	  }
 	}
 }
 
