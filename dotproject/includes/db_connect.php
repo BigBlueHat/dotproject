@@ -34,7 +34,10 @@ if ($rs) { // Won't work in install mode.
 	}
 }
 
-
+// Moved here because some versions of PHP don't seem to honour it
+// if set later on.
+if (isset($dPconfig['reset_memory_limit']))
+	ini_set('memory_limit', $dPconfig['reset_memory_limit']);
 
 /**
 * This global function loads the first field of the first row returned by the query.
