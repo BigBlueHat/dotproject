@@ -148,8 +148,8 @@ class EventQueue {
 
 		$this->event_count = 0;
 		for ($rid; ! $rid->EOF; $rid->moveNext()) {
-			if ($this->execute($rid->fields)) {
-				$this->update_event($rid->fields);
+			if (($res = $this->execute($rid->fields)) !== false ) {
+				$this->update_event($rid->fields, $res);
 				$this->event_count++;
 			}
 		}
@@ -158,9 +158,9 @@ class EventQueue {
 		$this->commit_updates();
 	}
 
-	function update_event(&$fields)
+	function update_event(&$fields, $flag)
 	{
-		if ($fields['queue_repeat_interval'] > 0 && $fields['queue_repeat_count'] > 0) {
+		if ($flag === true && $fields['queue_repeat_interval'] > 0 && $fields['queue_repeat_count'] > 0) {
 			$fields['queue_start'] += $fields['queue_repeat_interval'];
 			$fields['queue_repeat_count']--;
 			$this->update_list[] = $fields;
