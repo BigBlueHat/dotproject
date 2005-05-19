@@ -1,0 +1,48 @@
+Backup Module for dotProject
+============================
+
+Copyright (c) 2003 Daniel Vijge [danielvijge@users.sourceforge.net]
+
+This work is based on the work of the phpMyAdmin group:
+    Copyright (C) 1998-2000 Tobias Ratschiller <tobias.ratschiller_at_maguma.com>
+    Copyright (C) 2001-     Olivier Müller <om_at_omnis.ch>
+                            Loïc Chapeaux <lolo_at_phpHeaven.net>
+                Marc Delisle <DelislMa_at_CollegeSherbrooke.qc.ca>
+
+Changes to upgrade to dotProject v2.x by Adam Donnison <ajdonnison@dotproject.net>
+
+This program is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+
+ChangeLog:
+
+2005-05-04 08:52  (jcgonz)
+---------------------------------
+locales/es.inc
+- Added Spanish translation
+
+2005-04-08 11:24  (ajdonnison)
+---------------------------------
+README
+do_backup.php
+do_restore.php
+index.php
+restore.php
+setup.php
+locales/en.inc
+- Rewritten for 2.0, including XML output and restore, localisations,
+- ADODB support.
+- Requires changes to adodb library as supplied in dotProject 2.0.1
+
+2003-11-06 02:39  (jcgonz)
+---------------------------------
+README
+do_backup.php
+index.php
+setup.php
+zip.lib.php
+- Backup module by Daniel Vijge
+

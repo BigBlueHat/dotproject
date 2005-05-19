@@ -1,0 +1,22 @@
+##
+## DO NOT MODIFY THIS FILE BY HAND!
+##
+"upload",
+"Add \'DROP TABLE\' to output-script",
+"Backup Database",
+"Compressed ZIP SQL file",
+"Continue On Error?",
+"Download backup",
+"Export",
+"Only data",
+"Only table structure",
+"Options",
+"Plain text SQL file",
+"Restore Database",
+"Restore From XML File",
+"Save as",
+"Table structure and data",
+"XML File to Restore",
+"XML file",
+"xmlLoginMsg"=>"You may need to log out and back in again",
+"xmlRestoreWarning"=>"This utitily will restore schema and data from an XML file created by this utility.<br/>It will NOT restore from SQL files.",
