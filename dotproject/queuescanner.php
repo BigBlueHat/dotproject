@@ -52,6 +52,7 @@ $dPconfig = array();
 	require_once "$baseDir/classes/query.class.php";
 
 	$AppUI = new CAppUI;
+	$AppUI->loadPrefs();
 
 	echo "Scanning Queue ...\n";
 	$queue = new EventQueue;
