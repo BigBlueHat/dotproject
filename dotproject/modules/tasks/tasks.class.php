@@ -1403,7 +1403,7 @@ class CTask extends CDpObject {
 									$scm = $sysChargeMax['pref_value'];
                 // provide actual assignment charge, individual chargeMax and freeCapacity of users' assignments to tasks
                 $sql = "SELECT u.user_id,
-                        CONCAT(CONCAT_WS(' [', CONCAT_WS(' ',contact_first_name,contact_last_name), IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
+                        CONCAT(CONCAT_WS(' [', u.user_username, IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
                         IFNULL(SUM(ut.perc_assignment),0) AS charge, u.user_username,
                         IFNULL(up.pref_value,$scm) AS chargeMax,
                         IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0) AS freeCapacity

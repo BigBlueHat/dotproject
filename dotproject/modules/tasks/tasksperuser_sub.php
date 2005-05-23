@@ -556,7 +556,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
         $sep = $us = "";
 	foreach ($users as $row) {
                 if ($row["user_id"]) {
-                        $us .= "<a href='?m=admin&a=viewuser&user_id=$row[0]'>".$sep.$row['contact_last_name']."&nbsp;(".$row['perc_assignment']."%)</a>";
+                        $us .= "<a href='?m=admin&a=viewuser&user_id=$row[0]'>".$sep.$row['user_username']."&nbsp;(".$row['perc_assignment']."%)</a>";
                         $sep = ", ";
                 }
         }
