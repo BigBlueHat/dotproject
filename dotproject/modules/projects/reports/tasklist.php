@@ -139,7 +139,7 @@ function setCalendar( idate, fdate ) {
 <?php
 if ($do_report) {
 	
-	$sql = "SELECT * FROM tasks WHERE task_project = $project_id";
+	$project_id==0 ? $sql = "SELECT * FROM tasks where 1" : $sql = "SELECT * FROM tasks WHERE task_project = $project_id";
 	if (!$log_all) {
 		$sql .= "\n	AND task_start_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'"
 		."\n	AND task_start_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'";
@@ -174,8 +174,8 @@ if ($do_report) {
 		"<b>".$AppUI->_('Completion')."</b>"
 	);
 	while ($Tasks = db_fetch_assoc($Task_List)){
-		$start_date = new CDate( $Tasks['task_start_date'] );
-		$end_date = new CDate( $Tasks['task_end_date'] );
+		$start_date = intval($Tasks['task_start_date']) ? new CDate( $Tasks['task_start_date'] ) : ' ';
+		$end_date = intval($Tasks['task_end_date']) ? new CDate( $Tasks['task_end_date'] ) : ' ';
 		$task_id = $Tasks['task_id'];
 
 		$sql_user = db_exec ("SELECT * FROM user_tasks WHERE task_id = ".$task_id);
@@ -194,11 +194,13 @@ if ($do_report) {
 			$users .= $user_list['contact_first_name']." ".$user_list['contact_last_name'];
 		}
 		$str =  "<tr>";
-		$str .= "<td>".$Tasks['task_name']."</td>";
+		$str .= "<td><a href='?m=tasks&a=view&task_id=".$Tasks['task_id']. "'>".$Tasks['task_name']."</a></td>";
 		$str .= "<td>".$Tasks['task_description']."</td>";
 		$str .= "<td>".$users."</td>";
-		$str .= "<td>".$start_date->format( $df )."</td>";
-		$str .= "<td>".$end_date->format( $df )."</td>";
+		$str .= "<td>";
+		($start_date != ' ') ? $str .= $start_date->format( $df )."</td>" : $str .= ' '."</td>";			
+		$str .= "<td>";		
+		($end_date != ' ') ? $str .= $end_date->format( $df )."</td>" : $str .= ' '."</td>";
 		$str .= "<td align=\"center\">".$Tasks['task_percent_complete']."%</td>";
 		$str .= "</tr>";
 		echo $str;
@@ -206,8 +208,8 @@ if ($do_report) {
 			$Tasks['task_name'],
 			$Tasks['task_description'],
 			$users,
-			$start_date->format( $df ),
-			$end_date->format( $df ),
+			(($start_date != ' ') ? $start_date->format( $df ) : ' '),
+			(($end_date != ' ') ? $end_date->format( $df ) : ' '),
 			$Tasks['task_percent_complete']."%",
 		);
 
