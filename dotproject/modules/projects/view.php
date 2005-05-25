@@ -201,7 +201,11 @@ function delIt() {
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Company');?>:</td>
-			<td class="hilite" width="100%"><?php echo htmlspecialchars( $obj->company_name, ENT_QUOTES) ;?></td>
+			<?php if ($perms->checkModuleItem( 'companies', 'access', $obj->project_company )) {?>
+            			<td class="hilite" width="100%"> <?php echo "<a href='?m=companies&a=view&company_id=" . $obj->project_company ."'>" . htmlspecialchars( $obj->company_name, ENT_QUOTES) . '</a>' ;?></td>
+			<?php } else {?>
+            			<td class="hilite" width="100%"><?php echo htmlspecialchars( $obj->company_name, ENT_QUOTES) ;?></td>
+			<?php }?>
 		</tr>
 		<tr>
 			<td align="right" nowrap><?php echo $AppUI->_('Short Name');?>:</td>
