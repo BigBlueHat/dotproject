@@ -594,18 +594,21 @@ $AppUI->setState("tasks_opened", $tasks_opened);
 <tr>
 	<td><?php echo $AppUI->_('Key');?>:</td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+	<td class="task_future">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Future Task');?></td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
+	<td class="task_started">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Started and on time');?></td>
-	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
+	<td class="task_notstarted">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Should have started');?></td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+	<td class="task_overdue">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Overdue');?></td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#aaddaa">&nbsp; &nbsp;</td>
+	<td class="task_late">&nbsp; &nbsp;</td>
+	<td>=<?php echo $AppUI->_('Late');?></td>
+	<td>&nbsp; &nbsp;</td>
+	<td class="task_done">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Done');?></td>
 </tr>
 </table>

@@ -1861,17 +1861,24 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                 }
 
                 if ($now->after( $start_date ) && $a["task_percent_complete"] == 0) {
-                        $style = 'background-color:#ffeebb';
+                        //$style = 'background-color:#ffeebb';
+                        $style = 'class="task_future"';
                 } else if ($now->after( $start_date ) && $a["task_percent_complete"] < 100) {
-                        $style = 'background-color:#e6eedd';
+                        //$style = 'background-color:#e6eedd';
+                        $style = 'class="task_notstarted"';
                 } 
 
                 if ($now->after( $end_date )) {
                         $sign = -1;
-                        $style = 'background-color:#cc6666;color:#ffffff';
+                        //$style = 'background-color:#cc6666;color:#ffffff';
+                        $style = 'class="task_overdue"';
                 }
                 if ($a["task_percent_complete"] == 100){
-                        $style = 'background-color:#aaddaa; color:#00000';
+                       if ($now->after($end_date)) 
+	                       $style = 'class="task_late"';
+												else
+                        //$style = 'background-color:#aaddaa; color:#00000';
+                        	$style = 'class="task_done"';
                 }
 
                 $days = $now->dateDiff( $end_date ) * $sign;
@@ -1881,7 +1888,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 // edit icon
 	$s .= "\n\t<td>";
 	$canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
-	$canViewLog = $perms->checkModuleItem('task_log', 'view', $a['task_id']);
+	$canViewLog = $perms->checkModuleItem('tasks', 'view', $a['task_id']);
 	if ($canEdit) {
 		$s .= "\n\t\t<a href=\"?m=tasks&a=addedit&task_id={$a['task_id']}\">"
 			. "\n\t\t\t".'<img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12">'
@@ -1999,16 +2006,16 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 		$s .= '<td align="center">-</td>';
 	}
 	
-	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($start_date ? $start_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center" '.$style.'>'.($start_date ? $start_date->format( $df ) : '-').'</td>';
 // duration or milestone
-	$s .= '<td align="center" nowrap="nowrap" style="'.$style.'">';
+	$s .= '<td align="center" nowrap="nowrap" '.$style.'>';
 	$s .= $a['task_duration'] . ' ' . $AppUI->_( $durnTypes[$a['task_duration_type']] );
 	$s .= '</td>';
-	$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($end_date ? $end_date->format( $df ) : '-').'</td>';
+	$s .= '<td nowrap="nowrap" align="center" '.$style.'>'.($end_date ? $end_date->format( $df ) : '-').'</td>';
 	if ($today_view) {
-		$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'. $a['task_due_in'].'</td>';
+		$s .= '<td nowrap="nowrap" align="center" '.$style.'>'. $a['task_due_in'].'</td>';
 	} else {
-		$s .= '<td nowrap="nowrap" align="center" style="'.$style.'">'.($last_update ? $last_update->format( $df ) : '-').'</td>';
+		$s .= '<td nowrap="nowrap" align="center" '.$style.'>'.($last_update ? $last_update->format( $df ) : '-').'</td>';
 	}
 
 // Assignment checkbox

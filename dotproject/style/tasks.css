@@ -1,0 +1,21 @@
+/* task colours */
+.task_late {
+  background-color: #ff50a8 !important;
+	color: white !important;
+}
+.task_overdue {
+  background-color: #cc6666 !important;
+	color: white !important;
+}
+.task_future {
+  background-color: white;
+}
+.task_started {
+  background-color: #e6eebb !important;
+}
+.task_notstarted {
+  background-color: #ffeebb !important;
+}
+.task_done {
+  background-color: #aaddaa !important;
+}

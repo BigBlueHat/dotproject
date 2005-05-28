@@ -1,3 +1,5 @@
+@import "../tasks.css";
+
 BODY.mainpage {
 	margin: 0px;
 	background-color: #ffffff;
@@ -376,4 +378,3 @@ table.tbl td.event {
 table.tbl td.event td {
         background-color: #fff0b0;
 }
-
