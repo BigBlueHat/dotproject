@@ -40,38 +40,46 @@ if(!$tasks_opened){
 }
 
 $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+$q = new DBQuery;
 $pinned_only = intval( dPgetParam( $_GET, 'pinned', 0) );
 if (isset($_GET['pin']))
 {
-        $pin = intval( dPgetParam( $_GET, "pin", 0 ) );
+	$pin = intval( dPgetParam( $_GET, "pin", 0 ) );
+	$msg = '';
 
-        $msg = '';
-
-        // load the record data 
-        if($pin) {
-        $sql = "INSERT INTO user_task_pin (user_id, task_id) VALUES($AppUI->user_id, $task_id)";
-        } else {
-        $sql = "DELETE FROM user_task_pin WHERE user_id=$AppUI->user_id AND task_id=$task_id";
-        }
+	// load the record data 
+	if($pin) {
+		$q->addTable('user_task_pin');
+		$q->addInsert('user_id', $AppUI->user_id);
+		$q->addInsert('task_id', $task_id);
+		
+		//$sql = "INSERT INTO user_task_pin (user_id, task_id) VALUES($AppUI->user_id, $task_id)";
+	} else {
+		$q->setDelete('user_task_pin');
+		$q->addWhere('user_id = ' . $AppUI->user_id);
+		$q->addWhere('task_id = ' . $task_id);
+		//$sql = "DELETE FROM user_task_pin WHERE user_id=$AppUI->user_id AND task_id=$task_id";
+	}
         
-        if (!db_exec( $sql )) {
-                $AppUI->setMsg( "ins/del err", UI_MSG_ERROR, true );
-        }
-        $AppUI->redirect('', -1);
+	if ( !$q->exec() )
+		$AppUI->setMsg( "ins/del err", UI_MSG_ERROR, true );
+
+	$AppUI->redirect('', -1);
 }
-else if($task_id > 0){
-    $_GET["open_task_id"] = $task_id;
-}
+else if($task_id > 0)
+	$_GET['open_task_id'] = $task_id;
+
 
 $AppUI->savePlace();
 
-if(($open_task_id = dPGetParam($_GET, "open_task_id", 0)) > 0 && !in_array($_GET["open_task_id"], $tasks_opened)) {
+if( ($open_task_id = dPGetParam($_GET, 'open_task_id', 0)) > 0 
+	&& !in_array($_GET['open_task_id'], $tasks_opened)) {
     $tasks_opened[] = $_GET["open_task_id"];
 }
 
 // Closing tasks needs also to be within tasks iteration in order to
 // close down all child tasks
-if(($close_task_id = dPGetParam($_GET, "close_task_id", 0)) > 0) {
+if(($close_task_id = dPGetParam($_GET, 'close_task_id', 0)) > 0) {
     closeOpenedTask($close_task_id);
 }
 
@@ -104,20 +112,19 @@ $project =& new CProject;
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id);
 $where = "";
 if ( count($allowedProjects))
-  $where = "WHERE " . implode(" AND ", $allowedProjects);
+  $q->addWhere($allowedProjects);
 
-$psql = "
-SELECT project_id, project_color_identifier, project_name,
-	COUNT(t1.task_id) as total_tasks,
-	SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete,
-	company_name
-FROM projects
-LEFT JOIN tasks t1 ON projects.project_id = t1.task_project" .
-" LEFT JOIN companies ON company_id = project_company
-" . $where  . "
-GROUP BY project_id
-ORDER BY project_name
-";
+$q->clear();
+$q->addQuery('project_id, project_color_identifier, project_name');
+$q->addQuery('COUNT(t1.task_id) as total_tasks');
+$q->addQuery('SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete');
+$q->addQuery('company_name');
+$q->addTable('projects');
+$q->leftJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+$q->leftJoin('companies', 'c', 'company_id = project_company');
+$q->addWhere($allowedProjects);
+$q->addGroup('project_id');
+$q->addOrder('project_name');
 
 //echo "<pre>$psql</pre>";
 
@@ -125,119 +132,123 @@ $perms =& $AppUI->acl();
 $projects = array();
 $canViewTask = $perms->checkModule('tasks', 'view');
 if ($canViewTask) {
-	$prc = db_exec( $psql );
+	$prc = db_exec( $q->prepare() );
 	echo db_error();
 	while ($row = db_fetch_assoc( $prc )) {
 		$projects[$row["project_id"]] = $row;
 	}
 }
 
-$join = "";
-// pull tasks
-$select = "
-distinct tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_dynamic, task_pinned, pin.user_id as pin_user,
-task_priority, task_percent_complete, task_duration, task_duration_type, task_project,
-task_description, task_owner, task_status, usernames.user_username, usernames.user_id, task_milestone,
-assignees.user_username as assignee_username, count(distinct assignees.user_id) as assignee_count, co.contact_first_name, co.contact_last_name,
-count(distinct files.file_task) as file_count, tlog.task_log_problem";
+$q->clear();
 
-$from = "tasks";
+$q->addQuery('distinct tasks.task_id, task_parent, task_name');
+$q->addQuery('task_start_date, task_end_date, task_dynamic');
+$q->addQuery('task_pinned, pin.user_id as pin_user');
+$q->addQuery('task_priority, task_percent_complete');
+$q->addQuery('task_duration, task_duration_type');
+$q->addQuery('task_project');
+$q->addQuery('task_description, task_owner, task_status');
+$q->addQuery('usernames.user_username, usernames.user_id');
+$q->addQuery('assignees.user_username as assignee_username');
+$q->addQuery('count(distinct assignees.user_id) as assignee_count');
+$q->addQuery('co.contact_first_name, co.contact_last_name');
+$q->addQuery('task_milestone');
+$q->addQuery('count(distinct f.file_task) as file_count');
+$q->addQuery('tlog.task_log_problem');
+
+$q->addTable('tasks');
 $mods = $AppUI->getActiveModules();
 if (!empty($mods['history']) && !getDenyRead('history'))
 {
-        $select .= ", history_date as last_update";
-        $join = "LEFT JOIN history ON history_item = tasks.task_id AND history_table='tasks' ";
+	$q->addQuery('history_date as last_update');
+	$q->leftJoin('history', 'h', 'history_item = tasks.task_id AND history_table=\'tasks\'');
 }
-$join .= "LEFT JOIN projects ON project_id = task_project";
-$join .= " LEFT JOIN users as usernames ON task_owner = usernames.user_id";
-// patch 2.12.04 show assignee and count
-$join .= " LEFT JOIN user_tasks as ut ON ut.task_id = tasks.task_id";
-$join .= " LEFT JOIN users as assignees ON assignees.user_id = ut.user_id";
-$join .= " LEFT JOIN contacts as co ON co.contact_id = usernames.user_contact";
+$q->leftJoin('projects', 'p', 'p.project_id = task_project');
+$q->leftJoin('users', 'usernames', 'task_owner = usernames.user_id');
+$q->leftJoin('user_tasks', 'ut', 'ut.task_id = tasks.task_id');
+$q->leftJoin('users', 'assignees', 'assignees.user_id = ut.user_id');
+$q->leftJoin('contacts', 'co', 'co.contact_id = usernames.user_contact');
+$q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = tasks.task_id AND tlog.task_log_problem > 0');
+$q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
+$q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
+//$user_id = $user_id ? $user_id : $AppUI->user_id;
 
-// check if there is log report with the problem flag enabled for the task
-$join .= " LEFT JOIN task_log AS tlog ON tlog.task_log_task = tasks.task_id AND tlog.task_log_problem > '0'";
-
-// to figure out if a file is attached to task
-$join .= " LEFT JOIN files on tasks.task_id = files.file_task";
-$join .= ' LEFT JOIN user_task_pin as pin ON tasks.task_id = pin.task_id AND pin.user_id = ';
-$join .= $user_id ? $user_id : $AppUI->user_id;
-
-$where = $project_id ? "\ntask_project = $project_id" : "project_active != 0";
+if ($project_id)
+	$q->addWhere('task_project = ' . $project_id);
+else
+	$q->addWhere('project_active != 0');
 
 if ($pinned_only)
-        $where .= ' AND task_pinned = 1 ';
+	$q->addWhere('task_pinned = 1');
 
 switch ($f) {
 	case 'all':
 		break;
 	case 'myfinished7days':		
-		$where .= " AND user_tasks.user_id = $user_id";
+		$q->addWhere('ut.user_id = ' . $user_id);
 	case 'allfinished7days':	// patch 2.12.04 tasks finished in the last 7 days
-		$from .= ", user_tasks";
-		$where .= "
-			AND task_project             = projects.project_id
-			AND user_tasks.task_id       = tasks.task_id
-			AND task_percent_complete    = '100'
-		        AND task_end_date >= '" . date("Y-m-d 00:00:00", mktime(0, 0, 0, date("m"), date("d")-7, date("Y"))) . "'";
+//		$q->addTable('user_tasks');
+    $q->addTable('user_tasks');
+    $q->addWhere('user_tasks.user_id = ' . $user_id);
+    $q->addWhere('user_tasks.task_id = tasks.task_id');
+
+		$q->addWhere('task_percent_complete = 100');
+		//TODO: use date class to construct date.
+		$q->addWhere('task_end_date >= \'' . date('Y-m-d 00:00:00', mktime(0, 0, 0, date('m'), date('d')-7, date('Y'))) . "'");
 		break;		
 	case 'children':
 	// patch 2.13.04 2, fixed ambigious task_id
-		$where .= "\n	AND task_parent = $task_id AND tasks.task_id != $task_id";	
+		$q->addWhere('task_parent = ' . $task_id);
+		$q->addWhere('tasks.task_id != ' . $task_id);	
 		break;
 	case 'myproj':
-		$where .= "\n	AND project_owner = $user_id";
+		$q->addWhere('project_owner = ' . $user_id);
 		break;
 	case 'mycomp':
 	    if(!$AppUI->user_company){
 	        $AppUI->user_company = 0;
 	    }
-		$where .= "\n	AND project_company = $AppUI->user_company";
+		$q->addWhere('project_company = ' . $AppUI->user_company);
 		break;
 	case 'myunfinished':
-		$from .= ", user_tasks";
-		// This filter checks all tasks that are not already in 100% 
-		// and the project is not on hold nor completed
-		// patch 2.12.04 finish date required to be consider finish
-		$where .= "
-					AND task_project             = projects.project_id
-					AND user_tasks.user_id       = $user_id
-					AND user_tasks.task_id       = tasks.task_id
-					AND (task_percent_complete    < '100' OR task_end_date = '')
-					AND projects.project_active  = '1'
-					AND projects.project_status != '4'
-					AND projects.project_status != '5'";
+		$q->addTable('user_tasks');
+		$q->addWhere('user_tasks.user_id = ' . $user_id);
+		$q->addWhere('user_tasks.task_id = tasks.task_id');
+//		$q->addWhere('task_project = p.project_id');
+
+		$q->addWhere("(task_percent_complete < '100' OR task_end_date = '')");
+		$q->addWhere('p.project_active = 1');
+		$q->addWhere('p.project_status != 4');
+		$q->addWhere('p.project_status != 5');
 		break;
 	case 'allunfinished':
-		// patch 2.12.04 finish date required to be consider finish
-		// patch 2.12.04 2, also show unassigned tasks
-		$where .= "
-					AND task_project             = projects.project_id
-					AND (task_percent_complete   < '100' OR task_end_date = '')
-					AND projects.project_active  = '1'
-					AND projects.project_status != '4'
-					AND projects.project_status != '5'";
+		//			AND task_project             = projects.project_id
+		$q->addWhere("(task_percent_complete < '100' OR task_end_date = '')");
+		$q->addWhere('p.project_active = 1');
+		$q->addWhere('p.project_status != 4');
+		$q->addWhere('p.project_status != 5');
 		break;
 	case 'unassigned':
-		$join .= "\n LEFT JOIN user_tasks ON tasks.task_id = user_tasks.task_id";
-		$where .= "
-					AND user_tasks.task_id IS NULL";
+		$q->leftJoin('user_tasks', 'ut_empty', 'tasks.task_id = ut_empty.task_id');
+		$q->addWhere('ut_empty.task_id IS NULL');
 		break;
 	case 'taskcreated':
-		$where .= " AND task_owner = '$user_id'";
+		$q->addWhere('task_owner = ' . $user_id);
 		break;
 	default:
-		$from .= ", user_tasks";
-		$where .= "
-	AND task_project = projects.project_id
-	AND user_tasks.user_id = $user_id
-	AND user_tasks.task_id = tasks.task_id";
+    $q->addTable('user_tasks');
+    $q->addWhere('user_tasks.user_id = ' . $user_id);
+    $q->addWhere('user_tasks.task_id = tasks.task_id');
+//		$from .= ", user_tasks";
+//		$where .= "
+//	AND task_project = projects.project_id
+//	AND user_tasks.user_id = $user_id
+//	AND user_tasks.task_id = tasks.task_id";
 		break;
 }
 
 if ($project_id && $showIncomplete) {
-	$where .= "
-	AND ( task_percent_complete < 100 or task_percent_complete is null )";
+	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
 }
 
 $task_status = 0;
@@ -248,11 +259,11 @@ else if ( stristr($currentTabName, 'inactive') )
 else if ( ! $currentTabName)  // If we aren't tabbed we are in the tasks list.
 	$task_status = intval( $AppUI->getState( 'inactive' ) );
 
-$where .= "\n	AND task_status = '$task_status'";
+$q->addWhere('task_status = ' . $task_status);
 
 // patch 2.12.04 text search
 if ( $search_text = $AppUI->getState('searchtext') )
-	$where .= "\n AND (task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )";
+	$q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
 
 // filter tasks considering task and project permissions
 $projects_filter = '';
@@ -262,31 +273,32 @@ $tasks_filter = '';
 
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'task_project');
 if (count($allowedProjects))
-	$where .= " AND " . implode(" AND ", $allowedProjects);
+	$q->addWhere($allowedProjects);
 
 //
 $obj =& new CTask;
 $allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
 if ( count($allowedTasks))
-	$where .= " AND " . implode(" AND ", $allowedTasks);
+	$q->addWhere($allowedTasks);
 
 // echo "<pre>$where</pre>";
 
 // Filter by company
 if ( ! $min_view && $f2 != 'all' ) {
-	 $join .= "\nLEFT JOIN companies ON company_id = projects.project_company";
-         $where .= "\nAND company_id = " . intval($f2) . " ";
+		$q->leftJoin('companies', 'c', 'c.company_id = p.project_company');
+		$q->addWhere('company_id = ' . intval($f2) );
 }
 
-// patch 2.12.04 ADD GROUP BY clause for assignee count
-$tsql = "SELECT $select FROM $from $join WHERE $where" .
-  "\nGROUP BY task_id" .
-  "\nORDER BY project_id, task_start_date";
+$q->addGroup('task_id');
+$q->addOrder('project_id, task_start_date');
+//$tsql = "SELECT $select FROM $from $join WHERE $where" .
+//  "\nGROUP BY task_id" .
+//  "\nORDER BY project_id, task_start_date";
 
 // echo "<pre>$tsql</pre>";
 
 if ($canViewTask) {
-	$ptrc = db_exec( $tsql );
+	$ptrc = db_exec( $q->prepare() );
 	$nums = db_num_rows( $ptrc );
 	echo db_error();
 } else {
@@ -304,30 +316,24 @@ for ($x=0; $x < $nums; $x++) {
 	$row = db_fetch_assoc( $ptrc );
 
 	//add information about assigned users into the page output
-	$ausql = "SELECT ut.user_id,
-	u.user_username, contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent, contact_first_name, contact_last_name
-	FROM user_tasks ut
-	LEFT JOIN users u ON u.user_id = ut.user_id
-        LEFT JOIN contacts ON u.user_contact = contact_id
-	WHERE ut.task_id=".$row['task_id']."
-        GROUP BY ut.user_id";
+	$q->clear();
+	$q->addQuery('ut.user_id,
+	u.user_username, contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent, contact_first_name, contact_last_name');
+	$q->addTable('user_tasks', 'ut');
+	$q->leftJoin('users', 'u', 'u.user_id = ut.user_id');
+	$q->leftJoin('contacts', 'c', 'u.user_contact = c.contact_id');
+	$q->addWhere('ut.task_id = ' . $row['task_id']);
+	$q->addGroup('ut.user_id');
 
 	$assigned_users = array ();
-	$paurc = db_exec( $ausql );
-	$nnums = db_num_rows( $paurc );
-	echo db_error();
-	for ($xx=0; $xx < $nnums; $xx++) {
-		$row['task_assigned_users'][] = db_fetch_assoc($paurc);
-	}
+	$row['task_assigned_users'] = $q->loadList();
 	//pull the final task row into array
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
-if ( isset($canEdit) && $canEdit && $dPconfig['direct_edit_assignment'])
-	$showEditCheckbox = true;
-else
-	$showEditCheckbox = false;
-
+$showEditCheckbox = isset($canEdit) 
+								&& $canEdit 
+								&& $dPconfig['direct_edit_assignment'];
 ?>
 
 <script type="text/JavaScript">
@@ -340,7 +346,7 @@ function toggle_users(id){
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
-if (isset($canEdit) && $canEdit && $dPconfig['direct_edit_assignment']) {
+if ($showEditCheckbox) {
 ?>
 function checkAll(project_id) {
         var f = eval( 'document.assFrm' + project_id );
