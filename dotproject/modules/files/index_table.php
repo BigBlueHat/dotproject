@@ -63,7 +63,7 @@ if ($project_id) $q->addWhere("file_project = $project_id");
 if ($task_id) $q->addWhere("file_task = $task_id");
 $q->addGroup("file_version_id");
 $project->setAllowedSQL($AppUI->user_id, $q, 'file_project');
-$task->setAllowedSQL($AppUI->user_id, $q, 'file_task');
+$task->setAllowedSQL($AppUI->user_id, $q, 'file_task and task_project = file_project');
 
 // SETUP FOR FILE LIST
 $q2 = new DBQuery;
@@ -85,7 +85,7 @@ $q2->addTable('files', 'f');
 //$q2->leftJoin('users', 'u', 'u.user_id = f.file_owner');
 //$q2->leftJoin('contacts', 'cont', 'cont.contact_id = u.user_contact');
 $project->setAllowedSQL($AppUI->user_id, $q2, 'file_project');
-$task->setAllowedSQL($AppUI->user_id, $q2, 'file_task');
+$task->setAllowedSQL($AppUI->user_id, $q2, 'file_task and ta.task_project = file_project');
 if ($catsql) $q2->addWhere($catsql);
 if ($company_id) $q2->addWhere("project_company = $company_id");
 if ($project_id) $q2->addWhere("file_project = $project_id");
@@ -106,7 +106,7 @@ $q3->leftJoin('contacts', 'con', 'con.contact_id = u.user_contact');
 //$q3->leftJoin('tasks', 't', 't.task_id = file_task');
 //$q3->leftJoin('projects', 'p', 'p.project_id = file_project');
 $project->setAllowedSQL($AppUI->user_id, $q3, 'file_project');
-$task->setAllowedSQL($AppUI->user_id, $q3, 'file_task');
+$task->setAllowedSQL($AppUI->user_id, $q3, 'file_task and task_project = file_project');
 if ($project_id) $q3->addWhere("file_project = $project_id");
 if ($task_id) $q3->addWhere("file_task = $task_id");
 
