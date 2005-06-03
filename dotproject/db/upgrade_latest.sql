@@ -13,3 +13,7 @@ UPDATE `config` SET `config_name` = 'admin_user' WHERE `config_name` = 'admin_us
 INSERT INTO `config` VALUES ('', 'task_reminder_control', 'false', 'task_reminder', 'checkbox');
 INSERT INTO `config` VALUES ('', 'task_reminder_days_before', '1', 'task_reminder', 'text');
 INSERT INTO `config` VALUES ('', 'task_reminder_repeat', '100', 'task_reminder', 'text');
+
+# 20050603
+# This seemed to have been lost in one of the other updates.
+UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'check_tasks_dates';
