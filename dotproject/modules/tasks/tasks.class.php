@@ -1194,6 +1194,26 @@ class CTask extends CDpObject {
 
 		return $last_end_date;
 	}
+	
+	function get_actual_end_date()
+	{
+		$q = new DBQuery;
+		$q->addQuery('task_log_date');
+		$q->addTable('task_log');
+		$q->addWhere('task_log_id = ' . $this->task_id);
+		$task_log_end_date = $q->loadResult();
+		
+		if ($this->getDependencies())
+		{
+			$deps = $this->get_deps_max_end_date($this);		
+			$edate = ($deps > $task_log_end_date)?$deps:$task_log_end_date;
+		}
+		else
+			$edate = $task_log_end_date;
+		$edate = ($edate > $this->task_end_date)?$edate:$this->task_end_date;
+		
+		return $edate;
+	}
 
 	/*
 	* Calculate this task obj's end date. Based on start date
@@ -1874,7 +1894,10 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                         $style = 'class="task_overdue"';
                 }
                 if ($a["task_percent_complete"] == 100){
-                       if ($now->after($end_date)) 
+                	$t = new CTask();
+                	$t->load($a['task_id']);
+                	$actual_end_date = new CDate($t->get_actual_end_date());
+                       if ($actual_end_date->after($end_date)) 
 	                       $style = 'class="task_late"';
 												else
                         //$style = 'background-color:#aaddaa; color:#00000';
