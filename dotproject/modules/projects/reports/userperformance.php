@@ -183,7 +183,7 @@ if($do_report){
 				$percentage_e = 0;
 				if($total_hours_worked>0){
 					$percentage = ($total_hours_worked/$total_hours_allocated)*100;
-					$percentage_e = ($hours_allocated_complete/$hours_worked_complete)*100;
+					($hours_worked_complete) ? $percentage_e = ($hours_allocated_complete/$hours_worked_complete)*100 : 0;
 				}
 				?>
 				<tr>
@@ -200,7 +200,7 @@ if($do_report){
                 $sum_efficiency = 0;
 		if($sum_total_hours_worked > 0){
 			$sum_percentage = ($sum_total_hours_worked/$sum_total_hours_allocated)*100;
-                        $sum_efficiency = ($sum_hours_allocated_complete/$sum_hours_worked_complete)*100;
+	                ($sum_hours_worked_complete) ? $sum_efficiency = ($sum_hours_allocated_complete/$sum_hours_worked_complete)*100 : 0;
 		}
 		?>
 			<tr>
