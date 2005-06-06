@@ -1880,20 +1880,24 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                         $end_date->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
                 }
 
-                if ($now->after( $start_date ) && $a["task_percent_complete"] == 0) {
+                if ($a['task_percent_complete'] == 0) {
+                        if ($now->before( $start_date )) {
                         //$style = 'background-color:#ffeebb';
-                        $style = 'class="task_future"';
-                } else if ($now->after( $start_date ) && $a["task_percent_complete"] < 100) {
+                                $style = 'class="task_future"';
+                        } else {
                         //$style = 'background-color:#e6eedd';
-                        $style = 'class="task_notstarted"';
-                } 
+                                $style = 'class="task_notstarted"';
+                        }
+                } else {
+                                $style = 'class="task_started"';
+                }
 
                 if ($now->after( $end_date )) {
                         $sign = -1;
                         //$style = 'background-color:#cc6666;color:#ffffff';
                         $style = 'class="task_overdue"';
                 }
-                if ($a["task_percent_complete"] == 100){
+                if ($a["task_percent_complete"] == 100) {
                 	$t = new CTask();
                 	$t->load($a['task_id']);
                 	$actual_end_date = new CDate($t->get_actual_end_date());
