@@ -1,0 +1,2 @@
+Hour Summary Report
+Shows total hours for each user.

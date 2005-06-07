@@ -1,0 +1,2 @@
+Weekly Report
+Shows total hours of each day for users and provides a subtotal.

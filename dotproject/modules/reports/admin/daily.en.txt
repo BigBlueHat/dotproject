@@ -1,0 +1,2 @@
+Daily Report
+A detailed time sheet/report created from task logs.
