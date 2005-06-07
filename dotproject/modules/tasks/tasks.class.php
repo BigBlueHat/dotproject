@@ -1200,7 +1200,7 @@ class CTask extends CDpObject {
 		$q = new DBQuery;
 		$q->addQuery('task_log_date');
 		$q->addTable('task_log');
-		$q->addWhere('task_log_id = ' . $this->task_id);
+		$q->addWhere('task_log_task = ' . $this->task_id);
 		$task_log_end_date = $q->loadResult();
 		
 		if ($this->getDependencies())
