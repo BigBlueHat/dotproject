@@ -151,6 +151,7 @@ if ($canEdit) {
 		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
 		'<form action="?m=files&a=addedit&project_id=' . $project_id . '" method="post">', '</form>'
 	);
+
 }
 $titleBlock->addCrumb( "?m=projects", "projects list" );
 if ($canEdit) {
@@ -160,9 +161,10 @@ if ($canEdit) {
 	}
 	$titleBlock->addCrumb("?m=tasks&a=organize&project_id=$project_id", "organize tasks");
 }
-$titleBlock->addCrumb( "?m=projects&a=reports&project_id=$project_id", "reports" );
+$titleBlock->addCrumb( "?m=reports&project_id=$project_id", "reports" );
 $titleBlock->show();
 ?>
+
 <script language="javascript">
 <?php
 // security improvement:
