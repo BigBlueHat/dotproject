@@ -33,7 +33,7 @@ if ($display_option == 'custom') {
 } else {
 	// month
 	$start_date = new CDate();
-	$end_date = $start_date;
+	$end_date = new CDate( $start_date );
 	$end_date->addMonths( $scroll_date );
 }
 
