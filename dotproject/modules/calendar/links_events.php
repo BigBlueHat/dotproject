@@ -9,7 +9,14 @@
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
-	global $event_filter;
+	global $event_filter, $AppUI;
+		
+	// Check permissions.
+	$perms = & $AppUI->acl();
+	$canView = $perms->checkModule( 'calendar', 'view', $event_id );
+	if (!$canView)
+		return array();
+	
 	$events = CEvent::getEventsForPeriod( $startPeriod, $endPeriod, $event_filter );
 
 	// assemble the links for the events

@@ -12,6 +12,13 @@
 */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_id=0 ) {
 	GLOBAL $a, $AppUI, $dPconfig;
+	
+	// Check permissions.
+	$perms = & $AppUI->acl();
+	$canView = $perms->checkModule( 'calendar', 'view', $event_id );
+	if (!$canView)
+		return array();
+		
 	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $company_id );
 
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
