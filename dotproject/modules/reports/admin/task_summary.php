@@ -44,6 +44,7 @@ function reorder( order )
 <input type="hidden" name="m" value="reports" />
 <input type="hidden" name="order" value="<?php echo $order; ?>" />
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
 <tr>

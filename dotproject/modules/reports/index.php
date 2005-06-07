@@ -3,7 +3,7 @@ error_reporting( E_ALL );
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
 $project_id = intval( dPgetParam( $_REQUEST, 'project_id', 0 ) );
-$report_category = dPgetParam($_GET, 'report_category', null);
+$report_category = dPgetParam($_REQUEST, 'report_category', null);
 $report_type = dPgetParam( $_REQUEST, 'report_type', '' );
 
 $do_report = dPgetParam( $_REQUEST, 'do_report', 0 );
@@ -78,7 +78,7 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 if (!isset($report_category))
 {
 	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/reports" ); //, "\.php$"
-	$ignore = array('index.php', 'setup.php');
+	$ignore = array('index.php', 'setup.php', 'CVS');
 	$report_categories = array_diff($reports, $ignore);
 }
 else
@@ -95,7 +95,7 @@ if (! $suppressHeaders) {
 		$titleBlock->addCrumb( "?m=reports&project_id=$project_id", 'reports index' );
 
 	$titleBlock->show();
-}
+
 
 if (!isset($display_project_name))
 	$display_project_name = 'None'; 
@@ -118,6 +118,7 @@ if (!empty($report_type_var))
 </form>
 
 <?php
+}
 if ($report_type) {
 	$report_type = $AppUI->checkFileName( $report_type );
 	$report_type = str_replace( ' ', '_', $report_type );

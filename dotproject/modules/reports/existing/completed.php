@@ -1,8 +1,7 @@
 <?php
 // Output the PDF
 // make the PDF file
-$sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
-$pname = db_loadResult( $sql );
+$pname = $display_project_name;
 echo db_error();
 
 $font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";

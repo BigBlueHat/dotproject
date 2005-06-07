@@ -78,8 +78,9 @@ function setCalendar( idate, fdate ) {
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 
-<form name="editFrm" action="index.php?m=projects&a=reports" method="post">
+<form name="editFrm" action="index.php?m=reports" method="post">
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
 <tr>
