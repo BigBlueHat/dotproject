@@ -3,7 +3,7 @@ $event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
 $is_clash = isset($_SESSION['event_is_clash']) ? $_SESSION['event_is_clash'] : false;
 
 // check permissions
-if (!$canEdit) {
+if (!($canAuthor && $event_id == 0) && !$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
