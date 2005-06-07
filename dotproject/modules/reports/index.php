@@ -91,8 +91,10 @@ if (! $suppressHeaders) {
 	$titleBlock->addCrumb( "?m=projects", "projects list" );
 	if ($project_id != 0)
 		$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
-	if ($report_type)
+	if ($report_category)
 		$titleBlock->addCrumb( "?m=reports&project_id=$project_id", 'reports index' );
+	if ($report_type)
+		$titleBlock->addCrumb( "?m=reports&project_id=$project_id&report_category=$report_category", 'category index' );
 
 	$titleBlock->show();
 
