@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"BadParent_ChildDepOnParent"=>"A child of this task is dependent upon the parent of this task",
+"Late",
 "Access",
 "Action",
 "Active",
@@ -29,6 +29,7 @@
 "BadDep_CircularDepOnParentDependent"=>"There is a circular dependency between this task and its parents dependents",
 "BadDep_CircularGrandParent"=>"A task may not depend upon its ancestors",
 "BadDep_DynNoDep"=>"A Dynamic Task may not depend on another task",
+"BadParent_ChildDepOnParent"=>"A child of this task is dependent upon the parent of this task",
 "BadParent_CircularGrandParent"=>"An ancestor of this task is also a child!",
 "BadParent_CircularParent"=>"A parent of this task is also a child!",
 "Begin new tasks if dependencies are finished before expected",
