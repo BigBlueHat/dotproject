@@ -6,6 +6,7 @@ global $currentTabId;
 global $currentTabName;
 global $tabbed;
 global $type_filter;
+global $natab;
 global $orderby;
 global $orderdir;
 
@@ -18,11 +19,12 @@ $obj = new CCompany();
 $allowedCompanies = $obj->getAllowedRecords($AppUI->user_id, 'company_id, company_name');
 
 $company_type_filter = $currentTabId;
-//Not Defined
-$companiesType = true;
-if ($currentTabName == "All Companies")
-	$companiesType = false;
-if ($currentTabName == "Not Applicable")
+
+//Listing all types if ALL (-1) is selected
+$companiesType = ($currentTabId != 0);
+
+// natab keeps track of which tab stores companies with no type set.
+if ($currentTabId == $natab)
 	$company_type_filter = 0;
 
 // retrieve list of records

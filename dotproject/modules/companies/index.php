@@ -73,21 +73,21 @@ $titleBlock->show();
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'CompaniesIdxTab', $_GET['tab'] );
 }
-$companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ),  0 );
+$companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ),  -1 );
 
 // $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
 $companiesType = $companiesTypeTab;
 
 $tabBox = new CTabBox( "?m=companies", dPgetConfig('root_dir')."/modules/companies/", $companiesTypeTab );
 if ($tabbed = $tabBox->isTabbed()) {
-	$add_na = true;
-	if (isset($types[0])) { // They have a Not Applicable entry.
-		$add_na = false;
+	if (isset($types[0])) 
 		$types[] = $types[0];
-	}
-	$types[0] = "All Companies";
-	if ($add_na)
+	else // They have a Not Applicable entry.
 		$types[] = "Not Applicable";
+
+	$types[0] = "All Companies";
+	// natab keeps track of which tab stores companies with no type set.
+	$natab = count($types) - 1;
 }
 $type_filter = array();
 foreach($types as $type => $type_name){
