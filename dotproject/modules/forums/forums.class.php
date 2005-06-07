@@ -231,8 +231,9 @@ class CForumMessage {
 		if ($AllCount < 1)		//message is only delivered to users that checked the forum watch
 		{	
 			$q->addTable('forum_watch');
-			$q->addWhere("user_id = watch_user
-				AND (watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
+			$q->addWhere('user_id = watch_user');
+			$q->addWhere('user_id <> ' . $AppUI->user_id);
+			$q->addWhere("(watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
 		}
 
 		if (!($res = $q->exec())) {
