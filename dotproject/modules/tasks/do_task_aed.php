@@ -43,8 +43,6 @@ if ($sub_form) {
 	if (isset($pre_save)) {
 		foreach ($pre_save as $pre_save_function)
 			$pre_save_function();
-	} else {
-		dprint(__FILE__, __LINE__, 1, "No pre_save functions.");
 	}
 
 	// Find the task if we are set
