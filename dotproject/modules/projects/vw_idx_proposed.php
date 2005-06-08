@@ -108,8 +108,12 @@ foreach ($projects as $row) {
 		$s .= $CR . '<td align="center" nowrap="nowrap">';
 		$s .= $CT . $row["total_tasks"] . ($row["my_tasks"] ? ' ('.$row["my_tasks"].')' : '');
 		$s .= $CR . '</td>';
+		
 		$s .= $CR . '<td align="center">';
-		$s .= $CT . '<input type="checkbox" name="project_id[]" value="'.$row["project_id"].'" />';
+		if ($perms->checkModuleItem('projects', 'edit', $row['project_id']))
+			$s .= $CT . '<input type="checkbox" name="project_id[]" value="'.$row["project_id"].'" />';
+		else
+			$s .= $CT . '&nbsp;';
 		$s .= $CR . '</td>';
 
 		if($show_all_projects){
