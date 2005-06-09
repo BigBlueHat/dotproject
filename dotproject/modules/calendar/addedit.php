@@ -157,6 +157,19 @@ function submitIt(){
 		form.event_end_date.focus();
 		return;
 	}
+	
+	if (form.event_start_date.value > form.event_end_date.value) {
+		alert('<?php echo $AppUI->_('Start date must be before end date!',  UI_OUTPUT_JS); ?>');
+		form.event_title.focus();
+		return;
+	}
+	if (form.event_start_date.value == form.event_end_date.value && form.end_time.value < form.start_time.value) {
+		alert('<?php echo $AppUI->_('Start time must be before end time!',  UI_OUTPUT_JS); ?>');
+		form.event_title.focus();
+		return;
+	}
+
+		
   if ( (!(form.event_times_recuring.value>0))
     && (form.event_recurs[0].selected!=true) ) {
     alert("<?php echo $AppUI->_('Please enter number of recurrences', UI_OUTPUT_JS); ?>");
