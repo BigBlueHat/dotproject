@@ -1,8 +1,731 @@
-2005-04-13 11:09  (ajdonnison)
+2005-06-09 06:30  (cyberhorse)
 ---------------------------------
-classes/query.class.php
-- Added XML support to enable modules to load schemas using XML for
-- database independence.
+modules/tasks/tasks.class.php
+- Mantis #988 - fixed day duration hours calculation.
+
+2005-06-09 04:45  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed reports link in tasks listing to point to new reports module.
+
+2005-06-08 17:22  (cyberhorse)
+---------------------------------
+modules/tasks/do_task_aed.php
+- debugging information breaking headers and redirect on task save.
+- dprint statement removed.
+
+2005-06-08 11:51  (cyberhorse)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- Mantis #842 - fixed users with no edit privileges editing project status.
+
+2005-06-07 16:35  (cyberhorse)
+---------------------------------
+modules/reports/index.php
+- Added breadcrumb for category index.
+
+2005-06-07 16:31  (cyberhorse)
+---------------------------------
+modules/reports/index.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/completed.php
+modules/reports/existing/overall.php
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/upcoming.php
+modules/reports/existing/userperformance.php
+- Updated reports to support categories.
+
+2005-06-07 16:05  (cyberhorse)
+---------------------------------
+modules/projects/reports.php
+- Reports moved to reports module
+
+2005-06-07 16:04  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- Moved reports to their own module.
+
+2005-06-07 16:00  (cyberhorse)
+---------------------------------
+modules/reports/index.php
+modules/reports/setup.php
+modules/reports/admin/daily.en.txt
+modules/reports/admin/daily.php
+modules/reports/admin/hours.en.txt
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.en.txt
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.en.txt
+modules/reports/admin/weekly.php
+modules/reports/existing/allocateduserhours.en.txt
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/completed.en.txt
+modules/reports/existing/completed.php
+modules/reports/existing/overall.en.txt
+modules/reports/existing/overall.php
+modules/reports/existing/overdue.en.txt
+modules/reports/existing/overdue.php
+modules/reports/existing/stats.en.txt
+modules/reports/existing/stats.php
+modules/reports/existing/taskenddate.en.txt
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.en.txt
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.en.txt
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.en.txt
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/upcoming.en.txt
+modules/reports/existing/upcoming.php
+modules/reports/existing/userperformance.en.txt
+modules/reports/existing/userperformance.php
+- Moving the existing projects/reports part to a new reports module
+- Integrating 4 new reports modules
+- Providing for reports categories
+- Project selection at each point in the reports module
+
+2005-06-07 14:56  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+- Mantis #850 - fixed issue with adding a new even without edit permissions.
+
+2005-06-07 14:35  (cyberhorse)
+---------------------------------
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+- Mantis #849 - getEventLinks and getTaskLinks functions weren't checking permissions.
+
+2005-06-07 13:51  (cyberhorse)
+---------------------------------
+modules/calendar/view.php
+- converted an sql query to use the DBQuery class.
+
+2005-06-07 13:35  (cyberhorse)
+---------------------------------
+modules/companies/index.php
+modules/companies/vw_companies.php
+- Mantis #1020 - company without type weren't managed properly in other languages
+
+2005-06-07 12:59  (cyberhorse)
+---------------------------------
+modules/tasks/ae_dates.php
+- Mantis #1010 - overwriting start_date on edit
+
+2005-06-07 12:57  (cyberhorse)
+---------------------------------
+modules/tasks/ae_dates.php
+- Mantis #1010 - editing task with no start date overwrites date to now.
+
+2005-06-07 12:42  (cyberhorse)
+---------------------------------
+modules/forums/forums.class.php
+- Mantis #991 - users being notified about own posts in forums
+
+2005-06-07 12:38  (cyberhorse)
+---------------------------------
+locales/en/tasks.inc
+- Mantis #1014 - fixed "Late" not translated
+
+2005-06-07 12:34  (cyberhorse)
+---------------------------------
+modules/tasks/viewgantt.php
+- Mantis #1022 - start_date and end_date using the same object bug fixed.
+
+2005-06-07 12:00  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Mantis #1021 - fix join column
+
+2005-06-06 17:06  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Mantis #1013 - fixed logical errors in task status determination.
+
+2005-06-03 13:03  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Mantis #1007 - fixed comparing to actual_end_date rather than now.
+- Calculating actual end date based on last task_log, children and end date itself
+
+2005-06-03 06:25  (ajdonnison)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed problem with allowed project list that doesn't show the current
+- project if it is inactive.
+
+2005-06-03 03:21  (ajdonnison)
+---------------------------------
+db/upgrade_latest.sql
+- Added missing config update that seems to have been lost somewher.
+
+2005-06-03 02:21  (ajdonnison)
+---------------------------------
+locales/en/links.inc
+- Reprocessed through translation manager.
+
+2005-06-03 02:20  (ajdonnison)
+---------------------------------
+locales/en/links.inc
+- New translation file for Links module
+
+2005-05-30 05:32  (ajdonnison)
+---------------------------------
+modules/files/index_table.php
+- Changed setAllowedSQL call on tasks to limit by project as well (using
+- a bit of a loophole) so that tickets with attachments are not showing
+- as assigned to incorrect tasks.
+
+2005-05-29 18:31  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- bug fixed - query using wrong field (part of previous fix)
+
+2005-05-28 06:25  (cyberhorse)
+---------------------------------
+style/dp-grey-theme/main.css
+- added import for tasks status colours.
+
+2005-05-28 06:22  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+style/tasks.css
+style/classic/main.css
+style/default/main.css
+- Mantis #132 - indicate late finishing tasks (made task status indication with classes, updated styles to import the classes for indication and made the new status "late" done but after the due date).
+
+2005-05-28 03:11  (cyberhorse)
+---------------------------------
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_log.php
+- Mantis #794 - removed forced style
+
+2005-05-28 03:07  (cyberhorse)
+---------------------------------
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- Mantis #794 - removed forced style
+
+2005-05-28 02:55  (cyberhorse)
+---------------------------------
+modules/resources/tasks_dosql.addedit.php
+- changed level for debug statement on resource assignment (were breaking redirection).
+
+2005-05-28 02:02  (cyberhorse)
+---------------------------------
+modules/projects/do_project_aed.php
+- Mantis #973 - project end date finishing at the last time of the day.
+
+2005-05-28 02:02  (cyberhorse)
+---------------------------------
+modules/projects/do_project_aed.php
+- Mantis #973 - project end date should have the time at the end of the day.
+
+2005-05-28 01:57  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+- Mantis #984 - indexing updated files
+
+2005-05-28 01:55  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+- Mantis #984 - trying to indexString in files that are being edited
+
+2005-05-25 07:03  (revelation7)
+---------------------------------
+modules/projects/view.php
+-  0000978: Clickable link to company in View Project
+
+2005-05-25 06:10  (revelation7)
+---------------------------------
+README
+modules/help/en/help.toc.hlp
+-  0000980: Online help Forum link out of date.
+
+2005-05-23 16:40  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- Mantis #832 - fixed quotes
+
+2005-05-23 16:37  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- Mantis #832 - escaping single quotes
+
+2005-05-23 15:40  (cyberhorse)
+---------------------------------
+modules/forums/post_message.php
+modules/forums/post_message.php
+- Mantis #869 - fixed editing own posts
+
+2005-05-23 07:42  (revelation7)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasksperuser_sub.php
+- 0000967: Difference in naming.  I modified this two files so it displayes username instead of first_name and last_name,  This is to be more consistent with how assigned user is displayed elsewhere, in task lists, also to save space.
+
+2005-05-19 09:41  (ajdonnison)
+---------------------------------
+modules/tasks/viewgantt.php
+includes/db_connect.php
+modules/projects/viewgantt.php
+- Moved memory limit setting into db_connect to ensure that it is always
+- set, and set early enough that it takes effect (some Apache2 installations
+- were reporting the setting having no effect, this was fixed by setting
+- it earlier). Also removed the php_restore as the original value is always
+- restored when the script terminates anyway.
+
+2005-05-19 07:55  (ajdonnison)
+---------------------------------
+style/classic/header.php
+style/default/header.php
+style/dp-grey-theme/header.php
+- Added links module as a right-hand crumb.
+
+2005-05-19 07:42  (ajdonnison)
+---------------------------------
+modules/backup/README
+modules/backup/do_backup.php
+modules/backup/do_restore.php
+modules/backup/index.php
+modules/backup/restore.php
+modules/backup/setup.php
+modules/backup/zip.lib.php
+modules/backup/locales/en.inc
+modules/backup/locales/es.inc
+- Imported changed module from dotMods as it now is uses as part of the
+- standard install.
+
+2005-05-19 07:42  (ajdonnison)
+---------------------------------
+modules/backup/README
+modules/backup/do_backup.php
+modules/backup/do_restore.php
+modules/backup/index.php
+modules/backup/restore.php
+modules/backup/setup.php
+modules/backup/zip.lib.php
+modules/backup/locales/en.inc
+modules/backup/locales/es.inc
+- Initial revision
+
+2005-05-19 07:33  (ajdonnison)
+---------------------------------
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index.php
+modules/links/index_table.php
+modules/links/links.class.php
+modules/links/projects_tab.links.php
+modules/links/setup.php
+modules/links/tasks_tab.links.php
+- Module migrated from dotmods into core.
+
+2005-05-19 07:33  (ajdonnison)
+---------------------------------
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index.php
+modules/links/index_table.php
+modules/links/links.class.php
+modules/links/projects_tab.links.php
+modules/links/setup.php
+modules/links/tasks_tab.links.php
+- Initial revision
+
+2005-05-19 07:30  (ajdonnison)
+---------------------------------
+db/upgrade_latest.sql
+- Added task reminders
+
+2005-05-19 07:23  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Added task reminders.
+
+2005-05-19 07:07  (ajdonnison)
+---------------------------------
+modules/tasks/do_task_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- Added new reminder event for upcoming and overdue tasks.
+
+2005-05-19 07:06  (ajdonnison)
+---------------------------------
+classes/event_queue.class.php
+- Fixed problems with repeated events.  Added a dump function for debugging.
+
+2005-05-19 07:05  (ajdonnison)
+---------------------------------
+queuescanner.php
+- Added loadPrefs so that email language handling works correctly.
+
+2005-05-19 06:40  (ajdonnison)
+---------------------------------
+modules/projects/viewgantt.php
+- Fix for date problems as per forum post by scumble.
+
+2005-05-19 06:39  (ajdonnison)
+---------------------------------
+modules/calendar/day_view.php
+- Fix for bug 881 with suggestion from scumble on forums.
+
+2005-05-19 05:47  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Added catch to ensure bare CRs are handled correctly.
+
+2005-05-17 07:26  (revelation7)
+---------------------------------
+modules/admin/vw_usr_log.php
+- Fixed issue 0000944:  User Log Start Date Reset
+- Fixed this bug by using log_start_date and log_end_date fields to initialize start_date and end_date upon submission.
+
+2005-05-16 10:50  (ajdonnison)
+---------------------------------
+db/upgrade_latest.sql
+db/dotproject.sql
+- Change admin_username to admin_user as the former is a kludge but the
+- latter is used but not configured.
+
+2005-05-16 10:45  (ajdonnison)
+---------------------------------
+locales/en/system.inc
+- Changed admin user details to match requirements of email system rather
+- than the username length.
+
+2005-05-16 10:43  (ajdonnison)
+---------------------------------
+modules/admin/addedituser.php
+- Removed requirement for admin username to be set in system configuration.
+
+2005-05-12 10:40  (revelation7)
+---------------------------------
+modules/projects/projects.class.php
+modules/system/do_systemconfig_aed.php
+modules/system/systemconfig.php
+modules/tasks/tasks.class.php
+- Fixed issue 0000825: Task log not delete when deleting a project
+- Modified projects.class.php from issuing delete SQLs to simply calling CTask objects and invoke the delete() on Tasks. Modified tasks.class.php to delete dependencies
+- 
+- Fixed issue 0000915:  System Config not handling apostrophe
+- do_sysstemconfig_aed.php    added addslashes()
+- systemconfig.php    added stripslashes() and changed output
+
+2005-05-12 09:13  (revelation7)
+---------------------------------
+modules/projects/view.php
+modules/system/roles/viewrole.php
+- Fixed issue 0000904/0000922:   From Project view, contacts department are showing "dept_id" instead of "dept_name".  Fixed in Projects\view.php.
+- 
+- Fixed issue 0000937: Typo error in system\roles\viewrole.php
+
+2005-05-09 13:51  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- missing semi column (naughty, naughty)
+
+2005-05-09 13:34  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+modules/files/do_file_aed.php
+- fixed early redirection problem.
+
+2005-05-09 13:31  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+- Mantis #848 - fixed permissions on file adding.
+
+2005-05-09 13:30  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+- Mantis #848 - fixed permissions on file adding
+
+2005-05-09 13:20  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+- fixed permissions issue (deleting without delete permission) - part of Mantis #8
+- 48
+
+2005-05-09 13:20  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+- fixed permissions issue (deleting without delete permission) - part of Mantis #848
+
+2005-05-09 13:10  (cyberhorse)
+---------------------------------
+modules/tasks/organize.php
+modules/tasks/organize.php
+- Mantis #809 - fixed colour for finished tasks
+- display "n/a" for days left for finished tasks
+- added finished colour in the key at the end
+
+2005-05-09 12:51  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+modules/projects/view.php
+- as suggested in mantis #809
+
+2005-05-09 12:42  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- Mantis #813 - Adding New Event to Project Fails
+- applied proposed solution.
+
+2005-05-09 12:41  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- Mantis #813 - Adding new events to projects fails.
+- Applied proposed solution.
+
+2005-05-09 12:27  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+- Mantis #917 - recurring events times fix.
+- Also defaulting times to 1.
+
+2005-05-09 12:25  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+- Mantis #917 - recurring events check for recurrance times.
+- Also setting default recurrance to 1.
+
+2005-05-09 08:23  (ajdonnison)
+---------------------------------
+js/base.js
+- Added var declaration to remove js warnings.
+
+2005-05-02 12:16  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_log.php
+- Back ported fix from pedroa.
+
+2005-05-02 12:13  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_log.php
+- As per forum post by pedroa, fixed the user_id reference to sort out
+- filtering.
+
+2005-04-27 22:10  (jcgonz)
+---------------------------------
+modules/tasks/ae_dates.php
+- Solved some issues with utf8 encoding showing week days.
+
+2005-04-27 21:43  (jcgonz)
+---------------------------------
+modules/tasks/do_task_aed.php
+- Checked to se wether task_dynamic checkbox exists within POST array. If not; then that flag is disabled.
+
+2005-04-27 13:21  (ajdonnison)
+---------------------------------
+modules/admin/addedituser.php
+- Bug 893: Removed requirement for birthday field to exist.
+
+2005-04-26 08:55  (ajdonnison)
+---------------------------------
+modules/companies/do_company_aed.php
+- Changed redirect after delete to go to the companies listing rather
+- than the previous page.
+
+2005-04-26 08:42  (ajdonnison)
+---------------------------------
+modules/forums/post_message.php
+- Fix bug 839: Post reply was using the wrong message.
+
+2005-04-26 08:03  (ajdonnison)
+---------------------------------
+modules/companies/vw_depts.php
+- Fix for bug 875, user count incorrect in department list.
+
+2005-04-26 08:02  (ajdonnison)
+---------------------------------
+modules/departments/vw_contacts.php
+- Contacts no longer uses a string department name, but an integer, so
+- this query had to be converted.
+
+2005-04-26 07:53  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed bug 873 where assigned users listed were incorrect.
+
+2005-04-26 07:45  (ajdonnison)
+---------------------------------
+modules/tasks/todo.php
+- With user_id not global, it was causing admin "show todo for" list to keep
+- resetting.
+
+2005-04-22 04:05  (mosen)
+---------------------------------
+modules/contacts/addedit.php
+- Fixed another apostrophe bug in department selector
+
+2005-04-22 03:29  (mosen)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed task sorting bug where sort only works in the tasks view module not the index, same fixed for projects
+
+2005-04-22 03:06  (mosen)
+---------------------------------
+modules/contacts/select_contact_company.php
+- Fixed SQL escaping problem with company names containing apostrophes.
+
+2005-04-22 03:05  (mosen)
+---------------------------------
+modules/public/contact_selector.php
+- Fixed escaping sql problem with apostrophes in companies (Mantis #0000877)
+
+2005-04-19 11:32  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+- Mantis 787 - removed contact editing information from user editing - replaced it with a link to contact editing page.
+
+2005-04-19 11:02  (ajdonnison)
+---------------------------------
+modules/files/files.class.php
+- bug 808: _filepath is not always set (although I can't figure out why!)
+
+2005-04-19 10:35  (ajdonnison)
+---------------------------------
+modules/contacts/contacts.class.php
+- Fixed problems with alpha companies.
+
+2005-04-18 11:02  (ajdonnison)
+---------------------------------
+modules/tasks/todo.php
+- Fixed bug 836 - day view not working in classic style
+
+2005-04-18 10:50  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed typo in deep_move causing bug 833
+
+2005-04-18 09:34  (ajdonnison)
+---------------------------------
+queuescanner.php
+classes/event_queue.class.php
+- Fixed problems with missing baseUrl and with repeating events.
+
+2005-04-15 15:34  (cyberhorse)
+---------------------------------
+modules/smartsearch/index.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- reverse highlighting back in - sorry for reversing something twice - mistake
+
+2005-04-15 14:16  (mosen)
+---------------------------------
+modules/system/contacts_ldap.php
+- Fixed location attribute for LDAP contacts import.
+
+2005-04-15 14:09  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+- Fixed: Custom Field Textareas showing 'rn' after every return. Double escaping problem.
+
+2005-04-15 13:47  (mosen)
+---------------------------------
+modules/system/custom_field_addedit.php
+- Fixed some missing elements from Custom Field Types: Separator and Label
+- Fixed: Select List Javascript now works correctly - can create select lists.
+
+2005-04-15 13:32  (mosen)
+---------------------------------
+classes/authenticator.class.php
+- Fixed/Added LDAP Attributes (Mantis Bug#783)
+
+2005-04-15 13:29  (cyberhorse)
+---------------------------------
+modules/smartsearch/index.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- highlight searched for terms
+
+2005-04-15 13:27  (cyberhorse)
+---------------------------------
+modules/projects/reports.php
+- Fixed broken upcoming report
+
+2005-04-15 13:20  (mosen)
+---------------------------------
+modules/system/custom_field_addedit.php
+- Fixed Javascript Syntax Error (Mantis Bug#814)
+
+2005-04-13 23:38  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Removed reference to BSD license
+
+2005-04-13 15:27  (cyberhorse)
+---------------------------------
+modules/smartsearch/index.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- highlight word searched for in displayed results
 
 2005-04-13 10:31  (ajdonnison)
 ---------------------------------
