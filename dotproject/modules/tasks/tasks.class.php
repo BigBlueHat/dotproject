@@ -276,7 +276,7 @@ class CTask extends CDpObject {
 			if ( $modified_task->task_duration_type == 1 ) {
 				$modified_task->task_duration = round($children_allocated_hours,2);
 			} else {
-				$modified_task->task_duration = round($children_allocated_hours / $modified_task->task_duration_type, 2);
+				$modified_task->task_duration = round($children_allocated_hours / $dPconfig['daily_working_hours'], 2);
 			}
 
 			//Update worked hours based on children
