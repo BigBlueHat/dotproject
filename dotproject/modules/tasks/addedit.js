@@ -393,7 +393,7 @@ function calcFinish(f) {
 	}
 		
 	if ( durnType==24 ) {
-		fullWorkingDays = Math.ceil(inc);
+		fullWorkingDays = Math.ceil(inc)+1;
 		e.setMinutes( 0 );
 
 		// Include start day as a working day (if it is one)
