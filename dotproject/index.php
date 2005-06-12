@@ -67,7 +67,8 @@ require_once "$baseDir/includes/session.php";
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
-
+if (dPgetConfig('debug') > 0)
+	$time = array_sum(explode(" ",microtime()));
 // manage the session variable(s)
 dPsessionStart(array('AppUI'));
 
@@ -334,6 +335,8 @@ else
 if(!$suppressHeaders) {
 	echo '<iframe name="thread" src="' . $baseUrl . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
 	require "$baseDir/style/$uistyle/footer.php";
+	if (dPgetConfig('debug') > 0)
+		printf('<p style="font-size: 10pt; text-align: center; color: gray">Page generated in %.3f seconds<p>', (array_sum(explode(" ",microtime())) - $time));
 }
 ob_end_flush();
 ?>
