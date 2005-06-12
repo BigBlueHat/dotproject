@@ -42,10 +42,15 @@ class CPreferences {
 	}
 
 	function delete() {
-		$sql = "DELETE FROM user_preferences WHERE pref_user = $this->pref_user AND pref_name = '$this->pref_name'";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDelete('user_preferences');
+		$q->addWhere("pref_user = $this->pref_user");
+		$q->addWhere("pref_name = '$this->pref_name'");
+		if (!$q->exec()) {
+			$q->clear();
 			return db_error();
 		} else {
+			$q->clear();
 			return NULL;
 		}
 	}
@@ -76,15 +81,26 @@ class CModule extends CDpObject {
 	}
 
 	function install() {
-		$sql = "SELECT mod_directory FROM modules WHERE mod_directory = '$this->mod_directory'";
-		if (db_loadHash( $sql, $temp )) {
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addQuery('mod_directory');
+		$q->addWhere("mod_directory = '$this->mod_directory'");
+		
+		
+		if ($q->loadHashList()) {
 			// the module is already installed
 			// TODO: check for older version - upgrade
+			$q->clear();
 			return false;
 		}
-                $sql = 'SELECT max(mod_ui_order)
-                        FROM modules';
-                $this->mod_ui_order = db_loadResult($sql) + 1;
+		$q->clear();
+		
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addQuery('max(mod_ui_order)');
+		$mmuo = $q->loadList();
+		$this->mod_ui_order = $mmuo[0]['max(mod_ui_order)'] + 1;
+		$q->clear();
 
 		$perms =& $GLOBALS['AppUI']->acl();
 		$perms->addModule($this->mod_directory, $this->mod_name);
@@ -103,10 +119,14 @@ class CModule extends CDpObject {
 	}
 
 	function remove() {
-		$sql = "DELETE FROM modules WHERE mod_id = $this->mod_id";
-		if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->setDelete('modules');
+		$q->addWhere("mod_id = $this->mod_id");
+		if (!$q->exec()) {
+			$q->clear();
 			return db_error();
 		} else {
+			$q->clear();
 			$perms =& $GLOBALS['AppUI']->acl();
 			if (! isset($this->mod_admin))
 				$this->mod_admin = 0;
@@ -126,15 +146,31 @@ class CModule extends CDpObject {
 		$temp = $this->mod_ui_order;
 		if ($dirn == 'moveup') {
 			$temp--;
-			$sql = "UPDATE modules SET mod_ui_order = (mod_ui_order+1) WHERE mod_ui_order = $temp";
-			db_exec( $sql );
+		
+			$q  = new DBQuery;
+			$q->addTable('modules');
+			$q->addUpdate('mod_ui_order', '(mod_ui_order+1)');
+			$q->addWhere("mod_ui_order = $temp");
+			$q->exec();
+			$q->clear();
+
 		} else if ($dirn == 'movedn') {
 			$temp++;
-			$sql = "UPDATE modules SET mod_ui_order = (mod_ui_order-1) WHERE mod_ui_order = $temp";
-			db_exec( $sql );
+			
+			$q  = new DBQuery;
+			$q->addTable('modules');
+			$q->addUpdate('mod_ui_order', '(mod_ui_order-1)');
+			$q->addWhere("mod_ui_order = $temp");
+			$q->exec();
+			$q->clear();
 		}
-		$sql = "UPDATE modules SET mod_ui_order = $temp WHERE mod_id = $this->mod_id";
-		db_exec( $sql );
+				
+		$q  = new DBQuery;
+		$q->addTable('modules');
+		$q->addUpdate('mod_ui_order', "$temp");
+		$q->addWhere("mod_ui_order = $this->mod_id");
+		$q->exec();
+		$q->clear();
 
 		$this->mod_id = $temp;
 	}
@@ -193,10 +229,15 @@ class bcode {
         }
 
         function delete() {
-                $sql = "update billingcode set billingcode_status=1 where billingcode_id='".$this->_billingcode_id."'";
-                if (!db_exec( $sql )) {
+		$q  = new DBQuery;
+		$q->addTable('billingcode');
+		$q->addUpdate('billingcode_status', "1");
+		$q->addWhere("billingcode_id='".$this->_billingcode_id."'");
+                if (!$q->exec()) {
+			$q->clear();
                         return db_error();
                 } else {
+			$q->clear();
                         return NULL;
                 }
         }

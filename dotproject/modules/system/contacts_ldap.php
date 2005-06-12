@@ -8,8 +8,6 @@ if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
 
-$sql_table = "contacts";
-
 //Modify this mapping to match your LDAP->contact structure
 //For instance, of you want the contact_phone2 field to be populated out of, say telephonenumber2 then you would just modify
 //	"physicaldeliveryofficename" => "contact_phone2",
@@ -188,7 +186,13 @@ print "expression: ".$filter."<br>";
 				print "<th>".$sql."</th>";
 			}
 		} else {
-			$contacts = db_loadList( "SELECT contact_id, contact_first_name, contact_last_name FROM $sql_table" );
+			$q  = new DBQuery;
+			$q->addTable('contacts');
+			$q->addQuery('contact_id, contact_first_name, contact_last_name');
+			$q->addWhere('u.user_contact = con.contact_id');
+			$contacts = $q->loadList();
+			$q->clear();
+			
 			foreach($contacts as $contact){
 				$contact_list[$contact['contact_first_name']." ".$contact['contact_last_name']] = $contact['contact_id'];
 			}
@@ -230,11 +234,11 @@ print "expression: ".$filter."<br>";
 				if(isset($contact_list[$pairs["contact_first_name"]." ".$pairs["contact_last_name"]])){
 					//if it does, remove the old one.
 					$pairs["contact_id"] = $contact_list[$pairs["contact_first_name"]." ".$pairs["contact_last_name"]];
-					db_updateArray( $sql_table, $pairs, "contact_id");
+					db_updateArray( 'contacts', $pairs, "contact_id");
 					echo "<td><span style=\"color:#880000;\">There is a duplicate record for ".$pairs["contact_first_name"]." ".$pairs["contact_last_name"].", the record has been updated.</span></td>\n";
 				} else {
 					echo "<td>Adding ".$pairs["contact_first_name"]." ".$pairs["contact_last_name"].".</td>\n";
-					db_insertArray($sql_table,$pairs);
+					db_insertArray('contacts',$pairs);
 				}
 			}
 			print "</tr>\n";
