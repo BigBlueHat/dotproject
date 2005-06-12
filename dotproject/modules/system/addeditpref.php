@@ -9,12 +9,11 @@ if (!$canEdit && $user_id != $AppUI->user_id) {
 }
 
 // load the preferences
-$sql = "
-SELECT pref_name, pref_value
-FROM user_preferences
-WHERE pref_user = $user_id
-";
-$prefs = db_loadHashList( $sql );
+$q  = new DBQuery;
+$q->addTable('user_preferences','up');
+$q->addQuery('pref_name, pref_value');
+$q->addWhere('up.pref_user ='.$user_id);
+$prefs = $q->loadHashList();
 
 // get the user name
 if ($user_id)

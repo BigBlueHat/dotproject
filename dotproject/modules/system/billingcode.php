@@ -9,44 +9,23 @@ if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
   $AppUI->redirect("m=public&a=access_denied" );
 }
 
-$sql = "
-SELECT
-        billingcode_id,
-        billingcode_name,
-        billingcode_value,
-        billingcode_desc
-FROM billingcode
-WHERE billingcode_status = 0
-AND company_id = '$company_id'
-ORDER BY billingcode_name ASC
-";
+$q  = new DBQuery;
+$q->addTable('billingcode','bc');
+$q->addQuery('billingcode_id, billingcode_name, billingcode_value, billingcode_desc');
+$q->addOrder('billingcode_name ASC');
+$q->addWhere('bc.billingcode_status = 0');
+$q->addWhere("company_id = '$company_id'");
+$billingcodes = $q->loadHashList('billingcode_id');
+$q->clear();
 
-$billingcodes = NULL;
-$ptrc=db_exec($sql);
-$nums=db_num_rows($ptrc);
-echo db_error();
-for ($x=0; $x < $nums; $x++) {
-        $row = db_fetch_assoc ( $ptrc ) ;
-        $billingcodes[] = $row;
-}
+$q  = new DBQuery;
+$q->addTable('companies','c');
+$q->addQuery('company_id, company_name');
+$q->addOrder('company_name ASC');
+$company_list = array_merge(array("0"=> $AppUI->_("Select Company") ), $q->loadHashList());
+$q->clear();
 
-$sql="
-SELECT
-        company_id,
-        company_name
-FROM companies 
-ORDER BY company_name ASC
-";
-$company_name="";
-$company_list=array("0"=> $AppUI->_("Select Company") );
-$ptrc = db_exec($sql);
-$nums=db_num_rows($ptrc);
-echo db_error();
-for ($x=0; $x < $nums; $x++) {
-        $row = db_fetch_assoc( $ptrc );
-        $company_list[$row["company_id"]] = $row["company_name"];
-        if ($company_id == $row["company_id"]) $company_name=$row["company_name"];
-}
+$company_name = $company_list["$company_id"];
 
 function showcodes(&$a) {
         global $AppUI;
@@ -64,10 +43,6 @@ function showcodes(&$a) {
 $titleBlock = new CTitleBlock( 'Edit Billing Codes', 'myevo-weather.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=system", "system admin" );
 $titleBlock->show();
-
-
-
-
 ?>
 <script language="javascript">
 function submitIt(){
@@ -89,10 +64,8 @@ function delIt2(id) {
 </script>
 
 <form name="changeMe" action="./index.php?m=system&a=billingcode" method="post">
-        <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $obj->task_status, false );?>
+        <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $company_id, false );?>
 </form>
-
-<?php echo "<b>$company_name</b>"; ?>
 
 <table width="100%" border="0" cellpadding="1" cellspacing="1" class="std">
 <form name="frmDel" action="./index.php?m=system" method="post">
@@ -116,7 +89,7 @@ function delIt2(id) {
 
 <?php
         for ($s=0; $s < count($billingcodes); $s++) {
-                showcodes( $billingcodes[$s],1);
+                showcodes( $billingcodes[$s+1]);
         }
 ?>
 
@@ -132,4 +105,3 @@ function delIt2(id) {
         <td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt()" /></td>
 </tr>
 </table>
-
