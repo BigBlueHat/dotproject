@@ -19,9 +19,13 @@ $roles = $crole->getRoles();
 
 $role_id = dPgetParam( $_GET, 'role_id', 0 );
 
-$modules = 
-$sql = "SELECT mod_id, mod_name FROM modules WHERE mod_active > 0 ORDER BY mod_directory";
-$modules = arrayMerge( array( '0'=>'All' ), db_loadHashList( $sql ) );
+$q = new DBQuery;
+$q->addTable('modules');
+$q->addQuery('mod_id, mod_name');
+$q->addOrder('mod_directory');
+$q->addWhere('mod_active > 0');
+$modules = arrayMerge( array( '0'=>'All' ), $q->loadHashList() );
+$q->clear();
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Roles', 'main-settings.png', $m, "$m.$a" );
@@ -117,5 +121,4 @@ if ($role_id == 0) {
 </table>
 <?php
  // Do all the tab stuff.
- 
 ?>
