@@ -65,17 +65,18 @@ function setCalendar( idate, fdate ) {
         <SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 200px">
   
 	   	 	<?php
-   		   	  $usersql = "
-   		   	  SELECT user_id, user_username, contact_first_name, contact_last_name
-   		   	  FROM users
-                        LEFT JOIN contacts ON contact_id = user_contact
-			  ORDER by contact_last_name,contact_first_name
-   		   	  ";
- 			 
+   		   	  
+ 			 $q  = new DBQuery;
+			$q->addTable('users', 'u');
+			$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+			$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
+			$log_userfilter_users = $q->loadList();
+			$q->clear();
+			
    		   	  if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
    		   	  else echo '<OPTION VALUE="0">All users';
 			 
-   		   	  if (($log_userfilter_users = db_loadList( $usersql, NULL )))
+   		   	  if ($log_userfilter_users)
    		   	  {
    		   	      foreach ($log_userfilter_users as $row)
    		   	      {

@@ -140,22 +140,29 @@ function setCalendar( idate, fdate ) {
 <?php
 if ($do_report) {
 	
-	$project_id==0 ? $sql = "SELECT a.*, b.project_name FROM tasks a, projects b where a.task_project = b.project_id" : $sql = "SELECT * FROM tasks WHERE task_project = $project_id";
+	if ($project_id == 0){ 
+		$q = new DBQuery;
+		$q->addTable('tasks', 'a');
+		$q->addTable('projects', 'b');
+		$q->addQuery('a.*, b.project_name');
+		$q->addWhere('a.task_project = b.project_id');
+	} else {
+		$q = new DBQuery;
+		$q->addTable('tasks', 'a');
+		$q->addWhere('task_project ='.$project_id);
+	}
 	if (!$log_all) {
-		$sql .= "\n	AND task_start_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'"
-		."\n	AND task_start_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'";
+		$q->addWhere("task_start_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'");
+		$q->addWhere("task_start_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'");
 	}
 
 	$obj =& new CTask;
 	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
 	if (count($allowedTasks)) {
-		$sql .= " AND " . implode(" AND ", $allowedTasks);
+		$obj->getAllowedSQL($AppUI->user_id, $q);
 	}
-	$sql .= " ORDER BY task_start_date";
-	$Task_List = db_exec( $sql );
-		
-	//echo "<pre>".$sql."</pre>";
-	//echo db_error();
+	$q->addOrder('task_start_date');
+	$Task_List = $q->exec();
 
 	echo "<table cellspacing=\"1\" cellpadding=\"4\" border=\"0\" class=\"tbl\">";
 	if ($project_id==0) { echo "<tr><th>Project Name</th><th>Task Name</th>";} else {echo "<tr><th>Task Name</th>";}
@@ -179,19 +186,29 @@ if ($do_report) {
 		$start_date = intval($Tasks['task_start_date']) ? new CDate( $Tasks['task_start_date'] ) : ' ';
 		$end_date = intval($Tasks['task_end_date']) ? new CDate( $Tasks['task_end_date'] ) : ' ';
 		$task_id = $Tasks['task_id'];
-
-		$sql_user = db_exec ("SELECT * FROM user_tasks WHERE task_id = ".$task_id);
+		
+		$q = new DBQuery;
+		$q->addTable('user_tasks');
+		$q->addWhere('task_id = '.$task_id);
+		$sql_user = $q->exec();
+		$q->clear();
+		
 		$users = null;
 		while ($Task_User = db_fetch_assoc($sql_user)){
 			//$current_user = $Task_User['user_id'];
 			if ($users!=null){
 				$users.=", ";
 			}
-			$sql = "SELECT contact_first_name, contact_last_name 
-                        FROM users, contacts
-                        WHERE users.user_contact = contacts.contact_id
-                              AND user_id = ".$Task_User['user_id'];
-			$sql_user_array = db_exec ($sql);
+
+			$q = new DBQuery;
+			$q->addTable('users', 'u');
+			$q->addTable('contacts', 'c');
+			$q->addQuery('contact_first_name, contact_last_name');
+			$q->addWhere('u.user_contact = c.contact_id');
+			$q->addWhere('user_id = '.$Task_User['user_id']);
+
+			$sql_user_array = $q->exec();
+			$q->clear();
 			$user_list = db_fetch_assoc($sql_user_array);
 			$users .= $user_list['contact_first_name']." ".$user_list['contact_last_name'];
 		}
@@ -231,9 +248,12 @@ if ($do_report) {
 	echo "</table>";
 if ($log_pdf) {
 	// make the PDF file
-		$sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
-		$pname = db_loadResult( $sql );
-		echo db_error();
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addQuery('project_name');
+		$q->addWhere('project_id='.$project_id);
+		$pn = $q->loadHashList();
+		$pname = $pn[0]['project_name'];
 
 		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
 		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";

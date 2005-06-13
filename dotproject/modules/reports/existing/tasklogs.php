@@ -78,16 +78,18 @@ function setCalendar( idate, fdate ) {
 		<SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 80px">
 
 	<?php
-		$usersql = "
-		SELECT user_id, user_username, contact_first_name, contact_last_name
-		FROM users
-                LEFT JOIN contacts ON user_contact = contact_id
-		";
-
+		
+		$q  = new DBQuery;
+		$q->addTable('users', 'u');
+		$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+		$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
+		$rows = $q->loadList();
+		$q->clear();
+		
 		if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
 		else echo '<OPTION VALUE="0">All users';
 
-		if (($rows = db_loadList( $usersql, NULL )))
+		if ($rows)
 		{
 			foreach ($rows as $row)
 			{
@@ -132,40 +134,39 @@ function setCalendar( idate, fdate ) {
 
 <?php
 if ($do_report) {
-
-	$sql = "SELECT t.*, CONCAT_WS(' ',contact_first_name,contact_last_name) AS creator"
-		."\nFROM task_log AS t, tasks"
-		."\nLEFT JOIN users AS u ON user_id = task_log_creator"
-                ."\nLEFT JOIN contacts ON user_contact = contact_id"
-		."\nLEFT JOIN projects ON project_id = task_project"
-		."\nWHERE task_log_task = task_id";
+	$q  = new DBQuery;
+	$q->addTable('task_log', 'tl');
+	$q->addTable('tasks', 't');
+	$q->addJoin('users', 'u', 'user_id = task_log_creator');
+	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+	$q->addJoin('projects', 'p', 'project_id = task_project');
+	$q->addQuery("t.*, CONCAT_WS(' ',contact_first_name,contact_last_name) AS creator");
+	$q->addWhere('task_log_task = task_id');
+	
 	if (!$log_allprojects)
 	{
-		 $sql .= "\nAND task_project = $project_id";
+		$q->addWhere("task_project = $project_id");
 	}
 	if (!$log_all) {
-		$sql .= "\n	AND task_log_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'"
-		."\n	AND task_log_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'";
+		$q->addWhere("task_log_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'");
+		$q->addWhere("task_log_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'");
 	}
 	if ($log_ignore) {
-		$sql .= "\n	AND task_log_hours > 0";
+		$q->addWhere('task_log_hours > 0');
 	}
 	if ($log_userfilter) {
-		$sql .= "\n	AND task_log_creator = $log_userfilter";
+		$q->addWhere("task_log_creator = $log_userfilter");
 	}
 
 	$proj =& new CProject;
 	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
 	if (count($allowedProjects)) {
-		$sql .= "\n     AND " . implode(" AND ", $allowedProjects);
+		$proj->setAllowedSQL($AppUI->user_id, $q);
 	}
 
-	$sql .= " ORDER BY task_log_date";
-
-	//echo "<pre>$sql</pre>";
-
-	$logs = db_loadList( $sql );
-	echo db_error();
+	$q->addOrder('task_log_date');
+	$logs = $q->loadList();
+	$q->clear();
 ?>
 	<table cellspacing="1" cellpadding="4" border="0" class="tbl">
 	<tr>
@@ -238,8 +239,12 @@ if ($do_report) {
 	if ($log_pdf) {
 	// make the PDF file
 		 if (!$log_allprojects){
-			$sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
-			$pname = db_loadResult( $sql );
+			$q  = new DBQuery;
+			$q->addTable('projects');
+			$q->addQuery('project_name');
+			$q->addWhere("project_id=$project_id");
+			$pn = $q->loadHashList();
+			$pname = $pn[0]['project_name'];
 		}
 		else
 			$pname = "All Projects";
