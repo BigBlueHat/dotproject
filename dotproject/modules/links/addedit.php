@@ -15,20 +15,18 @@ $link_task = intval( dPgetParam( $_GET, 'link_task', 0 ) );
 $link_parent = intval( dPgetParam( $_GET, 'link_parent', 0 ) );
 $link_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
-$sql = "
-SELECT links.*,
-	user_username,
-	contact_first_name,
-	contact_last_name,
-	project_id,
-	task_id, task_name
-FROM links
-LEFT JOIN users ON link_owner = user_id
-LEFT JOIN contacts ON user_contact = contact_id
-LEFT JOIN projects ON project_id = link_project
-LEFT JOIN tasks ON task_id = link_task
-WHERE link_id = $link_id
-";
+$q = new DBQuery();
+$q->addQuery('links.*');
+$q->addQuery('user_username');
+$q->addQuery('contact_first_name,	contact_last_name');
+$q->addQuery('project_id');
+$q->addQuery('task_id, task_name');
+$q->addTable('links');
+$q->leftJoin('users', 'u', 'link_owner = user_id');
+$q->leftJoin('contacts', 'c', 'user_contact = contact_id');
+$q->leftJoin('projects', 'p', 'project_id = link_project');
+$q->leftJoin('tasks', 't', 'task_id = link_task');
+$q->addWhere('link_id = ' . $link_id);
 
 // check if this record has dependancies to prevent deletion
 $msg = '';
@@ -37,7 +35,7 @@ $canDelete = $obj->canDelete( $msg, $link_id );
 
 // load the record data
 $obj = null;
-if (!db_loadObject( $sql, $obj ) && $link_id > 0) {
+if (!db_loadObject( $q->prepare(), $obj ) && $link_id > 0) {
 	$AppUI->setMsg( 'Link' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
@@ -60,8 +58,11 @@ if ($obj->link_task) {
 	$link_task = $obj->link_task;
 	$task_name = @$obj->task_name;
 } else if ($link_task) {
-	$sql = "SELECT task_name FROM tasks WHERE task_id=$link_task";
-	$task_name = db_loadResult( $sql );
+	$q->clear();
+	$q->addQuery('task_name');
+	$q->addTable('tasks');
+	$q->addWhere('task_id = ' . $link_task);
+	$task_name = $q->loadResult();
 } else {
 	$task_name = '';
 }
