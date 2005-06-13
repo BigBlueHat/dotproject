@@ -140,7 +140,7 @@ function setCalendar( idate, fdate ) {
 <?php
 if ($do_report) {
 	
-	$project_id==0 ? $sql = "SELECT * FROM tasks where 1" : $sql = "SELECT * FROM tasks WHERE task_project = $project_id";
+	$project_id==0 ? $sql = "SELECT a.*, b.project_name FROM tasks a, projects b where a.task_project = b.project_id" : $sql = "SELECT * FROM tasks WHERE task_project = $project_id";
 	if (!$log_all) {
 		$sql .= "\n	AND task_start_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'"
 		."\n	AND task_start_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'";
@@ -158,7 +158,7 @@ if ($do_report) {
 	//echo db_error();
 
 	echo "<table cellspacing=\"1\" cellpadding=\"4\" border=\"0\" class=\"tbl\">";
-	echo "<tr><th>Task Name</th>";
+	if ($project_id==0) { echo "<tr><th>Project Name</th><th>Task Name</th>";} else {echo "<tr><th>Task Name</th>";}
 	echo "<th width=400>Task Description</th>";
 	echo "<th>Assigned To</th>";
 	echo "<th>Task Start Date</th>";
@@ -166,14 +166,15 @@ if ($do_report) {
 	echo "<th>Completion</th></tr>";
 	
 	$pdfdata = array();
-	$columns = array(
-		"<b>".$AppUI->_('Task Name')."</b>",
-		"<b>".$AppUI->_('Task Description')."</b>",
-		"<b>".$AppUI->_('Assigned To')."</b>",
-		"<b>".$AppUI->_('Task Start Date')."</b>",
-		"<b>".$AppUI->_('Task End Date')."</b>",
-		"<b>".$AppUI->_('Completion')."</b>"
+	$columns = array(	
+	"<b>".$AppUI->_('Task Name')."</b>",
+	"<b>".$AppUI->_('Task Description')."</b>",
+	"<b>".$AppUI->_('Assigned To')."</b>",
+	"<b>".$AppUI->_('Task Start Date')."</b>",
+	"<b>".$AppUI->_('Task End Date')."</b>",
+	"<b>".$AppUI->_('Completion')."</b>"
 	);
+	if ($project_id==0) { array_unshift($columns, "<b>".$AppUI->_('Project Name')."</b>");}		
 	while ($Tasks = db_fetch_assoc($Task_List)){
 		$start_date = intval($Tasks['task_start_date']) ? new CDate( $Tasks['task_start_date'] ) : ' ';
 		$end_date = intval($Tasks['task_end_date']) ? new CDate( $Tasks['task_end_date'] ) : ' ';
@@ -195,6 +196,7 @@ if ($do_report) {
 			$users .= $user_list['contact_first_name']." ".$user_list['contact_last_name'];
 		}
 		$str =  "<tr>";
+		if ($project_id==0) {$str .= "<td>".$Tasks['project_name']."</td>";}
 		$str .= "<td><a href='?m=tasks&a=view&task_id=".$Tasks['task_id']. "'>".$Tasks['task_name']."</a></td>";
 		$str .= "<td>".$Tasks['task_description']."</td>";
 		$str .= "<td>".$users."</td>";
@@ -205,15 +207,26 @@ if ($do_report) {
 		$str .= "<td align=\"center\">".$Tasks['task_percent_complete']."%</td>";
 		$str .= "</tr>";
 		echo $str;
+		if ($project_id==0) {	
 		$pdfdata[] = array(
+			$Tasks['project_name'],
+			$Tasks['task_name'],
+			$Tasks['task_description'],
+			$users,
+			(($start_date != ' ') ? $start_date->format( $df ) : ' '),
+			(($end_date != ' ') ? $end_date->format( $df ) : ' '),
+			$Tasks['task_percent_complete']."%",);
+			}
+		else {
+			$pdfdata[] = array(
 			$Tasks['task_name'],
 			$Tasks['task_description'],
 			$users,
 			(($start_date != ' ') ? $start_date->format( $df ) : ' '),
 			(($end_date != ' ') ? $end_date->format( $df ) : ' '),
 			$Tasks['task_percent_complete']."%",
-		);
-
+			);
+		}		
 	}
 	echo "</table>";
 if ($log_pdf) {
@@ -239,11 +252,11 @@ if ($log_pdf) {
 
 		$pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
 		$pdf->ezText( "\n" . $AppUI->_('Project Task Report'), 12 );
-		$pdf->ezText( "$pname", 15 );
+		if ($project_id <> 0) {$pdf->ezText( "$pname", 15 );}
 		if ($log_all) {
 			$pdf->ezText( "All task entries", 9 );
-		} else {
-			$pdf->ezText( "Task entries from ".$start_date->format( $df ).' to '.$end_date->format( $df ), 9 );
+		} else {		
+			if($end_date != ' ') {$pdf->ezText( "Task entries from ".$start_date->format( $df ).' to '.$end_date->format( $df ), 9 );} else {$pdf->ezText( "Task entries from ".$start_date->format( $df ),9);}
 		}
 		$pdf->ezText( "\n" );
 		$pdf->selectFont( "$font_dir/Helvetica.afm" );
