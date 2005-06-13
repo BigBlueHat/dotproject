@@ -136,17 +136,15 @@ $q = new DBQuery();
 $q->addQuery('links.*');
 $q->addQuery('project_name, project_color_identifier, project_active');
 $q->addQuery('contact_first_name, contact_last_name');
-$q->addQuery('task_name,task_id');
+$q->addQuery('task_name, task_id');
 
 $q->addTable('links');
-$q->addTable('permissions');
 
-$q->leftJoin('projects', 'p', 'project_id = link_project');
+//$q->leftJoin('projects', 'p', 'p.project_id = link_project');
 $q->leftJoin('users', 'u', 'user_id = link_owner');
 $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
-$q->leftJoin('tasks', 't', 'link_task = task_id');
+//$q->leftJoin('tasks', 't', 'link_task = t.task_id');
 
-$q->addWhere('permission_user = ' . $AppUI->user_id);
 if (!empty($search))
 	$q->addWhere("(link_name like '%$search%' OR link_description like '%$search%')");
 if (isset($project_id))		// Project
