@@ -88,29 +88,29 @@ function setCalendar( idate, fdate ) {
 </form>
 
 <?php
-if($do_report){
-    $projects_filter = $log_all_projects == "on" ? "" : " and task_project = $project_id ";
-    $user_filter     = "";
-    
-    $sql = "select t.*, p.project_name, u.user_username
-            from tasks as t,
-                 users as u,
-                 projects as p";
+if($do_report){   
+    $q = new DBQuery;
+    $q->addTable('tasks', 't');
+    $q->addTable('users', 'u');
+    $q->addTable('projects', 'p');
+    $q->addQuery('t.*, p.project_name, u.user_username');
     if($user_id > 0){
-        $sql         .= ", user_tasks as ut";
-        $user_filter  = " and ut.user_id = $user_id
-                         and ut.task_id = t.task_id ";
+    	$q->addTable('user_tasks', 'ut');
+    	$q->addWhere("ut.user_id = $user_id");
+	$q->addWhere('ut.task_id = t.task_id');
     }
-    $sql.=" where task_end_date   >= '".$start_date->format( FMT_DATETIME_MYSQL )."'
-                and task_end_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'
-                and p.project_id   = t.task_project
-                and t.task_dynamic = '0'
-                and t.task_owner = u.user_id
-                $projects_filter
-                $user_filter
-            order by project_name asc, task_end_date asc";
+    if ($log_all_projects != "on") {
+    	$q->addWhere('task_project = '.$project_id);
+    }
+    $q->addWhere("task_end_date   >= '".$start_date->format( FMT_DATETIME_MYSQL )."'");
+    $q->addWhere("task_end_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'");
+    $q->addWhere("t.task_dynamic = '0'");
+    $q->addWhere('p.project_id   = t.task_project');
+    $q->addWhere('t.task_owner = u.user_id');
+    $q->addOrder('project_name asc, task_end_date asc');
 
-    $tasks = db_loadHashList($sql, "task_id");
+    $tasks = $q->loadHashList('task_id');
+    $q->clear();
     $first_task = current($tasks);
     $actual_project_id = 0;
     $first_task        = true;
@@ -135,5 +135,4 @@ if($do_report){
         echo "<tr><td>&nbsp;&nbsp;&nbsp;".$task["task_name"]."</td><td>".$task["user_username"]."</td><td>".($task["task_duration"]*$task["task_duration_type"])." $hrs</td><td>".$task["task_end_date"]."</td><td>".$task_log["task_log_date"]."</td><td align='center'>$done_img</td></tr>";
     }
 }
-?>		
-
+?>

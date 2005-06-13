@@ -92,52 +92,59 @@ function setCalendar( idate, fdate ) {
 if($do_report) {
 	
 	// Let's figure out which users we have
-	$sql = "SELECT  u.user_id,
-	 				u.user_username, 
-					contact_first_name, 
-					contact_last_name
-	        FROM users AS u
-                LEFT JOIN contacts ON user_contact = contact_id";
+	$q = new DBQuery;
+	$q->addTable('users', 'u');
+	$q->addQuery('u.user_id, u.user_username, contact_first_name, contact_last_name');
+	$q->addJoin('contacts', 'c', 'u.user_contact = contact_id');
+	$user_list = $q->loadHashList('user_id');
+	$q->clear();
 	
-	$user_list = db_loadHashList($sql, "user_id");
-	
-	$sql = "SELECT t.*, ut.*, p.project_name
-			FROM tasks AS t, user_tasks AS ut, projects AS p
-			WHERE ( task_start_date
+	$q = new DBQuery;
+	$q->addTable('tasks', 't');
+	$q->addTable('user_tasks', 'ut');
+	$q->addTable('projects', 'p');
+	$q->addQuery('t.*, ut.*, p.project_name');
+	$q->addWhere("( task_start_date
 			   BETWEEN \"".$start_date->format( FMT_DATETIME_MYSQL )."\" 
 	                AND \"".$end_date->format( FMT_DATETIME_MYSQL )."\" 
 	           OR task_end_date	BETWEEN \"".$start_date->format( FMT_DATETIME_MYSQL )."\" 
 	                AND \"".$end_date->format( FMT_DATETIME_MYSQL )."\" 
 		   OR ( task_start_date < \"".$start_date->format( FMT_DATETIME_MYSQL )."\"
-	                AND task_end_date > \"".$end_date->format( FMT_DATETIME_MYSQL )."\") )
-	        AND task_end_date IS NOT NULL AND task_end_date != '0000-00-00 00:00:00'
-	        AND task_start_date IS NOT NULL AND task_start_date != '0000-00-00 00:00:00'
-	        AND task_dynamic   !='1'
-	        AND task_milestone = '0'
-	        AND task_duration  > 0
-	        AND t.task_project = p.project_id";
-    if($user_id){
-        $sql .= " AND t.task_owner = '$user_id'";
-    }
+	                AND task_end_date > \"".$end_date->format( FMT_DATETIME_MYSQL )."\") )");
+	$q->addWhere('task_end_date IS NOT NULL');
+	$q->addWhere("task_end_date != '0000-00-00 00:00:00'");
+	$q->addWhere('task_start_date IS NOT NULL');
+	$q->addWhere("task_start_date != '0000-00-00 00:00:00'");
+	$q->addWhere("task_dynamic !='1'");
+	$q->addWhere("task_milestone = '0'");
+	$q->addWhere('task_duration  > 0');
+	$q->addWhere('t.task_project = p.project_id');
+	$q->addWhere('t.task_id = ut.task_id');
+	
+	if($user_id){
+		$q->addWhere("t.task_owner = '$user_id'");
+    	}
 	if(!$log_all_projects){
-		$sql .= " AND t.task_project='$project_id'\n";
+		$q->addWhere("t.task_project='$project_id'");
 	}
-
-	$sql .= " AND t.task_id = ut.task_id";
-
+	
+	
 	$proj =& new CProject;
-	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
+	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id);
 	if (count($allowedProjects)) {
-		$sql .= " AND " . implode(" AND ", $allowedProjects);
+		$proj->setAllowedSQL($AppUI->user_id, $q);
 	}
 
 	$obj =& new CTask;
 	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
 	if (count($allowedTasks)) {
-		$sql .= " AND " . implode(" AND ", $allowedTasks);
+		$obj->setAllowedSQL($AppUI->user_id, $q);
 	}
 	
-	$task_list_hash   = db_loadHashList($sql, "task_id");
+	$task_list_hash   = $q->loadHashList('task_id');
+	
+	$q->clear();
+	
 	$task_list        = array();
 	$fetched_projects = array();
 	foreach($task_list_hash as $task_id => $task_data){
@@ -311,6 +318,4 @@ if($do_report) {
        ?>
 	<?php	
 }
-			?>		
-
-
+	?>
