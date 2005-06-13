@@ -21,7 +21,7 @@ $config['mod_config'] = false;                   // show 'configure' link in vie
 
 
 if (@$a == 'setup') {
-        echo dPshowModuleConfig( $config );
+	echo dPshowModuleConfig( $config );
 }
 
 // TODO: To be completed later as needed.
@@ -30,15 +30,22 @@ class CSetupLinks {
   function configure() { return true; }
 
   function remove() { 
-        db_exec('drop table links');
-        db_exec("DELETE FROM `sysvals` WHERE sysval_title='LinkType'");
+  	$q = new DBQuery();
+  	$q->dropTable('links');
+  	$q->exec();
+  	
+  	$q->clear();
+  	$q->setDelete('sysvals');
+  	$q->addWhere('sysval_title = \'LinkType\'');
+  	$q->exec();
  }
   
   function upgrade($old_version) { return true; }
 
   function install() {
-        $sql = "
-CREATE TABLE `links` (
+  	$q = new DBQuery();
+  	$q->createTable('links');
+  	$q->createDefinition("(
 `link_id` int( 11 ) NOT NULL AUTO_INCREMENT ,
 `link_url` varchar( 255 ) NOT NULL default '',
 `link_project` int( 11 ) NOT NULL default '0',
@@ -55,10 +62,18 @@ PRIMARY KEY ( `link_id` ) ,
 KEY `idx_link_task` ( `link_task` ) ,
 KEY `idx_link_project` ( `link_project` ) ,
 KEY `idx_link_parent` ( `link_parent` ) 
-) TYPE = MYISAM ";
+) TYPE = MYISAM ");
 
-        db_exec($sql);
-        db_exec("INSERT INTO `sysvals` VALUES (null, 1, 'LinkType', '0|Unknown\n1|Document\n2|Application')");
+	$q->exec($sql);
+
+	$q->clear();
+	$q->addTable('sysvals');
+	$q->addInsert('sysval_key_id', 1);
+	$q->addInsert('sysval_title', 'LinkType');
+	$q->addInsert('sysval_value', '0|Unknown\n1|Document\n2|Application');
+	$q->exec();
+	
+	return NULL;
  }
 
 }

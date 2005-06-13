@@ -40,8 +40,10 @@ class CLink extends CDpObject {
 		$this->_message = "deleted";
 
 	// delete the main table reference
-		$sql = "DELETE FROM links WHERE link_id = $this->link_id";
-		if (!db_exec( $sql )) {
+		$q = new DBQuery();
+		$q->setDelete('links');
+		$q->addWhere('link_id = ' . $this->link_id);
+		if (!$q->exec()) {
 			return db_error();
 		}
 		return NULL;

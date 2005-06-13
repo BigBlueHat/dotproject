@@ -105,10 +105,6 @@ GLOBAL $AppUI, $deny1, $canRead, $canEdit;
 $tab = $AppUI->getState( 'LinkIdxTab' ) !== NULL ? $AppUI->getState( 'LinkIdxTab' ) : 0;
 $page = dPgetParam( $_GET, "page", 1);
 $search = dPgetParam( $_REQUEST, 'search', '');
-if (!empty($search))
-        $search_sql = " AND (link_name like '%$search%' OR link_description like '%$search%')";
-else
-        $search_sql = '';
 
 global $project_id, $task_id, $showProject;
 if (!isset($project_id))
@@ -124,10 +120,7 @@ include_once( $AppUI->getModuleClass( 'projects' ) );
 include_once( $AppUI->getModuleClass( 'tasks' ) );
 
 $project = new CProject();
-$deny1 = $project->getDeniedRecords( $AppUI->user_id );
-
 $task = new CTask();
-$deny2 = $task->getDeniedRecords( $AppUI->user_id );
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
@@ -139,37 +132,40 @@ else
         $catsql = " AND link_category = " . --$tab ;
 
 // SETUP FOR LINK LIST
-$sql = "
-SELECT links.*,
-	project_name, project_color_identifier, project_active,
-	contact_first_name, contact_last_name,task_name,task_id
-FROM links, permissions
-LEFT JOIN projects ON project_id = link_project
-LEFT JOIN users ON user_id = link_owner
-LEFT JOIN contacts ON user_contact = contact_id 
-LEFT JOIN tasks on link_task = task_id
-WHERE
-	permission_user = $AppUI->user_id
-        $catsql $search_sql
-	AND permission_value <> 0
-	AND (
-		(permission_grant_on = 'all')
-		OR (permission_grant_on = 'projects' AND permission_item = -1)
-		OR (permission_grant_on = 'projects' AND permission_item = project_id)
-		)
-"
-. (count( $deny1 ) > 0 ? "\nAND link_project NOT IN (" . implode( ',', $deny1 ) . ')' : '') 
-. (count( $deny2 ) > 0 ? "\nAND link_task NOT IN (" . implode( ',', $deny2 ) . ')' : '') 
-. ($project_id ? "\nAND link_project = $project_id" : '')
-. (isset($task_id) ? "\nAND link_task = $task_id" : '')
-. '
-ORDER BY project_name, link_name';
+$q = new DBQuery();
+$q->addQuery('links.*');
+$q->addQuery('project_name, project_color_identifier, project_active');
+$q->addQuery('contact_first_name, contact_last_name');
+$q->addQuery('task_name,task_id');
+
+$q->addTable('links');
+$q->addTable('permissions');
+
+$q->leftJoin('projects', 'p', 'project_id = link_project');
+$q->leftJoin('users', 'u', 'user_id = link_owner');
+$q->leftJoin('contacts', 'c', 'user_contact = contact_id');
+$q->leftJoin('tasks', 't', 'link_task = task_id');
+
+$q->addWhere('permission_user = ' . $AppUI->user_id);
+if (!empty($search))
+	$q->addWhere("(link_name like '%$search%' OR link_description like '%$search%')");
+if (isset($project_id))		// Project
+	$q->addWhere('link_project = ' . $project_id);
+if (isset($task_id)) 			// Task
+	$q->addWhere('link_task = ' . $task_id);
+if ($tab > 0) 						// Category
+	$q->addWhere('link_category = ' . --$tab);
+// Permissions
+$project->setAllowedSQL($AppUI->user_id, $q, 'link_project');
+$task->setAllowedSQL($AppUI->user_id, $q, 'link_task and task_project = link_project');
+
+$q->addOrder('project_name, link_name');
 
 //LIMIT ' . $xpg_min . ', ' . $xpg_pagesize ;
 if ($canRead) 
-	$links = db_loadList( $sql );
+	$links = $q->loadList();
 else 
-        $AppUI->redirect('m=public&a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 // counts total recs from selection
 $xpg_totalrecs = count($links);
 
@@ -184,7 +180,7 @@ shownavbar_links($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 	<th nowrap="nowrap">&nbsp;</th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Link Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Description' );?></th>
-        <th nowrap="nowrap"><?php echo $AppUI->_( 'Category' );?></th>
+	<th nowrap="nowrap"><?php echo $AppUI->_( 'Category' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Task Name' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Owner' );?></th>
 	<th nowrap="nowrap"><?php echo $AppUI->_( 'Type' );?></a></th>
@@ -196,7 +192,7 @@ $link_date = new CDate();
 
 $id = 0;
 for ($i = ($page - 1)*$xpg_pagesize; $i < $page*$xpg_pagesize && $i < $xpg_totalrecs; $i++){
-        $row = $links[$i];
+	$row = $links[$i];
 	$link_date = new CDate( $row['link_date'] );
 
 	if ($fp != $row["link_project"]) {
