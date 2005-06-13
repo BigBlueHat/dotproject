@@ -2,11 +2,19 @@
 $AppUI->savePlace();
 
 // pull all the key types
-$sql = "SELECT syskey_id,syskey_name FROM syskeys ORDER BY syskey_name";
-$keys = arrayMerge( array( 0 => '- Select Type -' ), db_loadHashList( $sql ) );
+$q = new DBQuery;
+$q->addTable('syskeys');
+$q->addQuery('syskey_id, syskey_name');
+$q->addOrder('syskey_name');
+$keys = arrayMerge( array( 0 => '- Select Type -' ), $q->loadHashList() );
+$q->clear();
 
-$sql = "SELECT * FROM syskeys, sysvals WHERE sysval_key_id = syskey_id ORDER BY sysval_title";
-$values = db_loadList( $sql );
+$q = new DBQuery;
+$q->addTable('syskeys');
+$q->addTable('sysvals');
+$q->addOrder('sysval_title');
+$q->addWhere('sysval_key_id = syskey_id');
+$values = $q->loadList();
 
 $sysval_id = isset( $_GET['sysval_id'] ) ? $_GET['sysval_id'] : 0;
 
