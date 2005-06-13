@@ -4,6 +4,9 @@ $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
 	$AppUI->redirect("m=public&a=access_denied");
 
+$taskfield = dPgetParam( $_REQUEST, 'taskfield', 'new_task');
+$form = dPgetParam($_REQUEST, 'form', 'form');
+	
 $proj = $_GET['project'];
 $sql = 'SELECT task_id, task_name
         FROM tasks';
@@ -16,7 +19,7 @@ $tasks = db_loadList($sql);
 function loadTasks()
 {
   var tasks = new Array();
-  var sel = parent.document.forms['form'].new_task;
+  var sel = parent.document.forms['<?php echo $form; ?>'].<?php echo $taskfield; ?>;
   while ( sel.options.length )
     sel.options[0] = null;
     
