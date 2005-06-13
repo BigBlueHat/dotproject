@@ -19,6 +19,9 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }}} */
 
+$time = array_sum(explode(' ',microtime()));
+$dbtime = 0;
+$acltime = 0;
 ini_set('display_errors', 1); // Ensure errors get to the user.
 error_reporting(E_ALL & ~E_NOTICE);
 
@@ -67,8 +70,7 @@ require_once "$baseDir/includes/session.php";
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
-if (dPgetConfig('debug') > 0)
-	$time = array_sum(explode(" ",microtime()));
+
 // manage the session variable(s)
 dPsessionStart(array('AppUI'));
 
@@ -82,9 +84,9 @@ header ("Pragma: no-cache");	// HTTP/1.0
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
     {
-        $AppUI =& $_SESSION['AppUI'];
-	$user_id = $AppUI->user_id;
-        addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+			$AppUI =& $_SESSION['AppUI'];
+			$user_id = $AppUI->user_id;
+			addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
     }
 
 	$_SESSION['AppUI'] = new CAppUI;
@@ -145,10 +147,10 @@ if (isset($_REQUEST['login'])) {
 	if (!$ok) {
 		$AppUI->setMsg( 'Login Failed');
 	} else {
-	           //Register login in user_acces_log
-	           $AppUI->registerLogin();
+		//Register login in user_acces_log
+		$AppUI->registerLogin();
 	}
-        addHistory('login', $AppUI->user_id, 'login', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+	addHistory('login', $AppUI->user_id, 'login', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
 	$AppUI->redirect( "$redirect" );
 }
 
@@ -279,7 +281,6 @@ ob_start();
 if(!$suppressHeaders) {
 	require "$baseDir/style/$uistyle/header.php";
 }
-
 if (! isset($_SESSION['all_tabs'][$m]) ) {
 	// For some reason on some systems if you don't set this up
 	// first you get recursive pointers to the all_tabs array, creating
@@ -336,7 +337,10 @@ if(!$suppressHeaders) {
 	echo '<iframe name="thread" src="' . $baseUrl . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
 	require "$baseDir/style/$uistyle/footer.php";
 	if (dPgetConfig('debug') > 0)
-		printf('<p style="font-size: 10pt; text-align: center; color: gray">Page generated in %.3f seconds<p>', (array_sum(explode(" ",microtime())) - $time));
+	{
+		printf('<p style="font-size: 10pt; text-align: center; color: gray">Page generated in %.3f seconds<p>', (array_sum(explode(' ',microtime())) - $time));
+		printf('<p style="font-size: 10pt; text-align: center; color: gray">Time spend in: acl = %.3f seconds; db = %.3f seconds.<p>', $acltime, $dbtime);
+	}
 }
 ob_end_flush();
 ?>

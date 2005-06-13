@@ -49,24 +49,27 @@ function db_insert_id() {
 }
 
 function db_exec( $sql ) {
-        global $db, $baseDir;
+	global $db, $baseDir, $dbtime;
+	$startTime = array_sum(explode(' ',microtime()));
 
 	if (! is_object($db))
 	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 	$qid = $db->Execute( $sql );
 	dprint(__FILE__, __LINE__, 10, $sql);
 	if ($msg = db_error())
-        {
-                global $AppUI;
-                dprint(__FILE__, __LINE__, 0, "Error executing: <pre>$sql</pre>");
+	{
+		global $AppUI;
+		dprint(__FILE__, __LINE__, 0, "Error executing: <pre>$sql</pre>");
 		// Useless statement, but it is being executed only on error, 
 		// and it stops infinite loop.
 		$db->Execute( $sql );
 		if (!db_error())
 			echo '<script language="JavaScript"> location.reload(); </script>';
-        }
-        if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
-	  dprint(__FILE__, __LINE__, 0, $sql);
+	}
+	if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
+		dprint(__FILE__, __LINE__, 0, $sql);
+	  
+	$dbtime += array_sum(explode(' ', microtime())) - $startTime;
 	return $qid;
 }
 

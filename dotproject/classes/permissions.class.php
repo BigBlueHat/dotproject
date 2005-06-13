@@ -54,6 +54,18 @@ class dPacl extends gacl_api {
     parent::gacl_api($opts);
   }
 
+  function acl_check($aco_section_value, $aco_value, $aro_section_value, $aro_value, $axo_section_value=NULL, $axo_value=NULL, $root_aro_group=NULL, $root_axo_group=NULL)
+  {
+  	global $acltime;
+    $startTime = array_sum(explode(' ',microtime()));
+    
+  	$ret = parent::acl_check($aco_section_value, $aco_value, $aro_section_value, $aro_value, $axo_section_value, $axo_value, $root_aro_group, $root_axo_group);
+
+  	$acltime += array_sum(explode(' ', microtime())) - $startTime;
+  	
+  	return $ret;
+  }
+  
   function checkLogin($login) {
     // Simple ARO<->ACO check, no AXO's required.
     return $this->acl_check("system", "login", "user", $login);
@@ -62,7 +74,6 @@ class dPacl extends gacl_api {
   function checkModule($module, $op, $userid = null) {
     if (! $userid)
       $userid = $GLOBALS['AppUI']->user_id;
-      
     $result = $this->acl_check("application", $op, "user", $userid, "app", $module);
     dprint(__FILE__, __LINE__, 2, "checkModule( $module, $op, $userid) returned $result");
     return $result;
