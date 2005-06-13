@@ -180,7 +180,7 @@ class DBQuery {
 				$values = explode(',', $value);
 
 			for($i = 0; $i < count($fields); $i++)
-			$this->addMap('value_list', $values[$i], $fields[$i]);
+				$this->addMap('value_list', $this->quote($values[$i]), $fields[$i]);
 		}
 		else if (!$func)
     	$this->addMap('value_list', $this->quote($value), $field);
