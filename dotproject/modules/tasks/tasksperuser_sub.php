@@ -241,76 +241,63 @@ if($do_report){
         // get Users with all Allocation info (e.g. their freeCapacity)
         $tempoTask = new CTask();
         $userAlloc = $tempoTask->getAllocation("user_id");
-
-        // Let's figure out which users we have
-	$sql = "SELECT  u.user_id,u.user_username FROM users AS u";
+	
+	$q  = new DBQuery;
+	$q->addTable('users', 'u');
+	$q->addQuery('user_id, user_username');
+	$q->addOrder('user_username');
 
 	if ($log_userfilter!=0) {
-			$sql.=" WHERE u.user_id=".
-						  $log_userfilter
-					      ;//$log_userfilter_users[$log_userfilter]["user_id"];
+		$q->addWhere('user_id='.$log_userfilter);
 	}
-	$sql.=" ORDER by u.user_username";
-
-//echo "<pre>$sql</pre>";
-	$user_list = db_loadHashList($sql, "user_id");
+	
+	$user_list = $q->loadHashList('user_id');
+	$q->clear();
 
 	$ss="'".$start_date->format( FMT_DATETIME_MYSQL )."'";
 	$se="'".$end_date->format( FMT_DATETIME_MYSQL )."'";
-	
-	$and=false;
-	$where=false;
 
-	$sql = "SELECT t.*
-                FROM tasks AS t
-                LEFT JOIN projects AS p ON p.project_id = t.task_project";
+	$proj =& new CProject;
+	$obj =& new CTask;
+	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
+	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+	
+	$q  = new DBQuery;
+	$q->addTable('tasks', 't');
+	$q->addQuery('t.*');
+	$q->addJoin('projects', 'p', 'project_id = task_project');
+	$q->addOrder('task_project, task_end_date, task_start_date');
+	$q->addWhere(' (task_percent_complete < 100)');
 
 	if ($use_period) {
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		$sql.=" ( "
-			."  ( task_start_date >= $ss AND task_start_date <= $se ) "
-			." OR "
-			."  ( task_end_date <= $se AND task_end_date >= $ss ) "
-			." ) ";
-		$and=true;
+		$q->addWhere(" (  ( task_start_date >= $ss AND task_start_date <= $se ) OR ( task_end_date <= $se AND task_end_date >= $ss )  ) ");
+	}
+	
+	/*if(!$log_all_projects){
+		$q->addWhere("task_project='$project_id' ");
+	}
+	*/
+	
+	if (count($allowedProjects)) {
+		$proj->setAllowedSQL($AppUI->user_id, $q);
+	}
+	
+	if (count($allowedTasks)) {
+		$obj->setAllowedSQL($AppUI->user_id, $q);
 	}
 
-	if ($and) {
-        	$sql .= " AND ";
-      	}
-
-    	if (!$where) { $sql.=" WHERE ";$where=true; }
-     	$sql .= " (task_percent_complete < 100)";
-     	$and=true;
-
-	        //AND !isnull(task_end_date) AND task_end_date != '0000-00-00 00:00:00'
-	        //AND !isnull(task_start_date) AND task_start_date != '0000-00-00 00:00:00';
-	        //AND task_dynamic   ='0'
-	        //AND task_milestone = '0'
-	        //AND task_duration  > 0";
-			//;
-
         if($project_id != 'all'){
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		if ($and) {
-			$sql .= " AND ";
-		}
-		$sql.=" t.task_project='$project_id' ";
+		$q->addWhere("task_project='$project_id' ");
+
 	}
 
         if($company_id != 'all'){
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		if ($and) {
-			$sql .= " AND ";
-		}
-		$sql.=" p.project_company='$company_id' ";
+		$q->addWhere(" p.project_company='$company_id' ");
 	}
 
-	$sql .= " ORDER BY task_project, task_end_date, task_start_date;";
 
-//echo "<pre>$sql</pre>";
-	$task_list_hash 	 = db_loadHashList($sql, "task_id");
-	$task_list      	 = array();
+	$task_list_hash = $q->loadHashList('task_id');
+	$task_list = array();
 	$task_assigned_users = array();
 	$user_assigned_tasks = array();
 	$i = 0;
