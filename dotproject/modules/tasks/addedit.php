@@ -114,28 +114,32 @@ function build_date_list(&$date_array, $row) {
 }
 
 // let's get root tasks
-$sql = "select task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent, task_dynamic
-		from tasks
-		where task_project = '$task_project'
-			  and task_id  = task_parent
-        order by task_start_date";
+$q  = new DBQuery;
+$q->addTable('tasks', 't');
+$q->addQuery('task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent, task_dynamic');
+$q->addOrder('task_start_date');
+$q->addWhere('task_id  = task_parent');
+$q->addWhere("task_project = '$task_project'");
 
-$root_tasks = db_loadHashList($sql, 'task_id');
+$root_tasks = $q->loadHashList('task_id');
+$q->clear();
 
 $projTasks           = array();
 $task_parent_options = "";
 
 // Now lets get non-root tasks, grouped by the task parent
-$sql = "select task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent, task_dynamic
-	from tasks
-	where task_project = '$task_project'
-	and task_id != task_parent
-	order by task_start_date";
+$q  = new DBQuery;
+$q->addTable('tasks', 't');
+$q->addQuery('task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent, task_dynamic');
+$q->addOrder('task_start_date');
+$q->addWhere('task_id != task_parent');
+$q->addWhere("task_project = '$task_project'");
 
 $parents = array();
 $projTasksWithEndDates = array( $obj->task_id => $AppUI->_('None') );//arrays contains task end date info for setting new task start date as maximum end date of dependenced tasks
 $all_tasks = array();
-$sub_tasks = db_exec($sql);
+$sub_tasks = $q->exec();
+$q->clear();
 if ($sub_tasks) {
 	while ($sub_task = db_fetch_assoc($sub_tasks)) {
 		// Build parent/child task list
@@ -185,12 +189,15 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$parsed = '';
 
 	if($departments_count < 10) $departments_count++;
-	$sql = "select dept_id, dept_name
-	        from departments
-	        where dept_parent      = '$dept_parent'
-	              and dept_company = '$company_id'";
-	$depts_list = db_loadHashList($sql, "dept_id");
-
+	$q  = new DBQuery;
+	$q->addTable('departments', 'dept');
+	$q->addQuery('dept_id, dept_name');
+	$q->addWhere("dept_parent = '$dept_parent'");
+	$q->addWhere("dept_company = '$company_id'");
+	
+	$depts_list = $q->loadHashList('dept_id');
+	$q->clear();
+	
 	foreach($depts_list as $dept_id => $dept_info){
 		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
 

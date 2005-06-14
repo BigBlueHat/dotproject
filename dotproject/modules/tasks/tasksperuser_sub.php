@@ -297,6 +297,7 @@ if($do_report){
 
 
 	$task_list_hash = $q->loadHashList('task_id');
+	$q->clear();
 	$task_list = array();
 	$task_assigned_users = array();
 	$user_assigned_tasks = array();
