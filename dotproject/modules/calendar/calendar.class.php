@@ -534,18 +534,12 @@ class CEvent extends CDpObject {
 				break;
 		}
 		
-		/* FIX FOR #748
-		** @CAUSE 	THIS CODE WORKED BEFORE THE QUERY CLASS MOVE!
-		** @CAUSE	COMMENTING OUT PERHAPS RESULTS IN PERFORMANCE ISSUES,
-		** @CAUSE	IN THIS CASE, IMPROVE ABOVE CODE PART. 
-		** @AUTHOR 	20050611	GREGORERHARDT
+		// duplicate query object for recursive events; must reside before the date limits where clause
+		$r = $q;
 		
 		$q->addWhere("( event_start_date <= '$db_end' AND event_end_date >= '$db_start'
 				OR event_start_date BETWEEN '$db_start' AND '$db_end')");	
-		*/
 		
-		// duplicate query object for recursive events;
-		$r = $q;
 		
 		// assemble query for non-recursive events
 		$q->addWhere('( event_recurs <= 0 )');
