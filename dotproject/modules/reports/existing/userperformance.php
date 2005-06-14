@@ -83,16 +83,15 @@ function setCalendar( idate, fdate ) {
 
 <?php
 if($do_report){
+
+	$q  = new DBQuery;
+	$q->addTable('users', 'u');
+	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
+	$q->addOrder('contact_last_name, contact_first_name');
 	
-	// Let's figure out which users we have
-	$sql = "SELECT  u.user_id,
-	 				u.user_username, 
-					contact_first_name, 
-					contact_last_name
-	        FROM users AS u
-                LEFT JOIN contacts ON u.user_contact = contact_id";
-	
-	$user_list = db_loadHashList($sql, "user_id");
+	$user_list = $q->loadHashList('user_id');
+	$q->clear();
 	
 	// Now which tasks will we need and the real allocated hours (estimated time / number of users)
 	// Also we will use tasks with duration_type = 1 (hours) and those that are not marked
@@ -100,24 +99,26 @@ if($do_report){
 	// GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 	$working_hours = $dPconfig['daily_working_hours'];
 
-	$sql = "SELECT t.task_id, round(t.task_duration * IF(t.task_duration_type = 24, ".$working_hours.", t.task_duration_type)/count(ut.task_id),2) as hours_allocated
-	        FROM tasks as t, user_tasks as ut
-	        WHERE t.task_id = ut.task_id
-				  AND t.task_milestone    ='0'";
+	$q  = new DBQuery;
+	$q->addTable('tasks', 't');
+	$q->addTable('user_tasks', 'ut');
+	$q->addQuery('t.task_id, round(t.task_duration * IF(t.task_duration_type = 24, '.$working_hours.', t.task_duration_type)/count(ut.task_id),2) as hours_allocated');
+	$q->addWhere('t.task_id = ut.task_id');
+	$q->addWhere("t.task_milestone    ='0'");
+	$q->addGroup('t.task_id');
 	
 	if(!$log_all_projects){
-		$sql .= " AND t.task_project='$project_id'\n";
+		$q->addWhere("t.task_project='$project_id'");
 	}
 	
 	if(!$log_all){
-		$sql .= " AND t.task_start_date >= \"".$start_date->format( FMT_DATETIME_MYSQL )."\"
-		          AND t.task_start_date <= \"".$end_date->format( FMT_DATETIME_MYSQL )."\"";
+		$q->addWhere('t.task_start_date >= '.$start_date->format( FMT_DATETIME_MYSQL ));
+		$q->addWhere('t.task_start_date <= '.$end_date->format( FMT_DATETIME_MYSQL ));
 	}
-	
-	$sql .= "GROUP BY t.task_id";
-	
-	$task_list = db_loadHashList($sql, "task_id");
-	//echo $sql;
+		
+	$task_list = $q->loadHashList('task_id');
+	$q->clear();
+
 ?>
 
 <table cellspacing="1" cellpadding="4" border="0" class="tbl">
@@ -137,10 +138,13 @@ if($do_report){
 	
 //TODO: Split times for which more than one users were working...	
 		foreach($user_list as $user_id => $user){
-			$sql = "SELECT task_id
-			        FROM user_tasks
-			        where user_id = $user_id";
-			$tasks_id = db_loadColumn($sql);
+		
+			$q  = new DBQuery;
+			$q->addTable('user_tasks', 'ut');
+			$q->addQuery('task_id');
+			$q->addWhere("user_id = $user_id");	
+			$tasks_id = array_keys($q->loadHashList('task_id'));
+			$q->clear();
 
 			$total_hours_allocated = $total_hours_worked = 0;
 			$hours_allocated_complete = $hours_worked_complete = 0;
@@ -148,18 +152,23 @@ if($do_report){
 			foreach($tasks_id as $task_id){
 				if(isset($task_list[$task_id])){
 					// Now let's figure out how many time did the user spent in this task
-					$sql = "SELECT sum(task_log_hours)
-		        			FROM task_log
-		        			WHERE task_log_task        = $task_id
-					              AND task_log_creator = $user_id";
-					$hours_worked = round(db_loadResult($sql),2);
+					$q  = new DBQuery;
+					$q->addTable('task_log');
+					$q->addQuery('sum(task_log_hours)');
+					$q->addWhere("task_log_task = $task_id");
+					$q->addWhere("task_log_creator = $user_id");	
+					$hw = $q->loadList();
+					$q->clear();
+					$hours_worked = round($hw[0]['sum(task_log_hours)'],2);
 					
-
-                                        $sql = "SELECT task_percent_complete
-                                                FROM tasks
-                                                WHERE task_id = $task_id";
-                       //                 echo $sql;
-                                        $percent = db_loadColumn($sql);
+					$q  = new DBQuery;
+					$q->addTable('tasks');
+					$q->addQuery('task_percent_complete');
+					$q->addWhere("task_id = $task_id");
+					$pt = $q->loadList();
+					$q->clear();
+					$percent = round($pt[0]['task_percent_complete'],2);
+					
                                         $complete = ($percent[0] == 100);
                                         
                                         if ($complete)

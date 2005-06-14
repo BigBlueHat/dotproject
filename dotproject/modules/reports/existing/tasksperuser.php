@@ -135,82 +135,51 @@ function setCalendar( idate, fdate ) {
 
 <?php
 if($do_report){
-
-	// Let's figure out which users we have
-	$sql = "SELECT  u.user_id,
-	 				u.user_username, 
-					contact_first_name, 
-
-					contact_last_name
-	        FROM users AS u
-                LEFT JOIN contacts ON contact_id = user_contact";
+	
+	$q  = new DBQuery;
+	$q->addTable('users', 'u');
+	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
+	$q->addOrder('contact_last_name, contact_first_name');
 
 	if ($log_userfilter!=0) {
-			$sql.=" WHERE user_id=".
-						  $log_userfilter
-					      ;//$log_userfilter_users[$log_userfilter]["user_id"];
+		$q->addWhere('user_id='.$log_userfilter);
 	}
-	$sql.=" ORDER by contact_last_name, contact_first_name";
 	
-	$user_list = db_loadHashList($sql, "user_id");
+	$user_list = $q->loadHashList('user_id');
+	$q->clear();
 
 	$ss="'".$start_date->format( FMT_DATETIME_MYSQL )."'";
 	$se="'".$end_date->format( FMT_DATETIME_MYSQL )."'";
-
-	$and=false;
-	$where=false;
-
-	$sql = 	 "SELECT t.* "
-			."FROM tasks AS t "
-			."LEFT JOIN projects on project_id = task_project ";
-
-	if ($use_period) {
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		$sql.=" ( "
-			."  ( task_start_date >= $ss AND task_start_date <= $se ) "
-			." OR "
-			."  ( task_end_date <= $se AND task_end_date >= $ss ) "
-			." ) ";
-		$and=true;
-	}
-	        //AND !isnull(task_end_date) AND task_end_date != '0000-00-00 00:00:00'
-	        //AND !isnull(task_start_date) AND task_start_date != '0000-00-00 00:00:00';
-	        //AND task_dynamic   ='0'
-	        //AND task_milestone = '0'
-	        //AND task_duration  > 0";
-			//;
-
-	if(!$log_all_projects){
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		if ($and) {
-			$sql .= " AND ";
-		}
-		$sql.=" task_project='$project_id' ";
-		$and = true;
-	}
-
+	
 	$proj =& new CProject;
 	$obj =& new CTask;
 	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
 	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+	
+	$q  = new DBQuery;
+	$q->addTable('tasks', 't');
+	$q->addQuery('t.*');
+	$q->addJoin('projects', 'p', 'project_id = task_project');
+	$q->addOrder('task_end_date');
+
+	if ($use_period) {
+		$q->addWhere(" (  ( task_start_date >= $ss AND task_start_date <= $se ) OR ( task_end_date <= $se AND task_end_date >= $ss )  ) ");
+	}
+
+	if(!$log_all_projects){
+		$q->addWhere("task_project='$project_id' ");
+	}
 
 	if (count($allowedProjects)) {
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		if ($and) $sql .= " AND ";
-		$and = true;
-		$sql .= implode(" AND ", $allowedProjects);
+		$proj->setAllowedSQL($AppUI->user_id, $q);
 	}
 
 	if (count($allowedTasks)) {
-		if (!$where) { $sql.=" WHERE ";$where=true; }
-		if ($and) $sql .= " AND ";
-		$and = true;
-		$sql .= implode(" AND ", $allowedTasks);
+		$obj->setAllowedSQL($AppUI->user_id, $q);
  	}
  
-	$sql .= " ORDER BY task_end_date;";
-
-	$task_list_hash 	 = db_loadHashList($sql, "task_id");
+	$task_list_hash = $q->loadHashList('task_id');
 	$task_list      	 = array();
 	$task_assigned_users = array();
 	$i = 0;
@@ -492,4 +461,3 @@ return false;
 		<?php echo $table_header . $table_rows; ?>
 	</table>
 </center>
-
