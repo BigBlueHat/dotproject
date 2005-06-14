@@ -7,14 +7,13 @@ if ( $task_id == 0 ) {
 	$assigned_perc = array($AppUI->user_id => "100");	
 } else {
 	// Pull users on this task
-//			 SELECT u.user_id, CONCAT_WS(' ',u.user_first_name,u.user_last_name)
-	$sql = "
-			 SELECT user_id, perc_assignment
-			   FROM user_tasks
-			 WHERE task_id =$task_id
-			 AND task_id <> 0
-			 ";
-	$assigned_perc = db_loadHashList( $sql );	
+	$q = new DBQuery;
+	$q->addQuery('user_id, perc_assignment');
+	$q->addTable('user_tasks');
+	$q->addWhere('task_id = '.$task_id);
+	$q->addOrder('task_id <> 0');
+	$assigned_perc = $q->loadHashList();	
+	$q->clear();
 }
 
 $initPercAsignment = "";

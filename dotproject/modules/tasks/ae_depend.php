@@ -29,18 +29,20 @@ for ( $current = $start; $current < $end + 1; $current++ ) {
 }
 
 // Pull tasks dependencies
+$q  = new DBQuery;
+$q->addTable('tasks', 't');
+$q->addQuery('task_id, task_name');
+
 $deps = false;
 if ($deps) {
-	$sql = "SELECT task_id, task_name FROM tasks WHERE task_id in ($deps)";
+	$q->addWhere(" task_id in ($deps)");
 } else {
-	$sql = "
-		SELECT t.task_id, t.task_name
-		FROM tasks t, task_dependencies td
-		WHERE td.dependencies_task_id = $task_id
-		AND t.task_id = td.dependencies_req_task_id
-	";
+	$q->addTable('task_dependencies', 'td');
+	$q->addWhere("td.dependencies_task_id = $task_id");
+	$q->addWhere('t.task_id = td.dependencies_req_task_id');
 }
-$taskDep = db_loadHashList( $sql );
+$taskDep = $q->loadHashList();
+$q->clear();
 
 ?>
 <form name="dependFrm" action="?m=tasks&a=addedit&task_project=<?php echo $task_project;?>" method="post">
