@@ -8,11 +8,12 @@ $taskfield = dPgetParam( $_REQUEST, 'taskfield', 'new_task');
 $form = dPgetParam($_REQUEST, 'form', 'form');
 	
 $proj = $_GET['project'];
-$sql = 'SELECT task_id, task_name
-        FROM tasks';
+$q = new DBQuery;
+$q->addTable('tasks');
+$q->addQuery('task_id, task_name');
 if ($proj != 0)
-  $sql .= ' WHERE task_project = ' . $proj;
-$tasks = db_loadList($sql);
+	$q->addQuery('task_project = ' . $proj);
+$tasks = $q->loadList();
 ?>
 
 <script language="JavaScript">

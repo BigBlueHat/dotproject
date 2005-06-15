@@ -37,14 +37,16 @@ $task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
 
 $proj = &new CProject();
 $proj->load($obj->task_project);
-$sql = "SELECT billingcode_id, billingcode_name
-        FROM billingcode
-        WHERE billingcode_status=0
-        AND company_id='$proj->project_company' 
-        ORDER BY billingcode_name";
+
+$q = new DBQuery;
+$q->addTable('billingcode');
+$q->addQuery('billingcode_id, billingcode_name');
+$q->addWhere('billingcode_status=0');
+$q->addWhere("company_id='$proj->project_company'");
+$q->addOrder('billingcode_name');
 
 $task_log_costcodes[0]="None";
-$ptrc = db_exec($sql);
+$ptrc = $q->exec();
 echo db_error();
 $nums = 0;
 if ($ptrc)
@@ -53,7 +55,7 @@ for ($x=0; $x < $nums; $x++) {
         $row = db_fetch_assoc( $ptrc );
         $task_log_costcodes[$row["billingcode_id"]] = $row["billingcode_name"];
 }
-
+$q->clear();
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 
 // Task Update Form

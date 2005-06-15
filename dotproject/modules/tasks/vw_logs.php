@@ -49,14 +49,17 @@ function delIt2(id) {
 </tr>
 <?php
 // Pull the task comments
-$sql = "
-SELECT task_log.*, user_username
-FROM task_log
-LEFT JOIN users ON user_id = task_log_creator
-WHERE task_log_task = $task_id". ($problem ? " AND task_log_problem > '0'" : '') .
-" ORDER BY task_log_date
-";
-$logs = db_loadList( $sql );
+$q = new DBQuery;
+$q->addTable('task_log');
+$q->addQuery('task_log.*, user_username');
+$q->addJoin('users', 'u', 'user_id = task_log_creator');
+$q->addOrder('task_log_date');
+$q->addWhere("task_log_task = $task_id");
+if ($problem) {
+	$q->addWhere("task_log_problem > '0'");
+}
+$logs = $q->loadList();
+$q->clear();
 
 $s = '';
 $hrs = 0;
