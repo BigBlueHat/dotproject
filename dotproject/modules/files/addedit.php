@@ -49,7 +49,7 @@ $ttl = $file_id ? "Edit File" : "Add File";
 $ttl = $ci ? 'Checking in' : $ttl;
 $titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=files", "files list" );
-if ($canEdit && $file_id > 0 && !$ci) {
+if ($canDelete && $file_id > 0 && !$ci) {
 	$titleBlock->addCrumbDelete( 'delete file', $canDelete, $msg );
 }
 $titleBlock->show();
