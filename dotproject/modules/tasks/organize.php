@@ -40,11 +40,14 @@ if ($selected && count( $selected )) {
 			$children = $t->getDeepChildren();
 		if ( $action == 'f') { 										// Mark FINISHED
 			// mark task as completed
-			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id";
+			$q = new DBQuery;
+			$q->addTable('tasks');
+			$q->addUpdate('task_percent_complete', '100');
 			if (isset($children))
-				$sql .= " IN (" . implode(', ', $children) . ", $val)";
+				$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
 			else
-				$sql .= "=$val";
+				$q->addWhere('task_id='.$val);
+
 		} else if ( $action == 'd' ) { 						// DELETE
 			// delete task
       $t->delete();
@@ -74,14 +77,18 @@ if ($selected && count( $selected )) {
 			$t->store();
 		} else if ( $action > -2 && $action < 2 ) { // Set PRIORITY
 			// set priority
-      $sql = "UPDATE tasks SET task_priority=$action WHERE task_id";
+			$q = new DBQuery;
+			$q->addTable('tasks');
+			$q->addUpdate('task_priority', $action);
       if (isset($children))
-				$sql .= " IN (" . implode(',',$children) . ", $val)";
+      				$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
 			else
-				$sql .= "=$val";
+				$q->addWhere('task_id='.$val);
+
 		}
 		if (isset($sql)) {
-			db_exec( $sql );
+			$q->exec( $sql );
+			$q->clear();
 		}
 	}
 }
@@ -95,26 +102,25 @@ $allowedProjects = $proj->getAllowedSQL($AppUI->user_id);
 $allowedTasks = $tobj->getAllowedSQL($AppUI->user_id, 'a.task_id');
 
 // query my sub-tasks (ignoring task parents)
+$q = new DBQuery;
+$q->addTable('tasks');
+$q->addTable('projects');
+$q->addQuery('tasks.*, project_name, project_id, project_color_identifier');
+$q->addWhere('project_id = task_project');
 
-$sql = "
-		 SELECT tasks.*,
-		 project_name, project_id, project_color_identifier". 
-"		 FROM projects, tasks ".
-"		 WHERE project_id = task_project";
 if ($project_id)
-	$sql .= " AND project_id = $project_id";
+	$q->addWhere("project_id = $project_id");
 
 if (count($allowedTasks))
-	$sql .= " AND " . implode(" AND ", $allowedTasks);
+	$tobj->setAllowedSQL($AppUI->user_id, $q);
 
 if (count($allowedProjects))
-	$sql .= " AND " . implode(" AND ", $allowedProjects);
+	$proj->setAllowedSQL($AppUI->user_id, $q);
 
-$sql .=   " GROUP BY task_id
-	ORDER BY $sort, task_priority DESC
-";
-// echo "<pre>$sql</pre>";
-$tasks = db_loadList( $sql );
+$q->addGroup('task_id');
+$q->addOrder("$sort, task_priority DESC");
+$tasks = $q->loadList();
+$q->clear();
 
 $priorities = array(
 	'1' => 'high',
@@ -284,12 +290,12 @@ foreach ($tasks as $task)
 		$actions[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_JS);
 
   
-  $deny = $proj->getDeniedRecords( $AppUI->user_id );
-  $sql = 'SELECT project_id, project_name
-          FROM projects';
-	if ($deny)
-		$sql .= "\nWHERE project_id NOT IN (" . implode( ',', $deny ) . ')';
-  $projects = db_loadHashList($sql, 'project_id');
+  $q = new DBQuery;
+  $q->addTable('projects');
+  $q->addQuery('project_name, project_id');
+  $proj->setAllowedSQL( $AppUI->user_id, $q );
+  
+  $projects = $q->loadHashList('project_id');
 	$p[0] = $AppUI->_('[none]');
 	foreach($projects as $proj)
 		$p[$proj[0]] = $proj[1];
