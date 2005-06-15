@@ -506,7 +506,7 @@ class DBQuery {
 	$fieldlist .= ",";
       if ($valuelist)
 	$valuelist .= ",";
-      $fieldlist .= '`' . $field . '`';
+      $fieldlist .= '`' . trim($field) . '`';
       $valuelist .= $value;
     }
     $q .= "($fieldlist) values ($valuelist)";
