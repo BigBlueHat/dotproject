@@ -159,7 +159,7 @@ foreach($projects as $p) {
 	//using new jpGraph determines using Date object instead of string
 	$start = ($p["project_start_date"] > "0000-00-00 00:00:00") ? $p["project_start_date"] : date("Y-m-d H:i:s");
 	$end_date   = $p["project_end_date"];
-        $actual_end = $p["project_actual_end_date"] ? $p["project_actual_end_date"] : " ";
+        $actual_end = $p["project_actual_end_date"] ? $p["project_actual_end_date"] : $p["project_end_date"];
 
 
 	$end_date = new CDate($end_date);
