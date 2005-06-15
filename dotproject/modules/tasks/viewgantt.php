@@ -164,7 +164,13 @@ function showFullProject() {
 <tr>
 	<td>
 <?php
-if (db_loadResult( "SELECT COUNT(*) FROM tasks WHERE task_project=$project_id" )) {
+$q = new DBQuery;
+$q->addTable('tasks');
+$q->addQuery('COUNT(*) AS N');
+$q->addWhere("task_project=$project_id");
+$cnt = $q->loadList();
+$q->clear();
+if ($cnt[0]['N'] > 0) {
 	$src =
 	  "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
 	  ( $display_option == 'all' ? '' :
