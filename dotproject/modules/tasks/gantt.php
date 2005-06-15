@@ -23,18 +23,18 @@ $project =& new CProject;
 $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 $criticalTasks = ($project_id > 0) ? $project->getCriticalTasks($project_id) : NULL;
 // pull valid projects and their percent complete information
-$psql = "
-SELECT project_id, project_color_identifier, project_name, project_start_date, project_end_date
-FROM permissions, projects
-LEFT JOIN tasks t1 ON projects.project_id = t1.task_project
-WHERE project_active <> 0
-" . (count($allowedProjects) ? "AND project_id IN (" . implode(',', array_keys($allowedProjects)) . ')' : '') ."
-GROUP BY project_id
-ORDER BY project_name
-";
-// echo "<pre>$psql</pre>";
-$prc = db_exec( $psql );
-echo db_error();
+
+$q = new DBQuery;
+$q->addTable('permissions');
+$q->addTable('projects');
+$q->addQuery('project_id, project_color_identifier, project_name, project_start_date, project_end_date');
+$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+$q->addWhere('project_active <> 0');
+$q->addGroup('project_id');
+$q->addOrder('project_name');
+$project->setAllowedSQL($AppUI->user_id, $q);
+$prc = $q->exec();
+$q->clear();
 $pnums = db_num_rows( $prc );
 
 $projects = array();
@@ -48,50 +48,43 @@ $task =& new CTask;
 $deny = $task->getDeniedRecords($AppUI->user_id);
 
 // pull tasks
-
-$select = "
-tasks.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, task_duration_type,
-task_priority, task_percent_complete, task_order, task_project, task_milestone, 
-project_name, task_dynamic
-";
-
-$from = "tasks";
-$join = "LEFT JOIN projects ON project_id = task_project";
-$where = "project_active <> 0".($project_id ? "\nAND task_project = $project_id" : '');
-
+$q = new DBQuery;
+$q->addTable('tasks', 't');
+$q->addQuery('t.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, task_duration_type, task_priority, task_percent_complete, task_order, task_project, task_milestone, project_name, task_dynamic');
+$q->addJoin('projects', 'p', 'project_id = t.task_project');
+$q->addWhere('project_active <> 0');
+$q->addOrder('project_id, task_start_date');
+if ($project_id) {
+	$q->addWhere("task_project = $project_id");
+}
 switch ($f) {
 	case 'all':
-		$where .= "\nAND task_status > -1";
+		$q->addWhere('task_status > -1');
 		break;
 	case 'myproj':
-		$where .= "\nAND task_status > -1\n	AND project_owner = $AppUI->user_id";
+		$q->addWhere('task_status > -1');
+		$q->addWhere("project_owner = $AppUI->user_id");
 		break;
 	case 'mycomp':
-		$where .= "\nAND task_status > -1\n	AND project_company = $AppUI->user_company";
+		$q->addWhere('task_status > -1');
+		$q->addWhere("project_company = $AppUI->user_company");
 		break;
 	case 'myinact':
-		$from .= ", user_tasks";
-		$where .= "
-	AND task_project = projects.project_id
-	AND user_tasks.user_id = $AppUI->user_id
-	AND user_tasks.task_id = tasks.task_id
-";
+		$q->addTable('user_tasks', 'ut');
+		$q->addWhere('task_project = p.project_id');
+		$q->addWhere("ut.user_id = $AppUI->user_id");
+		$q->addWhere('ut.task_id = t.task_id');
 		break;
 	default:
-		$from .= ", user_tasks";
-		$where .= "
-	AND task_status > -1
-	AND task_project = projects.project_id
-	AND user_tasks.user_id = $AppUI->user_id
-	AND user_tasks.task_id = tasks.task_id
-";
+		$q->addTable('user_tasks', 'ut');
+		$q->addWhere('task_status > -1');
+		$q->addWhere('task_project = p.project_id');
+		$q->addWhere("ut.user_id = $AppUI->user_id");
+		$q->addWhere('ut.task_id = t.task_id');
 		break;
 }
 
-$tsql = "SELECT $select FROM $from $join WHERE $where ORDER BY project_id, task_start_date";
-##echo "<pre>$tsql</pre>".mysql_error();##
-
-$ptrc = db_exec( $tsql );
+$ptrc = $q->exec();
 $nums = db_num_rows( $ptrc );
 echo db_error();
 $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
@@ -115,7 +108,7 @@ for ($x=0; $x < $nums; $x++) {
 		
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
-
+$q->clear();
 $width      = dPgetParam( $_GET, 'width', 600 );
 //consider critical (concerning end date) tasks as well
 $project_end = ($projects[$project_id]["project_end_date"] > $criticalTasks[0]['task_end_date']) ? $projects[$project_id]["project_end_date"] : $criticalTasks[0]['task_end_date'];
@@ -307,8 +300,13 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 
 	$caption = "";
 	if ($showLabels=='1') {
-		$sql = "select ut.task_id, u.user_username, ut.perc_assignment from user_tasks ut, users u where u.user_id = ut.user_id and ut.task_id = ".$a["task_id"];
-		$res = db_exec( $sql );
+		$q = new DBQuery;
+		$q->addTable('user_tasks', 'ut');
+		$q->addTable('users', 'u');
+		$q->addQuery('ut.task_id, u.user_username, ut.perc_assignment');
+		$q->addWhere('u.user_id = ut.user_id');
+		$q->addWhere('ut.task_id = '.$a["task_id"]);
+		$res = $q->exec();
 		while ($rw = db_fetch_row( $res )) {
 			switch ($rw[2]) {
 				case 100:
@@ -319,6 +317,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 					break;
 			}
 		}
+		$q->clear();
 		$caption = substr($caption, 0, strlen($caption)-1);
 	}	
 	
@@ -340,10 +339,31 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		
 		if ($showWork=='1') {
 			$work_hours = 0;
-			$_days_sql  = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_id = ".$a['task_id']." AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
-			$_hours_sql = "SELECT ROUND(SUM(t.task_duration*u.perc_assignment/100),2) FROM tasks t left join user_tasks u on t.task_id = u.task_id WHERE t.task_id = ".$a['task_id']." AND t.task_duration_type = 1 AND t.task_milestone  ='0' AND t.task_dynamic = 0";
-			$work_hours = db_loadResult($_days_sql) * $dPconfig['daily_working_hours'];
-			$work_hours += db_loadResult($_hours_sql);
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
+			$q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2) AS wh');
+			$q->addWhere('t.task_duration_type = 24');
+			$q->addWhere("t.task_milestone  ='0'");
+			$q->addWhere("t.task_dynamic = 0");
+			$q->addWhere('t.task_id = '.$a["task_id"]);
+			
+			$wh = $q->loadHashList('wh');
+			$work_hours = $wh['wh'] * $dPconfig['daily_working_hours'];
+			$q->clear();
+			
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
+			$q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2) AS wh');
+			$q->addWhere('t.task_duration_type = 1');
+			$q->addWhere("t.task_milestone  ='0'");
+			$q->addWhere("t.task_dynamic = 0");
+			$q->addWhere('t.task_id = '.$a["task_id"]);
+			
+			$wh2 = $q->loadHashList('wh');
+			$work_hours += $wh2['wh'];
+			$q->clear();
 			//due to the round above, we don't want to print decimals unless they really exist
 			//$work_hours = rtrim($work_hours, "0");
 			$dur = $work_hours;
@@ -397,9 +417,11 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
                 $bar->progress->SetFillColor('darkgray');
                 $bar->progress->SetPattern(BAND_SOLID,'gray',98);
         }
-
-	$sql = "SELECT dependencies_task_id FROM task_dependencies WHERE dependencies_req_task_id=" . $a["task_id"];
-	$query = db_exec($sql);
+	$q = new DBQuery;
+	$q->addTable('task_dependencies');
+	$q->addQuery('dependencies_task_id');
+	$q->addWhere('dependencies_req_task_id=' . $a["task_id"]);
+	$query = $q->exec($sql);
 
 	while($dep = db_fetch_assoc($query)) {
 		// find row num of dependencies
@@ -409,6 +431,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 			}
 		}
 	}
+	$q->clear();
 	$graph->Add($bar);
 }
 $today = date("y-m-d");
