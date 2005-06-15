@@ -58,17 +58,22 @@ $selected = dPgetParam( $_POST, 'selected_task', 0 );
 
 if (is_array($selected) && count( $selected )) {
 	foreach ($selected as $key => $val) {
+		$q = new DBQuery;
+		$q->addWhere('task_id='.$val);
 		if ( $task_priority == 'c' ) {
 			// mark task as completed
-			$sql = "UPDATE tasks SET task_percent_complete=100 WHERE task_id=$val";
+			$q->addTable('tasks');
+			$q->addUpdate('task_percent_complete', '100');
 		} else if ( $task_priority == 'd' ) {
 			// delete task
-			$sql = "DELETE FROM tasks WHERE task_id=$val";
+			$q->setDelete('tasks');
 		} else if ( $task_priority > -2 && $task_priority < 2 ) {
 			// set priority
-			$sql = "UPDATE tasks SET task_priority=$task_priority WHERE task_id=$val";
+			$q->addTable('tasks');
+			$q->addUpdate('task_priority', $task_priority);
 		}
-		db_exec( $sql );
+		$q->exec();
+		$q->clear();
 		echo db_error();		
 	}
 }
