@@ -92,10 +92,15 @@ class CTask extends CDpObject {
 		
 		$this->task_percent_complete = intval( $this->task_percent_complete );
 	
+		/*
+		** @author 	Check removed on 20050617 by gregorerhardt
+		** @cause 	913: assigning 0 hours to a task impossible
+		
 		if (!$this->task_duration) {
 			$this->task_duration = '1';
 		}
-
+		*/
+		
 		if (!$this->task_creator) {
 			$this->task_creator = $AppUI->user_id;
 		}
