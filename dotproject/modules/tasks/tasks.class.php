@@ -260,19 +260,27 @@ class CTask extends CDpObject {
 
 		if ( $modified_task->task_dynamic == '1' ) {
 			//Update allocated hours based on children with duration type of 'hours'
-			$sql1 = "SELECT SUM( task_duration * task_duration_type ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
-					" and task_id != " . $modified_task->task_id . 
-					" AND task_duration_type = 1 " .
-					" GROUP BY task_parent;";
-			$children_allocated_hours1 = (float) db_loadResult( $sql1 );
+			$q = new DBQuery;
+			$q->addTable($this->_tbl);
+			$q->addQuery('SUM( task_duration * task_duration_type )');
+			$q->addWhere('task_parent = '. $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('task_duration_type = 1');
+			$q->addGroup('task_parent');
+			$children_allocated_hours1 = (float) $q->loadResult();
+			$q->clear();
 			
 			//Update allocated hours based on children with duration type of 'days'
 			// use here the daily working hours instead of the full 24 hours to calculate dynamic task duration!
-			$sql2 = "SELECT SUM( task_duration * ".$dPconfig['daily_working_hours']." ) from " . $this->_tbl . " WHERE task_parent = " . $modified_task->task_id .
-					" and task_id != " . $modified_task->task_id . 
-					" AND task_duration_type > 1" .
-					" GROUP BY task_parent;";
-			$children_allocated_hours2 = (float) db_loadResult( $sql2 );
+			$q = new DBQuery;
+			$q->addTable($this->_tbl);
+			$q->addQuery('SUM( task_duration * '.$dPconfig['daily_working_hours'].')');
+			$q->addWhere('task_parent = '. $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('task_duration_type > 1');
+			$q->addGroup('task_parent');
+			$children_allocated_hours2 = (float) $q->loadResult();
+			$q->clear();
 			
 			// sum up the two distinct duration values for the children with duration type 'hrs' 
 			// and for those with the duration type 'day'
@@ -285,33 +293,49 @@ class CTask extends CDpObject {
 			}
 
 			//Update worked hours based on children
-			$sql = "SELECT sum( task_log_hours ) FROM tasks, task_log
-					WHERE task_id = task_log_task AND task_parent = " . $modified_task->task_id .
-					" AND task_id != " . $modified_task->task_id .
-					" AND task_dynamic != 1";
-			$children_hours_worked = (float) db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addTable('task_log', 'tl');
+			$q->addQuery('sum( task_log_hours )');
+			$q->addWhere('task_id = task_log_task');
+			$q->addWhere('task_parent = ' . $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('task_dynamic != 1');
+			$children_hours_worked = (float) $q->loadResult();
+			$q->clear();
 			
 			
 			//Update worked hours based on dynamic children tasks
-			$sql = "SELECT sum( task_hours_worked ) FROM tasks
-					WHERE task_dynamic = 1 AND task_parent = " . $modified_task->task_id .
-					" AND task_id != " . $modified_task->task_id;
-			$children_hours_worked += (float) db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addQuery('sum( task_hours_worked )');
+			$q->addWhere('task_parent = ' . $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('task_dynamic = 1');
+			$children_hours_worked += (float) $q->loadResult();
+			$q->clear();
 			
 			$modified_task->task_hours_worked = $children_hours_worked;
 					
 			//Update percent complete
-			$sql = "SELECT sum(task_percent_complete * task_duration * task_duration_type )
-					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
-					" AND task_id != " . $modified_task->task_id .
-					" AND task_duration_type = 1";
-			$real_children_hours_worked = (float) db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addQuery('sum(task_percent_complete * task_duration * task_duration_type )');
+			$q->addWhere('task_parent = ' . $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('task_duration_type = 1');
+			$real_children_hours_worked = (float) $q->loadResult();
+			$q->clear();
+			
 			//This selects from task with duration in days.
-                        $sql = "SELECT sum(task_percent_complete * task_duration *". $dPconfig['daily_working_hours']." )
-                                        FROM tasks WHERE task_parent = " . $modified_task->task_id .
-                                        " AND task_id != " . $modified_task->task_id .
-                                        " AND task_duration_type = 24";
-                        $real_children_hours_worked += (float) db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addQuery('sum(task_percent_complete * task_duration * '.$dPconfig['daily_working_hours'].' )');
+			$q->addWhere('task_parent = ' . $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('task_duration_type = 24');
+			$real_children_hours_worked += (float) $q->loadResult();
+			$q->clear();
 			
 			if($modified_task->task_duration_type != 1) {
 			  $total_hours_allocated = (float)($modified_task->task_duration * $dPconfig['daily_working_hours']);
@@ -322,26 +346,37 @@ class CTask extends CDpObject {
 			if($total_hours_allocated > 0){
 			    $modified_task->task_percent_complete = $real_children_hours_worked / $total_hours_allocated;
 			} else {
-			    $sql = "SELECT avg(task_percent_complete)
-    					FROM tasks WHERE task_parent = " . $modified_task->task_id . 
-    					" AND task_id != " . $modified_task->task_id;
-			    $modified_task->task_percent_complete = db_loadResult($sql);
+				$q = new DBQuery;
+				$q->addTable('tasks', 't');
+				$q->addQuery('avg(task_percent_complete)');
+				$q->addWhere('task_parent = ' . $modified_task->task_id);
+				$q->addWhere('task_id != ' . $modified_task->task_id);
+				$modified_task->task_percent_complete = $q->loadResult();
+				$q->clear();
 			}
 
 
 			//Update start date
-			$sql = "SELECT min( task_start_date ) FROM tasks
-					WHERE task_parent = " . $modified_task->task_id .
-					" AND task_id != " . $modified_task->task_id .
-					" AND ! isnull( task_start_date ) AND task_start_date !=  '0000-00-00 00:00:00'";
-			$modified_task->task_start_date = db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addQuery('min( task_start_date )');
+			$q->addWhere('task_parent = ' . $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('! isnull( task_start_date )');
+			$q->addWhere("task_start_date !=  '0000-00-00 00:00:00'");
+			$modified_task->task_start_date =  $q->loadResult();
+			$q->clear();
 
 			//Update end date
-			$sql = "SELECT max( task_end_date ) FROM tasks
-					WHERE task_parent = " . $modified_task->task_id .
-					" AND task_id != " . $modified_task->task_id .
-					" AND ! isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'";
-			$modified_task->task_end_date = db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addQuery('max( task_end_date )');
+			$q->addWhere('task_parent = ' . $modified_task->task_id);
+			$q->addWhere('task_id != ' . $modified_task->task_id);
+			$q->addWhere('! isnull( task_end_date )');
+			$q->addWhere("task_end_date !=  '0000-00-00 00:00:00'");
+			$modified_task->task_end_date =  $q->loadResult();
+			$q->clear();
 
 			//If we are updating a dynamic task from its children we don't want to store() it
 			//when the method exists the next line in the store calling function will do that
@@ -467,38 +502,64 @@ class CTask extends CDpObject {
 			addHistory('tasks', $this->task_id, 'add', $this->task_name, $this->task_project);
 
 			if (!$this->task_parent) {
-				$sql = "UPDATE tasks SET task_parent = $this->task_id WHERE task_id = $this->task_id";
-				db_exec( $sql );
+				$q = new DBQuery;
+				$q->addTable('tasks', 't');
+				$q->addUpdate('task_parent', $this->task_id);
+				$q->addWhere('task_id = '.$this->task_id);
+				$q->exec();
+				$q->clear();
 			} else {
 				// importing tasks do not update dynamics
 				$importing_tasks = true;
 			}
 
 			// insert entry in user tasks
-			$sql = "INSERT INTO user_tasks (user_id, task_id, user_type) VALUES ($AppUI->user_id, $this->task_id, -1)";
-			db_exec( $sql );
+			$q = new DBQuery;
+			$q->addTable('user_tasks', 'ut');
+			$q->addInsert('user_id', $AppUI->user_id);
+			$q->addInsert('task_id', $this->task_id);
+			$q->addInsert('user_type', '-1');
+			$q->exec();
+			$q->clear();
 		}
 		
 		//split out related departments and store them seperatly.
-		$sql = 'DELETE FROM task_departments WHERE task_id='.$this->task_id;
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->setDelete('task_departments');
+		$q->addWhere('task_id = '.$this->task_id);
+		$q->exec();
+		$q->clear();
+		
 		// print_r($this->task_departments);
 		if(!empty($this->task_departments)){
 		  $departments = explode(',',$this->task_departments);
     	  foreach($departments as $department){
-    		   $sql = 'INSERT INTO task_departments (task_id, department_id) values ('.$this->task_id.', '.$department.')';
-    		   db_exec( $sql );
+    		$q = new DBQuery;
+		$q->addTable('task_departments');
+		$q->addInsert('task_id', $this->task_id);
+		$q->addInsert('department_id', $department);
+		$q->exec();
+		$q->clear();
+		   
     	  }
 		}
 		
 		//split out related contacts and store them seperatly.
-		$sql = 'DELETE FROM task_contacts WHERE task_id='.$this->task_id;
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->setDelete('task_contacts');
+		$q->addWhere('task_id = '.$this->task_id);
+		$q->exec();
+		$q->clear();
+		
 		if(!empty($this->task_contacts)){
     		$contacts = explode(',',$this->task_contacts);
     		foreach($contacts as $contact){
-    			$sql = 'INSERT INTO task_contacts (task_id, contact_id) values ('.$this->task_id.', '.$contact.')';
-    			db_exec( $sql );
+			$q = new DBQuery;
+			$q->addTable('task_contacts');
+			$q->addInsert('task_id', $this->task_id);
+			$q->addInsert('contact_id', $contact);
+			$q->exec();
+			$q->clear();
     		}
 		}
 
@@ -532,15 +593,22 @@ class CTask extends CDpObject {
 	function delete() {
 		$this->_action = 'deleted';
 		// delete linked user tasks
-		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
-		if (!db_exec( $sql )) {
+		$q = new DBQuery;
+		$q->setDelete('user_tasks');
+		$q->addWhere('task_id = '.$this->task_id);
+		if (!$q->exec()) {
 			return db_error();
 		}
+		$q->clear();
 		//delete dependencies
-		$sql = "DELETE FROM task_dependencies WHERE dependencies_req_task_id = $this->task_id or dependencies_task_id = $this->task_id";
-		if (!db_exec( $sql )) {
+		$q = new DBQuery;
+		$q->setDelete('task_dependencies');
+		$q->addWhere('dependencies_req_task_id = '.$this->task_id.' OR dependencies_task_id = '.$this->task_id);
+		if (!$q->exec()) {
 			return db_error();
 		}
+		$q->clear();
+
 		//load it before deleting it because we need info on it to update the parents later on
 		$this->load($this->task_id);
 		addHistory('tasks', $this->task_id, 'delete', $this->task_name, $this->task_project);
@@ -549,8 +617,10 @@ class CTask extends CDpObject {
 		// delete task with parent is this task
 		$childrenlist = $this->getDeepChildren();
 		
-		$sql = "DELETE FROM tasks WHERE task_id = $this->task_id";
-		if (!db_exec( $sql )) {
+		$q = new DBQuery;
+		$q->setDelete('tasks');
+		$q->addWhere('task_id = '.$this->task_id);
+		if (!$q->exec()) {
 			return db_error();
 		} else {
 			if ( $this->task_parent != $this->task_id ){
@@ -559,48 +629,63 @@ class CTask extends CDpObject {
 				$this->updateDynamics();
 			}
 		}
+		$q->clear();
 
-		// delete children
-		$sql = "SELECT * FROM tasks WHERE task_parent = $this->task_id";
-		
+		// delete children		
 		if (!empty($childrenlist)) 
 		{
-			$sql = "DELETE FROM tasks WHERE task_parent IN (" . implode(', ', $childrenlist) . ", $this->task_id)";
-			if (!db_exec( $sql ))
+			$q = new DBQuery;
+			$q->setDelete('tasks');
+			$q->addWhere('task_parent IN (' . implode(', ', $childrenlist) . ', $this->task_id)');
+			if (!$q->exec())
 				return db_error();
 			else
 			{
 				$this->updateDynamics(); // to update after children are deleted (see above)
 				$this->_action ='deleted with children'; // always overriden?
 			}
+			$q->clear();
+
 		}
 
 		// delete affiliated task_logs
-		$sql = "DELETE FROM task_log WHERE task_log_task";
+		$q = new DBQuery;
+		$q->setDelete('task_log');
 		if (!empty($childrenlist))
-			$sql .= " IN (" . implode(', ', $childrenlist) . ", $this->task_id)";
+			$q->addWhere('task_log_task IN (' . implode(', ', $childrenlist) . ', $this->task_id)');
 		else
-			$sql .= "=$this->task_id";
+			$q->addWhere('task_log_task = '.$this->task_id);
 
-		if (!db_exec( $sql ))
+
+		if (!$q->exec())
 			return db_error();
 		else
 			$this->_action ='deleted';
-
+			
+		$q->clear();
+		
 		 return NULL;
 	}
 
 	function updateDependencies( $cslist ) {
 	// delete all current entries
-		$sql = "DELETE FROM task_dependencies WHERE dependencies_task_id = $this->task_id";
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->setDelete('task_dependencies');
+		$q->addWhere('dependencies_task_id = '.$this->task_id);
+		$q->exec();
+		$q->clear();
+
 
 	// process dependencies
 		$tarr = explode( ",", $cslist );
 		foreach ($tarr as $task_id) {
 			if (intval( $task_id ) > 0) {
-				$sql = "REPLACE INTO task_dependencies (dependencies_task_id, dependencies_req_task_id) VALUES ($this->task_id, $task_id)";				
-				db_exec($sql);
+				$q = new DBQuery;
+				$q->addTable('task_contacts');
+				$q->addReplace('dependencies_task_id', $this->task_id);
+				$q->addReplace('dependencies_req_task_id', $task_id);
+				$q->exec();
+				$q->clear();
 			}
 		}
 	}
@@ -630,12 +715,13 @@ class CTask extends CDpObject {
 	function staticGetDependencies ($taskId) {
 		if (empty($taskId))
 			return '';
-		$sql = "
-            SELECT dependencies_req_task_id
-            FROM task_dependencies td
-            WHERE td.dependencies_task_id = $taskId
-		";
-		$list = db_loadColumn ($sql);
+		$q = new DBQuery;
+		$q->addTable('task_dependencies', 'td');
+		$q->addQuery('dependencies_req_task_id');
+		$q->addWhere('td.dependencies_task_id = '. $taskId);
+		$list = $q->loadColumn();
+		$q->clear();
+
 		$result = $list ? implode (',', $list) : '';
 
 		return $result;
@@ -646,8 +732,12 @@ class CTask extends CDpObject {
 	function notifyOwner() {
 		GLOBAL $AppUI, $dPconfig, $locale_char_set;
 		
-		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
-		$projname = db_loadResult( $sql );
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addQuery('project_name');
+		$q->addWhere('project_id='.$this->task_project);
+		$projname = $q->loadResult();
+		$q->clear();
 
 		$mail = new Mail;
 
@@ -656,27 +746,19 @@ class CTask extends CDpObject {
 	// c = creator
 	// a = assignee
 	// o = owner
-		$sql = "SELECT t.task_id,"
-		."\ncc.contact_email as creator_email,"
-		."\ncc.contact_first_name as creator_first_name,"
-		."\ncc.contact_last_name as creator_last_name,"
-		."\noc.contact_email as owner_email,"
-		."\noc.contact_first_name as owner_first_name,"
-		."\noc.contact_last_name as owner_last_name,"
-		."\na.user_id as assignee_id,"
-		."\nac.contact_email as assignee_email,"
-		."\nac.contact_first_name as assignee_first_name,"
-		."\nac.contact_last_name as assignee_last_name"
-		."\nFROM tasks t"
-		."\nLEFT JOIN user_tasks u ON u.task_id = t.task_id"
-		."\nLEFT JOIN users o ON o.user_id = t.task_owner"
-                ."\nLEFT JOIN contacts oc ON oc.contact_id = o.user_contact" 
-		."\nLEFT JOIN users c ON c.user_id = t.task_creator"
-                ."\nLEFT JOIN contacts cc ON cc.contact_id = c.user_contact" 
-		."\nLEFT JOIN users a ON a.user_id = u.user_id"
-                ."\nLEFT JOIN contacts ac ON ac.contact_id = a.user_contact" 
-		."\nWHERE t.task_id = $this->task_id";
-		$users = db_loadList( $sql );
+		$q = new DBQuery;
+		$q->addTable('tasks', 't');
+		$q->addQuery('t.task_id, ncc.contact_email as creator_email, ncc.contact_first_name as creator_first_name, ncc.contact_last_name as creator_last_name,noc.contact_email as owner_email,noc.contact_first_name as owner_first_name, noc.contact_last_name as owner_last_name, na.user_id as assignee_id, nac.contact_email as assignee_email, nac.contact_first_name as assignee_first_name, nac.contact_last_name as assignee_last_name');
+		$q->addJoin('user_tasks', 'u', 'u.task_id = t.task_id');
+		$q->addJoin('users', 'o', 'o.user_id = t.task_owner');
+		$q->addJoin('contacts', 'oc', 'oc.contact_id = o.user_contact');
+		$q->addJoin('users', 'c', 'c.user_id = t.task_creator');
+		$q->addJoin('contacts', 'cc', 'cc.contact_id = c.user_contact');
+		$q->addJoin('users', 'a', 'a.user_id = u.user_id');
+		$q->addJoin('contacts', 'ac', 'ac.contact_id = a.user_contact');
+		$q->addWhere('t.task_id = '.$this->task_id);
+		$users = $q->loadList();
+		$q->clear();
 
 		if (count( $users )) {
 			$body = $AppUI->_('Project').": $projname";
@@ -710,8 +792,12 @@ class CTask extends CDpObject {
 		$df = $AppUI->getPref('SHDATEFORMAT');
 		$df .= " " . $AppUI->getPref('TIMEFORMAT');
 
-		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
-		$projname = db_loadResult( $sql );
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addQuery('project_name');
+		$q->addWhere('project_id='.$this->task_project);
+		$projname = $q->loadResult();
+		$q->clear();
 
 		$mail = new Mail;
 		
@@ -720,27 +806,19 @@ class CTask extends CDpObject {
 	// c = creator
 	// a = assignee
 	// o = owner
-		$sql = "SELECT t.task_id,"
-		."\ncc.contact_email as creator_email,"
-		."\ncc.contact_first_name as creator_first_name,"
-		."\ncc.contact_last_name as creator_last_name,"
-		."\noc.contact_email as owner_email,"
-		."\noc.contact_first_name as owner_first_name,"
-		."\noc.contact_last_name as owner_last_name,"
-		."\na.user_id as assignee_id,"
-		."\nac.contact_email as assignee_email,"
-		."\nac.contact_first_name as assignee_first_name,"
-		."\nac.contact_last_name as assignee_last_name"
-		."\nFROM tasks t"
-		."\nLEFT JOIN user_tasks u ON u.task_id = t.task_id"
-		."\nLEFT JOIN users o ON o.user_id = t.task_owner"
-                ."\nLEFT JOIN contacts oc ON oc.contact_id = o.user_contact"
-		."\nLEFT JOIN users c ON c.user_id = t.task_creator"
-                ."\nLEFT JOIN contacts cc ON cc.contact_id = c.user_contact"
-		."\nLEFT JOIN users a ON a.user_id = u.user_id"
-                ."\nLEFT JOIN contacts ac ON ac.contact_id = a.user_contact"
-		."\nWHERE t.task_id = $this->task_id";
-		$users = db_loadList( $sql );
+		$q = new DBQuery;
+		$q->addTable('tasks', 't');
+		$q->addQuery('t.task_id, cc.contact_email as creator_email, cc.contact_first_name as creator_first_name, cc.contact_last_name as creator_last_name, oc.contact_email as owner_email, oc.contact_first_name as owner_first_name, oc.contact_last_name as owner_last_name, a.user_id as assignee_id, ac.contact_email as assignee_email, ac.contact_first_name as assignee_first_name, ac.contact_last_name as assignee_last_name');
+		$q->addJoin('user_tasks', 'u', 'u.task_id = t.task_id');
+		$q->addJoin('users', 'o', 'o.user_id = t.task_owner');
+		$q->addJoin('contacts', 'oc', 'oc.contact_id = o.user_contact');
+		$q->addJoin('users', 'c', 'c.user_id = t.task_creator');
+		$q->addJoin('contacts', 'cc', 'cc.contact_id = c.user_contact');
+		$q->addJoin('users', 'a', 'a.user_id = u.user_id');
+		$q->addJoin('contacts', 'ac', 'ac.contact_id = a.user_contact');
+		$q->addWhere('t.task_id = '.$this->task_id);
+		$users = $q->loadList();
+		$q->clear();
 
 		if (count( $users )) {
 			$task_start_date       = new CDate($this->task_start_date);
@@ -879,8 +957,12 @@ class CTask extends CDpObject {
 		$prefix = $AppUI->getPref('TASKLOGSUBJ');
 		$mail->Subject( $prefix .  ' ' . $log->task_log_name, $char_set);
 
-		$sql = "SELECT project_name FROM projects WHERE project_id=$this->task_project";
-		$projname = db_loadResult( $sql );
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addQuery('project_name');
+		$q->addWhere('project_id='.$this->task_project);
+		$projname = $q->loadResult();
+		$q->clear();
 
 		$body = $AppUI->_('Project') . ": $projname\n";
 		if ($this->task_parent != $this->task_id) {
