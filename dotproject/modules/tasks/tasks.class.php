@@ -636,7 +636,7 @@ class CTask extends CDpObject {
 		{
 			$q = new DBQuery;
 			$q->setDelete('tasks');
-			$q->addWhere('task_parent IN (' . implode(', ', $childrenlist) . ', $this->task_id)');
+			$q->addWhere("task_parent IN (' . implode(', ', $childrenlist) . ', $this->task_id)");
 			if (!$q->exec())
 				return db_error();
 			else
@@ -1132,7 +1132,6 @@ class CTask extends CDpObject {
 		$q->clear();
 
 		$aBuf = !empty($aBuf) ? $aBuf : array();
-		//$aBuf = array_values(db_loadColumn ($sql));
 
 		if ($recurse) {
 			// recurse to find sub dependents
@@ -1548,35 +1547,58 @@ class CTask extends CDpObject {
  	function getUserSpecificTaskPriority( $user_id = 0, $task_id = NULL ) {
 		// use task_id of given object if the optional parameter task_id is empty
 		$task_id = empty($task_id) ? $this->task_id : $task_id;
-		$sql = "SELECT user_task_priority FROM user_tasks WHERE user_id = $user_id AND task_id = $task_id";
-		$prio = db_loadHash($sql, $priority);
-		return $prio ? $priority['user_task_priority'] : NULL;
+		$q = new DBQuery;
+		$q->addTable('user_tasks');
+		$q->addQuery('user_task_priority');
+		$q->addWhere('user_id = '.$user_id);
+		$q->addWhere('task_id = '.$task_id);
+		$priority = $q->loadList();
+		$q->clear();
+		return $priority[0]['user_task_priority'];
 	}
 	
 	function updateUserSpecificTaskPriority( $user_task_priority = 0, $user_id = 0, $task_id = NULL ) {
 		// use task_id of given object if the optional parameter task_id is empty
 		$task_id = empty($task_id) ? $this->task_id : $task_id;
-		$sql = "REPLACE INTO user_tasks (user_id, task_id, user_task_priority) VALUES ($user_id, $task_id, $user_task_priority)";
-		db_exec( $sql );
+		$q = new DBQuery;
+		$q->addTable('user_tasks');
+		$q->addReplace('user_id', $user_id);
+		$q->addReplace('user_task_priority', $user_task_priority);
+		$q->addReplace('task_id', $task_id);
+		$q->exec();
+		$q->clear();
 	}
 
     function getProject() {
-     $sql = "SELECT project_name, project_short_name, project_color_identifier FROM projects WHERE project_id = '$this->task_project'";
-     $proj = db_loadHash($sql, $projects);
-     return $projects;
+	$q = new DBQuery;
+	$q->addTable('projects');
+	$q->addQuery('project_name, project_short_name, project_color_identifier');
+	$q->addWhere('project_id = '.$this->task_project);
+	$projects = $q->loadList();
+	$q->clear();
+	return $projects[0];
     }
 
 	//Returns task children IDs
 	function getChildren() {
-		$sql = "select task_id from tasks where task_id != '$this->task_id'
-				and task_parent = '$this->task_id'";
-		return db_loadColumn($sql);
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('task_id');
+		$q->addWhere('task_id != '.$this->task_id);
+		$q->addWhere('task_parent = '.$this->task_id);
+		return $q->loadColumn();
 	}
 
 	// Returns task deep children IDs
 	function getDeepChildren()
 	{
-		$children = db_loadColumn( "SELECT task_id FROM tasks WHERE task_parent = $this->task_id" );
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('task_id');
+		$q->addWhere('task_parent = '.$this->task_id);
+		$children = $q->loadColumn();
+		$q->clear();
+
 		if ($children)
 		{
 			$deep_children = array();
@@ -1602,17 +1624,23 @@ class CTask extends CDpObject {
 		}
 		
 		// get children
-		$sql = "select task_id
-		        from tasks
-		        where task_parent = '$task_id'";
-		
-		$tasks_id = db_loadColumn($sql);
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('task_id');
+		$q->addWhere('task_parent = '.$task_id);
+		$tasks_id = $q->loadColumn();
+		$q->clear();
+
 		if(count($tasks_id) == 0) return true;
 		
 		// update status of children
-		$sql = "update tasks set task_status = '$new_status' where task_parent = '$task_id'";
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addUpdate('task_status', $new_status);
+		$q->addWhere('task_parent = '.$task_id);
+		$q->exec();
+		$q->clear();
 
-		db_exec($sql);
 		// update status of children's children
 		foreach($tasks_id as $id){
 			if($id != $task_id){
@@ -1629,15 +1657,21 @@ class CTask extends CDpObject {
 		if(is_null($task_id)){
 			$task_id = $this->task_id;
 		}
-		$sql = "select task_id
-		        from tasks
-		        where task_parent = '$task_id'";
-		
-		$tasks_id = db_loadColumn($sql);
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addQuery('task_id');
+		$q->addWhere('task_parent = '.$task_id);
+		$tasks_id = $q->loadColumn();
+		$q->clear();
 		if(count($tasks_id) == 0) return true;
 		
-		$sql = "update tasks set task_project = '$new_project' where task_parent = '$task_id'";
-		db_exec($sql);
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addUpdate('task_project', $new_project);
+		$q->addWhere('task_parent = '.$task_id);
+		$q->exec();
+		$q->clear();
+
 
 		foreach($tasks_id as $id){
 			if($id != $task_id){
@@ -1921,13 +1955,16 @@ function canDelete( &$msg, $oid=null, $joins=null ) {
 			$this->$k = intval( $oid );
 		}
 		if (is_array( $joins )) {
-			$select = "$k";
-			$join = "";
+			$q = new DBQuery;
+			$q->addTable($this->_tbl);
+			$q->addQuery($k);
+			$q->addGroup($k);
+			$q->addWhere("$k = ".$this->$k);
 			foreach( $joins as $table ) {
-				$select .= ",\nCOUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}";
-				$join .= "\nLEFT JOIN {$table['name']} ON {$table['joinfield']} = $k";
+				$q->addQuery("COUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}");
+				$q->addJoin($table['name'], $table['name'], "{$table['joinfield']} = $k");
 			}
-			$sql = "SELECT $select\nFROM $this->_tbl\n$join\nWHERE $k = ".$this->$k." GROUP BY $k";
+			$sql = $q->prepare();
 
 			$obj = null;
 			if (!db_loadObject( $sql, $obj )) {
