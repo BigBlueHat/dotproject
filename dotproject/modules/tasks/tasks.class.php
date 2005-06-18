@@ -1027,55 +1027,31 @@ class CTask extends CDpObject {
 		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
 		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
 		
-		// filter tasks for not allowed projects
-		$tasks_filter = '';
-		$proj =& new CProject;
-		$task_filter_where = $proj->getAllowedSQL($AppUI->user_id, 'task_project');
-		if (count($task_filter_where))
-		  $tasks_filter = ' AND (' . implode(' AND ', $task_filter_where) . ")";
-
-
-	// assemble where clause
-		$where = "task_project = project_id"
-			. "\n\tAND ("
-			. "\n\t\t(task_start_date <= '$db_end' AND task_end_date >= '$db_start')"
-			. "\n\t\tOR task_start_date BETWEEN '$db_start' AND '$db_end'"
-			. "\n\t)"
-		    . "\n\t$tasks_filter";
-	/*
-			OR
-			task_end_date BETWEEN '$db_start' AND '$db_end'
-			OR
-			(DATE_ADD(task_start_date, INTERVAL task_duration HOUR)) BETWEEN '$db_start' AND '$db_end'
-			OR
-			(DATE_ADD(task_start_date, INTERVAL task_duration DAY)) BETWEEN '$db_start' AND '$db_end'
-	*/
-		$where .= $company_id ? "\n\tAND project_company = '$company_id'" : '';
-
-	// exclude read denied projects
-		$obj = new CProject();
-		$deny = $obj->getDeniedRecords( $AppUI->user_id );
-
-		$where .= count($deny) > 0 ? "\n\tAND task_project NOT IN (" . implode( ',', $deny ) . ')' : '';
-
-	// get any specifically denied tasks
-		$obj = new CTask();
-		$allow = $obj->getAllowedSQL( $AppUI->user_id );
-
-		$where .= count($allow) > 0 ? "\n\tAND " . implode( ' AND ', $allow ) : '';
-
 	// assemble query
-		$sql = "SELECT DISTINCT task_id, task_name, task_start_date, task_end_date,"
-			. "\n\ttask_duration, task_duration_type,"
-			. "\n\tproject_color_identifier AS color,"
-			. "\n\tproject_name"
-			. "\nFROM tasks,projects,companies"
-			. "\nWHERE $where"
-			. "\nORDER BY task_start_date";
-			
-//echo "<pre>$sql</pre>";
+		$q = new DBQuery;
+		$q->addTable('tasks');
+		$q->addTable('projects');
+		$q->addTable('companies');
+		$q->addQuery('DISTINCT task_id, task_name, task_start_date, task_end_date, task_duration, task_duration_type, project_color_identifier AS color, project_name');
+		$q->addOrder('task_start_date');
+		$q->addWhere('task_project = project_id');
+		$q->addWhere("((task_start_date <= '$db_end' AND task_end_date >= '$db_start') OR task_start_date BETWEEN '$db_start' AND '$db_end')");
+
+		if ($company_id ){
+			$q->addWhere("project_company = '$company_id'");
+		}
+		
+		// exclude read denied projects
+		$obj = new CProject();
+		$obj->setAllowedSQL( $AppUI->user_id, $q );
+		
+
+		// get any specifically denied tasks
+		$obj = new CTask();
+		$obj->setAllowedSQL( $AppUI->user_id, $q );
+
 	// execute and return
-		return db_loadList( $sql );
+		return $q->loadList();
 	}
 
 	function canAccess( $user_id ) {
@@ -1092,20 +1068,31 @@ class CTask extends CDpObject {
 				break;
 			case 1:
 				// protected
-				$sql = "SELECT user_company FROM users WHERE user_id=$user_id";
-				$user_company = db_loadResult( $sql );
-				$sql = "SELECT user_company FROM users WHERE user_id=$this->task_owner";
-				$owner_company = db_loadResult( $sql );
-				//echo "$user_company,$owner_company";die;
-
-				$sql = "SELECT COUNT(*) FROM user_tasks WHERE user_id=$user_id AND task_id=$this->task_id";
-				$count = db_loadResult( $sql );
+				$q = new DBQuery;
+				$q->addTable('users');
+				$q->addQuery('user_company');
+				$q->addWhere('user_id='.$this->task_owner);
+				$user_company = $q->loadResult();
+				$q->clear();
+				
+				$q = new DBQuery;
+				$q->addTable('user_tasks');
+				$q->addQuery('COUNT(*)');
+				$q->addWhere('task_id='.$this->task_id);
+				$q->addWhere('user_id='.$user_id);
+				$count = $q->loadResult();
+				$q->clear();
 				return (($owner_company == $user_company && $count > 0) || $this->task_owner == $user_id);
 				break;
 			case 2:
 				// participant
-				$sql = "SELECT COUNT(*) FROM user_tasks WHERE user_id=$user_id AND task_id=$this->task_id";
-				$count = db_loadResult( $sql );
+				$q = new DBQuery;
+				$q->addTable('user_tasks');
+				$q->addQuery('COUNT(*)');
+				$q->addWhere('task_id='.$this->task_id);
+				$q->addWhere('user_id='.$user_id);
+				$count = $q->loadResult();
+				$q->clear();
 				return ($count > 0 || $this->task_owner == $user_id);
 				break;
 			case 3:
@@ -1133,14 +1120,17 @@ class CTask extends CDpObject {
 
 		if (empty($taskId))
 			return '';
-		$sql = "
-			SELECT dependencies_task_id
-			FROM task_dependencies AS td, tasks AS t
-			WHERE td.dependencies_req_task_id = $taskId
-			AND td.dependencies_task_id = t.task_id
-		";
+			
+		$q = new DBQuery;
+		$q->addTable('tasks', 't');
+		$q->addTable('task_dependencies', 'td');
+		$q->addQuery('dependencies_task_id');
+		$q->addWhere('td.dependencies_req_task_id ='. $taskId);
+		$q->addWhere('td.dependencies_task_id = t.task_id');
 		// AND t.task_dynamic != 1   dynamics are not updated but they are considered
-		$aBuf = db_loadColumn($sql);
+		$aBuf = $q->loadColumn();
+		$q->clear();
+
 		$aBuf = !empty($aBuf) ? $aBuf : array();
 		//$aBuf = array_values(db_loadColumn ($sql));
 
@@ -1221,15 +1211,15 @@ class CTask extends CDpObject {
 		$newTask->calc_task_end_date();
 		$new_end_date = $newTask->task_end_date;
 
-		$sql = "UPDATE tasks
-		SET
-				task_start_date = '$new_start_date',
-				task_end_date = '$new_end_date'
-			WHERE 	task_dynamic != '1' AND task_id = $task_id
-		";
-
-		db_exec( $sql );
-
+		$q = new DBQuery;
+		$q->addTable('tasks', 't');
+		$q->addUpdate('task_start_date', $new_start_date);
+		$q->addUpdate('task_end_date', $new_end_date);
+		$q->addWhere('task_id = '.$task_id);
+		$q->addWhere('task_dynamic != 1');
+		$q->exec();
+		$q->clear();
+		
 		if ( $newTask->task_parent != $newTask->task_id )
 			$newTask->updateDynamics();
 		return;
@@ -1277,18 +1267,25 @@ class CTask extends CDpObject {
 		// Don't respect end dates of excluded tasks
 		if ($tracked_dynamics) {
 			$track_these = implode(',', $tracked_dynamics);
-			$sql = "SELECT MAX(task_end_date) FROM tasks
-				WHERE task_id IN ($deps) AND task_dynamic IN ($track_these)";
+			$q = new DBQuery;
+			$q->addTable('tasks', 't');
+			$q->addQuery('MAX(task_end_date)');
+			$q->addWhere("task_id IN ($deps)");
+			$q->addWhere("task_dynamic IN ($track_these)");
 		}
 
-		$last_end_date = db_loadResult( $sql );
+		$last_end_date = $q->loadResult();
+		$q->clear();
 
 		if ( !$last_end_date ) {
 			// Set to project start date
 			$id = $taskObj->task_project;
-			$sql = "SELECT project_start_date FROM projects
-				WHERE project_id = $id";
-			$last_end_date = db_loadResult( $sql );
+			$q = new DBQuery;
+			$q->addTable('projects');
+			$q->addQuery('project_start_date');
+			$q->addWhere('task_id = '.$id);
+			$last_end_date = $q->loadResult();
+			$q->clear();
 		}
 
 		return $last_end_date;
@@ -1445,9 +1442,12 @@ class CTask extends CDpObject {
          // unassign a user from task
 	function removeAssigned( $user_id ) {
 	// delete all current entries
-		$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id AND user_id = $user_id";
-		db_exec( $sql );
-
+		$q = new DBQuery;
+		$q->setDelete('user_tasks');
+		$q->addWhere('task_id = '.$this->task_id);
+		$q->addWhere('user_id = '.$user_id);
+		$q->exec();
+		$q->clear();
 	}
 
 	//using user allocation percentage ($perc_assign)
@@ -1461,17 +1461,18 @@ class CTask extends CDpObject {
                 if ($del == true && $rmUsers == true) {
                         foreach ($tarr as $user_id) {
 				if ($user_id > '') {
-					$sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id
-						AND user_id = $user_id";
-					db_exec( $sql );
+					$this->removeAssigned($user_id);
 				}
                         }
 
                          return false;
 
                 } else if ($del == true) {      // delete all on this task for a hand-over of the task
-                        $sql = "DELETE FROM user_tasks WHERE task_id = $this->task_id";
-                        db_exec( $sql );
+			$q = new DBQuery;
+			$q->setDelete('user_tasks');
+			$q->addWhere('task_id = '.$this->task_id);
+			$q->exec();
+			$q->clear();
                 }
 
 
@@ -1487,8 +1488,13 @@ class CTask extends CDpObject {
                                         // add Username of the overAssigned User
                                         $overAssignment .= " ".$alloc[$user_id]['userFC'];
                                 } else {
-                                        $sql = "REPLACE INTO user_tasks (user_id, task_id, perc_assignment) VALUES ($user_id, $this->task_id, $perc)";
-                                        db_exec( $sql );
+					$q = new DBQuery;
+					$q->addTable('user_tasks');
+					$q->addReplace('user_id', $user_id);
+					$q->addReplace('task_id', $this->task_id);
+					$q->addReplace('perc_assignment', $perc);
+					$q->exec();
+					$q->clear();
                                 }
 			}
 		}
@@ -1496,12 +1502,15 @@ class CTask extends CDpObject {
 	}
 
 	function getAssignedUsers(){
-		$sql = "select u.*, ut.perc_assignment, ut.user_task_priority, co.contact_last_name 
-		        from users as u, user_tasks as ut
-            LEFT JOIN contacts as co ON co.contact_id = u.user_contact 
-		        where ut.task_id = '$this->task_id'
-		              and ut.user_id = u.user_id";
-		return db_loadHashList($sql, "user_id");
+		$q = new DBQuery;
+		$q->addTable('users', 'u');
+		$q->addTable('user_tasks', 'ut');
+		$q->addQuery('u.*, ut.perc_assignment, ut.user_task_priority, co.contact_last_name');
+		$q->addJoin('contacts', 'co', 'co.contact_id = u.user_contact');
+		$q->addWhere('ut.task_id = '.$this->task_id);
+		$q->addWhere('ut.user_id = u.user_id');
+
+		return $q->loadHashList('user_id');
 	}
 
         /**
