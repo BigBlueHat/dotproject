@@ -188,6 +188,15 @@ class DBQuery {
     	$this->addMap('value_list', $value, $field);
     $this->type = 'insert';
   }
+  
+  // implemented addReplace() on top of addInsert()
+  
+  function addReplace($field, $value, $set = false, $func = false)
+  {
+  	 $this->addInsert($field, $value, $set, $func);
+	 $this->type = 'replace';
+  }
+
 
   function addUpdate($field, $value)
   {
@@ -385,6 +394,9 @@ class DBQuery {
       case 'insert':
         $q = $this->prepareInsert();
 	break;
+      case 'replace':
+        $q = $this->prepareReplace();
+	break;
       case 'delete':
       $q = $this->prepareDelete();
 	break;
@@ -513,6 +525,36 @@ class DBQuery {
     return $q;
   }
 
+  function prepareReplace()
+  {
+    $q = 'REPLACE INTO ';
+    if (isset($this->table_list)) {
+      if (is_array($this->table_list)) {
+			reset($this->table_list);
+	// Grab the first record
+	list($key, $table) = each ($this->table_list);
+      } else {
+	$table = $this->table_list;
+      }
+    } else {
+      return false;
+    }
+    $q .= '`' . $this->_table_prefix . $table . '`';
+
+    $fieldlist = '';
+    $valuelist = '';
+    foreach( $this->value_list as $field => $value) {
+      if ($fieldlist)
+	$fieldlist .= ",";
+      if ($valuelist)
+	$valuelist .= ",";
+      $fieldlist .= '`' . trim($field) . '`';
+      $valuelist .= $value;
+    }
+    $q .= "($fieldlist) values ($valuelist)";
+    return $q;
+  }
+  
   function prepareDelete()
   {
     $q = 'DELETE FROM ';
