@@ -51,6 +51,11 @@ class dPacl extends gacl_api {
     // the future.
     if ($dPconfig['debug'] > 10)
       $this->_debug = true;
+      
+    // Enable caching
+    $this->_caching = TRUE;
+    $this->_cache_expire_time = 6000;
+    
     parent::gacl_api($opts);
   }
 
