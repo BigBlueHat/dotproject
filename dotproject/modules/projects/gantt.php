@@ -159,7 +159,6 @@ foreach($projects as $p) {
 	//using new jpGraph determines using Date object instead of string
 	$start = ($p["project_start_date"] > "0000-00-00 00:00:00") ? $p["project_start_date"] : date("Y-m-d H:i:s");
 	$end_date   = $p["project_end_date"];
-        $actual_end = $p["project_actual_end_date"] ? $p["project_actual_end_date"] : $p["project_end_date"];
 
 
 	$end_date = new CDate($end_date);
@@ -191,6 +190,8 @@ foreach($projects as $p) {
         }
 	$enddate = new CDate($end);
 	$startdate = new CDate($start);
+	$actual_end = $p["project_actual_end_date"] ? $p["project_actual_end_date"] : $end;
+
 	$actual_enddate = new CDate($actual_end);
 	$actual_enddate = $actual_enddate->after($startdate) ? $actual_enddate : $enddate;
         $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), $actual_enddate->format($df)), $start, $actual_end, $cap, 0.6);
