@@ -17,3 +17,7 @@ INSERT INTO `config` VALUES ('', 'task_reminder_repeat', '100', 'task_reminder',
 # 20050603
 # This seemed to have been lost in one of the other updates.
 UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'check_tasks_dates';
+
+# 20050620
+# Adding new type for tasks collapse/expand
+INSERT INTO `config` VALUES('', 'tasks_ajax_list', 'true', '', 'checkbox');
