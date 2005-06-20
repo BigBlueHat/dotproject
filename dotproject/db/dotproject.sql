@@ -1195,3 +1195,7 @@ INSERT INTO config VALUES ('', 'ldap_search_user', 'Manager', 'ldap', 'text');
 INSERT INTO config VALUES ('', 'ldap_search_pass', 'secret', 'ldap', 'text');
 INSERT INTO config VALUES ('', 'ldap_allow_login', 'true', 'ldap', 'checkbox');
 
+# 20050620
+# New tasks list method for collapsing/expanding.
+INSERT INTO `config` VALUES('', 'tasks_ajax_list', 'true', '', 'checkbox');
+

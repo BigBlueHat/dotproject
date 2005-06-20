@@ -52,13 +52,10 @@ if (isset($_GET['pin']))
 		$q->addTable('user_task_pin');
 		$q->addInsert('user_id', $AppUI->user_id);
 		$q->addInsert('task_id', $task_id);
-		
-		//$sql = "INSERT INTO user_task_pin (user_id, task_id) VALUES($AppUI->user_id, $task_id)";
 	} else {
 		$q->setDelete('user_task_pin');
 		$q->addWhere('user_id = ' . $AppUI->user_id);
 		$q->addWhere('task_id = ' . $task_id);
-		//$sql = "DELETE FROM user_task_pin WHERE user_id=$AppUI->user_id AND task_id=$task_id";
 	}
         
 	if ( !$q->exec() )
@@ -67,7 +64,7 @@ if (isset($_GET['pin']))
 	$AppUI->redirect('', -1);
 }
 else if($task_id > 0)
-	$_GET['open_task_id'] = $task_id;
+	$tasks_opened[] = $task_id;
 
 
 $AppUI->savePlace();
@@ -426,6 +423,7 @@ function chAssignment(project_id, rmUser, del) {
 }
 <?php } ?>
 </script>
+<script language="JavaScript" src="modules/tasks/tree.js?<?php echo time(); ?>"></script >
 
 
 <?php if ($project_id || $task_id) { ?>
@@ -561,11 +559,12 @@ foreach ($projects as $k => $p) {
 			** added the following task status condition to the if clause in order to make sure inactive children
 			** are shown in the 'inactive view'; their parents are for instance not listed with them.
 			*/
-
-			if ($t["task_parent"] == $t["task_id"] || $p['tasks'][$i]["task_status"] != 0) {
+			if ($t["task_parent"] == $t["task_id"] || ($f == 'children') || $p['tasks'][$i]["task_status"] != 0) {
 			    $is_opened = in_array($t["task_id"], $tasks_opened);
+			    $t['node_id'] = $t['task_id'];
 				showtask( $t, 0, $is_opened );
-				if($is_opened || !$t["task_dynamic"]){
+				$q->clear();
+				if(($is_opened && !dPgetConfig('tasks_ajax_list')) || !$t["task_dynamic"]){
 				    findchild( $p['tasks'], $t["task_id"] );
 				}
 			}
@@ -576,7 +575,8 @@ foreach ($projects as $k => $p) {
 			    if($p['tasks'][$i]["task_dynamic"] && in_array( $p['tasks'][$i]["task_parent"], $tasks_closed)) {
 			        closeOpenedTask($p['tasks'][$i]["task_id"]);
 			    }
-			    if(in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
+			    // $f == 'children' - Child Tasks in tasks module
+			    if((!dPgetConfig('tasks_ajax_list') || $f == 'children') && in_array($p['tasks'][$i]["task_parent"], $tasks_opened)){
 				    showtask( $p['tasks'][$i], 1, false);
 			    }
 			}

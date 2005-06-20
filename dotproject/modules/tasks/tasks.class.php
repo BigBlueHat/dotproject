@@ -2056,7 +2056,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                 $days = $now->dateDiff( $end_date ) * $sign;
         }
 
-	$s = "\n<tr>";
+	$s = "\n<tr ondblclick='dpToggleNode(this)' id='node-{$a['node_id']}'>";
 // edit icon
 	$s .= "\n\t<td>";
 	$canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
@@ -2095,11 +2095,13 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 	}
 	$s .= @$a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
 	$s .= "</td>";
-// dots
+// name
+	$s .= '<td name="name"';
+	// dots
 	if ($today_view)
-		$s .= '<td width="50%">';
+		$s .= ' width="50%">';
 	else
-		$s .= '<td width="90%">';
+		$s .= ' width="90%">';
 	for ($y=0; $y < $level; $y++) {
 		if ($y+1 == $level) {
 			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
@@ -2115,7 +2117,10 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 	$alt = str_replace("\r", ' ', $alt);
 	$alt = str_replace("\n", ' ', $alt);
 
-	$open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
+	if (!dPgetConfig('tasks_ajax_list'))
+		$open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
+	else
+		$open_link = '<img src="images/icons/expand.gif" border="0" align="center" onClick="dpToggleNode(this);" />';
 	if ($a["task_milestone"] > 0 ) {
 		$s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a> <img src="./images/icons/milestone.gif" border="0"></td>';
 	} else if ($a["task_dynamic"] == '1'){
@@ -2204,10 +2209,10 @@ function findchild( &$tarr, $parent, $level=0){
 	
 	$level = $level+1;
 	$n = count( $tarr );
-	
 	for ($x=0; $x < $n; $x++) {
 		if($tarr[$x]["task_parent"] == $parent && $tarr[$x]["task_parent"] != $tarr[$x]["task_id"]){
-		    $is_opened = in_array($tarr[$x]["task_id"], $tasks_opened);
+			$tarr[$x]['node_id'] = $parent . '-' . $tarr['task_id'];
+	    $is_opened = in_array($tarr[$x]["task_id"], $tasks_opened);
 			showtask( $tarr[$x], $level, $is_opened );
 			if($is_opened || !$tarr[$x]["task_dynamic"]){
 			    findchild( $tarr, $tarr[$x]["task_id"], $level);
