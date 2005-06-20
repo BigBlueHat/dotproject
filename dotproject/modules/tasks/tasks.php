@@ -247,7 +247,7 @@ switch ($f) {
 		break;
 }
 
-if ($project_id && $showIncomplete) {
+if (($project_id  || $task_id) && $showIncomplete) {
 	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
 }
 
@@ -428,7 +428,7 @@ function chAssignment(project_id, rmUser, del) {
 </script>
 
 
-<?php if ($project_id) { ?>
+<?php if ($project_id || $task_id) { ?>
 <table width='100%' border='0' cellpadding='1' cellspacing='0'>
 <form name='task_list_options' method='POST' action='<?php echo $query_string; ?>'>
 <input type='hidden' name='show_task_options' value='1'>
