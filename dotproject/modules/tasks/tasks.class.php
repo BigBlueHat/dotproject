@@ -681,7 +681,7 @@ class CTask extends CDpObject {
 		foreach ($tarr as $task_id) {
 			if (intval( $task_id ) > 0) {
 				$q = new DBQuery;
-				$q->addTable('task_contacts');
+				$q->addTable('task_dependencies');
 				$q->addReplace('dependencies_task_id', $this->task_id);
 				$q->addReplace('dependencies_req_task_id', $task_id);
 				$q->exec();
