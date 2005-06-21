@@ -25,7 +25,6 @@ $criticalTasks = ($project_id > 0) ? $project->getCriticalTasks($project_id) : N
 // pull valid projects and their percent complete information
 
 $q = new DBQuery;
-$q->addTable('permissions');
 $q->addTable('projects');
 $q->addQuery('project_id, project_color_identifier, project_name, project_start_date, project_end_date');
 $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
@@ -33,15 +32,8 @@ $q->addWhere('project_active <> 0');
 $q->addGroup('project_id');
 $q->addOrder('project_name');
 $project->setAllowedSQL($AppUI->user_id, $q);
-$prc = $q->exec();
+$projects = $q->loadHashList('project_id');
 $q->clear();
-$pnums = db_num_rows( $prc );
-
-$projects = array();
-for ($x=0; $x < $pnums; $x++) {
-	$z = db_fetch_assoc( $prc );
-	$projects[$z["project_id"]] = $z;
-}
 
 // get any specifically denied tasks
 $task =& new CTask;
@@ -421,7 +413,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$q->addTable('task_dependencies');
 	$q->addQuery('dependencies_task_id');
 	$q->addWhere('dependencies_req_task_id=' . $a["task_id"]);
-	$query = $q->exec($sql);
+	$query = $q->exec();
 
 	while($dep = db_fetch_assoc($query)) {
 		// find row num of dependencies
