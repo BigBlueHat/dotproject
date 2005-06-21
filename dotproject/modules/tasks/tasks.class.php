@@ -652,7 +652,8 @@ class CTask extends CDpObject {
 		$q = new DBQuery;
 		$q->setDelete('task_log');
 		if (!empty($childrenlist))
-			$q->addWhere('task_log_task IN (' . implode(', ', $childrenlist) . ', $this->task_id)');
+			$q->addWhere('task_log_task IN (' . implode(', ', $childrenlist) . ',' . $this->task_id . ')');
+
 		else
 			$q->addWhere('task_log_task = '.$this->task_id);
 
