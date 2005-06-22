@@ -11,6 +11,8 @@ $AppUI->savePlace();
 // load the record data
 $msg = '';
 $row = new CContact();
+$row->contact_id = $contact_id;
+$row->load();
 $canDelete = $row->canDelete( $msg, $contact_id );
 // Don't allow to delete contacts, that have a user associated to them.
 $q  = new DBQuery;
