@@ -47,7 +47,12 @@ if ($selected && count( $selected )) {
 				$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
 			else
 				$q->addWhere('task_id='.$val);
-
+		} else if ( $action == 'a' ) {
+			$t->task_status = 0;
+			$t->store();
+		} else if ( $action == 'i' ) {
+			$t->task_status = -1;
+			$t->store();
 		} else if ( $action == 'd' ) { 						// DELETE
 			// delete task
       $t->delete();
@@ -81,13 +86,13 @@ if ($selected && count( $selected )) {
 			$q->addTable('tasks');
 			$q->addUpdate('task_priority', $action);
       if (isset($children))
-      				$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
+     		$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
 			else
 				$q->addWhere('task_id='.$val);
 
 		}
-		if (isset($sql)) {
-			$q->exec( $sql );
+		if (isset($q)) {
+			$q->exec();
 			$q->clear();
 		}
 	}
@@ -282,10 +287,12 @@ foreach ($tasks as $task)
 
 <?php
   $actions = array();
-  $actions['d'] = $AppUI->_('Delete', UI_OUTPUT_JS);
-  $actions['f'] = $AppUI->_('Mark as Finished', UI_OUTPUT_JS);
-  $actions['m'] = $AppUI->_('Move', UI_OUTPUT_JS);
   $actions['c'] = $AppUI->_('Copy', UI_OUTPUT_JS);
+  $actions['d'] = $AppUI->_('Delete', UI_OUTPUT_JS);
+  $actions['a'] = $AppUI->_('Mark as Active', UI_OUTPUT_JS);
+  $actions['f'] = $AppUI->_('Mark as Finished', UI_OUTPUT_JS);
+  $actions['i'] = $AppUI->_('Mark as Inactive', UI_OUTPUT_JS);
+  $actions['m'] = $AppUI->_('Move', UI_OUTPUT_JS);
 	foreach($priorities as $k => $v)
 		$actions[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_JS);
 
