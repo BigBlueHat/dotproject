@@ -35,7 +35,24 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 			$contactValues["contact_first_name"] = $ci['N'][0]['value'][1][0];
 			$contactValues["contact_title"] = $ci['N'][0]['value'][3][0];
 			$contactValues["contact_birthday"] = $ci['BDAY'][0]['value'][0][0];
-			$contactValues["contact_company"] = $ci['ORG'][0]['value'][0][0];
+
+			//$contactValues["contact_company"] = $ci['ORG'][0]['value'][0][0];
+			// Search for Company Name in companies table.
+			$query = New DBQuery(); 
+			$query->addTable("companies");
+			$query->addQuery("*");
+			$query->addWhere("company_name LIKE '%".$ci['ORG'][0]['value'][0][0]."%'");
+			$result = $query->exec();
+			$row = $result->FetchRow();
+			if (is_array($row)) 
+			{
+				$contactValues["contact_company"] = $row["company_id"];
+			}
+			else
+			{
+				$contactValues["contact_company"] = NULL;
+			}
+
 			$contactValues["contact_type"] = $ci['N'][0]['value'][2][0];
 			$contactValues["contact_email"] = $ci['EMAIL'][0]['value'][0][0];
 			$contactValues["contact_email2"] = $ci['EMAIL'][1]['value'][0][0];
@@ -51,6 +68,8 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 			$contactValues["contact_notes"] = $ci['NOTE'][0]['value'][0][0];
 			$contactValues["contact_order_by"] = $contactValues["contact_last_name"].', '.$contactValues["contact_first_name"];
 			$contactValues["contact_id"] = 0;
+
+			
 
 			// bind array to object
 			if (!$obj->bind( $contactValues )) {
