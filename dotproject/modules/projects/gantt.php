@@ -217,8 +217,8 @@ foreach($projects as $p) {
         }
 
 	$graph->Add($bar);
-
- 	// If showAllGant checkbox is checked 
+ 	
+	// If showAllGant checkbox is checked 
  	if ($showAllGantt)
  	{
  		// insert tasks into Gantt Chart
@@ -229,7 +229,7 @@ foreach($projects as $p) {
 		$q->addTable('tasks');
 		$q->addQuery('DISTINCT tasks.task_id, tasks.task_name, tasks.task_start_date, tasks.task_end_date, tasks.task_milestone');
 		$q->addJoin('projects', 'p', 'p.project_id = tasks.task_project');
-		$q->addWhere("p.project_id = {$p["project_id"]}");
+		$q->addWhere('p.project_id = '. $p['project_id']);
 		$q->addOrder('tasks.task_end_date ASC');
  		$tasks = $q->loadList();
 		$q->clear();
