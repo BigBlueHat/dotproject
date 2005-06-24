@@ -76,14 +76,11 @@ switch ($f) {
 		break;
 }
 
-$ptrc = $q->exec();
-$nums = db_num_rows( $ptrc );
-echo db_error();
+$proTasks = $q->loadHashList('task_id');
 $orrarr[] = array("task_id"=>0, "order_up"=>0, "order"=>"");
 
 //pull the tasks into an array
-for ($x=0; $x < $nums; $x++) {
-	$row = db_fetch_assoc( $ptrc );
+foreach ($proTasks as $row) {
 	
 	if($row["task_start_date"] == "0000-00-00 00:00:00"){
 		$row["task_start_date"] = date("Y-m-d H:i:s");
@@ -298,14 +295,14 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		$q->addQuery('ut.task_id, u.user_username, ut.perc_assignment');
 		$q->addWhere('u.user_id = ut.user_id');
 		$q->addWhere('ut.task_id = '.$a["task_id"]);
-		$res = $q->exec();
-		while ($rw = db_fetch_row( $res )) {
-			switch ($rw[2]) {
+		$res = $q->loadList();
+		foreach ($res as $rw) {
+			switch ($rw['perc_assignment']) {
 				case 100:
-					$caption = $caption."".$rw[1].";";
+					$caption = $caption."".$rw['user_username'].";";
 					break;
 				default:
-					$caption = $caption."".$rw[1]."[".$rw[2]."%];";
+					$caption = $caption."".$rw['user_username']."[".$rw['perc_assignment']."%];";
 					break;
 			}
 		}
@@ -413,9 +410,9 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	$q->addTable('task_dependencies');
 	$q->addQuery('dependencies_task_id');
 	$q->addWhere('dependencies_req_task_id=' . $a["task_id"]);
-	$query = $q->exec();
+	$query = $q->loadHashList();
 
-	while($dep = db_fetch_assoc($query)) {
+	foreach($query as $dep) {
 		// find row num of dependencies
 		for($d = 0; $d < count($gantt_arr); $d++ ) {
 			if($gantt_arr[$d][0]["task_id"] == $dep["dependencies_task_id"]) {
