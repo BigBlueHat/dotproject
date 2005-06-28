@@ -192,7 +192,8 @@ function chPriority(user_id) {
 	</td>
 	<td nowrap="nowrap">
                 <?php
-                        $system_users = dPgetUsers();
+                		// show only active users.
+                        $system_users = dPgetUsers(true);
                 ?>
                 <?php echo arraySelect( $system_users, 'log_userfilter', 'class="text" STYLE="width: 200px"', $log_userfilter ); ?>
 	</td>
@@ -369,9 +370,8 @@ if($do_report){
                                                 "<th nowrap=\"nowrap\" >".$AppUI->_("Possible Assignees")."</th>".
 						"</tr>";
 		$table_rows = "";
-
+		
 		foreach($user_list as $user_id => $user_data){
-
                         // count tasks per user;
                         $z=0;
                         foreach($task_list as $task) {

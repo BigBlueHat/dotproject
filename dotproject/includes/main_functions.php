@@ -155,15 +155,25 @@ function dPgetUsernameFromID( $user )
         return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
 }
 
-function dPgetUsers()
+function dPgetUsers($active_only = false)
 {
-global $AppUI;
+	global $AppUI;
 	$q  = new DBQuery;
 	$q->addTable('users');
 	$q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name) as name');
 	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
 	$q->addOrder('contact_last_name,contact_first_name');
-        return arrayMerge( array( 0 => $AppUI->_('All Users') ), $q->loadHashList() );
+
+	$users = $q->loadHashList();
+	if ($active_only)
+	{
+		$perms = & $AppUI->acl();
+		foreach ($users as $user_id => $user_data)
+			if ($perms->isUserPermitted($user_id) != true)
+				unset($users[$user_id]);
+	}
+	
+	return arrayMerge( array( 0 => $AppUI->_('All Users') ), $users );
 }
 ##
 ## displays the configuration array of a module for informational purposes

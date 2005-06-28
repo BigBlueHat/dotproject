@@ -1542,7 +1542,16 @@ class CTask extends CDpObject {
                         GROUP BY u.user_id
                         ORDER BY contact_last_name, contact_first_name";
 //               echo "<pre>$sql</pre>";
-                return db_loadHashList($sql, $hash);
+                $users = db_loadHashList($sql, $hash);
+                
+                global $perms;
+                foreach($users as $key => $user_data)
+                {
+                	if ($perms->isUserPermitted($user_data['user_id']) != true)
+						unset($users[$key]);
+                }
+                
+                return $users;
         }
 
  	function getUserSpecificTaskPriority( $user_id = 0, $task_id = NULL ) {
