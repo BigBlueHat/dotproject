@@ -155,7 +155,7 @@ function dPgetUsernameFromID( $user )
         return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
 }
 
-function dPgetUsers($active_only = false)
+function dPgetUsers($active_only = true)
 {
 	global $AppUI;
 	$q  = new DBQuery;
