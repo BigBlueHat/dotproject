@@ -9,6 +9,8 @@ $baseDir = dirname(dirname(__FILE__));
 $baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
 $baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
 $baseUrl .= isset($_SERVER['SCRIPT_NAME']) ? dirname(dirname($_SERVER['SCRIPT_NAME'])) : dirname(dirname(getenv('SCRIPT_NAME')));
+if (substr($baseUrl, -1) == '\\')
+	$baseUrl == substr($baseUrl, 0, -1);
 
 require_once "$baseDir/install/install.inc.php";
 
