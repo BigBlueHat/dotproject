@@ -119,7 +119,6 @@ function orderByName(x){
 	?></strong></th>
 </tr>
 <?php
-if ($message_parent>=0) {	//check if this is a reply-post; if so, printout the original message
 $date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : new CDate();
 ?>
 
@@ -127,9 +126,6 @@ $date = intval( $message_info["message_date"] ) ? new CDate( $message_info["mess
 <tr><td align="right"><?php echo  $AppUI->_('Subject') ?>:</td><td align="left"><?php echo $message_info['message_title'] ?></td></tr>
 <tr><td align="right" valign="top"><?php echo  $AppUI->_('Message') ?>:</td><td align="left"><textarea name="message_parent_body" cols="60" readonly="readonly" style="height:100px; font-size:8pt"><?php echo $message_info['message_body'];?></textarea></td></tr>
 <tr><td colspan="2" align="left"><hr></td></tr>
-<?php
-}				//end of if-condition
-?>
 <tr>
 	<td align="right"><?php echo $AppUI->_( 'Subject' );?>:</td>
 	<td>
