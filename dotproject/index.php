@@ -136,8 +136,10 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 // support alternative authentication methods such as the PostNuke
 // and HTTP auth methods now supported.
 if (isset($_REQUEST['login'])) {
-
-	$username = dPgetParam( $_POST, 'username', '' );
+	if (dPgetConfig('auth_method') == 'http_ba')
+		$username = $_SERVER['REMOTE_USER'];
+	else
+		$username = dPgetParam( $_POST, 'username', '' );
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 	$AppUI->setUserLocale();
@@ -181,7 +183,13 @@ if ($AppUI->doLogin()) {
 		header("Content-type: text/html;charset=$locale_char_set");
 	}
 
-	require "$baseDir/style/$uistyle/login.php";
+	//  Display the login page unless the authentication method is HTTP Basic Auth
+	if ($dPconfig['auth_method'] == 'http_ba' ) {
+		$AppUI->redirect( "login=http_ba&redirect=$redirect" );
+	} else {
+		require "$baseDir/style/$uistyle/login.php";
+	}
+
 	// destroy the current session and output login page
 	session_unset();
 	session_destroy();

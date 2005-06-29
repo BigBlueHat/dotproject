@@ -1199,3 +1199,9 @@ INSERT INTO config VALUES ('', 'ldap_allow_login', 'true', 'ldap', 'checkbox');
 # New tasks list method for collapsing/expanding.
 INSERT INTO `config` VALUES('', 'tasks_ajax_list', 'true', '', 'checkbox');
 
+# 20050629
+# New authentication method - HTTP Basic Auth
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'http_ba'
+	FROM config
+	WHERE config_name = 'auth_method';

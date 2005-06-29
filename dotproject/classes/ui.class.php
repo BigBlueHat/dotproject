@@ -666,6 +666,11 @@ class CAppUI {
 		  $GLOBALS['acl'] =& new dPacl;
 		if ( ! $GLOBALS['acl']->checkLogin($user_id)) {
 		  dprint(__FILE__, __LINE__, 1, "Permission check failed");
+		  //  Stop processing here if using HTTP Basic Auth or else enter a redirect loop.
+			if (dPgetConfig('auth_method') == 'http_ba') {
+				die($this->_('noAccount'));
+			} 
+ 
 		  return false;
 		}
 
@@ -678,7 +683,7 @@ class CAppUI {
 		$q->clear();
 		dprint(__FILE__, __LINE__, 7, "Login SQL: $sql");
 
-		if( !db_loadObject( $sql, $this ) ) {
+		if ( !db_loadObject($sql, $this) ) {
 			dprint(__FILE__, __LINE__, 1, "Failed to load user information");
 			return false;
 		}

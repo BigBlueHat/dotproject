@@ -21,3 +21,10 @@ UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'ch
 # 20050620
 # Adding new type for tasks collapse/expand
 INSERT INTO `config` VALUES('', 'tasks_ajax_list', 'true', '', 'checkbox');
+
+# 20050629
+# New authentication method - HTTP Basic Auth
+INSERT INTO config_list (`config_id`, `config_list_name`)
+  SELECT config_id, 'http_ba'
+	FROM config
+	WHERE config_name = 'auth_method';

@@ -100,6 +100,8 @@
 "auth_group_title"=>"User Authentication Settings",
 "auth_method_title"=>"User Authentication Method",
 "auth_method_tooltip"=>"Select the User authentication method that you wish to use.",
+"http_ba_item_title"=>"HTTP Basic Auth",
+"http_ba_item_tooltip"=>"Select HTTP Basic Authentication method.",
 "bg"=>"Bulgarian",
 "cal_day_end_title"=>"Calendar End Hour",
 "cal_day_end_tooltip"=>"The last hour of the working day - integer value from 0 to 23",
