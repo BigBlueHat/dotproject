@@ -2012,7 +2012,7 @@ function closeOpenedTask($task_id){
 //This kludgy function echos children tasks as threads
 
 function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
-	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $userAlloc, $showEditCheckbox;
+	global $AppUI, $dPconfig, $done, $query_string, $durnTypes, $userAlloc;
 
         $now = new CDate();
 	$df = $AppUI->getPref('SHDATEFORMAT');
@@ -2206,7 +2206,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 	}
 
 // Assignment checkbox
-        if ($showEditCheckbox) {
+        if ($canEdit && $dPconfig['direct_edit_assignment'] ) {
                 $s .= "\n\t<td align='center'><input type=\"checkbox\" name=\"selected_task[{$a['task_id']}]\" value=\"{$a['task_id']}\"/></td>";
         }
 	$s .= '</tr>';
