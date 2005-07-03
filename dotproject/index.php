@@ -328,7 +328,7 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 } else {
 	$all_tabs =& $_SESSION['all_tabs'][$m];
 }
-
+$setuptime = (array_sum(explode(' ',microtime())) - $time);
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if (file_exists($module_file))
   require $module_file;
@@ -346,8 +346,29 @@ if(!$suppressHeaders) {
 	require "$baseDir/style/$uistyle/footer.php";
 	if (dPgetConfig('debug') > 0)
 	{
-		printf('<p style="font-size: 10pt; text-align: center; color: gray">Page generated in %.3f seconds<p>', (array_sum(explode(' ',microtime())) - $time));
-		printf('<p style="font-size: 10pt; text-align: center; color: gray">Time spend in: acl = %.3f seconds; db = %.3f seconds.<p>', $acltime, $dbtime);
+		echo '<div style="text-align: center; border: 1px solid gray; margin-left: 200px; margin-right: 200px; font-size: 10pt; color: gray">';
+		printf('Page generated in %.3f seconds<br />', (array_sum(explode(' ',microtime())) - $time));
+		echo 'Time spend in:<br />
+		<table align="center">
+		<tr>
+			<td align="right">Index (setup):</td>
+			<td>';
+		printf('%.3f seconds.', $setuptime);
+		echo '</td>
+		</tr>
+		<tr>
+			<td align="right">Permissions (acl):</td>
+			<td>';
+		printf('%.3f seconds.', $acltime);
+		echo '</td>
+		</tr>
+		<tr>
+			<td align="right">Database (db):</td>
+			<td>';
+		printf('%.3f seconds.', $dbtime);
+		echo '</td>
+		</tr>
+		</table>';
 	}
 }
 ob_end_flush();
