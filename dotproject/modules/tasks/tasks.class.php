@@ -1032,7 +1032,6 @@ class CTask extends CDpObject {
 		$q = new DBQuery;
 		$q->addTable('tasks');
 		$q->addTable('projects');
-		$q->addTable('companies');
 		$q->addQuery('DISTINCT task_id, task_name, task_start_date, task_end_date, task_duration, task_duration_type, project_color_identifier AS color, project_name');
 		$q->addOrder('task_start_date');
 		$q->addWhere('task_project = project_id');
