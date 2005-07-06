@@ -20,8 +20,9 @@
 }}} */
 
 $time = array_sum(explode(' ',microtime()));
-$dbtime = 0;
 $acltime = 0;
+$dbtime = 0;
+$dbqueries = 0;
 ini_set('display_errors', 1); // Ensure errors get to the user.
 error_reporting(E_ALL & ~E_NOTICE);
 
@@ -363,7 +364,7 @@ if(!$suppressHeaders) {
 		echo '</td>
 		</tr>
 		<tr>
-			<td align="right">Database (db):</td>
+			<td align="right">Database '.$dbqueries.' queries (db):</td>
 			<td>';
 		printf('%.3f seconds.', $dbtime);
 		echo '</td>

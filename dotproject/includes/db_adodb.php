@@ -49,7 +49,7 @@ function db_insert_id() {
 }
 
 function db_exec( $sql ) {
-	global $db, $baseDir, $dbtime;
+	global $db, $baseDir, $dbtime, $dbqueries;
 	$startTime = array_sum(explode(' ',microtime()));
 
 	if (! is_object($db))
@@ -68,7 +68,8 @@ function db_exec( $sql ) {
 	}
 	if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
 		dprint(__FILE__, __LINE__, 0, $sql);
-	  
+	
+	++$dbqueries;
 	$dbtime += array_sum(explode(' ', microtime())) - $startTime;
 	return $qid;
 }
