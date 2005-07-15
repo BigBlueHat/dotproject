@@ -2,6 +2,15 @@
 var calendarField = '';
 var calWin = null;
 
+// automatically update the duration value in the input field
+// onchange unhappily does not work for the disabled task end date input text field, so
+// we need to use this event handler
+window.onfocus = autoUpdateDuration;
+
+function autoUpdateDuration(e) {
+    calcDuration(document.datesFrm);
+}
+
 function setMilestoneEndDate(checked){
     if(checked){
         document.datesFrm.end_date.value      = document.datesFrm.start_date.value;
@@ -67,6 +76,7 @@ function popCalendar( field ){
 	calendarField = field;
 	task_cal = document.getElementById('task_' + field.name);
 	idate = task_cal.value;
+	calcDuration(document.datesFrm);
 	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=251, height=220, scollbars=false' );
 }
 

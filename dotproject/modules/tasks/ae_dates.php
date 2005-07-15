@@ -85,7 +85,7 @@ function cal_work_day_conv($val) {
 		<table><tr>
 						
 	<?php
-		echo "<td>" . arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . "</td><td>" . " : " . "</td>";
+		echo "<td>" . arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this); calcDuration(document.datesFrm)" class="text"', $start_date ? $start_date->getHour() : $start ) . "</td><td>" . " : " . "</td>";
 		echo "<td>" . arraySelect($minutes, "start_minute",'size="1" class="text"', $start_date ? $start_date->getMinute() : "0" ) . "</td>";
 		if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
 			echo '<td><input type="text" name="start_hour_ampm" id="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
@@ -106,7 +106,7 @@ function cal_work_day_conv($val) {
         <td>
 <table><tr>
 	<?php
-		echo "<td>" . arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . "</td><td>" . " : " . "</td>";
+		echo "<td>" . arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this); calcDuration(document.datesFrm)" class="text"', $end_date ? $end_date->getHour() : $end ) . "</td><td>" . " : " . "</td>";
 		echo "<td>" .arraySelect($minutes, "end_minute",'size="1" class="text"', $end_date ? $end_date->getMinute() : "00" ) . "</td>";
 		if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
 			echo '<td><input type="text" name="end_hour_ampm" id="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
@@ -118,9 +118,9 @@ function cal_work_day_conv($val) {
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 	<td nowrap="nowrap">
-		<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo isset($obj->task_duration) ? $obj->task_duration : 1;?>" />
+		<input type="text" class="text" name="task_duration" maxlength="8" size="6" onChange="calcFinish(document.datesFrm)" value="<?php echo isset($obj->task_duration) ? $obj->task_duration : 1;?>" />
 	<?php
-		echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
+		echo arraySelect( $durnTypes, 'task_duration_type', 'class="text" onchange="calcDuration(document.datesFrm)"', $obj->task_duration_type, true );
 	?>
 	</td>
 	<td><?php echo $AppUI->_('Daily Working Hours').': '.$dPconfig['daily_working_hours']; ?></td>
