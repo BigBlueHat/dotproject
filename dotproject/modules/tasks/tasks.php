@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-GLOBAL $m, $a, $project_id, $f, $min_view, $query_string, $durnTypes;
+GLOBAL $m, $a, $project_id, $f, $f3, $min_view, $query_string, $durnTypes;
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
 GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
@@ -169,6 +169,9 @@ $q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = tasks.task_id AND tlog.ta
 $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
+
+if ($f3)
+$q->addWhere('task_status = ' . $f3);
 
 if ($project_id)
 	$q->addWhere('task_project = ' . $project_id);

@@ -29,6 +29,11 @@ if (isset( $_GET['project_id'] )) {
 }
 $project_id = $AppUI->getState( 'TaskIdxProject' ) ? $AppUI->getState( 'TaskIdxProject' ) : 0;
 
+if (isset( $_POST['f3'] )) {
+	$AppUI->setState( 'TaskStatusIdxFilter', $_POST['f3'] );
+}
+$f3 = $AppUI->getState( 'TaskStatusIdxFilter' ) ? $AppUI->getState( 'TaskStatusIdxFilter' ) : 0;
+
 // get CCompany() to filter tasks by company
 require_once( $AppUI->getModuleClass( 'companies' ) );
 $obj = new CCompany();
@@ -86,18 +91,17 @@ if ($canEdit && $project_id) {
 
 $titleBlock->show();
 
-if ( dPgetParam( $_GET, 'inactive', '' ) == 'toggle' )
-	$AppUI->setState( 'inactive', $AppUI->getState( 'inactive' ) == -1 ? 0 : -1 );
-$in = $AppUI->getState( 'inactive' ) == -1 ? '' : 'in';
-
 // use a new title block (a new row) to prevent from oversized sites
 $titleBlock = new CTitleBlock('' );
 $titleBlock->showhelp = false;
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Filter') . ':' );
 $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',
-	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>'
-);
+	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>');
+$titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Status') . ':' );
+$titleBlock->addCell(
+	arraySelect( $status, 'f3', 'size=1 class=text onChange="document.taskStatus.submit();"', $f3, true ), '',
+	'<form action="?m=tasks" method="post" name="taskStatus">', '</form>');
 $titleBlock->addCell();
 
 $titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
@@ -105,7 +109,6 @@ if (dPgetParam($_GET, 'pinned') == 1)
         $titleBlock->addCrumb( '?m=tasks', 'all tasks' );
 else
         $titleBlock->addCrumb( '?m=tasks&pinned=1', 'my pinned tasks' );
-$titleBlock->addCrumb( "?m=tasks&inactive=toggle", "show ".$in."active tasks" );
 $titleBlock->addCrumb( "?m=tasks&a=tasksperuser", "tasks per user" );
 
 $titleBlock->show();
