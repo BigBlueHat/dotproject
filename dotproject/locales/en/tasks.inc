@@ -221,6 +221,7 @@
 "taskName"=>"Please enter a valid task Name",
 "taskNameExist"=>"A Root Task (First Level Task) with the same name already exists. Root tasks names should be unique. Please choose another task name.",
 "taskNotify"=>"Notify Assignees of Task by Email",
+"taskValidEndDate"=>"Please enter a valid end date",
 "taskValidStartDate"=>"Please enter a valid start date",
 "tasks list",
 "tasks per user",
