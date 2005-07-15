@@ -694,6 +694,16 @@ class DBQuery {
 		return $hashlist;
 	}
 
+	function loadHash() {
+		global $db;
+		if (! $this->exec(ADODB_FETCH_ASSOC)) {
+			exit ($db->ErrorMsg());
+		}
+		$hash = $this->fetchRow();
+		$this->clear();
+		return $hash;
+	}
+	
 	function loadArrayList($index = 0) {
 		global $db;
 
@@ -722,6 +732,53 @@ class DBQuery {
 		return $result;
 	}
 
+	function loadObject( &$object, $bindAll=false , $strip = true) {
+		if (! $this->exec(ADODB_FETCH_NUM)) {
+			die ($db->ErrorMsg());
+		}
+		if ($object != null) {
+			$hash = $this->fetchRow();
+			$q->clear();
+			if( !$hash ) {
+				return false;
+			}
+			$this->bindHashToObject( $hash, $object, null, $strip, $bindAll );
+			return true;
+		} else {
+			if ($object = $this->_query_id->FetchNextObject(false)) {
+				$this->clear();
+				return true;
+			} else {
+				$object = null;
+				return false;
+			}
+		}
+	}
+	
+	function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true, $bindAll=false ) {
+		is_array( $hash ) or die( "bindHashToObject : hash expected" );
+		is_object( $obj ) or die( "bindHashToObject : object expected" );
+	
+		if ($bindAll) {
+			foreach ($hash as $k => $v) {
+				$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+			}
+		} else if ($prefix) {
+			foreach (get_object_vars($obj) as $k => $v) {
+				if (isset($hash[$prefix . $k ])) {
+					$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+				}
+			}
+		} else {
+			foreach (get_object_vars($obj) as $k => $v) {
+				if (isset($hash[$k])) {
+					$obj->$k = ($checkSlashes && get_magic_quotes_gpc()) ? stripslashes( $hash[$k] ) : $hash[$k];
+				}
+			}
+		}
+	}
+
+	
 	/**
 	 * Using an XML string, build or update a table.
 	 */
