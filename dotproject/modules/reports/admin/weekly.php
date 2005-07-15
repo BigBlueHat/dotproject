@@ -17,7 +17,7 @@ if (!$log_end_date)
 }
 $end_date->setTime( 23, 59, 59 );
 
-error_reporting( E_ALL );
+//error_reporting( E_ALL );
 $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
 	redirect('m=public&a=access_denied');

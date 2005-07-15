@@ -1,5 +1,5 @@
 <?php
-error_reporting( E_ALL );
+//error_reporting( E_ALL );
 $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
 	redirect('m=public&a=access_denied');

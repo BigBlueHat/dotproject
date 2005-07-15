@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-error_reporting( E_ALL );
+//error_reporting( E_ALL );
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
 $project_id = intval( dPgetParam( $_REQUEST, 'project_id', 0 ) );

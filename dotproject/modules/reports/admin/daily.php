@@ -1,5 +1,5 @@
 <?php
-error_reporting( E_ALL );
+//error_reporting( E_ALL );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 $log_task_task = dPgetParam($_POST, 'log_task_task', 0);
 $log_task_parent = dPgetParam($_POST, 'log_task_parent', 0);
