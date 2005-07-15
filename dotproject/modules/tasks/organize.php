@@ -304,8 +304,8 @@ foreach ($tasks as $task)
   
   $projects = $q->loadHashList('project_id');
 	$p[0] = $AppUI->_('[none]');
-	foreach($projects as $proj)
-		$p[$proj[0]] = $proj[1];
+	foreach($projects as $prj)
+		$p[$prj['project_id']] = $prj['project_name'];
 	if ($project_id)
 		$p[$project_id] = $AppUI->_('[same project]');
 		
