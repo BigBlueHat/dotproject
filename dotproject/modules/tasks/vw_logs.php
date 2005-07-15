@@ -95,7 +95,7 @@ foreach ($logs as $row) {
 	$s .= '<td width="30%" style="'.$style.'">'.@$row["task_log_name"].'</td>';
     $s .= !empty($row["task_log_related_url"]) ? '<td><a href="'.@$row["task_log_related_url"].'" title="'.@$row["task_log_related_url"].'">'.$AppUI->_('URL').'</a></td>' : '<td></td>';
 	$s .= '<td width="100">'.$row["user_username"].'</td>';
-	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . '</td>';
+	$s .= '<td width="100" align="right">'.sprintf( "%.2f", $row["task_log_hours"] ) . ' ('.(int)  $row["task_log_hours"] .':'. ( $row["task_log_hours"] - abs((int)  $row["task_log_hours"] ))*60 .')</td>';
 	$s .= '<td width="100">'.$row["task_log_costcode"].'</td>';
 	$s .= '<td>'.'<a name="tasklog'.@$row['task_log_id'].'"></a>';
 
@@ -127,7 +127,7 @@ foreach ($logs as $row) {
 }
 $s .= '<tr bgcolor="white" valign="top">';
 $s .= '<td colspan="6" align="right">' . $AppUI->_('Total Hours') . ' =</td>';
-$s .= '<td align="right">' . sprintf( "%.2f", $hrs ) . '</td>';
+$s .= '<td align="right">' . sprintf( "%.2f", $hrs ) . ' ('.(int) $hrs .':'. ($hrs - abs((int) $hrs))*60 .')</td>';
 $s .= '<td align="right" colspan="3"><form action="?m=tasks&a=view&tab=1&task_id=' . $task_id . '" method="post">';
 $s .= '<input type="submit" class="button" value="'.$AppUI->_('new log').'"></form></td>';
 $s .= '</tr>';
