@@ -148,5 +148,12 @@ function cal_work_day_conv($val) {
 </table>
 </form>
 <script language="javascript">
+<?php if ($task_id == 0) { ?>
+// in case of adding a new task we need to set the task end date for preventing from JS errrors
+// concerning the onfocus event handler and empty dates ('end date before start date')-alert warning
+document.datesFrm.task_end_date.value = document.datesFrm.task_start_date.value;
+document.datesFrm.end_date.value = document.datesFrm.start_date.value;
+<?php } ?>
+
  subForm.push(new FormDefinition(<?php echo $tab;?>, document.datesFrm, checkDates, saveDates));
 </script>

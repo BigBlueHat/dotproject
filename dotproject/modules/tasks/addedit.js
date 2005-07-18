@@ -8,7 +8,8 @@ var calWin = null;
 window.onfocus = autoUpdateDuration;
 
 function autoUpdateDuration(e) {
-    calcDuration(document.datesFrm);
+
+    calcDuration(document.datesFrm, true);
 }
 
 function setMilestoneEndDate(checked){
