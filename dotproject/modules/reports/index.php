@@ -33,21 +33,11 @@ if (!$canRead) {
 }
 
 $obj = new CProject();
-$deny = $obj->getDeniedRecords( $AppUI->user_id );
                                                                                 
 $q = new DBQuery;
 $q->addQuery('project_id, project_active, project_status, project_name, project_description, project_short_name');
-$q->addTable('permissions');
 $q->addTable('projects');
-$q->addWhere("permission_user = $AppUI->user_id");
-$q->addWhere('permission_value <> 0');
-$q->addWhere("(
-                (permission_grant_on = 'all')
-                OR (permission_grant_on = 'projects' AND permission_item = -1)
-                OR (permission_grant_on = 'projects' AND permission_item = project_id)
-                )");
-if (count($deny) > 0)
-	$q->addWhere('project_id NOT IN (' . implode( ',', $deny ) . ')');
+$obj->setAllowedSQL($AppUI->user_id, $q);
 
 $q->addGroup('project_id');
 $q->addOrder('project_short_name');
