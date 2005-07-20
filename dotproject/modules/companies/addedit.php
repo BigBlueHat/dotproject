@@ -54,7 +54,6 @@ if ($company_id != 0)
   $titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 $titleBlock->show();
 
-$theme = 'smarty1';
 $smarty->assign('company_id', $company_id);
 $smarty->assign('types', $types);
 $smarty->assign('obj', $obj);

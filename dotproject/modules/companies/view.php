@@ -69,6 +69,19 @@ if ($canEdit) {
 	}
 }
 $titleBlock->show();
+
+$obj->company_description = str_replace( chr(10), '<br />', $obj->company_description );
+
+
+require_once("./classes/CustomFields.class.php");
+$custom_fields = New CustomFields( $m, $a, $obj->company_id, "view" );
+$smarty->assign('customFields', $custom_fields->getHTML());
+$smarty->assign('obj', $obj);
+$smarty->assign('delete', $canDelete);
+$smarty->assign('company_id', $company_id);
+$smarty->assign('type', $types[@$obj->company_type]);
+
+$smarty->display($theme . '/companies/view.html');
 ?>
 <script language="javascript">
 <?php
@@ -85,83 +98,9 @@ function delIt() {
 <?php } ?>
 </script>
 
-<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
-<?php if ($canDelete) {
-?>
-<form name="frmDelete" action="./index.php?m=companies" method="post">
-	<input type="hidden" name="dosql" value="do_company_aed" />
-	<input type="hidden" name="del" value="1" />
-	<input type="hidden" name="company_id" value="<?php echo $company_id;?>" />
-</form>
-<?php } ?>
 
-<tr>
-	<td valign="top" width="50%">
-		<strong><?php echo $AppUI->_('Details');?></strong>
-		<table cellspacing="1" cellpadding="2" width="100%">
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?>:</td>
-			<td class="hilite" width="100%"><?php echo $obj->company_name;?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Email');?>:</td>
-			<td class="hilite" width="100%"><?php echo $obj->company_email;?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Phone');?>:</td>
-			<td class="hilite"><?php echo @$obj->company_phone1;?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Phone');?>2:</td>
-			<td class="hilite"><?php echo @$obj->company_phone2;?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Fax');?>:</td>
-			<td class="hilite"><?php echo @$obj->company_fax;?></td>
-		</tr>
-		<tr valign=top>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Address');?>:</td>
-			<td class="hilite"><?php
-						echo @$obj->company_address1
-							.( ($obj->company_address2) ? '<br />'.$obj->company_address2 : '' )
-							.( ($obj->company_city) ? '<br />'.$obj->company_city : '' )
-							.( ($obj->company_state) ? '<br />'.$obj->company_state : '' )
-							.( ($obj->company_zip) ? '<br />'.$obj->company_zip : '' )
-							;
-			?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?>:</td>
-			<td class="hilite">
-				<a href="http://<?php echo @$obj->company_primary_url;?>" target="Company"><?php echo @$obj->company_primary_url;?></a>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Type');?>:</td>
-			<td class="hilite"><?php echo $AppUI->_($types[@$obj->company_type]);?></td>
-		</tr>
-		</table>
 
-	</td>
-	<td width="50%" valign="top">
-		<strong><?php echo $AppUI->_('Description');?></strong>
-		<table cellspacing="0" cellpadding="2" border="0" width="100%">
-		<tr>
-			<td class="hilite">
-				<?php echo str_replace( chr(10), "<br />", $obj->company_description);?>&nbsp;
-			</td>
-		</tr>
-		
-		</table>
-		<?php
-			require_once("./classes/CustomFields.class.php");
-			$custom_fields = New CustomFields( $m, $a, $obj->company_id, "view" );
-			$custom_fields->printHTML();
-		?>
-	</td>
-</tr>
-</table>
 
 <?php
 // tabbed information boxes
