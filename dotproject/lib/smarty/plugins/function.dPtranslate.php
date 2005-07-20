@@ -21,12 +21,12 @@ function smarty_function_dPtranslate($params, &$smarty)
 	
     extract($params);
 
-    if (empty($word)) {
-        $smarty->trigger_error("assign: missing 'word' parameter");
+    if (empty($word) && empty($sentence)) {
+        $smarty->trigger_error("assign: missing parameter");
         return;
     }
 
-    return $AppUI->_($word);
+    return $AppUI->_($word . $sentence);
 }
 
 /* vim: set expandtab: */
