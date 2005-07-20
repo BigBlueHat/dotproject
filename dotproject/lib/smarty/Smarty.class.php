@@ -68,14 +68,14 @@ class Smarty
      *
      * @var string
      */
-    var $template_dir    =  'templates';
+    var $template_dir    =  '/style';
 
     /**
      * The directory where compiled templates are located.
      *
      * @var string
      */
-    var $compile_dir     =  'templates_c';
+    var $compile_dir     =  '/files/cache/smarty_templates';
 
     /**
      * The directory where config files are located.
@@ -160,7 +160,7 @@ class Smarty
      *
      * @var string
      */
-    var $cache_dir       =  'cache';
+    var $cache_dir       =  '/files/cache/smarty';
 
     /**
      * This is the number of seconds cached content will persist.

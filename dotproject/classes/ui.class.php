@@ -1209,4 +1209,11 @@ class CTitleBlock_core {
 	}
 }
 // !! Ensure there is no white space after this close php tag.
+
+require_once($baseDir . '/lib/smarty/Smarty.class.php');
+
+$smarty = new Smarty;
+$smarty->template_dir = $baseDir . '/style';
+$smarty->compile_dir	= $baseDir . '/files/cache/smarty_templates';
+$smarty->cache_dir		= $baseDir . '/files/cache/smarty';
 ?>
