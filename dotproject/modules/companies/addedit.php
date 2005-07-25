@@ -54,15 +54,15 @@ if ($company_id != 0)
   $titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 $titleBlock->show();
 
-$smarty->assign('company_id', $company_id);
-$smarty->assign('types', $types);
-$smarty->assign('obj', $obj);
-$smarty->assign('owners', $owners);
-
 require_once("./classes/CustomFields.class.php");
 $custom_fields = New CustomFields( $m, $a, $obj->company_id, "edit" );
-$smarty->assign('customFields', $custom_fields->getHTML());
-$smarty->display($theme . '/companies/addedit.html');
+$tpl->assign('customFields', $custom_fields->getHTML());
+$tpl->assign('company_id', $company_id);
+$tpl->assign('types', $types);
+$tpl->assign('owners', $owners);
+
+
+$tpl->displayAddEdit($obj);
 ?>
 
 <script language="javascript">

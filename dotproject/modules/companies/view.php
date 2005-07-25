@@ -75,13 +75,13 @@ $obj->company_description = str_replace( chr(10), '<br />', $obj->company_descri
 
 require_once("./classes/CustomFields.class.php");
 $custom_fields = New CustomFields( $m, $a, $obj->company_id, "view" );
-$smarty->assign('customFields', $custom_fields->getHTML());
-$smarty->assign('obj', $obj);
-$smarty->assign('delete', $canDelete);
-$smarty->assign('company_id', $company_id);
-$smarty->assign('type', $types[@$obj->company_type]);
+$tpl->assign('customFields', $custom_fields->getHTML());
 
-$smarty->display($theme . '/companies/view.html');
+$tpl->assign('delete', $canDelete);
+$tpl->assign('company_id', $company_id);
+$tpl->assign('type', $types[@$obj->company_type]);
+
+$tpl->displayView($obj);
 ?>
 <script language="javascript">
 <?php
@@ -106,12 +106,12 @@ function delIt() {
 // tabbed information boxes
 $moddir = $dPconfig['root_dir'] . '/modules/companies/';
 $tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "", $tab );
-$tabBox->add( $moddir . 'vw_active', 'Active Projects' );
-$tabBox->add( $moddir . 'vw_archived', 'Archived Projects' );
+//$tabBox->add( $moddir . 'vw_active', 'Active Projects' );
+//$tabBox->add( $moddir . 'vw_archived', 'Archived Projects' );
+$tabBox->loadExtras($m, $a);
 $tabBox->add( $moddir . 'vw_depts', 'Departments' );
 $tabBox->add( $moddir . 'vw_users', 'Users' );
 $tabBox->add( $moddir . 'vw_contacts', 'Contacts' );
-$tabBox->loadExtras($m);
 $tabBox->show();
 
 ?>

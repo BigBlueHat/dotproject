@@ -1,0 +1,46 @@
+<table width="100%" border="0" cellpadding="1" cellspacing="1">
+	<tr>
+	{if $icon}
+		<td width="42">
+		{dPshowImage src=$icon}
+		</td>
+	{/if}
+		<td align="left" width="100%" nowrap="nowrap">
+			<h1>{dPtranslate word=$title}</h1>
+		</td>
+	{section name=i loop=$cells1}
+		{$cells1[i][2]}
+		<td align="right" nowrap="nowrap"{$cells1[i][0]}>
+			{$cells1[i][1]}
+		</td>
+		{$cells1[i][3]}
+	{/section}
+	{if $help}
+		<td nowrap="nowrap" width="20" align="right">
+			<a href="#{$help}" onClick="javascript:window.open('?m=help&dialog=1&hid={$help}', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')" title="{dPtranslate word='Help'}">
+				{dPshowImage src='./images/icons/stock_help-16.png' wsize='16' hsize='16' alt='?'}
+			</a>
+		</td>
+	{/if}
+	</tr>
+</table>
+
+{if $cells2 || $crumbs}
+<table border="0" cellpadding="4" cellspacing="0" width="100%">
+	<tr>
+		<td nowrap="nowrap">
+	{section name=i loop=$crumbs}
+			<strong><a href="{$crumbs[i].link}">{dPshowImage src=$crumbs[i].img}{dPtranslate word=$crumbs[i].name}</a></strong>
+			{if $smarty.section.i.rownum != $smarty.section.i.total}:{/if}
+	{/section}
+		</td>
+	{section name=i loop=$cells2}
+		{$cells2[i][2]}
+		<td align="right" nowrap="nowrap"{$cells2[i][0]}>
+			{$cells2[i][1]}
+		</td>
+		{$cells2[i][3]}
+	{/section}
+	</tr>
+</table>
+{/if}

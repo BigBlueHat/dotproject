@@ -1,8 +1,7 @@
-<?php /* COMPANIES $Id$ */
-##
-##	Companies: View Projects sub-table
-##
-GLOBAL $AppUI, $company_id, $pstatus, $dPconfig, $smarty, $theme;
+<?php /* PROJECTS $Id$ */
+GLOBAL $AppUI, $company_id, $pstatus, $dPconfig, $tpl, $m;
+
+$pstatus = dPgetSysVal( 'ProjectStatus' );
 
 $sort = dPgetParam($_GET, 'sort', 'project_name');
 if ($sort == 'project_priority')
@@ -22,9 +21,10 @@ $q->addWhere('projects.project_company = '.$company_id);
 $q->addWhere('projects.project_active <> 0');
 $q->addOrder($sort);
 
-$smarty->assign('rows', $q->loadList());
-$smarty->assign('pstatus', $pstatus);
-$smarty->assign('show', array('project_name', 'project_owner', 'project_start_date', 'project_status', 'project_target_budget'));
+$tpl->assign('current_url', 'index.php?m=companies&a=view&company_id=' . $company_id);
+$tpl->assign('pstatus', $pstatus);
 
-$smarty->display($theme . '/companies/list.html');
+$show = array('project_name', 'project_owner', 'project_start_date', 'project_status', 'project_target_budget');
+
+$tpl->displayList('projects', $q->loadList(), $show);
 ?>

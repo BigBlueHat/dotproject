@@ -14,7 +14,25 @@ ob_start();
 	{
 		@readfile( "{$dPconfig['root_dir']}/locales/$AppUI->user_locale/$m.inc" );
 	}
+
+	//$all_tabs =& $_SESSION['all_tabs'][$m];
+	foreach($all_tabs as $key => $tab)
+	{
+		if (is_int($key))
+			$extra_modules[$tab['module']] = true;
+		else 
+			foreach($tab as $child_tab)
+				$extra_modules[$child_tab['module']] = true;
+	}
 	
+	foreach($extra_modules as $extra_module => $k)
+	{
+		if ( file_exists( "{$dPconfig['root_dir']}/modules/$extra_module/locales/$AppUI->user_locale.inc" ) )
+    	@readfile( "{$dPconfig['root_dir']}/modules/$extra_module/locales/$AppUI->user_locale.inc" );
+		else
+			@readfile("{$dPconfig['root_dir']}/locales/$AppUI->user_locale/$extra_module.inc" );
+	}
+
 	switch ($m) {
 	case 'departments':
 		@readfile( "{$dPconfig['root_dir']}/locales/$AppUI->user_locale/companies.inc" );

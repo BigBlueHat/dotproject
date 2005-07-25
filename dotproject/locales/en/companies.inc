@@ -1,7 +1,8 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Reset search",
+"company_projects_active"=>"active projects",
+"company_projects_inactive"=>"inactive projects",
 "Add Company",
 "All Companies",
 "Budget",
@@ -12,6 +13,7 @@
 "Invalid Company ID",
 "No companies available",
 "Owner filter",
+"Reset search",
 "Started",
 "Status",
 "Suppliers",
@@ -21,6 +23,8 @@
 "company list",
 "companyDelete"=>"Are you sure you want to delete this company?",
 "companyValidName"=>"Please enter a valid Company name",
+"company_name"=>"company name",
+"company_type"=>"company type",
 "delete company",
 "e-mail",
 "edit this company",

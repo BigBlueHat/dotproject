@@ -1,39 +1,42 @@
 {if !$rows}
-	{dPtranslate sentence='No data available'}<br />'.$AppUI->getMsg();
+	{dPtranslate sentence='No companies available'}<br />{$msg}
 {else}
-<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
-	<tr>
-		<th><a href="index.php?m=companies&a=view&company_id={$company_id}&sort=project_priority">{dPtranslate word='P'}</a></th>
+
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+	<td nowrap="nowrap" width="60" align="right">&nbsp;{dPtranslate word='sort by'}:&nbsp;</td>
 {section name=i loop=$show}
-	  <th><a href="index.php?m=companies&a=view&company_id={$company_id}&sort={$show[i]}">{dPtranslate word=$show[i]}</a></th>
+	  <th nowrap="nowrap">
+	  	<a href="index.php?m=companies&orderby={$show[i]}" class="hdr">
+	  		{dPtranslate|capitalize word=$show[i]}
+	  	</a>
+	  </th>
 {/section}
-	</tr>
+</tr>
+
 {section name=i loop=$rows}
 	<tr>
-		<td>
-		{if $rows[i].project_priority < 0}
-			<img src="./images/icons/low.gif" width=13 height=16>
-		{elseif $rows[i].project_priority > 0}
-			<img src="./images/icons/{$rows[i].project_priority}.gif" width=13 height=16>
-		{/if}
-		</td>
+	<td>&nbsp;</td>
 	{section name=j loop=$show}
-		{if $show[j] == 'project_name'}
-			<td width="100%"><a href="?m=projects&a=view&project_id={$rows[i].project_id}">{$rows[i].project_name}</a></td>
-		{elseif $show[j] == 'project_owner'}
-			<td nowrap="nowrap">{$rows[i].contact_first_name} {$rows[i].contact_last_name}</td>
-		{elseif $show[j] == 'project_status'}
-			{assign var=temp value=$rows[i].project_status}
-			<td nowrap="nowrap">{dPtranslate word=$pstatus[$temp]}</td>
-		{elseif $show[j] == 'project_target_budget'}
-			<td nowrap="nowrap" align="right">{dPconfig var='currency_symbol'} {$rows[i].project_target_budget}</td>
-		{elseif $show[j] == 'project_start_date'}
-			<td nowrap="nowrap" align="right">{dPdateFormat date=$rows[i].project_start_date}</td>
-		{else}
-			<td nowrap="nowrap">{$rows[i].$show[j]}</td>
-		{/if}
+	{if $show[j] == 'company_name'}
+	<td>
+		<a href="./index.php?m=companies&a=view&company_id={$rows[i].company_id}" title="{$rows[i].company_description}">
+			{$rows[i].company_name}
+		</a>
+	</td>
+	{elseif $show[j] == 'company_type'}
+	<td width="125" align="center" nowrap="nowrap">{dPtranslate word=$rows[i].company_type_name}</td>
+	{else}
+	{assign var='col' value=$show[j]}
+	<td width="125" align="center" nowrap="nowrap">{$rows[i][$col]}</td><!--$show[j]-->
+	{/if}
 	{/section}
 	</tr>
 {/section}
+
+<!--<td width="125" align="center" nowrap="nowrap">{$rows[j].countp}</td>
+	<td width="125" align="center" nowrap="nowrap">{$rows[j].inactive}</td>-->
+
 </table>
 {/if}

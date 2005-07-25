@@ -212,6 +212,7 @@ function dPfindImage( $name, $module=null ) {
 }
 
 /**
+ *  Function deprecated - to be replaced by a smarty dPshowImage function
  *	Workaround removed due to problems in Opera and other issues
  *	with IE6.
  *	Workaround to display png images with alpha-transparency in IE6.0

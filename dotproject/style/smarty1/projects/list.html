@@ -1,0 +1,40 @@
+{if !$rows}
+	{dPtranslate sentence='No data available'}<br />{$msg}
+{else}
+<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
+	<tr>
+		<th><a href="{$current_url}&sort=project_priority">{dPtranslate word='P'}</a></th>
+{section name=i loop=$show}
+	  <th><a href="{$current_url}&sort={$show[i]}">{dPtranslate|capitalize word=$show[i]}</a></th>
+{/section}
+	</tr>
+{section name=i loop=$rows}
+	<tr>
+		<td>
+		{if $rows[i].project_priority < 0}
+			<img src="./images/icons/low.gif" width=13 height=16>
+		{elseif $rows[i].project_priority > 0}
+			<img src="./images/icons/{$rows[i].project_priority}.gif" width=13 height=16>
+		{/if}
+		</td>
+	{section name=j loop=$show}
+		{if $show[j] == 'project_name'}
+			<td width="100%"><a href="?m=projects&a=view&project_id={$rows[i].project_id}">{$rows[i].project_name}</a></td>
+		{elseif $show[j] == 'project_owner'}
+			<td nowrap="nowrap">{$rows[i].contact_first_name} {$rows[i].contact_last_name}</td>
+		{elseif $show[j] == 'project_status'}
+			{assign var=temp value=$rows[i].project_status}
+			<td nowrap="nowrap">{dPtranslate word=$pstatus[$temp]}</td>
+		{elseif $show[j] == 'project_target_budget'}
+			<td nowrap="nowrap" align="right">{dPconfig var='currency_symbol'} {$rows[i].project_target_budget}</td>
+		{elseif $show[j] == 'project_start_date'}
+			<td nowrap="nowrap" align="right">{dPdateFormat date=$rows[i].project_start_date}</td>
+		{else}
+			{assign var='col' value=$show[j]}
+			<td nowrap="nowrap">{$rows[i][col]}</td>
+		{/if}
+	{/section}
+	</tr>
+{/section}
+</table>
+{/if}

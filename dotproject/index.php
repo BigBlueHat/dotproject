@@ -26,9 +26,6 @@ $dbqueries = 0;
 ini_set('display_errors', 1); // Ensure errors get to the user.
 error_reporting(E_ALL & ~E_NOTICE);
 
-//Smarty temporary variable
-$theme = 'smarty1';
-
 // If you experience a 'white screen of death' or other problems,
 // uncomment the following line of code:
 //error_reporting( E_ALL );
@@ -68,6 +65,7 @@ if (! isset($GLOBALS['OS_WIN']))
 require_once "$baseDir/includes/db_adodb.php";
 require_once "$baseDir/includes/db_connect.php";
 require_once "$baseDir/includes/main_functions.php";
+require_once "$baseDir/classes/template.class.php";
 require_once "$baseDir/classes/ui.class.php";
 require_once "$baseDir/classes/permissions.class.php";
 require_once "$baseDir/includes/session.php";
@@ -98,6 +96,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 $AppUI =& $_SESSION['AppUI'];
 $last_insert_id =$AppUI->last_insert_id;
 
+$tpl = $AppUI->getTemplate();
 $AppUI->checkStyle();
 
 // load the commonly used classes
@@ -227,14 +226,6 @@ $a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', $def_a));
 
 $u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
 
-// load module based locale settings
-@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
-@include_once "$baseDir/locales/core.php";
-
-setlocale( LC_TIME, $AppUI->user_lang );
-$m_config = dPgetConfig($m);
-@include_once "$baseDir/functions/" . $m . "_func.php";
-
 // TODO: canRead/Edit assignements should be moved into each file
 
 // check overall module permissions
@@ -245,6 +236,54 @@ $canRead = $perms->checkModule($m, 'view');
 $canEdit = $perms->checkModule($m, 'edit');
 $canAuthor = $perms->checkModule($m, 'add');
 $canDelete = $perms->checkModule($m, 'delete');
+
+if (! isset($_SESSION['all_tabs'][$m]) ) {
+	// For some reason on some systems if you don't set this up
+	// first you get recursive pointers to the all_tabs array, creating
+	// phantom tabs.
+	if (! isset($_SESSION['all_tabs']))
+		$_SESSION['all_tabs'] = array();
+	$_SESSION['all_tabs'][$m] = array();
+	$all_tabs =& $_SESSION['all_tabs'][$m];
+	foreach ($AppUI->getActiveModules() as $dir => $module)
+	{
+		if (! $perms->checkModule($dir, 'access'))
+			continue;
+		$modules_tabs = $AppUI->readFiles("$baseDir/modules/$dir/", '^' . $m . '_tab.*\.php');
+		foreach($modules_tabs as $tab)
+		{
+			// Get the name as the subextension
+			// cut the module_tab. and the .php parts of the filename 
+			// (begining and end)
+			$nameparts = explode('.', $tab);
+			$filename = substr($tab, 0, -4);
+			if (count($nameparts) > 3) {
+				$file = $nameparts[1];
+				if (! isset($all_tabs[$file]))
+					$all_tabs[$file] = array();
+				$arr =& $all_tabs[$file];
+				$name = $nameparts[2];
+			} else {
+				$arr =& $all_tabs;
+				$name = $nameparts[1];
+			}
+			$arr[] = array(
+				'name' => ucfirst(str_replace('_', ' ', $name)),
+				'file' => $baseDir . '/modules/' . $dir . '/' . $filename,
+				'module' => $dir);
+		}
+	}
+} else {
+	$all_tabs =& $_SESSION['all_tabs'][$m];
+}
+
+// load module based locale settings
+@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
+@include_once "$baseDir/locales/core.php";
+
+setlocale( LC_TIME, $AppUI->user_lang );
+$m_config = dPgetConfig($m);
+@include_once "$baseDir/functions/" . $m . "_func.php";
 
 if ( !$suppressHeaders ) {
 	// output the character set header
@@ -293,45 +332,7 @@ ob_start();
 if(!$suppressHeaders) {
 	require "$baseDir/style/$uistyle/header.php";
 }
-if (! isset($_SESSION['all_tabs'][$m]) ) {
-	// For some reason on some systems if you don't set this up
-	// first you get recursive pointers to the all_tabs array, creating
-	// phantom tabs.
-	if (! isset($_SESSION['all_tabs']))
-		$_SESSION['all_tabs'] = array();
-	$_SESSION['all_tabs'][$m] = array();
-	$all_tabs =& $_SESSION['all_tabs'][$m];
-	foreach ($AppUI->getActiveModules() as $dir => $module)
-	{
-		if (! $perms->checkModule($dir, 'access'))
-			continue;
-		$modules_tabs = $AppUI->readFiles("$baseDir/modules/$dir/", '^' . $m . '_tab.*\.php');
-		foreach($modules_tabs as $tab)
-		{
-			// Get the name as the subextension
-			// cut the module_tab. and the .php parts of the filename 
-			// (begining and end)
-			$nameparts = explode('.', $tab);
-			$filename = substr($tab, 0, -4);
-			if (count($nameparts) > 3) {
-				$file = $nameparts[1];
-				if (! isset($all_tabs[$file]))
-					$all_tabs[$file] = array();
-				$arr =& $all_tabs[$file];
-				$name = $nameparts[2];
-			} else {
-				$arr =& $all_tabs;
-				$name = $nameparts[1];
-			}
-			$arr[] = array(
-				'name' => ucfirst(str_replace('_', ' ', $name)),
-				'file' => $baseDir . '/modules/' . $dir . '/' . $filename,
-				'module' => $dir);
-		}
-	}
-} else {
-	$all_tabs =& $_SESSION['all_tabs'][$m];
-}
+
 $setuptime = (array_sum(explode(' ',microtime())) - $time);
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . "$a.php";
 if (file_exists($module_file))

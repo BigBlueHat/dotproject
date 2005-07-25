@@ -1,0 +1,16 @@
+<table cellspacing="0" cellpadding="0" border="0">
+	<tr>
+		<td>
+			<a href="javascript:delIt()" title="{$msg}">
+			{if $canDelete}
+				{dPshowImage src='./images/icons/stock_delete-16.png' wsize='16' hsize='16'}
+			{else}
+				{dPshowImage src='./images/icons/stock_trash_full-16.png' wsize='16' hsize='16'}
+			{/if}
+			</a>
+		</td>
+		<td>
+			<a href="javascript:delIt()" title="{$msg}">{dPtranslate word=$title}</a>
+		</td>
+	</tr>
+</table>

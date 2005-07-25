@@ -84,7 +84,10 @@ class CAppUI {
 	var $version_string = null;
 
 /** @var integer for register log ID */
-            var $last_insert_id = null;	
+	var $last_insert_id = null;	
+	
+/** @var template class */
+	var $template = null;
 /**
 * CAppUI Constructor
 */
@@ -110,6 +113,8 @@ class CAppUI {
 // set up the default preferences
 		$this->setUserLocale($this->base_locale);
 		$this->user_prefs = array();
+		
+		$this->template = new CTemplate();
 	}
 /**
 * Used to load a php class file from the system classes directory
@@ -184,6 +189,12 @@ class CAppUI {
 		}
 	}
 
+/** Access variable for the template class */
+	function getTemplate()
+	{
+		return $this->template;
+	}
+	
 /**
 * Utility function to read the 'directories' under 'path'
 *
@@ -949,10 +960,18 @@ the active tab, and the selected tab **/
 * @param string Can't remember whether this was useful
 */
 	function show( $extra='', $js_tabs = false ) {
-		GLOBAL $AppUI, $currentTabId, $currentTabName;
+		GLOBAL $AppUI, $currentTabId, $currentTabName, $tpl;
 		reset( $this->tabs );
 		$s = '';
-	// tabbed / flat view options
+	
+		$tpl->assign('current_tab', substr($this->baseHRef, 0, -1));
+		$tpl->assign('extra', $extra);
+		$tpl->assign('tabs', $this->tabs);
+		$tpl->assign('javascript', $this->javascript);
+		$tpl->assign('js_tabs', $js_tabs);
+		$tpl->assign('active', $this->active);
+		
+		// tabbed / flat view options
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
 			$s .= '<table border="0" cellpadding="2" cellspacing="0" width="100%"><tr><td nowrap="nowrap">';
 			$s .= '<a href="'.$this->baseHRef.'tab=0">'.$AppUI->_('tabbed').'</a> : ';
@@ -1137,83 +1156,48 @@ class CTitleBlock_core {
 * Creates a standarised, right-aligned delete bread-crumb and icon.
 */
 	function addCrumbDelete( $title, $canDelete='', $msg='' ) {
-		global $AppUI;
-		$this->addCrumbRight(
-			'<table cellspacing="0" cellpadding="0" border="0"?<tr><td>'
-			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">'
-			. dPshowImage( './images/icons/'.($canDelete?'stock_delete-16.png':'stock_trash_full-16.png'), '16', '16',  '' )
-			. '</a>'
-			. '</td><td>&nbsp;'
-			. '<a href="javascript:delIt()" title="'.($canDelete?'':$msg).'">' . $AppUI->_( $title ) . '</a>'
-			. '</td></tr></table>'
-		);
+		global $AppUI, $tpl;
+		
+		$tpl->assign('title', $title);
+		$tpl->assign('canDelete', $canDelete);
+		if ($canDelete)
+			$tpl->assign('msg', ''.$msg);
+		else
+			$tpl->assign('msg', '');
+			
+		$this->addCrumbRight($tpl->fetch('crumbDelete.html'));
 	}
 /**
 * The drawing function
 */
 	function show() {
-		global $AppUI;
-		$CR = "\n";
-		$CT = "\n\t";
-		$s = $CR . '<table width="100%" border="0" cellpadding="1" cellspacing="1">';
-		$s .= $CR . '<tr>';
-		if ($this->icon) {
-			$s .= $CR . '<td width="42">';
-			$s .= dPshowImage( dPFindImage( $this->icon, $this->module ));
-			$s .= '</td>';
-		}
-		$s .= $CR . '<td align="left" width="100%" nowrap="nowrap"><h1>' . $AppUI->_($this->title) . '</h1></td>';
-		foreach ($this->cells1 as $c) {
-			$s .= $c[2] ? $CR . $c[2] : '';
-			$s .= $CR . '<td align="right" nowrap="nowrap"' . ($c[0] ? " $c[0]" : '') . '>';
-			$s .= $c[1] ? $CT . $c[1] : '&nbsp;';
-			$s .= $CR . '</td>';
-			$s .= $c[3] ? $CR . $c[3] : '';
-		}
-		if ($this->showhelp) {
-			$s .= '<td nowrap="nowrap" width="20" align="right">';
-			//$s .= $CT . contextHelp( '<img src="./images/obj/help.gif" width="14" height="16" border="0" alt="'.$AppUI->_( 'Help' ).'" />', $this->helpref );
+		global $AppUI, $tpl;
+		
+		$tpl->assign('icon', dPFindImage($this->icon, $this->module));
+		$tpl->assign('title', $this->title);
+		//$tpl->assign('module', $this->module);
 
-			$s .= "\n\t<a href=\"#$this->helpref\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$this->helpref', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\" title=\"".$AppUI->_( 'Help' )."\">";
-			$s .= "\n\t\t" . dPshowImage( './images/icons/stock_help-16.png', '16', '16', $AppUI->_( 'Help' ) );
-			$s .= "\n\t</a>";
-			$s .= "\n</td>";
-		}
-		$s .= "\n</tr>";
-		$s .= "\n</table>";
+		$tpl->assign('cells1', $this->cells1);
+		$tpl->assign('cells2', $this->cells2);
 
-		if (count( $this->crumbs ) || count( $this->cells2 )) {
+		$tpl->assign('help', $this->helpref);
+		
+
+		if (count( $this->crumbs ) ) {
 			$crumbs = array();
 			foreach ($this->crumbs as $k => $v) {
-				$t = $v[1] ? '<img src="' . dPfindImage( $v[1], $this->module ) . '" border="" alt="" />&nbsp;' : '';
-				$t .= $AppUI->_( $v[0] );
-				$crumbs[] = "<a href=\"$k\">$t</a>";
+				if ($v[1])
+					$crumb['img'] = dPfindImage( $v[1], $this->module );
+				$crumb['name'] = $v[0];
+				$crumb['link'] = $k;
+				$crumbs[] = $crumb;
 			}
-			$s .= "\n<table border=\"0\" cellpadding=\"4\" cellspacing=\"0\" width=\"100%\">";
-			$s .= "\n<tr>";
-			$s .= "\n\t<td nowrap=\"nowrap\">";
-			$s .= "\n\t\t" . implode( ' <strong>:</strong> ', $crumbs );
-			$s .= "\n\t</td>";
+		$tpl->assign('crumbs', $crumbs);
 
-			foreach ($this->cells2 as $c) {
-				$s .= $c[2] ? "\n$c[2]" : '';
-				$s .= "\n\t<td align=\"right\" nowrap=\"nowrap\"" . ($c[0] ? " $c[0]" : '') . '>';
-				$s .= $c[1] ? "\n\t$c[1]" : '&nbsp;';
-				$s .= "\n\t</td>";
-				$s .= $c[3] ? "\n\t$c[3]" : '';
-			}
-
-			$s .= "\n</tr>\n</table>";
 		}
-		echo "$s";
+		
+		$tpl->display('titleBlock.html');
 	}
 }
 // !! Ensure there is no white space after this close php tag.
-
-require_once($baseDir . '/lib/smarty/Smarty.class.php');
-
-$smarty = new Smarty;
-$smarty->template_dir = $baseDir . '/style';
-$smarty->compile_dir	= $baseDir . '/files/cache/smarty_templates';
-$smarty->cache_dir		= $baseDir . '/files/cache/smarty';
 ?>
