@@ -53,10 +53,12 @@ class DBQuery {
   var $_table_prefix;
 	var $_query_id = null;
 	var $_old_style = null;
+	var $_db = null;
 
-  function DBQuery($prefix = null) 
+  function DBQuery($prefix = null, $query_db = null) 
   {
     global $dPconfig;
+    global $db;
 
     if (isset($prefix))
       $this->_table_prefix = $prefix;
@@ -64,6 +66,7 @@ class DBQuery {
       $this->_table_prefix = $dPconfig['dbprefix'];
     else
       $this->_table_prefix = "";
+    $this->_db = isset($query_db) ? $query_db : $db;
 
     $this->clear();
   }
@@ -601,7 +604,6 @@ class DBQuery {
    */
   function &exec($style = ADODB_FETCH_BOTH, $debug = false)
   {
-      global $db;
       global $ADODB_FETCH_MODE;
 
       if (! isset($this->_old_style))
@@ -612,7 +614,7 @@ class DBQuery {
           dprint(__FILE__, __LINE__, 7, "executing query($q)");
 	  if ($debug) {
 	    // Before running the query, explain the query and return the details.
-	    $qid = $db->Execute('EXPLAIN ' . $q);
+	    $qid = $this->_db->Execute('EXPLAIN ' . $q);
 	    if ($qid) {
 	      $res = array();
 	      while ($row = $this->fetchRow()) {
@@ -623,12 +625,12 @@ class DBQuery {
 	    }
 	  }
           if (isset($this->limit)) {
-            $this->_query_id = $db->SelectLimit($q, $this->limit, $this->offset);
+            $this->_query_id = $this->_db->SelectLimit($q, $this->limit, $this->offset);
           } else {
-            $this->_query_id =  $db->Execute($q);
+            $this->_query_id =  $this->_db->Execute($q);
           }
           if (! $this->_query_id) {
-              $error = $db->ErrorMsg();
+              $error = $this->_db->ErrorMsg();
               dprint(__FILE__, __LINE__, 0, "query failed($q) - error was: " . $error);
               return $this->_query_id;
           }
@@ -651,11 +653,10 @@ class DBQuery {
 	 */
 	function loadList($maxrows = null)
 	{
-		global $db;
 		global $AppUI;
 
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
-			$AppUI->setMsg($db->ErrorMsg(), UI_MSG_ERROR);
+			$AppUI->setMsg($this->_db->ErrorMsg(), UI_MSG_ERROR);
 			$this->clear();
 			return false;
 		}
@@ -672,10 +673,9 @@ class DBQuery {
 	}
 
 	function loadHashList($index = null) {
-		global $db;
 
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
-			exit ($db->ErrorMsg());
+			exit ($this->_db->ErrorMsg());
 		}
 		$hashlist = array();
 		$keys = null;
@@ -695,9 +695,8 @@ class DBQuery {
 	}
 
 	function loadHash() {
-		global $db;
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
-			exit ($db->ErrorMsg());
+			exit ($this->_db->ErrorMsg());
 		}
 		$hash = $this->fetchRow();
 		$this->clear();
@@ -705,10 +704,9 @@ class DBQuery {
 	}
 	
 	function loadArrayList($index = 0) {
-		global $db;
 
 		if (! $this->exec(ADODB_FETCH_NUM)) {
-			exit ($db->ErrorMsg());
+			exit ($this->_db->ErrorMsg());
 		}
 		$hashlist = array();
 		$keys = null;
@@ -720,9 +718,8 @@ class DBQuery {
 	}
 
 	function loadColumn() {
-		global $db;
 		if (! $this->exec(ADODB_FETCH_NUM)) {
-		  die ($db->ErrorMsg());
+		  die ($this->_db->ErrorMsg());
 		}
 		$result = array();
 		while ($row = $this->fetchRow()) {
@@ -734,7 +731,7 @@ class DBQuery {
 
 	function loadObject( &$object, $bindAll=false , $strip = true) {
 		if (! $this->exec(ADODB_FETCH_NUM)) {
-			die ($db->ErrorMsg());
+			die ($this->_db->ErrorMsg());
 		}
 		if ($object != null) {
 			$hash = $this->fetchRow();
@@ -783,17 +780,17 @@ class DBQuery {
 	 * Using an XML string, build or update a table.
 	 */
 	function execXML($xml, $mode = 'REPLACE') {
-		global $db, $baseDir, $AppUI;
+		global $baseDir, $AppUI;
 
 		include_once $baseDir.'/lib/adodb/adodb-xmlschema.inc.php';
-		$schema = new adoSchema($db);
+		$schema = new adoSchema($this->_db);
 		$schema->setUpgradeMode($mode);
 		if (isset($this->_table_prefix) && $this->_table_prefix) {
 			$schema->setPrefix($this->_table_prefix, false);
 		}
 		$schema->ContinueOnError(true);
 		if (($sql = $scheme->ParseSchemaString($xml)) == false) {
-			$AppUI->setMsg(array('Error in XML Schema', 'Error', $db->ErrorMsg()), UI_MSG_ERR);
+			$AppUI->setMsg(array('Error in XML Schema', 'Error', $this->_db->ErrorMsg()), UI_MSG_ERR);
 			return false;
 		}
 		if ($schema->ExecuteSchema($sql, true))
@@ -812,7 +809,7 @@ class DBQuery {
     $result = false;
 
     if (! $this->exec(ADODB_FETCH_NUM)) {
-      $AppUI->setMsg($db->ErrorMsg(), UI_MSG_ERROR);
+      $AppUI->setMsg($this->_db->ErrorMsg(), UI_MSG_ERROR);
     } else if ($data = $this->fetchRow()) {
       $result =  $data[0];
     }
@@ -910,7 +907,7 @@ class DBQuery {
 	function quote($string)
 	{
 		global $db;
-		return $db->qstr($string, get_magic_quotes_runtime());
+		return $this->_db->qstr($string, get_magic_quotes_runtime());
 	}
 }
 //1}}}
