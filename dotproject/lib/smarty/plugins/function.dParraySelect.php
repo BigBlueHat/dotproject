@@ -23,7 +23,7 @@ function smarty_function_dParraySelect($params, &$smarty)
     extract($params);
     
     if (empty($array) || empty($name) || empty($extras) || empty($value)) {
-        $smarty->trigger_error("assign: missing parameter");
+        $smarty->trigger_error("dParraySelect: missing parameter");
         return;
     }
     

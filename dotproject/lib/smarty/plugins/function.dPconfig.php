@@ -20,7 +20,7 @@ function smarty_function_dPconfig($params, &$smarty)
     extract($params);
 
     if (empty($var) && empty($sentence)) {
-        $smarty->trigger_error("assign: missing 'var' parameter");
+        $smarty->trigger_error("dPconfig: missing 'var' parameter");
         return;
     }
 

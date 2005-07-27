@@ -22,7 +22,7 @@ function smarty_function_dPtranslate($params, &$smarty)
     extract($params);
 
     if (empty($word) && empty($sentence)) {
-        $smarty->trigger_error("assign: missing parameter");
+        $smarty->trigger_error("dPtranslate: missing parameter");
         return;
     }
 

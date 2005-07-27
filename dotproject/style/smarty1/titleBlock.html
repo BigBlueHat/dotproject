@@ -6,7 +6,7 @@
 		</td>
 	{/if}
 		<td align="left" width="100%" nowrap="nowrap">
-			<h1>{dPtranslate word=$title}</h1>
+		{if $title}<h1>{dPtranslate word=$title}</h1>{/if}
 		</td>
 	{section name=i loop=$cells1}
 		{$cells1[i][2]}
