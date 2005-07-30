@@ -32,7 +32,6 @@ class CProject extends CDpObject {
 	var $project_target_budget = NULL;
 	var $project_actual_budget = NULL;
 	var $project_creator = NULL;
-	var $project_active = NULL;
 	var $project_private = NULL;
 	var $project_departments= NULL;
 	var $project_contacts = NULL;
@@ -45,7 +44,6 @@ class CProject extends CDpObject {
 
 	function check() {
 	// ensure changes of state in checkboxes is captured
-		$this->project_active = intval( $this->project_active );
 		$this->project_private = intval( $this->project_private );
 
 		return NULL; // object is ok

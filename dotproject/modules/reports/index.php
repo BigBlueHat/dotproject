@@ -35,7 +35,7 @@ if (!$canRead) {
 $obj = new CProject();
                                                                                 
 $q = new DBQuery;
-$q->addQuery('project_id, project_active, project_status, project_name, project_description, project_short_name');
+$q->addQuery('project_id, project_status, project_name, project_description, project_short_name');
 $q->addTable('projects');
 $obj->setAllowedSQL($AppUI->user_id, $q);
 

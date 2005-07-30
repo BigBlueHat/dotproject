@@ -25,7 +25,7 @@ if ($company_id != 0) {
 }
 //$filter1 = ($proFilter == '-1') ? '' : " AND project_status = $proFilter ";
 if ($showInactive != '1')
-	$filter1[] = "project_active <> 0 ";
+	$filter1[] = "project_status != 7";
 $pjobj =& new CProject;
 $allowed_projects = $pjobj->getAllowedSQL($AppUI->user_id);
 $where = array_merge($filter1, $allowed_projects);
@@ -40,7 +40,7 @@ $q->addQuery("DISTINCT project_id, project_color_identifier, project_name, proje
 		max(t1.task_end_date) AS project_actual_end_date, SUM(task_duration * task_percent_complete *
 		IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/ SUM(task_duration * 
 		IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete,
-		project_status, project_active");
+		project_status");
 $q->addJoin('tasks', 't1', 'p.project_id = t1.task_project');
 $q->addJoin('companies', 'c1', 'p.project_company = c1.company_id');
 if (count($where))
@@ -186,7 +186,7 @@ foreach($projects as $p) {
 
         if ($showLabels){
                 $caption .= $AppUI->_($projectStatus[$p['project_status']]).", ";
-                $caption .= $p['project_active'] <> 0 ? $AppUI->_('active') : $AppUI->_('inactive');
+                $caption .= $p['project_status'] <> 7 ? $AppUI->_('active') : $AppUI->_('archived');
         }
 	$enddate = new CDate($end);
 	$startdate = new CDate($start);
@@ -206,7 +206,7 @@ foreach($projects as $p) {
 	$bar->caption->Align("left","center");
 
         // gray out templates, completes, on ice, on hold
-        if ($p['project_status'] != '3' || $p['project_active'] == '0') {
+        if ($p['project_status'] != '3' || $p['project_status'] == '7') {
                 $bar->caption->SetColor('darkgray');
                 $bar->title->SetColor('darkgray');
                 $bar->SetColor('darkgray');

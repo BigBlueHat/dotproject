@@ -28,7 +28,7 @@ $q = new DBQuery;
 $q->addTable('projects');
 $q->addQuery('project_id, project_color_identifier, project_name, project_start_date, project_end_date');
 $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
-$q->addWhere('project_active <> 0');
+$q->addWhere('project_status != 7');
 $q->addGroup('project_id');
 $q->addOrder('project_name');
 $project->setAllowedSQL($AppUI->user_id, $q);
@@ -44,7 +44,7 @@ $q = new DBQuery;
 $q->addTable('tasks', 't');
 $q->addQuery('t.task_id, task_parent, task_name, task_start_date, task_end_date, task_duration, task_duration_type, task_priority, task_percent_complete, task_order, task_project, task_milestone, project_name, task_dynamic');
 $q->addJoin('projects', 'p', 'project_id = t.task_project');
-$q->addWhere('project_active <> 0');
+$q->addWhere('project_status != 7');
 $q->addOrder('project_id, task_start_date');
 if ($project_id) {
 	$q->addWhere("task_project = $project_id");

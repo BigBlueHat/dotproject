@@ -175,8 +175,6 @@ $q->addWhere('task_status = ' . $f3);
 
 if ($project_id)
 	$q->addWhere('task_project = ' . $project_id);
-else
-	$q->addWhere('project_active != 0');
 
 if ($pinned_only)
 	$q->addWhere('task_pinned = 1');
@@ -217,14 +215,14 @@ switch ($f) {
 //		$q->addWhere('task_project = p.project_id');
 
 		$q->addWhere("(task_percent_complete < '100' OR task_end_date = '')");
-		$q->addWhere('p.project_active = 1');
+		$q->addWhere('p.project_status != 7');
 		$q->addWhere('p.project_status != 4');
 		$q->addWhere('p.project_status != 5');
 		break;
 	case 'allunfinished':
 		//			AND task_project             = projects.project_id
 		$q->addWhere("(task_percent_complete < '100' OR task_end_date = '')");
-		$q->addWhere('p.project_active = 1');
+		$q->addWhere('p.project_status != 7');
 		$q->addWhere('p.project_status != 4');
 		$q->addWhere('p.project_status != 5');
 		break;

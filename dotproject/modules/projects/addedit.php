@@ -390,7 +390,6 @@ function setDepartment(department_id_string){
 				<tr>
 					<td><?php echo $AppUI->_('Status');?> *</td>
 					<td nowrap="nowrap"><?php echo $AppUI->_('Progress');?></td>
-					<td><?php echo $AppUI->_('Active');?>?</td>
 				</tr>
 				<tr>
 					<td>
@@ -398,9 +397,6 @@ function setDepartment(department_id_string){
 					</td>
 					<td>
 						<strong><?php echo sprintf( "%.1f%%", @$row->project_percent_complete);?></strong>
-					</td>
-					<td>
-						<input type="checkbox" value="1" name="project_active" <?php echo $row->project_active||$project_id==0 ? 'checked="checked"' : '';?> />
 					</td>
 				</tr>
 				</table>

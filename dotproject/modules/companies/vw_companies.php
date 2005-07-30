@@ -37,10 +37,10 @@ $q->addQuery('c.company_description');
 $q->addQuery('count(distinct p.project_id) as company_projects_active');
 $q->addQuery('count(distinct p2.project_id) as company_projects_inactive');
 $q->addQuery('con.contact_first_name, con.contact_last_name');
-$q->addJoin('projects', 'p', 'c.company_id = p.project_company AND p.project_active <> 0');
+$q->addJoin('projects', 'p', 'c.company_id = p.project_company AND p.project_status != 7');
 $q->addJoin('users', 'u', 'c.company_owner = u.user_id');
 $q->addJoin('contacts', 'con', 'u.user_contact = con.contact_id');
-$q->addJoin('projects', 'p2', 'c.company_id = p2.project_company AND p2.project_active = 0');
+$q->addJoin('projects', 'p2', 'c.company_id = p2.project_company AND p2.project_status = 7');
 if (count($allowedCompanies) > 0) { $q->addWhere('c.company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')'); }
 if ($companiesType) { $q->addWhere('c.company_type = '.$company_type_filter); }
 if ($search_string != "") { $q->addWhere("c.company_name LIKE '%$search_string%'"); }

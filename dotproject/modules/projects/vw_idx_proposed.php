@@ -75,7 +75,7 @@ foreach ($projects as $row) {
 		continue;
 	}
 	if ($show_all_projects ||
-	    ($row["project_active"] > 0 && $row["project_status"] == $project_status_filter)) {
+	    ($row["project_status"] == $project_status_filter)) {
 		$none = false;
                 $start_date = intval( @$row["project_start_date"] ) ? new CDate( $row["project_start_date"] ) : null;
 		$end_date = intval( @$row["project_end_date"] ) ? new CDate( $row["project_end_date"] ) : null;

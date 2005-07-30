@@ -136,7 +136,7 @@ if(count($companies) == 0) $companies = array(0);
 
 $sql = "
 SELECT
-	projects.project_id, project_active, project_status,
+	projects.project_id, project_status,
 	project_color_identifier, project_name, project_description,
 	project_start_date, project_end_date, project_color_identifier,
 	project_company, company_name, project_status, project_priority,
@@ -165,8 +165,8 @@ ORDER BY $orderby $orderdir
 global $projects;
 
 $q->addTable('projects');
-$q->addQuery('projects.project_id, project_active, project_status, project_color_identifier, project_name, project_description,
-	project_start_date, project_end_date, project_color_identifier, project_company, company_name, project_status,
+$q->addQuery('projects.project_id, project_status, project_color_identifier, project_name, project_description,
+	project_start_date, project_end_date, project_color_identifier, project_company, company_name,
 	project_priority, tc.critical_task, tc.project_actual_end_date, tp.task_log_problem, ts.total_tasks, tsy.my_tasks,
 	ts.project_percent_complete, user_username');
 $q->addJoin('companies', 'com', 'projects.project_company = company_id');
@@ -236,7 +236,6 @@ $titleBlock->show();
 
 $project_types = dPgetSysVal("ProjectStatus");
 
-$active = 0;
 $complete = 0;
 $archive = 0;
 $proposed = 0;
@@ -246,7 +245,7 @@ foreach($project_types as $key=>$value)
         $counter[$key] = 0;
 	if (is_array($projects)) {
 		foreach ($projects as $p)
-			if ($p['project_status'] == $key && $p['project_active'] > 0)
+			if ($p['project_status'] == $key)
 				++$counter[$key];
 	}
                 
@@ -257,12 +256,10 @@ foreach($project_types as $key=>$value)
 if (is_array($projects)) {
         foreach ($projects as $p)
         {
-                if ($p['project_active'] > 0 && $p['project_status'] == 3)
+                if ($p['project_status'] == 3)
                         ++$active;
-                else if ($p['project_active'] > 0 && $p['project_status'] == 5)
+                else if ($p['project_status'] == 5)
                         ++$complete;
-                else if ($p['project_active'] < 1)
-                        ++$archive;
                 else
                         ++$proposed;
         }
@@ -270,11 +267,7 @@ if (is_array($projects)) {
 
 $fixed_project_type_file = array(
         $AppUI->_('In Progress', UI_OUTPUT_RAW) . ' (' . $active . ')' => "vw_idx_active",
-        $AppUI->_('Complete', UI_OUTPUT_RAW) . ' (' . $complete . ')'    => "vw_idx_complete",
-        $AppUI->_('Archived', UI_OUTPUT_RAW) . ' (' . $archive . ')'    => "vw_idx_archived");
-// we need to manually add Archived project type because this status is defined by 
-// other field (Active) in the project table, not project_status
-$project_types[] = $AppUI->_('Archived', UI_OUTPUT_RAW) . ' (' . $archive . ')';
+        $AppUI->_('Complete', UI_OUTPUT_RAW) . ' (' . $complete . ')'    => "vw_idx_complete");
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page

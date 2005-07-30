@@ -28,3 +28,10 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
   SELECT config_id, 'http_ba'
 	FROM config
 	WHERE config_name = 'auth_method';
+	
+
+# 20050730
+# Converting deprecated inactive projects to new dPsysVal '7|Archived'
+UPDATE `sysvals` SET `sysval_value` = '0|Not Defined\n1|Proposed\n2|In Planning\n3|In Progress\n4|On Hold\n5|Complete\n6|Template\n7|Archived' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1;
+UPDATE `projects` SET `project_status` = '7' WHERE `project_active` = '0';
+ALTER TABLE `projects` DROP `project_active`;

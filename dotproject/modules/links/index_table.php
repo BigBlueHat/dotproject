@@ -134,7 +134,7 @@ else
 // SETUP FOR LINK LIST
 $q = new DBQuery();
 $q->addQuery('links.*');
-$q->addQuery('project_name, project_color_identifier, project_active');
+$q->addQuery('project_name, project_color_identifier, project_status');
 $q->addQuery('contact_first_name, contact_last_name');
 $q->addQuery('task_name, task_id');
 
