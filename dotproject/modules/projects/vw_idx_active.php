@@ -16,7 +16,7 @@ foreach ($projects as $k => $row) {
 
 $show = array(
 	'project_priority',
-	'project_color_identifier', 
+	'project_percent_complete', 
 	'project_name', 
 	'project_start_date', 
 	'project_end_date', 

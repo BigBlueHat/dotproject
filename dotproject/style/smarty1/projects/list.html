@@ -12,7 +12,7 @@
 	<tr>
 	{section name=j loop=$show}
 		{if $show[j] == 'project_name'}
-			<td width="100%"><a href="?m=projects&a=view&project_id={$row.project_id}">{$row.project_name}</a></td>
+			<td width="50%"><a href="?m=projects&a=view&project_id={$row.project_id}">{$row.project_name}</a></td>
 		{elseif $show[j] == 'project_priority'}
 			<td>
 			{if $row.project_priority < 0}
@@ -34,16 +34,22 @@
 			<td nowrap="nowrap" align="right">{dPdateFormat date=$row.project_end_date}</td>
 		{elseif $show[j] == 'total_tasks'}
 			<td align="right">{$row.total_tasks}</td>
-		{elseif $show[j] == 'project_color_identifier'}
-			<td width="200" align="left">
-				<span width="{$row.project_percent_complete * 2}" style="border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
+		{elseif $show[j] == 'project_percent_complete'}
+			<td width="100" align="left">
+				<div style="text-align: center; width:{$row.project_percent_complete}px; height: 13px; float: left;border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
 				{if $row.project_percent_complete >= 50}
 					{$row.project_percent_complete|string_format:"%.1f"}%
 				{/if}
-				</span>
+				</div>
 				{if $row.project_percent_complete < 50}
-					{$row.project_percent_complete|string_format:"%.1f"}%
+					&nbsp;{$row.project_percent_complete|string_format:"%.1f"}%
 				{/if}
+			</td>
+		{elseif $show[j] == 'project_percent_complete'}
+			<td width="64" align="center">
+				<div style="float: left;border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
+					{$row.project_percent_complete|string_format:"%.1f"}%
+				</div>
 			</td>
 		{else}
 			{assign var='col' value=$show[j]}

@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"project_actual_end_date"=>"actual end date",
+"project_percent_complete"=>"progress",
 "Active",
 "Actual",
 "Actual Budget",
@@ -132,6 +132,7 @@
 "noDeleteRecord"=>"Deletion not possible: Dependencies!",
 "none",
 "normal",
+"project_actual_end_date"=>"actual end date",
 "project_color_identifier"=>"color",
 "project_end_date"=>"end date",
 "project_name"=>"project name",
