@@ -24,13 +24,16 @@ function smarty_function_dPdateFormat($params, &$smarty)
 	
     extract($params);
     
-    if (empty($date)) {
-        $date = '';
+    if (empty($date) || $date == '0000-00-00 00:00:00') {
+    	if ($format == 'db')
+    		return '';
+    	else
+    		return '-';
     }
     
     if (empty($cdate))
     	$cdate = new CDate( $date );
-    
+    	
     if ($format == 'db')
     	$df = FMT_TIMESTAMP_DATE;
     else if (!empty($format))

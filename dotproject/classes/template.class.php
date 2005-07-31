@@ -20,7 +20,13 @@ class CTemplate extends Smarty
 	function displayList($module, $rows, $show = null)
 	{
 		if (!isset($show))
-			$show = array_keys($rows);
+		{
+			$keys = array_keys($rows);
+			$show = array_keys($rows[$keys[0]]);
+		}
+		
+		if (!$this->get_template_vars('current_url'))
+			$this->assign('current_url', '?m=' . $module);			
 			
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);

@@ -165,12 +165,22 @@ ORDER BY $orderby $orderdir
 global $projects;
 
 $q->addTable('projects');
-$q->addQuery('projects.project_id, project_status, project_color_identifier, project_name, project_description,
-	project_start_date, project_end_date, project_color_identifier, project_company, company_name,
-	project_priority, tc.critical_task, tc.project_actual_end_date, tp.task_log_problem, ts.total_tasks, tsy.my_tasks,
-	ts.project_percent_complete, user_username');
+$q->addQuery('projects.project_id');
+$q->addQuery('project_name, project_description');
+$q->addQuery('project_start_date, project_end_date');
+$q->addQuery('project_color_identifier');
+$q->addQuery('project_company');
+$q->addQuery('project_status, project_priority');
+$q->addQuery('company_name');
+$q->addQuery('tc.critical_task, tc.project_actual_end_date');
+$q->addQuery('tp.task_log_problem');
+$q->addQuery('ts.total_tasks');
+$q->addQuery('tsy.my_tasks');
+$q->addQuery('ts.project_percent_complete');
+$q->addQuery('contact_first_name, contact_last_name');
 $q->addJoin('companies', 'com', 'projects.project_company = company_id');
 $q->addJoin('users', 'u', 'projects.project_owner = u.user_id');
+$q->addJoin('contacts', 'c', 'user_contact = contact_id');
 $q->addJoin('tasks_critical', 'tc', 'projects.project_id = tc.task_project');
 $q->addJoin('tasks_problems', 'tp', 'projects.project_id = tp.task_project');
 $q->addJoin('tasks_sum', 'ts', 'projects.project_id = ts.task_project');

@@ -19,6 +19,9 @@ function smarty_function_dPbestColor($params, &$smarty)
 {
 	extract($params);
 	
+	if (!isset($bg))
+		$smarty->trigger_error("dPbestColor: missing 'bg' parameter");
+	
 	if (!isset($dk))
 		$dk = '#000000';
 	if (!isset($lt))

@@ -3,38 +3,54 @@
 {else}
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 	<tr>
-		<th><a href="{$current_url}&sort=project_priority">{dPtranslate word='P'}</a></th>
 {section name=i loop=$show}
-	  <th><a href="{$current_url}&sort={$show[i]}">{dPtranslate|capitalize word=$show[i]}</a></th>
+	  <th><a href="{$current_url}&orderby={$show[i]}">{dPtranslate|capitalize word=$show[i]}</a></th>
 {/section}
 	</tr>
-{section name=i loop=$rows}
+	{*{section name=i loop=$rows}*}
+{foreach from=$rows item=row}
 	<tr>
-		<td>
-		{if $rows[i].project_priority < 0}
-			<img src="./images/icons/low.gif" width=13 height=16>
-		{elseif $rows[i].project_priority > 0}
-			<img src="./images/icons/{$rows[i].project_priority}.gif" width=13 height=16>
-		{/if}
-		</td>
 	{section name=j loop=$show}
 		{if $show[j] == 'project_name'}
-			<td width="100%"><a href="?m=projects&a=view&project_id={$rows[i].project_id}">{$rows[i].project_name}</a></td>
+			<td width="100%"><a href="?m=projects&a=view&project_id={$row.project_id}">{$row.project_name}</a></td>
+		{elseif $show[j] == 'project_priority'}
+			<td>
+			{if $row.project_priority < 0}
+				<img src="./images/icons/low.gif" width="13" height="16">
+			{elseif $row.project_priority > 0}
+				<img src="./images/icons/{$row.project_priority}.gif" width="13" height="16">
+			{/if}
+			</td>
 		{elseif $show[j] == 'project_owner'}
-			<td nowrap="nowrap">{$rows[i].contact_first_name} {$rows[i].contact_last_name}</td>
+			<td nowrap="nowrap">{$row.project_owner}{$row.contact_first_name} {$row.contact_last_name}</td>
 		{elseif $show[j] == 'project_status'}
-			{assign var=temp value=$rows[i].project_status}
+			{assign var=temp value=$row.project_status}
 			<td nowrap="nowrap">{dPtranslate word=$pstatus[$temp]}</td>
 		{elseif $show[j] == 'project_target_budget'}
-			<td nowrap="nowrap" align="right">{dPconfig var='currency_symbol'} {$rows[i].project_target_budget}</td>
+			<td nowrap="nowrap" align="right">{dPconfig var='currency_symbol'} {$row.project_target_budget}</td>
 		{elseif $show[j] == 'project_start_date'}
-			<td nowrap="nowrap" align="right">{dPdateFormat date=$rows[i].project_start_date}</td>
+			<td nowrap="nowrap" align="right">{dPdateFormat date=$row.project_start_date}</td>
+		{elseif $show[j] == 'project_end_date'}
+			<td nowrap="nowrap" align="right">{dPdateFormat date=$row.project_end_date}</td>
+		{elseif $show[j] == 'total_tasks'}
+			<td align="right">{$row.total_tasks}</td>
+		{elseif $show[j] == 'project_color_identifier'}
+			<td width="200" align="left">
+				<span width="{$row.project_percent_complete * 2}" style="border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
+				{if $row.project_percent_complete >= 50}
+					{$row.project_percent_complete|string_format:"%.1f"}%
+				{/if}
+				</span>
+				{if $row.project_percent_complete < 50}
+					{$row.project_percent_complete|string_format:"%.1f"}%
+				{/if}
+			</td>
 		{else}
 			{assign var='col' value=$show[j]}
-			<td nowrap="nowrap">{$rows[i][col]}</td>
+			<td nowrap="nowrap">{$row.$col}</td>
 		{/if}
 	{/section}
 	</tr>
-{/section}
+{/foreach}
 </table>
 {/if}

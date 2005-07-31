@@ -47,9 +47,9 @@
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Target Finish Date'}</td>
-			<td nowrap="nowrap">	<input type="hidden" name="project_end_date" value="{dPdateFormat date=$obj->project_end_date format='db'}" />
+			<td nowrap="nowrap">
+				<input type="hidden" name="project_end_date" value="{dPdateFormat date=$obj->project_end_date format='db'}" />
 				<input type="text" class="text" name="end_date" id="date2" value="{dPdateFormat date=$obj->project_end_date}" class="text" disabled="disabled" />
-
 				<a href="#" onClick="popCalendar('end_date', 'end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>

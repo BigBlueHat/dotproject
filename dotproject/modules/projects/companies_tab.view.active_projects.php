@@ -3,7 +3,7 @@ GLOBAL $AppUI, $company_id, $pstatus, $dPconfig, $tpl, $m;
 
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 
-$sort = dPgetParam($_GET, 'sort', 'project_name');
+$sort = dPgetParam($_GET, 'orderby', 'project_name');
 if ($sort == 'project_priority')
         $sort .= ' DESC';
 
@@ -24,7 +24,7 @@ $q->addOrder($sort);
 $tpl->assign('current_url', 'index.php?m=companies&a=view&company_id=' . $company_id);
 $tpl->assign('pstatus', $pstatus);
 
-$show = array('project_name', 'project_owner', 'project_start_date', 'project_status', 'project_target_budget');
+$show = array('project_priority', 'project_name', 'project_owner', 'project_start_date', 'project_status', 'project_target_budget');
 
 $tpl->displayList('projects', $q->loadList(), $show);
 ?>
