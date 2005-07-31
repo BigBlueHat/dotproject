@@ -6,13 +6,16 @@
  */
 
 /*
- * Smarty {dateFormat date=} function plugin
+ * Smarty {dateFormat date= cdate= format=} function plugin
  *
  * Type:     function<br>
  * Name:     dateFormat<br>
  * Purpose:  format a date as per dp user preferences<br>
  *
- * @param array Format: array('date' => the date to be formatted)
+ * @param array Format: array(
+ *		'date' => the date to be formatted
+ * 		'cdate' => the date to be formatted in CDate class
+ *		'format' => optional format (if not specified - using user format))
  * @param Smarty
  */
 function smarty_function_dPdateFormat($params, &$smarty)
@@ -25,8 +28,14 @@ function smarty_function_dPdateFormat($params, &$smarty)
         $date = '';
     }
     
-    $cdate = new CDate( $date );
-    $df = $AppUI->getPref('SHDATEFORMAT');
+    if (empty($cdate))
+    	$cdate = new CDate( $date );
+    
+    if (!empty($format))
+    	$df = $format;
+    else
+    	$df = $AppUI->getPref('SHDATEFORMAT');
+    
     return $cdate->format($df);
 }
 

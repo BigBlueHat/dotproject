@@ -238,217 +238,54 @@ function setDepartment(department_id_string){
 
 </script>
 
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-<form name="editFrm" action="./index.php?m=projects" method="post">
-	<input type="hidden" name="dosql" value="do_project_aed" />
-	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-	<input type="hidden" name="project_creator" value="<?php echo $AppUI->user_id;?>" />
-	<input name='project_contacts' type='hidden' value="<?php echo implode(',', $selected_contacts); ?>" />
-
-<tr>
-	<td width="50%" valign="top">
-		<table cellspacing="0" cellpadding="2" border="0">
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Name');?></td>
-			<td width="100%" colspan="2">
-				<input type="text" name="project_name" value="<?php echo dPformSafe( $row->project_name );?>" size="25" maxlength="50" onBlur="setShort();" class="text" />
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Owner');?></td>
-			<td colspan="2">
-<?php echo arraySelect( $users, 'project_owner', 'size="1" style="width:200px;" class="text"', $row->project_owner? $row->project_owner : $AppUI->user_id ) ?>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Company');?></td>
-			<td width="100%" nowrap="nowrap" colspan="2">
 <?php
-		echo arraySelect( $companies, 'project_company', 'class="text" size="1"', $row->project_company );
-?> *</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Start Date');?></td>
-			<td nowrap="nowrap">	 <input type="hidden" name="project_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
-				<input type="text" class="text" name="start_date" id="date1" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
 
-				<a href="#" onClick="popCalendar( 'start_date', 'start_date');">
-					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
-				</a>
-			</td>
-			<td rowspan="6" valign="top">
-					<?php
-						if ( $AppUI->isActiveModule('contacts') && $perms->checkModule('contacts', 'view')) {
-							echo "<input type='button' class='button' value='".$AppUI->_("Select contacts...")."' onclick='javascript:popContacts();' />";
-						}
-						// Let's check if the actual company has departments registered
-						if($department_selection_list != ""){
-							?>
-								<br />
-								<?php echo $department_selection_list; ?>
-							<?php
-						}
-					?>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Finish Date');?></td>
-			<td nowrap="nowrap">	<input type="hidden" name="project_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
-				<input type="text" class="text" name="end_date" id="date2" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
+	$objProject = new CProject();
+	$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
+	
+	$q  = new DBQuery;
+	$q->addTable('projects', 'p');
+	$q->addTable('tasks', 't');
+	$q->addQuery('p.project_id, p.project_name');
+	$q->addWhere('t.task_project = p.project_id');
+	if ( count($allowedProjects) > 0 ) {
+		$q->addWhere('(p.project_id IN (' .
+		implode (',', array_keys($allowedProjects)) . '))');
+	}
+	$q->addOrder('p.project_name');
+		
+	$importList = $q->loadHashList ();
+	$importList = arrayMerge( array( '0'=> $AppUI->_('none') ), $importList);
 
-				<a href="#" onClick="popCalendar('end_date', 'end_date');">
-					<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
-				</a>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Target Budget');?> <?php echo $dPconfig['currency_symbol'] ?></td>
-			<td>
-				<input type="Text" name="project_target_budget" value="<?php echo @$row->project_target_budget;?>" maxlength="10" class="text" />
-			</td>
-		</tr>
-		<tr>
-			<td colspan="2"><hr noshade="noshade" size="1"></td>
-		</tr>
-<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Finish Date');?></td>
-			<td nowrap="nowrap">
-                                <?php if ($project_id > 0) { ?>
-                                        <?php echo $actual_end_date ? '<a href="?m=tasks&a=view&task_id='.$criticalTasks[0]['task_id'].'">' : '';?>
-                                        <?php echo $actual_end_date ? '<span '. $style.'>'.$actual_end_date->format( $df ).'</span>' : '-';?>
-                                        <?php echo $actual_end_date ? '</a>' : '';?>
-                                <?php } else { echo $AppUI->_('Dynamically calculated');} ?>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Actual Budget');?> <?php echo $dPconfig['currency_symbol'] ?></td>
-			<td>
-				<input type="text" name="project_actual_budget" value="<?php echo @$row->project_actual_budget;?>" size="10" maxlength="10" class="text"/>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="3"><hr noshade="noshade" size="1"></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('URL');?></td>
-			<td colspan="2">
-				<input type="text" name="project_url" value='<?php echo @$row->project_url;?>' size="40" maxlength="255" class="text" />
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Staging URL');?></td>
-			<td colspan="2">
-				<input type="Text" name="project_demo_url" value='<?php echo @$row->project_demo_url;?>' size="40" maxlength="255" class="text" />
-			</td>
-		</tr>
-		<tr>
-			<td align="right" colspan="3">
-			<?php
-				require_once("./classes/CustomFields.class.php");
-				$custom_fields = New CustomFields( $m, $a, $row->project_id, "edit" );
-				$custom_fields->printHTML();
-			?>
-			</td>
-		</tr>
-		</table>
-	</td>
-	<td width="50%" valign="top">
-		<table cellspacing="0" cellpadding="2" border="0" width="100%">
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?></td>
-			<td nowrap>
-				<?php echo arraySelect( $projectPriority, 'project_priority', 'size="1" class="text"', $row->project_priority, true );?> *
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Short Name');?></td>
-			<td colspan="3">
-				<input type="text" name="project_short_name" value="<?php echo dPformSafe( @$row->project_short_name ) ;?>" size="10" maxlength="10" class="text" /> *
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Color Identifier');?></td>
-			<td nowrap="nowrap">
-				<input type="text" name="project_color_identifier" value="<?php echo (@$row->project_color_identifier) ? @$row->project_color_identifier : 'FFFFFF';?>" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
-			</td>
-			<td nowrap="nowrap" align="right">
-				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><?php echo $AppUI->_('change color');?></a>
-			</td>
-			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#<?php echo (@$row->project_color_identifier) ? @$row->project_color_identifier : 'FFFFFF';?>;"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Project Type');?></td>
-			<td colspan="3">
-				<?php echo arraySelect( $ptype, 'project_type', 'size="1" class="text"', $row->project_type, true );?> *
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<table width="100%" bgcolor="#cccccc">
-				<tr>
-					<td><?php echo $AppUI->_('Status');?> *</td>
-					<td nowrap="nowrap"><?php echo $AppUI->_('Progress');?></td>
-				</tr>
-				<tr>
-					<td>
-						<?php echo arraySelect( $pstatus, 'project_status', 'size="1" class="text"', $row->project_status, true ); ?>
-					</td>
-					<td>
-						<strong><?php echo sprintf( "%.1f%%", @$row->project_percent_complete);?></strong>
-					</td>
-				</tr>
-				</table>
-			</td>
-		</tr>
-		<?php  
-			// Retrieve projects that the user can access
-			$objProject = new CProject();
-			$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
-			
-			$q  = new DBQuery;
-			$q->addTable('projects', 'p');
-			$q->addTable('tasks', 't');
-			$q->addQuery('p.project_id, p.project_name');
-			$q->addWhere('t.task_project = p.project_id');
-			if ( count($allowedProjects) > 0 ) {
-				$q->addWhere('(p.project_id IN (' .
-				implode (',', array_keys($allowedProjects)) . '))');
-			}
-			$q->addOrder('p.project_name');
-			
-			$importList = $q->loadHashList ();
-			$importList = arrayMerge( array( '0'=> $AppUI->_('none') ), $importList);
-		?>
-		<tr>
-			<td align="left" nowrap="nowrap">
-				<?php   echo $AppUI->_('Import tasks from');?>:<br/>
-			</td>
-			<td colspan="3">
-				<?php echo arraySelect( $importList, 'import_tasks_from', 'size="1" class="text"', null, false ); ?>
-			</td>
-		</tr>
-		<tr>
-			<td colspan="4">
-				<?php echo $AppUI->_('Description');?><br />
-				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea"><?php echo dPformSafe( @$row->project_description );?></textarea>
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-<tr>
-	<td>
-		<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="javascript:if(confirm('Are you sure you want to cancel.')){location.href = './index.php?m=projects';}" />
-	</td>
-	<td align="right">
-		<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt();" />
-	</td>
-</tr>
-</form>
-</table>
-* <?php echo $AppUI->_('requiredField');?>
+	require_once("./classes/CustomFields.class.php");
+	$custom_fields = New CustomFields( $m, $a, $row->project_id, "edit" );
+	
+	$tpl->assign('custom_fields', $custom_fields->getHTML());
+		
+	$tpl->assign('importList', $importList);
+	$tpl->assign('companies', $companies);
+	$tpl->assign('projectPriority', $projectPriority);
+	$tpl->assign('users', $users);
+	$tpl->assign('ptype', $ptype);
+	$tpl->assign('pstatus', $pstatus);
+	
+	$row->project_owner = $row->project_owner ? $row->project_owner : $AppUI->user_id;
+	
+	// TODO: is the check for contacts being an active module necessary?!? 
+	// isn't it always active?
+	$viewContacts = ( $AppUI->isActiveModule('contacts') && $perms->checkModule('contacts', 'view'));
+	$tpl->assign('viewContacts', $viewContacts);
+	
+	$tpl->assign('actual_end_date', $actual_end_date);
+	$tpl->assign('critical_task_id', $criticalTasks[0]['task_id']);
+	$tpl->assign('style', $style);
+	$tpl->assign('department_selection_list', $department_selection_list);
+	$tpl->assign('project_id', $project_id);
+	$tpl->assign('project_creator', $AppUI->user_id);
+	$tpl->assign('project_contacts', implode(',', $selected_contacts));
+	
+	$tpl->displayAddEdit($row);
+?>
 
 <?php
 function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
