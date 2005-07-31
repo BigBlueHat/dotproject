@@ -60,15 +60,15 @@
 {if $project_id > 0}
 	{if $obj->actual_end_date}
 				<a href="?m=tasks&a=view&task_id={$critical_task}">
-        	<span {$style}>{dPdateFormat date=$obj->actual_end_date}</span>
-         </a>
+					<span {$style}>{dPdateFormat date=$obj->actual_end_date}</span>
+				</a>
 	{else}
-            -
+				-
 	{/if}
 {else}
-        {dPtranslate sentence='Dynamically calculated'}
+				{dPtranslate sentence='Dynamically calculated'}
 {/if}
-      </td>
+			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap>{dPtranslate word='Target Budget'}:</td>
@@ -116,7 +116,7 @@
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap>{dPtranslate word='Status'}:</td>
-			<td class="hilite" width="100%">{$obj->project_status}</td>
+			<td class="hilite" width="100%">{$obj->project_status_name}</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap>{dPtranslate word='Priority'}:</td>
