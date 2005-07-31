@@ -1,0 +1,75 @@
+<table class="tbl" width="100%" border="0" cellpadding="4" cellspacing="0">
+<tr>
+        <td>
+                <table border="0" cellpadding="4" cellspacing="0" class="tbl">
+
+                <form name="editFrm" method="post" action="?m={$m}&a={$a}">
+                <input type="hidden" name="display_option" value="{$display_option}" />
+
+                <tr>
+                        <td align="left" valign="top" width="20">
+{if $display_option != 'all'}
+                                <a href="javascript:scrollPrev()">
+                                        <img src="./images/prev.gif" width="16" height="16" alt="{dPtranslate word='previous'}" border="0">
+                                </a>
+{/if}
+                        </td>
+
+                        <td align="right" nowrap="nowrap">{dPtranslate word='From'}:</td>
+                        <td align="left" nowrap="nowrap">
+                                <input type="hidden" name="sdate" value="{dPdateFormat date=$start_date format='db'}" />
+                                <input type="text" class="text" name="show_sdate" value="{dPdateFormat date=$start_date}" size="12" disabled="disabled" />
+                                <a href="javascript:popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
+                        </td>
+
+                        <td align="right" nowrap="nowrap">{dPtranslate word='To'}:</td>
+                        <td align="left" nowrap="nowrap">
+                                <input type="hidden" name="edate" value="{dPdateFormat date=$end_date format='db'}" />
+                                <input type="text" class="text" name="show_edate" value="{dPdateFormat date=$end_date}" size="12" disabled="disabled" />
+                                <a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
+                        <td valign="top">
+                        {dParraySelect array=$projFilter name='proFilter' extras='size=1 class=text' value=$proFilter translate='true'}
+                        </td>
+                        <td valign="top">
+                                <input type="checkbox" name="showLabels" value="1"{if $showLabels==1} checked="true"{/if} />{dPtranslate word='Show captions'}
+                        </td>
+                        <td valign="top">
+                                <input type="checkbox" value="1" name="showInactive"{if $showInactive==1} checked="true"{/if} />{dPtranslate word='Show Inactive'}
+                        </td>
+                        <td valign="top">
+                                <input type="checkbox" value="1" name="showAllGantt"{if $showAllGantt==1} checked="true"{/if} />{dPtranslate word='Show Tasks'}
+                        </td>
+                        <td align="left">
+                                <input type="button" class="button" value="{dPtranslate word='submit'}" onclick="document.editFrm.display_option.value='custom';submit();">
+                        </td>
+
+                        <td align="right" valign="top" width="20">
+{if $display_option != 'all'}
+                        <a href="javascript:scrollNext()">
+                                <img src="./images/next.gif" width="16" height="16" alt="{dPtranslate word='next'}" border="0">
+                        </a>
+{/if}
+                        </td>
+                </tr>
+
+                </form>
+
+                <tr>
+                        <td align="center" valign="bottom" colspan="12">
+                                <a href="javascript:showThisMonth()">{dPtranslate sentence='show this month'}</a> : 
+                                <a href="javascript:showFullProject()">{dPtranslate sentence='show all'}</a><br>
+                        </td>
+                </tr>
+
+                </table>
+
+                <table cellspacing="0" cellpadding="0" border="1" align="center" class="tbl">
+                <tr>
+                        <td>
+                        {$script}
+                        </td>
+                </tr>
+                </table>
+        </td>
+</tr>
+</table>

@@ -121,84 +121,27 @@ function showFullProject() {
 }
 
 </script>
-<table class="tbl" width="100%" border="0" cellpadding="4" cellspacing="0">
-<tr>
-        <td>
-                <table border="0" cellpadding="4" cellspacing="0" class="tbl">
+<?php
+global $tpl;
 
-                <form name="editFrm" method="post" action="?<?php echo "m=$m&a=$a";?>">
-                <input type="hidden" name="display_option" value="<?php echo $display_option;?>" />
+$src = "?m=$m&a=gantt&suppressHeaders=1" .
+($display_option == 'all' ? '' : 
+	'&start_date=' . $start_date->format( "%Y-%m-%d" ) . 
+	'&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
+	"&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=$showLabels&proFilter=$proFilter&showInactive=$showInactive&company_id=$company_id&department=$department&dept_ids=$dept_ids&showAllGantt=$showAllGantt";
+$tpl->assign('script', "<script>document.write('<img src=\"$src\">')</script>");
 
-                <tr>
-                        <td align="left" valign="top" width="20">
-                <?php if ($display_option != "all") { ?>
-                                <a href="javascript:scrollPrev()">
-                                        <img src="./images/prev.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'previous' );?>" border="0">
-                                </a>
-                <?php } ?>
-                        </td>
+$tpl->assign('projFilter', $projFilter);
+$tpl->assign('proFilter', $proFilter);
 
-                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'From' );?>:</td>
-                        <td align="left" nowrap="nowrap">
-                                <input type="hidden" name="sdate" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
-                                <input type="text" class="text" name="show_sdate" value="<?php echo $start_date->format( $df );?>" size="12" disabled="disabled" />
-                                <a href="javascript:popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
-                        </td>
+$tpl->assign('showLabels', $showLabels);
+$tpl->assign('showInactive', $showInactive);
+$tpl->assign('showAllGantt', $showAllGantt);
 
-                        <td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'To' );?>:</td>
-                        <td align="left" nowrap="nowrap">
-                                <input type="hidden" name="edate" value="<?php echo $end_date->format( FMT_TIMESTAMP_DATE );?>" />
-                                <input type="text" class="text" name="show_edate" value="<?php echo $end_date->format( $df );?>" size="12" disabled="disabled" />
-                                <a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
-                        <td valign="top">
-                                <?php echo arraySelect( $projFilter, 'proFilter', 'size=1 class=text', $proFilter, true );?>
-                        </td>
-                        <td valign="top">
-                                <input type="checkbox" name="showLabels" value='1' <?php echo (($showLabels==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show captions' );?>
-                        </td>
-                        <td valign="top">
-                                <input type="checkbox" value='1' name="showInactive" <?php echo (($showInactive==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show Inactive' );?>
-                        </td>
-                        <td valign="top">
-                                <input type="checkbox" value='1' name="showAllGantt" <?php echo (($showAllGantt==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show Tasks' );?>
-                        </td>
-                        <td align="left">
-                                <input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
-                        </td>
+$tpl->assign('start_date', $start_date);
+$tpl->assign('end_date', $end_date);
 
-                        <td align="right" valign="top" width="20">
-                <?php if ($display_option != "all") { ?>
-                        <a href="javascript:scrollNext()">
-                                <img src="./images/next.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'next' );?>" border="0">
-                        </a>
-                <?php } ?>
-                        </td>
-                </tr>
+$tpl->assign('display_option', $display_option);
 
-                </form>
-
-                <tr>
-                        <td align="center" valign="bottom" colspan="12">
-                                <?php echo "<a href='javascript:showThisMonth()'>".$AppUI->_('show this month')."</a> : <a href='javascript:showFullProject()'>".$AppUI->_('show all')."</a><br>"; ?>
-                        </td>
-                </tr>
-
-                </table>
-
-                <table cellspacing="0" cellpadding="0" border="1" align="center" class="tbl">
-                <tr>
-                        <td>
-                <?php
-                $src =
-                "?m=$m&a=gantt&suppressHeaders=1" .
-                ( $display_option == 'all' ? '' :
-                        '&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
-                "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=$showLabels&proFilter=$proFilter&showInactive=$showInactive&company_id=$company_id&department=$department&dept_ids=$dept_ids&showAllGantt=$showAllGantt";
-                echo "<script>document.write('<img src=\"$src\">')</script>";
-                ?>
-                        </td>
-                </tr>
-                </table>
-        </td>
-</tr>
-</table>
+$tpl->displayFile('gantt');
+?>

@@ -31,7 +31,7 @@ class CTemplate extends Smarty
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
 		
-		$this->display($module . '/list.html');
+		$this->displayFile('list', $module);
 	}
 	
 	function displayView($item)
@@ -40,7 +40,7 @@ class CTemplate extends Smarty
 		
 		$this->assign('obj', $item);
 		
-		$this->display($m . '/view.html');
+		$this->displayFile('view');
 	}
 	
 	function displayAddEdit($item)
@@ -49,7 +49,20 @@ class CTemplate extends Smarty
 		
 		$this->assign('obj', $item);
 		
-		$this->display($m . '/addedit.html');
+		$this->displayFile('addedit');
+	}
+	
+	function displayFile($file, $module = null)
+	{
+		global $m, $a;
+		
+		if ($module == null)
+			$module = $m;
+			
+		$this->assign('m', $m);
+		$this->assign('a', $a);
+			
+		$this->display($module . '/' . $file . '.html');
 	}
 }
 ?>

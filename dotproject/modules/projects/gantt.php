@@ -2,6 +2,8 @@
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph.php");
 include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
 
+ini_set('max_execution_time', 180);
+
 global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt;
 
 // get the prefered date format
