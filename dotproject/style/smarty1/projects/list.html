@@ -1,6 +1,9 @@
 {if !$rows}
 	{dPtranslate sentence='No data available'}<br />{$msg}
 {else}
+	{if $editProjects}
+<form action="./index.php" method="get">
+	{/if}
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 	<tr>
 {section name=i loop=$show}
@@ -56,7 +59,21 @@
 			<td nowrap="nowrap">{$row.$col}</td>
 		{/if}
 	{/section}
+	{if $row.edit}
+			<td align="center">
+				<input type="checkbox" name="project_id[]" value="{$row.project_id}" />
+			</td>
+	{/if}
 	</tr>
 {/foreach}
 </table>
+	{if $editProjects}
+<p align="right">
+	<input type="submit" class="button" value="{dPtranslate sentence='Update projects status'}" />
+	<input type="hidden" name="update_project_status" value="1" />
+	<input type="hidden" name="m" value="projects" />
+	{dParraySelect array=$pstatus name='project_status' extras='size="1" class="text"' value='2' translate='true'}
+</p>
+</form>
+	{/if}
 {/if}
