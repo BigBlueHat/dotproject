@@ -3,7 +3,6 @@ $task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
 $task_log_id = intval( dPgetParam( $_GET, "task_log_id", 0 ) );
 $reminded = intval( dPgetParam( $_GET, 'reminded', 0) );
 
-
 // check permissions for this record
 $canRead = !getDenyRead( $m, $task_id );
 $canEdit = !getDenyEdit( $m, $task_id );
@@ -84,6 +83,7 @@ $q->clear();
 $users = db_loadList( $sql );
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Task', 'applet-48.png', $m, "$m.$a" );
@@ -207,13 +207,7 @@ function delIt() {
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Priority');?>:</td>
 			<td class="hilite">
 		<?php
-			if ($obj->task_priority == 0) {
-				echo $AppUI->_('normal');
-			} else if ($obj->task_priority < 0){
-				echo $AppUI->_('low');
-			} else {
-				echo $AppUI->_('high');
-			}
+			echo $AppUI->_($taskPriority[$obj->task_priority]);
 		?>
 			</td>
 		</tr>

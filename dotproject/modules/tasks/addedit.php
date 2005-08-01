@@ -49,6 +49,7 @@ if (!$canEdit) {
 $canReadProject = $perms->checkModuleItem( 'projects', "view", $obj->task_project);
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 
 // check the document access (public, participant, private)
 if (!$obj->canAccess( $AppUI->user_id )) {
@@ -283,7 +284,7 @@ var daily_working_hours = <?php echo intval(dPgetConfig('daily_working_hours'));
 
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
 			<td nowrap>
-				<?php echo arraySelect( $priority, 'task_priority', 'size="1" class="text"', $obj->task_priority, true );?>
+				<?php echo arraySelect( $taskPriority, 'task_priority', 'size="1" class="text"', $obj->task_priority, true );?>
 			</td>
 		</tr>
 		<tr>

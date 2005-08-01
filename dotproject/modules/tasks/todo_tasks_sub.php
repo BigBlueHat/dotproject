@@ -1,5 +1,5 @@
 <?php
-global $showEditCheckbox, $tasks, $priorities;
+global $showEditCheckbox, $tasks, $taskPriority;
 GLOBAL $m, $a, $date, $other_users, $showPinned, $showArcProjs, $showHoldProjs, $showDynTasks, $showLowTasks, $showEmptyDate, $user_id;
 ?>
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
@@ -123,7 +123,7 @@ foreach ($tasks as $task) {
 	</td>
 	<td colspan="3" align="center">
 <?php
-foreach($priorities as $k => $v) {
+foreach($taskPriority as $k => $v) {
 	$options[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_RAW);
 }
 $options['c'] = $AppUI->_('mark as finished', UI_OUTPUT_RAW);

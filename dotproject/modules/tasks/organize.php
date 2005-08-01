@@ -127,12 +127,7 @@ $q->addOrder("$sort, task_priority DESC");
 $tasks = $q->loadList();
 $q->clear();
 
-$priorities = array(
-	'1' => 'high',
-	'0' => 'normal',
-  '-1' => 'low'
-);
-
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 if (!@$min_view) {
@@ -293,7 +288,7 @@ foreach ($tasks as $task)
   $actions['f'] = $AppUI->_('Mark as Finished', UI_OUTPUT_JS);
   $actions['i'] = $AppUI->_('Mark as Inactive', UI_OUTPUT_JS);
   $actions['m'] = $AppUI->_('Move', UI_OUTPUT_JS);
-	foreach($priorities as $k => $v)
+	foreach($taskPriority as $k => $v)
 		$actions[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_JS);
 
   

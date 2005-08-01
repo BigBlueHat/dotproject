@@ -132,13 +132,8 @@ $q->clear();
 global $tasks;
 $tasks = db_loadList( $sql );
 
-
-global $priorities;
-$priorities = array(
-	'1' => 'high',
-	'0' => 'normal',
-        '-1' => 'low'
-);
+global $taskPriority;
+$taskPriority = dPgetSysVal( 'TaskPriority' );
 
 global $durnTypes;
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
