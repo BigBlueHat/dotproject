@@ -6,7 +6,7 @@ $company_id=0;
 $company_id = isset($_REQUEST['company_id']) ? $_REQUEST['company_id'] : 0;
 // Check permissions
 if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
-  $AppUI->redirect("m=public&a=access_denied" );
+  $AppUI->redirect('m=public&a=access_denied' );
 }
 
 $q  = new DBQuery;
@@ -14,18 +14,19 @@ $q->addTable('billingcode','bc');
 $q->addQuery('billingcode_id, billingcode_name, billingcode_value, billingcode_desc');
 $q->addOrder('billingcode_name ASC');
 $q->addWhere('bc.billingcode_status = 0');
-$q->addWhere("company_id = '$company_id'");
-$billingcodes = $q->loadHashList('billingcode_id');
+$q->addWhere('company_id = ' . $company_id);
+$billingcodes = $q->loadList();
 $q->clear();
 
 $q  = new DBQuery;
 $q->addTable('companies','c');
 $q->addQuery('company_id, company_name');
 $q->addOrder('company_name ASC');
-$company_list = array_merge(array("0"=> $AppUI->_("Select Company") ), $q->loadHashList());
+$company_list = $q->loadHashList();
+$company_list[0] = $AppUI->_('Select Company');
 $q->clear();
 
-$company_name = $company_list["$company_id"];
+$company_name = $company_list[$company_id];
 
 function showcodes(&$a) {
         global $AppUI;
@@ -63,7 +64,7 @@ function delIt2(id) {
 }
 </script>
 
-<form name="changeMe" action="./index.php?m=system&a=billingcode" method="post">
+<form name="changeMe" action="./index.php?m=system&a=billingcode?company_id=<?php echo $company_id; ?>" method="post">
         <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $company_id, false );?>
 </form>
 
@@ -88,8 +89,8 @@ function delIt2(id) {
 </tr>
 
 <?php
-        for ($s=0; $s < count($billingcodes); $s++) {
-                showcodes( $billingcodes[$s+1]);
+        foreach($billingcodes as $code) {
+                showcodes( $code);
         }
 ?>
 
