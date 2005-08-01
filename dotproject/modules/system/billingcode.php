@@ -64,7 +64,7 @@ function delIt2(id) {
 }
 </script>
 
-<form name="changeMe" action="./index.php?m=system&a=billingcode?company_id=<?php echo $company_id; ?>" method="post">
+<form name="changeMe" action="./index.php?m=system&a=billingcode" method="post">
         <?php echo arraySelect( $company_list, 'company_id', 'size="1" class="text" onchange="changeIt();"', $company_id, false );?>
 </form>
 
@@ -72,6 +72,7 @@ function delIt2(id) {
 <form name="frmDel" action="./index.php?m=system" method="post">
         <input type="hidden" name="dosql" value="do_billingcode_aed" />
         <input type="hidden" name="del" value="1" />
+        <input type="hidden" name="company_id" value="<?php echo $company_id; ?>" />
         <input type="hidden" name="billingcode_id" value="" />
 </form>
 
