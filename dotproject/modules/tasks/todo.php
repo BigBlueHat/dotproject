@@ -156,12 +156,13 @@ if ($m == 'tasks' && $a == 'todo') {
 	<td width="80%" valign="top">
   <?php
   // Tabbed information boxes
-  $tabBox = new CTabBox( "?m=tasks&a=todo", "{$dPconfig['root_dir']}/modules/", $tab );
-  $tabBox->add( 'tasks/todo_tasks_sub', 'My Tasks' );
+  $tabBox = new CTabBox( "?m=tasks&a=todo", "", $tab );
+  $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/todo_tasks_sub', 'My Tasks' );
+  $tabBox->loadExtras('tasks', 'todo');
 	// Wouldn't it be better to user $tabBox->loadExtras('tasks', 'todo'); and then
 	// add tasks_tab.todo.my_open_requests.php in helpdesk?  
   if ($AppUI->isActiveModule('helpdesk')){ 
-  $tabBox->add( 'helpdesk/vw_idx_my', 'My Open Requests' );
+  $tabBox->add( $dPconfig['root_dir'].'/modules/helpdesk/vw_idx_my', 'My Open Requests' );
   }
   $tabBox->show();
   ?>
