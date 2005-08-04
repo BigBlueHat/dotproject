@@ -1048,6 +1048,7 @@ class CTask extends CDpObject {
 		$q->addOrder('task_start_date');
 		$q->addWhere('task_project = project_id');
 		$q->addWhere("((task_start_date <= '$db_end' AND task_end_date >= '$db_start') OR task_start_date BETWEEN '$db_start' AND '$db_end')");
+		$q->addWhere('task_status > -1');
 
 		if ($company_id ){
 			$q->addWhere("project_company = '$company_id'");
