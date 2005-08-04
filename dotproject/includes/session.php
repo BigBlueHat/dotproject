@@ -65,6 +65,7 @@ function dPsessionRead($id)
 
 function dPsessionWrite($id, $data)
 {
+	global $AppUI;
 	$q = new DBQuery;
 	$q->addQuery('count(*) as row_count');
 	$q->addTable('sessions');
@@ -75,6 +76,8 @@ function dPsessionWrite($id, $data)
 		dprint(__FILE__, __LINE__, 11, "Updating session $id");
 		$q->query = null;
 		$q->addUpdate('session_data', $data);
+		if (isset($AppUI))
+			$q->addUpdate('session_user', $AppUI->user_id);
 	} else {
 		dprint(__FILE__, __LINE__, 11, "Creating new session $id");
 		$q->query = null;
@@ -92,10 +95,32 @@ function dPsessionDestroy($id)
 {
 	dprint(__FILE__, __LINE__, 11, "Killing session $id");
 	$q = new DBQuery;
+	$q->addQuery('session_user');
+	$q->addTable('sessions');
+	$q->addWhere("session_id = '$id'");
+	$user_id = $q->loadResult();
+
+	$q->clear();
 	$q->setDelete('sessions');
 	$q->addWhere("session_id = '$id'");
 	$q->exec();
 	$q->clear();
+
+	if (isset($user_id))
+	{
+		$q->addQuery('max(user_access_log_id)');
+		$q->addTable('user_access_log');
+		$q->addWhere('user_id = ' . $user_id);
+		$q->addGroup('user_id');
+		$user_access = $q->loadResult();
+	
+		$q->clear();
+		$q->addTable('user_access_log');
+		$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
+		$q->addWhere('user_access_log_id = ' . $user_access);
+		$q->exec();
+	}
+	
 	return true;
 }
 
@@ -110,10 +135,52 @@ function dPsessionGC($maxlifetime)
 	$idle = dPsessionConvertTime('idle_time');
 	// Find all the session
 	$q = new DBQuery;
-	$q->setDelete('sessions');
+	$q->addQuery('session_id, session_user');
+	$q->addTable('sessions');
 	$q->addWhere("UNIX_TIMESTAMP() - UNIX_TIMESTAMP(session_updated) > $idle OR UNIX_TIMESTAMP() - UNIX_TIMESTAMP(session_created) > $max");
-	$q->exec();
+	$sessions = $q->loadList();
 	$q->clear();
+
+	$session_ids = '';
+	$users = '';
+	if (is_array($sessions))
+	{
+		foreach($sessions as $session)
+		{
+			$session_ids .= $session['session_id'] . ',';
+			$users .= $session['session_user'] . ',';
+		}
+	}
+
+	if (!empty($users))
+	{
+		$users = substr($users, 0, -1);
+	
+		$q->addQuery('max(user_access_log_id)');
+		$q->addTable('user_access_log');
+		$q->addQuery('user_id IN (' . $users . ')');
+		$q->addGroup('user_id');
+		$user_access = $q->loadColumn();
+	
+		if (is_array($user_access))
+		{
+			$q->clear();
+			$q->addTable('user_access_log');
+			$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
+			$q->addWhere('user_access_log_id IN (' . implode(','.$user_access) . ')');
+			$q->exec();
+		}
+		$q->clear();
+	}
+
+	if (!empty($session_ids))
+	{
+		$session_ids = substr($session_ids, 0, -1);
+		$q->setDelete('sessions');
+		$q->addWhere('session_id in (\'' . $session_ids . '\')');
+		$q->exec();
+		$q->clear();
+	}
 	if (isset($dPconfig['session_gc_scan_queue'])
 	  && $dPconfig['session_gc_scan_queue']) {
 		// We need to scan the event queue.  If $AppUI isn't created yet

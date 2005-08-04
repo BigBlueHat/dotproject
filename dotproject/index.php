@@ -113,11 +113,6 @@ if ($AppUI->doLogin()) {
 	$AppUI->loadPrefs( 0 );
 }
 
-//Function register logout in user_acces_log
-if (isset($user_id) && isset($_GET['logout'])){
-    $AppUI->registerLogout($user_id);
-}
-
 // check is the user needs a new password
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	$uistyle = $dPconfig['host_style'];

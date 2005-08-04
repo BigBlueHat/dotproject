@@ -35,3 +35,7 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
 UPDATE `sysvals` SET `sysval_value` = '0|Not Defined\n1|Proposed\n2|In Planning\n3|In Progress\n4|On Hold\n5|Complete\n6|Template\n7|Archived' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1;
 UPDATE `projects` SET `project_status` = '7' WHERE `project_active` = '0';
 ALTER TABLE `projects` DROP `project_active`;
+
+# 20050804
+# fix for stale users in users access log when users don't logoff
+ALTER TABLE `sessions` ADD`session_user` INT DEFAULT '0' NOT NULL AFTER `session_id` ;

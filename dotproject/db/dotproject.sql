@@ -1168,6 +1168,7 @@ INSERT INTO `gacl_acl_sections` (id, value, order_value, name) VALUES (2, 'user'
 DROP TABLE IF EXISTS `sessions`;
 CREATE TABLE `sessions` (
 	`session_id` varchar(40) NOT NULL default '',
+	`session_user` INT DEFAULT '0' NOT NULL,
 	`session_data` LONGBLOB,
 	`session_updated` TIMESTAMP,
 	`session_created` DATETIME NOT NULL default '0000-00-00 00:00:00',

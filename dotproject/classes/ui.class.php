@@ -721,20 +721,6 @@ class CAppUI {
            }
 
 /**
-*@Function for register log out in dotproject table "user_acces_log"
-*/
-          function registerLogout($user_id){
-		$q  = new DBQuery;
-		$q->addTable('user_access_log');
-		$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
-		$q->addWhere("user_id = '$user_id' and (date_time_out='0000-00-00 00:00:00' or isnull(date_time_out)) ");
-		if ($user_id > 0){
-			$q->exec();
-			$q->clear();
-		}
-          }
-          
-/**
 *@Function for update table user_acces_log in field date_time_lost_action
 */
           function updateLastAction($last_insert_id){
