@@ -47,6 +47,7 @@ $dPconfig = array();
 	require_once "$baseDir/includes/config.php";
 	require_once "$baseDir/includes/main_functions.php";
 	require_once "$baseDir/includes/db_connect.php";
+	require_once "$baseDir/classes/template.class.php";
 	require_once "$baseDir/classes/ui.class.php";
 	require_once "$baseDir/classes/event_queue.class.php";
 	require_once "$baseDir/classes/query.class.php";
