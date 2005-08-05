@@ -77,7 +77,7 @@ function dPsessionWrite($id, $data)
 		$q->query = null;
 		$q->addUpdate('session_data', $data);
 		if (isset($AppUI))
-			$q->addUpdate('session_user', $AppUI->user_id);
+			$q->addUpdate('session_user', $AppUI->last_insert_id);
 	} else {
 		dprint(__FILE__, __LINE__, 11, "Creating new session $id");
 		$q->query = null;
@@ -93,32 +93,22 @@ function dPsessionWrite($id, $data)
 
 function dPsessionDestroy($id)
 {
+	global $AppUI;
+	
 	dprint(__FILE__, __LINE__, 11, "Killing session $id");
 	$q = new DBQuery;
-	$q->addQuery('session_user');
-	$q->addTable('sessions');
-	$q->addWhere("session_id = '$id'");
-	$user_id = $q->loadResult();
-
-	$q->clear();
 	$q->setDelete('sessions');
 	$q->addWhere("session_id = '$id'");
 	$q->exec();
 	$q->clear();
 
-	if (isset($user_id))
+	if (isset($AppUI->last_insert_id))
 	{
-		$q->addQuery('max(user_access_log_id)');
-		$q->addTable('user_access_log');
-		$q->addWhere('user_id = ' . $user_id);
-		$q->addGroup('user_id');
-		$user_access = $q->loadResult();
-	
-		$q->clear();
 		$q->addTable('user_access_log');
 		$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
-		$q->addWhere('user_access_log_id = ' . $user_access);
+		$q->addWhere('user_access_log_id = ' . $AppUI->last_insert_id);
 		$q->exec();
+		$q->clear();
 	}
 	
 	return true;
@@ -156,20 +146,11 @@ function dPsessionGC($maxlifetime)
 	{
 		$users = substr($users, 0, -1);
 	
-		$q->addQuery('max(user_access_log_id)');
+		$q->clear();
 		$q->addTable('user_access_log');
-		$q->addQuery('user_id IN (' . $users . ')');
-		$q->addGroup('user_id');
-		$user_access = $q->loadColumn();
-	
-		if (is_array($user_access))
-		{
-			$q->clear();
-			$q->addTable('user_access_log');
-			$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
-			$q->addWhere('user_access_log_id IN (' . implode(','.$user_access) . ')');
-			$q->exec();
-		}
+		$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
+		$q->addWhere('user_access_log_id IN (' . $users . ')');
+		$q->exec();
 		$q->clear();
 	}
 
