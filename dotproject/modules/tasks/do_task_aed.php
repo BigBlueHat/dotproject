@@ -52,17 +52,15 @@ if ($sub_form) {
 		$task_end_date = new CDate($obj->task_end_date);
 	}
 
-	if ( isset($_POST)) {
-		$obj->bind($_POST);
+	if ( isset($_POST) ) {
+		if (!$obj->bind( $_POST )) {
+			$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
+			$AppUI->redirect();
+		}
 	}
 
 	if (! $obj->task_owner)
 		$obj->task_owner = $AppUI->user_id;
-
-	if (!$obj->bind( $_POST )) {
-		$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
-		$AppUI->redirect();
-	}
 
 	// Check to see if the task_project has changed
 	if (isset($_POST['new_task_project']) && $_POST['new_task_project'])
