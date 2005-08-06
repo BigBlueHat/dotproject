@@ -29,10 +29,10 @@ if (isset( $_GET['project_id'] )) {
 }
 $project_id = $AppUI->getState( 'TaskIdxProject' ) ? $AppUI->getState( 'TaskIdxProject' ) : 0;
 
-if (isset( $_POST['f3'] )) {
-	$AppUI->setState( 'TaskStatusIdxFilter', $_POST['f3'] );
+if (isset( $_POST['task_status'] )) {
+	$AppUI->setState( 'TaskStatusIdxFilter', $_POST['task_status'] );
 }
-$f3 = $AppUI->getState( 'TaskStatusIdxFilter' ) ? $AppUI->getState( 'TaskStatusIdxFilter' ) : 0;
+$task_status = $AppUI->getState( 'TaskStatusIdxFilter' ) ? $AppUI->getState( 'TaskStatusIdxFilter' ) : 0;
 
 // get CCompany() to filter tasks by company
 require_once( $AppUI->getModuleClass( 'companies' ) );
@@ -100,7 +100,7 @@ $titleBlock->addCell(
 	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>');
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Status') . ':' );
 $titleBlock->addCell(
-	arraySelect( $status, 'f3', 'size=1 class=text onChange="document.taskStatus.submit();"', $f3, true ), '',
+	arraySelect( $status, 'task_status', 'size=1 class=text onChange="document.taskStatus.submit();"', $task_status, true ), '',
 	'<form action="?m=tasks" method="post" name="taskStatus">', '</form>');
 $titleBlock->addCell();
 

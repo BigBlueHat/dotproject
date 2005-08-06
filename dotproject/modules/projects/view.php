@@ -235,8 +235,10 @@ $query_string = "?m=projects&a=view&project_id=$project_id";
 // Note that we now control these based upon module requirements.
 $canViewTask = $perms->checkModule('tasks', 'view');
 if ($canViewTask) {
-	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks' );
-	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks (Inactive)' );
+	$taskStatus = dPgetSysVal('TaskStatus');
+	foreach ($taskStatus as $ts) {
+		$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks ('.$ts.')' );
+	}
 }
 if ($perms->checkModule('forums', 'view'))
 	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_forums", 'Forums' );
