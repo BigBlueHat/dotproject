@@ -554,11 +554,7 @@ foreach ($projects as $k => $p) {
 		for ($i=0; $i < $tnums; $i++) {
 			$t = $p['tasks'][$i];
 
-			/* 20041118 gregorerhardt bug #311:
-			** added the following task status condition to the if clause in order to make sure inactive children
-			** are shown in the 'inactive view'; their parents are for instance not listed with them.
-			*/
-			if ($t["task_parent"] == $t["task_id"] || ($f == 'children') || $p['tasks'][$i]["task_status"] != 0) {
+			if ($t["task_parent"] == $t["task_id"] || ($f == 'children')) {
 			    $is_opened = in_array($t["task_id"], $tasks_opened);
 			    $t['node_id'] = $t['task_id'];
 				showtask( $t, 0, $is_opened );
