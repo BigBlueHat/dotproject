@@ -518,7 +518,7 @@ class CTask extends CDpObject {
 			$q->addTable('user_tasks', 'ut');
 			$q->addInsert('user_id', $AppUI->user_id);
 			$q->addInsert('task_id', $this->task_id);
-			$q->addInsert('user_type', '-1');
+			$q->addInsert('user_type', '0');
 			$q->exec();
 			$q->clear();
 		}
