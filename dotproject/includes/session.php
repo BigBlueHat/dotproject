@@ -210,7 +210,7 @@ function dpSessionStart($start_vars = 'AppUI')
 {
 	global $dPconfig;
 
-	session_name('dotproject');
+	session_name($dPconfig['session_name']);
 	if (ini_get('session.auto_start') > 0) {
 		session_write_close();
 	}

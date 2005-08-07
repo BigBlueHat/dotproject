@@ -683,6 +683,7 @@ INSERT INTO `config` VALUES ('', 'default_view_a', 'day_view', '', 'text');
 INSERT INTO `config` VALUES ('', 'default_view_tab', '1', '', 'text');
 INSERT INTO `config` VALUES ('', 'index_max_file_size', '-1', '', 'text');
 INSERT INTO `config` VALUES ('', 'session_handling', 'app', 'session', 'select');
+INSERT INTO `config` VALUES ('', 'session_name', 'dotproject', 'session', 'text');
 INSERT INTO `config` VALUES ('', 'session_idle_time', '2d', 'session', 'text');
 INSERT INTO `config` VALUES ('', 'session_max_lifetime', '1m', 'session', 'text');
 INSERT INTO `config` VALUES ('', 'debug', '1', '', 'text');

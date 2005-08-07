@@ -39,3 +39,8 @@ ALTER TABLE `projects` DROP `project_active`;
 # 20050804
 # fix for stale users in users access log when users don't logoff
 ALTER TABLE `sessions` ADD`session_user` INT DEFAULT '0' NOT NULL AFTER `session_id` ;
+
+# 20050807
+# cookie session name as a config option
+INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` )
+VALUES ('', 'session_name', 'dotproject', 'session', 'text');
