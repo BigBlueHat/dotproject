@@ -124,7 +124,7 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 		require  "$baseDir/includes/sendpass.php";
 		sendNewPass();
 	} else {
-		require  "$baseDir/style/$uistyle/lostpass.php";
+		$tpl->displayStyle('lostpass');
 	}
 	exit();
 }
@@ -185,7 +185,7 @@ if ($AppUI->doLogin()) {
 	if ($dPconfig['auth_method'] == 'http_ba' ) {
 		$AppUI->redirect( "login=http_ba&redirect=$redirect" );
 	} else {
-		require "$baseDir/style/$uistyle/login.php";
+		$tpl->displayStyle('login');
 	}
 
 	// destroy the current session and output login page
@@ -322,10 +322,10 @@ if (isset( $_REQUEST["dosql"]) ) {
 }
 
 // start output proper
-include  "$baseDir/style/$uistyle/overrides.php";
+$tpl->displayStyle('overrides');
 ob_start();
 if(!$suppressHeaders) {
-	require "$baseDir/style/$uistyle/header.php";
+	$tpl->displayStyle('header');
 }
 
 $setuptime = (array_sum(explode(' ',microtime())) - $time);
@@ -343,7 +343,7 @@ else
 }
 if(!$suppressHeaders) {
 	echo '<iframe name="thread" src="' . $baseUrl . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
-	require "$baseDir/style/$uistyle/footer.php";
+	
 	if (dPgetConfig('debug') > 0)
 	{
 		echo '<div style="text-align: center; border: 1px solid gray; margin-left: 200px; margin-right: 200px; font-size: 10pt; color: gray">';
@@ -370,6 +370,8 @@ if(!$suppressHeaders) {
 		</tr>
 		</table>';
 	}
+	
+	$tpl->displayStyle('footer');
 }
 ob_end_flush();
 ?>

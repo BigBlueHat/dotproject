@@ -64,5 +64,15 @@ class CTemplate extends Smarty
 			
 		$this->display($module . '/' . $file . '.html');
 	}
+	
+	function displayStyle($file)
+	{
+		global $baseDir, $dPconfig, $AppUI;
+		global $file_id, $company_id, $task_id;
+		global $currentTabId, $currentTabName;
+		global $uistyle;
+				
+		include($baseDir . '/style/' . $uistyle . '/' . $file . '.php');
+	}
 }
 ?>
