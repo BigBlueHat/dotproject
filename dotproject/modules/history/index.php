@@ -9,27 +9,6 @@
 $AppUI->savePlace();
 $titleBlock = new CTitleBlock( 'History', 'stock_book_blue_48.png', $m, "$m.$a" );
 $titleBlock->show();
-?>
-<table width="100%" cellspacing="1" cellpadding="0" border="0">
-<tr>
-        <td nowrap align="right">
-<form name="filter" action="?m=history" method="post" >
-<?php echo $AppUI->_('Changes to'); ?>:
-        <select name="filter" onChange="document.filter.submit()">
-                <option value=""></option>
-                <option value=""><?php echo $AppUI->_('Show all'); ?></option>
-                <option value="projects"><?php echo $AppUI->_('Projects'); ?></option>
-                <option value="files"><?php echo $AppUI->_('Files'); ?></option>
-                <option value="forums"><?php echo $AppUI->_('Forums'); ?></option>
-                <option value="login"><?php echo $AppUI->_('Login/Logouts'); ?></option>
-        </select>
-</form>
-        </td>
-	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('Add history');?>" onclick="window.location='?m=history&a=addedit'"></td>
-</table>
-
-
-<?php
 
 function show_history($history)
 {
@@ -124,35 +103,16 @@ $q->addWhere($filter);
 $q->addOrder('history_date DESC');
 $history = $q->loadList();
 
-?>
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th width="10">&nbsp;</th>
-	<th width="200"><?php echo $AppUI->_('Date');?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('Description');?></th>
-	<th nowrap="nowrap"><?php echo $AppUI->_('User');?>&nbsp;&nbsp;</th>
-</tr>
-<?php
-foreach($history as $row) {
-  $module = $row['history_table'] == 'task_log'?'tasks':$row['history_table'];
-  // Checking permissions.
-  // TODO: Enable the lines below to activate new permissions.
-  $perms = & $AppUI->acl();
-  if ($module == 'login' || $perms->checkModuleItem($module, "access", $row['history_item']))  {
-  	$df = $AppUI->getPref('SHDATEFORMAT');
-	$tf = $AppUI->getPref('TIMEFORMAT');
+foreach ($history as $key => $row)
+{
+	$module = $row['history_table'] == 'task_log'?'tasks':$row['history_table'];
+	$row['history_table'] = $module;
+	$history[$key]['history_display'] = show_history($row);
 
-  	$hd = new Date( $row["history_date"] );
-	
-?>
-<tr>	
-	<td><a href='<?php echo "?m=history&a=addedit&history_id=" . $row["history_id"] ?>'><img src="./images/icons/pencil.gif" alt="<?php echo $AppUI->_( 'Edit History' ) ?>" border="0" width="12" height="12"></a></td>
-	<td align="center"><?php echo $hd->format ( $df ).' '.$hd->format ( $tf ); ?></td>
-	<td><?php echo show_history($row) ?></td>	
-	<td align="center"><?php echo $row["user_username"]?></td>
-</tr>	
-<?php
-  }
+	$perms = & $AppUI->acl();
+  if ($module != 'login' && !$perms->checkModuleItem($module, "access", $row['history_item']))
+  	unset($history[$row]);
 }
+
+$tpl->displayList('history', $history);
 ?>
-</table>

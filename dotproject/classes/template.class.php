@@ -22,7 +22,7 @@ class CTemplate extends Smarty
 		if (!isset($show))
 		{
 			$keys = array_keys($rows);
-			$show = array_keys($rows[$keys[0]]);
+			$show = array_keys($rows); //[$keys[0]]);
 		}
 		
 		if (!$this->get_template_vars('current_url'))

@@ -36,6 +36,8 @@ function smarty_function_dPdateFormat($params, &$smarty)
     	
     if ($format == 'db')
     	$df = FMT_TIMESTAMP_DATE;
+    if ($format == 'full')
+    	return $cdate->format($AppUI->getPref('SHDATEFORMAT')) . ' ' . $cdate->format($AppUI->getPref('TIMEFORMAT'));
     else if (!empty($format))
     	$df = $format;
     else
