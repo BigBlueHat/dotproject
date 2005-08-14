@@ -25,6 +25,8 @@ function smarty_function_dPtranslate($params, &$smarty)
         $smarty->trigger_error("dPtranslate: missing parameter");
         return;
     }
+    if ($type == 'js')
+    	return $AppUI->_($word . $sentence, UI_OUTPUT_JS);
 
     return $AppUI->_($word . $sentence);
 }
