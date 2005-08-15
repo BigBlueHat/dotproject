@@ -163,11 +163,11 @@ class CDpObject {
 		}
 		$k = $this->_tbl_key;
 		if( $this->$k ) {
-                        addHistory($this->_tbl . '_update(' . $this->$k . ')', 0, $this->_tbl);
+                        addHistory($this->_tbl, $this->$k, 'update');
 			$ret = db_updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
 		} else {
 			$ret = db_insertObject( $this->_tbl, $this, $this->_tbl_key );
-                        addHistory($this->_tbl . '_add(' . $this->$k . ')', 0, $this->_tbl);
+                        addHistory($this->_tbl, $this->$k, 'add');
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
