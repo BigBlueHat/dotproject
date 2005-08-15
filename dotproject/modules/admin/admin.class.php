@@ -1,5 +1,4 @@
 <?php /* ADMIN $Id$ */
-
 /**
 * User Class
 */
@@ -9,27 +8,8 @@ class CUser extends CDpObject {
 	var $user_password = NULL;
 	var $user_parent = NULL;
 	var $user_type = NULL;
-        var $user_contact = NULL;
+	var $user_contact = NULL;
 	var $user_signature = NULL;
-/*	var $user_first_name = NULL;
-	var $user_last_name = NULL;
-	var $user_company = NULL;
-	var $user_department = NULL;
-	var $user_email = NULL;
-	var $user_phone = NULL;
-	var $user_home_phone = NULL;
-	var $user_mobile = NULL;
-	var $user_address1 = NULL;
-	var $user_address2 = NULL;
-	var $user_city = NULL;
-	var $user_state = NULL;
-	var $user_zip = NULL;
-	var $user_country = NULL;
-	var $user_icq = NULL;
-	var $user_aol = NULL;
-	var $user_birthday = NULL;
-	var $user_pic = NULL;
-	var $user_owner = NULL; */
 
 	function CUser() {
 		$this->CDpObject( 'users', 'user_id' );
@@ -90,5 +70,4 @@ class CUser extends CDpObject {
 		return $result;
  	}
 }
-
 ?>
