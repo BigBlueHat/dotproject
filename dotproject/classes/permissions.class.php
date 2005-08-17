@@ -38,7 +38,7 @@ require_once "$baseDir/lib/phpgacl/gacl_api.class.php";
 class dPacl extends gacl_api {
 
   function dPacl($opts = null) {
-    global $dPconfig;
+    global $dPconfig, $baseDir;
     if (! is_array($opts))
       $opts = array();
     $opts['db_type'] = $dPconfig['dbtype'];
@@ -55,6 +55,7 @@ class dPacl extends gacl_api {
     // Enable caching
     $this->_caching = TRUE;
     $this->_cache_expire_time = 6000;
+    $this->_cache_dir = $baseDir . '/files/cache/phpgacl';
     
     parent::gacl_api($opts);
   }
