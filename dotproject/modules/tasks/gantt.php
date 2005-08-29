@@ -415,7 +415,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 	foreach($query as $dep) {
 		// find row num of dependencies
 		for($d = 0; $d < count($gantt_arr); $d++ ) {
-			if($gantt_arr[$d][0]["task_id"] == $dep["dependencies_task_id"]) {
+			if($gantt_arr[$d][1]["task_id"] == $dep["dependencies_task_id"]) {
 				$bar->SetConstrain($d, CONSTRAIN_ENDSTART);
 			}
 		}
@@ -426,7 +426,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 $today = date("y-m-d");
 $vline = new GanttVLine($today, $AppUI->_('Today', UI_OUTPUT_RAW));
 if (is_file( TTF_DIR."arialbd.ttf" )) {
-	$vline->title->SetFont(FF_ARIAL,FS_BOLD,12);
+	$vline->title->SetFont(FF_ARIAL,FS_BOLD,10);
 }
 $graph->Add($vline);
 $graph->Stroke();
