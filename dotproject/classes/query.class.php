@@ -735,7 +735,7 @@ class DBQuery {
 		}
 		if ($object != null) {
 			$hash = $this->fetchRow();
-			$q->clear();
+			$this->clear();
 			if( !$hash ) {
 				return false;
 			}
