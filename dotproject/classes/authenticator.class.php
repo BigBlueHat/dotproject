@@ -3,7 +3,18 @@
 
 	/*
 	 *	Authenticator Class
+	 * 
+	 * Description:
+	 * The ui->login() method first checks the result of the supported() method to determine if the server supports all of the
+	 * features and extensions required to authenticate via that method. If the server does support the features then it uses the configured 
+	 * authenticator class. 
 	 *
+	 * If the authentication fails because the authentication server is unreachable (not because the server does not
+	 * support the feature), the authenticator class will fall back to the SQLAuthenticator method (if fall back to sql is enabled in the
+	 * dP config). 
+	 *
+	 * Usually an authenticator will inherit methods from the SQLAuthenticator class, so the fall back authentication can be
+	 * performed via the parent::authenticate() method.
 	 */
 
 
@@ -13,21 +24,18 @@
 		{
 			case "ldap":
 				$auth = new LDAPAuthenticator();
-				return $auth;
 				break;
 			case "pn":
 				$auth = new PostNukeAuthenticator();
-				return $auth;
 				break;
 			case "http_ba";
 				$auth = new HTTPBasicAuthenticator();
-				return $auth;
 				break;
 			default:
 				$auth = new SQLAuthenticator();
-				return $auth;
 				break;
 		}
+		return $auth;
 	}
 
 	/**
@@ -42,6 +50,16 @@
 		{
 			global $dPconfig;
 			$this->fallback = isset($dPconfig['postnuke_allow_login']) ? $dPconfig['postnuke_allow_login'] : false;
+		}
+
+		function displayName()
+		{
+			return "PostNuke";
+		}
+
+		function supported()
+		{
+			return true;
 		}
 
 		function authenticate($username, $password)
@@ -176,6 +194,17 @@
 			if (MD5($password) == $row["user_password"]) return true;
 			return false;
 		}
+		
+		function displayName()
+		{
+			return "SQL Database";
+		}
+		
+		function supported()
+		{
+			// every authenticator should support this method
+			return true;
+		}
 
 		function userId()
 		{
@@ -209,6 +238,23 @@
 			$this->ldap_search_user = $dPconfig["ldap_search_user"];
 			$this->ldap_search_pass = $dPconfig["ldap_search_pass"];
 			$this->filter = $dPconfig["ldap_user_filter"];
+		}
+		
+		function supported()
+		{
+			if (!function_exists("ldap_connect"))
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		
+		function displayName()
+		{
+			return "LDAP";
 		}
 
 		function authenticate($username, $password)
@@ -374,7 +420,12 @@
 				die($AppUI->_("noAccount"));
 			}
 		}
-	 
+		
+		function displayName()
+		{
+			return "HTTP Basic";
+		}
+
 		function userId($username)
 		{
 			GLOBAL $db;

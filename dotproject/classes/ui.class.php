@@ -660,8 +660,19 @@ class CAppUI {
 		$auth_method = isset($dPconfig['auth_method']) ? $dPconfig['auth_method'] : 'sql';
 		if (@$_POST['login'] != 'login' && @$_POST['login'] != $this->_('login') && $_REQUEST['login'] != $auth_method)
 			die("You have chosen to log in using an unsupported or disabled login method '$_REQUEST[login]'");
+
 		$auth =& getauth($auth_method);
-		
+		if (!$auth->supported()) {
+			//Try SQL if auth method unsupported by this system.
+			if ($dPconfig['ldap_allow_login'] == true) {
+				$auth =& getauth('sql');
+			}
+			else
+			{
+				die("The authentication method (".$auth->displayName().") is not supported by your server. Please contact
+				your server administrator to correct this problem.");
+			}
+		}
 		$username = trim( db_escape( $username ) );
 		$password = trim( db_escape( $password ) );
 
