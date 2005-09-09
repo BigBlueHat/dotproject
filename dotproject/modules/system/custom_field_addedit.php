@@ -91,6 +91,7 @@
 		'textarea'=>$AppUI->_('Text Area'),
 		'checkbox'=>$AppUI->_('Checkbox'),
 		'select'=>$AppUI->_('Select List'),
+		'sqlselect'=>$AppUI->_('SQL Query Select List'),
 		'label' => $AppUI->_('Label'),
 		'separator' => $AppUI->_('Separator')
 	);
@@ -220,6 +221,20 @@
 		</td></tr>
 		</table>
 		<hr />
+	</div>
+	<div id="div_sqlselect" style="<?php echo $visible_state["div_sqlselect"]?>">
+		<table id="atbl_sqlselect">
+		<tr><td colspan="2">
+			<b><?php echo $AppUI->_('SQL Query')?>:</b>
+		</td></tr>
+		<tr><td colspan="2">
+		Note: The first column will be used as the primary key.<br />
+		The second column will be used as the displayed value.
+		</td></tr>
+		<tr><td colspan="2">
+			<textarea name="sqlselect_query" cols="50" rows="4"></textarea>
+		</td></tr>
+		</table>
 	</div>
 	<div id="div_textinput" style="<?php echo $visible_state["div_textinput"]?>">
 		<table id="atbl_textinput">

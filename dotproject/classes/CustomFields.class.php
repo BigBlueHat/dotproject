@@ -270,6 +270,19 @@
 	    }
 	}
 
+	class CustomFieldSQLSelect extends CustomFieldSelect
+	{
+		var $options;
+		
+		function CustomFieldSQLSelect( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		{
+			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->field_htmltype = 'sqlselect';
+			$this->options = New SQLCustomOptionList( $field_id );		
+			$this->options->load();	
+		}
+	}
+
 	// CustomFieldSelect - Produces a SELECT list, extends the load method so that the option list can be loaded from a seperate table
 	class CustomFieldSelect extends CustomField
 	{
@@ -354,12 +367,15 @@
 						case "select":
 							$this->fields[$row["field_name"]] = New CustomFieldSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break;
-					    case "label":
-					        $this->fields[$row["field_name"]] = new CustomFieldLabel( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
-					        break;
-					    case "separator":
-					        $this->fields[$row["field_name"]] = new CustomFieldSeparator( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
-					        break;    
+						case "sqlselect":
+							$this->fields[$row["field_name"]] = New CustomFieldSQLSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+					   	break;
+						case "label":
+					      $this->fields[$row["field_name"]] = new CustomFieldLabel( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+					      break;
+					   case "separator":
+					      $this->fields[$row["field_name"]] = new CustomFieldSeparator( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+					      break;    
 						default:
 							$this->fields[$row["field_name"]] = New CustomFieldText( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break; 
@@ -530,6 +546,95 @@
 		
 	}
 
+	class SQLCustomOptionList
+	{
+		var $field_id;
+		var $query;
+		
+		function SQLCustomOptionList( $field_id )
+		{
+			$this->field_id = $field_id;
+		}
+		
+		function load()
+		{
+			GLOBAL $db;
+			
+			$q = new DBQuery;
+			$q->addTable('custom_fields_lists');
+			$q->addWhere('field_id = '.$this->field_id);
+			if (!$rs = $q->exec()) {
+				$q->clear();
+				return $db->ErrorMsg();
+			}
+			
+			$opt_qryrow = $q->fetchRow();
+			$this->query = $opt_qryrow["list_value"];			
+			
+			$q->clear();		 
+		}
+		
+		function store()
+		{
+			GLOBAL $db;
+			
+			$q  = new DBQuery;
+			$q->addTable('custom_fields_lists');
+			$q->addInsert('field_id', $this->field_id);
+			$q->addInsert('list_option_id', 0);
+			$q->addInsert('list_value', db_escape(strip_tags($this->query)));
+			
+			$rs = $q->exec();
+		}
+		
+		function delete()
+		{
+			$q = new DBQuery;
+			$q->setDelete('custom_fields_lists');
+			$q->addWhere("field_id = ".$this->field_id);
+			
+			$q->exec();
+		}
+		
+		function setQuery( $sql )
+		{
+			$this->query = $sql;
+		}
+		
+		function getQuery()
+		{
+			return $this->query;
+		}
+		
+		function getHTML( $field_name, $selected )
+		{
+			GLOBAL $db;
+			//die($this->query);
+			$rs = $db->Execute($this->query);
+			$html = "<select name=\"".$field_name."\">\n";
+			
+			while ($r = $rs->fetchRow())
+			{
+					$html .= "\t<option value=\"".$r[0]."\"";
+					if ($r[0] == $selected) $html .= " selected ";
+					$html .= ">".$r[1]."</option>";
+			}	
+			
+			$html .= "</select>\n";
+			return $html;
+		}
+		
+		function itemAtIndex( $i )
+		{
+			GLOBAL $db;
+			$rs = $db->Execute($this->query);
+			$allrows = $rs->GetAll();
+			// Non Zero Based Index is Supplied
+			return $allrows[$i - 1][1];
+		}
+	}
+	
+	
 	class CustomOptionList
 	{
 		var $field_id;

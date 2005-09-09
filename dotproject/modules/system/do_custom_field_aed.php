@@ -17,6 +17,7 @@
 		$field_extratags = db_escape(dpGetParam( $_POST, "field_extratags", NULL ));
 
 		$list_select_items = dpGetParam( $_POST, "select_items", NULL );
+		$sqlselect_query = dpGetParam( $_POST, "sqlselect_query", NULL );
 
 		$custom_fields = New CustomFields( strtolower($edit_module), 'addedit', null, null );
 
@@ -58,6 +59,14 @@
 					// Select List Failed - Delete CustomField also
 				}
 	
+			}
+			
+			if ($field_htmltype == "sqlselect")
+			{
+				$opts = New SQLCustomOptionList( $fid );
+				$opts->setQuery( $sqlselect_query );
+				$o_msg = $opts->store();
+				
 			}	
 
 			$AppUI->setMsg($AppUI->_('Custom field added successfully'), UI_MSG_OK, true);
