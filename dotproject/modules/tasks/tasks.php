@@ -452,7 +452,7 @@ function chAssignment(project_id, rmUser, del) {
 	<th width="10">&nbsp;</th>
         <th width="10"><?php echo $AppUI->_('Pin'); ?></th>
 	<th width="10"><?php echo $AppUI->_('New Log'); ?></th>
-	<th width="20"><?php echo $AppUI->_('Work');?></th>
+	<th width="20"><?php sort_by_item_title( 'Work', 'task_percent_complete', SORT_NUMERIC);?></th>
 	<th align="center"><?php sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC ); ?></th>
 	<th width="200"><?php sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );?></th>
 	<th nowrap="nowrap"><?php sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );?></th>

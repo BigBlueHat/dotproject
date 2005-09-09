@@ -66,15 +66,14 @@
 				return 'Error: Cannot store field ('.$this->field_name.'), associated id not supplied.';
 			}
 			else
-			{ 
+			{				 
 				$ins_intvalue = $this->value_intvalue == NULL ? 'NULL' : $this->value_intvalue;
-
 				if ($this->value_id > 0)
 				{
-
+						//return $this->value();
 						$q  = new DBQuery;
 						$q->addTable('custom_fields_values');
-						$q->addUpdate('value_charvalue', $this->value_charvalue );
+						$q->addUpdate('value_charvalue', $this->value() );
 						$q->addUpdate('value_intvalue', $ins_intvalue);
 						$q->addWhere("value_id = ".$this->value_id);
 				}
@@ -94,10 +93,12 @@
 				}
 //				if ($sql != NULL) $rs = $q->exec();
                 // No $sql var defined
-                $rs = $q->exec();
-                
-				$q->clear();
-				if (!$rs) return $db->ErrorMsg()." | SQL: ";
+
+					return $q->prepare();
+               $rs = $q->exec();
+
+					$q->clear();
+					if (!$rs) return $db->ErrorMsg()." | SQL: ";
 			}
 		}
 
@@ -495,7 +496,7 @@
 				}
 
 				//if ($store_errors) return $store_errors;
-				if ($store_errors) echo $store_errors;
+				if (!is_null($store_errors)) return $store_errors;
 			}
 		}
 
