@@ -5,6 +5,7 @@ $project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
 $perms =& $AppUI->acl();
 $canRead = $perms->checkModuleItem( $m, 'view', $project_id );
 $canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
+$canEditT = $perms->checkModule( 'tasks', 'add');
 
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
@@ -168,12 +169,20 @@ $titleBlock->addCell(
 	'<form action="?m=projects&a=view&project_id='.$project_id.'" method="post" id="searchfilter">', '</form>'
 );
 
-if ($canEdit) {
+if ($canEditT) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
 		'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
 	);
+}
+if ($canEdit) {
+	$titleBlock->addCell();
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
+		'<form action="?m=calendar&a=addedit&event_project=' . $project_id . '" method="post">', '</form>'
+	);
+
 	$titleBlock->addCell();
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
