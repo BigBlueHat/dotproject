@@ -35,7 +35,7 @@ if ( $task_id ) {
 	$canEdit = $perms->checkModuleItem( $m, "edit", $task_id );
 } else {
 	// do we have write access on this project?
-	$canEdit = $perms->checkModuleItem( 'projects', "edit", $task_project );
+	$canEdit = $perms->checkModuleItem( 'projects', "view", $task_project );
 	// And do we have add permission to tasks?
 	if ($canEdit)
 	  $canEdit = $perms->checkModule('tasks', 'add');
