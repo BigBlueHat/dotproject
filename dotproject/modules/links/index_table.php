@@ -129,7 +129,7 @@ $link_types = dPgetSysVal("LinkType");
 if ($tab <= 0)
         $catsql = "";
 else
-        $catsql = " AND link_category = " . --$tab ;
+        $catsql = "link_category = " . --$tab ;
 
 // SETUP FOR LINK LIST
 $q = new DBQuery();
@@ -147,12 +147,12 @@ $q->leftJoin('contacts', 'c', 'user_contact = contact_id');
 
 if (!empty($search))
 	$q->addWhere("(link_name like '%$search%' OR link_description like '%$search%')");
-if (isset($project_id))		// Project
+if ($project_id)		// Project
 	$q->addWhere('link_project = ' . $project_id);
-if (isset($task_id)) 			// Task
+if ($task_id) 			// Task
 	$q->addWhere('link_task = ' . $task_id);
-if ($tab > 0) 						// Category
-	$q->addWhere('link_category = ' . --$tab);
+if ($catsql) 						// Category
+	$q->addWhere($catsql);
 // Permissions
 $project->setAllowedSQL($AppUI->user_id, $q, 'link_project');
 $task->setAllowedSQL($AppUI->user_id, $q, 'link_task and task_project = link_project');
