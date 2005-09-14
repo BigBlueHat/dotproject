@@ -1,29 +1,7 @@
 <?php
-/**
- * Smarty plugin
- * @package Smarty
- * @subpackage plugins
- */
-
-/*
- * Smarty {dateFormat date= cdate= format=} function plugin
- *
- * Type:     function<br>
- * Name:     dateFormat<br>
- * Purpose:  format a date as per dp user preferences<br>
- *
- * @param array Format: array(
- *		'date' => the date to be formatted
- * 		'cdate' => the date to be formatted in CDate class
- *		'format' => optional format (if not specified - using user format))
- * @param Smarty
- */
-function smarty_function_dPdateFormat($params, &$smarty)
-{
+function smarty_modifier_dPdateFormat($date, $format=null) {
     global $AppUI;
-	
-    extract($params);
-    
+
     if (empty($date) || $date == '0000-00-00 00:00:00') {
     	if ($format == 'db')
     		return '';
@@ -45,6 +23,4 @@ function smarty_function_dPdateFormat($params, &$smarty)
 	
     return $cdate->format($format);
 }
-
-/* vim: set expandtab: */
 ?>

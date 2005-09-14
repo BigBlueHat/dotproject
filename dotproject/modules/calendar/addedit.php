@@ -95,6 +95,7 @@ $q->addOrder('project_name');
 $all_projects = '(' . $AppUI->_('All', UI_OUTPUT_RAW) . ')';
 $projects = arrayMerge( array( 0 => $all_projects ), $q->loadHashList() );
 
+/*
 if ($event_id || $is_clash) {
 	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;
 	$end_date = intval( $obj->event_end_date ) ? new CDate( $obj->event_end_date ) : $start_date;
@@ -103,6 +104,17 @@ if ($event_id || $is_clash) {
 	$start_date->setTime( 8,0,0 );
 	$end_date = new CDate( $date );
 	$end_date->setTime( 17,0,0 );
+}
+*/
+
+//TODO: If date is today, set start time to now + 15mins
+if (!$event_id && !$is_clash)
+{
+	$seldate = new CDate( $date );
+	$seldate->setTime(9,0,0);
+	$obj->event_start_date = $seldate->format(FMT_TIMESTAMP);
+	$seldate->setTime(17,0,0);
+	$obj->event_end_date = $seldate->format(FMT_TIMESTAMP);
 }
 
 $recurs =  array (
@@ -135,10 +147,30 @@ $t = new CDate();
 $t->setTime( 0,0,0 );
 if (!defined('LOCALE_TIME_FORMAT'))
   define('LOCALE_TIME_FORMAT', '%I:%M %p');
-for ($m=0; $m < 60; $m++) {
+//$m clashes with global $m (module)
+for ($minutes=0; $minutes < 60; $minutes++) {
 	$times[$t->format( "%H%M%S" )] = $t->format( LOCALE_TIME_FORMAT );
 	$t->addSeconds( 1800 );
 }
+
+
+require_once $AppUI->getSystemClass("CustomFields");
+$custom_fields = New CustomFields( 'calendar', 'addedit', $obj->event_id, "edit" );
+$tpl->assign('custom_fields', $custom_fields->getHTML());
+
+
+$tpl->assign('event_id', $event_id);
+
+$tpl->assign('remind', $remind);
+$tpl->assign('recurs', $recurs);
+$tpl->assign('times', $times);
+$tpl->assign('projects', $projects);
+$tpl->assign('types', $types);
+$tpl->assign('assigned', $assigned);
+$tpl->assign('users', $users);
+$tpl->assign('extras', $extras);
+
+$tpl->displayAddEdit($obj);
 ?>
 
 <script language="javascript">
@@ -259,139 +291,4 @@ function removeUser() {
 
 </script>
 
-<table cellspacing="1" cellpadding="2" border="0" width="100%" class="std">
-<form name="editFrm" action="?m=calendar" method="post">
-	<input type="hidden" name="dosql" value="do_event_aed" />
-	<input type="hidden" name="event_id" value="<?php echo $event_id;?>" />
-	<input type="hidden" name="event_project" value="0" />
-	<input type="hidden" name="event_assigned" value="" />
 
-<tr>
-	<td width="20%" align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Event Title' );?>:</td>
-	<td width="20%">
-		<input type="text" class="text" size="25" name="event_title" value="<?php echo @$obj->event_title;?>" maxlength="255">
-	</td>
-	<td align="left" rowspan=4 valign="top" colspan="2" width="40%">
-	<?php echo $AppUI->_( 'Description' ); ?> :<br/>
-		<textarea class="textarea" name="event_description" rows="5" cols="45"><?php echo @$obj->event_description;?></textarea></td>
-	</td>
-</tr>
-
-<tr>
-	<td align="right"><?php echo $AppUI->_('Type');?>:</td>
-	<td>
-<?php
-	echo arraySelect( $types, 'event_type', 'size="1" class="text"', @$obj->event_type, true );
-?>
-	</td>
-</tr>
-	
-<tr>
-	<td align="right"><?php echo $AppUI->_('Project');?>:</td>
-	<td>
-<?php
-	echo arraySelect( $projects, 'event_project', 'size="1" class="text"', @$obj->event_project );
-?>
-	</td>
-</tr>
-
-
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Private Entry' );?>:</td>
-	<td>
-		<input type="checkbox" value="1" name="event_private" <?php echo (@$obj->event_private ? 'checked' : '');?>>
-	</td>
-</tr>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?>:</td>
-	<td nowrap="nowrap">
-		<input type="hidden" name="event_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : '';?>">
-		<input type="text" name="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : '';?>" class="text" disabled="disabled">
-		<a href="#" onClick="popCalendar('start_date')">
-			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
-		</a>
-	</td>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Time' );?>:</td>
-	<td><?php echo arraySelect( $times, 'start_time', 'size="1" class="text"', $start_date->format( "%H%M%S" ) ); ?></td>
-</tr>
-
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'End Date' );?>:</td>
-	<td nowrap="nowrap">
-		<input type="hidden" name="event_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>">
-		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled">
-		<a href="#" onClick="popCalendar('end_date')">
-			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
-		</a>
-	</td>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Time' );?>:</td>
-	<td><?php echo arraySelect( $times, 'end_time', 'size="1" class="text"', $end_date->format( "%H%M%S" ) ); ?></td>
-</tr>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Recurs' );?>:</td>
-	<td><?php echo arraySelect( $recurs, 'event_recurs', 'size="1" class="text"', $obj->event_recurs, true ); ?></td>
-	<td align="right">x</td>
-	<td>
-		<input type="text"  name="event_times_recuring" value="<?php echo ((isset($obj->event_times_recuring))?($obj->event_times_recuring):'1');?>" maxlength="2" size=3> <?php echo $AppUI->_( 'times' );?>
-	</td>
-</tr>
-<?php /* FUNCTIONALITY NOT YET ENABLED ?>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Remind Me' );?>:</td>
-	<td><?php echo arraySelect( $remind, 'event_remind', 'size="1" class="text"', $obj['event_remind'] ); ?> <?php echo $AppUI->_( 'in advance' );?></td>
-</tr>
-<?php */ ?>
-
-<tr>
-	<td align="right"><?php echo $AppUI->_( 'Resources' ); ?>:</td>
-	<td></td>
-	<td align="left"><?php echo $AppUI->_( 'Invited to Event' ); ?>:</td>
-	<td></td>
-</tr>
-<tr>
-	<td colspan="2" align="right">
-	<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" class="text" multiple="multiple" ', null); ?>
-	</td>
-	<td colspan="2" align="left">
-	<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" class="text" multiple="multiple" ', null); ?>
-	</td>
-</tr>
-<tr>
-	<td></td>
-	<td colspan=2 align="center">
-		<table>
-			<tr>
-				<td align="left"><input type="button" class="button" value="&gt;"
-				onClick="addUser()" /></td>
-				<td align="right"><input type="button" class="button" value="&lt;"
-				onClick="removeUser()" /></td>
-			</tr>
-		</table>
-	</td>
-	<td align="left"><?php echo $AppUI->_('Mail Attendees?'); ?> <input type='checkbox' name='mail_invited' checked=true></td>
-</tr>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Show only on Working Days' );?>:</td>
-	<td>
-		<input type="checkbox" value="0" name="event_cwd" <?php echo (@$obj->event_cwd ? 'checked' : '');?>>
-	</td>
-</tr>
-<tr>
-	<td colspan="2" align="right">
-			<?php
-				// $m does not equal 'calendar' here???
-				require_once $AppUI->getSystemClass("CustomFields");
-				$custom_fields = New CustomFields( 'calendar', 'addedit', $obj->event_id, "edit" );
-				$custom_fields->printHTML();
-			?>
-	</td>
-<tr>
-	<td colspan="2">
-		<input type="button" value="<?php echo $AppUI->_( 'back' );?>" class="button" onclick="javascript:history.back();">
-	</td>
-	<td align="right" colspan="2">
-		<input type="button" value="<?php echo $AppUI->_( 'submit' );?>" class="button" onClick="submitIt()">
-	</td>
-</tr>
-</form>
-</table>
