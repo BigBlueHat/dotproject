@@ -47,9 +47,9 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 			if (is_array($row)) 
 			{
 				$contactValues["contact_company"] = $row["company_id"];
-			}
-			else
-			{
+			} elseif (!empty($ci['UID'][0]['value'][0][0])) {
+				$contactValues["contact_company"] = $ci['UID'][0]['value'][0][0];
+			} else{
 				$contactValues["contact_company"] = NULL;
 			}
 
