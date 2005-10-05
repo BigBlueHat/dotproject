@@ -4,7 +4,9 @@
 	 *	Custom Field Add/Edit
 	 *
 	 */
-
+if (!$canEdit) {
+    $AppUI->redirect( "m=public&a=access_denied" );
+}
 	require_once("./classes/CustomFields.class.php");
 		
 	$titleBlock = new CTitleBlock('Custom Fields - Add/Edit', "", "admin", "admin.custom_field_addedit");

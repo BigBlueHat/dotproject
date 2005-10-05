@@ -19,7 +19,7 @@ if (!$log_start_date) {
 }
 $end_date->setTime( 23, 59, 59 );
 
-$fullaccess = ($AppUI->user_type == 1);
+$fullaccess = ($canEdit);
 ?>
 <script language="javascript">
 var calendarField = '';

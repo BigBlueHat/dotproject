@@ -1,6 +1,9 @@
 <?php /* PUBLIC $Id$ */
+
 if (! ($user_id = dPgetParam($_REQUEST, 'user_id', 0)) )
         $user_id = @$AppUI->user_id;
+
+$canEdit = $perms->checkModuleItem('users',  'edit', $user_id);
 
 // check for a non-zero user id
 if ($user_id) {
@@ -13,7 +16,7 @@ if ($user_id) {
 		// check that the old password matches
 								$old_md5 = md5($old_pwd);
                 $sql = "SELECT user_id FROM users WHERE user_password = '$old_md5' AND user_id=$user_id";
-                if ($AppUI->user_type == 1 || db_loadResult( $sql ) == $user_id) {
+                if ($canEdit || db_loadResult( $sql ) == $user_id) {
 			require_once( "{$dPconfig['root_dir']}/modules/admin/admin.class.php" );
 			$user = new CUser();
 			$user->user_id = $user_id;
@@ -34,7 +37,7 @@ function submitIt() {
 	var f = document.frmEdit;
 	var msg = '';
 
-        <?php if ($AppUI->user_type != 1)
+        <?php if (!$canEdit)
         {
         ?>
 	if (f.old_pwd.value.length < 3) {
@@ -61,7 +64,7 @@ function submitIt() {
 <table width="100%" cellspacing="0" cellpadding="4" border="0" class="std">
 <form name="frmEdit" method="post" onsubmit="return false">
 <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-<?php if ($AppUI->user_type != 1)
+<?php if (!$canEdit)
 {
 ?>
 <tr>

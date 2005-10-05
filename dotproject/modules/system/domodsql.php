@@ -2,6 +2,7 @@
 ##
 ## Activate or move a module entry
 ##
+
 $cmd = dPgetParam( $_GET, 'cmd', '0' );
 $mod_id = intval( dPgetParam( $_GET, 'mod_id', '0' ) );
 $mod_directory = dPgetParam( $_GET, 'mod_directory', '0' );

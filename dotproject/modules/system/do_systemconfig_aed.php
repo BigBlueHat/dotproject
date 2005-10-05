@@ -1,4 +1,8 @@
 <?php /* SYSTEM $Id$ */
+if (!$canEdit) {
+    $AppUI->redirect( "m=public&a=access_denied" );
+}
+
 $obj = new CConfig();
 
 // set all checkboxes to false

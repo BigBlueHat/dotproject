@@ -1,4 +1,5 @@
 <?php /* ADMIN $Id$ */
+
 include $AppUI->getModuleClass('contacts');
 $del = isset($_REQUEST['del']) ? $_REQUEST['del'] : FALSE;
 

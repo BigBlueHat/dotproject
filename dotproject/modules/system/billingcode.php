@@ -5,7 +5,7 @@
 $company_id=0;
 $company_id = isset($_REQUEST['company_id']) ? $_REQUEST['company_id'] : 0;
 // Check permissions
-if (!$canEdit && $transmit_user_id != $AppUI->user_id) {
+if (!$canEdit) {
   $AppUI->redirect('m=public&a=access_denied' );
 }
 

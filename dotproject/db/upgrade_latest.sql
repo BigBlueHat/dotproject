@@ -44,3 +44,8 @@ ALTER TABLE `sessions` ADD `session_user` INT DEFAULT '0' NOT NULL AFTER `sessio
 # cookie session name as a config option
 INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` )
 VALUES ('', 'session_name', 'dotproject', 'session', 'text');
+
+#20051005ge
+#softcode for user_type
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
+VALUES ( '', '1', 'UserType', '0|Default User 1|Administrator 2|CEO 3|Director 4|Branch Manager 5|Manager 6|Supervisor 7|Employee' );
