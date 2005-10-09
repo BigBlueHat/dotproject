@@ -1,14 +1,13 @@
-if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
+{if $tabview == 0}
 <table border="0" cellpadding="2" cellspacing="0" width="100%">
 	<tr>
 		<td nowrap="nowrap">
-			<a href="{$current_url}&tab=0">{dPtranslate word='tabbed'}</a> : 
-			<a href="{$current_url}&tab=-1">{dPtranslate word='flat'}</a>
+			<a href="{$current_tab}&tab=0">{dPtranslate word='tabbed'}</a> : 
+			<a href="{$current_tab}&tab=-1">{dPtranslate word='flat'}</a>
 		</td>
 		{$extra}
 	</tr>
 </table>
-
 {else}
 	{if $extra}
 <table border="0" cellpadding="2" cellspacing="0" width="100%">
@@ -21,8 +20,8 @@ if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
 	{/if}
 {/if}
 
-		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
-		// flat view, active = -1
+		{if $active < 0 || $tabview == 2}
+		{* flat view, active = -1 *}
 <table border="0" cellpadding="2" cellspacing="0" width="100%">
 {foreach from=$tabs item=v key=k}
 	<tr>
@@ -33,8 +32,8 @@ if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
 		{php}
 				$currentTabId = $k;
 				$currentTabName = $v[1];
-				include $this->baseInc.$v[0].".php";
 		{/php}
+		{dPrequire file=$base.$v[0].'.php'}
 		</td>
 	</tr>
 {/foreach}
@@ -43,12 +42,11 @@ if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
 {* tabbed view *}
 <table width="100%" border="0" cellpadding="3" cellspacing="0">
 	<tr>
-			if ( count($this->tabs)-1 < $this->active ) {
-				//Last selected tab is not available in this view. eg. Child tasks
-				$this->active = 0;
-			}
+			{if $totaltabs-1 < $active}
+				{*//Last selected tab is not available in this view. eg. Child tasks*}
+				{assign var=active value=0}
+			{/if}
 {foreach from=$tabs item=v key=k}
-
 		<td width="1%" nowrap="nowrap" class="tabsp">
 			<img src="./images/shim.gif" height="1" width="1" alt="" />
 		</td>
@@ -59,7 +57,7 @@ javascript:{$javascript}({$active}, {$k})
 	{elseif $js_tabs}
 javascript:show_tab({$k})
 	{else}
-{$current_url}&tab={$k}
+{$current_tab}&tab={$k}
 	{/if}
 ">{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</a>
 		</td>
@@ -67,22 +65,16 @@ javascript:show_tab({$k})
 		<td nowrap="nowrap" class="tabsp">&nbsp;</td>
 	</tr>
 	<tr>
-		<td width="100%" colspan="'.(count($this->tabs)*2 + 1).'" class="tabox">
-			
-			//Will be null if the previous selection tab is not available in the new window eg. Children tasks
-			if ( $this->baseInc.$this->tabs[$this->active][0] != "" ) {
-				$currentTabId = $this->active;
-				$currentTabName = $this->tabs[$this->active][1];
-				if (!$js_tabs)
-					require $this->baseInc.$this->tabs[$this->active][0].'.php';
-			}
+		<td width="100%" colspan="{$totaltabs*4 + 1}" class="tabox">
+			{dPrequire file=$tab}
 {if $js_tabs}
 	{foreach from=$tabs item=v key=k} 
 	<div class="tab" id="tab_{$k}">
-					require $this->baseInc.$v[0].'.php';
+		{dPrequire file=$base.$v[0].'.php'}
 	</div>
 	{/foreach}
 {/if}
 		</td>
 	</tr>
 </table>
+{/if}

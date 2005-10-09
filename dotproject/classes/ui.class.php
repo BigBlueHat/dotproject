@@ -957,17 +957,37 @@ the active tab, and the selected tab **/
 * @param string Can't remember whether this was useful
 */
 	function show( $extra='', $js_tabs = false ) {
+		global $AppUI, $currentTabId, $currentTabName, $tpl;
+		echo '';//$this->fetch($extra, $js_tabs);
+	}
+	
+	function fetch( $extra='', $js_tabs = false ) {
 		GLOBAL $AppUI, $currentTabId, $currentTabName, $tpl;
 		reset( $this->tabs );
 		$s = '';
 	
 		$tpl->assign('current_tab', substr($this->baseHRef, 0, -1));
+		$tpl->assign('base', $this->baseInc);
+		$tpl->assign('totaltabs', count($this->tabs));
 		$tpl->assign('extra', $extra);
 		$tpl->assign('tabs', $this->tabs);
 		$tpl->assign('javascript', $this->javascript);
 		$tpl->assign('js_tabs', $js_tabs);
 		$tpl->assign('active', $this->active);
+		$tpl->assign('tabview', $AppUI->getPref( 'TABVIEW' ));
 		
+		if ( $this->baseInc.$this->tabs[$this->active][0] != "" ) {
+				$currentTabId = $this->active;
+				$currentTabName = $this->tabs[$this->active][1];
+				if (!$js_tabs)
+					$tpl->assign('tab', $this->baseInc.$this->tabs[$this->active][0].'.php');
+					//$tpl->assign('tab', eval(file_get_contents($this->baseInc.$this->tabs[$this->active][0].'.php')));
+					//require 
+			}
+		
+		return $tpl->fetch('tabBox.html');
+
+/*		
 		// tabbed / flat view options
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
 			$s .= '<table border="0" cellpadding="2" cellspacing="0" width="100%"><tr><td nowrap="nowrap">';
@@ -1044,6 +1064,7 @@ the active tab, and the selected tab **/
 			}
 			echo "\n</td>\n</tr>\n</table>";
 		}
+		*/
 	}
 
 	function loadExtras($module, $file = null) {

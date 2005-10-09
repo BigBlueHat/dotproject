@@ -51,43 +51,8 @@ $titleBlock->addCell(
 	'<form action="?m=calendar&a=addedit&date=' . $this_day->format( FMT_TIMESTAMP_DATE )  . '" method="post">', '</form>'
 );
 $titleBlock->show();
-?>
-<script language="javascript">
-function clickDay( idate, fdate ) {
-	window.location = './index.php?m=calendar&a=day_view&date='+idate;
-}
-</script>
 
-<table width="100%" cellspacing="0" cellpadding="4">
-<tr>
-	<td valign="top">
-		<table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
-		<tr>
-			<td>
-				<a href="<?php echo '?m=calendar&a=day_view&date='.$prev_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
-			</td>
-			<th width="100%">
-				<?php echo htmlentities($this_day->format( "%A" ), ENT_COMPAT, $locale_char_set).', '.$this_day->format( $df ); ?>
-			</th>
-			<td>
-				<a href="<?php echo '?m=calendar&a=day_view&date='.$next_day->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
-			</td>
-		</tr>
-		</table>
 
-<?php
-// tabbed information boxes
-$tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_TIMESTAMP_DATE ),
-	"", $tab );
-$tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_events', 'Events' );
-$tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_tasks', 'Tasks' );
-$tabBox->loadExtras('calendar', 'day_view');
-$tabBox->show();
-?>
-	</td>
-<?php if ($dPconfig['cal_day_view_show_minical']) { ?>
-	<td valign="top" width="175">
-<?php
 $minical = new CMonthCalendar( $this_day );
 $minical->setStyles( 'minititle', 'minical' );
 $minical->showArrows = false;
@@ -96,24 +61,30 @@ $minical->clickMonth = true;
 $minical->setLinkFunctions( 'clickDay' );
 
 $minical->setDate( $minical->prev_month );
-
-echo '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>';
-echo '<td align="center" >'.$minical->show().'</td>';
-echo '</tr></table><hr noshade size="1">';
-
+$tpl->assign('minical_prev', $minical->show());
 $minical->setDate( $minical->next_month );
-
-echo '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>';
-echo '<td align="center" >'.$minical->show().'</td>';
-echo '</tr></table><hr noshade size="1">';
-
+$tpl->assign('minical', $minical->show());
 $minical->setDate( $minical->next_month );
+$tpl->assign('minical_next', $minical->show());
 
-echo '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>';
-echo '<td align="center" >'.$minical->show().'</td>';
-echo '</tr></table>';
+$tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_TIMESTAMP_DATE ), "", $tab );
+$tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_events', 'Events' );
+$tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_tasks', 'Tasks' );
+$tabBox->loadExtras('calendar', 'day_view');
+
+//$tabBox->show();
+$tpl->assign('tabbox', $tabBox->fetch());
+$tpl->assign('show_minical', $dPconfig['cal_day_view_show_minical']);
+
+$tpl->assign('prev_day', $prev_day);
+$tpl->assign('next_day', $next_day);
+$tpl->assign('today', htmlentities($this_day->format( "%A" ), ENT_COMPAT, $locale_char_set).', '.$this_day->format( $df ));
+
+$tpl->display('calendar/view.day.html');
+
 ?>
-	</td>
- <?php } ?>
-</tr>
-</table>
+<script language="javascript">
+function clickDay( idate, fdate ) {
+	window.location = './index.php?m=calendar&a=day_view&date='+idate;
+}
+</script>
