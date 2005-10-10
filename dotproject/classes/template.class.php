@@ -65,6 +65,19 @@ class CTemplate extends Smarty
 		$this->display($module . '/' . $file . '.html');
 	}
 	
+	function fetchFile($file, $module = null)
+	{
+		global $m, $a;
+		
+		if ($module == null)
+			$module = $m;
+			
+		$this->assign('m', $m);
+		$this->assign('a', $a);
+			
+		return $this->fetch($module . '/' . $file . '.html');
+	}
+	
 	function displayStyle($file)
 	{
 		global $baseDir, $dPconfig, $AppUI;

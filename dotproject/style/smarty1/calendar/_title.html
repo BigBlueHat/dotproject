@@ -1,0 +1,24 @@
+<table border="0" cellspacing="0" cellpadding="3" width="100%" class="{$day->styleTitle}">
+	<tr>
+
+		{if $day->showArrows}
+			<td align="left">
+				<a href="{$href_prev}"><img src="./images/prev.gif" width="16" height="16" alt="{dPtranslate word='previous month'}" border="0" /></a>
+			</td>
+		{/if}
+
+		<th width="99%" align="center">
+		{if $day->clickMonth}
+			<a href="{$href_this}">
+		{/if}
+		{dPdateFormat|dPescape date=$day->this_month format="%B %Y"}
+		</th>
+
+		{if $day->showArrows}
+			<td align="right">
+				<a href="{$href_next}"><img src="./images/next.gif" width="16" height="16" alt="{dPtranslate word='next month'}" border="0" /></a>
+			</td>
+		{/if}
+
+		</tr>
+		</table>

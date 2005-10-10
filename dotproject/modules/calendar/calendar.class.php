@@ -204,42 +204,22 @@ class CMonthCalendar {
  *
  */
 	 function _drawTitle() {
-		global $AppUI, $m, $a, $locale_char_set;
+		global $AppUI, $m, $a, $locale_char_set, $tpl;
 		$url = "index.php?m=$m";
 		$url .= $a ? "&a=$a" : '';
 		$url .= isset( $_GET['dialog']) ? "&dialog=1" : '';
 
-		$s = "\n<table border=\"0\" cellspacing=\"0\" cellpadding=\"3\" width=\"100%\" class=\"$this->styleTitle\">";
-		$s .= "\n\t<tr>";
-
-		if ($this->showArrows) {
-			$href = $url.'&date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
-			$s .= "\n\t\t<td align=\"left\">";
-			$s .= '<a href="'.$href.'"><img src="./images/prev.gif" width="16" height="16" alt="'.$AppUI->_('previous month').'" border="0" /></a>';
-			$s .= "</td>";
-
-		}
+		$href = $url.'&date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
+		$tpl->assign('href_prev', $href);
+		$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
+		$tpl->assign('href_this', $href);
+		$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
+		$tpl->assign('href_next', $href);
+		
+		$tpl->assign('day', $this);
 
 
-		$s .= "\n\t<th width=\"99%\" align=\"center\">";
-		if ($this->clickMonth) {
-			$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
-			$s .= '<a href="'.$href.'">';
-		}
-		$s .= htmlentities($this->this_month->format( "%B %Y" ), ENT_COMPAT, $locale_char_set);
-		$s .= "</th>";
-
-		if ($this->showArrows) {
-			$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
-			$s .= "\n\t\t<td align=\"right\">";
-			$s .= '<a href="'.$href.'"><img src="./images/next.gif" width="16" height="16" alt="'.$AppUI->_('next month').'" border="0" /></a>';
-			$s .= "</td>";
-		}
-
-		$s .= "\n\t</tr>";
-		$s .= "\n</table>";
-
-		return $s;
+		return $tpl->fetchFile('_title', 'calendar');
 	}
 /**
 * CMonthCalendar::_drawDays()

@@ -80,7 +80,7 @@ $tpl->assign('prev_day', $prev_day);
 $tpl->assign('next_day', $next_day);
 $tpl->assign('today', htmlentities($this_day->format( "%A" ), ENT_COMPAT, $locale_char_set).', '.$this_day->format( $df ));
 
-$tpl->display('calendar/view.day.html');
+$tpl->displayFile('view.day');
 
 ?>
 <script language="javascript">

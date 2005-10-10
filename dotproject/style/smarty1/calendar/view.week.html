@@ -4,7 +4,7 @@
 		<a href="<?php echo '?m=calendar&a=week_view&date={dPdateFormat date=$prev_week format='db'}"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
 	</td>
 	<th width="100%">
-		<span style="font-size:12pt">{dPtranslate word='Week'} {dPdateFormat|escape date=$week[0] format="%U - %Y"}</span>
+		<span style="font-size:12pt">{dPtranslate word='Week'} {dPdateFormat|dPescape date=$week[0] format="%U - %Y"}</span>
 	</th>
 	<td>
 		<a href="?m=calendar&a=week_view&date={dPdateFormat date=$next_week format='db'}"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
@@ -23,11 +23,11 @@
 			<td align="{if $column % 2 == 0}left{else}right{/if}"><a href="?m=calendar&a=day_view&date={dPdateFormat date=$day format='db'}">
 	{if $todayStamp == $weekStamps[$smarty.foreach.week.index]}<span style="color:red">{/if}
 	{if $column % 2 == 0}
-		<strong>{dPdateFormat|escape:'htmlall' date=$day format="%d"}</strong>
-		{dPdateFormat|escape:'htmlall' date=$day format="%A"}
+		<strong>{dPdateFormat|dPescape date=$day format="%d"}</strong>
+		{dPdateFormat|dPescape date=$day format="%A"}
 	{else}
-		{dPdateFormat|escape:'htmlall' date=$day format="%A"}
-		<strong>{dPdateFormat|escape:'htmlall' date=$day format="%d"}</strong>
+		{dPdateFormat|dPescape date=$day format="%A"}
+		<strong>{dPdateFormat|dPescape date=$day format="%d"}</strong>
 	{/if}
 	
 	{if $todayStamp == $weekStamps[$smarty.foreach.week.index]}</span>{/if}

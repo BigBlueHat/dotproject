@@ -73,7 +73,7 @@ $tpl->assign('todayStamp', $today->format(FMT_TIMESTAMP_DATE));
 
 $tpl->assign('links', $links);
 
-$tpl->display('calendar/view.week.html');
+$tpl->displayFile('view.week');
 ?>
 
 <style type="text/css">

@@ -48,7 +48,7 @@ function clickWeek( uts, fdate ) {
 }
 </script>
 
-<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr><td>
+
 <?php
 // establish the focus 'date'
 $date = new CDate( $date );
@@ -78,7 +78,7 @@ $cal->setStyles( 'motitle', 'mocal' );
 $cal->setLinkFunctions( 'clickDay', 'clickWeek' );
 $cal->setEvents( $links );
 
-echo $cal->show();
+$tpl->assign('cal', $cal->show());
 //echo '<pre>';print_r($cal);echo '</pre>';
 
 // create the mini previous and next month calendars under
@@ -89,13 +89,9 @@ $minical->showWeek = false;
 $minical->clickMonth = true;
 $minical->setLinkFunctions( 'clickDay' );
 
-echo '<table cellspacing="0" cellpadding="0" border="0" width="100%"><tr>';
-echo '<td valign="top" align="center" width="200">'.$minical->show().'</td>';
-echo '<td valign="top" align="center" width="100%">&nbsp;</td>';
-
+$tpl->assign('cal_prev', $minical->show());
 $minical->setDate( $cal->next_month );
+$tpl->assign('cal_next', $minical->show());
 
-echo '<td valign="top" align="center" width="200">'.$minical->show().'</td>';
-echo '</tr></table>';
+$tpl->display('calendar/view.month.html');
 ?>
-</td></tr></table>
