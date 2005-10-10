@@ -53,6 +53,27 @@ $titleBlock->addCell(
 	$event_filter ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
 );
 $titleBlock->show();
+
+$show_day = $this_week;
+for ($i = 0; $i < 7; $i++) 
+{
+	$week[] = $show_day;
+	$weekStamps[] = $show_day->format( FMT_TIMESTAMP_DATE );
+	$show_day->addSeconds( 24*3600 );
+}
+
+$today = new CDate();
+$tpl->assign('prev_week', $prev_week);
+$tpl->assign('next_week', $next_week);
+$tpl->assign('week', $week);
+
+$tpl->assign('weekStamps', $weekStamps);
+$tpl->assign('today', $today);
+$tpl->assign('todayStamp', $today->format(FMT_TIMESTAMP_DATE));
+
+$tpl->assign('links', $links);
+
+$tpl->display('calendar/view.week.html');
 ?>
 
 <style type="text/css">
@@ -65,84 +86,3 @@ TD.weekDay  {
 	text-align: left;
 }
 </style>
-
-<table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
-<tr>
-	<td>
-		<a href="<?php echo '?m=calendar&a=week_view&date='.$prev_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></A>
-	</td>
-	<th width="100%">
-		<span style="font-size:12pt"><?php echo $AppUI->_( 'Week' ).' '.htmlentities($first_time->format( "%U - %Y" ), ENT_COMPAT, $locale_char_set); ?></span>
-	</th>
-	<td>
-		<a href="<?php echo '?m=calendar&a=week_view&date='.$next_week->format( FMT_TIMESTAMP_DATE ); ?>"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></A>
-	</td>
-</tr>
-</table>
-
-<table border="0" cellspacing="1" cellpadding="2" width="100%" style="margin-width:4px;background-color:white">
-<?php
-$column = 0;
-$show_day = $this_week;
-
-$today = new CDate();
-$today = $today->format( FMT_TIMESTAMP_DATE );
-
-for ($i=0; $i < 7; $i++) {
-	$dayStamp = $show_day->format( FMT_TIMESTAMP_DATE );
-
-	$day  = $show_day->getDay();
-	$href = "?m=calendar&a=day_view&date=$dayStamp";
-
-	$s = '';
-	if ($column == 0) {
-		$s .= '<tr>';
-	}
-	$s .= '<td class="weekDay" style="width:50%;">';
-
-	$s .= '<table style="width:100%;border-spacing:0;">';
-	$s .= '<tr><td align="';
-	$s .= ($column == 0) ? 'left' : 'right';
-	$s .= '"><a href="'.$href.'">';
-
-	$s .= $dayStamp == $today ? '<span style="color:red">' : '';
-	$day_string = "<strong>" . htmlentities($show_day->format("%d"), ENT_COMPAT, $locale_char_set) . "</strong>";
-	$day_name = htmlentities($show_day->format("%A"), ENT_COMPAT, $locale_char_set);
-	$s .= ($column == 0) ? "$day_string $day_name" :  "$day_name $day_string";
-	
-	$s .= $dayStamp == $today ? '</span>' : '';
-	$s .= '</a></td></tr>';
-
-	$s .= '<tr><td>';
-
-	if (isset( $links[$dayStamp] )) {
-		foreach ($links[$dayStamp] as $e) {
-			$href = isset($e['href']) ? $e['href'] : null;
-			$alt = isset($e['alt']) ? $e['alt'] : null;
-
-			$s .= "<br />";
-			$s .= $href ? "<a href=\"$href\" class=\"event\" title=\"$alt\">" : '';
-			$s .= "{$e['text']}";
-			$s .= $href ? '</a>' : '';
-		}
-	}
-
-	$s .= '</td></tr></table>';
-
-	$s .= '</td>';
-	if ($column == 1) {
-		$s .= '</tr>';
-	}
-	$column = 1 - $column;
-
-// select next day
-	$show_day->addSeconds( 24*3600 );
-	echo $s;
-}
-?>
-<tr>
-	<td colspan="2" align="right" bgcolor="#efefe7">
-		<a href="./index.php?m=calendar&a=week_view"><?php echo $AppUI->_('today');?></A>
-	</td>
-</tr>
-</table>
