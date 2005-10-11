@@ -239,14 +239,14 @@ foreach($projects as $p) {
  		{
  			if ($t["task_end_date"] == null)
  				$t["task_end_date"] = $t["task_start_date"];
+
+			$tStart = ($t["task_start_date"] > "0000-00-00 00:00:00") ? $t["task_start_date"] : date("Y-m-d H:i:s");
+			$tEnd = ($t["task_end_date"] > "0000-00-00 00:00:00") ? $t["task_end_date"] : date("Y-m-d H:i:s");
+			$tStartObj = new CDate($tStart);
+			$tEndObj = new CDate($tEnd);
  				
  			if ($t["task_milestone"] != 1)
  			{
-				$tStart = ($t["task_start_date"] > "0000-00-00 00:00:00") ? $t["task_start_date"] : date("Y-m-d H:i:s");
-				$tEnd = ($t["task_end_date"] > "0000-00-00 00:00:00") ? $t["task_end_date"] : date("Y-m-d H:i:s");
-				$tStartObj = new CDate($tStart);
-				$tEndObj = new CDate($tEnd);
-
 				$bar2 = new GanttBar($row++, array(substr(" --".$t["task_name"], 0, 20)."...", $tStartObj->format($df),  $tEndObj->format($df), ' '), $tStart, $tEnd, ' ', 0.6);
 				
 				$bar2->title->SetColor( bestColor( '#ffffff', '#'.$p['project_color_identifier'], '#000000' ) );
@@ -255,7 +255,7 @@ foreach($projects as $p) {
  			}
  			else
  			{
- 				$bar2  = new MileStone ($row++, "-- " . $t["task_name"], $t["task_start_date"], (substr($t["task_start_date"], 0, 10)));
+ 				$bar2  = new MileStone ($row++, "-- " . $t["task_name"], $t["task_start_date"], $tStartObj->format($df));
  				$bar2->title->SetColor("#CC0000");
  				$graph->Add($bar2);
  			}				

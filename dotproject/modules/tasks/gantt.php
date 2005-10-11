@@ -314,11 +314,14 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 		$start = new CDate($start);
 		$start->addDays(0);
 		$s = $start->format($df);//
-		$bar = new MileStone($row++, array($name, "", substr($s, 0, 10), substr($s, 0, 10)), $s, $s);		
+		#$bar = new MileStone($row++, array($name, "", substr($s, 0, 10), substr($s, 0, 10)), $s, $s);	
+		$bar  = new MileStone ($row++,array($name, "", substr($s, 0, 10), substr($s, 0, 10)) , $t["task_start_date"], $s);
 		//caption of milestone shoud be date
 		if ($showLabels=='1') {			
 			$caption = $start->format($df);		
 		}
+		$bar->title->SetColor("#CC0000");
+ 		$graph->Add($bar);
 	} else {
 		$type = $a["task_duration_type"];
 		$dur = $a["task_duration"];
