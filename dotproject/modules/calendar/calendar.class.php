@@ -252,7 +252,7 @@ class CMonthCalendar {
  *
  */
 	 function _drawMain() {
-		GLOBAL $AppUI;
+		GLOBAL $AppUI, $tpl;
 		$today = new CDate();
 		$today = $today->format( "%Y%m%d%w" );
 
@@ -268,11 +268,9 @@ class CMonthCalendar {
 		foreach ($cal as $week) {
 			$html .= "\n<tr>";
 			if ($this->showWeek) {
-				$html .=  "\n\t<td class=\"week\">";
-				$html .= $this->dayFunc ? "<a href=\"javascript:$this->weekFunc('$week[0]')\">" : '';
-				$html .= '<img src="./images/view.week.gif" width="16" height="15" border="0" alt="Week View" /></a>';
-				$html .= $this->dayFunc ? "</a>" : '';
-				$html .= "\n\t</td>";
+				if ($this->dayFunc)
+					$tpl->assign('href', "javascript:$this->weekFunc('{$week[0]}')");
+				$html .= $tpl->fetchFile('_week', 'calendar');
 			}
 
 			foreach ($week as $day) {
@@ -323,13 +321,13 @@ class CMonthCalendar {
  *
  */
 	 function _drawWeek( $dateObj ) {
+	 	global $tpl;
+		
 		$href = "javascript:$this->weekFunc(".$dateObj->getTimestamp().",'".$dateObj->toString()."')";
-		$w = "        <td class=\"week\">";
-		$w .= $this->dayFunc ? "<a href=\"$href\">" : '';
-		$w .= '<img src="./images/view.week.gif" width="16" height="15" border="0" alt="Week View" /></a>';
-		$w .= $this->dayFunc ? "</a>" : '';
-		$w .= "</td>\n";
-		return $w;
+		if ($this->dayFunc)
+			$tpl->assign('href', $href);
+
+		return $tpl->fetchFile('_week', 'calendar');
 	}
 
 /**
@@ -339,6 +337,7 @@ class CMonthCalendar {
  *
  */
 	 function _drawEvents( $day ) {
+	 	global $tpl;
 		$s = '';
 		if (!isset( $this->events[$day] )) {
 			return '';
@@ -347,11 +346,11 @@ class CMonthCalendar {
 		foreach ($events as $e) {
 			$href = isset($e['href']) ? $e['href'] : null;
 			$alt = isset($e['alt']) ? str_replace("\n",' ',$e['alt']) : null;
-
-			$s .= "<br />\n";
-			$s .= $href ? "<a href=\"$href\" class=\"event\" title=\"$alt\">" : '';
-			$s .= "{$e['text']}";
-			$s .= $href ? '</a>' : '';
+			
+			$tpl->assign('etext', $e['text']);
+			$tpl->assign('href', $href);
+			$tpl->assign('alt', $alt);
+			$s .= $tpl->fetchFile('_event', 'calendar');
 		}
 		return $s;
 	}

@@ -98,20 +98,15 @@ function delIt() {
 <?php } ?>
 </script>
 
-
-
-
-
 <?php
 // tabbed information boxes
 $moddir = $dPconfig['root_dir'] . '/modules/companies/';
 $tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "", $tab );
 //$tabBox->add( $moddir . 'vw_active', 'Active Projects' );
 //$tabBox->add( $moddir . 'vw_archived', 'Archived Projects' );
-$tabBox->loadExtras($m, $a);
 $tabBox->add( $moddir . 'vw_depts', 'Departments' );
 $tabBox->add( $moddir . 'vw_users', 'Users' );
-$tabBox->add( $moddir . 'vw_contacts', 'Contacts' );
+//$tabBox->add( $moddir . 'vw_contacts', 'Contacts' );
+$tabBox->loadExtras($m, $a);
 $tabBox->show();
-
 ?>
