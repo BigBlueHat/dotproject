@@ -384,7 +384,7 @@ function format_field ($value, $type, $ticket = NULL) {
             break;
 	case "attach":
 	    $output = "<A href=index.php?m=ticketsmith&a=attach&ticket=$value>";
-	    $output .= "Link</a>";
+	    $output .= $AppUI->_('Link') . "</a>";
 	    break;
 	case "doattach":
 	    $output = "<A href=index.php?m=ticketsmith&a=attach&newparent=$value&dosql=reattachticket&ticket=$ticket>";

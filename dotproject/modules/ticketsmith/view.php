@@ -262,7 +262,7 @@ else {
 
         /* start row */
         print("<tr>\n");
-        print("<td><strong>Followups</strong></td>\n");
+        print("<td><strong>". $AppUI->_('Followups') . "</strong></td>\n");
 
         /* start cell */
         print("<td valign=\"middle\">");
