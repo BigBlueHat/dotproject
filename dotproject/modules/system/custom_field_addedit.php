@@ -68,6 +68,13 @@ if (!$canEdit) {
 				$select_options->load();
 				$select_items = $select_options->getOptions();
 			}
+
+			if ($field_htmltype == "sqlselect")
+			{
+				$select_options = New SQLCustomOptionList( $field_id );
+				$select_options->load();
+				$select_query = $select_options->getQuery();
+			}
 		}
 		else
 		{
@@ -234,7 +241,7 @@ if (!$canEdit) {
 		The second column will be used as the displayed value.
 		</td></tr>
 		<tr><td colspan="2">
-			<textarea name="sqlselect_query" cols="50" rows="4"></textarea>
+			<textarea name="sqlselect_query" cols="50" rows="4"><?php echo $select_query;?></textarea>
 		</td></tr>
 		</table>
 	</div>

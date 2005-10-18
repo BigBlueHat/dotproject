@@ -94,7 +94,11 @@
 //				if ($sql != NULL) $rs = $q->exec();
                 // No $sql var defined
 
-					return $q->prepare();
+					//$sql_ins = $q->prepare();
+					
+					//$db->Execute($sql_ins);
+					
+					//return $q->prepare();
                $rs = $q->exec();
 
 					$q->clear();
