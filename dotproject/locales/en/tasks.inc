@@ -236,3 +236,5 @@
 "view project",
 "view this project",
 "view this task",
+"show other projects",
+"show only this project",
