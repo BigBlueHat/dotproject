@@ -265,7 +265,7 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 @include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
 @include_once "$baseDir/locales/core.php";
 
-setlocale( LC_TIME, $AppUI->user_lang );
+setlocale( LC_ALL, $AppUI->user_lang );
 $m_config = dPgetConfig($m);
 @include_once "$baseDir/functions/" . $m . "_func.php";
 
