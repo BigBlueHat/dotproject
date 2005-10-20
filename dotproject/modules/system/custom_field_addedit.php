@@ -118,157 +118,21 @@ if (!$canEdit) {
 			$visible_state["div_".$k] = "display : none";
 		}
 	}
+
+	include('./modules/system/custom_field_addedit.js'); 
+
+	$tpl->assign('module', $module); 
+	$tpl->assign('field_id', $field_id); 
+	$tpl->assign('field_name', $field_name); 
+	$tpl->assign('field_description', $field_description); 
+	$tpl->assign('field_extratags', $field_extratags); 
+	$tpl->assign('select_items', $select_items);
+	$tpl->assign('html_types', $html_types);
+	$tpl->assign('field_htmltype', $field_htmltype);
+	$tpl->assign('select_query', $select_query);
+
+
+	$tpl->assign('visible_state', $visible_state);
+
+	$tpl->displayFile('custom_field_addedit');
 ?>
-<script>
-	function hideAll()
-	{
-		var selobj = document.getElementById('htmltype');
-		for (i = 0; i < selobj.options.length; i++)
-		{
-			var atbl = document.getElementById('atbl_'+selobj.options[i].value);
-			var adiv = document.getElementById('div_'+selobj.options[i].value);
-
-			atbl.style.visibility = 'hidden';
-			adiv.style.display = 'none';
-		} 
-	}
-
-	function showAttribs()
-	{
-		hideAll();
-
-		var selobj = document.getElementById('htmltype');
-		var seltype = selobj.options[selobj.selectedIndex].value;
-		
-		var atbl = document.getElementById('atbl_'+seltype);
-		var adiv = document.getElementById('div_'+seltype);
-		atbl.style.visibility = 'visible';
-		adiv.style.display = 'block';
-	}
-
-	function addSelectItem()
-	{
-		frm = document.getElementById('custform');
-		frm.action = '?m=system&a=custom_field_addedit';
-		frm.submit();
-	}
-
-	function deleteItem( itmname )
-	{
-		del = document.getElementById('delete_item');
-		del.value = itmname;
-		addSelectItem();
-	}
-
-	function postCustomField()
-	{
-		frm = document.getElementById('custform');
-		frm.action = '?m=system&a=custom_field_editor';
-		sql = document.getElementById('dosql');
-		sql.name = 'dosql';	
-		frm.submit();
-	}
-</script>
-<form method="POST" action="?m=system&a=custom_field_editor" id="custform" />
-<table class="std">
-	<th colspan="2">
-		<?php echo $edit_title?> <?php echo $AppUI->_($module)?> <?php echo $AppUI->_('Module') ?>
-		<input type="hidden" name="field_id" value="<?php echo $field_id; ?>" />
-		<input type="hidden" name="module" value="<?php echo $module?>" /> 
-		<input type="hidden" name="dontdosql" id="dosql" value="do_custom_field_aed" />
-	</td></tr>
-	<tr><td>
-		<?php echo $AppUI->_('Field Name/Identifier')?>:
-		<br />
-		<?php echo $AppUI->_('(No Spaces)')?>
-		</td><td>
-		<input type="text" name="field_name" maxlength="100" value="<?php echo $field_name?>" onblur='this.value=this.value.replace(/[^a-z|^A-Z|^0-9]*/gi,"");' />
-	</td></tr>
-	<tr><td>
-		<?php echo $AppUI->_('Field Description')?>:
-		</td><td>
-		<input type="text" name="field_description" size="40" maxlength="250" value="<?php echo $field_description?>" />
-	</td></tr>
-	<tr><td>
-		<?php echo $AppUI->_('Field Display Type')?>:
-		</td><td>
-		<?php echo arraySelect( $html_types, 'field_htmltype', 'id="htmltype" onChange="javascript:showAttribs()"', $field_htmltype); ?>
-	</td></tr>
-	<tr><td colspan="2">
-		<hr />
-		<tr><td>
-			<?php echo $AppUI->_('HTML Tag Options')?>:
-		</td>
-		<td>
-			<input type="text" name="field_extratags" value="<?php echo $field_extratags?>" />
-		</td></tr>
-	</td></tr>
-	<tr><td colspan="2">
-	<div id="div_select" style="<?php echo $visible_state["div_select"]?>">
-		<table id="atbl_select">
-		<tr><td colspan="2">
-			<b><?php echo $AppUI->_('List of Options')?>:</b> 
-		</td></tr>
-		<tr><td colspan="2">
-			<input type="hidden" name="delete_item" value="0" id="delete_item" />
-			<table>
-			<?php
-				foreach( $select_items as $itm)
-				{
-					echo "<tr><td>";
-					echo "<li>".$itm."</li>\n";
-					echo "<input type=\"hidden\" name=\"select_items[]\" value=\"".$itm."\" />";
-					echo "</td><td>";
-					echo "<a href=\"javascript:deleteItem('".$itm."')\">[Delete]</a>";
-					echo "</td></tr>";
-				}
-			?>
-			<tr><td>
-			<li><input type="text" name="select_newitem" /></td><td><input type="button" value="<?php echo $AppUI->_('Add')?>" onClick="javascript:addSelectItem()" /></li>
-			</td></tr>
-			</table>
-		</td></tr>
-		</table>
-		<hr />
-	</div>
-	<div id="div_sqlselect" style="<?php echo $visible_state["div_sqlselect"]?>">
-		<table id="atbl_sqlselect">
-		<tr><td colspan="2">
-			<b><?php echo $AppUI->_('SQL Query')?>:</b>
-		</td></tr>
-		<tr><td colspan="2">
-		Note: The first column will be used as the primary key.<br />
-		The second column will be used as the displayed value.
-		</td></tr>
-		<tr><td colspan="2">
-			<textarea name="sqlselect_query" cols="50" rows="4"><?php echo $select_query;?></textarea>
-		</td></tr>
-		</table>
-	</div>
-	<div id="div_textinput" style="<?php echo $visible_state["div_textinput"]?>">
-		<table id="atbl_textinput">
-		</table>
-	</div>
-	<div id="div_textarea" style="<?php echo $visible_state["div_textarea"]?>">
-		<table id="atbl_textarea">
-		</table>
-	</div>
-	<div id="div_checkbox" style="<?php echo $visible_state["div_checkbox"]?>">
-		<table id="atbl_checkbox">
-		</table>
-	</div>
-	<div id="div_label" style="<?php echo $visible_state["div_label"]?>">
-		<table id="atbl_label">
-		</table>
-	</div>
-	<div id="div_separator" style="<?php echo $visible_state["div_separator"]?>">
-		<table id="atbl_separator">
-		</table>
-	</div>
-	</td></tr>
-	<tr><td colspan="2" align="right">
-		<input type="button" value="Cancel" onClick="location = '?m=system&a=custom_field_editor';" />
-		<input type="button" value="Save" onClick="javascript:postCustomField()" />
-	</td></tr>
-	</form>
-</table>
