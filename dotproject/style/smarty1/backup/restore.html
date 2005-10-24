@@ -1,0 +1,24 @@
+<form name="frmRestore" enctype="multipart/form-data" action="?m=backup&a=do_restore" method="post">
+<div align="center">
+<table cellspacing="0" cellpadding="4" border="0" width="80%" class="std">
+  <tr>
+    <th align="center" colspan="2">{dPtranslate word='Restore From XML File'}</th>
+  </tr>
+  <tr>
+    <td align="center" colspan="2">{dPtranslate word='xmlRestoreWarning'}</td>
+  </tr>
+  <tr>
+    <td align="right" valign="top" nowrap="nowrap">{dPtranslate word='XML File to Restore'}</td>
+    <td align="left"><input type="file" class="button" name="xmlfile" /></td>
+  </tr>
+  <tr>
+    <td align="right" valign="top" nowrap="nowrap">{dPtranslate word='Continue On Error?'}</td>
+    <td align="left"><input type="checkbox" class="button" value="1" name="continue" /></td>
+  </tr>
+  <tr>
+    <td align="right">&nbsp;</td>
+    <td align="right"><input type="submit" class="button" name="restore" value="{dPtranslate word='upload'}"</td>
+  </tr>
+</table>
+</div>
+</form>
