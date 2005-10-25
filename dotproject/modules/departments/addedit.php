@@ -75,12 +75,12 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$tpl->assign('company_id', $company_id);
 	$tpl->assign('company_name', $company_name);
 
-	//$tpl->assign('drow', $drow);	
+	$tpl->assign('drow', $drow);	
 
 	$dept_has_parents = (count($depts)) ? true : false;
 	$tpl->assign('depts', $depts);
 	$tpl->assign('owners', $owners); 
-
-	$tpl->displayAddEdit($drow);
+	
+	$tpl->displayFile('addedit');
 }
 ?>
