@@ -56,7 +56,7 @@ foreach($file_types as $file_type)
         $tabBox->add("index_table", $file_type);
         ++$i;
 }
-                                                                                
+
 $tabBox->show();
 
 ?>
