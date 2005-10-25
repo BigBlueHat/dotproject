@@ -1,0 +1,20 @@
+{literal}
+<script language="javascript">
+// Callback function for the generic selector
+function goProject( key, val ) {
+	var f = document.modProjects;
+	if (val != '') {
+		f.project_id.value = key;
+		f.submit();
+        }
+}
+</script>
+{/literal}
+<form action="./index.php" method='get' name="modProjects">
+  <input type='hidden' name='m' value='projects' />
+  <input type='hidden' name='a' value='view' />
+  <input type='hidden' name='project_id' />
+</form>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" height="400" class="contacts">
+<tr>
+{* contact generated html *} 
