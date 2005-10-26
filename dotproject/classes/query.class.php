@@ -105,6 +105,18 @@ class DBQuery {
 	}
   
   /**
+   * Return the SQL used to concatenate two strings.
+   * @param	string	$s1	First string to concat
+   * @param	string	$s2	Second string to concat 	
+   *
+   */
+
+   function concat($s1, $s2)
+   {
+   	return $this->_db->Concat($s1, $s2);
+   }
+	
+  /**
    * Add a hash item to an array.
    *
    * @access	private
