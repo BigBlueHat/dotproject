@@ -110,10 +110,11 @@ class DBQuery {
    * @param	string	$s2	Second string to concat 	
    *
    */
-
-   function concat($s1, $s2)
+   function concat()
    {
-   	return $this->_db->Concat($s1, $s2);
+   	$arr = func_get_args();
+   	$conc_str = call_user_func_array(array(&$this->_db, 'Concat'), $arr);
+	return $conc_str;	
    }
 	
   /**

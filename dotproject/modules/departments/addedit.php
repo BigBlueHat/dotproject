@@ -58,7 +58,8 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$q->addTable('users','u');
 	$q->addTable('contacts','con');
 	$q->addQuery('user_id');
-	$q->addQuery('CONCAT_WS(", ",contact_last_name, contact_first_name)'); 
+	$contact_full_name = $q->concat('contact_last_name', "', '", 'contact_first_name');
+	$q->addQuery($contact_full_name); 
 	$q->addOrder('contact_first_name');
 	$q->addWhere('u.user_contact = con.contact_id');
 	$q->addOrder('contact_last_name, contact_first_name');
