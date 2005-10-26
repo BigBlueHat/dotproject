@@ -105,10 +105,7 @@ class DBQuery {
 	}
   
   /**
-   * Return the SQL used to concatenate two strings.
-   * @param	string	$s1	First string to concat
-   * @param	string	$s2	Second string to concat 	
-   *
+   * Return the SQL used to concatenate strings.
    */
    function concat()
    {
@@ -116,7 +113,14 @@ class DBQuery {
    	$conc_str = call_user_func_array(array(&$this->_db, 'Concat'), $arr);
 	return $conc_str;	
    }
-	
+  /**
+   * Return the SQL used to check for null values (ADODB portable IFNULL function)
+   */
+   function ifNull($field, $nullReplacementValue)
+   {
+   	return $this->_db->IfNull($field, $nullReplacementValue);
+   }	
+
   /**
    * Add a hash item to an array.
    *
