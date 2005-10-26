@@ -52,7 +52,8 @@ case 'departments':
 	if ( $hide_company == 1 ){
 		$q->addQuery("dept_name");
 	}else{
-		$q->addQuery("CONCAT_WS(': ',company_name,dept_name) AS dept_name");
+		$company_department_concat = $q->concat('company_name', "': '", 'dept_name');
+		$q->addQuery($company_department_concat." AS dept_name");
 	}
 	if ($company_id) {
 		$q->addWhere("dept_company = $company_id");
@@ -100,7 +101,9 @@ case "tasks":
 	break;
 case 'users':
 	$title = 'User';
-	$q->addQuery("user_id,CONCAT_WS(' ',contact_first_name,contact_last_name)");
+	$q->addQuery("user_id");
+	$contact_full_name = $q->concat('contact_first_name', "' '" , 'contact_last_name');
+	$q->addQuery($contact_full_name);
 	$q->addOrder('contact_first_name');
 	$q->addTable("contacts", 'b');
 	$q->addWhere("user_contact = contact_id");

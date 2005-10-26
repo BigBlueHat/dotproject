@@ -141,7 +141,8 @@ if ($do_report) {
 	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
 	$q->addJoin('projects', 'p', 'project_id = task_project');
 	$q->addQuery('t.*');
-	$q->addQuery('CONCAT_WS(\' \',contact_first_name,contact_last_name) AS creator');
+	$contact_full_name = $q->concat('contact_first_name', "' '" , 'contact_last_name');
+	$q->addQuery($contact_full_name.' AS creator');
 	$q->addQuery('tl.*');
 	$q->addWhere('task_log_task = task_id');
 	

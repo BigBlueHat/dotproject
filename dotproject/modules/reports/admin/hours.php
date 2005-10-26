@@ -94,7 +94,8 @@ if ($do_report) {
 	$q = new DBQuery;
 	$q->addQuery('t.*');
 	$q->addQuery('sum(task_log_hours) as hours');
-	$q->addQuery("CONCAT_WS(' ',contact_first_name,contact_last_name) AS creator");
+	$contact_full_name = $q->concat('contact_last_name', "', '" , 'contact_first_name');
+	$q->addQuery($contact_full_name." AS creator");
 	$q->addTable('task_log', 't');
 	$q->addTable('tasks');
 	$q->addJoin('users', 'u', 'user_id = task_log_creator');

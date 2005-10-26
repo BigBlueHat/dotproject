@@ -113,7 +113,8 @@ if ($do_report) {
 	$q->addQuery('t.*');
 	$q->addQuery('DATE_FORMAT(task_log_date, \'%d/%m/%Y %W\') as f_date');
 	$q->addQuery('sum(task_log_hours) as hours');
-	$q->addQuery("CONCAT_WS(' ',contact_first_name,contact_last_name) AS creator");
+	$contact_full_name = $q->concat('contact_last_name', "', '" , 'contact_first_name');
+	$q->addQuery($contact_full_name." AS creator");
 	$q->addTable('task_log', 't');
 	$q->addTable('tasks');
 	$q->addJoin('users', 'u', 'user_id = task_log_creator');

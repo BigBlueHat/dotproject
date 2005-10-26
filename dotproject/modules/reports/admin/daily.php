@@ -187,7 +187,8 @@ if ($do_report) {
 	$q->addQuery('p.project_id, p.project_name');
 	$q->addQuery('billingcode_name as costcode');
 	$q->addQuery('ct.task_percent_complete as completion');
-	$q->addQuery("CONCAT_WS(' ',contact_first_name,contact_last_name) AS creator");
+	$contact_full_name = $q->concat('contact_last_name', "', '" , 'contact_first_name');
+	$q->addQuery($contact_full_name." AS creator");
 
 	$q->addTable('task_log', 't');
 	$q->addTable('tasks', 'tt');
