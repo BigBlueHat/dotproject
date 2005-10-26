@@ -1532,16 +1532,65 @@ class CTask extends CDpObject {
         *  @return array        returns hashList of extent of utilization for assignment of the users
         */
         function getAllocation( $hash = NULL, $users = NULL ) {
-                // use userlist if available otherwise pull data for all users
-                $where = !empty($users) ? 'WHERE u.user_id IN ('.implode(",", $users).') ' : '';
+		$q = new DBQuery();
+
                 // retrieve the systemwide default preference for the assignment maximum
-                $sql = "SELECT pref_value FROM user_preferences WHERE pref_user = 0 AND pref_name = 'TASKASSIGNMAX'";
-                $result = db_loadHash($sql, $sysChargeMax);
-								if (! $result)
-									$scm = 0;
-								else
-									$scm = $sysChargeMax['pref_value'];
+		$q->addQuery('pref_value');
+		$q->addTable('user_preferences');
+		$q->addWhere('pref_user = 0');
+		$q->addWhere('pref_name = \'TASKASSIGNMAX\'');
+		$sysChargeMax = $q->loadHash();
+		$q->clear();
+		//deprecated query
+                //$sql = "SELECT pref_value FROM user_preferences WHERE pref_user = 0 AND pref_name = 'TASKASSIGNMAX'";
+                //$result = db_loadHash($sql, $sysChargeMax);
+
+		if (! $sysChargeMax)
+			$scm = 0;
+		else
+			$scm = $sysChargeMax['pref_value'];
+
                 // provide actual assignment charge, individual chargeMax and freeCapacity of users' assignments to tasks
+
+		// Generate SQL for all the crazy amounts of nested IFNULL functions - description follows 
+
+                // use userlist if available otherwise pull data for all users
+                //$where = !empty($users) ? 'WHERE u.user_id IN ('.implode(",", $users).') ' : '';
+                $where = !empty($users) ? 'u.user_id IN ('.implode(",", $users).') ' : '';
+
+		// If the user set their maximum allocation use that, otherwise use system wide default. 
+		$AA_sql_ifnull_up_pref_value_scm = $q->ifNull('up.pref_value', $scm); 
+
+		// If the users maximum assignment minus their tasks assignment (the amount of free allocation) is null, use their preference for maximum allocation
+		$AB_sql_ifnull_AA_up_pref_value = $q->ifNull("(".$AA_sql_ifnull_up_pref_value_scum."-SUM(ut.perc_assignment))", 'up.pref_value'); 
+		
+		// If the amount of free allocation is greater than zero, then use that number, otherwise if the free allocation is zero or below zero, just display zero free allocation
+		$sql_if_ABgtZERO_ABeqZERO = "IF(".$AB_sql_ifnull_AA_up_pref_value.">0,".$AB_sql_ifnull_AA_up_pref_value.",0)";	
+
+		// Concatenate username with free allocation
+		$sql_userFC_concat = $q->concat('u.user_username', "' ['", $sql_if_ABgtZERO_ABeqZERO, "'%]'");  
+
+		// Produce the amount currently allocated. 
+		$AC_sql_ifnull_ut_perc_zero = $q->ifNull('SUM(ut.perc_assignment)', '0');
+
+		// Generate Query
+		$q->addQuery('u.user_id');
+		$q->addQuery($sql_userFC_concat." AS userFC");
+		$q->addQuery($AC_sql_ifnull_ut_perc_zero." AS charge");
+		$q->addQuery('u.user_username');
+		$q->addQuery($AA_sql_ifnull_up_pref_value_scm." AS chargeMax");
+		$q->addQuery($sql_if_ABgtZERO_ABeqZERO." AS freeCapacity");
+		$q->addTable('users', 'u');
+		$q->leftJoin('contacts', null, 'contact_id = user_contact');
+		$q->leftJoin('user_tasks', 'ut', 'ut.user_id = u.user_id');
+		$q->leftJoin('user_preferences', 'up', '(up.pref_user = u.user_id AND up.pref_name = \'TASKASSIGNMAX\')');
+		if (!empty($where)) $q->addWhere($where);
+		$q->addGroup('u.user_id');
+		$q->addOrder('contact_last_name, contact_first_name');
+		/*
+		// Uncomment this if everything goes pear shaped - also uncomment the line $users = db_loadHashList($sql, $hash);
+		// {{{1 Original Non Query Class SQL - Keep for debugging  
+
                 $sql = "SELECT u.user_id,
                         CONCAT(CONCAT_WS(' [', u.user_username, IF(IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value)>0,IFNULL((IFNULL(up.pref_value,$scm)-SUM(ut.perc_assignment)),up.pref_value),0)), '%]') AS userFC,
                         IFNULL(SUM(ut.perc_assignment),0) AS charge, u.user_username,
@@ -1553,8 +1602,10 @@ class CTask extends CDpObject {
                         LEFT JOIN user_preferences up ON (up.pref_user = u.user_id AND up.pref_name = 'TASKASSIGNMAX')".$where."
                         GROUP BY u.user_id
                         ORDER BY contact_last_name, contact_first_name";
+		}}}1 */
 //               echo "<pre>$sql</pre>";
-                $users = db_loadHashList($sql, $hash);
+                //$users = db_loadHashList($sql, $hash);
+		$users = $q->loadHashList();
                 
                 global $perms;
                 foreach($users as $key => $user_data)
