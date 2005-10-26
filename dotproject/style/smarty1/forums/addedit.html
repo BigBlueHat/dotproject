@@ -1,0 +1,103 @@
+{literal}
+<script language="javascript">
+function submitIt(){
+	var form = document.changeforum;
+	if(form.forum_name.value.search(/^\s*$/) >= 0 ) {
+		alert("{/literal}{dPtranslate word='forumName' type='js'}{literal}");
+		form.forum_name.focus();
+	} else if(form.forum_project.selectedIndex < 1) {
+		alert("{/literal}{dPtranslate word='forumSelectProject' type='js'}{literal}");
+		form.forum_project.focus();
+	} else if(form.forum_owner.selectedIndex < 1) {
+		alert("{/literal}{dPtranslate word='forumSelectOwner' type='js'}{literal}");
+		form.forum_owner.focus();
+	} else {
+		form.submit();
+	}
+}
+
+function delIt(){
+	var form = document.changeforum;
+	if (confirm( "{/literal}{dPtranslate word='forumDeleteForum' type='js'}{literal}" )) {
+		form.del.value="{/literal}{$forum_id}{literal}";
+		form.submit();
+	}
+}
+</script>
+{/literal}
+
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
+<form name="changeforum" action="?m=forums" method="post">
+	<input type="hidden" name="dosql" value="do_forum_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="forum_unique_update" value="{$forum_unique_update}" />
+	<input type="hidden" name="forum_id" value="{$forum_id}" />
+
+<tr height="20">
+	<th valign="top" colspan="3">
+		<strong>
+		{if $forum_id > 0}Edit{else}Add{/if}
+		{dPtranslate word='Forum'}
+		</strong>
+	</th>
+</tr>
+<tr>
+	<td valign="top" width="50%">
+		<strong>{dPtranslate word='Details'}</strong>
+		<table cellspacing="1" cellpadding="2" width="100%">
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Forum Name'}:</td>
+			<td>
+				<input type="text" class="text" size=25 name="forum_name" value="{dPformSafe var=$obj.forum_name}" maxlength="50" style="width:200px;" />
+			</td>
+		</tr>
+		<tr>
+			<td align="right">{dPtranslate word='Related Project'}</td>
+			<td>
+			{dParraySelect array=$projects name='forum_project' extras='size="1" class="text"' value=$obj.forum_project} 
+			</td>
+		</tr>
+		<tr>
+			<td align="right">{dPtranslate word='Owner'}:</td>
+			<td>
+			{dParraySelect array=$users name='forum_owner' extras='size="1" class="text"' value=$forum_owner_id}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Moderator'}:</td>
+			<td>
+			{dParraySelect array=$users name='forum_moderated' extras='size="1" class="text"' value=$obj.forum_moderated}
+			</td>
+		</tr>
+		{if $forum_id > 0}
+		<tr>
+			<td align="right">{dPtranslate word='Created On'}</td>
+			<td bgcolor="#ffffff">{$obj.forum_create_date}</td>
+		</tr>
+		<tr>
+			<td align="right">{dPtranslate word='Last Post'}:</td>
+			<td bgcolor="#ffffff">{$obj.forum_last_date}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Message Count'}:</td>
+			<td bgcolor="#ffffff">{$obj.forum_message_count}</td>
+		</tr>
+		{/if}
+		</table>
+	</td>
+	<td valign="top" width="50%">
+		<strong>{dPtranslate word='Description'}</strong><br />
+		<textarea class="textarea" name="forum_description" style="height:150px;">{dPformSafe var=$obj.forum_description}</textarea>
+	</td>
+</tr>
+<tr>
+	<td align="left">
+		<input type="button" value="{dPtranslate word='back'}" class="button" onclick="javascript:window.location='./index.php?m=forums';" />
+	</td>
+	<td align="right" colspan="2">
+		{if $show_submit_button == true}
+		<input type="button" value="{dPtranslate word='submit'}" class="button" onclick="submitIt()" />
+		{/if}</td>
+</tr>
+</form>
+</table>
