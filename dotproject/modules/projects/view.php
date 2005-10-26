@@ -41,10 +41,11 @@ $working_hours = $dPconfig['daily_working_hours'];
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 $q  = new DBQuery;
 $q->addTable('projects');
-$q->addQuery("company_name,
-	CONCAT_WS(' ',contact_first_name,contact_last_name) user_name,
-	projects.*,
-	SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type))/
+$q->addQuery("company_name");
+$contact_full_name = $q->concat('contact_last_name', "', '" , 'contact_first_name');
+$q->addQuery($contact_full_name.' user_name');
+$q->addQuery('projects.*');
+$q->addQuery("SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type))/
 		SUM(t1.task_duration * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type)) AS project_percent_complete");
 $q->addJoin('companies', 'com', 'company_id = project_company');
 $q->addJoin('users', 'u', 'user_id = project_owner');
