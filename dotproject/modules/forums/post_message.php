@@ -53,100 +53,38 @@ $crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
 if ($message_parent > -1) {
 	$crumbs["?m=forums&a=viewer&forum_id=$forum_id&message_id=$message_parent"] = "this topic";
 }
-?>
-<script language="javascript">
-<?php
-// security improvement:
-// some javascript functions may not appear on client side in case of user not having write permissions
-// else users would be able to arbitrarily run 'bad' functions
-if ($canEdit) {
-?>
-function submitIt(){
-	var form = document.changeforum;
-	if (form.message_title.value.search(/^\s*$/) >= 0 ) {
-		alert("<?php echo $AppUI->_('forumSubject', UI_OUTPUT_JS);?>");
-		form.message_title.focus();
-	} else if (form.message_body.value.search(/^\s*$/) >= 0) {
-		alert("<?php echo $AppUI->_('forumTypeMessage', UI_OUTPUT_JS);?>");
-		form.message_body.focus();
-	} else {
-		form.submit();
-	}
-}
 
-function delIt(){
-	var form = document.changeforum;
-	if (confirm( "<?php echo $AppUI->_('forumDeletePost', UI_OUTPUT_JS);?>" )) {
-		form.del.value="<?php echo $message_id;?>";
-		form.submit();
-	}
-}
-<?php } ?>
-function orderByName(x){
-	var form = document.changeforum;
-	if (x == "name") {
-		form.forum_order_by.value = form.forum_last_name.value + ", " + form.forum_name.value;
-	} else {
-		form.forum_order_by.value = form.forum_project.value;
-	}
-}
-</script>
+$tpl->assign('canEdit', $canEdit);
+$tpl->assign('breadCrumbs', breadCrumbs( $crumbs ));
 
-<table cellspacing="1" cellpadding="2" border="0" width="98%">
-<tr>
-	<td><?php echo breadCrumbs( $crumbs );?></td>
-	<td align="right"></td>
-</tr>
-</table>
+$tpl->assign('forum_id', $forum_id);
+$tpl->assign('forum_info', $forum_info);
 
-<table cellspacing="0" cellpadding="3" border="0" width="98%" class="std">
+$message_author = (isset($message_info["message_author"]) && ($message_id || $message_parent < 0)) ? $message_info["message_author"] : $AppUI->user_id;
+$message_editor = (isset($message_info["message_author"]) && ($message_id || $message_parent < 0)) ? $AppUI->user_id : '0';
+$message_username = dPgetUsername($message_info['user_username']);
+$message_body_text = (($message_id == 0) and ($message_parent != -1)) ? "\n>"  .  $last_message_info["message_body"] . "\n" : $message_info["message_body"];
 
-<!-- <form name="changeforum" action="?m=forums&a=viewposts&forum_id=<?php echo $forum_id;?>" method="post"> -->
+$tpl->assign('message_id', $message_id);
+$tpl->assign('message_parent', $message_parent);
+$tpl->assign('message_info', $message_info);
+$tpl->assign('message_author', $message_author);
+$tpl->assign('message_editor', $message_editor); 
+$tpl->assign('message_username', $message_username);
+$tpl->assign('message_body', $message_body_text);
 
-<form name="changeforum" action="?m=forums&forum_id=<?php echo $forum_id;?>" method="post">
-	<input type="hidden" name="dosql" value="do_post_aed" />
-	<input type="hidden" name="del" value="0" />
-	<input type="hidden" name="message_forum" value="<?php echo $forum_id;?>" />
-	<input type="hidden" name="message_parent" value="<?php echo $message_parent;?>" />
-	<input type="hidden" name="message_published" value="<?php echo $forum_info["forum_moderated"] ? '1' : '0';?>" />
-	<input type="hidden" name="message_author" value="<?php echo (isset($message_info["message_author"]) && ($message_id || $message_parent < 0)) ? $message_info["message_author"] : $AppUI->user_id;?>" />
-	<input type="hidden" name="message_editor" value="<?php echo (isset($message_info["message_author"]) && ($message_id || $message_parent < 0)) ? $AppUI->user_id : '0';?>" />
-	<input type="hidden" name="message_id" value="<?php echo $message_id;?>" />
-
-<tr>
-	<th valign="top" colspan="2"><strong><?php
-		echo $AppUI->_( $message_id ? 'Edit Message' : 'Add Message' );
-	?></strong></th>
-</tr>
-<?php
 $date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : new CDate();
-?>
+$formatted_date = $date->format( "$df $tf" );
+$tpl->assign('formatted_date', $formatted_date);
 
-<tr><td align="right"><?php echo $AppUI->_('Author') ?>:</td><td align="left"><?php echo dPgetUsername($message_info['user_username']) ?> (<?php echo $date->format( "$df $tf" );?>)</td></tr>
-<tr><td align="right"><?php echo  $AppUI->_('Subject') ?>:</td><td align="left"><?php echo $message_info['message_title'] ?></td></tr>
-<tr><td align="right" valign="top"><?php echo  $AppUI->_('Message') ?>:</td><td align="left"><textarea name="message_parent_body" cols="60" readonly="readonly" style="height:100px; font-size:8pt"><?php echo $message_info['message_body'];?></textarea></td></tr>
-<tr><td colspan="2" align="left"><hr></td></tr>
-<tr>
-	<td align="right"><?php echo $AppUI->_( 'Subject' );?>:</td>
-	<td>
-		<input type="text" name="message_title" value="<?php echo ($message_id || $message_parent < 0 ? '' : 'Re: ') .$message_info['message_title'];?>" size=50 maxlength=250>
-	</td>
-</tr>
-<tr>
-	<td align="right" valign="top"><?php echo $AppUI->_( 'Message' );?>:</td>
-	<td align="left" valign="top">
-       <textarea cols="60" name="message_body" style="height:200px"><?php echo (($message_id == 0) and ($message_parent != -1)) ? "\n>"  .  $last_message_info["message_body"] . "\n" : $message_info["message_body"];?></textarea>
-	</td>
-</tr>
-<tr>
-	<td>
-		<input type="button" value="<?php echo $AppUI->_('back');?>" class=button onclick="javascript:window.location='./index.php?m=forums';">
-	</td>
-	<td align="right"><?php
-		if ($AppUI->user_id == $message_info['message_author'] || $AppUI->user_id == $forum_info["forum_owner"] || $message_id ==0 || (!empty($perms['all']) && !getDenyEdit('all')) ) {
-			echo '<input type="button" value="'.$AppUI->_('submit').'" class=button onclick="submitIt()">';
-		}
-	?></td>
-</tr>
-</form>
-</table>
+if ($AppUI->user_id == $message_info['message_author'] || $AppUI->user_id == $forum_info["forum_owner"] || $message_id ==0 || (!empty($perms['all']) && !getDenyEdit('all')) )
+{
+	$tpl->assign('show_submit_button', TRUE);
+}
+else
+{
+	$tpl->assign('show_submit_button', FALSE);
+} 
+
+$tpl->displayFile('post_message');
+?>
