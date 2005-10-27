@@ -1,0 +1,28 @@
+<table width="100%" cellspacing="0" cellpadding="2" border="0" class="std">
+<tr>
+	<td height="20" colspan="3" style="border: outset #D1D1CD 1px;background-color:#{$forum.project_color_identifier}">
+		<font size="2" color="{dPbestColor bg=$forum.project_color_identifier}"><strong>{$forum.forum_name}</strong></font>
+	</td>
+</tr>
+<tr>
+	<td align="left" nowrap>{dPtranslate word='Related Project'}:</td>
+	<td nowrap><strong>{$forum.project_name}</strong></td>
+	<td valign="top" width="50%" rowspan="99">
+		<strong>{dPtranslate word='Description'}:</strong>
+		<br />{$forum.forum_description|nl2br}
+	</td>
+</tr>
+<tr>
+	<td align="left">{dPtranslate word='Owner'}:</td>
+	<td nowrap>
+		{$forum.contact_first_name} {$forum.contact_last_name}	
+		{if $forum.forum_id != 0}
+		({dPtranslate word='moderated'})
+		{/if}
+	</td>
+</tr>
+<tr>
+	<td align="left">{dPtranslate word='Created On'}:</td>
+	<td nowrap>{$formatted_start_date}</td>
+</tr>
+</table>

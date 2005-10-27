@@ -43,37 +43,12 @@ $titleBlock->addCell(
 	'<form action="?m=forums&a=viewer&forum_id='.$forum_id.'" method="post" name="filterFrm">', '</form>'
 );
 $titleBlock->show();
-?>
-<table width="100%" cellspacing="0" cellpadding="2" border="0" class="std">
-<tr>
-	<td height="20" colspan="3" style="border: outset #D1D1CD 1px;background-color:#<?php echo $forum["project_color_identifier"];?>">
-		<font size="2" color=<?php echo bestColor( $forum["project_color_identifier"] );?>><strong><?php echo @$forum["forum_name"];?></strong></font>
-	</td>
-</tr>
-<tr>
-	<td align="left" nowrap><?php echo $AppUI->_( 'Related Project' );?>:</td>
-	<td nowrap><strong><?php echo $forum["project_name"];?></strong></td>
-	<td valign="top" width="50%" rowspan="99">
-		<strong><?php echo $AppUI->_( 'Description' );?>:</strong>
-		<br /><?php echo @str_replace(chr(13), "&nbsp;<br />",$forum["forum_description"]);?>
-	</td>
-</tr>
-<tr>
-	<td align="left"><?php echo $AppUI->_( 'Owner' );?>:</td>
-	<td nowrap><?php
-		echo $forum['contact_first_name'] . ' ' . $forum['contact_last_name'];
-		if (intval( $forum["forum_id"] ) <> 0) {
-			echo " (".$AppUI->_( 'moderated' ).") ";
-		}?>
-	</td>
-</tr>
-<tr>
-	<td align="left"><?php echo $AppUI->_( 'Created On' );?>:</td>
-	<td nowrap><?php echo $start_date ? $start_date->format( $df ) : '-';?></td>
-</tr>
-</table>
 
-<?php
+$tpl->assign('forum', $forum);
+$start_date_formatted = $start_date ? $start_date->format( $df ) : '-';
+$tpl->assign('formatted_start_date', $start_date_formatted);
+$tpl->displayFile('viewer');
+
 if($post_message){
 	include("./modules/forums/post_message.php");
 } else if($message_id == 0) {
