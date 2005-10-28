@@ -1,0 +1,125 @@
+{if $viewtype == 'normal'} 
+	<tr>
+	<td valign="top" style="{$style}" nowrap="nowrap">
+	{if !$hideEmail}
+		<a href="mailto:{$row.contact_email}">
+	{/if}
+	<font size="2">{$row.contact_first_name} {$row.contact_last_name}</font>
+	{if !hideEmail}
+		</a>
+	{/if}
+	{if $editor|count_characters > 0}
+		<br />&nbsp;<br />{dPtranslate word='last edited by'}<br />
+		{if !$hideEmail}
+			<a href="mailto:{$editor.0.contact_email}">
+		{/if}
+		<font size="1">{$editor.0.contact_first_name} {$editor.0.contact_last_name}</font>
+		{if !$hideEmail}
+			</a>
+		{/if}
+	{/if}
+	{if $row.visit_user != $user_id}
+		<br />&nbsp;{dPshowImage src='images/icons/stock_new_small.png'}
+	{/if}
+	</td>
+	<td valign="top" style="{$style}">
+		<font size="2"><strong>{$row.message_title}</strong><hr size="1" />
+		{$row.message_body|nl2br} 
+		</font>
+	</td>
+	</tr>
+	<tr>
+	<td valign="top" style="{$style}" nowrap="nowrap"> 
+		<img src="./images/icons/posticon.gif" alt="{dPtranslate word='date posted'}" border="0" width="14" height="11">{$formatted_date}
+	</td>
+	<td valign="top" align="right" style="{$style}">
+	
+	{if $show_edit_controls == true}
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td><a href="./index.php?m=forums&a=viewer&post_message=1&forum_id={$row.message_forum}&message_parent={$row.message_parent}&message_id={$row.message_id}" title="{dPtranslate word='Edit'} {dPtranslate word='Message'}">
+			{dPshowImage src='./images/icons/stock_edit-16.png' wsize='16' hsize='16'}
+			</td><td>
+			<a href="javascript:delIt('{$row.message_id}')" title="{dPtranslate word='delete'}">
+			{dPshowImage src='./images/icons/stock_delete-16.png' wsize='16' hsize='16'}
+			</a>
+			</td>
+		</tr>
+		</table>
+	{/if}
+	</td></tr>
+{elseif $viewtype == 'short'}
+	<tr><td valign="top" style="{$style}">
+	{if !$hideEmail}
+		<a href="mailto:{$row.contact_email}">
+	{/if}
+	<font size="2">{$row.contact_first_name} {$row.contact_last_name}</font>
+	{if !hideEmail}
+		</a>
+	{/if}
+	({$formatted_date})
+	{if $editor|count_characters > 0}
+		<br />&nbsp;<br />{dPtranslate word='last edited by'}
+		<br /> 
+		{if !$hideEmail}
+			<a href="mailto:{$editor.0.contact_email}">
+		{/if}
+		<font size="1">{$editor.0.contact_first_name} {$editor.0.contact_last_name}</font>
+		{if !$hideEmail}
+			</a>
+		{/if}
+	{/if}
+	<a name="{$row.message_id}" href="#{$row.message_id}" onClick="toggle({$row.message_id})">
+		<span size="2"><strong>{$row.message_title}</strong></span>
+	</a>
+	<div class="message" id="{$row.message_id}" style="display: none">
+		{$row.message_body|nl2br}
+	</div>	
+	</td></tr>
+{else}
+	<tr>
+	<td valign="top" style="{$style}">
+	{if $viewtype == 'single'} 
+		{$formatted_date} - 
+	{/if}
+	{if !$hideEmail}
+		<a href="mailto:{$row.contact_email}">
+	{/if}
+	<font size="2">{$row.contact_first_name} {$row.contact_last_name}</font>
+	{if !hideEmail}
+		</a>
+	{/if}
+	{if $viewtype == 'short'}({$formatted_date}){/if}
+	{if $viewtype == 'single'}<br />{/if}
+	{if $editor|count_characters > 0}
+		<br />&nbsp;<br />{dPtranslate word='last edited by'}
+		<br /> 
+		{if !$hideEmail}
+			<a href="mailto:{$editor.0.contact_email}">
+		{/if}
+		<font size="1">{$editor.0.contact_first_name} {$editor.0.contact_last_name}</font>
+		{if !$hideEmail}
+			</a>
+		{/if}
+	{/if}
+	<a name="{$row.message_id}" href="#{$row.message_id}" onClick="toggle({$row.message_id})">
+		<span size="2"><strong>{$row.message_title}</strong></span>
+	</a>
+	{if $viewtype == 'single'}
+		{if $first}
+		</td>
+		<td rowspan="{$messages|count}" valign="top">
+		{/if}
+		<div class="message" id="{$row.message_id}" style="display: none">
+			{$row.message_body|nl2br}
+		</div>	
+	{else}
+	{$row.message_body|nl2br}
+	{/if}	
+	</td>
+	</tr>
+	{*
+	// if viewtype not single echo, x = !x
+	// if viewtype single echo side </td> s
+	*}
+{/if}
