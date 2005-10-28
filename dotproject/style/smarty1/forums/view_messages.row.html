@@ -48,8 +48,9 @@
 		</table>
 	{/if}
 	</td></tr>
-{elseif $viewtype == 'short'}
-	<tr><td valign="top" style="{$style}">
+{else}
+	<tr>
+	<td valign="top" style="{$style}">
 	{if !$hideEmail}
 		<a href="mailto:{$row.contact_email}">
 	{/if}
@@ -58,44 +59,14 @@
 		</a>
 	{/if}
 	({$formatted_date})
-	<a name="{$row.message_id}" href="#{$row.message_id}" onClick="toggle({$row.message_id})">
-		<span size="2"><strong>{$row.message_title}</strong></span>
-	</a>
-	{if $editor|count_characters > 0}
-		<br />{dPtranslate word='last edited by'}:
-		<br /> 
-		{if !$hideEmail}
-			<a href="mailto:{$editor.contact_email}">
-		{/if}
-		<font size="1">{$editor.contact_first_name} {$editor.contact_last_name}</font>
-		{if !$hideEmail}
-			</a>
-		{/if}
-	{/if}
-	<div class="message" id="{$row.message_id}" style="display: none">
-		{$row.message_body|nl2br}
-	</div>	
-	</td></tr>
-{else}
-	<tr>
-	<td valign="top" style="{$style}">
-	{if $viewtype == 'single'} 
-		{$formatted_date} - 
-	{/if}
-	{if !$hideEmail}
-		<a href="mailto:{$row.contact_email}">
-	{/if}
-	<font size="2">{$row.contact_first_name} {$row.contact_last_name}</font>
-	{if !$hideEmail}
-		</a>
-	{/if}
-	{if $viewtype == 'short'}({$formatted_date}){/if}
 	{if $viewtype == 'single'}<br />{/if}
 	<a name="{$row.message_id}" href="#{$row.message_id}" onClick="toggle({$row.message_id})">
 		<span size="2"><strong>{$row.message_title}</strong></span>
 	</a>
 	{if $editor|count > 0}
-		<br />&nbsp;<br />{dPtranslate word='last edited by'}:
+		<br />
+		{if $viewtype == 'single'}&nbsp;<br />{/if}	
+		{dPtranslate word='last edited by'}:
 		<br /> 
 		{if !$hideEmail}
 			<a href="mailto:{$editor.contact_email}">
@@ -112,7 +83,9 @@
 		{$message_bodies}
 		{/if}
 	{else}
-		{$row.message_body|nl2br}
+		<div class="message" id="{$row.message_id}" style="display: none">
+			{$row.message_body|nl2br}
+		</div>	
 	{/if}	
 	</td>
 	</tr>
