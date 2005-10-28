@@ -1,7 +1,10 @@
 {literal}
 <script language="javascript">
 {/literal}
-{if $viewtype == 'normal'}{literal}
+{*
+{if $viewtype == 'normal'}
+*}
+{literal}
         function toggle(id)
         {
 	{/literal}
@@ -22,7 +25,9 @@
 	{literal}
         }
 	{/literal}
+{*
 {/if}
+*}
 {*
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -73,10 +78,14 @@ value="{dPtranslate word='New Topic'}" onClick="javascript:window.location='./in
 <tr>
 {if $viewtype != 'short'} 
 	<th nowrap>{dPtranslate word='Author'}:</th>
-	<th width="{if $viewtype == 'single'}60{else}100{/if}%">{dPtranslate word='Message'}:</th>
 {/if}
+	<th width="{if $viewtype == 'single'}60{else}100{/if}%">{dPtranslate word='Message'}:</th>
 </tr>
+{if $viewtype == 'single'}
+{$message_bodies}</td>{$message_rows}
+{else}
 {$message_rows}
+{/if}
 {*
 if ($viewtype == 'single')
         echo $side . '</td>' . $s;
