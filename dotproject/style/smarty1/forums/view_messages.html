@@ -81,11 +81,7 @@ value="{dPtranslate word='New Topic'}" onClick="javascript:window.location='./in
 {/if}
 	<th width="{if $viewtype == 'single'}60{else}100{/if}%">{dPtranslate word='Message'}:</th>
 </tr>
-{if $viewtype == 'single'}
-{$message_bodies}</td>{$message_rows}
-{else}
 {$message_rows}
-{/if}
 {*
 if ($viewtype == 'single')
         echo $side . '</td>' . $s;

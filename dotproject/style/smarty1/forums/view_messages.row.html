@@ -91,6 +91,9 @@
 	{/if}
 	{if $viewtype == 'short'}({$formatted_date}){/if}
 	{if $viewtype == 'single'}<br />{/if}
+	<a name="{$row.message_id}" href="#{$row.message_id}" onClick="toggle({$row.message_id})">
+		<span size="2"><strong>{$row.message_title}</strong></span>
+	</a>
 	{if $editor|count > 0}
 		<br />&nbsp;<br />{dPtranslate word='last edited by'}:
 		<br /> 
@@ -102,28 +105,15 @@
 			</a>
 		{/if}
 	{/if}
-	<a name="{$row.message_id}" href="#{$row.message_id}" onClick="toggle({$row.message_id})">
-		<span size="2"><strong>{$row.message_title}</strong></span>
-	</a>
 	{if $viewtype == 'single'}
 		{if $first}
 		</td>
 		<td rowspan="{$message_count}" valign="top">
+		{$message_bodies}
 		{/if}
 	{else}
-	{$row.message_body|nl2br}
+		{$row.message_body|nl2br}
 	{/if}	
-	{*
-		<div class="message" id="{$row.message_id}" style="display: none">
-			{$row.message_body|nl2br}
-		</div>	
-	*}
-	{*
 	</td>
 	</tr>
-	*}
-	{*
-	// if viewtype not single echo, x = !x
-	// if viewtype single echo side </td> s
-	*}
 {/if}

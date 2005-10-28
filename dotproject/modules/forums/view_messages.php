@@ -38,6 +38,20 @@ $new_messages = array();
 $message_rows = "";
 $single_view_message_body = "";
 
+// If viewtype is Single message, build the message body section first
+// TODO - Replace with something less hackish 
+if ($viewtype == 'single')
+{
+	foreach ($messages as $row)
+	{
+			$single_view_message_body .= ' 
+				<div class="message" id="'.$row["message_id"].'" style="display: none">
+					'.nl2br($row["message_body"]).'
+				</div>
+			';
+	}
+}
+
 foreach ($messages as $row) {
 	$tpl_row = new CTemplate();
         
@@ -84,22 +98,15 @@ foreach ($messages as $row) {
 	}
 
 	$tpl_row->assign('first', $first);
-        if ($first)
+        if ($first && $viewtype == 'single')
         {
                 $first = false;
+		$tpl_row->assign('message_bodies', $single_view_message_body);
         }
 
 	if ($viewtype != 'single')
 		$x = !$x;
 
-	if ($viewtype == 'single')
-	{
-		$single_view_message_body .= ' 
-			<div class="message" id="'.$row["message_id"].'" style="display: none">
-				'.nl2br($row["message_body"]).'
-			</div>
-		';
-	}	
 	$message_rows .= $tpl_row->fetchFile('view_messages.row');
 	unset($tpl_row);
 }
