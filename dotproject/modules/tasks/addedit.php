@@ -228,111 +228,30 @@ $pq->addWhere('( project_status != 7 or project_id = \''. $task_project . '\')')
 $pq->addOrder('project_name');
 $project->setAllowedSQL($AppUI->user_id, $pq);
 $projects = $pq->loadHashList();
-?>
-<SCRIPT language="JavaScript">
-var selected_contacts_id = "<?php echo $obj->task_contacts; ?>";
-var task_id = '<?php echo $obj->task_id;?>';
 
-var check_task_dates = <?php
-  if (isset($dPconfig['check_task_dates']) && $dPconfig['check_task_dates'])
-    echo 'true';
-  else
-    echo 'false';
-?>;
-var can_edit_time_information = <?php echo $can_edit_time_information ? 'true' : 'false'; ?>;
+if (isset($dPconfig['check_task_dates']) && $dPconfig['check_task_dates'])
+	$check_task_dates_set = true;	  
+else
+	$check_task_dates_set = false;	  
+$tpl->assign('check_task_dates_set', $check_task_dates_set);
+$tpl->assign('task_project', $task_project);
+$tpl->assign('task_id', $task_id);
+$tpl->assign('project', $project); 
+$tpl->assign('status', $status);
+$tpl->assign('taskPriority', $taskPriority);
+$tpl->assign('percent', $percent); 
+$tpl->assign('ui_getplace', $AppUI->getPlace());
+$tpl->displayAddEdit($obj);
 
-var task_name_msg = "<?php echo $AppUI->_('taskName');?>";
-var task_start_msg = "<?php echo $AppUI->_('taskValidStartDate');?>";
-var task_end_msg = "<?php echo $AppUI->_('taskValidEndDate');?>";
+if (isset($_GET['tab']))
+	$AppUI->setState('TaskAeTabIdx', dPgetParam($_GET, 'tab', 0));
 
-var workHours = <?php echo dPgetConfig( 'daily_working_hours' );?>;
-//working days array from config.php
-var working_days = new Array(<?php echo dPgetConfig( 'cal_working_days' );?>);
-var cal_day_start = <?php echo intval(dPgetConfig( 'cal_day_start' ));?>;
-var cal_day_end = <?php echo intval(dPgetConfig( 'cal_day_end' ));?>;
-var daily_working_hours = <?php echo intval(dPgetConfig('daily_working_hours')); ?>;
-
-
-</script>
-
-<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
-<form name="editFrm" action="?m=tasks&project_id=<?php echo $task_project;?>" method="post">
-	<input name="dosql" type="hidden" value="do_task_aed" />
-	<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
-	<input name="task_project" type="hidden" value="<?php echo $task_project;?>" />
-	<input name='task_contacts' id='task_contacts' type='hidden' value="<?php echo $obj->task_contacts; ?>" />
-<tr>
-	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#<?php echo $project->project_color_identifier;?>" >
-		<font color="<?php echo bestColor( $project->project_color_identifier ); ?>">
-			<strong><?php echo $AppUI->_('Project');?>: <?php echo @$project->project_name;?></strong>
-		</font>
-	</td>
-</tr>
-
-<tr valign="top" width="50%">
-	<td>
-		<?php echo $AppUI->_( 'Task Name' );?> *
-		<br /><input type="text" class="text" name="task_name" value="<?php echo dPformSafe( $obj->task_name );?>" size="40" maxlength="255" />
-	</td>
-	<td>
-		<table cellspacing="0" cellpadding="2" border="0" width="100%">
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Status' );?></td>
-			<td>
-				<?php echo arraySelect( $status, 'task_status', 'size="1" class="text"', $obj->task_status, true );?>
-			</td>
-
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Priority' );?> *</td>
-			<td nowrap>
-				<?php echo arraySelect( $taskPriority, 'task_priority', 'size="1" class="text"', $obj->task_priority, true );?>
-			</td>
-		</tr>
-		<tr>
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Progress' );?></td>
-			<td>
-				<?php echo arraySelect( $percent, 'task_percent_complete', 'size="1" class="text"', $obj->task_percent_complete ) . '%';?>
-			</td>
-
-			<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Milestone' );?>?</td>
-			<td>
-				<input type="checkbox" value=1 name="task_milestone" <?php if($obj->task_milestone){?>checked<?php }?> />
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-</table>
-
-<table border="0" cellspacing="0" cellpadding="3" width="100%">
-<tr>
-	<td height="40" width="35%">
-		* <?php echo $AppUI->_( 'requiredField' );?>
-	</td>
-	<td height="40" width="30%">&nbsp;</td>
-	<td  height="40" width="35%" align="right">
-		<table>
-		<tr>
-			<td>
-				<input class="button" type="button" name="cancel" value="<?php echo $AppUI->_('cancel');?>" onClick="if(confirm('<?php echo $AppUI->_('taskCancel', UI_OUTPUT_JS);?>')){location.href = '?<?php echo $AppUI->getPlace();?>';}" />
-			</td>
-			<td>
-				<input class="button" type="button" name="btnFuseAction" value="<?php echo $AppUI->_('save');?>" onClick="submitIt(document.editFrm);" />
-			</td>
-		</tr>
-		</table>
-	</td>
-</tr>
-</table>
-</form>
-<?php
-	if (isset($_GET['tab']))
-	  $AppUI->setState('TaskAeTabIdx', dPgetParam($_GET, 'tab', 0));
-	$tab = $AppUI->getState('TaskAeTabIdx', 0);
-	$tabBox =& new CTabBox("?m=tasks&a=addedit&task_id=$task_id", "", $tab, "");
-	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_desc", "Details");
-        $tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_dates", "Dates");
-	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_depend", "Dependencies");
-	$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_resource", "Human Resources");
-	$tabBox->loadExtras('tasks', 'addedit');
-	$tabBox->show('', true);
+$tab = $AppUI->getState('TaskAeTabIdx', 0);
+$tabBox =& new CTabBox("?m=tasks&a=addedit&task_id=$task_id", "", $tab, "");
+$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_desc", "Details");
+$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_dates", "Dates");
+$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_depend", "Dependencies");
+$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_resource", "Human Resources");
+$tabBox->loadExtras('tasks', 'addedit');
+$tabBox->show('', true);
 ?>

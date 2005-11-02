@@ -1,0 +1,91 @@
+{literal}
+<SCRIPT language="JavaScript">
+var selected_contacts_id = "{/literal}{$obj->task_contacts}{literal}";
+var task_id = '{/literal}{$obj->task_id}{literal}';
+
+var check_task_dates = {/literal}{if $check_task_dates_set}true{else}false{/if}{literal};
+var can_edit_time_information = {/literal}{if $can_edit_time_information}true{else}false{/if}{literal};
+
+var task_name_msg = "{/literal}{dPtranslate word='taskName' type='js'}{literal}";
+var task_start_msg = "{/literal}{dPtranslate word='taskValidStartDate' type='js'}{literal}";
+var task_end_msg = "{/literal}{dPtranslate word='taskValidEndDate' type='js'}{literal}";
+
+var workHours = {/literal}{dPconfig var='daily_working_hours'}{literal};
+//working days array from config.php
+var working_days = new Array({/literal}{dPconfig var='cal_working_days'}{literal});
+var cal_day_start = {/literal}{dPconfig var='cal_day_start'}{literal};
+var cal_day_end = {/literal}{dPconfig var='cal_day_end'}{literal};
+var daily_working_hours = {/literal}{dPconfig var='daily_working_hours'}{literal};
+
+</script>
+{/literal}
+
+<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
+<form name="editFrm" action="?m=tasks&project_id={$task_project}" method="post">
+	<input name="dosql" type="hidden" value="do_task_aed" />
+	<input name="task_id" type="hidden" value="{$task_id}" />
+	<input name="task_project" type="hidden" value="{$task_project}" />
+	<input name='task_contacts' id='task_contacts' type='hidden' value="{$obj->task_contacts}" />
+<tr>
+	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#{$project->project_color_identifier}" >
+		<font color="{dPbestColor bg=$project->project_color_identifier}">
+			<strong>{dPtranslate word='Project'}: {$project->project_name}</strong>
+		</font>
+	</td>
+</tr>
+
+<tr valign="top" width="50%">
+	<td>
+		{dPtranslate word='Task Name'} *
+		<br /><input type="text" class="text" name="task_name" value="{dPformSafe var=$obj->task_name}" size="40" maxlength="255" />
+	</td>
+	<td>
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Status'}</td>
+			<td>
+				{dParraySelect array=$status name='task_status' extras='size="1" class="text"' value=$obj->task_status translate=true}
+			</td>
+
+			<td align="right" nowrap="nowrap">{dPtranslate word='Priority'} *</td>
+			<td nowrap>
+				{dParraySelect array=$taskPriority name='task_priority' extras='size="1" class="text"' value=$obj->task_priority translate=true}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Progress'}</td>
+			<td>
+				{dParraySelect array=$percent name='task_percent_complete' extras='size="1" class="text"' value=$obj->task_percent_complete}%
+			</td>
+
+			<td align="right" nowrap="nowrap">{dPtranslate word='Milestone'}?</td>
+			<td>
+				<input type="checkbox" value="1" name="task_milestone" {if $obj->task_milestone}checked{/if} />
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
+<tr>
+	<td height="40" width="35%">
+		* {dPtranslate word='requiredField'}
+	</td>
+	<td height="40" width="30%">&nbsp;</td>
+	<td height="40" width="35%" align="right">
+		<table>
+		<tr>
+			<td>
+				<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onClick="if(confirm('{dPtranslate word='taskCancel' type='js'}{literal}')){location.href = '?{/literal}{$ui_getplace}{literal}';}" />{/literal}
+			</td>
+			<td>
+				<input class="button" type="button" name="btnFuseAction" value="{dPtranslate word='save'}" onClick="submitIt(document.editFrm);" />
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+</form>
