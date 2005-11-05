@@ -1,5 +1,5 @@
 <?php /* CALENDAR $Id$ */
-global $tab, $locale_char_set;
+global $tab, $locale_char_set, $date;
 $AppUI->savePlace();
 
 require_once( $AppUI->getModuleClass( 'tasks' ) );
@@ -18,15 +18,13 @@ $tab = $AppUI->getState( 'CalDayViewTab' ,'0');
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-
-
+// get the passed timestamp (today if none)
+$date = dPgetParam( $_GET, 'date', NULL );
 // establish the focus 'date'
 $this_day = new CDate( $date );
 $dd = $this_day->getDay();
 $mm = $this_day->getMonth();
 $yy = $this_day->getYear();
-// get the passed timestamp (today if none)
-$date = dPgetParam( $_GET, 'date', $yy.$mm.$dd );
 
 // get current week
 $this_week = Date_calc::beginOfWeek ($dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY );
