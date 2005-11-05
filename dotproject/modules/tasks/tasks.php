@@ -255,7 +255,8 @@ $ctn = substr($currentTabName, 7, -1);
 if ( isset($currentTabName) )
         $task_status = $sutats[$ctn];
 
-$q->addWhere('task_status = ' . $task_status);
+if ($task_status)
+    $q->addWhere('task_status = ' . $task_status);
 
 // patch 2.12.04 text search
 if ( $search_text = $AppUI->getState('searchtext') )
