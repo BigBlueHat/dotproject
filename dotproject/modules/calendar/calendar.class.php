@@ -7,6 +7,7 @@ require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getSystemClass ('dp' ) );
 require_once $AppUI->getSystemClass('libmail');
 require_once $AppUI->getSystemClass('date');
+require_once( $AppUI->getSystemClass( 'webdav_client' ) );
 
 /**
 * Displays a configuration month calendar
@@ -476,7 +477,7 @@ class CEvent extends CDpObject {
 * @param Date End date of the period
 * @return array A list of events
 */
-	function getEventsForPeriod( $start_date, $end_date, $filter = 'all', $user_id = null ) {
+	function getEventsForPeriod( $start_date, $end_date, $filter = 'all', $user_id = null, $pro_filter = 0 ) {
 		global $AppUI;
 
 	// the event times are stored as unix time stamps, just to be different
@@ -510,6 +511,14 @@ class CEvent extends CDpObject {
 				break;
 			case 'all':
 				$q->addWhere("( event_private=0 OR (event_private=1 AND event_owner=$user_id) )");
+				break;
+		}
+		
+		switch ($pro_filter) {
+			case '0':
+				break;
+			default:
+				$q->addWhere("( event_project =".$pro_filter." )");
 				break;
 		}
 		
@@ -699,7 +708,38 @@ class CEvent extends CDpObject {
 	  }
 	  $body .= "\n\n" . $this->event_description . "\n";
 
+	// create vEvent Attachment String	
+	$v = new vEvent;
+	$v->addSum($this->event_title);
+	$v->addDesc($this->event_description);
+	$v->addCat($types[(int) $this->event_type]);
+	$v->addOrg($AppUI->user_first_name.' '.$AppUI->user_last_name, $AppUI->user_email);
+	$v->addStart($start_date);
+	$v->addEnd($end_date);
+	if ($this->event_recurs > 0 ) {
+		$v->addRec($this->event_recurs, $this->event_times_recuring, $end_date);
+	}
+	
+	foreach ($users as $user) {
+		$v->addAttendee($user[contact_first_name] .' '. $user[contact_last_name], $user[contact_email]);
+	}
+	
+	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $this->event_id );
+	$v->addRel($this->event_parent, 'PARENT');
+	$v->addCreated();
+	$v->addUid();
+	$v->addSeq();
+	if ($this->event_private == TRUE || $this->event_private == 1) {
+		$v->addClass('PRIVATE');
+	} else {
+		$v->addClass('PUBLIC');
+	}
+	$v->addvEvent();
+	$ical = $v->genString();
+	// end of vEvent generation
+	
 	  $mail->Body($body, $locale_char_set);
+	  $mail->Attach( $AppUI->_('Event').'.ics', $filetype = 'text/calendar' , $disposition = 'inline', $ical );
 
 	  foreach ($users as $user) {
 		if (! $mail_owner && $user['user_id'] == $this->event_owner)
@@ -794,6 +834,20 @@ class CEvent extends CDpObject {
 	}
 
 
+	function delete() {
+		$msg = parent::delete();
+		CWebCalresource::autoPublish($this->event_project);
+		return $msg;
+	}
+
+	function store($autoPublish = true) {
+		$msg = parent::store();
+		if ($autoPublish) {
+			CWebCalresource::autoPublish($this->event_project);
+		}
+		return $msg;
+	}
+
 
 }
 
@@ -802,4 +856,627 @@ $event_filter_list = array (
 	'own' => 'Events I Created',
 	'all' => 'All Events'
 );
+
+
+
+class vCalendar { 	 
+
+	var $recurs = NULL;
+	var $sd = NULL;
+	var $vcalendar = NULL;
+	var $vevent = NULL;
+	
+	function vCalendar() {
+		$this->recurs =  array ('NEVER', 'HOURLY', 'DAILY', 'WEEKLY', 'BI-WEEKLY', 'EVERY MONTH', 'QUARTERLY', 'EVERY 6 MONTHS', 'YEARLY');
+					
+		$this->sd = array('SU','MO','TU','WE','TH','FR','SA');
+	}
+
+	// create vcalendar header
+	function addVCH() {
+		global $AppUI;
+		$vch = "BEGIN:VCALENDAR\r\n";
+		$vch .= "PRODID:-//dotProject devTeam//NONSGML dotProject ".$AppUI->getVersion()."//iCal 2.0//EN\r\n";
+	  	$vch .= "VERSION:2.0\r\n";
+		$vch .= "METHOD:PUBLISH\r\n";	
+		$this->vcalendar = $vch.$this->vcalendar;
+	}
+	
+	// append footer
+	function addVCF() {
+		$this->vcalendar .= "END:VCALENDAR";
+	}
+
+	// append vevent header
+	function addVEH() {
+		$this->vevent = "BEGIN:VEVENT\r\n". $this->vevent;
+	}
+
+	// append vevent footer
+	function addVEF() {
+		$this->vevent .= "END:VEVENT\r\n";
+	}
+
+	function addAttendee($c, $e, $r = 'REQ-PARTICIPANT') {
+		$this->vevent .= 'ATTENDEE;ROLE='.$r.';CN=' . $c . ':MAILTO:' . $e . "\r\n";
+	}
+	
+	function addCat($c = 'GENERAL') {
+		$this->vevent .= "CATEGORIES:".$c."\r\n";	
+	}
+	
+	function addClass($c = 'PUBLIC') {
+		$this->vevent .= "CLASS:".$c."\r\n";	
+	}
+	
+	function addCreated($d = NULL, $t = NULL) {
+		$this->vevent .= "CREATED:".(empty($d) ? date("Ymd") : $d) .'T'.(empty($t) ? date("His") : $t) ."Z\r\n";
+		$this->vevent .= "DTSTAMP:".(empty($d) ? date("Ymd") : $d) .'T'.(empty($t) ? date("His") : $t) ."Z\r\n";
+		$this->vevent .= "LAST-MODIFIED:".(empty($d) ? date("Ymd") : $d) .'T'.(empty($t) ? date("His") : $t) ."Z\r\n";
+	}
+	
+	function addDesc($d) {
+		$this->vevent .= "DESCRIPTION:".$d."\r\n";	
+	}
+	
+	/*
+	*  @param object $e CDate object 
+	*/
+	function addEnd($e) {
+		$this->vevent .= "DTEND:".$e->format('%Y%m%d').'T'.$e->format('%H%M%S')."Z\r\n";	
+	}
+	
+	function addLoc($l) {
+		$this->vevent .= "LOCATION:".$l."\r\n";	
+	}
+	
+	function addPrio($p = '3') {
+		$this->vevent .= "PRIORITY:".$p."\r\n";	
+	}
+	
+	function addOrg($n, $e) {
+		$this->vevent .= "ORGANIZER;CN=".$n.":MAILTO:".$e."\r\n";	
+	}
+	
+	function addRel($r, $t = 'PARENT') {
+		$this->vevent .= "RELATED-TO;RELTYPE=$t:$r\r\n";	
+	}
+	
+	function addRec($f, $i, $e) {
+		$this->vevent .= 'RRULE:FREQ='.$this->recurs[$f].';COUNT='.$i.';UNTIL='.$e->format('%Y%m%d').'T'.$e->format('%H%M%S')."Z\r\n";
+	}
+	
+	function addSeq($s = '0') {
+		$this->vevent .= "SEQUENCE:".$s."\r\n";	
+	}
+	
+	/*
+	*  @param object $s CDate object 
+	*/
+	function addStart($s) {
+		$this->vevent .= "DTSTART:".$s->format('%Y%m%d').'T'.$s->format('%H%M%S')."Z\r\n";	
+	}
+	
+	function addSum($s) {
+		$this->vevent .= "SUMMARY:".$s."\r\n";	
+	}
+	
+	function addTransp($t = 'OPAQUE') {
+		$this->vevent .= "TRANSP:".$t."\r\n";	
+	}
+	
+	function addUid($u = 'dotProject') {
+		$this->vevent .= "UID:".$u."\r\n";	
+	}
+	
+	function addUrl($u) {
+		$this->vevent .= "URL:".$u."\r\n";	
+	}
+	
+	function addvEvent() {		
+		$this->addVEH();
+		$this->addVEF();
+		$this->vcalendar .= $this->vevent;
+		$this->vevent = NULL;
+	}
+	
+	// public function to add a vevent object
+	function genvEventString() {		
+		return "BEGIN:VEVENT\r\n".$this->vevent."END:VEVENT\r\n";
+	}
+	
+	function genString() {	
+		$this->addVCH();
+		$this->addVCF();
+		return $this->vcalendar;
+	}
+	
+	function iCalDateToDateObj($iD) {
+		$d = new CDate(substr($iD, 0, 8));
+		$d->setHour(substr($iD, 9, 2));
+		$d->setMinute(substr($iD, 11, 2));
+		$d->setSecond(substr($iD, 13, 2));
+		return $d;
+	}
+	
+	function recToDB($s) {
+		if (!empty($s)) {
+			$d = array();
+			// divide the different parameters (resulting PARAM=VALUE)
+			$re = explode(';', $s);
+			
+			// divide each parameter string into key and value
+			foreach ($re as $r) {
+				$t = explode('=', $r);
+				$d[$t[0]] = $t[1];
+			}
+			return $d;
+		} else return FALSE;
+	}
+
+	/**
+	* Retrieve filtered events
+	* @param string Filter Info String
+	* @param bool Determine whether Private Events shall be added or not
+	* @return array Event List
+	*/
+
+	function getEvents($eventFilter = null, $addPrivateEvents = false) {
+		$q  = new DBQuery;
+		$q->addTable('events');
+		if (!empty($eventFilter)) {
+			$q->addWhere($eventFilter);
+		}
+
+		if ($addPrivateEvents == false) {
+			$q->addWhere('event_private <> 1');
+		} 
+		$events = $q->loadList();	
+		$q->clear();
+		return $events;
+	}
+	
+	/**
+	* Add filtered events to the object output string from filter
+	* @param string Filter Info String
+	* @param bool Determine whether Private Events shall be added or not
+	*/
+
+	function addEventsByFilter($eventFilter = null, $addPrivateEvents = false) {
+		GLOBAL $dPconfig;
+		$events = $this->getEvents($eventFilter, $addPrivateEvents);
+		
+		$types = dPgetSysVal('EventType');		
+
+		foreach ($events as $e) {
+			
+			$q  = new DBQuery;
+			$q->addTable('user_events');
+			$q->addJoin('users', 'u', 'u.user_id = user_events.user_id');
+			$q->addJoin('contacts', 'c', 'u.user_contact = c.contact_id');
+			$q->addWhere("event_id =". $e['event_id']);
+			$users = $q->loadList();	
+			$q->clear();
+			
+			$q  = new DBQuery;
+			$q->addTable('users');
+			$q->addJoin('contacts', 'c', 'users.user_contact = c.contact_id');
+			$q->addWhere('user_id ='.$e['event_owner'] );
+			$q->loadObject($owner);	
+			$q->clear();
+
+			$start_date =& new CDate($e['event_start_date']);
+			$end_date =& new CDate($e['event_end_date']);	
+			
+			// create vEvent String	
+			$this->addSum($e['event_title']);
+			$this->addDesc($e['event_description']);
+			$this->addCat($types[(int) $e['event_type']]);
+			$this->addOrg($owner->contact_first_name.' '.$owner->contact_last_name, $owner->contact_email);
+			$this->addStart($start_date);
+			$this->addEnd($end_date);
+			if ($e['event_recurs'] > 0 ) {
+				$this->addRec($e['event_recurs'], $e['event_times_recuring'], $end_date);
+			}
+			
+			foreach ($users as $user) {
+				$this->addAttendee($user[contact_first_name] .' '. $user[contact_last_name], $user[contact_email]);
+			}
+			$this->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $e['event_id'] );
+			$this->addRel($e['event_parent'], 'PARENT');
+			$this->addCreated();
+			$this->addUid($e['event_id']);
+			$this->addSeq();
+			if ($e['event_private'] == TRUE || $e['event_private'] == 1) {
+				$this->addClass('PRIVATE');
+			} else {
+				$this->addClass('PUBLIC');
+			}
+
+			$this->addvEvent();
+
+		}		
+	}
+
+	/**
+	* Store an array parsed from a vcalendar file by the IMC class in dotproject events table
+	* @param array vcalendar array
+	* @param int 	project/'calendar' for event_project storage 
+	* @param bool Determine whether existing events for that project shall be purged or not
+	* @param bool preserve the id info got from the input row
+	* @return mixed true on 'no error' otherwise error info string
+	*/
+
+	// event_project is in fact the target calendar
+	function icsParsedArrayToDpEvents($ics, $event_project, $purge_before_update = true, $preserve_id = false) {
+	GLOBAL $AppUI;
+	
+		if ($purge_before_update) {
+			// grab events_id to delete
+			$q  = new DBQuery;
+			$q->addTable('events');
+			$q->addQuery('event_id');
+			$q->addWhere('events.event_project ='.$event_project);
+			$events = $q->loadList();	
+			$q->clear();
+
+			// delete events
+			$q  = new DBQuery;
+			$q->setDelete('events');
+			$q->addWhere('events.event_project ='.$event_project);
+			$q->exec();	
+			$q->clear();
+			
+			// compile where clause for user_events
+			$ev = 'event_id = "a" ';		// trick to avoid a 'OR'-if-clause down below
+			foreach ($events as $eve) {
+				$ev .= ' OR event_id ='. $eve['event_id'];
+			}
+
+			// delete user_events relations
+			$q  = new DBQuery;
+			$q->setDelete('user_events');
+			$q->addWhere($ev);
+			$q->exec();	
+			$q->clear();
+		}		
+
+		$cat = dPgetSysVal('EventType');
+		$tac = array_flip($cat);
+		
+		//get event types
+		$et = array_flip($this->recurs);
+		$errors = null;
+		foreach ($ics['VCALENDAR'] as $ci) {	//one file can contain multiple iCal items
+			foreach ($ci['VEVENT'] as $c) {		//each iCal item can contain multiple VEVENT items
+				$obj = new CEvent();
+				
+				$eventValues = $this->icsObjectToArray($c);
+
+				// bind array to object
+				if (!$obj->bind( $eventValues )) {
+					$errors .= $obj->getError()."\r";
+				}
+		
+				// store iCal data for this object
+				if (($msg = $obj->store(false))) {
+					$errors .= $msg."\r";
+				}
+			}
+
+		}
+		
+		return empty($errors) ? true : $errors;
+	}
+	
+	/**
+	* Convert an array parsed from a vcalendar file by the IMC class to aray list
+	* @param array vcalendar array
+	* @return mixed true on 'no error' otherwise error info string
+	*/
+	function icsParsedArrayToList($ics) {
+	GLOBAL $AppUI;
+	
+		$cat = dPgetSysVal('EventType');
+		$tac = array_flip($cat);
+		
+		//get event types
+		$et = array_flip($this->recurs);
+		$errors = null;
+
+		//target array
+		$events = array();		
+
+		foreach ($ics['VCALENDAR'] as $ci) {	//one file can contain multiple iCal items
+			foreach ($ci['VEVENT'] as $c) {		//each iCal item can contain multiple VEVENT items
+				
+				$eventValues = $this->icsObjectToArray($c);
+
+				// add current event data set to target array
+				$events[] = $eventValues;
+			}
+
+		}
+		
+		return empty($errors) ? $events : $errors;
+	}
+
+	// internal function to create a dp database like data set from an icalendar 'object'
+	function icsObjectToArray($c) {
+		//set target calendar, i.e. define event_project
+		$eventValues["event_project"] = $event_project;
+		
+		$e = $this->iCalDateToDateObj($c['DTEND'][0]['value'][0][0]);
+		$s = $this->iCalDateToDateObj($c['DTSTART'][0]['value'][0][0]);
+		
+		if ($preserve_id == true) {
+			$eventValues['event_id'] = is_int($c['UID'][0]['value'][0][0]) ? $c['UID'][0]['value'][0][0] : 0;
+		}
+
+		$eventValues["event_end_date"] = $e->format( FMT_DATETIME_MYSQL );
+		$eventValues["event_start_date"] = $s->format( FMT_DATETIME_MYSQL );
+		$eventValues["event_title"] = $c['SUMMARY'][0]['value'][0][0];
+		$eventValues["event_description"] = $c['DESCRIPTION'][0]['value'][0][0];
+		$eventValues["event_private"] = ($c['CLASS'][0]['value'][0][0] == 'PUBLIC') ? 0 : 1;
+		$eventValues["event_parent"] = ($c['RELATED-TO'][0]['param'][0][0] == 'PARENT') ? $c['RELATED-TO'][0]['value'][0][0] : 0;
+		$eventValues["event_owner"] = $AppUI->user_id;  // for instance set event_owner to importing user
+								// could perhaps be guessed by CN and email from db
+		$eventValues["event_type"] = $tac[$c['CATEGORIES'][0]['value'][0][0]];
+		
+		//recurrent events info
+		if (!empty($c['RRULE'][0]['value'][0][0])) {
+			$rt = vEvent::recToDB($c['RRULE'][0]['value'][0][0]);
+			$eventValues['event_recurs'] = $et[$rt['FREQ']];
+			$eventValues['event_times_recuring'] = $rt['COUNT'];
+		} else {
+			$eventValues['event_recurs'] = 0;
+		}
+		
+		return $eventValues;
+	}
+
+}
+
+
+class CWebCalresource extends CDpObject {
+	var $webcal_id = NULL;
+	var $webcal_path = NULL;
+	var $webcal_port = NULL;
+	var $webcal_user = NULL;	
+	var $webcal_pass = NULL;
+	var $webcal_auto_import = NULL;
+	var $webcal_auto_publish = NULL;
+	var $webcal_auto_show = NULL;
+	var $webcal_preserve_id = NULL;
+	var $webcal_private_events = NULL;
+	var $webcal_purge_events = NULL;
+	var $webcal_eq_id = NULL;
+
+	function CWebCalresource() {
+		GLOBAL $AppUI;
+		$this->webcal_port = 80;
+		$this->webcal_purge_events = 1;
+		$this->webcal_user = $AppUI->user_username;
+		$this->CDpObject('webcal_resources', 'webcal_id');
+	}
+
+	/**
+	* Get associated Projects/Calendars for object
+	*/
+	function getCalendars() {
+		$r  = new DBQuery;
+		$r->addTable('webcal_projects');
+		$r->addWhere('webcal_id ='. $this->webcal_id);
+		$wp = $r->loadList();
+		$r->clear();
+
+		$cals = array();
+		foreach ($wp as $w) {
+			$cals[] = $w['project_id'];
+		}
+		return $cals;
+	}
+
+	function getExternalWebcalendars() {
+		$r  = new DBQuery;
+		$r->addTable('webcal_resources');
+		$r->addWhere('webcal_auto_show = 1');
+		$cals = $r->loadList();
+		$r->clear();
+	
+		/*
+		$cals = array();
+		foreach ($wc as $w) {
+			$cals[] = $w['webcal_id'];
+		} */
+		return $cals;
+	}
+	
+	/**
+	* Get Filter string based on associated Projects/Calendars for object
+	*/
+	function getEventFilter() {
+
+		$q = new DBQuery;
+		$q->addTable('webcal_projects', 'wp');
+		$q->addWhere('webcal_id = ' . $this->webcal_id);
+		$wi = $q->loadList();
+
+		// establish the filter info based on the selected calendars
+		$w = null;
+		foreach ($wi as $c) {
+			if (!is_null($w)) {
+				$w .= ' OR ';
+			}
+				
+			$w .= 'event_project='.$c['project_id'];
+		}
+		
+		return $w;
+	}
+
+	// auto publish a webcal resource to given place
+	function autoPublish($event_project) {
+		//global $AppUI;
+		$q = new DBQuery;
+		$q->addTable('webcal_resources', 'w');
+		$q->addJoin('webcal_projects', 'wp', 'wp.webcal_id = w.webcal_id');
+		$q->addWhere('project_id = ' . $event_project);
+		$q->addWhere('webcal_auto_publish = 1');
+		$wr = $q->loadList();
+		$q->clear();
+
+		foreach ($wr as $r) {	//process each autoPub rule
+	
+			$q = new DBQuery;
+			$q->addTable('webcal_projects', 'wp');
+			$q->addWhere('webcal_id = ' . $r['webcal_id']);
+			$wi = $q->loadList();
+
+			// establish the filter info based on the selected calendars
+			$w = null;
+			foreach ($wi as $c) {
+				if (!is_null($w)) {
+					$w .= ' OR ';
+				}
+					
+				$w .= 'event_project='.$c['project_id'];
+			}
+
+			// instantiate new multiple vEvent object with filter info
+				$v = new vCalendar();
+				$v->addEventsByFilter($w, $r['webcal_private_events']);
+				$ics = $v->genString();
+
+			$r['webcal_path'] = 'http://'.$r['webcal_path'];
+
+			// establish webDAV client connection
+			$wdc = new WebDAVclient();
+			$target_path = $wdc->pathInfo( $r['webcal_path'] );
+			$wdc->setPath( $target_path );
+			$wdc->setServer( $wdc->hostInfo( $r['webcal_path'] ) );
+			$wdc->setPort($r['webcal_port']);
+			$wdc->setUser($r['webcal_user']);
+			$wdc->setPass($r['webcal_pass']);
+
+			if (!$wdc->openConnection()) {
+			//	$AppUI->setMsg( 'WebDAVClient: Could not open server connection', UI_MSG_ERROR );
+			}
+
+			// check if server supports webdav rfc 2518
+			if (!$wdc->checkConnection()) {
+			//	$AppUI->setMsg( 'WebDAVClient: Server does not support WebDAV or user/password may be wrong', UI_MSG_ERROR );
+			}
+			// put the ical content string to webdav collection as file
+			$http_status = $wdc->put($target_path, $ics);
+			$msgtype = ($http_status == '201' || $http_status == '204') ? UI_MSG_OK : UI_MSG_ERROR;
+			//$AppUI->setMsg( 'WebDAVClient: Server Status '.$http_status, $msgtype );
+			$wdc->closeConnection();
+			//flush();
+
+		}
+		
+	}
+	
+	// auto import webcal resources
+	// this function is automatically called from the event_queue scanner class
+	function autoImport($mod, $type, $originator, $owner, &$args) {
+		global $AppUI;
+		extract($args);
+		
+		$wcr = new CWebCalresource;
+		$wcr->load($webcal_id);
+
+		$wdc = new WebDAVclient();
+		$target_path = $wdc->pathInfo( 'http://'.$wcr->webcal_path );
+		$wdc->setPath( $target_path );
+		$wdc->setServer( $wdc->hostInfo( 'http://'.$wcr->webcal_path ) );
+		$wdc->setPort($wcr->webcal_port);
+		$wdc->setUser($wcr->webcal_user);
+		$wdc->setPass($wcr->webcal_pass);
+
+		if (!$wdc->openConnection()) {
+			
+		}
+
+		// check if server supports webdav rfc 2518
+		if (!$wdc->checkConnection()) {
+			
+		}
+
+		$ics = null;
+		$http_status = $wdc->get($target_path, $ics);
+		if ($http_status == '200') { 
+
+			require_once( $AppUI->getLibraryClass( 'PEAR/File/IMC/Parse' ) );
+
+			// instantiate a parser object
+			$parse = new File_IMC_Parse();
+
+			// parse a iCal file and store the data
+			// in $calinfo
+			$calinfo = $parse->fromText($ics);
+			$calendars = $wcr->getCalendars();
+
+			// store the ical info array
+			$v = new vCalendar;
+			foreach ($calendars as $c) {
+				$msg = $v->icsParsedArrayToDpEvents($calinfo, $c, $wcr->webcal_purge_events, $wcr->webcal_preserve_id);
+			}
+
+		}
+		
+		return true;
+	}
+
+	function delete() {
+		$msg = parent::delete();
+		if ($msg == null) {
+			$q  = new DBQuery;
+			$q->setDelete('webcal_projects');
+			$q->addWhere('webcal_id ='.$this->webcal_id);
+			$q->exec();	
+			$q->clear();
+		}
+		return $msg;
+	}
+
+	function store($calendars, $event_project = 0, $purge_before_update = true, $preserve_id = false) {
+		GLOBAL $AppUI;
+		//todo: check if update, then check if still autoImport.
+
+
+		$msg = parent::store();
+		
+		// store the related calendars
+		if ($msg == null) {
+			foreach ($calendars as $c) {
+				$q  = new DBQuery;
+				$q->addTable('webcal_projects');
+				$q->addInsert('webcal_id', $this->webcal_id);
+				$q->addInsert('project_id', $c);
+				$q->exec();	
+				$q->clear();
+			}
+		} 
+
+		// add autoImport event to event queue if necessary
+		if ($msg == null && $this->webcal_auto_import > 0) {
+			require_once $AppUI->getSystemClass('event_queue');
+			$eq = new EventQueue;
+			$vars = get_object_vars($this);
+			$now = time();
+			//$now += $this->webcal_auto_import * 60;
+			//$this->webcal_eq_id = $eq->add(array('CWebCalresource', 'autoImport'), $vars, 'calendar', false, 0, 'calAutoImport', $now);
+			$this->webcal_eq_id = $eq->add(array('CWebCalresource', 'autoImport'), $vars, 'calendar', false, 0, 'calAutoImport', $now);
+		}
+
+		// now that we've got the webcal_eq_id we'll 
+		// have to update the object in the db
+		$msg2 = parent::store();
+		
+		return $msg;
+	}
+
+}
 ?>

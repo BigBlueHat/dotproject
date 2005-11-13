@@ -1207,3 +1207,28 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
   SELECT config_id, 'http_ba'
 	FROM config
 	WHERE config_name = 'auth_method';
+
+#20051114
+# webdav/webcal and icalendar functionality
+CREATE TABLE `webcal_projects` (
+  `webcal_id` int(11) NOT NULL default '0',
+  `project_id` int(11) NOT NULL default '0',
+  UNIQUE KEY `webcal_id` (`webcal_id`,`project_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='relate webcal resources to project calendars';
+
+CREATE TABLE `webcal_resources` (
+  `webcal_id` int(11) NOT NULL auto_increment,
+  `webcal_path` varchar(255) default NULL,
+  `webcal_port` tinyint(4) NOT NULL default '80',
+  `webcal_owner` tinyint(11) NOT NULL default '0',
+  `webcal_user` varchar(255) default NULL,
+  `webcal_pass` varchar(255) default NULL,
+  `webcal_auto_import` int(11) NOT NULL default '0',
+  `webcal_auto_publish` tinyint(4) NOT NULL default '0',
+  `webcal_auto_show` tinyint(4) NOT NULL default '0',
+  `webcal_private_events` tinyint(4) NOT NULL default '0',
+  `webcal_purge_events` tinyint(4) NOT NULL default '0',
+  `webcal_preserve_id` tinyint(4) NOT NULL default '0',
+  `webcal_eq_id` int(11) NOT NULL default '0',
+  PRIMARY KEY  (`webcal_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='webcal resource management' AUTO_INCREMENT=29 ;

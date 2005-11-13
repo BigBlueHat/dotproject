@@ -92,8 +92,10 @@ if (count($allowedProjects)) {
 }
 $q->addOrder('project_name');
 
-$all_projects = '(' . $AppUI->_('All', UI_OUTPUT_RAW) . ')';
-$projects = arrayMerge( array( 0 => $all_projects ), $q->loadHashList() );
+$perso_projects = '(' . $AppUI->_('Personal Calendar', UI_OUTPUT_RAW) . ')';
+$all_projects = '(' . $AppUI->_('Unspecified Calendar', UI_OUTPUT_RAW) . ')';
+$projects = arrayMerge(  array( 0 => $all_projects ), $q->loadHashList() );
+$projects = arrayMerge( array( -1 => $perso_projects ), $projects );
 
 /*
 if ($event_id || $is_clash) {

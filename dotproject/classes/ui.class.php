@@ -50,6 +50,8 @@ class CAppUI {
 	var $user_email=null;
 /** @var int */
 	var $user_type=null;
+/** @var string */
+	var $user_username=null;
 /** @var array */
 	var $user_prefs=null;
 /** @var int Unix time stamp */
@@ -102,6 +104,7 @@ class CAppUI {
 		$this->user_company = 0;
 		$this->user_department = 0;
 		$this->user_type = 0;
+		$this->user_username = '';
 
 		// cfg['locale_warn'] is the only cfgVariable stored in session data (for security reasons)
 		// this guarants the functionality of this->setWarning
@@ -710,6 +713,8 @@ class CAppUI {
 			return false;
 		}
 
+		$this->user_username = $username;
+
 // load the user preferences
 		$this->loadPrefs( $this->user_id );
 		$this->setUserLocale();
@@ -874,6 +879,7 @@ class CAppUI {
 	  while(list(,$js_file_name) = each($js_files)){
 		  echo "<script type=\"text/javascript\" src=\"{$base}js/$js_file_name\"></script>\n";
 		  }
+		echo "<script type=\"text/javascript\" src=\"{$base}lib/overlib/overlib.js\"></script>\n";
 		$this->getModuleJS($m, $a, true);
 	}
 

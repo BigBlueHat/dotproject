@@ -58,6 +58,13 @@ class Mail
  *	@var array
 */
 	var $aattach = array();
+
+/**
+ *	type of attached files : file (false) or text string (string)
+ *	@var array / mixed bool string
+*/
+	var $aString = array();
+
 /**
  *	list of message headers
  *	@var array
@@ -298,8 +305,9 @@ function Priority( $priority ) {
  *	@param string $filename : path of the file to attach
  *	@param string $filetype : MIME-type of the file. default to 'application/x-unknown-content-type'
  *	@param string $disposition : instruct the Mailclient to display the file if possible ("inline") or always as a link ("attachment") possible values are "inline", "attachment"
+ *	@param mixed bool/string	$isString : expects $filename to be a real existing file link if FALSE; if var is a STRING $filename is expected to be a dummy and the attachment will be generated from the content of $isString (like an icalendar text block)
  */
-function Attach( $filename, $filetype = "", $disposition = "inline" ) {
+function Attach( $filename, $filetype = "", $disposition = "inline", $isString = false ) {
 	// TODO : si filetype="", alors chercher dans un tablo de MT connus / extension du fichier
 	if( $filetype == "" )
 		$filetype = "application/x-unknown-content-type";
@@ -307,6 +315,7 @@ function Attach( $filename, $filetype = "", $disposition = "inline" ) {
 	$this->aattach[] = $filename;
 	$this->actype[] = $filetype;
 	$this->adispo[] = $disposition;
+	$this->aString[] = $isString;
 }
 
 /**
@@ -577,21 +586,31 @@ function _build_attachement() {
 
 	// for each attached file, do...
 	for( $i=0; $i < count( $this->aattach); $i++ ) {
-		$filename = $this->aattach[$i];
-		$basename = basename($filename);
-		$ctype = $this->actype[$i];	// content-type
-		$disposition = $this->adispo[$i];
-
-		if( ! file_exists( $filename) ) {
-			echo "Class Mail, method attach : file $filename can't be found"; exit;
+		if ($this->aString[$i] == false) {	// attachment is a real file
+			$filename = $this->aattach[$i];
+			$basename = basename($filename);
+			$ctype = $this->actype[$i];	// content-type
+			$disposition = $this->adispo[$i];
+	
+			if( ! file_exists( $filename) ) {
+				echo "Class Mail, method attach : file $filename can't be found"; exit;
+			}
+			$subhdr= "--$this->boundary\r\nContent-type: $ctype;\r\n name=\"$basename\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $disposition;\r\n  filename=\"$basename\"\r\n";
+			$ata[$k++] = $subhdr;
+			// non encoded line length
+			$linesz= filesize( $filename)+1;
+			$fp= fopen( $filename, 'r' );
+			$ata[$k++] = chunk_split(base64_encode(fread( $fp, $linesz)));
+			fclose($fp);
+		} else {				// attachment is included from text string
+			$filename = $this->aattach[$i];
+			$basename = basename($filename);
+			$ctype = $this->actype[$i];	// content-type
+			$disposition = $this->adispo[$i];
+			$subhdr= "--$this->boundary\r\nContent-type: $ctype;\r\n name=\"$basename\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $disposition;\r\n  filename=\"$basename\"\r\n method=\"publish\"\r\n";
+			$ata[$k++] = $subhdr;
+			$ata[$k++] = base64_encode($this->aString[$i]);
 		}
-		$subhdr= "--$this->boundary\r\nContent-type: $ctype;\r\n name=\"$basename\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $disposition;\r\n  filename=\"$basename\"\r\n";
-		$ata[$k++] = $subhdr;
-		// non encoded line length
-		$linesz= filesize( $filename)+1;
-		$fp= fopen( $filename, 'r' );
-		$ata[$k++] = chunk_split(base64_encode(fread( $fp, $linesz)));
-		fclose($fp);
 	}
 	$this->fullBody .= implode($sep, $ata);
 }

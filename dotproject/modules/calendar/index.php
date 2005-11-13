@@ -4,6 +4,7 @@ $AppUI->savePlace();
 dPsetMicroTime();
 
 require_once( $AppUI->getModuleClass( 'companies' ) );
+require_once( $AppUI->getModuleClass( 'projects' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 
 // retrieve any state parameters
@@ -11,6 +12,29 @@ if (isset( $_REQUEST['company_id'] )) {
 	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
 }
 $company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
+
+$proj = new CProject();
+
+$r  = new DBQuery;
+$r->addTable('projects');
+$r->addQuery('project_id, CONCAT(c.company_name,"::", project_short_name) AS project_short_name');
+$r->addJoin('companies', 'c', 'project_company = c.company_id'); 
+if ($company_id > 0){
+	$r->addWhere('project_company='.$company_id);
+}
+if ($calendar_filter > 0){
+	$r->addWhere('project_id='.$calendar_filter);
+}
+$proj->setAllowedSQL($AppUI->user_id, $r);
+$projects = $r->loadHashList();
+$r->clear();
+$calendar_filter_list = arrayMerge( array( '-1'=>$AppUI->_('Personal Calendar'), '0'=>$AppUI->_('Unspecified Calendar') ) , $projects );
+
+// retrieve any state parameters
+if (isset( $_REQUEST['calendar_filter'] )) {
+	$AppUI->setState( 'CalIdxCalFilter', intval( $_REQUEST['calendar_filter'] ) );
+}
+$calendar_filter = $AppUI->getState( 'CalIdxCalFilter', '0');
 
 // Using simplified set/get semantics. Doesn't need as much code in the module.
 $event_filter = $AppUI->checkPrefState('CalIdxFilter', @$_REQUEST['event_filter'], 'EVENTFILTER', 'my');
@@ -26,10 +50,17 @@ $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 #echo '<pre>';print_r($events);echo '</pre>';
 // setup the title block
 $titleBlock = new CTitleBlock( 'Monthly Calendar', 'myevo-appointments.png', $m, "$m.$a" );
+$titleBlock->addCrumb( "?m=calendar&a=calmgt", "calendar management" );
+$titleBlock->addCrumb( "?m=calendar&a=eventimport&dialog=0", "import icalendar" );
 $titleBlock->addCell( $AppUI->_('Company').':' );
 $titleBlock->addCell(
 	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
 	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="pickCompany">', '</form>'
+);
+$titleBlock->addCell( $AppUI->_('Calendar Filter') . ':');
+$titleBlock->addCell(
+	arraySelect($calendar_filter_list, 'calendar_filter', 'onChange="document.pickCalFilter.submit()" class="text"',
+	$calendar_filter, true ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickCalFilter'>", '</form>'
 );
 $titleBlock->addCell( $AppUI->_('Event Filter') . ':');
 $titleBlock->addCell(
@@ -71,6 +102,7 @@ getTaskLinks( $first_time, $last_time, $links, 20, $company_id );
 // assemble the links for the events
 require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
 getEventLinks( $first_time, $last_time, $links, 20 );
+getExternalWebcalEventLinks( $first_time, $last_time, $links, 20 );
 
 // create the main calendar
 $cal = new CMonthCalendar( $date  );

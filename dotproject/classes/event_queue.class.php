@@ -37,6 +37,13 @@ class EventQueue {
 	 * @param integer $repeat_count number of times to repeat
 	 * @return integer queue id
 	 */
+	/**
+	**	@date 			20051101
+	**	@responsible		gregorerhardt
+	**	@change			added infinitely repeated events support
+	**					choose $repeat_count as -8 to let the event repeat infinitely
+	**					8 is a rotated infinity symbol
+	*/
 	function add($callback, &$args, $module, $sysmodule = false, $id = 0, $type = '', $date = 0, $repeat_interval = 0, $repeat_count = 1)
 	{
 		global $AppUI;
@@ -163,15 +170,32 @@ class EventQueue {
 	}
 
 	function update_event(&$fields, $flag)
-	{
-		if ($flag === true && $fields['queue_repeat_interval'] > 0 && $fields['queue_repeat_count'] > 0) {
-			$fields['queue_start'] += $fields['queue_repeat_interval'];
-			$fields['queue_repeat_count']--;
+	{	/**
+		**	@date 			20051101
+		**	@responsible		gregorerhardt
+		**	@change			added infinitely repeated events
+		**					added OR if statement for check whether repeat_count == -8
+		**					8 is a rotated infinity symbol
+		*/
+
+		if ($flag === true && $fields['queue_repeat_interval'] > 0 && ($fields['queue_repeat_count'] > 0 || $fields['queue_repeat_count'] == '-8') ) {
+			/**
+			** changed to actual time + interval because there could emerge the situation
+			** where dotproject isn't used (and no EventQueue->scan() is done) for a longer time
+			** (e.g. over night) and then in case of short repeat cycles (1 min) the event_queue is pushed 
+			** on every dp call because the updated queue_start times are light years behind the actual time since 1970.
+			*/
+			$fields['queue_start'] = time()+$fields['queue_repeat_interval'];
+			// only decrease counter if event isn't repeated infinitely
+			if ($fields['queue_repeat_count'] != -8) {
+				$fields['queue_repeat_count']--;
+			}
 			$this->update_list[] = $fields;
 		} else {
 			$this->delete_list[] = $fields['queue_id'];
 		}
 	}
+
 
 	function commit_updates()
 	{
