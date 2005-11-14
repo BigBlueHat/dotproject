@@ -1,10 +1,5 @@
 <?php /* FORUMS $Id$ */
 
-$canRead = !getDenyRead( 'webcal' );
-if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
 // collect and convert checkbox info
 $_POST['webcal_auto_import'] = dPgetParam( $_POST, 'webcal_auto_import', 0 );
 $_POST['webcal_auto_publish'] =  isset($_POST['webcal_auto_publish']) ? 1 : 0;

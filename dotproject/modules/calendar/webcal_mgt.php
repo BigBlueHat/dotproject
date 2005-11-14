@@ -62,9 +62,9 @@ $s .= '<tr>';
 	$s .= '<th nowrap="nowrap">'.$AppUI->_( 'WebDAV Path' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'User' ).'&'.$AppUI->_( 'Pass' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'Calendars' ).'</th>';
-	$s .= '<th>'.$AppUI->_( 'Publish' ).'</th>';
-	$s .= '<th>'.$AppUI->_( 'Show' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'Import' ).'</th>';
+	$s .= '<th>'.$AppUI->_( 'Publish' ).'</th>';
+	$s .= '<th>'.$AppUI->_( 'Subscribe' ).'</th>';
 
 
 $s .= '</tr>';
