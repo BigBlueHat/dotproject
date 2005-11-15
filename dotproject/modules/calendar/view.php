@@ -74,7 +74,6 @@ $titleBlock->show();
 require_once $AppUI->getSystemClass("CustomFields");
 $custom_fields = New CustomFields( $m, $a, $obj->event_id, "view" );
 $tpl->assign('custom_fields', $custom_fields->getHTML());
-$tpl->assign('img', dPfindImage('down.png'));
 $tpl->assign('recurs', $recurs[$obj->event_recurs]);
 $tpl->assign('type', $types[$obj->event_type]);
 $tpl->assign('assigned', $assigned);

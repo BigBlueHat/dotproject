@@ -20,8 +20,10 @@ function smarty_function_dPshowImage($params, &$smarty)
 	global $AppUI;
 	
     extract($params);
-
-		$result = '<img src="' . $src . '" align="center"';
+		if($find)
+			$result = '<img src="' . dPfindImage($find) . '" align="center"';
+		else
+			$result = '<img src="' . $src . '" align="center"';
 		if ($wsize)
 		  $result .= ' width="' . $wsize . '"';
 		if ($hsize)
