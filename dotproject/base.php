@@ -23,7 +23,7 @@
 global $baseDir;
 global $baseUrl;
 
-$baseDir = dirname(__FILE__);
+$baseDir = dirname( isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : __FILE__);
 
 // automatically define the base url
 $baseUrl = ( isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
