@@ -112,10 +112,9 @@
 "cal_day_view_show_minical_title"=>"Show MiniCals in Day View",
 "cal_day_view_show_minical_tooltip"=>"Include MiniCalendar Displays in the Day View.",
 "cal_working_days_title"=>"Calendar Working Days",
-"cal_working_days_tooltip"=>"Establish the required working days for your company in a comma separated list where 0 is Sunday.  For example if you work Monday through to Friday your list would be 1,2,3,4,5.  If you work Friday through to Sunday your list would be 5,6,0
-",
+"cal_working_days_tooltip"=>"Establish the required working days for your company in a comma separated list where 0 is Sunday.  For example if you work Monday through to Friday your list would be 1,2,3,4,5.  If you work Friday through to Sunday your list would be 5,6,0",
 "check_overallocation_title"=>"Overallocation Checking",
-"check_overallocation_tooltip"=>"The over allocation component of dotProject is an incomplete function which has been developed.  It is the basis of a system that will allow Project Managers to establish the maximum % of time that a resource can be allocated to a particular task for a particular period of time.   ",
+"check_overallocation_tooltip"=>"The over allocation component of dotProject is an incomplete function which has been developed.  It is the basis of a system that will allow Project Managers to establish the maximum % of time that a resource can be allocated to a particular task for a particular period of time.",
 "check_tasks_dates_title"=>"Check Task Dates",
 "check_tasks_dates_tooltip"=>"If this option is turned on the start and end dates will be required in all tasks before they can be added.",
 "cn"=>"Chinese",
@@ -124,47 +123,25 @@
 "configure",
 "cs"=>"Czech",
 "currency_symbol_title"=>"Currency Symbol",
-"currency_symbol_tooltip"=>"Whilst we currently have locale support built in there is still an extra facility for setting Currency Symbol. 
-
-Localisation of the currency-symbol. For the EURO sign symbol set to \'&#8364;\' 
-
-Check http://www.w3.org/TR/html401/sgml/entities.html for information about html special characters.",
+"currency_symbol_tooltip"=>"Whilst we currently have locale support built in there is still an extra facility for setting Currency Symbol/Localisation of the currency-symbol. <br />For the EURO sign symbol set to ". htmlentities('&#8364;') ."<br />Check http://www.w3.org/TR/html401/sgml/entities.html for information about html special characters.",
 "daily_working_hours_title"=>"Daily Working Hours",
 "daily_working_hours_tooltip"=>"This setting establishes the standard number of hours in a working day for your installation, for example 8.0",
 "de"=>"German",
 "debug_title"=>"Debug Level",
-"debug_tooltip"=>"Turn this option on to display debug messages as well as log them.
-
-WARNING:  Setting to true, if the debug level is greater than 1, can cause dotProject to fail on messages that are technically only Warnings and therefore can be ignored.
-
-Normally errors will be displayed so this should only be set to track warnings and debug messages if you do not have access to the PHP log files.
-
-Anything other than 0 will provide debugging information.
-
-Level 1 is probably the most reasonable compromise between normal operation and error tracking information.
-
-Set to 10 to get complete debugging information but be aware that this will generate large log files and/or debug listings very very quickly.",
+"debug_tooltip"=>"Turn this option on to display debug messages as well as log them. <br/> WARNING:  Setting to true, if the debug level is greater than 1, can cause dotProject to fail on messages that are technically only Warnings and therefore can be ignored.<br /> Normally errors will be displayed so this should only be set to track warnings and debug messages if you do not have access to the PHP log files.<br/>Anything other than 0 will provide debugging information. <br/>Level 1 is probably the most reasonable compromise between normal operation and error tracking information.<br />Set to 10 to get complete debugging information but be aware that this will generate large log files and/or debug listings very very quickly.",
 "default user preferences",
 "default_view_a_title"=>"Default Submodule",
-"default_view_a_tooltip"=>"If you want to define your own start/default page set this.
-Specifies a subview like shown in the url of dP.",
+"default_view_a_tooltip"=>"If you want to define your own start/default page set this. Specifies a subview like shown in the url of dP.",
 "default_view_m_title"=>"Default Module",
-"default_view_m_tooltip"=>"If you want to define your own start/default page set this.
-If the value is empty then the first listed module becomes the default view.",
+"default_view_m_tooltip"=>"If you want to define your own start/default page set this. If the value is empty then the first listed module becomes the default view.",
 "default_view_tab_title"=>"Default Tabbed Subview",
-"default_view_tab_tooltip"=>"If you want to define your own start/default page set this.
-Specifies a tabbed subview. 0=first tab, ...",
+"default_view_tab_tooltip"=>"If you want to define your own start/default page set this. Specifies a tabbed subview. 0=first tab, ...",
 "deleted",
 "direct_edit_assignment_title"=>"Edit Multiple Task Assignments",
-"direct_edit_assignment_tooltip"=>"Turning this option on will allow you to edit task assignments and other options (per task block) in the main Task Module view.
-
-",
+"direct_edit_assignment_tooltip"=>"Turning this option on will allow you to edit task assignments and other options (per task block) in the main Task Module view.",
 "disabled",
 "display_debug_title"=>"Show Debug Messages",
-"display_debug_tooltip"=>"Set to true to display debug messages as well as log them. WARNING: Setting to true can cause dotproject to fail on warnings if the debug level is set greater than 1.
-Normally errors will be displayed so this should only be
-set to track warnings and debug messages if you do not
-have access to the PHP log files.",
+"display_debug_tooltip"=>"Set to true to display debug messages as well as log them. WARNING: Setting to true can cause dotproject to fail on warnings if the debug level is set greater than 1. Normally errors will be displayed so this should only be set to track warnings and debug messages if you do not have access to the PHP log files.",
 "edit",
 "email_prefix_title"=>"Email Prefix",
 "email_prefix_tooltip"=>"This setting is used to stipulate the subject line prefix for all email that dotProject sends out.",
@@ -185,19 +162,13 @@ have access to the PHP log files.",
 "host_style_title"=>"Default User Interface Style",
 "host_style_tooltip"=>"Default User Interface Style - as set in the User Preferences area, however, you will need to type the name of the default in here.  If you need a prompt - check the dropdown in the User preferences and repeat that name here.",
 "index_max_file_size_title"=>"Maximum File Size for Indexing",
-"index_max_file_size_tooltip"=>"File Indexing for Searching:
-Large Files may cause timeout problems during exhausting indexing process.
-Specify an upper filesize limit for indexing in KiloBytes.
-Have in mind that files greater than the specified value are not indexed!
-A negative value defines the absence of a limit (index all files).",
+"index_max_file_size_tooltip"=>"File Indexing for Searching: Large Files may cause timeout problems during exhausting indexing process. Specify an upper filesize limit for indexing in KiloBytes. Have in mind that files greater than the specified value are not indexed! A negative value defines the absence of a limit (index all files).",
 "inserted",
 "install",
 "it"=>"Italian",
 "ja"=>"Japanese",
 "jpLocale_title"=>"jpGraph Locale",
-"jpLocale_tooltip"=>"Use this option to set a locale for jpGraph if it is required.
-
-jpGraph is the third party package that is used throughout dotProject to create graphics or charts (eg the Gantt chart).  Leave blank if you experience problems.",
+"jpLocale_tooltip"=>"Use this option to set a locale for jpGraph if it is required. <br />jpGraph is the third party package that is used throughout dotProject to create graphics or charts (eg the Gantt chart).  Leave blank if you experience problems.",
 "ldap_allow_login_title"=>"LDAP also allows standard login",
 "ldap_allow_login_tooltip"=>"dotProject database based users will also be allowed to login",
 "ldap_base_dn_title"=>"LDAP Base DN",
@@ -222,14 +193,11 @@ jpGraph is the third party package that is used throughout dotProject to create 
 "locale_warn_title"=>"Translation Warning",
 "locale_warn_tooltip"=>"Display a warning in the User Interface when a translated item is not found.",
 "log_changes_title"=>"Log Changes",
-"log_changes_tooltip"=>"This option allows you to nominate whether you wish to Log Changes in the history module automatically.
-",
+"log_changes_tooltip"=>"This option allows you to nominate whether you wish to Log Changes in the history module automatically.",
 "mail_auth_title"=>"Host requires login",
 "mail_auth_tooltip"=>"Some SMTP hosts require authentication, if yours does you will need to set this and provide a username and password",
 "mail_defer_title"=>"Queue Email for later sending",
-"mail_defer_tooltip"=>"Check this to queue email for later sending.  An entry will be made in the Event Queue.  You will need to either set the Scan Event Queue option in Session Handling or create a cron job to call:
-
-wget -O- http://your.domain/dotproject/queuescanner.php",
+"mail_defer_tooltip"=>"Check this to queue email for later sending.  An entry will be made in the Event Queue.  You will need to either set the Scan Event Queue option in Session Handling or create a cron job to call:<br /> wget -O- http://your.domain/dotproject/queuescanner.php",
 "mail_group_title"=>"Email Settings",
 "mail_host_title"=>"SMTP Host",
 "mail_host_tooltip"=>"The fully qualified domain name (FQDN) or the IP address of the SMTP host to use for sending email",
@@ -255,8 +223,7 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "parser_text/html_title"=>"Html File Indexing Parser",
 "parser_text/html_tooltip"=>"Location for the Html File Indexing Parser, e.g. /usr/bin/strings",
 "password_min_len_title"=>"Minimum Password Length",
-"password_min_len_tooltip"=>"Establish the minimum length of any password entry in dotProject.  This can NOT be longer than the length of the column in DB
-",
+"password_min_len_tooltip"=>"Establish the minimum length of any password entry in dotProject.  This can NOT be longer than the length of the column in DB",
 "php_item_title"=>"PHP Default",
 "pl"=>"Polish",
 "pn_item_title"=>"PostNuke",
@@ -269,38 +236,26 @@ wget -O- http://your.domain/dotproject/queuescanner.php",
 "reset_memory_limit_title"=>"Memory Limit for Gantt",
 "reset_memory_limit_tooltip"=>"Experiencing Errors with invisible Gantt Charts use this variable to temporarily expand your PHP Memory Limit for Gantt Chart drawing. Values of 64M, 128M etc. are common.",
 "restrict_color_selection_title"=>"Restrict Project Colour Selection",
-"restrict_color_selection_tooltip"=>"Used in conjuction with the System Value Look up option \"ProjectColors\" you can use this setting to control the project colour selection options accessible by all users on this system.
-
-If you turn this option on then project creators will only be able to select from the colour options defined in the System Value Lookup outlined above.
-
-If you turn this option off then project creators will be able to access the default system presets and the full colour pallette.
-",
+"restrict_color_selection_tooltip"=>"Used in conjuction with the System Value Look up option \"ProjectColors\" you can use this setting to control the project colour selection options accessible by all users on this system. If you turn this option on then project creators will only be able to select from the colour options defined in the System Value Lookup outlined above. If you turn this option off then project creators will be able to access the default system presets and the full colour pallette.",
 "restrict_task_time_editing_title"=>"Restrict Task Time Editing",
-"restrict_task_time_editing_tooltip"=>"Turned on, this option will restrict the editing of task time settings to the task owner, the project owner or the system administration only.
-",
+"restrict_task_time_editing_tooltip"=>"Turned on, this option will restrict the editing of task time settings to the task owner, the project owner or the system administration only.",
 "session_gc_scan_queue_title"=>"Scan Event Queue on Session Garbage Collection",
 "session_gc_scan_queue_tooltip"=>"If using deferred email or any other event queue, setting this causes the session handler to check the queue when it garbage collects the session.  This is an option to using an external program to call the queue scanner.",
 "session_group_title"=>"Session Handling Settings",
 "session_handling_title"=>"Session Handler",
-"session_handling_tooltip"=>"Which session handling to use, should be either \'php\' for traditional
-PHP session management, or \'app\' for the dotProject application to manage its own sessions via the database.
-Session Management: This extends the session handling of PHP to beyond browser-based sessions and stores the session information in the
- database. This allows for prolonged sessions with lower overheads.",
+"session_handling_tooltip"=>"Which session handling to use, should be either \'php\' for traditional PHP session management, or \'app\' for the dotProject application to manage its own sessions via the database. Session Management: This extends the session handling of PHP to beyond browser-based sessions and stores the session information in the database. This allows for prolonged sessions with lower overheads.",
 "session_idle_time_title"=>"Session Idle Time",
-"session_idle_time_tooltip"=>"The maximum time a session can have no activity before it is declared dead.
-Values are in seconds unless followed by a letter: h = hours, d = days, m = months, y = years.
-You can only have 1 character within a string, so 2d4h is NOT valid, but 28h is.",
+"session_idle_time_tooltip"=>"The maximum time a session can have no activity before it is declared dead. Values are in seconds unless followed by a letter: h = hours, d = days, m = months, y = years. You can only have 1 character within a string, so 2d4h is NOT valid, but 28h is.",
 "session_max_lifetime_title"=>"Session Maximum Lifetime",
 "session_max_lifetime_tooltip"=>"The maximum time a session can exist before it is trashed, regardless of how active it is.",
 "session_name_title"=>"Session/Cookie Name",
 "session_name_tooltip"=>"Define your own Cookie Name. Attention: Change of Session Name will immediately log out all users! They will need to login again.",
 "show_all_task_assignees_title"=>"Show All Task Assignees",
-"show_all_task_assignees_tooltip"=>"Set this option on if you wish to show all assignee names in the project task task list or off if you would prefer to see just the main assignee name and a count in brackets of the number of other assignees.
-",
-"show_all_tasks_title"=>"Show Other Users\' Tasks",
+"show_all_task_assignees_tooltip"=>"Set this option on if you wish to show all assignee names in the project task task list or off if you would prefer to see just the main assignee name and a count in brackets of the number of other assignees.",
+"show_all_tasks_title"=>"Show Other Tasks of other Users",
 "show_all_tasks_tooltip"=>"Controls viewing of tasks that belong to other users.",
 "site_domain_title"=>"Site Domain",
-"site_domain_tooltip"=>"The domain set here is used to generate an email address if an incomplete address has been entered in the user\'s record.",
+"site_domain_tooltip"=>"The domain set here is used to generate an email address if an incomplete address has been entered in the record for a user.",
 "sl"=>"Slovenian",
 "smtp_item_title"=>"SMTP",
 "sql_item_title"=>"Standard dotProject",

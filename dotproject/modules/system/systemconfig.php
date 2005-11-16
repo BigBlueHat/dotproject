@@ -36,7 +36,8 @@ $output  = null;
 $last_group = '';
 foreach ($rs as $c) {
 
- 	$tooltip = "title='".$AppUI->_($c['config_name'].'_tooltip')."'";
+	$oc = 'onclick="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip').'\', STICKY, CAPTION, \''.$AppUI->_($c['config_name']. '_title').'\', CENTER);"';
+$om = 'onmouseover="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip').'\', CAPTION, \''.$AppUI->_($c['config_name']. '_title').'\', CENTER);" onmouseout="nd();"';
 	// extraparse the checkboxes and the select lists
 	$value = '';
 	switch ($c['config_type']) {
@@ -60,7 +61,7 @@ foreach ($rs as $c) {
 		default:
 			if (! $value)
 				$value = get_magic_quotes_gpc() ? $c['config_value'] : stripslashes( $c['config_value']);	
-			$entry = "<input class='button' type='{$c['config_type']}' name='dPcfg[{$c['config_name']}]' value=\"$value\" $tooltip $extra/>";
+			$entry = "<input class='button' type='{$c['config_type']}' name='dPcfg[{$c['config_name']}]' value=\"$value\" $om $extra/>";
 			break;
 	}
 
@@ -68,11 +69,13 @@ foreach ($rs as $c) {
 		$output .="<tr><td colspan='2'><b>" . $AppUI->_($c['config_group'] .'_group_title') . "</b></td></tr>\n";
 		$last_group = $c['config_group'];
 	}
+
+
 	$output .= "<tr>
 			<td class='item' width='20%'>".$AppUI->_($c['config_name'].'_title')."</td>
             		<td align='left'>
 				$entry
-				<a href='#' onClick=\"javascript:window.open('?m=system&a=systemconfig_help&dialog=1&cn={$c['config_name']}', 'contexthelp', 'width=400, height=200, left=50, top=50, scrollbars=yes, resizable=yes')\" $tooltip>(?)</a>
+				<a href='javascript:void(0);' $oc $om>(?)</a>
 				<input class='button' type='hidden'  name='dPcfgId[{$c['config_name']}]' value='{$c['config_id']}' />
 			</td>
         </tr>
