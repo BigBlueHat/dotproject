@@ -190,35 +190,56 @@ if($do_report){
 			
 			if($total_hours_allocated > 0 || $total_hours_worked > 0){
 				$percentage = 0;
-				$percentage_e = 0;
-				if($total_hours_worked>0){
+				if($total_hours_allocated > 0){
 					$percentage = ($total_hours_worked/$total_hours_allocated)*100;
-					($hours_worked_complete) ? $percentage_e = ($hours_allocated_complete/$hours_worked_complete)*100 : 0;
+				}
+				else{
+					$percentage = "N/A";
+				}
+				
+				$percentage_e = 0;
+				if($hours_worked_complete > 0){
+					$percentage_e = ($hours_allocated_complete/$hours_worked_complete)*100;
+				}
+				else{
+					$percentage_e = "N/A";
 				}
 				?>
 				<tr>
 					<td><?php echo "(".$user["user_username"].") </td><td> ".$user["contact_first_name"]." ".$user["contact_last_name"]; ?></td>
 					<td align='right'><?php echo $total_hours_allocated; ?> </td>
 					<td align='right'><?php echo $total_hours_worked; ?> </td>
-					<td align='right'><?php echo number_format($percentage, 0); ?>% </td>
-					<td align='right'><?php echo number_format($percentage_e, 0); ?>% </td>
+					<?php $percentage = ($percentage == "N/A"?"N/A":number_format($percentage, 0).'%'); ?>
+					<td align='right'><?php echo $percentage; ?>% </td>
+					<?php $percentage_e = ($percentage_e == "N/A"?"N/A":number_format($percentage_e, 0).'%'); ?>
+					<td align='right'><?php echo $percentage_e; ?>% </td>
 				</tr>
 				<?php
 			}
 		}
 		$sum_percentage = 0;
-                $sum_efficiency = 0;
-		if($sum_total_hours_worked > 0){
+		if($sum_total_hours_allocated > 0){
 			$sum_percentage = ($sum_total_hours_worked/$sum_total_hours_allocated)*100;
-	                ($sum_hours_worked_complete) ? $sum_efficiency = ($sum_hours_allocated_complete/$sum_hours_worked_complete)*100 : 0;
+		}
+		else{
+			$sum_percentage = "N/A";
+		}
+                $sum_efficiency = 0;
+		if($sum_hours_worked_complete > 0){
+			$sum_efficiency = ($sum_hours_allocated_complete/$sum_hours_worked_complete)*100;
+		}
+		else{
+			$sum_efficiency = "N/A";
 		}
 		?>
 			<tr>
 				<td colspan='2'><?php echo $AppUI->_('Total'); ?></td>
 				<td align='right'><?php echo $sum_total_hours_allocated; ?></td>
 				<td align='right'><?php echo $sum_total_hours_worked; ?></td>
-				<td align='right'><?php echo number_format($sum_percentage,0); ?>%</td>
-				<td align='right'><?php echo number_format($sum_efficiency,0); ?>%</td>
+				<?php $sum_percentage = ($sum_percentage == "N/A"?"N/A":number_format($sum_percentage, 0).'%'); ?>
+				<td align='right'><?php echo $sum_percentage; ?>%</td>
+				<?php $sum_efficiency = ($sum_efficiency == "N/A"?"N/A":number_format($sum_efficiency, 0).'%'); ?>
+				<td align='right'><?php echo $sum_efficiency; ?>%</td>
 			</tr>
 		<?php
 	} else {
