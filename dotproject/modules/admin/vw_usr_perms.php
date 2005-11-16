@@ -149,7 +149,7 @@ foreach ($user_acls as $acl){
 			foreach ($permission['axo'] as $key => $section) {
 				foreach ($section as $id) {
 					$mod_data = $perms->get_object_full($id, $key, 1, 'axo');
-					$modlist[] = $AppUI->_($mod_data['name']);
+					$modlist[] = $mod_data['name'];
 				}
 			}
 		}
