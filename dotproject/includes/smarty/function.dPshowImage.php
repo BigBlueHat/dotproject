@@ -21,22 +21,25 @@ function smarty_function_dPshowImage($params, &$smarty)
 	
     extract($params);
 		if($find)
-			$result = '<img src="' . dPfindImage($find) . '" align="center"';
-		else
-			$result = '<img src="' . $src . '" align="center"';
-		if ($wsize)
-		  $result .= ' width="' . $wsize . '"';
-		if ($hsize)
-		  $result .= ' height="' . $hsize . '"';
-		if ($alt)
-		  $result .= ' alt="' . $AppUI->_($alt) . '"';
-		if ($title)
-		  $result .= ' title="' . $AppUI->_($title) . '"';
-		$result .= ' border="0">';
+			$src = dPfindImage($find);
+		
+    $return = '';
+    if ($src)
+    {
+	  	$result = '<img src="' . $src . '" align="center"';
+  		if ($wsize)
+		    $result .= ' width="' . $wsize . '"';
+		  if ($hsize)
+		    $result .= ' height="' . $hsize . '"';
+		  if ($alt)
+		    $result .= ' alt="' . $AppUI->_($alt) . '"';
+		  if ($title)
+		    $result .= ' title="' . $AppUI->_($title) . '"';
+		  $result .= ' border="0">';
+    }
     
     return $result;
 }
 
 /* vim: set expandtab: */
-
 ?>
