@@ -50,12 +50,12 @@ class dPacl extends gacl_api {
     // connection details.  This might be worth looking at in
     // the future.
     if ($dPconfig['debug'] > 10)
-      $this->_debug = true;
+      $opts['debut'] = true;
       
     // Enable caching
-    $this->_caching = TRUE;
-    $this->_cache_expire_time = 6000;
-    $this->_cache_dir = $baseDir . '/files/cache/phpgacl';
+    $opts['caching'] = true;
+    $opts['cache_expire_time'] = 6000;
+    $opts['cache_dir'] = $baseDir . '/files/cache/phpgacl';
     
     parent::gacl_api($opts);
   }
