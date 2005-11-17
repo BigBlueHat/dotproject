@@ -42,7 +42,7 @@ $q = new DBQuery;
 $q->addTable('billingcode');
 $q->addQuery('billingcode_id, billingcode_name');
 $q->addWhere('billingcode_status=0');
-$q->addWhere("company_id='$proj->project_company'");
+$q->addWhere("(company_id='$proj->project_company' OR company_id='0')");
 $q->addOrder('billingcode_name');
 
 $task_log_costcodes[0]="None";
