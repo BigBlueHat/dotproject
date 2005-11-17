@@ -173,7 +173,7 @@ foreach ($files as $file_row) {
         else { 
                 if ($latest_file['file_checkout'] == 'final')
 			$checkinout_html = 'final';
-                else
+                else {
 			$q4 = new DBQuery;
 			$q4->addQuery("file_id, file_checkout, user_username as co_user, contact_first_name, contact_last_name");
 			$q4->addTable('files');
@@ -184,6 +184,7 @@ foreach ($files as $file_row) {
 			$co_user = $q4->loadHash();
 			$q4->clear();
                        	$checkinout_html = $co_user['contact_first_name'].' '.$co_user['contact_last_name'].'<br>('.$co_user['co_user'].')'; 
+					}
         }
 
 	$tpl_row->assign('checkout_link', $checkinout_html);
@@ -271,12 +272,12 @@ foreach ($files as $file_row) {
 		$tpl_row->assign('hidden_table', $hidden_table);
 
 		// Run the row template through smarty and collect the output. 
-		$file_rows_html .= $tpl_row->fetchFile('list.row');
+		$file_rows_html .= $tpl_row->fetchFile('list.row', 'files');
 		unset($tpl_row);
 }
 
 	$tpl->assign('file_rows', $file_rows_html);
-	$tpl->displayFile('list');
+	$tpl->displayFile('list', 'files');
 
 	//shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 ?>
