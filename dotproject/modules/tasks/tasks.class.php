@@ -155,7 +155,8 @@ class CTask extends CDpObject {
                                 if ( $dependent_task->task_id != $dependent_task->task_parent )
                                         $more_dependents = explode(',', $this->dependentTasks($dependent_task->task_parent));
                         }
-                        $this_dependents = array_merge($this_dependents, $more_dependents);
+                        if (is_array($more_dependents))
+													$this_dependents = array_merge($this_dependents, $more_dependents);
 
                         // Task dependencies can not be dependent on this task
                         $intersect = array_intersect( $this_dependencies, $this_dependents );
