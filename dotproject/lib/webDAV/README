@@ -1,0 +1,14 @@
+The webdav server used in test.php is freely available to the public.
+User: demo@xwave.ch
+Pass: demodemo
+Server: http://demo.webdav.ch/
+
+You can localy modify test.php as you like and run it against demo.webdav.ch or of course you own webdav server.
+
+Look at our fine X-DAV DHTML client. 
+It's an Interface to Xwave's Webdav Service (http://x-dav.xwave.ch/),
+where this class is in use.
+
+Have fun.
+
+Chris (chris@xwave.ch)
