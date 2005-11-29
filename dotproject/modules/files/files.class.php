@@ -187,9 +187,16 @@ class CFile extends CDpObject {
 		foreach ($ignore as $w) {
 			unset( $wordarr[$w] );
 		}
+// remove old strings from the table
+		$q  = new DBQuery;
+		$q->setDelete('files_index');
+		$q->addQuery('*');
+		$q->addWhere("file_id = $this->file_id");
+		$q->exec();
+		$q->clear();
+
 	// insert the strings into the table
 		while (list( $key, $val ) = each( $wordarr )) {
-			$q  = new DBQuery;
 			$q->addTable('files_index');
 
 			$q->addInsert("file_id", $this->file_id);
