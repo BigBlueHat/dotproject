@@ -837,6 +837,16 @@ class CEvent extends CDpObject {
 
 	function delete() {
 		$msg = parent::delete();
+		if(empty($msg))
+		{
+		  $q  = new DBQuery;
+		  $q->setDelete('user_events');
+		  $q->addWhere('event_id = ' . $this->event_id);
+		  if (!$q->exec())
+		    $msg = db_error();
+		  
+		  $q->clear();
+		}
 		CWebCalresource::autoPublish($this->event_project);
 		return $msg;
 	}
@@ -1322,7 +1332,7 @@ class CWebCalresource extends CDpObject {
 		$q = new DBQuery;
 		$q->addTable('webcal_resources', 'w');
 		$q->addJoin('webcal_projects', 'wp', 'wp.webcal_id = w.webcal_id');
-		$q->addWhere('project_id = ' . $event_project);
+		$q->addWhere('project_id = ' . (empty($event_project))?'0':$event_project);
 		$q->addWhere('webcal_auto_publish = 1');
 		$wr = $q->loadList();
 		$q->clear();
