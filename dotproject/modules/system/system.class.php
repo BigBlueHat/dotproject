@@ -149,7 +149,7 @@ class CModule extends CDpObject {
 
                         $q  = new DBQuery;
                         $q->addTable('modules');
-                        $q->addUpdate('mod_ui_order', '(mod_ui_order+1)');
+                        $q->addUpdate('mod_ui_order', ''.$temp+1);
                         $q->addWhere("mod_ui_order = $temp");
                         $q->exec();
                         $q->clear();
@@ -159,7 +159,7 @@ class CModule extends CDpObject {
 
                         $q  = new DBQuery;
                         $q->addTable('modules');
-                        $q->addUpdate('mod_ui_order', '(mod_ui_order-1)');
+                        $q->addUpdate('mod_ui_order', ''.$temp-1);
                         $q->addWhere("mod_ui_order = $temp");
                         $q->exec();
                         $q->clear();
