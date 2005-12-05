@@ -195,7 +195,7 @@ foreach ($files as $file_row) {
 	$filename = $latest_file['file_name'];
 	if (strlen($latest_file['file_name']) > $fnamelen+9)
 	{
-		$ext = substr($filename, strpos($filename, '.')+1);
+		$ext = substr($filename, strrpos($filename, '.')+1);
 		$filename = substr($filename, 0, $fnamelen);
 		$filename .= '[...].' . $ext;
 	}
