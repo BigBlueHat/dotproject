@@ -158,14 +158,14 @@
 	    </tr>
 	    <tr>
 	    	<td colspan='3' class="hilite">
-	{section name=i loop=$departments}
+	{foreach from=$departments item=department key=dept_id}
 	    		<div>
-		    		{$departments[i].dept_name}
-		    		{if $departments[i].dept_phone}
-			    		({$departments[i].dept_phone})
+		    		{$department.dept_name}
+		    		{if $department.dept_phone}
+			    		({$department.dept_phone})
 		    		{/if}
 	    		</div>
-	{/section}
+	{/foreach}
 	    	</td>
 	    </tr>
 {/if}
@@ -177,7 +177,7 @@
 			    <tr>
 			    	<td colspan='3' class="hilite">
 			    		
-			    		<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
+			    		<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>
 			    		<tr>
 			    			<th>{dPtranslate word='Name'}</th>
 			    			<th>{dPtranslate word='Email'}</th>
