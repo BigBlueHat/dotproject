@@ -8,7 +8,7 @@
 
 <tr>
 	<td style="border: outset #d1d1cd 1px;background-color:#{$obj->project_color_identifier}" colspan="2">
-		<span color="{dPbestColor bg=$obj->project_color_identifier}">
+		<span style="color: {dPbestColor bg=$obj->project_color_identifier};">
 			<strong>{$obj->project_name}<strong>
 		</span>
 	</td>
@@ -19,7 +19,7 @@
 		<strong>{dPtranslate word='Details'}</strong>
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Company'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Company'}:</td>
 {if $viewCompany}
             			<td class="hilite" width="100%">
             				<a href="?m=companies&a=view&company_id={$obj->project_company}">
@@ -31,11 +31,11 @@
 {/if}
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Short Name'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Short Name'}:</td>
 			<td class="hilite">{$obj->project_short_name|escape:"html"}</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Start Date'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Start Date'}:</td>
 			<td class="hilite">
 				{if $obj->project_start_date}
 					{dPdateFormat date=$obj->project_start_date}
@@ -45,7 +45,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Target End Date'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Target End Date'}:</td>
 			<td class="hilite">
 				{if $obj->project_end_date}
 					{dPdateFormat date=$obj->project_end_date}
@@ -55,7 +55,7 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Actual End Date'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Actual End Date'}:</td>
 			<td class="hilite">
 {if $project_id > 0}
 	{if $obj->actual_end_date}
@@ -71,23 +71,23 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Target Budget'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Target Budget'}:</td>
 			<td class="hilite">
 				{dPconfig var='currency_symbol'}{$obj->project_target_budget}
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Project Owner'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Project Owner'}:</td>
 			<td class="hilite">{$obj->user_name}</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='URL'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='URL'}:</td>
 			<td class="hilite">
 				<a href="{$obj->project_url}" target="_new">{$obj->project_url}</a>
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Staging URL'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Staging URL'}:</td>
 			<td class="hilite">
 				<a href="{$obj->project_demo_url}" target="_new">{$obj->project_demo_url}</a>
 			</td>
@@ -115,23 +115,23 @@
 		<strong>{dPtranslate word='Summary'}</strong><br />
 		<table cellspacing="1" cellpadding="2" border="0" width="100%">
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Status'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Status'}:</td>
 			<td class="hilite" width="100%">{$obj->project_status_name}</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Priority'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Priority'}:</td>
 			<td class="hilite" width="100%" style="background-color:{$obj->project_priority_color}">{$obj->project_priority_name}</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Type'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Type'}:</td>
 			<td class="hilite" width="100%">{dPtranslate word=$obj->project_type_name}</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Progress'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Progress'}:</td>
 			<td class="hilite" width="100%">{$obj->project_percent_complete|string_format:"%.1f"}%</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Active'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Active'}:</td>
 			<td class="hilite" width="100%">
 			{if $obj->project_active}
 				{dPtranslate word='Yes'}
@@ -141,15 +141,15 @@
 			</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Worked Hours'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Worked Hours'}:</td>
 			<td class="hilite" width="100%">{$worked_hours}</td>
 		</tr>	
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Scheduled Hours'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Scheduled Hours'}:</td>
 			<td class="hilite" width="100%">{$total_hours}</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap>{dPtranslate word='Project Hours'}:</td>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Project Hours'}:</td>
 			<td class="hilite" width="100%">{$total_project_hours}</td>
 		</tr>				
 {if $departments}
@@ -157,7 +157,7 @@
 	    	<td><strong>{dPtranslate word="Departments"}</strong></td>
 	    </tr>
 	    <tr>
-	    	<td colspan='3' class="hilite">
+	    	<td colspan="3" class="hilite">
 	{foreach from=$departments item=department key=dept_id}
 	    		<div>
 		    		{$department.dept_name}
@@ -175,9 +175,9 @@
 			    	<td><strong>{dPtranslate word="Contacts"}</strong></td>
 			    </tr>
 			    <tr>
-			    	<td colspan='3' class="hilite">
+			    	<td colspan="3" class="hilite">
 			    		
-			    		<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>
+			    		<table cellspacing="1" cellpadding="2" border="0" width="100%" bgcolor="black">
 			    		<tr>
 			    			<th>{dPtranslate word='Name'}</th>
 			    			<th>{dPtranslate word='Email'}</th>
