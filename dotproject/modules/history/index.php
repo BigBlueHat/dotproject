@@ -17,6 +17,7 @@ function show_history($history)
         $id = $history['history_item'];
         $module = $history['history_table'];        
 	$table_id = (substr($module, -1) == 's'?substr($module, 0, -1):$module) . '_id';
+	$item_name = substr($table_id, 0, -2) . 'name';
         
         if ($module == 'login')
                return 'User \'' . $history['history_description'] . '\' ' . $history['history_action'] . '.';
@@ -30,11 +31,10 @@ function show_history($history)
 
 	$q  = new DBQuery;
 	$q->addTable($module);
-	$q->addQuery($table_id);
+	$q->addQuery('*');
 	$q->addWhere($table_id.' ='.$id);
-	$sql = $q->prepare();
-	$q->clear();
-	if (db_loadResult($sql))
+	list($item) = $q->loadList();
+	if ($item)
         switch ($module)
         {
         case 'history':
@@ -57,12 +57,12 @@ function show_history($history)
                 break;
         }
 
-	if (!empty($link))
-		$link = '<a href="?m='.$module.$link.$id.'">'.$history['history_description'].'</a>';
+	if (!empty($link)) 
+		$link = '<a href="?m='.$module.$link.$id.'">'.($item[$item_name]?$item[$item_name]:$history['history_description']).'</a>';
 	else
-		$link = $history['history_description'];
-        $msg .= $AppUI->_('item')." '$link' ".$AppUI->_('in').' '.$AppUI->_(ucfirst($module)).' '.$AppUI->_('module'); // . $history;
-
+		$link = ($item[$item_name]?$item[$item_name]:$history['history_description']);
+		$msg .= $AppUI->_('item')." '$link' ".$AppUI->_('in').' '.$AppUI->_(ucfirst($module)).' '.$AppUI->_('module'); // . $history;
+	
         return $msg;
 }
 

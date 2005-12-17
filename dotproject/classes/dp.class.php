@@ -25,6 +25,10 @@ class CDpObject {
  */
 	var $_tbl_key = '';
 /**
+ *  @var string Name of the field containing the name for the item.
+ */
+ var $_tbl_name = '';
+/**
  *	@var string Error message
  */
 	var $_error = '';
@@ -45,6 +49,7 @@ class CDpObject {
 		global $dPconfig;
 		$this->_tbl = $table;
 		$this->_tbl_key = $key;
+		$this->_tbl_name = substr($key, 0, -2) . 'name';
 		if (isset($dPconfig['dbprefix']))
 			$this->_prefix = $dPconfig['dbprefix'];
 		else
@@ -162,12 +167,13 @@ class CDpObject {
 			return get_class( $this )."::store-check failed<br />$msg";
 		}
 		$k = $this->_tbl_key;
+		$n = $this->_tbl_name;
 		if( $this->$k ) {
-                        addHistory($this->_tbl, $this->$k, 'update');
+			addHistory($this->_tbl, $this->$k, 'update', $this->$n);
 			$ret = db_updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
 		} else {
 			$ret = db_insertObject( $this->_tbl, $this, $this->_tbl_key );
-                        addHistory($this->_tbl, $this->$k, 'add');
+			addHistory($this->_tbl, $this->$k, 'add', $this->$n);
 		}
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
