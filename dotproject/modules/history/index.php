@@ -111,7 +111,7 @@ foreach ($history as $key => $row)
 
 	$perms = & $AppUI->acl();
   if ($module != 'login' && !$perms->checkModuleItem($module, "access", $row['history_item']))
-  	unset($history[$row]);
+  	unset($history[$key]);
 }
 
 $tpl->displayList('history', $history);
