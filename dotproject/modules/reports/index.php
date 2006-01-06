@@ -52,6 +52,8 @@ for ($x=0; $x < $nums; $x++) {
         $project_list[$row["project_id"]] = '('.$row["project_short_name"].') '.$row["project_name"];
 }
 
+if (!$suppressHeaders)
+{
 ?>
 <script language="javascript">
                                                                                 
@@ -62,6 +64,7 @@ function changeIt() {
 </script>
 
 <?php
+}
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 
