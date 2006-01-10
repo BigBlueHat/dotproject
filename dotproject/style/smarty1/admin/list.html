@@ -32,7 +32,7 @@
 			</td>
 			<td>
 				<a href="?m=admin&a=viewuser&user_id={$row.user_id}&tab=2" title="">
-					<img src="images/obj/lock.gif" width="16" height="16" border="0" alt="{dPtranslate word='edit permissions'}">
+					<img src="images/obj/lock.gif" width="16" height="16" border="0" alt="{dPtranslate word='edit permissions'}" title="{dPtranslate word='edit permissions'}" />
 				</a>
 			</td>
 			<td>
@@ -60,7 +60,7 @@
 	</td>
 	<td>
 		<a href="mailto:{$row.contact_email}">
-			<img src="images/obj/email.gif" width="16" height="16" border="0" alt="email">
+			<img src="images/obj/email.gif" width="16" height="16" border="0" alt="{dPtranslate word='email'}" title="{dPtranslate word='email'}" />
 		</a>
 	{if $row.contact_last_name && $row.contact_first_name}
 		{$row.contact_last_name}, {$row.contact_first_name}
