@@ -7,29 +7,29 @@
 </table>
 
 <form action="index.php?m=admin{$get}" method="post" name="frmDate">
-<table align="center" " width="100%">
+<table align="center" width="100%">
 	<tr align="center">
-		<td align="right" width="45%" >{dPtranslate word='Start Date'}</td>
+		<td align="right" width="45%" ><label for="start_date">{dPtranslate word='Start Date'}</label></td>
 			<td width="55%" align="left">
 				<input type="hidden" name="log_start_date" value="{if $start_date}{dPdateFormat date=$start_date format='db'}{/if}" />
-				<input type="text" name="start_date" value="{if $start_date}{dPdateFormat date=$start_date}{/if}" class="text" readonly disabled="disabled" />
-				<a href="#" onClick="popCalendar('start_date')">
-				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" ></a>
+				<input id="start_date" type="text" name="start_date" value="{if $start_date}{dPdateFormat date=$start_date}{/if}" class="text" readonly="readonly" disabled="disabled" />
+				<a href="#" onclick="popCalendar('start_date')">
+				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" title="{dPtranslate word='Calendar'}" border="0" /></a>
 			</td>
 	</tr>
 	<tr align="center">
-		<td align="right" width="45%">{dPtranslate word='End Date'}</td>
+		<td align="right" width="45%"><label for="end_date">{dPtranslate word='End Date'}</label></td>
 			<td width="55%" align="left">
 				<input type="hidden" name="log_end_date" value="{if $end_date}{dPdateFormat date=$end_date format='db'}{/if}" />
-				<input type="text" name="end_date" value="{if $end_date}{dPdateFormat date=$end_date}{/if}" class="text" readonly disabled="disabled" />
-				<a href="#" onClick="popCalendar('end_date')">
-				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0"></a>
+				<input id="end_date" type="text" name="end_date" value="{if $end_date}{dPdateFormat date=$end_date}{/if}" class="text" readonly="readonly" disabled="disabled" />
+				<a href="#" onclick="popCalendar('end_date')">
+				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" title="{dPtranslate word='Calendar'}" border="0" /></a>
 		</td>
 	</tr>
 </table>
 <table align="center">
 	<tr align="center">
-		<td><input type="submit" class="button" value="{dPtranslate word='Submit'}" onClick="return checkDate('start','end')"></td>
+		<td><input type="submit" class="button" value="{dPtranslate word='Submit'}" onclick="return checkDate('start','end')" accesskey="s" /></td>
 	</tr>
 </table>
 </form>
@@ -37,11 +37,11 @@
 {if $logs}
 <table align="center" class="tbl" width="50%">
 <tr>
-	<th nowrap="nowrap" >{dPtranslate word='Name(s)'}</th>
-	<th nowrap="nowrap" >{dPtranslate word='Last Name'}</th>
-	<th nowrap="nowrap" >{dPtranslate word='Internet Address'}</th>
-	<th nowrap="nowrap" >{dPtranslate word='Date Time IN'}</th>
-	<th nowrap="nowrap" >{dPtranslate word='Date Time OUT'}</th>
+	<th nowrap="nowrap">{dPtranslate word='Name(s)'}</th>
+	<th nowrap="nowrap">{dPtranslate word='Last Name'}</th>
+	<th nowrap="nowrap">{dPtranslate word='Internet Address'}</th>
+	<th nowrap="nowrap">{dPtranslate word='Date Time IN'}</th>
+	<th nowrap="nowrap">{dPtranslate word='Date Time OUT'}</th>
 </tr>
 	{foreach from=$logs item=detail}
 <tr>
