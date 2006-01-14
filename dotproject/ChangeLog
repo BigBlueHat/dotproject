@@ -1,3 +1,936 @@
+2006-01-10 12:18  (theideaman)
+---------------------------------
+style/smarty1/admin/list.html
+- very minor XHTML changes
+
+2006-01-10 12:17  (theideaman)
+---------------------------------
+style/smarty1/admin/simple_list.html
+- very minor PHP code cleanup
+
+2006-01-10 12:17  (theideaman)
+---------------------------------
+style/smarty1/admin/view.html
+- minor XHTML changes: nowrap
+
+2006-01-10 12:17  (theideaman)
+---------------------------------
+style/smarty1/admin/usr_log.html
+- added 'label' tags to filed names and 'id' attributes to fields and 'accesskey' attributes to buttons
+
+2006-01-10 11:35  (theideaman)
+---------------------------------
+style/smarty1/admin/addedit.html
+- added 'label' tags to filed names and 'id' attributes to fields
+
+2006-01-06 12:26  (cyberhorse)
+---------------------------------
+modules/reports/index.php
+- supress javascript if outputting pdf
+
+2006-01-03 00:33  (pedroix)
+---------------------------------
+modules/files/companies_tab.view.files.php
+- Files extra tab for companies view page. HEAD branch
+
+2006-01-02 02:26  (pedroix)
+---------------------------------
+includes/config-dist.php
+install/do_install_db.php
+install/do_install_db.php
+includes/config-dist.php
+- Bug0001421: Dollarsign in DB password fails
+
+2005-12-25 23:08  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- Mantis #1415 - variable misnamed fixed as suggested.
+
+2005-12-25 23:07  (cyberhorse)
+---------------------------------
+classes/query.class.php
+- Mantis #1416 - misnamed variable fixed as suggested.
+
+2005-12-25 23:03  (cyberhorse)
+---------------------------------
+classes/query.class.php
+- Mantis #1416 - wrong variable name fixed.
+
+2005-12-18 10:42  (cyberhorse)
+---------------------------------
+modules/tasks/organize.php
+- Mantis #1096 - Message for include children revised
+
+2005-12-18 10:24  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+modules/contacts/contacts.class.php
+modules/history/index.php
+- Fixed displaying history item's names (even if they've been deleted, etc)
+- Mantis #804 addressed
+
+2005-12-16 01:22  (theideaman)
+---------------------------------
+style/smarty1/calendar/view.day.html
+- very minor XHTML changes
+
+2005-12-15 01:37  (theideaman)
+---------------------------------
+style/smarty1/projects/view.html
+- minor XHTML changes: nowrap, style, and double quotes on attributes
+
+2005-12-10 10:47  (pedroix)
+---------------------------------
+style/smarty1/projects/view.html
+style/smarty1/projects/addedit.html
+- Bug0001383: Minor typos on Project View and Edit page.
+
+2005-12-05 10:59  (pedroix)
+---------------------------------
+modules/files/index_table.php
+modules/files/index_table.php
+- Bug0001370: Filename bug with long names
+
+2005-12-05 00:56  (pedroix)
+---------------------------------
+modules/system/system.class.php
+- Applied backport of solution to Bug0001349: Module re-order not working properly
+
+2005-12-05 00:55  (pedroix)
+---------------------------------
+modules/system/system.class.php
+- Bug0001349: Module re-order not working properly
+
+2005-12-05 00:37  (pedroix)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- Req0001329: add company name to project list
+
+2005-11-29 23:49  (cyberhorse)
+---------------------------------
+modules/ticketsmith/do_ticket_aed.php
+- Mantis #1358 - HTTP_POST_VARS replaced
+
+2005-11-29 23:48  (cyberhorse)
+---------------------------------
+modules/ticketsmith/do_ticket_aed.php
+- Mantis #1358 - HTTP_POST_VARS removed
+
+2005-11-29 23:43  (cyberhorse)
+---------------------------------
+modules/system/translate_save.php
+- Mantis #1358 - $HTTP_POST_VARS substituted
+
+2005-11-29 23:42  (cyberhorse)
+---------------------------------
+modules/system/translate_save.php
+- Mantis #1358 - $HTTP_POST_VARS substituted
+- using dPgetParam
+
+2005-11-29 20:40  (cyberhorse)
+---------------------------------
+modules/contacts/vcardexport.php
+modules/contacts/vcardexport.php
+- Mantis #1346 - contact company join was wrong
+
+2005-11-29 20:34  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- Mantis #1359 - suggested fixes/checks applied
+
+2005-11-29 20:25  (cyberhorse)
+---------------------------------
+modules/files/files.class.php
+- Mantis #1359 - remove stale index entries
+
+2005-11-29 20:16  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- Mantis #1280 - spelling mistake fixed
+
+2005-11-29 20:14  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- stupid spelling mistake
+
+2005-11-26 13:21  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- Mantis #1280 - company_fax field not transferred to contact information
+- fixed button style
+
+2005-11-26 13:19  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+- Mantis #1280 - company_fax not used when transferring contact information
+- fixed the style of the select button
+
+2005-11-26 12:41  (cyberhorse)
+---------------------------------
+modules/contacts/view.php
+- Mantis #1326 - use $contact_id instead of $row, which isn't initialized.
+
+2005-11-25 10:54  (pedroix)
+---------------------------------
+locales/en/common.inc
+style/smarty1/admin/addedit.html
+locales/en/common.inc
+modules/admin/addedituser.php
+- Sug 0001348: Password2 -> Confirm Password
+
+2005-11-25 10:35  (pedroix)
+---------------------------------
+install/db.php
+install/db.php
+- Sug 0001347: database password shown as cleartext
+
+2005-11-22 10:43  (mosen)
+---------------------------------
+lib/webDAV/README
+lib/webDAV/class_webdav_client.php
+- Added missing webDAV class
+
+2005-11-21 15:34  (pedroix)
+---------------------------------
+classes/CustomFields.class.php
+classes/CustomFields.class.php
+- Bug 0001317: Custom Fields, unable to clear
+
+2005-11-21 15:19  (pedroix)
+---------------------------------
+style/smarty1/contacts/view.html
+- Bug 0001338: Inadvertent display of URL2, should be URL
+
+2005-11-21 15:07  (pedroix)
+---------------------------------
+modules/contacts/addedit.php
+modules/contacts/view.php
+- Bug 0001338: Inadvertent display of URL2, should be URL
+
+2005-11-18 08:32  (mosen)
+---------------------------------
+style/smarty1/files/co.html
+- Added missing template for files checkout
+
+2005-11-17 22:16  (cyberhorse)
+---------------------------------
+modules/tasks/vw_log_update.php
+- Mantis #921 - enable generic billing codes (with company=0)
+
+2005-11-17 20:57  (cyberhorse)
+---------------------------------
+modules/tasks/ae_dates.php
+- Mantis #1274 - working week display issue fixed
+
+2005-11-17 20:55  (cyberhorse)
+---------------------------------
+modules/tasks/ae_dates.php
+- Mantis #1274 - working days display fixed
+
+2005-11-17 20:44  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+- Mantis #1142 - possible fix
+- general approach for overrides
+
+2005-11-17 20:35  (gregorerhardt)
+---------------------------------
+style/smarty1/tasks/addedit.html
+modules/tasks/addedit.php
+- rollback fix for 1302
+
+2005-11-17 20:29  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Mantis #1275 - PHP5 compatibility fix
+
+2005-11-17 20:25  (cyberhorse)
+---------------------------------
+style/smarty1/contacts/view.html
+- Mantis #1279 - in contact/view show only the fields for which there is data.
+
+2005-11-17 20:14  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+- Mantis #1314 - fixed broken file list in task view
+- fixed an open else (missing brakets)
+
+2005-11-17 19:57  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- Mantis #1200 - if an empty image is passed to dPshowImage, don't show it
+
+2005-11-17 19:52  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+includes/smarty/function.dPshowImage.php
+- Mantis #1200 - don't show image placeholder if there is no image passed to function
+
+2005-11-17 07:42  (gregorerhardt)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/calendar.class.php
+- 1284: event clashes with itself on edit
+
+2005-11-17 06:44  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- 878: removed translation of AXO Permission Items
+
+2005-11-17 06:28  (gregorerhardt)
+---------------------------------
+locales/en/system.inc
+modules/resources/tasks_dosql.addedit.php
+modules/system/systemconfig.php
+modules/tasks/ae_depend.php
+- moved syscfg tooltips to overlib tooltip library
+
+2005-11-17 05:16  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+- update
+
+2005-11-17 05:15  (gregorerhardt)
+---------------------------------
+style/smarty1/tasks/addedit.html
+- 1302: other resources lost on task resave
+
+2005-11-17 04:15  (gregorerhardt)
+---------------------------------
+modules/reports/existing/userperformance.php
+- 1303: division by zero
+
+2005-11-16 15:09  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- user_department wasn't being correctly set.
+
+2005-11-16 13:31  (pedroix)
+---------------------------------
+modules/forums/index.php
+modules/forums/index.php
+- Bug 0000970: Forums List is very slow. This has been reported before.
+
+2005-11-16 12:58  (pedroix)
+---------------------------------
+modules/files/index_table.php
+- Bug 0001304: Checked Out file display will crash if users.user_id don't match contacts.user_contact
+
+2005-11-16 12:45  (pedroix)
+---------------------------------
+modules/files/index_table.php
+- Bug 0001304: Checked Out file display will crash if users.user_id don't match contacts.user_contact
+
+2005-11-16 04:01  (gregorerhardt)
+---------------------------------
+base.php
+- 1313: fix for symlinks
+
+2005-11-16 03:29  (gregorerhardt)
+---------------------------------
+includes/smarty/function.dPshowImage.php
+modules/calendar/view.php
+style/smarty1/calendar/view.html
+- fixed smarty for dPfindImage
+
+2005-11-14 23:00  (gregorerhardt)
+---------------------------------
+modules/calendar/do_webcal_process.php
+modules/calendar/webcal_mgt.php
+- ical fixes: change table head sequence in webcal_mgt and fix a permission issue
+
+2005-11-14 09:03  (gregorerhardt)
+---------------------------------
+classes/event_queue.class.php
+classes/libmail.class.php
+classes/ui.class.php
+classes/webdav_client.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+images/icons/down.png
+images/icons/up.png
+lib/PEAR/File/IMC.php
+lib/PEAR/File/IMC/Build.php
+lib/PEAR/File/IMC/Parse.php
+lib/PEAR/File/IMC/Build/vCard.php
+lib/PEAR/File/IMC/Parse/vCalendar.php
+lib/PEAR/File/IMC/Parse/vCard.php
+lib/PEAR/HTTP/WebDAV/Client.php
+lib/PEAR/HTTP/WebDAV/Client/Stream.php
+lib/PEAR/HTTP/WebDAV/Tools/_parse_lock_response.php
+lib/PEAR/HTTP/WebDAV/Tools/_parse_propfind_response.php
+lib/overlib/makemini.pl
+lib/overlib/overlib.js
+lib/overlib/overlib_anchor.js
+lib/overlib/overlib_centerpopup.js
+lib/overlib/overlib_crossframe.js
+lib/overlib/overlib_cssstyle.js
+lib/overlib/overlib_debug.js
+lib/overlib/overlib_exclusive.js
+lib/overlib/overlib_followscroll.js
+lib/overlib/overlib_hideform.js
+lib/overlib/overlib_setonoff.js
+lib/overlib/overlib_shadow.js
+lib/overlib/Mini/overlib_anchor_mini.js
+lib/overlib/Mini/overlib_centerpopup_mini.js
+lib/overlib/Mini/overlib_crossframe_mini.js
+lib/overlib/Mini/overlib_csstyle_mini.js
+lib/overlib/Mini/overlib_debug_mini.js
+lib/overlib/Mini/overlib_exclusive_mini.js
+lib/overlib/Mini/overlib_followscroll_mini.js
+lib/overlib/Mini/overlib_hideform_mini.js
+lib/overlib/Mini/overlib_mini.js
+lib/overlib/Mini/overlib_setonoff_mini.js
+lib/overlib/Mini/overlib_shadow_mini.js
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/calmgt.php
+modules/calendar/do_webcal_process.php
+modules/calendar/eventexport.php
+modules/calendar/eventimport.php
+modules/calendar/eventpublish.php
+modules/calendar/index.php
+modules/calendar/links_events.php
+modules/calendar/view.php
+modules/calendar/webcal_mgt.php
+modules/calendar/images/event-1.png
+modules/calendar/images/vcalendar-16.png
+modules/calendar/images/vcalendar.png
+style/smarty1/calendar/view.html
+- webdav and webcal functions for icalendar or vcalendar functionality
+
+2005-11-07 15:14  (pedroix)
+---------------------------------
+modules/companies/addedit.php
+- Bug 0001320: Add Company, make logged in user the default owner
+
+2005-11-07 15:11  (pedroix)
+---------------------------------
+style/smarty1/companies/addedit.html
+modules/companies/addedit.php
+- Bug 0001320: Add Company, make logged in user the default owner
+
+2005-11-07 11:50  (pedroix)
+---------------------------------
+modules/projects/gantt.php
+- On stable_2 branch inactive projects are defined trough project_active field and not trough project_status yet, so a little twist to the backported code of HEAD is required.
+
+2005-11-07 02:59  (pedroix)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.class.php
+- Avoid a task dependence message warning
+- http://www.dotproject.net/vbulletin/showthread.php?p=16317
+
+2005-11-06 10:22  (pedroix)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/gantt.php
+- Milestones other than the last were misplaced at the date of the last Milestone
+
+2005-11-06 04:35  (pedroix)
+---------------------------------
+modules/calendar/day_view.php
+modules/calendar/day_view.php
+- Bug  0001308: Choosing a day from the bottom pane in calendar jumps to current date and not to the chosen date
+
+2005-11-06 03:17  (pedroix)
+---------------------------------
+modules/tasks/gantt.php
+- Milestones are not visible in the gantt chart on stable_2
+-  and Consistent Use of Arial font for Milestones
+- http://www.dotproject.net/vbulletin/showthread.php?p=16301
+
+2005-11-06 03:16  (pedroix)
+---------------------------------
+modules/tasks/gantt.php
+- Consistent Use of Arial font for Milestones
+
+2005-11-06 02:39  (pedroix)
+---------------------------------
+modules/tasks/tasks.php
+- Bug 0001316: Error on dynamic task children tab
+
+2005-11-05 13:13  (pedroix)
+---------------------------------
+modules/system/system.class.php
+- Bug 0001299: Changing module UI order broken
+
+2005-11-05 13:07  (pedroix)
+---------------------------------
+modules/system/system.class.php
+- Bug 0001299: Changing module UI order broken
+
+2005-11-05 12:41  (pedroix)
+---------------------------------
+classes/date.class.php
+classes/date.class.php
+- Sug0001295: date.class.php addDays bug on daylight savings time days
+
+2005-11-05 12:38  (pedroix)
+---------------------------------
+modules/tasks/addedit.js
+- Backport changes to stable_2 branch
+
+2005-11-05 10:45  (pedroix)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/tasks.php
+- Sug1300: Fix for child tasks not being displayed under their subtasks
+
+2005-11-03 11:10  (mosen)
+---------------------------------
+includes/smarty/function.dPgetSysVal.php
+modules/tasks/ae_desc.php
+style/smarty1/tasks/ae_desc.html
+- Added smarty template for tasks ae_desc tab
+- Added smarty function dPgetSysVal
+
+2005-11-03 09:52  (mosen)
+---------------------------------
+modules/tasks/addedit.php
+style/smarty1/tasks/addedit.html
+- Added smarty template for tasks addedit
+
+2005-10-31 12:29  (mosen)
+---------------------------------
+modules/files/index_table.php
+style/smarty1/files/list.html
+style/smarty1/files/list.row.html
+- Added smarty template for files listing
+
+2005-10-31 11:49  (mosen)
+---------------------------------
+modules/files/co.php
+- Added smarty template for Files checkout
+
+2005-10-31 11:35  (mosen)
+---------------------------------
+modules/files/addedit.php
+style/smarty1/files/addedit.html
+- Added Smarty template for files addedit
+
+2005-10-31 10:04  (mosen)
+---------------------------------
+includes/smarty/function.dParraySelectTree.php
+- Added Smarty function for dParraySelectTree
+
+2005-10-31 09:53  (mosen)
+---------------------------------
+modules/forums/view_topics.php
+style/smarty1/forums/view_messages.row.html
+style/smarty1/forums/view_topics.html
+style/smarty1/forums/view_topics.row.html
+- Added Template for Forums topic view
+
+2005-10-28 16:33  (mosen)
+---------------------------------
+style/smarty1/forums/view_messages.row.html
+- Smarty template for view_messages in forums module greatly simplified
+
+2005-10-28 16:17  (mosen)
+---------------------------------
+modules/forums/view_messages.php
+style/smarty1/forums/view_messages.html
+style/smarty1/forums/view_messages.row.html
+- Fixed single mode smarty template in forums
+
+2005-10-28 16:01  (mosen)
+---------------------------------
+modules/forums/view_messages.php
+style/smarty1/forums/view_messages.html
+style/smarty1/forums/view_messages.row.html
+- More fixes for forum view_messages page - single view broken
+
+2005-10-28 13:39  (mosen)
+---------------------------------
+style/smarty1/forums/view_messages.html
+style/smarty1/forums/view_messages.row.html
+- Added template for view_messages forum page
+
+2005-10-27 11:14  (mosen)
+---------------------------------
+modules/forums/post_message.php
+style/smarty1/forums/post_message.html
+- Added smarty template for forum post/edit message page
+
+2005-10-27 10:32  (mosen)
+---------------------------------
+modules/forums/viewer.php
+style/smarty1/forums/viewer.html
+- Added smarty template for forum viewer
+
+2005-10-26 17:14  (mosen)
+---------------------------------
+modules/forums/addedit.php
+style/smarty1/forums/addedit.html
+- Added smarty template for forums addedit page
+
+2005-10-26 16:33  (mosen)
+---------------------------------
+modules/forums/index.php
+style/smarty1/forums/index.html
+style/smarty1/forums/index.row.html
+- Added smarty templates for forums listing
+
+2005-10-26 14:05  (mosen)
+---------------------------------
+modules/tasks/tasks.class.php
+- major change in task class: getAllocation function uses database independant query and query class
+
+2005-10-26 10:28  (mosen)
+---------------------------------
+classes/query.class.php
+- Added DB Independant IFNULL function to the query class
+
+2005-10-26 10:21  (mosen)
+---------------------------------
+modules/public/selector.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/tasklogs.php
+- Added DB Independant concatenation to public selector
+- Added DB Independant concatenation to reports module
+
+2005-10-26 10:05  (mosen)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/view.php
+- Replaced SQL CONCAT Function in Projects module with DBQuery concat function (Database Independant).
+
+2005-10-26 10:01  (mosen)
+---------------------------------
+classes/query.class.php
+modules/companies/addedit.php
+modules/departments/addedit.php
+- Modified query concat function to take variable parameter length.
+- Database independance changes in companies and departments modules
+
+2005-10-26 09:41  (mosen)
+---------------------------------
+classes/query.class.php
+- Added support for database independant concatenation of strings
+
+2005-10-26 09:21  (mosen)
+---------------------------------
+modules/contacts/addedit.php
+style/smarty1/contacts/addedit.html
+- Added smarty template for contact addedit page
+
+2005-10-25 16:27  (mosen)
+---------------------------------
+modules/contacts/index.php
+style/smarty1/contacts/index.html
+style/smarty1/contacts/list.row.html
+- Added smarty template for contacts index
+
+2005-10-25 13:34  (mosen)
+---------------------------------
+modules/departments/vw_contacts.php
+style/smarty1/departments/vw_contacts.html
+- added template for vw_contacts tab in departments
+
+2005-10-25 13:17  (mosen)
+---------------------------------
+modules/departments/addedit.php
+modules/departments/view.php
+style/smarty1/departments/view.html
+- added smarty template for department view
+- fixed small problem with department addedit template
+
+2005-10-25 12:53  (mosen)
+---------------------------------
+modules/departments/addedit.php
+modules/files/index.php
+style/smarty1/departments/addedit.html
+- Added smarty template for departments add/edit
+
+2005-10-24 15:13  (cyberhorse)
+---------------------------------
+style/smarty1/contacts/cardlist.html
+- contacts smartified
+
+2005-10-24 09:44  (mosen)
+---------------------------------
+style/smarty1/backup/index.html
+style/smarty1/backup/restore.html
+- Added smarty templates for Backup module
+
+2005-10-24 09:23  (mosen)
+---------------------------------
+modules/system/custom_field_addedit.js
+- custom field js moved to seperate file for inclusion
+
+2005-10-21 11:04  (mosen)
+---------------------------------
+modules/smartsearch/index.php
+style/smarty1/smartsearch/index.html
+- Added smarty template for smartsearch module
+
+2005-10-21 08:54  (mosen)
+---------------------------------
+modules/system/custom_field_editor.php
+style/smarty1/system/custom_field_editor.html
+- Added smarty template for custom field editor - custom field listing page
+
+2005-10-20 17:51  (mosen)
+---------------------------------
+modules/system/custom_field_addedit.php
+style/smarty1/system/custom_field_addedit.html
+- Added smarty template for custom field editor
+
+2005-10-20 16:39  (mosen)
+---------------------------------
+modules/system/index.php
+style/smarty1/system/index.html
+- System module index now uses smarty template.
+
+2005-10-19 10:35  (mosen)
+---------------------------------
+index.php
+- FIXED: Mantis bug 0001262 - setlocale should be set for all categories (LC_ALL)
+
+2005-10-19 10:06  (mosen)
+---------------------------------
+modules/calendar/calendar.class.php
+- FIXED Mantis Bug 0001258 - un necessary utf8_encode of day row
+
+2005-10-19 08:50  (mosen)
+---------------------------------
+modules/system/addeditpref.php
+- FIXED: Mantis Bug #0001267 - Strings not localised
+
+2005-10-19 00:17  (pedroix)
+---------------------------------
+modules/tasks/tasks.php
+- Bug1266: Strings are not localized.
+
+2005-10-19 00:11  (pedroix)
+---------------------------------
+locales/en/tasks.inc
+- Bug1266: Strings are not localized.
+
+2005-10-19 00:05  (pedroix)
+---------------------------------
+locales/en/tasks.inc
+modules/tasks/tasks.php
+- Bug1266: Strings are not localized.
+
+2005-10-18 11:10  (mosen)
+---------------------------------
+modules/contacts/index.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/view.php
+- Fixed Mantis Bug 0001259: Several strings are not localized.
+
+2005-10-18 10:49  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+modules/system/custom_field_addedit.php
+- Fixed a problem when editing SQLSelect Custom Fields
+
+2005-10-17 23:13  (cyberhorse)
+---------------------------------
+modules/admin/companies_tab.view.users.php
+modules/companies/view.php
+modules/companies/vw_users.php
+style/smarty1/admin/simple_list.html
+- smartifying and moving to auto-loading tab the users list in a company/view page
+
+2005-10-13 00:02  (cyberhorse)
+---------------------------------
+modules/contacts/view.php
+style/smarty1/contacts/view.html
+- contacts/view smartified
+
+2005-10-12 23:11  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/companies/view.php
+modules/companies/vw_contacts.php
+modules/contacts/companies_tab.view.contacts.php
+style/smarty1/calendar/_event.html
+style/smarty1/calendar/_week.html
+style/smarty1/contacts/list.html
+- calendar.class.php smartified (subfunctions dealt with small _template files)
+- companies->contacts tab smartified and moved to a dynamically loaded tab in the contacts module
+
+2005-10-11 22:53  (gregorerhardt)
+---------------------------------
+modules/projects/index.php
+- 1140: backported fix for 960 - proj actual end date correction
+
+2005-10-11 21:33  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/tasks/gantt.php
+- 1241: gantt milestone - softcoded date, added stone where lost
+
+2005-10-11 00:12  (cyberhorse)
+---------------------------------
+style/smarty1/calendar/view.day.html
+style/smarty1/calendar/view.month.html
+- missing template files
+
+2005-10-11 00:11  (cyberhorse)
+---------------------------------
+classes/template.class.php
+includes/smarty/modifier.dPescape.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/index.php
+modules/calendar/week_view.php
+style/smarty1/calendar/_title.html
+style/smarty1/calendar/view.week.html
+- added smarty dPescape modifier for dp htmlentities
+- updated calendar day/week view with that modifier and a few other optimizations
+- started work on smartifying the calendar class.
+
+2005-10-10 22:52  (cyberhorse)
+---------------------------------
+modules/calendar/week_view.php
+style/smarty1/calendar/view.week.html
+- calendar/week_view smartified
+
+2005-10-10 01:45  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+includes/smarty/function.dPrequire.php
+modules/calendar/day_view.php
+style/smarty1/tabBox.html
+- tabbox smartified (some work to be done in overriden show() methods)
+- calendar/day view smartified
+
+2005-10-09 23:57  (cyberhorse)
+---------------------------------
+modules/calendar/view.php
+style/smarty1/calendar/view.html
+- calendar/view smartified
+
+2005-10-06 01:41  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+functions/admin_func.php
+modules/admin/do_user_aed.php
+modules/public/chpwd.php
+modules/reports/existing/overall.php
+modules/system/billingcode.php
+modules/system/custom_field_addedit.php
+modules/system/custom_field_editor.php
+modules/system/do_billingcode_aed.php
+modules/system/do_custom_field_aed.php
+modules/system/do_preference_aed.php
+modules/system/do_systemconfig_aed.php
+modules/system/domodsql.php
+modules/system/index.php
+modules/system/translate.php
+style/smarty1/admin/addedit.html
+- 1194: softcoded UserType and cleaned admin check against user_type of 1
+
+2005-10-05 22:33  (gregorerhardt)
+---------------------------------
+modules/contacts/vcardexport.php
+modules/contacts/vcardimport.php
+- 1220: vcard company name correction
+
+2005-10-05 22:17  (gregorerhardt)
+---------------------------------
+modules/contacts/vcardexport.php
+modules/contacts/vcardimport.php
+- 1220: restore vvcard company name correctly
+
+2005-10-05 21:26  (gregorerhardt)
+---------------------------------
+includes/main_functions.php
+- 1237: added empty lookup separator
+
+2005-10-05 21:19  (gregorerhardt)
+---------------------------------
+includes/main_functions.php
+- 1237: added empty lookup separator
+
+2005-10-04 10:36  (pedroix)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/gantt.php
+- Gantt hours based on "Work instead of duration" calculated badly
+
+2005-10-03 10:57  (pedroix)
+---------------------------------
+modules/calendar/clash.php
+locales/en/calendar.inc
+- Bug1234: Words not translated in calendar/clash.php
+
+2005-10-03 10:51  (pedroix)
+---------------------------------
+locales/en/calendar.inc
+modules/calendar/clash.php
+- Bug1234: Words not translated in calendar/clash.php
+
+2005-10-01 04:20  (pedroix)
+---------------------------------
+modules/contacts/view.php
+modules/contacts/view.php
+- F.Req.1235: Clickable link to Company from View Contact
+
+2005-09-28 08:43  (pedroix)
+---------------------------------
+locales/en/forums.inc
+modules/forums/view_messages.php
+- Bug1227: Words not translated in Forums - view_messages.php
+
+2005-09-28 08:40  (pedroix)
+---------------------------------
+locales/en/forums.inc
+modules/forums/view_messages.php
+- Bug1227: Words not translated in Forums - view_messages.php
+
+2005-09-25 04:24  (pedroix)
+---------------------------------
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+- Bug1223: SmartSearch results contact links point to edit rather than view mode
+
+2005-09-15 23:47  (pedroix)
+---------------------------------
+modules/links/addedit.php
+- "Uploaded by" field not correctly displayed
+
+2005-09-15 03:36  (pedroix)
+---------------------------------
+modules/admin/admin.class.php
+- Default preferences were not being imported to new users.
+- http://www.dotproject.net/vbulletin/showthread.php?t=2337
+
+2005-09-15 03:33  (pedroix)
+---------------------------------
+modules/admin/admin.class.php
+- Default preferences were not being imported to new users.
+
+2005-09-15 01:50  (pedroix)
+---------------------------------
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+- Added company for projects list.
+
+2005-09-14 23:07  (cyberhorse)
+---------------------------------
+ChangeLog
+includes/smarty/function.dPdateFormat.php
+includes/smarty/modifier.dPdateFormat.php
+modules/calendar/addedit.php
+style/smarty1/calendar/addedit.html
+- smartified calendar addedit page
+- converted dPdateFormat in smarty from function to a modifier
+- updated ChangeLog
+
 2005-09-13 23:41  (pedroix)
 ---------------------------------
 modules/links/index.html
@@ -14,6 +947,7 @@ modules/links/links.class.php
 modules/links/projects_tab.links.php
 modules/links/setup.php
 modules/links/tasks_tab.links.php
+modules/links/images/folder5.png
 - Back ported functional links module to stable_2 branch
 
 2005-09-13 23:39  (pedroix)
@@ -26,6 +960,16 @@ modules/links/index_table.php
 ---------------------------------
 modules/links/index_table.php
 - file index_table.php was added on branch stable_2 on 2005-09-13 14:11:33 +0000
+
+2005-09-13 23:37  (pedroix)
+---------------------------------
+modules/links/images/folder5.png
+- file folder5.png was added on branch stable_2 on 2005-09-13 14:12:05 +0000
+
+2005-09-13 23:37  (pedroix)
+---------------------------------
+modules/links/images/folder5.png
+- Icon of the module was missing
 
 2005-09-13 03:01  (pedroix)
 ---------------------------------
