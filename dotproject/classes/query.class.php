@@ -460,7 +460,7 @@ class DBQuery {
     } else {
       $q .= '*';
     }
-    $q .= ' FROM ';
+    $q .= ' FROM (';
     if (isset($this->table_list)) {
       if (is_array($this->table_list)) {
 	$intable = false;
@@ -476,6 +476,7 @@ class DBQuery {
       } else {
 	$q .= $this->_table_prefix . $this->table_list;
       }
+    $q .= ')';
     } else {
       return false;
     }

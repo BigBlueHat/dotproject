@@ -72,8 +72,8 @@ $canReadProject = !getDenyRead( 'projects', $obj->task_project);
 // get the users on this task
 $q->addTable('users', 'u');
 $q->addTable('user_tasks', 't');
-$q->leftJoin('contacts', 'c' , 'user_contact = contact_id');
-$q->addQuery('u.user_id, u.user_username, contact_email');
+$q->leftJoin('contacts', 'c' , 'u.user_contact = c.contact_id');
+$q->addQuery('u.user_id, u.user_username, c.contact_email');
 $q->addWhere('t.task_id = ' . $task_id);
 $q->addWhere('t.user_id = u.user_id');
 $q->addOrder('u.user_username');

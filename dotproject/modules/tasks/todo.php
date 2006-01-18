@@ -93,8 +93,8 @@ $q->addQuery('ta.*');
 $q->addQuery('project_name, project_id, project_color_identifier');
 $q->addQuery('tp.task_pinned');
 $q->addTable('projects', 'pr');
-$q->addTable('tasks', 'ta');
 $q->addTable('user_tasks', 'ut');
+$q->addTable('tasks', 'ta');
 $q->leftJoin('user_task_pin', 'tp', 'tp.task_id = ta.task_id and tp.user_id = ' . $user_id);
 
 $q->addWhere('ut.task_id = ta.task_id');
