@@ -234,6 +234,7 @@ if (isset($dPconfig['check_task_dates']) && $dPconfig['check_task_dates'])
 else
 	$check_task_dates_set = false;	  
 $tpl->assign('check_task_dates_set', $check_task_dates_set);
+$tpl->assign('can_edit_time_information', $can_edit_time_information);
 $tpl->assign('task_project', $task_project);
 $tpl->assign('task_id', $task_id);
 $tpl->assign('project', $project); 
