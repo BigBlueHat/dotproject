@@ -216,7 +216,10 @@ class CMonthCalendar {
 		$tpl->assign('href_this', $href);
 		$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
 		$tpl->assign('href_next', $href);
-		
+		$urlm = "index.php?m=$m";
+		$hrefm = $urlm.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE);
+		$tpl->assign('href_month', $hrefm);
+            		
 		$tpl->assign('day', $this);
 
 
