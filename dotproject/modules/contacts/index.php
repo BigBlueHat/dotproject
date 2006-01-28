@@ -41,6 +41,7 @@ foreach( $arr as $L ) {
 // optional fields shown in the list (could be modified to allow breif and verbose, etc)
 $showfields = array(
 	// "test" => "concat(contact_first_name,' ',contact_last_name) as test",    why do we want the name repeated?
+    "contact_company" => "contact_company",
 	"company_name" => "company_name",
 	"contact_phone" => "contact_phone",
 	"contact_email" => "contact_email"
@@ -189,6 +190,7 @@ for ($z=0; $z < $carrWidth; $z++) {
 			if (strlen( $carr[$z][$x][$key] ) > 0) {
 				if($val == "contact_email") {
 					$contact_fields .= "<A HREF='mailto:{$carr[$z][$x][$key]}' class='mailto'>{$carr[$z][$x][$key]}</a>\n";
+                } elseif($val == "contact_company" && is_numeric($carr[$z][$x][$key])) {
 				} else {
 					$contact_fields .= $carr[$z][$x][$key]. "<br />\n";
 				}
