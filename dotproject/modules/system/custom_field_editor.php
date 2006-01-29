@@ -23,7 +23,7 @@ if (!$canEdit) {
 	$q  = new DBQuery;
 	$q->addTable('modules');
 	$q->addOrder('mod_ui_order');
-	$q->addWhere("mod_name IN ('Companies', 'Projects', 'Tasks', 'Calendar')");
+	$q->addWhere("mod_name IN ('Companies', 'Projects', 'Tasks', 'Calendar', 'Resources')");
 	$modules = $q->loadList();
 	$q->clear();
 	

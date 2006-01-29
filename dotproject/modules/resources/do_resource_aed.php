@@ -9,6 +9,8 @@ if (! $obj->bind($_POST)) {
   $AppUI->redirect();
 }
 
+require_once("./classes/CustomFields.class.php");
+
 $AppUI->setMsg('Resource');
 if ($del) {
   if (! $obj->canDelete($msg)) {
@@ -26,6 +28,11 @@ if ($del) {
   if (($msg = $obj->store())) {
     $AppUI->setMsg($msg, UI_MSG_ERROR);
   } else {
+  	
+  	 	$custom_fields = New CustomFields( $m, 'addedit', $obj->resource_id, "edit" );
+ 		$custom_fields->bind( $_POST );
+ 		$sql = $custom_fields->store( $obj->resource_id ); // Store Custom Fields
+ 		
     $AppUI->setMsg($_POST['resource_id'] ? 'updated' : 'added', UI_MSG_OK, true);
   }
   $AppUI->redirect();

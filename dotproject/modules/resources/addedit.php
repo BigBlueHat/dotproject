@@ -52,6 +52,15 @@ $typelist = $obj->typeSelect();
     name='resource_max_allocation'></td></tr>
   <tr><td align='right'><?php echo $AppUI->_('Notes'); ?></td>
   <td><textarea name='resource_note' cols=40 rows=5 ><?php echo dPformSafe($obj->resource_note);?></textarea>
+  	<tr>
+		<td align="right" colspan="3">
+		<?php
+			require_once("./classes/CustomFields.class.php");
+			$custom_fields = New CustomFields( $m, $a, $obj->resource_id, "edit" );
+			$custom_fields->printHTML();
+		?>
+		</td>
+	</tr>
   </table>
 </td>
 </tr>

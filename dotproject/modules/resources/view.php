@@ -80,8 +80,17 @@ if ($canDelete) {
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Max Allocation %');?>:</td>
 			<td class="hilite"><?php echo @$obj->resource_max_allocation;?></td>
+		</tr>
 		</table>
-
+	</td>
+	</tr>
+	<tr>
+	<td>
+		<?php
+			require_once("./classes/CustomFields.class.php");
+			$custom_fields = New CustomFields( $m, $a, $obj->resource_id, "view" );
+			$custom_fields->printHTML();
+		?>
 	</td>
 </tr>
 <tr>
@@ -94,9 +103,8 @@ if ($canDelete) {
 				<?php echo str_replace( chr(10), "<br />", $obj->resource_note);?>&nbsp;
 			</td>
 		</tr>
-		
+
 		</table>
 	</td>
-
 </tr>
 </table>
