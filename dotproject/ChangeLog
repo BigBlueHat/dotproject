@@ -1,3 +1,121 @@
+2006-01-29 11:45  (ajdonnison)
+---------------------------------
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/view.php
+modules/system/custom_field_editor.php
+- Applied patch from alleyCat (#1438) to add custom fields to other resources.
+
+2006-01-29 11:43  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Removed extraneous global.
+
+2006-01-29 11:19  (ajdonnison)
+---------------------------------
+modules/resources/tabs.js
+modules/resources/tasks_dosql.addedit.php
+modules/resources/tasks_tab.addedit.other_resources.php
+- Fixed saving of resources when editing tasks.
+
+2006-01-29 11:14  (ajdonnison)
+---------------------------------
+modules/resources/tabs.js
+modules/resources/tasks_dosql.addedit.php
+modules/resources/tasks_tab.addedit.other_resources.php
+- Fixed saving of resource information in task editing.
+
+2006-01-29 04:38  (pedroix)
+---------------------------------
+modules/calendar/calendar.class.php
+- Sug0001384: Clicking on Minical Month should display month calendar
+
+2006-01-29 04:28  (pedroix)
+---------------------------------
+modules/calendar/calendar.class.php
+- Sug0001384: Clicking on Minical Month should display month calendar
+
+2006-01-29 04:20  (pedroix)
+---------------------------------
+style/smarty1/calendar/_title.html
+- Sug0001384: Clicking on Minical Month should display month calendar
+
+2006-01-29 03:08  (pedroix)
+---------------------------------
+modules/calendar/day_view.php
+- Bug0001341: [REGRESSION] Todo displays 01/01/1970 again Bug: 0001146
+
+2006-01-29 03:02  (pedroix)
+---------------------------------
+modules/calendar/day_view.php
+- Bug0001341: [REGRESSION] Todo displays 01/01/1970 again Bug: 0001146
+
+2006-01-29 02:26  (pedroix)
+---------------------------------
+modules/contacts/contacts.class.php
+- Reverted Bug0001427: Contacts Editor unaccessable, as it was already been taken care with the quote method
+
+2006-01-29 01:55  (pedroix)
+---------------------------------
+modules/contacts/index.php
+- Treats correctly the company_name hibrid field to appear on the contacts list
+
+2006-01-29 01:54  (pedroix)
+---------------------------------
+modules/contacts/contacts.class.php
+- Bug0001427: Contacts Editor unaccessable
+
+2006-01-29 01:50  (pedroix)
+---------------------------------
+modules/contacts/index.php
+- Treats correctly the company_name hibrid field to appear on the contacts list
+
+2006-01-28 08:45  (pedroix)
+---------------------------------
+classes/CustomFields.class.php
+classes/CustomFields.class.php
+- Bug: Custom Field returning \\\
+- input text and textarea custom fields were recording buggy backslashes
+
+2006-01-28 02:50  (pedroix)
+---------------------------------
+install/do_install_db.php
+install/do_install_db.php
+- Bug0001452: superfluous backslashes in the auto-generated config file
+
+2006-01-21 02:06  (pedroix)
+---------------------------------
+modules/tasks/addedit.php
+- 0001381: Add/Edit Task consistantly and incorrectly setting start/stop time.
+
+2006-01-18 11:13  (cyberhorse)
+---------------------------------
+classes/query.class.php
+modules/tasks/todo.php
+modules/tasks/view.php
+- PHP5 specific bug fixes (backwards compatible)
+
+2006-01-15 13:26  (pedroix)
+---------------------------------
+js/base.js
+style/classic/main.css
+style/default/main.css
+style/dp-grey-theme/main.css
+- Bug0001355: IE remove brake line("\n") in Task Description field.
+
+2006-01-15 13:20  (pedroix)
+---------------------------------
+js/base.js
+style/classic/main.css
+style/default/main.css
+style/dp-grey-theme/main.css
+- Bug0001355: IE remove brake line("\n") in Task Description field.
+
+2006-01-14 12:20  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog
+
 2006-01-10 12:18  (theideaman)
 ---------------------------------
 style/smarty1/admin/list.html
