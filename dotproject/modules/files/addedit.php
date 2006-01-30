@@ -103,7 +103,8 @@ $tpl->assign('canAdmin', $canAdmin);
 $tpl->assign('file_project', $file_project);
 
 $select_disabled = ( $ci && $preserve ) ? ' disabled ' : ' ';
-$select_file_category = arraySelect(dPgetSysVal("FileType"), 'file_category', ''.$select_disabled, $obj->file_category, true);
+$filetype = dPgetSysVal('FileType');
+$select_file_category = arraySelect($filetype, 'file_category', ''.$select_disabled, $obj->file_category, true);
 $tpl->assign('select_file_category', $select_file_category);
 
 $select_file_project = arraySelect($projects, 'file_project', 'size="1" class="text" style="width:270px"' . $select_disabled, $file_project);
