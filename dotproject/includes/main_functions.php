@@ -549,6 +549,7 @@ function format_backtrace($bt, $file, $line, $msg)
   foreach ($bt as $level => $frame) {
     echo "$level $frame[file]:$frame[line] $frame[function](";
     $in = false;
+		if (!empty($frame['args']))
     foreach ($frame['args'] as $arg) {
       if ($in)
 	echo ",";
