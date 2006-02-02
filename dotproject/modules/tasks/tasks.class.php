@@ -1982,6 +1982,26 @@ class CTask extends CDpObject {
             }
           }
         }
+				
+				function showtask( $level=0, $is_opened = true, $today_view = false) {
+//					showtask($this, $level, $is_opened, $today_view);
+					global $tpl;
+
+  				$canEdit = !getDenyEdit( 'tasks', $this->task_id );
+					$canViewLog = $perms->checkModuleItem('tasks', 'view', $$this->task_id);
+					
+					$tpl->assign('canEdit', $canEdit);
+					$tpl->assign('canViewLog', $canViewLog);
+					
+					$tpl->assign('today_view', $today_view);
+					$tpl->assign('assigned_users', $assigned_users);
+					
+					$tpl->assign('obj', $this);
+					
+					$tpl->assign('style', $style);
+					
+					$tpl->displayFile('tasks', 'list.row');
+				}
 }
 
 
@@ -2275,6 +2295,47 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         }
         $s .= '</tr>';
         echo $s;
+}
+
+function taskstyle($task)
+{
+	$now = new CDate();
+	$start_date = intval( $task["task_start_date"] ) ? new CDate( $task["task_start_date"] ) : null;
+	$end_date = intval( $task["task_end_date"] ) ? new CDate( $task["task_end_date"] ) : null;
+
+	if ($start_date) {
+		if (!$end_date) {
+						$end_date = $start_date;
+						$end_date->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
+		}
+	}
+	else
+		return '';
+
+	if ($task['task_percent_complete'] == 0) {
+		if ($now->before( $start_date )) 
+			$style = 'class="task_future"';
+		else
+			$style = 'class="task_notstarted"';
+	} else {
+		$style = 'class="task_started"';
+	}
+
+	if ($now->after( $end_date )) {
+		$sign = -1;
+		$style = 'class="task_overdue"';
+	}
+	if ($task["task_percent_complete"] == 100) {
+		$t = new CTask();
+		$t->load($task['task_id']);
+		$actual_end_date = new CDate($t->get_actual_end_date());
+		if ($actual_end_date->after($end_date))
+			$style = 'class="task_late"';
+		else
+			$style = 'class="task_done"';
+	}
+	
+	return $style;
 }
 
 function findchild( &$tarr, $parent, $level=0){

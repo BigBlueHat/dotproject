@@ -15,10 +15,14 @@ class CTemplate extends Smarty
 		$this->compile_dir	= $baseDir . '/files/cache/smarty_templates';
 		$this->cache_dir		= $baseDir . '/files/cache/smarty';
 		$this->plugins_dir[]= $baseDir . '/includes/smarty';
+		
+		$this->assign('template', $this->template_dir);
 	}
 	
 	function displayList($module, $rows, $show = null)
 	{
+		$page = dPgetParam($_GET, 'page', 1);
+
 		if (!isset($show))
 		{
 			$keys = array_keys($rows);
@@ -31,7 +35,9 @@ class CTemplate extends Smarty
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
 		
+		$this->displayPagination($page, count($rows), $module);
 		$this->displayFile('list', $module);
+		$this->displayPagination($page, count($rows), $module);
 	}
 	
 	function displayView($item)
@@ -50,6 +56,18 @@ class CTemplate extends Smarty
 		$this->assign('obj', $item);
 		
 		$this->displayFile('addedit');
+	}
+	
+	function displayPagination($currentPage, $totalRecords, $module = null)
+	{
+		$pagination['page'] = $currentPage;
+		$pagination['total_records'] = $totalRecords;
+		$pagination['page_size'] = 30;
+		$pagination['pages_size'] = 30;
+		$pagination['total_pages'] = ceil($pagination['total_records'] / $pagination['page_size']);
+		$pagination['pages'] = range(($pagination['page'] >= ($pagination['pages_size'] / 2))?$pagination['page'] : 1, $pagination['total_pages']);
+		$this->assign('pagination', $pagination);
+		$this->display('pagination.html', $module);
 	}
 	
 	function displayFile($file, $module = null)

@@ -1,6 +1,7 @@
 <?php //$Id$
 //global $durnTypes, $AppUI;
 $perms =& $AppUI->acl();
+global $tpl;
 if (! $perms->checkModule('tasks', 'view'))
 	$AppUI->redirect("m=public&a=access_denied");
 
@@ -48,13 +49,15 @@ if (isset($_GET['table']))
 	//echo $q->prepare();
 	//$q->addTable('tasks');
 	//$q->addQuery('*');
-
+$sql = $q->prepare();
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
 	$tasks = $q->loadList();
 	$msg = db_error();
 	if ($msg)
-		$AppUI->setMsg('failed collapse/expand', UI_MSG_WARNING);
+		$AppUI->setMsg('failed collapse/expand: ' . $msg, UI_MSG_WARNING);
 	else
+	{
+		//echo 'parent: ' . $parent . '; sql: ' . $sql . '::' . db_error();
 		foreach ($tasks as $t)
 		{
 			$q->clear();
@@ -71,9 +74,20 @@ if (isset($_GET['table']))
 		
 			$t['node_id'] = $node_id . '-' . $t['task_id'];
 			echo $t['node_id'] . '---';
-			showtask($t, count(explode('-', $t['node_id']))-2); 
+			
+			$t['canEdit'] = !getDenyEdit( 'tasks', $t['task_id'] );
+			$t['canViewLog'] = $perms->checkModuleItem('tasks', 'view', $t['task_id']);
+
+			$t['level'] = range(1, count(explode('-', $t['node_id']))-2);
+
+			global $durnTypes;
+			$tpl->assign('durnTypes', $durnTypes);
+
+			$tpl->assign('obj', $t);
+			$tpl->displayFile('list.row', 'tasks');
 			echo '[][][]';
 		}
+	}
 }
 else 
 {

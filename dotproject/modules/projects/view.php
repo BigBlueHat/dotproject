@@ -247,7 +247,7 @@ $canViewTask = $perms->checkModule('tasks', 'view');
 if ($canViewTask) {
 	$taskStatus = dPgetSysVal('TaskStatus');
 	foreach ($taskStatus as $ts) {
-		$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/tasks", 'Tasks ('.$ts.')' );
+		$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/vw_tasks", 'Tasks ('.$ts.')' );
 	}
 }
 if ($perms->checkModule('forums', 'view'))

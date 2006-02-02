@@ -21,7 +21,12 @@ function smarty_function_dPshowImage($params, &$smarty)
 	
     extract($params);
 		if($find)
-			$src = dPfindImage($find);
+		{
+			if ($mod)
+				$src = dPfindImage($find, $mod);
+			else
+				$src = dPfindImage($find);
+		}
 		
     $return = '';
     if ($src)

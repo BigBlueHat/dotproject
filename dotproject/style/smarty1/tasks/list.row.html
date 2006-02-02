@@ -1,0 +1,141 @@
+
+<tr id="node-{$obj.node_id}"> {* ondblclick="dpToggleNode(this)" *}
+{* edit icon *}
+	<td>{if $obj.canEdit}
+		<a href="?m=tasks&a=addedit&task_id={$obj.task_id}">
+			<img src="./images/icons/pencil.gif" alt="{dPtranslate word='Edit Task'}" border="0" width="12" height="12"></a>
+	{/if}
+	</td>
+{* pinned *}
+	<td>
+		<a href="?m=tasks&pin={if $obj.task_pinned}0{else}1{/if}&task_id={$obj.task_id}">
+			<img src="./images/icons/{if !$obj.task_pinned}un{/if}pin.gif" 
+				alt="{if $obj.task_pinned}{dPtranslate word='pin Task'}{else}{dPtranslate word='unpin Task'}{/if}" border="0" width="12" height="12">
+		</a>
+	</td>
+{* New Log *}
+	<td align="center" valign="middle">
+{if $obj.task_log_problem > 0}
+		<a href="?m=tasks&a=view&task_id={$obj.task_id}&tab=0&problem=1">
+			{dPshowImage img='./images/icons/dialog-warning5.png' width='16' height='16' title='Problem' alt='Problem!'}
+		</a>
+{elseif $obj.canViewLog}
+		<a href="?m=tasks&a=view&task_id={$obj.task_id}&tab=1">{dPtranslate word='Log'}</a>
+{/if}
+	</td>
+{* percent complete *}
+	<td align="right">{$obj.task_percent_complete}%</td>
+{* priority *}
+	<td align="center" nowrap="nowrap">
+{if $obj.task_priority < 0}
+	<img src="./images/icons/priority-{$obj.task_priority}.gif" width=13 height=16>
+{else if $obj.task_priority > 0}
+	<img src="./images/icons/priority+{$obj.task_priority}.gif" width=13 height=16>
+{/if}
+{if $obj.file_count > 0}<img src="./images/clip.png" alt="F">{/if}
+	</td>
+{* name *}
+	<td name="name" width="{if $today_view}50{else}90{/if}%">
+	{* won't show if ajax is used *}
+	{foreach from=$obj.level item=not_used name=level}
+		{if $smarty.foreach.level.last}
+		<img src="./images/corner-dots.gif" width="16" height="12" border="0">
+		{else}
+		<img src="./images/shim.gif" width="16" height="12"  border="0">
+		{/if}
+	{/foreach}
+{* name link *}
+{if $obj.task_milestone > 0}
+<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
+	<b>{$obj.task_name}</b>
+</a> <img src="./images/icons/milestone.gif" border="0">
+{elseif $obj.task_dynamic == '1'}
+	{if !dPgetConfig('tasks_ajax_list')}
+<a href="index.php{$query_string}&close_task_id={$obj.task_id}"><img src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" /></a>
+	{else}
+<img src="images/icons/expand.gif" border="0" align="center" onClick="dpToggleNode(this);" />
+	{/if}
+<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
+	<b><i>{$obj.task_name}</i></b>
+</a>
+{else} {* normal task *}
+		&nbsp;
+		<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
+			{$obj.task_name}
+		</a>
+{/if}
+	</td>
+
+{if $today_view}
+	<td width="50%">
+		<a href="./index.php?m=projects&a=view&project_id={$obj.task_project}">
+			<span style="padding:2px;background-color:#{$obj.project_color_identifier};color:{dPbestColor bg=$obj.project_color_identifier}">
+				{$obj.project_name}
+			</span>
+		</a>
+	</td>
+{/if}
+
+{* task owner *}
+{if !$today_view}
+	<td nowrap="nowrap" align="center">
+		<a href="?m=admin&a=viewuser&user_id={$obj.user_id}">
+			{$obj.user_username}
+		</a>
+	</td>
+{/if}
+{if $obj.task_assigned_users}
+	{if $show_all_assignees}
+	<td align="center">
+		{foreach from=$obj.task_assigned_users item=user}
+		<a href="?m=admin&a=viewuser&user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
+			{$user.user_username} ({$user.perc_assignment}%)
+		</a>, 
+		{/foreach}
+	</td>
+	{else}
+	<td align="center" nowrap="nowrap">
+		{assign var=first_user value=$obj.task_assigned_users[0]}
+		<a href="?m=admin&a=viewuser&user_id={$first_user.user_id}" title="{dPtranslate word='Extent of Assignment'}:{$first_user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $first_user.perc_assignment}%">
+			{$first_user.user_username} ({$first_user.perc_assignment}%)</a>
+		{if $obj.assignee_count > 1}
+		<a href="javascript: void(0);"  onClick="toggle_users('users_{$obj.task_id}');" title="">(+{$obj.assignee_count-1})</a>
+		<span style="display: none" id="users_{$obj.task_id}">
+		{foreach from=$obj.task_assigned_users item=user}
+			{if $user.user_id != $first_user.user_id}
+			<br />
+			<a href="?m=admin&a=viewuser&user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
+				{$user.user_username} ({$user.perc_assignment}%)</a>
+			{/if}
+		{/foreach}
+		</span>
+		{/if}
+	</td>
+	{/if}
+{elseif !$today_view}
+	<td align="center">-</td>
+{/if}
+
+	<td nowrap="nowrap" align="center" {$obj.style}>
+		{dPdateFormat date=$obj.task_start_date format='full'}
+	</td>
+{* duration or milestone *}
+	<td align="center" nowrap="nowrap" {$obj.style}>
+		{$obj.task_duration} {dPtranslate word=$durnTypes[$obj.task_duration_type]}
+	</td>
+	<td nowrap="nowrap" align="center" {$obj.style}>{dPdateFormat date=$obj.task_end_date format='full'}</td>
+{if $today_view}
+	<td nowrap="nowrap" align="center" {$obj.style}>{$obj.task_due_in}</td>
+{else}
+	<td nowrap="nowrap" align="center" {$obj.style}>
+		{dPdateFormat date=$obj.last_update format='full'}
+	</td>
+{/if}
+
+{* Assignment checkbox *}
+{if $canEdit && $direct_edit_assignment}
+	<td align="center">
+		<input type="checkbox" name="selected_task[{$obj.task_id}]" value="{$obj.task_id}"/>
+	</td>
+{/if}
+</tr>

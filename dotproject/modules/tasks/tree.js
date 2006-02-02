@@ -174,7 +174,9 @@ function processReqChange() {
 	if (req.readyState == 4) {
 		// only if "OK"
 		if (req.status == 200) {				
-			tasks = req.responseText.split('[][][]');
+			ret = req.responseText;
+			// alert('Returned: ' + ret);
+			tasks = ret.split('[][][]');
 			for (i = 0; i < tasks.length; i++)
 			{
 				t = tasks[i].split('---');

@@ -1,0 +1,65 @@
+{if $project_id || $task_id}
+<form name="task_list_options" method="POST" action="{$query_string}">
+<table width="100%" border="0" cellpadding="1" cellspacing="0">
+<input type="hidden" name="show_task_options" value="1">
+<tr>
+	<td align="right">
+		<table>
+		<tr>
+			<td>{dPtranslate word='Show'}:</td>
+			<td>
+				<input type="checkbox" name="show_incomplete" onclick="document.task_list_options.submit();" {if $showIncomplete}checked="checked"{/if} />
+			</td>
+			<td>{dPtranslate word='Incomplete Tasks Only'}</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>
+</form>
+{/if}
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+	<th width="10">&nbsp;</th>
+	<th width="10">{dPtranslate word='Pin'}</th>
+	<th width="10">{dPtranslate word='New Log'}</th>
+	<th width="20">{php}sort_by_item_title( 'Work', 'task_percent_complete', SORT_NUMERIC);{/php}</th>
+	<th align="center">{php}sort_by_item_title( 'P', 'task_priority', SORT_NUMERIC );{/php}</th>
+	<th width="200">{php}sort_by_item_title( 'Task Name', 'task_name', SORT_STRING );{/php}</th>
+	<th nowrap="nowrap">{php}sort_by_item_title( 'Task Creator', 'user_username', SORT_STRING );{/php}</th>
+	<th nowrap="nowrap">{dPtranslate word='Assigned Users'}</th>
+	<th nowrap="nowrap">{php}sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );{/php}</th>
+	<th nowrap="nowrap">{php}sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );{/php}&nbsp;&nbsp;</th>
+	<th nowrap="nowrap">{php}sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );{/php}</th>
+	<th nowrap="nowrap">{php}sort_by_item_title( 'Last Update', 'last_update', SORT_NUMERIC );{/php}</th>
+</tr>
+
+{foreach from=$rows item=task}
+{include file="tasks/list.row.html" obj=$task}
+{*$task->showtask()*}
+{/foreach}
+</table>
+
+<table>
+<tr>
+        <td>{dPtranslate word='Key'}:</td>
+        <td>&nbsp; &nbsp;</td>
+        <td class="task_future">&nbsp; &nbsp;</td>
+        <td>={dPtranslate word='Future Task'}</td>
+        <td>&nbsp; &nbsp;</td>
+        <td class="task_started">&nbsp; &nbsp;</td>
+        <td>={dPtranslate word='Started and on time'}</td>
+        <td class="task_notstarted">&nbsp; &nbsp;</td>
+        <td>={dPtranslate word='Should have started'}</td>
+        <td>&nbsp; &nbsp;</td>
+        <td class="task_overdue">&nbsp; &nbsp;</td>
+        <td>={dPtranslate word='Overdue'}</td>
+        <td>&nbsp; &nbsp;</td>
+        <td class="task_late">&nbsp; &nbsp;</td>
+        <td>={dPtranslate word='Late'}</td>
+        <td>&nbsp; &nbsp;</td>
+        <td class="task_done">&nbsp; &nbsp;</td>
+        <td>={dPtranslate word='Done'}</td>
+</tr>
+</table>
