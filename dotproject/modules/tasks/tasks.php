@@ -133,7 +133,7 @@ if ($canViewTask) {
 
 $q->clear();
 
-$q->addQuery('distinct tasks.task_id, task_parent, task_name');
+$q->addQuery('tasks.task_id, task_parent, task_name');
 $q->addQuery('task_start_date, task_end_date, task_dynamic');
 $q->addQuery('task_pinned, pin.user_id as pin_user');
 $q->addQuery('task_priority, task_percent_complete');

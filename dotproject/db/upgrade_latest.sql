@@ -74,3 +74,8 @@ CREATE TABLE `webcal_resources` (
   `webcal_eq_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`webcal_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='webcal resource management' AUTO_INCREMENT=29 ;
+
+#20060203
+# Indeces added for optimization purposes.
+alter table user_tasks add index index_ut_to_tasks (task_id);
+alter table history add index index_history_item (history_item);
