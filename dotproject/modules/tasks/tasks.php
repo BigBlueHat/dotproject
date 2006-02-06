@@ -111,7 +111,7 @@ if ( count($allowedProjects))
 $q->clear();
 $q->addQuery('project_id, project_color_identifier, project_name');
 $q->addQuery('COUNT(t1.task_id) as total_tasks');
-$q->addQuery('SUM(t1.task_duration*t1.task_percent_complete)/SUM(t1.task_duration) as project_percent_complete');
+$q->addQuery('SUM(t1.task_duration*t1.task_duration_type*t1.task_percent_complete)/SUM(t1.task_duration*t1.task_duration_type) as project_percent_complete');
 $q->addQuery('company_name');
 $q->addTable('projects');
 $q->leftJoin('tasks', 't1', 'projects.project_id = t1.task_project');
