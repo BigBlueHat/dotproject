@@ -22,6 +22,9 @@ if (isset( $_GET["search_string"] )){
 						  OR contact_notes      like '%{$_GET['search_string']}%'
 						  OR contact_email      like '%{$_GET['search_string']}%'";
 }
+
+$company_id = dPgetParam($_POST, 'company_filter', 'all');
+
 $where = $AppUI->getState( 'ContIdxWhere' ) ? $AppUI->getState( 'ContIdxWhere' ) : '%';
 
 $orderby = 'contact_order_by';
@@ -64,7 +67,9 @@ $q->addWhere("
 		OR (contact_private=1 AND contact_owner=$AppUI->user_id)
 		OR contact_owner IS NULL OR contact_owner = 0
 	)");
-if (count($allowedCompanies)) {
+if ($company_id != 'all')
+	$q->addWhere('contact_company = ' . $company_id);
+else if (count($allowedCompanies)) {
 	$comp_where = implode(' AND ', $allowedCompanies);
 	$q->addWhere( '( (' . $comp_where . ') OR contact_company = 0 )' );
 }
@@ -112,6 +117,14 @@ $tdw = floor( 100 / $carrWidth );
 /**
 * Contact search form
 */
+
+// get CCompany() to filter tasks by company
+require_once( $AppUI->getModuleClass( 'companies' ) );
+$obj = new CCompany();
+$companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$filters2 = arrayMerge(  array( 'all' => $AppUI->_('All Companies', UI_OUTPUT_RAW) ), $companies );
+
+
  // Let's remove the first '%' that we previously added to ContIdxWhere
 $default_search_string = dPformSafe(substr($AppUI->getState( 'ContIdxWhere' ), 1, strlen($AppUI->getState( 'ContIdxWhere' ))), true);
 
@@ -140,6 +153,11 @@ $a2z .= "\n</tr>\n<tr><td colspan='28'>$form</td></tr></table>";
 // setup the title block
 $titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $a2z );
+$titleBlock->addCell(
+  arraySelect( $filters2, 'company_filter', 'size=1 class=text onChange="document.companyFilter.submit();"', $company_id, false ), '',
+  '<form action="?m=contacts" method="post" name="companyFilter">', '</form>'
+);
+
 if ($canEdit) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',
@@ -150,6 +168,7 @@ if ($canEdit) {
 		'<a href="./index.php?m=contacts&a=vcardimport&dialog=0">' . $AppUI->_('Import vCard') . '</a>'
 	);
 }
+
 $titleBlock->show();
 
 // TODO: Check to see that the Edit function is separated.
