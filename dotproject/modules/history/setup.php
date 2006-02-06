@@ -37,7 +37,7 @@ class CSetupHistory {
 		  "history_description text," .
 		  "PRIMARY KEY  (history_id)," .
 		  "UNIQUE KEY history_id (history_id)," .
-			'KEY `index_histoy_item` (history_item)' . 
+			'KEY `index_history_item` (history_item)' . 
 		  ") TYPE=MyISAM";
 		$q = new DBQuery;
 		$q->createTable('history');
