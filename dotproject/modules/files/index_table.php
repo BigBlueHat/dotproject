@@ -189,7 +189,6 @@ foreach ($files as $file_row) {
 
 	$tpl_row->assign('checkout_link', $checkinout_html);
                 
-	$tpl_row->assign('latest_file', $latest_file);
 
 	$fnamelen = 32;
 	$filename = $latest_file['file_name'];
@@ -200,7 +199,8 @@ foreach ($files as $file_row) {
 		$filename .= '[...].' . $ext;
 	}
 
-	$tpl->assign('filename', $filename);
+	$latest_file['filename_display'] = $filename;
+	$tpl_row->assign('latest_file', $latest_file);
 
 	$hidden_table = '';
 	$tpl_row->assign('file_row', $file_row); 	
