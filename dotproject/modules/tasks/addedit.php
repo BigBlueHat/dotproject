@@ -139,15 +139,10 @@ $q->addWhere("task_project = '$task_project'");
 $parents = array();
 $projTasksWithEndDates = array( $obj->task_id => $AppUI->_('None') );//arrays contains task end date info for setting new task start date as maximum end date of dependenced tasks
 $all_tasks = array();
-$sub_tasks = $q->exec();
-$q->clear();
-if ($sub_tasks) {
-	while ($sub_task = db_fetch_assoc($sub_tasks)) {
-		// Build parent/child task list
-		$parents[$sub_task['task_parent']][] = $sub_task['task_id'];
-		$all_tasks[$sub_task['task_id']] = $sub_task;
-		build_date_list($projTasksWithEndDates, $sub_task);
-	}
+$all_tasks = $q->loadHashList('task_id');
+foreach($all_tasks as $sub_task) {
+	$parents[$sub_task['task_parent']][] = $sub_task['task_id'];
+	build_date_list($projTasksWithEndDates, $sub_task);
 }
 
 // let's iterate root tasks
