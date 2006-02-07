@@ -171,13 +171,22 @@ function insertNewRow(row, html)
 	{
 		cell = row.insertCell(i);
 		// Get content.
-		td = tds[i].substring(tds[i].indexOf('<td') + 4);
+		td = tds[i].substring(tds[i].indexOf('<td') + 3);
+//alert('td: ' + td);
 		attr = td.substring(0, td.indexOf('>'));
+		attr = attr.replace(/^\s+|\s+$/g, "");
 		// Parse td attributes
-		attrs = attr.split(' ');
-		for(j = 0; j < attrs.length; j++)
-			cell.setAttribute(attrs[j].substring(0, attrs[j].indexOf('=')), 
-											attrs[j].substring(attrs[j].indexOf('=') + 2, attrs[j].length - 1));
+		if (attr != '')
+		{
+			attrs = attr.split(' ');
+			for(j = 0; j < attrs.length; j++)
+			{
+				attrName = attrs[j].substring(0, attrs[j].indexOf('='));
+				attrValue = attrs[j].substring(attrs[j].indexOf('=') + 1);
+				attrValue = attrValue.substring(1, attrValue.length-1);
+				cell.setAttribute(attrName, attrValue);
+			}
+		}
 		td = td.substring(td.indexOf('>') + 1);
 		cell.innerHTML = td;
 	}
@@ -203,8 +212,8 @@ function processReqChange() {
 				node_id = t[1].substring(t[1].indexOf('id')+4);
 				node_id = node_id.substring(0, node_id.indexOf('\''));
 				
-				t[1] = t[1].substring(t[1].indexOf('\n')+2, t[1].length - 5);
-				t[1] = t[1].substring(t[1].indexOf('\n'));
+			//	t[1] = t[1].substring(t[1].indexOf('\n')+2, t[1].length - 5);
+			//	t[1] = t[1].substring(t[1].indexOf('\n'));
 			
 				parent_id = t[0].substring(0, t[0].lastIndexOf('-'));
 
