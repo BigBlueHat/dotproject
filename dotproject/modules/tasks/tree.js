@@ -124,7 +124,7 @@ function dpToggleTree() {
 
 function dpToggleNode(img) { // oRow
 	oRow = img.parentNode.parentNode;
-	table = oRow.parentNode;
+	table = oRow.parentNode.parentNode;
 
 	if (oRow._dpCollapsed == undefined)
 		oRow._dpCollapsed = true;
@@ -159,10 +159,29 @@ function loadXMLDoc(url) {
 	}
 }
 
-function insertNewRow(pos, html)
+function insertNewRow(row, html)
 {
-	table.insertRow(pos);
-	table.rows.item(pos).innerHTML = html;
+	table = row.parentNode.parentNode;
+	pos = row.rowIndex + 1;
+	row = table.insertRow(pos);
+	// row.innerHTML = html; // doesn't work in IE
+	// DIRTY HACK for IE
+	tds = html.split('</td>');
+  for(i = 0; i < tds.length; i++)
+	{
+		cell = row.insertCell(i);
+		// Get content.
+		td = tds[i].substring(tds[i].indexOf('<td') + 4);
+		attr = td.substring(0, td.indexOf('>'));
+		// Parse td attributes
+		attrs = attr.split(' ');
+		for(j = 0; j < attrs.length; j++)
+			cell.setAttribute(attrs[j].substring(0, attrs[j].indexOf('=')), 
+											attrs[j].substring(attrs[j].indexOf('=') + 2, attrs[j].length - 1));
+		td = td.substring(td.indexOf('>') + 1);
+		cell.innerHTML = td;
+	}
+
 	//table.rows.item(pos).outerHTML = html;
 	
 	return table.rows.item(pos);
@@ -180,19 +199,21 @@ function processReqChange() {
 			for (i = 0; i < tasks.length; i++)
 			{
 				t = tasks[i].split('---');
+
 				node_id = t[1].substring(t[1].indexOf('id')+4);
 				node_id = node_id.substring(0, node_id.indexOf('\''));
 				
 				t[1] = t[1].substring(t[1].indexOf('\n')+2, t[1].length - 5);
 				t[1] = t[1].substring(t[1].indexOf('\n'));
-				
-				parent = t[0].substring(0, t[0].lastIndexOf('-'));
+			
+				parent_id = t[0].substring(0, t[0].lastIndexOf('-'));
 
-				rowInsert = document.getElementById(parent).rowIndex;
-				row = insertNewRow(rowInsert + 1, t[1]);
+				rowInsert = document.getElementById(parent_id); //.rowIndex;
+				table = document.getElementById(parent_id).parentNode.parentNode;
+				row = insertNewRow(rowInsert, t[1]);
 				row.id = t[0];
 				
-				loadedTasks[parent] = true;
+				loadedTasks[parent_id] = true;
 			}
 		} else {
 			return false
