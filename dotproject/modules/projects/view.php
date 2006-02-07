@@ -78,7 +78,7 @@ $q->addTable('tasks');
 $q->addQuery('ROUND(SUM(task_log_hours),2)');
 $q->addWhere("task_log_task = task_id AND task_project = $project_id AND task_milestone ='0'");
 $worked_hours = $q->loadResult();
-$worked_hours = rtrim($worked_hours, "0");
+$worked_hours = rtrim($worked_hours, '.');
 $q->clear();
 
 // total hours
