@@ -147,6 +147,9 @@ if ($pinned_only)
 if ($showIncomplete)
 	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
 
+$q->addWhere('tasks.task_id = task_parent');
+// $q->addWhere('(task_id = task_parent OR (t1.task_parent = t2.task_id AND t2.task_dynamic <> 1))');
+
 // patch 2.12.04 text search
 //if ( $search_text = $AppUI->getState('searchtext') )
 //        $q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
@@ -180,7 +183,7 @@ foreach ($tasks as $k => $task)
         $q->addGroup('ut.user_id');
 
         $tasks[$k]['task_assigned_users'] = $q->loadList();
-				$tasks[$k]['node_id'] = $task['task_id'];
+				$tasks[$k]['node_id'] = 'node-' . $task['task_id'];
 				$tasks[$k]['style'] = taskstyle($task);
 				$tasks[$k]['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
 				$tasks[$k]['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);

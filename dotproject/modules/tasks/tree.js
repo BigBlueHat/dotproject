@@ -164,6 +164,11 @@ function insertNewRow(row, html)
 	table = row.parentNode.parentNode;
 	pos = row.rowIndex + 1;
 	row = table.insertRow(pos);
+	tr_id = html.substring(4, html.indexOf('>'));
+	attrName = tr_id.substring(0, tr_id.indexOf('='));
+	attrValue = tr_id.substring(tr_id.indexOf('=') + 1);
+	attrValue = attrValue.substring(1, attrValue.length-1);
+	row.setAttribute(attrName, attrValue);
 	// row.innerHTML = html; // doesn't work in IE
 	// DIRTY HACK for IE
 	tds = html.split('</td>');

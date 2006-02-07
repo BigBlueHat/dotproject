@@ -1,3 +1,60 @@
+2006-02-06 21:53  (cyberhorse)
+---------------------------------
+fileviewer.php
+- Mantis #1470 - check for fopen return value in fileviewer.
+
+2006-02-06 21:49  (cyberhorse)
+---------------------------------
+modules/contacts/index.php
+- Mantis #1169 - Added company filter to contacts screen.
+
+2006-02-06 15:41  (cyberhorse)
+---------------------------------
+modules/history/setup.php
+- fixed spelling mistake.
+
+2006-02-03 17:06  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/history/setup.php
+modules/tasks/tasks.php
+- Optimizations applied as suggested by danny.green.eye on the forums.
+
+2006-02-03 01:50  (cyberhorse)
+---------------------------------
+classes/template.class.php
+includes/smarty/function.dPshowImage.php
+modules/projects/view.php
+modules/tasks/list.js.php
+modules/tasks/listtasks.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tree.js
+modules/tasks/vw_tasks.php
+style/smarty1/pagination.html
+style/smarty1/tasks/list.html
+style/smarty1/tasks/list.projects.html
+style/smarty1/tasks/list.row.html
+- task list smartified - big changes done. Probably more work needed. There are redundant variables and functions now (tasks.class.php and global variables)
+- pagination added (not fully functioning in tabs yet and some other places)
+
+2006-02-01 20:11  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+includes/main_functions.php
+- Mantis #1451 - Patch applied
+
+2006-01-31 00:29  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+- PHP5 compatibility issue with arraySelect fixed.
+
+2006-01-31 00:22  (cyberhorse)
+---------------------------------
+ChangeLog
+- ChangeLog updated
+
 2006-01-29 11:45  (ajdonnison)
 ---------------------------------
 modules/resources/addedit.php

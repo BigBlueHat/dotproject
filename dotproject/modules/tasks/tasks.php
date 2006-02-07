@@ -301,7 +301,7 @@ foreach ($tasks as $row) {
 	$assigned_users = array ();
 	$row['task_assigned_users'] = $q->loadList();
 	$row['style'] = taskstyle($row);
-	$row['node_id'] = $row['task_id'];
+	$row['node_id'] = 'node-' . $row['task_id'];
 	$row['canEdit'] = !getDenyEdit( 'tasks', $row['task_id'] );
 	$row['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $row['task_id']);
 		
