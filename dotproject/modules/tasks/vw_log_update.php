@@ -16,6 +16,7 @@ if ($task_log_id) {
 } else {
 	if (! $canAdd)
 		$AppUI->redirect("m=public&a=access_denied");
+	$log->task_log_creator = $AppUI->user_id;
 	$log->task_log_task = $task_id;
 	$log->task_log_name = $obj->task_name;
 }
@@ -130,7 +131,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 	<input type="hidden" name="dosql" value="do_updatetask" />
 	<input type="hidden" name="task_log_id" value="<?php echo $log->task_log_id;?>" />
 	<input type="hidden" name="task_log_task" value="<?php echo $log->task_log_task;?>" />
-	<input type="hidden" name="task_log_creator" value="<?php echo $AppUI->user_id;?>" />
+	<input type="hidden" name="task_log_creator" value="<?php echo $log->task_log_creator;?>" />
 	<input type="hidden" name="task_log_name" value="Update :<?php echo $log->task_log_name;?>" />
 <table cellspacing="1" cellpadding="2" border="0" width="100%">
 <tr>
