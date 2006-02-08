@@ -712,7 +712,7 @@ class CEvent extends CDpObject {
 	  $body .= "\n\n" . $this->event_description . "\n";
 
 	// create vEvent Attachment String	
-	$v = new vEvent;
+	$v = new vCalendar;
 	$v->addSum($this->event_title);
 	$v->addDesc($this->event_description);
 	$v->addCat($types[(int) $this->event_type]);
