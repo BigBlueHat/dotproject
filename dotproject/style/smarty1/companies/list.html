@@ -16,7 +16,7 @@
 </tr>
 
 {section name=i loop=$rows}
-	<tr>
+	<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
 	<td>&nbsp;</td>
 	{section name=j loop=$show}
 	{if $show[j] == 'company_name'}

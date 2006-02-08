@@ -12,7 +12,7 @@
 	</tr>
 	{*{section name=i loop=$rows}*}
 {foreach from=$rows item=row}
-	<tr>
+	<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
 	{section name=j loop=$show}
 		{if $show[j] == 'project_name'}
 			<td width="50%"><a href="?m=projects&a=view&project_id={$row.project_id}">{$row.project_name}</a></td>

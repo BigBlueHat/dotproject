@@ -1,4 +1,4 @@
-<tr id="{$obj.node_id}"> {* ondblclick="dpToggleNode(this)" *}
+<tr id="{$obj.node_id}" onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')"> {* ondblclick="dpToggleNode(this)" *}
 {* edit icon *}
 	<td>{if $obj.canEdit}
 		<a href="?m=tasks&a=addedit&task_id={$obj.task_id}">

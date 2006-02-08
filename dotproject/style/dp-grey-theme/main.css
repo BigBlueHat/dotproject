@@ -211,7 +211,7 @@ table.tbl TH {
 	list-style-position: inside;
 }
 
-table.tbl td {
+table.tbl tr {
 	background-color: #ECECEC;
 }
 

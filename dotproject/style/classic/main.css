@@ -133,7 +133,7 @@ TABLE.tbl TH {
 	font-weight: normal;
 }
 
-TABLE.tbl TD {
+TABLE.tbl tr {
 	background-color: #f4efe3;
 }
 

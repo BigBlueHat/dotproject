@@ -24,7 +24,7 @@
 	<th nowrap="nowrap">{dPtranslate word='User'}</th>
 </tr>
 {foreach from=$rows item=row}
-<tr>
+<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
 	<td>
 		<a href="?m=history&a=addedit&history_id={$row.history_id}">
 			<img src="./images/icons/pencil.gif" alt="{dPtranslate word='Edit History'}" border="0" width="12" height="12">
