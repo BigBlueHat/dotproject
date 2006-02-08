@@ -58,6 +58,10 @@ $sql = $q->prepare();
 	else
 	{
 		//echo 'parent: ' . $parent . '; sql: ' . $sql . '::' . db_error();
+		global $durnTypes;
+		$tpl->assign('durnTypes', $durnTypes);
+
+		$tpl->assign('direct_edit_assignment', false);
 		foreach ($tasks as $t)
 		{
 			$q->clear();
@@ -79,9 +83,6 @@ $sql = $q->prepare();
 			$t['canViewLog'] = $perms->checkModuleItem('tasks', 'view', $t['task_id']);
 
 			$t['level'] = range(1, count(explode('-', $t['node_id']))-2);
-
-			global $durnTypes;
-			$tpl->assign('durnTypes', $durnTypes);
 
 			$tpl->assign('obj', $t);
 			$tpl->displayFile('list.row', 'tasks');

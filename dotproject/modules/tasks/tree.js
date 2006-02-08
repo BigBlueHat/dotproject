@@ -169,6 +169,7 @@ function insertNewRow(row, html)
 	attrValue = tr_id.substring(tr_id.indexOf('=') + 1);
 	attrValue = attrValue.substring(1, attrValue.length-1);
 	row.setAttribute(attrName, attrValue);
+//alert(html);
 	// row.innerHTML = html; // doesn't work in IE
 	// DIRTY HACK for IE
 	tds = html.split('</td>');
@@ -177,7 +178,6 @@ function insertNewRow(row, html)
 		cell = row.insertCell(i);
 		// Get content.
 		td = tds[i].substring(tds[i].indexOf('<td') + 3);
-//alert('td: ' + td);
 		attr = td.substring(0, td.indexOf('>'));
 		attr = attr.replace(/^\s+|\s+$/g, "");
 		// Parse td attributes
@@ -187,6 +187,9 @@ function insertNewRow(row, html)
 			for(j = 0; j < attrs.length; j++)
 			{
 				attrName = attrs[j].substring(0, attrs[j].indexOf('='));
+				attrName = attrName.replace(/^\s+|\s+$/g, "");
+				if (attrName == '')
+					continue;
 				attrValue = attrs[j].substring(attrs[j].indexOf('=') + 1);
 				attrValue = attrValue.substring(1, attrValue.length-1);
 				cell.setAttribute(attrName, attrValue);
@@ -195,10 +198,9 @@ function insertNewRow(row, html)
 		td = td.substring(td.indexOf('>') + 1);
 		cell.innerHTML = td;
 	}
-
 	//table.rows.item(pos).outerHTML = html;
 	
-	return table.rows.item(pos);
+	return row;
 }
 
 function processReqChange() {
@@ -209,10 +211,10 @@ function processReqChange() {
 		if (req.status == 200) {				
 			ret = req.responseText;
 			// alert('Returned: ' + ret);
-			tasks = ret.split('[][][]');
-			for (i = 0; i < tasks.length; i++)
+			tasks = ret.substring(0, ret.length - 6).split('[][][]');
+			for (task_num = 0; task_num < tasks.length; task_num++)
 			{
-				t = tasks[i].split('---');
+				t = tasks[task_num].split('---');
 
 				node_id = t[1].substring(t[1].indexOf('id')+4);
 				node_id = node_id.substring(0, node_id.indexOf('\''));
@@ -221,12 +223,11 @@ function processReqChange() {
 			//	t[1] = t[1].substring(t[1].indexOf('\n'));
 			
 				parent_id = t[0].substring(0, t[0].lastIndexOf('-'));
-
 				rowInsert = document.getElementById(parent_id); //.rowIndex;
 				table = document.getElementById(parent_id).parentNode.parentNode;
 				row = insertNewRow(rowInsert, t[1]);
-				row.id = t[0];
-				
+				row.setAttribute('id', t[0]);
+
 				loadedTasks[parent_id] = true;
 			}
 		} else {
