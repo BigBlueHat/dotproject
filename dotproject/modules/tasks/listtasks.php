@@ -44,12 +44,12 @@ if (isset($_GET['table']))
 	$q->addWhere('task_parent = ' . $parent);
 	$q->addWhere('task_parent <> tasks.task_id');
 	$q->addGroup('task_id');
-	$q->addOrder('project_id, task_start_date');
+	$q->addOrder('project_id, task_start_date DESC');
 	
 	//echo $q->prepare();
 	//$q->addTable('tasks');
 	//$q->addQuery('*');
-$sql = $q->prepare();
+	//$sql = $q->prepare();
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
 	$tasks = $q->loadList();
 	$msg = db_error();
