@@ -140,6 +140,7 @@ $q->clear();
 
 $q->addQuery('tasks.task_id, task_parent, task_name');
 $q->addQuery('task_start_date, task_end_date, task_dynamic');
+$q->addQuery('count(tasks.task_parent) as children');
 $q->addQuery('task_pinned, pin.user_id as pin_user');
 $q->addQuery('task_priority, task_percent_complete');
 $q->addQuery('task_duration, task_duration_type');
@@ -169,6 +170,8 @@ $q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = tasks.task_id AND tlog.ta
 $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
+
+$q->addWhere('tasks.task_id = task_parent');
 
 if ($project_id)
 	$q->addWhere('task_project = ' . $project_id);
@@ -280,7 +283,7 @@ if ( ! $min_view && $f2 != 'all' ) {
 	$q->addWhere('company_id = ' . intval($f2) );
 }
 
-$q->addGroup('task_id');
+$q->addGroup('tasks.task_id');
 $q->addOrder('project_id, task_start_date');
 
 if ($canViewTask)
@@ -300,6 +303,11 @@ foreach ($tasks as $row) {
 	
 	$assigned_users = array ();
 	$row['task_assigned_users'] = $q->loadList();
+	$q->addQuery('count(*) as children');
+	$q->addTable('tasks');
+	$q->addWhere('task_parent = ' . $row['task_id']);
+	$q->addWhere('task_id <> task_parent');
+	$row['children'] = $q->loadResult();
 	$row['style'] = taskstyle($row);
 	$row['node_id'] = 'node-' . $row['task_id'];
 	$row['canEdit'] = !getDenyEdit( 'tasks', $row['task_id'] );

@@ -164,9 +164,8 @@ $allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
 if ( count($allowedTasks))
 	$q->addWhere($allowedTasks);
 
-$q->addGroup('task_id');
 //$q->addOrder($task_sort_item1.', '.$task_sort_item2);
-
+$q->addGroup('tasks.task_id');
 $tasks = $q->loadList();
 
 //add information about assigned users into the page output
@@ -182,12 +181,19 @@ foreach ($tasks as $k => $task)
         $q->addWhere('ut.task_id = ' . $task['task_id']);
         $q->addGroup('ut.user_id');
 
-        $tasks[$k]['task_assigned_users'] = $q->loadList();
-				$tasks[$k]['node_id'] = 'node-' . $task['task_id'];
-				$tasks[$k]['style'] = taskstyle($task);
-				$tasks[$k]['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
-				$tasks[$k]['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
+        $task['task_assigned_users'] = $q->loadList();
+				
+				$q->addQuery('count(*) as children');
+				$q->addTable('tasks');
+				$q->addWhere('task_parent = ' . $task['task_id']);
+				$q->addWhere('task_id <> task_parent');
+				$task['children'] = $q->loadResult();
+				$task['node_id'] = 'node-' . $task['task_id'];
+				$task['style'] = taskstyle($task);
+				$task['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
+				$task['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
 
+				$tasks[$k] = $task;
 
 //				$tasks[$k]['task_description'] = str_replace("\"", "&quot;", str_replace("\r", ' ', str_replace("\n", ' ', $task['task_description'])));
 //        $alt = htmlspecialchars($alt);

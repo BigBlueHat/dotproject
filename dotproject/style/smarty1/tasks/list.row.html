@@ -43,25 +43,25 @@
 		<img src="./images/shim.gif" width="16" height="12"  border="0">
 		{/if}
 	{/foreach}
+
 {* name link *}
-{if $obj.task_milestone > 0}
-<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
-	<b>{$obj.task_name}</b>
-</a> <img src="./images/icons/milestone.gif" border="0">
-{elseif $obj.task_dynamic == '1'}
+{if $obj.children > 0}
 	{if !dPgetConfig('tasks_ajax_list')}
 <a href="index.php{$query_string}&close_task_id={$obj.task_id}"><img src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" /></a>
 	{else}
 <img src="images/icons/expand.gif" border="0" align="center" onClick="dpToggleNode(this);" />
 	{/if}
-<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
-	<b><i>{$obj.task_name}</i></b>
-</a>
-{else} {* normal task *}
-		&nbsp;
+{/if}
 		<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
-			{$obj.task_name}
+{if $obj.task_dynamic == '1'}
+		<b><i>{$obj.task_name}</i></b>
+{else}
+		{$obj.task_name} 
+{/if}
 		</a>
+{if $obj.task_milestone > 0}<img src="./images/icons/milestone.gif" border="0">{/if}
+{if $obj.children > 0}
+({$obj.children})
 {/if}
 	</td>
 
@@ -132,7 +132,7 @@
 {/if}
 
 {* Assignment checkbox *}
-{if $canEdit && $direct_edit_assignment}
+{if $obj.canEdit && $direct_edit_assignment}
 	<td align="center">
 		<input type="checkbox" name="selected_task[{$obj.task_id}]" value="{$obj.task_id}"/>
 	</td>
