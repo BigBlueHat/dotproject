@@ -16,7 +16,10 @@ function show_history($history)
 	GLOBAL $AppUI;
         $id = $history['history_item'];
         $module = $history['history_table'];        
-	$table_id = (substr($module, -1) == 's'?substr($module, 0, -1):$module) . '_id';
+	$table_id = (substr($module, -1) == 's'?substr($module, 0, -1):$module);
+	if (substr($table_id, -2) == 'ie')
+		$table_id = substr($table_id, 0, -2) . 'y';
+ 	$table_id .= '_id';
 	$item_name = substr($table_id, 0, -2) . 'name';
         
         if ($module == 'login')
