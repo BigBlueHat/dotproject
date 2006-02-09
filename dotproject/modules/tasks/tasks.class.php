@@ -365,7 +365,11 @@ class CTask extends CDpObject {
                         $q->addWhere('task_id != ' . $modified_task->task_id);
                         $q->addWhere('! isnull( task_start_date )');
                         $q->addWhere("task_start_date !=  '0000-00-00 00:00:00'");
-                        $modified_task->task_start_date =  $q->loadResult();
+												$d = $q->loadResult();
+												if ($d)
+                        	$modified_task->task_start_date = $d;
+												else
+													$modified_task->task_start_date = '0000-00-00 00:00:00';
                         $q->clear();
 
                         //Update end date
@@ -375,7 +379,7 @@ class CTask extends CDpObject {
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
                         $q->addWhere('task_id != ' . $modified_task->task_id);
                         $q->addWhere('! isnull( task_end_date )');
-                        $q->addWhere("task_end_date !=  '0000-00-00 00:00:00'");
+                        //$q->addWhere("task_end_date !=  '0000-00-00 00:00:00'");
                         $modified_task->task_end_date =  $q->loadResult();
                         $q->clear();
 
