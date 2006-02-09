@@ -43,7 +43,6 @@ if ($del) {
 		}
 
 		//pull a list of existing usernames
-		$sql = "SELECT user_username FROM users";
 		$q  = new DBQuery;
 		$q->addTable('users','u');
 		$q->addQuery('user_username');

@@ -52,6 +52,13 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	}
 	$titleBlock->show();
 	
+	$q->addQuery('contact_id');
+	$q->addQuery('contact_first_name, contact_last_name');
+	$q->addQuery('contact_email');
+	$q->addTable('contacts');
+	$contacts = $q->loadList();
+	$tpl->assign('contacts', $contacts);
+	
 	$user['canEdit'] = $canEdit;
 	
 	$tpl->assign('companies', $companies);
@@ -60,6 +67,23 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	
 ?>
 <SCRIPT language="javascript">
+var emails = new Array();
+<?php
+foreach($contacts as $contact)
+	echo 'emails['.$contact['contact_id'].'] = "' . $contact['contact_email'] . '";';
+?>
+
+function setContact(){
+	var form = document.editFrm;
+	contact = form.contact_id;
+	contact_option = contact.options[contact.selectedIndex];
+	contact_id = contact_option.value;
+	contact_name = contact_option.text;
+	form.contact_first_name.value = contact_name.substring(0, contact_name.indexOf(' '));
+	form.contact_last_name.value = contact_name.substring(contact_name.indexOf(' ') + 1);
+	form.contact_email.value = emails[contact_id];
+}
+
 function submitIt(){
     var form = document.editFrm;
    if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len'); ?> && form.user_username.value != 'admin') {
@@ -80,26 +104,6 @@ function submitIt(){
     } else if (form.contact_email.value.length < 4) {
         alert("<?php echo $AppUI->_('adminInvalidEmail', UI_OUTPUT_JS);?>");
         form.contact_email.focus();
-    } else if (form.contact_birthday && form.contact_birthday.value.length > 0) {
-        dar = form.contact_birthday.value.split("-");
-        if (dar.length < 3) {
-            alert("<?php echo $AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
-            form.contact_birthday.focus();
-        } else if (isNaN(parseInt(dar[0],10)) || isNaN(parseInt(dar[1],10)) || isNaN(parseInt(dar[2],10))) {
-            alert("<?php echo $AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
-            form.contact_birthday.focus();
-        } else if (parseInt(dar[1],10) < 1 || parseInt(dar[1],10) > 12) {
-            alert("<?php echo $AppUI->_('adminInvalidMonth', UI_OUTPUT_JS).' '.$AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
-            form.contact_birthday.focus();
-        } else if (parseInt(dar[2],10) < 1 || parseInt(dar[2],10) > 31) {
-            alert("<?php echo $AppUI->_('adminInvalidDay', UI_OUTPUT_JS).' '.$AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
-            form.contact_birthday.focus();
-        } else if(parseInt(dar[0],10) < 1900 || parseInt(dar[0],10) > 2020) {
-            alert("<?php echo $AppUI->_('adminInvalidYear', UI_OUTPUT_JS).' '.$AppUI->_('adminInvalidBirthday', UI_OUTPUT_JS);?>");
-            form.contact_birthday.focus();
-        } else {
-            form.submit();
-        }
     } else {
         form.submit();
     }

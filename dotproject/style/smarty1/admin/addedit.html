@@ -1,7 +1,7 @@
 <table width="100%" border="0" cellpadding="0" cellspacing="1" height="400" class="std">
 <form name="editFrm" action="./index.php?m=admin" method="post">
 	<input type="hidden" name="user_id" value="{$obj.user_id}" />
-	<input type="hidden" name="contact_id" value="{$obj.contact_id}" />
+{*	<input type="hidden" name="contact_id" value="{$obj.contact_id}" /> *}
 	<input type="hidden" name="dosql" value="do_user_aed" />
 	<input type="hidden" name="username_min_len" value="{dPconfig var='username_min_len'}" />
 	<input type="hidden" name="password_min_len" value="{dPconfig var='password_min_len'}" />
@@ -34,13 +34,6 @@
     <td align="right">* <label for="password_check">{dPtranslate word='Confirm Password'}</label>:</td>
     <td><input id="password_check" type="password" class="text" name="password_check" value="{$obj.user_password}" maxlength="32" size="32" /> </td>
 </tr>
-<tr>
-    <td align="right">* <label for="first_name">{dPtranslate word='Name'}</label>:</td>
-    <td>
-    	<input id="first_name" type="text" class="text" name="contact_first_name" value="{$obj.contact_first_name}" maxlength="50" />
-    	<input id="last_name" type="text" class="text" name="contact_last_name" value="{$obj.contact_last_name}" maxlength="50" />
-    </td>
-</tr>
 {if $obj.canEdit}
 <tr>
     <td align="right">* <label for="company">{dPtranslate word='Company'}</label>:</td>
@@ -55,6 +48,24 @@
         <input type="hidden" name="contact_department" value="{$obj.contact_department}" />
         <input id="department" type="text" class="text" name="dept_name" value="{$obj.dept_name}" size="40" disabled />
         <input type="button" class="button" value="{dPtranslate word='select dept'}..." onclick="popDept()" />
+    </td>
+</tr>
+<tr>
+	<td align="right">Choose an existing user:</td>
+	<td>
+		<select class="text" name="contact_id" onChange="setContact()">
+			<option value=""></option>
+		{foreach from=$contacts item=contact}
+			<option value="{$contact.contact_id}" {if $contact.contact_id == $obj.contact_id} selected{/if}>{$contact.contact_first_name} {$contact.contact_last_name}</option>
+		{/foreach}
+		</select>
+	</td>
+</tr>
+<tr>
+    <td align="right">* <label for="first_name">{dPtranslate word='Name'}</label>:</td>
+    <td>
+    	<input id="first_name" type="text" class="text" name="contact_first_name" value="{$obj.contact_first_name}" maxlength="50" />
+    	<input id="last_name" type="text" class="text" name="contact_last_name" value="{$obj.contact_last_name}" maxlength="50" />
     </td>
 </tr>
 <tr>
