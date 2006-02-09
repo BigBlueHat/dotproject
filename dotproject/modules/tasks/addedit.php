@@ -190,6 +190,7 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$q->addQuery('dept_id, dept_name');
 	$q->addWhere("dept_parent = '$dept_parent'");
 	$q->addWhere("dept_company = '$company_id'");
+	$q->addOrder('dept_name');
 	
 	$depts_list = $q->loadHashList('dept_id');
 	$q->clear();
