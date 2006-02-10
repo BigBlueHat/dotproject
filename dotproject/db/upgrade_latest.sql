@@ -37,7 +37,7 @@ UPDATE `projects` SET `project_status` = '7' WHERE `project_active` = '0';
 ALTER TABLE `projects` DROP `project_active`;
 
 # 20050804
-# fix for stale users in users access log when users don't logoff
+# fix for stale users in users access log when users dont logoff
 ALTER TABLE `sessions` ADD `session_user` INT DEFAULT '0' NOT NULL AFTER `session_id` ;
 
 # 20050807
