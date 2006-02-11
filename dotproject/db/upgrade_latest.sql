@@ -48,7 +48,7 @@ VALUES ('', 'session_name', 'dotproject', 'session', 'text');
 #20051005ge
 #softcode for user_type
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
-VALUES ( '', '1', 'UserType', '0|Default User 1|Administrator 2|CEO 3|Director 4|Branch Manager 5|Manager 6|Supervisor 7|Employee' );
+VALUES ( '', '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
 
 #20051114
 # webdav/webcal and icalendar functionality
