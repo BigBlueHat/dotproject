@@ -76,7 +76,7 @@ class CSetupHistory {
 				$q->alterTable('history');
 				$q->addField('history_name', 'varchar(255)');
 				$q->addField('history_changes', 'text');
-				$q->exec()
+				$q->exec();
 				$q->clear();
 				break;
 		}
