@@ -69,7 +69,9 @@ class CFile extends CDpObject {
     if (!$this->canDelete( $msg ))
       return $msg;
 		$this->_message = "deleted";
-		addHistory('files', $this->file_id, 'delete',  $this->file_name, $this->file_project);
+		$details['name'] = $this->file_name;
+		$details['project'] = $this->file_project;
+		addHistory('files', $this->file_id, 'delete',  $details);
 	// remove the file from the file system
 		@unlink( "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename" );
 	// delete any index entries

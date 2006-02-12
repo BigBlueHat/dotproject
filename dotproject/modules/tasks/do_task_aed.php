@@ -155,8 +155,27 @@ if ($sub_form) {
 				$post_save_function();
 			}
 		}
-
+		
+		$q = new DBQuery();
 		if ($notify) {
+			$q->addQuery('history_changes');
+			$q->addTable('history');
+			$q->addWhere('history_table = \'tasks\'');
+			$q->addWhere('history_user = ' . $AppUI->user_id);
+			$q->addWhere('history_item = ' . $obj->task_id);
+			$q->addOrder('history_date desc');
+			$changes = $q->loadResult();
+			
+			list($fields, $values) = explode('=', $changes);
+			$fields = substr($fields, 1, -1);
+			$fields = explode('","', $fields);
+			$values = substr($values, 1, -1);
+			$values = explode('","', $values);
+			$changes = "Changes: \n";
+			foreach ($fields as $k => $field)
+				$changes .= ucfirst(str_replace('_', ' ', $field)) . ': ' . $values[$k] . "\n";
+			$comment = $changes . "\n" . 'Comment: ' . $comment;
+			
 			if ($msg = $obj->notify($comment)) {
 				$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			}

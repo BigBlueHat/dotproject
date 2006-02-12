@@ -84,8 +84,10 @@ class CProject extends CDpObject {
 	}
 
 	function delete() {
-                $this->load($this->project_id);
-		addHistory('projects', $this->project_id, 'delete', $this->project_name, $this->project_id);
+		$this->load($this->project_id);
+		$details['name'] = $this->project_name;
+		$details['project'] = $this->project_id;
+		addHistory('projects', $this->project_id, 'delete', $details);
 		$q = new DBQuery;
 		$q->addTable('tasks');
 		$q->addQuery('task_id');
@@ -308,12 +310,15 @@ class CProject extends CDpObject {
 			return get_class( $this )."::store-check failed - $msg";
 		}
 
+		$details['name'] = $this->project_name;
+		$details['projects'] = $this->project_id;
 		if( $this->project_id ) {
 			$ret = db_updateObject( 'projects', $this, 'project_id', false );
-        		addHistory('projects', $this->project_id, 'update', $this->project_name, $this->project_id);
+			$details['changes'] = $ret;
+			addHistory('projects', $this->project_id, 'update', $details);
 		} else {
 			$ret = db_insertObject( 'projects', $this, 'project_id' );
-		        addHistory('projects', $this->project_id, 'add', $this->project_name, $this->project_id);
+			addHistory('projects', $this->project_id, 'add', $details);
 		}
 		
 		//split out related departments and store them seperatly.

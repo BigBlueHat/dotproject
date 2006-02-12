@@ -167,14 +167,16 @@ class CDpObject {
 			return get_class( $this )."::store-check failed<br />$msg";
 		}
 		$k = $this->_tbl_key;
-		$n = $this->_tbl_name;
 		if( $this->$k ) {
-			addHistory($this->_tbl, $this->$k, 'update', $this->$n);
 			$ret = db_updateObject( $this->_tbl, $this, $this->_tbl_key, $updateNulls );
+			$action = 'update';
 		} else {
 			$ret = db_insertObject( $this->_tbl, $this, $this->_tbl_key );
-			addHistory($this->_tbl, $this->$k, 'add', $this->$n);
+			$action = 'add';
 		}
+		$details['name'] = $this->_tbl_name;
+		$details['changes'] = $ret;
+		addHistory($this->_tbl, $this->$k, $action, $details);
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {

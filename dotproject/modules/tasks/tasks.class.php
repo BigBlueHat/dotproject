@@ -474,7 +474,7 @@ class CTask extends CDpObject {
                         }
                 }
                 if( $this->task_id ) {
-                        addHistory('tasks', $this->task_id, 'update', $this->task_name, $this->task_project);
+									
                         $this->_action = 'updated';
                         // Load the old task from disk
                         $oTsk = new CTask();
@@ -493,7 +493,10 @@ class CTask extends CDpObject {
 
                         // shiftDependentTasks needs this done first
                         $ret = db_updateObject( 'tasks', $this, 'task_id', false );
-
+												$details['name'] = $this->task_name;
+												$details['project'] = $this->task_project;
+												$details['changes'] = $ret;
+                        addHistory('tasks', $this->task_id, 'update', $details);
                         // Milestone or task end date, or dynamic status has changed,
                         // shift the dates of the tasks that depend on this task
                         if (($this->task_end_date != $oTsk->task_end_date) ||
@@ -504,7 +507,10 @@ class CTask extends CDpObject {
                 } else {
                         $this->_action = 'added';
                         $ret = db_insertObject( 'tasks', $this, 'task_id' );
-                        addHistory('tasks', $this->task_id, 'add', $this->task_name, $this->task_project);
+												$details['name'] = $this->task_name;
+												$details['changes'] = $ret;
+												$details['project'] = $this->task_project;
+                        addHistory('tasks', $this->task_id, 'add', $details);
 
                         if (!$this->task_parent) {
                                 $q = new DBQuery;
@@ -616,7 +622,9 @@ class CTask extends CDpObject {
 
                 //load it before deleting it because we need info on it to update the parents later on
                 $this->load($this->task_id);
-                addHistory('tasks', $this->task_id, 'delete', $this->task_name, $this->task_project);
+								$details['name'] = $this->task_name;
+								$details['project'] = $this->task_project;
+                addHistory('tasks', $this->task_id, 'delete', $details);
 
                 // delete the tasks...what about orphans?
                 // delete task with parent is this task

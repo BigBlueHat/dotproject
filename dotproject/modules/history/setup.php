@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'History';
-$config['mod_version'] = '0.3';
+$config['mod_version'] = '0.4';
 $config['mod_directory'] = 'history';
 $config['mod_setup_class'] = 'CSetupHistory';
 $config['mod_type'] = 'user';
@@ -28,12 +28,14 @@ class CSetupHistory {
 	function install() {
 		$sql = " ( " .
 		  "history_id int(10) unsigned NOT NULL auto_increment," .
+		  "history_date datetime NOT NULL default '0000-00-00 00:00:00'," .
 		  "history_user int(10) NOT NULL default '0'," .
                   "history_action varchar(10) NOT NULL default 'modify', " .
                   "history_item int(10) NOT NULL," .
 		  "history_table varchar(15) NOT NULL default ''," .
 		  "history_project int(10) NOT NULL default '0'," .
-		  "history_date datetime NOT NULL default '0000-00-00 00:00:00'," .
+		  "history_name varchar(255)," .
+		  "history_changes text," .
 		  "history_description text," .
 		  "PRIMARY KEY  (history_id)," .
 		  "UNIQUE KEY history_id (history_id)," .
@@ -71,6 +73,11 @@ class CSetupHistory {
 				$q->exec();
 				$q->clear();
 			case '0.3':
+				$q->alterTable('history');
+				$q->addField('history_name', 'varchar(255)');
+				$q->addField('history_changes', 'text');
+				$q->exec()
+				$q->clear();
 				break;
 		}
 		return db_error();

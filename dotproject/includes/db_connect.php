@@ -304,7 +304,10 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 		$fields[] = $k;
 		//$values[] = "'" . db_escape(htmlentities(strip_tags( $v ), ENT_COMPAT ,$locale_char_set)) . "'";
 		$values[] = "'" . db_escape(strip_tags( $v )) . "'";
+		$insert_list[] = $k;
+		$values_list[] = $v;
 	}
+	$change = '"' . implode('","', $insert_list) . '"="' . implode('","', $values_list) . '"';
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 	($verbose) && print "$sql<br />\n";
 	if (!db_exec( $sql )) {
@@ -314,7 +317,7 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 	($verbose) && print "id=[$id]<br />\n";
 	if ($keyName && $id)
 		$object->$keyName = $id;
-	return true;
+	return $change;
 }
 
 /**
@@ -325,31 +328,37 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 * @param [type] $updateNulls
 */
 function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
-	$fmtsql = "UPDATE `$table` SET %s WHERE %s";
-	foreach (get_object_vars( $object ) as $k => $v) {
-		if( is_array($v) or is_object($v) or $k[0] == '_' ) { // internal or NA field
-			continue;
+	$q = new DBQuery;
+	$q->addQuery('*');
+	$q->addTable($table);
+	$q->addWhere($keyName . '=' . $object->$keyName);
+	list($old_obj) = $q->loadList();
+
+	$update_list = array();
+	$values_list = array();
+	foreach($old_obj as $field => $value)
+		if ($object->$field != $value && ($value !== NULL || $updateNulls))
+		{
+			$update_list[] = $field;
+			$values_list[] = strip_tags($object->$field);
 		}
-		if( $k == $keyName ) { // PK not to be updated
-			$where = "$keyName='" . db_escape( $v ) . "'";
-			continue;
-		}
-		if ($v === NULL && !$updateNulls) {
-			continue;
-		}
-		if( $v == '' ) {
-			$val = "''";
-		} else {
-			$val = "'" . db_escape(strip_tags( $v )). "'";
-		}
-		$tmp[] = "$k=$val";
+
+	if (count($update_list))
+	{
+		$change = '"' . implode('","', $update_list) . '"="' . implode('","', $values_list) . '"';
+		// addHistory($table, $object->$keyName, 'modify', $change, 0);
+		
+		$q->addUpdate($update_list, $values_list, true);
+		$q->addWhere($keyName . '=' . db_escape($object->$keyName));
+		$q->addTable($table);
+		$ret = $q->exec();
+		if ($ret)
+			return $change;
+		else
+			return $ret;
 	}
-	if (count ($tmp)) {
-		$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
-		return db_exec( $sql );
-	} else {
+	else
 		return true;
-	}
 }
 
 /**

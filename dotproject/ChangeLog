@@ -1,3 +1,197 @@
+2006-02-12 05:40  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- #1450: added missing sysvals separators
+
+2006-02-12 05:16  (gregorerhardt)
+---------------------------------
+modules/projects/do_project_aed.php
+modules/projects/do_project_aed.php
+- #1469: Empty Project Start Date now defaults to empty date
+
+2006-02-12 04:56  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/files/files.class.php
+modules/forums/forums.class.php
+- #1472: UI_OUTPUT_RAW in mails preventing from html entity encoding special chars
+
+2006-02-11 06:17  (gregorerhardt)
+---------------------------------
+modules/files/files.class.php
+modules/forums/forums.class.php
+modules/tasks/tasks.class.php
+- #1472: UI_OUTPUT_RAW in mails preventing from html entity encoding special chars
+
+2006-02-11 03:05  (gregorerhardt)
+---------------------------------
+includes/main_functions.php
+- (php5) compatibility fix - removed pass by refrence
+
+2006-02-10 16:53  (cyberhorse)
+---------------------------------
+db/upgrade_latest.sql
+- fixed sql validation error
+
+2006-02-10 00:44  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- basic linguistics applied to fix table id key names based on module tables
+
+2006-02-09 23:19  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1468 - fixed calculating dynamic dates, when children's dates are cleared.
+
+2006-02-09 23:14  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1468 - fixed calculating dynamic dates, when children's dates are cleared.
+
+2006-02-09 21:14  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- #1443 - Added alphabetical sorting of departments in task edit page.
+
+2006-02-09 21:07  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/do_user_aed.php
+style/smarty1/admin/addedit.html
+- #1413 - added the ability to convert contacts to users (drop down select box on user's creation page)
+
+2006-02-09 09:30  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+- disable set_time_limit if safe_mode is on.
+
+2006-02-09 09:29  (cyberhorse)
+---------------------------------
+modules/files/do_file_aed.php
+- Disabled setting timout time if safe_mode is set.
+
+2006-02-08 23:59  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- Wrong class name was crashing the adding of new events.
+
+2006-02-08 23:52  (cyberhorse)
+---------------------------------
+db/upgrade_latest.sql
+- removed default charsets - could cause problems.
+
+2006-02-08 23:47  (cyberhorse)
+---------------------------------
+modules/tasks/listtasks.php
+- #1387 - fixed the order of loaded tasks.
+
+2006-02-08 23:02  (cyberhorse)
+---------------------------------
+modules/tasks/vw_log_update.php
+- #1270 - Fixed task_log_creator overriding.
+
+2006-02-08 21:32  (cyberhorse)
+---------------------------------
+js/base.js
+style/classic/main.css
+style/default/main.css
+style/dp-grey-theme/main.css
+style/smarty1/admin/simple_list.html
+style/smarty1/companies/list.html
+style/smarty1/files/list.row.html
+style/smarty1/history/list.html
+style/smarty1/projects/list.html
+style/smarty1/tasks/list.row.html
+- #697 - added mouse pointer row highlighting
+- applied to all styles in the cvs
+- applied to the following modules:
+- companies
+- files
+- history
+- projects
+- tasks
+- users
+
+2006-02-08 21:06  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/vw_tasks.php
+style/smarty1/tasks/list.row.html
+- parent/children tasks fixed
+
+2006-02-08 19:52  (cyberhorse)
+---------------------------------
+modules/tasks/listtasks.php
+modules/tasks/tree.js
+- #1374 - Fixed displaying more than one dynamic child
+
+2006-02-08 01:30  (cyberhorse)
+---------------------------------
+ChangeLog
+modules/tasks/listtasks.php
+modules/tasks/tasks.php
+modules/tasks/tree.js
+modules/tasks/vw_tasks.php
+style/smarty1/tasks/list.row.html
+- Fixed more problems with tasks display - node_ids fixed, duplicate tasks avoided, etc
+- 
+- TODO: fix children, non-dynamic tasks display!
+- fix display for main tasks list!
+
+2006-02-08 00:57  (cyberhorse)
+---------------------------------
+modules/tasks/tree.js
+- Issue #1468 - Fixed first td problems and empty attributes (firefox wasn't happy).
+
+2006-02-08 00:12  (cyberhorse)
+---------------------------------
+modules/tasks/tree.js
+- Issue #1468 - ajax tasks fixed in IE
+- multiple problems:
+-  - parent table node not set properly
+-  - used of reserved work "parent"
+-  - tr.innerHTML read only
+- 
+- All of these apply only for IE, but the sollution works in both IE and firefox.
+
+2006-02-07 22:04  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- Issue #1399 - . in hours not trimmed.
+
+2006-02-07 22:03  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- Issue #1399 - Dangling . not trimmed.
+
+2006-02-07 00:20  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- Mantis #1192 - fixed showing children tasks in the task parent combo box.
+
+2006-02-06 23:10  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Mantis #1420 - fixed properly the project completed percentage calculation
+
+2006-02-06 23:06  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- Mantis #1420 - Project percentage completion improved (still not completely fixed - 24 has to be the hours in the day config instead...)
+
+2006-02-06 22:22  (cyberhorse)
+---------------------------------
+modules/files/index_table.php
+style/smarty1/files/list.row.html
+- Fixed displaying file names in filelist
+- major problems found with file listings - look further into it!
+
+2006-02-06 22:12  (cyberhorse)
+---------------------------------
+fileviewer.php
+- Mantis #1470 - fixed file handle checks
+
 2006-02-06 21:53  (cyberhorse)
 ---------------------------------
 fileviewer.php

@@ -268,7 +268,7 @@ function dPgetParam( &$arr, $name, $def=null ) {
 # add history entries for tracking changes
 #
 
-function addHistory( $table, $id, $action = 'modify', $description = '', $project_id = 0) {
+function addHistory( $table, $id, $action = 'modify', $details) { //$description = '', $project_id = 0) {
 	global $AppUI, $dPconfig;
 	/*
 	 * TODO:
@@ -302,12 +302,16 @@ function addHistory( $table, $id, $action = 'modify', $description = '', $projec
 	$q->clear();
 	$q->addTable('history');
 	$q->addInsert('history_action', $action);
-	$q->addInsert('history_item', $id);
-	$q->addInsert('history_description', $description);
-	$q->addInsert('history_user', $AppUI->user_id);
 	$q->addInsert('history_date', 'now()', false, true);
-	$q->addInsert('history_project', $project_id);
+	$q->addInsert('history_user', $AppUI->user_id);
 	$q->addInsert('history_table', $table);
+	$q->addInsert('history_item', $id);
+	foreach ($details as $field => $value)
+		$q->addInsert('history_' . $field, $value);
+
+//	$q->addInsert('history_description', $description);
+//	$q->addInsert('history_project', $project_id);
+
 	$q->exec();
 	echo db_error();
 	$q->clear();

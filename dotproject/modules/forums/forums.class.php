@@ -44,14 +44,18 @@ class CForum extends CDpObject {
 		}
 		if( $this->forum_id ) {
 			$ret = db_updateObject( 'forums', $this, 'forum_id', false ); // ! Don't update null values
+			$details['changes'] = $ret;
 			if($this->forum_name) {
 				// when adding messages, this functon is called without first setting 'forum_name'
-				addHistory('forums', $this->forum_id, 'update', $this->forum_name);
+				$details['name'] = $this->forum_name;
 			}
+			addHistory('forums', $this->forum_id, 'update', $details);
 		} else {
 			$this->forum_create_date = db_datetime( time() );
 			$ret = db_insertObject( 'forums', $this, 'forum_id' );
-			addHistory('forums', $this->forum_id, 'add', $this->forum_name);
+			$details['changes'] = $ret;
+			$details['name'] = $this->forum_name;
+			addHistory('forums', $this->forum_id, 'add', $details);
 		}
 		if( !$ret ) {
 			return "CForum::store failed <br />" . db_error();
@@ -80,7 +84,8 @@ class CForum extends CDpObject {
 		if (!$q->exec()) {
 			$result =  db_error();
 		} else {
-			addHistory('forums', $this->forum_id, 'delete', $this->forum_name);
+			$details['name'] = $this->forum_name;
+			addHistory('forums', $this->forum_id, 'delete', $details);
 			$result =  NULL;
 		}
 		$q->clear();

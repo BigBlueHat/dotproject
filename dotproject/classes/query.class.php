@@ -218,9 +218,25 @@ class DBQuery {
   }
 
 
-  function addUpdate($field, $value)
+  function addUpdate($field, $value, $set = false)
   {
-    $this->addMap('update_list', $value, $field);
+		if ($set)
+		{
+			if (is_array($field))
+				$fields = $field;
+			else
+				$fields = explode(',', $field);
+
+			if (is_array($value))
+				$values = $value;
+			else
+				$values = explode(',', $value);
+
+			for($i = 0; $i < count($fields); $i++)
+				$this->addMap('update_list', $values[$i], $fields[$i]);
+		}
+		else
+    	$this->addMap('update_list', $value, $field);
     $this->type = 'update';
   }
 

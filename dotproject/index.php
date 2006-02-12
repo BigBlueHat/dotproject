@@ -77,7 +77,8 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
     {
 			$AppUI =& $_SESSION['AppUI'];
 			$user_id = $AppUI->user_id;
-			addHistory('login', $AppUI->user_id, 'logout', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+			$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
+			addHistory('login', $AppUI->user_id, 'logout', $details);
     }
 
 	$_SESSION['AppUI'] = new CAppUI;
@@ -139,7 +140,8 @@ if (isset($_REQUEST['login'])) {
 		//Register login in user_acces_log
 		$AppUI->registerLogin();
 	}
-	addHistory('login', $AppUI->user_id, 'login', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+	$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
+	addHistory('login', $AppUI->user_id, 'login', $details);
 	$AppUI->redirect( "$redirect" );
 }
 
