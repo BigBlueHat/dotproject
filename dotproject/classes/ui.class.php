@@ -1172,7 +1172,7 @@ class CTitleBlock_core {
 			} else {
 				$filters[$filter] = $AppUI->getState($filter);
 				if (! isset($filter)) {
-					$filters[$filter] = $AppUI->user_id;
+					$filters[$filter] = (strpos($filter, 'owner') > 0)?$AppUI->user_id:0;
 					$AppUI->setState($filter, $filters[$filter]);
 				}
 			}
