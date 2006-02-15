@@ -1,0 +1,15 @@
+<form name="filtersform" action="?m={$m}" method="post">
+<table>
+<tr>
+{foreach from=$filters item='combo' key='name' name='filters'}
+	{if $smarty.foreach.filters.index % 2 == 0}
+</tr>
+<tr>
+	{/if}
+	<td valign="top">
+		<strong>{dPtranslate|ucfirst word="$name"}:</strong> {$combo}
+	</td>
+{/foreach}
+</tr>
+</table>
+</form>

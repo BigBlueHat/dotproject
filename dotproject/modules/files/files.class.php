@@ -28,6 +28,7 @@ class CFile extends CDpObject {
 	
 	function CFile() {
 		$this->CDpObject( 'files', 'file_id' );
+		$this->search_fields = array ("file_real_filename","file_name","file_description","file_type");
 	}
 
 	function canAdmin() {
@@ -334,7 +335,26 @@ class CFile extends CDpObject {
 		$this->_query->clear();
 		return $taskname;
 	}
-
+	
+	function search($keyword)
+	{
+		global $AppUI;
+		$perms = &$AppUI->acl();
+		$list = parent::search($keyword);
+		
+		$q = new DBQuery();
+		$q->addQuery('file_name, f.file_id, file_version, count(*) as words');
+		$q->addTable('files');
+		$q->addJoin('files_index', 'f', 'f.file_id = files.file_id');
+		$q->addWhere("word LIKE '%$keyword%'");
+		$q->addGroup('files.file_id');
+		$files = $q->loadList();
+		foreach($files as $file)
+	    if ($perms->checkModuleItem($this->_tbl, 'view', $file['file_id']))
+				$list[$file['file_id']] = $file['file_name'] . ' v.' . $file['file_version'] . ' ==> ' . $AppUI->_('found').' '.$file['words'].' '.$AppUI->_('times').' '.$AppUI->_('in').' '.$AppUI->_('file'); 
+					
+		return $list;
+	}
 }
 
 function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)

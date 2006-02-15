@@ -20,7 +20,8 @@ class CDepartment extends CDpObject {
 	var $dept_owner = NULL;
 
 	function CDepartment() {
-		// empty constructor
+		$this->CDpObject( 'departments', 'dept_id' );
+		$this->search_fields = array ("dept_name","dept_address1","dept_address2","dept_city","dept_state","dept_zip","dept_url","dept_desc");
 	}
 
 	function load( $oid ) {

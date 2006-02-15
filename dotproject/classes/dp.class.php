@@ -38,6 +38,9 @@ class CDpObject {
  */
  var $_query;
 
+/** @var array the fields to search through */
+ var $search_fields;
+ 
 /**
  *	Object constructor to set table and key field
  *
@@ -387,6 +390,19 @@ class CDpObject {
 		if (count($deny)) {
 		  $query->addWhere("$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
 		}
+	}
+	
+	function search($keyword)
+	{
+		global $AppUI;
+		
+		$sql = '';
+		foreach($this->search_fields as $field)
+			$sql .= " $field LIKE '%$keyword%' OR ";
+		$sql = substr($sql, 0, -4);
+		
+		// getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
+		return $this->getAllowedRecords($AppUI->user_id, $this->_tbl_key . ',' . $this->_tbl_name, $this->_tbl_name, null, array('where' => $sql));
 	}
 }
 ?>

@@ -1,7 +1,8 @@
 <?php /* COMPANIES $Id$ */
 
 global $search_string;
-global $owner_filter_id;
+global $filters;
+//global $owner_filter_id;
 global $currentTabId;
 global $currentTabName;
 global $tabbed;
@@ -44,7 +45,9 @@ $q->addJoin('projects', 'p2', 'c.company_id = p2.project_company AND p2.project_
 if (count($allowedCompanies) > 0) { $q->addWhere('c.company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')'); }
 if ($companiesType) { $q->addWhere('c.company_type = '.$company_type_filter); }
 if ($search_string != "") { $q->addWhere("c.company_name LIKE '%$search_string%'"); }
-if ($owner_filter_id > 0) { $q->addWhere("c.company_owner = $owner_filter_id "); }
+foreach($filters as $field => $filter)
+	if ($filter > 0)
+		$q->addWhere("c.$field = $filter ");
 $q->addGroup('c.company_id');
 $q->addOrder($orderby.' '.$orderdir);
 $rows = $q->loadList();

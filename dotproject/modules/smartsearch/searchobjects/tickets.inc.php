@@ -13,6 +13,7 @@ class tickets {
 		global $AppUI;
 		$sql = $this->_buildQuery();
 		$results = db_loadList($sql);
+
 		$outstring = "<th nowrap='nowrap' >".$AppUI->_('Tickets')."</th>\n";
 		if($results){
 			foreach($results as $records){
@@ -35,19 +36,37 @@ class tickets {
 		$this->keyword = $keyword;
 	}
 	
-	function _buildQuery(){
-                $q  = new DBQuery;
-                $q->addTable($this->table);
-                $q->addQuery('ticket');
-                $q->addQuery('subject');
+	function search($permissions){
+		$q  = new DBQuery;
+		$q->addTable($this->table);
+		$q->addQuery('ticket');
+		$q->addQuery('subject');
 
-                $sql = '';
-                foreach($this->search_fields as $field){
-                        $sql.=" $field LIKE '%$this->keyword%' or ";
-                }
-                $sql = substr($sql,0,-4);
-                $q->addWhere($sql);
-                return $q->prepare(true);
+		$sql = '';
+		foreach($this->search_fields as $field){
+						$sql.=" $field LIKE '%$this->keyword%' or ";
+		}
+		$sql = substr($sql,0,-4);
+		$q->addWhere($sql);
+		$results = $q->loadList();
+		if($results)
+			foreach($results as $k => $records)
+				if($permissions->checkModuleItem($this->table, "view", $records["ticket"]))
+					$tickets[$records['ticket']] = $records['subject'];
+
+		return $tickets;
+//		return $q->prepare(true);
+	}
+	
+	function searchResults($permissions)
+	{
+		global $tpl;
+		
+		$tickets = $this->search($permissions);
+		$results = array('results', $tickets);
+		$tpl->assign('name', 'tickets');
+		$tpl->assign('results', $results);
+		return $tpl->fetchFile('list');
 	}
 }
 ?>

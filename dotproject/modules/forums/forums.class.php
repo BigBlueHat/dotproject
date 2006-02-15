@@ -18,6 +18,7 @@ class CForum extends CDpObject {
 	function CForum() {
 		// empty constructor
 		parent::CDpObject('forums', 'forum_id');
+		$this->search_fields = array ('forum_name', 'forum_description');
 	}
 
 	function bind( $hash ) {
@@ -90,6 +91,25 @@ class CForum extends CDpObject {
 		}
 		$q->clear();
 		return $result;
+	}
+	
+	function search($keyword)
+	{
+		global $AppUI;
+		$perms = &$AppUI->acl();
+		$list = parent::search($keyword);
+		
+		$q = new DBQuery();
+		$q->addQuery('forum_name, message_id, message_forum, message_title');
+		$q->addTable('forums');
+		$q->addJoin('forum_messages', 'f', 'forum_id = message_forum');
+		$q->addWhere("(message_title LIKE '%$keyword%' OR message_body LIKE '%$keyword%')");
+		$messages = $q->loadList();
+		foreach($messages as $message)
+	    if ($perms->checkModuleItem($this->_tbl, 'view', $message['message_id']))
+				$list[$message['message_forum']] = $message['forum_name'] . ' ==> ' . $message['message_title']; 
+					
+		return $list;
 	}
 }
 

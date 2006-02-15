@@ -13,6 +13,8 @@ class CUser extends CDpObject {
 
 	function CUser() {
 		$this->CDpObject( 'users', 'user_id' );
+		$this->_tbl_name = 'user_username';
+		$this->search_fields = array ('user_username', 'user_signature');
 	}
 
 	function check() {

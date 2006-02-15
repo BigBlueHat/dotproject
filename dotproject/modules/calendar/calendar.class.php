@@ -390,6 +390,8 @@ class CEvent extends CDpObject {
 
 	function CEvent() {
 		$this->CDpObject( 'events', 'event_id' );
+		$this->_tbl_name = 'event_title';
+		$this->search_fields = array ('event_title', 'event_description');
 	}
 
 // overload check operation

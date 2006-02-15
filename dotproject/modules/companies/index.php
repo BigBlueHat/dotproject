@@ -10,16 +10,9 @@ if (isset( $_GET['orderby'] )) {
 $orderby         = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
 $orderdir        = $AppUI->getState( 'CompIdxOrderDir' ) ? $AppUI->getState( 'CompIdxOrderDir' ) : 'asc';
 
-if(isset($_REQUEST["owner_filter_id"])){
-	$AppUI->setState("owner_filter_id", $_REQUEST["owner_filter_id"]);
-	$owner_filter_id = $_REQUEST["owner_filter_id"];
-} else {
-	$owner_filter_id = $AppUI->getState( 'owner_filter_id');
-	if (! isset($owner_filter_id)) {
-		$owner_filter_id = $AppUI->user_id;
-		$AppUI->setState('owner_filter_id', $owner_filter_id);
-	}
-}
+$perms =& $AppUI->acl();
+$filters_selection = array('company_owner' => $perms->getPermittedUsers('companies'));
+
 // load the company types
 $types = dPgetSysVal( 'CompanyType' );
 
@@ -40,27 +33,12 @@ if($search_string != ""){
 // retrieve list of records
 $search_string = dPformSafe($search_string, true);
 
-$perms =& $AppUI->acl();
-$owner_list = array( 0 => $AppUI->_("All", UI_OUTPUT_RAW)) + $perms->getPermittedUsers("companies"); // db_loadHashList($sql);
-$owner_combo = arraySelect($owner_list, "owner_filter_id", "class='text' onchange='javascript:document.searchform.submit()'", $owner_filter_id, false);
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Companies', 'handshake.png', $m, "$m.$a" );
-$titleBlock->addCell("<form name='searchform' action='?m=companies&amp;search_string=$search_string' method='post'>
-						<table>
-							<tr>
-                      			<td>
-                                    <strong>".$AppUI->_('Search')."</strong>
-                                    <input class='text' type='text' name='search_string' value='$search_string' /><br />
-						<a href='index.php?m=companies&search_string=-1'>".$AppUI->_("Reset search")."</a></td>
-								<td valign='top'>
-									<strong>".$AppUI->_("Owner filter")."</strong> $owner_combo
-								</td>
-							</tr>
-						</table>
-                      </form>");
-
-$search_string = addslashes($search_string);
+$search_form = $tpl->fetchFile('search', '.');
+$search_string = $titleBlock->addSearchCell();
+$filters = $titleBlock->addFiltersCell($filters_selection);
 
 if ($canEdit) {
 	$titleBlock->addCell(

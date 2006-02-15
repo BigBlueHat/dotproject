@@ -3,14 +3,14 @@
 		<td nowrap width="100%"><h1>{dPtranslate word='Search'}</h1></td>
 	</tr>
 </table>
-	<form name="frmSearch" action="?m=smartsearch"  method="POST">
-			<table cellspacing="10" cellpadding="0" border="0">
-				<tr>
-					<td align="left"><INPUT class="text" type="text" id="keyword" name="keyword" value="{dPformSafe var=$search_keyword}"></td>
-					<td align="left"><input class="button" type="submit" value="{dPtranslate word='Search'}"></td>
-				</tr>
-			</table>
-	</form>
+<form name="frmSearch" action="?m=smartsearch"  method="post">
+	<table cellspacing="10" cellpadding="0" border="0">
+		<tr>
+			<td align="left"><input class="text" type="text" id="keyword" name="keyword" value="{dPformSafe var=$search_keyword}" /></td>
+			<td align="left"><input class="button" type="submit" value="{dPtranslate word='Search'}" /></td>
+		</tr>
+	</table>
+</form>
 <script language="JavaScript">
 {literal}
 	function focusOnSearchBox(){
@@ -21,5 +21,8 @@
 {/literal}
 </script>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+{foreach from=$results item=result key=name}
+	{include file='smartsearch/list.html' title=$name results=$result keyword=$search_keyword}
+{/foreach}
 {$search_results}
 </table>

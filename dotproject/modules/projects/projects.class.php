@@ -40,6 +40,7 @@ class CProject extends CDpObject {
 
 	function CProject() {
 		$this->CDpObject( 'projects', 'project_id' );
+		$this->search_fields = array('project_name', 'project_short_name', 'project_description', 'project_url', 'project_demo_url');
 	}
 
 	function check() {

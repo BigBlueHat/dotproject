@@ -77,6 +77,8 @@ class CTask extends CDpObject {
 
         function CTask() {
                 $this->CDpObject( 'tasks', 'task_id' );
+					$this->search_fields = array ("task_name","task_description","task_related_url","task_departments",
+								"task_contacts","task_custom");
         }
 
 // overload check
@@ -2014,6 +2016,25 @@ class CTask extends CDpObject {
 					
 					$tpl->displayFile('tasks', 'list.row');
 				}
+				
+	function search($keyword)
+	{
+		global $AppUI;
+		$perms = &$AppUI->acl();
+		$list = parent::search($keyword);
+		
+		$q = new DBQuery();
+		$q->addQuery('task_name, task_log_id, task_log_description');
+		$q->addTable('tasks');
+		$q->addJoin('task_log', 't', 'task_id = task_log_task');
+		$q->addWhere("(task_log_name LIKE '%$keyword%' OR task_log_description LIKE '%$keyword%')");
+		$tasks = $q->loadList();
+		foreach($tasks as $task)
+	    if ($perms->checkModuleItem($this->_tbl, 'view', $task['task_id']))
+				$list[$task['task_id']] = $task['task_name'] . ' ==> ' . $task['task_log_description']; 
+					
+		return $list;
+	}
 }
 
 

@@ -1160,6 +1160,55 @@ class CTitleBlock_core {
 	function addCell( $data='', $attribs='', $prefix='', $suffix='' ) {
 		$this->cells1[] = array( $attribs, $data, $prefix, $suffix );
 	}
+	
+	function addFiltersCell($filters_selection) {
+		global $AppUI, $tpl;
+
+		foreach($filters_selection as $filter => $array)
+		{
+			if(isset($_REQUEST[$filter])){
+				$AppUI->setState($filter, $_REQUEST[$filter]);
+				$filters[$filter] = $_REQUEST[$filter];
+			} else {
+				$filters[$filter] = $AppUI->getState($filter);
+				if (! isset($filter)) {
+					$filters[$filter] = $AppUI->user_id;
+					$AppUI->setState($filter, $filters[$filter]);
+				}
+			}
+			
+			$list = array(0 => $AppUI->_("All", UI_OUTPUT_RAW)) + $array; // db_loadHashList($sql);
+			// style -  style="font-weight:bold;"
+			$filters_combos[substr($filter, strpos($filter, '_') + 1)] = arraySelect($list, $filter, 'class="text" onchange="javascript:document.filtersform.submit()"', $filters[$filter], false);
+		}
+		
+		$tpl->assign('filters', $filters_combos);
+		$tpl->assign('search_string', $search_string);
+		$data = $tpl->fetchFile('filters', '.');
+		$this->cells1[] = array('', $data, '', '');
+		
+		return $filters;
+	}
+	
+	function addSearchCell() {
+		global $AppUI, $tpl;
+		
+		$search_string = dPgetParam( $_REQUEST, 'search_string', "" );
+		if($search_string != ""){
+			$search_string = $search_string == "-1" ? "" : $search_string;
+			$AppUI->setState("search_string", $search_string);
+		} else {
+			$search_string = $AppUI->getState("search_string");
+		}
+		
+		$search_string = dPformSafe($search_string, true);
+
+		$tpl->assign('search_string', $search_string);
+		$data = $tpl->fetchFile('search', '.');
+		$this->cells1[] = array('', $data, '', '');
+		
+		return addslashes($search_string);
+	}
 /**
 * Adds a table 'cell' to left-aligned bread-crumbs
 *

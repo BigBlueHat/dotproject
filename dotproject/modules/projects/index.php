@@ -4,6 +4,27 @@ $AppUI->savePlace();
 // load the companies class to retrieved denied companies
 require_once( $AppUI->getModuleClass( 'companies' ) );
 
+
+$perms =& $AppUI->acl();
+
+$companies = new CCompany();
+$filters_selection = array(
+'project_owner' => $perms->getPermittedUsers('projects'),
+'project_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'));
+
+// setup the title block
+$titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );
+$search_string = $titleBlock->addSearchCell();
+$filters = $titleBlock->addFiltersCell($filters_selection);
+
+if ($canEdit) {
+	$titleBlock->addCell(
+		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">', '',
+		'<form action="?m=projects&a=addedit" method="post">', '</form>'
+	);
+}
+$titleBlock->show();
+
 // Let's update project status!
 if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && isset($_GET["project_id"]) ){
 	$projects_id = $_GET["project_id"]; // This must be an array
@@ -134,34 +155,6 @@ $obj = new CCompany();
 $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 if(count($companies) == 0) $companies = array(0);
 
-$sql = "
-SELECT
-	projects.project_id, project_status,
-	project_color_identifier, project_name, project_description,
-	project_start_date, project_end_date, project_color_identifier,
-	project_company, company_name, project_status, project_priority,
-        tasks_critical.critical_task, tasks_critical.project_actual_end_date,
-        tasks_problems.task_log_problem,
-	tasks_sum.total_tasks,
-	tasks_summy.my_tasks,
-	tasks_sum.project_percent_complete,
-	user_username
-FROM projects
-LEFT JOIN companies ON projects.project_company = company_id
-LEFT JOIN users ON projects.project_owner = users.user_id
-LEFT JOIN tasks_critical ON projects.project_id = tasks_critical.task_project
-LEFT JOIN tasks_problems ON projects.project_id = tasks_problems.task_project
-LEFT JOIN tasks_sum ON projects.project_id = tasks_sum.task_project
-LEFT JOIN tasks_summy ON projects.project_id = tasks_summy.task_project"
-.(isset($department) ? "\nLEFT JOIN project_departments ON project_departments.project_id = projects.project_id" : '')."
-WHERE 1 = 1"
-.(count($deny) > 0 ? "\nAND projects.project_id NOT IN (" . implode( ',', $deny ) . ')' : '')
-.(!isset($department)&&$company_id ? "\nAND projects.project_company = '$company_id'" : "\nAND projects.project_company IN (" . implode(',', array_keys($companies)) . ")" )
-.(isset($department) ? "\nAND project_departments.department_id in ( ".implode(',',$dept_ids)." )" : '')
-."
-GROUP BY projects.project_id
-ORDER BY $orderby $orderdir	
-";
 global $projects;
 
 $q->addTable('projects');
@@ -196,6 +189,10 @@ if (!isset($department) && $company_id) {
 if (isset($department)) {
 	$q->addWhere("pd.department_id in ( ".implode(',',$dept_ids)." )");
 }
+if ($search_string != "") $q->addWhere("project_name LIKE '%$search_string%'");
+foreach($filters as $field => $filter)
+	if ($filter > 0)
+		$q->addWhere("projects.$field = $filter ");
 $q->addGroup('projects.project_id');
 $q->addOrder("$orderby $orderdir");
 $obj->setAllowedSQL($AppUI->user_id, $q);
@@ -230,19 +227,6 @@ foreach ($rows as $row) {
 	}
 }
 $buffer .= '</select>';
-
-// setup the title block
-$titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );
-$titleBlock->addCell( $AppUI->_('Company') . '/' . $AppUI->_('Division') . ':');
-$titleBlock->addCell( $buffer, '', '<form action="?m=projects" method="post" name="pickCompany">', '</form>');
-$titleBlock->addCell();
-if ($canEdit) {
-	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">', '',
-		'<form action="?m=projects&a=addedit" method="post">', '</form>'
-	);
-}
-$titleBlock->show();
 
 $project_types = dPgetSysVal("ProjectStatus");
 
