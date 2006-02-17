@@ -83,7 +83,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
        // One minute has passed
        total_minutes = total_minutes+1;
 	   
-	   document.getElementById("timerStatus").innerHTML = "( "+total_minutes+" <?php echo $AppUI->_('minutes elapsed'); ?> )";
+	   document.getElementById("timerStatus").innerHTML = "<br />("+total_minutes+" <?php echo $AppUI->_('minutes elapsed'); ?>)";
 
 	   // Lets round hours to two decimals
 	   var total_hours   = Math.round( (total_minutes / 60) * 100) / 100;
