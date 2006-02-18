@@ -51,11 +51,7 @@ if (!db_loadHash( $sql, $dept )) {
 		$titleBlock->addCrumb( "?m=departments&a=addedit&dept_id=$dept_id", "edit this department" );
 
 		if ($canDelete) {
-			$titleBlock->addCrumbRight(
-				'<a href="javascript:delIt()">'
-					. '<img align="absmiddle" src="' . dPfindImage( 'trash.gif', $m ) . '" width="16" height="16" alt="" border="0" />&nbsp;'
-					. $AppUI->_('delete department') . '</a>'
-			);
+			$titleBlock->addCrumbDelete( 'delete department', $canDelete, $msg );
 		}
 	}
 	$titleBlock->show();
