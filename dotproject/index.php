@@ -79,6 +79,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 			$user_id = $AppUI->user_id;
 			$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
 			addHistory('login', $AppUI->user_id, 'logout', $details);
+			dPsessionDestroy($dPconfig['session_name']);
     }
 
 	$_SESSION['AppUI'] = new CAppUI;
