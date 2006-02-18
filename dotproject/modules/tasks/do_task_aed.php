@@ -157,7 +157,8 @@ if ($sub_form) {
 		}
 		
 		$q = new DBQuery();
-		if ($notify) {
+		if ($notify && $dPconfig['log_changes']) {
+			
 			$q->addQuery('history_changes');
 			$q->addTable('history');
 			$q->addWhere('history_table = \'tasks\'');
@@ -165,19 +166,25 @@ if ($sub_form) {
 			$q->addWhere('history_item = ' . $obj->task_id);
 			$q->addOrder('history_date desc');
 			$changes = $q->loadResult();
-			
-			list($fields, $values) = explode('=', $changes);
-			$fields = substr($fields, 1, -1);
-			$fields = explode('","', $fields);
-			$values = substr($values, 1, -1);
-			$values = explode('","', $values);
-			$changes = "Changes: \n";
-			foreach ($fields as $k => $field)
-				$changes .= ucfirst(str_replace('_', ' ', $field)) . ': ' . $values[$k] . "\n";
-			$comment = $changes . "\n" . 'Comment: ' . $comment;
-			
-			if ($msg = $obj->notify($comment)) {
-				$AppUI->setMsg( $msg, UI_MSG_ERROR );
+
+			if (!$changes || db_num_rows($changes) == 0) {
+				$AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
+				$q->clear();
+
+			} else {
+				list($fields, $values) = explode('=', $changes);
+				$fields = substr($fields, 1, -1);
+				$fields = explode('","', $fields);
+				$values = substr($values, 1, -1);
+				$values = explode('","', $values);
+				$changes = "Changes: \n";
+				foreach ($fields as $k => $field)
+					$changes .= ucfirst(str_replace('_', ' ', $field)) . ': ' . $values[$k] . "\n";
+				$comment = $changes . "\n" . 'Comment: ' . $comment;
+				
+				if ($msg = $obj->notify($comment)) {
+					$AppUI->setMsg( $msg, UI_MSG_ERROR );
+				}
 			}
 		}
 		
