@@ -1241,7 +1241,7 @@ class vCalendar {
 		
 		//recurrent events info
 		if (!empty($c['RRULE'][0]['value'][0][0])) {
-			$rt = vEvent::recToDB($c['RRULE'][0]['value'][0][0]);
+			$rt = vCalendar::recToDB($c['RRULE'][0]['value'][0][0]);
 			$eventValues['event_recurs'] = $et[$rt['FREQ']];
 			$eventValues['event_times_recuring'] = $rt['COUNT'];
 		} else {

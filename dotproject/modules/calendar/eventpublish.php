@@ -38,7 +38,7 @@ if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
 	$end_date =& new CDate($event->event_end_date);	
 	
 	// create vEvent String	
-	$v = new vEvent;
+	$v = new vCalendar;
 	$v->addSum($event->event_title);
 	$v->addDesc($event->event_description);
 	$v->addCat($types[(int) $this->event_type]);
