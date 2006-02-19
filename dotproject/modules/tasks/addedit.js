@@ -298,31 +298,39 @@ function calcDuration(f) {
 	//alert(durn);
 	if (durnType == 1){
 		// durn is absolute weekday hours
-
-		// Hours worked on the first day
-		var first_day_hours = cal_day_end - sDate.getHours();
-		if (first_day_hours > daily_working_hours)
-			first_day_hours = daily_working_hours;
-
-		// Hours worked on the last day
-		var last_day_hours = eDate.getHours() - cal_day_start;
-		if (last_day_hours > daily_working_hours)
-			last_day_hours = daily_working_hours;
-
-		// Total partial day hours
-		var partial_day_hours = first_day_hours + last_day_hours;
-
-		// Full work days
-		var full_work_days = (durn - partial_day_hours) / 24;
-
-		// Total working hours
-		durn = Math.floor(full_work_days) * daily_working_hours + partial_day_hours;
 		
-		// check if the last day is a weekendDay
-		// if so we subtracted some hours too much before, 
-		// we have to fill up the last working day until cal_day_start + daily_working_hours
-		if ( !isInArray(working_days, eDate.getDay()) && eDate.getHours() != cal_day_start) {
-			durn = durn + Math.max(0, (cal_day_start + daily_working_hours - eDate.getHours()));
+		//if first day equals last day we're already done
+		if( durn_abs < daily_working_hours ) {
+
+			durn = durn_abs;
+
+		} else { //otherwise we need to process first and end day different;
+
+			// Hours worked on the first day
+			var first_day_hours = cal_day_end - sDate.getHours();
+			if (first_day_hours > daily_working_hours)
+				first_day_hours = daily_working_hours;
+
+			// Hours worked on the last day
+			var last_day_hours = eDate.getHours() - cal_day_start;
+			if (last_day_hours > daily_working_hours)
+				last_day_hours = daily_working_hours;
+
+			// Total partial day hours
+			var partial_day_hours = first_day_hours + last_day_hours;
+
+			// Full work days
+			var full_work_days = (durn - partial_day_hours) / 24;
+
+			// Total working hours
+			durn = Math.floor(full_work_days) * daily_working_hours + partial_day_hours;
+			
+			// check if the last day is a weekendDay
+			// if so we subtracted some hours too much before, 
+			// we have to fill up the last working day until cal_day_start + daily_working_hours
+			if ( !isInArray(working_days, eDate.getDay()) && eDate.getHours() != cal_day_start) {
+				durn = durn + Math.max(0, (cal_day_start + daily_working_hours - eDate.getHours()));
+			}
 		}
 
 	} else if (durnType == 24 ) {
