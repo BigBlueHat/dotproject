@@ -86,11 +86,11 @@ function setContact(){
 
 function submitIt(){
     var form = document.editFrm;
-   if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len'); ?> && form.user_username.value != 'admin') {
-        alert("<?php echo $AppUI->_('adminValidUserName', UI_OUTPUT_JS)  ;?>"  + <?php echo dPgetConfig('username_min_len'); ?>);
+   if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len', 3); ?> && form.user_username.value != 'admin') {
+        alert("<?php echo $AppUI->_('adminValidUserName', UI_OUTPUT_JS)  ;?>"  + <?php echo dPgetConfig('username_min_len', 3); ?>);
         form.user_username.focus();
-    } else if (form.user_password.value.length < <?php echo dPgetConfig('password_min_len'); ?>) {
-        alert("<?php echo $AppUI->_('adminValidPassword', UI_OUTPUT_JS);?>" + <?php echo dPgetConfig('password_min_len'); ?>);
+    } else if (form.user_password.value.length < <?php echo dPgetConfig('password_min_len', 6); ?>) {
+        alert("<?php echo $AppUI->_('adminValidPassword', UI_OUTPUT_JS);?>" + <?php echo dPgetConfig('password_min_len', 6); ?>);
         form.user_password.focus();
     } else if (form.user_password.value !=  form.password_check.value) {
         alert("<?php echo $AppUI->_('adminPasswordsDiffer', UI_OUTPUT_JS);?>");
