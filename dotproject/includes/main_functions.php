@@ -286,7 +286,7 @@ function addHistory( $table, $id, $action = 'modify', $details = '') { //$descri
 	 *
 	 */
 	if(!$dPconfig['log_changes']) return;
-	$description = str_replace("'", "\'", $description);
+
 //	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
 	$q  = new DBQuery;
 	$q->addTable('modules');
@@ -309,8 +309,12 @@ function addHistory( $table, $id, $action = 'modify', $details = '') { //$descri
 	if (is_array($details))
 		foreach ($details as $field => $value)
 			$q->addInsert('history_' . $field, $value);
+	else
+	{
+		$details = str_replace("'", "\'", $details);
+		$q->addInsert('history_description', $details);
+	}
 
-//	$q->addInsert('history_description', $description);
 //	$q->addInsert('history_project', $project_id);
 
 	$q->exec();
