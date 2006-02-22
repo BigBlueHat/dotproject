@@ -167,7 +167,7 @@ if ($sub_form) {
 			$q->addOrder('history_date desc');
 			$changes = $q->loadResult();
 
-			if (!$changes || db_num_rows($changes) == 0) {
+			if (!$changes) {
 				$AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
 				$q->clear();
 
