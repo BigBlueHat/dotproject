@@ -312,7 +312,7 @@ class CProject extends CDpObject {
 		}
 
 		$details['name'] = $this->project_name;
-		$details['projects'] = $this->project_id;
+		$details['project'] = $this->project_id;
 		if( $this->project_id ) {
 			$ret = db_updateObject( 'projects', $this, 'project_id', false );
 			$details['changes'] = $ret;
