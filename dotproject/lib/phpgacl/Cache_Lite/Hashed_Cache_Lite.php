@@ -55,7 +55,7 @@ class Hashed_Cache_Lite extends Cache_Lite
         $this->_group = $group;
 
         if ($this->_caching) {
-			if ($this->_memoryCache[$group.'-'.$id]) {
+			if (!empty($this->_memoryCache[$group.'-'.$id])) {
 				return ($this->_memoryCache[$group.'-'.$id]);
 			} else {
 				$this->_setFileName($id, $group);

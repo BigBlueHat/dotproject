@@ -2654,7 +2654,8 @@
 	*/
 	function &FetchRow()
 	{
-		if ($this->EOF) return false;
+		$false = false;
+		if ($this->EOF) return $false;
 		$arr = $this->fields;
 		$this->_currentRow++;
 		if (!$this->_fetch()) $this->EOF = true;
