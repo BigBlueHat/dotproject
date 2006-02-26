@@ -101,14 +101,16 @@
 		</table>
 	</td>
 				{/if}
+			{/if}
 </tr>
-				{foreach from=$p.tasks item=task}
-					{include file="tasks/list.row.html" obj=$task}
-					{* $task->showtask() *}
-					{* $p.tasks_display *}
-				{/foreach}
+			{foreach from=$p.tasks item=task}
+				{include file="tasks/list.row.html" obj=$task}
+				{* $task->showtask() *}
+				{* $p.tasks_display *}
+			{/foreach}
 
-				{if $p.tasks_count > 0 && $enable_gantt_charts && !$min_view}
+		{if !$min_view}
+			{if $p.tasks_count > 0 && $enable_gantt_charts && !$min_view}
 <tr>
 	<td colspan="{$cols}" align="right">
 		<input type="button" class="button" value="{dPtranslate word='Reports'}" onclick="javascript:window.location='index.php?m=reports&project_id={$k}';" />

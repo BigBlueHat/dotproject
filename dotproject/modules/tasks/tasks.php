@@ -171,7 +171,8 @@ $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
 
-$q->addWhere('tasks.task_id = task_parent');
+if ($f != 'children')
+	$q->addWhere('tasks.task_id = task_parent');
 
 if ($project_id)
 	$q->addWhere('task_project = ' . $project_id);
@@ -285,7 +286,7 @@ if ( ! $min_view && $f2 != 'all' ) {
 
 $q->addGroup('tasks.task_id');
 $q->addOrder('project_id, task_start_date');
-echo $q->prepare();
+
 if ($canViewTask)
 	$tasks = $q->loadList();
 
