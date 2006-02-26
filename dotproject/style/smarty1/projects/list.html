@@ -41,7 +41,7 @@
 		{elseif $show[j] == 'project_start_date'}
 			<td nowrap="nowrap" align="center">{dPdateFormat date=$row.project_start_date}</td>
 		{elseif $show[j] == 'project_duration'}
-			<td nowrap="nowrap" align="right">{if $row.project_duration > 0}{$row.project_duration}{else}-{/if}</td>
+			<td nowrap="nowrap" align="right">{if $row.project_duration > 0}{$row.project_duration}{dPtranslate word='h'}{else}-{/if}</td>
 		{elseif $show[j] == 'project_end_date'}
 			<td nowrap="nowrap" align="center">{dPdateFormat date=$row.project_end_date}</td>
 		{elseif $show[j] == 'total_tasks'}
