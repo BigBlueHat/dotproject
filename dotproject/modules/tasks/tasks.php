@@ -285,7 +285,7 @@ if ( ! $min_view && $f2 != 'all' ) {
 
 $q->addGroup('tasks.task_id');
 $q->addOrder('project_id, task_start_date');
-
+echo $q->prepare();
 if ($canViewTask)
 	$tasks = $q->loadList();
 

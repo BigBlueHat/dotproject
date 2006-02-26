@@ -76,6 +76,11 @@ if (isset($_GET['table']))
 			$assigned_users = array ();
 			$t['task_assigned_users'] = $q->loadList();
 		
+			$q->addQuery('count(*)');
+			$q->addTable('tasks');
+			$q->addWhere('task_parent = ' . $t['task_id']);
+			$t['children'] = $q->loadResult() - 1;
+		
 			$t['node_id'] = $node_id . '-' . $t['task_id'];
 			echo $t['node_id'] . '---';
 			
