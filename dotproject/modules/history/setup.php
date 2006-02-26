@@ -40,6 +40,7 @@ class CSetupHistory {
 		  "PRIMARY KEY  (history_id)," .
 		  "UNIQUE KEY history_id (history_id)," .
 			'KEY `index_history_item` (history_item)' . 
+			'KEY `index_history_table` (history_table)' . 
 		  ") TYPE=MyISAM";
 		$q = new DBQuery;
 		$q->createTable('history');
@@ -78,6 +79,9 @@ class CSetupHistory {
 				$q->addField('history_changes', 'text');
 				$q->exec();
 				$q->clear();
+				break;
+			case '0.4':
+				// TODO: add indexes
 				break;
 		}
 		return db_error();
