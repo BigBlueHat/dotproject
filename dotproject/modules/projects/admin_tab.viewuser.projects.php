@@ -55,14 +55,16 @@ foreach ($projects as $k => $row) {
 $show = array(
 	'project_priority',
 	'project_percent_complete', 
-	'company_name', 
 	'project_name', 
+	'company_name', 
 	'project_start_date', 
+	'project_duration',
 	'project_end_date', 
 	'project_actual_end_date',
 	'project_owner',
 	'total_tasks',
-	'my_tasks');
+	'my_tasks',
+	'project_status');
 
 $tpl->assign('buffer', $buffer);
 $tpl->assign('cols', count($show));

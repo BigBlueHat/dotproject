@@ -39,11 +39,13 @@
 		{elseif $show[j] == 'project_target_budget'}
 			<td nowrap="nowrap" align="right">{dPconfig var='currency_symbol'} {$row.project_target_budget}</td>
 		{elseif $show[j] == 'project_start_date'}
-			<td nowrap="nowrap" align="right">{dPdateFormat date=$row.project_start_date}</td>
+			<td nowrap="nowrap" align="center">{dPdateFormat date=$row.project_start_date}</td>
+		{elseif $show[j] == 'project_duration'}
+			<td nowrap="nowrap" align="right">{if $row.project_duration > 0}{$row.project_duration}{else}-{/if}</td>
 		{elseif $show[j] == 'project_end_date'}
-			<td nowrap="nowrap" align="right">{dPdateFormat date=$row.project_end_date}</td>
+			<td nowrap="nowrap" align="center">{dPdateFormat date=$row.project_end_date}</td>
 		{elseif $show[j] == 'total_tasks'}
-			<td align="right">{$row.total_tasks}</td>
+			<td align="center">{$row.total_tasks}</td>
 		{elseif $show[j] == 'project_percent_complete'}
 			<td width="100" align="left">
 				<div style="text-align: center; width:{$row.project_percent_complete}px; height: 13px; float: left;border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
@@ -63,7 +65,7 @@
 			</td>
 		{else}
 			{assign var='col' value=$show[j]}
-			<td nowrap="nowrap">{$row.$col}</td>
+			<td nowrap="nowrap" align="center">{$row.$col}</td>
 		{/if}
 	{/section}
 	{if $row.edit}

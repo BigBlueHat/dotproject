@@ -432,9 +432,13 @@ function projects_list_data($user_id = false) {
 	// GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 	$q->createTemp('tasks_sum');
 	$q->addTable('tasks');
-	$q->addQuery("task_project, COUNT(distinct task_id) AS total_tasks, 
+	$q->addQuery("task_project, COUNT(distinct tasks.task_id) AS total_tasks, 
 			SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
-			SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete");
+			SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete, SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_duration");
+	$q->addJoin('user_tasks', 'ut', 'ut.task_id = tasks.task_id');
+	if ($user_id) {
+		$q->addWhere('ut.user_id = '.$user_id);
+	}
 	$q->addGroup('task_project');
 	$tasks_sum = $q->exec();
 	$q->clear();
@@ -517,6 +521,7 @@ function projects_list_data($user_id = false) {
 	$q->addQuery('project_start_date, project_end_date');
 	$q->addQuery('project_color_identifier');
 	$q->addQuery('project_company');
+	$q->addQuery('project_duration');
 	$q->addQuery('project_status, project_priority');
 	$q->addQuery('company_name');
 	$q->addQuery('tc.critical_task, tc.project_actual_end_date');
