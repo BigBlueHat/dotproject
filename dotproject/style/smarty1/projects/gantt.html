@@ -3,7 +3,7 @@
         <td>
                 <table border="0" cellpadding="4" cellspacing="0" class="tbl">
 
-                <form name="editFrm" method="post" action="?m={$m}&a={$a}">
+                <form name="editFrm" method="post" action="?m={$m}&a={$a}{if $user_id}&user_id={$user_id}{/if}&tab={$tab}">
                 <input type="hidden" name="display_option" value="{$display_option}" />
 
                 <tr>

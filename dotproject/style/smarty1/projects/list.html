@@ -1,15 +1,22 @@
-{if !$rows}
-	{dPtranslate sentence='No data available'}<br />{$msg}
-{else}
-	{if $editProjects}
+{if $editProjects}
 <form action="./index.php" method="get">
-	{/if}
+{/if}
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
+	<tr>
+{if $showFilters}
+	<td align="right" nowrap="nowrap" colspan="{$cols-2}"></td>
+	<td align="right" nowrap="nowrap"><form action="?m=admin&a=viewuser&user_id={$user_id}&tab={$tab}" method="post" name="pickCompany">{$buffer}</form></td>
+	<td align="right" nowrap="nowrap"><form action="?m=admin&a=viewuser&user_id={$user_id}&tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
+{/if}
+	</tr>
 	<tr>
 {section name=i loop=$show}
 	  <th><a href="{$current_url}&orderby={$show[i]}">{dPtranslate|capitalize word=$show[i]}</a></th>
 {/section}
 	</tr>
+{if !$rows}
+	<td align="left" nowrap="nowrap" colspan="{$cols}">{dPtranslate sentence='No data available'}<br />{$msg}</td>
+{else}
 	{*{section name=i loop=$rows}*}
 {foreach from=$rows item=row}
 	<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">

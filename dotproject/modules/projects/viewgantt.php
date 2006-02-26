@@ -1,6 +1,5 @@
 <?php /* TASKS $Id$gantt.php,v 1.30 2004/08/06 22:56:54 gregorerhardt Exp $ */
-GLOBAL  $company_id, $dept_ids, $department, $min_view, $m, $a;
-
+GLOBAL  $AppUI, $company_id, $dept_ids, $department, $min_view, $m, $a, $user_id, $tab;
 $min_view = defVal( @$min_view, false);
 $project_id = defVal( @$_GET['project_id'], 0);
 
@@ -124,7 +123,7 @@ function showFullProject() {
 <?php
 global $tpl;
 
-$src = "?m=$m&a=gantt&suppressHeaders=1" .
+$src = "?m=projects&a=gantt&suppressHeaders=1" .
 ($display_option == 'all' ? '' : 
 	'&start_date=' . $start_date->format( "%Y-%m-%d" ) . 
 	'&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
@@ -143,5 +142,8 @@ $tpl->assign('end_date', $end_date);
 
 $tpl->assign('display_option', $display_option);
 
-$tpl->displayFile('gantt');
+$tpl->assign('user_id', $user_id);
+$tpl->assign('tab', $tab);
+
+$tpl->displayFile('gantt', 'projects');
 ?>
