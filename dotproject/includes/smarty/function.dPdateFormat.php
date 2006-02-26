@@ -36,6 +36,8 @@ function smarty_function_dPdateFormat($params, &$smarty)
     	
 	if ($format == 'time')
 		$format = '%H%M%S';
+	else if ($format == 'timestamp')
+		$format = FMT_TIMESTAMP;
     else if ($format == 'db')
     	$format = FMT_TIMESTAMP_DATE;
     else if ($format == 'full')

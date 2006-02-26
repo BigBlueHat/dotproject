@@ -1,0 +1,91 @@
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
+<form name="frmDelete2" action="./index.php?m=tasks" method="post">
+	<input type="hidden" name="dosql" value="do_updatetask">
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="task_log_id" value="0" />
+</form>
+
+<tr>
+	<th></th>
+	<th>{dPtranslate word='Date'}</th>
+        <th title="{dPtranslate word='Reference'}">{dPtranslate word='Ref'}</th>
+	<th width="100">{dPtranslate word='Summary'}</th>
+    <th>{dPtranslate word='URL'}</th>
+	<th width="100">{dPtranslate word='User'}</th>
+	<th width="100">{dPtranslate word='Hours'}</th>
+	<th width="100">{dPtranslate word='Cost Code'}</th>
+	<th width="100%">{dPtranslate word='Comments'}</th>
+	<th></th>
+</tr>
+{foreach from=$rows item=row}
+<tr bgcolor="white" valign="top">
+	<td>
+	{if $row.canEdit}
+		<a href="?m=tasks&a=view&task_id={$task_id}&tab={$tab}&task_log_id={$row.task_log_id}#log">
+			{dPshowImage src='./images/icons/stock_edit-16.png' width=16 height=16}
+		</a>
+	{/if}
+	</td>
+	<td nowrap="nowrap">{dPdateFormat date=$row.task_log_date}</td>
+{*<td align="center" valign="middle">{if $row.task_log_problem}{dPshowImage src='./images/icons/mark-as-important-16.png' width=16 height=16 alt='Problem', 'Problem'{/if}</td>*}
+	<td align="center" valign="middle">{$row.reference_image}</td>
+	<td width="30%"{if $row.task_log_problem} style="background-color:#cc6666;color:#ffffff"{/if}>{$row.task_log_name}</td>
+	<td>
+	{if $row.task_log_related_url}
+		<a href="{$row.task_log_related_url}" title="{$row.task_log_related_url}">{dPtranslate word='URL'}</a>
+	{/if}
+	</td>
+	<td width="100">{$row.user_username}</td>
+	<td width="100" align="right">{$row.task_log_hours|string_format:"%.2f"} ({$row.task_log_hours_display}){*('.(int)  $row["task_log_hours"] .':'. ( $row["task_log_hours"] - abs((int)  $row["task_log_hours"] ))*60 .')*}</td>
+	<td width="100">{$row.task_log_costcode}</td>
+	<td>
+		<a name="tasklog{$row.task_log_id}"></a>
+		{$row.task_log_description|nl2br}
+{*
+	$transbrk = "\n[translation]\n";
+	$descrip = str_replace( "\n", "<br />", htmlspecialchars($row['task_log_description']) );
+	$tranpos = strpos( $descrip, str_replace( "\n", "<br />", $transbrk ) );
+	if ( $tranpos === false) $s .= $descrip;
+	else
+	{
+		$descrip = substr( $descrip, 0, $tranpos );
+		$tranpos = strpos( $row['task_log_description'], $transbrk );
+		$transla = substr( $row['task_log_description'], $tranpos + strlen( $transbrk ) );
+		$transla = trim( str_replace( "'", '"', $transla ) );
+
+		{$row.task_log_description|nl2br}
+		<div style="font-weight: bold; text-align: right"><a title="{$transla}" class="hilite">[{dPtranslate word='translation'}]</a></div>
+	}
+*}			
+	</td>
+	<td>
+	{if $canDelete}
+		<a href="javascript:delIt2({$row.task_log_id});" title="{dPtranslate word='delete log'}">
+			{dPshowImage src='./images/icons/stock_delete-16.png' width=16 height=16}
+		</a>
+	{/if}
+	</td>
+</tr>
+{/foreach}
+<tr bgcolor="white" valign="top">
+	<td colspan="6" align="right">{dPtranslate word='Total Hours'} =</td>
+	<td align="right">{$total_hours|string_format:"%.2f"} ({$total_hours_display})</td>
+	{*  ('.(int) $hrs .':'. ($hrs - abs((int) $hrs))*60 .') *}
+	<td align="right" colspan="3">
+		<form action="?m=tasks&a=view&tab=1&task_id={$task_id}" method="post">
+			<input type="submit" class="button" value="{dPtranslate word='new log'}">
+		</form>
+	</td>
+</tr>
+
+</table>
+<table>
+<tr>
+	<td>{dPtranslate word='Key'}:</td>
+	<td>&nbsp; &nbsp;</td>
+	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+	<td>={dPtranslate word='Normal Log'}</td>
+	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+	<td>={dPtranslate word='Problem Report'}</td>
+</tr>
+</table>
