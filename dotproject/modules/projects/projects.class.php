@@ -144,9 +144,11 @@ class CProject extends CDpObject {
 	/**	Import tasks from another project
 	*
 	*	@param	int		Project ID of the tasks come from.
+	* @param  date  The date to offset tasks with.
+	* @param  bool  To keep or not assignees.
 	*	@return	bool	
 	**/
-	function importTasks ($from_project_id) {
+	function importTasks ($from_project_id, $import_date = '', $keepAssignees = true) {
 		
 		// Load the original
 		$origProject = new CProject ();
@@ -161,7 +163,10 @@ class CProject extends CDpObject {
 
 		$origDate = new CDate( $origProject->project_start_date );
 
-		$destDate = new CDate ($this->project_start_date);
+		if (!empty($import_date))
+			$destDate = new CDate($import_date);
+		else
+			$destDate = new CDate ($this->project_start_date);
 
 		$timeOffset = $destDate->getTime() - $origDate->getTime();
 
@@ -179,7 +184,6 @@ class CProject extends CDpObject {
 
 		// Fix record integrity 
 		foreach ($tasks as $old_id => $newTask) {
-
 			// Fix parent Task
 			// This task had a parent task, adjust it to new parent task_id
 			if ($newTask->task_id != $newTask->task_parent)
@@ -192,7 +196,11 @@ class CProject extends CDpObject {
 			$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);   
 			
 			// Fix task end date from start date + work duration
-			$newTask->calc_task_end_date();
+			//$newTask->calc_task_end_date();
+			$origDate->setDate ($newTask->task_end_date);
+			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
+			$destDate = $newTask->next_working_day( $destDate );
+			$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);
 			
 			// Dependencies
 			if (!empty($deps[$old_id])) {
@@ -208,7 +216,28 @@ class CProject extends CDpObject {
 			} // end of update dependencies 
 
 			$newTask->store();
-
+			
+			if ($keepAssignees)
+			{
+				$q->addQuery('user_id, user_type, user_task_priority, perc_assignment');
+				$q->addTable('user_tasks');
+				$q->addWhere('task_id = ' . $old_id);
+				$assignedUsers = $q->loadList();
+				
+				$q->setDelete('user_tasks');
+				$q->addWhere('task_id = ' . $newTask->task_id);
+				$q->exec();
+				$q->clear();
+				foreach ($assignedUsers as $user)
+				{
+					$q->addTable('user_tasks');
+					foreach($user as $field => $value)
+						$q->addInsert($field, $value);
+					$q->addInsert('task_id', $newTask->task_id);
+					$q->exec();
+					$q->clear();
+				}
+			}
 		} // end Fix record integrity	
 
 			

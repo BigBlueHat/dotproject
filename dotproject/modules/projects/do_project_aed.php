@@ -50,7 +50,19 @@ if ($del) {
 		$isNotNew = @$_POST['project_id'];
 		
 		if ( $importTask_projectId = dPgetParam( $_POST, 'import_tasks_from', '0' ) )
-			$obj->importTasks ($importTask_projectId);
+		{
+			$import_date = dPgetParam( $_POST, 'project_import_date', '' );
+			if (empty($import_date))
+			{
+				if (!empty($obj->project_start_date))
+					$date = new CDate($obj->project_start_date);
+				else
+					$date = new CDate();
+				$import_date = $date->format(FMT_DATETIME_MYSQL);
+			}
+			$keepAssignees = dPgetParam( $_POST, 'keepAssignees', '' );
+			$obj->importTasks ($importTask_projectId, $import_date, $keepAssignees);
+		}
 
  		$custom_fields = New CustomFields( $m, 'addedit', $obj->project_id, "edit" );
  		$custom_fields->bind( $_POST );

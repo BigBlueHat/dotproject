@@ -412,7 +412,12 @@ class CTask extends CDpObject {
                 if ($newObj->task_parent == $this->task_id)
                         $newObj->task_parent = '';
 
-                $newObj->store();
+								$newObj->store();
+								if (empty($newObj->task_parent))
+								{
+									$newObj->task_parent = $newObj->task_id;
+									$newObj->store();
+								}
 
                 return $newObj;
         }// end of copy()
@@ -475,8 +480,7 @@ class CTask extends CDpObject {
                                 return $return_msg;
                         }
                 }
-                if( $this->task_id ) {
-									
+                if( $this->task_id ) {									
                         $this->_action = 'updated';
                         // Load the old task from disk
                         $oTsk = new CTask();
@@ -1049,7 +1053,7 @@ class CTask extends CDpObject {
 * @param Date End date of the period
 * @param integer The target company
 */
-        function getTasksForPeriod( $start_date, $end_date, $company_id=0 ) {
+        function getTasksForPeriod( $start_date, $end_date, $filters = 0) {
                 GLOBAL $AppUI;
         // convert to default db time stamp
                 $db_start = $start_date->format( FMT_DATETIME_MYSQL );
@@ -1065,9 +1069,14 @@ class CTask extends CDpObject {
                 $q->addWhere("((task_start_date <= '$db_end' AND task_end_date >= '$db_start') OR task_start_date BETWEEN '$db_start' AND '$db_end')");
                 $q->addWhere('task_status > -1');
 
-                if ($company_id ){
-                        $q->addWhere("project_company = '$company_id'");
-                }
+								if (is_array($filters))
+								{
+									foreach($filters as $field => $filter)
+										if ($filter > 0)
+											$q->addWhere("tasks.$field = $filter ");
+								}
+								else if ($filters)
+									$q->addWhere('project_company = ' . $filters);
 
                 // exclude read denied projects
                 $obj = new CProject();
