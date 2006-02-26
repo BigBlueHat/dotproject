@@ -289,6 +289,7 @@ $q->addOrder('project_id, task_start_date');
 if ($canViewTask)
 	$tasks = $q->loadList();
 
+// POST PROCESSING TASKS
 foreach ($tasks as $row) {
 	//add information about assigned users into the page output
 	$q->clear();
@@ -312,7 +313,10 @@ foreach ($tasks as $row) {
 	$row['node_id'] = 'node-' . $row['task_id'];
 	$row['canEdit'] = !getDenyEdit( 'tasks', $row['task_id'] );
 	$row['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $row['task_id']);
-		
+
+	if (strpos($row['task_duration'], '.') && $row['task_duration_type'] == 1)
+		$row['task_duration'] = floor($row['task_duration']) . ':' . round(60 * ($row['task_duration'] - floor($row['task_duration'])));
+
 	//pull the final task row into array
 	$projects[$row['task_project']]['tasks'][] = $row;
 }

@@ -192,6 +192,10 @@ foreach ($tasks as $k => $task)
 				$task['style'] = taskstyle($task);
 				$task['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
 				$task['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
+				
+				if (strpos($task['task_duration'], '.') && $task['task_duration_type'] == 1)
+					$task['task_duration'] = floor($task['task_duration']) . ':' . round(60 * ($task['task_duration'] - floor($task['task_duration'])));
+
 
 				$tasks[$k] = $task;
 

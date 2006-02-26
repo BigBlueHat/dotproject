@@ -47,6 +47,11 @@ else
 //$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : new CDate();
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
 
+$task_duration = isset($obj->task_duration) ? $obj->task_duration : 1;
+if ($dot = strpos($task_duration, '.') && $obj->task_duration_type == 1)
+	$task_duration = floor($task_duration) . ':' . (60 * ($task_duration - floor($task_duration)));
+
+
 // convert the numeric calendar_working_days config array value to a human readable output format
 $cwd = explode(',', $dPconfig['cal_working_days']);
 
@@ -118,7 +123,7 @@ function cal_work_day_conv($val) {
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Expected Duration' );?>:</td>
 	<td nowrap="nowrap">
-		<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo isset($obj->task_duration) ? $obj->task_duration : 1;?>" />
+		<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="<?php echo $task_duration; ?>" />
 	<?php
 		echo arraySelect( $durnTypes, 'task_duration_type', 'class="text"', $obj->task_duration_type, true );
 	?>

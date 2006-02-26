@@ -110,7 +110,12 @@ if ($sub_form) {
 		$end_date = new CDate( $obj->task_end_date );
 		$obj->task_end_date = $end_date->format( FMT_DATETIME_MYSQL );
 	}
-
+	$dot = strpos($obj->task_duration, ':');
+	if ($dot > 0)
+	{
+		$task_duration_minutes = sprintf('%.3f', substr($obj->task_duration, $dot + 1)/60.0);
+		$obj->task_duration = floor($obj->task_duration) + $task_duration_minutes;
+	}
 
 	require_once("./classes/CustomFields.class.php");
 	//echo '<pre>';print_r( $hassign );echo '</pre>';die;
