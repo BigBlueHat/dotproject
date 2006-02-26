@@ -57,6 +57,12 @@ if ($obj->task_log_date) {
 	$date = new CDate( $obj->task_log_date );
 	$obj->task_log_date = $date->format( FMT_DATETIME_MYSQL );
 }
+$dot = strpos($obj->task_log_hours, ':');
+if ($dot > 0)
+{
+	$log_duration_minutes = sprintf('%.3f', substr($obj->task_log_hours, $dot + 1)/60.0);
+	$obj->task_log_hours = floor($obj->task_log_hours) + $log_duration_minutes;
+}
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Task Log' );

@@ -180,7 +180,10 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 	}
 
 	function timerSet() {
-		total_minutes = Math.round(document.editFrm.task_log_hours.value * 60) -1;
+		if ((dot = document.editFrm.task_log_hours.value.indexOf(':')) > 0)
+			total_minutes = parseInt(document.editFrm.task_log_hours.value.substring(0, dot)) * 60 + parseInt(document.editFrm.task_log_hours.value.substring(dot + 1));
+		else
+			total_minutes = Math.round(document.editFrm.task_log_hours.value * 60) -1;
 	}
 	
 	function popCalendar( field )
