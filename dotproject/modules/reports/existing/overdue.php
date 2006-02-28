@@ -17,7 +17,11 @@ $pdf =& new Cezpdf($paper='A4',$orientation='landscape');
 $pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
 $pdf->selectFont( "$font_dir/Helvetica.afm" );
 
-$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
+if ( $locale_char_set=='utf-8' && function_exists("utf8_decode") ) 
+	$pdf->ezText( utf8_decode(dPgetConfig( 'company_name' )), 12 );
+else
+	$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
+
 
 $date = new CDate();
 $pdf->ezText( "\n" . $date->format( $df ) , 8 );
@@ -26,7 +30,10 @@ $next_week->addSpan(new Date_Span(array(7,0,0,0)));
 
 $pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
 $pdf->ezText( "\n" . $AppUI->_('Project Overdue Task Report'), 12 );
-$pdf->ezText( "$pname", 15 );
+if ( $locale_char_set=='utf-8' && function_exists("utf8_decode") ) 
+	$pdf->ezText( utf8_decode($pname), 15 );
+else 
+	$pdf->ezText( $pname, 15 )
 $pdf->ezText( "\n" );
 $pdf->selectFont( "$font_dir/Helvetica.afm" );
 $title = null;
