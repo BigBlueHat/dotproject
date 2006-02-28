@@ -11,8 +11,11 @@
 	</tr>
 	<tr>
 {section name=i loop=$show}
-	  <th><a href="{$current_url}&orderby={$show[i]}">{dPtranslate|capitalize word=$show[i]}</a></th>
+	  <th><a href="{$current_url}&orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
 {/section}
+	{if $editProjects}
+	  <th>Edit</th>
+	{/if}
 	</tr>
 {if !$rows}
 	<td align="left" nowrap="nowrap" colspan="{$cols}">{dPtranslate sentence='No data available'}<br />{$msg}</td>
