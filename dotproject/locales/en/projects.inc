@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"project_percent_complete"=>"progress",
 "Active",
 "Actual",
 "Actual Budget",
@@ -120,6 +119,7 @@
 "Worked Hours",
 "change color",
 "co",
+"company_name"=>"Company Name",
 "delete project",
 "edit this project",
 "inserted",
@@ -137,6 +137,7 @@
 "project_end_date"=>"end date",
 "project_name"=>"project name",
 "project_owner"=>"owner",
+"project_percent_complete"=>"progress",
 "project_priority"=>"p",
 "project_start_date"=>"start date",
 "project_status"=>"status",

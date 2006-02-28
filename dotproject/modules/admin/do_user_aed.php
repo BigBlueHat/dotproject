@@ -2,6 +2,7 @@
 
 include $AppUI->getModuleClass('contacts');
 $del = isset($_REQUEST['del']) ? $_REQUEST['del'] : FALSE;
+$user_current_company = $_REQUEST['user_current_company'];
 
 $obj = new CUser();
 $contact = new CContact();
@@ -60,12 +61,19 @@ if ($del) {
 
 		$contact->contact_owner = $AppUI->user_id;
 	}
+       if ($obj->user_company != $user_current_company)
+       {
+            $obj->user_department = null;
+            $contact->contact_department = null;
+        }
+
+
 
         if (($msg = $contact->store())) {
                 $AppUI->setMsg( $msg, UI_MSG_ERROR );
         }
 	else {
-        
+         
         $obj->user_contact = $contact->contact_id;
         if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
