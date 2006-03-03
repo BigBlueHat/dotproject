@@ -2156,10 +2156,13 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         $sign = 1;
         $style = "";
         if ($start_date) {
-                if (!$end_date) {
-                        $end_date = $start_date;
-                        $end_date->addSeconds( @$a["task_duration"]*$a["task_duration_type"]*SEC_HOUR );
-                }
+	
+                       	/*
+			** end date calc has been moved to calcEndByStartAndDuration()-function
+			** called from array_csort and tasks.php 
+			** delete this comment if no errors occur in the future
+			** 20060303
+			*/ 
 
                 if ($a['task_percent_complete'] == 0) {
                         if ($now->before( $start_date )) {
@@ -2414,6 +2417,24 @@ function array_csort()   //coded by Ichier2003
         $i++;
         if (is_string($arg)) {
             foreach ($marray as $row) {
+
+		/* we have to calculate the end_date via start_date+duration for 
+		** end='0000-00-00 00:00:00' before sorting, see mantis #1509:
+		
+		** Task definition writes the following to the DB:
+		** A without start date: start = end = NULL
+		** B with start date and empty end date: start = startdate, end = "0000-00-00 00:00:00"
+		** C start + end date: start= startdate, end = end date
+
+		** A the end_date for the middle task (B) is ('dynamically') calculated on display 
+		** via start_date+duration, it may be that the order gets wrong due to the fact 
+		** that sorting has taken place _before_.
+		*/
+		if ( $marray[$j]['task_end_date'] == '0000-00-00 00:00:00') {
+			
+			$marray[$j]['task_end_date'] = calcEndByStartAndDuration($marray[$j]);
+		}
+
                 $sortarr[$i][] = $row[$arg];
             }
         } else {
