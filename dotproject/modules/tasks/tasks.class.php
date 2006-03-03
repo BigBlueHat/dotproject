@@ -2437,10 +2437,10 @@ function sort_by_item_title( $title, $item_name, $item_type )
         if ( $task_sort_item1 == $item_name ) $item_order = $task_sort_order1;
 
         if ( isset( $item_order ) ) {
-                if ( $item_order == SORT_ASC )
-                        echo '<img src="./images/icons/low.gif" width=13 height=16>';
+                if ( $item_order == SORT_ASC )    
+			   echo '<img src="./images/arrow-up.gif" width=11 height=11>';
                 else
-                        echo '<img src="./images/icons/1.gif" width=13 height=16>';
+                        echo '<img src="./images/arrow-down.gif" width=11 height=11>';
         } else
                 $item_order = SORT_DESC;
 
