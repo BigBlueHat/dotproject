@@ -50,8 +50,9 @@ if ($display_option == 'custom') {
 } else {
 	// month
 	$start_date = new CDate();
-	$end_date = new CDate( $start_date );
-	$end_date->addMonths( $scroll_date );
+	$start_date->day = 1;
+   	$end_date = new CDate($start_date);
+    	$end_date->addMonths( $scroll_date );
 }
 
 // setup the title block
@@ -84,10 +85,12 @@ function setCalendar( idate, fdate ) {
 function scrollPrev() {
 	f = document.editFrm;
 <?php
-	$new_start = $start_date;
+	$new_start = $start_date;	
+	$new_start->day = 1;
 	$new_end = $end_date;
 	$new_start->addMonths( -$scroll_date );
 	$new_end->addMonths( -$scroll_date );
+	
 	echo "f.sdate.value='".$new_start->format( FMT_TIMESTAMP_DATE )."';";
 	echo "f.edate.value='".$new_end->format( FMT_TIMESTAMP_DATE )."';";
 ?>
@@ -99,7 +102,8 @@ function scrollNext() {
 	f = document.editFrm;
 <?php
 	$new_start = $start_date;
-	$new_end = $end_date;
+	$new_start->day = 1;
+	$new_end = $end_date;	
 	$new_start->addMonths( $scroll_date );
 	$new_end->addMonths( $scroll_date );
 	echo "f.sdate.value='" . $new_start->format( FMT_TIMESTAMP_DATE ) . "';";
