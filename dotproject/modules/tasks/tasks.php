@@ -158,7 +158,7 @@ $q->addTable('tasks');
 $mods = $AppUI->getActiveModules();
 if (!empty($mods['history']) && !getDenyRead('history'))
 {
-        $q->addQuery('history_date as last_update');
+        $q->addQuery('MAX(history_date) as last_update');
         $q->leftJoin('history', 'h', 'history_item = tasks.task_id AND history_table=\'tasks\'');
 }
 $q->leftJoin('projects', 'p', 'p.project_id = task_project');
