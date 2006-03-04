@@ -137,7 +137,8 @@ if (($msg = $obj->store())) {
 	if (empty($file_id) && ($index_max_file_size < 0 || $obj->file_size <= $index_max_file_size*1024)) 
 	{
 		$obj->indexStrings();
-		$AppUI->setMsg('; ' . $indexed . ' words indexed', UI_MSG_OK, true);
+		$AppUI->setMsg('; ' . $indexed . ' ', UI_MSG_OK, true);
+		$AppUI->setMsg('words indexed' , UI_MSG_OK, true);
 	}
 }
 $AppUI->redirect();
