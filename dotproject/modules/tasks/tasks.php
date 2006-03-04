@@ -313,7 +313,8 @@ foreach ($tasks as $row) {
 	$row['style'] = taskstyle($row);
 	$row['canEdit'] = !getDenyEdit( 'tasks', $row['task_id'] );
 	$row['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $row['task_id']);
-	$row['task_number'] = ++$i;
+	$i = count($projects[$row['task_project']]['tasks']) + 1;
+	$row['task_number'] = $i;
 	$row['node_id'] = 'node('.$i.')-' . $row['task_id'];
 
 
