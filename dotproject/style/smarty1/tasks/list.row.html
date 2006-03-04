@@ -1,4 +1,5 @@
-<tr id="{$obj.node_id}" onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')"> {* ondblclick="dpToggleNode(this)" *}
+{* if any of the TR attributes contains spaces, CHANGE processing in tree.js!!! *}
+<tr id="{$obj.node_id}" onMouseOver="setPointer(this,'#FFFFB0')" onMouseOut="setPointer(this,'')"> {* ondblclick="dpToggleNode(this)" *}
 {* edit icon *}
 	<td>{if $obj.canEdit}
 		<a href="?m=tasks&a=addedit&task_id={$obj.task_id}">
@@ -45,6 +46,7 @@
 	{/foreach}
 
 {* name link *}
+{$obj.task_number}. 
 {if $obj.children > 0}
 	{if !dPgetConfig('tasks_ajax_list')}
 <a href="index.php{$query_string}&close_task_id={$obj.task_id}"><img src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" /></a>

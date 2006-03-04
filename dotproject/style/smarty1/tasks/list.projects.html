@@ -105,8 +105,6 @@
 </tr>
 			{foreach from=$p.tasks item=task}
 				{include file="tasks/list.row.html" obj=$task}
-				{* $task->showtask() *}
-				{* $p.tasks_display *}
 			{/foreach}
 
 		{if !$min_view}

@@ -36,8 +36,7 @@
 </tr>
 
 {foreach from=$rows item=task}
-{include file="tasks/list.row.html" obj=$task}
-{*$task->showtask()*}
+	{include file="tasks/list.row.html" obj=$task}
 {/foreach}
 </table>
 
