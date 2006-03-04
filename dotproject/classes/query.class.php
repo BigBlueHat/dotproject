@@ -480,6 +480,10 @@ class DBQuery {
     if (isset($this->table_list)) {
       if (is_array($this->table_list)) {
 	$intable = false;
+	/* added brackets for MySQL > 5.0.12 compatibility
+	** patch #1358907 submitted to sf.net on 2005-11-17 04:12 by ilgiz
+	*/
+	$q .= '(';
 	foreach ($this->table_list as $table_id => $table) {
 	  if ($intable)
 	    $q .= ",";
@@ -489,6 +493,10 @@ class DBQuery {
 	  if (! is_numeric($table_id))
 	    $q .= " as $table_id";
 	}
+	/* added brackets for MySQL > 5.0.12 compatibility
+	** patch #1358907 submitted to sf.net on 2005-11-17 04:12 by ilgiz
+	*/
+	$q .= ')';
       } else {
 	$q .= $this->_table_prefix . $this->table_list;
       }
