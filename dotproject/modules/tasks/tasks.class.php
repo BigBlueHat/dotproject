@@ -1073,7 +1073,12 @@ class CTask extends CDpObject {
 								{
 									foreach($filters as $field => $filter)
 										if ($filter > 0)
-											$q->addWhere("tasks.$field = $filter ");
+											if ($field == 'task_owner')
+												$q->addWhere("tasks.task_owner = $filter OR tasks.task_creator = $filter");
+											else if ($field == 'task_company')
+												$q->addWhere('projects.project_company = ' . $filter);
+											else
+												$q->addWhere("tasks.$field = $filter ");
 								}
 								else if ($filters)
 									$q->addWhere('project_company = ' . $filters);

@@ -10,7 +10,7 @@
 * @param int the company id to filter by
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
-function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_id=0 ) {
+function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters ) {
 	GLOBAL $a, $AppUI, $dPconfig;
 	
 	// Check permissions.
@@ -19,7 +19,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $company_i
 	if (!$canView)
 		return array();
 		
-	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $company_id );
+	$tasks = CTask::getTasksForPeriod( $startPeriod, $endPeriod, $filters );
 
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
 

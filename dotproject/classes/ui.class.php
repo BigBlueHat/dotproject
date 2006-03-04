@@ -1183,7 +1183,7 @@ class CTitleBlock_core {
 		}
 		
 		$tpl->assign('filters', $filters_combos);
-		$tpl->assign('search_string', $search_string);
+		$tpl->assign('post_url', $_SERVER['REQUEST_URI']);
 		$data = $tpl->fetchFile('filters', '.');
 		$this->cells1[] = array('', $data, '', '');
 		

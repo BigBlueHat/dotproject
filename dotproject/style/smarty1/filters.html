@@ -1,4 +1,5 @@
-<form name="filtersform" action="?m={$m}" method="post">
+<div id="filters" style="display:none">
+<form name="filtersform" action="{$post_url}" method="post">
 <table>
 <tr>
 {foreach from=$filters item='combo' key='name' name='filters'}
@@ -13,3 +14,7 @@
 </tr>
 </table>
 </form>
+</div>
+<a href="javascript:void(0);" 
+	onClick="document.getElementById('filters').style.display=document.getElementById('filters').style.display=='none'?'block':'none';">
+	filters</a>

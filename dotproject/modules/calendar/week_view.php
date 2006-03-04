@@ -2,7 +2,21 @@
 $AppUI->savePlace();
 global $locale_char_set;
 
+require_once( $AppUI->getModuleClass( 'companies' ) );
+require_once( $AppUI->getModuleClass( 'projects' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
+
+$companies = new CCompany();
+$projects = new CProject();
+
+$perms =& $AppUI->acl();
+$tasks_filters_selection = array(
+//'tasks_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'),
+'task_owner' => $perms->getPermittedUsers('calendar'),
+//'task_creator' => $perms->getPermittedUsers('calendar'),
+'task_project' => $projects->getAllowedRecords($AppUI->user_id, 'project_id, project_name', 'project_name'),
+'task_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'));
+
 
 // retrieve any state parameters
 if (isset( $_REQUEST['company_id'] )) {
@@ -34,24 +48,60 @@ $next_week = new CDate( Date_calc::beginOfNextWeek( $dd, $mm, $yy, FMT_TIMESTAMP
 $tasks = CTask::getTasksForPeriod( $first_time, $last_time, $company_id );
 $events = CEvent::getEventsForPeriod( $first_time, $last_time );
 
+if (isset($_POST['show_form']))
+{
+	if (isset($_POST['show_events']))
+		$AppUI->setState('CalIdxShowEvents', true);
+	else if ($AppUI->getState('CalIdxShowEvents', '') === '')
+		$AppUI->setState('CalIdxShowEvents', true);
+	else
+		$AppUI->setState('CalIdxShowEvents', false);
+
+	if (isset($_POST['show_tasks']))
+		$AppUI->setState('CalIdxShowTasks', true);
+	else
+		$AppUI->setState('CalIdxShowTasks', false);
+}
+
+$show_events = $AppUI->getState('CalIdxShowEvents', true);
+$show_tasks = $AppUI->getState('CalIdxShowTasks', false);
+
 $links = array();
 
 // assemble the links for the tasks
-require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
-getTaskLinks( $first_time, $last_time, $links, 50, $company_id );
+if ($show_tasks)
+{
+	require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+	getTaskLinks( $first_time, $last_time, $links, 50, $filters);
+}
 
 // assemble the links for the events
-require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
-getEventLinks( $first_time, $last_time, $links, 50 );
+if ($show_events)
+{
+	require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+	getEventLinks( $first_time, $last_time, $links, 50 );
+}
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Week View', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=calendar&date=".$this_week->format( FMT_TIMESTAMP_DATE ), "month view" );
+
+$titleBlock->addCell('
+<input type="hidden" name="show_form" value="1" />
+<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked ':'') . 'onChange="document.filters.submit()"> show events
+<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked ':'') . 'onChange="document.filters.submit()"> show tasks', '', 
+	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="filters">', '</form>');
+
+if ($show_tasks)
+	$filters = $titleBlock->addFiltersCell($tasks_filters_selection);
+
+/*
 $titleBlock->addCell( $AppUI->_('Event Filter') . ':');
 $titleBlock->addCell(
 	arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
 	$event_filter ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
 );
+*/
 $titleBlock->show();
 
 $show_day = $this_week;
