@@ -26,12 +26,13 @@ global $company_id, $project_id, $task_id;
 // $xpg_sqlquery    - SELECT for the SELECT LIMIT
 // $xpg_result      - pointer to results from SELECT LIMIT
 
-$tab = $AppUI->getState( 'FileIdxTab' ) !== NULL ? $AppUI->getState( 'FileIdxTab' ) : 0;
 $page = dPgetParam( $_GET, "page", 1);
+if ($showProject)
+	$tab = $AppUI->getState( 'FileIdxTab' ) !== NULL ? $AppUI->getState( 'FileIdxTab' ) : 0;
+else 
+	$tab = 0;
 if (!isset($project_id))
         $project_id = dPgetParam( $_REQUEST, 'project_id', 0);
-if (!isset($showProject))
-        $showProject = true;
 
 $xpg_pagesize = 30;
 $xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
