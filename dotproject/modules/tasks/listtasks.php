@@ -9,6 +9,7 @@ if (isset($_GET['table']))
 {
 	$node_id = dPgetParam($_GET, 'node_id');
 	$parent = substr($node_id, strrpos($node_id, '-') + 1);
+	$parent_number = substr($node_id, 5, strpos($node_id, ')') - 5);
 	$q = new DBQuery;
 	$q->addQuery('distinct tasks.task_id, task_parent, task_name');
 	$q->addQuery('task_start_date, task_end_date, task_dynamic');
@@ -44,7 +45,7 @@ if (isset($_GET['table']))
 	$q->addWhere('task_parent = ' . $parent);
 	$q->addWhere('task_parent <> tasks.task_id');
 	$q->addGroup('task_id');
-	$q->addOrder('project_id, task_start_date DESC');
+	$q->addOrder('project_id, task_start_date');
 	
 	//echo $q->prepare();
 	//$q->addTable('tasks');
@@ -62,6 +63,7 @@ if (isset($_GET['table']))
 		$tpl->assign('durnTypes', $durnTypes);
 
 		$tpl->assign('direct_edit_assignment', false);
+		$i = 0;
 		foreach ($tasks as $t)
 		{
 			$q->clear();
@@ -80,9 +82,11 @@ if (isset($_GET['table']))
 			$q->addTable('tasks');
 			$q->addWhere('task_parent = ' . $t['task_id']);
 			$t['children'] = $q->loadResult() - 1;
+			$t['task_number'] = $parent_number . '.' . (++$i);
 		
-			$t['node_id'] = $node_id . '-' . $t['task_id'];
-			echo $t['node_id'] . '---';
+			$new_id = str_replace('('.$parent_number.')', '('.$t['task_number'].')', $node_id) . '-' . $t['task_id'];
+			$t['node_id'] = $new_id;
+			echo $node_id . '---';
 			
 			$t['canEdit'] = !getDenyEdit( 'tasks', $t['task_id'] );
 			$t['canViewLog'] = $perms->checkModuleItem('tasks', 'view', $t['task_id']);

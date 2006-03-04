@@ -164,11 +164,15 @@ function insertNewRow(row, html)
 	table = row.parentNode.parentNode;
 	pos = row.rowIndex + 1;
 	row = table.insertRow(pos);
-	tr_id = html.substring(4, html.indexOf('>'));
-	attrName = tr_id.substring(0, tr_id.indexOf('='));
-	attrValue = tr_id.substring(tr_id.indexOf('=') + 1);
-	attrValue = attrValue.substring(1, attrValue.length-1);
-	row.setAttribute(attrName, attrValue);
+	tr_attributes = html.substring(4, html.indexOf('>')).split(' ');
+	for (i = 0; i < tr_attributes.length; i++)
+	{
+		tr_id = tr_attributes[i];
+		attrName = tr_id.substring(0, tr_id.indexOf('='));
+		attrValue = tr_id.substring(tr_id.indexOf('=') + 1);
+		attrValue = attrValue.substring(1, attrValue.length-1);
+		row.setAttribute(attrName, attrValue);
+	}
 //alert(html);
 	// row.innerHTML = html; // doesn't work in IE
 	// DIRTY HACK for IE
@@ -210,23 +214,17 @@ function processReqChange() {
 		// only if "OK"
 		if (req.status == 200) {				
 			ret = req.responseText;
-			// alert('Returned: ' + ret);
+//			alert('Returned: ' + ret);
 			tasks = ret.substring(0, ret.length - 6).split('[][][]');
-			for (task_num = 0; task_num < tasks.length; task_num++)
+			for (task_num = tasks.length - 1; task_num >= 0; task_num--)
 			{
 				t = tasks[task_num].split('---');
+				parent_id = t[0];
+				row_data = t[1];
 
-				node_id = t[1].substring(t[1].indexOf('id')+4);
-				node_id = node_id.substring(0, node_id.indexOf('\''));
-				
-			//	t[1] = t[1].substring(t[1].indexOf('\n')+2, t[1].length - 5);
-			//	t[1] = t[1].substring(t[1].indexOf('\n'));
-			
-				parent_id = t[0].substring(0, t[0].lastIndexOf('-'));
 				rowInsert = document.getElementById(parent_id); //.rowIndex;
 				table = document.getElementById(parent_id).parentNode.parentNode;
-				row = insertNewRow(rowInsert, t[1]);
-				row.setAttribute('id', t[0]);
+				row = insertNewRow(rowInsert, row_data);
 
 				loadedTasks[parent_id] = true;
 			}

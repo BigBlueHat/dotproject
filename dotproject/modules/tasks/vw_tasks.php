@@ -169,6 +169,7 @@ $q->addGroup('tasks.task_id');
 $tasks = $q->loadList();
 
 //add information about assigned users into the page output
+$i = 0;
 foreach ($tasks as $k => $task) 
 {
         $q->clear();
@@ -188,10 +189,11 @@ foreach ($tasks as $k => $task)
 				$q->addWhere('task_parent = ' . $task['task_id']);
 				$q->addWhere('task_id <> task_parent');
 				$task['children'] = $q->loadResult();
-				$task['node_id'] = 'node-' . $task['task_id'];
 				$task['style'] = taskstyle($task);
 				$task['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
 				$task['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
+				$task['task_number'] = ++$i;
+				$task['node_id'] = 'node('.$i.')-' . $task['task_id'];
 				
 				if (strpos($task['task_duration'], '.') && $task['task_duration_type'] == 1)
 					$task['task_duration'] = floor($task['task_duration']) . ':' . round(60 * ($task['task_duration'] - floor($task['task_duration'])));

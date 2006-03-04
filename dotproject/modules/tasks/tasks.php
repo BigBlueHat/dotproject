@@ -311,9 +311,11 @@ foreach ($tasks as $row) {
 	$q->addWhere('task_id <> task_parent');
 	$row['children'] = $q->loadResult();
 	$row['style'] = taskstyle($row);
-	$row['node_id'] = 'node-' . $row['task_id'];
 	$row['canEdit'] = !getDenyEdit( 'tasks', $row['task_id'] );
 	$row['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $row['task_id']);
+	$row['task_number'] = ++$i;
+	$row['node_id'] = 'node('.$i.')-' . $row['task_id'];
+
 
 	if (strpos($row['task_duration'], '.') && $row['task_duration_type'] == 1)
 		$row['task_duration'] = floor($row['task_duration']) . ':' . round(60 * ($row['task_duration'] - floor($row['task_duration'])));
