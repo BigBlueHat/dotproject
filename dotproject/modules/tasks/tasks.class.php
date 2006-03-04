@@ -2448,6 +2448,18 @@ function array_csort()   //coded by Ichier2003
     return $marray;
 }
 
+/*
+** Calc End Date via Startdate + Duration
+** @param array task	A DB row from the earlier fetched tasklist
+** @return string	Return calculated end date in MySQL-TIMESTAMP format	
+*/
+
+function calcEndByStartAndDuration( $task ) {
+	$end_date = new CDate($task['task_start_date']);
+        $end_date->addSeconds( @$task['task_duration']*$task['task_duration_type']*SEC_HOUR );
+	return $end_date->format(FMT_DATETIME_MYSQL);
+}
+
 function sort_by_item_title( $title, $item_name, $item_type )
 {
         global $AppUI,$project_id,$task_id,$min_view,$m;
