@@ -21,6 +21,11 @@ function show_history($history)
 		$table_id = substr($table_id, 0, -2) . 'y';
  	$table_id .= '_id';
 	$item_name = substr($table_id, 0, -2) . 'name';
+	if ($module == 'modules')
+	{
+		$table_id = 'mod_id';
+		$table_name = 'mod_name';
+	}
         
         if ($module == 'login')
                return 'User \'' . $history['history_description'] . '\' ' . $history['history_action'] . '.';
