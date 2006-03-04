@@ -542,21 +542,22 @@ function projects_list_data($user_id = false) {
 	//$q->addJoin('', '', '');
 	if (isset($department)) {
 		$q->addJoin('project_departments', 'pd', 'pd.project_id = projects.project_id');
-	}
-	if (!isset($department) && $company_id) {
-		$q->addWhere("projects.project_company = '$company_id'");
-	}
-	if (isset($department)) {
 		$q->addWhere("pd.department_id in ( ".implode(',',$dept_ids)." )");
 	}
-	if ($user_id) {
-		$q->addWhere('(tu.user_id = '.$user_id.' OR projects.project_owner = '.$user_id.' )');
-	}
-	if ($search_string != "") $q->addWhere("project_name LIKE '%$search_string%'");
+// Handled through the generic filters
+//	if (!isset($department) && $company_id) {
+//		$q->addWhere("projects.project_company = '$company_id'");
+//	}
+	if ($search_string != "")
+		$q->addWhere("project_name LIKE '%$search_string%'");
 	if ($filters) {
 		foreach($filters as $field => $filter)
 			if ($filter > 0)
-				$q->addWhere("projects.$field = $filter ");
+				// Special conditions:
+				if ($field == 'project_owner')
+					$q->addWhere('(tu.user_id = '.$filter.' OR projects.project_owner = '.$filter.' )');
+				else
+					$q->addWhere("projects.$field = $filter ");
 	}
 	$q->addGroup('projects.project_id');
 	$q->addOrder("$orderby $orderdir");

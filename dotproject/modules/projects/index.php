@@ -47,26 +47,18 @@ if (isset( $_GET['tab'] )) {
 $tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
 $active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
-if (isset( $_POST['company_id'] )) {
-	$AppUI->setState( 'ProjIdxCompany', intval( $_POST['company_id'] ) );
-}
-$company_id = $AppUI->getState( 'ProjIdxCompany' ) !== NULL ? $AppUI->getState( 'ProjIdxCompany' ) : $AppUI->user_company;
-
 $company_prefix = 'company_';
 
 if (isset( $_POST['department'] )) {
 	$AppUI->setState( 'ProjIdxDepartment', $_POST['department'] );
-	
-	//if department is set, ignore the company_id field
-	unset($company_id);
 }
 $department = $AppUI->getState( 'ProjIdxDepartment' ) !== NULL ? $AppUI->getState( 'ProjIdxDepartment' ) : $company_prefix.$AppUI->user_company;
 
 //if $department contains the $company_prefix string that it's requesting a company and not a department.  So, clear the 
 // $department variable, and populate the $company_id variable.
+// TODO: Broken by generic filters (company_id not used) - how to fix?
 if(!(strpos($department, $company_prefix)===false)){
 	$company_id = substr($department,strlen($company_prefix));
-	$AppUI->setState( 'ProjIdxCompany', $company_id );
 	unset($department);
 }
 
