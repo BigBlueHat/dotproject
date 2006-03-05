@@ -331,7 +331,8 @@ function format_field ($value, $type, $ticket = NULL) {
             break;
         case "status":
 	    if ($canEdit) {
-            	$output = create_selectbox("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
+				$output = arraySelect(dPgetSysVal('TicketsStatus'), 'type_toggle', ' onChange="document.ticketform.submit()" class="text"', $value);
+      //      	$output = create_selectbox("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
 	    }
 	    else {
 		$output = chooseSelectedValue("type_toggle", array("Open" =>$AppUI->_("Open"), "Processing" => $AppUI->_("Processing"), "Closed" => $AppUI->_("Closed"), "Deleted" => $AppUI->_("Deleted")), $value);
@@ -352,7 +353,8 @@ function format_field ($value, $type, $ticket = NULL) {
             break;
         case "priority_select":
 	    if ($canEdit) {
-            	$output = create_selectbox("priority_toggle", $CONFIG["priority_names"], $value);
+				$output = arraySelect(dPgetSysVal('TicketsPriority'), 'priority_toggle', ' onChange="document.ticketform.submit()" class="text"', $value);
+            	//$output = create_selectbox("priority_toggle", $CONFIG["priority_names"], $value);
 	    }
 	    else {
 	    	$output = chooseSelectedValue("priority_toggle", $CONFIG["priority_names"], $value);

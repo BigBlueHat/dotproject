@@ -63,15 +63,14 @@ function submitIt() {
 </tr>
 <tr>
 	<TD align="right"><?php echo $AppUI->_('Priority'); ?>:</td>
-	<TD>
-		<select name="priority" class="text">
+	<td><?php echo arraySelect(dPgetSysVal('TicketsPriority'), 'priority', ' class="text"', '0'); ?></td>
+<!--		<select name="priority" class="text">
 			<option value="0"><?php echo $AppUI->_('Low'); ?>
 			<option value="1" selected><?php echo $AppUI->_('Normal'); ?>
 			<option value="2"><?php echo $AppUI->_('High'); ?>
 			<option value="3"><?php echo $AppUI->_('Highest'); ?>
 			<option value="4"><strong><?php echo $AppUI->_('911'); ?> (<?php echo $AppUI->_('Showstopper'); ?>)</strong>
-		</select>
-	</td>
+		</select> -->
 </tr>
 <TR>
 	<TD align="right"><?php echo $AppUI->_('Description of Problem'); ?>: </td>
