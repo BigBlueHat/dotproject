@@ -197,10 +197,13 @@ print("<td><br /></td>\n");
 print("<td colspan=" . (count($fields["headings"]) - 1) . " align=right>\n");
 print("<table width=100% border=0 cellspacing=0 cellpadding=0>\n");
 print("<tr height=25><td align=left>");
-$types = array("My","Open","Processing","Closed","Deleted","All");
-for ($loop = 0; $loop < count($types); $loop++) {
-    $toggles[] = "<a href=index.php?m=ticketsmith&type=" . $types[$loop] . ">" . $AppUI->_($types[$loop]) . "</a>";
-}
+$types = dPgetSysVal('TicketsStatus'); //"Open","Processing","Closed","Deleted","All");
+
+$toggles[] = '<a href="index.php?m=ticketsmith&type=My">' . $AppUI->_('My') . '</a>';
+foreach ($types as $k => $type)
+	$toggles[] = "<a href=index.php?m=ticketsmith&type=" . $k . ">" . $AppUI->_($type) . "</a>";
+$toggles[] = '<a href="index.php?m=ticketsmith&type=All">' . $AppUI->_('All') . '</a>';
+
 print(join(" | ", $toggles));
 print(" ".$AppUI->_('Tickets')."</td>\n");
 if ($type == "Deleted" && $parent_count) {
