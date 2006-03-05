@@ -36,8 +36,8 @@ $output  = null;
 $last_group = '';
 foreach ($rs as $c) {
 
-	$oc = 'onclick="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip').'\', STICKY, CAPTION, \''.$AppUI->_($c['config_name']. '_title').'\', CENTER);"';
-$om = 'onmouseover="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip').'\', CAPTION, \''.$AppUI->_($c['config_name']. '_title').'\', CENTER);" onmouseout="nd();"';
+	$oc = 'onclick="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip', UI_OUTPUT_JS).'\', STICKY, CAPTION, \''.$AppUI->_($c['config_name']. '_title').'\', CENTER);"';
+$om = 'onmouseover="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip', UI_OUTPUT_JS).'\', CAPTION, \''.$AppUI->_($c['config_name']. '_title').'\', CENTER);" onmouseout="nd();"';
 	// extraparse the checkboxes and the select lists
 	$value = '';
 	switch ($c['config_type']) {
