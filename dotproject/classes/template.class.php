@@ -72,13 +72,14 @@ class CTemplate extends Smarty
 	
 	function displayFile($file, $module = null)
 	{
-		global $m, $a;
+		global $m, $a, $dPconfig;
 		
 		if ($module == null)
 			$module = $m;
 			
 		$this->assign('m', $m);
 		$this->assign('a', $a);
+		$this->assign('config', $dPconfig);
 			
 		$this->display($module . '/' . $file . '.html');
 	}

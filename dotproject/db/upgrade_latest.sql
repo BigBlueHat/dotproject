@@ -79,3 +79,7 @@ CREATE TABLE `webcal_resources` (
 # Indeces added for optimization purposes.
 alter table user_tasks add index index_ut_to_tasks (task_id);
 alter table history add index index_history_item (history_item);
+
+#20060304
+# added optional task numbers
+INSERT INTO `config` VALUES ('', 'show_task_numbers', 'false', '', 'checkbox');

@@ -46,7 +46,7 @@
 	{/foreach}
 
 {* name link *}
-{$obj.task_number}. 
+{if $config.show_task_numbers}{$obj.task_number}. {/if}
 {if $obj.children > 0}
 	{if !dPgetConfig('tasks_ajax_list')}
 <a href="index.php{$query_string}&close_task_id={$obj.task_id}"><img src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" /></a>

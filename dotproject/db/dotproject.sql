@@ -672,6 +672,7 @@ INSERT INTO `config` VALUES ('', 'daily_working_hours', '8.0', '', 'text');
 INSERT INTO `config` VALUES ('', 'display_debug', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'link_tickets_kludge', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'show_all_task_assignees', 'false', '', 'checkbox');
+INSERT INTO `config` VALUES ('', 'show_task_numbers', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'direct_edit_assignment', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'restrict_color_selection', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'cal_day_view_show_minical', 'true', '', 'checkbox');
