@@ -171,6 +171,7 @@ if ($do_report) {
 	echo "<th>Assigned To</th>";
 	echo "<th>Task Start Date</th>";
 	echo "<th>Task End Date</th>";
+	echo "<th>Duration</th>";
 	echo "<th>Completion</th></tr>";
 	
 	$pdfdata = array();
@@ -180,6 +181,7 @@ if ($do_report) {
 	"<b>".$AppUI->_('Assigned To')."</b>",
 	"<b>".$AppUI->_('Task Start Date')."</b>",
 	"<b>".$AppUI->_('Task End Date')."</b>",
+	"<b>".$AppUI->_('Duration')."</b>",
 	"<b>".$AppUI->_('Completion')."</b>"
 	);
 	if ($project_id==0) { array_unshift($columns, "<b>".$AppUI->_('Project Name')."</b>");}		
@@ -216,12 +218,13 @@ if ($do_report) {
 		$str =  "<tr>";
 		if ($project_id==0) {$str .= "<td>".$Tasks['project_name']."</td>";}
 		$str .= "<td><a href='?m=tasks&a=view&task_id=".$Tasks['task_id']. "'>".$Tasks['task_name']."</a></td>";
-		$str .= "<td>".$Tasks['task_description']."</td>";
+		$str .= '<td>'.str_replace('  ', '&nbsp;&nbsp;', str_replace("\n", '<br />', $Tasks['task_description']))."</td>";
 		$str .= "<td>".$users."</td>";
 		$str .= "<td>";
 		($start_date != ' ') ? $str .= $start_date->format( $df )."</td>" : $str .= ' '."</td>";			
 		$str .= "<td>";		
 		($end_date != ' ') ? $str .= $end_date->format( $df )."</td>" : $str .= ' '."</td>";
+		$str .= '<td align="center">' . $Tasks['task_duration'] . '</td>';
 		$str .= "<td align=\"center\">".$Tasks['task_percent_complete']."%</td>";
 		$str .= "</tr>";
 		echo $str;
@@ -233,6 +236,7 @@ if ($do_report) {
 			$users,
 			(($start_date != ' ') ? $start_date->format( $df ) : ' '),
 			(($end_date != ' ') ? $end_date->format( $df ) : ' '),
+			$Tasks['task_duration'],
 			$Tasks['task_percent_complete']."%",);
 			}
 		else {
@@ -242,6 +246,7 @@ if ($do_report) {
 			$users,
 			(($start_date != ' ') ? $start_date->format( $df ) : ' '),
 			(($end_date != ' ') ? $end_date->format( $df ) : ' '),
+			$Tasks['task_duration'],
 			$Tasks['task_percent_complete']."%",
 			);
 		}		
