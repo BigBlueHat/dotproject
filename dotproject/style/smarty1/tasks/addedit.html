@@ -60,7 +60,7 @@ var daily_working_hours = {/literal}{dPconfig var='daily_working_hours'}{literal
 
 			<td align="right" nowrap="nowrap">{dPtranslate word='Milestone'}?</td>
 			<td>
-				<input type="checkbox" value="1" name="task_milestone" {if $obj->task_milestone}checked{/if} />
+				<input type="checkbox" value="1" name="task_milestone" {if $obj->task_milestone}checked{/if} onChange="if (this.checked) document.datesFrm.task_duration.value=0"/>
 			</td>
 		</tr>
 		</table>
