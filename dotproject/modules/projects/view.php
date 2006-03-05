@@ -81,6 +81,13 @@ $worked_hours = $q->loadResult();
 $worked_hours = rtrim($worked_hours, '.');
 $q->clear();
 
+$q->addTable('tasks');
+$q->addQuery("SUM(task_duration * (100 - task_percent_complete) * IF(task_duration_type = 24, ".$dPconfig['daily_working_hours'].", task_duration_type))");
+$q->addWhere('task_project = ' . $project_id);
+$q->addWhere('task_milestone = 0');
+$q->addWhere('task_dynamic != 1');
+$remaining_hours = $q->loadResult() / 100;
+
 // total hours
 // same milestone comment as above, also applies to dynamic tasks
 $q->addTable('tasks');
@@ -216,6 +223,7 @@ $tpl->assign('critical_task', $criticalTasks[0]['task_id']);
 $tpl->assign('total_project_hours', $total_project_hours);
 $tpl->assign('total_hours', $total_hours);
 $tpl->assign('worked_hours', $worked_hours);
+$tpl->assign('remaining_hours', $remaining_hours);
 
 $tpl->assign('departments', $depts);
 $tpl->assign('contacts', $contacts);
