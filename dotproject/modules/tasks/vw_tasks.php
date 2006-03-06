@@ -4,13 +4,6 @@ GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
 GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
 /*
-        tasks.php
-
-        This file contains common task list rendering code used by
-        modules/tasks/index.php and modules/projects/vw_tasks.php
-
-        in
-
         External used variables:
 
         * $min_view: hide some elements when active (used in the vw_tasks.php)
@@ -20,7 +13,8 @@ GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditC
 */
 
 $filters_selection = array(
-'task_percent_complete' => array(-1 => 'not started', 1 => 'started', 100 => 'finished'));
+'task_percent_complete' => array(-1 => 'All', 0 => 'not started', 1 => 'started', 100 => 'finished'),
+'task_status' => dPgetSysVal( 'TaskStatus' ));
 
 $tasksTitleBlock = new CTitleBlock( 'Tasks', 'applet-48.png' );
 $filters = $tasksTitleBlock->addFiltersCell($filters_selection);
@@ -102,10 +96,10 @@ $task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', '' );
 $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
-if (isset($_POST['show_task_options'])) {
-        $AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
-}
-$showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
+//if (isset($_POST['show_task_options'])) {
+//        $AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
+//}
+//$showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 
 $where = '';
 require_once $AppUI->getModuleClass('projects');
@@ -151,20 +145,27 @@ $q->addWhere('task_project = ' . $project_id);
 
 foreach ($filters as $name => $filter)
 {
-	if ($name = 'task_percent_complete' && $filter != 0)
-		if ($filter == 1)
-			$q->addWhere('task_percent_complete > 0 AND task_percent_complete < 100');
-		else if ($filter == -1)
-			$q->addWhere('task_percent_complete = 0');
+	 if ($filter != '')
+	 {
+		if ($name == 'task_percent_complete')
+		{
+			if ($filter == -1)
+				;
+			else if ($filter == 1)
+				$q->addWhere('(task_percent_complete > 0 AND task_percent_complete < 100 OR task_percent_complete is null)');
+			else
+				$q->addWhere('task_percent_complete = ' . $filter);
+		}
 		else
-			$q->addWhere('task_percent_complete = ' . $filter);
+			$q->addWhere($name . ' = ' . $filter);
+	}
 }
 
 if ($pinned_only)
 	$q->addWhere('task_pinned = 1');
 
-if ($showIncomplete)
-	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
+//if ($showIncomplete)
+//	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
 
 $q->addWhere('tasks.task_id = task_parent');
 // $q->addWhere('(task_id = task_parent OR (t1.task_parent = t2.task_id AND t2.task_dynamic <> 1))');
@@ -227,7 +228,7 @@ foreach ($tasks as $k => $task)
 $showEditCheckbox = false;
 ?>
 <script type="text/JavaScript" src="modules/tasks/list.js.php"></script>
-<script language="JavaScript" src="modules/tasks/tree.js?<?php echo time(); ?>"></script>
+<script type="text/JavaScript" src="modules/tasks/tree.js?<?php echo time(); ?>"></script>
 
 <?php
 $AppUI->setState('tasks_opened', $tasks_opened);
@@ -247,7 +248,7 @@ $tpl->assign('sort_type1', $task_sort_type1);
 $tpl->assign('sort_type2', $task_sort_type2);
 
 $tpl->assign('query_string', $query_string);
-$tpl->assign('showIncomplete', $showIncomplete);
+//$tpl->assign('showIncomplete', $showIncomplete);
 $tpl->assign('showEditCheckbox', $showEditCheckbox);
 $tpl->assign('direct_edit_assignment', dPgetConfig('direct_edit_assignment'));
 $tpl->assign('show_cols', (dPgetConfig('direct_edit_assignment')?($cols-4):($cols-1)));
