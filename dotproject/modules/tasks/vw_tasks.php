@@ -19,6 +19,14 @@ GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditC
         * $query_string
 */
 
+$filters_selection = array(
+'task_percent_complete' => array(-1 => 'not started', 1 => 'started', 100 => 'finished'));
+
+$tasksTitleBlock = new CTitleBlock( 'Tasks', 'applet-48.png' );
+$filters = $tasksTitleBlock->addFiltersCell($filters_selection);
+$tasksTitleBlock->show();
+
+
 if (empty($query_string))
 	$query_string = "?m=$m&a=$a";
 
@@ -140,6 +148,17 @@ $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
 $q->addWhere('task_project = ' . $project_id);
+
+foreach ($filters as $name => $filter)
+{
+	if ($name = 'task_percent_complete' && $filter != 0)
+		if ($filter == 1)
+			$q->addWhere('task_percent_complete > 0 AND task_percent_complete < 100');
+		else if ($filter == -1)
+			$q->addWhere('task_percent_complete = 0');
+		else
+			$q->addWhere('task_percent_complete = ' . $filter);
+}
 
 if ($pinned_only)
 	$q->addWhere('task_pinned = 1');
