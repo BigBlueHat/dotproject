@@ -1257,7 +1257,6 @@ class CTitleBlock_core {
 
 		$tpl->assign('help', $this->helpref);
 		
-
 		if (count( $this->crumbs ) ) {
 			$crumbs = array();
 			foreach ($this->crumbs as $k => $v) {
@@ -1267,9 +1266,10 @@ class CTitleBlock_core {
 				$crumb['link'] = $k;
 				$crumbs[] = $crumb;
 			}
-		$tpl->assign('crumbs', $crumbs);
-
+			$tpl->assign('crumbs', $crumbs);
 		}
+		else
+			$tpl->assign('crumbs', array());
 		
 		$tpl->display('titleBlock.html');
 	}
