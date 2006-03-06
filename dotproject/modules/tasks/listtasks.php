@@ -90,7 +90,7 @@ if (isset($_GET['table']))
 			
 			$t['canEdit'] = !getDenyEdit( 'tasks', $t['task_id'] );
 			$t['canViewLog'] = $perms->checkModuleItem('tasks', 'view', $t['task_id']);
-
+			$t['style'] = taskstyle($t);
 			$t['level'] = range(1, count(explode('-', $t['node_id']))-2);
 
 			$tpl->assign('obj', $t);
