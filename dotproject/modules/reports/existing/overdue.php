@@ -33,7 +33,7 @@ $pdf->ezText( "\n" . $AppUI->_('Project Overdue Task Report'), 12 );
 if ( $locale_char_set=='utf-8' && function_exists("utf8_decode") ) 
 	$pdf->ezText( utf8_decode($pname), 15 );
 else 
-	$pdf->ezText( $pname, 15 )
+	$pdf->ezText( $pname, 15 );
 $pdf->ezText( "\n" );
 $pdf->selectFont( "$font_dir/Helvetica.afm" );
 $title = null;
