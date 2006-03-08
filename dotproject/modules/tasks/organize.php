@@ -104,7 +104,7 @@ $proj =& new CProject;
 $tobj =& new CTask;
 
 $allowedProjects = $proj->getAllowedSQL($AppUI->user_id);
-$allowedTasks = $tobj->getAllowedSQL($AppUI->user_id, 'a.task_id');
+$allowedTasks = $tobj->getAllowedSQL($AppUI->user_id, 'task_id');
 
 // query my sub-tasks (ignoring task parents)
 $q = new DBQuery;
@@ -303,7 +303,8 @@ foreach ($tasks as $task)
 		$p[$prj['project_id']] = $prj['project_name'];
 	if ($project_id)
 		$p[$project_id] = $AppUI->_('[same project]');
-		
+
+	natsort($p);
 	$projects = $p;
 	
 	$ts[0] = $AppUI->_('[top task]');
