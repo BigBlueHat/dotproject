@@ -2,13 +2,13 @@
 GLOBAL  $AppUI, $company_id, $dept_ids, $department, $min_view, $m, $a, $user_id, $tab;
 $min_view = defVal( @$min_view, false);
 $project_id = defVal( @$_GET['project_id'], 0);
+$user_id = defVal( @$_GET['user_id'], $AppUI->user_id);
 
 // sdate and edate passed as unix time stamps
 $sdate = dPgetParam( $_POST, 'sdate', 0 );
 $edate = dPgetParam( $_POST, 'edate', 0 );
 $showInactive = dPgetParam( $_POST, 'showInactive', '0' );
 $showLabels = dPgetParam( $_POST, 'showLabels', '0' );
-
 $showAllGantt = dPgetParam( $_POST, 'showAllGantt', '0' );
 $showTaskGantt = dPgetParam( $_POST, 'showTaskGantt', '0' );
 
@@ -32,6 +32,11 @@ $proFilter = $AppUI->getState( 'ProjectIdxFilter' ) !== NULL ? $AppUI->getState(
 
 $projFilter = arrayMerge( array('-1' => 'All Projects'), $projectStatus);
 $projFilter = arrayMerge( array( '-2' => 'All w/o in progress'), $projFilter);
+if ($AppUI->user_id == $user_id) {
+	$projFilter = arrayMerge( array( '-3' => 'My projects'), $projFilter);
+} else {
+	$projFilter = arrayMerge( array( '-3' => 'User\'s projects'), $projFilter);
+}
 natsort($projFilter);
 
 
@@ -131,7 +136,7 @@ $src = "?m=projects&a=gantt&suppressHeaders=1" .
 ($display_option == 'all' ? '' : 
 	'&start_date=' . $start_date->format( "%Y-%m-%d" ) . 
 	'&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
-	"&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=$showLabels&proFilter=$proFilter&showInactive=$showInactive&company_id=$company_id&department=$department&dept_ids=$dept_ids&showAllGantt=$showAllGantt";
+	"&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=$showLabels&proFilter=$proFilter&showInactive=$showInactive&company_id=$company_id&department=$department&dept_ids=$dept_ids&showAllGantt=$showAllGantt&user_id=$user_id";
 $tpl->assign('script', "<script>document.write('<img src=\"$src\">')</script>");
 
 $tpl->assign('projFilter', $projFilter);

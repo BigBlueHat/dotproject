@@ -1,5 +1,5 @@
 <?php /* ADMIN $Id$ */
-global $company_id, $dept_ids, $department, $min_view, $m, $a;
+global $addPwT, $company_id, $dept_ids, $department, $min_view, $m, $a;
 
 $user_id = isset( $_GET['user_id'] ) ? $_GET['user_id'] : 0;
 
