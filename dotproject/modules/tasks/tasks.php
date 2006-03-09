@@ -274,7 +274,7 @@ if (count($allowedProjects))
 
 //
 $obj =& new CTask;
-$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
+$allowedTasks = $obj->getAllowedSQL($AppUI->user_id, 'tasks.task_id');
 if ( count($allowedTasks))
 	$q->addWhere($allowedTasks);
 
