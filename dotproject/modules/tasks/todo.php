@@ -132,6 +132,17 @@ $q->clear();
 global $tasks;
 $tasks = db_loadList( $sql );
 
+/* we have to calculate the end_date via start_date+duration for 
+** end='0000-00-00 00:00:00' or NULL
+*/
+for ($j=0; $j < count($tasks); $j++) {
+		
+	if ( $tasks[$j]['task_end_date'] == '0000-00-00 00:00:00' || $tasks[$j]['task_end_date'] == NULL) {
+		
+		 $tasks[$j]['task_end_date'] = calcEndByStartAndDuration($tasks[$j]);
+	}
+}
+
 global $taskPriority;
 $taskPriority = dPgetSysVal( 'TaskPriority' );
 
