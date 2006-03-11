@@ -70,6 +70,7 @@ $perms->add_object("app", "User Table", "users", 15, 0, "axo");
 
 // Now we need to add some objects to some groups.
 $perms->add_group_object($all_mods, "app", "admin", "axo");
+$perms->add_group_object($all_mods, "app", "backup", "axo");
 $perms->add_group_object($all_mods, "app", "calendar", "axo");
 $perms->add_group_object($all_mods, "app", "companies", "axo");
 $perms->add_group_object($all_mods, "app", "events", "axo");
@@ -89,6 +90,7 @@ $perms->add_group_object($all_mods, "app", "users", "axo");
 
 // Admin groups
 $perms->add_group_object($admin_mods, "app", "admin", "axo");
+$perms->add_group_object($admin_mods, "app", "backup", "axo");
 $perms->add_group_object($admin_mods, "app", "system", "axo");
 $perms->add_group_object($admin_mods, "app", "roles", "axo");
 $perms->add_group_object($admin_mods, "app", "users", "axo");
