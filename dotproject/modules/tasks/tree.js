@@ -163,45 +163,103 @@ function insertNewRow(row, html)
 {
 	table = row.parentNode.parentNode;
 	pos = row.rowIndex + 1;
+	// "Cleaner" Solution to adding rows add in IE
+	// ROW
+	//pull out row properties and remove dangling white space
+	tr_prop_str = html.substring(html.indexOf('<tr') + 3, html.indexOf('>'));
+	tr_prop_str = tr_prop_str.replace(/^\s+|\s+$/g, "");
+	// divide up string between property name and value
+	tr_prop_arr = tr_prop_str.split('=');
+	tr_pairs = new Array();
+	//put ALL property names/values into an seperate array using loop
+	for(j = 0; j < tr_prop_arr.length; j++){ 
+	  tr_prop_arr[j].replace(/^\s+|\s+$/g, "");
+	  if((tr_prop_arr[j]).length == 0){
+	    //do nothing
+	  }
+	  //first name or last value
+	  else if (j == 0 || j ==  (tr_prop_arr.length - 1)){
+	    temp_str = tr_prop_arr[j];
+	    temp_str = temp_str.replace(/^\"|\"$/g, "");
+	    tr_pairs.push(temp_str);
+	  }
+	  // value/name substring
+	  else {
+	    // get value, trim any white space from ends, trim any quotation marks, add to array
+	    temp_str = (tr_prop_arr[j].substring(0,tr_prop_arr[j].lastIndexOf(' '))).replace(/^\s+|\s+$/g, "");
+	    temp_str = temp_str.replace(/^\"|\"$/g, "");
+	    tr_pairs.push(temp_str);
+	    //get name, add to array
+	    temp_str = tr_prop_arr[j].substring(tr_prop_arr[j].lastIndexOf(' ')+1);
+	    tr_pairs.push(temp_str);
+	  }
+	  
+	}
+	//insert row and set properties
 	row = table.insertRow(pos);
-	tr_attributes = html.substring(4, html.indexOf('>')).split(' ');
-	for (i = 0; i < tr_attributes.length; i++)
-	{
-		tr_id = tr_attributes[i];
-		attrName = tr_id.substring(0, tr_id.indexOf('='));
-		attrValue = tr_id.substring(tr_id.indexOf('=') + 1);
-		attrValue = attrValue.substring(1, attrValue.length-1);
-		row.setAttribute(attrName, attrValue);
+	for(j = 0; j < tr_pairs.length; j=j+2){
+	  if(j+1 < tr_pairs.length && tr_pairs[j+1].length != 0){
+	    row.setAttribute(tr_pairs[j], tr_pairs[j+1]);
+	  }
+	  else{
+	    row.setAttribute(tr_pairs[j]);
+	  }
 	}
-//alert(html);
+	
+	// CELLS
+	// get substring for cells, remove dangling white space, loop through cells
+	tds_str = (html.substring(html.indexOf('<td') , html.lastIndexOf('</td>'))).replace(/^\s+|\s+$/g, "");
+	tds_arr = tds_str.split('</td>');
+	for(i = 0; i < tds_arr.length; i++) {
+	  //pull out cell properties, remove dangling white space, pull out cell text
+	  td_prop_str = tds_arr[i].substring(tds_arr[i].indexOf('<td') + 3, tds_arr[i].indexOf('>'));
+	  td_prop_str = td_prop_str.replace(/^\s+|\s+$/g, "");
+	  
+	  // divide up string between property name and value to get ALL cell property names/values into an array
+	  td_prop_arr = td_prop_str.split('=');
+	  td_pairs = new Array();
+	  for(j = 0; j < td_prop_arr.length; j++){ 
+	    td_prop_arr[j].replace(/^\s+|\s+$/g, "");
+	    if((td_prop_arr[j].toString()).length == 0){
+	      //do nothing
+	    }
+	    //first name or last value
+	    else if (j == 0 || j ==  (td_prop_arr.length - 1)){
+	      temp_str = td_prop_arr[j];
+	      temp_str = temp_str.replace(/^\"|\"$/g, "");
+	      td_pairs.push(temp_str);
+	      
+	    }
+	    // value/name substring
+	    else {
+	      // get value, trim any white space from ends, trim any quotation marks, add to array
+	      temp_str = (td_prop_arr[j].substring(0,td_prop_arr[j].lastIndexOf(' '))).replace(/^\s+|\s+$/g, "");
+	      temp_str = temp_str.replace(/^\"|\"$/g, "");
+	      td_pairs.push(temp_str);
+	      //get name, add to array
+	      temp_str = td_prop_arr[j].substring(td_prop_arr[j].lastIndexOf(' ')+1);
+	      td_pairs.push(temp_str);
+	    }
+	    
+	  }
+	  
+	  //insert cell and set properties
+	  cell = row.insertCell(i);
+	  for(j = 0; j < td_pairs.length; j=j+2){
+	    if(j+1 < td_pairs.length){
+	      cell.setAttribute(td_pairs[j], td_pairs[j+1]);
+	    }
+	    else{
+	      cell.setAttribute(td_pairs[j]);
+	    }
+	  }
+	  
+	  //pull out cell text and set text in cell
+	  td_text_str = tds_arr[i].substring(tds_arr[i].indexOf('>')+1);
+	  cell.innerHTML = td_text_str;
+	}
+	
 	// row.innerHTML = html; // doesn't work in IE
-	// DIRTY HACK for IE
-	tds = html.split('</td>');
-  for(i = 0; i < tds.length; i++)
-	{
-		cell = row.insertCell(i);
-		// Get content.
-		td = tds[i].substring(tds[i].indexOf('<td') + 3);
-		attr = td.substring(0, td.indexOf('>'));
-		attr = attr.replace(/^\s+|\s+$/g, "");
-		// Parse td attributes
-		if (attr != '')
-		{
-			attrs = attr.split(' ');
-			for(j = 0; j < attrs.length; j++)
-			{
-				attrName = attrs[j].substring(0, attrs[j].indexOf('='));
-				attrName = attrName.replace(/^\s+|\s+$/g, "");
-				if (attrName == '')
-					continue;
-				attrValue = attrs[j].substring(attrs[j].indexOf('=') + 1);
-				attrValue = attrValue.substring(1, attrValue.length-1);
-				cell.setAttribute(attrName, attrValue);
-			}
-		}
-		td = td.substring(td.indexOf('>') + 1);
-		cell.innerHTML = td;
-	}
 	//table.rows.item(pos).outerHTML = html;
 	
 	return row;

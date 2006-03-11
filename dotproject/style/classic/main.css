@@ -85,35 +85,35 @@ Begin IE TD buttonizing
 */
 
 TD.clsBtnUp {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: pointer;    color: #FFFFFF;    padding: 0px 3px;    border: inset 2px;
 }
 
 TD.clsBtnDown {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: pointer;    color: #FFFFFF;    padding: 0px 3px;    border: inset 2px;
 }
 
 TD.clsBtnOn {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
+	cursor: pointer;    color: #FFFFFF;    padding: 0px 3px;    border: outset #eeeeee inset 2px;
 }
 
 TD.clsBtnOff {
-	color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #559999 2px;
+	color: #FFFFFF;    padding: 0px 3px;    border: solid #559999 2px;
 }
 
 TD.topBtnUp {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: pointer;    color: #FFFFFF;    padding: 0px 3px;    border: inset 2px;
 }
 
 TD.topBtnDown {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: inset 2px;
+	cursor: pointer;    color: #FFFFFF;    padding: 0px 3px;    border: inset 2px;
 }
 
 TD.topBtnOn {
-	cursor: hand;    color: #FFFFFF;    padding: 0 3;    border: outset #eeeeee 2px;
+	cursor: pointer;    color: #FFFFFF;    padding: 0px 3px;    border: outset #eeeeee inset 2px;
 }
 
 TD.topBtnOff {
-	color: #FFFFFF;    padding: 0 3;    tab-index: 0;    border: solid #cccccc 2px;
+	color: #FFFFFF;    padding: 0px 3px;    border: solid #cccccc 2px;
 }
 TD.nav {
 	color: #FFFFFF;
