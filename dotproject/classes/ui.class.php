@@ -210,7 +210,7 @@ class CAppUI {
 		$dirs = array();
 		$d = dir( "$baseDir/$path" );
 		while (false !== ($name = $d->read())) {
-			if(is_dir( "$baseDir/$path/$name" ) && $name != "." && $name != ".." && $name != "CVS") {
+			if(is_dir( "$baseDir/$path/$name" ) && $name != "smarty1" && $name != "." && $name != ".." && $name != "CVS") {
 				$dirs[$name] = $name;
 			}
 		}
