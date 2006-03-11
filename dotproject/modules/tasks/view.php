@@ -1,6 +1,6 @@
 <?php /* $Id$ */
-$task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
-$task_log_id = intval( dPgetParam( $_GET, "task_log_id", 0 ) );
+$task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
+$task_log_id = intval( dPgetParam( $_GET, 'task_log_id', 0 ) );
 $reminded = intval( dPgetParam( $_GET, 'reminded', 0) );
 
 // check permissions for this record
@@ -11,7 +11,7 @@ $canReadModule = !getDenyRead( $m );
 
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 }
 $q =& new DBQuery;
 $perms =& $AppUI->acl();
@@ -38,14 +38,14 @@ $q->clear();
 
 if (!db_loadObject( $sql, $obj, true, false )) {
 	$AppUI->setMsg( 'Task' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
 	$AppUI->redirect();
 } else {
 	$AppUI->savePlace();
 }
 
 if (!$obj->canAccess( $AppUI->user_id )) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 }
 
 // Clear any reminders
@@ -61,7 +61,7 @@ $tab = $AppUI->getState( 'TaskLogVwTab' ) !== NULL ? $AppUI->getState( 'TaskLogV
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
 //Also view the time
-$df .= " " . $AppUI->getPref('TIMEFORMAT');
+$df .= ' ' . $AppUI->getPref('TIMEFORMAT');
 
 $start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : null;
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
@@ -99,19 +99,19 @@ if ($canEdit) {
 		'<form action="?m=files&a=addedit&project_id=' . $obj->task_project . '&file_task=' . $obj->task_id . '" method="post">', '</form>'
 	);
 }
-$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 if ($canReadProject) {
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$obj->task_project", "view this project" );
+	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$obj->task_project", 'view this project' );
 }
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", "edit this task" );
+	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", 'edit this task' );
 }
 if ($canDelete) {
 	$titleBlock->addCrumbDelete( 'delete task', $canDelete, $msg );
 }
 $titleBlock->show();
 
-$task_types = dPgetSysVal("TaskType");
+$task_types = dPgetSysVal('TaskType');
 
 ?>
 
@@ -197,7 +197,7 @@ function delIt() {
 		?>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task Parent');?>:</td>
-			<td class="hilite"><a href="<?php echo "./index.php?m=tasks&a=view&task_id=" . @$obj_parent->task_id; ?>"><?php echo @$obj_parent->task_name;?></a></td>
+			<td class="hilite"><a href="<?php echo './index.php?m=tasks&a=view&task_id=' . @$obj_parent->task_id; ?>"><?php echo @$obj_parent->task_name;?></a></td>
 		</tr>
 		<?php } ?>
 		<tr>
@@ -217,7 +217,7 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Milestone');?>:</td>
-			<td class="hilite" width="300"><?php if($obj->task_milestone){echo $AppUI->_("Yes");}else{echo $AppUI->_("No");}?></td>
+			<td class="hilite" width="300"><?php if($obj->task_milestone){echo $AppUI->_('Yes');}else{echo $AppUI->_('No');}?></td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Progress');?>:</td>
@@ -263,7 +263,7 @@ function delIt() {
 			<td colspan="3">
 			<?php
 				$s = '';
-				$s = count( $users ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
+				$s = count( $users ) == 0 ? '<tr><td bgcolor=#ffffff>'.$AppUI->_('none').'</td></tr>' : '';
 				foreach($users as $row) {
 					$s .= '<tr>';
 					$s .= '<td class="hilite">'.dPgetUsernameFromID($row["user_id"]).'</td>';
@@ -292,7 +292,7 @@ function delIt() {
 		<tr>
 			<td colspan="3">
 			<?php 
-				$s = count( $taskDep ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
+				$s = count( $taskDep ) == 0 ? '<tr><td bgcolor=#ffffff>'.$AppUI->_('none').'</td></tr>' : '';
 				foreach($taskDep as $key => $value) {
 					$s .= '<tr><td class="hilite">';
 					$s .= '<a href="./index.php?m=tasks&a=view&task_id='.$key.'">'.$value.'</a>';
@@ -318,7 +318,7 @@ function delIt() {
 		<tr>
 			<td colspan="3">
 			<?php
-				$s = count( $dependingTasks ) == 0 ? "<tr><td bgcolor=#ffffff>".$AppUI->_('none')."</td></tr>" : '';
+				$s = count( $dependingTasks ) == 0 ? '<tr><td bgcolor=#ffffff>'.$AppUI->_('none').'</td></tr>' : '';
 				foreach($dependingTasks as $key => $value) {
 					$s .= '<tr><td class="hilite">';
 					$s .= '<a href="./index.php?m=tasks&a=view&task_id='.$key.'">'.$value.'</a>';
@@ -335,7 +335,7 @@ function delIt() {
 		 </tr>
 		 <tr>
 		  <td class='hilite' colspan='3'>
-				<?php $newstr = str_replace( chr(10), "<br />", $obj->task_description);echo $newstr;?>
+				<?php $newstr = str_replace( chr(10), '<br />', $obj->task_description);echo $newstr;?>
 		  </td>
 		</tr>
 <?php
@@ -344,22 +344,22 @@ function delIt() {
 		$q->addWhere('t.department_id = d.dept_id');
 		$q->addWhere('t.task_id = ' . $task_id);
 		$q->addQuery('dept_id, dept_name, dept_phone');
-		$depts = $q->loadHashList("dept_id");
+		$depts = $q->loadHashList('dept_id');
 		$q->clear();
 		if (count($depts)) {
 			?>
 		    <tr>
-		    	<td><strong><?php echo $AppUI->_("Departments"); ?></strong></td>
+		    	<td><strong><?php echo $AppUI->_('Departments'); ?></strong></td>
 		    </tr>
 		    <tr>
 		    	<td colspan='3' class="hilite">
 		    		<?php
 		    			foreach($depts as $dept_id => $dept_info){
-		    				echo "<div>".$dept_info["dept_name"];
-		    				if($dept_info["dept_phone"] != ""){
-		    					echo "( ".$dept_info["dept_phone"]." )";
+		    				echo '<div>'.$dept_info['dept_name'];
+		    				if($dept_info['dept_phone'] != ''){
+		    					echo '( '.$dept_info['dept_phone'].' )';
 		    				}
-		    				echo "</div>";
+		    				echo '</div>';
 		    			}
 		    		?>
 		    	</td>
@@ -375,27 +375,27 @@ function delIt() {
 			$q->addQuery('c.contact_id, contact_first_name, contact_last_name, contact_email');
 			$q->addQuery('contact_phone, dept_name');
 			$q->addWhere("( contact_owner = '$AppUI->user_id' or contact_private = '0')");
-			$contacts = $q->loadHashList("contact_id");
+			$contacts = $q->loadHashList('contact_id');
 			$q->clear();
 			if(count($contacts)>0){
 				?>
 			    <tr>
-			    	<td><strong><?php echo $AppUI->_("Task Contacts"); ?></strong></td>
+			    	<td><strong><?php echo $AppUI->_('Task Contacts'); ?></strong></td>
 			    </tr>
 			    <tr>
 			    	<td colspan='3' class="hilite">
 			    		<?php
 			    			echo "<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
-			    			echo "<tr><th>".$AppUI->_("Name")."</font></th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
+			    			echo '<tr><th>'.$AppUI->_('Name').'</font></th><th>'.$AppUI->_('Email').'</th><th>'.$AppUI->_('Phone').'</th><th>'.$AppUI->_('Department').'</th></tr>';
 			    			foreach($contacts as $contact_id => $contact_data){
-			    				echo "<tr>";
-			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
-			    				echo "<td class='hilite'><a href='mailto: ".$contact_data["contact_email"]."'>".$contact_data["contact_email"]."</a></td>";
-			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
-			    				echo "<td class='hilite'>".$contact_data["dept_name"]."</td>";
-			    				echo "</tr>";
+			    				echo '<tr>';
+			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data['contact_first_name'].' '.$contact_data['contact_last_name'].'</a></td>';
+			    				echo "<td class='hilite'><a href='mailto: ".$contact_data['contact_email']."'>".$contact_data['contact_email'].'</a></td>';
+			    				echo "<td class='hilite'>".$contact_data['contact_phone']."</td>";
+			    				echo "<td class='hilite'>".$contact_data['dept_name'].'</td>';
+			    				echo '</tr>';
 			    			}
-			    			echo "</table>";
+			    			echo '</table>';
 			    		?>
 			    	</td>
 			    </tr>
@@ -411,27 +411,27 @@ function delIt() {
 			$q->addQuery('c.contact_id, contact_first_name, contact_last_name, contact_email');
 			$q->addQuery('contact_phone, dept_name');
 			$q->addWhere("( contact_owner = '$AppUI->user_id' or contact_private = '0')");
-			$contacts = $q->loadHashList("contact_id");
+			$contacts = $q->loadHashList('contact_id');
 			$q->clear();
 			if(count($contacts)>0){
 				?>
 			    <tr>
-			    	<td><strong><?php echo $AppUI->_("Project Contacts"); ?></strong></td>
+			    	<td><strong><?php echo $AppUI->_('Project Contacts'); ?></strong></td>
 			    </tr>
 			    <tr>
 			    	<td colspan='3' class="hilite">
 			    		<?php
 			    			echo "<table cellspacing='1' cellpadding='2' border='0' width='100%' bgcolor='black'>";
-			    			echo "<tr><th color='white'>".$AppUI->_("Name")."</th><th>".$AppUI->_("Email")."</th><th>".$AppUI->_("Phone")."</th><th>".$AppUI->_("Department")."</th></tr>";
+			    			echo "<tr><th color='white'>".$AppUI->_('Name').'</th><th>'.$AppUI->_('Email').'</th><th>'.$AppUI->_('Phone').'</th><th>'.$AppUI->_('Department').'</th></tr>';
 			    			foreach($contacts as $contact_id => $contact_data){
-			    				echo "<tr>";
-			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data["contact_first_name"]." ".$contact_data["contact_last_name"]."</a></td>";
-			    				echo "<td class='hilite'><a href='mailto: ".$contact_data["contact_email"]."'>".$contact_data["contact_email"]."</a></td>";
-			    				echo "<td class='hilite'>".$contact_data["contact_phone"]."</td>";
-			    				echo "<td class='hilite'>".$contact_data["dept_name"]."</td>";
-			    				echo "</tr>";
+			    				echo '<tr>';
+			    				echo "<td class='hilite'><a href='index.php?m=contacts&a=addedit&contact_id=$contact_id'>".$contact_data['contact_first_name'].' '.$contact_data['contact_last_name'].'</a></td>';
+			    				echo "<td class='hilite'><a href='mailto: ".$contact_data['contact_email']."'>".$contact_data['contact_email'].'</a></td>';
+			    				echo "<td class='hilite'>".$contact_data['contact_phone'].'</td>';
+			    				echo "<td class='hilite'>".$contact_data['dept_name'].'</td>';
+			    				echo '</tr>';
 			    			}
-			    			echo "</table>";
+			    			echo '</table>';
 			    		?>
 			    	</td>
 			    </tr>
@@ -442,7 +442,7 @@ function delIt() {
 
 		}
 				require_once  $AppUI->getSystemClass( 'CustomFields' );
-				$custom_fields = New CustomFields( $m, $a, $obj->task_id, "view" );
+				$custom_fields = New CustomFields( $m, $a, $obj->task_id, 'view' );
 				$custom_fields->printHTML();
 	 ?>
 	 		</td>
@@ -453,24 +453,24 @@ function delIt() {
 </table>
 
 <?php
-$query_string = "?m=tasks&a=view&task_id=$task_id";
-$tabBox = new CTabBox( "?m=tasks&a=view&task_id=$task_id", "", $tab );
+$query_string = '?m=tasks&a=view&task_id='.$task_id;
+$tabBox = new CTabBox( $query_string, '', $tab );
 
 $tabBox_show = 0;
 if ( $obj->task_dynamic != 1 ) {
 	// tabbed information boxes
 	if ($perms->checkModuleItem('task_log', 'view', $task_id)) {
 		$tabBox_show = 1;
-		$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_logs", 'Task Logs' );
+		$tabBox->add( $dPconfig['root_dir'].'/modules/tasks/vw_logs', 'Task Logs' );
 		// fixed bug that dP automatically jumped to access denied if user does not
 		// have read-write permissions on task_id and this tab is opened by default (session_vars)
 		// only if user has r-w perms on this task, new or edit log is beign showed
         if ($task_log_id == 0) {
             if ($perms->checkModuleItem('task_log', 'add', $task_id))
-                $tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'New Log' );
+                $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/vw_log_update', 'New Log' );
         }
         else if ($perms->checkModuleItem('task_log', 'edit', $task_id)) {
-            $tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/vw_log_update", 'Edit Log' );
+            $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/vw_log_update', 'Edit Log' );
         }
 	}
 }
@@ -484,8 +484,8 @@ if ( count($obj->getChildren()) > 0 ) {
 	// in the tasks file there is an if that checks
 	// $_GET[task_status]; this patch is to be able to see
 	// child tasks withing an inactive task
-	$_GET["task_status"] = $obj->task_status;
-	$tabBox->add( "{$dPconfig['root_dir']}/modules/tasks/tasks", 'Child Tasks' );
+	$_GET['task_status'] = $obj->task_status;
+	$tabBox->add( $dPconfig['root_dir'].'/modules/tasks/tasks', 'Child Tasks' );
 }
 
 if ($tabBox->loadExtras($m, $a))

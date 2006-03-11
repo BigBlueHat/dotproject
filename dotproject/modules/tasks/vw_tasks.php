@@ -36,17 +36,17 @@ global $tasks_opened;
 global $tasks_closed;
 
 $tasks_closed = array();
-$tasks_opened = $AppUI->getState("tasks_opened");
+$tasks_opened = $AppUI->getState('tasks_opened');
 if(!$tasks_opened){
     $tasks_opened = array();
 }
 
-$task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+$task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
 $q = new DBQuery;
 $pinned_only = intval( dPgetParam( $_GET, 'pinned', 0) );
 if (isset($_GET['pin']))
 {
-        $pin = intval( dPgetParam( $_GET, "pin", 0 ) );
+        $pin = intval( dPgetParam( $_GET, 'pin', 0 ) );
         $msg = '';
 
         // load the record data
@@ -61,7 +61,7 @@ if (isset($_GET['pin']))
         }
 
         if ( !$q->exec() )
-                $AppUI->setMsg( "ins/del err", UI_MSG_ERROR, true );
+                $AppUI->setMsg( 'ins/del err', UI_MSG_ERROR, true );
 
         $AppUI->redirect('', -1);
 }
@@ -73,7 +73,7 @@ $AppUI->savePlace();
 
 if( ($open_task_id = dPGetParam($_GET, 'open_task_id', 0)) > 0
         && !in_array($_GET['open_task_id'], $tasks_opened)) {
-    $tasks_opened[] = $_GET["open_task_id"];
+    $tasks_opened[] = $_GET['open_task_id'];
 }
 
 // Closing tasks needs also to be within tasks iteration in order to

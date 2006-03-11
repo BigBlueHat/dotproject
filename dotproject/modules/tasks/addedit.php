@@ -4,7 +4,7 @@
 *
 */
 
-$task_id = intval( dPgetParam( $_REQUEST, "task_id", 0 ) );
+$task_id = intval( dPgetParam( $_REQUEST, 'task_id', 0 ) );
 $perms =& $AppUI->acl();
 
 // load the record data
@@ -13,7 +13,7 @@ $obj = new CTask();
 // check if we are in a subform
 if ($task_id > 0 && !$obj->load( $task_id )) {
 	$AppUI->setMsg( 'Task' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
 
@@ -24,7 +24,7 @@ $task_project = intval( $obj->task_project );
 if (!$task_project) {
 	$task_project = dPgetParam( $_REQUEST, 'task_project', 0 );
 	if (!$task_project) {
-		$AppUI->setMsg( "badTaskProject", UI_MSG_ERROR );
+		$AppUI->setMsg( 'badTaskProject', UI_MSG_ERROR );
 		$AppUI->redirect();
 	}
 }
@@ -32,28 +32,28 @@ if (!$task_project) {
 // check permissions
 if ( $task_id ) {
 	// we are editing an existing task
-	$canEdit = $perms->checkModuleItem( $m, "edit", $task_id );
+	$canEdit = $perms->checkModuleItem( $m, 'edit', $task_id );
 } else {
 	// do we have write access on this project?
-	$canEdit = $perms->checkModuleItem( 'projects', "view", $task_project );
+	$canEdit = $perms->checkModuleItem( 'projects', 'view', $task_project );
 	// And do we have add permission to tasks?
 	if ($canEdit)
 	  $canEdit = $perms->checkModule('tasks', 'add');
 }
 
 if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied&err=noedit" );
+	$AppUI->redirect( 'm=public&a=access_denied&err=noedit' );
 }
 
 //check permissions for the associated project
-$canReadProject = $perms->checkModuleItem( 'projects', "view", $obj->task_project);
+$canReadProject = $perms->checkModuleItem( 'projects', 'view', $obj->task_project);
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $taskPriority = dPgetSysVal( 'TaskPriority' );
 
 // check the document access (public, participant, private)
 if (!$obj->canAccess( $AppUI->user_id )) {
-	$AppUI->redirect( "m=public&a=access_denied&err=noaccess" );
+	$AppUI->redirect( 'm=public&a=access_denied&err=noaccess' );
 }
 
 // pull the related project
@@ -75,8 +75,8 @@ while ( $row = $q->fetchRow()) {
 $q->clear();
 
 function getSpaces($amount){
-	if($amount == 0) return "";
-	return str_repeat("&nbsp;", $amount);
+	if($amount == 0) return '';
+	return str_repeat('&nbsp;', $amount);
 }
 
 function constructTaskTree($task_data, $depth = 0){
@@ -84,10 +84,10 @@ function constructTaskTree($task_data, $depth = 0){
 
 	$projTasks[$task_data['task_id']] = $task_data['task_name'];
 
-	$selected = $task_data['task_id'] == $task_parent ? "selected='selected'" : "";
-	$task_data['task_name'] = strlen($task_data[1])>45 ? substr($task_data['task_name'],0, 45)."..." : $task_data['task_name'];
+	$selected = $task_data['task_id'] == $task_parent ? 'selected="selected"' : '';
+	$task_data['task_name'] = strlen($task_data[1])>45 ? substr($task_data['task_name'],0, 45).'...' : $task_data['task_name'];
 
-	$task_parent_options .= "<option value='".$task_data['task_id']."' $selected>".getSpaces($depth*3).dPFormSafe($task_data['task_name'])."</option>";
+	$task_parent_options .= '<option value="'.$task_data['task_id']. '" ' .$selected. '.>'.getSpaces($depth*3).dPFormSafe($task_data['task_name']).'</option>';
 
 	if (isset($parents[$task_data['task_id']])) {
 		foreach ($parents[$task_data['task_id']] as $child_task) {
@@ -107,9 +107,9 @@ function build_date_list(&$date_array, $row) {
 	} else {
 		$date = new CDate($row['task_start_date']);
 	}
-	$sdate = $date->format("%d/%m/%Y");
-	$shour = $date->format("%H");
-	$smin = $date->format("%M");
+	$sdate = $date->format('%d/%m/%Y');
+	$shour = $date->format('%H');
+	$smin = $date->format('%M');
 
 	$date_array[$row['task_id']] = array($row['task_name'], $sdate, $shour, $smin);
 }
@@ -120,13 +120,13 @@ $q->addTable('tasks', 't');
 $q->addQuery('task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent, task_dynamic');
 $q->addOrder('task_start_date');
 $q->addWhere('task_id  = task_parent');
-$q->addWhere("task_project = '$task_project'");
+$q->addWhere('task_project = '.$task_project);
 
 $root_tasks = $q->loadHashList('task_id');
 $q->clear();
 
 $projTasks           = array();
-$task_parent_options = "";
+$task_parent_options = '';
 
 // Now lets get non-root tasks, grouped by the task parent
 $q  = new DBQuery;
@@ -134,8 +134,7 @@ $q->addTable('tasks', 't');
 $q->addQuery('task_id, task_name, task_end_date, task_start_date, task_milestone, task_parent, task_dynamic');
 $q->addOrder('task_start_date');
 $q->addWhere('task_id != task_parent');
-$q->addWhere("task_project = '$task_project'");
-
+$q->addWhere('task_project = '.$task_project);
 $parents = array();
 $projTasksWithEndDates = array( $obj->task_id => $AppUI->_('None') );//arrays contains task end date info for setting new task start date as maximum end date of dependenced tasks
 $all_tasks = array();
@@ -153,14 +152,14 @@ foreach ($root_tasks as $root_task) {
 }
 
 // setup the title block
-$ttl = $task_id > 0 ? "Edit Task" : "Add Task";
-$titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+$ttl = $task_id > 0 ? 'Edit Task' : 'Add Task';
+$titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, $m.$a );
+$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 if ( $canReadProject ) {
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$task_project", "view this project" );
+	$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$task_project, 'view this project' );
 }
 if ($task_id > 0)
-  $titleBlock->addCrumb( "?m=tasks&a=view&task_id=$obj->task_id", "view this task" );
+  $titleBlock->addCrumb( '?m=tasks&a=view&task_id='.$obj->task_id, 'view this task' );
 $titleBlock->show();
 
 // Let's gather all the necessary information from the department table
@@ -169,13 +168,13 @@ $depts = array( 0 => '' );
 
 // ALTER TABLE `tasks` ADD `task_departments` CHAR( 100 ) ;
 $company_id                = $project->project_company;
-$selected_departments      = $obj->task_departments != "" ? explode(",", $obj->task_departments) : array();
+$selected_departments      = $obj->task_departments != '' ? explode(',', $obj->task_departments) : array();
 $departments_count         = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
-if($department_selection_list!=""){
-	$department_selection_list = "<select name='dept_ids[]' size='$departments_count' multiple class='text'>
+if($department_selection_list!=''){
+	$department_selection_list = '<select name="dept_ids[]" size="'.$departments_count.'" multiple class="text">'.
 								  $department_selection_list
-    	                          </select>";
+    	                          .'</select>';
 }
 
 
@@ -188,21 +187,21 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$q  = new DBQuery;
 	$q->addTable('departments', 'dept');
 	$q->addQuery('dept_id, dept_name');
-	$q->addWhere("dept_parent = '$dept_parent'");
-	$q->addWhere("dept_company = '$company_id'");
+	$q->addWhere('dept_parent = '.$dept_parent);
+	$q->addWhere('dept_company = '.$company_id);
 	$q->addOrder('dept_name');
 	
 	$depts_list = $q->loadHashList('dept_id');
 	$q->clear();
 	
 	foreach($depts_list as $dept_id => $dept_info){
-		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
+		$selected = in_array($dept_id, $checked_array) ? 'selected' : '';
 
-		if(strlen($dept_info["dept_name"]) > 30){
-			$dept_info["dept_name"] = substr($dept_info["dept_name"], 0, 28)."...";
+		if(strlen($dept_info['dept_name']) > 30){
+			$dept_info['dept_name'] = substr($dept_info['dept_name'], 0, 28).'...';
 		}
 
-		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
+		$parsed .= '<option value="'.$dept_id.'" '. $selected.'>'.str_repeat('&nbsp;', $spaces).$dept_info['dept_name'].'</option>';
 		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
 	}
 
@@ -219,7 +218,7 @@ $can_edit_time_information = $obj->canUserEditTimeInformation();
 $pq = new DBQuery;
 $pq->addQuery('project_id, project_name');
 $pq->addTable('projects');
-$pq->addWhere("project_company = '$company_id'");
+$pq->addWhere('project_company = '.$company_id);
 $pq->addWhere('( project_status != 7 or project_id = \''. $task_project . '\')');
 $pq->addOrder('project_name');
 $project->setAllowedSQL($AppUI->user_id, $pq);
@@ -244,11 +243,11 @@ if (isset($_GET['tab']))
 	$AppUI->setState('TaskAeTabIdx', dPgetParam($_GET, 'tab', 0));
 
 $tab = $AppUI->getState('TaskAeTabIdx', 0);
-$tabBox =& new CTabBox("?m=tasks&a=addedit&task_id=$task_id", "", $tab, "");
-$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_desc", "Details");
-$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_dates", "Dates");
-$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_depend", "Dependencies");
-$tabBox->add("{$dPconfig['root_dir']}/modules/tasks/ae_resource", "Human Resources");
+$tabBox =& new CTabBox('?m=tasks&a=addedit&task_id='.$task_id, '', $tab, '');
+$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_desc', 'Details');
+$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_dates', 'Dates');
+$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_depend', 'Dependencies');
+$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_resource', 'Human Resources');
 $tabBox->loadExtras('tasks', 'addedit');
 $tabBox->show('', true);
 ?>

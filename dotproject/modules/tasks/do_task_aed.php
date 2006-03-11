@@ -25,14 +25,14 @@ if ($sub_form) {
 		else
 			$mod = 'tasks';
 		$proc = $AppUI->checkFileName($_POST['subform_processor']);
-		include "$root/modules/$mod/$proc.php";
+		include $root.'/modules/'.$mod.'/'.$proc.'.php';
 	} 
 } else {
 
 	// Include any files for handling module-specific requirements
 	foreach (findTabModules('tasks', 'addedit') as $mod) {
-		$fname = dPgetConfig('root_dir') . "/modules/$mod/tasks_dosql.addedit.php";
-		dprint(__FILE__, __LINE__, 3, "checking for $fname");
+		$fname = dPgetConfig('root_dir') . '/modules/'.$mod.'/tasks_dosql.addedit.php';
+		dprint(__FILE__, __LINE__, 3, 'checking for '.$fname);
 		if (file_exists($fname))
 			require_once $fname;
 	}
@@ -68,13 +68,13 @@ if ($sub_form) {
 
 		
     // Let's check if task_dynamic is unchecked
-    if( !array_key_exists("task_dynamic", $_POST) ){
+    if( !array_key_exists('task_dynamic', $_POST) ){
         $obj->task_dynamic = false;
     }
 		
 	// Map task_dynamic checkboxes to task_dynamic values for task dependencies.
 	if ( $obj->task_dynamic != 1 ) {
-		$task_dynamic_delay = setItem("task_dynamic_nodelay", '0');
+		$task_dynamic_delay = setItem('task_dynamic_nodelay', '0');
 		if (in_array($obj->task_dynamic, $tracking_dynamics)) {
 			$obj->task_dynamic = $task_dynamic_delay ? 21 : 31;
 		} else {
@@ -87,10 +87,10 @@ if ($sub_form) {
 		$obj->task_milestone = false;
 
 	//format hperc_assign user_id=percentage_assignment;user_id=percentage_assignment;user_id=percentage_assignment;
-	$tmp_ar = explode(";", $hperc_assign);
+	$tmp_ar = explode(';', $hperc_assign);
 	$hperc_assign_ar = array();
 	for ($i = 0; $i < sizeof($tmp_ar); $i++) {
-		$tmp = explode("=", $tmp_ar[$i]);
+		$tmp = explode('=', $tmp_ar[$i]);
 		if (count($tmp) > 1)
 			$hperc_assign_ar[$tmp[0]] = $tmp[1];
 		else
@@ -98,7 +98,7 @@ if ($sub_form) {
 	}
 
 	// let's check if there are some assigned departments to task
-	$obj->task_departments = implode(",", setItem("dept_ids", array()));
+	$obj->task_departments = implode(',', setItem('dept_ids', array()));
 
 	// convert dates to SQL format first
 	if ($obj->task_start_date) {
@@ -117,7 +117,7 @@ if ($sub_form) {
 		$obj->task_duration = floor($obj->task_duration) + $task_duration_minutes;
 	}
 
-	require_once("./classes/CustomFields.class.php");
+	require_once('./classes/CustomFields.class.php');
 	//echo '<pre>';print_r( $hassign );echo '</pre>';die;
 	// prepare (and translate) the module name ready for the suffix
 	if ($del) {
@@ -133,7 +133,7 @@ if ($sub_form) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			$AppUI->redirect(); // Store failed don't continue?
 		} else {
-			$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, "edit" );
+			$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, 'edit' );
  			$custom_fields->bind( $_POST );
  			$sql = $custom_fields->store( $obj->task_id ); // Store Custom Fields
 
@@ -173,7 +173,7 @@ if ($sub_form) {
 			$changes = $q->loadResult();
 
 			if (!$changes) {
-				$AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
+				$AppUI->setMsg('History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.', UI_MSG_ALERT);
 				$q->clear();
 
 			} else {

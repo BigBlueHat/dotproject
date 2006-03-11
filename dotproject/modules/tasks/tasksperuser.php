@@ -22,11 +22,11 @@ $titleBlock->addCell(
 	arraySelect( $compFilter, 'company_id', 'size="1" class="text" onChange="document.companyFilter.submit();"', $company_id, false ), '',
 	'<form action="?m=tasks&a=tasksperuser" method="post" name="companyFilter">', '</form>'
 );
-$titleBlock->addCrumb( "?m=tasks", "tasks list" );
-$titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
+$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
+$titleBlock->addCrumb( '?m=tasks&a=todo&user_id='.$user_id, 'my todo' );
 $titleBlock->show();
 
 // include the re-usable sub view
 	$min_view = false;
-	include("{$dPconfig['root_dir']}/modules/tasks/tasksperuser_sub.php");
+	include($dPconfig['root_dir'].'/modules/tasks/tasksperuser_sub.php');
 ?>

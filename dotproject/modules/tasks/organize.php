@@ -10,14 +10,14 @@ $no_modify	= false;
 
 $sort = dPgetParam($_REQUEST, 'sort', 'task_end_date');
 
-if($perms->checkModule("admin","view")){ // let's see if the user has sysadmin access
+if($perms->checkModule('admin','view')){ // let's see if the user has sysadmin access
 	$other_users = true;
-	if(($show_uid = dPgetParam($_REQUEST, "show_user_todo", 0)) != 0){ // lets see if the user wants to see anothers user mytodo
+	if(($show_uid = dPgetParam($_REQUEST, 'show_user_todo', 0)) != 0){ // lets see if the user wants to see anothers user mytodo
 		$user_id = $show_uid;
 		$no_modify = true;
-		$AppUI->setState("user_id", $user_id);
+		$AppUI->setState('user_id', $user_id);
 	} else {
-//		$user_id = $AppUI->getState("user_id");
+//		$user_id = $AppUI->getState('user_id');
 	}
 }
 
@@ -44,7 +44,7 @@ if ($selected && count( $selected )) {
 			$q->addTable('tasks');
 			$q->addUpdate('task_percent_complete', '100');
 			if (isset($children))
-				$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
+				$q->addWhere('task_id IN (' . implode(', ', $children) . ', '.$val.')');
 			else
 				$q->addWhere('task_id='.$val);
 		} else if ( $action == 'a' ) {
@@ -86,7 +86,7 @@ if ($selected && count( $selected )) {
 			$q->addTable('tasks');
 			$q->addUpdate('task_priority', $action);
       if (isset($children))
-     		$q->addWhere("task_id IN (" . implode(', ', $children) . ", $val)");
+     		$q->addWhere('task_id IN (' . implode(', ', $children) . ', '.$val.')');
 			else
 				$q->addWhere('task_id='.$val);
 
@@ -114,7 +114,7 @@ $q->addQuery('tasks.*, project_name, project_id, project_color_identifier');
 $q->addWhere('project_id = task_project');
 
 if ($project_id)
-	$q->addWhere("project_id = $project_id");
+	$q->addWhere('project_id = '.$project_id);
 
 if (count($allowedTasks))
 	$tobj->setAllowedSQL($AppUI->user_id, $q);
@@ -123,7 +123,7 @@ if (count($allowedProjects))
 	$proj->setAllowedSQL($AppUI->user_id, $q);
 
 $q->addGroup('task_id');
-$q->addOrder("$sort, task_priority DESC");
+$q->addOrder($sort.', task_priority DESC');
 $tasks = $q->loadList();
 $q->clear();
 
@@ -132,9 +132,9 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 if (!@$min_view) {
 	$titleBlock = new CTitleBlock( 'Organize Tasks', 'applet-48.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+	$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 	if ($project_id)
-		$titleBlock->addCrumb("?m=projects&a=view&project_id=$project_id", "view project");
+		$titleBlock->addCrumb('?m=projects&a=view&project_id='.$project_id, 'view project');
 	$titleBlock->show();
 }
 
@@ -162,15 +162,15 @@ function showtask_edit($task, $level=0)
 	
 	$style = '';
 	$sign = 1;
-	$start = intval( @$task["task_start_date"] ) ? new CDate( $task["task_start_date"] ) : null;
-	$end = intval( @$task["task_end_date"] ) ? new CDate( $task["task_end_date"] ) : null;
+	$start = intval( @$task['task_start_date'] ) ? new CDate( $task['task_start_date'] ) : null;
+	$end = intval( @$task['task_end_date'] ) ? new CDate( $task['task_end_date'] ) : null;
 	
 	if (!$end && $start) {
 		$end = $start;
-		$end->addSeconds( @$task["task_duration"]*$task["task_duration_type"]*SEC_HOUR );
+		$end->addSeconds( @$task['task_duration']*$task['task_duration_type']*SEC_HOUR );
 	}
 
-	if ($now->after( $start ) && $task["task_percent_complete"] == 0) {
+	if ($now->after( $start ) && $task['task_percent_complete'] == 0) {
 		$style = 'background-color:#ffeebb';
 	} else if ($now->after( $start )) {
 		$style = 'background-color:#e6eedd';
@@ -198,18 +198,18 @@ function showtask_edit($task, $level=0)
 <tr>
 	<td>
 <?php if ($canEdit) { ?>
-		<a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $task["task_id"];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>
+		<a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $task['task_id'];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>
 <?php } ?>
 	</td>
 	<td align="right">
-		<?php echo intval($task["task_percent_complete"]);?>%
+		<?php echo intval($task['task_percent_complete']);?>%
 	</td>
 
 	<td>
-<?php if ($task["task_priority"] < 0 ) {
-	echo "<img src='./images/icons/low.gif' width=13 height=16>";
+<?php if ($task['task_priority'] < 0 ) {
+	echo '<img src="./images/icons/low.gif" width=13 height=16>';
 } else if ($task["task_priority"] > 0) {
-	echo "<img src='./images/icons/" . $task["task_priority"] .".gif' width=13 height=16>";
+	echo '<img src="./images/icons/' . $task['task_priority'] .'.gif" width=13 height=16>';
 }?>
 	</td>
 
@@ -219,11 +219,11 @@ function showtask_edit($task, $level=0)
 			if ($level > 0)
 				echo '<img src="./images/corner-dots.gif" width="16" height="12" border="0">'; ?>
 			
-		<a 	href="./index.php?m=tasks&a=view&task_id=<?php echo $task["task_id"];?>"
+		<a 	href="./index.php?m=tasks&a=view&task_id=<?php echo $task['task_id'];?>"
 				title="<?php
 					echo ( isset($task['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($task['parent_name'], ENT_QUOTES) . "\n\n" : '' ) .
 					'*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($task['task_description'], ENT_QUOTES) ?>">
-					<?php echo htmlspecialchars($task["task_name"], ENT_QUOTES); ?>
+					<?php echo htmlspecialchars($task['task_name'], ENT_QUOTES); ?>
 		</a>
 	</td>
 	<td style="<?php echo $style;?>">

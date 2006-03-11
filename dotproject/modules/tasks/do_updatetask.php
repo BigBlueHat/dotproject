@@ -70,7 +70,7 @@ if ($del) {
 	if (($msg = $obj->delete())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( "deleted", UI_MSG_ALERT );
+		$AppUI->setMsg( 'deleted', UI_MSG_ALERT );
 	}
 	$AppUI->redirect();
 } else {
@@ -90,8 +90,8 @@ $task_end_date = new CDate($task->task_end_date);
 
 $task->task_percent_complete = dPgetParam( $_POST, 'task_percent_complete', null );
 
-if(dPgetParam($_POST, "task_end_date", "") != ""){
-	$task->task_end_date = $_POST["task_end_date"];
+if(dPgetParam($_POST, 'task_end_date', '') != ''){
+	$task->task_end_date = $_POST['task_end_date'];
 }
 
 if ($task->task_percent_complete >= 100 && ( ! $task->task_end_date || $task->task_end_date == '0000-00-00 00:00:00')){
@@ -124,5 +124,5 @@ if ($task->email_log($obj, $email_assignees, $email_task_contacts, $email_projec
 }
  
 
-$AppUI->redirect("m=tasks&a=view&task_id={$obj->task_log_task}&tab=0#tasklog{$obj->task_log_id}");
+$AppUI->redirect('m=tasks&a=view&task_id='.$obj->task_log_task.'&tab=0#tasklog'.$obj->task_log_id);
 ?>

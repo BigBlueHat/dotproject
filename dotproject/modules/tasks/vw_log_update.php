@@ -11,11 +11,11 @@ $task_log_id = intval( dPgetParam( $_GET, 'task_log_id', 0 ) );
 $log = new CTaskLog();
 if ($task_log_id) {
 	if (! $canEdit)
-		$AppUI->redirect("m=public&a=access_denied");
+		$AppUI->redirect('m=public&a=access_denied');
 	$log->load( $task_log_id );
 } else {
 	if (! $canAdd)
-		$AppUI->redirect("m=public&a=access_denied");
+		$AppUI->redirect('m=public&a=access_denied');
 	$log->task_log_creator = $AppUI->user_id;
 	$log->task_log_task = $task_id;
 	$log->task_log_name = $obj->task_name;
@@ -46,7 +46,7 @@ $q->addWhere('billingcode_status=0');
 $q->addWhere("(company_id='$proj->project_company' OR company_id='0')");
 $q->addOrder('billingcode_name');
 
-$task_log_costcodes[0]="None";
+$task_log_costcodes[0]='None';
 $ptrc = $q->exec();
 echo db_error();
 $nums = 0;
@@ -54,7 +54,7 @@ if ($ptrc)
 	$nums=db_num_rows($ptrc);
 for ($x=0; $x < $nums; $x++) {
         $row = db_fetch_assoc( $ptrc );
-        $task_log_costcodes[$row["billingcode_id"]] = $row["billingcode_name"];
+        $task_log_costcodes[$row['billingcode_id']] = $row['billingcode_name'];
 }
 $q->clear();
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
@@ -67,7 +67,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 				$q = new DBQuery;
 				$q->addTable('task_contacts', 'tc');
 				$q->leftJoin('contacts', 'c', 'c.contact_id = tc.contact_id');
-				$q->addWhere("tc.task_id = '$task_id'");
+				$q->addWhere('tc.task_id = '.$task_id);
 				$q->addQuery('tc.contact_id');
 				$q->addQuery('c.contact_first_name, c.contact_last_name');
 				$req =& $q->exec();
@@ -82,7 +82,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 					$q->clear();
 				$q->addTable('project_contacts', 'pc');
 				$q->leftJoin('contacts', 'c', 'c.contact_id = pc.contact_id');
-				$q->addWhere("pc.project_id = '$obj->task_project'");
+				$q->addWhere('pc.project_id = '.$obj->task_project);
 				$q->addQuery('pc.contact_id');
 				$q->addQuery('c.contact_first_name, c.contact_last_name');
 				$req =& $q->exec();
@@ -122,7 +122,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 				$tpl->assign('taskLogReference', $taskLogReference);
 				$tpl->assign('log_date', $log_date);
 				
-				$tpl->assign('uniqid', uniqid(""));
+				$tpl->assign('uniqid', uniqid(''));
 				$tpl->displayFile('tasklog.addedit');
 ?>
 

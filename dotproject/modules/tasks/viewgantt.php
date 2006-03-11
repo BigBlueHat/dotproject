@@ -41,8 +41,8 @@ if ($display_option == 'custom') {
 // setup the title block
 if (!@$min_view) {
 	$titleBlock = new CTitleBlock( 'Gantt Chart', 'applet-48.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=tasks", "tasks list" );
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+	$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
+	$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$project_id, 'view this project' );
 	$titleBlock->show();
 }
 ?>
@@ -74,8 +74,8 @@ function scrollPrev() {
 	$new_end = $end_date;
 	$new_start->addMonths( -$scroll_date );
 	$new_end->addMonths( -$scroll_date );
-	echo "f.sdate.value='".$new_start->format( FMT_TIMESTAMP_DATE )."';";
-	echo "f.edate.value='".$new_end->format( FMT_TIMESTAMP_DATE )."';";
+	echo 'f.sdate.value="'.$new_start->format( FMT_TIMESTAMP_DATE ).'";';
+	echo 'f.edate.value="'.$new_end->format( FMT_TIMESTAMP_DATE ).'";';
 ?>
 	document.editFrm.display_option.value = 'custom';
 	f.submit()
@@ -88,9 +88,9 @@ function scrollNext() {
 	$new_start->day = 1;
 	$new_end = $end_date;
 	$new_start->addMonths( $scroll_date );
-	$new_end->addMonths( $scroll_date );
-	echo "f.sdate.value='" . $new_start->format( FMT_TIMESTAMP_DATE ) . "';";
-	echo "f.edate.value='" . $new_end->format( FMT_TIMESTAMP_DATE ) . "';";
+	$new_end->addMonths( $scroll_date );	
+	echo 'f.sdate.value="'.$new_start->format( FMT_TIMESTAMP_DATE ).'";';	
+	echo 'f.edate.value="'.$new_end->format( FMT_TIMESTAMP_DATE ).'";';
 ?>
 	document.editFrm.display_option.value = 'custom';
 	f.submit()
@@ -135,10 +135,10 @@ function showFullProject() {
 		<input type="text" class="text" name="show_edate" value="<?php echo $end_date->format( $df );?>" size="12" disabled="disabled" />
 		<a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
 	<td valign="top">
-		<input type="checkbox" name="showLabels" <?php echo (($showLabels==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show captions' );?>
+		<input type="checkbox" name="showLabels" <?php echo (($showLabels==1) ? 'checked=true' : '');?>><?php echo $AppUI->_( 'Show captions' );?>
 	</td>
 	<td valign="top">
-		<input type="checkbox" name="showWork" <?php echo (($showWork==1) ? "checked=true" : "");?>><?php echo $AppUI->_( 'Show work instead of duration' );?>
+		<input type="checkbox" name="showWork" <?php echo (($showWork==1) ? 'checked=true' : '');?>><?php echo $AppUI->_( 'Show work instead of duration' );?>
 	</td>	
 	<td align="left">
 		<input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
@@ -157,7 +157,7 @@ function showFullProject() {
 
 <tr>
 	<td align="center" valign="bottom" colspan="7">
-		<?php echo "<a href='javascript:showThisMonth()'>".$AppUI->_('show this month')."</a> : <a href='javascript:showFullProject()'>".$AppUI->_('show full project')."</a><br>"; ?>
+		<?php echo '<a href="javascript:showThisMonth()">'.$AppUI->_('show this month').'</a> : <a href="javascript:showFullProject()">'.$AppUI->_('show full project').'</a><br>'; ?>
 	</td>
 </tr>
 
@@ -170,19 +170,19 @@ function showFullProject() {
 $q = new DBQuery;
 $q->addTable('tasks');
 $q->addQuery('COUNT(*) AS N');
-$q->addWhere("task_project=$project_id");
+$q->addWhere('task_project='.$project_id);
 $cnt = $q->loadList();
 $q->clear();
 if ($cnt[0]['N'] > 0) {
 	$src =
-	  "?m=tasks&a=gantt&suppressHeaders=1&project_id=$project_id" .
+	  '?m=tasks&a=gantt&suppressHeaders=1&project_id='.$project_id .
 	  ( $display_option == 'all' ? '' :
-		'&start_date=' . $start_date->format( "%Y-%m-%d" ) . '&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
+		'&start_date=' . $start_date->format( '%Y-%m-%d' ) . '&end_date=' . $end_date->format( '%Y-%m-%d' ) ) .
 	  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=".$showLabels."&showWork=".$showWork;
 
 	echo "<script>document.write('<img src=\"$src\">')</script>";
 } else {
-	echo $AppUI->_( "No tasks to display" );
+	echo $AppUI->_( 'No tasks to display' );
 }
 ?>
 	</td>

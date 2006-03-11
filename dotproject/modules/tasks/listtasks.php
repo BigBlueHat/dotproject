@@ -3,7 +3,7 @@
 $perms =& $AppUI->acl();
 global $tpl;
 if (! $perms->checkModule('tasks', 'view'))
-	$AppUI->redirect("m=public&a=access_denied");
+	$AppUI->redirect('m=public&a=access_denied');
 
 if (isset($_GET['table']))
 {

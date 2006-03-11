@@ -20,9 +20,9 @@
 
 	$tpl->assign('sysval_task_type', dPgetSysVal('TaskType'));
 
-	require_once("./classes/CustomFields.class.php");
+	require_once('./classes/CustomFields.class.php');
 	GLOBAL $m;
-	$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, "edit" );
+	$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, 'edit' );
 	$custom_fields_html = $custom_fields->getHTML();
 	$tpl->assign('custom_fields_html', $custom_fields_html);
 	$tpl->assign('tab', $tab);

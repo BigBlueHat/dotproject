@@ -14,12 +14,12 @@ if ($inc   === null)  $inc = 15;
 $hours = array();
 for ( $current = $start; $current < $end + 1; $current++ ) {
 	if ( $current < 10 ) { 
-		$current_key = "0" . $current;
+		$current_key = '0' . $current;
 	} else {
 		$current_key = $current;
 	}
 	
-	if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ){
+	if ( stristr($AppUI->getPref('TIMEFORMAT'), '%p') ){
 		//User time format in 12hr
 		$hours[$current_key] = ( $current > 12 ? $current-12 : $current );
 	} else {
@@ -35,10 +35,10 @@ $q->addQuery('task_id, task_name');
 
 $deps = false;
 if ($deps) {
-	$q->addWhere(" task_id in ($deps)");
+	$q->addWhere(' task_id in ('.$deps.')');
 } else {
 	$q->addTable('task_dependencies', 'td');
-	$q->addWhere("td.dependencies_task_id = $task_id");
+	$q->addWhere('td.dependencies_task_id = '.$task_id);
 	$q->addWhere('t.task_id = td.dependencies_req_task_id');
 }
 $taskDep = $q->loadHashList();
@@ -59,32 +59,32 @@ $q->clear();
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'On' );?></td>
 				<td nowrap="nowrap">
-					<input type="radio" name="task_dynamic" value="31" <?php if($obj->task_dynamic > '20') echo "checked"?> />
+					<input type="radio" name="task_dynamic" value="31" <?php if($obj->task_dynamic > '20') echo 'checked'?> />
 				</td>
 			</tr>
 			<tr>
 				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Off' );?></td>
 				<td id="no_dyn" nowrap="nowrap">
-					<input type="radio" name="task_dynamic" value="0" <?php if($obj->task_dynamic == '0' || $obj->task_dynamic == '11') echo "checked"?> />
+					<input type="radio" name="task_dynamic" value="0" <?php if($obj->task_dynamic == '0' || $obj->task_dynamic == '11') echo 'checked'?> />
 				</td>
 </tr>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
 	<td nowrap="nowrap">
-		<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo "checked"?> />
+		<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo 'checked'?> />
 	</td>
 </tr>
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Do not track this task' );?></td>
 	<td>
-		<input type="checkbox" name="task_dynamic_nodelay" value="1" <?php if(($obj->task_dynamic > '10') && ($obj->task_dynamic < 30)) echo "checked"?> />
+		<input type="checkbox" name="task_dynamic_nodelay" value="1" <?php if(($obj->task_dynamic > '10') && ($obj->task_dynamic < 30)) echo 'checked'?> />
 	</td>
 			</tr>
 			<?php
 				} else {  
 			?>
 			<tr>
-					<td colspan='2'><?php echo $AppUI->_("Only the task owner, project owner, or system administrator is able to edit time related information."); ?></td>
+					<td colspan='2'><?php echo $AppUI->_('Only the task owner, project owner, or system administrator is able to edit time related information.'); ?></td>
 				</tr>
 			<?php
 				}// end of can_edit_time_information
@@ -96,7 +96,7 @@ $q->clear();
 			<tr>
 				<td>
 					<select name='all_tasks' class="text" style="width:220px" size="10" class="text" multiple="multiple">
-						<?php echo str_replace("selected", "", $task_parent_options); // we need to remove selected added from task_parent options ?>
+						<?php echo str_replace('selected', '', $task_parent_options); // we need to remove selected added from task_parent options ?>
 					</select>
 				</td>
 				<td>

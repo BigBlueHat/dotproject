@@ -3,7 +3,7 @@ global $AppUI, $task_id, $df, $canEdit, $m, $tpl;
 
 $perms =& $AppUI->acl();
 if (! $perms->checkModuleItem('task_log', 'view', $task_id)) {
-	$AppUI->redirect("m=public&a=access_denied");
+	$AppUI->redirect('m=public&a=access_denied');
 }
 
 $problem = intval( dPgetParam( $_GET, 'problem', null ) );
@@ -38,21 +38,21 @@ $q->addTable('task_log');
 $q->addJoin('billingcode', 'b', 'task_log_costcode = billingcode_id');
 $q->addJoin('users', 'u', 'user_id = task_log_creator');
 $q->addOrder('task_log_date');
-$q->addWhere("task_log_task = $task_id");
+$q->addWhere('task_log_task = '.$task_id);
 if ($problem) {
-	$q->addWhere("task_log_problem > '0'");
+	$q->addWhere('task_log_problem > 0');
 }
 $logs = $q->loadList();
 $q->clear();
 
 foreach($logs as $k => $row)
 {
-	$reference_image = "-";
-	if($row["task_log_reference"] > 0){
-			if(isset($taskLogReferenceImage[$row["task_log_reference"]])){
-					$reference_image = dPshowImage( $taskLogReferenceImage[$row["task_log_reference"]], 16, 16, $taskLogReference[$row["task_log_reference"]], $taskLogReference[$row["task_log_reference"]] );
-			} else if (isset($taskLogReference[$row["task_log_reference"]])){
-					$reference_image = $taskLogReference[$row["task_log_reference"]];
+	$reference_image = '-';
+	if($row['task_log_reference'] > 0){
+			if(isset($taskLogReferenceImage[$row['task_log_reference']])){
+					$reference_image = dPshowImage( $taskLogReferenceImage[$row['task_log_reference']], 16, 16, $taskLogReference[$row['task_log_reference']], $taskLogReference[$row['task_log_reference']] );
+			} else if (isset($taskLogReference[$row['task_log_reference']])){
+					$reference_image = $taskLogReference[$row['task_log_reference']];
 			}
 	}
 	
@@ -62,7 +62,7 @@ foreach($logs as $k => $row)
 	$row['task_log_hours_display'] = floor($hours) .':'. sprintf('%02.0f', ($hours - floor($hours)) * 60);
 	$logs[$k] = $row;
 	
-	$hrs += (float)$row["task_log_hours"];
+	$hrs += (float)$row['task_log_hours'];
 }
 
 $tpl->assign('tab', (($tab == -1)?$AppUI->getState('TaskLogVwTab'):1));

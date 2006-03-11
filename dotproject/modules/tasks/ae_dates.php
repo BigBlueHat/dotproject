@@ -15,12 +15,12 @@ if ($inc   === null)  $inc = 15;
 $hours = array();
 for ( $current = $start; $current < $end + 1; $current++ ) {
 	if ( $current < 10 ) { 
-		$current_key = "0" . $current;
+		$current_key = '0' . $current;
 	} else {
 		$current_key = $current;
 	}
 	
-	if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ){
+	if ( stristr($AppUI->getPref('TIMEFORMAT'), '%p') ){
 		//User time format in 12hr
 		$hours[$current_key] = ( $current > 12 ? $current-12 : $current );
 	} else {
@@ -30,7 +30,7 @@ for ( $current = $start; $current < $end + 1; $current++ ) {
 }
 
 $minutes = array();
-$minutes["00"] = "00";
+$minutes['00'] = '00';
 for ( $current = 0 + $inc; $current < 60; $current += $inc ) {
 	$minutes[$current] = $current;
 }
@@ -60,10 +60,10 @@ $cwd_hr = implode(', ', $cwd_conv);
 
 function cal_work_day_conv($val) {
 	GLOBAL $locale_char_set;
-	$wk = Date_Calc::getCalendarWeek( null, null, null, "%a", LOCALE_FIRST_DAY );
+	$wk = Date_Calc::getCalendarWeek( null, null, null, '%a', LOCALE_FIRST_DAY );
 	
 	$day_name = $wk[($val - LOCALE_FIRST_DAY)%7];
-	if ($locale_char_set == "utf-8" && function_exists("utf8_encode")) {
+	if ($locale_char_set == 'utf-8' && function_exists('utf8_encode')) {
 	    $day_name = utf8_encode($day_name);
 	}
 	return htmlentities($day_name, ENT_COMPAT, $locale_char_set);
@@ -80,8 +80,8 @@ function cal_work_day_conv($val) {
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Start Date' );?></td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="task_start_date" id="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : "" ;?>" />
-		<input type="text" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : "" ;?>" class="text" disabled="disabled" />
+		<input type="hidden" name="task_start_date" id="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : '' ;?>" />
+		<input type="text" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : '' ;?>" class="text" disabled="disabled" />
 		<a href="#" onClick="popCalendar(document.datesFrm.start_date)">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
@@ -90,10 +90,10 @@ function cal_work_day_conv($val) {
 		<table><tr>
 						
 	<?php
-		echo "<td>" . arraySelect($hours, "start_hour",'size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . "</td><td>" . " : " . "</td>";
-		echo "<td>" . arraySelect($minutes, "start_minute",'size="1" class="text"', $start_date ? $start_date->getMinute() : "0" ) . "</td>";
-		if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
-			echo '<td><input type="text" name="start_hour_ampm" id="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
+		echo '<td>' . arraySelect($hours, 'start_hour','size="1" onchange="setAMPM(this)" class="text"', $start_date ? $start_date->getHour() : $start ) . '</td><td>' . ' : ' . '</td>';
+		echo '<td>' . arraySelect($minutes, 'start_minute','size="1" class="text"', $start_date ? $start_date->getMinute() : '0' ) . '</td>';
+		if ( stristr($AppUI->getPref('TIMEFORMAT'), '%p') ) {
+			echo '<td><input type="text" name="start_hour_ampm" id="start_hour_ampm" value="' . ( $start_date ? $start_date->getAMPM() : ( $start > 11 ? 'pm' : 'am' ) ) . '" disabled="disabled" class="text" size="2" /></td>';
 		}
 	?>
 		</tr></table>
@@ -111,10 +111,10 @@ function cal_work_day_conv($val) {
         <td>
 <table><tr>
 	<?php
-		echo "<td>" . arraySelect($hours, "end_hour",'size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . "</td><td>" . " : " . "</td>";
-		echo "<td>" .arraySelect($minutes, "end_minute",'size="1" class="text"', $end_date ? $end_date->getMinute() : "00" ) . "</td>";
-		if ( stristr($AppUI->getPref('TIMEFORMAT'), "%p") ) {
-			echo '<td><input type="text" name="end_hour_ampm" id="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? "pm" : "am" ) ) . '" disabled="disabled" class="text" size="2" /></td>';
+		echo '<td>' . arraySelect($hours, 'end_hour','size="1" onchange="setAMPM(this)" class="text"', $end_date ? $end_date->getHour() : $end ) . '</td><td>' . ' : ' . '</td>';
+		echo '<td>' .arraySelect($minutes, 'end_minute','size="1" class="text"', $end_date ? $end_date->getMinute() : "00" ) . '</td>';
+		if ( stristr($AppUI->getPref('TIMEFORMAT'), '%p') ) {
+			echo '<td><input type="text" name="end_hour_ampm" id="end_hour_ampm" value="' . ( $end_date ? $end_date->getAMPM() : ( $end > 11 ? 'pm' : 'am' ) ) . '" disabled="disabled" class="text" size="2" /></td>';
 		}
 	?>
 	</tr></table>
@@ -144,7 +144,7 @@ function cal_work_day_conv($val) {
         ?>
 <tr>
         <td colspan='2'>
-                <?php echo $AppUI->_("Only the task owner, project owner, or system administrator is able to edit time related information."); ?>
+                <?php echo $AppUI->_('Only the task owner, project owner, or system administrator is able to edit time related information.'); ?>
         </td>
 </tr>
         <?php

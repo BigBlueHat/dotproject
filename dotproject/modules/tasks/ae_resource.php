@@ -4,7 +4,7 @@ global $AppUI, $users, $task_id, $task_project, $obj, $projTasksWithEndDates, $t
 
 if ( $task_id == 0 ) {
 	// Add task creator to assigned users by default
-	$assigned_perc = array($AppUI->user_id => "100");	
+	$assigned_perc = array($AppUI->user_id => '100');	
 } else {
 	// Pull users on this task
 	$q = new DBQuery;
@@ -16,17 +16,17 @@ if ( $task_id == 0 ) {
 	$q->clear();
 }
 
-$initPercAsignment = "";
+$initPercAsignment = '';
 $assigned = array();
 foreach ($assigned_perc as $user_id => $perc) {
-	$assigned[$user_id] = $users[$user_id] . " [" . $perc . "%]";
+	$assigned[$user_id] = $users[$user_id] . ' [' . $perc . '%]';
 	$initPercAsignment .= "$user_id=$perc;";
 }
 
 ?>
 <script language="javascript">
 <?php
-echo "var projTasksWithEndDates=new Array();\n";
+echo 'var projTasksWithEndDates=new Array();\n';
 $keys = array_keys($projTasksWithEndDates);
 for ($i = 1; $i < sizeof($keys); $i++) {
 	//array[task_is] = end_date, end_hour, end_minutes
@@ -65,7 +65,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 							<select name="percentage_assignment" class="text">
 							<?php 
 								for ($i = 5; $i <= 100; $i+=5) {
-									echo "<option ".(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i."%</option>";
+									echo '<option '.(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i.'%</option>';
 								}
 							?>
 							</select>
