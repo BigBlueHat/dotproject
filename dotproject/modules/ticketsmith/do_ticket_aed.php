@@ -19,14 +19,9 @@ $q->addInsert('priority', $priority);
 $q->addInsert('body', $description);
 $q->addInsert('timestamp', 'UNIX_TIMESTAMP()', false, true);
 $q->addInsert('type', 'Open');
-// "INSERT INTO tickets (author,subject,priority,body,timestamp,type) ".
-// "VALUES('$author','$subject','$priority','$description',UNIX_TIMESTAMP(),'Open')";
-
-//$rc = mysql_query($tsql);
 
 if (!$q->exec()) 
 	$AppUI->setMsg( mysql_error() );
-	// add code to mail to ticket master
 else 
 {
 	$AppUI->setMsg( 'Ticket added' );
