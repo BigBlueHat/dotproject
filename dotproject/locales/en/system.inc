@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"tasks_ajax_list_tooltip"=>"If your browser doesn\'t support ajax, turn this off. Dynamically loading tasks the first time they are requested.",
+"notification_email_title"=>"Notification Email",
 "Abbreviation",
 "All Events",
 "Are you sure you want to delete this?",
@@ -212,6 +212,7 @@
 "mail_user_title"=>"SMTP Username",
 "mail_user_tooltip"=>"The username to use when authenticating to your SMTP server",
 "no"=>"Norwegian",
+"notification_email_tooltip"=>"Notification Email for emergency tickets and other special events to be emailed to.",
 "page_title_title"=>"Page Title",
 "page_title_tooltip"=>"Stipulate what will appear on the top line of the browser - before the browser name. ",
 "parser_application/msword_title"=>"MS Word Indexing Parser",
@@ -279,6 +280,7 @@ There are mouseover-tooltips and (?)-information popups with each of the fields 
 "task_reminder_repeat_title"=>"Maximum number of reminders to send",
 "task_reminder_repeat_tooltip"=>"If a task is overdue for a large number of days, it may not be worth sending any more reminders. This value determines the total number of reminders that will be sent, including pre-due date warnings and overdue alerts.",
 "tasks_ajax_list_title"=>"Use AJAX for dynamic tasks",
+"tasks_ajax_list_tooltip"=>"If your browser doesn\'t support ajax, turn this off. Dynamically loading tasks the first time they are requested.",
 "updated",
 "username_min_len_title"=>"Minimum Username Length",
 "username_min_len_tooltip"=>"Establish the minimum length of any user names for dotProject.  This can NOT be longer than the length of the column in DB",
