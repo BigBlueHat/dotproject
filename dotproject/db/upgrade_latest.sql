@@ -88,3 +88,7 @@ INSERT INTO `config` VALUES ('', 'show_task_numbers', 'false', '', 'checkbox');
 # added notification email
 INSERT INTO `config` VALUES ('', 'notification_email', '', '', '');
 
+#20060311
+# Check task dates fix
+UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'check_tasks_dates';
+
