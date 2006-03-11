@@ -46,7 +46,7 @@ else
 		
 		$body = $subject . "\n\n";
 		$body .= 'From: ' . $author . "\n";
-		$body .= 'Priority: ' . $priority;
+		$body .= 'Priority: ' . $priority . "\n";
 		$body .= 'Description: ' . "\n" . $description;
 		$mail->Body($body, $locale_char_set);
 		$mail->Send();

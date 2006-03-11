@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"my tickets",
+"notification_email_tooltip"=>"Notification Email for emergency tickets and other special events to be emailed to.",
 "Activity",
 "All",
 "All Tickets",
@@ -89,10 +89,12 @@
 "minutes",
 "month",
 "months",
+"my tickets",
 "new ticket",
 "newer",
 "no results",
 "none",
+"notification_email_title"=>"Notification Email",
 "older",
 "original ticket author",
 "results",
