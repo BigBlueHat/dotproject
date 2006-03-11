@@ -32,17 +32,17 @@ global $tasks_opened;
 global $tasks_closed;
 
 $tasks_closed = array();
-$tasks_opened = $AppUI->getState("tasks_opened");
+$tasks_opened = $AppUI->getState('tasks_opened');
 if(!$tasks_opened){
     $tasks_opened = array();
 }
 
-$task_id = intval( dPgetParam( $_GET, "task_id", 0 ) );
+$task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
 $q = new DBQuery;
 $pinned_only = intval( dPgetParam( $_GET, 'pinned', 0) );
 if (isset($_GET['pin']))
 {
-        $pin = intval( dPgetParam( $_GET, "pin", 0 ) );
+        $pin = intval( dPgetParam( $_GET, 'pin', 0 ) );
         $msg = '';
 
         // load the record data
@@ -57,7 +57,7 @@ if (isset($_GET['pin']))
         }
 
         if ( !$q->exec() )
-                $AppUI->setMsg( "ins/del err", UI_MSG_ERROR, true );
+                $AppUI->setMsg( 'ins/del err', UI_MSG_ERROR, true );
 
         $AppUI->redirect('', -1);
 }
@@ -69,7 +69,7 @@ $AppUI->savePlace();
 
 if( ($open_task_id = dPGetParam($_GET, 'open_task_id', 0)) > 0
         && !in_array($_GET['open_task_id'], $tasks_opened)) {
-    $tasks_opened[] = $_GET["open_task_id"];
+    $tasks_opened[] = $_GET['open_task_id'];
 }
 
 // Closing tasks needs also to be within tasks iteration in order to
@@ -104,7 +104,7 @@ require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
 // $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id);
-$where = "";
+$where = '';
 if ( count($allowedProjects))
   $q->addWhere($allowedProjects);
 
@@ -115,8 +115,8 @@ $working_hours = $dPconfig['daily_working_hours'];
 $q->clear();
 $q->addQuery('project_id, project_color_identifier, project_name');
 $q->addQuery('COUNT(t1.task_id) as total_tasks');
-$q->addQuery("SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, ".$working_hours.", task_duration_type))/
-    SUM(task_duration * IF(task_duration_type = 24, ".$working_hours.", task_duration_type)) AS project_percent_complete");
+$q->addQuery('SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, '.$working_hours.', task_duration_type))/
+    SUM(task_duration * IF(task_duration_type = 24, '.$working_hours.', task_duration_type)) AS project_percent_complete');
 $q->addQuery('company_name');
 $q->addTable('projects');
 $q->leftJoin('tasks', 't1', 'projects.project_id = t1.task_project');
@@ -132,7 +132,7 @@ if ($canViewTask) {
         $prc = db_exec( $q->prepare() );
         echo db_error();
         while ($row = db_fetch_assoc( $prc )) {
-                $projects[$row["project_id"]] = $row;
+                $projects[$row['project_id']] = $row;
         }
 }
 
@@ -217,14 +217,14 @@ switch ($f) {
                 $q->addWhere('user_tasks.task_id = tasks.task_id');
 //                $q->addWhere('task_project = p.project_id');
 
-                $q->addWhere("(task_percent_complete < '100' OR task_end_date = '')");
+                $q->addWhere('(task_percent_complete < 100 OR task_end_date = "")');
                 $q->addWhere('p.project_status != 7');
                 $q->addWhere('p.project_status != 4');
                 $q->addWhere('p.project_status != 5');
                 break;
         case 'allunfinished':
                 //                        AND task_project             = projects.project_id
-                $q->addWhere("(task_percent_complete < '100' OR task_end_date = '')");
+                $q->addWhere('(task_percent_complete < 100 OR task_end_date = "")');
                 $q->addWhere('p.project_status != 7');
                 $q->addWhere('p.project_status != 4');
                 $q->addWhere('p.project_status != 5');
@@ -407,7 +407,7 @@ $tpl->assign('assignment_options', $assignment_options);
 
 
 $tempoTask = new CTask();
-$userAlloc = $tempoTask->getAllocation("user_id");
+$userAlloc = $tempoTask->getAllocation('user_id');
 $tpl->assign('userAlloc', $userAlloc);
 
 //print_r($projects);

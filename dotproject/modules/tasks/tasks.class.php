@@ -77,8 +77,8 @@ class CTask extends CDpObject {
 
         function CTask() {
                 $this->CDpObject( 'tasks', 'task_id' );
-					$this->search_fields = array ("task_name","task_description","task_related_url","task_departments",
-								"task_contacts","task_custom");
+					$this->search_fields = array ('task_name','task_description','task_related_url','task_departments',
+								'task_contacts','task_custom');
         }
 
 // overload check
@@ -163,7 +163,7 @@ class CTask extends CDpObject {
                         // Task dependencies can not be dependent on this task
                         $intersect = array_intersect( $this_dependencies, $this_dependents );
                         if (array_sum($intersect)) {
-                                $ids = "(".implode(',', $intersect).")";
+                                $ids = '('.implode(',', $intersect).')';
                                 return array('BadDep_CircularDep', $ids);
                         }
                 }
@@ -197,7 +197,7 @@ class CTask extends CDpObject {
                         if ( $this_parent->task_dynamic == '1' ) {
                                 $intersect = array_intersect( $this_dependencies, $parents_dependents );
                                 if (array_sum($intersect)) {
-                                        $ids = "(".implode(',', $intersect).")";
+                                        $ids = '('.implode(',', $intersect).')';
                                         return array('BadDep_CircularDepOnParentDependent', $ids);
                                 }
                         }
@@ -597,7 +597,7 @@ class CTask extends CDpObject {
                         print_r($this);
 
                 if( !$ret ) {
-                        return get_class( $this )."::store failed <br />" . db_error();
+                        return get_class( $this ).'::store failed <br />' . db_error();
                 } else {
                         return NULL;
                 }
@@ -697,7 +697,7 @@ class CTask extends CDpObject {
 
 
         // process dependencies
-                $tarr = explode( ",", $cslist );
+                $tarr = explode( ',', $cslist );
                 foreach ($tarr as $task_id) {
                         if (intval( $task_id ) > 0) {
                                 $q = new DBQuery;
@@ -798,14 +798,14 @@ class CTask extends CDpObject {
                         $body .= "\n".$AppUI->_('URL', UI_OUTPUT_RAW).":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
                         $body .= "\n\n" . $AppUI->_('Description', UI_OUTPUT_RAW) . ":"
                                 . "\n$this->task_description";
-                        $body .= "\n\n" . $AppUI->_('Creator', UI_OUTPUT_RAW).":" . $AppUI->user_first_name . " " . $AppUI->user_last_name;
+                        $body .= "\n\n" . $AppUI->_('Creator', UI_OUTPUT_RAW).':' . $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
 
-                        $body .= "\n\n" . $AppUI->_('Progress', UI_OUTPUT_RAW) . ": " . $this->task_percent_complete . "%";
-                        $body .= "\n\n" . dPgetParam($_POST, "task_log_description");
+                        $body .= "\n\n" . $AppUI->_('Progress', UI_OUTPUT_RAW) . ': ' . $this->task_percent_complete . '%';
+                        $body .= "\n\n" . dPgetParam($_POST, 'task_log_description');
 
 
-                        $mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );
-                        $mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name
+                        $mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : '' );
+                        $mail->From ( '"' . $AppUI->user_first_name . ' ' . $AppUI->user_last_name
                                 . '" <' . $AppUI->user_email . '>'
                         );
                 }
@@ -822,7 +822,7 @@ class CTask extends CDpObject {
         function notify( $comment = '' ) {
                 GLOBAL $AppUI, $dPconfig, $locale_char_set;
                 $df = $AppUI->getPref('SHDATEFORMAT');
-                $df .= " " . $AppUI->getPref('TIMEFORMAT');
+                $df .= ' ' . $AppUI->getPref('TIMEFORMAT');
 
                 $q = new DBQuery;
                 $q->addTable('projects');
@@ -860,25 +860,25 @@ class CTask extends CDpObject {
                         $body .= "\n".$AppUI->_('Task', UI_OUTPUT_RAW).":    $this->task_name";
                         //Priority not working for some reason, will wait till later
                         //$body .= "\n".$AppUI->_('Priority', UI_OUTPUT_RAW). ": $this->task_priority";
-                        $body .= "\n".$AppUI->_('Start Date', UI_OUTPUT_RAW) . ": " . $task_start_date->format( $df );
-                        $body .= "\n".$AppUI->_('Finish Date', UI_OUTPUT_RAW) . ": " . ($this->task_end_date != "" ? $task_finish_date->format( $df ) : "");
+                        $body .= "\n".$AppUI->_('Start Date', UI_OUTPUT_RAW) . ': ' . $task_start_date->format( $df );
+                        $body .= "\n".$AppUI->_('Finish Date', UI_OUTPUT_RAW) . ': ' . ($this->task_end_date != '' ? $task_finish_date->format( $df ) : '');
                         $body .= "\n".$AppUI->_('URL', UI_OUTPUT_RAW).":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
-                        $body .= "\n\n" . $AppUI->_('Description', UI_OUTPUT_RAW) . ":"
+                        $body .= "\n\n" . $AppUI->_('Description', UI_OUTPUT_RAW) . ':'
                                 . "\n$this->task_description";
                         if ($users[0]['creator_email']) {
-                                $body .= "\n\n" . $AppUI->_('Creator', UI_OUTPUT_RAW).":"
+                                $body .= "\n\n" . $AppUI->_('Creator', UI_OUTPUT_RAW).':'
                                         . "\n" . $users[0]['creator_first_name'] . " " . $users[0]['creator_last_name' ]
                                         . ", " . $users[0]['creator_email'];
                         }
-                        $body .= "\n\n" . $AppUI->_('Owner', UI_OUTPUT_RAW).":"
-                                . "\n" . $users[0]['owner_first_name'] . " " . $users[0]['owner_last_name' ]
-                                . ", " . $users[0]['owner_email'];
+                        $body .= "\n\n" . $AppUI->_('Owner', UI_OUTPUT_RAW).':'
+                                . "\n" . $users[0]['owner_first_name'] . ' ' . $users[0]['owner_last_name' ]
+                                . ', ' . $users[0]['owner_email'];
 
                         if ($comment != '') {
                                 $body .= "\n\n".$comment;
                         }
-                        $mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : "" );
-                        $mail->From ( '"' . $AppUI->user_first_name . " " . $AppUI->user_last_name
+                        $mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : '' );
+                        $mail->From ( '"' . $AppUI->user_first_name . ' ' . $AppUI->user_last_name
                                 . '" <' . $AppUI->user_email . '>'
                         );
                 }
@@ -1009,7 +1009,7 @@ class CTask extends CDpObject {
                 }
                 $q->clear();
                 $body .= $AppUI->_('Task', UI_OUTPUT_RAW) . ": $this->task_name\n";
-                $task_types = dPgetSysVal("TaskType");
+                $task_types = dPgetSysVal('TaskType');
                 $body .= $AppUI->_('Task Type', UI_OUTPUT_RAW) . ':' . $task_types[$this->task_type] . "\n";
                 $body .= $AppUI->_('URL', UI_OUTPUT_RAW) . ": {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id\n\n";
                 $body .= $AppUI->_('Summary', UI_OUTPUT_RAW) . ": $log->task_log_name\n\n";
@@ -1028,7 +1028,7 @@ class CTask extends CDpObject {
                 $mail->Body( $body, $char_set);
                 $mail->From( "$AppUI->user_first_name $AppUI->user_last_name <$AppUI->user_email>");
 
-                $recipient_list = "";
+                $recipient_list = '';
                 foreach ($mail_recipients as $email => $name) {
                         if ($mail->ValidEmail($email)) {
                                 $mail->To($email);
@@ -1099,7 +1099,7 @@ class CTask extends CDpObject {
         function canAccess( $user_id ) {
                 //echo intval($this->task_access);
                 // Let's see if this user has admin privileges
-                if(!getDenyRead("admin")){
+                if(!getDenyRead('admin')){
                         return true;
                 }
 
@@ -1204,7 +1204,7 @@ class CTask extends CDpObject {
          */
         function shiftDependentTasks () {
                 // Get tasks that depend on this task
-                $csDeps = explode( ",", $this->dependentTasks('','',false));
+                $csDeps = explode( ',', $this->dependentTasks('','',false));
 
                 if ($csDeps[0] == '')
                         return;
@@ -1496,7 +1496,7 @@ class CTask extends CDpObject {
         function updateAssigned( $cslist, $perc_assign, $del=true, $rmUsers=false ) {
 
         // process assignees
-                $tarr = explode( ",", $cslist );
+                $tarr = explode( ',', $cslist );
 
                 // delete all current entries from $cslist
                 if ($del == true && $rmUsers == true) {
@@ -1518,16 +1518,16 @@ class CTask extends CDpObject {
 
 
                 // get Allocation info in order to check if overAssignment occurs
-                $alloc = $this->getAllocation("user_id");
+                $alloc = $this->getAllocation('user_id');
                 $overAssignment = false;
 
 
                 foreach ($tarr as $user_id) {
                         if (intval( $user_id ) > 0) {
                                 $perc = $perc_assign[$user_id];
-                                if (dPgetConfig("check_overallocation") && $perc > $alloc[$user_id]['freeCapacity']) {
+                                if (dPgetConfig('check_overallocation') && $perc > $alloc[$user_id]['freeCapacity']) {
                                         // add Username of the overAssigned User
-                                        $overAssignment .= " ".$alloc[$user_id]['userFC'];
+                                        $overAssignment .= ' '.$alloc[$user_id]['userFC'];
                                 } else {
                                         $q = new DBQuery;
                                         $q->addTable('user_tasks');
@@ -1585,16 +1585,16 @@ class CTask extends CDpObject {
 
                 // use userlist if available otherwise pull data for all users
                 //$where = !empty($users) ? 'WHERE u.user_id IN ('.implode(",", $users).') ' : '';
-                $where = !empty($users) ? 'u.user_id IN ('.implode(",", $users).') ' : '';
+                $where = !empty($users) ? 'u.user_id IN ('.implode(',', $users).') ' : '';
 
                 // If the user set their maximum allocation use that, otherwise use system wide default.
                 $AA_sql_ifnull_up_pref_value_scm = $q->ifNull('up.pref_value', $scm);
 
                 // If the users maximum assignment minus their tasks assignment (the amount of free allocation) is null, use their preference for maximum allocation
-                $AB_sql_ifnull_AA_up_pref_value = $q->ifNull("(".$AA_sql_ifnull_up_pref_value_scum."-SUM(ut.perc_assignment))", 'up.pref_value');
+                $AB_sql_ifnull_AA_up_pref_value = $q->ifNull('('.$AA_sql_ifnull_up_pref_value_scum.'-SUM(ut.perc_assignment))', 'up.pref_value');
 
                 // If the amount of free allocation is greater than zero, then use that number, otherwise if the free allocation is zero or below zero, just display zero free allocation
-                $sql_if_ABgtZERO_ABeqZERO = "IF(".$AB_sql_ifnull_AA_up_pref_value.">0,".$AB_sql_ifnull_AA_up_pref_value.",0)";
+                $sql_if_ABgtZERO_ABeqZERO = 'IF('.$AB_sql_ifnull_AA_up_pref_value.'>0,'.$AB_sql_ifnull_AA_up_pref_value.',0)';
 
                 // Concatenate username with free allocation
                 $sql_userFC_concat = $q->concat('u.user_username', "' ['", $sql_if_ABgtZERO_ABeqZERO, "'%]'");
@@ -1604,11 +1604,11 @@ class CTask extends CDpObject {
 
                 // Generate Query
                 $q->addQuery('u.user_id');
-                $q->addQuery($sql_userFC_concat." AS userFC");
-                $q->addQuery($AC_sql_ifnull_ut_perc_zero." AS charge");
+                $q->addQuery($sql_userFC_concat.' AS userFC');
+                $q->addQuery($AC_sql_ifnull_ut_perc_zero.' AS charge');
                 $q->addQuery('u.user_username');
-                $q->addQuery($AA_sql_ifnull_up_pref_value_scm." AS chargeMax");
-                $q->addQuery($sql_if_ABgtZERO_ABeqZERO." AS freeCapacity");
+                $q->addQuery($AA_sql_ifnull_up_pref_value_scm.' AS chargeMax');
+                $q->addQuery($sql_if_ABgtZERO_ABeqZERO.' AS freeCapacity');
                 $q->addTable('users', 'u');
                 $q->leftJoin('contacts', null, 'contact_id = user_contact');
                 $q->leftJoin('user_tasks', 'ut', 'ut.user_id = u.user_id');
@@ -1805,7 +1805,7 @@ class CTask extends CDpObject {
                         }
 
                         // Am I sys admin?
-                        if(!getDenyEdit("admin")){
+                        if(!getDenyEdit('admin')){
                                 $can_edit_time_information = true;
                         }
 
@@ -2086,8 +2086,8 @@ function canDelete( &$msg, $oid=null, $joins=null ) {
 
                 // First things first.  Are we allowed to delete?
                 $acl =& $AppUI->acl();
-                if ( ! $acl->checkModuleItem('task_log', "delete", $oid)) {
-                  $msg = $AppUI->_( "noDeletePermission" );
+                if ( ! $acl->checkModuleItem('task_log', 'delete', $oid)) {
+                  $msg = $AppUI->_( 'noDeletePermission' );
                   return false;
                 }
 
@@ -2121,7 +2121,7 @@ function canDelete( &$msg, $oid=null, $joins=null ) {
                         }
 
                         if (count( $msg )) {
-                                $msg = $AppUI->_( "noDeleteRecord" ) . ": " . implode( ', ', $msg );
+                                $msg = $AppUI->_( 'noDeleteRecord' ) . ': ' . implode( ', ', $msg );
                                 return false;
                         } else {
                                 return true;
@@ -2147,19 +2147,19 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 
         $now = new CDate();
         $df = $AppUI->getPref('SHDATEFORMAT');
-        $df .= " " . $AppUI->getPref('TIMEFORMAT');
+        $df .= ' ' . $AppUI->getPref('TIMEFORMAT');
         $perms =& $AppUI->acl();
         $show_all_assignees = @$dPconfig['show_all_task_assignees'] ? true : false;
 
         $done[] = $a['task_id'];
 
-        $start_date = intval( $a["task_start_date"] ) ? new CDate( $a["task_start_date"] ) : null;
-        $end_date = intval( $a["task_end_date"] ) ? new CDate( $a["task_end_date"] ) : null;
+        $start_date = intval( $a['task_start_date'] ) ? new CDate( $a['task_start_date'] ) : null;
+        $end_date = intval( $a['task_end_date'] ) ? new CDate( $a['task_end_date'] ) : null;
         $last_update = isset($a['last_update']) && intval( $a['last_update'] ) ? new CDate( $a['last_update'] ) : null;
 
         // prepare coloured highlight of task time information
         $sign = 1;
-        $style = "";
+        $style = '';
         if ($start_date) {
 	
                        	/*
@@ -2186,7 +2186,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                         //$style = 'background-color:#cc6666;color:#ffffff';
                         $style = 'class="task_overdue"';
                 }
-                if ($a["task_percent_complete"] == 100) {
+                if ($a['task_percent_complete'] == 100) {
                         $t = new CTask();
                         $t->load($a['task_id']);
                         $actual_end_date = new CDate($t->get_actual_end_date());
@@ -2203,7 +2203,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         $s = "\n<tr ondblclick='dpToggleNode(this)' id='node-{$a['node_id']}'>";
 // edit icon
         $s .= "\n\t<td>";
-        $canEdit = !getDenyEdit( 'tasks', $a["task_id"] );
+        $canEdit = !getDenyEdit( 'tasks', $a['task_id'] );
         $canViewLog = $perms->checkModuleItem('tasks', 'view', $a['task_id']);
         if ($canEdit) {
                 $s .= "\n\t\t<a href=\"?m=tasks&a=addedit&task_id={$a['task_id']}\">"
@@ -2256,7 +2256,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 // name link
         $alt = strlen($a['task_description']) > 80 ? substr($a["task_description"],0,80) . '...' : $a['task_description'];
         // instead of the statement below
-        $alt = str_replace("\"", "&quot;", $alt);
+        $alt = str_replace("\"", '&quot;', $alt);
 //        $alt = htmlspecialchars($alt);
         $alt = str_replace("\r", ' ', $alt);
         $alt = str_replace("\n", ' ', $alt);
@@ -2375,7 +2375,7 @@ function taskstyle($task)
 		$sign = -1;
 		$style = 'class="task_overdue"';
 	}
-	if ($task["task_percent_complete"] == 100) {
+	if ($task['task_percent_complete'] == 100) {
 		$t = new CTask();
 		$t->load($task['task_id']);
 		$actual_end_date = new CDate($t->get_actual_end_date());
@@ -2395,12 +2395,12 @@ function findchild( &$tarr, $parent, $level=0){
         $level = $level+1;
         $n = count( $tarr );
         for ($x=0; $x < $n; $x++) {
-                if($tarr[$x]["task_parent"] == $parent && $tarr[$x]["task_parent"] != $tarr[$x]["task_id"]){
+                if($tarr[$x]['task_parent'] == $parent && $tarr[$x]['task_parent'] != $tarr[$x]['task_id']){
                         $tarr[$x]['node_id'] = $parent . '-' . $tarr['task_id'];
-            $is_opened = in_array($tarr[$x]["task_id"], $tasks_opened);
+            $is_opened = in_array($tarr[$x]['task_id'], $tasks_opened);
                         showtask( $tarr[$x], $level, $is_opened );
-                        if($is_opened || !$tarr[$x]["task_dynamic"]){
-                            findchild( $tarr, $tarr[$x]["task_id"], $level);
+                        if($is_opened || !$tarr[$x]['task_dynamic']){
+                            findchild( $tarr, $tarr[$x]['task_id'], $level);
                         }
                 }
         }
@@ -2416,7 +2416,7 @@ function array_csort()   //coded by Ichier2003
         if ( empty( $marray )) return array();
 
         $i = 0;
-    $msortline = "return(array_multisort(";
+    $msortline = 'return(array_multisort(';
         $sortarr = array();
     foreach ($args as $arg) {
         $i++;
