@@ -83,3 +83,8 @@ alter table history add index index_history_item (history_item);
 #20060304
 # added optional task numbers
 INSERT INTO `config` VALUES ('', 'show_task_numbers', 'false', '', 'checkbox');
+
+#20060311
+# added notification email
+INSERT INTO `config` VALUES ('', 'notification_email', '', '', '');
+

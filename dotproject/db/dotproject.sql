@@ -658,6 +658,7 @@ INSERT INTO `config` VALUES ('', 'host_style', 'default', '', 'text');
 INSERT INTO `config` VALUES ('', 'company_name', 'My Company', '', 'text');
 INSERT INTO `config` VALUES ('', 'page_title', 'dotProject', '', 'text');
 INSERT INTO `config` VALUES ('', 'site_domain', 'dotproject.net', '', 'text');
+INSERT INTO `config` VALUES ('', 'notification_email', '', '', '');
 INSERT INTO `config` VALUES ('', 'email_prefix', '[dotProject]', '', 'text');
 INSERT INTO `config` VALUES ('', 'admin_user', 'admin', '', 'text');
 INSERT INTO `config` VALUES ('', 'username_min_len', '4', '', 'text');

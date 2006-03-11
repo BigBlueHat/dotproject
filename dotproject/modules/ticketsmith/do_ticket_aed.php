@@ -10,18 +10,53 @@ $priority = dPgetParam($_POST, 'priority', '');
 $description = dPgetParam($_POST, 'description', '');
 //$description = db_escape($description);
 
-$author = $name . " <" . $email . ">";
-$tsql =
-"INSERT INTO tickets (author,subject,priority,body,timestamp,type) ".
-"VALUES('$author','$subject','$priority','$description',UNIX_TIMESTAMP(),'Open')";
+$author = $name . ' <' . $email . '>';
+$q = new DBQuery;
+$q->addTable('tickets');
+$q->addInsert('author', $author);
+$q->addInsert('subject', $subject);
+$q->addInsert('priority', $priority);
+$q->addInsert('body', $description);
+$q->addInsert('timestamp', 'UNIX_TIMESTAMP()', false, true);
+$q->addInsert('type', 'Open');
+// "INSERT INTO tickets (author,subject,priority,body,timestamp,type) ".
+// "VALUES('$author','$subject','$priority','$description',UNIX_TIMESTAMP(),'Open')";
 
-$rc = mysql_query($tsql);
+//$rc = mysql_query($tsql);
 
-if (!mysql_errno()) {
+if (!$q->exec()) 
 	$AppUI->setMsg( mysql_error() );
 	// add code to mail to ticket master
-} else {
-	$AppUI->setMsg( "Ticket added" );
+else 
+{
+	$AppUI->setMsg( 'Ticket added' );
+
+	if ($priority == 4) // TODO
+	{
+		include ('classes/libmail.class.php');
+		$mail = new Mail;
+		$notification_email = dPgetConfig('notification_email');
+		if ($mail->ValidEmail($notification_email))
+			$mail->To($notification_email);
+
+		$q->clear();	
+		$q->addQuery('contact_email');
+		$q->addTable('users', 'u');
+		$q->leftJoin('contacts', 'c', 'c.contact_id = u.user_contact');
+		$q->addWhere('u.user_id = ' . $AppUI->user_id);
+		$owner_email = $q->loadResult();
+			
+		$mail->From($owner_email);
+		$mail->Subject('Ticket: ' . $subject, $locale_char_set);
+		
+		$body = $subject . "\n\n";
+		$body .= 'From: ' . $author . "\n";
+		$body .= 'Priority: ' . $priority;
+		$body .= 'Description: ' . "\n" . $description;
+		$mail->Body($body, $locale_char_set);
+		$mail->Send();
+	}
 }
-$AppUI->redirect( "m=ticketsmith" );
+
+$AppUI->redirect( 'm=ticketsmith' );
 ?>
