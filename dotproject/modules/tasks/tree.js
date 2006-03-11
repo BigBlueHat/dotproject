@@ -42,9 +42,14 @@ function _dpSetRowCollapsed(oRow, bCollapsed, img) {
  * @param sPid the parent id (task_id) of the task, being expanded.
  */
 function dpExpandNode(sPid) {
-	oRows = table.rows;
-    var oRe = new RegExp("^" + sPid + "-");
-    var oReBogus = new RegExp("^" + sPid + "-somethingbogus");
+    oRows = table.rows;
+	
+    regEx = sPid.toString();
+    regEx = regEx.replace( '\(', '\\(');
+    regEx = regEx.replace( '\)', '\\.(\\d)+\\)');
+    
+    var oRe = new RegExp("^" + regEx + "-");
+    var oReBogus = new RegExp("^" + regEx + "-somethingbogus");
     var oReUc = oReBogus;
 
     if (loadedTasks[sPid] == undefined)
@@ -61,7 +66,10 @@ function dpExpandNode(sPid) {
 	            if (!oReUc.test(oRow.id)) {
 	                oRow.style.display = _visRow;
 	                if (oRow._dpCollapsed) {
-	                    oReUc = new RegExp("^" + oRow.id + "-");
+			    oReUcExp = (oRow.id).toString();
+			    oReUcExp = oReUcExp.replace( '\(', '\\(');
+			    oReUcExp = oReUcExp.replace( '\)', '\\.(\\d)+\\)');
+			    oReUc = new RegExp("^" + oReUcExp + "-");
 	                } else {
 	                    oReUc = oReBogus;
 	                }
@@ -73,12 +81,14 @@ function dpExpandNode(sPid) {
 
 // collapse a given node
 function dpCollapseNode(sPid) {
-	oRows = table.rows;
-    var oRe = new RegExp("^" + sPid + "-");
-
+    oRows = table.rows;
+    
+    regEx = sPid.toString();
+    regEx = regEx.replace( '\(', '\\(');
+    regEx = regEx.replace( '\)', '\\.(\\d)+\\)');
+    var oRe = new RegExp("^" + regEx + "-");
     for (var i = 0; i < oRows.length; i++) {
         var oRow = oRows.item(i);
-
         if (oRe.test(oRow.id)) {
             oRow.style.display = 'none';
         }
@@ -89,7 +99,7 @@ function dpCollapseNode(sPid) {
 function dpCollapseAll() {
     var oRows = table.rows;
     // Regular expression child nodes
-    var oRe = /^node-\d+(-\d+)+/;
+    var oRe = /^node\(\d+\.\d+\)(-\d+)+/;
     for (var i = 0; i < oRows.length; i++) {
         var oRow = oRows.item(i);
         _dpSetRowCollapsed(oRow, true);
