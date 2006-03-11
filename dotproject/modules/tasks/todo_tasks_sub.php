@@ -90,7 +90,7 @@ $canDelete = $perms->checkModuleItem($m, 'delete');
 	<th nowrap><?php echo $AppUI->_('Duration');?></th>
 	<th nowrap><?php echo $AppUI->_('Finish Date');?></th>
 	<th nowrap><?php echo $AppUI->_('Due In');?></th>
-	<th width="0">&nbsp;</th>
+	<?php if (dPgetParam('direct_edit_assignment')) { ?><th width="0">&nbsp;</th><?php } ?>
 </tr>
 
 <?php
@@ -118,22 +118,23 @@ foreach ($tasks as $task) {
 
 	showtask($task, 0, false, true);
 
-} ?>
+} 
+if (dPgetParam('direct_edit_assignment')) {
+?>
 <tr>
 	<td colspan="9" align="right" height="30">
 		<input type="submit" class="button" value="<?php echo $AppUI->_('update task');?>">
 	</td>
 	<td colspan="3" align="center">
 <?php
-foreach($taskPriority as $k => $v) {
-	$options[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_RAW);
+	foreach($taskPriority as $k => $v)
+		$options[$k] = $AppUI->_('set priority to ' . $v, UI_OUTPUT_RAW);
+	$options['c'] = $AppUI->_('mark as finished', UI_OUTPUT_RAW);
+	if ($canDelete) 
+		$options['d'] = $AppUI->_('delete', UI_OUTPUT_RAW);
+
+	echo arraySelect( $options, 'task_priority', 'size="1" class="text"', '0' );
 }
-$options['c'] = $AppUI->_('mark as finished', UI_OUTPUT_RAW);
-if ($canDelete) 
-{
-    $options['d'] = $AppUI->_('delete', UI_OUTPUT_RAW);
-}
-echo arraySelect( $options, 'task_priority', 'size="1" class="text"', '0' );
 ?>
 	</td>
 </form>
