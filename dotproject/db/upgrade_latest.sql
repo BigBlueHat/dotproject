@@ -78,7 +78,6 @@ CREATE TABLE `webcal_resources` (
 #20060203
 # Indeces added for optimization purposes.
 alter table user_tasks add index index_ut_to_tasks (task_id);
-alter table history add index index_history_item (history_item);
 
 #20060304
 # added optional task numbers
@@ -91,4 +90,3 @@ INSERT INTO `config` VALUES ('', 'notification_email', '', '', '');
 #20060311
 # Check task dates fix
 UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'check_tasks_dates';
-

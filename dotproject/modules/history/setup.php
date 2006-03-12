@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'History';
-$config['mod_version'] = '0.4';
+$config['mod_version'] = '0.5';
 $config['mod_directory'] = 'history';
 $config['mod_setup_class'] = 'CSetupHistory';
 $config['mod_type'] = 'user';
@@ -38,7 +38,6 @@ class CSetupHistory {
 		  "history_changes text," .
 		  "history_description text," .
 		  "PRIMARY KEY  (history_id)," .
-		  "UNIQUE KEY history_id (history_id)," .
 			'KEY `index_history_item` (history_item)' . 
 			'KEY `index_history_table` (history_table)' . 
 		  ") TYPE=MyISAM";
@@ -81,7 +80,11 @@ class CSetupHistory {
 				$q->clear();
 				break;
 			case '0.4':
-				// TODO: add indexes
+				$q->alterTable('history');
+				$q->addIndex('history_table', '');
+				$q->addIndex('history_item', '');
+				$q->exec();
+				$q->clear();
 				break;
 		}
 		return db_error();
