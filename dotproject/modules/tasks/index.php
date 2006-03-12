@@ -92,7 +92,7 @@ if ($canEdit && $project_id) {
 $titleBlock->show();
 
 // use a new title block (a new row) to prevent from oversized sites
-$titleBlock = new CTitleBlock('' );
+$titleBlock = new CTitleBlock('', 'shim.gif');
 $titleBlock->showhelp = false;
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Filter') . ':' );
 $titleBlock->addCell(
