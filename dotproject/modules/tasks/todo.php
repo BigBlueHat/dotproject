@@ -4,6 +4,7 @@ global $showEditCheckbox, $this_day, $other_users, $baseDir, $dPconfig, $user_id
 $showEditCheckbox = true;
 // Project status from sysval, defined as a constant
 $project_on_hold_status = 4;
+$project_template_status = 6;
 $perms =& $AppUI->acl();
 
 if (isset( $_GET['tab'] )) {
@@ -102,12 +103,13 @@ $q->addWhere("ut.user_id = '$user_id'");
 $q->addWhere('( ta.task_percent_complete < 100 or ta.task_percent_complete is null)');
 $q->addWhere("ta.task_status = '0'");
 $q->addWhere("pr.project_id = ta.task_project");
+$q->addWhere('project_status != ' . $project_template_status); // Filter out template projects
 if (!$showArcProjs)
 	$q->addWhere('project_status != 7');
-if (!$showLowTasks)
-	$q->addWhere('task_priority >= 0');
 if (!$showHoldProjs)
 	$q->addWhere('project_status != ' . $project_on_hold_status);
+if (!$showLowTasks)
+	$q->addWhere('task_priority >= 0');
 if (!$showDynTasks)
 	$q->addWhere('task_dynamic != 1');
 if ($showPinned)
