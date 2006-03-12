@@ -60,7 +60,7 @@ function setTask( key, val ) {
 <tr>
 	<td width="100%" valign="top" align="center">
 		<table cellspacing="1" cellpadding="2" width="60%">
-		{if $file_id}
+		{if $file_id && !$ci}
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='File Name'}:</td>
 			<td align="left" class="hilite">{if $obj->file_name|count_characters == 0}n/a{else}{$obj->file_name}{/if}</td>
@@ -99,6 +99,10 @@ function setTask( key, val ) {
 			<td>
 				<input type="Radio" name="revision_type" value="major">
 			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Cancel Checkout'}</td>
+			<td><input type="radio" name="revision_type" value="cancel" ></td>
 		{else}
 			<tr>
 			<td align="right" nowrap="nowrap">
@@ -106,18 +110,9 @@ function setTask( key, val ) {
 			</td>
 		{/if}
 		{* file_attrs *}
-		{if $can_admin_final}
-				<td align="right" nowrap="nowrap">&nbsp;</td>
-				<td align="left"><input type="checkbox" name="final_ci" onClick="finalCI()">{dPtranslate word='Final Version'}</td>		
-			</tr>
-		{/if}
 		<td align="left">
-		{if $ci || ($canAdmin && $obj->file_checkout == 'final')}
-  			<input type="hidden" name="file_checkout" value="" />
-			<input type="hidden" name="file_co_reason" value="" />
-		{/if}
 		{if $ci}
-  			<input type="hidden" name="file_version"
+  		<input type="hidden" name="file_version"
 		value="{if $obj->file_version|count_characters > 0}{$obj->file_version+0.01}{else}1{/if}" />
 		{else}
   			<input type="text" name="file_version" maxlength="10" size="5"
@@ -178,7 +173,14 @@ function setTask( key, val ) {
 			<td align="right" nowrap="nowrap">&nbsp;</td>
 			<td align="left"><input type="checkbox" name="notify" checked="checked">{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}</td>		
 		</tr>
-		
+		{if $ci || ($canAdmin && $obj->file_checkout == 'final')}
+			<input type="hidden" name="file_checkout" value="" />
+			<input type="hidden" name="file_co_reason" value="" />
+		<tr>
+				<td align="right" nowrap="nowrap">&nbsp;</td>
+				<td align="left"><input type="checkbox" name="final_ci" onClick="finalCI()">{dPtranslate word='Final Version'}</td>		
+ 		</tr>
+		{/if}
 		</table>
 	</td>
 </tr>

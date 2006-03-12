@@ -2,6 +2,27 @@
 //addfile sql
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 $del = intval( dPgetParam( $_POST, 'del', 0 ) );
+$revision_type = dPgetParam($_POST, 'revision_type', 0);
+if ($revision_type)
+{
+	if ($revision_type == 'cancel')
+	{
+		$obj = new CFile();
+		$obj->load( $file_id );
+		$obj->file_checkout='';
+		$obj->file_co_reason='';
+		$obj->store();
+		$AppUI->setMsg( 'Checkout has been cancelled.', UI_MSG_ALERT, true );
+		$AppUI->redirect();
+		return;
+	}
+	else
+	{
+		$file_id = false;
+		$_POST['file_id'] = '';
+	}
+}
+
 global $db;
 
 $not = dPgetParam( $_POST, 'notify', '0' );
@@ -28,7 +49,6 @@ if ($file_id) {
 $obj->file_category = intval( dPgetParam( $_POST, 'file_category', 0 ) );
 
 $version = dPgetParam( $_POST, 'file_version', 0 );
-$revision_type   = dPgetParam( $_POST, 'revision_type', 0 );
 
 if ( strcasecmp('major', $revision_type) == 0 )
 {

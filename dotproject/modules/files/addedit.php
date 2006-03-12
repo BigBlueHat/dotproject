@@ -67,8 +67,8 @@ if ($canDelete && $file_id > 0 && !$ci) {
 $titleBlock->show();
 
 //Clear the file id if checking out so a new version is created.
-if ($ci)
-        $file_id = 0;
+//if ($ci)
+//        $file_id = 0;
 
 if ($obj->file_project) {
 	$file_project = $obj->file_project;
