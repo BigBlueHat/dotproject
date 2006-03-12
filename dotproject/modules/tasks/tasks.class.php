@@ -1451,10 +1451,10 @@ class CTask extends CDpObject {
         * task consumes per user each day
         */
         function getTaskDurationPerDay($use_percent_assigned = false){
-                $duration              = $this->task_duration*$this->task_duration_type;
-                $task_start_date       = new CDate($this->task_start_date);
-                $task_finish_date      = new CDate($this->task_end_date);
-                $assigned_users        = $this->getAssignedUsers();
+                $duration          = $this->task_duration*($this->task_duration_type == 24?dPgetConfig('daily_working_hours'):$this->task_duration_type);
+                $task_start_date   = new CDate($this->task_start_date);
+                $task_finish_date  = new CDate($this->task_end_date);
+                $assigned_users    = $this->getAssignedUsers();
                 if ($use_percent_assigned) {
                         $number_assigned_users = 0;
                         foreach ($assigned_users as $u) {
