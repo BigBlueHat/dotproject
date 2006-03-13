@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $priority, $projects, $pstatus, $tab, $tpl, $user_id;
+global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $orderby, $orderdir, $priority, $projects, $pstatus, $tab, $tpl, $user_id;
 
 $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -30,8 +30,6 @@ if (isset( $_GET['orderby'] )) {
 }
 $orderby  = $AppUI->getState( 'UsrProjIdxOrderBy' ) ? $AppUI->getState( 'UsrProjIdxOrderBy' ) : 'project_end_date';
 $orderdir = $AppUI->getState( 'UsrProjIdxOrderDir' ) ? $AppUI->getState( 'UsrProjIdxOrderDir' ) : 'asc';
-
-
 
 $extraGet = '&user_id='.$user_id;
 

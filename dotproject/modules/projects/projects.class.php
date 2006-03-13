@@ -414,9 +414,6 @@ class CProject extends CDpObject {
 function projects_list_data($user_id = false) {
 	global $AppUI, $buffer, $company, $company_id, $company_prefix, $deny, $department, $dept_ids, $dPconfig, $filters, $orderby, $orderdir, $projects, $search_string, $tasks_critical, $tasks_problems, $tasks_sum, $tasks_summy;
 
-	$orderby  = $AppUI->getState( 'UsrProjIdxOrderBy' ) ? $AppUI->getState( 'UsrProjIdxOrderBy' ) : 'project_end_date';
-	$orderdir = $AppUI->getState( 'UsrProjIdxOrderDir' ) ? $AppUI->getState( 'UsrProjIdxOrderDir' ) : 'asc';
-
 	// Let's delete temproary tables
 	$q  = new DBQuery;
 	$q->dropTemp('tasks_sum, tasks_summy, tasks_critical, tasks_problems, tasks_users');
