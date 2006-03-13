@@ -74,7 +74,7 @@ $tpl->assign('tab', $tab);
 $tpl->assign('user_id', $user_id);
 
 
-//$tpl->assign('current_url', 'index.php?m=companies&a=view&company_id=' . $company_id);
+$tpl->assign('current_url', 'index.php?m='.$m.'&a='.$a.'&user_id='.$user_id);
 
 $tpl->displayList('projects', $projects, $show);
 ?>
