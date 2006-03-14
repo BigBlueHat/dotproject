@@ -26,6 +26,7 @@ class CCompany extends CDpObject {
 	var $company_city = NULL;
 	var $company_state = NULL;
 	var $company_zip = NULL;
+	var $company_country = NULL;
 	var $company_email = NULL;
 
 /** @var string */

@@ -25,6 +25,7 @@ CREATE TABLE `companies` (
   `company_city` varchar(30) default '',
   `company_state` varchar(30) default '',
   `company_zip` varchar(11) default '',
+  `company_country` varchar(100) default '',
   `company_primary_url` varchar(255) default '',
   `company_owner` int(11) NOT NULL default '0',
   `company_description` text NOT NULL default '',

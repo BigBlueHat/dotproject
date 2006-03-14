@@ -90,3 +90,7 @@ INSERT INTO `config` VALUES ('', 'notification_email', '', '', '');
 #20060311
 # Check task dates fix
 UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'check_tasks_dates';
+
+#20060314
+# Add country to company details
+ALTER TABLE companies ADD company_country varchar(100) NOT NULL default '' AFTER company_zip; 
