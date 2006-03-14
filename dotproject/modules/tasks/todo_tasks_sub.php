@@ -90,7 +90,7 @@ $canDelete = $perms->checkModuleItem($m, 'delete');
 	<th nowrap><?php echo $AppUI->_('Duration');?></th>
 	<th nowrap><?php echo $AppUI->_('Finish Date');?></th>
 	<th nowrap><?php echo $AppUI->_('Due In');?></th>
-	<?php if (dPgetParam('direct_edit_assignment')) { ?><th width="0">&nbsp;</th><?php } ?>
+	<?php if (dPgetConfig('direct_edit_assignment')) { echo '<th width="0">&nbsp;</th>'; } ?>
 </tr>
 
 <?php
@@ -119,7 +119,7 @@ foreach ($tasks as $task) {
 	showtask($task, 0, false, true);
 
 } 
-if (dPgetParam('direct_edit_assignment')) {
+if (dPgetConfig('direct_edit_assignment')) {
 ?>
 <tr>
 	<td colspan="9" align="right" height="30">
