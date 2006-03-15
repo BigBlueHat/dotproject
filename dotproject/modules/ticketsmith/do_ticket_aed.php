@@ -5,9 +5,9 @@
 
 $name = dPgetParam($_POST, 'name', '');
 $email = dPgetParam($_POST, 'email', '');
-$subject = dPgetParam($_POST, 'subject', '');
+$subject = stripslashes(dPgetParam($_POST, 'subject', ''));
 $priority = dPgetParam($_POST, 'priority', '');
-$description = dPgetParam($_POST, 'description', '');
+$description = stripslashes(dPgetParam($_POST, 'description', ''));
 //$description = db_escape($description);
 
 $author = $name . ' <' . $email . '>';
