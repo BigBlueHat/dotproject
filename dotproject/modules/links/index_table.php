@@ -185,7 +185,6 @@ shownavbar_links($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 </tr>
 <?php
 $fp=-1;
-$link_date = new CDate($row['link_date']);
 
 $id = 0;
 for ($i = ($page - 1)*$xpg_pagesize; $i < $page*$xpg_pagesize && $i < $xpg_totalrecs; $i++){
