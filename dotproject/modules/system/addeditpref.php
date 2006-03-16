@@ -114,6 +114,7 @@ function submitIt(){
 	$f = "%I:%M %p"; $times[$f]	= $ex->format( $f );
 	$f = "%H:%M"; $times[$f]	= $ex->format( $f ).' (24)';
 	$f = "%H:%M:%S"; $times[$f]	= $ex->format( $f ).' (24)';
+	$f = ' '; $times[$f] = '';
 	echo arraySelect( $times, 'pref_name[TIMEFORMAT]', 'class=text size=1', @$prefs['TIMEFORMAT'], false );
 ?>
 	</td>
