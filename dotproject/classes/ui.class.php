@@ -195,6 +195,7 @@ class CAppUI {
 /** Access variable for the template class */
 	function getTemplate()
 	{
+		$this->template->init();
 		return $this->template;
 	}
 	

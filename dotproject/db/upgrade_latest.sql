@@ -93,4 +93,9 @@ UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'ch
 
 #20060314
 # Add country to company details
-ALTER TABLE companies ADD company_country varchar(100) NOT NULL default '' AFTER company_zip; 
+ALTER TABLE companies ADD company_country varchar(100) NOT NULL default '' AFTER company_zip;
+
+#20060319
+# Check task dates fix
+INSERT INTO `config` VALUES('', 'page_size', '25', '', 'text');
+

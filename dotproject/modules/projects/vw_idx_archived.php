@@ -25,5 +25,5 @@ $show = array(
 
 $tpl->assign('pstatus', $pstatus);
 
-$tpl->displayList('projects', $projects, $show);
+$tpl->displayList('projects', $projects, 0, $show);
 ?>

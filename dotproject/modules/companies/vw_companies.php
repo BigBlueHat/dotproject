@@ -16,8 +16,8 @@ global $tpl;
 // load the company types
 
 $types = dPgetSysVal( 'CompanyType' );
-// get any records denied from viewing
 
+// get any records denied from viewing
 $obj = new CCompany();
 $allowedCompanies = $obj->getAllowedRecords($AppUI->user_id, 'company_id, company_name');
 
@@ -50,7 +50,18 @@ foreach($filters as $field => $filter)
 		$q->addWhere("c.$field = $filter ");
 $q->addGroup('c.company_id');
 $q->addOrder($orderby.' '.$orderdir);
+$q->setPageLimit();
 $rows = $q->loadList();
+
+$q->addTable('companies', 'c');
+$q->addQuery('count(*)');
+if (count($allowedCompanies) > 0) { $q->addWhere('c.company_id IN (' . implode(',', array_keys($allowedCompanies)) . ')'); }
+if ($companiesType) { $q->addWhere('c.company_type = '.$company_type_filter); }
+if ($search_string != "") { $q->addWhere("c.company_name LIKE '%$search_string%'"); }
+foreach($filters as $field => $filter)
+	if ($filter > 0)
+		$q->addWhere("c.$field = $filter ");
+$count_rows = $q->loadResult();
 
 foreach($rows as $key => $value)
 	$rows[$key]['company_type_name'] = $types[$rows[$key]['company_type']];
@@ -58,5 +69,5 @@ foreach($rows as $key => $value)
 //$smarty->assign('msg', $AppUI->getMsg());
 //$smarty->assign('current_url', 'index.php?m=companies');
 $show = array('company_name', 'company_projects_active', 'company_projects_inactive', 'company_type');
-$tpl->displayList('companies', $rows, $show);
+$tpl->displayList('companies', $rows, $count_rows, $show);
 ?>

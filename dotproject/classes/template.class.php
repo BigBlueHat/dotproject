@@ -4,10 +4,11 @@ require_once($baseDir . '/lib/smarty/Smarty.class.php');
 class CTemplate extends Smarty
 {
 //	var $plugins_dir = array('/var/www/html/dotproject/includes/smarty');
+	var $page;
 
 	function CTemplate()
 	{
-		global $AppUI, $baseDir;
+		global $AppUI, $baseDir, $m, $a, $dPconfig;
 	
 		parent::Smarty();
 		// $this->template_dir = $baseDir . '/style/' . $AppUI->getPref('template');
@@ -15,14 +16,21 @@ class CTemplate extends Smarty
 		$this->compile_dir	= $baseDir . '/files/cache/smarty_templates';
 		$this->cache_dir		= $baseDir . '/files/cache/smarty';
 		$this->plugins_dir[]= $baseDir . '/includes/smarty';
-		
-		$this->assign('template', $this->template_dir);
 	}
 	
-	function displayList($module, $rows, $show = null)
+	function init()
 	{
-		$page = dPgetParam($_GET, 'page', 1);
+		$this->assign('template', $this->template_dir);
+		$this->assign('config', $dPconfig);
+		$this->assign('m', $m);
+		$this->assign('a', $a);
 
+		$this->page = isset($_REQUEST['page'])?$_REQUEST['page']:1;
+		$this->assign('page', $this->page);
+	}
+	
+	function displayList($module, $rows, $totalRows = 0, $show = null)
+	{
 		if (!isset($show))
 		{
 			$keys = array_keys($rows);
@@ -35,9 +43,9 @@ class CTemplate extends Smarty
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
 		
-		$this->displayPagination($page, count($rows), $module);
+		$this->displayPagination($this->page, $totalRows > 0?$totalRows:count($rows), $module);
 		$this->displayFile('list', $module);
-		$this->displayPagination($page, count($rows), $module);
+		$this->displayPagination($this->page, $totalRows > 0?$totalRows:count($rows), $module);
 	}
 	
 	function displayView($item)
@@ -60,39 +68,45 @@ class CTemplate extends Smarty
 	
 	function displayPagination($currentPage, $totalRecords, $module = null)
 	{
+		$pagination['url'] = 'index.php?' . ereg_replace('&page=.+', '', $_SERVER['QUERY_STRING']);
+		// The current page
 		$pagination['page'] = $currentPage;
+		// how many items in total there are in the list
 		$pagination['total_records'] = $totalRecords;
-		$pagination['page_size'] = 30;
+		// how many records there will be per page
+		$pagination['page_size'] = dPgetConfig('page_size');
+		// how many direct page links to display in the pagination bar
 		$pagination['pages_size'] = 30;
+		// how many pages there are in total
 		$pagination['total_pages'] = ceil($pagination['total_records'] / $pagination['page_size']);
-		$pagination['pages'] = range(($pagination['page'] >= ($pagination['pages_size'] / 2))?$pagination['page'] : 1, $pagination['total_pages']);
+		
+		$start_page = ($pagination['page'] >= ($pagination['pages_size'] / 2))?$pagination['page'] : 1;
+		$end_page = ($pagination['total_pages'] <= $pagination['page'] + $pagination['pages_size'] / 2)?$pagination['total_pages']:($pagination['page'] + ($pagination['pages_size'] / 2));
+		if ($start_page >= $end_page) // no pagination necessary - only one page!
+			return;
+		// an array with the pages numbers to be displayed
+		$pagination['pages'] = range($start_page, $end_page);
+
 		$this->assign('pagination', $pagination);
 		$this->display('pagination.html', $module);
 	}
 	
 	function displayFile($file, $module = null)
 	{
-		global $m, $a, $dPconfig;
+		global $m;
 		
 		if ($module == null)
 			$module = $m;
-			
-		$this->assign('m', $m);
-		$this->assign('a', $a);
-		$this->assign('config', $dPconfig);
 			
 		$this->display($module . '/' . $file . '.html');
 	}
 	
 	function fetchFile($file, $module = null)
 	{
-		global $m, $a;
+		global $m;
 		
 		if ($module == null)
 			$module = $m;
-			
-		$this->assign('m', $m);
-		$this->assign('a', $a);
 			
 		return $this->fetch($module . '/' . $file . '.html');
 	}

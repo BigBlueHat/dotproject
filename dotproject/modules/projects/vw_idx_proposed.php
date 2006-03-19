@@ -45,5 +45,5 @@ if ($show_all_projects)
 $tpl->assign('pstatus', $pstatus);
 $tpl->assign('editProjects', true);
 
-$tpl->displayList('projects', $projects, $show);
+$tpl->displayList('projects', $projects, 0, $show);
 ?>

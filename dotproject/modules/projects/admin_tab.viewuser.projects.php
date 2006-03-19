@@ -76,5 +76,5 @@ $tpl->assign('user_id', $user_id);
 
 $tpl->assign('current_url', 'index.php?m='.$m.'&a='.$a.'&user_id='.$user_id);
 
-$tpl->displayList('projects', $projects, $show);
+$tpl->displayList('projects', $projects, 0, $show);
 ?>

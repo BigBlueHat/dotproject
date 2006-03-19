@@ -413,6 +413,25 @@ class DBQuery {
     $this->limit = $limit;
     $this->offset = $start;
   }
+	
+	/** Set a limit on the query based on pagination.
+	 *
+	 * @param integer $page     the current page
+	 * @param integer $pagesize the size of pages
+	 */
+	function setPageLimit($page = 0, $pagesize = 0)
+	{
+		if ($page == 0)
+		{
+			global $tpl;
+			$page = $tpl->page;
+		}
+		
+		if ($pagesize == 0)
+			$pagesize = dPgetConfig('page_size');
+			
+		$this->setLimit($pagesize, $page - 1);
+	}
 
   /**
    * Prepare a query for execution via db_exec.
@@ -508,6 +527,7 @@ class DBQuery {
     $q .= $this->make_where_clause($this->where);
     $q .= $this->make_group_clause($this->group_by);
     $q .= $this->make_order_clause($this->order_by);
+		// TODO: Prepare limit as well
     return $q;
   }
 

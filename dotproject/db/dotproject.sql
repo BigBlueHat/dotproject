@@ -700,6 +700,7 @@ INSERT INTO `config` VALUES ('', 'files_ci_preserve_attr', 'true', '', 'checkbox
 INSERT INTO `config` VALUES ('', 'files_show_versions_edit', 'false', '', 'checkbox');
 INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` )
 VALUES ('', 'reset_memory_limit', '8M', '', 'text');
+INSERT INTO `config` VALUES('', 'page_size', '25', '', 'text');
 
 # 20050302
 # ldap system config variables
