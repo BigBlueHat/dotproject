@@ -73,7 +73,7 @@ $tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_tasks', 'Tasks' );
 $tabBox->loadExtras('calendar', 'day_view');
 
 //$tabBox->show();
-$tpl->assign('tabbox', $tabBox->fetch());
+$tpl->assign('tabbox', $tabBox);
 $tpl->assign('show_minical', $dPconfig['cal_day_view_show_minical']);
 
 $tpl->assign('prev_day', $prev_day);
