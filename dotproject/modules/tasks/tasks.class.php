@@ -795,6 +795,9 @@ class CTask extends CDpObject {
                 $q->addJoin('users', 'a', 'a.user_id = u.user_id');
                 $q->addJoin('contacts', 'ac', 'ac.contact_id = a.user_contact');
                 $q->addWhere('t.task_id = '.$this->task_id);
+                $q->addWhere('o.user_id <> ' . $AppUI->user_id);
+                $q->addWhere('a.user_id <> ' . $AppUI->user_id);
+                $q->addWhere('c.user_id <> ' . $AppUI->user_id);
 
                 $users = $q->loadList();
                 $q->clear();
@@ -856,6 +859,9 @@ class CTask extends CDpObject {
                 $q->addJoin('users', 'a', 'a.user_id = u.user_id');
                 $q->addJoin('contacts', 'ac', 'ac.contact_id = a.user_contact');
                 $q->addWhere('t.task_id = '.$this->task_id);
+                $q->addWhere('o.user_id <> ' . $AppUI->user_id);
+                $q->addWhere('a.user_id <> ' . $AppUI->user_id);
+                $q->addWhere('c.user_id <> ' . $AppUI->user_id);
                 $users = $q->loadList();
                 $q->clear();
 
@@ -922,6 +928,7 @@ class CTask extends CDpObject {
                         $q->addQuery('c.contact_email');
                         $q->addQuery('c.contact_first_name');
                         $q->addQuery('c.contact_last_name');
+                        $q->addWhere('ua.user_id <> ' . $AppUI->user_id);
                         $req =& $q->exec(QUERY_STYLE_NUM);
                         for($req; ! $req->EOF; $req->MoveNext()) {
                                 list($email, $first, $last) = $req->fields;
@@ -933,10 +940,12 @@ class CTask extends CDpObject {
                         $q->clear();
                         $q->addTable('task_contacts', 'tc');
                         $q->addWhere('tc.task_id = ' . $this->task_id);
+                        $q->addJoin('users', 'u', 'tc.contact_id = u.user_contact');
                         $q->leftJoin('contacts', 'c', 'c.contact_id = tc.contact_id');
                         $q->addQuery('c.contact_email');
                         $q->addQuery('c.contact_first_name');
                         $q->addQuery('c.contact_last_name');
+                        $q->addWhere('u.user_id <> ' . $AppUI->user_id);
                         $req =& $q->exec(QUERY_STYLE_NUM);
                         for ($req; ! $req->EOF; $req->MoveNext()) {
                                 list($email, $first, $last) = $req->fields;
@@ -948,10 +957,12 @@ class CTask extends CDpObject {
                         $q->clear();
                         $q->addTable('project_contacts', 'pc');
                         $q->addWhere('pc.project_id = ' . $this->task_project);
+                        $q->addJoin('users', 'u', 'pc.contact_id = u.user_contact');
                         $q->leftJoin('contacts', 'c', 'c.contact_id = pc.contact_id');
                         $q->addQuery('c.contact_email');
                         $q->addQuery('c.contact_first_name');
                         $q->addQuery('c.contact_last_name');
+                        $q->addWhere('u.user_id <> ' . $AppUI->user_id);
                         $req =& $q->exec(QUERY_STYLE_NUM);
                         for ($req; ! $req->EOF; $req->MoveNext()) {
                                 list($email, $first, $last) = $req->fields;
