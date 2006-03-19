@@ -11,9 +11,11 @@ GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditC
         * $f
         * $query_string
 */
+if ($AppUI->getState('task_percent_complete', false) === false)
+	$AppUI->setState('task_percent_complete', 99);
 
 $filters_selection = array(
-'task_percent_complete' => array(-1 => 'All', 0 => 'not started', 1 => 'started', 100 => 'finished'),
+'task_percent_complete' => array(-1 => 'All', 0 => 'not started', 1 => 'started', 99 => 'not complete', 100 => 'finished'),
 'task_status' => dPgetSysVal( 'TaskStatus' ));
 
 $tasksTitleBlock = new CTitleBlock( 'Tasks', 'applet-48.png' );
@@ -153,6 +155,8 @@ foreach ($filters as $name => $filter)
 				;
 			else if ($filter == 1)
 				$q->addWhere('(task_percent_complete > 0 AND task_percent_complete < 100 OR task_percent_complete is null)');
+			else if ($filter == 99)
+				$q->addWhere('task_percent_complete < 100 OR task_percent_complete is null');
 			else
 				$q->addWhere('task_percent_complete = ' . $filter);
 		}
