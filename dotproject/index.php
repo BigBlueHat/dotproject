@@ -317,6 +317,7 @@ if (isset( $_REQUEST["dosql"]) ) {
 $tpl->displayStyle('overrides');
 ob_start();
 if(!$suppressHeaders) {
+	$style_extras = '<link rel="stylesheet" type="text/css" href="style/print.css" media="print" />';
 	$tpl->displayStyle('header');
 }
 

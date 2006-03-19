@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"type"=>"Type",
+"Print",
 "Active Projects",
 "Add",
 "Add a new Custom Field to this Module",
@@ -244,4 +244,5 @@
 "submit",
 "tabbed",
 "test",
+"type"=>"Type",
 "updated",

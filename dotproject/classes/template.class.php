@@ -102,7 +102,7 @@ class CTemplate extends Smarty
 		global $baseDir, $dPconfig, $AppUI;
 		global $file_id, $company_id, $task_id;
 		global $currentTabId, $currentTabName;
-		global $uistyle;
+		global $uistyle, $style_extras;
 				
 		include($baseDir . '/style/' . $uistyle . '/' . $file . '.php');
 	}

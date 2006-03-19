@@ -13,6 +13,7 @@ else
 	<meta name="Version" content="<?php echo @$AppUI->getVersion();?>" />
 	<meta http-equiv="Content-Type" content="text/html;charset=<?php echo isset( $locale_char_set ) ? $locale_char_set : 'UTF-8';?>" />
 	<title><?php echo @dPgetConfig( 'page_title' );?></title>
+	<?php echo $style_extras; ?>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
@@ -102,7 +103,7 @@ else
 				  <a href="./index.php?m=links"><?php echo $AppUI->_('Links');?></a> |
 				<?php
 				}
-				?>
+				?><a href="javascript:void(0);" onclick="window.print();return false;"><?php echo $AppUI->_('Print'); ?></a> | 
 				<a href="./index.php?logout=-1"><?php echo $AppUI->_('Logout');?></a>
 			</td>
 		</tr>
@@ -113,7 +114,7 @@ else
 </table>
 
 <table width="100%" cellspacing="0" cellpadding="4" border="0">
-<tr>
+<tr class="print">
 <td valign="top" align="left" width="98%">
 <?php
 	echo $AppUI->getMsg();
