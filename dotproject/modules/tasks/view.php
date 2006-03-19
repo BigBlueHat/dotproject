@@ -16,16 +16,42 @@ if (!$canRead) {
 $q =& new DBQuery;
 $perms =& $AppUI->acl();
 
+// Process pin/unpin of a task.
+if (isset($_GET['pin']))
+{
+        $pin = intval( dPgetParam( $_GET, 'pin', 0 ) );
+        $msg = '';
+
+        // load the record data
+        if($pin) {
+                $q->addTable('user_task_pin');
+                $q->addInsert('user_id', $AppUI->user_id);
+                $q->addInsert('task_id', $task_id);
+        } else {
+                $q->setDelete('user_task_pin');
+                $q->addWhere('user_id = ' . $AppUI->user_id);
+                $q->addWhere('task_id = ' . $task_id);
+        }
+
+        if ( !$q->exec() )
+                $AppUI->setMsg( 'ins/del err', UI_MSG_ERROR, true );
+
+        $AppUI->redirect('', -1);
+}
+
+
 $q->addTable('tasks');
 $q->leftJoin('users', 'u1', 'u1.user_id = task_owner');
 $q->leftJoin('projects', 'p', 'p.project_id = task_project');
-$q->leftJoin('task_log', 'tl', 'tl.task_log_task = task_id');
-$q->addWhere('task_id = ' . $task_id);
+$q->leftJoin('task_log', 'tl', 'tl.task_log_task = tasks.task_id');
+$q->leftJoin('user_task_pin', 'utp', 'utp.task_id = tasks.task_id AND utp.user_id = ' . $AppUI->user_id);
+$q->addWhere('tasks.task_id = ' . $task_id);
 $q->addQuery('tasks.*');
+$q->addQuery('task_pinned');
 $q->addQuery('project_name, project_color_identifier');
 $q->addQuery('u1.user_username as username');
 $q->addQuery('ROUND(SUM(task_log_hours),2) as log_hours_worked');
-$q->addGroup('task_id');
+$q->addGroup('tasks.task_id');
 
 // check if this record has dependencies to prevent deletion
 $msg = '';
@@ -189,7 +215,12 @@ function delIt() {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Task');?>:</td>
-			<td class="hilite"><strong><?php echo @$obj->task_name;?></strong></td>
+			<td class="hilite"><strong><?php echo @$obj->task_name;?></strong>	
+		<a href="?m=tasks&pin=<?php if ($obj->task_pinned) echo '0'; else echo '1'; ?>&task_id=<?php echo $obj->task_id; ?>">
+			<img src="./images/icons/<?php if (!$obj->task_pinned) echo 'un'; ?>pin.gif" 
+				alt="<?php if (!$obj->task_pinned) echo $AppUI->_('pin Task'); else echo $AppUI->_('unpin Task'); ?>" border="0" width="12" height="12">
+		</a>
+	</td>
 		</tr>
 		<?php if ( $obj->task_parent != $obj->task_id ) { 
 			$obj_parent = new CTask();
