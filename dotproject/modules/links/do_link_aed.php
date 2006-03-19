@@ -13,7 +13,6 @@ if ($link_id) {
 	$obj->_message = 'added';
 }
 $obj->link_date = date('Y-m-d H:i:s');
-$obj->link_owner = $AppUI->user_id;
 $obj->link_category = intval( dPgetParam( $_POST, 'link_category', 0 ) );
 
 if (!$obj->bind( $_POST )) {
