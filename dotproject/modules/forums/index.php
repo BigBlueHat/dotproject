@@ -79,7 +79,9 @@ $titleBlock->addCell(
 	arraySelect( $filters, 'f', 'size="1" class="text" onChange="document.forum_filter.submit();"', $f , true ), '',
 	'<form name="forum_filter" action="?m=forums" method="post">', '</form>'
 );
-if ($canEdit) {
+
+$canAdd = $perms->checkModule( $m, 'add');
+if ($canAdd) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new forum').'">', '',
 		'<form action="?m=forums&a=addedit" method="post">', '</form>'
@@ -103,7 +105,7 @@ foreach ($forums as $row) {
 		$create_date = intval( $row['forum_create_date'] ) ? new CDate( $row['forum_create_date'] ) : null;
 		$p = $row["forum_project"];
 	}
-	if ( $row["forum_owner"] == $AppUI->user_id || $perms->checkModuleItem('forums', 'edit', $row['forum_id']) ) { 
+	if ( $row["forum_owner"] == $AppUI->user_id || $perms->checkModule('forums', 'add') ) { 
 		$tpl_row->assign('show_edit_controls', TRUE); 
 	} 
 
