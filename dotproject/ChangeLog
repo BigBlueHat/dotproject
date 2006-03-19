@@ -1,3 +1,406 @@
+2006-03-19 14:19  (cyberhorse)
+---------------------------------
+classes/query.class.php
+classes/template.class.php
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/companies/vw_companies.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/companies_tab.view.active_projects.php
+modules/projects/companies_tab.view.archived_projects.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+style/smarty1/pagination.html
+- #1549 - pagination in tabs fixed
+- Pagination in general fixed (lots of problem were there - it wasn't finished before)
+- template class keeps current page number
+- template class now  has an init() method, called on each page load - does standard things
+- query class now has a setPageLimit() function, which does limit by pagination settings and current page
+- there is a page_size system variable now that sets the size of pages for pagination
+- lots of other little fixes
+
+2006-03-19 12:43  (cyberhorse)
+---------------------------------
+index.php
+classes/template.class.php
+locales/en/common.inc
+style/classic/header.php
+style/default/header.php
+style/dp-grey-theme/header.php
+- Added print button at the top right corner (using "print" css class to define what's printable)
+
+2006-03-19 11:59  (cyberhorse)
+---------------------------------
+style/smarty1/smartsearch/list.html
+- added the smartsearch list file
+
+2006-03-19 11:53  (cyberhorse)
+---------------------------------
+modules/calendar/day_view.php
+style/smarty1/calendar/view.day.html
+- #1561 - fixed calendar dayview tab backgrounds (applied proposed patch)
+
+2006-03-19 01:39  (gregorerhardt)
+---------------------------------
+lib/jpgraph/src/jpg-config.inc
+lib/jpgraph/src/jpgraph.php
+- jpgraph: Auto-detect cyrillic conversion based on locale_char_set
+
+2006-03-16 19:23  (cyberhorse)
+---------------------------------
+modules/links/index_table.php
+modules/links/setup.php
+- fixed sysvals for linktypes (new line character needs "" qoutes).
+- removed redundant code.
+
+2006-03-16 19:21  (cyberhorse)
+---------------------------------
+modules/links/setup.php
+- fixed sysval for links - new lines need "" quotes
+
+2006-03-16 19:19  (cyberhorse)
+---------------------------------
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index_table.php
+modules/links/links.class.php
+modules/links/setup.php
+- #1558
+- link_type removed (not used)
+- link_date usage fixed (recording it on add)
+
+2006-03-16 19:16  (cyberhorse)
+---------------------------------
+modules/links/links.class.php
+- #1558 - together with previous ci
+
+2006-03-16 19:14  (cyberhorse)
+---------------------------------
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index_table.php
+modules/links/setup.php
+- #1558
+- link_type removed (not used)
+- link_date usage fixed (recording it on add)
+
+2006-03-16 18:11  (cyberhorse)
+---------------------------------
+modules/system/addeditpref.php
+- Added empty time format (for dates only display)
+
+2006-03-15 20:17  (cyberhorse)
+---------------------------------
+modules/ticketsmith/do_ticket_aed.php
+- #1268 - fixed redundant slashes in tickets subjects and descriptions.
+
+2006-03-15 19:14  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/gantt.php
+- wrong progress range
+
+2006-03-15 09:06  (gregorerhardt)
+---------------------------------
+modules/tasks/todo_tasks_sub.php
+- corrected wrong dpgetconfig function name
+
+2006-03-14 23:37  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr.php
+- corrected tab link for permissions tab
+
+2006-03-14 19:02  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/companies/companies.class.php
+style/smarty1/companies/addedit.html
+style/smarty1/companies/view.html
+- #1362 - added country field to company
+
+2006-03-14 18:55  (cyberhorse)
+---------------------------------
+modules/companies/addedit.php
+- removed blank lines every second line (windows/linux issue)
+
+2006-03-14 09:14  (gregorerhardt)
+---------------------------------
+style/smarty1/calendar/view.week.html
+- fixed wrong last week link
+
+2006-03-14 09:08  (gregorerhardt)
+---------------------------------
+modules/projects/admin_tab.viewuser.projects.php
+- enabled sorting with smarty by using the currenturl
+
+2006-03-14 08:56  (gregorerhardt)
+---------------------------------
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/projects.class.php
+- 1554 - projects sorting
+
+2006-03-14 08:52  (gregorerhardt)
+---------------------------------
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/projects.class.php
+- 1554 - projects sorting
+
+2006-03-14 08:04  (gregorerhardt)
+---------------------------------
+modules/calendar/addedit.php
+- 1556 - considering system value for cal day increment
+
+2006-03-14 06:06  (pedroix)
+---------------------------------
+db/upgrade_102_to_20alpha.sql
+- Sug0001553: SMTP password in SysConfig should be masked (related)
+
+2006-03-14 06:03  (pedroix)
+---------------------------------
+db/upgrade_102_to_20alpha.sql
+db/dotproject.sql
+db/dotproject.sql
+- Sug0001553: SMTP password in SysConfig should be masked (related)
+
+2006-03-14 05:38  (pedroix)
+---------------------------------
+db/dotproject.sql
+db/dotproject.sql
+- Sug0001553: SMTP password in SysConfig should be masked
+
+2006-03-13 02:32  (cyberhorse)
+---------------------------------
+modules/tasks/index.php
+modules/tasks/index.php
+- #1372 - fixed broken image error
+
+2006-03-13 02:12  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+modules/files/do_file_aed.php
+style/smarty1/files/addedit.html
+- #1494 - ability to cancel a checkout
+
+2006-03-13 01:29  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1506 - updating dynamic tasks from their prior children
+- fixed some other dynamics updating (passing parameter was reversed)
+
+2006-03-13 01:24  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1506 - updating dynamic tasks from their prior children
+
+2006-03-13 00:49  (cyberhorse)
+---------------------------------
+db/upgrade_latest.sql
+modules/history/setup.php
+- #1530 - updated code for creating indexes. Removed index creation from upgrade_latest (it is module specific)
+
+2006-03-12 20:56  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/tasks/gantt.php
+- 1550 - the jpgraph date locale is now set automatically - sys config option obsolete
+
+2006-03-12 19:04  (cyberhorse)
+---------------------------------
+modules/tasks/todo.php
+- #1495 - filter out template projects from todo list
+
+2006-03-12 17:58  (cyberhorse)
+---------------------------------
+index.php
+- #1540 - put source on iframe - should fix ssl warnings
+
+2006-03-12 17:45  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1278 - fixed inclusion of dates in allocatedusershours report
+- fixed bug in duration calculation
+
+2006-03-12 17:32  (cyberhorse)
+---------------------------------
+modules/reports/existing/allocateduserhours.php
+modules/tasks/tasks.class.php
+- #1278 - fixed inclusion of dates in allocatedusershours report
+- fixed bug in duration calculation
+
+2006-03-12 17:07  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+includes/main_functions.php
+- #1505 - fixed convert2days function (added 1 to the switch cases)
+
+2006-03-12 16:11  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- fixing unnecessary join (was causing major delay in big installations)
+
+2006-03-12 16:08  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- fixed unnecessary join (was introducing major delay in big installations)
+
+2006-03-12 09:57  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+- replaced some double quotes by single quotes
+
+2006-03-12 09:45  (gregorerhardt)
+---------------------------------
+modules/tasks/addedit.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_desc.php
+modules/tasks/ae_resource.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_assign_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/listtasks.php
+modules/tasks/organize.php
+modules/tasks/tasksperuser.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+modules/tasks/vw_tasks.php
+- replaced some double quotes by single quotes
+
+2006-03-12 08:01  (gregorerhardt)
+---------------------------------
+style/smarty1/backup/index.html
+- 1409 - Added a message that files are not included for backup
+
+2006-03-12 07:56  (gregorerhardt)
+---------------------------------
+db/upgrade_permissions.php
+- 1409 - backup is now an admin module
+
+2006-03-11 17:17  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- #1513 - Hide smarty1 directory patch applied
+
+2006-03-11 17:11  (cyberhorse)
+---------------------------------
+modules/tasks/tree.js
+- #1541 - proposed patch applied to fix collapsing/expanding tasks.
+
+2006-03-11 17:09  (cyberhorse)
+---------------------------------
+modules/tasks/tree.js
+style/classic/main.css
+style/default/main.css
+style/dp-grey-theme/main.css
+- #1473 - patch applied to improve string parsing and some beautifications
+
+2006-03-11 16:53  (cyberhorse)
+---------------------------------
+modules/tasks/todo_tasks_sub.php
+- #1542 - applied proposed patch to hide checkboxes when "edit multiple..." is disabled.
+
+2006-03-11 16:49  (cyberhorse)
+---------------------------------
+modules/tasks/todo_tasks_sub.php
+- #1542 - applied suggested patch
+
+2006-03-11 16:44  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+- #1547 - applied proposed changes to fix "check_task_dates" system config option
+
+2006-03-11 16:37  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+locales/en/tasks.inc
+modules/tasks/ae_desc.php
+- #1547 - proposed changes applied to fix "check task dates" option
+
+2006-03-11 15:52  (cyberhorse)
+---------------------------------
+locales/en/system.inc
+locales/en/ticketsmith.inc
+- Grrr - had the Notification Email translations in the wrong file.
+
+2006-03-11 15:47  (cyberhorse)
+---------------------------------
+locales/en/ticketsmith.inc
+modules/ticketsmith/do_ticket_aed.php
+- final touches and fixes for 911 email notifications (translations and fixed missing new line characters).
+
+2006-03-11 15:42  (cyberhorse)
+---------------------------------
+modules/ticketsmith/do_ticket_aed.php
+- clear out unneeded commented code
+
+2006-03-11 15:40  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/ticketsmith/do_ticket_aed.php
+- Add notification email configuration setting
+- tickets, marked as 911 (emergency) are being emailed to the notification email
+
+2006-03-11 12:44  (gregorerhardt)
+---------------------------------
+lib/jpgraph/src/jpg-config.inc
+lib/jpgraph/src/jpgraph.php
+- 1464 - auto-detecting whether enabled cyrillic support is really needed based on our locale_char_set var
+
+2006-03-11 09:21  (gregorerhardt)
+---------------------------------
+modules/public/contact_selector.php
+- 1529 - keep choices - contact selector patch by Carsten Menke smp-synergie.de
+
+2006-03-11 08:58  (gregorerhardt)
+---------------------------------
+modules/public/contact_selector.php
+- 1529 - keep choices - contact selector patch by Carsten Menke smp-synergie.de
+
+2006-03-10 00:19  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/todo.php
+- removed auto end date calc for NULL end date tasks
+
+2006-03-10 00:09  (gregorerhardt)
+---------------------------------
+modules/tasks/todo.php
+modules/tasks/todo.php
+- fixing auto end date calc
+
+2006-03-10 00:01  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/tasks.php
+- fixing auto end date calc
+
+2006-03-09 23:35  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/tasks.php
+- fixing missing table_name prefix in getAllowedSQL function call
+
+2006-03-09 22:51  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updated change log
+
 2006-03-09 07:53  (gregorerhardt)
 ---------------------------------
 modules/admin/viewuser.php
