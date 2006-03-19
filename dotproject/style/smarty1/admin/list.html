@@ -3,11 +3,6 @@
 	<td width="60" align="right">
 		&nbsp; {dPtranslate word='sort by'}:&nbsp;
 	</td>
-{if $tab == 0}
-	<th width="125">
-		{dPtranslate word='Login History'}
-	</th>
-{/if}
 	<th width="150">
 		<a href="?m=admin&a=index&orderby=user_username" class="hdr">{dPtranslate word='Login Name'}</a>
 	</th>
@@ -17,6 +12,11 @@
 	<th>
 		<a href="?m=admin&a=index&orderby=contact_company" class="hdr">{dPtranslate word='Company'}</a>
 	</th>
+{if $tab == 0}
+	<th width="125">
+		{dPtranslate word='Login History'}
+	</th>
+{/if}
 </tr>
 
 {foreach from=$rows item=row}
@@ -44,17 +44,6 @@
 		</table>
 {/if}
 	</td>
-{if $tab == 0}
-	<td>
-	{if $row.online == 1}
-		<span style="color: green">{$row.hours} {dPtranslate word='hrs.'}( {$row.idle} {dPtranslate word='hrs.'} {dPtranslate word='idle'}) - {dPtranslate word='Online'}</span>
-	{elseif $row.online == 0}
-		<span style="color: red">{dPtranslate word='Offline'}</span>
-	{else}
-		<span style="color: grey">{dPtranslate word='Never Visited'}</span>
-	{/if}
-	</td>
-{/if}
 	<td>
 		<a href="./index.php?m=admin&a=viewuser&user_id={$row.user_id}">{$row.user_username}</a>
 	</td>
@@ -71,6 +60,17 @@
 	<td>
 		<a href="./index.php?m=companies&a=view&company_id={$row.contact_company}">{$row.company_name}</a>
 	</td>
+{if $tab == 0}
+	<td>
+	{if $row.online == 1}
+		<span style="color: green">{$row.hours} {dPtranslate word='hrs.'}( {$row.idle} {dPtranslate word='hrs.'} {dPtranslate word='idle'}) - {dPtranslate word='Online'}</span>
+	{elseif $row.online == 0}
+		<span style="color: red">{dPtranslate word='Offline'}</span>
+	{else}
+		<span style="color: grey">{dPtranslate word='Never Visited'}</span>
+	{/if}
+	</td>
+{/if}
 </tr>
 {/foreach}
 </table>
