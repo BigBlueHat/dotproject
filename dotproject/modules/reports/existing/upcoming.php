@@ -1,12 +1,7 @@
 <?php
 // Output the PDF
 // make the PDF file
-$q = new DBQuery();
-$q->addQuery('project_name');
-$q->addTable('projects');
-$q->addWhere('project_id = ' . $project_id);
-$pname = $q->loadResult();
-echo db_error();
+$pname = $display_project_name;
 
 $font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";
 $temp_dir = $dPconfig['root_dir']."/files/temp";

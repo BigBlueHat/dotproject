@@ -11,7 +11,6 @@ $log_all = dPgetParam( $_GET, 'log_all', 0 );
 $log_pdf = dPgetParam( $_GET, 'log_pdf', 0 );
 $log_ignore = dPgetParam( $_GET, 'log_ignore', 0 );
 $log_userfilter = dPgetParam( $_GET, 'log_userfilter', '0' );
-$log_allprojects = dPgetParam( $_GET, 'log_allprojects', '0' );
 
 $log_start_date = dPgetParam( $_GET, "log_start_date", 0 );
 $log_end_date = dPgetParam( $_GET, "log_end_date", 0 );
@@ -106,11 +105,6 @@ function setCalendar( idate, fdate ) {
 	</TD>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_allprojects" <?php if ($log_allprojects) echo "checked" ?> />
-		<?php echo $AppUI->_( 'All Projects' );?>
-	</td>
-
-	<td nowrap="nowrap">
 		<input type="checkbox" name="log_all" <?php if ($log_all) echo "checked" ?> />
 		<?php echo $AppUI->_( 'Log All' );?>
 	</td>
@@ -146,10 +140,8 @@ if ($do_report) {
 	$q->addQuery('tl.*');
 	$q->addWhere('task_log_task = task_id');
 	
-	if (!$log_allprojects)
-	{
+	if ($project_id != 0)
 		$q->addWhere("task_project = $project_id");
-	}
 	if (!$log_all) {
 		$q->addWhere("task_log_date >= '".$start_date->format( FMT_DATETIME_MYSQL )."'");
 		$q->addWhere("task_log_date <= '".$end_date->format( FMT_DATETIME_MYSQL )."'");
@@ -241,7 +233,7 @@ if ($do_report) {
 <?php
 	if ($log_pdf) {
 	// make the PDF file
-		 if (!$log_allprojects){
+		 if ($project_id != 0){
 			$q  = new DBQuery;
 			$q->addTable('projects');
 			$q->addQuery('project_name');

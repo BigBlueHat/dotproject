@@ -93,7 +93,7 @@ if (! $suppressHeaders) {
 
 
 if (!isset($display_project_name))
-	$display_project_name = 'None'; 
+	$display_project_name = $AppUI->_('All Projects'); 
 
 echo $AppUI->_('Selected Project') . ': <b>'.$display_project_name.'</b>'; 
 $report_type_var = dPgetParam($_GET, 'report_type', '');

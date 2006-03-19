@@ -2,7 +2,6 @@
 $do_report 		    = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date 	    = dPgetParam( $_POST, "log_end_date", 0 );
-$log_all_projects 	= dPgetParam($_POST["log_all_projects"], 0);
 $log_all		    = dPgetParam($_POST["log_all"], 0);
 $group_by_unit      = dPgetParam($_POST["group_by_unit"],"day");
 
@@ -62,11 +61,6 @@ function setCalendar( idate, fdate ) {
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
-
-	<td nowrap="nowrap">
-		<input type="checkbox" name="log_all_projects" <?php if ($log_all_projects) echo "checked" ?> />
-		<?php echo $AppUI->_( 'Log All Projects' );?>
-	</td>
 	
 	<td nowrap='nowrap'>
 		<input type="checkbox" name="log_all" <?php if ($log_all) echo "checked" ?> />
@@ -107,13 +101,12 @@ if($do_report){
 	$q->addWhere("t.task_milestone    ='0'");
 	$q->addGroup('t.task_id');
 	
-	if(!$log_all_projects){
+	if($project_id != 0)
 		$q->addWhere("t.task_project='$project_id'");
-	}
 	
 	if(!$log_all){
-		$q->addWhere('t.task_start_date >= '.$start_date->format( FMT_DATETIME_MYSQL ));
-		$q->addWhere('t.task_start_date <= '.$end_date->format( FMT_DATETIME_MYSQL ));
+		$q->addWhere('t.task_start_date >= \''.$start_date->format( FMT_DATETIME_MYSQL ) . "'");
+		$q->addWhere('t.task_start_date <= \''.$end_date->format( FMT_DATETIME_MYSQL ) . "'");
 	}
 		
 	$task_list = $q->loadHashList('task_id');

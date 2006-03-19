@@ -143,13 +143,13 @@ if ($do_report) {
 	
 	if ($project_id == 0){ 
 		$q = new DBQuery;
-		$q->addTable('tasks', 'a');
-		$q->addTable('projects', 'b');
-		$q->addQuery('a.*, b.project_name');
-		$q->addWhere('a.task_project = b.project_id');
+		$q->addTable('tasks');
+		$q->addTable('projects');
+		$q->addQuery('tasks.*, project_name');
+		$q->addWhere('task_project = project_id');
 	} else {
 		$q = new DBQuery;
-		$q->addTable('tasks', 'a');
+		$q->addTable('tasks');
 		$q->addWhere('task_project ='.$project_id);
 	}
 	if (!$log_all) {
@@ -166,7 +166,9 @@ if ($do_report) {
 	$Task_List = $q->exec();
 
 	echo "<table cellspacing=\"1\" cellpadding=\"4\" border=\"0\" class=\"tbl\">";
-	if ($project_id==0) { echo "<tr><th>Project Name</th><th>Task Name</th>";} else {echo "<tr><th>Task Name</th>";}
+	if ($project_id==0) 
+		echo '<tr><th>Project Name</th>';
+	echo '<th>Task Name</th>';
 	echo "<th width=400>Task Description</th>";
 	echo "<th>Assigned To</th>";
 	echo "<th>Task Start Date</th>";
@@ -216,7 +218,8 @@ if ($do_report) {
 			$users .= $user_list['contact_first_name']." ".$user_list['contact_last_name'];
 		}
 		$str =  "<tr>";
-		if ($project_id==0) {$str .= "<td>".$Tasks['project_name']."</td>";}
+		if ($project_id==0)
+			$str .= '<td><a href="?m=projects&a=view&project_id=' . $Tasks['task_project'] . '">' . $Tasks['project_name'].'</a></td>';
 		$str .= "<td><a href='?m=tasks&a=view&task_id=".$Tasks['task_id']. "'>".$Tasks['task_name']."</a></td>";
 		$str .= '<td>'.str_replace('  ', '&nbsp;&nbsp;', str_replace("\n", '<br />', $Tasks['task_description']))."</td>";
 		$str .= "<td>".$users."</td>";

@@ -3,7 +3,6 @@
 $do_report 		         = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date          = dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date 	         = dPgetParam( $_POST, "log_end_date", 0 );
-$log_all_projects 	     = dPgetParam($_POST, "log_all_projects", 0);
 $log_all		         = dPgetParam($_POST, "log_all", 0);
 $use_assigned_percentage = dPgetParam($_POST, "use_assigned_percentage", 0);
 $user_id                 = dPgetParam($_POST, "user_id", $AppUI->user_id);
@@ -62,11 +61,6 @@ function setCalendar( idate, fdate ) {
 		</a>
 	</td>
 
-	<td nowrap="nowrap">
-		<input type="checkbox" name="log_all_projects" <?php if ($log_all_projects) echo "checked" ?> />
-		<?php echo $AppUI->_( 'Log All Projects' );?>
-	</td>
-	
 	<td nowrap='nowrap'>
 	   <input type="checkbox" name="use_assigned_percentage" <?php if ($use_assigned_percentage) echo "checked" ?> />
 	   <?php echo $AppUI->_( 'Use assigned percentage' );?>
@@ -124,7 +118,7 @@ if($do_report) {
 	if($user_id){
 		$q->addWhere("t.task_owner = '$user_id'");
     	}
-	if(!$log_all_projects){
+	if($project_id != 0){
 		$q->addWhere("t.task_project='$project_id'");
 	}
 	
