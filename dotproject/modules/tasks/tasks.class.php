@@ -267,7 +267,7 @@ class CTask extends CDpObject {
                         $q->addTable($this->_tbl);
                         $q->addQuery('SUM( task_duration * task_duration_type )');
                         $q->addWhere('task_parent = '. $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('task_duration_type = 1');
                         $q->addGroup('task_parent');
                         $children_allocated_hours1 = (float) $q->loadResult();
@@ -279,7 +279,7 @@ class CTask extends CDpObject {
                         $q->addTable($this->_tbl);
                         $q->addQuery('SUM( task_duration * '.$dPconfig['daily_working_hours'].')');
                         $q->addWhere('task_parent = '. $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('task_duration_type > 1');
                         $q->addGroup('task_parent');
                         $children_allocated_hours2 = (float) $q->loadResult();
@@ -302,8 +302,8 @@ class CTask extends CDpObject {
                         $q->addQuery('sum( task_log_hours )');
                         $q->addWhere('task_id = task_log_task');
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
-                        $q->addWhere('task_dynamic != 1');
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
+                        $q->addWhere('task_dynamic <> 1');
                         $children_hours_worked = (float) $q->loadResult();
                         $q->clear();
 
@@ -313,7 +313,7 @@ class CTask extends CDpObject {
                         $q->addTable('tasks', 't');
                         $q->addQuery('sum( task_hours_worked )');
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('task_dynamic = 1');
                         $children_hours_worked += (float) $q->loadResult();
                         $q->clear();
@@ -325,7 +325,7 @@ class CTask extends CDpObject {
                         $q->addTable('tasks', 't');
                         $q->addQuery('sum(task_percent_complete * task_duration * task_duration_type )');
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('task_duration_type = 1');
                         $real_children_hours_worked = (float) $q->loadResult();
                         $q->clear();
@@ -335,7 +335,7 @@ class CTask extends CDpObject {
                         $q->addTable('tasks', 't');
                         $q->addQuery('sum(task_percent_complete * task_duration * '.$dPconfig['daily_working_hours'].' )');
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('task_duration_type = 24');
                         $real_children_hours_worked += (float) $q->loadResult();
                         $q->clear();
@@ -353,7 +353,7 @@ class CTask extends CDpObject {
                                 $q->addTable('tasks', 't');
                                 $q->addQuery('avg(task_percent_complete)');
                                 $q->addWhere('task_parent = ' . $modified_task->task_id);
-                                $q->addWhere('task_id != ' . $modified_task->task_id);
+                                $q->addWhere('task_id <> ' . $modified_task->task_id);
                                 $modified_task->task_percent_complete = $q->loadResult();
                                 $q->clear();
                         }
@@ -364,9 +364,9 @@ class CTask extends CDpObject {
                         $q->addTable('tasks', 't');
                         $q->addQuery('min( task_start_date )');
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('! isnull( task_start_date )');
-                        $q->addWhere("task_start_date !=  '0000-00-00 00:00:00'");
+                        $q->addWhere("task_start_date <>  '0000-00-00 00:00:00'");
 												$d = $q->loadResult();
 												if ($d)
                         	$modified_task->task_start_date = $d;
@@ -379,9 +379,9 @@ class CTask extends CDpObject {
                         $q->addTable('tasks', 't');
                         $q->addQuery('max( task_end_date )');
                         $q->addWhere('task_parent = ' . $modified_task->task_id);
-                        $q->addWhere('task_id != ' . $modified_task->task_id);
+                        $q->addWhere('task_id <> ' . $modified_task->task_id);
                         $q->addWhere('! isnull( task_end_date )');
-                        //$q->addWhere("task_end_date !=  '0000-00-00 00:00:00'");
+                        //$q->addWhere("task_end_date <>  '0000-00-00 00:00:00'");
                         $modified_task->task_end_date =  $q->loadResult();
                         $q->clear();
 
@@ -1275,7 +1275,7 @@ class CTask extends CDpObject {
                 $q->addUpdate('task_start_date', $new_start_date);
                 $q->addUpdate('task_end_date', $new_end_date);
                 $q->addWhere('task_id = '.$task_id);
-                $q->addWhere('task_dynamic != 1');
+                $q->addWhere('task_dynamic <> 1');
                 $q->exec();
                 $q->clear();
 
@@ -1704,7 +1704,7 @@ class CTask extends CDpObject {
                 $q = new DBQuery;
                 $q->addTable('tasks');
                 $q->addQuery('task_id');
-                $q->addWhere('task_id != '.$this->task_id);
+                $q->addWhere('task_id <> '.$this->task_id);
                 $q->addWhere('task_parent = '.$this->task_id);
                 return $q->loadColumn();
         }

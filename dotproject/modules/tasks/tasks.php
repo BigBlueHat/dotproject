@@ -200,7 +200,7 @@ switch ($f) {
         case 'children':
         // patch 2.13.04 2, fixed ambigious task_id
                 $q->addWhere('task_parent = ' . $task_id);
-                $q->addWhere('tasks.task_id != ' . $task_id);
+                $q->addWhere('tasks.task_id <> ' . $task_id);
                 break;
         case 'myproj':
                 $q->addWhere('project_owner = ' . $user_id);
@@ -218,16 +218,16 @@ switch ($f) {
 //                $q->addWhere('task_project = p.project_id');
 
                 $q->addWhere('(task_percent_complete < 100 OR task_end_date = "")');
-                $q->addWhere('p.project_status != 7');
-                $q->addWhere('p.project_status != 4');
-                $q->addWhere('p.project_status != 5');
+                $q->addWhere('p.project_status <> 7');
+                $q->addWhere('p.project_status <> 4');
+                $q->addWhere('p.project_status <> 5');
                 break;
         case 'allunfinished':
                 //                        AND task_project             = projects.project_id
                 $q->addWhere('(task_percent_complete < 100 OR task_end_date = "")');
-                $q->addWhere('p.project_status != 7');
-                $q->addWhere('p.project_status != 4');
-                $q->addWhere('p.project_status != 5');
+                $q->addWhere('p.project_status <> 7');
+                $q->addWhere('p.project_status <> 4');
+                $q->addWhere('p.project_status <> 5');
                 break;
         case 'unassigned':
                 $q->leftJoin('user_tasks', 'ut_empty', 'tasks.task_id = ut_empty.task_id');
