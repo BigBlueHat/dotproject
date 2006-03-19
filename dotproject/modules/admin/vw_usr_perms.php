@@ -149,6 +149,8 @@ foreach ($user_acls as $acl){
 			foreach ($permission['axo'] as $key => $section) {
 				foreach ($section as $id) {
 					$mod_data = $perms->get_object_full($id, $key, 1, 'axo');
+					if ($mod_data['section_value'] != 'app')
+						$modlist[] = '<i>' . ($mod_data['section_value']) . '</i>: ';
 					$modlist[] = $mod_data['name'];
 				}
 			}
