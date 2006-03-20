@@ -144,6 +144,7 @@ $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
 $q->addWhere('task_project = ' . $project_id);
+$q->addWhere("task_name like '%" . $AppUI->getState('searchtext') . "%'");
 
 foreach ($filters as $name => $filter)
 {
