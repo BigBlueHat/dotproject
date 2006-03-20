@@ -1159,6 +1159,10 @@ CREATE TABLE `billingcode` (
   `company_id` bigint(20) NOT NULL default '0',
   PRIMARY KEY  (`billingcode_id`)
 ) TYPE=MyISAM;
+ALTER TABLE `billingcode` ADD UNIQUE (
+`billingcode_name` ,
+`company_id`
+)
 
 INSERT INTO `gacl_phpgacl` (name, value) VALUES ('version', '3.3.2');
 INSERT INTO `gacl_phpgacl` (name, value) VALUES ('schema_version', '2.1');

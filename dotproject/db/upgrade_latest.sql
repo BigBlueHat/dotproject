@@ -99,3 +99,9 @@ ALTER TABLE companies ADD company_country varchar(100) NOT NULL default '' AFTER
 # Check task dates fix
 INSERT INTO `config` VALUES('', 'page_size', '25', '', 'text');
 
+#20060320
+# Force unique billing codes per company
+ALTER TABLE `billingcode` ADD UNIQUE (
+`billingcode_name` ,
+`company_id`
+)
