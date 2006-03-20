@@ -46,8 +46,8 @@ ORDER BY 1, 2, 5, 4
 $q  = new DBQuery;
 $q->addTable('tasks', 't');
 $q->addQuery('u.user_username user_name, t.task_name task_name, t.task_start_date task_start_date, t.task_milestone
-		task_milestone, ut.perc_assignment perc_assignment, t.task_end_date task_end_date, p.project_color_identifier
-		project_color_identifier, p.project_name project_name');
+		task_milestone, ut.perc_assignment perc_assignment, t.task_end_date task_end_date, t.task_dynamic');
+$q->addQuery('p.project_color_identifier project_color_identifier, p.project_name project_name');
 $q->addJoin('user_tasks', 'ut', 't.task_id = ut.task_id');
 $q->addJoin('users', 'u', 'u.user_id = ut.user_id');
 $q->addJoin('projects', 'p', 'p.project_id = t.task_project');
@@ -176,7 +176,7 @@ foreach($tasks as $t) {
 	if($nameUser != $t['user_name']	)
 	{
 		$row++;
-		$barTmp = new GanttBar($row++, array($t["user_name"], "", ""," "), "0", "0;" , 0.6);						
+		$barTmp = new GanttBar($row++, array($t["user_name"], "", ""," "), "0", "0;" , $t['task_dynamic'] == 1 ? 0.1 : 0.6);						
 		$barTmp->title->SetColor("#".$t['project_color_identifier']);
 		$barTmp->SetFillColor("#".$t['project_color_identifier']);
 		$barTmp->title ->SetFont(FF_FONT1, FF_BOLD);		
