@@ -4,7 +4,7 @@
 {if $results.results}
 	{foreach from=$results.results item=result key=id}
 <tr>
-	<td><a href="index.php?m={$name}&a=addedit&{$results.key}={$id}">{$result|dPhighlight:$keyword}</a></td>
+	<td><a href="index.php?m={$name}&a=view&{$results.key}={$id}">{$result|dPhighlight:$keyword}</a></td>
 </tr>
 	{/foreach}
 {else}
