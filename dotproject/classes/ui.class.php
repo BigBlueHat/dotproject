@@ -93,7 +93,8 @@ class CAppUI {
 /**
 * CAppUI Constructor
 */
-	function CAppUI() {
+	function CAppUI()
+	{
 		global $dPconfig;
 
 		$this->state = array();
@@ -124,7 +125,8 @@ class CAppUI {
 * @param string $name The class root file name (excluding .class.php)
 * @return string The path to the include file
  */
-	function getSystemClass( $name=null ) {
+	function getSystemClass( $name=null )
+	{
 		global $baseDir;
 		if ($name) {
 			return "$baseDir/classes/$name.class.php";
@@ -137,7 +139,8 @@ class CAppUI {
 * @param string $name The class root file name (excluding .class.php)
 * @return string The path to the include file
 */
-	function getLibraryClass( $name=null ) {
+	function getLibraryClass( $name=null )
+	{
 		global $baseDir;
 		if ($name) {
 			return "$baseDir/lib/$name.php";
@@ -149,7 +152,8 @@ class CAppUI {
 * @param string $name The class root file name (excluding .class.php)
 * @return string The path to the include file
  */
-	function getModuleClass( $name=null ) {
+	function getModuleClass( $name=null )
+	{
 		global $baseDir;
 		if ($name) {
 			return "$baseDir/modules/$name/$name.class.php";
@@ -160,7 +164,8 @@ class CAppUI {
 * Determines the version.
 * @return String value indicating the current dotproject version
 */
-	function getVersion() {
+	function getVersion()
+	{
 		global $dPconfig;
 		global $baseDir;
 		if ( ! isset($this->version_major)) {
@@ -180,7 +185,8 @@ class CAppUI {
 /**
 * Checks that the current user preferred style is valid/exists.
 */
-	function checkStyle() {
+	function checkStyle()
+	{
 		global $dPconfig;
 		global $baseDir;
 		// check if default user's uistyle is installed
@@ -206,7 +212,8 @@ class CAppUI {
 * @param string The path to read.
 * @return array A named array of the directories (the key and value are identical).
 */
-	function readDirs( $path ) {
+	function readDirs( $path )
+	{
 		global $baseDir;
 		$dirs = array();
 		$d = dir( "$baseDir/$path" );
@@ -225,7 +232,8 @@ class CAppUI {
 * @param string A regular expression to filter by.
 * @return array A named array of the files (the key and value are identical).
 */
-	function readFiles( $path, $filter='.' ) {
+	function readFiles( $path, $filter='.' )
+	{
 		$files = array();
 
 		if (is_dir($path) && ($handle = opendir( $path )) ) {
@@ -247,7 +255,8 @@ class CAppUI {
 * @param string The file name.
 * @return array A named array of the files (the key and value are identical).
 */
-	function checkFileName( $file ) {
+	function checkFileName( $file )
+	{
 		global $AppUI;
 
 		// define bad characters and their replacement
@@ -273,7 +282,8 @@ class CAppUI {
 * @param string The file name.
 * @return array A named array of the files (the key and value are identical).
 */
-	function makeFileNameSafe( $file ) {
+	function makeFileNameSafe( $file )
+	{
 		$file = str_replace( '../', '', $file );
 		$file = str_replace( '..\\', '', $file );
 		return $file;
@@ -285,7 +295,8 @@ class CAppUI {
 * Looks in the user preferences first.  If this value has not been set by the user it uses the system default set in config.php.
 * @param string Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
 */
-	function setUserLocale( $loc='', $set = true ) {
+	function setUserLocale( $loc='', $set = true )
+	{
 		global $dPconfig, $locale_char_set;
 
 		$LANGUAGES = $this->loadLanguages();
@@ -360,7 +371,8 @@ class CAppUI {
  * Load the known language codes for loaded locales
  *
  */
-	function loadLanguages() {
+	function loadLanguages()
+	{
 		global $baseDir;
 
 		if ( isset($_SESSION['LANGUAGES'])) {
@@ -392,7 +404,8 @@ class CAppUI {
 * @param int Option flags, can be case handling or'd with output styles
 * @return string
 */
-	function _( $str, $flags= 0 ) {
+	function _( $str, $flags= 0 )
+	{
 		if (is_array($str)) {
 			$translated = array();
 			foreach ($str as $s)
@@ -403,7 +416,8 @@ class CAppUI {
 		}
 	}
 
-	function __( $str, $flags = 0) {
+	function __( $str, $flags = 0)
+	{
 		global $dPconfig;
 		$str = trim($str);
 		if (empty( $str )) {
@@ -467,7 +481,8 @@ class CAppUI {
 * Set the display of warning for untranslated strings
 * @param string
 */
-	function setWarning( $state=true ) {
+	function setWarning( $state=true )
+	{
 		$temp = @$this->cfg['locale_warn'];
 		$this->cfg['locale_warn'] = $state;
 		return $temp;
@@ -480,7 +495,8 @@ class CAppUI {
 * would be a nonsense in this case.
 * @param string If not set then the current url query string is used
 */
-	function savePlace( $query='' ) {
+	function savePlace( $query='' )
+	{
 		if (!$query) {
 			$query = @$_SERVER['QUERY_STRING'];
 		}
@@ -492,14 +508,16 @@ class CAppUI {
 /**
 * Resets the internal variable
 */
-	function resetPlace() {
+	function resetPlace()
+	{
 		$this->state['SAVEDPLACE'] = '';
 	}
 /**
 * Get the saved place (usually one that could contain an edit button)
 * @return string
 */
-	function getPlace() {
+	function getPlace()
+	{
 		return @$this->state['SAVEDPLACE'];
 	}
 /**
@@ -512,7 +530,8 @@ class CAppUI {
 * @param string The URL query string to append to the URL
 * @param string A marker for a historic 'place, only -1 or an empty string is valid.
 */
-	function redirect( $params='', $hist='' ) {
+	function redirect( $params='', $hist='' )
+	{
 		$session_id = SID;
 
 		session_write_close();
@@ -547,7 +566,8 @@ class CAppUI {
 * @param boolean If true, $msg is appended to the current string otherwise
 * the existing message is overwritten with $msg.
 */
-	function setMsg( $msg, $msgNo=0, $append=false ) {
+	function setMsg( $msg, $msgNo=0, $append=false )
+	{
 		$msg = $this->_( $msg );
 		$this->msg = $append ? $this->msg.' '.$msg : $msg;
 		$this->msgNo = $msgNo;
@@ -556,7 +576,8 @@ class CAppUI {
 * Display the formatted message and icon
 * @param boolean If true the current message state is cleared.
 */
-	function getMsg( $reset=true ) {
+	function getMsg( $reset=true )
+	{
 		$img = '';
 		$class = '';
 		$msg = $this->msg;
@@ -600,7 +621,8 @@ class CAppUI {
 * @param string The label or key of the state variable
 * @param mixed Value to assign to the label/key
 */
-	function setState( $label, $value = null) {
+	function setState( $label, $value = null)
+	{
 		if (isset($value))
 			$this->state[$label] = $value;
 	}
@@ -609,7 +631,8 @@ class CAppUI {
 * If a default value is supplied and no value is found, set the default.
 * @return mixed
 */
-	function getState( $label, $default_value = null ) {
+	function getState( $label, $default_value = null )
+	{
 		if (array_key_exists( $label, $this->state)) {
 			return $this->state[$label];
 		} else if (isset($default_value)) {
@@ -620,7 +643,8 @@ class CAppUI {
 		}
 	}
 
-	function checkPrefState($label, $value, $prefname, $default_value = null) {
+	function checkPrefState($label, $value, $prefname, $default_value = null)
+	{
 		// Check if we currently have it set
 		if (isset($value)) {
 			$result = $value;
@@ -658,7 +682,8 @@ class CAppUI {
 * @param string The user password
 * @return boolean True if successful, false if not
 */
-	function login( $username, $password ) {
+	function login( $username, $password )
+	{
 		global $dPconfig, $baseDir;
 
 		require_once "$baseDir/classes/authenticator.class.php";
@@ -728,7 +753,8 @@ class CAppUI {
 /**
 *@Function for regiser log in dotprojet table "user_access_log"
 */
-	   function registerLogin(){
+	   function registerLogin()
+	   {
 		$q  = new DBQuery;
 		$q->addTable('user_access_log');
 		$q->addInsert('user_id', "$this->user_id");
@@ -742,7 +768,8 @@ class CAppUI {
 /**
 *@Function for update table user_acces_log in field date_time_lost_action
 */
-          function updateLastAction($last_insert_id){
+          function updateLastAction($last_insert_id)
+          {
 		$q  = new DBQuery;
 		$q->addTable('user_access_log');
 		$q->addUpdate('date_time_last_action', date("Y-m-d H:i:s"));
@@ -756,19 +783,22 @@ class CAppUI {
 /**
 * @deprecated
 */
-	function logout() {
+	function logout()
+	{
 	}
 /**
 * Checks whether there is any user logged in.
 */
-	function doLogin() {
+	function doLogin()
+	{
 		return ($this->user_id < 0) ? true : false;
 	}
 /**
 * Gets the value of the specified user preference
 * @param string Name of the preference
 */
-	function getPref( $name ) {
+	function getPref( $name )
+	{
 		return @$this->user_prefs[$name];
 	}
 /**
@@ -776,7 +806,8 @@ class CAppUI {
 * @param string Name of the preference
 * @param mixed The value of the preference
 */
-	function setPref( $name, $val ) {
+	function setPref( $name, $val )
+	{
 		$this->user_prefs[$name] = $val;
 	}
 /**
@@ -784,7 +815,8 @@ class CAppUI {
 * preferences variable.
 * @param int User id number
 */
-	function loadPrefs( $uid=0 ) {
+	function loadPrefs( $uid=0 )
+	{
 		$q  = new DBQuery;
 		$q->addTable('user_preferences');
 		$q->addQuery('pref_name, pref_value');
@@ -799,7 +831,8 @@ class CAppUI {
 * Gets a list of the installed modules
 * @return array Named array list in the form 'module directory'=>'module name'
 */
-	function getInstalledModules() {
+	function getInstalledModules()
+	{
 		$q  = new DBQuery;
 		$q->addTable('modules');
 		$q->addQuery('mod_directory, mod_ui_name');
@@ -810,7 +843,8 @@ class CAppUI {
 * Gets a list of the active modules
 * @return array Named array list in the form 'module directory'=>'module name'
 */
-	function getActiveModules() {
+	function getActiveModules()
+	{
 		$q  = new DBQuery;
 		$q->addTable('modules');
 		$q->addQuery('mod_directory, mod_ui_name');
@@ -823,7 +857,8 @@ class CAppUI {
 * @return array Named array list in the form
 * ['module directory', 'module name', 'module_icon']
 */
-	function getMenuModules() {
+	function getMenuModules()
+	{
 		$q  = new DBQuery;
 		$q->addTable('modules');
 		$q->addQuery('mod_directory, mod_ui_name, mod_ui_icon');
@@ -832,7 +867,8 @@ class CAppUI {
 		return ($q->loadList());
 	}
 
-	function isActiveModule($module) {
+	function isActiveModule($module)
+	{
 		$q  = new DBQuery;
 		$q->addTable('modules');
 		$q->addQuery('mod_active');
@@ -846,8 +882,9 @@ class CAppUI {
  * Returns the global dpACL class or creates it as neccessary.
  * @return object dPacl
  */
-	function &acl() {
-		if (! isset($GLOBALS['acl'])) {
+	function &acl()
+	{
+		if (! isset($GLOBALS['acl'])){
 			$GLOBALS['acl'] =& new dPacl;
 	  	}
 	  	return $GLOBALS['acl'];
@@ -857,7 +894,8 @@ class CAppUI {
  * Find and add to output the file tags required to load module-specific
  * javascript.
  */
-	function loadJS() {
+	function loadJS()
+	{
 	  global $m, $a, $dPconfig, $baseDir;
 	  // Search for the javascript files to load.
 	  if (! isset($m))
@@ -886,7 +924,8 @@ class CAppUI {
 		$this->getModuleJS($m, $a, true);
 	}
 
-	function getModuleJS($module, $file=null, $load_all = false) {
+	function getModuleJS($module, $file=null, $load_all = false)
+	{
 		global $dPconfig, $baseDir;
 		$root = $baseDir;
 		if (substr($root, -1) != '/');
@@ -928,7 +967,8 @@ the active tab, and the selected tab **/
 * @param string Optional javascript method to be used to execute tabs.
 *	Must support 2 arguments, currently active tab, new tab to activate.
 */
-	function CTabBox_core( $baseHRef='', $baseInc='', $active=0, $javascript = null ) {
+	function CTabBox_core( $baseHRef='', $baseInc='', $active=0, $javascript = null )
+	{
 		$this->tabs = array();
 		$this->active = $active;
 		$this->baseHRef = ($baseHRef ? "$baseHRef&" : "?");
@@ -939,7 +979,8 @@ the active tab, and the selected tab **/
 * Gets the name of a tab
 * @return string
 */
-	function getTabName( $idx ) {
+	function getTabName( $idx )
+	{
 		return $this->tabs[$idx][1];
 	}
 /**
@@ -947,11 +988,13 @@ the active tab, and the selected tab **/
 * @param string File to include
 * @param The display title/name of the tab
 */
-	function add( $file, $title, $translated = false ) {
+	function add( $file, $title, $translated = false )
+	{
 		$this->tabs[] = array( $file, $title, $translated );
 	}
 
-	function isTabbed() {
+	function isTabbed()
+	{
 		global $AppUI;
 		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 )
 			return false;
@@ -965,12 +1008,14 @@ the active tab, and the selected tab **/
 *
 * @param string Can't remember whether this was useful
 */
-	function show( $extra='', $js_tabs = false ) {
+	function show( $extra='', $js_tabs = false )
+	{
 		global $AppUI, $currentTabId, $currentTabName, $tpl;
 		echo '';//$this->fetch($extra, $js_tabs);
 	}
 	
-	function fetch( $extra='', $js_tabs = false ) {
+	function fetch( $extra='', $js_tabs = false )
+	{
 		GLOBAL $AppUI, $currentTabId, $currentTabName, $tpl;
 		reset( $this->tabs );
 		$s = '';
@@ -1076,7 +1121,8 @@ the active tab, and the selected tab **/
 		*/
 	}
 
-	function loadExtras($module, $file = null) {
+	function loadExtras($module, $file = null)
+	{
 		global $AppUI;
 		if (! isset($_SESSION['all_tabs']) || ! isset($_SESSION['all_tabs'][$module]))
 			return false;
@@ -1100,7 +1146,8 @@ the active tab, and the selected tab **/
 		return $tab_count;
 	}
 
-	function findTabModule($tab) {
+	function findTabModule($tab)
+	{
 		global $AppUI, $m, $a;
 
 		if (! isset($_SESSION['all_tabs']) || ! isset($_SESSION['all_tabs'][$m]))
@@ -1145,7 +1192,8 @@ class CTitleBlock_core {
 * have permission to view the help module, then the context help icon is
 * not displayed.
 */
-	function CTitleBlock_core( $title, $icon='', $module='', $helpref='' ) {
+	function CTitleBlock_core( $title, $icon='', $module='', $helpref='' )
+	{
 		$this->title = $title;
 		$this->icon = $icon;
 		$this->module = $module;
@@ -1160,11 +1208,13 @@ class CTitleBlock_core {
 *
 * Cells are added from left to right.
 */
-	function addCell( $data='', $attribs='', $prefix='', $suffix='' ) {
+	function addCell( $data='', $attribs='', $prefix='', $suffix='' )
+	{
 		$this->cells1[] = array( $attribs, $data, $prefix, $suffix );
 	}
 	
-	function addFiltersCell($filters_selection) {
+	function addFiltersCell($filters_selection)
+	{
 		global $AppUI, $tpl;
 
 		foreach($filters_selection as $filter => $array)
@@ -1196,7 +1246,8 @@ class CTitleBlock_core {
 		return $filters;
 	}
 	
-	function addSearchCell() {
+	function addSearchCell()
+	{
 		global $AppUI, $tpl;
 		
 		$search_string = dPgetParam( $_REQUEST, 'search_string', "" );
@@ -1220,7 +1271,8 @@ class CTitleBlock_core {
 *
 * Cells are added from left to right.
 */
-	function addCrumb( $link, $label, $icon='' ) {
+	function addCrumb( $link, $label, $icon='' )
+	{
 		$this->crumbs[$link] = array( $label, $icon );
 	}
 /**
@@ -1228,13 +1280,15 @@ class CTitleBlock_core {
 *
 * Cells are added from left to right.
 */
-	function addCrumbRight( $data='', $attribs='', $prefix='', $suffix='' ) {
+	function addCrumbRight( $data='', $attribs='', $prefix='', $suffix='' )
+	{
 		$this->cells2[] = array( $attribs, $data, $prefix, $suffix );
 	}
 /**
 * Creates a standarised, right-aligned delete bread-crumb and icon.
 */
-	function addCrumbDelete( $title, $canDelete='', $msg='' ) {
+	function addCrumbDelete( $title, $canDelete='', $msg='' )
+	{
 		global $AppUI, $tpl;
 		
 		$tpl->assign('title', $title);
@@ -1249,7 +1303,8 @@ class CTitleBlock_core {
 /**
 * The drawing function
 */
-	function show() {
+	function show()
+	{
 		global $AppUI, $tpl;
 		
 		$tpl->assign('icon', dPFindImage($this->icon, $this->module));

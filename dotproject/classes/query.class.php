@@ -734,7 +734,8 @@ class DBQuery {
 		return $list;
 	}
 
-	function loadHashList($index = null) {
+	function loadHashList($index = null)
+	{
 
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
 			exit ($this->_db->ErrorMsg());
@@ -756,7 +757,8 @@ class DBQuery {
 		return $hashlist;
 	}
 
-	function loadHash() {
+	function loadHash()
+	{
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
 			exit ($this->_db->ErrorMsg());
 		}
@@ -765,7 +767,8 @@ class DBQuery {
 		return $hash;
 	}
 	
-	function loadArrayList($index = 0) {
+	function loadArrayList($index = 0)
+	{
 
 		if (! $this->exec(ADODB_FETCH_NUM)) {
 			exit ($this->_db->ErrorMsg());
@@ -779,7 +782,8 @@ class DBQuery {
 		return $hashlist;
 	}
 
-	function loadColumn() {
+	function loadColumn()
+	{
 		if (! $this->exec(ADODB_FETCH_NUM)) {
 		  die ($this->_db->ErrorMsg());
 		}
@@ -791,7 +795,8 @@ class DBQuery {
 		return $result;
 	}
 
-	function loadObject( &$object, $bindAll=false , $strip = true) {
+	function loadObject( &$object, $bindAll=false , $strip = true)
+	{
 		if (! $this->exec(ADODB_FETCH_NUM)) {
 			die ($this->_db->ErrorMsg());
 		}
@@ -814,7 +819,8 @@ class DBQuery {
 		}
 	}
 	
-	function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true, $bindAll=false ) {
+	function bindHashToObject( $hash, &$obj, $prefix=null, $checkSlashes=true, $bindAll=false )
+	{
 		is_array( $hash ) or die( "bindHashToObject : hash expected" );
 		is_object( $obj ) or die( "bindHashToObject : object expected" );
 	
@@ -841,7 +847,8 @@ class DBQuery {
 	/**
 	 * Using an XML string, build or update a table.
 	 */
-	function execXML($xml, $mode = 'REPLACE') {
+	function execXML($xml, $mode = 'REPLACE')
+	{
 		global $baseDir, $AppUI;
 
 		include_once $baseDir.'/lib/adodb/adodb-xmlschema.inc.php';
