@@ -3,6 +3,9 @@ GLOBAL $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTyp
 GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
 GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
 GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
+
+$toggleAll = dPgetParam($_GET, 'parents', false);
+
 /*
         External used variables:
 
@@ -92,9 +95,9 @@ $taskPriority = dPgetSysVal( 'TaskPriority' );
 
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
 
-$task_sort_item1 = dPgetParam( $_GET, 'task_sort_item1', '' );
+$task_sort_item1 = dPgetParam( $_GET, 'task_sort_item1', 'task_name' );
 $task_sort_type1 = dPgetParam( $_GET, 'task_sort_type1', '' );
-$task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', '' );
+$task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', 'task_end_date' );
 $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
@@ -157,7 +160,7 @@ foreach ($filters as $name => $filter)
 			else if ($filter == 1)
 				$q->addWhere('(task_percent_complete > 0 AND task_percent_complete < 100 OR task_percent_complete is null)');
 			else if ($filter == 99)
-				$q->addWhere('task_percent_complete < 100 OR task_percent_complete is null');
+				$q->addWhere('(task_percent_complete < 100 OR task_percent_complete is null)');
 			else
 				$q->addWhere('task_percent_complete = ' . $filter);
 		}
@@ -171,7 +174,6 @@ if ($pinned_only)
 
 //if ($showIncomplete)
 //	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
-
 $q->addWhere('tasks.task_id = task_parent');
 // $q->addWhere('(task_id = task_parent OR (t1.task_parent = t2.task_id AND t2.task_dynamic <> 1))');
 
@@ -189,12 +191,13 @@ $allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
 if ( count($allowedTasks))
 	$q->addWhere($allowedTasks);
 
-//$q->addOrder($task_sort_item1.', '.$task_sort_item2);
+$q->addOrder($task_sort_item1.', '.$task_sort_item2);
 $q->addGroup('tasks.task_id');
 $tasks = $q->loadList();
 
 //add information about assigned users into the page output
 $i = 0;
+global $display_tasks;
 foreach ($tasks as $k => $task) 
 {
         $q->clear();
@@ -224,11 +227,71 @@ foreach ($tasks as $k => $task)
 					$task['task_duration'] = floor($task['task_duration']) . ':' . round(60 * ($task['task_duration'] - floor($task['task_duration'])));
 
 
-				$tasks[$k] = $task;
+
+				$display_tasks[$i] = $task;
+				if ($task['children'] > 0 && $toggleAll == 'open')
+					recurse_children($task['node_id']);
+
+		
 
 //				$tasks[$k]['task_description'] = str_replace("\"", "&quot;", str_replace("\r", ' ', str_replace("\n", ' ', $task['task_description'])));
 //        $alt = htmlspecialchars($alt);
 }
+
+//natural sorting instead?
+ksort($display_tasks);
+
+// Code duplicated from above. To be cleaned!!! (to be done in one place)
+function recurse_children($node_id)
+{
+	global $display_tasks, $perms, $task_sort_item1, $task_sort_item2;
+
+	$task_id = substr($node_id, strrpos($node_id, '-') + 1);
+	$q = new DBQuery;
+	$q->addQuery('*');
+	$q->addTable('tasks');
+	$q->addWhere('task_parent = ' . $task_id);
+	$q->addWhere('task_id <> task_parent');
+	$q->addOrder($task_sort_item1.', '.$task_sort_item2);
+	
+	// To be sorted (by date? reversed?)
+	$tasks = $q->loadList();
+	$i = 0;
+	$num = substr($node_id, 5, strpos($node_id, ')') - 5);
+	foreach($tasks as $task)
+	{
+		$q->addQuery('ut.user_id, u.user_username');
+		$q->addQuery('contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent');
+		$q->addQuery('contact_first_name, contact_last_name');
+		$q->addTable('user_tasks', 'ut');
+		$q->leftJoin('users', 'u', 'u.user_id = ut.user_id');
+		$q->leftJoin('contacts', 'c', 'u.user_contact = c.contact_id');
+		$q->addWhere('ut.task_id = ' . $task['task_id']);
+		$q->addGroup('ut.user_id');
+		$task['task_assigned_users'] = $q->loadList();
+		
+		$q->addQuery('count(*) as children');
+		$q->addTable('tasks');
+		$q->addWhere('task_parent = ' . $task['task_id']);
+		$q->addWhere('task_id <> task_parent');
+		$task['children'] = intval($q->loadResult());
+		$task['style'] = taskstyle($task);
+		$task['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
+		$task['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
+		$task['task_number'] = $num . '.' . (++$i);
+		$task['node_id'] = str_replace('('.$num.')', '('.$task['task_number'].')', $node_id) . '-' . $task['task_id'];
+		$task['level'] = range(1, count(explode('.', $task['task_number']))-1);
+		
+		if (strpos($task['task_duration'], '.') && $task['task_duration_type'] == 1)
+			$task['task_duration'] = floor($task['task_duration']) . ':' . round(60 * ($task['task_duration'] - floor($task['task_duration'])));
+
+		$display_tasks[$num . '.' . $i] = $task;
+		if ($task['children'] > 0)
+			recurse_children($task['node_id']);
+	}
+}
+
+
 
 $showEditCheckbox = false;
 ?>
@@ -263,6 +326,16 @@ $tpl->assign('canViewLog', $canViewTask);
 $tpl->assign('canEdit', $canEdit);
 
 $tpl->assign('style', $style);
+$tpl->assign('is_opened', $toggleAll == 'open');
+$tpl->assign('ajax', dPgetConfig('tasks_ajax_list'));
+$tpl->displayList('tasks', $display_tasks);
 
-$tpl->displayList('tasks', $tasks);
+if ($toggleAll == 'open')
+{
 ?>
+<script type="text/javascript">
+	table = document.getElementById('tbl'); 
+	parents = 'open';
+	dpExpandAll();
+</script>
+<?php } ?>

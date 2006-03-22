@@ -19,7 +19,7 @@
 </form>
 {/if}
 
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl" id="tbl">
 <tr>
 	<th width="10">&nbsp;</th>
 	<th width="10">{dPtranslate word='Pin'}</th>
@@ -38,6 +38,14 @@
 {foreach from=$rows item=task}
 	{include file="tasks/list.row.html" obj=$task}
 {/foreach}
+<tr>
+	<td colspan="5">
+		<input type="button" class="button" value="{dPtranslate word='Expand All'}" onclick="javascript:window.location='index.php?m=projects&a=view&project_id={$project_id}&parents=open';" />
+	</td>
+	<td colspan="5">
+		<input type="button" class="button" value="{dPtranslate word='Collapse All'}" onclick="javascript:window.location='index.php?m=projects&a=view&project_id={$project_id}&parents=close';" />
+	</td>
+</tr>
 </table>
 
 <table>

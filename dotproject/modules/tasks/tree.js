@@ -87,11 +87,24 @@ function dpCollapseNode(sPid) {
     regEx = regEx.replace( '\(', '\\(');
     regEx = regEx.replace( '\)', '\\.(\\d)+\\)');
     var oRe = new RegExp("^" + regEx + "-");
-    for (var i = 0; i < oRows.length; i++) {
+
+/*		img = document.getElementById(sPid + '_img');
+		if (img)
+			img.src = "images/icons/collapse.gif";
+*/
+
+		for (var i = 0; i < oRows.length; i++) {
         var oRow = oRows.item(i);
         if (oRe.test(oRow.id)) {
+					img = document.getElementById(oRow.id + '_img'); 
+						_dpSetRowCollapsed(oRow, true, img);
             oRow.style.display = 'none';
-        }
+						dpCollapseNode(oRow.id);
+												
+//						if (img)
+//							img.src = "images/icons/expand.gif";
+
+				}
     }
 }
 
@@ -99,7 +112,7 @@ function dpCollapseNode(sPid) {
 function dpCollapseAll() {
     var oRows = table.rows;
     // Regular expression child nodes
-    var oRe = /^node\(\d+\.\d+\)(-\d+)+/;
+    var oRe = /^node\(\d+\.\)(-\d+)+/;
     for (var i = 0; i < oRows.length; i++) {
         var oRow = oRows.item(i);
         _dpSetRowCollapsed(oRow, true);

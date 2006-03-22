@@ -51,7 +51,7 @@
 	{if !dPgetConfig('tasks_ajax_list')}
 <a href="index.php{$query_string}&close_task_id={$obj.task_id}"><img src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" /></a>
 	{else}
-<img src="images/icons/expand.gif" border="0" align="center" onClick="dpToggleNode(this);" />
+<img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" onClick="dpToggleNode(this);" />
 	{/if}
 {/if}
 		<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
