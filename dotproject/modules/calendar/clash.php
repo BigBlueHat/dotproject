@@ -18,13 +18,14 @@ if ( isset($_REQUEST['clash_action'])) {
 } else {
 
 ?>
-<script language="javascript">
+<script language="javascript" type="text/javascript">
+<!--
   function set_clash_action(action) {
     var f = document.clash_form;
     f.clash_action.value = action;
     f.submit();
   }
-
+// -->
 </script>
 <?php
 
@@ -37,18 +38,18 @@ if ( isset($_REQUEST['clash_action'])) {
   $_SESSION['add_event_attendees'] = $_POST['event_assigned'];
   $_SESSION['add_event_mail'] = isset($_POST['mail_invited']) ? $_POST['mail_invited'] : 'off';
 
-  echo "<table width='100%' class='std'><tr><td><b>".$AppUI->_('clashEvent')."</b></tr></tr>";
+  echo '<table width="100%" class="std"><tr><td><strong>'.$AppUI->_('clashEvent').'</strong></tr></tr>';
   foreach($clash as $user) {
     echo "<tr><td>$user</td></tr>\n";
   }
   echo "</table>\n";
-  $calurl = $dPconfig['base_url'] . "/index.php?m=calendar&a=clash&event_id=" . $obj->event_id;
-  echo "<a href='#' onclick=\"set_clash_action('suggest');\">" . $AppUI->_('Suggest Alternative') . "</a> : ";
-  echo "<a href='#' onclick=\"set_clash_action('cancel');\">" . $AppUI->_('Cancel') . "</a> : ";
-  echo "<a href='#' onclick=\"set_clash_action('mail');\">" . $AppUI->_('Mail Request') . "</a> : ";
-  echo "<a href='#' onclick=\"set_clash_action('accept');\">" . $AppUI->_('Book Event Despite Conflict') . "</a>\n";
-  echo "<form name='clash_form' method='POST' action='$calurl'>";
-  echo "<input type='hidden' name='clash_action' value='cancel'>";
+  $calurl = $dPconfig['base_url'] . '/index.php?m=calendar&a=clash&event_id=' . $obj->event_id;
+  echo '<a href="#" onclick="set_clash_action(\'suggest\');">' . $AppUI->_('Suggest Alternative') . '</a> : ';
+  echo '<a href="#" onclick="set_clash_action(\'cancel\');">' . $AppUI->_('Cancel') . '</a> : ';
+  echo '<a href="#" onclick="set_clash_action(\'mail\');">' . $AppUI->_('Mail Request') . '</a> : ';
+  echo '<a href="#" onclick="set_clash_action(\'accept\');">' . $AppUI->_('Book Event Despite Conflict') . "</a>\n";
+  echo '<form name="clash_form" method="POST" action="$calurl">';
+  echo '<input type="hidden" name="clash_action" value="cancel">';
   echo "</form>\n";
 
 }
@@ -89,15 +90,17 @@ function clash_suggest()
   $times = array();
   $t = new CDate();
   $t->setTime( 0,0,0 );
-  if (!defined('LOCALE_TIME_FORMAT'))
+  if (!defined('LOCALE_TIME_FORMAT')) {
     define('LOCALE_TIME_FORMAT', '%I:%M %p');
+  }
   for ($m=0; $m < 60; $m++) {
 	  $times[$t->format( "%H%M%S" )] = $t->format( LOCALE_TIME_FORMAT );
 	  $t->addSeconds( 1800 );
   }
 
 ?>
-<script language="javascript">
+<script language="javascript" type="text/javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -121,55 +124,55 @@ function set_clash_action(action) {
 	document.editFrm.clash_action.value = action;
 	document.editFrm.submit();
 }
-
+// -->
 </script>
-<form name='editFrm' method='POST' action='<?php echo "$calurl&clash_action=process"; ?>'>
-<table width='100%' class='std'>
+<form name="editFrm" method="POST" action="<?php echo $calurl; ?>&clash_action=process">
+<table width="100%" class="std">
 <tr>
-  <td width='50%' align='right'><?php echo $AppUI->_('Earliest Date'); ?>:</td>
-  <td width='50%' align='left' nowrap="nowrap">
-    <input type="hidden" name="event_start_date" value="<?php echo $start_date->format(FMT_TIMESTAMP_DATE); ?>">
-    <input type="text" name="start_date" value="<?php echo $start_date->format($df);?>" class="text" disabled="disabled">
-      <a href="#" onClick="popCalendar('start_date')">
+  <td width="50%" align="right"><?php echo $AppUI->_('Earliest Date'); ?>:</td>
+  <td width="50%" align="left" nowrap="nowrap">
+    <input type="hidden" name="event_start_date" value="<?php echo $start_date->format(FMT_TIMESTAMP_DATE); ?>" />
+    <input type="text" name="start_date" value="<?php echo $start_date->format($df);?>" class="text" disabled="disabled" />
+      <a href="#" onclick="popCalendar('start_date')">
 	<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
       </a>
   </td>
 </tr>
 <tr>
-  <td width='50%' align='right'><?php echo $AppUI->_('Latest Date'); ?>:</td>
-  <td width='50%' align='left' nowrap="nowrap">
-    <input type="hidden" name="event_end_date" value="<?php echo $end_date->format(FMT_TIMESTAMP_DATE); ?>">
-    <input type="text" name="end_date" value="<?php echo $end_date->format($df);?>" class="text" disabled="disabled">
-      <a href="#" onClick="popCalendar('end_date')">
+  <td width="50%" align="right"><?php echo $AppUI->_('Latest Date'); ?>:</td>
+  <td width="50%" align="left" nowrap="nowrap">
+    <input type="hidden" name="event_end_date" value="<?php echo $end_date->format(FMT_TIMESTAMP_DATE); ?>" />
+    <input type="text" name="end_date" value="<?php echo $end_date->format($df);?>" class="text" disabled="disabled" />
+      <a href="#" onclick="popCalendar('end_date')">
 	<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
       </a>
   </td>
 </tr>
 <tr>
-  <td width='50%' align='right'><?php echo $AppUI->_('Earliest Start Time'); ?>:</td>
-  <td width='50%' align='left'>
+  <td width="50%" align="right"><?php echo $AppUI->_('Earliest Start Time'); ?>:</td>
+  <td width="50%" align="left">
     <?php echo arraySelect( $times, 'start_time', 'size="1" class="text"', $start_date->format("%H%M%S") ); ?>
   </td>
 </tr>
 <tr>
-  <td width='50%' align='right'><?php echo $AppUI->_('Latest Finish Time'); ?>:</td>
-  <td width='50%' align='left'>
+  <td width="50%" align="right"><?php echo $AppUI->_('Latest Finish Time'); ?>:</td>
+  <td width="50%" align="left">
     <?php echo arraySelect( $times, 'end_time', 'size="1" class="text"', $end_date->format("%H%M%S") ); ?>
   </td>
 </tr>
 <tr>
-  <td width='50%' align='right'><?php echo $AppUI->_('Duration'); ?>:</td>
-  <td width='50%' align='left'>
-    <input type="text" class="text" size=5 name="duration" value="<?php echo $duration; ?>">
+  <td width="50%" align="right"><?php echo $AppUI->_('Duration'); ?>:</td>
+  <td width="50%" align="left">
+    <input type="text" class="text" size="5" name="duration" value="<?php echo $duration; ?>" />
     <?php echo $AppUI->_('minutes'); ?>
   </td>
 </tr>
 <tr>
-  <td><input type="button" value="<?php echo $AppUI->_('cancel'); ?>" class="button" onClick="set_clash_action('cancel');" /></td>
-  <td align="right"><input type="button" value="<?php echo $AppUI->_('submit'); ?>" class="button" onClick="set_clash_action('process')" /></td>
+  <td><input type="button" value="<?php echo $AppUI->_('cancel'); ?>" class="button" onclick="set_clash_action('cancel');" /></td>
+  <td align="right"><input type="button" value="<?php echo $AppUI->_('submit'); ?>" class="button" onclick="set_clash_action('process')" /></td>
 </tr>
 </table>
-<input type='hidden' name='clash_action' value='cancel'>
+<input type="hidden" name="clash_action" value="cancel" />
 </form>
 <?php
 }
