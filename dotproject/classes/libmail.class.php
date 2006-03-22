@@ -138,7 +138,8 @@ function autoCheck( $bool )
  *	@param string $subject any monoline string
  *	@param string $charset encoding to be used for Quoted-Printable encoding of the subject 
 */
-function Subject( $subject, $charset='' ) {
+function Subject( $subject, $charset='' )
+{
 	global $dPconfig;
 
 	if( isset($charset) && $charset != "" ) {
@@ -161,7 +162,8 @@ function Subject( $subject, $charset='' ) {
 
 */
 
-function From( $from ) {
+function From( $from )
+{
 	if( ! is_string($from) ) {
 		echo "Class Mail: error, From is not a string";
 		exit;
@@ -173,7 +175,8 @@ function From( $from ) {
  *	set the Reply-to header
  *	@param string $email should be an email address
 */
-function ReplyTo( $address ) {
+function ReplyTo( $address )
+{
 	if (!is_string($address)) {
 		return false;
 	}
@@ -186,7 +189,8 @@ function ReplyTo( $address ) {
  *	@warning this functionality is *not* a standard, thus only some mail clients are compliants.
 */
 
-function Receipt() {
+function Receipt()
+{
 	$this->receipt = 1;
 }
 
@@ -200,7 +204,8 @@ function Receipt() {
  *	@param boolean $reset resets the current array
 */
 
-function To( $to, $reset=false ) {
+function To( $to, $reset=false )
+{
 
 	// TODO : test validité sur to
 	if( is_array( $to ) ) {
@@ -230,7 +235,8 @@ function To( $to, $reset=false ) {
  *	$cc : email address(es), accept both array and string
  */
 
-function Cc( $cc ) {
+function Cc( $cc )
+{
 	if( is_array($cc) )
 		$this->acc= $cc;
 	else
@@ -246,7 +252,8 @@ function Cc( $cc ) {
  *	$bcc : email address(es), accept both array and string
  */
 
-function Bcc( $bcc ) {
+function Bcc( $bcc )
+{
 	if( is_array($bcc) ) {
 		$this->abcc = $bcc;
 	} else {
@@ -263,7 +270,8 @@ function Bcc( $bcc ) {
  *		default to us-ascii
  *		$mail->Body( "mél en français avec des accents", "iso-8859-1" );
  */
-function Body( $body, $charset="" ) {
+function Body( $body, $charset="" )
+{
 	$this->body = $body;
 
 	if( isset($charset) && $charset != "" ) {
@@ -276,7 +284,8 @@ function Body( $body, $charset="" ) {
 /**
  *		set the Organization header
  */
-function Organization( $org ) {
+function Organization( $org )
+{
 	if( trim( $org != "" )  )
 		$this->xheaders['Organization'] = $org;
 }
@@ -287,7 +296,8 @@ function Organization( $org ) {
  *		ex: $mail->Priority(1) ; => Highest
  */
 
-function Priority( $priority ) {
+function Priority( $priority )
+{
 	if( ! intval( $priority ) )
 		return false;
 
@@ -307,7 +317,8 @@ function Priority( $priority ) {
  *	@param string $disposition : instruct the Mailclient to display the file if possible ("inline") or always as a link ("attachment") possible values are "inline", "attachment"
  *	@param mixed bool/string	$isString : expects $filename to be a real existing file link if FALSE; if var is a STRING $filename is expected to be a dummy and the attachment will be generated from the content of $isString (like an icalendar text block)
  */
-function Attach( $filename, $filetype = "", $disposition = "inline", $isString = false ) {
+function Attach( $filename, $filetype = "", $disposition = "inline", $isString = false )
+{
 	// TODO : si filetype="", alors chercher dans un tablo de MT connus / extension du fichier
 	if( $filetype == "" )
 		$filetype = "application/x-unknown-content-type";
@@ -322,7 +333,8 @@ function Attach( $filename, $filetype = "", $disposition = "inline", $isString =
  *	Build the email message
  *	@access protected
 */
-function BuildMail() {
+function BuildMail()
+{
 // build the headers
 	global $AppUI;
 
@@ -372,7 +384,8 @@ function BuildMail() {
  *	format and send the mail
  *	@access public
 */
-function Send() {
+function Send()
+{
 	$this->BuildMail();
 
 	$this->strTo = implode( ", ", $this->sendto );
@@ -392,7 +405,8 @@ function Send() {
  *
  * @access public
  */
-function SMTPSend($to, $subject, $body, &$headers) {
+function SMTPSend($to, $subject, $body, &$headers)
+{
 	global $AppUI, $dPconfig;
 
 	// Start the connection to the server
@@ -497,7 +511,8 @@ function getHostName()
  *
  * @access private
  */
-function QueueMail() {
+function QueueMail()
+{
 	global $AppUI;
 
 	require_once $AppUI->getSystemClass('event_queue');
@@ -511,7 +526,8 @@ function QueueMail() {
  *
  * @access private
  */
-function SendQueuedMail($mod, $type, $originator, $owner, &$args) {
+function SendQueuedMail($mod, $type, $originator, $owner, &$args)
+{
 	extract($args);
 	if ($this->transport == 'smtp') {
 		return $this->SMTPSend($sendto, $xheaders['Subject'], $fullBody, $xheaders);
@@ -527,7 +543,8 @@ function SendQueuedMail($mod, $type, $originator, $owner, &$args) {
  *
  *	@return string
  */
-function Get() {
+function Get()
+{
 	$this->BuildMail();
 	$mail = "To: " . $this->strTo . "\r\n";
 	$mail .= $this->headers . "\r\n";
@@ -541,7 +558,8 @@ function Get() {
  *	@param string $address : email address to check
  *	@return true if email adress is ok
  */
-function ValidEmail($address) {
+function ValidEmail($address)
+{
    if( preg_match( "/^(.*)\<(.+)\>$/", $address, $regs ) ) {
       $address = $regs[2];
    }
@@ -558,7 +576,8 @@ function ValidEmail($address) {
  *	@return if unvalid, output an error message and exit, this may -should- be customized
  */
 
-function CheckAdresses( $aad ) {
+function CheckAdresses( $aad )
+{
 	for($i=0;$i< count( $aad); $i++ ) {
 		if( ! $this->ValidEmail( $aad[$i]) ) {
 			echo "Class Mail, method Mail : invalid address $aad[$i]";
@@ -571,7 +590,8 @@ function CheckAdresses( $aad ) {
  *	check and encode attach file(s) . internal use only
  *	@access private
 */
-function _build_attachement() {
+function _build_attachement()
+{
 	$this->xheaders["Content-Type"] = "multipart/mixed;\r\n boundary=\"$this->boundary\"";
 
 	$this->fullBody = "This is a multi-part message in MIME format.\r\n--$this->boundary\r\n";

@@ -48,7 +48,8 @@ class CDpObject {
  *	@param string $table name of the table in the db schema relating to child class
  *	@param string $key name of the primary key field in the table
  */
-	function CDpObject( $table, $key ) {
+	function CDpObject( $table, $key )
+	{
 		global $dPconfig;
 		$this->_tbl = $table;
 		$this->_tbl_key = $key;
@@ -62,7 +63,8 @@ class CDpObject {
 /**
  *	@return string Returns the error message
  */
-	function getError() {
+	function getError()
+	{
 		return $this->_error;
 	}
 /**
@@ -72,7 +74,8 @@ class CDpObject {
  *	@param array $hash named array
  *	@return null|string	null is operation was satisfactory, otherwise returns an error
  */
-	function bind( $hash ) {
+	function bind( $hash )
+	{
 		if (!is_array( $hash )) {
 			$this->_error = get_class( $this )."::bind failed.";
 			return false;
@@ -87,7 +90,8 @@ class CDpObject {
  *	@param int $oid optional argument, if not specifed then the value of current key is used
  *	@return any result from the database operation
  */
-	function load( $oid=null , $strip = true) {
+	function load( $oid=null , $strip = true)
+	{
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = intval( $oid );
@@ -108,7 +112,8 @@ class CDpObject {
  *	Returns an array, keyed by the key field, of all elements that meet
  *	the where clause provided. Ordered by $order key.
  */
-	function loadAll($order = null, $where = null) {
+	function loadAll($order = null, $where = null)
+	{
 		$this->_query->clear();
 		$this->_query->addTable($this->_tbl);
 		if ($order)
@@ -125,7 +130,8 @@ class CDpObject {
  *	@param string $alias optional alias for table queries.
  *	@return DBQuery object
  */
-	function &getQuery($alias = null) {
+	function &getQuery($alias = null)
+	{
 		$this->_query->clear();
 		$this->_query->addTable($this->_tbl, $alias);
 		return $this->_query;
@@ -137,7 +143,8 @@ class CDpObject {
  *	Can be overloaded/supplemented by the child class
  *	@return null if the object is ok
  */
-	function check() {
+	function check()
+	{
 		return NULL;
 	}
 	
@@ -147,7 +154,8 @@ class CDpObject {
 *	@author	handco <handco@users.sourceforge.net>
 *	@return	object	The new record object or null if error
 **/
-	function duplicate() {
+	function duplicate()
+	{
 		$_key = $this->_tbl_key;
 		
 		$newObj = $this;
@@ -164,7 +172,8 @@ class CDpObject {
  *	Can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns and error message
  */
-	function store( $updateNulls = false ) {
+	function store( $updateNulls = false )
+	{
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed<br />$msg";
@@ -196,7 +205,8 @@ class CDpObject {
  *	@param array Optional array to compiles standard joins: format [label=>'Label',name=>'table name',idfield=>'field',joinfield=>'field']
  *	@return true|false
  */
-	function canDelete( &$msg, $oid=null, $joins=null ) {
+	function canDelete( &$msg, $oid=null, $joins=null )
+	{
 		global $AppUI;
 
 		// First things first.  Are we allowed to delete?
@@ -255,7 +265,8 @@ class CDpObject {
  *	Can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns and error message
  */
-	function delete( $oid=null ) {
+	function delete( $oid=null )
+	{
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = intval( $oid );
@@ -281,7 +292,8 @@ class CDpObject {
  *	@param int User id number
  *	@return array
  */
-	function getDeniedRecords( $uid ) {
+	function getDeniedRecords( $uid )
+	{
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getDeniedRecords failed, user id = 0" );
 
@@ -299,7 +311,8 @@ class CDpObject {
  *	@return array
  */
 // returns a list of records exposed to the user
-	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) {
+	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
+	{
 		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedRecords failed" );
@@ -335,7 +348,8 @@ class CDpObject {
 		return $this->_query->loadHashList( $index );
 	}
 
-	function getAllowedSQL( $uid, $index = null ) {
+	function getAllowedSQL( $uid, $index = null )
+	{
 		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );
@@ -360,7 +374,8 @@ class CDpObject {
 		return $where;
 	}
 
-	function setAllowedSQL($uid, &$query, $index = null, $key = null) {
+	function setAllowedSQL($uid, &$query, $index = null, $key = null)
+	{
 		$perms =& $GLOBALS['AppUI']->acl();
 		$uid = intval( $uid );
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );

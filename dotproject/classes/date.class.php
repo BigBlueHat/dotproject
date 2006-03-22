@@ -64,7 +64,8 @@ class CDate extends Date {
 * @param int Positive or negative number of days
 * @author J. Christopher Pereira <kripper@users.sf.net>
 */
-        function addDays( $n ) {
+        function addDays( $n )
+        {
                  $timeStamp = $this->getTime();
                  $oldHour = $this->getHour();
                  $this->setDate( $timeStamp + SEC_DAY * ceil($n), DATE_FORMAT_UNIXTIME);
@@ -80,7 +81,8 @@ class CDate extends Date {
 * @param int Positive or negative number of months
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
-        function addMonths( $n ) {
+        function addMonths( $n )
+        {
                 $an = abs( $n );
                 $years = floor( $an / 12 );
                 $months = $an % 12;
@@ -107,7 +109,8 @@ class CDate extends Date {
 * @param Date The date to compare to
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
-        function dateDiff( $when ) {
+        function dateDiff( $when ) 
+        {
                 return Date_calc::dateDiff(
                         $this->getDay(), $this->getMonth(), $this->getYear(),
                         $when->getDay(), $when->getMonth(), $when->getYear()
@@ -121,13 +124,15 @@ class CDate extends Date {
 * @param int second
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
-        function setTime( $h=0, $m=0, $s=0 ) {
+        function setTime( $h=0, $m=0, $s=0 )
+        {
                 $this->setHour( $h );
                 $this->setMinute( $m );
                 $this->setSecond( $s );
         }
 
-        function isWorkingDay(){
+        function isWorkingDay()
+        {
                 global $AppUI;
 
                 $working_days = dPgetConfig("cal_working_days");
@@ -140,7 +145,8 @@ class CDate extends Date {
                 return in_array($this->getDayOfWeek(), $working_days);
         }
 
-        function getAMPM() {
+        function getAMPM()
+        {
                 if ( $this->getHour() > 11 ) {
                         return "pm";
                 } else {
