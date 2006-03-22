@@ -45,7 +45,8 @@ if (isset($dPconfig['reset_memory_limit']))
 * @param string The SQL query
 * @return The value returned in the query or null if the query failed.
 */
-function db_loadResult( $sql ) {
+function db_loadResult( $sql )
+{
 	$cur = db_exec( $sql );
 	$cur or exit( db_error() );
 	$ret = null;
@@ -64,7 +65,8 @@ function db_loadResult( $sql ) {
 * @param string The SQL query
 * @param object The address of variable
 */
-function db_loadObject( $sql, &$object, $bindAll=false , $strip = true) {
+function db_loadObject( $sql, &$object, $bindAll=false , $strip = true)
+{
 	if ($object != null) {
 		$hash = array();
 		if( !db_loadHash( $sql, $hash ) ) {
@@ -92,7 +94,8 @@ function db_loadObject( $sql, &$object, $bindAll=false , $strip = true) {
 * @param array An array for the result to be return in
 * @return <b>True</b> is the query was successful, <b>False</b> otherwise
 */
-function db_loadHash( $sql, &$hash ) {
+function db_loadHash( $sql, &$hash )
+{
 	$cur = db_exec( $sql );
 	$cur or exit( db_error() );
 	$hash = db_fetch_assoc( $cur );
@@ -111,7 +114,8 @@ function db_loadHash( $sql, &$hash ) {
 *
 * @param string $index
 */
-function db_loadHashList( $sql, $index='' ) {
+function db_loadHashList( $sql, $index='' )
+{
 	$cur = db_exec( $sql );
 	$cur or exit( db_error() );
 	$hashlist = array();
@@ -129,8 +133,9 @@ function db_loadHashList( $sql, $index='' ) {
 *
 * @param [type] $maxrows
 */
-function db_loadList( $sql, $maxrows=NULL ) {
-	GLOBAL $AppUI;
+function db_loadList( $sql, $maxrows=null )
+{
+	global $AppUI;
 	if (!($cur = db_exec( $sql ))) {;
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 		return false;
@@ -154,8 +159,9 @@ function db_loadList( $sql, $maxrows=NULL ) {
 *
 * @param [type] $maxrows
 */
-function db_loadColumn( $sql, $maxrows=NULL ) {
-	GLOBAL $AppUI;
+function db_loadColumn( $sql, $maxrows=null )
+{
+	global $AppUI;
 	if (!($cur = db_exec( $sql ))) {;
 		$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 		return false;
@@ -173,7 +179,7 @@ function db_loadColumn( $sql, $maxrows=NULL ) {
 			}
 		}
 		$list[] = $row[$row_index];
-		if( $maxrows && $maxrows == $cnt++ ) {
+		if ( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
 	}
@@ -185,7 +191,8 @@ function db_loadColumn( $sql, $maxrows=NULL ) {
  * class must implement the Load() factory, see examples in Webo classes
  * @note to optimize request, only select object oids in $sql
  */
-function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
+function db_loadObjectList( $sql, $object, $maxrows = null )
+{
 	$cur = db_exec( $sql );
 	if (!$cur) {
 		die( "db_loadObjectList : " . db_error() );
@@ -204,7 +211,7 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 		}
 		$object->load( $row[$row_index] );
 		$list[] = $object;
-		if( $maxrows && $maxrows == $cnt++ ) {
+		if ( $maxrows && $maxrows == $cnt++ ) {
 			break;
 		}
 	}
@@ -220,10 +227,11 @@ function db_loadObjectList( $sql, $object, $maxrows = NULL ) {
 *
 * @param [type] $verbose
 */
-function db_insertArray( $table, &$hash, $verbose=false ) {
+function db_insertArray( $table, &$hash, $verbose=false )
+{
 	$fmtsql = "insert into $table ( %s ) values( %s ) ";
 	foreach ($hash as $k => $v) {
-		if (is_array($v) or is_object($v) or $v == NULL) {
+		if (is_array($v) or is_object($v) or $v == null) {
 			continue;
 		}
 		$fields[] = $k;
@@ -247,13 +255,14 @@ function db_insertArray( $table, &$hash, $verbose=false ) {
 *
 * @param [type] $verbose
 */
-function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
+function db_updateArray( $table, &$hash, $keyName, $verbose=false )
+{
 	$fmtsql = "UPDATE $table SET %s WHERE %s";
 	foreach ($hash as $k => $v) {
-		if( is_array($v) or is_object($v) or $k[0] == '_' ) // internal or NA field
+		if ( is_array($v) or is_object($v) or $k[0] == '_' ) // internal or NA field
 			continue;
 
-		if( $k == $keyName ) { // PK not to be updated
+		if ( $k == $keyName ) { // PK not to be updated
 			$where = "$keyName='" . db_escape( $v ) . "'";
 			continue;
 		}
@@ -276,7 +285,8 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 * { Description }
 *
 */
-function db_delete( $table, $keyName, $keyValue ) {
+function db_delete( $table, $keyName, $keyValue )
+{
 	$keyName = db_escape( $keyName );
 	$keyValue = db_escape( $keyValue );
 	$ret = db_exec( "DELETE FROM $table WHERE $keyName='$keyValue'" );
@@ -292,10 +302,11 @@ function db_delete( $table, $keyName, $keyValue ) {
 * @param [type] $keyName
 * @param [type] $verbose
 */
-function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
+function db_insertObject( $table, &$object, $keyName = null, $verbose=false )
+{
 	$fmtsql = "INSERT INTO `$table` ( %s ) VALUES ( %s ) ";
 	foreach (get_object_vars( $object ) as $k => $v) {
-		if (is_array($v) or is_object($v) or $v == NULL) {
+		if (is_array($v) or is_object($v) or $v == null) {
 			continue;
 		}
 		if ($k[0] == '_') { // internal field
@@ -314,8 +325,9 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 	}
 	$id = db_insert_id();
 	($verbose) && print "id=[$id]<br />\n";
-	if ($keyName && $id)
+	if ($keyName && $id) {
 		$object->$keyName = $id;
+	}
 	return $change;
 }
 
@@ -326,7 +338,8 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 *
 * @param [type] $updateNulls
 */
-function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
+function db_updateObject( $table, &$object, $keyName, $updateNulls=true )
+{
 	$q = new DBQuery;
 	$q->addQuery('*');
 	$q->addTable($table);
@@ -336,14 +349,12 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 	$update_list = array();
 	$values_list = array();
 	foreach($old_obj as $field => $value)
-		if ($object->$field != $value && ($value !== NULL || $updateNulls))
-		{
+		if ($object->$field != $value && ($value !== NULL || $updateNulls)) {
 			$update_list[] = $field;
 			$values_list[] = htmlspecialchars($object->$field);
 		}
 
-	if (count($update_list))
-	{
+	if (count($update_list)) {
 		$change = '"' . implode('","', $update_list) . '"="' . implode('","', $values_list) . '"';
 		// addHistory($table, $object->$keyName, 'modify', $change, 0);
 		
@@ -351,13 +362,14 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 		$q->addWhere($keyName . '=' . db_escape($object->$keyName));
 		$q->addTable($table);
 		$ret = $q->exec();
-		if ($ret)
+		if ($ret) {
 			return $change;
-		else
+		} else {
 			return $ret;
-	}
-	else
+		}
+	} else {
 		return true;
+	}
 }
 
 /**
@@ -366,7 +378,8 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 * { Description }
 *
 */
-function db_dateConvert( $src, &$dest, $srcFmt ) {
+function db_dateConvert( $src, &$dest, $srcFmt )
+{
 	$result = strtotime( $src );
 	$dest = $result;
 	return ( $result != 0 );
@@ -379,9 +392,10 @@ function db_dateConvert( $src, &$dest, $srcFmt ) {
 *
 * @param [type] $timestamp
 */
-function db_datetime( $timestamp = NULL ) {
+function db_datetime( $timestamp = null )
+{
 	if (!$timestamp) {
-		return NULL;
+		return null;
 	}
 	if (is_object($timestamp)) {
 		return $timestamp->toString( '%Y-%m-%d %H:%M:%S');
@@ -396,7 +410,8 @@ function db_datetime( $timestamp = NULL ) {
 * { Description }
 *
 */
-function db_dateTime2locale( $dateTime, $format ) {
+function db_dateTime2locale( $dateTime, $format )
+{
 	if (intval( $dateTime)) {
 		$date = new CDate( $dateTime );
 		return $date->format( $format );
@@ -414,7 +429,8 @@ function db_dateTime2locale( $dateTime, $format ) {
 * @param boolean
 * @param boolean
 */
-function bindHashToObject( $hash, &$obj, $prefix=NULL, $checkSlashes=true, $bindAll=false ) {
+function bindHashToObject( $hash, &$obj, $prefix=null, $checkSlashes=true, $bindAll=false )
+{
 	is_array( $hash ) or die( "bindHashToObject : hash expected" );
 	is_object( $obj ) or die( "bindHashToObject : object expected" );
 
