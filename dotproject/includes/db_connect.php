@@ -227,7 +227,7 @@ function db_insertArray( $table, &$hash, $verbose=false ) {
 			continue;
 		}
 		$fields[] = $k;
-		$values[] = "'" . db_escape(strip_tags( $v )) . "'";
+		$values[] = "'" . db_escape(htmlspecialchars( $v )) . "'";
 	}
 	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
 
@@ -260,7 +260,7 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false ) {
 		if ($v == '') {
 			$val = 'NULL';
 		} else {
-			$val = "'" . db_escape(strip_tags( $v )) . "'";
+			$val = "'" . db_escape(htmlspecialchars( $v )) . "'";
 		}
 		$tmp[] = "$k=$val";
 	}
@@ -302,8 +302,7 @@ function db_insertObject( $table, &$object, $keyName = NULL, $verbose=false ) {
 			continue;
 		}
 		$fields[] = $k;
-		//$values[] = "'" . db_escape(htmlentities(strip_tags( $v ), ENT_COMPAT ,$locale_char_set)) . "'";
-		$values[] = "'" . db_escape(strip_tags( $v )) . "'";
+		$values[] = "'" . db_escape(htmlspecialchars( $v )) . "'";
 		$insert_list[] = $k;
 		$values_list[] = $v;
 	}
@@ -340,7 +339,7 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true ) {
 		if ($object->$field != $value && ($value !== NULL || $updateNulls))
 		{
 			$update_list[] = $field;
-			$values_list[] = strip_tags($object->$field);
+			$values_list[] = htmlspecialchars($object->$field);
 		}
 
 	if (count($update_list))
