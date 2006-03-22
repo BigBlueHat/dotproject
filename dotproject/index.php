@@ -40,7 +40,7 @@ if( is_file( "$baseDir/includes/config.php" ) ) {
 	require_once "$baseDir/includes/config.php";
 
 } else {
-	echo "<html><head><meta http-equiv='refresh' content='5; URL=".$baseUrl."/install/index.php'></head><body>";
+	echo "<html><head><meta http-equiv='refresh' content='5; URL=".$baseUrl."/install/index.php' /></head><body>";
 	echo "Fatal Error. You haven't created a config file yet.<br/><a href='./install/index.php'>
 		Click Here To Start Installation and Create One!</a> (forwarded in 5 sec.)</body></html>";
 	exit();
