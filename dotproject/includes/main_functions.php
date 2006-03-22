@@ -9,7 +9,8 @@ define('SECONDS_PER_DAY', 60 * 60 * 24);
 ##
 ## Returns the best color based on a background color (x is cross-over)
 ##
-function bestColor( $bg, $lt='#ffffff', $dk='#000000' ) {
+function bestColor( $bg, $lt='#ffffff', $dk='#000000' )
+{
 // cross-over color = x
 	$x = 128;
 	$r = hexdec( substr( $bg, 0, 2 ) );
@@ -26,8 +27,9 @@ function bestColor( $bg, $lt='#ffffff', $dk='#000000' ) {
 ##
 ## returns a select box based on an key,value array where selected is based on key
 ##
-function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translate=false ) {
-	GLOBAL $AppUI;
+function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translate=false )
+{
+	global $AppUI;
 	if (! is_array($arr)) {
 		dprint(__FILE__, __LINE__, 0, "arraySelect called with no array");
 		return '';
@@ -53,8 +55,9 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 ##
 ## returns a select box based on an key,value array where selected is based on key
 ##
-function arraySelectTree( &$arr, $select_name, $select_attribs, $selected, $translate=false ) {
-	GLOBAL $AppUI;
+function arraySelectTree( &$arr, $select_name, $select_attribs, $selected, $translate=false )
+{
+	global $AppUI;
 	reset( $arr );
 
 	$children = array();
@@ -70,7 +73,8 @@ function arraySelectTree( &$arr, $select_name, $select_attribs, $selected, $tran
 	return arraySelect( $list, $select_name, $select_attribs, $selected, $translate );
 }
 
-function tree_recurse($id, $indent, $list, $children) {
+function tree_recurse($id, $indent, $list, $children)
+{
 	if (@$children[$id]) {
 		foreach ($children[$id] as $v) {
 			$id = $v[0];
@@ -86,7 +90,8 @@ function tree_recurse($id, $indent, $list, $children) {
 ##
 ## Merges arrays maintaining/overwriting shared numeric indicees
 ##
-function arrayMerge( $a1, $a2 ) {
+function arrayMerge( $a1, $a2 )
+{
 	foreach ($a2 as $k => $v) {
 		$a1[$k] = $v;
 	}
@@ -97,8 +102,9 @@ function arrayMerge( $a1, $a2 ) {
 ## breadCrumbs - show a colon separated list of bread crumbs
 ## array is in the form url => title
 ##
-function breadCrumbs( &$arr ) {
-	GLOBAL $AppUI;
+function breadCrumbs( &$arr )
+{
+	global $AppUI;
 	$crumbs = array();
 	foreach ($arr as $k => $v) {
 		$crumbs[] = "<a href=\"$k\">".$AppUI->_( $v )."</a>";
@@ -108,11 +114,13 @@ function breadCrumbs( &$arr ) {
 ##
 ## generate link for context help -- old version
 ##
-function contextHelp( $title, $link='' ) {
+function contextHelp( $title, $link='' )
+{
 	return dPcontextHelp( $title, $link );
 }
 
-function dPcontextHelp( $title, $link='' ) {
+function dPcontextHelp( $title, $link='' )
+{
 	global $AppUI;
 	return "<a href=\"#$link\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$link', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">".$AppUI->_($title)."</a>";
 }
@@ -124,7 +132,8 @@ function dPcontextHelp( $title, $link='' ) {
 * @param $default string The default value to return if the key not found.
 * @return The value of the setting, or the default value if not found.
 */
-function dPgetConfig( $key, $default = null ) {
+function dPgetConfig( $key, $default = null )
+{
 	global $dPconfig;
 	if (array_key_exists( $key, $dPconfig )) {
 		return $dPconfig[$key];
@@ -178,8 +187,9 @@ function dPgetUsers($active_only = true)
 ##
 ## displays the configuration array of a module for informational purposes
 ##
-function dPshowModuleConfig( $config ) {
-	GLOBAL $AppUI;
+function dPshowModuleConfig( $config )
+{
+	global $AppUI;
 	$s = '<table cellspacing="2" cellpadding="2" border="0" class="std" width="50%">';
 	$s .= '<tr><th colspan="2">'.$AppUI->_( 'Module Configuration' ).'</th></tr>';
 	foreach ($config as $k => $v) {
@@ -194,7 +204,8 @@ function dPshowModuleConfig( $config ) {
  *	@param string The name of the image
  *	@param string Optional name of the current module
  */
-function dPfindImage( $name, $module=null ) {
+function dPfindImage( $name, $module=null )
+{
 // uistyle must be declared globally
 	global $dPconfig, $uistyle;
 
@@ -221,7 +232,8 @@ function dPfindImage( $name, $module=null ) {
  *	@param string The image height
  *	@param string The alt text for the image
  */
-function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' ) {
+function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' )
+{
 	global $AppUI;
 	/*
 	if (strpos( $src, '.png' ) > 0 && strpos( $_SERVER['HTTP_USER_AGENT'], 'MSIE 6.0' ) !== false) {
@@ -253,14 +265,16 @@ function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' ) {
 # function to return a default value if a variable is not set
 #
 
-function defVal($var, $def) {
+function defVal($var, $def)
+{
 	return isset($var) ? $var : $def;
 }
 
 /**
 * Utility function to return a value from a named array or a specified default
 */
-function dPgetParam( &$arr, $name, $def=null ) {
+function dPgetParam( &$arr, $name, $def=null )
+{
 	return isset( $arr[$name] ) ? $arr[$name] : $def;
 }
 
@@ -268,7 +282,8 @@ function dPgetParam( &$arr, $name, $def=null ) {
 # add history entries for tracking changes
 #
 
-function addHistory( $table, $id, $action = 'modify', $details = '') { //$description = '', $project_id = 0) {
+function addHistory( $table, $id, $action = 'modify', $details = '')
+{ //$description = '', $project_id = 0) {
 	global $AppUI, $dPconfig;
 	/*
 	 * TODO:
@@ -285,7 +300,7 @@ function addHistory( $table, $id, $action = 'modify', $details = '') { //$descri
 	 * 2) project_id and module_id should be provided in order to filter history entries
 	 *
 	 */
-	if(!$dPconfig['log_changes']) return;
+	if (!$dPconfig['log_changes']) return;
 
 //	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
 	$q  = new DBQuery;
@@ -306,11 +321,11 @@ function addHistory( $table, $id, $action = 'modify', $details = '') { //$descri
 	$q->addInsert('history_user', $AppUI->user_id);
 	$q->addInsert('history_table', $table);
 	$q->addInsert('history_item', $id);
-	if (is_array($details))
-		foreach ($details as $field => $value)
+	if (is_array($details)) {
+		foreach ($details as $field => $value) {
 			$q->addInsert('history_' . $field, $value);
-	else
-	{
+		}
+	} else {
 		$details = str_replace("'", "\'", $details);
 		$q->addInsert('history_description', $details);
 	}
@@ -325,7 +340,8 @@ function addHistory( $table, $id, $action = 'modify', $details = '') { //$descri
 ##
 ## Looks up a value from the SYSVALS table
 ##
-function dPgetSysVal( $title ) {
+function dPgetSysVal( $title )
+{
 	$q  = new DBQuery;
 	$q->addTable('sysvals');
 	$q->leftJoin('syskeys', 'sk', 'syskey_id = sysval_key_id');
@@ -340,19 +356,22 @@ function dPgetSysVal( $title ) {
 
 	// A bit of magic to handle newlines and returns as separators
 	// Missing sep1 is treated as a newline.
-	if (!isset($sep1) || empty($sep1))
+	if (!isset($sep1) || empty($sep1)) {
 	  $sep1 = "\n";
-	if ($sep1 == "\\n")
+	}
+	if ($sep1 == "\\n") {
 	  $sep1 = "\n";
-	if ($sep1 == "\\r")
+	}
+	if ($sep1 == "\\r") {
 	  $sep1 = "\r";
+	}
 
 	$temp = explode( $sep1, $row['sysval_value'] );
 	$arr = array();
 	// We use trim() to make sure a numeric that has spaces
 	// is properly treated as a numeric
 	foreach ($temp as $item) {
-		if($item) {
+		if ($item) {
 			$sep2 = empty($sep2) ? "\n" : $sep2;
 			$temp2 = explode( $sep2, $item );
 			if (isset( $temp2[1] )) {
@@ -365,7 +384,8 @@ function dPgetSysVal( $title ) {
 	return $arr;
 }
 
-function dPuserHasRole( $name ) {
+function dPuserHasRole( $name )
+{
 	global $AppUI;
 	$uid = $AppUI->user_id;
 	$sql = "SELECT r.role_id FROM roles AS r,user_roles AS ur WHERE ur.user_id=$uid AND ur.role_id=r.role_id AND r.role_name='$name'";
@@ -377,7 +397,8 @@ function dPuserHasRole( $name ) {
 	return $q->loadResult();
 }
 
-function dPformatDuration($x) {
+function dPformatDuration($x)
+{
     global $dPconfig;
     global $AppUI;
     $dur_day = floor($x / $dPconfig['daily_working_hours']);
@@ -401,12 +422,12 @@ function dPformatDuration($x) {
     }
 
     return $str;
-
 }
 
 /**
 */
-function dPsetMicroTime() {
+function dPsetMicroTime()
+{
 	global $microTimeSet;
 	list($usec, $sec) = explode(" ",microtime());
 	$microTimeSet = (float)$usec + (float)$sec;
@@ -414,7 +435,8 @@ function dPsetMicroTime() {
 
 /**
 */
-function dPgetMicroDiff() {
+function dPgetMicroDiff()
+{
 	global $microTimeSet;
 	$mt = $microTimeSet;
 	dPsetMicroTime();
@@ -424,10 +446,11 @@ function dPgetMicroDiff() {
 /**
 * Make text safe to output into double-quote enclosed attirbutes of an HTML tag
 */
-function dPformSafe( $txt, $deslash=false ) {
+function dPformSafe( $txt, $deslash=false )
+{
 	global $locale_char_set;
 	
-	if(!$locale_char_set){
+	if (!$locale_char_set){
 	    $locale_char_set = "utf-8";
 	}
 	
@@ -439,7 +462,7 @@ function dPformSafe( $txt, $deslash=false ) {
 				$obj->$k = htmlspecialchars( $v, ENT_COMPAT, $locale_char_set );
 			}
 		}
-	} else if (is_array( $txt )) {
+	} elseif (is_array( $txt )) {
 		foreach ($txt as $k=>$v) {
 			if ($deslash) {
 				$txt[$k] = htmlspecialchars( stripslashes( $v ), ENT_COMPAT, $locale_char_set );
@@ -457,19 +480,21 @@ function dPformSafe( $txt, $deslash=false ) {
 	return $txt;
 }
 
-function convert2days( $durn, $units ) {
+function convert2days( $durn, $units )
+{
 	global $dPconfig;
 	switch ($units) {
-	case 0:
-	case 1:
-		return $durn / $dPconfig['daily_working_hours'];
-		break;
-	case 24:
-		return $durn;
+		case 0:
+		case 1:
+			return $durn / $dPconfig['daily_working_hours'];
+			break;
+		case 24:
+			return $durn;
 	}
 }
 
-function formatTime( $uts ) {
+function formatTime( $uts )
+{
 	global $AppUI;
 	$date = new CDate();
 	$date->setDate($uts, DATE_FORMAT_UNIXTIME);	
@@ -481,7 +506,8 @@ function formatTime( $uts ) {
  * write their own standards.  Nothing that depends on locales
  * can be trusted in Windows.
  */
-function formatCurrency( $number, $format ) {
+function formatCurrency( $number, $format )
+{
 	global $AppUI;
 
 	if (!$format) {
@@ -489,24 +515,30 @@ function formatCurrency( $number, $format ) {
 	}
 	// If the requested locale doesn't work, don't fail,
 	// revert to the system default.
-	if (! setlocale(LC_MONETARY, $format))
+	if (! setlocale(LC_MONETARY, $format)) {
 		setlocale(LC_MONETARY, "");
-	if (function_exists('money_format'))
+	}
+	if (function_exists('money_format')) {
 		return money_format('%i', $number);
+	}
 
 	// NOTE: This is called if money format doesn't exist.
 	// Money_format only exists on non-windows 4.3.x sites.
 	// This uses localeconv to get the information required
 	// to format the money.  It tries to set reasonable defaults.
 	$mondat = localeconv();
-	if (! isset($mondat['int_frac_digits']) || $mondat['int_frac_digits'] > 100)
+	if (! isset($mondat['int_frac_digits']) || $mondat['int_frac_digits'] > 100) {
 		$mondat['int_frac_digits'] = 2;
-	if (! isset($mondat['int_curr_symbol']))
+	}
+	if (! isset($mondat['int_curr_symbol'])) {
 		$mondat['int_curr_symbol'] = '';
-	if (! isset($mondat['mon_decimal_point']))
+	}
+	if (! isset($mondat['mon_decimal_point'])) {
 		$mondat['mon_decimal_point'] = '.';
-	if (! isset($mondat['mon_thousands_sep']))
+	}
+	if (! isset($mondat['mon_thousands_sep'])) {
 		$mondat['mon_thousands_sep'] = ',';
+	}
 	$numeric_portion = number_format(abs($number),
 		$mondat['int_frac_digits'],
 		$mondat['mon_decimal_point'],
@@ -541,8 +573,9 @@ function formatCurrency( $number, $format ) {
 	}
 	$currency .= $currency_prefix . $mondat['int_curr_symbol'] . $currency_suffix;
 	$space = "";
-	if ($mondat[$letter . "_sep_by_space"])
+	if ($mondat[$letter . "_sep_by_space"]) {
 		$space = " ";
+	}
 	if ($mondat[$letter . "_cs_precedes"]) {
 		$result = "$currency$space$numeric_portion";
 	} else {
@@ -618,14 +651,16 @@ function findTabModules($module, $file = null)
  * @param char $title
  * @desc Show an estructure (array/object) formatted
 */
-function showFVar(&$var, $title = ""){
+function showFVar(&$var, $title = "")
+{
     echo "<h1>$title</h1";
     echo "<pre>";
     print_r($var);
     echo "</pre>";
 }
 
-function getUsersArray(){
+function getUsersArray()
+{
 	$q  = new DBQuery;
 	$q->addTable('users');
 	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
@@ -635,16 +670,17 @@ function getUsersArray(){
     
 }
 
-function getUsersCombo($default_user_id = 0, $first_option = 'All users') {
+function getUsersCombo($default_user_id = 0, $first_option = 'All users')
+{
     global $AppUI;
     
-    $parsed = "<select name='user_id' class='text'>";
+    $parsed = '<select name="user_id" class="text">';
     if($first_option != ""){
-        $parsed .= "<option value='0' ".(!$default_user_id ? "selected" : "").">".$AppUI->_($first_option)."</option>";
+        $parsed .= '<option value="0" '.(!$default_user_id ? "selected" : "").'>'.$AppUI->_($first_option).'</option>';
     }
     foreach(getUsersArray() as $user_id => $user){
-        $selected = $user_id == $default_user_id ? "selected" : "";
-        $parsed .= "<option value='$user_id' $selected>".$user["contact_first_name"]." ".$user["contact_last_name"]."</option>";
+        $selected = $user_id == $default_user_id ? 'selected="selected"' : "";
+        $parsed .= "<option value=\"$user_id\" $selected>".$user["contact_first_name"]." ".$user["contact_last_name"]."</option>";
     }
     $parsed .= "</select>";
     return $parsed;
