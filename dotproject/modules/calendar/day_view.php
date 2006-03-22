@@ -83,8 +83,10 @@ $tpl->assign('today', htmlentities($this_day->format( "%A" ), ENT_COMPAT, $local
 $tpl->displayFile('view.day');
 
 ?>
-<script language="javascript">
+<script language="javascript" type="text/javascript">
+<!--
 function clickDay( idate, fdate ) {
 	window.location = './index.php?m=calendar&a=day_view&date='+idate;
 }
+// -->
 </script>
