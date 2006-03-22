@@ -66,14 +66,14 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$tpl->displayAddEdit($user);
 	
 ?>
-<SCRIPT language="javascript">
+<script language="javascript" type="text/javascript">
 var emails = new Array();
 <?php
 foreach($contacts as $contact)
 	echo 'emails['.$contact['contact_id'].'] = "' . $contact['contact_email'] . '";';
 ?>
 
-function setContact(){
+function setContact() {
 	var form = document.editFrm;
 	contact = form.contact_id;
 	contact_option = contact.options[contact.selectedIndex];
@@ -84,7 +84,7 @@ function setContact(){
 	form.contact_email.value = emails[contact_id];
 }
 
-function submitIt(){
+function submitIt() {
     var form = document.editFrm;
    if (form.user_username.value.length < <?php echo dPgetConfig('username_min_len', 3); ?> && form.user_username.value != 'admin') {
         alert("<?php echo $AppUI->_('adminValidUserName', UI_OUTPUT_JS)  ;?>"  + <?php echo dPgetConfig('username_min_len', 3); ?>);
