@@ -70,3 +70,4 @@ $tabBox = new CTabBox( "?m=calendar&a=calmgt", "{$dPconfig['root_dir']}/modules/
 $tabBox->add('webcal_mgt', 'WebCal Management', true);
 $min_view = true;
 $tabBox->show();
+?>
