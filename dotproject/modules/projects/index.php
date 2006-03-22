@@ -116,7 +116,7 @@ $fixed_project_type_file = array(
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
-$tabBox = new CTabBox( "?m=projects&orderby=$orderby", "{$dPconfig['root_dir']}/modules/projects/", $tab );
+$tabBox = new CTabBox( "?m=projects", "{$dPconfig['root_dir']}/modules/projects/", $tab );
 if ( $tabBox->isTabbed() ) {
 	// This will overwrited the initial tab, so we need to add that separately.
 	if (isset($project_types[0]))
