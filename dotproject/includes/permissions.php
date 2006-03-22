@@ -14,7 +14,8 @@ define( 'PERM_ALL', '-1' );
 
 // TODO: getDeny* should return true/false instead of 1/0
 
-function getReadableModule() {
+function getReadableModule()
+{
 	global $AppUI;
 	$perms =& $AppUI->acl();
 
@@ -31,14 +32,15 @@ function getReadableModule() {
 /**
  * This function is used to check permissions.
  */
-function checkFlag($flag, $perm_type, $old_flag) {
-	if($old_flag) {
+function checkFlag($flag, $perm_type, $old_flag)
+{
+	if ($old_flag) {
 		return (
 				($flag == PERM_DENY) ||	// permission denied
 				($perm_type == PERM_EDIT && $flag == PERM_READ)	// we ask for editing, but are only allowed to read
 				) ? 0 : 1;
 	} else {
-		if($perm_type == PERM_READ) {
+		if ($perm_type == PERM_READ) {
 			return ($flag != PERM_DENY)?1:0;
 		} else {
 			// => $perm_type == PERM_EDIT
@@ -53,29 +55,42 @@ function checkFlag($flag, $perm_type, $old_flag) {
  * 
  * $perm_type can be PERM_READ or PERM_EDIT
  */
-function isAllowed($perm_type, $mod, $item_id = 0) {
+function isAllowed($perm_type, $mod, $item_id = 0)
+{
 	$invert = false;
 	switch ($perm_type) {
-		case PERM_READ:	$perm_type = "view"; break;
-		case PERM_EDIT:	$perm_type = "edit"; break;
-		case PERM_ALL: $perm_type = "edit"; break;
-		case PERM_DENY: $perm_type = "view"; $invert=true; break;
+		case PERM_READ:
+			$perm_type = "view";
+			break;
+		case PERM_EDIT:
+			$perm_type = "edit";
+			break;
+		case PERM_ALL:
+			$perm_type = "edit";
+			break;
+		case PERM_DENY:
+			$perm_type = "view";
+			$invert = true;
+			break;
 	}
 	$allowed = getPermission($mod, $perm_type, $item_id);
-	if ($invert)
+	if ($invert) {
 		return ! $allowed;
+	}
 	return $allowed;
 }
 
-function getPermission( $mod, $perm, $item_id = 0) {
+function getPermission( $mod, $perm, $item_id = 0)
+{
 	// First check if the module is readable, i.e. has view permission.
 	$perms =& $GLOBALS['AppUI']->acl();
 	$result = $perms->checkModule($mod, $perm);
 	// If we have access then we need to ensure we are not denied access to the particular
 	// item.
 	if ($result && $item_id) {
-		if ($perms->checkModuleItemDenied($mod, $perm, $item_id))
+		if ($perms->checkModuleItemDenied($mod, $perm, $item_id)) {
 			$result = false;
+		}
 	}
 	// If denied we need to check if we are allowed the task.  This can be done
 	// a lot better in PHPGACL, but is here for compatibility.
@@ -87,11 +102,13 @@ function getPermission( $mod, $perm, $item_id = 0) {
 	return $result;
 }
 
-function getDenyRead( $mod, $item_id = 0 ) {
+function getDenyRead( $mod, $item_id = 0 )
+{
  	return ! getPermission($mod, "view", $item_id);
 }
 
-function getDenyEdit( $mod, $item_id=0 ) {
+function getDenyEdit( $mod, $item_id=0 )
+{
  	return ! getPermission($mod, "edit", $item_id);
 }
 
@@ -99,9 +116,10 @@ function getDenyEdit( $mod, $item_id=0 ) {
  * Return a join statement and a where clause filtering
  * all items which for which no explicit read permission is granted.
  */
-function winnow( $mod, $key, &$where, $alias = 'perm' ) {
+function winnow( $mod, $key, &$where, $alias = 'perm' )
+{
 	die ("The function winnow() is deprecated.  Check to see that the
-	module/code has been updated to the latest permissions handling<br>");
+	module/code has been updated to the latest permissions handling<br />");
 }
 
 ?>
