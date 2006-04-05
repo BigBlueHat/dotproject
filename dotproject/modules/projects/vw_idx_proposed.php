@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-global $projects;
+global $projects, $project_types;
 global $AppUI, $company_id, $priority, $tpl, $pstatus, $currentTabId, $currentTabName;
 
 $check = $AppUI->_('All Projects', UI_OUTPUT_RAW);
