@@ -240,47 +240,10 @@ function showtask_edit($task, $level=0)
 	</td>
 </tr>
 <?php } // END of displaying tasks function.}}}
-?>
 
-<form name="form" method="post" action="index.php?<?php echo "m=$m&a=$a&project_id=$project_id";?>"> <!--&date=$date -->
-<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th width="20" colspan="2"><?php echo $AppUI->_('Progress');?></th>
-	<th width="15" align="center"><?php echo $AppUI->_('P');?></th>
-	<th>
-		<a class="hdr" href="index.php?m=tasks&a=organize&project_id=<?php echo $project_id;?>&sort=task_name">
-		<?php echo $AppUI->_('Task');?>
-		</a>
-	</th>
-	<th nowrap>
-		<a class="hdr" href="index.php?m=tasks&a=organize&project_id=<?php echo $project_id;?>&sort=task_duration">
-		<?php echo $AppUI->_('Duration');?>
-		</a>
-	</th>
-	<th nowrap>
-		<a class="hdr" href="index.php?m=tasks&a=organize&project_id=<?php echo $project_id;?>&sort=task_end_date">
-		<?php echo $AppUI->_('Due In');?>
-		</a>
-	</th>
-	<th width="0"><?php echo $AppUI->_('Select');?></th>
-</tr>
+	$now = new CDate();
+	$df = $AppUI->getPref('SHDATEFORMAT');
 
-<?php
-
-/*** Tasks listing ***/
-$now = new CDate();
-$df = $AppUI->getPref('SHDATEFORMAT');
-
-foreach ($tasks as $task) 
-	if ($task['task_id'] == $task['task_parent'])
-	{
-		showtask_edit($task);
-		showchildren($task['task_id']);
-	}
-?>
-</table>
-
-<?php
   $actions = array();
   $actions['c'] = $AppUI->_('Copy', UI_OUTPUT_JS);
   $actions['d'] = $AppUI->_('Delete', UI_OUTPUT_JS);
@@ -310,62 +273,11 @@ foreach ($tasks as $task)
 	$ts[0] = $AppUI->_('[top task]');
 	foreach($tasks as $t)
 		$ts[$t['task_id']] = $t['task_name'];
+		
+	$tpl->assign('ts', $ts);
+	$tpl->assign('projects', $projects);
+	$tpl->assign('tasks', $tasks);
+	$tpl->assign('actions', $actions);
+	$tpl->assign('project_id', $project_id);
+	$tpl->displayFile('organize');
 ?>
-
-<input type="checkbox" name="include_children" value='1' /><?php echo $AppUI->_('Include Children (automatically applies to move within the same project and delete)');?><br />
-<table>
-  <tr>
-    <th>Action: </th>
-    <th>Project: </th>
-    <th>Task: </th>
-  </tr>
-  <tr>
-    <td>
-      <?php echo arraySelect($actions, 'action', '', '0'); ?>
-    </td>
-    <td>
-      <?php echo arraySelect($projects, 'new_project', ' onChange="updateTasks();"', '0'); ?>
-    </td>
-    <td>
-      <?php echo ($ts)?arraySelect($ts, 'new_task', '', '0'):''; ?>
-    </td>
-		<td>
-			<input type="submit" class="button" value="<?php echo $AppUI->_('update selected tasks');?>">
-		</td>
-  </tr>
-</table>
-</form>
-
-<table>
-<tr>
-	<td><?php echo $AppUI->_('Key');?>:</td>
-	<td>&nbsp; &nbsp;</td>
-  <td style="background-color:#aaddaa; color:#00000">&nbsp; &nbsp;</td>
-  <td>=<?php echo $AppUI->_('Complete');?></td>
-	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
-	<td>=<?php echo $AppUI->_('Future Task');?></td>
-	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
-	<td>=<?php echo $AppUI->_('Started and on time');?></td>
-	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
-	<td>=<?php echo $AppUI->_('Should have started');?></td>
-	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
-	<td>=<?php echo $AppUI->_('Overdue');?></td>
-	<td bgcolor="lightgray">&nbsp; &nbsp;</td>
-	<td>=<?php echo $AppUI->_('Unknown');?></td>
-</tr>
-</table>
-
-<script language="javascript">
-	function updateTasks()
-	{
-		var proj = document.forms['form'].new_project.value;
-		var tasks = new Array();
-		var sel = document.forms['form'].new_task;
-		while ( sel.options.length )
-			sel.options[0] = null;
-		sel.options[0] = new Option('loading...', -1);
-		frames['thread'].location.href = './index.php?m=tasks&a=listtasks&project=' + proj;
-	}
-</script>

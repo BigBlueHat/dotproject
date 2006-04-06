@@ -20,7 +20,7 @@ $titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );
 $search_string = $titleBlock->addSearchCell();
 $filters = $titleBlock->addFiltersCell($filters_selection);
 
-if ($canEdit) {
+if ($canAuthor) {
 	$titleBlock->addCell(
 		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">', '',
 		'<form action="?m=projects&a=addedit" method="post">', '</form>'

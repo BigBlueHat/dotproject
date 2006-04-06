@@ -35,7 +35,7 @@ $q->addQuery('task_log.*');
 $q->addQuery('billingcode_name as task_log_costcode');
 $q->addQuery('user_username');
 $q->addTable('task_log');
-$q->addJoin('billingcode', 'b', 'task_log_costcode = billingcode_id');
+$q->addJoin('billingcode', 'b', 'task_log.task_log_costcode = billingcode_id');
 $q->addJoin('users', 'u', 'user_id = task_log_creator');
 $q->addOrder('task_log_date');
 $q->addWhere('task_log_task = '.$task_id);
@@ -61,7 +61,6 @@ foreach($logs as $k => $row)
 	$hours = $row['task_log_hours'];
 	$row['task_log_hours_display'] = floor($hours) .':'. sprintf('%02.0f', ($hours - floor($hours)) * 60);
 	$logs[$k] = $row;
-	
 	$hrs += (float)$row['task_log_hours'];
 }
 

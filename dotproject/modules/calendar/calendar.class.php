@@ -383,10 +383,12 @@ class CEvent extends CDpObject {
 	var $event_icon = NULL;
 	var $event_owner = NULL;
 	var $event_project = NULL;
+	var $event_task = NULL;
 	var $event_private = NULL;
 	var $event_type = NULL;
 	var $event_notify = null;
 	var $event_cwd = null;
+	var $event_url = null;
 
 	function CEvent() {
 		$this->CDpObject( 'events', 'event_id' );
@@ -684,6 +686,8 @@ class CEvent extends CDpObject {
 	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . "/index.php?m=calendar&a=view&event_id=" . $this->event_id . "\n";
 	  $body .= $AppUI->_('Starts') . ":\t" . $start_date->format($fmt) . "\n";
 	  $body .= $AppUI->_('Ends') . ":\t" . $end_date->format($fmt) . "\n";
+		if ($this->event_url)
+			$body .= $AppUI->_('Website') . ":\t" . $this->event_url . "\n";
 
 	  // Find the project name.
 	  if ($this->event_project) {

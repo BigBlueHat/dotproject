@@ -190,17 +190,23 @@ class CProject extends CDpObject {
 				$newTask->task_parent = $tasks[$newTask->task_parent]->task_id;
 
 			// Fix task start date from project start date offset
-			$origDate->setDate ($newTask->task_start_date);
-			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-			$destDate = $newTask->next_working_day( $destDate );
-			$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);   
+			if (!empty($newTask->task_start_date) && $newTask->task_start_date != '0000-00-00 00:00:00')
+			{
+				$origDate->setDate ($newTask->task_start_date);
+				$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
+				$destDate = $newTask->next_working_day( $destDate );
+				$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);
+			}
 			
 			// Fix task end date from start date + work duration
 			//$newTask->calc_task_end_date();
-			$origDate->setDate ($newTask->task_end_date);
-			$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-			$destDate = $newTask->next_working_day( $destDate );
-			$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);
+			if (!empty($newTask->task_end_date) && $newTask->task_end_date != '0000-00-00 00:00:00')
+			{
+				$origDate->setDate ($newTask->task_end_date);
+				$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
+				$destDate = $newTask->next_working_day( $destDate );
+				$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);
+			}
 			
 			// Dependencies
 			if (!empty($deps[$old_id])) {

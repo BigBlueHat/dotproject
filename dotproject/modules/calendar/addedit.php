@@ -97,6 +97,15 @@ $all_projects = '(' . $AppUI->_('Unspecified Calendar', UI_OUTPUT_RAW) . ')';
 $projects = arrayMerge(  array( 0 => $all_projects ), $q->loadHashList() );
 $projects = arrayMerge( array( -1 => $perso_projects ), $projects );
 
+$tasks = array('' => '');
+if ($obj->event_project)
+{
+	$q->addQuery('task_id, task_name');
+	$q->addTable('tasks');
+	$q->addWhere('task_project = ' . $obj->event_project);
+	$tasks = $q->loadHashList();
+}
+
 /*
 if ($event_id || $is_clash) {
 	$start_date = intval( $obj->event_start_date ) ? new CDate( $obj->event_start_date ) : null;
@@ -192,6 +201,7 @@ $tpl->assign('remind', $remind);
 $tpl->assign('recurs', $recurs);
 $tpl->assign('times', $times);
 $tpl->assign('projects', $projects);
+$tpl->assign('tasks', $tasks);
 $tpl->assign('types', $types);
 $tpl->assign('assigned', $assigned);
 $tpl->assign('users', $users);
@@ -315,7 +325,4 @@ function removeUser() {
 	}
 }
 
-
 </script>
-
-

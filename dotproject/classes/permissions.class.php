@@ -51,7 +51,7 @@ class dPacl extends gacl_api {
     // connection details.  This might be worth looking at in
     // the future.
     if ($dPconfig['debug'] > 10)
-      $opts['debut'] = true;
+      $opts['debug'] = true;
       
     // Enable caching
     $opts['caching'] = true;

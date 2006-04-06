@@ -101,7 +101,13 @@ INSERT INTO `config` VALUES('', 'page_size', '25', '', 'text');
 
 #20060320
 # Force unique billing codes per company
-ALTER TABLE `billingcode` ADD UNIQUE (
-`billingcode_name` ,
-`company_id`
-)
+ALTER TABLE `billingcode` ADD UNIQUE (`billingcode_name` ,`company_id`);
+
+#20060402
+# Add Event URL
+ALTER TABLE `events` ADD `event_url` VARCHAR( 255 ) AFTER `event_description` ;
+
+#20060402
+# Add event_task field
+ALTER TABLE `events` ADD `event_task` INT(11) AFTER `event_project` ;
+

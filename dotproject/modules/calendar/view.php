@@ -52,6 +52,11 @@ $q->addTable('projects');
 $q->addWhere('project_id = ' . $obj->event_project);
 $event_project = $q->loadResult();
 
+$q->addQuery('task_name');
+$q->addTable('tasks');
+$q->addWhere('task_id = ' . $obj->event_task);
+$event_task = $q->loadResult();
+
 // setup the title block
 $titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
 if ($canEdit) {
@@ -78,6 +83,7 @@ $tpl->assign('recurs', $recurs[$obj->event_recurs]);
 $tpl->assign('type', $types[$obj->event_type]);
 $tpl->assign('assigned', $assigned);
 $tpl->assign('event_project', $event_project);
+$tpl->assign('event_task', $event_task);
 $tpl->assign('event_id', $event_id);
 $tpl->displayView($obj);
 ?>

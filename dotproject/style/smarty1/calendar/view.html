@@ -15,6 +15,10 @@
 			<td class="hilite" width="100%">{$obj->event_title}&nbsp;&nbsp;<a title="{dPtranslate word='Export iCalendar File'}" href="?m=calendar&a=eventexport&suppressHeaders=true&event_id={$event_id}">{dPshowImage find='down.png' wsize=16 hsize=16}</a></td>
 		</tr>
 		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='URL'}:</td>
+			<td class="hilite" width="100%"><a href="{$obj->url}">{$obj->event_url}</a></td>
+		</tr>	
+		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Type'}:</td>
 			<td class="hilite" width="100%">{dPtranslate word=$type}</td>
 		</tr>	
@@ -22,6 +26,12 @@
 			<td align="right" nowrap="nowrap">{dPtranslate word='Project'}:</td>
 			<td class="hilite" width="100%"><a href='?m=projects&a=view&project_id={$obj->event_project}'>{$event_project}</a></td>
 		</tr>
+{if $obj->event_task}
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Task'}:</td>
+			<td class="hilite" width="100%"><a href='?m=tasks&a=view&task_id={$obj->event_task}'>{$event_task}</a></td>
+		</tr>
+{/if}
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Starts'}:</td>
 			<td class="hilite">{dPdateFormat date=$obj->event_start_date}</td>

@@ -268,7 +268,7 @@ if ($perms->checkModule('forums', 'view'))
 //	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_files", 'Files' );
 if ($canViewTask) {
 	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/viewgantt", 'Gantt Chart' );
-	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_logs", 'Task Logs' );
+//	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_logs", 'Task Logs' );
 }
 
 // deprecated:
