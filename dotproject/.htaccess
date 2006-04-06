@@ -1,4 +1,4 @@
-php_flag register_globals 0
-php_flag session.auto_start 1
-php_flag session.use_cookies 1
-php_flag session.use_trans_sid 0
+php_flag register_globals off
+php_flag session.auto_start on
+php_flag session.use_cookies on
+php_flag session.use_trans_sid off
