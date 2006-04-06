@@ -239,7 +239,8 @@ foreach ($tasks as $k => $task)
 }
 
 //natural sorting instead?
-ksort($display_tasks);
+if (is_array($display_tasks))
+	ksort($display_tasks);
 
 // Code duplicated from above. To be cleaned!!! (to be done in one place)
 function recurse_children($node_id)

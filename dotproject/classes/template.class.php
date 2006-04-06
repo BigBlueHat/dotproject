@@ -20,6 +20,7 @@ class CTemplate extends Smarty
 	
 	function init()
 	{
+		global $m, $a, $dPconfig;
 		$this->assign('template', $this->template_dir);
 		$this->assign('config', $dPconfig);
 		$this->assign('m', $m);
@@ -31,7 +32,7 @@ class CTemplate extends Smarty
 	
 	function displayList($module, $rows, $totalRows = 0, $show = null)
 	{
-		if (!isset($show))
+		if (!isset($show) && is_array($rows))
 		{
 			$keys = array_keys($rows);
 			$show = array_keys($rows); //[$keys[0]]);

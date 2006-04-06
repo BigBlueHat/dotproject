@@ -224,6 +224,9 @@ $canEdit = $perms->checkModule($m, 'edit');
 $canAuthor = $perms->checkModule($m, 'add');
 $canDelete = $perms->checkModule($m, 'delete');
 
+// All settings set. Initialise template (set global variables)
+$tpl->init();
+
 if (! isset($_SESSION['all_tabs'][$m]) ) {
 	// For some reason on some systems if you don't set this up
 	// first you get recursive pointers to the all_tabs array, creating

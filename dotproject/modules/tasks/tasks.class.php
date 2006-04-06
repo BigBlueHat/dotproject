@@ -422,9 +422,13 @@ class CTask extends CDpObject {
                 return $newObj;
         }// end of copy()
 
-        function deepCopy($destProject_id = 0, $destTask_id = 0) {
+        function deepCopy($destProject_id = 0, $destTask_id = 0, $newParent_id = 0) {
+                if ($this->task_id == $newParent_id)
+                	return null;
                 $newObj = $this->copy($destProject_id, $destTask_id);
                 $new_id = $newObj->task_id;
+                if ($newParent_id == 0)
+                	$newParent_id = $new_id;
                 $children = $this->getChildren();
                 if (!empty($children))
                 {
@@ -432,8 +436,7 @@ class CTask extends CDpObject {
                         foreach ($children as $child)
                         {
                                 $tempTask->load($child);
-                                $newChild = $tempTask->deepCopy($destProject_id, $new_id);
-                                $newChild->store();
+                                $newChild = $tempTask->deepCopy($destProject_id, $new_id, $newParent_id);
                         }
                 }
 
