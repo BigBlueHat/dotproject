@@ -444,11 +444,10 @@ class CTask extends CDpObject {
         }
 
         function move($destProject_id = 0, $destTask_id = -1) {
-        	global $AppUI;
-        	
         	if (in_array($destTask_id, $this->getDeepChildren()))
         	{
-        		$AppUI->setMsg('Cycle detected. Move cancelled', UI_MSG_ERROR, true);
+        		global $AppUI;
+        		$AppUI->setMsg('Cycle detected. Move cancelled.', UI_MSG_ERROR, true);
         		return false;
         	}
                 if ($destProject_id != 0)
@@ -462,7 +461,7 @@ class CTask extends CDpObject {
         }
 
         function deepMove($destProject_id = 0, $destTask_id = 0) {
-                if (!$this->move($destProject_id, destTask_id))
+                if (!$this->move($destProject_id, $destTask_id))
 	                $children = $this->getDeepChildren();
                 if (!empty($children))
                 {
@@ -1166,11 +1165,11 @@ class CTask extends CDpObject {
                                 $count = $q->loadResult();
                                 $q->clear();
                                 return ($count > 0 || $this->task_owner == $user_id);
-                                break;
+                                // break; // unreachable
                         case 3:
                                 // private
                                 return ($this->task_owner == $user_id);
-                                break;
+                                // break; // unreachable
                 }
         }
 
@@ -2043,7 +2042,7 @@ class CTask extends CDpObject {
 				
 				function showtask( $level=0, $is_opened = true, $today_view = false) {
 //					showtask($this, $level, $is_opened, $today_view);
-					global $tpl;
+					global $tpl, $assigned_users, $style;
 
   				$canEdit = !getDenyEdit( 'tasks', $this->task_id );
 					$canViewLog = $perms->checkModuleItem('tasks', 'view', $$this->task_id);
