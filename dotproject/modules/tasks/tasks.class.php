@@ -444,17 +444,26 @@ class CTask extends CDpObject {
         }
 
         function move($destProject_id = 0, $destTask_id = -1) {
+        	global $AppUI;
+        	
+        	if (in_array($destTask_id, $this->getDeepChildren()))
+        	{
+        		$AppUI->setMsg('Cycle detected. Move cancelled', UI_MSG_ERROR, true);
+        		return false;
+        	}
                 if ($destProject_id != 0)
                         $this->task_project = $destProject_id;
                 if ($destTask_id == 0)
                         $this->task_parent = $this->task_id;
                 else if ($destTask_id > 0)
                         $this->task_parent = $destTask_id;
+                        
+                return true;
         }
 
         function deepMove($destProject_id = 0, $destTask_id = 0) {
-                $this->move($destProject_id, destTask_id);
-                $children = $this->getDeepChildren();
+                if (!$this->move($destProject_id, destTask_id))
+	                $children = $this->getDeepChildren();
                 if (!empty($children))
                 {
                         $tempChild = & new CTask();
