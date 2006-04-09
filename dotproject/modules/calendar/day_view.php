@@ -34,7 +34,9 @@ $this_week = Date_calc::beginOfWeek ($dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_F
 // prepare time period for 'events'
 $first_time = new CDate( $date);
 $first_time->setTime( 0, 0, 0 );
-$first_time->subtractSeconds( 1 );
+$phpver = phpversion();
+if ($phpver < "5") // fix a bug in php4.
+	$first_time->subtractSeconds( 1 );
 
 $last_time = new CDate( $date );
 $last_time->setTime( 23, 59, 59 );
