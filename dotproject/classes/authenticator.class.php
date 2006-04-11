@@ -1,27 +1,28 @@
 <?php
 // $Id$
 
-	/*
-	 *	Authenticator Class
-	 * 
-	 * Description:
-	 * The ui->login() method first checks the result of the supported() method to determine if the server supports all of the
-	 * features and extensions required to authenticate via that method. If the server does support the features then it uses the configured 
-	 * authenticator class. 
-	 *
-	 * If the authentication fails because the authentication server is unreachable (not because the server does not
-	 * support the feature), the authenticator class will fall back to the SQLAuthenticator method (if fall back to sql is enabled in the
-	 * dP config). 
-	 *
-	 * Usually an authenticator will inherit methods from the SQLAuthenticator class, so the fall back authentication can be
-	 * performed via the parent::authenticate() method.
-	 */
+/**
+ * @package Authenticator Class
+ * 
+ * @abstract
+ * Description:
+ * The ui->login() method first checks the result of the supported() method to determine if the server supports all of the
+ * features and extensions required to authenticate via that method. If the server does support the features then it uses the configured 
+ * authenticator class. 
+ *
+ * If the authentication fails because the authentication server is unreachable (not because the server does not
+ * support the feature), the authenticator class will fall back to the SQLAuthenticator method (if fall back to sql is enabled in the
+ * dP config). 
+ *
+ * Usually an authenticator will inherit methods from the SQLAuthenticator class, so the fall back authentication can be
+ * performed via the parent::authenticate() method.
+ * 
+ */
 
 
 	function &getAuth($auth_mode)
 	{
-		switch($auth_mode)
-		{
+		switch($auth_mode) {
 			case "ldap":
 				$auth = new LDAPAuthenticator();
 				break;
@@ -62,25 +63,32 @@
 			return true;
 		}
 
+		/**
+		 * @param string $username
+		 * @param string $password
+		 * 
+		 * @return boolean	Returns true if user's password is correct; die's if misconfigured or
+		 * 					if there was an error with the credentials.
+		 */
 		function authenticate($username, $password)
 		{
 			global $db, $AppUI;
 			if (!isset($_REQUEST['userdata'])) { // fallback to SQL Authentication if PostNuke fails.
-				if ($this->fallback)
+				if ($this->fallback) {
 					return parent::authenticate($username, $password);
-				else {
+				} else {
 					die($AppUI->_('You have not configured your PostNuke site correctly'));
 				}
 			}
 
-			if (! $compressed_data = base64_decode(urldecode($_REQUEST['userdata']))) {
+			if (!$compressed_data = base64_decode(urldecode($_REQUEST['userdata']))) {
 				die($AppUI->_('The credentials supplied were missing or corrupted') . ' (1)');
 			}
-			if (! $userdata = gzuncompress($compressed_data)) {
+			if (!$userdata = gzuncompress($compressed_data)) {
 				die($AppUI->_('The credentials supplied were missing or corrupted') . ' (2)');
 			}
-			if (! $_REQUEST['check'] = md5($userdata)) {
-				die ($AppUI->_('The credentials supplied were issing or corrupted') . ' (3)');
+			if (!$_REQUEST['check'] = md5($userdata)) {
+				die($AppUI->_('The credentials supplied were issing or corrupted') . ' (3)');
 			}
 			$user_data = unserialize($userdata);
 
@@ -95,26 +103,27 @@
 			$passwd = trim($user_data['passwd']);
 			$email = trim($user_data['email']);
 			
-			$q  = new DBQuery;
+			$q = new DBQuery();
 			$q->addTable('users');
 			$q->addQuery('user_id, user_password, user_contact');
 			$q->addWhere("user_username = '$username'");
-			if (! $rs = $q->exec()) {
+			if (!$rs = $q->exec()) {
 				die($AppUI->_('Failed to get user details') . ' - error was ' . $db->ErrorMsg());
 			}
-			if ( $rs->RecordCount() < 1) {
+			if ($rs->RecordCount() < 1) {
 				$q->clear();
 				$this->createsqluser($username, $passwd, $email, $first_name, $last_name);
 			} else {
-				if (! $row = $rs->FetchRow())
+				if (! $row = $rs->FetchRow()) {
 					die($AppUI->_('Failed to retrieve user detail'));
+				}
 				// User exists, update the user details.
 				$this->user_id = $row['user_id'];
 				$q->clear();
 				$q->addTable('users');
 				$q->addUpdate('user_password', $passwd);
 				$q->addWhere("user_id = {$this->user_id}");
-				if (! $q->exec()) {
+				if (!$q->exec()) {
 					die($AppUI->_('Could not update user credentials'));
 				}
 				$q->clear();
@@ -123,7 +132,7 @@
 				$q->addUpdate('contact_last_name', $last_name);
 				$q->addUpdate('contact_email', $email);
 				$q->addWhere("contact_id = {$row['user_contact']}");
-				if (! $q->exec()) {
+				if (!$q->exec()) {
 					die($AppUI->_('Could not update user details'));
 				}
 				$q->clear();
@@ -131,13 +140,22 @@
 			return true;
 		}
 
+		/**
+		 * @param string $username
+		 * @param string $password
+		 * @param string $email
+		 * @param string $first
+		 * @param string $last
+		 * 
+		 * @return void Does not return anything
+		 */
 		function createsqluser($username, $password, $email, $first, $last)
 		{
-			GLOBAL $db, $AppUI;
+			global $db, $AppUI;
 
-			require_once($AppUI->getModuleClass("contacts"));
+			require_once $AppUI->getModuleClass("contacts");
 	
-			$c = New CContact();
+			$c = new CContact();
 			$c->contact_first_name = $first;
 			$c->contact_last_name = $last;
 			$c->contact_email = $email;
@@ -145,17 +163,18 @@
 
 			db_insertObject('contacts', $c, 'contact_id');
 			$contact_id = ($c->contact_id == NULL) ? "NULL" : $c->contact_id;
-			if (! $c->contact_id)
+			if (!$c->contact_id) {
 				die($AppUI->_('Failed to create user details'));
-
-			$q  = new DBQuery;
+			}
+			$q  = new DBQuery();
 			$q->addTable('users');
 			$q->addInsert('user_username',$username );
 			$q->addInsert('user_password', $password);
 			$q->addInsert('user_type', '1');
 			$q->addInsert('user_contact', $c->contact_id);
-			if (! $q->exec())
+			if (!$q->exec()) {
 				die($AppUI->_('Failed to create user credentials'));
+			}
 			$user_id = $db->Insert_ID();
 			$this->user_id = $user_id;
 			$q->clear();
@@ -170,13 +189,19 @@
 		var $user_id;
 		var $username;
 
+		/**
+		 * @param string $username
+		 * @param string $password
+		 * 
+		 * @return boolean Returns true if the user's password is correct
+		 */
 		function authenticate($username, $password)
 		{
-			GLOBAL $db, $AppUI;
+			global $db, $AppUI;
 
 			$this->username = $username;
 
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('users');
 			$q->addQuery('user_id, user_password');
 			$q->addWhere("user_username = '$username'");
@@ -227,7 +252,7 @@
 
 		function LDAPAuthenticator()
 		{
-			GLOBAL $dPconfig;
+			global $dPconfig;
 
 			$this->fallback = isset($dPconfig['ldap_allow_login']) ? $dPconfig['ldap_allow_login'] : false;
 
@@ -242,12 +267,9 @@
 		
 		function supported()
 		{
-			if (!function_exists("ldap_connect"))
-			{
+			if (!function_exists("ldap_connect")) {
 				return false;
-			}
-			else
-			{
+			} else {
 				return true;
 			}
 		}
@@ -257,20 +279,24 @@
 			return "LDAP";
 		}
 
+		/**
+		 * @param string $username
+		 * @param string $password
+		 * 
+		 * @return boolean Returns true if user's password is correct
+		 */
 		function authenticate($username, $password)
 		{
-			GLOBAL $dPconfig;
+			global $dPconfig;
 			$this->username = $username;
 
 			if (strlen($password) == 0) return false; // LDAP will succeed binding with no password on AD (defaults to anon bind)
-			if ($this->fallback == true)
-			{
+			if ($this->fallback == true) {
 				if (parent::authenticate($username, $password)) return true;	
 			}
 			// Fallback SQL authentication fails, proceed with LDAP
 
-			if (!$rs = @ldap_connect($this->ldap_host, $this->ldap_port))
-			{
+			if (!$rs = @ldap_connect($this->ldap_host, $this->ldap_port)) {
 				return false;
 			}
 			@ldap_set_option($rs, LDAP_OPT_PROTOCOL_VERSION, $this->ldap_version);
@@ -279,17 +305,14 @@
 			//$ldap_bind_dn = "cn=".$this->ldap_search_user.",".$this->base_dn;
 			$ldap_bind_dn = $this->ldap_search_user;	
 
-			if (!$bindok = @ldap_bind($rs, $ldap_bind_dn, $this->ldap_search_pass))
-			{
+			if (!$bindok = @ldap_bind($rs, $ldap_bind_dn, $this->ldap_search_pass)) {
 				// Uncomment for LDAP debugging
 				/*	
 				$error_msg = ldap_error($rs);
 				die("Couldnt Bind Using ".$ldap_bind_dn."@".$this->ldap_host.":".$this->ldap_port." Because:".$error_msg);
 				*/
 				return false;
-			}
-			else
-			{
+			} else {
 				$filter_r = str_replace("%USERNAME%", $username, $this->filter);
 				$result = @ldap_search($rs, $this->base_dn, $filter_r);
 				if (!$result) return false; // ldap search returned nothing or error
@@ -302,22 +325,16 @@
 
 				// Bind with the dn of the user that matched our filter (only one user should match sAMAccountName or uid etc..)
 
-				if (!$bind_user = @ldap_bind($rs, $ldap_user_dn, $password))
-				{
+				if (!$bind_user = @ldap_bind($rs, $ldap_user_dn, $password)) {
 					/*
 					$error_msg = ldap_error($rs);
 					die("Couldnt Bind Using ".$ldap_user_dn."@".$this->ldap_host.":".$this->ldap_port." Because:".$error_msg);
 					*/
 					return false;
-				}
-				else
-				{
-					if ($this->userExists($username))
-					{
+				} else {
+					if ($this->userExists($username)) {
 						return true;
-					}
-					else
-					{
+					} else {
 						$this->createsqluser($username, $password, $first_user); 
 					}
 					return true;
@@ -325,24 +342,31 @@
 			}
 		}
 
+		/**
+		 * @param string $username
+		 */
 		function userExists($username)
 		{
-			GLOBAL $db;
-			$q  = new DBQuery;
+			global $db;
+			$q  = new DBQuery();
 			$result = false;
 			$q->addTable('users');
 			$q->addWhere("user_username = '$username'");
 			$rs = $q->exec();
-			if ($rs->RecordCount() > 0) 
-			  $result = true;
+			if ($rs->RecordCount() > 0) {
+				$result = true;
+			}
 			$q->clear();
 			return $result;
 		}
 
+		/**
+		 * @param string $username
+		 */
 		function userId($username)
 		{
-			GLOBAL $db;
-			$q  = new DBQuery;
+			global $db;
+			$q  = new DBQuery();
 			$q->addTable('users');
 			$q->addWhere("user_username = '$username'");
 			$rs = $q->exec();
@@ -351,17 +375,21 @@
 			return $row["user_id"];	
 		}
 
-		function createsqluser($username, $password, $ldap_attribs = Array())
+		/**
+		 * @param string $username
+		 * @param string $password
+		 * @param array $ldap_attribs
+		 */
+		function createsqluser($username, $password, $ldap_attribs = array())
 		{
-			GLOBAL $db, $AppUI;
+			global $db, $AppUI;
 			$hash_pass = MD5($password);
 
-			require_once($AppUI->getModuleClass("contacts"));
+			require_once $AppUI->getModuleClass("contacts");
 	
-			if (!count($ldap_attribs) == 0)
-			{
+			if (!count($ldap_attribs) == 0) {
 				// Contact information based on the inetOrgPerson class schema
-				$c = New CContact();
+				$c = new CContact();
 				$c->contact_first_name = $ldap_attribs["givenname"][0];
 				$c->contact_last_name = $ldap_attribs["sn"][0];
 				$c->contact_email = $ldap_attribs["mail"][0];
@@ -378,7 +406,7 @@
 			}
 			$contact_id = ($c->contact_id == NULL) ? "NULL" : $c->contact_id;
 
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('users');
 			$q->addInsert('user_username',$username );
 			$q->addInsert('user_password', $hash_pass);
@@ -409,9 +437,14 @@
 		//  option .... 'create_account_on_successful_external_authentication' or something. It would also
 		//  be nice for the administrator to have the option of getting an e-mail when such an account
 		//  is created.
+		/**
+		 * @param string $username
+		 * 
+		 * @return boolean Return true if $username exists; die if not
+		 */
 		function authenticate($username)
 		{
-			GLOBAL $AppUI;
+			global $AppUI;
 	
 			$this->user_id = $this->userId($username);
 			if (isset($this->user_id) && $this->user_id > 0) {
@@ -426,11 +459,14 @@
 			return "HTTP Basic";
 		}
 
+		/**
+		 * @param string $username
+		 */
 		function userId($username)
 		{
-			GLOBAL $db;
+			global $db;
 	
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('users');
 			$q->addWhere("user_username = '$username'");
 			$rs = $q->exec();
