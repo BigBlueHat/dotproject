@@ -1,23 +1,30 @@
 <?php /* $Id$ */
 
-/* {{{ Copyright (c) 2003-2005 The dotProject Development Team <core-developers@dotproject.net>
+/** {{{ Copyright (c) 2003-2005 The dotProject Development Team <core-developers@dotproject.net>
+ *
+ *  This file is part of dotProject.
 
-    This file is part of dotProject.
-
-    dotProject is free software; you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation; either version 2 of the License, or
-    (at your option) any later version.
-
-    dotProject is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
-
-    You should have received a copy of the GNU General Public License
-    along with dotProject; if not, write to the Free Software
-    Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
-}}} */
+ *  dotProject is free software; you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation; either version 2 of the License, or
+ *  (at your option) any later version.
+ *
+ *  dotProject is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with dotProject; if not, write to the Free Software
+ *  Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+ *
+ * @license		http://www.gnu.org/licenses/gpl.txt GNU Public License (GPL)
+ * @copyright	2003-2005 The dotProject Development Team <core-developers@dotproject.net>
+ * 
+ * @package		dotProject
+ * @version		CVS: $Id$
+ * }}}
+ */
 
 $time = array_sum(explode(' ',microtime()));
 $acltime = 0;
@@ -35,7 +42,7 @@ $loginFromPage = 'index.php';
 require_once 'base.php';
 
 clearstatcache();
-if( is_file( "$baseDir/includes/config.php" ) ) {
+if (is_file("$baseDir/includes/config.php")) {
 
 	require_once "$baseDir/includes/config.php";
 
@@ -46,8 +53,9 @@ if( is_file( "$baseDir/includes/config.php" ) ) {
 	exit();
 }
 
-if (! isset($GLOBALS['OS_WIN']))
+if (!isset($GLOBALS['OS_WIN'])) {
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
+}
 
 // tweak for pathname consistence on windows machines
 require_once "$baseDir/includes/db_adodb.php";
@@ -59,41 +67,40 @@ require_once "$baseDir/classes/permissions.class.php";
 require_once "$baseDir/includes/session.php";
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
-$suppressHeaders = dPgetParam( $_GET, 'suppressHeaders', false );
+$suppressHeaders = dPgetParam($_GET, 'suppressHeaders', false);
 $dialog = dPgetParam($_GET, 'dialog', false);
 
 // manage the session variable(s)
 dPsessionStart(array('AppUI'));
 
 // write the HTML headers
-header ("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
-header ("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modified
-header ("Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-check=0");	// HTTP/1.1
-header ("Pragma: no-cache");	// HTTP/1.0
+header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
+header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modified
+header("Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-check=0");	 // HTTP/1.1
+header("Pragma: no-cache");	// HTTP/1.0
 
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
-    if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id))
-    {
-			$AppUI =& $_SESSION['AppUI'];
-			$user_id = $AppUI->user_id;
-			$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
-			addHistory('login', $AppUI->user_id, 'logout', $details);
-			dPsessionDestroy($dPconfig['session_name']);
-    }
+	if (isset($_GET['logout']) && isset($_SESSION['AppUI']->user_id)) {
+		$AppUI =& $_SESSION['AppUI'];
+		$user_id = $AppUI->user_id;
+		$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
+		addHistory('login', $AppUI->user_id, 'logout', $details);
+		dPsessionDestroy($dPconfig['session_name']);
+	}
 
-	$_SESSION['AppUI'] = new CAppUI;
+	$_SESSION['AppUI'] = new CAppUI();
 }
 $AppUI =& $_SESSION['AppUI'];
-$last_insert_id =$AppUI->last_insert_id;
+$last_insert_id = $AppUI->last_insert_id;
 
 $tpl = $AppUI->getTemplate();
 $AppUI->checkStyle();
 
 // load the commonly used classes
-require_once( $AppUI->getSystemClass( 'date' ) );
-require_once( $AppUI->getSystemClass( 'dp' ) );
-require_once( $AppUI->getSystemClass( 'query' ) );
+require_once $AppUI->getSystemClass('date');
+require_once $AppUI->getSystemClass('dp');
+require_once $AppUI->getSystemClass('query');
 
 require_once "$baseDir/misc/debug.php";
 
@@ -125,14 +132,15 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 // support alternative authentication methods such as the PostNuke
 // and HTTP auth methods now supported.
 if (isset($_REQUEST['login'])) {
-	if (dPgetConfig('auth_method') == 'http_ba')
+	if (dPgetConfig('auth_method') == 'http_ba') {
 		$username = $_SERVER['REMOTE_USER'];
-	else
+	} else {
 		$username = dPgetParam( $_POST, 'username', '' );
+	}
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 	$AppUI->setUserLocale();
-	@include_once( "$baseDir/locales/$AppUI->user_locale/locales.php" );
+	@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
 	@include_once "$baseDir/locales/core.php";
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
@@ -161,9 +169,9 @@ $u = '';
 if ($AppUI->doLogin()) {
 	// load basic locale settings
 	$AppUI->setUserLocale();
-	@include_once( "./locales/$AppUI->user_locale/locales.php" );
-	@include_once( "./locales/core.php" );
-	setlocale( LC_TIME, $AppUI->user_lang );
+	@include_once "./locales/$AppUI->user_locale/locales.php";
+	@include_once "./locales/core.php";
+	setlocale(LC_TIME, $AppUI->user_lang);
 	$redirect = @$_SERVER['QUERY_STRING'];
 	if (strpos( $redirect, 'logout' ) !== false) {
 		$redirect = '';
@@ -193,25 +201,25 @@ require_once "$baseDir/includes/permissions.php";
 
 
 $def_a = 'index';
-if (! isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
+if (!isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
   	$m = $dPconfig['default_view_m'];
 	$def_a = !empty($dPconfig['default_view_a']) ? $dPconfig['default_view_a'] : $def_a;
 	$tab = $dPconfig['default_view_tab'];
 } else {
 	// set the module from the url
-	$m = $AppUI->checkFileName(dPgetParam( $_GET, 'm', getReadableModule() ));
+	$m = $AppUI->checkFileName(dPgetParam($_GET, 'm', getReadableModule()));
 }
 // set the action from the url
-$a = $AppUI->checkFileName(dPgetParam( $_GET, 'a', $def_a));
+$a = $AppUI->checkFileName(dPgetParam($_GET, 'a', $def_a));
 
 /* This check for $u implies that a file located in a subdirectory of higher depth than 1
  * in relation to the module base can't be executed. So it would'nt be possible to
  * run for example the file module/directory1/directory2/file.php
  * Also it won't be possible to run modules/module/abc.zyz.class.php for that dots are
  * not allowed in the request parameters.
-*/
+ */
 
-$u = $AppUI->checkFileName(dPgetParam( $_GET, 'u', '' ));
+$u = $AppUI->checkFileName(dPgetParam($_GET, 'u', ''));
 
 // TODO: canRead/Edit assignements should be moved into each file
 
@@ -227,21 +235,21 @@ $canDelete = $perms->checkModule($m, 'delete');
 // All settings set. Initialise template (set global variables)
 $tpl->init();
 
-if (! isset($_SESSION['all_tabs'][$m]) ) {
+if (!isset($_SESSION['all_tabs'][$m])) {
 	// For some reason on some systems if you don't set this up
 	// first you get recursive pointers to the all_tabs array, creating
 	// phantom tabs.
-	if (! isset($_SESSION['all_tabs']))
+	if (!isset($_SESSION['all_tabs'])) {
 		$_SESSION['all_tabs'] = array();
+	}
 	$_SESSION['all_tabs'][$m] = array();
 	$all_tabs =& $_SESSION['all_tabs'][$m];
-	foreach ($AppUI->getActiveModules() as $dir => $module)
-	{
-		if (! $perms->checkModule($dir, 'access'))
+	foreach ($AppUI->getActiveModules() as $dir => $module) {
+		if (!$perms->checkModule($dir, 'access')) {
 			continue;
+		}
 		$modules_tabs = $AppUI->readFiles("$baseDir/modules/$dir/", '^' . $m . '_tab.*\.php');
-		foreach($modules_tabs as $tab)
-		{
+		foreach ($modules_tabs as $tab) {
 			// Get the name as the subextension
 			// cut the module_tab. and the .php parts of the filename 
 			// (begining and end)
@@ -249,8 +257,9 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 			$filename = substr($tab, 0, -4);
 			if (count($nameparts) > 3) {
 				$file = $nameparts[1];
-				if (! isset($all_tabs[$file]))
+				if (!isset($all_tabs[$file])) {
 					$all_tabs[$file] = array();
+				}
 				$arr =& $all_tabs[$file];
 				$name = $nameparts[2];
 			} else {
@@ -271,13 +280,13 @@ if (! isset($_SESSION['all_tabs'][$m]) ) {
 @include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
 @include_once "$baseDir/locales/core.php";
 
-setlocale( LC_ALL, $AppUI->user_lang );
+setlocale(LC_ALL, $AppUI->user_lang);
 $m_config = dPgetConfig($m);
 @include_once "$baseDir/functions/" . $m . "_func.php";
 
-if ( !$suppressHeaders ) {
+if (!$suppressHeaders) {
 	// output the character set header
-	if (isset( $locale_char_set )) {
+	if (isset($locale_char_set)) {
 		header("Content-type: text/html;charset=$locale_char_set");
 	}
 }
@@ -304,16 +313,18 @@ if (!(
 // that any parse errors in the file are reported, rather than errors
 // further down the track.
 $modclass = $AppUI->getModuleClass($m);
-if (file_exists($modclass))
-	include_once( $modclass );
-if ($u && file_exists("$baseDir/modules/$m/$u/$u.class.php"))
+if (file_exists($modclass)) {
+	include_once $modclass;
+}
+if ($u && file_exists("$baseDir/modules/$m/$u/$u.class.php")) {
 	include_once "$baseDir/modules/$m/$u/$u.class.php";
+}
 
 // do some db work if dosql is set
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
-if (isset( $_REQUEST["dosql"]) ) {
-    //require("./dosql/" . $_REQUEST["dosql"] . ".php");
-    require  "$baseDir/modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php";
+if (isset($_REQUEST["dosql"])) {
+	//require("./dosql/" . $_REQUEST["dosql"] . ".php");
+	require  "$baseDir/modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php";
 }
 
 // start output proper
@@ -326,22 +337,20 @@ if(!$suppressHeaders) {
 
 $setuptime = (array_sum(explode(' ',microtime())) - $time);
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . "$a.php";
-if (file_exists($module_file))
-  require $module_file;
-else
-{
+if (file_exists($module_file)) {
+	require $module_file;
+} else {
 // TODO: make this part of the public module? 
 // TODO: internationalise the string.
-  $titleBlock = new CTitleBlock('Warning', 'log-error.gif');
-  $titleBlock->show();
+	$titleBlock = new CTitleBlock('Warning', 'log-error.gif');
+	$titleBlock->show();
 
-  echo $AppUI->_("Missing file. Possible Module \"$m\" missing!");
+	echo $AppUI->_("Missing file. Possible Module \"$m\" missing!");
 }
-if(!$suppressHeaders && ! $dialog) {
+if (!$suppressHeaders && !$dialog) {
 	echo '<iframe name="thread" src="' . $baseUrl . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
 	
-	if (dPgetConfig('debug') > 0)
-	{
+	if (dPgetConfig('debug') > 0) {
 		echo '<div style="text-align: center; border: 1px solid gray; margin-left: 200px; margin-right: 200px; font-size: 10pt; color: gray">';
 		printf('Page generated in %.3f seconds<br />', (array_sum(explode(' ',microtime())) - $time));
 		echo 'Time spend in:<br />
