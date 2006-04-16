@@ -1,13 +1,20 @@
 <?php /* TASKS $Id$ */
 	global $AppUI, $project_id, $df, $canEdit, $m, $tab;
 
-	// Lets check which cost codes have been used before
 	$q  = new DBQuery;
-	$q->addTable('task_log');
-	$q->addQuery('distinct task_log_costcode, task_log_costcode');
-	$q->addOrder('task_log_costcode');
-	$q->addWhere("task_log_costcode != ''");
-	$task_log_costcodes = array("" => ""); // Let's add a blank default option
+	$q->addQuery('project_company');
+	$q->addTable('projects');
+	$q->addWhere('project_id = ' . $project_id);
+	$company_id = $q->loadResult();
+	
+	// Lets check which cost codes have been used before
+	$q->addTable('billingcode');
+	$q->addJoin('task_log', 't', 'task_log_costcode = billingcode_id');
+	$q->addQuery('task_log_costcode, billingcode_name');
+	$q->addWhere('(company_id = '.$company_id . ' OR company_id = 0)');
+	$q->addOrder('billingcode_name');
+	$q->addWhere("task_log_costcode <> ''");
+	$task_log_costcodes = array('' => 'All'); // Let's add a blank default option
 	$task_log_costcodes = array_merge($task_log_costcodes, $q->loadHashList());
 	
 	$q  = new DBQuery;
