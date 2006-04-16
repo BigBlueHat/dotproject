@@ -46,7 +46,7 @@ $q->addWhere('billingcode_status=0');
 $q->addWhere("(company_id='$proj->project_company' OR company_id='0')");
 $q->addOrder('billingcode_name');
 
-$task_log_costcodes[0]='None';
+$task_log_costcodes[0]='';
 $ptrc = $q->exec();
 echo db_error();
 $nums = 0;
