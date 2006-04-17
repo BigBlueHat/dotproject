@@ -1,3 +1,524 @@
+2006-04-16 18:54  (cyberhorse)
+---------------------------------
+modules/tasks/vw_log_update.php
+- #1602 - remember selected billingcode
+
+2006-04-16 18:52  (cyberhorse)
+---------------------------------
+.htaccess
+- added comment for guidance
+
+2006-04-16 18:51  (cyberhorse)
+---------------------------------
+.htaccess
+modules/tasks/vw_log_update.php
+style/smarty1/tasks/tasklog.addedit.html
+- #1602 - remember selected billingcode
+
+2006-04-16 18:19  (cyberhorse)
+---------------------------------
+modules/projects/vw_logs.php
+- fixed billing codes filtering in task_log view
+
+2006-04-16 06:01  (pedroix)
+---------------------------------
+modules/tasks/tasks.class.php
+- dPconfig array badly invoked
+- http://www.dotproject.net/vbulletin/showthread.php?t=4800
+
+2006-04-16 04:34  (pedroix)
+---------------------------------
+modules/tasks/todo.php
+- Dynamic tasks were badly treated on the todo and today view
+- http://www.dotproject.net/vbulletin/showthread.php?t=4416
+
+2006-04-12 07:26  (theideaman)
+---------------------------------
+classes/authenticator.class.php
+- added DocBlock comments and did some code cleanup
+
+2006-04-12 07:01  (theideaman)
+---------------------------------
+queuescanner.php
+- added improved header comment
+
+2006-04-12 06:58  (theideaman)
+---------------------------------
+base.php
+- code cleanup and header comment (copyright/licence) addition
+
+2006-04-11 22:59  (theideaman)
+---------------------------------
+install/do_install_db.php
+- code cleanup and header comment (copyright/licence) addition
+
+2006-04-11 22:38  (theideaman)
+---------------------------------
+install/db.php
+- code cleanup and header comment (copyright/licence) addition
+
+2006-04-11 22:24  (theideaman)
+---------------------------------
+install/vw_idx_check.php
+- added cacheDir check and did some code cleanup
+
+2006-04-11 22:24  (theideaman)
+---------------------------------
+install/index.php
+- added cacheDir and modified PHP/XHTML to conform to Coding Standards
+
+2006-04-11 22:02  (theideaman)
+---------------------------------
+db/dotproject.sql
+- added missing ';' after the ALTER TABLE 'billing_code' statement
+
+2006-04-11 21:41  (theideaman)
+---------------------------------
+index.php
+- PHP code cleanup to match Coding Standards
+
+2006-04-09 21:18  (cyberhorse)
+---------------------------------
+modules/tasks/vw_tasks.php
+- #1236 - remembering task ordering in project view after seeing a task
+
+2006-04-09 20:54  (cyberhorse)
+---------------------------------
+includes/gateway.pl
+includes/gateway.pl
+- #1137 - applied proposed patch to fix acknowledgements
+
+2006-04-09 20:41  (cyberhorse)
+---------------------------------
+modules/calendar/day_view.php
+- #1425 - (hopefully) fixed a PHP5 issue with day view off by one date.
+
+2006-04-09 20:21  (cyberhorse)
+---------------------------------
+modules/tasks/vw_logs.php
+- #1157 - fixed billing codes display
+
+2006-04-07 02:00  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- possible fix for missing assigned users and formatting related issues
+
+2006-04-07 01:50  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixed cyclic move
+
+2006-04-07 01:34  (cyberhorse)
+---------------------------------
+index.php
+classes/template.class.php
+modules/resources/tasks_dosql.addedit.php
+modules/tasks/tasks.class.php
+modules/tasks/vw_tasks.php
+- #1095 - fixed recursive copying
+- fixed missing function call
+- fixed missing variables in template handling
+- created init() for templates
+
+2006-04-07 01:20  (cyberhorse)
+---------------------------------
+.htaccess
+- patch applied
+
+2006-04-07 01:08  (cyberhorse)
+---------------------------------
+.htaccess
+- #1586 - .htaccess fixed (using boolean variables instead of generic ones)
+
+2006-04-07 00:07  (cyberhorse)
+---------------------------------
+classes/libmail.class.php
+- #1290 - fixed new line character bug in libmail
+
+2006-04-07 00:06  (cyberhorse)
+---------------------------------
+classes/libmail.class.php
+- #1290 - fixed new line characters in libmail
+
+2006-04-06 23:37  (cyberhorse)
+---------------------------------
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_aed.php
+- #1239 - fixed issue with dynamic task and dependencies
+
+2006-04-06 23:12  (cyberhorse)
+---------------------------------
+modules/system/translate_save.php
+modules/system/translate_save.php
+- #1061 - fixed translating an english string with single quotes
+
+2006-04-06 22:26  (cyberhorse)
+---------------------------------
+modules/tasks/vw_log_update.php
+- #1578 - added generic billing codes
+
+2006-04-06 22:19  (cyberhorse)
+---------------------------------
+modules/projects/do_project_aed.php
+modules/projects/do_project_aed.php
+- #1579 - fixed deletion permissions
+
+2006-04-06 18:05  (cyberhorse)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/vw_logs.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/vw_log_update.php
+- #1575 - fix permissions in project module
+- #1580 - fixed task costcodes in both stable_2 and latest cvs
+- #1572 - fixed html double encoding issue
+- #1569 - issue in tasklog date calculations fixed
+- fixed percent completed calculations
+
+2006-04-06 18:02  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/smarty/function.dPgetContact.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/view.php
+modules/projects/addedit.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/tasks/organize.php
+modules/tasks/projects_tab.view.task_logs.php
+modules/tasks/view.php
+modules/tasks/vw_logs.php
+style/smarty1/calendar/addedit.html
+style/smarty1/calendar/view.html
+style/smarty1/tasks/organize.html
+style/smarty1/tasks/tasklog.html
+style/smarty1/tasks/view.html
+- stupid cvs missing ... a few commits now:
+- #1570 - added url to events
+- #822 - added event_task
+- #1575 - fix permissions in project module
+- #1580 - fixed task costcodes in both stable_2 and latest cvs
+- fixed keeping owner of event after edit
+- smartified task view (had slipped through the cracks) and organization, some system pages, etc.
+- smartified task logs in project view
+- moved task logs tab to an automatically loaded tab
+
+2006-04-05 14:43  (ajdonnison)
+---------------------------------
+modules/projects/vw_idx_proposed.php
+- 1565: Patch from Matthew to fix "Not Defined" project tab.
+
+2006-03-28 10:21  (pedroix)
+---------------------------------
+modules/tasks/do_task_aed.php
+- Back port of version 1.32 added task reminders by AJ
+
+2006-03-23 06:54  (theideaman)
+---------------------------------
+includes/permissions.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 06:22  (theideaman)
+---------------------------------
+includes/main_functions.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 06:15  (theideaman)
+---------------------------------
+includes/db_connect.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 06:10  (theideaman)
+---------------------------------
+includes/db_adodb.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 03:46  (theideaman)
+---------------------------------
+classes/ui.class.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 03:41  (theideaman)
+---------------------------------
+classes/permissions.class.php
+classes/query.class.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 03:35  (theideaman)
+---------------------------------
+classes/libmail.class.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 03:30  (theideaman)
+---------------------------------
+classes/customfieldsparser.class.php
+classes/date.class.php
+classes/dp.class.php
+- minor PHP code cleanup to match Coding Standards
+
+2006-03-23 03:28  (theideaman)
+---------------------------------
+modules/calendar/day_view.php
+- added type attribute to script tag
+
+2006-03-23 03:05  (theideaman)
+---------------------------------
+modules/calendar/clash.php
+- XHTML and PHP code clean up
+
+2006-03-23 02:43  (theideaman)
+---------------------------------
+modules/calendar/calmgt.php
+- added closing PHP tag
+
+2006-03-23 02:38  (theideaman)
+---------------------------------
+modules/admin/addedituser.php
+- added type attribute and value to script tag
+
+2006-03-23 02:15  (theideaman)
+---------------------------------
+files/cache/smarty_templates/.keep
+- this folder was needed for Smarty's caching functionality
+
+2006-03-23 02:06  (theideaman)
+---------------------------------
+.htaccess
+- .htaccess file for changing PHP settings (sessions, register globals)
+
+2006-03-23 01:36  (theideaman)
+---------------------------------
+index.php
+- super minor XHTML change
+
+2006-03-23 00:04  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+modules/projects/index.php
+- remember ordering across tabs
+
+2006-03-23 00:01  (cyberhorse)
+---------------------------------
+modules/tasks/tree.js
+modules/tasks/vw_tasks.php
+style/smarty1/tasks/list.html
+style/smarty1/tasks/list.row.html
+- Added expand/collapse all buttons in project view screen
+- fixed ordering handling (was commented out)
+- fixed a few other minor things
+
+2006-03-22 19:04  (cyberhorse)
+---------------------------------
+includes/db_connect.php
+- #977 - fixed stripping <> characters
+
+2006-03-22 19:02  (cyberhorse)
+---------------------------------
+includes/db_connect.php
+- #977 - fixed stripping of <> chars
+
+2006-03-21 22:33  (cyberhorse)
+---------------------------------
+style/smarty1/smartsearch/list.html
+- fixed the links to point to view pages instead of edit ones
+
+2006-03-21 20:28  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+modules/tasks/do_task_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+modules/tasks/view.php
+- Backported task reminders so they make it into the 2.0.2 release
+
+2006-03-20 22:08  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/system/system.class.php
+modules/system/system.class.php
+- #1156 - don't allow duplicate billing codes within a company.
+
+2006-03-20 21:53  (cyberhorse)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt2.php
+- #1449 - fix dynamic tasks display in projects gantt charts
+
+2006-03-20 21:50  (cyberhorse)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt2.php
+- #1449 - fix dynamic tasks display in projects gantt charts
+
+2006-03-20 21:19  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- #1407 - fixed displaying children tasks, when they fit a search.
+
+2006-03-20 20:59  (cyberhorse)
+---------------------------------
+modules/tasks/vw_tasks.php
+- fixed search filtering in tasks (when viewing a project)
+
+2006-03-20 20:39  (cyberhorse)
+---------------------------------
+modules/links/index_table.php
+- #1558 - fixed tasks/projects missing in links display
+
+2006-03-20 20:35  (cyberhorse)
+---------------------------------
+modules/links/index_table.php
+- #1558 - fixed tasks/projects missing in links display
+
+2006-03-20 20:25  (cyberhorse)
+---------------------------------
+includes/smarty/modifier.dPhighlight.php
+- file, missing since work on smartsearch module
+
+2006-03-20 20:14  (cyberhorse)
+---------------------------------
+style/print.css
+- needed for printing button
+
+2006-03-20 06:07  (pedroix)
+---------------------------------
+modules/forums/view_messages.php
+modules/forums/view_messages.php
+- Bug0001456: 'visit_date' not set properly after viewing messages in a Forum thread
+
+2006-03-20 05:55  (pedroix)
+---------------------------------
+modules/forums/index.php
+- Bug0001185: Forum permissions
+- Add+Edit Permission is for adding New Forums and Editing Forums
+- solely Edit is for editing and adding topics and replies
+
+2006-03-20 05:43  (pedroix)
+---------------------------------
+modules/forums/addedit.php
+modules/forums/index.php
+modules/forums/addedit.php
+- Bug0001185: Forum permissions
+- Add+Edit Permission is for adding New Forums and Editing Forums
+- solely Edit is for editing and adding topics and replies
+
+2006-03-20 00:06  (pedroix)
+---------------------------------
+modules/projects/reports.php
+- Bug0001217: Task report won't give me all tasks
+
+2006-03-19 23:16  (cyberhorse)
+---------------------------------
+modules/tasks/view.php
+- #982 - enable "pinning" a task from the task view screen.
+
+2006-03-19 22:49  (cyberhorse)
+---------------------------------
+style/smarty1/admin/list.html
+- #1151 - moved login history time to be the last column in user listing.
+
+2006-03-19 22:41  (cyberhorse)
+---------------------------------
+modules/tasks/vw_tasks.php
+- #1298 - added new filter option - not complete tasks. Made it the default.
+
+2006-03-19 21:59  (cyberhorse)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- #1492 - display module name for items based permissions
+
+2006-03-19 21:45  (cyberhorse)
+---------------------------------
+modules/reports/index.php
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/upcoming.php
+modules/reports/existing/userperformance.php
+- Lots of project reports errors fixed in latest cvs
+- tasklist - general cleanup
+- userperformance query quotes missing fixed
+- 
+- enabled "All projects" reports properly (port changes from stable_2)
+- allocateduserhours
+- tasklogs
+- tasksperuser
+- userperformance
+- taskenddate
+- 
+- fix project names in upcoming and a few other reports
+- general cleanup
+
+2006-03-19 21:07  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+- replaced incompatible != with <> in sql queries
+
+2006-03-19 21:02  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+- != is not valid SQL notation - replaced with <>
+
+2006-03-19 20:52  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1486 - don't email tasks and tasklog notification emails to yourself
+
+2006-03-19 20:28  (cyberhorse)
+---------------------------------
+modules/links/index_table.php
+modules/links/index_table.php
+- fix a spurious error message
+
+2006-03-19 18:20  (cyberhorse)
+---------------------------------
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index_table.php
+- #1558
+-  - links open in new window
+-  - uploaded by fixed
+-  - date/time update on every change
+
+2006-03-19 18:05  (cyberhorse)
+---------------------------------
+modules/links/do_link_aed.php
+- removed redundant code
+
+2006-03-19 17:56  (cyberhorse)
+---------------------------------
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index_table.php
+- #1558
+-  - all projects link fixed (still displays error though)
+-  - date/time saved on update too
+-  - creator set to last editor
+-  - links open in new windows
+
+2006-03-19 14:35  (cyberhorse)
+---------------------------------
+locales/en/system.inc
+- added translation for the new page_size setting title and description
+
+2006-03-19 14:21  (cyberhorse)
+---------------------------------
+ChangeLog
+- changelog updated
+
 2006-03-19 14:19  (cyberhorse)
 ---------------------------------
 classes/query.class.php

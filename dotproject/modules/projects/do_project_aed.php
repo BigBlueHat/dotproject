@@ -63,7 +63,57 @@ if ($del) {
 				$import_date = $date->format(FMT_DATETIME_MYSQL);
 			}
 			$keepAssignees = dPgetParam( $_POST, 'keepAssignees', '' );
-			$obj->importTasks ($importTask_projectId, $import_date, $keepAssignees);
+			$keepFiles = dPgetParam( $_POST, 'keepFiles', '' );
+			$obj->importTasks ($importTask_projectId, $import_date, $keepAssignees, $keepFiles);
+
+			// Import forums
+			$keepForums = dPgetParam($_POST, 'keepForums', false);
+			if ($keepForums)
+			{
+				$q = new DBQuery;
+				$q->addTable('forums');
+				$q->addQuery('*');
+				$q->addWhere('forum_project = ' . $importTask_projectId);
+				$forums = $q->loadList();
+				foreach($forums as $forum)
+				{
+					$forum['forum_id'] = '';
+					$forum['forum_project'] = $obj->project_id;
+					$q->addInsert(array_keys($forum), array_values($forum), true);
+					$q->addTable('forums');
+					$q->exec();
+					$q->clear();
+				}
+			}
+
+			// Import project files (task files are already imported).
+			if ($keepFiles)
+			{
+				if (!is_dir($dPconfig['root_dir'].'/files/'.$obj->project_id))
+				{
+					$res = mkdir( $dPconfig['root_dir'].'/files/'.$obj->project_id, 0777 );
+					if (!$res) 
+						$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
+       }
+
+
+				$q = new DBQuery;
+				$q->addTable('files');
+				$q->addQuery('*');
+				$q->addWhere('file_task = 0');
+				$q->addWhere('file_project = ' . $importTask_projectId);
+				$files = $q->loadList();
+				foreach($files as $file)
+				{
+    			$res = copy($dPconfig['root_dir'].'/files/'.$file['file_project'].'/'.$file['file_real_filename'], $dPconfig['root_dir'].'/files/'.$obj->project_id.'/'.$file['file_real_filename']);
+					$file['file_id'] = '';
+					$file['file_project'] = $obj->project_id;
+					$q->addInsert(array_keys($file), array_values($file), true);
+					$q->addTable('files');
+					$q->exec();
+					$q->clear();
+				}
+			}
 		}
 
  		$custom_fields = New CustomFields( $m, 'addedit', $obj->project_id, "edit" );

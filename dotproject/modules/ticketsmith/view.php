@@ -199,10 +199,10 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
     print("<td align=\"left\" valign=\"top\">\n");
 
     /* grab followups */
-    $query = "SELECT ticket, type, timestamp, author FROM tickets WHERE parent = '$ticket' ORDER BY ticket " . $CONFIG["followup_order"];
+    $query = "SELECT ticket, type, timestamp, author, body FROM tickets WHERE parent = '$ticket' ORDER BY ticket " . $CONFIG["followup_order"];
     $result = do_query($query);
 
-    if (number_rows($result)) {
+    if (($num_followups = number_rows($result))) {
 
         /* print followups */
         print("<table width=\"100%\" border=\"1\" cellspacing=\"5\" cellpadding=\"5\">\n");
@@ -233,6 +233,18 @@ if ($ticket_type != "Staff Followup" && $ticket_type != "Client Followup" && $ti
             /* end row */
             print("</tr>\n");
 
+            if ($num_followups < 5)
+            {
+              print("<tr>\n");
+
+              /* show body/comments */
+              print("<td colspan=\"3\" bgcolor=\"$color\">\n");
+              print(stripslashes($row["body"] . "\n"));
+              print("</td>\n");
+
+              /* end row */
+              print("</tr>\n");
+            }
         }
         print("</table>\n");
 

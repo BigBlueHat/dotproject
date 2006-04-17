@@ -146,9 +146,10 @@ class CProject extends CDpObject {
 	*	@param	int		Project ID of the tasks come from.
 	* @param  date  The date to offset tasks with.
 	* @param  bool  To keep or not assignees.
+	* @param  bool  To keep or not files.
 	*	@return	bool	
 	**/
-	function importTasks ($from_project_id, $import_date = '', $keepAssignees = true) {
+	function importTasks ($from_project_id, $import_date = '', $keepAssignees = true, $keepFiles = false) {
 		
 		// Load the original
 		$origProject = new CProject ();
@@ -240,6 +241,26 @@ class CProject extends CDpObject {
 					foreach($user as $field => $value)
 						$q->addInsert($field, $value);
 					$q->addInsert('task_id', $newTask->task_id);
+					$q->exec();
+					$q->clear();
+				}
+			}
+
+			if ($keepFiles)
+			{
+				$q->addQuery('*');
+				$q->addTable('files');
+				$q->addWhere('file_task = ' . $old_id);
+				$files = $q->loadList();
+
+				foreach($files as $file)
+				{
+					$res = copy(dPgetConfig('root_dir').'/files/'.$file['file_project'].'/'.$file['file_real_filename'], dPgetConfig('root_dir').'/files/'.$obj->project_id.'/'.$file['file_real_filename']);
+					$file['file_id'] = '';
+					$file['file_task'] = $newTask->task_id;
+					$file['file_project'] = $newTask->task_project;
+					$q->addTable('files');
+					$q->addInsert(array_keys($file), array_values($file), true);
 					$q->exec();
 					$q->clear();
 				}
