@@ -241,7 +241,7 @@ function setDepartment(department_id_string){
 </script>
 
 <?php
-
+// Template projects related processing.
 	$objProject = new CProject();
 	$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
 	
@@ -259,6 +259,8 @@ function setDepartment(department_id_string){
 	$importList = $q->loadHashList ();
 	$importList = arrayMerge( array( '0'=> $AppUI->_('none') ), $importList);
 
+
+/**************** Display *********************/
 	require_once("./classes/CustomFields.class.php");
 	$custom_fields = New CustomFields( $m, $a, $row->project_id, "edit" );
 	
@@ -287,14 +289,26 @@ function setDepartment(department_id_string){
 	$tpl->assign('project_contacts', implode(',', $selected_contacts));
 	
 	$tpl->displayAddEdit($row);
-?>
 
-<?php
-function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
+
+
+/**
+ * List available departments options list with formatting (tabulated).
+ * used in a recursive call.
+ *
+ * @param int $company_id 			the id of the company for which to lookup departments
+ * @param array $checked_array 	the list of already processed departments 
+ * @param int $dept_parent 			the parent department of the current one
+ * @param int $spaces						the size of the tabulation to be applied (in spaces)
+ *
+ * return string 		the list of options for all accessible departments
+ */
+function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent = 0, $spaces = 0){
 	global $departments_count;
 	$parsed = '';
 
-	if($departments_count < 6) $departments_count++;
+	if ($departments_count < 6)
+		$departments_count++;
 	
 	$q  = new DBQuery;
 	$q->addTable('departments');
@@ -303,10 +317,10 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$depts_list = $q->loadHashList("dept_id");
 
 	foreach($depts_list as $dept_id => $dept_info){
-		$selected = in_array($dept_id, $checked_array) ? "selected" : "";
+		$selected = in_array($dept_id, $checked_array) ? 'selected' : '';
 
-		$parsed .= "<option value='$dept_id' $selected>".str_repeat("&nbsp;", $spaces).$dept_info["dept_name"]."</option>";
-		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
+		$parsed .= '<option value="' . $dept_id . "\" $selected>" . str_repeat('&nbsp;', $spaces) . $dept_info['dept_name'].'</option>';
+		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces + 5);
 	}
 	
 	return $parsed;
