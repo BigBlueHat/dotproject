@@ -91,9 +91,13 @@ function dPsessionWrite($id, $data)
 	return true;
 }
 
-function dPsessionDestroy($id)
+function dPsessionDestroy($id, $user_access_log_id = 0)
 {
 	global $AppUI;
+
+	if(!($user_access_log_id) && isset($AppUI->last_insert_id))
+		$user_access_log_id = $AppUI->last_insert_id;
+	
 	
 	dprint(__FILE__, __LINE__, 11, "Killing session $id");
 	$q = new DBQuery;
@@ -102,11 +106,11 @@ function dPsessionDestroy($id)
 	$q->exec();
 	$q->clear();
 
-	if (isset($AppUI->last_insert_id))
+	if ($user_access_log_id)
 	{
 		$q->addTable('user_access_log');
 		$q->addUpdate('date_time_out', date("Y-m-d H:i:s"));
-		$q->addWhere('user_access_log_id = ' . $AppUI->last_insert_id);
+		$q->addWhere('user_access_log_id = ' . $user_access_log_id);
 		$q->exec();
 		$q->clear();
 	}
