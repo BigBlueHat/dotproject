@@ -508,15 +508,17 @@ function formatTime( $uts )
  */
 function formatCurrency( $number, $format )
 {
-	global $AppUI;
+	global $AppUI, $locale_char_set;
 
 	if (!$format) {
 		$format = $AppUI->getPref('SHCURRFORMAT');
 	}
 	// If the requested locale doesn't work, don't fail,
 	// revert to the system default.
-	if (! setlocale(LC_MONETARY, $format)) {
-		setlocale(LC_MONETARY, "");
+	if ( $locale_char_set != 'utf-8' || ! setlocale(LC_MONETARY, $format . '.UTF8') ) {
+		if (! setlocale(LC_MONETARY, $format)) {
+			setlocale(LC_MONETARY, "");
+		}
 	}
 	if (function_exists('money_format')) {
 		return money_format('%i', $number);
