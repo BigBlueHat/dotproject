@@ -873,10 +873,6 @@ class dPacl extends gacl_api {
       null,
       null,
       "user");
-    if (! is_array($_POST['permission_type'])) {
-      $this->debug_text("you must select at least one permission");
-      return false;
-    }
   }
 
   // Some function overrides.
