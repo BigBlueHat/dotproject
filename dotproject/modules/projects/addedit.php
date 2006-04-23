@@ -1,7 +1,7 @@
 <?php /* PROJECTS $Id$ */
-$project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
-$company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
-$contact_id = intval( dPgetParam( $_GET, "contact_id", 0 ) );
+$project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
+$company_id = intval( dPgetParam( $_GET, 'company_id', 0 ) );
+$contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 
 $perms =& $AppUI->acl();
 // check permissions for this record
@@ -34,10 +34,10 @@ $row = new CProject();
 
 if (!$row->load( $project_id, false ) && $project_id > 0) {
 $AppUI->setMsg( 'Project' );
-$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
 $AppUI->redirect();
 } else if (count( $companies ) < 2 && $project_id == 0) {
-$AppUI->setMsg( "noCompanies", UI_MSG_ERROR, true );
+$AppUI->setMsg( 'noCompanies', UI_MSG_ERROR, true );
 $AppUI->redirect();
 }
 
@@ -72,11 +72,11 @@ $actual_end_date = intval( $criticalTasks[0]['task_end_date'] ) ? new CDate( $cr
 $style = (( $actual_end_date > $end_date) && !empty($end_date)) ? 'style="color:red; font-weight:bold"' : '';
 
 // setup the title block
-$ttl = $project_id > 0 ? "Edit Project" : "New Project";
+$ttl = $project_id > 0 ? 'Edit Project' : 'New Project';
 $titleBlock = new CTitleBlock( $ttl, 'applet3-48.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=projects", "projects list" );
+$titleBlock->addCrumb( '?m=projects', 'projects list' );
 if ($project_id != 0)
-$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$project_id, 'view this project' );
 $titleBlock->show();
 
 //Build display list for departments
@@ -94,10 +94,10 @@ if ($project_id) {
 }
 $departments_count = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
-if($department_selection_list!=""){
-$department_selection_list = $AppUI->_("Departments")."<br /><select name='dept_ids[]' size='$departments_count' multiple style=''>$department_selection_list</select>";
+if($department_selection_list != ''){
+$department_selection_list = $AppUI->_('Departments').'<br /><select name="dept_ids[]" size="'.$departments_count.'" multiple>'.$department_selection_list.'</select>';
 } else {
-$department_selection_list = "<input type='button' class='button' value='".$AppUI->_("Select department...")."' onclick='javascript:popDepartment();' /><input type=\"hidden\" name=\"project_departments\"";
+$department_selection_list = '<input type="button" class="button" value="'.$AppUI->_('Select department...').'" onclick="javascript:popDepartment();" /><input type="hidden" name="project_departments" />';
 }
 
 // Get contacts list
@@ -261,8 +261,8 @@ function setDepartment(department_id_string){
 
 
 /**************** Display *********************/
-	require_once("./classes/CustomFields.class.php");
-	$custom_fields = New CustomFields( $m, $a, $row->project_id, "edit" );
+	require_once($baseDir . '/classes/CustomFields.class.php');
+	$custom_fields = New CustomFields( $m, $a, $row->project_id, 'edit' );
 	
 	$tpl->assign('custom_fields', $custom_fields->getHTML());
 		

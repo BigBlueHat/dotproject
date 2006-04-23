@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-$project_id = intval( dPgetParam( $_GET, "project_id", 0 ) );
+$project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
 // check permissions for this record
 $perms =& $AppUI->acl();
@@ -41,7 +41,7 @@ $working_hours = $dPconfig['daily_working_hours'];
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 $q  = new DBQuery;
 $q->addTable('projects');
-$q->addQuery("company_name");
+$q->addQuery('company_name');
 $contact_full_name = $q->concat('contact_last_name', "', '" , 'contact_first_name');
 $q->addQuery($contact_full_name.' user_name');
 $q->addQuery('projects.*');
@@ -59,7 +59,7 @@ $q->clear();
 $obj = null;
 if (!db_loadObject( $sql, $obj )) {
 	$AppUI->setMsg( 'Project' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
 	$AppUI->redirect();
 } else {
 	$AppUI->savePlace();
@@ -198,19 +198,19 @@ if ($canEdit) {
 	);
 
 }
-$titleBlock->addCrumb( "?m=projects", "projects list" );
+$titleBlock->addCrumb( '?m=projects', 'projects list' );
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=projects&a=addedit&project_id=$project_id", "edit this project" );
+	$titleBlock->addCrumb( '?m=projects&a=addedit&project_id='.$project_id, 'edit this project' );
 	if ($canDelete) {
 		$titleBlock->addCrumbDelete( 'delete project', $canDelete, $msg );
 	}
-	$titleBlock->addCrumb("?m=tasks&a=organize&project_id=$project_id", "organize tasks");
+	$titleBlock->addCrumb('?m=tasks&a=organize&project_id='.$project_id, 'organize tasks');
 }
-$titleBlock->addCrumb( "?m=reports&project_id=$project_id", "reports" );
+$titleBlock->addCrumb( '?m=reports&project_id='.$project_id, 'reports' );
 $titleBlock->show();
 
-require_once("./classes/CustomFields.class.php");
-$custom_fields = New CustomFields( $m, $a, $obj->project_id, "view" );
+require_once($baseDir . '/classes/CustomFields.class.php');
+$custom_fields = New CustomFields( $m, $a, $obj->project_id, 'view' );
 
 $tpl->assign('custom_fields', $custom_fields->getHTML());
 $tpl->assign('style', $style);

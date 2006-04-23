@@ -7,7 +7,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-require_once("./classes/CustomFields.class.php");
+require_once($baseDir . '/classes/CustomFields.class.php');
 // convert dates to SQL format first
 if ($obj->project_start_date) {
 	$date = new CDate( $obj->project_start_date );
@@ -24,8 +24,8 @@ if ($obj->project_actual_end_date) {
 }
 
 // let's check if there are some assigned departments to project
-if(!dPgetParam($_POST, "project_departments", 0)){
-	$obj->project_departments = implode(",", dPgetParam($_POST, "dept_ids", array()));
+if(!dPgetParam($_POST, 'project_departments', 0)){
+	$obj->project_departments = implode(',', dPgetParam($_POST, 'dept_ids', array()));
 }
 
 $del = dPgetParam( $_POST, 'del', 0 );
@@ -42,8 +42,8 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 		$AppUI->redirect();
 	} else {
-		$AppUI->setMsg( "Project deleted", UI_MSG_ALERT);
-		$AppUI->redirect( "m=projects" );
+		$AppUI->setMsg( 'Project deleted', UI_MSG_ALERT);
+		$AppUI->redirect( 'm=projects' );
 	}
 } else {
 	if (($msg = $obj->store())) {
@@ -93,7 +93,7 @@ if ($del) {
 				{
 					$res = mkdir( $dPconfig['root_dir'].'/files/'.$obj->project_id, 0777 );
 					if (!$res) 
-						$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
+						$AppUI->setMsg( 'Upload folder not setup to accept uploads - change permission on files/ directory.', UI_MSG_ALLERT );
        }
 
 
