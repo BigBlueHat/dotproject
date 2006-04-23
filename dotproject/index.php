@@ -26,27 +26,27 @@
  * }}}
  */
 
+// Timings init
 $time = array_sum(explode(' ',microtime()));
 $acltime = 0;
 $dbtime = 0;
 $dbqueries = 0;
+
 ini_set('display_errors', 1); // Ensure errors get to the user.
 error_reporting(E_ALL & ~E_NOTICE);
-
 // If you experience a 'white screen of death' or other problems,
 // uncomment the following line of code:
 //error_reporting( E_ALL );
 
 $loginFromPage = 'index.php';
 
-require_once 'base.php';
+require_once('base.php');
 
 clearstatcache();
-if (is_file($baseDir . '/includes/config.php')) {
-
+if (is_file($baseDir . '/includes/config.php'))
 	require_once($baseDir . '/includes/config.php');
-
-} else {
+else
+{
 	include_once($baseDir . '/classes/template.class.php');
 	$tpl = new CTemplate();
 	$tpl->init();
@@ -54,9 +54,8 @@ if (is_file($baseDir . '/includes/config.php')) {
 	exit();
 }
 
-if (!isset($GLOBALS['OS_WIN'])) {
+if (!isset($GLOBALS['OS_WIN']))
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, 'WIN') !== false);
-}
 
 // tweak for pathname consistence on windows machines
 require_once($baseDir . '/includes/db_adodb.php');
@@ -108,9 +107,8 @@ require_once($baseDir .'/misc/debug.php');
 //Function for update lost action in user_access_log
 $AppUI->updateLastAction($last_insert_id);
 // load default preferences if not logged in
-if ($AppUI->doLogin()) {
+if ($AppUI->doLogin())
 	$AppUI->loadPrefs( 0 );
-}
 
 // check is the user needs a new password
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
@@ -133,11 +131,11 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 // support alternative authentication methods such as the PostNuke
 // and HTTP auth methods now supported.
 if (isset($_REQUEST['login'])) {
-	if (dPgetConfig('auth_method') == 'http_ba') {
+	if (dPgetConfig('auth_method') == 'http_ba')
 		$username = $_SERVER['REMOTE_USER'];
-	} else {
+	else
 		$username = dPgetParam( $_POST, 'username', '' );
-	}
+
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 	$AppUI->setUserLocale();
@@ -152,11 +150,8 @@ if (isset($_REQUEST['login'])) {
 	}
 	$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
 	addHistory('login', $AppUI->user_id, 'login', $details);
-	$AppUI->redirect( "$redirect" );
+	$AppUI->redirect( $redirect );
 }
-
-// supported since PHP 4.2
-// writeDebug( var_export( $AppUI, true ), 'AppUI', __FILE__, __LINE__ );
 
 // set the default ui style
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
@@ -170,25 +165,23 @@ $u = '';
 if ($AppUI->doLogin()) {
 	// load basic locale settings
 	$AppUI->setUserLocale();
-	@include_once "./locales/$AppUI->user_locale/locales.php";
-	@include_once "./locales/core.php";
+	@include_once($baseDir . '/locales/'.$AppUI->user_locale.'/locales.php');
+	@include_once($baseDir . '/locales/core.php');
 	setlocale(LC_TIME, $AppUI->user_lang);
 	$redirect = @$_SERVER['QUERY_STRING'];
-	if (strpos( $redirect, 'logout' ) !== false) {
+	if (strpos( $redirect, 'logout' ) !== false)
 		$redirect = '';
-	}
 
-	if (isset( $locale_char_set )) {
-		header("Content-type: text/html;charset=$locale_char_set");
-	}
+
+	if (isset( $locale_char_set ))
+		header('Content-type: text/html;charset='.$locale_char_set);
 
 	//  Display the login page unless the authentication method is HTTP Basic Auth
-	if ($dPconfig['auth_method'] == 'http_ba' ) {
-		$AppUI->redirect( "login=http_ba&redirect=$redirect" );
-	} else {
+	if ($dPconfig['auth_method'] == 'http_ba' )
+		$AppUI->redirect( 'login=http_ba&redirect='.$redirect );
+	else
 		$tpl->displayStyle('login');
-	}
-
+	
 	// destroy the current session and output login page
 	session_unset();
 	session_destroy();
@@ -198,12 +191,12 @@ $AppUI->setUserLocale();
 
 
 // bring in the rest of the support and localisation files
-require_once "$baseDir/includes/permissions.php";
+require_once($baseDir.'/includes/permissions.php');
 
 
 $def_a = 'index';
 if (!isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
-  	$m = $dPconfig['default_view_m'];
+	$m = $dPconfig['default_view_m'];
 	$def_a = !empty($dPconfig['default_view_a']) ? $dPconfig['default_view_a'] : $def_a;
 	$tab = $dPconfig['default_view_tab'];
 } else {
@@ -227,11 +220,11 @@ $u = $AppUI->checkFileName(dPgetParam($_GET, 'u', ''));
 // check overall module permissions
 // these can be further modified by the included action files
 $perms =& $AppUI->acl();
-$canAccess = $perms->checkModule($m, 'access');
-$canRead = $perms->checkModule($m, 'view');
-$canEdit = $perms->checkModule($m, 'edit');
-$canAuthor = $perms->checkModule($m, 'add');
-$canDelete = $perms->checkModule($m, 'delete');
+$canAccess 	= $perms->checkModule($m, 'access');
+$canRead 		= $perms->checkModule($m, 'view');
+$canEdit 		= $perms->checkModule($m, 'edit');
+$canAuthor 	= $perms->checkModule($m, 'add');
+$canDelete 	= $perms->checkModule($m, 'delete');
 
 // All settings set. Initialise template (set global variables)
 $tpl->init();
@@ -240,15 +233,15 @@ if (!isset($_SESSION['all_tabs'][$m])) {
 	// For some reason on some systems if you don't set this up
 	// first you get recursive pointers to the all_tabs array, creating
 	// phantom tabs.
-	if (!isset($_SESSION['all_tabs'])) {
+	if (!isset($_SESSION['all_tabs']))
 		$_SESSION['all_tabs'] = array();
-	}
+
 	$_SESSION['all_tabs'][$m] = array();
 	$all_tabs =& $_SESSION['all_tabs'][$m];
 	foreach ($AppUI->getActiveModules() as $dir => $module) {
-		if (!$perms->checkModule($dir, 'access')) {
+		if (!$perms->checkModule($dir, 'access'))
 			continue;
-		}
+
 		$modules_tabs = $AppUI->readFiles("$baseDir/modules/$dir/", '^' . $m . '_tab.*\.php');
 		foreach ($modules_tabs as $tab) {
 			// Get the name as the subextension
@@ -258,9 +251,9 @@ if (!isset($_SESSION['all_tabs'][$m])) {
 			$filename = substr($tab, 0, -4);
 			if (count($nameparts) > 3) {
 				$file = $nameparts[1];
-				if (!isset($all_tabs[$file])) {
+				if (!isset($all_tabs[$file]))
 					$all_tabs[$file] = array();
-				}
+
 				$arr =& $all_tabs[$file];
 				$name = $nameparts[2];
 			} else {
@@ -278,17 +271,17 @@ if (!isset($_SESSION['all_tabs'][$m])) {
 }
 
 // load module based locale settings
-@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
-@include_once "$baseDir/locales/core.php";
+@include_once($baseDir.'/locales/'.$AppUI->user_locale.'/locales.php');
+@include_once($baseDir.'/locales/core.php');
 
 setlocale(LC_ALL, $AppUI->user_lang);
 $m_config = dPgetConfig($m);
-@include_once "$baseDir/functions/" . $m . "_func.php";
+@include_once($baseDir.'/functions/'.$m.'_func.php');
 
 if (!$suppressHeaders) {
 	// output the character set header
 	if (isset($locale_char_set)) {
-		header("Content-type: text/html;charset=$locale_char_set");
+		header('Content-type: text/html;charset=.'$locale_char_set);
 	}
 }
 
@@ -315,17 +308,17 @@ if (!(
 // further down the track.
 $modclass = $AppUI->getModuleClass($m);
 if (file_exists($modclass)) {
-	include_once $modclass;
+	include_once($modclass);
 }
 if ($u && file_exists("$baseDir/modules/$m/$u/$u.class.php")) {
-	include_once "$baseDir/modules/$m/$u/$u.class.php";
+	include_once("$baseDir/modules/$m/$u/$u.class.php");
 }
 
 // do some db work if dosql is set
 // TODO - MUST MOVE THESE INTO THE MODULE DIRECTORY
-if (isset($_REQUEST["dosql"])) {
+if (isset($_REQUEST['dosql'])) {
 	//require("./dosql/" . $_REQUEST["dosql"] . ".php");
-	require  "$baseDir/modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST["dosql"]) . ".php";
+	require("$baseDir/modules/$m/" . ($u ? "$u/" : "") . $AppUI->checkFileName($_REQUEST['dosql']) . '.php');
 }
 
 // start output proper
@@ -337,10 +330,11 @@ if(!$suppressHeaders) {
 }
 
 $setuptime = (array_sum(explode(' ',microtime())) - $time);
-$module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . "$a.php";
-if (file_exists($module_file)) {
+$module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . $a . '.php';
+if (file_exists($module_file))
 	require $module_file;
-} else {
+else
+{
 // TODO: make this part of the public module? 
 // TODO: internationalise the string.
 	$titleBlock = new CTitleBlock('Warning', 'log-error.gif');
@@ -348,6 +342,7 @@ if (file_exists($module_file)) {
 
 	echo $AppUI->_('Missing file ('.$module_file.'). Possible Module "'.$m.'" missing!');
 }
+
 if (!$suppressHeaders && !$dialog) {
 	// iframe for doing multithreaded work - handle additional requests.
 	echo '<iframe name="thread" src="' . $baseUrl . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
