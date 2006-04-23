@@ -20,8 +20,9 @@ class CTemplate extends Smarty
 	
 	function init()
 	{
-		global $m, $a, $dPconfig;
+		global $m, $a, $dPconfig, $baseUrl;
 		$this->assign('template', $this->template_dir);
+		$this->assign('baseUrl', $baseUrl);
 		$this->assign('config', $dPconfig);
 		$this->assign('m', $m);
 		$this->assign('a', $a);

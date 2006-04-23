@@ -42,29 +42,30 @@ $loginFromPage = 'index.php';
 require_once 'base.php';
 
 clearstatcache();
-if (is_file("$baseDir/includes/config.php")) {
+if (is_file($baseDir . '/includes/config.php')) {
 
-	require_once "$baseDir/includes/config.php";
+	require_once($baseDir . '/includes/config.php');
 
 } else {
-	echo "<html><head><meta http-equiv='refresh' content='5; URL=".$baseUrl."/install/index.php' /></head><body>";
-	echo "Fatal Error. You haven't created a config file yet.<br/><a href='./install/index.php'>
-		Click Here To Start Installation and Create One!</a> (forwarded in 5 sec.)</body></html>";
+	include_once($baseDir . '/classes/template.class.php');
+	$tpl = new CTemplate();
+	$tpl->init();
+	$tpl->displayFile('install', '.');
 	exit();
 }
 
 if (!isset($GLOBALS['OS_WIN'])) {
-	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, "WIN") !== false);
+	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, 'WIN') !== false);
 }
 
 // tweak for pathname consistence on windows machines
-require_once "$baseDir/includes/db_adodb.php";
-require_once "$baseDir/includes/db_connect.php";
-require_once "$baseDir/includes/main_functions.php";
-require_once "$baseDir/classes/template.class.php";
-require_once "$baseDir/classes/ui.class.php";
-require_once "$baseDir/classes/permissions.class.php";
-require_once "$baseDir/includes/session.php";
+require_once($baseDir . '/includes/db_adodb.php');
+require_once($baseDir . '/includes/db_connect.php');
+require_once($baseDir . '/includes/main_functions.php');
+require_once($baseDir . '/classes/template.class.php');
+require_once($baseDir . '/classes/ui.class.php');
+require_once($baseDir . '/classes/permissions.class.php');
+require_once($baseDir . '/includes/session.php');
 
 // don't output anything. Usefull for fileviewer.php, gantt.php, etc.
 $suppressHeaders = dPgetParam($_GET, 'suppressHeaders', false);
@@ -74,10 +75,10 @@ $dialog = dPgetParam($_GET, 'dialog', false);
 dPsessionStart(array('AppUI'));
 
 // write the HTML headers
-header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");	// Date in the past
-header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");	// always modified
-header("Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-check=0");	 // HTTP/1.1
-header("Pragma: no-cache");	// HTTP/1.0
+header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');	// Date in the past
+header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');	// always modified
+header('Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-check=0');	 // HTTP/1.1
+header('Pragma: no-cache');	// HTTP/1.0
 
 // check if session has previously been initialised
 if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
@@ -98,11 +99,11 @@ $tpl = $AppUI->getTemplate();
 $AppUI->checkStyle();
 
 // load the commonly used classes
-require_once $AppUI->getSystemClass('date');
-require_once $AppUI->getSystemClass('dp');
-require_once $AppUI->getSystemClass('query');
+require_once($AppUI->getSystemClass('date'));
+require_once($AppUI->getSystemClass('dp'));
+require_once($AppUI->getSystemClass('query'));
 
-require_once "$baseDir/misc/debug.php";
+require_once($baseDir .'/misc/debug.php');
 
 //Function for update lost action in user_access_log
 $AppUI->updateLastAction($last_insert_id);
@@ -115,11 +116,11 @@ if ($AppUI->doLogin()) {
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
 	$uistyle = $dPconfig['host_style'];
 	$AppUI->setUserLocale();
-	@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
-	@include_once "$baseDir/locales/core.php";
+	@include_once($baseDir . '/locales/'.$AppUI->user_locale.'/locales.php');
+	@include_once($baseDir . '/locales/core.php');
 	setlocale( LC_TIME, $AppUI->user_lang );
 	if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
-		require  "$baseDir/includes/sendpass.php";
+		require($baseDir . '/includes/sendpass.php');
 		sendNewPass();
 	} else {
 		$tpl->displayStyle('lostpass');
@@ -140,8 +141,8 @@ if (isset($_REQUEST['login'])) {
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
 	$AppUI->setUserLocale();
-	@include_once "$baseDir/locales/$AppUI->user_locale/locales.php";
-	@include_once "$baseDir/locales/core.php";
+	@include_once($baseDir . '/locales/'.$AppUI->user_locale.'/locales.php');
+	@include_once($baseDir . '/locales/core.php');
 	$ok = $AppUI->login( $username, $password );
 	if (!$ok) {
 		$AppUI->setMsg( 'Login Failed');
@@ -345,35 +346,19 @@ if (file_exists($module_file)) {
 	$titleBlock = new CTitleBlock('Warning', 'log-error.gif');
 	$titleBlock->show();
 
-	echo $AppUI->_("Missing file. Possible Module \"$m\" missing!");
+	echo $AppUI->_('Missing file ('.$module_file.'). Possible Module "'.$m.'" missing!');
 }
 if (!$suppressHeaders && !$dialog) {
+	// iframe for doing multithreaded work - handle additional requests.
 	echo '<iframe name="thread" src="' . $baseUrl . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
 	
 	if (dPgetConfig('debug') > 0) {
-		echo '<div style="text-align: center; border: 1px solid gray; margin-left: 200px; margin-right: 200px; font-size: 10pt; color: gray">';
-		printf('Page generated in %.3f seconds<br />', (array_sum(explode(' ',microtime())) - $time));
-		echo 'Time spend in:<br />
-		<table align="center">
-		<tr>
-			<td align="right">Index (setup):</td>
-			<td>';
-		printf('%.3f seconds.', $setuptime);
-		echo '</td>
-		</tr>
-		<tr>
-			<td align="right">Permissions (acl):</td>
-			<td>';
-		printf('%.3f seconds.', $acltime);
-		echo '</td>
-		</tr>
-		<tr>
-			<td align="right">Database '.$dbqueries.' queries (db):</td>
-			<td>';
-		printf('%.3f seconds.', $dbtime);
-		echo '</td>
-		</tr>
-		</table>';
+		$tpl->assign('page_time', sprintf('%.3f', (array_sum(explode(' ',microtime())) - $time)));
+		$tpl->assign('setup_time', sprintf('%.3f seconds.', $setuptime));
+		$tpl->assign('acl_time', sprintf('%.3f seconds.', $acltime));
+		$tpl->assign('db_time', sprintf('%.3f seconds.', $dbtime));
+		$tpl->assign('db_queries', $dbqueries);
+		$tpl->displayFile('debug', '.');
 	}
 	
 	$tpl->displayStyle('footer');
