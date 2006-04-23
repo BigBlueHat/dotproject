@@ -83,7 +83,7 @@ if (! $suppressHeaders) {
 	if ($report_category)
 		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id, 'reports index' );
 	if ($report_type)
-		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id.'&report_category=.'$report_category, 'category index' );
+		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id.'&report_category='.$report_category, 'category index' );
 
 	$titleBlock->show();
 
