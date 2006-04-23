@@ -19,7 +19,8 @@ if ($AppUI->getState('task_percent_complete', false) === false)
 
 $filters_selection = array(
 'task_percent_complete' => array(-1 => 'All', 0 => 'not started', 1 => 'started', 99 => 'not complete', 100 => 'finished'),
-'task_status' => dPgetSysVal( 'TaskStatus' ));
+'task_status' => dPgetSysVal( 'TaskStatus' ),
+'task_type' => dPgetSysVal( 'TaskType') );
 
 $tasksTitleBlock = new CTitleBlock( 'Tasks', 'applet-48.png' );
 $filters = $tasksTitleBlock->addFiltersCell($filters_selection);
