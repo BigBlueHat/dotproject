@@ -67,6 +67,8 @@ class CFile extends CDpObject {
 
 	function delete() {
 		global $dPconfig;
+		
+		$msg = '';
     if (!$this->canDelete( $msg ))
       return $msg;
 		$this->_message = "deleted";
@@ -88,7 +90,7 @@ class CFile extends CDpObject {
 		$q->clear();
 		$q->setDelete('files');
 		$q->addQuery('*');
-		$q->addWhere("file_id = $this->file_id");
+		$q->addWhere('file_id = ' . $this->file_id);
 		if (!$q->exec()) {
 			$q->clear();
 			return db_error();
@@ -100,19 +102,18 @@ class CFile extends CDpObject {
 	// move the file if the affiliated project was changed
 	function moveFile( $oldProj, $realname ) {
 		global $AppUI, $dPconfig;
+		
 		if (!is_dir("{$dPconfig['root_dir']}/files/$this->file_project")) {
-		    $res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
-			 if (!$res) {
-                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-			     return false;
-			 }
+			$res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
+			if (!$res) {
+					$AppUI->setMsg( 'Upload folder not setup to accept uploads - change permission on files/ directory.', UI_MSG_ALLERT );
+					return false;
+			}
 		}
 		$res = rename("{$dPconfig['root_dir']}/files/$oldProj/$realname", "{$dPconfig['root_dir']}/files/$this->file_project/$realname");
 
-		if (!$res) {
-		    return false;
-		}
-		return true;
+		// true if resource is created, and false otherwise.
+		return ($res);
 	}
 
 // move a file from a temporary (uploaded) location to the file system
@@ -126,21 +127,20 @@ class CFile extends CDpObject {
 			 }
 		}
 		if (!is_dir("{$dPconfig['root_dir']}/files/$this->file_project")) {
-		    $res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
-			 if (!$res) {
-                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-			     return false;
-			 }
+			$res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
+			if (!$res) {
+				$AppUI->setMsg( 'Upload folder not setup to accept uploads - change permission on files/ directory.', UI_MSG_ALLERT );
+				return false;
+			}
 		}
 
 
 		$this->_filepath = "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename";
 	// move it
 		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );
-		if (!$res) {
-		    return false;
-		}
-		return true;
+		
+		// true if the resource was created and false otherwise.
+		return ($res);
 	}
 
 // parse file for indexing
@@ -154,7 +154,7 @@ class CFile extends CDpObject {
 			return false;
 	// buffer the file
 		$this->_filepath = "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename";
-		$fp = fopen( $this->_filepath, "rb" );
+		$fp = fopen( $this->_filepath, 'rb' );
 		$x = fread( $fp, $this->file_size );
 		fclose( $fp );
 	// parse it
@@ -170,20 +170,20 @@ class CFile extends CDpObject {
 			return 0;
 		}
 	// remove punctuation and parse the strings
-		$x = str_replace( array( ".", ",", "!", "@", "(", ")" ), " ", $x );
-		$warr = split( "[[:space:]]", $x );
+		$x = str_replace( array( '.', ',', '!', '@', '(', ')' ), ' ', $x );
+		$warr = split( '[[:space:]]', $x );
 
 		$wordarr = array();
 		$nwords = count( $warr );
 		for ($x=0; $x < $nwords; $x++) {
 			$newword = $warr[$x];
-			if (!ereg( "[[:punct:]]", $newword )
+			if (!ereg( '[[:punct:]]', $newword )
 				&& strlen( trim( $newword ) ) > 2
-				&& !ereg( "[[:digit:]]", $newword )) {
-				$wordarr[] = array( "word" => $newword, "wordplace" => $x );
+				&& !ereg( '[[:digit:]]', $newword )) {
+				$wordarr[] = array( 'word' => $newword, 'wordplace' => $x );
 			}
 		}
-		db_exec( "LOCK TABLES files_index WRITE" );
+		db_exec( 'LOCK TABLES files_index WRITE' );
 	// filter out common strings
 		$ignore = array();
 		include "{$dPconfig['root_dir']}/modules/files/file_index_ignore.php";
@@ -194,7 +194,7 @@ class CFile extends CDpObject {
 		$q  = new DBQuery;
 		$q->setDelete('files_index');
 		$q->addQuery('*');
-		$q->addWhere("file_id = $this->file_id");
+		$q->addWhere('file_id = ' . $this->file_id);
 		$q->exec();
 		$q->clear();
 
@@ -202,15 +202,15 @@ class CFile extends CDpObject {
 		while (list( $key, $val ) = each( $wordarr )) {
 			$q->addTable('files_index');
 
-			$q->addInsert("file_id", $this->file_id);
-			$q->addInsert("word", $wordarr[$key]['word']);
-			$q->addInsert("word_placement", $wordarr[$key]['wordplace']);
+			$q->addInsert('file_id', $this->file_id);
+			$q->addInsert('word', $wordarr[$key]['word']);
+			$q->addInsert('word_placement', $wordarr[$key]['wordplace']);
 			$q->exec();
 			$q->clear();
 		}
 
-		db_exec( "UNLOCK TABLES;" );
-		return nwords;
+		db_exec( 'UNLOCK TABLES;' );
+		return $nwords;
 	}
 	
 	//function notifies about file changing
@@ -359,79 +359,82 @@ class CFile extends CDpObject {
 
 function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 {
-
-	GLOBAL $AppUI;
+	global $AppUI;
 	$xpg_break = false;
-        $xpg_prev_page = $xpg_next_page = 1;
+	$xpg_prev_page = $xpg_next_page = 1;
 	
-	echo "\t<table width='100%' cellspacing='0' cellpadding='0' border=0><tr>";
+	echo '
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<tr>';
 
 	if ($xpg_totalrecs > $xpg_pagesize) {
 		$xpg_prev_page = $page - 1;
 		$xpg_next_page = $page + 1;
 		// left buttoms
 		if ($xpg_prev_page > 0) {
-			echo "<td align='left' width='15%'>";
-			echo '<a href="./index.php?m=files&amp;page=1">';
-			echo '<img src="images/navfirst.gif" border="0" Alt="First Page"></a>&nbsp;&nbsp;';
-			echo '<a href="./index.php?m=files&amp;page=' . $xpg_prev_page . '">';
-			echo "<img src=\"images/navleft.gif\" border=\"0\" Alt=\"Previous page ($xpg_prev_page)\"></a></td>";
+			echo '
+	<td align="left" width="15%">
+		<a href="./index.php?m=files&amp;page=1">
+			<img src="images/navfirst.gif" border="0" Alt="First Page"></a>&nbsp;&nbsp;
+		<a href="./index.php?m=files&amp;page=' . $xpg_prev_page . '">
+			<img src="images/navleft.gif" border="0" Alt="Previous page (' . $xpg_prev_page . ')"></a>
+	</td>';
 		} else {
-			echo "<td width='15%'>&nbsp;</td>\n";
+			echo '<td width="15%">&nbsp;</td>' . "\n";
 		} 
 		
 		// central text (files, total pages, ...)
-		echo "<td align='center' width='70%'>";
-		echo "$xpg_totalrecs " . $AppUI->_('File(s)') . " ($xpg_total_pages " . $AppUI->_('Page(s)') . ")";
-		echo "</td>";
+		echo '
+	<td align="center" width="70%">
+		' . $xpg_totalrecs . ' ' . $AppUI->_('File(s)') . ' (' . $xpg_total_pages . ' ' . $AppUI->_('Page(s)') . ')
+	</td>';
 
 		// right buttoms
 		if ($xpg_next_page <= $xpg_total_pages) {
-			echo "<td align='right' width='15%'>";
-			echo '<a href="./index.php?m=files&amp;page='.$xpg_next_page.'">';
-			echo '<img src="images/navright.gif" border="0" Alt="Next Page ('.$xpg_next_page.')"></a>&nbsp;&nbsp;';
-			echo '<a href="./index.php?m=files&amp;page=' . $xpg_total_pages . '">';
-			echo '<img src="images/navlast.gif" border="0" Alt="Last Page"></a></td>';
+			echo '
+	<td align="right" width="15%">
+		<a href="./index.php?m=files&amp;page='.$xpg_next_page.'">
+			<img src="images/navright.gif" border="0" Alt="Next Page ('.$xpg_next_page.')"></a>&nbsp;&nbsp;
+		<a href="./index.php?m=files&amp;page=' . $xpg_total_pages . '">
+			<img src="images/navlast.gif" border="0" Alt="Last Page"></a>
+	</td>';
 		} else {
-			echo "<td width='15%'>&nbsp;</td></tr>\n";
+			echo '<td width="15%">&nbsp;</td></tr>'."\n";
 		}
 		// Page numbered list, up to 30 pages
-		echo "<tr><td colspan=\"3\" align=\"center\">";
-		echo " [ ";
+		echo '<tr><td colspan="3" align="center">';
+		echo ' [ ';
 	
 		for($n = $page > 16 ? $page-16 : 1; $n <= $xpg_total_pages; $n++) {
-			if ($n == $page) {
-				echo "<b>$n</b></a>";
-			} else {
-				echo "<a href='./index.php?m=files&amp;page=$n'>";
-				echo $n . "</a>";
-			} 
+			if ($n == $page)
+				echo '<b>' . $n . '</b>';
+			else
+				echo '<a href="./index.php?m=files&amp;page='.$n.'">' . $n . '</a>';
+
 			if ($n >= 30+$page-15) {
 				$xpg_break = true;
 				break;
 			} else if ($n < $xpg_total_pages) {
-				echo " | ";
+				echo ' | ';
 			} 
 		} 
 	
 		if (!isset($xpg_break)) { // are we supposed to break ?
-			if ($n == $page) {
-				echo "<" . $n . "</a>";
-			} else {
-				echo "<a href='./index.php?m=files&amp;page=$xpg_total_pages'>";
-				echo $n . "</a>";
-			} 
+			if ($n == $page)
+				echo $n;
+			else
+				echo '<a href="./index.php?m=files&amp;page='.$xpg_total_pages.'">' . $n . '</a>';
 		} 
-		echo " ] ";
-		echo "</td></tr>";
+		echo ' ] ';
+		echo '</td></tr>';
 	} else { // or we dont have any files..
-		echo "<td align='center'>";
-		if ($xpg_next_page > $xpg_total_pages) {
-		echo $xpg_sqlrecs . " " . "Files" . " ";
-		}
-		echo "</td></tr>";
+		echo '<td align="center">';
+//		if ($xpg_next_page > $xpg_total_pages) {
+//			echo $xpg_sqlrecs . ' Files ';
+//		}
+		echo '</td></tr>';
 	} 
-	echo "</table>";
+	echo '</table>';
 }
 
 function file_size($size)

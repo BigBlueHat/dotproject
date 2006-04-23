@@ -38,19 +38,24 @@ if ( isset($_REQUEST['clash_action'])) {
   $_SESSION['add_event_attendees'] = $_POST['event_assigned'];
   $_SESSION['add_event_mail'] = isset($_POST['mail_invited']) ? $_POST['mail_invited'] : 'off';
 
-  echo '<table width="100%" class="std"><tr><td><strong>'.$AppUI->_('clashEvent').'</strong></tr></tr>';
+  echo '
+<table width="100%" class="std">
+<tr>
+	<td><strong>'.$AppUI->_('clashEvent').'</strong></td>
+</tr>' . "\n";
   foreach($clash as $user) {
-    echo "<tr><td>$user</td></tr>\n";
+    echo '<tr><td>' . $user . '</td></tr>' . "\n";
   }
-  echo "</table>\n";
+  echo '</table>' . "\n";
   $calurl = $dPconfig['base_url'] . '/index.php?m=calendar&a=clash&event_id=' . $obj->event_id;
-  echo '<a href="#" onclick="set_clash_action(\'suggest\');">' . $AppUI->_('Suggest Alternative') . '</a> : ';
-  echo '<a href="#" onclick="set_clash_action(\'cancel\');">' . $AppUI->_('Cancel') . '</a> : ';
-  echo '<a href="#" onclick="set_clash_action(\'mail\');">' . $AppUI->_('Mail Request') . '</a> : ';
-  echo '<a href="#" onclick="set_clash_action(\'accept\');">' . $AppUI->_('Book Event Despite Conflict') . "</a>\n";
-  echo '<form name="clash_form" method="POST" action="$calurl">';
-  echo '<input type="hidden" name="clash_action" value="cancel">';
-  echo "</form>\n";
+  echo '
+	<a href="#" onclick="set_clash_action(\'suggest\');">' . $AppUI->_('Suggest Alternative') . '</a> : 
+  <a href="#" onclick="set_clash_action(\'cancel\');">' . $AppUI->_('Cancel') . '</a> : 
+  <a href="#" onclick="set_clash_action(\'mail\');">' . $AppUI->_('Mail Request') . '</a> :  
+  <a href="#" onclick="set_clash_action(\'accept\');">' . $AppUI->_('Book Event Despite Conflict') . '</a>
+ <form name="clash_form" method="post" action="$calurl">
+  <input type="hidden" name="clash_action" value="cancel">
+ </form>' . "\n";
 
 }
 
@@ -73,7 +78,7 @@ function clash_cancel()
  */
 function clash_suggest()
 {
-  global $AppUI, $dPconfig;
+  global $AppUI, $dPconfig, $m, $a;
   $obj =& new CEvent;
   $obj->bind($_SESSION['add_event_post']);
 
@@ -84,9 +89,9 @@ function clash_suggest()
   $end_secs = $end_date->getTime();
   $duration = (int) (( $end_secs - $start_secs ) / 60);
 
-  $titleBlock =& new CTitleBlock( "Suggest Alternative Event Time", "myevo-appointments.png", $m, "$m.$a");
+  $titleBlock =& new CTitleBlock( 'Suggest Alternative Event Time', 'myevo-appointments.png', $m, "$m.$a");
   $titleBlock->show();
-  $calurl = $dPconfig['base_url'] . "/index.php?m=calendar&a=clash&event_id=" . $obj->event_id;
+  $calurl = $dPconfig['base_url'] . '/index.php?m=calendar&a=clash&event_id=' . $obj->event_id;
   $times = array();
   $t = new CDate();
   $t->setTime( 0,0,0 );
@@ -94,7 +99,7 @@ function clash_suggest()
     define('LOCALE_TIME_FORMAT', '%I:%M %p');
   }
   for ($m=0; $m < 60; $m++) {
-	  $times[$t->format( "%H%M%S" )] = $t->format( LOCALE_TIME_FORMAT );
+	  $times[$t->format( '%H%M%S' )] = $t->format( LOCALE_TIME_FORMAT );
 	  $t->addSeconds( 1800 );
   }
 
@@ -202,8 +207,8 @@ function clash_process()
     	unset($users[$key]);
   }
 
-  $start_date =& new CDate($_POST['event_start_date'] . "000000");
-  $end_date =& new CDate($_POST['event_end_date']  . "235959");
+  $start_date =& new CDate($_POST['event_start_date'] . '000000');
+  $end_date =& new CDate($_POST['event_end_date']  . '235959');
 
   // First find any events in the range requested.
   $event_list = $obj->getEventsInWindow($start_date->format(FMT_DATETIME_MYSQL),
@@ -212,7 +217,7 @@ function clash_process()
   $event_start_date =& new CDate($_POST['event_start_date'] . $_POST['start_time']);
   $event_end_date =& new CDate($_POST['event_end_date'] . $_POST['end_time']);
 
-  if (! $event_list || !count($event_list)) {
+  if (!$event_list || !count($event_list)) {
     // First available date/time is OK, seed addEdit with the details.
     $obj->event_start_date = $event_start_date->format(FMT_DATETIME_MYSQL);
     $obj->event_end_date = $event_end_date->format(FMT_DATETIME_MYSQL);
@@ -220,7 +225,7 @@ function clash_process()
     $AppUI->setMsg('No clashes in suggested timespan', UI_MSG_OK);
     $_SESSION['event_is_clash'] = true;
     $_GET['event_id'] = $obj->event_id;
-    $do_include = "$baseDir/modules/calendar/addedit.php";
+    $do_include = $baseDir . '/modules/calendar/addedit.php';
     return;
   }
 
@@ -271,9 +276,9 @@ function clash_process()
 
     // Now find the slots on that day that match
     list($syear, $smonth, $sday, $shour, $sminute, $ssecond)
-    	= sscanf($event['event_start_date'], "%4d-%2d-%2d %2d:%2d:%2d");
+    	= sscanf($event['event_start_date'], '%4d-%2d-%2d %2d:%2d:%2d');
     list($eyear, $emonth, $eday, $ehour, $eminute, $esecond)
-    	= sscanf($event['event_start_date'], "%4d-%2d-%2d %2d:%2d:%2d");
+    	= sscanf($event['event_start_date'], '%4d-%2d-%2d %2d:%2d:%2d');
     $start_mins = $shour * 60 + $sminute;
     $end_mins = $ehour * 60 + $eminute;
     if (isset($slots[$day_offset])) {
@@ -293,8 +298,8 @@ function clash_process()
 	$min = $slot['start_time'] % 60;
 	$ehour = (int)($slot['end_time'] / 60);
 	$emin = $slot['end_time'] % 60;
-	$obj->event_start_date = $slot['date'] . " " . sprintf("%02d:%02d:00", $hour, $min);
-	$obj->event_end_date = $slot['date'] . " " . sprintf("%02d:%02d:00", $ehour, $emin);
+	$obj->event_start_date = $slot['date'] . ' ' . sprintf('%02d:%02d:00', $hour, $min);
+	$obj->event_end_date = $slot['date'] . ' ' . sprintf('%02d:%02d:00', $ehour, $emin);
 	$_SESSION['add_event_post'] = get_object_vars($obj);
 	$AppUI->setMsg('First available time slot', UI_MSG_OK);
 	$_SESSION['event_is_clash'] = true;
@@ -306,7 +311,7 @@ function clash_process()
   }
   // If we get here we have found no available slots
   clear_clash();
-  $AppUI->setMsg("No times match your parameters", UI_MSG_ALERT);
+  $AppUI->setMsg('No times match your parameters', UI_MSG_ALERT);
   $AppUI->redirect();
 }
 
@@ -323,7 +328,7 @@ function clash_mail()
     $AppUI->setMsg($obj->getError(), UI_MSG_ERROR);
   } else {
     $obj->notify(@$_SESSION['add_event_post']['event_assigned'], $_REQUEST['event_id'] ? false : true, true);
-    $AppUI->setMsg("Mail sent", UI_MSG_OK);
+    $AppUI->setMsg('Mail sent', UI_MSG_OK);
   }
   clear_clash();
   $AppUI->redirect();
@@ -346,7 +351,7 @@ function clash_accept()
     $AppUI->setMsg($msg, UI_MSG_ERROR);
   } else {
     if (isset($_SESSION['add_event_attendees']) && $_SESSION['add_event_attendees'])
-      $obj->updateAssigned(explode(",", $_SESSION['add_event_attendees']));
+      $obj->updateAssigned(explode(',', $_SESSION['add_event_attendees']));
     if (isset($_SESSION['add_event_mail']) && $_SESSION['add_event_mail'] == 'on')
       $obj->notify($_SESSION['add_event_attendees'], ! $is_new);
     $AppUI->setMsg($is_new ? 'added' : 'updated', UI_MSG_OK, true);
@@ -363,5 +368,4 @@ function clear_clash()
   unset($_SESSION['add_event_attendees']);
   unset($_SESSION['add_event_mail']);
 }
-
 ?>

@@ -730,7 +730,7 @@ class CEvent extends CDpObject {
 	}
 	
 	foreach ($users as $user) {
-		$v->addAttendee($user[contact_first_name] .' '. $user[contact_last_name], $user[contact_email]);
+		$v->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 	}
 	
 	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $this->event_id );
@@ -1078,6 +1078,7 @@ class vCalendar {
 			$users = $q->loadList();	
 			$q->clear();
 			
+			$owner = null;
 			$q  = new DBQuery;
 			$q->addTable('users');
 			$q->addJoin('contacts', 'c', 'users.user_contact = c.contact_id');
@@ -1100,7 +1101,7 @@ class vCalendar {
 			}
 			
 			foreach ($users as $user) {
-				$this->addAttendee($user[contact_first_name] .' '. $user[contact_last_name], $user[contact_email]);
+				$this->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 			}
 			$this->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $e['event_id'] );
 			$this->addRel($e['event_parent'], 'PARENT');
@@ -1240,7 +1241,7 @@ class vCalendar {
 		$eventValues["event_private"] = ($c['CLASS'][0]['value'][0][0] == 'PUBLIC') ? 0 : 1;
 		$eventValues["event_parent"] = ($c['RELATED-TO'][0]['param'][0][0] == 'PARENT') ? $c['RELATED-TO'][0]['value'][0][0] : 0;
 		$eventValues["event_owner"] = $AppUI->user_id;  // for instance set event_owner to importing user
-								// could perhaps be guessed by CN and email from db
+		// could perhaps be guessed by CN and email from db
 		$eventValues["event_type"] = $tac[$c['CATEGORIES'][0]['value'][0][0]];
 		
 		//recurrent events info
@@ -1403,6 +1404,7 @@ class CWebCalresource extends CDpObject {
 	function autoImport($mod, $type, $originator, $owner, &$args) {
 		global $AppUI;
 		extract($args);
+		$webcal_id = $args['webcal_id'];
 		
 		$wcr = new CWebCalresource;
 		$wcr->load($webcal_id);

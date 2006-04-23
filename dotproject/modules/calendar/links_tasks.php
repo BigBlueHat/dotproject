@@ -11,7 +11,7 @@
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters ) {
-	GLOBAL $a, $AppUI, $dPconfig;
+	GLOBAL $a, $AppUI, $dPconfig, $event_id;
 	
 	// Check permissions.
 	$perms = & $AppUI->acl();

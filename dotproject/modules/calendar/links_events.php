@@ -30,7 +30,7 @@ $recurs =  array (
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
-	global $event_filter, $AppUI;
+	global $event_filter, $AppUI, $event_id;
 		
 	// Check permissions.
 	$perms = & $AppUI->acl();
@@ -68,7 +68,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 
 
 function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
-	global $df, $event_filter, $AppUI, $recurs, $types;
+	global $df, $event_filter, $AppUI, $recurs, $types, $event_id;
 		
 	// Check permissions.
 	$perms = & $AppUI->acl();
@@ -149,11 +149,20 @@ function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMax
 					$oc = 'onclick="return overlib('.$ot.', STICKY, CAPTION, \''.$row['event_title'].'\', CENTER);" onmouseout="nd();"';
 					$link['href'] = '';
 					$link['alt'] = $row['event_description'];
-					$link['text'] = '<table cellspacing="0" cellpadding="0" border="0"><tr>'
-						. '<td><a href="javascript:void(0);" '.$oc.'>' . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' )
-						. '</a></td>'
-						. '<td><a href="javascript:void(0);" '.$oc.'><span class="event">'.$row['event_title'].'</span></a>'
-						. '</td></tr></table>';
+					$link['text'] = '
+<table cellspacing="0" cellpadding="0" border="0">
+<tr>
+	<td>
+		<a href="javascript:void(0);" '.$oc.'>
+			' . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' )	. '</a>
+	</td>
+	<td>
+		<a href="javascript:void(0);" '.$oc.'>
+			<span class="event">'.$row['event_title'].'</span>
+		</a>
+	</td>
+</tr>
+</table>';
 					$links[$date->format( FMT_TIMESTAMP_DATE )][] = $link;
 				 }
 					$date = $date->getNextDay();

@@ -50,7 +50,7 @@ if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
 	}
 	
 	foreach ($users as $user) {
-		$v->addAttendee($user[contact_first_name] .' '. $user[contact_last_name], $user[contact_email]);
+		$v->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 	}
 	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $event->event_id );
 	$v->addRel($event->event_parent, 'PARENT');

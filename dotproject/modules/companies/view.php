@@ -73,7 +73,7 @@ $titleBlock->show();
 $obj->company_description = str_replace( chr(10), '<br />', $obj->company_description );
 
 
-require_once("./classes/CustomFields.class.php");
+require_once($baseDir . '/classes/CustomFields.class.php');
 $custom_fields = New CustomFields( $m, $a, $obj->company_id, "view" );
 $tpl->assign('customFields', $custom_fields->getHTML());
 

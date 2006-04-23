@@ -8,8 +8,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-require_once("./classes/CustomFields.class.php");
-
+require_once($baseDir . '/classes/CustomFields.class.php');
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Company' );
 if ($del) {

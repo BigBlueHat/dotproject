@@ -1,10 +1,9 @@
 <?php /* PROJECTS $Id$ */
-//error_reporting( E_ALL );
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
-$project_id = intval( dPgetParam( $_REQUEST, 'project_id', 0 ) );
-$report_category = dPgetParam($_REQUEST, 'report_category', null);
-$report_type = dPgetParam( $_REQUEST, 'report_type', '' );
+$project_id 			= intval( dPgetParam( $_REQUEST, 'project_id', 0 ) );
+$report_category 	= dPgetParam($_REQUEST, 'report_category', null);
+$report_type 			= dPgetParam( $_REQUEST, 'report_type', '' );
 
 $do_report = dPgetParam( $_REQUEST, 'do_report', 0 );
 $log_all = dPgetParam( $_REQUEST, 'log_all', 0 );
@@ -41,25 +40,22 @@ $obj->setAllowedSQL($AppUI->user_id, $q);
 
 $q->addGroup('project_id');
 $q->addOrder('project_short_name');
-                                                                                
+$projects = $q->loadList();                                                                                
 $project_list=array('0'=> $AppUI->_('All', UI_OUTPUT_RAW) );
-$ptrc = $q->exec();
-$nums=db_num_rows($ptrc);
-echo db_error();
-for ($x=0; $x < $nums; $x++) {
-        $row = db_fetch_assoc( $ptrc );
-        if ($row["project_id"] == $project_id) $display_project_name='('.$row["project_short_name"].') '.$row["project_name"];
-        $project_list[$row["project_id"]] = '('.$row["project_short_name"].') '.$row["project_name"];
-}
+foreach ($projects as $row)
+	$project_list[$row['project_id']] = '('.$row['project_short_name'].') '.$row['project_name'];
+
+$display_project_name=$project_list[$project_id]; 
 
 if (!$suppressHeaders)
 {
 ?>
 <script language="javascript">
                                                                                 
-function changeIt() {
-        var f=document.changeMe;
-        f.submit();
+function changeIt()
+{
+	var f=document.changeMe;
+	f.submit();
 }
 </script>
 
@@ -70,24 +66,24 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 if (!isset($report_category))
 {
-	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/reports" ); //, "\.php$"
+	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' ).'/modules/reports' ); //, "\.php$"
 	$ignore = array('index.php', 'setup.php', 'CVS');
 	$report_categories = array_diff($reports, $ignore);
 }
 else
-	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/reports/$report_category", "\.php$" );
+	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' ).'/modules/reports/'.$report_category, "\.php$" );
 
 
 // setup the title block
 if (! $suppressHeaders) {
 	$titleBlock = new CTitleBlock( 'Reports', 'applet3-48.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=projects", "projects list" );
+	$titleBlock->addCrumb( '?m=projects', 'projects list' );
 	if ($project_id != 0)
-		$titleBlock->addCrumb( "?m=projects&a=view&project_id=$project_id", "view this project" );
+		$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$project_id, 'view this project' );
 	if ($report_category)
-		$titleBlock->addCrumb( "?m=reports&project_id=$project_id", 'reports index' );
+		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id, 'reports index' );
 	if ($report_type)
-		$titleBlock->addCrumb( "?m=reports&project_id=$project_id&report_category=$report_category", 'category index' );
+		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id.'&report_category=.'$report_category, 'category index' );
 
 	$titleBlock->show();
 
@@ -121,44 +117,54 @@ if ($report_type) {
 	$report_title = $report_title[0];
 	require( dPgetConfig( 'root_dir' )."/modules/reports/$report_category/$report_type.php" );
 } else if ($report_category) {
-	echo "<table>";
-	echo "<tr><td><h2>" . $AppUI->_( 'Reports Available' ) . "</h2></td></tr>";
+	echo '
+<table>
+<tr>
+	<td><h2>' . $AppUI->_( 'Reports Available' ) . '</h2></td>
+</tr>';
 	foreach ($reports as $v) {
-		$type = str_replace( ".php", "", $v );
-		$desc_file = str_replace( ".php", ".$AppUI->user_locale.txt", $v );
+		$type = str_replace( '.php', '', $v );
+		$desc_file = str_replace( '.php', '.'.$AppUI->user_locale.'.txt', $v );
 		$desc = @file( dPgetConfig( 'root_dir' )."/modules/reports/$report_category/$desc_file" );
 
-		echo "\n<tr>";
-		echo "\n	<td><a href=\"index.php?m=reports&project_id=$project_id&report_category=$report_category&report_type=$type";
+		echo "
+<tr>
+	<td>
+		<a href=\"index.php?m=reports&project_id=$project_id&report_category=$report_category&report_type=$type";
 		if (isset($desc[2]))
-			echo "&" . $desc[2];
-		echo "\">";
+			echo '&' . $desc[2];
+		echo '">';
 		echo @$desc[0] ? $desc[0] : $v;
-		echo "</a>";
-		echo "\n</td>";
-		echo "\n<td>" . (@$desc[1] ? "- $desc[1]" : '') . "</td>";
-		echo "\n</tr>";
+		echo '</a>
+	</td>
+	<td>' . (@$desc[1] ? "- $desc[1]" : '') . '</td>
+</tr>';
 	}
-	echo "</table>";
+	echo '</table>';
 } else {
-	echo "<table>";
-	echo "<tr><td><h2>" . $AppUI->_( 'Reports Categories' ) . "</h2></td></tr>";
+	echo '
+<table>
+<tr>
+	<td><h2>' . $AppUI->_( 'Reports Categories' ) . '</h2></td>
+</tr>';
 	foreach ($report_categories as $v) {
 		$type = $v;
 		$desc_file = "$v.$AppUI->user_locale.txt";
-		$desc = @file( dPgetConfig( 'root_dir' )."/modules/reports/$desc_file" );
+		$desc = @file( dPgetConfig( 'root_dir' ).'/modules/reports/'.$desc_file );
 
-		echo "\n<tr>";
-		echo "\n	<td><a href=\"index.php?m=reports&project_id=$project_id&report_category=$v";
+		echo "
+<tr>
+	<td><a href=\"index.php?m=reports&project_id=$project_id&report_category=$v";
 		if (isset($desc[2]))
 			echo "&" . $desc[2];
-		echo "\">";
+		echo '">';
 		echo @$desc[0] ? $desc[0] : $v;
-		echo "</a>";
-		echo "\n</td>";
-		echo "\n<td>" . (@$desc[1] ? "- $desc[1]" : '') . "</td>";
-		echo "\n</tr>";
+		echo '</a>';
+		echo '
+	</td>
+	<td>' . (@$desc[1] ? "- $desc[1]" : '') . '</td>
+</tr>';
 	}
-	echo "</table>";
+	echo '</table>';
 }
 ?>

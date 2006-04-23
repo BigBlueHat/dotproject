@@ -59,7 +59,7 @@ if ($company_id != 0)
   $titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
 $titleBlock->show();
 
-require_once("./classes/CustomFields.class.php");
+require_once($baseDir . '/classes/CustomFields.class.php');
 $custom_fields = New CustomFields( $m, $a, $obj->company_id, "edit" );
 $tpl->assign('customFields', $custom_fields->getHTML());
 $tpl->assign('company_id', $company_id);
