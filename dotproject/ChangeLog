@@ -1,3 +1,132 @@
+2006-04-21 17:08  (ajdonnison)
+---------------------------------
+includes/version.php
+- Fixed the version number.
+
+2006-04-21 17:06  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Added 2.0.2 to the valid upgrade path array.
+
+2006-04-21 16:55  (ajdonnison)
+---------------------------------
+db/upgrade_201_to_202.sql
+- file upgrade_201_to_202.sql was initially added on branch stable_2.
+
+2006-04-21 16:55  (ajdonnison)
+---------------------------------
+db/upgrade_to_202.php
+- file upgrade_to_202.php was initially added on branch stable_2.
+
+2006-04-21 16:55  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_201_to_202.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_to_202.php
+- Latest install and upgrade file changes.
+
+2006-04-21 16:44  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+install/db.php
+install/do_install_db.php
+- Minor fixups to better identify invalid setups.
+
+2006-04-21 16:29  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+install/index.php
+- Added changes from 2.0.2 installer that better identify common install problems.
+
+2006-04-21 16:25  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+- file check_upgrade.php was initially added on branch stable_2.
+
+2006-04-21 16:25  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+install/index.php
+- New tests to enable better detection of common install problems.
+
+2006-04-21 14:40  (ajdonnison)
+---------------------------------
+modules/contacts/contacts.class.php
+- #1232: Contacts are no longer deletable if they have a user associated.
+
+2006-04-21 14:38  (ajdonnison)
+---------------------------------
+modules/contacts/contacts.class.php
+- #1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.#1232: Now reports contacts that have active users as non-deletable.
+
+2006-04-21 14:09  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed problem where task owner, if not assigned, was not notified.
+
+2006-04-21 14:09  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Fixed problem with backported task reminders not working.
+
+2006-04-21 13:09  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- #1257: Attempt to force UTF8 in monetary format.
+
+2006-04-21 13:06  (ajdonnison)
+---------------------------------
+includes/main_functions.php
+- Added a catch to try and work with UTF8 encoding.  Not likely to work
+- under windows but since this is highly isolated (we only use it to
+- set preferences and it is then never used!) it isn't much of a problem.
+
+2006-04-20 18:28  (cyberhorse)
+---------------------------------
+includes/session.php
+- user logout tab in admin
+
+2006-04-20 09:35  (cyberhorse)
+---------------------------------
+style/smarty1/admin/addedit.html
+- fixing missing translation
+- fixing wording
+
+2006-04-20 00:45  (cyberhorse)
+---------------------------------
+modules/admin/index.php
+- sessions patch (missed to checkin)
+
+2006-04-19 00:39  (pedroix)
+---------------------------------
+style/dp-grey-theme/header.php
+style/default/header.php
+- minor visual enhancement for the top menu on IE browser
+
+2006-04-18 20:52  (pedroix)
+---------------------------------
+modules/files/index.php
+modules/files/index_table.php
+- Bug0001318: FILES section show multiple duplicate entries (FLAT UI)
+
+2006-04-17 19:40  (cyberhorse)
+---------------------------------
+ChangeLog
+modules/projects/do_project_aed.php
+modules/projects/projects.class.php
+modules/ticketsmith/view.php
+style/smarty1/projects/addedit.html
+- #888 - when importing from template project, copy forums/files options as well.
+- #200 - added full text of followups in tickets module if there are less than 5 followups
+
+2006-04-17 13:41  (cyberhorse)
+---------------------------------
+modules/projects/addedit.php
+- added comments to display section and phpdoc comments to the function at the bottom
+- converted some " to ' and other small changes
+
 2006-04-16 18:54  (cyberhorse)
 ---------------------------------
 modules/tasks/vw_log_update.php

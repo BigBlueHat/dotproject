@@ -26,16 +26,39 @@ $display_option = dPgetParam( $_POST, 'display_option', 'this_month' );
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-if ($display_option == 'custom') {
+if ($display_option == 'custom') 
+{
 	// custom dates
 	$start_date = intval( $sdate ) ? new CDate( $sdate ) : new CDate();
 	$end_date = intval( $edate ) ? new CDate( $edate ) : new CDate();
-} else {
-	// month
+} 
+else if ($display_option == 'this_month') // month
+{
 	$start_date = new CDate();
 	$start_date->day = 1;
-   	$end_date = new CDate($start_date);
-    	$end_date->addMonths( $scroll_date );
+	$end_date = new CDate($start_date);
+	$end_date->addMonths( $scroll_date );
+}
+else if ($display_option == '3_months') // month
+{
+	$start_date = new CDate();
+	$start_date->day = 1;
+	$start_date->addMonths(-1);
+	$end_date = new CDate($start_date);
+	$end_date->addMonths(3);
+}
+else if ($display_option == 'first_month')
+{
+	//TODO: find project start date
+	$q = new DBQuery;
+	$q->addQuery('project_start_date');
+	$q->addTable('projects');
+	$q->addWhere('project_id = ' . $project_id);
+	$project_start_date = $q->loadResult();
+	$start_date = new CDate($project_start_date);
+	$start_date->day = 1;
+	$end_date = new CDate($start_date);
+	$end_date->addMonths(1);
 }
 
 // setup the title block
@@ -96,23 +119,28 @@ function scrollNext() {
 	f.submit()
 }
 
-function showThisMonth() {
-	document.editFrm.display_option.value = "this_month";
-	document.editFrm.submit();
-}
-
-function showFullProject() {
-	document.editFrm.display_option.value = "all";
+function showGantt(type) {
+	document.editFrm.display_option.value = type;
 	document.editFrm.submit();
 }
 
 </script>
 
-<table border="0" cellpadding="4" cellspacing="0">
-
 <form name="editFrm" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
-<input type="hidden" name="display_option" value="<?php echo $display_option;?>" />
 
+<table border="0" cellpadding="4" cellspacing="0">
+<tr>
+	<td colspan="3"><?php echo $AppUI->_('Predefined filters:');?></td>
+	<td>
+		<select name="display_option" class="text" onChange="document.editFrm.submit();">
+			<option value="custom" <?php if ($display_option == 'custom') echo 'selected'; ?>></option>
+			<option value="all" <?php if ($display_option == 'all') echo 'selected'; ?>><?php echo $AppUI->_('show full project'); ?></option>
+			<option value="this_month" <?php if ($display_option == 'this_month') echo 'selected'; ?>><?php echo $AppUI->_('show this month');?></option>
+			<option value="3_months" <?php if ($display_option == '3_months') echo 'selected'; ?>><?php echo $AppUI->_('3 months');?></option>
+			<option value="first_month" <?php if ($display_option == 'first_month') echo 'selected'; ?>><?php echo $AppUI->_('show first month');?></option>
+		</select>
+	</td>
+</tr>
 <tr>
 	<td align="left" valign="top" width="20">
 <?php if ($display_option != "all") { ?>
@@ -152,16 +180,9 @@ function showFullProject() {
 <?php } ?>
 	</td>
 </tr>
+</table>
 
 </form>
-
-<tr>
-	<td align="center" valign="bottom" colspan="7">
-		<?php echo '<a href="javascript:showThisMonth()">'.$AppUI->_('show this month').'</a> : <a href="javascript:showFullProject()">'.$AppUI->_('show full project').'</a><br>'; ?>
-	</td>
-</tr>
-
-</table>
 
 <table cellspacing="0" cellpadding="0" border="1" align="center">
 <tr>
@@ -174,12 +195,16 @@ $q->addWhere('task_project='.$project_id);
 $cnt = $q->loadList();
 $q->clear();
 if ($cnt[0]['N'] > 0) {
-	$src =
-	  '?m=tasks&a=gantt&suppressHeaders=1&project_id='.$project_id .
-	  ( $display_option == 'all' ? '' :
-		'&start_date=' . $start_date->format( '%Y-%m-%d' ) . '&end_date=' . $end_date->format( '%Y-%m-%d' ) ) .
-	  "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=".$showLabels."&showWork=".$showWork;
+	$src = '?m=tasks&a=gantt&suppressHeaders=1&project_id='.$project_id;
+	// Set the width of the image (based on browser window width.
+	$src .= "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '";
+	$src .= '&showLabels='.$showLabels;
+	$src .= '&showWork='.$showWork;
+	if ($display_option != 'all')
+		$src .=	'&start_date=' . $start_date->format( '%Y-%m-%d' ) . '&end_date=' . $end_date->format( '%Y-%m-%d' );
 
+
+	// document.write used so javascript is applied to find browser width.
 	echo "<script>document.write('<img src=\"$src\">')</script>";
 } else {
 	echo $AppUI->_( 'No tasks to display' );
