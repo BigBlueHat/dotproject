@@ -281,7 +281,7 @@ $m_config = dPgetConfig($m);
 if (!$suppressHeaders) {
 	// output the character set header
 	if (isset($locale_char_set)) {
-		header('Content-type: text/html;charset=.'$locale_char_set);
+		header('Content-type: text/html;charset='.$locale_char_set);
 	}
 }
 
