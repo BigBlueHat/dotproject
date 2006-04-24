@@ -56,6 +56,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$q->addQuery('contact_first_name, contact_last_name');
 	$q->addQuery('contact_email');
 	$q->addTable('contacts');
+	$q->addOrder('contact_first_name, contact_last_name');
 	$contacts = $q->loadList();
 	$tpl->assign('contacts', $contacts);
 	
