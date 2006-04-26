@@ -863,16 +863,16 @@ class dPacl extends gacl_api {
       }
     }
     return $this->add_acl(
-      $type_map,
+      $type_map,	// permissions types
       null,
-      $aro_map,
-      $mod_mod,
-      $mod_group,
-      $_POST['permission_access'],
+      $aro_map, 	// role_id
+      $mod_mod,		// mod_id, mod_name
+      $mod_group,	// null or mod_id
+      $_POST['permission_access'], // allow or deny (allow by default)
       1,
       null,
       null,
-      "user");
+      'user');
   }
 
   // Some function overrides.
