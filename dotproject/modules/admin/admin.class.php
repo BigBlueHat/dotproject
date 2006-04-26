@@ -36,10 +36,10 @@ class CUser extends CDpObject {
 		$q  = new DBQuery;
 		if( $this->user_id ) {
 		// save the old password
-			$perm_func = "updateLogin";
+			$perm_func = 'updateLogin';
 			$q->addTable('users');
 			$q->addQuery('user_password');
-			$q->addWhere("user_id = $this->user_id");
+			$q->addWhere('user_id = ' . $this->user_id);
 			$pwd = $q->loadResult();
 			if ($pwd != $this->user_password) {
 				$this->user_password = md5($this->user_password);
@@ -49,25 +49,25 @@ class CUser extends CDpObject {
 
 			$ret = db_updateObject( 'users', $this, 'user_id', false );
 		} else {
-			$perm_func = "addLogin";
+			$perm_func = 'addLogin';
 			$this->user_password = md5($this->user_password);
 			$ret = db_insertObject( 'users', $this, 'user_id' );
 		}
 		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
+			return get_class( $this ).'::store failed <br />' . db_error();
 		} else {
 			$acl =& $GLOBALS['AppUI']->acl();
 			$acl->$perm_func($this->user_id, $this->user_username);
 			//Insert Default Preferences
-			//Lets check if the user has allready default users preferences set, if not insert the default ones
+			//Lets check if the user has already default users preferences set, if not insert the default ones
 			$q->addTable('user_preferences', 'upr');
-			$q->addWhere("upr.pref_user = $this->user_id");
+			$q->addWhere('upr.pref_user = ' . $this->user_id);
 			$uprefs = $q->loadList();
 			$q->clear();
 			if (!count($uprefs) && $this->user_id > 0) {
 				//Lets get the default users preferences
 				$q->addTable('user_preferences', 'dup');
-				$q->addWhere("dup.pref_user = 0");
+				$q->addWhere('dup.pref_user = 0');
 				$dprefs = $q->loadList();
 				$q->clear();
 				
