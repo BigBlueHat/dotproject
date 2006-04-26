@@ -1,7 +1,8 @@
 <?php
 	// $Id$
-	/*
-	 *	CustomField Classes
+	/**
+	 * @abstract CustomField Classes
+	 * @version CVS: $Id$
 	 */
 
 	class CustomField
@@ -25,7 +26,18 @@
 		var $value_charvalue;
 		var $value_intvalue;
 
-		function CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		/**
+		 * CustomField constructor
+		 * 
+		 * TODO: check/confirm param value types
+		 * 
+		 * @param int $field_id
+		 * @param string $field_name
+		 * @param int $field_order
+		 * @param string $field_description
+		 * @param string $field_extratags
+		 */
+		function CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
 			$this->field_id = $field_id;
 			$this->field_name = $field_name;
@@ -34,11 +46,20 @@
 			$this->field_extratags = $field_extratags;
 		}
 
-		function load( $object_id )
+		/**
+		 * @abstract Loads data for the requested $object_id into this object.
+		 * 
+		 * @param int $object_id
+		 * 
+		 * @global ADOConnection $db
+		 * 
+		 * @return void
+		 */
+		function load($object_id)
 		{
 			// Override Load Method for List type Classes
-			GLOBAL $db;
-			$q  = new DBQuery;
+			global $db;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_values');
 			$q->addWhere("value_field_id = ".$this->field_id);
 			$q->addWhere("value_object_id = ".$object_id);
@@ -50,48 +71,41 @@
 			$value_charvalue = $row["value_charvalue"];
 			$value_intvalue = $row["value_intvalue"];
 
-			if ($value_id != NULL)
-			{
+			if ($value_id != NULL) {
 				$this->value_id = $value_id;
 				$this->value_charvalue = $value_charvalue;
 				$this->value_intvalue = $value_intvalue;
 			}
 		}
 
-		function store( $object_id )
+		function store($object_id)
 		{
-			GLOBAL $db;
-			if ($object_id == NULL)
-			{
+			global $db;
+			if ($object_id == NULL) {
 				return 'Error: Cannot store field ('.$this->field_name.'), associated id not supplied.';
-			}
-			else
-			{				 
+			} else {				 
 				$ins_intvalue = $this->value_intvalue == NULL ? 'NULL' : $this->value_intvalue;
 				$ins_charvalue = $this->value_charvalue == NULL ? '' : stripslashes($this->value_charvalue);
 
-				if ($this->value_id > 0)
-				{
-						//return $this->value();
-						$q  = new DBQuery;
-						$q->addTable('custom_fields_values');
-						$q->addUpdate('value_charvalue', $ins_charvalue );
-						$q->addUpdate('value_intvalue', $ins_intvalue);
-						$q->addWhere("value_id = ".$this->value_id);
-				}
-				else
-				{
-						$new_value_id = $db->GenID('custom_fields_values_id', 1 );
+				if ($this->value_id > 0) {
+					//return $this->value();
+					$q  = new DBQuery();
+					$q->addTable('custom_fields_values');
+					$q->addUpdate('value_charvalue', $ins_charvalue );
+					$q->addUpdate('value_intvalue', $ins_intvalue);
+					$q->addWhere("value_id = ".$this->value_id);
+				} else {
+					$new_value_id = $db->GenID('custom_fields_values_id', 1 );
 		
-						$q  = new DBQuery;
-						$q->addTable('custom_fields_values');
-						$q->addInsert('value_id', $new_value_id);
-						$q->addInsert('value_module', '');
-						$q->addInsert('value_field_id', $this->field_id);
-						$q->addInsert('value_object_id', $object_id);
+					$q  = new DBQuery();
+					$q->addTable('custom_fields_values');
+					$q->addInsert('value_id', $new_value_id);
+					$q->addInsert('value_module', '');
+					$q->addInsert('value_field_id', $this->field_id);
+					$q->addInsert('value_object_id', $object_id);
 
-						$q->addInsert('value_charvalue', $ins_charvalue );
-						$q->addInsert('value_intvalue', $ins_intvalue);
+					$q->addInsert('value_charvalue', $ins_charvalue );
+					$q->addInsert('value_intvalue', $ins_intvalue);
 				}
 //				if ($sql != NULL) $rs = $q->exec();
                 // No $sql var defined
@@ -103,12 +117,14 @@
 					//return $q->prepare();
                $rs = $q->exec();
 
-					$q->clear();
-					if (!$rs) return $db->ErrorMsg()." | SQL: ";
+				$q->clear();
+				if (!$rs) {
+					return $db->ErrorMsg()." | SQL: ";
+				}
 			}
 		}
 
-		function setIntValue( $v )
+		function setIntValue($v)
 		{	
 			$this->value_intvalue = $v;
 		}
@@ -118,7 +134,7 @@
 			return $this->value_intvalue;
 		}
 
-		function setValue( $v )
+		function setValue($v)
 		{
 			$this->value_charvalue = $v;
 		}
@@ -133,7 +149,7 @@
 			return $this->value_charvalue;
 		}
 
-		function setValueId( $v )
+		function setValueId($v)
 		{
 			$this->value_id = $v;
 		}
@@ -170,19 +186,23 @@
 
 	}
 
-	// CustomFieldCheckBox - Produces an INPUT Element of the CheckBox type in edit mode, view mode indicates 'Yes' or 'No'
+	/**
+	 *  CustomFieldCheckBox - Produces an INPUT Element of the CheckBox type in edit mode, view mode indicates 'Yes' or 'No'
+	 */
 	class CustomFieldCheckBox extends CustomField
 	{
-		function CustomFieldCheckBox( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		/**
+		 * CustomFieldCheckBox constructor
+		 */
+		function CustomFieldCheckBox($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
-			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
 			$this->field_htmltype = 'checkbox';
 		}
 
 		function getHTML($mode)
 		{
-			switch($mode)
-			{
+			switch ($mode) {
 				case "edit":
 					$bool_tag = ($this->intValue()) ? "checked " : "";
 					$html = $this->field_description.": </td><td><input type=\"checkbox\" name=\"".$this->field_name."\" value=\"1\" ".$bool_tag.$this->field_extratags."/>";
@@ -195,25 +215,29 @@
 			return $html;
 		}
 
-		function setValue( $v )
+		function setValue($v)
 		{
 			$this->value_intvalue = $v;
 		}
 	}
 	
-	// CustomFieldText - Produces an INPUT Element of the TEXT type in edit mode
+	/**
+	 *  CustomFieldText - Produces an INPUT Element of the TEXT type in edit mode
+	 */
 	class CustomFieldText extends CustomField
 	{
-		function CustomFieldText( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		/**
+		 * CustomFieldText constructor
+		 */
+		function CustomFieldText($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
-			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
 			$this->field_htmltype = 'textinput';
 		}
 
 		function getHTML($mode)
 		{
-			switch($mode)
-			{
+			switch ($mode) {
 				case "edit":
 					$html = $this->field_description.": </td><td><input type=\"text\" name=\"".$this->field_name."\" value=\"".$this->charValue()."\" ".$this->field_extratags." />";
 					break;
@@ -225,19 +249,23 @@
 		}
 	}
 
-	// CustomFieldTextArea - Produces a TEXTAREA Element in edit mode
+	/**
+	 * CustomFieldTextArea - Produces a TEXTAREA Element in edit mode
+	 */
 	class CustomFieldTextArea extends CustomField
 	{
-		function CustomFieldTextArea( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		/**
+		 * CustomFieldTextArea constructor
+		 */
+		function CustomFieldTextArea($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
-			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
 			$this->field_htmltype = 'textarea';
 		}
 
 		function getHTML($mode)
 		{
-			switch($mode)
-			{
+			switch ($mode) {
 				case "edit":
 					$html = $this->field_description.": </td><td><textarea name=\"".$this->field_name."\" ".$this->field_extratags.">".$this->charValue()."</textarea>";
 					break;
@@ -249,31 +277,39 @@
 		}
 	}
 	
-	// CustomFieldLabel - Produces just a non editable label
+	/**
+	 * CustomFieldLabel - Produces just a non editable label
+	 */
 	class CustomFieldLabel extends CustomField 
 	{
-	    function CustomFieldLabel($field_id, $field_name, $field_order, $field_description, $field_extratags) {
-    	    $this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+	    function CustomFieldLabel($field_id, $field_name, $field_order, $field_description, $field_extratags)
+	    {
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
             $this->field_htmltype = 'label';
 	    }
 	    
-	    function getHTML($mode) {
-	    	// We don't really care about its mode
-	    	return "<span $this->field_extratags>$this->field_description</span>";
+	    function getHTML($mode)
+	    {
+			// We don't really care about its mode
+			return "<span $this->field_extratags>$this->field_description</span>";
 	    }
 	}
 	
-	// CustomFieldSeparator - Produces just an horizontal line
+	/**
+	 * CustomFieldSeparator - Produces just an horizontal line
+	 */
 	class CustomFieldSeparator extends CustomField 
 	{
-	    function CustomFieldSeparator($field_id, $field_name, $field_order, $field_description, $field_extratags) {
-    	    $this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
-            $this->field_htmltype = 'separator';
+	    function CustomFieldSeparator($field_id, $field_name, $field_order, $field_description, $field_extratags)
+	    {
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
+			$this->field_htmltype = 'separator';
 	    }
 	    
-	    function getHTML($mode) {
-	    	// We don't really care about its mode
-	    	return "<hr $this->field_extratags />";
+	    function getHTML($mode)
+	    {
+			// We don't really care about its mode
+			return "<hr $this->field_extratags />";
 	    }
 	}
 
@@ -281,32 +317,33 @@
 	{
 		var $options;
 		
-		function CustomFieldSQLSelect( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		function CustomFieldSQLSelect($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
-			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
 			$this->field_htmltype = 'sqlselect';
-			$this->options = New SQLCustomOptionList( $field_id );		
+			$this->options = new SQLCustomOptionList($field_id);		
 			$this->options->load();	
 		}
 	}
 
-	// CustomFieldSelect - Produces a SELECT list, extends the load method so that the option list can be loaded from a seperate table
+	/**
+	 * CustomFieldSelect - Produces a SELECT list, extends the load method so that the option list can be loaded from a seperate table
+	 */
 	class CustomFieldSelect extends CustomField
 	{
 		var $options;
 
-		function CustomFieldSelect( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		function CustomFieldSelect($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
-			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
 			$this->field_htmltype = 'select';
-			$this->options = New CustomOptionList( $field_id );		
+			$this->options = new CustomOptionList($field_id);		
 			$this->options->load();
 		}
 
 		function getHTML($mode)
 		{
-			switch($mode)
-			{
+			switch ($mode) {
 				case "edit":
 					$html = $this->field_description.": </td><td>";
 					$html.= $this->options->getHTML( $this->field_name, $this->intValue() );
@@ -318,7 +355,7 @@
 			return $html;
 		}
 
-		function setValue( $v )
+		function setValue($v)
 		{
 			$this->value_intvalue = $v;
 		}
@@ -330,9 +367,11 @@
 	}
 
 
-	// CustomFields class - loads all custom fields related to a module, produces a html table of all custom fields
-	// Also loads values automatically if the obj_id parameter is supplied. The obj_id parameter is the ID of the module object 
-	// eg. company_id for companies module
+	/**
+	 * CustomFields class - loads all custom fields related to a module, produces a html table of all custom fields
+	 * Also loads values automatically if the obj_id parameter is supplied. The obj_id parameter is the ID of the module object 
+	 * eg. company_id for companies module
+	 */
 	class CustomFields
 	{
 		var $m;
@@ -342,6 +381,14 @@
 
 		var $fields;
 
+		/**
+		 * @param string $m Module name
+		 * @param string $a Action name
+		 * @param int $obj_id ID of the object with the requested module
+		 * @param string $mode
+		 * 
+		 * @return void
+		 */
 		function CustomFields($m, $a, $obj_id = NULL, $mode = "edit")
 		{
 			$this->m = $m;
@@ -350,32 +397,27 @@
 			$this->mode = $mode;
 
 			// Get Custom Fields for this Module
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_struct');
 			$q->addWhere("field_module = '".$this->m."' AND	field_page = '".$this->a."'");
 			$q->addOrder('field_order ASC');
 			$rows = $q->loadList();						
-			if ($rows == NULL)
-			{
+			if ($rows == NULL) {
 				// No Custom Fields Available
-			}
-			else
-			{
-				foreach($rows as $row)
-				{
-					switch ($row["field_htmltype"])
-					{
+			} else {
+				foreach ($rows as $row) {
+					switch ($row["field_htmltype"]) {
 						case "checkbox":
-							$this->fields[$row["field_name"]] = New CustomFieldCheckbox( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+							$this->fields[$row["field_name"]] = new CustomFieldCheckbox( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break;
 						case "textarea":
-							$this->fields[$row["field_name"]] = New CustomFieldTextArea( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+							$this->fields[$row["field_name"]] = new CustomFieldTextArea( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break;
 						case "select":
-							$this->fields[$row["field_name"]] = New CustomFieldSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+							$this->fields[$row["field_name"]] = new CustomFieldSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break;
 						case "sqlselect":
-							$this->fields[$row["field_name"]] = New CustomFieldSQLSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+							$this->fields[$row["field_name"]] = new CustomFieldSQLSelect( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 					   	break;
 						case "label":
 					      $this->fields[$row["field_name"]] = new CustomFieldLabel( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
@@ -384,36 +426,31 @@
 					      $this->fields[$row["field_name"]] = new CustomFieldSeparator( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 					      break;    
 						default:
-							$this->fields[$row["field_name"]] = New CustomFieldText( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+							$this->fields[$row["field_name"]] = new CustomFieldText( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break; 
 					}
-				
 				}
 	
-				if ($obj_id > 0)
-				{
+				if ($obj_id > 0) {
 					//Load Values
-					foreach ($this->fields as $key => $cfield)
-					{
+					foreach ($this->fields as $key => $cfield) {
 						$this->fields[$key]->load( $this->obj_id );
 					}
 				}
 			}
-		
-
 		}
 
-		function add( $field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg )
+		function add($field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg)
 		{
-			GLOBAL $db;
-			$next_id = $db->GenID( 'custom_fields_struct_id', 1 );
+			global $db;
+			$next_id = $db->GenID('custom_fields_struct_id', 1);
 
 			$field_order = 1;
 			$field_a = 'addedit';
 
 			// TODO - module pages other than addedit
 			// TODO - validation that field_name doesnt already exist
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_struct');
 			$q->addInsert('field_id', $next_id);
 			$q->addInsert('field_module', $this->m);
@@ -426,25 +463,22 @@
 			$q->addInsert('field_extratags', $field_extratags);
 
 
-			if (!$q->exec())
-			{
+			if (!$q->exec()) {
 				//return "<pre>".$sql."</pre>";
 				$error_msg = $db->ErrorMsg();
 				$q->clear();
 				return 0;
-			}
-			else
-			{
+			} else {
 				$q->clear();
 				return $next_id;
 			}
 		} 
 
-		function update( $field_id, $field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg )
+		function update($field_id, $field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg)
 		{
-			GLOBAL $db;
+			global $db;
 			
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_struct');
 			$q->addUpdate('field_name', $field_name);
 			$q->addUpdate('field_description', $field_description);
@@ -452,72 +486,64 @@
 			$q->addUpdate('field_datatype', $field_datatype);
 			$q->addUpdate('field_extratags', $field_extratags);
 			$q->addWhere("field_id = ".$field_id);
-			if (!$q->exec())
-			{
+			if (!$q->exec()) {
 				$error_msg = $db->ErrorMsg();
 				$q->clear();
 				return 0;
-			}
-			else
-			{
+			} else {
 				$q->clear();
 				return $field_id;
 			}
 		}
 
-		function fieldWithId( $field_id )
+		function fieldWithId($field_id)
 		{
-			foreach ($this->fields as $k => $v)
-			{
-				if ($this->fields[$k]->field_id == $field_id) 
-					return $this->fields[$k];	
+			foreach ($this->fields as $k => $v) {
+				if ($this->fields[$k]->field_id == $field_id) { 
+					return $this->fields[$k];
+				}
 			}
 		}
 
-		function bind( &$formvars )
+		function bind(&$formvars)
 		{
-			if (!count($this->fields) == 0)
-			{
-				foreach ($this->fields as $k => $v)
-				{
-//					if ($formvars[$k] != NULL)
-//					{
+			if (!count($this->fields) == 0) {
+				foreach ($this->fields as $k => $v) {
+//					if ($formvars[$k] != NULL) {
 						$this->fields[$k]->setValue(@$formvars[$k]);
 //					}
 				}
 			}
 		}
 
-		function store( $object_id )
+		function store($object_id)
 		{
-			if (!count($this->fields) == 0)
-			{
+			if (!count($this->fields) == 0) {
 				$store_errors = '';
-				foreach ($this->fields as $k => $cf)
-				{
-					$result = $this->fields[$k]->store( $object_id );
-					if ($result)
-					{
+				foreach ($this->fields as $k => $cf) {
+					$result = $this->fields[$k]->store($object_id);
+					if ($result) {
 						$store_errors .= "Error storing custom field ".$k.":".$result;
 					}
 				}
 
 				//if ($store_errors) return $store_errors;
-				if (!is_null($store_errors)) return $store_errors;
+				if (!is_null($store_errors)) {
+					return $store_errors;	
+				}
 			}
 		}
 
-		function deleteField( $field_id )
+		function deleteField($field_id)
 		{
-			GLOBAL $db;
-			$q  = new DBQuery;
+			global $db;
+			$q  = new DBQuery();
 			$q->setDelete('custom_fields_struct');
 			$q->addWhere("field_id = $field_id");
-			if (!$q->exec())
-			{
+			if (!$q->exec()) {
 				$q->clear();
 				return $db->ErrorMsg();
-			}	
+			}
 		}
 
 		function count()
@@ -527,16 +553,12 @@
 
 		function getHTML()
 		{
-			if ($this->count() == 0)
-			{
+			if ($this->count() == 0) {
 				return "";
-			}
-			else
-			{
+			} else {
 				$html = "<table width=\"100%\">\n";
 	
-				foreach ($this->fields as $cfield)
-				{
+				foreach ($this->fields as $cfield) {
 					$html .= "\t<tr><td nowrap=\"nowrap\">".$cfield->getHTML($this->mode)."</td></tr>\n";
 				}
 				$html .= "</table>\n";
@@ -559,16 +581,16 @@
 		var $field_id;
 		var $query;
 		
-		function SQLCustomOptionList( $field_id )
+		function SQLCustomOptionList($field_id)
 		{
 			$this->field_id = $field_id;
 		}
 		
 		function load()
 		{
-			GLOBAL $db;
+			global $db;
 			
-			$q = new DBQuery;
+			$q = new DBQuery();
 			$q->addTable('custom_fields_lists');
 			$q->addWhere('field_id = '.$this->field_id);
 			if (!$rs = $q->exec()) {
@@ -584,9 +606,9 @@
 		
 		function store()
 		{
-			GLOBAL $db;
+			global $db;
 			
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_lists');
 			$q->addInsert('field_id', $this->field_id);
 			$q->addInsert('list_option_id', 0);
@@ -597,14 +619,14 @@
 		
 		function delete()
 		{
-			$q = new DBQuery;
+			$q = new DBQuery();
 			$q->setDelete('custom_fields_lists');
 			$q->addWhere("field_id = ".$this->field_id);
 			
 			$q->exec();
 		}
 		
-		function setQuery( $sql )
+		function setQuery($sql)
 		{
 			$this->query = $sql;
 		}
@@ -614,15 +636,14 @@
 			return $this->query;
 		}
 		
-		function getHTML( $field_name, $selected )
+		function getHTML($field_name, $selected)
 		{
-			GLOBAL $db;
+			global $db;
 			//die($this->query);
 			$rs = $db->Execute($this->query);
 			$html = "<select name=\"".$field_name."\">\n";
 			
-			while ($r = $rs->fetchRow())
-			{
+			while ($r = $rs->fetchRow()) {
 					$html .= "\t<option value=\"".$r[0]."\"";
 					if ($r[0] == $selected) $html .= " selected ";
 					$html .= ">".$r[1]."</option>";
@@ -632,9 +653,9 @@
 			return $html;
 		}
 		
-		function itemAtIndex( $i )
+		function itemAtIndex($i)
 		{
-			GLOBAL $db;
+			global $db;
 			$rs = $db->Execute($this->query);
 			$allrows = $rs->GetAll();
 			// Non Zero Based Index is Supplied
@@ -656,21 +677,20 @@
 
 		function load()
 		{
-			GLOBAL $db;
+			global $db;
 	
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_lists');
 			$q->addWhere("field_id = {$this->field_id}");
 			$q->addOrder("list_value");
 			if (!$rs = $q->exec()) {
 				$q->clear();
-			  return $db->ErrorMsg();		
+				return $db->ErrorMsg();		
 			}
 
-			$this->options = Array();
+			$this->options = array();
 
-			while ($opt_row = $q->fetchRow())
-			{
+			while ($opt_row = $q->fetchRow()) {
 				$this->options[$opt_row["list_option_id"]] = $opt_row["list_value"];
 			}
 			$q->clear();
@@ -678,13 +698,14 @@
 
 		function store()
 		{
-			GLOBAL $db;
+			global $db;
 
-			if (! is_array($this->options))
+			if (!is_array($this->options)) {
 				$this->options = array();
+			}
 			
 			//load the dbs options and compare them with the options
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->addTable('custom_fields_lists');
 			$q->addWhere("field_id = {$this->field_id}");
 			$q->addOrder("list_value");
@@ -693,23 +714,21 @@
 			  	return $db->ErrorMsg();		
 			}
 
-			$dboptions = Array();
+			$dboptions = array();
 
-			while ($opt_row = $q->fetchRow())
-			{
+			while ($opt_row = $q->fetchRow()) {
 				$dboptions[$opt_row["list_option_id"]] = $opt_row["list_value"];
 			}
 			$q->clear();
 			
-			$newoptions = Array();
+			$newoptions = array();
 			$newoptions = array_diff($this->options, $dboptions);
 			$deleteoptions = array_diff($dboptions, $this->options);
 			//insert the new options
-			foreach($newoptions as $opt)
-			{
+			foreach($newoptions as $opt) {
 				$optid = $db->GenID('custom_fields_option_id', 1 );
 
-				$q  = new DBQuery;
+				$q  = new DBQuery();
 				$q->addTable('custom_fields_lists');
 				$q->addInsert('field_id', $this->field_id);
 				$q->addInsert('list_option_id', $optid);
@@ -719,13 +738,14 @@
 				$q->clear();
 			}	
 			//delete the deleted options
-			foreach($deleteoptions as $opt => $value)
-			{
-				$q  = new DBQuery;
+			foreach($deleteoptions as $opt => $value) {
+				$q  = new DBQuery();
 				$q->setDelete('custom_fields_lists');
 				$q->addWhere("list_option_id = $opt");
 
-				if (!$q->exec()) $delete_error = $db->ErrorMsg();  	
+				if (!$q->exec()) {
+					$delete_error = $db->ErrorMsg();
+				}  	
 				$q->clear();
 			}	
 
@@ -734,14 +754,14 @@
 
 		function delete()
 		{
-			$q  = new DBQuery;
+			$q  = new DBQuery();
 			$q->setDelete('custom_fields_lists');
 			$q->addWhere("field_id = {$this->field_id}");
 			$q->exec();
 			$q->clear();
 		}
 
-		function setOptions( $option_array )
+		function setOptions($option_array)
 		{
 			$this->options = $option_array;
 		} 
@@ -751,18 +771,19 @@
 			return $this->options;
 		}
 
-		function itemAtIndex( $i )
+		function itemAtIndex($i)
 		{
 			return $this->options[$i];
 		}
 
-		function getHTML( $field_name, $selected )
+		function getHTML($field_name, $selected)
 		{
 			$html = "<select name=\"".$field_name."\">\n";
-			foreach ($this->options as $i => $opt)
-			{
+			foreach ($this->options as $i => $opt) {
 				$html .= "\t<option value=\"".$i."\"";
-				if ($i == $selected) $html .= " selected ";
+				if ($i == $selected) {
+					$html .= " selected ";
+				}
 				$html .= ">".$opt."</option>";
 			}	
 			$html .= "</select>\n";
