@@ -162,7 +162,12 @@ $a = '';
 $u = '';
 
 // check if we are logged in
-if ($AppUI->doLogin()) {
+if ($_GET['m'] == 'public' && $_GET['a'] == 'register')
+{
+// Exception for automatic registrations (if they are allowed)
+//	$suppressHeaders = true;
+}
+else if ($AppUI->doLogin()) {
 	// load basic locale settings
 	$AppUI->setUserLocale();
 	@include_once($baseDir . '/locales/'.$AppUI->user_locale.'/locales.php');
