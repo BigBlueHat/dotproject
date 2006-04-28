@@ -430,7 +430,7 @@ class DBQuery {
 		if ($pagesize == 0)
 			$pagesize = dPgetConfig('page_size');
 			
-		$this->setLimit($pagesize, $page - 1);
+		$this->setLimit($pagesize, ($page - 1) * $pagesize);
 	}
 
   /**
