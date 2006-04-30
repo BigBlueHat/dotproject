@@ -718,6 +718,8 @@ INSERT INTO config VALUES ('', 'ldap_user_filter', '(uid=%USERNAME%)', '', 'text
 # PostNuke authentication variables
 INSERT INTO config VALUES ('', 'postnuke_allow_login', 'true', 'auth', 'checkbox');
 
+INSERT INTO `config` VALUES('', 'site_terms', '...', '', 'textarea');
+
 # 20050302
 # New list support for config variables
 CREATE TABLE `config_list` (

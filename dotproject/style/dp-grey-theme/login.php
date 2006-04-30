@@ -41,6 +41,9 @@
 <tr>
 	<td colspan="2"><a href="#" onclick="f=document.loginform;f.lostpass.value=1;f.submit();"><?php echo $AppUI->_('forgotPassword');?></a></td>
 </tr>
+<tr>
+	<td><a href="#" onclick="document.getElementById('terms').style.display='block'"><?php echo $AppUI->_('TERMS AND CONDITIONS OF ACCESSING THIS SITE'); ?></a></td>
+</tr>
 </table>
 <?php if (@$AppUI->getVersion()) { ?>
 <div align="center">
@@ -59,5 +62,8 @@
 ?>
 </div>
 <center>* <?php echo $AppUI->_('You must have cookies enabled in your browser');?></center>
+<div style="display: none;" id="terms">>
+<?php echo $dPconfig['site_terms']; ?>
+</div>
 </body>
 </html>

@@ -114,3 +114,7 @@ ALTER TABLE `events` ADD `event_task` INT(11) AFTER `event_project` ;
 #20060430
 # Add a user preference to the user display
 INSERT INTO `user_preferences` VALUES('0', 'USERFORMAT', 'last');
+
+#20060430
+# terms and conditions link
+INSERT INTO `config` VALUES('', 'site_terms', '...', '', 'textarea');

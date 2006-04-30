@@ -57,8 +57,9 @@
 		<br />
 		<ul type="square">
 			<li>
-				<A href="mailto:<?php echo 'admin@' . $dPconfig['site_domain'];?>"><?php echo $AppUI->_('forgotPassword');?></a>
+				<a href="mailto:<?php echo 'admin@' . $dPconfig['site_domain'];?>"><?php echo $AppUI->_('forgotPassword');?></a>
 			</li>
+			<li><a href="#" onclick="document.getElementById('terms').style.display='block'"><?php echo $AppUI->_('TERMS AND CONDITIONS OF ACCESSING THIS SITE'); ?></a></li>
 		</ul>
 	</td>
 </tr>
@@ -72,5 +73,8 @@
 </form>
 </table>
 <center><?php echo $AppUI->_('* You must have cookies enabled in your browser');?></center>
+<div style="display: none;" id="terms">>
+<?php echo $dPconfig['site_terms']; ?>
+</div>
 </body>
 </html>

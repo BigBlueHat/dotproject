@@ -43,43 +43,46 @@ $om = 'onmouseover="return overlib( \''.$AppUI->_($c['config_name']. '_tooltip',
 	switch ($c['config_type']) {
 		case 'select':
 			// Build the select list.
-			$entry = "<select class='text' name='dPcfg[{$c['config_name']}]'>\n";
+			$entry = '<select class="text" name="dPcfg['.$c['config_name'] ."]\">\n";
 			// Find the detail relating to this entry.
 			$children = $dPcfg->getChildren($c['config_id']);
 			foreach ($children as $child) {
-				$entry .= "<option value='{$child['config_list_name']}'";
+				$entry .= '<option value="'.$child['config_list_name'].'"';
 				if ($child['config_list_name'] == $c['config_value'])
-					$entry  .= " selected='selected'";
-				$entry .= ">" . $AppUI->_($child['config_list_name'] . '_item_title') . "</option>\n";
+					$entry  .= ' selected="selected"';
+				$entry .= '>' . $AppUI->_($child['config_list_name'] . '_item_title') . "</option>\n";
 			}
-			$entry .= "</select>";
+			$entry .= '</select>';
+			break;
+		case 'textarea':
+			$entry = '<textarea name="dPcfg['.$c['config_name'].']">'.$c['config_value'].'</textarea>';
 			break;
 		case 'checkbox':
-			$extra = ($c['config_value'] == 'true') ? "checked='checked'" : '';
+			$extra = ($c['config_value'] == 'true') ? 'checked="checked"' : '';
 			$value = 'true';
 			// allow to fallthrough
 		default:
 			if (! $value)
 				$value = get_magic_quotes_gpc() ? $c['config_value'] : stripslashes( $c['config_value']);	
-			$entry = "<input class='button' type='{$c['config_type']}' name='dPcfg[{$c['config_name']}]' value=\"$value\" $om $extra/>";
+			$entry = '<input class="button" type="'.$c['config_type'].'" name="dPcfg['.$c['config_name'].']" value="'.$value."\" $om $extra/>";
 			break;
 	}
 
 	if ($c['config_group'] != $last_group) {
-		$output .="<tr><td colspan='2'><b>" . $AppUI->_($c['config_group'] .'_group_title') . "</b></td></tr>\n";
+		$output .='<tr><td colspan="2"><b>' . $AppUI->_($c['config_group'] .'_group_title') . '</b></td></tr>'."\n";
 		$last_group = $c['config_group'];
 	}
 
 
-	$output .= "<tr>
-			<td class='item' width='20%'>".$AppUI->_($c['config_name'].'_title')."</td>
-            		<td align='left'>
-				$entry
-				<a href='javascript:void(0);' $oc $om>(?)</a>
-				<input class='button' type='hidden'  name='dPcfgId[{$c['config_name']}]' value='{$c['config_id']}' />
+	$output .= '<tr>
+			<td class="item" width="20%">'.$AppUI->_($c['config_name'].'_title').'</td>
+            		<td align="left">'.
+				$entry .
+				'<a href="javascript:void(0);" '.$oc.' '. $om.'>(?)</a>
+				<input class="button" type="hidden"  name="dPcfgId['.$c['config_name'].']" value="'.$c['config_id'].'" />
 			</td>
         </tr>
-	";
+	';
 
 	}
 echo '<form name="cfgFrm" action="index.php?m=system&a=systemconfig" method="post">';
