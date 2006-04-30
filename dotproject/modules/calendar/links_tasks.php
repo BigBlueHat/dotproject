@@ -11,7 +11,10 @@
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters ) {
-	GLOBAL $a, $AppUI, $dPconfig, $event_id;
+	GLOBAL $a, $AppUI, $dPconfig, $event_id, $df, $tf;
+
+	$df = $AppUI->getPref('SHDATEFORMAT');
+	$tf = $AppUI->getPref('TIMEFORMAT');
 	
 	// Check permissions.
 	$perms = & $AppUI->acl();
@@ -31,18 +34,41 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 	// the link
 		$link['href'] = "?m=tasks&a=view&task_id=".$row['task_id'];
 		$link['alt'] = $row['project_name'].":\n".$row['task_name'];
-
 	// the link text
 		if (strlen( $row['task_name'] ) > $strMaxLen) {
 			$row['task_name'] = substr( $row['task_name'], 0, $strMaxLen ).'...';
 		}
+		$link['title'] = $row['task_name'];
+		$link['description'] = $row['task_description'];
 		$link['text'] = '<span style="color:'.bestColor($row['color']).';background-color:#'.$row['color'].'">'.$row['task_name'].'</span>';
-
 	// determine which day(s) to display the task
 		$start = new CDate( $row['task_start_date'] );
 		$end = $row['task_end_date'] ? new CDate( $row['task_end_date'] ) : null;
 		$durn = $row['task_duration'];
 		$durnType = $row['task_duration_type'];
+
+		$link['start_date'] = $start->format($df . ' ' . $tf);
+		$link['end_date'] = $end?$end->format($df . ' ' . $tf):null;
+		// tooltip is in Javascript - needs slashes at the end
+		$link['tooltip'] = '\
+<table>\
+<tr>\
+	<td>'.$AppUI->_('Start Date').':</td>\
+	<td>'.$link['start_date'].'</td>\
+</tr>\
+<tr>\
+	<td>'.$AppUI->_('End Date').':</td>\
+	<td>'.$link['end_date'].'</td>\
+</tr>\
+<tr>\
+	<td>'.$AppUI->_('Description').':</td>\
+	<td>'.$row['task_description'].'</td>\
+</tr>\
+<tr>\
+	<td>'.$AppUI->_('Project') . ':</td>\
+	<td>'.$row['project_name'].'</td>\
+</tr>\
+</table>';
 
 		if (($start->after( $startPeriod ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
 			$temp = $link;

@@ -7,6 +7,7 @@ $types = dPgetSysVal( 'EventType' );
 
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
+$tf = $AppUI->getPref('TIMEFORMAT');
 
 $recurs =  array (
 	'Never',
@@ -58,7 +59,8 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 				$link['end_date'] = $row['event_end_date'];
 				$link['title'] = $row['event_title'];
 				$link['description'] = $row['event_description'];
-				$link['type'] = 'event' . $row['event_type'];
+				$link['type'] = 'event';
+				$link['img'] = 'event' . $row['event_type'] . '.png';
 				$start_date = new CDate($row['event_start_date']);
 				$end_date = new CDate($row['event_end_date']);
 				// tooltip is in Javascript - it needs slashes before new lines.
@@ -77,11 +79,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 	<td>'.$row['event_description'].'</td>\
 </tr>\
 </table>';
-				$link['text'] = '<table cellspacing="0" cellpadding="0" border="0"><tr>'
-					. '<td><a href=' . $url . '>' . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' )
-					. '</a></td>'
-					. '<td><a href="' . $url . '" title="'.$row['event_description'].'"><span class="event">'.$row['event_title'].'</span></a>'
-					. '</td></tr></table>';
+				$link['text'] = $row['event_title'];
 				$links[$date->format( FMT_TIMESTAMP_DATE )][] = $link;
 			 }
 				$date = $date->getNextDay();
