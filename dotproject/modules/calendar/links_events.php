@@ -30,7 +30,7 @@ $recurs =  array (
 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 */
 function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
-	global $event_filter, $AppUI, $event_id;
+	global $event_filter, $AppUI, $event_id, $df, $tf;
 		
 	// Check permissions.
 	$perms = & $AppUI->acl();
@@ -52,8 +52,31 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 			// optionally do not show events on non-working days 
 			if ( ( $row['event_cwd'] && in_array($date->getDayOfWeek(), $cwd ) ) || !$row['event_cwd'] ) {
 				$url = '?m=calendar&a=view&event_id=' . $row['event_id'];
-				$link['href'] = '';
+				$link['href'] = $url;
 				$link['alt'] = $row['event_description'];
+				$link['start_date'] = $row['event_start_date'];
+				$link['end_date'] = $row['event_end_date'];
+				$link['title'] = $row['event_title'];
+				$link['description'] = $row['event_description'];
+				$link['type'] = 'event' . $row['event_type'];
+				$start_date = new CDate($row['event_start_date']);
+				$end_date = new CDate($row['event_end_date']);
+				// tooltip is in Javascript - it needs slashes before new lines.
+				$link['tooltip'] = '\
+<table>\
+<tr>\
+	<td>'.$AppUI->_('Start Date').':</td>\
+	<td>' . $start_date->format($df.' '.$tf) . '</td>\
+</tr>\
+<tr>\
+	<td>'.$AppUI->_('End Date').':</td>\
+	<td>' . $end_date->format($df.' '.$tf) . '</td>\
+</tr>\
+<tr>\
+	<td>'.$AppUI->_('Description').':</td>\
+	<td>'.$row['event_description'].'</td>\
+</tr>\
+</table>';
 				$link['text'] = '<table cellspacing="0" cellpadding="0" border="0"><tr>'
 					. '<td><a href=' . $url . '>' . dPshowImage( dPfindImage( 'event'.$row['event_type'].'.png', 'calendar' ), 16, 16, '' )
 					. '</a></td>'

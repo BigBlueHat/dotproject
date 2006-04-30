@@ -1,4 +1,7 @@
 <br />
-{if $href}<a href="{$href}" class="event" title="{$alt}">{/if}
-{$etext}
-{if $href}</a>{/if}
+{if $event.href}<a href="{$event.href}" class="event" title="{$event.alt}" onmouseover="return overlib('{$event.tooltip}', CAPTION, '{dPtranslate word='Details'}', CENTER)" onmouseout="nd();">{/if}
+{assign var='img' value=$event.type}
+{assign var='img' value="$img.png"}
+{dPshowImage find=$img mod='calendar'}
+{$event.title}
+{if $event.href}</a>{/if}

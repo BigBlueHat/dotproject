@@ -349,11 +349,9 @@ class CMonthCalendar {
 		$events = $this->events[$day];
 		foreach ($events as $e) {
 			$href = isset($e['href']) ? $e['href'] : null;
-			$alt = isset($e['alt']) ? str_replace("\n",' ',$e['alt']) : null;
+			$e['alt'] = isset($e['alt']) ? str_replace("\n",' ',$e['alt']) : null;
 			
-			$tpl->assign('etext', $e['text']);
-			$tpl->assign('href', $href);
-			$tpl->assign('alt', $alt);
+			$tpl->assign('event', $e);
 			$s .= $tpl->fetchFile('_event', 'calendar');
 		}
 		return $s;
