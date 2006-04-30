@@ -111,3 +111,6 @@ ALTER TABLE `events` ADD `event_url` VARCHAR( 255 ) AFTER `event_description` ;
 # Add event_task field
 ALTER TABLE `events` ADD `event_task` INT(11) AFTER `event_project` ;
 
+#20060430
+# Add a user preference to the user display
+INSERT INTO `user_preferences` VALUES('0', 'USERFORMAT', 'last');

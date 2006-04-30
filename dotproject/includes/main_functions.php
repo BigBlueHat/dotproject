@@ -31,7 +31,7 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 {
 	global $AppUI;
 	if (! is_array($arr)) {
-		dprint(__FILE__, __LINE__, 0, "arraySelect called with no array");
+		dprint(__FILE__, __LINE__, 0, 'arraySelect called with no array');
 		return '';
 	}
 	reset( $arr );
@@ -46,7 +46,7 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 			$v=str_replace('&#369;','û',$v);
 			$v=str_replace('&#337;','õ',$v);
 		}
-		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').">" .  $v  . "</option>";
+		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').'>' .  $v  . '</option>';
 	}
 	$s .= "\n</select>\n";
 	return $s;
@@ -149,31 +149,45 @@ function dPgetUsername( $user )
 	$q->addQuery('contact_first_name, contact_last_name');
 	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
 	$q->addWhere('user_username like \'' . $user . '\' OR user_id = \'' . $user . "'");
-        $r = $q->loadList();
-        return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
+	list($contact) = $q->loadList();
+	//TODO: use dPgetUsername instead?
+
+	return $contact['contact_first_name'] . ' ' . $contact['contact_last_name'];
 }
 
 function dPgetUsernameFromID( $user )
 {
-	$q  = new DBQuery;
-	$q->addTable('users');
-	$q->addQuery('contact_first_name, contact_last_name');
-	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
-	$q->addWhere('user_id = \'' . $user . "'");
-        $r = $q->loadList();
-        return $r[0]['contact_first_name'] . ' ' . $r[0]['contact_last_name'];
+	return dPgetUsername($user);
 }
 
 function dPgetUsers($active_only = true)
 {
 	global $AppUI;
-	$q  = new DBQuery;
-	$q->addTable('users');
-	$q->addQuery('user_id, concat_ws(" ", contact_first_name, contact_last_name) as name');
-	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
-	$q->addOrder('contact_last_name,contact_first_name');
+	if ($_SESSION['users'])
+		$users = $_SESSION['users'];
+	else
+	{
+		$q  = new DBQuery;
+		$q->addTable('users');
+		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
 
-	$users = $q->loadHashList();
+		$q->addQuery('user_id');
+
+		$uf = $AppUI->getPref(USERFORMAT);
+		if ($uf == 'first')	{
+			$q->addQuery('concat_ws(" ", contact_first_name, contact_last_name) as name');
+			$q->addOrder('contact_first_name, contact_last_name');
+		}	else if ($uf == 'last')	{
+			$q->addQuery('concat_ws(", ", contact_last_name, contact_first_name) as name');
+			$q->addOrder('contact_last_name, contact_first_name');
+		}	else { // if ($uf == 'user') {
+			$q->addQuery('user_username as name');
+			$q->addOrder('user_username');
+		}
+
+		$users = $q->loadHashList();
+		$_SESSION['users'] = $users;
+	}
 	if ($active_only)
 	{
 		$perms = & $AppUI->acl();
@@ -309,7 +323,7 @@ function addHistory( $table, $id, $action = 'modify', $details = '')
 	$qid = $q->exec();
 
 	if (! $qid || db_num_rows($qid) == 0) {
-	  $AppUI->setMsg("History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.", UI_MSG_ALERT);
+	  $AppUI->setMsg('History module is not loaded, but your config file has requested that changes be logged.  You must either change the config file or install and activate the history module to log changes.', UI_MSG_ALERT);
 		$q->clear();
 	  return;
 	}
@@ -418,7 +432,7 @@ function dPformatDuration($x)
     }
 
     if ($str == '') {
-        $str = $AppUI->_("n/a");
+        $str = $AppUI->_('n/a');
     }
 
     return $str;
@@ -429,7 +443,7 @@ function dPformatDuration($x)
 function dPsetMicroTime()
 {
 	global $microTimeSet;
-	list($usec, $sec) = explode(" ",microtime());
+	list($usec, $sec) = explode(' ', microtime());
 	$microTimeSet = (float)$usec + (float)$sec;
 }
 
@@ -440,18 +454,18 @@ function dPgetMicroDiff()
 	global $microTimeSet;
 	$mt = $microTimeSet;
 	dPsetMicroTime();
-	return sprintf( "%.3f", $microTimeSet - $mt );
+	return sprintf( '%.3f', $microTimeSet - $mt );
 }
 
 /**
 * Make text safe to output into double-quote enclosed attirbutes of an HTML tag
 */
-function dPformSafe( $txt, $deslash=false )
+function dPformSafe( $txt, $deslash = false )
 {
 	global $locale_char_set;
 	
 	if (!$locale_char_set){
-	    $locale_char_set = "utf-8";
+		$locale_char_set = 'utf-8';
 	}
 	
 	if (is_object( $txt )) {
@@ -547,10 +561,10 @@ function formatCurrency( $number, $format )
 		$mondat['mon_thousands_sep']);
 	// Not sure, but most countries don't put the sign in if it is positive.
 	$letter='p';
-	$currency_prefix="";
-	$currency_suffix="";
-	$prefix="";
-	$suffix="";
+	$currency_prefix='';
+	$currency_suffix='';
+	$prefix='';
+	$suffix='';
 	if ($number < 0) {
 		$sign = $mondat['negative_sign'];
 		$letter = 'n';
@@ -574,11 +588,11 @@ function formatCurrency( $number, $format )
 		}
 	}
 	$currency .= $currency_prefix . $mondat['int_curr_symbol'] . $currency_suffix;
-	$space = "";
-	if ($mondat[$letter . "_sep_by_space"]) {
-		$space = " ";
+	$space = '';
+	if ($mondat[$letter . '_sep_by_space']) {
+		$space = ' ';
 	}
-	if ($mondat[$letter . "_cs_precedes"]) {
+	if ($mondat[$letter . '_cs_precedes']) {
 		$result = "$currency$space$numeric_portion";
 	} else {
 		$result = "$numeric_portion$space$currency";
@@ -655,21 +669,9 @@ function findTabModules($module, $file = null)
 */
 function showFVar(&$var, $title = "")
 {
-    echo "<h1>$title</h1";
-    echo "<pre>";
-    print_r($var);
-    echo "</pre>";
-}
-
-function getUsersArray()
-{
-	$q  = new DBQuery;
-	$q->addTable('users');
-	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
-	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
-	$q->addOrder('contact_first_name, contact_last_name');
-    return $q->loadHashList("user_id");
-    
+    echo '
+	<h1>' . $title . '</h1>
+	<pre>' . print_r($var, true) . '</pre>';
 }
 
 function getUsersCombo($default_user_id = 0, $first_option = 'All users')
@@ -678,13 +680,14 @@ function getUsersCombo($default_user_id = 0, $first_option = 'All users')
     
     $parsed = '<select name="user_id" class="text">';
     if($first_option != ""){
-        $parsed .= '<option value="0" '.(!$default_user_id ? "selected" : "").'>'.$AppUI->_($first_option).'</option>';
+        $parsed .= '<option value="0" '.(!$default_user_id ? 'selected' : '').'>'.$AppUI->_($first_option).'</option>';
     }
-    foreach(getUsersArray() as $user_id => $user){
-        $selected = $user_id == $default_user_id ? 'selected="selected"' : "";
-        $parsed .= "<option value=\"$user_id\" $selected>".$user["contact_first_name"]." ".$user["contact_last_name"]."</option>";
+		$users = dPgetUsernames();
+    foreach($users as $user_id => $user_name){
+        $selected = $user_id == $default_user_id ? 'selected="selected"' : '';
+        $parsed .= '<option value="'.$user_id.'" '.$selected.'>'.$user_name.'</option>';
     }
-    $parsed .= "</select>";
+    $parsed .= '</select>';
     return $parsed;
 }
 

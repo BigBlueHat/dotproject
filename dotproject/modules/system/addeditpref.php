@@ -140,6 +140,18 @@ function submitIt(){
 </tr>
 
 <tr>
+	<td align="right"><?php echo $AppUI->_('User Format');?>:</td>
+	<td>
+<?php
+	$userFormat['user'] = $AppUI->_('Username');
+	$userFormat['first'] = $AppUI->_('Firstname Lastname');
+	$userFormat['last'] = $AppUI->_('Lastname, Firstname');
+	echo arraySelect($userFormat, 'pref_name[USERFORMAT]', 'class="text" size="1"', $prefs['USERFORMAT'], false);
+?>
+	</td>
+</tr>
+
+<tr>
 	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php

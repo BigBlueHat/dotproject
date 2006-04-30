@@ -61,6 +61,8 @@ $project = new CProject();
 $project->load( $task_project );
 
 //Pull all users
+$users = dPgetUsers();
+/*
 $q = new DBQuery;
 $q->addQuery('user_id, contact_first_name, contact_last_name');
 $q->addTable('users');
@@ -74,6 +76,7 @@ while ( $row = $q->fetchRow()) {
 	  $users[$row['user_id']] = $row['contact_last_name'] . ', ' . $row['contact_first_name'];
 }
 $q->clear();
+*/
 
 function getSpaces($amount){
 	if($amount == 0) return '';
