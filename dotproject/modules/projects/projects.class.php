@@ -588,6 +588,10 @@ function projects_list_data($user_id = false) {
 	}
 	$q->addGroup('projects.project_id');
 	$q->addOrder("$orderby $orderdir");
+// if filtering is applied here, number of records is unknown
+// $page = dPgetParam($_GET, 'page', 1);
+// $pagesize = dPgetConfig('page_size', 25);
+// $q->setPageLimit($page, $pagesize);
 	$obj->setAllowedSQL($AppUI->user_id, $q);
 	$projects = $q->loadList();
 

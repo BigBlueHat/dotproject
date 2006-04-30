@@ -30,7 +30,14 @@ class CTemplate extends Smarty
 		$this->page = isset($_REQUEST['page'])?$_REQUEST['page']:1;
 		$this->assign('page', $this->page);
 	}
-	
+
+	/**
+	 * Display a list of records through a smarty template.
+	 * 
+	 * @param string 	$module 		the module for which the list applies (used to determine the smarty template file).
+	 * @param array 	$rows				the actual data to be displayed
+	 * @param int			$totalRows	the total rows available (if 0, it will be interpreted as count($rows)). This is necessary if $rows is a partial result, returned by an sql query with limits, but there are more results.
+	 */	
 	function displayList($module, $rows, $totalRows = 0, $show = null)
 	{
 		if (!isset($show) && is_array($rows))
@@ -41,13 +48,27 @@ class CTemplate extends Smarty
 		
 		if (!$this->get_template_vars('current_url'))
 			$this->assign('current_url', '?m=' . $module);			
-			
+
+		$total_rows = count($rows);
+		$page_size = dPgetConfig('page_size', 25);
+		$i = 0;
+		foreach ($rows as $k => $row)
+		{
+			++$i;
+			if ($i >= $this->page*$page_size - $page_size 
+			 && $i < $this->page * $page_size)
+				$paginated_rows[$k] = $row;
+		}
+
+		$rows = $paginated_rows;
+		
+	
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
 		
-		$this->displayPagination($this->page, $totalRows > 0?$totalRows:count($rows), $module);
+		$this->displayPagination($this->page, $totalRows > 0?$totalRows:$total_rows, $module);
 		$this->displayFile('list', $module);
-		$this->displayPagination($this->page, $totalRows > 0?$totalRows:count($rows), $module);
+		$this->displayPagination($this->page, $totalRows > 0?$totalRows:$total_rows, $module);
 	}
 	
 	function displayView($item)
