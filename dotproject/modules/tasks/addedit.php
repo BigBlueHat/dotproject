@@ -70,7 +70,8 @@ $q->addOrder('contact_last_name, contact_first_name');
 $q->exec();
 $users = array();
 while ( $row = $q->fetchRow()) {
-  $users[$row['user_id']] = $row['contact_last_name'] . ', ' . $row['contact_first_name'];
+	if ($perms->isUserPermitted($row['user_id']))
+	  $users[$row['user_id']] = $row['contact_last_name'] . ', ' . $row['contact_first_name'];
 }
 $q->clear();
 
