@@ -42,7 +42,7 @@ function smarty_function_dPshowImage($params, &$smarty)
 		    $result .= ' alt="' . $AppUI->_($alt) . '"';
 		  if ($title)
 		    $result .= ' title="' . $AppUI->_($title) . '"';
-		  $result .= ' border="0">';
+		  $result .= ' border="0" />';
     }
     
     return $result;
