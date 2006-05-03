@@ -59,9 +59,9 @@
 {if $obj.children > 0}
 	{if !dPgetConfig('tasks_ajax_list')}
 {if $is_opened}
-{assign var='img_open'}
+{assign var='img_open' value='corner-dots.gif'}
 {else}
-{assign var='img_open'}
+{assign var='img_open' value='shim.gif'}
 {/if}
 <a href="index.php{$query_string}&close_task_id={$obj.task_id}">
 {dPshowImage find=$img_open align='center'}</a>
