@@ -1,0 +1,25 @@
+<table width="100%" cellspacing="1" cellpadding="2" border="0" class="tbl">
+<form name="watcher" action="./index.php?m=forums&f={$f}" method="post">
+<tr>
+	<th nowrap="nowrap">&nbsp;</th>
+	<th nowrap="nowrap" width="25"><a href="?m=forums&orderby=watch_user" class="hdr">{dPtranslate word='Watch'}</a></th>
+	<th nowrap="nowrap"><a href="?m=forums&orderby=forum_name" class="hdr">{dPtranslate word='Forum Name'}</a></th>
+	<th nowrap="nowrap" width="50" align="center"><a href="?m=forums&orderby=forum_topics" class="hdr">{dPtranslate word='Topics'}</a></th>
+	<th nowrap="nowrap" width="50" align="center"><a href="?m=forums&orderby=forum_replies" class="hdr">{dPtranslate word='Replies'}</a></th>
+	<th nowrap="nowrap" width="200"><a href="?m=forums&orderby=forum_last_date" class="hdr">{dPtranslate word='Last Post Info'}</a></th>
+</tr>
+{$forum_rows}
+</table>
+<table width="100%" cellspacing="1" cellpadding="0" border="0">
+	<input type="hidden" name="dosql" value="do_watch_forum" />
+	<input type="hidden" name="watch" value="forum" />
+<tr>
+	<td>&nbsp;</td>
+</tr>
+<tr>
+	<td align="left">
+		<input type="submit" class="button" value="{dPtranslate word='update watches'}" />
+	</td>
+</tr>
+</form>
+</table>

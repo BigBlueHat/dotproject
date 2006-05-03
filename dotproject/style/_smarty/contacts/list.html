@@ -1,0 +1,32 @@
+{if !$rows}
+	{dPtranslate word='No data available'}<br />{$msg}
+{else}
+<table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+	<th>{dPtranslate word='Name'}</td>
+	<th>{dPtranslate word='e-mail'}</td>
+	<th>{dPtranslate word='Department'}</td>
+</tr>
+	{foreach from=$rows item=row}
+<tr>
+	<td>
+		<a href="./index.php?m=contacts&a=addedit&contact_id={$row.contact_id}">
+			{$row.contact_last_name}, {$row.contact_first_name}
+		</a>
+	</td>
+	<td>
+		<a href="mailto:{$row.contact_email}">{$row.contact_email}</a>
+	</td>
+	<td>
+		{$row.dept_name}
+	</td>
+</tr>
+	{/foreach}
+{/if}
+
+<tr>
+	<td colspan="3" align="right" valign="top" style="background-color:#ffffff">
+		<input type="button" class=button value="{dPtranslate word='new contact'}" onClick="javascript:window.location=\'./index.php?m=contacts&a=addedit&company_id={$company_id}&company_name={$company_name}'">
+	</td>
+</tr>
+</table>

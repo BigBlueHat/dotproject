@@ -1,0 +1,64 @@
+<script>
+	{literal}
+	function check_backup_options()
+	{
+		var f = document.frmBackup;
+		if(f.export_what.options[f.export_what.selectedIndex].value == 'data')
+		{
+			f.droptable.enabled=false;
+			f.droptable.checked=false;
+		}
+		else
+		{
+			f.droptable.enabled=true;
+		}
+	}
+	{/literal}
+</script>
+
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
+	<form onclick="check_backup_options()" name="frmBackup" action="?m=backup&a=do_backup&suppressHeaders=1" method="post">
+	<tr>
+		<td align="right" valign="top" nowrap="nowrap">
+		</td>
+		<td width="100%" nowrap="nowrap">{dPtranslate word='Files are not included with Database Backups'}!
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="top" nowrap="nowrap">
+			{dPtranslate word='Export'}
+		</td>
+		<td width="100%" nowrap="nowrap">
+			<select name="export_what" class="text" >
+				<option value="all" checked="checked">{dPtranslate word='Table structure and data'}</option>
+				<option value="table">{dPtranslate word='Only table structure'}</option>
+				<option value="data">{dPtranslate word='Only data'}</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="top"  nowrap="nowrap">{dPtranslate word='Options'}</td>
+		<td width="100%" nowrap="nowrap">
+			<input type="checkbox" name="droptable" value="1" checked="checked" />{dPtranslate word='Add \'DROP TABLE\' to output-script'}<br />
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="top"  nowrap="nowrap">{dPtranslate word='Save as'}</td>
+		<td width="100%" nowrap="nowrap">
+			<select name="output_format" class="text" >
+				<option value="zip" checked="checked">{dPtranslate word='Compressed ZIP SQL file'}</option>
+				<option value="sql">{dPtranslate word='Plain text SQL file'}</option>
+				<option value="xml">{dPtranslate word='XML file'}</option>
+			</select>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			&nbsp;
+		</td>
+		<td align="right">
+			<input type="submit" value="{dPtranslate word='Download backup'}" class="button"/>
+		</td>
+	</tr>
+	</form>
+</table>

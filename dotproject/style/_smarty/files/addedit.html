@@ -1,0 +1,203 @@
+{literal}
+<script language="javascript">
+function submitIt() {
+	var f = document.uploadFrm;
+	f.submit();
+}
+function delIt() {
+	if (confirm( "{/literal}{dPtranslate word='filesDelete' type='js'}{literal}" )) {
+		var f = document.uploadFrm;
+		f.del.value='1';
+		f.submit();
+	}
+}
+function popTask() {
+    var f = document.uploadFrm;
+    if (f.file_project.selectedIndex == 0) {
+        alert( "{/literal}{dPtranslate word='Please select a project first!' type='js'}{literal}" );
+    } else {
+        window.open('./index.php?m=public&a=selector&dialog=1&callback=setTask&table=tasks&task_project='
+            + f.file_project.options[f.file_project.selectedIndex].value, 'task','left=50,top=50,height=250,width=400,resizable')
+    }
+}
+
+function finalCI()
+{
+        var f = document.uploadFrm;
+        if (f.final_ci.value = '1')
+        {
+                f.file_checkout.value = 'final';
+                f.file_co_reason.value = 'Final Version';
+        }
+        else
+        {
+                f.file_checkout.value = '';
+                f.file_co_reason.value = '';
+        }
+}
+
+// Callback function for the generic selector
+function setTask( key, val ) {
+    var f = document.uploadFrm;
+    if (val != '') {
+        f.file_task.value = key;
+        f.task_name.value = val;
+    } else {
+        f.file_task.value = '0';
+        f.task_name.value = '';
+    }
+}
+</script>
+{/literal}
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
+
+<form name="uploadFrm" action="?m=files" enctype="multipart/form-data" method="post">
+	<input type="hidden" name="dosql" value="do_file_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="file_id" value="{$file_id}" />
+	<input type="hidden" name="file_version_id" value="{$obj->file_version_id}" />
+
+<tr>
+	<td width="100%" valign="top" align="center">
+		<table cellspacing="1" cellpadding="2" width="60%">
+		{if $file_id && !$ci}
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='File Name'}:</td>
+			<td align="left" class="hilite">{if $obj->file_name|count_characters == 0}n/a{else}{$obj->file_name}{/if}</td>
+			<td>
+				<a href="./fileviewer.php?file_id={$obj->file_id}">{dPtranslate word='download'}</a>
+			</td>
+		</tr>
+		<tr valign="top">
+			<td align="right" nowrap="nowrap">{dPtranslate word='Type'}:</td>
+			<td align="left" class="hilite">{$obj->file_type}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Size'}:</td>
+			<td align="left" class="hilite">{$obj->file_size}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Uploaded By'}:</td>
+			<td align="left" class="hilite">{$file_owner}</td>
+		</tr>
+		{/if}
+		{*
+		{$file_attr}
+		*}
+		{if $ci}
+			<tr>
+			<td align="right" nowrap="nowrap">
+				{dPtranslate word='Minor Revision'} 
+			</td>
+			<td>
+				<input type="Radio" name="revision_type" value="minor" checked>
+			</td>
+			<tr>
+			<td align="right" nowrap="nowrap">
+				{dPtranslate word='Major Revision'} 
+			</td>
+			<td>
+				<input type="Radio" name="revision_type" value="major">
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Cancel Checkout'}</td>
+			<td><input type="radio" name="revision_type" value="cancel" ></td>
+		{else}
+			<tr>
+			<td align="right" nowrap="nowrap">
+				{dPtranslate word='Version'}:
+			</td>
+		{/if}
+		{* file_attrs *}
+		<td align="left">
+		{if $ci}
+  		<input type="hidden" name="file_version"
+		value="{if $obj->file_version|count_characters > 0}{$obj->file_version+0.01}{else}1{/if}" />
+		{else}
+  			<input type="text" name="file_version" maxlength="10" size="5"
+		value="{if $obj->file_version|count_characters > 0}{$obj->file_version}{else}1{/if}" />
+		{/if}
+		{if $ci && $preserve}
+  			<input type="hidden" name="file_project" value="{$file_project}" />
+  			<input type="hidden" name="file_category" value="{$obj->file_category}" /> 
+		{/if}
+		</td>
+		</tr>
+		{* Category *}
+			<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Category'}:</td>
+			<td align="left">
+				{$select_file_category}
+			{*
+				arraySelect(dPgetSysVal("FileType"), 'file_category', 
+				$select_disabled, $obj->file_category, true)
+			*}
+			</td>
+			</tr>
+
+		{* Project *}
+			<tr>
+   			<td align="right" nowrap="nowrap">{dPtranslate word='Project'}:</td>
+			<td align="left">
+				{$select_file_project}
+			{*
+            			arraySelect( $projects, 'file_project', 
+                         'size="1" class="text" style="width:270px"' . $select_disabled,
+                          $file_project  ) . 
+			*}
+         		</td></tr>
+
+		{* Task *}
+			<tr>
+            		<td align="right" nowrap="nowrap">{dPtranslate word='Task'}:</td>
+			<td align="left" colspan="2" valign="top">
+				<input type="hidden" name="file_task" value="{$file_task}" />
+				<input type="text" class="text" name="task_name" value="{$task_name}" size="40" disabled />
+				<input type="button" class="button" value="{dPtranslate word='select task'}..."
+				    {if $ci && $preserve}{else} onclick="popTask()" {/if}/>
+			</td></tr>
+ 
+		{* end file_attrs *}
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Description'}:</td>
+			<td align="left">
+				<textarea name="file_description" class="textarea" rows="4" style="width:270px">{$obj->file_description}</textarea>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Upload File'}:</td>
+			<td align="left"><input type="File" class="button" name="formfile" style="width:270px"></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">&nbsp;</td>
+			<td align="left"><input type="checkbox" name="notify" checked="checked">{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}</td>		
+		</tr>
+		{if $ci || ($canAdmin && $obj->file_checkout == 'final')}
+			<input type="hidden" name="file_checkout" value="" />
+			<input type="hidden" name="file_co_reason" value="" />
+		<tr>
+				<td align="right" nowrap="nowrap">&nbsp;</td>
+				<td align="left"><input type="checkbox" name="final_ci" onClick="finalCI()">{dPtranslate word='Final Version'}</td>		
+ 		</tr>
+		{/if}
+		</table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onClick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')){literal}{location.href = './index.php?m=files';}{/literal}" />
+	</td>
+	<td align="right">
+		<input type="button" class="button" value="{dPtranslate word='submit'}" onclick="submitIt()" />
+	</td>
+</tr>
+</form>
+</table>
+{*
+$select_disabled=' ';  
+if ( $ci && $preserve)
+{
+  $select_disabled=' disabled ';  
+}
+*}

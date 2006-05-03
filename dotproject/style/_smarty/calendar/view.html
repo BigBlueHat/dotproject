@@ -1,0 +1,71 @@
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
+<form name="frmDelete" action="./index.php?m=calendar" method="post">
+	<input type="hidden" name="dosql" value="do_event_aed" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="event_id" value="{$event_id}" />
+</form>
+
+<tr>
+	<td valign="top" width="50%">
+		<strong>{dPtranslate word='Details'}</strong>
+		<table cellspacing="1" cellpadding="2" width="100%">
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Event Title'}:</td>
+			<td class="hilite" width="100%">{$obj->event_title}&nbsp;&nbsp;<a title="{dPtranslate word='Export iCalendar File'}" href="?m=calendar&a=eventexport&suppressHeaders=true&event_id={$event_id}">{dPshowImage find='down.png' wsize=16 hsize=16}</a></td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='URL'}:</td>
+			<td class="hilite" width="100%"><a href="{$obj->url}">{$obj->event_url}</a></td>
+		</tr>	
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Type'}:</td>
+			<td class="hilite" width="100%">{dPtranslate word=$type}</td>
+		</tr>	
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Project'}:</td>
+			<td class="hilite" width="100%"><a href='?m=projects&a=view&project_id={$obj->event_project}'>{$event_project}</a></td>
+		</tr>
+{if $obj->event_task}
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Task'}:</td>
+			<td class="hilite" width="100%"><a href='?m=tasks&a=view&task_id={$obj->event_task}'>{$event_task}</a></td>
+		</tr>
+{/if}
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Starts'}:</td>
+			<td class="hilite">{dPdateFormat date=$obj->event_start_date}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Ends'}:</td>
+			<td class="hilite">{dPdateFormat date=$obj->event_end_date}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Recurs'}:</td>
+			<td class="hilite">{dPtranslate word=$recurs} ({$obj->event_times_recuring}&nbsp;{dPtranslate word='times'})</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Attendees'}:</td>
+			<td class="hilite">
+				{if $assigned}
+					{foreach from=$assigned item=user}
+						{$user}<br />
+					{/foreach}
+				{/if}
+			</td>
+		</tr>
+		</table>
+	</td>
+	<td width="50%" valign="top">
+		<strong>{dPtranslate word='Description'}</strong>
+		<table cellspacing="0" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td class="hilite">
+				{$obj->event_description|nl2br}&nbsp;
+			</td>
+		</tr>
+		</table>
+		{$custom_fields}
+	</td>
+</tr>
+</table>

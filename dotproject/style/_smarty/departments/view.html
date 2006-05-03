@@ -1,0 +1,76 @@
+<script language="javascript">
+<?php
+{*
+// security improvement:
+// some javascript functions may not appear on client side in case of user not having write permissions
+// else users would be able to arbitrarily run 'bad' functions
+*}
+{if $canDelete == true}
+{literal}
+function delIt() {
+	{/literal}
+	if (confirm( "{dPtranslate word='departmentDelete'}" )) 
+	{literal}
+	{
+		document.frmDelete.submit();
+	}
+}
+{/literal}
+{/if}
+</script>
+
+<form name="frmDelete" action="./index.php?m=departments" method="post">
+	<input type="hidden" name="dosql" value="do_dept_aed" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="dept_id" value="{$dept_id}" />
+</form>
+
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+<tr valign="top">
+	<td width="50%">
+		<strong>{dPtranslate word='Details'}</strong>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Company'}:</td>
+			<td bgcolor="#ffffff" width="100%">{$dept.company_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Department'}:</td>
+			<td bgcolor="#ffffff" width="100%">{$dept.dept_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Owner'}:</td>
+			<td bgcolor="#ffffff" width="100%">{$dept.contact_first_name} {$dept.contact_last_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Phone'}:</td>
+			<td bgcolor="#ffffff" width="100%">{$dept.dept_phone}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap>{dPtranslate word='Fax'}:</td>
+			<td bgcolor="#ffffff" width="100%">{$dept.dept_fax}</td>
+		</tr>
+		<tr valign=top>
+			<td align="right" nowrap>{dPtranslate word='Address'}:</td>
+			<td bgcolor="#ffffff">
+				{$dept.dept_address1}
+				{if $dept.dept_address2 != ''}
+				<br />{$dept.dept_address2}	
+				{/if}
+				<br />{$dept.dept_city}
+				&nbsp;&nbsp;{$dept.dept_state}
+				&nbsp;&nbsp;{$dept.dept_zip}
+			</td>
+		</tr>
+		</table>
+	</td>
+	<td width="50%">
+		<strong>{dPtranslate word='Description'}</strong>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td bgcolor="#ffffff" width="100%">{$dept.dept_desc|nl2br}&nbsp;</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>

@@ -1,0 +1,170 @@
+<form name="changecontact" action="?m=contacts" method="post">
+	<input type="hidden" name="dosql" value="do_contact_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="contact_id" value="{$contact_id}" />
+	<input type="hidden" name="contact_owner" value="{$obj->contact_owner}" />
+</form>
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+<tr>
+	<td colspan="2">
+		<table border="0" cellpadding="1" cellspacing="1">
+{if $obj->contact_first_name}
+		<tr>
+			<td align="right">{dPtranslate word='First Name'}:</td>
+			<td>{$obj->contact_first_name}</td>
+		</tr>
+{/if}
+		<tr>
+			<td align="right">{dPtranslate word='Last Name'}:</td>
+			<td>{$obj->contact_last_name}</td>
+		</tr>
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Display Name'}: </td>
+			<td>{$obj->contact_order_by}</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td valign="top" width="50%">
+		<table border="0" cellpadding="1" cellspacing="1" class="details" width="100%">
+{if $obj->contact_job}
+		<tr>
+			<td align="right">{dPtranslate word='Job Title'}:</td>
+			<td>{$obj->contact_job}</td>
+		</tr>
+{/if}
+{if $obj->contact_company}
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Company'}:</td>
+	{if $view_company}
+			<td nowrap>
+				<a href="?m=companies&a=view&company_id={$obj->contact_company}">{$obj->company_name|dPescape}</a>
+			</td>
+	{else}
+			<td nowrap>{$obj->company_name|dPescape}</td>
+	{/if}
+		</tr>
+{/if}
+{if $view_dept && $obj->dept_name}
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Department'}:</td>
+			<td nowrap>{$obj->dept_name}</td>
+		</tr>
+{/if}
+{if $obj->contact_title}
+		<tr>
+			<td align="right">{dPtranslate word='Title'}:</td>
+			<td>{$obj->contact_title}</td>
+		</tr>
+{/if}
+{if $obj->contact_type}
+		<tr>
+			<td align="right">{dPtranslate word='Type'}:</td>
+			<td>{$obj->contact_type}</td>
+		</tr>
+{/if}
+{if $obj->contact_city}
+		<tr>
+			<td align="right" valign="top" width="100">{dPtranslate word='Address'}:</td>
+			<td>
+				{$obj->contact_address1}<br />
+				{$obj->contact_address2}<br />
+				{$obj->contact_city}, {$obj->contact_state} {$obj->contact_zip}
+			</td>
+		</tr>
+{/if}
+{if $obj->contact_phone}
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Phone'}:</td>
+			<td>{$obj->contact_phone}</td>
+		</tr>
+{/if}
+{if $obj->contact_phone2}
+		<tr>
+			<td align="right">{dPtranslate word='Phone'}2:</td>
+			<td>{$obj->contact_phone2}</td>
+		</tr>
+{/if}
+{if $obj->contact_fax}
+		<tr>
+			<td align="right">{dPtranslate word='Fax'}:</td>
+			<td>{$obj->contact_fax}</td>
+		</tr>
+{/if}
+{if $obj->contact_mobile}
+		<tr>
+			<td align="right">{dPtranslate word='Mobile Phone'}:</td>
+			<td>{$obj->contact_mobile}</td>
+		</tr>
+{/if}
+{if $obj->contact_email}
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Email'}:</td>
+			<td nowrap><a href="mailto:{$obj->contact_email}">{$obj->contact_email}</a></td>
+		</tr>
+{/if}
+{if $obj->contact_email2}
+		<tr>
+			<td align="right">{dPtranslate word='Email'}2:</td>
+			<td nowrap><a href="mailto:{$obj->contact_email2}">{$obj->contact_email2}</a></td>
+		</tr>
+{/if}
+{if $obj->contact_url}
+		<tr>
+			<td align="right">{dPtranslate word='URL'}:</td>
+			<td nowrap><a href="{$obj->contact_url}">{$obj->contact_url}</a></td>
+		</tr>
+{/if}
+{if $obj->contact_jabber}
+		<tr>
+			<td align="right">Jabber:</td>
+			<td>{$obj->contact_jabber}</td>
+		</tr>
+{/if}
+{if $obj->contact_icq}
+		<tr>
+			<td align="right">ICQ:</td>
+			<td>{$obj->contact_icq}</td>
+		</tr>
+{/if}
+{if $obj->contact_aol}
+		<tr>
+			<td align="right">AOL:</td>
+			<td>{$obj->contact_aol}</td>
+		</tr>
+{/if}
+{if $obj->contact_msn}
+		<tr>
+			<td align="right">MSN:</td>
+			<td>{$obj->contact_msn}</td>
+		</tr>
+{/if}
+{if $obj->contact_yahoo}
+		<tr>
+			<td align="right">Yahoo:</td>
+			<td>{$obj->contact_yahoo}</td>
+		</tr>
+{/if}
+{if $obj->contact_birthday}
+		<tr>
+			<td align="right">{dPtranslate word='Birthday'}:</td>
+			<td nowrap>{$obj->contact_birthday|truncate:10}</td>
+		</tr>
+		</table>
+	</td>
+{/if}
+{if $obj->contact_notes}
+	<td valign="top" width="50%">
+		<strong>{dPtranslate word='Contact Notes'}</strong><br />
+		{$obj->contact_notes|nl2br}
+	</td>
+</tr>
+{/if}
+<tr>
+	<td>
+		<input type="button" value="{dPtranslate word='back'}" class="button" onClick="javascript:window.location='./index.php?m=contacts';" />
+	</td>
+</tr>
+</form>
+</table>

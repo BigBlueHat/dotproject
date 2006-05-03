@@ -1,0 +1,155 @@
+<a name="log"></a>
+<form name="editFrm" action="?m=tasks&a=view&task_id={$task_id}" method="post"
+  onsubmit="updateEmailContacts();">
+	<input type="hidden" name="uniqueid" value="{$uniqid}" />
+	<input type="hidden" name="dosql" value="do_updatetask" />
+	<input type="hidden" name="task_log_id" value="{$log->task_log_id}" />
+	<input type="hidden" name="task_log_task" value="{$log->task_log_task}" />
+	<input type="hidden" name="task_log_creator" value="{$log->task_log_creator}" />
+	<input type="hidden" name="task_log_name" value="Update :{$log->task_log_name}" />
+<table cellspacing="1" cellpadding="2" border="0" width="100%">
+<tr>
+	<td width="40%" valign="top" align="center">
+	<table width="100%">
+	<tr>
+		<td align="right">
+			{dPtranslate word='Date'}
+		</td>
+		<td nowrap="nowrap">
+		<!-- patch by rowan  bug #890841 against v1.0.2-1   email: bitter at sourceforge dot net -->
+			<input type="hidden" name="task_log_date" value="{dPdateFormat date=$log_date format='db'}">
+		<!-- end patch #890841 -->
+			<input type="text" name="log_date" value="{dPdateFormat date=$log_date}" class="text" disabled="disabled">
+			<a href="#" onClick="popCalendar('log_date')">
+				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
+			</a>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">{dPtranslate word='Progress'}</td>
+		<td>
+			<table>
+			<tr>
+				<td>
+					{dParraySelect array=$percent name='task_percent_complete' extras='size="1" class="text"' value=$obj->task_percent_complete}%
+				</td>
+				<td valign="middle" >
+					{if $obj->task_owner != $user_id }
+						<input type='checkbox' name='task_log_notify_owner' /></td><td valign='middle'>{dPtranslate word='Notify creator'}
+					{/if} 	
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			{dPtranslate word='Hours Worked'}
+		</td>
+		<td>
+			<input type="text" class="text" name="task_log_hours" value="{$log->task_log_hours}" maxlength="8" size="6" /> 
+			<input type="button" class="button" value="{dPtranslate word='Start'}" onclick="javascript:timerStart()" name="timerStartStopButton" />
+			<input type="button" class="button" value="{dPtranslate word='Reset'}" onclick="javascript:timerReset()" name="timerResetButton" /> 
+			<span id="timerStatus"></span>
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			{dPtranslate word='Cost Code'}
+		</td>
+		<td>
+			{dParraySelect array=$task_log_costcodes name='task_log_costcodes' extras='size="1" class="text" onchange="javascript:task_log_costcode.value = this.options[this.selectedIndex].value;"' value=$log->task_log_costcode}
+			&nbsp;->&nbsp; <input type="text" class="text" name="task_log_costcode" value="{$log->task_log_costcode}" maxlength="8" size="8" />
+		</td>
+	</tr>
+	{if $obj->canUserEditTimeInformation()}
+	<tr>
+		<td align="right">
+			{dPtranslate word='Task end date'}
+		</td>
+		<td>
+			<input type="hidden" name="task_end_date" value="{dPdateFormat date=$obj->task_end_date format='timestamp'}" />
+			<input type="text" name="end_date" value="{dPdateFormat date=$obj->task_end_date}" class="text" disabled="disabled" />
+			<a href="#" onClick="popCalendar('end_date')">
+				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0">
+			</a>
+		</td>
+	</tr>
+	{/if}
+	</table>
+	</td>
+	<td width='60%' valign='top' align='center'>
+	<table width='100%'>
+	<tr>
+		<td align="right">{dPtranslate word='Summary'}:</td>
+		<td valign="middle">
+			<table width="100%">
+			<tr>
+				<td align="left">
+					<input type="text" class="text" name="task_log_name" value="{$log->task_log_name}" maxlength="255" size="30" />
+				</td>
+				<td align="center">
+					{dPtranslate word='Problem'}:
+					<input type="checkbox" value="1" name="task_log_problem"{if $log->task_log_problem} checked="checked"{/if} />
+				</td>
+			</tr>
+			</table>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="middle">{dPtranslate word='Reference'}:</td>
+		<td valign="middle">
+			{dParraySelect array=$taskLogReference name='task_log_reference' extras='size="1" class="text"' value=$log->task_log_reference}
+		</td>
+	</tr>
+	<tr>
+		<td align="right">
+			{dPtranslate word='URL'}:
+		</td>
+		<td>
+			<input type="text" class="text" name="task_log_related_url" value="{$log->task_log_related_url}" size="50" maxlength="255" title="{dPtranslate word='Must in general be entered with protocol name, e.g. http://...'}"/>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="top">{dPtranslate word='Description'}:</td>
+		<td>
+			<textarea name="task_log_description" class="textarea" cols="50" rows="6">{$log->task_log_description}</textarea>
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="top">{dPtranslate word='Email Log to'}:</td>
+		<td>
+	
+			<input type="checkbox" name="email_assignees"{if $ta} checked="checked"{/if}>{dPtranslate word='Task Assignees'}
+			<input type="hidden" name="email_task_list" id="email_task_list" value="{$task_contacts}">
+			<input type="checkbox" onmouseover="window.status = '{$task_email_title}';"
+			onmouseout="window.status = '';"
+			name="email_task_contacts" id="email_task_contacts"{if $tt} checked="checked"{/if}>{dPtranslate word='Task Contacts'}
+			<input type="hidden" name="email_project_list" id="email_project_list"
+				value='{$project_contacts}'>
+			<input type="checkbox" onmouseover="window.status = '{$proj_email_title}';" 
+			 onmouseout="window.status = '';"
+			 name='email_project_contacts' id="email_project_contacts"{if $tp} checked="checked"{/if}>{dPtranslate word='Project Contacts'}
+			<input type="hidden" name="email_others" id="email_others" value="">
+			{if $viewContacts}
+			<input type="button" class="button" value="{dPtranslate word='Other Contacts...'}" onclick="javascript:popEmailContacts();" />
+			{/if}
+		</td>
+	</tr>
+	<tr>
+		<td align="right" valign="top">{dPtranslate word='Extra Recipients'}:</td>
+		<td>
+			<input type="text" class="text" name="email_extras" maxlength="255" size="30" />
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" valign="bottom" align="right">
+			<input type="button" class="button" value="{dPtranslate word='update task'}" onclick="updateTask()" />
+		</td>
+	</tr>
+	</td>
+	</table>
+	</td>
+</tr>
+</table>
+</form>

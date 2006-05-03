@@ -1,0 +1,111 @@
+{literal}
+<script language="javascript">
+function testURL( x ) {
+	var test = "document.editFrm.dept_url.value";
+	test = eval(test);
+	if (test.length > 6) {
+		newwin = window.open( "http://" + test, 'newwin', '' );
+	}
+}
+
+function submitIt() {
+	var form = document.editFrm;
+	if (form.dept_name.value.length < 2) {
+{/literal}
+		alert( '{dPtranslate word='deptValidName'}' );
+{literal}
+		form.dept_name.focus();
+	} else {
+		form.submit();
+	}
+}
+</script>
+{/literal}
+<table cellspacing="0" cellpadding="4" border="0" width="98%" class="std">
+<form name="editFrm" action="?m=departments" method="post">
+	<input type="hidden" name="dosql" value="do_dept_aed" />
+	<input type="hidden" name="dept_id" value="{$dept_id}" />
+	<input type="hidden" name="dept_company" value="{$company_id}" />
+
+<tr>
+	<td align="right" nowrap>{dPtranslate word='Department Company'}:</td>
+	<td><strong>{$company_name}</strong></td>
+</tr>
+<tr>
+	<td align="right" nowrap>{dPtranslate word='Department Name'}:</td>
+	<td>
+		<input type="text" class="text" name="dept_name" value="{$drow.dept_name}" size="50" maxlength="255" />
+		<span class="smallNorm">({dPtranslate word='required'})</span>
+	</td>
+</tr>
+<tr>
+	<td align="right" nowrap>{dPtranslate word='Phone'}:</td>
+	<td>
+		<input type="text" class="text" name="dept_phone" value="{$drow.dept_phone}" maxlength="30" />
+	</td>
+</tr>
+<tr>
+	<td align="right" nowrap>{dPtranslate word='Fax'}:</td>
+	<td>
+		<input type="text" class="text" name="dept_fax" value="{$drow.dept_fax}" maxlength="30" />
+	</td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='Address'} 1:</td>
+	<td><input type="text" class="text" name="dept_address1" value="{$drow.dept_address1}" size="50" maxlength="255" /></td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='Address'} 2:</td>
+	<td><input type="text" class="text" name="dept_address2" value="{$drow.dept_address2}" size="50" maxlength="255"></td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='City'}:</td>
+	<td><input type="text" class="text" name="dept_city" value="{$drow.dept_city}" size="50" maxlength="50"></td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='State'}:</td>
+	<td><input type="text" class="text" name="dept_state" value="{$drow.dept_state}" maxlength="50"></td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='Zip'}:</td>
+	<td><input type="text" class="text" name="dept_zip" value="{$drow.dept_zip}" maxlength="15"></td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='URL'}</td>
+	<td>
+		<input type="text" class="text" value="{$drow.dept_url}" name="dept_url" size="50" maxlength="255">
+		<a href="#x" onClick="testURL('dept_url')">[{dPtranslate word='test'}]</a>
+	</td>
+</tr>
+{if $dept_has_parents == true}
+<tr>
+	<td align="right" nowrap>{dPtranslate word='Department Parent'}:</td>
+	<td>
+	{dParraySelectTree array=$depts name='dept_parent' extras='class="text" size="1"' value=$drow.dept_parent translate=false}
+	</td>
+</tr>
+{else}
+	<input type="hidden" name="dept_parent" value="0" />
+{/if}
+<tr>
+	<td align="right">{dPtranslate word='Owner'}:</td>
+	<td>
+	{dParraySelect array=$owners name='dept_owner' extras='size="1" class="text"' value=$drow.dept_owner translate=false}
+	</td>
+</tr>
+<tr>
+	<td align="right" valign="top" nowrap>{dPtranslate word='Description'}:</td>
+	<td align="left">
+		<textarea cols="70" rows="10" class="textarea" name="dept_desc">{$drow.dept_desc}</textarea>
+	</td>
+</tr>
+<tr>
+	<td>
+		<input type="button" value="{dPtranslate word='back'}" class="button" onClick="javascript:history.back(-1);" />
+	</td>
+	<td align="right">
+		<input type="button" value="{dPtranslate word='submit'}" class="button" onClick="submitIt()" />
+	</td>
+</tr>
+</form>
+</table>

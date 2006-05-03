@@ -1,0 +1,62 @@
+<form name="AddEdit" method="post">				
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
+<input name="action" type="hidden" value="{if $history_id}update{else}add{/if}">
+<tr>
+	<td><img src="./images/icons/tasks.gif" alt="" border="0"></td>
+	<td align="left" nowrap="nowrap" width="100%">
+		<h1>
+{if $history_id}
+	{dPtranslate word='Edit history'}
+{else}
+	{dPtranslate word='New history'}
+{/if}
+		</h1>
+	</td>
+</tr>
+</table>
+
+<table border="0" cellpadding="4" cellspacing="0" width="98%">
+<tr>
+	<td width="50%" align="right">
+		<a href="javascript:delIt()"><img align="absmiddle" src="./images/icons/trash.gif" width="16" height="16" alt="" border="0">{dPtranslate word='delete history'}</a>
+	</td>
+</tr>
+</table>
+
+<table border="1" cellpadding="4" cellspacing="0" width="98%" class="std">
+<tr>
+	<td align="right" nowrap="nowrap">{dPtranslate word='Project'}:</td>
+	<td width="60%">
+		{dParraySelect array=$projects name='history_project' extras='class="text"' value=$obj.history_project}
+	</td>
+</tr>
+	
+<tr>
+	<td align="right" nowrap="nowrap">{dPtranslate word='Description'}:</td>
+	<td width="60%">
+		<textarea name="history_description" class="textarea" cols="60" rows="5" wrap="virtual">{$obj.history_description}</textarea>
+	</td>
+</tr>	
+		
+<table border="0" cellspacing="0" cellpadding="3" width="98%">
+<tr>
+	<td height="40" width="30%">&nbsp;</td>
+	<td  height="40" width="35%" align="right">
+		<table>
+		<tr>
+			<td>
+				<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onClick="javascript:if(confirm('{dPtranslate sentence='Are you sure you want to cancel?' type='js'}')) location.href = '?{$current_url}';">
+			</td>
+			<td>
+				<input class="button" type="button" name="btnFuseAction" value="{dPtranslate word='save'}" onClick="submit()">
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+</table>	
+	
+</table>
+</form>		
+</body>
+</html>

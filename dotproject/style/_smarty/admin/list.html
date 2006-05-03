@@ -1,0 +1,76 @@
+<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
+<tr>
+	<td width="60" align="right">
+		&nbsp; {dPtranslate word='sort by'}:&nbsp;
+	</td>
+	<th width="150">
+		<a href="?m=admin&a=index&orderby=user_username" class="hdr">{dPtranslate word='Login Name'}</a>
+	</th>
+	<th>
+		<a href="?m=admin&a=index&orderby=contact_last_name" class="hdr">{dPtranslate word='Real Name'}</a>
+	</th>
+	<th>
+		<a href="?m=admin&a=index&orderby=contact_company" class="hdr">{dPtranslate word='Company'}</a>
+	</th>
+{if $tab == 0}
+	<th width="125">
+		{dPtranslate word='Login History'}
+	</th>
+{/if}
+</tr>
+
+{foreach from=$rows item=row}
+<tr>
+	<td align="right" nowrap="nowrap">
+{if $canEdit}
+		<table cellspacing="0" cellpadding="0" border="0">
+		<tr>
+			<td>
+				<a href="./index.php?m=admin&a=addedituser&user_id={$row.user_id}" title="{dPtranslate word='edit'}">
+					{dPshowImage src='./images/icons/stock_edit-16.png' wsize=16 hsize=16}
+				</a>
+			</td>
+			<td>
+				<a href="?m=admin&a=viewuser&user_id={$row.user_id}&tab=2" title="">
+					<img src="images/obj/lock.gif" width="16" height="16" border="0" alt="{dPtranslate word='edit permissions'}" title="{dPtranslate word='edit permissions'}" />
+				</a>
+			</td>
+			<td>
+				<a href="javascript:delMe({$row.user_id}, '{$row.display}')" title="{dPtranslate word='delete'}">
+					{dPshowImage src='./images/icons/stock_delete-16.png' wsize=16 hsize=16}
+				</a>
+			</td>
+		</tr>
+		</table>
+{/if}
+	</td>
+	<td>
+		<a href="./index.php?m=admin&a=viewuser&user_id={$row.user_id}">{$row.user_username}</a>
+	</td>
+	<td>
+		<a href="mailto:{$row.contact_email}">
+			<img src="images/obj/email.gif" width="16" height="16" border="0" alt="{dPtranslate word='email'}" title="{dPtranslate word='email'}" />
+		</a>
+	{if $row.contact_last_name && $row.contact_first_name}
+		{$row.contact_last_name}, {$row.contact_first_name}
+	{else}
+		<span style="font-style: italic">unknown</span>
+	{/if}
+	</td>
+	<td>
+		<a href="./index.php?m=companies&a=view&company_id={$row.contact_company}">{$row.company_name}</a>
+	</td>
+{if $tab == 0}
+	<td>
+	{if $row.online == 1}
+		<span style="color: green">{$row.hours} {dPtranslate word='hrs.'}( {$row.idle} {dPtranslate word='hrs.'} {dPtranslate word='idle'}) - {dPtranslate word='Online'}</span>
+	{elseif $row.online == 0}
+		<span style="color: red">{dPtranslate word='Offline'}</span>
+	{else}
+		<span style="color: grey">{dPtranslate word='Never Visited'}</span>
+	{/if}
+	</td>
+{/if}
+</tr>
+{/foreach}
+</table>

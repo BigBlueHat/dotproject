@@ -1,0 +1,100 @@
+<form method="POST" action="?m=system&a=custom_field_editor" id="custform" />
+<table class="std">
+	<th colspan="2">
+		{$edit_title} {$module} {dPtranslate word='Module'}
+		<input type="hidden" name="field_id" value="{$field_id}" />
+		<input type="hidden" name="module" value="{$module}" /> 
+		<input type="hidden" name="dontdosql" id="dosql" value="do_custom_field_aed" />
+	</td></tr>
+	<tr><td>
+		{dPtranslate word='Field Name/Identifier'}:
+		<br />
+		({dPtranslate word='No Spaces'})
+		</td><td>
+		<input type="text" name="field_name" maxlength="100" value="{dPformSafe var=$field_name}" onblur='this.value=this.value.replace(/[^a-z|^A-Z|^0-9]*/gi,"");' />
+	</td></tr>
+	<tr><td>
+		{dPtranslate word='Field Description'}:
+		</td><td>
+		<input type="text" name="field_description" size="40" maxlength="250" value="{dPformSafe var=$field_description}" />
+	</td></tr>
+	<tr><td>
+		{dPtranslate word='Field Display Type'}:
+		</td><td>
+		{dParraySelect array=$html_types name='field_htmltype' extras='id="htmltype" onChange="javascript:showAttribs()"' value=$field_htmltype translate=true}
+	</td></tr>
+	<tr><td colspan="2">
+		<hr />
+		<tr><td>
+			{dPtranslate word='HTML Tag Options'}:
+		</td>
+		<td>
+			<input type="text" name="field_extratags" value="{$field_extratags}" />
+		</td></tr>
+	</td></tr>
+	<tr><td colspan="2">
+	<div id="div_select" style="{$visible_state.div_select}">
+		<table id="atbl_select">
+		<tr><td colspan="2">
+			<b>{dPtranslate word='List of Options'}:</b> 
+		</td></tr>
+		<tr><td colspan="2">
+			<input type="hidden" name="delete_item" value="0" id="delete_item" />
+			<table>
+			{foreach key=optid item=selectoption from=$select_items} 
+				<tr><td>
+				<li>{$selectoption}</li>
+				<input type="hidden" name="select_items[]" value="{$selectoption}" />
+				</td><td>
+				<a href="javascript:deleteItem('{$selectoption}')">[{dPtranslate word='Delete'}]</a>
+				</td></tr>
+			{/foreach}
+			<tr><td>
+			<li><input type="text" name="select_newitem" /></td><td><input type="button" value="{dPtranslate word='Add'}" onClick="javascript:addSelectItem()" /></li>
+			</td></tr>
+			</table>
+		</td></tr>
+		</table>
+		<hr />
+	</div>
+	<div id="div_sqlselect" style="{$visible_state.div_sqlselect}">
+		<table id="atbl_sqlselect">
+		<tr><td colspan="2">
+			<b>{dPtranslate word='SQL Query'}:</b>
+		</td></tr>
+		<tr><td colspan="2">
+		{dPtranslate word='Note: The first column will be used as the primary key.'}<br />
+		{dPtranslate word='The second column will be used as the displayed value.'}
+		</td></tr>
+		<tr><td colspan="2">
+			<textarea name="sqlselect_query" cols="50" rows="4">{$select_query}</textarea>
+		</td></tr>
+		</table>
+	</div>
+	<div id="div_textinput" style="{$visible_state.div_textinput}">
+		<table id="atbl_textinput">
+		</table>
+	</div>
+	<div id="div_textarea" style="{$visible_state.div_textarea}">
+		<table id="atbl_textarea">
+		</table>
+	</div>
+	<div id="div_checkbox" style="{$visible_state.div_checkbox}">
+		<table id="atbl_checkbox">
+		</table>
+	</div>
+	<div id="div_label" style="{$visible_state.div_label}">
+		<table id="atbl_label">
+		</table>
+	</div>
+	<div id="div_separator" style="{$visible_state.div_separator}">
+		<table id="atbl_separator">
+		</table>
+	</div>
+	</td></tr>
+	<tr><td colspan="2" align="right">
+		<input type="button" value="{dPtranslate word='Cancel'}" onClick="location = '?m=system&a=custom_field_editor';" />
+		<input type="button" value="{dPtranslate word='Save'}" onClick="javascript:postCustomField()" />
+	</td></tr>
+	</form>
+</table>

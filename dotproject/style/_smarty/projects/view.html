@@ -1,0 +1,211 @@
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
+<form name="frmDelete" action="./index.php?m=projects" method="post">
+	<input type="hidden" name="dosql" value="do_project_aed" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="project_id" value="{$project_id}" />
+</form>
+
+<tr>
+	<td style="border: outset #d1d1cd 1px;background-color:#{$obj->project_color_identifier}" colspan="2">
+		<span style="color: {dPbestColor bg=$obj->project_color_identifier};">
+			<strong>{$obj->project_name}<strong>
+		</span>
+	</td>
+</tr>
+
+<tr>
+	<td width="50%" valign="top">
+		<strong>{dPtranslate word='Details'}</strong>
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Company'}:</td>
+{if $viewCompany}
+            			<td class="hilite" width="100%">
+            				<a href="?m=companies&a=view&company_id={$obj->project_company}">
+											{$obj->company_name|escape:"html"}
+										</a>
+									</td>
+{else}
+            			<td class="hilite" width="100%">{$obj->company_name|escape:"html"}</td>
+{/if}
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Short Name'}:</td>
+			<td class="hilite">{$obj->project_short_name|escape:"html"}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Start Date'}:</td>
+			<td class="hilite">
+				{if $obj->project_start_date}
+					{dPdateFormat date=$obj->project_start_date}
+				{else}
+					-
+				{/if}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Target End Date'}:</td>
+			<td class="hilite">
+				{if $obj->project_end_date}
+					{dPdateFormat date=$obj->project_end_date}
+				{else}
+					-
+				{/if}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Actual End Date'}:</td>
+			<td class="hilite">
+{if $project_id > 0}
+	{if $obj->actual_end_date}
+				<a href="?m=tasks&a=view&task_id={$critical_task}">
+					<span {$style}>{dPdateFormat date=$obj->actual_end_date}</span>
+				</a>
+	{else}
+				-
+	{/if}
+{else}
+				{dPtranslate sentence='Dynamically calculated'}
+{/if}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Target Budget'}:</td>
+			<td class="hilite">
+				{dPconfig var='currency_symbol'}{$obj->project_target_budget}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Project Owner'}:</td>
+			<td class="hilite">{$obj->user_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='URL'}:</td>
+			<td class="hilite">
+				<a href="{$obj->project_url}" target="_new">{$obj->project_url}</a>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Staging URL'}:</td>
+			<td class="hilite">
+				<a href="{$obj->project_demo_url}" target="_new">{$obj->project_demo_url}</a>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			{$custom_fields}
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+			<strong>{dPtranslate word='Description'}</strong><br />
+			<table cellspacing="0" cellpadding="2" border="0" width="100%">
+			<tr>
+				<td class="hilite">
+					{$obj->project_description|nl2br}&nbsp;
+				</td>
+			</tr>
+			</table>
+			</td>
+		</tr>
+		</table>
+	</td>
+	<td width="50%" rowspan="9" valign="top">
+		<strong>{dPtranslate word='Summary'}</strong><br />
+		<table cellspacing="1" cellpadding="2" border="0" width="100%">
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Status'}:</td>
+			<td class="hilite" width="100%">{$obj->project_status_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Priority'}:</td>
+			<td class="hilite" width="100%" style="background-color:{$obj->project_priority_color}">{$obj->project_priority_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Type'}:</td>
+			<td class="hilite" width="100%">{dPtranslate word=$obj->project_type_name}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Progress'}:</td>
+			<td class="hilite" width="100%">{$obj->project_percent_complete|string_format:"%.1f"}%</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Active'}:</td>
+			<td class="hilite" width="100%">
+			{if $obj->project_active}
+				{dPtranslate word='Yes'}
+			{else}
+				{dPtranslate word='No'}
+			{/if}
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Worked Hours'}:</td>
+			<td class="hilite" width="100%">{$worked_hours}</td>
+		</tr>	
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Remaining Hours'}:</td>
+			<td class="hilite" width="100%">{$remaining_hours|string_format:'%.2f'}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Scheduled Hours'}:</td>
+			<td class="hilite" width="100%">{$total_hours}</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Project Hours'}:</td>
+			<td class="hilite" width="100%">{$total_project_hours}</td>
+		</tr>				
+{if $departments}
+	    <tr>
+	    	<td><strong>{dPtranslate word="Departments"}</strong></td>
+	    </tr>
+	    <tr>
+	    	<td colspan="3" class="hilite">
+	{foreach from=$departments item=department key=dept_id}
+	    		<div>
+		    		{$department.dept_name}
+		    		{if $department.dept_phone}
+			    		({$department.dept_phone})
+		    		{/if}
+	    		</div>
+	{/foreach}
+	    	</td>
+	    </tr>
+{/if}
+			
+{if $contacts}
+			    <tr>
+			    	<td><strong>{dPtranslate word="Contacts"}</strong></td>
+			    </tr>
+			    <tr>
+			    	<td colspan="3" class="hilite">
+			    		
+			    		<table cellspacing="1" cellpadding="2" border="0" width="100%" bgcolor="black">
+			    		<tr>
+			    			<th>{dPtranslate word='Name'}</th>
+			    			<th>{dPtranslate word='Email'}</th>
+			    			<th>{dPtranslate word='Phone'}</th>
+			    			<th>{dPtranslate word='Department'}</th>
+			    		</tr>
+	{foreach from=$contacts item=contact key=contact_id}
+							<tr>
+					    	<td class="hilite">
+									<a href="index.php?m=contacts&a=view&contact_id={$contact_id}">
+									{$contact.contact_first_name} {$contact.contact_last_name}
+									</a>
+								</td>
+		    				<td class="hilite">
+			    					<a href="mailto:{$contact.contact_email}">{$contact.contact_email}</a>
+		    				</td>
+		    				<td class="hilite">{$contact.contact_phone}</td>
+		    				<td class="hilite">{$contact.dept_name}</td>
+			    		</tr>
+	{/foreach}
+			    	</table>
+			    	</td>
+			    </tr>
+{/if}
+		</table>
+	</td>
+</table>

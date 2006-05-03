@@ -1,0 +1,42 @@
+{if !$rows}
+	{dPtranslate sentence='No companies available'}<br />{$msg}
+{else}
+
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+	<td nowrap="nowrap" width="60" align="right">&nbsp;{dPtranslate word='sort by'}:&nbsp;</td>
+{section name=i loop=$show}
+	  <th nowrap="nowrap">
+	  	<a href="index.php?m=companies&orderby={$show[i]}" class="hdr">
+	  		{dPtranslate|capitalize word=$show[i]}
+	  	</a>
+	  </th>
+{/section}
+</tr>
+
+{section name=i loop=$rows}
+	<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
+	<td>&nbsp;</td>
+	{section name=j loop=$show}
+	{if $show[j] == 'company_name'}
+	<td>
+		<a href="./index.php?m=companies&a=view&company_id={$rows[i].company_id}" title="{$rows[i].company_description}">
+			{$rows[i].company_name}
+		</a>
+	</td>
+	{elseif $show[j] == 'company_type'}
+	<td width="125" align="center" nowrap="nowrap">{dPtranslate word=$rows[i].company_type_name}</td>
+	{else}
+	{assign var='col' value=$show[j]}
+	<td width="125" align="center" nowrap="nowrap">{$rows[i][$col]}</td><!--$show[j]-->
+	{/if}
+	{/section}
+	</tr>
+{/section}
+
+<!--<td width="125" align="center" nowrap="nowrap">{$rows[j].countp}</td>
+	<td width="125" align="center" nowrap="nowrap">{$rows[j].inactive}</td>-->
+
+</table>
+{/if}

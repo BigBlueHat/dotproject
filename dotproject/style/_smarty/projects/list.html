@@ -1,0 +1,91 @@
+{if $editProjects}
+<form action="./index.php" method="get">
+{/if}
+<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
+	<tr>
+{if $showFilters}
+	<td align="right" nowrap="nowrap" colspan="{$cols-2}"></td>
+	<td align="right" nowrap="nowrap"><form action="?m=admin&a=viewuser&user_id={$user_id}&tab={$tab}" method="post" name="pickCompany">{$buffer}</form></td>
+	<td align="right" nowrap="nowrap"><form action="?m=admin&a=viewuser&user_id={$user_id}&tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
+{/if}
+	</tr>
+	<tr>
+{section name=i loop=$show}
+	  <th><a href="{$current_url}&orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
+{/section}
+	{if $editProjects}
+	  <th>Edit</th>
+	{/if}
+	</tr>
+{if !$rows}
+	<td align="left" nowrap="nowrap" colspan="{$cols}">{dPtranslate sentence='No data available'}<br />{$msg}</td>
+{else}
+	{*{section name=i loop=$rows}*}
+{foreach from=$rows item=row}
+	<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
+	{section name=j loop=$show}
+		{if $show[j] == 'project_name'}
+			<td width="50%"><a href="?m=projects&a=view&project_id={$row.project_id}">{$row.project_name}</a></td>
+		{elseif $show[j] == 'project_priority'}
+			<td>
+			{if $row.project_priority < 0}
+				<img src="./images/icons/low.gif" width="13" height="16">
+			{elseif $row.project_priority > 0}
+				<img src="./images/icons/{$row.project_priority}.gif" width="13" height="16">
+			{/if}
+			</td>
+		{elseif $show[j] == 'project_owner'}
+			<td nowrap="nowrap">{$row.project_owner}{$row.contact_first_name} {$row.contact_last_name}</td>
+		{elseif $show[j] == 'project_status'}
+			{assign var=temp value=$row.project_status}
+			<td nowrap="nowrap">{dPtranslate word=$pstatus[$temp]}</td>
+		{elseif $show[j] == 'project_target_budget'}
+			<td nowrap="nowrap" align="right">{dPconfig var='currency_symbol'} {$row.project_target_budget}</td>
+		{elseif $show[j] == 'project_start_date'}
+			<td nowrap="nowrap" align="center">{dPdateFormat date=$row.project_start_date}</td>
+		{elseif $show[j] == 'project_duration'}
+			<td nowrap="nowrap" align="right">{if $row.project_duration > 0}{$row.project_duration}{dPtranslate word='h'}{else}-{/if}</td>
+		{elseif $show[j] == 'project_end_date'}
+			<td nowrap="nowrap" align="center">{dPdateFormat date=$row.project_end_date}</td>
+		{elseif $show[j] == 'total_tasks'}
+			<td align="center">{$row.total_tasks}</td>
+		{elseif $show[j] == 'project_percent_complete'}
+			<td width="100" align="left">
+				<div style="text-align: center; width:{$row.project_percent_complete}px; height: 13px; float: left;border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
+				{if $row.project_percent_complete >= 50}
+					{$row.project_percent_complete|string_format:"%.1f"}%
+				{/if}
+				</div>
+				{if $row.project_percent_complete < 50}
+					&nbsp;{$row.project_percent_complete|string_format:"%.1f"}%
+				{/if}
+			</td>
+		{elseif $show[j] == 'project_percent_complete'}
+			<td width="64" align="center">
+				<div style="float: left;border: outset #eeeeee 2px;background-color:#{$row.project_color_identifier};color:{dPbestColor bg=$row.project_color_identifier}">
+					{$row.project_percent_complete|string_format:"%.1f"}%
+				</div>
+			</td>
+		{else}
+			{assign var='col' value=$show[j]}
+			<td nowrap="nowrap" align="center">{$row.$col}</td>
+		{/if}
+	{/section}
+	{if $row.edit}
+			<td align="center">
+				<input type="checkbox" name="project_id[]" value="{$row.project_id}" />
+			</td>
+	{/if}
+	</tr>
+{/foreach}
+</table>
+	{if $editProjects}
+<p align="right">
+	<input type="submit" class="button" value="{dPtranslate sentence='Update projects status'}" />
+	<input type="hidden" name="update_project_status" value="1" />
+	<input type="hidden" name="m" value="projects" />
+	{dParraySelect array=$pstatus name='project_status' extras='size="1" class="text"' value='2' translate='true'}
+</p>
+</form>
+	{/if}
+{/if}
