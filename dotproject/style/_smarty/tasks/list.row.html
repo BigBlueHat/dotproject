@@ -48,9 +48,9 @@
 	{* won't show if ajax is used *}
 	{foreach from=$obj.level item=not_used name=level}
 		{if $smarty.foreach.level.last}
-		<img src="./images/corner-dots.gif" width="16" height="12" border="0">
+			{dPshowImage find='corner-dots.gif'}
 		{else}
-		<img src="./images/shim.gif" width="16" height="12"  border="0">
+			{dPshowImage find='shim.gif'}
 		{/if}
 	{/foreach}
 
@@ -58,7 +58,13 @@
 {if $config.show_task_numbers}{$obj.task_number}. {/if}
 {if $obj.children > 0}
 	{if !dPgetConfig('tasks_ajax_list')}
-<a href="index.php{$query_string}&close_task_id={$obj.task_id}"><img src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" /></a>
+{if $is_opened}
+{assign var='img_open'}
+{else}
+{assign var='img_open'}
+{/if}
+<a href="index.php{$query_string}&close_task_id={$obj.task_id}">
+{dPshowImage find=$img_open align='center'}</a>
 	{else}
 <img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" onClick="dpToggleNode(this);" />
 	{/if}
@@ -70,7 +76,7 @@
 		{$obj.task_name} 
 {/if}
 		</a>
-{if $obj.task_milestone > 0}<img src="./images/icons/milestone.gif" border="0">{/if}
+{if $obj.task_milestone > 0}{dPshowImage find='milestone.gif'}{/if}
 {if $obj.children > 0}
 ({$obj.children})
 {/if}
