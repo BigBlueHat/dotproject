@@ -155,10 +155,22 @@ function submitIt(){
 	<td align="right"><?php echo $AppUI->_('User Interface Style');?>:</td>
 	<td>
 <?php
-        $uis = $prefs['UISTYLE'] ? $prefs['UISTYLE'] : 'default';
+	$uis = $prefs['UISTYLE'] ? $prefs['UISTYLE'] : 'default';
 	$styles = $AppUI->readDirs( 'style' );
 	$temp = $AppUI->setWarning( false );
 	echo arraySelect( $styles, 'pref_name[UISTYLE]', 'class=text size=1', $uis, true , true);
+	$AppUI->setWarning( $temp );
+?>
+	</td>
+</tr>
+<tr>
+	<td align="right"><?php echo $AppUI->_('Iconset Style');?>:</td>
+	<td>
+<?php
+	$icons = $prefs['ICONSTYLE'] ? $prefs['ICONSTYLE'] : '';
+	$icon_styles = $AppUI->readDirs( 'style/_iconsets', 'default');
+	$temp = $AppUI->setWarning( false );
+	echo arraySelect( $icon_styles, 'pref_name[ICONSTYLE]', 'class="text" size="1"', $icons, true , true);
 	$AppUI->setWarning( $temp );
 ?>
 	</td>

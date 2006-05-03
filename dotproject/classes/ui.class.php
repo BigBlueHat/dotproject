@@ -209,13 +209,17 @@ class CAppUI {
 * Utility function to read the 'directories' under 'path'
 *
 * This function is used to read the modules or locales installed on the file system.
-* @param string The path to read.
+* @param string $path The path to read.
+* @param string $default add a default entry at the top (empty)
 * @return array A named array of the directories (the key and value are identical).
 */
-	function readDirs( $path )
+	function readDirs( $path, $default = null)
 	{
 		global $baseDir;
 		$dirs = array();
+		if ($default != null)
+			$dirs[$default] = $default;
+
 		$d = dir( "$baseDir/$path" );
 		$ignore = array('.', '_');
 		while (false !== ($name = $d->read())) {

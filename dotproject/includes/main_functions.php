@@ -221,12 +221,24 @@ function dPshowModuleConfig( $config )
 function dPfindImage( $name, $module=null )
 {
 // uistyle must be declared globally
-	global $dPconfig, $uistyle;
+	global $dPconfig, $uistyle, $iconstyle;
 
-	if (file_exists( "{$dPconfig['root_dir']}/style/$uistyle/images/$name" )) {
+	// Iconset
+	if ($iconstyle && $module && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/$module/$name" )) {
+		return "./style/_iconsets/$iconstyle/$module/$name";
+	} else if ($iconstyle && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/_icons/$name" )) {
+		return "./style/_iconsets/$iconstyle/_icons/$name";
+	} else if ($iconstyle && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/_obj/$name" )) {
+		return "./style/_iconsets/$iconstyle/_obj/$name";
+	} else if ($iconstyle && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/$name" )) {
+		return "./style/_iconsets/$iconstyle/$name";
+	// Template style
+	} else if (file_exists( "{$dPconfig['root_dir']}/style/$uistyle/images/$name" )) {
 		return "./style/$uistyle/images/$name";
+	// Module
 	} else if ($module && file_exists( "{$dPconfig['root_dir']}/modules/$module/images/$name" )) {
 		return "./modules/$module/images/$name";
+	// general image/icon
 	} else if (file_exists( "{$dPconfig['root_dir']}/images/icons/$name" )) {
 		return "./images/icons/$name";
 	} else if (file_exists( "{$dPconfig['root_dir']}/images/obj/$name" )) {

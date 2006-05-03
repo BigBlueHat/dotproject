@@ -3,21 +3,26 @@
 {* edit icon *}
 	<td>{if $obj.canEdit}
 		<a href="?m=tasks&a=addedit&task_id={$obj.task_id}">
-			<img src="./images/icons/pencil.gif" alt="{dPtranslate word='Edit Task'}" border="0" width="12" height="12"></a>
+			{dPshowImage find='pencil.gif' alt='Edit Task' wsize='12'}</a>
 	{/if}
 	</td>
 {* pinned *}
 	<td>
 		<a href="?m=tasks&pin={if $obj.task_pinned}0{else}1{/if}&task_id={$obj.task_id}">
-			<img src="./images/icons/{if !$obj.task_pinned}un{/if}pin.gif" 
-				alt="{if $obj.task_pinned}{dPtranslate word='pin Task'}{else}{dPtranslate word='unpin Task'}{/if}" border="0" width="12" height="12">
-		</a>
+	{if $obj.task_pinned}
+		{assign var='icon' value='pin.gif'}
+		{assign var='alt' value='pin Task'}
+	{else}
+		{assign var='icon' value='unpin.gif'}
+		{assign var='alt' value='unpin Task'}
+	{/if}
+			{dPshowImage find=$icon alt=$alt wsize='12'}</a>
 	</td>
 {* New Log *}
 	<td align="center" valign="middle">
 {if $obj.task_log_problem > 0}
 		<a href="?m=tasks&a=view&task_id={$obj.task_id}&tab=0&problem=1">
-			{dPshowImage img='./images/icons/dialog-warning5.png' width='16' height='16' title='Problem' alt='Problem!'}
+			{dPshowImage find='dialog-warning5.png' width='16' height='16' title='Problem' alt='Problem!'}
 		</a>
 {elseif $obj.canViewLog}
 		<a href="?m=tasks&a=view&task_id={$obj.task_id}&tab=1">{dPtranslate word='Log'}</a>
@@ -27,12 +32,16 @@
 	<td align="right">{$obj.task_percent_complete}%</td>
 {* priority *}
 	<td align="center" nowrap="nowrap">
+{assign var='img_priority' value=$obj.task_priority}
 {if $obj.task_priority < 0}
-	<img src="./images/icons/priority-{$obj.task_priority}.gif" width=13 height=16>
+{assign var='img_priority' value="priority-$img_priority.gif"}
 {else if $obj.task_priority > 0}
-	<img src="./images/icons/priority+{$obj.task_priority}.gif" width=13 height=16>
+{assign var='img_priority' value="priority+$img_priority.gif"}
 {/if}
-{if $obj.file_count > 0}<img src="./images/clip.png" alt="F">{/if}
+{if $img_priority}
+	{dPshowImage find=$img_priority}
+{/if}
+{if $obj.file_count > 0}{dPshowImage find="clip.png" alt="F"}{/if}
 	</td>
 {* name *}
 	<td name="name" width="{if $today_view}50{else}90{/if}%">

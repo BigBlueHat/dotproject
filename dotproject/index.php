@@ -155,6 +155,7 @@ if (isset($_REQUEST['login'])) {
 
 // set the default ui style
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
+$iconstyle = $AppUI->getPref( 'ICONSTYLE' ) ? $AppUI->getPref( 'ICONSTYLE' ) : 'default';
 
 // clear out main url parameters
 $m = '';

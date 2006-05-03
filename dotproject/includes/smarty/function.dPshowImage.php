@@ -36,6 +36,8 @@ function smarty_function_dPshowImage($params, &$smarty)
 		    $result .= ' width="' . $wsize . '"';
 		  if ($hsize)
 		    $result .= ' height="' . $hsize . '"';
+      else if ($wsize)
+        $result .= ' height="' . $wsize . '"';
 		  if ($alt)
 		    $result .= ' alt="' . $AppUI->_($alt) . '"';
 		  if ($title)

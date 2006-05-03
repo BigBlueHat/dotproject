@@ -461,6 +461,7 @@ INSERT INTO `user_preferences` VALUES("0", "TIMEFORMAT", "%I:%M %p");
 INSERT INTO `user_preferences` VALUES('0', 'USERFORMAT', 'last');
 INSERT INTO `user_preferences` VALUES("0", "UISTYLE", "default");
 INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");
+INSERT INTO `user_preferences` VALUES('0', 'ICONSTYLE', '');
 
 #
 # AJE (24/Jan/2003)

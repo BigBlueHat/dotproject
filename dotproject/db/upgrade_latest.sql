@@ -118,3 +118,7 @@ INSERT INTO `user_preferences` VALUES('0', 'USERFORMAT', 'last');
 #20060430
 # terms and conditions link
 INSERT INTO `config` VALUES('', 'site_terms', '...', '', 'textarea');
+
+#20060503
+# iconsets support
+INSERT INTO `user_preferences` VALUES('0', 'ICONSTYLE', '');
