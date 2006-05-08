@@ -52,17 +52,21 @@ class CTemplate extends Smarty
 		$total_rows = count($rows);
 		$page_size = dPgetConfig('page_size', 25);
 		$i = 0;
-		foreach ($rows as $k => $row)
-		{
-			if ($i >= $this->page*$page_size - $page_size 
-			 && $i < $this->page * $page_size)
-				$paginated_rows[$k] = $row;
 
-			++$i;
+		// Make sure there are any results to display
+		if (is_array($rows))
+		{
+			foreach ($rows as $k => $row)
+			{
+				if ($i >= $this->page*$page_size - $page_size 
+				 && $i < $this->page * $page_size)
+					$paginated_rows[$k] = $row;
+
+				++$i;
+			}
 		}
 
 		$rows = $paginated_rows;
-		
 	
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
