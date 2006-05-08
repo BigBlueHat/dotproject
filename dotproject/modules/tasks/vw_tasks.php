@@ -218,6 +218,7 @@ foreach ($tasks as $k => $task)
         $q->leftJoin('contacts', 'c', 'u.user_contact = c.contact_id');
         $q->addWhere('ut.task_id = ' . $task['task_id']);
         $q->addGroup('ut.user_id');
+	$q->addOrder('perc_assignment desc, user_username');
 
         $task['task_assigned_users'] = $q->loadList();
 				
