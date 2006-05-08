@@ -2,17 +2,20 @@
 var calendarField = '';
 var calWin = null;
 
+/** {{{ setMilestoneEndDate(checked)
+ *
+ */
 function setMilestoneEndDate(checked){
     if(checked){
         document.datesFrm.end_date.value      = document.datesFrm.start_date.value;
         document.datesFrm.task_end_date.value = document.datesFrm.task_start_date.value;
     } 
-}
+} // }}}
 
-/**
-setTasksStartDate sets new task's start date value which is maximum end date of all dependend tasks
-to do: date format should be taken from config
-*/
+/** {{{ setTasksStartDate(form, datesForm)
+ * sets new task's start date value which is maximum end date of all dependend tasks
+ * to do: date format should be taken from config
+ */
 function setTasksStartDate(form, datesForm) {
 
 	var td = form.task_dependencies.length -1;
@@ -57,20 +60,26 @@ function setTasksStartDate(form, datesForm) {
 		}	
 		setAMPM(datesForm.start_hour);
 	}
-}
+} // }}}
 
+/** {{{ popContacts()
+ * opens a popup window with contacts to be selected.
+ */
 function popContacts() {
 	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
-}
+} // }}}
 
+/** {{{ popCalendar(field)
+ * Opens the calendar popup window.
+ */
 function popCalendar( field ){
 	calendarField = field;
 	task_cal = document.getElementById('task_' + field.name);
 	idate = task_cal.value;
 	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=251, height=220, scollbars=false' );
-}
+} // }}}
 
-/**
+/** {{{ setCalendar(idate, fdate)
  *	@param string Input date in the format YYYYMMDD
  *	@param string Formatted date
  */
@@ -88,8 +97,10 @@ function setCalendar( idate, fdate ) {
 			e_fdate.value = fdate;
 		}
 	}
-}
+} // }}}
 
+/** {{{ setContact(contact_id_string)
+ */
 function setContacts(contact_id_string){
 	if(!contact_id_string){
 		contact_id_string = "";
@@ -97,8 +108,10 @@ function setContacts(contact_id_string){
 	task_contacts = document.getElementById('task_contacts');
 	task_contacts.value = contact_id_string;
 	selected_contacts_id = contact_id_string;
-}
+} // }}}
 
+/** {{{ submitIt(form)
+ */
 function submitIt(form){
 
 	if (form.task_name.value.length < 3) {
@@ -117,8 +130,10 @@ function submitIt(form){
 	}
 
 	form.submit();
-}
+} // }}}
 
+/** {{{ addUser(form)
+ */
 function addUser(form) {
 	var fl = form.resources.length -1;
 	var au = form.assigned.length -1;
@@ -141,8 +156,10 @@ function addUser(form) {
 			form.assigned.options[t] = opt
 		}
 	}
-}
+} // }}}
 
+/** {{{ removeUser(form)
+ */
 function removeUser(form) {
 	fl = form.assigned.length -1;
 	for (fl; fl > -1; fl--) {
@@ -159,12 +176,13 @@ function removeUser(form) {
 				form.hperc_assign.value = hiddenValue;
 				form.assigned.options[fl] = null;
 			}
-//alert(form.hperc_assign.value);
 		}
 	}
-}
+} // }}}
 
-//Check to see if None has been selected.
+/** {{{ checkForTaskDependencyNone(obj)
+ * Check to see if None has been selected.
+ */
 function checkForTaskDependencyNone(obj){
 	var td = obj.length -1;
 	for (td; td > -1; td--) {
@@ -173,9 +191,11 @@ function checkForTaskDependencyNone(obj){
 			break;
 		}
 	}
-}
+} // }}}
 
-//If None has been selected, remove the existing entries.
+/** {{{ clearExceptFor(obj, id)
+ * If None has been selected, remove the existing entries.
+ */
 function clearExceptFor(obj, id){
 	var td = obj.length -1;
 	for (td; td > -1; td--) {
@@ -183,8 +203,10 @@ function clearExceptFor(obj, id){
 			obj.options[td]=null;
 		}
 	}
-}
+} // }}}
 
+/** {{{ addTaskDependency(form, datesForm)
+ */
 function addTaskDependency(form, datesForm) {
 	var at = form.all_tasks.length -1;
 	var td = form.task_dependencies.length -1;
@@ -213,8 +235,10 @@ function addTaskDependency(form, datesForm) {
 	
 	checkForTaskDependencyNone(form.task_dependencies);
 	setTasksStartDate(form, datesForm);
-}
+} // }}}
 
+/** {{{ removeTaskDependency(form, datesForm)
+ */
 function removeTaskDependency(form, datesForm) {
 	td = form.task_dependencies.length -1;
 
@@ -225,8 +249,10 @@ function removeTaskDependency(form, datesForm) {
 	}
 	
 	setTasksStartDate(form, datesForm);
-}
+} // }}}
 
+/** {{{ setAMPM(field)
+ */
 function setAMPM( field) {
 	ampm_field = document.getElementById(field.name + "_ampm");
 	if (ampm_field) {
@@ -236,12 +262,12 @@ function setAMPM( field) {
 			ampm_field.value = "am";
 		}
 	}
-}
+} // }}}
 
 var hourMSecs = 3600*1000;
 
-/**
-* no comment needed
+/** {{{ isInArray(array, intValue)
+* checks if a value is contained in an array.
 */
 function isInArray(myArray, intValue) {
 
@@ -251,9 +277,9 @@ function isInArray(myArray, intValue) {
 		}
 	}		
 	return false;
-}
+} // }}}
 
-/**
+/** {{{ calcDuration(form)
 * @modify_reason calculating duration does not include time information and cal_working_days stored in config.php
 */
 function calcDuration(f) {
@@ -280,8 +306,7 @@ function calcDuration(f) {
 		}
 		myDate.setDate(myDay + 1);
 	}
-	//alert('h'+weekendDays);
-	//alert(durn);
+
 	//calculating correct durn value
 	durn = durn - weekendDays*24;	// total hours minus non-working days (work day hours)
 
@@ -295,7 +320,7 @@ function calcDuration(f) {
 	//could be 1 or 24 (based on TaskDurationType value)
 	var durnType = parseFloat(f.task_duration_type.value);	
 	durn /= durnType;
-	//alert(durn);
+
 	if (durnType == 1){
 		// durn is absolute weekday hours
 		
@@ -343,8 +368,9 @@ function calcDuration(f) {
 		alert( 'End date is before start date!');
 	else
 		f.task_duration.value = Math.round(durn);
-}
-/**
+} // }}}
+
+/** {{{ prev_working_day(dateObj)
 * Get the end of the previous working day 
 */
 function prev_working_day( dateObj ) {
@@ -357,20 +383,24 @@ function prev_working_day( dateObj ) {
 	}
 
 	return dateObj;
-}
-/**
+} // }}}
+
+/** {{{ next_working_day(dateObj)
 * Get the start of the next working day 
 */
 function next_working_day( dateObj ) {
-	while ( ! isInArray(working_days, dateObj.getDay()) || dateObj.getHours() >= cal_day_end ) {
-		dateObj.setDate(dateObj.getDate()+1);
-		dateObj.setHours( cal_day_start );
-		dateObj.setMinutes( 0 );
-	}
+	// TODO: while loop may never end of working_days array is empty!!!
+
+	dateObj.setHours( cal_day_start );
+	dateObj.setMinutes( 0 );
+	do {
+		dateObj.setDate(dateObj.getDate() + 1);
+	} while ( ! isInArray(working_days, dateObj.getDay()) || dateObj.getHours() >= cal_day_end );
 
 	return dateObj;
-}
-/**
+} // }}}
+
+/** {{{ calcFinish(form)
 * @modify reason calcFinish does not use time info and working_days array 
 */
 function calcFinish(f) {
@@ -384,7 +414,7 @@ function calcFinish(f) {
 	var durnType = parseFloat(f.task_duration_type.value); //1 or 24
 
 	//temporary variables
-	var inc = Math.floor(durn);
+	var inc = durn; //Math.floor(durn);
 	var hoursToAddToLastDay = 0;
 	var hoursToAddToFirstDay = durn;
 	var fullWorkingDays = 0;
@@ -393,11 +423,53 @@ function calcFinish(f) {
 	// calculate the number of non-working days
 	var k = 7 - working_days.length;
 
+	
+	// jump over to the first working day
+//	e = next_working_day(e);
+		
+	if ( durnType == 24 ) {
+		durn = durn * workHours;
+		inc = inc * workHours;
+	}
+
+// {{{ Hours calculations
 	var durnMins = (durn - inc) * 60;
 	if ((e.getMinutes() + durnMins) >= 60)
 		inc++;
 
 	var mins = ( e.getMinutes() + durnMins ) % 60;
+	// {{{ hours to add to first day.
+	hoursToAddToFirstDay = inc;
+	if ( e.getHours() + inc > cal_day_end )
+		hoursToAddToFirstDay = cal_day_end - e.getHours();
+	if ( hoursToAddToFirstDay > workHours )
+		hoursToAddToFirstDay = workHours;
+	inc -= hoursToAddToFirstDay;
+	// }}}
+	hoursToAddToLastDay = inc % workHours;
+	// {{{ days to add
+	fullWorkingDays = Math.floor((inc - hoursToAddToLastDay) / workHours);
+ 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++)
+		e = next_working_day(e);
+	// }}}
+
+	if (hoursToAddToLastDay <= 0)
+		e.setHours(e.getHours() + hoursToAddToFirstDay);
+	else
+	{
+		e = next_working_day(e);
+		e.setHours(cal_day_start + hoursToAddToLastDay);
+	}
+
+			
+	if ((e.getHours() == cal_day_end || (e.getHours() - int_st_hour) == workHours) && mins > 0)
+	{
+		e = next_working_day(e);
+
+		e.setHours(cal_day_start);
+	}
+
+	// {{{ Set minutes
 	if (mins > 38)
 		e.setMinutes( 45 );
 	else if (mins > 23)
@@ -406,80 +478,20 @@ function calcFinish(f) {
 		e.setMinutes( 15 );
 	else
 		e.setMinutes( 0 );
-	
-	// jump over to the first working day
-	for (var i = 0; i < k; i++){
-		if ( !isInArray(working_days, e.getDay()) ) {
-			e.setDate(e.getDate() + 1);
-		}
-	}
-		
-	if ( durnType==24 ) {
-		fullWorkingDays = Math.ceil(inc)+1;
-		e.setMinutes( 0 );
-
-		// Include start day as a working day (if it is one)
-		if ( isInArray(working_days, e.getDay()) ) fullWorkingDays--;
-
-	 	for (var i = 0; i < fullWorkingDays; i++)
-		{
-			e.setDate(e.getDate() + 1);
-			if ( !isInArray(working_days, e.getDay()) ) i--;			
-		}
-		
-		f.end_hour.value = f.start_hour.value;
-	} else {
-		
-		hoursToAddToFirstDay = inc;
-		if ( e.getHours() + inc > cal_day_end )
-			hoursToAddToFirstDay = cal_day_end - e.getHours();
-		if ( hoursToAddToFirstDay > workHours )
-			hoursToAddToFirstDay = workHours;
-		inc -= hoursToAddToFirstDay;
-		hoursToAddToLastDay = inc % workHours;
-		fullWorkingDays = Math.floor((inc - hoursToAddToLastDay) / workHours);
-
-		if (hoursToAddToLastDay <= 0)
-			e.setHours(e.getHours()+hoursToAddToFirstDay);
-		else
-		{
-			e.setHours(cal_day_start+hoursToAddToLastDay);
-			e.setDate(e.getDate() + 1);
-		}
-
+ // }}}
 			
-		if ((e.getHours() == cal_day_end || (e.getHours() - int_st_hour) == workHours) && mins > 0)
-		{
-			e.setDate(e.getDate() + 1);
-			e.setHours(cal_day_start);
-		}
-			
-		f.end_minute.value = (e.getMinutes() < 10 ? "0"+e.getMinutes() : e.getMinutes());
+	f.end_minute.value = (e.getMinutes() < 10 ? "0"+e.getMinutes() : e.getMinutes());
 		
-		// boolean for setting later if we just found a non-working day
-		// and therefore do not have to add a day in the next loop
-		// (which would have caused to not respecting multiple non-working days after each other)
-		var g = false;
-	 	for (var i = 0; i < Math.ceil(fullWorkingDays); i++){
-			if (!g) {
-				e.setDate(e.getDate() + 1);
-			}
-			g = false;
-			// calculate overriden non-working days
-			if ( !isInArray(working_days, e.getDay()) ) {
-				e.setDate(e.getDate() + 1);
-				i--;
-				g = true;
-			}
-		}
-		f.end_hour.value = (e.getHours() < 10 ? "0"+e.getHours() : e.getHours());
-	}
+	f.end_hour.value = (e.getHours() < 10 ? "0"+e.getHours() : e.getHours());
+// }}} end hours calculations
 	
 	var tz1 = "";
 	var tz2 = "";
 
-	if ( e.getDate() < 10 ) tz1 = "0";
-	if ( (e.getMonth()+1) < 10 ) tz2 = "0";
+	if ( e.getDate() < 10 ) 
+		tz1 = "0";
+	if ( (e.getMonth()+1) < 10 ) 
+		tz2 = "0";
 
 	f.task_end_date.value = e.getUTCFullYear()+tz2+(e.getMonth()+1)+tz1+e.getDate();
 	//f.end_date.value = tz2+(e.getMonth()+1)+"/"+tz1+e.getDate()+"/"+e.getUTCFullYear(); // MM/DD/YY
@@ -488,7 +500,7 @@ function calcFinish(f) {
 	thread = window.frames['thread']; //document.getElementById('thread');
 	thread.location = url;
 	setAMPM(f.end_hour);
-}
+} // }}}
 
 function changeRecordType(value){
 	// if the record type is changed, then hide everything
@@ -499,6 +511,8 @@ function changeRecordType(value){
 
 var subForm = new Array();
 
+/** {{{ FormDefinition(id, form, check, save)
+ */
 function FormDefinition(id, form, check, save) {
 	this.id = id;
 	this.form = form;
@@ -508,7 +522,7 @@ function FormDefinition(id, form, check, save) {
 	this.save = fd_save;
 	this.submit = fd_submit;
 	this.seed = fd_seed;
-}
+} // }}}
 
 function fd_check()
 {
@@ -541,7 +555,9 @@ function fd_seed()
 	return copyForm(document.editFrm, this.form);
 }
 
-// Sub-form specific functions.
+/** {{{ checkDates(form)
+ * Sub-form specific functions.
+ */
 function checkDates(form) {
 	if (can_edit_time_information && check_task_dates) {
 		if (!form.task_start_date.value) {
@@ -556,8 +572,10 @@ function checkDates(form) {
 		}
 	}
 	return true;
-}
+} // }}}
 
+/** {{{ copyForm(form, to, extras)
+ */
 function copyForm(form, to, extras) {
 	// Grab all of the elements in the form, and copy them
 	// to the main form.  Do not copy hidden fields.
@@ -607,8 +625,10 @@ function copyForm(form, to, extras) {
 		}
 	}
 	return true;
-}
+} // }}}
 
+/** {{{ saveDates(form)
+ */
 function saveDates(form) {
 	if (can_edit_time_information) {
 		if ( form.task_start_date.value.length > 0 ) {
@@ -621,7 +641,7 @@ function saveDates(form) {
 	
 
 	return new Array('task_start_date', 'task_end_date');
-}
+} // }}} 
 
 function saveDepend(form) {
 	var dl = form.task_dependencies.length -1;
@@ -645,6 +665,8 @@ function checkResource(form) {
 	return true;
 }
 
+/** {{{ saveResource(form)
+ */
 function saveResource(form) {
 	var fl = form.assigned.length -1;
 	ha = form.hassign;
@@ -653,4 +675,4 @@ function saveResource(form) {
 		ha.value = "," + ha.value +","+ form.assigned.options[fl].value;
 	}
 	return new Array('hassign', 'hperc_assign');
-}
+} // }}}
