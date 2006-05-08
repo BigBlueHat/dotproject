@@ -54,10 +54,11 @@ class CTemplate extends Smarty
 		$i = 0;
 		foreach ($rows as $k => $row)
 		{
-			++$i;
 			if ($i >= $this->page*$page_size - $page_size 
 			 && $i < $this->page * $page_size)
 				$paginated_rows[$k] = $row;
+
+			++$i;
 		}
 
 		$rows = $paginated_rows;
