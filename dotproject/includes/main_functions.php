@@ -192,8 +192,15 @@ function dPgetUsers($active_only = true)
 	{
 		$perms = & $AppUI->acl();
 		foreach ($users as $user_id => $user_data)
+		{
 			if ($perms->isUserPermitted($user_id) != true)
 				unset($users[$user_id]);
+			$roles = $perms->getUserRoles($user_id);
+			foreach ($roles as $role)
+		    if (strtolower($role['name']) == 'guest')
+    		 	unset($users[$user_id]);
+
+		}
 	}
 	
 	return arrayMerge( array( 0 => $AppUI->_('All Users') ), $users );
