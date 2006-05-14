@@ -103,13 +103,25 @@ if (!empty($project_files))
 	)";
 }
 
+$page = dPgetParam($_GET, 'page', 1);
+$offset = ($page - 1) * dPgetConfig('page_size');
+
 $q  = new DBQuery;
 $q->addTable('history');
 $q->addTable('users');
 $q->addWhere('history_user = user_id');
 $q->addWhere($filter);
 $q->addOrder('history_date DESC');
+$q->setLimit(dPgetConfig('page_size'), $offset);
 $history = $q->loadList();
+
+
+$q->addQuery('count(*)');
+$q->addTable('history');
+$q->addTable('users');
+$q->addWhere('history_user = user_id');
+$q->addWhere($filter);
+$history_count = $q->loadResult();
 
 foreach ($history as $key => $row)
 {
@@ -122,5 +134,5 @@ foreach ($history as $key => $row)
   	unset($history[$key]);
 }
 
-$tpl->displayList('history', $history);
+$tpl->displayList('history', $history, $history_count);
 ?>
