@@ -299,7 +299,6 @@ function calcDuration(f) {
 	var weekendDays = 0;
 		var myDate = new Date(int_st_date.substring(0,4), (int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10));
 	for (var i = 0; i < duration; i++) {
-		//var myDate = new Date(int_st_date.substring(0,4), (int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10));
 		var myDay = myDate.getDate();
 		if ( !isInArray(working_days, myDate.getDay()) ) {
 			weekendDays++;
@@ -325,11 +324,7 @@ function calcDuration(f) {
 		// durn is absolute weekday hours
 		
 		//if first day equals last day we're already done
-		if( durn_abs < daily_working_hours ) {
-
-			durn = durn_abs;
-
-		} else { //otherwise we need to process first and end day different;
+		if( durn >= daily_working_hours ) {
 
 			// Hours worked on the first day
 			var first_day_hours = cal_day_end - sDate.getHours();
