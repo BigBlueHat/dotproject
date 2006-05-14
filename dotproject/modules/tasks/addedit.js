@@ -441,7 +441,7 @@ function calcFinish(f) {
 		hoursToAddToFirstDay = workHours;
 	inc -= hoursToAddToFirstDay;
 	// }}}
-	hoursToAddToLastDay = inc % workHours;
+	hoursToAddToLastDay = (inc == workHours)?workHours:(inc % workHours);
 	// {{{ days to add
 	fullWorkingDays = Math.floor((inc - hoursToAddToLastDay) / workHours);
  	for (var i = 0; i < Math.ceil(fullWorkingDays); i++)
