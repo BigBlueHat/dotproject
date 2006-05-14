@@ -6,6 +6,7 @@
 
 	require_once("./classes/CustomFields.class.php");
 
+	$del = dPgetParam($_POST, 'del',  0);
 	$edit_field_id = dpGetParam( $_POST, "field_id", NULL );
 
 	if ($edit_field_id != NULL)
@@ -29,7 +30,10 @@
 		}
 		else
 		{
-			$fid = $custom_fields->update( $edit_field_id, $field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, $msg );
+			if ($del)
+				$custom_fields->deleteField($edit_field_id);
+			else
+				$fid = $custom_fields->update( $edit_field_id, $field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, $msg );
 		}
 	
 		// Add or Update a Custom Field
