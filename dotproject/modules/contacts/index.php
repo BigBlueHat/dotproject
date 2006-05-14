@@ -186,6 +186,7 @@ for ($z=0; $z < $carrWidth; $z++) {
         	$contactid = $carr[$z][$x]['contact_id']; //added for simplification
 		$tpl_contact->assign('contactid', $contactid);
 		$tpl_contact->assign('contact', $carr[$z][$x]);
+		$tpl_contact->assign('keyword', $_GET['search_string']);
 
 		$q  = new DBQuery;
 		$q->addTable('projects');
