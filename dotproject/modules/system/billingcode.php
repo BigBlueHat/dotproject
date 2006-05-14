@@ -99,11 +99,12 @@ function delIt2(id) {
         <td>&nbsp;</td>
         <td><input type="text" name="billingcode_name" value=""></td>
         <td><input type="text" name="billingcode_value" value=""></td>
-        <td><input type="text" name="billingcode_desc" value=""</td>
+        <td><input type="text" name="billingcode_desc" value=""></td>
 </tr>
 
 <tr>
         <td align="left"><input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onClick="javascript:history.back(-1);" /></td>
         <td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt()" /></td>
 </tr>
+</form>
 </table>
