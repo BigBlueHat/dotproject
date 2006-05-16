@@ -79,6 +79,8 @@ class CTask extends CDpObject {
                 $this->CDpObject( 'tasks', 'task_id' );
 					$this->search_fields = array ('task_name','task_description','task_related_url','task_departments',
 								'task_contacts','task_custom');
+					$this->_tbl_parent = 'task_project';
+					$this->_parent = new CProject();
         }
 
 // overload check
@@ -2068,13 +2070,23 @@ class CTask extends CDpObject {
 		
 		$q = new DBQuery();
 		$q->addQuery('task_name, task_log_id, task_log_description');
+		$q->addQuery('project_id, project_name');
 		$q->addTable('tasks');
 		$q->addJoin('task_log', 't', 'task_id = task_log_task');
+		$q->addJoin('projects', 'p', 'task_project = project_id');
 		$q->addWhere("(task_log_name LIKE '%$keyword%' OR task_log_description LIKE '%$keyword%')");
 		$tasks = $q->loadList();
 		foreach($tasks as $task)
 	    if ($perms->checkModuleItem($this->_tbl, 'view', $task['task_id']))
-				$list[$task['task_id']] = $task['task_name'] . ' ==> ' . $task['task_log_description']; 
+			{
+				$task_id = $task['task_id'];
+				$list[$task_id]['name'] = $task['task_name'];
+				$list[$task_id]['notes'] = $task['task_log_description'];
+				$list[$task_id]['parent_key'] = 'project_id';
+				$list[$task_id]['parent_id'] = $task['project_id'];
+				$list[$task_id]['parent_name'] = $task['project_name'];
+				$list[$task_id]['parent_type'] = 'projects';
+			}
 					
 		return $list;
 	}

@@ -1,6 +1,7 @@
 <?php /* FORUMS $Id$ */
 
 require_once( $AppUI->getSystemClass( 'libmail' ) );
+require_once( $AppUI->getModuleClass( 'projects' ) );
 
 class CForum extends CDpObject {
 	var $forum_id = NULL;
@@ -19,6 +20,8 @@ class CForum extends CDpObject {
 		// empty constructor
 		parent::CDpObject('forums', 'forum_id');
 		$this->search_fields = array ('forum_name', 'forum_description');
+		$this->_parent = new CProject;
+		$this->_tpl_parent = 'forum_project';
 	}
 
 	function bind( $hash ) {

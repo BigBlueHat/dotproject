@@ -4,7 +4,13 @@
 {if $results.results}
 	{foreach from=$results.results item=result key=id}
 <tr>
-	<td><a href="index.php?m={$name}&a=view&{$results.key}={$id}">{$result|dPhighlight:$keyword}</a></td>
+	<td>
+		{if $result.parent_name}
+		<a href="index.php?m={$result.parent_type}&a=view&{$result.parent_key}={$result.parent_id}">[{$result.parent_type|ucfirst}: {$result.parent_name|dPhighlight:$keyword}]</a>::
+		{/if}
+		<a href="index.php?m={$name}&a=view&{$results.key}={$id}">{$result.name|dPhighlight:$keyword}</a>
+{if $result.notes} ==> {$result.notes|dPhighlight:$keyword}{/if}
+	</td>
 </tr>
 	{/foreach}
 {else}

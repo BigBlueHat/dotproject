@@ -9,6 +9,8 @@ require_once $AppUI->getSystemClass('libmail');
 require_once $AppUI->getSystemClass('date');
 require_once( $AppUI->getSystemClass( 'webdav_client' ) );
 
+require_once( $AppUI->getModuleClass( 'projects' ) );
+
 /**
 * Displays a configuration month calendar
 *
@@ -392,6 +394,8 @@ class CEvent extends CDpObject {
 		$this->CDpObject( 'events', 'event_id' );
 		$this->_tbl_name = 'event_title';
 		$this->search_fields = array ('event_title', 'event_description');
+		$this->_parent = new CProject;
+		$this->_tbl_parent = 'event_project';
 	}
 
 // overload check operation

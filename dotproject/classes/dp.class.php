@@ -16,6 +16,7 @@ require_once $AppUI->getSystemClass('query');
  *	@abstract
  */
 class CDpObject {
+// {{{ variables
 /**
  *	@var string Name of the table in the db schema relating to child class
  */
@@ -29,6 +30,15 @@ class CDpObject {
  */
  var $_tbl_name = '';
 /**
+ * @var string The name of the field, referencing the logical parent 
+ * of the current item
+ */
+	var $_tbl_parent = null;
+/**
+ * @var object The logical parent of the current item
+ */
+	var $_parent = null;
+/**
  *	@var string Error message
  */
 	var $_error = '';
@@ -40,8 +50,9 @@ class CDpObject {
 
 /** @var array the fields to search through */
  var $search_fields;
- 
-/**
+//}}}
+
+/** {{{ constructor
  *	Object constructor to set table and key field
  *
  *	Can be overloaded/supplemented by the child class
@@ -59,7 +70,8 @@ class CDpObject {
 		else
 			$this->_prefix = '';
 		$this->_query =& new DBQuery;
-	}
+	} // }}} constructor
+
 /**
  *	@return string Returns the error message
  */
@@ -410,14 +422,47 @@ class CDpObject {
 	function search($keyword)
 	{
 		global $AppUI;
-		
+
 		$sql = '';
 		foreach($this->search_fields as $field)
 			$sql .= " $field LIKE '%$keyword%' OR ";
 		$sql = substr($sql, 0, -4);
 		
 		// getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
-		return $this->getAllowedRecords($AppUI->user_id, $this->_tbl_key . ',' . $this->_tbl_name, $this->_tbl_name, null, array('where' => $sql));
+		$list = $this->getAllowedRecords($AppUI->user_id, $this->_tbl_key . ',' . $this->_tbl_name, $this->_tbl_name, null, array('where' => $sql));
+
+		if (empty($list))
+			return $list;
+
+		if (!isset($this->_parent) || empty($this->_tbl_parent))
+		{
+			foreach($list as $id => $name)
+				$results[$id]['name'] = $name;
+echo 'no parent';
+		}
+		else
+		{
+			$q = new DBQuery;
+			$q->addQuery($this->_tbl_key);
+			$q->addQuery($this->_parent->_tbl_key . ' as id');
+			$q->addQuery($this->_parent->_tbl_name . ' as parent');
+			$q->addTable($this->_parent->_tbl);
+			$q->addJoin($this->_tbl, 'children', $this->_tbl_parent . ' = ' . $this->_parent->_tbl_key);
+			$q->addWhere($this->_tbl_key . ' in (' . implode(', ', array_keys($list)) . ')');
+			$parents = $q->loadHashList($this->_tbl_key);
+
+			foreach($list as $id => $item)
+			{
+				$results[$id]['name'] = $item;
+				$results[$id]['parent_key'] = $this->_parent->_tbl_key;
+				$results[$id]['parent_id'] = $parents[$id]['id'];
+				$results[$id]['parent_name'] = $parents[$id]['parent'];
+				$results[$id]['parent_type'] = $this->_parent->_tbl;
+			}
+		}
+
+		//TODO: Sort by parent_name, name
+		return $results;
 	}
 }
 ?>

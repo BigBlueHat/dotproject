@@ -29,6 +29,8 @@ class CFile extends CDpObject {
 	function CFile() {
 		$this->CDpObject( 'files', 'file_id' );
 		$this->search_fields = array ("file_real_filename","file_name","file_description","file_type");
+		$this->_parent = new CProject;
+		$this->_tbl_parent = 'file_project';
 	}
 
 	function canAdmin() {
@@ -344,15 +346,26 @@ class CFile extends CDpObject {
 		
 		$q = new DBQuery();
 		$q->addQuery('file_name, f.file_id, file_version, count(*) as words');
+		$q->addQuery('project_id, project_name');
 		$q->addTable('files');
 		$q->addJoin('files_index', 'f', 'f.file_id = files.file_id');
+		$q->addJoin('projects', 'p', 'file_project = project_id');
 		$q->addWhere("word LIKE '%$keyword%'");
 		$q->addGroup('files.file_id');
 		$files = $q->loadList();
 		foreach($files as $file)
 	    if ($perms->checkModuleItem($this->_tbl, 'view', $file['file_id']))
-				$list[$file['file_id']] = $file['file_name'] . ' v.' . $file['file_version'] . ' ==> ' . $AppUI->_('found').' '.$file['words'].' '.$AppUI->_('times').' '.$AppUI->_('in').' '.$AppUI->_('file'); 
-					
+			{
+				$file_id = $file['file_id'];
+
+				$list[$file_id]['parent_key'] = 'project_id';
+				$list[$file_id]['parent_id'] = $file['project_id'];
+				$list[$file_id]['parent_name'] = $file['project_name'];
+				$list[$file_id]['parent_type'] = 'projects';
+				$list[$file_id]['name'] = $file['file_name'] . ' v.' . $file['file_version'];
+				$list[$file_id]['notes'] = $AppUI->_('found').' '.$file['words'].' '.$AppUI->_('times').' '.$AppUI->_('in').' '.$AppUI->_('file') . '.'; 
+			}
+		
 		return $list;
 	}
 }
