@@ -11,7 +11,7 @@
 // MODULE CONFIGURATION DEFINITION
 $config = array();
 $config['mod_name'] = 'History';
-$config['mod_version'] = '0.5';
+$config['mod_version'] = '0.6';
 $config['mod_directory'] = 'history';
 $config['mod_setup_class'] = 'CSetupHistory';
 $config['mod_type'] = 'user';
@@ -38,8 +38,9 @@ class CSetupHistory {
 		  "history_changes text," .
 		  "history_description text," .
 		  "PRIMARY KEY  (history_id)," .
-			'KEY `index_history_item` (history_item)' . 
-			'KEY `index_history_table` (history_table)' . 
+			'KEY `index_history_item` (history_item) ' . 
+			'KEY `index_history_table` (history_table) ' .
+			'INDEX `index_history_item_table` (`history_item`, `history_table`) ' .  
 		  ") TYPE=MyISAM";
 		$q = new DBQuery;
 		$q->createTable('history');
@@ -78,11 +79,18 @@ class CSetupHistory {
 				$q->addField('history_changes', 'text');
 				$q->exec();
 				$q->clear();
-				break;
 			case '0.4':
 				$q->alterTable('history');
-				$q->addIndex('history_table', '');
-				$q->addIndex('history_item', '');
+				$q->addIndex('index_history_table', '(history_table)');
+				$q->exec();
+				$q->clear();
+				$q->alterTable('history');
+				$q->addIndex('index_history_item', '(history_item)');
+				$q->exec();
+				$q->clear();
+			case '0.5':
+				$q->alterTable('history');
+				$q->addIndex('index_history_item_table', '(history_item, history_table)');
 				$q->exec();
 				$q->clear();
 				break;
