@@ -2,8 +2,8 @@
 <table border="0" cellpadding="2" cellspacing="0" width="100%">
 	<tr>
 		<td nowrap="nowrap">
-			<a href="{$current_tab}&tab=0">{dPtranslate word='tabbed'}</a> : 
-			<a href="{$current_tab}&tab=-1">{dPtranslate word='flat'}</a>
+			<a href="{$current_tab}&amp;tab=0">{dPtranslate word='tabbed'}</a> : 
+			<a href="{$current_tab}&amp;tab=-1">{dPtranslate word='flat'}</a>
 		</td>
 		{$extra}
 	</tr>
@@ -57,7 +57,7 @@ javascript:{$javascript}({$active}, {$k})
 	{elseif $js_tabs}
 javascript:show_tab({$k})
 	{else}
-{$current_tab}&tab={$k}
+{$current_tab}&amp;tab={$k}
 	{/if}
 ">{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</a>
 		</td>
