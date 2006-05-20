@@ -38,8 +38,11 @@ function smarty_function_dPshowImage($params, &$smarty)
 		    $result .= ' height="' . $hsize . '"';
       else if ($wsize)
         $result .= ' height="' . $wsize . '"';
-		  if ($alt)
-		    $result .= ' alt="' . $AppUI->_($alt) . '"';
+		  if (empty($alt))
+        $alt = substr($src, 0, -4);
+
+	    $result .= ' alt="' . $AppUI->_($alt) . '"';
+      
 		  if ($title)
 		    $result .= ' title="' . $AppUI->_($title) . '"';
 		  $result .= ' border="0" />';
