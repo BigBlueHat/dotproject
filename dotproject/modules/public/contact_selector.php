@@ -164,7 +164,7 @@ self.close();
 	echo arraySelect($companies_names, "company_id", "onchange=\"document.frmContactSelect.contacts_submited.value=0; setContactIDs(); document.frmContactSelect.submit();\"", 0);
 ?>
 <br>
- <h4><a href="#" onClick="window.location.href=setContactIDs('GET','dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>show_all=1');"><?php echo $AppUI->_("View all allowed companies"); ?></a></h4>
+ <h4><a href="#" onclick="window.location.href=setContactIDs('GET','dialog=1&<?php if(!is_null($call_back)) echo "call_back=$call_back&"; ?>show_all=1');"><?php echo $AppUI->_("View all allowed companies"); ?></a></h4>
 <hr />
 <h2><?php echo $AppUI->_('Contacts for'); ?> <?php echo $company_name ?></h2>
 <?php	
@@ -192,5 +192,5 @@ self.close();
 <hr />
 <input name='contacts_submited' type='hidden' value='1' />
 <input name='selected_contacts_id' type='hidden' value='<?php echo $selected_contacts_id; ?>'>
-<input type='submit' value='<?php echo $AppUI->_("Continue"); ?>' onClick="setContactIDs()" class='button' />
+<input type='submit' value='<?php echo $AppUI->_("Continue"); ?>' onclick="setContactIDs()" class='button' />
 </form>

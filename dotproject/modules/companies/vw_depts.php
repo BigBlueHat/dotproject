@@ -74,7 +74,7 @@ foreach ($rows as $row) {
 
 echo '<td colspan="3" nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
 if ($canEdit) {
-	echo '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onClick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
+	echo '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onclick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
 }
 echo '</td>';
 

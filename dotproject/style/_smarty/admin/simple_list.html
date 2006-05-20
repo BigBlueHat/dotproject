@@ -7,7 +7,7 @@
 	<th>{dPtranslate word='Name'}</th>
 </tr>
 {foreach from=$list item=row}
-<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
+<tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
 	<td>
 		<a href="./index.php?m=admin&a=viewuser&user_id={$row.user_id}">{$row.user_username}</a>
 	</td>

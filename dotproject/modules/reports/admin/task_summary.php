@@ -55,7 +55,7 @@ function reorder( order )
 	<td nowrap="nowrap">
 		<input type="hidden" name="log_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" style="width: 80px" />
-		<a href="#" onClick="popCalendar('start_date')">
+		<a href="#" onclick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
@@ -63,7 +63,7 @@ function reorder( order )
 	<td nowrap="nowrap">
 		<input type="hidden" name="log_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" style="width: 80px"/>
-		<a href="#" onClick="popCalendar('end_date')">
+		<a href="#" onclick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
@@ -228,13 +228,13 @@ if ($do_report)
 ?>
 	<table cellspacing="1" cellpadding="4" border="0" class="tbl" width="100%">
 	<tr>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('task_name');"><?php echo $AppUI->_('Task');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('task_name');"><?php echo $AppUI->_('Task');?></a></th>
 		<th><?php echo $AppUI->_('Actual');?></th>
 		<th><?php echo $AppUI->_('Budget');?></th>
 		<th><?php echo $AppUI->_('Completion');?></th>
 		<th><?php echo $AppUI->_('Over/Under');?></th>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('parent');"><?php echo $AppUI->_('Task Parent');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('parent');"><?php echo $AppUI->_('Task Parent');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
 	</tr>
 
 <?php

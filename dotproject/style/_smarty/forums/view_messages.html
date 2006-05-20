@@ -53,17 +53,17 @@ function delIt(id){
         <td>
 		<form action="{$thispage}" method="post">
         		{dPtranslate word='View'}: 
-        		<input type="radio" name="viewtype" value="normal" {if $viewtype == 'normal'}checked{/if} onClick="this.form.submit();" />{dPtranslate word='Normal'}
-        		<input type="radio" name="viewtype" value="short" {if $viewtype == 'short'}checked{/if} onClick="this.form.submit();" />{dPtranslate word='Collapsed'}
-        		<input type="radio" name="viewtype" value="single" {if $viewtype == 'single'}checked{/if} onClick="this.form.submit();" />{dPtranslate word='Single Message at a time'}
+        		<input type="radio" name="viewtype" value="normal" {if $viewtype == 'normal'}checked{/if} onclick="this.form.submit();" />{dPtranslate word='Normal'}
+        		<input type="radio" name="viewtype" value="short" {if $viewtype == 'short'}checked{/if} onclick="this.form.submit();" />{dPtranslate word='Collapsed'}
+        		<input type="radio" name="viewtype" value="single" {if $viewtype == 'single'}checked{/if} onclick="this.form.submit();" />{dPtranslate word='Single Message at a time'}
 		</form>
         </td>
 	<td align="right">
-	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id={$message_id}&sort={$sort}'" />
+	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id={$message_id}&sort={$sort}'" />
 	{if $canEdit}
-		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_parent={$message_id}&post_message=1';" />
+		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_parent={$message_id}&post_message=1';" />
 		<input type="button" class="button"
-value="{dPtranslate word='New Topic'}" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id=0&post_message=1';" />
+value="{dPtranslate word='New Topic'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id=0&post_message=1';" />
 	{/if}
 	</td>
 </tr>
@@ -92,11 +92,11 @@ if ($viewtype == 'single')
 <tr>
 	<td>{$breadCrumbs}</td>
 	<td align="right">
-	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id={$message_id}&sort={$sort}'" />
+	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id={$message_id}&sort={$sort}'" />
 	{if $canEdit}
-		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_parent={$message_id}&post_message=1';" />
+		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_parent={$message_id}&post_message=1';" />
 		<input type="button" class="button"
-value="{dPtranslate word='New Topic'}" onClick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id=0&post_message=1';" />
+value="{dPtranslate word='New Topic'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id=0&post_message=1';" />
 	{/if}
 	</td>
 </tr>

@@ -13,7 +13,7 @@
 <tr>
     <td align="center" nowrap="nowrap">
       {if $canEdit && canDelete}
-      <input type="button" class=button value="{dPtranslate word='logout'}" onClick="javascript:window.location='./index.php?m=admin&tab=3&out_session={$row.session_id}&out_user_log_id={$row.user_access_log_id}&out_user_id={$row.u_user_id}&out_name={$row.contact_first_name}%20{$row.contact_last_name}';"></input>
+      <input type="button" class=button value="{dPtranslate word='logout'}" onclick="javascript:window.location='./index.php?m=admin&tab=3&out_session={$row.session_id}&out_user_log_id={$row.user_access_log_id}&out_user_id={$row.u_user_id}&out_name={$row.contact_first_name}%20{$row.contact_last_name}';"></input>
       {/if}
     </td>
 

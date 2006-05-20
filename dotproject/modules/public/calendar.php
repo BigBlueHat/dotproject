@@ -13,7 +13,7 @@ $this_month = new CDate( $date );
 
 $uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
 ?>
-<a href="javascript: void(0);" onClick="clickDay('', '');">clear date</a>
+<a href="javascript: void(0);" onclick="clickDay('', '');">clear date</a>
 <?php
 $cal = new CMonthCalendar( $this_month );
 $cal->setStyles( 'poptitle', 'popcal' );

@@ -256,7 +256,7 @@ function submitIt(){
 </tr>
 
 <tr>
-	<td align="left"><input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onClick="javascript:history.back(-1);" /></td>
-	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('submit');?>" onClick="submitIt()" /></td>
+	<td align="left"><input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onclick="javascript:history.back(-1);" /></td>
+	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('submit');?>" onclick="submitIt()" /></td>
 </tr>
 </table>

@@ -173,7 +173,7 @@ $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Search') . '
 $titleBlock->addCell(
 	'
 <form action="?m=projects&amp;a=view&amp;project_id='.$project_id.'" method="post" id="searchfilter">
-	<input type="text" class="text" SIZE="10" name="searchtext" onChange="document.searchfilter.submit();" value="'.$search_text.'" title="'. $AppUI->_('Search in name and description fields') . '" />
+	<input type="text" class="text" size="10" name="searchtext" onchange="document.searchfilter.submit();" value="'.$search_text.'" title="'. $AppUI->_('Search in name and description fields') . '" />
 </form>', '', '', '');
 
 if ($canEditT) {

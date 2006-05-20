@@ -60,7 +60,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 				<td colspan="2" align="center">
 					<table>
 					<tr>
-						<td align="right"><input type="button" class="button" value="&gt;" onClick="addUser(document.resourceFrm)" /></td>
+						<td align="right"><input type="button" class="button" value="&gt;" onclick="addUser(document.resourceFrm)" /></td>
 						<td>
 							<select name="percentage_assignment" class="text">
 							<?php 
@@ -70,7 +70,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 							?>
 							</select>
 						</td>				
-						<td align="left"><input type="button" class="button" value="&lt;" onClick="removeUser(document.resourceFrm)" /></td>					
+						<td align="left"><input type="button" class="button" value="&lt;" onclick="removeUser(document.resourceFrm)" /></td>					
 					</tr>
 					</table>
 				</td>

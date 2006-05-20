@@ -208,7 +208,7 @@ foreach ($files as $file_row) {
 
         if ($file_row['file_versions'] > 1)
         {
-                $file_versions_list = ' <a href="#" onClick="expand(\'versions_' . ++$id . '\'); ">(' . $file_row['file_versions'] . ')</a>';
+                $file_versions_list = ' <a href="#" onclick="expand(\'versions_' . ++$id . '\'); ">(' . $file_row['file_versions'] . ')</a>';
 		$tpl_row->assign('file_versions', $file_versions_list);
 
                 $hidden_table .= '<tr><td colspan="12">

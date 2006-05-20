@@ -98,10 +98,10 @@ function setCalendar( idate, fdate ) {
         </td>
         <td colspan="3"><input class="text" type="field" size="2" name="pvalue" value="1" /> - value for the previous buttons</td>
 <!--
-        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Month'); ?>" onClick="set(-30)" /></td>
-        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Week'); ?>" onClick="set(-7)" /></td>
-        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Next Week'); ?>" onClick="set(7)" /></td>
-        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Next Month'); ?>" onClick="set(30)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Month'); ?>" onclick="set(-30)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Week'); ?>" onclick="set(-7)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Next Week'); ?>" onclick="set(7)" /></td>
+        <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Next Month'); ?>" onclick="set(30)" /></td>
 -->
 </tr>
 <tr>
@@ -109,7 +109,7 @@ function setCalendar( idate, fdate ) {
 	<td nowrap="nowrap">
 		<input type="hidden" name="list_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
-		<a href="#" onClick="popCalendar('start_date')">
+		<a href="#" onclick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
@@ -117,7 +117,7 @@ function setCalendar( idate, fdate ) {
 	<td nowrap="nowrap">
 		<input type="hidden" name="list_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-		<a href="#" onClick="popCalendar('end_date')">
+		<a href="#" onclick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>

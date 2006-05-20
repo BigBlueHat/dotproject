@@ -54,7 +54,7 @@ function reorder( order )
 	<td nowrap="nowrap">
 		<input type="hidden" name="log_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" style="width: 80px" />
-		<a href="#" onClick="popCalendar('start_date')">
+		<a href="#" onclick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
@@ -62,7 +62,7 @@ function reorder( order )
 	<td nowrap="nowrap">
 		<input type="hidden" name="log_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" style="width: 80px"/>
-		<a href="#" onClick="popCalendar('end_date')">
+		<a href="#" onclick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
@@ -235,14 +235,14 @@ if ($do_report) {
 	<table cellspacing="1" cellpadding="4" border="0" class="tbl" width="100%">
 	<tr>
 		<th width="100" nowrap="nowrap"><?php echo $AppUI->_('User');?></th>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('pt.task_name');"><?php echo $AppUI->_('Task Parent');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('tt.task_name');"><?php echo $AppUI->_('Task');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onClick="reorder('ct.task_name');"><?php echo $AppUI->_('Child Task');?></a></th>
-		<th width="20"><a href="javascript: void(0)" style="color: white" onClick="reorder('task_log_hours');"><?php echo $AppUI->_('Hours');?></a></th>
-		<th width="20"><a href="javascript: void(0)" style="color: white" onClick="reorder('costcode');"><?php echo $AppUI->_('Cost Code');?></th>
-		<th width="20"><a href="javascript: void(0)" style="color: white" onClick="reorder('completion');"><?php echo $AppUI->_('Completion	');?></th>
-		<th width="40"><a href="javascript: void(0)" style="color: white" onClick="reorder('task_log_date');"><?php echo $AppUI->_('Date');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('pt.task_name');"><?php echo $AppUI->_('Task Parent');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('tt.task_name');"><?php echo $AppUI->_('Task');?></a></th>
+		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('ct.task_name');"><?php echo $AppUI->_('Child Task');?></a></th>
+		<th width="20"><a href="javascript: void(0)" style="color: white" onclick="reorder('task_log_hours');"><?php echo $AppUI->_('Hours');?></a></th>
+		<th width="20"><a href="javascript: void(0)" style="color: white" onclick="reorder('costcode');"><?php echo $AppUI->_('Cost Code');?></th>
+		<th width="20"><a href="javascript: void(0)" style="color: white" onclick="reorder('completion');"><?php echo $AppUI->_('Completion	');?></th>
+		<th width="40"><a href="javascript: void(0)" style="color: white" onclick="reorder('task_log_date');"><?php echo $AppUI->_('Date');?></a></th>
 	</tr>
 <?php
 	$hours = 0.0;

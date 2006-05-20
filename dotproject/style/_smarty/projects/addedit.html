@@ -1,17 +1,17 @@
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <form name="editFrm" action="./index.php?m=projects" method="post">
 	<input type="hidden" name="dosql" value="do_project_aed" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
 	<input type="hidden" name="project_creator" value="{$project_creator}" />
 	<input name='project_contacts' type='hidden' value="{$project_contacts}" />
 
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <tr>
 	<td width="50%" valign="top">
 		<table cellspacing="0" cellpadding="2" border="0">
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Project Name'}</td>
 			<td width="100%" colspan="2">
-				<input type="text" name="project_name" value="{dPformSafe var=$obj->project_name}" size="25" maxlength="50" onBlur="setShort();" class="text" />
+				<input type="text" name="project_name" value="{dPformSafe var=$obj->project_name}" size="25" maxlength="50" onblur="setShort();" class="text" />
 			</td>
 		</tr>
 		<tr>
@@ -31,9 +31,9 @@
 			<td nowrap="nowrap">
 				<input type="hidden" name="project_start_date" value="{dPdateFormat date=$obj->project_start_date format='db'}" />
 			<!-- format(FMT_TIMESTAMP_DATE) -->
-				<input type="text" class="text" name="start_date" id="date1" value="{dPdateFormat date=$obj->project_start_date}" class="text" disabled="disabled" />
+				<input type="text" class="text" name="start_date" id="date1" value="{dPdateFormat date=$obj->project_start_date}" disabled="disabled" />
 
-				<a href="#" onClick="popCalendar( 'start_date', 'start_date');">
+				<a href="#" onclick="popCalendar( 'start_date', 'start_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>
 			</td>
@@ -49,8 +49,8 @@
 			<td align="right" nowrap="nowrap">{dPtranslate word='Target Finish Date'}</td>
 			<td nowrap="nowrap">
 				<input type="hidden" name="project_end_date" value="{dPdateFormat date=$obj->project_end_date format='db'}" />
-				<input type="text" class="text" name="end_date" id="date2" value="{dPdateFormat date=$obj->project_end_date}" class="text" disabled="disabled" />
-				<a href="#" onClick="popCalendar('end_date', 'end_date');">
+				<input type="text" class="text" name="end_date" id="date2" value="{dPdateFormat date=$obj->project_end_date}" disabled="disabled" />
+				<a href="#" onclick="popCalendar('end_date', 'end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>
 			</td>
@@ -58,18 +58,20 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Target Budget'} {dPconfig var='currency_symbol'}</td>
 			<td>
-				<input type="Text" name="project_target_budget" value="{$obj->project_target_budget}" maxlength="10" class="text" />
+				<input type="text" name="project_target_budget" value="{$obj->project_target_budget}" maxlength="10" class="text" />
 			</td>
 		</tr>
 		<tr>
-			<td colspan="2"><hr noshade="noshade" size="1"></td>
+			<td colspan="2">
+				<hr noshade="noshade" size="1" />
+			</td>
 		</tr>
 <tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Actual Finish Date'}</td>
 			<td nowrap="nowrap">
 {if $project_id > 0}
 	{if $actual_end_date}
-			  <a href="?m=tasks&a=view&task_id={$critical_task_id}">
+			  <a href="?m=tasks&amp;a=view&amp;task_id={$critical_task_id}">
 					<span {$style}>{dPdateFormat cdate=$actual_end_date}</span>
 				</a>
 	{else}
@@ -87,7 +89,9 @@
 			</td>
 		</tr>
 		<tr>
-			<td colspan="3"><hr noshade="noshade" size="1"></td>
+			<td colspan="3">
+				<hr noshade="noshade" size="1" />
+			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='URL'}</td>
@@ -98,7 +102,7 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Staging URL'}</td>
 			<td colspan="2">
-				<input type="Text" name="project_demo_url" value="{$obj->project_demo_url}" size="40" maxlength="255" class="text" />
+				<input type="text" name="project_demo_url" value="{$obj->project_demo_url}" size="40" maxlength="255" class="text" />
 			</td>
 		</tr>
 		<tr>
@@ -112,7 +116,7 @@
 		<table cellspacing="0" cellpadding="2" border="0" width="100%">
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Priority'}</td>
-			<td nowrap>
+			<td nowrap="nowrap">
 				{dParraySelect array=$projectPriority name='project_priority' extras='size="1" class="text"' value=$obj->project_priority translate='true' } *
 			</td>
 		</tr>
@@ -125,13 +129,13 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Color Identifier'}</td>
 			<td nowrap="nowrap">
-				<input type="text" name="project_color_identifier" value="{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}" size="10" maxlength="6" onBlur="setColor();" class="text" /> *
+				<input type="text" name="project_color_identifier" value="{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}" size="10" maxlength="6" onblur="setColor();" class="text" /> *
 			</td>
 			<td nowrap="nowrap" align="right">
-				<a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">{dPtranslate word='change color'}</a>
+				<a href="#" onclick="newwin=window.open('./index.php?m=public&amp;a=color_selector&amp;dialog=1&amp;callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">{dPtranslate word='change color'}</a>
 			</td>
 			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}"><a href="#" onClick="newwin=window.open('./index.php?m=public&a=color_selector&dialog=1&callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" border="1" width="40" height="20" /></a></span>
+				<span id="test" title="test" style="background:#{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}"><a href="#" onclick="newwin=window.open('./index.php?m=public&amp;a=color_selector&amp;dialog=1&amp;callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" alt="" border="1" width="40" height="20" /></a></span>
 			</td>
 		</tr>
 		<tr>
@@ -171,9 +175,9 @@
 			<td colspan="3" nowrap="nowrap">
 				<input type="hidden" name="project_import_date" value="{dPdateFormat date=$obj->project_start_date format='db'}" />
 			<!-- format(FMT_TIMESTAMP_DATE) -->
-				<input type="text" class="text" name="import_date" id="date3" value="" class="text" disabled="disabled" />
+				<input type="text" class="text" name="import_date" id="date3" value="" disabled="disabled" />
 
-				<a href="#" onClick="popCalendar( 'import_date', 'import_date');">
+				<a href="#" onclick="popCalendar( 'import_date', 'import_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>
 			</td>
@@ -198,7 +202,7 @@
 		<tr>
 			<td colspan="4">
 				{dPtranslate word='Description'}<br />
-				<textarea name="project_description" cols="50" rows="10" wrap="virtual" class="textarea">{dPformSafe var=$obj->project_description}</textarea>
+				<textarea name="project_description" cols="50" rows="10" class="textarea">{dPformSafe var=$obj->project_description}</textarea>
 			</td>
 		</tr>
 		</table>
@@ -206,12 +210,12 @@
 </tr>
 <tr>
 	<td>
-		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onClick="javascript:if(confirm('Are you sure you want to cancel.')) location.href = './index.php?m=projects';" />
+		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if(confirm('Are you sure you want to cancel.')) location.href = './index.php?m=projects';" />
 	</td>
 	<td align="right">
-		<input class="button" type="button" name="btnFuseAction" value="{dPtranslate word='submit'}" onClick="submitIt();" />
+		<input class="button" type="button" name="btnFuseAction" value="{dPtranslate word='submit'}" onclick="submitIt();" />
 	</td>
 </tr>
-</form>
 </table>
+</form>
 * {dPtranslate word='requiredField'}

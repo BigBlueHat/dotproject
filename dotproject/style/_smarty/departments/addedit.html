@@ -74,7 +74,7 @@ function submitIt() {
 	<td align="right">{dPtranslate word='URL'}</td>
 	<td>
 		<input type="text" class="text" value="{$drow.dept_url}" name="dept_url" size="50" maxlength="255">
-		<a href="#x" onClick="testURL('dept_url')">[{dPtranslate word='test'}]</a>
+		<a href="#x" onclick="testURL('dept_url')">[{dPtranslate word='test'}]</a>
 	</td>
 </tr>
 {if $dept_has_parents == true}
@@ -101,10 +101,10 @@ function submitIt() {
 </tr>
 <tr>
 	<td>
-		<input type="button" value="{dPtranslate word='back'}" class="button" onClick="javascript:history.back(-1);" />
+		<input type="button" value="{dPtranslate word='back'}" class="button" onclick="javascript:history.back(-1);" />
 	</td>
 	<td align="right">
-		<input type="button" value="{dPtranslate word='submit'}" class="button" onClick="submitIt()" />
+		<input type="button" value="{dPtranslate word='submit'}" class="button" onclick="submitIt()" />
 	</td>
 </tr>
 </form>

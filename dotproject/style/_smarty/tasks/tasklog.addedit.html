@@ -20,7 +20,7 @@
 			<input type="hidden" name="task_log_date" value="{dPdateFormat date=$log_date format='db'}">
 		<!-- end patch #890841 -->
 			<input type="text" name="log_date" value="{dPdateFormat date=$log_date}" class="text" disabled="disabled">
-			<a href="#" onClick="popCalendar('log_date')">
+			<a href="#" onclick="popCalendar('log_date')">
 				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 			</a>
 		</td>
@@ -70,7 +70,7 @@
 		<td>
 			<input type="hidden" name="task_end_date" value="{dPdateFormat date=$obj->task_end_date format='timestamp'}" />
 			<input type="text" name="end_date" value="{dPdateFormat date=$obj->task_end_date}" class="text" disabled="disabled" />
-			<a href="#" onClick="popCalendar('end_date')">
+			<a href="#" onclick="popCalendar('end_date')">
 				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0">
 			</a>
 		</td>

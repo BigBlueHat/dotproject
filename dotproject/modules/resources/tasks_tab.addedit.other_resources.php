@@ -91,7 +91,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 				<td colspan="2" align="center">
 					<table>
 					<tr>
-						<td align="right"><input type="button" class="button" value="&gt;" onClick="addResource(document.otherFrm)" /></td>
+						<td align="right"><input type="button" class="button" value="&gt;" onclick="addResource(document.otherFrm)" /></td>
 						<td>
 							<select name="resource_assignment" class="text">
 							<?php 
@@ -101,7 +101,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 							?>
 							</select>
 						</td>				
-						<td align="left"><input type="button" class="button" value="&lt;" onClick="removeResource(document.otherFrm)" /></td>					
+						<td align="left"><input type="button" class="button" value="&lt;" onclick="removeResource(document.otherFrm)" /></td>					
 					</tr>
 					</table>
 				</td>

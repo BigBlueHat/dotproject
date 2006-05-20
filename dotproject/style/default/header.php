@@ -15,6 +15,7 @@ else
 	<title><?php echo @dPgetConfig( 'page_title' );?></title>
 	<?php echo $style_extras; ?>
 	<link rel="stylesheet" type="text/css" href="./style/<?php echo $uistyle;?>/main.css" media="all" />
+	<link rel="stylesheet" type="text/css" media="all" href="<?php echo $dPconfig['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
 	<style type="text/css" media="all">@import "./style/<?php echo $uistyle;?>/main.css";</style>
 	<link rel="shortcut icon" href="./style/<?php echo $uistyle;?>/images/favicon.ico" type="image/ico" />
 	<?php @$AppUI->loadJS(); ?>
@@ -23,12 +24,21 @@ else
 <body onload="this.focus();">
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
-	<td><table width="100%" cellpadding=3 cellspacing=0 border=0><tr>
-	<th style="background:url('style/<?php echo $uistyle;?>/images/titlegrad.jpg')" class="banner" align="left"><strong><?php
-		echo '<a style="color: white" href="'.$dPconfig['base_url'].'">'.$page_title.'</a>';
-	?></strong></th>
-	<th align="right" width="50"><a href="http://www.dotproject.net/" <?php if ($dialog) echo 'target="_blank"'; ?>><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" alt="dotProject icon" border="0" /></a></th>
-	</tr></table></td>
+	<td>
+		<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<th style="background:url('style/<?php echo $uistyle;?>/images/titlegrad.jpg')" class="banner" align="left">
+				<strong>
+				<?php	echo '<a style="color: white" href="'.$dPconfig['base_url'].'">'.$page_title.'</a>'; ?>
+				</strong>
+			</th>
+			<th align="right" width="50">
+				<a href="http://www.dotproject.net/"<?php if ($dialog) echo ' target="_blank"';?>>
+					<img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" alt="dotProject icon" border="0" /></a>
+			</th>
+		</tr>
+		</table>
+	</td>
 </tr>
 <?php if (!$dialog) {
 	// top navigation menu
@@ -61,7 +71,7 @@ else
 	if ($perms->checkModule( 'files', 'add' )) $newItem["files"] = "File";
 	if ($perms->checkModule( 'projects', 'add' )) $newItem["projects"] = "Project";
 
-	echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
+	echo arraySelect( $newItem, 'm', 'style="font-size:10px" onchange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
 //build URI string
 	if (isset( $company_id )) {
 		echo '<input type="hidden" name="company_id" value="'.$company_id.'" />';

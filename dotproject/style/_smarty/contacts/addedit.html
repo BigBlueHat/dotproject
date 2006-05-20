@@ -96,7 +96,7 @@ function companyChange() {
 			<td align="right">&nbsp;&nbsp;{dPtranslate word='Last Name'}:</td>
 			<td>
 				<input type="text" class="text" size=25 name="contact_last_name" value="{dPformSafe var=$obj->contact_last_name}" maxlength="50" {if $contact_id == 0}onBlur="orderByName('name')"{/if} />
-				<a href="#" onClick="orderByName('name')">[{dPtranslate word='use in display'}]</a>
+				<a href="#" onclick="orderByName('name')">[{dPtranslate word='use in display'}]</a>
 			</td>
 		</tr>
 		<tr>
@@ -128,7 +128,7 @@ function companyChange() {
 				<input type="text" class="text" name="contact_company_name" value="{dPformSafe var=$company_detail.company_name}" maxlength="100" size="25" /> 
 				<input type="button" class="button" value="{dPtranslate word='select company...'}..." onclick="popCompany()" />
 				<input type='hidden' name='contact_company' value="{$company_id}">
-				<a href="#" onClick="orderByName('company')">[{dPtranslate word='use in display'}]</a>
+				<a href="#" onclick="orderByName('company')">[{dPtranslate word='use in display'}]</a>
 				</td>
 		</tr>
 		<tr>
@@ -256,10 +256,10 @@ function companyChange() {
 </tr>
 <tr>
 	<td>
-		<input type="button" value="{dPtranslate word='back'}" class="button" onClick="javascript:window.location='./index.php?m=contacts';" />
+		<input type="button" value="{dPtranslate word='back'}" class="button" onclick="javascript:window.location='./index.php?m=contacts';" />
 	</td>
 	<td align="right">
-		<input type="button" value="{dPtranslate word='submit'}" class="button" onClick="submitIt()" />
+		<input type="button" value="{dPtranslate word='submit'}" class="button" onclick="submitIt()" />
 	</td>
 </tr>
 </form>

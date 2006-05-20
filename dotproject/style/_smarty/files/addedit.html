@@ -178,7 +178,7 @@ function setTask( key, val ) {
 			<input type="hidden" name="file_co_reason" value="" />
 		<tr>
 				<td align="right" nowrap="nowrap">&nbsp;</td>
-				<td align="left"><input type="checkbox" name="final_ci" onClick="finalCI()">{dPtranslate word='Final Version'}</td>		
+				<td align="left"><input type="checkbox" name="final_ci" onclick="finalCI()">{dPtranslate word='Final Version'}</td>		
  		</tr>
 		{/if}
 		</table>
@@ -186,7 +186,7 @@ function setTask( key, val ) {
 </tr>
 <tr>
 	<td>
-		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onClick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')){literal}{location.href = './index.php?m=files';}{/literal}" />
+		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')){literal}{location.href = './index.php?m=files';}{/literal}" />
 	</td>
 	<td align="right">
 		<input type="button" class="button" value="{dPtranslate word='submit'}" onclick="submitIt()" />

@@ -2305,7 +2305,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         if (!dPgetConfig('tasks_ajax_list'))
                 $open_link = $is_opened ? "<a href='index.php$query_string&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' /></a>" : "<a href='index.php$query_string&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' /></a>";
         else
-                $open_link = '<img src="images/icons/expand.gif" border="0" align="center" onClick="dpToggleNode(this);" />';
+                $open_link = '<img src="images/icons/expand.gif" border="0" align="center" onclick="dpToggleNode(this);" />';
         if ($a["task_milestone"] > 0 ) {
                 $s .= '&nbsp;<a href="./index.php?m=tasks&a=view&task_id=' . $a["task_id"] . '" title="' . $alt . '"><b>' . $a["task_name"] . '</b></a> <img src="./images/icons/milestone.gif" border="0"></td>';
         } else if ($a["task_dynamic"] == '1'){
@@ -2348,7 +2348,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
                         $s .= $assigned_users[0]['user_username'] .' (' . $assigned_users[0]['perc_assignment'] .'%)</a>';
                         if($a['assignee_count']>1){
                         $id = $a['task_id'];
-                        $s .= " <a href=\"javascript: void(0);\"  onClick=\"toggle_users('users_$id');\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
+                        $s .= " <a href=\"javascript: void(0);\"  onclick=\"toggle_users('users_$id');\" title=\"" . join ( ', ', $a_u_tmp_array ) ."\">(+". ($a['assignee_count']-1) .")</a>";
 
                         $s .= '<span style="display: none" id="users_' . $id . '">';
 

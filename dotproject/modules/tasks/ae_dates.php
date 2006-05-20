@@ -82,7 +82,7 @@ function cal_work_day_conv($val) {
 	<td nowrap="nowrap">
 		<input type="hidden" name="task_start_date" id="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : '' ;?>" />
 		<input type="text" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : '' ;?>" class="text" disabled="disabled" />
-		<a href="#" onClick="popCalendar(document.datesFrm.start_date)">
+		<a href="#" onclick="popCalendar(document.datesFrm.start_date)">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
 	</td>
@@ -104,7 +104,7 @@ function cal_work_day_conv($val) {
 	<td nowrap="nowrap">
 		<input type="hidden" name="task_end_date" id="task_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 		<input type="text" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-		<a href="#" onClick="popCalendar(document.datesFrm.end_date)">
+		<a href="#" onclick="popCalendar(document.datesFrm.end_date)">
 						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
 					</a>
 	</td>

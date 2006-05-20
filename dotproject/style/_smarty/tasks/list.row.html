@@ -1,5 +1,5 @@
 {* if any of the TR attributes contains spaces, CHANGE processing in tree.js!!! *}
-<tr id="{$obj.node_id}" onMouseOver="setPointer(this,'#FFFFB0')" onMouseOut="setPointer(this,'')"> {* ondblclick="dpToggleNode(this)" *}
+<tr id="{$obj.node_id}" onmouseover="setPointer(this,'#FFFFB0')" onmouseout="setPointer(this,'')"> {* ondblclick="dpToggleNode(this)" *}
 {* edit icon *}
 	<td>{if $obj.canEdit}
 		<a href="?m=tasks&a=addedit&task_id={$obj.task_id}">
@@ -66,7 +66,7 @@
 <a href="index.php{$query_string}&close_task_id={$obj.task_id}">
 {dPshowImage find=$img_open align='center'}</a>
 	{else}
-<img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" onClick="dpToggleNode(this);" />
+<img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" border="0" align="center" onclick="dpToggleNode(this);" />
 	{/if}
 {/if}
 		<a href="./index.php?m=tasks&a=view&task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
@@ -115,7 +115,7 @@
 		<a href="?m=admin&a=viewuser&user_id={$first_user.user_id}" title="{dPtranslate word='Extent of Assignment'}:{$first_user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $first_user.perc_assignment}%">
 			{$first_user.user_username} ({$first_user.perc_assignment}%)</a>
 		{if $obj.assignee_count > 1}
-		<a href="javascript: void(0);"  onClick="toggle_users('users_{$obj.task_id}');" title="">(+{$obj.assignee_count-1})</a>
+		<a href="javascript: void(0);"  onclick="toggle_users('users_{$obj.task_id}');" title="">(+{$obj.assignee_count-1})</a>
 		<span style="display: none" id="users_{$obj.task_id}">
 		{foreach from=$obj.task_assigned_users item=user}
 			{if $user.user_id != $first_user.user_id}

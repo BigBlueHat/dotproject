@@ -109,8 +109,8 @@ $q->clear();
 				</td>
 			</tr>
 			<tr>
-				<td align="right"><input type="button" class="button" value="&gt;" onClick="addTaskDependency(document.dependFrm, document.datesFrm)" /></td>
-				<td align="left"><input type="button" class="button" value="&lt;" onClick="removeTaskDependency(document.dependFrm, document.datesFrm)" /></td>
+				<td align="right"><input type="button" class="button" value="&gt;" onclick="addTaskDependency(document.dependFrm, document.datesFrm)" /></td>
+				<td align="left"><input type="button" class="button" value="&lt;" onclick="removeTaskDependency(document.dependFrm, document.datesFrm)" /></td>
 			</tr>
 		</table>
 <input type="hidden" name="hdependencies" />

@@ -7,16 +7,16 @@ $perms =& $AppUI->acl();
 // check permissions for this record
 $canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 $canAuthor = $perms->checkModuleItem( $m, 'add' );
-if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0)) {
-$AppUI->redirect( "m=public&a=access_denied" );
-}
+if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0))
+	$AppUI->redirect( 'm=public&amp;a=access_denied' );
+
 
 // get a list of permitted companies
 require_once( $AppUI->getModuleClass ('companies' ) );
 
 $row = new CCompany();
 $companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
-$companies = arrayMerge( array( '0'=>'' ), $companies );
+$companies = arrayMerge( array( '0'=>'&nbsp;' ), $companies );
 
 // pull users
 $q  = new DBQuery;
@@ -76,7 +76,7 @@ $ttl = $project_id > 0 ? 'Edit Project' : 'New Project';
 $titleBlock = new CTitleBlock( $ttl, 'applet3-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( '?m=projects', 'projects list' );
 if ($project_id != 0)
-$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$project_id, 'view this project' );
+$titleBlock->addCrumb( '?m=projects&amp;a=view&amp;project_id='.$project_id, 'view this project' );
 $titleBlock->show();
 
 //Build display list for departments
@@ -95,7 +95,7 @@ if ($project_id) {
 $departments_count = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
 if($department_selection_list != ''){
-$department_selection_list = $AppUI->_('Departments').'<br /><select name="dept_ids[]" size="'.$departments_count.'" multiple>'.$department_selection_list.'</select>';
+$department_selection_list = $AppUI->_('Departments').'<br /><select name="dept_ids[]" size="'.$departments_count.'" multiple="multiple">'.$department_selection_list.'</select>';
 } else {
 $department_selection_list = '<input type="button" class="button" value="'.$AppUI->_('Select department...').'" onclick="javascript:popDepartment();" /><input type="hidden" name="project_departments" />';
 }
@@ -116,13 +116,13 @@ if ($project_id == 0 && $contact_id > 0){
 	$selected_contacts[] = "$contact_id";
 }
 ?>
-<link rel="stylesheet" type="text/css" media="all" href="<?php echo $dPconfig['base_url'];?>/lib/calendar/calendar-dp.css" title="blue" />
 <!-- import the calendar script -->
 <script type="text/javascript" src="<?php echo $dPconfig['base_url'];?>/lib/calendar/calendar.js"></script>
 <!-- import the language module -->
 <script type="text/javascript" src="<?php echo $dPconfig['base_url'];?>/lib/calendar/lang/calendar-<?php echo $AppUI->user_locale; ?>.js"></script>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function setColor(color) {
 var f = document.editFrm;
 if (color) {
@@ -149,7 +149,7 @@ var calWin = null;
 function popCalendar( field ){
 calendarField = field;
 idate = eval( 'document.editFrm.project_' + field + '.value' );
-window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=280, height=250, scollbars=false' );
+window.open( 'index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback=setCalendar&amp;date=' + idate, 'calwin', 'width=280, height=250, scollbars=false' );
 }
 
 /**
@@ -205,7 +205,7 @@ if (msg.length < 1) {
 var selected_contacts_id = "<?php echo implode(',', $selected_contacts); ?>";
 
 function popContacts() {
-	window.open('./index.php?m=public&a=contact_selector&dialog=1&call_back=setContacts&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
+	window.open('./index.php?m=public&amp;a=contact_selector&amp;dialog=1&amp;call_back=setContacts&amp;selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
 }
 
 function setContacts(contact_id_string){
@@ -219,15 +219,12 @@ function setContacts(contact_id_string){
 var selected_departments_id = "<?php echo implode(',', $selected_departments); ?>";
 
 function popDepartment() {
-        var f = document.editFrm;
-	var url = './index.php?m=public&a=selector&dialog=1&callback=setDepartment&table=departments&company_id='
+	var f = document.editFrm;
+	var url = './index.php?m=public&amp;a=selector&amp;dialog=1&amp;callback=setDepartment&amp;table=departments&amp;company_id='
             + f.project_company.options[f.project_company.selectedIndex].value
-            + '&dept_id='
+            + '&amp;dept_id='
             + selected_departments_id;
-//prompt('',url);
         window.open(url,'dept','left=50,top=50,height=250,width=400,resizable');
-
-//	window.open('./index.php?m=public&a=selector&dialog=1&call_back=setDepartment&selected_contacts_id='+selected_contacts_id, 'contacts','height=600,width=400,resizable,scrollbars=yes');
 }
 
 function setDepartment(department_id_string){
@@ -237,7 +234,7 @@ function setDepartment(department_id_string){
 	document.editFrm.project_departments.value = department_id_string;
 	selected_departments_id = department_id_string;
 }
-
+-->
 </script>
 
 <?php

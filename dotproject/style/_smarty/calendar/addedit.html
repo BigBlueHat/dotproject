@@ -68,7 +68,7 @@ function updateTasks()
 	<td nowrap="nowrap">
 		<input type="hidden" name="event_start_date" value="{dPdateFormat date=$obj->event_start_date format='db'}">
 		<input type="text" name="start_date" value="{dPdateFormat date=$obj->event_start_date}" class="text" disabled="disabled">
-		<a href="#" onClick="popCalendar('start_date')">
+		<a href="#" onclick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 		</a>
 	</td>
@@ -83,7 +83,7 @@ function updateTasks()
 	<td nowrap="nowrap">
 		<input type="hidden" name="event_end_date" value="{dPdateFormat date=$obj->event_end_date format='db'}">
 		<input type="text" name="end_date" value="{dPdateFormat date=$obj->event_end_date}" class="text" disabled="disabled">
-		<a href="#" onClick="popCalendar('end_date')">
+		<a href="#" onclick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 		</a>
 	</td>
@@ -125,9 +125,9 @@ function updateTasks()
 		<table>
 			<tr>
 				<td align="left"><input type="button" class="button" value="&gt;"
-				onClick="addUser()" /></td>
+				onclick="addUser()" /></td>
 				<td align="right"><input type="button" class="button" value="&lt;"
-				onClick="removeUser()" /></td>
+				onclick="removeUser()" /></td>
 			</tr>
 		</table>
 	</td>
@@ -148,7 +148,7 @@ function updateTasks()
 		<input type="button" value="{dPtranslate word='back'}" class="button" onclick="javascript:history.back();">
 	</td>
 	<td align="right" colspan="2">
-		<input type="button" value="{dPtranslate word='submit'}" class="button" onClick="submitIt()">
+		<input type="button" value="{dPtranslate word='submit'}" class="button" onclick="submitIt()">
 	</td>
 </tr>
 </form>

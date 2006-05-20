@@ -82,8 +82,8 @@ function submitIt() {
 	</td>
 </tr>
 <TR>
-	<TD><input type="button" value="<?php echo $AppUI->_('back'); ?>" class="button" onClick="javascript:history.back(-1);"></td>
-	<TD align="right"><input type="button" value="<?php echo $AppUI->_('submit'); ?>" class="button" onClick="submitIt()"></td>
+	<TD><input type="button" value="<?php echo $AppUI->_('back'); ?>" class="button" onclick="javascript:history.back(-1);"></td>
+	<TD align="right"><input type="button" value="<?php echo $AppUI->_('submit'); ?>" class="button" onclick="submitIt()"></td>
 </tr>
 </form>
 </TABLE>

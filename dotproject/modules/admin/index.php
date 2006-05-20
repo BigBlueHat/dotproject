@@ -103,7 +103,7 @@ function delMe( x, y ) {
 </script>
 
 <?php
-$extra = '<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onClick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>';
+$extra = '<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>';
 
 // tabbed information boxes
 $tabBox = new CTabBox( "?m=admin", "{$dPconfig['root_dir']}/modules/admin/", $tab );

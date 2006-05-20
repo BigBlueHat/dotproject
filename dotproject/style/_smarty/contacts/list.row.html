@@ -7,7 +7,7 @@
 				&nbsp;<a title="{dPtranslate word='Export vCard for'} {$contact.contact_first_name} {$contact.contact_last_name}" href="?m=contacts&a=vcardexport&suppressHeaders=true&contact_id={$contactid}" >(vCard)</a>
                                 &nbsp;<a title="{dPtranslate word='Edit'}" href="?m=contacts&a=addedit&contact_id={$contactid}">{dPtranslate word='Edit'}</a>
 				{if $contact_has_projects == true}
-   					&nbsp;<a href="" onClick="window.open('./index.php?m=public&a=selector&dialog=1&callback=goProject&table=projects&user_id={$contactid}', 'selector', 'left=50,top=50,height=250,width=400,resizable')
+   					&nbsp;<a href="" onclick="window.open('./index.php?m=public&a=selector&dialog=1&callback=goProject&table=projects&user_id={$contactid}', 'selector', 'left=50,top=50,height=250,width=400,resizable')
 return false;">(Projects)</a>
 				{/if}
 			</td>
