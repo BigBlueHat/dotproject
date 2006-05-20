@@ -22,9 +22,9 @@ $filters = $titleBlock->addFiltersCell($filters_selection);
 
 if ($canAuthor) {
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new project').'">', '',
-		'<form action="?m=projects&a=addedit" method="post">', '</form>'
-	);
+		'<form action="?m=projects&amp;a=addedit" method="post">
+			<input type="submit" class="button" value="'.$AppUI->_('new project').'" />
+		</form>', '',	'', '');
 }
 $titleBlock->show();
 

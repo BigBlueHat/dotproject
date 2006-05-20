@@ -16,24 +16,33 @@ class CTabBox extends CTabBox_core {
 		$s = '';
 	// tabbed / flat view options
 		if (@$AppUI->getPref( 'TABVIEW' ) == 0) {
-			$s .= "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
-			$s .= "<tr>\n";
-			$s .= "<td nowrap=\"nowrap\">";
-			$s .= "<a href=\"".$this->baseHRef."tab=0\">".$AppUI->_('tabbed')."</a> : ";
-			$s .= "<a href=\"".$this->baseHRef."tab=-1\">".$AppUI->_('flat')."</a>";
-			$s .= "</td>\n".$extra."\n</tr>\n</table>\n";
+			$s .= '
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tr>
+	<td nowrap="nowrap">
+		<a href="'.$this->baseHRef.'tab=0">'.$AppUI->_('tabbed').'</a> : 
+		<a href="'.$this->baseHRef.'tab=-1">'.$AppUI->_('flat').'</a>
+	</td>'
+	.$extra.'
+</tr>
+</table>'."\n";
 			echo $s;
 		} else {
 			if ($extra) {
-				echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n<tr>\n".$extra."</tr>\n</table>\n";
+				echo '
+<table border="0" cellpadding="2" cellspacing="0" width="100%">
+<tr>'
+.$extra.'
+</tr>
+</table>'."\n";
 			} else {
-				echo "<img src=\"./images/shim.gif\" height=\"10\" width=\"1\" alt=\"\" />";
+				echo '<img src="./images/shim.gif" height="10" width="1" alt="" />';
 			}
 		}
 
 		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 ) {
 		// flat view, active = -1
-			echo "<table border=\"0\" cellpadding=\"2\" cellspacing=\"0\" width=\"100%\">\n";
+			echo '<table border="0" cellpadding="2" cellspacing="0" width="100%">'."\n";
 			foreach ($this->tabs as $k => $v) {
 				echo "<tr><td><strong>".($v[2] ? $v[1] : $AppUI->_($v[1]))."</strong></td></tr>\n";
 				echo "<tr><td>";
@@ -45,23 +54,31 @@ class CTabBox extends CTabBox_core {
 			echo "</table>\n";
 		} else {
 		// tabbed view
-			$s = '<table width="100%" border="0" cellpadding="0" cellspacing="0">';
-			$s .= '<tr><td><table border="0" cellpadding="0" cellspacing="0">';
+			$s = '
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+	<td>
+		<table border="0" cellpadding="0" cellspacing="0">
+		<tr>';
 			
-			if ( count($this->tabs)-1 < $this->active ) {
+			if ( count($this->tabs)-1 < $this->active )
 				//Last selected tab is not available in this view. eg. Child tasks
 				$this->active = 0;
-			}
+	
 			foreach( $this->tabs as $k => $v ) {
 				$class = ($k == $this->active) ? 'tabon' : 'taboff';
 				$sel = ($k == $this->active) ? 'Selected' : '';
-				$s .= '<td height="28" valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt="" /></td>';
-				$s .= '<td id="toptab_'.$k.'" valign="middle" nowrap="nowrap"';
+				$s .= '
+			<td height="28" valign="middle" width="3">
+				<img src="./style/' . $uistyle . '/images/tab'.$sel.'Left.png" width="3" height="28" border="0" alt="" />
+			</td>
+			<td id="toptab_'.$k.'" valign="middle" nowrap="nowrap"';
 				if ($js_tabs)
 					$s .= " class=\"$class\"";
 				else
-					$s .= ' background="./style/'.$uistyle.'/images/tab'.$sel.'Bg.png"';
-				$s .= '>&nbsp;<a href="';
+					$s .= ' style="background: url(\'./style/'.$uistyle.'/images/tab'.$sel.'Bg.png\')"';
+				$s .= '>&nbsp;
+				<a href="';
 				if ($this->javascript)
 					$s .= "javascript:" . $this->javascript . "({$this->active}, $k)";
 				else if  ($js_tabs)
@@ -69,11 +86,21 @@ class CTabBox extends CTabBox_core {
 				else
 					$s .= $this->baseHRef.'tab='.$k;
 				$s .='">'.($v[2] ? $v[1] : $AppUI->_($v[1])).'</a>&nbsp;</td>';
-				$s .= '<td valign="middle" width="3"><img src="./style/' . $uistyle . '/images/tab'.$sel.'Right.png" width="3" height="28" border="0" alt="" /></td>';
-				$s .= '<td width="3" class="tabsp"><img src="./images/shim.gif" height="1" width="3" /></td>';
+				$s .= '
+			<td valign="middle" width="3">
+				<img src="./style/' . $uistyle . '/images/tab'.$sel.'Right.png" width="3" height="28" border="0" alt="" />
+			</td>
+			<td width="3" class="tabsp">
+				<img src="./images/shim.gif" alt="shim" height="1" width="3" />
+			</td>';
 			}
-			$s .= '</table></td></tr>';
-			$s .= '<tr><td width="100%" colspan="'.(count($this->tabs)*4 + 1).'" class="tabox">';
+			$s .= '
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td width="100%" colspan="'.(count($this->tabs)*4 + 1).'" class="tabox">';
 			echo $s;
 			//Will be null if the previous selection tab is not available in the new window eg. Children tasks
 			if ( $this->tabs[$this->active][0] != "" ) {

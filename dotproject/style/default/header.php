@@ -23,11 +23,11 @@ else
 <body onload="this.focus();">
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
-	<td><table width='100%' cellpadding=3 cellspacing=0 border=0><tr>
-	<th background="style/<?php echo $uistyle;?>/images/titlegrad.jpg" class="banner" align="left"><strong><?php
-		echo "<a style='color: white' href='{$dPconfig['base_url']}'>$page_title</a>";
+	<td><table width="100%" cellpadding=3 cellspacing=0 border=0><tr>
+	<th style="background:url('style/<?php echo $uistyle;?>/images/titlegrad.jpg')" class="banner" align="left"><strong><?php
+		echo '<a style="color: white" href="'.$dPconfig['base_url'].'">'.$page_title.'</a>';
 	?></strong></th>
-	<th align="right" width='50'><a href='http://www.dotproject.net/' <?php if ($dialog) echo "target='_blank'"; ?>><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" border=0></a></th>
+	<th align="right" width="50"><a href="http://www.dotproject.net/" <?php if ($dialog) echo 'target="_blank"'; ?>><img src="style/<?php echo $uistyle;?>/images/dp_icon.gif" alt="dotProject icon" border="0" /></a></th>
 	</tr></table></td>
 </tr>
 <?php if (!$dialog) {
@@ -37,7 +37,7 @@ else
 ?>
 <tr>
 	<td class="nav" align="left">
-	<table width="100%" cellpadding="3" cellspacing="0" width="100%">
+	<table cellpadding="3" cellspacing="0" width="100%">
 	<tr>
 		<td>
 		<?php
@@ -51,9 +51,9 @@ else
 		echo "\n";
 		?>
 		</td>
-		<form name="frm_new" method=GET action="./index.php">
+		<td nowrap="nowrap" align="right">';
+		<form name="frm_new" method="get" action="./index.php">
 <?php
-	echo '        <td nowrap="nowrap" align="right">';
 	$newItem = array( ""=>'- New Item -' );
 	if ($perms->checkModule( 'companies', 'add' )) $newItem["companies"] = "Company";
 	if ($perms->checkModule( 'contacts', 'add' )) $newItem["contacts"] = "Contact";
@@ -62,10 +62,6 @@ else
 	if ($perms->checkModule( 'projects', 'add' )) $newItem["projects"] = "Project";
 
 	echo arraySelect( $newItem, 'm', 'style="font-size:10px" onChange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"', '', true);
-
-	echo "</td>\n";
-	echo "        <input type=\"hidden\" name=\"a\" value=\"addedit\" />\n";
-
 //build URI string
 	if (isset( $company_id )) {
 		echo '<input type="hidden" name="company_id" value="'.$company_id.'" />';
@@ -77,6 +73,7 @@ else
 		echo '<input type="hidden" name="file_id" value="'.$file_id.'" />';
 	}
 ?>
+		<input type="hidden" name="a" value="addedit" />'."\n";
 		</form>
 		</td>
 	</tr>
@@ -90,12 +87,12 @@ else
 			<td width="100%"><?php echo $AppUI->_('Welcome')." $AppUI->user_first_name $AppUI->user_last_name"; ?></td>
 			<td nowrap="nowrap">
 				<?php echo dPcontextHelp( 'Help' );?> |
-				<a href="./index.php?m=admin&a=viewuser&user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
+				<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id=<?php echo $AppUI->user_id;?>"><?php echo $AppUI->_('My Info');?></a> |
 <?php
 	if ($perms->checkModule('calendar', 'access')) {
 		$now = new CDate();
-?>                              <b><a href="./index.php?m=tasks&a=todo"><?php echo $AppUI->_('Todo');?></a></b> |
-				<a href="./index.php?m=calendar&a=day_view&date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |
+?>                              <b><a href="./index.php?m=tasks&amp;a=todo"><?php echo $AppUI->_('Todo');?></a></b> |
+				<a href="./index.php?m=calendar&amp;a=day_view&amp;date=<?php echo $now->format( FMT_TIMESTAMP_DATE );?>"><?php echo $AppUI->_('Today');?></a> |
 <?php } ?>
 				<?php
 				if ($perms->checkModule('links', 'access')) {

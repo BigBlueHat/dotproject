@@ -2,36 +2,38 @@
 <form action="./index.php" method="get">
 {/if}
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
-	<tr>
 {if $showFilters}
+<tr>
 	<td align="right" nowrap="nowrap" colspan="{$cols-2}"></td>
-	<td align="right" nowrap="nowrap"><form action="?m=admin&a=viewuser&user_id={$user_id}&tab={$tab}" method="post" name="pickCompany">{$buffer}</form></td>
-	<td align="right" nowrap="nowrap"><form action="?m=admin&a=viewuser&user_id={$user_id}&tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
+	<td align="right" nowrap="nowrap"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickCompany">{$buffer}</form></td>
+	<td align="right" nowrap="nowrap"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
+</tr>
 {/if}
-	</tr>
 	<tr>
 {section name=i loop=$show}
-	  <th><a href="{$current_url}&orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
+	  <th><a href="{$current_url}&amp;orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
 {/section}
 	{if $editProjects}
 	  <th>Edit</th>
 	{/if}
 	</tr>
 {if !$rows}
-	<td align="left" nowrap="nowrap" colspan="{$cols}">{dPtranslate sentence='No data available'}<br />{$msg}</td>
+	<tr>
+		<td align="left" nowrap="nowrap" colspan="{$cols}">{dPtranslate sentence='No data available'}<br />{$msg}</td>
+	</tr>
 {else}
 	{*{section name=i loop=$rows}*}
 {foreach from=$rows item=row}
 	<tr onMouseOver="setPointer(this, '#FFFFB0')" onMouseOut="setPointer(this, '')">
 	{section name=j loop=$show}
 		{if $show[j] == 'project_name'}
-			<td width="50%"><a href="?m=projects&a=view&project_id={$row.project_id}">{$row.project_name}</a></td>
+			<td width="50%"><a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}">{$row.project_name}</a></td>
 		{elseif $show[j] == 'project_priority'}
 			<td>
 			{if $row.project_priority < 0}
-				<img src="./images/icons/low.gif" width="13" height="16">
+				<img src="./images/icons/low.gif" width="13" height="16" />
 			{elseif $row.project_priority > 0}
-				<img src="./images/icons/{$row.project_priority}.gif" width="13" height="16">
+				<img src="./images/icons/{$row.project_priority}.gif" width="13" height="16" />
 			{/if}
 			</td>
 		{elseif $show[j] == 'project_owner'}

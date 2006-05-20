@@ -31,7 +31,7 @@ function smarty_function_dPshowImage($params, &$smarty)
     $return = '';
     if ($src)
     {
-	  	$result = '<img src="' . $src . '" align="center"';
+	  	$result = '<img src="' . $src . '"'; // align="center"';
   		if ($wsize)
 		    $result .= ' width="' . $wsize . '"';
 		  if ($hsize)

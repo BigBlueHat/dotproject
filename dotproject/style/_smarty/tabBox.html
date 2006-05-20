@@ -16,14 +16,14 @@
 	</tr>
 </table>
 	{else}
-	<img src="./images/shim.gif" height="10" width="1" />
+	<img src="./images/shim.gif" alt="shim" height="10" width="1" />
 	{/if}
 {/if}
 
-		{if $active < 0 || $tabview == 2}
+{if $active < 0 || $tabview == 2}
 		{* flat view, active = -1 *}
 <table border="0" cellpadding="2" cellspacing="0" width="100%">
-{foreach from=$tabs item=v key=k}
+	{foreach from=$tabs item=v key=k}
 	<tr>
 		<td><strong>{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</strong></td>
 	</tr>
@@ -36,7 +36,7 @@
 		{dPrequire file=$base.$v[0].'.php'}
 		</td>
 	</tr>
-{/foreach}
+	{/foreach}
 </table>
 {else}
 {* tabbed view *}

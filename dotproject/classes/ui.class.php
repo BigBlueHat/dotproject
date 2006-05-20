@@ -270,7 +270,7 @@ class CAppUI {
 
 		// check whether the filename contained bad characters
 		if ( strpos( strtr( $file, $bad_chars, $bad_replace), '.') !== false ) {
-			$AppUI->redirect( "m=public&a=access_denied" );
+			$AppUI->redirect( "m=public&amp;a=access_denied" );
 		}
 		else {
 			return $file;
@@ -550,7 +550,7 @@ class CAppUI {
 		  if (!$params)
 		    $params = $session_id;
 		  else
-		    $params .= "&" . $session_id;
+		    $params .= "&amp;" . $session_id;
 		}
 		ob_implicit_flush(); // Ensure any buffering is disabled.
 		header( "Location: index.php?$params" );
@@ -976,7 +976,7 @@ the active tab, and the selected tab **/
 	{
 		$this->tabs = array();
 		$this->active = $active;
-		$this->baseHRef = ($baseHRef ? "$baseHRef&" : "?");
+		$this->baseHRef = ($baseHRef ? "$baseHRef&amp;" : "?");
 		$this->javascript = $javascript;
 		$this->baseInc = $baseInc;
 	}

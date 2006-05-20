@@ -122,7 +122,7 @@ function contextHelp( $title, $link='' )
 function dPcontextHelp( $title, $link='' )
 {
 	global $AppUI;
-	return "<a href=\"#$link\" onClick=\"javascript:window.open('?m=help&dialog=1&hid=$link', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">".$AppUI->_($title)."</a>";
+	return "<a href=\"#$link\" onClick=\"javascript:window.open('?m=help&amp;dialog=1&amp;hid=$link', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">".$AppUI->_($title)."</a>";
 }
 
 
@@ -276,16 +276,18 @@ function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' )
 		if ($src == '')
 			return '';
 
-		$result = "<img src='$src' align='center'";
+		$result = "<img src='$src'"; //align='center'";
 		if ($wid)
 		  $result .= " width='$wid'";
 		if ($hgt)
 		  $result .= " height='$hgt'";
-		if ($alt)
-		  $result .= " alt='" . $AppUI->_($alt) . "'";
+		if (empty($alt))
+			$alt = substr($src, 0, -4);
+	  $result .= " alt='" . $AppUI->_($alt) . "'";
+
 		if ($title)
 		  $result .= " title='" . $AppUI->_($title) . "'";
-		$result .= " border='0'>";
+		$result .= ' border="0" />';
 
 		return $result;
 	// }
