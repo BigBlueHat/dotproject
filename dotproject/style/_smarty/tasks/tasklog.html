@@ -1,14 +1,14 @@
 {if $project_id}
-<table border="0" cellpadding="2" cellspacing="1" width="100%" class="std">
 <form name="frmFilter" action="./index.php" method="get">
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="std">
 <tr>
 	<td width="98%">&nbsp;</td>
 	<td width="1%" nowrap="nowrap">
-		<input type="checkbox" name="hide_inactive" {if $hide_inactive}checked{/if} onchange="document.frmFilter.submit()">
+		<input type="checkbox" name="hide_inactive" {if $hide_inactive}checked{/if} onchange="document.frmFilter.submit()" />
 		{dPtranslate word='Hide Inactive'}
 	</td>
 	<td width="1%" nowrap="nowrap">
-		<input type="checkbox" name="hide_complete" {if $hide_complete}checked{/if} onchange="document.frmFilter.submit()">
+		<input type="checkbox" name="hide_complete" {if $hide_complete}checked{/if} onchange="document.frmFilter.submit()" />
 		{dPtranslate word='Hide 100% Complete'}
 	</td>
 	<td width="1%" nowrap="nowrap">{dPtranslate word='User Filter'}</td>
@@ -20,21 +20,22 @@
 		{dParraySelect array=$task_log_costcodes name='cost_code' extras='size="1" class="text" onchange="document.frmFilter.submit()"' value=$cost_code}
 	</td>
 </tr>
+</table>
+
 <input type="hidden" name="m" value="projects"/>
 <input type="hidden" name="a" value="view"/>
 <input type="hidden" name="project_id" value="{$project_id}"/>
 <input type="hidden" name="tab" value="{$tab}"/>
 </form>
-</table>
 {/if}
 
-<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
 <form name="frmDelete2" action="./index.php?m=tasks" method="post">
-	<input type="hidden" name="dosql" value="do_updatetask">
+	<input type="hidden" name="dosql" value="do_updatetask" />
 	<input type="hidden" name="del" value="1" />
 	<input type="hidden" name="task_log_id" value="0" />
 </form>
 
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
 <tr>
 	<th></th>
 	<th>{dPtranslate word='Date'}</th>

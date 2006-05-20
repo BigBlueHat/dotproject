@@ -1,15 +1,15 @@
-<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
-
 <form name="frmDelete" action="./index.php?m=projects" method="post">
 	<input type="hidden" name="dosql" value="do_project_aed" />
 	<input type="hidden" name="del" value="1" />
 	<input type="hidden" name="project_id" value="{$project_id}" />
 </form>
 
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
+
 <tr>
 	<td style="border: outset #d1d1cd 1px;background-color:#{$obj->project_color_identifier}" colspan="2">
 		<span style="color: {dPbestColor bg=$obj->project_color_identifier};">
-			<strong>{$obj->project_name}<strong>
+			<strong>{$obj->project_name}</strong>
 		</span>
 	</td>
 </tr>
@@ -21,13 +21,13 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Company'}:</td>
 {if $viewCompany}
-            			<td class="hilite" width="100%">
-            				<a href="?m=companies&amp;a=view&amp;company_id={$obj->project_company}">
-											{$obj->company_name|escape:"html"}
-										</a>
-									</td>
+			<td class="hilite" width="100%">
+				<a href="?m=companies&amp;a=view&amp;company_id={$obj->project_company}">
+					{$obj->company_name|escape:"html"}
+				</a>
+			</td>
 {else}
-            			<td class="hilite" width="100%">{$obj->company_name|escape:"html"}</td>
+			<td class="hilite" width="100%">{$obj->company_name|escape:"html"}</td>
 {/if}
 		</tr>
 		<tr>
@@ -82,14 +82,18 @@
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='URL'}:</td>
-			<td class="hilite">
-				<a href="{$obj->project_url}" target="_new">{$obj->project_url}</a>
+			<td class="hilite">&nbsp;
+				{if $obj->project_url}
+				<a href="{$obj->project_url}" target="_blank">{$obj->project_url}</a>
+				{/if}
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Staging URL'}:</td>
-			<td class="hilite">
-				<a href="{$obj->project_demo_url}" target="_new">{$obj->project_demo_url}</a>
+			<td class="hilite">&nbsp;
+				{if $obj->project_demo_url}
+				<a href="{$obj->project_demo_url}" target="_blank">{$obj->project_demo_url}</a>
+				{/if}
 			</td>
 		</tr>
 		<tr>
@@ -157,29 +161,29 @@
 			<td class="hilite" width="100%">{$total_project_hours}</td>
 		</tr>				
 {if $departments}
-	    <tr>
-	    	<td><strong>{dPtranslate word="Departments"}</strong></td>
-	    </tr>
-	    <tr>
-	    	<td colspan="3" class="hilite">
+		<tr>
+			<td><strong>{dPtranslate word="Departments"}</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3" class="hilite">
 	{foreach from=$departments item=department key=dept_id}
-	    		<div>
+				<div>
 		    		{$department.dept_name}
 		    		{if $department.dept_phone}
 			    		({$department.dept_phone})
 		    		{/if}
-	    		</div>
+				</div>
 	{/foreach}
-	    	</td>
-	    </tr>
+			</td>
+		</tr>
 {/if}
 			
 {if $contacts}
-			    <tr>
-			    	<td><strong>{dPtranslate word="Contacts"}</strong></td>
-			    </tr>
-			    <tr>
-			    	<td colspan="3" class="hilite">
+		<tr>
+			<td><strong>{dPtranslate word="Contacts"}</strong></td>
+		</tr>
+		<tr>
+			<td colspan="3" class="hilite">
 			    		
 			    		<table cellspacing="1" cellpadding="2" border="0" width="100%" bgcolor="black">
 			    		<tr>

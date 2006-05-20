@@ -18,7 +18,7 @@ GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditC
 */
 
 if (empty($query_string)) {
-        $query_string = "?m=$m&a=$a";
+        $query_string = "?m=$m&amp;a=$a";
 }
 
 // Number of columns (used to calculate how many columns to span things through)

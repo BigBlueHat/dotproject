@@ -13,7 +13,7 @@
   $q->addOrder('billingcode_name');
   $q->addWhere('(company_id = 0 OR company_id = ' . $company_id . ')');
   $task_log_costcodes = $q->loadHashList();
-	$task_log_costcodes[0] = '';
+	$task_log_costcodes[0] = '&nbsp;';
 	ksort($task_log_costcodes);
 	
 	$q->addTable('users');
@@ -83,7 +83,8 @@ $tpl->assign('rows', $logs);
 $tpl->displayFile('tasklog', 'tasks');
 
 ?>
-<script language="JavaScript">
+
+<script type="text/javascript" language="JavaScript">
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions

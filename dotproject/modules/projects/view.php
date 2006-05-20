@@ -8,7 +8,7 @@ $canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 $canEditT = $perms->checkModule( 'tasks', 'add');
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=public&amp;a=access_denied" );
 }
 
 // retrieve any state parameters
@@ -23,7 +23,7 @@ $obj = new CProject();
 // Now check if the proect is editable/viewable.
 $denied = $obj->getDeniedRecords($AppUI->user_id);
 if (in_array($project_id, $denied)) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect( "m=public&amp;a=access_denied" );
 }
 
 $canDelete = $obj->canDelete( $msg, $project_id );
@@ -171,42 +171,44 @@ if (isset( $_POST['searchtext'] )) {
 $search_text = $AppUI->getState('searchtext') ? $AppUI->getState('searchtext'):'';
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Search') . ':' );
 $titleBlock->addCell(
-	'<input type="text" class="text" SIZE="10" name="searchtext" onChange="document.searchfilter.submit();" value=' . "'$search_text'" .
-	'title="'. $AppUI->_('Search in name and description fields') . '"/>
-       	<!--<input type="submit" class="button" value=">" title="'. $AppUI->_('Search in name and description fields') . '"/>-->', '',
-	'<form action="?m=projects&a=view&project_id='.$project_id.'" method="post" id="searchfilter">', '</form>'
-);
+	'
+<form action="?m=projects&amp;a=view&amp;project_id='.$project_id.'" method="post" id="searchfilter">
+	<input type="text" class="text" SIZE="10" name="searchtext" onChange="document.searchfilter.submit();" value="'.$search_text.'" title="'. $AppUI->_('Search in name and description fields') . '" />
+</form>', '', '', '');
 
 if ($canEditT) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-		'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
-	);
+		'
+<form action="?m=tasks&amp;a=addedit&amp;task_project=' . $project_id . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new task').'" />
+</form>', '',	'', '');
 }
 if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
-		'<form action="?m=calendar&a=addedit&event_project=' . $project_id . '" method="post">', '</form>'
-	);
+		'
+<form action="?m=calendar&amp;a=addedit&amp;event_project=' . $project_id . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new event').'" />
+</form>', '', '', '');
 
 	$titleBlock->addCell();
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
-		'<form action="?m=files&a=addedit&project_id=' . $project_id . '" method="post">', '</form>'
-	);
+		'
+<form action="?m=files&amp;a=addedit&amp;project_id=' . $project_id . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new file').'" />
+</form>', '',	'', '');
 
 }
 $titleBlock->addCrumb( '?m=projects', 'projects list' );
 if ($canEdit) {
-	$titleBlock->addCrumb( '?m=projects&a=addedit&project_id='.$project_id, 'edit this project' );
+	$titleBlock->addCrumb( '?m=projects&amp;a=addedit&amp;project_id='.$project_id, 'edit this project' );
 	if ($canDelete) {
 		$titleBlock->addCrumbDelete( 'delete project', $canDelete, $msg );
 	}
-	$titleBlock->addCrumb('?m=tasks&a=organize&project_id='.$project_id, 'organize tasks');
+	$titleBlock->addCrumb('?m=tasks&amp;a=organize&amp;project_id='.$project_id, 'organize tasks');
 }
-$titleBlock->addCrumb( '?m=reports&project_id='.$project_id, 'reports' );
+$titleBlock->addCrumb( '?m=reports&amp;project_id='.$project_id, 'reports' );
 $titleBlock->show();
 
 require_once($baseDir . '/classes/CustomFields.class.php');
@@ -231,7 +233,7 @@ $tpl->assign('contacts', $contacts);
 $tpl->displayView($obj);
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -247,8 +249,8 @@ function delIt() {
 </script>
 
 <?php
-$tabBox = new CTabBox( "?m=projects&a=view&project_id=$project_id", "", $tab );
-$query_string = "?m=projects&a=view&project_id=$project_id";
+$tabBox = new CTabBox( "?m=projects&amp;a=view&amp;project_id=$project_id", "", $tab );
+$query_string = "?m=projects&amp;a=view&amp;project_id=$project_id";
 // tabbed information boxes
 // Note that we now control these based upon module requirements.
 
