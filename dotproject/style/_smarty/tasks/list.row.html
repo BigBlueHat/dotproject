@@ -33,9 +33,11 @@
 {* priority *}
 	<td align="center" nowrap="nowrap">
 {assign var='img_priority' value=$obj.task_priority}
-{if $obj.task_priority < 0}
-{assign var='img_priority' value="priority-$img_priority.gif"}
-{else if $obj.task_priority > 0}
+{if $obj.task_priority == '0'}
+{assign var='img_priority' value=false}
+{elseif $obj.task_priority < 0}
+{assign var='img_priority' value="priority$img_priority.gif"}
+{elseif $obj.task_priority > 0}
 {assign var='img_priority' value="priority+$img_priority.gif"}
 {/if}
 {if $img_priority}

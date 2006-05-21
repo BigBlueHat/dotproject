@@ -104,7 +104,7 @@
 			{/if}
 </tr>
 			{foreach from=$p.tasks item=task}
-				{include file="tasks/list.row.html" obj=$task}
+				{include file="_smarty/tasks/list.row.html" obj=$task}
 			{/foreach}
 
 		{if !$min_view}

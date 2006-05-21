@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta name="Description" content="dotProject Default Style" />
+	<meta name="Version" content="{$version}" />
+	<meta http-equiv="Content-Type" content="text/html;charset={$charset}" />
+	<title>{$config.page_title}</title>
+	<link rel="stylesheet" type="text/css" href="style/print.css" media="print" />
+	<link rel="stylesheet" type="text/css" href="./style/{$uistyle}/main.css" media="all" />
+	<link rel="stylesheet" type="text/css" media="all" href="{$config.base_url}/lib/calendar/calendar-dp.css" title="blue" />
+	<style type="text/css" media="all">@import "./style/{$uistyle}/main.css";</style>
+	<link rel="shortcut icon" href="./style/{$uistyle}/images/favicon.ico" type="image/ico" />
+	{$js}
+</head>
+
+<body onload="this.focus();">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td>
+		<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<th style="background:url('style/{$uistyle}/images/titlegrad.jpg')" class="banner" align="left">
+				<strong>
+				<a style="color: white" href="{$config.base_url}">{$page_title}</a>
+				</strong>
+			</th>
+			<th align="right" width="50">
+				<a href="http://www.dotproject.net/"{if $dialog} target="_blank"{/if}>
+					<img src="style/{$uistyle}/images/dp_icon.gif" alt="dotProject icon" border="0" /></a>
+			</th>
+		</tr>
+		</table>
+	</td>
+</tr>
+{if !$dialog}
+<tr>
+	<td class="nav" align="left">
+	<table cellpadding="3" cellspacing="0" width="100%">
+	<tr>
+		<td>{$links}</td>
+		<td nowrap="nowrap" align="right">
+		<form name="frm_new" method="get" action="./index.php">
+		{dParraySelect array=$new_item name='m' extras='style="font-size:10px" onchange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"' value='' translation=true}
+	{if $company_id}
+		<input type="hidden" name="company_id" value="{$company_id}" />
+	{/if}
+	{if $task_id}
+		<input type="hidden" name="task_parent" value="{$task_id}" />
+	{/if}
+	{if $file_id}
+		<input type="hidden" name="file_id" value="{$file_id}" />
+	{/if}
+		<input type="hidden" name="a" value="addedit" />
+		</form>
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+		<tr>
+			<td width="100%">{dPtranslate word='Welcome'} {$user_name}</td>
+			<td nowrap="nowrap">
+				<a href="#" onclick="javascript:window.open('?m=help&amp;dialog=1', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')">{dPtranslate word='Help'}</a> |
+				<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id={$user_id}">{dPtranslate word='My Info'}</a> |
+	{if $access_calendar}
+	         <b><a href="./index.php?m=tasks&amp;a=todo">{dPtranslate word='Todo'}</a></b> |
+				<a href="./index.php?m=calendar&amp;a=day_view&amp;date={dPdateFormat cdate=$now}">{dPtranslate word='Today'}</a> |
+	{/if}
+	{if $access_links}
+				<a href="./index.php?m=links">{dPtranslate word='Links'}</a> |
+	{/if}
+				<a href="javascript:void(0);" onclick="window.print();return false;">{dPtranslate word='Print'}</a> | 
+				<a href="./index.php?logout=-1">{dPtranslate word='Logout'}</a>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+{/if} {* dialog *}
+</table>
+
+<table width="100%" cellspacing="0" cellpadding="4" border="0">
+<tr class="print">
+	<td valign="top" align="left" width="98%">
+	{$msg}

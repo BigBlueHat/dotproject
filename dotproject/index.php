@@ -121,7 +121,11 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 		require($baseDir . '/includes/sendpass.php');
 		sendNewPass();
 	} else {
-		$tpl->displayStyle('lostpass');
+		$_GET['dialog'] = 1;
+		$tpl->assign('redirect', $redirect);
+		$tpl->displayHeader();
+		$tpl->displayFile('lostpass', '.');
+		$tpl->displayFile('footer', '.');
 	}
 	exit();
 }
@@ -186,7 +190,18 @@ else if ($AppUI->doLogin()) {
 	if ($dPconfig['auth_method'] == 'http_ba' )
 		$AppUI->redirect( 'login=http_ba&redirect='.$redirect );
 	else
-		$tpl->displayStyle('login');
+	{
+		$_GET['dialog'] = 1;
+
+		$tpl->assign('phpversion', phpversion());
+		$tpl->assign('mysql', function_exists('mysql_pconnect'));
+		$tpl->assign('redirect', $redirect);
+		$tpl->assign('loginFromPage', $loginFromPage);
+
+		$tpl->displayHeader();
+		$tpl->displayFile('login', '.');
+		$tpl->displayFile('footer', '.');
+	}
 	
 	// destroy the current session and output login page
 	session_unset();
@@ -328,12 +343,10 @@ if (isset($_REQUEST['dosql'])) {
 }
 
 // start output proper
-$tpl->displayStyle('overrides');
+$tpl->loadOverrides();
 ob_start();
-if(!$suppressHeaders) {
-	$style_extras = '<link rel="stylesheet" type="text/css" href="style/print.css" media="print" />';
-	$tpl->displayStyle('header');
-}
+if(!$suppressHeaders)
+	$tpl->displayHeader();
 
 $setuptime = (array_sum(explode(' ',microtime())) - $time);
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . $a . '.php';
@@ -362,7 +375,8 @@ if (!$suppressHeaders && !$dialog) {
 		$tpl->displayFile('debug', '.');
 	}
 	
-	$tpl->displayStyle('footer');
+	$tpl->assign('msg', $AppUI->getMsg());
+	$tpl->displayFile('footer', '.');
 }
 ob_end_flush();
 ?>

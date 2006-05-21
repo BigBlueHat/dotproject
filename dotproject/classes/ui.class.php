@@ -922,11 +922,14 @@ class CAppUI {
 	    }
 	  }
 	  asort($js_files);
+	  $js = '';
 	  while(list(,$js_file_name) = each($js_files)){
-		  echo "<script type=\"text/javascript\" src=\"{$base}js/$js_file_name\"></script>\n";
+		  $js .= "<script type=\"text/javascript\" src=\"{$base}js/$js_file_name\"></script>\n";
 		  }
-		echo "<script type=\"text/javascript\" src=\"{$base}lib/overlib/overlib.js\"></script>\n";
-		$this->getModuleJS($m, $a, true);
+		$js .= "<script type=\"text/javascript\" src=\"{$base}lib/overlib/overlib.js\"></script>\n";
+		$js .= $this->getModuleJS($m, $a, true);
+		
+		return $js;
 	}
 
 	function getModuleJS($module, $file=null, $load_all = false)
@@ -938,12 +941,16 @@ class CAppUI {
 		$base = $dPconfig['base_url'];
 		if (substr($base, -1) != '/') 
 			$base .= '/';
+			
+		$js = '';
 		if ($load_all || ! $file) {
 			if (file_exists("{$root}modules/$module/$module.module.js"))
-				echo "<script type=\"text/javascript\" src=\"{$base}modules/$module/$module.module.js\"></script>\n";
+				$js .= "<script type=\"text/javascript\" src=\"{$base}modules/$module/$module.module.js\"></script>\n";
 		}
-	  if (isset($file) && file_exists("{$root}modules/$module/$file.js"))
-	    echo "<script type=\"text/javascript\" src=\"{$base}modules/$module/$file.js\"></script>\n";
+		if (isset($file) && file_exists("{$root}modules/$module/$file.js"))
+			$js .= "<script type=\"text/javascript\" src=\"{$base}modules/$module/$file.js\"></script>\n";
+		
+		return $js;
 	}
 
 }
@@ -1335,7 +1342,7 @@ class CTitleBlock_core {
 		else
 			$tpl->assign('crumbs', array());
 		
-		$tpl->display('titleBlock.html');
+		$tpl->displayFile('titleBlock', '.');
 	}
 }
 // !! Ensure there is no white space after this close php tag.

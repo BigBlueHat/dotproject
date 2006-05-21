@@ -12,23 +12,81 @@ class CTemplate extends Smarty
 	
 		parent::Smarty();
 		// $this->template_dir = $baseDir . '/style/' . $AppUI->getPref('template');
-		$this->template_dir = $baseDir . '/style/_smarty';
+		$this->template_dir = $baseDir . '/style/';
 		$this->compile_dir	= $baseDir . '/files/cache/smarty_templates';
-		$this->cache_dir		= $baseDir . '/files/cache/smarty';
+		$this->cache_dir	= $baseDir . '/files/cache/smarty';
 		$this->plugins_dir[]= $baseDir . '/includes/smarty';
 	}
 	
 	function init()
 	{
-		global $m, $a, $dPconfig, $baseUrl;
+		global $m, $a, $dPconfig, $baseUrl, $AppUI,
+		$company_id, $project_id, $task_id, $file_id;
+		
+		
 		$this->assign('template', $this->template_dir);
-		$this->assign('baseUrl', $baseUrl);
 		$this->assign('config', $dPconfig);
-		$this->assign('m', $m);
-		$this->assign('a', $a);
+		$this->assign('version', $AppUI->getVersion());
+		$this->assign('user_id', $AppUI->user_id);
+		$this->assign('user_name', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+		
+		foreach(array('baseUrl', 'm', 'a', 'company_id', 'task_id', 'file_id') as $global)
+			$this->assign($global, $$global);
 
 		$this->page = isset($_REQUEST['page'])?$_REQUEST['page']:1;
 		$this->assign('page', $this->page);
+	}
+	
+	function displayHeader()
+	{
+		global $locale_char_set, $uistyle, $AppUI;
+		
+		$perms = & $AppUI->acl();
+		
+		$dialog = dPgetParam( $_GET, 'dialog', 0 );
+		if (!$dialog)
+			$page_title = ($dPconfig['page_title'] == 'dotProject') ? $dPconfig['page_title'] . '&nbsp;' . $AppUI->getVersion() : $dPconfig['page_title'];
+
+		$this->assign('page_title', $page_title);
+		$this->assign('charset', isset( $locale_char_set ) ? $locale_char_set : 'UTF-8');
+		$this->assign('version', $AppUI->getVersion());
+		$this->assign('dialog', $dialog);
+		
+		$this->assign('access_calendar', $perms->checkModule('calendar', 'access'));
+		$this->assign('access_links', $perms->checkModule('links', 'access'));
+
+		$this->assign('msg', $AppUI->getMsg());
+		$this->assign('now', new CDate());
+		
+		$this->assign('js', $AppUI->loadJS());
+		$this->assign('uistyle', $uistyle);
+		$this->assign('style_extras', $style_extras);
+		
+		// top navigation menu
+		$nav = $AppUI->getMenuModules();
+		$perms =& $AppUI->acl();
+		$links = array();
+		foreach ($nav as $module) {
+			if ($perms->checkModule($module['mod_directory'], 'access')) {
+				$links[] = '<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
+			}
+		}
+		$this->assign('links', implode( ' | ', $links ));
+		
+		$newItem = array( '' => '- New Item -' );
+		if ($perms->checkModule( 'companies', 'add' )) 
+			$newItem['companies'] = 'Company';
+		if ($perms->checkModule( 'contacts', 'add' )) 
+			$newItem['contacts'] = 'Contact';
+		if ($perms->checkModule( 'calendar', 'add' )) 
+			$newItem['calendar'] = 'Event';
+		if ($perms->checkModule( 'files', 'add' )) 
+			$newItem['files'] = 'File';
+		if ($perms->checkModule( 'projects', 'add' )) 
+			$newItem['projects'] = 'Project';
+		$this->assign('new_item', $newItem);
+
+		$this->displayFile('header', '.');
 	}
 
 	/**
@@ -119,34 +177,43 @@ class CTemplate extends Smarty
 		$this->display('pagination.html', $module);
 	}
 	
-	function displayFile($file, $module = null)
+	function file($file, $module)
 	{
 		global $m;
 		
 		if ($module == null)
 			$module = $m;
-			
-		$this->display($module . '/' . $file . '.html');
+		
+		if ($module == '.')
+			$module = '';
+		else
+			$module .= '/';
+
+		$style = $this->template_dir;
+		if (is_file($baseDir . "/style/$style/$module$file.html"))
+			return "$style/$module$file.html";
+		else // default fallback
+			return "_smarty/$module$file.html";
+	}
+	
+	function displayFile($file, $module = null)
+	{
+		$this->display($this->file($file, $module));
 	}
 	
 	function fetchFile($file, $module = null)
 	{
-		global $m;
-		
-		if ($module == null)
-			$module = $m;
-			
-		return $this->fetch($module . '/' . $file . '.html');
+		return $this->fetch($this->file($file, $module));
 	}
 	
-	function displayStyle($file)
+	function loadOverrides()
 	{
-		global $baseDir, $dPconfig, $AppUI;
-		global $file_id, $company_id, $task_id;
+		global $baseDir, $dPconfig, $AppUI, $uistyle;
+/*		global $file_id, $company_id, $task_id;
 		global $currentTabId, $currentTabName;
-		global $uistyle, $style_extras;
+		global $uistyle, $style_extras; */
 				
-		include($baseDir . '/style/' . $uistyle . '/' . $file . '.php');
+		include($baseDir . '/style/' . $uistyle . '/overrides.php');
 	}
 }
 ?>
