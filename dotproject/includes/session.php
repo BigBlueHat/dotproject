@@ -70,9 +70,9 @@ function dPsessionWrite($id, $data)
 	$q->addQuery('count(*) as row_count');
 	$q->addTable('sessions');
 	$q->addWhere("session_id = '$id'");
+	$qid = $q->loadResult();
 
-	if ( $qid =& $q->exec() 
-	&& ( @$qid->fields['row_count'] > 0 || @$qid->fields[0] > 0) ) {
+	if ( $qid > 0 ) {
 		dprint(__FILE__, __LINE__, 11, "Updating session $id");
 		$q->query = null;
 		$q->addUpdate('session_data', $data);

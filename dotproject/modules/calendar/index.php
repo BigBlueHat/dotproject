@@ -174,5 +174,5 @@ $tpl->assign('cal_prev', $minical->show());
 $minical->setDate( $cal->next_month );
 $tpl->assign('cal_next', $minical->show());
 
-$tpl->display('calendar/view.month.html');
+$tpl->displayFile('view.month', 'calendar');
 ?>

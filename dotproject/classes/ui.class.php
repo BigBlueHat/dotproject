@@ -1023,7 +1023,7 @@ the active tab, and the selected tab **/
 	function show( $extra='', $js_tabs = false )
 	{
 		global $AppUI, $currentTabId, $currentTabName, $tpl;
-		echo '';//$this->fetch($extra, $js_tabs);
+		echo $this->fetch($extra, $js_tabs);
 	}
 	
 	function fetch( $extra='', $js_tabs = false )
@@ -1051,7 +1051,7 @@ the active tab, and the selected tab **/
 					//require 
 			}
 		
-		return $tpl->fetch('tabBox.html');
+		return $tpl->fetchFile('tabBox', '.');
 
 /*		
 		// tabbed / flat view options
@@ -1310,7 +1310,7 @@ class CTitleBlock_core {
 		else
 			$tpl->assign('msg', '');
 			
-		$this->addCrumbRight($tpl->fetch('crumbDelete.html'));
+		$this->addCrumbRight($tpl->fetchFile('crumbDelete', '.'));
 	}
 /**
 * The drawing function
@@ -1345,5 +1345,11 @@ class CTitleBlock_core {
 		$tpl->displayFile('titleBlock', '.');
 	}
 }
+
+class CTitleBlock extends CTitleBlock_core
+{
+}
+class CTabBox extends CTabBox_core
+{}
 // !! Ensure there is no white space after this close php tag.
 ?>

@@ -1,5 +1,5 @@
 <?php /* PROJECTS $Id$ */
-global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $orderby, $orderdir, $priority, $projects, $pstatus, $tab, $tpl, $user_id;
+global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $orderby, $orderdir, $priority, $projects, $pstatus, $tab, $tpl, $user_id, $baseDir;
 
 $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -33,7 +33,7 @@ $orderdir = $AppUI->getState( 'UsrProjIdxOrderDir' ) ? $AppUI->getState( 'UsrPro
 
 $extraGet = '&user_id='.$user_id;
 
-require("{$dPconfig['root_dir']}/functions/projects_func.php");
+require($baseDir . '/functions/projects_func.php');
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
 // collect the full projects list data via function in projects.class.php

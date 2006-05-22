@@ -68,10 +68,10 @@ class CTemplate extends Smarty
 		$links = array();
 		foreach ($nav as $module) {
 			if ($perms->checkModule($module['mod_directory'], 'access')) {
-				$links[] = '<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
+				$links[] = $module; //'<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
 			}
 		}
-		$this->assign('links', implode( ' | ', $links ));
+		$this->assign('modules', $links);
 		
 		$newItem = array( '' => '- New Item -' );
 		if ($perms->checkModule( 'companies', 'add' )) 
@@ -174,12 +174,12 @@ class CTemplate extends Smarty
 		$pagination['pages'] = range($start_page, $end_page);
 
 		$this->assign('pagination', $pagination);
-		$this->display('pagination.html', $module);
+		$this->displayFile('pagination', '.');
 	}
 	
 	function file($file, $module)
 	{
-		global $m;
+		global $m, $uistyle, $baseDir;
 		
 		if ($module == null)
 			$module = $m;
@@ -189,7 +189,7 @@ class CTemplate extends Smarty
 		else
 			$module .= '/';
 
-		$style = $this->template_dir;
+		$style = $uistyle;
 		if (is_file($baseDir . "/style/$style/$module$file.html"))
 			return "$style/$module$file.html";
 		else // default fallback
@@ -212,8 +212,9 @@ class CTemplate extends Smarty
 /*		global $file_id, $company_id, $task_id;
 		global $currentTabId, $currentTabName;
 		global $uistyle, $style_extras; */
-				
-		include($baseDir . '/style/' . $uistyle . '/overrides.php');
+		
+		if (is_file($baseDir . '/style/' . $uistyle . '/overrides.php'))		
+			include($baseDir . '/style/' . $uistyle . '/overrides.php');
 	}
 }
 ?>

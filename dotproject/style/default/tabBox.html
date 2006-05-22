@@ -40,17 +40,20 @@
 </table>
 {else}
 {* tabbed view *}
-<table width="100%" border="0" cellpadding="3" cellspacing="0">
-	<tr>
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
 			{if $totaltabs-1 < $active}
 				{*//Last selected tab is not available in this view. eg. Child tasks*}
 				{assign var=active value=0}
 			{/if}
+	<td>
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
 {foreach from=$tabs item=v key=k}
-		<td width="1%" nowrap="nowrap" class="tabsp">
-			<img src="./images/shim.gif" height="1" width="1" alt="" />
+		<td height="28" valign="middle" width="3">
+			<img src="./style/{$uistyle}/images/tab{if $k == $active}Selected{/if}Left.png" width="3" height="28" border="0" alt="" />
 		</td>
-		<td id="toptab_{$k}" width="1%" nowrap="nowrap"{if $js_tabs} class="{if $k == $active}tabon{else}taboff{/if}"{/if}>
+		<td id="toptab_{$k}" valign="middle" nowrap="nowrap"{if $js_tabs} class={if $k == $active}"tabon"{else}"taboff"{/if}{/if} style="background: url('./style/{$uistyle}/images/tab{if $k == $active}Selected{/if}Bg.png')">
 			<a href="
 	{if $javascript}
 javascript:{$javascript}({$active}, {$k})
@@ -61,20 +64,39 @@ javascript:show_tab({$k})
 	{/if}
 ">{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</a>
 		</td>
+		<td valign="middle" width="3">
+			<img src="./style/{$uistyle}/images/tab{if $k == $active}Selected{/if}Right.png" width="3" height="28" border="0" alt="" />
+		</td>
+		<td width="3" class="tabsp">
+			<img src="./images/shim.gif" alt="shim" height="1" width="3" />
+		</td>
 {/foreach}
-		<td nowrap="nowrap" class="tabsp">&nbsp;</td>
 	</tr>
-	<tr>
-		<td width="100%" colspan="{$totaltabs*4 + 1}" class="tabox">
-			{dPrequire file=$tab}
+	</table>
+	</td>
+		
+</tr>
+<tr>
+	<td width="100%" colspan="{$totaltabs*4 + 1}" class="tabox">
+			
 {if $js_tabs}
 	{foreach from=$tabs item=v key=k} 
 	<div class="tab" id="tab_{$k}">
+	{$base.$v[0].php}
 		{dPrequire file="$base$v[0].php"}
 	</div>
 	{/foreach}
+<script language="JavaScript" type="text/javascript">
+<!--
+show_tab('{$active}');
+//-->
+</script>
+
+{else}
+	{dPrequire file=$tab}
 {/if}
-		</td>
-	</tr>
+
+	</td>
+</tr>
 </table>
 {/if}

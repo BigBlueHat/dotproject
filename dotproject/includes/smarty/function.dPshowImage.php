@@ -39,7 +39,7 @@ function smarty_function_dPshowImage($params, &$smarty)
       else if ($wsize)
         $result .= ' height="' . $wsize . '"';
 		  if (empty($alt))
-        $alt = substr($src, 0, -4);
+        $alt = substr($src, strrpos($src, '/') + 1, -4);
 
 	    $result .= ' alt="' . $AppUI->_($alt) . '"';
       

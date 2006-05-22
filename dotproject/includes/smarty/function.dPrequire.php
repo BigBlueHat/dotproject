@@ -20,7 +20,7 @@ function smarty_function_dPrequire($params, &$smarty)
 	global $AppUI;
     extract($params);
 
-    if (empty($file) && empty($sentence)) {
+    if (empty($file)) {
         $smarty->trigger_error("dPrequire: missing 'file' parameter");
         return;
     }
