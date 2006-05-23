@@ -51,15 +51,9 @@
 			<img src="./images/shim.gif" height="1" width="1" alt="" />
 		</td>
 		<td id="toptab_{$k}" width="1%" nowrap="nowrap"{if $js_tabs} class="{if $k == $active}tabon{else}taboff{/if}"{/if}>
-			<a href="
-	{if $javascript}
-javascript:{$javascript}({$active}, {$k})
-	{elseif $js_tabs}
-javascript:show_tab({$k})
-	{else}
-{$current_tab}&amp;tab={$k}
-	{/if}
-">{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</a>
+			<a href="{if $javascript}javascript:{$javascript}({$active}, {$k})
+	{elseif $js_tabs}javascript:show_tab({$k})
+	{else}{$current_tab}&amp;tab={$k}{/if}">{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</a>
 		</td>
 {/foreach}
 		<td nowrap="nowrap" class="tabsp">&nbsp;</td>
