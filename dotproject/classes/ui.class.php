@@ -983,7 +983,7 @@ the active tab, and the selected tab **/
 	{
 		$this->tabs = array();
 		$this->active = $active;
-		$this->baseHRef = ($baseHRef ? "$baseHRef&amp;" : "?");
+		$this->baseHRef = ($baseHRef ? $baseHRef.'&amp;' : '?');
 		$this->javascript = $javascript;
 		$this->baseInc = $baseInc;
 	}
@@ -1032,7 +1032,7 @@ the active tab, and the selected tab **/
 		reset( $this->tabs );
 		$s = '';
 	
-		$tpl->assign('current_tab', substr($this->baseHRef, 0, -1));
+		$tpl->assign('current_tab', $this->baseHRef);
 		$tpl->assign('base', $this->baseInc);
 		$tpl->assign('totaltabs', count($this->tabs));
 		$tpl->assign('extra', $extra);
