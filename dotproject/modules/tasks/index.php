@@ -53,11 +53,12 @@ $search_text = dPformSafe($search_text, true);
 
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Search') . ':' );
 $titleBlock->addCell(
-	'<input type="text" class="text" SIZE="20" name="searchtext" onChange="document.searchfilter.submit();" value=' . "'$search_text'" .
+	'
+<form action="?m=tasks" method="post" id="searchfilter">
+	<input type="text" class="text" SIZE="20" name="searchtext" onChange="document.searchfilter.submit();" value=' . "'$search_text'" .
 	'title="'. $AppUI->_('Search in name and description fields') . '"/>
-       	<!--<input type="submit" class="button" value=">" title="'. $AppUI->_('Search in name and description fields') . '"/>-->', '',
-	'<form action="?m=tasks" method="post" id="searchfilter">', '</form>'
-);
+       	<!--<input type="submit" class="button" value=">" title="'. $AppUI->_('Search in name and description fields') . '"/>-->
+</form>', '',	'', '');
 
 
 // Let's see if this user has admin privileges
@@ -67,26 +68,27 @@ if(!getDenyRead('admin')){
 	
 	$user_list = $perms->getPermittedUsers('tasks');
 	$titleBlock->addCell(
-		arraySelect($user_list, 'user_id', 'size="1" class="text" onChange="document.userIdForm.submit();"', $user_id, false), '',
-		'<form action="?m=tasks" method="post" name="userIdForm">','</form>'
-	);
+'<form action="?m=tasks" method="post" name="userIdForm">'.
+		arraySelect($user_list, 'user_id', 'size="1" class="text" onChange="document.userIdForm.submit();"', $user_id, false) . 
+'</form>', '','','');
 }
 
 $titleBlock->addCell();
 $titleBlock->addCell( $AppUI->_('Company') . ':' );
 $titleBlock->addCell(
-	arraySelect( $filters2, 'f2', 'size=1 class=text onChange="document.companyFilter.submit();"', $f2, false ), '',
-	'<form action="?m=tasks" method="post" name="companyFilter">', '</form>'
-);
+'<form action="?m=tasks" method="post" name="companyFilter">'.
+	arraySelect( $filters2, 'f2', 'size=1 class=text onChange="document.companyFilter.submit();"', $f2, false ) . 
+'</form>', '', '', '');
 
 
 
 $titleBlock->addCell();
 if ($canEdit && $project_id) {
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-		'<form action="?m=tasks&a=addedit&task_project=' . $project_id . '" method="post">', '</form>'
-	);
+		'
+<form action="?m=tasks&amp;a=addedit&amp;task_project=' . $project_id . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new task').'">
+</form>', '', '', '');
 }
 
 $titleBlock->show();
@@ -96,20 +98,22 @@ $titleBlock = new CTitleBlock('', 'shim.gif');
 $titleBlock->showhelp = false;
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Filter') . ':' );
 $titleBlock->addCell(
-	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ), '',
-	'<form action="?m=tasks" method="post" name="taskFilter">', '</form>');
+'<form action="?m=tasks" method="post" name="taskFilter">'.
+	arraySelect( $filters, 'f', 'size=1 class=text onChange="document.taskFilter.submit();"', $f, true ) .
+'</form>', '', '', '');
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Task Status') . ':' );
 $titleBlock->addCell(
-	arraySelect( $status, 'task_status', 'size=1 class=text onChange="document.taskStatus.submit();"', $task_status, true ), '',
-	'<form action="?m=tasks" method="post" name="taskStatus">', '</form>');
+'<form action="?m=tasks" method="post" name="taskStatus">' .
+	arraySelect( $status, 'task_status', 'size=1 class=text onChange="document.taskStatus.submit();"', $task_status, true ) . 
+'</form>', '', '', '');
 $titleBlock->addCell();
 
-$titleBlock->addCrumb( "?m=tasks&a=todo&user_id=$user_id", "my todo" );
+$titleBlock->addCrumb( "?m=tasks&amp;a=todo&amp;user_id=$user_id", "my todo" );
 if (dPgetParam($_GET, 'pinned') == 1)
         $titleBlock->addCrumb( '?m=tasks', 'all tasks' );
 else
-        $titleBlock->addCrumb( '?m=tasks&pinned=1', 'my pinned tasks' );
-$titleBlock->addCrumb( '?m=tasks&a=tasksperuser', 'tasks per user' );
+        $titleBlock->addCrumb( '?m=tasks&amp;pinned=1', 'my pinned tasks' );
+$titleBlock->addCrumb( '?m=tasks&amp;a=tasksperuser', 'tasks per user' );
 
 $titleBlock->show();
 

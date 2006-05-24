@@ -112,7 +112,7 @@ function dpCollapseNode(sPid) {
 function dpCollapseAll() {
     var oRows = table.rows;
     // Regular expression child nodes
-    var oRe = /^node\(\d+\.\)(-\d+)+/;
+    var oRe = /^node_\d+\.(-\d+)+/;
     for (var i = 0; i < oRows.length; i++) {
         var oRow = oRows.item(i);
         _dpSetRowCollapsed(oRow, true);

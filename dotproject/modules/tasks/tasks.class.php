@@ -2517,9 +2517,9 @@ function sort_by_item_title( $title, $item_name, $item_type )
 
         if ( isset( $item_order ) ) {
                 if ( $item_order == SORT_ASC )    
-			   echo '<img src="./images/arrow-up.gif" width=11 height=11>';
+			   echo '<img src="./images/arrow-up.gif" width="11" height="11" />';
                 else
-                        echo '<img src="./images/arrow-down.gif" width=11 height=11>';
+                        echo '<img src="./images/arrow-down.gif" width="11" height="11" />';
         } else
                 $item_order = SORT_DESC;
 
@@ -2528,36 +2528,28 @@ function sort_by_item_title( $title, $item_name, $item_type )
         if ( $m == 'tasks' )
         {
                 if ( $task_id > 0 )
-                {
-                        echo '<a href="./index.php?m=tasks&a=view&task_id='.$task_id;
-                }
+                        echo '<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$task_id;
                 else
-                {
                         echo '<a href="./index.php?m=tasks';
-                }
         }
         else
         {
                 if ( $project_id > 0 )
-                {
-                        echo '<a href="./index.php?m=projects&a=view&project_id='.$project_id;
-                }
+                        echo '<a href="./index.php?m=projects&amp;a=view&amp;project_id='.$project_id;
                 else
-                {
                         echo '<a href="./index.php?m=projects';
-                }
         }
-        echo '&task_sort_item1='.$item_name;
-        echo '&task_sort_type1='.$item_type;
-        echo '&task_sort_order1='.$item_order;
+        echo '&amp;task_sort_item1='.$item_name;
+        echo '&amp;task_sort_type1='.$item_type;
+        echo '&amp;task_sort_order1='.$item_order;
         if ( $task_sort_item1 == $item_name ) {
-                echo '&task_sort_item2='.$task_sort_item2;
-                echo '&task_sort_type2='.$task_sort_type2;
-                echo '&task_sort_order2='.$task_sort_order2;
+                echo '&amp;task_sort_item2='.$task_sort_item2;
+                echo '&amp;task_sort_type2='.$task_sort_type2;
+                echo '&amp;task_sort_order2='.$task_sort_order2;
         } else {
-                echo '&task_sort_item2='.$task_sort_item1;
-                echo '&task_sort_type2='.$task_sort_type1;
-                echo '&task_sort_order2='.$task_sort_order1;
+                echo '&amp;task_sort_item2='.$task_sort_item1;
+                echo '&amp;task_sort_type2='.$task_sort_type1;
+                echo '&amp;task_sort_order2='.$task_sort_order1;
         }
         echo '" class="hdr">';
 

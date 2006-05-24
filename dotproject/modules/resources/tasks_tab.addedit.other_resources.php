@@ -55,7 +55,7 @@ if ($loadFromTab && isset($_SESSION['tasks_subform']['hresource_assign'])) {
 
 $AppUI->getModuleJS('resources', 'tabs');
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 <?php
 echo "var projTasksWithEndDates=new Array();\n";
 $keys = array_keys($projTasksWithEndDates);
@@ -65,7 +65,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 }
 ?>
 </script>
-<form action="?m=tasks&a=addedit&task_project=<?php echo $task_project; ?>"
+<form action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project; ?>"
   method="post" name="otherFrm">
 <input type="hidden" name="sub_form" value="1" />
 <input type="hidden" name="task_id" value="<?php echo $task_id; ?>" />
@@ -106,7 +106,6 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 					</table>
 				</td>
 			</tr>
-			</tr>
 <!-- 			<tr>
 				<td colspan=3 align="center">
 					<input type="checkbox" name="task_notify" value="1" <?php //if($obj->task_notify!="0") echo "checked"?> /> <?php //echo $AppUI->_( 'notifyChange' );?>
@@ -117,6 +116,6 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 </tr>
 </table>
 </form>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
   subForm.push(new FormDefinition(<?php echo $tab; ?>, document.otherFrm, checkOther, saveOther));
 </script>

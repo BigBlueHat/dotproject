@@ -91,7 +91,7 @@ function constructTaskTree($task_data, $depth = 0){
 	$selected = $task_data['task_id'] == $task_parent ? 'selected="selected"' : '';
 	$task_data['task_name'] = strlen($task_data[1])>45 ? substr($task_data['task_name'],0, 45).'...' : $task_data['task_name'];
 
-	$task_parent_options .= '<option value="'.$task_data['task_id']. '" ' .$selected. '.>'.getSpaces($depth*3).dPFormSafe($task_data['task_name']).'</option>';
+	$task_parent_options .= '<option value="'.$task_data['task_id']. '" ' .$selected. '>'.getSpaces($depth*3).dPFormSafe($task_data['task_name']).'</option>'."\n";
 
 	if (isset($parents[$task_data['task_id']])) {
 		foreach ($parents[$task_data['task_id']] as $child_task) {
@@ -160,10 +160,10 @@ $ttl = $task_id > 0 ? 'Edit Task' : 'Add Task';
 $titleBlock = new CTitleBlock( $ttl, 'applet-48.png', $m, $m.$a );
 $titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 if ( $canReadProject ) {
-	$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$task_project, 'view this project' );
+	$titleBlock->addCrumb( '?m=projects&amp;a=view&amp;project_id='.$task_project, 'view this project' );
 }
 if ($task_id > 0)
-  $titleBlock->addCrumb( '?m=tasks&a=view&task_id='.$obj->task_id, 'view this task' );
+  $titleBlock->addCrumb( '?m=tasks&amp;a=view&amp;task_id='.$obj->task_id, 'view this task' );
 $titleBlock->show();
 
 // Let's gather all the necessary information from the department table
@@ -247,7 +247,7 @@ if (isset($_GET['tab']))
 	$AppUI->setState('TaskAeTabIdx', dPgetParam($_GET, 'tab', 0));
 
 $tab = $AppUI->getState('TaskAeTabIdx', 0);
-$tabBox =& new CTabBox('?m=tasks&a=addedit&task_id='.$task_id, '', $tab, '');
+$tabBox =& new CTabBox('?m=tasks&amp;a=addedit&amp;task_id='.$task_id, '', $tab, '');
 $tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_desc', 'Details');
 $tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_dates', 'Dates');
 $tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_depend', 'Dependencies');

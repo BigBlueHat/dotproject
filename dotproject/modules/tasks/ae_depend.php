@@ -45,7 +45,7 @@ $taskDep = $q->loadHashList();
 $q->clear();
 
 ?>
-<form name="dependFrm" action="?m=tasks&a=addedit&task_project=<?php echo $task_project;?>" method="post">
+<form name="dependFrm" action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project;?>" method="post">
 <input name="dosql" type="hidden" value="do_task_aed" />
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 <input name="sub_form" type="hidden" value="1" />
@@ -95,7 +95,7 @@ $q->clear();
 			</tr>
 			<tr>
 				<td>
-					<select name='all_tasks' class="text" style="width:220px" size="10" class="text" multiple="multiple">
+					<select name='all_tasks' class="text" style="width:220px" size="10" multiple="multiple">
 						<?php echo str_replace('selected', '', $task_parent_options); // we need to remove selected added from task_parent options ?>
 					</select>
 				</td>
@@ -115,6 +115,6 @@ $q->clear();
 		</table>
 <input type="hidden" name="hdependencies" />
 </form>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
   subForm.push( new FormDefinition(<?php echo $tab; ?>, document.dependFrm, checkDetail, saveDepend));
 </script>

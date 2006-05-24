@@ -1,5 +1,5 @@
 {literal}
-<SCRIPT language="JavaScript">
+<script type="text/javascript" language="javascript">
 var selected_contacts_id = "{/literal}{$obj->task_contacts}{literal}";
 var task_id = '{/literal}{$obj->task_id}{literal}';
 
@@ -20,12 +20,12 @@ var daily_working_hours = {/literal}{dPconfig var='daily_working_hours'}{literal
 </script>
 {/literal}
 
-<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
-<form name="editFrm" action="?m=tasks&project_id={$task_project}" method="post">
+<form name="editFrm" action="?m=tasks&amp;project_id={$task_project}" method="post">
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="{$task_id}" />
 	<input name="task_project" type="hidden" value="{$task_project}" />
 	<input name='task_contacts' id='task_contacts' type='hidden' value="{$obj->task_contacts}" />
+<table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#{$project->project_color_identifier}" >
 		<font color="{dPbestColor bg=$project->project_color_identifier}">
@@ -34,7 +34,7 @@ var daily_working_hours = {/literal}{dPconfig var='daily_working_hours'}{literal
 	</td>
 </tr>
 
-<tr valign="top" width="50%">
+<tr valign="top">
 	<td>
 		{dPtranslate word='Task Name'} *
 		<br /><input type="text" class="text" name="task_name" value="{dPformSafe var=$obj->task_name}" size="40" maxlength="255" />

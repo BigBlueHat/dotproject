@@ -1,8 +1,8 @@
 {assign var=x value=0}
 {if $project_id || $task_id}
 <form name="task_list_options" method="post" action="{$query_string}">
+<input type="hidden" name="show_task_options" value="1" />
 <table width="100%" border="0" cellpadding="1" cellspacing="0">
-<input type="hidden" name="show_task_options" value="1">
 <tr>
 	<td align="right">
 		<table>
@@ -42,19 +42,10 @@
 {foreach from=$rows item='p' key='k'}
 	{if $p.tasks_count > 0 || $project_id == $p.project_id}
 		{if !$min_view}
-<form name="assFrm{$p.project_id}" action="index.php?m={$m}&amp;a={$a}" method="post">
-	<input type="hidden" name="del" value="1" />
-	<input type="hidden" name="rm" value="0" />
-	<input type="hidden" name="store" value="0" />
-	<input type="hidden" name="dosql" value="do_task_assign_aed" />
-	<input type="hidden" name="project_id" value="{$p.project_id}" />
-	<input type="hidden" name="hassign" />
-	<input type="hidden" name="htasks" />
-
 <tr>
 	<td>
 		<a href="index.php?m=tasks&amp;f={$f}&amp;project_id={if $project_id}0{else}{$k}{/if}">
-			<img src="./images/icons/{if $project_id}expand{else}collapse{/if}.gif" width="16" height="16" border="0" alt="{if $project_id}{dPtranslate word='show other projects'}{else}{dPtranslate word='show only this project'}{/if}">
+			<img src="./images/icons/{if $project_id}expand{else}collapse{/if}.gif" width="16" height="16" border="0" alt="{if $project_id}{dPtranslate word='show other projects'}{else}{dPtranslate word='show only this project'}{/if}" />
 		</a>
 	</td>
 	<td colspan="{$show_cols}">
@@ -100,9 +91,9 @@
 		</tr>
 		</table>
 	</td>
+</tr>
 				{/if}
 			{/if}
-</tr>
 			{foreach from=$p.tasks item=task}
 				{include file="_smarty/tasks/list.row.html" obj=$task}
 			{/foreach}
@@ -115,7 +106,6 @@
 		<input type="button" class="button" value="{dPtranslate word='Gantt Chart'}" onclick="javascript:window.location='index.php?m=tasks&amp;a=viewgantt&amp;project_id={$k}';" />
 	</td>
 </tr>
-</form>
 			{/if}
 		{/if}
 	{/if}

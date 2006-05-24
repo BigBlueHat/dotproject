@@ -24,7 +24,7 @@ foreach ($assigned_perc as $user_id => $perc) {
 }
 
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 <?php
 echo 'var projTasksWithEndDates=new Array();\n';
 $keys = array_keys($projTasksWithEndDates);
@@ -34,7 +34,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 }
 ?>
 </script>
-<form action="?m=tasks&a=addedit&task_project=<?php echo $task_project; ?>"
+<form action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project; ?>"
   method="post" name="resourceFrm">
 <input type="hidden" name="sub_form" value="1" />
 <input type="hidden" name="task_id" value="<?php echo $task_id; ?>" />
@@ -75,7 +75,6 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 					</table>
 				</td>
 			</tr>
-			</tr>
 <!-- 			<tr>
 				<td colspan=3 align="center">
 					<input type="checkbox" name="task_notify" value="1" <?php //if($obj->task_notify!="0") echo "checked"?> /> <?php //echo $AppUI->_( 'notifyChange' );?>
@@ -87,7 +86,7 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 		<table><tr><td align="left">
 		<?php echo $AppUI->_( 'Additional Email Comments' );?>:		
 		<br />
-		<textarea name="email_comment" class="textarea" cols="60" rows="10" wrap="virtual"></textarea><br />
+		<textarea name="email_comment" class="textarea" cols="60" rows="10"></textarea><br />
 		<input type="checkbox" name="task_notify" value="1" <?php if($obj->task_notify!="0") echo "checked"?> /> <?php echo $AppUI->_( 'notifyChange' );?>
 		</td></tr></table><br />
 		
@@ -96,6 +95,6 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 </table>
 <input type="hidden" name="hassign" />
 </form>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
   subForm.push(new FormDefinition(<?php echo $tab; ?>, document.resourceFrm, checkResource, saveResource));
 </script>

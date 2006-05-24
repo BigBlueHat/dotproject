@@ -11,7 +11,7 @@ $canReadModule = !getDenyRead( $m );
 
 
 if (!$canRead) {
-	$AppUI->redirect( 'm=public&a=access_denied' );
+	$AppUI->redirect( 'm=public&amp;a=access_denied' );
 }
 $q =& new DBQuery;
 $perms =& $AppUI->acl();
@@ -71,7 +71,7 @@ if (!db_loadObject( $sql, $obj, true, false )) {
 }
 
 if (!$obj->canAccess( $AppUI->user_id )) {
-	$AppUI->redirect( 'm=public&a=access_denied' );
+	$AppUI->redirect( 'm=public&amp;a=access_denied' );
 }
 
 // Clear any reminders
@@ -117,20 +117,26 @@ $titleBlock->addCell(
 );
 if ($canEdit) {
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new task').'">', '',
-		'<form action="?m=tasks&a=addedit&task_project='.$obj->task_project.'&task_parent=' . $task_id . '" method="post">', '</form>'
+		'
+<form action="?m=tasks&amp;a=addedit&amp;task_project='.$obj->task_project.'&amp;task_parent=' . $task_id . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new task').'" />
+</form>', '',
+		'', ''
 	);
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
-		'<form action="?m=files&a=addedit&project_id=' . $obj->task_project . '&file_task=' . $obj->task_id . '" method="post">', '</form>'
+		'
+<form action="?m=files&amp;a=addedit&amp;project_id=' . $obj->task_project . '&amp;file_task=' . $obj->task_id . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new file').'" />
+</form>', '',
+		'', ''
 	);
 }
 $titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 if ($canReadProject) {
-	$titleBlock->addCrumb( "?m=projects&a=view&project_id=$obj->task_project", 'view this project' );
+	$titleBlock->addCrumb( "?m=projects&amp;a=view&amp;project_id=$obj->task_project", 'view this project' );
 }
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=tasks&a=addedit&task_id=$task_id", 'edit this task' );
+	$titleBlock->addCrumb( "?m=tasks&amp;a=addedit&amp;task_id=$task_id", 'edit this task' );
 }
 if ($canDelete) {
 	$titleBlock->addCrumbDelete( 'delete task', $canDelete, $msg );
@@ -213,13 +219,14 @@ $obj->task_hours_worked_display = $obj->task_hours_worked + @rtrim($obj->log_hou
 $tpl->displayView($obj);
 ?>
 
-<script language="JavaScript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
 	calendarField = field;
 	idate = eval( 'document.editFrm.task_' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=250, height=220, scollbars=false' );
+	window.open( 'index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback=setCalendar&amp;date=' + idate, 'calwin', 'width=250, height=220, scollbars=false' );
 }
 
 /**
@@ -261,12 +268,13 @@ function delIt() {
 	}
 }
 <?php } ?>
+-->
 </script>
 
 
 
 <?php
-$query_string = '?m=tasks&a=view&task_id='.$task_id;
+$query_string = '?m=tasks&amp;a=view&amp;task_id='.$task_id;
 $tabBox = new CTabBox( $query_string, '', $tab );
 
 $tabBox_show = 0;

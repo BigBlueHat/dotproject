@@ -127,7 +127,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 ?>
 
 <!-- TIMER RELATED SCRIPTS -->
-<script language="JavaScript">
+<script type=text/javascript" language="javascript">
 	// please keep these lines on when you copy the source
 	// made by: Nicolas - http://www.javascript-page.com
 	// adapted by: Juan Carlos Gonzalez jcgonz@users.sourceforge.net

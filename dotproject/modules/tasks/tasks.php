@@ -316,7 +316,7 @@ foreach ($tasks as $row) {
 	$row['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $row['task_id']);
 	$i = count($projects[$row['task_project']]['tasks']) + 1;
 	$row['task_number'] = $i;
-	$row['node_id'] = 'node('.$i.')-' . $row['task_id'];
+	$row['node_id'] = 'node_'.$i.'-' . $row['task_id'];
 
 
 	if (strpos($row['task_duration'], '.') && $row['task_duration_type'] == 1)
@@ -329,8 +329,8 @@ foreach ($tasks as $row) {
 $showEditCheckbox = isset($canEdit) && $canEdit && $dPconfig['direct_edit_assignment'];
 ?>
 
-<script type="text/JavaScript" src="modules/tasks/list.js.php"></script>
-<script language="JavaScript" src="modules/tasks/tree.js?<?php echo time(); ?>"></script>
+<script type="text/javascript" src="modules/tasks/list.js.php"></script>
+<script type="text/javascript" language="javascript" src="modules/tasks/tree.js?<?php echo time(); ?>"></script>
 
 <?php
 $AppUI->setState('tasks_opened', $tasks_opened);
@@ -413,5 +413,4 @@ $tpl->assign('userAlloc', $userAlloc);
 
 //print_r($projects);
 $tpl->assign('rows', $projects);
-$tpl->displayFile('list.projects', 'tasks');
-?>
+$tpl->displayFile('list.projects', 'tasks');?>

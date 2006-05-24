@@ -113,7 +113,7 @@ else
 	$tasks = $q->loadList();
 	?>
 
-<script language="JavaScript">
+<script type="text/javascript" language="javascript">
 function loadTasks()
 {
   var tasks = new Array();

@@ -69,7 +69,7 @@ function cal_work_day_conv($val) {
 	return htmlentities($day_name, ENT_COMPAT, $locale_char_set);
 }
 ?>
-<form name="datesFrm" action="?m=tasks&a=addedit&task_project=<?php echo $task_project;?>" method="post">
+<form name="datesFrm" action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project;?>" method="post">
 <input name="dosql" type="hidden" value="do_task_aed" />
 <input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
 <input name="sub_form" type="hidden" value="1" />
@@ -83,7 +83,7 @@ function cal_work_day_conv($val) {
 		<input type="hidden" name="task_start_date" id="task_start_date" value="<?php echo $start_date ? $start_date->format( FMT_TIMESTAMP_DATE ) : '' ;?>" />
 		<input type="text" name="start_date" id="start_date" value="<?php echo $start_date ? $start_date->format( $df ) : '' ;?>" class="text" disabled="disabled" />
 		<a href="#" onclick="popCalendar(document.datesFrm.start_date)">
-						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 					</a>
 	</td>
 	<td>
@@ -105,7 +105,7 @@ function cal_work_day_conv($val) {
 		<input type="hidden" name="task_end_date" id="task_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 		<input type="text" name="end_date" id="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
 		<a href="#" onclick="popCalendar(document.datesFrm.end_date)">
-						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0">
+						<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 					</a>
 	</td>
         <td>
@@ -152,6 +152,6 @@ function cal_work_day_conv($val) {
         ?>
 </table>
 </form>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
  subForm.push(new FormDefinition(<?php echo $tab;?>, document.datesFrm, checkDates, saveDates));
 </script>
