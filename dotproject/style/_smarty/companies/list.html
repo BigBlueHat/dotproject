@@ -16,7 +16,7 @@
 </tr>
 
 {section name=i loop=$rows}
-	<tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
+<tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
 	<td>&nbsp;</td>
 	{section name=j loop=$show}
 	{if $show[j] == 'company_name'}
@@ -32,7 +32,7 @@
 	<td width="125" align="center" nowrap="nowrap">{$rows[i][$col]}</td><!--$show[j]-->
 	{/if}
 	{/section}
-	</tr>
+</tr>
 {/section}
 
 <!--<td width="125" align="center" nowrap="nowrap">{$rows[j].countp}</td>

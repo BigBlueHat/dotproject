@@ -1,5 +1,6 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 window.company_id = {/literal}{$company_detail.company_id}{literal};
 window.company_value = '{/literal}{$company_detail.company_name}{literal}';
 
@@ -70,10 +71,9 @@ function companyChange() {
 		f.contact_department.value = "";
 	} 
 }
+-->
 </script>
 {/literal}
-
-<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 
 <form name="changecontact" action="?m=contacts" method="post">
 	<input type="hidden" name="dosql" value="do_contact_aed" />
@@ -83,6 +83,7 @@ function companyChange() {
 	<input type="hidden" name="contact_id" value="{$contact_id}" />
 	<input type="hidden" name="contact_owner" value="{$contact_owner}" />
 
+<table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
 	<td colspan="2">
 		<table border="0" cellpadding="1" cellspacing="1">
@@ -114,6 +115,7 @@ function companyChange() {
 		</table>
 	</td>
 </tr>
+<tr>
 	<td valign="top" width="50%">
 		<table border="0" cellpadding="1" cellspacing="1" class="details" width="100%">
 		<tr>
@@ -127,7 +129,7 @@ function companyChange() {
 			<td nowrap>
 				<input type="text" class="text" name="contact_company_name" value="{dPformSafe var=$company_detail.company_name}" maxlength="100" size="25" /> 
 				<input type="button" class="button" value="{dPtranslate word='select company...'}..." onclick="popCompany()" />
-				<input type='hidden' name='contact_company' value="{$company_id}">
+				<input type="hidden" name="contact_company" value="{$company_id}" />
 				<a href="#" onclick="orderByName('company')">[{dPtranslate word='use in display'}]</a>
 				</td>
 		</tr>
@@ -136,7 +138,7 @@ function companyChange() {
 			<td nowrap>
 				<input type="text" class="text" name="contact_department_name" value="{dPformSafe var=$dept_detail.dept_name}" maxlength="100" size="25" />
 
-				<input type='hidden' name='contact_department' value='{$dept_detail.dept_id}'>
+				<input type='hidden' name='contact_department' value='{$dept_detail.dept_id}' />
 				<input type="button" class="button" value="{dPtranslate word='select department...'}" onclick="popDepartment()" />
 				</td>
 		</tr>
@@ -240,7 +242,6 @@ function companyChange() {
 				<input type="text" class="text" name="contact_yahoo" value="{dPformSafe var=$obj->contact_yahoo}" maxlength="255" size="25" />
 			</td>
 		</tr>
-		</tr>
 		<tr>
 			<td align="right">{dPtranslate word='Birthday'}:</td>
 			<td nowrap>
@@ -251,7 +252,7 @@ function companyChange() {
 	</td>
 	<td valign="top" width="50%">
 		<strong>{dPtranslate word='Contact Notes'}</strong><br />
-		<textarea class="textarea" name="contact_notes" rows="20" cols="40">{dPformSafe var=$obj->contact_notes}</textarea></td>
+		<textarea class="textarea" name="contact_notes" rows="20" cols="40">{dPformSafe var=$obj->contact_notes}</textarea>
 	</td>
 </tr>
 <tr>
@@ -262,5 +263,5 @@ function companyChange() {
 		<input type="button" value="{dPtranslate word='submit'}" class="button" onclick="submitIt()" />
 	</td>
 </tr>
-</form>
 </table>
+</form>

@@ -43,11 +43,10 @@ foreach( $arr as $L ) {
 
 // optional fields shown in the list (could be modified to allow breif and verbose, etc)
 $showfields = array(
-	// "test" => "concat(contact_first_name,' ',contact_last_name) as test",    why do we want the name repeated?
-    "contact_company" => "contact_company",
-	"company_name" => "company_name",
-	"contact_phone" => "contact_phone",
-	"contact_email" => "contact_email"
+	'contact_company' => 'contact_company',
+	'company_name' 		=> 'company_name',
+	'contact_phone' 	=> 'contact_phone',
+	'contact_email' 	=> 'contact_email'
 );
 
 require_once $AppUI->getModuleClass('companies');
@@ -128,44 +127,55 @@ $filters2 = arrayMerge(  array( 'all' => $AppUI->_('All Companies', UI_OUTPUT_RA
  // Let's remove the first '%' that we previously added to ContIdxWhere
 $default_search_string = dPformSafe(substr($AppUI->getState( 'ContIdxWhere' ), 1, strlen($AppUI->getState( 'ContIdxWhere' ))), true);
 
-$form = "<form action='./index.php' method='get'>".$AppUI->_('Search for')."
-           <input type='text' name='search_string' value='$default_search_string' />
-		   <input type='hidden' name='m' value='contacts' />
-		   <input type='submit' value='>' />
-		   <a href='./index.php?m=contacts&amp;search_string='>".$AppUI->_('Reset search')."</a>
-		 </form>";
+$form = '
+<form action="./index.php" method="get">
+'.$AppUI->_('Search for').'
+	<input type="text" name="search_string" value="'.$default_search_string.'" />
+	<input type="hidden" name="m" value="contacts" />
+	<input type="submit" value=">" />
+	<a href="./index.php?m=contacts&amp;search_string=">
+		'.$AppUI->_('Reset search').'
+	</a>
+</form>';
 // En of contact search form
 
-$a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
-$a2z .= "\n<tr>";
-$a2z .= "<td width='100%' align='right'>" . $AppUI->_('Show'). ": </td>";
-$a2z .= '<td><a href="./index.php?m=contacts&where=0">' . $AppUI->_('All') . '</a></td>';
+$a2z = '
+<table cellpadding="2" cellspacing="1" border="0">
+<tr>
+	<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>
+	<td><a href="./index.php?m=contacts&amp;where=0">' . $AppUI->_('All') . '</a></td>';
 for ($c=65; $c < 91; $c++) {
 	$cu = chr( $c );
 	$cell = strpos($let, "$cu") > 0 ?
-		"<a href=\"?m=contacts&where=$cu\">$cu</a>" :
+		"<a href=\"?m=contacts&amp;where=$cu\">$cu</a>" :
 		"<font color=\"#999999\">$cu</font>";
 	$a2z .= "\n\t<td>$cell</td>";
 }
-$a2z .= "\n</tr>\n<tr><td colspan='28'>$form</td></tr></table>";
+$a2z .= '
+</tr>
+<tr>
+	<td colspan="28">'.$form.'</td>
+</tr>
+</table>';
 
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCell( $a2z );
 $titleBlock->addCell(
-  arraySelect( $filters2, 'company_filter', 'size=1 class=text onChange="document.companyFilter.submit();"', $company_id, false ), '',
-  '<form action="?m=contacts" method="post" name="companyFilter">', '</form>'
-);
+'<form action="?m=contacts" method="post" name="companyFilter">' .
+  arraySelect( $filters2, 'company_filter', 'size=1 class=text onChange="document.companyFilter.submit();"', $company_id, false ) . 
+'</form>', '', '', '');
 
 if ($canEdit) {
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',
-		'<form action="?m=contacts&a=addedit" method="post">', '</form>'
-	);
+		'
+<form action="?m=contacts&amp;a=addedit" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new contact').'" />
+</form>', '', '', '');
 	$titleBlock->addCrumbRight(
-		'<a href="./index.php?m=contacts&a=csvexport&suppressHeaders=true">' . $AppUI->_('CSV Download') . "</a> | " .
-		'<a href="./index.php?m=contacts&a=vcardimport&dialog=0">' . $AppUI->_('Import vCard') . '</a>'
+		'<a href="./index.php?m=contacts&amp;a=csvexport&amp;suppressHeaders=true">' . $AppUI->_('CSV Download') . "</a> | " .
+		'<a href="./index.php?m=contacts&amp;a=vcardimport&amp;dialog=0">' . $AppUI->_('Import vCard') . '</a>'
 	);
 }
 
@@ -209,7 +219,7 @@ for ($z=0; $z < $carrWidth; $z++) {
 		while (list( $key, $val ) = each( $showfields )) {
 			if (strlen( $carr[$z][$x][$key] ) > 0) {
 				if($val == "contact_email") {
-					$contact_fields .= "<A HREF='mailto:{$carr[$z][$x][$key]}' class='mailto'>{$carr[$z][$x][$key]}</a>\n";
+					$contact_fields .= "<a href='mailto:{$carr[$z][$x][$key]}' class='mailto'>{$carr[$z][$x][$key]}</a>\n";
                 } elseif($val == "contact_company" && is_numeric($carr[$z][$x][$key])) {
 				} else {
 					$contact_fields .= $carr[$z][$x][$key]. "<br />\n";
@@ -226,6 +236,7 @@ for ($z=0; $z < $carrWidth; $z++) {
 
 	echo "</td>";
 }
-echo "</tr>";
-echo "</table>";
+echo '
+</tr>
+</table>';
 ?>

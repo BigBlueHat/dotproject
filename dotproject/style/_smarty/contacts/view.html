@@ -39,7 +39,7 @@
 			<td align="right" width="100">{dPtranslate word='Company'}:</td>
 	{if $view_company}
 			<td nowrap>
-				<a href="?m=companies&a=view&company_id={$obj->contact_company}">{$obj->company_name|dPescape}</a>
+				<a href="?m=companies&amp;a=view&amp;company_id={$obj->contact_company}">{$obj->company_name|dPescape}</a>
 			</td>
 	{else}
 			<td nowrap>{$obj->company_name|dPescape}</td>
@@ -166,5 +166,4 @@
 		<input type="button" value="{dPtranslate word='back'}" class="button" onclick="javascript:window.location='./index.php?m=contacts';" />
 	</td>
 </tr>
-</form>
 </table>

@@ -49,11 +49,12 @@ $ttl = "View Contact";
 $titleBlock = new CTitleBlock( $ttl, 'monkeychat-48.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=contacts", "contacts list" );
 if ($canEdit && $contact_id)
-        $titleBlock->addCrumb( "?m=contacts&a=addedit&contact_id=$contact_id", 'edit' );
+	$titleBlock->addCrumb( "?m=contacts&amp;a=addedit&amp;contact_id=$contact_id", 'edit' );
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new project').'" />', '',
-		'<form action="?m=projects&a=addedit&company_id='.$row->contact_company.'&contact_id='.$contact_id.'" method="post">', '</form>'
-	);
+		'
+<form action="?m=projects&amp;a=addedit&amp;company_id='.$row->contact_company.'&amp;contact_id='.$contact_id.'" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new project').'" />
+</form>', '', '', '');
 if ($canDelete && $contact_id) {
 	$titleBlock->addCrumbDelete( 'delete contact', $canDelete, $msg );
 }
@@ -68,12 +69,16 @@ $tpl->assign('view_dept', isset($_SESSION['all_tabs']['departments']));
 $tpl->displayView($row);
 ?>
 
-<script language="JavaScript">
-function delIt(){
-        var form = document.changecontact;
-        if(confirm( "<?php echo $AppUI->_('contactsDelete', UI_OUTPUT_JS);?>" )) {
-                form.del.value = "<?php echo $contact_id;?>";
-                form.submit();
-        }
+<script type="text/javascript" language="javascript">
+<!--
+function delIt()
+{
+	var form = document.changecontact;
+	if (confirm( "<?php echo $AppUI->_('contactsDelete', UI_OUTPUT_JS);?>" ))
+	{
+		form.del.value = "<?php echo $contact_id;?>";
+		form.submit();
+	}
 }
+-->
 </script>
