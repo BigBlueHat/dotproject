@@ -52,21 +52,23 @@ $titleBlock = new CTitleBlock( 'View Company', 'handshake.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell();
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new company').'" />', '',
-		'<form action="?m=companies&a=addedit" method="post">', '</form>'
+		'
+<form action="?m=companies&amp;a=addedit" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new company').'" />
+</form>', '', '', ''
 	);
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new project').'" />', '',
-		'<form action="?m=projects&a=addedit&company_id='.$company_id.'" method="post">', '</form>'
-	);
+		'
+<form action="?m=projects&amp;a=addedit&amp;company_id='.$company_id.'" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new project').'" />
+</form>', '', '', '');
 }
 $titleBlock->addCrumb( "?m=companies", "company list" );
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=companies&a=addedit&company_id=$company_id", "edit this company" );
+	$titleBlock->addCrumb( "?m=companies&amp;a=addedit&amp;company_id=$company_id", 'edit this company' );
 	
-	if ($canDelete) {
+	if ($canDelete)
 		$titleBlock->addCrumbDelete( 'delete company', $canDelete, $msg );
-	}
 }
 $titleBlock->show();
 
@@ -83,25 +85,27 @@ $tpl->assign('type', $types[@$obj->company_type]);
 
 $tpl->displayView($obj);
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
 if ($canDelete) {
 ?>
-function delIt() {
-	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Company').'?';?>" )) {
+function delIt() 
+{
+	if (confirm( "<?php echo $AppUI->_('doDelete').' '.$AppUI->_('Company').'?';?>" ))
 		document.frmDelete.submit();
-	}
 }
 <?php } ?>
+-->
 </script>
 
 <?php
 // tabbed information boxes
 $moddir = $dPconfig['root_dir'] . '/modules/companies/';
-$tabBox = new CTabBox( "?m=companies&a=view&company_id=$company_id", "", $tab );
+$tabBox = new CTabBox( "?m=companies&amp;a=view&amp;company_id=$company_id", '', $tab );
 //$tabBox->add( $moddir . 'vw_active', 'Active Projects' );
 //$tabBox->add( $moddir . 'vw_archived', 'Archived Projects' );
 $tabBox->add( $moddir . 'vw_depts', 'Departments' );

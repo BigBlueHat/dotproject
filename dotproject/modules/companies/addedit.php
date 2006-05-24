@@ -56,7 +56,7 @@ $ttl = $company_id > 0 ? "Edit Company" : "Add Company";
 $titleBlock = new CTitleBlock( $ttl, 'handshake.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=companies", "companies list" );
 if ($company_id != 0)
-  $titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
+  $titleBlock->addCrumb( "?m=companies&amp;a=view&amp;company_id=$company_id", 'view this company' );
 $titleBlock->show();
 
 require_once($baseDir . '/classes/CustomFields.class.php');
@@ -70,7 +70,8 @@ $tpl->assign('owner_id', $owner_id);
 $tpl->displayAddEdit($obj);
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function submitIt() {
 	var form = document.changeclient;
 	if (form.company_name.value.length < 3) {
@@ -88,4 +89,5 @@ function testURL( x ) {
 		newwin = window.open( "http://" + test, 'newwin', '' );
 	}
 }
+-->
 </script>

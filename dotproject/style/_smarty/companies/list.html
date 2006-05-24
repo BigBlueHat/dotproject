@@ -8,7 +8,7 @@
 	<td nowrap="nowrap" width="60" align="right">&nbsp;{dPtranslate word='sort by'}:&nbsp;</td>
 {section name=i loop=$show}
 	  <th nowrap="nowrap">
-	  	<a href="index.php?m=companies&orderby={$show[i]}" class="hdr">
+	  	<a href="index.php?m=companies&amp;orderby={$show[i]}" class="hdr">
 	  		{dPtranslate|capitalize word=$show[i]}
 	  	</a>
 	  </th>
@@ -21,7 +21,7 @@
 	{section name=j loop=$show}
 	{if $show[j] == 'company_name'}
 	<td>
-		<a href="./index.php?m=companies&a=view&company_id={$rows[i].company_id}" title="{$rows[i].company_description}">
+		<a href="./index.php?m=companies&amp;a=view&amp;company_id={$rows[i].company_id}" title="{$rows[i].company_description}">
 			{$rows[i].company_name}
 		</a>
 	</td>

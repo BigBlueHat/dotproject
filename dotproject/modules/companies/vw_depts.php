@@ -16,20 +16,19 @@ $q->clear();
 
 function showchilddept( &$a, $level=0 ) {
 	global $AppUI;
-	$s = '';
+	$s = '
+	<td>
+		<a href="./index.php?m=departments&amp;a=addedit&amp;dept_id='.$a["dept_id"].'" title="'.$AppUI->_('edit').'">
+			' . dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' ) . '
+	</td>
+	<td>';
 
-	$s .= '<td>';
-	$s .= '<a href="./index.php?m=departments&a=addedit&dept_id='.$a["dept_id"].'" title="'.$AppUI->_('edit').'">';
-	$s .= dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' );
-	$s .= '</td>';
-	$s .= '<td>';
-
-	for ($y=0; $y < $level; $y++) {
-		if ($y+1 == $level) {
+	for ($y=0; $y < $level; $y++) 
+	{
+		if ($y+1 == $level)
 			$s .= '<img src="./images/corner-dots.gif" width="16" height="12" border="0">';
-		} else {
+		else
 			$s .= '<img src="./images/shim.gif" width="16" height="12" border="0">';
-		}
 	}
 
 	$s .= '<a href="./index.php?m=departments&a=view&dept_id='.$a["dept_id"].'">'.$a["dept_name"].'</a>';
@@ -59,7 +58,7 @@ if (count( $rows)) {
 	$s .= '<th width="100%">'.$AppUI->_( 'Name' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'Users' ).'</th>';
 } else {
-	$s .= $AppUI->_('No data available');
+	$s .= '<td>' . $AppUI->_('No data available') . '</td>';
 }
 
 $s .= '</tr>';
@@ -72,11 +71,14 @@ foreach ($rows as $row) {
 	}
 }
 
-echo '<td colspan="3" nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
+echo '
+<tr>
+	<td colspan="3" nowrap="nowrap" rowspan="99" align="right" valign="top" style="background-color:#ffffff">';
 if ($canEdit) {
-	echo '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onclick="javascript:window.location=\'./index.php?m=departments&a=addedit&company_id='.$company_id.'\';">';
+	echo '<input type="button" class=button value="'.$AppUI->_( 'new department' ).'" onclick="javascript:window.location=\'./index.php?m=departments&amp;a=addedit&amp;company_id='.$company_id.'\';" />';
 }
-echo '</td>';
-
-echo '</table>';
+echo '
+	</td>
+</tr>
+</table>';
 ?>

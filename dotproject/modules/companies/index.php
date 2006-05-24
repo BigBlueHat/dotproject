@@ -42,9 +42,10 @@ $filters = $titleBlock->addFiltersCell($filters_selection);
 
 if ($canEdit) {
 	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new company').'">', '',
-		'<form action="?m=companies&a=addedit" method="post">', '</form>'
-	);
+		'
+<form action="?m=companies&amp;a=addedit" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new company').'" />
+</form>', '',	'', '');
 }
 $titleBlock->show();
 

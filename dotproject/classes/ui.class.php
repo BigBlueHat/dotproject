@@ -1251,7 +1251,7 @@ class CTitleBlock_core {
 		}
 		
 		$tpl->assign('filters', $filters_combos);
-		$tpl->assign('post_url', $_SERVER['REQUEST_URI']);
+		$tpl->assign('post_url', str_replace('&', '&amp;', $_SERVER['REQUEST_URI']));
 		$data = $tpl->fetchFile('filters', '.');
 		$this->cells1[] = array('', $data, '', '');
 		

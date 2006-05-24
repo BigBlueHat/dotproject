@@ -155,6 +155,7 @@ class CTemplate extends Smarty
 	function displayPagination($currentPage, $totalRecords, $module = null)
 	{
 		$pagination['url'] = 'index.php?' . ereg_replace('&page=[^&]+', '', $_SERVER['QUERY_STRING']);
+		$pagination['url'] = str_replace('&', '&amp;', $pagination['url']);
 		// The current page
 		$pagination['page'] = $currentPage;
 		// how many items in total there are in the list
