@@ -7,9 +7,9 @@ $project_on_hold_status = 4;
 $project_template_status = 6;
 $perms =& $AppUI->acl();
 
-if (isset( $_GET['tab'] )) {
+if (isset( $_GET['tab'] ))
 	$AppUI->setState( 'ToDoTab', $_GET['tab'] );
-}
+
 $tab = $AppUI->getState( 'ToDoTab' ) !== NULL ? $AppUI->getState( 'ToDoTab' ) : 0;
 
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
@@ -18,9 +18,9 @@ $user_id    = $AppUI->user_id;
 $no_modify	= false;
 $other_users	= false;
 
-if($perms->checkModule("admin","view")){ // let's see if the user has sysadmin access
+if($perms->checkModule('admin', 'view')){ // let's see if the user has sysadmin access
 	$other_users = true;
-	if(($show_uid = dPgetParam($_REQUEST, "show_user_todo", 0)) != 0){ // lets see if the user wants to see anothers user mytodo
+	if(($show_uid = dPgetParam($_REQUEST, 'show_user_todo', 0)) != 0){ // lets see if the user wants to see anothers user mytodo
 		$user_id = $show_uid;
 		$no_modify = true;
 		$AppUI->setState("user_id", $user_id);
@@ -45,12 +45,12 @@ if (isset( $_POST['show_form'] )) {
 // Required for today view.
 global $showArcProjs, $showLowTasks, $showHoldProjs,$showDynTasks,$showPinned, $showEmptyDate;
 
-$showArcProjs = $AppUI->getState( 'TaskDayShowArc', 0 );
-$showLowTasks = $AppUI->getState( 'TaskDayShowLow', 1);
-$showHoldProjs = $AppUI->getState( 'TaskDayShowHold', 0);
-$showDynTasks = $AppUI->getState('TaskDayShowDyn', 0);
-$showPinned = $AppUI->getState('TaskDayShowPin', 0);
-$showEmptyDate = $AppUI->getState('TaskDayShowEmptyDate', 0);
+$showArcProjs 	= $AppUI->getState('TaskDayShowArc', 0 );
+$showLowTasks 	= $AppUI->getState('TaskDayShowLow', 1);
+$showHoldProjs 	= $AppUI->getState('TaskDayShowHold', 0);
+$showDynTasks 	= $AppUI->getState('TaskDayShowDyn', 0);
+$showPinned 		= $AppUI->getState('TaskDayShowPin', 0);
+$showEmptyDate 	= $AppUI->getState('TaskDayShowEmptyDate', 0);
 
 
 // if task priority set and items selected, do some work
@@ -137,12 +137,10 @@ $tasks = db_loadList( $sql );
 /* we have to calculate the end_date via start_date+duration for 
 ** end='0000-00-00 00:00:00' or NULL
 */
-for ($j=0; $j < count($tasks); $j++) {
-		
-	if ( $tasks[$j]['task_end_date'] == '0000-00-00 00:00:00' || $tasks[$j]['task_end_date'] == NULL) {
-		
+for ($j=0; $j < count($tasks); $j++) 
+{
+	if ( $tasks[$j]['task_end_date'] == '0000-00-00 00:00:00' || $tasks[$j]['task_end_date'] == NULL)		
 		 $tasks[$j]['task_end_date'] = calcEndByStartAndDuration($tasks[$j]);
-	}
 }
 
 global $taskPriority;
@@ -153,7 +151,7 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 if (!@$min_view) {
 	$titleBlock = new CTitleBlock( 'My Tasks To Do', 'applet-48.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=tasks", "tasks list" );
+	$titleBlock->addCrumb('?m=tasks', 'tasks list');
 	$titleBlock->show();
 }
 
@@ -169,14 +167,14 @@ if ($m == 'tasks' && $a == 'todo') {
 	<td width="80%" valign="top">
   <?php
   // Tabbed information boxes
-  $tabBox = new CTabBox( "?m=tasks&a=todo", "", $tab );
+  $tabBox = new CTabBox( '?m=tasks&amp;a=todo', '', $tab );
   $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/todo_tasks_sub', 'My Tasks' );
   $tabBox->loadExtras('tasks', 'todo');
 	// Wouldn't it be better to user $tabBox->loadExtras('tasks', 'todo'); and then
 	// add tasks_tab.todo.my_open_requests.php in helpdesk?  
-  if ($AppUI->isActiveModule('helpdesk')){ 
-  $tabBox->add( $dPconfig['root_dir'].'/modules/helpdesk/vw_idx_my', 'My Open Requests' );
-  }
+  if ($AppUI->isActiveModule('helpdesk')) 
+	  $tabBox->add( $dPconfig['root_dir'].'/modules/helpdesk/vw_idx_my', 'My Open Requests' );
+  
   $tabBox->show();
   ?>
 	</td>

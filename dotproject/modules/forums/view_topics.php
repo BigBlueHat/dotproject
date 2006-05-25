@@ -46,14 +46,14 @@ $q->addOrder("$orderby $orderdir");
 $topics = $q->loadList();
 
 $crumbs = array();
-$crumbs["?m=forums"] = "forums list";
+$crumbs['?m=forums'] = 'forums list';
 
 $tpl->assign('breadCrumbs', breadCrumbs( $crumbs ));
 $tpl->assign('canEdit', $canEdit);
 $tpl->assign('forum_id', $forum_id);
 $tpl->assign('f', $f);
 
-$topic_rows = "";
+$topic_rows = '';
 
 $now = new CDate();
 
@@ -61,7 +61,7 @@ foreach ($topics as $row) {
 	$tpl_row = new CTemplate();
 
 	$tpl_row->assign('forum_id', $forum_id);
-	$last = intval( $row["latest_reply"] ) ? new CDate( $row["latest_reply"] ) : null;
+	$last = intval( $row['latest_reply'] ) ? new CDate( $row['latest_reply'] ) : null;
 	
 	//JBF limit displayed messages to first-in-thread
 	$tpl_row->assign('row', $row);
@@ -73,7 +73,7 @@ foreach ($topics as $row) {
 	$span = new Date_Span();
 	$span->setFromDateDiff( $now, $last );
 
-	$date_diff = sprintf( "%.1f", $span->format( "%d" ) );
+	$date_diff = sprintf( '%.1f', $span->format( '%d' ) );
 	$tpl_row->assign('date_diff_now_last', $date_diff);
 
 	$topic_rows .= $tpl_row->fetchFile('view_topics.row');
@@ -82,7 +82,4 @@ foreach ($topics as $row) {
 $tpl->assign('topic_rows', $topic_rows);
 
 $tpl->displayFile('view_topics');
-
-
-
 ?>

@@ -1,13 +1,15 @@
 <table border="0" cellspacing="1" cellpadding="2" width="100%" class="motitle">
 <tr>
 	<td>
-		<a href="?m=calendar&a=week_view&date={dPdateFormat date=$prev_week format='db'}"><img src="images/prev.gif" width="16" height="16" alt="pre" border="0"></a>
+		<a href="?m=calendar&amp;a=week_view&amp;date={dPdateFormat date=$prev_week format='db'}">
+			<img src="images/prev.gif" width="16" height="16" alt="pre" border="0" /></a>
 	</td>
 	<th width="100%">
 		<span style="font-size:12pt">{dPtranslate word='Week'} {dPdateFormat|dPescape date=$week[0] format="%U - %Y"}</span>
 	</th>
 	<td>
-		<a href="?m=calendar&a=week_view&date={dPdateFormat date=$next_week format='db'}"><img src="images/next.gif" width="16" height="16" alt="next" border="0"></a>
+		<a href="?m=calendar&amp;a=week_view&amp;date={dPdateFormat date=$next_week format='db'}">
+			<img src="images/next.gif" width="16" height="16" alt="next" border="0" /></a>
 	</td>
 </tr>
 </table>
@@ -20,7 +22,8 @@
 	<td class="weekDay" style="width:50%;">
 		<table style="width:100%;border-spacing:0;">
 		<tr>
-			<td align="{if $column % 2 == 0}left{else}right{/if}"><a href="?m=calendar&a=day_view&date={dPdateFormat date=$day format='db'}">
+			<td align="{if $column % 2 == 0}left{else}right{/if}">
+				<a href="?m=calendar&amp;a=day_view&amp;date={dPdateFormat date=$day format='db'}">
 	{if $todayStamp == $weekStamps[$smarty.foreach.week.index]}<span style="color:red">{/if}
 	{if $column % 2 == 0}
 		<strong>{dPdateFormat|dPescape date=$day format="%d"}</strong>
@@ -59,7 +62,9 @@
 {/foreach}
 <tr>
 	<td colspan="2" align="right" bgcolor="#efefe7">
-		<a href="./index.php?m=calendar&amp;a=week_view">{dPtranslate word='today'}</a>
+		<a href="./index.php?m=calendar&amp;a=week_view">
+			{dPtranslate word='today'}
+		</a>
 	</td>
 </tr>
 </table>

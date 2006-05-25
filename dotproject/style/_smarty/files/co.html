@@ -1,11 +1,11 @@
-<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
-
 <form name="coFrm" action="?m=files" method="post">
 	<input type="hidden" name="dosql" value="do_file_co" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="{$file_id}" />
-        <input type="hidden" name="file_checkout" value="{$user_id}">
-        <input type="hidden" name="file_version_id" value="{$obj->file_version_id}">
+	<input type="hidden" name="file_checkout" value="{$user_id}" />
+	<input type="hidden" name="file_version_id" value="{$obj->file_version_id}" />
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 <tr>
 	<td width="100%" valign="top" align="center">
 		<table cellspacing="1" cellpadding="2" width="60%">
@@ -36,7 +36,10 @@
 
 		<tr>
 			<td align="right" nowrap="nowrap">&nbsp;</td>
-			<td align="left"><input type="checkbox" name="notify" checked="checked">{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}</td>	
+			<td align="left">
+				<input type="checkbox" name="notify" checked="checked" />
+				{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}
+			</td>
 		</tr>
 		</table>
 	</td>
@@ -49,5 +52,5 @@
 		<input type="submit" class="button" value="{dPtranslate word='submit'}" />
 	</td>
 </tr>
-</form>
 </table>
+</form>

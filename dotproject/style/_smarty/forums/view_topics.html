@@ -3,27 +3,27 @@
 	<td>{$breadCrumbs}</td>
 	<td align="right">
 	{if $canEdit}
-		<input type="button" class="button" style="width:120;" value="{dPtranslate word='start a new topic'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&post_message=1';">
+		<input type="button" class="button" style="width:120;" value="{dPtranslate word='start a new topic'}" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;post_message=1';" />
 	{/if}
 	</td>
 </tr>
 </table>
 
+<form name="watcher" action="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;f={$f}" method="post">
+	<input type="hidden" name="dosql" value="do_watch_forum" />
+	<input type="hidden" name="watch" value="topic" />
 <table width="100%" cellspacing="1" cellpadding="2" border="0" class="tbl">
-<form name="watcher" action="?m=forums&a=viewer&forum_id={$forum_id}&f={$f}" method="post">
 <tr>
-	<th><a href="?m=forums&a=viewer&forum_id={$forum_id}&orderby=watch_user" class="hdr">{dPtranslate word='Watch'}</a></th>
-	<th><a href="?m=forums&a=viewer&forum_id={$forum_id}&orderby=message_title" class="hdr">{dPtranslate word='Topics'}</a></th>
-	<th><a href="?m=forums&a=viewer&forum_id={$forum_id}&orderby=user_username" class="hdr">{dPtranslate word='Author'}</a></th>
-	<th><a href="?m=forums&a=viewer&forum_id={$forum_id}&orderby=replies" class="hdr">{dPtranslate word='Replies'}</a></th>
-	<th><a href="?m=forums&a=viewer&forum_id={$forum_id}&orderby=latest_reply" class="hdr">{dPtranslate word='Last Post'}</a></th>
+	<th><a href="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;orderby=watch_user" class="hdr">{dPtranslate word='Watch'}</a></th>
+	<th><a href="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;orderby=message_title" class="hdr">{dPtranslate word='Topics'}</a></th>
+	<th><a href="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;orderby=user_username" class="hdr">{dPtranslate word='Author'}</a></th>
+	<th><a href="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;orderby=replies" class="hdr">{dPtranslate word='Replies'}</a></th>
+	<th><a href="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;orderby=latest_reply" class="hdr">{dPtranslate word='Last Post'}</a></th>
 </tr>
 {$topic_rows}
 </table>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="1">
-<input type="hidden" name="dosql" value="do_watch_forum" />
-<input type="hidden" name="watch" value="topic" />
 <tr>
 	<td>&nbsp;</td>
 </tr>
@@ -32,5 +32,5 @@
 		<input type="submit" class="button" value="{dPtranslate word='update watches'}" />
 	</td>
 </tr>
-</form>
 </table>
+</form>

@@ -3,7 +3,8 @@
 
 		{if $day->showArrows}
 			<td align="left">
-				<a href="{$href_prev}"><img src="./images/prev.gif" width="16" height="16" alt="{dPtranslate word='previous month'}" border="0" /></a>
+				<a href="{$href_prev}">
+					<img src="./images/prev.gif" width="16" height="16" alt="{dPtranslate word='previous month'}" border="0" /></a>
 			</td>
 		{/if}
 
@@ -12,11 +13,15 @@
 			<a href="{$href_month}">
 		{/if}
 		{dPdateFormat|dPescape date=$day->this_month format="%B %Y"}
+		{if $day->clickMonth}
+			</a>
+		{/if}
 		</th>
 
 		{if $day->showArrows}
 			<td align="right">
-				<a href="{$href_next}"><img src="./images/next.gif" width="16" height="16" alt="{dPtranslate word='next month'}" border="0" /></a>
+				<a href="{$href_next}">
+					<img src="./images/next.gif" width="16" height="16" alt="{dPtranslate word='next month'}" border="0" /></a>
 			</td>
 		{/if}
 

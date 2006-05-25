@@ -11,7 +11,7 @@
 			{dPshowImage src='images/icons/stock_new_small.png' alt='You have unread posts in this topic'}
 		{/if}
 		<span style="font-size:10pt;">
-		<a href="?m=forums&a=viewer&forum_id={$forum_id}&message_id={$row.message_id}">{$row.message_title}</a>
+		<a href="?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_id={$row.message_id}">{$row.message_title}</a>
 		</span>
 	</td>
 	<td bgcolor="#dddddd" width="10%">{$row.user_username}</td>
@@ -19,7 +19,7 @@
 	<td bgcolor="#dddddd" width="150" nowrap="nowrap">
 		{if $row.latest_reply}
 			{$formatted_date}
-			<br /><font color=#999966>(
+			<br /><font color="#999966">(
 			{$date_diff_now_last}
 			{dPtranslate word='days ago'}
 			)</font>

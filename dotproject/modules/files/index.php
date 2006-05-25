@@ -31,32 +31,31 @@ $projects = arrayMerge( array( '0'=>$AppUI->_('All', UI_OUTPUT_RAW) ), $projects
 $titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCell( $AppUI->_('Filter') . ':' );
 $titleBlock->addCell(
-	arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" size="1" class="text"', $project_id ), '',
-	'<form name="pickProject" action="?m=files" method="post">', '</form>'
-);
+'<form name="pickProject" action="?m=files" method="post">' .
+	arraySelect( $projects, 'project_id', 'onchange="document.pickProject.submit()" size="1" class="text"', $project_id ) . 
+'</form>', '', '', '');
 if ($canEdit) {
-	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new file').'">', '',
-		'<form action="?m=files&a=addedit" method="post">', '</form>'
-	);
+	$titleBlock->addCell('
+<form action="?m=files&amp;a=addedit" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new file').'" />
+</form>', '', '', '');
 }
 $titleBlock->show();
 
-$file_types = dPgetSysVal("FileType");
-if ( $tab != -1 ) {
-        array_unshift($file_types, "All Files");
-}
+$file_types = dPgetSysVal('FileType');
+if ( $tab != -1 )
+	array_unshift($file_types, 'All Files');
 
-$tabBox = new CTabBox( "?m=files", "{$dPconfig['root_dir']}/modules/files/", $tab );
+
+$tabBox = new CTabBox( '?m=files', "{$dPconfig['root_dir']}/modules/files/", $tab );
 
 $i = 0;
 
 foreach($file_types as $file_type)
 {
-        $tabBox->add("index_table", $file_type);
-        ++$i;
+	$tabBox->add('index_table', $file_type);
+	++$i;
 }
 
 $tabBox->show();
-
 ?>

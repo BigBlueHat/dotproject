@@ -1,9 +1,11 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function submitIt() {
 	var f = document.uploadFrm;
 	f.submit();
 }
+
 function delIt() {
 	if (confirm( "{/literal}{dPtranslate word='filesDelete' type='js'}{literal}" )) {
 		var f = document.uploadFrm;
@@ -11,6 +13,7 @@ function delIt() {
 		f.submit();
 	}
 }
+
 function popTask() {
     var f = document.uploadFrm;
     if (f.file_project.selectedIndex == 0) {
@@ -47,16 +50,16 @@ function setTask( key, val ) {
         f.task_name.value = '';
     }
 }
+-->
 </script>
 {/literal}
-<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
-
 <form name="uploadFrm" action="?m=files" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="{$file_id}" />
 	<input type="hidden" name="file_version_id" value="{$obj->file_version_id}" />
 
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 <tr>
 	<td width="100%" valign="top" align="center">
 		<table cellspacing="1" cellpadding="2" width="60%">
@@ -90,19 +93,19 @@ function setTask( key, val ) {
 				{dPtranslate word='Minor Revision'} 
 			</td>
 			<td>
-				<input type="Radio" name="revision_type" value="minor" checked>
+				<input type="radio" name="revision_type" value="minor" checked="checked" />
 			</td>
 			<tr>
 			<td align="right" nowrap="nowrap">
 				{dPtranslate word='Major Revision'} 
 			</td>
 			<td>
-				<input type="Radio" name="revision_type" value="major">
+				<input type="radio" name="revision_type" value="major" />
 			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Cancel Checkout'}</td>
-			<td><input type="radio" name="revision_type" value="cancel" ></td>
+			<td><input type="radio" name="revision_type" value="cancel" /></td>
 		{else}
 			<tr>
 			<td align="right" nowrap="nowrap">
@@ -149,14 +152,15 @@ function setTask( key, val ) {
          		</td></tr>
 
 		{* Task *}
-			<tr>
-            		<td align="right" nowrap="nowrap">{dPtranslate word='Task'}:</td>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Task'}:</td>
 			<td align="left" colspan="2" valign="top">
 				<input type="hidden" name="file_task" value="{$file_task}" />
-				<input type="text" class="text" name="task_name" value="{$task_name}" size="40" disabled />
+				<input type="text" class="text" name="task_name" value="{$task_name}" size="40" disabled="disabled" />
 				<input type="button" class="button" value="{dPtranslate word='select task'}..."
-				    {if $ci && $preserve}{else} onclick="popTask()" {/if}/>
-			</td></tr>
+				    {if $ci && $preserve}{else} onclick="popTask()" {/if} />
+			</td>
+		</tr>
  
 		{* end file_attrs *}
 		<tr>
@@ -167,18 +171,26 @@ function setTask( key, val ) {
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Upload File'}:</td>
-			<td align="left"><input type="File" class="button" name="formfile" style="width:270px"></td>
+			<td align="left">
+				<input type="file" class="button" name="formfile" style="width:270px" />
+			</td>
 		</tr>
 		<tr>
 			<td align="right" nowrap="nowrap">&nbsp;</td>
-			<td align="left"><input type="checkbox" name="notify" checked="checked">{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}</td>		
+			<td align="left">
+				<input type="checkbox" name="notify" checked="checked" />
+				{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}
+			</td>		
 		</tr>
 		{if $ci || ($canAdmin && $obj->file_checkout == 'final')}
-			<input type="hidden" name="file_checkout" value="" />
-			<input type="hidden" name="file_co_reason" value="" />
 		<tr>
 				<td align="right" nowrap="nowrap">&nbsp;</td>
-				<td align="left"><input type="checkbox" name="final_ci" onclick="finalCI()">{dPtranslate word='Final Version'}</td>		
+				<td align="left">
+					<input type="hidden" name="file_checkout" value="" />
+					<input type="hidden" name="file_co_reason" value="" />
+					<input type="checkbox" name="final_ci" onclick="finalCI()" />
+					{dPtranslate word='Final Version'}
+			</td>
  		</tr>
 		{/if}
 		</table>
@@ -186,14 +198,14 @@ function setTask( key, val ) {
 </tr>
 <tr>
 	<td>
-		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')){literal}{location.href = './index.php?m=files';}{/literal}" />
+		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if (confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')) location.href = './index.php?m=files';" />
 	</td>
 	<td align="right">
 		<input type="button" class="button" value="{dPtranslate word='submit'}" onclick="submitIt()" />
 	</td>
 </tr>
-</form>
 </table>
+</form>
 {*
 $select_disabled=' ';  
 if ( $ci && $preserve)

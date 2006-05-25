@@ -64,14 +64,14 @@ if ($is_clash) {
 	unset($_SESSION['add_event_clash']);
 	unset($_SESSION['event_is_clash']);
 }
-if ($_GET["event_project"]) 
-	$obj->event_project = $_GET["event_project"];
+if ($_GET['event_project']) 
+	$obj->event_project = $_GET['event_project'];
 
 // setup the title block
-$titleBlock = new CTitleBlock( ($event_id ? "Edit Event" : "Add Event") , 'myevo-appointments.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar", "month view" );
+$titleBlock = new CTitleBlock( ($event_id ? 'Edit Event' : 'Add Event') , 'myevo-appointments.png', $m, "$m.$a" );
+$titleBlock->addCrumb( '?m=calendar', 'month view' );
 if ($event_id) {
-	$titleBlock->addCrumb( "?m=calendar&a=view&event_id=$event_id", "view this event" );
+	$titleBlock->addCrumb( '?m=calendar&amp;a=view&event_id='.$event_id, 'view this event' );
 }
 $titleBlock->show();
 
@@ -97,7 +97,7 @@ $all_projects = '(' . $AppUI->_('Unspecified Calendar', UI_OUTPUT_RAW) . ')';
 $projects = arrayMerge(  array( 0 => $all_projects ), $q->loadHashList() );
 $projects = arrayMerge( array( -1 => $perso_projects ), $projects );
 
-$tasks = array('' => '');
+$tasks = array('' => '&nbsp;');
 if ($obj->event_project)
 {
 	$q->addQuery('task_id, task_name');
@@ -210,7 +210,8 @@ $tpl->assign('extras', $extras);
 $tpl->displayAddEdit($obj);
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function submitIt(){
 	var form = document.editFrm;
 	if (form.event_title.value.length < 1) {
@@ -324,5 +325,5 @@ function removeUser() {
 		}
 	}
 }
-
+-->
 </script>

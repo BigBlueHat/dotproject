@@ -46,7 +46,8 @@ $project->setAllowedSQL($AppUI->user_id, $q);
 $forum->setAllowedSQL($AppUI->user_id, $q);
 
 
-$q->addWhere("user_id = forum_owner AND project_id = forum_project");
+$q->addWhere('user_id = forum_owner');
+$q->addWhere('project_id = forum_project');
 
 switch ($f) {
 	case 1:
@@ -75,24 +76,24 @@ $forums = $q->loadList();
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Forums', 'support.png', $m, "$m.$a" );
-$titleBlock->addCell(
-	arraySelect( $filters, 'f', 'size="1" class="text" onChange="document.forum_filter.submit();"', $f , true ), '',
-	'<form name="forum_filter" action="?m=forums" method="post">', '</form>'
-);
+$titleBlock->addCell('
+<form name="forum_filter" action="?m=forums" method="post">'.
+	arraySelect( $filters, 'f', 'size="1" class="text" onchange="document.forum_filter.submit();"', $f , true ) . 
+'</form>', '', '', '');
 
 $canAdd = $perms->checkModule( $m, 'add');
 if ($canAdd) {
-	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new forum').'">', '',
-		'<form action="?m=forums&a=addedit" method="post">', '</form>'
-	);
+	$titleBlock->addCell('
+<form action="?m=forums&amp;a=addedit" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new forum').'" />
+</form>', '', '', '');
 }
 $titleBlock->show();
 
 $tpl->assign('f', $f);
 
-$p ="";
-$forum_rows_html = "";
+$p ='';
+$forum_rows_html = '';
 $now = new CDate();
 foreach ($forums as $row) {
 	$tpl_row = new CTemplate();
@@ -100,14 +101,13 @@ foreach ($forums as $row) {
 	
 	$message_date = intval( $row['forum_last_date'] ) ? new CDate( $row['forum_last_date'] ) : null;
 
-	if($p != $row["forum_project"]) {
+	if($p != $row['forum_project']) {
 		$tpl_row->assign('show_project_header', TRUE);
 		$create_date = intval( $row['forum_create_date'] ) ? new CDate( $row['forum_create_date'] ) : null;
-		$p = $row["forum_project"];
+		$p = $row['forum_project'];
 	}
-	if ( $row["forum_owner"] == $AppUI->user_id || $perms->checkModule('forums', 'add') ) { 
-		$tpl_row->assign('show_edit_controls', TRUE); 
-	} 
+	if ( $row['forum_owner'] == $AppUI->user_id || $perms->checkModule('forums', 'add') ) 
+		$tpl_row->assign('show_edit_controls', true); 
 
 	$formatted_create_date = $create_date->format( $df );
 	$tpl_row->assign('create_date', $formatted_create_date);
@@ -120,7 +120,7 @@ foreach ($forums as $row) {
 		$last = new Date_Span();
 		$last->setFromDateDiff( $now, $message_date );
 
-		$last_post_days = sprintf( "%.1f", $last->format( "%d" ) );
+		$last_post_days = sprintf( '%.1f', $last->format( '%d' ) );
 		$tpl_row->assign('last_post_days', $last_post_days);
 
 		$id = $row['message_parent'] < 0 ? $row['message_id'] : $row['message_parent'];

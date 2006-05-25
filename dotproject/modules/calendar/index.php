@@ -61,8 +61,8 @@ $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 #echo '<pre>';print_r($events);echo '</pre>';
 // setup the title block
 $titleBlock = new CTitleBlock( 'Monthly Calendar', 'myevo-appointments.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar&a=calmgt", "calendar management" );
-$titleBlock->addCrumb( "?m=calendar&a=eventimport&dialog=0", "import icalendar" );
+$titleBlock->addCrumb( '?m=calendar&amp;a=calmgt', 'calendar management' );
+$titleBlock->addCrumb( '?m=calendar&amp;a=eventimport&amp;dialog=0', 'import icalendar' );
 
 if (isset($_POST['show_form']))
 {
@@ -83,10 +83,11 @@ $show_events = $AppUI->getState('CalIdxShowEvents', true);
 $show_tasks = $AppUI->getState('CalIdxShowTasks', false);
 
 $titleBlock->addCell('
-<input type="hidden" name="show_form" value="1" />
-<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked ':'') . 'onChange="document.filters.submit()"> show events
-<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked ':'') . 'onChange="document.filters.submit()"> show tasks', '', 
-	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="filters">', '</form>');
+<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="filters">
+	<input type="hidden" name="show_form" value="1" />
+	<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked ':'') . 'onchange="document.filters.submit()" /> show events
+	<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked ':'') . 'onchange="document.filters.submit()" /> show tasks
+</form>', '', '', '');
 
 if ($show_tasks)
 	$filters = $titleBlock->addFiltersCell($tasks_filters_selection);
@@ -113,13 +114,15 @@ $titleBlock->addCell(
 $titleBlock->show();
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function clickDay( uts, fdate ) {
 	window.location = './index.php?m=calendar&a=day_view&date='+uts;
 }
 function clickWeek( uts, fdate ) {
 	window.location = './index.php?m=calendar&a=week_view&date='+uts;
 }
+-->
 </script>
 
 
@@ -141,14 +144,14 @@ $links = array();
 // assemble the links for the tasks
 if ($show_tasks)
 {
-	require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+	require_once( dPgetConfig( 'root_dir' ).'/modules/calendar/links_tasks.php' );
 	getTaskLinks( $first_time, $last_time, $links, 20, $filters );
 }
 
 // assemble the links for the events
 if ($show_events)
 {
-	require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+	require_once( dPgetConfig( 'root_dir' ).'/modules/calendar/links_events.php' );
 	getEventLinks( $first_time, $last_time, $links, 20 );
 	getExternalWebcalEventLinks( $first_time, $last_time, $links, 20 );
 }

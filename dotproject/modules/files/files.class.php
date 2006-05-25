@@ -388,9 +388,9 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 			echo '
 	<td align="left" width="15%">
 		<a href="./index.php?m=files&amp;page=1">
-			<img src="images/navfirst.gif" border="0" Alt="First Page"></a>&nbsp;&nbsp;
+			<img src="images/navfirst.gif" border="0" alt="First Page" /></a>&nbsp;&nbsp;
 		<a href="./index.php?m=files&amp;page=' . $xpg_prev_page . '">
-			<img src="images/navleft.gif" border="0" Alt="Previous page (' . $xpg_prev_page . ')"></a>
+			<img src="images/navleft.gif" border="0" alt="Previous page (' . $xpg_prev_page . ')" /></a>
 	</td>';
 		} else {
 			echo '<td width="15%">&nbsp;</td>' . "\n";
@@ -407,9 +407,9 @@ function shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 			echo '
 	<td align="right" width="15%">
 		<a href="./index.php?m=files&amp;page='.$xpg_next_page.'">
-			<img src="images/navright.gif" border="0" Alt="Next Page ('.$xpg_next_page.')"></a>&nbsp;&nbsp;
+			<img src="images/navright.gif" border="0" alt="Next Page ('.$xpg_next_page.')" /></a>&nbsp;&nbsp;
 		<a href="./index.php?m=files&amp;page=' . $xpg_total_pages . '">
-			<img src="images/navlast.gif" border="0" Alt="Last Page"></a>
+			<img src="images/navlast.gif" border="0" alt="Last Page" /></a>
 	</td>';
 		} else {
 			echo '<td width="15%">&nbsp;</td></tr>'."\n";

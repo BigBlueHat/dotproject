@@ -63,31 +63,30 @@ if ($inc === null) $inc = 15;
 
 $this_day->setTime( $start, 0, 0 );
 
-$html  = "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>";
-$html .= $AppUI->_("Event Filter") . ":" . arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
+$html  = '<form action="' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']) . '" method="post" name="pickFilter">';
+$html .= $AppUI->_('Event Filter') . ':' . arraySelect($event_filter_list, 'event_filter', 'onchange="document.pickFilter.submit()" class="text"',
 	$event_filter, true );
 if ($other_users) {
-	$html .= $AppUI->_("Show Events for") . ":" . "<select name='show_user_events' onchange='document.pickFilter.submit()' class='text'>";
+	$html .= $AppUI->_('Show Events for') . ':' . '<select name="show_user_events" onchange="document.pickFilter.submit()" class="text">';
 	$q  = new DBQuery;
 	$q->addTable('users', 'u');
 	$q->addTable('contacts', 'con');
 	$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
-	$q->addWhere("user_contact = contact_id");
+	$q->addWhere('user_contact = contact_id');
 			
 	if (($rows = $q->loadList()))
 	{
 		foreach ($rows as $row)
 		{
 			if ( $user_id == $row["user_id"])
-				$html .= "<OPTION VALUE='".$row["user_id"]."' SELECTED>".$row["user_username"];
+				$html .= '<option value="'.$row['user_id'].'" selected="selected">'.$row['user_username'];
 			else
-				$html .= "<OPTION VALUE='".$row["user_id"]."'>".$row["user_username"];
+				$html .= '<option value="'.$row['user_id'].'">'.$row['user_username'];
 		}
 	}
-	$html .= "</select>";
-	
+	$html .= '</select>';	
 }
-$html .= "</form>";
+$html .= '</form>';
 $html .= '<table cellspacing="1" cellpadding="2" border="0" width="100%" class="tbl">';
 $rows = 0;
 for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
@@ -105,7 +104,7 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 			$et = new CDate( $row['event_end_date'] );
 			$rows = (($et->getHour()*60 + $et->getMinute()) - ($this_day->getHour()*60 + $this_day->getMinute()))/$inc;
 
-			$href = "?m=calendar&a=view&event_id=".$row['event_id'];
+			$href = "?m=calendar&amp;a=view&amp;event_id=".$row['event_id'];
 			$alt = $row['event_description'];
 
 			$html .= "\n\t<td class=\"event\" rowspan=\"$rows\" valign=\"top\">";

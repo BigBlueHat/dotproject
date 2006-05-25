@@ -1,5 +1,6 @@
 {literal}
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function submitIt(){
 	var form = document.changeforum;
 	if(form.forum_name.value.search(/^\s*$/) >= 0 ) {
@@ -23,17 +24,18 @@ function delIt(){
 		form.submit();
 	}
 }
+-->
 </script>
 {/literal}
 
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <form name="changeforum" action="?m=forums" method="post">
 	<input type="hidden" name="dosql" value="do_forum_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="forum_unique_update" value="{$forum_unique_update}" />
 	<input type="hidden" name="forum_id" value="{$forum_id}" />
 
-<tr height="20">
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
+<tr>
 	<th valign="top" colspan="3">
 		<strong>
 		{if $forum_id > 0}Edit{else}Add{/if}
@@ -99,5 +101,5 @@ function delIt(){
 		<input type="button" value="{dPtranslate word='submit'}" class="button" onclick="submitIt()" />
 		{/if}</td>
 </tr>
-</form>
 </table>
+</form>

@@ -209,17 +209,17 @@ class CMonthCalendar {
 	 function _drawTitle() {
 		global $AppUI, $m, $a, $locale_char_set, $tpl;
 		$url = "index.php?m=$m";
-		$url .= $a ? "&a=$a" : '';
-		$url .= isset( $_GET['dialog']) ? "&dialog=1" : '';
+		$url .= $a ? "&amp;a=$a" : '';
+		$url .= isset( $_GET['dialog']) ? "&amp;dialog=1" : '';
 
-		$href = $url.'&date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
+		$href = $url.'&amp;date='.$this->prev_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&amp;callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
 		$tpl->assign('href_prev', $href);
-		$href = $url.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
+		$href = $url.'&amp;date='.$this->this_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&amp;callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&amp;uts='.key($this->highlightedDays):'');
 		$tpl->assign('href_this', $href);
-		$href = $url.'&date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&uts='.key($this->highlightedDays):'');
+		$href = $url.'&amp;date='.$this->next_month->format(FMT_TIMESTAMP_DATE).($this->callback ? '&amp;callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&amp;uts='.key($this->highlightedDays):'');
 		$tpl->assign('href_next', $href);
 		$urlm = "index.php?m=$m";
-		$hrefm = $urlm.'&date='.$this->this_month->format(FMT_TIMESTAMP_DATE);
+		$hrefm = $urlm.'&amp;date='.$this->this_month->format(FMT_TIMESTAMP_DATE);
 		$tpl->assign('href_month', $hrefm);
             		
 		$tpl->assign('day', $this);
@@ -685,7 +685,7 @@ class CEvent extends CDpObject {
 	  }
 	  $body .= $AppUI->_('Event') . ":\t" . $this->event_title . "\n";
 	  if (! $clash)
-	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . "/index.php?m=calendar&a=view&event_id=" . $this->event_id . "\n";
+	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . "/index.php?m=calendar&amp;a=view&amp;event_id=" . $this->event_id . "\n";
 	  $body .= $AppUI->_('Starts') . ":\t" . $start_date->format($fmt) . "\n";
 	  $body .= $AppUI->_('Ends') . ":\t" . $end_date->format($fmt) . "\n";
 		if ($this->event_url)
@@ -735,7 +735,7 @@ class CEvent extends CDpObject {
 		$v->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 	}
 	
-	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $this->event_id );
+	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
 	$v->addRel($this->event_parent, 'PARENT');
 	$v->addCreated();
 	$v->addUid();
@@ -1105,7 +1105,7 @@ class vCalendar {
 			foreach ($users as $user) {
 				$this->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 			}
-			$this->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $e['event_id'] );
+			$this->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $e['event_id'] );
 			$this->addRel($e['event_parent'], 'PARENT');
 			$this->addCreated();
 			$this->addUid($e['event_id']);

@@ -7,18 +7,17 @@ $preserve = $dPconfig['files_ci_preserve_attr'];
 // check permissions for this record
 $perms =& $AppUI->acl();
 $canEdit = $perms->checkModuleItem( $m, 'edit', $file_id );
-if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
+if (!$canEdit)
+	$AppUI->redirect('m=public&amp;a=access_denied');
 
 $canAdmin = $perms->checkModule('system', 'edit');
 
 // load the companies class to retrieved denied companies
-require_once( $AppUI->getModuleClass( 'projects' ) );
-require_once $AppUI->getModuleClass('tasks');
+require_once ($AppUI->getModuleClass('projects'));
+require_once ($AppUI->getModuleClass('tasks'));
 
-$file_task = intval( dPgetParam( $_GET, 'file_task', 0 ) );
-$file_parent = intval( dPgetParam( $_GET, 'file_parent', 0 ) );
+$file_task 		= intval( dPgetParam( $_GET, 'file_task', 0 ) );
+$file_parent 	= intval( dPgetParam( $_GET, 'file_parent', 0 ) );
 $file_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
 $q =& new DBQuery;
@@ -32,23 +31,23 @@ $canDelete = $obj->canDelete( $msg, $file_id );
 // $obj = null;
 if ($file_id > 0 && ! $obj->load($file_id)) {
 	$AppUI->setMsg( 'File' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
 if ($file_id > 0) {
 	// Check to see if the task or the project is also allowed.
 	if ($obj->file_task) {
 		if (! $perms->checkModuleItem('tasks', 'view', $obj->file_task))
-			$AppUI->redirect("m=public&a=access_denied");
+			$AppUI->redirect('m=public&amp;a=access_denied');
 	}
 	if ($obj->file_project) {
 		if (! $perms->checkModuleItem('projects', 'view', $obj->file_project))
-			$AppUI->redirect("m=public&a=access_denied");
+			$AppUI->redirect('m=public&amp;a=access_denied');
 	}
 }
 
 if ($obj->file_checkout != $AppUI->user_id)
-        $ci = false;
+	$ci = false;
 
 if (! $canAdmin)
 	$canAdmin = $obj->canAdmin();
@@ -57,7 +56,7 @@ if ($obj->file_checkout == 'final' && ! $canAdmin) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
 // setup the title block
-$ttl = $file_id ? "Edit File" : "Add File";
+$ttl = $file_id ? 'Edit File' : 'Add File';
 $ttl = $ci ? 'Checking in' : $ttl;
 $titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=files", "files list" );
@@ -78,19 +77,15 @@ if ($obj->file_task) {
 	$task_name = $obj->getTaskName();
 } else if ($file_task) {
 	$q  = new DBQuery;
-	$q->addTable('tasks');
 	$q->addQuery('task_name');
-	$q->addWhere("task_id=$file_task");
-	$sql = $q->prepare();
-	$q->clear();
-	$task_name = db_loadResult( $sql );
+	$q->addTable('tasks');
+	$q->addWhere('task_id = ' . $file_task);
+	$task_name = $q->loadResult();
 } else {
 	$task_name = '';
 }
 
-$extra = array(
-	'where'=>'project_status != 7'
-);
+$extra = array('where'=>'project_status != 7');
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
 $projects = arrayMerge( array( '0'=>$AppUI->_('All', UI_OUTPUT_RAW) ), $projects );

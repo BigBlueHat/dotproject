@@ -61,15 +61,15 @@ $event_task = $q->loadResult();
 $titleBlock = new CTitleBlock( 'View Event', 'myevo-appointments.png', $m, "$m.$a" );
 if ($canEdit) {
 	$titleBlock->addCell();
-	$titleBlock->addCell(
-		'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
-		'<form action="?m=calendar&a=addedit" method="post">', '</form>'
-	);
+	$titleBlock->addCell('
+<form action="?m=calendar&amp;a=addedit" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new event').'" />
+</form>', '', '', '');
 }
-$titleBlock->addCrumb( "?m=calendar&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "month view" );
+$titleBlock->addCrumb( '?m=calendar&amp;date='.$start_date->format( FMT_TIMESTAMP_DATE ), 'month view' );
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=calendar&a=day_view&date=".$start_date->format( FMT_TIMESTAMP_DATE ), "day view" );
-	$titleBlock->addCrumb( "?m=calendar&a=addedit&event_id=$event_id", "edit this event" );
+	$titleBlock->addCrumb( '?m=calendar&amp;a=day_view&amp;date='.$start_date->format( FMT_TIMESTAMP_DATE ), 'day view' );
+	$titleBlock->addCrumb( '?m=calendar&amp;a=addedit&amp;event_id='.$event_id, 'edit this event' );
 	if ($canDelete) {
 		$titleBlock->addCrumbDelete( 'delete event', $canDelete, $msg );
 	}
@@ -87,7 +87,8 @@ $tpl->assign('event_task', $event_task);
 $tpl->assign('event_id', $event_id);
 $tpl->displayView($obj);
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -100,5 +101,6 @@ function delIt() {
 	}
 }
 <?php } ?>
+-->
 </script>
 

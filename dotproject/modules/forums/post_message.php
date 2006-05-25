@@ -48,11 +48,11 @@ if ($message_parent != -1)
 }
 
 $crumbs = array();
-$crumbs["?m=forums"] = "forums list";
-$crumbs["?m=forums&a=viewer&forum_id=$forum_id"] = "topics for this forum";
-if ($message_parent > -1) {
-	$crumbs["?m=forums&a=viewer&forum_id=$forum_id&message_id=$message_parent"] = "this topic";
-}
+$crumbs['?m=forums'] = 'forums list';
+$crumbs['?m=forums&amp;a=viewer&amp;forum_id='.$forum_id] = 'topics for this forum';
+if ($message_parent > -1)
+	$crumbs['?m=forums&amp;a=viewer&amp;forum_id='.$forum_id.'&amp;message_id='.$message_parent] = 'this topic';
+
 
 $tpl->assign('canEdit', $canEdit);
 $tpl->assign('breadCrumbs', breadCrumbs( $crumbs ));
@@ -63,7 +63,7 @@ $tpl->assign('forum_info', $forum_info);
 $message_author = (isset($message_info["message_author"]) && ($message_id || $message_parent < 0)) ? $message_info["message_author"] : $AppUI->user_id;
 $message_editor = (isset($message_info["message_author"]) && ($message_id || $message_parent < 0)) ? $AppUI->user_id : '0';
 $message_username = dPgetUsername($message_info['user_username']);
-$message_body_text = (($message_id == 0) and ($message_parent != -1)) ? "\n>"  .  $last_message_info["message_body"] . "\n" : $message_info["message_body"];
+$message_body_text = (($message_id == 0) and ($message_parent != -1)) ? "\n>"  .  $last_message_info['message_body'] . "\n" : $message_info['message_body'];
 
 $tpl->assign('message_id', $message_id);
 $tpl->assign('message_parent', $message_parent);
@@ -73,18 +73,14 @@ $tpl->assign('message_editor', $message_editor);
 $tpl->assign('message_username', $message_username);
 $tpl->assign('message_body', $message_body_text);
 
-$date = intval( $message_info["message_date"] ) ? new CDate( $message_info["message_date"] ) : new CDate();
+$date = intval( $message_info['message_date'] ) ? new CDate( $message_info['message_date'] ) : new CDate();
 $formatted_date = $date->format( "$df $tf" );
 $tpl->assign('formatted_date', $formatted_date);
 
-if ($AppUI->user_id == $message_info['message_author'] || $AppUI->user_id == $forum_info["forum_owner"] || $message_id ==0 || (!empty($perms['all']) && !getDenyEdit('all')) )
-{
+if ($AppUI->user_id == $message_info['message_author'] || $AppUI->user_id == $forum_info['forum_owner'] || $message_id ==0 || (!empty($perms['all']) && !getDenyEdit('all')) )
 	$tpl->assign('show_submit_button', TRUE);
-}
 else
-{
 	$tpl->assign('show_submit_button', FALSE);
-} 
 
 $tpl->displayFile('post_message');
 ?>

@@ -71,7 +71,7 @@ $links = array();
 // assemble the links for the tasks
 if ($show_tasks)
 {
-	require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_tasks.php" );
+	require_once( dPgetConfig( 'root_dir' ).'/modules/calendar/links_tasks.php' );
 	getTaskLinks( $first_time, $last_time, $links, 50, $filters);
 }
 
@@ -84,13 +84,14 @@ if ($show_events)
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Week View', 'myevo-appointments.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar&date=".$this_week->format( FMT_TIMESTAMP_DATE ), "month view" );
+$titleBlock->addCrumb( "?m=calendar&amp;date=".$this_week->format( FMT_TIMESTAMP_DATE ), "month view" );
 
 $titleBlock->addCell('
-<input type="hidden" name="show_form" value="1" />
-<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked ':'') . 'onChange="document.filters.submit()"> show events
-<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked ':'') . 'onChange="document.filters.submit()"> show tasks', '', 
-	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="filters">', '</form>');
+<form action="' . str_replace('&', '&amp;', $_SERVER['REQUEST_URI']) . '" method="post" name="filters">
+	<input type="hidden" name="show_form" value="1" />
+	<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked ':'') . 'onchange="document.filters.submit()" /> show events
+	<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked ':'') . 'onchange="document.filters.submit()" /> show tasks
+</form>', '', '', '');
 
 if ($show_tasks)
 	$filters = $titleBlock->addFiltersCell($tasks_filters_selection);
@@ -99,7 +100,7 @@ if ($show_tasks)
 $titleBlock->addCell( $AppUI->_('Event Filter') . ':');
 $titleBlock->addCell(
 	arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
-	$event_filter ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
+	$event_filter ), '', "<form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
 );
 */
 $titleBlock->show();
@@ -125,14 +126,3 @@ $tpl->assign('links', $links);
 
 $tpl->displayFile('view.week');
 ?>
-
-<style type="text/css">
-TD.weekDay  {
-	height:120px;
-	vertical-align: top;
-	padding: 1px 4px 1px 4px;
-	border-bottom: 1px solid #ccc;
-	border-right: 1px solid  #ccc;
-	text-align: left;
-}
-</style>

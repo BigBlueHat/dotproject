@@ -46,12 +46,12 @@ $next_day = new CDate( Date_calc::nextDay( $dd, $mm, $yy, FMT_TIMESTAMP_DATE ) )
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar&date=".$this_day->format( FMT_TIMESTAMP_DATE ), "month view" );
-$titleBlock->addCrumb( "?m=calendar&a=week_view&date=".$this_week, "week view" );
-$titleBlock->addCell(
-	'<input type="submit" class="button" value="'.$AppUI->_('new event').'">', '',
-	'<form action="?m=calendar&a=addedit&date=' . $this_day->format( FMT_TIMESTAMP_DATE )  . '" method="post">', '</form>'
-);
+$titleBlock->addCrumb( '?m=calendar&amp;date='.$this_day->format( FMT_TIMESTAMP_DATE ), 'month view' );
+$titleBlock->addCrumb( '?m=calendar&amp;a=week_view&amp;date='.$this_week, 'week view' );
+$titleBlock->addCell('
+<form action="?m=calendar&amp;a=addedit&amp;date=' . $this_day->format( FMT_TIMESTAMP_DATE )  . '" method="post">
+	<input type="submit" class="button" value="'.$AppUI->_('new event').'" />
+</form>', '', '', '');
 $titleBlock->show();
 
 
@@ -69,7 +69,7 @@ $tpl->assign('minical', $minical->show());
 $minical->setDate( $minical->next_month );
 $tpl->assign('minical_next', $minical->show());
 
-$tabBox = new CTabBox( "?m=calendar&a=day_view&date=" . $this_day->format( FMT_TIMESTAMP_DATE ), "", $tab );
+$tabBox = new CTabBox( "?m=calendar&amp;a=day_view&amp;date=" . $this_day->format( FMT_TIMESTAMP_DATE ), "", $tab );
 $tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_events', 'Events' );
 $tabBox->add( $dPconfig['root_dir'].'/modules/calendar/vw_day_tasks', 'Tasks' );
 $tabBox->loadExtras('calendar', 'day_view');
