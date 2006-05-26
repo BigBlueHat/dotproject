@@ -358,7 +358,14 @@ function calcDuration(f) {
 		if (durn > Math.round(durn))
 			durn++;
 		}
-
+// if there was no fullworkingday we have to check whether the end day is a working day 
+	// and in the negative case postpone the end date by appropriate days
+	for (var i = 0; i < 7-working_days.length; i++){
+		// override  possible non-working enddays
+		if ( !isInArray(working_days, e.getDay()) ) {
+			e.setDate(e.getDate() + 1);
+		}
+	}
 	if ( s > e )
 		alert( 'End date is before start date!');
 	else

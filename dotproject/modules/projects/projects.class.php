@@ -197,7 +197,7 @@ class CProject extends CDpObject {
 			{
 				$origDate->setDate ($newTask->task_start_date);
 				$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-				$destDate = $newTask->next_working_day( $destDate );
+				$destDate = $destDate->next_working_day();
 				$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);
 			}
 			
@@ -207,7 +207,7 @@ class CProject extends CDpObject {
 			{
 				$origDate->setDate ($newTask->task_end_date);
 				$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-				$destDate = $newTask->next_working_day( $destDate );
+				$destDate = $destDate->next_working_day();
 				$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);
 			}
 			

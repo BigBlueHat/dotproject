@@ -1,4 +1,5 @@
 <?php /* TASKS $Id$ */
+$adjustStartDate = dPgetParam($_POST, 'set_task_start_date');
 $del = dPgetParam($_POST, 'del',  0);
 $task_id = dPgetParam($_POST, 'task_id', 0);
 $hassign = dPgetParam($_POST, 'hassign');
@@ -142,9 +143,45 @@ if ($sub_form) {
 		}
 		
 		if (isset($hdependencies)) {
+			// backup old start and end dates
+			$tsd = new CDate ($obj->task_start_date);
+			$ted = new CDate ($obj->task_end_date);
+
 			$obj->updateDependencies( $hdependencies );
+			
+			// we will reset the task's start date based upon dependencies
+			// and shift the end date appropriately
+			if ($adjustStartDate) {
+			
+				// update start date based on dep
+				$obj->update_dep_dates( $obj->task_id );
+
+				// load new task data
+				$tempTask = new CTask();
+				$tempTask->load( $obj->task_id );
+
+				// shifted new start date
+				$nsd = new CDate ($tempTask->task_start_date);
+				
+				// calc shifting span old start ~ new start
+				$d = $tsd->calcDurationDiffToDate($nsd);
+
+				// appropriately shifted end date
+				$ned = $ted->addDuration($d);
+
+				$obj->task_end_date = $ned->format( FMT_DATETIME_MYSQL );
+
+		 		$q = new DBQuery;
+		                $q->addTable('tasks', 't');
+		                $q->addUpdate('task_end_date', $obj->task_end_date);
+		                $q->addWhere('task_id = '.$obj->task_id);
+		                $q->addWhere('task_dynamic != 1');
+		                $q->exec();
+		                $q->clear();
+			}
+
 		}
-		
+
 		// If there is a set of post_save functions, then we process them
 
 		if (isset($post_save)) {
