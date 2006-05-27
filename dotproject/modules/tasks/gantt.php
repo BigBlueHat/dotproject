@@ -273,7 +273,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 //        $start->addDays(0);
         $start = $start->getDate();
 
-        $progress = $a['task_percent_complete'];
+        $progress = $a['task_percent_complete'] + 0;
 	
 	if ($progress > 100) 
 		$progress = 100;
@@ -377,7 +377,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
                 $enddate = new CDate($end);
                 $startdate = new CDate($start);
                 $bar = new GanttBar($row++, array($name, $dur, $startdate->format($df), $enddate->format($df)), substr($start, 2, 8), substr($end, 2, 8), $cap, $a['task_dynamic'] == 1 ? 0.1 : 0.6);
-                $bar->progress->Set($progress/100);
+                $bar->progress->Set(min(($progress/100),1));
                 if (is_file( TTF_DIR.'arialbd.ttf' )) {
                         $bar->title->SetFont(FF_ARIAL,FS_NORMAL,8);
                 }

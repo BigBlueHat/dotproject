@@ -183,7 +183,7 @@ foreach($projects as $p) {
 //	$start->addDays(0);
 	$start = $start->getDate();
 
-	$progress = $p['project_percent_complete'];
+	$progress = $p['project_percent_complete'] + 0;
 
 	$caption = "";
 	if(!$start || $start == "0000-00-00"){
@@ -209,7 +209,7 @@ foreach($projects as $p) {
 	$actual_enddate = new CDate($actual_end);
 	$actual_enddate = $actual_enddate->after($startdate) ? $actual_enddate : $enddate;
         $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), $actual_enddate->format($df)), $start, $actual_end, $cap, 0.6);
-        $bar->progress->Set($progress/100);
+        $bar->progress->Set(min(($progress/100), 1));
 
         $bar->title->SetFont(FF_FONT1,FS_NORMAL,10);
         $bar->SetFillColor("#".$p['project_color_identifier']);
