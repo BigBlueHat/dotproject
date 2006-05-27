@@ -1,9 +1,9 @@
 <?php
-
-$do_report 		         = dPgetParam( $_POST, "do_report", 0 );
+$coarseness 		 = dPgetParam( $_POST, "coarseness", 1 );
+$do_report 		 = dPgetParam( $_POST, "do_report", 0 );
+$hideNonWd		 = dPgetParam($_POST, "hideNonWd", 0);
 $log_start_date          = dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date 	         = dPgetParam( $_POST, "log_end_date", 0 );
-$log_all		         = dPgetParam($_POST, "log_all", 0);
 $use_assigned_percentage = dPgetParam($_POST, "use_assigned_percentage", 0);
 $user_id                 = dPgetParam($_POST, "user_id", $AppUI->user_id);
 
@@ -35,7 +35,7 @@ function setCalendar( idate, fdate ) {
 }
 </script>
 
-<form name="editFrm" action="index.php?m=reports" method="post">
+<form name="editFrm" action="index.php?m=projects&a=reports" method="post">
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 <input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
@@ -44,28 +44,26 @@ function setCalendar( idate, fdate ) {
 
 
 <tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
-	<td nowrap="nowrap">
+	<td nowrap="nowrap"><?php echo $AppUI->_('For period');?>:
 		<input type="hidden" name="log_start_date" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" name="start_date" value="<?php echo $start_date->format( $df );?>" class="text" disabled="disabled" />
-		<a href="#" onclick="popCalendar('start_date')">
+		<a href="#" onClick="popCalendar('start_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('to');?></td>
-	<td nowrap="nowrap">
+	<td nowrap="nowrap"><?php echo $AppUI->_('to');?>
 		<input type="hidden" name="log_end_date" value="<?php echo $end_date ? $end_date->format( FMT_TIMESTAMP_DATE ) : '';?>" />
 		<input type="text" name="end_date" value="<?php echo $end_date ? $end_date->format( $df ) : '';?>" class="text" disabled="disabled" />
-		<a href="#" onclick="popCalendar('end_date')">
+		<a href="#" onClick="popCalendar('end_date')">
 			<img src="./images/calendar.gif" width="24" height="12" alt="<?php echo $AppUI->_('Calendar');?>" border="0" />
 		</a>
 	</td>
-
 	<td nowrap='nowrap'>
-	   <input type="checkbox" name="use_assigned_percentage" <?php if ($use_assigned_percentage) echo "checked" ?> />
-	   <?php echo $AppUI->_( 'Use assigned percentage' );?>
-	</td>
-	
+	   <input type="radio" name="coarseness" value="1" <?php if ($coarseness == 1) echo "checked" ?> />
+	   <?php echo $AppUI->_( 'Days' );?>
+	   <input type="radio" name="coarseness" value="7" <?php if ($coarseness == 7) echo "checked" ?> />
+	   <?php echo $AppUI->_( 'Weeks' );?>
+</td>
 	<td nowrap='nowrap'>
 	   <?php 
 	       echo $AppUI->_( 'Tasks created by' );
@@ -73,12 +71,19 @@ function setCalendar( idate, fdate ) {
 	       echo getUsersCombo($user_id);
 	   ?>
 	</td>
+</tr>
+<tr>
+	<td nowrap="nowrap" colspan="3" align="center">
+	   <input type="checkbox" name="use_assigned_percentage" <?php if ($use_assigned_percentage) echo "checked" ?> />
+	   <?php echo $AppUI->_( 'Use assigned percentage' );?>
 	
-	<td align="right" width="50%" nowrap="nowrap">
+	   <input type="checkbox" name="hideNonWd" <?php if ($hideNonWd) echo "checked" ?> />
+	   <?php echo $AppUI->_( 'Hide non-working days' );?>
+	</td>	
+	<td align="left" width="50%" nowrap="nowrap">
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
 </tr>
-
 </table>
 </form>
 
@@ -122,18 +127,11 @@ if($do_report) {
 		$q->addWhere("t.task_project='$project_id'");
 	}
 	
-	
 	$proj =& new CProject;
-	$allowedProjects = $proj->getAllowedSQL($AppUI->user_id);
-	if (count($allowedProjects)) {
-		$proj->setAllowedSQL($AppUI->user_id, $q);
-	}
+	$proj->setAllowedSQL($AppUI->user_id, $q);
 
 	$obj =& new CTask;
-	$allowedTasks = $obj->getAllowedSQL($AppUI->user_id);
-	if (count($allowedTasks)) {
-		$obj->setAllowedSQL($AppUI->user_id, $q);
-	}
+	$obj->setAllowedSQL($AppUI->user_id, $q);
 	
 	$task_list_hash   = $q->loadHashList('task_id');
 	
@@ -167,7 +165,193 @@ if($do_report) {
 			$day_difference   = $task_end_date->dateDiff($task_start_date);
 			$actual_date      = $task_start_date;
 	
-			$users                 = $task->getAssignedUsers();
+			$users            = $task->getAssignedUsers();
+			
+			if ($coarseness == 1)
+				userUsageDays();
+			elseif ($coarseness == 7)
+				userUsageWeeks();
+		}
+	
+		if ($coarseness == 1)
+			showDays();
+		elseif ($coarseness == 7)
+			showWeeks();
+		?>
+			<center><table class="std">
+			<?php echo $table_header . $table_rows; ?>
+			</table>
+			<table width="100%"><tr><td align="center">
+		<?php
+			
+	
+			echo '<h4>' . $AppUI->_("Total capacity for shown users") . '</h4>';
+			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
+			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity,2)."<br />";
+			echo $AppUI->_("Percentage used").": ". (($total_hours_capacity > 0) ? number_format($allocated_hours_sum/$total_hours_capacity,2)*100 : 0) ."%<br />";
+	?>
+			</td>
+			<td align="center">
+		<?php
+			
+	
+			echo '<h4>' . $AppUI->_("Total capacity for all users") . '</h4>';
+			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
+			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity_all,2)."<br />";
+			echo $AppUI->_("Percentage used").": ".(($total_hours_capacity_all > 0) ? number_format($allocated_hours_sum/$total_hours_capacity,2)*100 : 0)."%<br />";
+	}		
+?>
+	   </td></tr>
+	   </table>
+	   </center>
+<?php
+foreach($user_tasks_counted_in as $user_id => $project_information) {
+	echo "<b>".$user_names[$user_id]."</b><br /><blockquote>";
+	echo "<table width='50%' border='1' class='std'>";
+	foreach ($project_information as $project_id => $task_information) {
+	        echo "<tr><th colspan='3'><span style='font-weight:bold; font-size:110%'>".$fetched_projects[$project_id]."</span></th></tr>";
+	        
+	        $project_total = 0;
+	        foreach($task_information as $task_id => $hours_assigned){
+	        echo "<tr><td>&nbsp;</td><td>".$task_list_hash[$task_id]["task_name"]."</td><td>".round($hours_assigned,2)." hrs</td></tr>";
+	        $project_total += round($hours_assigned,2);
+	        }
+	        echo "<tr><td colspan='2' align='right'><b>".$AppUI->_("Total assigned")."</b></td><td><b>$project_total hrs</b></td></tr>";
+	        
+	}
+	echo "</table></blockquote>";
+	}	
+}
+
+function userUsageWeeks() {
+GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_date, $users, $user_data, $user_usage,$use_assigned_percentage, $user_tasks_counted_in, $task, $start_date, $end_date;
+
+	$task_duration_per_week = $task->getTaskDurationPerWeek($use_assigned_percentage);
+	$ted = new CDate(Date_Calc::endOfWeek($task_end_date->day,$task_end_date->month,$task_end_date->year));
+	$tsd = new CDate(Date_Calc::beginOfWeek($task_start_date->day,$task_start_date->month,$task_start_date->year));
+	$ed = new CDate(Date_Calc::endOfWeek($end_date->day,$end_date->month,$end_date->year));
+	$sd = new CDate(Date_Calc::beginOfWeek($start_date->day,$start_date->month,$start_date->year));
+
+	$week_difference = $ted->workingDaysInSpan($tsd)/count(explode(",",dPgetConfig("cal_working_days")));
+
+	$actual_date = $tsd;
+
+	for($i = 0; $i<=$week_difference; $i++){
+		if(!$actual_date->before($tsd) && !$actual_date->after($ted)) {
+			$awoy = Date_Calc::weekOfYear($actual_date->day,$actual_date->month,$actual_date->year);
+			foreach($users as $user_id => $user_data){
+				if(!isset($user_usage[$user_id][$awoy])){
+					$user_usage[$user_id][$awoy] = 0;
+				}
+				$percentage_assigned = $use_assigned_percentage ? ($user_data["perc_assignment"]/100) : 1;
+				$hours_added = $task_duration_per_week * $percentage_assigned;
+				$user_usage[$user_id][$awoy] += $hours_added;
+				if($user_usage[$user_id][$awoy] < 0.005){
+					//We want to show at least 0.01 even when the assigned time is very small so we know
+					//that at that time the user has a running task
+					$user_usage[$user_id][$awoy] += 0.006;
+					$hours_added                 += 0.006;
+				}
+				
+				// Let's register the tasks counted in for calculation
+				if(!array_key_exists($user_id, $user_tasks_counted_in)){
+				    $user_tasks_counted_in[$user_id] = array();
+				}
+				
+				if(!array_key_exists($task->task_project, $user_tasks_counted_in[$user_id])) {
+				    $user_tasks_counted_in[$user_id][$task->task_project] = array();
+				}
+				
+				if(!array_key_exists($task->task_id, $user_tasks_counted_in[$user_id][$task->task_project])){
+				    $user_tasks_counted_in[$user_id][$task->task_project][$task->task_id] = 0;
+				}
+				// We add it up
+				$user_tasks_counted_in[$user_id][$task->task_project][$task->task_id] += $hours_added;
+			}
+		}
+		$actual_date->addSeconds(168*3600);	// + one week
+	}
+}
+
+function showWeeks(){
+GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_names, $user_usage, $hideNonWd, $table_header, $table_rows, $df, $working_days_count, $total_hours_capacity, $total_hours_capacity_all;
+
+	$working_days_count = 0;
+	$allocated_hours_sum = 0;
+
+	$ed = new CDate(Date_Calc::endOfWeek($end_date->day,$end_date->month,$end_date->year));
+	$sd = new CDate(Date_Calc::beginOfWeek($start_date->day,$start_date->month,$start_date->year));
+
+	$week_difference = ceil($ed->workingDaysInSpan($sd)/count(explode(",",dPgetConfig("cal_working_days"))));
+
+	$actual_date = $sd;
+
+// some helpful functions
+//Date_Calc::function weekOfYear($day,$month,$year)
+//Date_Calc::function beginOfWeek($day="",$month="",$year="",$format="%Y%m%d",$fdow=null)
+//$s->addSeconds(168*3600);	// + one week
+//function beginOfNextWeek($day="",$month="",$year="",$format="%Y%m%d",$fdow=null)
+
+
+	$table_header = "<tr><th>".$AppUI->_("User")."</th>";
+	for($i=0; $i<$week_difference; $i++){
+		$table_header .= "<th>".Date_Calc::weekOfYear($actual_date->day, $actual_date->month, $actual_date->year)."<br><table><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></table></th>";	
+		$actual_date->addSeconds(168*3600);	// + one week
+	}
+	$table_header .= "<th nowrap='nowrap' colspan='2'>".$AppUI->_("Allocated")."</th></tr>";
+	
+	$table_rows = "";
+	
+	foreach($user_list as $user_id => $user_data){
+	    @$user_names[$user_id] = $user_data["user_username"];
+		if(isset($user_usage[$user_id])) {
+			$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["contact_first_name"]." ".$user_data["contact_last_name"]."</td>";
+			$actual_date = $sd;
+			for($i=0; $i<$week_difference; $i++){	
+				$awoy = Date_Calc::weekOfYear($actual_date->day,$actual_date->month,$actual_date->year);
+
+				$table_rows .= "<td align='right'>";
+				if(isset($user_usage[$user_id][$awoy])){
+
+					$hours = number_format($user_usage[$user_id][$awoy],2);
+					$table_rows .= $hours;
+					$percentage_used = round($hours/100);
+					$bar_color       = "blue";
+					if($percentage_used > 100){
+						$bar_color = "red";
+						$percentage_used = 100;
+					}
+					$table_rows .= "<div style='height:2px;width:$percentage_used%; background-color:$bar_color'>&nbsp;</div>";
+				} else {
+					$table_rows .= "&nbsp;";
+				} 
+				$table_rows .= "</td>";
+
+				$actual_date->addSeconds(168*3600);	// + one week
+			}
+				
+			$array_sum = array_sum($user_usage[$user_id]);
+			$average_user_usage = number_format( ($array_sum/(count(explode(",",dPgetConfig("cal_working_days")))*dPgetConfig("daily_working_hours")))*100, 2);
+			$allocated_hours_sum += $array_sum;
+			
+			$bar_color = "blue";
+			if($average_user_usage > 100){
+				$bar_color = "red";
+				$average_user_usage = 100;
+			}
+			$table_rows .= "<td ><div align='left'>".round($array_sum, 2)." ".$AppUI->_("hours")."</td> <td align='right'> ".$average_user_usage ;
+			$table_rows .= "%</div>";
+			$table_rows .= "<div align='left' style='height:2px;width:$average_user_usage%; background-color:$bar_color'>&nbsp;</div></td>";
+			$table_rows .= "</tr>";
+		}
+	}
+	$total_hours_capacity = $week_difference * count(explode(",",dPgetConfig("cal_working_days"))) * dPgetConfig("daily_working_hours") * count($user_usage);		
+	$total_hours_capacity_all = $week_difference * count(explode(",",dPgetConfig("cal_working_days"))) *dPgetConfig("daily_working_hours") * count($user_list);
+}
+
+function userUsageDays() {
+GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_date, $users, $user_data, $user_usage,$use_assigned_percentage, $user_tasks_counted_in, $task, $start_date, $end_date;
+
 			$task_duration_per_day = $task->getTaskDurationPerDay($use_assigned_percentage);
 			
 			for($i = 0; $i<=$day_difference; $i++){
@@ -206,16 +390,25 @@ if($do_report) {
 				}
 				$actual_date->addDays(1);
 			}
-		}
-	
-		$days_difference = $end_date->dateDiff($start_date);
+}
+
+
+
+
+function showDays(){
+GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_names, $user_usage, $hideNonWd, $table_header, $table_rows, $df, $working_days_count, $total_hours_capacity, $total_hours_capacity_all;
+
+		$days_difference =  $end_date->dateDiff($start_date);
+
 		$actual_date     = $start_date;
 		$working_days_count = 0;
 		$allocated_hours_sum = 0;
 		
 		$table_header = "<tr><th>".$AppUI->_("User")."</th>";
 		for($i=0; $i<=$days_difference; $i++){
-			$table_header .= "<th>".utf8_encode(Date_Calc::getWeekdayAbbrname($actual_date->day, $actual_date->month, $actual_date->year, 3))."<br><table><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></table></th>";
+			if(($actual_date->isWorkingDay()) || (!$actual_date->isWorkingDay() && !$hideNonWd)) {
+			$table_header .= "<th>".utf8_encode(Date_Calc::getWeekdayAbbrname($actual_date->day, $actual_date->month, $actual_date->year, 3))."<br><table><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></table></th>";	
+			} 
 			if($actual_date->isWorkingDay()){
 				$working_days_count++;
 			}
@@ -230,7 +423,8 @@ if($do_report) {
 			if(isset($user_usage[$user_id])) {
 				$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["contact_first_name"]." ".$user_data["contact_last_name"]."</td>";
 				$actual_date = $start_date;
-				for($i=0; $i<=$days_difference; $i++){
+				for($i=0; $i<=$days_difference; $i++){	
+		if(($actual_date->isWorkingDay()) || (!$actual_date->isWorkingDay() && !$hideNonWd)) {
 					$table_rows .= "<td>";
 					if(isset($user_usage[$user_id][$actual_date->format("%Y%m%d")])){
 						$hours       = number_format($user_usage[$user_id][$actual_date->format("%Y%m%d")],2);
@@ -246,6 +440,7 @@ if($do_report) {
 						$table_rows .= "&nbsp;";
 					} 
 					$table_rows .= "</td>";
+}
 					$actual_date->addDays(1);
 				}
 				
@@ -265,51 +460,7 @@ if($do_report) {
 				
 			}
 		}
-		?>
-			<center><table class="std">
-			<?php echo $table_header . $table_rows; ?>
-			</table>
-			<table width="100%"><tr><td align="center">
-		<?php
-			$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_usage);
-	
-			echo '<h4>' . $AppUI->_("Total capacity for shown users") . '</h4>';
-			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
-			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity,2)."<br />";
-			echo $AppUI->_("Percentage used").": ".number_format($allocated_hours_sum/$total_hours_capacity,2)*100 ."%<br />";
-	?>
-			</td>
-			<td align="center">
-		<?php
-			$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_list);
-	
-			echo '<h4>' . $AppUI->_("Total capacity for all users") . '</h4>';
-			echo $AppUI->_("Allocated hours").": ".number_format($allocated_hours_sum,2)."<br />";
-			echo $AppUI->_("Total capacity").": ".number_format($total_hours_capacity,2)."<br />";
-			echo $AppUI->_("Percentage used").": ".number_format($allocated_hours_sum/$total_hours_capacity,2)*100 ."%<br />";
-	}		
-	?>
-	   </td></tr>
-	   </table>
-	   </center>
-       <?php
-           foreach($user_tasks_counted_in as $user_id => $project_information) {
-               echo "<b>".$user_names[$user_id]."</b><br /><blockquote>";
-               echo "<table width='50%' border='1' class='std'>";
-               foreach ($project_information as $project_id => $task_information) {
-                   echo "<tr><th colspan='3'><span style='font-weight:bold; font-size:110%'>".$fetched_projects[$project_id]."</span></th></tr>";
-                   
-                   $project_total = 0;
-                   foreach($task_information as $task_id => $hours_assigned){
-                       echo "<tr><td>&nbsp;</td><td>".$task_list_hash[$task_id]["task_name"]."</td><td>".round($hours_assigned,2)." hrs</td></tr>";
-                       $project_total += round($hours_assigned,2);
-                   }
-                   echo "<tr><td colspan='2' align='right'><b>".$AppUI->_("Total assigned")."</b></td><td><b>$project_total hrs</b></td></tr>";
-                   
-               }
-               echo "</table></blockquote>";
-           }
-       ?>
-	<?php	
+		$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_usage);
+		$total_hours_capacity_all = $working_days_count*dPgetConfig("daily_working_hours")*count($user_list);
 }
-	?>
+?>		
