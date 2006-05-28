@@ -9,6 +9,7 @@ require_once( $AppUI->getSystemClass ('dp' ) );
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 require_once( $AppUI->getModuleClass( 'companies' ) );
+require_once( $AppUI->getModuleClass( 'forums' ) );
 
 /**
  * The Project Class
@@ -420,6 +421,14 @@ class CProject extends CDpObject {
 		if( !$ret ) {
 			return get_class( $this )."::store failed <br />" . db_error();
 		} else {
+			$forum = new CForum();
+			$forum->forum_id = 0;
+			$forum->forum_project 	= $this->project_id;
+			$forum->forum_name 		= $this->project_name;
+			$forum->forum_owner 	= $this->project_owner;
+			$forum->forum_moderated = $this->project_owner;
+			$ret = $forum->store();
+
 			return NULL;
 		}
 
