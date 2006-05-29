@@ -1,7 +1,7 @@
 <?php /* PUBLIC $Id$ */
 $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 	function setClose(color){
 		window.opener.<?php echo $callback;?>(color);
 		window.close();
@@ -36,29 +36,29 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 		<td valign="top">
 			<strong><?php echo $AppUI->_('Color Selector');?></strong>
 		</td>
-	<form>
 		<td align="right" valign="bottom">
-			<select name="" class="text" onchange="javascript:setClose(this.options[this.selectedIndex].value)">
-				<option value="0">- - <?php echo $AppUI->_('Preset');?> - -</option>
+<form action="#" method="post">
+<select name="colours" class="text" onchange="javascript:setClose(this.options[this.selectedIndex].value)">
+<option value="0">- - <?php echo $AppUI->_('Preset');?> - -</option>
 <?php
-				foreach($colors as $key=>$value){
-					echo "<option value=\"$value\">$key</option>\n";
-				}
+foreach($colors as $key=>$value){
+	echo "<option value=\"$value\">$key</option>\n";
+}
 ?>
-			</select>
-		</td>
-	</form>
-	</tr>
-	<tr>
-		<td colspan="2">
-			<a href="webpal.map">
-				<img src="./images/colorchart.gif" width="292" height="196" border="0" alt="color chart" usemap="#map_webpal" ismap />
-			</a>
-		</td>
-	</tr>
-	<tr>
-		<td colspan="2" align="left"><font size="1" face="trebuchetms,verdana,arial">
-			<?php echo $AppUI->_('colorLegend');?></p>
+</select>
+</form>
+</td>
+</tr>
+<tr>
+<td colspan="2">
+<a href="webpal.map">
+<img src="./images/colorchart.gif" width="292" height="196" border="0" alt="color chart" usemap="#map_webpal" ismap />
+</a>
+</td>
+</tr>
+<tr>
+<td colspan="2" align="left"><font size="1" face="trebuchetms,verdana,arial">
+<?php echo $AppUI->_('colorLegend');?></font>
 		</td>
 	</tr>
 </table>
@@ -329,3 +329,8 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 <?php
 	}
 ?>
+	</td>
+</tr>
+</table>
+</body>
+</html>
