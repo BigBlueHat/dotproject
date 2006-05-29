@@ -1,0 +1,49 @@
+{if (is_dir("$baseDir/install"))}
+	{php}
+		global $AppUI;
+		$AppUI->setMsg("You have not removed your install directory, this is a major security risk!", UI_MSG_ALERT);
+	{/php}
+	<div class='error'>{dPgetMsg}</div>
+{/if}
+
+{dPtranslate word='syscfg_intro'}
+<br />&nbsp;<br />
+<form name="cfgFrm" action="index.php?m=system&amp;a=systemconfig" method="post">
+<input type="hidden" name="dosql" value="do_systemconfig_aed" />
+<table cellspacing="0" cellpadding="3" border="0" class="std" width="100%" align="center">
+	
+{foreach from=$rs item=c}
+	<tr>
+		<td class="item" width="20%">{dPtranslate word=$c.config_name append='_title'}</td>
+			<td align="left">
+
+	{if $c.config_type == 'select'}
+		{dPgetSystemConfigSelect cid=$c.config_id cname=$c.config_name}
+		{dParraySelect array=$clist name=$cln extras='class=text size=1 id=$c.config_name' value=$c.config_value }	
+
+	{elseif $c.config_type == 'textarea'}
+		<textarea name="dPcfg[{$c.config_name}]">{$c.config_value}</textarea>
+	{elseif $c.config_type == 'checkbox'}
+		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="{$c.config_value}"
+		{if $c.config_value == 'true'} checked="checked" {/if} >
+	{else}
+		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="{$c.config_value}">
+	{/if}
+			{dPtranslateToVar word=$c.config_name append='_title' ass='ti'}
+			{dPtranslateToVar word=$c.config_name append='_tooltip' ass='tt'}
+			<a href="javascript:void(0);" {popup text="$tt" caption="$ti"}>(?)</a>
+			<input class="button" type="hidden"  name="dPcfgId[{$c.config_name}]" value="{$c.config_id}" />
+		</td>
+	</tr>
+	{if $c.config_group != $last_group}
+		<tr>
+			<td colspan="2"><b>{dPtranslate word=$c.config_group append='_group_title'}</b></td>
+		</tr>
+		{assign var="last_group" value=$c.config_group}
+	{/if}
+{/foreach}
+
+	<tr>
+ 		<td align="right" colspan="2"><input class="button" type="submit" name="do_save_cfg" value="{dPtranslate word='Save'}" /></td>
+	</tr>
+</table></form>
