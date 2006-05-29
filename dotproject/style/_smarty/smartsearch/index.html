@@ -1,6 +1,6 @@
-<table width="100%" border="0" cellpadding="0" cellspacing=1>
+<table width="100%" border="0" cellpadding="0" cellspacing="1">
 	<tr>
-		<td nowrap width="100%"><h1>{dPtranslate word='Search'}</h1></td>
+		<td nowrap="nowrap" width="100%"><h1>{dPtranslate word='Search'}</h1></td>
 	</tr>
 </table>
 <form name="frmSearch" action="?m=smartsearch"  method="post">
@@ -20,9 +20,11 @@
 	window.onload = focusOnSearchBox;
 {/literal}
 </script>
+{if $results}
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 {foreach from=$results item=result key=name}
 	{include file='_smarty/smartsearch/list.html' title=$name results=$result keyword=$search_keyword}
 {/foreach}
 {$search_results}
 </table>
+{/if}
