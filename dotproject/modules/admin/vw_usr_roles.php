@@ -3,7 +3,7 @@ GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab, $baseDir;
 
 //$roles
 // Create the roles class container
-require_once "$baseDir/modules/system/roles/roles.class.php";
+require_once($baseDir . '/modules/system/roles/roles.class.php');
 
 $perms =& $AppUI->acl();
 $user_roles = $perms->getUserRoles($user_id);
@@ -11,13 +11,12 @@ $crole =& new CRole;
 $roles = $crole->getRoles();
 // Format the roles for use in arraySelect
 $roles_arr = array();
-foreach ($roles as $role) {
+foreach ($roles as $role)
   $roles_arr[$role['id']] = $role['name'];
-}
-
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -34,11 +33,12 @@ function delIt(id) {
 }
 <?php
 }?>
-
+-->
 </script>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
-<tr><td width="50%" valign="top">
+<tr>
+	<td width="50%" valign="top">
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
@@ -66,17 +66,18 @@ foreach ($user_roles as $row){
 ?>
 </table>
 
-</td><td width="50%" valign="top">
+	</td>
+	<td width="50%" valign="top">
 
 <?php if ($canEdit) {?>
+<form name="frmPerms" method="post" action="?m=admin">
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="dosql" value="do_userrole_aed" />
+	<input type="hidden" name="user_id" value="<?php echo $user_id;?>" />
+	<input type="hidden" name="user_name" value="<?php echo $user_name;?>" />
+	<input type="hidden" name="role_id" value="" />
 
 <table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
-<form name="frmPerms" method="post" action="?m=admin">
-	<input type="hidden" name="del" value="0">
-	<input type="hidden" name="dosql" value="do_userrole_aed">
-	<input type="hidden" name="user_id" value="<?php echo $user_id;?>">
-	<input type="hidden" name="user_name" value="<?php echo $user_name;?>">
-	<input type="hidden" name="role_id" value="">
 <tr>
 	<th colspan='2'><?php echo $AppUI->_('Add Role');?></th>
 </tr>
@@ -85,17 +86,16 @@ foreach ($user_roles as $row){
 </tr>
 <tr>
 	<td>
-		<input type="reset" value="<?php echo $AppUI->_('clear');?>" class="button" name="sqlaction" onclick="clearIt();">
+		<input type="reset" value="<?php echo $AppUI->_('clear');?>" class="button" name="sqlaction" onclick="clearIt();" />
 	</td>
 	<td align="right">
-		<input type="submit" value="<?php echo $AppUI->_('add');?>" class="button" name="sqlaction2">
+		<input type="submit" value="<?php echo $AppUI->_('add');?>" class="button" name="sqlaction2" />
 	</td>
 </tr>
 </table>
 </form>
-
 <?php } ?>
 
-</td>
+	</td>
 </tr>
 </table>

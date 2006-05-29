@@ -11,7 +11,7 @@
 		</tr>
 	</table>
 </form>
-<script language="JavaScript">
+<script type="text/javascript" language="javascript">
 {literal}
 	function focusOnSearchBox(){
 		document.forms.frmSearch.keyword.focus();
@@ -22,7 +22,7 @@
 </script>
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 {foreach from=$results item=result key=name}
-	{include file='smartsearch/list.html' title=$name results=$result keyword=$search_keyword}
+	{include file='_smarty/smartsearch/list.html' title=$name results=$result keyword=$search_keyword}
 {/foreach}
 {$search_results}
 </table>

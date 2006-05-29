@@ -6,10 +6,11 @@ $log_task_parent = dPgetParam($_POST, 'log_task_parent', 0);
 $order = dPgetParam($_POST, 'order', 'task_log_date');
 $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
-	redirect('m=public&a=access_denied');
+	redirect('m=public&amp;a=access_denied');
 
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -35,17 +36,18 @@ function reorder( order )
 	document.editFrm.do_report.click();
 	document.editFrm.submit();
 }
+-->
 </script>
+
 <h2><?php echo $report_title; ?></h2>
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
 <form name="editFrm" action="" method="post">
-<input type="hidden" name="m" value="reports" />
-<input type="hidden" name="order" value="<?php echo $order; ?>" />
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="m" value="reports" />
+	<input type="hidden" name="order" value="<?php echo $order; ?>" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <tr>
 	<td align="right" nowrap="nowrap">
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
@@ -76,17 +78,17 @@ function reorder( order )
 -->
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_all" <?php if ($log_all) echo "checked" ?> />
+		<input type="checkbox" name="log_all" <?php if ($log_all) echo 'checked="checked"'; ?> />
 		<?php echo $AppUI->_( 'Log All' );?>
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_csv" <?php if ($log_pdf) echo "checked" ?> />
+		<input type="checkbox" name="log_csv" <?php if ($log_pdf) echo 'checked="checked"'; ?> />
 		<?php echo $AppUI->_( 'Make CSV' );?>
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_pdf" <?php if ($log_pdf) echo "checked" ?> />
+		<input type="checkbox" name="log_pdf" <?php if ($log_pdf) echo 'checked="checked"'; ?> />
 		<?php echo $AppUI->_( 'Make PDF' );?>
 	</td>
 
@@ -97,7 +99,7 @@ function reorder( order )
 		<?php echo $AppUI->_('User');?>:
 	</td>
 	<td>
-		<select name="log_userfilter" class="text" style="width: 80px" onChange="reorder('<?php echo $order; ?>')">
+		<select name="log_userfilter" class="text" style="width: 80px" onchange="reorder('<?php echo $order; ?>')">
 
 	<?php
 		$q = new DBQuery;
@@ -106,11 +108,11 @@ function reorder( order )
 		$q->addTable('users');
 		$q->addJoin('contacts', 'c', 'user_contact = contact_id');
 
-		echo '<option value="0" '.(($log_userfilter == 0)?' selected':'').'>'.$AppUI->_('All users' ).'</option>';
+		echo '<option value="0" '.(($log_userfilter == 0)?' selected="selected"':'').'>'.$AppUI->_('All users' ).'</option>';
 
 		if (($rows = db_loadList( $q->prepare(), NULL )))
 			foreach ($rows as $row)
-				echo '<option value="'.$row["user_id"].'"'.(($log_userfilter == $row["user_id"])?' selected':'').'>'.$row["user_username"].'</option>';
+				echo '<option value="'.$row['user_id'].'"'.(($log_userfilter == $row['user_id'])?' selected':'').'>'.$row['user_username'].'</option>';
 	?>
 		</select>
 	</td>
@@ -119,7 +121,7 @@ function reorder( order )
 		<?php echo $AppUI->_('Task Parent');?>:
 	</td>
 	<td>
-		<select name="log_task_parent" class="text" style="width: 80px" onChange="reorder('<?php echo $order; ?>')">
+		<select name="log_task_parent" class="text" style="width: 80px" onchange="reorder('<?php echo $order; ?>')">
 
 	<?php
 		$q = new DBQuery;
@@ -133,11 +135,11 @@ function reorder( order )
 		$q->addGroup('pt.task_id');
 		$q->addOrder('pt.task_project, pt.task_name');
 
-		echo '<option value="0"'.(($log_task_parent == 0)?' selected':'').'>'.$AppUI->_('All Task Parent' ) . '</option>';
+		echo '<option value="0"'.(($log_task_parent == 0)?' selected="selected"':'').'>'.$AppUI->_('All Task Parent' ) . '</option>';
 
 		if (($rows = db_loadList( $q->prepare(), NULL )))
 			foreach ($rows as $row)
-				echo "<option value='".$row['task_id']."'".(($log_task_parent == $row['task_id'])?' selected':'').'>'.$row['task_name'];
+				echo '<option value="'.$row['task_id'].'"'.(($log_task_parent == $row['task_id'])?' selected="selected"':'').'>'.$row['task_name'];
 	?>
 
 		</select>
@@ -145,7 +147,7 @@ function reorder( order )
 
 	<td nowrap>
 		<?php echo $AppUI->_('Task');?>:
-		<select name="log_task_task" class="text" style="width: 80px" onChange="reorder('<?php echo $order; ?>')">
+		<select name="log_task_task" class="text" style="width: 80px" onchange="reorder('<?php echo $order; ?>')">
 
 	<?php
 		$q = new DBQuery;
@@ -161,19 +163,18 @@ function reorder( order )
 		$q->addGroup('t.task_id');
 		$q->addOrder('t.task_project, t.task_name');
 
-		echo '<option value="0"'.(($log_task_task == 0)?' selected':'').'>'.$AppUI->_('All Tasks' ) . '</option>';
+		echo '<option value="0"'.(($log_task_task == 0)?' selected="selected"':'').'>'.$AppUI->_('All Tasks' ) . '</option>';
 
 		if (($rows = db_loadList( $q->prepare(), NULL )))
 			foreach ($rows as $row)
-				echo "<option value='".$row['task_id']."'".(($log_task_task == $row['task_id'])?' selected':'').'>'.$row['task_name'];
+				echo '<option value="'.$row['task_id'].'"'.(($log_task_task == $row['task_id'])?' selected="selected"':'').'>'.$row['task_name'];
 	?>
 
 		</select>
 	</td>
 </tr>
-</form>
 </table>
-
+</form>
 
 <?php
 if ($do_report) {
@@ -235,14 +236,14 @@ if ($do_report) {
 	<table cellspacing="1" cellpadding="4" border="0" class="tbl" width="100%">
 	<tr>
 		<th width="100" nowrap="nowrap"><?php echo $AppUI->_('User');?></th>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('pt.task_name');"><?php echo $AppUI->_('Task Parent');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('tt.task_name');"><?php echo $AppUI->_('Task');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('ct.task_name');"><?php echo $AppUI->_('Child Task');?></a></th>
-		<th width="20"><a href="javascript: void(0)" style="color: white" onclick="reorder('task_log_hours');"><?php echo $AppUI->_('Hours');?></a></th>
-		<th width="20"><a href="javascript: void(0)" style="color: white" onclick="reorder('costcode');"><?php echo $AppUI->_('Cost Code');?></th>
-		<th width="20"><a href="javascript: void(0)" style="color: white" onclick="reorder('completion');"><?php echo $AppUI->_('Completion	');?></th>
-		<th width="40"><a href="javascript: void(0)" style="color: white" onclick="reorder('task_log_date');"><?php echo $AppUI->_('Date');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('pt.task_name');"><?php echo $AppUI->_('Task Parent');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('tt.task_name');"><?php echo $AppUI->_('Task');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('ct.task_name');"><?php echo $AppUI->_('Child Task');?></a></th>
+		<th width="20"><a href="javascript:void(0)" style="color: white" onclick="reorder('task_log_hours');"><?php echo $AppUI->_('Hours');?></a></th>
+		<th width="20"><a href="javascript:void(0)" style="color: white" onclick="reorder('costcode');"><?php echo $AppUI->_('Cost Code');?></a></th>
+		<th width="20"><a href="javascript:void(0)" style="color: white" onclick="reorder('completion');"><?php echo $AppUI->_('Completion	');?></a></th>
+		<th width="40"><a href="javascript:void(0)" style="color: white" onclick="reorder('task_log_date');"><?php echo $AppUI->_('Date');?></a></th>
 	</tr>
 <?php
 	$hours = 0.0;
@@ -294,16 +295,16 @@ if ($do_report) {
 			<?php echo $log['creator'];?>
 		</td>
 		<td style="background:<?php echo $bgcolor;?>">
-			<a href="index.php?m=projects&a=view&project_id=<?php echo $log['project_id'];?>"><?php echo $log['project_name'];?></a>
+			<a href="index.php?m=projects&amp;a=view&amp;project_id=<?php echo $log['project_id'];?>"><?php echo $log['project_name'];?></a>
 		</td>
 		<td style="background:<?php echo $bgcolor;?>">
-			<a href="index.php?m=tasks&a=view&task_id=<?php echo $log['parent_id'];?>"><?php echo $log['parent'];?></a>
+			<a href="index.php?m=tasks&amp;a=view&amp;task_id=<?php echo $log['parent_id'];?>"><?php echo $log['parent'];?></a>
 		</td>
 		<td style="background:<?php echo $bgcolor;?>">
-			<a href="index.php?m=tasks&a=view&task_id=<?php echo $log['task_id'];?>"><?php echo $log['task_name']; ?></a>
+			<a href="index.php?m=tasks&amp;a=view&amp;task_id=<?php echo $log['task_id'];?>"><?php echo $log['task_name']; ?></a>
 		</td>
 		<td style="background:<?php echo $bgcolor;?>">
-			<a href="index.php?m=tasks&a=view&task_id=<?php echo $log['child_task_id'];?>"><?php echo $log['child_task_name']; ?></a>
+			<a href="index.php?m=tasks&amp;a=view&amp;task_id=<?php echo $log['child_task_id'];?>"><?php echo $log['child_task_name']; ?></a>
 		</td>
 		<td style="background:<?php echo $bgcolor;?>" align="right">
 			<?php printf( "%.2f", $log['task_log_hours'] );?>
@@ -320,7 +321,6 @@ if ($do_report) {
 	</tr>
 	<tr>
 		<td style="background:<?php echo $bgcolor;?>" colspan="9">
-			<!-- <a href="index.php?m=tasks&a=view&tab=1&task_id=<?php echo $log['task_log_task'];?>&task_log_id=<?php echo $log['task_log_id'];?>"><?php echo $log['task_log_name'];?></a><br /><br />  -->
 			<?php echo $log['task_log_description']; ?>
 		</td>
 	</tr>
@@ -369,13 +369,13 @@ if ($do_report) {
 		if ($fp = fopen( "$temp_dir/temp$AppUI->user_id.csv", 'wb' )) {
 			fwrite( $fp, $csvfile );
 			fclose( $fp );
-			echo "<a href=\"" . dPgetConfig( 'base_url' ) . "/files/temp/temp$AppUI->user_id.csv\">";
-			echo $AppUI->_( "View CSV File" );
-			echo "</a>";
+			echo '<a href="' . dPgetConfig( 'base_url' ) . "/files/temp/temp$AppUI->user_id.csv\">";
+			echo $AppUI->_('View CSV File');
+			echo '</a>';
 		} else {
-			echo "Could not open file to save CSV.  ";
+			echo 'Could not open file to save CSV.';
 			if (!is_writable( $temp_dir ))
-				"The files/temp directory is not writable.  Check your file system permissions.";
+				'The files/temp directory is not writable.  Check your file system permissions.';
 		}
 	}
 	if ($log_pdf) 
@@ -393,8 +393,8 @@ if ($do_report) {
 			$pname = "All Projects";
 		echo db_error();
 
-		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
-		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
+		$font_dir = dPgetConfig( 'root_dir' ).'/lib/ezpdf/fonts';
+		$temp_dir = dPgetConfig( 'root_dir' ).'/files/temp';
 		$base_url  = dPgetConfig( 'base_url' );
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
@@ -408,13 +408,13 @@ if ($do_report) {
 		$date = new CDate();
 		$pdf->ezText( "\n" . $date->format( $df ) , 8 );
 
-		$pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
+		$pdf->selectFont($font_dir . '/Helvetica-Bold.afm');
 		$pdf->ezText( "\n" . $report_title, 12 );
-		$pdf->ezText( "$pname", 15 );
+		$pdf->ezText($pname, 15);
 		if ($log_all)
-			$pdf->ezText( "All task log entries", 9 );
+			$pdf->ezText('All task log entries', 9);
 		else
-			$pdf->ezText( "Task log entries from ".$start_date->format( $df ).' to '.$end_date->format( $df ), 9 );
+			$pdf->ezText('Task log entries from '.$start_date->format( $df ).' to '.$end_date->format( $df ), 9 );
 
 		$pdf->ezText( "\n\n" );
 
@@ -452,7 +452,7 @@ if ($do_report) {
 		} else {
 			echo "Could not open file to save PDF.  ";
 			if (!is_writable( $temp_dir ))
-				"The files/temp directory is not writable.  Check your file system permissions.";
+				'The files/temp directory is not writable.  Check your file system permissions.';
 		}
 	}
 }

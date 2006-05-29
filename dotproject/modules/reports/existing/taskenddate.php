@@ -15,7 +15,7 @@ if (!$log_start_date) {
 $end_date->setTime( 23, 59, 59 );
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 var calendarField = '';
 
 function popCalendar( field ){
@@ -110,23 +110,33 @@ if($do_report){
     $first_task        = true;
     $task_log          = array();
     
-    echo "<table class='tbl' width='80%'>";
+    echo '<table class="tbl" width="80%">';
     echo "<tr><th>".$AppUI->_("Task name")."</th><th>".$AppUI->_("T.Owner")."</th><th>".$AppUI->_("H.Alloc.")."</th><th>".$AppUI->_("Task end date")."</th><th>".$AppUI->_("Last activity date")."</th><th>".$AppUI->_("Done")."?</th></tr>";
     $hrs = $AppUI->_("hrs"); // To avoid calling $AppUI each row
+		$q = new DBQuery;
     foreach($tasks as $task){
         if($actual_project_id != $task["task_project"]){
             echo "<tr><td colspan='6'><b>".$task["project_name"]."</b></td>";
             $actual_project_id = $task["task_project"];
         }
-        $sql = "select *
-                from task_log
-                where task_log_task = ".$task["task_id"]."
-                order by task_log_date desc
-                limit 1";
-        db_loadHash($sql, $task_log);
+				$q->addQuery('*');
+				$q->addTable('task_log');
+				$q->addWhere('task_log_task = ' . $task['task_id']);
+				$q->addOrder('task_log_date desc');
+				$q->setLimit('1');
+        $task_log_date = $q->loadResult();
         
-        $done_img = $task["task_percent_complete"] == 100 ? "Yes" : "No";
-        echo "<tr><td>&nbsp;&nbsp;&nbsp;".$task["task_name"]."</td><td>".$task["user_username"]."</td><td>".($task["task_duration"]*$task["task_duration_type"])." $hrs</td><td>".$task["task_end_date"]."</td><td>".$task_log["task_log_date"]."</td><td align='center'>$done_img</td></tr>";
+        $done_img = $task['task_percent_complete'] == 100 ? 'Yes' : 'No';
+        echo '
+<tr>
+	<td>&nbsp;&nbsp;&nbsp;'.$task['task_name'].'</td>
+	<td>'.$task['user_username'].'</td>
+	<td>'.($task['task_duration']*$task['task_duration_type'])." $hrs</td>
+	<td>".$task['task_end_date'].'</td>
+	<td>'.$task_log_date.'</td>
+	<td align="center">' . $done_img . '</td>
+</tr>';
     }
+	echo '</table>';
 }
 ?>

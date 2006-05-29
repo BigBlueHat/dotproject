@@ -101,7 +101,7 @@ $ontime = round(100 * (1 - (count($tasks['overdue']) / count($all_tasks)) - (cou
 <tr>
 	<th colspan="3">Progress Chart (completed/in progress/pending)</th>
 </tr>
-<tr height="30">
+<tr>
 	<td width="<?php echo round(count($tasks['completed']) / count($all_tasks) * 100); ?>%" style="background: springgreen; text-align: center;">completed</td>
 	<td width="<?php echo round(count($tasks['inprogress']) / count($all_tasks) * 100); ?>%" style="background: aquamarine; text-align: center;">in progress</td>
 	<td width="<?php echo round(count($tasks['pending']) / count($all_tasks) * 100); ?>%" style="background: gold; text-align: center;">pending</td>
@@ -111,9 +111,9 @@ $ontime = round(100 * (1 - (count($tasks['overdue']) / count($all_tasks)) - (cou
 
 <table width="100%" border="1" cellpadding="0" cellspacing="0" class="tbl">
 <tr>
-	<th colspan="3">Time Chart (completed/on time/overdue)</td>
+	<th colspan="3">Time Chart (completed/on time/overdue)</th>
 </tr>
-<tr height="30">
+<tr>
 	<td width="<?php echo round(count($tasks['completed']) / count($all_tasks) * 100); ?>%" style="background: springgreen; text-align: center;">completed</td>
 	<td width="<?php echo $ontime; ?>%" style="background: aquamarine; text-align: center;">on time</td>
 	<td width="<?php echo round(count($tasks['overdue']) / count($all_tasks) * 100); ?>%" style="background: tomato; text-align: center;">overdue</td>

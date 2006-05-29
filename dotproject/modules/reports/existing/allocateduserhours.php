@@ -14,7 +14,8 @@ $end_date   = intval( $log_end_date )   ? new CDate( $log_end_date ) : new CDate
 $end_date->setTime( 23, 59, 59 );
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -33,9 +34,10 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 
-<form name="editFrm" action="index.php?m=projects&a=reports" method="post">
+<form name="editFrm" action="index.php?m=reports&amp;report_category=existing&amp;report_type=allocateduserhours" method="post">
 <input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
 <input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
 <input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
@@ -293,39 +295,44 @@ GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user
 //function beginOfNextWeek($day="",$month="",$year="",$format="%Y%m%d",$fdow=null)
 
 
-	$table_header = "<tr><th>".$AppUI->_("User")."</th>";
+	$table_header = '<tr><th>'.$AppUI->_('User').'</th>';
 	for($i=0; $i<$week_difference; $i++){
-		$table_header .= "<th>".Date_Calc::weekOfYear($actual_date->day, $actual_date->month, $actual_date->year)."<br><table><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></table></th>";	
+		$table_header .= '<th>'.Date_Calc::weekOfYear($actual_date->day, $actual_date->month, $actual_date->year).'<br /><table><tr><td style="font-weight:normal; font-size:70%">'.$actual_date->format( $df ).'</td></tr></table></th>';	
 		$actual_date->addSeconds(168*3600);	// + one week
 	}
-	$table_header .= "<th nowrap='nowrap' colspan='2'>".$AppUI->_("Allocated")."</th></tr>";
+	$table_header .= '<th nowrap="nowrap" colspan="2">'.$AppUI->_('Allocated').'</th></tr>';
 	
-	$table_rows = "";
+	$table_rows = '';
 	
 	foreach($user_list as $user_id => $user_data){
-	    @$user_names[$user_id] = $user_data["user_username"];
+	    @$user_names[$user_id] = $user_data['user_username'];
 		if(isset($user_usage[$user_id])) {
-			$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["contact_first_name"]." ".$user_data["contact_last_name"]."</td>";
+			$table_rows .= '
+<tr>
+	<td nowrap="nowrap">
+		('.$user_data['user_username'].') 
+		'.$user_data['contact_first_name'].' '.$user_data['contact_last_name'].'
+	</td>';
 			$actual_date = $sd;
 			for($i=0; $i<$week_difference; $i++){	
 				$awoy = Date_Calc::weekOfYear($actual_date->day,$actual_date->month,$actual_date->year);
 
-				$table_rows .= "<td align='right'>";
+				$table_rows .= '<td align="right">';
 				if(isset($user_usage[$user_id][$awoy])){
 
 					$hours = number_format($user_usage[$user_id][$awoy],2);
 					$table_rows .= $hours;
 					$percentage_used = round($hours/100);
-					$bar_color       = "blue";
+					$bar_color       = 'blue';
 					if($percentage_used > 100){
 						$bar_color = "red";
 						$percentage_used = 100;
 					}
-					$table_rows .= "<div style='height:2px;width:$percentage_used%; background-color:$bar_color'>&nbsp;</div>";
+					$table_rows .= '<div style="height:2px;width:'.$percentage_used.'%; background-color:'.$bar_color.'">&nbsp;</div>';
 				} else {
-					$table_rows .= "&nbsp;";
+					$table_rows .= '&nbsp;';
 				} 
-				$table_rows .= "</td>";
+				$table_rows .= '</td>';
 
 				$actual_date->addSeconds(168*3600);	// + one week
 			}
@@ -339,10 +346,13 @@ GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user
 				$bar_color = "red";
 				$average_user_usage = 100;
 			}
-			$table_rows .= "<td ><div align='left'>".round($array_sum, 2)." ".$AppUI->_("hours")."</td> <td align='right'> ".$average_user_usage ;
-			$table_rows .= "%</div>";
-			$table_rows .= "<div align='left' style='height:2px;width:$average_user_usage%; background-color:$bar_color'>&nbsp;</div></td>";
-			$table_rows .= "</tr>";
+			$table_rows .= '
+	<td align="left">'.round($array_sum, 2)." ".$AppUI->_('hours').'</td>
+	<td align="right">
+		'.$average_user_usage . '%
+		<div align="left" style="height:2px;width:'.$average_user_usage.'%; background-color:'.$bar_color.'">&nbsp;</div>
+	</td>
+</tr>';
 		}
 	}
 	$total_hours_capacity = $week_difference * count(explode(",",dPgetConfig("cal_working_days"))) * dPgetConfig("daily_working_hours") * count($user_usage);		
@@ -407,21 +417,26 @@ GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_
 		$table_header = "<tr><th>".$AppUI->_("User")."</th>";
 		for($i=0; $i<=$days_difference; $i++){
 			if(($actual_date->isWorkingDay()) || (!$actual_date->isWorkingDay() && !$hideNonWd)) {
-			$table_header .= "<th>".utf8_encode(Date_Calc::getWeekdayAbbrname($actual_date->day, $actual_date->month, $actual_date->year, 3))."<br><table><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></table></th>";	
+			$table_header .= "<th>".utf8_encode(Date_Calc::getWeekdayAbbrname($actual_date->day, $actual_date->month, $actual_date->year, 3))."<br /><table><tr><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></tr></table></th>";	
 			} 
 			if($actual_date->isWorkingDay()){
 				$working_days_count++;
 			}
 			$actual_date->addDays(1);
 		}
-		$table_header .= "<th nowrap='nowrap' colspan='2'>".$AppUI->_("Allocated")."</th></tr>";
+		$table_header .= '<th nowrap="nowrap" colspan="2">'.$AppUI->_('Allocated').'</th></tr>';
 		
-		$table_rows = "";
+		$table_rows = '';
 		
 		foreach($user_list as $user_id => $user_data){
-		    @$user_names[$user_id] = $user_data["user_username"];
+		    @$user_names[$user_id] = $user_data['user_username'];
 			if(isset($user_usage[$user_id])) {
-				$table_rows .= "<tr><td nowrap='nowrap'>(".$user_data["user_username"].") ".$user_data["contact_first_name"]." ".$user_data["contact_last_name"]."</td>";
+				$table_rows .= '
+<tr>
+	<td nowrap="nowrap">
+		('.$user_data['user_username'].') 
+		'.$user_data['contact_first_name'].' '.$user_data['contact_last_name'].'
+	</td>';
 				$actual_date = $start_date;
 				for($i=0; $i<=$days_difference; $i++){	
 		if(($actual_date->isWorkingDay()) || (!$actual_date->isWorkingDay() && !$hideNonWd)) {
@@ -439,7 +454,7 @@ GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_
 					} else {
 						$table_rows .= "&nbsp;";
 					} 
-					$table_rows .= "</td>";
+					$table_rows .= '</td>';
 }
 					$actual_date->addDays(1);
 				}
@@ -453,14 +468,17 @@ GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_
 					$bar_color = "red";
 					$average_user_usage = 100;
 				}
-				$table_rows .= "<td ><div align='left'>".round($array_sum, 2)." ".$AppUI->_("hours")."</td> <td align='right'> ".$average_user_usage ;
-				$table_rows .= "%</div>";
-				$table_rows .= "<div align='left' style='height:2px;width:$average_user_usage%; background-color:$bar_color'>&nbsp;</div></td>";
-				$table_rows .= "</tr>";
+				$table_rows .= '
+	<td align="left">'.round($array_sum, 2).' '.$AppUI->_('hours').'</td>
+	<td align="right">
+		'.$average_user_usage .'%
+		<div align="left" style="height:2px;width:'.$average_user_usage.'%; background-color:'.$bar_color.'">&nbsp;</div>
+	</td>
+</tr>';
 				
 			}
 		}
-		$total_hours_capacity = $working_days_count*dPgetConfig("daily_working_hours")*count($user_usage);
-		$total_hours_capacity_all = $working_days_count*dPgetConfig("daily_working_hours")*count($user_list);
+		$total_hours_capacity = $working_days_count*dPgetConfig('daily_working_hours')*count($user_usage);
+		$total_hours_capacity_all = $working_days_count*dPgetConfig('daily_working_hours')*count($user_list);
 }
 ?>		

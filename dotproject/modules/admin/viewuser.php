@@ -6,7 +6,7 @@ $user_id = isset( $_GET['user_id'] ) ? $_GET['user_id'] : 0;
 if ($user_id != $AppUI->user_id 
 && ( ! $perms->checkModuleItem('admin', 'view', $user_id) 
 || ! $perms->checkModuleItem('users', 'view', $user_id) ) )
-	$AppUI->redirect('m=public&a=access_denied');
+	$AppUI->redirect('m=public&amp;a=access_denied');
 
 $AppUI->savePlace();
 
@@ -50,26 +50,27 @@ $q->clear();
 
 if (!db_loadHash( $sql, $user )) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=admin", "users list" );
+	$titleBlock->addCrumb('?m=admin', 'users list');
 	$titleBlock->show();
 } else {
 
 // setup the title block
 	$titleBlock = new CTitleBlock( 'View User', 'helix-setup-user.png', $m, "$m.$a" );
-	if ($canRead) {
-	  $titleBlock->addCrumb( "?m=admin", "users list" );
-	}
+	if ($canRead)
+	  $titleBlock->addCrumb('?m=admin', 'users list');
+	
 	if ($canEdit || $user_id == $AppUI->user_id) {
-	      $titleBlock->addCrumb( "?m=admin&a=addedituser&user_id=$user_id", "edit this user" );
-	      $titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
+	      $titleBlock->addCrumb('?m=admin&amp;a=addedituser&amp;user_id=' . $user_id, 'edit this user');
+	      $titleBlock->addCrumb('?m=system&amp;a=addeditpref&amp;user_id=' . $user_id, 'edit preferences');
 	      $titleBlock->addCrumbRight(
 			'<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>'
 	      );
-	      $titleBlock->addCell('<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>');
+	      $titleBlock->addCell('<input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&amp;a=addedituser\';" />');
 	}
 	$titleBlock->show();
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -80,9 +81,8 @@ function popChgPwd() {
 	window.open( './index.php?m=public&a=chpwd&dialog=1&user_id=<?php echo $user['user_id']; ?>', 'chpwd', 'top=250,left=250,width=350, height=220, scollbars=false' );
 }
 <?php } ?>
+-->
 </script>
-
-
 
 <?php
 	$user['user_type_name'] = $utypes[$user['user_type']];
@@ -90,12 +90,11 @@ function popChgPwd() {
 		
 	// tabbed information boxes
 	$min_view = true;
-	$tabBox = new CTabBox( "?m=admin&a=viewuser&user_id=$user_id", '', $tab );
+	$tabBox = new CTabBox('?m=admin&amp;a=viewuser&amp;user_id=' . $user_id, '', $tab);
 	$tabBox->loadExtras('admin', 'viewuser'); 
 	$tabBox->add($dPconfig['root_dir'].'/modules/admin/vw_usr_log', 'User Log');
-	$tabBox->add($dPconfig['root_dir'].'/modules/admin/vw_usr_perms', 'Permissions' );
-	$tabBox->add($dPconfig['root_dir'].'/modules/admin/vw_usr_roles', 'Roles' );
+	$tabBox->add($dPconfig['root_dir'].'/modules/admin/vw_usr_perms', 'Permissions');
+	$tabBox->add($dPconfig['root_dir'].'/modules/admin/vw_usr_roles', 'Roles');
 	$tabBox->show();
-
 }
 ?>

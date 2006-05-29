@@ -11,27 +11,27 @@ $tab = $AppUI->getState('RoleVwTab') !== NULL ? $AppUI->getState('RoleVwTab') : 
 
 if (! is_array($role)) {
 	$titleBlock = new CTitleBlock('Invalid Role', 'main-settings.png', $m, "$m.$a");
-	$titleBlock->addCrumb("?m=system&u=roles", "role list");
+	$titleBlock->addCrumb('?m=system&amp;u=roles', 'role list');
 	$titleBlock->show();
 } else {
 	$titleBlock = new CTitleBlock('View Role', 'main-settings.png', $m, "$m.$a");
-	$titleBlock->addCrumb("?m=system&u=roles", "role list");
+	$titleBlock->addCrumb('?m=system&amp;u=roles', 'role list');
 	$titleBlock->show();
 	// Now onto the display of the user.
 ?>
 <table border="0" cellpadding="4" cellspacing="0" width="100%" class="std">
-		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Role ID');?>:</td>
-			<td class="hilite" width="100%"><?php echo $role["value"];?></td>
-		</tr>
-		<tr>
-			<td align="right" nowrap><?php echo $AppUI->_('Description');?>:</td>
-			<td class="hilite" width="100%"><?php echo $AppUI->_($role["name"]);?></td>
-		</tr>
+<tr>
+	<td align="right" nowrap><?php echo $AppUI->_('Role ID');?>:</td>
+	<td class="hilite" width="100%"><?php echo $role["value"];?></td>
+</tr>
+<tr>
+	<td align="right" nowrap><?php echo $AppUI->_('Description');?>:</td>
+	<td class="hilite" width="100%"><?php echo $AppUI->_($role["name"]);?></td>
+</tr>
 </table>
 
 <?php
-	$tabBox = new CTabBox("?m=system&u=roles&a=viewrole&role_id=$role_id", "./modules/system/roles/", $tab );
+	$tabBox = new CTabBox('?m=system&amp;u=roles&amp;a=viewrole&amp;role_id='.$role_id, './modules/system/roles/', $tab );
 	$tabBox->add( 'vw_role_perms', 'Permissions');
 	$tabBox->show();
 } // End of check for valid role

@@ -33,7 +33,8 @@ $perm_list = $perms->getPermissionList();
 
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -91,10 +92,12 @@ function setPermItem( key, val ) {
 	}
 }
 <?php } ?>
+-->
 </script>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="0">
-<tr><td width="50%" valign="top">
+<tr>
+	<td width="50%" valign="top">
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
@@ -135,7 +138,7 @@ foreach ($role_acls as $acl){
 		// Item information TODO:  need to figure this one out.
 	// 	$buf .= "<td></td>";
 		// Type information.
-		$buf .= "<td>";
+		$buf .= '<td>';
 		$perm_type = array();
 		if (is_array($permission['aco'])) {
 			foreach ($permission['aco'] as $key => $section) {
@@ -145,11 +148,11 @@ foreach ($role_acls as $acl){
 				}
 			}
 		}
-		$buf .= implode("<br />", $perm_type);
-		$buf .= "</td>";
+		$buf .= implode('<br />', $perm_type);
+		$buf .= '</td>';
 
 		// Allow or deny
-		$buf .= "<td>" . $AppUI->_( $permission['allow'] ? 'allow' : 'deny' ) . "</td>";
+		$buf .= '<td>' . $AppUI->_( $permission['allow'] ? 'allow' : 'deny' ) . '</td>';
 		$buf .= '<td nowrap>';
 		if ($canDelete) {
 			$buf .= "<a href=\"javascript:delIt({$acl});\" title=\"".$AppUI->_('delete')."\">"
@@ -168,8 +171,7 @@ foreach ($role_acls as $acl){
 
 <?php if ($canEdit) {?>
 
-<table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
-<form name="frmPerms" method="post" action="?m=system&u=roles">
+<form name="frmPerms" method="post" action="?m=system&amp;u=roles">
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="dosql" value="do_perms_aed" />
 	<input type="hidden" name="role_id" value="<?php echo $role_id;?>" />
@@ -177,6 +179,8 @@ foreach ($role_acls as $acl){
 	<input type="hidden" name="permission_item" value="0" />
 	<input type="hidden" name="permission_table" value="" />
 	<input type="hidden" name="permission_name" value="" />
+
+<table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
 <tr>
 	<th colspan="2"><?php echo $AppUI->_('Add Permissions');?></th>
 </tr>
@@ -187,8 +191,8 @@ foreach ($role_acls as $acl){
 <tr>
 	<td nowrap align="right"><?php echo $AppUI->_('Item');?>:</td>
 	<td>
-		<input type="text" name="permission_item_name" class="text" size="30" value="all" disabled>
-		<input type="button" name="" class="text" value="..." onclick="popPermItem();">
+		<input type="text" name="permission_item_name" class="text" size="30" value="all" disabled="disabled" />
+		<input type="button" name="" class="text" value="..." onclick="popPermItem();" />
 	</td>
 </tr>
 
@@ -196,8 +200,8 @@ foreach ($role_acls as $acl){
 	<td nowrap align="right"><?php echo $AppUI->_('Access');?>:</td>
 	<td>
 		<select name="permission_access" class="text">
-			<option value='1'><?php echo $AppUI->_('allow');?></option>
-			<option value='0'><?php echo $AppUI->_('deny');?></option>
+			<option value="1"><?php echo $AppUI->_('allow');?></option>
+			<option value="0"><?php echo $AppUI->_('deny');?></option>
 		</select>
 	</td>
 </tr>
@@ -205,9 +209,9 @@ foreach ($role_acls as $acl){
 	foreach ($perm_list as $perm_id => $perm_name) {
 ?>
 <tr>
-	<td nowrap align='right'><?php echo $AppUI->_($perm_name);?>:</td>
+	<td nowrap="nowrap" align="right"><?php echo $AppUI->_($perm_name);?>:</td>
 	<td>
-	  <input type='checkbox' name='permission_type[]' value='<?php echo $perm_id;?>'>
+	  <input type="checkbox" name="permission_type[]" value="<?php echo $perm_id;?>" />
 	</td>
 </tr>
 <?php
@@ -215,22 +219,16 @@ foreach ($role_acls as $acl){
 ?>
 <tr>
 	<td>
-		<input type="reset" value="<?php echo $AppUI->_('clear');?>" class="button" name="sqlaction" onclick="clearIt();">
+		<input type="reset" value="<?php echo $AppUI->_('clear');?>" class="button" name="sqlaction" onclick="clearIt();" />
 	</td>
 	<td align="right">
-		<input type="submit" value="<?php echo $AppUI->_('add');?>" class="button" name="sqlaction2">
+		<input type="submit" value="<?php echo $AppUI->_('add');?>" class="button" name="sqlaction2" />
 	</td>
 </tr>
-</form>
 </table>
+</form>
 <?php } ?>
 
-</td>
-
+	</td>
 </tr>
-
-
-
-</tr>
-
 </table>

@@ -3,17 +3,17 @@
 * Generates a report of the task logs for given dates
 */
 //error_reporting( E_ALL );
-$do_report = dPgetParam( $_POST, "do_report", 0 );
-$log_all = dPgetParam( $_POST, 'log_all', 0 );
-$log_pdf = dPgetParam( $_POST, 'log_pdf', 0 );
-$log_ignore = dPgetParam( $_POST, 'log_ignore', 0 );
-$days = dPgetParam( $_POST, 'days', 30 );
+$do_report 				= dPgetParam( $_POST, 'do_report', 0 );
+$log_all 					= dPgetParam( $_POST, 'log_all', 0 );
+$log_pdf 					= dPgetParam( $_POST, 'log_pdf', 0 );
+$log_ignore 			= dPgetParam( $_POST, 'log_ignore', 0 );
+$days 						= dPgetParam( $_POST, 'days', 30 );
 
-$list_start_date = dPgetParam( $_POST, "list_start_date", 0 );
-$list_end_date = dPgetParam( $_POST, "list_end_date", 0 );
+$list_start_date 	= dPgetParam( $_POST, 'list_start_date', 0 );
+$list_end_date 		= dPgetParam( $_POST, 'list_end_date', 0 );
 
-$period = dPgetParam($_POST, "period", 0);
-$period_value = dPgetParam($_POST, "pvalue", 1);
+$period 					= dPgetParam($_POST, 'period', 0);
+$period_value 		= dPgetParam($_POST, 'pvalue', 1);
 if ($period)
 {
   $today = new CDate();
@@ -56,7 +56,8 @@ if (!$list_start_date) {
 $end_date->setTime( 23, 59, 59 );
 
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -75,15 +76,15 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
 <form name="editFrm" action="index.php?m=reports" method="post">
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <tr>
         <td align="right"><?php echo $AppUI->_('Default Actions'); ?>:</td>
         <td nowrap="nowrap" colspan="2">
@@ -135,8 +136,8 @@ function setCalendar( idate, fdate ) {
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
 </tr>
-</form>
 </table>
+</form>
 
 <?php
 if ($do_report) {
@@ -219,8 +220,8 @@ if ($do_report) {
 		}
 		$str =  "<tr>";
 		if ($project_id==0)
-			$str .= '<td><a href="?m=projects&a=view&project_id=' . $Tasks['task_project'] . '">' . $Tasks['project_name'].'</a></td>';
-		$str .= "<td><a href='?m=tasks&a=view&task_id=".$Tasks['task_id']. "'>".$Tasks['task_name']."</a></td>";
+			$str .= '<td><a href="?m=projects&amp;a=view&amp;project_id=' . $Tasks['task_project'] . '">' . $Tasks['project_name'].'</a></td>';
+		$str .= "<td><a href='?m=tasks&amp;a=view&amp;task_id=".$Tasks['task_id']. "'>".$Tasks['task_name']."</a></td>";
 		$str .= '<td>'.str_replace('  ', '&nbsp;&nbsp;', str_replace("\n", '<br />', $Tasks['task_description']))."</td>";
 		$str .= "<td>".$users."</td>";
 		$str .= "<td>";
@@ -325,4 +326,3 @@ if ($log_pdf) {
 	}
 }
 ?>
-</table>

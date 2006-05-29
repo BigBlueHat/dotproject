@@ -9,7 +9,8 @@ $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
 	redirect('m=public&a=access_denied');
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -35,18 +36,19 @@ function reorder( order )
 	document.editFrm.do_report.click();
 	document.editFrm.submit();
 }
+-->
 </script>
+
 <h2><?php echo $report_title; ?></h2>
 <br />
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
 <form name="editFrm" action="" method="post">
-<input type="hidden" name="m" value="reports" />
-<input type="hidden" name="order" value="<?php echo $order; ?>" />
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="m" value="reports" />
+	<input type="hidden" name="order" value="<?php echo $order; ?>" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <tr>
 	<td align="right" nowrap="nowrap">
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
@@ -69,17 +71,17 @@ function reorder( order )
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_all" <?php if ($log_all) echo "checked" ?> />
+		<input type="checkbox" name="log_all" <?php if ($log_all) echo 'checked="checked"' ?> />
 		<?php echo $AppUI->_( 'Log All' );?>
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_csv" <?php if ($log_pdf) echo "checked" ?> />
+		<input type="checkbox" name="log_csv" <?php if ($log_pdf) echo 'checked="checked"' ?> />
 		<?php echo $AppUI->_( 'Make CSV' );?>
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="log_pdf" <?php if ($log_pdf) echo "checked" ?> />
+		<input type="checkbox" name="log_pdf" <?php if ($log_pdf) echo 'checked="checked"' ?> />
 		<?php echo $AppUI->_( 'Make PDF' );?>
 	</td>
 </tr>
@@ -135,7 +137,7 @@ function reorder( order )
 		</select>
 	</td>
 
-	<td nowrap>
+	<td nowrap="nowrap">
 		<?php echo $AppUI->_('Task');?>:
 		<select name="log_task_task" class="text" style="width: 80px" onChange="reorder('<?php echo $order; ?>')">
 
@@ -228,13 +230,13 @@ if ($do_report)
 ?>
 	<table cellspacing="1" cellpadding="4" border="0" class="tbl" width="100%">
 	<tr>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('task_name');"><?php echo $AppUI->_('Task');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('task_name');"><?php echo $AppUI->_('Task');?></a></th>
 		<th><?php echo $AppUI->_('Actual');?></th>
 		<th><?php echo $AppUI->_('Budget');?></th>
 		<th><?php echo $AppUI->_('Completion');?></th>
 		<th><?php echo $AppUI->_('Over/Under');?></th>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('parent');"><?php echo $AppUI->_('Task Parent');?></a></th>
-		<th><a href="javascript: void(0)" style="color: white" onclick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('parent');"><?php echo $AppUI->_('Task Parent');?></a></th>
+		<th><a href="javascript:void(0)" style="color: white" onclick="reorder('project_name');"><?php echo $AppUI->_('Project');?></a></th>
 	</tr>
 
 <?php

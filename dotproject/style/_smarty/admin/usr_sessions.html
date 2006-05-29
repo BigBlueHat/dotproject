@@ -1,23 +1,23 @@
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 <tr>
     <th>&nbsp; {dPtranslate word='sort by'}:&nbsp;</th>
-    <th width="150"><a href="?m=admin&a=index&orderby=user_username" class="hdr">{dPtranslate word='Login Name'}</a></th>
-    <th><a href="?m=admin&a=index&orderby=contact_last_name" class="hdr">{dPtranslate word='Real Name'}</a></th>
-    <th><a href="?m=admin&a=index&orderby=contact_last_name" class="hdr">{dPtranslate word='Company'}</a></th>
-    <th><a href="?m=admin&a=index&orderby=date_time_in" class="hdr">{dPtranslate word='Date Time IN'}</a></th>
+    <th width="150"><a href="?m=admin&amp;a=index&amp;orderby=user_username" class="hdr">{dPtranslate word='Login Name'}</a></th>
+    <th><a href="?m=admin&amp;a=index&amp;orderby=contact_last_name" class="hdr">{dPtranslate word='Real Name'}</a></th>
+    <th><a href="?m=admin&amp;a=index&amp;orderby=contact_last_name" class="hdr">{dPtranslate word='Company'}</a></th>
+    <th><a href="?m=admin&amp;a=index&amp;orderby=date_time_in" class="hdr">{dPtranslate word='Date Time IN'}</a></th>
 
-    <th><a href="?m=admin&a=index&orderby=user_ip" class="hdr">{dPtranslate word='Internet Address'}</a></th>
+    <th><a href="?m=admin&amp;a=index&amp;orderby=user_ip" class="hdr">{dPtranslate word='Internet Address'}</a></th>
 </tr>
 
 {foreach from=$rows item=row}
 <tr>
     <td align="center" nowrap="nowrap">
       {if $canEdit && canDelete}
-      <input type="button" class=button value="{dPtranslate word='logout'}" onclick="javascript:window.location='./index.php?m=admin&tab=3&out_session={$row.session_id}&out_user_log_id={$row.user_access_log_id}&out_user_id={$row.u_user_id}&out_name={$row.contact_first_name}%20{$row.contact_last_name}';"></input>
+      <input type="button" class=button value="{dPtranslate word='logout'}" onclick="javascript:window.location='./index.php?m=admin&amp;tab=3&amp;out_session={$row.session_id}&amp;out_user_log_id={$row.user_access_log_id}&amp;out_user_id={$row.u_user_id}&amp;out_name={$row.contact_first_name}%20{$row.contact_last_name}';"></input>
       {/if}
     </td>
 
-    <td><a href="./index.php?m=admin&a=viewuser&user_id={$row.u_user_id}">{$row.user_username}</a></td>
+    <td><a href="./index.php?m=admin&amp;a=viewuser&amp;user_id={$row.u_user_id}">{$row.user_username}</a></td>
     <td>
       {if $row.contact_last_name && $row.contact_first_name}
       {$row.contact_last_name}, {$row.contact_first_name} 
@@ -25,7 +25,7 @@
       <span style="font-style: italic">unknown</span>
       {/if}
     </td>
-    <td><a href="./index.php?m=companies&a=view&company_id={$row.contact_company}">{$row.company_name}</a></td>
+    <td><a href="./index.php?m=companies&amp;a=view&amp;company_id={$row.contact_company}">{$row.company_name}</a></td>
 
     <td>{$row.date_time_in}</td>
     <td>{$row.user_ip}</td>

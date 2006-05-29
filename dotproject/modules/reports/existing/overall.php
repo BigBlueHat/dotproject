@@ -2,13 +2,12 @@
 /**
 * Generates a report of the task logs for given dates
 */
-//error_reporting( E_ALL );
-$do_report = dPgetParam( $_POST, "do_report", 0 );
-$log_pdf = dPgetParam( $_POST, 'log_pdf', 0 );
+$do_report 			= dPgetParam( $_POST, 'do_report', 0 );
+$log_pdf 				= dPgetParam( $_POST, 'log_pdf', 0 );
 
-$log_start_date = dPgetParam( $_POST, "log_start_date", 0 );
-$log_end_date = dPgetParam( $_POST, "log_end_date", 0 );
-$log_all = dPgetParam( $_POST, 'log_all', 0 );
+$log_start_date = dPgetParam( $_POST, 'log_start_date', 0 );
+$log_end_date 	= dPgetParam( $_POST, 'log_end_date', 0 );
+$log_all 				= dPgetParam( $_POST, 'log_all', 0 );
 
 // create Date objects from the datetime fields
 $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDate();
@@ -21,7 +20,8 @@ $end_date->setTime( 23, 59, 59 );
 
 $fullaccess = ($canEdit);
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -40,15 +40,15 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
 <form name="editFrm" action="index.php?m=reports" method="post">
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
@@ -80,8 +80,8 @@ function setCalendar( idate, fdate ) {
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
 </tr>
-</form>
 </table>
+</form>
 
 <?php
 $allpdfdata = array();

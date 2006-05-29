@@ -2,45 +2,41 @@
 /*	$Id$ 	
  *
  *	Custom field editor - lists custom fields by module 	
- *
  */
 
-if (!$canEdit) {
-    $AppUI->redirect( "m=public&a=access_denied" );
-}
-	$AppUI->savePlace();
+if (!$canEdit)
+	$AppUI->redirect('m=public&amp;a=access_denied');
 
-	require_once("./classes/CustomFields.class.php");
+$AppUI->savePlace();
 
-	$titleBlock = new CTitleBlock('Custom field editor', "customfields.png", "admin", "admin.custom_field_editor");
-	$titleBlock->addCrumb( "?m=system", "system admin" );
+require_once($baseDir . '/classes/CustomFields.class.php');
 
-	$edit_field_id = dpGetParam( $_POST, "field_id", NULL );
+$titleBlock = new CTitleBlock('Custom field editor', 'customfields.png', 'admin', 'admin.custom_field_editor');
+$titleBlock->addCrumb('?m=system', 'system admin');
+$titleBlock->show();
 
-	$titleBlock->show();
+$edit_field_id = dpGetParam( $_POST, "field_id", NULL );
 
-	// Load module list
-	$q  = new DBQuery;
-	$q->addTable('modules');
-	$q->addOrder('mod_ui_order');
-	$q->addWhere("mod_name IN ('Companies', 'Projects', 'Tasks', 'Calendar', 'Resources')");
-	$modules = $q->loadList();
-	$q->clear();
+// Load module list
+$q  = new DBQuery;
+$q->addTable('modules');
+$q->addOrder('mod_ui_order');
+$q->addWhere("mod_name IN ('Companies', 'Projects', 'Tasks', 'Calendar', 'Resources')");
+$modules = $q->loadList();
 	
-	$module_fields = Array();
+$module_fields = Array();
 
-	foreach ($modules as $i=>$module)
-	{
-		// Load field list for each module
-		$q = new DBQuery;
-                $q->addTable('custom_fields_struct');
-                $q->addWhere("field_module = '".strtolower($module["mod_name"])."'");
-                $custom_fields = $q->loadList();
+foreach ($modules as $i=>$module)
+{
+	// Load field list for each module
+	$q = new DBQuery;
+	$q->addTable('custom_fields_struct');
+	$q->addWhere("field_module = '".strtolower($module['mod_name'])."'");
+	$custom_fields = $q->loadList();
 
-		$modules[$i]['custom_fields'] = $custom_fields;
-                $q->clear();
-	}	
+	$modules[$i]['custom_fields'] = $custom_fields;
+}	
 
-	$tpl->assign('modules', $modules);
-	$tpl->displayFile('custom_field_editor');
+$tpl->assign('modules', $modules);
+$tpl->displayFile('custom_field_editor');
 ?>

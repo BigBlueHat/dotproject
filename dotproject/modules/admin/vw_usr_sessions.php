@@ -19,7 +19,7 @@ if($_GET["out_session"] && $_GET["out_user_log_id"] && $_GET["out_user_id"] &&  
     
     $msg = $boot_user_name . " logged out by " . $AppUI->user_first_name . " " . $AppUI->user_last_name;
     $AppUI->setMsg( $msg, UI_MSG_OK );
-    $AppUI->redirect("m=admin&tab=3");
+    $AppUI->redirect("m=admin&amp;tab=3");
 }
 
 $q  = new DBQuery;

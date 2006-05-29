@@ -17,15 +17,17 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Company'}:</td>
 			<td class="hilite" width="100%">
-				<a href="?m=companies&a=view&company_id={$obj.contact_company}">{$obj.company_name}</a>
+				<a href="?m=companies&amp;a=view&amp;company_id={$obj.contact_company}">{$obj.company_name}</a>
 			</td>
 		</tr>
+{if $obj.contact_department}
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Department'}:</td>
 			<td class="hilite" width="100%">
-				<a href="?m=departments&a=view&dept_id={$obj.contact_department}">{$obj.dept_name}</a>
+				<a href="?m=departments&amp;a=view&amp;dept_id={$obj.contact_department}">{$obj.dept_name}</a>
 			</td>
 		</tr>
+{/if}
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Phone'}:</td>
 			<td class="hilite" width="100%">{$obj.contact_phone}</td>
@@ -69,7 +71,8 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Email'}:</td>
 			<td class="hilite" width="100%">
-				<a href="mailto:{$obj.contact_email}">{$obj.contact_email}</a></td>
+				<a href="mailto:{$obj.contact_email}">{$obj.contact_email}</a>
+			</td>
 		</tr>
 		<tr>
 			<td colspan="2"><strong>{dPtranslate word='Signature'}:</strong></td>

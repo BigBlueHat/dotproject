@@ -700,10 +700,10 @@ function getUsersCombo($default_user_id = 0, $first_option = 'All users')
     global $AppUI;
     
     $parsed = '<select name="user_id" class="text">';
-    if($first_option != ""){
-        $parsed .= '<option value="0" '.(!$default_user_id ? 'selected' : '').'>'.$AppUI->_($first_option).'</option>';
-    }
-		$users = dPgetUsernames();
+    if($first_option != '')
+        $parsed .= '<option value="0" '.(!$default_user_id ? 'selected="selected"' : '').'>'.$AppUI->_($first_option).'</option>';
+
+		$users = dPgetUsers();
     foreach($users as $user_id => $user_name){
         $selected = $user_id == $default_user_id ? 'selected="selected"' : '';
         $parsed .= '<option value="'.$user_id.'" '.$selected.'>'.$user_name.'</option>';

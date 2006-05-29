@@ -4,9 +4,8 @@ $AppUI->savePlace();
 
 $canEdit = !getDenyEdit( $m );
 $canRead = !getDenyRead( $m );
-if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
+if (!$canRead)
+	$AppUI->redirect('m=public&amp;a=access_denied');
 
 //Modify this mapping to match your LDAP->contact structure
 //For instance, of you want the contact_phone2 field to be populated out of, say telephonenumber2 then you would just modify
@@ -31,33 +30,33 @@ $sql_ldap_mapping = array(
 	"c" => "contact_country"
 	);
 
-$titleBlock = new CTitleBlock("Import Contacts from LDAP Directory", "", "admin", "");
-$titleBlock->addCrumb( "?m=system", "system admin" );
+$titleBlock = new CTitleBlock('Import Contacts from LDAP Directory', '', 'admin', '');
+$titleBlock->addCrumb('?m=system', 'system admin');
 $titleBlock->show();
 
 
-if (isset( $_POST['server'] )) {
+if (isset( $_POST['server'] ))
 	$AppUI->setState( 'LDAPServer', $_POST['server'] );
-}
+
 $server = $AppUI->getState( 'LDAPServer', '' );
 //$server = "KMP00";
 
-if (isset( $_POST['bind_name'] )) {
+if (isset( $_POST['bind_name'] ))
 	$AppUI->setState( 'LDAPBindName', $_POST['bind_name'] );
-}
+
 $bind_name = $AppUI->getState( 'LDAPBindName', '' );
 //$bind_name = "dcordes";
 
 $bind_password = dPgetParam($_POST,'bind_password', '');
 
-if (isset( $_POST['port'] )) {
+if (isset( $_POST['port'] ))
 	$AppUI->setState( 'LDAPPort', $_POST['port'] );
-}
+
 $port = $AppUI->getState( 'LDAPPort', '389' );
 
-if (isset( $_POST['dn'] )) {
+if (isset( $_POST['dn'] ))
 	$AppUI->setState( 'LDAPDN', $_POST['dn'] );
-}
+
 $dn = $AppUI->getState( 'LDAPDN', '' );
 //$dn = "OU=USA,O=MINEBEA";
 
@@ -74,15 +73,19 @@ $AppUI->setState('LDAPProto', dPgetParam($_POST, 'ldap_proto'));
 $proto = $AppUI->getState('LDAPProto', '3');
 
 ?>
-<form method="post">
+<form action="#" method="post">
 <table border="0" cellpadding="2" cellspacing="1" width="600" class="std">
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Server'); ?>:</td>
-		<td><input type="text" name="server" value="<?php echo $server; ?>" size="50"></td>
+		<td>
+			<input type="text" name="server" value="<?php echo $server; ?>" size="50" />
+		</td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Port'); ?>:</td>
-		<td><input type="text" name="port" value="<?php echo $port; ?>" size="4"></td>
+		<td>
+			<input type="text" name="port" value="<?php echo $port; ?>" size="4" />
+		</td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Protocol'); ?>:</td>
@@ -90,94 +93,94 @@ $proto = $AppUI->getState('LDAPProto', '3');
 		 	echo $AppUI->_('Version 2') . ' <input type="radio" name="ldap_proto" value="2"';
 			if ($proto == '2')
 			  echo ' checked="checked"';
-			echo '>  ' . $AppUI->_('Version 3') . ' <input type="radio" name="ldap_proto" value="3"';
+			echo ' />  ' . $AppUI->_('Version 3') . ' <input type="radio" name="ldap_proto" value="3"';
 			if ($proto == '3')
 			  echo ' checked="checked"';
-			echo '>';
+			echo ' />';
 		?></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Bind Name'); ?>:</td>
-		<td><input type="text" name="bind_name" value="<?php echo $bind_name; ?>" size="50"></td>
+		<td>
+			<input type="text" name="bind_name" value="<?php echo $bind_name; ?>" size="50" />
+		</td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Bind Password'); ?>:</td>
-		<td><input type="password" name="bind_password" value="<?php echo $bind_password; ?>" size="25"></td>
+		<td>
+			<input type="password" name="bind_password" value="<?php echo $bind_password; ?>" size="25" />
+		</td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Base DN'); ?>:</td>
-		<td><input type="text" name="dn" value="<?php echo $dn; ?>" size="100"></td>
+		<td><input type="text" name="dn" value="<?php echo $dn; ?>" size="100" /></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_('Filter'); ?>:</td>
-		<td><input type="text" name="filter" value="<?php echo $filter; ?>" size="100"></td>
+		<td><input type="text" name="filter" value="<?php echo $filter; ?>" size="100" /></td>
 	</tr>
 	<tr>
-		<td colspan="2" align="right"><input type="submit" name="test" value="<?php echo $AppUI->_('Test Connection and Query'); ?>"><input type="submit" name="import" value="<?php echo $AppUI->_('Import Users'); ?>"></td>
+		<td colspan="2" align="right">
+			<input type="submit" name="test" value="<?php echo $AppUI->_('Test Connection and Query'); ?>" />
+			<input type="submit" name="import" value="<?php echo $AppUI->_('Import Users'); ?>" />
+		</td>
 	</tr>
 </table>
-<pre>
+
 <?php
-echo "<b>";
+echo '<b>&nbsp;';
 if(isset($test)){
 	echo $test;
 }
 if(isset($import)){
 	echo $import;
 }
-echo "</b>\n<hr>";
+echo '</b><hr />'."\n";
 if(isset($test) || isset($import)){
 
 	$ds = @ldap_connect($server, $port);
 
 	if(!$ds) {
-	    if(function_exists("ldap_error")) {
+	    if(function_exists('ldap_error')) {
 		print ldap_error($ds)."\n"; 
 	    } else {
-		print "<span style='color:red;font-weight:bold;'>ldap_connect failed.</span>\n";
+		print '<span style="color:red;font-weight:bold;">' . $AppUI->_('ldap_connect') . ' ' . $AppUI->_('failed') . '.</span>'."\n";
 	    }
 	} else {
-		print "ldap_connect succeeded.\n";
+		print $AppUI->_('ldap_connect') . ' ' . $AppUI->_('successful') . ".\n";
 	}
 
 	ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, $proto);
 
 	if(!@ldap_bind($ds,$bind_name,$bind_password)) {
-	    print "<span style='color:red;font-weight:bold;'>ldap_bind failed.</span>\n";
+	    print '<span style="color:red;font-weight:bold;">'.$AppUI->_('ldap_bind') . ' ' . $AppUI->_('failed') . '.</span>' . "\n";
 	    if(function_exists("ldap_error")) {
 		print ldap_error($ds)."\n"; 
 	    }
 	} else {
-		print "ldap_bind successful.\n";
+		print $AppUI->_('failed') . ' ' . $AppUI->_('successful') . ".\n";
 	}
 
 	$return_types = array();
-	foreach ($sql_ldap_mapping as $ldap => $sql) {
+	foreach ($sql_ldap_mapping as $ldap => $sql)
 		$return_types[] = $ldap;
-	}
 
-print "basedn: ".$dn."<br>";
-print "expression: ".$filter."<br>";
+	echo 'based: '.$dn.'<br />';
+	echo 'expression: '.$filter.'<br />';
 
 	$sr = @ldap_search($ds,$dn,$filter,$return_types);
 	
-	if($sr){
-		print "Search completed Sucessfully.\n";
-	} else {
-		print "Search Error: [".ldap_errno($ds)."] ".ldap_error($ds)."\n";
-	}
-
-
-?>
-</pre>
-<?php
+	if($sr)
+		echo 'Search completed Sucessfully.' . "\n";
+	else
+		echo 'Search Error: ['.ldap_errno($ds).'] '.ldap_error($ds)."\n";
 
 //	print "Result Count:".(ldap_count_entries($ds,$sr))."\n";
 	$info = ldap_get_entries($ds, $sr);
-	if(!$info["count"]){
-		print "No users were found.\n";
+	if(!$info['count']){
+		print 'No users were found.'."\n";
 	} else {
-		print "Total Users Found:".$info["count"]."\n<hr>";
+		print 'Total Users Found:'.$info['count'].'<hr />' . "\n";
 ?>
 <table border="0" cellpadding="1" cellspacing="0" width="98%" class="std">
 <?php
@@ -254,7 +257,7 @@ print "expression: ".$filter."<br>";
 			echo "\n";
 		}
 	}
-echo "</table>";
+	echo '</table>';
 	ldap_close($ds);
 }
 
@@ -263,4 +266,4 @@ function clean_value($str){
 	return str_replace($bad_values,"",$str);
 }
 ?>
-</table>
+</form>

@@ -15,7 +15,8 @@ if (!$log_start_date) {
 $end_date->setTime( 23, 59, 59 );
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -34,16 +35,15 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 
 <form name="editFrm" action="index.php?m=reports" method="post">
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
-
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
@@ -71,7 +71,6 @@ function setCalendar( idate, fdate ) {
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
 </tr>
-
 </table>
 </form>
 
@@ -242,6 +241,6 @@ if($do_report){
 		</tr>
 		<?php
 	}
+	echo '</table>';
 }
 ?>
-</table>

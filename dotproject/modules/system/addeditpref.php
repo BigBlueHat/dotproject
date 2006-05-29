@@ -4,9 +4,8 @@
 ##
 $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
 // Check permissions
-if (!$canEdit && $user_id != $AppUI->user_id) {
-  $AppUI->redirect("m=public&a=access_denied" );
-}
+if (!$canEdit && $user_id != $AppUI->user_id)
+	$AppUI->redirect('m=public&amp;a=access_denied');
 
 // load the preferences
 $q  = new DBQuery;
@@ -19,17 +18,18 @@ $prefs = $q->loadHashList();
 if ($user_id)
 	$user = dPgetUsernameFromID($user_id);
 else
-	$user = "Default";
+	$user = 'Default';
 
 $titleBlock = new CTitleBlock( 'Edit User Preferences', 'myevo-weather.png', $m, "$m.$a" );
 $perms =& $AppUI->acl();
 if ($perms->checkModule('system', 'edit')) {
-	$titleBlock->addCrumb( "?m=system", "system admin" );
-	$titleBlock->addCrumb( "?m=system&a=systemconfig", "system configuration" );
+	$titleBlock->addCrumb('?m=system', 'system admin');
+	$titleBlock->addCrumb('?m=system&amp;a=systemconfig', 'system configuration');
 }
 $titleBlock->show();
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function submitIt(){
 	var form = document.changeuser;
 	// Collate the checked states of the task log stuff
@@ -44,20 +44,20 @@ function submitIt(){
 	defs.value = mask;
 	form.submit();
 }
+-->
 </script>
-
-<table width="100%" border="0" cellpadding="1" cellspacing="1" class="std">
 
 <form name="changeuser" action="./index.php?m=system" method="post">
 	<input type="hidden" name="dosql" value="do_preference_aed" />
 	<input type="hidden" name="pref_user" value="<?php echo $user_id;?>" />
 	<input type="hidden" name="del" value="0" />
 
-<tr height="20">
-	<th colspan="2"><?php echo $AppUI->_('User Preferences');?>:
-	<?php
-		echo $user_id ? "$user" : $AppUI->_("Default");
-	?></th>
+<table width="100%" border="0" cellpadding="1" cellspacing="1" class="std">
+<tr>
+	<th colspan="2">
+		<?php echo $AppUI->_('User Preferences');?>:
+		<?php	echo ($user_id ? $user : $AppUI->_('Default'));?>
+	</th>
 </tr>
 
 <tr>
@@ -114,8 +114,8 @@ function submitIt(){
 	$f = "%I:%M %p"; $times[$f]	= $ex->format( $f );
 	$f = "%H:%M"; $times[$f]	= $ex->format( $f ).' (24)';
 	$f = "%H:%M:%S"; $times[$f]	= $ex->format( $f ).' (24)';
-	$f = ' '; $times[$f] = '';
-	echo arraySelect( $times, 'pref_name[TIMEFORMAT]', 'class=text size=1', @$prefs['TIMEFORMAT'], false );
+	$f = ' '; $times[$f] = '&nbsp;';
+	echo arraySelect( $times, 'pref_name[TIMEFORMAT]', 'class="text" size="1"', @$prefs['TIMEFORMAT'], false );
 ?>
 	</td>
 </tr>
@@ -215,7 +215,7 @@ function submitIt(){
 <tr>
 	<td align="right"><?php echo $AppUI->_('Task Log Email Defaults');?>:</td>
 	<td>
-		<input type='hidden' name='pref_name[TASKLOGEMAIL]' id='task_log_email_defaults' value='<?php echo @$prefs['TASKLOGEMAIL']; ?>'>
+		<input type="hidden" name="pref_name[TASKLOGEMAIL]" id="task_log_email_defaults" value="<?php echo @$prefs['TASKLOGEMAIL']; ?>" />
 <?php
 	if (! isset($prefs['TASKLOGEMAIL']))
 		$prefs['TASKLOGEMAIL'] = 0;
@@ -223,25 +223,25 @@ function submitIt(){
 	$tl_assign = $prefs['TASKLOGEMAIL'] & 1;
 	$tl_task = $prefs['TASKLOGEMAIL'] & 2;
 	$tl_proj = $prefs['TASKLOGEMAIL'] & 4;
-	echo $AppUI->_('Email Assignees') . "&nbsp;<input type='checkbox' name='tl_assign' id='tl_assign' ";
+	echo $AppUI->_('Email Assignees') . '&nbsp;<input type="checkbox" name="tl_assign" id="tl_assign" ';
 	if ($tl_assign)
-		echo " checked=checked";
-	echo "><br>";
-	echo $AppUI->_('Email Task Contacts') . "&nbsp;<input type='checkbox' name='tl_task' id='tl_task' ";
+		echo ' checked="checked"';
+	echo ' /><br />';
+	echo $AppUI->_('Email Task Contacts') . '&nbsp;<input type="checkbox" name="tl_task" id="tl_task" ';
 	if ($tl_task)
-		echo " checked=checked";
-	echo "><br>";
-	echo $AppUI->_('Email Project Contacts') . "&nbsp;<input type='checkbox' name='tl_proj' id='tl_proj' ";
+		echo ' checked="checked"';
+	echo ' /><br />';
+	echo $AppUI->_('Email Project Contacts') . '&nbsp;<input type="checkbox" name="tl_proj" id="tl_proj" ';
 	if ($tl_proj)
-		echo " checked=checked";
-	echo ">";
+		echo ' checked="checked"';
+	echo ' />';
 ?>
 	</td>
 </tr>
 <tr>
 	<td align="right"><?php echo $AppUI->_('Task Log Email Subject');?>:</td>
 	<td>
-		<input type='text' name='pref_name[TASKLOGSUBJ]' value='<?php echo @$prefs['TASKLOGSUBJ']; ?>'>
+		<input type="text" name="pref_name[TASKLOGSUBJ]" value="<?php echo @$prefs['TASKLOGSUBJ']; ?>" />
 	</td>
 </tr>
 <tr>
@@ -256,7 +256,12 @@ function submitIt(){
 </tr>
 
 <tr>
-	<td align="left"><input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onclick="javascript:history.back(-1);" /></td>
-	<td align="right"><input class="button" type="button" value="<?php echo $AppUI->_('submit');?>" onclick="submitIt()" /></td>
+	<td align="left">
+		<input class="button"  type="button" value="<?php echo $AppUI->_('back');?>" onclick="javascript:history.back(-1);" />
+	</td>
+	<td align="right">
+		<input class="button" type="button" value="<?php echo $AppUI->_('submit');?>" onclick="submitIt()" />
+	</td>
 </tr>
 </table>
+</form>

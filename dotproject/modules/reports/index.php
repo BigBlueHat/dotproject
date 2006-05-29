@@ -50,13 +50,14 @@ $display_project_name=$project_list[$project_id];
 if (!$suppressHeaders)
 {
 ?>
-<script language="javascript">
-                                                                                
+<script type="text/javascript" language="javascript">
+<!--
 function changeIt()
 {
 	var f=document.changeMe;
 	f.submit();
 }
+-->
 </script>
 
 <?php
@@ -79,11 +80,11 @@ if (! $suppressHeaders) {
 	$titleBlock = new CTitleBlock( 'Reports', 'applet3-48.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( '?m=projects', 'projects list' );
 	if ($project_id != 0)
-		$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$project_id, 'view this project' );
+		$titleBlock->addCrumb( '?m=projects&amp;a=view&amp;project_id='.$project_id, 'view this project' );
 	if ($report_category)
-		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id, 'reports index' );
+		$titleBlock->addCrumb( '?m=reports&amp;project_id='.$project_id, 'reports index' );
 	if ($report_type)
-		$titleBlock->addCrumb( '?m=reports&project_id='.$project_id.'&report_category='.$report_category, 'category index' );
+		$titleBlock->addCrumb( '?m=reports&amp;project_id='.$project_id.'&amp;report_category='.$report_category, 'category index' );
 
 	$titleBlock->show();
 
@@ -94,7 +95,7 @@ if (!isset($display_project_name))
 echo $AppUI->_('Selected Project') . ': <b>'.$display_project_name.'</b>'; 
 $report_type_var = dPgetParam($_GET, 'report_type', '');
 if (!empty($report_type_var))
-	$report_type_var = "&report_category=$report_category&report_type=$report_type";
+	$report_type_var = "&amp;report_category=$report_category&amp;report_type=$report_type";
 ?>
 <form name="changeMe" action="./index.php?m=reports<?php echo $report_type_var; ?>" method="post">
 	<input type="hidden" name="do_report" value="<?php echo $do_report; ?>" />
@@ -130,9 +131,9 @@ if ($report_type) {
 		echo "
 <tr>
 	<td>
-		<a href=\"index.php?m=reports&project_id=$project_id&report_category=$report_category&report_type=$type";
+		<a href=\"index.php?m=reports&amp;project_id=$project_id&amp;report_category=$report_category&amp;report_type=$type";
 		if (isset($desc[2]))
-			echo '&' . $desc[2];
+			echo '&amp;' . trim($desc[2]);
 		echo '">';
 		echo @$desc[0] ? $desc[0] : $v;
 		echo '</a>
@@ -154,7 +155,7 @@ if ($report_type) {
 
 		echo "
 <tr>
-	<td><a href=\"index.php?m=reports&project_id=$project_id&report_category=$v";
+	<td><a href=\"index.php?m=reports&amp;project_id=$project_id&amp;report_category=$v";
 		if (isset($desc[2]))
 			echo "&" . $desc[2];
 		echo '">';

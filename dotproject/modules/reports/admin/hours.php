@@ -2,9 +2,10 @@
 //error_reporting( E_ALL );
 $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
-	redirect('m=public&a=access_denied');
+	redirect('m=public&amp;a=access_denied');
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -23,16 +24,17 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 <h2><?php echo $report_title; ?></h2>
-<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 
 <form name="editFrm" action="" method="post">
-<input type="hidden" name="m" value="reports" />
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="m" value="reports" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
+<table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
 <tr>
 	<td align="right" nowrap="nowrap">
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
@@ -54,7 +56,7 @@ function setCalendar( idate, fdate ) {
 		</a>
 	</td>
 
-	<td nowrap>
+	<td nowrap="nowrap">
 		<?php echo $AppUI->_('User');?>:
 		<select name="log_userfilter" class="text" style="width: 80px">
 
@@ -65,7 +67,7 @@ function setCalendar( idate, fdate ) {
 		$q->addTable('users');
 		$q->addJoin('contacts', 'c', 'user_contact = contact_id');
 
-		echo '<option value="0" '.(($log_userfilter == 0)?' selected':'').'>'.$AppUI->_('All users' ).'</option>';
+		echo '<option value="0" '.(($log_userfilter == 0)?' selected="selected"':'').'>'.$AppUI->_('All users' ).'</option>';
 
 		if (($rows = db_loadList( $q->prepare(), NULL )))
 			foreach ($rows as $row)
@@ -85,9 +87,8 @@ function setCalendar( idate, fdate ) {
 	</td>
 
 </tr>
-</form>
 </table>
-
+</form>
 
 <?php
 if ($do_report) {
@@ -155,7 +156,7 @@ if ($do_report) {
 
 	$csvdata[] = array(
 		$AppUI->_('Total Hours').':',
-		sprintf( "%.2f", $hours )
+		sprintf('%.2f', $hours)
 	);
 
 	$pdfdata = $csvdata;

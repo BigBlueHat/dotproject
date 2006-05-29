@@ -25,7 +25,8 @@ if (!$log_start_date) {
 $end_date->setTime( 23, 59, 59 );
 
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -44,16 +45,16 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 
+<form name="editFrm" action="" method="get">
+	<input type="hidden" name="m" value="reports" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
-<form name="editFrm" action="" method="GET">
-<input type="hidden" name="m" value="reports" />
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
-
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
@@ -72,9 +73,9 @@ function setCalendar( idate, fdate ) {
 		</a>
 	</td>
 
-	<TD NOWRAP>
+	<td nowrap="nowrap">
 		<?php echo $AppUI->_('User');?>:
-		<SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 80px">
+		<select name="log_userfilter" class="text" style="width: 80px">
 
 	<?php
 		
@@ -85,24 +86,14 @@ function setCalendar( idate, fdate ) {
 		$rows = $q->loadList();
 		$q->clear();
 		
-		if ( $log_userfilter == 0 ) echo '<OPTION VALUE="0" SELECTED>'.$AppUI->_('All users' );
-		else echo '<OPTION VALUE="0">All users';
+		echo '<option value="0"'.($log_userfilter == 0?' selected="selected"':'').'>'.$AppUI->_('All users' ) . '</option>';
 
 		if ($rows)
-		{
 			foreach ($rows as $row)
-			{
-				if ( $log_userfilter == $row["user_id"])
-					echo "<OPTION VALUE='".$row["user_id"]."' SELECTED>".$row["user_username"];
-				else
-					echo "<OPTION VALUE='".$row["user_id"]."'>".$row["user_username"];
-			}
-		}
-
+				echo '<option value="'.$row['user_id'].'"' . ($log_userfilter == $row["user_id"]?'selected="selected"':'') . '>'.$row['user_username'] . '</option>';
 	?>
-
-		</SELECT>
-	</TD>
+		</select>
+	</td>
 
 	<td nowrap="nowrap">
 		<input type="checkbox" name="log_all" <?php if ($log_all) echo "checked" ?> />
@@ -123,8 +114,8 @@ function setCalendar( idate, fdate ) {
 		<input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('submit');?>" />
 	</td>
 </tr>
-</form>
 </table>
+</form>
 
 <?php
 if ($do_report) {
@@ -192,7 +183,7 @@ if ($do_report) {
 	<tr>
 		<td><?php echo $log['creator'];?></td>
 		<td>
-			<a href="index.php?m=tasks&a=view&tab=1&task_id=<?php echo $log['task_log_task'];?>&task_log_id=<?php echo $log['task_log_id'];?>"><?php echo $log['task_log_name'];?></a>
+			<a href="index.php?m=tasks&amp;a=view&amp;tab=1&amp;task_id=<?php echo $log['task_log_task'];?>&amp;task_log_id=<?php echo $log['task_log_id'];?>"><?php echo $log['task_log_name'];?></a>
 		</td>
 		<td><?php
 // dylan_cuthbert: auto-transation system in-progress, leave these lines for time-being

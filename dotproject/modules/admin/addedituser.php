@@ -10,9 +10,9 @@ if ($canEdit)
 	$canEdit = $perms->checkModuleItem('users', ($user_id ? 'edit' : 'add'), $user_id);
 
 // check permissions
-if (!$canEdit && $user_id != $AppUI->user_id) {
-    $AppUI->redirect( "m=public&a=access_denied" );
-}
+if (!$canEdit && $user_id != $AppUI->user_id) 
+	$AppUI->redirect('m=public&amp;a=access_denied');
+
 
 $q  = new DBQuery;
 $q->addTable('users', 'u');
@@ -27,28 +27,27 @@ $q->clear();
 
 if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=admin", "users list" );
+	$titleBlock->addCrumb('?m=admin', 'users list');
 	$titleBlock->show();
 } else {
-	 if ( $user_id == 0)
-        $user['contact_id'] = 0;
+	if ( $user_id == 0)
+		$user['contact_id'] = 0;
 // pull companies
 	$q = new DBQuery;
 	$q->addTable('companies');
 	$q->addQuery('company_id, company_name');
 	$q->addOrder('company_name');
-	$companies = arrayMerge( array( 0 => '' ), $q->loadHashList() );
+	$companies = arrayMerge( array( 0 => '&nbsp;' ), $q->loadHashList() );
 
 // setup the title block
 	$ttl = $user_id > 0 ? "Edit User" : "Add User";
 	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, "$m.$a" );
 	if ($perms->checkModule('admin', 'view') && $perms->checkModule('users', 'view'))
-		$titleBlock->addCrumb( "?m=admin", "users list" );
+		$titleBlock->addCrumb('?m=admin', 'users list');
 	if ($user_id > 0) {
-		$titleBlock->addCrumb( "?m=admin&a=viewuser&user_id=$user_id", "view this user" );
-		if ($canEdit || $user_id == $AppUI->user_id) {
-		$titleBlock->addCrumb( "?m=system&a=addeditpref&user_id=$user_id", "edit preferences" );
-		}
+		$titleBlock->addCrumb('?m=admin&amp;a=viewuser&amp;user_id=' . $user_id, 'view this user');
+		if ($canEdit || $user_id == $AppUI->user_id)
+			$titleBlock->addCrumb('?m=system&amp;a=addeditpref&amp;user_id=' . $user_id, 'edit preferences');
 	}
 	$titleBlock->show();
 	
@@ -68,6 +67,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	
 ?>
 <script language="javascript" type="text/javascript">
+<!--
 var emails = new Array();
 <?php
 foreach($contacts as $contact)
@@ -132,6 +132,7 @@ function setDept( key, val ) {
         f.dept_name.value = '';
     }
 }
+-->
 </script>
 
 

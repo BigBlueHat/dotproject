@@ -60,11 +60,11 @@ foreach( $arr as $L ) {
 $a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
 $a2z .= "\n<tr>";
 $a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
-$a2z .= '<td><a href="./index.php?m=admin&stub=0">' . $AppUI->_('All') . '</a></td>';
+$a2z .= '<td><a href="./index.php?m=admin&amp;stub=0">' . $AppUI->_('All') . '</a></td>';
 for ($c=65; $c < 91; $c++) {
 	$cu = chr( $c );
 	$cell = strpos($let, "$cu") > 0 ?
-		"<a href=\"?m=admin&stub=$cu\">$cu</a>" :
+		"<a href=\"?m=admin&amp;stub=$cu\">$cu</a>" :
 		"<font color=\"#999999\">$cu</font>";
 	$a2z .= "\n\t<td>$cell</td>";
 }
@@ -75,18 +75,17 @@ $titleBlock = new CTitleBlock( 'User Management', 'helix-setup-users.png', $m, "
 
 $where = dPformSafe( $where, true );
 
-$titleBlock->addCell(
-	'<input type="text" name="where" class="text" size="10" value="'.$where.'" />'
-	. ' <input type="submit" value="'.$AppUI->_( 'search' ).'" class="button" />',
-	'',
-	'<form action="index.php?m=admin" method="post">', '</form>'
-);
+$titleBlock->addCell('
+<form action="index.php?m=admin" method="post">
+	<input type="text" name="where" class="text" size="10" value="'.$where.'" />
+	<input type="submit" value="'.$AppUI->_( 'search' ).'" class="button" />
+</form>', '', '', '');
 
 $titleBlock->addCell( $a2z );
 $titleBlock->show();
 
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -103,10 +102,13 @@ function delMe( x, y ) {
 </script>
 
 <?php
-$extra = '<td align="right" width="100%"><input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&a=addedituser\';" /></td>';
+$extra = '
+<td align="right" width="100%">
+	<input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&amp;a=addedituser\';" />
+</td>';
 
 // tabbed information boxes
-$tabBox = new CTabBox( "?m=admin", "{$dPconfig['root_dir']}/modules/admin/", $tab );
+$tabBox = new CTabBox( '?m=admin', $dPconfig['root_dir'] . '/modules/admin/', $tab );
 $tabBox->add( 'vw_usr', 'Active Users' );
 $tabBox->add( 'vw_usr', 'Inactive Users' );
 $tabBox->add( 'vw_usr_log', 'User Log' );

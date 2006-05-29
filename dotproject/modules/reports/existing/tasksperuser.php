@@ -23,7 +23,8 @@ if (!$log_start_date) {
 $end_date->setTime( 23, 59, 59 );
 ?>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -42,15 +43,15 @@ function setCalendar( idate, fdate ) {
 	fld_date.value = idate;
 	fld_fdate.value = fdate;
 }
+-->
 </script>
 
 <form name="editFrm" action="index.php?m=reports" method="post">
-<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
-<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
-<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
+	<input type="hidden" name="project_id" value="<?php echo $project_id;?>" />
+	<input type="hidden" name="report_category" value="<?php echo $report_category;?>" />
+	<input type="hidden" name="report_type" value="<?php echo $report_type;?>" />
 
 <table cellspacing="0" cellpadding="4" border="0" width="100%" class="std">
-
 <tr>
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_('For period');?>:</td>
 	<td nowrap="nowrap">
@@ -61,11 +62,10 @@ function setCalendar( idate, fdate ) {
 		</a>
 	</td>
 	<td nowrap="nowrap">
-        <SELECT NAME="log_userfilter" CLASS="text" STYLE="width: 200px">
-  
-	   	 	<?php
+        <select name="log_userfilter" class="text" style="width: 200px">
+   	 	<?php
    		   	  
- 			 $q  = new DBQuery;
+			$q  = new DBQuery;
 			$q->addTable('users', 'u');
 			$q->addJoin('contacts', 'con', 'user_contact = contact_id');
 			$q->addQuery('user_id, user_username, contact_first_name, contact_last_name');
@@ -79,10 +79,11 @@ function setCalendar( idate, fdate ) {
    		   	  {
    		   	      foreach ($log_userfilter_users as $row)
    		   	      {
-					  $selected="";
-   		   	          if ( $log_userfilter == $row["user_id"]) { $selected=" SELECTED"; }
-					  echo "<OPTION VALUE='".$row["user_id"]."'$selected>".
-                                    $row["contact_first_name"]." ".$row["contact_last_name"];
+								  $selected='';
+   		   	        if ($log_userfilter == $row["user_id"])
+										$selected=' selected="selected"';
+					  echo '<option value="'.$row["user_id"].'"'.$selected.'>'.
+                                    $row["contact_first_name"].' '.$row["contact_last_name"];
    		   	      }
    		   	  }
 		
@@ -93,14 +94,12 @@ function setCalendar( idate, fdate ) {
 	</td>
 
 	<td nowrap="nowrap">
-		<input type="checkbox" name="use_period" <?php if ($use_period) echo "checked" ?> >
+		<input type="checkbox" name="use_period" <?php if ($use_period) echo 'checked="checked"' ?> />
 		<?php echo $AppUI->_( 'Use the period' );?>
-		</input>
-		<br>
-		<input type="checkbox" name="display_week_hours" <?php if ($display_week_hours) echo "checked" ?> >
+		<br />
+		<input type="checkbox" name="display_week_hours" <?php if ($display_week_hours) echo 'checked="checked"' ?> />
 		<?php echo $AppUI->_( 'Display allocated hours/week' );?>
-		</input>
-		<br> 
+		<br /> 
 
 	</td> 
 	
@@ -119,18 +118,14 @@ function setCalendar( idate, fdate ) {
 	</td>
 	<td>
 		<?php echo $AppUI->_( 'Levels to display' ); ?>
-		<input type="text" name="max_levels" size="10" maxlength="3" <?php $max_levels ?> >
-		</input>
+		<input type="text" name="max_levels" size="10" maxlength="3" <?php $max_levels ?> />
 	</td>
-
 </tr>
-
 </table>
 </form>
 
 <?php
 if($do_report){
-	
 	$q  = new DBQuery;
 	$q->addTable('users', 'u');
 	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
@@ -227,28 +222,38 @@ if($do_report){
 			}
 		}
 	
-		$table_header = "<tr>".
-						"<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("Task")."</B></font></td>".
-						( $project_id == 0 ? "<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("Project")."</B></font></td>" : "" ) .
-						"<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("Start Date")."</B></font></td>".
-						"<td nowrap=\"nowrap\" bgcolor='#A0A0A0'><font color='black'><B>".$AppUI->_("End Date")."</B></font></td>".
-						weekDates($display_week_hours,$sss,$sse).
-						"</tr>";
-		$table_rows = "";
+		$table_header = '
+<tr>
+	<td nowrap="nowrap" bgcolor="#A0A0A0">
+		<font color="black"><b>'.$AppUI->_('Task').'</b></font>
+	</td>'.
+						( $project_id == 0 ? '<td nowrap="nowrap" bgcolor="#A0A0A0"><font color="black"><b>'.$AppUI->_('Project').'</b></font></td>' : '' ) . '
+	<td nowrap="nowrap" bgcolor="#A0A0A0">
+		<font color="black"><b>'.$AppUI->_('Start Date').'</b></font>
+	</td>
+	<td nowrap="nowrap" bgcolor="#A0A0A0">
+		<font color="black"><b>'.$AppUI->_('End Date').'</b></font>
+	</td>'.
+	weekDates($display_week_hours,$sss,$sse).'
+</tr>';
+		$table_rows = '';
 		
 		foreach($user_list as $user_id => $user_data){
-
-			$tmpuser= "<tr><td align='left' nowrap='nowrap' bgcolor='#D0D0D0'><font color='black'><B>"
-					  .$user_data["contact_first_name"]
+			$tmpuser= '
+<tr>
+	<td align="left" nowrap="nowrap" bgcolor="#D0D0D0">
+		<font color="black"><b>'
+					  .$user_data['contact_first_name']
 				      ." "
-					  .$user_data["contact_last_name"]
-					  ."</B></font></td>";
+					  .$user_data['contact_last_name']
+					  .'</b></font>
+	</td>';
 		    for($w=0;$w<=(1 + ($project_id == 0 ? 1 : 0) + weekCells($display_week_hours,$sss,$sse));$w++) {
-				 $tmpuser.="<td bgcolor='#D0D0D0'></td>";
+				 $tmpuser.='<td bgcolor="#D0D0D0">&nbsp;</td>';
 			}
-			$tmpuser.="</tr>";
+			$tmpuser.='</tr>';
 
-			$tmptasks="";
+			$tmptasks='';
 			$actual_date = $start_date;
 			foreach($task_list as $task) {
 				if (!isChildTask($task)) {
@@ -313,17 +318,22 @@ return false;
 }
 
 function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPeriod, $log_all_projects = false) {
-	$tmp="";
-	$tmp.="<tr><td nowrap=\"nowrap\">&#160&#160&#160";
+	$tmp = '
+<tr>
+	<td nowrap="nowrap">&#160;&#160;&#160;';
 	for($i=0;$i<$level;$i++) {
-		$tmp.="&#160&#160&#160";
+		$tmp.='&#160;&#160;&#160;';
 	}
-	if ($level==0) { $tmp.="<B>"; }
-	elseif ($level==1) { $tmp.="<I>"; }
+	if ($level==0)
+		$tmp .= '<b>';
+	elseif ($level==1)
+		$tmp .= '<i>';
 	$tmp.=$task->task_name;
-	if ($level==0) { $tmp.="</B>"; }
-	elseif ($level==1) { $tmp.="</I>"; }
-	$tmp.="&#160&#160&#160</td>";
+	if ($level==0)
+		$tmp .= '</b>';
+	elseif ($level==1)
+		$tmp .= '</i>';
+	$tmp .= '&#160;&#160;&#160;</td>';
 	if ( $log_all_projects ) {	
 		//Show project name when we are logging all projects
 		$project = $task->getProject();
@@ -337,7 +347,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	$tmp.="<td nowrap=\"nowrap\">";
 	$dt=new CDate($task->task_start_date);
 	$tmp.=$dt->format("%d-%m-%Y");
-	$tmp.="&#160&#160&#160</td>";
+	$tmp.="&#160;&#160;&#160;</td>";
 	$tmp.="<td nowrap=\"nowrap\">";
 	$dt=new CDate($task->task_end_date);
 	$tmp.=$dt->format("%d-%m-%Y");
@@ -420,7 +430,7 @@ function displayWeeks($list,$task,$level,$fromPeriod,$toPeriod) {
 		else {
 			$row.="<td nowrap=\"nowrap\">";
 		}
-		$row.="&#160&#160</td>";
+		$row.="&#160;&#160;</td>";
 	}
 
 return $row;

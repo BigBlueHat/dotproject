@@ -1,4 +1,5 @@
-<script languaje="JavaScript">
+<script type="text/javascript" language="JavaScript">
+<!--
 var calendarField = '';
 var calWin = null;
 
@@ -22,6 +23,7 @@ function checkDate(){
            } 
            return true;
 }
+-->
 </script>
 
 <?php
@@ -32,10 +34,10 @@ $end_date = intval( $date_reg) ? new CDate( dPgetParam($_REQUEST, "log_end_date"
 //$df = $AppUI->getPref('SHDATEFORMAT');
 global $currentTabId, $tpl;
 if ($a = dPgetParam($_REQUEST, "a", "") == ""){
-    $a = "&tab={$currentTabId}&showdetails=1";
+    $a = "&amp;tab={$currentTabId}&amp;showdetails=1";
 } else {
     $user_id = dPgetParam($_REQUEST, "user_id", 0);
-    $a = "&a=viewuser&user_id={$user_id}&tab={$currentTabId}&showdetails=1";
+    $a = "&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$currentTabId}&amp;showdetails=1";
 }
 
 if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) 

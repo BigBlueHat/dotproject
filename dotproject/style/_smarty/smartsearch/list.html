@@ -6,13 +6,21 @@
 <tr>
 	<td>
 		{if $result.parent_name}
-		<a href="index.php?m={$result.parent_type}&a=view&{$result.parent_key}={$result.parent_id}">[{$result.parent_type|ucfirst}: {$result.parent_name|dPhighlight:$keyword}]</a>::
+		<a href="index.php?m={$result.parent_type}&amp;a=view&amp;{$result.parent_key}={$result.parent_id}">
+			[{$result.parent_type|ucfirst}: {$result.parent_name|dPhighlight:$keyword}]
+		</a>::
 		{/if}
-		<a href="index.php?m={$name}&a=view&{$results.key}={$id}">{$result.name|dPhighlight:$keyword}</a>
+		<a href="index.php?m={$name}&amp;a=view&amp;{$results.key}={$id}">
+			{$result.name|dPhighlight:$keyword}
+		</a>
 {if $result.notes} ==> {$result.notes|dPhighlight:$keyword}{/if}
 	</td>
 </tr>
 	{/foreach}
 {else}
-<tr><td align="center" style="font-style:italic; font-weight:bold">** {dPtranslate word='Empty'} **</td></tr>
+<tr>
+	<td align="center" style="font-style:italic; font-weight:bold">
+		** {dPtranslate word='Empty'} **
+	</td>
+</tr>
 {/if}
