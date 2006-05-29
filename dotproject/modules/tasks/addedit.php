@@ -240,7 +240,7 @@ $tpl->assign('project', $project);
 $tpl->assign('status', $status);
 $tpl->assign('taskPriority', $taskPriority);
 $tpl->assign('percent', $percent); 
-$tpl->assign('ui_getplace', $AppUI->getPlace());
+$tpl->assign('ui_getplace', str_replace('&', '&amp;', $AppUI->getPlace()));
 $tpl->displayAddEdit($obj);
 
 if (isset($_GET['tab']))
