@@ -122,3 +122,65 @@ INSERT INTO `config` VALUES('', 'site_terms', '...', '', 'textarea');
 #20060503
 # iconsets support
 INSERT INTO `user_preferences` VALUES('0', 'ICONSTYLE', '');
+
+#20060530
+# Regrouping system config site
+UPDATE `config` SET `config_group` = 'localisation' WHERE `config_name` = 'host_locale';
+UPDATE `config` SET `config_group` = 'localisation' WHERE `config_name` = 'currency_symbol';
+UPDATE `config` SET `config_group` = 'localisation' WHERE `config_name` = 'locale_warn';
+UPDATE `config` SET `config_group` = 'localisation' WHERE `config_name` = 'locale_alert';
+
+UPDATE `config` SET `config_group` = 'tasks' WHERE `config_name` = 'show_all_task_assignees';
+UPDATE `config` SET `config_group` = 'tasks' WHERE `config_name` = 'show_task_numbers';
+UPDATE `config` SET `config_group` = 'tasks' WHERE `config_name` = 'direct_edit_assignment';
+UPDATE `config` SET `config_group` = 'tasks' WHERE `config_name` = 'restrict_task_time_editing';
+UPDATE `config` SET `config_group` = 'tasks' WHERE `config_name` = 'check_task_dates';
+UPDATE `config` SET `config_group` = 'tasks' WHERE `config_name` = 'check_overallocation';
+
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'cal_day_view_show_minical';
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'tasks_ajax_list';
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'host_style';
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'page_size';
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'default_view_a';
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'default_view_m';
+UPDATE `config` SET `config_group` = 'interface' WHERE `config_name` = 'default_view_tab';
+
+UPDATE `config` SET `config_group` = 'calendar' WHERE `config_name` = 'daily_working_hours';
+UPDATE `config` SET `config_group` = 'calendar' WHERE `config_name` = 'cal_day_start';
+UPDATE `config` SET `config_group` = 'calendar' WHERE `config_name` = 'cal_day_end';
+UPDATE `config` SET `config_group` = 'calendar' WHERE `config_name` = 'cal_day_increment';
+UPDATE `config` SET `config_group` = 'calendar' WHERE `config_name` = 'cal_working_days';
+
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'index_max_file_size';
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'parser_default';
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'parser_application/msword';
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'parser_text/html';
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'parser_application/pdf';
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'files_ci_preserve_attr';
+UPDATE `config` SET `config_group` = 'files' WHERE `config_name` = 'files_show_versions_edit';
+
+UPDATE `config` SET `config_group` = 'gantt' WHERE `config_name` = 'enable_gantt_charts';
+UPDATE `config` SET `config_group` = 'gantt' WHERE `config_name` = 'reset_memory_limit';
+
+UPDATE `config` SET `config_group` = 'ldap' WHERE `config_name` = 'ldap_host';
+UPDATE `config` SET `config_group` = 'ldap' WHERE `config_name` = 'ldap_port';
+UPDATE `config` SET `config_group` = 'ldap' WHERE `config_name` = 'ldap_version';
+UPDATE `config` SET `config_group` = 'ldap' WHERE `config_name` = 'ldap_base_dn';
+UPDATE `config` SET `config_group` = 'ldap' WHERE `config_name` = 'ldap_user_filter';
+
+UPDATE `config` SET `config_group` = 'mail' WHERE `config_name` = 'email_prefix';
+UPDATE `config` SET `config_group` = 'mail' WHERE `config_name` = 'notification_email';
+
+UPDATE `config` SET `config_group` = 'auth' WHERE `config_name` = 'admin_user';
+UPDATE `config` SET `config_group` = 'auth' WHERE `config_name` = 'username_min_len';
+UPDATE `config` SET `config_group` = 'auth' WHERE `config_name` = 'password_min_len';
+
+UPDATE `config` SET `config_group` = 'site' WHERE `config_name` = 'page_title';
+UPDATE `config` SET `config_group` = 'site' WHERE `config_name` = 'site_domain';
+UPDATE `config` SET `config_group` = 'site' WHERE `config_name` = 'site_terms';
+UPDATE `config` SET `config_group` = 'site' WHERE `config_name` = 'company_name';
+
+UPDATE `config` SET `config_group` = 'projects' WHERE `config_name` = 'restrict_color_selection';
+
+UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'display_debug';
+UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'debug';
