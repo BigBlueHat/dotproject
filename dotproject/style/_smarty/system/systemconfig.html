@@ -13,6 +13,12 @@
 <table cellspacing="0" cellpadding="3" border="0" class="std" width="100%" align="center">
 	
 {foreach from=$rs item=c}
+{if $c.config_group != $last_group}
+		<tr>
+			<td colspan="2"><b>{dPtranslate word=$c.config_group append='_group_title'}</b></td>
+		</tr>
+		{assign var="last_group" value=$c.config_group}
+	{/if}
 	<tr>
 		<td class="item" width="20%">{dPtranslate word=$c.config_name append='_title'}</td>
 			<td align="left">
@@ -35,12 +41,6 @@
 			<input class="button" type="hidden"  name="dPcfgId[{$c.config_name}]" value="{$c.config_id}" />
 		</td>
 	</tr>
-	{if $c.config_group != $last_group}
-		<tr>
-			<td colspan="2"><b>{dPtranslate word=$c.config_group append='_group_title'}</b></td>
-		</tr>
-		{assign var="last_group" value=$c.config_group}
-	{/if}
 {/foreach}
 
 	<tr>
