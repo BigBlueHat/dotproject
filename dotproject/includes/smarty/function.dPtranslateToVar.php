@@ -26,6 +26,9 @@ function smarty_function_dPtranslateToVar($params, &$smarty)
         return;
     }
 
+	if (!empty($prepend))
+	$word = $prepend.$word; 
+
     if (!empty($append))
 		$word .= $append; 
 	

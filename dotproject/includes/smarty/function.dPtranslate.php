@@ -25,6 +25,10 @@ function smarty_function_dPtranslate($params, &$smarty)
         $smarty->trigger_error("dPtranslate: missing parameter");
         return;
     }
+
+	if (!empty($prepend))
+	$word = $prepend.$word; 
+
     if (!empty($append))
 	$word .= $append; 
 
