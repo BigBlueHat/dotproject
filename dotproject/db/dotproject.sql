@@ -650,7 +650,7 @@ CREATE TABLE `config` (
   `config_type` varchar(255) NOT NULL default '',
   PRIMARY KEY  (`config_id`),
   UNIQUE KEY `config_name` (`config_name`)
-) TYPE=MyISAM AUTO_INCREMENT=47 ;
+) TYPE=MyISAM;
 
 #
 # Dumping data for table `config`
@@ -1227,7 +1227,7 @@ CREATE TABLE `webcal_projects` (
   `webcal_id` int(11) NOT NULL default '0',
   `project_id` int(11) NOT NULL default '0',
   UNIQUE KEY `webcal_id` (`webcal_id`,`project_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='relate webcal resources to project calendars';
+) ENGINE=MyISAM COMMENT='relate webcal resources to project calendars';
 
 CREATE TABLE `webcal_resources` (
   `webcal_id` int(11) NOT NULL auto_increment,
@@ -1244,4 +1244,4 @@ CREATE TABLE `webcal_resources` (
   `webcal_preserve_id` tinyint(4) NOT NULL default '0',
   `webcal_eq_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`webcal_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=latin1 COMMENT='webcal resource management' AUTO_INCREMENT=29 ;
+) ENGINE=MyISAM COMMENT='webcal resource management';
