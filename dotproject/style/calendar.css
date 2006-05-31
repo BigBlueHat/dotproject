@@ -1,0 +1,9 @@
+td.weekDay
+{
+  height:120px;
+  vertical-align: top;
+  padding: 1px 4px 1px 4px;
+  border-bottom: 1px solid #ccc;
+  border-right: 1px solid  #ccc;
+  text-align: left;
+}
