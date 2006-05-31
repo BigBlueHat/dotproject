@@ -7,6 +7,8 @@ class CPreferences {
         var $pref_user = NULL;
         var $pref_name = NULL;
         var $pref_value = NULL;
+        var $pref_group = NULL;
+        var $pref_type = NULL;
 
         function CPreferences() {
                 // empty constructor

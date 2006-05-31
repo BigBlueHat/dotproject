@@ -436,8 +436,10 @@ CREATE TABLE `user_preferences` (
   `pref_user` varchar(12) NOT NULL default '',
   `pref_name` varchar(72) NOT NULL default '',
   `pref_value` varchar(32) NOT NULL default '',
+  `pref_group` varchar(255) NOT NULL default '',
+  `pref_type` varchar(255) NOT NULL default '',
   KEY `pref_user` (`pref_user`,`pref_name`)
-) TYPE=MyISAM;
+) ENGINE=MyISAM;
 
 #
 # ATTENTION:
@@ -454,14 +456,37 @@ VALUES (1,'Admin','Person','admin@localhost');
 
 INSERT INTO `permissions` VALUES (1,1,"all",-1, -1);
 
-INSERT INTO `user_preferences` VALUES("0", "LOCALE", "en");
-INSERT INTO `user_preferences` VALUES("0", "TABVIEW", "0");
-INSERT INTO `user_preferences` VALUES("0", "SHDATEFORMAT", "%d/%m/%Y");
-INSERT INTO `user_preferences` VALUES("0", "TIMEFORMAT", "%I:%M %p");
-INSERT INTO `user_preferences` VALUES('0', 'USERFORMAT', 'last');
-INSERT INTO `user_preferences` VALUES("0", "UISTYLE", "default");
-INSERT INTO `user_preferences` VALUES("0", "TASKASSIGNMAX", "100");
-INSERT INTO `user_preferences` VALUES('0', 'ICONSTYLE', '');
+INSERT INTO `user_preferences` VALUES ('0', 'LOCALE', 'en_AU', 'l10n', 'locale');
+INSERT INTO `user_preferences` VALUES ('0', 'TABVIEW', '0', 'ui', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'SHDATEFORMAT', '%d/%m/%Y', 'l10n', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'TIMEFORMAT', '%I:%M %p', 'l10n', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'UISTYLE', 'default', 'ui', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'TASKASSIGNMAX', '100', 'tasks', '');
+INSERT INTO `user_preferences` VALUES ('0', 'ICONSTYLE', '', 'ui', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'USERFORMAT', 'last', 'ui', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'CURRENCYFORM', 'en_AU', 'l10n', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'EVENTFILTER', 'all', 'calendar', 'select');
+INSERT INTO `user_preferences` VALUES ('0', 'MAILALL', 'false', 'tasks', 'checkbox');
+INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGEMAIL', '0', 'tasklog', '');
+INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGSUBJ', '', 'tasklog', '');
+INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGNOTE', 'false', 'tasklog', 'checkbox');
+
+CREATE TABLE `user_prefs_list` (
+`pref_list_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`pref_name` VARCHAR( 255 ) NOT NULL ,
+`pref_list_name` VARCHAR( 255 ) NOT NULL ,
+INDEX ( `pref_name` )
+) TYPE = MYISAM ;
+
+INSERT INTO `user_prefs_list` ( `pref_list_id` , `pref_name` , `pref_list_name` )
+VALUES (
+NULL , 'USERFORMAT', 'first'
+), (
+NULL , 'USERFORMAT', 'last'
+), (
+NULL , 'USERFORMAT', 'user'
+);
+
 
 #
 # AJE (24/Jan/2003)

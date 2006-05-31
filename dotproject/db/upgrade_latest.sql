@@ -188,3 +188,51 @@ UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'debug';
 #20060531
 # preparing for ticketsmith move to dotmods
 DELETE FROM `config` WHERE `config_name` = 'link_tickets_kludge';
+
+#20060531
+# change over to automatic system as used in system config
+ALTER TABLE `user_preferences` ADD `pref_group` VARCHAR( 255 ) NOT NULL ,
+ADD `pref_type` VARCHAR( 255 ) NOT NULL ;
+
+INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
+VALUES (
+'0', 'CURRENCYFORM', 'en_AU', 'l10n', 'select'
+);
+INSERT INTO `user_preferences` (`pref_user`, `pref_name`, `pref_value`, `pref_group`, `pref_type`) VALUES ('0', 'EVENTFILTER', 'all', '', 'select');
+INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
+VALUES (
+'0', 'MAILALL', 'false', 'tasks', 'checkbox'
+);
+INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
+VALUES (
+'0', 'TASKLOGEMAIL', '0', 'tasklog', ''
+);
+INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
+VALUES (
+'0', 'TASKLOGSUBJ', '', 'tasklog', ''
+);
+INSERT INTO `user_preferences` (`pref_user`, `pref_name`, `pref_value`, `pref_group`, `pref_type`) VALUES ('0', 'TASKLOGNOTE', 'false', 'tasklog', 'checkbox');
+
+UPDATE `user_preferences` SET `pref_group` = 'l10n', `pref_type` = 'select', `pref_value` = 'en_AU' WHERE `pref_name` = 'LOCALE';
+UPDATE `user_preferences` SET `pref_group` = 'l10n', `pref_type` = 'select' WHERE `pref_name` = 'SHDATEFORMAT';
+UPDATE `user_preferences` SET `pref_group` = 'l10n', `pref_type` = 'select' WHERE `pref_name` = 'TIMEFORMAT';
+UPDATE `user_preferences` SET `pref_group` = 'ui', `pref_type` = 'select' WHERE `pref_name` = 'UISTYLE';
+UPDATE `user_preferences` SET `pref_group` = 'ui', `pref_type` = 'select' WHERE `pref_name` = 'ICONSTYLE';
+UPDATE `user_preferences` SET `pref_group` = 'ui', `pref_type` = 'select' WHERE `pref_name` = 'USERFORMAT';
+UPDATE `user_preferences` SET `pref_type` = 'select' WHERE `pref_name` = 'TABVIEW';
+
+CREATE TABLE `user_prefs_list` (
+`pref_list_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
+`pref_name` VARCHAR( 255 ) NOT NULL ,
+`pref_list_name` VARCHAR( 255 ) NOT NULL ,
+INDEX ( `pref_name` )
+) TYPE = MYISAM ;
+
+INSERT INTO `user_prefs_list` ( `pref_list_id` , `pref_name` , `pref_list_name` )
+VALUES (
+NULL , 'USERFORMAT', 'first'
+), (
+NULL , 'USERFORMAT', 'last'
+), (
+NULL , 'USERFORMAT', 'user'
+);

@@ -1,0 +1,105 @@
+{literal}
+<script type="text/javascript" language="javascript">
+	<!--
+	function submitIt(){
+		var form = document.changeuser;
+		// Collate the checked states of the task log stuff
+		var defs = document.getElementById('task_log_email_defaults');
+		var mask = 0;
+		if (form.tl_assign.checked)
+			mask += 1;
+		if (form.tl_task.checked)
+			mask += 2;
+		if (form.tl_proj.checked)
+			mask += 4;
+		defs.value = mask;
+		form.submit();
+	}
+	-->
+</script>
+{/literal}
+<form name="changeuser" action="index.php?m=system" method="post">
+<input type="hidden" name="dosql" value="do_preference_aed" />	
+<input type="hidden" name="pref_user" value="{$user_id}" />
+<input type="hidden" name="del" value="0" />
+<table cellspacing="0" cellpadding="3" border="0" class="std" width="100%" align="center">
+<tr>
+	<th colspan="2">{dPtranslate word='User Preferences'}:
+					{if $user_id}
+						{$user}
+					{else}
+						{dPtranslate word='Default'}
+					{/if}
+	</th>
+</tr>
+{foreach from=$prefs item=p}
+	{if $p.pref_group != $last_group}
+		<tr>
+			<td colspan="2"><b>{dPtranslate word=$p.pref_group prepend='prefs_' append='_group_title'}</b></td>
+		</tr>
+		{assign var="last_group" value=$p.pref_group}
+	{/if}
+	<tr>
+		<td class="item" width="20%">{dPtranslate word=$p.pref_name prepend='prefs_' append='_title'}</td>
+			<td align="left">
+
+	{if $p.pref_type == 'select'}
+		{assign var='trl' value=false}
+		{* custom types *}			
+		{assign var='pln' value="pref_name[`$p.pref_name`]"}
+		{if $p.pref_name == 'LOCALE'}
+			{assign var='plist' value=$langlist}
+		{elseif $p.pref_name == 'TABVIEW'}
+			{assign var='plist' value=$tabview}	
+			{assign var='trl' value=true}
+		{elseif $p.pref_name == 'SHDATEFORMAT'}
+			{assign var='plist' value=$dates}	
+		{elseif $p.pref_name == 'TIMEFORMAT'}
+			{assign var='plist' value=$times}	
+		{elseif $p.pref_name == 'CURRENCYFORM'}
+			{assign var='plist' value=$currencies}	
+		{elseif $p.pref_name == 'UISTYLE'}
+			{assign var='plist' value=$styles}	
+		{elseif $p.pref_name == 'ICONSTYLE'}
+			{assign var='plist' value=$is}	
+		{elseif $p.pref_name == 'EVENTFILTER'}
+			{assign var='plist' value=$efl}	
+			{assign var='trl' value=true}
+		{else}	
+			{dPgetSystemPrefsSelect pid=$p.pref_name pname=$p.pref_name}
+		{/if}
+		{dParraySelect array=$plist name=$pln extras='class=text size=1' value=$p.pref_value translation=$trl}	
+	{elseif $p.pref_type == 'textarea'}
+		<textarea name="pref_name[{$p.pref_name}]">{$p.pref_value}</textarea>
+	{elseif $p.pref_type == 'checkbox'}
+		<input class="button" type="{$p.pref_type}" name="pref_name[{$p.pref_name}]" value="{$p.pref_value}"
+		{if $p.pref_value == 'true'} checked="checked" {/if} >
+	{elseif $p.pref_name == 'TASKLOGEMAIL'}
+		<input type="hidden" name="pref_name[TASKLOGEMAIL]" id="task_log_email_defaults" value='{$tle}' />
+		<input type="checkbox" name="tl_assign" id="tl_assign" {if $tl_assign} checked="checked"{/if} />
+		&nbsp;{dPtranslate word='Email Assignees'}<br />
+		<input type="checkbox" name="tl_task" id="tl_task" {if $tl_task} checked="checked"{/if} />
+		&nbsp;{dPtranslate word='Email Task Contacts'}<br />
+		<input type="checkbox" name="tl_proj" id="tl_proj" {if $tl_proj} checked="checked"{/if} />
+		&nbsp;{dPtranslate word='Email Project Contacts'}
+	{else}
+		<input class="button" type="{$p.pref_type}" name="pref_name[{$p.pref_name}]" value="{$p.pref_value}">
+	{/if}
+			{dPtranslateToVar word=$p.pref_name prepend='prefs_' append='_title' ass='ti'}
+			{dPtranslateToVar word=$p.pref_name prepend='prefs_' append='_tooltip' ass='tt'}
+			<a href="javascript:void(0);" {popup text="$tt" caption="$ti"}>(?)</a>
+			<input type="hidden" name="pref_group[{$p.pref_name}]" value="{$p.pref_group}" />
+			<input type="hidden" name="pref_type[{$p.pref_name}]" value="{$p.pref_type}" />
+		</td>
+	</tr>
+{/foreach}
+
+<tr>
+	<td align="left">
+		<input class="button"  type="button" value="{dPtranslate word='back'}" onclick="javascript:history.back(-1);" />
+	</td>
+	<td align="right">
+		<input class="button" type="button" value="{dPtranslate word='Save'}" onclick="submitIt()" />
+	</td>
+</tr>
+</table></form>
