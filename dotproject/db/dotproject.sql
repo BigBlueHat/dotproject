@@ -675,7 +675,6 @@ INSERT INTO `config` VALUES ('', 'locale_warn', 'false', 'localisation', 'checkb
 INSERT INTO `config` VALUES ('', 'locale_alert', '^', 'localisation', 'text');
 INSERT INTO `config` VALUES ('', 'daily_working_hours', '8.0', 'calendar', 'text');
 INSERT INTO `config` VALUES ('', 'display_debug', 'false', 'debug', 'checkbox');
-INSERT INTO `config` VALUES ('', 'link_tickets_kludge', 'false', '', 'checkbox');
 INSERT INTO `config` VALUES ('', 'show_all_task_assignees', 'false', 'tasks', 'checkbox');
 INSERT INTO `config` VALUES ('', 'show_task_numbers', 'false', 'tasks', 'checkbox');
 INSERT INTO `config` VALUES ('', 'direct_edit_assignment', 'false', 'tasks', 'checkbox');

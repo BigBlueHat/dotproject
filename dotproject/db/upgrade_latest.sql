@@ -184,3 +184,7 @@ UPDATE `config` SET `config_group` = 'projects' WHERE `config_name` = 'restrict_
 
 UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'display_debug';
 UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'debug';
+
+#20060531
+# preparing for ticketsmith move to dotmods
+DELETE FROM `config` WHERE `config_name` = 'link_tickets_kludge';

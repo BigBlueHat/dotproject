@@ -1,6 +1,11 @@
-<?php
+<?php /* $Id$ */
 
-/* $Id$ */
+/* Allow Ticket Relinking
+** Having this option turned on will allow you 
+** to relink tickets to an arbitrary parent in Ticketsmith.  
+** Could be useful for email-generated tickets.
+*/
+$CONFIG["link_tickets_kludge"] = false;
 
 // reply-to address for staff followups
 // i.e. the address the gateway receives
@@ -55,5 +60,4 @@ $CONFIG["followup_order"] = "ASC"; // "ASC" or "DESC"
 // go to parent or latest followup from index?
 // note that latest followup is slightly slower
 $CONFIG["index_link"] = "parent"; // "parent" or "latest"
-
 ?>

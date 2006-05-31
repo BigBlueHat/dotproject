@@ -49,7 +49,7 @@ if (@$action == "expunge") {
 }
 
 /* setup table & database field stuff */
-if ($dPconfig['link_tickets_kludge']) {
+if ($CONFIG['link_tickets_kludge']) {
 	$fields = array("headings" => array("View", "Author", "Subject", "Date", 
                                     "Followup", "Status", "Priority", "Owner", "Link"),
 

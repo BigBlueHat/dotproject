@@ -191,8 +191,6 @@
 "ldap_user_filter_tooltip"=>"User Filter to use for determining matching users on LDAP queries.  Check with your site administrator for details.",
 "ldap_version_title"=>"LDAP Version",
 "ldap_version_tooltip"=>"LDAP Version that the LDAP host understands. If unsure, leave at the default of 3.",
-"link_tickets_kludge_title"=>"Allow Ticket Relinking",
-"link_tickets_kludge_tooltip"=>"Having this option turned on will allow you to relink tickets to an arbitrary parent in Ticketsmith.  Could be useful for email-generated tickets.",
 "locale_alert_title"=>"Translation Alert String",
 "locale_alert_tooltip"=>"The string appended to untranslated strings or unfound keys if Translation Warning is turned on.",
 "locale_warn_title"=>"Translation Warning",
