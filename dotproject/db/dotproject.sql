@@ -1212,7 +1212,7 @@ INSERT INTO config VALUES ('', 'ldap_allow_login', 'true', 'ldap', 'checkbox');
 
 # 20050620
 # New tasks list method for collapsing/expanding.
-INSERT INTO `config` VALUES('', 'tasks_ajax_list', 'true', '', 'checkbox');
+INSERT INTO `config` VALUES('', 'tasks_ajax_list', 'true', 'interface', 'checkbox');
 
 # 20050629
 # New authentication method - HTTP Basic Auth
