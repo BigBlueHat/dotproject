@@ -85,8 +85,8 @@ $show_tasks = $AppUI->getState('CalIdxShowTasks', false);
 $titleBlock->addCell('
 <form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="displayForm">
 	<input type="hidden" name="show_form" value="1" />
-	<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked="checked" ':'') . 'onchange="document.filtersForm.submit()" /> show events
-	<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked="checked" ':'') . 'onchange="document.filtersForm.submit()" /> show tasks
+	<input type="checkbox" name="show_events" value="1" ' . ($show_events?'checked="checked" ':'') . 'onchange="document.displayForm.submit()" /> show events
+	<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked="checked" ':'') . 'onchange="document.displayForm.submit()" /> show tasks
 </form>', '', '', '');
 
 if ($show_tasks)
