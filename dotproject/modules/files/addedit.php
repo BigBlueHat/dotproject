@@ -8,7 +8,7 @@ $preserve = $dPconfig['files_ci_preserve_attr'];
 $perms =& $AppUI->acl();
 $canEdit = $perms->checkModuleItem( $m, 'edit', $file_id );
 if (!$canEdit)
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 $canAdmin = $perms->checkModule('system', 'edit');
 
@@ -38,11 +38,11 @@ if ($file_id > 0) {
 	// Check to see if the task or the project is also allowed.
 	if ($obj->file_task) {
 		if (! $perms->checkModuleItem('tasks', 'view', $obj->file_task))
-			$AppUI->redirect('m=public&amp;a=access_denied');
+			$AppUI->redirect('m=public&a=access_denied');
 	}
 	if ($obj->file_project) {
 		if (! $perms->checkModuleItem('projects', 'view', $obj->file_project))
-			$AppUI->redirect('m=public&amp;a=access_denied');
+			$AppUI->redirect('m=public&a=access_denied');
 	}
 }
 

@@ -11,7 +11,7 @@ $canRead = !getDenyRead( $m, $forum_id );
 $canEdit = !getDenyEdit( $m, $forum_id );
 
 if (!$canRead || ($post_message & !$canEdit)) 
-	$AppUI->redirect( 'm=public&amp;a=access_denied' );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');

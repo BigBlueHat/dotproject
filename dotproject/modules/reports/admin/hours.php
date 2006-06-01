@@ -2,7 +2,7 @@
 //error_reporting( E_ALL );
 $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
-	redirect('m=public&amp;a=access_denied');
+	redirect('m=public&a=access_denied');
 ?>
 <script type="text/javascript" language="javascript">
 <!--

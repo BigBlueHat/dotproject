@@ -8,7 +8,7 @@ $perms =& $AppUI->acl();
 $canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 $canAuthor = $perms->checkModuleItem( $m, 'add' );
 if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0))
-	$AppUI->redirect( 'm=public&amp;a=access_denied' );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 
 
 // get a list of permitted companies

@@ -11,7 +11,7 @@ $canReadModule = !getDenyRead( $m );
 
 
 if (!$canRead) {
-	$AppUI->redirect( 'm=public&amp;a=access_denied' );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 }
 $q =& new DBQuery;
 $perms =& $AppUI->acl();
@@ -71,7 +71,7 @@ if (!db_loadObject( $sql, $obj, true, false )) {
 }
 
 if (!$obj->canAccess( $AppUI->user_id )) {
-	$AppUI->redirect( 'm=public&amp;a=access_denied' );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 }
 
 // Clear any reminders

@@ -5,7 +5,7 @@
 $user_id = isset($HTTP_GET_VARS['user_id']) ? $HTTP_GET_VARS['user_id'] : 0;
 // Check permissions
 if (!$canEdit && $user_id != $AppUI->user_id)
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 // load the preferences
 $q  = new DBQuery;

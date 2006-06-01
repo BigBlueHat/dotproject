@@ -270,7 +270,7 @@ class CAppUI {
 
 		// check whether the filename contained bad characters
 		if ( strpos( strtr( $file, $bad_chars, $bad_replace), '.') !== false ) {
-			$AppUI->redirect( "m=public&amp;a=access_denied" );
+			$AppUI->redirect( 'm=public&a=access_denied' );
 		}
 		else {
 			return $file;

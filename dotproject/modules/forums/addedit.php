@@ -8,7 +8,7 @@ $perms =& $AppUI->acl();
 $canAdd = $perms->checkModule( $m, 'add');
 $canEdit = $perms->checkModuleItem( $m, 'edit', $forum_id );
 if (!$canEdit || !$canAdd)
-	$AppUI->redirect( 'm=public&amp;a=access_denied' );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 
 // load the companies class to retrieved denied projects
 require_once( $AppUI->getModuleClass( 'projects' ) );

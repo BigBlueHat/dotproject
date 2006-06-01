@@ -7,7 +7,7 @@ $perms =& $AppUI->acl();
 // Get the permissions for this module
 $canAccess = $perms->checkModule('roles', 'access');
 if (! $canAccess)
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 $canRead 		= $perms->checkModule('roles', 'view');
 $canAdd 		= $perms->checkModule('roles', 'add');

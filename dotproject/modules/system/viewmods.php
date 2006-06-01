@@ -5,7 +5,7 @@ $AppUI->savePlace();
 $canEdit = !getDenyEdit( $m );
 $canRead = !getDenyRead( $m );
 if (!$canRead)
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 $q = new DBQuery;
 $q->addQuery('*');

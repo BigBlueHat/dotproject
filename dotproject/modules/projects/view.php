@@ -8,7 +8,7 @@ $canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 $canEditT = $perms->checkModule( 'tasks', 'add');
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&amp;a=access_denied" );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 }
 
 // retrieve any state parameters
@@ -23,7 +23,7 @@ $obj = new CProject();
 // Now check if the proect is editable/viewable.
 $denied = $obj->getDeniedRecords($AppUI->user_id);
 if (in_array($project_id, $denied)) {
-	$AppUI->redirect( "m=public&amp;a=access_denied" );
+	$AppUI->redirect( 'm=public&a=access_denied' );
 }
 
 $canDelete = $obj->canDelete( $msg, $project_id );

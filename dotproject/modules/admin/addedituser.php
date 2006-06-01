@@ -11,7 +11,7 @@ if ($canEdit)
 
 // check permissions
 if (!$canEdit && $user_id != $AppUI->user_id) 
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 
 $q  = new DBQuery;

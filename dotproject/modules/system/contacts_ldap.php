@@ -5,7 +5,7 @@ $AppUI->savePlace();
 $canEdit = !getDenyEdit( $m );
 $canRead = !getDenyRead( $m );
 if (!$canRead)
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 //Modify this mapping to match your LDAP->contact structure
 //For instance, of you want the contact_phone2 field to be populated out of, say telephonenumber2 then you would just modify

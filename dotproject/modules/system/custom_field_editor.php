@@ -5,7 +5,7 @@
  */
 
 if (!$canEdit)
-	$AppUI->redirect('m=public&amp;a=access_denied');
+	$AppUI->redirect('m=public&a=access_denied');
 
 $AppUI->savePlace();
 
