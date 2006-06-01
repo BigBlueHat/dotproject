@@ -69,7 +69,8 @@ if (!@$min_view) {
 	$titleBlock->show();
 }
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -123,17 +124,17 @@ function showGantt(type) {
 	document.editFrm.display_option.value = type;
 	document.editFrm.submit();
 }
-
+-->
 </script>
 
-<form name="editFrm" method="post" action="?<?php echo "m=$m&a=$a&project_id=$project_id";?>">
+<form name="editFrm" method="post" action="?<?php echo "m=$m&amp;a=$a&amp;project_id=$project_id";?>">
 
 <table border="0" cellpadding="4" cellspacing="0">
 <tr>
 	<td colspan="3"><?php echo $AppUI->_('Predefined filters:');?></td>
 	<td>
 		<select name="display_option" class="text" onChange="document.editFrm.submit();">
-			<option value="custom" <?php if ($display_option == 'custom') echo 'selected'; ?>></option>
+			<option value="custom" <?php if ($display_option == 'custom') echo 'selected'; ?>>&nbsp;</option>
 			<option value="all" <?php if ($display_option == 'all') echo 'selected'; ?>><?php echo $AppUI->_('show full project'); ?></option>
 			<option value="this_month" <?php if ($display_option == 'this_month') echo 'selected'; ?>><?php echo $AppUI->_('show this month');?></option>
 			<option value="3_months" <?php if ($display_option == '3_months') echo 'selected'; ?>><?php echo $AppUI->_('3 months');?></option>
@@ -145,7 +146,7 @@ function showGantt(type) {
 	<td align="left" valign="top" width="20">
 <?php if ($display_option != "all") { ?>
 		<a href="javascript:scrollPrev()">
-			<img src="./images/prev.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'previous' );?>" border="0">
+			<img src="./images/prev.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'previous' );?>" border="0" />
 		</a>
 <?php } ?>
 	</td>
@@ -154,28 +155,28 @@ function showGantt(type) {
 	<td align="left" nowrap="nowrap">
 		<input type="hidden" name="sdate" value="<?php echo $start_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" class="text" name="show_sdate" value="<?php echo $start_date->format( $df );?>" size="12" disabled="disabled" />
-		<a href="javascript:popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
+		<a href="javascript:popCalendar('sdate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0" /></a>
 	</td>
 
 	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'To' );?>:</td>
 	<td align="left" nowrap="nowrap">
 		<input type="hidden" name="edate" value="<?php echo $end_date->format( FMT_TIMESTAMP_DATE );?>" />
 		<input type="text" class="text" name="show_edate" value="<?php echo $end_date->format( $df );?>" size="12" disabled="disabled" />
-		<a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0"></a>
+		<a href="javascript:popCalendar('edate')"><img src="./images/calendar.gif" width="24" height="12" alt="" border="0" /></a>
 	<td valign="top">
-		<input type="checkbox" name="showLabels" <?php echo (($showLabels==1) ? 'checked=true' : '');?>><?php echo $AppUI->_( 'Show captions' );?>
+		<input type="checkbox" name="showLabels" <?php echo (($showLabels==1) ? 'checked="checked"' : '');?> /><?php echo $AppUI->_( 'Show captions' );?>
 	</td>
 	<td valign="top">
-		<input type="checkbox" name="showWork" <?php echo (($showWork==1) ? 'checked=true' : '');?>><?php echo $AppUI->_( 'Show work instead of duration' );?>
+		<input type="checkbox" name="showWork" <?php echo (($showWork==1) ? 'checked="checked"' : '');?> /><?php echo $AppUI->_( 'Show work instead of duration' );?>
 	</td>	
 	<td align="left">
-		<input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick='document.editFrm.display_option.value="custom";submit();'>
+		<input type="button" class="button" value="<?php echo $AppUI->_( 'submit' );?>" onclick="document.editFrm.display_option.value='custom';submit();" />
 	</td>
 
 	<td align="right" valign="top" width="20">
 <?php if ($display_option != "all") { ?>
 	  <a href="javascript:scrollNext()">
-	  	<img src="./images/next.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'next' );?>" border="0">
+	  	<img src="./images/next.gif" width="16" height="16" alt="<?php echo $AppUI->_( 'next' );?>" border="0" />
 	  </a>
 <?php } ?>
 	</td>
@@ -205,7 +206,7 @@ if ($cnt[0]['N'] > 0) {
 
 
 	// document.write used so javascript is applied to find browser width.
-	echo "<script>document.write('<img src=\"$src\">')</script>";
+	echo "<script type=\"text/javascript\"><!--document.write('<img src=\"$src\">')--></script>";
 } else {
 	echo $AppUI->_( 'No tasks to display' );
 }

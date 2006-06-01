@@ -1,16 +1,16 @@
 <table class="tbl" width="100%" border="0" cellpadding="4" cellspacing="0">
 <tr>
         <td>
+                <form name="editFrm" method="post" action="?m={$m}&amp;a={$a}{if $user_id}&amp;user_id={$user_id}{/if}&amp;tab={$tab}">
+                <input type="hidden" name="display_option" value="{$display_option}" />
                 <table border="0" cellpadding="4" cellspacing="0" class="tbl">
 
-                <form name="editFrm" method="post" action="?m={$m}&a={$a}{if $user_id}&user_id={$user_id}{/if}&tab={$tab}">
-                <input type="hidden" name="display_option" value="{$display_option}" />
 
                 <tr>
                         <td align="left" valign="top" width="20">
 {if $display_option != 'all'}
                                 <a href="javascript:scrollPrev()">
-                                        <img src="./images/prev.gif" width="16" height="16" alt="{dPtranslate word='previous'}" border="0">
+                                        <img src="./images/prev.gif" width="16" height="16" alt="{dPtranslate word='previous'}" border="0" />
                                 </a>
 {/if}
                         </td>
@@ -40,19 +40,17 @@
                                 <input type="checkbox" value="1" name="showAllGantt"{if $showAllGantt==1} checked="true"{/if} />{dPtranslate word='Show Tasks'}
                         </td>
                         <td align="left">
-                                <input type="button" class="button" value="{dPtranslate word='submit'}" onclick="document.editFrm.display_option.value='custom';submit();">
+                                <input type="button" class="button" value="{dPtranslate word='submit'}" onclick="document.editFrm.display_option.value='custom';submit();" />
                         </td>
 
                         <td align="right" valign="top" width="20">
 {if $display_option != 'all'}
                         <a href="javascript:scrollNext()">
-                                <img src="./images/next.gif" width="16" height="16" alt="{dPtranslate word='next'}" border="0">
+                                <img src="./images/next.gif" width="16" height="16" alt="{dPtranslate word='next'}" border="0" />
                         </a>
 {/if}
                         </td>
                 </tr>
-
-                </form>
 
                 <tr>
                         <td align="center" valign="bottom" colspan="12">
@@ -70,6 +68,7 @@
                         </td>
                 </tr>
                 </table>
+                </form>
         </td>
 </tr>
 </table>

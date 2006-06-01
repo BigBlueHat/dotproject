@@ -46,22 +46,22 @@ function show_history($history)
         switch ($module)
         {
         case 'history':
-                $link = '&a=addedit&history_id='; break;
+                $link = '&amp;a=addedit&amp;history_id='; break;
         case 'files':
-                $link = '&a=addedit&file_id='; break;
+                $link = '&amp;a=addedit&amp;file_id='; break;
         case 'tasks':
-                $link = '&a=view&task_id='; break;
+                $link = '&amp;a=view&amp;task_id='; break;
         case 'forums':
-                $link = '&a=viewer&forum_id='; break;
+                $link = '&amp;a=viewer&amp;forum_id='; break;
         case 'projects':
-                $link = '&a=view&project_id='; break;
+                $link = '&amp;a=view&amp;project_id='; break;
         case 'companies':
-                $link = '&a=view&company_id='; break;
+                $link = '&amp;a=view&amp;company_id='; break;
         case 'contacts':
-                $link = '&a=view&contact_id='; break;
+                $link = '&amp;a=view&amp;contact_id='; break;
         case 'task_log':
-                $module = 'Tasks';
-                $link = '&a=view&task_id=170&tab=1&task_log_id=';
+                $module = 'Tasks'; // TODO: task_id = 170?!? Why?
+                $link = '&amp;a=view&amp;task_id=170&amp;tab=1&amp;task_log_id=';
                 break;
         }
 

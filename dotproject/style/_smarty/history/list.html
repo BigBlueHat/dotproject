@@ -3,8 +3,8 @@
 	<td nowrap align="right">
 		<form name="filter" action="?m=history" method="post" >
 		{dPtranslate word='Changes to'}:
-		<select name="filter" onChange="document.filter.submit()">
-			<option value=""></option>
+		<select name="filter" onchange="document.filter.submit()">
+			<option value="">&nbsp;</option>
 			<option value="">{dPtranslate word='Show all'}</option>
 			<option value="projects">{dPtranslate word='Projects'}</option>
 			<option value="files">{dPtranslate word='Files'}</option>
@@ -13,7 +13,7 @@
 		</select>
 		</form>
 	</td>
-	<td align="right"><input class="button" type="button" value="{dPtranslate word='Add history'}" onclick="window.location='?m=history&a=addedit'"></td>
+	<td align="right"><input class="button" type="button" value="{dPtranslate word='Add history'}" onclick="window.location='?m=history&amp;a=addedit'" /></td>
 </table>
 
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
@@ -26,8 +26,8 @@
 {foreach from=$rows item=row}
 <tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
 	<td>
-		<a href="?m=history&a=addedit&history_id={$row.history_id}">
-			<img src="./images/icons/pencil.gif" alt="{dPtranslate word='Edit History'}" border="0" width="12" height="12">
+		<a href="?m=history&amp;a=addedit&amp;history_id={$row.history_id}">
+			<img src="./images/icons/pencil.gif" alt="{dPtranslate word='Edit History'}" border="0" width="12" height="12" />
 		</a>
 	</td>
 	<td align="center">{dPdateFormat date=$row.history_date format='full'}</td>

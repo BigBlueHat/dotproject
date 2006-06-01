@@ -67,7 +67,8 @@ if (!@$min_view) {
 	$titleBlock->show();
 }
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 var calendarField = '';
 
 function popCalendar( field ){
@@ -127,17 +128,17 @@ function showFullProject() {
 	document.editFrm.display_option.value = "all";
 	document.editFrm.submit();
 }
-
+-->
 </script>
 <?php
 global $tpl;
 
-$src = "?m=projects&a=gantt&suppressHeaders=1" .
+$src = '?m=projects&a=gantt&suppressHeaders=1" .
 ($display_option == 'all' ? '' : 
 	'&start_date=' . $start_date->format( "%Y-%m-%d" ) . 
 	'&end_date=' . $end_date->format( "%Y-%m-%d" ) ) .
 	"&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*0.95) + '&showLabels=$showLabels&proFilter=$proFilter&showInactive=$showInactive&company_id=$company_id&department=$department&dept_ids=$dept_ids&showAllGantt=$showAllGantt&user_id=$user_id";
-$tpl->assign('script', "<script>document.write('<img src=\"$src\">')</script>");
+$tpl->assign('script', "<script type="text/javascript"><!--document.write('<img src=\"$src\">')--></script>");
 
 $tpl->assign('projFilter', $projFilter);
 $tpl->assign('proFilter', $proFilter);
