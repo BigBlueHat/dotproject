@@ -1,4 +1,5 @@
-<script>
+<script type="text/javascript">
+<!--
         function hideAll()
         {       
                 var selobj = document.getElementById('htmltype');
@@ -47,4 +48,5 @@
                 sql.name = 'dosql';     
                 frm.submit();
         }
+-->
 </script>

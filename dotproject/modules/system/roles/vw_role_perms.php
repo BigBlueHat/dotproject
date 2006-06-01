@@ -192,7 +192,7 @@ foreach ($role_acls as $acl){
 	<td nowrap align="right"><?php echo $AppUI->_('Item');?>:</td>
 	<td>
 		<input type="text" name="permission_item_name" class="text" size="30" value="all" disabled="disabled" />
-		<input type="button" name="" class="text" value="..." onclick="popPermItem();" />
+		<input type="button" name="popup" class="text" value="..." onclick="popPermItem();" />
 	</td>
 </tr>
 

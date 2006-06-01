@@ -1,12 +1,13 @@
-<form method="POST" action="?m=system&a=custom_field_editor" id="custform" />
-<table class="std">
-	<th colspan="2">
-		{$edit_title} {$module} {dPtranslate word='Module'}
+<form method="post" action="?m=system&amp;a=custom_field_editor" id="custform">
 		<input type="hidden" name="field_id" value="{$field_id}" />
 		<input type="hidden" name="module" value="{$module}" /> 
 		<input type="hidden" name="del" />
 		<input type="hidden" name="dontdosql" id="dosql" value="do_custom_field_aed" />
-	</td></tr>
+<table class="std">
+<tr>
+	<th colspan="2">
+		{$edit_title} {$module} {dPtranslate word='Module'}
+	</th></tr>
 	<tr><td>
 		{dPtranslate word='Field Name/Identifier'}:
 		<br />
@@ -26,12 +27,12 @@
 	</td></tr>
 	<tr><td colspan="2">
 		<hr />
-		<tr><td>
+	</td></tr>	
+	<tr><td>
 			{dPtranslate word='HTML Tag Options'}:
 		</td>
 		<td>
 			<input type="text" name="field_extratags" value="{$field_extratags}" />
-		</td></tr>
 	</td></tr>
 	<tr><td colspan="2">
 	<div id="div_select" style="{$visible_state.div_select}">
@@ -51,7 +52,7 @@
 				</td></tr>
 			{/foreach}
 			<tr><td>
-			<li><input type="text" name="select_newitem" /></td><td><input type="button" value="{dPtranslate word='Add'}" onclick="javascript:addSelectItem()" /></li>
+				<input type="text" name="select_newitem" /></td><td><input type="button" value="{dPtranslate word='Add'}" onclick="javascript:addSelectItem()" />
 			</td></tr>
 			</table>
 		</td></tr>
@@ -89,13 +90,13 @@
 		</table>
 	</div>
 	<div id="div_separator" style="{$visible_state.div_separator}">
-		<table id="atbl_separator">
-		</table>
+		<hr />
 	</div>
 	</td></tr>
 	<tr><td colspan="2" align="right">
-		<input type="button" value="{dPtranslate word='Cancel'}" onclick="location = '?m=system&a=custom_field_editor';" />
+		<input type="button" value="{dPtranslate word='Cancel'}" onclick="location='?m=system&amp;a=custom_field_editor';" />
 		<input type="button" value="{dPtranslate word='Save'}" onclick="javascript:postCustomField()" />
-	</td></tr>
-	</form>
+	</td>
+</tr>
 </table>
+</form>

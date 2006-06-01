@@ -11,7 +11,7 @@ if (!$canEdit) {
 		
 	$titleBlock = new CTitleBlock('Custom Fields - Add/Edit', "", "admin", "admin.custom_field_addedit");
 	$titleBlock->addCrumb( "?m=system", 'system admin' );
-	$titleBlock->addCrumb( "?m=system&a=custom_field_editor", 'custom fields' );
+	$titleBlock->addCrumb( "?m=system&amp;a=custom_field_editor", 'custom fields' );
 	if ($canDelete)
 	  $titleBlock->addCrumbDelete( 'delete custom field', $canDelete, $msg );
 	$titleBlock->show();
@@ -141,6 +141,7 @@ if (!$canEdit) {
 
 <?php if ($canDelete) { ?>
 <script type="text/javascript">
+<!--
 function delIt() {
   if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Field', UI_OUTPUT_JS).'?';?>" )) {
 		form = document.getElementById('custform');
@@ -149,6 +150,7 @@ function delIt() {
 //    form.submit();
   }
 }
+-->
 </script>
 <?php } ?>
 
