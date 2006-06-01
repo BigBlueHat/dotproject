@@ -23,22 +23,23 @@
 	{/if}
 	</td>
 	<td valign="top" style="{$style}">
-		<font size="2"><strong>{$row.message_title}</strong><hr size="1" />
+		<hr size="1" />
+		<font size="2"><strong>{$row.message_title}</strong>
 		{$row.message_body|nl2br} 
 		</font>
 	</td>
 	</tr>
 	<tr>
 	<td valign="top" style="{$style}" nowrap="nowrap"> 
-		<img src="./images/icons/posticon.gif" alt="{dPtranslate word='date posted'}" border="0" width="14" height="11">{$formatted_date}
+		<img src="./images/icons/posticon.gif" alt="{dPtranslate word='date posted'}" border="0" width="14" height="11" />{$formatted_date}
 	</td>
 	<td valign="top" align="right" style="{$style}">
 	
 	{if $show_edit_controls == true}
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
-			<td><a href="./index.php?m=forums&a=viewer&post_message=1&forum_id={$row.message_forum}&message_parent={$row.message_parent}&message_id={$row.message_id}" title="{dPtranslate word='Edit'} {dPtranslate word='Message'}">
-			{dPshowImage src='./images/icons/stock_edit-16.png' wsize='16' hsize='16'}
+			<td><a href="./index.php?m=forums&amp;a=viewer&amp;post_message=1&amp;forum_id={$row.message_forum}&amp;message_parent={$row.message_parent}&amp;message_id={$row.message_id}" title="{dPtranslate word='Edit'} {dPtranslate word='Message'}">
+			{dPshowImage src='./images/icons/stock_edit-16.png' wsize='16' hsize='16'}</a>
 			</td><td>
 			<a href="javascript:delIt('{$row.message_id}')" title="{dPtranslate word='delete'}">
 			{dPshowImage src='./images/icons/stock_delete-16.png' wsize='16' hsize='16'}

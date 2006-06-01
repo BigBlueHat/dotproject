@@ -1,6 +1,5 @@
-{literal}
-<script language="javascript">
-{/literal}
+<script type="text/javascript" language="javascript">
+<!--
 {*
 {if $viewtype == 'normal'}
 *}
@@ -45,6 +44,7 @@ function delIt(id){
 }
 {/literal}
 {/if}
+-->
 </script>
 
 <table width="98%" cellspacing="1" cellpadding="2" border="0" align="center">
@@ -59,22 +59,23 @@ function delIt(id){
 		</form>
         </td>
 	<td align="right">
-	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id={$message_id}&sort={$sort}'" />
+	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_id={$message_id}&amp;sort={$sort}'" />
 	{if $canEdit}
-		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_parent={$message_id}&post_message=1';" />
+		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_parent={$message_id}&amp;post_message=1';" />
 		<input type="button" class="button"
-value="{dPtranslate word='New Topic'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id=0&post_message=1';" />
+value="{dPtranslate word='New Topic'}" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_id=0&amp;post_message=1';" />
 	{/if}
 	</td>
 </tr>
 </table>
 
-<table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl" align="center">
-<form name="messageForm" method="POST" action="?m=forums&forum_id={$forum_id}">
+<form name="messageForm" method="post" action="?m=forums&amp;forum_id={$forum_id}">
 	<input type="hidden" name="dosql" value="do_post_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="message_id" value="0" />
 </form>
+
+<table border="0" cellpadding="4" cellspacing="1" width="98%" class="tbl" align="center">
 <tr>
 {if $viewtype != 'short'} 
 	<th nowrap>{dPtranslate word='Author'}:</th>
@@ -92,11 +93,11 @@ if ($viewtype == 'single')
 <tr>
 	<td>{$breadCrumbs}</td>
 	<td align="right">
-	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id={$message_id}&sort={$sort}'" />
+	<input type="button" class="button" value="{dPtranslate word='Sort By Date'} ({dPtranslate word=$sort})" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_id={$message_id}&amp;sort={$sort}'" />
 	{if $canEdit}
-		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_parent={$message_id}&post_message=1';" />
+		<input type="button" class="button" value="{dPtranslate word='Post Reply'}" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_parent={$message_id}&amp;post_message=1';" />
 		<input type="button" class="button"
-value="{dPtranslate word='New Topic'}" onclick="javascript:window.location='./index.php?m=forums&a=viewer&forum_id={$forum_id}&message_id=0&post_message=1';" />
+value="{dPtranslate word='New Topic'}" onclick="javascript:window.location='./index.php?m=forums&amp;a=viewer&amp;forum_id={$forum_id}&amp;message_id=0&amp;post_message=1';" />
 	{/if}
 	</td>
 </tr>
