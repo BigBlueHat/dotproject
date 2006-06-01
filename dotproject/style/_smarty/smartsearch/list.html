@@ -5,7 +5,7 @@
 	{foreach from=$results.results item=result key=id}
 <tr>
 	<td>
-		{if $result.parent_name}
+		{if $result.parent_name|strip:''}
 		<a href="index.php?m={$result.parent_type}&amp;a=view&amp;{$result.parent_key}={$result.parent_id}">
 			[{$result.parent_type|ucfirst}: {$result.parent_name|dPhighlight:$keyword}]
 		</a>::
