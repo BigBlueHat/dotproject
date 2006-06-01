@@ -901,7 +901,7 @@ class CAppUI {
  */
 	function loadJS()
 	{
-	  global $m, $a, $dPconfig, $baseDir;
+	  global $m, $a, $dPconfig, $baseDir, $extra_js;
 	  // Search for the javascript files to load.
 	  if (! isset($m))
 	    return;
@@ -923,6 +923,7 @@ class CAppUI {
 	  }
 	  asort($js_files);
 	  $js = '';
+		$js .= $extra_js;
 	  while(list(,$js_file_name) = each($js_files)){
 		  $js .= "<script type=\"text/javascript\" src=\"{$base}js/$js_file_name\"></script>\n";
 		  }

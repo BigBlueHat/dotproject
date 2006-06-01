@@ -57,7 +57,7 @@ class CTemplate extends Smarty
 
 		$this->assign('msg', $AppUI->getMsg());
 		$this->assign('now', new CDate());
-		
+	
 		$this->assign('js', $AppUI->loadJS());
 		$this->assign('uistyle', $uistyle);
 		$this->assign('style_extras', $style_extras);

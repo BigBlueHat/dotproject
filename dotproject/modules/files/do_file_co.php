@@ -47,7 +47,7 @@ $q->clear();
                 $params .= "&" . $session_id;
         
 //        header( "Refresh: 0; URL=fileviewer.php?$params" );
-	echo '<script type="text/javascript">
+	$extra_js = '<script type="text/javascript">
 	fileloader = window.open("fileviewer.php?'.$params.'", "mywindow",
     "location=1,status=1,scrollbars=0,width=20,height=20");
 	fileloader.moveTo(0,0);
