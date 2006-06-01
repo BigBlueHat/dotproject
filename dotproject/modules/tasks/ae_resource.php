@@ -25,14 +25,16 @@ foreach ($assigned_perc as $user_id => $perc) {
 
 ?>
 <script type="text/javascript" language="javascript">
+<!--
 <?php
-echo 'var projTasksWithEndDates=new Array();\n';
+echo 'var projTasksWithEndDates=new Array();'."\n";
 $keys = array_keys($projTasksWithEndDates);
 for ($i = 1; $i < sizeof($keys); $i++) {
 	//array[task_is] = end_date, end_hour, end_minutes
 	echo "projTasksWithEndDates[".$keys[$i]."]=new Array(\"".$projTasksWithEndDates[$keys[$i]][1]."\", \"".$projTasksWithEndDates[$keys[$i]][2]."\", \"".$projTasksWithEndDates[$keys[$i]][3]."\");\n";
 }
 ?>
+-->
 </script>
 <form action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project; ?>"
   method="post" name="resourceFrm">
