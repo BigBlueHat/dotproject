@@ -45,7 +45,7 @@ if ($viewtype == 'single')
 	foreach ($messages as $row)
 	{
 			$single_view_message_body .= ' 
-				<div class="message" id="'.$row["message_id"].'" style="display: none">
+				<div class="message" id="message_'.$row["message_id"].'" style="display: none">
 					'.nl2br($row["message_body"]).'
 				</div>
 			';

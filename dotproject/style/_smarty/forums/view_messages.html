@@ -13,12 +13,12 @@
                 for (var i=0; i<elems.length; i++)
                   if (elems[i].className == 'message')
                         elems[i].style.display = 'none';
-                document.getElementById(id).style.display = 'block';
+                document.getElementById('message_' + id).style.display = 'block';
 	{/literal}
 	{elseif $viewtype == 'short'}
 	{literal}
-                vista = (document.getElementById(id).style.display == 'none') ? 'block' : 'none';
-                document.getElementById(id).style.display = vista;
+                vista = (document.getElementById('message_' + id).style.display == 'none') ? 'block' : 'none';
+                document.getElementById('message_' + id).style.display = vista;
 	{/literal}
 	{/if}
 	{literal}
