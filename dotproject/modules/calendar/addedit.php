@@ -160,10 +160,10 @@ $recurs =  array (
 	'Daily',
 	'Weekly',
 	'Bi-Weekly',
-	'Every Month',
+	'Monthly',
 	'Quarterly',
-	'Every 6 months',
-	'Every Year'
+	'Semi-Annually',
+	'Annually'
 );
 
 $remind = array (
