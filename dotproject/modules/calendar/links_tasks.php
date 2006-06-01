@@ -32,7 +32,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 
 	foreach ($tasks as $row) {
 	// the link
-		$link['href'] = "?m=tasks&a=view&task_id=".$row['task_id'];
+		$link['href'] = "?m=tasks&amp;a=view&amp;task_id=".$row['task_id'];
 		$link['alt'] = $row['project_name'].":\n".$row['task_name'];
 	// the link text
 		if (strlen( $row['task_name'] ) > $strMaxLen) {

@@ -52,7 +52,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 		// the link
 			// optionally do not show events on non-working days 
 			if ( ( $row['event_cwd'] && in_array($date->getDayOfWeek(), $cwd ) ) || !$row['event_cwd'] ) {
-				$url = '?m=calendar&a=view&event_id=' . $row['event_id'];
+				$url = '?m=calendar&amp;a=view&amp;event_id=' . $row['event_id'];
 				$link['href'] = $url;
 				$link['alt'] = $row['event_description'];
 				$link['start_date'] = $row['event_start_date'];
