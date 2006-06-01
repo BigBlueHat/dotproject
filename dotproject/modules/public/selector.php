@@ -178,4 +178,7 @@ if (!$ok) {
 </form>
 
 <?php } ?>
+</td>
+</tr>
+</table>
 
