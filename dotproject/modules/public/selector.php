@@ -129,7 +129,7 @@ if (!$ok) {
 	$list = arrayMerge( array( 0=>$AppUI->_( '[none]' )), $q->loadHashList( ) );
 	echo db_error();
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
 	function setClose(key, val){
 		window.opener.<?php echo $callback;?>(key,val);
 		window.close();
@@ -150,24 +150,24 @@ if (!$ok) {
 	}
 
 </script>
-<form name="frmSelector">
+<form name="frmSelector" action="#">
 <b><?php echo $AppUI->_( 'Select' ).' '.$AppUI->_( $title ).':'?></b>
 <table width="100%">
 <tr>
 	<td>
 		<div style="white-space:normal; overflow:auto; "  id="selector">
-		<ul style="padding-left:0px">
 		<?php
 			if (count( $list ) > 1) {
+				echo '<ul style="padding-left:0px">';
 		//		echo arraySelect( $list, 'list', ' size="8"', 0 );
 				foreach ($list as $key => $val) {
 					echo "<li><a href=\"javascript:setClose('$key','".addslashes($val)."');\">$val</a></li>\n";
 				}
+				echo '</ul>';
 			} else {
 				echo $AppUI->_( "no$table" );
 			}
 		?>
-		</ul>
 		</div>
 	</td>
 	<td valign="bottom">
