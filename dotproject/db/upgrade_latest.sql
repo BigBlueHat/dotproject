@@ -236,3 +236,7 @@ NULL , 'USERFORMAT', 'last'
 ), (
 NULL , 'USERFORMAT', 'user'
 );
+
+#20060601
+# made sure session id field is big enough
+ALTER TABLE `sessions` CHANGE `session_id` `session_id` VARCHAR( 64 ) NOT NULL ;

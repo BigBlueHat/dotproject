@@ -72,16 +72,14 @@ function dPsessionWrite($id, $data)
 	$q->addWhere("session_id = '$id'");
 	$qid = $q->loadResult();
 
+	$q->addTable('sessions');
 	if ( $qid > 0 ) {
 		dprint(__FILE__, __LINE__, 11, "Updating session $id");
-		$q->query = null;
 		$q->addUpdate('session_data', $data);
 		if (isset($AppUI))
 			$q->addUpdate('session_user', $AppUI->last_insert_id);
 	} else {
 		dprint(__FILE__, __LINE__, 11, "Creating new session $id");
-		$q->query = null;
-		$q->where = null;
 		$q->addInsert('session_id', $id);
 		$q->addInsert('session_data', $data);
 		$q->addInsert('session_created', date('Y-m-d H:i:s'));

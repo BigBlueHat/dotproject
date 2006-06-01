@@ -1,7 +1,7 @@
 <br /><br /><br /><br />
 {* please leave action argument empty *}
 <form method="post" action="{$loginFromPage}" name="loginform">
-<input type="hidden" name="login" value="{dPdateFormat date=$now format='time'}" />
+<input type="hidden" name="login" value="{php}echo time();{/php}{*dPdateFormat date=$now format='time'*}" />
 <input type="hidden" name="lostpass" value="0" />
 <input type="hidden" name="redirect" value="{$redirect}" />
 <table align="center" border="0" width="250" cellpadding="6" cellspacing="0" class="std">

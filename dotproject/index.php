@@ -154,6 +154,7 @@ if (isset($_REQUEST['login'])) {
 	}
 	$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
 	addHistory('login', $AppUI->user_id, 'login', $details);
+
 	$AppUI->redirect( $redirect );
 }
 
