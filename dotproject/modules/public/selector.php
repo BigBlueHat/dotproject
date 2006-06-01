@@ -161,7 +161,7 @@ if (!$ok) {
 				echo '<ul style="padding-left:0px">';
 		//		echo arraySelect( $list, 'list', ' size="8"', 0 );
 				foreach ($list as $key => $val) {
-					echo "<li><a href=\"javascript:setClose('$key','".addslashes($val)."');\">$val</a></li>\n";
+					echo "<li><a href=\"javascript:void(0);\" onclick=\"setClose('$key','".addslashes($val)."');\">$val</a></li>\n";
 				}
 				echo '</ul>';
 			} else {
