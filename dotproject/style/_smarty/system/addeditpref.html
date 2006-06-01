@@ -73,7 +73,7 @@
 		<textarea name="pref_name[{$p.pref_name}]">{$p.pref_value}</textarea>
 	{elseif $p.pref_type == 'checkbox'}
 		<input class="button" type="{$p.pref_type}" name="pref_name[{$p.pref_name}]" value="{$p.pref_value}"
-		{if $p.pref_value == 'true'} checked="checked" {/if} >
+		{if $p.pref_value == 'true'} checked="checked" {/if} />
 	{elseif $p.pref_name == 'TASKLOGEMAIL'}
 		<input type="hidden" name="pref_name[TASKLOGEMAIL]" id="task_log_email_defaults" value='{$tle}' />
 		<input type="checkbox" name="tl_assign" id="tl_assign" {if $tl_assign} checked="checked"{/if} />
@@ -83,7 +83,7 @@
 		<input type="checkbox" name="tl_proj" id="tl_proj" {if $tl_proj} checked="checked"{/if} />
 		&nbsp;{dPtranslate word='Email Project Contacts'}
 	{else}
-		<input class="button" type="{$p.pref_type}" name="pref_name[{$p.pref_name}]" value="{$p.pref_value}">
+		<input class="button" type="{$p.pref_type}" name="pref_name[{$p.pref_name}]" value="{$p.pref_value}" />
 	{/if}
 			{dPtranslateToVar word=$p.pref_name prepend='prefs_' append='_title' ass='ti'}
 			{dPtranslateToVar word=$p.pref_name prepend='prefs_' append='_tooltip' ass='tt'}
