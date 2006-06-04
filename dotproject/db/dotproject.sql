@@ -355,26 +355,6 @@ CREATE TABLE `task_departments` (
   `department_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
 
-CREATE TABLE `tickets` (
-  `ticket` int(10) unsigned NOT NULL auto_increment,
-  `author` varchar(100) NOT NULL default '',
-  `recipient` varchar(100) NOT NULL default '',
-  `subject` varchar(100) NOT NULL default '',
-  `attachment` tinyint(1) unsigned NOT NULL default '0',
-  `timestamp` int(10) unsigned NOT NULL default '0',
-  `type` varchar(15) NOT NULL default '',
-  `assignment` int(10) unsigned NOT NULL default '0',
-  `parent` int(10) unsigned NOT NULL default '0',
-  `activity` int(10) unsigned NOT NULL default '0',
-  `priority` tinyint(1) unsigned NOT NULL default '1',
-  `cc` varchar(255) NOT NULL default '',
-  `body` text NOT NULL,
-  `signature` text,
-  PRIMARY KEY  (`ticket`),
-  KEY `parent` (`parent`),
-  KEY `type` (`type`)
-) TYPE=MyISAM;
-
 CREATE TABLE `user_events` (
 	`user_id` int(11) NOT NULL default '0',
 	`event_id` int(11) NOT NULL default '0',
@@ -529,12 +509,11 @@ INSERT INTO `modules` VALUES("4", "Calendar", "calendar", "1.0.0", "", "core", "
 INSERT INTO `modules` VALUES("5", "Files", "files", "1.0.0", "", "core", "1", "Files", "folder5.png", "5", "1", "", "files", "file_id", "file_name");
 INSERT INTO `modules` VALUES("6", "Contacts", "contacts", "1.0.0", "", "core", "1", "Contacts", "monkeychat-48.png", "6", "1", "", "", "", "");
 INSERT INTO `modules` VALUES("7", "Forums", "forums", "1.0.0", "", "core", "1", "Forums", "support.png", "7", "1", "", "forums", "forum_id", "forum_name");
-INSERT INTO `modules` VALUES("8", "Tickets", "ticketsmith", "1.0.0", "", "core", "1", "Tickets", "ticketsmith.gif", "8", "1", "", "", "", "");
-INSERT INTO `modules` VALUES("9", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "helix-setup-users.png", "9", "1", "", "users", "user_id", "user_username");
-INSERT INTO `modules` VALUES("10", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "48_my_computer.png", "10", "1", "", "", "", "");
-INSERT INTO `modules` VALUES("11", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "", "", "", "");
-INSERT INTO `modules` VALUES("12", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "", "", "", "");
-INSERT INTO `modules` VALUES("13", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "13", "0", "", "", "", "");
+INSERT INTO `modules` VALUES("8", "User Administration", "admin", "1.0.0", "", "core", "1", "User Admin", "helix-setup-users.png", "9", "1", "", "users", "user_id", "user_username");
+INSERT INTO `modules` VALUES("9", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "48_my_computer.png", "10", "1", "", "", "", "");
+INSERT INTO `modules` VALUES("10", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "11", "0", "", "", "", "");
+INSERT INTO `modules` VALUES("11", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "12", "0", "", "", "", "");
+INSERT INTO `modules` VALUES("12", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "13", "0", "", "", "", "");
 
 #
 # Table structure for table 'syskeys'
