@@ -65,7 +65,7 @@ function orderByName(x){
 		{if $message_id > 0}{dPtranslate word='Edit Message'}{else}{dPtranslate word='Add Message'}{/if}
 	</strong></th>
 </tr>
-{if $message_id > 0}
+{if $message_id > 0 || $message_parent > 0}
 <tr><td align="right">{dPtranslate word='Author'}:</td><td align="left">{$message_username} ({$formatted_date})</td></tr>
 <tr><td align="right">{dPtranslate word='Subject'}:</td><td align="left">{$message_info.message_title}</td></tr>
 <tr><td align="right" valign="top">{dPtranslate word='Message'}:</td><td align="left"><textarea name="message_parent_body" cols="60" readonly="readonly" style="height:100px; font-size:8pt">{dPformSafe var=$message_info.message_body}</textarea></td></tr>
