@@ -251,7 +251,7 @@ if ($a != 'todo') {
 }
 
 if ($cnt[0]['N'] > 0) {
-	$src = '?m=tasks&a=gantt_todo&suppressHeaders=1&project_id='.$project_id;
+	$src = '?m=tasks&a=gantt&suppressHeaders=1&project_id='.$project_id;
 	// Set the width of the image (based on browser window width.
 	$src .= "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*" . (($uistyle == 'classic')?0.8:0.95) . ") + '";
 	$src .= '&showLabels='.$showLabels;
