@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-GLOBAL $min_view, $m, $a;
+GLOBAL $min_view, $m, $a, $user_id, $tab, $tasks;
 
 $min_view = defVal( @$min_view, false);
 
@@ -16,6 +16,26 @@ if ($showLabels!='0') {
 $showWork = dPgetParam( $_POST, 'showWork', '0' );
 if ($showWork!='0') {
     $showWork='1';
+}
+$showPinned = dPgetParam( $_POST, 'showPinned', '0' );
+if ($showPinned!='0') {
+    $showPinned='1';
+}
+$showArcProjs = dPgetParam( $_POST, 'showArcProjs', '0' );
+if ($showArcProjs!='0') {
+    $showArcProjs='1';
+}
+$showHoldProjs = dPgetParam( $_POST, 'showHoldProjs', '0' );
+if ($showHoldProjs!='0') {
+    $showHoldProjs='1';
+}
+$showDynTasks = dPgetParam( $_POST, 'showDynTasks', '0' );
+if ($showDynTasks!='0') {
+    $showDynTasks='1';
+}
+$showLowTasks = dPgetParam( $_POST, 'showLowTasks', '1' );
+if ($showLowTasks!='0') {
+    $showLowTasks='1';
 }
 
 // months to scroll
@@ -127,8 +147,7 @@ function showGantt(type) {
 -->
 </script>
 
-<form name="editFrm" method="post" action="?<?php echo "m=$m&amp;a=$a&amp;project_id=$project_id";?>">
-
+<form name="editFrm" method="post" action="?<?php echo "m=$m&amp;a=$a&amp;tab=$tab&amp;project_id=$project_id";?>">
 <table border="0" cellpadding="4" cellspacing="0">
 <tr>
 	<td colspan="3"><?php echo $AppUI->_('Predefined filters:');?></td>
@@ -181,26 +200,69 @@ function showGantt(type) {
 <?php } ?>
 	</td>
 </tr>
+<?php if($a == 'todo') { ?>
+<tr>
+	<td align="center" valign="bottom" nowrap="nowrap" colspan="7">
+		<table width="100%" border="0" cellpadding="1" cellspacing="0">
+			<tr>
+			<td align="center" valign="bottom" nowrap="nowrap">
+				<input type=checkbox name="showPinned" <?php echo $showPinned ? 'checked="checked"' : ""; ?> /><?php echo $AppUI->_('Pinned Only'); ?>
+			</td>
+			<td align="center" valign="bottom" nowrap="nowrap">
+				<input type=checkbox name="showArcProjs" <?php echo $showArcProjs ? 'checked="checked"' : ""; ?> /><?php echo $AppUI->_('Archived Projects'); ?>
+			</td>
+			<td align="center" valign="bottom" nowrap="nowrap">
+				<input type=checkbox name="showHoldProjs" <?php echo $showHoldProjs ? 'checked="checked"' : ""; ?> />
+			<?php echo $AppUI->_('Projects on Hold'); ?>
+			</td>
+			<td align="center" valign="bottom" nowrap="nowrap">
+				<input type=checkbox name="showDynTasks" <?php echo $showDynTasks ? 'checked="checked"' : ""; ?> />
+			<?php echo $AppUI->_('Dynamic Tasks'); ?>
+			</td>
+			<td align="center" valign="bottom" nowrap="nowrap">
+				<input type=checkbox name="showLowTasks" <?php echo $showLowTasks ? 'checked="checked"' : ""; ?> />
+				<?php echo $AppUI->_('Low Priority Tasks'); ?>
+			</td>
+			</tr>
+		</table>
+	</td>
+</tr>
+<?php } ?>
 </table>
-
 </form>
 
 <table cellspacing="0" cellpadding="0" border="1" align="center">
 <tr>
 	<td>
 <?php
-$q = new DBQuery;
-$q->addTable('tasks');
-$q->addQuery('COUNT(*) AS N');
-$q->addWhere('task_project='.$project_id);
-$cnt = $q->loadList();
-$q->clear();
+if ($a != 'todo') {
+	$q = new DBQuery;
+	$q->addTable('tasks');
+	$q->addQuery('COUNT(*) AS N');
+	$q->addWhere('task_project='.$project_id);
+
+	$cnt = $q->loadList();
+	$q->clear();
+} else {
+	if (empty($tasks))
+		$cnt[0]['N'] = 0;
+	else 	
+		$cnt[0]['N'] = 1;
+}
+
 if ($cnt[0]['N'] > 0) {
-	$src = '?m=tasks&a=gantt&suppressHeaders=1&project_id='.$project_id;
+	$src = '?m=tasks&a=gantt_todo&suppressHeaders=1&project_id='.$project_id;
 	// Set the width of the image (based on browser window width.
 	$src .= "&width=' + ((navigator.appName=='Netscape'?window.innerWidth:document.body.offsetWidth)*" . (($uistyle == 'classic')?0.8:0.95) . ") + '";
 	$src .= '&showLabels='.$showLabels;
 	$src .= '&showWork='.$showWork;
+	$src .= '&showPinned='.$showPinned;
+	$src .= '&showArcProjs='.$showArcProjs;
+	$src .= '&showHoldProjs='.$showHoldProjs;
+	$src .= '&showDynTasks='.$showDynTasks;
+	$src .= '&showLowTasks='.$showLowTasks;
+	$src .= '&caller='.$a;
+	$src .= '&user_id='.$user_id;
 	if ($display_option != 'all')
 		$src .=	'&start_date=' . $start_date->format( '%Y-%m-%d' ) . '&end_date=' . $end_date->format( '%Y-%m-%d' );
 
