@@ -102,6 +102,7 @@
 			{if $p.tasks_count > 0 && $enable_gantt_charts && !$min_view}
 <tr>
 	<td colspan="{$cols}" align="right">
+		<input type="button" class="button" value="{dPtranslate word='new task'}" onclick="javascript:window.location='index.php?m=tasks&amp;a=addedit&amp;task_project={$k}';" />
 		<input type="button" class="button" value="{dPtranslate word='Reports'}" onclick="javascript:window.location='index.php?m=reports&amp;project_id={$k}';" />
 		<input type="button" class="button" value="{dPtranslate word='Gantt Chart'}" onclick="javascript:window.location='index.php?m=tasks&amp;a=viewgantt&amp;project_id={$k}';" />
 	</td>
