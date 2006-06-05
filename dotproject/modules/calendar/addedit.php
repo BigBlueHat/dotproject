@@ -22,12 +22,6 @@ else if ( !$obj->load( $event_id ) && $event_id ) {
 	$AppUI->redirect();
 }
 
-// check only owner can edit
-// TODO: Should assignee's be allowed to edit?
-if ($obj->event_owner != $AppUI->user_id && $event_id != 0) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
-
 // load the event types
 $types = dPgetSysVal( 'EventType' );
 

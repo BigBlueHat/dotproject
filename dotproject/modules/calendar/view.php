@@ -38,9 +38,11 @@ $recurs =  array (
 $assigned = $obj->getAssigned();
 
 
-if ($obj->event_owner != $AppUI->user_id) {
-	$canEdit = false;
+if (($obj->event_owner != $AppUI->user_id) && !($perms->checkModule("admin", "view"))) {
+ $canEdit = false;
 }
+
+
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
