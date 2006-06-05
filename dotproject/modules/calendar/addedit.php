@@ -72,7 +72,7 @@ if ($_GET['event_project']) {
 $titleBlock = new CTitleBlock( ($event_id ? 'Edit Event' : 'Add Event') , 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( '?m=calendar', 'month view' );
 if ($event_id) {
-	$titleBlock->addCrumb( '?m=calendar&amp;a=view&event_id='.$event_id, 'view this event' );
+	$titleBlock->addCrumb( '?m=calendar&amp;a=view&amp;event_id='.$event_id, 'view this event' );
 }
 $titleBlock->show();
 

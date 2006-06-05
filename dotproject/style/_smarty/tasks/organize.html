@@ -1,20 +1,20 @@
-<form name="form" method="post" action="index.php?m={$m}&a={$a}&project_id={$project_id}"> <!--&date=$date -->
+<form name="form" method="post" action="index.php?m={$m}&amp;a={$a}&amp;project_id={$project_id}"> <!--&date=$date -->
 <table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 <tr>
 	<th width="20" colspan="2">{dPtranslate word='Progress'}</th>
 	<th width="15" align="center">{dPtranslate word='P'}</th>
 	<th>
-		<a class="hdr" href="index.php?m=tasks&a=organize&project_id={$project_id}&sort=task_name">
+		<a class="hdr" href="index.php?m=tasks&amp;a=organize&amp;project_id={$project_id}&amp;sort=task_name">
 		{dPtranslate word='Task'}
 		</a>
 	</th>
 	<th nowrap>
-		<a class="hdr" href="index.php?m=tasks&a=organize&project_id={$project_id}&sort=task_duration">
+		<a class="hdr" href="index.php?m=tasks&amp;a=organize&amp;project_id={$project_id}&amp;sort=task_duration">
 		{dPtranslate word='Duration'}
 		</a>
 	</th>
 	<th nowrap>
-		<a class="hdr" href="index.php?m=tasks&a=organize&project_id={$project_id}&sort=task_end_date">
+		<a class="hdr" href="index.php?m=tasks&amp;a=organize&amp;project_id={$project_id}&amp;sort=task_end_date">
 		{dPtranslate word='Due In'}
 		</a>
 	</th>
@@ -32,7 +32,7 @@ foreach ($tasks as $task)
 {/php}
 </table>
 
-<input type="checkbox" name="include_children" value='1' />{dPtranslate word='Include Children (automatically applies to move within the same project and delete)'}<br />
+<input type="checkbox" name="include_children" value="1" />{dPtranslate word='Include Children (automatically applies to move within the same project and delete)'}<br />
 <table>
   <tr>
     <th>Action: </th>
@@ -50,7 +50,7 @@ foreach ($tasks as $task)
       {if $ts}{dParraySelect array=$ts name='new_task' value='0'}{/if}
     </td>
 		<td>
-			<input type="submit" class="button" value="{dPtranslate word='update selected tasks'}">
+			<input type="submit" class="button" value="{dPtranslate word='update selected tasks'}" />
 		</td>
   </tr>
 </table>
@@ -77,7 +77,8 @@ foreach ($tasks as $task)
 </tr>
 </table>
 
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function updateTasks()
 {ldelim}
 	var proj = document.forms['form'].new_project.value;
@@ -88,4 +89,5 @@ function updateTasks()
 	sel.options[0] = new Option('loading...', -1);
 	frames['thread'].location.href = './index.php?m=tasks&a=listtasks&project=' + proj;
 {rdelim}
+-->
 </script>

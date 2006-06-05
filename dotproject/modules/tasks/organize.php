@@ -134,7 +134,7 @@ if (!@$min_view) {
 	$titleBlock = new CTitleBlock( 'Organize Tasks', 'applet-48.png', $m, "$m.$a" );
 	$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 	if ($project_id)
-		$titleBlock->addCrumb('?m=projects&a=view&project_id='.$project_id, 'view project');
+		$titleBlock->addCrumb('?m=projects&amp;a=view&amp;project_id='.$project_id, 'view project');
 	$titleBlock->show();
 }
 
@@ -181,7 +181,7 @@ function showtask_edit($task, $level=0)
 		if ($end)
 			$style = 'background-color:#cc6666;color:#ffffff';
 		else
-			$style = 'background-color: lightgray;';
+			$style = 'background-color: gray;';
 	} 
 
   if ($start)
@@ -198,7 +198,7 @@ function showtask_edit($task, $level=0)
 <tr>
 	<td>
 <?php if ($canEdit) { ?>
-		<a href="./index.php?m=tasks&a=addedit&task_id=<?php echo $task['task_id'];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12"></a>
+		<a href="./index.php?m=tasks&amp;a=addedit&amp;task_id=<?php echo $task['task_id'];?>"><img src="./images/icons/pencil.gif" alt="Edit Task" border="0" width="12" height="12" /></a>
 <?php } ?>
 	</td>
 	<td align="right">
@@ -207,9 +207,9 @@ function showtask_edit($task, $level=0)
 
 	<td>
 <?php if ($task['task_priority'] < 0 ) {
-	echo '<img src="./images/icons/low.gif" width=13 height=16>';
+	echo '<img src="./images/icons/low.gif" alt="low priority" width="13" height="16" />';
 } else if ($task["task_priority"] > 0) {
-	echo '<img src="./images/icons/' . $task['task_priority'] .'.gif" width=13 height=16>';
+	echo '<img src="./images/icons/' . $task['task_priority'] .'.gif" alt="priority" width="13" height="16" />';
 }?>
 	</td>
 
@@ -217,9 +217,9 @@ function showtask_edit($task, $level=0)
 	<?php for ($i = 1; $i < $level; $i++)
 							echo '&nbsp;&nbsp;';
 			if ($level > 0)
-				echo '<img src="./images/corner-dots.gif" width="16" height="12" border="0">'; ?>
+				echo '<img src="./images/corner-dots.gif" alt="" width="16" height="12" border="0" />'; ?>
 			
-		<a 	href="./index.php?m=tasks&a=view&task_id=<?php echo $task['task_id'];?>"
+		<a 	href="./index.php?m=tasks&amp;a=view&amp;task_id=<?php echo $task['task_id'];?>"
 				title="<?php
 					echo ( isset($task['parent_name']) ? '*** ' . $AppUI->_('Parent Task') . " ***\n" . htmlspecialchars($task['parent_name'], ENT_QUOTES) . "\n\n" : '' ) .
 					'*** ' . $AppUI->_('Description') . " ***\n" . htmlspecialchars($task['task_description'], ENT_QUOTES) ?>">
@@ -236,7 +236,7 @@ function showtask_edit($task, $level=0)
 		<?php echo $days; ?>
 	</td>
 	<td>
-		<input type="checkbox" name="selected[]" value="<?php echo $task['task_id'] ?>">
+		<input type="checkbox" name="selected[]" value="<?php echo $task['task_id'] ?>" />
 	</td>
 </tr>
 <?php } // END of displaying tasks function.}}}
