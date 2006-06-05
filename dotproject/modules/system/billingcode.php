@@ -35,7 +35,7 @@ function showcodes(&$a) {
 <tr>
 	<td width=40>
 		<a href="javascript:delIt2('.$a['billingcode_id'].');" title="'.$AppUI->_('delete').'">
-			<img src="./images/icons/stock_delete-16.png" border="0" alt="Delete"></a>
+			<img src="./images/icons/stock_delete-16.png" border="0" alt="Delete" /></a>
 	</td>
 	<td align="left">&nbsp;' . $a['billingcode_name'] . '</td>
 	<td nowrap="nowrap" align="center">' . $a['billingcode_value'] . '</td>

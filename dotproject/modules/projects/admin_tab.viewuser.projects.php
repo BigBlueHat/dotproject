@@ -31,7 +31,7 @@ if (isset( $_GET['orderby'] )) {
 $orderby  = $AppUI->getState( 'UsrProjIdxOrderBy' ) ? $AppUI->getState( 'UsrProjIdxOrderBy' ) : 'project_end_date';
 $orderdir = $AppUI->getState( 'UsrProjIdxOrderDir' ) ? $AppUI->getState( 'UsrProjIdxOrderDir' ) : 'asc';
 
-$extraGet = '&user_id='.$user_id;
+$extraGet = '&amp;user_id='.$user_id;
 
 require($baseDir . '/functions/projects_func.php');
 require_once( $AppUI->getModuleClass( 'projects' ) );
@@ -74,7 +74,7 @@ $tpl->assign('tab', $tab);
 $tpl->assign('user_id', $user_id);
 
 
-$tpl->assign('current_url', 'index.php?m='.$m.'&a='.$a.'&user_id='.$user_id);
+$tpl->assign('current_url', 'index.php?m='.$m.'&amp;a='.$a.'&amp;user_id='.$user_id);
 
 $tpl->displayList('projects', $projects, 0, $show);
 ?>

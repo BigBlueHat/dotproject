@@ -50,14 +50,14 @@ $titleBlock = new CTitleBlock( 'Event and Calendar Management', 'vcalendar.png',
 $titleBlock->addCrumb( "?m=calendar", "monthly calendar" );
 $titleBlock->addCell( $AppUI->_('Company').':' );
 $titleBlock->addCell(
-	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
-	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="pickCompany">', '</form>'
-);
+	'<form action="' . urlencode($_SERVER['REQUEST_URI']) . '" method="post" name="pickCompany">' .
+	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ) . 
+'</form>', '', '', '');
 $titleBlock->addCell( $AppUI->_('Project').':' );
 $titleBlock->addCell(
-	arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" class="text"', $project_id ), '',
-	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="pickProject">', '</form>'
-);
+'<form action="' . urlencode($_SERVER['REQUEST_URI']) . '" method="post" name="pickProject">' .
+	arraySelect( $projects, 'project_id', 'onChange="document.pickProject.submit()" class="text"', $project_id ) . 
+'</form>', '', '', '');
 $titleBlock->show();
 
 $perms =& $AppUI->acl();
@@ -65,7 +65,7 @@ $perms =& $AppUI->acl();
 $df = $AppUI->getPref( 'SHDATEFORMAT' );
 $tf = $AppUI->getPref( 'TIMEFORMAT' );
 
-$tabBox = new CTabBox( "?m=calendar&a=calmgt", "{$dPconfig['root_dir']}/modules/calendar/", $tab );
+$tabBox = new CTabBox( "?m=calendar&amp;a=calmgt", "{$dPconfig['root_dir']}/modules/calendar/", $tab );
 
 $tabBox->add('webcal_mgt', 'WebCal Management', true);
 $min_view = true;

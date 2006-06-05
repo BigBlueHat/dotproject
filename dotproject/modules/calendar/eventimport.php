@@ -85,13 +85,13 @@ $titleBlock->show();
 
 ?>
 
-<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
+<form name="icsFrm" action="?m=calendar&amp;a=eventimport&amp;suppressHeaders=true" enctype="multipart/form-data" method="post">
+	<input type="hidden" name="max_file_size" value="109605000" />
 
-	<form name="icsFrm" action="?m=calendar&a=eventimport&suppressHeaders=true" enctype="multipart/form-data" method="post">
-		<input type="hidden" name="max_file_size" value="109605000" />
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Fetch iCalendar(s) File' );?>:</td>
-		<td align="left"><input type="File" class="button" name="ics" style="width:280px" accept="text/icalendar,text/vcalendar"></td>
+		<td align="left"><input type="File" class="button" name="ics" style="width:280px" accept="text/icalendar,text/vcalendar" /></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Target Calendar(s)' );?>:</td>
@@ -100,17 +100,17 @@ $titleBlock->show();
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Purge existing Events from Calendar on Import' );?>?:</td>
-		<td align="left"><input type="checkbox" class="button" name="purge_events" checked="checked"></td>
+		<td align="left"><input type="checkbox" class="button" name="purge_events" checked="checked" /></td>
 	</tr>
 	<tr>
 		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Try to preserve Event IDs on import' );?>?:</td>
-		<td align="left"><input type="checkbox" class="button" name="webdav_preserve_id"></td>
+		<td align="left"><input type="checkbox" class="button" name="webdav_preserve_id" /></td>
 	</tr>
 	<tr>
-		<td align="right" colspan="2" nowrap="nowrap"><input type="submit" class="button" value="<?php echo $AppUI->_('submit'); ?>"/></td>
+		<td align="right" colspan="2" nowrap="nowrap"><input type="submit" class="button" value="<?php echo $AppUI->_('submit'); ?>" /></td>
 	</tr>
-	</form>
 </table>
+</form>
 
 <?php } else {	// trouble with get parameters
 $AppUI->setMsg( "iCalendarImportError", UI_MSG_ERROR );

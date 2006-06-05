@@ -53,6 +53,15 @@ $r->clear();
 
 $owners = array( '0'=>$AppUI->_('All'), "$AppUI->user_id" =>dPgetUsernameFromID($AppUI->user_id) );
 
+if ($canEdit) {
+	echo '<form name="webcalFrm" action="?m=calendar&amp;a=calmgt" method="post">';
+	echo '<input type="hidden" name="dosql" value="do_webcal_process" />';
+	echo '<input type="hidden" name="webcal_id" value="'.$webcal_id.'" />';
+	echo '<input type="hidden" name="webcal_res_type" value="1" />';	
+	echo '<input type="hidden" name="del" value="0" />';
+	echo '<input type="hidden" name="proc_method" value="" />';
+}	
+
 $s = '<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">';
 $s .= '<tr>';
 
@@ -60,7 +69,7 @@ $s .= '<tr>';
 	$s .= '<th>&nbsp;</th>';	
 
 	$s .= '<th nowrap="nowrap">'.$AppUI->_( 'WebDAV Path' ).'</th>';
-	$s .= '<th>'.$AppUI->_( 'User' ).'&'.$AppUI->_( 'Pass' ).'</th>';
+	$s .= '<th>'.$AppUI->_( 'User' ).'&amp;'.$AppUI->_( 'Pass' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'Calendars' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'Import' ).'</th>';
 	$s .= '<th>'.$AppUI->_( 'Publish' ).'</th>';
@@ -75,12 +84,12 @@ foreach ($wres as $row) {
 	foreach ($wp as $w) {
 		if ($w['webcal_id'] == $row['webcal_id']) {
 			if ($w['project_id'] == 0) {
-				$cals[] = '<a href="?m=calendar&calendar_filter=0">'.$AppUI->_('Unspecified').'</a>';
+				$cals[] = '<a href="?m=calendar&amp;calendar_filter=0">'.$AppUI->_('Unspecified').'</a>';
 			} elseif ($w['project_id'] == -1 ) {
-				$cals[] = '<a href="?m=calendar&calendar_filter=-1">'.$AppUI->_('Personal').'</a>';
+				$cals[] = '<a href="?m=calendar&amp;calendar_filter=-1">'.$AppUI->_('Personal').'</a>';
 			} elseif ($w['project_id'] >0 ) {
 				$proj->load($w['project_id']);
-				$cals[] = '<a href="?m=calendar&calendar_filter='.$proj->project_id.'">'.$proj->project_short_name.'</a>';
+				$cals[] = '<a href="?m=calendar&amp;calendar_filter='.$proj->project_id.'">'.$proj->project_short_name.'</a>';
 			}
 		}
 	}
@@ -92,7 +101,7 @@ $s .= '<td nowrap="nowrap">';
 	$s .= '<a href="javascript:subm(\'publish\','.$row["webcal_id"].')" title="'.$AppUI->_( 'publish' ).'">';
 	$s .= dPshowImage( './images/icons/up.png', '16', '16' );
 	$s .= '</a>';
-	$s .= '<a href="?m=calendar&a=calmgt&webcal_id='.$row["webcal_id"].'" title="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Resource' ).'">';
+	$s .= '<a href="?m=calendar&amp;a=calmgt&amp;webcal_id='.$row["webcal_id"].'" title="'.$AppUI->_( 'Edit' ).' '.$AppUI->_( 'Resource' ).'">';
 	$s .= dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
 	$s .= '</a><a href="javascript:subm(\'del\','.$row["webcal_id"].')" title="'.$AppUI->_( 'delete' ).'">';
 	$s .= dPshowImage( './images/icons/stock_delete-16.png', '16', '16' );
@@ -117,25 +126,19 @@ $s .= '<td nowrap="nowrap">';
 echo $s;
 
 if ($canEdit) {
-	echo '<form name="webcalFrm" action="?m=calendar&a=calmgt" method="post">';
-	echo '<input type="hidden" name="dosql" value="do_webcal_process" />';
-	echo '<input type="hidden" name="webcal_id" value="'.$webcal_id.'" />';
-	echo '<input type="hidden" name="webcal_res_type" value="1" />';	
-	echo '<input type="hidden" name="del" value="0" />';
-	echo '<input type="hidden" name="proc_method" value="" />';	
 	echo '<tr>';
-echo '<td nowrap="nowrap" align="center"><input type="button" class="button" onclick="javascript:subm(\'store\', -1)" value="'.$AppUI->_('submit').'"/><br/><a href="javascript:clear()">'.$AppUI->_('reset').'</a></td>';
+echo '<td nowrap="nowrap" align="center"><input type="button" class="button" onclick="javascript:subm(\'store\', -1)" value="'.$AppUI->_('submit').'" /><br/><a href="javascript:clear()">'.$AppUI->_('reset').'</a></td>';
 	echo '<td nowrap="nowrap">';
-		echo 'http://<input type="text" class="button" name="webcal_path" style="width:280px" value="'.$wdo->webcal_path.'"><br />Port: <input type="text" class="button" name="webcal_port" style="width:30px" value="'.$wdo->webcal_port.'">';
+		echo 'http://<input type="text" class="button" name="webcal_path" style="width:280px" value="'.$wdo->webcal_path.'" /><br />Port: <input type="text" class="button" name="webcal_port" style="width:30px" value="'.$wdo->webcal_port.'" />';
 	echo '</td>';	
 	echo '<td>';
-	echo  $AppUI->_( 'User' ).':<input type="text" class="button" name="webcal_user" style="width:140px" value="'.$wdo->webcal_user.'"><br/>'.$AppUI->_( 'Pass' ).':<input type="password" class="button" name="webcal_pass" style="width:140px" value="'.$wdo->webcal_pass.'">';
+	echo  $AppUI->_( 'User' ).':<input type="text" class="button" name="webcal_user" style="width:140px" value="'.$wdo->webcal_user.'" /><br />'.$AppUI->_( 'Pass' ).':<input type="password" class="button" name="webcal_pass" style="width:140px" value="'.$wdo->webcal_pass.'" />';
 	echo '</td>';	
 	$opt = 'size="'.min(10, sizeof($calendar)).'" class="text" multiple="multiple"';
 	echo '<td align="center">'.arraySelect( $calendar, 'calendars[]', $opt, $cal, false ).'</td>';
 $purge_ex = ($wdo->webcal_purge_events == 1) ? 'checked="checked"' : '';
 	$pres_id = ($wdo->webcal_preserve_id == 1) ? 'checked="checked"' : '';
-echo '<td style="background-color:#ffdddd">'.$AppUI->_('Auto-Imp. every').'&nbsp;<nobr><input type="text" class="button" name="webcal_auto_import" style="width:20px" value="'.$wdo->webcal_auto_import.'">'.$AppUI->_('min').'</nobr><br/>'.$AppUI->_( 'Purge ex. Events' ).'?<input type="checkbox" name="webcal_purge_events" class="text" '.$purge_ex.'/><br/>'.$AppUI->_('Preserve Id').'?<input type="checkbox"  name="webcal_preserve_id" class="text" '.$pres_id.'/></td>';
+echo '<td style="background-color:#ffdddd">'.$AppUI->_('Auto-Imp. every').'&nbsp;<input type="text" class="button" name="webcal_auto_import" style="width:20px" value="'.$wdo->webcal_auto_import.'" />'.$AppUI->_('min').'<br />'.$AppUI->_( 'Purge ex. Events' ).'?<input type="checkbox" name="webcal_purge_events" class="text" '.$purge_ex.'/><br/>'.$AppUI->_('Preserve Id').'?<input type="checkbox"  name="webcal_preserve_id" class="text" '.$pres_id.'/></td>';
 	$autopub = ($wdo->webcal_auto_publish == 1) ? 'checked="checked"' : '';
 	$priv_ev = ($wdo->webcal_private_events != 0) ? 'checked="checked"' : '';
 echo '<td  style="background-color:#ffdddd">'.$AppUI->_( 'Auto' ).'?<input type="checkbox" name="webcal_auto_publish" class="text" '.$auto_pub.'/><br/>'.$AppUI->_('Private Events').'?<input type="checkbox" name="webcal_private_events" class="text" '.$priv_ev.'/></td>';
@@ -144,15 +147,15 @@ echo '<td  style="background-color:#ffdddd">'.$AppUI->_( 'Auto' ).'?<input type=
 echo '<td  style="background-color:#ffdddd">'.$AppUI->_( 'Show' ).'?<input type="checkbox" name="webcal_auto_show" class="text" '.$auto_pub.'/></td>';
 	//echo '</td>';
 	echo '</tr>';
-	echo '</form>';
-
 }
 
-
 echo '</table>';
+if ($canEdit) 
+	echo '</form>';
 
 ?>
-<script language="javascript">
+<script type="text/javascript" language="javascript">
+<!--
 function clear(){
 	document.webcalFrm.webcal_id.value = 0;
 	document.webcalFrm.webcal_path.value = '';
@@ -193,4 +196,5 @@ function subm(p,i) {
 	}
 }
 <?php } ?>
+-->
 </script>
