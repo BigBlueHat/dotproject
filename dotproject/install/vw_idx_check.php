@@ -148,7 +148,7 @@ if ((file_exists( $cfgFile ) && !is_writable( $cfgFile )) || (!file_exists( $cfg
 	@chmod( $cfgDir, $chmod );
  	$filemode = @fileperms($cfgFile);
 	if ($filemode & 2) {
-		$okMessage="<span class='error'> World Writable</span>";
+		$okMessage="<span class='ok'> World Writable</span>";
 	}
 }
 ?>
@@ -163,7 +163,7 @@ if (!is_writable( $filesDir )) {
 }
 $filemode = @fileperms($filesDir);
 if ($filemode & 2) {
-	$okMessage="<span class='error'> World Writable</span>";
+	$okMessage="<span class='ok'> World Writable</span>";
 }
 ?>
 <tr>
@@ -177,7 +177,7 @@ if (!is_writable($cacheDir)) {
 }
 $filemode = @fileperms($cacheDir);
 if ($filemode & 2) {
-	$okMessage="<span class='error'> World Writable</span>";
+	$okMessage="<span class='ok'> World Writable</span>";
 }
 ?>
 <tr>
@@ -191,7 +191,7 @@ if (!is_writable($tmpDir)) {
 }
 $filemode = @fileperms($tmpDir);
 if ($filemode & 2) {
-	$okMessage="<span class='error'> World Writable</span>";
+	$okMessage="<span class='ok'> World Writable</span>";
 }
 ?>
 <tr>
@@ -205,7 +205,7 @@ if (!is_writable( $locEnDir )) {
 }
 $filemode = @fileperms($locEnDir);
 if ($filemode & 2) {
-	$okMessage="<span class='error'> World Writable</span>";
+	$okMessage="<span class='ok'> World Writable</span>";
 }
 ?>
 <tr>
