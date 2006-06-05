@@ -1,7 +1,1393 @@
-2006-04-21 17:08  (ajdonnison)
+2006-06-05 16:20  (gregorerhardt)
 ---------------------------------
+db/dotproject.sql
+- forgotten range shift
+
+2006-06-05 15:13  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/list.projects.html
+- #1623 - show "add task" button on the main task list page, next to other buttons.
+
+2006-06-05 15:03  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- fix for overlong project names
+
+2006-06-05 14:58  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- fix for overlong project names
+
+2006-06-05 14:44  (nybod)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/view.php
+- Event owner and admin role can edit events, some XHTML cleanup
+
+2006-06-05 14:24  (nybod)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/view.php
+- Event owner and admin role can edit events
+
+2006-06-05 13:47  (cyberhorse)
+---------------------------------
+modules/calendar/calmgt.php
+modules/calendar/eventimport.php
+modules/calendar/webcal_mgt.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/system/billingcode.php
+- yet more xhtml compatibility fixes (last ones?)
+
+2006-06-05 13:25  (cyberhorse)
+---------------------------------
+modules/tasks/organize.php
+style/_smarty/tasks/organize.html
+modules/calendar/addedit.php
+- xhtml validity
+
+2006-06-05 13:15  (cyberhorse)
+---------------------------------
+modules/tasks/vw_log_update.php
+style/_smarty/tasks/tasklog.addedit.html
+- xhtml compatibility fixes
+
+2006-06-05 13:07  (cyberhorse)
+---------------------------------
+modules/tasks/vw_logs.php
+style/_smarty/tasks/tasklog.html
+- xhtml fixes
+
+2006-06-05 05:48  (ajdonnison)
+---------------------------------
+ChangeLog
+- Changelog update
+
+2006-06-05 05:42  (ajdonnison)
+---------------------------------
+classes/date.class.php
+- Backported fix for PHP 5.1.x which disallows assignment to $this.
+
+2006-06-05 05:41  (ajdonnison)
+---------------------------------
+classes/date.class.php
+- Changed from using '$this =' to '$this->copy()' so that it works in php 5.1.4
+
+2006-06-05 05:01  (ajdonnison)
+---------------------------------
+ChangeLog
 includes/version.php
-- Fixed the version number.
+install/do_install_db.php
+- Changes for 2.0.3 security and bug fix update.
+
+2006-06-05 05:00  (ajdonnison)
+---------------------------------
+classes/query.class.php
+- Fix for MySQL 5 compatibility in Joins.
+
+2006-06-04 19:28  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+locales/en/ticketsmith.inc
+modules/ticketsmith/CHANGELOG
+modules/ticketsmith/CREDITS
+modules/ticketsmith/INSTALL
+modules/ticketsmith/LICENSE
+modules/ticketsmith/README
+modules/ticketsmith/TODO
+modules/ticketsmith/UPGRADE
+modules/ticketsmith/admin.php
+modules/ticketsmith/attach.php
+modules/ticketsmith/comment.php
+modules/ticketsmith/common.inc.php
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/do_ticket_aed.php
+modules/ticketsmith/followup.php
+modules/ticketsmith/index.html
+modules/ticketsmith/index.php
+modules/ticketsmith/login.php
+modules/ticketsmith/pdf.php
+modules/ticketsmith/post_ticket.php
+modules/ticketsmith/reattachticket.php
+modules/ticketsmith/search.php
+modules/ticketsmith/setup.php
+modules/ticketsmith/style.css
+modules/ticketsmith/table.schema
+modules/ticketsmith/view.php
+modules/ticketsmith/images/gconf-app-icon.png
+modules/ticketsmith/images/ltwt.gif
+modules/ticketsmith/images/posticon.gif
+modules/ticketsmith/images/rtwt.gif
+- sad enough - ticketsmith had to go away
+
+2006-06-04 18:06  (gregorerhardt)
+---------------------------------
+modules/tasks/viewgantt.php
+- corrected gantt driver link
+
+2006-06-04 18:03  (gregorerhardt)
+---------------------------------
+modules/tasks/todo.php
+modules/tasks/todo_gantt_sub.php
+modules/tasks/viewgantt.php
+modules/tasks/gantt.php
+- todo gantt charts
+
+2006-06-04 17:48  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+- added minor space character to separate two words
+
+2006-06-04 16:23  (gregorerhardt)
+---------------------------------
+modules/tasks/todo_gantt_sub.php
+- file todo_gantt_sub.php was initially added on branch stable_2.
+
+2006-06-04 16:23  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/todo.php
+modules/tasks/todo_gantt_sub.php
+modules/tasks/viewgantt.php
+- todo gantt charts
+
+2006-06-04 04:51  (cyberhorse)
+---------------------------------
+style/_smarty/forums/post_message.html
+- made parent message display to be just text rather than disabled textbox
+
+2006-06-04 04:44  (cyberhorse)
+---------------------------------
+style/_smarty/forums/post_message.html
+- as previous commit
+
+2006-06-04 04:30  (cyberhorse)
+---------------------------------
+style/_smarty/forums/post_message.html
+- hide the parent message when posting a new topic
+
+2006-06-01 18:47  (cyberhorse)
+---------------------------------
+modules/calendar/index.php
+- fixed javascript error
+
+2006-06-01 18:08  (cyberhorse)
+---------------------------------
+modules/system/custom_field_addedit.js
+modules/system/custom_field_addedit.php
+modules/system/roles/vw_role_perms.php
+style/_smarty/system/custom_field_addedit.html
+- xhtml validity
+
+2006-06-01 17:51  (cyberhorse)
+---------------------------------
+style/_smarty/system/addeditpref.html
+style/_smarty/system/systemconfig.html
+- xhtml validity
+
+2006-06-01 17:37  (cyberhorse)
+---------------------------------
+style/_smarty/smartsearch/list.html
+- xhtml
+
+2006-06-01 17:28  (cyberhorse)
+---------------------------------
+classes/template.class.php
+classes/ui.class.php
+modules/files/do_file_co.php
+- xhtml validity
+
+2006-06-01 17:12  (cyberhorse)
+---------------------------------
+modules/public/selector.php
+modules/public/selector.php
+- xhtml
+
+2006-06-01 17:08  (cyberhorse)
+---------------------------------
+modules/public/selector.php
+- xhtml validity
+
+2006-06-01 17:04  (cyberhorse)
+---------------------------------
+modules/calendar/index.php
+- xhtml validity
+
+2006-06-01 16:56  (cyberhorse)
+---------------------------------
+modules/calendar/index.php
+- xhtml validity
+
+2006-06-01 16:52  (cyberhorse)
+---------------------------------
+modules/forums/view_messages.php
+style/_smarty/forums/view_messages.html
+style/_smarty/forums/view_messages.row.html
+- xhtml validity
+
+2006-06-01 16:42  (cyberhorse)
+---------------------------------
+style/_smarty/forums/viewer.html
+- xhtml fixes
+
+2006-06-01 16:32  (cyberhorse)
+---------------------------------
+style/_smarty/forums/view_messages.html
+style/_smarty/forums/view_messages.row.html
+style/_smarty/forums/viewer.html
+modules/forums/view_messages.php
+- xhtml validity
+
+2006-06-01 16:11  (cyberhorse)
+---------------------------------
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+- xhtml validity fixed
+
+2006-06-01 16:00  (cyberhorse)
+---------------------------------
+index.php
+- fixed XSS weakness
+
+2006-06-01 15:46  (cyberhorse)
+---------------------------------
+modules/tasks/ae_resource.php
+- javascript error fixed
+
+2006-06-01 15:38  (merlinyoda)
+---------------------------------
+classes/dp.class.php
+- 
+- Fixed lines of codes causing bugs 0001616 and 0001617. Table identifier was needed in an
+- "addWhere" function. This likely fixed other related bugs that had problems with using the
+- "setAllowedSQL" function.
+
+2006-06-01 15:33  (merlinyoda)
+---------------------------------
+modules/calendar/addedit.php
+- Changed wording in recurrance drop-down box for reasons
+- discussed in Mantis bug 0001557 (i.e. more professional tone)
+
+2006-06-01 15:18  (cyberhorse)
+---------------------------------
+style/_smarty/header.html
+style/default/tabBox.html
+- fixed xhtml validity
+
+2006-06-01 15:12  (merlinyoda)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/do_event_aed.php
+style/_smarty/calendar/addedit.html
+- applying fix for following bugs: 0001557
+-  - fixed main bug not allowing for editing/deleting of recurring events
+-  - tweaked minor bug that didn't handle recurrance properly (according to
+-    a method in calendar.class.php)
+
+2006-06-01 15:10  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+modules/files/addedit.php
+modules/forums/addedit.php
+modules/forums/viewer.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/system/addeditpref.php
+modules/system/billingcode.php
+modules/system/contacts_ldap.php
+modules/system/custom_field_editor.php
+modules/system/index.php
+modules/system/systemconfig.php
+modules/system/translate.php
+modules/system/viewmods.php
+modules/system/roles/index.php
+modules/tasks/view.php
+- fixed broken "access denied" redirections
+
+2006-06-01 14:11  (cyberhorse)
+---------------------------------
+index.php
+- XSS vulnerability fixed
+
+2006-06-01 13:56  (cyberhorse)
+---------------------------------
+modules/projects/viewgantt.php
+- fixed syntactical errors
+
+2006-06-01 13:42  (cyberhorse)
+---------------------------------
+index.php
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/session.php
+style/_smarty/login.html
+- fixed 'app' session handling
+
+2006-06-01 11:56  (cyberhorse)
+---------------------------------
+modules/history/index.php
+modules/projects/viewgantt.php
+modules/tasks/viewgantt.php
+style/_smarty/history/addedit.html
+style/_smarty/history/list.html
+style/_smarty/projects/gantt.html
+- xhtml compatibility
+
+2006-05-31 22:36  (gregorerhardt)
+---------------------------------
+includes/smarty/function.dPtranslate.php
+includes/smarty/function.dPtranslateToVar.php
+locales/en/system.inc
+- smartified and softcoded user preference system
+
+2006-05-31 22:29  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+db/dotproject.sql
+includes/smarty/function.dPgetSystemPrefsSelect.php
+modules/system/addeditpref.php
+modules/system/do_preference_aed.php
+modules/system/system.class.php
+style/_smarty/system/addeditpref.html
+- smartified and softcoded user preference system
+
+2006-05-31 15:57  (cyberhorse)
+---------------------------------
+style/calendar.css
+- calendar related styling
+
+2006-05-31 13:57  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- setting config item group
+
+2006-05-31 13:52  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- charset and auto_increment cleanup
+
+2006-05-31 13:38  (gregorerhardt)
+---------------------------------
+modules/admin/viewuser.php
+- do not show projects with assigned tasks by default
+
+2006-05-31 13:18  (gregorerhardt)
+---------------------------------
+modules/projects/reports/allocateduserhours.php
+modules/reports/existing/allocateduserhours.php
+- fixed unique array entry bug and division by zero
+
+2006-05-31 11:37  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+modules/ticketsmith/config.inc.php
+modules/ticketsmith/index.php
+- preparing for ticketsmith move to dotmods
+
+2006-05-30 22:08  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+- regrouped config items
+
+2006-05-30 19:57  (nybod)
+---------------------------------
+modules/projects/gantt.php
+modules/tasks/gantt.php
+- backported from HEAD - some progress overshoot and undershoot prevention
+
+2006-05-30 11:11  (gregorerhardt)
+---------------------------------
+style/_smarty/system/systemconfig.html
+- replaced config group title
+
+2006-05-30 01:51  (gregorerhardt)
+---------------------------------
+classes/ui.class.php
+includes/smarty/function.dPgetSystemConfigSelect.php
+includes/smarty/function.dPtranslate.php
+includes/smarty/function.dPtranslateToVar.php
+modules/system/systemconfig.php
+style/_smarty/header.html
+style/_smarty/system/systemconfig.html
+- systemconfig smartified, some new general plugins
+
+2006-05-29 17:20  (cyberhorse)
+---------------------------------
+modules/public/color_selector.php
+- -xhtml validity fixed
+
+2006-05-29 17:10  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- xhtml fixed
+
+2006-05-29 17:08  (cyberhorse)
+---------------------------------
+modules/public/calendar.php
+- fixed xhtml on date picker
+
+2006-05-29 17:03  (cyberhorse)
+---------------------------------
+style/_smarty/smartsearch/index.html
+- xhtml cleanup
+
+2006-05-29 16:34  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+modules/admin/addedituser.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+modules/admin/vw_usr_sessions.php
+modules/reports/index.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/overall.php
+modules/reports/existing/stats.php
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/userperformance.php
+modules/system/addeditpref.php
+modules/system/billingcode.php
+modules/system/contacts_ldap.php
+modules/system/custom_field_editor.php
+modules/system/index.php
+modules/system/systemconfig.php
+modules/system/translate.php
+modules/system/viewmods.php
+modules/system/roles/index.php
+modules/system/roles/viewrole.php
+modules/system/roles/vw_role_perms.php
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+style/_smarty/admin/addedit.html
+style/_smarty/admin/list.html
+style/_smarty/admin/usr_sessions.html
+style/_smarty/admin/view.html
+style/_smarty/smartsearch/index.html
+style/_smarty/smartsearch/list.html
+style/_smarty/system/custom_field_editor.html
+style/_smarty/system/index.html
+- xhtml validity fixed
+- general cleanup and optimization
+
+2006-05-28 17:04  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+modules/projects/vw_forums.php
+style/_smarty/forums/post_message.html
+- new forum created for each new project
+- forum tab in projects handled through forum module - showing messages rather than forums
+- don't ask for subjects on replies
+
+2006-05-27 21:30  (gregorerhardt)
+---------------------------------
+modules/reports/existing/allocateduserhours.php
+- week scale in allocated hours report
+
+2006-05-27 21:24  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+includes/main_functions.php
+modules/projects/projects.class.php
+modules/projects/reports/allocateduserhours.php
+modules/tasks/addedit.js
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- Task dependency - task shifting, week scale in allocated hours report
+
+2006-05-27 03:03  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/tasks/gantt.php
+- some progress overshoot and undershoot prevention
+
+2006-05-26 14:53  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+includes/main_functions.php
+modules/projects/projects.class.php
+modules/tasks/addedit.js
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- shift depending task B if prior task A is shifted
+
+2006-05-25 17:03  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/do_event_aed.php
+modules/calendar/index.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/week_view.php
+modules/files/addedit.php
+modules/files/files.class.php
+modules/files/index.php
+modules/files/index_table.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/forums/post_message.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+modules/tasks/todo_tasks_sub.php
+style/_smarty/header.html
+style/_smarty/calendar/_title.html
+style/_smarty/calendar/addedit.html
+style/_smarty/calendar/view.day.html
+style/_smarty/calendar/view.html
+style/_smarty/calendar/view.week.html
+style/_smarty/files/addedit.html
+style/_smarty/files/co.html
+style/_smarty/files/list.html
+style/_smarty/files/list.row.html
+style/_smarty/forums/addedit.html
+style/_smarty/forums/index.html
+style/_smarty/forums/index.row.html
+style/_smarty/forums/post_message.html
+style/_smarty/forums/view_topics.html
+style/_smarty/forums/view_topics.row.html
+style/classic/header.html
+style/dp-grey-theme/header.html
+- many xhtml fixes (calendar, forums, files modules)
+
+2006-05-24 16:38  (cyberhorse)
+---------------------------------
+modules/contacts/index.php
+modules/contacts/view.php
+style/_smarty/companies/list.html
+style/_smarty/companies/view.html
+style/_smarty/contacts/addedit.html
+style/_smarty/contacts/index.html
+style/_smarty/contacts/list.row.html
+style/_smarty/contacts/view.html
+- fixed xhtml validity in contacts module
+
+2006-05-24 16:08  (cyberhorse)
+---------------------------------
+classes/template.class.php
+classes/ui.class.php
+modules/companies/addedit.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_depts.php
+style/_smarty/companies/addedit.html
+style/_smarty/companies/list.html
+style/_smarty/companies/view.html
+- companies module converted to xhtml compatible
+
+2006-05-24 15:45  (cyberhorse)
+---------------------------------
+modules/resources/tasks_tab.addedit.other_resources.php
+modules/tasks/addedit.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_resource.php
+modules/tasks/index.php
+modules/tasks/listtasks.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tree.js
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_tasks.php
+style/_smarty/tabBox.html
+style/_smarty/tasks/addedit.html
+style/_smarty/tasks/ae_desc.html
+style/_smarty/tasks/list.projects.html
+style/_smarty/tasks/list.row.html
+style/_smarty/tasks/tasklog.addedit.html
+style/_smarty/tasks/view.html
+style/dp-grey-theme/header.html
+style/dp-grey-theme/tabBox.html
+- tasks module updated to xhtml
+
+2006-05-23 11:27  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+style/_smarty/tabBox.html
+style/default/tabBox.html
+style/dp-grey-theme/tabBox.html
+- fixed & handling at the end of baseHRef
+
+2006-05-23 11:21  (cyberhorse)
+---------------------------------
+style/_smarty/tabBox.html
+style/dp-grey-theme/header.html
+style/dp-grey-theme/tabBox.html
+- xhtml fixes
+
+2006-05-22 17:08  (cyberhorse)
+---------------------------------
+classes/template.class.php
+classes/ui.class.php
+includes/session.php
+includes/smarty/function.dPrequire.php
+includes/smarty/function.dPshowImage.php
+modules/calendar/index.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/admin_tab.viewuser.projects_gantt.php
+style/_smarty/header.html
+style/_smarty/login.html
+style/_smarty/tabBox.html
+style/_smarty/calendar/view.week.html
+style/classic/footer.php
+style/classic/header.html
+style/classic/header.php
+style/classic/login.php
+style/classic/overrides.php
+style/default/footer.php
+style/default/header.php
+style/default/login.php
+style/default/lostpass.php
+style/default/overrides.php
+style/default/tabBox.html
+style/dp-grey-theme/footer.php
+style/dp-grey-theme/header.html
+style/dp-grey-theme/header.php
+style/dp-grey-theme/login.php
+style/dp-grey-theme/lostpass.php
+style/dp-grey-theme/overrides.php
+style/dp-grey-theme/tabBox.html
+- major template engine overhaul - supports new templates by just overriding wanted files. Automatic fallback to default files (in _smarty directory).
+- 
+- !NB: Beware that not complete style may be preserved during the change - if any style should be updated, compare to template files from 2.0.2 version
+
+2006-05-21 11:18  (cyberhorse)
+---------------------------------
+index.php
+classes/template.class.php
+classes/ui.class.php
+includes/smarty/function.dPgetMsg.php
+style/_smarty/footer.html
+style/_smarty/header.html
+style/_smarty/login.html
+style/_smarty/lostpass.html
+style/_smarty/tasks/list.html
+style/_smarty/tasks/list.projects.html
+style/_smarty/tasks/list.row.html
+- work towards making all templates smarty (and fall back to _smarty one if files are missing)
+
+2006-05-20 11:35  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+modules/companies/vw_depts.php
+modules/files/index_table.php
+modules/links/addedit.php
+modules/projects/addedit.php
+modules/projects/view.php
+modules/public/calendar.php
+modules/public/color_selector.php
+modules/public/contact_selector.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/overall.php
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/userperformance.php
+modules/resources/tasks_tab.addedit.other_resources.php
+modules/system/addeditpref.php
+modules/system/billingcode.php
+modules/system/roles/vw_role_perms.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_resource.php
+modules/tasks/tasks.class.php
+modules/tasks/tasksperuser_sub.php
+modules/ticketsmith/post_ticket.php
+style/_smarty/filters.html
+style/_smarty/titleBlock.html
+style/_smarty/admin/simple_list.html
+style/_smarty/admin/usr_sessions.html
+style/_smarty/calendar/addedit.html
+style/_smarty/companies/addedit.html
+style/_smarty/companies/list.html
+style/_smarty/contacts/addedit.html
+style/_smarty/contacts/cardlist.html
+style/_smarty/contacts/list.html
+style/_smarty/contacts/list.row.html
+style/_smarty/contacts/view.html
+style/_smarty/departments/addedit.html
+style/_smarty/files/addedit.html
+style/_smarty/files/co.html
+style/_smarty/files/list.row.html
+style/_smarty/forums/view_messages.html
+style/_smarty/forums/view_messages.row.html
+style/_smarty/forums/view_topics.html
+style/_smarty/history/addedit.html
+style/_smarty/history/list.html
+style/_smarty/projects/addedit.html
+style/_smarty/projects/list.html
+style/_smarty/projects/view.html
+style/_smarty/system/custom_field_addedit.html
+style/_smarty/tasks/addedit.html
+style/_smarty/tasks/list.row.html
+style/_smarty/tasks/tasklog.addedit.html
+style/default/header.php
+- xhtml fixes
+
+2006-05-20 10:25  (cyberhorse)
+---------------------------------
+files/cache/smarty_templates/.cvsignore
+- ignore cache files
+
+2006-05-20 10:21  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+modules/tasks/projects_tab.view.task_logs.php
+modules/tasks/tasks.php
+style/_smarty/projects/view.html
+style/_smarty/tasks/list.projects.html
+style/_smarty/tasks/tasklog.html
+- fix xhtml issues in projects
+
+2006-05-20 09:37  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+includes/main_functions.php
+includes/smarty/function.dPshowImage.php
+modules/projects/index.php
+style/_smarty/filters.html
+style/_smarty/pagination.html
+style/_smarty/search.html
+style/_smarty/tabBox.html
+style/_smarty/titleBlock.html
+style/_smarty/projects/list.html
+style/_smarty/projects/view.html
+style/default/header.php
+style/default/overrides.php
+- fixed xhtml issues
+
+2006-05-20 08:23  (cyberhorse)
+---------------------------------
+modules/index.html
+- made placeholder file xhtml valid (it's used in the hidden, thread iframe)
+
+2006-05-20 08:23  (cyberhorse)
+---------------------------------
+style/_smarty/tabBox.html
+- replaced some & with &amp; - xhtml validity
+
+2006-05-20 08:22  (cyberhorse)
+---------------------------------
+includes/smarty/function.dPshowImage.php
+- alt tag is required for XHTML - made it always available
+
+2006-05-16 16:29  (cyberhorse)
+---------------------------------
+includes/smarty/modifier.dPhighlight.php
+- fixed bug in highlighting (when keyword was empty)
+
+2006-05-16 16:21  (cyberhorse)
+---------------------------------
+style/smarty1/crumbDelete.html
+style/smarty1/debug.html
+style/smarty1/filters.html
+style/smarty1/install.html
+style/smarty1/pagination.html
+style/smarty1/search.html
+style/smarty1/tabBox.html
+style/smarty1/titleBlock.html
+style/smarty1/admin/addedit.html
+style/smarty1/admin/list.html
+style/smarty1/admin/simple_list.html
+style/smarty1/admin/usr_log.html
+style/smarty1/admin/usr_sessions.html
+style/smarty1/admin/view.html
+style/smarty1/backup/index.html
+style/smarty1/backup/restore.html
+style/smarty1/calendar/_event.html
+style/smarty1/calendar/_title.html
+style/smarty1/calendar/_week.html
+style/smarty1/calendar/addedit.html
+style/smarty1/calendar/view.day.html
+style/smarty1/calendar/view.html
+style/smarty1/calendar/view.month.html
+style/smarty1/calendar/view.week.html
+style/smarty1/companies/addedit.html
+style/smarty1/companies/list.html
+style/smarty1/companies/view.html
+style/smarty1/contacts/addedit.html
+style/smarty1/contacts/cardlist.html
+style/smarty1/contacts/index.html
+style/smarty1/contacts/list.html
+style/smarty1/contacts/list.row.html
+style/smarty1/contacts/view.html
+style/smarty1/departments/addedit.html
+style/smarty1/departments/view.html
+style/smarty1/departments/vw_contacts.html
+style/smarty1/files/addedit.html
+style/smarty1/files/co.html
+style/smarty1/files/list.html
+style/smarty1/files/list.row.html
+style/smarty1/forums/addedit.html
+style/smarty1/forums/index.html
+style/smarty1/forums/index.row.html
+style/smarty1/forums/post_message.html
+style/smarty1/forums/view_messages.html
+style/smarty1/forums/view_messages.row.html
+style/smarty1/forums/view_topics.html
+style/smarty1/forums/view_topics.row.html
+style/smarty1/forums/viewer.html
+style/smarty1/history/addedit.html
+style/smarty1/history/list.html
+style/smarty1/projects/addedit.html
+style/smarty1/projects/gantt.html
+style/smarty1/projects/list.html
+style/smarty1/projects/view.html
+style/smarty1/public/register.html
+style/smarty1/smartsearch/index.html
+style/smarty1/smartsearch/list.html
+style/smarty1/system/custom_field_addedit.html
+style/smarty1/system/custom_field_editor.html
+style/smarty1/system/index.html
+style/smarty1/tasks/addedit.html
+style/smarty1/tasks/ae_desc.html
+style/smarty1/tasks/list.html
+style/smarty1/tasks/list.projects.html
+style/smarty1/tasks/list.row.html
+style/smarty1/tasks/organize.html
+style/smarty1/tasks/tasklog.addedit.html
+style/smarty1/tasks/tasklog.html
+style/smarty1/tasks/view.html
+- smarty1 moved to _smarty
+
+2006-05-16 15:27  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+modules/calendar/calendar.class.php
+modules/files/files.class.php
+modules/forums/forums.class.php
+modules/projects/projects.class.php
+modules/tasks/tasks.class.php
+style/_smarty/smartsearch/list.html
+- #466 - indicate parent in smartsearch
+- deployed a flexible way to keep track of parent for each item (two new variables have to be initiated in constructor - _tbl_parent and _parent - descriptions of the two in dp.class.php's phpdoc comments)
+
+2006-05-16 13:56  (cyberhorse)
+---------------------------------
+modules/history/setup.php
+- updated module setup to 0.6
+- fixed 0.5 upgrade sql statements for adding indexes
+- #1643 - added new joined index
+
+2006-05-14 16:01  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+- fixed end date calculations
+
+2006-05-14 15:33  (cyberhorse)
+---------------------------------
+modules/history/addedit.js
+modules/history/index.php
+style/_smarty/history/addedit.html
+- fixed delete button in history module
+- improved limits
+
+2006-05-14 13:06  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+- #1626 - fixed duration calculation
+
+2006-05-14 12:20  (cyberhorse)
+---------------------------------
+modules/system/custom_field_addedit.php
+modules/system/do_custom_field_aed.php
+style/_smarty/system/custom_field_addedit.html
+- #1560 - missing delete button in custom fields fixed
+
+2006-05-14 06:51  (cyberhorse)
+---------------------------------
+modules/system/billingcode.php
+- #1632 - fixed html form errors
+
+2006-05-14 06:42  (cyberhorse)
+---------------------------------
+modules/contacts/index.php
+style/_smarty/contacts/list.row.html
+- #694 - contacts highlighting
+
+2006-05-14 05:39  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- #773 - hide guest users from assignees
+
+2006-05-08 17:50  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+- #1626 - fixed day related end date calculations
+- greatly improved and simplified end date calculations
+- added comments to javascript file
+
+2006-05-08 15:30  (cyberhorse)
+---------------------------------
+classes/template.class.php
+- fixed an error when there are no results to display in a list
+
+2006-05-08 15:24  (cyberhorse)
+---------------------------------
+classes/template.class.php
+- fixed pagination starting position (was starting one record late)
+
+2006-05-08 15:19  (cyberhorse)
+---------------------------------
+classes/template.class.php
+- improved ereg expression for stripping page in pagination
+
+2006-05-08 14:42  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+modules/tasks/vw_tasks.php
+- added assigned users order - by perc_assignment desc first and username second
+
+2006-05-08 14:16  (cyberhorse)
+---------------------------------
+style/_iconsets/wps/_icons/1.gif
+style/_iconsets/wps/_icons/admin.gif
+style/_iconsets/wps/_icons/calendar.gif
+style/_iconsets/wps/_icons/ci.png
+style/_iconsets/wps/_icons/co.png
+style/_iconsets/wps/_icons/collapse.gif
+style/_iconsets/wps/_icons/companies.gif
+style/_iconsets/wps/_icons/customfields.png
+style/_iconsets/wps/_icons/dialog-warning5.png
+style/_iconsets/wps/_icons/down.png
+style/_iconsets/wps/_icons/dp.gif
+style/_iconsets/wps/_icons/expand.gif
+style/_iconsets/wps/_icons/graph.gif
+style/_iconsets/wps/_icons/index.html
+style/_iconsets/wps/_icons/low.gif
+style/_iconsets/wps/_icons/mail.gif
+style/_iconsets/wps/_icons/milestone.gif
+style/_iconsets/wps/_icons/pencil.gif
+style/_iconsets/wps/_icons/pin.gif
+style/_iconsets/wps/_icons/posticon.gif
+style/_iconsets/wps/_icons/priority+1.gif
+style/_iconsets/wps/_icons/priority+2.gif
+style/_iconsets/wps/_icons/priority-1.gif
+style/_iconsets/wps/_icons/priority-2.gif
+style/_iconsets/wps/_icons/rc-gui-status-downgr.png
+style/_iconsets/wps/_icons/shim.gif
+style/_iconsets/wps/_icons/stock_attach-16.png
+style/_iconsets/wps/_icons/stock_cancel-16.png
+style/_iconsets/wps/_icons/stock_delete-16.png
+style/_iconsets/wps/_icons/stock_edit-16.png
+style/_iconsets/wps/_icons/stock_help-16.png
+style/_iconsets/wps/_icons/stock_new.png
+style/_iconsets/wps/_icons/stock_new_small.png
+style/_iconsets/wps/_icons/stock_ok-16.png
+style/_iconsets/wps/_icons/stock_print-16.png
+style/_iconsets/wps/_icons/stock_trash_full-16.png
+style/_iconsets/wps/_icons/ticketsmith.gif
+style/_iconsets/wps/_icons/trash.gif
+style/_iconsets/wps/_icons/unpin.gif
+style/_iconsets/wps/_icons/up.png
+style/_iconsets/wps/_icons/updown.gif
+style/_iconsets/wps/_icons/users.gif
+style/_iconsets/wps/_obj/alert.gif
+style/_iconsets/wps/_obj/contact.gif
+style/_iconsets/wps/_obj/dotgreen.gif
+style/_iconsets/wps/_obj/dotgrey.gif
+style/_iconsets/wps/_obj/dotredanim.gif
+style/_iconsets/wps/_obj/dotyellowanim.gif
+style/_iconsets/wps/_obj/email.gif
+style/_iconsets/wps/_obj/error.gif
+style/_iconsets/wps/_obj/event-attendees.gif
+style/_iconsets/wps/_obj/event.gif
+style/_iconsets/wps/_obj/folder-shared.gif
+style/_iconsets/wps/_obj/folder.gif
+style/_iconsets/wps/_obj/help.gif
+style/_iconsets/wps/_obj/index.html
+style/_iconsets/wps/_obj/lock.gif
+style/_iconsets/wps/_obj/palette.gif
+style/_iconsets/wps/_obj/phone.gif
+style/_iconsets/wps/_obj/warning.gif
+- forgotten files (more...)
+
+2006-05-03 16:18  (cyberhorse)
+---------------------------------
+style/default/login.php
+- fixed html errors - now it validates as xhtml
+
+2006-05-03 16:12  (cyberhorse)
+---------------------------------
+style/_iconsets/wps/admin/helix-setup-user.png
+style/_iconsets/wps/admin/helix-setup-users.png
+style/_iconsets/wps/admin/helix-setup-users3.png
+style/_iconsets/wps/calendar/myevo-appointments.png
+style/_iconsets/wps/companies/handshake.png
+style/_iconsets/wps/contacts/monkeychat-48.png
+style/_iconsets/wps/files/folder5.png
+style/_iconsets/wps/forums/support.png
+style/_iconsets/wps/history/stock_book_blue_48.png
+style/_iconsets/wps/install/control-center.png
+style/_iconsets/wps/projects/applet3-48.png
+style/_iconsets/wps/system/48_my_computer.png
+style/_iconsets/wps/system/control-center.png
+style/_iconsets/wps/system/index.html
+style/_iconsets/wps/system/main-settings.png
+style/_iconsets/wps/system/myevo-weather.png
+style/_iconsets/wps/system/power-management.png
+style/_iconsets/wps/system/rdf2.png
+style/_iconsets/wps/tasks/applet-48.png
+style/_iconsets/wps/ticketsmith/gconf-app-icon.png
+- adding missing icons
+
+2006-05-03 16:10  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/list.row.html
+- fixed image names
+
+2006-05-03 15:30  (cyberhorse)
+---------------------------------
+includes/smarty/function.dPshowImage.php
+- made image tag xhtml complient
+
+2006-05-03 15:29  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/list.row.html
+- converted some images to go through findImage function
+
+2006-05-03 15:03  (cyberhorse)
+---------------------------------
+style/_iconsets/wps/arrow-down.gif
+style/_iconsets/wps/arrow-right.gif
+style/_iconsets/wps/arrow-up.gif
+style/_iconsets/wps/block-end-16.png
+style/_iconsets/wps/block-start-16.png
+style/_iconsets/wps/calendar.gif
+style/_iconsets/wps/clip.png
+style/_iconsets/wps/colorchart.gif
+style/_iconsets/wps/corner-dots.gif
+style/_iconsets/wps/index.html
+style/_iconsets/wps/log-error.gif
+style/_iconsets/wps/log-info.gif
+style/_iconsets/wps/log-notice.gif
+style/_iconsets/wps/navfirst.gif
+style/_iconsets/wps/navlast.gif
+style/_iconsets/wps/navleft.gif
+style/_iconsets/wps/navright.gif
+style/_iconsets/wps/next.gif
+style/_iconsets/wps/prev.gif
+style/_iconsets/wps/shim.gif
+style/_iconsets/wps/smartfolder.gif
+style/_iconsets/wps/trash_small.gif
+style/_iconsets/wps/view.week.gif
+style/_iconsets/wps/week.gif
+- added a new iconset - wps. Thanks to Mats Djärf (dafox) for the icons.
+
+2006-05-03 14:56  (cyberhorse)
+---------------------------------
+index.php
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/main_functions.php
+includes/smarty/function.dPshowImage.php
+modules/system/addeditpref.php
+style/_smarty/tasks/list.row.html
+- made tasks module rely more on the findImage function
+- updated smarty showImage to default height to width if only first is available
+- added setting for iconsets
+- added support for iconsets
+- drop a directory in style/_iconsets
+- the directory has the following structure
+- /style/_iconsets/{$iconstyle}/ - files from /images/
+- /style/_iconsets/{$iconstyle}/_icons/ - files from /images/icons/
+- /style/_iconsets/{$iconstyle}/_obj/ - files from /images/obj/
+- /style/_iconsets/{$iconstyle}/{$module}/ - files from /module/{$module}/images/
+
+2006-05-03 13:35  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- hide directories starting with _ and . in readDir function
+
+2006-05-03 13:33  (cyberhorse)
+---------------------------------
+classes/template.class.php
+style/_smarty/crumbDelete.html
+style/_smarty/debug.html
+style/_smarty/filters.html
+style/_smarty/install.html
+style/_smarty/pagination.html
+style/_smarty/search.html
+style/_smarty/tabBox.html
+style/_smarty/titleBlock.html
+style/_smarty/admin/addedit.html
+style/_smarty/admin/list.html
+style/_smarty/admin/simple_list.html
+style/_smarty/admin/usr_log.html
+style/_smarty/admin/usr_sessions.html
+style/_smarty/admin/view.html
+style/_smarty/backup/index.html
+style/_smarty/backup/restore.html
+style/_smarty/calendar/_event.html
+style/_smarty/calendar/_title.html
+style/_smarty/calendar/_week.html
+style/_smarty/calendar/addedit.html
+style/_smarty/calendar/view.day.html
+style/_smarty/calendar/view.html
+style/_smarty/calendar/view.month.html
+style/_smarty/calendar/view.week.html
+style/_smarty/companies/addedit.html
+style/_smarty/companies/list.html
+style/_smarty/companies/view.html
+style/_smarty/contacts/addedit.html
+style/_smarty/contacts/cardlist.html
+style/_smarty/contacts/index.html
+style/_smarty/contacts/list.html
+style/_smarty/contacts/list.row.html
+style/_smarty/contacts/view.html
+style/_smarty/departments/addedit.html
+style/_smarty/departments/view.html
+style/_smarty/departments/vw_contacts.html
+style/_smarty/files/addedit.html
+style/_smarty/files/co.html
+style/_smarty/files/list.html
+style/_smarty/files/list.row.html
+style/_smarty/forums/addedit.html
+style/_smarty/forums/index.html
+style/_smarty/forums/index.row.html
+style/_smarty/forums/post_message.html
+style/_smarty/forums/view_messages.html
+style/_smarty/forums/view_messages.row.html
+style/_smarty/forums/view_topics.html
+style/_smarty/forums/view_topics.row.html
+style/_smarty/forums/viewer.html
+style/_smarty/history/addedit.html
+style/_smarty/history/list.html
+style/_smarty/projects/addedit.html
+style/_smarty/projects/gantt.html
+style/_smarty/projects/list.html
+style/_smarty/projects/view.html
+style/_smarty/public/register.html
+style/_smarty/smartsearch/index.html
+style/_smarty/smartsearch/list.html
+style/_smarty/system/custom_field_addedit.html
+style/_smarty/system/custom_field_editor.html
+style/_smarty/system/index.html
+style/_smarty/tasks/addedit.html
+style/_smarty/tasks/ae_desc.html
+style/_smarty/tasks/list.html
+style/_smarty/tasks/list.projects.html
+style/_smarty/tasks/list.row.html
+style/_smarty/tasks/organize.html
+style/_smarty/tasks/tasklog.addedit.html
+style/_smarty/tasks/tasklog.html
+style/_smarty/tasks/view.html
+- moved smarty directory to _smarty
+
+2006-04-30 10:42  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/system/systemconfig.php
+style/classic/login.php
+style/default/login.php
+style/dp-grey-theme/login.php
+- #412 - added terms and conditions text to login screen
+- added textarea as system config type option
+
+2006-04-30 09:10  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+modules/system/addeditpref.php
+modules/tasks/addedit.php
+db/dotproject.sql
+db/upgrade_latest.sql
+- #1567 - created a user preference for how to display users
+
+2006-04-30 07:34  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- #156 - hide inactive users from task resources assignment
+
+2006-04-30 06:40  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+- #1614 - event_cwd's value fixed
+
+2006-04-30 06:37  (cyberhorse)
+---------------------------------
+style/smarty1/calendar/addedit.html
+- #1614 - event_cwd value fixed
+
+2006-04-30 06:26  (cyberhorse)
+---------------------------------
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+style/smarty1/calendar/_event.html
+- #588 - fixed tasks display and cleaned up smarty
+
+2006-04-30 05:35  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/links_events.php
+style/smarty1/calendar/_event.html
+- #588
+- added an overlib tooltip with extra event info - dates, descriptions
+- improved smarty handling in events view
+
+2006-04-30 03:52  (cyberhorse)
+---------------------------------
+modules/tasks/viewgantt.php
+- #81 - fixed width when using the classic theme.
+
+2006-04-30 03:34  (cyberhorse)
+---------------------------------
+classes/template.class.php
+modules/projects/projects.class.php
+- fixed some pagination issues
+
+2006-04-28 05:05  (cyberhorse)
+---------------------------------
+classes/query.class.php
+- fixed pagination
+
+2006-04-26 18:19  (theideaman)
+---------------------------------
+classes/CustomFields.class.php
+- significant code cleanup; modified existing header comments to DocBlock format
+
+2006-04-26 15:59  (cyberhorse)
+---------------------------------
+index.php
+modules/public/register.php
+style/smarty1/public/register.html
+- #108 - registration page. Link to it should be ?m=public&a=register
+- defined as the role "guest"
+
+2006-04-26 15:55  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+- added comments
+
+2006-04-26 15:53  (cyberhorse)
+---------------------------------
+modules/admin/admin.class.php
+modules/admin/do_perms_aed.php
+- cleanups
+
+2006-04-24 04:12  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+- added sorting for contacts in user edit screen.
+
+2006-04-23 08:03  (cyberhorse)
+---------------------------------
+modules/reports/index.php
+- fixed a poopoo
+
+2006-04-23 07:54  (cyberhorse)
+---------------------------------
+modules/tasks/vw_tasks.php
+- #1532 - filtering by task type
+
+2006-04-23 07:51  (cyberhorse)
+---------------------------------
+index.php
+- fixed a poopoo
+
+2006-04-23 07:36  (cyberhorse)
+---------------------------------
+index.php
+- some cleanup
+
+2006-04-23 07:19  (cyberhorse)
+---------------------------------
+modules/projects/addedit.php
+modules/projects/do_project_aed.php
+modules/projects/view.php
+- cleanup
+
+2006-04-23 07:09  (cyberhorse)
+---------------------------------
+style/smarty1/admin/usr_sessions.html
+- arggrh - forgot this file too
+
+2006-04-23 07:08  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/clash.php
+modules/calendar/eventpublish.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/calendar/webcal_mgt.php
+modules/companies/addedit.php
+modules/companies/do_company_aed.php
+modules/companies/view.php
+modules/companies/vw_depts.php
+modules/files/co.php
+modules/files/files.class.php
+modules/reports/index.php
+- general cleanup (double to single quotes, reformatting code, cleanup warnings)
+
+2006-04-23 07:06  (cyberhorse)
+---------------------------------
+modules/forums/viewer.php
+- replaced double quotes with single quotes
+- some other cleanups
+
+2006-04-23 07:01  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+- removed unreachable code
+
+2006-04-23 05:39  (cyberhorse)
+---------------------------------
+index.php
+classes/template.class.php
+style/smarty1/debug.html
+style/smarty1/install.html
+- smartified some parts of main index file
+- replaced double quotes with single quotes
+
+2006-04-23 05:03  (cyberhorse)
+---------------------------------
+ChangeLog
+modules/tasks/viewgantt.php
+- updated changelog
+- added 2 more selectors for ganttcharts - more to be added
+
+2006-04-23 03:52  (cyberhorse)
+---------------------------------
+modules/admin/vw_usr_sessions.php
+- yep, forgot a file
+
+2006-04-22 01:33  (pedroix)
+---------------------------------
+modules/files/index_table.php
+- Files not viewable on the companies, projects and tasks Files tab
+- http://www.dotproject.net/vbulletin/showthread.php?t=4870
 
 2006-04-21 17:06  (ajdonnison)
 ---------------------------------
