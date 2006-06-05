@@ -43,7 +43,7 @@ $caller = defVal( @$_REQUEST['caller'], null );
 if ($caller == 'todo') {
 	$user_id = defVal( @$_REQUEST['user_id'], 0 );
 
-	$projects[$project_id]['project_name'] = $AppUI->_('Todo for'). ' ' .dPgetUsername($user_id);
+	$projects[$project_id]['project_name'] = $AppUI->_('Todo for').' '.dPgetUsername($user_id);
 	$projects[$project_id]['project_color_identifier'] = 'ff6000';
 
 	$showLabels = dPgetParam($_REQUEST, 'showLabels', false);
@@ -335,8 +335,8 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
 			$pname = $a['project_name'];
 	        if ( $locale_char_set=='utf-8' && function_exists('utf8_decode') ) {
 	                $pname = utf8_decode($pname);
-	        }
-	        $pname = strlen( $pname ) > 34 ? substr( $pname, 0, 33 ).'.' : $pname ;
+	        }	        
+			$pname = strlen( $pname ) > 14 ? substr( $pname, 0, 5 ).'...'.substr( $pname, -5, 5 ): $pname ;
 		}
         //using new jpGraph determines using Date object instead of string
         $start = $a['task_start_date'];
