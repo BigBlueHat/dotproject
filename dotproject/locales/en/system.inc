@@ -246,6 +246,8 @@
 "prefs_TASKLOGSUBJ_title"=>"Task Log Subject",
 "prefs_TASKLOGEMAIL_title"=>"Email",
 "prefs_TASKLOGNOTE_title"=>"Append Mails To Log?",
+"prefs_TASKNOTIFYBYDEF_title"=>"Send Task Notifications by Default?",
+"prefs_TASKNOTIFYBYDEF_tooltip"=>"Determine whether the Checkbox for sending Task Notifications on the task addedit page is enabled by default or not. Thus this setting can be manually overridden from there.",
 "prefs_tasks_group_title"=>"Tasks",
 "prefs_TASKASSIGNMAX_title"=>"Task Assignment Maximum",
 "prefs_MAILALL_title"=>"Notification Mails: Include Task Owner?",

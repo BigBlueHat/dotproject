@@ -4,6 +4,15 @@ $del = isset($_POST['del']) ? $_POST['del'] : 0;
 $obj = new CPreferences();
 $obj->pref_user = isset($_POST['pref_user']) ? $_POST['pref_user'] : 0;
 
+// reset checkboxes
+// checked checkboxes will be set to true later again
+$q  = new DBQuery;
+$q->addTable('user_preferences');
+$q->addUpdate('pref_value', 'false');
+$q->addWhere('pref_type="checkbox"');
+$q->addWhere('pref_user = '.$obj->pref_user);
+$rs = $q->exec();
+
 foreach ($_POST['pref_name'] as $name => $value) {
 	$obj->pref_name = $name;
 	$obj->pref_value = $value;

@@ -450,6 +450,7 @@ INSERT INTO `user_preferences` VALUES ('0', 'MAILALL', 'false', 'tasks', 'checkb
 INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGEMAIL', '0', 'tasklog', '');
 INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGSUBJ', '', 'tasklog', '');
 INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGNOTE', 'false', 'tasklog', 'checkbox');
+INSERT INTO `user_preferences` VALUES ('0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 'checkbox');
 
 CREATE TABLE `user_prefs_list` (
 `pref_list_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,

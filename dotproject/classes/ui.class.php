@@ -804,7 +804,11 @@ class CAppUI {
 */
 	function getPref( $name )
 	{
-		return @$this->user_prefs[$name];
+		$pref = @$this->user_prefs[$name];
+		if ($pref == 'false')
+				$pref = false;
+	
+		return $pref;
 	}
 /**
 * Sets the value of a user preference specified by name

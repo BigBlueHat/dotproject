@@ -70,6 +70,10 @@ if ($sub_form) {
 		}
 	}
 
+	// handle task notify checkbox
+	if ( $notify != 1 ) 
+		$obj->task_notify = 0;
+
 	// Let's check if task_dynamic is unchecked
 	if( !array_key_exists('task_dynamic', $_POST) ){
 	    $obj->task_dynamic = false;

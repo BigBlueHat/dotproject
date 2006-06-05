@@ -77,11 +77,6 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 					</table>
 				</td>
 			</tr>
-<!-- 			<tr>
-				<td colspan=3 align="center">
-					<input type="checkbox" name="task_notify" value="1" <?php //if($obj->task_notify!="0") echo "checked"?> /> <?php //echo $AppUI->_( 'notifyChange' );?>
-				</td>
-			</tr> -->
 		</table>
 	</td>
 	<td valign="top" align="center">
@@ -89,7 +84,16 @@ for ($i = 1; $i < sizeof($keys); $i++) {
 		<?php echo $AppUI->_( 'Additional Email Comments' );?>:		
 		<br />
 		<textarea name="email_comment" class="textarea" cols="60" rows="10"></textarea><br />
-		<input type="checkbox" name="task_notify" value="1" <?php if($obj->task_notify!="0") echo "checked"?> /> <?php echo $AppUI->_( 'notifyChange' );?>
+	<?php // determine how to set the task notify box 
+		$tnd = $AppUI->getPref('TASKNOTIFYBYDEF');
+		$tn = '';
+		if($obj->task_notify == '1')
+			$tn = 'checked="checked"';
+		if($tnd && ($task_id == 0)) 
+			$tn = 'checked="checked"';
+	?>
+		
+		<input type="checkbox" name="task_notify" value="1" <?php echo $tn; ?> /> <?php echo $AppUI->_( 'notifyChange' );?>
 		</td></tr></table><br />
 		
 	</td>
