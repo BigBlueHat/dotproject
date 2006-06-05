@@ -11,7 +11,8 @@ $problem = intval( dPgetParam( $_GET, 'problem', null ) );
 $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 $taskLogReferenceImage = dPgetSysVal( 'TaskLogReferenceImage' );
 ?>
-<script language="JavaScript">
+<script type="text/javascript" language="JavaScript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -26,6 +27,7 @@ function delIt2(id) {
 	}
 }
 <?php } ?>
+-->
 </script>
 
 <?php

@@ -52,7 +52,7 @@
 <tr bgcolor="white" valign="top">
 	<td>
 	{if $row.canEdit}
-		<a href="?m=tasks&a=view&task_id={$task_id}&tab={$tab}&task_log_id={$row.task_log_id}#log">
+		<a href="?m=tasks&amp;a=view&amp;task_id={$task_id}&amp;tab={$tab}&amp;task_log_id={$row.task_log_id}#log">
 			{dPshowImage src='./images/icons/stock_edit-16.png' width=16 height=16}
 		</a>
 	{/if}
@@ -105,7 +105,7 @@
 	<td align="right" colspan="3">
 {if $task_id}	
 		<form action="?m=tasks&a=view&tab=1&task_id={$task_id}" method="post">
-			<input type="submit" class="button" value="{dPtranslate word='new log'}">
+			<input type="submit" class="button" value="{dPtranslate word='new log'}" />
 		</form>
 {/if}
 	</td>
