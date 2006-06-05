@@ -46,7 +46,7 @@ $q->addWhere('billingcode_status=0');
 $q->addWhere("(company_id='$proj->project_company' OR company_id='0')");
 $q->addOrder('billingcode_name');
 
-$task_log_costcodes[0]='';
+$task_log_costcodes[0]='&nbsp;';
 $ptrc = $q->exec();
 echo db_error();
 $nums = 0;
@@ -127,7 +127,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 ?>
 
 <!-- TIMER RELATED SCRIPTS -->
-<script type=text/javascript" language="javascript">
+<script type="text/javascript" language="javascript">
 	// please keep these lines on when you copy the source
 	// made by: Nicolas - http://www.javascript-page.com
 	// adapted by: Juan Carlos Gonzalez jcgonz@users.sourceforge.net

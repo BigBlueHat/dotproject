@@ -17,9 +17,9 @@
 		</td>
 		<td nowrap="nowrap">
 		<!-- patch by rowan  bug #890841 against v1.0.2-1   email: bitter at sourceforge dot net -->
-			<input type="hidden" name="task_log_date" value="{dPdateFormat date=$log_date format='db'}">
+			<input type="hidden" name="task_log_date" value="{dPdateFormat date=$log_date format='db'}" />
 		<!-- end patch #890841 -->
-			<input type="text" name="log_date" value="{dPdateFormat date=$log_date}" class="text" disabled="disabled">
+			<input type="text" name="log_date" value="{dPdateFormat date=$log_date}" class="text" disabled="disabled" />
 			<a href="#" onclick="popCalendar('log_date')">
 				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 			</a>
@@ -71,7 +71,7 @@
 			<input type="hidden" name="task_end_date" value="{dPdateFormat date=$obj->task_end_date format='timestamp'}" />
 			<input type="text" name="end_date" value="{dPdateFormat date=$obj->task_end_date}" class="text" disabled="disabled" />
 			<a href="#" onclick="popCalendar('end_date')">
-				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0">
+				<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 			</a>
 		</td>
 	</tr>
@@ -107,7 +107,7 @@
 			{dPtranslate word='URL'}:
 		</td>
 		<td>
-			<input type="text" class="text" name="task_log_related_url" value="{$log->task_log_related_url}" size="50" maxlength="255" title="{dPtranslate word='Must in general be entered with protocol name, e.g. http://...'}"/>
+			<input type="text" class="text" name="task_log_related_url" value="{$log->task_log_related_url}" size="50" maxlength="255" title="{dPtranslate word='Must in general be entered with protocol name, e.g. http://...'}" />
 		</td>
 	</tr>
 	<tr>
@@ -120,17 +120,17 @@
 		<td align="right" valign="top">{dPtranslate word='Email Log to'}:</td>
 		<td>
 	
-			<input type="checkbox" name="email_assignees"{if $ta} checked="checked"{/if}>{dPtranslate word='Task Assignees'}
-			<input type="hidden" name="email_task_list" id="email_task_list" value="{$task_contacts}">
+			<input type="checkbox" name="email_assignees"{if $ta} checked="checked"{/if} />{dPtranslate word='Task Assignees'}
+			<input type="hidden" name="email_task_list" id="email_task_list" value="{$task_contacts}" />
 			<input type="checkbox" onmouseover="window.status = '{$task_email_title}';"
 			onmouseout="window.status = '';"
-			name="email_task_contacts" id="email_task_contacts"{if $tt} checked="checked"{/if}>{dPtranslate word='Task Contacts'}
+			name="email_task_contacts" id="email_task_contacts"{if $tt} checked="checked"{/if} />{dPtranslate word='Task Contacts'}
 			<input type="hidden" name="email_project_list" id="email_project_list"
-				value='{$project_contacts}'>
+				value='{$project_contacts}' />
 			<input type="checkbox" onmouseover="window.status = '{$proj_email_title}';" 
 			 onmouseout="window.status = '';"
-			 name='email_project_contacts' id="email_project_contacts"{if $tp} checked="checked"{/if}>{dPtranslate word='Project Contacts'}
-			<input type="hidden" name="email_others" id="email_others" value="">
+			 name='email_project_contacts' id="email_project_contacts"{if $tp} checked="checked"{/if} />{dPtranslate word='Project Contacts'}
+			<input type="hidden" name="email_others" id="email_others" value="" />
 			{if $viewContacts}
 			<input type="button" class="button" value="{dPtranslate word='Other Contacts...'}" onclick="javascript:popEmailContacts();" />
 			{/if}
@@ -147,7 +147,6 @@
 			<input type="button" class="button" value="{dPtranslate word='update task'}" onclick="updateTask()" />
 		</td>
 	</tr>
-	</td>
 	</table>
 	</td>
 </tr>
