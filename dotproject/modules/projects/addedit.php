@@ -149,7 +149,7 @@ var calWin = null;
 function popCalendar( field ){
 calendarField = field;
 idate = eval( 'document.editFrm.project_' + field + '.value' );
-window.open( 'index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback=setCalendar&amp;date=' + idate, 'calwin', 'width=280, height=250, scollbars=false' );
+window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=280, height=250, scollbars=false' );
 }
 
 /**
