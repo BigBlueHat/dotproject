@@ -58,62 +58,36 @@ if ( isset($_FILES['ics']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 }
 elseif ( isset($_GET['dialog']) && ($_GET['dialog']=='0') ){	//file upload form
 
-require_once( $AppUI->getModuleClass( 'companies' ) );
-require_once( $AppUI->getModuleClass( 'projects' ) );
+	require_once( $AppUI->getModuleClass( 'companies' ) );
+	require_once( $AppUI->getModuleClass( 'projects' ) );
+	
+	$comp = new CCompany();
+	$proj = new CProject();
+	
+	$r  = new DBQuery;
+	$r->addTable('projects');
+	$r->addQuery('project_id, CONCAT(c.company_name,"::", project_name) AS project_name');
+	$r->addJoin('companies', 'c', 'project_company = c.company_id'); 
+	if ($company_id > 0){
+		$r->addWhere('project_company='.$company_id);
+	}
+	$proj->setAllowedSQL($AppUI->user_id, $r);
+	$comp->setAllowedSQL($AppUI->user_id, $r);
+	$calendar = $r->loadHashList();
+	$r->clear();
+	
+	$calendar[0] = $AppUI->_('Unspecified Calendar');
+	$calendar[-1] = $AppUI->_('Personal Calendar');
+	
+	$titleBlock = new CTitleBlock( 'Import iCalendar File', 'vcalendar.png', $m, "$m.$a" );
+	$titleBlock->addCrumb( "?m=calendar", "monthly calendar" );
+	$titleBlock->show();
+	
+	$tpl->assign('cal', $cal);
+	$tpl->assign('calendar', $calendar);
+	$tpl->displayFile('eventimport', 'calendar');
 
-$comp = new CCompany();
-$proj = new CProject();
-
-$r  = new DBQuery;
-$r->addTable('projects');
-$r->addQuery('project_id, CONCAT(c.company_name,"::", project_name) AS project_name');
-$r->addJoin('companies', 'c', 'project_company = c.company_id'); 
-if ($company_id > 0){
-	$r->addWhere('project_company='.$company_id);
-}
-$proj->setAllowedSQL($AppUI->user_id, $r);
-$comp->setAllowedSQL($AppUI->user_id, $r);
-$calendar = $r->loadHashList();
-$r->clear();
-
-$calendar[0] = $AppUI->_('Unspecified Calendar');
-$calendar[-1] = $AppUI->_('Personal Calendar');
-
-$titleBlock = new CTitleBlock( 'Import iCalendar File', 'vcalendar.png', $m, "$m.$a" );
-$titleBlock->addCrumb( "?m=calendar", "monthly calendar" );
-$titleBlock->show();
-
-?>
-
-<form name="icsFrm" action="?m=calendar&amp;a=eventimport&amp;suppressHeaders=true" enctype="multipart/form-data" method="post">
-	<input type="hidden" name="max_file_size" value="109605000" />
-
-<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
-	<tr>
-		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Fetch iCalendar(s) File' );?>:</td>
-		<td align="left"><input type="File" class="button" name="ics" style="width:280px" accept="text/icalendar,text/vcalendar" /></td>
-	</tr>
-	<tr>
-		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Target Calendar(s)' );?>:</td>
-		<td align="left" valign="middle"><?php echo arraySelect( $calendar, 'calendars[]', 'size="10" class="text" multiple="multiple"', $cal, false );?>
-		</td>
-	</tr>
-	<tr>
-		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Purge existing Events from Calendar on Import' );?>?:</td>
-		<td align="left"><input type="checkbox" class="button" name="purge_events" checked="checked" /></td>
-	</tr>
-	<tr>
-		<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Try to preserve Event IDs on import' );?>?:</td>
-		<td align="left"><input type="checkbox" class="button" name="webdav_preserve_id" /></td>
-	</tr>
-	<tr>
-		<td align="right" colspan="2" nowrap="nowrap"><input type="submit" class="button" value="<?php echo $AppUI->_('submit'); ?>" /></td>
-	</tr>
-</table>
-</form>
-
-<?php } else {	// trouble with get parameters
+} else {	// trouble with get parameters
 $AppUI->setMsg( "iCalendarImportError", UI_MSG_ERROR );
 	$AppUI->redirect();
 }
-?>

@@ -1,0 +1,25 @@
+<form name="icsFrm" action="?m=calendar&amp;a=eventimport&amp;suppressHeaders=true" enctype="multipart/form-data" method="post">
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
+	<tr>
+		<td align="right" nowrap="nowrap">{dPtranslate word='Fetch iCalendar(s) File'}:</td>
+		<td align="left"><input type="File" class="button" name="ics" style="width:280px" accept="text/icalendar,text/vcalendar" /></td>
+	</tr>
+	<tr>
+		<td align="right" nowrap="nowrap">{dPtranslate word='Target Calendar(s)'}:</td>
+		<td align="left" valign="middle">
+				{dParraySelect array=$calendar name='calendars[]' extras='multiple="multiple" class=text size=10' value=$cal translation=false}
+		</td>
+	</tr>
+	<tr>
+		<td align="right" nowrap="nowrap">{dPtranslate word='Purge existing Events from Calendar on Import'}?:</td>
+		<td align="left"><input type="checkbox" class="button" name="purge_events" checked="checked" /></td>
+	</tr>
+	<tr>
+		<td align="right" nowrap="nowrap">{dPtranslate word='Try to preserve Event IDs on import'}?:</td>
+		<td align="left"><input type="checkbox" class="button" name="webdav_preserve_id" /></td>
+	</tr>
+	<tr>
+		<td align="right" colspan="2" nowrap="nowrap"><input type="submit" class="button" value="{dPtranslate word='submit'}" /></td>
+	</tr>
+</table>
+</form>
