@@ -1,0 +1,103 @@
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+<tr>
+	<td width="50%" valign="top">
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl2">
+<tr>
+	<th width="100%">{dPtranslate word='Item'}</th>
+	<th nowrap>{dPtranslate word='Type'}</th>
+	<th nowrap>{dPtranslate word='Status'}</th>
+	<th>&nbsp;</th>
+</tr>
+
+{foreach from=$user_acls  item=acl}
+	{*Module information*}
+	
+	{*Different bg color classes for allowed and denied items*}
+	{if $perm.$acl == "allow"}
+	 	{assign var="bg" value="class='allow'"}
+	{else}
+		{assign var="bg" value="class='deny'"}
+	{/if}
+	
+	<tr>
+		<td {$bg} align="center">{$ml.$acl}</td>
+		<td {$bg} align="center">{$pt.$acl}</td
+		<td {$bg} align="center">{dPtranslate word=$perm.$acl}</td>
+		<td {$bg} nowrap align="center">
+		{if $canDelete}
+			<a href="javascript:delIt({$acl});" title="{dPtranslate word='delete'}">
+				{dPshowImage src='./images/icons/stock_delete-16.png' wsize=16 hsize=16 title=''}
+			</a>
+		{/if}
+		</td>
+	</tr>
+{/foreach}
+</table>
+
+	</td>
+	<td width="50%" valign="top">
+
+{if $canEdit}
+	
+	<form name="frmPerms" method="post" action="?m=admin">
+		<input type="hidden" name="del" value="0" />
+		<input type="hidden" name="dosql" value="do_perms_aed" />
+		<input type="hidden" name="user_id" value="{$user_id}" />
+		<input type="hidden" name="permission_user" value="{$aro}" />
+		<input type="hidden" name="permission_id" value="0" />
+		<input type="hidden" name="permission_item" value="0" />
+		<input type="hidden" name="permission_table" value="" />
+		<input type="hidden" name="permission_name" value="" />
+	
+	<table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
+	<tr>
+		<th colspan="2">{dPtranslate word='Add Permissions'}</th>
+	</tr>
+	<tr>
+		<td nowrap="nowrap" align="right">{dPtranslate word='Module'}:</td>
+		<td width="100%">
+			{dParraySelect array=$modules name='permission_module' extras='class=text size=1' value='grp,all' translation=true}
+		</td>
+	</tr>
+	<tr>
+		<td nowrap="nowrap" align="right">{dPtranslate word='Item'}:</td>
+		<td>
+			<input type="text" name="permission_item_name" class="text" size="30" value="all" disabled="disabled" />
+			<input type="button" name="more" class="text" value="..." onclick="popPermItem();" />
+		</td>
+	</tr>
+	<tr>
+		<td nowrap="nowrap" align="right">{dPtranslate word='Access'}:</td>
+		<td>
+			<select name="permission_access" class="text">
+				<option value="1">{dPtranslate word='allow'}</option>
+				<option value="0">{dPtranslate word='deny'}</option>
+			</select>
+		</td>
+	</tr>
+	
+	{foreach from=$perm_list item=perm_id key=id}
+		<tr>
+			<td nowrap="nowrap" align="right">{dPtranslate word=$perm_id}:</td>
+			<td>
+			  <input type="checkbox" name="permission_type[]" value="{$id}" />
+			</td>
+		</tr>	
+	{/foreach}
+	
+	<tr>
+		<td>
+			<input type="reset" value="{dPtranslate word='clear'}" class="button" name="sqlaction" onclick="clearIt();" />
+		</td>
+		<td align="right">
+			<input type="submit" value="{dPtranslate word='add'}" class="button" name="sqlaction2" />
+		</td>
+	</tr>
+	</table>
+	</form>
+{/if}
+
+</td>
+</tr>
+</table>

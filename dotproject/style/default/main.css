@@ -149,6 +149,15 @@ TD.nav {
 	color: #000
 }
 
+/* dotProject Permission Allow Deny Highlighting */
+
+TD.allow {
+	background-color: #D0F8D0;
+}
+
+TD.deny {
+	background-color: #F9DDDD;
+}
 /*
 **********************************
 Begin IE TD buttonizing
@@ -192,12 +201,13 @@ TD.nav {
 	color: #FFFFFF;
 }
 
-/* Standard table 'spreadsheet' style */
-table.tbl {
+/* tbl Standard table 'spreadsheet' style */
+/* tbl2 doesn't define td (bgcolor), so it can be overriden for row highlighting */
+table.tbl, table.tbl2 {
 	background: #a5cbf7;
 }
 
-table.tbl TH {
+table.tbl, table.tbl2 TH {
 	background-color: #08245b;
 	color: #ffffff;
 	list-style-type: disc;
