@@ -15,7 +15,7 @@ $tasks_filters_selection = array(
 //'tasks_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'),
 'task_owner' => $perms->getPermittedUsers('calendar'),
 //'task_creator' => $perms->getPermittedUsers('calendar'),
-'task_project' => $projects->getAllowedRecords($AppUI->user_id, 'project_id, project_name', 'project_name'),
+'task_project' => arrayMerge( array( '-1'=>$AppUI->_('Personal Calendar'), '0'=>$AppUI->_('Unspecified Calendar') ) , $projects->getAllowedRecords($AppUI->user_id, 'project_id, project_name', 'project_name')),
 'task_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'));
 
 // retrieve any state parameters
@@ -39,7 +39,6 @@ if ($calendar_filter > 0){
 $proj->setAllowedSQL($AppUI->user_id, $r);
 $projects = $r->loadHashList();
 $r->clear();
-$calendar_filter_list = arrayMerge( array( '-1'=>$AppUI->_('Personal Calendar'), '0'=>$AppUI->_('Unspecified Calendar') ) , $projects );
 
 // retrieve any state parameters
 if (isset( $_REQUEST['calendar_filter'] )) {
