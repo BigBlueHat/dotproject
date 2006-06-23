@@ -1,0 +1,57 @@
+<table width="100%" border="0" cellpadding="2" cellspacing="0">
+<tr>
+	<td width="50%" valign="top">
+
+		<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+		<tr>
+			<th width="100%">{dPtranslate word='Role'}</th>
+			<th>&nbsp;</th>
+		</tr>
+		{foreach from=$user_roles item=row}
+			<tr>
+				<td>{$row.name}</td>
+				<td nowrap>
+				{if $canEdit}
+					<a href="javascript:delIt({$row.id});" title="{dPtranslate word='delete'}">
+						{dPshowImage src='./images/icons/stock_delete-16.png' wsize=16 hsize=16 title=''}
+					</a>
+				{/if}
+				</td>
+			</tr>
+		{/foreach}
+		</table>
+
+	</td>
+	<td width="50%" valign="top">
+
+{if $canEdit}
+	<form name="frmPerms" method="post" action="?m=admin">
+		<input type="hidden" name="del" value="0" />
+		<input type="hidden" name="dosql" value="do_userrole_aed" />
+		<input type="hidden" name="user_id" value="{$user_id}" />
+		<input type="hidden" name="user_name" value="{$user_name}" />
+		<input type="hidden" name="role_id" value="" />
+	
+	<table cellspacing="1" cellpadding="2" border="0" class="std" width="100%">
+	<tr>
+		<th colspan='2'>{dPtranslate word='Add Role'}</th>
+	</tr>
+	<tr>
+		<td colspan='2' width="100%">
+			{dParraySelect array=$roles_arr name='user_role' extras='class=text size=1' value='' translation=true}
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<input type="reset" value="{dPtranslate word='clear'}" class="button" name="sqlaction" onclick="clearIt();" />
+		</td>
+		<td align="right">
+			<input type="submit" value="{dPtranslate word='add'}" class="button" name="sqlaction2" />
+		</td>
+	</tr>
+	</table>
+	</form>
+{/if}
+	</td>
+</tr>
+</table>
