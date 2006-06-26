@@ -202,12 +202,11 @@ TD.nav {
 }
 
 /* tbl Standard table 'spreadsheet' style */
-/* tbl2 doesn't define td (bgcolor), so it can be overriden for row highlighting */
-table.tbl, table.tbl2 {
+table.tbl{
 	background: #a5cbf7;
 }
 
-table.tbl, table.tbl2 TH {
+table.tbl TH {
 	background-color: #08245b;
 	color: #ffffff;
 	list-style-type: disc;
@@ -220,6 +219,22 @@ table.tbl, table.tbl2 TH {
 table.tbl td {
 	background-color: #ffffff;
 }
+
+/* tbl2 doesn't define td (bgcolor), so it can be overriden for row highlighting */
+table.tbl2 {
+	background: #a5cbf7;
+}
+
+table.tbl2 TH {
+	background-color: #08245b;
+	color: #ffffff;
+	list-style-type: disc;
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+	font-weight: normal;
+	text-align:center;
+}
+
 
 /* a 'standard' table */
 table.std {
