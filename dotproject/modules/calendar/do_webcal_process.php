@@ -3,6 +3,7 @@
 // collect and convert checkbox info
 $_POST['webcal_auto_import'] = dPgetParam( $_POST, 'webcal_auto_import', 0 );
 $_POST['webcal_auto_publish'] =  isset($_POST['webcal_auto_publish']) ? 1 : 0;
+$_POST['webcal_auto_show'] =  isset($_POST['webcal_auto_show']) ? 1 : 0;
 $_POST['webcal_private_events'] = isset($_POST['webcal_private_events']) ? 1 : 0;
 $_POST['webcal_purge_events'] = isset($_POST['webcal_purge_events']) ? 1 : 0;
 $_POST['webcal_preserve_id'] = isset($_POST['webcal_preserve_id']) ? 1 : 0;

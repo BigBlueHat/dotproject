@@ -1,0 +1,160 @@
+{if $canEdit}
+	<form name="webcalFrm" action="?m=calendar&amp;a=calmgt" method="post">
+	<input type="hidden" name="dosql" value="do_webcal_process" />
+	<input type="hidden" name="webcal_id" value="{$webcal_id}" />
+	<input type="hidden" name="webcal_res_type" value="1" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="proc_method" value="" />
+{/if}
+
+<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+<tr>
+
+
+	<th>&nbsp;</th>	
+
+	<th nowrap="nowrap">{dPtranslate word='WebDAV Path'}</th>
+	<th>{dPtranslate word='User'}&amp;{dPtranslate word='Pass'}</th>
+	<th>{dPtranslate word='Calendars'}</th>
+	<th>{dPtranslate word='Import'}</th>
+	<th>{dPtranslate word='Publish'}</th>
+	<th>{dPtranslate word='Subscribe'}</th>
+
+
+</tr>
+
+
+{foreach from=$wres item=row}
+	<tr>
+		<td nowrap="nowrap">
+			<a href="javascript:subm('import',{$row.webcal_id})" title="{dPtranslate word='import'}">
+				{dPshowImage find='down.png' wsize=16 hsize=16}
+			</a>
+			<a href="javascript:subm('publish',{$row.webcal_id})" title="{dPtranslate word='publish'}">
+				{dPshowImage find='up.png' wsize=16 hsize=16}
+			</a>
+			<a href="?m=calendar&amp;a=calmgt&amp;webcal_id={$row.webcal_id}" title="{dPtranslate word='Edit'} {dPtranslate word='Resource'}">
+				{dPshowImage find='stock_edit-16.png' wsize=16 hsize=16}
+			</a>
+			<a href="javascript:subm('del',{$row.webcal_id})" title="{dPtranslate word='delete'}">
+				{dPshowImage find='stock_delete-16.png' wsize=16 hsize=16}
+			</a>
+		<td nowrap="nowrap"><a href="http://{$row.webcal_path}">{$row.webcal_path}</a></td>
+		<td nowrap="nowrap">{$row.webcal_user}</td>
+		{assign var="ind" value=$row.webcal_id}
+		<td nowrap="nowrap">{$cals.$ind}</td>
+		<td nowrap="nowrap">
+			{if $row.webcal_auto_import > 0}
+				<span style="color:green">{dPtranslate word='Auto'} {$row.webcal_auto_import}</span>
+			{else}
+				<strike style="color:darkgrey">{dPtranslate word='Auto'}</strike>
+			{/if}
+			,&nbsp;
+			{if $row.webcal_purge_events} 
+				<span style="color:green">{dPtranslate word='Purge'}</span>
+			{else}
+				<strike style="color:darkgrey">{dPtranslate word='Purge'}</strike>
+			{/if}		
+			,&nbsp;
+			{if $row.webcal_preserve_id}
+				<span style="color:green">{dPtranslate word='Pres.'}</span>'
+			{else}
+				<strike style="color:darkgrey">{dPtranslate word='Pres.'}</strike>
+			{/if}		
+		</td>	
+		<td nowrap="nowrap">
+			{if $row.webcal_auto_publish}
+				<span style="color:green">{dPtranslate word='Auto'}</span>
+			{else}
+				<strike style="color:darkgrey">{dPtranslate word='Auto'}</strike>
+			{/if}		
+			,&nbsp;
+			{if $row.webcal_private_events}
+				<span style="color:green">{dPtranslate word='Priv.'}</span>
+			{else}
+				<strike style="color:darkgrey">{dPtranslate word='Priv.'}</strike>
+			{/if}		
+		</td>
+		<td nowrap="nowrap">
+			{if $row.webcal_auto_show}
+				<span style="color:green">{dPtranslate word='Show'}</span>
+			{else}
+				<strike style="color:darkgrey">{dPtranslate word='Show'}</strike>
+			{/if}		
+		</td>
+	</tr>
+{/foreach}
+
+
+{if $canEdit}
+<tr>
+	<td nowrap="nowrap" align="center">
+		<input type="button" class="button" onclick="javascript:subm('store', -1)" value="{dPtranslate word='submit'}" />
+		<br/>
+		<a href="javascript:clear()">{dPtranslate word='reset'}</a>
+	</td>
+	<td nowrap="nowrap">
+		http://<input type="text" class="button" name="webcal_path" style="width:280px" value="{$wdo->webcal_path}" />
+		<br />
+		{dPtranslate word='Port'}: 
+		<input type="text" class="button" name="webcal_port" style="width:30px" value="{$wdo->webcal_port}" />
+	</td>
+	<td>
+		{dPtranslate word='User'}: 
+		<input type="text" class="button" name="webcal_user" style="width:140px" value="{$wdo->webcal_user}" />
+		<br />
+		{dPtranslate word='Pass'}: 
+		<input type="password" class="button" name="webcal_pass" style="width:140px" value="{$wdo->webcal_pass}" />
+	</td>
+	<td align="center">
+		{dParraySelect array=$calendar name='calendars[]' extras='size="$cal_size" class="text" multiple="multiple"' value=$cal}
+	</td>
+	<td style="background-color:#ffdddd">
+		{dPtranslate word='Auto-Imp. every'}&nbsp;
+		<input type="text" class="button" name="webcal_auto_import" style="width:20px" value="{$wdo->webcal_auto_import}" />
+		{dPtranslate word='min'}
+		<br />
+		{dPtranslate word='Purge ex. Events'}?
+		<input type="checkbox" name="webcal_purge_events" class="text"
+			{if $wdo->webcal_purge_events == 1}
+				checked="checked"
+			{/if}
+		/>
+		<br/>
+		{dPtranslate word='Preserve Id')}?
+		<input type="checkbox"  name="webcal_preserve_id" class="text"
+			{if $wdo->webcal_preserve_id == 1}
+				checked="checked"
+			{/if}
+		/>
+	</td>
+	<td  style="background-color:#ffdddd">
+		{dPtranslate word='Auto'}?
+		<input type="checkbox" name="webcal_auto_publish" class="text" 
+			{if $wdo->webcal_auto_publish == 1}
+				checked="checked"
+			{/if}
+		/>
+		<br/>
+		'Private Events'}?
+		<input type="checkbox" name="webcal_private_events" class="text" 
+			{if $wdo->webcal_private_events != 0}
+				checked="checked"
+			{/if}
+		/>
+	</td>
+	<td  style="background-color:#ffdddd">
+		{dPtranslate word='Show'}?
+		<input type="checkbox" name="webcal_auto_show" class="text"
+			{if $wdo->webcal_auto_show == 1}
+				checked="checked"
+			{/if}
+		/>
+	</td>
+</tr>
+{/if}
+
+</table>
+{if $canEdit}
+	</form>
+{/if}
