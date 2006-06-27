@@ -35,6 +35,9 @@ function smarty_function_dPtranslate($params, &$smarty)
     if ($type == 'js')
     	return $AppUI->_($word . $sentence, UI_OUTPUT_JS);
 
+	  if ($type == 'cl')
+	    	return $AppUI->_($word . $sentence, UI_CASE_LOWER);
+
     return $AppUI->_($word . $sentence);
 }
 
