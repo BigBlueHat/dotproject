@@ -1,0 +1,15 @@
+<table width="100%" class="std">
+	<tr>
+		<td><strong>{dPtranslate word='clashEvent'}</strong></td>
+	</tr>
+	{foreach from=$clash item=user}
+		<tr><td>{$user}</td></tr>
+	{/foreach}
+</table>
+<a href="#" onclick="set_clash_action('suggest');">{dPtranslate word='Suggest Alternative'}</a> : 
+<a href="#" onclick="set_clash_action('cancel');">{dPtranslate word='Cancel'}</a> : 
+<a href="#" onclick="set_clash_action('mail');">{dPtranslate word='Mail Request'}</a> :  
+<a href="#" onclick="set_clash_action('accept');">{dPtranslate word='Book Event Despite Conflict'}</a>
+<form name="clash_form" method="post" action="?m=calendar&a=clash&event_id={$obj->event_id}">
+<input type="hidden" name="clash_action" value="cancel">
+</form>

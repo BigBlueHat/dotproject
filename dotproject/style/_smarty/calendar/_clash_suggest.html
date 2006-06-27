@@ -1,0 +1,48 @@
+<form name="editFrm" method="POST" action="{$calurl}&clash_action=process">
+<table width="100%" class="std">
+<tr>
+  <td width="50%" align="right">{dPtranslate word='Earliest Date'}:</td>
+  <td width="50%" align="left" nowrap="nowrap">
+    <input type="hidden" name="event_start_date" value="{dPdateFormat date=$start_date format='db'}" />
+    <input type="text" name="start_date" value="{dPdateFormat date=$start_date}" class="text" disabled="disabled" />
+      <a href="#" onclick="popCalendar('start_date')">
+	<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
+      </a>
+  </td>
+</tr>
+<tr>
+  <td width="50%" align="right">{dPtranslate word='Latest Date'}:</td>
+  <td width="50%" align="left" nowrap="nowrap">
+    <input type="hidden" name="event_end_date" value="{dPdateFormat date=$end_date format='db'}" />
+    <input type="text" name="end_date" value="{dPdateFormat date=$end_date}" class="text" disabled="disabled" />
+      <a href="#" onclick="popCalendar('end_date')">
+	<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
+      </a>
+  </td>
+</tr>
+<tr>
+  <td width="50%" align="right">{dPtranslate word='Earliest Start Time'}:</td>
+  <td width="50%" align="left">
+		{dParraySelect array=$times name='start_time' extras='size="1" class="text"' value=$start_date|dPdateFormat:'time'}
+  </td>
+</tr>
+<tr>
+  <td width="50%" align="right">{dPtranslate word='Latest Finish Time'}:</td>
+  <td width="50%" align="left">
+		{dParraySelect array=$times name='end_time' extras='size="1" class="text"' value=$end_date|dPdateFormat:'time'}
+  </td>
+</tr>
+<tr>
+  <td width="50%" align="right">{dPtranslate word='Duration'}:</td>
+  <td width="50%" align="left">
+    <input type="text" class="text" size="5" name="duration" value="{$duration}" />
+   	{dPtranslate word='minutes'}
+  </td>
+</tr>
+<tr>
+  <td><input type="button" value="{dPtranslate word='cancel'}" class="button" onclick="set_clash_action('cancel');" /></td>
+  <td align="right"><input type="button" value="{dPtranslate word='submit'}" class="button" onclick="set_clash_action('process')" /></td>
+</tr>
+</table>
+<input type="hidden" name="clash_action" value="cancel" />
+</form>
