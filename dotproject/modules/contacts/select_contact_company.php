@@ -78,29 +78,13 @@
 			</script>
 		<?php
 	} else {
-		?>
 		
-		<form name="frmSelector" action="./index.php?m=contacts&a=select_contact_company&dialog=1&table_name=<?php echo $table_name."&$additional_get_information"; ?>" method="post">
-			<table cellspacing="0" cellpadding="3" border="0">
-			<tr>
-				<td colspan="2">
-			<?php
-				echo $AppUI->_( 'Select' ).' '.$AppUI->_( $selection_string ).':<br />';
-				echo arraySelect( $company_list, $id_field, ' size="10"', $company_id );
-			?>
-				</td>
-			</tr>
-			<tr>
-				<td>
-					<input type="button" class="button" value="<?php echo $AppUI->_( 'cancel' );?>" onclick="window.close()" />
-				</td>
-				<td align="right">
-					<input type='checkbox' name='overwrite_address' /> <?php echo $AppUI->_("Overwrite contact address information"); ?>
-					<input type="submit" class="button" value="<?php echo $AppUI->_( 'Select', UI_CASE_LOWER );?>" />
-				</td>
-			</tr>
-			</table>
-		</form>
-	<?php
+		$tpl->assign('additional_get_information', $additional_get_information);
+		$tpl->assign('company_list', $company_list);
+		$tpl->assign('company_id', $company_id);
+		$tpl->assign('id_field', $id_field);
+		$tpl->assign('selection_string', $selection_string);
+		$tpl->assign('table_name', $table_name);
+		$tpl->displayFile('_select_contact_company', 'contacts');
 	}
 ?>

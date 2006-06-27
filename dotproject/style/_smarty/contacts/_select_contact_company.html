@@ -1,0 +1,19 @@
+<form name="frmSelector" action="./index.php?m=contacts&a=select_contact_company&dialog=1&table_name={$table_name}&{$additional_get_information}" method="post">
+			<table cellspacing="0" cellpadding="3" border="0">
+			<tr>
+				<td colspan="2">
+					{dPtranslate word='Select'} {dPtranslate word=$selection_string}:<br />
+					{dParraySelect array=$company_list name='$id_field' extras='size="10" class="text"' value=$company_id}
+				</td>
+			</tr>
+			<tr>
+				<td>
+					<input type="button" class="button" value="{dPtranslate word='cancel'}" onclick="window.close()" />
+				</td>
+				<td align="right">
+					<input type='checkbox' name='overwrite_address' /> {dPtranslate word='Overwrite contact address information'}
+					<input type="submit" class="button" value="{dPtranslate word='select'}" />
+				</td>
+			</tr>
+			</table>
+		</form>
