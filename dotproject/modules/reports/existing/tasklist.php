@@ -197,8 +197,7 @@ if ($do_report) {
 		$q->addTable('user_tasks');
 		$q->addWhere('task_id = '.$task_id);
 		$sql_user = $q->exec();
-		$q->clear();
-		
+				
 		$users = null;
 		while ($Task_User = db_fetch_assoc($sql_user)){
 			//$current_user = $Task_User['user_id'];
@@ -206,6 +205,7 @@ if ($do_report) {
 				$users.=", ";
 			}
 
+			$q->clear();
 			$q = new DBQuery;
 			$q->addTable('users', 'u');
 			$q->addTable('contacts', 'c');
