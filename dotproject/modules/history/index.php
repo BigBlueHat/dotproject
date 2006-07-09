@@ -134,5 +134,6 @@ foreach ($history as $key => $row)
   	unset($history[$key]);
 }
 
+global $tpl;
 $tpl->displayList('history', $history, $history_count);
 ?>
