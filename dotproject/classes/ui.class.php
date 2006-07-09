@@ -1325,6 +1325,9 @@ class CTitleBlock_core {
 	{
 		global $AppUI, $tpl;
 		
+		if (empty($this->icon))
+			$this->icon = 'stock_new.png';
+		
 		$tpl->assign('icon', dPFindImage($this->icon, $this->module));
 		$tpl->assign('title', $this->title);
 		//$tpl->assign('module', $this->module);
