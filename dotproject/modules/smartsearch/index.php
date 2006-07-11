@@ -1,6 +1,9 @@
 <?php
 $search_keyword = @$_POST['keyword'];
 
+$titleBlock = new CTitleBlock( 'Search', 'smartfolder.gif'); //, $m, "$m.$a" );
+$titleBlock->show();
+
 if ($search_keyword != NULL && $search_keyword != '')
 { 
 	$perms = &$AppUI->acl();
