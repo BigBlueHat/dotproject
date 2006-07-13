@@ -268,7 +268,12 @@ if ($cnt[0]['N'] > 0) {
 
 
 	// document.write used so javascript is applied to find browser width.
-	echo "<script type=\"text/javascript\"><!--document.write('<img src=\"$src\">')--></script>";
+	echo "
+<script type=\"text/javascript\">
+<!--
+document.write('<img src=\"$src\" alt=\"gantt chart\" />');
+-->
+</script>";
 } else {
 	echo $AppUI->_( 'No tasks to display' );
 }
