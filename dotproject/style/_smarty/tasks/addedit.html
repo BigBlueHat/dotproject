@@ -1,30 +1,28 @@
-{literal}
 <script type="text/javascript" language="javascript">
-var selected_contacts_id = "{/literal}{$obj->task_contacts}{literal}";
-var task_id = '{/literal}{$obj->task_id}{literal}';
+var selected_contacts_id = "{$obj->task_contacts}";
+var task_id = '{$obj->task_id}';
 
-var check_task_dates = {/literal}{if $check_task_dates_set}true{else}false{/if}{literal};
-var can_edit_time_information = {/literal}{if $can_edit_time_information}true{else}false{/if}{literal};
+var check_task_dates = {if $check_task_dates_set}true{else}false{/if};
+var can_edit_time_information = {if $can_edit_time_information}true{else}false{/if};
 
-var task_name_msg = "{/literal}{dPtranslate word='taskName' type='js'}{literal}";
-var task_start_msg = "{/literal}{dPtranslate word='taskValidStartDate' type='js'}{literal}";
-var task_end_msg = "{/literal}{dPtranslate word='taskValidEndDate' type='js'}{literal}";
+var task_name_msg = "{dPtranslate word='taskName' type='js'}";
+var task_start_msg = "{dPtranslate word='taskValidStartDate' type='js'}";
+var task_end_msg = "{dPtranslate word='taskValidEndDate' type='js'}";
 
-var workHours = {/literal}{dPconfig var='daily_working_hours'}{literal};
+var workHours = {dPconfig var='daily_working_hours'};
 //working days array from config.php
-var working_days = new Array({/literal}{dPconfig var='cal_working_days'}{literal});
-var cal_day_start = {/literal}{dPconfig var='cal_day_start'}{literal};
-var cal_day_end = {/literal}{dPconfig var='cal_day_end'}{literal};
-var daily_working_hours = {/literal}{dPconfig var='daily_working_hours'}{literal};
+var working_days = new Array({dPconfig var='cal_working_days'});
+var cal_day_start = {dPconfig var='cal_day_start'};
+var cal_day_end = {dPconfig var='cal_day_end'};
+var daily_working_hours = {dPconfig var='daily_working_hours'};
 
 </script>
-{/literal}
 
 <form name="editFrm" action="?m=tasks&amp;project_id={$task_project}" method="post">
 	<input name="dosql" type="hidden" value="do_task_aed" />
 	<input name="task_id" type="hidden" value="{$task_id}" />
 	<input name="task_project" type="hidden" value="{$task_project}" />
-	<input name='task_contacts' id='task_contacts' type='hidden' value="{$obj->task_contacts}" />
+	<input name="task_contacts" id="task_contacts" type="hidden" value="{$obj->task_contacts}" />
 <table border="1" cellpadding="4" cellspacing="0" width="100%" class="std">
 <tr>
 	<td colspan="2" style="border: outset #eeeeee 1px;background-color:#{$project->project_color_identifier}" >
@@ -83,9 +81,23 @@ var daily_working_hours = {/literal}{dPconfig var='daily_working_hours'}{literal
 			<td>
 				<input class="button" type="button" name="btnFuseAction" value="{dPtranslate word='save'}" onclick="submitIt(document.editFrm);" />
 			</td>
+			<td>
+				<input type="hidden" name="go" value="m=projects&amp;a=view&amp;project_id={$task_project}" />
+				<input class="button" type="button" name="btnFuseActionRenew" value="{dPtranslate word='save'} &amp; {dPtranslate word='new'}" onclick="document.editFrm.go.value='m=tasks&amp;a=addedit&amp;task_project={$task_project}'; submitIt(document.editFrm);" />
+			</td>
 		</tr>
 		</table>
 	</td>
 </tr>
+{* instead of the "save & new" button/cell
+<tr>
+	<td align="right" colspan="3">
+		{dPtranslate word='and'} {dPtranslate word='go to'}: 
+		<input type="radio" name="go" value="m=projects&a=view&project_id={$task_project}" checked="checked" />{dPtranslate word='view project'}
+		<input type="radio" name="go" value="m=tasks&a=addedit&task_project={$task_project}" />{dPtranslate word='new task'}
+		<input type="radio" name="go" value="m=tasks" />{dPtranslate word='tasks'}
+	</td>
+</tr>
+*}
 </table>
 </form>

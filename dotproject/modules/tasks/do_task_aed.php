@@ -8,6 +8,7 @@ $hdependencies = dPgetParam($_POST, 'hdependencies');
 $notify = dPgetParam($_POST, 'task_notify', 0);
 $comment = dPgetParam($_POST, 'email_comment','');
 $sub_form = dPgetParam($_POST, 'sub_form', 0);
+$go = dPgetParam($_POST, 'go', 'm=tasks');
 
 if ($sub_form) {
 	// in add-edit, so set it to what it should be
@@ -226,7 +227,7 @@ if ($sub_form) {
 			}
 		}
 		
-		$AppUI->redirect();
+		$AppUI->redirect($go);
 	}
 
 } // end of if subform
