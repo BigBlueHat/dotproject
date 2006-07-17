@@ -709,6 +709,7 @@ INSERT INTO `config` VALUES (0, 'files_show_versions_edit', 'false', 'files', 'c
 INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` )
 VALUES (0, 'reset_memory_limit', '8M', 'gantt', 'text');
 INSERT INTO `config` VALUES(0, 'page_size', '25', 'interface', 'text');
+INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` ) VALUES (NULL , 'dependency_tracking_default', 'false', 'tasks', 'checkbox');
 
 # 20050302
 # ldap system config variables

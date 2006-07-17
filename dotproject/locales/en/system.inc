@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"page_size_tooltip"=>"How many records to display per page on list pages.",
+"dependency_tracking_default_tooltip"=>"Turn on by default dependancy tracking for all newly created tasks.",
 "Abbreviation",
 "All Events",
 "Are you sure you want to delete this?",
@@ -136,6 +136,7 @@
 "default_view_tab_title"=>"Default Tabbed Subview",
 "default_view_tab_tooltip"=>"If you want to define your own start/default page set this. Specifies a tabbed subview. 0=first tab, ...",
 "deleted",
+"dependency_tracking_default_title"=>"Default Dependancy Tracking On for new tasks",
 "direct_edit_assignment_title"=>"Edit Multiple Task Assignments",
 "direct_edit_assignment_tooltip"=>"Turning this option on will allow you to edit task assignments and other options (per task block) in the main Task Module view.",
 "disabled",
@@ -218,6 +219,7 @@
 "notification_email_title"=>"Notification Email",
 "notification_email_tooltip"=>"Notification Email for emergency tickets and other special events to be emailed to.",
 "page_size_title"=>"Pagination Page Size",
+"page_size_tooltip"=>"How many records to display per page on list pages.",
 "page_title_title"=>"Page Title",
 "page_title_tooltip"=>"Stipulate what will appear on the top line of the browser - before the browser name. ",
 "parser_application/msword_title"=>"MS Word Indexing Parser",
@@ -235,29 +237,29 @@
 "pn_item_title"=>"PostNuke",
 "postnuke_allow_login_title"=>"Postnuke login also allows Standard Login",
 "postnuke_allow_login_tooltip"=>"If PostNuke authentication is in effect, setting this also allows standard dotProject logins.  If not set all logins must be performed via PostNuke.",
-"prefs_calendar_group_title"=>"Calendar & Time-related Settings",
-"prefs_EVENTFILTER_title"=>"Default Event Filter",
-"prefs_l10n_group_title"=>"Localisation (l10n, i18n)",
-"prefs_LOCALE_title"=>"Locale",
-"prefs_SHDATEFORMAT_title"=>"Short Date Format",
-"prefs_TIMEFORMAT_title"=>"Time Format",
 "prefs_CURRENCYFORM_title"=>"Currency Format",
-"prefs_tasklog_group_title"=>"Task Logs",
-"prefs_TASKLOGSUBJ_title"=>"Task Log Subject",
+"prefs_EVENTFILTER_title"=>"Default Event Filter",
+"prefs_ICONSTYLE_title"=>"Iconset Style",
+"prefs_LOCALE_title"=>"Locale",
+"prefs_MAILALL_title"=>"Notification Mails: Include Task Owner?",
+"prefs_SHDATEFORMAT_title"=>"Short Date Format",
+"prefs_TABVIEW_title"=>"Tabbed Box View",
+"prefs_TASKASSIGNMAX_title"=>"Task Assignment Maximum",
 "prefs_TASKLOGEMAIL_title"=>"Email",
 "prefs_TASKLOGNOTE_title"=>"Append Mails To Log?",
+"prefs_TASKLOGSUBJ_title"=>"Task Log Subject",
 "prefs_TASKNOTIFYBYDEF_title"=>"Send Task Notifications by Default?",
 "prefs_TASKNOTIFYBYDEF_tooltip"=>"Determine whether the Checkbox for sending Task Notifications on the task addedit page is enabled by default or not. Thus this setting can be manually overridden from there.",
-"prefs_tasks_group_title"=>"Tasks",
-"prefs_TASKASSIGNMAX_title"=>"Task Assignment Maximum",
-"prefs_MAILALL_title"=>"Notification Mails: Include Task Owner?",
-"prefs_ui_group_title"=>"User Interface",
-"prefs_ICONSTYLE_title"=>"Iconset Style",
+"prefs_TIMEFORMAT_title"=>"Time Format",
 "prefs_UISTYLE_title"=>"UI Style",
-"prefs_TABVIEW_title"=>"Tabbed Box View",
 "prefs_USERFORMAT_title"=>"Usernames Display Type",
+"prefs_calendar_group_title"=>"Calendar & Time-related Settings",
 "prefs_first_item_title"=>"Firstname Lastname",
+"prefs_l10n_group_title"=>"Localisation (l10n, i18n)",
 "prefs_last_item_title"=>"Lastname, Firstname",
+"prefs_tasklog_group_title"=>"Task Logs",
+"prefs_tasks_group_title"=>"Tasks",
+"prefs_ui_group_title"=>"User Interface",
 "prefs_user_item_title"=>"Username",
 "projects_group_title"=>"Projects",
 "pt"=>"Portugese",
@@ -298,9 +300,27 @@
 "sv"=>"Swedish",
 "syscfg_intro"=>"The following configuration variables have a direct impact on how your system functions.  
 
+
+
+
+
+
+
 If you adjust any of these options incorrectly this may affect the operation of your installation and restoring the setting may require external action.
 
+
+
+
+
+
+
 We would strongly suggest that if any of these items are not clearly understood that it would be safer to leave them as they are or check the code implications before proceeding.
+
+
+
+
+
+
 
 There are mouseover-tooltips and (?)-information popups with each of the fields that include as much information as we are able to provide.",
 "system admin",

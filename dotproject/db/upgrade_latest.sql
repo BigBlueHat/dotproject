@@ -247,3 +247,7 @@ INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pre
 VALUES (
 '0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 'checkbox'
 );
+
+#20060717
+# Add system variable to set tasks default for dependency tracking
+INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` ) VALUES (NULL , 'dependency_tracking_default', 'false', 'tasks', 'checkbox');
