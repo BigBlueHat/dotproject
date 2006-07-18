@@ -52,7 +52,7 @@ $titleBlock->show();
 if (isset( $_GET['tab'] )) {
 	$AppUI->setState( 'CompaniesIdxTab', $_GET['tab'] );
 }
-$companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ),  -1 );
+$companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ),  0);
 
 // $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
 $companiesType = $companiesTypeTab;
