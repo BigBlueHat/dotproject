@@ -49,7 +49,8 @@
 		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')){literal}{location.href = './index.php?m=files';}{/literal}" />
 	</td>
 	<td align="right">
-		<input type="submit" class="button" value="{dPtranslate word='submit'}" />
+	    <!--- MerlinYoda: Note that submit call is in JavaScript for onclick event --->
+		<input class="button" type="button" onclick="{$extra_js}" value="{dPtranslate word='submit'}" />
 	</td>
 </tr>
 </table>
