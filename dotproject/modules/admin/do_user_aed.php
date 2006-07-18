@@ -81,6 +81,5 @@ if ($del) {
 		$AppUI->setMsg( $isNewUser ? 'added - please setup roles and permissions now.  User must have at least one role to log in.' : 'updated', UI_MSG_OK, true );
 	}
         }
-	($isNewUser)?$AppUI->redirect("m=admin&a=viewuser&user_id=". $obj->user_id . "&tab=3"):$AppUI->redirect();
-
+	($isNewUser)?$AppUI->redirect('m=admin&a=viewuser&user_id='. $obj->user_id . '&tab=2'):$AppUI->redirect();
 ?>
