@@ -27,7 +27,11 @@
 	<tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
 	{section name=j loop=$show}
 		{if $show[j] == 'project_name'}
-			<td width="50%"><a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}">{$row.project_name}</a></td>
+			<td width="50%" style="background-color:#{$row.project_color_identifier}">
+				<span style="color: {dPbestColor bg=$row.project_color_identifier};">
+					<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}">{$row.project_name}</a>
+				</span>
+			</td>
 		{elseif $show[j] == 'project_priority'}
 			<td>
 			{if $row.project_priority < 0}
