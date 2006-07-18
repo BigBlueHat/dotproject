@@ -45,8 +45,8 @@ function findchilddept_comp( &$tarr, $parent, $level=0 ){
 	$n = count( $tarr );
 	for ($x=0; $x < $n; $x++) {
 		if($tarr[$x]["dept_parent"] == $parent && $tarr[$x]["dept_parent"] != $tarr[$x]["dept_id"]){
-			showchilddept_com( $tarr[$x], $level );
-			findchilddept_com( $tarr, $tarr[$x]["dept_id"], $level);
+			showchilddept_comp( $tarr[$x], $level );
+			findchilddept_comp( $tarr, $tarr[$x]["dept_id"], $level);
 		}
 	}
 }
@@ -68,8 +68,8 @@ echo $s;
 
 foreach ($rows as $row) {
 	if ($row["dept_parent"] == 0) {
-		showchilddept_com( $row );
-		findchilddept_com( $rows, $row["dept_id"] );
+		showchilddept_comp( $row );
+		findchilddept_comp( $rows, $row["dept_id"] );
 	}
 }
 
