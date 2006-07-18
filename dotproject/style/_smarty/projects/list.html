@@ -68,6 +68,8 @@
 					{$row.project_percent_complete|string_format:"%.1f"}%
 				</div>
 			</td>
+		{elseif $show[j] == 'company_name'}
+			<td align="center"><a href="?m=companies&amp;a=view&amp;company_id={$row.project_company}">{$row.company_name}</a></td>
 		{else}
 			{assign var='col' value=$show[j]}
 			<td nowrap="nowrap" align="center">{$row.$col}</td>
