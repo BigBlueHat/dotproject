@@ -51,7 +51,7 @@
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
 // else users would be able to arbitrarily run 'bad' functions
-if ($canEdit) {
+if ($canDelete) {
 ?>
 function delIt2(id) {
 	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Task Log', UI_OUTPUT_JS).'?';?>" )) {
@@ -159,7 +159,7 @@ foreach ($logs as $row) {
 			
 	$s .= '</td>';
 	$s .= "\n\t<td>";
-	if ($canEdit) {
+	if ($canDelete) {
 		$s .= "\n\t\t<a href=\"javascript:delIt2({$row['task_log_id']});\" title=\"".$AppUI->_('delete log')."\">"
 			. "\n\t\t\t". dPshowImage( './images/icons/stock_delete-16.png', 16, 16, '' )
 			. "\n\t\t</a>";
