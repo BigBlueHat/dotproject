@@ -67,7 +67,7 @@ else if ($display_option == '3_months') // month
 	$end_date = new CDate($start_date);
 	$end_date->addMonths(3);
 }
-else if ($display_option == 'first_month')
+else if ($display_option == 'first_month' || $display_option == 'all')
 {
 	//TODO: find project start date
 	$q = new DBQuery;
