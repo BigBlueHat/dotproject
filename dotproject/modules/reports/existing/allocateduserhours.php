@@ -314,7 +314,7 @@ GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user
 
 					$hours = number_format($user_usage[$user_id][$awoy],2);
 					$table_rows .= $hours;
-					$percentage_used = round($hours/100);
+					$percentage_used = round(($hours/(dPgetConfig("daily_working_hours")*count(explode(",",dPgetConfig("cal_working_days")))) )*100);
 					$bar_color       = 'blue';
 					if($percentage_used > 100){
 						$bar_color = "red";
@@ -330,7 +330,7 @@ GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user
 			}
 				
 			$array_sum = array_sum($user_usage[$user_id]);
-			$average_user_usage = number_format( ($array_sum/(count(explode(",",dPgetConfig("cal_working_days")))*dPgetConfig("daily_working_hours")))*100, 2);
+			$average_user_usage = number_format( ($array_sum/( $week_difference * count(explode(",",dPgetConfig("cal_working_days")))*dPgetConfig("daily_working_hours")))*100, 2);
 			$allocated_hours_sum += $array_sum;
 			
 			$bar_color = "blue";

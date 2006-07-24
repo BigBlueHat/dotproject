@@ -366,6 +366,33 @@
 		}
 	}
 
+	/* CustomFieldWeblink
+	** Produces an INPUT Element of the TEXT type in edit mode 
+	** and a <a href> </a> weblink in display mode
+	*/
+
+	class CustomFieldWeblink extends CustomField
+	{
+		function CustomFieldWeblink ( $field_id, $field_name, $field_order, $field_description, $field_extratags )
+		{
+			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
+			$this->field_htmltype = 'href';
+		}
+
+		function getHTML($mode)
+		{
+			switch($mode)
+			{
+				case "edit":
+					$html = $this->field_description.": </td><td><input type=\"text\" name=\"".$this->field_name."\" value=\"".$this->charValue()."\" ".$this->field_extratags." />";
+					break;
+				case "view":
+					$html = $this->field_description.': </td><td class="hilite" width="100%"><a href="'.$this->charValue().'">'.$this->charValue().'</a>';
+					break;
+			}
+			return $html;
+		}
+	}
 
 	/**
 	 * CustomFields class - loads all custom fields related to a module, produces a html table of all custom fields
@@ -409,6 +436,9 @@
 					switch ($row["field_htmltype"]) {
 						case "checkbox":
 							$this->fields[$row["field_name"]] = new CustomFieldCheckbox( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
+							break;
+						case "href":
+							$this->fields[$row["field_name"]] = New CustomFieldWeblink( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
 							break;
 						case "textarea":
 							$this->fields[$row["field_name"]] = new CustomFieldTextArea( $row["field_id"], $row["field_name"], $row["field_order"], stripslashes($row["field_description"]), stripslashes($row["field_extratags"]) );
@@ -574,6 +604,27 @@
 			echo $html;
 		}
 		
+		/* Custom Fields Smart Searcher
+		** Module agnostic custom field smart search plugin helper method
+		** Allows smartsearch to find patterns in custom fields on a per module base
+		** This has been implemented in stable_2 on 20060724 by gregorerhardt
+		** At the time of writing the smartsearch seems to be redesigned by cyberhorse
+		** Searchability of custom fields should be implemented by upcoming redesigned smartsearch plugins
+		** 
+		*/
+		function search($moduleTable, $moduleTableId, $moduleTableName, $keyword )
+		{
+			$q  = new DBQuery;
+      $q->addTable('custom_fields_values', 'cfv');
+      $q->addQuery('m.'.$moduleTableId);
+      $q->addQuery('m.'.$moduleTableName);
+			$q->addJoin('custom_fields_struct', 'cfs', 'cfs.field_id = cfv.value_field_id');
+			$q->addJoin($moduleTable, 'm', 'm.'.$moduleTableId.' = cfv. value_object_id');
+      $q->addWhere('cfs.field_module = "'.$this->m.'"');
+      $q->addWhere('cfv.value_charvalue LIKE "%'.$keyword.'%"');
+			return $q->loadList();
+		}
+
 	}
 
 	class SQLCustomOptionList

@@ -102,6 +102,9 @@
 				
 			$parsed .= $this->_getLabelHTML($field_config);
 			switch($field_config["type"]){
+				case "href":
+					$parsed .= "<td align='left'><input type='text' name='custom_$key' class='text' " . $field_config["options"] . " value='" . ( isset($this->previous_data[$key]) ? $this->previous_data[$key] : "") . "' /></td>";
+					break;
 				case "text":
 					$parsed .= "<td align='left'><input type='text' name='custom_$key' class='text' " . $field_config["options"] . " value='" . ( isset($this->previous_data[$key]) ? $this->previous_data[$key] : "") . "' /></td>";
 					break;
@@ -135,6 +138,9 @@
 			$parsed  = "<tr id='custom_tr_$key'>";
 			$parsed .= $this->_getLabelHTML($field_config);
 			switch ( $field_config["type"]){
+				case "href":
+					$parsed .= '<td class="hilite"><a href="'. dPformSafe(( isset($this->previous_data[$key]) ? $this->previous_data[$key] : "")) . '">' . dPformSafe(( isset($this->previous_data[$key]) ? $this->previous_data[$key] : "")) . '</a></td>';
+					break;
 				case "text":
 					$parsed .= "<td class='hilite'>" . dPformSafe(( isset($this->previous_data[$key]) ? $this->previous_data[$key] : "")) . "</td>";
 					break;
