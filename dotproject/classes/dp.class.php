@@ -176,6 +176,22 @@ class CDpObject {
 		
 		return $newObj;
 	}
+    
+    /**
+     *	Default trimming method for class variables of type string
+     *
+     *	@param object Object to trim class variables for
+     *	Can be overloaded/supplemented by the child class
+     *	@return none
+     */
+    function dPTrimAll() {
+        $trim_arr = get_object_vars($this);
+        foreach ($trim_arr as $trim_key => $trim_val) {
+            if (!(strcasecmp(gettype($trim_val), "string"))) {
+                $this->{$trim_key} = trim($trim_val);
+            }
+        }
+    }
 
 
 /**
@@ -184,8 +200,10 @@ class CDpObject {
  *	Can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns and error message
  */
-	function store( $updateNulls = false )
-	{
+	function store( $updateNulls = false ) {
+        
+        $this->dPTrimAll();
+        
 		$msg = $this->check();
 		if( $msg ) {
 			return get_class( $this )."::store-check failed<br />$msg";
