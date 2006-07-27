@@ -5,7 +5,7 @@
 	<meta name="Description" content="dotProject Default Style" />
 	<meta name="Version" content="{$version}" />
 	<meta http-equiv="Content-Type" content="text/html;charset={$charset}" />
-	<title>{$config.page_title}</title>
+	<title> {if $page_title}{$page_title}{else}{$config.page_title}{/if}</title>
 	<link rel="stylesheet" type="text/css" href="style/print.css" media="print" />
 	<link rel="stylesheet" type="text/css" href="style/calendar.css" />
 	<link rel="stylesheet" type="text/css" href="./style/{$uistyle}/main.css" media="all" />

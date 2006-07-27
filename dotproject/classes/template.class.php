@@ -39,14 +39,17 @@ class CTemplate extends Smarty
 	
 	function displayHeader()
 	{
-		global $locale_char_set, $uistyle, $AppUI;
+		global $locale_char_set, $uistyle, $AppUI, $style_extras;
 		
 		$perms = & $AppUI->acl();
 		
 		$dialog = dPgetParam( $_GET, 'dialog', 0 );
 		if (!$dialog)
-			$page_title = ($dPconfig['page_title'] == 'dotProject') ? $dPconfig['page_title'] . '&nbsp;' . $AppUI->getVersion() : $dPconfig['page_title'];
-
+		{
+			$page_title = dPgetConfig('page_title');
+			$page_title = ($page_title == 'dotProject') ? $page_title . '&nbsp;' . $AppUI->getVersion() : $page_title;
+		}
+//echo $page_title;
 		$this->assign('page_title', $page_title);
 		$this->assign('charset', isset( $locale_char_set ) ? $locale_char_set : 'UTF-8');
 		$this->assign('version', $AppUI->getVersion());
