@@ -57,6 +57,7 @@ $f = "%m/%d/%Y"; $dates[$f]	= $ex->format( $f );
 $f = "%b/%d/%Y"; $dates[$f]	= $ex->format( $f );
 $f = "%d.%m.%Y"; $dates[$f]	= $ex->format( $f );
 $f = "%Y/%b/%d"; $dates[$f] = $ex->format( $f ); 
+$f = '%Y-%m-%d'; $dates[$f] = $ex->format( $f );
 
 // collect timeformat options
 $times = array();
@@ -98,9 +99,16 @@ $tabview = array( 'either', 'tabbed', 'flat' );
 
 $last_group = '';
 
+$tz = Date_TimeZone::getAvailableIDs();
+sort($tz);
+$timezones = array();
+foreach ($tz as $timezone)
+	$timezones[$timezone] = $timezone;
+
 $tpl->assign('AppUI', $AppUI);
 $tpl->assign('baseDir', $baseDir);
 $tpl->assign('currencies', $currencies);
+$tpl->assign('timezones', $timezones);
 $tpl->assign('dates', $dates);
 $tpl->assign('efl', $event_filter_list);
 $tpl->assign('is', $icon_styles);
@@ -116,5 +124,6 @@ $tpl->assign('tle', $prefs['TASKLOGEMAIL']);
 $tpl->assign('times', $times);
 $tpl->assign('user', $user);
 $tpl->assign('user_id', $user_id);
+
 $tpl->displayFile('addeditpref', 'system');
 ?>
