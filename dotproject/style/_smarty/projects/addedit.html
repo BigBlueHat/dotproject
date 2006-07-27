@@ -132,10 +132,10 @@
 				<input type="text" name="project_color_identifier" value="{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}" size="10" maxlength="6" onblur="setColor();" class="text" /> *
 			</td>
 			<td nowrap="nowrap" align="right">
-				<a href="#" onclick="newwin=window.open('./index.php?m=public&amp;a=color_selector&amp;dialog=1&amp;callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');">{dPtranslate word='change color'}</a>
+				<a href="#" onclick="newwin=window.open('./index.php?m=public&amp;a=color_selector&amp;dialog=1&amp;callback=setColor', 'calwin', 'width=320, height=300, scrollbars=no');">{dPtranslate word='change color'}</a>
 			</td>
 			<td nowrap="nowrap">
-				<span id="test" title="test" style="background:#{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}"><a href="#" onclick="newwin=window.open('./index.php?m=public&amp;a=color_selector&amp;dialog=1&amp;callback=setColor', 'calwin', 'width=320, height=300, scollbars=false');"><img src="./images/shim.gif" alt="" border="1" width="40" height="20" /></a></span>
+				<span id="test" title="test" style="background:#{if $obj->project_color_identifier}{$obj->project_color_identifier}{else}FFFFFF{/if}"><a href="#" onclick="newwin=window.open('./index.php?m=public&amp;a=color_selector&amp;dialog=1&amp;callback=setColor', 'calwin', 'width=320, height=300, scrollbars=no');"><img src="./images/shim.gif" alt="" border="1" width="40" height="20" /></a></span>
 			</td>
 		</tr>
 		<tr>

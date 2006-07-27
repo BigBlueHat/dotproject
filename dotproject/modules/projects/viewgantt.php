@@ -74,7 +74,7 @@ var calendarField = '';
 function popCalendar( field ){
 	calendarField = field;
 	idate = eval( 'document.editFrm.' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=250, height=220, scollbars=false' );
+	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=250, height=220, scrollbars=no' );
 }
 
 /**
@@ -93,8 +93,11 @@ function scrollPrev() {
 <?php
 	$new_start = $start_date;	
 	$new_start->day = 1;
+
 	$new_end = $end_date;
+
 	$new_start->addMonths( -$scroll_date );
+
 	$new_end->addMonths( -$scroll_date );
 	
 	echo "f.sdate.value='".$new_start->format( FMT_TIMESTAMP_DATE )."';";
@@ -109,8 +112,11 @@ function scrollNext() {
 <?php
 	$new_start = $start_date;
 	$new_start->day = 1;
+
 	$new_end = $end_date;	
+
 	$new_start->addMonths( $scroll_date );
+
 	$new_end->addMonths( $scroll_date );
 	echo "f.sdate.value='" . $new_start->format( FMT_TIMESTAMP_DATE ) . "';";
 	echo "f.edate.value='" . $new_end->format( FMT_TIMESTAMP_DATE ) . "';";

@@ -226,7 +226,7 @@ var calendarField = '';
 function popCalendar( field ){
 	calendarField = field;
 	idate = eval( 'document.editFrm.task_' + field + '.value' );
-	window.open( 'index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback=setCalendar&amp;date=' + idate, 'calwin', 'width=250, height=220, scollbars=false' );
+	window.open( 'index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback=setCalendar&amp;date=' + idate, 'calwin', 'width=250, height=220, scrollbars=no' );
 }
 
 /**
