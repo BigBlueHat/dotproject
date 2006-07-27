@@ -107,6 +107,7 @@ $tpl->assign('select_file_project', $select_file_project);
 
 $tpl->assign('file_task', $file_task);
 $tpl->assign('task_name', $task_name);
+$tpl->assign('ui_getplace', str_replace('&', '&amp;', $AppUI->getPlace()));
 
 $tpl->displayAddEdit($obj);
 ?>

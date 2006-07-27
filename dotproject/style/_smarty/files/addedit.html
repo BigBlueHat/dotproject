@@ -198,7 +198,7 @@ function setTask( key, val ) {
 </tr>
 <tr>
 	<td>
-		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if (confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')) location.href = './index.php?m=files';" />
+		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}{literal}')){location.href = '?{/literal}{$ui_getplace}{literal}';}" />{/literal}
 	</td>
 	<td align="right">
 		<input type="button" class="button" value="{dPtranslate word='submit'}" onclick="submitIt()" />

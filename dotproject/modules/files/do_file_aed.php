@@ -3,6 +3,7 @@
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 $del = intval( dPgetParam( $_POST, 'del', 0 ) );
 $revision_type = dPgetParam($_POST, 'revision_type', 0);
+
 if ($revision_type)
 {
 	if ($revision_type == 'cancel')
