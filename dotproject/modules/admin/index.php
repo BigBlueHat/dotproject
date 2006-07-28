@@ -112,8 +112,9 @@ $tabBox = new CTabBox( '?m=admin', $dPconfig['root_dir'] . '/modules/admin/', $t
 $tabBox->add( 'vw_usr', 'Active Users' );
 $tabBox->add( 'vw_usr', 'Inactive Users' );
 $tabBox->add( 'vw_usr_log', 'User Log' );
-if ($canEdit && $canDelete)
+if ($canEdit && $canDelete) {
 	$tabBox->add('vw_usr_sessions', 'Active Sessions');
+}
 $tabBox->show( $extra );
 
 ?>
