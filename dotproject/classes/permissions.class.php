@@ -54,7 +54,7 @@ class dPacl extends gacl_api {
       $opts['debug'] = true;
       
     // Enable caching
-    $opts['caching'] = false;
+    $opts['caching'] = true;
     $opts['cache_expire_time'] = 6000;
     $opts['cache_dir'] = $baseDir . '/files/cache/phpgacl';
     
