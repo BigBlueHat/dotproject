@@ -48,6 +48,7 @@ $topics = $q->loadList();
 $crumbs = array();
 $crumbs['?m=forums'] = 'forums list';
 
+global $tpl;
 $tpl->assign('breadCrumbs', breadCrumbs( $crumbs ));
 $tpl->assign('canEdit', $canEdit);
 $tpl->assign('forum_id', $forum_id);
