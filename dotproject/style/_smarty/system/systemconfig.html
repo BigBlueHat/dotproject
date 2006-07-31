@@ -21,7 +21,9 @@
 	{/if}
 	<tr>
 		<td class="item" width="20%">{dPtranslate word=$c.config_name append='_title'}</td>
-			<td align="left">
+		<td align="left">
+		<input type="hidden" name="{$c.config_name}___group" value="{$c.config_group}" />
+		<input type="hidden" name="{$c.config_name}___type" value="{$c.config_type}" />
 
 	{if $c.config_type == 'select'}
 		{dPgetSystemConfigSelect cid=$c.config_id cname=$c.config_name}
@@ -30,7 +32,7 @@
 	{elseif $c.config_type == 'textarea'}
 		<textarea name="dPcfg[{$c.config_name}]">{$c.config_value}</textarea>
 	{elseif $c.config_type == 'checkbox'}
-		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="{$c.config_value}"
+		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="true"
 		{if $c.config_value == 'true'} checked="checked" {/if} />
 	{else}
 		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="{$c.config_value}" />
