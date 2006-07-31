@@ -32,8 +32,8 @@ function smarty_function_dPgetSystemConfigSelect($params, &$smarty)
 	$cli = $q->loadHashList();
 	
 	$clist = array();
-	foreach($cli as $cl => $c) {
-		$clist[$cl] = $AppUI->_($c.'_item_title');
+	foreach($cli as $c) {
+		$clist[$c] = $AppUI->_($c.'_item_title');
 	}
 
 	$tpl->assign('clist', $clist);

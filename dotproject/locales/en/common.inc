@@ -1,7 +1,6 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"Print",
 "Active Projects",
 "Add",
 "Add a new Custom Field to this Module",
@@ -120,6 +119,7 @@
 "Pinned Only",
 "Port",
 "Postcode",
+"Print",
 "Private",
 "Private Entry",
 "Project",

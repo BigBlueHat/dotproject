@@ -98,6 +98,8 @@
 "full access to module",
 "hrs.",
 "idle",
+"logout_session"=>"end user session",
+"logout_user"=>"force user logout",
 "projects list",
 "read only",
 "read-write",
