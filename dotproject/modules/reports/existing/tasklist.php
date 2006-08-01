@@ -262,8 +262,7 @@ if ($log_pdf) {
 		$q->addTable('projects');
 		$q->addQuery('project_name');
 		$q->addWhere('project_id='.$project_id);
-		$pn = $q->loadHashList();
-		$pname = $pn[0]['project_name'];
+		$pname = $q->loadResult();
 
 		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
 		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
@@ -282,7 +281,7 @@ if ($log_pdf) {
 
 		$pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
 		$pdf->ezText( "\n" . $AppUI->_('Project Task Report'), 12 );
-		if ($project_id <> 0) {$pdf->ezText( "$pname", 15 );}
+		if ($project_id != 0) {$pdf->ezText( $pname, 15 );}
 		if ($log_all) {
 			$pdf->ezText( "All task entries", 9 );
 		} else {		
