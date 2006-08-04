@@ -35,7 +35,7 @@ $criticalTasks = ($project_id > 0) ? $obj->getCriticalTasks($project_id) : NULL;
 $projectPriority = dPgetSysVal( 'ProjectPriority' );
 $projectPriorityColor = dPgetSysVal( 'ProjectPriorityColor' );
 
-$working_hours = $dPconfig['daily_working_hours'];
+$working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
 
 // load the record data
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
@@ -45,13 +45,14 @@ $q->addQuery('company_name');
 $contact_full_name = $q->concat('contact_last_name', "', '" , 'contact_first_name');
 $q->addQuery($contact_full_name.' user_name');
 $q->addQuery('projects.*');
-$q->addQuery("SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type))/
-		SUM(t1.task_duration * IF(t1.task_duration_type = 24, ".$working_hours.", t1.task_duration_type)) AS project_percent_complete");
+$q->addQuery('SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, '.$working_hours
+             .', t1.task_duration_type)) / SUM(t1.task_duration * IF(t1.task_duration_type = 24, '.$working_hours
+             .', t1.task_duration_type)) AS project_percent_complete');
 $q->addJoin('companies', 'com', 'company_id = project_company');
 $q->addJoin('users', 'u', 'user_id = project_owner');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
-$q->addWhere('project_id = '.$project_id);
+$q->addWhere('project_id = '.$project_id.' AND t1.task_id = t1.task_parent');
 $q->addGroup('project_id');
 $sql = $q->prepare();
 $q->clear();
@@ -82,7 +83,8 @@ $worked_hours = rtrim($worked_hours, '.');
 $q->clear();
 
 $q->addTable('tasks');
-$q->addQuery("SUM(task_duration * (100 - task_percent_complete) * IF(task_duration_type = 24, ".$dPconfig['daily_working_hours'].", task_duration_type))");
+$q->addQuery('SUM(task_duration * (100 - task_percent_complete) * IF(task_duration_type = 24, '.$working_hours
+             .', task_duration_type))');
 $q->addWhere('task_project = ' . $project_id);
 $q->addWhere('task_milestone = 0');
 $q->addWhere('task_dynamic != 1');
@@ -108,7 +110,7 @@ $total_project_hours = 0;
 $q->addTable('tasks', 't');
 $q->addQuery('ROUND(SUM(t.task_duration*u.perc_assignment/100),2)');
 $q->addJoin('user_tasks', 'u', 't.task_id = u.task_id');
-$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone  ='0' AND t.task_dynamic != 1");
+$q->addWhere("t.task_project = $project_id AND t.task_duration_type = 24 AND t.task_milestone ='0' AND t.task_dynamic != 1");
 $total_project_days_sql = $q->loadResult();
 $q->clear();
 
@@ -123,11 +125,10 @@ $q  = new DBQuery;
 $q->addTable('contacts', 'a');
 $q->addTable('project_contacts', 'b');
 $q->addJoin('departments', 'c', 'a.contact_department = c.dept_id', 'left outer');			
-$q->addQuery('a.contact_id, a.contact_first_name, a.contact_last_name,
-		a.contact_email, a.contact_phone, c.dept_name');
+$q->addQuery('a.contact_id, a.contact_first_name, a.contact_last_name, a.contact_email, a.contact_phone, c.dept_name');
 $q->addWhere('a.contact_id = b.contact_id');
 $q->addWhere('b.project_id = ' . $project_id);
-$q->addWhere("(contact_owner = '$AppUI->user_id' or contact_private='0')");
+$q->addWhere("(contact_owner = '{$AppUI->user_id}' or contact_private='0')");
 
 $contacts = $q->loadHashList("contact_id");
 foreach($contacts as $contact_id => $contact)
@@ -178,28 +179,21 @@ $titleBlock->addCell(
 
 if ($canEditT) {
 	$titleBlock->addCell();
-	$titleBlock->addCell(
-		'
-<form action="?m=tasks&amp;a=addedit&amp;task_project=' . $project_id . '" method="post">
-	<input type="submit" class="button" value="'.$AppUI->_('new task').'" />
-</form>', '',	'', '');
+	$titleBlock->addCell('<form action="?m=tasks&amp;a=addedit&amp;task_project='.$project_id
+                         .'" method="post"><input type="submit" class="button" value="'.$AppUI->_('new task')
+                         .'" /></form>', '',	'', '');
 }
 if ($canEdit) {
 	$titleBlock->addCell();
-	$titleBlock->addCell(
-		'
-<form action="?m=calendar&amp;a=addedit&amp;event_project=' . $project_id . '" method="post">
-	<input type="submit" class="button" value="'.$AppUI->_('new event').'" />
-</form>', '', '', '');
-
+	$titleBlock->addCell('<form action="?m=calendar&amp;a=addedit&amp;event_project='.$project_id
+                         .'" method="post"><input type="submit" class="button" value="'.$AppUI->_('new event')
+                         .'" /></form>', '', '', '');
 	$titleBlock->addCell();
-	$titleBlock->addCell(
-		'
-<form action="?m=files&amp;a=addedit&amp;project_id=' . $project_id . '" method="post">
-	<input type="submit" class="button" value="'.$AppUI->_('new file').'" />
-</form>', '',	'', '');
-
+	$titleBlock->addCell('<form action="?m=files&amp;a=addedit&amp;project_id='.$project_id
+                         .'" method="post"><input type="submit" class="button" value="'.$AppUI->_('new file')
+                         .'" /></form>', '',	'', '');
 }
+
 $titleBlock->addCrumb( '?m=projects', 'projects list' );
 if ($canEdit) {
 	$titleBlock->addCrumb( '?m=projects&amp;a=addedit&amp;project_id='.$project_id, 'edit this project' );
@@ -244,7 +238,7 @@ function delIt() {
 	if (confirm( "<?php echo $AppUI->_('doDelete', UI_OUTPUT_JS).' '.$AppUI->_('Project', UI_OUTPUT_JS).'?';?>" )) {
 		document.frmDelete.submit();
 	}
-}
+ }
 <?php } ?>
 </script>
 
