@@ -1,0 +1,36 @@
+<a href="javascript:void(0);" onclick="clickDay('', '');">clear date</a>
+{$calendar}
+<table border="0" cellspacing="0" cellpadding="3" width="100%">
+<tr>
+{foreach from=$months item='month' key='date'}
+	<td width="8%">
+		<a href="index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback={$callback}&amp;date={$date}&amp;uts={$prev_date}" class="">{$month}</a>
+	</td>
+{/foreach}
+</tr>
+<tr>
+	<td colspan="6" align="left">
+		<a href="index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback={$callback}&amp;date={$previous_year}&amp;uts={$prev_date}" class="">{$previous_year_display}</a>
+	</td>
+	<td colspan="6" align="right">
+		<a href="index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback={$callback}&amp;date={$next_year}&amp;uts={$prev_date}" class="">{$next_year_display}</a>
+	</td>
+</tr>
+</table>
+	</td>
+</tr>
+</table>
+
+<script type="text/javascript" language="javascript">
+<!--
+/**
+ *	@param string Input date in the format YYYYMMDD
+ *	@param string Formatted date
+ */
+	function clickDay(idate, fdate) 
+	{ldelim}
+		window.opener.<?php echo $callback;?>(idate,fdate);
+		window.close();
+	{rdelim}
+-->
+</script>
