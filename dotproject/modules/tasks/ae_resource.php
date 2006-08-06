@@ -23,84 +23,22 @@ foreach ($assigned_perc as $user_id => $perc) {
 	$initPercAsignment .= "$user_id=$perc;";
 }
 
+for ($i = 5; $i <= 100; $i+=5)
+	$percentages = '<option '.(($i==100)? 'selected="true"' : '' ).' value="'.$i.'">'.$i.'%</option>';
+
+global $tpl;
+
+$tpl->assign('can_edit_time_information', $can_edit_time_information);
+$tpl->assign('tab', $tab);
+
+$tpl->assign('users', $users);
+$tpl->assign('assigned', $assigned);
+$tpl->assign('initPercAsignment', $initPercAsignment);
+$tpl->assign('percentages', $percentages);
+$tpl->assign('notify_by_default', $AppUI->getPref('TASKNOTIFYBYDEF'));
+$tpl->assign('task_with_enddates', $projTasksWithEndDates);
+
+$tpl->assign('obj', $obj); 
+
+$tpl->displayFile('ae_resource');
 ?>
-<script type="text/javascript" language="javascript">
-<!--
-<?php
-echo 'var projTasksWithEndDates=new Array();'."\n";
-$keys = array_keys($projTasksWithEndDates);
-for ($i = 1; $i < sizeof($keys); $i++) {
-	//array[task_is] = end_date, end_hour, end_minutes
-	echo "projTasksWithEndDates[".$keys[$i]."]=new Array(\"".$projTasksWithEndDates[$keys[$i]][1]."\", \"".$projTasksWithEndDates[$keys[$i]][2]."\", \"".$projTasksWithEndDates[$keys[$i]][3]."\");\n";
-}
-?>
--->
-</script>
-<form action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project; ?>"
-  method="post" name="resourceFrm">
-<input type="hidden" name="sub_form" value="1" />
-<input type="hidden" name="task_id" value="<?php echo $task_id; ?>" />
-<input type="hidden" name="dosql" value="do_task_aed" />
-	<input name="hperc_assign" type="hidden" value="<?php echo
-	$initPercAsignment;?>"/>
-<table width="100%" border="1" cellpadding="4" cellspacing="0" class="std">
-<tr>
-	<td valign="top" align="center">
-		<table cellspacing="0" cellpadding="2" border="0">
-			<tr>
-				<td><?php echo $AppUI->_( 'Human Resources' );?>:</td>
-				<td><?php echo $AppUI->_( 'Assigned to Task' );?>:</td>
-			</tr>
-			<tr>
-				<td>
-					<?php echo arraySelect( $users, 'resources', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
-				</td>
-				<td>
-					<?php echo arraySelect( $assigned, 'assigned', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
-				</td>
-			<tr>
-				<td colspan="2" align="center">
-					<table>
-					<tr>
-						<td align="right"><input type="button" class="button" value="&gt;" onclick="addUser(document.resourceFrm)" /></td>
-						<td>
-							<select name="percentage_assignment" class="text">
-							<?php 
-								for ($i = 5; $i <= 100; $i+=5) {
-									echo '<option '.(($i==100)? "selected=\"true\"" : "" )." value=\"".$i."\">".$i.'%</option>';
-								}
-							?>
-							</select>
-						</td>				
-						<td align="left"><input type="button" class="button" value="&lt;" onclick="removeUser(document.resourceFrm)" /></td>					
-					</tr>
-					</table>
-				</td>
-			</tr>
-		</table>
-	</td>
-	<td valign="top" align="center">
-		<table><tr><td align="left">
-		<?php echo $AppUI->_( 'Additional Email Comments' );?>:		
-		<br />
-		<textarea name="email_comment" class="textarea" cols="60" rows="10"></textarea><br />
-	<?php // determine how to set the task notify box 
-		$tnd = $AppUI->getPref('TASKNOTIFYBYDEF');
-		$tn = '';
-		if($obj->task_notify == '1')
-			$tn = 'checked="checked"';
-		if($tnd && ($task_id == 0)) 
-			$tn = 'checked="checked"';
-	?>
-		
-		<input type="checkbox" name="task_notify" value="1" <?php echo $tn; ?> /> <?php echo $AppUI->_( 'notifyChange' );?>
-		</td></tr></table><br />
-		
-	</td>
-</tr>
-</table>
-<input type="hidden" name="hassign" />
-</form>
-<script type="text/javascript" language="javascript">
-  subForm.push(new FormDefinition(<?php echo $tab; ?>, document.resourceFrm, checkResource, saveResource));
-</script>

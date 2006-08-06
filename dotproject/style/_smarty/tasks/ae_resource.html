@@ -1,0 +1,75 @@
+<script type="text/javascript" language="javascript">
+<!--
+var projTasksWithEndDates = new Array();
+{foreach from=$tasks_with_enddates item='task' key='key'}
+projTasksWithEndDates[{$key}]=new Array('{$task[1]}', '{$task[2]}', '{$task[3]}');
+{/foreach}
+-->
+</script>
+
+<form action="?m=tasks&amp;a=addedit&amp;task_project={$obj->task_project}"  method="post" name="resourceFrm">
+	<input type="hidden" name="sub_form" value="1" />
+	<input type="hidden" name="task_id" value="{$obj->task_id}" />
+	<input type="hidden" name="dosql" value="do_task_aed" />
+	<input name="hperc_assign" type="hidden" value="{$initPercAsignment}" />
+<table width="100%" border="1" cellpadding="4" cellspacing="0" class="std">
+<tr>
+	<td valign="top" align="center">
+	<table cellspacing="0" cellpadding="2" border="0">
+	<tr>
+		<td> {dPtranslate word='Human Resources'}:</td>
+		<td> {dPtranslate word='Assigned to Task'}:</td>
+	</tr>
+	<tr>
+		<td>
+			{dParraySelect array=$users name='resources' extras='style="width:220px" size="10" class="text" multiple="multiple" ' value=null}
+		</td>
+		<td>
+			{dParraySelect array=$assigned name='assigned' extras='style="width:220px" size="10" class="text" multiple="multiple" ' value=null}
+		</td>
+	</tr>
+	<tr>
+		<td colspan="2" align="center">
+		<table>
+		<tr>
+			<td align="right">
+				<input type="button" class="button" value="&gt;" onclick="addUser(document.resourceFrm)" />
+			</td>
+			<td>
+				<select name="percentage_assignment" class="text">
+					{$percentages}
+				</select>
+			</td>				
+			<td align="left">
+				<input type="button" class="button" value="&lt;" onclick="removeUser(document.resourceFrm)" />
+			</td>
+		</tr>
+		</table>
+		</td>
+	</tr>
+	</table>
+	</td>
+	<td valign="top" align="center">
+		<table>
+		<tr>
+			<td align="left">
+				{dPtranslate word='Additional Email Comments'}:		
+				<br />
+				<textarea name="email_comment" class="textarea" cols="60" rows="10"></textarea>
+				<br />
+				<input type="checkbox" name="task_notify" value="1"{if $obj->task_notify == '1' || ($notify_by_default && $obj->task_id == 0)} checked="checked"{/if} /> 
+				{dPtranslate word='notifyChange'}
+			</td>
+		</tr>
+		</table>
+		<br />
+	</td>
+</tr>
+</table>
+	<input type="hidden" name="hassign" />
+</form>
+<script type="text/javascript" language="javascript">
+<!--
+	subForm.push(new FormDefinition({$tab}, document.resourceFrm, checkResource, saveResource));
+-->
+</script>

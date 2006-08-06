@@ -1,0 +1,88 @@
+<form name="datesFrm" action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project;?>" method="post">
+<input name="dosql" type="hidden" value="do_task_aed" />
+<input name="task_id" type="hidden" value="{$task_id}" />
+<input name="sub_form" type="hidden" value="1" />
+<table width="100%" border="0" cellpadding="4" cellspacing="0" class="std">
+{if $can_edit_time_information}
+<tr>
+	<td align="right" nowrap="nowrap">{dPtranslate word='Start Date'}</td>
+	<td nowrap="nowrap">
+		<input type="hidden" name="task_start_date" id="task_start_date" value="{dPdateFormat date=$obj->start_date format='db'}" />
+		<input type="text" name="start_date" id="start_date" value="{dPdateFormat date=$obj->start_date}" class="text" disabled="disabled" />
+		<a href="#" onclick="popCalendar(document.datesFrm.start_date)">
+			<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
+		</a>
+	</td>
+	<td>
+		<table>
+		<tr>
+			<td> {dParraySelect array=$hours name='start_hour' extras='size="1" onchange="setAMPM(this)" class="text"' value=$start_time.hour}</td>
+			<td> : </td>
+			<td> {dParraySelect array=$minutes name='start_minute' extras='size="1" class="text"' value=$start_time.minute}</td>
+
+		{if $ampm_time_format}
+			<td>
+				<input type="text" name="start_hour_ampm" id="start_hour_ampm" value="{$start_time.ampm}" disabled="disabled" class="text" size="2" />
+			</td>
+		{/if}
+
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td align="right" nowrap="nowrap">{dPtranslate word='Finish Date'}</td>
+	<td nowrap="nowrap">
+		<input type="hidden" name="task_end_date" id="task_end_date" value="{dPdateFormat date=$obj->end_date format='db'}" />
+		<input type="text" name="end_date" id="end_date" value="{dPdateFormat date=$obj->end_date}" class="text" disabled="disabled" />
+		<a href="#" onclick="popCalendar(document.datesFrm.end_date)">
+			<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
+		</a>
+	</td>
+	<td>
+		<table>
+		<tr>
+			<td> {dParraySelect array=$hours name='end_hour' extras='size="1" onchange="setAMPM(this)" class="text"' value=$end_time.hour}</td>
+			<td> : </td>
+			<td> {dParraySelect array=$minutes name='end_minute' extras='size="1" class="text"' value=$end_time.minute}</td>
+		{if $ampm_time_format}
+			<td>
+				<input type="text" name="end_hour_ampm" id="end_hour_ampm" value="{$end_time.ampm}" disabled="disabled" class="text" size="2" />
+			</td>
+		{/if}
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td align="right" nowrap="nowrap">{dPtranslate word='Expected Duration'}:</td>
+	<td nowrap="nowrap">
+		<input type="text" class="text" name="task_duration" maxlength="8" size="6" value="{$obj->task_duration}" />
+		{dParraySelect array=$durnTypes name='task_duration_type' extras='class="text"' value=$obj->task_duration_type translation=true}
+	</td>
+	<td>{dPtranslate word='Daily Working Hours'}: {dPconfig var='daily_working_hours'}</td>
+
+</tr>
+<tr>
+	<td align="right" nowrap="nowrap">{dPtranslate word='Calculate'}:</td>
+	<td nowrap="nowrap">
+		<input type="button" value="{dPtranslate word='Duration'}" onclick="calcDuration(document.datesFrm)" class="button" />
+		<input type="button" value="{dPtranslate word='Finish Date'}" onclick="calcFinish(document.datesFrm)" class="button" />
+	</td>
+	<td> {dPtranslate word='Working Days'}: {$working_days}</td>
+</tr>
+{else}
+<tr>
+	<td colspan="2">
+		{dPtranslate word='Only the task owner, project owner, or system administrator is able to edit time related information.'}
+	</td>
+</tr>
+{/if}
+</table>
+</form>
+
+<script type="text/javascript" language="javascript">
+<!--
+	subForm.push(new FormDefinition({$tab}, document.datesFrm, checkDates, saveDates));
+-->
+</script>

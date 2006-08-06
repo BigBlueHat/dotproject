@@ -20,23 +20,26 @@
  */
 function smarty_function_dParraySelect($params, &$smarty)
 {
-    extract($params);
-    
-    if (empty($array) || empty($name)) {
-        $smarty->trigger_error("dParraySelect: missing parameter");
-        return;
-    }
-    
-    if (!isset($extras))
-    	$extras = '';
-    	
-    if (!isset($value))
-    	$value = null;
-    
-    if (!isset($translation))
-    	$translation = false;
-
-    return arraySelect($array, $name, $extras, $value, $translation);
+	extract($params);
+	
+	if (!isset($array)) {
+	    $smarty->trigger_error('dParraySelect: missing parameter "array"');
+	    return;
+	} elseif (!isset($name)) {
+	    $smarty->trigger_error('dParraySelect: missing parameter "name"');
+	    return;
+	}
+	
+	if (!isset($extras))
+		$extras = '';
+		
+	if (!isset($value))
+		$value = null;
+	
+	if (!isset($translation))
+		$translation = false;
+	
+	return arraySelect($array, $name, $extras, $value, $translation);
 }
 
 /* vim: set expandtab: */

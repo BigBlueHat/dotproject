@@ -44,77 +44,14 @@ if ($deps) {
 $taskDep = $q->loadHashList();
 $q->clear();
 
+global $tpl;
+
+$tpl->assign('can_edit_time_information', $can_edit_time_information);
+$tpl->assign('task_parent_options', str_replace('selected', '', $task_parent_options));
+$tpl->assign('taskDep', $taskDep?$taskDep:array());
+$tpl->assign('tab', $tab); 
+
+$tpl->assign('obj', $obj); 
+
+$tpl->displayFile('ae_depend');
 ?>
-<form name="dependFrm" action="?m=tasks&amp;a=addedit&amp;task_project=<?php echo $task_project;?>" method="post">
-<input name="dosql" type="hidden" value="do_task_aed" />
-<input name="task_id" type="hidden" value="<?php echo $task_id;?>" />
-<input name="sub_form" type="hidden" value="1" />
-<table width="100%" border="0" cellpadding="4" cellspacing="0" class="std">
-			<?php
-				if($can_edit_time_information){
-			?>
-			<tr>
-				<td align="center" nowrap="nowrap" colspan="3"><b><?php echo $AppUI->_( 'Dependency Tracking' );?></b></td>
-			</tr>
-			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'On' );?></td>
-				<td nowrap="nowrap">
-					<input type="radio" name="task_dynamic" value="31" <?php if($obj->task_dynamic > '20') echo 'checked'?> />
-				</td>
-			</tr>
-			<tr>
-				<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Off' );?></td>
-				<td id="no_dyn" nowrap="nowrap">
-					<input type="radio" name="task_dynamic" value="0" <?php if($obj->task_dynamic == '0' || $obj->task_dynamic == '11') echo 'checked'?> />
-				</td>
-</tr>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Dynamic Task' );?></td>
-	<td nowrap="nowrap">
-		<input type="checkbox" name="task_dynamic" value="1" <?php if($obj->task_dynamic=="1") echo 'checked'?> />
-	</td>
-</tr>
-<tr>
-	<td align="right" nowrap="nowrap"><?php echo $AppUI->_( 'Do not track this task' );?></td>
-	<td>
-		<input type="checkbox" name="task_dynamic_nodelay" value="1" <?php if(($obj->task_dynamic > '10') && ($obj->task_dynamic < 30)) echo 'checked'?> />
-	</td>
-			</tr>
-			<?php
-				} else {  
-			?>
-			<tr>
-					<td colspan='2'><?php echo $AppUI->_('Only the task owner, project owner, or system administrator is able to edit time related information.'); ?></td>
-				</tr>
-			<?php
-				}// end of can_edit_time_information
-			?>
-			<tr>
-				<td><?php echo $AppUI->_( 'All Tasks' );?>:</td>
-				<td><?php echo $AppUI->_( 'Task Dependencies' );?>:</td>
-			</tr>
-			<tr>
-				<td>
-					<select name='all_tasks' class="text" style="width:220px" size="10" multiple="multiple">
-						<?php echo str_replace('selected', '', $task_parent_options); // we need to remove selected added from task_parent options ?>
-					</select>
-				</td>
-				<td>
-					<?php echo arraySelect( $taskDep, 'task_dependencies', 'style="width:220px" size="10" class="text" multiple="multiple" ', null ); ?>
-				</td>
-			</tr>
-			<tr>
-				<td colspan="2">
-				<input type="checkbox" name="set_task_start_date" /><?php echo $AppUI->_( 'Set task start date based on dependency' );?>
-				</td>
-			</tr>
-			<tr>
-				<td align="right"><input type="button" class="button" value="&gt;" onclick="addTaskDependency(document.dependFrm, document.datesFrm)" /></td>
-				<td align="left"><input type="button" class="button" value="&lt;" onclick="removeTaskDependency(document.dependFrm, document.datesFrm)" /></td>
-			</tr>
-		</table>
-<input type="hidden" name="hdependencies" />
-</form>
-<script type="text/javascript" language="javascript">
-  subForm.push( new FormDefinition(<?php echo $tab; ?>, document.dependFrm, checkDetail, saveDepend));
-</script>
