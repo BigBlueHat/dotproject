@@ -54,12 +54,22 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$q->addQuery('contact_id');
 	$q->addQuery('contact_first_name, contact_last_name');
 	$q->addQuery('contact_email');
+	$q->addQuery('contact_department');
 	$q->addTable('contacts');
 	$q->addOrder('contact_first_name, contact_last_name');
 	$contacts = $q->loadList();
 	$tpl->assign('contacts', $contacts);
-	
 	$user['canEdit'] = $canEdit;
+
+	$q->addQuery('contact_department, dept_name');
+	$q->addTable('contacts');
+	$q->addJoin('departments', 'd', 'contact_department = dept_id');
+	$q->addWhere('contact_id = ' . $user['user_contact']);
+	$contact = $q->loadList();
+foreach($contact as $c)
+//print_r($c);
+	$user['contact_department'] = $contact[0]['contact_department'];
+	$user['dept_name'] = $contact[0]['dept_name'];
 	
 	$tpl->assign('companies', $companies);
 	$tpl->assign('utypes', $utypes);

@@ -61,20 +61,21 @@ if ($del) {
 
 		$contact->contact_owner = $AppUI->user_id;
 	}
-       if ($obj->user_company != $user_current_company)
+       if ($contact->contact_company != $user_current_company)
        {
             $obj->user_department = null;
             $contact->contact_department = null;
         }
-
-
-
         if (($msg = $contact->store())) {
                 $AppUI->setMsg( $msg, UI_MSG_ERROR );
         }
 	else {
-         
-        $obj->user_contact = $contact->contact_id;
+		$q = new DBQuery;
+		$q->addUpdate('contact_department', $contact->contact_department);
+		$q->addTable('contacts');
+		$q->addWhere('contact_id = ' . $contact->contact_id);
+		$q->exec();
+	        $obj->user_contact = $contact->contact_id;
         if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
