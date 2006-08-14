@@ -551,7 +551,7 @@ function projects_list_data($user_id = false) {
 	global $projects;
 
 	$q->addTable('projects');
-	$q->addQuery('projects.project_id, project_name, project_description, project_start_date, project_end_date'.
+	$q->addQuery('projects.project_id, project_name, project_description, project_start_date, project_end_date, '.
                  'project_color_identifier, project_company, project_duration, project_status, project_priority');
 	$q->addQuery('company_name');
 	$q->addQuery('tc.critical_task, tc.project_actual_end_date');
