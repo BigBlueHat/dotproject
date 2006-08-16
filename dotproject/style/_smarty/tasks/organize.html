@@ -56,26 +56,7 @@ foreach ($tasks as $task)
 </table>
 </form>
 
-<table>
-<tr>
-	<td>{dPtranslate word='Key'}:</td>
-	<td>&nbsp; &nbsp;</td>
-  <td style="background-color:#aaddaa; color:#00000">&nbsp; &nbsp;</td>
-  <td>={dPtranslate word='Complete'}</td>
-	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
-	<td>={dPtranslate word='Future Task'}</td>
-	<td bgcolor="#e6eedd">&nbsp; &nbsp;</td>
-	<td>={dPtranslate word='Started and on time'}</td>
-	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#ffeebb">&nbsp; &nbsp;</td>
-	<td>={dPtranslate word='Should have started'}</td>
-	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
-	<td>={dPtranslate word='Overdue'}</td>
-	<td bgcolor="lightgray">&nbsp; &nbsp;</td>
-	<td>={dPtranslate word='Unknown'}</td>
-</tr>
-</table>
+{include file="$template/_smarty/tasks/colours.html"}
 
 <script type="text/javascript" language="javascript">
 <!--
