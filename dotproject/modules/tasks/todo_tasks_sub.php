@@ -127,15 +127,15 @@ if (dPgetConfig('direct_edit_assignment')) {
 <tr>
 	<td><?php echo $AppUI->_('Key');?>:</td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#ffffff">&nbsp; &nbsp;</td>
+	<td class="task_future">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Future Task');?></td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#CCECAC">&nbsp; &nbsp;</td>
+	<td class="task_started">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Started and on time');?></td>
-	<td bgcolor="#FFDD88">&nbsp; &nbsp;</td>
+	<td class="task_notstarted">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Should have started');?></td>
 	<td>&nbsp; &nbsp;</td>
-	<td bgcolor="#CC6666">&nbsp; &nbsp;</td>
+	<td class="task_overdue">&nbsp; &nbsp;</td>
 	<td>=<?php echo $AppUI->_('Overdue');?></td>
 </tr>
 </table>
