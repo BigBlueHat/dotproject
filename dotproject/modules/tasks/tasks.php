@@ -125,13 +125,7 @@ $q->addGroup('project_id');
 $q->addOrder('project_name');
 $psql = $q->prepare();
 
-$q->addTable('projects');
 $q->addQuery('project_id, COUNT(t1.task_id) as total_tasks');
-$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
-if ( count($allowedProjects)) {
-  $q->addWhere($allowedProjects);
-}
-$q->addGroup('project_id');
 $psql2 = $q->prepare();
 $q->clear();
 
