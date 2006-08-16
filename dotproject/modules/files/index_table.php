@@ -3,7 +3,7 @@
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
 GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $tpl;
-global $company_id, $project_id, $task_id;
+global $company_id, $project_id, $task_id, $showProject;
 
 //require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
 

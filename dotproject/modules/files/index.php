@@ -51,6 +51,7 @@ $tabBox = new CTabBox( '?m=files', "{$dPconfig['root_dir']}/modules/files/", $ta
 
 $i = 0;
 
+$showProject = true;
 foreach($file_types as $file_type)
 {
 	$tabBox->add('index_table', $file_type);
