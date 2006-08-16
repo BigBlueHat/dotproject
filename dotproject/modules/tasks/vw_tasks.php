@@ -95,13 +95,12 @@ $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $taskPriority = dPgetSysVal( 'TaskPriority' );
 
 $task_project = intval( dPgetParam( $_GET, 'task_project', null ) );
-
-$task_sort_item1 = dPgetParam( $_GET, 'task_sort_item1', $AppUI->getState('tsi1_'.$project_id, 'task_name') );
-$task_sort_type1 = dPgetParam( $_GET, 'task_sort_type1', $AppUI->getState('tst1_'.$project_id, '') );
+$task_sort_item1 = dPgetParam( $_GET, 'task_sort_item1', $AppUI->getState('tsi1_'.$project_id, 'task_start_date') );
+$task_sort_type1 = dPgetParam( $_GET, 'task_sort_type1', $AppUI->getState('tst1_'.$project_id, '1') );
 $task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', $AppUI->getState('tsi2_'.$project_id, 'task_end_date') );
-$task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', $AppUI->getState('tst2_'.$project_id, '') );
-$task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', $AppUI->getState('tso1_'.$project_id, 0) ) );
-$task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', $AppUI->getState('tso2_'.$project_id, 0) ) );
+$task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', $AppUI->getState('tst2_'.$project_id, '1') );
+$task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', $AppUI->getState('tso1_'.$project_id, 4) ) );
+$task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', $AppUI->getState('tso2_'.$project_id, 3) ) );
 
 $AppUI->setState('tsi1_'.$project_id, $task_sort_item1);
 $AppUI->setState('tsi2_'.$project_id, $task_sort_item2);
