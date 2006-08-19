@@ -7,8 +7,8 @@
 <tr>
 	<td align="right" nowrap="nowrap">{dPtranslate word='Start Date'}</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="task_start_date" id="task_start_date" value="{dPdateFormat date=$obj->start_date format='db'}" />
-		<input type="text" name="start_date" id="start_date" value="{dPdateFormat date=$obj->start_date}" class="text" disabled="disabled" />
+		<input type="hidden" name="task_start_date" id="task_start_date" value="{dPdateFormat date=$obj->task_start_date format='db'}" />
+		<input type="text" name="start_date" id="start_date" value="{dPdateFormat date=$obj->task_start_date}" class="text" disabled="disabled" />
 		<a href="#" onclick="popCalendar(document.datesFrm.start_date)">
 			<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 		</a>
@@ -33,8 +33,8 @@
 <tr>
 	<td align="right" nowrap="nowrap">{dPtranslate word='Finish Date'}</td>
 	<td nowrap="nowrap">
-		<input type="hidden" name="task_end_date" id="task_end_date" value="{dPdateFormat date=$obj->end_date format='db'}" />
-		<input type="text" name="end_date" id="end_date" value="{dPdateFormat date=$obj->end_date}" class="text" disabled="disabled" />
+		<input type="hidden" name="task_end_date" id="task_end_date" value="{dPdateFormat date=$obj->task_end_date format='db'}" />
+		<input type="text" name="end_date" id="end_date" value="{dPdateFormat date=$obj->task_end_date}" class="text" disabled="disabled" />
 		<a href="#" onclick="popCalendar(document.datesFrm.end_date)">
 			<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 		</a>
