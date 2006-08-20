@@ -62,6 +62,8 @@ $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 $titleBlock = new CTitleBlock( 'Monthly Calendar', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( '?m=calendar&amp;a=calmgt', 'calendar management' );
 $titleBlock->addCrumb( '?m=calendar&amp;a=eventimport&amp;dialog=0', 'import icalendar' );
+if ($canAuthor)
+	$titleBlock->addCrumb( '?m=calendar&a=addedit', 'add event' );
 
 if (isset($_POST['show_form']))
 {
