@@ -1,5 +1,5 @@
 <?php /* ADMIN  $Id$ */ 
-GLOBAL $dPconfig, $canEdit, $stub, $where, $orderby, $tpl;
+GLOBAL $dPconfig, $canDelete, $canEdit, $stub, $where, $orderby, $tpl;
 
 $q  = new DBQuery;
 $q->addTable('users', 'u');
@@ -52,6 +52,7 @@ foreach ($users as $k => $row)
 }
 
 $tpl->assign('tab', $tab);
+$tpl->assign('canDelete', $canDelete);
 $tpl->assign('canEdit', $canEdit);
 $tpl->displayList('admin', $users);
 ?>
