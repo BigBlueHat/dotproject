@@ -233,7 +233,7 @@ if ($do_report) {
 			$pname = $pn[0]['project_name'];
 		}
 		else
-			$pname = "All Projects";
+			$pname = $AppUI->_('All Projects');
 		echo db_error();
 
 		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
@@ -249,19 +249,19 @@ if ($do_report) {
 		// $pdf->ezText( dPgetConfig( 'company_name' ).' :: '.dPgetConfig( 'page_title' ), 12 );
 
 		$date = new CDate();
-		$pdf->ezText( "\n" . $date->format( $df ) , 8 );
+		$pdf->ezText( "\n" . $AppUI->_('Print Date').' '.$date->format( $df ) , 8 );
 
 		$pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
 		$pdf->ezText( "\n" . $AppUI->_('Task Log Report'), 12 );
 		$pdf->ezText( "$pname", 15 );
 		if ($log_all) {
-			$pdf->ezText( "All task log entries", 9 );
+			$pdf->ezText( $AppUI->_('All task log entries'), 9 );
 		} else {
-			$pdf->ezText( "Task log entries from ".$start_date->format( $df ).' to '.$end_date->format( $df ), 9 );
+			$pdf->ezText( $AppUI->_('Task log entries from') .' '.$start_date->format( $df ).' '.$AppUI->_('to').' '.$end_date->format( $df ), 9 );
 		}
 		$pdf->ezText( "\n\n" );
 
-		$title = 'Task Logs';
+		$title = $AppUI->_('Task Logs');
 
 	        $pdfheaders = array(
 		        $AppUI->_('Created by'),
