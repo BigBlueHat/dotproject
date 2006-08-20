@@ -22,27 +22,34 @@
 {foreach from=$rows item=row}
 <tr>
 	<td align="right" nowrap="nowrap">
-{if $canEdit}
 		<table cellspacing="0" cellpadding="0" border="0">
 		<tr>
+{if $canEdit}
 			<td>
 				<a href="./index.php?m=admin&amp;a=addedituser&amp;user_id={$row.user_id}" title="{dPtranslate word='edit'}">
 					{dPshowImage src='./images/icons/stock_edit-16.png' wsize=16 hsize=16}
 				</a>
 			</td>
 			<td>
-				<a href="?m=admin&amp;a=viewuser&amp;user_id={$row.user_id}&amp;tab=2" title="">
+				<a href="?m=admin&amp;a=viewuser&amp;user_id={$row.user_id}&amp;tab=1" title="">
 					<img src="images/obj/lock.gif" width="16" height="16" border="0" alt="{dPtranslate word='edit permissions'}" title="{dPtranslate word='edit permissions'}" />
 				</a>
 			</td>
+			<td>
+				<a href="?m=admin&amp;a=viewuser&amp;user_id={$row.user_id}&amp;tab=2" title="">
+					<img src="images/icons/group_key.png" width="16" height="16" border="0" alt="{dPtranslate word='edit roles'}" title="{dPtranslate word='edit roles'}" />
+				</a>
+			</td>
+{/if}
+{if $canDelete}
 			<td>
 				<a href="#" onclick="javascript:delMe({$row.user_id}, '{$row.display}')" title="{dPtranslate word='delete'}">
 					{dPshowImage src='./images/icons/stock_delete-16.png' wsize=16 hsize=16}
 				</a>
 			</td>
+{/if}
 		</tr>
 		</table>
-{/if}
 	</td>
 	<td>
 		<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id={$row.user_id}">{$row.user_username}</a>
