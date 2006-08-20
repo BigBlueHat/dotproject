@@ -553,7 +553,13 @@ class CTask extends CDpObject {
             if (($this->task_end_date != $oTsk->task_end_date) 
                 || ($this->task_dynamic != $oTsk->task_dynamic) 
                 || ($this->task_milestone == '1')) {
-                $this->shiftDependentTasks();
+
+							// Load shifted date data
+							$oEnd = new CDate($oTsk->task_end_date);
+							$nEnd = new CDate($this->task_end_date);
+							$shift = $oEnd->calcDurationDiffToDate($nEnd, $this->task_duration_type);
+
+							$this->shiftDependentTasks($shift);
             }
         }
         else {
@@ -1279,7 +1285,7 @@ class CTask extends CDpObject {
 	 *       @param  integer         time offset in seconds
 	 *       @return void
 	 */
-	function shiftDependentTasks () {
+	function shiftDependentTasks ($shift) {
         // Get tasks that depend on this task
         $csDeps = explode( ',', $this->dependentTasks('','',false));
         
@@ -1289,14 +1295,14 @@ class CTask extends CDpObject {
         
         // Stage 1: Update dependent task dates (accounting for working hours)
         foreach( $csDeps as $task_id ) {
-            $this->update_dep_dates( $task_id );
+            $this->update_dep_dates( $task_id, $shift );
         }
         
         // Stage 2: Now shift the dependent tasks' dependents
         foreach( $csDeps as $task_id ) {
             $newTask = new CTask();
             $newTask->load($task_id);
-            $newTask->shiftDependentTasks();
+            $newTask->shiftDependentTasks($shift);
         }
         
         return;
@@ -1309,8 +1315,8 @@ class CTask extends CDpObject {
 	 *         
 	 *        @param                integer task_id of task to update
 	 */
-	function update_dep_dates( $task_id ) {
-        GLOBAL $tracking_dynamics, $oTsk;
+	function update_dep_dates( $task_id, $shift ) {
+        GLOBAL $tracking_dynamics;
         
         $destDate = new CDate();
         $newTask = new CTask();
@@ -1341,17 +1347,9 @@ class CTask extends CDpObject {
         // end date, based on start date + shift of original task, keeping work duration
         $newTask->task_start_date = $new_start_date;
         
-        // Load original task data for comparison of the time span from
-        // task's original end date to task's new end date
-        // @var  oTsk  data of old object with unshifted dates
-        $oEnd = new CDate($oTsk->task_end_date);
-        
-        // Load shifted date data
-        $nEnd = new CDate($this->task_end_date);
-        
-        $duration = $oEnd->calcDurationDiffToDate($nEnd, $newTask->task_duration_type);
+        // Add shifting span to End Date
         $new_end_date = new CDate($newTask->task_end_date);
-        $new_end_date->addDuration( $duration, 1);
+        $new_end_date->addDuration( $shift, 1);
         $new_end_date = $new_end_date->format( FMT_DATETIME_MYSQL );
         
         $q = new DBQuery;
