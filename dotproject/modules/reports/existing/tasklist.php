@@ -97,7 +97,7 @@ function setCalendar( idate, fdate ) {
           <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Next Week'); ?>" />
           <input class="button" type="submit" name="period" value="<?php echo $AppUI->_('Next Month'); ?>" />
         </td>
-        <td colspan="3"><input class="text" type="field" size="2" name="pvalue" value="1" /> - value for the previous buttons</td>
+        <td colspan="3"><input class="text" type="field" size="2" name="pvalue" value="1" /> - <?php echo $AppUI->_( 'value for the previous buttons' );?></td>
 <!--
         <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Month'); ?>" onclick="set(-30)" /></td>
         <td><input class="button" type="submit" name="do_report" value="<?php echo $AppUI->_('Previous Week'); ?>" onclick="set(-7)" /></td>
@@ -168,14 +168,14 @@ if ($do_report) {
 
 	echo "<table cellspacing=\"1\" cellpadding=\"4\" border=\"0\" class=\"tbl\">";
 	if ($project_id==0) 
-		echo '<tr><th>Project Name</th>';
-	echo '<th>Task Name</th>';
-	echo "<th width=400>Task Description</th>";
-	echo "<th>Assigned To</th>";
-	echo "<th>Task Start Date</th>";
-	echo "<th>Task End Date</th>";
-	echo "<th>Duration</th>";
-	echo "<th>Completion</th></tr>";
+		echo '<tr><th>'.$AppUI->_('Project Name').'</th>';
+	echo '<th>'.$AppUI->_('Task Name').'</th>';
+	echo '<th width="400">'.$AppUI->_('Task Description').'</th>';
+	echo '<th>'.$AppUI->_('Assigned To').'</th>';
+	echo '<th>'.$AppUI->_('Task Start Date').'</th>';
+	echo '<th>'.$AppUI->_('Task End Date').'</th>';
+	echo '<th>'.$AppUI->_('Duration').'</th>';
+	echo '<th>'.$AppUI->_('Completion').'</th></tr>';
 	
 	$pdfdata = array();
 	$columns = array(	
