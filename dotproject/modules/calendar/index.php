@@ -54,7 +54,12 @@ $date = dPgetParam( $_GET, 'date', null );
 
 // get the list of visible companies
 $company = new CCompany();
-$companies = $company->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$q = new DBQuery;
+$q->addTable('companies');
+$q->addQuery('company_id, company_name');
+$company->setAllowedSQL($AppUI->user_id, $q);
+$companies = $q->loadHashList();
+$q->clear();
 $companies = arrayMerge( array( '0'=>$AppUI->_('All') ), $companies );
 
 #echo '<pre>';print_r($events);echo '</pre>';
