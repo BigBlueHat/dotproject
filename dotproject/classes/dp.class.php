@@ -411,12 +411,13 @@ class CDpObject {
 		$uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedSQL failed" );
 		$deny =& $perms->getDeniedItems($this->_tbl, $uid );
 		$allow =& $perms->getAllowedItems($this->_tbl, $uid);
+
+		if (! $key)
+			$key = substr($this->_tbl, 0, 2);
 		// Make sure that we add the table otherwise dependencies break
-		if (isset($index)) {
-			if (! $key)
-				$key = substr($this->_tbl, 0, 2);
+		if (isset($index)) 
 			$query->leftJoin($this->_tbl, $key, "$key.$this->_tbl_key = $index");
-		}
+		
 		if (! $perms->checkModule($this->_tbl, "view", $uid )) {
 		  if (! count($allow)) {
 				// We need to ensure that we don't just break complex SQLs, but
@@ -430,10 +431,10 @@ class CDpObject {
 		}
 
 		if (count($allow)) {
-		  $query->addWhere("$this->_tbl_key IN (" . implode(',', $allow) . ")");
+		  $query->addWhere("$key.$this->_tbl_key IN (" . implode(',', $allow) . ")");
 		}
 		if (count($deny)) {
-		  $query->addWhere("$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
+		  $query->addWhere("$key.$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
 		}
 	}
 	
