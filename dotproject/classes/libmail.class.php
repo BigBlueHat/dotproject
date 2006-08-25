@@ -529,6 +529,10 @@ function QueueMail()
 function SendQueuedMail($mod, $type, $originator, $owner, &$args)
 {
 	extract($args);
+	// These two lines scrub the message body to take care of "no CR prepended (SMTP code 451)"
+	$fullBody = str_replace("\r\n", "\n", $fullBody);
+	$fullBody = str_replace("\n", "\r\n", $fullBody);
+
 	if ($this->transport == 'smtp') {
 		return $this->SMTPSend($sendto, $xheaders['Subject'], $fullBody, $xheaders);
 	} else {
