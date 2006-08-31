@@ -52,9 +52,10 @@ $q->addJoin('companies', 'com', 'company_id = project_company');
 $q->addJoin('users', 'u', 'user_id = project_owner');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
-$q->addWhere('project_id = '.$project_id.' AND t1.task_id = t1.task_parent');
+$q->addWhere('project_id = '.$project_id);
 $q->addGroup('project_id');
 $sql = $q->prepare();
+echo $sql;
 $q->clear();
 
 $obj = null;
