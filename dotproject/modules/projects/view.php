@@ -55,7 +55,6 @@ $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
 $q->addWhere('project_id = '.$project_id);
 $q->addGroup('project_id');
 $sql = $q->prepare();
-echo $sql;
 $q->clear();
 
 $obj = null;
