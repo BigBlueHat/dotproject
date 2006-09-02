@@ -210,41 +210,35 @@ foreach ($tasks as $k => $task)
 {
         $q->clear();
         $q->addQuery('ut.user_id, u.user_username');
-				$q->addQuery('contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent');
-				$q->addQuery('contact_first_name, contact_last_name');
+		$q->addQuery('contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent');
+		$q->addQuery('contact_first_name, contact_last_name');
         $q->addTable('user_tasks', 'ut');
         $q->leftJoin('users', 'u', 'u.user_id = ut.user_id');
         $q->leftJoin('contacts', 'c', 'u.user_contact = c.contact_id');
         $q->addWhere('ut.task_id = ' . $task['task_id']);
         $q->addGroup('ut.user_id');
-	$q->addOrder('perc_assignment desc, user_username');
-
+		$q->addOrder('perc_assignment desc, user_username');
         $task['task_assigned_users'] = $q->loadList();
 				
-				$q->addQuery('count(*) as children');
-				$q->addTable('tasks');
-				$q->addWhere('task_parent = ' . $task['task_id']);
-				$q->addWhere('task_id <> task_parent');
-				$task['children'] = $q->loadResult();
-				$task['style'] = taskstyle($task);
-				$task['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
-				$task['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
-				$task['task_number'] = ++$i;
-				$task['node_id'] = 'node_'.$i.'-' . $task['task_id'];
-				
-				if (strpos($task['task_duration'], '.') && $task['task_duration_type'] == 1)
-					$task['task_duration'] = floor($task['task_duration']) . ':' . round(60 * ($task['task_duration'] - floor($task['task_duration'])));
+		$q->addQuery('count(*) as children');
+		$q->addTable('tasks');
+		$q->addWhere('task_parent = ' . $task['task_id']);
+		$q->addWhere('task_id <> task_parent');
+		$task['children'] = $q->loadResult();
+		$task['style'] = taskstyle($task);
+		$task['canEdit'] = !getDenyEdit( 'tasks', $task['task_id'] );
+		$task['canViewLog'] = $perms->checkModuleItem('task_log', 'view', $task['task_id']);
+		$task['task_number'] = ++$i;
+		$task['node_id'] = 'node_'.$i.'-' . $task['task_id'];
 
+		if (strpos($task['task_duration'], '.') && $task['task_duration_type'] == 1) {
+			$task['task_duration'] = floor($task['task_duration']) . ':' . round(60 * ($task['task_duration'] - floor($task['task_duration'])));
+		}
 
-
-				$display_tasks[$i] = $task;
-				if ($task['children'] > 0 && $toggleAll == 'open')
-					recurse_children($task['node_id']);
-
-		
-
-//				$tasks[$k]['task_description'] = str_replace("\"", "&quot;", str_replace("\r", ' ', str_replace("\n", ' ', $task['task_description'])));
-//        $alt = htmlspecialchars($alt);
+		$display_tasks[$i] = $task;
+		if ($task['children'] > 0 && $toggleAll == 'open') {
+			recurse_children($task['node_id']);
+		}
 }
 
 //natural sorting instead?
