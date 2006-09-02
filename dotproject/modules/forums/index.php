@@ -60,7 +60,7 @@ switch ($f) {
 		$q->addWhere("project_status != 7 AND project_owner = $AppUI->user_id");
 		break;
 	case 4:
-		$q->addWhere("project_status != 7 AND project_company = $AppUI->user_company");
+		$q->addWhere('project_status != 7 AND project_company = '. (int) $AppUI->user_company);
 		break;
 	case 5:
 		$q->addWhere("project_status = 7");
