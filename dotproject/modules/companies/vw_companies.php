@@ -66,8 +66,6 @@ $count_rows = $q->loadResult();
 foreach($rows as $key => $value)
 	$rows[$key]['company_type_name'] = $types[$rows[$key]['company_type']];
 
-//$smarty->assign('msg', $AppUI->getMsg());
-//$smarty->assign('current_url', 'index.php?m=companies');
 $show = array('company_name', 'company_projects_active', 'company_projects_inactive', 'company_type');
 $tpl->displayList('companies', $rows, $count_rows, $show);
 ?>
