@@ -325,7 +325,7 @@ function _HTMLaddTextInput(id, value, size, maxlength)
 //{{{2 function _HTMLaddHidden
 function _HTMLaddHidden(id, value)
 {
-   if (window.navigator.userAgent.toLowerCase().match(/gecko/)) {navigator.family = "gecko"}
+   if (window.navigator.userAgent.toLowerCase().match(/gecko/) || window.navigator.userAgent.toLowerCase().match(/opera/)) {navigator.family = "gecko"}
    var c = new Comparable
    c.add('id', id);
    c.add('name', id);
