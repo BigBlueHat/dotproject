@@ -162,7 +162,7 @@ class CDate extends Date {
 		$do = $this;
                 $end = intval(dPgetConfig('cal_day_end'));
                 $start = intval(dPgetConfig('cal_day_start'));
-                while ( ! $this->isWorkingDay() || $this->getHour() >= $end ) {
+                while ( ! $this->isWorkingDay() || $this->getHour() > $end ) {
                         $this->addDays(1);
                         $this->setTime($start, '0', '0');
                 }
@@ -228,7 +228,7 @@ class CDate extends Date {
 	// proceeding the actual (first) day
 
 		// move to the next working day if the first day is a non-working day
-		$this->copy( ($sgn > 0) ? $this->next_working_day() : $this->prev_working_day());
+		($sgn > 0) ? $this->next_working_day() : $this->prev_working_day();
 
 	
 		$firstDay = ($sgn > 0) ? $cal_day_end - $this->hour : $this->hour - $cal_day_start;
@@ -249,7 +249,7 @@ class CDate extends Date {
 
 
 		$this->addDays(1 * $sgn);
-		$this->copy( ($sgn > 0) ? $this->next_working_day() : $this->prev_working_day());
+		($sgn > 0) ? $this->next_working_day() : $this->prev_working_day();
 		$duration -= $firstAdj;
 
 	// end of proceeding the first day
