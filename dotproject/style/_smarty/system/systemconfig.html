@@ -39,7 +39,7 @@
 	{/if}
 			{dPtranslateToVar word=$c.config_name append='_title' ass='ti'}
 			{dPtranslateToVar word=$c.config_name append='_tooltip' ass='tt'}
-			<a href="javascript:void(0);" {popup text="$tt" caption="$ti"}>(?)</a>
+			<a href="javascript:void(0);" {popup text="$tt" caption="$ti"}>{dPshowImage find='information.png' wsize=16 hsize=16}</a>
 			<input class="button" type="hidden"  name="dPcfgId[{$c.config_name}]" value="{$c.config_id}" />
 		</td>
 	</tr>
