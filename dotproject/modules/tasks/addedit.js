@@ -287,6 +287,10 @@ function calcDuration(f) {
 	var int_st_date = new String(f.task_start_date.value + f.start_hour.value + f.start_minute.value);
 	var int_en_date = new String(f.task_end_date.value + f.end_hour.value + f.end_minute.value);
 
+	if (int_st_date.length == 4 || int_en_date.length == 4) {
+		return;
+	}
+	
 	var sDate = new Date(int_st_date.substring(0,4),(int_st_date.substring(4,6)-1),int_st_date.substring(6,8), int_st_date.substring(8,10), int_st_date.substring(10,12));
 	var eDate = new Date(int_en_date.substring(0,4),(int_en_date.substring(4,6)-1),int_en_date.substring(6,8), int_en_date.substring(8,10), int_en_date.substring(10,12));
 	
