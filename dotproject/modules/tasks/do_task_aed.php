@@ -157,9 +157,9 @@ if ($sub_form) {
 			// we will reset the task's start date based upon dependencies
 			// and shift the end date appropriately
 			if ($adjustStartDate) {
-			
+
 				// update start date based on dep
-				$obj->update_dep_dates( $obj->task_id );
+				$obj->update_dep_dates( $obj->task_id, 0 );
 
 				// load new task data
 				$tempTask = new CTask();
@@ -167,22 +167,22 @@ if ($sub_form) {
 
 				// shifted new start date
 				$nsd = new CDate ($tempTask->task_start_date);
-				
+
 				// calc shifting span old start ~ new start
-				$d = $tsd->calcDurationDiffToDate($nsd);
+				//$d = $tsd->calcDurationDiffToDate($nsd);
 
 				// appropriately shifted end date
-				$ned = $ted->addDuration($d);
+				$ned = $nsd->addDuration($obj->task_duration, $obj->task_duration_type);
 
 				$obj->task_end_date = $ned->format( FMT_DATETIME_MYSQL );
 
 		 		$q = new DBQuery;
-		                $q->addTable('tasks', 't');
-		                $q->addUpdate('task_end_date', $obj->task_end_date);
-		                $q->addWhere('task_id = '.$obj->task_id);
-		                $q->addWhere('task_dynamic != 1');
-		                $q->exec();
-		                $q->clear();
+				$q->addTable('tasks', 't');
+				$q->addUpdate('task_end_date', $obj->task_end_date);
+				$q->addWhere('task_id = '.$obj->task_id);
+				$q->addWhere('task_dynamic != 1');
+				$q->exec();
+				$q->clear();
 			}
 
 		}
