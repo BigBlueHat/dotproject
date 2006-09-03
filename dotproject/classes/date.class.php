@@ -291,9 +291,9 @@ class CDate extends Date {
 	*/ 
 	function calcDurationDiffToDate($e) {
 		// get dP time constants
-	      	$cal_day_start = intval(dPgetConfig( 'cal_day_start' ));
-	        $cal_day_end = intval(dPgetConfig( 'cal_day_end' ));
-	        $dwh = intval(dPgetConfig( 'daily_working_hours' ));
+		$cal_day_start = intval(dPgetConfig( 'cal_day_start' ));
+		$cal_day_end = intval(dPgetConfig( 'cal_day_end' ));
+		$dwh = intval(dPgetConfig( 'daily_working_hours' ));
 		
 		// assume start is before end and set a default signum for the duration	
 		$sgn = 1;
