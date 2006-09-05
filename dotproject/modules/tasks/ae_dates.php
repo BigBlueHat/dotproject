@@ -37,8 +37,10 @@ if (intval($obj->task_start_date))
   $start_date = new CDate($obj->task_start_date);
 else if ($task_id != 0)
   $start_date = null;
-else
+else {
   $start_date = new CDate();
+  $start_date->setHour($start);
+  }
 //$start_date = intval( $obj->task_start_date ) ? new CDate( $obj->task_start_date ) : new CDate();
 $end_date = intval( $obj->task_end_date ) ? new CDate( $obj->task_end_date ) : null;
 
