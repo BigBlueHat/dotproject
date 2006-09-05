@@ -167,17 +167,6 @@ if ($sub_form) {
 
 							// calc shifting span old start ~ new start
 							$d = $tsd->calcDurationDiffToDate($nsd);
-							
-	if (!$handle = fopen('/home/gregor/public_html/dp/unstable/dotproject/log', "a")) {
-        
-   }
-
-   // Schreibe $somecontent in die geöffnete Datei.
-   if (!fwrite($handle, 'd: '.$d."\n")) {
-   
-   }
-
-   fclose($handle);
 
 							// update start date based on dep
 							$obj->update_dep_dates( $obj->task_id, $d );
