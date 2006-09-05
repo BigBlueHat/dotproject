@@ -215,7 +215,7 @@ class CDate extends Date {
 					// in case the duration type is 24 resp. full days
 					// we're finished very quickly
 					if ($durationType == '24') {
-						$d->addDays($duration * $sgn);
+						$this->addDays($duration * $sgn);
 						return $this->prev_working_day(true);
 					}
 			
