@@ -148,7 +148,7 @@ if ($sub_form) {
 		}
 		
 		if (isset($hdependencies)) {
-			// backup old start and end dates
+			// backup initial start and end dates
 			$tsd = new CDate ($obj->task_start_date);
 			$ted = new CDate ($obj->task_end_date);
 
@@ -158,31 +158,55 @@ if ($sub_form) {
 			// and shift the end date appropriately
 			if ($adjustStartDate && !is_null($hdependencies)) {
 
-							// load new task data
+							// load already stored task data for this task
 							$tempTask = new CTask();
 							$tempTask->load( $obj->task_id );
 
-							// shifted new start date
+							// shift new start date to the last dependency end date
 							$nsd = new CDate ($tempTask->get_deps_max_end_date( $tempTask ) );
-
-							// calc shifting span old start ~ new start
-							$d = $tsd->calcDurationDiffToDate($nsd);
-
-							// update start date based on dep
-							$obj->update_dep_dates( $obj->task_id, $d );
-
-							// appropriately shifted end date
-							$ned = $ted->addDuration($d, $obj->task_duration_type);
-
+							
+							/* two cases:
+							** 1. start date is _not_ specified:
+							**		set end date as start+duration
+							** 2. start date is specified:
+							**		set end date by appropriate time shift
+							**		in order to preserve the task time span
+							**		(start-end) independently from the duration
+							*/
+							
+							if (empty($obj->task_start_date)) {
+								
+								// appropriately calculated end date via start+duration
+								$ned = new CDate();
+								$ned->copy($nsd);
+								$ned->addDuration($obj->task_duration, $obj->task_duration_type);		
+								
+							} else { 
+							
+								// calc shifting span old start ~ new start
+								$d = $tsd->calcDurationDiffToDate($nsd);
+							
+								// update start date based on dep
+								$obj->update_dep_dates( $obj->task_id, $d );
+	
+								// appropriately shifted end date
+								// the value returned by Date::calcDurationDiffToDate() 
+								// is always in hours ('1')
+								$ned = $ted->addDuration($d, '1');
+								
+							}
+							
+							$obj->task_start_date = $nsd->format( FMT_DATETIME_MYSQL );
 							$obj->task_end_date = $ned->format( FMT_DATETIME_MYSQL );
-
-					 		$q = new DBQuery;
-					                $q->addTable('tasks', 't');
-					                $q->addUpdate('task_end_date', $obj->task_end_date);
-					                $q->addWhere('task_id = '.$obj->task_id);
-					                $q->addWhere('task_dynamic != 1');
-					                $q->exec();
-					                $q->clear();
+							
+							$q = new DBQuery;
+					    $q->addTable('tasks', 't');							
+							$q->addUpdate('task_start_date', $obj->task_start_date);	
+              $q->addUpdate('task_end_date', $obj->task_end_date);
+              $q->addWhere('task_id = '.$obj->task_id);
+              $q->addWhere('task_dynamic != 1');
+              $q->exec();
+              $q->clear();
 						}
 
 		}

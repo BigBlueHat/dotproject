@@ -214,69 +214,68 @@ class CDate extends Date {
 			
 					// in case the duration type is 24 resp. full days
 					// we're finished very quickly
+			
 					if ($durationType == '24') {
-						$this->addDays($duration * $sgn);
-						return $this->prev_working_day(true);
+						$full_working_days = $duration;
 					}
-			
+					
 					// durationType is 1 hour
-						
-					// get dP time constants
-	      	$cal_day_start = intval(dPgetConfig( 'cal_day_start' ));
-	        $cal_day_end = intval(dPgetConfig( 'cal_day_end' ));
-	        $dwh = intval(dPgetConfig( 'daily_working_hours' ));
-			
-				// proceeding the actual (first) day
-			
-					// move to the next working day if the first day is a non-working day
-					($sgn > 0) ? $this->next_working_day() : $this->prev_working_day();
-			
-					// calculate the hours spent on the first day	
-					$firstDay = ($sgn > 0) ? $cal_day_end - $this->hour : $this->hour - $cal_day_start;
-			
-					/*
-					** if we're later than cal_end_day or sooner than cal_start_day
-					** just move by one day without subtracting any time from duration 
-					*/
-					if ($firstDay < 0)
-						$firstDay = 0;
-			
-					if ($duration < $firstDay) {
-						($sgn > 0) ? $this->setHour($this->hour+$duration) : $this->setHour($this->hour-$duration);
-						return $this;
-					}
-			
-					// the effective first day hours value
-					$firstAdj = min($dwh, $firstDay);
-			
-					// subtract the first day hours from the total duration
-					$duration -= $firstAdj;
-					
-					// we've already processed the first day; move by one day!
-					$this->addDays(1 * $sgn);
-					
-					// make sure that we didn't move to a non-working day
-					($sgn > 0) ? $this->next_working_day() : $this->prev_working_day();
+					else if ($durationType == '1') {
+						// get dP time constants
+		      	$cal_day_start = intval(dPgetConfig( 'cal_day_start' ));
+		        $cal_day_end = intval(dPgetConfig( 'cal_day_end' ));
+		        $dwh = intval(dPgetConfig( 'daily_working_hours' ));
 				
-				// end of proceeding the first day
+					// proceeding the actual (first) day
+				
+						// move to the next working day if the first day is a non-working day
+						($sgn > 0) ? $this->next_working_day() : $this->prev_working_day();
+				
+						// calculate the hours spent on the first day	
+						$firstDay = ($sgn > 0) ? $cal_day_end - $this->hour : $this->hour - $cal_day_start;
+				
+						/*
+						** if we're later than cal_end_day or sooner than cal_start_day
+						** just move by one day without subtracting any time from duration 
+						*/
+						if ($firstDay < 0)
+							$firstDay = 0;
+				
+						if ($duration < $firstDay) {
+							($sgn > 0) ? $this->setHour($this->hour+$duration) : $this->setHour($this->hour-$duration);
+							return $this;
+						}
+				
+						// the effective first day hours value
+						$firstAdj = min($dwh, $firstDay);
+				
+						// subtract the first day hours from the total duration
+						$duration -= $firstAdj;
 						
-					// calc the remaining time and the full working days part of this residual
-					$hoursRemaining = ($duration > $dwh) ? ($duration % $dwh) : $duration;
-			    $full_working_days = round(($duration - $hoursRemaining) / $dwh);
-			    // (proceed the full days later)
-			
-			
-				// proceed the last day now
-			
-					// we prefer wed 16:00 over thu 08:00 as end date :)
-					if ($hoursRemaining == 0){
-						$full_working_days--;
-						($sgn > 0) ? $this->setHour($cal_day_start+$dwh) : $this->setHour($cal_day_end-$dwh);
-					} else
-						($sgn > 0) ? $this->setHour($cal_day_start+$hoursRemaining + 1) : $this->setHour($cal_day_end-$hoursRemaining - 1);
-						// magically an additional amount of +1 or -1 hrs respectively is needed in the above calc
-				//end of proceeding the last day
-			
+						// we've already processed the first day; move by one day!
+						$this->addDays(1 * $sgn);
+						
+						// make sure that we didn't move to a non-working day
+						($sgn > 0) ? $this->next_working_day() : $this->prev_working_day();
+					
+					// end of proceeding the first day
+							
+						// calc the remaining time and the full working days part of this residual
+						$hoursRemaining = ($duration > $dwh) ? ($duration % $dwh) : $duration;
+				    $full_working_days = round(($duration - $hoursRemaining) / $dwh);
+				    // (proceed the full days later)
+				
+				
+					// proceed the last day now
+				
+						// we prefer wed 16:00 over thu 08:00 as end date :)
+						if ($hoursRemaining == 0){
+							$full_working_days--;
+							($sgn > 0) ? $this->setHour($cal_day_start+$dwh) : $this->setHour($cal_day_end-$dwh);
+						} else
+							($sgn > 0) ? $this->setHour($cal_day_start+$hoursRemaining) : $this->setHour($cal_day_end-$hoursRemaining);
+					//end of proceeding the last day
+				}
 			
 				// proceeding the fulldays finally which is easy
 					// Full days
