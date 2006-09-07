@@ -110,9 +110,9 @@ if (is_array($projects)) {
         }
 }
 
-$fixed_project_type_file = array(
-        $AppUI->_('In Progress', UI_OUTPUT_RAW) . ' (' . $active . ')' => "vw_idx_active",
-        $AppUI->_('Complete', UI_OUTPUT_RAW) . ' (' . $complete . ')'    => "vw_idx_complete");
+//$fixed_project_type_file = array(
+//        $AppUI->_('In Progress', UI_OUTPUT_RAW) . ' (' . $active . ')' => "vw_idx_list",
+//        $AppUI->_('Complete', UI_OUTPUT_RAW) . ' (' . $complete . ')'    => "vw_idx_list");
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
@@ -132,11 +132,7 @@ $project_type_file = array();
 
 foreach($project_types as $project_type){
 	$project_type = trim($project_type);
-	if(isset($fixed_project_type_file[$project_type])){
-		$project_file_type[$project_type] = $fixed_project_type_file[$project_type];
-	} else { // if there is no fixed vw_idx file, we will use vw_idx_proposed
-		$project_file_type[$project_type] = "vw_idx_proposed";
-	}
+	$project_file_type[$project_type] = "vw_idx_list";
 }
 
 // tabbed information boxes

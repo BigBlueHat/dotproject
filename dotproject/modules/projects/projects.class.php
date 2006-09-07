@@ -27,6 +27,7 @@ class CProject extends CDpObject {
 	var $project_end_date = NULL;
 	var $project_actual_end_date = NULL;
 	var $project_status = NULL;
+	var $project_active = NULL;
 	var $project_percent_complete = NULL;
 	var $project_color_identifier = NULL;
 	var $project_description = NULL;
