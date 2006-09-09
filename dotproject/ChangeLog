@@ -1,3 +1,975 @@
+2006-09-08 01:44  (caseydk)
+---------------------------------
+style/_smarty/projects/addedit.html
+- [no log message]
+
+2006-09-08 01:44  (caseydk)
+---------------------------------
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_list.php
+modules/projects/vw_idx_proposed.php
+- refactored all the vw_idx into one
+
+2006-09-06 11:00  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_aed.php
+classes/date.class.php
+- calc start date now on server-side, allow empty start date and fix for day-based shifting
+
+2006-09-05 23:47  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+- wrong var call
+
+2006-09-05 20:25  (gregorerhardt)
+---------------------------------
+modules/tasks/ae_dates.php
+- corrected amPm settingfor start date based on cal start day value
+
+2006-09-05 19:05  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_aed.php
+- remove development testing code
+
+2006-09-05 19:03  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+modules/tasks/do_task_aed.php
+- duration and dateDifference calc fixes, more verbose comments
+
+2006-09-03 19:37  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+classes/date.class.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- tasks dependency shifting - finally fixed?
+
+2006-09-03 10:18  (gregorerhardt)
+---------------------------------
+images/information.png
+style/_smarty/system/systemconfig.html
+- adding sys config info graphic
+
+2006-09-03 10:01  (caseydk)
+---------------------------------
+modules/tasks/do_task_aed.php
+- cleaned up the identation;
+- fixed the date shifting for dependencies... it works!
+
+2006-09-03 10:00  (caseydk)
+---------------------------------
+modules/tasks/addedit.js
+- handled the infinite loop when either date is null
+
+2006-09-03 10:00  (caseydk)
+---------------------------------
+classes/date.class.php
+- cleaned up the identation
+
+2006-09-02 17:41  (caseydk)
+---------------------------------
+style/_smarty/tasks/list.html
+style/_smarty/tasks/list.projects.html
+- changed "Task Creator" to "Task Owner"
+
+2006-09-02 17:35  (caseydk)
+---------------------------------
+modules/tasks/vw_tasks.php
+- cleaned up the identation
+
+2006-09-02 17:34  (caseydk)
+---------------------------------
+modules/companies/vw_companies.php
+- removed some commented code
+
+2006-09-02 13:49  (gregorerhardt)
+---------------------------------
+modules/forums/index.php
+- 1663 - explicit cast in forums My Company Filter for AppUI user_company
+
+2006-09-02 13:38  (gregorerhardt)
+---------------------------------
+js/base.js
+- 1669 - task addedit js nodeAdding fixed for hidden type with OPERA
+
+2006-09-01 02:16  (caseydk)
+---------------------------------
+includes/version.php
+- updated this to current
+
+2006-09-01 02:15  (caseydk)
+---------------------------------
+style/_smarty/tabBox.html
+- hid the flat view
+
+2006-09-01 02:14  (caseydk)
+---------------------------------
+style/_smarty/projects/addedit.html
+- [no log message]
+
+2006-09-01 00:41  (caseydk)
+---------------------------------
+modules/projects/view.php
+- removed my debug statement.  :(
+
+2006-09-01 00:40  (caseydk)
+---------------------------------
+modules/projects/view.php
+- removed the additional AND clause, it made projects with zero tasks not display;
+
+2006-08-27 17:26  (nybod)
+---------------------------------
+style/_smarty/login.html
+- Made site_terms a link to the defined site terms document.
+
+2006-08-25 17:53  (caseydk)
+---------------------------------
+classes/libmail.class.php
+- fix for bug - 0001756: SMTP 451 error sending SMTP mail
+
+2006-08-25 17:41  (caseydk)
+---------------------------------
+db/upgrade_20_to_201.sql
+- updated for mysql 5 compliance
+
+2006-08-22 18:29  (gregorerhardt)
+---------------------------------
+classes/dp.class.php
+- 1705: revert to old state of no key in table call
+
+2006-08-22 17:58  (gregorerhardt)
+---------------------------------
+classes/dp.class.php
+modules/calendar/index.php
+- 1705: add table key to setAllowedSQL query
+
+2006-08-22 17:22  (gregorerhardt)
+---------------------------------
+modules/calendar/index.php
+- 1705: replace deprecated getAllowedSql
+
+2006-08-20 20:37  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixing task dependency shifting bug for recursive dependencies
+
+2006-08-20 20:11  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixing task dependency shifting bug for recursive dependencies
+
+2006-08-20 13:47  (gregorerhardt)
+---------------------------------
+modules/calendar/index.php
+- added link for adding an event
+
+2006-08-20 13:29  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr.php
+- corrected ACL for delete perms
+
+2006-08-20 13:25  (gregorerhardt)
+---------------------------------
+LICENSE
+images/icons/group_key.png
+style/_smarty/admin/list.html
+- added icon and link for roles
+
+2006-08-20 12:24  (gregorerhardt)
+---------------------------------
+modules/reports/existing/tasklogs.php
+- prepared for translation
+
+2006-08-20 12:17  (gregorerhardt)
+---------------------------------
+modules/reports/existing/tasklist.php
+- prepared for translation
+
+2006-08-20 11:57  (gregorerhardt)
+---------------------------------
+modules/reports/existing/stats.php
+- prepared for translation
+
+2006-08-19 22:11  (caseydk)
+---------------------------------
+style/_smarty/tasks/ae_dates.html
+- tweaked to get the dates to show up properly for editting
+
+2006-08-19 21:01  (caseydk)
+---------------------------------
+modules/tasks/todo.php
+- the "show archived projects" was based on having a particular project_status instead of a project_active
+
+2006-08-18 23:45  (merlinyoda)
+---------------------------------
+locales/en/system.inc
+- 
+- Added some values that were missing for the English version of
+- the "system.inc" translation file.
+
+2006-08-17 20:40  (caseydk)
+---------------------------------
+files/cache/phpgacl/.cvsignore
+- [no log message]
+
+2006-08-17 13:24  (cyberhorse)
+---------------------------------
+modules/calendar/index.php
+- fixed issue with IS (not recognizing onchange for checkboxes - changed to
+- onclick)
+
+2006-08-16 18:57  (caseydk)
+---------------------------------
+modules/tasks/vw_tasks.php
+- someone tweaked the default ordering to be task_name, task_end_date which makes no sense from a PM perspective;
+- i've changed it back to task_start_date, task_end_date as the default;
+
+2006-08-16 18:12  (caseydk)
+---------------------------------
+modules/tasks/tasks.php
+- the removed tables and fields are already in the query and throwing sql errors as a result
+
+2006-08-16 14:16  (cyberhorse)
+---------------------------------
+modules/files/index.php
+modules/files/index_table.php
+- fixed file category tabs and general display
+
+2006-08-16 13:51  (cyberhorse)
+---------------------------------
+modules/tasks/tasksperuser_sub.php
+- fixed view user link
+- fixed xhtml
+
+2006-08-16 13:42  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/colours.html
+style/_smarty/tasks/organize.html
+style/_smarty/tasks/tasklog.html
+- fixed colour coding to use css styles
+
+2006-08-16 12:55  (cyberhorse)
+---------------------------------
+modules/tasks/todo_tasks_sub.php
+- applied css styles to task statuses
+
+2006-08-14 13:04  (caseydk)
+---------------------------------
+modules/projects/projects.class.php
+- line 554:  a missing comma merged two column names and resulted in a sql error.
+
+2006-08-10 00:19  (merlinyoda)
+---------------------------------
+db/upgrade_latest.php
+- 
+- Added 2 lines of code in upgrade_latest so that the 'session_user' column
+- is present 'sessions' table. Sessions may be joined to a user id in
+- the database. This was also necessary to get the "Active Sessions" tab under
+- "User Admin" working in stable_2
+
+2006-08-09 15:26  (cyberhorse)
+---------------------------------
+style/tasks.css
+- add border to task colours - better to see
+
+2006-08-09 15:06  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+- only look for user department for existing users
+
+2006-08-09 14:58  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/do_user_aed.php
+- fixed department saving in user
+
+2006-08-07 23:48  (merlinyoda)
+---------------------------------
+db/upgrade_to_204.php
+modules/projects/view.php
+modules/tasks/tasks.php
+- 
+- Fixed problem with "empty" projects not properly displaying information
+- on project/task view pages after 1737 bug fix.
+
+2006-08-06 15:48  (cyberhorse)
+---------------------------------
+includes/smarty/function.dParraySelect.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_resource.php
+style/_smarty/public/calendar.html
+style/_smarty/tasks/ae_dates.html
+style/_smarty/tasks/ae_depend.html
+style/_smarty/tasks/ae_resource.html
+- smartified some of the task tabs and fixed some other minor things
+
+2006-08-06 11:48  (cyberhorse)
+---------------------------------
+modules/public/calendar.php
+modules/tasks/addedit.js
+style/_smarty/public/calendar.html
+- smartified the popup calendar
+
+2006-08-04 17:32  (merlinyoda)
+---------------------------------
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/tasks/tasks.php
+- 
+- Fixed project percent complete calculation in similiar manner to stable_2
+- fix for bug report 1737
+
+2006-08-04 01:44  (merlinyoda)
+---------------------------------
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/tasks/tasks.php
+- Related to Bug Report 1737:
+- 
+- Fixed project percentage complete calculations based on submitter's suggestions.
+
+2006-08-01 08:20  (ajdonnison)
+---------------------------------
+modules/reports/existing/tasklist.php
+- Fixed bug in getting project title on top of PDF.
+
+2006-07-31 23:37  (merlinyoda)
+---------------------------------
+modules/system/do_systemconfig_aed.php
+style/_smarty/system/systemconfig.html
+- 
+- Added hidden form fields for "config_group" and "config_type" fields for
+- system config page. Add/Edit page for system config takes new values from
+- POST and assings them to the proper object variable to be stored.
+- Previous setup would "forget" these values and assign blank values into
+- many of the database fields, causing a loss of needed information.
+- 
+- Also fixed checkbox functionality on system config page. Value
+- attributes for checkboxes were being set to their previous values instead
+- of "true" when checked. Since POST data is only passed along by *checked*
+- checkbox items, newly uncheck items remained unchanged (the values
+- weren't posted to be updated) and newly checked items were passing their
+- old value of "false" (old value passed to POST instead of "true", new
+- value). Unchenged valued were unaffected.
+
+2006-07-31 19:15  (merlinyoda)
+---------------------------------
+modules/admin/vw_usr_sessions.php
+- 
+- Another "Active Sessions" tweak. Correted Company "order by" link.
+
+2006-07-31 19:09  (merlinyoda)
+---------------------------------
+includes/smarty/function.dPgetSystemConfigSelect.php
+locales/en/admin.inc
+locales/en/common.inc
+style/_smarty/admin/usr_sessions.html
+- 
+- Tweaked "Active Session" tab display. Added text strings for
+- "Active Sessions" to translation file (English).
+- 
+- Also fixed bug on "System Configuration" page that caused the improper
+- value to be assigned to the database on for "select" fields.
+
+2006-07-31 18:42  (merlinyoda)
+---------------------------------
+modules/admin/vw_usr_sessions.php
+- 
+- Another display tweak for "Active Session" tab in admin module.
+
+2006-07-31 18:35  (merlinyoda)
+---------------------------------
+locales/en/admin.inc
+modules/admin/vw_usr_sessions.php
+- 
+- Tweeked display on "Active Session" tab in admin module.
+- Added text strings to translation files (English).
+
+2006-07-31 13:54  (nybod)
+---------------------------------
+modules/companies/vw_depts.php
+- Function 'findchilddept' renamed to avoid naming clash when viewed in flat view (fix taken from HEAD code)
+
+2006-07-30 11:30  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+- turn caching on by default (grr this got lost in one of my other updates)
+
+2006-07-30 06:55  (cyberhorse)
+---------------------------------
+images/applet-48.png
+- added file here (fixes some broken images)
+
+2006-07-30 06:54  (cyberhorse)
+---------------------------------
+modules/forums/view_topics.php
+- made sure $tpl is visible
+
+2006-07-30 06:54  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+- fixed sql (project_active doesn't exist anymore)
+
+2006-07-30 06:53  (cyberhorse)
+---------------------------------
+style/_smarty/contacts/list.html
+- fixed javascript link
+
+2006-07-28 17:51  (merlinyoda)
+---------------------------------
+modules/admin/vw_usr_sessions.php
+- 
+- Adding code for "Active Sessions" tab
+
+2006-07-28 17:42  (merlinyoda)
+---------------------------------
+includes/session.php
+modules/admin/index.php
+- 
+- Modified code to accept "Active Sessions" tab. Will be adding file for
+- "Active Sessions" tab shortly.
+
+2006-07-28 17:38  (merlinyoda)
+---------------------------------
+modules/admin/index.php
+- 
+- Minor coding style change around code for "Active Sessions" tab.
+
+2006-07-27 22:50  (merlinyoda)
+---------------------------------
+includes/main_functions.php
+modules/files/addedit.php
+modules/files/do_file_aed.php
+style/_smarty/files/addedit.html
+- 
+- Fix for Bug Report 1700:
+- Applied more permanent and consistant fix than a previous fix that I applied
+- to stable_2. Redirect to link supplied by "getPlace" method in "UI" class.
+- 
+- Also, edited a URL string in includes/main_functions.php to make it more
+- complient with XHTML (replaced lone '&' with '&amp;')
+
+2006-07-27 22:43  (merlinyoda)
+---------------------------------
+modules/files/addedit.php
+- 
+- Fix for Bug Report 1700:
+- Applied more permanent and consistant fix. Redirect to link supplied
+- by "getPlace" method in "UI" class.
+
+2006-07-27 22:29  (merlinyoda)
+---------------------------------
+includes/main_functions.php
+modules/files/addedit.php
+- Fixed bug 1700:
+- Pressing the cancel button in the file add/edit page causes the user's
+- browser to go back in the user's history one page (after confirmation).
+- 
+- Also modified part of a URL string in includes/main_functions.php to
+- conform with XHTML standards ( '&' to '&amp;' )
+
+2006-07-27 21:16  (nybod)
+---------------------------------
+modules/admin/viewuser.php
+modules/admin/vw_usr_log.php
+modules/calendar/addedit.php
+modules/calendar/clash.php
+modules/projects/addedit.php
+modules/projects/viewgantt.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+- Corrected spelling and syntax - from scollbars=false (note spelling) to scrollbars=no
+
+2006-07-27 21:09  (nybod)
+---------------------------------
+modules/admin/viewuser.php
+modules/admin/vw_usr_log.php
+modules/calendar/addedit.php
+modules/calendar/clash.php
+modules/projects/addedit.php
+modules/projects/viewgantt.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/overall.php
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/userperformance.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+style/_smarty/projects/addedit.html
+- Corrected spelling and syntax - from scollbars=false (note spelling) to scrollbars=no
+
+2006-07-27 18:14  (cyberhorse)
+---------------------------------
+classes/template.class.php
+style/_smarty/header.html
+- [no log message]
+
+2006-07-27 17:26  (cyberhorse)
+---------------------------------
+modules/system/addeditpref.php
+- added Y-m-d to the date formats users can chose from
+
+2006-07-27 09:54  (gregorerhardt)
+---------------------------------
+classes/CustomFields.class.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+- smartsearch for custom fields: keyword highlighting
+
+2006-07-25 22:29  (merlinyoda)
+---------------------------------
+classes/dp.class.php
+modules/projects/projects.class.php
+modules/tasks/listtasks.php
+modules/tasks/tasks.class.php
+- Fixed Bug 1709:
+- Added function "dPTrimAll" to main dP class. Only class variables of string
+- types are trimmed. Trim function is called immediately before the modules
+- respective "store" function. Exception is made in task module. The task log
+- description field value is preserved and restored after the parent function
+- is called.
+- 
+- Also modified code under the task module to make the "Last Update" field
+- and the highlighted status color more "accurate" by using the history
+- module if present as opposed to the last task log. Noted need for "actual"
+- end date  field for a given task in code.
+
+2006-07-25 22:24  (merlinyoda)
+---------------------------------
+classes/dp.class.php
+modules/companies/companies.class.php
+modules/companies/do_company_aed.php
+modules/projects/do_project_aed.php
+modules/projects/projects.class.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_assign_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/tasks.class.php
+- Fixed Bug 1709:
+- Added function "dPTrimAll" to main dP class. Only class variables of string
+- types are trimmed. Trim function is called immediately before the modules
+- respective "store" function. Exception is made in task module. The task log
+- description field value is preserved and restored after the parent function
+- is called.
+
+2006-07-24 16:22  (gregorerhardt)
+---------------------------------
+classes/CustomFields.class.php
+classes/customfieldsparser.class.php
+modules/reports/existing/allocateduserhours.php
+modules/system/custom_field_addedit.php
+- custom fields: weblink type and smartsearch plugin helper method prepared for implementation when smartsearch is redesigned
+
+2006-07-24 15:54  (gregorerhardt)
+---------------------------------
+classes/CustomFields.class.php
+classes/customfieldsparser.class.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/system/custom_field_addedit.php
+modules/system/custom_field_editor.php
+- custom fields: new type weblink and smart searchability
+
+2006-07-22 22:21  (nybod)
+---------------------------------
+functions/tasks_func.php
+modules/tasks/view.php
+- Fix to read TaskPriority from sysvals
+
+2006-07-20 14:48  (cyberhorse)
+---------------------------------
+modules/tasks/viewgantt.php
+- fixed one of the gantt chart displays
+
+2006-07-19 15:30  (merlinyoda)
+---------------------------------
+modules/projects/vw_logs.php
+modules/projects/vw_logs.php
+- 
+- Fixed Bug 1726:
+- The project module's "vw_logs.php" was improperly checking the value of
+- "$canEdit" to determine if the delete icon should be displayed. Replaced
+- "$canEdit" with "$canDelete".
+
+2006-07-19 00:01  (merlinyoda)
+---------------------------------
+modules/files/co.php
+modules/files/do_file_co.php
+style/_smarty/files/co.html
+- 
+- Modification relating to Bug report# 1694:
+- 
+- Modified and moved code for related to "file checkout" popup window in
+- order to be more compatible with "less-intelligent" popup blockers. Also
+- added menu bar on popup window to ease saving files that don't trigger
+- open/save dialogs (i.e. displayed in browser)
+
+2006-07-18 23:56  (merlinyoda)
+---------------------------------
+modules/files/co.php
+modules/files/do_file_co.php
+- 
+- Modification relating to Bug report# 1694:
+- 
+- Modified and moved code for related to "file checkout" popup window in
+- order to be more compatible with "less-intelligent" popup blockers. Also
+- added menu bar on popup window to ease saving files that don't trigger
+- open/save dialogs (i.e. displayed in browser)
+
+2006-07-18 16:53  (cyberhorse)
+---------------------------------
+modules/companies/index.php
+- default company tab to "all" (flat view is broken - shouldn't be used)
+
+2006-07-18 16:52  (cyberhorse)
+---------------------------------
+modules/admin/do_user_aed.php
+- Updated tab number redirection after user creation
+
+2006-07-18 16:30  (cyberhorse)
+---------------------------------
+modules/companies/vw_depts.php
+- fixed misspelling
+
+2006-07-18 15:42  (cyberhorse)
+---------------------------------
+style/_smarty/projects/list.html
+- added project colour to the project list per project
+
+2006-07-18 15:37  (cyberhorse)
+---------------------------------
+style/_smarty/projects/list.html
+- Added a link to the company name in the project list
+
+2006-07-17 16:05  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+modules/tasks/tasks.class.php
+- Add a system configuration variable to control the default depenndency state for all newly created tasks.
+
+2006-07-17 15:48  (cyberhorse)
+---------------------------------
+style/_smarty/admin/addedit.html
+- fixed xhtml issue
+
+2006-07-16 17:05  (cyberhorse)
+---------------------------------
+modules/tasks/do_task_aed.php
+style/_smarty/tasks/addedit.html
+- Add save & new button on addedit task to allow for faster task creation (skipping one step)
+
+2006-07-13 14:50  (cyberhorse)
+---------------------------------
+modules/tasks/viewgantt.php
+- xhtml compatibility fixed
+- gantt charts size and display fixed
+
+2006-07-12 06:30  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.class.php
+- Reordered query to get around LEFT JOIN constraints in MySQL 5
+
+2006-07-11 15:00  (cyberhorse)
+---------------------------------
+modules/smartsearch/index.php
+style/_smarty/smartsearch/index.html
+- moved smarty title to index page via CTitleBlock
+
+2006-07-09 08:56  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- Added a default icon for CTitleBlock if empty one is passed.
+
+2006-07-09 08:33  (cyberhorse)
+---------------------------------
+modules/contacts/index.php
+- expanded the functionality of contact alphabet search map to include first and last name starting letters as well as the "order by" field.
+
+2006-07-09 07:26  (cyberhorse)
+---------------------------------
+modules/companies/vw_depts.php
+- functions renamed to avoid naming clash
+
+2006-07-09 07:23  (cyberhorse)
+---------------------------------
+modules/history/index.php
+- fixed $tpl missing error
+
+2006-07-07 14:46  (merlinyoda)
+---------------------------------
+modules/tasks/tasks.php
+- Fixed Bug 1701:
+- Table "user_tasks" needed to be prepended to $from instead of appended so
+- that the result was "user_tasks, tasks" instead of "tasks, user_tasks".
+- This was messing up the following join statement as it was trying to
+- join using wrong table.
+
+2006-07-06 23:19  (merlinyoda)
+---------------------------------
+db/dotproject.sql
+- 
+- applying fixes for Bug #1713 and Bug # 1714 to HEAD Branch:
+- 
+- Fixed Bug 1713:
+- changed instances of "VALUES (''" and "VALUES (NULL" to "VALUES (0"
+- for relevant columns (mainly for numeric ID column on "config" table)
+- 
+- ... minor code cosmetic changes also.
+- changed "INSERT INTO config " to "INSERT INTO `config`" for purposes of
+- code regularity.
+- 
+- Fixed trivial bug #1714:
+- 
+- changed version number string from '2.0.2' to '2.0.4'
+
+2006-07-06 23:07  (merlinyoda)
+---------------------------------
+db/dotproject.sql
+- 
+- Fixed Bug 1713:
+- changed instances of "VALUES (''" and "VALUES (NULL" to "VALUES (0"
+- for relevant columns (mainly for numeric ID column on "config" table)
+- 
+- ... minor code cosmetic changes also.
+- changed "INSERT INTO config " to "INSERT INTO `config`" for purposes of
+- code regularity.
+
+2006-07-06 22:29  (merlinyoda)
+---------------------------------
+db/dotproject.sql
+- 
+- Fixed trivial bug #1714:
+- 
+- changed version number string from '2.0.2' to '2.0.4'
+
+2006-07-06 09:48  (ajdonnison)
+---------------------------------
+modules/tasks/tasks.php
+- Added fix for MySQL 5.x restriction on LEFT JOIN
+
+2006-07-02 00:43  (nybod)
+---------------------------------
+modules/reports/existing/tasklist.php
+- Moved $q->clear(); to pickup all users assigned to task
+
+2006-06-27 16:57  (gregorerhardt)
+---------------------------------
+includes/smarty/function.dPtranslate.php
+- type UI_CASE_LOWER added
+
+2006-06-27 16:56  (gregorerhardt)
+---------------------------------
+modules/contacts/select_contact_company.php
+style/_smarty/contacts/_select_contact_company.html
+- contact company selector smartified
+
+2006-06-27 16:30  (gregorerhardt)
+---------------------------------
+modules/calendar/clash.php
+style/_smarty/calendar/_clash_suggest.html
+style/_smarty/calendar/clash.html
+- event clashing pages smartified
+
+2006-06-27 15:28  (gregorerhardt)
+---------------------------------
+modules/calendar/do_webcal_process.php
+modules/calendar/webcal_mgt.php
+style/_smarty/calendar/webcal_mgt.html
+- converted webcal mgt to smarty
+
+2006-06-26 20:02  (gregorerhardt)
+---------------------------------
+style/default/main.css
+- created own style description for tbl2 class
+
+2006-06-26 19:43  (gregorerhardt)
+---------------------------------
+modules/calendar/calendar.class.php
+- typo fix in event clash mail
+
+2006-06-24 21:21  (cyberhorse)
+---------------------------------
+modules/system/addeditpref.php
+- PHP >5.0.4 fix
+
+2006-06-24 04:40  (ajdonnison)
+---------------------------------
+ChangeLog
+- Updated changelog for 2.0.4 release
+
+2006-06-24 04:36  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+- Update for 2.0.4 upgrade.
+
+2006-06-24 04:35  (ajdonnison)
+---------------------------------
+db/upgrade_to_204.php
+- file upgrade_to_204.php was initially added on branch stable_2.
+
+2006-06-24 04:35  (ajdonnison)
+---------------------------------
+db/upgrade_latest.php
+db/upgrade_to_204.php
+includes/version.php
+- Updated install files for 2.0.4
+
+2006-06-23 21:21  (gregorerhardt)
+---------------------------------
+modules/calendar/index.php
+- project calendars fixed, types readded, didnt test, events should be storable related to projects and personal cal and one unspec cal again as before
+
+2006-06-23 20:44  (gregorerhardt)
+---------------------------------
+modules/calendar/eventimport.php
+style/_smarty/calendar/eventimport.html
+- smarty conv
+
+2006-06-23 20:03  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_perms.php
+style/_smarty/admin/usr_perms.html
+style/default/main.css
+- smarty conversion and css classes for td bg color highlighting
+
+2006-06-23 17:29  (gregorerhardt)
+---------------------------------
+modules/admin/vw_usr_roles.php
+style/_smarty/admin/usr_roles.html
+- smarty conv
+
+2006-06-22 12:12  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Fixed XSS bug reported by JPCERT.
+
+2006-06-22 12:10  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Fixed XSS vulnerability in login parameter
+
+2006-06-19 18:39  (nybod)
+---------------------------------
+index.php
+index.php
+- Changed urlencode to strip_tags
+
+2006-06-19 02:41  (ajdonnison)
+---------------------------------
+modules/public/contact_selector.php
+- Port of stable_2 bugfix for broken SQL.
+
+2006-06-19 02:35  (ajdonnison)
+---------------------------------
+modules/public/contact_selector.php
+- Fixed problem with contact_selector occasionally creating bodgy SQL.
+
+2006-06-16 00:15  (gregorerhardt)
+---------------------------------
+style/_smarty/projects/addedit.html
+style/_smarty/tasks/organize.html
+- translation softcoding as suggested by Carsten Menke
+
+2006-06-15 22:19  (merlinyoda)
+---------------------------------
+style/_smarty/tasks/tasklog.html
+- 
+- corrected possible bug similiar to Mantis Bug #1572 where amperstands don't display correctly
+
+2006-06-15 16:44  (merlinyoda)
+---------------------------------
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- 
+- Re-fixed bug #1572 ... had somehow crept back into the follwoing files:
+- modules/tasks/vw_log_update.php
+- modules/tasks/vw_logs.php
+- 
+- ... also got rid off all the carrage returns (^M) in modules/tasks/vw_logs.php
+- to help with code readibility under *nix since most Windows text editors can
+- read (and write?) the files properly without the carrage return characters
+- (except for Notepad, Wordpad does).
+
+2006-06-09 21:33  (merlinyoda)
+---------------------------------
+modules/admin/vw_usr_sessions.php
+style/_smarty/admin/usr_sessions.html
+- 
+- Fixed "session logout" function for logging out other sessions for same user. User is no
+- longer just logged out of own session. They will be only logged out if trying to force-logout
+- their current session.
+- 
+- Changed "logout" button to "logout session"
+- 
+- Added "logout user" button that logs out all of a user's sessions. If it's the current user, all
+- previous sessions and the current one are logged out.
+
+2006-06-09 21:33  (merlinyoda)
+---------------------------------
+modules/admin/vw_usr_sessions.php
+- file vw_usr_sessions.php was added on branch stable_2 on 2006-07-28 15:51:15 +0000
+
+2006-06-06 18:33  (nybod)
+---------------------------------
+modules/projects/projects.class.php
+- Time related calculations have been moved to ./classes/date.class.php
+
+2006-06-06 13:59  (cyberhorse)
+---------------------------------
+modules/projects/addedit.php
+- fixed javascript error (urlencoded too far)
+
+2006-06-06 01:01  (gregorerhardt)
+---------------------------------
+ChangeLog
+- ChangeLog Update
+
+2006-06-06 00:53  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_aed.php
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+locales/en/system.inc
+modules/system/do_preference_aed.php
+modules/tasks/ae_resource.php
+- Added preference option to determine whether to send task notifications by default or not
+
+2006-06-05 17:00  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- Corrected html form type for locale pref
+
+2006-06-05 16:53  (gregorerhardt)
+---------------------------------
+install/vw_idx_check.php
+- Changed Message Type to OK for File Permissions Writable
+
 2006-06-05 16:20  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql

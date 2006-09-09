@@ -164,7 +164,7 @@ if ($sub_form) {
 
 							// shift new start date to the last dependency end date
 							$nsd = new CDate ($tempTask->get_deps_max_end_date( $tempTask ) );
-							
+					
 							/* two cases:
 							** 1. start date is _not_ specified:
 							**		set end date as start+duration
@@ -185,7 +185,7 @@ if ($sub_form) {
 							
 								// calc shifting span old start ~ new start
 								$d = $tsd->calcDurationDiffToDate($nsd);
-							
+					
 								// update start date based on dep
 								$obj->update_dep_dates( $obj->task_id, $d );
 	

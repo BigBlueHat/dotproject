@@ -1354,7 +1354,7 @@ class CTask extends CDpObject {
 		$new_end_date->addDuration( $shift, 1);
 		$new_end_date = $new_end_date->next_working_day(true);
 		$new_end_date = $new_end_date->format( FMT_DATETIME_MYSQL );
-        
+		
 		$sql = "UPDATE tasks SET task_start_date = '$new_start_date', task_end_date = '$new_end_date'" 
             . " WHERE task_dynamic <> '1' AND task_id = $task_id";
         db_exec( $sql );
@@ -1376,7 +1376,7 @@ class CTask extends CDpObject {
      ** calc_task_end_date()
      ** calc_end_date()
      **
-     ** @date 	20050525
+     ** @date 	20060525
      ** @responsible gregorerhardt
      ** @purpose	reusability, consistence
      */ 
