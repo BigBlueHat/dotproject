@@ -15,7 +15,6 @@ if (!$contact->bind( $_POST )) {
 	$AppUI->setMsg( $contact->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
-        
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'User' );
@@ -61,26 +60,23 @@ if ($del) {
 
 		$contact->contact_owner = $AppUI->user_id;
 	}
-       if ($contact->contact_company != $user_current_company)
-       {
-            $obj->user_department = null;
-            $contact->contact_department = null;
-        }
-        if (($msg = $contact->store())) {
-                $AppUI->setMsg( $msg, UI_MSG_ERROR );
-        }
-	else {
-		$q = new DBQuery;
-		$q->addUpdate('contact_department', $contact->contact_department);
-		$q->addTable('contacts');
-		$q->addWhere('contact_id = ' . $contact->contact_id);
-		$q->exec();
-	        $obj->user_contact = $contact->contact_id;
-        if (($msg = $obj->store())) {
+	if ($contact->contact_company != $user_current_company) {
+		$obj->user_department = null;
+		$contact->contact_department = null;
+	}
+	if (!is_numeric($contact->contact_id)) {
+		$contact->store();
+	}
+	$q = new DBQuery;
+	$q->addUpdate('contact_department', $contact->contact_department);
+	$q->addTable('contacts');
+	$q->addWhere('contact_id = ' . $contact->contact_id);
+	$q->exec();
+    $obj->user_contact = $contact->contact_id;
+	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$AppUI->setMsg( $isNewUser ? 'added - please setup roles and permissions now.  User must have at least one role to log in.' : 'updated', UI_MSG_OK, true );
 	}
-        }
 	($isNewUser)?$AppUI->redirect('m=admin&a=viewuser&user_id='. $obj->user_id . '&tab=2'):$AppUI->redirect();
 ?>
