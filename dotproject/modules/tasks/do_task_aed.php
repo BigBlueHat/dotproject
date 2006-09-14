@@ -191,6 +191,9 @@ if ($sub_form) {
 	
 							}
 							
+							// prefer tue 16:00 over wed 8:00 as an end date
+							$ned = $ned->prev_working_day();
+							
 							$obj->task_start_date = $nsd->format( FMT_DATETIME_MYSQL );
 							$obj->task_end_date = $ned->format( FMT_DATETIME_MYSQL );						
 							

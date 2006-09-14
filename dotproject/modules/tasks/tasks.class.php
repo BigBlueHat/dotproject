@@ -1339,6 +1339,10 @@ class CTask extends CDpObject {
 		
 		// make sure one didn't land on a non-working day
 		$ned = $ned->next_working_day(true);
+
+		// prefer tue 16:00 over wed 8:00 as an end date
+		$ned = $ned->prev_working_day();
+		
 		$new_end_date = $ned->format( FMT_DATETIME_MYSQL ); 	
     
     // update the db
