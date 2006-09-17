@@ -56,6 +56,8 @@ class CProject extends CDpObject {
 	}
     
     function load($oid=null , $strip = true) {
+    	global $dPconfig;
+    
         $result = parent::load($oid, $strip);
         if ($result && $oid) {
             $working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
@@ -343,8 +345,57 @@ class CProject extends CDpObject {
 		$q->addOrder('task_end_date DESC');
 		$q->setLimit($limit);
 
-                return $q->loadList();
-        }
+		return $q->loadList();
+	}
+
+	function getActualStartDate() {
+		$q = new DBQuery();
+		$q->addQuery('min(task_log_date)');
+		$q->addTable('task_log');
+		$q->addTable('tasks', 't', 'task_id = task_log_task');
+		$q->addTable('projects', 'p', 'p.project_id = t.task_project');
+		//$q->addWhere();
+		return $q->loadResult();
+	}
+	
+	function getActualEndDate() {
+		$q = new DBQuery();
+		$q->addQuery('max(task_log_date)');
+		$q->addTable('task_log');
+		$q->addTable('tasks', 't', 'task_id = task_log_task');
+		$q->addTable('projects', 'p', 'p.project_id = t.task_project');
+		//$q->addWhere();
+		$date = $q->loadResult();
+		
+		if (empty($date))
+			$date = $this->project_end_date;
+		
+		dPgetSysVal('ProjectStatus');
+		$completed_status = array_search('Complete');
+		if ($date > $this->project_end_date)
+			;
+		else if ($this->project_status == $completed_status)
+			;
+		else
+			$date = $this->project_end_date;
+			
+		return $date;
+	}
+	
+	function getStartEndDate() {
+		$q = new DBQuery();
+		$q->addQuery('min(task_log_date)');
+		$q->addTable('task_log');
+		$q->addTable('tasks', 't', 'task_id = task_log_task');
+		$q->addTable('projects', 'p', 'p.project_id = t.task_project');
+		//$q->addWhere();
+		$date = $q->loadResult();
+		
+		if (empty($date))
+			$date = $this->project_start_date;
+		
+		return $date;
+	}
 
 	function store() {
         
@@ -584,20 +635,22 @@ function projects_list_data($user_id = false) {
 		$q->addWhere("project_name LIKE '%$search_string%'");
     }
 
-    foreach($filters as $field => $filter) {
-        if ($filter > 0) {
-            // Special conditions:
-            if ($field == 'project_owner') {
-                $q->addWhere('(tu.user_id = '.$filter.' OR projects.project_owner = '.$filter.' )');
-            }
-            else if ($field == 'project_company_type') {
-                $q->addWhere('com.company_type = ' . $filter);
-            }
-            else {
-                $q->addWhere("projects.$field = $filter ");
-            }
-        }
-    }
+	if (is_array($filters))
+	    foreach($filters as $field => $filter) {
+	        if ($filter > 0) {
+	            // Special conditions:
+	            if ($field == 'project_owner') {
+	                $q->addWhere('(tu.user_id = '.$filter.' OR projects.project_owner = '.$filter.' )');
+	            }
+	            else if ($field == 'project_company_type') {
+	                $q->addWhere('com.company_type = ' . $filter);
+	            }
+	            else {
+	                $q->addWhere("projects.$field = $filter ");
+	            }
+	        }
+	    }
+	    
 	$q->addGroup('projects.project_id');
 	$q->addOrder("$orderby $orderdir");
 // if filtering is applied here, number of records is unknown
