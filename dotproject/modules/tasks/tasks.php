@@ -1,8 +1,9 @@
 <?php /* TASKS $Id$ */
-GLOBAL $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
-GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
-GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
-GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
+global $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
+global $task_sort_item1, $task_sort_type1, $task_sort_order1;
+global $task_sort_item2, $task_sort_type2, $task_sort_order2;
+global $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
+global $tasks_opened, $tasks_closed;
 /*      tasks.php
 
         This file contains common task list rendering code used by
@@ -16,10 +17,8 @@ GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditC
         * $f
         * $query_string
 */
-
-if (empty($query_string)) {
-        $query_string = "?m=$m&amp;a=$a";
-}
+if (empty($query_string))
+	$query_string = "?m=$m&amp;a=$a";
 
 // Number of columns (used to calculate how many columns to span things through)
 $cols = 13;
@@ -28,14 +27,10 @@ $cols = 13;
 // Let's figure out which tasks are selected
 */
 
-global $tasks_opened;
-global $tasks_closed;
-
 $tasks_closed = array();
 $tasks_opened = $AppUI->getState('tasks_opened');
-if(!$tasks_opened){
-    $tasks_opened = array();
-}
+if(!$tasks_opened)
+	$tasks_opened = array();
 
 $task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
 $q = new DBQuery;
@@ -78,13 +73,12 @@ if( ($open_task_id = dPGetParam($_GET, 'open_task_id', 0)) > 0
 
 // Closing tasks needs also to be within tasks iteration in order to
 // close down all child tasks
-if(($close_task_id = dPGetParam($_GET, 'close_task_id', 0)) > 0) {
-    closeOpenedTask($close_task_id);
-}
+if(($close_task_id = dPGetParam($_GET, 'close_task_id', 0)) > 0)
+	closeOpenedTask($close_task_id);
+
 
 // We need to save tasks_opened until the end because some tasks are closed within tasks iteration
 /// End of tasks_opened routine
-
 
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $taskPriority = dPgetSysVal( 'TaskPriority' );
@@ -98,9 +92,9 @@ $task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', '' );
 $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
-if (isset($_POST['show_task_options'])) {
-        $AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
-}
+if (isset($_POST['show_task_options']))
+	$AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
+
 $showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 
 require_once $AppUI->getModuleClass('projects');
@@ -118,9 +112,9 @@ $q->addTable('projects');
 $q->leftJoin('tasks', 't1', 'projects.project_id = t1.task_project');
 $q->leftJoin('companies', 'c', 'company_id = project_company');
 $q->addWhere('t1.task_id = t1.task_parent');
-if ( count($allowedProjects)) {
+if ( count($allowedProjects))
   $q->addWhere($allowedProjects);
-}
+
 $q->addGroup('project_id');
 $q->addOrder('project_name');
 $psql = $q->prepare();
@@ -179,18 +173,14 @@ $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
 //$user_id = $user_id ? $user_id : $AppUI->user_id;
 
-if ($f != 'children') {
+if ($f != 'children')
 	$q->addWhere('tasks.task_id = task_parent');
-}
 
-if ($project_id) {
+if ($project_id)
 	$q->addWhere('task_project = ' . $project_id);
-}
 
-if ($pinned_only) {
+if ($pinned_only)
 	$q->addWhere('task_pinned = 1');
-}
-
 
 switch ($f) {
  case 'all':
@@ -253,9 +243,8 @@ switch ($f) {
      break;
 }
 
-if (($project_id  || $task_id) && $showIncomplete) {
-    $q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
-}
+if (($project_id  || $task_id) && $showIncomplete)
+	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
 
 // reverse lookup the status integer from Tab name
 $status = dPgetSysVal( 'TaskStatus' );
@@ -263,18 +252,15 @@ $sutats = array_flip($status);
 $ctn = substr($currentTabName, 7, -1);
 
 // we are in a tabbed view
-if ( isset($currentTabName) ) {
-    $task_status = $sutats[$ctn];
-}
+if ( isset($currentTabName) )
+	$task_status = $sutats[$ctn];
 
-if ($task_status) {
-    $q->addWhere('task_status = ' . $task_status);
-}
+if ($task_status)
+	$q->addWhere('task_status = ' . $task_status);
     
 // patch 2.12.04 text search
-if ( $search_text = $AppUI->getState('searchtext') ) {
-    $q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
-}
+if ( $search_text = $AppUI->getState('searchtext') )
+	$q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
 
 // filter tasks considering task and project permissions
 $projects_filter = '';
@@ -301,9 +287,8 @@ if ( ! $min_view && $f2 != 'all' ) {
 $q->addGroup('tasks.task_id');
 $q->addOrder('project_id, task_start_date');
 
-if ($canViewTask) {
+if ($canViewTask)
 	$tasks = $q->loadList();
-}
 
 // POST PROCESSING TASKS
 foreach ($tasks as $row) {
@@ -405,7 +390,6 @@ $tpl->assign('sort_order2', $task_sort_order2);
 $tpl->assign('sort_type1', $task_sort_type1);
 $tpl->assign('sort_type2', $task_sort_type2);
 
-
 $tpl->assign('query_string', $query_string);
 $tpl->assign('showIncomplete', $showIncomplete);
 $tpl->assign('showEditCheckbox', $showEditCheckbox);
@@ -418,11 +402,11 @@ for ($i = 0; $i <= 100; $i+=5) {
 }
 $tpl->assign('assignment_options', $assignment_options);
 
-
 $tempoTask = new CTask();
 $userAlloc = $tempoTask->getAllocation('user_id');
 $tpl->assign('userAlloc', $userAlloc);
 
 //print_r($projects);
 $tpl->assign('rows', $projects);
-$tpl->displayFile('list.projects', 'tasks');?>
+$tpl->displayFile('list.projects', 'tasks');
+?>
