@@ -60,7 +60,7 @@
 {if $project_id > 0}
 	{if $obj->actual_end_date}
 				<a href="?m=tasks&amp;a=view&amp;task_id={$critical_task}">
-					<span {$style}>{dPdateFormat date=$obj->actual_end_date}</span>
+					<span {$style}>{dPdateFormat date=$obj->project_actual_end_date}</span>
 				</a>
 	{else}
 				-
