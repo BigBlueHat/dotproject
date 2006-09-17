@@ -181,6 +181,18 @@ class CTemplate extends Smarty
 		$this->displayFile('pagination', '.');
 	}
 	
+	function displayCalendar($field, $module)
+	{
+		global $AppUI;
+
+		$this->assign('ampm_time_format', stristr($AppUI->getPref('TIMEFORMAT'), '%p'));
+		$this->assign('df', $AppUI->getPref('SHDATEFORMAT'));
+		$this->assign('tf', $AppUI->getPref('TIMEFORMAT'));
+		$this->assign('field', $field);
+		$this->assign('module', $module);
+		$this->displayFile('calendar', '.');
+	}
+	
 	function file($file, $module)
 	{
 		global $m, $uistyle, $baseDir;
