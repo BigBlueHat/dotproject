@@ -313,7 +313,8 @@ function db_insertObject( $table, &$object, $keyName = null, $verbose=false )
 			continue;
 		}
 		$fields[] = $k;
-		$values[] = "'" . db_escape(htmlspecialchars( $v )) . "'";
+		//$values[] = "'" . db_escape(htmlspecialchars( $v )) . "'";
+		$values[] = "'" . db_escape($v) . "'";
 		$insert_list[] = $k;
 		$values_list[] = $v;
 	}
@@ -351,7 +352,8 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true )
 	foreach($old_obj as $field => $value)
 		if ($object->$field != $value && ($value !== NULL || $updateNulls)) {
 			$update_list[] = $field;
-			$values_list[] = htmlspecialchars($object->$field);
+			//$values_list[] = htmlspecialchars($object->$field);
+			$values_list[] = $object->$field;
 		}
 
 	if (count($update_list)) {

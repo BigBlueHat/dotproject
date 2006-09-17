@@ -30,12 +30,12 @@
 		{dParraySelect array=$clist name=$cln extras='class=text size=1' value=$c.config_value }	
 
 	{elseif $c.config_type == 'textarea'}
-		<textarea name="dPcfg[{$c.config_name}]">{$c.config_value}</textarea>
+		<textarea name="dPcfg[{$c.config_name}]">{$c.config_value|htmlspecialchars}</textarea>
 	{elseif $c.config_type == 'checkbox'}
 		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="true"
 		{if $c.config_value == 'true'} checked="checked" {/if} />
 	{else}
-		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="{$c.config_value}" />
+		<input class="button" type="{$c.config_type}" name="dPcfg[{$c.config_name}]" value="{$c.config_value|htmlspecialchars}" />
 	{/if}
 			{dPtranslateToVar word=$c.config_name append='_title' ass='ti'}
 			{dPtranslateToVar word=$c.config_name append='_tooltip' ass='tt'}
