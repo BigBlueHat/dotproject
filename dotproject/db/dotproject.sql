@@ -452,6 +452,8 @@ INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGSUBJ', '', 'tasklog', '');
 INSERT INTO `user_preferences` VALUES ('0', 'TASKLOGNOTE', 'false', 'tasklog', 'checkbox');
 INSERT INTO `user_preferences` VALUES ('0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 'checkbox');
 
+INSERT INTO `user_preferences` VALUES ('0', 'TIMEZONE', 'UTC', 'l10n', 'select');
+
 CREATE TABLE `user_prefs_list` (
 `pref_list_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `pref_name` VARCHAR( 255 ) NOT NULL ,

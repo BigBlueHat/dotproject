@@ -251,3 +251,8 @@ VALUES (
 #20060717
 # Add system variable to set tasks default for dependency tracking
 INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` ) VALUES (NULL , 'dependency_tracking_default', 'false', 'tasks', 'checkbox');
+
+#20060722
+# Add user preference for timezone
+INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
+VALUES ('0', 'TIMEZONE', 'UTC', 'l10n', 'select');
