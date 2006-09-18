@@ -567,7 +567,7 @@ function ValidEmail($address)
    if( preg_match( "/^(.*)\<(.+)\>$/", $address, $regs ) ) {
       $address = $regs[2];
    }
-   if( preg_match( "/^[^@ ]+@([a-zA-Z0-9\-.]+)$/",$address) ) {
+   if( preg_match( "/^[^@ ]+@([a-zA-Z0-9.\-.]+)$/",$address) ) {
       return true;
    } else {
       return false;
