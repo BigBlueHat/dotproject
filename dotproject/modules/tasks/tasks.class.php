@@ -521,7 +521,9 @@ class CTask extends CDpObject {
         if( $this->task_id ) {									
             $this->_action = 'updated';
             
-            // Load  the old, not yet updated task object 	
+            // Load and globalize the old, not yet updated task object 	
+            // e.g. we need some info later to calculate the shifting time for depending tasks	
+            // see function update_dep_dates
             GLOBAL $oTsk;
             $oTsk = new CTask();
             $oTsk->load ($this->task_id);
@@ -1278,7 +1280,6 @@ class CTask extends CDpObject {
 	 *       shift dependents tasks dates
 	 *       @return void
 	 */
-
 	function shiftDependentTasks () {
         // Get tasks that depend on this task
         $csDeps = explode( ',', $this->dependentTasks('','',false));
@@ -1457,11 +1458,23 @@ class CTask extends CDpObject {
             $edate = $task_log_end_date;
         }
         
-        $edate = ($edate > $this->task_end_date)?$edate:$this->task_end_date;
+        $edate = ($edate > $this->task_end_date || $this->task_percent_complete == 100)?$edate:$this->task_end_date;
         
         return $edate;
 	}
 	
+	function get_actual_start_date() {
+		$q = new DBQuery();
+		$q->addQuery('MIN(task_log_date) AS actual_end_date');
+		$q->addTable('task_log');
+		$q->addWhere('task_log_task = '.$this->task_id);
+		
+		$task_log_start_date = $q->loadResult();
+		
+		$rdate = ($task_log_start_date > $this->task_start_date)?$task_log_start_date:$this->task_start_date;
+		
+		return $rdate;
+	}
 	
 	/**
      * Function that returns the amount of hours this
