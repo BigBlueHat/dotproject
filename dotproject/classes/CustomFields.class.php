@@ -371,18 +371,14 @@
 	** and a <a href> </a> weblink in display mode
 	*/
 
-	class CustomFieldWeblink extends CustomField
-	{
-		function CustomFieldWeblink ( $field_id, $field_name, $field_order, $field_description, $field_extratags )
-		{
+	class CustomFieldWeblink extends CustomField {
+		function CustomFieldWeblink ( $field_id, $field_name, $field_order, $field_description, $field_extratags ) {
 			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
 			$this->field_htmltype = 'href';
 		}
 
-		function getHTML($mode)
-		{
-			switch($mode)
-			{
+		function getHTML($mode) {
+			switch($mode) {
 				case "edit":
 					$html = $this->field_description.": </td><td><input type=\"text\" name=\"".$this->field_name."\" value=\"".$this->charValue()."\" ".$this->field_extratags." />";
 					break;
@@ -615,13 +611,13 @@
 		function search($moduleTable, $moduleTableId, $moduleTableName, $keyword )
 		{
 			$q  = new DBQuery;
-      $q->addTable('custom_fields_values', 'cfv');
-      $q->addQuery('m.'.$moduleTableId);
-      $q->addQuery('m.'.$moduleTableName);
+			$q->addTable('custom_fields_values', 'cfv');
+			$q->addQuery('m.'.$moduleTableId);
+			$q->addQuery('m.'.$moduleTableName);
 			$q->addJoin('custom_fields_struct', 'cfs', 'cfs.field_id = cfv.value_field_id');
 			$q->addJoin($moduleTable, 'm', 'm.'.$moduleTableId.' = cfv. value_object_id');
-      $q->addWhere('cfs.field_module = "'.$this->m.'"');
-      $q->addWhere('cfv.value_charvalue LIKE "%'.$keyword.'%"');
+			$q->addWhere('cfs.field_module = "'.$this->m.'"');
+			$q->addWhere('cfv.value_charvalue LIKE "%'.$keyword.'%"');
 			return $q->loadList();
 		}
 

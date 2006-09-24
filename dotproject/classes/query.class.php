@@ -355,9 +355,9 @@ class DBQuery {
   function addJoin($table, $alias, $join, $type = 'left')
   {
     $var = array ( 'table' => $table,
-	'alias' => $alias,
-    	'condition' => $join,
-	'type' => $type );
+	  'alias' => $alias,
+      'condition' => $join,
+	  'type' => $type );
 
     $this->addClause('join', $var, false);
   }
