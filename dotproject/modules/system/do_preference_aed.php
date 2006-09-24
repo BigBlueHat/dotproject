@@ -13,6 +13,7 @@ $q->addWhere('pref_type="checkbox"');
 $q->addWhere('pref_user = '.$obj->pref_user);
 $rs = $q->exec();
 
+$update = true;
 foreach ($_POST['pref_name'] as $name => $value) {
 	$obj->pref_name = $name;
 	$obj->pref_value = $value;
@@ -26,21 +27,28 @@ foreach ($_POST['pref_name'] as $name => $value) {
 		} else {
 			$AppUI->setMsg( "deleted", UI_MSG_ALERT, true );
 		}
+		$update = false;
 	} else {
 		if (($msg = $obj->store())) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
-		} else {
-			if ($obj->pref_user) {
-			// if user preferences, reload them now
-				$AppUI->loadPrefs( $AppUI->user_id );
-				$AppUI->setUserLocale();
-				include_once dPRealPath( "./locales/$AppUI->user_locale/locales.php" );
-				include dPRealPath( "./locales/core.php" );
-				$AppUI->setMsg( 'Preferences' );
-			}
-			$AppUI->setMsg( "updated", UI_MSG_OK, true );
+			$update = false;
 		}
 	}
 }
+
+if ($update)
+{
+	if ($obj->pref_user == $AppUI->user_id) {
+	// if user preferences, reload them now
+		$AppUI->loadPrefs( $AppUI->user_id );
+		$AppUI->setUserLocale();
+		include_once dPRealPath( "./locales/$AppUI->user_locale/locales.php" );
+		include dPRealPath( "./locales/core.php" );
+		$AppUI->setMsg( 'Preferences' );
+	}
+	
+	$AppUI->setMsg( "updated", UI_MSG_OK, true );
+}
+
 $AppUI->redirect();
 ?>
