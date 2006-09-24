@@ -189,6 +189,9 @@ class CMonthCalendar {
 		}
 		$s .= "<table border=\"0\" cellspacing=\"1\" cellpadding=\"2\" width=\"100%\" class=\"" . $this->styleMain . "\">\n";
 
+		// Draw months in the minical
+		// $s .= $this->_drawMonths();
+
 		if ($this->showDays) {
 			$s .= $this->_drawDays();
 		}
@@ -198,6 +201,39 @@ class CMonthCalendar {
 		$s .= "</table>\n";
 
 		return $s;
+	}
+	
+	function showDynamic() {
+		$html = '';
+	
+		$orig_date = $this->this_month;
+		if ($this->this_month->getMonth() - 4 < 1)
+		{
+			$this->this_month->setMonth(8 + $this->this_month->getMonth());
+			$this->this_month->setYear($this->this_month->getYear() - 1);
+		}
+		else
+			$this->this_month->setMonth($this->this_month->getMonth() - 4);
+		$this->setDate($this->this_month);
+		for ($i = -3; $i <= 6; $i++)
+		{
+			
+			if ($this->this_month->getMonth() == 12)
+			{
+				$this->this_month->setMonth(1);
+				$this->this_month->setYear($this->this_month->getYear() + 1);
+			}
+			else
+				$this->this_month->setMonth($this->this_month->getMonth() + 1);
+			$this->setDate($this->this_month);
+			$html .= '<div id="cal_' . $i . '" class="calendar' . ($i != 0?', hidden':'') . '">';
+			$html .= $this->show();
+			$html .= '</div>';
+		}
+		
+		$this->setDate($orig_date);
+		
+		return $html;
 	}
 
 /**
@@ -227,6 +263,29 @@ class CMonthCalendar {
 
 		return $tpl->fetchFile('_title', 'calendar');
 	}
+	
+	function _drawMonths() {
+		global $a, $m;
+	
+		$url = "index.php?m=$m";
+		$url .= $a ? "&amp;a=$a" : '';
+		$url .= isset( $_GET['dialog']) ? "&amp;dialog=1" : '';
+	
+		$year = new CDate();
+		$year->copy($this->this_month);
+		for( $i = 1; $i <= 12; $i++) {
+			$year->setMonth($i);
+			$month = $i;
+			//if ($this->styleMain != 'minical')
+			if ($this->showWeek)
+				$month = $year->getMonthName();
+			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE) . '">' . $month . '</a></td>';
+			
+		}
+
+		return "\n" . '<tr><td colspan="8"><table class="tbl"><tr>' . $s . '</tr></table></td></tr>';
+	}
+	
 /**
 * CMonthCalendar::_drawDays()
 *
@@ -492,8 +551,12 @@ class CEvent extends CDpObject {
 	// the event times are stored as unix time stamps, just to be different
 
 	// convert to default db time stamp
-		$db_start = $start_date->format( FMT_DATETIME_MYSQL );
-		$db_end = $end_date->format( FMT_DATETIME_MYSQL );
+		$sdate = new CDate();
+		$sdate->setDate($start_date->getDate());
+		$db_start = $sdate->format( FMT_DATETIME_MYSQL );
+		$edate = new CDate();
+		$edate->setDate($end_date->getDate());
+		$db_end = $edate->format( FMT_DATETIME_MYSQL );
 		if (! isset($user_id))
 		  $user_id = $AppUI->user_id;
 

@@ -10,12 +10,14 @@ if (!$obj->bind( $_POST )) {
 require_once($baseDir . '/classes/CustomFields.class.php');
 // convert dates to SQL format first
 if ($obj->project_start_date) {
-	$date = new CDate( $obj->project_start_date );
+	$date = new CDate();
+	$date->setDate($obj->project_start_date . '000000', DATE_FORMAT_TIMESTAMP);
 	$obj->project_start_date = $date->format( FMT_DATETIME_MYSQL );
 }
 if ($obj->project_end_date) {
-	$date = new CDate( $obj->project_end_date );
-	$date->setTime( 23, 59, 59 );
+	$date = new CDate();
+	$date->setDate($obj->project_end_date . '235959', DATE_FORMAT_TIMESTAMP);
+//	$date->setTime( 23, 59, 59 );
 	$obj->project_end_date = $date->format( FMT_DATETIME_MYSQL );
 }
 if ($obj->project_actual_end_date) {

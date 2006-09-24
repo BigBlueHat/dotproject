@@ -23,7 +23,8 @@ $ctoday = new CDate();
 $today = $ctoday->format(FMT_TIMESTAMP_DATE);
 $date = dPgetParam( $_GET, 'date', $today);
 // establish the focus 'date'
-$this_day = new CDate( $date );
+$this_day = new CDate();
+$this_day->setDate($date . '000000', DATE_FORMAT_TIMESTAMP);
 $dd = $this_day->getDay();
 $mm = $this_day->getMonth();
 $yy = $this_day->getYear();

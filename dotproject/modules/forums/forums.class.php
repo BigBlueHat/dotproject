@@ -163,7 +163,8 @@ class CForumMessage {
 			$ret = db_updateObject( 'forum_messages', $this, 'message_id', false ); // ! Don't update null values
 			$q->clear();
 		} else {
-			$this->message_date = db_datetime( time() );
+			$date = new CDate();
+			$this->message_date = $date->format( FMT_DATETIME_MYSQL );
 			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
 			echo db_error(); ## TODO handle error better
 

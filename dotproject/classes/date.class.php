@@ -33,6 +33,51 @@ define( 'SEC_DAY',    86400 );
 */
 class CDate extends Date {
 
+
+	function CDate($date = null)
+	{
+		global $AppUI;
+		
+		$tz = $AppUI->getPref('TIMEZONE');
+		
+		$this->tz = new Date_TimeZone($tz);
+		
+		if (is_null($date)) {
+			$this->setDate(date('Y-m-d H:i:s'));
+		} elseif (is_object($date) && (get_class($date) == get_class($date))) {
+			$this->setDate($date->getDate());
+		} elseif (preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $date)) {
+    	$this->tz = new Date_TimeZone('UTC');
+    	$d = new Date();
+			$d->convertTZ(new Date_TimeZone('UTC'));
+			$d->setDate($date);
+			$this->setDate($d->getDate());
+			if ($tz)
+	 			$this->convertTZ(new Date_TimeZone($tz));	
+		} else {
+			parent::Date($date);
+		}
+
+
+
+  	
+/*		parent::Date();
+		
+		$local_date = new Date($date);
+		if ($tz = $AppUI->getPref('TIMEZONE'))
+  		$this->convertTZ(new Date_TimeZone($tz));
+
+		$this->setDate($local_date->getDate());
+		echo $this->getDate();
+		$this->convertTZ(new Date_TimeZone('Adelaide'));
+		echo $this->getDate(); echo '<br />';
+*/
+
+//  		$this->convertTZ(new Date_TimeZone(Date_TimeZone::getDefault()));
+
+		
+		//echo $date;
+	}
 /**
 * Overloaded compare method
 *
@@ -352,6 +397,19 @@ class CDate extends Date {
 		$duration += $s->isWorkingDay() ? min($dwh, abs($e->hour - $cal_day_start)) : 0;
 
 		return $duration*$sgn;
+	}	
+
+	function format($format = null)
+	{
+		global $AppUI;
+	
+		$local_date = new Date();
+		$local_date->copy($this);
+		
+		if (($format == FMT_DATETIME_MYSQL || $format == FMT_DATE_MYSQL))
+  		$local_date->convertTZ(new Date_TimeZone('UTC'));
+  		
+  	return $local_date->format($format);
 	}
 }
 ?>

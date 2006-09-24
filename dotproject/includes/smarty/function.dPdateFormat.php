@@ -20,32 +20,37 @@
  */
 function smarty_function_dPdateFormat($params, &$smarty)
 {
-    global $AppUI;
+	global $AppUI;
 	
-    extract($params);
-    
-    if (empty($date) || $date == '0000-00-00 00:00:00') {
-    	if ($format == 'db')
-    		return '';
-    	else
-    		return '-';
-    }
-    
-    if (empty($cdate))
-    	$cdate = new CDate( $date );
-    	
+	extract($params);
+	
+	if (empty($date) || $date == '0000-00-00 00:00:00') {
+		if ($format == 'db')
+			return '';
+		else
+			return '-';
+	}
+	
+	if (empty($cdate))
+		if ($date == 'now')
+			$cdate = new CDate();
+		else
+			$cdate = new CDate( $date );
+  
 	if ($format == 'time')
 		$format = '%H%M%S';
 	else if ($format == 'timestamp')
 		$format = FMT_TIMESTAMP;
-    else if ($format == 'db')
-    	$format = FMT_TIMESTAMP_DATE;
-    else if ($format == 'full')
-    	return $cdate->format($AppUI->getPref('SHDATEFORMAT')) . ' ' . $cdate->format($AppUI->getPref('TIMEFORMAT'));
-    else if (empty($format))
-    	$format = $AppUI->getPref('SHDATEFORMAT');
+	else if ($format == 'db')
+		$format = FMT_TIMESTAMP_DATE;
+	else if ($format == 'calendar')
+		$format = '%Y-%m-%d';
+	else if ($format == 'full')
+		$format = $AppUI->getPref('SHDATEFORMAT') . ' ' . $AppUI->getPref('TIMEFORMAT');
+	else if (empty($format))
+		$format = $AppUI->getPref('SHDATEFORMAT');
 	
-    return $cdate->format($format);
+	return $cdate->format($format);
 }
 
 /* vim: set expandtab: */

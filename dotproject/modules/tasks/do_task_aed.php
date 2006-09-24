@@ -100,12 +100,18 @@ if ($sub_form) {
 
 	// convert dates to SQL format first
 	if ($obj->task_start_date) {
-		$date = new CDate( $obj->task_start_date );
+		$date = new CDate( );
+//		$date->setDate($obj->task_start_date, DATE_FORMAT_TIMESTAMP);
+		$date->setDate($obj->task_start_date . '00', DATE_FORMAT_TIMESTAMP);
+//		$date = new CDate( $obj->task_start_date );
 		$obj->task_start_date = $date->format( FMT_DATETIME_MYSQL );
 	}
 	$end_date = null;
 	if ($obj->task_end_date) {
-		$end_date = new CDate( $obj->task_end_date );
+		$end_date = new CDate( ); 
+//		$end_date->setDate($obj->task_end_date, DATE_FORMAT_TIMESTAMP);
+		$end_date->setDate($obj->task_end_date . '00', DATE_FORMAT_TIMESTAMP);
+//		$end_date = new CDate( $obj->task_end_date );
 		$obj->task_end_date = $end_date->format( FMT_DATETIME_MYSQL );
 	}
 	$dot = strpos($obj->task_duration, ':');

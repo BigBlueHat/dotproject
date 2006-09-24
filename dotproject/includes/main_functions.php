@@ -348,12 +348,20 @@ function addHistory( $table, $id, $action = 'modify', $details = '')
 		$q->clear();
 	  return;
 	}
-	$now = new CDate();
+	
 
 	$q->clear();
 	$q->addTable('history');
 	$q->addInsert('history_action', $action);
-	$q->addInsert('history_date', $now->format(FMT_DATETIME_MYSQL));
+	
+	if (class_exists('cdate'))
+	{
+		$now = new CDate();
+		$q->addInsert('history_date', $now->format(FMT_DATETIME_MYSQL));
+	}
+	else
+		$q->addInsert('history_date', 'now()', false, true); 
+	
 	$q->addInsert('history_user', $AppUI->user_id);
 	$q->addInsert('history_table', $table);
 	$q->addInsert('history_item', $id);
