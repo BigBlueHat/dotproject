@@ -144,15 +144,25 @@ function dPgetConfig( $key, $default = null )
 
 function dPgetUsername( $user )
 {
+	global $AppUI;
+
 	$q  = new DBQuery;
 	$q->addTable('users');
 	$q->addQuery('contact_first_name, contact_last_name');
+	$q->addQuery('user_username');
 	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
 	$q->addWhere('user_username like \'' . $user . '\' OR user_id = \'' . $user . "'");
 	list($contact) = $q->loadList();
-	//TODO: use dPgetUsername instead?
-
-	return $contact['contact_first_name'] . ' ' . $contact['contact_last_name'];
+	$user_format = $AppUI->getPref('USERFORMAT');
+	
+	if ($user_format == 'first')
+		return $contact['contact_first_name'] . ' ' . $contact['contact_last_name'];
+	elseif ($user_format == 'last')
+		return $contact['contact_last_name'] . ', ' . $contact['contact_first_name'];
+	elseif ($user_format == 'user')
+		return $contact['user_username'];
+	else
+		return $contact['contact_first_name'] . ' ' . $contact['contact_last_name'];
 }
 
 function dPgetUsernameFromID( $user )

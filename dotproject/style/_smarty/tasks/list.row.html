@@ -98,7 +98,7 @@
 {if !$today_view}
 	<td nowrap="nowrap" align="center">
 		<a href="?m=admin&amp;a=viewuser&amp;user_id={$obj.user_id}">
-			{$obj.user_username}
+			{dPgetContact user_id=$obj.user_id}
 		</a>
 	</td>
 {/if}
@@ -107,7 +107,7 @@
 	<td align="center">
 		{foreach from=$obj.task_assigned_users item=user}
 		<a href="?m=admin&amp;a=viewuser&amp;user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
-			{$user.user_username} ({$user.perc_assignment}%)
+			{dPgetContact user_id=$obj.user_id} ({$user.perc_assignment}%)
 		</a>, 
 		{/foreach}
 	</td>
@@ -115,7 +115,7 @@
 	<td align="center" nowrap="nowrap">
 		{assign var=first_user value=$obj.task_assigned_users[0]}
 		<a href="?m=admin&amp;a=viewuser&amp;user_id={$first_user.user_id}" title="{dPtranslate word='Extent of Assignment'}:{$first_user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $first_user.perc_assignment}%">
-			{$first_user.user_username} ({$first_user.perc_assignment}%)</a>
+			{dPgetContact user_id=$first_user.user_id} ({$first_user.perc_assignment}%)</a>
 		{if $obj.assignee_count > 1}
 		<a href="javascript:void(0);"  onclick="toggle_users('users_{$obj.task_id}');" title="">(+{$obj.assignee_count-1})</a>
 		<span style="display: none" id="users_{$obj.task_id}">
@@ -123,7 +123,7 @@
 			{if $user.user_id != $first_user.user_id}
 			<br />
 			<a href="?m=admin&amp;a=viewuser&amp;user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
-				{$user.user_username} ({$user.perc_assignment}%)</a>
+				{dPgetContact user_id=$obj.user_id} ({$user.perc_assignment}%)</a>
 			{/if}
 		{/foreach}
 		</span>
