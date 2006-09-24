@@ -242,19 +242,21 @@ class dPacl extends gacl_api {
     $canViewUsers = $this->checkModule('users', 'view');
     $q  = new DBQuery;
     $q->addTable('users');
-    $q->addQuery('user_id, concat_ws(", ", contact_last_name, contact_first_name) as contact_name');
+    $q->addQuery('user_id');
     $q->addJoin('contacts', 'con', 'contact_id = user_contact');
     $q->addOrder('contact_last_name');
-    $res = $q->exec();
-    $userlist = array();
-    while ($row = $q->fetchRow()) {
-      if ( ($canViewUsers && $this->isUserPermitted($row['user_id'], $module))
-	 || $row['user_id'] == $AppUI->user_id)
-	$userlist[$row['user_id']] = $row['contact_name'];
+    $userlist = $q->loadColumn();
+
+    foreach ($userlist as $k => $user_id) {
+      if ( !($canViewUsers && $this->isUserPermitted($user_id, $module))
+			&& $user_id != $AppUI->user_id)
+				unset($userlist[$k]);
     }
-		$q->clear();
+		
     //  Now format the userlist as an assoc array.
-    return $userlist;
+    $users = dPgetUsersHash($userlist);
+
+    return $users;
   }
 
   function getItemACLs($module, $uid = null)

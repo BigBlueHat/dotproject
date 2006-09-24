@@ -34,17 +34,10 @@ $assigned = array();
 if ($is_clash) {
 	$assignee_list = $_SESSION['add_event_attendees'];
 	if (isset($assignee_list) && $assignee_list) {
-		$q  = new DBQuery;
-		$q->addTable('users', 'u');
-		$q->addTable('contacts', 'con');
-		$q->addQuery('user_id, CONCAT_WS(" " , contact_first_name, contact_last_name)');
-		$q->addWhere("user_id in ($assignee_list)");
-		$q->addWhere("user_contact = contact_id");
-		$assigned = $q->loadHashList();
-	} else {
+		$assigned = dPgetUsersHash($assignee_list);
 	}
 } else if ( $event_id == 0 ) {
-	$assigned[$AppUI->user_id] = "$AppUI->user_first_name $AppUI->user_last_name";
+	$assigned[$AppUI->user_id] = dPgetUsername($AppUI->user_id);
 } else {
 	$assigned = $obj->getAssigned();
 }

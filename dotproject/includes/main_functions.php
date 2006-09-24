@@ -162,12 +162,63 @@ function dPgetUsername( $user )
 	elseif ($user_format == 'user')
 		return $contact['user_username'];
 	else
-		return $contact['contact_first_name'] . ' ' . $contact['contact_last_name'];
+		return $contact['contact_order_by'];
 }
 
 function dPgetUsernameFromID( $user )
 {
 	return dPgetUsername($user);
+}
+
+function dPgetUsersHash($selected = null, $active_only = true)
+{
+	global $AppUI;
+
+	$q  = new DBQuery;
+	$q->addTable('users');
+	$q->addJoin('contacts', 'con', 'contact_id = user_contact');
+
+	$q->addQuery('user_id');
+
+	$uf = $AppUI->getPref(USERFORMAT);
+	if ($uf == 'first')	{
+		$q->addQuery('concat_ws(" ", contact_first_name, contact_last_name) as name');
+		$q->addOrder('contact_first_name, contact_last_name');
+	}	elseif ($uf == 'last')	{
+		$q->addQuery('concat_ws(", ", contact_last_name, contact_first_name) as name');
+		$q->addOrder('contact_last_name, contact_first_name');
+	}	elseif ($uf == 'user') {
+		$q->addQuery('user_username as name');
+		$q->addOrder('user_username');
+	} else {
+		$q->addQuery('contact_order_by');
+		$q->addOrder('contact_order_by');
+	}
+	
+	if (isset($selected))
+	{
+		if (is_array($selected))
+			$selected = implode(', ', $selected);
+		$q->addWhere('user_id IN ('.$selected.')');
+	}
+
+	$users = $q->loadHashList();
+
+	if ($active_only)
+	{
+		$perms = & $AppUI->acl();
+		foreach ($users as $user_id => $user_data)
+		{
+			if ($perms->isUserPermitted($user_id) != true)
+				unset($users[$user_id]);
+			$roles = $perms->getUserRoles($user_id);
+			foreach ($roles as $role)
+		    if (strtolower($role['name']) == 'guest')
+    		 	unset($users[$user_id]);
+		}
+	}
+	
+	return $users;
 }
 
 function dPgetUsers($active_only = true)
@@ -190,9 +241,12 @@ function dPgetUsers($active_only = true)
 		}	else if ($uf == 'last')	{
 			$q->addQuery('concat_ws(", ", contact_last_name, contact_first_name) as name');
 			$q->addOrder('contact_last_name, contact_first_name');
-		}	else { // if ($uf == 'user') {
-			$q->addQuery('user_username as name');
-			$q->addOrder('user_username');
+		}	elseif ($uf == 'user') {
+		$q->addQuery('user_username as name');
+		$q->addOrder('user_username');
+		} else {
+			$q->addQuery('contact_order_by');
+			$q->addOrder('contact_order_by');
 		}
 
 		$users = $q->loadHashList();

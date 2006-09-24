@@ -666,11 +666,13 @@ class CEvent extends CDpObject {
 		$q->addTable('users', 'u');
 		$q->addTable('user_events', 'ue');
 		$q->addTable('contacts', 'con');
-		$q->addQuery('u.user_id, CONCAT_WS(" ",contact_first_name, contact_last_name)');
+		$q->addQuery('u.user_id');
 		$q->addWhere("ue.event_id = $this->event_id");
 		$q->addWhere('user_contact = contact_id');
 		$q->addWhere('ue.user_id = u.user_id');
-		$assigned = $q->loadHashList();
+		$assigned_ids = $q->loadColumn();
+		$assigned = dPgetUsersHash($assigned_ids);
+		
 		return $assigned;
 	}
 
