@@ -82,5 +82,5 @@ foreach ($topics as $row) {
 
 $tpl->assign('topic_rows', $topic_rows);
 
-$tpl->displayFile('view_topics');
+$tpl->displayFile('view_topics', 'forums');
 ?>
