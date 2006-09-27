@@ -1,7 +1,7 @@
 ##
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
-"dependency_tracking_default_tooltip"=>"Turn on by default dependancy tracking for all newly created tasks.",
+"prefs_TIMEZONE_tooltip"=>"Select the user\'s local timezone.",
 "Abbreviation",
 "All Events",
 "Are you sure you want to delete this?",
@@ -137,6 +137,7 @@
 "default_view_tab_tooltip"=>"If you want to define your own start/default page set this. Specifies a tabbed subview. 0=first tab, ...",
 "deleted",
 "dependency_tracking_default_title"=>"Default Dependancy Tracking On for new tasks",
+"dependency_tracking_default_tooltip"=>"Turn on by default dependancy tracking for all newly created tasks.",
 "direct_edit_assignment_title"=>"Edit Multiple Task Assignments",
 "direct_edit_assignment_tooltip"=>"Turning this option on will allow you to edit task assignments and other options (per task block) in the main Task Module view.",
 "disabled",
@@ -251,6 +252,7 @@
 "prefs_TASKNOTIFYBYDEF_title"=>"Send Task Notifications by Default?",
 "prefs_TASKNOTIFYBYDEF_tooltip"=>"Determine whether the Checkbox for sending Task Notifications on the task addedit page is enabled by default or not. Thus this setting can be manually overridden from there.",
 "prefs_TIMEFORMAT_title"=>"Time Format",
+"prefs_TIMEZONE_title"=>"User Timezone",
 "prefs_UISTYLE_title"=>"UI Style",
 "prefs_USERFORMAT_title"=>"Usernames Display Type",
 "prefs_calendar_group_title"=>"Calendar & Time-related Settings",
