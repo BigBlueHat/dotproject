@@ -1,31 +1,32 @@
+<table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
+<tr>
+{section name=i loop=$show}
+  <th><a href="{$current_url}&amp;a=list&amp;orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
+{/section}
+</tr>
 {if !$rows}
-	{dPtranslate word='No data available'}<br />{$msg}
+<tr>
+	<td align="left" nowrap="nowrap" colspan="{$cols}">{dPtranslate sentence='No data available'}<br />{$msg}</td>
+</tr>
 {else}
-<table width="100%" border=0 cellpadding="2" cellspacing="1" class="tbl">
-<tr>
-	<th>{dPtranslate word='Name'}</td>
-	<th>{dPtranslate word='e-mail'}</td>
-	<th>{dPtranslate word='Department'}</td>
+{foreach from=$rows item=row}
+<tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
+	{section name=j loop=$show}
+		{if $show[j] == 'company_name'}
+	<td align="center"><a href="?m=companies&amp;a=view&amp;company_id={$row.project_company}">{$row.company_name}</a></td>
+		{elseif $show[j] == 'contact_email'}
+	<td align="center"><a href="mailto:{$row.contact_email}">{$row.contact_email}</a></td>
+		{else}
+			{assign var='col' value=$show[j]}
+	<td nowrap="nowrap" align="center">{$row.$col}</td>
+		{/if}
+	{/section}
 </tr>
-	{foreach from=$rows item=row}
-<tr>
-	<td>
-		<a href="./index.php?m=contacts&a=addedit&contact_id={$row.contact_id}">
-			{$row.contact_last_name}, {$row.contact_first_name}
-		</a>
-	</td>
-	<td>
-		<a href="mailto:{$row.contact_email}">{$row.contact_email}</a>
-	</td>
-	<td>
-		{$row.dept_name}
-	</td>
-</tr>
-	{/foreach}
+{/foreach}
 {/if}
 
 <tr>
-	<td colspan="3" align="right" valign="top" style="background-color:#ffffff">
+	<td colspan="4" align="right" valign="top" style="background-color:#ffffff">
 		<input type="button" class=button value="{dPtranslate word='new contact'}" onclick="javascript:window.location='./index.php?m=contacts&a=addedit&company_id={$company_id}&company_name={$company_name}'">
 	</td>
 </tr>

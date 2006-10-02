@@ -104,7 +104,8 @@ class CTemplate extends Smarty
 		if (!isset($show) && is_array($rows))
 		{
 			$keys = array_keys($rows);
-			$show = array_keys($rows); //[$keys[0]]);
+			$show = array_keys($rows);
+			//print_r($show);
 		}
 		
 		if (!$this->get_template_vars('current_url'))

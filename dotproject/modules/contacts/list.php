@@ -1,6 +1,8 @@
 <?php /* $Id$ */
 $AppUI->savePlace();
 
+$orderby = dPgetParam($_GET, 'orderby', 'contact_order_by');
+
 if (! $canAccess) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
@@ -27,11 +29,9 @@ $company_id = dPgetParam($_POST, 'company_filter', 'all');
 
 $where = $AppUI->getState( 'ContIdxWhere' ) ? $AppUI->getState( 'ContIdxWhere' ) : '%';
 
-$orderby = 'contact_order_by';
-
 // Pull First Letters
 $let = ':';
-$search_map = array($orderby, 'contact_first_name', 'contact_last_name');
+$search_map = array('contact_order_by', 'contact_first_name', 'contact_last_name');
 foreach ($search_map as $search_name)
 {
 	$q  = new DBQuery;
@@ -80,50 +80,9 @@ else if (count($allowedCompanies)) {
 	$comp_where = implode(' AND ', $allowedCompanies);
 	$q->addWhere( '( (' . $comp_where . ') OR contact_company = 0 )' );
 }
-$q->addOrder('contact_order_by');
+$q->addOrder($orderby);
+$contacts = $q->loadList();
 
-$carr[] = array();
-$carrWidth = 4;
-$carrHeight = 4;
-
-$sql = $q->prepare();
-$q->clear();
-$res = db_exec( $sql );
-if ($res)
-	$rn = db_num_rows( $res );
-else {
-	echo db_error();
-	$rn = 0;
-}
-
-$t = floor( $rn / $carrWidth );
-$r = ($rn % $carrWidth);
-
-if ($rn < ($carrWidth * $carrHeight)) {
-	for ($y=0; $y < $carrWidth; $y++) {
-		$x = 0;
-		//if($y<$r)	$x = -1;
-		while (($x<$carrHeight) && ($row = db_fetch_assoc( $res ))){
-			$carr[$y][] = $row;
-			$x++;
-		}
-	}
-} else {
-	for ($y=0; $y < $carrWidth; $y++) {
-		$x = 0;
-		if($y<$r)	$x = -1;
-		while(($x<$t) && ($row = db_fetch_assoc( $res ))){
-			$carr[$y][] = $row;
-			$x++;
-		}
-	}
-}
-
-$tdw = floor( 100 / $carrWidth );
-
-/**
-* Contact search form
-*/
 
 // get CCompany() to filter tasks by company
 require_once( $AppUI->getModuleClass( 'companies' ) );
@@ -188,7 +147,7 @@ if ($canEdit) {
 }
 
 // Bread Crumbs
-$titleBlock->addCrumb('?m=contacts&amp;a=list', 'list');
+$titleBlock->addCrumb('?m=contacts', 'cards');
 
 $titleBlock->show();
 
@@ -196,58 +155,5 @@ $titleBlock->show();
 
 $tpl->displayFile('index');
 
-
-for ($z=0; $z < $carrWidth; $z++) {
-	echo '<td valign="top" align="left" bgcolor="#f4efe3" width="'.$tdw.'%">';
-
-
-	for ($x=0; $x < @count($carr[$z]); $x++) {
-		$tpl_contact = new CTemplate();
-
-        	$contactid = $carr[$z][$x]['contact_id']; //added for simplification
-		$tpl_contact->assign('contactid', $contactid);
-		$tpl_contact->assign('contact', $carr[$z][$x]);
-		$tpl_contact->assign('keyword', $_GET['search_string']);
-
-		$q  = new DBQuery;
-		$q->addTable('projects');
-		$q->addQuery('count(*)');
-		$q->addWhere("project_contacts like \"" .$contactid
-			.",%\" or project_contacts like \"%," .$contactid 
-			.",%\" or project_contacts like \"%," .$contactid
-			."\" or project_contacts like \"" .$contactid."\"");
-	
- 		$res = $q->exec();
- 		$projects_contact = db_fetch_row($res);
- 		$q->clear();
-
-		$contact_has_projects = ($projects_contact[0] > 0) ? true : false;
-		$tpl_contact->assign('contact_has_projects', $contact_has_projects);
-
-		$contact_fields = '';
-
-		reset( $showfields );
-		while (list( $key, $val ) = each( $showfields )) {
-			if (strlen( $carr[$z][$x][$key] ) > 0) {
-				if($val == "contact_email") {
-					$contact_fields .= "<a href='mailto:{$carr[$z][$x][$key]}' class='mailto'>{$carr[$z][$x][$key]}</a>\n";
-                } elseif($val == "contact_company" && is_numeric($carr[$z][$x][$key])) {
-				} else {
-					$contact_fields .= $carr[$z][$x][$key]. "<br />\n";
-				}
-			}
-		}
-
-		$tpl_contact->assign('contact_fields', $contact_fields);
-		$tpl_contact_html = $tpl_contact->fetchFile('list.row');
-		unset($tpl_contact);
-
-		echo $tpl_contact_html;
-	}
-
-	echo "</td>";
-}
-echo '
-</tr>
-</table>';
+$tpl->displayList('contacts', $contacts, count($contacts), array('contact_order_by', 'contact_email', 'contact_phone', 'company_name'));
 ?>
