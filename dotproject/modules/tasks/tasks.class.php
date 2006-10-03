@@ -1368,11 +1368,11 @@ class CTask extends CDpObject {
      ** Time related calculations have been moved to ./classes/date.class.php
      ** some have been replaced with more _robust_ functions
      **
-     ** Affects functions:
+     ** Affected functions:
      ** prev_working_day()
      ** next_working_day()
-     ** calc_task_end_date()
-     ** calc_end_date()
+     ** calc_task_end_date() 	renamed to addDuration()
+     ** calc_end_date()	renamed to calcDuration()
      **
      ** @date 	20060525
      ** @responsible gregorerhardt
