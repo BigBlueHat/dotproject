@@ -1,5 +1,5 @@
 <?php /* TASKS $Id$ */
-$adjustStartDate = dPgetParam($_POST, 'set_task_start_date');
+$adjustStartDate = dPgetParam($_POST, 'task_dep_reset_dates');
 $del = dPgetParam($_POST, 'del',  0);
 $task_id = dPgetParam($_POST, 'task_id', 0);
 $hassign = dPgetParam($_POST, 'hassign');

@@ -256,3 +256,7 @@ INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_gr
 # Add user preference for timezone
 INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
 VALUES ('0', 'TIMEZONE', 'UTC', 'l10n', 'select');
+
+#200601003
+# Add field storing the 'set start dates based on dep...' checkbox state
+ALTER TABLE `tasks` ADD `task_dep_reset_dates` TINYINT( 1 ) NULL DEFAULT '0';
