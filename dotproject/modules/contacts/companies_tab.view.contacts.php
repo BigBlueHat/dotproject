@@ -23,5 +23,5 @@ $tpl->assign('company_id', $company_id);
 $tpl->assign('company_name', $obj->company_name);
 $tpl->assign('msg', $AppUI->getMsg());
 
-$tpl->displayList('contacts', $rows);
+$tpl->displayList('contacts', $rows, count($rows), array('contact_order_by', 'contact_email', 'contact_phone', 'company_name'));
 ?>

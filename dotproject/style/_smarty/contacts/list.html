@@ -12,7 +12,11 @@
 {foreach from=$rows item=row}
 <tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
 	{section name=j loop=$show}
-		{if $show[j] == 'company_name'}
+		{if $show[j] == 'contact_order_by'}
+	<td nowrap="nowrap" align="center">
+		<a href="?m=contacts&amp;a=view&amp;contact_id={$row.contact_id}">{$row.contact_order_by}</a>
+	</td>
+		{elseif $show[j] == 'company_name'}
 	<td align="center"><a href="?m=companies&amp;a=view&amp;company_id={$row.project_company}">{$row.company_name}</a></td>
 		{elseif $show[j] == 'contact_email'}
 	<td align="center"><a href="mailto:{$row.contact_email}">{$row.contact_email}</a></td>
