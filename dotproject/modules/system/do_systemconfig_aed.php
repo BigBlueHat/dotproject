@@ -16,12 +16,13 @@ $rs = $q->exec();
 
 foreach ($_POST['dPcfg'] as $name => $value) {
 	$obj->config_name = $name;
-    $obj->config_value = (get_magic_quotes_gpc() ? $value : addslashes( $value ));
-    
-    // get the group and type from hidden fields to preserver their values
-    // previous setup caused group and type to be lost.
-    $obj->config_group = $_POST["{$name}___group"];
-    $obj->config_type = $_POST["{$name}___type"];
+	// Slashes added in the query class
+	$obj->config_value = (get_magic_quotes_gpc() ? stripslashes($value) : $value );
+	
+	// get the group and type from hidden fields to preserver their values
+	// previous setup caused group and type to be lost.
+	$obj->config_group = $_POST["{$name}___group"];
+	$obj->config_type = $_POST["{$name}___type"];
     
 	// grab the appropriate id for the object in order to ensure
 	// that the db is updated well (config_name must be unique)
@@ -32,7 +33,7 @@ foreach ($_POST['dPcfg'] as $name => $value) {
 	if (($msg = $obj->store())) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
-		$AppUI->setMsg( "updated", UI_MSG_OK, true );
+		$AppUI->setMsg( 'updated', UI_MSG_OK, true );
 	}
 }
 $AppUI->redirect();
