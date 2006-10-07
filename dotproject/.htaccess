@@ -30,7 +30,7 @@
   Order deny,allow
   Deny from all
 </FilesMatch>
-<FilesMatch "(index.php|queuescanner.php)$">
+<FilesMatch "(index.php|queuescanner.php|fileviewer.php)$">
   Order deny,allow
   Allow from all
 </FilesMatch>
