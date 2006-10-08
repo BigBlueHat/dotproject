@@ -169,7 +169,7 @@ class CTemplate extends Smarty
 		// how many direct page links to display in the pagination bar
 		$pagination['pages_size'] = 30;
 		// how many pages there are in total
-		$pagination['total_pages'] = ceil($pagination['total_records'] / $pagination['page_size']);
+		$pagination['total_pages'] = ceil($pagination['total_records'] / $pagination['pages_size']);
 		
 		$start_page = ($pagination['page'] >= ($pagination['pages_size'] / 2))?$pagination['page'] : 1;
 		$end_page = ($pagination['total_pages'] <= $pagination['page'] + $pagination['pages_size'] / 2)?$pagination['total_pages']:($pagination['page'] + ($pagination['pages_size'] / 2));
