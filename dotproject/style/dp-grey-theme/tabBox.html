@@ -53,7 +53,7 @@
 		<td height="28" valign="middle" width="3">
 			<img src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}left.gif" border="0" alt="" />
 		</td>
-		<td id="toptab_{$k}" valign="middle" nowrap="nowrap"{if $js_tabs} class={if $k == $active}"tabon"{else}"taboff"{/if}{/if} style="background: url('./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}middle.gif')">
+		<td id="toptab_{$k}" valign="middle" nowrap="nowrap" class={if $k == $active}"tabon"{else}"taboff"{/if}>
 			<a href="{if $javascript}javascript:{$javascript}({$active}, {$k})
 	{elseif $js_tabs}javascript:show_tab({$k}){else}{$current_tab}tab={$k}{/if}">
 				{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}
