@@ -50,8 +50,8 @@
 	<table border="0" cellpadding="0" cellspacing="0">
 	<tr>
 {foreach from=$tabs item=v key=k}
-		<td valign="middle" width="3">
-			<img src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}left.gif" border="0" alt="" />
+		<td valign="middle" width="3" height="26">
+			<img id="lefttab_{$k}" src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}left.gif" border="0" alt="" />
 		</td>
 		<td id="toptab_{$k}" valign="middle" nowrap="nowrap" class={if $k == $active}"tabon"{else}"taboff"{/if}>
 			<a href="{if $javascript}javascript:{$javascript}({$active}, {$k})
@@ -60,7 +60,7 @@
 			</a>
 		</td>
 		<td valign="middle" width="3">
-			<img src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}right.gif" border="0" alt="" />
+			<img id="righttab_{$k}" src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}right.gif" border="0" alt="" />
 		</td>
 		<td width="3" class="tabsp">
 			<img src="./images/shim.gif" alt="shim" height="1" width="3" />
