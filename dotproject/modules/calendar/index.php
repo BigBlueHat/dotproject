@@ -12,9 +12,7 @@ $projects = new CProject();
 
 $perms =& $AppUI->acl();
 $tasks_filters_selection = array(
-//'tasks_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'),
 'task_owner' => $perms->getPermittedUsers('calendar'),
-//'task_creator' => $perms->getPermittedUsers('calendar'),
 'task_project' => arrayMerge( array( '-1'=>$AppUI->_('Personal Calendar'), '0'=>$AppUI->_('Unspecified Calendar') ) , $projects->getAllowedRecords($AppUI->user_id, 'project_id, project_name', 'project_name')),
 'task_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'));
 
@@ -90,28 +88,9 @@ $titleBlock->addCell('
 	<input type="checkbox" name="show_tasks" value="1" ' . ($show_tasks?'checked="checked" ':'') . 'onclick="document.displayForm.submit()" /> show tasks
 </form>', '', '', '');
 
-if ($show_tasks)
+if ($show_tasks) {
 	$filters = $titleBlock->addFiltersCell($tasks_filters_selection);
-/*
-$titleBlock->addCell( $AppUI->_('Company').':' );
-$titleBlock->addCell(
-	arraySelect( $companies, 'company_id', 'onChange="document.pickCompany.submit()" class="text"', $company_id ), '',
-	'<form action="' . $_SERVER['REQUEST_URI'] . '" method="post" name="pickCompany">', '</form>'
-);
-*/
-/*
-$titleBlock->addCell( $AppUI->_('Calendar Filter') . ':');
-$titleBlock->addCell(
-	arraySelect($calendar_filter_list, 'calendar_filter', 'onChange="document.pickCalFilter.submit()" class="text"',
-	$calendar_filter, true ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickCalFilter'>", '</form>'
-);
-
-$titleBlock->addCell( $AppUI->_('Event Filter') . ':');
-$titleBlock->addCell(
-	arraySelect($event_filter_list, 'event_filter', 'onChange="document.pickFilter.submit()" class="text"',
-	$event_filter, true ), '', "<Form action='{$_SERVER['REQUEST_URI']}' method='post' name='pickFilter'>", '</form>'
-);
-*/
+}
 $titleBlock->show();
 ?>
 
@@ -143,15 +122,13 @@ $last_time->setTime( 23, 59, 59 );
 $links = array();
 
 // assemble the links for the tasks
-if ($show_tasks)
-{
+if ($show_tasks) {
 	require_once( dPgetConfig( 'root_dir' ).'/modules/calendar/links_tasks.php' );
 	getTaskLinks( $first_time, $last_time, $links, 20, $filters );
 }
 
 // assemble the links for the events
-if ($show_events)
-{
+if ($show_events) {
 	require_once( dPgetConfig( 'root_dir' ).'/modules/calendar/links_events.php' );
 	getEventLinks( $first_time, $last_time, $links, 20 );
 	getExternalWebcalEventLinks( $first_time, $last_time, $links, 20 );
