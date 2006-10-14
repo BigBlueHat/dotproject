@@ -89,9 +89,11 @@ foreach($project_types as $key=>$value)
 {
         $counter[$key] = 0;
 	if (is_array($projects)) {
-		foreach ($projects as $p)
-			if ($p['project_status'] == $key)
+		foreach ($projects as $p) {
+			if ($p['project_status'] == $key) {
 				++$counter[$key];
+			}
+		}
 	}
                 
         $project_types[$key] = $AppUI->_($project_types[$key], UI_OUTPUT_RAW) . ' (' . $counter[$key] . ')';
@@ -109,10 +111,6 @@ if (is_array($projects)) {
                         ++$proposed;
         }
 }
-
-//$fixed_project_type_file = array(
-//        $AppUI->_('In Progress', UI_OUTPUT_RAW) . ' (' . $active . ')' => "vw_idx_list",
-//        $AppUI->_('Complete', UI_OUTPUT_RAW) . ' (' . $complete . ')'    => "vw_idx_list");
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
