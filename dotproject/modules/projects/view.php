@@ -245,26 +245,16 @@ function delIt() {
 <?php
 $tabBox = new CTabBox( "?m=projects&amp;a=view&amp;project_id=$project_id", "", $tab );
 $query_string = "?m=projects&amp;a=view&amp;project_id=$project_id";
+
 // tabbed information boxes
 // Note that we now control these based upon module requirements.
-
 $canViewTask = $perms->checkModule('tasks', 'view');
-/*
-if ($canViewTask) {
-	$taskStatus = dPgetSysVal('TaskStatus');
-	foreach ($taskStatus as $ts) {
-		$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/vw_tasks", 'Tasks ('.$ts.')' );
-	}
-}
-*/
+
 $tabBox->loadExtras($m, 'view');
 if ($perms->checkModule('forums', 'view'))
 	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_forums", 'Forums' );
-//if ($perms->checkModule('files', 'view'))
-//	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_files", 'Files' );
 if ($canViewTask) {
 	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/viewgantt", 'Gantt Chart' );
-//	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_logs", 'Task Logs' );
 }
 
 // deprecated:
