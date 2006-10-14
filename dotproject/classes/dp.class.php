@@ -442,24 +442,23 @@ class CDpObject {
 		global $AppUI;
 
 		$sql = '';
-		foreach($this->search_fields as $field)
+		foreach($this->search_fields as $field) {
 			$sql .= " $field LIKE '%$keyword%' OR ";
+		}
 		$sql = substr($sql, 0, -4);
 		
 		// getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
 		$list = $this->getAllowedRecords($AppUI->user_id, $this->_tbl_key . ',' . $this->_tbl_name, $this->_tbl_name, null, array('where' => $sql));
 
-		if (empty($list))
+		if (empty($list)) {
 			return $list;
-
-		if (!isset($this->_parent) || empty($this->_tbl_parent))
-		{
-			foreach($list as $id => $name)
-				$results[$id]['name'] = $name;
-echo 'no parent';
 		}
-		else
-		{
+
+		if (!isset($this->_parent) || empty($this->_tbl_parent)) {
+			foreach($list as $id => $name) {
+				$results[$id]['name'] = $name;
+			}
+		} else {
 			$q = new DBQuery;
 			$q->addQuery($this->_tbl_key);
 			$q->addQuery($this->_parent->_tbl_key . ' as id');
@@ -469,8 +468,7 @@ echo 'no parent';
 			$q->addWhere($this->_tbl_key . ' in (' . implode(', ', array_keys($list)) . ')');
 			$parents = $q->loadHashList($this->_tbl_key);
 
-			foreach($list as $id => $item)
-			{
+			foreach($list as $id => $item) {
 				$results[$id]['name'] = $item;
 				$results[$id]['parent_key'] = $this->_parent->_tbl_key;
 				$results[$id]['parent_id'] = $parents[$id]['id'];
