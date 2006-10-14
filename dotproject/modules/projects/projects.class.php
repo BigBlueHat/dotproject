@@ -81,16 +81,6 @@ class CProject extends CDpObject {
 		$perms =& $AppUI->acl();
         
 		return $perms->checkModuleItem('projects', 'delete', $oid);
-        
-		// NOTE: I uncommented the dependencies check since it is
-		// very anoying having to delete all tasks before being able
-		// to delete a project.
-		
-		/*		
-		$tables[] = array( 'label' => 'Tasks', 'name' => 'tasks', 'idfield' => 'task_id', 'joinfield' => 'task_project' );
-		// call the parent class method to assign the oid
-		return CDpObject::canDelete( $msg, $oid, $tables );
-		*/
 	}
 
 	function delete() {
@@ -110,25 +100,7 @@ class CProject extends CDpObject {
 			$task = new CTask();
 			$task->task_id = $task_id;
 			$task->delete();
-			//NOTE: I've commented this out as this logic already resides in Task class -Revelation7
-			/*$q->setDelete('user_tasks');
-			$q->addWhere('task_id ='.$task_id);
-			$q->exec();
-			$q->clear();
-			$q->setDelete('task_dependencies');
-			$q->addWhere('dependencies_req_task_id ='.$task_id);
-			$q->exec();
-			$q->clear();
-			$q->setDelete('task_log');
-			$q->addWhere('task_log_task ='.$task_id);
-			$q->exec();
-			$q->clear();*/
 		}
-		//NOTE: I've commented this out as this logic already resides in Task class -Revelation7
-		/*$q->setDelete('tasks');
-		$q->addWhere('task_project ='.$this->project_id);
-		$q->exec();
-		$q->clear();*/
 
 		// remove the project-contacts and project-departments map
 		$q->setDelete('project_contacts');
