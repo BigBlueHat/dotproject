@@ -1414,7 +1414,7 @@ class CTask extends CDpObject {
             $q = new DBQuery;
             $q->addTable('projects');
             $q->addQuery('project_start_date');
-            $q->addWhere('task_id = '.$id);
+            $q->addWhere('project_id = '.$id);
             $last_end_date = $q->loadResult();
             $q->clear();
         }
