@@ -73,7 +73,7 @@ class CTask extends CDpObject {
 	var $task_contacts = NULL;
 	var $task_custom = NULL;
 	var $task_type   = NULL;
-  var $task_dep_reset_dates = NULL;
+	var $task_dep_reset_dates = NULL;
 
 	function CTask() {
 		$this->CDpObject( 'tasks', 'task_id' );

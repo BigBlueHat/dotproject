@@ -100,7 +100,7 @@ $q->leftJoin('user_task_pin', 'tp', 'tp.task_id = ta.task_id and tp.user_id = ' 
 
 $q->addWhere('ut.task_id = ta.task_id');
 $q->addWhere("ut.user_id = '$user_id'");
-$q->addWhere('( ta.task_percent_complete < 100 or ta.task_percent_complete is null)');
+$q->addWhere('ta.task_percent_complete != 100');
 $q->addWhere("ta.task_status = '0'");
 $q->addWhere("pr.project_id = ta.task_project");
 $q->addWhere('project_status != ' . $project_template_status); // Filter out template projects
@@ -129,18 +129,17 @@ $q->addOrder('ta.task_end_date');
 $q->addOrder('task_priority DESC');
 
 $sql = $q->prepare();
-//echo "<pre>$sql</pre>";
 $q->clear();
-global $tasks;
 $tasks = db_loadList( $sql );
 
 /* we have to calculate the end_date via start_date+duration for 
 ** end='0000-00-00 00:00:00' or NULL
 */
-for ($j=0; $j < count($tasks); $j++) 
-{
-	if ( $tasks[$j]['task_end_date'] == '0000-00-00 00:00:00' || $tasks[$j]['task_end_date'] == NULL)		
+$taskCount = count($tasks);
+for ($j=0; $j < $taskCount; $j++) {
+	if ( $tasks[$j]['task_end_date'] == '0000-00-00 00:00:00' || $tasks[$j]['task_end_date'] == NULL) {
 		 $tasks[$j]['task_end_date'] = calcEndByStartAndDuration($tasks[$j]);
+	}
 }
 
 global $taskPriority;
