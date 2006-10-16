@@ -287,10 +287,13 @@ function db_updateArray( $table, &$hash, $keyName, $verbose=false )
 */
 function db_delete( $table, $keyName, $keyValue )
 {
-	$keyName = db_escape( $keyName );
-	$keyValue = db_escape( $keyValue );
-	$ret = db_exec( "DELETE FROM $table WHERE $keyName='$keyValue'" );
-	return $ret;
+//	$keyName = db_escape( $keyName );
+//	$keyValue = db_escape( $keyValue );
+//	$ret = db_exec( "DELETE FROM $table WHERE $keyName='$keyValue'" );
+	$q = new DBQuery();
+	$q->setDelete($table);
+	$q->addWhere("$keyName = '$keyValue'");
+	return $q->exec();
 }
 
 
@@ -304,7 +307,9 @@ function db_delete( $table, $keyName, $keyValue )
 */
 function db_insertObject( $table, &$object, $keyName = null, $verbose=false )
 {
-	$fmtsql = "INSERT INTO `$table` ( %s ) VALUES ( %s ) ";
+//	$fmtsql = "INSERT INTO `$table` ( %s ) VALUES ( %s ) ";
+	$q = new DBQuery();
+	$q->addTable($table);
 	foreach (get_object_vars( $object ) as $k => $v) {
 		if (is_array($v) or is_object($v) or $v == null) {
 			continue;
@@ -312,16 +317,17 @@ function db_insertObject( $table, &$object, $keyName = null, $verbose=false )
 		if ($k[0] == '_') { // internal field
 			continue;
 		}
-		$fields[] = $k;
+		$q->addInsert($k, $v);
+		//$fields[] = $k;
 		//$values[] = "'" . db_escape(htmlspecialchars( $v )) . "'";
-		$values[] = "'" . db_escape($v) . "'";
+		//$values[] = "'" . db_escape($v) . "'";
 		$insert_list[] = $k;
 		$values_list[] = $v;
 	}
 	$change = '"' . implode('","', $insert_list) . '"="' . implode('","', $values_list) . '"';
-	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
-	($verbose) && print "$sql<br />\n";
-	if (!db_exec( $sql )) {
+	//$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
+	//($verbose) && print "$sql<br />\n";
+	if (!$q->exec()) {
 		return false;
 	}
 	$id = db_insert_id();
