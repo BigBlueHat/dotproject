@@ -82,24 +82,27 @@ $canDelete = $perms->checkModuleItem($m, 'delete');
 $now = new CDate();
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-foreach ($tasks as $task) {
-	$sign = 1;
-	$start = intval( @$task['task_start_date'] ) ? new CDate( $task['task_start_date'] ) : null;
-	$end = intval( @$task['task_end_date'] ) ? new CDate( $task['task_end_date'] ) : null;
+if (!empty($tasks))
+{
+	foreach ($tasks as $task) {
+		$sign = 1;
+		$start = intval( @$task['task_start_date'] ) ? new CDate( $task['task_start_date'] ) : null;
+		$end = intval( @$task['task_end_date'] ) ? new CDate( $task['task_end_date'] ) : null;
+		
+		if (!$end && $start) {
+			$end = $start;
+			$end->addSeconds( @$task['task_duration']*$task['task_duration_type']*SEC_HOUR );
+		}
 	
-	if (!$end && $start) {
-		$end = $start;
-		$end->addSeconds( @$task['task_duration']*$task['task_duration_type']*SEC_HOUR );
+		if ($end && $now->after( $end ))
+			$sign = -1;
+	
+		$days = $end ? $now->dateDiff( $end ) * $sign : null;
+		$task['task_due_in'] = $days;
+	
+		$task['node_id'] = $task['task_id'];
+		showtask($task, 0, false, true);
 	}
-
-	if ($end && $now->after( $end ))
-		$sign = -1;
-
-	$days = $end ? $now->dateDiff( $end ) * $sign : null;
-	$task['task_due_in'] = $days;
-
-	$task['node_id'] = $task['task_id'];
-	showtask($task, 0, false, true);
 } 
 if (dPgetConfig('direct_edit_assignment')) {
 ?>
