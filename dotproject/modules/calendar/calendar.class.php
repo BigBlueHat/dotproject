@@ -603,7 +603,7 @@ class CEvent extends CDpObject {
         
         
 		// seperate query object for recursive events
-		$r = = new DBQuery;
+		$r = new DBQuery;
 		$r->addTable('events', 'e');
 		$r->addQuery('e.*');
 		
