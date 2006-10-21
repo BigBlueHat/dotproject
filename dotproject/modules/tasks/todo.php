@@ -105,7 +105,7 @@ $q->addWhere("ta.task_status = '0'");
 $q->addWhere("pr.project_id = ta.task_project");
 $q->addWhere('project_status != ' . $project_template_status); // Filter out template projects
 if (!$showArcProjs)
-	$q->addWhere('project_active != 0');
+	$q->addWhere('project_status != 7');
 if (!$showHoldProjs)
 	$q->addWhere('project_status != ' . $project_on_hold_status);
 if (!$showLowTasks)
