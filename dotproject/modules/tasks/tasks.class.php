@@ -770,6 +770,65 @@ class CTask extends CDpObject {
 	}
 	
 	/**
+	 * Return the duration of the selected task in working hours.
+	 * 
+	 * @return duration of the task in hours.
+	 */
+	function getDuration() {
+		return $this->task_duration * ($this->task_duration_type > 1?dPgetConfig('daily_working_hours'):1);
+	}
+	
+	function calcWorkingDays() {
+		$duration = $this->getDuration();
+	
+		$working_days = dPgetConfig('cal_working_days');
+		if(is_null($working_days)){
+	    $working_days = array('1','2','3','4','5');
+	  } else {
+	    $working_days = explode(',', $working_days);
+	  }
+	  
+	  $days = ceil($duration / dPgetConfig('daily_working_hours'));
+	  
+	  $working_days = $days / 7 * count($working_days);
+	  
+	  return $working_days;
+	}
+	
+	function calcDays() {
+		$conf_working_days = dPgetConfig('cal_working_days');
+		if(is_null($conf_working_days)){
+	    $conf_working_days = array('1','2','3','4','5');
+	  } else {
+	    $conf_working_days = explode(',', $conf_working_days);
+	  }
+	  $working_days = $this->calcWorkingDays();
+	  
+	  $weeks = floor($working_days / count($conf_working_days));
+	  $weekend_days = (7 - count($conf_working_days));
+	  return $working_days + $weeks * $weekend_days;
+	}
+	
+	function getCriticalDuration() {
+		$this->getDependencies();
+		$children_max_duration = 0;
+		$tasks = explode(',', $this->getDependencies());
+		if (!empty($tasks))
+		{
+			$tobj = new CTask();
+			
+			foreach ($tasks as $task)
+			{
+				$tobj->load($task);
+				$duration = $obj->getCriticalDuration();
+				if ($duration > $children_max_duration)	
+					$children_max_duration = $duration;
+			}
+		}
+
+		return $this->getDuration() + $children_max_duration;
+	}
+	/**
      *        Retrieve the tasks dependencies
      *
      *        @author        handco        <handco@users.sourceforge.net>
@@ -1396,17 +1455,15 @@ class CTask extends CDpObject {
         $obj = new CTask();
         
         // Don't respect end dates of excluded tasks
-        if ($tracked_dynamics) {
+        if ($tracked_dynamics && !empty($deps)) {
             $track_these = implode(',', $tracked_dynamics);
             $q = new DBQuery;
             $q->addTable('tasks', 't');
             $q->addQuery('MAX(task_end_date)');
             $q->addWhere("task_id IN ($deps)");
             $q->addWhere("task_dynamic IN ($track_these)");
+            $last_end_date = $q->loadResult();
         }
-        
-        $last_end_date = $q->loadResult();
-        $q->clear();
         
         if ( !$last_end_date ) {
             // Set to project start date
