@@ -5,7 +5,7 @@
  *	@version $Revision$
 */
 
-require_once( $AppUI->getSystemClass ('dp' ) );
+require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 require_once( $AppUI->getModuleClass( 'companies' ) );
@@ -27,6 +27,7 @@ class CProject extends CDpObject {
 	var $project_end_date = NULL;
 	var $project_actual_end_date = NULL;
 	var $project_status = NULL;
+	var $project_active = NULL;
 	var $project_percent_complete = NULL;
 	var $project_color_identifier = NULL;
 	var $project_description = NULL;
@@ -54,24 +55,24 @@ class CProject extends CDpObject {
 		return NULL; // object is ok
 	}
     
-    function load($oid=null , $strip = true) {
-    	global $dPconfig;
-    
-        $result = parent::load($oid, $strip);
-        if ($result && $oid) {
-            $working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
-            
-            $q = new DBQuery;
-            $q->addTable('projects');
-            $q->addQuery('SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, '.$working_hours
-                         .', t1.task_duration_type)) / SUM(t1.task_duration * IF(t1.task_duration_type = 24, '.$working_hours
-                         .', t1.task_duration_type)) AS project_percent_complete');
-            $q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
-            $q->addWhere(" project_id = $oid");
-            $this->project_percent_complete = $q->loadResult();
-        }
-        return $result;
-    }
+	function load($oid=null , $strip = true) {
+		global $dPconfig;
+
+		$result = parent::load($oid, $strip);
+		if ($result && $oid) {
+			$working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
+			
+			$q = new DBQuery;
+			$q->addTable('projects');
+			$q->addQuery('SUM(t1.task_duration * t1.task_percent_complete * IF(t1.task_duration_type = 24, '.$working_hours
+			             .', t1.task_duration_type)) / SUM(t1.task_duration * IF(t1.task_duration_type = 24, '.$working_hours
+			             .', t1.task_duration_type)) AS project_percent_complete');
+			$q->addJoin('tasks', 't1', 'projects.project_id = t1.task_project');
+			$q->addWhere(" project_id = $oid");
+			$this->project_percent_complete = $q->loadResult();
+		}
+		return $result;
+	}
     
     // overload canDelete
 	function canDelete( &$msg, $oid=null ) {
@@ -129,7 +130,7 @@ class CProject extends CDpObject {
 	function importTasks ($from_project_id, $import_date = '', $keepAssignees = true, $keepFiles = false) {
         
 		// Load the original
-		$origProject = new CProject ();
+		$origProject = new CProject();
 		$origProject->load ($from_project_id);
 		$q = new DBQuery;
 		$q->addTable('tasks');
@@ -140,7 +141,8 @@ class CProject extends CDpObject {
 		$tasks = array_flip(db_loadColumn ($sql));
         
 		$origDate = new CDate( $origProject->project_start_date );
-        $destDate = new CDate(((!empty($import_date))?$import_date:$this->project_start_date));
+		$destDate = new CDate(((!empty($import_date))?$import_date:$this->project_start_date));
+		$offset = $origDate->dateDiff($destDate);
 		$timeOffset = $destDate->getTime() - $origDate->getTime();
 
 		// Dependencies array
@@ -154,7 +156,9 @@ class CProject extends CDpObject {
 			$tasks[$orig] = $destTask;
 			$deps[$orig] = $objTask->getDependencies ();
 		}
-        
+		$all_deps = explode(',', implode(',', $deps));
+    //print_r($all_deps);
+    
 		// Fix record integrity 
 		foreach ($tasks as $old_id => $newTask) {
 			// Fix parent Task
@@ -162,22 +166,41 @@ class CProject extends CDpObject {
 			if ($newTask->task_id != $newTask->task_parent)
 				$newTask->task_parent = $tasks[$newTask->task_parent]->task_id;
             
-			// Fix task start date from project start date offset
-			if (!empty($newTask->task_start_date) && $newTask->task_start_date != '0000-00-00 00:00:00') {
-				$origDate->setDate ($newTask->task_start_date);
-				$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-				$destDate = $destDate->next_working_day();
-				$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL);
-			}
-			
-			// Fix task end date from start date + work duration
-			//$newTask->calc_task_end_date();
-			if (!empty($newTask->task_end_date) && $newTask->task_end_date != '0000-00-00 00:00:00'){
-				$origDate->setDate ($newTask->task_end_date);
-				$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME ); 
-				$destDate = $destDate->next_working_day();
-				$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL);
-			}
+//      if ($reschedule)
+//      {
+//      	//if (empty($all_deps) || !in_array($old_id, $all_deps))
+//      	//{
+//      		$newTask->task_start_date = $import_date;
+//      		$end_date = new CDate($import_date);
+//      		$end_date->addDays($newTask->calcDays());
+//      		$newTask->task_end_date = $end_date->format(FMT_DATETIME_MYSQL);
+//      		//print_r($newTask);
+//      	//}
+//      }
+//      else
+//      {
+				// Fix task start date from project start date offset
+				if (!empty($newTask->task_start_date) && $newTask->task_start_date != '0000-00-00 00:00:00') {
+					$origDate->setDate ($newTask->task_start_date);
+					
+					$destDate = $origDate;
+					$destDate->addDays($offset);
+//					$destDate = $destDate->next_working_day();
+					$newTask->task_start_date = $destDate->format(FMT_DATETIME_MYSQL, true);
+				}
+				
+				// Fix task end date from start date + work duration
+				//$newTask->calc_task_end_date();
+				if (!empty($newTask->task_end_date) && $newTask->task_end_date != '0000-00-00 00:00:00'){
+					$origDate->setDate ($newTask->task_end_date);
+					
+					$destDate = $origDate;
+					$destDate->addDays($offset);
+//					$destDate = $destDate->next_working_day();
+					//$destDate->setDate ($origDate->getTime() + $timeOffset , DATE_FORMAT_UNIXTIME );
+					$newTask->task_end_date = $destDate->format(FMT_DATETIME_MYSQL, true);
+				}
+//      }
 			
 			// Dependencies
 			if (!empty($deps[$old_id])) {
@@ -234,6 +257,8 @@ class CProject extends CDpObject {
 				}
 			}
 		} // end Fix record integrity	
+//		foreach($tasks as $task)
+//			$task->store();
 	} // end of importTasks
 
 	/**
@@ -303,13 +328,13 @@ class CProject extends CDpObject {
 		
 	}
 
-        /** Retrieve tasks with latest task_end_dates within given project
-        * @param int Project_id
-        * @param int SQL-limit to limit the number of returned tasks
-        * @return array List of criticalTasks
-        */
-        function getCriticalTasks($project_id = NULL, $limit = 1) {
-                $project_id = !empty($project_id) ? $project_id : $this->project_id;
+	/** Retrieve tasks with latest task_end_dates within given project
+	 * @param int Project_id
+	 * @param int SQL-limit to limit the number of returned tasks
+	 * @return array List of criticalTasks
+	 */
+	function getCriticalTasks($project_id = NULL, $limit = 1) {
+		$project_id = !empty($project_id) ? $project_id : $this->project_id;
 		$q = new DBQuery;
 		$q->addTable('tasks');
 		$q->addWhere("task_project = $project_id AND !isnull( task_end_date ) AND task_end_date !=  '0000-00-00 00:00:00'");
@@ -327,6 +352,44 @@ class CProject extends CDpObject {
 		$q->addTable('projects', 'p', 'p.project_id = t.task_project');
 		//$q->addWhere();
 		return $q->loadResult();
+	}
+	
+	/** 
+	 * Return the maximum duration for a project (ignoring dates) - Critical path duration.
+	 * 
+	 * @return the duration in hours
+	 */
+	function calcMinDuration() {
+		$max_duration = 0;
+	
+		$q = new DBQuery();
+		$q->addQuery('task_id, task_duration, task_duration_type');
+		$q->addTable('tasks');
+		$q->addWhere('task_project = ' . $this->project_id);
+		$tasks = $q->loadHashList();
+		
+		$tobj = new CTask();
+		foreach ($tasks as $task)
+		{
+			$tobj->load($task['task_id']);
+		
+			if ($deps = $tobj->getDependencies())
+				$duration = $tobj->getCriticalDuration();
+			else
+				$duration = $tobj->getDuration();
+			if ($duration > $max_duration)
+				$max_duration = $duration;
+		}
+		
+		return $max_duration;
+	}
+	
+	function calcDuration()
+	{
+		$start_date = new CDate($this->project_start_date);
+		$end_date = new CDate($this->project_end_date);
+		
+		return $start_date->dateDiff($end_date);
 	}
 	
 	function getActualEndDate() {
@@ -367,6 +430,56 @@ class CProject extends CDpObject {
 		
 		return $date;
 	}
+	
+	function calcMaxStartDate($end_date = null) 
+	{
+		if ($end_date == null)
+			$end_date = $this->project_end_date;
+		$end_date = new CDate($end_date);
+		
+		$min_end_date = $this->calcMinEndDate();
+		
+		$project_end_date = new CDate($this->project_start_date);
+		$duration = $min_end_date->dateDiff($project_end_date);
+			
+		$offset = $project_end_date->dateDiff($end_date);
+		$end_date->addDays($offset - $duration);
+
+		return $end_date;
+	}
+	
+	function calcMinEndDate($start_date = null)
+	{
+		$diff = 0;
+	
+		if ($start_date != null)
+			$diff = $start_date->dateDiff(new CDate($this->project_start_date));
+						
+		$latest_date = new CDate($this->project_start_date);
+		$q = new DBQuery();
+		$q->addQuery('task_id');
+		$q->addQuery('task_start_date, task_end_date');
+		$q->addTable('tasks');
+		$q->addWhere('task_project = ' . $this->project_id);
+		$tasks = $q->loadList();
+		
+		$t = new CTask();
+		
+		foreach ($tasks as $task)
+		{
+			$t->load($task['task_id']);
+			$date = $t->get_deps_max_end_date($t);
+			if (empty($date))
+				$date = $t->task_end_date;
+			$date = new CDate($date);
+			
+			if ($date->dateDiff($latest_date) < 0)
+				$latest_date = $date;
+		}
+		$latest_date->addDays($diff);
+		
+		return $latest_date;	
+	}
 
 	function store() {
         
@@ -384,7 +497,7 @@ class CProject extends CDpObject {
 			$details['changes'] = $ret;
 			addHistory('projects', $this->project_id, 'update', $details);
 		} 
-        else {
+		else {
 			$ret = db_insertObject( 'projects', $this, 'project_id' );
 			addHistory('projects', $this->project_id, 'add', $details);
 		}

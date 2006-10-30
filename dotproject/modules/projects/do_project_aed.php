@@ -56,12 +56,25 @@ if ($del) {
 		if ( $importTask_projectId = dPgetParam( $_POST, 'import_tasks_from', '0' ) )
 		{
 			$import_date = dPgetParam( $_POST, 'project_import_date', '' );
+			$import_end_date = dPgetParam( $_POST, 'project_import_end_date', '' );
 			if (empty($import_date))
 			{
-				if (!empty($obj->project_start_date))
-					$date = new CDate($obj->project_start_date);
+				if (!empty($import_end_date))
+				{
+					$importProject = new CProject();
+					$importProject->load($importTask_projectId);
+					$date = new CDate($import_end_date);
+					$date->addDays( 0 - $importProject->calcDuration() );
+					//$reschedule = true;
+					//$date = $importProject->calcMaxStartDate($import_end_date);
+				}
 				else
-					$date = new CDate();
+				{
+					if (!empty($obj->project_start_date))
+						$date = new CDate($obj->project_start_date);
+					else
+						$date = new CDate();
+				}
 				$import_date = $date->format(FMT_DATETIME_MYSQL);
 			}
 			$keepAssignees = dPgetParam( $_POST, 'keepAssignees', '' );
