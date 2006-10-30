@@ -27,15 +27,6 @@ $task->load($task_id);
 if (! $task->canAccess($AppUI->user_id))
 	$AppUI->redirect('m=public&a=access_denied');
 
-// Lets check which cost codes have been used before
-/*$sql = "select distinct task_log_costcode
-        from task_log
-        where task_log_costcode != ''
-        order by task_log_costcode";
-$task_log_costcodes = array(""); // Let's add a blank default option
-$task_log_costcodes = array_merge($task_log_costcodes, db_loadColumn($sql));
-*/
-
 $proj = &new CProject();
 $proj->load($obj->task_project);
 
