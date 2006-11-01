@@ -707,7 +707,6 @@ class CEvent extends CDpObject {
 	function updateAssigned($assigned) {
 		// First remove the assigned from the user_events table
 		global $AppUI;
-		$sql = "DELETE from user_events WHERE event_id = $this->event_id";
 		$q  = new DBQuery;
 		$q->addWhere("event_id = $this->event_id");
 		$q->setDelete('user_events');		

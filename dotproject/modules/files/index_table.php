@@ -75,19 +75,9 @@ $q2 = new DBQuery;
 $q2->addQuery(array ('f.*',
 	'max(f.file_id) as  latest_id',
 	'count(f.file_version) as file_versions',
-	'round(max(f.file_version),2) as file_lastversion'//,
-//	'project_name',
-//	'project_color_identifier',
-//	'cont.contact_first_name',
-//	'cont.contact_last_name',
-//	'task_name',
-//	'task_id',
-//	'cu.user_username as co_user'
+	'round(max(f.file_version),2) as file_lastversion'
 ));
 $q2->addTable('files', 'f');
-//$q2->leftJoin('users', 'cu', 'cu.user_id = f.file_checkout');
-//$q2->leftJoin('users', 'u', 'u.user_id = f.file_owner');
-//$q2->leftJoin('contacts', 'cont', 'cont.contact_id = u.user_contact');
 $project->setAllowedSQL($AppUI->user_id, $q2, 'file_project');
 $task->setAllowedSQL($AppUI->user_id, $q2, 'file_task and ta.task_project = file_project');
 if ($catsql) $q2->addWhere($catsql);
@@ -117,8 +107,6 @@ $q3->addTable('files');
 $q3->leftJoin('users', 'cu', 'cu.user_id = file_checkout');
 $q3->leftJoin('users', 'u', 'u.user_id = file_owner');
 $q3->leftJoin('contacts', 'con', 'con.contact_id = u.user_contact');
-//$q3->leftJoin('tasks', 't', 't.task_id = file_task');
-//$q3->leftJoin('projects', 'p', 'p.project_id = file_project');
 $project->setAllowedSQL($AppUI->user_id, $q3, 'file_project');
 $task->setAllowedSQL($AppUI->user_id, $q3, 'file_task and task_project = file_project');
 if ($project_id)
@@ -172,10 +160,6 @@ foreach ($files as $file_row) {
 		}
 	}
 	$fp = $latest_file['file_project'];
-//        if ($row['file_versions'] > 1)
-//                $file = last_file($file_versions, $row['file_name'], $row['file_project']);
-//        else 
-//                $file = $latest_file;
 	if ($canEdit && ( empty($latest_file['file_checkout']) || ( $latest_file['file_checkout'] == 'final' && ($canEdit|| $latest_file['project_owner'] == $AppUI->user_id) ))) {
 		$file_edit_html = "\n".'<a href="./index.php?m=files&amp;a=addedit&amp;file_id=' . $latest_file['file_id'] . '">';
 		$file_edit_html.= dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
@@ -294,5 +278,4 @@ foreach ($files as $file_row) {
 	$tpl->assign('file_rows', $file_rows_html);
 	$tpl->displayFile('list', 'files');
 
-	//shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page);
 ?>

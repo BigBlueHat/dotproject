@@ -81,7 +81,6 @@ class CForum extends CDpObject {
 			$q->clear();
 			return db_error();
 		}
-		// $sql = "DELETE FROM forum_messages WHERE message_forum = $this->forum_id";
 		$q->clear();
 		$q->setDelete('forum_messages');
 		$q->addWhere('message_forum = '.$this->forum_id);

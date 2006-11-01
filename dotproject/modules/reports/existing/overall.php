@@ -116,14 +116,6 @@ function showcompany($company, $restricted = false)
 	$obj->setAllowedSQL($AppUI->user_id, $q);	
 	$sql = $q->prepare();
 	$projects = db_loadHashList($sql);	
-	/*$sql = "SELECT project_id, project_name
-		FROM projects
-		WHERE project_company = $company";
-  
-	$sql = "SELECT company_name
-		FROM companies
-		WHERE company_id = $company";
-	$company_name = db_loadResult($sql);      */                                                                                                                 
 
 	$obj = new CCompany();
 	$q = new DBQuery;
@@ -141,13 +133,6 @@ function showcompany($company, $restricted = false)
                 <th>' . $AppUI->_('Project') . '</th>';
                 
 		$pdfth[] = $AppUI->_('Project');
-/*		if (isset($company_billingcodes))
-	                foreach ($company_billingcodes as $code)
-			{
-        	                $project_row .= '<th>' . $code . ' ' . $AppUI->_('Hours') . '</th>';
-				$pdfth[] = $code;
-			}
-  */              
         $project_row .= '<th>' . $AppUI->_('Total') . '</th></tr>';
 	$pdfth[] = $AppUI->_('Total');
 	$pdfdata[] = $pdfth;
@@ -170,22 +155,15 @@ function showcompany($company, $restricted = false)
 		$q->addQuery('task_log_costcode, sum(task_log_hours) as hours');                     
 		$q->addwhere("project_id='$project'");
 		
-		/*$sql = "SELECT 
-			FROM projects, tasks, task_log
-			WHERE project_id = $project";*/
-		if ($log_start_date != 0 && !$log_all)
-			//$sql .= " AND task_log_date >= $log_start_date";
+		if ($log_start_date != 0 && !$log_all) {
 			$q->addwhere("task_log_date >= '$log_start_date'");
-		if ($log_end_date != 0 && !$log_all)
-			//$sql .= " AND task_log_date <= $log_end_date";
+		}
+		if ($log_end_date != 0 && !$log_all) {
 			$q->addwhere("task_log_date <= '$log_end_date'");
-		if ($restricted)
-			//$sql .= " AND task_log_creator = '" . $AppUI->user_id . "'";
+		}
+		if ($restricted) {
 			$q->addwhere("task_log_creator = '$AppUI->user_id'");
-			
-		/*$sql .= " AND project_id = task_project
-			AND task_id = task_log_task
-			GROUP BY project_id"; //task_log_costcode";*/
+		}
 		$q->addwhere("project_id = task_project");					
 		$q->addwhere("task_id = task_log_task");								
 		$q->addgroup('project_id');
@@ -195,30 +173,13 @@ function showcompany($company, $restricted = false)
 		
 		$task_logs = db_loadHashList($sql);
 
-/*		if (isset($company_billingcodes))
-		foreach($company_billingcodes as $code => $name)
-		{
-			if (isset($task_logs[$code]))
-			{
-				$value = sprintf( "%.2f", $task_logs[$code] );
-				$project_row .= '<td>' . $value . '</td>';
-				$project_hours += $task_logs[$code];
-				$pdfproject[] = $value;
-			}
-			else
-			{
-				$project_row .= '<td>&nbsp;</td>';
-				$pdfproject[] = 0;
-			}
+		foreach($task_logs as $task_log) {
+			$project_hours += $task_log;
 		}
-*/
-                foreach($task_logs as $task_log)
-                        $project_hours += $task_log;
 		$project_row .= '<td>' . round($project_hours, 2) . '</td></tr>';
 		$pdfproject[]=round($project_hours, 2);
 		$hours += $project_hours;
-		if ($project_hours > 0)
-		{
+		if ($project_hours > 0) {
 			$table .= $project_row;
 			$pdfdata[] = $pdfproject;
 		}
@@ -239,11 +200,11 @@ if ($do_report) {
 
 	$total = 0;
 
-if ($fullaccess)
+if ($fullaccess) {
 	$sql = "SELECT company_id FROM companies";
-else
+} else {
 	$sql = "SELECT company_id FROM companies WHERE company_owner='" . $AppUI->user_id . "'";
-
+}
 $companies = db_loadColumn($sql);
 
 if (!empty($companies))	
@@ -252,11 +213,10 @@ if (!empty($companies))
 else
 {
 	$sql = "SELECT company_id FROM companies";
-	foreach(db_loadColumn($sql) as $company)
+	foreach(db_loadColumn($sql) as $company) {
 		$total += showcompany($company, true);
+	}
 }
-
-	
 
 echo '<h2>' . $AppUI->_('Total Hours') . ":"; 
 printf( "%.2f", $total );
@@ -276,7 +236,6 @@ if ($log_pdf) {
 		$pdf->selectFont( "$font_dir/Helvetica.afm" );
 
 		$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
-		// $pdf->ezText( dPgetConfig( 'company_name' ).' :: '.$AppUI->getConfig( 'page_title' ), 12 );		
 
 		if ($log_all)
 		{

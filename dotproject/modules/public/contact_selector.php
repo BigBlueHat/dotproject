@@ -143,12 +143,6 @@ self.close();
 		$q->addQuery('c.company_name');
 		$q->addWhere('company_id = '.$company_id);
 		$company_name = $q->loadResult();
-		/*
-		$sql = "select c.company_name
-	        	from companies as c
-	        	where company_id = $company_id";
-		$company_name = db_loadResult($sql);
-		*/
 		$company_name_sql = db_escape($company_name);
 		$where = " ( contact_company = '$company_name_sql' or contact_company = '$company_id' )";
 	}

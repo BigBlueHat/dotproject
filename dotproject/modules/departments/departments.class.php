@@ -92,7 +92,6 @@ class CDepartment extends CDpObject {
 			$q->clear();
 			return "deptWithProject";
 		}
-		// $sql = "DELETE FROM departments WHERE dept_id = $this->dept_id";
 		$q->clear();
 		$q->addQuery('*');
 		$q->setDelete('departments');

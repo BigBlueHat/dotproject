@@ -33,16 +33,6 @@ $where = array_merge($filter1, $allowed_projects);
 
 // pull valid projects and their percent complete information
 // changed "ti.task_end_date AS project_actual_end_date" to  "max(t1.task_end_date) AS project_actual_end_date" -- max()
-$sql = "
-SELECT u.user_username user_name, t.task_name task_name, t.task_start_date task_start_date, t.task_milestone task_milestone, ut.perc_assignment perc_assignment,
-t.task_end_date task_end_date, p.project_color_identifier project_color_identifier, p.project_name project_name
-FROM tasks t 
-LEFT JOIN user_tasks ut ON t.task_id = ut.task_id
-LEFT JOIN users u ON u.user_id = ut.user_id
-LEFT JOIN  projects p ON p.project_id = t.task_project
-LEFT JOIN companies c ON p.project_company = c.company_id
-ORDER BY 1, 2, 5, 4 
-";
 $q  = new DBQuery;
 $q->addTable('tasks', 't');
 $q->addQuery('u.user_username user_name, t.task_name task_name, t.task_start_date task_start_date, t.task_milestone
@@ -55,11 +45,6 @@ $q->addJoin('companies', 'c', 'p.project_company = c.company_id');
 $q->addOrder('1, 2, 5, 4');
 $tasks = $q->loadList();
 
-$sqlMinMax = "
-SELECT min(t.task_start_date) task_min_date, max(t.task_end_date) task_max_date
-FROM users u, tasks t, user_tasks ut
-WHERE u.user_id = ut.user_id AND ut.task_id = t.task_id
-";
 $q  = new DBQuery;
 $q->addTable('users', 'u');
 $q->addTable('tasks', 't');

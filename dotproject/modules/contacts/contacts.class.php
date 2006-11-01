@@ -106,7 +106,6 @@ class CContact extends CDpObject{
 	}
 
 	function getCompanyName(){
-		$sql = "select company_name from companies where company_id = '" . $this->contact_company . "'";
 		$q  = new DBQuery;
 		$q->addTable('companies');
 		$q->addQuery('company_name');
@@ -140,16 +139,14 @@ class CContact extends CDpObject{
 		$result = array('dept_id' => 0, 'dept_name' => '');
 		if (! $this->contact_department)
 			return $result;
-		$sql = "select dept_id, dept_name from departments";
 		$q  = new DBQuery;
 		$q->addTable('departments');
 		$q->addQuery('dept_id, dept_name');
-		if ($this->is_alpha($this->contact_department))
+		if ($this->is_alpha($this->contact_department)) {
 			$q->addWhere('dept_name = ' . $q->quote($this->contact_department) );
-
-		else
+		} else {
 			$q->addWhere("dept_id = '" . $this->contact_department . "'");
-			
+		}
 		$sql = $q->prepare();
 		$q->clear();
 		db_loadHash($sql, $result);
