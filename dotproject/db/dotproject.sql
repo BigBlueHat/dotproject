@@ -145,6 +145,11 @@ CREATE TABLE `event_queue` (
     KEY `queue_origin_id` (`queue_origin_id`)
 ) TYPE=MyISAM;
 
+CREATE TABLE `event_contacts` (
+`event_id` INT NOT NULL ,
+`contact_id` INT NOT NULL ,
+PRIMARY KEY ( `event_id` , `contact_id` )
+) ENGINE = MYISAM ;
 
 CREATE TABLE `files` (
     `file_id` int(11) NOT NULL auto_increment,

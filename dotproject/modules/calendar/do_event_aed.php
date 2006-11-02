@@ -65,6 +65,7 @@ if ($del) {
 		$AppUI->setMsg( $isNotNew ? 'updated' : 'added', UI_MSG_OK, true );
 		if (isset($_POST['event_assigned'])) {
 		      $obj->updateAssigned(explode(",",$_POST['event_assigned']));
+		      $obj->updateAssignedContacts(explode(',', $_POST['event_assigned_contacts']));
         }
 		if (isset($_POST['mail_invited'])) {
 		      $obj->notify(@$_POST['event_assigned'], $isNotNew);

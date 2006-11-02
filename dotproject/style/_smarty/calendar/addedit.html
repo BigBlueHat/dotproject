@@ -18,6 +18,7 @@ function updateTasks()
 	<input type="hidden" name="dosql" value="do_event_aed" />
 	<input type="hidden" name="event_id" value="{$event_id}" />
 	<input type="hidden" name="event_assigned" value="" />
+	<input type="hidden" name="event_assigned_contacts" value="" />
 	<input type="hidden" name="event_owner" value="{$obj->event_owner}" />
 	<input type="hidden" name="event_icon" value="{$obj->event_icon}" />
 
@@ -108,7 +109,7 @@ function updateTasks()
 *}
 
 <tr>
-	<td align="right">{dPtranslate word='Resources'}:</td>
+	<td align="right">{dPtranslate word='Users'}:</td>
 	<td></td>
 	<td align="left">{dPtranslate word='Invited to Event'}:</td>
 	<td></td>
@@ -131,6 +132,37 @@ function updateTasks()
 				</td>
 				<td align="right">
 					<input type="button" class="button" value="&lt;" onclick="removeUser()" />
+				</td>
+			</tr>
+		</table>
+	</td>
+	<td align="left">
+	</td>
+</tr>
+<tr>
+	<td align="right">{dPtranslate word='Contacts'}:</td>
+	<td></td>
+	<td align="left">{dPtranslate word='Invited to Event'}:</td>
+	<td></td>
+</tr>
+<tr>
+	<td colspan="2" align="right">
+	{dParraySelect array=$contacts name='contacts' extras='style="width:220px" size="10" class="text" multiple="multiple" '}
+	</td>
+	<td colspan="2" align="left">
+	{dParraySelect array=$assigned_contacts name='assigned_contacts' extras='style="width:220px" size="10" class="text" multiple="multiple" '}
+	</td>
+</tr>
+<tr>
+	<td></td>
+	<td colspan=2 align="center">
+		<table>
+			<tr>
+				<td align="left">
+					<input type="button" class="button" value="&gt;" onclick="addContact()" />
+				</td>
+				<td align="right">
+					<input type="button" class="button" value="&lt;" onclick="removeContact()" />
 				</td>
 			</tr>
 		</table>

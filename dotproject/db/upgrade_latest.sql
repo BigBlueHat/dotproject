@@ -257,3 +257,11 @@ INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pre
 #200601003
 # Add field storing the 'set start dates based on dep...' checkbox state
 ALTER TABLE `tasks` ADD `task_dep_reset_dates` TINYINT( 1 ) NULL DEFAULT '0';
+
+#20061102
+# Add contacts to events
+CREATE TABLE `event_contacts` (
+`event_id` INT NOT NULL ,
+`contact_id` INT NOT NULL ,
+PRIMARY KEY ( `event_id` , `contact_id` )
+) ENGINE = MYISAM ;

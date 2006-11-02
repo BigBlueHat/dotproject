@@ -29,6 +29,24 @@ $types = dPgetSysVal( 'EventType' );
 $perms =& $AppUI->acl();
 $users = $perms->getPermittedUsers();
 
+include ($AppUI->getModuleClass('contacts'));
+$contact = new CContact();
+
+$q = new DBQuery;
+$q->addQuery('contact_id');
+$q->addQuery('contact_order_by');
+$q->addTable('contacts');
+//TODO: Add permissions handling.
+//$q->addWhere('contact_id in (' . implode(',', $contact->getAllowedRecords($AppUI->user_id)) . ')');
+$contacts = $q->loadHashList();
+
+if ( $event_id == 0 ) {
+	$assigned_contacts = array();
+} else {
+	$assigned_contacts = $obj->getAssignedContacts();
+}
+
+
 // Load the assignees
 $assigned = array();
 if ($is_clash) {
@@ -193,6 +211,9 @@ $tpl->assign('tasks', $tasks);
 $tpl->assign('types', $types);
 $tpl->assign('assigned', $assigned);
 $tpl->assign('users', $users);
+$tpl->assign('contacts', $contacts);
+print_r($contacts);
+$tpl->assign('assigned_contacts', $assigned_contacts);
 $tpl->assign('extras', $extras);
 
 $tpl->displayAddEdit($obj);
@@ -246,6 +267,16 @@ function submitIt(){
         }
 		form.event_assigned.value += form.assigned.options[i].value;
 	}
+	
+	var len = form.assigned_contacts.length;
+	form.event_assigned_contacts.value = "";
+	for (var i = 0; i < len; i++) {
+        if (i){
+			form.event_assigned_contacts.value += ",";
+        }
+		form.event_assigned_contacts.value += form.assigned_contacts.options[i].value;
+	}
+	
 	form.submit();
 }
 
@@ -309,6 +340,43 @@ function removeUser() {
 			var selValue = form.assigned.options[fl].value;			
 			var re = ".*("+selValue+"=[0-9]*;).*";
 			form.assigned.options[fl] = null;
+		}
+	}
+}
+
+function addContact() {
+	var form = document.editFrm;
+	var fl = form.contacts.length -1;
+	var au = form.assigned_contacts.length -1;
+	//gets value of percentage assignment of selected resource
+
+	var contacts = "x";
+
+	//build array of assiged users
+	for (au; au > -1; au--) {
+		contacts = contacts + "," + form.assigned_contacts.options[au].value + ","
+	}
+
+	//Pull selected resources and add them to list
+	for (fl; fl > -1; fl--) {
+		if (form.contacts.options[fl].selected && contacts.indexOf( "," + form.contacts.options[fl].value + "," ) == -1) {
+			t = form.assigned_contacts.length
+			opt = new Option( form.contacts.options[fl].text, form.contacts.options[fl].value);
+			form.assigned_contacts.options[t] = opt
+		}
+	}
+
+}
+
+function removeContact() {
+	var form = document.editFrm;
+	fl = form.assigned_contacts.length -1;
+	for (fl; fl > -1; fl--) {
+		if (form.assigned_contacts.options[fl].selected) {
+			//remove from hperc_assign
+			var selValue = form.assigned_contacts.options[fl].value;			
+			var re = ".*("+selValue+"=[0-9]*;).*";
+			form.assigned_contacts.options[fl] = null;
 		}
 	}
 }

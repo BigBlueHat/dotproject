@@ -703,6 +703,45 @@ class CEvent extends CDpObject {
 		
 		return $assigned;
 	}
+	
+	function &getAssignedContacts() {
+		$q  = new DBQuery;
+		$q->addQuery('c.contact_id');
+		$q->addQuery('c.contact_order_by');
+		$q->addTable('contacts', 'c');
+		$q->addTable('event_contacts', 'ec');
+		$q->addWhere("ec.event_id = $this->event_id");
+		$q->addWhere('ec.contact_id = c.contact_id');
+		$assigned_contacts = $q->loadHashList();
+				
+		return $assigned_contacts;
+	}
+	
+	function updateAssignedContacts($assigned_contacts) {
+		// First remove the assigned from the user_events table
+		global $AppUI;
+		$q  = new DBQuery;
+		$q->addWhere("event_id = $this->event_id");
+		$q->setDelete('event_contacts');		
+		$q->exec();
+		$q->clear();
+		
+		if (is_array($assigned_contacts) && count($assigned_contacts)) {
+			
+			foreach ($assigned_contacts as $cid) {
+			    if ($cid) {
+				$q->addTable('event_contacts', 'ec');
+				$q->addInsert('event_id', $this->event_id);
+				$q->addInsert('contact_id', $cid);
+				$q->exec();
+				$q->clear();
+			    }
+			}
+			
+			  if ($msg = db_error())
+				$AppUI->setMsg($msg, UI_MSG_ERROR);
+		}
+	}
 
 	function updateAssigned($assigned) {
 		// First remove the assigned from the user_events table
@@ -754,6 +793,13 @@ class CEvent extends CDpObject {
 		$q->addWhere('u.user_contact = con.contact_id');
 		$q->addWhere("user_id in ( " . implode(',', $assignee_list) . ")");
 		$users = $q->loadHashList('user_id');
+		
+		
+		$q->addTable('event_contacts', 'ec');
+		$q->addTable('contacts','con', 'con.contact_id = ec.contact_id');
+		$q->addQuery('con.contact_id, contact_first_name,contact_last_name, contact_email');
+		$q->addWhere('ec.event_id = ' . $this->event_id);
+		$contacts = $q->loadList();
 	
 	  $date_format = $AppUI->getPref('SHDATEFORMAT');
 	  $time_format = $AppUI->getPref('TIMEFORMAT');
@@ -830,6 +876,9 @@ class CEvent extends CDpObject {
 	foreach ($users as $user) {
 		$v->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 	}
+	foreach ($contacts as $contact) {
+		$v->addAttendee($contact['contact_first_name'] .' '. $contact['contact_last_name'], $contact['contact_email']);
+	}
 	
 	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
 	$v->addRel($this->event_parent, 'PARENT');
@@ -849,10 +898,17 @@ class CEvent extends CDpObject {
 	  $mail->Attach( $AppUI->_('Event').'.ics', $filetype = 'text/calendar' , $disposition = 'inline', $ical );
 
 	  foreach ($users as $user) {
-		if (! $mail_owner && $user['user_id'] == $this->event_owner)
-			continue;
-	  	$mail->To($user['contact_email'], true);
-		$mail->Send();
+			if (! $mail_owner && $user['user_id'] == $this->event_owner)
+				continue;
+	  		$mail->To($user['contact_email'], true);
+				$mail->Send();
+	  }
+	  
+	  foreach ($contacts as $contact) {
+	  	if (!empty($contact['contact_email']) && $mail->ValidEmail($contact['contact_email'])) {
+	  		$mail->To($contact['contact_email'], true);
+				$mail->Send();
+	  	}
 	  }
 	}
 
