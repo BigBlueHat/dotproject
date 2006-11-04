@@ -36,7 +36,8 @@ $recurs =  array (
 );
 
 $assigned = $obj->getAssigned();
-
+// Add contacts to the assigned list.
+$assigned = array_merge($assigned, $obj->getAssignedContacts());
 
 if (($obj->event_owner != $AppUI->user_id) && !($perms->checkModule("admin", "view"))) {
  $canEdit = false;

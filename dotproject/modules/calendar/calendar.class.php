@@ -699,7 +699,10 @@ class CEvent extends CDpObject {
 		$q->addWhere('user_contact = contact_id');
 		$q->addWhere('ue.user_id = u.user_id');
 		$assigned_ids = $q->loadColumn();
-		$assigned = dPgetUsersHash($assigned_ids);
+		if (!empty($assigned_ids))
+			$assigned = dPgetUsersHash($assigned_ids);
+		else
+			$assigned = array();
 		
 		return $assigned;
 	}

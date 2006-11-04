@@ -212,7 +212,6 @@ $tpl->assign('types', $types);
 $tpl->assign('assigned', $assigned);
 $tpl->assign('users', $users);
 $tpl->assign('contacts', $contacts);
-print_r($contacts);
 $tpl->assign('assigned_contacts', $assigned_contacts);
 $tpl->assign('extras', $extras);
 
