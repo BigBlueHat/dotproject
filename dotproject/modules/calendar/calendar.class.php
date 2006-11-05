@@ -441,8 +441,8 @@ class CEvent extends CDpObject {
 	var $event_remind = NULL;
 	var $event_icon = NULL;
 	var $event_owner = NULL;
-	var $event_project = NULL;
-	var $event_task = NULL;
+	var $event_project = 0;
+	var $event_task = 0;
 	var $event_private = NULL;
 	var $event_type = NULL;
 	var $event_notify = null;
