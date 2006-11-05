@@ -1,6 +1,7 @@
 <?php
 global $tpl;
-if ( isset($_REQUEST['clash_action'])) {
+
+if (isset($_REQUEST['clash_action'])) {
   $do_include = false;
   switch ($_REQUEST['clash_action']) {
     case 'suggest':  clash_suggest(); break;
@@ -29,7 +30,7 @@ if ( isset($_REQUEST['clash_action'])) {
 </script>
 <?php
 
-  $titleBlock =& new CTitleBlock( ($obj->event_id ? "Edit Event" : "Add Event"), "myevo-appointments.png", $m, "$m.$a");
+  $titleBlock =& new CTitleBlock( ($obj->event_id ? 'Edit Event' : 'Add Event'), 'myevo-appointments.png', $m, "$m.$a");
   $titleBlock->show();
 
   $_SESSION['add_event_post'] = get_object_vars($obj);
@@ -37,7 +38,6 @@ if ( isset($_REQUEST['clash_action'])) {
   $_SESSION['add_event_caller'] = $last_a;
   $_SESSION['add_event_attendees'] = $_POST['event_assigned'];
   $_SESSION['add_event_mail'] = isset($_POST['mail_invited']) ? $_POST['mail_invited'] : 'off';
-
   
 	$tpl->assign('clash', $clash);
 	$tpl->assign('obj', $obj);
@@ -45,7 +45,7 @@ if ( isset($_REQUEST['clash_action'])) {
 }
 
 // Clash functions.
-/*
+/**
  * Cancel the event, simply clear the event details and return to the previous
  * page.
 */
@@ -58,12 +58,13 @@ function clash_cancel()
   $AppUI->redirect();
 }
 
-/* 
+/**
  * display a form
  */
 function clash_suggest()
 {
   global $AppUI, $dPconfig, $m, $a, $tpl;
+  
   $obj =& new CEvent;
   $obj->bind($_SESSION['add_event_post']);
 
@@ -72,20 +73,20 @@ function clash_suggest()
   $df = $AppUI->getPref('SHDATEFORMAT');
   $start_secs = $start_date->getTime();
   $end_secs = $end_date->getTime();
-  $duration = (int) (( $end_secs - $start_secs ) / 60);
+  $duration = (int) (($end_secs - $start_secs) / 60);
 
   $titleBlock =& new CTitleBlock( 'Suggest Alternative Event Time', 'myevo-appointments.png', $m, "$m.$a");
   $titleBlock->show();
-  $calurl = $dPconfig['base_url'] . '/index.php?m=calendar&a=clash&event_id=' . $obj->event_id;
+  $calurl = $dPconfig['base_url'] . '/index.php?m=calendar&amp;a=clash&amp;event_id=' . $obj->event_id;
   $times = array();
   $t = new CDate();
-  $t->setTime( 0,0,0 );
-  if (!defined('LOCALE_TIME_FORMAT')) {
+  $t->setTime(0, 0, 0);
+  if (!defined('LOCALE_TIME_FORMAT'))
     define('LOCALE_TIME_FORMAT', '%I:%M %p');
-  }
+  
   for ($m=0; $m < 60; $m++) {
-	  $times[$t->format( '%H%M%S' )] = $t->format( LOCALE_TIME_FORMAT );
-	  $t->addSeconds( 1800 );
+	  $times[$t->format('%H%M%S')] = $t->format(LOCALE_TIME_FORMAT);
+	  $t->addSeconds(1800);
   }
 
 	$tpl->assign('calurl', $calurl);
@@ -93,6 +94,7 @@ function clash_suggest()
 	$tpl->assign('end_date', $end_date );
 	$tpl->assign('start_date', $start_date );
 	$tpl->assign('times', $times );
+	
 	$tpl->displayFile('_clash_suggest', 'calendar');
 ?>
 <script language="javascript" type="text/javascript">
@@ -126,7 +128,7 @@ function set_clash_action(action) {
 <?php
 }
 
-/*
+/**
  * Build an SQL to determine an appropriate time slot that will meet
  * The requirements for all participants, including the requestor.
  */
@@ -170,6 +172,7 @@ function clash_process()
     $_SESSION['event_is_clash'] = true;
     $_GET['event_id'] = $obj->event_id;
     $do_include = $baseDir . '/modules/calendar/addedit.php';
+    
     return;
   }
 
@@ -178,12 +181,12 @@ function clash_process()
   // Working in 30 minute increments from the start time, and remembering
   // the end time stipulation, find the first hole in the times.
   // Determine the duration in hours/minutes.
-  $start_hour = (int)($_POST['start_time'] / 10000);
-  $start_minutes = (int)(($_POST['start_time'] % 10000) / 100);
-  $start_time = $start_hour * 60 + $start_minutes;
-  $end_hour = (int)($_POST['end_time'] / 10000);
-  $end_minutes = (int)(($_POST['end_time'] % 10000) / 100);
-  $end_time = ($end_hour * 60 + $end_minutes) - $_POST['duration'];
+  $start_hour 		= (int)($_POST['start_time'] / 10000);
+  $start_minutes 	= (int)(($_POST['start_time'] % 10000) / 100);
+  $start_time 		= $start_hour * 60 + $start_minutes;
+  $end_hour 			= (int)($_POST['end_time'] / 10000);
+  $end_minutes 		= (int)(($_POST['end_time'] % 10000) / 100);
+  $end_time 			= ($end_hour * 60 + $end_minutes) - $_POST['duration'];
 
   // First, build a set of "slots" that give us the duration
   // and start/end times we need
@@ -199,13 +202,13 @@ function clash_process()
     if ($first_date->isWorkingDay()) {
       $slots[$i] = array();
       for ($j = $start_time; $j <= $end_time; $j += 30) {
-	  $slot_count++;
-	  $slots[$i][] = array(
-	    'date' => $first_date->format('%Y-%m-%d'),
-	    'start_time' => $j,
-	    'end_time' => $j + $_POST['duration'],
-	    'committed' => false
-	  );
+				$slot_count++;
+				$slots[$i][] = array(
+				  'date' => $first_date->format('%Y-%m-%d'),
+				  'start_time' => $j,
+				  'end_time' => $j + $_POST['duration'],
+				  'committed' => false
+				);
       }
     } 
     $first_date->addSpan($oneday);
@@ -227,9 +230,9 @@ function clash_process()
     $end_mins = $ehour * 60 + $eminute;
     if (isset($slots[$day_offset])) {
       foreach ($slots[$day_offset] as $key => $slot) {
-	if ($start_mins <= $slot['end_time'] && $end_mins >= $slot['start_time']) {
-	  $slots[$day_offset][$key]['committed'] = true;
-	}
+				if ($start_mins <= $slot['end_time'] && $end_mins >= $slot['start_time']) {
+				  $slots[$day_offset][$key]['committed'] = true;
+				}
       }
     } 
   }
@@ -238,18 +241,18 @@ function clash_process()
   foreach ($slots as $day_offset => $day_slot) {
     foreach ($day_slot as $slot) {
       if (! $slot['committed']) {
-	$hour = (int)($slot['start_time'] / 60);
-	$min = $slot['start_time'] % 60;
-	$ehour = (int)($slot['end_time'] / 60);
-	$emin = $slot['end_time'] % 60;
-	$obj->event_start_date = $slot['date'] . ' ' . sprintf('%02d:%02d:00', $hour, $min);
-	$obj->event_end_date = $slot['date'] . ' ' . sprintf('%02d:%02d:00', $ehour, $emin);
-	$_SESSION['add_event_post'] = get_object_vars($obj);
-	$AppUI->setMsg('First available time slot', UI_MSG_OK);
-	$_SESSION['event_is_clash'] = true;
-	$_GET['event_id'] = $obj->event_id;
-	$do_include = "$baseDir/modules/calendar/addedit.php";
-	return;
+				$hour = (int)($slot['start_time'] / 60);
+				$min = $slot['start_time'] % 60;
+				$ehour = (int)($slot['end_time'] / 60);
+				$emin = $slot['end_time'] % 60;
+				$obj->event_start_date = $slot['date'] . ' ' . sprintf('%02d:%02d:00', $hour, $min);
+				$obj->event_end_date = $slot['date'] . ' ' . sprintf('%02d:%02d:00', $ehour, $emin);
+				$_SESSION['add_event_post'] = get_object_vars($obj);
+				$AppUI->setMsg('First available time slot', UI_MSG_OK);
+				$_SESSION['event_is_clash'] = true;
+				$_GET['event_id'] = $obj->event_id;
+				$do_include = $baseDir.'/modules/calendar/addedit.php';
+				return;
       }
     }
   }
@@ -259,7 +262,7 @@ function clash_process()
   $AppUI->redirect();
 }
 
-/*
+/**
  * Cancel the event, but notify attendees of a possible meeting and request
  * they might like to contact author regarding the date.
  *
@@ -267,6 +270,7 @@ function clash_process()
 function clash_mail()
 {
   global $AppUI;
+  
   $obj =& new CEvent;
   if (! $obj->bind ($_SESSION['add_event_post'])) {
     $AppUI->setMsg($obj->getError(), UI_MSG_ERROR);
@@ -279,7 +283,7 @@ function clash_mail()
 }
 
 
-/*
+/**
  * Even though we end up with a clash, accept the detail.
  */
 function clash_accept()

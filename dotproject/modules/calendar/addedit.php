@@ -1,29 +1,27 @@
 <?php /* CALENDAR $Id$ */
-$event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
-$is_clash = isset($_SESSION['event_is_clash']) ? $_SESSION['event_is_clash'] : false;
+$event_id = intval(dPgetParam($_GET, 'event_id', 0));
+$is_clash = dPgetParam($_SESSION, 'event_is_clash', false);
 
 // check permissions
-if (!($canAuthor && $event_id == 0) && !$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
-}
+if (!($canAuthor && $event_id == 0) && !$canEdit)
+	$AppUI->redirect('m=public&a=access_denied');
 
 // get the passed timestamp (today if none)
-$date = dPgetParam( $_GET, 'date', null );
+$date = dPgetParam($_GET, 'date', null);
 
 // load the record data
 $obj = new CEvent();
 
-if ($is_clash) {
+if ($is_clash)
   $obj->bind($_SESSION['add_event_post']);
-}
-else if ( !$obj->load( $event_id ) && $event_id ) {
-	$AppUI->setMsg( 'Event' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+else if (!$obj->load( $event_id ) && $event_id) {
+	$AppUI->setMsg('Event');
+	$AppUI->setMsg('invalidID', UI_MSG_ERROR, true);
 	$AppUI->redirect();
 }
 
 // load the event types
-$types = dPgetSysVal( 'EventType' );
+$types = dPgetSysVal('EventType');
 
 // Load the users
 $perms =& $AppUI->acl();
@@ -40,12 +38,10 @@ $q->addTable('contacts');
 //$q->addWhere('contact_id in (' . implode(',', $contact->getAllowedRecords($AppUI->user_id)) . ')');
 $contacts = $q->loadHashList();
 
-if ( $event_id == 0 ) {
+if ( $event_id == 0 )
 	$assigned_contacts = array();
-} else {
+else
 	$assigned_contacts = $obj->getAssignedContacts();
-}
-
 
 // Load the assignees
 $assigned = array();
@@ -69,16 +65,15 @@ if ($is_clash) {
 	unset($_SESSION['add_event_clash']);
 	unset($_SESSION['event_is_clash']);
 }
-if ($_GET['event_project']) {
+if ($_GET['event_project'])
 	$obj->event_project = $_GET['event_project'];
-}
 
 // setup the title block
 $titleBlock = new CTitleBlock( ($event_id ? 'Edit Event' : 'Add Event') , 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb( '?m=calendar', 'month view' );
-if ($event_id) {
+if ($event_id)
 	$titleBlock->addCrumb( '?m=calendar&amp;a=view&amp;event_id='.$event_id, 'view this event' );
-}
+
 $titleBlock->show();
 
 // format dates
@@ -100,8 +95,8 @@ $q->addOrder('project_name');
 
 $perso_projects = '(' . $AppUI->_('Personal Calendar', UI_OUTPUT_RAW) . ')';
 $all_projects = '(' . $AppUI->_('Unspecified Calendar', UI_OUTPUT_RAW) . ')';
-$projects = arrayMerge(  array( 0 => $all_projects ), $q->loadHashList() );
-$projects = arrayMerge( array( -1 => $perso_projects ), $projects );
+$projects = arrayMerge(array( 0 => $all_projects ), $q->loadHashList());
+$projects = arrayMerge(array( -1 => $perso_projects ), $projects);
 
 $tasks = array('' => '&nbsp;');
 if ($obj->event_project)
@@ -128,7 +123,6 @@ if ($event_id || $is_clash) {
 $inc = intval(dPgetConfig('cal_day_increment')) ? intval(dPgetConfig('cal_day_increment')) : 30;
 if (!$event_id && !$is_clash)
 {
-
 	$seldate = new CDate( $date );
 	// If date is today, set start time to now + inc
 	if ($date == date('Ymd'))
@@ -172,15 +166,15 @@ $recurs =  array (
 );
 
 $remind = array (
-	"900" => '15 mins',
-	"1800" => '30 mins',
-	"3600" => '1 hour',
-	"7200" => '2 hours',
-	"14400" => '4 hours',
-	"28800" => '8 hours',
-	"56600" => '16 hours',
-	"86400" => '1 day',
-	"172800" => '2 days'
+	'900' 	=> '15 mins',
+	'1800' 	=> '30 mins',
+	'3600' 	=> '1 hour',
+	'7200' 	=> '2 hours',
+	'14400' => '4 hours',
+	'28800' => '8 hours',
+	'56600' => '16 hours',
+	'86400' => '1 day',
+	'172800' => '2 days'
 );
 
 // build array of times in 30 minute increments
@@ -191,18 +185,16 @@ if (!defined('LOCALE_TIME_FORMAT'))
   define('LOCALE_TIME_FORMAT', '%I:%M %p');
 //$m clashes with global $m (module)
 for ($minutes=0; $minutes < ((24 * 60) / $inc); $minutes++) {
-	$times[$t->format( "%H%M%S" )] = $t->format( LOCALE_TIME_FORMAT );
+	$times[$t->format( '%H%M%S' )] = $t->format(LOCALE_TIME_FORMAT);
 	$t->addSeconds( $inc * 60 );
 }
 
 
-require_once $AppUI->getSystemClass("CustomFields");
-$custom_fields = New CustomFields( 'calendar', 'addedit', $obj->event_id, "edit" );
+require_once $AppUI->getSystemClass('CustomFields');
+$custom_fields = new CustomFields('calendar', 'addedit', $obj->event_id, 'edit');
 $tpl->assign('custom_fields', $custom_fields->getHTML());
 
-
 $tpl->assign('event_id', $event_id);
-
 $tpl->assign('remind', $remind);
 $tpl->assign('recurs', $recurs);
 $tpl->assign('times', $times);
@@ -228,12 +220,12 @@ function submitIt(){
 		return;
 	}
 	if (form.event_start_date.value.length < 1){
-		alert('<?php echo $AppUI->_("Please enter a start date", UI_OUTPUT_JS); ?>');
+		alert('<?php echo $AppUI->_('Please enter a start date', UI_OUTPUT_JS); ?>');
 		form.event_start_date.focus();
 		return;
 	}
 	if (form.event_end_date.value.length < 1){
-		alert('<?php echo $AppUI->_("Please enter an end date", UI_OUTPUT_JS); ?>');
+		alert('<?php echo $AppUI->_('Please enter an end date', UI_OUTPUT_JS); ?>');
 		form.event_end_date.focus();
 		return;
 	}
@@ -249,7 +241,6 @@ function submitIt(){
 		return;
 	}
 
-		
   if ( (!(form.event_times_recuring.value>0))
     && (form.event_recurs[0].selected!=true) ) {
     alert("<?php echo $AppUI->_('Please enter number of recurrences', UI_OUTPUT_JS); ?>");
@@ -261,9 +252,9 @@ function submitIt(){
 	var len = form.assigned.length;
 	form.event_assigned.value = "";
 	for (var i = 0; i < len; i++) {
-        if (i){
+		if (i)
 			form.event_assigned.value += ",";
-        }
+
 		form.event_assigned.value += form.assigned.options[i].value;
 	}
 	
@@ -283,8 +274,8 @@ var calendarField = '';
 
 function popCalendar( field ){
 	calendarField = field;
-	idate = eval( 'document.editFrm.event_' + field + '.value' );
-	window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scrollbars=no' );
+	idate = eval('document.editFrm.event_' + field + '.value');
+	window.open('index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'top=250,left=250,width=250, height=220, scrollbars=no');
 }
 
 /**
@@ -312,19 +303,19 @@ function addUser() {
 	var au = form.assigned.length -1;
 	//gets value of percentage assignment of selected resource
 
-	var users = "x";
+	var users = 'x';
 
 	//build array of assiged users
 	for (au; au > -1; au--) {
-		users = users + "," + form.assigned.options[au].value + ","
+		users = users + ',' + form.assigned.options[au].value + ',';
 	}
 
 	//Pull selected resources and add them to list
 	for (fl; fl > -1; fl--) {
 		if (form.resources.options[fl].selected && users.indexOf( "," + form.resources.options[fl].value + "," ) == -1) {
-			t = form.assigned.length
+			t = form.assigned.length;
 			opt = new Option( form.resources.options[fl].text, form.resources.options[fl].value);
-			form.assigned.options[t] = opt
+			form.assigned.options[t] = opt;
 		}
 	}
 
@@ -359,9 +350,9 @@ function addContact() {
 	//Pull selected resources and add them to list
 	for (fl; fl > -1; fl--) {
 		if (form.contacts.options[fl].selected && contacts.indexOf( "," + form.contacts.options[fl].value + "," ) == -1) {
-			t = form.assigned_contacts.length
+			t = form.assigned_contacts.length;
 			opt = new Option( form.contacts.options[fl].text, form.contacts.options[fl].value);
-			form.assigned_contacts.options[t] = opt
+			form.assigned_contacts.options[t] = opt;
 		}
 	}
 
