@@ -975,7 +975,10 @@ class DBQuery {
 
 	function quote($string)
 	{
-		return $this->_db->qstr($string, get_magic_quotes_runtime());
+		if (is_int($string))
+			return $string;
+		else
+			return $this->_db->qstr($string, get_magic_quotes_runtime());
 	}
 }
 //1}}}
