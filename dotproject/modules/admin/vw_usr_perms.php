@@ -10,13 +10,12 @@ $q->addQuery('mod_id, mod_name, permissions_item_table');
 $q->addWhere('permissions_item_table is not null');
 $q->addWhere("permissions_item_table <> ''");
 $pgo_list = $q->loadHashList('mod_name');
-$q->clear();
 
 // Build an intersection array for the modules and their listing
 $modules = array();
 $offset = 0;
 foreach ($module_list as $module) {
-  $modules[ $module['type'] . "," . $module['id']] = $module['name'];
+  $modules[ $module['type'] . ',' . $module['id']] = $module['name'];
   if ($module['type'] = 'mod' && isset($pgo_list[$module['name']]))
     $pgos[$offset] = $pgo_list[$module['name']]['permissions_item_table'];
   $offset++;
@@ -98,7 +97,7 @@ function editPerm( id, gon, it, vl, nm ) {
 	vl =permission_value
 	nm = text representation of permission_value
 */
-//alert( 'id='+id+'\ngon='+gon+'\nit='+it+'\nvalue='+vl+'\nnm='+nm);
+
 	var f = document.frmPerms;
 
 	f.sqlaction2.value = "<?php echo $AppUI->_('edit'); ?>";

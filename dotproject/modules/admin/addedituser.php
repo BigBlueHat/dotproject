@@ -1,7 +1,7 @@
 <?php /* ADMIN $Id$ */
 //add or edit a system user
 
-$user_id = isset($_GET['user_id']) ? $_GET['user_id'] : 0;
+$user_id = dPgetParam($_GET, 'user_id', 0);
 
 if ($user_id == 0)
 	$canEdit = $canAuthor;
@@ -13,11 +13,11 @@ if ($canEdit)
 if (!$canEdit && $user_id != $AppUI->user_id) 
 	$AppUI->redirect('m=public&a=access_denied');
 
-
 $q  = new DBQuery;
-$q->addTable('users', 'u');
 $q->addQuery('u.*');
-$q->addQuery('con.*, company_id, company_name, dept_name');
+$q->addQuery('con.*');
+$q->addQuery('company_id, company_name, dept_name');
+$q->addTable('users', 'u');
 $q->addJoin('contacts', 'con', 'user_contact = contact_id');
 $q->addJoin('companies', 'com', 'contact_company = company_id');
 $q->addJoin('departments', 'dep', 'dept_id = contact_department');
@@ -25,8 +25,8 @@ $q->addWhere('u.user_id = '.$user_id);
 $sql = $q->prepare();
 $q->clear();
 
-if (!db_loadHash( $sql, $user ) && $user_id > 0) {
-	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
+if (!db_loadHash($sql, $user) && $user_id > 0) {
+	$titleBlock = new CTitleBlock('Invalid User ID', 'helix-setup-user.png', $m, "$m.$a");
 	$titleBlock->addCrumb('?m=admin', 'users list');
 	$titleBlock->show();
 } else {
@@ -40,7 +40,7 @@ if (!db_loadHash( $sql, $user ) && $user_id > 0) {
 	$companies = arrayMerge( array( 0 => '&nbsp;' ), $q->loadHashList() );
 
 // setup the title block
-	$ttl = $user_id > 0 ? "Edit User" : "Add User";
+	$ttl = $user_id > 0 ? 'Edit User' : 'Add User';
 	$titleBlock = new CTitleBlock( $ttl, 'helix-setup-user.png', $m, "$m.$a" );
 	if ($perms->checkModule('admin', 'view') && $perms->checkModule('users', 'view'))
 		$titleBlock->addCrumb('?m=admin', 'users list');
@@ -145,6 +145,5 @@ function setDept( key, val ) {
 }
 -->
 </script>
-
 
 <?php } ?>

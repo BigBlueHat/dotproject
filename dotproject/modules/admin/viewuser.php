@@ -1,7 +1,7 @@
 <?php /* ADMIN $Id$ */
 global $addPwT, $company_id, $dept_ids, $department, $min_view, $m, $a;
 
-$user_id = isset( $_GET['user_id'] ) ? $_GET['user_id'] : 0;
+$user_id = dPgetParam($_GET, 'user_id', 0);
 
 if ($user_id != $AppUI->user_id 
 && ( ! $perms->checkModuleItem('admin', 'view', $user_id) 
@@ -10,45 +10,45 @@ if ($user_id != $AppUI->user_id
 
 $AppUI->savePlace();
 
-$company_id = $AppUI->getState( 'UsrProjIdxCompany' ) !== NULL ? $AppUI->getState( 'UsrProjIdxCompany' ) : $AppUI->user_company;
+$company_id = $AppUI->getState('UsrProjIdxCompany') !== NULL ? $AppUI->getState( 'UsrProjIdxCompany' ) : $AppUI->user_company;
 
 $company_prefix = 'company_';
 
 if (isset( $_POST['department'] )) {
-	$AppUI->setState( 'UsrProjIdxDepartment', $_POST['department'] );
+	$AppUI->setState('UsrProjIdxDepartment', $_POST['department']);
 	
 	//if department is set, ignore the company_id field
 	unset($company_id);
 }
-$department = $AppUI->getState( 'UsrProjIdxDepartment' ) !== NULL ? $AppUI->getState( 'UsrProjIdxDepartment' ) : $company_prefix.$AppUI->user_company;
+$department = $AppUI->getState('UsrProjIdxDepartment') !== NULL ? $AppUI->getState('UsrProjIdxDepartment') : $company_prefix.$AppUI->user_company;
 
 //if $department contains the $company_prefix string that it's requesting a company and not a department.  So, clear the 
 // $department variable, and populate the $company_id variable.
 if(!(strpos($department, $company_prefix)===false)){
 	$company_id = substr($department,strlen($company_prefix));
-	$AppUI->setState( 'UsrProjIdxCompany', $company_id );
+	$AppUI->setState('UsrProjIdxCompany', $company_id);
 	unset($department);
 }
 
-if (isset( $_GET['tab'] )) {
+if (isset($_GET['tab']))
 	$AppUI->setState( 'UserVwTab', $_GET['tab'] );
-}
-$tab = $AppUI->getState( 'UserVwTab' ) !== NULL ? $AppUI->getState( 'UserVwTab' ) : 0;
+	
+$tab = $AppUI->getState('UserVwTab') !== NULL ? $AppUI->getState('UserVwTab') : 0;
 
 
 // pull data
 $q  = new DBQuery;
-$q->addTable('users', 'u');
 $q->addQuery('u.*');
-$q->addQuery('con.*, company_id, company_name, dept_name, dept_id');
+$q->addQuery('con.*, company_id, company_name');
+$q->addQuery('dept_name, dept_id');
+$q->addTable('users', 'u');
 $q->addJoin('contacts', 'con', 'user_contact = contact_id');
 $q->addJoin('companies', 'com', 'contact_company = company_id');
 $q->addJoin('departments', 'dep', 'dept_id = contact_department');
 $q->addWhere('u.user_id = '.$user_id);
-$sql = $q->prepare();
-$q->clear();
+list($user) = $q->loadList();
 
-if (!db_loadHash( $sql, $user )) {
+if (!$user) {
 	$titleBlock = new CTitleBlock( 'Invalid User ID', 'helix-setup-user.png', $m, "$m.$a" );
 	$titleBlock->addCrumb('?m=admin', 'users list');
 	$titleBlock->show();

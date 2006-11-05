@@ -2,9 +2,14 @@
 GLOBAL $dPconfig, $canDelete, $canEdit, $stub, $where, $orderby, $tpl;
 
 $q  = new DBQuery;
+$q->addQuery('DISTINCT(user_id)');
+$q->addQuery('user_username');
+$q->addQuery('permission_user');
+$q->addQuery('contact_last_name, contact_first_name');
+$q->addQuery('contact_email');
+$q->addQuery('contact_company');
+$q->addQuery('company_name');
 $q->addTable('users', 'u');
-$q->addQuery('DISTINCT(user_id), user_username, contact_last_name, contact_first_name,
-	permission_user, contact_email, company_name, contact_company');
 $q->addJoin('contacts', 'con', 'user_contact = contact_id');
 $q->addJoin('companies', 'com', 'contact_company = company_id');
 $q->addJoin('permissions', 'per', 'user_id = permission_user');
@@ -35,7 +40,7 @@ foreach ($users as $k => $row)
 		$q  = new DBQuery;
 		$q->addTable('user_access_log', 'ual');
 		$q->addQuery("user_access_log_id, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_in ) ) / 3600 as 		hours, ( unix_timestamp( now( ) ) - unix_timestamp( date_time_last_action ) ) / 3600 as 		idle, if(isnull(date_time_out) or date_time_out ='0000-00-00 00:00:00','1','0') as online");
-		$q->addWhere("user_id ='". $row["user_id"]."'");
+		$q->addWhere('user_id =' . $row['user_id']);
 		$q->addOrder('user_access_log_id DESC');
 		$q->setLimit(1);
 		list ($user_log) = $q->loadList();
@@ -44,15 +49,16 @@ foreach ($users as $k => $row)
 			$users[$k]['online'] = -1;
 		else
 		{
-			$users[$k]['online'] = $user_log['online'];
-			$users[$k]['hours'] = $user_log['hours'];
-			$users[$k]['idle'] = $user_log['idle'];
+			$users[$k]['online'] 	= $user_log['online'];
+			$users[$k]['hours'] 	= $user_log['hours'];
+			$users[$k]['idle'] 		= $user_log['idle'];
 		}
 	}
 }
 
-$tpl->assign('tab', $tab);
+$tpl->assign('tab', 			$tab);
 $tpl->assign('canDelete', $canDelete);
-$tpl->assign('canEdit', $canEdit);
+$tpl->assign('canEdit', 	$canEdit);
+
 $tpl->displayList('admin', $users);
 ?>

@@ -11,23 +11,38 @@ class CUser extends CDpObject {
 	var $user_contact = NULL;
 	var $user_signature = NULL;
 
+	/**
+	 * Default constructor.
+	 * Sets up table name, key fields and search fields.
+	 */
 	function CUser() {
-		$this->CDpObject( 'users', 'user_id' );
+		$this->CDpObject('users', 'user_id');
 		$this->_tbl_name = 'user_username';
 		$this->search_fields = array ('user_username', 'user_signature');
 	}
 
+	/**
+	 * Prepare the object for saving.
+	 * 
+	 * @return mixed an error message or null if the checks were successful.
+	 */
 	function check() {
 		if ($this->user_id === NULL) {
 			return 'user id is NULL';
 		}
 		if ($this->user_password !== NULL) {
-			$this->user_password = db_escape( trim( $this->user_password ) );
+			$this->user_password = db_escape(trim($this->user_password));
 		}
-		// TODO MORE
+		// TODO: more
+		
 		return NULL; // object is ok
 	}
 
+	/**
+	 * Save the object
+	 * 
+	 * @return mixed an error message or null if the checks were successful.
+	 */
 	function store() {
 		$msg = $this->check();
 		if( $msg ) {
@@ -85,6 +100,13 @@ class CUser extends CDpObject {
 		}
 	}
 
+	/**
+	 * Delete the object
+	 * 
+	 * @param integer $oid 	optional parameter with the object id to delete. 
+	 * 											It uses the one from the object if it's missing.
+	 * @return mixed null if the operation was successful or an error message otherwise.
+	 */
 	function delete( $oid = NULL ) {
 		$id = $this->user_id;
 		$result = parent::delete($oid);
@@ -97,6 +119,7 @@ class CUser extends CDpObject {
 			$q->exec();
 			$q->clear();
 		}
+		
 		return $result;
  	}
 }

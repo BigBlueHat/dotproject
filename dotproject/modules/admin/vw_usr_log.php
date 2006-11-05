@@ -27,32 +27,36 @@ function checkDate(){
 </script>
 
 <?php
-$date_reg = date("Y-m-d");
-$start_date = intval( $date_reg) ? new CDate( dPgetParam($_REQUEST, "log_start_date", date("Y-m-d") ) ) : null;
-$end_date = intval( $date_reg) ? new CDate( dPgetParam($_REQUEST, "log_end_date", date("Y-m-d") ) ) : null;
+$date_reg = date('Y-m-d');
+$start_date = intval($date_reg) ? new CDate(dPgetParam($_REQUEST, 'log_start_date', date('Y-m-d'))) : null;
+$end_date = intval($date_reg) ? new CDate(dPgetParam($_REQUEST, 'log_end_date', date('Y-m-d'))) : null;
 
 //$df = $AppUI->getPref('SHDATEFORMAT');
 global $currentTabId, $tpl;
-if ($a = dPgetParam($_REQUEST, "a", "") == ""){
-    $a = "&amp;tab={$currentTabId}&amp;showdetails=1";
+if ($a = dPgetParam($_REQUEST, 'a', '') == ''){
+    $a = '&amp;tab='.$currentTabId.'&amp;showdetails=1';
 } else {
-    $user_id = dPgetParam($_REQUEST, "user_id", 0);
-    $a = "&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$currentTabId}&amp;showdetails=1";
+    $user_id = dPgetParam($_REQUEST, 'user_id', 0);
+    $a = '&amp;a=viewuser&amp;user_id='.$user_id.'&amp;tab='.$currentTabId.'&amp;showdetails=1';
 }
 
-if (dPgetParam($_REQUEST, "showdetails", 0) == 1 ) 
+if (dPgetParam($_REQUEST, 'showdetails', 0) == 1) 
 {
-  $start_date = date("Y-m-d", strtotime(dPgetParam($_REQUEST, "log_start_date", date("Y-m-d") )));
-  $end_date   = date("Y-m-d 23:59:59", strtotime(dPgetParam($_REQUEST, "log_end_date", date("Y-m-d") )));
+  $start_date = date('Y-m-d', 					strtotime(dPgetParam($_REQUEST, 'log_start_date', date('Y-m-d'))));
+  $end_date   = date('Y-m-d 23:59:59', 	strtotime(dPgetParam($_REQUEST, 'log_end_date', date('Y-m-d'))));
       
 	$q  = new DBQuery;
+	$q->addQuery('ual.*'); 	// Access logs
+	$q->addQuery('u.*'); 		// Users
+	$q->addQuery('c.*'); 		// Contacts
 	$q->addTable('user_access_log', 'ual');
 	$q->addTable('users', 'u');
 	$q->addTable('contacts', 'c');
-	$q->addQuery('ual.*, u.*, c.*');
 	$q->addWhere('ual.user_id = u.user_id');
 	$q->addWhere('user_contact = contact_id ');
-	if($user_id != 0) { $q->addWhere("ual.user_id='$user_id'"); }
+	if($user_id != 0) 
+		$q->addWhere('ual.user_id=' . $user_id);
+	
 	$q->addWhere("ual.date_time_in >='$start_date'");
 	$q->addWhere("ual.date_time_out <='$end_date'");
 	$q->addGroup('ual.date_time_last_action DESC');
@@ -62,7 +66,7 @@ if (dPgetParam($_REQUEST, "showdetails", 0) == 1 )
   $tpl->assign('end_date', $end_date);
 	$tpl->assign('logs', $logs);
 }
-
 $tpl->assign('get', $a);
+
 $tpl->displayFile('usr_log');
 ?>

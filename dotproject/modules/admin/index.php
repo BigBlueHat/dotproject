@@ -8,23 +8,23 @@ if (! $perms->checkModule('users', 'view'))
 $AppUI->savePlace();
 
 if (isset( $_GET['tab'] )) {
-    $AppUI->setState( 'UserIdxTab', $_GET['tab'] );
+    $AppUI->setState('UserIdxTab', $_GET['tab']);
 }
-$tab = $AppUI->getState( 'UserIdxTab' ) !== NULL ? $AppUI->getState( 'UserIdxTab' ) : 0;
+$tab = $AppUI->getState('UserIdxTab') !== NULL ? $AppUI->getState('UserIdxTab') : 0;
 
 if (isset( $_GET['stub'] )) {
-    $AppUI->setState( 'UserIdxStub', $_GET['stub'] );
-    $AppUI->setState( 'UserIdxWhere', '' );
-} else if (isset( $_POST['where'] )) { 
-    $AppUI->setState( 'UserIdxWhere', $_POST['where'] );
-    $AppUI->setState( 'UserIdxStub', '' );
+    $AppUI->setState('UserIdxStub', $_GET['stub']);
+    $AppUI->setState('UserIdxWhere', '');
+} else if (isset($_POST['where'])) { 
+    $AppUI->setState('UserIdxWhere', $_POST['where']);
+    $AppUI->setState('UserIdxStub', '');
 }
-$stub = $AppUI->getState( 'UserIdxStub' );
-$where = $AppUI->getState( 'UserIdxWhere' );
+$stub = $AppUI->getState('UserIdxStub');
+$where = $AppUI->getState('UserIdxWhere');
 
-if (isset( $_GET['orderby'] )) {
-    $AppUI->setState( 'UserIdxOrderby', $_GET['orderby'] );
-}
+if (isset($_GET['orderby']))
+	$AppUI->setState('UserIdxOrderby', $_GET['orderby']);
+    
 $orderby = $AppUI->getState( 'UserIdxOrderby' ) ? $AppUI->getState( 'UserIdxOrderby' ) : 'user_username';
 
 // Pull First Letters
@@ -34,7 +34,7 @@ $q->addTable('users','u');
 $q->addQuery('DISTINCT UPPER(SUBSTRING(user_username, 1, 1)) AS L');
 $arr = $q->loadList();
 foreach( $arr as $L ) {
-    $let .= $L['L'];
+	$let .= $L['L'];
 }
 
 $q  = new DBQuery;
@@ -43,42 +43,49 @@ $q->addQuery('DISTINCT UPPER(SUBSTRING(contact_first_name, 1, 1)) AS L');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $arr = $q->loadList();
 foreach( $arr as $L ) {
-    if ($L['L'])
-	$let .= strpos($let, $L['L']) ? '' : $L['L'];
+	if ($L['L'])
+		$let .= strpos($let, $L['L']) ? '' : $L['L'];
 }
 
 $q  = new DBQuery;
 $q->addTable('users','u');
-$q->addQuery('DISTINCT UPPER(SUBSTRING(contact_last_name, 1, 1)) AS L');
+$q->addQuery('DISTINCT UPPER(SUBSTRING(contact_last_name, 1, 1)) AS letter');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
-$arr = $q->loadList();
-foreach( $arr as $L ) {
-    if ($L['L'])
-	$let .= strpos($let, $L['L']) ? '' : $L['L'];
+$letters = $q->loadColumn();
+foreach( $letters as $letter ) {
+    if ($letter)
+	$let .= strpos($let, $letter) ? '' : $letter;
 }
 
-$a2z = "\n<table cellpadding=\"2\" cellspacing=\"1\" border=\"0\">";
-$a2z .= "\n<tr>";
-$a2z .= '<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>';
-$a2z .= '<td><a href="./index.php?m=admin&amp;stub=0">' . $AppUI->_('All') . '</a></td>';
+$a2z = '
+<table cellpadding="2" cellspacing="1" border="0">
+<tr>
+	<td width="100%" align="right">' . $AppUI->_('Show'). ': </td>
+	<td><a href="./index.php?m=admin&amp;stub=0">' . $AppUI->_('All') . '</a></td>';
+
+// From A to Z
 for ($c=65; $c < 91; $c++) {
 	$cu = chr( $c );
-	$cell = strpos($let, "$cu") > 0 ?
-		"<a href=\"?m=admin&amp;stub=$cu\">$cu</a>" :
-		"<font color=\"#999999\">$cu</font>";
-	$a2z .= "\n\t<td>$cell</td>";
+	if (strpos($let, $cu) > 0)
+		$cell = '<a href="?m=admin&amp;stub='.$cu.'">'.$cu.'</a>';
+	else
+		$cell = '<font color="#999999">'.$cu.'</font>';
+	$a2z .= '
+	<td>'.$cell.'</td>';
 }
-$a2z .= "\n</tr>\n</table>";
+$a2z .= '
+</tr>
+</table>';
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'User Management', 'helix-setup-users.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock('User Management', 'helix-setup-users.png', $m, "$m.$a");
 
 $where = dPformSafe( $where, true );
 
 $titleBlock->addCell('
 <form action="index.php?m=admin" method="post">
 	<input type="text" name="where" class="text" size="10" value="'.$where.'" />
-	<input type="submit" value="'.$AppUI->_( 'search' ).'" class="button" />
+	<input type="submit" value="'.$AppUI->_('search').'" class="button" />
 </form>', '', '', '');
 
 $titleBlock->addCell( $a2z );
@@ -108,14 +115,14 @@ $extra = '
 </td>';
 
 // tabbed information boxes
-$tabBox = new CTabBox( '?m=admin', $dPconfig['root_dir'] . '/modules/admin/', $tab );
-$tabBox->add( 'vw_usr', 'Active Users' );
-$tabBox->add( 'vw_usr', 'Inactive Users' );
-$tabBox->add( 'vw_usr_log', 'User Log' );
+$tabBox = new CTabBox('?m=admin', $dPconfig['root_dir'] . '/modules/admin/', $tab);
+$tabBox->add('vw_usr', 'Active Users');
+$tabBox->add('vw_usr', 'Inactive Users');
+$tabBox->add('vw_usr_log', 'User Log');
 if ($canEdit && $canDelete) {
 	$tabBox->add('vw_usr_sessions', 'Active Sessions');
 }
-$tabBox->show( $extra );
+$tabBox->show($extra);
 
 ?>
 
