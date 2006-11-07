@@ -7,8 +7,9 @@ $preserve = $dPconfig['files_ci_preserve_attr'];
 // check permissions for this record
 $perms =& $AppUI->acl();
 $canEdit = $perms->checkModuleItem( $m, 'edit', $file_id );
-if (!$canEdit)
+if (!$canEdit) {
 	$AppUI->redirect('m=public&a=access_denied');
+}
 
 $canAdmin = $perms->checkModule('system', 'edit');
 
