@@ -77,7 +77,7 @@ function showRow($id=0, $key=0, $title='', $value='') {
 		$s .= '
 	<td width="12" valign="top">';
 		if ($canEdit) {
-			$s .= '<a href="?m=system&amp;u=syskeys&amp;sysval_id='.$id.'" title="'.$AppUI->_('edit').'">'
+			$s .= '<a href="?m=system&amp;u=syskeys&amp;sysval_id='.$id.'" title="'.$AppUI->_('save').'">'
 				. dPshowImage( './images/icons/stock_edit-16.png', 16, 16, '' )
 				. '</a>';
 			$s .= '</td>'.$CR;
