@@ -209,6 +209,9 @@ class CTemplate extends Smarty
 		$style = $uistyle;
 		if (is_file($baseDir . "/style/$style/$module$file.html"))
 			return "$style/$module$file.html";
+		// Allow modules to provide their own templates, if one doesn't exist in the current theme.
+		elseif (is_file($baseDir . '/modules/'.$module.'style/'.$file.'.html'))
+			return '../modules/'.$module.'style/'.$file.'.html';
 		else // default fallback
 			return "_smarty/$module$file.html";
 	}
