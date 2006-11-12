@@ -412,9 +412,10 @@ class CDpObject {
 		$deny =& $perms->getDeniedItems($this->_tbl, $uid );
 		$allow =& $perms->getAllowedItems($this->_tbl, $uid);
 		// Make sure that we add the table otherwise dependencies break
+    if (! $key) {
+      $key = substr($this->_tbl, 0, 2);
+    }
 		if (isset($index)) {
-			if (! $key)
-				$key = substr($this->_tbl, 0, 2);
 			$query->leftJoin($this->_tbl, $key, "$key.$this->_tbl_key = $index");
 		}
 		if (! $perms->checkModule($this->_tbl, "view", $uid )) {
@@ -430,10 +431,10 @@ class CDpObject {
 		}
 
 		if (count($allow)) {
-		  $query->addWhere("$this->_tbl_key IN (" . implode(',', $allow) . ")");
+		  $query->addWhere("$key.$this->_tbl_key IN (" . implode(',', $allow) . ")");
 		}
 		if (count($deny)) {
-		  $query->addWhere("$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
+		  $query->addWhere("$key.$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
 		}
 	}
 	

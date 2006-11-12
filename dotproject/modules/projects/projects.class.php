@@ -596,13 +596,13 @@ function projects_list_data($user_id = false) {
 		$q->addJoin('user_tasks', 'ut', 'ut.task_id = tasks.task_id');
 		$q->addWhere('ut.user_id = '.$user_id);
 	}
-    $q->addWhere("tasks.task_id = tasks.task_parent");
+  $q->addWhere("tasks.task_id = tasks.task_parent");
 	$q->addGroup('task_project');
 	$tasks_sum = $q->exec();
 	$q->clear();
     
     // Task total table
-    $q->createTemp('tasks_total');
+  $q->createTemp('tasks_total');
 	$q->addTable('tasks');
 	$q->addQuery("task_project, COUNT(distinct tasks.task_id) AS total_tasks");
 	if ($user_id) {
@@ -696,7 +696,7 @@ function projects_list_data($user_id = false) {
 	$q->addQuery('tsy.my_tasks');
 	$q->addQuery('ts.project_percent_complete');
 	$q->addQuery('contact_first_name, contact_last_name');
-	$q->addJoin('companies', 'com', 'projects.project_company = company_id');
+	$q->addJoin('companies', 'co', 'projects.project_company = company_id');
 	$q->addJoin('users', 'u', 'projects.project_owner = u.user_id');
 	$q->addJoin('contacts', 'c', 'user_contact = contact_id');
 	$q->addJoin('tasks_critical', 'tc', 'projects.project_id = tc.task_project');
@@ -711,10 +711,6 @@ function projects_list_data($user_id = false) {
 		$q->addJoin('project_departments', 'pd', 'pd.project_id = projects.project_id');
 		$q->addWhere("pd.department_id in ( ".implode(',',$dept_ids)." )");
 	}
-// Handled through the generic filters
-//	if (!isset($department) && $company_id) {
-//		$q->addWhere("projects.project_company = '$company_id'");
-//	}
 	if ($search_string != "") {
 		$q->addWhere("project_name LIKE '%$search_string%'");
     }
@@ -737,10 +733,6 @@ function projects_list_data($user_id = false) {
 	    
 	$q->addGroup('projects.project_id');
 	$q->addOrder("$orderby $orderdir");
-// if filtering is applied here, number of records is unknown
-// $page = dPgetParam($_GET, 'page', 1);
-// $pagesize = dPgetConfig('page_size', 25);
-// $q->setPageLimit($page, $pagesize);
 	$obj->setAllowedSQL($AppUI->user_id, $q);
 	$projects = $q->loadList();
 
@@ -749,9 +741,9 @@ function projects_list_data($user_id = false) {
 
 	//get list of all departments, filtered by the list of permitted companies.
 	$q->clear();
-	$q->addTable('companies');
+	$q->addTable('companies', 'co');
 	$q->addQuery('company_id, company_name, dep.*');
-	$q->addJoin('departments', 'dep', 'companies.company_id = dep.dept_company');
+	$q->addJoin('departments', 'dep', 'co.company_id = dep.dept_company');
 	$q->addOrder('company_name,dept_parent,dept_name');
 	$obj->setAllowedSQL($AppUI->user_id, $q);
 	$rows = $q->loadList();

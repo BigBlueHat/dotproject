@@ -54,16 +54,19 @@ $q->addJoin('users', 'u', 'user_id = task_log_creator');
 $q->addJoin('tasks', 't', 'task_log_task = t.task_id');
 $q->addJoin('billingcode', 'b', 'task_log.task_log_costcode = billingcode_id');
 //already included bY the setAllowedSQL function
-//$q->addJoin('projects', 'p', 'task_project = p.project_id');
 $q->addWhere("task_project = $project_id ");
-if ($user_id>0) 
+if ($user_id>0) {
 	$q->addWhere("task_log_creator=$user_id");
-if ($hide_inactive) 
+}
+if ($hide_inactive) {
 	$q->addWhere("task_status>=0");
-if ($hide_complete) 
+}  
+if ($hide_complete) { 
 	$q->addWhere("task_percent_complete < 100");
-if ($cost_code != '0') 
+}
+if ($cost_code != '0') {
 	$q->addWhere('task_log_costcode = ' . $cost_code);
+}
 $q->addOrder('task_log_date');
 $project->setAllowedSQL($AppUI->user_id, $q, 'task_project');
 $logs = $q->loadList();
