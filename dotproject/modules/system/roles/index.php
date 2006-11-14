@@ -97,7 +97,7 @@ function showRow( $role=null )
 		if ($canEdit) {
 			$s .= '		<a href="?m=system&amp;u=roles&amp;role_id='.$id.'">'.
 			dPshowImage('./images/icons/stock_edit-16.png') . '</a>
-		<a href="?m=system&amp;u=roles&amp;a=viewrole&amp;role_id='.$id.'&amp;tab=1" title="">'.
+		<a href="?m=system&amp;u=roles&amp;a=viewrole&amp;role_id='.$id.'&amp;tab=0" title="">'.
 			dPshowImage('images/obj/lock.gif').'</a>';
 		}
 		if ($canDelete) {
