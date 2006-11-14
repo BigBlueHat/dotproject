@@ -26,14 +26,22 @@
 #       close out previous issues.  In order to install some modules - such as the Task Tracker for the Yahoo Widget Engine- 
 #       have to be manually added to the second FileMatch block in order to allow for external access.
 
-<FilesMatch "(\.(classes|db|files|functions|includes|install|lib|locales|misc|modules|theme|CVS|.svn)|Entries.*|Repository|Root|(php)|(sql))$"> 
+<FilesMatch "(\.(classes|db|files|functions|includes|lib|locales|misc|modules|theme|CVS|.svn)|Entries.*|Repository|Root|(php)|(sql))$"> 
   Order deny,allow
   Deny from all
 </FilesMatch>
-<FilesMatch "(index.php|queuescanner.php|fileviewer.php)$">
+<FilesMatch "(index.php|queuescanner.php|fileviewer.php|db.php)$">
   Order deny,allow
   Allow from all
 </FilesMatch>
+
+# REST rewrite rules.
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^(.*)$ rest.php?action=$1 [L,QSA]
+</IfModule>
 
 # Set some options.
 Options -Indexes
