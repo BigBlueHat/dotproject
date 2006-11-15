@@ -36,6 +36,7 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 	}
 	reset( $arr );
 	$s = "\n<select name=\"$select_name\" $select_attribs>";
+	$did_selected = 0;
 	foreach ($arr as $k => $v ) {
 		if ($translate) {
 			$v = @$AppUI->_( $v );
@@ -46,7 +47,9 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 			$v=str_replace('&#369;','û',$v);
 			$v=str_replace('&#337;','õ',$v);
 		}
-		$s .= "\n\t<option value=\"".$k."\"".($k == $selected ? " selected=\"selected\"" : '').'>' .  $v  . '</option>';
+		$s .= "\n\t<option value=\"".$k."\"".(($k == $selected && !$did_selected) ? " selected=\"selected\"" : '').">" .  $v  . "</option>";
+		if ($k == $selected)
+			$did_selected = 1;
 	}
 	$s .= "\n</select>\n";
 	return $s;
