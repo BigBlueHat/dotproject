@@ -26,17 +26,21 @@ function smarty_function_dPtranslate($params, &$smarty)
         return;
     }
 
-	if (!empty($prepend))
-	$word = $prepend.$word; 
+    if (!empty($prepend)) {
+      $word = $prepend.$word;
+    } 
 
-    if (!empty($append))
-	$word .= $append; 
+    if (!empty($append)) {
+      $word .= $append;
+    }
 
-    if ($type == 'js')
+    if ($type == 'js') {
     	return $AppUI->_($word . $sentence, UI_OUTPUT_JS);
+    }
 
-	  if ($type == 'cl')
-	    	return $AppUI->_($word . $sentence, UI_CASE_LOWER);
+	  if ($type == 'cl') {
+	  	return $AppUI->_($word . $sentence, UI_CASE_LOWER);
+    }
 
     return $AppUI->_($word . $sentence);
 }
