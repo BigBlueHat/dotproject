@@ -723,7 +723,7 @@ function projects_list_data($user_id = false) {
 	                $q->addWhere('(tu.user_id = '.$filter.' OR projects.project_owner = '.$filter.' )');
 	            }
 	            else if ($field == 'project_company_type') {
-	                $q->addWhere('com.company_type = ' . $filter);
+	                $q->addWhere('co.company_type = ' . $filter);
 	            }
 	            else {
 	                $q->addWhere("projects.$field = $filter ");
