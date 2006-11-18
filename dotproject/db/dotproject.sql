@@ -13,6 +13,7 @@
 # * replace "task_owner" with "task_creator"
 #
 
+DROP TABLE IF EXISTS `companies`;
 CREATE TABLE `companies` (
     `company_id` INT(10) NOT NULL auto_increment,
     `company_module` INT(10) NOT NULL default 0,
@@ -39,6 +40,7 @@ CREATE TABLE `companies` (
 #
 # New to version 1.0
 #
+DROP TABLE IF EXISTS `departments`;
 CREATE TABLE `departments` (
     `dept_id` int(10) unsigned NOT NULL auto_increment,
     `dept_parent` int(10) unsigned NOT NULL default '0',
@@ -57,6 +59,7 @@ CREATE TABLE `departments` (
     PRIMARY KEY    (`dept_id`)
 ) TYPE=MyISAM COMMENT='Department heirarchy under a company';
 
+DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts` (
     `contact_id` int(11) NOT NULL auto_increment,
     `contact_first_name` varchar(30) default NULL,
@@ -97,6 +100,7 @@ CREATE TABLE `contacts` (
     KEY `idx_prp` (`contact_project`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
     `event_id` int(11) NOT NULL auto_increment,
     `event_title` varchar(255) NOT NULL default '',
@@ -126,6 +130,7 @@ CREATE TABLE `events` (
 
 # 20050303
 #
+DROP TABLE IF EXISTS `event_queue`;
 CREATE TABLE `event_queue` (
     `queue_id` int(11) NOT NULL auto_increment,
     `queue_start` int(11) NOT NULL default '0',
@@ -145,12 +150,14 @@ CREATE TABLE `event_queue` (
     KEY `queue_origin_id` (`queue_origin_id`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `event_contacts`;
 CREATE TABLE `event_contacts` (
 `event_id` INT NOT NULL ,
 `contact_id` INT NOT NULL ,
 PRIMARY KEY ( `event_id` , `contact_id` )
 ) ENGINE = MYISAM ;
 
+DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
     `file_id` int(11) NOT NULL auto_increment,
     `file_real_filename` varchar(255) NOT NULL default '',
@@ -176,6 +183,7 @@ CREATE TABLE `files` (
     KEY `idx_file_vid` (`file_version_id`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `files_index`;
 CREATE TABLE `files_index` (
     `file_id` int(11) NOT NULL default '0',
     `word` varchar(50) NOT NULL default '',
@@ -184,6 +192,7 @@ CREATE TABLE `files_index` (
     KEY `idx_fwrd` (`word`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `forum_messages`;
 CREATE TABLE `forum_messages` (
     `message_id` int(11) NOT NULL auto_increment,
     `message_forum` int(11) NOT NULL default '0',
@@ -203,6 +212,7 @@ CREATE TABLE `forum_messages` (
 #
 # new field forum_last_id in Version 1.0
 #
+DROP TABLE IF EXISTS `forums`;
 CREATE TABLE `forums` (
     `forum_id` int(11) NOT NULL auto_increment,
     `forum_project` int(11) NOT NULL default '0',
@@ -224,6 +234,7 @@ CREATE TABLE `forums` (
 #
 # New to Version 1.0
 #
+DROP TABLE IF EXISTS `forum_watch`;
 CREATE TABLE `forum_watch` (
     `watch_user` int(10) unsigned NOT NULL default '0',
     `watch_forum` int(10) unsigned default NULL,
@@ -234,6 +245,7 @@ CREATE TABLE `forum_watch` (
 
 # 20050303
 # New to Version 2.0
+DROP TABLE IF EXISTS `forum_visits`;
 CREATE TABLE `forum_visits` (
     `visit_user` INT(10) NOT NULL DEFAULT 0,
     `visit_forum` INT(10) NOT NULL DEFAULT 0,
@@ -242,6 +254,7 @@ CREATE TABLE `forum_visits` (
     KEY `idx_fv` (`visit_user`, `visit_forum`, `visit_message`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE `permissions` (
     `permission_id` int(11) NOT NULL auto_increment,
     `permission_user` int(11) NOT NULL default '0',
@@ -254,6 +267,7 @@ CREATE TABLE `permissions` (
     KEY `idx_pvalue` (`permission_value`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
     `project_id` int(11) NOT NULL auto_increment,
     `project_company` int(11) NOT NULL default '0',
@@ -287,16 +301,19 @@ CREATE TABLE `projects` (
 
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `project_contacts`;
 CREATE TABLE `project_contacts` (
     `project_id` INT(10) NOT NULL,
     `contact_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `project_departments`;
 CREATE TABLE `project_departments` (
     `project_id` INT(10) NOT NULL,
     `department_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `task_log`;
 CREATE TABLE `task_log` (
     `task_log_id` INT(11) NOT NULL auto_increment,
     `task_log_task` INT(11) NOT NULL default '0',
@@ -313,6 +330,7 @@ CREATE TABLE `task_log` (
     KEY `idx_log_task` (`task_log_task`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `tasks`;
 CREATE TABLE `tasks` (
     `task_id` int(11) NOT NULL auto_increment,
     `task_name` varchar(255) default NULL,
@@ -351,16 +369,19 @@ CREATE TABLE `tasks` (
     KEY `idx_task2` (`task_end_date`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `task_contacts`;
 CREATE TABLE `task_contacts` (
     `task_id` INT(10) NOT NULL,
     `contact_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `task_departments`;
 CREATE TABLE `task_departments` (
     `task_id` INT(10) NOT NULL,
     `department_id` INT(10) NOT NULL
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `user_events`;
 CREATE TABLE `user_events` (
     `user_id` int(11) NOT NULL default '0',
     `event_id` int(11) NOT NULL default '0',
@@ -368,6 +389,7 @@ CREATE TABLE `user_events` (
     KEY `uek2` (`event_id`, `user_id`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `user_tasks`;
 CREATE TABLE `user_tasks` (
     `user_id` int(11) NOT NULL default '0',
     `user_type` tinyint(4) NOT NULL default '0',
@@ -379,6 +401,7 @@ CREATE TABLE `user_tasks` (
     KEY `index_ut_to_tasks` (`task_id`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
     `user_id` int(11) NOT NULL auto_increment,
     `user_contact` int(11) NOT NULL default '0',
@@ -388,22 +411,6 @@ CREATE TABLE `users` (
     `user_type` tinyint(3) not null default '0',
     `user_company` int(11) default '0',
     `user_department` int(11) default '0',
-/*    `user_first_name` varchar(50) default '',
-    `user_last_name` varchar(50) default '',
-    `user_email` varchar(255) default '',
-    `user_phone` varchar(30) default '',
-    `user_home_phone` varchar(30) default '',
-    `user_mobile` varchar(30) default '',
-    `user_address1` varchar(30) default '',
-    `user_address2` varchar(30) default '',
-    `user_city` varchar(30) default '',
-    `user_state` varchar(30) default '',
-    `user_zip` varchar(11) default '',
-    `user_country` varchar(30) default '',
-    `user_icq` varchar(20) default '',
-    `user_aol` varchar(20) default '',
-    `user_birthday` datetime default NULL,
-    `user_pic` TEXT,*/
     `user_owner` int(11) NOT NULL default '0',
     `user_signature` TEXT,
     PRIMARY KEY    (`user_id`),
@@ -412,12 +419,14 @@ CREATE TABLE `users` (
     KEY `idx_user_parent` (`user_parent`)
 ) TYPE=MyISAM;
 
+DROP TABLE IF EXISTS `task_dependencies`;
 CREATE TABLE `task_dependencies` (
         `dependencies_task_id` int(11) NOT NULL,
         `dependencies_req_task_id` int(11) NOT NULL,
         PRIMARY KEY (`dependencies_task_id`, `dependencies_req_task_id`)
 );
 
+DROP TABLE IF EXISTS `user_preferences`;
 CREATE TABLE `user_preferences` (
     `pref_user` varchar(12) NOT NULL default '',
     `pref_name` varchar(72) NOT NULL default '',
@@ -459,6 +468,7 @@ INSERT INTO `user_preferences` VALUES ('0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 
 
 INSERT INTO `user_preferences` VALUES ('0', 'TIMEZONE', 'UTC', 'l10n', 'select');
 
+DROP TABLE IF EXISTS `user_prefs_list`;
 CREATE TABLE `user_prefs_list` (
 `pref_list_id` INT( 11 ) NOT NULL AUTO_INCREMENT PRIMARY KEY ,
 `pref_name` VARCHAR( 255 ) NOT NULL ,
@@ -487,7 +497,7 @@ NULL , 'USERFORMAT', 'user'
 #
 # Table structure for table 'modules'
 #
-#DROP TABLE modules;
+DROP TABLE IF EXISTS `modules`;
 CREATE TABLE `modules` (
     `mod_id` int(11) NOT NULL auto_increment,
     `mod_name` varchar(64) NOT NULL default '',
@@ -556,36 +566,25 @@ CREATE TABLE `sysvals` (
 # Table structure for table 'sysvals'
 #
 
-INSERT INTO `syskeys` VALUES (null, "SelectList", "Enter values for list", "0", "\n", "|");
-INSERT INTO `syskeys` VALUES (null, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
-INSERT INTO `syskeys` VALUES (null, "ColorSelection", "Hex color values for type=>color association.", "0", "\n", "|");
+INSERT INTO `syskeys` VALUES (1, 'SelectList', 'Enter values for list', '0', '\n', '|');
+INSERT INTO `syskeys` VALUES (2, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
+INSERT INTO `syskeys` VALUES (3, 'ColorSelection', 'Hex color values for type=>color association.', '0', '\n', '|');
 
-INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES 
-    (null, "ProjectStatus", "0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete\r\n6|Template\r\n7|Archived");
-INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES 
-    (null, "CompanyType", "0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal");
-INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES 
-    (null, "TaskDurationType", "1|hours\n24|days");
-INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES 
-    (null, "EventType", "0|General\n1|Appointment\n2|Meeting\n3|All Day Event\n4|Anniversary\n5|Reminder");
-INSERT INTO `sysvals` VALUES (null, 1, 'TaskStatus', '0|Active\n-1|Inactive');
-INSERT INTO `sysvals` VALUES (null, 1, 'TaskType', '0|Unknown\n1|Administrative\n2|Operative');
-INSERT INTO `sysvals` VALUES (null, 1, 'ProjectType', '0|Unknown\n1|Administrative\n2|Operative');
-INSERT INTO `sysvals` (`sysval_key_id`,`sysval_title`,`sysval_value`) VALUES 
-    ("3", "ProjectColors", "Web|FFE0AE\nEngineering|AEFFB2\nHelpDesk|FFFCAE\nSystem Administration|FFAEAE");
-INSERT INTO `sysvals` VALUES (null, 1, 'FileType', '0|Unknown\n1|Document\n2|Application');
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES 
-    (null, '1', 'TaskPriority', '-1|low\n0|normal\n1|high');
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES 
-    (null, '1', 'ProjectPriority', '-1|low\n0|normal\n1|high');
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES 
-    (null, '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n1|#FFDCB3');
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES 
-    (null, '1', 'TaskLogReference', '0|Not Defined\n1|Email\n2|Helpdesk\n3|Phone Call\n4|Fax');
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES 
-    (null, '1', 'TaskLogReferenceImage', '0|\n1|./images/obj/email.gif\n2|./modules/helpdesk/images/helpdesk.png\n3|./images/obj/phone.gif\n |./images/icons/stock_print-16.png');
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
-    VALUES ( null, '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
+INSERT INTO `sysvals` VALUES (1, 1, 'ProjectStatus', '0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete\r\n6|Template\r\n7|Archived');
+INSERT INTO `sysvals` VALUES (2, 1, 'CompanyType', '0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal');
+INSERT INTO `sysvals` VALUES (3, 1, 'TaskDurationType', '1|hours\n24|days');
+INSERT INTO `sysvals` VALUES (4, 1, 'EventType', '0|General\n1|Appointment\n2|Meeting\n3|All Day Event\n4|Anniversary\n5|Reminder');
+INSERT INTO `sysvals` VALUES (5, 1, 'TaskStatus', '0|Active\n-1|Inactive');
+INSERT INTO `sysvals` VALUES (6, 1, 'TaskType', '0|Unknown\n1|Administrative\n2|Operative');
+INSERT INTO `sysvals` VALUES (7, 1, 'ProjectType', '0|Unknown\n1|Administrative\n2|Operative');
+INSERT INTO `sysvals` VALUES (8, 1, 'ProjectColors', 'Web|FFE0AE\nEngineering|AEFFB2\nHelpDesk|FFFCAE\nSystem Administration|FFAEAE');
+INSERT INTO `sysvals` VALUES (9, 1, 'FileType', '0|Unknown\n1|Document\n2|Application');
+INSERT INTO `sysvals` VALUES (10, '1', 'TaskPriority', '-1|low\n0|normal\n1|high');
+INSERT INTO `sysvals` VALUES (11, '1', 'ProjectPriority', '-1|low\n0|normal\n1|high');
+INSERT INTO `sysvals` VALUES (12, '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n1|#FFDCB3');
+INSERT INTO `sysvals` VALUES (13, '1', 'TaskLogReference', '0|Not Defined\n1|Email\n2|Helpdesk\n3|Phone Call\n4|Fax');
+INSERT INTO `sysvals` VALUES (14, '1', 'TaskLogReferenceImage', '0|\n1|./images/obj/email.gif\n2|./modules/helpdesk/images/helpdesk.png\n3|./images/obj/phone.gif\n |./images/icons/stock_print-16.png');
+INSERT INTO `sysvals` VALUES (15, '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
 
 #
 # Table structure for table 'roles'
@@ -637,6 +636,7 @@ CREATE TABLE `common_notes` (
 
 #20040823
 #Added user access log
+DROP TABLE IF EXISTS `user_access_log`;
 CREATE TABLE `user_access_log` (
 `user_access_log_id` INT( 10 ) UNSIGNED NOT NULL AUTO_INCREMENT ,
 `user_id` INT( 10 ) UNSIGNED NOT NULL ,
@@ -663,7 +663,7 @@ PRIMARY KEY (`user_id`,`task_id`)
 # Creation: Feb 23, 2005 at 01:26 PM
 # Last update: Feb 24, 2005 at 02:15 AM
 #
-
+DROP TABLE IF EXISTS `config`;
 CREATE TABLE `config` (
     `config_id` int(11) NOT NULL auto_increment,
     `config_name` varchar(255) NOT NULL default '',
@@ -745,6 +745,7 @@ INSERT INTO `config` VALUES(0, 'site_terms', '...', 'site', 'textarea');
 
 # 20050302
 # New list support for config variables
+DROP TABLE IF EXISTS `config_list`;
 CREATE TABLE `config_list` (
 `config_list_id` integer not null auto_increment,
 `config_id` integer not null default 0,
@@ -805,6 +806,7 @@ INSERT INTO `config` VALUES (0, 'session_gc_scan_queue', 'false', 'session', 'ch
 
 # 20050302
 # new custom fields
+DROP TABLE IF EXISTS `custom_fields_struct`;
 CREATE TABLE custom_fields_struct (
     field_id integer primary key,
     field_module varchar(30),
@@ -817,6 +819,7 @@ CREATE TABLE custom_fields_struct (
     field_description varchar(250)
 );
 
+DROP TABLE IF EXISTS `custom_fields_values`;
 CREATE TABLE custom_fields_values (
     value_id integer,
     value_module varchar(30),
@@ -826,6 +829,7 @@ CREATE TABLE custom_fields_values (
     value_intvalue integer
 );
 
+DROP TABLE IF EXISTS `custom_fields_lists`;
 CREATE TABLE custom_fields_lists (
     field_id integer,
     list_option_id integer,
@@ -1218,6 +1222,7 @@ CREATE TABLE `sessions` (
 # 20050304
 # Version tracking table.    From here on in all updates are done via the installer,
 # which uses this table to manage the upgrade process.
+DROP TABLE IF EXISTS `dpversion`;
 CREATE TABLE dpversion (
     code_version varchar(10) not null default '',
     db_version integer not null default '0',
@@ -1225,7 +1230,7 @@ CREATE TABLE dpversion (
     last_code_update date not null default '0000-00-00'
 );
 
-INSERT INTO dpversion VALUES ('2.0.1', 2, '2005-04-05', '2005-04-09');
+INSERT INTO dpversion VALUES ('2.0.2', 2, '2005-04-05', '2005-04-09');
 
 # 20050307
 # Additional LDAP search user and search password fields for Active Directory compatible LDAP authentication
@@ -1246,12 +1251,14 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
 
 #20051114
 # webdav/webcal and icalendar functionality
+DROP TABLE IF EXISTS `webcal_projects`;
 CREATE TABLE `webcal_projects` (
     `webcal_id` int(11) NOT NULL default '0',
     `project_id` int(11) NOT NULL default '0',
     UNIQUE KEY `webcal_id` (`webcal_id`,`project_id`)
 ) ENGINE=MyISAM COMMENT='relate webcal resources to project calendars';
 
+DROP TABLE IF EXISTS `webcal_resources`;
 CREATE TABLE `webcal_resources` (
     `webcal_id` int(11) NOT NULL auto_increment,
     `webcal_path` varchar(255) default NULL,
