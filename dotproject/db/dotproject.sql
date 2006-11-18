@@ -443,7 +443,6 @@ VALUES (1,'Admin','Person','admin@localhost');
 INSERT INTO `permissions` VALUES (1,1,"all",-1, -1);
 
 INSERT INTO `user_preferences` VALUES ('0', 'LOCALE', 'en_AU', 'l10n', 'select');
-INSERT INTO `user_preferences` VALUES ('0', 'TABVIEW', '0', 'ui', 'select');
 INSERT INTO `user_preferences` VALUES ('0', 'SHDATEFORMAT', '%d/%m/%Y', 'l10n', 'select');
 INSERT INTO `user_preferences` VALUES ('0', 'TIMEFORMAT', '%I:%M %p', 'l10n', 'select');
 INSERT INTO `user_preferences` VALUES ('0', 'UISTYLE', 'default', 'ui', 'select');

@@ -49,9 +49,6 @@
 		{assign var='pln' value="pref_name[`$p.pref_name`]"}
 		{if $p.pref_name == 'LOCALE'}
 			{assign var='plist' value=$langlist}
-		{elseif $p.pref_name == 'TABVIEW'}
-			{assign var='plist' value=$tabview}	
-			{assign var='trl' value=true}
 		{elseif $p.pref_name == 'TIMEZONE'}
 			{assign var='plist' value=$timezones}
 		{elseif $p.pref_name == 'SHDATEFORMAT'}

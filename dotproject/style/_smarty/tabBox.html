@@ -1,44 +1,3 @@
-{if $tabview == 0}
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-	<tr>
-		<td nowrap="nowrap">
-			<a href="{$current_tab}tab=0">{dPtranslate word='tabbed'}</a>
-		</td>
-		{$extra}
-	</tr>
-</table>
-{else}
-	{if $extra}
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-	<tr>
-		{$extra}
-	</tr>
-</table>
-	{else}
-	<img src="./images/shim.gif" alt="shim" height="10" width="1" />
-	{/if}
-{/if}
-
-{if $active < 0 || $tabview == 2}
-		{* flat view, active = -1 *}
-<table border="0" cellpadding="2" cellspacing="0" width="100%">
-	{foreach from=$tabs item=v key=k}
-	<tr>
-		<td><strong>{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}</strong></td>
-	</tr>
-	<tr>
-		<td>
-		{php}
-				$currentTabId = $k;
-				$currentTabName = $v[1];
-		{/php}
-		{dPrequire file="$base$v[0].php"}
-		</td>
-	</tr>
-	{/foreach}
-</table>
-{else}
-{* tabbed view *}
 <table width="100%" border="0" cellpadding="3" cellspacing="0">
 	<tr>
 			{if $totaltabs-1 < $active}
@@ -69,4 +28,3 @@
 		</td>
 	</tr>
 </table>
-{/if}

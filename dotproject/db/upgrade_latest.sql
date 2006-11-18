@@ -265,3 +265,8 @@ CREATE TABLE `event_contacts` (
 `contact_id` INT NOT NULL ,
 PRIMARY KEY ( `event_id` , `contact_id` )
 ) ENGINE = MYISAM ;
+
+#20061118
+# gregorerhardt
+# Remove flat view
+DELETE FROM `user_preferences` WHERE `pref_name` = 'TABVIEW';
