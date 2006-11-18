@@ -95,7 +95,7 @@ $tl_task = $prefs['TASKLOGEMAIL'] & 2;
 $tl_proj = $prefs['TASKLOGEMAIL'] & 4;
 
 // collect tabview options
-$tabview = array( 'either', 'tabbed', 'flat' );
+$tabview = array( 'tabbed' );
 
 $last_group = '';
 
