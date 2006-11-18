@@ -35,14 +35,6 @@
   Allow from all
 </FilesMatch>
 
-# REST rewrite rules.
-<IfModule mod_rewrite.c>
-  RewriteEngine on
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^(.*)$ rest.php?action=$1 [L,QSA]
-</IfModule>
-
 # Set some options.
 Options -Indexes
 Options +FollowSymLinks
