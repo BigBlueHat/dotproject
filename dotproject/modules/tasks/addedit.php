@@ -228,8 +228,9 @@ $tpl->assign('percent', $percent);
 $tpl->assign('ui_getplace', str_replace('&', '&amp;', $AppUI->getPlace()));
 $tpl->displayAddEdit($obj);
 
-if (isset($_GET['tab']))
+if (isset($_GET['tab'])) {
 	$AppUI->setState('TaskAeTabIdx', dPgetParam($_GET, 'tab', 0));
+}
 
 $tab = $AppUI->getState('TaskAeTabIdx', 0);
 $tabBox =& new CTabBox('?m=tasks&amp;a=addedit&amp;task_id='.$task_id, '', $tab, '');

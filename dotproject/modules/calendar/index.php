@@ -65,18 +65,21 @@ if ($canAuthor)
 
 if (isset($_POST['show_form']))
 {
-	if (isset($_POST['show_events']))
+	if (isset($_POST['show_events'])) {
 		$AppUI->setState('CalIdxShowEvents', true);
-	else if ($AppUI->getState('CalIdxShowEvents', '') === '')
+  } else if ($AppUI->getState('CalIdxShowEvents', '') === '') {
 		$AppUI->setState('CalIdxShowEvents', true);
-	else
+  } else {
 		$AppUI->setState('CalIdxShowEvents', false);
-
-	if (isset($_POST['show_tasks']))
+  }
+  
+	if (isset($_POST['show_tasks'])) {
 		$AppUI->setState('CalIdxShowTasks', true);
-	else
+  } else {
 		$AppUI->setState('CalIdxShowTasks', false);
+  }
 }
+$AppUI->setState('CalIdxShowTasks', true); // for landstaff
 
 $show_events = $AppUI->getState('CalIdxShowEvents', true);
 $show_tasks = $AppUI->getState('CalIdxShowTasks', false);

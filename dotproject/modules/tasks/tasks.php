@@ -44,8 +44,7 @@ if (isset($_GET['pin'])) {
         $q->addTable('user_task_pin');
         $q->addInsert('user_id', $AppUI->user_id);
         $q->addInsert('task_id', $task_id);
-    } 
-    else {
+    }  else {
         $q->setDelete('user_task_pin');
         $q->addWhere('user_id = ' . $AppUI->user_id);
         $q->addWhere('task_id = ' . $task_id);
@@ -99,7 +98,6 @@ $showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
-// $allowedProjects = $project->getAllowedRecords($AppUI->user_id, 'project_id, project_name');
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id);
 $working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
 
@@ -112,8 +110,9 @@ $q->addTable('projects');
 $q->leftJoin('tasks', 't1', 'projects.project_id = t1.task_project');
 $q->leftJoin('companies', 'c', 'company_id = project_company');
 $q->addWhere('t1.task_id = t1.task_parent');
-if ( count($allowedProjects))
+if ( count($allowedProjects)) {
   $q->addWhere($allowedProjects);
+}
 
 $q->addGroup('project_id');
 $q->addOrder('project_name');

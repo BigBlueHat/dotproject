@@ -5,8 +5,7 @@ global $tpl;
 if (! $perms->checkModule('tasks', 'view'))
 	$AppUI->redirect('m=public&a=access_denied');
 
-if (isset($_GET['table']))
-{
+if (isset($_GET['table'])) {
 	$node_id = dPgetParam($_GET, 'node_id');
 	$parent = substr($node_id, strrpos($node_id, '-') + 1);
 	$parent_number = substr($node_id, 5, strpos($node_id, ')') - 5);
@@ -29,8 +28,7 @@ if (isset($_GET['table']))
 	
 	$q->addTable('tasks');
 	$mods = $AppUI->getActiveModules();
-	if (!empty($mods['history']) && !getDenyRead('history'))
-	{
+	if (!empty($mods['history']) && !getDenyRead('history')) {
 		$q->addQuery('MAX(history_date) as last_update');
 		$q->leftJoin('history', 'h', 'history_item = tasks.task_id AND history_table=\'tasks\'');
 	}
@@ -47,25 +45,18 @@ if (isset($_GET['table']))
 	$q->addGroup('task_id');
 	$q->addOrder('project_id, task_start_date');
 	
-	//echo $q->prepare();
-	//$q->addTable('tasks');
-	//$q->addQuery('*');
-	//$sql = $q->prepare();
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
 	$tasks = $q->loadList();
 	$msg = db_error();
-	if ($msg)
+	if ($msg) {
 		$AppUI->setMsg('failed collapse/expand: ' . $msg, UI_MSG_WARNING);
-	else
-	{
-		//echo 'parent: ' . $parent . '; sql: ' . $sql . '::' . db_error();
+  } else {
 		global $durnTypes;
 		$tpl->assign('durnTypes', $durnTypes);
 
 		$tpl->assign('direct_edit_assignment', false);
 		$i = 0;
-		foreach ($tasks as $t)
-		{
+		foreach ($tasks as $t) {
 			$q->clear();
 			$q->addQuery('ut.user_id,
 			u.user_username, contact_email, ut.perc_assignment, SUM(ut.perc_assignment) AS assign_extent, contact_first_name, contact_last_name');
@@ -98,9 +89,7 @@ if (isset($_GET['table']))
 			echo '[][][]';
 		}
 	}
-}
-else 
-{
+} else {
 	$taskfield = dPgetParam( $_REQUEST, 'taskfield', 'new_task');
 	$form = dPgetParam($_REQUEST, 'form', 'form');
 		

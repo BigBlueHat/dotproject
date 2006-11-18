@@ -4,21 +4,24 @@ global $AppUI, $company_id, $priority, $tpl, $pstatus;
 
 $check = $AppUI->getState( 'ProjIdxTab' );
 $show_all_projects = false;
-if ($check == 0)
+if ($check == 0) {
 	$show_all_projects = true;
+}
 
 $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
 foreach ($projects as $k => $row) {
-	if (! $perms->checkModuleItem('projects', 'view', $row['project_id']))
+	if (! $perms->checkModuleItem('projects', 'view', $row['project_id'])) {
 		continue;
-	if ($perms->checkModuleItem('projects', 'edit', $row['project_id']))
+  }
+	if ($perms->checkModuleItem('projects', 'edit', $row['project_id'])) {
 		$projects[$k]['edit'] = true;
-
-	if (!$show_all_projects && $row["project_status"] != $AppUI->getState( 'ProjIdxTab' ))
+  }
+	if (!$show_all_projects && $row["project_status"] != $AppUI->getState( 'ProjIdxTab' )) {
 		unset($projects[$k]);
-	else 
+  } else { 
 		$projects[$k]['project_status_name'] = $pstatus[$row['project_status']];
+  }
 }
 
 $show = array(
@@ -32,8 +35,9 @@ $show = array(
 	'project_owner',
 	'total_tasks',
 	'my_tasks');
-if ($show_all_projects)
+if ($show_all_projects) {
 	$show[] = 'project_status';
+}
 
 $tpl->assign('pstatus', $pstatus);
 $tpl->assign('editProjects', true);
