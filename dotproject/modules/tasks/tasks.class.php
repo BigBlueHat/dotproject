@@ -1576,6 +1576,41 @@ class CTask extends CDpObject {
         return ($duration/$number_assigned_users) / $number_of_days_worked;
 	}
 	
+	/**
+     * Function that returns the amount of hours this
+     * task consumes per user each week
+     */
+    function getTaskDurationPerWeek($use_percent_assigned = false){
+        $duration = $this->task_duration
+            *($this->task_duration_type == 24?dPgetConfig('daily_working_hours'):$this->task_duration_type);
+        $task_start_date = new CDate($this->task_start_date);
+        $task_finish_date = new CDate($this->task_end_date);
+        $assigned_users = $this->getAssignedUsers();
+        if ($use_percent_assigned) {
+            $number_assigned_users = 0;
+            foreach ($assigned_users as $u) {
+                $number_assigned_users += ( $u['perc_assignment'] / 100 );
+            }
+        } 
+        else {
+            $number_assigned_users = count($assigned_users);
+        }
+        
+        $number_of_weeks_worked = $task_finish_date->workingDaysInSpan($task_start_date) 
+            / count(explode(",",dPgetConfig("cal_working_days")));	
+		$number_of_weeks_worked = ($number_of_weeks_worked < 1) ? ceil($number_of_weeks_worked) : $number_of_weeks_worked;
+        
+        // zero adjustment
+        if($number_of_weeks_worked == 0) {
+            $number_of_weeks_worked = 1;
+        }
+        if($number_assigned_users == 0) {
+            $number_assigned_users = 1;
+        }
+        return ($duration/$number_assigned_users) / $number_of_weeks_worked;
+    }
+    
+	
     // unassign a user from task
 	function removeAssigned( $user_id ) {
         // delete all current entries
