@@ -29,7 +29,11 @@
 		{if $show[j] == 'project_name'}
 			<td width="50%" style="background-color:#{$row.project_color_identifier}">
 				<span style="color: {dPbestColor bg=$row.project_color_identifier};">
-					<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}">{$row.project_name}</a>
+					{capture name=projDesc assign=popDesc}
+						{$row.project_description|nl2br}
+					{/capture}
+					{dPtranslateToVar word='Description' ass='popDescCap'}
+					<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}" {popup sticky=true caption=$popDescCap text=$popDesc}>{$row.project_name}</a>
 				</span>
 			</td>
 		{elseif $show[j] == 'project_priority'}
