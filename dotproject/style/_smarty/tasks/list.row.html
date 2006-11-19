@@ -71,7 +71,11 @@
 <img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" alt="expand" border="0" onclick="dpToggleNode(this);" />
 	{/if}
 {/if}
-		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" title="{$obj.task_description|truncate}">
+		{capture name=projDesc assign=popDesc}
+			{$task.task_description|nl2br}
+		{/capture}
+		{dPtranslateToVar word='Description' ass='popDescCap'}
+		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" {popup sticky=true caption=$popDescCap text=$popDesc}>
 {if $obj.task_dynamic == '1'}
 		<b><i>{$obj.task_name}</i></b>
 {else}
