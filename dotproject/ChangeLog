@@ -1,7 +1,643 @@
+2006-11-19 14:12  (gregorerhardt)
+---------------------------------
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_companies.php
+modules/files/addedit.php
+modules/files/co.php
+modules/files/index_table.php
+modules/forums/addedit.php
+modules/forums/index.php
+modules/links/addedit.php
+modules/projects/addedit.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/reports.php
+modules/projects/view.php
+modules/projects/viewgantt.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+modules/tasks/addedit.php
+modules/tasks/gantt.php
+modules/tasks/tasks.php
+modules/tasks/todo.php
+style/default/overrides.php
+style/dp-grey-theme/overrides.php
+- Incorporating project inactive state in the Archived status
+
+2006-11-19 09:54  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- revert last change - already was in head
+- ----------------------------------------------------------------------
+
+2006-11-19 09:43  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1824 - delete task dependencies when deleting a task.
+- ----------------------------------------------------------------------
+
+2006-11-19 09:29  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1824 - delete dependencies when deleting tasks.
+- ----------------------------------------------------------------------
+
+2006-11-19 00:36  (caseydk)
+---------------------------------
+db/dotproject.sql
+- fully mysql 4/5 compliant;
+
+2006-11-18 20:05  (caseydk)
+---------------------------------
+includes/version.php
+- changed to denote this as 2.0.4-head as opposed to 2.0.4-5
+
+2006-11-18 19:38  (caseydk)
+---------------------------------
+classes/ui.class.php
+modules/system/addeditpref.php
+- removed flat view;
+
+2006-11-18 17:58  (caseydk)
+---------------------------------
+modules/projects/projects.class.php
+- fixed for the "abiguous field" issue
+
+2006-11-18 17:58  (caseydk)
+---------------------------------
+modules/projects/vw_idx_list.php
+modules/tasks/addedit.php
+modules/tasks/listtasks.php
+modules/tasks/tasks.php
+modules/calendar/index.php
+- adjusted for coding standards;
+
+2006-11-18 15:15  (caseydk)
+---------------------------------
+.htaccess
+- removed the mapping for the REST interface, should not have been committed;
+
+2006-11-18 14:15  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+style/_smarty/tabBox.html
+style/_smarty/system/addeditpref.html
+style/default/tabBox.html
+style/dp-grey-theme/tabBox.html
+db/upgrade_latest.sql
+- dropping flat view mode
+
+2006-11-17 23:47  (caseydk)
+---------------------------------
+includes/smarty/function.dPtranslate.php
+- adjusting for clarity/coding standards;
+
+2006-11-17 23:10  (caseydk)
+---------------------------------
+includes/main_functions.php
+- adjusting for clarity
+
+2006-11-15 13:03  (pedroix)
+---------------------------------
+includes/main_functions.php
+- Make sure only one (the first found) option gets selected from a arraySelect
+
+2006-11-15 12:55  (pedroix)
+---------------------------------
+includes/main_functions.php
+- Make sure only one (the first found) option gets selected from a arraySelect
+
+2006-11-14 04:41  (caseydk)
+---------------------------------
+.htaccess
+- had to adjust to handle upgrades, the old htaccess blocked access to db.php;
+
+2006-11-14 04:40  (caseydk)
+---------------------------------
+style/_smarty/search.html
+- adjusted to conform to proper web layout rules;
+
+2006-11-14 04:39  (caseydk)
+---------------------------------
+modules/system/roles/index.php
+- tweaked to resolve a tabbing error issue;
+
+2006-11-12 07:05  (caseydk)
+---------------------------------
+classes/dp.class.php
+modules/projects/projects.class.php
+modules/tasks/projects_tab.view.task_logs.php
+- very subtle combination of errors:
+-  - if you had a user who was denied access to Companies as a whole, but then allowed access to one, you'd get an ambiguous company_id in the where clause;
+-  - in order to correct this, the aliasing mechanism had to be tweaked to add the key when provided but also tweak a couple other queries where a prefix was referenced but not used;
+-  - i've tested my modules locally and in my server and haven't found any further problems;
+
+2006-11-11 04:33  (cyberhorse)
+---------------------------------
+classes/template.class.php
+- extended templates to allow modules to supply their own template files (improving management of new modules)
+
+2006-11-07 12:53  (cyberhorse)
+---------------------------------
+modules/calendar/day_view.php
+- cleanup
+
+2006-11-07 04:03  (caseydk)
+---------------------------------
+modules/files/addedit.php
+- tweaking formatting
+
+2006-11-07 04:02  (caseydk)
+---------------------------------
+modules/system/syskeys/index.php
+- changed the translation key
+
+2006-11-05 11:19  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/calmgt.php
+modules/calendar/clash.php
+- clean up code
+
+2006-11-05 10:18  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/admin.class.php
+modules/admin/companies_tab.view.users.php
+modules/admin/do_perms_aed.php
+modules/admin/do_user_aed.php
+modules/admin/do_userrole_aed.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_sessions.php
+- update and optimize code
+
+2006-11-05 05:35  (cyberhorse)
+---------------------------------
+classes/query.class.php
+- #1732 - don't add quotes around integers in sql queries (mysql 5 fix)
+
+2006-11-05 05:05  (cyberhorse)
+---------------------------------
+modules/system/addeditpref.php
+- #1814 - updated GET_HTTP_VARS usage to _GET
+
+2006-11-05 04:04  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- initialise event_task and project to 0 (php5/mysql5 fix)
+
+2006-11-04 16:02  (cyberhorse)
+---------------------------------
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/view.php
+- #1568 - added assigned contacts to the assigned display in calendar view.
+- Fixed an sql error when only contacts and no users were displayed.
+
+2006-11-02 16:45  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/do_event_aed.php
+style/_smarty/calendar/addedit.html
+- #1568 - Added contacts to events (to be emailed and to keep track of)
+
+2006-11-02 00:39  (caseydk)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/contacts/contacts.class.php
+modules/departments/departments.class.php
+modules/files/index_table.php
+modules/forums/forums.class.php
+modules/links/addedit.php
+modules/projects/gantt2.php
+modules/public/chpwd.php
+modules/public/contact_selector.php
+modules/reports/existing/overall.php
+modules/tasks/addedit.php
+- removed all the raw sql both commented out and not
+
+2006-10-31 16:05  (pedroix)
+---------------------------------
+js/base.js
+- Opera browser would null the fields of tasks upon add or edit. Not anymore.
+- BTW: since navigator.family is propagated throughout the application and we don't know if opera will stick to geckos standards, navigator.family will be set to own opera in case we need evasive manouvres in the future.
+
+2006-10-30 20:32  (caseydk)
+---------------------------------
+modules/tasks/vw_log_update.php
+- scrubbed the old raw sql calls
+
+2006-10-30 20:32  (caseydk)
+---------------------------------
+modules/tasks/todo.php
+- adjusted to reference the actual project_active as opposed to the arbitrary project_status field
+
+2006-10-30 20:31  (caseydk)
+---------------------------------
+includes/db_connect.php
+- removed the old raw db_exec call
+
+2006-10-30 20:30  (caseydk)
+---------------------------------
+db/dotproject.sql
+- cleaned up the creation script to meet PEAR standards and eliminate some mysql5 errors, still 100% mysql4 compliant
+
+2006-10-30 20:28  (caseydk)
+---------------------------------
+classes/date.class.php
+modules/projects/do_project_aed.php
+modules/projects/projects.class.php
+- importing a bunch of cyberhorse's changes to support reverse imports of projects
+
+2006-10-26 12:53  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Added some functions to extend functionality.
+
+2006-10-21 21:18  (nybod)
+---------------------------------
+modules/projects/gantt2.php
+modules/projects/projects.class.php
+modules/tasks/todo.php
+- Removed references to deprecated project_active column in projects table
+
+2006-10-20 01:59  (nybod)
+---------------------------------
+modules/calendar/calendar.class.php
+- Fixed typo at Line 606, extra "=" sign.
+
+2006-10-18 18:00  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+- 
+- Implementing (reimplementing?) fix for bug 0001557 on stable_2 branch.
+- 
+- Change was implemented in HEAD branch as of revision 1.50 of
+- calendar.class.php, but was not implemented in the stable_2 branch.
+
+2006-10-18 16:29  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/calendar.class.php
+- 
+- Modified query code for recursive/non-recursive events around line 539.
+- Gets around object cloning/version skewing issue between PHP 4 and PHP 5.
+- Should probably have been created and managed independently anyway.
+
+2006-10-18 12:52  (nybod)
+---------------------------------
+classes/libmail.class.php
+- Modified regex to accept email address containing sub-domain.
+
+2006-10-17 21:20  (theideaman)
+---------------------------------
+classes/libmail.class.php
+- fixed CheckAdresses method to return true if addresses validate. Added CheckAddresses alias method to fix typo.
+
+2006-10-17 16:33  (cyberhorse)
+---------------------------------
+modules/tasks/todo_tasks_sub.php
+- fixed sql error when no todo tasks are available.
+
+2006-10-16 17:05  (cyberhorse)
+---------------------------------
+includes/db_connect.php
+- modified some sql to go through the sql query class
+
+2006-10-16 04:19  (caseydk)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+classes/ui.class.php
+- cleaned up some formatting
+
+2006-10-15 15:00  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixed an sql error
+
+2006-10-14 19:25  (caseydk)
+---------------------------------
+modules/projects/view.php
+- removed a bunch of deprecated code from modules/projects/view.php
+
+2006-10-14 19:25  (caseydk)
+---------------------------------
+modules/projects/projects.class.php
+- removed a bunch of deprecated code from modules/projects/projects.class.php
+
+2006-10-14 19:24  (caseydk)
+---------------------------------
+modules/projects/index.php
+- removed a bunch of deprecated code from modules/projects/index.php
+
+2006-10-14 19:24  (caseydk)
+---------------------------------
+modules/calendar/index.php
+- removed a bunch of deprecated code from modules/calendar/index.php
+
+2006-10-14 19:23  (caseydk)
+---------------------------------
+classes/dp.class.php
+- cleaned up some formatting
+
+2006-10-14 14:32  (caseydk)
+---------------------------------
+modules/tasks/do_task_aed.php
+- cleaned up some formatting
+
+2006-10-12 17:10  (cyberhorse)
+---------------------------------
+style/dp-grey-theme/header.html
+style/dp-grey-theme/main.css
+style/dp-grey-theme/tabBox.html
+- fixed tab display completely
+
+2006-10-12 16:48  (cyberhorse)
+---------------------------------
+style/dp-grey-theme/tabBox.html
+- fixed tabs display (looked half broken)
+
+2006-10-12 16:46  (cyberhorse)
+---------------------------------
+style/_smarty/tabBox.html
+style/default/tabBox.html
+style/dp-grey-theme/tabBox.html
+- work towards fixing javascript tabs styles (when changing tabs, change styles as well)
+
+2006-10-12 00:43  (merlinyoda)
+---------------------------------
+fileviewer.php
+- 
+- Added code to resolve issues in IE/HTTPS with file download links that
+- go through fileviewer.php.
+
+2006-10-12 00:33  (merlinyoda)
+---------------------------------
+fileviewer.php
+- 
+- Added code to resolve issues in IE/HTTPS with file  download links that
+- use through fileviewer.php
+
+2006-10-11 16:17  (pedroix)
+---------------------------------
+modules/tasks/tasks.class.php
+- clearReminder was not working. This method was trying to find nothing because the id field of a task is named "task_id" and not just "id". Therefore nothing was being cleared through this method.
+
+2006-10-11 16:10  (pedroix)
+---------------------------------
+modules/tasks/tasks.class.php
+- clearReminder was not working. This method was trying to find nothing because the id field of a task is named "task_id" and not just "id". Therefore nothing was being cleared through this method.
+
+2006-10-08 14:03  (nybod)
+---------------------------------
+classes/template.class.php
+- Corrected small typo causing div by zero error
+
+2006-10-07 23:33  (caseydk)
+---------------------------------
+.htaccess
+- forgot to add fileviewer.php to the allow list
+
+2006-10-07 23:19  (caseydk)
+---------------------------------
+db/upgrade_latest.sql
+- cleaned up some of the formating, applied some (mysql4 compatible) mysql5 fixes such as inserting null instead of '' for keys
+
+2006-10-07 23:12  (caseydk)
+---------------------------------
+.htaccess
+- Locked this thing down like there's no tomorrow, got the idea from Drupal
+
+2006-10-04 18:10  (pedroix)
+---------------------------------
+classes/query.class.php
+- Backported loadHash and addReplace methods to stable_2
+
+2006-10-04 16:26  (cyberhorse)
+---------------------------------
+modules/system/do_systemconfig_aed.php
+- #1654 - handle adding extra slashes
+
+2006-10-04 15:40  (cyberhorse)
+---------------------------------
+modules/contacts/companies_tab.view.contacts.php
+style/_smarty/contacts/list.html
+- #1787 - fixed tab to use contact list
+
+2006-10-04 15:25  (cyberhorse)
+---------------------------------
+modules/contacts/select_contact_company.php
+style/_smarty/contacts/_select_contact_company.html
+- #1787 - fixed selecting company with ' in contacts
+- fixed a few xhtml compatibility issues
+- optimised files
+
+2006-10-03 13:26  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+style/_smarty/tasks/ae_depend.html
+- save checkbox state: set start based on dependency
+
+2006-10-03 12:12  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- task dependency shifting and fix for custom fields smartsearch
+
+2006-10-03 12:12  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- comment completed
+
+2006-10-02 16:02  (cyberhorse)
+---------------------------------
+classes/template.class.php
+locales/en/contacts.inc
+modules/contacts/index.php
+modules/contacts/list.php
+style/_smarty/contacts/list.html
+- #1281 - added contacts list display
+
+2006-09-29 18:58  (caseydk)
+---------------------------------
+lib/adodb/adodb-time.zip
+- removed corrupted file (adodb-time.zip), does not seem to be used anywhere;
+
+2006-09-27 16:24  (cyberhorse)
+---------------------------------
+locales/en/system.inc
+- Added translation strings for new TIMEZONE setting
+
+2006-09-25 01:08  (caseydk)
+---------------------------------
+classes/CustomFields.class.php
+classes/query.class.php
+- cleaned up the identation for clarity, nothing major;
+
+2006-09-24 13:06  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+includes/main_functions.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+- #1567 - improved contacts display
+
+2006-09-24 11:38  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+style/_smarty/tasks/list.row.html
+- made task list use the user display style config option
+
+2006-09-24 10:58  (cyberhorse)
+---------------------------------
+modules/system/do_preference_aed.php
+- some optimizations added to system preferences saving - only update user settings at the end and only if the saved settings are for the current user
+
+2006-09-24 10:33  (cyberhorse)
+---------------------------------
+includes/session.php
+- #1757 - sessions being overwriten by latest logged in user.
+
+2006-09-24 10:01  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+includes/smarty/function.dPdateFormat.php
+includes/smarty/modifier.dPdateFormat.php
+modules/calendar/do_event_aed.php
+modules/forums/forums.class.php
+modules/projects/do_project_aed.php
+classes/date.class.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/tasks/do_task_aed.php
+- Local timezone changes.
+
+2006-09-24 07:46  (cyberhorse)
+---------------------------------
+modules/forums/view_topics.php
+- fixed problem with forums tab in projects
+
+2006-09-24 06:41  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- Extra function added to find start dates
+
+2006-09-20 11:37  (pedroix)
+---------------------------------
+modules/tasks/tasks.php
+- Minor bug on tasks search feature upon search box reset.
+- http://www.dotproject.net/vbulletin/showthread.php?p=24667
+
+2006-09-18 16:27  (nybod)
+---------------------------------
+classes/libmail.class.php
+- Modified regex to accept email address containing sub-domain.
+
+2006-09-17 12:44  (cyberhorse)
+---------------------------------
+includes/main_functions.php
+- prepare for user timezone changes
+
+2006-09-17 09:28  (cyberhorse)
+---------------------------------
+classes/template.class.php
+style/_smarty/calendar.html
+- setup calendar display as a template function
+
+2006-09-17 09:22  (cyberhorse)
+---------------------------------
+style/_smarty/projects/view.html
+- actual project end date calculation
+
+2006-09-17 09:21  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+style/_smarty/system/addeditpref.html
+- Added TIMEZONE preference (to be used for userbased timezone configuration
+
+2006-09-17 08:32  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.php
+- formatting improved
+
+2006-09-17 08:13  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- added a couple of extra checks
+- added a few new handy functions (to calculate proj start/end dates)
+
+2006-09-17 07:50  (cyberhorse)
+---------------------------------
+includes/db_connect.php
+style/_smarty/system/systemconfig.html
+- allow html entities in db - clean them up on display.
+
+2006-09-15 01:58  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- prefer tue 16:00 over wed 8:00 as an end date
+
+2006-09-14 21:19  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- calculating task dependency shifting via task_end_date + task time span
+
+2006-09-09 21:55  (caseydk)
+---------------------------------
+modules/admin/do_user_aed.php
+- made fix for #1607 - problems when you'd want to associate a new user with an existing contact;
+
+2006-09-09 10:48  (gregorerhardt)
+---------------------------------
+ChangeLog
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- minor changes to tasks dependency mgt
+
 2006-09-08 01:44  (caseydk)
 ---------------------------------
 style/_smarty/projects/addedit.html
 - [no log message]
+
+2006-09-08 01:44  (caseydk)
+---------------------------------
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_list.php
+modules/projects/vw_idx_proposed.php
+- refactored all the vw_idx into one
 
 2006-09-08 01:44  (caseydk)
 ---------------------------------

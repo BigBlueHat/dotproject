@@ -1006,10 +1006,15 @@ the active tab, and the selected tab **/
 * Adds a tab to the object
 * @param string File to include
 * @param The display title/name of the tab
+* @param shall the title be translated?
+* @param explicitly index the tabs with $key
 */
-	function add( $file, $title, $translated = false )
-	{
-		$this->tabs[] = array( $file, $title, $translated );
+	function add( $file, $title, $translated = false, $key= NULL ) {
+		$t = array( $file, $title, $translated);
+		if (isset($key))
+			$this->tabs[$key] = $t;
+		else
+ 			$this->tabs[] = $t;
 	}
 
 	function isTabbed()

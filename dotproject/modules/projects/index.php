@@ -115,29 +115,14 @@ if (is_array($projects)) {
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
 $tabBox = new CTabBox( "?m=projects", "{$dPconfig['root_dir']}/modules/projects/", $tab );
-if ( $tabBox->isTabbed() ) {
-	// This will overwrited the initial tab, so we need to add that separately.
-	if (isset($project_types[0]))
-		$project_types[] = $project_types[0];
-	$project_types[0] = $AppUI->_('All Projects', UI_OUTPUT_RAW) . ' (' . count($projects) . ')';
-}
 
-/**
-* Now, we will figure out which vw_idx file are available
-* for each project type using the $fixed_project_type_file array 
-*/
-$project_type_file = array();
-
-foreach($project_types as $project_type){
-	$project_type = trim($project_type);
-	$project_file_type[$project_type] = "vw_idx_list";
-}
 
 // tabbed information boxes
-foreach($project_types as $project_type) {
-	$tabBox->add($project_file_type[$project_type], $project_type, true);
+$tabBox->add( 'vw_idx_list', $AppUI->_('All', UI_OUTPUT_RAW). ' (' . count($projects) . ')' , true,  1000);
+foreach($project_types as $key=>$project_type) {
+	$tabBox->add('vw_idx_list', $project_type, true, $key);
 }
 $min_view = true;
-$tabBox->add("viewgantt", "Gantt");
+$tabBox->add("viewgantt", "Gantt", true, 'gantt');
 $tabBox->show();
 ?>

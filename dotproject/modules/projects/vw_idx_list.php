@@ -4,7 +4,7 @@ global $AppUI, $company_id, $priority, $tpl, $pstatus;
 
 $check = $AppUI->getState( 'ProjIdxTab' );
 $show_all_projects = false;
-if ($check == 0) {
+if ($check == 1000) {
 	$show_all_projects = true;
 }
 

@@ -135,16 +135,6 @@
 			<td class="hilite" width="100%">{$obj->project_percent_complete|string_format:"%.1f"}%</td>
 		</tr>
 		<tr>
-			<td align="right" nowrap="nowrap">{dPtranslate word='Active'}:</td>
-			<td class="hilite" width="100%">
-			{if $obj->project_active}
-				{dPtranslate word='Yes'}
-			{else}
-				{dPtranslate word='No'}
-			{/if}
-			</td>
-		</tr>
-		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Worked Hours'}:</td>
 			<td class="hilite" width="100%">{$worked_hours}</td>
 		</tr>	

@@ -36,9 +36,9 @@ INSERT INTO config_list (`config_id`, `config_list_name`)
 
 # 20050730
 # Converting deprecated inactive projects to new dPsysVal '7|Archived'
-#UPDATE `sysvals` SET `sysval_value` = '0|Not Defined\n1|Proposed\n2|In Planning\n3|In Progress\n4|On Hold\n5|Complete\n6|Template\n7|Archived' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1;
-#UPDATE `projects` SET `project_status` = '7' WHERE `project_active` = '0';
-#ALTER TABLE `projects` DROP `project_active`;
+UPDATE `sysvals` SET `sysval_value` = '0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete\r\n6|Template\r\n7|Archived' WHERE `sysval_title` = 'ProjectStatus' LIMIT 1;
+UPDATE `projects` SET `project_status` = '7' WHERE `project_active` = '0';
+ALTER TABLE `projects` DROP `project_active`;
 
 # 20050804
 # fix for stale users in users access log when users dont logoff

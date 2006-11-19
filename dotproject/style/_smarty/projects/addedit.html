@@ -150,7 +150,6 @@
 				<tr>
 					<td>{dPtranslate word='Status'} *</td>
 					<td nowrap="nowrap">{dPtranslate word='Progress'}</td>
-					<td nowrap="nowrap">{dPtranslate word='Active'}?</td>
 				</tr>
 				<tr>
 					<td>
@@ -158,13 +157,6 @@
 					</td>
 					<td>
 						<strong>{$obj->project_percent_complete|string_format:"%.1f"}%</strong>
-					</td>
-					<td>
-					{if $obj->project_active}
-						<input type="checkbox" value="1" name="project_active" checked="checked" />
-					{else}
-						<input type="checkbox" value="1" name="project_active" />
-					{/if}
 					</td>
 				</tr>
 				</table>
