@@ -233,9 +233,9 @@ GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_
 	$ed = new CDate(Date_Calc::endOfWeek($end_date->day,$end_date->month,$end_date->year));
 	$sd = new CDate(Date_Calc::beginOfWeek($start_date->day,$start_date->month,$start_date->year));
 
-	$week_difference = $ted->workingDaysInSpan($tsd)/count(explode(",",dPgetConfig("cal_working_days")));
+	$week_difference = $end_date->workingDaysInSpan($start_date)/count(explode(",",dPgetConfig("cal_working_days")));
 
-	$actual_date = $tsd;
+	$actual_date = $start_date;
 
 	for($i = 0; $i<=$week_difference; $i++){
 		if(!$actual_date->before($tsd) && !$actual_date->after($ted)) {
