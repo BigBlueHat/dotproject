@@ -2671,7 +2671,7 @@ function calcEndByStartAndDuration( $task ) {
 	return $end_date->format(FMT_DATETIME_MYSQL);
 }
 
-function sort_by_item_title( $title, $item_name, $item_type ) {
+function sort_by_item_title( $title, $item_name, $item_type, $a='' ) {
     global $AppUI,$project_id,$task_id,$min_view,$m;
     global $task_sort_item1,$task_sort_type1,$task_sort_order1;
     global $task_sort_item2,$task_sort_type2,$task_sort_order2;
@@ -2703,7 +2703,7 @@ function sort_by_item_title( $title, $item_name, $item_type ) {
             echo '<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$task_id;
         }
         else {
-            echo '<a href="./index.php?m=tasks';
+            echo '<a href="./index.php?m=tasks'.$a;
         }
     }
     else {
@@ -2711,7 +2711,7 @@ function sort_by_item_title( $title, $item_name, $item_type ) {
             echo '<a href="./index.php?m=projects&amp;a=view&amp;project_id='.$project_id;
         }
         else {
-            echo '<a href="./index.php?m=projects';
+            echo '<a href="./index.php?m=projects'.$a;
         }
     }
     
