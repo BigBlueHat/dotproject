@@ -49,7 +49,7 @@ ALTER TABLE `sessions` ADD `session_user` INT DEFAULT '0' NOT NULL AFTER `sessio
 INSERT INTO `config` (config_id, config_name, config_value, config_group, config_type) 
 	VALUES (null, 'session_name', 'dotproject', 'session', 'text');
 
-#20051005ge
+#20051005
 #softcode for user_type
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
 VALUES (null, '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
@@ -267,6 +267,5 @@ PRIMARY KEY ( `event_id` , `contact_id` )
 ) ENGINE = MYISAM ;
 
 #20061118
-# gregorerhardt
 # Remove flat view
 DELETE FROM `user_preferences` WHERE `pref_name` = 'TABVIEW';
