@@ -112,12 +112,21 @@ class CDpObject {
 		if ($oid === null) {
 			return false;
 		}
+		
 		$this->_query->clear();
 		$this->_query->addTable($this->_tbl);
 		$this->_query->addWhere("$this->_tbl_key = $oid");
 		$sql = $this->_query->prepare();
 		$this->_query->clear();
-		return db_loadObject( $sql, $this, false, $strip );
+		$obj = db_loadObject( $sql, $this, false, $strip );
+		
+		if ($this->_parent)
+		{
+			$parent_key = $this->_tbl_parent;
+			$this->_parent->load($this->$parent_key);
+		}
+		
+		return $obj;
 	}
 
 /**
@@ -177,22 +186,21 @@ class CDpObject {
 		return $newObj;
 	}
     
-    /**
-     *	Default trimming method for class variables of type string
-     *
-     *	@param object Object to trim class variables for
-     *	Can be overloaded/supplemented by the child class
-     *	@return none
-     */
-    function dPTrimAll() {
-        $trim_arr = get_object_vars($this);
-        foreach ($trim_arr as $trim_key => $trim_val) {
-            if (!(strcasecmp(gettype($trim_val), "string"))) {
-                $this->{$trim_key} = trim($trim_val);
-            }
-        }
-    }
-
+	/**
+	 *	Default trimming method for class variables of type string
+	 *
+	 *	@param object Object to trim class variables for
+	 *	Can be overloaded/supplemented by the child class
+	 *	@return none
+	 */
+	function dPTrimAll() {
+		$trim_arr = get_object_vars($this);
+		foreach ($trim_arr as $trim_key => $trim_val) {
+			if (!(strcasecmp(gettype($trim_val), "string"))) {
+				$this->{$trim_key} = trim($trim_val);
+			}
+		}
+	}
 
 /**
  *	Inserts a new row if id is zero or updates an existing row in the database table
@@ -226,6 +234,25 @@ class CDpObject {
 		}
 	}
 
+	function access($type) 
+	{
+		global $AppUI;
+		
+		$perms =& $AppUI->acl();
+		$k = $this->_tbl_key;
+		if (!$perms->checkModuleItem($this->_tbl, $type, $this->$k)) 
+		{
+			$msg = $AppUI->_('noPermission');
+			return false;
+		}
+		
+		if ($this->_parent)
+			return $this->_parent->access($type);
+			
+		return true;
+		
+	}
+
 /**
  *	Generic check for whether dependencies exist for this object in the db schema
  *
@@ -241,8 +268,8 @@ class CDpObject {
 
 		// First things first.  Are we allowed to delete?
 		$acl =& $AppUI->acl();
-		if ( ! $acl->checkModuleItem($this->_tbl, "delete", $oid)) {
-		  $msg = $AppUI->_( "noDeletePermission" );
+		if ( ! $acl->checkModuleItem($this->_tbl, 'delete', $oid)) {
+		  $msg = $AppUI->_( 'noDeletePermission' );
 		  return false;
 		}
 
@@ -251,8 +278,8 @@ class CDpObject {
 			$this->$k = intval( $oid );
 		}
 		if (is_array( $joins )) {
-			$select = "$k";
-			$join = "";
+			$select = $k;
+			$join = '';
 			
 			$q  = new DBQuery;
 			$q->addTable($this->_tbl);

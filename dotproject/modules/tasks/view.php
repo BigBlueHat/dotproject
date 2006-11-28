@@ -15,6 +15,26 @@ if (!$canRead) {
 }
 $q =& new DBQuery;
 $perms =& $AppUI->acl();
+// check permissions
+if ( $task_id ) {
+	// we are editing an existing task
+	$canView = $perms->checkModuleItem( 'tasks', 'view', $task_id );
+	$obj = new CTask();
+	$obj->load($task_id);
+	$parent = $obj->_parent;
+	$pk = $parent->_tbl_key;
+	$canView = $canView && $obj->access('view');
+} else {
+	// do we have write access on this project?
+	$canView = $perms->checkModuleItem( 'projects', 'view', $task_project );
+	// And do we have add permission to tasks?
+	if ($canView)
+	  $canView = $perms->checkModule('tasks', 'view');
+}
+
+if (!$canView || !$canRead) {
+	$AppUI->redirect( 'm=public&a=access_denied&err=noedit' );
+}
 
 // Process pin/unpin of a task.
 if (isset($_GET['pin']))
