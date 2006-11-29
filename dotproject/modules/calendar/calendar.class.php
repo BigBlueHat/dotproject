@@ -793,7 +793,7 @@ class CEvent extends CDpObject {
 		$users = $q->loadHashList('user_id');
 		
 		$q->addTable('event_contacts', 'ec');
-		$q->addTable('contacts','con', 'con.contact_id = ec.contact_id');
+		$q->addJoin('contacts','con', 'con.contact_id = ec.contact_id');
 		$q->addQuery('con.contact_id, contact_first_name,contact_last_name, contact_email');
 		$q->addWhere('ec.event_id = ' . $this->event_id);
 		$contacts = $q->loadList();
