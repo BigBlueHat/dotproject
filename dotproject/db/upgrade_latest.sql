@@ -270,6 +270,5 @@ PRIMARY KEY ( `event_id` , `contact_id` )
 # Remove flat view
 DELETE FROM `user_preferences` WHERE `pref_name` = 'TABVIEW';
 
-# 20061129
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'TaskRequiredFields', 'task_name.value.length|<3' );
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'ProjectRequiredFields', 'project_name.value.length|<3\r\nproject_color_identifier.value.length|<3\r\nproject_company.options[f.project_company.selectedIndex].value|<1' );
+# 20061130
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'ProjectRequiredFields', 'f.project_name.value.length|<3\r\nf.project_color_identifier.value.length|<3\r\nf.project_company.options[f.project_company.selectedIndex].value|<1' );
