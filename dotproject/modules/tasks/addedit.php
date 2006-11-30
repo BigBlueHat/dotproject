@@ -56,6 +56,22 @@ if (!$obj->canAccess( $AppUI->user_id )) {
 	$AppUI->redirect( 'm=public&a=access_denied&err=noaccess' );
 }
 
+?>
+<script type="text/javascript" language="javascript">
+	function checkAutoRequiredFields(f) {
+		var msg = '';
+		<?php 
+		/*
+		** Automatic required fields generated from System Values
+		*/
+		$requiredFields = dPgetSysVal( 'TaskRequiredFields' );
+		echo dPrequiredFields($requiredFields);
+		?>
+		return msg;
+	}
+</script>
+<?php
+
 // pull the related project
 $project = new CProject();
 $project->load( $task_project );

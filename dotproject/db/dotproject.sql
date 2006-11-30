@@ -585,6 +585,8 @@ INSERT INTO `sysvals` VALUES (12, '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n
 INSERT INTO `sysvals` VALUES (13, '1', 'TaskLogReference', '0|Not Defined\n1|Email\n2|Helpdesk\n3|Phone Call\n4|Fax');
 INSERT INTO `sysvals` VALUES (14, '1', 'TaskLogReferenceImage', '0|\n1|./images/obj/email.gif\n2|./modules/helpdesk/images/helpdesk.png\n3|./images/obj/phone.gif\n |./images/icons/stock_print-16.png');
 INSERT INTO `sysvals` VALUES (15, '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (16, '1', 'TaskRequiredFields', 'task_name.value.length|<3' );
+INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (17, '1', 'ProjectRequiredFields', 'project_name.value.length|<3\r\nproject_color_identifier.value.length|<3\r\nproject_company.options[f.project_company.selectedIndex].value|<1' );
 
 #
 # Table structure for table 'roles'

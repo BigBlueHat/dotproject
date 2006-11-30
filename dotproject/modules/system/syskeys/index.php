@@ -67,7 +67,7 @@ function showRow($id=0, $key=0, $title='', $value='') {
 		<input type="text" name="sysval_title" value="'.dPformSafe($title).'" class="text" />
 	</td>
 	<td valign="top">
-		<textarea name="sysval_value" class="small" rows="5" cols="40">'.dPformSafe($value).'</textarea>
+		<textarea name="sysval_value" class="small" rows="5" cols="40">'.$value.'</textarea>
 	</td>
 	<td>
 		<input type="submit" value="'.$AppUI->_($id ? 'edit' : 'add').'" class="button" />
