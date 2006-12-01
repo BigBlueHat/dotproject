@@ -1,4 +1,4 @@
-<table cellpadding="2">
+<table cellpadding="0" class="std" width="100%">
 {foreach name=modules item=module from=$modules}
 <tr>
 	<td colspan="4">
@@ -9,17 +9,27 @@
 	<td colspan="4">
 		<a href="?m=system&amp;a=custom_field_addedit&amp;module={$module.mod_name}">
 			<img src="./images/icons/stock_new.png" alt="{dPtranslate word='new'}" width="16" height="16" border="0" />
-			{dPtranslate word='Add a new Custom Field to this Module'}
+			<input type="button" value="{dPtranslate word='Add a new Custom Field to this Module'}" onClick="location = '?m=system&amp;a=custom_field_addedit&amp;module={$module.mod_name}';" />
 		</a>
 		<br /><br />
 	</td>
 </tr>
+<th>{dPtranslate word='Edit'}</th><th>{dPtranslate word='Order'}</th><th>{dPtranslate word='Description'}</th>
 	{foreach name=custom_fields item=field from=$module.custom_fields}
 <tr>
-	<td class="hilite">
+	<td class="hilite" width="90px">
 		<a href="?m=system&amp;a=custom_field_addedit&amp;module={$module.mod_name}&amp;field_id={$field.field_id}">
 			<img src="./images/icons/stock_edit-16.png" alt="{dPtranslate word='edit'}" width="16" height="16" border="0" />
 			{dPtranslate word='Edit'}
+		</a>
+	</td>
+	<td class="hilite" width="90px" align="center">
+		<a href="?m=system&amp;a=custom_field_editor&amp;dir=up&amp;field_id={$field.field_id}&module={$module.mod_directory}">
+		<img src="./images/arrow-up.gif" alt="{dPtranslate word='move up'}" border="0" />
+		</a>
+			/
+		<a href="?m=system&amp;a=custom_field_editor&amp;dir=down&amp;field_id={$field.field_id}&module={$module.mod_directory}">
+		<img src="./images/arrow-down.gif" alt="{dPtranslate word='move down'}" border="0" />
 		</a>
 	</td>
 	<td class="hilite">{dPformSafe var=$field.field_description}</td>

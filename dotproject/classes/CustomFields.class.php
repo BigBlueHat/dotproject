@@ -8,7 +8,6 @@
 	class CustomField
 	{
 		var $field_id;
-		// TODO - Implement Field Order - some people like to change the order of fields
 		var $field_order;
 		var $field_name;
 		var $field_description;
@@ -107,17 +106,10 @@
 					$q->addInsert('value_charvalue', $ins_charvalue );
 					$q->addInsert('value_intvalue', $ins_intvalue);
 				}
-//				if ($sql != NULL) $rs = $q->exec();
-                // No $sql var defined
 
-					//$sql_ins = $q->prepare();
-					
-					//$db->Execute($sql_ins);
-					
-					//return $q->prepare();
-               $rs = $q->exec();
-
+               			$rs = $q->exec();
 				$q->clear();
+
 				if (!$rs) {
 					return $db->ErrorMsg()." | SQL: ";
 				}
@@ -415,7 +407,7 @@
 		function CustomFields($m, $a, $obj_id = NULL, $mode = "edit")
 		{
 			$this->m = $m;
-			$this->a = 'addedit'; // only addedit pages can carry the custom field for now
+			$this->a = 'addedit'; // only addedit or view pages can carry the custom field for now, class assumes only addedit/view will be used
 			$this->obj_id = $obj_id;
 			$this->mode = $mode;
 
@@ -466,14 +458,41 @@
 			}
 		}
 
+		/* Add a new custom field - will automatically determine the field_order to be the next one in sequence
+		 *
+		 */
 		function add($field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg)
 		{
 			global $db;
 			$next_id = $db->GenID('custom_fields_struct_id', 1);
 
-			$field_order = 1;
-			$field_a = 'addedit';
+			//$field_order = 1;
+			$field_a = 'addedit'; // allows for expansion later, so that custom fields may be added to modules with multiple different pages 
 
+			$q = new DBQuery();
+			$q->addTable('custom_fields_struct');
+			$q->addQuery('MAX(field_order) AS field_order_max');
+			$q->addWhere('field_module = \''.$this->m.'\'');
+			$q->addWhere('field_page = \''.$field_a.'\'');
+			if (!$rs = $q->exec()) {
+				$q->clear();
+				return 0;
+			}
+			else
+			{
+				$row = $rs->fetchRow();
+				$field_order_max = $row['field_order_max'];
+				if (is_numeric($field_order_max))
+				{
+					$field_order = $field_order_max + 1; 
+				}
+				else
+				{
+					$field_order = 1;
+				}
+				$q->clear();
+			}
+			
 			// TODO - module pages other than addedit
 			// TODO - validation that field_name doesnt already exist
 			$q  = new DBQuery();
@@ -522,6 +541,25 @@
 			}
 		}
 
+		function updateOrder($field_id, $field_order)
+		{
+			global $db;
+
+			$q = new DBQuery();
+			$q->addTable('custom_fields_struct');
+			$q->addUpdate('field_order', $field_order);
+			$q->addWhere("field_id = ".$field_id);
+			if (!$q->exec()) {
+				// unused for now
+				//$error_msg = $db->ErrorMsg();
+				$q->clear();
+				return 0;
+			} else {
+				$q->clear();
+				return $field_id;
+			}
+		}	
+
 		function fieldWithId($field_id)
 		{
 			foreach ($this->fields as $k => $v) {
@@ -530,6 +568,106 @@
 				}
 			}
 		}
+	
+		function indexOfFieldWithId($field_id)
+		{
+			for ($i = 0; $i < $this->count(); $i++) {
+				if ($this->fields[$i]->field_id == $field_id) { 
+					return $i;
+				}
+			}
+		}
+
+		function moveFieldOrder($field_id, $direction )
+		{
+			$field_to_move = $this->fieldWithId($field_id);
+			$cfenum = $this->getEnumerator(); 
+			//die(print_r($this->fields));	
+			//die('fid:'.print_r($field_id).'. fobj:'.print_r($field_to_move).'.');
+
+			/*
+			if ($field_to_move->field_order == 1)
+			{
+				// upgrade fields with no proper order assigned
+				
+				$reorder_idx = 2;
+
+				while ($cf = $cfenum->nextObject())
+				{
+					if ($cf->field_id != $field_id && $cf->field_order == 1)
+					{
+						//update field with reordered index	
+						$this->updateOrder($cf->field_id, $reorder_idx);
+						$reorder_idx++;
+					}
+				}
+			}
+			*/
+
+			// switch places with the next field
+			if ($direction == 'down')
+			{
+				$cfenum->reset();
+				
+				while($cf = $cfenum->nextObject())
+				{
+					if ($cf == $field_to_move)
+					{
+						$nextfield = $cfenum->nextObject();
+		
+						if ($nextfield != NULL)
+						{
+							$field_order = $field_to_move->field_order;
+							$nextfield_order = $nextfield->field_order;
+							
+							if ($field_order == $nextfield_order) 
+							{
+								$nextfield_order++;
+							}
+							$this->updateOrder( $field_to_move->field_id, $nextfield_order );
+							$field_to_move->field_order = $nextfield_order;
+
+							$this->updateOrder( $nextfield->field_id, $field_order ); 					
+							$nextfield->field_order = $field_order;					
+						}
+						return 0;
+					}	
+				}
+			}
+			
+			if ($direction == 'up')
+			{
+				$cfenum->moveLast();
+			
+				while($cf = $cfenum->prevObject())
+				{
+					if ($cf == $field_to_move)
+					{
+						$prevfield = $cfenum->prevObject();
+
+						if ($prevfield != NULL)
+						{
+							$field_order = $field_to_move->field_order;
+							$prevfield_order = $prevfield->field_order;
+							
+							if ($field_order == $prevfield_order)
+							{
+								$prevfield_order--;
+							}
+						
+							$this->updateOrder( $field_to_move->field_id, $prevfield_order );
+							$field_to_move->field_order = $prevfield_order;
+
+							$this->updateOrder( $prevfield->field_id, $field_order ); 					
+							$prevfield->field_order = $field_order;					
+						}
+						return 0;
+					}	
+				}
+			}
+			
+		}
+
 
 		function bind(&$formvars)
 		{
@@ -621,7 +759,60 @@
 			return $q->loadList();
 		}
 
+		function getEnumerator()
+		{
+			return new CustomFieldsEnumerator( $this );
+		}
+
 	}
+
+	// Enumerates CustomFields object, similar to javastyle object enumerator
+	class CustomFieldsEnumerator
+	{
+		var $customfieldsobj;
+		var $keys;
+		var $index;
+
+		function CustomFieldsEnumerator( $customfieldsobj )
+		{	
+			$this->customfieldsobj = $customfieldsobj;
+			$this->index = 0;
+			$this->keys = array_keys($this->customfieldsobj->fields);
+		}
+
+		function nextObject()
+		{
+			if ($this->index >= count($this->keys))
+			{
+				return NULL;	
+			} 
+			$nextobject = $this->customfieldsobj->fields[$this->keys[$this->index]];
+			$this->index++;
+			return $nextobject;
+		}
+
+		function prevObject()
+		{
+			if ($this->index < 0)
+			{
+				return NULL;
+			}
+			$prevobject = $this->customfieldsobj->fields[$this->keys[$this->index]];
+			$this->index--;
+			return $prevobject;
+		}
+
+		function moveLast()
+		{
+			$this->index = (count($this->keys) - 1);
+		}
+
+		function reset()
+		{
+			$this->index = 0;
+		}
+	}
+
 
 	class SQLCustomOptionList
 	{

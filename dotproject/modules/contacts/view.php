@@ -63,9 +63,12 @@ $titleBlock->show();
 if (!$row->contact_owner)
 	$row->contact_owner = $AppUI->user_id;
 
+
 $tpl->assign('contact_id', $contact_id);
 $tpl->assign('view_company', $perms->checkModuleItem( 'companies', 'access', $obj->contact_company ));
 $tpl->assign('view_dept', isset($_SESSION['all_tabs']['departments']));
+$custom_fields = New CustomFields( $m, $a, $contact_id, "view" );
+$tpl->assign('customFields', $custom_fields->getHTML());
 $tpl->displayView($row);
 ?>
 

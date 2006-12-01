@@ -43,6 +43,9 @@ if ($contact_id == 0 && $company_id > 0) {
 $contact_owner = $row->contact_owner ? $row->contact_owner : $AppUI->user_id;
 $contact_unique_update = uniqid("");
 
+require_once($baseDir . '/classes/CustomFields.class.php');
+$custom_fields = New CustomFields( $m, $a, $contact_id, "edit" );
+$tpl->assign('customFields', $custom_fields->getHTML());
 $tpl->assign('company_detail', $company_detail);
 $tpl->assign('contact_id', $contact_id);
 $tpl->assign('contact_owner', $contact_owner);
