@@ -585,30 +585,29 @@
 			//die(print_r($this->fields));	
 			//die('fid:'.print_r($field_id).'. fobj:'.print_r($field_to_move).'.');
 
-			/*
-			if ($field_to_move->field_order == 1)
-			{
-				// upgrade fields with no proper order assigned
-				
-				$reorder_idx = 2;
+                        if ($field_to_move->field_order == 1)
+                        {
+                                // upgrade fields with no proper order assigned
 
-				while ($cf = $cfenum->nextObject())
-				{
-					if ($cf->field_id != $field_id && $cf->field_order == 1)
-					{
-						//update field with reordered index	
-						$this->updateOrder($cf->field_id, $reorder_idx);
-						$reorder_idx++;
-					}
-				}
-			}
-			*/
+                                $reorder_idx = 2;
+
+                                while ($cf = $cfenum->nextObject())
+                                {
+                                        if ($cf->field_id != $field_id && $cf->field_order == 1)
+                                        {
+                                                //update field with reordered index     
+                                                $this->updateOrder($cf->field_id, $reorder_idx);
+                                                $f = $this->fieldWithId($cf->field_id);
+                                                $f->field_order = $reorder_idx;
+                                                $reorder_idx++;
+                                        }
+                                }
+                                $cfenum->reset();
+                        }
 
 			// switch places with the next field
 			if ($direction == 'down')
 			{
-				$cfenum->reset();
-				
 				while($cf = $cfenum->nextObject())
 				{
 					if ($cf == $field_to_move)
