@@ -24,13 +24,22 @@
 		</a>
 	</td>
 	<td class="hilite" width="90px" align="center">
+	{if $smarty.foreach.custom_fields.first}
+		<img src="./images/arrow-up-disabled.gif" alt="{dPtranslate word='move up'}" border="0" />
+	{else}
 		<a href="?m=system&amp;a=custom_field_editor&amp;dir=up&amp;field_id={$field.field_id}&module={$module.mod_directory}">
 		<img src="./images/arrow-up.gif" alt="{dPtranslate word='move up'}" border="0" />
 		</a>
+	{/if}
 			/
+
+	{if $smarty.foreach.custom_fields.last}
+		<img src="./images/arrow-down-disabled.gif" alt="{dPtranslate word='move down'}" border="0" />
+	{else}
 		<a href="?m=system&amp;a=custom_field_editor&amp;dir=down&amp;field_id={$field.field_id}&module={$module.mod_directory}">
 		<img src="./images/arrow-down.gif" alt="{dPtranslate word='move down'}" border="0" />
 		</a>
+	{/if}
 	</td>
 	<td class="hilite">{dPformSafe var=$field.field_description}</td>
 </tr>
