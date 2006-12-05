@@ -9,11 +9,12 @@ $perms =& $AppUI->acl();
 
 $companies = new CCompany();
 $filters_selection = array(
-'project_owner' => $perms->getPermittedUsers('projects'),
-'project_status' => dPgetSysVal('ProjectStatus'),
-'project_type' => dPgetSysVal('ProjectType'),
-'project_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'),
-'project_company_type' => dPgetSysVal('CompanyType'));
+  'project_owner' => $perms->getPermittedUsers('projects'),
+  'project_status' => dPgetSysVal('ProjectStatus'),
+  'project_type' => dPgetSysVal('ProjectType'),
+  'project_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'),
+  'project_company_type' => dPgetSysVal('CompanyType')
+);
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Projects', 'applet3-48.png', $m, "$m.$a" );

@@ -155,8 +155,6 @@ $total_project_hours = $total_project_days_sql * $dPconfig['daily_working_hours'
 $df = $AppUI->getPref('SHDATEFORMAT');
 
 // create Date objects from the datetime fields
-//$start_date = intval( $obj->project_start_date ) ? new CDate( $obj->project_start_date ) : null;
-//$end_date = intval( $obj->project_end_date ) ? new CDate( $obj->project_end_date ) : null;
 $obj->actual_end_date = intval( $criticalTasks[0]['task_end_date'] ) ? new CDate( $criticalTasks[0]['task_end_date'] ) : null;
 
 $style = (( $actual_end_date > $end_date) && !empty($end_date)) ? 'style="color:red; font-weight:bold"' : '';

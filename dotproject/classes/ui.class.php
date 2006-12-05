@@ -721,8 +721,9 @@ class CAppUI {
 		$username = $auth->username; // Some authentication schemes may collect username in various ways.
 		// Now that the password has been checked, see if they are allowed to
 		// access the system
-		if (! isset($GLOBALS['acl']))
+		if (! isset($GLOBALS['acl'])) {
 		  $GLOBALS['acl'] =& new dPacl;
+    	}
 		if ( ! $GLOBALS['acl']->checkLogin($user_id)) {
 		  dprint(__FILE__, __LINE__, 1, "Permission check failed");
 		  //  Stop processing here if using HTTP Basic Auth or else enter a redirect loop.
@@ -1011,10 +1012,11 @@ the active tab, and the selected tab **/
 */
 	function add( $file, $title, $translated = false, $key= NULL ) {
 		$t = array( $file, $title, $translated);
-		if (isset($key))
+		if (isset($key)) {
 			$this->tabs[$key] = $t;
-		else
+		} else {
  			$this->tabs[] = $t;
+ 		}
 	}
 
 	function isTabbed()
