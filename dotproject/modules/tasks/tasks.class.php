@@ -738,7 +738,7 @@ class CTask extends CDpObject {
             return db_error();
         }
         else {
-					$this->_action ='deleted';
+            $this->_action ='deleted';
         }
         
         $q->clear();
@@ -1204,12 +1204,10 @@ class CTask extends CDpObject {
             foreach($filters as $field => $filter) {
                 if ($filter > 0) {
                     if ($field == 'task_owner') {
-                        $q->addWhere("tasks.task_owner = $filter OR tasks.task_creator = $filter");
-                    }
-                    else if ($field == 'task_company') {
-                        $q->addWhere('projects.project_company = ' . $filter);
-                    }
-                    else {
+                      $q->addWhere("tasks.task_owner = $filter OR tasks.task_creator = $filter");
+                    } else if ($field == 'task_company') {
+                      $q->addWhere('projects.project_company = ' . $filter);
+                    } else {
                         $q->addWhere("tasks.$field = $filter ");
                     }
                 }
@@ -1222,7 +1220,6 @@ class CTask extends CDpObject {
         // exclude read denied projects
         $obj = new CProject();
         $obj->setAllowedSQL( $AppUI->user_id, $q );
-        
         
         // get any specifically denied tasks
         $obj = new CTask();
@@ -2671,7 +2668,7 @@ function calcEndByStartAndDuration( $task ) {
 	return $end_date->format(FMT_DATETIME_MYSQL);
 }
 
-function sort_by_item_title( $title, $item_name, $item_type, $a='' ) {
+function sort_by_item_title( $title, $item_name, $item_type ) {
     global $AppUI,$project_id,$task_id,$min_view,$m;
     global $task_sort_item1,$task_sort_type1,$task_sort_order1;
     global $task_sort_item2,$task_sort_type2,$task_sort_order2;
@@ -2703,7 +2700,7 @@ function sort_by_item_title( $title, $item_name, $item_type, $a='' ) {
             echo '<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$task_id;
         }
         else {
-            echo '<a href="./index.php?m=tasks'.$a;
+            echo '<a href="./index.php?m=tasks';
         }
     }
     else {
@@ -2711,7 +2708,7 @@ function sort_by_item_title( $title, $item_name, $item_type, $a='' ) {
             echo '<a href="./index.php?m=projects&amp;a=view&amp;project_id='.$project_id;
         }
         else {
-            echo '<a href="./index.php?m=projects'.$a;
+            echo '<a href="./index.php?m=projects';
         }
     }
     

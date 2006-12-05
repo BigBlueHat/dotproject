@@ -110,26 +110,31 @@ $q->addWhere('ta.task_percent_complete != 100');
 $q->addWhere("ta.task_status = '0'");
 $q->addWhere("pr.project_id = ta.task_project");
 $q->addWhere('project_status != ' . $project_template_status); // Filter out template projects
-if (!$showArcProjs)
+if (!$showArcProjs) {
 	$q->addWhere('project_status != 7');
-if (!$showHoldProjs)
+}
+if (!$showHoldProjs) {
 	$q->addWhere('project_status != ' . $project_on_hold_status);
-if (!$showLowTasks)
+}
+if (!$showLowTasks) {
 	$q->addWhere('task_priority >= 0');
-if (!$showDynTasks)
+}
+if (!$showDynTasks) {
 	$q->addWhere('task_dynamic != 1');
-if ($showPinned)
+}
+if ($showPinned) {
 	$q->addWhere('task_pinned = 1');
-if (!$showEmptyDate)
+}
+if (!$showEmptyDate) {
 	$q->addWhere("ta.task_end_date != '' AND ta.task_end_date != '0000-00-00 00:00:00'");
+}
 
-
-if (count($allowedTasks))
+if (count($allowedTasks)) {
 	$q->addWhere($allowedTasks);
-
-if (count($allowedProjects))
+}
+if (count($allowedProjects)) {
 	$q->addWhere($allowedProjects);
-
+}
 $q->addGroup('ta.task_id');
 $q->addOrder('ta.task_end_date');
 $q->addOrder('task_priority DESC');
