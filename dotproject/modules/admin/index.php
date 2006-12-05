@@ -43,8 +43,9 @@ $q->addQuery('DISTINCT UPPER(SUBSTRING(contact_first_name, 1, 1)) AS L');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $arr = $q->loadList();
 foreach( $arr as $L ) {
-	if ($L['L'])
+	if ($L['L']) {
 		$let .= strpos($let, $L['L']) ? '' : $L['L'];
+  }
 }
 
 $q  = new DBQuery;
@@ -53,8 +54,9 @@ $q->addQuery('DISTINCT UPPER(SUBSTRING(contact_last_name, 1, 1)) AS letter');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $letters = $q->loadColumn();
 foreach( $letters as $letter ) {
-    if ($letter)
-	$let .= strpos($let, $letter) ? '' : $letter;
+  if ($letter) {
+	  $let .= strpos($let, $letter) ? '' : $letter;
+  }
 }
 
 $a2z = '
@@ -73,9 +75,11 @@ for ($c=65; $c < 91; $c++) {
 	$a2z .= '
 	<td>'.$cell.'</td>';
 }
-$a2z .= '
-</tr>
-</table>';
+if ($canEdit || $user_id == $AppUI->user_id) {
+	$a2z .= '<td><input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&amp;a=addedituser\';" /></td>';
+}
+
+$a2z .= '</tr></table>';
 
 // setup the title block
 $titleBlock = new CTitleBlock('User Management', 'helix-setup-users.png', $m, "$m.$a");

@@ -56,15 +56,14 @@ if (!$user) {
 
 // setup the title block
 	$titleBlock = new CTitleBlock( 'View User', 'helix-setup-user.png', $m, "$m.$a" );
-	if ($canRead)
+	if ($canRead) {
 	  $titleBlock->addCrumb('?m=admin', 'users list');
+  }
 	
 	if ($canEdit || $user_id == $AppUI->user_id) {
 	      $titleBlock->addCrumb('?m=admin&amp;a=addedituser&amp;user_id=' . $user_id, 'edit this user');
 	      $titleBlock->addCrumb('?m=system&amp;a=addeditpref&amp;user_id=' . $user_id, 'edit preferences');
-	      $titleBlock->addCrumbRight(
-			'<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>'
-	      );
+	      $titleBlock->addCrumbRight('<a href="#" onclick="popChgPwd();return false">' . $AppUI->_('change password') . '</a>');
 	      $titleBlock->addCell('<input type="button" class=button value="'.$AppUI->_('add user').'" onclick="javascript:window.location=\'./index.php?m=admin&amp;a=addedituser\';" />');
 	}
 	$titleBlock->show();
