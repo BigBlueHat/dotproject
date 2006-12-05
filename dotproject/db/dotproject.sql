@@ -531,7 +531,7 @@ INSERT INTO `modules` VALUES("8", "User Administration", "admin", "1.0.0", "", "
 INSERT INTO `modules` VALUES("9", "System Administration", "system", "1.0.0", "", "core", "1", "System Admin", "48_my_computer.png", "9", "1", "", "", "", "");
 INSERT INTO `modules` VALUES("10", "Departments", "departments", "1.0.0", "", "core", "1", "Departments", "users.gif", "10", "0", "", "", "", "");
 INSERT INTO `modules` VALUES("11", "Help", "help", "1.0.0", "", "core", "1", "Help", "dp.gif", "11", "0", "", "", "", "");
-INSERT INTO `modules` VALUES("12", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "12", "0", "", "", "", "");
+INSERT INTO `modules` VALUES("12", "Public", "public", "1.0.0", "", "core", "1", "Public", "users.gif", "0", "0", "", "", "", "");
 
 #
 # Table structure for table 'syskeys'

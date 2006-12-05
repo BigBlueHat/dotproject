@@ -49,12 +49,12 @@ ALTER TABLE `sessions` ADD `session_user` INT DEFAULT '0' NOT NULL AFTER `sessio
 INSERT INTO `config` (config_id, config_name, config_value, config_group, config_type) 
 	VALUES (null, 'session_name', 'dotproject', 'session', 'text');
 
-#20051005
-#softcode for user_type
+# 20051005
+# softcode for user_type
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` )
 VALUES (null, '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
 
-#20051114
+# 20051114
 # webdav/webcal and icalendar functionality
 CREATE TABLE `webcal_projects` (
   `webcal_id` int(11) NOT NULL default '0',
@@ -79,59 +79,59 @@ CREATE TABLE `webcal_resources` (
   PRIMARY KEY  (`webcal_id`)
 ) ENGINE=MyISAM COMMENT='webcal resource management' AUTO_INCREMENT=29 ;
 
-#20060203
+# 20060203
 # Indeces added for optimization purposes.
 alter table user_tasks add index index_ut_to_tasks (task_id);
 
-#20060304
+# 20060304
 # added optional task numbers
 INSERT INTO `config` (config_id, config_name, config_value, config_group, config_type) 
 	VALUES (null, 'show_task_numbers', 'false', '', 'checkbox');
 
-#20060311
+# 20060311
 # added notification email
 INSERT INTO `config` (config_id, config_name, config_value, config_group, config_type) 
 	VALUES (null, 'notification_email', '', '', '');
 
-#20060311
+# 20060311
 # Check task dates fix
 UPDATE `config` SET `config_name` = 'check_task_dates' WHERE `config_name` = 'check_tasks_dates';
 
-#20060314
+# 20060314
 # Add country to company details
 ALTER TABLE companies ADD company_country varchar(100) NOT NULL default '' AFTER company_zip;
 
-#20060319
+# 20060319
 # Check task dates fix
 INSERT INTO `config` (config_id, config_name, config_value, config_group, config_type) 
 	VALUES(null, 'page_size', '25', '', 'text');
 
-#20060320
+# 20060320
 # Force unique billing codes per company
 ALTER TABLE `billingcode` ADD UNIQUE (`billingcode_name` ,`company_id`);
 
-#20060402
+# 20060402
 # Add Event URL
 ALTER TABLE `events` ADD `event_url` VARCHAR( 255 ) AFTER `event_description` ;
 
-#20060402
+# 20060402
 # Add event_task field
 ALTER TABLE `events` ADD `event_task` INT(11) AFTER `event_project` ;
 
-#20060430
+# 20060430
 # Add a user preference to the user display
 INSERT INTO `user_preferences` VALUES('0', 'USERFORMAT', 'last');
 
-#20060430
+# 20060430
 # terms and conditions link
 INSERT INTO `config` (config_id, config_name, config_value, config_group, config_type) 
 	VALUES(null, 'site_terms', '...', '', 'textarea');
 
-#20060503
+# 20060503
 # iconsets support
 INSERT INTO `user_preferences` VALUES('0', 'ICONSTYLE', '');
 
-#20060530
+# 20060530
 # Regrouping system config site
 UPDATE `config` SET `config_group` = 'localisation' WHERE `config_name` = 'host_locale';
 UPDATE `config` SET `config_group` = 'localisation' WHERE `config_name` = 'currency_symbol';
@@ -193,11 +193,11 @@ UPDATE `config` SET `config_group` = 'projects' WHERE `config_name` = 'restrict_
 UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'display_debug';
 UPDATE `config` SET `config_group` = 'debug' WHERE `config_name` = 'debug';
 
-#20060531
+# 20060531
 # preparing for ticketsmith move to dotmods
 DELETE FROM `config` WHERE `config_name` = 'link_tickets_kludge';
 
-#20060531
+# 20060531
 # change over to automatic system as used in system config
 ALTER TABLE `user_preferences` ADD `pref_group` VARCHAR( 255 ) NOT NULL ,
 ADD `pref_type` VARCHAR( 255 ) NOT NULL ;
@@ -234,31 +234,31 @@ INSERT INTO `user_prefs_list` ( `pref_list_id` , `pref_name` , `pref_list_name` 
 	VALUES (NULL , 'USERFORMAT', 'first'), (NULL , 'USERFORMAT', 'last'), 
 	(NULL , 'USERFORMAT', 'user');
 
-#20060601
+# 20060601
 # made sure session id field is big enough
 ALTER TABLE `sessions` CHANGE `session_id` `session_id` VARCHAR( 64 ) NOT NULL ;
 
-#20060605
+# 20060605
 # adding some further user preferences options
 INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
 VALUES (
 '0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 'checkbox'
 );
 
-#20060717
+# 20060717
 # Add system variable to set tasks default for dependency tracking
 INSERT INTO `config` ( `config_id` , `config_name` , `config_value` , `config_group` , `config_type` ) VALUES (NULL , 'dependency_tracking_default', 'false', 'tasks', 'checkbox');
 
-#20060722
+# 20060722
 # Add user preference for timezone
 INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
 	VALUES ('0', 'TIMEZONE', 'UTC', 'l10n', 'select');
 
-#200601003
+# 20061003
 # Add field storing the 'set start dates based on dep...' checkbox state
 ALTER TABLE `tasks` ADD `task_dep_reset_dates` TINYINT( 1 ) NULL DEFAULT '0';
 
-#20061102
+# 20061102
 # Add contacts to events
 CREATE TABLE `event_contacts` (
 `event_id` INT NOT NULL ,
@@ -266,9 +266,13 @@ CREATE TABLE `event_contacts` (
 PRIMARY KEY ( `event_id` , `contact_id` )
 ) ENGINE = MYISAM ;
 
-#20061118
+# 20061118
 # Remove flat view
 DELETE FROM `user_preferences` WHERE `pref_name` = 'TABVIEW';
 
 # 20061130
 INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (null, '1', 'ProjectRequiredFields', 'f.project_name.value.length|<3\r\nf.project_color_identifier.value.length|<3\r\nf.project_company.options[f.project_company.selectedIndex].value|<1' );
+
+# 20061205
+# Zeroing out UI order of "Inaccessible" modules so as not to interfere with other modules
+UPDATE `modules` SET `mod_ui_order`=0 WHERE `mod_name` = 'Public';

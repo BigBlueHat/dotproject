@@ -100,8 +100,14 @@ class CModule extends CDpObject {
                 $q  = new DBQuery;
                 $q->addTable('modules');
                 $q->addQuery('max(mod_ui_order)');
+                // We need to account for "pre-installed" modules that are "UI Inaccessible"
+                // in order to make sure we get the "correct" initial value for .
+                // mod_ui_order values of "UI Inaccessible" modules are irrelevant
+                // and should probably be set to 0 so as not to interfere.
+                $q->addWhere("mod_name NOT LIKE 'Public'");
                 $mmuo = $q->loadList();
-                $this->mod_ui_order = $mmuo[0]['max(mod_ui_order)'] + 1;
+                $this->mod_ui_order = $mmuo[0]['max(mod_ui_order)'] + 1; 
+                print $this->mod_ui_order ;
                 $q->clear();
 
                 $perms =& $GLOBALS['AppUI']->acl();
@@ -145,36 +151,37 @@ class CModule extends CDpObject {
         }
 
         function move( $dirn ) {
-                $temp = $this->mod_ui_order;
+                $new_ui_order = $this->mod_ui_order;
+                $other_new = false;
+                
                 if ($dirn == 'moveup') {
-                        $temp--;
-
-                        $q  = new DBQuery;
-                        $q->addTable('modules');
-                        $q->addUpdate('mod_ui_order', ''.$temp+1);
-                        $q->addWhere("mod_ui_order = $temp");
-                        $q->exec();
-                        $q->clear();
-
+                        $other_new=$new_ui_order;
+                        $new_ui_order--;
                 } else if ($dirn == 'movedn') {
-                        $temp++;
-
+                        $other_new=$new_ui_order;
+                        $new_ui_order++;
+                }
+                
+                //make sure we aren't going "up" to 0
+                if ($new_ui_order) {
                         $q  = new DBQuery;
+                        //make sure our option was valid.
+                        if ($other_new) {
+                                $q->addTable('modules');
+                                $q->addUpdate('mod_ui_order', ''.$other_new);
+                                $q->addWhere("mod_ui_order = $new_ui_order");
+                                $q->exec();
+                                $q->clear();
+                        }
+                        
                         $q->addTable('modules');
-                        $q->addUpdate('mod_ui_order', ''.$temp-1);
-                        $q->addWhere("mod_ui_order = $temp");
+                        $q->addUpdate('mod_ui_order', "$new_ui_order");
+                        $q->addWhere("mod_id = $this->mod_id");
                         $q->exec();
                         $q->clear();
+                        
+                        $this->mod_ui_order = $new_ui_order;
                 }
-
-                $q  = new DBQuery;
-                $q->addTable('modules');
-                $q->addUpdate('mod_ui_order', "$temp");
-                $q->addWhere("mod_id = $this->mod_id");
-                $q->exec();
-                $q->clear();
-
-                $this->mod_ui_order = $temp;
         }
 // overridable functions
         function moduleInstall() {
