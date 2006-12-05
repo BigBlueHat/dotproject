@@ -129,7 +129,7 @@ $tdw = floor( 100 / $carrWidth );
 require_once( $AppUI->getModuleClass( 'companies' ) );
 $obj = new CCompany();
 $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
-$filters2 = arrayMerge(  array( 'all' => $AppUI->_('All Companies', UI_OUTPUT_RAW) ), $companies );
+$filters2 = arrayMerge(  array( 'all' => $AppUI->_('All', UI_OUTPUT_RAW) ), $companies );
 
 
  // Let's remove the first '%' that we previously added to ContIdxWhere
