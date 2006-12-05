@@ -24,9 +24,14 @@ if (!$ok) {
                         $sql = "DELETE FROM modules WHERE mod_id = $mod_id";
                         db_exec($sql);
                         echo db_error();
-                        $AppUI->setMsg( 'Module has been removed from the modules list - please check your database for additional tables that may need to be removed', UI_MSG_ERROR );       
-                }       
-		$AppUI->redirect();
+                        // move following modules "up" to fill the "UI order" gap
+                        $sql = ('UPDATE modules SET `mod_ui_order`=(`mod_ui_order` - 1) WHERE `mod_ui_order` > '
+                                .$obj->mod_ui_order);
+                        db_exec($sql);
+                        echo db_error();
+                        $AppUI->setMsg( 'Module has been removed from the modules list - please check your database for additional tables that may need to be removed', UI_MSG_ERROR );
+                }
+                $AppUI->redirect();
 	}
 }
 $setupclass = $config['mod_setup_class'];
@@ -66,10 +71,16 @@ switch ($cmd) {
 		$AppUI->setMsg( 'Module installed', UI_MSG_OK, true );
 		break;
 	case 'remove':
-	// do the module specific stuff
+    // do the module specific stuff
 		$AppUI->setMsg( $setup->remove() );
 	// remove from the installed modules table
 		$obj->remove();
+    // move following modules "up" to fill the "UI order" gap
+        $sql = ('UPDATE modules SET `mod_ui_order`=(`mod_ui_order` - 1) WHERE `mod_ui_order` > '
+                .$obj->mod_ui_order);
+        db_exec($sql);
+        echo db_error();
+        
 		$AppUI->setMsg( 'Module removed', UI_MSG_ALERT, true );
 		break;
 	case 'upgrade':

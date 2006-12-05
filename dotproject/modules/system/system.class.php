@@ -128,24 +128,20 @@ class CModule extends CDpObject {
 
         function remove() {
                 $q  = new DBQuery;
+                // remove module from table
                 $q->setDelete('modules');
                 $q->addWhere("mod_id = $this->mod_id");
                 if (!$q->exec()) {
                         $q->clear();
                         return db_error();
                 } else {
-                        $q->clear();
+                        //remove module permissions from gacl tables
                         $perms =& $GLOBALS['AppUI']->acl();
-                        if (! isset($this->mod_admin))
-                                $this->mod_admin = 0;
-                        if ($this->mod_admin) {
-                                $perms->deleteGroupItem($this->mod_directory, "admin");
-                        } else {
-                                $perms->deleteGroupItem($this->mod_directory, "non_admin");
-                        }
+                        $perms->deleteGroupItem($this->mod_directory, (($this->mod_admin)?"admin":"non_admin"));
                         $perms->deleteModule($this->mod_directory);
-                        if (isset($this->permissions_item_table) && $this->permissions_item_table)
-                          $perms->deleteModuleSection($this->permissions_item_table);
+                        if (isset($this->permissions_item_table) && $this->permissions_item_table) {
+                                $perms->deleteModuleSection($this->permissions_item_table);
+                        }
                         return NULL;
                 }
         }
