@@ -65,3 +65,4 @@ if (!db_loadHash( $sql, $dept )) {
 	$tabBox->add("vw_contacts", "Contacts");
 	$tabBox->show();
 }
+?>
