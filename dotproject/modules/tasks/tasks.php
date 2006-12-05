@@ -52,14 +52,12 @@ if (isset($_GET['pin'])) {
     
     if ( !$q->exec() ) {
         $AppUI->setMsg( 'ins/del err', UI_MSG_ERROR, true );
-    }
-    else {
+    } else {
         $q->clear();
     }
     
     $AppUI->redirect('', -1);
-}
-else if($task_id > 0) {
+} else if($task_id > 0) {
     $tasks_opened[] = $task_id;
 }
 
@@ -72,9 +70,9 @@ if( ($open_task_id = dPGetParam($_GET, 'open_task_id', 0)) > 0
 
 // Closing tasks needs also to be within tasks iteration in order to
 // close down all child tasks
-if(($close_task_id = dPGetParam($_GET, 'close_task_id', 0)) > 0)
+if(($close_task_id = dPGetParam($_GET, 'close_task_id', 0)) > 0) {
 	closeOpenedTask($close_task_id);
-
+}
 
 // We need to save tasks_opened until the end because some tasks are closed within tasks iteration
 /// End of tasks_opened routine
@@ -91,8 +89,9 @@ $task_sort_item2 = dPgetParam( $_GET, 'task_sort_item2', '' );
 $task_sort_type2 = dPgetParam( $_GET, 'task_sort_type2', '' );
 $task_sort_order1 = intval( dPgetParam( $_GET, 'task_sort_order1', 0 ) );
 $task_sort_order2 = intval( dPgetParam( $_GET, 'task_sort_order2', 0 ) );
-if (isset($_POST['show_task_options']))
+if (isset($_POST['show_task_options'])) {
 	$AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
+}
 
 $showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 
@@ -170,17 +169,16 @@ $q->leftJoin('contacts', 'co', 'co.contact_id = usernames.user_contact');
 $q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = tasks.task_id AND tlog.task_log_problem > 0');
 $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
-//$user_id = $user_id ? $user_id : $AppUI->user_id;
 
-if ($f != 'children')
+if ($f != 'children') {
 	$q->addWhere('tasks.task_id = task_parent');
-
-if ($project_id)
+}
+if ($project_id) {
 	$q->addWhere('task_project = ' . $project_id);
-
-if ($pinned_only)
+}
+if ($pinned_only) {
 	$q->addWhere('task_pinned = 1');
-
+}
 switch ($f) {
  case 'all':
      break;
@@ -214,15 +212,12 @@ switch ($f) {
      $q->addTable('user_tasks');
      $q->addWhere('user_tasks.user_id = ' . $user_id);
      $q->addWhere('user_tasks.task_id = tasks.task_id');
-     //$q->addWhere('task_project = p.project_id');
-     
      $q->addWhere('(task_percent_complete < 100 OR task_end_date = "")');
      $q->addWhere('p.project_status <> 7');
      $q->addWhere('p.project_status <> 4');
      $q->addWhere('p.project_status <> 5');
      break;
  case 'allunfinished':
-// AND task_project = projects.project_id
      $q->addWhere('(task_percent_complete < 100 OR task_end_date = "")');
      $q->addWhere('p.project_status <> 7');
      $q->addWhere('p.project_status <> 4');
@@ -242,8 +237,9 @@ switch ($f) {
      break;
 }
 
-if (($project_id  || $task_id) && $showIncomplete)
+if (($project_id  || $task_id) && $showIncomplete) {
 	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
+}
 
 // reverse lookup the status integer from Tab name
 $status = dPgetSysVal( 'TaskStatus' );
@@ -251,15 +247,30 @@ $sutats = array_flip($status);
 $ctn = substr($currentTabName, 7, -1);
 
 // we are in a tabbed view
-if ( isset($currentTabName) )
+if ( isset($currentTabName) ) {
 	$task_status = $sutats[$ctn];
+}
 
-if ($task_status)
-	$q->addWhere('task_status = ' . $task_status);
-    
+if ($task_status) {
+	if ($task_status <> -1) {
+	  $q->addWhere('task_status = ' . $task_status);
+  }
+}
+if ($task_type) {
+	if ($task_type <> -1) {
+    $q->addWhere('task_type = ' . $task_type);
+  }
+}
+if ($task_owner) {
+	if ($task_owner <> -1) {
+    $q->addWhere('task_owner = ' . $task_owner);
+  }
+}    
+
 // patch 2.12.04 text search
-if ( $search_text = $AppUI->getState('searchtext') )
+if ( $search_text = $AppUI->getState('searchtext') ) {
 	$q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
+}
 
 // filter tasks considering task and project permissions
 $projects_filter = '';
@@ -286,8 +297,9 @@ if ( ! $min_view && $f2 != 'all' ) {
 $q->addGroup('tasks.task_id');
 $q->addOrder('project_id, task_start_date');
 
-if ($canViewTask)
-	$tasks = $q->loadList();
+if ($canViewTask) {
+  $tasks = $q->loadList();
+}
 
 // POST PROCESSING TASKS
 foreach ($tasks as $row) {
@@ -339,16 +351,14 @@ foreach($projects as $k => $p) {
 	global $done;
 	$done = array();
 	if ( $task_sort_item1 != '' ) {
-		if ( $task_sort_item2 != '' && $task_sort_item1 != $task_sort_item2 ) {
+	  if ( $task_sort_item2 != '' && $task_sort_item1 != $task_sort_item2 ) {
 			$p['tasks'] = array_csort($p['tasks'], 
                                       $task_sort_item1, $task_sort_order1, $task_sort_type1,
                                       $task_sort_item2, $task_sort_order2, $task_sort_type2 );
-        }
-		else {
-			$p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1 );
-        }
-	}
-    else {
+      } else {
+	    $p['tasks'] = array_csort($p['tasks'], $task_sort_item1, $task_sort_order1, $task_sort_type1 );
+      }
+	} else {
 		/* we have to calculate the end_date via start_date+duration for 
 		** end='0000-00-00 00:00:00' if array_csort function is not used
 		** as it is normally done in array_csort function in order to economise

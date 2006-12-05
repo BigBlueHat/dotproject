@@ -14,22 +14,24 @@ $toggleAll = dPgetParam($_GET, 'parents', false);
         * $f
         * $query_string
 */
-if ($AppUI->getState('task_percent_complete', false) === false)
+if ($AppUI->getState('task_percent_complete', false) === false) {
 	$AppUI->setState('task_percent_complete', 99);
+}
 
 $filters_selection = array(
-'task_percent_complete' => array(-1 => 'All', 0 => 'not started', 1 => 'started', 99 => 'not complete', 100 => 'finished'),
-'task_status' => dPgetSysVal( 'TaskStatus' ),
-'task_type' => dPgetSysVal( 'TaskType') );
+  'task_percent_complete' => array(-1 => 'All', 0 => 'not started', 1 => 'started', 99 => 'not complete', 100 => 'finished'),
+  'task_status' => arrayMerge( array( '-1'=>$AppUI->_('All') ), dPgetSysVal( 'TaskStatus' )),
+  'task_type' => arrayMerge(   array( '-1'=>$AppUI->_('All') ), dPgetSysVal( 'TaskType' ))
+);
 
 $tasksTitleBlock = new CTitleBlock( 'Tasks', 'applet-48.png' );
 $filters = $tasksTitleBlock->addFiltersCell($filters_selection);
 $tasksTitleBlock->show();
 
 
-if (empty($query_string))
+if (empty($query_string)) {
 	$query_string = "?m=$m&a=$a";
-
+}
 
 // Number of columns (used to calculate how many columns to span things through)
 $cols = 13;
@@ -109,11 +111,6 @@ $AppUI->setState('tst2_'.$project_id, $task_sort_type2);
 $AppUI->setState('tso1_'.$project_id, $task_sort_order1);
 $AppUI->setState('tso2_'.$project_id, $task_sort_order2);
 
-//if (isset($_POST['show_task_options'])) {
-//        $AppUI->setState('TaskListShowIncomplete', dPgetParam($_POST, 'show_incomplete', 0));
-//}
-//$showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
-
 $where = '';
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
@@ -153,41 +150,33 @@ $q->leftJoin('contacts', 'co', 'co.contact_id = usernames.user_contact');
 $q->leftJoin('task_log', 'tlog', 'tlog.task_log_task = tasks.task_id AND tlog.task_log_problem > 0');
 $q->leftJoin('files', 'f', 'tasks.task_id = f.file_task');
 $q->leftJoin('user_task_pin', 'pin', 'tasks.task_id = pin.task_id AND pin.user_id = ' . $AppUI->user_id);
-//$user_id = $user_id ? $user_id : $AppUI->user_id;
 $q->addWhere('task_project = ' . $project_id);
 $q->addWhere("task_name like '%" . $AppUI->getState('searchtext') . "%'");
 
-foreach ($filters as $name => $filter)
-{
-	 if ($filter != '')
-	 {
-		if ($name == 'task_percent_complete')
-		{
-			if ($filter == -1)
-				;
-			else if ($filter == 1)
-				$q->addWhere('(task_percent_complete > 0 AND task_percent_complete < 100 OR task_percent_complete is null)');
-			else if ($filter == 99)
-				$q->addWhere('(task_percent_complete < 100 OR task_percent_complete is null)');
-			else
-				$q->addWhere('task_percent_complete = ' . $filter);
-		}
-		else
-			$q->addWhere($name . ' = ' . $filter);
-	}
+foreach ($filters as $name => $filter) {
+  if ($filter != '') {	
+    if ($filter == -1) {
+      // do nothing
+    } else {
+      if ($name == 'task_percent_complete') {
+      	if ($filter == 1) {
+      	  $q->addWhere('(task_percent_complete > 0 AND task_percent_complete < 100 OR task_percent_complete is null)');
+      	} else if ($filter == 99) {
+      	  $q->addWhere('(task_percent_complete < 100 OR task_percent_complete is null)');
+      	} else {
+		  $q->addWhere('task_percent_complete = ' . $filter);
+        }
+  	  } else {
+  		$q->addWhere($name . ' = ' . $filter);
+      }
+    }
+  }
 }
 
 if ($pinned_only)
 	$q->addWhere('task_pinned = 1');
 
-//if ($showIncomplete)
-//	$q->addWhere('( task_percent_complete < 100 or task_percent_complete is null )');
 $q->addWhere('tasks.task_id = task_parent');
-// $q->addWhere('(task_id = task_parent OR (t1.task_parent = t2.task_id AND t2.task_dynamic <> 1))');
-
-// patch 2.12.04 text search
-//if ( $search_text = $AppUI->getState('searchtext') )
-//        $q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
 
 // filter tasks considering task and project permissions
 $tasks_filter = '';
@@ -242,8 +231,9 @@ foreach ($tasks as $k => $task)
 }
 
 //natural sorting instead?
-if (is_array($display_tasks))
+if (is_array($display_tasks)) {
 	ksort($display_tasks);
+}  
 
 // Code duplicated from above. To be cleaned!!! (to be done in one place)
 function recurse_children($node_id)
