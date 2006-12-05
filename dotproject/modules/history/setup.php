@@ -38,8 +38,8 @@ class CSetupHistory {
 		  "history_changes text," .
 		  "history_description text," .
 		  "PRIMARY KEY  (history_id)," .
-			'KEY `index_history_item` (history_item) ' . 
-			'KEY `index_history_table` (history_table) ' .
+			'KEY `index_history_item` (history_item), ' . 
+			'KEY `index_history_table` (history_table), ' .
 			'INDEX `index_history_item_table` (`history_item`, `history_table`) ' .  
 		  ") TYPE=MyISAM";
 		$q = new DBQuery;
