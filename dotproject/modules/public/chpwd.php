@@ -16,10 +16,11 @@ if ($user_id) {
 		// check that the old password matches
 		$old_md5 = md5($old_pwd);
 		$sql = "SELECT user_id FROM users WHERE user_password = '$old_md5' AND user_id=$user_id";
-		if ($canEdit || db_loadResult( $sql ) == $user_id) {
+        //user is Administrator or has permissions and matched previous password
+		if (($AppUI->user_type == 1 || ($canEdit && db_loadResult( $sql ) == $user_id)) { 
 			require_once( "{$dPconfig['root_dir']}/modules/admin/admin.class.php" );
 			$user = new CUser();
-			$user->user_id = $user_id;
+            $user->load($user_id);
 			$user->user_password = $new_pwd1;
 
 			if (($msg = $user->store())) {
@@ -56,7 +57,7 @@ function submitIt() {
 <table width="100%" cellspacing="0" cellpadding="4" border="0" class="std">
 <form name="frmEdit" method="post" onsubmit="return false">
 <input type="hidden" name="user_id" value="<?php echo $user_id; ?>">
-<?php if (!$canEdit)
+<?php if ($AppUI->user_type != 1) //if user is not an Administrator - this needs to be more "dynamic" to avoid confusion.
 {
 ?>
 <tr>
