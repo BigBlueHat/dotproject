@@ -38,10 +38,13 @@ foreach ($user_acls as $acl){
 			foreach ($permission['axo_groups'] as $group_id) {
 				$group_data = $perms->get_group_data($group_id, 'axo');
 				$modlist[] = $AppUI->_($group_data[3]);
+				$itemlist[] = 'ALL';
 			}
 		}
 		if (is_array($permission['axo'])) {
 			foreach ($permission['axo'] as $key => $section) {
+				$mod_info = $perms->get_object_full($key, 'app', 1, 'axo');
+				$itemlist[] = $mod_info['name'];
 				foreach ($section as $id) {
 					$mod_data = $perms->get_object_full($id, $key, 1, 'axo');
 					if ($mod_data['section_value'] != 'app')
@@ -63,6 +66,7 @@ foreach ($user_acls as $acl){
 		
 		$ml[$acl] = implode("<br />", $modlist);
 		$pt[$acl] = implode("<br />", $perm_type);
+		$it[$acl] = implode("<br />", $itemlist);
 		$perm_ad[$acl] .= $permission['allow'] ? 'allow' : 'deny';
 	}
 }	
@@ -76,6 +80,7 @@ $tpl->assign('perm', $perm_ad);
 $tpl->assign('perm_id', $perm_id);
 $tpl->assign('perm_list', $perm_list);
 $tpl->assign('pt', $pt);
+$tpl->assign('it', $it);
 $tpl->assign('user_acls', $user_acls);
 $tpl->assign('user_id', $user_id);
 $tpl->displayFile('usr_perms', $users);
