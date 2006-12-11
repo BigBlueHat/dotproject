@@ -329,6 +329,14 @@ function Attach( $filename, $filetype = "", $disposition = "inline", $isString =
 	$this->aString[] = $isString;
 }
 
+function clearAttachments()
+{
+	$this->aattach 	= array();
+	$this->actype 	= array();
+	$this->adispo 	= array();
+	$this->aString 	= array();
+}
+
 /**
  *	Build the email message
  *	@access protected
@@ -596,30 +604,39 @@ function CheckAdresses( $aad )
 */
 function _build_attachement()
 {
-	$this->xheaders["Content-Type"] = "multipart/mixed;\r\n boundary=\"$this->boundary\"";
-
-	$this->fullBody = "This is a multi-part message in MIME format.\r\n--$this->boundary\r\n";
-	$this->fullBody .= "Content-Type: text/plain; charset=$this->charset\r\nContent-Transfer-Encoding: $this->ctencoding\r\n\r\n";
-
 	$sep= "\r\n";
+	
+	$this->xheaders["Content-Type"] = 'multipart/mixed; boundary="'.$this->boundary .'"';
+
+	$this->fullBody = 'This is a multi-part message in MIME format.' . $sep.$sep;
+	$this->fullBody .= '--' . $this->boundary . $sep;
+	$this->fullBody .= 'Content-Type: text/plain;'.$sep .' charset=' . $this->charset . $sep;
+	$this->fullBody .= 'Content-Transfer-Encoding: ' . $this->ctencoding . $sep . $sep;
+
+	
 	$body = preg_split("/\r?\n/", $this->body);
-	$this->fullBody .= implode($sep, $body) ."\r\n";
+	$this->fullBody .= implode($sep, $body) . $sep;
 
 	$ata= array();
 	$k=0;
 
 	// for each attached file, do...
 	for( $i=0; $i < count( $this->aattach); $i++ ) {
-		if ($this->aString[$i] == false) {	// attachment is a real file
-			$filename = $this->aattach[$i];
-			$basename = basename($filename);
-			$ctype = $this->actype[$i];	// content-type
-			$disposition = $this->adispo[$i];
+		$filename = $this->aattach[$i];
+		$basename = basename($filename);
+		$ctype = $this->actype[$i];	// content-type
+		$disposition = $this->adispo[$i];
+
+		$subhdr = '--' . $this->boundary . $sep;
+		$subhdr .= 'Content-Type: '. $ctype . ';  name="'.$basename.'"'.$sep;
+		$subhdr .= 'Content-Transfer-Encoding: base64'.$sep;
+		$subhdr .= 'Content-Disposition: '.$disposition.';' . $sep;
 	
+		if ($this->aString[$i] == false) {	// attachment is a real file
 			if( ! file_exists( $filename) ) {
 				echo "Class Mail, method attach : file $filename can't be found"; exit;
 			}
-			$subhdr= "--$this->boundary\r\nContent-type: $ctype;\r\n name=\"$basename\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $disposition;\r\n  filename=\"$basename\"\r\n";
+			$subhdr .= '  filename="'.$basename.'"' . $sep;
 			$ata[$k++] = $subhdr;
 			// non encoded line length
 			$linesz= filesize( $filename)+1;
@@ -627,11 +644,7 @@ function _build_attachement()
 			$ata[$k++] = chunk_split(base64_encode(fread( $fp, $linesz)));
 			fclose($fp);
 		} else {				// attachment is included from text string
-			$filename = $this->aattach[$i];
-			$basename = basename($filename);
-			$ctype = $this->actype[$i];	// content-type
-			$disposition = $this->adispo[$i];
-			$subhdr= "--$this->boundary\r\nContent-type: $ctype;\r\n name=\"$basename\"\r\nContent-Transfer-Encoding: base64\r\nContent-Disposition: $disposition;\r\n  filename=\"$basename\"\r\n method=\"publish\"\r\n";
+			$subhdr .= '  filename="'.$basename.'"' . $sep . ' method="publish"'. $sep;
 			$ata[$k++] = $subhdr;
 			$ata[$k++] = base64_encode($this->aString[$i]);
 		}

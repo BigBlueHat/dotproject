@@ -823,8 +823,6 @@ class CEvent extends CDpObject {
 	    $body .= 'and confirm if you can or can not make the requested time.'."\n\n";
 	  }
 	  $body .= $AppUI->_('Event') . ":\t" . $this->event_title . "\n";
-	  if (! $clash)
-	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id . "\n";
 	  $body .= $AppUI->_('Starts') . ":\t" . $start_date->format($fmt) . "\n";
 	  $body .= $AppUI->_('Ends') . ":\t" . $end_date->format($fmt) . "\n";
 		if ($this->event_url)
@@ -857,7 +855,7 @@ class CEvent extends CDpObject {
 			
 	  	$body .= $user[contact_first_name].' '.$user[contact_last_name];
 	  }
-	  $body .= "\n\n" . $this->event_description . "\n";
+	  $bodyContacts = $body . "\n\n" . $this->event_description . "\n";
 
 		// create vEvent Attachment String	
 		$v = new vCalendar;
@@ -877,7 +875,7 @@ class CEvent extends CDpObject {
 			$v->addAttendee($contact['contact_first_name'] .' '. $contact['contact_last_name'], $contact['contact_email']);
 		}
 		
-		$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
+		
 		$v->addRel($this->event_parent, 'PARENT');
 		$v->addCreated();
 		$v->addUid();
@@ -891,22 +889,34 @@ class CEvent extends CDpObject {
 		$ical = $v->genString();
 		// end of vEvent generation
 	
-	  $mail->Body($body, $locale_char_set);
+	  $mail->Body($bodyContacts, $locale_char_set);
 	  $mail->Attach( $AppUI->_('Event').'.ics', $filetype = 'text/calendar' , $disposition = 'inline', $ical );
 
+		// Send out emails to all interested contacts.
+		foreach ($contacts as $contact) {
+	  	if (!empty($contact['contact_email']) && $mail->ValidEmail($contact['contact_email'])) {
+	  		$mail->To($contact['contact_email'], true);
+				$mail->Send();
+	  	}
+	  }
+
+		// Send details with dP URLs for users (they don't apply to contacts, since contacts can't login)
+		if (! $clash)
+	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id . "\n";
+	   $bodyUsers = $body . "\n\n" . $this->event_description . "\n";
+ 		$mail->Body($bodyUsers, $locale_char_set);
+ 		
+		$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
+		$mail->clearAttachments();
+		$mail->Attach( $AppUI->_('Event').'.ics', $filetype = 'text/calendar' , $disposition = 'inline', $ical );
+		
+		// Send out emails to all interested users.
 	  foreach ($users as $user) {
 			if (! $mail_owner && $user['user_id'] == $this->event_owner)
 				continue;
 				
 			$mail->To($user['contact_email'], true);
 			$mail->Send();
-	  }
-	  
-	  foreach ($contacts as $contact) {
-	  	if (!empty($contact['contact_email']) && $mail->ValidEmail($contact['contact_email'])) {
-	  		$mail->To($contact['contact_email'], true);
-				$mail->Send();
-	  	}
 	  }
 	}
 
@@ -992,7 +1002,6 @@ class CEvent extends CDpObject {
 		
 		return $eventlist;
 	}
-
 
 	function delete() {
 		$msg = parent::delete();
