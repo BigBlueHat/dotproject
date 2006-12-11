@@ -2,7 +2,7 @@
 <script type="text/javascript" language="javascript">
 <!--
 window.company_id = {/literal}{$company_detail.company_id}{literal};
-window.company_value = '{/literal}{$company_detail.company_name}{literal}';
+window.company_value = '{/literal}{$company_detail.company_name|addslashes}{literal}';
 
 function submitIt() {
 	var form = document.changecontact;
