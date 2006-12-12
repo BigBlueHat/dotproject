@@ -77,7 +77,7 @@ foreach ($topics as $row) {
 	$date_diff = sprintf( '%.1f', $span->format( '%d' ) );
 	$tpl_row->assign('date_diff_now_last', $date_diff);
 
-	$topic_rows .= $tpl_row->fetchFile('view_topics.row');
+	$topic_rows .= $tpl_row->fetchFile('view_topics.row', 'forums');
 }
 
 $tpl->assign('topic_rows', $topic_rows);
