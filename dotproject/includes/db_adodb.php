@@ -52,12 +52,12 @@ function db_insert_id()
 	return $db->Insert_ID();
 }
 
-function db_exec( $sql )
+function db_exec($sql)
 {
 	global $db, $baseDir, $dbtime, $dbqueries;
 	$startTime = array_sum(explode(' ',microtime()));
 
-	if (! is_object($db))
+	if (!is_object($db))
 	  dprint(__FILE__,__LINE__, 0, "Database object does not exist");
 	$qid = $db->Execute( $sql );
 	dprint(__FILE__, __LINE__, 10, $sql);
@@ -69,7 +69,7 @@ function db_exec( $sql )
 		// and it stops infinite loop.
 		$db->Execute( $sql );
 		if (!db_error())
-			echo '<script language="JavaScript"> location.reload(); </script>';
+			echo '<script language="JavaScript" type="text/javascript"> location.reload(); </script>';
 	}
 	if ( ! $qid && preg_match('/^\<select\>/i', $sql) )
 		dprint(__FILE__, __LINE__, 0, $sql);
@@ -79,14 +79,13 @@ function db_exec( $sql )
 	return $qid;
 }
 
-function db_free_result($cur )
+function db_free_result($cur)
 {
-        // TODO
-        //	mysql_free_result( $cur );
-        // Maybe it's done my Adodb
 	if (! is_object($cur))
-	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_free_result");
-        $cur->Close();
+		dprint(__FILE__, __LINE__, 0, 'Invalid object passed to db_free_result');
+	// No need to free resources - php4 does garbage collection on unused resources.
+	// Let adodb do whatever is necessary in platform independent way.
+	$cur->Close();
 }
 
 function db_num_rows( $qid )
@@ -94,7 +93,7 @@ function db_num_rows( $qid )
 	if (! is_object($qid))
 	  dprint(__FILE__, __LINE__, 0, "Invalid object passed to db_num_rows");
 	return $qid->RecordCount();
-        //return $db->Affected_Rows();
+	//return $db->Affected_Rows();
 }
 
 function db_fetch_row( &$qid )

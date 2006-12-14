@@ -165,7 +165,7 @@ class CForumMessage {
 			$date = new CDate();
 			$this->message_date = $date->format( FMT_DATETIME_MYSQL );
 			$new_id = db_insertObject( 'forum_messages', $this, 'message_id' ); ## TODO handle error now
-			echo db_error(); ## TODO handle error better
+			echo db_error(); //TODO handle error better
 
 			$q->addTable('forum_messages');
 			$q->addQuery('count(message_id), MAX(message_date)');
