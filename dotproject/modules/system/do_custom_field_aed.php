@@ -4,7 +4,7 @@
 	 *
 	 */
 
-	require_once("./classes/CustomFields.class.php");
+	require_once($baseDir . '/classes/CustomFields.class.php');
 
 	$del = dPgetParam($_POST, 'del',  0);
 	$edit_field_id = dpGetParam( $_POST, "field_id", NULL );

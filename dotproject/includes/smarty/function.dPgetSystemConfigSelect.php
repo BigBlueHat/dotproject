@@ -18,12 +18,12 @@
 function smarty_function_dPgetSystemConfigSelect($params, &$smarty)
 {
 	global $AppUI, $tpl;
-    extract($params);
-
-    if (empty($cid)) {
-        $smarty->trigger_error("dPgetSysVal: missing 'config_id' parameter");
-        return;
-    } 
+	extract($params);
+	
+	if (empty($cid)) {
+		$smarty->trigger_error("dPgetSysVal: missing 'config_id' parameter");
+		return;
+	} 
 	$q = new DBQuery;
 	$q->addTable('config_list');
 	$q->addQuery('config_list_id, config_list_name');
@@ -38,8 +38,10 @@ function smarty_function_dPgetSystemConfigSelect($params, &$smarty)
 
 	$tpl->assign('clist', $clist);
 
-	$cln = 'dPcfg['.$cname.']';
-	$tpl->assign('cln', $cln);
+	if (!empty($cname)) {
+		$cln = 'dPcfg['.$cname.']';
+		$tpl->assign('cln', $cln);
+	}
 	return;
 }
 /* vim: set expandtab: */

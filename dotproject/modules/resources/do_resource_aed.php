@@ -9,7 +9,7 @@ if (! $obj->bind($_POST)) {
   $AppUI->redirect();
 }
 
-require_once("./classes/CustomFields.class.php");
+require_once($baseDir . '/classes/CustomFields.class.php');
 
 $AppUI->setMsg('Resource');
 if ($del) {

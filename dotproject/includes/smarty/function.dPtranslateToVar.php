@@ -19,12 +19,14 @@
 function smarty_function_dPtranslateToVar($params, &$smarty)
 {
 	global $AppUI, $tpl;
-    extract($params);
-
-    if ((empty($word) && empty($sentence)) || empty($ass)) {
-        $smarty->trigger_error("dPtranslate: missing parameter");
-        return;
-    }
+	
+	$type = ''; // Set below.
+	extract($params);
+	
+	if ((empty($word) && empty($sentence)) || empty($ass)) {
+		$smarty->trigger_error("dPtranslate: missing parameter");
+		return;
+	}
 
 	if (!empty($prepend))
 	$word = $prepend.$word; 
@@ -33,13 +35,12 @@ function smarty_function_dPtranslateToVar($params, &$smarty)
 		$word .= $append; 
 	
 	if ($type == 'js')
-    	$i18n = $AppUI->_($word . $sentence, UI_OUTPUT_JS);
+		$i18n = $AppUI->_($word . $sentence, UI_OUTPUT_JS);
 
-    $i18n = $AppUI->_($word . $sentence);
+	$i18n = $AppUI->_($word . $sentence);
 	//$tpl->assign('tt', $i18n);
 	$tpl->assign($ass, $i18n);
 	return;
-
 }
 /* vim: set expandtab: */
 ?>

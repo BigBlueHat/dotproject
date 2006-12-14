@@ -55,7 +55,7 @@ $typelist = $obj->typeSelect();
   	<tr>
 		<td align="right" colspan="3">
 		<?php
-			require_once("./classes/CustomFields.class.php");
+			require_once($baseDir . '/classes/CustomFields.class.php');
 			$custom_fields = New CustomFields( $m, $a, $obj->resource_id, "edit" );
 			$custom_fields->printHTML();
 		?>

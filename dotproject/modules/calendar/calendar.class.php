@@ -1317,7 +1317,7 @@ class vCalendar {
 		foreach ($ics['VCALENDAR'] as $ci) {	//one file can contain multiple iCal items
 			foreach ($ci['VEVENT'] as $c) {		//each iCal item can contain multiple VEVENT items
 				$obj = new CEvent();
-				$eventValues = $this->icsObjectToArray($c);
+				$eventValues = $this->icsObjectToArray($c, $tac, $et, $event_project, $preserve_id);
 
 				// bind array to object
 				if (!$obj->bind( $eventValues ))
@@ -1352,7 +1352,7 @@ class vCalendar {
 
 		foreach ($ics['VCALENDAR'] as $ci) {	//one file can contain multiple iCal items
 			foreach ($ci['VEVENT'] as $c) {		//each iCal item can contain multiple VEVENT items
-				$eventValues = $this->icsObjectToArray($c);
+				$eventValues = $this->icsObjectToArray($c, $tac, $et);
 
 				// add current event data set to target array
 				$events[] = $eventValues;
@@ -1363,7 +1363,7 @@ class vCalendar {
 	}
 
 	// internal function to create a dp database like data set from an icalendar 'object'
-	function icsObjectToArray($c) {
+	function icsObjectToArray($c, $tac, $et, $event_project = 0, $preserve_id = false) {
 		//set target calendar, i.e. define event_project
 		$eventValues["event_project"] = $event_project;
 		

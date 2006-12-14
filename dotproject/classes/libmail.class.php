@@ -542,9 +542,14 @@ function SendQueuedMail($mod, $type, $originator, $owner, &$args)
 	$fullBody = str_replace("\n", "\r\n", $fullBody);
 
 	if ($this->transport == 'smtp') {
-		return $this->SMTPSend($sendto, $xheaders['Subject'], $fullBody, $xheaders);
+		return $this->SMTPSend($this->sendto, $this->xheaders['Subject'], $fullBody, $this->xheaders);
 	} else {
-		return @mail( $strTo, $xheaders['Subject'], $fullBody, $headers );
+		$headers = '';
+		foreach ($this->xheaders as $hdr =>$val) {
+			$headers .= "$hdr: $val\r\n";
+		}
+		$strTo = explode(', ', $this->sendto);
+		return @mail( $strTo, $this->xheaders['Subject'], $fullBody, $headers );
 	}
 }
 

@@ -5,10 +5,10 @@
 $m = 'links';
 function shownavbar_links($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page)
 {
-
-	GLOBAL $AppUI, $m;
+	global $AppUI, $m;
+	
 	$xpg_break = false;
-        $xpg_prev_page = $xpg_next_page = 0;
+	$xpg_prev_page = $xpg_next_page = 0;
 	
 	echo "\t<table width='100%' cellspacing='0' cellpadding='0' border=0><tr>";
 
@@ -72,7 +72,7 @@ function shownavbar_links($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page
 	} else { // or we dont have any files..
 		echo "<td align='center'>";
 		if ($xpg_next_page > $xpg_total_pages) {
-		echo $xpg_sqlrecs . " " . $m . " ";
+		echo $xpg_totalrecs . " " . $m . " ";
 		}
 		echo "</td></tr>";
 	} 
@@ -92,7 +92,6 @@ GLOBAL $AppUI, $deny1, $canRead, $canEdit;
 // $xpg_pagesize    - max rows per page
 // $xpg_min         - initial record in the SELECT LIMIT
 // $xpg_totalrecs   - total rows selected
-// $xpg_sqlrecs     - total rows from SELECT LIMIT
 // $xpg_total_pages - total pages
 // $xpg_next_page   - next pagenumber
 // $xpg_prev_page   - previous pagenumber

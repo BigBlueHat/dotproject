@@ -63,9 +63,9 @@ KEY `idx_link_project` ( `link_project` ) ,
 KEY `idx_link_parent` ( `link_parent` ) 
 ) TYPE = MYISAM ");
 
-	$q->exec($sql);
-
+	$q->exec();
 	$q->clear();
+
 	$q->addTable('sysvals');
 	$q->addInsert('sysval_key_id', 1);
 	$q->addInsert('sysval_title', 'LinkType');
@@ -74,6 +74,5 @@ KEY `idx_link_parent` ( `link_parent` )
 	
 	return NULL;
  }
-
 }
 ?>

@@ -170,6 +170,8 @@ class CAppUI {
 	{
 		global $dPconfig;
 		global $baseDir;
+		global $dp_version_major, $dp_version_minor, $dp_version_patch;
+		
 		if ( ! isset($this->version_major)) {
 			include_once $baseDir . '/includes/version.php';
 			$this->version_major = $dp_version_major;

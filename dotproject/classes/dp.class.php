@@ -328,6 +328,7 @@ class CDpObject {
 		if ($oid) {
 			$this->$k = intval( $oid );
 		}
+		$msg = null; //to be initialized by method below.
 		if (!$this->canDelete( $msg )) {
 			return $msg;
 		}

@@ -18,12 +18,12 @@
 function smarty_function_dPgetSystemPrefsSelect($params, &$smarty)
 {
 	global $AppUI, $tpl;
-    extract($params);
-
-    if (empty($pid)) {
-        $smarty->trigger_error("dPgetSystemPrefsSelect: missing 'pref_id' parameter");
-        return;
-    } 
+	extract($params);
+	
+	if (empty($pid)) {
+		$smarty->trigger_error("dPgetSystemPrefsSelect: missing 'pref_id' parameter");
+		return;
+	} 
 	$q = new DBQuery;
 	$q->addTable('user_prefs_list');
 	$q->addQuery('pref_list_id, pref_list_name');
@@ -38,8 +38,10 @@ function smarty_function_dPgetSystemPrefsSelect($params, &$smarty)
 	
 	$tpl->assign('plist', $clist);
 
-	$pln = 'pref_name['.$pname.']';
-	$tpl->assign('pln', $pln);
+	if (!empty($pname)) {
+		$pln = 'pref_name['.$pname.']';
+		$tpl->assign('pln', $pln);
+	}
 	return;
 }
 /* vim: set expandtab: */

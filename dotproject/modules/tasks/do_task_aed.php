@@ -121,7 +121,7 @@ if ($sub_form) {
 		$obj->task_duration = floor($obj->task_duration) + $task_duration_minutes;
 	}
 
-	require_once('./classes/CustomFields.class.php');
+	require_once($baseDir . '/classes/CustomFields.class.php');
 	//echo '<pre>';print_r( $hassign );echo '</pre>';die;
 	// prepare (and translate) the module name ready for the suffix
 	if ($del) {

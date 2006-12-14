@@ -87,7 +87,7 @@ if ($canDelete) {
 	<tr>
 	<td>
 		<?php
-			require_once("./classes/CustomFields.class.php");
+			require_once($baseDir . '/classes/CustomFields.class.php');
 			$custom_fields = New CustomFields( $m, $a, $obj->resource_id, "view" );
 			$custom_fields->printHTML();
 		?>

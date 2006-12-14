@@ -1250,6 +1250,11 @@ class CTask extends CDpObject {
             $user_company = $q->loadResult();
             $q->clear();
             
+            $q->addQuery('project_company');
+            $q->addTable('project');
+            $q->addWhere('project_id = ' . $this->task_project);
+            $owner_company = $q->loadResult();
+            
             $q = new DBQuery;
             $q->addTable('user_tasks');
             $q->addQuery('COUNT(*)');
@@ -1713,7 +1718,7 @@ class CTask extends CDpObject {
         
         // If the users maximum assignment minus their tasks assignment (the amount of free allocation) is null,
         // use their preference for maximum allocation
-        $AB_sql_ifnull_AA_up_pref_value = $q->ifNull('('.$AA_sql_ifnull_up_pref_value_scum.'-SUM(ut.perc_assignment))', 
+        $AB_sql_ifnull_AA_up_pref_value = $q->ifNull('('.$AA_sql_ifnull_up_pref_value_scm.'-SUM(ut.perc_assignment))', 
                                                      'up.pref_value');
         
         // If the amount of free allocation is greater than zero, then use that number,
@@ -2624,7 +2629,7 @@ function array_csort() {
     foreach ($args as $arg) {
         $i++;
         if (is_string($arg)) {
-            foreach ($marray as $row) {
+            foreach ($marray as $j => $row) {
                 
                 /* we have to calculate the end_date via start_date+duration for 
                  ** end='0000-00-00 00:00:00' before sorting, see mantis #1509:

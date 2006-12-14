@@ -22,6 +22,7 @@ function smarty_function_dPdateFormat($params, &$smarty)
 {
 	global $AppUI;
 	
+	$format = 'full'; // to be set by the extract below.
 	extract($params);
 	
 	if (empty($date) || $date == '0000-00-00 00:00:00') {
