@@ -24,16 +24,30 @@ require_once "$baseDir/classes/permissions.class.php";
  * Each case statement should fall through to the next, so that the
  * complete update is run if the last_updated is not set.
  */
+
 function dPupgrade($from_version, $to_version, $last_updated)
 {
 
-	global $baseDir;
-	$latest_update = '20050409'; // Set to the latest upgrade date.
+	global $baseDir, $db;
+	$latest_update = '20061214'; // Set to the latest upgrade date.
 
 	if (! $last_updated)
 		$last_updated = '00000000';
-	
+
+
 	// Place the upgrade code here, depending on the last_updated date.
+
+	switch ($last_updated)
+	{
+		case '00000000':
+			// upgrade the sysvals table
+			include "$baseDir/db/upgrade_sysvals.php";
+			//$latest_update = '20061214';
+		default:
+			break;
+
+	}
+
 	return $latest_update;
 }
 

@@ -555,37 +555,86 @@ CREATE TABLE `syskeys` (
 
 DROP TABLE IF EXISTS `sysvals`;
 CREATE TABLE `sysvals` (
-    `sysval_id` int(10) unsigned NOT NULL auto_increment,
-    `sysval_key_id` int(10) unsigned NOT NULL default '0',
-    `sysval_title` varchar(48) NOT NULL default '',
-    `sysval_value` text NOT NULL,
-    PRIMARY KEY    (`sysval_id`)
+  `sysval_id` int(10) unsigned NOT NULL auto_increment,
+  `sysval_title` varchar(48) NOT NULL default '',
+  `sysval_value_id` varchar(32) default '0',
+  `sysval_value` text NOT NULL,
+  PRIMARY KEY  (`sysval_id`)
 ) TYPE=MyISAM;
+
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("1","CompanyType","0","Not Applicable");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("2","CompanyType","1","Client");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("3","CompanyType","2","Vendor");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("4","CompanyType","3","Supplier");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("5","CompanyType","4","Consultant");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("6","CompanyType","5","Government");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("7","CompanyType","6","Internal");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("8","EventType","0","General");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("9","EventType","1","Appointment");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("10","EventType","2","Meeting");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("11","EventType","3","All Day Event");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("12","EventType","4","Anniversary");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("13","EventType","5","Reminder");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("14","FileType","0","Unknown");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("15","FileType","1","Document");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("16","FileType","2","Application");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("17","ProjectColors","Web","FFE0AE");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("18","ProjectColors","Engineering","AEFFB2");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("19","ProjectColors","HelpDesk","FFFCAE");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("20","ProjectColors","System Administration","FFAEAE");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("21","ProjectPriority","-1","low");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("22","ProjectPriority","0","normal");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("23","ProjectPriority","1","high");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("24","ProjectPriorityColor","-1","#E5F7FF");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("25","ProjectPriorityColor","0","");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("26","ProjectPriorityColor","1","#FFDCB3");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("27","ProjectStatus","0","Not Defined");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("28","ProjectStatus","1","Proposed");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("29","ProjectStatus","2","In Planning");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("30","ProjectStatus","3","In Progress");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("31","ProjectStatus","4","On Hold");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("32","ProjectStatus","5","Complete");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("33","ProjectStatus","6","Template");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("34","ProjectStatus","7","Archived");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("35","ProjectType","0","Unknown");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("36","ProjectType","1","Administrative");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("37","ProjectType","2","Operative");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("38","TaskDurationType","1","hours");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("39","TaskDurationType","24","days");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("40","TaskLogReference","0","Not Defined");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("41","TaskLogReference","1","Email");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("42","TaskLogReference","2","Helpdesk");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("43","TaskLogReference","3","Phone Call");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("44","TaskLogReference","4","Fax");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("45","TaskLogReferenceImage","0","");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("46","TaskLogReferenceImage","1","./images/obj/email.gif");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("47","TaskLogReferenceImage","2","./modules/helpdesk/images/helpdesk.png");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("48","TaskLogReferenceImage","3","./images/obj/phone.gif");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("49","TaskLogReferenceImage","","./images/icons/stock_print-16.png");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("50","TaskPriority","-1","low");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("51","TaskPriority","0","normal");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("52","TaskPriority","1","high");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("53","TaskStatus","0","Active");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("54","TaskStatus","-1","Inactive");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("55","TaskType","0","Unknown");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("56","TaskType","1","Administrative");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("57","TaskType","2","Operative");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("58","UserType","0","Default User");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("59","UserType","1","Administrator");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("60","UserType","2","CEO");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("61","UserType","3","Director");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("62","UserType","4","Branch Manager");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("63","UserType","5","Manager");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("64","UserType","6","Supervisor");
+INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("65","UserType","7","Employee");
 
 #
 # Table structure for table 'sysvals'
 #
 
 INSERT INTO `syskeys` VALUES (1, 'SelectList', 'Enter values for list', '0', '\n', '|');
-INSERT INTO `syskeys` VALUES (2, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
-INSERT INTO `syskeys` VALUES (3, 'ColorSelection', 'Hex color values for type=>color association.', '0', '\n', '|');
-
-INSERT INTO `sysvals` VALUES (1, 1, 'ProjectStatus', '0|Not Defined\r\n1|Proposed\r\n2|In Planning\r\n3|In Progress\r\n4|On Hold\r\n5|Complete\r\n6|Template\r\n7|Archived');
-INSERT INTO `sysvals` VALUES (2, 1, 'CompanyType', '0|Not Applicable\n1|Client\n2|Vendor\n3|Supplier\n4|Consultant\n5|Government\n6|Internal');
-INSERT INTO `sysvals` VALUES (3, 1, 'TaskDurationType', '1|hours\n24|days');
-INSERT INTO `sysvals` VALUES (4, 1, 'EventType', '0|General\n1|Appointment\n2|Meeting\n3|All Day Event\n4|Anniversary\n5|Reminder');
-INSERT INTO `sysvals` VALUES (5, 1, 'TaskStatus', '0|Active\n-1|Inactive');
-INSERT INTO `sysvals` VALUES (6, 1, 'TaskType', '0|Unknown\n1|Administrative\n2|Operative');
-INSERT INTO `sysvals` VALUES (7, 1, 'ProjectType', '0|Unknown\n1|Administrative\n2|Operative');
-INSERT INTO `sysvals` VALUES (8, 1, 'ProjectColors', 'Web|FFE0AE\nEngineering|AEFFB2\nHelpDesk|FFFCAE\nSystem Administration|FFAEAE');
-INSERT INTO `sysvals` VALUES (9, 1, 'FileType', '0|Unknown\n1|Document\n2|Application');
-INSERT INTO `sysvals` VALUES (10, '1', 'TaskPriority', '-1|low\n0|normal\n1|high');
-INSERT INTO `sysvals` VALUES (11, '1', 'ProjectPriority', '-1|low\n0|normal\n1|high');
-INSERT INTO `sysvals` VALUES (12, '1', 'ProjectPriorityColor', '-1|#E5F7FF\n0|\n1|#FFDCB3');
-INSERT INTO `sysvals` VALUES (13, '1', 'TaskLogReference', '0|Not Defined\n1|Email\n2|Helpdesk\n3|Phone Call\n4|Fax');
-INSERT INTO `sysvals` VALUES (14, '1', 'TaskLogReferenceImage', '0|\n1|./images/obj/email.gif\n2|./modules/helpdesk/images/helpdesk.png\n3|./images/obj/phone.gif\n |./images/icons/stock_print-16.png');
-INSERT INTO `sysvals` VALUES (15, '1', 'UserType', '0|Default User\n1|Administrator\n2|CEO\n3|Director\n4|Branch Manager\n5|Manager\n6|Supervisor\n7|Employee' );
-INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval_value` ) VALUES (17, '1', 'ProjectRequiredFields', 'f.project_name.value.length|<3\r\nf.project_color_identifier.value.length|<3\r\nf.project_company.options[f.project_company.selectedIndex].value|<1' );
+#INSERT INTO `syskeys` VALUES (2, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
+#INSERT INTO `syskeys` VALUES (3, 'ColorSelection', 'Hex color values for type=>color association.', '0', '\n', '|');
 
 #
 # Table structure for table 'roles'
