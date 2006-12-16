@@ -55,7 +55,6 @@ if ( $isNewUser ) {
 	$contact->contact_owner = $AppUI->user_id;
 }
 if ($contact->contact_company != $user_current_company) {
-	$obj->user_department = null;
 	$contact->contact_department = null;
 }
 if (!is_numeric($contact->contact_id)) {

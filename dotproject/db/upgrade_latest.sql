@@ -276,3 +276,9 @@ INSERT INTO `sysvals` ( `sysval_id` , `sysval_key_id` , `sysval_title` , `sysval
 # 20061205
 # Zeroing out UI order of "Inaccessible" modules so as not to interfere with other modules
 UPDATE `modules` SET `mod_ui_order`=0 WHERE `mod_name` = 'Public';
+
+# 20061216
+# Remove unused fields from users table
+ALTER TABLE `users` DROP `user_owner`;
+ALTER TABLE `users` DROP `user_company`;
+ALTER TABLE `users` DROP `user_department`;
