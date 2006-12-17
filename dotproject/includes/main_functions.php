@@ -452,6 +452,9 @@ function addHistory( $table, $id, $action = 'modify', $details = '')
 ##
 ## Looks up a value from the SYSVALS table
 ##
+
+// Old sysvals function
+/*
 function dPgetSysVal( $title )
 {
 	$q  = new DBQuery;
@@ -493,6 +496,22 @@ function dPgetSysVal( $title )
 			}
 		}
 	}
+	return $arr;
+}
+*/
+
+function dPgetSysVal( $title )
+{
+	$q = new DBQuery;
+	$q->addTable('sysvals');
+	$q->addQuery('sysval_value_id, sysval_value');
+	$q->addWhere("sysval_title = '$title'");
+	$q->exec();
+
+	$arr = $q->loadHashList();
+
+	$q->clear();
+
 	return $arr;
 }
 
