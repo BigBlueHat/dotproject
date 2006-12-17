@@ -75,7 +75,7 @@
 			{$task.task_description|nl2br}
 		{/capture}
 		{dPtranslateToVar word='Description' ass='popDescCap'}
-		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" {popup sticky=true caption=$popDescCap text=$popDesc}>
+		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" {popup sticky=false caption=$popDescCap text=$popDesc}>
 {if $obj.task_dynamic == '1'}
 		<b><i>{$obj.task_name}</i></b>
 {else}
