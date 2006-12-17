@@ -36,22 +36,25 @@ function dPsessionRead($id)
 	$q  = new DBQuery;
 	$q->addTable('sessions');
 	$q->addQuery('session_data');
-	$q->addQuery('UNIX_TIMESTAMP() - UNIX_TIMESTAMP(session_created) as session_lifespan');
-	$q->addQuery('UNIX_TIMESTAMP() - UNIX_TIMESTAMP(session_updated) as session_idle');
+	$q->addQuery('session_created, session_updated');
+	
 	$q->addWhere("session_id = '$id'");
 	$qid =& $q->exec();
 	if (! $qid || $qid->EOF ) {
 		dprint(__FILE__, __LINE__, 11, "Failed to retrieve session $id");
 		$data =  "";
 	} else {
+		$session_lifespan = time() - db_dateTime2unix($qid->fields['session_created']);
+		$session_idle = time() - db_dateTime2unix($qid->fields['session_updated']);
+
 		$max = dPsessionConvertTime('max_lifetime');
 		$idle = dPsessionConvertTime('idle_time');
-		dprint(__FILE__, __LINE__, 11, "Found session $id, max=$max/" . $qid->fields['session_lifespan']
-		. ", idle=$idle/" . $qid->fields['session_idle']);
+		dprint(__FILE__, __LINE__, 11, "Found session $id, max=$max/" . $session_lifespan
+		. ", idle=$idle/" . $session_idle);
 		// If the idle time or the max lifetime is exceeded, trash the
 		// session.
-		if ($max < $qid->fields['session_lifespan']
-		 || $idle < $qid->fields['session_idle']) {
+		if ($max < $session_lifespan
+		 || $idle < $session_idle) {
 			dprint(__FILE__, __LINE__, 11, "session $id expired");
 			dPsessionDestroy($id);
 			$data = '';
@@ -74,13 +77,13 @@ function dPsessionWrite($id, $data)
 
 	$q->addTable('sessions');
 	if ( $qid > 0 ) {
-		dprint(__FILE__, __LINE__, 11, "Updating session $id");
+		dprint(__FILE__, __LINE__, 11, 'Updating session ' . $id);
 		$q->addUpdate('session_data', $data);
 		if (isset($AppUI))
 			$q->addUpdate('session_user', $AppUI->last_insert_id);
 		$q->addWhere("session_id = '$id'");
 	} else {
-		dprint(__FILE__, __LINE__, 11, "Creating new session $id");
+		dprint(__FILE__, __LINE__, 11, 'Creating new session ' . $id);
 		$q->addInsert('session_id', $id);
 		$q->addInsert('session_data', $data);
 		$q->addInsert('session_created', date('Y-m-d H:i:s'));

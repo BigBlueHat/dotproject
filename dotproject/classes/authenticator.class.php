@@ -216,6 +216,7 @@
 
 			$this->user_id = $row["user_id"];
 			$q->clear();
+
 			if (MD5($password) == $row["user_password"]) return true;
 			return false;
 		}

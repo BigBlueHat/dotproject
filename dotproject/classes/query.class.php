@@ -508,7 +508,7 @@ class DBQuery {
 	    $q .= ",";
 	  else
 	    $intable = true;
-	  $q .= '`' . $this->_table_prefix . $table . '`';
+	  $q .= $this->quote_db($this->_table_prefix . $table);
 	  if (! is_numeric($table_id))
 	    $q .= " as $table_id";
 	}
@@ -546,14 +546,14 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= '`' . $this->_table_prefix . $table . '`';
+    $q .= $this->quote_db($this->_table_prefix . $table);
 
     $q .= ' SET ';
     $sets = '';
     foreach( $this->update_list as $field => $value) {
       if ($sets)
         $sets .= ", ";
-      $sets .= "`$field` = " . $this->quote($value);
+      $sets .= $this->quote_db($field) . ' = ' . $this->quote($value);
     }
     $q .= $sets;
     $q .= $this->make_where_clause($this->where);
@@ -574,7 +574,7 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= '`' . $this->_table_prefix . $table . '`';
+    $q .= $this->quote_db($this->_table_prefix . $table);
 
     $fieldlist = '';
     $valuelist = '';
@@ -583,7 +583,7 @@ class DBQuery {
 	$fieldlist .= ",";
       if ($valuelist)
 	$valuelist .= ",";
-      $fieldlist .= '`' . trim($field) . '`';
+      $fieldlist .= $this->quote_db(trim($field));
       $valuelist .= $value;
     }
     $q .= "($fieldlist) values ($valuelist)";
@@ -604,7 +604,7 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= '`' . $this->_table_prefix . $table . '`';
+    $q .= $this->quote_db($this->_table_prefix . $table);
 
     $fieldlist = '';
     $valuelist = '';
@@ -613,7 +613,7 @@ class DBQuery {
 	$fieldlist .= ",";
       if ($valuelist)
 	$valuelist .= ",";
-      $fieldlist .= '`' . trim($field) . '`';
+      $fieldlist .= $this->quote_db(trim($field));
       $valuelist .= $value;
     }
     $q .= "($fieldlist) values ($valuelist)";
@@ -633,7 +633,7 @@ class DBQuery {
     } else {
       return false;
     }
-    $q .= '`' . $this->_table_prefix . $table . '`';
+    $q .= $this->quote_db($this->_table_prefix . $table);
     $q .= $this->make_where_clause($this->where);
     return $q;
   }
@@ -642,7 +642,7 @@ class DBQuery {
 	//definitions: http://dev.mysql.com/doc/mysql/en/alter-table.html
 	function prepareAlter()
 	{
-		$q = 'ALTER TABLE `' . $this->_table_prefix . $this->create_table . '` ';
+		$q = 'ALTER TABLE ' . $this->quote_db($this->_table_prefix . $this->create_table) . ' ';
 		if (isset($this->create_definition)) {
 		  if (is_array($this->create_definition)) {
 		    $first = true;
@@ -693,7 +693,7 @@ class DBQuery {
           }
           if (! $this->_query_id) {
               $error = $this->_db->ErrorMsg();
-              dprint(__FILE__, __LINE__, 0, "query failed($q) - error was: " . $error);
+              dprint(__FILE__, __LINE__, 0, "query failed($q)".' - error was: <span style="color:red">' . $error . '</span>');
               return $this->_query_id;
           }
           return $this->_query_id;
@@ -957,7 +957,7 @@ class DBQuery {
       return $result;
     if (is_array($join_clause)) {
       foreach ($join_clause as $join) {
-	$result .= ' ' . strtoupper($join['type']) . ' JOIN `' . $this->_table_prefix . $join['table'] . '`';
+	$result .= ' ' . strtoupper($join['type']) . ' JOIN ' . $this->quote_db($this->_table_prefix . $join['table']);
 	if ($join['alias'])
 	  $result .= ' AS ' . $join['alias'];
 	if (is_array($join['condition'])) {
@@ -967,7 +967,7 @@ class DBQuery {
 	}
       }
     } else {
-      $result .= ' LEFT JOIN `' . $this->_table_prefix . $join_clause . '`';
+      $result .= ' LEFT JOIN ' . $this->quote_db($this->_table_prefix . $join_clause);
     }
     return $result;
   }
@@ -979,6 +979,11 @@ class DBQuery {
 			return $string;
 		else
 			return $this->_db->qstr($string, get_magic_quotes_runtime());
+	}
+	
+	function quote_db($string)
+	{
+		return $this->_db->nameQuote . $string . $this->_db->nameQuote; 
 	}
 }
 //1}}}

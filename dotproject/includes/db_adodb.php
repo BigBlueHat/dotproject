@@ -153,7 +153,7 @@ function db_dateTime2unix( $time )
 {
         global $db;
 
-        return $db->UnixDate($time);
+        return $db->UnixTimeStamp($time);
 
         // TODO - check if it's used anywhere...
 //	if ($time == '0000-00-00 00:00:00') {
