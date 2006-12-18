@@ -1,60 +1,34 @@
 <?php /* SYSKEYS $Id$ */
 $AppUI->savePlace();
 
-// pull all the key types
 $q = new DBQuery;
-$q->addTable('syskeys');
-$q->addQuery('syskey_id, syskey_name');
-$q->addOrder('syskey_name');
-$keys = arrayMerge( array( 0 => '- Select Type -' ), $q->loadHashList() );
-$q->clear();
-
-$q = new DBQuery;
-$q->addTable('syskeys');
 $q->addTable('sysvals');
-$q->addOrder('sysval_title');
-$q->addWhere('sysval_key_id = syskey_id');
-$values = $q->loadList();
+$q->addQuery('sysval_id, sysval_title, sysval_value_id, sysval_value');
+$rs = $q->Exec();
+
+$sysval_rows = Array();
+
+while($r = $rs->fetchRow())
+{
+	if (!array_key_exists($r['sysval_title'], $sysval_rows))
+	{
+		$sysval_rows[$r['sysval_title']] = Array();
+	}
+	$sysval_rows[$r['sysval_title']][] = $r;
+}
 
 $sysval_id = isset( $_GET['sysval_id'] ) ? $_GET['sysval_id'] : 0;
 
 $titleBlock = new CTitleBlock( 'System Lookup Values', 'myevo-weather.png', $m, "$m.$u.$a" );
 $titleBlock->addCrumb('?m=system', 'System Admin');
 $titleBlock->show();
-?>
-<script type="text/javascript" language="javascript">
-<!--
-<?php
-// security improvement:
-// some javascript functions may not appear on client side in case of user not having write permissions
-// else users would be able to arbitrarily run 'bad' functions
-if ($canEdit) {
-?>
-function delIt(id) {
-	if (confirm( 'Are you sure you want to delete this?' )) {
-		f = document.sysValFrm;
-		f.del.value = 1;
-		f.sysval_id.value = id;
-		f.submit();
-	}
-}
-<?php } ?>
--->
-</script>
-<form name="sysValFrm" method="post" action="?m=system&amp;u=syskeys&amp;a=do_sysval_aed">
-	<input type="hidden" name="del" value="0" />
-	<input type="hidden" name="sysval_id" value="<?php echo $sysval_id; ?>" />
 
-<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
-<tr>
-	<th>&nbsp;</th>
-	<th><?php echo $AppUI->_('Key Type');?></th>
-	<th><?php echo $AppUI->_('Title');?></th>
-	<th colspan="2"><?php echo $AppUI->_('Values');?></th>
-	<th>&nbsp;</th>
-</tr>
-<?php
+$tpl->assign('canEdit', $canEdit);
+$tpl->assign('sysval_rows', $sysval_rows);
+$tpl->assign('sysval_id', $sysval_id);
+$tpl->displayFile('syskeys/index');
 
+/*
 function showRow($id=0, $key=0, $title='', $value='') {
 	GLOBAL $canEdit, $sysval_id, $CR, $AppUI, $keys;
 	$s = '<tr>'.$CR;
@@ -83,7 +57,9 @@ function showRow($id=0, $key=0, $title='', $value='') {
 			$s .= '</td>'.$CR;
 		}
 		$s .= '
+	<!--
 	<td valign="top">'.$keys[$key].'</td>
+	-->
 	<td valign="top">'.dPformSafe($title).'</td>
 	<td valign="top" colspan="2">'.dPformSafe($value).'</td>
 	<td valign="top" width="16">';
@@ -106,6 +82,5 @@ foreach ($values as $row) {
 // add in the new key row:
 if ($sysval_id == 0)
 	echo showRow();
+*/
 ?>
-</table>
-</form>

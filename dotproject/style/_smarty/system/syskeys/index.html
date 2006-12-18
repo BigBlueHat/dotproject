@@ -1,0 +1,69 @@
+<script type="text/javascript" language="javascript">
+{if $canEdit}
+	{literal}
+		function delIt(id) {
+			if (confirm( 'Are you sure you want to delete this?' )) {
+				f = document.sysValFrm;
+				f.del.value = 1;
+				f.sysval_id.value = id;
+				f.submit();
+			}
+		}
+	{/literal}
+{/if}
+</script>
+
+<form name="sysValFrm" method="post" action="?m=system&amp;u=syskeys&amp;a=do_sysval_aed">
+<input type="hidden" name="del" value="0" />
+<input type="hidden" name="sysval_id" value="{$sysval_id}" />
+
+<table border="0" cellpadding="2" cellspacing="1" width="100%" class="tbl">
+<tr>
+	<th>{dPtranslate word='Title'}</th>
+	<th>&nbsp;</th>
+	<th>{dPtranslate word='Value'}</th>
+	<th>&nbsp;</th>
+</tr>
+{foreach name=sysval_group from=$sysval_rows key=sysval_group_title item=svv}
+<tr>
+	<td valign="top"><b>{$sysval_group_title}</b></td>
+	{foreach name=sysval_values from=$svv item=sysval_value}
+		{if $smarty.foreach.sysval_values.first}
+		{else}
+			<tr><td></td>
+		{/if}
+		<td>
+		{if $canEdit}
+			{if $sysval_value.sysval_id != $sysval_id}
+				<a href="?m=system&amp;u=syskeys&amp;sysval_id={$sysval_value.sysval_id}" title="{dPtranslate word='Edit'}">
+				{dPshowImage src='./images/icons/stock_edit-16.png' wsize='16' hsize='16' alt='Edit'}
+				</a>
+			{/if}
+		{/if}
+		</td><td>
+		{if $sysval_value.sysval_id == $sysval_id}
+			<!-- Edit sysval -->
+			<input type="text" name="sysval_value_id" size="10" value="{$sysval_value.sysval_value_id}" />
+			<input type="text" name="sysval_value" value="{$sysval_value.sysval_value}" />
+			<input type="hidden" name="sysval_title" value="{$sysval_group_title}" />
+			<input type="button" value="{dPtranslate word='Cancel'}" onClick="location = '?m=system&u=syskeys';" />
+			<input type="submit" value="{dPtranslate word='Save'}" />
+		{else}
+			<!-- Display sysval -->
+			{$sysval_value.sysval_value_id}
+			&#183;
+			{$sysval_value.sysval_value}
+		{/if}
+		</td><td>
+		{if $canEdit}
+			{if $sysval_value.sysval_id != $sysval_id}
+				<a href="javascript:delIt('{$sysval_value.sysval_id}')" title="{dPtranslate word='Delete'}">
+				{dPshowImage src='./images/icons/stock_delete-16.png' wsize='16' hsize='16' alt='Delete'}
+				</a>
+			{/if}
+		{/if}
+		</tr>
+	{/foreach}
+{/foreach}
+</table>
+</form>

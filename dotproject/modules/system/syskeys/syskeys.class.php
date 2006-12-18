@@ -30,13 +30,14 @@ class CSysKey extends CDpObject {
 
 class CSysVal extends CDpObject {
 	var $sysval_id = NULL;
-	var $sysval_key_id = NULL;
+	//var $sysval_key_id = NULL;
 	var $sysval_title = NULL;
 	var $sysval_value = NULL;
+	var $sysval_value_id = NULL;
 
-	function CSysVal( $key=null, $title=null, $value=null ) {
+	function CSysVal( $title=null, $value_id=null, $value=null ) {
 		$this->CDpObject( 'sysvals', 'sysval_id' );
-		$this->sysval_key_id = $key;
+		//$this->sysval_key_id = $key;
 		$this->sysval_title = $title;
 		$this->sysval_value = $value;
 	}
