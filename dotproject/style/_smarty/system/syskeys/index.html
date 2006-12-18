@@ -61,6 +61,35 @@
 				{dPshowImage src='./images/icons/stock_delete-16.png' wsize='16' hsize='16' alt='Delete'}
 				</a>
 			{/if}
+
+			{if $smarty.foreach.sysval_values.last}
+				</tr>
+				<tr>
+				<td></td>
+				{if $sysval_add_group == $sysval_group_title}
+					<td></td>
+					<td>
+						<input type="text" name="sysval_value_id" size="10" value="" />
+						<input type="text" name="sysval_value" value="" />
+						<input type="hidden" name="sysval_title" value="{$sysval_group_title}" />
+						<input type="button" value="{dPtranslate word='Cancel'}" onClick="location = '?m=system&u=syskeys';" />
+						<input type="submit" value="{dPtranslate word='Save'}" />
+					</td>
+					<td></td>
+				{else}
+				<td>
+					<a href="?m=system&amp;u=syskeys&amp;sysval_add_group={$sysval_group_title}" title="{dPtranslate word='New'}">
+					{dPshowImage src='./images/icons/stock_new.png' wsize='16' hsize='16' alt='New'}
+					</a>
+				</td>
+				<td>
+					<a href="?m=system&amp;u=syskeys&amp;sysval_add_group={$sysval_group_title}" title="{dPtranslate word='New'}">
+					{dPtranslate word='Add'}
+					</a>	
+				</td>
+				<td></td>
+				{/if}
+			{/if}
 		{/if}
 		</tr>
 	{/foreach}

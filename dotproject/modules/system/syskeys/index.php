@@ -18,6 +18,7 @@ while($r = $rs->fetchRow())
 }
 
 $sysval_id = isset( $_GET['sysval_id'] ) ? $_GET['sysval_id'] : 0;
+$sysval_add_group = isset( $_GET['sysval_add_group'] ) ? $_GET['sysval_add_group'] : NULL;
 
 $titleBlock = new CTitleBlock( 'System Lookup Values', 'myevo-weather.png', $m, "$m.$u.$a" );
 $titleBlock->addCrumb('?m=system', 'System Admin');
@@ -26,6 +27,7 @@ $titleBlock->show();
 $tpl->assign('canEdit', $canEdit);
 $tpl->assign('sysval_rows', $sysval_rows);
 $tpl->assign('sysval_id', $sysval_id);
+$tpl->assign('sysval_add_group', $sysval_add_group);
 $tpl->displayFile('syskeys/index');
 
 /*
