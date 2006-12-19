@@ -1,25 +1,29 @@
 <?php
 global $baseDir, $db;
 
+require_once "$baseDir/classes/query.class.php";
+
 if (! isset($baseDir))
 	die('You must not use this file directly, please direct your browser to install/index.php instead');
 
 dPmsg("Upgrading sysvals");
 
+$q = new DBQuery;
+
 function dPgetOldSysval( $sysval_title )
 {
-        GLOBAL $db;
+	$q = new DBQuery;
+	$q->addTable('sysvals');
+	$q->addQuery('syskey_type');
+	$q->addQuery('syskey_sep1');
+	$q->addQuery('syskey_sep2');
+	$q->addQuery('sysval_value');
+	$q->leftJoin('syskeys', 'sk', 'syskey_id = sysval_key_id');
+	$q->addWhere('sysval_title = \''.$sysval_title.'\'');
 
-        $sql = "SELECT syskey_type, syskey_sep1, syskey_sep2, sysval_value 
-                FROM sysvals 
-                LEFT JOIN syskeys sk ON syskey_id = sysval_key_id
-                WHERE sysval_title = '$sysval_title'
-                ";
-
-        $rs = $db->Execute($sql);
         $arr = array();
 
-        $row = $rs->fetchRow();
+        $row = $q->loadHash();
 
         $sep1 = $row['syskey_sep1'];    // item separator
         $sep2 = $row['syskey_sep2'];    // alias separator
@@ -54,44 +58,53 @@ function dPgetOldSysval( $sysval_title )
 }
 
 // upgrade the sysvals table
-$sql = "SELECT sysval_title FROM sysvals GROUP BY sysval_title";
-$rs = $db->Execute($sql);
+$q = new DBQuery;
+$q->addQuery('sysval_title');
+$q->addTable('sysvals');
+$q->addGroup('sysval_title');
+
+$title_list = $q->loadList();
+$q->clear();
 
 $sysvals = Array();
 
 // read all the old sysvals
-while ($r = $rs->fetchRow())
+foreach ($title_list as $r)
 {
 	$sv = dPgetOldSysval( $r['sysval_title'] );
 	$sysvals[$r['sysval_title']] = $sv;
 }
 
+// drop the old format sysvals table
+$q->dropTable('sysvals');
+$q->exec();
+
 // create the new sysvals table
-$sql_create_sv = "CREATE TABLE `sysvals_upgrade` (
+$sql_create_sv = "(
 	  `sysval_id` int(10) unsigned NOT NULL auto_increment,
 	  `sysval_title` varchar(48) NOT NULL default '',
 	  `sysval_value_id` varchar(32) default '0',
 	  `sysval_value` text NOT NULL,
 	  PRIMARY KEY  (`sysval_id`)
-	) TYPE=MyISAM;";
+	)";
 
-$rs = $db->Execute($sql_create_sv);
+$q->createTable('sysvals');
+$q->createDefinition($sql_create_sv);
+$q->exec();
+$q->clear();
 
+// insert new sysvals data
 foreach($sysvals as $k=>$v)
 {
 	foreach ($v as $sv_k=>$sv_v)
 	{
-		$sql_insert_sv = "INSERT INTO `sysvals_upgrade` (
-				`sysval_title`, `sysval_value_id`, `sysval_value`) VALUES (
-                                                        '".$k."', '".$sv_k."', '".$sv_v."')";
-                $rs = $db->Execute($sql_insert_sv);
+		$q->addTable('sysvals');
+		$q->addInsert('sysval_title', $k);
+		$q->addInsert('sysval_value_id', $sv_k);
+		$q->addInsert('sysval_value', $sv_v);
+		$q->exec();
+		$q->clear();
         }
 }
-
-$sql_rename_sv = "ALTER TABLE `sysvals` RENAME TO `sysvals_old`";
-$sql_rename_sv_ug = "ALTER TABLE `sysvals_upgrade` RENAME TO `sysvals`";
-
-$db->Execute($sql_rename_sv);
-$db->Execute($sql_rename_sv_ug);
 
 ?>

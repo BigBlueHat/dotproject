@@ -631,7 +631,7 @@ INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_valu
 
 INSERT INTO `syskeys` VALUES (1, 'SelectList', 'Enter values for list', '0', '\n', '|');
 #INSERT INTO `syskeys` VALUES (2, 'CustomField', 'Serialized array in the following format:\r\n<KEY>|<SERIALIZED ARRAY>\r\n\r\nSerialized Array:\r\n[type] => text | checkbox | select | textarea | label\r\n[name] => <Field\'s name>\r\n[options] => <html capture options>\r\n[selects] => <options for select and checkbox>', 0, '\n', '|');
-#INSERT INTO `syskeys` VALUES (3, 'ColorSelection', 'Hex color values for type=>color association.', '0', '\n', '|');
+INSERT INTO `syskeys` VALUES (3, 'ColorSelection', 'Hex color values for type=>color association.', '0', '\n', '|');
 
 #
 # Table structure for table 'roles'
