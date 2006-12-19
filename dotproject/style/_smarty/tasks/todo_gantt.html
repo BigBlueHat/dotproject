@@ -1,0 +1,18 @@
+<form name="form_buttons" method="post" action="index.php?m={$m}&amp;a={$a}&amp;date={$date}">
+	<input type="hidden" name="show_form" value="1" />
+<table width="100%" border="0" cellpadding="1" cellspacing="0">
+<tr>
+	<td width="50%">
+{if $other_users}
+		{dPtranslate word='Show Todo for'}:
+		<select name="show_user_todo" onchange="document.form_buttons.submit()">
+
+	{foreach from=$users item='user' key='uid'}
+			<option value="{$uid}"{if $user_id == $uid} selected="selected"{/if}>{$user}</option>
+	{/foreach}
+{/if}
+		</select>
+	</td>
+</tr>
+</table>
+</form>
