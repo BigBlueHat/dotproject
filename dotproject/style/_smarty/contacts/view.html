@@ -73,6 +73,10 @@
 				{$obj->contact_city}, {$obj->contact_state} {$obj->contact_zip}
 			</td>
 		</tr>
+		<tr>
+			<td align="right" width="100">{dPtranslate word='Map Address'}:</td>
+			<td><input type="image" src="./images/GoogleMaps.gif" width="55" height="22" alt="Find It on Google" onClick="window.open('http://maps.google.com/maps?q={$obj->contact_address1}+{$obj->contact_address2}+{$obj->contact_city}, {$obj->contact_state} {$obj->contact_zip}')"></td>
+		</tr>
 {/if}
 {if $obj->contact_phone}
 		<tr>
