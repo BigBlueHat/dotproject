@@ -1,4 +1,6 @@
 <?php /* CONTACTS $Id$ */
+require_once($baseDir . '/classes/CustomFields.class.php');
+
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 $AppUI->savePlace();
 

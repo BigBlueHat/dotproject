@@ -155,9 +155,15 @@
 			<td align="right">{dPtranslate word='Birthday'}:</td>
 			<td nowrap>{$obj->contact_birthday|truncate:10}</td>
 		</tr>
+{/if}
+{if $customFields}
+		<tr>
+			<td></td>
+			<td>{$customFields}</td>
+		</tr>
+{/if}
 		</table>
 	</td>
-{/if}
 {if $obj->contact_notes}
 	<td valign="top" width="50%">
 		<strong>{dPtranslate word='Contact Notes'}</strong><br />
