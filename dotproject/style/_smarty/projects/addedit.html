@@ -37,13 +37,14 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Start Date'}</td>
 			<td nowrap="nowrap">
-				<input type="hidden" name="project_start_date" value="{dPdateFormat date=$obj->project_start_date format='db'}" />
+				<input type="hidden" name="project_start_date" id="project_start_date" value="{dPdateFormat date=$obj->project_start_date format='db'}" />
 			<!-- format(FMT_TIMESTAMP_DATE) -->
 				<input type="text" class="text" name="start_date" id="date1" value="{dPdateFormat date=$obj->project_start_date}" disabled="disabled" />
 
 				<a href="#" onclick="popCalendar( 'start_date', 'start_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>
+				<a href="#" onClick="clearDate('project_start_date','date1')">{dPtranslate word='clear date'}</a>
 			</td>
 			<td rowspan="6" valign="top">
 {if $viewContacts}
@@ -56,11 +57,12 @@
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='Target End Date'}</td>
 			<td nowrap="nowrap">
-				<input type="hidden" name="project_end_date" value="{dPdateFormat date=$obj->project_end_date format='db'}" />
+				<input type="hidden" name="project_end_date" id="project_end_date" value="{dPdateFormat date=$obj->project_end_date format='db'}" />
 				<input type="text" class="text" name="end_date" id="date2" value="{dPdateFormat date=$obj->project_end_date}" disabled="disabled" />
 				<a href="#" onclick="popCalendar('end_date', 'end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>
+				<a href="#" onClick="clearDate('project_end_date','date2')">{dPtranslate word='clear date'}</a>
 			</td>
 		</tr>
 		<tr>
@@ -158,6 +160,7 @@
 				<tr>
 					<td>{dPtranslate word='Status'} *</td>
 					<td nowrap="nowrap">{dPtranslate word='Progress'}</td>
+					<td nowrap="nowrap">{dPtranslate word='Active'}?</td>
 				</tr>
 				<tr>
 					<td>
@@ -165,6 +168,13 @@
 					</td>
 					<td>
 						<strong>{$obj->project_percent_complete|string_format:"%.1f"}%</strong>
+					</td>
+					<td>
+					{if $obj->project_active}
+						<input type="checkbox" value="1" name="project_active" checked="checked" />
+					{else}
+						<input type="checkbox" value="1" name="project_active" />
+					{/if}
 					</td>
 				</tr>
 				</table>
@@ -186,6 +196,18 @@
 				<input type="text" class="text" name="import_date" id="date3" value="" disabled="disabled" />
 
 				<a href="#" onclick="popCalendar( 'import_date', 'import_date');">
+					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
+				</a>
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='End Date'}</td>
+			<td colspan="3" nowrap="nowrap">
+				<input type="hidden" name="project_import_end_date" value="" />
+			<!-- format(FMT_TIMESTAMP_DATE) -->
+				<input type="text" class="text" name="import_end_date" id="date4" value="" disabled="disabled" />
+
+				<a href="#" onclick="popCalendar( 'import_end_date', 'import_end_date');">
 					<img src="./images/calendar.gif" width="24" height="12" alt="{dPtranslate word='Calendar'}" border="0" />
 				</a>
 			</td>
