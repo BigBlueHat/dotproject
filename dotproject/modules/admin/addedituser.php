@@ -116,6 +116,9 @@ function submitIt() {
     } else if (form.contact_email.value.length < 4) {
         alert("<?php echo $AppUI->_('adminInvalidEmail', UI_OUTPUT_JS);?>");
         form.contact_email.focus();
+    } else if (form.contact_company.value < 1) {
+        alert("<?php echo $AppUI->_('adminInvalidCompany', UI_OUTPUT_JS);?>");
+        form.contact_company.focus();
     } else {
         form.submit();
     }

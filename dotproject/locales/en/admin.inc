@@ -76,6 +76,7 @@
 "adminDeleteTemplate"=>"delete all existing permissions (otherwise only add new permissions)",
 "adminInvalidBirthday"=>"Please enter a valid Birthday dateformat: (YYYY-MM-DD)or leave the field blank.",
 "adminInvalidDay"=>"The day you have provided is invalid.",
+"adminInvalidCompany"=>"Please choose a company for this user.",
 "adminInvalidEmail"=>"Your email is invalid, please try again.",
 "adminInvalidMonth"=>"The month you provided is invalid (try M instead of MM).",
 "adminInvalidYear"=>"The year you have provided is invalid.",
