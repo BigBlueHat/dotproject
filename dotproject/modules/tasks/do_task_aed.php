@@ -242,7 +242,7 @@ if ($sub_form) {
 				$fields = explode('","', $fields);
 				$values = substr($values, 1, -1);
 				$values = explode('","', $values);
-				$changes = "Changes: \n";
+				$changes = 'Changes: '."\n";
 				foreach ($fields as $k => $field)
 					$changes .= ucfirst(str_replace('_', ' ', $field)) . ': ' . $values[$k] . "\n";
 				$comment = $changes . "\n" . 'Comment: ' . $comment;

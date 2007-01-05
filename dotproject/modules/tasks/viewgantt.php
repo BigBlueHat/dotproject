@@ -83,7 +83,7 @@ else if ($display_option == 'first_month' || $display_option == 'all')
 
 // setup the title block
 if (!@$min_view) {
-	$titleBlock = new CTitleBlock( 'Gantt Chart', 'applet-48.png', $m, "$m.$a" );
+	$titleBlock = new CTitleBlock( 'Gantt Chart', 'applet-48.png', $m, $m.$a );
 	$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 	$titleBlock->addCrumb( '?m=projects&a=view&project_id='.$project_id, 'view this project' );
 	$titleBlock->show();

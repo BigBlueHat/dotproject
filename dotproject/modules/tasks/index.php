@@ -41,7 +41,7 @@ $companies = $obj->getAllowedRecords( $AppUI->user_id, 'company_id,company_name'
 $filters2 = arrayMerge(  array( 'all' => $AppUI->_('All', UI_OUTPUT_RAW) ), $companies );
 
 // setup the title block
-$titleBlock = new CTitleBlock( 'Tasks', 'applet-48.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Tasks', 'applet-48.png', $m, $m.$a );
 
 // patch 2.12.04 text to search entry box
 if (isset( $_POST['searchtext'] )) {
@@ -108,7 +108,7 @@ $titleBlock->addCell(
 '</form>', '', '', '');
 $titleBlock->addCell();
 
-$titleBlock->addCrumb( "?m=tasks&amp;a=todo&amp;user_id=$user_id", "my todo" );
+$titleBlock->addCrumb( '?m=tasks&amp;a=todo&amp;user_id='.$user_id, 'my todo' );
 if (dPgetParam($_GET, 'pinned') == 1)
         $titleBlock->addCrumb( '?m=tasks', 'all tasks' );
 else

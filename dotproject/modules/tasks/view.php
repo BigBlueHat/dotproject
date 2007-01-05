@@ -153,10 +153,10 @@ if ($canEdit) {
 }
 $titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 if ($canReadProject) {
-	$titleBlock->addCrumb( "?m=projects&amp;a=view&amp;project_id=$obj->task_project", 'view this project' );
+	$titleBlock->addCrumb( '?m=projects&amp;a=view&amp;project_id='.$obj->task_project, 'view this project' );
 }
 if ($canEdit) {
-	$titleBlock->addCrumb( "?m=tasks&amp;a=addedit&amp;task_id=$task_id", 'edit this task' );
+	$titleBlock->addCrumb( '?m=tasks&amp;a=addedit&amp;task_id='.$task_id, 'edit this task' );
 }
 if ($canDelete) {
 	$titleBlock->addCrumbDelete( 'delete task', $canDelete, $msg );
@@ -206,7 +206,7 @@ if ($AppUI->isActiveModule('contacts') && $perms->checkModule('contacts', 'view'
 	$q->addWhere('pc.project_id = ' . $obj->task_project);
 	$q->addQuery('c.contact_id, contact_first_name, contact_last_name, contact_email');
 	$q->addQuery('contact_phone, dept_name');
-	$q->addWhere("( contact_owner = '$AppUI->user_id' or contact_private = '0')");
+	$q->addWhere('( contact_owner = "'.$AppUI->user_id.'" or contact_private = "0")');
 	$project_contacts = $q->loadHashList('contact_id');
 }
 

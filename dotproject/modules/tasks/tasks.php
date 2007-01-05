@@ -18,7 +18,7 @@ global $tasks_opened, $tasks_closed;
         * $query_string
 */
 if (empty($query_string))
-	$query_string = "?m=$m&amp;a=$a";
+	$query_string = '?m='.$m.'&amp;a='.$a;
 
 // Number of columns (used to calculate how many columns to span things through)
 $cols = 13;
@@ -134,8 +134,8 @@ if ($canViewTask) {
     $prc2 = db_exec( $psql2 );
     echo db_error();
     while ($row2 = db_fetch_assoc( $prc2 )) {
-        $projects[$row2["project_id"]] = ((!($projects[$row2["project_id"]]))?array():$projects[$row2["project_id"]]);
-        array_push($projects[$row2["project_id"]], $row2);
+        $projects[$row2['project_id']] = ((!($projects[$row2['project_id']]))?array():$projects[$row2['project_id']]);
+        array_push($projects[$row2['project_id']], $row2);
     }
 }
 
@@ -269,7 +269,7 @@ if ($task_owner) {
 
 // patch 2.12.04 text search
 if ( $search_text = $AppUI->getState('searchtext') ) {
-	$q->addWhere("( task_name LIKE ('%$search_text%') OR task_description LIKE ('%$search_text%') )");
+	$q->addWhere('( task_name LIKE ("%'.$search_text'.%") OR task_description LIKE ("%'.$search_text.'%") )');
 }
 
 // filter tasks considering task and project permissions

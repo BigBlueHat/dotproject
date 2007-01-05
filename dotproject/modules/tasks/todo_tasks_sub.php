@@ -16,7 +16,7 @@ $canDelete = $perms->checkModuleItem($m, 'delete');
 	if ($other_users) {
 		$users = dPgetUsers();
 		unset($users[0]);
-		echo $AppUI->_("Show Todo for:").
+		echo $AppUI->_('Show Todo for:').
 		arraySelect($users, 'show_user_todo', ' onchange="document.form_buttons.submit();"', $user_id);
 	} ?>
 	</td>
@@ -88,12 +88,12 @@ if (!empty($tasks))
 	// generate the 'due in' value
 	foreach ($tasks as $tId=>$task) {
 		$sign = 1;
-		$start = intval( @$task["task_start_date"] ) ? new CDate( $task["task_start_date"] ) : null;
-		$end = intval( @$task["task_end_date"] ) ? new CDate( $task["task_end_date"] ) : null;
+		$start = intval( @$task['task_start_date'] ) ? new CDate( $task['task_start_date'] ) : null;
+		$end = intval( @$task['task_end_date'] ) ? new CDate( $task['task_end_date'] ) : null;
 		
 		if (!$end && $start) {
 			$end = $start;
-			$end->addSeconds( @$task["task_duration"]*$task["task_duration_type"]*SEC_HOUR );
+			$end->addSeconds( @$task['task_duration']*$task['task_duration_type']*SEC_HOUR );
 		}
 
 		if ($end && $now->after( $end )) {
@@ -106,8 +106,8 @@ if (!empty($tasks))
 	}
 
 	// sorting tasks
-	if ( $task_sort_item1 != "" ) {
-	    if ( $task_sort_item2 != "" && $task_sort_item1 != $task_sort_item2 )
+	if ( $task_sort_item1 != '' ) {
+	    if ( $task_sort_item2 != '' && $task_sort_item1 != $task_sort_item2 )
 	        $tasks = array_csort($tasks, $task_sort_item1, $task_sort_order1, $task_sort_type1
 	                                  , $task_sort_item2, $task_sort_order2, $task_sort_type2 );
 	    else $tasks = array_csort($tasks, $task_sort_item1, $task_sort_order1, $task_sort_type1 );

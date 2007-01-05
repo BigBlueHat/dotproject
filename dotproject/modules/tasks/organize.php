@@ -131,7 +131,7 @@ $taskPriority = dPgetSysVal( 'TaskPriority' );
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 
 if (!@$min_view) {
-	$titleBlock = new CTitleBlock( 'Organize Tasks', 'applet-48.png', $m, "$m.$a" );
+	$titleBlock = new CTitleBlock( 'Organize Tasks', 'applet-48.png', $m, $m.$a );
 	$titleBlock->addCrumb( '?m=tasks', 'tasks list' );
 	if ($project_id)
 		$titleBlock->addCrumb('?m=projects&amp;a=view&amp;project_id='.$project_id, 'view project');

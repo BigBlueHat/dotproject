@@ -17,7 +17,7 @@
 	ksort($task_log_costcodes);
 	
 	$q->addTable('users');
-	$q->addQuery("user_id, concat(contact_first_name,' ',contact_last_name)");
+	$q->addQuery('user_id, concat(contact_first_name," ",contact_last_name)');
 	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
 	$q->addOrder('contact_first_name, contact_last_name');
 	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), $q->loadHashList() );
@@ -54,15 +54,15 @@ $q->addJoin('users', 'u', 'user_id = task_log_creator');
 $q->addJoin('tasks', 't', 'task_log_task = t.task_id');
 $q->addJoin('billingcode', 'b', 'task_log.task_log_costcode = billingcode_id');
 //already included bY the setAllowedSQL function
-$q->addWhere("task_project = $project_id ");
+$q->addWhere('task_project = '.$project_id);
 if ($user_id>0) {
-	$q->addWhere("task_log_creator=$user_id");
+	$q->addWhere('task_log_creator= '.$user_id);
 }
 if ($hide_inactive) {
-	$q->addWhere("task_status>=0");
+	$q->addWhere('task_status>=0');
 }  
 if ($hide_complete) { 
-	$q->addWhere("task_percent_complete < 100");
+	$q->addWhere('task_percent_complete < 100');
 }
 if ($cost_code != '0') {
 	$q->addWhere('task_log_costcode = ' . $cost_code);
@@ -102,4 +102,3 @@ function delIt2(id) {
 }
 <?php } ?>
 </script>
-

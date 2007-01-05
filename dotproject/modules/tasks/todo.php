@@ -105,10 +105,10 @@ $q->addTable('tasks', 'ta');
 $q->leftJoin('user_task_pin', 'tp', 'tp.task_id = ta.task_id and tp.user_id = ' . $user_id);
 
 $q->addWhere('ut.task_id = ta.task_id');
-$q->addWhere("ut.user_id = '$user_id'");
+$q->addWhere('ut.user_id = '.$user_id);
 $q->addWhere('ta.task_percent_complete != 100');
-$q->addWhere("ta.task_status = '0'");
-$q->addWhere("pr.project_id = ta.task_project");
+$q->addWhere('ta.task_status = 0');
+$q->addWhere('pr.project_id = ta.task_project');
 $q->addWhere('project_status != ' . $project_template_status); // Filter out template projects
 if (!$showArcProjs) {
 	$q->addWhere('project_status != 7');
@@ -126,7 +126,7 @@ if ($showPinned) {
 	$q->addWhere('task_pinned = 1');
 }
 if (!$showEmptyDate) {
-	$q->addWhere("ta.task_end_date != '' AND ta.task_end_date != '0000-00-00 00:00:00'");
+	$q->addWhere('ta.task_end_date != "" AND ta.task_end_date != "0000-00-00 00:00:00"');
 }
 
 if (count($allowedTasks)) {

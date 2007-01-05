@@ -387,7 +387,7 @@ class CTask extends CDpObject {
             $q->addWhere('task_parent = ' . $modified_task->task_id);
             $q->addWhere('task_id <> ' . $modified_task->task_id);
             $q->addWhere('! isnull( task_start_date )');
-            $q->addWhere("task_start_date <>  '0000-00-00 00:00:00'");
+            $q->addWhere('task_start_date <>  "0000-00-00 00:00:00"');
             $d = $q->loadResult();
             $modified_task->task_start_date = (($d)?$d:'0000-00-00 00:00:00');
             $q->clear();
@@ -399,7 +399,7 @@ class CTask extends CDpObject {
             $q->addWhere('task_parent = ' . $modified_task->task_id);
             $q->addWhere('task_id <> ' . $modified_task->task_id);
             $q->addWhere('! isnull( task_end_date )');
-            //$q->addWhere("task_end_date <>  '0000-00-00 00:00:00'");
+            //$q->addWhere('task_end_date <>  "0000-00-00 00:00:00"');
             $modified_task->task_end_date =  $q->loadResult();
             $q->clear();
             
@@ -712,7 +712,7 @@ class CTask extends CDpObject {
         if (!empty($childrenlist)) {
             $q = new DBQuery;
             $q->setDelete('tasks');
-            $q->addWhere("task_parent IN (' . implode(', ', $childrenlist) . ', $this->task_id)");
+            $q->addWhere('task_parent IN (' . implode(', ', $childrenlist) . ',' . $this->task_id .')');
             if (!$q->exec()) {
                 return db_error();
             }
@@ -878,7 +878,7 @@ class CTask extends CDpObject {
         
         $mail = new Mail;
         
-        $mail->Subject( dPgetConfig('email_prefix') . " $projname::$this->task_name "
+        $mail->Subject( dPgetConfig('email_prefix') . ' '. $projname.'::'.$this->task_name
                         .$AppUI->_($this->_action, UI_OUTPUT_RAW), $locale_char_set);
         
         // c = creator
@@ -910,11 +910,11 @@ class CTask extends CDpObject {
         $q->clear();
         
         if (count( $users )) {
-            $body = $AppUI->_('Project', UI_OUTPUT_RAW).": $projname";
-            $body .= "\n".$AppUI->_('Task', UI_OUTPUT_RAW).":    $this->task_name";
+            $body = $AppUI->_('Project', UI_OUTPUT_RAW).': '.$projname;
+            $body .= "\n".$AppUI->_('Task', UI_OUTPUT_RAW).':    '.$this->task_name;
             $body .= "\n".$AppUI->_('URL', UI_OUTPUT_RAW)
-                .":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=$this->task_id";
-            $body .= "\n\n".$AppUI->_('Description', UI_OUTPUT_RAW).":"."\n$this->task_description";
+                .':     '.$dPconfig['base_url'].'/index.php?m=tasks&a=view&task_id='.$this->task_id;
+            $body .= "\n\n".$AppUI->_('Description', UI_OUTPUT_RAW).':'."\n".$this->task_description;
             $body .= "\n\n".$AppUI->_('Creator', UI_OUTPUT_RAW).':'.$AppUI->user_first_name.' '.$AppUI->user_last_name;
             $body .= "\n\n".$AppUI->_('Progress', UI_OUTPUT_RAW) . ': '.$this->task_percent_complete.'%';
             $body .= "\n\n".dPgetParam($_POST, 'task_log_description');
@@ -947,7 +947,7 @@ class CTask extends CDpObject {
         
         $mail = new Mail;
         
-        $mail->Subject( "$projname::$this->task_name ".$AppUI->_($this->_action, UI_OUTPUT_RAW), $locale_char_set);
+        $mail->Subject( $projname.'::'.$this->task_name.$AppUI->_($this->_action, UI_OUTPUT_RAW), $locale_char_set);
         
         // c = creator
         // a = assignee
@@ -977,25 +977,25 @@ class CTask extends CDpObject {
             $task_start_date = new CDate($this->task_start_date);
             $task_finish_date = new CDate($this->task_end_date);
             
-            $body = $AppUI->_('Project', UI_OUTPUT_RAW).": $projname";
+            $body = $AppUI->_('Project', UI_OUTPUT_RAW).': '.$projname;
             $body .= "\n".$AppUI->_('Task', UI_OUTPUT_RAW).':    '.$this->task_name;
             //Priority not working for some reason, will wait till later
-            //$body .= "\n".$AppUI->_('Priority', UI_OUTPUT_RAW). ": {$this->task_priority}";
+            //$body .= "\n".$AppUI->_('Priority', UI_OUTPUT_RAW). ': '.$this->task_priority;
             $body .= "\n".$AppUI->_('Start Date', UI_OUTPUT_RAW) . ': ' . $task_start_date->format( $df );
             $body .= "\n".$AppUI->_('Finish Date', UI_OUTPUT_RAW).': '
                 .($this->task_end_date != '' ? $task_finish_date->format( $df ) : '');
             $body .= "\n".$AppUI->_('URL', UI_OUTPUT_RAW)
-                .":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id={$this->task_id}";
-            $body .= "\n\n".$AppUI->_('Description', UI_OUTPUT_RAW).":\n{$this->task_description}";
+                .':     '.$dPconfig['base_url'].'/index.php?m=tasks&a=view&task_id='.$this->task_id;
+            $body .= "\n\n".$AppUI->_('Description', UI_OUTPUT_RAW).':'."\n".$this->task_description;
             if ($users[0]['creator_email']) {
-                $body .= "\n\n".$AppUI->_('Creator', UI_OUTPUT_RAW).":\n".$users[0]['creator_first_name'].' '
+                $body .= "\n\n".$AppUI->_('Creator', UI_OUTPUT_RAW).':'."\n".$users[0]['creator_first_name'].' '
                     .$users[0]['creator_last_name' ].', '.$users[0]['creator_email'];
             }
-            $body .= "\n\n".$AppUI->_('Owner', UI_OUTPUT_RAW).":\n".$users[0]['owner_first_name'].' '
+            $body .= "\n\n".$AppUI->_('Owner', UI_OUTPUT_RAW).':'."\n".$users[0]['owner_first_name'].' '
                 .$users[0]['owner_last_name' ].', '.$users[0]['owner_email'];
             
             if ($comment != '') {
-                $body .= "\n\n{$comment}";
+                $body .= "\n\n".$comment;
             }
             $mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : '' );
             $mail->From ( '"'.$AppUI->user_first_name.' '.$AppUI->user_last_name.'" <'.$AppUI->user_email.'>');
@@ -1123,7 +1123,7 @@ class CTask extends CDpObject {
         $projname = $q->loadResult();
         $q->clear();
         
-        $body = $AppUI->_('Project', UI_OUTPUT_RAW).": $projname\n";
+        $body = $AppUI->_('Project', UI_OUTPUT_RAW).': '.$projname."\n";
         if ($this->task_parent != $this->task_id) {
             $q->clear();
             $q->addTable('tasks');
@@ -1136,12 +1136,12 @@ class CTask extends CDpObject {
         }
         
         $q->clear();
-        $body .= $AppUI->_('Task', UI_OUTPUT_RAW).": $this->task_name\n";
+        $body .= $AppUI->_('Task', UI_OUTPUT_RAW).': '.$this->task_name."\n";
         $task_types = dPgetSysVal('TaskType');
         $body .= $AppUI->_('Task Type', UI_OUTPUT_RAW).':'.$task_types[$this->task_type]."\n";
         $body .= $AppUI->_('URL', UI_OUTPUT_RAW)
-            .": {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id={$this->task_id}\n\n";
-        $body .= $AppUI->_('Summary', UI_OUTPUT_RAW).": {$log->task_log_name}\n\n";
+            .': '.$dPconfig['base_url'].'/index.php?m=tasks&a=view&task_id='.$this->task_id."\n\n";
+        $body .= $AppUI->_('Summary', UI_OUTPUT_RAW).': '.$log->task_log_name."\n\n";
         $body .= $log->task_log_description;
         
         // Append the user signature to the email - if it exists.
@@ -1155,22 +1155,22 @@ class CTask extends CDpObject {
         
         $q->clear();
         $mail->Body( $body, $char_set);
-        $mail->From( "{$AppUI->user_first_name} {$AppUI->user_last_name} <{$AppUI->user_email}>");
+        $mail->From( $AppUI->user_first_name.' '.$AppUI->user_last_name.' <'.$AppUI->user_email.'>');
         $recipient_list = '';
         foreach ($mail_recipients as $email => $name) {
             if ($mail->ValidEmail($email)) {
                 $mail->To($email);
-                $recipient_list .= "$email ($name)\n";
+                $recipient_list .= $email.' ('.$name.')'."\n";
             }
             else {
-                $recipient_list .= "Invalid email address '$email' for $name, not sent\n";
+                $recipient_list .= 'Invalid email address "'.$email.'" for '.$name.', not sent'."\n";
             }
         }
         $mail->Send();
         // Now update the log
         $save_email = @$AppUI->getPref('TASKLOGNOTE');
         if ($save_email) {
-            $log->task_log_description .= "\nEmailed " . date('d/m/Y H:i:s') . " to:\n{$recipient_list}";
+            $log->task_log_description .= "\n".'Emailed ' . date('d/m/Y H:i:s') . ' to:'."\n".$recipient_list;
             return true;
         }
         
@@ -1196,19 +1196,19 @@ class CTask extends CDpObject {
                      .'project_color_identifier AS color, project_name');
         $q->addOrder('task_start_date');
         $q->addWhere('task_project = project_id');
-        $q->addWhere("((task_start_date <= '{$db_end}' AND task_end_date >= '{$db_start}')"
-                     ." OR task_start_date BETWEEN '{$db_start}' AND '{$db_end}')");
+        $q->addWhere('((task_start_date <= '.$db_end.' AND task_end_date >= '.$db_start.')'
+                     .' OR task_start_date BETWEEN '.$db_start.' AND '.$db_end.')');
         $q->addWhere('task_status > -1');
         
         if (is_array($filters)) {
             foreach($filters as $field => $filter) {
                 if ($filter > 0) {
                     if ($field == 'task_owner') {
-                      $q->addWhere("tasks.task_owner = $filter OR tasks.task_creator = $filter");
+                      $q->addWhere('tasks.task_owner = '.$filter.' OR tasks.task_creator = '.$filter);
                     } else if ($field == 'task_company') {
                       $q->addWhere('projects.project_company = ' . $filter);
                     } else {
-                        $q->addWhere("tasks.$field = $filter ");
+                        $q->addWhere('tasks.'.$field.' = '.$filter);
                     }
                 }
             }
@@ -1462,8 +1462,8 @@ class CTask extends CDpObject {
             $q = new DBQuery;
             $q->addTable('tasks', 't');
             $q->addQuery('MAX(task_end_date)');
-            $q->addWhere("task_id IN ($deps)");
-            $q->addWhere("task_dynamic IN ($track_these)");
+            $q->addWhere('task_id IN ('.$deps.')');
+            $q->addWhere('task_dynamic IN ('.$track_these.')');
             $last_end_date = $q->loadResult();
         }
         
@@ -1487,15 +1487,15 @@ class CTask extends CDpObject {
         $mods = $AppUI->getActiveModules();
         
         /*
-         * Note from MerlinYoda: Use date in history module (if present) to get a "more accurate" end date.
-         * Informational Task Logs could conceivablly be posted after a task is "finished" which do not effect the
-         * "done-ness" of the task. Therefore, they should be used as an alternative source for an actual end date.
-         * Otherwise there risks of are inconsistancies between things like the "Last Update" display field and the status
+         * Note from MerlinYoda: Use date in history module (if present) to get a 'more accurate' end date.
+         * Informational Task Logs could conceivablly be posted after a task is 'finished' which do not effect the
+         * 'done-ness' of the task. Therefore, they should be used as an alternative source for an actual end date.
+         * Otherwise there risks of are inconsistancies between things like the 'Last Update' display field and the status
          * highlighting color (done, overdue, late, etc.).
          *
-         * In future, we should probably set up a date field in the 'tasks' table to write a task's "actual" end date to
+         * In future, we should probably set up a date field in the 'tasks' table to write a task's 'actual' end date to
          * under certain circumstances. (i.e. setting the task's completion percentage to 100) to remove any possibility of
-         * ambiguity about the "correct-ness" of the actual end date.
+         * ambiguity about the 'correct-ness' of the actual end date.
          */
         if (!empty($mods['history']) && !getDenyRead('history')) {
             $q->addQuery('MAX(history_date) as actual_end_date');
@@ -1599,7 +1599,7 @@ class CTask extends CDpObject {
         }
         
         $number_of_weeks_worked = $task_finish_date->workingDaysInSpan($task_start_date) 
-            / count(explode(",",dPgetConfig("cal_working_days")));	
+            / count(explode(',',dPgetConfig('cal_working_days')));	
 		$number_of_weeks_worked = ($number_of_weeks_worked < 1) ? ceil($number_of_weeks_worked) : $number_of_weeks_worked;
         
         // zero adjustment
@@ -1702,7 +1702,7 @@ class CTask extends CDpObject {
         $sysChargeMax = $q->loadHash();
         $q->clear();
         //deprecated query
-        //$sql = "SELECT pref_value FROM user_preferences WHERE pref_user = 0 AND pref_name = 'TASKASSIGNMAX'";
+        //$sql = 'SELECT pref_value FROM user_preferences WHERE pref_user = 0 AND pref_name = 'TASKASSIGNMAX'';
         //$result = db_loadHash($sql, $sysChargeMax);
         
         $scm = ((! $sysChargeMax)?0:$sysChargeMax['pref_value']);
@@ -1710,7 +1710,7 @@ class CTask extends CDpObject {
         // provide actual assignment charge, individual chargeMax and freeCapacity of users' assignments to tasks
         // Generate SQL for all the crazy amounts of nested IFNULL functions - description follows
         // use userlist if available otherwise pull data for all users
-        //$where = !empty($users) ? 'WHERE u.user_id IN ('.implode(",", $users).') ' : '';
+        //$where = !empty($users) ? 'WHERE u.user_id IN ('.implode(',', $users).') ' : '';
         $where = !empty($users) ? 'u.user_id IN ('.implode(',', $users).') ' : '';
         
         // If the user set their maximum allocation use that, otherwise use system wide default.
@@ -1726,7 +1726,7 @@ class CTask extends CDpObject {
         $sql_if_ABgtZERO_ABeqZERO = 'IF('.$AB_sql_ifnull_AA_up_pref_value.'>0,'.$AB_sql_ifnull_AA_up_pref_value.',0)';
         
         // Concatenate username with free allocation
-        $sql_userFC_concat = $q->concat('u.user_username', "' ['", $sql_if_ABgtZERO_ABeqZERO, "'%]'");
+        $sql_userFC_concat = $q->concat('u.user_username', '" ["', $sql_if_ABgtZERO_ABeqZERO, '"%]"');
         
         // Produce the amount currently allocated.
         $AC_sql_ifnull_ut_perc_zero = $q->ifNull('SUM(ut.perc_assignment)', '0');
@@ -2194,7 +2194,7 @@ class CTask extends CDpObject {
 		$q->addTable('tasks');
 		$q->addJoin('task_log', 't', 'task_id = task_log_task');
 		$q->addJoin('projects', 'p', 'task_project = project_id');
-		$q->addWhere("(task_log_name LIKE '%$keyword%' OR task_log_description LIKE '%$keyword%')");
+		$q->addWhere('(task_log_name LIKE "%'.$keyword.'%" OR task_log_description LIKE "%'.$keyword.'%"');
 		$tasks = $q->loadList();
 		foreach($tasks as $task) {
             if ($perms->checkModuleItem($this->_tbl, 'view', $task['task_id'])) {
@@ -2268,10 +2268,10 @@ class CTaskLog extends CDpObject {
             $q->addTable($this->_tbl);
             $q->addQuery($k);
             $q->addGroup($k);
-            $q->addWhere("$k = ".$this->$k);
+            $q->addWhere($k.' = '.$this->$k);
             foreach( $joins as $table ) {
-                $q->addQuery("COUNT(DISTINCT {$table['idfield']}) AS {$table['idfield']}");
-                $q->addJoin($table['name'], $table['name'], "{$table['joinfield']} = $k");
+                $q->addQuery('COUNT(DISTINCT '.$table['idfield'].') AS '.$table['idfield']);
+                $q->addJoin($table['name'], $table['name'], $table['joinfield'].' = '.$k);
             }
             $sql = $q->prepare();
             
@@ -2313,12 +2313,12 @@ function closeOpenedTask($task_id){
 
 function taskstyle($task) {
 	$now = new CDate();
-	$start_date = intval( $task["task_start_date"] ) ? new CDate( $task["task_start_date"] ) : null;
-	$end_date = intval( $task["task_end_date"] ) ? new CDate( $task["task_end_date"] ) : null;
+	$start_date = intval( $task['task_start_date'] ) ? new CDate( $task['task_start_date'] ) : null;
+	$end_date = intval( $task['task_end_date'] ) ? new CDate( $task['task_end_date'] ) : null;
     
 	if ($start_date && !$end_date) {
         $end_date = $start_date;
-        $end_date->addSeconds( @$task["task_duration"]*$task["task_duration_type"]*SEC_HOUR );
+        $end_date->addSeconds( @$task['task_duration']*$task['task_duration_type']*SEC_HOUR );
 	}
 	else if (!$start_date){
 		return '';
@@ -2423,24 +2423,24 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
     }
     */
     
-    $s = "\n<tr ondblclick='dpToggleNode(this)' id='node-{$a['node_id']}'>";
+    $s = "\n".'<tr ondblclick="dpToggleNode(this)" id="node-'.$a['node_id'].'>';
     // edit icon
-    $s .= "\n\t<td>";
+    $s .= "\n\t".'<td>';
     $canEdit = !getDenyEdit( 'tasks', $a['task_id'] );
     $canViewLog = $perms->checkModuleItem('tasks', 'view', $a['task_id']);
     if ($canEdit) {
-        $s .= "\n\t\t<a href=\"?m=tasks&amp;a=addedit&amp;task_id={$a['task_id']}\">"."\n\t\t\t"
+        $s .= "\n\t\t".'<a href="?m=tasks&amp;a=addedit&amp;task_id='.$a['task_id'].'">'."\n\t\t\t"
             .'<img src="./images/icons/pencil.gif" alt="'.$AppUI->_( 'Edit Task' ).'" border="0" width="12" height="12" />'
-            ."\n\t\t</a>";
+            ."\n\t\t".'</a>';
     }
-    $s .= "\n\t</td>";
+    $s .= "\n\t".'</td>';
     // pinned
     $pin_prefix = $a['task_pinned']?'':'un';
-    $s .= "\n\t<td>";
-    $s .= "\n\t\t<a href=\"?m=tasks&amp;pin=".($a['task_pinned']?0:1)."&amp;task_id={$a['task_id']}\">"."\n\t\t\t"
+    $s .= "\n\t".'<td>';
+    $s .= "\n\t\t".'<a href="?m=tasks&amp;pin='.($a['task_pinned']?0:1).'&amp;task_id='.$a['task_id'].'">'."\n\t\t\t"
         .'<img src="./images/icons/'.$pin_prefix.'pin.gif" alt="'.$AppUI->_( $pin_prefix . 'pin Task' )
-        .'" border="0" width="12" height="12" />'."\n\t\t</a>";
-    $s .= "\n\t</td>";
+        .'" border="0" width="12" height="12" />'."\n\t\t".'</a>';
+    $s .= "\n\t".'</td>';
     // New Log
     if (@$a['task_log_problem']>0) {
         $s .= '<td align="center" valign="middle"><a href="?m=tasks&amp;a=view&amp;task_id='.$a['task_id']
@@ -2449,27 +2449,27 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         $s .='</a></td>';
     }
     else if ($canViewLog) {
-        $s .= "\n\t<td><a href=\"?m=tasks&amp;a=view&amp;task_id=".$a['task_id'].'&amp;tab=1">'.$AppUI->_('Log').'</a></td>';
+        $s .= "\n\t<td>".'<a href="?m=tasks&amp;a=view&amp;task_id='.$a['task_id'].'&amp;tab=1">'.$AppUI->_('Log').'</a></td>';
     }
     else {
-        $s .= "\n\t<td></td>";
+        $s .= "\n\t".'<td></td>';
     }
     
     // percent complete
-    $s .= "\n\t<td align=\"right\">".intval( $a["task_percent_complete"] ).'%</td>';
+    $s .= "\n\t".'<td align="right">'.intval( $a['task_percent_complete'] ).'%</td>';
     // priority
-    $s .= "\n\t<td align='center' nowrap='nowrap'>";
-    if ($a["task_priority"] < 0 ) {
-        $s .= "\n\t\t<img src=\"./images/icons/priority-".(-$a["task_priority"]).'.gif" alt="'.$AppUI->_('high priority')
+    $s .= "\n\t".'<td align="center" nowrap="nowrap">';
+    if ($a['task_priority'] < 0 ) {
+        $s .= "\n\t\t".'<img src="./images/icons/priority-'.$a['task_priority'].'.gif" alt="'.$AppUI->_('high priority')
             .'" width="13" height="16" />';
     } 
-    else if ($a["task_priority"] > 0) {
-        $s .= "\n\t\t<img src=\"./images/icons/priority+".$a["task_priority"].'.gif" alt="'.$AppUI->_('low priority')
+    else if ($a['task_priority'] > 0) {
+        $s .= "\n\t\t".'<img src="./images/icons/priority+'.$a['task_priority'].'.gif" alt="'.$AppUI->_('low priority')
             .'" width="13" height="16" />';
     }
     
-    $s .= @$a["file_count"] > 0 ? "<img src=\"./images/clip.png\" alt=\"F\">" : "";
-    $s .= "</td>";
+    $s .= @$a['file_count'] > 0 ? '<img src="./images/clip.png" alt="F">' : '';
+    $s .= '</td>';
     
     // name
     $s .= '<td width="'.(($today_view)?'50%':'90%').'">';
@@ -2480,7 +2480,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
     }
     
     // name link
-    $alt = strlen($a['task_description']) > 80 ? substr($a["task_description"],0,80) . '...' : $a['task_description'];
+    $alt = strlen($a['task_description']) > 80 ? substr($a['task_description'],0,80) . '...' : $a['task_description'];
     // instead of the statement below
     $alt = str_replace("\"", '&quot;', $alt);
     //$alt = htmlspecialchars($alt);
@@ -2488,29 +2488,29 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
     $alt = str_replace("\n", ' ', $alt);
     
     if (!dPgetConfig('tasks_ajax_list')) {
-        $open_link = "<a href='index.php$query_string".(($is_opened)
-                      ?"&close_task_id=".$a["task_id"]."'><img src='images/icons/collapse.gif' border='0' align='center' />" 
-                      : "&open_task_id=".$a["task_id"]."'><img src='images/icons/expand.gif' border='0' />").'</a>';
+        $open_link = '<a href="index.php'.$query_string.($is_opened
+                      ? '&close_task_id='.$a['task_id'].'"><img src="images/icons/collapse.gif" border="0" align="center" />' 
+                      : '&open_task_id='.$a['task_id'].'"><img src="images/icons/expand.gif" border="0" />').'</a>';
     }
     else {
         $open_link = '<img src="images/icons/expand.gif" border="0" align="center" onclick="dpToggleNode(this);" />';
     }
     
-    if ($a["task_milestone"] > 0 ) {
-        $s .= '<a href="./index.php?m=tasks&a=view&task_id='.$a["task_id"].'" title="'.$alt.'"><b>'.$a["task_name"]
+    if ($a['task_milestone'] > 0 ) {
+        $s .= '<a href="./index.php?m=tasks&a=view&task_id='.$a['task_id'].'" title="'.$alt.'"><b>'.$a['task_name']
             .'</b></a> <img src="./images/icons/milestone.gif" border="0" /></td>';
     } 
-    else if ($a["task_dynamic"] == '1'){
+    else if ($a['task_dynamic'] == '1'){
         if (! $today_view) {
             $s .= $open_link;
         }
         
-        $s .= '<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$a["task_id"].'" title="'.$alt.'"><b><i>'
-            .$a["task_name"] . '</i></b></a></td>';
+        $s .= '<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$a['task_id'].'" title="'.$alt.'"><b><i>'
+            .$a['task_name'] . '</i></b></a></td>';
     }
     else {
-        $s .= '&nbsp;<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$a["task_id"].'" title="'.$alt.'">'
-            .$a["task_name"].'</a></td>';
+        $s .= '&nbsp;<a href="./index.php?m=tasks&amp;a=view&amp;task_id='.$a['task_id'].'" title="'.$alt.'">'
+            .$a['task_name'].'</a></td>';
     }
     
     if ($today_view) { // Show the project name
@@ -2523,20 +2523,19 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
     
     // task owner
     if (! $today_view) {
-        $s .= '<td nowrap="nowrap" align="center">'."<a href='?m=admin&amp;a=viewuser&amp;user_id=".$a['user_id']."'>"
-            .$a['user_username']."</a>".'</td>';
+        $s .= '<td nowrap="nowrap" align="center"><a href="?m=admin&amp;a=viewuser&amp;user_id='.$a['user_id'].'">'
+            .$a['user_username'].'</a></td>';
     }
-    // $s .= '<td nowrap="nowrap" align="center">'. $a["user_username"] .'</td>';
     if ( isset($a['task_assigned_users']) && ($assigned_users = $a['task_assigned_users'])) {
         $a_u_tmp_array = array();
         if($show_all_assignees){
             $s .= '<td align="center">';
             foreach ( $assigned_users as $val) {
                 //$a_u_tmp_array[] = "<A href='mailto:".$val['user_email']."'>".$val['user_username']."</A>";
-                $aInfo = "<a href='?m=admin&amp;a=viewuser&amp;user_id=".$val['user_id']."'";
+                $aInfo = '<a href="?m=admin&amp;a=viewuser&amp;user_id='.$val['user_id'].'"';
                 $aInfo .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$val['user_id']]['charge'].'%; '
                     .$AppUI->_('Free Capacity').':'.$userAlloc[$val['user_id']]['freeCapacity'].'%'.'">';
-                $aInfo .= $val['user_username']." (".$val['perc_assignment']."%)</a>";
+                $aInfo .= $val['user_username'].' ('.$val['perc_assignment'].'%)</a>';
                 $a_u_tmp_array[] = $aInfo;
             }
             $s .= join ( ', ', $a_u_tmp_array );
@@ -2545,14 +2544,14 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
         else {
             $s .= '<td align="center" nowrap="nowrap">';
             // $s .= $a['assignee_username'];
-            $s .= "<a href='?m=admin&amp;a=viewuser&amp;user_id=".$assigned_users[0]['user_id']."'";
+            $s .= '<a href="?m=admin&amp;a=viewuser&amp;user_id='.$assigned_users[0]['user_id'].'"';
             $s .= 'title="'.$AppUI->_('Extent of Assignment').':'.$userAlloc[$assigned_users[0]['user_id']]['charge'].'%; '
                 .$AppUI->_('Free Capacity').':'.$userAlloc[$assigned_users[0]['user_id']]['freeCapacity'].'%'.'">';
             $s .= $assigned_users[0]['user_username'].' ('.$assigned_users[0]['perc_assignment'] .'%)</a>';
             if($a['assignee_count']>1) {
                 $id = $a['task_id'];
-                $s .= " <a href=\"javascript: void(0);\"  onclick=\"toggle_users('users_$id');\" title=\""
-                    .join ( ', ', $a_u_tmp_array )."\">(+".($a['assignee_count']-1).")</a>";
+                $s .= ' <a href="javascript: void(0);"  onclick="toggle_users("users_'.$id.'");" title="'
+                    .join ( ', ', $a_u_tmp_array ).'">(+'.($a['assignee_count']-1).')</a>';
                 $s .= '<span style="display: none" id="users_' . $id . '">';
                 $a_u_tmp_array[] = $assigned_users[0]['user_username'];
                 for ( $i = 1; $i < count( $assigned_users ); $i++) {
@@ -2653,9 +2652,9 @@ function array_csort() {
         else {
             $sortarr[$i] = $arg;
         }
-        $msortline .= "\$sortarr[".$i."],";
+        $msortline .= '$sortarr['.$i.'],';
     }
-    $msortline .= "\$marray));";
+    $msortline .= '$marray));';
     
     eval($msortline);
     return $marray;
@@ -2736,6 +2735,4 @@ function sort_by_item_title( $title, $item_name, $item_type ) {
     echo $AppUI->_($title);
     echo '</a>';
 }
-
-
 ?>
