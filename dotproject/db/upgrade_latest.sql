@@ -282,3 +282,7 @@ UPDATE `modules` SET `mod_ui_order`=0 WHERE `mod_name` = 'Public';
 ALTER TABLE `users` DROP `user_owner`;
 ALTER TABLE `users` DROP `user_company`;
 ALTER TABLE `users` DROP `user_department`;
+
+# 20070106
+# Adding Index to the custom fields value
+ALTER TABLE `custom_fields_values` ADD INDEX `idx_cfv_id` ( `value_id` );
