@@ -863,7 +863,8 @@ CREATE TABLE custom_fields_struct (
     field_order integer,
     field_name varchar(100),
     field_extratags varchar(250),
-    field_description varchar(250)
+    field_description varchar(250),
+		PRIMARY KEY(`field_id`)
 );
 
 DROP TABLE IF EXISTS `custom_fields_values`;
@@ -874,14 +875,15 @@ CREATE TABLE custom_fields_values (
     value_field_id integer,
     value_charvalue varchar(250),
     value_intvalue integer,
-		KEY `idx_cfv_id` (`value_id`)
+		PRIMARY KEY (`value_id`)
 );
 
 DROP TABLE IF EXISTS `custom_fields_lists`;
 CREATE TABLE custom_fields_lists (
     field_id integer,
     list_option_id integer,
-    list_value varchar(250)
+    list_value varchar(250),
+		PRIMARY KEY(`field_id`)
 );
 
 

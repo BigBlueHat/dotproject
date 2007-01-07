@@ -286,3 +286,10 @@ ALTER TABLE `users` DROP `user_department`;
 # 20070106
 # Adding Index to the custom fields value
 ALTER TABLE `custom_fields_values` ADD INDEX `idx_cfv_id` ( `value_id` );
+
+# 20070107
+# Adding Primary Key to custom fields instead of Index
+ALTER TABLE `custom_fields_values` DROP INDEX `idx_cfv_id`;
+ALTER TABLE `custom_fields_values` ADD PRIMARY KEY ( `value_id` );
+ALTER TABLE `custom_fields_lists` ADD PRIMARY KEY ( `field_id` );
+ALTER TABLE `custom_fields_struct` ADD PRIMARY KEY ( `field_id` );
