@@ -241,9 +241,7 @@ ALTER TABLE `sessions` CHANGE `session_id` `session_id` VARCHAR( 64 ) NOT NULL ;
 # 20060605
 # adding some further user preferences options
 INSERT INTO `user_preferences` ( `pref_user` , `pref_name` , `pref_value` , `pref_group` , `pref_type` )
-VALUES (
-'0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 'checkbox'
-);
+	VALUES ('0', 'TASKNOTIFYBYDEF', 'true', 'tasks', 'checkbox');
 
 # 20060717
 # Add system variable to set tasks default for dependency tracking
