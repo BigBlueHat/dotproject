@@ -49,11 +49,15 @@ function setCompany( key, val ){
 }
 
 function delIt(){
+{/literal}{if $userDeleteProtect}{literal}
+	alert( "{/literal}{dPtranslate word='contactsDeleteUserError' type='js'}{literal}" );
+{/literal}{else}{literal}
 	var form = document.changecontact;
 	if(confirm( "{/literal}{dPtranslate word='contactsDelete' type='js'}{literal}" )) {
 		form.del.value = "{/literal}{$contact_id}{literal}";
 		form.submit();
 	}
+{/literal}{/if}{literal}
 }
 
 function orderByName( x ){

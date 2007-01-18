@@ -20,6 +20,7 @@
 "contact_order_by"=>"Contact Name",
 "contacts list",
 "contactsDelete"=>"Are you sure you would like to delete this contact?",
+"contactsDeleteUserError"=>"This contact belongs to a user and cannot be deleted.",
 "contactsOrderBy"=>"Please enter a valid Display Name, used to order the contact list.",
 "contactsValidName"=>"Please enter a valid contact name.",
 "delete contact",
