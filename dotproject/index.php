@@ -227,6 +227,7 @@ if (!isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
 }
 // set the action from the url
 $a = $AppUI->checkFileName(dPgetParam($_GET, 'a', $def_a));
+$_GET['tab'] = $dPconfig['default_view_tab'];
 
 /* This check for $u implies that a file located in a subdirectory of higher depth than 1
  * in relation to the module base can't be executed. So it would'nt be possible to
