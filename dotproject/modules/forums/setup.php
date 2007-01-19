@@ -18,19 +18,12 @@ $config['mod_type'] = 'core';
 $config['mod_ui_name'] = 'Forums';
 $config['mod_ui_icon'] = 'communicate.gif';
 $config['mod_description'] = '';
-$config['mod_config'] = true;			// show 'configure' link in viewmods
 
 if (@$a == 'setup') {
 	echo dPshowModuleConfig( $config );
 }
 
 class CSetupForums {
-
-	function configure() {		// configure this module
-	global $AppUI;
-		$AppUI->redirect( 'm=forums&a=configure' );	// load module specific configuration page
-  		return true;
-	}
 
 }
 

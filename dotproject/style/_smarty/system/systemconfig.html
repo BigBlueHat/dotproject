@@ -15,7 +15,9 @@
 {foreach from=$rs item=c}
 {if $c.config_group != $last_group}
 		<tr>
-			<td colspan="2"><b>{dPtranslate word=$c.config_group append='_group_title'}</b></td>
+			<td colspan="2">
+				<b><a name="{$c.config_group}"/>{dPtranslate word=$c.config_group append='_group_title'}</a></b>
+			</td>
 		</tr>
 		{assign var="last_group" value=$c.config_group}
 	{/if}

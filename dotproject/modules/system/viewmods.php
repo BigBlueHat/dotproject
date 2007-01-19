@@ -91,12 +91,14 @@ foreach ($modules as $row) {
 
 // check for configuration
 
-	if ( $ok )
+	$q = new DBQuery;
+	$q->addTable('config');
+	$q->addWhere('config_group = "'.$row['mod_directory'].'"');
+	$res = $q->exec();
+	
+	if (db_num_rows($res) > 0)
 	{
-		if ( isset($config['mod_config']) && $config['mod_config'] == true && $canEdit )
-		{
-			$s .= ' | <a href="'.$query_string . '&amp;cmd=configure">'.$AppUI->_('configure').'</a>';
-		}
+		$s .= ' | <a href="?m=system&amp;a=systemconfig#'.$row['mod_directory'].'">'.$AppUI->_('configure').'</a>';
 	}
 
 

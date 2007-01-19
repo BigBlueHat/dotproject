@@ -242,27 +242,15 @@ class CForumMessage {
 		  $forum_name = 'Unknown';
 		}
 
-		// SQL-Query to check if the message should be delivered to all users (forced)
-		// In positive case there will be a (0,0,0) row in the forum_watch table
-		$q->clear();
-		$q->addTable('forum_watch');
-		$q->addQuery('*');
-		$q->addWhere('watch_user = 0 AND watch_forum = 0 AND watch_topic = 0');
-		$resAll = $q->exec();
-		$AllCount = db_num_rows($resAll);
-
 		$q->clear();
 		$q->addTable('users');
 		$q->addQuery('DISTINCT contact_email, user_id, contact_first_name, contact_last_name');
 		$q->addJoin('contacts', 'con', 'contact_id = user_contact');
-
-		if ($AllCount < 1)		//message is only delivered to users that checked the forum watch
-		{	
-			$q->addTable('forum_watch');
-			$q->addWhere('user_id = watch_user');
-			$q->addWhere('user_id <> ' . $AppUI->user_id);
-			$q->addWhere("(watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
-		}
+		
+		$q->addTable('forum_watch');
+		$q->addWhere('user_id = watch_user');
+		$q->addWhere('user_id <> ' . $AppUI->user_id);
+		$q->addWhere("(watch_forum = $this->message_forum OR watch_topic = $this->message_parent)");
 
 		if (!($res = $q->exec())) {
 			$q->clear();
