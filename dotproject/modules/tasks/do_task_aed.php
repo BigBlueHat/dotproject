@@ -58,9 +58,10 @@ if ($sub_form) {
 		$obj->task_owner = $AppUI->user_id;
 
 	// Check to see if the task_project has changed
-	if (isset($_POST['new_task_project']) && $_POST['new_task_project'])
+	if (isset($_POST['new_task_project']) && $_POST['new_task_project']) {
 		$obj->task_project = $_POST['new_task_project'];
-
+		$obj->task_parent  = $obj->task_id;
+	}
 	// Map task_dynamic checkboxes to task_dynamic values for task dependencies.
 	if ( $obj->task_dynamic != 1 ) {
 		$task_dynamic_delay = dPgetParam($_POST, 'task_dynamic_nodelay', '0');
