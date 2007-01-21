@@ -1,5 +1,5 @@
 {if $editProjects}
-<form action="./index.php" method="get" name="eform">
+<form action="./index.php" method="get">
 {/if}
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 {if $showFilters}
@@ -9,12 +9,7 @@
 	<td align="right" nowrap="nowrap"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
 </tr>
 {/if}
-{if $showAllProjects}
 	<tr>
-		<td align="right" nowrap="nowrap" colspan="{$show|@count}"><input type="checkbox" name="hideArchived" class="text" {if $hideArchived}checked="checked"{/if} onclick="document.eform.submit()"/>{dPtranslate sentence='Hide Archived'}?<td>
-	</tr> 
-	<tr>
-{/if}
 {section name=i loop=$show}
 	  <th><a href="{$current_url}&amp;orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
 {/section}
@@ -26,10 +21,6 @@
 	<tr>
 		<td align="left" nowrap="nowrap" colspan="25">{dPtranslate sentence='No data available'}<br />{$msg}</td>
 	</tr>
-	<input type="hidden" name="update_project_status" value="1" />
-	<input type="hidden" name="m" value="projects" />
-	<input type="hidden" name="tab" value="{$tab}" />
-</form>
 {else}
 	{*{section name=i loop=$rows}*}
 {foreach from=$rows item=row}
@@ -105,7 +96,6 @@
 	<input type="submit" class="button" value="{dPtranslate sentence='Update projects status'}" />
 	<input type="hidden" name="update_project_status" value="1" />
 	<input type="hidden" name="m" value="projects" />
-	<input type="hidden" name="tab" value="{$tab}" />
 	{dParraySelect array=$pstatus name='project_status' extras='size="1" class="text"' value='2' translate='true'}
 </p>
 </form>
