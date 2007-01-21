@@ -1,0 +1,99 @@
+<table border="0" cellpadding="2" cellspacing="1" width="98%" class="tbl">
+<tr>
+	<th colspan="2">{dPtranslate word='Module'}</th>
+	<th>{dPtranslate word='Status'}</th>
+	<th>{dPtranslate word='Type'}</th>
+	<th>{dPtranslate word='Version'}</th>
+	<th>{dPtranslate word='Menu Text'}</th>
+	<th>{dPtranslate word='Menu Icon'}</th>
+	<th>{dPtranslate word='Menu Status'}</th>
+	<th>{dPtranslate word='#'}</th>
+</tr>
+
+{foreach from=$modules item=row}
+
+{* Unset those Modules from the modFiles Array which are already installed *}
+{dPunsetArrayValue a='modFiles' k=$row.mod_directory}
+
+{assign var="query_string" value="?m=$m&amp;a=domodsql&amp;mod_id=`$row.mod_id`"}
+<tr>
+	<td>	
+		<img src="./images/icons/updown.gif" alt="{dPtranslate word='arrows'}" width="10" height="15" border=0 usemap="#arrow{$row.mod_id}"/>
+		{if $canEdit}
+		<map name="arrow{$row.mod_id}">
+		{if $row.mod_ui_order > 0}
+			<area coords="0,0,10,7" href="{$query_string}&amp;cmd=moveup">
+		{/if}
+		<area coords="0,8,10,14" href="{$query_string}&amp;cmd=movedn">
+		</map>
+		{/if}
+	</td>
+	<td width="1%" nowrap="nowrap">{dPtranslate word=$row.mod_name}</td>
+	<td><img src="./images/obj/dot{if $row.mod_active}
+			{strip}green{/strip}
+		{else}
+			{strip}yellowanim{/strip}
+		{/if}.gif" alt="{dPtranslate word='status'}" width="12" height="12" />&nbsp;
+	{if $canEdit}
+		<a href="{$query_string}&amp;cmd=toggle">
+			{if $row.mod_active}
+				{dPtranslate word='active'}
+			{else}
+				{dPtranslate word='disabled'}
+			{/if}
+		</a>
+		{if file_exists("`$dPconfig.root_dir`/modules/`$row.mod_directory`/setup.php")}
+			{dPgetModuleSetupConfig file="`$dPconfig.root_dir`/modules/`$row.mod_directory`/setup.php" modCon='mc'}
+			{if $mc.mod_version != $row.mod_version && $canEdit}
+				&nbsp;|&nbsp;<a href="{$query_string}&amp;cmd=upgrade" onclick="return window.confirm('{dPtranslate sentence='Are you sure?'}');">{dPtranslate word='upgrade'}</a>
+			{/if}
+		{/if}
+		{dPisModuleConfigurable modDir=$row.mod_directory modConfigurable='modConfigurable'}
+		{if db_num_rows($modConfigurable) > 0}
+			&nbsp;|&nbsp; <a href="?m=system&amp;a=systemconfig#{$row.mod_directory}">{dPtranslate word=configure'}</a>
+		{/if}
+	{/if}
+	{if $row.mod_type != 'core' && $canEdit}
+		&nbsp;|&nbsp;<a href="{$query_string}&amp;cmd=remove" onclick="return window.confirm('{dPtranslate sentence='This will delete all data associated with the module!'}\n{dPtranslate sentence='Are you sure?'}');">{dPtranslate word='remove'}</a>
+	{/if}
+	</td>
+	<td>{$row.mod_type}</td>
+	<td>{$row.mod_version}</td>
+	<td>{dPtranslate word=$row.mod_ui_name}</td>
+	<td>{$row.mod_ui_icon}</td>
+	<td>
+		<img src="./images/obj/{if $row.mod_ui_active}dotgreen.gif{else}dotredanim.gif{/if}" alt="{dPtranslate word='UI status'}" width="12" height="12" />&nbsp;
+		{if $canEdit}
+			<a href="{$query_string}&amp;cmd=toggleMenu">
+				{if $row.mod_ui_active} {dPtranslate word='visible'}{else}{dPtranslate word='hidden'}{/if}
+			</a>
+		{/if}
+	</td>
+	<td>{$row.mod_ui_order}</td>
+</tr>
+{/foreach}
+
+{foreach from=$modFiles item=row}
+	<tr>
+		<td></td>
+		<td>{$row}</td>
+		<td>
+			<img src="./images/obj/dotgrey.gif" alt="{dPtranslate word='not installed'}" width="12" height="12" />&nbsp;
+			{if $canEdit}
+				<a href="?m={$m}&amp;a=domodsql&amp;cmd=install&amp;mod_directory={$row}">
+					{dPtranslate word='install'}
+				</a>
+			{/if}
+		</td>
+		{if file_exists("`$dPconfig.root_dir`/modules/$row/setup.php")}
+			{dPgetModuleSetupConfig file="`$dPconfig.root_dir`/modules/$row/setup.php" modCon='mc' }
+			<td>{$mc.mod_type}</td>
+			<td>{$mc.mod_version}</td>
+			<td>{if !empty($mc.mod_ui_name)}{dPtranslate word=$mc.mod_ui_name}{/if}</td>
+			<td>{$mc.mod_ui_icon}</td>
+			<td></td>
+			<td></td>
+		{/if}
+	</tr>
+{/foreach}
+</table>
