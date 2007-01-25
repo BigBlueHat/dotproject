@@ -102,15 +102,15 @@ foreach($project_types as $key=>$value)
 
 
 if (is_array($projects)) {
-        foreach ($projects as $p)
-        {
-                if ($p['project_status'] == 3)
-                        ++$active;
-                else if ($p['project_status'] == 5)
-                        ++$complete;
-                else
-                        ++$proposed;
-        }
+  foreach ($projects as $p) {
+    if ($p['project_status'] == 3) {
+      ++$active;
+    } else if ($p['project_status'] == 5) {
+      ++$complete;
+    } else {
+    	++$proposed;
+    }
+  }
 }
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else

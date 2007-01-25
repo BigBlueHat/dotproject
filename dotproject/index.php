@@ -43,10 +43,9 @@ $loginFromPage = 'index.php';
 require_once('base.php');
 
 clearstatcache();
-if (is_file($baseDir . '/includes/config.php'))
+if (is_file($baseDir . '/includes/config.php')) {
 	require_once($baseDir . '/includes/config.php');
-else
-{
+} else {
 	include_once($baseDir . '/classes/template.class.php');
 	$tpl = new CTemplate();
 	$tpl->init();
@@ -54,8 +53,9 @@ else
 	exit();
 }
 
-if (!isset($GLOBALS['OS_WIN']))
+if (!isset($GLOBALS['OS_WIN'])) {
 	$GLOBALS['OS_WIN'] = (stristr(PHP_OS, 'WIN') !== false);
+}
 
 // tweak for pathname consistence on windows machines
 require_once($baseDir . '/includes/db_adodb.php');
@@ -135,10 +135,11 @@ if (dPgetParam( $_POST, 'lostpass', 0 )) {
 // support alternative authentication methods such as the PostNuke
 // and HTTP auth methods now supported.
 if (isset($_REQUEST['login'])) {
-	if (dPgetConfig('auth_method') == 'http_ba')
+	if (dPgetConfig('auth_method') == 'http_ba') {
 		$username = $_SERVER['REMOTE_USER'];
-	else
+	} else {
 		$username = dPgetParam( $_POST, 'username', '' );
+	}
 
 	$password = dPgetParam( $_POST, 'password', '' );
 	$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
@@ -243,8 +244,8 @@ $u = $AppUI->checkFileName(dPgetParam($_GET, 'u', ''));
 // these can be further modified by the included action files
 $perms =& $AppUI->acl();
 $canAccess 	= $perms->checkModule($m, 'access');
-$canRead 		= $perms->checkModule($m, 'view');
-$canEdit 		= $perms->checkModule($m, 'edit');
+$canRead 	= $perms->checkModule($m, 'view');
+$canEdit 	= $perms->checkModule($m, 'edit');
 $canAuthor 	= $perms->checkModule($m, 'add');
 $canDelete 	= $perms->checkModule($m, 'delete');
 
@@ -351,10 +352,9 @@ if(!$suppressHeaders)
 
 $setuptime = (array_sum(explode(' ',microtime())) - $time);
 $module_file = "$baseDir/modules/$m/" . ($u ? "$u/" : "") . $a . '.php';
-if (file_exists($module_file))
+if (file_exists($module_file)) {
 	require $module_file;
-else
-{
+} else {
 // TODO: make this part of the public module? 
 // TODO: internationalise the string.
 	$titleBlock = new CTitleBlock('Warning', 'log-error.gif');
