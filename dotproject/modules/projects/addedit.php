@@ -15,7 +15,7 @@ if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0))
 require_once( $AppUI->getModuleClass ('companies' ) );
 
 $row = new CCompany();
-$companies = $row->getAllowedRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
+$companies = $row->getEdittableRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
 $companies = arrayMerge( array( '0'=>'&nbsp;' ), $companies );
 
 // pull users
