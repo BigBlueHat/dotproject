@@ -266,6 +266,13 @@ class dPacl extends gacl_api {
     // Grab a list of all acls that match the user/module, for which Deny permission is set.
     return $this->search_acl("application", "view", "user", $uid, false, $module, false, false, false);
   }
+  function getItemEditACLs($module, $uid = null)
+  {
+    if (! $uid)
+      $uid = $GLOBALS['AppUI']->user_id;
+    // Grab a list of all acls that match the user/module, for which Deny permission is set.
+    return $this->search_acl("application", "edit", "user", $uid, false, $module, false, false, false);
+  }
 
   function getUserACLs($uid = null)
   {
@@ -342,6 +349,27 @@ class dPacl extends gacl_api {
     return $items;
   }
 
+  function & getEdittableItems($module, $uid = null)
+  {
+    $items = array();
+    if (! $uid)
+      $uid = $GLOBALS['AppUI']->user_id;
+    $acls = $this->getItemEditACLs($module, $uid);
+    if (is_array($acls)) {
+      foreach ($acls as $acl) {
+  $acl_entry = $this->get_acl($acl);
+  if ($acl_entry['allow'] == true && $acl_entry['enabled'] == true && isset($acl_entry['axo'][$module])) {
+    foreach ($acl_entry['axo'][$module] as $id) {
+      $items[] = $id;
+    }
+  }
+      }
+    } else {
+      dprint(__FILE__, __LINE__, 2, "getEdittableItems($module, $uid) - no ACL's match");
+    }
+    dprint(__FILE__,__LINE__, 2, "getEdittableItems($module, $uid) returning " . count($items) . " items");
+    return $items;
+  }
   // Copied from get_group_children in the parent class, this version returns
   // all of the fields, rather than just the group ids.  This makes it a bit
   // more efficient as it doesn't need the get_group_data call for each row.

@@ -405,7 +405,42 @@ class CDpObject {
 
 		return $this->_query->loadHashList( $index );
 	}
+  function getEdittableRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
+  {
+    $perms =& $GLOBALS['AppUI']->acl();
+    $uid = intval( $uid );
+    $uid || exit ("FATAL ERROR<br />" . get_class( $this ) . "::getAllowedRecords failed" );
+    $deny =& $perms->getDeniedItems( $this->_tbl, $uid );
+    $allow =& $perms->getEdittableItems($this->_tbl, $uid);
+    if (! $perms->checkModule($this->_tbl, "view", $uid )) {
+      if (! count($allow))
+        return array(); // No access, and no allow overrides, so nothing to show.
+    } else {
+      $allow = array(); // Full access, allow overrides don't mean anything.
+    }
+    $this->_query->clear();
+    $this->_query->addQuery($fields);
+    $this->_query->addTable($this->_tbl);
 
+    if (@$extra['from']) {
+      $this->_query->addTable($extra['from']);
+    }
+    
+    if (count($allow)) {
+      $this->_query->addWhere("$this->_tbl_key IN (" . implode(',', $allow) . ")");
+    }
+    if (count($deny)) {
+      $this->_query->addWhere("$this->_tbl_key NOT IN (" . implode(",", $deny) . ")");
+    }
+    if (isset($extra['where'])) {
+      $this->_query->addWhere($extra['where']);
+    }
+
+    if ($orderby)
+      $this->_query->addOrder($orderby);
+
+    return $this->_query->loadHashList( $index );
+  }
 	function getAllowedSQL( $uid, $index = null )
 	{
 		$perms =& $GLOBALS['AppUI']->acl();
