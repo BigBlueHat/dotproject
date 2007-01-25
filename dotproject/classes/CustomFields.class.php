@@ -415,7 +415,7 @@
 			$q  = new DBQuery();
 			$q->addTable('custom_fields_struct');
 			$q->addWhere("field_module = '".$this->m."' AND	field_page = '".$this->a."'");
-			$q->addOrder('field_order ASC');
+			$q->addOrder('field_order, field_name ASC');
 			$rows = $q->loadList();						
 			if ($rows == NULL) {
 				// No Custom Fields Available
