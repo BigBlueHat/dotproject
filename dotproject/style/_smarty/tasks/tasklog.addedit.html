@@ -59,7 +59,7 @@
 		</td>
 		<td>
 			{dParraySelect array=$task_log_costcodes name='task_log_costcodes' extras='size="1" class="text" onchange="javascript:task_log_costcode.value = this.options[this.selectedIndex].value;"' value=$log->task_log_costcode}
-			&nbsp;->&nbsp; <input type="text" class="text" name="task_log_costcode" value="{$log->task_log_costcode}" maxlength="8" size="8" />
+			<input type="hidden" class="text" name="task_log_costcode" value="{$log->task_log_costcode}" maxlength="8" size="8" />
 		</td>
 	</tr>
 	{if $obj->canUserEditTimeInformation()}
