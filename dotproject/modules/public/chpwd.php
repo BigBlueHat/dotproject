@@ -16,14 +16,9 @@ if ($user_id) {
 		// check that the old password matches
 		$old_md5 = md5($old_pwd);
 		$sql = "SELECT user_id FROM users WHERE user_password = '$old_md5' AND user_id=$user_id";
-        //user is Administrator or has permissions and matched previous password
-		if ($AppUI->user_type == 1 || ($canEdit && db_loadResult( $sql ) == $user_id)) { 
-			require_once( "{$dPconfig['root_dir']}/modules/admin/admin.class.php" );
-			$user = new CUser();
-            $user->load($user_id);
-			$user->user_password = $new_pwd1;
-
-			if (($msg = $user->store())) {
+		if ($canEdit || db_loadResult( $sql ) == $user_id) {
+			$sql = "UPDATE users SET user_password = '".md5($new_pwd1)."' WHERE user_password = '$old_md5' AND user_id=$user_id";
+			if (($msg = db_loadResult( $sql ))) {
 				$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			} else {
 				echo $AppUI->_('chgpwUpdated');
