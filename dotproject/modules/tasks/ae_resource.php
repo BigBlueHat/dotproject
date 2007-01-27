@@ -22,10 +22,10 @@ foreach ($assigned_perc as $user_id => $perc) {
 	$assigned[$user_id] = $users[$user_id] . ' [' . $perc . '%]';
 	$initPercAsignment .= "$user_id=$perc;";
 }
-
-for ($i = 5; $i <= 100; $i+=5)
-	$percentages = '<option '.(($i==100)? 'selected="true"' : '' ).' value="'.$i.'">'.$i.'%</option>';
-
+$percentages = '';
+for ($i = 5; $i <= 100; $i+=5) {
+  $percentages .= '<option '.(($i==100)? 'selected="true"' : '' ).' value="'.$i.'">'.$i.'%</option>';
+}
 global $tpl;
 
 $tpl->assign('can_edit_time_information', $can_edit_time_information);
