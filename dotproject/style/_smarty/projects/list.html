@@ -4,9 +4,9 @@
 <table cellpadding="2" cellspacing="1" border="0" width="100%" class="tbl">
 {if $showFilters}
 <tr>
-	<td align="right" nowrap="nowrap" colspan="{$cols-2}"></td>
-	<td align="right" nowrap="nowrap"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickCompany">{$buffer}</form></td>
-	<td align="right" nowrap="nowrap"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
+	<td align="right" nowrap="nowrap" colspan="{$cols-5}"></td>
+	<td align="right" nowrap="nowrap" colspan="4"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickCompany">{$buffer}</form></td>
+	<td align="right" nowrap="nowrap" colspan="2"><form action="?m=admin&amp;a=viewuser&amp;user_id={$user_id}&amp;tab={$tab}" method="post" name="pickProject">{dParraySelect array=$projFilter name='proFilter' extras='size="1" class="text" onChange="document.pickProject.submit()"' value=$proFilter translate='true'}</form></td>
 </tr>
 {/if}
 	<tr>
@@ -83,11 +83,11 @@
 			<td nowrap="nowrap" align="center">{$row.$col}</td>
 		{/if}
 	{/section}
-	{if $row.edit}
-			<td align="center">
-				<input type="checkbox" name="project_id[]" value="{$row.project_id}" />
-			</td>
-	{/if}
+	<td align="center">
+		{if $row.edit}
+			<input type="checkbox" name="project_id[]" value="{$row.project_id}" />
+		{/if}
+	</td>
 	</tr>
 {/foreach}
 </table>
