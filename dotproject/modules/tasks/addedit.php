@@ -61,7 +61,7 @@ $project = new CProject();
 $project->load( $task_project );
 
 //Pull all users
-$users = dPgetUsers();
+$users = dPgetUsersHash();
 
 function getSpaces($amount){
 	if($amount == 0) return '';
