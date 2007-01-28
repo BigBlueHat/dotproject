@@ -119,8 +119,6 @@ class CAppUI {
 // set up the default preferences
 		$this->setUserLocale($this->base_locale);
 		$this->user_prefs = array();
-		
-		$this->template = new CTemplate();
 	}
 /**
 * Used to load a php class file from the system classes directory
@@ -205,6 +203,7 @@ class CAppUI {
 /** Access variable for the template class */
 	function getTemplate()
 	{
+		$this->template = new CTemplate();
 		$this->template->init();
 		return $this->template;
 	}
