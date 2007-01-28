@@ -8,8 +8,10 @@
  * }}}
  */
 
-if ($_POST['mode'] == 'install' && is_file("../includes/config.php")) {
-	die("Security Check: dotProject seems to be already configured. Communication broken for Security Reasons!");
+require_once 'check_upgrade.php';
+
+if ($_POST['mode'] == 'install' && dPcheckExistingDB()) {
+	die("Security Check: dotProject seems to be already installed. Not installing over existing installation");
 }
 ######################################################################################################################
 
@@ -276,7 +278,7 @@ if ($do_cfg || $do_db_cfg) {
          </tr>
 <?php endif; ?>
  <tr>
-     <td class="item" align="center" colspan="2"><br/><b><a href="<?php echo $baseUrl.'/index.php?m=system&a=systemconfig';?>">Login and Configure the dotProject System Environment</a></b></td>
+     <td class="item" align="center" colspan="2"><br/><b><a class="button" href="<?php echo $baseUrl.'/index.php?m=system&a=systemconfig';?>">Login and Configure the dotProject System Environment</a></b></td>
   </tr>
 <?php if ($mode == 'install'): ?>
 	<tr>

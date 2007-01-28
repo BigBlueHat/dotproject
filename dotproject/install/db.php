@@ -20,7 +20,11 @@
 if ($_POST['mode'] == 'upgrade') {
 	@include_once "../includes/config.php";
 } elseif (is_file("../includes/config.php")) {
-	die("Security Check: dotProject seems to be already configured. Install aborted!");
+	require_once 'check_upgrade.php';
+	if (dPcheckExistingDB()) {
+		die('dotProject appears to already be installed, aborting install.');
+	}
+	@include_once "../includes/config.php";
 } else {
 	@include_once "../includes/config-dist.php";
 }
