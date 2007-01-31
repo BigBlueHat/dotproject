@@ -160,10 +160,11 @@ $company_id                = $project->project_company;
 $selected_departments      = $obj->task_departments != '' ? explode(',', $obj->task_departments) : array();
 $departments_count         = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
-if($department_selection_list!=''){
-	$department_selection_list = '<select name="dept_ids[]" size="'.$departments_count.'" multiple class="text">'.
-								  $department_selection_list
-    	                          .'</select>';
+if ($department_selection_list!='') {
+  $department_selection_list = ('<select name="dept_ids[]" class="text">'."\n"
+								.'<option value="0"></option>'."\n"
+								.$department_selection_list."\n"
+								.'</select>');
 }
 
 
@@ -184,13 +185,13 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$q->clear();
 	
 	foreach($depts_list as $dept_id => $dept_info){
-		$selected = in_array($dept_id, $checked_array) ? 'selected' : '';
+		$selected = in_array($dept_id, $checked_array) ? ' selected="selected"' : '';
 
 		if(strlen($dept_info['dept_name']) > 30){
 			$dept_info['dept_name'] = substr($dept_info['dept_name'], 0, 28).'...';
 		}
 
-		$parsed .= '<option value="'.$dept_id.'" '. $selected.'>'.str_repeat('&nbsp;', $spaces).$dept_info['dept_name'].'</option>';
+		$parsed .= '<option value="'.$dept_id.'"'.$selected.'>'.str_repeat('&nbsp;', $spaces).$dept_info['dept_name'].'</option>';
 		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);
 	}
 
