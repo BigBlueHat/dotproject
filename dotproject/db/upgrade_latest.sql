@@ -291,3 +291,9 @@ ALTER TABLE `custom_fields_values` DROP INDEX `idx_cfv_id`;
 ALTER TABLE `custom_fields_values` ADD PRIMARY KEY ( `value_id` );
 ALTER TABLE `custom_fields_lists` ADD PRIMARY KEY ( `field_id` );
 ALTER TABLE `custom_fields_struct` ADD PRIMARY KEY ( `field_id` );
+
+# 20070131
+#row added 20061130 overflowed sysval_value_id field (then sysval_title)
+#quadrupling field size, "code" should probably not be stored in database
+ALTER TABLE `sysvals` MODIFY `sysval_value_id` VARCHAR(128) NULL DEFAULT '0';
+UPDATE `sysvals` SET `sysval_value_id`='f.project_company.options[f.project_company.selectedIndex].value' WHERE `sysval_value_id` = 'f.project_company.options[f.proj';

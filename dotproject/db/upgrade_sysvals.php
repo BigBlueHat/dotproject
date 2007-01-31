@@ -80,10 +80,17 @@ $q->dropTable('sysvals');
 $q->exec();
 
 // create the new sysvals table
+/*
+ * MerlinYoda (2007-01-31): Increased sysval_value_id size from 32 to 128
+ * because code being stored in database was overflowing and being truncated.
+ * "Code" probably shouldn't be stored in this table anyway. 
+ * Added line in upgrade_latest.sql to correct this for anyone that updated on
+ * HEAD between then (when this file was set in place) and now (2007-01-31)
+ */
 $sql_create_sv = "(
 	  `sysval_id` int(10) unsigned NOT NULL auto_increment,
-	  `sysval_title` varchar(48) NOT NULL default '',
-	  `sysval_value_id` varchar(32) default '0',
+	  `sysval_title` varchar(128) NOT NULL default '',
+	  `sysval_value_id` varchar(128) default '0',
 	  `sysval_value` text NOT NULL,
 	  PRIMARY KEY  (`sysval_id`)
 	)";

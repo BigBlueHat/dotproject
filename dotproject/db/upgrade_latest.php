@@ -29,7 +29,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 {
 
 	global $baseDir, $db;
-	$latest_update = '20061214'; // Set to the latest upgrade date.
+	$latest_update = '20070131'; // Set to the latest upgrade date.
 
 	if (! $last_updated)
 		$last_updated = '00000000';
@@ -42,7 +42,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 		case '00000000':
 			// upgrade the sysvals table
 			include "$baseDir/db/upgrade_sysvals.php";
-			//$latest_update = '20061214';
+			//$latest_update = '20070131';
 		default:
 			break;
 
