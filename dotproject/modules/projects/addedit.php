@@ -101,7 +101,7 @@ if($department_selection_list != ''){
 								.$department_selection_list."\n"
 								.'</select>');
 } else {
-$d	epartment_selection_list = '<input type="button" class="button" value="'.$AppUI->_('Select department...').'" onclick="javascript:popDepartment();" /><input type="hidden" name="project_departments" />';
+  $department_selection_list = '<input type="button" class="button" value="'.$AppUI->_('Select department...').'" onclick="javascript:popDepartment();" /><input type="hidden" name="project_departments" />';
 }
 
 // Get contacts list
