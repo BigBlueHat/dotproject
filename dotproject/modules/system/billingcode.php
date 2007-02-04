@@ -28,7 +28,7 @@ $q->clear();
 $company_name = $company_list[$company_id];
 
 function showcodes(&$a) {
-	global $AppUI;
+	global $AppUI, $company_id;
 
 	$alt = htmlspecialchars( $a["billingcode_desc"] );
 	$s = '
@@ -36,6 +36,8 @@ function showcodes(&$a) {
 	<td width=40>
 		<a href="javascript:delIt2('.$a['billingcode_id'].');" title="'.$AppUI->_('delete').'">
 			<img src="./images/icons/stock_delete-16.png" border="0" alt="Delete" /></a>
+		<a href="?m=system&amp;a=billingcode&amp;company_id='.$company_id.'&amp;billingcode_id='.$a['billingcode_id'].'" title="'.$AppUI->_('edit').'">
+			<img src="./images/icons/stock_edit-16.png" border="0" alt="Edit" /></a>
 	</td>
 	<td align="left">&nbsp;' . $a['billingcode_name'] . '</td>
 	<td nowrap="nowrap" align="center">' . $a['billingcode_value'] . '</td>
@@ -98,14 +100,29 @@ function delIt2(id) {
         foreach($billingcodes as $code) {
                 showcodes( $code);
         }
-?>
 
+if (isset($_GET['billingcode_id'])) {
+	$q->addQuery('*');
+	$q->addTable('billingcode');
+	$q->addWhere('billingcode_id = ' . $_GET['billingcode_id']);
+	list($obj) = $q->loadList();
+
+	echo '
+<tr>
+	<td>&nbsp;<input type="hidden" name="billingcode_id" value="'.$_POST['billingcode_id'].'" /></td>
+	<td><input type="text" name="billingcode_name" value="'.$obj['billingcode_name'].'" /></td>
+	<td><input type="text" name="billingcode_value" value="'.$obj['billingcode_value'].'" /></td>
+	<td><input type="text" name="billingcode_desc" value="'.$obj['billingcode_desc'].'" /></td>
+</tr>';
+} else {
+?>
 <tr>
 	<td>&nbsp;</td>
 	<td><input type="text" name="billingcode_name" value="" /></td>
 	<td><input type="text" name="billingcode_value" value="" /></td>
 	<td><input type="text" name="billingcode_desc" value="" /></td>
 </tr>
+<?php } ?>
 
 <tr>
 	<td align="left">

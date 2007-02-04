@@ -213,15 +213,17 @@ class CConfig extends CDpObject {
 }
 
 
-class bcode {
+class bcode extends CDpObject {
         var $_billingcode_id=NULL;
         var $company_id;
+        var $billingcode_id = NULL;
         var $billingcode_desc;
         var $billingcode_name;
         var $billingcode_value;
         var $billingcode_status;
 
         function bcode() {
+        	$this->CDpObject( 'billingcode', 'billingcode_id' );
         }
 
         function bind( $hash ) {
@@ -236,7 +238,7 @@ class bcode {
         function delete() {
                 $q  = new DBQuery;
                 $q->addTable('billingcode');
-                $q->addUpdate('billingcode_status', "1");
+                $q->addUpdate('billingcode_status', '1');
                 $q->addWhere("billingcode_id='".$this->_billingcode_id."'");
                 if (!$q->exec()) {
                         $q->clear();
@@ -253,10 +255,14 @@ class bcode {
 								$q->addTable('billingcode');
 								$q->addWhere('billingcode_name = \'' . $this->billingcode_name . "'");
 								$q->addWhere('company_id = ' . $this->company_id);
-                if ($q->loadResult())
-								        return 'Billing Code::code already exists';
-                else if (!($ret = db_insertObject ( 'billingcode', $this, 'billingcode_id' ))) {
-                        return "Billing Code::store failed <br />" . db_error();
+                if ($billing_code = $q->loadResult()) {
+								  $q->setDelete('billingcode');
+								  $q->addWhere('billingcode_id = ' . $billing_code);
+								  $q->exec();
+                }
+                
+                if (!($ret = db_insertObject ( 'billingcode', $this, 'billingcode_id' ))) {
+                        return 'Billing Code::store failed <br />' . db_error();
                 } else {
                         return NULL;
                 }
