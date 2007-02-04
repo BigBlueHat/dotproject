@@ -12,9 +12,19 @@
 	$q->addJoin('task_log', 't', 'task_log_costcode = billingcode_id');
 	$q->addQuery('task_log_costcode, billingcode_name');
 	$q->addWhere('(company_id = '.$company_id . ' OR company_id = 0)');
-	$q->addOrder('billingcode_name');
+	$q->addWhere('billingcode_status = 0');
+	$q->addOrder('billingcode_status, billingcode_name');
 	$q->addWhere("task_log_costcode <> ''");
 	$task_log_costcodes = array('' => 'All'); // Let's add a blank default option
+	$task_log_costcodes = array_merge($task_log_costcodes, $q->loadHashList());
+
+	// Show deleted codes separately (at the end)
+	$q->addTable('billingcode');
+	$q->addJoin('task_log', 't', 'task_log_costcode = billingcode_id');
+	$q->addQuery('task_log_costcode, CONCAT(billingcode_name, \' (deleted)\')');
+	$q->addWhere('(company_id = '.$company_id . ' OR company_id = 0)');
+	$q->addWhere('billingcode_status = 1');
+	$q->addOrder('billingcode_status, billingcode_name');
 	$task_log_costcodes = array_merge($task_log_costcodes, $q->loadHashList());
 	
 	$q  = new DBQuery;
