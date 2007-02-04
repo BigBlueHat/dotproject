@@ -255,16 +255,18 @@ class bcode extends CDpObject {
 								$q->addTable('billingcode');
 								$q->addWhere('billingcode_name = \'' . $this->billingcode_name . "'");
 								$q->addWhere('company_id = ' . $this->company_id);
-                if ($billing_code = $q->loadResult()) {
-								  $q->setDelete('billingcode');
-								  $q->addWhere('billingcode_id = ' . $billing_code);
+								$found_id = $q->loadResult();
+                if ($found_id && $found_id == $this->_billingcode_id) {
+                	$q->setDelete('billingcode');
+								  $q->addWhere('billingcode_id = ' . $this->_billingcode_id);
 								  $q->exec();
                 }
                 
-                if (!($ret = db_insertObject ( 'billingcode', $this, 'billingcode_id' ))) {
+                if ($found_id && $found_id != $this->_billingcode_id)
+								        return 'Billing Code::code already exists';
+                elseif (!($ret = db_insertObject ( 'billingcode', $this, 'billingcode_id' ))) 
                         return 'Billing Code::store failed <br />' . db_error();
-                } else {
+                else
                         return NULL;
-                }
         }
 }

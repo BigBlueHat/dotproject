@@ -109,7 +109,7 @@ if (isset($_GET['billingcode_id'])) {
 
 	echo '
 <tr>
-	<td>&nbsp;<input type="hidden" name="billingcode_id" value="'.$_POST['billingcode_id'].'" /></td>
+	<td>&nbsp;<input type="hidden" name="billingcode_id" value="'.$_GET['billingcode_id'].'" /></td>
 	<td><input type="text" name="billingcode_name" value="'.$obj['billingcode_name'].'" /></td>
 	<td><input type="text" name="billingcode_value" value="'.$obj['billingcode_value'].'" /></td>
 	<td><input type="text" name="billingcode_desc" value="'.$obj['billingcode_desc'].'" /></td>
