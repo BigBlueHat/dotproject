@@ -10,9 +10,9 @@ if (!$canEdit)
 
 $q  = new DBQuery;
 $q->addTable('billingcode','bc');
-$q->addQuery('billingcode_id, billingcode_name, billingcode_value, billingcode_desc');
+$q->addQuery('billingcode_id, billingcode_name, billingcode_value, billingcode_desc, billingcode_status');
 $q->addOrder('billingcode_name ASC');
-$q->addWhere('bc.billingcode_status = 0');
+//$q->addWhere('bc.billingcode_status = 0');
 $q->addWhere('company_id = ' . $company_id);
 $billingcodes = $q->loadList();
 $q->clear();
@@ -34,12 +34,16 @@ function showcodes(&$a) {
 	$s = '
 <tr>
 	<td width=40>
-		<a href="javascript:delIt2('.$a['billingcode_id'].');" title="'.$AppUI->_('delete').'">
-			<img src="./images/icons/stock_delete-16.png" border="0" alt="Delete" /></a>
 		<a href="?m=system&amp;a=billingcode&amp;company_id='.$company_id.'&amp;billingcode_id='.$a['billingcode_id'].'" title="'.$AppUI->_('edit').'">
-			<img src="./images/icons/stock_edit-16.png" border="0" alt="Edit" /></a>
+			<img src="./images/icons/stock_edit-16.png" border="0" alt="Edit" /></a>';
+			
+	if ($a['billingcode_status'] == 0)
+		$s .= '<a href="javascript:delIt2('.$a['billingcode_id'].');" title="'.$AppUI->_('delete').'">
+			<img src="./images/icons/stock_delete-16.png" border="0" alt="Delete" /></a>';
+			
+	$s .= '
 	</td>
-	<td align="left">&nbsp;' . $a['billingcode_name'] . '</td>
+	<td align="left">&nbsp;' . $a['billingcode_name'] . ($a['billingcode_status'] == 1 ? ' (deleted)':'') . '</td>
 	<td nowrap="nowrap" align="center">' . $a['billingcode_value'] . '</td>
 	<td nowrap="nowrap">' . $a['billingcode_desc'] . '</td>
 </tr>';

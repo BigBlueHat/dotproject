@@ -256,7 +256,8 @@ class bcode extends CDpObject {
 								$q->addWhere('billingcode_name = \'' . $this->billingcode_name . "'");
 								$q->addWhere('company_id = ' . $this->company_id);
 								$found_id = $q->loadResult();
-                if ($found_id && $found_id == $this->_billingcode_id) {
+								
+                if ($this->_billingcode_id) {
                 	$q->setDelete('billingcode');
 								  $q->addWhere('billingcode_id = ' . $this->_billingcode_id);
 								  $q->exec();
