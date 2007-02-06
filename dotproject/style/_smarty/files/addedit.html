@@ -53,17 +53,24 @@ function setTask( key, val ) {
 -->
 </script>
 {/literal}
+
 <form name="uploadFrm" action="?m=files" enctype="multipart/form-data" method="post">
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="0" />
 	<input type="hidden" name="file_id" value="{$file_id}" />
 	<input type="hidden" name="file_version_id" value="{$obj->file_version_id}" />
+	<input type="hidden" name="redirect" value="{$referrer}" />
+	<input type="hidden" name="file_helpdesk_item" value="{$file_helpdesk_item}" />
 
 <table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
 <tr>
 	<td width="100%" valign="top" align="center">
 		<table cellspacing="1" cellpadding="2" width="60%">
-		{if $file_id && !$ci}
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Folder'}:</td>
+			<td align="left">{dParraySelectTree array=$folders name='file_folder' extras='style="width:175px;" class="text"' value=$folder_value}</td>
+		</tr>
+		{if $file_id}
 		<tr>
 			<td align="right" nowrap="nowrap">{dPtranslate word='File Name'}:</td>
 			<td align="left" class="hilite">{if $obj->file_name|count_characters == 0}n/a{else}{$obj->file_name}{/if}</td>
@@ -84,9 +91,7 @@ function setTask( key, val ) {
 			<td align="left" class="hilite">{$file_owner}</td>
 		</tr>
 		{/if}
-		{*
-		{$file_attr}
-		*}
+
 		{if $ci}
 			<tr>
 			<td align="right" nowrap="nowrap">

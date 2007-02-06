@@ -1,0 +1,66 @@
+<table width="100%" cellspacing="0" cellpadding="0" border="0">
+<tr>
+{if $xpg_totalrecs > $xpg_pagesize}
+	{assign var='xpg_prev_page' value=$page-1}
+	{assign var='xpg_next_page' value=$page+1}
+	{if $xpg_prev_page > 0}
+	<td align="left" width="15%">
+		<a href="./index.php?m={$m}&amp;a={$a}&amp;tab={$tab}&amp;folder={$folder}&amp;page=1">
+			<img src="images/navfirst.gif" border="0" Alt="First Page"></a>&nbsp;&nbsp;
+		<a href="./index.php?m={$m}&amp;a={$a}&amp;tab={$tab}&amp;folder={$folder}&amp;page={$xpg_prev_page}">
+			<img src="images/navleft.gif" border="0" Alt="Previous page ({$xpg_prev_page})"></a>
+	</td>
+	{else}
+		<td width="15%">&nbsp;</td>
+	{/if} 
+		
+	<td align="center" width="70%">
+		{$xpg_totalrecs} {dPtranslate word='File(s)'} {dPtranslate word='Pages'}: [ 
+{php}		
+		for($n = $page > 16 ? $page-16 : 1; $n <= $xpg_total_pages; $n++) {
+			if ($n == $page) {
+				echo "<b>$n</b></a>";
+			} else {
+				echo "<a href='./index.php?m='.$m.'&amp;a='.$a.'&amp;tab='.$tab.'&amp;folder={$folder}&amp;page=$n'>";
+				echo $n . "</a>";
+			} 
+			if ($n >= 30+$page-15) {
+				$xpg_break = true;
+				break;
+			} else if ($n < $xpg_total_pages) {
+				echo " | ";
+			} 
+		} 
+
+		if (!isset($xpg_break)) { // are we supposed to break ?
+			if ($n == $page) {
+				echo "<" . $n . "</a>";
+			} else {
+				echo "<a href='./index.php?m='.$m.'&amp;a='.$a.'&amp;tab='.$tab.'&amp;page=$xpg_total_pages'>";
+				echo $n . "</a>";
+			} 
+		} 
+{/php}
+ ] 
+		
+	</td>
+
+	{if $xpg_next_page <= $xpg_total_pages}
+	<td align="right" width="15%">
+		<a href="./index.php?m={$m}&amp;a={$a}&amp;tab={$tab}&amp;folder={$folder}&amp;page={$xpg_next_page}">
+			<img src="images/navright.gif" border="0" Alt="Next Page ({$xpg_next_page})"></a>&nbsp;&nbsp;
+		<a href="./index.php?m={$m}&amp;a={$a}&amp;tab={$tab}&amp;folder={$folder}&amp;page={$xpg_total_pages}">
+			<img src="images/navlast.gif" border="0" Alt="Last Page"></a>
+	</td>
+	{else}
+	<td width="15%">&nbsp;</td>
+	{/if}
+</tr>
+<tr>
+	<td align='center'>
+		{if $xpg_next_page > $xpg_total_pages}
+		{$xpg_sqlrecs} {dPtranslate word=Files} 
+		{/if}
+	</td>
+</tr>
+</table>

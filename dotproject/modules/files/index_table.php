@@ -2,7 +2,7 @@
 /* FILES $Id$ */
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
-GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $tpl;
+global $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $tpl;
 global $company_id, $project_id, $task_id, $showProject;
 
 //require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
@@ -162,16 +162,16 @@ foreach ($files as $file_row) {
 	$fp = $latest_file['file_project'];
 	if ($canEdit && ( empty($latest_file['file_checkout']) || ( $latest_file['file_checkout'] == 'final' && ($canEdit|| $latest_file['project_owner'] == $AppUI->user_id) ))) {
 		$file_edit_html = "\n".'<a href="./index.php?m=files&amp;a=addedit&amp;file_id=' . $latest_file['file_id'] . '">';
-		$file_edit_html.= dPshowImage( './images/icons/stock_edit-16.png', '16', '16' );
+		$file_edit_html.= dPshowImage( './modules/files/images/kedit.png', '16', '16' );
 		$file_edit_html.="\n</a>";
 
 		$tpl_row->assign('edit_link', $file_edit_html);
 	}
 
 	if ($canEdit && empty($latest_file['file_checkout']) )
-		$checkinout_html = '<a href="?m=files&amp;a=co&amp;file_id='.$latest_file['file_id'].'">'.dPshowImage( './images/icons/co.png', '20', '20' ).'</a>';
+		$checkinout_html = '<a href="?m=files&amp;a=co&amp;file_id='.$latest_file['file_id'].'">'.dPshowImage( './modules/files/images/up.png', '20', '20' ).'</a>';
 	else if ($latest_file['file_checkout'] == $AppUI->user_id)
-		$checkinout_html = '<a href="?m=files&amp;a=addedit&amp;ci=1&amp;file_id='.$latest_file['file_id'].'">'.dPshowImage( './images/icons/ci.png', '20', '20' ).'</a>';
+		$checkinout_html = '<a href="?m=files&amp;a=addedit&amp;ci=1&amp;file_id='.$latest_file['file_id'].'">'.dPshowImage( './modules/files/images/down.png', '20', '20' ).'</a>';
 	else { 
 		if ($latest_file['file_checkout'] == 'final')
 			$checkinout_html = 'final';
@@ -204,6 +204,8 @@ foreach ($files as $file_row) {
 	$tpl_row->assign('latest_file', $latest_file);
 
 	$hidden_table = '';
+	$file_icon = getIcon($file_row['file_type']);
+	$tpl_row->assign('file_icon', $file_icon);
 	$tpl_row->assign('file_row', $file_row); 	
 
 	if ($file_row['file_versions'] > 1)

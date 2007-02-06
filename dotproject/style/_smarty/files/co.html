@@ -41,6 +41,10 @@
 				{dPtranslate word='Notify Assignees of Task or Project Owner by Email'}
 			</td>
 		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">&nbsp;</td>
+			<td align="left"><input type="checkbox" name="notify_contacts" checked="checked">{dPtranslate word='Notify Project and Task Contacts'}</td>		
+		</tr>
 		</table>
 	</td>
 </tr>
@@ -49,7 +53,6 @@
 		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onclick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?' type='js'}')){literal}{location.href = './index.php?m=files';}{/literal}" />
 	</td>
 	<td align="right">
-	    <!--- MerlinYoda: Note that submit call is in JavaScript for onclick event --->
 		<input class="button" type="button" onclick="{$extra_js}" value="{dPtranslate word='submit'}" />
 	</td>
 </tr>

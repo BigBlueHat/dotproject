@@ -1,4 +1,5 @@
 <?php /* FILES $Id$ */
+$folder = intval( dPgetParam( $_GET, 'folder', 0 ) );
 $file_id = intval( dPgetParam( $_GET, 'file_id', 0 ) );
 $ci = dPgetParam($_GET, 'ci', 0) == 1 ? true : false;
 $preserve = $dPconfig['files_ci_preserve_attr'];
@@ -8,18 +9,27 @@ $preserve = $dPconfig['files_ci_preserve_attr'];
 $perms =& $AppUI->acl();
 $canEdit = $perms->checkModuleItem( $m, 'edit', $file_id );
 if (!$canEdit) {
-	$AppUI->redirect('m=public&a=access_denied');
+	$AppUI->redirect( "m=public&a=access_denied" );
 }
+if (file_exists($dPconfig['root_dir'].'/modules/helpdesk/config.php')) {
+	include ($dPconfig['root_dir'] . '/modules/helpdesk/config.php');
+}
+require ($dPconfig['root_dir'] . '/modules/files/functions.php');
 
 $canAdmin = $perms->checkModule('system', 'edit');
+// add to allow for returning to other modules besides Files
+$referrerArray = parse_url($_SERVER['HTTP_REFERER']);
+$referrer = $referrerArray['query'] . $referrerArray['fragment'];
 
 // load the companies class to retrieved denied companies
-require_once ($AppUI->getModuleClass('projects'));
-require_once ($AppUI->getModuleClass('tasks'));
+require_once( $AppUI->getModuleClass( 'companies' ) );
+require_once( $AppUI->getModuleClass( 'projects' ) );
+require_once $AppUI->getModuleClass('tasks');
 
-$file_task 		= intval( dPgetParam( $_GET, 'file_task', 0 ) );
-$file_parent 	= intval( dPgetParam( $_GET, 'file_parent', 0 ) );
+$file_task = intval( dPgetParam( $_GET, 'file_task', 0 ) );
+$file_parent = intval( dPgetParam( $_GET, 'file_parent', 0 ) );
 $file_project = intval( dPgetParam( $_GET, 'project_id', 0 ) );
+$file_helpdesk_item = intval( dPgetParam( $_GET, 'file_helpdesk_item', 0 ) );
 
 $q =& new DBQuery;
 
@@ -32,23 +42,23 @@ $canDelete = $obj->canDelete( $msg, $file_id );
 // $obj = null;
 if ($file_id > 0 && ! $obj->load($file_id)) {
 	$AppUI->setMsg( 'File' );
-	$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
+	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
 	$AppUI->redirect();
 }
 if ($file_id > 0) {
 	// Check to see if the task or the project is also allowed.
 	if ($obj->file_task) {
 		if (! $perms->checkModuleItem('tasks', 'view', $obj->file_task))
-			$AppUI->redirect('m=public&a=access_denied');
+			$AppUI->redirect("m=public&a=access_denied");
 	}
 	if ($obj->file_project) {
 		if (! $perms->checkModuleItem('projects', 'view', $obj->file_project))
-			$AppUI->redirect('m=public&a=access_denied');
+			$AppUI->redirect("m=public&a=access_denied");
 	}
 }
 
 if ($obj->file_checkout != $AppUI->user_id)
-	$ci = false;
+        $ci = false;
 
 if (! $canAdmin)
 	$canAdmin = $obj->canAdmin();
@@ -57,7 +67,7 @@ if ($obj->file_checkout == 'final' && ! $canAdmin) {
 	$AppUI->redirect('m=public&a=access_denied');
 }
 // setup the title block
-$ttl = $file_id ? 'Edit File' : 'Add File';
+$ttl = $file_id ? "Edit File" : "Add File";
 $ttl = $ci ? 'Checking in' : $ttl;
 $titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=files", "files list" );
@@ -67,8 +77,8 @@ if ($canDelete && $file_id > 0 && !$ci) {
 $titleBlock->show();
 
 //Clear the file id if checking out so a new version is created.
-//if ($ci)
-//        $file_id = 0;
+if ($ci)
+        $file_id = 0;
 
 if ($obj->file_project) {
 	$file_project = $obj->file_project;
@@ -78,25 +88,37 @@ if ($obj->file_task) {
 	$task_name = $obj->getTaskName();
 } else if ($file_task) {
 	$q  = new DBQuery;
-	$q->addQuery('task_name');
 	$q->addTable('tasks');
-	$q->addWhere('task_id = ' . $file_task);
-	$task_name = $q->loadResult();
+	$q->addQuery('task_name');
+	$q->addWhere("task_id=$file_task");
+	$sql = $q->prepare();
+	$q->clear();
+	$task_name = db_loadResult( $sql );
 } else {
 	$task_name = '';
 }
+if ($obj->file_helpdesk_item) {
+	$file_helpdesk_item = $obj->file_helpdesk_item;	
+}
 
-$extra = array('where'=>'project_status != 7');
+$extra = array(
+	'where'=>'project_status <> 7'
+);
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
 $projects = arrayMerge( array( '0'=>$AppUI->_('All', UI_OUTPUT_RAW) ), $projects );
+/*
+$folders = array( 0 => '' );
+$sql = "SELECT file_folder_id, file_folder_name, file_folder_parent FROM file_folders";
+$folders = arrayMerge( array( '0'=>array( 0, '- '.$AppUI->_('Select Folder').' -', -1 ) ), db_loadHashList( $sql, 'file_folder_id' ));
+*/
+$folders = getFolderSelectList();
 
 $tpl->assign('file_id', $file_id);
+$tpl->assign('referrer', $referrer);
+$tpl->assign('file_helpdesk_item', $file_helpdesk_item);
+$tpl->assign('folders', $folders);
 $tpl->assign('file_owner', $obj->getOwner());
-$tpl->assign('ci', $ci);
-$tpl->assign('preserve', $preserve); 
-$tpl->assign('canAdmin', $canAdmin);
-$tpl->assign('file_project', $file_project);
 
 $select_disabled = ( $ci && $preserve ) ? ' disabled ' : ' ';
 $filetype = dPgetSysVal('FileType');
@@ -110,5 +132,29 @@ $tpl->assign('file_task', $file_task);
 $tpl->assign('task_name', $task_name);
 $tpl->assign('ui_getplace', str_replace('&', '&amp;', $AppUI->getPlace()));
 
-$tpl->displayAddEdit($obj);
+if ($file_helpdesk_item)
+	$folder_value = getHelpdeskFolder();
+elseif ($file_id == 0 && !$ci)
+	$folder_value = $folder;
+else
+	$folder_value = $obj->file_folder;
+$tpl->assign('folder_value', $folder_value);
+
+$tpl->assign('ci', $ci);
+$tpl->assign('preserve', $preserve); 
+$tpl->assign('canAdmin', $canAdmin);
+$tpl->assign('file_project', $file_project);
+
+$tpl->displayAddEdit($obj); 
+
+function getHelpdeskFolder() {
+	$q = new DBQuery();
+	$q->addTable('file_folders', 'ff');
+	$q->addQuery('file_folder_id');
+	$q->addWhere('ff.file_folder_name = "Helpdesk"');
+	$ffid = $q->loadResult();
+	$q->clear();
+	return intval($ffid);
+}
+
 ?>

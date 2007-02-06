@@ -1,12 +1,20 @@
-<?php // check access to files module
-global $AppUI, $m, $company_id, $dPconfig;
-if (!getDenyRead( 'files' )) {
-        if (!getDenyEdit( 'files' )) { 
-                echo '<a href="./index.php?m=files&a=addedit">' . $AppUI->_('Attach a file') . '</a>';
-                    
-        }
-        echo dPshowImage( dPfindImage( 'stock_attach-16.png', $m ), 16, 16, '' ); 
-        $showProject=true;
-        include($dPconfig['root_dir'] . '/modules/files/index_table.php');
+<?php /* PROJECTS $Id$ */
+global $AppUI, $company_id, $deny, $canRead, $canEdit, $dPconfig;
+global $allowed_folders_ary, $denied_folders_ary;
+
+require_once( $AppUI->getModuleClass( 'files' ) );
+   
+$cfObj = new CFileFolder();
+
+$allowed_folders_ary = $cfObj->getAllowedRecords($AppUI->user_id);
+$denied_folders_ary  = $cfObj->getDeniedRecords($AppUI->user_id);
+
+if ( count( $allowed_folders_ary ) < $cfObj->countFolders() ) {
+	$limited = true;
 }
+
+$canEdit = !$limited or array_key_exists($folder, $allowed_folders_ary);
+
+$showProject = false;
+require( dPgetConfig('root_dir') . '/modules/files/folders_table.php' );
 ?>

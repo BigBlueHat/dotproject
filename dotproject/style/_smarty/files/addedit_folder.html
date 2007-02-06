@@ -1,0 +1,72 @@
+<script language="javascript">
+function submitIt()
+{ldelim}
+	var f = document.folderFrm;
+	var msg = '';
+	if (f.file_folder_name.value.length < 1) 
+	{ldelim}
+		msg += "\n{dPtranslate word='Folder Name'}";
+		f.file_folder_name.focus();
+	{rdelim}
+	if( msg.length > 0) 
+		alert("{dPtranslate word='Please type'}:" + msg);
+	else 
+		f.submit();
+{rdelim}
+function delIt() 
+{ldelim}
+	if (confirm( "<?php echo $AppUI->_('Delete Folder');?>" )) 
+	{ldelim}
+		var f = document.folderFrm;
+		f.del.value='1';
+		f.submit();
+	{rdelim}
+{rdelim}
+</script>
+
+<table width="100%" border="0" cellpadding="3" cellspacing="3" class="std">
+
+<form name="folderFrm" action="?m=files" enctype="multipart/form-data" method="post">
+	<input type="hidden" name="dosql" value="do_folder_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="file_folder_id" value="{$folder}" />
+	<input type="hidden" name="redirect" value="{$referrer}" />
+
+<tr>
+	<td width="100%" valign="top" align="center">
+		<table cellspacing="1" cellpadding="2" width="60%">
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Subfolder of'}:</td>
+			<td align="left">
+			{if $folder > 0}
+				{assign var='parent_folder' value=$obj->file_folder_parent}
+			{else}
+				{assign var='parent_folder' value=$file_folder_parent}
+			{/if}
+			{dParraySelectTree array=$folders name='file_folder_parent' extras='style="width:175px;" class="text"' value=$parent_folder} 
+			</td>
+		</tr>
+		<tr>
+			<td align="right" nowrap="nowrap">{dPtranslate word='Folder Name'}:</td>
+			<td align="left"><input type="text" class="text" id="ffn" name="file_folder_name"
+                              value="{$obj->file_folder_name}" maxlength="64" /></td>
+		</tr>
+		<tr>
+			<td align="right" valign="top" nowrap="nowrap">{dPtranslate word='Description'}:</td>
+			<td align="left">
+				<textarea name="file_folder_description" class="textarea" rows="4" style="width:270px">{$obj->file_folder_description}</textarea>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<input class="button" type="button" name="cancel" value="{dPtranslate word='cancel'}" onClick="javascript:if(confirm('{dPtranslate word='Are you sure you want to cancel?'}')) location.href = '?{$referrer}';" />
+	</td>
+	<td align="right">
+		<input type="button" class="button" value="{dPtranslate word='submit'}" onclick="submitIt()" />
+	</td>
+</tr>
+</form>
+</table>

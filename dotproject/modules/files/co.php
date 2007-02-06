@@ -49,7 +49,7 @@ if ($obj->file_task) {
 }
 
 $extra = array(
-	'where'=>'project_status != 7'
+	'where'=>'project_status <> 7'
 );
 $project = new CProject();
 $projects = $project->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name', null, $extra );
@@ -63,8 +63,8 @@ $params = 'file_id=' . $file_id;
 $session_id = SID;
 // are the params empty
 // Fix to handle cookieless sessions
-if ($session_id != "") {
-    $params .= "&" . $session_id;
+if ($session_id != '') {
+    $params .= '&' . $session_id;
 }
 
 $extra_js = "fileloader = window.open('fileviewer.php?{$params}','mywindow','location=1,menubar=1,status=1,width=200px,height=150px,resizable');fileloader.moveTo(0,0);document.coFrm.submit();";
