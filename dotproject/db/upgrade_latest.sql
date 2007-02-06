@@ -292,6 +292,18 @@ ALTER TABLE `custom_fields_values` ADD PRIMARY KEY ( `value_id` );
 ALTER TABLE `custom_fields_lists` ADD PRIMARY KEY ( `field_id` );
 ALTER TABLE `custom_fields_struct` ADD PRIMARY KEY ( `field_id` );
 
+#20070129
+#file_folder field doesn't exist (guessing pedro's folder contribution)
+ALTER TABLE `files` ADD `file_folder` INT NOT NULL DEFAULT '0' AFTER `file_real_filename` ;
+
+CREATE TABLE `file_folders` (
+	`file_folder_id` int(11) NOT NULL auto_increment,
+	`file_folder_parent` int(11) NOT NULL default '0',
+	`file_folder_name` varchar(255) NOT NULL default '',
+	`file_folder_description` text,
+	PRIMARY KEY  (`file_folder_id`)
+) TYPE=MyISAM;
+
 # 20070131
 #row added 20061130 overflowed sysval_value_id field (then sysval_title)
 #quadrupling field size, "code" should probably not be stored in database

@@ -161,6 +161,7 @@ DROP TABLE IF EXISTS `files`;
 CREATE TABLE `files` (
     `file_id` int(11) NOT NULL auto_increment,
     `file_real_filename` varchar(255) NOT NULL default '',
+    `file_folder` int(11) NOT NULL default '0',
     `file_project` int(11) NOT NULL default '0',
     `file_task` int(11) NOT NULL default '0',
     `file_name` varchar(255) NOT NULL default '',
@@ -1325,3 +1326,12 @@ CREATE TABLE `webcal_resources` (
     `webcal_eq_id` int(11) NOT NULL default '0',
     PRIMARY KEY    (`webcal_id`)
 ) ENGINE=MyISAM COMMENT='webcal resource management';
+
+DROP TABLE IF EXISTS `file_folders`;
+CREATE TABLE `file_folders` (
+	`file_folder_id` int(11) NOT NULL auto_increment,
+	`file_folder_parent` int(11) NOT NULL default '0',
+	`file_folder_name` varchar(255) NOT NULL default '',
+	`file_folder_description` text,
+	PRIMARY KEY  (`file_folder_id`)
+) TYPE=MyISAM;
