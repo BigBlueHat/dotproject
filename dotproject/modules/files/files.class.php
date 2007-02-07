@@ -114,7 +114,7 @@ class CFile extends CDpObject {
 		$this->_message = "deleted";
 		addHistory('files', $this->file_id, 'delete',  $this->file_name, $this->file_project);
 	// remove the file from the file system
-		@unlink( "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename" );
+		$this->deleteFile();
 	// delete any index entries
 		$q  = new DBQuery;
 		$q->setDelete('files_index');
@@ -139,6 +139,12 @@ class CFile extends CDpObject {
 			$this->addHelpDeskTaskLog();
 		}
 		return NULL;
+	}
+
+	// delete File from File System
+	function deleteFile() {
+		global $dPconfig;
+		return @unlink($dPconfig['root_dir'].'/files/'.$this->file_project.'/'.$this->file_real_filename);
 	}
 
 	// move the file if the affiliated project was changed

@@ -153,10 +153,22 @@ if (!$file_id) {
 if (($msg = $obj->store())) {
 	$AppUI->setMsg( $msg, UI_MSG_ERROR );
 } else {
+	// Notification
 	$obj->load($obj->file_id);
 	if ($not=='1') $obj->notify();
 	if ($notcont=='1') $obj->notifyContacts();
-	$AppUI->setMsg( $file_id ? 'updated' : 'added', UI_MSG_OK, true );
+
+	// Delete the existing (old) file in case of file replacement (through addedit not through c/o-versions)
+	if (($file_id) && ($upload['size'] > 0)) {
+		if (($oldObj->deleteFile())) {
+			$AppUI->setMsg('replaced', UI_MSG_OK, true);
+		} else {
+			$AppUI->setMsg($file_id ? 'updated' : 'added' . '; unable to delete existing file', UI_MSG_OK, true);
+		}
+	} else {
+		$AppUI->setMsg( $file_id ? 'updated' : 'added', UI_MSG_OK, true );
+	}
+	
 	/* Workaround for indexing large files:
 	** Based on the value defined in config data,
 	** files with file_size greater than specified limit
