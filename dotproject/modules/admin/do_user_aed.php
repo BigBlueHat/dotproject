@@ -15,6 +15,7 @@ if (!$contact->bind($_POST)) {
 	$AppUI->setMsg( $contact->getError(), UI_MSG_ERROR );
 	$AppUI->redirect();
 }
+$obj->user_username = strtolower($obj->user_username);
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'User' );
@@ -86,7 +87,8 @@ else
 function userExistence( $userName ) {
 	global $obj, $userEx;
 	
-	if ($userName == $obj->user_username)
+	if ($userName == $obj->user_username) {
 		$userEx = true;
+	}
 }
 ?>
