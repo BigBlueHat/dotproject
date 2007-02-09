@@ -1,0 +1,100 @@
+{literal}
+<script type="text/javascript" language="javascript">
+<!--
+function submitIt(){
+	var form = document.changeuser;
+	form.submit();
+}
+
+function changeIt() {
+	var f=document.changeMe;
+	var msg = '';
+	f.submit();
+}
+
+
+function delIt2(id) {
+	document.frmDel.billingcode_id.value = id;
+	document.frmDel.submit();
+}
+-->
+</script>
+{/literal}
+
+<form name="changeMe" action="./index.php?m=system&amp;a=billingcode" method="post">	
+	{dParraySelect array=$company_list name='company_id' extras='class="text" size="1" onchange="changeIt();"' value=$company_id translation=false}	
+</form>
+
+<form name="frmDel" action="./index.php?m=system" method="post">
+	<input type="hidden" name="dosql" value="do_billingcode_aed" />
+	<input type="hidden" name="del" value="1" />
+	<input type="hidden" name="company_id" value="{$company_id}" />
+	<input type="hidden" name="billingcode_id" value="" />
+</form>
+
+<form name="changeuser" action="./index.php?m=system" method="post">
+	<input type="hidden" name="dosql" value="do_billingcode_aed" />
+	<input type="hidden" name="del" value="0" />
+	<input type="hidden" name="company_id" value="{$company_id}" />
+	<input type="hidden" name="billingcode_status" value="0" />
+
+<table width="100%" border="0" cellpadding="1" cellspacing="1" class="std">
+<tr>
+	<th width="40">&nbsp;</th>
+	<th>{dPtranslate word='Billing Code'}</th>
+	<th>{dPtranslate word='Value'}</th>
+	<th>{dPtranslate word='Description'}</th>
+</tr>
+
+{foreach from=$billingcodes item=b}
+	<tr>
+		<td width="40">
+			<a href="?m=system&amp;a=billingcode&amp;company_id={$company_id}&amp;billingcode_id={$b.billingcode_id}" title="{dPtranslate word='edit'}">
+				<img src="./images/icons/stock_edit-16.png" border="0" alt="{dPtranslate word='edit'}" />
+			</a>
+				
+		{if $a.billingcode_status == 0}
+			<a href="javascript:delIt2({$b.billingcode_id});" title="{dPtranslate word='delete'}">
+				<img src="./images/icons/stock_delete-16.png" border="0" alt="{dPtranslate word='delete'}" />
+			</a>
+		{/if}
+				
+		</td>
+		<td align="left">
+			&nbsp;{$b.billingcode_name}&nbsp;
+			{if $b.billingcode_status == 1}
+				{dPtranslate word='deleted'}
+			{/if}
+		</td>
+		<td nowrap="nowrap" align="center">{$b.billingcode_value}</td>
+		<td nowrap="nowrap">{$b.billingcode_desc}</td>
+	</tr>';
+{/foreach}
+
+
+{if isset($billingcode_id)}
+	<tr>
+		<td>&nbsp;<input type="hidden" name="billingcode_id" value="{$billingcode_id}" /></td>
+		<td><input type="text" name="billingcode_name" value="{$obj.billingcode_name}" /></td>
+		<td><input type="text" name="billingcode_value" value="{$obj.billingcode_value}" /></td>
+		<td><input type="text" name="billingcode_desc" value="{$obj.billingcode_desc}" /></td>
+	</tr>
+{else}
+	<tr>
+		<td>&nbsp;</td>
+		<td><input type="text" name="billingcode_name" value="" /></td>
+		<td><input type="text" name="billingcode_value" value="" /></td>
+		<td><input type="text" name="billingcode_desc" value="" /></td>
+	</tr>
+{/if}
+
+<tr>
+	<td align="left">
+		<input class="button"  type="button" value="{dPtranslate word='back'}" onclick="javascript:history.back(-1);" />
+	</td>
+	<td align="right">
+		<input class="button" type="button" value="{dPtranslate word='submit'}" onclick="submitIt()" />
+	</td>
+</tr>
+</table>
+</form>
