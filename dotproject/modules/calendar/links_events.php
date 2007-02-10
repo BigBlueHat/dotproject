@@ -150,19 +150,7 @@ function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMax
 				// optionally do not show events on non-working days 
 				if ( ( $row['event_cwd'] && in_array($date->getDayOfWeek(), $cwd ) ) || !$row['event_cwd'] ) {
 					$url = '?m=calendar&a=view&event_id=' . $row['event_id'];
-					$ot = '\''.$AppUI->_('Type:').' '.$types[$row['event_type']].'<br />';
-				//	$ot .=$AppUI->_('Project:').' '.$row['event_type'].'<br />';
-					/*if (is_array($assigned)) {
-						$start = false;
-						foreach ($assigned as $user) {
-							if ($start)
-								echo ", ";
-							else
-								$start = true;
-							echo $user;
-						}
-					}*/
-					
+					$ot = '\''.$AppUI->_('Type:').' '.$types[$row['event_type']].'<br />';				
 					$ot .=$AppUI->_('Start:').' '.$start->format($df).'<br />';
 					$ot .=$AppUI->_('End:').' '.$end->format($df).'<br />';
 					$ot .=$AppUI->_('Recurs:').' '.$AppUI->_($recurs[$row['event_recurs']]).'<br />';
