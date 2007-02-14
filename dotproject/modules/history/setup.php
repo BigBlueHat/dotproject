@@ -2,7 +2,7 @@
 /*
  * Name:      History
  * Directory: history
- * Version:   0.1
+ * Version:   0.6
  * Class:     user
  * UI Name:   History
  * UI Icon:
@@ -26,22 +26,21 @@ if (@$a == 'setup') {
 class CSetupHistory {   
 
 	function install() {
-		$sql = " ( " .
-		  "history_id int(10) unsigned NOT NULL auto_increment," .
-		  "history_date datetime NOT NULL default '0000-00-00 00:00:00'," .
-		  "history_user int(10) NOT NULL default '0'," .
-                  "history_action varchar(10) NOT NULL default 'modify', " .
-                  "history_item int(10) NOT NULL," .
-		  "history_table varchar(15) NOT NULL default ''," .
-		  "history_project int(10) NOT NULL default '0'," .
-		  "history_name varchar(255)," .
-		  "history_changes text," .
-		  "history_description text," .
-		  "PRIMARY KEY  (history_id)," .
-			'KEY `index_history_item` (history_item), ' . 
-			'KEY `index_history_table` (history_table), ' .
-			'INDEX `index_history_item_table` (`history_item`, `history_table`) ' .  
-		  ") TYPE=MyISAM";
+		$sql = ' ( 
+			history_id int(10) unsigned NOT NULL auto_increment,
+			history_date datetime NOT NULL default \'0000-00-00 00:00:00\',		  
+			history_user int(10) NOT NULL default \'0\',
+			history_action varchar(10) NOT NULL default \'modify\',
+			history_item int(10) NOT NULL,
+			history_table varchar(15) NOT NULL default \'\',
+			history_project int(10) NOT NULL default \'0\',
+			history_name varchar(255),
+			history_changes text,
+			history_description text,
+			PRIMARY KEY  (history_id),
+			INDEX `index_history_module` ( `history_table` , `history_item` ),
+		  INDEX `index_history_item` ( `history_item` ) 
+			) TYPE=MyISAM';
 		$q = new DBQuery;
 		$q->createTable('history');
 		$q->createDefinition($sql);
@@ -81,20 +80,17 @@ class CSetupHistory {
 				$q->clear();
 			case '0.4':
 				$q->alterTable('history');
-				$q->addIndex('index_history_table', '(history_table)');
-				$q->exec();
-				$q->clear();
-				$q->alterTable('history');
 				$q->addIndex('index_history_item', '(history_item)');
 				$q->exec();
 				$q->clear();
 			case '0.5':
 				$q->alterTable('history');
-				$q->addIndex('index_history_item_table', '(history_item, history_table)');
+				$q->addIndex('index_history_module', '(history_table, history_item)');
 				$q->exec();
 				$q->clear();
 				break;
 		}
+		
 		return db_error();
 	}
 }
