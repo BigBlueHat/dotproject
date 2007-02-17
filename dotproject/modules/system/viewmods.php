@@ -7,20 +7,26 @@ $canRead = !getDenyRead( $m );
 if (!$canRead)
 	$AppUI->redirect('m=public&a=access_denied');
 
-$q = new DBQuery;
-$q->addQuery('*');
-$q->addTable('modules');
-$q->addWhere("mod_name <> 'Public'");
-$q->addOrder('mod_ui_order');
-$modules = db_loadList( $q->prepare() );
+// Keep a list of modules that are never installed or removed
+$hidden_modules = array(
+	'public',
+	'install'
+);
 
 // get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs('modules');
-// and remove the public module and install module
-if (isset($modFiles['public'])) 
-	unset($modFiles['public']);
-if (isset($modFiles['install'])) 
-	unset($modFiles['install']);
+
+$q = new DBQuery;
+$q->addQuery('*');
+$q->addTable('modules');
+foreach ($hidden_modules as $no_show) {
+	$q->addWhere('mod_directory != \'' . $no_show . '\'');
+	if (isset($modFiles[$no_show])) {
+		unset($modFiles[$no_show]);
+	}
+}
+$q->addOrder('mod_ui_order');
+$modules = db_loadList( $q->prepare() );
 
 $titleBlock = new CTitleBlock('Modules', 'power-management.png', $m, "$m.$a");
 $titleBlock->addCrumb('?m=system', 'System Admin');
