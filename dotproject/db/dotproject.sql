@@ -856,7 +856,7 @@ INSERT INTO `config` VALUES (0, 'session_gc_scan_queue', 'false', 'session', 'ch
 # new custom fields
 DROP TABLE IF EXISTS `custom_fields_struct`;
 CREATE TABLE custom_fields_struct (
-    field_id integer primary key,
+    field_id integer auto_increment,
     field_module varchar(30),
     field_page varchar(30),
     field_htmltype varchar(20),
