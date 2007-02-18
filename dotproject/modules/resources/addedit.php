@@ -1,5 +1,9 @@
 <?php
-// Copyright 2004 Adam Donnison <adam@saki.com.au>
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+// Copyright 2007 dotProject dev team <core-developer@dotproject.net>
 $resource_id = intval(dPgetParam($_GET, "resource_id", null));
 $perms =& $AppUI->acl();
 $canDelete = $perms->checkModuleItem('resources', 'delete', $resource_id);
@@ -55,7 +59,7 @@ $typelist = $obj->typeSelect();
   	<tr>
 		<td align="right" colspan="3">
 		<?php
-			require_once($baseDir . '/classes/CustomFields.class.php');
+			require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 			$custom_fields = New CustomFields( $m, $a, $obj->resource_id, "edit" );
 			$custom_fields->printHTML();
 		?>

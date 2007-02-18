@@ -1,5 +1,9 @@
 <?php
-require_once($baseDir . '/lib/smarty/Smarty.class.php');
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+require_once(DP_BASE_DIR . '/lib/smarty/Smarty.class.php');
 
 class CTemplate extends Smarty
 {
@@ -8,19 +12,19 @@ class CTemplate extends Smarty
 
 	function CTemplate()
 	{
-		global $AppUI, $baseDir, $m, $a, $dPconfig;
+		global $AppUI, $m, $a, $dPconfig;
 	
 		parent::Smarty();
-		// $this->template_dir = $baseDir . '/style/' . $AppUI->getPref('template');
-		$this->template_dir = $baseDir . '/style/';
-		$this->compile_dir	= $baseDir . '/files/cache/smarty_templates';
-		$this->cache_dir	= $baseDir . '/files/cache/smarty';
-		$this->plugins_dir[]= $baseDir . '/includes/smarty';
+		// $this->template_dir = DP_BASE_DIR . '/style/' . $AppUI->getPref('template');
+		$this->template_dir = DP_BASE_DIR . '/style/';
+		$this->compile_dir	= DP_BASE_DIR . '/files/cache/smarty_templates';
+		$this->cache_dir	= DP_BASE_DIR . '/files/cache/smarty';
+		$this->plugins_dir[]= DP_BASE_DIR . '/includes/smarty';
 	}
 	
 	function init()
 	{
-		global $m, $a, $dPconfig, $baseUrl, $AppUI,
+		global $m, $a, $dPconfig, $AppUI,
 		$company_id, $project_id, $task_id, $file_id;
 		
 		
@@ -30,7 +34,9 @@ class CTemplate extends Smarty
 		$this->assign('user_id', $AppUI->user_id);
 		$this->assign('user_name', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
 		
-		foreach(array('baseUrl', 'm', 'a', 'company_id', 'task_id', 'file_id') as $global)
+		$this->assign('baseUrl', DP_BASE_URL);
+		$this->assign('baseDir', DP_BASE_DIR);
+		foreach(array('m', 'a', 'company_id', 'task_id', 'file_id') as $global)
 			$this->assign($global, $$global);
 
 		$this->page = isset($_REQUEST['page'])?$_REQUEST['page']:1;
@@ -196,7 +202,7 @@ class CTemplate extends Smarty
 	
 	function file($file, $module)
 	{
-		global $m, $uistyle, $baseDir;
+		global $m, $uistyle;
 		
 		if ($module == null)
 			$module = $m;
@@ -207,10 +213,10 @@ class CTemplate extends Smarty
 			$module .= '/';
 
 		$style = $uistyle;
-		if (is_file($baseDir . "/style/$style/$module$file.html"))
+		if (is_file(DP_BASE_DIR . "/style/$style/$module$file.html"))
 			return "$style/$module$file.html";
 		// Allow modules to provide their own templates, if one doesn't exist in the current theme.
-		elseif (is_file($baseDir . '/modules/'.$module.'style/'.$file.'.html'))
+		elseif (is_file(DP_BASE_DIR . '/modules/'.$module.'style/'.$file.'.html'))
 			return '../modules/'.$module.'style/'.$file.'.html';
 		else // default fallback
 			return "_smarty/$module$file.html";
@@ -228,13 +234,13 @@ class CTemplate extends Smarty
 	
 	function loadOverrides()
 	{
-		global $baseDir, $dPconfig, $AppUI, $uistyle;
+		global $dPconfig, $AppUI, $uistyle;
 /*		global $file_id, $company_id, $task_id;
 		global $currentTabId, $currentTabName;
 		global $uistyle, $style_extras; */
 		
-		if (is_file($baseDir . '/style/' . $uistyle . '/overrides.php'))		
-			include($baseDir . '/style/' . $uistyle . '/overrides.php');
+		if (is_file(DP_BASE_DIR . '/style/' . $uistyle . '/overrides.php'))		
+			include(DP_BASE_DIR . '/style/' . $uistyle . '/overrides.php');
 	}
 }
 ?>

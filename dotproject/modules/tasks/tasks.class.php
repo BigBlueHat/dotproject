@@ -1,4 +1,8 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 require_once( $AppUI->getSystemClass( 'libmail' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
@@ -2023,7 +2027,7 @@ class CTask extends CDpObject {
      -1, event is destroyed.
     */
 	function remind($module, $type, $id, $owner, &$args) {
-        global $locale_char_set, $AppUI, $baseUrl;
+        global $locale_char_set, $AppUI;
         $df = $AppUI->getPref('SHDATEFORMAT');
         $tf = $AppUI->getPref('TIMEFORMAT');
         // If we don't have preferences set for these, use ISO defaults.
@@ -2122,7 +2126,7 @@ class CTask extends CDpObject {
         $starts = new CDate($this->task_start_date);
         $body .= $AppUI->_('Start Date', UI_OUTPUT_RAW).': '.$starts->format($df)."\n";
         $body .= $AppUI->_('Finish Date', UI_OUTPUT_RAW).': '.$expires->format($df)."\n";
-        $body .= $AppUI->_('URL', UI_OUTPUT_RAW).': '.$baseUrl.'/index.php?m=tasks&a=view&task_id='.$this->task_id
+        $body .= $AppUI->_('URL', UI_OUTPUT_RAW).': '.DP_BASE_URL.'/index.php?m=tasks&a=view&task_id='.$this->task_id
             .'&reminded=1'."\n";
         $body .= "\n".$AppUI->_('Resources', UI_OUTPUT_RAW).":\n";
         foreach ($contacts as $contact) {

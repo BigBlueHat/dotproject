@@ -1,4 +1,8 @@
 <?php  // $Id$
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 // check permissions
 if (!$canEdit) {
@@ -19,7 +23,7 @@ $titleBlock->show();
 $last_group = '';
 
 $tpl->assign('AppUI', $AppUI);
-$tpl->assign('baseDir', $baseDir);
+$tpl->assign('baseDir', DP_BASE_DIR);
 $tpl->assign('last_group', $last_group);
 $tpl->assign('rs', $rs);
 $tpl->displayFile('systemconfig', 'system');

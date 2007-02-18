@@ -1,4 +1,8 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $adjustStartDate = dPgetParam($_POST, 'task_dep_reset_dates');
 $del = dPgetParam($_POST, 'del',  0);
 $task_id = dPgetParam($_POST, 'task_id', 0);
@@ -122,7 +126,7 @@ if ($sub_form) {
 		$obj->task_duration = floor($obj->task_duration) + $task_duration_minutes;
 	}
 
-	require_once($baseDir . '/classes/CustomFields.class.php');
+	require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 	//echo '<pre>';print_r( $hassign );echo '</pre>';die;
 	// prepare (and translate) the module name ready for the suffix
 	if ($del) {

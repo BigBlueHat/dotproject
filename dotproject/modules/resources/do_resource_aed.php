@@ -1,4 +1,8 @@
 <?php /* RESOURCES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 $del = dPgetParam($_POST, 'del', 0);
 $obj =& new CResource;
@@ -9,7 +13,7 @@ if (! $obj->bind($_POST)) {
   $AppUI->redirect();
 }
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 
 $AppUI->setMsg('Resource');
 if ($del) {

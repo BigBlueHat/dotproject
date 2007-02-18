@@ -1,5 +1,9 @@
 <?php /* TASKS $Id$ */
-global $showEditCheckbox, $this_day, $other_users, $baseDir, $dPconfig, $user_id;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $showEditCheckbox, $this_day, $other_users, $dPconfig, $user_id;
 
 $showEditCheckbox = true;
 // Project status from sysval, defined as a constant

@@ -1,9 +1,13 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $register = dPgetParam($_POST, 'user_username', false);
 if ($register)
 {
-	require_once($baseDir . '/modules/system/roles/roles.class.php');
-	require_once($baseDir . '/modules/admin/admin.class.php');
+	require_once(DP_BASE_DIR . '/modules/system/roles/roles.class.php');
+	require_once(DP_BASE_DIR . '/modules/admin/admin.class.php');
 
 	$user = new CUser;
 	$user->bind($_POST);

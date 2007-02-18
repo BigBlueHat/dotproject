@@ -1,5 +1,9 @@
 <?php
-// Copyright 2005, Adam Donnison <adam@saki.com.au>
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+// Copyright 2007, dotProject Developer Team
 // Released under GPL version 2 or later
 
 // Restores an XML file.
@@ -17,7 +21,7 @@ if (! isset($_FILES['xmlfile'])) {
 $upload_tmp_file = $_FILES['xmlfile']['tmp_name'];
 $continue = dPgetParam($_POST, 'continue', false);
 
-require_once $baseDir . '/lib/adodb/adodb-xmlschema.inc.php';
+require_once DP_BASE_DIR . '/lib/adodb/adodb-xmlschema.inc.php';
 $schema = new adoSchema($GLOBALS['db']);
 $schema->setUpgradeMethod('REPLACE');
 $schema->ContinueOnError(true);

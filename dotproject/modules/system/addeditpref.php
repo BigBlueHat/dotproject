@@ -1,4 +1,8 @@
 <?php /* SYSTEM $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 ##
 ## add or edit a user preferences
 ##
@@ -106,7 +110,7 @@ foreach ($tz as $timezone)
 	$timezones[$timezone] = $timezone;
 
 $tpl->assign('AppUI', $AppUI);
-$tpl->assign('baseDir', $baseDir);
+$tpl->assign('baseDir', DP_BASE_DIR);
 $tpl->assign('currencies', $currencies);
 $tpl->assign('timezones', $timezones);
 $tpl->assign('dates', $dates);

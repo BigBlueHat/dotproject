@@ -1,4 +1,8 @@
 <?php /* CONTACTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 $company_id = intval( dPgetParam( $_REQUEST, 'company_id', 0 ) );
 $company_name = dPgetParam( $_REQUEST, 'company_name', null );
@@ -47,7 +51,7 @@ if ($contact_id == 0 && $company_id > 0) {
 $contact_owner = $row->contact_owner ? $row->contact_owner : $AppUI->user_id;
 $contact_unique_update = uniqid("");
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 $custom_fields = New CustomFields( $m, $a, $contact_id, "edit" );
 $tpl->assign('customFields', $custom_fields->getHTML());
 $tpl->assign('company_detail', $company_detail);

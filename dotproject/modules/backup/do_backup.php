@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // backup database module for dotProject
 // (c)2003 Daniel Vijge
 // Licensed under GNU/GPL v2 or later
@@ -26,7 +30,7 @@ if (! in_array($export_what, $valid_export_options)
   $AppUI->redirect('m=public&a=access_denied');
 }
 
-require_once "$baseDir/lib/adodb/adodb-xmlschema.inc.php";
+require_once DP_BASE_DIR."/lib/adodb/adodb-xmlschema.inc.php";
 
 
 if ($output_format == 'xml') {
@@ -153,7 +157,7 @@ switch ($output_format) {
   case 'zip':
     header('Content-Disposition: inline; filename="backup.zip"');
     header('Content-Type: application/x-zip');
-    include_once $baseDir . '/modules/backup/zip.lib.php';
+    include_once DP_BASE_DIR . '/modules/backup/zip.lib.php';
     $zip = new zipfile;
     $zip->addFile($output,'backup.sql');
     echo $zip->file();

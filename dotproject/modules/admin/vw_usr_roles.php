@@ -1,9 +1,13 @@
 <?php /* ADMIN $Id$ */
-GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab, $baseDir, $tpl;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab, $tpl;
 
 //$roles
 // Create the roles class container
-require_once($baseDir . '/modules/system/roles/roles.class.php');
+require_once(DP_BASE_DIR . '/modules/system/roles/roles.class.php');
 
 $perms =& $AppUI->acl();
 $user_roles = $perms->getUserRoles($user_id);

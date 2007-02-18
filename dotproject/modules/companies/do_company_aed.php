@@ -1,4 +1,8 @@
 <?php /* COMPANIES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $del = dPgetParam( $_POST, 'del', 0 );
 $obj = new CCompany();
 $msg = '';
@@ -8,7 +12,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Company' );
 if ($del) {

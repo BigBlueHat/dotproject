@@ -1,4 +1,8 @@
 <?php /* $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 //view posts
 $forum_id 		= dPgetParam($_GET, 'forum_id', 0);
 $message_id 	= dPgetParam($_GET, 'message_id', 0);
@@ -55,10 +59,10 @@ $tpl->assign('formatted_start_date', $start_date_formatted);
 $tpl->displayFile('viewer');
 
 if($post_message)
-	include($baseDir . '/modules/forums/post_message.php');
+	include(DP_BASE_DIR . '/modules/forums/post_message.php');
 else if($message_id == 0)
-	include($baseDir . '/modules/forums/view_topics.php');
+	include(DP_BASE_DIR . '/modules/forums/view_topics.php');
 else
-	include($baseDir . '/modules/forums/view_messages.php');
+	include(DP_BASE_DIR . '/modules/forums/view_messages.php');
 
 ?>

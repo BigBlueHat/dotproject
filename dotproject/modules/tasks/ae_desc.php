@@ -1,6 +1,10 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // $Id$
-	global $tpl, $AppUI, $task_id, $obj, $users, $task_access, $department_selection_list, $baseDir;
+	global $tpl, $AppUI, $task_id, $obj, $users, $task_access, $department_selection_list;
 	global $task_parent_options, $dPconfig, $projects, $task_project, $can_edit_time_information, $tab;
 
 	$perms =& $AppUI->acl();
@@ -20,7 +24,7 @@
 
 	$tpl->assign('sysval_task_type', dPgetSysVal('TaskType'));
 
-	require_once($baseDir . '/classes/CustomFields.class.php');
+	require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 	GLOBAL $m;
 	$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, 'edit' );
 	$custom_fields_html = $custom_fields->getHTML();

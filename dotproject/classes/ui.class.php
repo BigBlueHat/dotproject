@@ -1,4 +1,8 @@
 <?php /* CLASSES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
 * @package dotproject
 * @subpackage core
@@ -24,9 +28,9 @@ define ("UI_OUTPUT_HTML", 0);
 define ("UI_OUTPUT_JS", 0x10);
 define ("UI_OUTPUT_RAW", 0x20);
 
-// $baseDir is set in index.php and fileviewer.php and is the base directory
+// DP_BASE_DIR is set in index.php and fileviewer.php and is the base directory
 // of the dotproject installation.
-require_once "$baseDir/classes/permissions.class.php";
+require_once DP_BASE_DIR."/classes/permissions.class.php";
 /**
 * The Application User Interface Class.
 *
@@ -127,9 +131,8 @@ class CAppUI {
  */
 	function getSystemClass( $name=null )
 	{
-		global $baseDir;
 		if ($name) {
-			return "$baseDir/classes/$name.class.php";
+			return DP_BASE_DIR."/classes/$name.class.php";
 		}
 	}
 
@@ -141,9 +144,8 @@ class CAppUI {
 */
 	function getLibraryClass( $name=null )
 	{
-		global $baseDir;
 		if ($name) {
-			return "$baseDir/lib/$name.php";
+			return DP_BASE_DIR."/lib/$name.php";
 		}
 	}
 
@@ -154,9 +156,8 @@ class CAppUI {
  */
 	function getModuleClass( $name=null )
 	{
-		global $baseDir;
 		if ($name) {
-			return "$baseDir/modules/$name/$name.class.php";
+			return DP_BASE_DIR."/modules/$name/$name.class.php";
 		}
 	}
 
@@ -167,11 +168,10 @@ class CAppUI {
 	function getVersion()
 	{
 		global $dPconfig;
-		global $baseDir;
 		global $dp_version_major, $dp_version_minor, $dp_version_patch;
 		
 		if ( ! isset($this->version_major)) {
-			include_once $baseDir . '/includes/version.php';
+			include_once DP_BASE_DIR . '/includes/version.php';
 			$this->version_major = $dp_version_major;
 			$this->version_minor = $dp_version_minor;
 			$this->version_patch = $dp_version_patch;
@@ -190,11 +190,10 @@ class CAppUI {
 	function checkStyle()
 	{
 		global $dPconfig;
-		global $baseDir;
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
 
-		if ($uistyle && !is_dir("$baseDir/style/$uistyle")) {
+		if ($uistyle && !is_dir(DP_BASE_DIR."/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
 			$this->setPref( 'UISTYLE', $dPconfig['host_style'] );
 		}
@@ -218,15 +217,14 @@ class CAppUI {
 */
 	function readDirs( $path, $default = null)
 	{
-		global $baseDir;
 		$dirs = array();
 		if ($default != null)
 			$dirs[$default] = $default;
 
-		$d = dir( "$baseDir/$path" );
+		$d = dir( DP_BASE_DIR."/$path" );
 		$ignore = array('.', '_');
 		while (false !== ($name = $d->read())) {
-			if(is_dir( "$baseDir/$path/$name" ) && !in_array($name[0], $ignore) && $name != 'CVS') {
+			if(is_dir( DP_BASE_DIR."/$path/$name" ) && !in_array($name[0], $ignore) && $name != 'CVS') {
 				$dirs[$name] = $name;
 			}
 		}
@@ -381,7 +379,6 @@ class CAppUI {
  */
 	function loadLanguages()
 	{
-		global $baseDir;
 
 		if ( isset($_SESSION['LANGUAGES'])) {
 			$LANGUAGES =& $_SESSION['LANGUAGES'];
@@ -389,8 +386,8 @@ class CAppUI {
 			$LANGUAGES = array();
 			$langs = $this->readDirs('locales');
 			foreach ($langs as $lang) {
-				if (file_exists("$baseDir/locales/$lang/lang.php")) {
-					include_once "$baseDir/locales/$lang/lang.php";
+				if (file_exists(DP_BASE_DIR."/locales/$lang/lang.php")) {
+					include_once DP_BASE_DIR."/locales/$lang/lang.php";
 				}
 			}
 			@$_SESSION['LANGUAGES'] =& $LANGUAGES;
@@ -692,9 +689,9 @@ class CAppUI {
 */
 	function login( $username, $password )
 	{
-		global $dPconfig, $baseDir;
+		global $dPconfig;
 
-		require_once "$baseDir/classes/authenticator.class.php";
+		require_once DP_BASE_DIR."/classes/authenticator.class.php";
 
 		$auth_method = isset($dPconfig['auth_method']) ? $dPconfig['auth_method'] : 'sql';
 		if (@$_POST['login'] != 'login' && @$_POST['login'] != $this->_('login') && $_REQUEST['login'] != $auth_method) {
@@ -910,11 +907,11 @@ class CAppUI {
  */
 	function loadJS()
 	{
-	  global $m, $a, $dPconfig, $baseDir, $extra_js;
+	  global $m, $a, $dPconfig, $extra_js;
 	  // Search for the javascript files to load.
 	  if (! isset($m))
 	    return;
-	  $root = $baseDir;
+	  $root = DP_BASE_DIR;
 	  if (substr($root, -1) != '/')
 	    $root .= '/';
 
@@ -945,8 +942,8 @@ class CAppUI {
 
 	function getModuleJS($module, $file=null, $load_all = false)
 	{
-		global $dPconfig, $baseDir;
-		$root = $baseDir;
+		global $dPconfig;
+		$root = DP_BASE_DIR;
 		if (substr($root, -1) != '/');
 			$root .= '/';
 		$base = $dPconfig['base_url'];

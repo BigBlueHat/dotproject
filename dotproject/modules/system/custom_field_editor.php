@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /*	$Id$ 	
  *
  *	Custom field editor - lists custom fields by module 	
@@ -9,7 +13,7 @@ if (!$canEdit)
 
 $AppUI->savePlace();
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 
 $titleBlock = new CTitleBlock('Custom field editor', 'customfields.png', 'admin', 'admin.custom_field_editor');
 $titleBlock->addCrumb('?m=system', 'system admin');

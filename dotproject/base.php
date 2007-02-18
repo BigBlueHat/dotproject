@@ -41,6 +41,16 @@ if (@$pathInfo) {
 } else {
 	$baseUrl .= str_replace('\\','/', dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : getenv('SCRIPT_NAME')));
 }
+
+// If we are at the top level we will have a trailing slash, which we need to remove, otherwise we get invalid URLs for some servers (like IIS)
+$baseUrl = preg_replace(':/*$:', '', $baseUrl);
+
+// To avoid the usual problems with registered globals and other hacks, use a define rather
+// than a global.  These are also used as a sentinel to stop direct calling of pages that shouldn't be.
+
+define('DP_BASE_DIR', $baseDir);
+define('DP_BASE_URL', $baseUrl);
+
 // required includes for start-up
 global $dPconfig;
 $dPconfig = array();

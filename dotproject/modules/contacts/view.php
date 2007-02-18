@@ -1,5 +1,9 @@
 <?php /* CONTACTS $Id$ */
-require_once($baseDir . '/classes/CustomFields.class.php');
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
 $AppUI->savePlace();

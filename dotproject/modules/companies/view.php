@@ -1,4 +1,8 @@
 <?php /* COMPANIES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
 // check permissions for this record
@@ -75,7 +79,7 @@ $titleBlock->show();
 $obj->company_description = str_replace( chr(10), '<br />', $obj->company_description );
 
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 $custom_fields = New CustomFields( $m, $a, $obj->company_id, "view" );
 $tpl->assign('customFields', $custom_fields->getHTML());
 

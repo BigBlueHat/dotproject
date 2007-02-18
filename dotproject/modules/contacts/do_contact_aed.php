@@ -1,4 +1,8 @@
 <?php /* CONTACTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 $obj = new CContact();
 $msg = '';
@@ -10,7 +14,7 @@ if (!$obj->bind( $_POST )) {
 
 $del = dPgetParam( $_POST, 'del', 0 );
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 
 // prepare (and translate) the module name ready for the suffix
 $AppUI->setMsg( 'Contact' );

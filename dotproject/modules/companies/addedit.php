@@ -1,4 +1,8 @@
 <?php /* COMPANIES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $company_id = intval( dPgetParam( $_GET, "company_id", 0 ) );
 
 // check permissions for this company
@@ -59,7 +63,7 @@ if ($company_id != 0)
   $titleBlock->addCrumb( "?m=companies&amp;a=view&amp;company_id=$company_id", 'view this company' );
 $titleBlock->show();
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 $custom_fields = New CustomFields( $m, $a, $obj->company_id, "edit" );
 $tpl->assign('customFields', $custom_fields->getHTML());
 $tpl->assign('company_id', $company_id);

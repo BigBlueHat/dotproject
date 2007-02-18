@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 $obj =& new CResource;
 $resource_id = dPgetParam($_GET, 'resource_id', 0);
@@ -87,7 +91,7 @@ if ($canDelete) {
 	<tr>
 	<td>
 		<?php
-			require_once($baseDir . '/classes/CustomFields.class.php');
+			require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 			$custom_fields = New CustomFields( $m, $a, $obj->resource_id, "view" );
 			$custom_fields->printHTML();
 		?>

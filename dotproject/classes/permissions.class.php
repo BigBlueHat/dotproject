@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // $Id$
 
 /**
@@ -18,12 +22,12 @@
 
 // Set the ADODB directory
 if (! defined('ADODB_DIR')) {
-  define('ADODB_DIR', "$baseDir/lib/adodb");
+  define('ADODB_DIR', DP_BASE_DIR."/lib/adodb");
 }
  
 // Include the PHPGACL library
-require_once "$baseDir/lib/phpgacl/gacl.class.php";
-require_once "$baseDir/lib/phpgacl/gacl_api.class.php";
+require_once DP_BASE_DIR."/lib/phpgacl/gacl.class.php";
+require_once DP_BASE_DIR."/lib/phpgacl/gacl_api.class.php";
 // Include the db_connections 
 
 // Now extend the class
@@ -39,7 +43,7 @@ class dPacl extends gacl_api {
 
   function dPacl($opts = null)
   {
-    global $dPconfig, $baseDir;
+    global $dPconfig;
     if (! is_array($opts))
       $opts = array();
     $opts['db_type'] = $dPconfig['dbtype'];
@@ -56,7 +60,7 @@ class dPacl extends gacl_api {
     // Enable caching
     $opts['caching'] = true;
     $opts['cache_expire_time'] = 6000;
-    $opts['cache_dir'] = $baseDir . '/files/cache/phpgacl';
+    $opts['cache_dir'] = DP_BASE_DIR . '/files/cache/phpgacl';
     
     parent::gacl_api($opts);
   }

@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 	/*
 	 *	Custom Field Add/Edit
@@ -7,7 +11,7 @@
 if (!$canEdit) {
     $AppUI->redirect( "m=public&a=access_denied" );
 }
-	require_once($baseDir . '/classes/CustomFields.class.php');
+	require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 		
 	$titleBlock = new CTitleBlock('Custom Fields - Add/Edit', "", "admin", "admin.custom_field_addedit");
 	$titleBlock->addCrumb( "?m=system", 'system admin' );
@@ -122,7 +126,7 @@ if (!$canEdit) {
 		}
 	}
 
-	include($baseDir . '/modules/system/custom_field_addedit.js'); 
+	include(DP_BASE_DIR . '/modules/system/custom_field_addedit.js'); 
 
 	$tpl->assign('module', $module); 
 	$tpl->assign('field_id', $field_id); 

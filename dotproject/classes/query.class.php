@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 
 /*{{{ Copyright 2003,2004 Adam Donnison <adam@saki.com.au>
 
@@ -19,7 +23,7 @@
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }}}*/
 
-require_once "$baseDir/lib/adodb/adodb.inc.php";
+require_once DP_BASE_DIR."/lib/adodb/adodb.inc.php";
 
 define('QUERY_STYLE_ASSOC', ADODB_FETCH_ASSOC);
 define('QUERY_STYLE_NUM' , ADODB_FETCH_NUM);
@@ -849,9 +853,9 @@ class DBQuery {
 	 */
 	function execXML($xml, $mode = 'REPLACE')
 	{
-		global $baseDir, $AppUI;
+		global $AppUI;
 
-		include_once $baseDir.'/lib/adodb/adodb-xmlschema.inc.php';
+		include_once DP_BASE_DIR.'/lib/adodb/adodb-xmlschema.inc.php';
 		$schema = new adoSchema($this->_db);
 		$schema->setUpgradeMode($mode);
 		if (isset($this->_table_prefix) && $this->_table_prefix) {
