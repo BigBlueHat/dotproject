@@ -1,7 +1,11 @@
 <?php /* FORUMS $Id$ */
-##
-## Change forum watches
-##
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/** 
+ * Change forum watches
+ */
 $watch = isset( $_POST['watch'] ) ? $_POST['watch'] : 0;
 
 if ($watch) {
@@ -24,7 +28,7 @@ if ($watch) {
 				if (!$q->exec()) {
 					$AppUI->setMsg( db_error(), UI_MSG_ERROR );
 				} else {
-					$AppUI->setMsg( "Watch updated", UI_MSG_OK );
+					$AppUI->setMsg( 'Watch updated', UI_MSG_OK );
 				}
 				$q->clear();
 			}

@@ -1,4 +1,8 @@
 <?php /* ADMIN $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 //add or edit a system user
 
 $user_id = dPgetParam($_GET, 'user_id', 0);
@@ -75,7 +79,6 @@ if (!db_loadHash($sql, $user) && $user_id > 0) {
 	$tpl->assign('companies', $companies);
 	$tpl->assign('utypes', $utypes);
 	$tpl->displayAddEdit($user);
-	
 ?>
 <script language="javascript" type="text/javascript">
 <!--

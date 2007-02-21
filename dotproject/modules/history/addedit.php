@@ -1,5 +1,9 @@
 <?php /* $Id$ */
-$history_id = defVal( @$_GET["history_id"], 0);
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$history_id = dPgetParam($_GET, 'history_id', 0);
 
 /*
 // check permissions
@@ -66,5 +70,6 @@ db_loadHash( $sql, $history );
 $tpl->assign('history_id', $history_id);
 $tpl->assign('projects', $projects);
 $tpl->assign('current_url', $AppUI->getPlace());
+
 $tpl->displayAddEdit($history);
 ?>

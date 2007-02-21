@@ -1,4 +1,7 @@
 <?php /* CLASSES $Id$ */
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
 
 /**
  *	@package dotproject
@@ -61,14 +64,10 @@ class CDpObject {
  */
 	function CDpObject( $table, $key )
 	{
-		global $dPconfig;
 		$this->_tbl = $table;
 		$this->_tbl_key = $key;
 		$this->_tbl_name = substr($key, 0, -2) . 'name';
-		if (isset($dPconfig['dbprefix']))
-			$this->_prefix = $dPconfig['dbprefix'];
-		else
-			$this->_prefix = '';
+		$this->_prefix = dPgetConfig('dbprefix', '');
 		$this->_query =& new DBQuery;
 	} // }}} constructor
 

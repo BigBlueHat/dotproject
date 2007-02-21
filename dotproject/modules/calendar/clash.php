@@ -67,7 +67,7 @@ function clash_cancel()
  */
 function clash_suggest()
 {
-  global $AppUI, $dPconfig, $m, $a, $tpl;
+  global $AppUI, $m, $a, $tpl;
   
   $obj =& new CEvent;
   $obj->bind($_SESSION['add_event_post']);
@@ -81,7 +81,7 @@ function clash_suggest()
 
   $titleBlock =& new CTitleBlock( 'Suggest Alternative Event Time', 'myevo-appointments.png', $m, "$m.$a");
   $titleBlock->show();
-  $calurl = $dPconfig['base_url'] . '/index.php?m=calendar&amp;a=clash&amp;event_id=' . $obj->event_id;
+  $calurl = DP_BASE_URL . '/index.php?m=calendar&amp;a=clash&amp;event_id=' . $obj->event_id;
   $times = array();
   $t = new CDate();
   $t->setTime(0, 0, 0);
@@ -285,7 +285,6 @@ function clash_mail()
   clear_clash();
   $AppUI->redirect();
 }
-
 
 /**
  * Even though we end up with a clash, accept the detail.

@@ -1,9 +1,12 @@
 <?php  /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 // load the companies class to retrieved denied companies
 require_once( $AppUI->getModuleClass( 'companies' ) );
-
 
 $perms =& $AppUI->acl();
 
@@ -115,7 +118,7 @@ if (is_array($projects)) {
 
 // Only display the All option in tabbed view, in plain mode it would just repeat everything else
 // already in the page
-$tabBox = new CTabBox( "?m=projects", "{$dPconfig['root_dir']}/modules/projects/", $tab );
+$tabBox = new CTabBox( "?m=projects", DP_BASE_DIR . '/modules/projects/', $tab );
 
 
 // tabbed information boxes

@@ -1,4 +1,8 @@
 <?php /* FILES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 // retrieve any state parameters
@@ -83,7 +87,7 @@ if ( $tab != -1 ) {
 //if ($view == "folders") {
 	//include('folders_table.php');	
 //} else {
-	$tabBox = new CTabBox( "?m=files", "{$dPconfig['root_dir']}/modules/files/", $tab );
+	$tabBox = new CTabBox( '?m=files', DP_BASE_DIR . '/modules/files/', $tab );
 	$tabbed = $tabBox->isTabbed();
 	$i = 0;
 	foreach($file_types as $file_type) {
@@ -93,10 +97,10 @@ if ( $tab != -1 ) {
         $key = array_search($file_type, $fts);              
         if ($i>0 || !$tabbed) $q->addWhere('file_category = '.$key);        
         if ($project_id>0) $q->addWhere('file_project = '.$project_id);        
-        $tabBox->add("index_table", $file_type . ' (' . $q->loadResult() .')');
+        $tabBox->add('index_table', $file_type . ' (' . $q->loadResult() .')');
         ++$i;
 	}
-    $tabBox->add("folders_table", 'Folder Explorer');
+    $tabBox->add('folders_table', 'Folder Explorer');
 	$tabBox->show();
 //}
 ?>

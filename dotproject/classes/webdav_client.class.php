@@ -1,5 +1,7 @@
-<?php
-// $Id$
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 /**
  * WebDAV client connection and operations abstraction class.
@@ -109,6 +111,5 @@ class WebDAVclient extends webdav_client {
 		$info = parse_url($fullserverpath);
 		return $info['path'];
 	}
-
 }
 ?>

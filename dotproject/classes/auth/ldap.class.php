@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
+
 	define('DP_AUTH_SUBCLASS', 'LDAPAuthenticator');
 
 	class LDAPAuthenticator extends SQLAuthenticator
@@ -16,17 +20,15 @@
 
 		function LDAPAuthenticator()
 		{
-			global $dPconfig;
+			$this->fallback = dPgetConfig('ldap_allow_login', false);
 
-			$this->fallback = isset($dPconfig['ldap_allow_login']) ? $dPconfig['ldap_allow_login'] : false;
-
-			$this->ldap_host = explode(';', $dPconfig["ldap_host"]);
-			$this->ldap_port = $dPconfig["ldap_port"];
-			$this->ldap_version = $dPconfig["ldap_version"];
-			$this->base_dn = $dPconfig["ldap_base_dn"];
-			$this->ldap_search_user = $dPconfig["ldap_search_user"];
-			$this->ldap_search_pass = $dPconfig["ldap_search_pass"];
-			$this->filter = $dPconfig["ldap_user_filter"];
+			$this->ldap_host = explode(';', dPgetConfig('ldap_host'));
+			$this->ldap_port = dPgetConfig('ldap_port');
+			$this->ldap_version = dPgetConfig('ldap_version');
+			$this->base_dn = dPgetConfig('ldap_base_dn');
+			$this->ldap_search_user = dPgetConfig('ldap_search_user');
+			$this->ldap_search_pass = dPgetConfig('ldap_search_pass');
+			$this->filter = dPgetConfig('ldap_user_filter');
 		}
 		
 		function supported()
@@ -51,7 +53,6 @@
 		 */
 		function authenticate($username, $password)
 		{
-			global $dPconfig;
 			$this->username = $username;
 
 			if (strlen($password) == 0) return false; // LDAP will succeed binding with no password on AD (defaults to anon bind)
@@ -202,5 +203,4 @@
 		}
 
 	}
-
 ?>

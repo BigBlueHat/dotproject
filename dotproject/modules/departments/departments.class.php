@@ -1,8 +1,11 @@
 <?php /* DEPARTMENTS $Id$ */
-##
-## CDepartment Class
-##
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
+/** 
+ * CDepartment Class
+ */
 class CDepartment extends CDpObject {
 	var $dept_id = NULL;
 	var $dept_parent = NULL;

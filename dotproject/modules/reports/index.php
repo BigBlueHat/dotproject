@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
 $project_id 			= intval( dPgetParam( $_REQUEST, 'project_id', 0 ) );
@@ -67,12 +71,12 @@ $df = $AppUI->getPref('SHDATEFORMAT');
 
 if (!isset($report_category))
 {
-	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' ).'/modules/reports' ); //, "\.php$"
+	$reports = $AppUI->readFiles(DP_BASE_DIR . '/modules/reports');
 	$ignore = array('index.php', 'setup.php', 'CVS');
 	$report_categories = array_diff($reports, $ignore);
 }
 else
-	$reports = $AppUI->readFiles( dPgetConfig( 'root_dir' ).'/modules/reports/'.$report_category, "\.php$" );
+	$reports = $AppUI->readFiles(DP_BASE_DIR . '/modules/reports/'.$report_category, "\.php$" );
 
 
 // setup the title block
@@ -114,9 +118,9 @@ if (!empty($report_type_var))
 if ($report_type) {
 	$report_type = $AppUI->checkFileName( $report_type );
 	$report_type = str_replace( ' ', '_', $report_type );
-	$report_title = @file( dPgetConfig('root_dir')."/modules/reports/$report_category/$report_type.$AppUI->user_locale.txt");
+	$report_title = @file(DP_BASE_DIR."/modules/reports/$report_category/$report_type.$AppUI->user_locale.txt");
 	$report_title = $report_title[0];
-	require( dPgetConfig( 'root_dir' )."/modules/reports/$report_category/$report_type.php" );
+	require(DP_BASE_DIR."/modules/reports/$report_category/$report_type.php");
 } else if ($report_category) {
 	echo '
 <table>
@@ -126,7 +130,7 @@ if ($report_type) {
 	foreach ($reports as $v) {
 		$type = str_replace( '.php', '', $v );
 		$desc_file = str_replace( '.php', '.'.$AppUI->user_locale.'.txt', $v );
-		$desc = @file( dPgetConfig( 'root_dir' )."/modules/reports/$report_category/$desc_file" );
+		$desc = @file(DP_BASE_DIR."/modules/reports/$report_category/$desc_file");
 
 		echo "
 <tr>
@@ -151,7 +155,7 @@ if ($report_type) {
 	foreach ($report_categories as $v) {
 		$type = $v;
 		$desc_file = "$v.$AppUI->user_locale.txt";
-		$desc = @file( dPgetConfig( 'root_dir' ).'/modules/reports/'.$desc_file );
+		$desc = @file(DP_BASE_DIR.'/modules/reports/'.$desc_file );
 
 		echo "
 <tr>

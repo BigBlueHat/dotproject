@@ -1,5 +1,9 @@
 <?php /* SYSKEYS $Id$ */
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$del = dPgetParam($_POST, 'del', 0);
 
 $obj = new CSysVal();
 
@@ -22,5 +26,5 @@ if ($del) {
 		$AppUI->setMsg( @$_POST['sysval_id'] ? 'updated' : 'inserted', UI_MSG_OK, true );
 	}
 }
-$AppUI->redirect( "m=system&u=syskeys" );
+$AppUI->redirect('m=system&u=syskeys');
 ?>

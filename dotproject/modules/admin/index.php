@@ -1,4 +1,8 @@
 <?php /* $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $perms =& $AppUI->acl();
 if (! $perms->checkModule($m, 'view'))
 	$AppUI->redirect('m=public&a=access_denied');
@@ -120,7 +124,7 @@ $extra = '
 </td>';
 
 // tabbed information boxes
-$tabBox = new CTabBox('?m=admin', $dPconfig['root_dir'] . '/modules/admin/', $tab);
+$tabBox = new CTabBox('?m=admin', DP_BASE_DIR . '/modules/admin/', $tab);
 $tabBox->add('vw_usr', 'Active Users');
 $tabBox->add('vw_usr', 'Inactive Users');
 $tabBox->add('vw_usr_log', 'User Log');

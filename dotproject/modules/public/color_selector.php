@@ -1,5 +1,9 @@
 <?php /* PUBLIC $Id$ */
-$callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$callback = dPgetParam($_GET, 'callback', 0);
 ?>
 <script type="text/javascript" language="javascript">
 	function setClose(color){
@@ -9,7 +13,7 @@ $callback = isset( $_GET['callback'] ) ? $_GET['callback'] : 0;
 </script>
 <?php
 	$colors = dPgetSysVal( 'ProjectColors' );
-	if($dPconfig['restrict_color_selection']){
+	if(dPgetConfig('restrict_color_selection')){
 ?>
 <table border="0" cellpadding="1" cellspacing="2" width="292" align="center">
 	<tr>

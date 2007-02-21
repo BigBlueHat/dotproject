@@ -1,4 +1,8 @@
 <?php /* FORUMS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 require_once($AppUI->getModuleClass('companies'));
@@ -60,7 +64,7 @@ $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
 
-$tabBox = new CTabBox('?m=calendar&amp;a=calmgt', $dPconfig['root_dir'].'/modules/calendar/', $tab);
+$tabBox = new CTabBox('?m=calendar&amp;a=calmgt', DP_BASE_DIR.'/modules/calendar/', $tab);
 
 $tabBox->add('webcal_mgt', 'WebCal Management', true);
 $min_view = true;

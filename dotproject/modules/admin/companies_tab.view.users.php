@@ -1,7 +1,11 @@
 <?php /* COMPANIES $Id$ */
-##
-##	Companies: View User sub-table
-##
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
+ * Companies: View User sub-table
+ */
 global $AppUI, $company_id, $tpl;
 
 $q  = new DBQuery;

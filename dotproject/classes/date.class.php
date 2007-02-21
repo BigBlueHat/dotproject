@@ -1,4 +1,8 @@
 <?php /* CLASSES $Id$ */
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
+
 /**
 * @package dotproject
 * @subpackage utilites
@@ -32,7 +36,6 @@ define( 'SEC_DAY',    86400 );
  * Date package as 'pure' as possible
  */
 class CDate extends Date {
-
 
 	function CDate($date = null)
 	{
@@ -200,7 +203,6 @@ class CDate extends Date {
 		return $this;
 	}
 
-
 	/**
 	 *  Return date obj for the end of the previous working day
 	 * @param	bool	Determine whether to set time to end of day or preserve the time of the given object
@@ -221,7 +223,6 @@ class CDate extends Date {
 		return $this;
 	}
 
-	
 	/** 
 	 * Calculating _robustly_ a date from a given date and duration
 	 * Works in both directions: forwards/prospective and backwards/retrospective

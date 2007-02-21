@@ -1,9 +1,13 @@
 <?php /* EVENTS $Id$ */
-GLOBAL $company_id;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $company_id;
 
 $canEdit = !getDenyEdit( 'events' );
 if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect('m=public&a=access_denied');
 }
 
 // check whether iCal file should be fetched from source or parsed for iCalKeys; criteria: get parameters
@@ -80,14 +84,13 @@ elseif ( isset($_GET['dialog']) && ($_GET['dialog']=='0') ){	//file upload form
 	$calendar[-1] = $AppUI->_('Personal Calendar');
 	
 	$titleBlock = new CTitleBlock( 'Import iCalendar File', 'vcalendar.png', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=calendar", "monthly calendar" );
+	$titleBlock->addCrumb('?m=calendar', 'monthly calendar');
 	$titleBlock->show();
 	
 	$tpl->assign('cal', $cal);
 	$tpl->assign('calendar', $calendar);
 	$tpl->displayFile('eventimport', 'calendar');
-
 } else {	// trouble with get parameters
-$AppUI->setMsg( "iCalendarImportError", UI_MSG_ERROR );
+	$AppUI->setMsg( "iCalendarImportError", UI_MSG_ERROR );
 	$AppUI->redirect();
 }

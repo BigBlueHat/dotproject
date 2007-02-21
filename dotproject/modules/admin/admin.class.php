@@ -1,15 +1,19 @@
 <?php /* ADMIN $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
-* User Class
-*/
+ * User Class
+ */
 class CUser extends CDpObject {
-	var $user_id = NULL;
-	var $user_username = NULL;
-	var $user_password = NULL;
-	var $user_parent = NULL;
-	var $user_type = NULL;
-	var $user_contact = NULL;
-	var $user_signature = NULL;
+	var $user_id = null;
+	var $user_username = null;
+	var $user_password = null;
+	var $user_parent = null;
+	var $user_type = null;
+	var $user_contact = null;
+	var $user_signature = null;
 
 	/**
 	 * Default constructor.
@@ -107,7 +111,7 @@ class CUser extends CDpObject {
 	 * 											It uses the one from the object if it's missing.
 	 * @return mixed null if the operation was successful or an error message otherwise.
 	 */
-	function delete( $oid = NULL ) {
+	function delete($oid = null) {
 		$id = $this->user_id;
 		$result = parent::delete($oid);
 		if (! $result) {

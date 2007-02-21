@@ -1,57 +1,61 @@
 <?php /* TASKS $Id$ */
-	global $AppUI, $project_id, $df, $canEdit, $m, $tab;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
-	// Lets check which cost codes have been used before
-  $q  = new DBQuery;
-  $q->addQuery('project_company');
-  $q->addTable('projects');
-  $q->addWhere('project_id = ' . $project_id);
-  $company_id = $q->loadResult();
+global $AppUI, $project_id, $df, $canEdit, $m, $tab;
 
-  $q->addTable('billingcode');
-  $q->addQuery('billingcode_id, billingcode_name');
-  $q->addOrder('billingcode_name');
-  $q->addWhere('billingcode_status = 0');
-  $q->addWhere('(company_id = 0 OR company_id = ' . $company_id . ')');
-  $task_log_costcodes = $q->loadHashList();
-	$task_log_costcodes[0] = '&nbsp;';
-	
-	ksort($task_log_costcodes);
-	
-	// Show deleted codes separately (at the end)
-  $q->addTable('billingcode');
-  $q->addQuery('billingcode_id, billingcode_name');
-  $q->addOrder('billingcode_name');
-  $q->addWhere('billingcode_status = 1');
-  $q->addWhere('(company_id = 0 OR company_id = ' . $company_id . ')');
-	$task_log_costcodes = array_merge($task_log_costcodes, $q->loadHashList());
-	
-	$q->addTable('users');
-	$q->addQuery('user_id, concat(contact_first_name," ",contact_last_name)');
-	$q->addJoin('contacts', 'con', 'user_contact = contact_id');
-	$q->addOrder('contact_first_name, contact_last_name');
-	$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), $q->loadHashList() );
+// Lets check which cost codes have been used before
+$q  = new DBQuery;
+$q->addQuery('project_company');
+$q->addTable('projects');
+$q->addWhere('project_id = ' . $project_id);
+$company_id = $q->loadResult();
 
-	$cost_code = dPgetParam( $_GET, 'cost_code', '0' );
-	
-	if (isset( $_GET['user_id'] )) {
-		$AppUI->setState( 'ProjectsTaskLogsUserFilter', $_GET['user_id'] );
-	}
-	$user_id = $AppUI->getState( 'ProjectsTaskLogsUserFilter' ) ? $AppUI->getState( 'ProjectsTaskLogsUserFilter' ) : $AppUI->user_id;
+$q->addTable('billingcode');
+$q->addQuery('billingcode_id, billingcode_name');
+$q->addOrder('billingcode_name');
+$q->addWhere('billingcode_status = 0');
+$q->addWhere('(company_id = 0 OR company_id = ' . $company_id . ')');
+$task_log_costcodes = $q->loadHashList();
+$task_log_costcodes[0] = '&nbsp;';
 
-	if (isset( $_GET['hide_inactive'] )) {
-		$AppUI->setState( 'ProjectsTaskLogsHideArchived', true );
-	} else {
-		$AppUI->setState( 'ProjectsTaskLogsHideArchived', false );
-	}
-	$hide_inactive = $AppUI->getState( 'ProjectsTaskLogsHideArchived' );
+ksort($task_log_costcodes);
 
-	if (isset( $_GET['hide_complete'] )) {
-		$AppUI->setState( 'ProjectsTaskLogsHideComplete', true );
-	} else {
-		$AppUI->setState( 'ProjectsTaskLogsHideComplete', false );
-	}
-	$hide_complete = $AppUI->getState( 'ProjectsTaskLogsHideComplete' );
+// Show deleted codes separately (at the end)
+$q->addTable('billingcode');
+$q->addQuery('billingcode_id, billingcode_name');
+$q->addOrder('billingcode_name');
+$q->addWhere('billingcode_status = 1');
+$q->addWhere('(company_id = 0 OR company_id = ' . $company_id . ')');
+$task_log_costcodes = array_merge($task_log_costcodes, $q->loadHashList());
+
+$q->addTable('users');
+$q->addQuery('user_id, concat(contact_first_name," ",contact_last_name)');
+$q->addJoin('contacts', 'con', 'user_contact = contact_id');
+$q->addOrder('contact_first_name, contact_last_name');
+$users = arrayMerge( array( '-1' => $AppUI->_('All Users') ), $q->loadHashList() );
+
+$cost_code = dPgetParam( $_GET, 'cost_code', '0' );
+
+if (isset( $_GET['user_id'] )) {
+	$AppUI->setState( 'ProjectsTaskLogsUserFilter', $_GET['user_id'] );
+}
+$user_id = $AppUI->getState( 'ProjectsTaskLogsUserFilter' ) ? $AppUI->getState( 'ProjectsTaskLogsUserFilter' ) : $AppUI->user_id;
+
+if (isset( $_GET['hide_inactive'] )) {
+	$AppUI->setState( 'ProjectsTaskLogsHideArchived', true );
+} else {
+	$AppUI->setState( 'ProjectsTaskLogsHideArchived', false );
+}
+$hide_inactive = $AppUI->getState( 'ProjectsTaskLogsHideArchived' );
+
+if (isset( $_GET['hide_complete'] )) {
+	$AppUI->setState( 'ProjectsTaskLogsHideComplete', true );
+} else {
+	$AppUI->setState( 'ProjectsTaskLogsHideComplete', false );
+}
+$hide_complete = $AppUI->getState( 'ProjectsTaskLogsHideComplete' );
 
 $perms =& $AppUI->acl();
 $project =& new CProject;
@@ -93,8 +97,8 @@ $tpl->assign('hide_inactive', $hide_inactive);
 $tpl->assign('hide_complete', $hide_complete);
 
 $tpl->assign('rows', $logs);
-$tpl->displayFile('tasklog', 'tasks');
 
+$tpl->displayFile('tasklog', 'tasks');
 ?>
 
 <script type="text/javascript" language="JavaScript">

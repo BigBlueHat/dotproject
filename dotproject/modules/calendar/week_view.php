@@ -1,4 +1,8 @@
 <?php /* CALENDAR $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 global $locale_char_set;
 
@@ -71,14 +75,14 @@ $links = array();
 // assemble the links for the tasks
 if ($show_tasks)
 {
-	require_once( dPgetConfig( 'root_dir' ).'/modules/calendar/links_tasks.php' );
-	getTaskLinks( $first_time, $last_time, $links, 50, $filters);
+	require_once(DP_BASE_DIR.'/modules/calendar/links_tasks.php');
+	getTaskLinks($first_time, $last_time, $links, 50, $filters);
 }
 
 // assemble the links for the events
 if ($show_events)
 {
-	require_once( dPgetConfig( 'root_dir' )."/modules/calendar/links_events.php" );
+	require_once(DP_BASE_DIR.'/modules/calendar/links_events.php');
 	getEventLinks( $first_time, $last_time, $links, 50 );
 }
 

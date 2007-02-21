@@ -1,5 +1,9 @@
 <?php /* TASKS $Id$ */
-GLOBAL $AppUI, $task_id, $obj, $percent, $can_edit_time_information, $tpl;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $AppUI, $task_id, $obj, $percent, $can_edit_time_information, $tpl;
 
 $perms =& $AppUI->acl();
 

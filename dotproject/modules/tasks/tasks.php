@@ -1,8 +1,12 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
 global $task_sort_item1, $task_sort_type1, $task_sort_order1;
 global $task_sort_item2, $task_sort_type2, $task_sort_order2;
-global $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
+global $user_id, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
 global $tasks_opened, $tasks_closed;
 /*      tasks.php
 
@@ -98,7 +102,7 @@ $showIncomplete = $AppUI->getState('TaskListShowIncomplete', 0);
 require_once $AppUI->getModuleClass('projects');
 $project =& new CProject;
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id);
-$working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
+$working_hours = dPgetConfig('daily_working_hours', 8);
 
 $q->addQuery('project_id, project_color_identifier, project_name');
 $q->addQuery('SUM(task_duration * task_percent_complete * IF(task_duration_type = 24, '.$working_hours
@@ -338,7 +342,7 @@ foreach ($tasks as $row) {
 	$projects[$row['task_project']]['tasks'][] = $row;
 }
 
-$showEditCheckbox = isset($canEdit) && $canEdit && $dPconfig['direct_edit_assignment'];
+$showEditCheckbox = isset($canEdit) && $canEdit && dPgetConfig('direct_edit_assignment');
 ?>
 
 <script type="text/javascript" src="modules/tasks/list.js.php"></script>
@@ -415,7 +419,7 @@ $tempoTask = new CTask();
 $userAlloc = $tempoTask->getAllocation('user_id');
 $tpl->assign('userAlloc', $userAlloc);
 
-//print_r($projects);
 $tpl->assign('rows', $projects);
+
 $tpl->displayFile('list.projects', 'tasks');
 ?>

@@ -1,20 +1,9 @@
-<?php
+<?php // $Id$
 if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-// $Id$
-
 /**
- * Copyright 2005, the dotProject Team.
- *
- * This file is part of dotProject and is released under the same license.
- * Check the file index.php in the top level dotproject directory for license
- * details.  If you cannot find this file, or a LICENSE or COPYING file,
- * please email the author for details.
- */
-
-/*
  * Permissions system extends the phpgacl class.  Very few changes have
  * been made, however the main one is to provide the database details from
  * the main dP environment.
@@ -22,12 +11,12 @@ if (!defined('DP_BASE_DIR')){
 
 // Set the ADODB directory
 if (! defined('ADODB_DIR')) {
-  define('ADODB_DIR', DP_BASE_DIR."/lib/adodb");
+  define('ADODB_DIR', DP_BASE_DIR . '/lib/adodb');
 }
  
 // Include the PHPGACL library
-require_once DP_BASE_DIR."/lib/phpgacl/gacl.class.php";
-require_once DP_BASE_DIR."/lib/phpgacl/gacl_api.class.php";
+require_once DP_BASE_DIR . '/lib/phpgacl/gacl.class.php';
+require_once DP_BASE_DIR . '/lib/phpgacl/gacl_api.class.php';
 // Include the db_connections 
 
 // Now extend the class
@@ -43,18 +32,17 @@ class dPacl extends gacl_api {
 
   function dPacl($opts = null)
   {
-    global $dPconfig;
     if (! is_array($opts))
       $opts = array();
-    $opts['db_type'] = $dPconfig['dbtype'];
-    $opts['db_host'] = $dPconfig['dbhost'];
-    $opts['db_user'] = $dPconfig['dbuser'];
-    $opts['db_password'] = $dPconfig['dbpass'];
-    $opts['db_name'] = $dPconfig['dbname'];
+    $opts['db_type'] = dPgetConfig('dbtype');
+    $opts['db_host'] = dPgetConfig('dbhost');
+    $opts['db_user'] = dPgetConfig('dbuser');
+    $opts['db_password'] = dPgetConfig('dbpass');
+    $opts['db_name'] = dPgetConfig('dbname');
     // We can add an ADODB instance instead of the database
     // connection details.  This might be worth looking at in
     // the future.
-    if ($dPconfig['debug'] > 10)
+    if (dPgetConfig('debug', 0) > 10)
       $opts['debug'] = true;
       
     // Enable caching
@@ -475,19 +463,23 @@ class dPacl extends gacl_api {
     return $this->del_group_object($role, "user", $user);
   }
 
-  // Returns the group ids of all groups this user is mapped to.
-  // Not provided in original phpGacl, but useful.
+  /**
+   * Returns the group ids of all groups this user is mapped to.
+   * Not provided in original phpGacl, but useful.
+   */
   function getUserRoles($user)
   {
-    $id = $this->get_object_id("user", $user, "aro");
+    $id = $this->get_object_id('user', $user, 'aro');
     $result = $this->get_group_map($id);
-    if (! is_array($result))
+    if (!is_array($result))
       $result = array();
     return $result;
   }
 
-  // Return a list of module groups and modules that a user can
-  // be permitted access to.
+  /**
+   * Return a list of module groups and modules that a user can
+   * be permitted access to.
+   */
   function getModuleList()
   {
     $result = array();
@@ -501,7 +493,7 @@ class dPacl extends gacl_api {
 	$result[] = array('id' => $group['id'], 'type' => 'grp', 'name' => $group['name'], 'value' => $group['value']);
       }
     } else {
-      dprint(__FILE__, __LINE__, 1, "No groups available for $parent_id");
+      dprint(__FILE__, __LINE__, 1, 'No groups available for ' . $parent_id);
     }
     // Now the individual modules.
     $modlist = $this->get_objects_full("app", 0, "axo");
@@ -513,8 +505,10 @@ class dPacl extends gacl_api {
     return $result;
   }
 
-  // An assignable module is one where there is a module sub-group
-  // Effectivly we just list those module in the section "modname"
+  /**
+   * An assignable module is one where there is a module sub-group
+   * Effectivly we just list those module in the section "modname"
+   */ 
   function getAssignableModules()
   {
     return $this->get_object_sections(null, 0, 'axo', "value not in ('sys', 'app')");
@@ -532,53 +526,53 @@ class dPacl extends gacl_api {
     return $result;
   }
 
-  function get_group_map($id, $group_type = "ARO")
+  function get_group_map($id, $group_type = 'ARO')
   {
-	$this->debug_text("get_group_map(): Assigned ID: $id Group Type: $group_type");
-
-	switch (strtolower(trim($group_type))) {
-		case 'axo':
-			$group_type = 'axo';
-			$table = $this->_db_table_prefix .'axo_groups';
-			$map_table = $this->_db_table_prefix . 'groups_axo_map';
-			$map_field = "axo_id";
-			break;
-		default:
-			$group_type = 'aro';
-			$table = $this->_db_table_prefix .'aro_groups';
-			$map_table = $this->_db_table_prefix . 'groups_aro_map';
-			$map_field = "aro_id";
-	}
-
-	if (empty($id)) {
-		$this->debug_text("get_group_map(): ID ($id) is empty, this is required");
-		return FALSE;
-	}
-
-	$q = new DBQuery;
-	$q->addTable($table, 'g1');
-	$q->addTable( $map_table, 'g2');
-	$q->addQuery('g1.id, g1.name, g1.value, g1.parent_id');
-	$q->addWhere("g1.id = g2.group_id AND g2.$map_field = $id");
-	$q->addOrder('g1.value');
-
-	$result = array();
-	$q->exec();
-	while ($row = $q->fetchRow()) {
-			$result[] = array(
-			 'id' => $row[0],
-			 'name' => $row[1],
-			 'value' => $row[2],
-			 'parent_id' => $row[3]);
-	}
-	$q->clear();
-	return $result;
-
+		$this->debug_text("get_group_map(): Assigned ID: $id Group Type: $group_type");
+	
+		switch (strtolower(trim($group_type))) {
+			case 'axo':
+				$group_type = 'axo';
+				$table = $this->_db_table_prefix .'axo_groups';
+				$map_table = $this->_db_table_prefix . 'groups_axo_map';
+				$map_field = "axo_id";
+				break;
+			default:
+				$group_type = 'aro';
+				$table = $this->_db_table_prefix .'aro_groups';
+				$map_table = $this->_db_table_prefix . 'groups_aro_map';
+				$map_field = "aro_id";
+		}
+	
+		if (empty($id)) {
+			$this->debug_text("get_group_map(): ID ($id) is empty, this is required");
+			return FALSE;
+		}
+	
+		$q = new DBQuery;
+		$q->addTable($table, 'g1');
+		$q->addTable( $map_table, 'g2');
+		$q->addQuery('g1.id, g1.name, g1.value, g1.parent_id');
+		$q->addWhere("g1.id = g2.group_id AND g2.$map_field = $id");
+		$q->addOrder('g1.value');
+	
+		$result = array();
+		$q->exec();
+		while ($row = $q->fetchRow()) {
+				$result[] = array(
+				 'id' => $row[0],
+				 'name' => $row[1],
+				 'value' => $row[2],
+				 'parent_id' => $row[3]);
+		}
+		$q->clear();
+		
+		return $result;
   }
 
-/*======================================================================*\
-		Function:	get_object()
-	\*======================================================================*/
+/**
+ * Function:	get_object()
+ */
 	function get_object_full($value = null , $section_value = null, $return_hidden=1, $object_type = null)
 	{
 
@@ -646,11 +640,11 @@ class dPacl extends gacl_api {
 		);
 	}
 
-	/*======================================================================*\
-		Function:	get_objects ()
-		Purpose:	Grabs all Objects in the database, or specific to a section_value
-					returns format suitable for add_acl and is_conflicting_acl
-	\*======================================================================*/
+	/**
+	 * Function:	get_objects ()
+	 * Purpose:	Grabs all Objects in the database, or specific to a section_value
+	 * 		returns format suitable for add_acl and is_conflicting_acl
+	 */
 	function get_objects_full($section_value = null, $return_hidden = 1, $object_type = null, $limit_clause = null)
 	{
 		switch (strtolower(trim($object_type))) {
@@ -909,7 +903,9 @@ class dPacl extends gacl_api {
       'user');
   }
 
-  // Some function overrides.
+  /**
+   * Some function overrides.
+   */ 
   function debug_text($text)
   {
     $this->_debug_msg = $text;
@@ -920,6 +916,5 @@ class dPacl extends gacl_api {
   {
     return $this->_debug_msg;
   }
-
 }
 ?>

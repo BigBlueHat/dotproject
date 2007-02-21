@@ -1,4 +1,7 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 function check_perm(&$var) {
 	global $m;
@@ -30,5 +33,4 @@ function getFolderSelectList() {
 	$folders = array_filter($vfolders, "check_perm");
 	return $folders;
 }
-
 ?>

@@ -1,8 +1,12 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
 * Generates a report of the task logs for given dates
 */
-//error_reporting( E_ALL );
+
 $do_report 				= dPgetParam( $_POST, 'do_report', 0 );
 $log_all 					= dPgetParam( $_POST, 'log_all', 0 );
 $log_pdf 					= dPgetParam( $_POST, 'log_pdf', 0 );
@@ -264,9 +268,9 @@ if ($log_pdf) {
 		$q->addWhere('project_id='.$project_id);
 		$pname = $q->loadResult();
 
-		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
-		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
-		$base_url  = dPgetConfig( 'base_url' );
+		$font_dir = DP_BASE_DIR . '/lib/ezpdf/fonts';
+		$temp_dir = DP_BASE_DIR . '/files/temp';
+		$base_url = DP_BASE_URL;
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
 		$pdf =& new Cezpdf($paper='A4',$orientation='landscape');

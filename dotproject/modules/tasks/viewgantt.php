@@ -1,5 +1,9 @@
 <?php /* TASKS $Id$ */
-GLOBAL $min_view, $m, $a, $user_id, $tab, $tasks;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $min_view, $m, $a, $user_id, $tab, $tasks;
 
 $min_view = defVal( @$min_view, false);
 

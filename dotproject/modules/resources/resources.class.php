@@ -1,10 +1,13 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // Copyright 2004, Adam Donnison <adam@saki.com.au>
 // Released under GNU General Public License version 2 or later
 
 require_once $AppUI->getSystemClass('dp');
 require_once $AppUI->getSystemClass('query');
-
 
 class CResource extends CDpObject {
   var $resource_id = null;
@@ -68,7 +71,6 @@ class CResource extends CDpObject {
     return $result;
   }
 }
-
 
 // vim600: sw=2 ts=8 ai fdm=marker:
 ?>

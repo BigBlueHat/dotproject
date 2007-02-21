@@ -1,11 +1,14 @@
 <?php /* INCLUDES $Id$ */
-/*
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
  * Compatibility layer for handling old-style permissions checks against the
  * new PHPGACL library.
  */
 
 // Permission flags used in the DB
-
 define( 'PERM_DENY', '0' );
 define( 'PERM_EDIT', '-1' );
 define( 'PERM_READ', '1' );
@@ -121,5 +124,4 @@ function winnow( $mod, $key, &$where, $alias = 'perm' )
 	die ("The function winnow() is deprecated.  Check to see that the
 	module/code has been updated to the latest permissions handling<br />");
 }
-
 ?>

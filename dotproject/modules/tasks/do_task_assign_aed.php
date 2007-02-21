@@ -1,6 +1,11 @@
 <?php //$Id$
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
-$rm = isset($_POST['rm']) ? $_POST['rm'] : 0;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$del = dPgetParam($_POST, 'del', 0);
+$rm = dPgetParam($_POST, 'rm', 0);
+
 $hassign = @$_POST['hassign'];
 $htasks = @$_POST['htasks'];
 $store = dPgetParam($_POST, 'store', 0);

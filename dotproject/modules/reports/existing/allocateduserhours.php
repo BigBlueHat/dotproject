@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $coarseness 		 = dPgetParam( $_POST, "coarseness", 1 );
 $do_report 		 = dPgetParam( $_POST, "do_report", 0 );
 $hideNonWd		 = dPgetParam($_POST, "hideNonWd", 0);
@@ -394,9 +398,6 @@ GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_
 			}
 }
 
-
-
-
 function showDays(){
 GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_names, $user_usage, $hideNonWd, $table_header, $table_rows, $df, $working_days_count, $total_hours_capacity, $total_hours_capacity_all;
 
@@ -473,4 +474,4 @@ GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_
 		$total_hours_capacity = $working_days_count*dPgetConfig('daily_working_hours')*count($user_usage);
 		$total_hours_capacity_all = $working_days_count*dPgetConfig('daily_working_hours')*count($user_list);
 }
-?>		
+?>

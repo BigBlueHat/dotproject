@@ -1,4 +1,8 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 $perms =& $AppUI->acl();
 // retrieve any state parameters
@@ -81,7 +85,6 @@ $titleBlock->addCell(
 '</form>', '', '', '');
 
 
-
 $titleBlock->addCell();
 if ($canEdit && $project_id) {
 	$titleBlock->addCell(
@@ -118,7 +121,6 @@ $titleBlock->addCrumb( '?m=tasks&amp;a=tasksperuser', 'tasks per user' );
 $titleBlock->show();
 
 // include the re-usable sub view
-	$min_view = false;
-	include($dPconfig['root_dir'].'/modules/tasks/tasks.php');
-
+$min_view = false;
+include(DP_BASE_DIR.'/modules/tasks/tasks.php');
 ?>

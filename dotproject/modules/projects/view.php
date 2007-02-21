@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
 // check permissions for this record
@@ -35,7 +39,7 @@ $criticalTasks = ($project_id > 0) ? $obj->getCriticalTasks($project_id) : NULL;
 $projectPriority = dPgetSysVal( 'ProjectPriority' );
 $projectPriorityColor = dPgetSysVal( 'ProjectPriorityColor' );
 
-$working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
+$working_hours = dPgetConfig('daily_working_hours', 8);
 
 // load the record data
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
@@ -103,7 +107,7 @@ $q->addQuery('ROUND(SUM(task_duration),2)');
 $q->addWhere("task_project = $project_id AND task_duration_type = 1 AND task_milestone  ='0' AND task_dynamic != 1");
 $hours = $q->loadResult();
 $q->clear();
-$total_hours = $days * $dPconfig['daily_working_hours'] + $hours;
+$total_hours = $days * dPgetConfig('daily_working_hours') + $hours;
 
 $total_project_hours = 0;
 
@@ -147,7 +151,7 @@ $depts = $q->loadHashList('dept_id');
 		
 		
 
-$total_project_hours = $total_project_days_sql * $dPconfig['daily_working_hours'] + $total_project_hours_sql;
+$total_project_hours = $total_project_days_sql * dPgetConfig('daily_working_hours') + $total_project_hours_sql;
 //due to the round above, we don't want to print decimals unless they really exist
 //$total_project_hours = rtrim($total_project_hours, "0");
 
@@ -203,7 +207,7 @@ if ($canEdit) {
 $titleBlock->addCrumb( '?m=reports&amp;project_id='.$project_id, 'reports' );
 $titleBlock->show();
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 $custom_fields = New CustomFields( $m, $a, $obj->project_id, 'view' );
 
 $tpl->assign('custom_fields', $custom_fields->getHTML());
@@ -250,9 +254,9 @@ $canViewTask = $perms->checkModule('tasks', 'view');
 
 $tabBox->loadExtras($m, 'view');
 if ($perms->checkModule('forums', 'view'))
-	$tabBox->add( dPgetConfig('root_dir')."/modules/projects/vw_forums", 'Forums' );
+	$tabBox->add(DP_BASE_DIR . '/modules/projects/vw_forums', 'Forums');
 if ($canViewTask) {
-	$tabBox->add( dPgetConfig('root_dir')."/modules/tasks/viewgantt", 'Gantt Chart' );
+	$tabBox->add(DP_BASE_DIR . '/modules/tasks/viewgantt', 'Gantt Chart');
 }
 
 // deprecated:

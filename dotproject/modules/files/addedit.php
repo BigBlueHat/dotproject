@@ -1,9 +1,12 @@
 <?php /* FILES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $folder = intval( dPgetParam( $_GET, 'folder', 0 ) );
 $file_id = intval( dPgetParam( $_GET, 'file_id', 0 ) );
 $ci = dPgetParam($_GET, 'ci', 0) == 1 ? true : false;
-$preserve = $dPconfig['files_ci_preserve_attr'];
-
+$preserve = dPgetConfig('files_ci_preserve_attr');
 
 // check permissions for this record
 $perms =& $AppUI->acl();
@@ -11,10 +14,10 @@ $canEdit = $perms->checkModuleItem( $m, 'edit', $file_id );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
-if (file_exists($dPconfig['root_dir'].'/modules/helpdesk/config.php')) {
-	include ($dPconfig['root_dir'] . '/modules/helpdesk/config.php');
+if (file_exists(DP_BASE_DIR.'/modules/helpdesk/config.php')) {
+	include (DP_BASE_DIR . '/modules/helpdesk/config.php');
 }
-require ($dPconfig['root_dir'] . '/modules/files/functions.php');
+require (DP_BASE_DIR . '/modules/files/functions.php');
 
 $canAdmin = $perms->checkModule('system', 'edit');
 // add to allow for returning to other modules besides Files
@@ -156,5 +159,4 @@ function getHelpdeskFolder() {
 	$q->clear();
 	return intval($ffid);
 }
-
 ?>

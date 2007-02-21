@@ -1,12 +1,15 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // get GETPARAMETER for event_id
 $event_id = intval( $_GET['event_id']);
 $types = dPgetSysVal('EventType');
 
-
 $canRead = !getDenyRead( 'events' );
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect('m=public&a=access_denied');
 }
 
 if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
@@ -31,20 +34,20 @@ if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
 
 	// BEGIN extra headers to resolve IE caching bug (JRP 9 Feb 2003)
 	// [http://bugs.php.net/bug.php?id=16173]
-		header("Pragma: ");
-		header("Cache-Control: ");
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");  //HTTP/1.1
-		header("Cache-Control: post-check=0, pre-check=0", false);
+	header('Pragma: ');
+	header('Cache-Control: ');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header('Cache-Control: no-store, no-cache, must-revalidate');  //HTTP/1.1
+	header('Cache-Control: post-check=0, pre-check=0', false);
 	// END extra headers to resolve IE caching bug
 
-	header("MIME-Version: 1.0");
-	header("Content-Type: text/icalendar");
-	header("Content-Disposition: attachment; filename={$event->event_title}".$start_date->format('%Y%m%d').$start_date->format('%H%M%S').".ics");
+	header('MIME-Version: 1.0');
+	header('Content-Type: text/icalendar');
+	header("Content-Disposition: attachment; filename={$event->event_title}".$start_date->format('%Y%m%d').$start_date->format('%H%M%S').'.ics');
 	print_r($text);
 } else {
-$AppUI->setMsg( "eventIdError", UI_MSG_ERROR );
+	$AppUI->setMsg( "eventIdError", UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 ?>

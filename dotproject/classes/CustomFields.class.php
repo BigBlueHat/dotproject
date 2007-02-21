@@ -1,10 +1,11 @@
-<?php
-	// $Id$
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
 	/**
 	 * @abstract CustomField Classes
 	 * @version CVS: $Id$
 	 */
-
 	class CustomField
 	{
 		var $field_id;
@@ -15,13 +16,11 @@
 		// TODO - data type, meant for validation if you just want numeric data in a text input
 		// but not yet implemented
 		var $field_datatype;
-
 		var $field_extratags;
 
-		var $object_id = NULL;
+		var $object_id = null;
 
 		var $value_id = 0;
-
 		var $value_charvalue;
 		var $value_intvalue;
 
@@ -175,7 +174,6 @@
 		{
 			return $this->field_extratags;
 		}
-
 	}
 
 	/**
@@ -358,11 +356,10 @@
 		}
 	}
 
-	/* CustomFieldWeblink
-	** Produces an INPUT Element of the TEXT type in edit mode 
-	** and a <a href> </a> weblink in display mode
-	*/
-
+	/** CustomFieldWeblink
+	 * Produces an INPUT Element of the TEXT type in edit mode 
+	 * and a <a href> </a> weblink in display mode
+	 */
 	class CustomFieldWeblink extends CustomField {
 		function CustomFieldWeblink ( $field_id, $field_name, $field_order, $field_description, $field_extratags ) {
 			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
@@ -667,7 +664,6 @@
 			
 		}
 
-
 		function bind(&$formvars)
 		{
 			if (!count($this->fields) == 0) {
@@ -730,21 +726,19 @@
 			}
 		}
 
-
 		function printHTML()
 		{
 			$html = $this->getHTML();
 			echo $html;
 		}
 		
-		/* Custom Fields Smart Searcher
-		** Module agnostic custom field smart search plugin helper method
-		** Allows smartsearch to find patterns in custom fields on a per module base
-		** This has been implemented in stable_2 on 20060724 by gregorerhardt
-		** At the time of writing the smartsearch seems to be redesigned by cyberhorse
-		** Searchability of custom fields should be implemented by upcoming redesigned smartsearch plugins
-		** 
-		*/
+		/** Custom Fields Smart Searcher
+		 * Module agnostic custom field smart search plugin helper method
+		 * Allows smartsearch to find patterns in custom fields on a per module base
+		 * This has been implemented in stable_2 on 20060724 by gregorerhardt
+		 * At the time of writing the smartsearch seems to be redesigned by cyberhorse
+		 * Searchability of custom fields should be implemented by upcoming redesigned smartsearch plugins
+		 */
 		function search($moduleTable, $moduleTableId, $moduleTableName, $keyword )
 		{
 			$q  = new DBQuery;
@@ -762,10 +756,11 @@
 		{
 			return new CustomFieldsEnumerator( $this );
 		}
-
 	}
 
-	// Enumerates CustomFields object, similar to javastyle object enumerator
+	/**
+	 * Enumerates CustomFields object, similar to javastyle object enumerator
+	 */ 
 	class CustomFieldsEnumerator
 	{
 		var $customfieldsobj;
@@ -811,7 +806,6 @@
 			$this->index = 0;
 		}
 	}
-
 
 	class SQLCustomOptionList
 	{
@@ -899,7 +893,6 @@
 			return $allrows[$i - 1][1];
 		}
 	}
-	
 	
 	class CustomOptionList
 	{

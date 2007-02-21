@@ -1,5 +1,8 @@
-<?php
-/* FILES $Id$ */
+<?php /* FILES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
 
@@ -93,7 +96,7 @@ function showfnavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $fo
 
 global $AppUI, $deny1, $canRead, $canEdit, $allowed_folders_ary, $denied_folders_ary, $tab, $folder, $cfObj, $m, $a, $company_id, $allowed_companies, $showProject;
 
-//require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
+//require_once( DP_BASE_DIR . '/modules/files/index_table.lib.php');
 
 // ****************************************************************************
 // Page numbering variables
@@ -197,7 +200,7 @@ $xpg_total_pages = ($xpg_totalrecs > $xpg_pagesize) ? ceil($xpg_totalrecs / $xpg
 //shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $folder);
 
 //Lets add our bulk form
-	require (dPgetConfig('base_dir').'modules/files/functions.php');
+	require (DP_BASE_DIR.'/modules/files/functions.php');
 	$folders_avail = getFolderSelectList();
 	//used O (uppercase 0)instead of 0 (zero) to keep things in place
 	$folders = array('-1' => Array ( 0 => 'O', 1 => '(Move to Folder)', 2 => -1 )) + array('0' => Array ( 0 => 0, 1 => 'Root', 2 => -1 )) + $folders_avail;
@@ -403,12 +406,11 @@ function countFiles($folder) {
 	return $files_in_folder;
 }
 
-
 function displayFiles($folder) {
 	global $m, $a, $tab, $AppUI, $xpg_min, $xpg_pagesize;
 	global $deny1, $deny2, $project_id, $task_id, $showProject, $file_types, $cfObj;
 	global $xpg_totalrecs, $xpg_total_pages, $page;
-	global $company_id, $allowed_companies, $current_uri, $dPconfig;
+	global $company_id, $allowed_companies, $current_uri;
 	
 	$fp=-1;
 	$file_date = new CDate();
@@ -420,8 +422,6 @@ function displayFiles($folder) {
 	}
 	echo "<br />";
 }
-
-
 
 		getFolders($folder);
 ?>

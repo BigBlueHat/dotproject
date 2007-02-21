@@ -1,15 +1,19 @@
 <?php /* CONTACTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
  *	@package dotProject
  *	@subpackage modules
  *	@version $Revision$
-*/
+ */
 
 require_once( $AppUI->getSystemClass ('dp' ) );
 
 /**
-* Contacts class
-*/
+ * Contacts class
+ */
 class CContact extends CDpObject{
 /** @var int */
 	var $contact_id = NULL;
@@ -152,6 +156,5 @@ class CContact extends CDpObject{
 		db_loadHash($sql, $result);
 		return $result;
 	}
-	
 }
 ?>

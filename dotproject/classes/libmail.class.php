@@ -1,4 +1,8 @@
 <?php /* CLASSES $Id$ */
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
+
 /**
  *	@package dotproject
  *	@subpackage utilites
@@ -98,21 +102,18 @@ class Mail
 */
 function Mail()
 {
-	global $dPconfig;
-
 	$this->autoCheck( true );
 	$this->boundary= "--" . md5( uniqid("myboundary") );
 	// Grab the current mail handling options
-	$this->transport = isset($dPconfig['mail_transport']) ? $dPconfig['mail_transport'] : 'php';
-	$this->host = isset($dPconfig['mail_host']) ? $dPconfig['mail_host'] : 'localhost';
-	$this->port = isset($dPconfig['mail_port']) ? $dPconfig['mail_port'] : '25';
-	$this->sasl = isset($dPconfig['mail_auth']) ? $dPconfig['mail_auth'] : false;
-	$this->username = @$dPconfig['mail_user'];
-	$this->password = @$dPconfig['mail_pass'];
-	$this->defer = @$dPconfig['mail_defer'];
-	$this->timeout = isset($dPconfig['mail_timeout']) ? $dPconfig['mail_timeout'] : 0;
+	$this->transport = dPgetConfig('mail_transport', 'php');
+	$this->host = dPgetConfig('mail_host', 'localhost');
+	$this->port = dPgetConfig('mail_port', '25');
+	$this->sasl = dPgetConfig('mail_auth', false);
+	$this->username = dPgetConfig('mail_user');
+	$this->password = dPgetConfig('mail_pass');
+	$this->defer = dPgetConfig('mail_defer');
+	$this->timeout = dPgetConfig('mail_timeout', 0);
 }
-
 
 /**
  *	activate or desactivate the email addresses validator
@@ -132,7 +133,6 @@ function autoCheck( $bool )
 	}
 }
 
-
 /**
  *	Define the subject line of the email
  *	@param string $subject any monoline string
@@ -140,28 +140,23 @@ function autoCheck( $bool )
 */
 function Subject( $subject, $charset='' )
 {
-	global $dPconfig;
-
+	global $AppUI;
+	
 	if( isset($charset) && $charset != "" ) {
 		$this->charset = strtolower($charset);
 	}
-	
-	global $AppUI;
 	
 	if ( ( $AppUI->user_locale != 'en' || ( $this->charset && $this->charset != 'us-ascii' && $this->charset != 'utf-8') ) && function_exists('imap_8bit')) {
 		$subject = "=?".$this->charset."?Q?".
 			str_replace("=\r\n","",imap_8bit($subject))."?=";		
 	}
-	$this->xheaders['Subject'] = $dPconfig['email_prefix'].' '.strtr( $subject, "\r\n" , "  " );
+	$this->xheaders['Subject'] = dPgetConfig('email_prefix', '').' '.strtr( $subject, "\r\n" , "  " );
 }
-
 
 /**
  *	set the sender of the mail
  *	@param string $from should be an email address
-
-*/
-
+ */
 function From( $from )
 {
 	if( ! is_string($from) ) {
@@ -228,13 +223,11 @@ function To( $to, $reset=false )
 
 }
 
-
 /**
  *	Cc()
  *	set the CC headers ( carbon copy )
  *	$cc : email address(es), accept both array and string
  */
-
 function Cc( $cc )
 {
 	if( is_array($cc) )
@@ -251,7 +244,6 @@ function Cc( $cc )
  *	set the Bcc headers ( blank carbon copy ).
  *	$bcc : email address(es), accept both array and string
  */
-
 function Bcc( $bcc )
 {
 	if( is_array($bcc) ) {
@@ -295,7 +287,6 @@ function Organization( $org )
  *		$priority : integer taken between 1 (highest) and 5 ( lowest )
  *		ex: $mail->Priority(1) ; => Highest
  */
-
 function Priority( $priority )
 {
 	if( ! intval( $priority ) )
@@ -415,7 +406,7 @@ function Send()
  */
 function SMTPSend($to, $subject, $body, &$headers)
 {
-	global $AppUI, $dPconfig;
+	global $AppUI;
 
 	// Start the connection to the server
 	$error_number = 0;
@@ -443,7 +434,7 @@ function SMTPSend($to, $subject, $body, &$headers)
 	}
 	// Determine the mail from address.
 	if ( ! isset($headers['From'])) {
-		$from = $dPconfig['admin_user'] . '@' . $dPconfig['site_domain'];
+		$from = dPgetConfig('admin_user') . '@' . dPgetConfig('site_domain');
 	} else {
 		// Search for the parts of the email address
 		if (preg_match('/.*<([^@]+@[a-z0-9\._-]+)>/i', $headers['From'], $matches))
@@ -592,7 +583,6 @@ function ValidEmail($address)
  *	@param	array $aad -
  *	@return if unvalid, output an error message and exit, this may -should- be customized
  */
-
 function CheckAdresses( $aad )
 {
 	for($i=0;$i< count( $aad); $i++ ) {
@@ -658,6 +648,4 @@ function _build_attachement()
 }
 
 } // class Mail
-
-
 ?>

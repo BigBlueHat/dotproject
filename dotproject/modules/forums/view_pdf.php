@@ -21,7 +21,9 @@ $q->addJoin('forum_visits', 'v', "visit_user = {$AppUI->user_id} AND visit_forum
 $q->addJoin('users', 'u', 'message_author = u.user_id');
 $q->addJoin('contacts', 'con', 'contact_id = user_contact');
 $q->addWhere("forum_id = message_forum AND (message_id = $message_id OR message_parent = $message_id)");
-if (@$dPconfig['forum_descendent_order'] || dPgetParam($_REQUEST,'sort',0)) { $q->addOrder("message_date $sort"); }
+if (dPgetConfig('forum_descendent_order') || dPgetParam($_REQUEST, 'sort', 0)) { 
+	$q->addOrder("message_date $sort"); 
+}
 
 $messages = $q->loadList();
 
@@ -54,14 +56,14 @@ foreach ($messages as $row) {
 		' . $row['message_body']);
 }
 
-$font_dir = DP_BASE_DIR."/lib/ezpdf/fonts";
-$temp_dir = DP_BASE_DIR."/files/temp";
-$base_url  = $dPconfig['base_url'];
+$font_dir = DP_BASE_DIR . '/lib/ezpdf/fonts';
+$temp_dir = DP_BASE_DIR . '/files/temp';
+$base_url  = DB_BASE_URL;
 require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
-$pdf = &new Cezpdf($paper='A4',$orientation='portrait');
-$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
-$pdf->selectFont( "$font_dir/Helvetica.afm" );
+$pdf = &new Cezpdf($paper='A4', $orientation='portrait');
+$pdf->ezSetCmMargins(1, 2, 1.5, 1.5);
+$pdf->selectFont($font_dir . '/Helvetica.afm');
 $pdf->ezText('Project: ' . $forum['project_name']. '   Forum: '.$forum['forum_name'] );
 $pdf->ezText('Topic: ' . $topic);
 $pdf->ezText('');

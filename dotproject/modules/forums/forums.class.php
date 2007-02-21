@@ -1,4 +1,7 @@
 <?php /* FORUMS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 require_once( $AppUI->getSystemClass( 'libmail' ) );
 require_once( $AppUI->getModuleClass( 'projects' ) );
@@ -214,7 +217,7 @@ class CForumMessage {
 	}
 
 	function sendWatchMail( $debug=false ) {
-		GLOBAL $AppUI, $debug, $dPconfig;
+		GLOBAL $AppUI, $debug;
 		$subj_prefix = $AppUI->_('forumEmailSubj', UI_OUTPUT_RAW);
 		$body_msg = $AppUI->_('forumEmailBody', UI_OUTPUT_RAW);
 		
@@ -268,7 +271,7 @@ class CForumMessage {
 		$body .= "\n\n" . $AppUI->_('Forum', UI_OUTPUT_RAW) . ": $forum_name";
 		$body .= "\n" . $AppUI->_('Subject', UI_OUTPUT_RAW) . ": {$this->message_title}";
 		$body .= "\n" . $AppUI->_('Message From', UI_OUTPUT_RAW) . ": $message_from";
-		$body .= "\n\n{$dPconfig['base_url']}/index.php?m=forums&a=viewer&forum_id=$this->message_forum";
+		$body .= "\n\n" . DP_BASE_URL . '/index.php?m=forums&a=viewer&forum_id='.$this->message_forum;
 		$body .= "\n\n$this->message_body";
  
 		$mail->Body( $body, isset( $GLOBALS['locale_char_set']) ? $GLOBALS['locale_char_set'] : ""  );

@@ -1,5 +1,7 @@
-<?php
-// $Id$
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
 
 /**
  * Event handling queue class.
@@ -10,7 +12,6 @@
  *
  * Copyright 2005, the dotProject team.
  */
-
 class EventQueue {
 
 	var $table = 'event_queue';
@@ -203,7 +204,6 @@ class EventQueue {
 			$this->delete_list[] = $fields['queue_id'];
 		}
 	}
-
 
 	function commit_updates()
 	{

@@ -58,9 +58,9 @@ if (!isset($GLOBALS['OS_WIN'])) {
 }
 
 // tweak for pathname consistence on windows machines
+require_once(DP_BASE_DIR . '/includes/main_functions.php');
 require_once(DP_BASE_DIR . '/includes/db_adodb.php');
 require_once(DP_BASE_DIR . '/includes/db_connect.php');
-require_once(DP_BASE_DIR . '/includes/main_functions.php');
 require_once(DP_BASE_DIR . '/classes/template.class.php');
 require_once(DP_BASE_DIR . '/classes/ui.class.php');
 require_once(DP_BASE_DIR . '/classes/permissions.class.php');
@@ -86,7 +86,7 @@ if (!isset( $_SESSION['AppUI'] ) || isset($_GET['logout'])) {
 		$user_id = $AppUI->user_id;
 		$details['name'] = $AppUI->user_first_name . ' ' . $AppUI->user_last_name;
 		addHistory('login', $AppUI->user_id, 'logout', $details);
-		dPsessionDestroy($dPconfig['session_name']);
+		dPsessionDestroy(dPgetConfig('session_name'));
 	}
 
 	$_SESSION['AppUI'] = new CAppUI();
@@ -112,7 +112,7 @@ if ($AppUI->doLogin())
 
 // check is the user needs a new password
 if (dPgetParam( $_POST, 'lostpass', 0 )) {
-	$uistyle = $dPconfig['host_style'];
+	$uistyle = dPgetConfig('host_style');
 	$AppUI->setUserLocale();
 	@include_once(DP_BASE_DIR . '/locales/'.$AppUI->user_locale.'/locales.php');
 	@include_once(DP_BASE_DIR . '/locales/core.php');
@@ -160,7 +160,7 @@ if (isset($_REQUEST['login'])) {
 }
 
 // set the default ui style
-$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : $dPconfig['host_style'];
+$uistyle = $AppUI->getPref( 'UISTYLE' ) ? $AppUI->getPref( 'UISTYLE' ) : dPgetConfig('host_style');
 $iconstyle = $AppUI->getPref( 'ICONSTYLE' ) ? $AppUI->getPref( 'ICONSTYLE' ) : 'default';
 
 // clear out main url parameters
@@ -189,7 +189,7 @@ else if ($AppUI->doLogin()) {
 		header('Content-type: text/html;charset='.$locale_char_set);
 
 	//  Display the login page unless the authentication method is HTTP Basic Auth
-	if ($dPconfig['auth_method'] == 'http_ba' )
+	if (dPgetConfig('auth_method') == 'http_ba' )
 		$AppUI->redirect( 'login=http_ba&redirect='.$redirect );
 	else
 	{
@@ -218,10 +218,10 @@ require_once(DP_BASE_DIR.'/includes/permissions.php');
 
 
 $def_a = 'index';
-if (!isset($_GET['m']) && !empty($dPconfig['default_view_m'])) {
-	$m = $dPconfig['default_view_m'];
-	$def_a = !empty($dPconfig['default_view_a']) ? $dPconfig['default_view_a'] : $def_a;
-	$tab = $dPconfig['default_view_tab'];
+if (!isset($_GET['m']) && dPgetConfig('default_view_m')) {
+	$m = dPgetConfig('default_view_m');
+	$def_a = dPgetConfig('default_view_a', $def_a);
+	$tab = dPgetConfig('default_view_tab');
 } else {
 	// set the module from the url
 	$m = $AppUI->checkFileName(dPgetParam($_GET, 'm', getReadableModule()));

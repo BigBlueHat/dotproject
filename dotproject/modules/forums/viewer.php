@@ -64,5 +64,4 @@ else if($message_id == 0)
 	include(DP_BASE_DIR . '/modules/forums/view_topics.php');
 else
 	include(DP_BASE_DIR . '/modules/forums/view_messages.php');
-
 ?>

@@ -2,15 +2,15 @@
 
 $hid = dPgetParam( $_GET, 'hid', 'help.toc' );
 
-$inc = "{$dPconfig['root_dir']}/modules/help/{$AppUI->user_locale}/$hid.hlp";
+$inc = DP_BASE_DIR . '/modules/help/'.$AppUI->user_locale . '/'.$hid.'.hlp';
 
 if (!file_exists( $inc )) {
-	$inc = "{$dPconfig['root_dir']}/modules/help/en/$hid.hlp";
+	$inc = DP_BASE_DIR . '/modules/help/en/'.$hid.'.hlp';
 	if (!file_exists( $inc )) {
-		$hid = "help.toc";
-		$inc = "{$dPconfig['root_dir']}/modules/help/{$AppUI->user_locale}/$hid.hlp";
+		$hid = 'help.toc';
+		$inc = DP_BASE_DIR . '/modules/help/' . $AppUI->user_locale . '/' . $hid . '.hlp';
 		if (!file_exists( $inc )) {
-		  $inc = "{$dPconfig['root_dir']}/modules/help/en/$hid.hlp";
+		  $inc = DP_BASE_DIR . '/modules/help/en/' . $hid . '.hlp';
 		}
 	}
 }

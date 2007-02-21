@@ -1,9 +1,12 @@
 <?php 
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 class tickets {
 	var $table = 'tickets';
 	var $search_fields = array ("author","recipient","subject","type","cc","body","signature");
 	var $keyword = null;
-	
 	
 	function ctickets (){
 		return new tickets();

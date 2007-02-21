@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // get GETPARAMETER for contact_id
 $contact_id = intval( $_GET['contact_id']);
 
@@ -8,7 +12,6 @@ if (!$canRead) {
 }
 
 if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
-
 	//pull data for this contact
 	$q  = new DBQuery;
 	$q->addTable('contacts');
@@ -19,7 +22,6 @@ if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 	//foreach ($contacts as $row) {
 	//echo $row['contact_id'];
 	//}
-
 
 	// include PEAR vCard class
 	require_once( $AppUI->getLibraryClass( 'PEAR/Contact_Vcard_Build' ) );
@@ -36,7 +38,7 @@ if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 		$contacts[0]['contact_title'], '');
 
 	// set the source of the vCard
-	$vcard->setSource($dPconfig['company_name'].' '.$dPconfig['page_title'].': '.$dPconfig['site_domain']);
+	$vcard->setSource(dPgetConfig('company_name').' '.dPgetConfig('page_title').': '.dPgetConfig('site_domain'));
 
 	// set the birthday of the contact
 	$vcard->setBirthday($contacts[0]['contact_birthday']);
@@ -79,7 +81,6 @@ if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 		$contacts[0]['contact_city'], $contacts[0]['contact_state'], $contacts[0]['contact_zip'], $contacts[0]['contact_country']);
 	//$vcard->addParam('TYPE', 'WORK');
 
-
 	// get back the vCard
 	$text = $vcard->fetch();
 
@@ -87,20 +88,20 @@ if ( isset($_GET['contact_id']) && !($_GET['contact_id']=='') ) {
 
 	// BEGIN extra headers to resolve IE caching bug (JRP 9 Feb 2003)
 	// [http://bugs.php.net/bug.php?id=16173]
-		header("Pragma: ");
-		header("Cache-Control: ");
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");  //HTTP/1.1
-		header("Cache-Control: post-check=0, pre-check=0", false);
+	header('Pragma: ');
+	header('Cache-Control: ');
+	header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+	header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+	header('Cache-Control: no-store, no-cache, must-revalidate');  //HTTP/1.1
+	header('Cache-Control: post-check=0, pre-check=0', false);
 	// END extra headers to resolve IE caching bug
 
-	header("MIME-Version: 1.0");
-	header("Content-Type: text/x-vcard");
+	header('MIME-Version: 1.0');
+	header('Content-Type: text/x-vcard');
 	header("Content-Disposition: attachment; filename={$contacts[0]['contact_last_name']}{$contacts[0]['contact_first_name']}.vcf");
 	print_r($text);
 } else {
-$AppUI->setMsg( "contactIdError", UI_MSG_ERROR );
+	$AppUI->setMsg('contactIdError', UI_MSG_ERROR);
 	$AppUI->redirect();
 }
 ?>

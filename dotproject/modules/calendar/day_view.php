@@ -1,4 +1,8 @@
 <?php /* CALENDAR $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $tab, $locale_char_set, $date;
 
 $AppUI->savePlace();
@@ -72,13 +76,13 @@ $minical->setDate($minical->next_month);
 $tpl->assign('minical_next', $minical->show());
 
 $tabBox = new CTabBox('?m=calendar&amp;a=day_view&amp;date=' . $this_day->format(FMT_TIMESTAMP_DATE), '', $tab);
-$tabBox->add($dPconfig['root_dir'].'/modules/calendar/vw_day_events', 'Events');
-$tabBox->add($dPconfig['root_dir'].'/modules/calendar/vw_day_tasks', 'Tasks');
+$tabBox->add(DP_BASE_DIR.'/modules/calendar/vw_day_events', 'Events');
+$tabBox->add(DP_BASE_DIR.'/modules/calendar/vw_day_tasks', 'Tasks');
 $tabBox->loadExtras('calendar', 'day_view');
 
 //$tabBox->show();
 $tpl->assign('tabbox', $tabBox);
-$tpl->assign('show_minical', $dPconfig['cal_day_view_show_minical']);
+$tpl->assign('show_minical', dPgetConfig('cal_day_view_show_minical'));
 
 $tpl->assign('prev_day', $prev_day);
 $tpl->assign('next_day', $next_day);

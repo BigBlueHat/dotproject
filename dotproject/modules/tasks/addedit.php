@@ -1,8 +1,11 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
-* Tasks :: Add/Edit Form
-*
-*/
+ * Tasks :: Add/Edit Form
+ */
 
 $task_id = intval( dPgetParam( $_REQUEST, 'task_id', 0 ) );
 $perms =& $AppUI->acl();
@@ -214,7 +217,7 @@ $pq->addOrder('project_name');
 $project->setAllowedSQL($AppUI->user_id, $pq);
 $projects = $pq->loadHashList();
 
-if (isset($dPconfig['check_task_dates']) && $dPconfig['check_task_dates'])
+if (dPgetConfig('check_task_dates'))
 	$check_task_dates_set = true;	  
 else
 	$check_task_dates_set = false;	  
@@ -235,10 +238,10 @@ if (isset($_GET['tab'])) {
 
 $tab = $AppUI->getState('TaskAeTabIdx', 0);
 $tabBox =& new CTabBox('?m=tasks&amp;a=addedit&amp;task_id='.$task_id, '', $tab, '');
-$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_desc', 'Details');
-$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_dates', 'Dates');
-$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_depend', 'Dependencies');
-$tabBox->add($dPconfig['root_dir'].'/modules/tasks/ae_resource', 'Human Resources');
+$tabBox->add(DP_BASE_DIR.'/modules/tasks/ae_desc', 'Details');
+$tabBox->add(DP_BASE_DIR.'/modules/tasks/ae_dates', 'Dates');
+$tabBox->add(DP_BASE_DIR.'/modules/tasks/ae_depend', 'Dependencies');
+$tabBox->add(DP_BASE_DIR.'/modules/tasks/ae_resource', 'Human Resources');
 $tabBox->loadExtras('tasks', 'addedit');
 $tabBox->show('', true);
 ?>

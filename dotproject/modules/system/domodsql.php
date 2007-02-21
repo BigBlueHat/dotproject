@@ -1,7 +1,11 @@
 <?php /* SYSTEM $Id$ */
-##
-## Activate or move a module entry
-##
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/** 
+ * Activate or move a module entry
+ */
 
 $cmd = dPgetParam( $_GET, 'cmd', '0' );
 $mod_id = intval( dPgetParam( $_GET, 'mod_id', '0' ) );
@@ -14,7 +18,7 @@ if ($mod_id) {
 	$obj->mod_directory = $mod_directory;
 }
 
-$ok = @include_once( "{$dPconfig['root_dir']}/modules/$obj->mod_directory/setup.php" );
+$ok = @include_once(DP_BASE_DIR . '/modules/' . $obj->mod_directory . '/setup.php');
 
 if (!$ok) {
 	if ($obj->mod_type != 'core') {

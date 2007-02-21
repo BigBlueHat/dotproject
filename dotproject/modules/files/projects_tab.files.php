@@ -1,5 +1,9 @@
 <?php /* PROJECTS $Id$ */
-GLOBAL $AppUI, $project_id, $deny, $canRead, $canEdit, $dPconfig;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $AppUI, $project_id, $deny, $canRead, $canEdit;
 require_once( $AppUI->getModuleClass( 'files' ) );
    
 $cfObj = new CFileFolder();
@@ -9,15 +13,15 @@ global $denied_folders_ary;
 $denied_folders_ary = $cfObj->getDeniedRecords($AppUI->user_id);
 
 if ( count( $allowed_folders_ary ) < $cfObj->countFolders() ) {
-$limited = true;
+	$limited = true;
 }
 if (!$limited) {
-$canEdit = true;
+	$canEdit = true;
 } elseif ($limited AND array_key_exists($folder, $allowed_folders_ary)) {
-$canEdit = true;
+	$canEdit = true;
 } else {
-$canEdit = false;
+	$canEdit = false;
 }
 $showProject = false;
-require( dPgetConfig('root_dir') . '/modules/files/folders_table.php' );
+require( DP_BASE_DIR . '/modules/files/folders_table.php' );
 ?>

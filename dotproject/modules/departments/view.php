@@ -1,4 +1,8 @@
 <?php /* DEPARTMENTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $dept_id = isset($_GET['dept_id']) ? $_GET['dept_id'] : 0;
 
 // check permissions
@@ -6,7 +10,7 @@ $canRead = !getDenyRead( $m, $dept_id );
 $canEdit = !getDenyEdit( $m, $dept_id );
 
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect('m=public&a=access_denied');
 }
 $AppUI->savePlace();
 
@@ -29,7 +33,7 @@ $q->addWhere('dep.dept_company = company_id');
 $sql = $q->prepare();
 $q->clear();
 
-if (!db_loadHash( $sql, $dept )) {
+if (!db_loadHash($sql, $dept)) {
 	$titleBlock = new CTitleBlock( 'Invalid Department ID', 'users.gif', $m, "$m.$a" );
 	$titleBlock->addCrumb( "?m=companies", "companies list" );
 	$titleBlock->show();
@@ -61,7 +65,7 @@ if (!db_loadHash( $sql, $dept )) {
 	$tpl->displayFile('view');
 
 	// tabbed information boxes
-	$tabBox = new CTabBox( "?m=departments&a=view&dept_id=$dept_id", "{$dPconfig['root_dir']}/modules/departments/", $tab );
+	$tabBox = new CTabBox( "?m=departments&a=view&dept_id=$dept_id", DP_BASE_DIR.'/modules/departments/', $tab );
 	$tabBox->add("vw_contacts", "Contacts");
 	$tabBox->show();
 }

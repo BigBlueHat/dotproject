@@ -3,7 +3,6 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-
 /*{{{ Copyright 2003,2004 Adam Donnison <adam@saki.com.au>
 
     This file is part of the collected works of Adam Donnison.
@@ -23,7 +22,7 @@ if (!defined('DP_BASE_DIR')){
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }}}*/
 
-require_once DP_BASE_DIR."/lib/adodb/adodb.inc.php";
+require_once DP_BASE_DIR . '/lib/adodb/adodb.inc.php';
 
 define('QUERY_STYLE_ASSOC', ADODB_FETCH_ASSOC);
 define('QUERY_STYLE_NUM' , ADODB_FETCH_NUM);
@@ -61,21 +60,17 @@ class DBQuery {
 
   function DBQuery($prefix = null, $query_db = null) 
   {
-    global $dPconfig;
     global $db;
 
     if (isset($prefix))
       $this->_table_prefix = $prefix;
-    else if (isset($dPconfig['dbprefix']))
-      $this->_table_prefix = $dPconfig['dbprefix'];
-    else
-      $this->_table_prefix = "";
+    else 
+      $this->_table_prefix = dPgetConfig('dbprefix', '');
     $this->_db = isset($query_db) ? $query_db : $db;
 
     $this->clear();
   }
   
-
   function clear()
   {
 		global $ADODB_FETCH_MODE;
@@ -214,13 +209,11 @@ class DBQuery {
   }
   
   // implemented addReplace() on top of addInsert()
-  
   function addReplace($field, $value, $set = false, $func = false)
   {
   	 $this->addInsert($field, $value, $set, $func);
 	 $this->type = 'replace';
   }
-
 
   function addUpdate($field, $value, $set = false)
   {
@@ -847,7 +840,6 @@ class DBQuery {
 		}
 	}
 
-	
 	/**
 	 * Using an XML string, build or update a table.
 	 */

@@ -1,5 +1,9 @@
 <?php /* EVENTS $Id$ */
-GLOBAL $AppUI, $company_id, $project_id, $tpl;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $AppUI, $company_id, $project_id, $tpl;
 $canEdit = !getDenyEdit( 'calendar' );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );

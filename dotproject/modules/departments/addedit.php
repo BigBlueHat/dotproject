@@ -1,4 +1,8 @@
 <?php /* DEPARTMENTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // Add / Edit Company
 $dept_id = isset($_GET['dept_id']) ? $_GET['dept_id'] : 0;
 $company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
@@ -6,7 +10,7 @@ $company_id = isset($_GET['company_id']) ? $_GET['company_id'] : 0;
 // check permissions for this department
 $canEdit = !getDenyEdit( $m, $dept_id );
 if (!$canEdit) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect('m=public&a=access_denied');
 }
 
 // pull data for this department
@@ -66,10 +70,10 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$owners = arrayMerge( array( '0'=>'' ), $q->loadHashList() );
 
 // setup the title block
-	$ttl = $company_id > 0 ? "Edit Department" : "Add Department";
+	$ttl = $company_id > 0 ? 'Edit Department' : 'Add Department';
 	$titleBlock = new CTitleBlock( $ttl, 'users.gif', $m, "$m.$a" );
-	$titleBlock->addCrumb( "?m=companies", "companies list" );
-	$titleBlock->addCrumb( "?m=companies&a=view&company_id=$company_id", "view this company" );
+	$titleBlock->addCrumb('?m=companies', 'companies list');
+	$titleBlock->addCrumb('?m=companies&a=view&company_id=' . $company_id, 'view this company');
 	$titleBlock->show();
 
 	$tpl->assign('dept_id', $dept_id);

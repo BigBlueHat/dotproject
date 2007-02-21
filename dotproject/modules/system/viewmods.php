@@ -1,4 +1,7 @@
 <?php /* SYSTEM $Id$*/
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 $AppUI->savePlace();
 
@@ -32,13 +35,11 @@ $titleBlock = new CTitleBlock('Modules', 'power-management.png', $m, "$m.$a");
 $titleBlock->addCrumb('?m=system', 'System Admin');
 $titleBlock->show();
 
-
 $tpl->assign('canEdit', $canEdit);
 $tpl->assign('dPconfig', $dPconfig);
 $tpl->assign('m', $m);
 $tpl->assign('modFiles', $modFiles);
 $tpl->assign('modules', $modules);
-// $tpl->assign('', $);
-$tpl->displayFile('viewmods', 'system');
 
+$tpl->displayFile('viewmods', 'system');
 ?>

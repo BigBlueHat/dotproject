@@ -41,11 +41,11 @@ if ($output_format == 'xml') {
   $db->setFetchMode(ADODB_FETCH_NUM);
   $alltables = $db->MetaTables('TABLES');
   $output  = '';
-  $output .= '# Backup of database \'' . $dPconfig['dbname'] . '\'' . "\r\n";
+  $output .= '# Backup of database \'' . dPgetConfig('dbname') . '\'' . "\r\n";
   $output .= '# Generated on ' . date('j F Y, H:i:s') . "\r\n";
   $output .= '# OS: ' . PHP_OS . "\r\n";
   $output .= '# PHP version: ' . PHP_VERSION . "\r\n";
-  if ($dPconfig['dbtype'] == 'mysql')
+  if (dPgetConfig('dbtype') == 'mysql')
     $output .= '# MySQL version: ' . mysql_get_server_info() . "\r\n";
   $output .= "\r\n";
   $output .= "\r\n";

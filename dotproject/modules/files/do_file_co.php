@@ -1,4 +1,8 @@
 <?php /* FILES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 //addfile sql
 $file_id = intval( dPgetParam( $_POST, 'file_id', 0 ) );
 
@@ -7,7 +11,6 @@ if ($file_id) {
 	$obj->_message = 'updated';
 	$oldObj = new CFile();
 	$oldObj->load( $file_id );
-
 } else {
 	$obj->_message = 'added';
 }
@@ -52,5 +55,4 @@ fileloader = window.open("fileviewer.php?'.$params.'", "mywindow",
 "location=1,status=1,scrollbars=0,width=20,height=20");
 fileloader.moveTo(0,0);
 </script>';
-
 ?>

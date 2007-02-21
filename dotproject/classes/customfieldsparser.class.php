@@ -1,5 +1,7 @@
-<?php
-	// $Id$
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
 
 	class CustomFieldsParser {
 		var $fields_array        = array();
@@ -8,9 +10,9 @@
 		var $row_id              = 0;
 		var $custom_record_types = array();
 		
-		var $table_name    = "tasks";
-		var $field_name    = "task_custom";
-		var $id_field_name = "task_id";
+		var $table_name    = 'tasks';
+		var $field_name    = 'task_custom';
+		var $id_field_name = 'task_id';
 		
 		/**
 		* @return CustomFieldsParser
@@ -254,6 +256,5 @@
 			$parsed .= "}\n";
 			return $parsed;
 		}
-		
 	}
 ?>

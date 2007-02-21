@@ -1,11 +1,14 @@
 <?php /* SYSTEM $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 // only user_type of Administrator (1) can access this page
 if (!$canEdit)
 	$AppUI->redirect('m=public&a=access_denied');
 
-$module = isset( $_REQUEST['module'] ) ? $_REQUEST['module'] : 'admin';
-$lang = isset( $_REQUEST['lang'] ) ? $_REQUEST['lang'] : 'en';
+$module = dPgetParam($_REQUEST, 'module', 'admin');
+$lang = dPgetParam($_REQUEST, 'lang', 'en');
 
 $AppUI->savePlace('m=system&amp;a=translate&amp;module='.$module.'&amp;lang='.$lang);
 
@@ -17,10 +20,10 @@ $locales = $AppUI->readDirs( 'locales' );
 
 ob_start();
 // read language files from module's locale directory preferrably
-	if (file_exists($dPconfig['root_dir'] . "/modules/$modules[$module]/locales/en.inc" ) )
-		@readfile($dPconfig['root_dir'] . "/modules/$modules[$module]/locales/en.inc" );
+	if (file_exists(DP_BASE_DIR . "/modules/$modules[$module]/locales/en.inc" ) )
+		@readfile(DP_BASE_DIR . "/modules/$modules[$module]/locales/en.inc" );
 	else
-		@readfile($dPconfig['root_dir'] . "/locales/en/$modules[$module].inc" );
+		@readfile(DP_BASE_DIR . "/locales/en/$modules[$module].inc" );
 	
 	eval( "\$english=array(".ob_get_contents()."\n'0');" );
 ob_end_clean();
@@ -39,10 +42,10 @@ foreach( $english as $k => $v ) {
 if ($lang != 'en') {
 	ob_start();
 // read language files from module's locale directory preferrably
-		if ( file_exists($dPconfig['root_dir'] . "/modules/$modules[$module]/locales/$lang.inc"))
-			@readfile($dPconfig['root_dir'] . "/modules/$modules[$module]/locales/$lang.inc");
+		if ( file_exists(DP_BASE_DIR . "/modules/$modules[$module]/locales/$lang.inc"))
+			@readfile(DP_BASE_DIR . "/modules/$modules[$module]/locales/$lang.inc");
 		else
-			@readfile($dPconfig['root_dir'] . "/locales/$lang/$modules[$module].inc");
+			@readfile(DP_BASE_DIR . "/locales/$lang/$modules[$module].inc");
 
 		eval( "\$locale=array(".ob_get_contents()."\n'0');" );
 	ob_end_clean();

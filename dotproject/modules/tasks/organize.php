@@ -1,4 +1,7 @@
 <?php  // $Id$
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 // Project status from sysval, defined as a constant
 $perms =& $AppUI->acl();
@@ -279,5 +282,6 @@ function showtask_edit($task, $level=0)
 	$tpl->assign('tasks', $tasks);
 	$tpl->assign('actions', $actions);
 	$tpl->assign('project_id', $project_id);
+
 	$tpl->displayFile('organize');
 ?>

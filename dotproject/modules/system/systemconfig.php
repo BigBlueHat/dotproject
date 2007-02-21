@@ -3,7 +3,6 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-
 // check permissions
 if (!$canEdit) {
     $AppUI->redirect( 'm=public&a=access_denied' );
@@ -26,5 +25,6 @@ $tpl->assign('AppUI', $AppUI);
 $tpl->assign('baseDir', DP_BASE_DIR);
 $tpl->assign('last_group', $last_group);
 $tpl->assign('rs', $rs);
+
 $tpl->displayFile('systemconfig', 'system');
 ?>

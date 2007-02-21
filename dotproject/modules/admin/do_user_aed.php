@@ -1,6 +1,10 @@
 <?php /* ADMIN $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
-include_once( $AppUI->getModuleClass('contacts') );
+include_once($AppUI->getModuleClass('contacts'));
+
 $del = dPgetParam($_REQUEST, 'del', false);
 $user_current_company = $_REQUEST['user_current_company'];
 

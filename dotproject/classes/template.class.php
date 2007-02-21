@@ -12,7 +12,7 @@ class CTemplate extends Smarty
 
 	function CTemplate()
 	{
-		global $AppUI, $m, $a, $dPconfig;
+		global $AppUI, $m, $a;
 	
 		parent::Smarty();
 		// $this->template_dir = DP_BASE_DIR . '/style/' . $AppUI->getPref('template');
@@ -234,7 +234,7 @@ class CTemplate extends Smarty
 	
 	function loadOverrides()
 	{
-		global $dPconfig, $AppUI, $uistyle;
+		global $AppUI, $uistyle;
 /*		global $file_id, $company_id, $task_id;
 		global $currentTabId, $currentTabName;
 		global $uistyle, $style_extras; */

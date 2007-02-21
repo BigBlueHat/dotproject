@@ -1,15 +1,19 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /* FILES $Id$ */
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
-GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin;
+global $AppUI, $deny1, $canRead, $canEdit, $canAdmin;
 global $company_id, $project_id, $task_id;
 
 global $currentTabId;
 global $currentTabName;
 global $tabbed, $m;
 
-//require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
+//require_once( DP_BASE_DIR . '/modules/files/index_table.lib.php');
 
 // ****************************************************************************
 // Page numbering variables
@@ -246,7 +250,7 @@ if (strlen($latest_file['file_name']) > $fnamelen+9)
 }
 $file_icon = getIcon($file_row['file_type']);
 echo "
-<a href=\"./fileviewer.php?file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\"><img border=\"0\" width=\"16\" heigth=\"16\" src=\"{$dPconfig['base_url']}/modules/files/images/$file_icon\" />&nbsp;$filename</a>";
+<a href=\"./fileviewer.php?file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\"><img border=\"0\" width=\"16\" heigth=\"16\" src=\"".DP_BASE_URL."/modules/files/images/$file_icon\" />&nbsp;$filename</a>";
 //	{$latest_file['file_name']}
 		?>
 	</td>
@@ -281,7 +285,7 @@ echo "
                                       $hidden_table .= '
                       <tr>
                       <td nowrap="nowrap" width="20">&nbsp;';
-                                      if ($canEdit && $dPconfig['files_show_versions_edit'])
+                                      if ($canEdit && dPgetConfig('files_show_versions_edit'))
                                       {
                                               $hidden_table .= '<a href="./index.php?m=files&a=addedit&file_id=' . $file["file_id"] . '">' . dPshowImage( './modules/files/images/kedit.png', '16', '16' ) . "</a>";
                                       }
@@ -289,7 +293,7 @@ echo "
                       </td>
                       <td nowrap="8%"><a href="./fileviewer.php?file_id=' . $file['file_id'] . '" 
                               title="' . $file['file_description'] . '">' . 
-                              "<img border=\"0\" width=\"16\" heigth=\"16\" src=\"{$dPconfig['base_url']}/modules/files/images/$file_icon\" />&nbsp;" . 
+                              '<img border="0" width="16" heigth="16" src="'.DP_BASE_URL.'/modules/files/images/'.$file_icon.'" />&nbsp;' . 
                               $file['file_name'] . '
                       </a></td>
                       <td width="20%">' . $file['file_description'] . '</td>

@@ -30,7 +30,7 @@ define ("UI_OUTPUT_RAW", 0x20);
 
 // DP_BASE_DIR is set in index.php and fileviewer.php and is the base directory
 // of the dotproject installation.
-require_once DP_BASE_DIR."/classes/permissions.class.php";
+require_once DP_BASE_DIR . '/classes/permissions.class.php';
 /**
 * The Application User Interface Class.
 *
@@ -101,8 +101,6 @@ class CAppUI {
 */
 	function CAppUI()
 	{
-		global $dPconfig;
-
 		$this->state = array();
 
 		$this->user_id = -1;
@@ -115,7 +113,7 @@ class CAppUI {
 
 		// cfg['locale_warn'] is the only cfgVariable stored in session data (for security reasons)
 		// this guarants the functionality of this->setWarning
-		$this->cfg['locale_warn'] = $dPconfig['locale_warn'];
+		$this->cfg['locale_warn'] = dPgetConfig('locale_warn');
 		
 		$this->project_id = 0;
 
@@ -167,7 +165,6 @@ class CAppUI {
 */
 	function getVersion()
 	{
-		global $dPconfig;
 		global $dp_version_major, $dp_version_minor, $dp_version_patch;
 		
 		if ( ! isset($this->version_major)) {
@@ -189,13 +186,12 @@ class CAppUI {
 */
 	function checkStyle()
 	{
-		global $dPconfig;
 		// check if default user's uistyle is installed
 		$uistyle = $this->getPref("UISTYLE");
 
 		if ($uistyle && !is_dir(DP_BASE_DIR."/style/$uistyle")) {
 			// fall back to host_style if user style is not installed
-			$this->setPref( 'UISTYLE', $dPconfig['host_style'] );
+			$this->setPref('UISTYLE', dPgetConfig('host_style'));
 		}
 	}
 
@@ -253,7 +249,6 @@ class CAppUI {
 		return $files;
 	}
 
-
 /**
 * Utility function to check whether a file name is 'safe'
 *
@@ -279,8 +274,6 @@ class CAppUI {
 
 	}
 
-
-
 /**
 * Utility function to make a file name 'safe'
 *
@@ -303,12 +296,12 @@ class CAppUI {
 */
 	function setUserLocale( $loc='', $set = true )
 	{
-		global $dPconfig, $locale_char_set;
+		global $locale_char_set;
 
 		$LANGUAGES = $this->loadLanguages();
 
 		if (! $loc) {
-			$loc = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : $dPconfig['host_locale'];
+			$loc = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : dPgetConfig('host_locale');
 		}
 
 		if (isset($LANGUAGES[$loc]))
@@ -423,7 +416,6 @@ class CAppUI {
 
 	function __( $str, $flags = 0)
 	{
-		global $dPconfig;
 		$str = trim($str);
 		if (empty( $str )) {
 			return '';
@@ -434,10 +426,10 @@ class CAppUI {
 		
 		if ($x) {
 			$str = $x;
-		} else if (@$dPconfig['locale_warn']) {
+		} else if (dPgetConfig('locale_warn')) {
 			if ($this->base_locale != $this->user_locale ||
 				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
-				$str .= @$dPconfig['locale_alert'];
+				$str .= dPgetConfig('locale_alert');
 			}
 		}
 		switch ($flags & UI_CASE_MASK) {
@@ -463,7 +455,7 @@ class CAppUI {
 		 * where appropriate.
 		 * AJD - 2004-12-10
 		 */
-                global $locale_char_set;
+		global $locale_char_set;
 
 		if (! $locale_char_set) {
 			$locale_char_set = 'utf-8';
@@ -689,11 +681,9 @@ class CAppUI {
 */
 	function login( $username, $password )
 	{
-		global $dPconfig;
+		require_once DP_BASE_DIR . '/classes/authenticator.class.php';
 
-		require_once DP_BASE_DIR."/classes/authenticator.class.php";
-
-		$auth_method = isset($dPconfig['auth_method']) ? $dPconfig['auth_method'] : 'sql';
+		$auth_method = dPgetConfig('auth_method', 'sql');
 		if (@$_POST['login'] != 'login' && @$_POST['login'] != $this->_('login') && $_REQUEST['login'] != $auth_method) {
 			die("You have chosen to log in using an unsupported or disabled login method");
 		}
@@ -701,7 +691,7 @@ class CAppUI {
 		$auth =& getauth($auth_method);
 		if (!$auth->supported()) {
 			//Try SQL if auth method unsupported by this system.
-			if ($dPconfig['ldap_allow_login'] == true) {
+			if (dPgetConfig('ldap_allow_login') == true) {
 				$auth =& getauth('sql');
 			}
 			else
@@ -907,7 +897,7 @@ class CAppUI {
  */
 	function loadJS()
 	{
-	  global $m, $a, $dPconfig, $extra_js;
+	  global $m, $a, $extra_js;
 	  // Search for the javascript files to load.
 	  if (! isset($m))
 	    return;
@@ -915,7 +905,7 @@ class CAppUI {
 	  if (substr($root, -1) != '/')
 	    $root .= '/';
 
-	  $base = $dPconfig['base_url'];
+	  $base = DP_BASE_URL;
 	  if ( substr($base, -1) != '/')
 	    $base .= '/';
 	  // Load the basic javascript used by all modules.
@@ -942,11 +932,10 @@ class CAppUI {
 
 	function getModuleJS($module, $file=null, $load_all = false)
 	{
-		global $dPconfig;
 		$root = DP_BASE_DIR;
 		if (substr($root, -1) != '/');
 			$root .= '/';
-		$base = $dPconfig['base_url'];
+		$base = DP_BASE_URL;
 		if (substr($base, -1) != '/') 
 			$base .= '/';
 			
@@ -960,7 +949,6 @@ class CAppUI {
 		
 		return $js;
 	}
-
 }
 
 /**

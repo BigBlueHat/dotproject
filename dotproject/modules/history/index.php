@@ -1,10 +1,13 @@
 <?php /* HISTORY $Id$ */
-##
-## History module
-## (c) Copyright
-## J. Christopher Pereira (kripper@imatronix.cl)
-## IMATRONIX
-## 
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/** 
+ * History module
+ * J. Christopher Pereira (kripper@imatronix.cl)
+ * IMATRONIX
+ */
 
 $AppUI->savePlace();
 $titleBlock = new CTitleBlock( 'History', 'stock_book_blue_48.png', $m, "$m.$a" );

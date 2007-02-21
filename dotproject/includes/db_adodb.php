@@ -1,5 +1,9 @@
 <?php /* $Id$ */
-/*
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
 	Based on Leo West's (west_leo@yahooREMOVEME.com):
 	lib.DB
 	Database abstract layer
@@ -9,7 +13,7 @@
 	A generic database layer providing a set of low to middle level functions
 	originally written for WEBO project, see webo source for "real life" usages
 */
-require_once( "$baseDir/lib/adodb/adodb.inc.php" );
+require_once( DP_BASE_DIR . '/lib/adodb/adodb.inc.php');
 
 $db = NewADOConnection($dPconfig['dbtype']);
 

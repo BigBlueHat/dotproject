@@ -1,12 +1,15 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // get GETPARAMETER for event_id
 $event_id = intval( $_GET['event_id']);
 $types = dPgetSysVal('EventType');
 
-
 $canRead = !getDenyRead( 'events' );
 if (!$canRead) {
-	$AppUI->redirect( "m=public&a=access_denied" );
+	$AppUI->redirect('m=public&a=access_denied');
 }
 
 if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
@@ -52,7 +55,7 @@ if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
 	foreach ($users as $user) {
 		$v->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 	}
-	$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&a=view&event_id=' . $event->event_id );
+	$v->addUrl(DP_BASE_URL . '/index.php?m=calendar&a=view&event_id=' . $event->event_id );
 	$v->addRel($event->event_parent, 'PARENT');
 	$v->addCreated();
 	$v->addUid();
@@ -100,7 +103,6 @@ echo (int) $w;
 */
 require_once( $AppUI->getLibraryClass( 'webDAV/class_webdav_client' ) );
 
-
 $wdc = new webdav_client();
 $wdc->_path='/~gregor/webdav/';
 $wdc->set_server('127.0.0.1');
@@ -111,7 +113,6 @@ $wdc->set_pass('gregi');
 $wdc->set_protocol(1);
 // enable debugging
 $wdc->set_debug(true);
-
 
 if (!$wdc->open()) {
   print 'Error: could not open server connection';
@@ -172,7 +173,7 @@ $wdc->close();
 flush();
 
 } else {
-$AppUI->setMsg( "eventIdError", UI_MSG_ERROR );
+	$AppUI->setMsg( "eventIdError", UI_MSG_ERROR );
 	$AppUI->redirect();
 }
 ?>

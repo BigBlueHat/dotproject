@@ -27,6 +27,10 @@ function checkDate(){
 </script>
 
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $date_reg = date('Y-m-d');
 $start_date = intval($date_reg) ? new CDate(dPgetParam($_REQUEST, 'log_start_date', date('Y-m-d'))) : null;
 $end_date = intval($date_reg) ? new CDate(dPgetParam($_REQUEST, 'log_end_date', date('Y-m-d'))) : null;

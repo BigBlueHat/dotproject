@@ -1,5 +1,9 @@
 <?php /* ADMIN $Id$ */
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$del = dPgetParam($_POST, 'del', 0);
 
 $obj =& $AppUI->acl();
 

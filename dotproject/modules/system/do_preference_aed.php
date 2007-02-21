@@ -1,8 +1,12 @@
 <?php /* SYSTEM $Id$ */
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$del = dPgetParam($_POST, 'del', 0);
 
 $obj = new CPreferences();
-$obj->pref_user = isset($_POST['pref_user']) ? $_POST['pref_user'] : 0;
+$obj->pref_user = dPgetParam($_POST, 'pref_user', 0);
 
 // reset checkboxes
 // checked checkboxes will be set to true later again
@@ -42,12 +46,12 @@ if ($update)
 	// if user preferences, reload them now
 		$AppUI->loadPrefs( $AppUI->user_id );
 		$AppUI->setUserLocale();
-		include_once dPRealPath( "./locales/$AppUI->user_locale/locales.php" );
-		include dPRealPath( "./locales/core.php" );
-		$AppUI->setMsg( 'Preferences' );
+		include_once DP_BASE_DIR . '/locales/' . $AppUI->user_locale . '/locales.php');
+		include DP_BASE_DIR . '/locales/core.php';
+		$AppUI->setMsg('Preferences');
 	}
 	
-	$AppUI->setMsg( "updated", UI_MSG_OK, true );
+	$AppUI->setMsg('updated', UI_MSG_OK, true);
 }
 
 $AppUI->redirect();

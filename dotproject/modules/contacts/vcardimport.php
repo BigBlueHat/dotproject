@@ -1,11 +1,12 @@
 <?php /* CONTACTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 $canEdit = !getDenyEdit( 'contacts' );
 if (!$canEdit) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
-
-
 
 // check whether vCard file should be fetched from source or parsed for vCardKeys; criteria: get parameters
 if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppressHeaders']=='true')) {	//parse and store vCard file
@@ -13,7 +14,6 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 	$vcf = $_FILES['vcf'];
 	// include PEAR vCard class
 	require_once( $AppUI->getLibraryClass( 'PEAR/Contact_Vcard_Parse' ) );
-
 
 	if (is_uploaded_file($vcf['tmp_name'])) {
 
@@ -27,7 +27,6 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 		// store the card info array
 
 		foreach ($cardinfo as $ci) {	//one file can contain multiple vCards
-
 			$obj = new CContact();
 
 			//transform the card info array to dP store format
@@ -69,8 +68,6 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 			$contactValues["contact_order_by"] = $contactValues["contact_last_name"].', '.$contactValues["contact_first_name"];
 			$contactValues["contact_id"] = 0;
 
-			
-
 			// bind array to object
 			if (!$obj->bind( $contactValues )) {
 				$AppUI->setMsg( $obj->getError(), UI_MSG_ERROR );
@@ -81,9 +78,6 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 			if (($msg = $obj->store())) {
 				$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			}
-
-
-
 		}
 		// one or more vCard imports were succesfull
 		$AppUI->setMsg( 'vCard(s) imported', UI_MSG_OK, true );
@@ -94,9 +88,6 @@ if ( isset($_FILES['vcf']) && isset($_GET['suppressHeaders']) && ($_GET['suppres
 		$AppUI->setMsg( "vCardFileUploadError", UI_MSG_ERROR );
 		$AppUI->redirect();
 	}
-
-
-
 }
 elseif ( isset($_GET['dialog']) && ($_GET['dialog']=='0') ){	//file upload formular
 
@@ -124,5 +115,4 @@ $titleBlock->show();
 $AppUI->setMsg( "vCardImportError", UI_MSG_ERROR );
 	$AppUI->redirect();
 }
-
 ?>

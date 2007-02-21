@@ -1,7 +1,11 @@
 <?php /* CALENDAR $Id$ */
-##
-## Calendar classes
-##
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
+ *  Calendar classes
+ */
 
 require_once($AppUI->getLibraryClass('PEAR/Date'));
 require_once($AppUI->getSystemClass('dp'));
@@ -537,7 +541,6 @@ class CEvent extends CDpObject {
 		return $transferredEvent;
 	}
 
-
 	/**
 	 * Utility function to return an array of events with a period
 	 * @param Date Start date of the period
@@ -769,7 +772,7 @@ class CEvent extends CDpObject {
 
 	function notify($assignees, $update = false, $clash = false)
 	{
-	  global $AppUI, $locale_char_set, $dPconfig;
+	  global $AppUI, $locale_char_set;
 	  $mail_owner = $AppUI->getPref('MAILALL');
 	  $assignee_list = explode(',', $assignees);
 	  $owner_is_assigned = in_array($this->event_owner, $assignee_list);
@@ -902,11 +905,11 @@ class CEvent extends CDpObject {
 
 		// Send details with dP URLs for users (they don't apply to contacts, since contacts can't login)
 		if (! $clash)
-	    $body .= $AppUI->_('URL') . ":\t" . $dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id . "\n";
+	    $body .= $AppUI->_('URL') . ":\t" . DP_BASE_URL . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id . "\n";
 	   $bodyUsers = $body . "\n\n" . $this->event_description . "\n";
  		$mail->Body($bodyUsers, $locale_char_set);
  		
-		$v->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
+		$v->addUrl(DP_BASE_URL . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
 		$mail->clearAttachments();
 		$mail->Attach( $AppUI->_('Event').'.ics', $filetype = 'text/calendar' , $disposition = 'inline', $ical );
 		
@@ -1047,7 +1050,9 @@ class vCalendar {
 		$this->sd = array('SU','MO','TU','WE','TH','FR','SA');
 	}
 
-	// create vcalendar header
+	/** 
+	 * create vcalendar header
+	 */
 	function addVCH() {
 		global $AppUI;
 		$vch = "BEGIN:VCALENDAR\r\n";
@@ -1057,17 +1062,23 @@ class vCalendar {
 		$this->vcalendar = $vch.$this->vcalendar;
 	}
 	
-	// append footer
+	/** 
+	 * append footer
+	 */
 	function addVCF() {
 		$this->vcalendar .= 'END:VCALENDAR';
 	}
 
-	// append vevent header
+	/** 
+	 * append vevent header
+	 */
 	function addVEH() {
 		$this->vevent = "BEGIN:VEVENT\r\n". $this->vevent;
 	}
 
-	// append vevent footer
+	/**
+	 * append vevent footer
+	 */
 	function addVEF() {
 		$this->vevent .= "END:VEVENT\r\n";
 	}
@@ -1094,9 +1105,9 @@ class vCalendar {
 		$this->vevent .= 'DESCRIPTION:'.$d."\r\n";	
 	}
 	
-	/*
-	*  @param object $e CDate object 
-	*/
+	/**
+	 *  @param object $e CDate object 
+	 */
 	function addEnd($e) {
 		$this->vevent .= 'DTEND:'.$e->format('%Y%m%d').'T'.$e->format('%H%M%S')."Z\r\n";	
 	}
@@ -1125,9 +1136,9 @@ class vCalendar {
 		$this->vevent .= 'SEQUENCE:'.$s."\r\n";	
 	}
 	
-	/*
-	*  @param object $s CDate object 
-	*/
+	/**
+	 *  @param object $s CDate object 
+	 */
 	function addStart($s) {
 		$this->vevent .= 'DTSTART:'.$s->format('%Y%m%d').'T'.$s->format('%H%M%S')."Z\r\n";	
 	}
@@ -1155,7 +1166,9 @@ class vCalendar {
 		$this->vevent = null;
 	}
 	
-	// public function to add a vevent object
+	/** 
+	 * public function to add a vevent object
+	 */
 	function genvEventString() {		
 		return "BEGIN:VEVENT\r\n".$this->vevent."END:VEVENT\r\n";
 	}
@@ -1220,7 +1233,6 @@ class vCalendar {
 	*/
 
 	function addEventsByFilter($eventFilter = null, $addPrivateEvents = false) {
-		GLOBAL $dPconfig;
 		$events = $this->getEvents($eventFilter, $addPrivateEvents);
 		
 		$types = dPgetSysVal('EventType');		
@@ -1255,7 +1267,7 @@ class vCalendar {
 			foreach ($users as $user)
 				$this->addAttendee($user['contact_first_name'] .' '. $user['contact_last_name'], $user['contact_email']);
 			
-			$this->addUrl($dPconfig['base_url'] . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $e['event_id'] );
+			$this->addUrl(DP_BASE_URL . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $e['event_id'] );
 			$this->addRel($e['event_parent'], 'PARENT');
 			$this->addCreated();
 			$this->addUid($e['event_id']);
@@ -1362,7 +1374,9 @@ class vCalendar {
 		return empty($errors) ? $events : $errors;
 	}
 
-	// internal function to create a dp database like data set from an icalendar 'object'
+	/** 
+	 * internal function to create a dp database like data set from an icalendar 'object'
+	 */
 	function icsObjectToArray($c, $tac, $et, $event_project = 0, $preserve_id = false) {
 		//set target calendar, i.e. define event_project
 		$eventValues["event_project"] = $event_project;
@@ -1397,18 +1411,18 @@ class vCalendar {
 }
 
 class CWebCalresource extends CDpObject {
-	var $webcal_id = NULL;
-	var $webcal_path = NULL;
-	var $webcal_port = NULL;
-	var $webcal_user = NULL;	
-	var $webcal_pass = NULL;
-	var $webcal_auto_import = NULL;
-	var $webcal_auto_publish = NULL;
-	var $webcal_auto_show = NULL;
-	var $webcal_preserve_id = NULL;
-	var $webcal_private_events = NULL;
-	var $webcal_purge_events = NULL;
-	var $webcal_eq_id = NULL;
+	var $webcal_id = null;
+	var $webcal_path = null;
+	var $webcal_port = null;
+	var $webcal_user = null;	
+	var $webcal_pass = null;
+	var $webcal_auto_import = null;
+	var $webcal_auto_publish = null;
+	var $webcal_auto_show = null;
+	var $webcal_preserve_id = null;
+	var $webcal_private_events = null;
+	var $webcal_purge_events = null;
+	var $webcal_eq_id = null;
 
 	function CWebCalresource() {
 		global $AppUI;
@@ -1472,7 +1486,9 @@ class CWebCalresource extends CDpObject {
 		return $w;
 	}
 
-	// auto publish a webcal resource to given place
+	/** 
+	 * auto publish a webcal resource to given place
+	 */
 	function autoPublish($event_project) {
 		//global $AppUI;
 		$q = new DBQuery;
@@ -1531,8 +1547,10 @@ class CWebCalresource extends CDpObject {
 		}
 	}
 	
-	// auto import webcal resources
-	// this function is automatically called from the event_queue scanner class
+	/** 
+	 * auto import webcal resources
+	 * this function is automatically called from the event_queue scanner class
+	 */
 	function autoImport($mod, $type, $originator, $owner, &$args) {
 		global $AppUI;
 		

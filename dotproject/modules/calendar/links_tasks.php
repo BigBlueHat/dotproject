@@ -1,17 +1,20 @@
 <?php /* CALENDAR $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 /**
-* Sub-function to collect tasks within a period
-*
-* @param Date the starting date of the period
-* @param Date the ending date of the period
-* @param array by-ref an array of links to append new items to
-* @param int the length to truncate entries by
-* @param int the company id to filter by
-* @author Andrew Eddie <eddieajau@users.sourceforge.net>
-*/
+ * Sub-function to collect tasks within a period
+ *
+ * @param Date the starting date of the period
+ * @param Date the ending date of the period
+ * @param array by-ref an array of links to append new items to
+ * @param int the length to truncate entries by
+ * @param int the company id to filter by
+ * @author Andrew Eddie <eddieajau@users.sourceforge.net>
+ */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters ) {
-	GLOBAL $a, $AppUI, $dPconfig, $event_id, $df, $tf;
+	GLOBAL $a, $AppUI, $event_id, $df, $tf;
 
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$tf = $AppUI->getPref('TIMEFORMAT');
@@ -91,8 +94,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 		}
 	// convert duration to days
 		if ($durnType < 24.0 ) {
-			if ($durn > $dPconfig['daily_working_hours']) {
-				$durn /= $dPconfig['daily_working_hours'];
+			if ($durn > dPgetConfig('daily_working_hours')) {
+				$durn /= dPgetConfig('daily_working_hours');
 			} else {
 				$durn = 0.0;
 			}

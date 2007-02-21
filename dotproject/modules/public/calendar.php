@@ -10,7 +10,7 @@ $callback 	= isset($_GET['callback']) ? $_GET['callback'] : 0;
 $date 			= dpGetParam($_GET, 'date', null);
 $prev_date 	= dpGetParam($_GET, 'uts', null);
 
-$uistyle = $AppUI->getPref('UISTYLE') ? $AppUI->getPref('UISTYLE') : $dPconfig['host_style'];
+$uistyle = $AppUI->getPref('UISTYLE') ? $AppUI->getPref('UISTYLE') : dPgetConfig('host_style');
 
 // if $date is empty, set to null
 $date = $date !== '' ? $date : null;
@@ -30,7 +30,6 @@ if(isset($prev_date))
 	$cal->showHighlightedDays = true;
 }
 
-
 //$months = array();
 $i = 0;
 while ($i < 12) 
@@ -49,3 +48,4 @@ $tpl->assign('next_year_display', $cal->next_year->getYear());
 $tpl->assign('prev_date', $prev_date);
 
 $tpl->displayFile('calendar');
+?>

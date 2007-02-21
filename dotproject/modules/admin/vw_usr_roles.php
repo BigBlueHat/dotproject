@@ -3,7 +3,7 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab, $tpl;
+global $AppUI, $user_id, $canEdit, $canDelete, $tab, $tpl;
 
 //$roles
 // Create the roles class container

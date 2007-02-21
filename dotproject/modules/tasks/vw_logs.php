@@ -1,4 +1,8 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $AppUI, $task_id, $df, $canEdit, $m, $tpl;
 
 $perms =& $AppUI->acl();
@@ -72,5 +76,6 @@ $tpl->assign('task_id', $task_id);
 $tpl->assign('rows', $logs);
 $tpl->assign('total_hours', $hrs);
 $tpl->assign('total_hours_display', floor($hrs) .':'. sprintf('%02.0f', ($hrs - floor($hrs)) * 60));
+
 $tpl->displayFile('tasklog');
 ?>

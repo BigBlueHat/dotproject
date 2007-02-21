@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /*
  * Name:      Backup
  * Directory: backup
@@ -37,5 +41,4 @@ class CSetupBackup {
 		return null;
 	}
 }
-
 ?>

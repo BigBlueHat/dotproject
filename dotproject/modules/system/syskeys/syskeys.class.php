@@ -1,11 +1,13 @@
 <?php /* SYSKEYS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 include_once( $AppUI->getSystemClass ('dp' ) );
 
-##
-## CSysKey Class
-##
-
+/** 
+ * CSysKey Class
+ */
 class CSysKey extends CDpObject {
 	var $syskey_id = NULL;
 	var $syskey_name = NULL;
@@ -24,10 +26,9 @@ class CSysKey extends CDpObject {
 	}
 }
 
-##
-## CSysVal Class
-##
-
+/** 
+ * CSysVal Class
+ */
 class CSysVal extends CDpObject {
 	var $sysval_id = NULL;
 	//var $sysval_key_id = NULL;
@@ -49,5 +50,4 @@ class CSysVal extends CDpObject {
 		$this->sysval_value = $value;
 	}
 }
-
 ?>

@@ -1,5 +1,9 @@
 <?php /* ADMIN $Id$ */
-GLOBAL $AppUI, $user_id, $canEdit, $canDelete, $tab, $tpl;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $AppUI, $user_id, $canEdit, $canDelete, $tab, $tpl;
 
 $perms =& $AppUI->acl();
 $module_list = $perms->getModuleList();

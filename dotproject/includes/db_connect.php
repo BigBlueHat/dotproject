@@ -1,4 +1,8 @@
 <?php /* INCLUDES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
 * Generic functions based on library function (that is, non-db specific)
 *
@@ -6,9 +10,9 @@
 */
 
 // load the db specific handlers
-//require_once( "{$dPconfig['root_dir']}/includes/db_{$dPconfig['dbtype']}.php" );
+//require_once( DP_BASE_DIR . "/includes/db_{$dPconfig['dbtype']}.php" );
 //require_once( "./includes/db_adodb.php" );
-require_once "$baseDir/includes/db_adodb.php";
+require_once DP_BASE_DIR . '/includes/db_adodb.php';
 
 // make the connection to the db
 db_connect( $dPconfig['dbhost'], $dPconfig['dbname'],
@@ -425,7 +429,7 @@ function db_dateTime2locale( $dateTime, $format )
 	}
 }
 
-/*
+/**
 * copy the hash array content into the object as properties
 * only existing properties of object are filled. when undefined in hash, properties wont be deleted
 * @param array the input array

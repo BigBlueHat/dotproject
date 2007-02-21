@@ -1,8 +1,12 @@
 <?php /* TASKS $Id$ */
-GLOBAL $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
-GLOBAL $task_sort_item1, $task_sort_type1, $task_sort_order1;
-GLOBAL $task_sort_item2, $task_sort_type2, $task_sort_order2;
-GLOBAL $user_id, $dPconfig, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
+global $task_sort_item1, $task_sort_type1, $task_sort_order1;
+global $task_sort_item2, $task_sort_type2, $task_sort_order2;
+global $user_id, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
 
 $toggleAll = dPgetParam($_GET, 'parents', false);
 
@@ -322,6 +326,7 @@ $tpl->assign('canEdit', $canEdit);
 $tpl->assign('style', $style);
 $tpl->assign('is_opened', $toggleAll == 'open');
 $tpl->assign('ajax', dPgetConfig('tasks_ajax_list'));
+
 $tpl->displayList('tasks', $display_tasks);
 
 if ($toggleAll == 'open')

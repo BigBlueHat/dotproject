@@ -1,11 +1,14 @@
-<?php
-/* FILES $Id$ */
+<?php /* FILES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
 global $AppUI, $deny1, $canRead, $canEdit, $canAdmin, $tpl;
 global $company_id, $project_id, $task_id, $showProject;
 
-//require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
+//require_once( DP_BASE_DIR . '/modules/files/index_table.lib.php');
 
 // ****************************************************************************
 // Page numbering variables
@@ -237,7 +240,7 @@ foreach ($files as $file_row) {
         			<tr>
                 		<td nowrap="nowrap" width="20">&nbsp;';
 
-				if ($canEdit && $dPconfig['files_show_versions_edit'])
+				if ($canEdit && dPgetConfig('files_show_versions_edit'))
 					$hidden_table .= '
                 			<a href="./index.php?m=files&amp;a=addedit&amp;file_id=' . $file["file_id"] . '">' . dPshowImage( './images/icons/stock_edit-16.png', '16', '16' ) . "\n</a>";
 
@@ -279,5 +282,4 @@ foreach ($files as $file_row) {
 
 	$tpl->assign('file_rows', $file_rows_html);
 	$tpl->displayFile('list', 'files');
-
 ?>

@@ -1,4 +1,7 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 $do_report 		    = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
@@ -398,11 +401,11 @@ function weekCells($display_allocated_hours,$fromPeriod,$toPeriod) {
 return $ew-$sw+1;
 }
 
-
-
-// Look for a user when he/she has been allocated
-// to this task and when. Report this in weeks
-// This function is called within 'displayTask()'
+/** 
+ * Look for a user when he/she has been allocated
+ * to this task and when. Report this in weeks
+ * This function is called within 'displayTask()'
+ */
 function displayWeeks($list,$task,$level,$fromPeriod,$toPeriod) {
 
 	if ($fromPeriod==-1) { return ""; }
@@ -457,7 +460,6 @@ function hasChildren($list,$task) {
 	}
 return false;
 }
-
 ?>
 
 <center>

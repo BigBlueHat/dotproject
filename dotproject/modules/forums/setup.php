@@ -1,5 +1,9 @@
 <?php
-/*
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
  * Name:      Forums
  * Directory: forums
  * Version:   1.0.0
@@ -24,7 +28,6 @@ if (@$a == 'setup') {
 }
 
 class CSetupForums {
-
 }
 
 ?>

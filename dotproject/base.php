@@ -54,5 +54,4 @@ define('DP_BASE_URL', $baseUrl);
 // required includes for start-up
 global $dPconfig;
 $dPconfig = array();
-
 ?>

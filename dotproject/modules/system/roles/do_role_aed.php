@@ -1,5 +1,9 @@
 <?php /* ROLES $Id$ */
-$del = isset($_POST['del']) ? $_POST['del'] : 0;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$del = dPgetParam($_POST, 'del', 0);
 
 $role =& new CRole();
 
@@ -19,8 +23,8 @@ if ($del) {
 		$AppUI->setMsg( $msg, UI_MSG_ERROR );
 	} else {
 		$isNotNew = @$_POST['role_id'];
-		$AppUI->setMsg( "Role ".($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK );
+		$AppUI->setMsg('Role '.($isNotNew ? 'updated' : 'inserted'), UI_MSG_OK);
 	}
 }
-$AppUI->redirect( "m=system&u=roles" );
+$AppUI->redirect('m=system&u=roles');
 ?>

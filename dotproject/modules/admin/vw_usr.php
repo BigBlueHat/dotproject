@@ -1,5 +1,9 @@
 <?php /* ADMIN  $Id$ */ 
-GLOBAL $dPconfig, $canDelete, $canEdit, $stub, $where, $orderby, $tpl;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $canDelete, $canEdit, $stub, $where, $orderby, $tpl;
 
 $q  = new DBQuery;
 $q->addQuery('DISTINCT(user_id)');

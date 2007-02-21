@@ -1,11 +1,15 @@
 <?php /* COMPANIES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 // retrieve any state parameters
 if (isset( $_GET['orderby'] )) {
-    $orderdir = $AppUI->getState( 'CompIdxOrderDir' ) ? ($AppUI->getState( 'CompIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
+	$orderdir = $AppUI->getState( 'CompIdxOrderDir' ) ? ($AppUI->getState( 'CompIdxOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
 	$AppUI->setState( 'CompIdxOrderBy', $_GET['orderby'] );
-    $AppUI->setState( 'CompIdxOrderDir', $orderdir);
+	$AppUI->setState( 'CompIdxOrderDir', $orderdir);
 }
 $orderby         = $AppUI->getState( 'CompIdxOrderBy' ) ? $AppUI->getState( 'CompIdxOrderBy' ) : 'company_name';
 $orderdir        = $AppUI->getState( 'CompIdxOrderDir' ) ? $AppUI->getState( 'CompIdxOrderDir' ) : 'asc';
@@ -57,7 +61,7 @@ $companiesTypeTab = defVal( $AppUI->getState( 'CompaniesIdxTab' ),  0);
 // $tabTypes = array(getCompanyTypeID('Client'), getCompanyTypeID('Supplier'), 0);
 $companiesType = $companiesTypeTab;
 
-$tabBox = new CTabBox( "?m=companies", dPgetConfig('root_dir')."/modules/companies/", $companiesTypeTab );
+$tabBox = new CTabBox( '?m=companies', DP_BASE_DIR.'/modules/companies/', $companiesTypeTab );
 if ($tabbed = $tabBox->isTabbed()) {
 	if (isset($types[0])) 
 		$types[] = $types[0];

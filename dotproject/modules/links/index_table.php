@@ -1,5 +1,8 @@
-<?php
-/* FILES $Id$ */
+<?php /* LINKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
 $m = 'links';
@@ -79,8 +82,8 @@ function shownavbar_links($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page
 	echo "</table>";
 }
 
-GLOBAL $AppUI, $deny1, $canRead, $canEdit;
-//require_once( dPgetConfig( 'root_dir' )."/modules/files/index_table.lib.php");
+global $AppUI, $deny1, $canRead, $canEdit;
+//require_once( DP_BASE_DIR."/modules/files/index_table.lib.php");
 
 // ****************************************************************************
 // Page numbering variables

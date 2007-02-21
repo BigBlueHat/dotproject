@@ -1,7 +1,9 @@
-<?php
-// $Id$
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
-global $AppUI, $dPconfig, $task_parent_options, $loadFromTab;
+global $AppUI, $task_parent_options, $loadFromTab;
 global $can_edit_time_information, $locale_char_set, $obj;
 global $durnTypes, $task_project, $task_id, $tab;
 
@@ -49,7 +51,7 @@ if ($dot = strpos($task_duration, '.') && $obj->task_duration_type == 1)
 	$task_duration = floor($task_duration) . ':' . (60 * ($task_duration - floor($task_duration)));
 
 // convert the numeric calendar_working_days config array value to a human readable output format
-$cwd = explode(',', $dPconfig['cal_working_days']);
+$cwd = explode(',', dPgetConfig('cal_working_days'));
 
 $cwd_conv = array_map('cal_work_day_conv', $cwd);
 $cwd_hr = implode(', ', $cwd_conv);

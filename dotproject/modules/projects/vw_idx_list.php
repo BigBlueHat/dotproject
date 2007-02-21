@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id: vw_idx_list.php,v 1.0 caseydk Exp $ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $projects;
 global $AppUI, $company_id, $priority, $tpl, $pstatus;
 

@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
+
 	define('DP_AUTH_SUBCLASS', 'PostNukeAuthenticator');
 	/**
 	 * PostNuke authentication has encoded information
@@ -10,8 +14,7 @@
 
 		function PostNukeAuthenticator()
 		{
-			global $dPconfig;
-			$this->fallback = isset($dPconfig['postnuke_allow_login']) ? $dPconfig['postnuke_allow_login'] : false;
+			$this->fallback = dPgetConfig('postnuke_allow_login', false);
 		}
 
 		function displayName()
@@ -144,5 +147,4 @@
 			$acl->insertUserRole($acl->get_group_id('anon'), $this->user_id);
 		}
 	}
-
 ?>

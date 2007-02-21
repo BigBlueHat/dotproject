@@ -1,14 +1,18 @@
 <?php /* INCLUDES $Id$ */
-##
-## Global General Purpose Functions
-##
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
+ * Global General Purpose Functions
+ */
 
 $CR = "\n";
 define('SECONDS_PER_DAY', 60 * 60 * 24);
 
-##
-## Returns the best color based on a background color (x is cross-over)
-##
+/**
+ * Returns the best color based on a background color (x is cross-over)
+ */
 function bestColor( $bg, $lt='#ffffff', $dk='#000000' )
 {
 // cross-over color = x
@@ -24,9 +28,9 @@ function bestColor( $bg, $lt='#ffffff', $dk='#000000' )
 	}
 }
 
-##
-## returns a select box based on an key,value array where selected is based on key
-##
+/**
+ * returns a select box based on an key,value array where selected is based on key
+ */
 function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translate=false )
 {
 	global $AppUI;
@@ -56,9 +60,9 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 	return $s;
 }
 
-##
-## returns a select box based on an key,value array where selected is based on key
-##
+/**
+ * returns a select box based on an key,value array where selected is based on key
+ */
 function arraySelectTree( &$arr, $select_name, $select_attribs, $selected, $translate=false )
 {
 	global $AppUI;
@@ -91,9 +95,9 @@ function tree_recurse($id, $indent, $list, $children)
 	return $list;
 }
 
-##
-## Merges arrays maintaining/overwriting shared numeric indicees
-##
+/**
+ * Merges arrays maintaining/overwriting shared numeric indicees 
+ */
 function arrayMerge( $a1, $a2 )
 {
 	foreach ($a2 as $k => $v) {
@@ -102,10 +106,10 @@ function arrayMerge( $a1, $a2 )
 	return $a1;
 }
 
-##
-## breadCrumbs - show a colon separated list of bread crumbs
-## array is in the form url => title
-##
+/**
+ * breadCrumbs - show a colon separated list of bread crumbs
+ * array is in the form url => title
+ */
 function breadCrumbs( &$arr )
 {
 	global $AppUI;
@@ -115,9 +119,10 @@ function breadCrumbs( &$arr )
 	}
 	return implode( ' <strong>:</strong> ', $crumbs );
 }
-##
-## generate link for context help -- old version
-##
+
+/**
+ * generate link for context help -- old version
+ */
 function contextHelp( $title, $link='' )
 {
 	return dPcontextHelp( $title, $link );
@@ -128,7 +133,6 @@ function dPcontextHelp( $title, $link='' )
 	global $AppUI;
 	return "<a href=\"#$link\" onclick=\"javascript:window.open('?m=help&dialog=1&hid=$link', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')\">".$AppUI->_($title)."</a>";
 }
-
 
 /**
 * Retrieves a configuration setting.
@@ -273,9 +277,10 @@ function dPgetUsers($active_only = true)
 	
 	return arrayMerge( array( 0 => $AppUI->_('All Users') ), $users );
 }
-##
-## displays the configuration array of a module for informational purposes
-##
+
+/**
+ * displays the configuration array of a module for informational purposes
+ */
 function dPshowModuleConfig( $config )
 {
 	global $AppUI;
@@ -296,30 +301,30 @@ function dPshowModuleConfig( $config )
 function dPfindImage( $name, $module=null )
 {
 // uistyle must be declared globally
-	global $dPconfig, $uistyle, $iconstyle;
+	global $uistyle, $iconstyle;
 
 	// Iconset
-	if ($iconstyle && $module && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/$module/$name" )) {
+	if ($iconstyle && $module && file_exists(DP_BASE_DIR . "/style/_iconsets/$iconstyle/$module/$name" )) {
 		return "./style/_iconsets/$iconstyle/$module/$name";
-	} else if ($iconstyle && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/_icons/$name" )) {
+	} else if ($iconstyle && file_exists(DP_BASE_DIR . "/style/_iconsets/$iconstyle/_icons/$name" )) {
 		return "./style/_iconsets/$iconstyle/_icons/$name";
-	} else if ($iconstyle && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/_obj/$name" )) {
+	} else if ($iconstyle && file_exists(DP_BASE_DIR . "/style/_iconsets/$iconstyle/_obj/$name" )) {
 		return "./style/_iconsets/$iconstyle/_obj/$name";
-	} else if ($iconstyle && file_exists( "{$dPconfig['root_dir']}/style/_iconsets/$iconstyle/$name" )) {
+	} else if ($iconstyle && file_exists(DP_BASE_DIR . "/style/_iconsets/$iconstyle/$name" )) {
 		return "./style/_iconsets/$iconstyle/$name";
 	// Template style
-	} else if (file_exists( "{$dPconfig['root_dir']}/style/$uistyle/images/$name" )) {
+	} else if (file_exists(DP_BASE_DIR . "/style/$uistyle/images/$name" )) {
 		return "./style/$uistyle/images/$name";
 	// Module
-	} else if ($module && file_exists( "{$dPconfig['root_dir']}/modules/$module/images/$name" )) {
+	} else if ($module && file_exists(DP_BASE_DIR . "/modules/$module/images/$name" )) {
 		return "./modules/$module/images/$name";
 	// general image/icon
-	} else if (file_exists( "{$dPconfig['root_dir']}/images/icons/$name" )) {
-		return "./images/icons/$name";
-	} else if (file_exists( "{$dPconfig['root_dir']}/images/obj/$name" )) {
-		return "./images/obj/$name";
+	} else if (file_exists(DP_BASE_DIR . '/images/icons/'.$name)) {
+		return './images/icons/'.$name;
+	} else if (file_exists(DP_BASE_DIR . '/images/obj/'.$name)) {
+		return './images/obj/'.$name;
 	} else {
-		return "./images/$name";
+		return './images/'.$name;
 	}
 }
 
@@ -361,13 +366,9 @@ function dPshowImage( $src, $wid='', $hgt='', $alt='', $title='' )
 	// }
 }
 
-
-
-
-#
-# function to return a default value if a variable is not set
-#
-
+/**
+ * function to return a default value if a variable is not set
+ */
 function defVal($var, $def)
 {
 	return isset($var) ? $var : $def;
@@ -381,13 +382,12 @@ function dPgetParam( &$arr, $name, $def=null )
 	return isset( $arr[$name] ) ? $arr[$name] : $def;
 }
 
-#
-# add history entries for tracking changes
-#
-
+/**
+ * add history entries for tracking changes
+ */
 function addHistory( $table, $id, $action = 'modify', $details = '')
 { //$description = '', $project_id = 0) {
-	global $AppUI, $dPconfig;
+	global $AppUI;
 	/*
 	 * TODO:
 	 * 1) description should be something like:
@@ -403,7 +403,7 @@ function addHistory( $table, $id, $action = 'modify', $details = '')
 	 * 2) project_id and module_id should be provided in order to filter history entries
 	 *
 	 */
-	if (!$dPconfig['log_changes']) return;
+	if (!dPgetConfig('log_changes')) return;
 
 //	$hsql = "select * from modules where mod_name = 'History' and mod_active = 1";
 	$q  = new DBQuery;
@@ -448,10 +448,6 @@ function addHistory( $table, $id, $action = 'modify', $details = '')
 	echo db_error();
 	$q->clear();
 }
-
-##
-## Looks up a value from the SYSVALS table
-##
 
 // Old sysvals function
 /*
@@ -500,6 +496,9 @@ function dPgetSysVal( $title )
 }
 */
 
+/**
+ * Looks up a value from the SYSVALS table
+ */
 function dPgetSysVal( $title )
 {
 	$q = new DBQuery;
@@ -530,11 +529,10 @@ function dPuserHasRole( $name )
 
 function dPformatDuration($x)
 {
-    global $dPconfig;
     global $AppUI;
-    $dur_day = floor($x / $dPconfig['daily_working_hours']);
-    //$dur_hour = fmod($x, $dPconfig['daily_working_hours']);
-    $dur_hour = $x - $dur_day*$dPconfig['daily_working_hours'];
+    $dur_day = floor($x / dPgetConfig('daily_working_hours'));
+    //$dur_hour = fmod($x, dPgetConfig('daily_working_hours'));
+    $dur_hour = $x - $dur_day*dPgetConfig('daily_working_hours');
     $str = '';
     if ($dur_day > 1) {
         $str .= $dur_day .' '. $AppUI->_('days'). ' ';
@@ -613,11 +611,10 @@ function dPformSafe( $txt, $deslash = false )
 
 function convert2days( $durn, $units )
 {
-	global $dPconfig;
 	switch ($units) {
 		case 0:
 		case 1:
-			return $durn / $dPconfig['daily_working_hours'];
+			return $durn / dPgetConfig('daily_working_hours');
 			break;
 		case 24:
 			return $durn;
@@ -739,10 +736,9 @@ function format_backtrace($bt, $file, $line, $msg)
 
 function dprint($file, $line, $level, $msg)
 {
-  global $dPconfig;
   $max_level = 0;
-  $max_level = (int)$dPconfig['debug'];
-	$display_debug = isset($dPconfig['display_debug']) ? $dPconfig['display_debug'] : false;
+  $max_level = (int)dPgetConfig('debug', 0);
+	$display_debug = dPgetConfig('display_debug', false);
   if ($level <= $max_level) {
     error_log("$file($line): $msg");
 		if ($display_debug)
@@ -814,10 +810,10 @@ function getUsersCombo($default_user_id = 0, $first_option = 'All users')
  */
 function formatHours($hours)
 {
-	global $AppUI, $dPconfig;
+	global $AppUI;
 
 	$hours = (int)$hours;
-	$working_hours = $dPconfig['daily_working_hours'];
+	$working_hours = dPgetConfig('daily_working_hours');
 
 	if ($hours < $working_hours) {
 		if ($hours == 1) {
@@ -860,12 +856,11 @@ function dpRealPath($file)
 	return $file;
 }
 
-
-/*
-** Create the Required Fields (From Sysvals) JavaScript Code
-** For instance implemented in projects and tasks addedit.php
-** @param array required field array from SysVals
-*/
+/**
+ * Create the Required Fields (From Sysvals) JavaScript Code
+ * For instance implemented in projects and tasks addedit.php
+ * @param array required field array from SysVals
+ */
 function dPrequiredFields($requiredFields) 
 {
 	global $AppUI, $m;

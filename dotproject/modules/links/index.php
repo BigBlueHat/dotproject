@@ -1,4 +1,8 @@
-<?php /* FILES $Id$ */
+<?php /* LINKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 // retrieve any state parameters
@@ -51,7 +55,7 @@ if ( $tab != -1 ) {
         array_unshift($link_types, "All Links");
 }
 
-$tabBox = new CTabBox( "?m=links", "{$dPconfig['root_dir']}/modules/links/", $tab );
+$tabBox = new CTabBox( "?m=links", DP_BASE_DIR . '/modules/links/', $tab );
 
 $i = 0;
 

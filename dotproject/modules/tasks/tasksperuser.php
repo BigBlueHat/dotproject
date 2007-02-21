@@ -1,4 +1,8 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 if (isset( $_POST['company_id'] )) {
@@ -27,6 +31,6 @@ $titleBlock->addCrumb( '?m=tasks&a=todo&user_id='.$user_id, 'my todo' );
 $titleBlock->show();
 
 // include the re-usable sub view
-	$min_view = false;
-	include($dPconfig['root_dir'].'/modules/tasks/tasksperuser_sub.php');
+$min_view = false;
+include(DP_BASE_DIR.'/modules/tasks/tasksperuser_sub.php');
 ?>

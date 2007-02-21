@@ -1,5 +1,8 @@
-<?php
-// $Id$
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $AppUI, $users, $task_id, $task_project, $obj, $projTasksWithEndDates, $tab, $loadFromTab;
 
 if ( $task_id == 0 ) {

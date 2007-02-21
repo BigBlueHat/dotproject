@@ -1,4 +1,7 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 //There is an issue with international UTF characters, when stored in the database an accented letter
 //actually takes up two letters per say in the field length, this is a problem with costcodes since
@@ -122,7 +125,6 @@ $email_extras = dPgetParam($_POST, 'email_extras', null);
 if ($task->email_log($obj, $email_assignees, $email_task_contacts, $email_project_contacts, $email_others, $email_extras)) {
 	$obj->store(); // Save the updated message. It is not an error if this fails.
 }
- 
 
 $AppUI->redirect('m=tasks&a=view&task_id='.$obj->task_log_task.'&tab=0#tasklog'.$obj->task_log_id);
 ?>

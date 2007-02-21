@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+  die('You should not access this file directly');
+}
+
 	define('DP_AUTH_SUBCLASS', 'HTTPBasicAuthenticator');
 
 	class HTTPBasicAuthenticator extends SQLAuthenticator
@@ -54,5 +58,4 @@
 			return $row["user_id"];
 		}
 	}
-
 ?>

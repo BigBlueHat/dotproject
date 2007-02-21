@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $orderby, $orderdir, $priority, $projects, $pstatus, $tab, $tpl, $user_id, $baseDir;
 
 $perms =& $AppUI->acl();
@@ -33,7 +37,7 @@ $orderdir = $AppUI->getState( 'UsrProjIdxOrderDir' ) ? $AppUI->getState( 'UsrPro
 
 $extraGet = '&amp;user_id='.$user_id;
 
-require($baseDir . '/functions/projects_func.php');
+require(DP_BASE_DIR . '/functions/projects_func.php');
 require_once( $AppUI->getModuleClass( 'projects' ) );
 
 // collect the full projects list data via function in projects.class.php
@@ -72,7 +76,6 @@ $tpl->assign('pstatus', $pstatus);
 $tpl->assign('showFilters', true);
 $tpl->assign('tab', $tab);
 $tpl->assign('user_id', $user_id);
-
 
 $tpl->assign('current_url', 'index.php?m='.$m.'&amp;a='.$a.'&amp;user_id='.$user_id);
 

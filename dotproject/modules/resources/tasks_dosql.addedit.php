@@ -1,4 +1,7 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 // Set the pre and post save functions
 global $pre_save, $post_save, $other_resources;
@@ -58,5 +61,4 @@ function resource_postsave()
     }
   }
 }
-  
 ?>

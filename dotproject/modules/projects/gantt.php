@@ -1,6 +1,10 @@
 <?php /* TASKS $Id$ */
-include ($dPconfig['root_dir'].'/lib/jpgraph/src/jpgraph.php');
-include ($dPconfig['root_dir'].'/lib/jpgraph/src/jpgraph_gantt.php');
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph.php');
+include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph_gantt.php');
 
 ini_set('max_execution_time', 180);
 
@@ -24,7 +28,7 @@ $showLabels = dPgetParam($_REQUEST, 'showLabels', 0);
 $showInactive = dPgetParam($_REQUEST, 'showInactive', 0);
 
 $pjobj =& new CProject;
-$working_hours = $dPconfig['daily_working_hours'];
+$working_hours = dPgetConfig('daily_working_hours');
 
 // pull valid projects and their percent complete information
 // GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours

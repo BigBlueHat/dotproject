@@ -1,4 +1,7 @@
 <?php /* FORUMS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 // collect and convert checkbox info
 $_POST['webcal_auto_import'] = dPgetParam( $_POST, 'webcal_auto_import', 0 );
@@ -43,7 +46,6 @@ if ($_POST['proc_method'] == 'publish' || $_POST['proc_method'] == 'import') {
 	}
 }
 
-
 switch ($_POST['proc_method']) {
 
 case 'del':
@@ -82,8 +84,6 @@ case 'publish':
 
 	break;
 case 'import':
-	
-
 	$ics = null;
 	$http_status = $wdc->get($target_path, $ics);
 	if ($http_status == '200') { 

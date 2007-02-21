@@ -1,5 +1,8 @@
 <?php //$Id$
-//global $durnTypes, $AppUI;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $perms =& $AppUI->acl();
 global $tpl;
 if (! $perms->checkModule('tasks', 'view'))

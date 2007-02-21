@@ -1,6 +1,9 @@
-<?php
-// $Id$
-global $AppUI, $dPconfig, $task_parent_options, $loadFromTab;
+<?php // $Id$
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $AppUI, $task_parent_options, $loadFromTab;
 global $can_edit_time_information, $obj;
 global $durnTypes, $task_project, $task_id, $tab;
 

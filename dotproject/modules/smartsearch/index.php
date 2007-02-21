@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $search_keyword = @$_POST['keyword'];
 
 $titleBlock = new CTitleBlock( 'Search', 'smartfolder.gif'); //, $m, "$m.$a" );
@@ -31,7 +35,7 @@ if ($search_keyword != NULL && $search_keyword != '')
 	//$search = new smartsearch();
 	//$search->keyword = $search_keyword;
 	
-	$files = $AppUI->readFiles( dPgetConfig( 'root_dir' )."/modules/smartsearch/searchobjects", "\.php$" );
+	$files = $AppUI->readFiles(DP_BASE_DIR . '/modules/smartsearch/searchobjects', "\.php$" );
 	sort($files);
 	$results_html = ''; // html results
 	foreach ($files as $tmp)

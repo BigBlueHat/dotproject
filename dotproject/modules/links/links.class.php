@@ -1,7 +1,12 @@
-<?php /* FILES $Id$ */
+<?php /* LINKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 require_once( $AppUI->getModuleClass( 'projects' ) );
+
 /**
 * Link Class
 */
@@ -34,7 +39,6 @@ class CLink extends CDpObject {
 	}
 
 	function delete() {
-		global $dPconfig;
 		$this->_message = "deleted";
 
 	// delete the main table reference

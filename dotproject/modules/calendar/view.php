@@ -1,9 +1,13 @@
 <?php /* CALENDAR $Id$ */
-$event_id = intval( dPgetParam( $_GET, "event_id", 0 ) );
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+$event_id = intval(dPgetParam($_GET, 'event_id', 0));
 
 // check permissions for this record
 $perms =& $AppUI->acl();
-$canEdit = $perms->checkModuleItem( $m, "edit", $event_id );
+$canEdit = $perms->checkModuleItem($m, 'edit', $event_id);
 
 // check if this record has dependencies to prevent deletion
 $msg = '';
@@ -12,15 +16,15 @@ $canDelete = $obj->canDelete( $msg, $event_id );
 
 // load the record data
 if (!$obj->load( $event_id )) {
-	$AppUI->setMsg( 'Event' );
-	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
+	$AppUI->setMsg('Event');
+	$AppUI->setMsg('invalidID', UI_MSG_ERROR, true );
 	$AppUI->redirect();
 } else {
 	$AppUI->savePlace();
 }
 
 // load the event types
-$types = dPgetSysVal( 'EventType' );
+$types = dPgetSysVal('EventType');
 
 // load the event recurs types
 $recurs =  array (
@@ -42,7 +46,6 @@ $assigned = array_merge($assigned, $obj->getAssignedContacts());
 if (($obj->event_owner != $AppUI->user_id) && !($perms->checkModule("admin", "view"))) {
  $canEdit = false;
 }
-
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
@@ -106,4 +109,3 @@ function delIt() {
 <?php } ?>
 -->
 </script>
-

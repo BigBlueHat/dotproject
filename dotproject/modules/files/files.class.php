@@ -1,4 +1,8 @@
 <?php /* FILES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 require_once( $AppUI->getSystemClass( 'libmail' ) );
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getSystemClass( 'date' ) );
@@ -7,35 +11,34 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 if (array_key_exists( 'helpdesk', $AppUI->getInstalledModules() )) {
 	require_once( $AppUI->getModuleClass( 'helpdesk' ) );
 }
+
 /**
 * File Class
 */
 class CFile extends CDpObject {
+	var $file_id = null;
+	var $file_version_id = null;
+	var $file_project = null;
+	var $file_real_filename = null;
+	var $file_task = null;
+	var $file_name = null;
+	var $file_parent = null;
+	var $file_description = null;
+	var $file_type = null;
+	var $file_owner = null;
+	var $file_date = null;
+	var $file_size = null;
+	var $file_version = null;
+	var $file_category = null;
+	var $file_folder = null;
+	var $file_checkout = null;
+	var $file_co_reason = null;
 
-	var $file_id = NULL;
-	var $file_version_id = NULL;
-	var $file_project = NULL;
-	var $file_real_filename = NULL;
-	var $file_task = NULL;
-	var $file_name = NULL;
-	var $file_parent = NULL;
-	var $file_description = NULL;
-	var $file_type = NULL;
-	var $file_owner = NULL;
-	var $file_date = NULL;
-	var $file_size = NULL;
-	var $file_version = NULL;
-      var $file_category = NULL;
-      var $file_folder = null;
-	var $file_checkout = NULL;
-	var $file_co_reason = NULL;
-
-	
 	function CFile() {
 		global $AppUI;
 		$this->CDpObject( 'files', 'file_id' );
             if (array_key_exists( 'helpdesk', $AppUI->getInstalledModules() )) {
-      	     $this->file_helpdesk_item = NULL;
+      	     $this->file_helpdesk_item = null;
             }
 		if ($this->file_helpdesk_item != 0) {
 			$this->_hditem = new CHelpDeskItem();
@@ -70,7 +73,7 @@ class CFile extends CDpObject {
 				$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			}
 		}
-		return NULL;
+		return null;
 	}
 
 	function canAdmin() {
@@ -104,11 +107,10 @@ class CFile extends CDpObject {
 		$this->file_task = intval( $this->file_task );
 		$this->file_project = intval( $this->file_project );
 
-		return NULL; // object is ok
+		return null; // object is ok
 	}
 
 	function delete() {
-		global $dPconfig;
 		if (!$this->canDelete( $msg ))
 			return $msg;
 		$this->_message = "deleted";
@@ -138,96 +140,99 @@ class CFile extends CDpObject {
 		if ($this->file_helpdesk_item != 0) {
 			$this->addHelpDeskTaskLog();
 		}
-		return NULL;
+		return null;
 	}
 
-	// delete File from File System
+	/** 
+	 * delete File from File System
+	 */
 	function deleteFile() {
-		global $dPconfig;
-		return @unlink($dPconfig['root_dir'].'/files/'.$this->file_project.'/'.$this->file_real_filename);
+		return @unlink(DP_BASE_DIR.'/files/'.$this->file_project.'/'.$this->file_real_filename);
 	}
 
-	// move the file if the affiliated project was changed
+	/** 
+	 * move the file if the affiliated project was changed
+	 */
 	function moveFile( $oldProj, $realname ) {
-		global $AppUI, $dPconfig;
-		if (!is_dir("{$dPconfig['root_dir']}/files/$this->file_project")) {
-		    $res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
-			 if (!$res) {
-                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-			     return false;
-			 }
+		global $AppUI;
+		
+		if (!is_dir(DP_BASE_DIR."/files/$this->file_project")) {
+			$res = mkdir( DP_BASE_DIR."/files/$this->file_project", 0777 );
+			if (!$res) {
+				$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
+				return false;
+			}
 		}
-		$res = rename("{$dPconfig['root_dir']}/files/$oldProj/$realname", "{$dPconfig['root_dir']}/files/$this->file_project/$realname");
+		$res = rename(DP_BASE_DIR."/files/$oldProj/$realname", DP_BASE_DIR."/files/$this->file_project/$realname");
 
 		if (!$res) {
-		    return false;
+			return false;
 		}
 		return true;
 	}
 
 	// duplicate a file into root
 	function duplicateFile( $oldProj, $realname ) {
-		global $AppUI, $dPconfig;
-		if (!is_dir("{$dPconfig['root_dir']}/files/0")) {
-		    $res = mkdir( "{$dPconfig['root_dir']}/files/0", 0777 );
-			 if (!$res) {
-                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-			     return false;
-			 }
+		global $AppUI;
+		if (!is_dir(DP_BASE_DIR.'/files/0')) {
+			$res = mkdir(DP_BASE_DIR.'/files/0', 0777);
+			if (!$res) {
+				$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
+				return false;
+			}
 		}
 		$dest_realname = uniqid( rand() );
-		$res = copy("{$dPconfig['root_dir']}/files/$oldProj/$realname", "{$dPconfig['root_dir']}/files/0/$dest_realname");
+		$res = copy(DP_BASE_DIR . "/files/$oldProj/$realname", DP_BASE_DIR . '/files/0/'.$dest_realname);
 
 		if (!$res) {
-		    return false;
+			return false;
 		}
 		return $dest_realname;
 	}
 
 // move a file from a temporary (uploaded) location to the file system
 	function moveTemp( $upload ) {
-		global $AppUI, $dPconfig;
+		global $AppUI;
 	// check that directories are created
-		if (!is_dir("{$dPconfig['root_dir']}/files")) {
-		    $res = mkdir( "{$dPconfig['root_dir']}/files", 0777 );
+		if (!is_dir(DP_BASE_DIR . '/files')) {
+		    $res = mkdir(DP_BASE_DIR . '/files', 0777);
 		    if (!$res) {
 			     return false;
 			 }
 		}
-		if (!is_dir("{$dPconfig['root_dir']}/files/$this->file_project")) {
-		    $res = mkdir( "{$dPconfig['root_dir']}/files/$this->file_project", 0777 );
-			 if (!$res) {
-                                $AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-			     return false;
-			 }
+		if (!is_dir(DP_BASE_DIR . '/files/'.$this->file_project)) {
+		    $res = mkdir(DP_BASE_DIR . '/files/'.$this->file_project, 0777 );
+			if (!$res) {
+				$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
+				return false;
+			}
 		}
 
-
-		$this->_filepath = "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename";
+		$this->_filepath = DP_BASE_DIR . "/files/$this->file_project/$this->file_real_filename";
 	// move it
 		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );
 		if (!$res) {
-		    return false;
+			return false;
 		}
 		return true;
 	}
 
 // parse file for indexing
 	function indexStrings() {
-		GLOBAL $AppUI, $dPconfig;
+		GLOBAL $AppUI;
 	// get the parser application
-		$parser = @$dPconfig['parser_' . $this->file_type];
+		$parser = dPgetConfig('parser_' . $this->file_type);
 		if (!$parser)
-			$parser = $dPconfig['parser_default'];
+			$parser = dPgetConfig('parser_default');
 		if (!$parser) 
 			return false;
 	// buffer the file
-		$this->_filepath = "{$dPconfig['root_dir']}/files/$this->file_project/$this->file_real_filename";
+		$this->_filepath = DP_BASE_DIR . "/files/$this->file_project/$this->file_real_filename";
 		$fp = fopen( $this->_filepath, "rb" );
 		$x = fread( $fp, $this->file_size );
 		fclose( $fp );
 	// parse it
-		$parser = $parser . " " . $this->_filepath;
+		$parser = $parser . ' ' . $this->_filepath;
 		$pos = strpos( $parser, '/pdf' );
 		if (false !== $pos) {
 			$x = `$parser -`;
@@ -239,23 +244,25 @@ class CFile extends CDpObject {
 			return 0;
 		}
 	// remove punctuation and parse the strings
-		$x = str_replace( array( ".", ",", "!", "@", "(", ")" ), " ", $x );
-		$warr = split( "[[:space:]]", $x );
+		$x = str_replace(array( '.', ',', '!', '@', '(', ')' ), ' ', $x);
+		$warr = split('[[:space:]]', $x);
 
 		$wordarr = array();
 		$nwords = count( $warr );
 		for ($x=0; $x < $nwords; $x++) {
 			$newword = $warr[$x];
-			if (!ereg( "[[:punct:]]", $newword )
+			if (!ereg('[[:punct:]]', $newword )
 				&& strlen( trim( $newword ) ) > 2
-				&& !ereg( "[[:digit:]]", $newword )) {
-				$wordarr[] = array( "word" => $newword, "wordplace" => $x );
+				&& !ereg('[[:digit:]]', $newword )) {
+				$wordarr[] = array('word' => $newword, 'wordplace' => $x);
 			}
 		}
-		db_exec( "LOCK TABLES files_index WRITE" );
+		
+		//TODO: Add lock()/unlock() methods to query class.
+		db_exec( 'LOCK TABLES files_index WRITE');
 	// filter out common strings
 		$ignore = array();
-		include "{$dPconfig['root_dir']}/modules/files/file_index_ignore.php";
+		include DP_BASE_DIR . '/modules/files/file_index_ignore.php';
 		foreach ($ignore as $w) {
 			unset( $wordarr[$w] );
 		}
@@ -264,20 +271,20 @@ class CFile extends CDpObject {
 			$q  = new DBQuery;
 			$q->addTable('files_index');
 
-			$q->addReplace("file_id", $this->file_id);
-			$q->addReplace("word", $wordarr[$key]['word']);
-			$q->addReplace("word_placement", $wordarr[$key]['wordplace']);
+			$q->addReplace('file_id', $this->file_id);
+			$q->addReplace('word', $wordarr[$key]['word']);
+			$q->addReplace('word_placement', $wordarr[$key]['wordplace']);
 			$q->exec();
 			$q->clear();
 		}
 
-		db_exec( "UNLOCK TABLES;" );
+		db_exec('UNLOCK TABLES;');
 		return nwords;
 	}
 	
 	//function notifies about file changing
 	function notify() {	
-		GLOBAL $AppUI, $dPconfig, $locale_char_set;
+		global $AppUI, $locale_char_set;
 		// if helpdesk_item is available send notification to assigned users
 		if ($this->file_helpdesk_item != 0) {
 			$this->_hditem = new CHelpDeskItem();
@@ -305,11 +312,11 @@ class CFile extends CDpObject {
 			}
 			
 			$body = $AppUI->_('Project').": ".$this->_project->project_name;
-			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=projects&a=view&project_id=".$this->_project->project_id;
+			$body .= "\n".$AppUI->_('URL').':     ' . DP_BASE_URL . '/index.php?m=projects&a=view&project_id='.$this->_project->project_id;
 			
 			if (intval($this->_task->task_id) != 0) {
 				$body .= "\n\n".$AppUI->_('Task').":    ".$this->_task->task_name;
-				$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=".$this->_task->task_id;
+				$body .= "\n".$AppUI->_('URL').':     '.DP_BASE_URL . '/index.php?m=tasks&a=view&task_id='.$this->_task->task_id;
 				$body .= "\n" . $AppUI->_('Description') . ":" . "\n".$this->_task->task_description;
 				
 				//preparing users array
@@ -342,7 +349,7 @@ class CFile extends CDpObject {
 			}
 			$body .= "\n\nFile ".$this->file_name." was ".$this->_message." by ".$AppUI->user_first_name . " " . $AppUI->user_last_name;
 			if ($this->_message != "deleted") {
-				$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/fileviewer.php?file_id=".$this->file_id;
+				$body .= "\n".$AppUI->_('URL').':     ' . DP_BASE_URL . '/fileviewer.php?file_id='.$this->file_id;
 				$body .= "\n" . $AppUI->_('Description') . ":" . "\n".$this->file_description;	
 			}
 			
@@ -373,7 +380,7 @@ class CFile extends CDpObject {
 	}//notify
 
 	function notifyContacts() {
-		GLOBAL $AppUI, $dPconfig, $locale_char_set;
+		global $AppUI, $locale_char_set;
 		//if no project specified than we will not do anything
 		if ($this->file_project != 0) {
 			$this->_project = new CProject();
@@ -389,11 +396,11 @@ class CFile extends CDpObject {
 			}
 
 			$body = $AppUI->_('Project').": ".$this->_project->project_name;
-			$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=projects&a=view&project_id=".$this->_project->project_id;
+			$body .= "\n".$AppUI->_('URL').':     '. DP_BASE_URL . '/index.php?m=projects&a=view&project_id='.$this->_project->project_id;
 			
 			if (intval($this->_task->task_id) != 0) {
 				$body .= "\n\n".$AppUI->_('Task').":    ".$this->_task->task_name;
-				$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/index.php?m=tasks&a=view&task_id=".$this->_task->task_id;
+				$body .= "\n".$AppUI->_('URL').':     ' . DP_BASE_URL . '/index.php?m=tasks&a=view&task_id='.$this->_task->task_id;
 				$body .= "\n" . $AppUI->_('Description') . ": " . "\n".$this->_task->task_description;
 
 				$sql = "(SELECT contacts.contact_last_name, contacts.contact_email, contacts.contact_first_name FROM project_contacts INNER JOIN contacts ON (project_contacts.contact_id = contacts.contact_id) WHERE (project_contacts.project_id = ".$this->_project->project_id.")) ";				
@@ -414,7 +421,7 @@ class CFile extends CDpObject {
 			
 			$body .= "\n\nFile ".$this->file_name." was ".$this->_message." by ".$AppUI->user_first_name . " " . $AppUI->user_last_name;
 			if ($this->_message != "deleted") {
-				$body .= "\n".$AppUI->_('URL').":     {$dPconfig['base_url']}/fileviewer.php?file_id=".$this->file_id;
+				$body .= "\n".$AppUI->_('URL').':     ' . DP_BASE_DIR . '/fileviewer.php?file_id='.$this->file_id;
 				$body .= "\n" . $AppUI->_('Description') . ":" . "\n".$this->file_description;	
 			}
 			
@@ -472,7 +479,6 @@ class CFile extends CDpObject {
 		$this->_query->clear();
 		return $taskname;
 	}
-
 }
 
 /**
@@ -507,7 +513,7 @@ class CFileFolder extends CDpObject {
 		return null;
 	}
 	
-	function delete( $oid=null ) {
+	function delete( $oid = null ) {
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = intval( $oid );
@@ -683,41 +689,40 @@ function last_file($file_versions, $file_name, $file_project)
 }
 
 function getIcon($file_type) {
-      global $dPconfig;
       $result = '';
       $mime = str_replace('/','-',$file_type);
       $icon = 'gnome-mime-'.$mime;
-      if (is_file($dPconfig['root_dir'].'/modules/files/images/icons/'.$icon.'.png')) {
-    		$result = "icons/$icon.png";
+      if (is_file(DP_BASE_DIR.'/modules/files/images/icons/'.$icon.'.png')) {
+    		$result = 'icons/'.$icon.'.png';
       } else {
             $mime = split("/", $file_type);
             switch($mime[0]){
-            	case "audio" : 
-            		$result = "icons/wav.png";
+            	case 'audio' : 
+            		$result = 'icons/wav.png';
             		break;
-            	case "image" :
-            		$result = "icons/image.png";
+            	case 'image' :
+            		$result = 'icons/image.png';
             		break;
-            	case "text" :
-            		$result = "icons/text.png";
+            	case 'text' :
+            		$result = 'icons/text.png';
             		break;
-            	case "video" :
-            		$result = "icons/video.png";
+            	case 'video' :
+            		$result = 'icons/video.png';
             		break;
             }
-            if ($mime[0] == "application"){
+            if ($mime[0] == 'application'){
             		switch($mime[1]){
-            			case "vnd.ms-excel" : 
-            				$result = "icons/spreadsheet.png";
+            			case 'vnd.ms-excel' : 
+            				$result = 'icons/spreadsheet.png';
             				break;
-            			case "vnd.ms-powerpoint" :
-            				$result = "icons/quicktime.png";
+            			case 'vnd.ms-powerpoint' :
+            				$result = 'icons/quicktime.png';
             				break;
-            			case "octet-stream" :
-            				$result = "icons/source_c.png";
+            			case 'octet-stream' :
+            				$result = 'icons/source_c.png';
             				break;
             			default :
-            				$result = "icons/documents.png";
+            				$result = 'icons/documents.png';
             		}
             }
       }      
@@ -725,7 +730,7 @@ function getIcon($file_type) {
       if ($result == ''){
       	switch($obj->$file_category){
       		default : // no idea what's going on
-      			$result = "icons/unknown.png";
+      			$result = 'icons/unknown.png';
       	}
       }
       return $result;      

@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $do_report 		    = dPgetParam( $_POST, "do_report", 0 );
 $log_start_date 	= dPgetParam( $_POST, "log_start_date", 0 );
 $log_end_date 	    = dPgetParam( $_POST, "log_end_date", 0 );
@@ -90,7 +94,7 @@ if($do_report){
 	// Also we will use tasks with duration_type = 1 (hours) and those that are not marked
 	// as milstones
 	// GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
-	$working_hours = $dPconfig['daily_working_hours'];
+	$working_hours = dPgetConfig('daily_working_hours');
 
 	$q  = new DBQuery;
 	$q->addTable('tasks', 't');

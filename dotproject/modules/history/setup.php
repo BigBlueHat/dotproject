@@ -1,5 +1,9 @@
 <?php
-/*
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**
  * Name:      History
  * Directory: history
  * Version:   0.6
@@ -94,5 +98,4 @@ class CSetupHistory {
 		return db_error();
 	}
 }
-
 ?>

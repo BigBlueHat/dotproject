@@ -1,10 +1,14 @@
 <?php /* CALENDAR $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 global $this_day, $first_time, $last_time, $company_id, $m, $a;
 
 $links = array();
 // assemble the links for the tasks
-require_once( dPgetConfig('root_dir' )."/modules/calendar/links_tasks.php" );
-getTaskLinks( $first_time, $last_time, $links, 100, $company_id );
+require_once(DP_BASE_DIR.'/modules/calendar/links_tasks.php');
+getTaskLinks($first_time, $last_time, $links, 100, $company_id);
 
 $s = '';
 $dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
@@ -28,5 +32,5 @@ echo $s;
 echo '</table>';
 
 $min_view = 1;
-include dPgetConfig( 'root_dir' ).'/modules/tasks/todo.php';
+include DP_BASE_DIR.'/modules/tasks/todo.php';
 ?>

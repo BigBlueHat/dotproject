@@ -10,7 +10,6 @@ $perms =& $AppUI->acl();
 $canRead = $perms->checkModuleItem( $m, 'view', $company_id );
 $canEdit = $perms->checkModuleItem( $m, 'edit', $company_id );
 
-
 if (!$canRead) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
@@ -108,8 +107,8 @@ function delIt()
 
 <?php
 // tabbed information boxes
-$moddir = $dPconfig['root_dir'] . '/modules/companies/';
-$tabBox = new CTabBox( "?m=companies&amp;a=view&amp;company_id=$company_id", '', $tab );
+$moddir = DP_BASE_DIR . '/modules/companies/';
+$tabBox = new CTabBox('?m=companies&amp;a=view&amp;company_id=' . $company_id, '', $tab );
 //$tabBox->add( $moddir . 'vw_active', 'Active Projects' );
 //$tabBox->add( $moddir . 'vw_archived', 'Archived Projects' );
 $tabBox->add( $moddir . 'vw_depts', 'Departments' );

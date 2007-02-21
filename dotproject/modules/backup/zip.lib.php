@@ -1,6 +1,7 @@
-<?php
-/* $Id$ */
-
+<?php /* $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 /**
  * Zip file creation class.
@@ -51,7 +52,6 @@ class zipfile
      */
     var $old_offset   = 0;
 
-
     /**
      * Converts an Unix timestamp to a four byte DOS date and time format (date
      * in high two bytes, time in low two bytes allowing magnitude comparison).
@@ -77,7 +77,6 @@ class zipfile
         return (($timearray['year'] - 1980) << 25) | ($timearray['mon'] << 21) | ($timearray['mday'] << 16) |
                 ($timearray['hours'] << 11) | ($timearray['minutes'] << 5) | ($timearray['seconds'] >> 1);
     } // end of the 'unix2DosTime()' method
-
 
     /**
      * Adds "file" to archive
@@ -158,7 +157,6 @@ class zipfile
         $this -> ctrl_dir[] = $cdrec;
     } // end of the 'addFile()' method
 
-
     /**
      * Dumps out file
      *
@@ -181,6 +179,5 @@ class zipfile
             pack('V', strlen($data)) .              // offset to start of central dir
             "\x00\x00";                             // .zip file comment length
     } // end of the 'file()' method
-
 } // end of the 'zipfile' class
 ?>

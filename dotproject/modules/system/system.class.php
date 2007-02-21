@@ -1,4 +1,7 @@
 <?php /* SYSTEM $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 /**
 * Preferences class
@@ -212,7 +215,6 @@ class CConfig extends CDpObject {
 
 }
 
-
 class bcode extends CDpObject {
         var $_billingcode_id=NULL;
         var $company_id;
@@ -275,3 +277,4 @@ class bcode extends CDpObject {
                         return NULL;
         }
 }
+?>

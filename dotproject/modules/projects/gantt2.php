@@ -1,12 +1,13 @@
 <?php /* TASKS $Id$ */
-include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph.php");
-include ("{$dPconfig['root_dir']}/lib/jpgraph/src/jpgraph_gantt.php");
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
-
+include (DP_BASE_DIR . '/lib/jpgraph/src/jpgraph.php');
+include (DP_BASE_DIR . '/lib/jpgraph/src/jpgraph_gantt.php');
 
 // orginal: global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;
 global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt; // $showAllGantt == Gantt with tasks and users
-
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');

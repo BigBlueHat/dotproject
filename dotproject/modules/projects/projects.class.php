@@ -1,9 +1,13 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
  *	@package dotProject
  *	@subpackage modules
  *	@version $Revision$
-*/
+ */
 
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
@@ -55,11 +59,9 @@ class CProject extends CDpObject {
 	}
     
 	function load($oid=null , $strip = true) {
-		global $dPconfig;
-
 		$result = parent::load($oid, $strip);
 		if ($result && $oid) {
-			$working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
+			$working_hours = dPgetConfig('daily_working_hours', 8);
 			
 			$q = new DBQuery;
 			$q->addTable('projects');
@@ -73,7 +75,9 @@ class CProject extends CDpObject {
 		return $result;
 	}
     
-    // overload canDelete
+  /** 
+   * overload canDelete
+   */
 	function canDelete( &$msg, $oid=null ) {
 		// TODO: check if user permissions are considered when deleting a project
 		global $AppUI;
@@ -118,14 +122,15 @@ class CProject extends CDpObject {
 		return $result;
 	}
 
-	/**	Import tasks from another project
-	*
-	*	@param	int		Project ID of the tasks come from.
-	* @param  date  The date to offset tasks with.
-	* @param  bool  To keep or not assignees.
-	* @param  bool  To keep or not files.
-	*	@return	bool	
-	**/
+	/**	
+	 * Import tasks from another project
+	 *
+	 *	@param	int		Project ID of the tasks come from.
+	 * @param  date  The date to offset tasks with.
+	 * @param  bool  To keep or not assignees.
+	 * @param  bool  To keep or not files.
+	 *	@return	bool	
+	 **/
 	function importTasks ($from_project_id, $import_date = '', $keepAssignees = true, $keepFiles = false) {
         
 		// Load the original
@@ -244,8 +249,8 @@ class CProject extends CDpObject {
 				$files = $q->loadList();
                 
 				foreach($files as $file) {
-					$res = copy(dPgetConfig('root_dir').'/files/'.$file['file_project'].'/'.$file['file_real_filename'], 
-                                dPgetConfig('root_dir').'/files/'.$obj->project_id.'/'.$file['file_real_filename']);
+					$res = copy(DP_BASE_DIR.'/files/'.$file['file_project'].'/'.$file['file_real_filename'], 
+                                DP_BASE_DIR.'/files/'.$obj->project_id.'/'.$file['file_real_filename']);
 					$file['file_id'] = '';
 					$file['file_task'] = $newTask->task_id;
 					$file['file_project'] = $newTask->task_project;
@@ -261,13 +266,12 @@ class CProject extends CDpObject {
 	} // end of importTasks
 
 	/**
-	**	Overload of the dpObject::getAllowedRecords 
-	**	to ensure that the allowed projects are owned by allowed companies.
-	**
-	**	@author	handco <handco@sourceforge.net>
-	**	@see	dpObject::getAllowedRecords
-	**/
-
+	 *	Overload of the dpObject::getAllowedRecords 
+	 *	to ensure that the allowed projects are owned by allowed companies.
+	 *
+	 *	@author	handco <handco@sourceforge.net>
+	 *	@see	dpObject::getAllowedRecords
+	 */
 	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ){
 		$oCpy = new CCompany ();
 		
@@ -327,7 +331,8 @@ class CProject extends CDpObject {
 		
 	}
 
-	/** Retrieve tasks with latest task_end_dates within given project
+	/** 
+	 * Retrieve tasks with latest task_end_dates within given project
 	 * @param int Project_id
 	 * @param int SQL-limit to limit the number of returned tasks
 	 * @return array List of criticalTasks
@@ -553,22 +558,21 @@ class CProject extends CDpObject {
 	}
 }
 
-
-/* The next lines of code have resided in projects/index.php before 
-** and have been moved into this 'encapsulated' function
-** for reusability of that central code.
-**
-** @date 20060225
-** @responsible gregorerhardt
-**
-** E.g. this code is used as well in a tab for the admin/viewuser site
-**
-** @mixed user_id 	userId as filter for tasks/projects that are shown, if nothing is specified, 
-			current viewing user $AppUI->user_id is used.
-*/
-
+/** 
+ * The next lines of code have resided in projects/index.php before
+ * and have been moved into this 'encapsulated' function
+ * for reusability of that central code.
+ *
+ * @date 20060225
+ * @responsible gregorerhardt
+ *
+ * E.g. this code is used as well in a tab for the admin/viewuser site
+ *
+ * @mixed user_id 	userId as filter for tasks/projects that are shown, if nothing is specified,
+ *  	current viewing user $AppUI->user_id is used.
+ */
 function projects_list_data($user_id = false) {
-	global $AppUI, $buffer, $company, $company_id, $company_prefix, $deny, $department, $dept_ids, $dPconfig, 
+	global $AppUI, $buffer, $company, $company_id, $company_prefix, $deny, $department, $dept_ids, 
         $filters, $orderby, $orderdir, $projects, $search_string, $tasks_critical, $tasks_problems, $tasks_sum, 
         $tasks_summy, $tasks_total;
 
@@ -582,7 +586,7 @@ function projects_list_data($user_id = false) {
 	// by Pablo Roca (pabloroca@mvps.org)
 	// 16 August 2003
 
-	$working_hours = ($dPconfig['daily_working_hours']?$dPconfig['daily_working_hours']:8);
+	$working_hours = dPgetConfig('daily_working_hours', 8);
 
 	// GJB: Note that we have to special case duration type 24 and this refers to the hours in a day, NOT 24 hours
 	$q->createTemp('tasks_sum');
@@ -768,7 +772,9 @@ function projects_list_data($user_id = false) {
 
 }
 
-//writes out a single <option> element for display of departments
+/** 
+ * writes out a single <option> element for display of departments
+ */
 function showchilddept( &$a, $level=1 ) {
 	Global $buffer, $department;
 	$s = '<option value="'.$a["dept_id"].'"'.(isset($department)&&$department==$a["dept_id"]?'selected="selected"':'').'>';
@@ -782,7 +788,9 @@ function showchilddept( &$a, $level=1 ) {
 //	echo $s;
 }
 
-//recursive function to display children departments.
+/**
+ * recursive function to display children departments.
+ */
 function findchilddept( &$tarr, $parent, $level=1 ){
 	$level = $level+1;
 	$n = count( $tarr );

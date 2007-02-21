@@ -1,5 +1,11 @@
 <?php /* FORUMS $Id$ */
-// Add / Edit forum
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/** 
+ * Add / Edit forum
+ */
 
 $forum_id = intval( dPgetParam( $_GET, 'forum_id', 0 ) );
 $perms =& $AppUI->acl();

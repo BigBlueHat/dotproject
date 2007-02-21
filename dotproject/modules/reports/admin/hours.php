@@ -1,5 +1,8 @@
 <?php
-//error_reporting( E_ALL );
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $perms =& $AppUI->acl();
 if (! $perms->checkModule('tasks', 'view'))
 	redirect('m=public&a=access_denied');
@@ -169,7 +172,7 @@ if ($do_report) {
 <?php
 	if ($log_csv)
 	{
-		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
+		$temp_dir = DP_BASE_DIR . '/files/temp';
 		$csvfile = '"User","Hours"' . "\n"; 
 		foreach($csvdata as $row)
 		{	
@@ -182,7 +185,7 @@ if ($do_report) {
 		if ($fp = fopen( "$temp_dir/temp$AppUI->user_id.csv", 'wb' )) {
 			fwrite( $fp, $csvfile );
 			fclose( $fp );
-			echo "<a href=\"" . dPgetConfig( 'base_url' ) . "/files/temp/temp$AppUI->user_id.csv\">";
+			echo "<a href=\"" . DP_BASE_URL . "/files/temp/temp$AppUI->user_id.csv\">";
 			echo $AppUI->_( "View CSV File" );
 			echo "</a>";
 		} else {
@@ -206,9 +209,9 @@ if ($do_report) {
 			$pname = "All Projects";
 		echo db_error();
 
-		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
-		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
-		$base_url  = dPgetConfig( 'base_url' );
+		$font_dir = DP_BASE_DIR . '/lib/ezpdf/fonts';
+		$temp_dir = DP_BASE_DIR . '/files/temp';
+		$base_url  = DP_BASE_URL;
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
 		$pdf =& new Cezpdf();

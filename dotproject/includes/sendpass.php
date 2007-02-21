@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
 * @package dotproject
 * @subpackage core
@@ -7,15 +11,15 @@
 
 require_once( $AppUI->getSystemClass( 'libmail' ) );
 
-//
-// New password code based oncode from Mambo Open Source Core
-// www.mamboserver.com | mosforge.net
-//
+/**
+ * New password code based oncode from Mambo Open Source Core
+ * www.mamboserver.com | mosforge.net
+ */
 function sendNewPass() {
  global $AppUI, $dPconfig;
 
- $_live_site = $dPconfig['base_url'];
- $_sitename = $dPconfig['company_name'];
+ $_live_site = DP_BASE_URL;
+ $_sitename = dPgetConfig('company_name');
 
  // ensure no malicous sql gets past
  $checkusername = trim( dPgetParam( $_POST, 'checkusername', '') );

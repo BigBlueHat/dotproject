@@ -3,7 +3,7 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $showEditCheckbox, $this_day, $other_users, $dPconfig, $user_id;
+global $showEditCheckbox, $this_day, $other_users, $user_id;
 
 $showEditCheckbox = true;
 // Project status from sysval, defined as a constant
@@ -182,8 +182,8 @@ if ($m == 'tasks' && $a == 'todo') {
   <?php
   // Tabbed information boxes
   $tabBox = new CTabBox( '?m=tasks&amp;a=todo', '', $tab );
-  $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/todo_tasks_sub', 'My Tasks' ); 
-  $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/todo_gantt_sub', 'My Gantt' );
+  $tabBox->add(DP_BASE_DIR . '/modules/tasks/todo_tasks_sub', 'My Tasks'); 
+  $tabBox->add(DP_BASE_DIR . '/modules/tasks/todo_gantt_sub', 'My Gantt');
 
   $tabBox->loadExtras('tasks', 'todo');
 	// Wouldn't it be better to user $tabBox->loadExtras('tasks', 'todo'); and then
@@ -191,7 +191,7 @@ if ($m == 'tasks' && $a == 'todo') {
 	//
 	// reply by gregorerhardt on 20060604: Yes, sure, the suggested approach would be much better
   if ($AppUI->isActiveModule('helpdesk')) 
-	  $tabBox->add( $dPconfig['root_dir'].'/modules/helpdesk/vw_idx_my', 'My Open Requests' );
+	  $tabBox->add(DP_BASE_DIR . '/modules/helpdesk/vw_idx_my', 'My Open Requests');
   
   $tabBox->show();
   ?>
@@ -200,6 +200,6 @@ if ($m == 'tasks' && $a == 'todo') {
 </table>
 <?php
 } else {
-	include $dPconfig['root_dir'] . '/modules/tasks/todo_tasks_sub.php';
+	include DP_BASE_DIR . '/modules/tasks/todo_tasks_sub.php';
 }
 ?>

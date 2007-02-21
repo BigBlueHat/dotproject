@@ -1,4 +1,8 @@
 <?php /* $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
 $task_log_id = intval( dPgetParam( $_GET, 'task_log_id', 0 ) );
 $reminded = intval( dPgetParam( $_GET, 'reminded', 0) );
@@ -302,16 +306,16 @@ if ( $obj->task_dynamic != 1 ) {
 	// tabbed information boxes
 	if ($perms->checkModuleItem('task_log', 'view', $task_id)) {
 		$tabBox_show = 1;
-		$tabBox->add( $dPconfig['root_dir'].'/modules/tasks/vw_logs', 'Task Logs' );
+		$tabBox->add(DP_BASE_DIR.'/modules/tasks/vw_logs', 'Task Logs');
 		// fixed bug that dP automatically jumped to access denied if user does not
 		// have read-write permissions on task_id and this tab is opened by default (session_vars)
 		// only if user has r-w perms on this task, new or edit log is beign showed
         if ($task_log_id == 0) {
             if ($perms->checkModuleItem('task_log', 'add', $task_id))
-                $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/vw_log_update', 'New Log' );
+                $tabBox->add(DP_BASE_DIR.'/modules/tasks/vw_log_update', 'New Log');
         }
         else if ($perms->checkModuleItem('task_log', 'edit', $task_id)) {
-            $tabBox->add( $dPconfig['root_dir'].'/modules/tasks/vw_log_update', 'Edit Log' );
+            $tabBox->add(DP_BASE_DIR.'/modules/tasks/vw_log_update', 'Edit Log');
         }
 	}
 }
@@ -326,11 +330,14 @@ if ( count($obj->getChildren()) > 0 ) {
 	// $_GET[task_status]; this patch is to be able to see
 	// child tasks withing an inactive task
 	$_GET['task_status'] = $obj->task_status;
-	$tabBox->add( $dPconfig['root_dir'].'/modules/tasks/tasks', 'Child Tasks' );
+	$tabBox->add(DP_BASE_DIR.'/modules/tasks/tasks', 'Child Tasks');
 }
 
-if ($tabBox->loadExtras($m, $a))
+if ($tabBox->loadExtras($m, $a)) {
   $tabBox_show = 1;
+}
 
-if ( $tabBox_show == 1)	$tabBox->show();
+if ( $tabBox_show == 1)	{
+	$tabBox->show();
+}
 ?>

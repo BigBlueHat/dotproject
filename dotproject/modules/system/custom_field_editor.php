@@ -1,10 +1,9 @@
-<?php
+<?php //	$Id$
 if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
-
-/*	$Id$ 	
- *
+ 	
+/**
  *	Custom field editor - lists custom fields by module 	
  */
 
@@ -54,5 +53,6 @@ foreach ($modules as $i=>$module)
 }	
 
 $tpl->assign('modules', $modules);
+
 $tpl->displayFile('custom_field_editor');
 ?>

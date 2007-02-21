@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 /**
 * Generates a report of the task logs for given dates
 */
@@ -226,9 +230,9 @@ echo '</h2>';
 if ($log_pdf) {
 	// make the PDF file
 
-		$font_dir = dPgetConfig( 'root_dir' )."/lib/ezpdf/fonts";
-		$temp_dir = dPgetConfig( 'root_dir' )."/files/temp";
-		$base_url  = dPgetConfig( 'base_url' );
+		$font_dir = DP_BASE_DIR."/lib/ezpdf/fonts";
+		$temp_dir = DP_BASE_DIR."/files/temp";
+		$base_url = DP_BASE_URL;
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
 		$pdf =& new Cezpdf();

@@ -1,7 +1,11 @@
 <?php /* SYSTEM $Id$ */
-/*
- add or edit a user preferences
-*/
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/** 
+ * add or edit a user preferences
+ */
 
 $company_id=0;
 $company_id = isset($_REQUEST['company_id']) ? $_REQUEST['company_id'] : 0;

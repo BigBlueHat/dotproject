@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $obj = new CProject();
 $msg = '';
 
@@ -7,7 +11,7 @@ if (!$obj->bind( $_POST )) {
 	$AppUI->redirect();
 }
 
-require_once($baseDir . '/classes/CustomFields.class.php');
+require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 // convert dates to SQL format first
 if ($obj->project_start_date) {
 	$date = new CDate();
@@ -104,9 +108,9 @@ if ($del) {
 			// Import project files (task files are already imported).
 			if ($keepFiles)
 			{
-				if (!is_dir($dPconfig['root_dir'].'/files/'.$obj->project_id))
+				if (!is_dir(DP_BASE_DIR.'/files/'.$obj->project_id))
 				{
-					$res = mkdir( $dPconfig['root_dir'].'/files/'.$obj->project_id, 0777 );
+					$res = mkdir(DP_BASE_DIR.'/files/'.$obj->project_id, 0777 );
 					if (!$res) 
 						$AppUI->setMsg( 'Upload folder not setup to accept uploads - change permission on files/ directory.', UI_MSG_ALLERT );
        }
@@ -120,7 +124,7 @@ if ($del) {
 				$files = $q->loadList();
 				foreach($files as $file)
 				{
-    			$res = copy($dPconfig['root_dir'].'/files/'.$file['file_project'].'/'.$file['file_real_filename'], $dPconfig['root_dir'].'/files/'.$obj->project_id.'/'.$file['file_real_filename']);
+    			$res = copy(DP_BASE_DIR.'/files/'.$file['file_project'].'/'.$file['file_real_filename'], DP_BASE_DIR.'/files/'.$obj->project_id.'/'.$file['file_real_filename']);
 					$file['file_id'] = '';
 					$file['file_project'] = $obj->project_id;
 					$q->addInsert(array_keys($file), array_values($file), true);

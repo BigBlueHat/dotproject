@@ -4,16 +4,15 @@ if (!defined('DP_BASE_DIR')){
 }
 
 /**
-* Processes the entries in the translation form.
-* @version $Revision$
-* @author Andrew Eddie <users.sourceforge.net>
-*/
+ * Processes the entries in the translation form.
+ * @version $Revision$
+ * @author Andrew Eddie <users.sourceforge.net>
+ */
 
 $module = dPgetParam($_POST, 'module', 0);
 $lang = dPgetParam($_POST, 'lang', 'en');
 
 $trans = dPgetParam($_POST, 'trans', 0);
-//echo '<pre>';print_r( $trans );echo '</pre>';die;
 
 // save to core locales if a translation exists there, otherwise save
 // into the module's local locale area if it exists.  If not then

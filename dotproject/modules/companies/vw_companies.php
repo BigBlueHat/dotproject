@@ -1,4 +1,7 @@
 <?php /* COMPANIES $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 global $search_string;
 global $filters;
@@ -14,7 +17,6 @@ global $orderdir;
 global $tpl;
 
 // load the company types
-
 $types = dPgetSysVal( 'CompanyType' );
 
 // get any records denied from viewing

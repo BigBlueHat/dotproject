@@ -1,4 +1,7 @@
 <?php /* CALENDAR $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 require_once( $AppUI->getSystemClass( 'webdav_client' ) );
 
@@ -23,13 +26,13 @@ $recurs =  array (
 
 
 /**
-* Sub-function to collect events within a period
-* @param Date the starting date of the period
-* @param Date the ending date of the period
-* @param array by-ref an array of links to append new items to
-* @param int the length to truncate entries by
-* @author Andrew Eddie <eddieajau@users.sourceforge.net>
-*/
+ * Sub-function to collect events within a period
+ * @param Date the starting date of the period
+ * @param Date the ending date of the period
+ * @param array by-ref an array of links to append new items to
+ * @param int the length to truncate entries by
+ * @author Andrew Eddie <eddieajau@users.sourceforge.net>
+ */
 function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 	global $event_filter, $AppUI, $event_id, $df, $tf;
 		
@@ -46,7 +49,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 		$start = new CDate( $row['event_start_date'] );
 		$end = new CDate( $row['event_end_date'] );
 		$date = $start;
-		$cwd = explode(",", $GLOBALS["dPconfig"]['cal_working_days']);
+		$cwd = explode(",", dPgetConfig('cal_working_days'));
 
 		for($i=0; $i <= $start->dateDiff($end); $i++) {
 		// the link
@@ -86,7 +89,6 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 		}
 	}
 }
-
 
 function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 	global $df, $event_filter, $AppUI, $recurs, $types, $event_id;
@@ -141,7 +143,7 @@ function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMax
 			$start = new CDate( $row['event_start_date'] );
 			$end = new CDate( $row['event_end_date'] );
 			$date = $start;
-			$cwd = explode(",", $GLOBALS["dPconfig"]['cal_working_days']);
+			$cwd = explode(",", dPgetConfig('cal_working_days'));
 			// set Event_type to auto/external event
 			$row['event_type'] = -1;
 

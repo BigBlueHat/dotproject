@@ -1,4 +1,7 @@
 <?php /* PUBLIC $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 function selPermWhere( $obj, $idfld, $namefield, $prefix = '' ) {
 	global $AppUI;
@@ -19,7 +22,7 @@ $user_id = dPgetParam( $_GET, 'user_id', 0 );
 
 $ok = $callback & $table;
 
-$title = "Generic Selector";
+$title = 'Generic Selector';
 
 $modclass = $AppUI->getModuleClass($table);
 if ($modclass && file_exists ($modclass))
@@ -181,4 +184,3 @@ if (!$ok) {
 </td>
 </tr>
 </table>
-

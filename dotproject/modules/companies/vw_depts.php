@@ -1,8 +1,12 @@
 <?php /* COMPANIES $Id$ */
-##
-##	Companies: View Projects sub-table
-##
-GLOBAL $AppUI, $company_id, $canEdit;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**	
+ * Companies: View Projects sub-table
+ */
+global $AppUI, $company_id, $canEdit;
 
 $q  = new DBQuery;
 $q->addTable('departments');
@@ -14,7 +18,9 @@ $q->addOrder('dept_parent, dept_name');
 $sql = $q->prepare();
 $q->clear();
 
-// function renamed to avoid naming clash
+/** 
+ * function renamed to avoid naming clash
+ */
 function showchilddept_comp( &$a, $level=0 ) {
 	global $AppUI;
 	$s = '
@@ -39,7 +45,9 @@ function showchilddept_comp( &$a, $level=0 ) {
 	echo "<tr>$s</tr>";
 }
 
-// function renamed to avoid naming clash
+/** 
+ * function renamed to avoid naming clash
+ */
 function findchilddept_comp( &$tarr, $parent, $level=0 ){
 	$level = $level+1;
 	$n = count( $tarr );
@@ -50,7 +58,6 @@ function findchilddept_comp( &$tarr, $parent, $level=0 ){
 		}
 	}
 }
-
 
 $s = '<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">';
 $s .= '<tr>';

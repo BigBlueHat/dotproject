@@ -1,4 +1,7 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
 $config = array();
 $config['mod_name'] = 'Reports';
@@ -28,5 +31,4 @@ class CSetupReports {
     return null;
   }
 }
-
 ?>

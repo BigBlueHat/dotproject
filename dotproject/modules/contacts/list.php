@@ -1,4 +1,8 @@
 <?php /* $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 
 $orderby = dPgetParam($_GET, 'orderby', 'contact_order_by');

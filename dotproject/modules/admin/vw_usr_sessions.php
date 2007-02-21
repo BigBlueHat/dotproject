@@ -1,5 +1,9 @@
 <?php /* ADMIN  $Id$ */ 
-GLOBAL $dPconfig, $canEdit, $canDelete, $stub, $where, $orderby, $tpl;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+global $canEdit, $canDelete, $stub, $where, $orderby, $tpl;
 
 /*
  * Flag value to determine if "logout user" button should show. 

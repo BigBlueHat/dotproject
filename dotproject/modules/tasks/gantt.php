@@ -1,12 +1,15 @@
 <?php /* TASKS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
 
-/*
+/**
  * Gantt.php - by J. Christopher Pereira
  * TASKS $Id$
  */
 
-include ($dPconfig['root_dir'].'/lib/jpgraph/src/jpgraph.php');
-include ($dPconfig['root_dir'].'/lib/jpgraph/src/jpgraph_gantt.php');
+include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph.php');
+include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph_gantt.php');
 
 global $caller, $locale_char_set, $showLabels, $showWork, $showLabels, $showPinned, $showArcProjs, $showHoldProjs, $showDynTasks, $showLowTasks, $user_id;
 
@@ -414,7 +417,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
                 $type = $a['task_duration_type'];
                 $dur = $a['task_duration'];
                 if ($type == 24) {
-                        $dur *= $dPconfig['daily_working_hours'];
+                        $dur *= dPgetConfig('daily_working_hours');
                 }
 
                 if ($showWork=='1') {
@@ -427,7 +430,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
                         $q->addWhere('t.task_id = '.$a['task_id']);
 
                         $wh = $q->loadResult();
-                        $work_hours = $wh * $dPconfig['daily_working_hours'];
+                        $work_hours = $wh * dPgetConfig('daily_working_hours');
                         $q->clear();
 
                         $q = new DBQuery;

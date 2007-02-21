@@ -1,4 +1,8 @@
 <?php
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 // Output the PDF
 // make the PDF file
 $sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
@@ -8,9 +12,9 @@ if ($err = db_error()) {
 	$AppUI->redirect();
 }
 
-$font_dir = $dPconfig['root_dir']."/lib/ezpdf/fonts";
-$temp_dir = $dPconfig['root_dir']."/files/temp";
-$base_url  = $dPconfig['base_url'];
+$font_dir = DP_BASE_DIR . '/lib/ezpdf/fonts';
+$temp_dir = DP_BASE_DIR . '/files/temp';
+$base_url = DP_BASE_URL;
 require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
 $pdf =& new Cezpdf($paper='A4',$orientation='landscape');

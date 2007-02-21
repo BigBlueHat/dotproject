@@ -1,8 +1,12 @@
 <?php /* COMPANIES $Id$ */
-##
-##	Companies: View Archived Projects sub-table
-##
-GLOBAL $AppUI, $company_id, $pstatus, $dPconfig, $tpl, $m;
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
+/**	
+ * Companies: View Archived Projects sub-table
+ */
+global $AppUI, $company_id, $pstatus, $tpl, $m;
 
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 

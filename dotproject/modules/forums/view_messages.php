@@ -1,4 +1,8 @@
 <?php  /* FORUMS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $AppUI->savePlace();
 $sort = dPgetParam($_REQUEST, 'sort', 'asc');
 $viewtype = dPgetParam($_REQUEST, 'viewtype', 'normal');
@@ -131,7 +135,7 @@ if ($viewtype == 'single')
 */
 
   // Now we need to update the forum visits with the new messages so they don't show again.
-  foreach ($new_messages as $msg_id) {
+foreach ($new_messages as $msg_id) {
 	$q  = new DBQuery;
 	$q->addTable('forum_visits');
 	$q->addInsert('visit_user', $AppUI->user_id);
@@ -140,5 +144,5 @@ if ($viewtype == 'single')
 	$q->addInsert('visit_date', $date->getDate());
 	$q->exec();
 	$q->clear();
-  }
+}
 ?>

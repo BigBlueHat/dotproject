@@ -1,4 +1,8 @@
 <?php /* PROJECTS $Id$ */
+if (!defined('DP_BASE_DIR')){
+	die('You should not access this file directly');
+}
+
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 $company_id = intval( dPgetParam( $_GET, 'company_id', 0 ) );
 $contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
@@ -9,7 +13,6 @@ $canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
 $canAuthor = $perms->checkModuleItem( $m, 'add' );
 if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0))
 	$AppUI->redirect( 'm=public&a=access_denied' );
-
 
 // get a list of permitted companies
 require_once( $AppUI->getModuleClass ('companies' ) );
@@ -121,9 +124,9 @@ if ($project_id == 0 && $contact_id > 0){
 }
 ?>
 <!-- import the calendar script -->
-<script type="text/javascript" src="<?php echo $dPconfig['base_url'];?>/lib/calendar/calendar.js"></script>
+<script type="text/javascript" src="<?php echo DP_BASE_URL;?>/lib/calendar/calendar.js"></script>
 <!-- import the language module -->
-<script type="text/javascript" src="<?php echo $dPconfig['base_url'];?>/lib/calendar/lang/calendar-<?php echo $AppUI->user_locale; ?>.js"></script>
+<script type="text/javascript" src="<?php echo DP_BASE_URL;?>/lib/calendar/lang/calendar-<?php echo $AppUI->user_locale; ?>.js"></script>
 
 <script type="text/javascript" language="javascript">
 <!--
@@ -258,7 +261,7 @@ function setDepartment(department_id_string){
 
 
 /**************** Display *********************/
-	require_once($baseDir . '/classes/CustomFields.class.php');
+	require_once(DP_BASE_DIR . '/classes/CustomFields.class.php');
 	$custom_fields = New CustomFields( $m, $a, $row->project_id, 'edit' );
 	
 	$tpl->assign('custom_fields', $custom_fields->getHTML());
@@ -286,8 +289,6 @@ function setDepartment(department_id_string){
 	$tpl->assign('project_contacts', implode(',', $selected_contacts));
 	
 	$tpl->displayAddEdit($row);
-
-
 
 /**
  * List available departments options list with formatting (tabulated).
