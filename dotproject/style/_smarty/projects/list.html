@@ -11,7 +11,7 @@
 {/if}
 	<tr>
 {section name=i loop=$show}
-	  <th><a href="{$current_url}&amp;orderby={$show[i]}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
+	  <th><a href="{$current_url}&amp;orderby={$show[i]}{if isset($current_page)}&amp;page={$current_page}{/if}" class="hdr">{dPtranslate|capitalize word=$show[i]}</a></th>
 {/section}
 	{if $editProjects}
 	  <th>Edit</th>
