@@ -9,8 +9,9 @@
  */
 
 require_once 'check_upgrade.php';
-
-if ($_POST['mode'] == 'install' && dPcheckExistingDB()) {
+@include_once "../includes/config.php";
+define('DP_BASE_DIR', $baseDir);
+if ($_POST['mode'] == 'install' && dPcheckExistingDB($dPconfig)) {
 	die("Security Check: dotProject seems to be already installed. Not installing over existing installation");
 }
 ######################################################################################################################
