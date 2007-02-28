@@ -572,6 +572,9 @@ class CEvent extends CDpObject {
 		if (count ($allowedProjects)) {
 		  $q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR event_project = 0 )');
 		  $q->addJoin('projects', 'p', 'p.project_id = e.event_project');
+		}	else if ($AppUI->getState('CalIdxCompany')) {
+			$q->addJoin('projects', 'p', 'p.project_id = e.event_project');
+			$q->addWhere('project_company = ' . $AppUI->getState('CalIdxCompany'));
 		}
 
 		switch ($filter) {

@@ -21,11 +21,10 @@ $tasks_filters_selection = array(
 'task_company' => $companies->getAllowedRecords($AppUI->user_id, 'company_id, company_name', 'company_name'));
 
 // retrieve any state parameters
-if (isset( $_REQUEST['company_id'] )) {
-	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['company_id'] ) );
+if (isset( $_REQUEST['task_company'] )) {
+	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['task_company'] ) );
 }
 $company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
-
 $proj = new CProject();
 
 $r  = new DBQuery;
