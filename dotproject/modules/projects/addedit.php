@@ -3,26 +3,27 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-$project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
-$company_id = intval( dPgetParam( $_GET, 'company_id', 0 ) );
-$contact_id = intval( dPgetParam( $_GET, 'contact_id', 0 ) );
+$project_id = intval(dPgetParam($_GET, 'project_id', 0));
+$company_id = intval(dPgetParam($_GET, 'company_id', 0));
+$contact_id = intval(dPgetParam($_GET, 'contact_id', 0));
 
 $perms =& $AppUI->acl();
 // check permissions for this record
-$canEdit = $perms->checkModuleItem( $m, 'edit', $project_id );
-$canAuthor = $perms->checkModuleItem( $m, 'add' );
-if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0))
-	$AppUI->redirect( 'm=public&a=access_denied' );
+$canEdit = $perms->checkModuleItem($m, 'edit', $project_id);
+$canAuthor = $perms->checkModuleItem($m, 'add');
+if ((!$canEdit && $project_id > 0) || (!$canAuthor && $project_id == 0)) {
+	$AppUI->redirect('m=public&a=access_denied');
+}
 
 // get a list of permitted companies
-require_once( $AppUI->getModuleClass ('companies' ) );
+require_once $AppUI->getModuleClass('companies');
 
 $row = new CCompany();
-$companies = $row->getEdittableRecords( $AppUI->user_id, 'company_id,company_name', 'company_name' );
-$companies = arrayMerge( array( '0'=>'&nbsp;' ), $companies );
+$companies = $row->getEdittableRecords($AppUI->user_id, 'company_id,company_name', 'company_name');
+$companies = arrayMerge(array('0'=>'&nbsp;' ), $companies);
 
 // pull users
-$q  = new DBQuery;
+$q  = new DBQuery();
 $q->addTable('users','u');
 $q->addTable('contacts','con');
 $q->addQuery('user_id');
@@ -36,12 +37,12 @@ $users = $q->loadHashList();
 $row = new CProject();
 
 if (!$row->load( $project_id, false ) && $project_id > 0) {
-$AppUI->setMsg( 'Project' );
-$AppUI->setMsg( 'invalidID', UI_MSG_ERROR, true );
-$AppUI->redirect();
-} else if (count( $companies ) < 2 && $project_id == 0) {
-$AppUI->setMsg( 'noCompanies', UI_MSG_ERROR, true );
-$AppUI->redirect();
+	$AppUI->setMsg('Project');
+	$AppUI->setMsg('invalidID', UI_MSG_ERROR, true);
+	$AppUI->redirect();
+} elseif (count($companies) < 2 && $project_id == 0) {
+	$AppUI->setMsg('noCompanies', UI_MSG_ERROR, true);
+	$AppUI->redirect();
 }
 
 if ($project_id == 0 && $company_id > 0) {
@@ -50,7 +51,7 @@ if ($project_id == 0 && $company_id > 0) {
 
 // add in the existing company if for some reason it is dis-allowed
 if ($project_id && !array_key_exists( $row->project_company, $companies )) {
-	$q  = new DBQuery;
+	$q  = new DBQuery();
 	$q->addTable('companies');
 	$q->addQuery('company_name');
 	$q->addWhere('companies.company_id = '.$row->project_company);
@@ -68,25 +69,26 @@ $projectPriority = dPgetSysVal( 'ProjectPriority' );
 // format dates
 $df = $AppUI->getPref('SHDATEFORMAT');
 
-$start_date = new CDate( $row->project_start_date );
+$start_date = new CDate($row->project_start_date);
 
-$end_date = intval( $row->project_end_date ) ? new CDate( $row->project_end_date ) : null;
-$actual_end_date = intval( $criticalTasks[0]['task_end_date'] ) ? new CDate( $criticalTasks[0]['task_end_date'] ) : null;
-$style = (( $actual_end_date > $end_date) && !empty($end_date)) ? 'style="color:red; font-weight:bold"' : '';
+$end_date = intval($row->project_end_date) ? new CDate($row->project_end_date) : null;
+$actual_end_date = intval($criticalTasks[0]['task_end_date']) ? new CDate($criticalTasks[0]['task_end_date']) : null;
+$style = (($actual_end_date > $end_date) && !empty($end_date)) ? 'style="color:red; font-weight:bold"' : '';
 
 // setup the title block
 $ttl = $project_id > 0 ? 'Edit Project' : 'New Project';
-$titleBlock = new CTitleBlock( $ttl, 'applet3-48.png', $m, "$m.$a" );
-$titleBlock->addCrumb( '?m=projects', 'projects list' );
-if ($project_id != 0)
-$titleBlock->addCrumb( '?m=projects&amp;a=view&amp;project_id='.$project_id, 'view this project' );
+$titleBlock = new CTitleBlock($ttl, 'applet3-48.png', $m, "$m.$a");
+$titleBlock->addCrumb('?m=projects', 'projects list');
+if ($project_id != 0) {
+	$titleBlock->addCrumb( '?m=projects&amp;a=view&amp;project_id='.$project_id, 'view this project' );
+}
 $titleBlock->show();
 
 //Build display list for departments
 $company_id = $row->project_company;
 $selected_departments = array();
 if ($project_id) {
-	$q =& new DBQuery;
+	$q =& new DBQuery();
 	$q->addTable('project_departments');
 	$q->addQuery('department_id');
 	$q->addWhere('project_id = ' . $project_id);
@@ -97,7 +99,7 @@ if ($project_id) {
 }
 $departments_count = 0;
 $department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
-if($department_selection_list != ''){
+if($department_selection_list != '') {
   $department_selection_list = ($AppUI->_('Departments').'<br />'."\n"
 								.'<select name="dept_ids[]"  class="text">'."\n"
 								.'<option value="0"></option>'."\n"
@@ -110,7 +112,7 @@ if($department_selection_list != ''){
 // Get contacts list
 $selected_contacts = array();
 if ($project_id) {
-	$q =& new DBQuery;
+	$q =& new DBQuery();
 	$q->addTable('project_contacts');
 	$q->addQuery('contact_id');
 	$q->addWhere('project_id = ' . $project_id);
@@ -223,9 +225,9 @@ var selected_departments_id = "<?php echo implode(',', $selected_departments); ?
 
 function popDepartment() {
 	var f = document.editFrm;
-	var url = './index.php?m=public&amp;a=selector&amp;dialog=1&amp;callback=setDepartment&amp;table=departments&amp;company_id='
+	var url = './index.php?m=public&a=selector&dialog=1&callback=setDepartment&table=departments&company_id='
             + f.project_company.options[f.project_company.selectedIndex].value
-            + '&amp;dept_id='
+            + '&dept_id='
             + selected_departments_id;
         window.open(url,'dept','left=50,top=50,height=250,width=400,resizable');
 }
@@ -245,7 +247,7 @@ function setDepartment(department_id_string){
 	$objProject = new CProject();
 	$allowedProjects = $objProject->getAllowedRecords( $AppUI->user_id, 'project_id,project_name', 'project_name' );
 	
-	$q  = new DBQuery;
+	$q  = new DBQuery();
 	$q->addTable('projects', 'p');
 	$q->addTable('tasks', 't');
 	$q->addQuery('p.project_id, p.project_name');
@@ -308,7 +310,7 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	if ($departments_count < 6)
 		$departments_count++;
 	
-	$q  = new DBQuery;
+	$q  = new DBQuery();
 	$q->addTable('departments');
 	$q->addQuery('dept_id, dept_name');
 	$q->addWhere("dept_parent = '$dept_parent' and dept_company = '$company_id'");
