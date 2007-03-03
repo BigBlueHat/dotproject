@@ -10,7 +10,7 @@ $obj->pref_user = dPgetParam($_POST, 'pref_user', 0);
 
 // reset checkboxes
 // checked checkboxes will be set to true later again
-$q  = new DBQuery;
+$q  = new DBQuery();
 $q->addTable('user_preferences');
 $q->addUpdate('pref_value', 'false');
 $q->addWhere('pref_type="checkbox"');
@@ -40,13 +40,12 @@ foreach ($_POST['pref_name'] as $name => $value) {
 	}
 }
 
-if ($update)
-{
+if ($update) {
 	if ($obj->pref_user == $AppUI->user_id) {
 	// if user preferences, reload them now
 		$AppUI->loadPrefs( $AppUI->user_id );
 		$AppUI->setUserLocale();
-		include_once DP_BASE_DIR . '/locales/' . $AppUI->user_locale . '/locales.php');
+		include_once DP_BASE_DIR . '/locales/' . $AppUI->user_locale . '/locales.php';
 		include DP_BASE_DIR . '/locales/core.php';
 		$AppUI->setMsg('Preferences');
 	}
