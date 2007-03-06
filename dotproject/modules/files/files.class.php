@@ -500,7 +500,7 @@ class CFileFolder extends CDpObject {
 	
 	function getAllowedRecords($uid) {
 		$q = new DBQuery();
-      	$q->addTable('file_folders');
+      	$q->addTable($this->_tbl);
       	$q->addQuery('*');
       	$q->addOrder('file_folder_parent');
       	$q->addOrder('file_folder_name');
@@ -539,7 +539,7 @@ class CFileFolder extends CDpObject {
 	function canDelete(&$msg, $oid) {
 		global $AppUI;
 		$q = new DBQuery();
-      	$q->addTable('file_folders');
+      	$q->addTable($this->_tbl);
       	$q->addQuery('COUNT(DISTINCT file_folder_id) AS num_of_subfolders');
       	$q->addWhere("file_folder_parent=$oid");
       	$sql1 = $q->prepare();
@@ -566,7 +566,7 @@ class CFileFolder extends CDpObject {
 	/** @return string Returns the name of the parent folder or null if no parent was found **/
 	function getParentFolderName() {
 		$q = new DBQuery();
-      	$q->addTable('file_folders');
+      	$q->addTable($this->_tbl);
       	$q->addQuery('file_folder_name');
       	$q->addWhere("file_folder_id=$this->file_folder_parent");
       	$sql = $q->prepare();
