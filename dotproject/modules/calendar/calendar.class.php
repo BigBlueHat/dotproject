@@ -4,7 +4,7 @@ if (!defined('DP_BASE_DIR')){
 }
 
 /**
- *  Calendar classes
+ *	Calendar classes
  */
 
 require_once($AppUI->getLibraryClass('PEAR/Date'));
@@ -168,7 +168,7 @@ class CMonthCalendar {
 	
 /**
  * CMonthCalendar::setHighlightedDays()
- * ie 	['20040517'] => '#ff0000',
+ * ie	['20040517'] => '#ff0000',
  *
  * { Description }
  *
@@ -194,8 +194,9 @@ class CMonthCalendar {
 		// Draw months in the minical
 		// $s .= $this->_drawMonths();
 
-		if ($this->showDays)
+		if ($this->showDays) {
 			$s .= $this->_drawDays();
+		}
 
 		$s .= $this->_drawMain();
 
@@ -208,24 +209,23 @@ class CMonthCalendar {
 		$html = '';
 	
 		$orig_date = $this->this_month;
-		if ($this->this_month->getMonth() - 4 < 1)
-		{
+		if ($this->this_month->getMonth() - 4 < 1) {
 			$this->this_month->setMonth(8 + $this->this_month->getMonth());
 			$this->this_month->setYear($this->this_month->getYear() - 1);
-		}
-		else
+		} else {
 			$this->this_month->setMonth($this->this_month->getMonth() - 4);
+		}
+		
 		$this->setDate($this->this_month);
 		for ($i = -3; $i <= 6; $i++)
 		{
 			
-			if ($this->this_month->getMonth() == 12)
-			{
+			if ($this->this_month->getMonth() == 12) {
 				$this->this_month->setMonth(1);
 				$this->this_month->setYear($this->this_month->getYear() + 1);
-			}
-			else
+			} else {
 				$this->this_month->setMonth($this->this_month->getMonth() + 1);
+			}
 			$this->setDate($this->this_month);
 			$html .= '<div id="cal_' . $i . '" class="calendar' . ($i != 0?', hidden':'') . '">';
 			$html .= $this->show();
@@ -277,8 +277,9 @@ class CMonthCalendar {
 			$year->setMonth($i);
 			$month = $i;
 			//if ($this->styleMain != 'minical')
-			if ($this->showWeek)
+			if ($this->showWeek) {
 				$month = $year->getMonthName();
+			}
 			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE) . '">' . $month . '</a></td>';
 			
 		}
@@ -340,19 +341,20 @@ class CMonthCalendar {
 
 			foreach ($week as $day) {
 				$this_day = new CDate($day);
-				$y 		= intval(substr($day, 0, 4));
-				$m 		= intval(substr($day, 4, 2));
-				$d 		= intval(substr($day, 6, 2));
-				$dow 	= intval(substr($day, 8, 1));
+				$y		= intval(substr($day, 0, 4));
+				$m		= intval(substr($day, 4, 2));
+				$d		= intval(substr($day, 6, 2));
+				$dow	= intval(substr($day, 8, 1));
 
-				if ($m != $this_month)
+				if ($m != $this_month) {
 					$class = 'empty';
-				else if ($day == $today)
+				} else if ($day == $today) {
 					$class = 'today';
-				else if ($dow == 0 || $dow == 6)
+				} else if ($dow == 0 || $dow == 6) {
 					$class = 'weekend';
-				else
+				} else {
 					$class = 'day';
+				}
 				
 				$day = substr( $day, 0, 8 );
 				$html .= "\n\t<td class=\"$class\"";
@@ -366,11 +368,12 @@ class CMonthCalendar {
 						$html .= "$d";
 						$html .= "</a>";
 					} else {
-						$html .= "$d";
-				  }
-					if ($this->showEvents)
+					  $html .= "$d";
+					}
+					
+					if ($this->showEvents) {
 						$html .= $this->_drawEvents(substr($day, 0, 8));
-				  
+					}
 				}
 				$html .= "\n\t</td>";
 			}
@@ -386,7 +389,7 @@ class CMonthCalendar {
 	 *
 	 */
 	 function _drawWeek( $dateObj ) {
-	 	global $tpl;
+		global $tpl;
 		
 		$href = "javascript:$this->weekFunc(".$dateObj->getTimestamp().",'".$dateObj->toString()."')";
 		if ($this->dayFunc)
@@ -402,7 +405,7 @@ class CMonthCalendar {
 	 *
 	 */
 	 function _drawEvents( $day ) {
-	 	global $tpl;
+		global $tpl;
 		$s = '';
 		if (!isset( $this->events[$day] )) {
 			return '';
@@ -462,9 +465,9 @@ class CEvent extends CDpObject {
 	 */
 	function check() {
 	// ensure changes to check boxes and select lists are honoured
-		$this->event_private 	= intval($this->event_private);
-		$this->event_type 		= intval($this->event_type);
-		$this->event_cwd 			= intval($this->event_cwd);
+		$this->event_private	= intval($this->event_private);
+		$this->event_type		= intval($this->event_type);
+		$this->event_cwd			= intval($this->event_cwd);
 		
 		return null;
 	}
@@ -487,7 +490,7 @@ class CEvent extends CDpObject {
 
 		//create Date Objects for Event Start and Event End
 		$eventStart = new CDate($event_start_date);
-		$eventEnd 	= new CDate($event_end_date);
+		$eventEnd	= new CDate($event_end_date);
 
 		//Time of Recurence = 0 (first occurence of event) has to be checked, too.
 		if ($j>0) {
@@ -531,7 +534,7 @@ class CEvent extends CDpObject {
 
 		if ($start_date->compare ($start_date, $eventStart) <= 0 &&
 			$end_date->compare ($end_date, $eventEnd) >= 0)
-        {
+		{
 		// add temporarily moved Event Start and End dates to returnArray
 		$transferredEvent = array($eventStart, $eventEnd);
 		}
@@ -559,8 +562,9 @@ class CEvent extends CDpObject {
 		$edate = new CDate();
 		$edate->setDate($end_date->getDate());
 		$db_end = $edate->format( FMT_DATETIME_MYSQL );
-		if (! isset($user_id))
-		  $user_id = $AppUI->user_id;
+		if (! isset($user_id)) {
+			$user_id = $AppUI->user_id;
+		}
 
 		$project =& new CProject;
 		$allowedProjects = $project->getAllowedSQL($user_id, 'event_project');
@@ -579,7 +583,7 @@ class CEvent extends CDpObject {
 			  $$query_set->addJoin('projects', 'p', 'p.project_id = e.event_project');
 			}	else if ($AppUI->getState('CalIdxCompany')) {
 				$$query_set->addJoin('projects', 'p', 'p.project_id = e.event_project');
-				$$query_set->addWhere('project_company = ' . $AppUI->getState('CalIdxCompany'));
+				$$query_set->addWhere('project_company = ' . $AppUI->getState('CalIdxCompany') . ' OR event_project = 0');
 			}
 			
 			switch ($filter) {
@@ -610,28 +614,28 @@ class CEvent extends CDpObject {
 				// assemble query for non-recursive events
 				$$query_set->addWhere('(event_recurs <= 0)');
 				$eventList = $$query_set->loadList();
-        	} else if ($query_set == 'r') {
+			} else if ($query_set == 'r') {
 				// assemble query for recursive events
 				$$query_set->addWhere('( event_recurs > 0 )');
 				$eventListRec = $$query_set->loadList();
-        	}
+			}
 		}
-        
+		
 
 	//Calculate the Length of Period (Daily, Weekly, Monthly View)
 		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
 
 
-		// AJD: Should this be going off the end of the array?  I don't think so.
+		// AJD: Should this be going off the end of the array?	I don't think so.
 		// If it should then a comment to that effect would be nice.
-		// for ($i=0; $i < sizeof($eventListRec)+1;  $i++) {
-		for ($i=0; $i < sizeof($eventListRec);  $i++) {
+		// for ($i=0; $i < sizeof($eventListRec)+1;	 $i++) {
+		for ($i=0; $i < sizeof($eventListRec);	$i++) {
 
-            //note from merlinyoda: j=0 is the original event according to getRecurrentEventforPeriod
-            // So, since the event is *recurring* x times, the loop condition should be j <= x, not j < x.
-            // This way the original and all recurrances are covered.
+			//note from merlinyoda: j=0 is the original event according to getRecurrentEventforPeriod
+			// So, since the event is *recurring* x times, the loop condition should be j <= x, not j < x.
+			// This way the original and all recurrances are covered.
 			//for ($j=0; $j < intval($eventListRec[$i]['event_times_recuring']); $j++) {
-            for ($j=0; $j <= intval($eventListRec[$i]['event_times_recuring']); $j++) {
+			for ($j=0; $j <= intval($eventListRec[$i]['event_times_recuring']); $j++) {
 
 				//Daily View
 				//show all
@@ -666,7 +670,7 @@ class CEvent extends CDpObject {
 	}
 
 	function &getAssigned() {
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('users', 'u');
 		$q->addTable('user_events', 'ue');
 		$q->addTable('contacts', 'con');
@@ -684,7 +688,7 @@ class CEvent extends CDpObject {
 	}
 	
 	function &getAssignedContacts() {
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addQuery('c.contact_id');
 		$q->addQuery('c.contact_order_by');
 		$q->addTable('contacts', 'c');
@@ -700,7 +704,7 @@ class CEvent extends CDpObject {
 		// First remove the assigned from the user_events table
 		global $AppUI;
 		
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addWhere("event_id = $this->event_id");
 		$q->setDelete('event_contacts');		
 		$q->exec();
@@ -726,7 +730,7 @@ class CEvent extends CDpObject {
 		// First remove the assigned from the user_events table
 		global $AppUI;
 		
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addWhere('event_id = ' . $this->event_id);
 		$q->setDelete('user_events');		
 		$q->exec();
@@ -756,7 +760,7 @@ class CEvent extends CDpObject {
 	  $assignee_list = explode(',', $assignees);
 	  $owner_is_assigned = in_array($this->event_owner, $assignee_list);
 	  if ($mail_owner && ! $owner_is_assigned && $this->event_owner) {
-	  	array_push($assignee_list, $this->event_owner);
+		array_push($assignee_list, $this->event_owner);
 	  }
 		// Remove any empty elements otherwise implode has a problem
 		foreach ($assignee_list as $key => $x) {
@@ -764,9 +768,9 @@ class CEvent extends CDpObject {
 				unset($assignee_list[$key]);
 		}
 	  if (! count($assignee_list))
-	  	return;
+		return;
 		
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('users','u');
 		$q->addTable('contacts','con');
 		$q->addQuery('user_id, contact_first_name,contact_last_name, contact_email');
@@ -790,19 +794,19 @@ class CEvent extends CDpObject {
 	  $mail =& new Mail;
 	  $type = $update ? $AppUI->_('Updated') : $AppUI->_('New');
 	  if ($clash) {
-	    $mail->Subject($AppUI->_('Requested Event') . ': ' . $this->event_title, $locale_char_set);
+		$mail->Subject($AppUI->_('Requested Event') . ': ' . $this->event_title, $locale_char_set);
 	  } else  {
-	    $mail->Subject($type . ' ' . $AppUI->_('Event') . ': ' . $this->event_title, $locale_char_set);
+		$mail->Subject($type . ' ' . $AppUI->_('Event') . ': ' . $this->event_title, $locale_char_set);
 	  }
 	  $mail->From( '"' . $AppUI->user_first_name . ' ' . $AppUI->user_last_name 
 				. '" <' . $AppUI->user_email . '>');
 
 	  $body = '';
 	  if ($clash) {
-	    $body .= "You have been invited to an event by $AppUI->user_first_name $AppUI->user_last_name\n";
-	    $body .= 'However, either you or another intended invitee has a competing event'."\n";
-	    $body .= "$AppUI->user_first_name $AppUI->user_last_name has requested that you reply to this message\n";
-	    $body .= 'and confirm if you can or can not make the requested time.'."\n\n";
+		$body .= "You have been invited to an event by $AppUI->user_first_name $AppUI->user_last_name\n";
+		$body .= 'However, either you or another intended invitee has a competing event'."\n";
+		$body .= "$AppUI->user_first_name $AppUI->user_last_name has requested that you reply to this message\n";
+		$body .= 'and confirm if you can or can not make the requested time.'."\n\n";
 	  }
 	  $body .= $AppUI->_('Event') . ":\t" . $this->event_title . "\n";
 	  $body .= $AppUI->_('Starts') . ":\t" . $start_date->format($fmt) . "\n";
@@ -813,7 +817,7 @@ class CEvent extends CDpObject {
 	  // Find the project name.
 	  if ($this->event_project) {
 			$prj = array();
-			$q  = new DBQuery;
+			$q	= new DBQuery;
 			$q->addTable('projects','p');
 			$q->addQuery('project_name');
 			$q->addWhere('p.project_id ='.$this->event_project);
@@ -835,7 +839,7 @@ class CEvent extends CDpObject {
 			else
 				$start = true;
 			
-	  	$body .= $user[contact_first_name].' '.$user[contact_last_name];
+		$body .= $user[contact_first_name].' '.$user[contact_last_name];
 	  }
 	  $bodyContacts = $body . "\n\n" . $this->event_description . "\n";
 
@@ -876,18 +880,18 @@ class CEvent extends CDpObject {
 
 		// Send out emails to all interested contacts.
 		foreach ($contacts as $contact) {
-	  	if (!empty($contact['contact_email']) && $mail->ValidEmail($contact['contact_email'])) {
-	  		$mail->To($contact['contact_email'], true);
+		if (!empty($contact['contact_email']) && $mail->ValidEmail($contact['contact_email'])) {
+			$mail->To($contact['contact_email'], true);
 				$mail->Send();
-	  	}
+		}
 	  }
 
 		// Send details with dP URLs for users (they don't apply to contacts, since contacts can't login)
 		if (! $clash)
-	    $body .= $AppUI->_('URL') . ":\t" . DP_BASE_URL . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id . "\n";
+		$body .= $AppUI->_('URL') . ":\t" . DP_BASE_URL . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id . "\n";
 	   $bodyUsers = $body . "\n\n" . $this->event_description . "\n";
- 		$mail->Body($bodyUsers, $locale_char_set);
- 		
+		$mail->Body($bodyUsers, $locale_char_set);
+		
 		$v->addUrl(DP_BASE_URL . '/index.php?m=calendar&amp;a=view&amp;event_id=' . $this->event_id );
 		$mail->clearAttachments();
 		$mail->Attach( $AppUI->_('Event').'.ics', $filetype = 'text/calendar' , $disposition = 'inline', $ical );
@@ -906,22 +910,22 @@ class CEvent extends CDpObject {
 	{
 	  global $AppUI;
 	  if (! isset($userlist))
-	    return false;
+		return false;
 	  $users = explode(',', $userlist);
 
 	  // Now, remove the owner from the list, as we will always clash on this.
 	  $key = array_search($AppUI->user_id, $users);
 	  if (isset($key) && $key !== false) // Need both for change in php 4.2.0
-	    unset($users[$key]);
+		unset($users[$key]);
 
 	  if (! count($users))
-	    return false;
+		return false;
 
 	  $start_date =& new CDate($this->event_start_date);
 	  $end_date =& new CDate($this->event_end_date);
 
 	  // Now build a query to find matching events.
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('events', 'e');
 		$q->addQuery('e.event_owner, ue.user_id, e.event_cwd, e.event_id, e.event_start_date, e.event_end_date');
 		$q->addJoin('user_events', 'ue', 'ue.event_id = e.event_id');
@@ -932,17 +936,17 @@ class CEvent extends CDpObject {
 		
 		$result = $q->exec();
 	  if (! $result)
-	    return false;
+		return false;
 
 	  $clashes = array();
 	  while ($row = db_fetch_assoc($result)) {
-	    array_push($clashes, $row['event_owner']);
-	    if ($row['user_id'])
-	      array_push($clashes, $row['user_id']);
+		array_push($clashes, $row['event_owner']);
+		if ($row['user_id'])
+		  array_push($clashes, $row['user_id']);
 	  }
 	  $clash = array_unique($clashes);
 		$q->clear();
-	  if (count($clash)) {  
+	  if (count($clash)) {	
 		$q->addTable('users','u');
 		$q->addTable('contacts','con');
 		$q->addQuery('user_id');
@@ -951,7 +955,7 @@ class CEvent extends CDpObject {
 		$q->addWhere('user_contact = contact_id');
 		return $q->loadHashList();
 	  } else {
-	    return false;
+		return false;
 	  }
 
 	}
@@ -959,12 +963,12 @@ class CEvent extends CDpObject {
 	function getEventsInWindow($start_date, $end_date, $start_time, $end_time, $users = null)
 	{
 	  if (!isset($users))
-	    return false;
+		return false;
 	  if (!count($users))
-	    return false;
+		return false;
 
 	  // Now build a query to find matching events. 
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('events', 'e');
 		$q->addQuery('e.event_owner, ue.user_id, e.event_cwd, e.event_id, e.event_start_date, e.event_end_date');
 		$q->addJoin('user_events', 'ue', 'ue.event_id = e.event_id');
@@ -993,7 +997,7 @@ class CEvent extends CDpObject {
 		  $q->setDelete('user_events');
 		  $q->addWhere('event_id = ' . $this->event_id);
 		  if (!$q->exec())
-		    $msg = db_error();
+			$msg = db_error();
 		  
 		  $q->clear();
 		}
@@ -1012,13 +1016,13 @@ class CEvent extends CDpObject {
 }
 
 $event_filter_list = array (
-	'my' 	=> 'My Events',
+	'my'	=> 'My Events',
 	'own' => 'Events I Created',
 	'all' => 'All Events'
 );
 
 
-class vCalendar { 	 
+class vCalendar {	 
 	var $recurs = null;
 	var $sd = null;
 	var $vcalendar = null;
@@ -1036,7 +1040,7 @@ class vCalendar {
 		global $AppUI;
 		$vch = "BEGIN:VCALENDAR\r\n";
 		$vch .= "PRODID:-//dotProject devTeam//NONSGML dotProject ".$AppUI->getVersion()."//iCal 2.0//EN\r\n";
-	  	$vch .= "VERSION:2.0\r\n";
+		$vch .= "VERSION:2.0\r\n";
 		$vch .= "METHOD:PUBLISH\r\n";	
 		$this->vcalendar = $vch.$this->vcalendar;
 	}
@@ -1085,7 +1089,7 @@ class vCalendar {
 	}
 	
 	/**
-	 *  @param object $e CDate object 
+	 *	@param object $e CDate object 
 	 */
 	function addEnd($e) {
 		$this->vevent .= 'DTEND:'.$e->format('%Y%m%d').'T'.$e->format('%H%M%S')."Z\r\n";	
@@ -1116,7 +1120,7 @@ class vCalendar {
 	}
 	
 	/**
-	 *  @param object $s CDate object 
+	 *	@param object $s CDate object 
 	 */
 	function addStart($s) {
 		$this->vevent .= 'DTSTART:'.$s->format('%Y%m%d').'T'.$s->format('%H%M%S')."Z\r\n";	
@@ -1192,7 +1196,7 @@ class vCalendar {
 	*/
 
 	function getEvents($eventFilter = null, $addPrivateEvents = false) {
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('events');
 		if (!empty($eventFilter))
 			$q->addWhere($eventFilter);
@@ -1217,7 +1221,7 @@ class vCalendar {
 		$types = dPgetSysVal('EventType');		
 
 		foreach ($events as $e) {
-			$q  = new DBQuery;
+			$q	= new DBQuery;
 			$q->addTable('user_events');
 			$q->addJoin('users', 'u', 'u.user_id = user_events.user_id');
 			$q->addJoin('contacts', 'c', 'u.user_contact = c.contact_id');
@@ -1263,7 +1267,7 @@ class vCalendar {
 	/**
 	* Store an array parsed from a vcalendar file by the IMC class in dotproject events table
 	* @param array vcalendar array
-	* @param int 	project/'calendar' for event_project storage 
+	* @param int	project/'calendar' for event_project storage 
 	* @param bool Determine whether existing events for that project shall be purged or not
 	* @param bool preserve the id info got from the input row
 	* @return mixed true on 'no error' otherwise error info string
@@ -1293,7 +1297,7 @@ class vCalendar {
 			}
 
 			// delete user_events relations
-			$q  = new DBQuery;
+			$q	= new DBQuery;
 			$q->setDelete('user_events');
 			$q->addWhere($ev);
 			$q->exec();	
@@ -1372,7 +1376,7 @@ class vCalendar {
 		$eventValues['event_description'] = $c['DESCRIPTION'][0]['value'][0][0];
 		$eventValues['event_private'] = ($c['CLASS'][0]['value'][0][0] == 'PUBLIC') ? 0 : 1;
 		$eventValues['event_parent'] = ($c['RELATED-TO'][0]['param'][0][0] == 'PARENT') ? $c['RELATED-TO'][0]['value'][0][0] : 0;
-		$eventValues['event_owner'] = $AppUI->user_id;  // for instance set event_owner to importing user
+		$eventValues['event_owner'] = $AppUI->user_id;	// for instance set event_owner to importing user
 		// could perhaps be guessed by CN and email from db
 		$eventValues['event_type'] = $tac[$c['CATEGORIES'][0]['value'][0][0]];
 		
@@ -1416,7 +1420,7 @@ class CWebCalresource extends CDpObject {
 	* Get associated Projects/Calendars for object
 	*/
 	function getCalendars() {
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('webcal_projects');
 		$q->addWhere('webcal_id ='. $this->webcal_id);
 		$wp = $q->loadList();
@@ -1430,7 +1434,7 @@ class CWebCalresource extends CDpObject {
 	}
 
 	function getExternalWebcalendars() {
-		$q  = new DBQuery;
+		$q	= new DBQuery;
 		$q->addTable('webcal_resources');
 		$q->addWhere('webcal_auto_show = 1');
 		$cals = $q->loadList();
@@ -1582,7 +1586,7 @@ class CWebCalresource extends CDpObject {
 	function delete() {
 		$msg = parent::delete();
 		if ($msg == null) {
-			$q  = new DBQuery;
+			$q	= new DBQuery;
 			$q->setDelete('webcal_projects');
 			$q->addWhere('webcal_id ='.$this->webcal_id);
 			$q->exec();	
@@ -1600,7 +1604,7 @@ class CWebCalresource extends CDpObject {
 		// store the related calendars
 		if ($msg == null) {
 			foreach ($calendars as $c) {
-				$q  = new DBQuery;
+				$q	= new DBQuery;
 				$q->addTable('webcal_projects');
 				$q->addInsert('webcal_id', $this->webcal_id);
 				$q->addInsert('project_id', $c);
