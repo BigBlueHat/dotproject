@@ -578,9 +578,9 @@ class CEvent extends CDpObject {
 			$$query_set->addTable('events', 'e');
 			$$query_set->addJoin('projects', 'p', 'p.project_id = e.event_project'); 
 			$$query_set->addQuery('e.*');
-			$$query_set->addWhere( 
-				((count ($allowedProjects)) ? '( ' . implode(' AND ', $allowedProjects) . ') OR ' : '') 
-				. 'event_project = 0');
+			if (count ($allowedProjects)) {
+				$$query_set->addWhere('( ' . implode(' AND ', $allowedProjects) . ')');
+			}
 			
 			if ($AppUI->getState('CalIdxCompany')) {
 				$$query_set->addWhere('project_company = ' . $AppUI->getState('CalIdxCompany') 
@@ -617,7 +617,7 @@ class CEvent extends CDpObject {
 				$eventList = $$query_set->loadList();
 			} else if ($query_set == 'r') {
 				// assemble query for recursive events
-				$$query_set->addWhere('( event_recurs > 0 )');
+				$$query_set->addWhere('(event_recurs > 0)');
 				$eventListRec = $$query_set->loadList();
 			}
 		}
