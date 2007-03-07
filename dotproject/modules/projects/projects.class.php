@@ -52,10 +52,12 @@ class CProject extends CDpObject {
 	}
     
 	function check() {
-        // ensure changes of state in checkboxes is captured
+		// ensure changes of state in checkboxes is captured
 		$this->project_private = intval( $this->project_private );
-        
-		return NULL; // object is ok
+		// Make sure project_short_name is the right size (issue for languages with encoded characters)
+		$this->project_short_name = substr($this->project_short_name, 0, 10);
+
+		return null; // object is ok
 	}
     
 	function load($oid=null , $strip = true) {
@@ -486,8 +488,7 @@ class CProject extends CDpObject {
 	}
 
 	function store() {
-        
-        $this->dPTrimAll();
+		$this->dPTrimAll();
         
 		$msg = $this->check();
 		if( $msg ) {
