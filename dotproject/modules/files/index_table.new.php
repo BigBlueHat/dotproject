@@ -74,13 +74,21 @@ if (($company_id || $project_id || $task_id) && !($m=='files')) {
 $q = new DBQuery;
 $q->addQuery('count(file_id)');
 $q->addTable('files', 'f');
-if ($catsql) $q->addWhere($catsql);
-if ($company_id) $q->addWhere("project_company = $company_id");
-if ($project_id) $q->addWhere("file_project = $project_id");
-if ($task_id) $q->addWhere("file_task = $task_id");
+$q->addJoin('projects', 'p', 'p.project_id = file_project');
+$q->addJoin('tasks', 't', 't.task_id = file_task');
+$allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'file_project');
+$q->addWhere(((count ($allowedProjects)) ? '( ' . implode(' AND ', $allowedProjects) . ') OR ' : '') .'file_project = 0');
+$allowedTasks = $task->getAllowedSQL($AppUI->user_id, 'file_task');
+$q->addWhere(((count ($allowedTasks)) ? '( ' . implode(' AND ', $allowedTasks) . ') OR ' : '') .'file_task = 0');
+if ($catsql)
+	$q->addWhere($catsql);
+if ($company_id)
+	$q->addWhere('project_company = ' . $company_id);
+if ($project_id)
+	$q->addWhere('file_project = ' . $project_id);
+if ($task_id)
+	$q->addWhere('file_task = ' . $task_id);
 $q->addGroup("file_version_id");
-$project->setAllowedSQL($AppUI->user_id, $q, 'file_project');
-$task->setAllowedSQL($AppUI->user_id, $q, 'file_task');
 
 // SETUP FOR FILE LIST
 $q2 = new DBQuery;
