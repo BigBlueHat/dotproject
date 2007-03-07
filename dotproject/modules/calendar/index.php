@@ -24,7 +24,7 @@ $tasks_filters_selection = array(
 if (isset( $_REQUEST['task_company'] )) {
 	$AppUI->setState( 'CalIdxCompany', intval( $_REQUEST['task_company'] ) );
 }
-$company_id = $AppUI->getState( 'CalIdxCompany', $AppUI->user_company);
+$company_id = $AppUI->getState( 'CalIdxCompany', 0);
 $proj = new CProject();
 
 $r  = new DBQuery;
