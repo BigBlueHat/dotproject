@@ -4,8 +4,8 @@ if (!defined('DP_BASE_DIR')){
 }
 
 //view posts
-$forum_id 		= dPgetParam($_GET, 'forum_id', 0);
-$message_id 	= dPgetParam($_GET, 'message_id', 0);
+$forum_id 		= (int)dPgetParam($_GET, 'forum_id', 0);
+$message_id 	= (int)dPgetParam($_GET, 'message_id', 0);
 $post_message = dPgetParam($_GET, 'post_message', 0);
 
 $f = dPgetParam( $_POST, 'f', 0 );
