@@ -50,8 +50,10 @@
 {if $viewContacts}
 				<input type="button" class="button" value="{dPtranslate sentence='Select contacts...'}" onclick="javascript:popContacts();" />
 {/if}
+{if $department_selection_list != null}
 				<br />
 				{$department_selection_list}
+{/if}
 			</td>
 		</tr>
 		<tr>

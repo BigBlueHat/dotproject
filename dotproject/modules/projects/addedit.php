@@ -84,29 +84,34 @@ if ($project_id != 0) {
 }
 $titleBlock->show();
 
+
 //Build display list for departments
-$company_id = $row->project_company;
-$selected_departments = array();
-if ($project_id) {
-	$q =& new DBQuery();
-	$q->addTable('project_departments');
-	$q->addQuery('department_id');
-	$q->addWhere('project_id = ' . $project_id);
-	$res =& $q->exec();
-	for ( $res; ! $res->EOF; $res->MoveNext())
-		$selected_departments[] = $res->fields['department_id'];
-	$q->clear();
-}
-$departments_count = 0;
-$department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
-if($department_selection_list != '') {
-  $department_selection_list = ($AppUI->_('Departments').'<br />'."\n"
-								.'<select name="dept_ids[]"  class="text">'."\n"
-								.'<option value="0"></option>'."\n"
-								.$department_selection_list."\n"
-								.'</select>');
+if( $AppUI->isActiveModule('departments')) {
+	$company_id = $row->project_company;
+	$selected_departments = array();
+	if ($project_id) {
+		$q =& new DBQuery();
+		$q->addTable('project_departments');
+		$q->addQuery('department_id');
+		$q->addWhere('project_id = ' . $project_id);
+		$res =& $q->exec();
+		for ( $res; ! $res->EOF; $res->MoveNext())
+			$selected_departments[] = $res->fields['department_id'];
+		$q->clear();
+	}
+	$departments_count = 0;
+	$department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
+	if($department_selection_list != '') {
+	  $department_selection_list = ($AppUI->_('Departments').'<br />'."\n"
+									.'<select name="dept_ids[]"  class="text">'."\n"
+									.'<option value="0"></option>'."\n"
+									.$department_selection_list."\n"
+									.'</select>');
+	} else {
+	  $department_selection_list = '<input type="button" class="button" value="'.$AppUI->_('Select department...').'" onclick="javascript:popDepartment();" /><input type="hidden" name="project_departments" />';
+	}
 } else {
-  $department_selection_list = '<input type="button" class="button" value="'.$AppUI->_('Select department...').'" onclick="javascript:popDepartment();" /><input type="hidden" name="project_departments" />';
+$department_selection_list = null;
 }
 
 // Get contacts list
@@ -221,6 +226,11 @@ function setContacts(contact_id_string){
 	selected_contacts_id = contact_id_string;
 }
 
+-->
+</script>
+<?php if ($department_selection_list != null){ ?>
+<script>
+<!--
 var selected_departments_id = "<?php echo implode(',', $selected_departments); ?>";
 
 function popDepartment() {
@@ -241,7 +251,7 @@ function setDepartment(department_id_string){
 }
 -->
 </script>
-
+<?php } ?>
 <?php
 // Template projects related processing.
 	$objProject = new CProject();
