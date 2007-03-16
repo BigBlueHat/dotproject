@@ -1,4 +1,4558 @@
-2006-11-19 14:12  (gregorerhardt)
+2007-03-14 15:26  (pedroix)
+---------------------------------
+modules/files/folders_table.php
+- folders files list and version sublists not in synch
+
+2007-03-14 01:59  (merlinyoda)
+---------------------------------
+modules/files/index.php
+modules/files/index_table.php
+modules/files/index.php
+modules/files/index_table.new.php
+modules/files/index_table.php
+- 
+- Fixed some permission display issues for files.
+- 
+- Also, removed query object from inside index table loop in favor of pulling
+- all needed information *outside* of the loop.
+
+2007-03-13 10:25  (caseydk)
+---------------------------------
+modules/forums/view_topics.php
+modules/forums/view_topics.php
+- nasty bug in the join/group by which caused every post to show up as its own thread;
+
+2007-03-12 11:46  (nybod)
+---------------------------------
+db/upgrade_contacts_company.php
+- Added closing bracket at line 48
+
+2007-03-11 19:52  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updated changelog
+
+2007-03-11 07:57  (nybod)
+---------------------------------
+includes/session.php
+- Fix for Mantis 1901 regarding problems using dP's extended sessions with versions of php >= 5.2.0
+
+2007-03-10 04:16  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+style/_smarty/projects/addedit.html
+- Do not show departments button if dep module is inactive
+
+2007-03-10 03:50  (gregorerhardt)
+---------------------------------
+modules/files/do_file_aed.php
+modules/files/do_file_aed.php
+- #1932 - remove requirement for delete perm on file addition; cleaned permission check
+
+2007-03-09 22:27  (nybod)
+---------------------------------
+modules/links/addedit.php
+- reinserted "echo"
+
+2007-03-08 22:13  (nybod)
+---------------------------------
+modules/links/addedit.php
+- Removed short open tag.
+
+2007-03-08 22:04  (nybod)
+---------------------------------
+modules/contacts/addedit.php
+modules/links/addedit.php
+- replaced short tags in a couple of places.
+
+2007-03-08 18:37  (ajdonnison)
+---------------------------------
+modules/forums/viewer.php
+- #1930 - sanitise input against SQL injection attack.
+
+2007-03-08 18:33  (ajdonnison)
+---------------------------------
+modules/forums/viewer.php
+- #1930 - sanitise against SQL injection
+
+2007-03-08 09:06  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/index.php
+modules/calendar/calendar.class.php
+modules/calendar/index.php
+- 
+- Resolved issues (some due to recent development and fixes of other issues):
+- 
+-  - double display of certain events if user had any denied projects
+-  - some recurring events would not display properly in certain views
+-  - company_id defaults to "All" (company_id 0) instead of user's company
+
+2007-03-08 01:58  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/calendar.class.php
+- 
+- Conditionally adding join to projects table instead of always.
+
+2007-03-08 01:24  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/files/index_table.php
+modules/calendar/calendar.class.php
+- 
+- Removed unneeded occurrence of "event_project = 0" in WHERE clause
+- 
+- Where clause is now in an if block testing against
+- "count($allowedProjects)". Ironically enough $allowedProjects contains
+- an array of SQL statement listing *denied* project IDs
+- (i.e. 'event_id NOT IN (4,5,6)'). May need better wording on variable.
+- Something like "$notDeniedProjects" may be better than "$allowedProjects"
+
+2007-03-07 21:26  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- fixed a potential problem with substring
+
+2007-03-07 21:25  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- fixed potential problem with shortname being too short for substring
+
+2007-03-07 21:21  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+modules/projects/projects.class.php
+- #1908 - check that project_short_name is 10 characters (issue for
+- languages with encoded characters)
+
+2007-03-07 11:39  (merlinyoda)
+---------------------------------
+modules/files/index_table.new.php
+- 
+- Didn't apply all needed changes made in index_table.php to this file
+
+2007-03-07 11:34  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/files/index_table.new.php
+modules/files/index_table.php
+- 
+- Fixed issue with files marked for "all" projects not properly displaying
+- for users that are denied acces to at least one project.
+- 
+- Also fixed small bug introduced into modules/calendar/calendar.class.php
+
+2007-03-07 11:18  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/files/index_table.php
+- 
+- Fixed issue with files marked for "all" projects not properly displaying
+- for users that are denied acces to at least one project.
+- 
+- Also fixed small bug introduced into modules/calendar/calendar.class.php
+
+2007-03-07 09:13  (merlinyoda)
+---------------------------------
+modules/files/folders_table.php
+modules/files/index.php
+modules/files/files.class.php
+modules/files/index.php
+- 
+- Fixed syntax error in modules/files/folders_table.php.
+- 
+- Slight lin order change in modules/files/index.php
+
+2007-03-07 08:27  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/calendar.class.php
+- 
+- Streamlining previous fix concerning event visibility. Also fixed
+- company filter code immediately following.
+
+2007-03-07 07:28  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/files/index.php
+- 
+- Attempt to resolve issue where events and files that are not associated
+- with a project are not being displayed for users that are denied
+- to any (but not all) projects.
+
+2007-03-07 07:19  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/files/index.php
+- 
+- Attempt to resolve issue where events and files that are not associated
+- with a project are not being displayed for users that are denied
+- to any (but not all) projects.
+
+2007-03-07 00:27  (cyberhorse)
+---------------------------------
+modules/companies/index.php
+modules/contacts/index.php
+modules/tasks/index.php
+- #1914 - fixed issues with disappearing quotes from search box after a search.
+
+2007-03-06 23:51  (cyberhorse)
+---------------------------------
+modules/tasks/do_task_assign_aed.php
+- #1913 - fixed nonaction on updating priority in tasks per user screen.
+
+2007-03-06 23:47  (cyberhorse)
+---------------------------------
+modules/tasks/do_task_assign_aed.php
+- #1913 - fixed sql error on priority update.
+
+2007-03-06 23:20  (cyberhorse)
+---------------------------------
+modules/contacts/index.php
+- #1911 - fixed browsing by letter in contacts module for first/last name as well as display name.
+
+2007-03-06 23:01  (cyberhorse)
+---------------------------------
+modules/companies/vw_contacts.php
+- #1916 - fixed issue with companies, containing single quotes in the name
+- when viewing contact tab.
+
+2007-03-06 11:04  (merlinyoda)
+---------------------------------
+locales/en/admin.inc
+modules/admin/addedituser.php
+modules/admin/admin.class.php
+modules/admin/do_perms_aed.php
+modules/admin/do_user_aed.php
+modules/admin/do_userrole_aed.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+modules/admin/vw_usr_sessions.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/clash.php
+modules/calendar/day_view.php
+modules/calendar/do_event_aed.php
+modules/calendar/index.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/companies.class.php
+modules/companies/do_company_aed.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/companies/vw_archived.php
+modules/companies/vw_companies.php
+modules/companies/vw_contacts.php
+modules/companies/vw_depts.php
+modules/companies/vw_users.php
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+modules/contacts/csvexport.php
+modules/contacts/do_contact_aed.php
+modules/contacts/index.php
+modules/contacts/select_contact_company.php
+modules/contacts/vcardexport.php
+modules/contacts/vcardimport.php
+modules/contacts/view.php
+modules/departments/addedit.php
+modules/departments/departments.class.php
+modules/departments/do_dept_aed.php
+modules/departments/index.php
+modules/departments/view.php
+modules/departments/vw_contacts.php
+modules/files/addedit.php
+modules/files/addedit_folder.php
+modules/files/co.php
+modules/files/companies_tab.files.php
+modules/files/do_file_aed.php
+modules/files/do_file_co.php
+modules/files/do_files_bulk_aed.php
+modules/files/do_folder_aed.php
+modules/files/do_searchfiles.php
+modules/files/file_index_ignore.php
+modules/files/files.class.php
+modules/files/folders_table.php
+modules/files/functions.php
+modules/files/index.php
+modules/files/index_table.php
+modules/files/projects_tab.files.php
+modules/files/tasks_tab.files.php
+modules/files/tasks_tab.view.files.php
+modules/forums/addedit.php
+modules/forums/configure.php
+modules/forums/do_forum_aed.php
+modules/forums/do_post_aed.php
+modules/forums/do_watch_forum.php
+modules/forums/forums.class.php
+modules/forums/post_message.php
+modules/forums/setup.php
+modules/forums/view_messages.php
+modules/forums/view_pdf.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/help/index.php
+modules/history/addedit.php
+modules/history/index.php
+modules/history/projects_tab.history.php
+modules/history/setup.php
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index.php
+modules/links/index_table.php
+modules/links/links.class.php
+modules/links/projects_tab.links.php
+modules/links/setup.php
+modules/links/tasks_tab.links.php
+modules/projects/addedit.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/admin_tab.viewuser.projects_gantt.php
+modules/projects/departments_tab.view.projects.php
+modules/projects/departments_tab.view.projects_gantt.php
+modules/projects/do_project_aed.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/reports.php
+modules/projects/view.php
+modules/projects/viewgantt.php
+modules/projects/vw_files.php
+modules/projects/vw_forums.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+modules/projects/vw_logs.php
+modules/public/access_denied.php
+modules/public/calendar.php
+modules/public/chpwd.php
+modules/public/color_selector.php
+modules/public/contact_selector.php
+modules/public/date_format.php
+modules/public/selector.php
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/index.php
+modules/resources/resources.class.php
+modules/resources/setup.php
+modules/resources/tasks_dosql.addedit.php
+modules/resources/tasks_tab.addedit.other_resources.php
+modules/resources/tasks_tab.view.other_resources.php
+modules/resources/view.php
+modules/resources/vw_resources.php
+modules/smartsearch/index.php
+modules/smartsearch/setup.php
+modules/smartsearch/smartsearch.class.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+modules/system/addeditpref.php
+modules/system/billingcode.php
+modules/system/contacts_ldap.php
+modules/system/custom_field_addedit.php
+modules/system/custom_field_editor.php
+modules/system/do_billingcode_aed.php
+modules/system/do_custom_field_aed.php
+modules/system/do_preference_aed.php
+modules/system/do_systemconfig_aed.php
+modules/system/domodsql.php
+modules/system/index.php
+modules/system/system.class.php
+modules/system/systemconfig.php
+modules/system/systemconfig_help.php
+modules/system/translate.php
+modules/system/translate_save.php
+modules/system/viewmods.php
+modules/system/roles/do_perms_aed.php
+modules/system/roles/do_role_aed.php
+modules/system/roles/index.php
+modules/system/roles/roles.class.php
+modules/system/roles/viewrole.php
+modules/system/roles/vw_role_perms.php
+modules/system/syskeys/do_syskey_aed.php
+modules/system/syskeys/do_sysval_aed.php
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+modules/system/syskeys/syskeys.class.php
+modules/tasks/addedit.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_desc.php
+modules/tasks/ae_resource.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_assign_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/listtasks.php
+modules/tasks/organize.php
+modules/tasks/organizer.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/todo.php
+modules/tasks/todo_gantt_sub.php
+modules/tasks/todo_tasks_sub.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+- Systematic check through files for (!defined('DP_BASE_DIR')) sentinel.
+- Also checking for any remaining $dPconfig['root_dir'], $baseDir, or $baseDir
+- Adding punctuation so sentinel warning message to looks "proper".
+- 
+- ... also fixed some bugs in calendar.class.php and files.class.php
+- 
+-  - fix for company filter was not applied to recurring events.
+-  - statically declaring $file_helpdesk_item without helpdesk installed was
+-    breaking upload/check-in (stopping record being saved to database)
+
+2007-03-06 09:55  (merlinyoda)
+---------------------------------
+modules/calendar/calendar.class.php
+- 
+- fixed filtering by company for recurring events (HEAD and stable_2)
+
+2007-03-05 06:36  (caseydk)
+---------------------------------
+modules/departments/index.php
+- cleaning up some deprecated queries
+
+2007-03-04 01:40  (theideaman)
+---------------------------------
+modules/projects/addedit.php
+- fixed department popup and did minor code cleanup
+
+2007-03-04 01:36  (theideaman)
+---------------------------------
+modules/system/do_preference_aed.php
+- fixed a typo in the include_once statement and did *very* minor code cleanup
+
+2007-02-28 19:51  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/index.php
+- fixed company selection in calendar module
+
+2007-02-28 19:17  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- fixed filtering by company
+
+2007-02-27 21:38  (nybod)
+---------------------------------
+index.php
+- Couldn't handle empty default_view_a field. Applied code from HEAD to address problem.
+
+2007-02-27 08:35  (merlinyoda)
+---------------------------------
+fileviewer.php
+index.php
+queuescanner.php
+- 
+- Replaced some double qoute usage with equivilents single quote usage.
+- Especially strings without variables in them.
+
+2007-02-27 07:34  (merlinyoda)
+---------------------------------
+install/check_upgrade.php
+install/db.php
+install/do_install_db.php
+install/index.php
+install/install.inc.php
+install/vw_idx_check.php
+install/docs/about.html
+install/docs/check.php
+install/docs/index.html
+install/docs/main.css
+install/docs/rfc0001.00.html
+locales/core.php
+misc/debug.php
+misc/postnuke/dplink/index.php
+misc/postnuke/dplink/pnadmin.php
+misc/postnuke/dplink/pnuser.php
+misc/postnuke/dplink/pnlang/eng/admin.php
+- 
+- Systematic check through files for (!defined('DP_BASE_DIR')) sentinel.
+- Also checking for any remaining $dPconfig['root_dir'], $baseDir, or $baseDir
+- Adding punctuation so sentinel warning message to looks "proper".
+- 
+- Also removed "keelhaulable" useage of double quotes for simple strings.
+- 
+- Also removed carriage returns (^M) from some files.
+
+2007-02-27 04:34  (merlinyoda)
+---------------------------------
+includes/config-dist.php
+includes/db_adodb.php
+includes/db_connect.php
+includes/main_functions.php
+includes/permissions.php
+includes/sendpass.php
+includes/session.php
+includes/version.php
+- 
+- Systematic check through files for (!defined('DP_BASE_DIR')) sentinel.
+- Also checking for any remaining $dPconfig['root_dir'], $baseDir, or $baseDir
+- Adding punctuation so sentinel warning message to looks "proper".
+- 
+- Also removed "keelhaulable" useage of double quotes for simple strings.
+
+2007-02-27 03:37  (merlinyoda)
+---------------------------------
+functions/admin_func.php
+functions/forums_func.php
+functions/projects_func.php
+functions/tasks_func.php
+- 
+- Systematic check through files for (!defined('DP_BASE_DIR')) sentinel.
+- Also checking for any remaining $dPconfig['root_dir'], $baseDir, or $baseDir.
+- Adding punctuation so sentinel warning message to looks "proper".
+
+2007-02-27 03:33  (merlinyoda)
+---------------------------------
+db/upgrade_contacts.php
+db/upgrade_contacts_company.php
+db/upgrade_latest.php
+db/upgrade_permissions.php
+- 
+- Systematic check through files for (!defined('DP_BASE_DIR')) sentinel.
+- Also checking for any remaining $dPconfig['root_dir'], $baseDir, or $baseDir
+- Adding punctuation so sentinel warning message to looks "proper".
+- 
+- Also removed "keelhaulable" useage of double quotes for simple strings.
+
+2007-02-26 10:42  (nybod)
+---------------------------------
+modules/files/index_table.php
+- Added missing tooltip to edit icon.
+
+2007-02-25 08:10  (theideaman)
+---------------------------------
+install/db.php
+install/do_install_db.php
+- dPcheckExistingDB needs the dPconfig variable passed, so loaded from config.php if available
+
+2007-02-25 07:05  (theideaman)
+---------------------------------
+style/_smarty/projects/list.html
+- added current_page var to keep page when using pagination
+
+2007-02-25 07:05  (theideaman)
+---------------------------------
+modules/projects/index.php
+- added current_page var to keep page when using pagination; modified orderby code to sort asc by project_end_date; also did some code cleanup of that section
+
+2007-02-25 07:02  (theideaman)
+---------------------------------
+modules/projects/index.php
+- modified orderby code to sort asc by project_end_date; also did some code cleanup of that section
+
+2007-02-25 02:58  (theideaman)
+---------------------------------
+classes/template.class.php
+- removed orderby param in displayPagination to prevent accidental resorting
+
+2007-02-23 06:33  (caseydk)
+---------------------------------
+fileviewer.php
+- cleaned up some old stuff
+
+2007-02-23 05:06  (merlinyoda)
+---------------------------------
+classes/CustomFields.class.php
+classes/authenticator.class.php
+classes/customfieldsparser.class.php
+classes/date.class.php
+classes/dp.class.php
+classes/event_queue.class.php
+classes/libmail.class.php
+classes/permissions.class.php
+classes/query.class.php
+classes/ui.class.php
+- 
+- Systematic check through files for (!defined('DP_BASE_DIR')) sentinel.
+- Also checking for any remaining $dPconfig['root_dir'], $baseDir, or $baseDir
+- Adding punctuation so sentinel warning message to looks "proper".
+
+2007-02-22 01:23  (cyberhorse)
+---------------------------------
+base.php
+fileviewer.php
+index.php
+classes/CustomFields.class.php
+classes/authenticator.class.php
+classes/customfieldsparser.class.php
+classes/date.class.php
+classes/dp.class.php
+classes/event_queue.class.php
+classes/libmail.class.php
+classes/permissions.class.php
+classes/query.class.php
+classes/template.class.php
+classes/ui.class.php
+classes/webdav_client.class.php
+classes/auth/http_ba.class.php
+classes/auth/ldap.class.php
+classes/auth/pn.class.php
+functions/admin_func.php
+functions/forums_func.php
+functions/projects_func.php
+functions/tasks_func.php
+includes/db_adodb.php
+includes/db_connect.php
+includes/main_functions.php
+includes/permissions.php
+includes/sendpass.php
+includes/session.php
+includes/version.php
+locales/core.php
+locales/en/lang.php
+locales/en/locales.php
+modules/admin/addedituser.php
+modules/admin/admin.class.php
+modules/admin/companies_tab.view.users.php
+modules/admin/do_perms_aed.php
+modules/admin/do_user_aed.php
+modules/admin/do_userrole_aed.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/admin/vw_usr_roles.php
+modules/admin/vw_usr_sessions.php
+modules/backup/do_backup.php
+modules/backup/index.php
+modules/backup/restore.php
+modules/backup/setup.php
+modules/backup/zip.lib.php
+modules/calendar/addedit.php
+modules/calendar/calendar.class.php
+modules/calendar/calmgt.php
+modules/calendar/clash.php
+modules/calendar/day_view.php
+modules/calendar/do_event_aed.php
+modules/calendar/do_webcal_process.php
+modules/calendar/eventexport.php
+modules/calendar/eventimport.php
+modules/calendar/eventpublish.php
+modules/calendar/index.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/webcal_mgt.php
+modules/calendar/week_view.php
+modules/companies/companies.class.php
+modules/companies/do_company_aed.php
+modules/companies/index.php
+modules/companies/view.php
+modules/companies/vw_companies.php
+modules/companies/vw_depts.php
+modules/contacts/addedit.php
+modules/contacts/companies_tab.view.contacts.php
+modules/contacts/contacts.class.php
+modules/contacts/csvexport.php
+modules/contacts/do_contact_aed.php
+modules/contacts/index.php
+modules/contacts/list.php
+modules/contacts/select_contact_company.php
+modules/contacts/vcardexport.php
+modules/contacts/vcardimport.php
+modules/contacts/view.php
+modules/departments/addedit.php
+modules/departments/departments.class.php
+modules/departments/do_dept_aed.php
+modules/departments/index.php
+modules/departments/view.php
+modules/departments/vw_contacts.php
+modules/files/addedit.php
+modules/files/addedit_folder.php
+modules/files/co.php
+modules/files/companies_tab.files.php
+modules/files/companies_tab.view.files.php
+modules/files/do_file_aed.php
+modules/files/do_file_co.php
+modules/files/do_files_bulk_aed.php
+modules/files/do_folder_aed.php
+modules/files/do_searchfiles.php
+modules/files/files.class.php
+modules/files/folders_table.php
+modules/files/functions.php
+modules/files/index.php
+modules/files/index_table.new.php
+modules/files/index_table.php
+modules/files/projects_tab.files.php
+modules/files/tasks_tab.files.php
+modules/files/tasks_tab.view.files.php
+modules/forums/addedit.php
+modules/forums/do_forum_aed.php
+modules/forums/do_post_aed.php
+modules/forums/do_watch_forum.php
+modules/forums/forums.class.php
+modules/forums/index.php
+modules/forums/post_message.php
+modules/forums/setup.php
+modules/forums/view_messages.php
+modules/forums/view_pdf.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/help/index.php
+modules/history/addedit.php
+modules/history/index.php
+modules/history/projects_tab.history.php
+modules/history/setup.php
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index.php
+modules/links/index_table.php
+modules/links/links.class.php
+modules/links/projects_tab.links.php
+modules/links/setup.php
+modules/links/tasks_tab.links.php
+modules/projects/addedit.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/admin_tab.viewuser.projects_gantt.php
+modules/projects/companies_tab.view.active_projects.php
+modules/projects/companies_tab.view.archived_projects.php
+modules/projects/do_project_aed.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/projects/viewgantt.php
+modules/projects/vw_files.php
+modules/projects/vw_forums.php
+modules/projects/vw_idx_list.php
+modules/projects/vw_logs.php
+modules/public/calendar.php
+modules/public/chpwd.php
+modules/public/color_selector.php
+modules/public/contact_selector.php
+modules/public/date_format.php
+modules/public/register.php
+modules/public/selector.php
+modules/reports/index.php
+modules/reports/setup.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/allocateduserhours.php
+modules/reports/existing/completed.php
+modules/reports/existing/overall.php
+modules/reports/existing/overdue.php
+modules/reports/existing/stats.php
+modules/reports/existing/taskenddate.php
+modules/reports/existing/tasklist.php
+modules/reports/existing/tasklogs.php
+modules/reports/existing/tasksperuser.php
+modules/reports/existing/upcoming.php
+modules/reports/existing/userperformance.php
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/index.php
+modules/resources/resources.class.php
+modules/resources/setup.php
+modules/resources/tasks_dosql.addedit.php
+modules/resources/tasks_tab.addedit.other_resources.php
+modules/resources/tasks_tab.view.other_resources.php
+modules/resources/view.php
+modules/resources/vw_resources.php
+modules/smartsearch/index.php
+modules/smartsearch/setup.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/system/addeditpref.php
+modules/system/billingcode.php
+modules/system/contacts_ldap.php
+modules/system/custom_field_addedit.php
+modules/system/custom_field_editor.php
+modules/system/do_billingcode_aed.php
+modules/system/do_custom_field_aed.php
+modules/system/do_preference_aed.php
+modules/system/do_systemconfig_aed.php
+modules/system/domodsql.php
+modules/system/index.php
+modules/system/system.class.php
+modules/system/systemconfig.php
+modules/system/translate.php
+modules/system/translate_save.php
+modules/system/viewmods.php
+modules/system/roles/do_perms_aed.php
+modules/system/roles/do_role_aed.php
+modules/system/roles/index.php
+modules/system/roles/roles.class.php
+modules/system/roles/viewrole.php
+modules/system/roles/vw_role_perms.php
+modules/system/syskeys/do_syskey_aed.php
+modules/system/syskeys/do_sysval_aed.php
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+modules/system/syskeys/syskeys.class.php
+modules/tasks/addedit.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_desc.php
+modules/tasks/ae_resource.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_assign_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/listtasks.php
+modules/tasks/organize.php
+modules/tasks/projects_tab.view.task_logs.php
+modules/tasks/projects_tab.view.tasks.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/todo.php
+modules/tasks/todo_gantt_sub.php
+modules/tasks/todo_tasks_sub.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+modules/tasks/vw_tasks.php
+- major code cleanup
+- dPgetConfig calls
+- check for DP_BASE_DIR existance on every file
+- use DP_ constants
+
+2007-02-22 00:24  (merlinyoda)
+---------------------------------
+modules/files/files.class.php
+- 
+- Removed syntax error. Extra parenthesis at line 13.
+- Was causing white error screen of doom ...
+- ... (not to be confused with the Blue Screen Of Death :-))
+
+2007-02-21 21:30  (cyberhorse)
+---------------------------------
+fileviewer.php
+index.php
+classes/dp.class.php
+classes/libmail.class.php
+classes/permissions.class.php
+classes/query.class.php
+classes/ui.class.php
+includes/db_adodb.php
+includes/db_connect.php
+includes/main_functions.php
+includes/sendpass.php
+includes/session.php
+modules/calendar/clash.php
+modules/forums/view_pdf.php
+modules/public/calendar.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+- Cleanup $dPconfig calls and others
+
+2007-02-21 21:27  (ajdonnison)
+---------------------------------
+modules/files/files.class.php
+- Don't rely on helpdesk just being installed, it should also be enabled.
+- Probably should also add check on being able to access it (permissions).
+
+2007-02-21 20:55  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+- Changed from projects to sysvals in check for existing table as projects
+- can give a false prefix if eventum integration module is installed.
+
+2007-02-20 01:47  (caseydk)
+---------------------------------
+modules/admin/admin.class.php
+modules/admin/do_perms_aed.php
+modules/admin/do_userrole_aed.php
+modules/admin/vw_usr.php
+modules/admin/vw_usr_log.php
+modules/admin/vw_usr_perms.php
+modules/calendar/addedit.php
+modules/calendar/do_event_aed.php
+modules/calendar/index.php
+modules/calendar/view.php
+modules/calendar/vw_day_events.php
+modules/calendar/vw_day_tasks.php
+modules/calendar/week_view.php
+modules/companies/addedit.php
+modules/companies/companies.class.php
+modules/companies/do_company_aed.php
+modules/companies/index.php
+modules/companies/vw_archived.php
+modules/companies/vw_companies.php
+modules/companies/vw_contacts.php
+modules/companies/vw_depts.php
+modules/companies/vw_users.php
+modules/departments/addedit.php
+modules/departments/departments.class.php
+modules/departments/do_dept_aed.php
+modules/departments/vw_contacts.php
+modules/files/addedit_folder.php
+modules/files/co.php
+modules/files/do_file_aed.php
+modules/files/do_file_co.php
+modules/files/do_files_bulk_aed.php
+modules/files/do_folder_aed.php
+modules/files/do_searchfiles.php
+modules/files/file_index_ignore.php
+modules/files/functions.php
+modules/forums/configure.php
+modules/forums/do_post_aed.php
+modules/forums/do_watch_forum.php
+modules/forums/setup.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/forums/viewer.php
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+modules/contacts/do_contact_aed.php
+modules/contacts/index.php
+modules/contacts/select_contact_company.php
+modules/contacts/vcardimport.php
+modules/contacts/view.php
+modules/forums/addedit.php
+modules/forums/do_forum_aed.php
+modules/forums/index.php
+modules/forums/post_message.php
+modules/help/index.php
+modules/history/addedit.php
+modules/history/index.php
+modules/history/projects_tab.history.php
+modules/history/setup.php
+modules/links/addedit.php
+modules/links/do_link_aed.php
+modules/links/index_table.php
+modules/links/setup.php
+modules/projects/do_project_aed.php
+modules/projects/reports.php
+modules/projects/vw_forums.php
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+modules/projects/vw_logs.php
+modules/system/addeditpref.php
+modules/system/billingcode.php
+modules/system/contacts_ldap.php
+modules/system/custom_field_addedit.php
+modules/system/custom_field_editor.php
+modules/system/do_billingcode_aed.php
+modules/system/do_custom_field_aed.php
+modules/system/do_preference_aed.php
+modules/system/do_systemconfig_aed.php
+modules/system/index.php
+modules/system/system.class.php
+modules/system/systemconfig_help.php
+modules/tasks/ae_resource.php
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_assign_aed.php
+modules/tasks/do_updatetask.php
+modules/tasks/listtasks.php
+modules/tasks/organize.php
+modules/tasks/organizer.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/todo_tasks_sub.php
+modules/tasks/viewgantt.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+modules/system/roles/do_perms_aed.php
+modules/system/roles/do_role_aed.php
+modules/system/roles/index.php
+modules/system/roles/roles.class.php
+modules/system/roles/viewrole.php
+modules/system/roles/vw_role_perms.php
+modules/system/syskeys/do_syskey_aed.php
+modules/system/syskeys/do_sysval_aed.php
+modules/system/syskeys/index.php
+modules/system/syskeys/keys.php
+modules/system/syskeys/syskeys.class.php
+functions/projects_func.php
+modules/public/access_denied.php
+modules/public/contact_selector.php
+modules/public/selector.php
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/resources.class.php
+modules/resources/setup.php
+modules/resources/tasks_dosql.addedit.php
+modules/resources/tasks_tab.addedit.other_resources.php
+modules/resources/tasks_tab.view.other_resources.php
+modules/resources/view.php
+modules/resources/vw_resources.php
+modules/smartsearch/index.php
+modules/smartsearch/setup.php
+modules/smartsearch/smartsearch.class.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+functions/admin_func.php
+functions/forums_func.php
+functions/tasks_func.php
+- added the "!defined('DP_BASE_DIR')" sentinel to all of these files to prevent some of the previous register_globals issues;
+
+2007-02-18 13:54  (ajdonnison)
+---------------------------------
+base.php
+index.php
+queuescanner.php
+classes/permissions.class.php
+classes/query.class.php
+classes/template.class.php
+classes/ui.class.php
+modules/admin/vw_usr_roles.php
+modules/backup/do_backup.php
+modules/backup/do_restore.php
+modules/calendar/clash.php
+modules/companies/addedit.php
+modules/companies/do_company_aed.php
+modules/companies/view.php
+modules/contacts/addedit.php
+modules/contacts/do_contact_aed.php
+modules/contacts/view.php
+modules/forums/view_pdf.php
+modules/forums/viewer.php
+modules/public/calendar.php
+modules/public/date_format.php
+modules/public/register.php
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/view.php
+modules/system/addeditpref.php
+modules/system/custom_field_addedit.php
+modules/system/custom_field_editor.php
+modules/system/do_custom_field_aed.php
+modules/system/systemconfig.php
+modules/system/translate_save.php
+modules/tasks/ae_desc.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+- Added DP_BASE_DIR logic (first pass).
+
+2007-02-18 13:41  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.php
+db/upgrade_to_20.php
+db/upgrade_to_201.php
+db/upgrade_to_20beta.php
+- Changes to support new upgrade method,
+- fix for incorrect SQL.
+
+2007-02-18 13:36  (ajdonnison)
+---------------------------------
+locales/core.php
+misc/debug.php
+modules/admin/do_user_aed.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/admin/vw_active_usr.php
+modules/admin/vw_inactive_usr.php
+modules/admin/vw_usr_sessions.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/links_events.php
+modules/calendar/links_tasks.php
+modules/companies/view.php
+modules/companies/vw_active.php
+modules/contacts/csvexport.php
+modules/contacts/vcardexport.php
+modules/departments/index.php
+modules/departments/view.php
+modules/files/addedit.php
+modules/files/companies_tab.files.php
+modules/files/files.class.php
+modules/files/folders_table.php
+modules/files/index.php
+modules/files/index_table.php
+modules/files/projects_tab.files.php
+modules/files/tasks_tab.files.php
+modules/files/tasks_tab.view.files.php
+modules/forums/forums.class.php
+modules/help/index.php
+modules/links/index.php
+modules/links/links.class.php
+modules/links/projects_tab.links.php
+modules/links/tasks_tab.links.php
+modules/projects/addedit.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/admin_tab.viewuser.projects_gantt.php
+modules/projects/departments_tab.view.projects.php
+modules/projects/departments_tab.view.projects_gantt.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/view.php
+modules/projects/viewgantt.php
+modules/projects/vw_files.php
+modules/public/chpwd.php
+modules/public/color_selector.php
+modules/resources/index.php
+modules/system/domodsql.php
+modules/system/translate.php
+modules/system/viewmods.php
+modules/tasks/addedit.php
+modules/tasks/ae_dates.php
+modules/tasks/ae_depend.php
+modules/tasks/ae_desc.php
+modules/tasks/do_task_aed.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser.php
+modules/tasks/todo_gantt_sub.php
+modules/tasks/view.php
+style/classic/header.php
+style/classic/login.php
+style/default/header.php
+style/default/login.php
+style/default/lostpass.php
+style/default/overrides.php
+style/dp-grey-theme/header.php
+style/dp-grey-theme/login.php
+style/dp-grey-theme/overrides.php
+- First pass of security fixes, add DP_BASE_DIR sentinel
+
+2007-02-18 11:12  (nybod)
+---------------------------------
+modules/system/viewmods.php
+- Was missing a column
+
+2007-02-17 16:48  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+- Probably should have gone into RC1, but can wait for full release. Better detection of previous installation.
+
+2007-02-17 16:33  (ajdonnison)
+---------------------------------
+install/do_install_db.php
+install/install.inc.php
+- Fixed problem with installer not getting correct dates.
+
+2007-02-17 15:26  (ajdonnison)
+---------------------------------
+ChangeLog
+- Changelog for 2.1-rc1 release
+
+2007-02-17 15:18  (ajdonnison)
+---------------------------------
+db/dotproject.sql
+db/upgrade_101_to_102.sql
+db/upgrade_102_to_20alpha.sql
+db/upgrade_204_to_21rc1.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_to_20.php
+db/upgrade_to_201.php
+db/upgrade_to_202.php
+db/upgrade_to_204.php
+db/upgrade_to_20beta.php
+includes/version.php
+install/do_install_db.php
+- Fixed a number of outstanding issues in install/upgrade script so it should
+- now be safe to upgrade from stable release to CVS to stable release without
+- re-running code or losing track of versions or change dates.
+- Also added the new version information.
+
+2007-02-17 15:18  (ajdonnison)
+---------------------------------
+db/upgrade_204_to_21rc1.sql
+- file upgrade_204_to_21rc1.sql was initially added on branch stable_2.
+
+2007-02-17 12:14  (ajdonnison)
+---------------------------------
+classes/authenticator.class.php
+- #1890 - Allow anon bind in LDAP auth.
+
+2007-02-17 11:50  (ajdonnison)
+---------------------------------
+modules/system/viewmods.php
+- Keep module list clean.
+
+2007-02-17 11:50  (ajdonnison)
+---------------------------------
+modules/system/viewmods.php
+- Slightly tidier and easier to maintain method of keeping module list clean.
+
+2007-02-15 10:05  (nybod)
+---------------------------------
+modules/calendar/addedit.php
+- Fixed small problem when comparing event_end_date to start date.
+
+2007-02-15 10:02  (nybod)
+---------------------------------
+modules/calendar/addedit.php
+- Fixed small problem in comparison of event_end_date to start date.
+
+2007-02-14 22:56  (cyberhorse)
+---------------------------------
+modules/history/setup.php
+- reformatted code
+- updated names and order of indexes
+
+2007-02-14 22:52  (cyberhorse)
+---------------------------------
+modules/history/setup.php
+- #1879 - Optimized indexes on the history table to avoid slowdown.
+
+2007-02-14 22:24  (cyberhorse)
+---------------------------------
+modules/system/syskeys/syskeys.class.php
+modules/system/syskeys/syskeys.class.php
+- #1883 - fixed - added a check, which doesn't allow an empty key type.
+
+2007-02-14 02:14  (merlinyoda)
+---------------------------------
+modules/tasks/do_task_aed.php
+- Fixed bug introduced by previous fix to #1695. Task parent was always
+- being set to task's own id and making it a "root level" task.
+- 
+- Only existance of $_POST['new_task_project'] was checked and that
+- value was not 0 but did not check that project actually changed.
+- (that curreent project was different than new project).
+
+2007-02-14 02:13  (merlinyoda)
+---------------------------------
+modules/tasks/do_task_aed.php
+- 
+- Fixed bug introduced by previous fix to #1695. Task parent was always
+- being set to task's own id and making it a "root level" task.
+- 
+- Only existance of $_POST['new_task_project'] was checked and that
+- value was not 0 but did not check that project actually changed.
+- (that curreent project was different than new project).
+
+2007-02-11 21:57  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+classes/ui.class.php
+- #890 - fixed issue with quotes in passwords
+
+2007-02-11 21:18  (cyberhorse)
+---------------------------------
+modules/system/system.class.php
+modules/system/system.class.php
+- fixed billingcode id remembered after update
+
+2007-02-11 03:23  (caseydk)
+---------------------------------
+locales/en/system.inc
+locales/en/system.inc
+- fixed a translation typo;
+
+2007-02-11 03:19  (caseydk)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- added UserType to close out issue #1882;
+- tweaked a sysval update statement to use the sysval_title as opposed to an id;
+
+2007-02-11 03:10  (caseydk)
+---------------------------------
+modules/admin/addedituser.php
+- cleaning out a bunch of deprecated code
+
+2007-02-11 03:06  (caseydk)
+---------------------------------
+modules/calendar/links_events.php
+- cleaned out some deprecated code
+
+2007-02-10 07:12  (gregorerhardt)
+---------------------------------
+modules/system/billingcode.php
+style/_smarty/system/billingcode.html
+- billingcodes smartified on a early friday eve, now a date with a nice girl is following :)
+
+2007-02-09 09:02  (caseydk)
+---------------------------------
+modules/admin/do_user_aed.php
+modules/admin/do_user_aed.php
+- fixed #1880 - creating a user was case sensitive but the login was not - therefore, you could create User and user but the only one could log in;
+
+2007-02-09 07:28  (theideaman)
+---------------------------------
+style/classic/header.php
+- hide background image if window is a popup
+
+2007-02-07 22:47  (gregorerhardt)
+---------------------------------
+modules/files/do_file_aed.php
+modules/files/files.class.php
+- Fixing an unreported bug where the existing file has not been deleted on replacement via addedit - not via co and versioning
+
+2007-02-07 22:25  (gregorerhardt)
+---------------------------------
+modules/files/do_file_aed.php
+modules/files/files.class.php
+- Fixing an unreported bug where the existing file has not been deleted on replacement via addedit - not via co and versioning
+
+2007-02-06 23:59  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Updated db scripts for files module
+
+2007-02-06 23:54  (cyberhorse)
+---------------------------------
+modules/files/addedit.php
+modules/files/addedit_folder.php
+modules/files/co.php
+modules/files/companies_tab.files.php
+modules/files/do_file_aed.php
+modules/files/do_file_co.php
+modules/files/do_files_bulk_aed.php
+modules/files/do_folder_aed.php
+modules/files/files.class.php
+modules/files/folders_table.php
+modules/files/functions.php
+modules/files/index.php
+modules/files/index_table.new.php
+modules/files/index_table.php
+modules/files/projects_tab.files.php
+modules/files/images/back.png
+modules/files/images/down.png
+modules/files/images/duplicate.png
+modules/files/images/edit_add.png
+modules/files/images/filesaveas.png
+modules/files/images/folder5_small.png
+modules/files/images/folder_new.png
+modules/files/images/home.png
+modules/files/images/kedit.png
+modules/files/images/remove.png
+modules/files/images/up.png
+modules/files/images/icons/ac3.png
+modules/files/images/icons/aiff.png
+modules/files/images/icons/application-certificate.png
+modules/files/images/icons/application-x-executable.png
+modules/files/images/icons/applix.png
+modules/files/images/icons/arj.png
+modules/files/images/icons/ascii.png
+modules/files/images/icons/audio-x-generic.png
+modules/files/images/icons/audio.png
+modules/files/images/icons/binary.png
+modules/files/images/icons/bmp.png
+modules/files/images/icons/bz2.png
+modules/files/images/icons/cbz.png
+modules/files/images/icons/cdbo_list.png
+modules/files/images/icons/cdimage.png
+modules/files/images/icons/cdr.png
+modules/files/images/icons/cdtrack.png
+modules/files/images/icons/colorscm.png
+modules/files/images/icons/deb.png
+modules/files/images/icons/dia.png
+modules/files/images/icons/documents.png
+modules/files/images/icons/documents2.png
+modules/files/images/icons/empty.png
+modules/files/images/icons/encrypted.png
+modules/files/images/icons/exec_wine.png
+modules/files/images/icons/exec_wine1.png
+modules/files/images/icons/file_locked.png
+modules/files/images/icons/file_temporary.png
+modules/files/images/icons/font-x-generic.png
+modules/files/images/icons/font.png
+modules/files/images/icons/font_truetype.png
+modules/files/images/icons/ggnome-mime-application-x-class-file.png
+modules/files/images/icons/gif.png
+modules/files/images/icons/gnome-library.png
+modules/files/images/icons/gnome-mime-application-magicpoint.png
+modules/files/images/icons/gnome-mime-application-msword.png
+modules/files/images/icons/gnome-mime-application-ogg.png
+modules/files/images/icons/gnome-mime-application-par.png
+modules/files/images/icons/gnome-mime-application-pdf.png
+modules/files/images/icons/gnome-mime-application-pgp-encrypted.png
+modules/files/images/icons/gnome-mime-application-pgp-keys.png
+modules/files/images/icons/gnome-mime-application-pgp.png
+modules/files/images/icons/gnome-mime-application-postscript.png
+modules/files/images/icons/gnome-mime-application-rtf.png
+modules/files/images/icons/gnome-mime-application-vnd.lotus-1-2-3.png
+modules/files/images/icons/gnome-mime-application-vnd.ms-excel.png
+modules/files/images/icons/gnome-mime-application-vnd.ms-powerpoint.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.chart.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.database.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.drawing.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.formula.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.graphics-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.image.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.presentation-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.presentation.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.spreadsheet-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.spreadsheet.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text-web.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text.png
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.calc.png
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.impress.png
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.writer.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.calc.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.draw.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.impress.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.writer.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.writer.template.png
+modules/files/images/icons/gnome-mime-application-wordperfect.png
+modules/files/images/icons/gnome-mime-application-x-abiword.png
+modules/files/images/icons/gnome-mime-application-x-applix-spreadsheet.png
+modules/files/images/icons/gnome-mime-application-x-archive.png
+modules/files/images/icons/gnome-mime-application-x-arj.png
+modules/files/images/icons/gnome-mime-application-x-bittorrent.png
+modules/files/images/icons/gnome-mime-application-x-bzip-compressed-tar.png
+modules/files/images/icons/gnome-mime-application-x-bzip.png
+modules/files/images/icons/gnome-mime-application-x-cd-image.png
+modules/files/images/icons/gnome-mime-application-x-compress.png
+modules/files/images/icons/gnome-mime-application-x-compressed-tar.png
+modules/files/images/icons/gnome-mime-application-x-cpio-compressed.png
+modules/files/images/icons/gnome-mime-application-x-cpio.png
+modules/files/images/icons/gnome-mime-application-x-deb.png
+modules/files/images/icons/gnome-mime-application-x-desktop.png
+modules/files/images/icons/gnome-mime-application-x-dia-diagram.png
+modules/files/images/icons/gnome-mime-application-x-extension-nfo.png
+modules/files/images/icons/gnome-mime-application-x-extension-par2.png
+modules/files/images/icons/gnome-mime-application-x-gnumeric.png
+modules/files/images/icons/gnome-mime-application-x-gzip.png
+modules/files/images/icons/gnome-mime-application-x-ipod-firmware.png
+modules/files/images/icons/gnome-mime-application-x-jar.png
+modules/files/images/icons/gnome-mime-application-x-java-byte-code.png
+modules/files/images/icons/gnome-mime-application-x-lha.png
+modules/files/images/icons/gnome-mime-application-x-lhz.png
+modules/files/images/icons/gnome-mime-application-x-par2.png
+modules/files/images/icons/gnome-mime-application-x-perl.png
+modules/files/images/icons/gnome-mime-application-x-php.png
+modules/files/images/icons/gnome-mime-application-x-python-bytecode.png
+modules/files/images/icons/gnome-mime-application-x-python.png
+modules/files/images/icons/gnome-mime-application-x-rar.png
+modules/files/images/icons/gnome-mime-application-x-rpm.png
+modules/files/images/icons/gnome-mime-application-x-sharedlib.png
+modules/files/images/icons/gnome-mime-application-x-shellscript.png
+modules/files/images/icons/gnome-mime-application-x-tar.png
+modules/files/images/icons/gnome-mime-application-x-zip-compressed.png
+modules/files/images/icons/gnome-mime-application-x-zip.png
+modules/files/images/icons/gnome-mime-application-zip.png
+modules/files/images/icons/gnome-mime-application.png
+modules/files/images/icons/gnome-mime-audio-ac3.png
+modules/files/images/icons/gnome-mime-audio-basic.png
+modules/files/images/icons/gnome-mime-audio-midi.png
+modules/files/images/icons/gnome-mime-audio-x-aiff.png
+modules/files/images/icons/gnome-mime-audio-x-it.png
+modules/files/images/icons/gnome-mime-audio-x-midi.png
+modules/files/images/icons/gnome-mime-audio-x-mod.png
+modules/files/images/icons/gnome-mime-audio-x-mp3.png
+modules/files/images/icons/gnome-mime-audio-x-s3m.png
+modules/files/images/icons/gnome-mime-audio-x-stm.png
+modules/files/images/icons/gnome-mime-audio-x-ulaw.png
+modules/files/images/icons/gnome-mime-audio-x-voc.png
+modules/files/images/icons/gnome-mime-audio-x-wav.png
+modules/files/images/icons/gnome-mime-audio-x-xi.png
+modules/files/images/icons/gnome-mime-audio-x-xm.png
+modules/files/images/icons/gnome-mime-audio.png
+modules/files/images/icons/gnome-mime-image-bmp.png
+modules/files/images/icons/gnome-mime-image-gif.png
+modules/files/images/icons/gnome-mime-image-ief.png
+modules/files/images/icons/gnome-mime-image-jpeg.png
+modules/files/images/icons/gnome-mime-image-png.png
+modules/files/images/icons/gnome-mime-image-svg+xml.png
+modules/files/images/icons/gnome-mime-image-tiff.png
+modules/files/images/icons/gnome-mime-image-x-psd.png
+modules/files/images/icons/gnome-mime-image-x-rgb.png
+modules/files/images/icons/gnome-mime-image-x-tga.png
+modules/files/images/icons/gnome-mime-image-x-xbitmap.png
+modules/files/images/icons/gnome-mime-image-x-xcf.png
+modules/files/images/icons/gnome-mime-image-x-xfig.png
+modules/files/images/icons/gnome-mime-image-x-xpixmap.png
+modules/files/images/icons/gnome-mime-image.png
+modules/files/images/icons/gnome-mime-text-css.png
+modules/files/images/icons/gnome-mime-text-html.png
+modules/files/images/icons/gnome-mime-text-plain.png
+modules/files/images/icons/gnome-mime-text-x-authors.png
+modules/files/images/icons/gnome-mime-text-x-c++src.png
+modules/files/images/icons/gnome-mime-text-x-c-header.png
+modules/files/images/icons/gnome-mime-text-x-c.png
+modules/files/images/icons/gnome-mime-text-x-chdr.png
+modules/files/images/icons/gnome-mime-text-x-credits.png
+modules/files/images/icons/gnome-mime-text-x-csh.png
+modules/files/images/icons/gnome-mime-text-x-csharp.png
+modules/files/images/icons/gnome-mime-text-x-csrc.png
+modules/files/images/icons/gnome-mime-text-x-haskell.png
+modules/files/images/icons/gnome-mime-text-x-install.png
+modules/files/images/icons/gnome-mime-text-x-java.png
+modules/files/images/icons/gnome-mime-text-x-literate-haskell.png
+modules/files/images/icons/gnome-mime-text-x-objcsrc.png
+modules/files/images/icons/gnome-mime-text-x-python.png
+modules/files/images/icons/gnome-mime-text-x-readme.png
+modules/files/images/icons/gnome-mime-text-x-scheme.png
+modules/files/images/icons/gnome-mime-text-x-tex.png
+modules/files/images/icons/gnome-mime-text-x-txt.png
+modules/files/images/icons/gnome-mime-text-xml.png
+modules/files/images/icons/gnome-mime-text.png
+modules/files/images/icons/gnome-mime-video-mpeg.png
+modules/files/images/icons/gnome-mime-video-quicktime.png
+modules/files/images/icons/gnome-mime-video-x-ms-asf.png
+modules/files/images/icons/gnome-mime-video-x-ms-wmv.png
+modules/files/images/icons/gnome-mime-video-x-msvideo.png
+modules/files/images/icons/gnome-mime-video.png
+modules/files/images/icons/gnome-mime-x-directory-smb-server.png
+modules/files/images/icons/gnome-mime-x-directory-smb-share.png
+modules/files/images/icons/gnome-package.png
+modules/files/images/icons/gz.png
+modules/files/images/icons/html.png
+modules/files/images/icons/ief.png
+modules/files/images/icons/image-x-generic.png
+modules/files/images/icons/image.png
+modules/files/images/icons/image2.png
+modules/files/images/icons/info.png
+modules/files/images/icons/jpeg.png
+modules/files/images/icons/jpg.png
+modules/files/images/icons/lha.png
+modules/files/images/icons/lhz.png
+modules/files/images/icons/message.png
+modules/files/images/icons/midi.png
+modules/files/images/icons/mime-colorset.png
+modules/files/images/icons/mime-empty.png
+modules/files/images/icons/mime-help.png
+modules/files/images/icons/mime-postscript.png
+modules/files/images/icons/mime_ascii.png
+modules/files/images/icons/mime_cdr.png
+modules/files/images/icons/mime_colorset.png
+modules/files/images/icons/mime_empty.png
+modules/files/images/icons/mime_koffice.png
+modules/files/images/icons/misc.png
+modules/files/images/icons/mod.png
+modules/files/images/icons/mp3.png
+modules/files/images/icons/package-x-generic.png
+modules/files/images/icons/par.png
+modules/files/images/icons/pdf.png
+modules/files/images/icons/php.png
+modules/files/images/icons/pix.png
+modules/files/images/icons/png.png
+modules/files/images/icons/ps.png
+modules/files/images/icons/psd.png
+modules/files/images/icons/quicktime.png
+modules/files/images/icons/rar.png
+modules/files/images/icons/recycled.png
+modules/files/images/icons/rgb.png
+modules/files/images/icons/rpm.png
+modules/files/images/icons/s3m.png
+modules/files/images/icons/schedule.png
+modules/files/images/icons/shellscript.png
+modules/files/images/icons/sound.png
+modules/files/images/icons/source_c.png
+modules/files/images/icons/source_cpp.png
+modules/files/images/icons/source_h.png
+modules/files/images/icons/source_java.png
+modules/files/images/icons/source_php.png
+modules/files/images/icons/source_py.png
+modules/files/images/icons/source_pyc.png
+modules/files/images/icons/spreadsheet.png
+modules/files/images/icons/stm.png
+modules/files/images/icons/svg.png
+modules/files/images/icons/tar.png
+modules/files/images/icons/template_source.png
+modules/files/images/icons/tex.png
+modules/files/images/icons/text-html.png
+modules/files/images/icons/text-x-generic-template.png
+modules/files/images/icons/text-x-generic.png
+modules/files/images/icons/text-x-script.png
+modules/files/images/icons/text.png
+modules/files/images/icons/tga.png
+modules/files/images/icons/tgz.png
+modules/files/images/icons/tiff.png
+modules/files/images/icons/txt.png
+modules/files/images/icons/ulaw.png
+modules/files/images/icons/unknown.png
+modules/files/images/icons/vcalendar.png
+modules/files/images/icons/video-x-generic.png
+modules/files/images/icons/video.png
+modules/files/images/icons/vmlinuz.png
+modules/files/images/icons/voc.png
+modules/files/images/icons/wav.png
+modules/files/images/icons/x-office-address-book.png
+modules/files/images/icons/x-office-calendar.png
+modules/files/images/icons/x-office-document.png
+modules/files/images/icons/x-office-presentation.png
+modules/files/images/icons/x-office-spreadsheet.png
+modules/files/images/icons/xcf.png
+modules/files/images/icons/xfig.png
+modules/files/images/icons/xi.png
+modules/files/images/icons/xm.png
+modules/files/images/icons/zip.png
+style/_smarty/files/addedit.html
+style/_smarty/files/addedit_folder.html
+style/_smarty/files/co.html
+style/_smarty/files/list.row.html
+style/_smarty/files/list_folder.html
+style/_smarty/files/list_folder.row.html
+style/_smarty/files/navbar.html
+- Updating files module with pedro's update
+
+2007-02-06 04:48  (caseydk)
+---------------------------------
+modules/tasks/do_task_aed.php
+- fix from #1695 - when moving a task to a new project, it resets its task_parent - was causing odd display errors elsewhere
+
+2007-02-04 22:30  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt.php
+- 1611 - corrected start dates for task workers in project gantt
+
+2007-02-04 22:07  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_aed.php
+modules/tasks/do_task_aed.php
+- 1799 - sql error on saving with inexisting task dependency
+
+2007-02-04 14:25  (cyberhorse)
+---------------------------------
+modules/projects/vw_logs.php
+modules/projects/vw_logs.php
+modules/tasks/projects_tab.view.task_logs.php
+- #1764 - show deleted costcodes at the end of the filter
+
+2007-02-04 13:39  (cyberhorse)
+---------------------------------
+modules/system/billingcode.php
+modules/system/do_billingcode_aed.php
+modules/system/system.class.php
+- #1764 - added ability to edit billing codes
+
+2007-02-04 13:37  (cyberhorse)
+---------------------------------
+modules/system/billingcode.php
+modules/system/system.class.php
+- show deleted codes and allow editing them
+
+2007-02-04 13:22  (cyberhorse)
+---------------------------------
+modules/system/billingcode.php
+modules/system/do_billingcode_aed.php
+modules/system/system.class.php
+- #1764 - fixed/improved billingcode editing
+
+2007-02-04 13:11  (cyberhorse)
+---------------------------------
+modules/system/billingcode.php
+modules/system/do_billingcode_aed.php
+modules/system/system.class.php
+- #1764 - added ability to edit billing codes
+
+2007-02-04 12:30  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+modules/tasks/addedit.js
+- #1849 - added a check for end date to be after start date if "check
+- dates" system config is enabled.
+
+2007-02-04 01:02  (nybod)
+---------------------------------
+modules/admin/do_user_aed.php
+- After new user creation redirect to new user's permissions tab.
+
+2007-02-03 23:39  (gregorerhardt)
+---------------------------------
+index.php
+index.php
+- 1767 - disappearing tabs: unset commonly used reference variable
+
+2007-02-03 21:18  (gregorerhardt)
+---------------------------------
+install/check_upgrade.php
+- corrected typo in basedir define
+
+2007-02-03 21:18  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+- adding missing folder table structure on upgrade
+
+2007-02-03 04:41  (merlinyoda)
+---------------------------------
+modules/projects/addedit.php
+- 
+- Put back department selecting functionality for new projects.
+- Button appears for new projects. Drop-down appears for editing projects
+
+2007-02-03 02:36  (merlinyoda)
+---------------------------------
+modules/projects/addedit.php
+- 
+- Further modification to department selection for projects.
+- Departments cannot be selected until after new project is saved.
+- "Temporary" work-around until something can be sorted out for
+- to populate/re-populate departments when company is selected.
+
+2007-02-02 23:11  (nybod)
+---------------------------------
+modules/admin/addedituser.php
+- Added asterisk beside "User Role" to denote it as a required field: removed asterisk beside "User Type" as it is not a required field.
+
+2007-02-02 22:41  (pedroix)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/gantt.php
+- Only one dependency line was being drawn when there was more than one dependency (when several tasks depended on the end of only one task)
+
+2007-02-02 10:28  (nybod)
+---------------------------------
+locales/en/admin.inc
+modules/admin/addedituser.php
+modules/admin/do_user_aed.php
+- Made adding a role a requirement when creating a new user; made sending email to new user optional
+
+2007-02-02 05:38  (merlinyoda)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/tasks/gantt.php
+- 
+- 
+- Fixed an issue with Gantt chart locale as noted
+- (several times apparently:-)) on dP Forums
+- URL:
+- http://www.dotproject.net/vbulletin/showpost.php?p=26964&postcount=25
+- 
+- Slight variation from suggested fix:
+- Instead of changing
+- $graph->scale->SetDateLocale( $AppUI->user_lang[0] );
+- to
+- $graph->scale->SetDateLocale( $AppUI->user_lang[1] );
+- changed to
+- $graph->scale->SetDateLocale( $AppUI->user_lang[2] );
+
+2007-02-01 18:01  (ajdonnison)
+---------------------------------
+classes/event_queue.class.php
+- #1773 - Don't crash out on missing or invalid methods.
+
+2007-02-01 17:56  (ajdonnison)
+---------------------------------
+classes/event_queue.class.php
+- #1773 - Don't crash on invalid method/class in event queue.
+
+2007-02-01 06:46  (merlinyoda)
+---------------------------------
+db/upgrade_latest.php
+db/upgrade_latest.sql
+db/upgrade_sysvals.php
+- 
+- Fixing bug involving certain sysvals.
+
+2007-02-01 05:35  (merlinyoda)
+---------------------------------
+modules/companies/companies.class.php
+modules/projects/addedit.php
+- 
+- Fixed typo from bugfix in modules/projects/addedit.php
+- 
+- Commented out "FIXME" line of code that was causing error
+- in modules/companies/companies.class.php since users apparently no longer
+- have a company and department information.
+- (Company and Department should probably be dropped from user view/edit
+- screens if we really are dropping these fields)
+
+2007-02-01 03:46  (merlinyoda)
+---------------------------------
+modules/projects/addedit.php
+modules/tasks/addedit.php
+- Fix for Mantis Bug 1763. Make multi-select form objects into drop-downs
+- for Department field.
+
+2007-02-01 03:42  (merlinyoda)
+---------------------------------
+modules/projects/addedit.php
+modules/tasks/addedit.php
+- 
+- Fix for Mantis Bug 1763. Make multi-select form objects into drop-downs
+- for Department field.
+
+2007-01-31 20:06  (ajdonnison)
+---------------------------------
+base.php
+fileviewer.php
+index.php
+queuescanner.php
+classes/CustomFields.class.php
+classes/authenticator.class.php
+classes/customfieldsparser.class.php
+classes/date.class.php
+classes/dp.class.php
+classes/event_queue.class.php
+classes/libmail.class.php
+classes/permissions.class.php
+classes/query.class.php
+classes/ui.class.php
+db/upgrade_contacts.php
+db/upgrade_contacts_company.php
+db/upgrade_latest.php
+db/upgrade_permissions.php
+db/upgrade_to_20.php
+db/upgrade_to_201.php
+db/upgrade_to_202.php
+db/upgrade_to_204.php
+db/upgrade_to_20beta.php
+includes/db_adodb.php
+includes/db_connect.php
+includes/main_functions.php
+includes/permissions.php
+includes/sendpass.php
+includes/session.php
+install/check_upgrade.php
+install/do_install_db.php
+install/vw_idx_check.php
+lib/phpgacl/admin/gacl_admin.inc.php
+modules/admin/addedituser.php
+modules/admin/vw_usr_roles.php
+modules/calendar/clash.php
+modules/forums/view_pdf.php
+modules/projects/reports.php
+modules/public/calendar.php
+modules/public/date_format.php
+modules/system/systemconfig.php
+modules/system/translate_save.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+- First cut of using defines instead of globals to bypass a slew of register_globals related issues.
+
+2007-01-31 06:07  (merlinyoda)
+---------------------------------
+modules/admin/index.php
+modules/admin/index.php
+- 
+- Added additional check on user administration index page to make sure
+- that "orderby" value is not an invalid column from the "Active Sessions"
+- tab (tab=3) (this would cause a minor error when switching tabs).
+- Otherwise orderby is set to 'user_username'.
+
+2007-01-30 20:02  (pedroix)
+---------------------------------
+modules/files/files.class.php
+- A last query DBQueried
+
+2007-01-30 10:55  (nybod)
+---------------------------------
+images/googlemaps.gif
+- file googlemaps.gif was initially added on branch stable_2.
+
+2007-01-30 10:55  (nybod)
+---------------------------------
+images/googlemaps.gif
+modules/contacts/view.php
+- Added feature: lookup of contact address on Google Maps, may need some tweaking for non-US addresses. Modified  /contacts/view.php and added new file, /images/GoogleMaps.gif
+
+2007-01-30 10:32  (merlinyoda)
+---------------------------------
+style/_smarty/tasks/addedit.html
+- 
+- Fix for Mantis Bug 1857 (HEAD Version):
+- Modification to smarty "display" template.
+- dPformSafe unecessarily called for initial value in task name input field.
+
+2007-01-30 10:20  (merlinyoda)
+---------------------------------
+modules/tasks/addedit.php
+- 
+- Fixed Mantis Bug 1857:
+- Task name unnecessarily being run through dPformSafe()
+- on Add/Edit display page.
+
+2007-01-29 23:41  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+- file_folder field doesn't exist (guessing pedro's folder contribution)
+
+2007-01-29 14:07  (pedroix)
+---------------------------------
+modules/smartsearch/index.php
+modules/smartsearch/setup.php
+modules/smartsearch/smartsearch.class.php
+modules/smartsearch/searchobjects/companies.inc.php
+modules/smartsearch/searchobjects/contacts.inc.php
+modules/smartsearch/searchobjects/departments.inc.php
+modules/smartsearch/searchobjects/events.inc.php
+modules/smartsearch/searchobjects/files.inc.php
+modules/smartsearch/searchobjects/files_content.inc.php
+modules/smartsearch/searchobjects/forum_messages.inc.php
+modules/smartsearch/searchobjects/forums.inc.php
+modules/smartsearch/searchobjects/projects.inc.php
+modules/smartsearch/searchobjects/task_log.inc.php
+modules/smartsearch/searchobjects/tasks.inc.php
+modules/smartsearch/searchobjects/tickets.inc.php
+modules/smartsearch/searchobjects/users.inc.php
+- SmartSearch module upgraded
+
+2007-01-29 13:21  (pedroix)
+---------------------------------
+modules/files/index_table.php
+- "to be project_active or not to be project_active that is the question"
+
+2007-01-29 12:57  (pedroix)
+---------------------------------
+includes/main_functions.php
+- Make sure XSS protection is run against the blacklist correctly
+
+2007-01-28 14:07  (ajdonnison)
+---------------------------------
+install/check_upgrade.php
+install/db.php
+install/do_install_db.php
+- Better detection of existing database or missing tables, cleaned up
+- secondary pages so they still work with an existing config file.
+
+2007-01-28 13:47  (ajdonnison)
+---------------------------------
+classes/authenticator.class.php
+classes/auth/http_ba.class.php
+classes/auth/ldap.class.php
+classes/auth/pn.class.php
+- Split out authentication classes to allow pluggable authentication,
+- Added multiple LDAP server support using ; separated list of hosts.
+
+2007-01-28 13:19  (ajdonnison)
+---------------------------------
+classes/ui.class.php
+- Removed template creation from the constructor as it gets corrupted on
+- saving to session and re-initialising on wakeup.  Now creates the template
+- class instance just prior to initialising it.  This fixes problems with
+- smarty errors on missing functions, etc.
+
+2007-01-28 09:26  (caseydk)
+---------------------------------
+modules/public/chpwd.php
+- fixed a nasty one where changing your password would blank out your own account - not happy with the fix (raw sql) but it works;
+
+2007-01-28 09:25  (caseydk)
+---------------------------------
+modules/tasks/addedit.php
+- changed this to get users in the user's preferred format;
+
+2007-01-28 09:20  (caseydk)
+---------------------------------
+style/_smarty/projects/list.html
+- straightened out the table generation
+
+2007-01-28 08:39  (caseydk)
+---------------------------------
+modules/tasks/ae_resource.php
+- fixed bug that would only show 100% assignment instead of all of them - should be changed to fit Smarty instead of string concat;
+
+2007-01-27 09:05  (caseydk)
+---------------------------------
+style/_smarty/tasks/tasklog.addedit.html
+- tweaked to hide the costcode_id and validated 1865 as closed;
+
+2007-01-27 08:57  (caseydk)
+---------------------------------
+modules/tasks/tasks.class.php
+- some bad sql was causing the daily todo screen to die;
+
+2007-01-27 03:19  (pedroix)
+---------------------------------
+modules/files/addedit_folder.php
+- Last minute bug squash, cancel button thing
+
+2007-01-27 03:12  (pedroix)
+---------------------------------
+modules/files/addedit.php
+modules/files/folders_table.php
+- "to be project_active or not to be project_active that is the question"
+
+2007-01-27 02:32  (pedroix)
+---------------------------------
+db/upgrade_latest.sql
+- file_folder new field
+
+2007-01-27 02:20  (pedroix)
+---------------------------------
+db/dotproject.sql
+- file_folders new table
+
+2007-01-27 02:10  (pedroix)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/do_user_aed.php
+- Create a new user with a role and notification
+
+2007-01-27 01:49  (pedroix)
+---------------------------------
+modules/files/do_folder_aed.php
+- file do_folder_aed.php was initially added on branch stable_2.
+
+2007-01-27 01:49  (pedroix)
+---------------------------------
+modules/files/folders_table.php
+- file folders_table.php was initially added on branch stable_2.
+
+2007-01-27 01:49  (pedroix)
+---------------------------------
+modules/files/functions.php
+- file functions.php was initially added on branch stable_2.
+
+2007-01-27 01:49  (pedroix)
+---------------------------------
+modules/files/do_files_bulk_aed.php
+- file do_files_bulk_aed.php was initially added on branch stable_2.
+
+2007-01-27 01:49  (pedroix)
+---------------------------------
+modules/files/do_files_bulk_aed.php
+modules/files/do_folder_aed.php
+modules/files/folders_table.php
+modules/files/functions.php
+- Files module updated to folders
+
+2007-01-27 01:46  (pedroix)
+---------------------------------
+modules/files/addedit_folder.php
+- file addedit_folder.php was initially added on branch stable_2.
+
+2007-01-27 01:45  (pedroix)
+---------------------------------
+modules/files/addedit.php
+modules/files/addedit_folder.php
+modules/files/co.php
+modules/files/companies_tab.files.php
+modules/files/do_file_aed.php
+modules/files/do_file_co.php
+modules/files/files.class.php
+modules/files/index.php
+modules/files/index_table.php
+modules/files/projects_tab.files.php
+- Files module updated to folders
+
+2007-01-27 01:42  (pedroix)
+---------------------------------
+modules/files/images/up.png
+- file up.png was initially added on branch stable_2.
+
+2007-01-27 01:42  (pedroix)
+---------------------------------
+modules/files/images/up.png
+- Open source support icons for the files module
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/filesaveas.png
+- file filesaveas.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/folder_new.png
+- file folder_new.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/folder5_small.png
+- file folder5_small.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/home.png
+- file home.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/kedit.png
+- file kedit.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/remove.png
+- file remove.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/back.png
+- file back.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/back.png
+modules/files/images/down.png
+modules/files/images/duplicate.png
+modules/files/images/edit_add.png
+modules/files/images/filesaveas.png
+modules/files/images/folder5_small.png
+modules/files/images/folder_new.png
+modules/files/images/home.png
+modules/files/images/kedit.png
+modules/files/images/remove.png
+- Open source support icons for the files module
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/down.png
+- file down.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/duplicate.png
+- file duplicate.png was initially added on branch stable_2.
+
+2007-01-27 01:30  (pedroix)
+---------------------------------
+modules/files/images/edit_add.png
+- file edit_add.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/vmlinuz.png
+- file vmlinuz.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/x-office-address-book.png
+- file x-office-address-book.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/x-office-calendar.png
+- file x-office-calendar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/xi.png
+- file xi.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/x-office-document.png
+- file x-office-document.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/zip.png
+- file zip.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/voc.png
+- file voc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/x-office-presentation.png
+- file x-office-presentation.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/xfig.png
+- file xfig.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/x-office-spreadsheet.png
+- file x-office-spreadsheet.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/xcf.png
+- file xcf.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/video.png
+- file video.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/xm.png
+- file xm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/wav.png
+- file wav.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/text.png
+- file text.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/text-x-script.png
+- file text-x-script.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/video-x-generic.png
+- file video-x-generic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/unknown.png
+- file unknown.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/txt.png
+- file txt.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_py.png
+- file source_py.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/tex.png
+- file tex.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/tga.png
+- file tga.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/text-html.png
+- file text-html.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/spreadsheet.png
+- file spreadsheet.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_pyc.png
+- file source_pyc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/svg.png
+- file svg.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/tgz.png
+- file tgz.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ulaw.png
+- file ulaw.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/tar.png
+- file tar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/text-x-generic.png
+- file text-x-generic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/text-x-generic-template.png
+- file text-x-generic-template.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/vcalendar.png
+- file vcalendar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/tiff.png
+- file tiff.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/stm.png
+- file stm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/template_source.png
+- file template_source.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/rgb.png
+- file rgb.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/shellscript.png
+- file shellscript.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/php.png
+- file php.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/png.png
+- file png.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mp3.png
+- file mp3.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/psd.png
+- file psd.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_php.png
+- file source_php.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/pix.png
+- file pix.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/par.png
+- file par.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/rpm.png
+- file rpm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_java.png
+- file source_java.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/pdf.png
+- file pdf.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/package-x-generic.png
+- file package-x-generic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/quicktime.png
+- file quicktime.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ps.png
+- file ps.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/rar.png
+- file rar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_cpp.png
+- file source_cpp.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/schedule.png
+- file schedule.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/sound.png
+- file sound.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/s3m.png
+- file s3m.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/recycled.png
+- file recycled.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_c.png
+- file source_c.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/source_h.png
+- file source_h.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/image-x-generic.png
+- file image-x-generic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/image2.png
+- file image2.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/midi.png
+- file midi.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime_colorset.png
+- file mime_colorset.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime-postscript.png
+- file mime-postscript.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/jpeg.png
+- file jpeg.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime-help.png
+- file mime-help.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/misc.png
+- file misc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/image.png
+- file image.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime_cdr.png
+- file mime_cdr.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/info.png
+- file info.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mod.png
+- file mod.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/message.png
+- file message.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/jpg.png
+- file jpg.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/lha.png
+- file lha.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/lhz.png
+- file lhz.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/html.png
+- file html.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime_ascii.png
+- file mime_ascii.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime_koffice.png
+- file mime_koffice.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime-empty.png
+- file mime-empty.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime-colorset.png
+- file mime-colorset.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ief.png
+- file ief.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/mime_empty.png
+- file mime_empty.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-xml.png
+- file gnome-mime-text-xml.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-video.png
+- file gnome-mime-video.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-video-x-ms-asf.png
+- file gnome-mime-video-x-ms-asf.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gz.png
+- file gz.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-objcsrc.png
+- file gnome-mime-text-x-objcsrc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-x-directory-smb-share.png
+- file gnome-mime-x-directory-smb-share.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-tex.png
+- file gnome-mime-text-x-tex.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-video-x-ms-wmv.png
+- file gnome-mime-video-x-ms-wmv.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text.png
+- file gnome-mime-text.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-java.png
+- file gnome-mime-text-x-java.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-literate-haskell.png
+- file gnome-mime-text-x-literate-haskell.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-video-quicktime.png
+- file gnome-mime-video-quicktime.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-video-mpeg.png
+- file gnome-mime-video-mpeg.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-x-directory-smb-server.png
+- file gnome-mime-x-directory-smb-server.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-readme.png
+- file gnome-mime-text-x-readme.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-scheme.png
+- file gnome-mime-text-x-scheme.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-package.png
+- file gnome-package.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-python.png
+- file gnome-mime-text-x-python.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-video-x-msvideo.png
+- file gnome-mime-video-x-msvideo.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-txt.png
+- file gnome-mime-text-x-txt.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-tiff.png
+- file gnome-mime-image-tiff.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-authors.png
+- file gnome-mime-text-x-authors.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-html.png
+- file gnome-mime-text-html.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-c++src.png
+- file gnome-mime-text-x-c++src.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-xpixmap.png
+- file gnome-mime-image-x-xpixmap.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-credits.png
+- file gnome-mime-text-x-credits.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-tga.png
+- file gnome-mime-image-x-tga.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-xfig.png
+- file gnome-mime-image-x-xfig.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-haskell.png
+- file gnome-mime-text-x-haskell.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-c.png
+- file gnome-mime-text-x-c.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-psd.png
+- file gnome-mime-image-x-psd.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-css.png
+- file gnome-mime-text-css.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-install.png
+- file gnome-mime-text-x-install.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-csrc.png
+- file gnome-mime-text-x-csrc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-xcf.png
+- file gnome-mime-image-x-xcf.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-c-header.png
+- file gnome-mime-text-x-c-header.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-plain.png
+- file gnome-mime-text-plain.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-xbitmap.png
+- file gnome-mime-image-x-xbitmap.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-chdr.png
+- file gnome-mime-text-x-chdr.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-x-rgb.png
+- file gnome-mime-image-x-rgb.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image.png
+- file gnome-mime-image.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-csharp.png
+- file gnome-mime-text-x-csharp.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-text-x-csh.png
+- file gnome-mime-text-x-csh.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-mod.png
+- file gnome-mime-audio-x-mod.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-voc.png
+- file gnome-mime-audio-x-voc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-zip.png
+- file gnome-mime-application-zip.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-gif.png
+- file gnome-mime-image-gif.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-xi.png
+- file gnome-mime-audio-x-xi.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-ac3.png
+- file gnome-mime-audio-ac3.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-jpeg.png
+- file gnome-mime-image-jpeg.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-svg+xml.png
+- file gnome-mime-image-svg+xml.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-basic.png
+- file gnome-mime-audio-basic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-midi.png
+- file gnome-mime-audio-x-midi.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-s3m.png
+- file gnome-mime-audio-x-s3m.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-xm.png
+- file gnome-mime-audio-x-xm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-midi.png
+- file gnome-mime-audio-midi.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-ief.png
+- file gnome-mime-image-ief.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-bmp.png
+- file gnome-mime-image-bmp.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-ulaw.png
+- file gnome-mime-audio-x-ulaw.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application.png
+- file gnome-mime-application.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-mp3.png
+- file gnome-mime-audio-x-mp3.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-wav.png
+- file gnome-mime-audio-x-wav.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-aiff.png
+- file gnome-mime-audio-x-aiff.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio.png
+- file gnome-mime-audio.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-stm.png
+- file gnome-mime-audio-x-stm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-audio-x-it.png
+- file gnome-mime-audio-x-it.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-image-png.png
+- file gnome-mime-image-png.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-perl.png
+- file gnome-mime-application-x-perl.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-shellscript.png
+- file gnome-mime-application-x-shellscript.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-ipod-firmware.png
+- file gnome-mime-application-x-ipod-firmware.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-java-byte-code.png
+- file gnome-mime-application-x-java-byte-code.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-zip-compressed.png
+- file gnome-mime-application-x-zip-compressed.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-sharedlib.png
+- file gnome-mime-application-x-sharedlib.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-python.png
+- file gnome-mime-application-x-python.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-rpm.png
+- file gnome-mime-application-x-rpm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-lhz.png
+- file gnome-mime-application-x-lhz.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-php.png
+- file gnome-mime-application-x-php.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-lha.png
+- file gnome-mime-application-x-lha.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-par2.png
+- file gnome-mime-application-x-par2.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-jar.png
+- file gnome-mime-application-x-jar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-tar.png
+- file gnome-mime-application-x-tar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-python-bytecode.png
+- file gnome-mime-application-x-python-bytecode.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-zip.png
+- file gnome-mime-application-x-zip.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-rar.png
+- file gnome-mime-application-x-rar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-gzip.png
+- file gnome-mime-application-x-gzip.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-applix-spreadsheet.png
+- file gnome-mime-application-x-applix-spreadsheet.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.writer.png
+- file gnome-mime-application-vnd.sun.xml.writer.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-cpio-compressed.png
+- file gnome-mime-application-x-cpio-compressed.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-cpio.png
+- file gnome-mime-application-x-cpio.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-bzip-compressed-tar.png
+- file gnome-mime-application-x-bzip-compressed-tar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-desktop.png
+- file gnome-mime-application-x-desktop.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-deb.png
+- file gnome-mime-application-x-deb.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-extension-nfo.png
+- file gnome-mime-application-x-extension-nfo.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-arj.png
+- file gnome-mime-application-x-arj.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-gnumeric.png
+- file gnome-mime-application-x-gnumeric.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-wordperfect.png
+- file gnome-mime-application-wordperfect.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-abiword.png
+- file gnome-mime-application-x-abiword.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-compressed-tar.png
+- file gnome-mime-application-x-compressed-tar.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-cd-image.png
+- file gnome-mime-application-x-cd-image.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-bittorrent.png
+- file gnome-mime-application-x-bittorrent.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-extension-par2.png
+- file gnome-mime-application-x-extension-par2.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-compress.png
+- file gnome-mime-application-x-compress.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-archive.png
+- file gnome-mime-application-x-archive.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-bzip.png
+- file gnome-mime-application-x-bzip.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-x-dia-diagram.png
+- file gnome-mime-application-x-dia-diagram.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.writer.template.png
+- file gnome-mime-application-vnd.sun.xml.writer.template.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.ms-excel.png
+- file gnome-mime-application-vnd.ms-excel.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.formula.png
+- file gnome-mime-application-vnd.oasis.opendocument.formula.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.drawing.png
+- file gnome-mime-application-vnd.oasis.opendocument.drawing.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.spreadsheet-template.png
+- file gnome-mime-application-vnd.oasis.opendocument.spreadsheet-template.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.graphics-template.png
+- file gnome-mime-application-vnd.oasis.opendocument.graphics-template.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.lotus-1-2-3.png
+- file gnome-mime-application-vnd.lotus-1-2-3.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.calc.png
+- file gnome-mime-application-vnd.stardivision.calc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text-template.png
+- file gnome-mime-application-vnd.oasis.opendocument.text-template.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.calc.png
+- file gnome-mime-application-vnd.sun.xml.calc.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.database.png
+- file gnome-mime-application-vnd.oasis.opendocument.database.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.writer.png
+- file gnome-mime-application-vnd.stardivision.writer.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.ms-powerpoint.png
+- file gnome-mime-application-vnd.ms-powerpoint.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.presentation-template.png
+- file gnome-mime-application-vnd.oasis.opendocument.presentation-template.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.spreadsheet.png
+- file gnome-mime-application-vnd.oasis.opendocument.spreadsheet.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.presentation.png
+- file gnome-mime-application-vnd.oasis.opendocument.presentation.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text-web.png
+- file gnome-mime-application-vnd.oasis.opendocument.text-web.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.image.png
+- file gnome-mime-application-vnd.oasis.opendocument.image.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text.png
+- file gnome-mime-application-vnd.oasis.opendocument.text.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.impress.png
+- file gnome-mime-application-vnd.stardivision.impress.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.draw.png
+- file gnome-mime-application-vnd.sun.xml.draw.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.chart.png
+- file gnome-mime-application-vnd.oasis.opendocument.chart.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.impress.png
+- file gnome-mime-application-vnd.sun.xml.impress.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-rtf.png
+- file gnome-mime-application-rtf.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-pgp.png
+- file gnome-mime-application-pgp.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-ogg.png
+- file gnome-mime-application-ogg.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-pgp-encrypted.png
+- file gnome-mime-application-pgp-encrypted.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-magicpoint.png
+- file gnome-mime-application-magicpoint.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-msword.png
+- file gnome-mime-application-msword.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-pdf.png
+- file gnome-mime-application-pdf.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-pgp-keys.png
+- file gnome-mime-application-pgp-keys.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-par.png
+- file gnome-mime-application-par.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gif.png
+- file gif.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ggnome-mime-application-x-class-file.png
+- file ggnome-mime-application-x-class-file.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-library.png
+- file gnome-library.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/gnome-mime-application-postscript.png
+- file gnome-mime-application-postscript.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/file_temporary.png
+- file file_temporary.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/empty.png
+- file empty.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/font.png
+- file font.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/dia.png
+- file dia.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/encrypted.png
+- file encrypted.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/exec_wine.png
+- file exec_wine.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/deb.png
+- file deb.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/documents.png
+- file documents.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/documents2.png
+- file documents2.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/colorscm.png
+- file colorscm.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/font_truetype.png
+- file font_truetype.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/cdtrack.png
+- file cdtrack.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/exec_wine1.png
+- file exec_wine1.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/cdr.png
+- file cdr.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/cdimage.png
+- file cdimage.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/file_locked.png
+- file file_locked.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/font-x-generic.png
+- file font-x-generic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/audio-x-generic.png
+- file audio-x-generic.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/bz2.png
+- file bz2.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/binary.png
+- file binary.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ac3.png
+- file ac3.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/cdbo_list.png
+- file cdbo_list.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/aiff.png
+- file aiff.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ascii.png
+- file ascii.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/ac3.png
+modules/files/images/icons/aiff.png
+modules/files/images/icons/application-certificate.png
+modules/files/images/icons/application-x-executable.png
+modules/files/images/icons/applix.png
+modules/files/images/icons/arj.png
+modules/files/images/icons/ascii.png
+modules/files/images/icons/audio-x-generic.png
+modules/files/images/icons/audio.png
+modules/files/images/icons/binary.png
+modules/files/images/icons/bmp.png
+modules/files/images/icons/bz2.png
+modules/files/images/icons/cbz.png
+modules/files/images/icons/cdbo_list.png
+modules/files/images/icons/cdimage.png
+modules/files/images/icons/cdr.png
+modules/files/images/icons/cdtrack.png
+modules/files/images/icons/colorscm.png
+modules/files/images/icons/deb.png
+modules/files/images/icons/dia.png
+modules/files/images/icons/documents.png
+modules/files/images/icons/documents2.png
+modules/files/images/icons/empty.png
+modules/files/images/icons/encrypted.png
+modules/files/images/icons/exec_wine.png
+modules/files/images/icons/exec_wine1.png
+modules/files/images/icons/file_locked.png
+modules/files/images/icons/file_temporary.png
+modules/files/images/icons/font-x-generic.png
+modules/files/images/icons/font.png
+modules/files/images/icons/font_truetype.png
+modules/files/images/icons/ggnome-mime-application-x-class-file.png
+modules/files/images/icons/gif.png
+modules/files/images/icons/gnome-library.png
+modules/files/images/icons/gnome-mime-application-magicpoint.png
+modules/files/images/icons/gnome-mime-application-msword.png
+modules/files/images/icons/gnome-mime-application-ogg.png
+modules/files/images/icons/gnome-mime-application-par.png
+modules/files/images/icons/gnome-mime-application-pdf.png
+modules/files/images/icons/gnome-mime-application-pgp-encrypted.png
+modules/files/images/icons/gnome-mime-application-pgp-keys.png
+modules/files/images/icons/gnome-mime-application-pgp.png
+modules/files/images/icons/gnome-mime-application-postscript.png
+modules/files/images/icons/gnome-mime-application-rtf.png
+modules/files/images/icons/gnome-mime-application-vnd.lotus-1-2-3.png
+modules/files/images/icons/gnome-mime-application-vnd.ms-excel.png
+modules/files/images/icons/gnome-mime-application-vnd.ms-powerpoint.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.chart.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.database.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.drawing.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.formula.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.graphics-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.image.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.presentation-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.presentation.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.spreadsheet-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.spreadsheet.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text-template.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text-web.png
+modules/files/images/icons/gnome-mime-application-vnd.oasis.opendocument.text.png
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.calc.png
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.impress.png
+modules/files/images/icons/gnome-mime-application-vnd.stardivision.writer.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.calc.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.draw.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.impress.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.writer.png
+modules/files/images/icons/gnome-mime-application-vnd.sun.xml.writer.template.png
+modules/files/images/icons/gnome-mime-application-wordperfect.png
+modules/files/images/icons/gnome-mime-application-x-abiword.png
+modules/files/images/icons/gnome-mime-application-x-applix-spreadsheet.png
+modules/files/images/icons/gnome-mime-application-x-archive.png
+modules/files/images/icons/gnome-mime-application-x-arj.png
+modules/files/images/icons/gnome-mime-application-x-bittorrent.png
+modules/files/images/icons/gnome-mime-application-x-bzip-compressed-tar.png
+modules/files/images/icons/gnome-mime-application-x-bzip.png
+modules/files/images/icons/gnome-mime-application-x-cd-image.png
+modules/files/images/icons/gnome-mime-application-x-compress.png
+modules/files/images/icons/gnome-mime-application-x-compressed-tar.png
+modules/files/images/icons/gnome-mime-application-x-cpio-compressed.png
+modules/files/images/icons/gnome-mime-application-x-cpio.png
+modules/files/images/icons/gnome-mime-application-x-deb.png
+modules/files/images/icons/gnome-mime-application-x-desktop.png
+modules/files/images/icons/gnome-mime-application-x-dia-diagram.png
+modules/files/images/icons/gnome-mime-application-x-extension-nfo.png
+modules/files/images/icons/gnome-mime-application-x-extension-par2.png
+modules/files/images/icons/gnome-mime-application-x-gnumeric.png
+modules/files/images/icons/gnome-mime-application-x-gzip.png
+modules/files/images/icons/gnome-mime-application-x-ipod-firmware.png
+modules/files/images/icons/gnome-mime-application-x-jar.png
+modules/files/images/icons/gnome-mime-application-x-java-byte-code.png
+modules/files/images/icons/gnome-mime-application-x-lha.png
+modules/files/images/icons/gnome-mime-application-x-lhz.png
+modules/files/images/icons/gnome-mime-application-x-par2.png
+modules/files/images/icons/gnome-mime-application-x-perl.png
+modules/files/images/icons/gnome-mime-application-x-php.png
+modules/files/images/icons/gnome-mime-application-x-python-bytecode.png
+modules/files/images/icons/gnome-mime-application-x-python.png
+modules/files/images/icons/gnome-mime-application-x-rar.png
+modules/files/images/icons/gnome-mime-application-x-rpm.png
+modules/files/images/icons/gnome-mime-application-x-sharedlib.png
+modules/files/images/icons/gnome-mime-application-x-shellscript.png
+modules/files/images/icons/gnome-mime-application-x-tar.png
+modules/files/images/icons/gnome-mime-application-x-zip-compressed.png
+modules/files/images/icons/gnome-mime-application-x-zip.png
+modules/files/images/icons/gnome-mime-application-zip.png
+modules/files/images/icons/gnome-mime-application.png
+modules/files/images/icons/gnome-mime-audio-ac3.png
+modules/files/images/icons/gnome-mime-audio-basic.png
+modules/files/images/icons/gnome-mime-audio-midi.png
+modules/files/images/icons/gnome-mime-audio-x-aiff.png
+modules/files/images/icons/gnome-mime-audio-x-it.png
+modules/files/images/icons/gnome-mime-audio-x-midi.png
+modules/files/images/icons/gnome-mime-audio-x-mod.png
+modules/files/images/icons/gnome-mime-audio-x-mp3.png
+modules/files/images/icons/gnome-mime-audio-x-s3m.png
+modules/files/images/icons/gnome-mime-audio-x-stm.png
+modules/files/images/icons/gnome-mime-audio-x-ulaw.png
+modules/files/images/icons/gnome-mime-audio-x-voc.png
+modules/files/images/icons/gnome-mime-audio-x-wav.png
+modules/files/images/icons/gnome-mime-audio-x-xi.png
+modules/files/images/icons/gnome-mime-audio-x-xm.png
+modules/files/images/icons/gnome-mime-audio.png
+modules/files/images/icons/gnome-mime-image-bmp.png
+modules/files/images/icons/gnome-mime-image-gif.png
+modules/files/images/icons/gnome-mime-image-ief.png
+modules/files/images/icons/gnome-mime-image-jpeg.png
+modules/files/images/icons/gnome-mime-image-png.png
+modules/files/images/icons/gnome-mime-image-svg+xml.png
+modules/files/images/icons/gnome-mime-image-tiff.png
+modules/files/images/icons/gnome-mime-image-x-psd.png
+modules/files/images/icons/gnome-mime-image-x-rgb.png
+modules/files/images/icons/gnome-mime-image-x-tga.png
+modules/files/images/icons/gnome-mime-image-x-xbitmap.png
+modules/files/images/icons/gnome-mime-image-x-xcf.png
+modules/files/images/icons/gnome-mime-image-x-xfig.png
+modules/files/images/icons/gnome-mime-image-x-xpixmap.png
+modules/files/images/icons/gnome-mime-image.png
+modules/files/images/icons/gnome-mime-text-css.png
+modules/files/images/icons/gnome-mime-text-html.png
+modules/files/images/icons/gnome-mime-text-plain.png
+modules/files/images/icons/gnome-mime-text-x-authors.png
+modules/files/images/icons/gnome-mime-text-x-c++src.png
+modules/files/images/icons/gnome-mime-text-x-c-header.png
+modules/files/images/icons/gnome-mime-text-x-c.png
+modules/files/images/icons/gnome-mime-text-x-chdr.png
+modules/files/images/icons/gnome-mime-text-x-credits.png
+modules/files/images/icons/gnome-mime-text-x-csh.png
+modules/files/images/icons/gnome-mime-text-x-csharp.png
+modules/files/images/icons/gnome-mime-text-x-csrc.png
+modules/files/images/icons/gnome-mime-text-x-haskell.png
+modules/files/images/icons/gnome-mime-text-x-install.png
+modules/files/images/icons/gnome-mime-text-x-java.png
+modules/files/images/icons/gnome-mime-text-x-literate-haskell.png
+modules/files/images/icons/gnome-mime-text-x-objcsrc.png
+modules/files/images/icons/gnome-mime-text-x-python.png
+modules/files/images/icons/gnome-mime-text-x-readme.png
+modules/files/images/icons/gnome-mime-text-x-scheme.png
+modules/files/images/icons/gnome-mime-text-x-tex.png
+modules/files/images/icons/gnome-mime-text-x-txt.png
+modules/files/images/icons/gnome-mime-text-xml.png
+modules/files/images/icons/gnome-mime-text.png
+modules/files/images/icons/gnome-mime-video-mpeg.png
+modules/files/images/icons/gnome-mime-video-quicktime.png
+modules/files/images/icons/gnome-mime-video-x-ms-asf.png
+modules/files/images/icons/gnome-mime-video-x-ms-wmv.png
+modules/files/images/icons/gnome-mime-video-x-msvideo.png
+modules/files/images/icons/gnome-mime-video.png
+modules/files/images/icons/gnome-mime-x-directory-smb-server.png
+modules/files/images/icons/gnome-mime-x-directory-smb-share.png
+modules/files/images/icons/gnome-package.png
+modules/files/images/icons/gz.png
+modules/files/images/icons/html.png
+modules/files/images/icons/ief.png
+modules/files/images/icons/image-x-generic.png
+modules/files/images/icons/image.png
+modules/files/images/icons/image2.png
+modules/files/images/icons/info.png
+modules/files/images/icons/jpeg.png
+modules/files/images/icons/jpg.png
+modules/files/images/icons/lha.png
+modules/files/images/icons/lhz.png
+modules/files/images/icons/message.png
+modules/files/images/icons/midi.png
+modules/files/images/icons/mime-colorset.png
+modules/files/images/icons/mime-empty.png
+modules/files/images/icons/mime-help.png
+modules/files/images/icons/mime-postscript.png
+modules/files/images/icons/mime_ascii.png
+modules/files/images/icons/mime_cdr.png
+modules/files/images/icons/mime_colorset.png
+modules/files/images/icons/mime_empty.png
+modules/files/images/icons/mime_koffice.png
+modules/files/images/icons/misc.png
+modules/files/images/icons/mod.png
+modules/files/images/icons/mp3.png
+modules/files/images/icons/package-x-generic.png
+modules/files/images/icons/par.png
+modules/files/images/icons/pdf.png
+modules/files/images/icons/php.png
+modules/files/images/icons/pix.png
+modules/files/images/icons/png.png
+modules/files/images/icons/ps.png
+modules/files/images/icons/psd.png
+modules/files/images/icons/quicktime.png
+modules/files/images/icons/rar.png
+modules/files/images/icons/recycled.png
+modules/files/images/icons/rgb.png
+modules/files/images/icons/rpm.png
+modules/files/images/icons/s3m.png
+modules/files/images/icons/schedule.png
+modules/files/images/icons/shellscript.png
+modules/files/images/icons/sound.png
+modules/files/images/icons/source_c.png
+modules/files/images/icons/source_cpp.png
+modules/files/images/icons/source_h.png
+modules/files/images/icons/source_java.png
+modules/files/images/icons/source_php.png
+modules/files/images/icons/source_py.png
+modules/files/images/icons/source_pyc.png
+modules/files/images/icons/spreadsheet.png
+modules/files/images/icons/stm.png
+modules/files/images/icons/svg.png
+modules/files/images/icons/tar.png
+modules/files/images/icons/template_source.png
+modules/files/images/icons/tex.png
+modules/files/images/icons/text-html.png
+modules/files/images/icons/text-x-generic-template.png
+modules/files/images/icons/text-x-generic.png
+modules/files/images/icons/text-x-script.png
+modules/files/images/icons/text.png
+modules/files/images/icons/tga.png
+modules/files/images/icons/tgz.png
+modules/files/images/icons/tiff.png
+modules/files/images/icons/txt.png
+modules/files/images/icons/ulaw.png
+modules/files/images/icons/unknown.png
+modules/files/images/icons/vcalendar.png
+modules/files/images/icons/video-x-generic.png
+modules/files/images/icons/video.png
+modules/files/images/icons/vmlinuz.png
+modules/files/images/icons/voc.png
+modules/files/images/icons/wav.png
+modules/files/images/icons/x-office-address-book.png
+modules/files/images/icons/x-office-calendar.png
+modules/files/images/icons/x-office-document.png
+modules/files/images/icons/x-office-presentation.png
+modules/files/images/icons/x-office-spreadsheet.png
+modules/files/images/icons/xcf.png
+modules/files/images/icons/xfig.png
+modules/files/images/icons/xi.png
+modules/files/images/icons/xm.png
+modules/files/images/icons/zip.png
+- Open source support icons for the files module
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/application-x-executable.png
+- file application-x-executable.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/bmp.png
+- file bmp.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/arj.png
+- file arj.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/application-certificate.png
+- file application-certificate.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/audio.png
+- file audio.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/cbz.png
+- file cbz.png was initially added on branch stable_2.
+
+2007-01-27 01:23  (pedroix)
+---------------------------------
+modules/files/images/icons/applix.png
+- file applix.png was initially added on branch stable_2.
+
+2007-01-25 13:37  (caseydk)
+---------------------------------
+modules/projects/index.php
+index.php
+- adjusted for coding standards;
+
+2007-01-25 13:37  (caseydk)
+---------------------------------
+modules/projects/projects.class.php
+- tweaked it to update null values;
+
+2007-01-25 13:36  (caseydk)
+---------------------------------
+modules/projects/addedit.php
+- implemented retrieval for "edit" permissions distinct from "view" permissions - for example, if you have "view" permissions for a company, you probably shouldn't be able to add a project to it;
+
+2007-01-25 13:35  (caseydk)
+---------------------------------
+modules/projects/companies_tab.view.active_projects.php
+modules/projects/companies_tab.view.archived_projects.php
+- refactored these to be essentially identical since they functioned the same
+
+2007-01-25 13:34  (caseydk)
+---------------------------------
+classes/dp.class.php
+classes/permissions.class.php
+- implemented retrieval for "edit" permissions distinct from "view" permissions
+
+2007-01-25 13:33  (caseydk)
+---------------------------------
+classes/CustomFields.class.php
+- added a sort by field_name to ensure alphabetical order if they don't set a order;
+
+2007-01-25 08:10  (merlinyoda)
+---------------------------------
+db/dotproject.sql
+lib/phpgacl/Cache_Lite/Cache_Lite.php
+- 
+- Changes towards Bug Report #1792
+
+2007-01-25 04:05  (merlinyoda)
+---------------------------------
+modules/tasks/tasks.php
+- 
+- "Improvement" on fix for bug #1744.
+- Also "tabified" file (replaces 4 spaces with a tab character)
+
+2007-01-22 05:31  (gregorerhardt)
+---------------------------------
+style/_smarty/system/viewmods.html
+- adding view modules smarty template
+
+2007-01-22 05:30  (gregorerhardt)
+---------------------------------
+includes/smarty/function.dPgetModuleSetupConfig.php
+includes/smarty/function.dPisModuleConfigurable.php
+includes/smarty/function.dPunsetArrayValue.php
+modules/system/systemconfig_help.php
+modules/system/viewmods.php
+- module view converted to smarty
+
+2007-01-22 05:24  (gregorerhardt)
+---------------------------------
+style/_smarty/projects/list.html
+- rollback erraneous changes which should not have gone in - 1.8
+
+2007-01-21 04:06  (caseydk)
+---------------------------------
+modules/tasks/do_task_aed.php
+- fixed an error that would cause a task moved to a new project to keep its original parent task which would throw off all calculations, displays, etc;
+
+2007-01-20 01:56  (gregorerhardt)
+---------------------------------
+modules/forums/configure.php
+modules/forums/forums.class.php
+modules/forums/setup.php
+modules/system/viewmods.php
+style/_smarty/projects/list.html
+style/_smarty/system/systemconfig.html
+- module configuration links, remove hard custom hack for forums config
+
+2007-01-20 01:02  (gregorerhardt)
+---------------------------------
+modules/projects/departments_tab.view.projects.php
+- rounding duration - hint by bruce
+
+2007-01-18 12:49  (nybod)
+---------------------------------
+index.php
+index.php
+- Oops. Not the right fix.  Undoing for now. default_view_tab not getting pulled from dPconfig.
+
+2007-01-18 12:35  (nybod)
+---------------------------------
+index.php
+index.php
+- default_view_tab not getting pulled from dPconfig.
+
+2007-01-18 11:23  (merlinyoda)
+---------------------------------
+locales/en/contacts.inc
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+style/_smarty/contacts/addedit.html
+- 
+-  - Solidified fix for bug #1232.
+-  - Added "user contact deletion" error message to "en" locale
+
+2007-01-18 11:20  (merlinyoda)
+---------------------------------
+locales/en/contacts.inc
+modules/contacts/addedit.php
+modules/contacts/contacts.class.php
+- 
+-  - Solidified fix for bug #1232.
+-  - Added "user contact deletion" error message to "en" locale
+
+2007-01-18 03:21  (gregorerhardt)
+---------------------------------
+modules/projects/departments_tab.view.projects.php
+- Merge the forms for the checkboxes on departments: projects tab
+
+2007-01-18 01:10  (nybod)
+---------------------------------
+modules/projects/vw_logs.php
+- Mantis 1833 regarding task log editing permissions.
+
+2007-01-17 23:26  (nybod)
+---------------------------------
+modules/projects/vw_logs.php
+- Mantis 1833 regarding task log editing permissions.
+
+2007-01-17 15:49  (caseydk)
+---------------------------------
+db/upgrade_latest.sql
+- tiny formatting tweak, no func change
+
+2007-01-13 07:48  (nybod)
+---------------------------------
+modules/calendar/calendar.class.php
+- Corrected typo: uset_last_name to user_last_name.
+
+2007-01-10 04:50  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- fixing double to single quotes conversion error
+
+2007-01-08 00:19  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Changing INDEX to PRIMARY KEY
+
+2007-01-06 19:15  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Adding INDEX for custom fields value_id
+
+2007-01-06 19:11  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+- Adding INDEX for custom fields value_id
+
+2007-01-06 04:57  (gregorerhardt)
+---------------------------------
+modules/tasks/do_task_aed.php
+modules/tasks/gantt.php
+modules/tasks/index.php
+modules/tasks/organize.php
+modules/tasks/projects_tab.view.task_logs.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/todo.php
+modules/tasks/todo_tasks_sub.php
+modules/tasks/view.php
+modules/tasks/viewgantt.php
+- replacing double with single quotes
+
+2007-01-06 03:20  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+- replacing double with single quotes
+
+2007-01-06 03:03  (gregorerhardt)
+---------------------------------
+locales/en/admin.inc
+modules/admin/addedituser.php
+- #1671: require company to be chosen when adding a new user
+
+2007-01-04 12:34  (ajdonnison)
+---------------------------------
+modules/system/system.class.php
+- Fix for wrong user preferences being changed.
+
+2007-01-04 12:29  (ajdonnison)
+---------------------------------
+modules/system/system.class.php
+- Fixed problem where the wrong user's preferences are updated, thanks to ryan_ on IRC for his assistance in sorting this out.
+
+2007-01-04 05:29  (gregorerhardt)
+---------------------------------
+modules/departments/view.php
+- fix dept_id losing when viewing department from company's link
+
+2007-01-03 04:02  (merlinyoda)
+---------------------------------
+functions/projects_func.php
+- Set "$priority" array to use system configured values instead
+- of predefined values in the code.
+
+2007-01-03 03:44  (merlinyoda)
+---------------------------------
+functions/admin_func.php
+- 
+- Updated "$utypes" user type array to use system configured values instead
+- of using a predefined list as it had been.
+
+2007-01-01 09:50  (caseydk)
+---------------------------------
+js/dPcommon.js
+style/_smarty/header.html
+style/_smarty/projects/addedit.html
+style/_smarty/public/calendar.html
+style/_smarty/tasks/ae_dates.html
+- implemented #1171 which called for a 'clear date' button in a few places;
+- also changed the existing 'clear date' display to use the translation system;
+
+2006-12-28 09:55  (mosen)
+---------------------------------
+modules/contacts/view.php
+style/_smarty/contacts/view.html
+- Included missing customfields module in contacts/view
+- Added CustomFields variable to contact view template
+
+2006-12-28 05:20  (gregorerhardt)
+---------------------------------
+modules/projects/departments_tab.view.projects_gantt.php
+- file departments_tab.view.projects_gantt.php was initially added on branch stable_2.
+
+2006-12-28 05:20  (gregorerhardt)
+---------------------------------
+modules/projects/departments_tab.view.projects_gantt.php
+modules/projects/gantt.php
+modules/projects/viewgantt.php
+- projects gantt subview with project owner option for departments
+
+2006-12-27 21:19  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/tasks/gantt.php
+- fixing gantt locale determination change from 20061208
+
+2006-12-27 20:24  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- added missing session_user column and updated ProjectStatus sysval
+
+2006-12-27 19:39  (gregorerhardt)
+---------------------------------
+modules/departments/index.php
+modules/departments/view.php
+- fix for the case where  unset or no session data available
+
+2006-12-26 05:31  (nybod)
+---------------------------------
+images/GoogleMaps.gif
+style/_smarty/contacts/view.html
+- Added feature: lookup of contact address on Google Maps, may need some tweaking for non-US addresses. Modified  style/_smarty/contacts/view.html and added new file, /images/GoogleMaps.gif
+
+2006-12-20 00:13  (nybod)
+---------------------------------
+modules/tasks/todo.php
+- #1790 - make selected user to see todo->gantt chart for stick (cyberhorse's work)
+
+2006-12-19 23:57  (cyberhorse)
+---------------------------------
+modules/tasks/todo_gantt_sub.php
+style/_smarty/tasks/todo_gantt.html
+- smartified todo->gantt page
+
+2006-12-19 23:35  (cyberhorse)
+---------------------------------
+modules/tasks/todo.php
+- #1790 - make selected user to see todo->gantt chart for stick
+
+2006-12-19 11:07  (mosen)
+---------------------------------
+db/dotproject.sql
+db/upgrade_sysvals.php
+- sysvals upgrade converted to query class
+
+2006-12-18 13:17  (mosen)
+---------------------------------
+modules/system/syskeys/index.php
+style/_smarty/system/syskeys/index.html
+- completed conversion of sysvals editor to support new sysvals structure.
+
+2006-12-18 13:01  (mosen)
+---------------------------------
+modules/system/syskeys/do_sysval_aed.php
+modules/system/syskeys/index.php
+modules/system/syskeys/syskeys.class.php
+style/_smarty/system/syskeys/index.html
+- system lookup values editor partial update
+
+2006-12-18 09:40  (mosen)
+---------------------------------
+includes/main_functions.php
+- dpGetSysvals upgraded in main functions
+
+2006-12-17 21:29  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/list.row.html
+- Made task description popup non-sticky - it was too distracting before
+- IMO
+
+2006-12-17 21:21  (cyberhorse)
+---------------------------------
+classes/authenticator.class.php
+classes/query.class.php
+includes/db_adodb.php
+includes/session.php
+- Changes towards making database portability
+- Fixed db_dateTime2unix behaviour (take time into account)
+
+2006-12-17 05:03  (nybod)
+---------------------------------
+modules/admin/addedituser.php
+- Removed asterisk beside Company field which erroneously indicated that it was a required field.
+
+2006-12-16 18:59  (cyberhorse)
+---------------------------------
+db/dotproject.sql
+- fixed sql error (too many values after removing users fields)
+
+2006-12-16 17:22  (cyberhorse)
+---------------------------------
+modules/tasks/ae_desc.php
+- fixed missing global $baseDir variable
+
+2006-12-16 16:57  (cyberhorse)
+---------------------------------
+includes/session.php
+- PHP5 fix (as suggested by MOTE in
+- http://www.dotproject.net/vbulletin/showthread.php?t=5667)
+
+2006-12-16 16:47  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/admin/do_user_aed.php
+- removed user_company, user_department and user_owner from users table
+
+2006-12-16 05:02  (merlinyoda)
+---------------------------------
+lib/ezpdf/class.ezpdf.php
+lib/ezpdf/class.pdf.php
+- 
+- Got rid of the carrage return characters so they don't show up under *nix.
+- 
+- Added the following lines to the stream() function in
+- lib/ezpdf/class.pdf.php to solve the problem of certain versions IE
+- trying to download/display a pdf report based on the page/arguments
+- in the URL instead of what is passed to it in the HTTP header information
+- (I've had a similiar problem in other programs because of IE's disreguard
+- of web standards by running everything in "quirks" mode unless you
+- explicitly specify otherwise not to):
+- 
+-   header( "Pragma: ");
+-   header( "Cache-Control: public");
+
+2006-12-15 01:41  (cyberhorse)
+---------------------------------
+includes/db_adodb.php
+modules/companies/companies.class.php
+modules/forums/forums.class.php
+- Some comments updated
+
+2006-12-15 00:07  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+classes/libmail.class.php
+classes/ui.class.php
+includes/smarty/function.dPdateFormat.php
+includes/smarty/function.dPgetSystemConfigSelect.php
+includes/smarty/function.dPgetSystemPrefsSelect.php
+includes/smarty/function.dPshowImage.php
+includes/smarty/function.dPtranslate.php
+includes/smarty/function.dPtranslateToVar.php
+misc/postnuke/dplink/index.php
+modules/calendar/calendar.class.php
+modules/links/index_table.php
+modules/links/setup.php
+modules/resources/addedit.php
+modules/resources/do_resource_aed.php
+modules/resources/view.php
+modules/system/custom_field_addedit.php
+modules/system/do_custom_field_aed.php
+modules/tasks/ae_desc.php
+modules/tasks/do_task_aed.php
+modules/tasks/tasks.class.php
+- Fixed a few potential problems
+- initialized some variables
+- pointed some variables to actual class variables in the mail class
+- (monitor if something goes wrong)
+- declared some variables as globals, when accessed from methods
+- updated missing parameters
+- added $baseDir to a few includes in resources and tasks modules
+
+2006-12-14 15:01  (mosen)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.php
+db/upgrade_sysvals.php
+- Updated sysvals table to use rows instead of char delimited fields
+
+2006-12-12 15:52  (cyberhorse)
+---------------------------------
+modules/forums/view_topics.php
+- forums tabs were broken when there are messages
+
+2006-12-11 23:09  (cyberhorse)
+---------------------------------
+style/_smarty/contacts/addedit.html
+- #1847 - added slashes to company name in javascript
+
+2006-12-11 22:59  (cyberhorse)
+---------------------------------
+classes/libmail.class.php
+modules/calendar/calendar.class.php
+- #1845
+- contacts don't get dp urls (can't login to use them)
+- updated multipart messages building
+- added a clearAttachments() method to the mail class to reset attached
+- files
+
+2006-12-10 21:03  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+- Added Module/Item separation, sponsored by De Bortoli Wines.
+
+2006-12-10 20:59  (ajdonnison)
+---------------------------------
+modules/admin/vw_usr_perms.php
+style/_smarty/admin/usr_perms.html
+- Added split between module and item information in Permissions display.
+
+2006-12-09 18:51  (ajdonnison)
+---------------------------------
+index.php
+includes/main_functions.php
+- Added anti-XSS function from Kallahar@quickwired.com with permission (code is released in the public domain).
+
+2006-12-08 10:39  (merlinyoda)
+---------------------------------
+modules/projects/gantt.php
+modules/tasks/gantt.php
+- 
+- jpGraph is still a congig variable in stable_2 ... should be used on gantt
+
+2006-12-08 10:20  (uid225572)
+---------------------------------
+modules/projects/viewgantt.php
+- 
+- Just made code a little more condensed/readable
+- ... someone got newline-happy :-)
+
+2006-12-08 10:08  (merlinyoda)
+---------------------------------
+classes/ui.class.php
+- 
+- Class variable $user_lang was used in the code but not defined.
+
+2006-12-08 10:05  (merlinyoda)
+---------------------------------
+classes/ui.class.php
+- 
+- Class variable $user_lang was used but not defined in the code.
+
+2006-12-07 22:15  (cyberhorse)
+---------------------------------
+includes/db_connect.php
+- #1838 - applied suggested change
+
+2006-12-06 10:50  (merlinyoda)
+---------------------------------
+modules/public/chpwd.php
+- 
+- Fixing stray syntax error from previous modification.
+
+2006-12-06 10:48  (merlinyoda)
+---------------------------------
+modules/public/chpwd.php
+- 
+- Modified password changing code to follow more orignial design.
+- 
+- $canEdit was improperly replacing a check on user type
+- ( i.e Administrators don't have to provide the original password).
+- 
+- Also tweaked a line so that the whole user record was loaded to the object
+- instead of just the ID which was causing a loss of user information
+- (... didn't cause issues before now, must have relied on some seperate
+- obscure piece of code)
+
+2006-12-06 09:36  (caseydk)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+- adjusted for coding standards;
+
+2006-12-06 09:31  (caseydk)
+---------------------------------
+modules/tasks/index.php
+modules/tasks/tasks.php
+modules/tasks/vw_tasks.php
+- normalizing naming and coding conventions;
+
+2006-12-06 09:31  (caseydk)
+---------------------------------
+modules/departments/view.php
+- restored missing closing php tag
+
+2006-12-06 09:30  (merlinyoda)
+---------------------------------
+modules/system/domodsql.php
+modules/system/system.class.php
+- 
+- Improved module remove code so that remaining modules "below" a removed
+- module will move up to fill the gap. Also stream-lined the remove function
+- in system.class.php
+
+2006-12-06 09:28  (caseydk)
+---------------------------------
+style/_smarty/companies/list.html
+style/_smarty/projects/list.html
+- cleaning up some html
+
+2006-12-06 09:26  (caseydk)
+---------------------------------
+modules/contacts/index.php
+- standardize language to use All
+
+2006-12-06 09:25  (caseydk)
+---------------------------------
+modules/calendar/index.php
+modules/projects/index.php
+modules/projects/view.php
+- adjusted for coding standards;
+
+2006-12-06 09:25  (caseydk)
+---------------------------------
+modules/admin/index.php
+modules/admin/viewuser.php
+- restored the 'add user' button and placed it better
+
+2006-12-06 09:22  (caseydk)
+---------------------------------
+classes/ui.class.php
+- adjusted for coding standards;
+
+2006-12-06 08:02  (merlinyoda)
+---------------------------------
+modules/history/setup.php
+- 
+- Corrected syntax errors in string containing SQL table definition code.
+
+2006-12-06 05:11  (merlinyoda)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+modules/system/system.class.php
+- 
+- modules/system/system.class.php:
+- Modified install() function to filter out "Public" module when calculating
+- the value of mod_ui_value for a new module record.
+- 
+- Streamlined the move() function to eliminate repeating code, making it
+- easier to expand upon if needed.
+- 
+- db/dotproject.sql & db/upgrade_latest.sql:
+- Set/Updated 'mod_ui_order' to 0 for 'Public' module to keep it from
+- interferring other modules since it's never visible.
+
+2006-12-06 04:55  (merlinyoda)
+---------------------------------
+modules/system/system.class.php
+- 
+- Modified install() function to filter out "Public" module when
+- calculating the value of mod_ui_value for a new module record.
+- 
+- Streamlined the move() function to eliminate repeating code, making it
+- easier to expand upon if needed.
+
+2006-12-04 14:30  (mosen)
+---------------------------------
+images/arrow-down-disabled.gif
+images/arrow-up-disabled.gif
+style/_smarty/system/custom_field_editor.html
+- Custom field editor now shows a greyed out arrow for fields that are not moveable
+
+2006-12-04 14:12  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+- customfields editor upgrades non-ordered fields automatically
+
+2006-12-03 21:00  (gregorerhardt)
+---------------------------------
+includes/main_functions.php
+includes/main_functions.php
+- fix for hidden and disabled fields in MSIE
+
+2006-12-03 12:36  (nybod)
+---------------------------------
+modules/calendar/day_view.php
+- Backward compatible function to address php5 date issue
+
+2006-12-01 16:08  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+modules/contacts/addedit.php
+modules/contacts/do_contact_aed.php
+modules/contacts/view.php
+modules/system/custom_field_editor.php
+style/_smarty/contacts/addedit.html
+style/_smarty/system/custom_field_editor.html
+- Added custom fields to contacts module
+- Changed cosmetics of custom fields editor
+- User can reorder custom fields using arrows on custom fields editor
+- Added customfields enumerator class
+
+2006-12-01 09:12  (nybod)
+---------------------------------
+modules/projects/addedit.php
+- Added required field indicator (*) to project name
+
+2006-12-01 00:28  (gregorerhardt)
+---------------------------------
+modules/projects/view.php
+- last_name, first_name for consistency
+
+2006-12-01 00:26  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/main_functions.php
+locales/en/projects.inc
+locales/en/tasks.inc
+modules/tasks/addedit.js
+modules/tasks/addedit.php
+- removing user-specific required fields from tasks
+
+2006-12-01 00:24  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/main_functions.php
+locales/en/projects.inc
+locales/en/tasks.inc
+modules/tasks/addedit.js
+modules/tasks/addedit.php
+- remove user-specific required fields for tasks
+
+2006-11-30 22:02  (gregorerhardt)
+---------------------------------
+style/_smarty/projects/addedit.html
+- Showing 2 save and cancel buttons for usability
+
+2006-11-30 21:59  (gregorerhardt)
+---------------------------------
+modules/projects/addedit.php
+modules/tasks/addedit.php
+- Showing 2 save and cancel buttons for usability
+
+2006-11-30 21:39  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+db/upgrade_latest.sql
+includes/main_functions.php
+locales/en/projects.inc
+locales/en/tasks.inc
+modules/projects/addedit.php
+modules/system/syskeys/index.php
+modules/tasks/addedit.js
+modules/tasks/addedit.php
+- user-specific required fields
+
+2006-11-30 21:21  (gregorerhardt)
+---------------------------------
+db/dotproject.sql
+- user-specific required fields
+
+2006-11-30 21:16  (gregorerhardt)
+---------------------------------
+ChangeLog
+classes/CustomFields.class.php
+db/upgrade_latest.sql
+includes/main_functions.php
+locales/en/projects.inc
+locales/en/tasks.inc
+modules/projects/addedit.php
+modules/system/syskeys/index.php
+modules/tasks/addedit.js
+modules/tasks/addedit.php
+- user-specific required fields
+
+2006-11-29 23:27  (gregorerhardt)
+---------------------------------
+modules/departments/departments.class.php
+modules/departments/index.php
+modules/departments/view.php
+modules/projects/departments_tab.view.projects.php
+modules/projects/projects.class.php
+- view departments from dep module; some auto-tabs
+
+2006-11-29 23:27  (gregorerhardt)
+---------------------------------
+modules/projects/departments_tab.view.projects.php
+- file departments_tab.view.projects.php was initially added on branch stable_2.
+
+2006-11-29 22:34  (cyberhorse)
+---------------------------------
+style/_smarty/login.html
+- Added selection of the username field when the login page loads. That
+- way it's easier to type/update credentials and login.
+
+2006-11-29 22:05  (cyberhorse)
+---------------------------------
+modules/calendar/calendar.class.php
+- #1822 - Fixed contacts notification for events
+- 
+- ----------------------------------------------------------------------
+
+2006-11-29 01:44  (cyberhorse)
+---------------------------------
+classes/dp.class.php
+modules/tasks/view.php
+- #1826 - fixed particular access issue.
+- Improved permission handling, tracking parent relationships
+- Added better handling of parent relationships tracking.
+
+2006-11-28 10:09  (pedroix)
+---------------------------------
+modules/reports/existing/upcoming.php
+- assigned_users variable typo
+
+2006-11-28 03:00  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.php
+- open or close all tasks in a list at once
+
+2006-11-28 01:57  (gregorerhardt)
+---------------------------------
+db/upgrade_latest.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+- remove installer inconsistencies
+
+2006-11-28 01:10  (gregorerhardt)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/viewgantt.php
+- gantt sortable by name
+
+2006-11-28 00:34  (gregorerhardt)
+---------------------------------
+modules/tasks/gantt.php
+modules/tasks/viewgantt.php
+- gantt sortable by name
+
+2006-11-27 23:48  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+modules/tasks/todo_tasks_sub.php
+- sortable todo
+
+2006-11-27 23:35  (gregorerhardt)
+---------------------------------
+ChangeLog
+modules/projects/admin_tab.viewuser.projects.php
+modules/tasks/tasks.class.php
+modules/tasks/todo.php
+modules/tasks/todo_tasks_sub.php
+- sortable todo, some more tooltips
+
+2006-11-25 22:43  (nybod)
+---------------------------------
+modules/reports/existing/completed.php
+- Fixed typo
+
+2006-11-23 06:05  (gregorerhardt)
+---------------------------------
+modules/tasks/view.php
+- softcoding translation
+
+2006-11-23 05:45  (gregorerhardt)
+---------------------------------
+modules/calendar/week_view.php
+- softcoding translation
+
+2006-11-23 05:29  (gregorerhardt)
+---------------------------------
+modules/tasks/tasks.class.php
+- some additional overlib enhanced tooltips
+
+2006-11-22 22:29  (nybod)
+---------------------------------
+style/_smarty/tasks/view.html
+- Fixed typo
+
+2006-11-20 09:45  (nybod)
+---------------------------------
+modules/tasks/tasks.class.php
+- Missing function getTaskDurationPerWeek
+
+2006-11-20 09:06  (gregorerhardt)
+---------------------------------
+modules/projects/index.php
+modules/projects/projects.class.php
+- adding owner filter to projects
+
+2006-11-20 07:53  (gregorerhardt)
+---------------------------------
+modules/reports/existing/allocateduserhours.php
+- correcting user usage hour and percent values
+
+2006-11-20 07:20  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+- readded erraneously removed date::workingdaysinspan()
+
+2006-11-20 07:16  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+- readded erraneously removed date::workingdaysinspan()
+
+2006-11-20 06:09  (gregorerhardt)
+---------------------------------
+ChangeLog
+modules/smartsearch/searchobjects/projects.inc.php
+- Smartsearch project_contacts for projects
+
+2006-11-20 05:13  (gregorerhardt)
+---------------------------------
+style/_smarty/tasks/list.row.html
+- Some Task Description ToolTips
+
+2006-11-20 03:01  (gregorerhardt)
+---------------------------------
+style/_smarty/projects/list.html
+- Project Description ToolTip
+
+2006-11-20 02:31  (gregorerhardt)
+---------------------------------
+classes/ui.class.php
+lib/overlib/makemini.pl
+lib/overlib/overlib.js
+lib/overlib/overlib_anchor.js
+lib/overlib/overlib_centerpopup.js
+lib/overlib/overlib_crossframe.js
+lib/overlib/overlib_cssstyle.js
+lib/overlib/overlib_debug.js
+lib/overlib/overlib_exclusive.js
+lib/overlib/overlib_followscroll.js
+lib/overlib/overlib_hideform.js
+lib/overlib/overlib_setonoff.js
+lib/overlib/overlib_shadow.js
+lib/overlib/Mini/overlib_anchor_mini.js
+lib/overlib/Mini/overlib_centerpopup_mini.js
+lib/overlib/Mini/overlib_crossframe_mini.js
+lib/overlib/Mini/overlib_csstyle_mini.js
+lib/overlib/Mini/overlib_debug_mini.js
+lib/overlib/Mini/overlib_exclusive_mini.js
+lib/overlib/Mini/overlib_followscroll_mini.js
+lib/overlib/Mini/overlib_hideform_mini.js
+lib/overlib/Mini/overlib_mini.js
+lib/overlib/Mini/overlib_setonoff_mini.js
+lib/overlib/Mini/overlib_shadow_mini.js
+modules/projects/vw_idx_active.php
+modules/projects/vw_idx_archived.php
+modules/projects/vw_idx_complete.php
+modules/projects/vw_idx_proposed.php
+- Adding Overlib for advanced tooltips and implement tooltips for project description
+
+2006-11-20 00:37  (gregorerhardt)
+---------------------------------
+ChangeLog
+classes/ui.class.php
+db/upgrade_latest.sql
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/vw_idx_list.php
+modules/tasks/todo.php
+style/_smarty/projects/addedit.html
+style/_smarty/projects/view.html
+- consistenly removed project inactive state (now Archived Status) and made tabs explicitly indexable
+
+2006-11-19 23:42  (gregorerhardt)
 ---------------------------------
 classes/ui.class.php
 db/dotproject.sql
@@ -32,6 +4586,24 @@ modules/tasks/todo.php
 style/default/overrides.php
 style/dp-grey-theme/overrides.php
 - Incorporating project inactive state in the Archived status
+
+2006-11-19 19:24  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- revert last change - already was in head
+- ----------------------------------------------------------------------
+
+2006-11-19 19:13  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1824 - delete task dependencies when deleting a task.
+- ----------------------------------------------------------------------
+
+2006-11-19 18:59  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- #1824 - delete dependencies when deleting tasks.
+- ----------------------------------------------------------------------
 
 2006-11-19 09:54  (cyberhorse)
 ---------------------------------
