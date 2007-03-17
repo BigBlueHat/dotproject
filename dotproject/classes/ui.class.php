@@ -1163,11 +1163,11 @@ class CTitleBlock_core {
 				}
 			}
 			
-			if (isset($array[0]))
+			if (isset($array[0])) {
 				$list = $array;
-			else
-				$list = array(0 => $AppUI->_("All", UI_OUTPUT_RAW)) + $array; // db_loadHashList($sql);
-			// style -  style="font-weight:bold;"
+			} else {
+				$list = array(0 => $AppUI->_("All", UI_OUTPUT_RAW)) + $array;
+			}
 			$filters_combos[str_replace('_', ' ', substr($filter, strpos($filter, '_') + 1))] = arraySelect($list, $filter, 'class="text" onchange="javascript:document.filtersform.submit()"', $filters[$filter], false);
 		}
 		
