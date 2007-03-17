@@ -10,7 +10,7 @@
 </tr>
 <tr>
 	<td align="right" nowrap="nowrap">{dPtranslate word='Username'}:</td>
-	<td align="left" nowrap="nowrap"><input type="text" size="25" maxlength="20" name="username" class="text" /></td>
+	<td align="left" nowrap="nowrap"><input type="text" size="25" maxlength="255" name="username" class="text" /></td>
 </tr>
 <tr>
 	<td align="right" nowrap="nowrap">{dPtranslate word='Password'}:</td>
@@ -48,7 +48,7 @@
 {/if}
 </div>
 <center>
-	* {dPtranslate sentence='You must have cookies enabled in your browser'}
+	* {dPtranslate sentence='You must have cookies enabled in your browser'}<br />
 </center>
 <div style="text-align: center; display: none;" id="terms">
 	{$config.site_terms}
