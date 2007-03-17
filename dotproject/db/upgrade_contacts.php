@@ -1,10 +1,10 @@
 <?php
-global $baseDir;
 
-if (! isset($baseDir))
-	die('You must not use this file directly, please direct your browser to install/index.php instead');
+if (!defined('DP_BASE_DIR')) {
+	die('You should not access this file directly. Instead, run the Installer in install/index.php.');
+}
 
-dPmsg("Converting users to contacts");
+dPmsg('Converting users to contacts');
 $users = db_loadList('SELECT * FROM users');
 foreach ($users as $user)
 {

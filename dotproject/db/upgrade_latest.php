@@ -1,15 +1,14 @@
 <?php
-global $baseDir;
 
-if (! isset($baseDir)) {
-	die("You must not call this file directly, it is run automatically on install/upgrade");
+if (!defined('DP_BASE_DIR')) {
+	die('You should not access this file directly. Instead, run the Installer in install/index.php.');
 }
-include_once "$baseDir/includes/config.php";
-include_once "$baseDir/includes/main_functions.php";
-require_once "$baseDir/includes/db_adodb.php";
-include_once "$baseDir/includes/db_connect.php";
-include_once "$baseDir/install/install.inc.php";
-require_once "$baseDir/classes/permissions.class.php";
+include_once DP_BASE_DIR.'/includes/config.php';
+include_once DP_BASE_DIR.'/includes/main_functions.php';
+require_once DP_BASE_DIR.'/includes/db_adodb.php';
+include_once DP_BASE_DIR.'/includes/db_connect.php';
+include_once DP_BASE_DIR.'/install/install.inc.php';
+require_once DP_BASE_DIR.'/classes/permissions.class.php';
 
 /**
  * DEVELOPERS PLEASE NOTE:

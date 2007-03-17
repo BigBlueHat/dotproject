@@ -1,5 +1,8 @@
 <?php
 
+if (!defined('DP_BASE_DIR')) {
+	die('You should not access this file directly. Instead, run the Installer in install/index.php.');
+}
 /**
 * This script iterates all contacts and verify if the contact_company 
 * field has a text value; if it does, it searches of the company in the 
@@ -7,17 +10,13 @@
 * If it doesn't find it, the it creates the company (only the name) and then it 
 * relates it to the contact using the new company's id.
 */
-global $baseDir;
-
-if (! isset($baseDir))
-	die('You must not use this file directly, please direct your browser to install/index.php instead');
 
 dPmsg("Fetching companies list");
 foreach(db_loadList("SELECT * FROM contacts") as $contact) {
     $contact_company = $contact["contact_company"];
     if (is_numeric($contact_company)){
         if(!checkCompanyId($contact_company)){
-            dPmsg("Error found in contact_company in the contact ".getContactGeneralInformation($contact));
+            dPmsg('Error found in contact_company in the contact '.getContactGeneralInformation($contact));
         }
     } else if ($contact_company != "") {
         $company_id = fetchCompanyId($contact_company);
