@@ -1542,7 +1542,18 @@ class Date_Calc
             $month = Date_Calc::dateNow("%m");
         if(empty($day))
             $day = Date_Calc::dateNow("%d");
-        return substr(Date_Calc::getWeekdayFullname($day,$month,$year),0,$length);
+
+				/*
+				** dP
+				** @date 20070319
+				** @author gregorerhardt
+				** @reason 1853, Not all locales should abbreviate locales to 3 letters,
+				** e.g. in germany one expects 'Mo' instead of 'Mon' - strftime ('%a', $timestamp)
+				** is the only native implementation to consider this - date('%a') doesn't!
+				*/
+        //return substr(Date_Calc::getWeekdayFullname($day,$month,$year),0,$length);
+
+				return strftime('%a', strtotime($month.'/'.$day.'/'.$year));
     } // end func getWeekdayFullname
 
     /**
