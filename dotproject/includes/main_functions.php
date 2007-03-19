@@ -3,16 +3,22 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
+/** @file */
+
 /**
  * Global General Purpose Functions
  */
 
 $CR = "\n";
+/**
+ * \def SECONDS_PER_DAY
+ */
 define('SECONDS_PER_DAY', 60 * 60 * 24);
 
 /**
  * Returns the best color based on a background color (x is cross-over)
  */
+
 function bestColor( $bg, $lt='#ffffff', $dk='#000000' )
 {
 // cross-over color = x

@@ -9,11 +9,14 @@ if (!defined('DP_BASE_DIR')){
 * @license http://opensource.org/licenses/gpl-license.php GPL License Version 2
 */
 
-// Message No Constants
-define( 'UI_MSG_OK', 1 );
-define( 'UI_MSG_ALERT', 2 );
-define( 'UI_MSG_WARNING', 3 );
-define( 'UI_MSG_ERROR', 4 );
+/** 
+* UI Message Number Constants
+*/
+
+define( 'UI_MSG_OK', 1 ); /**< Message OK */  
+define( 'UI_MSG_ALERT', 2 ); /**< Message ALERT */
+define( 'UI_MSG_WARNING', 3 ); /**< Message WARNING */
+define( 'UI_MSG_ERROR', 4 ); /**< Message ERROR */
 
 // global variable holding the translation array
 $GLOBALS['translate'] = array();
@@ -193,6 +196,7 @@ class CAppUI {
 			// fall back to host_style if user style is not installed
 			$this->setPref('UISTYLE', dPgetConfig('host_style'));
 		}
+		
 	}
 
 /** Access variable for the template class */
@@ -823,6 +827,7 @@ class CAppUI {
 		$q->addQuery('pref_name, pref_value');
 		$q->addWhere("pref_user = $uid");
 		$prefs = $q->loadHashList();
+		
 		$this->user_prefs = array_merge( $this->user_prefs, $prefs );
 	}
 
@@ -946,6 +951,25 @@ class CAppUI {
 		}
 		if (isset($file) && file_exists("{$root}modules/$module/$file.js"))
 			$js .= "<script type=\"text/javascript\" src=\"{$base}modules/$module/$file.js\"></script>\n";
+		
+		$js_subdir = "{$root}modules/$module/js";	
+		
+		if (is_dir($js_subdir)) {
+			$module_jsdir = dir($js_subdir);
+			$module_js_files = array();
+			
+			while (($entry = $module_jsdir->read()) !== false) {
+				if (substr($entry, -3) == '.js'){
+				    $module_js_files[] = $entry;
+			    }
+			}
+			
+			asort($module_js_files);
+
+			while(list(,$js_file_name) = each($module_js_files)){
+				  $js .= "<script type=\"text/javascript\" src=\"{$base}modules/$module/js/$js_file_name\"></script>\n";
+			}			
+		}
 		
 		return $js;
 	}

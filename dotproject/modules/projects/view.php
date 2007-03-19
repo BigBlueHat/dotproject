@@ -2,6 +2,8 @@
 if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
+$extrajs = $AppUI->getModuleJS('projects', 'timeline-load');
+$tpl->assign('js', $extrajs);
 
 $project_id = intval( dPgetParam( $_GET, 'project_id', 0 ) );
 
@@ -171,6 +173,7 @@ if (isset( $_POST['searchtext'] )) {
 	$AppUI->setState( 'searchtext', $_POST['searchtext']);
 }
 
+
 $search_text = $AppUI->getState('searchtext') ? $AppUI->getState('searchtext'):'';
 $titleBlock->addCell( '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;' . $AppUI->_('Search') . ':' );
 $titleBlock->addCell(
@@ -245,6 +248,8 @@ function delIt() {
 </script>
 
 <?php
+
+//$tabs_js = NULL;
 $tabBox = new CTabBox( "?m=projects&amp;a=view&amp;project_id=$project_id", "", $tab );
 $query_string = "?m=projects&amp;a=view&amp;project_id=$project_id";
 
@@ -257,6 +262,7 @@ if ($perms->checkModule('forums', 'view'))
 	$tabBox->add(DP_BASE_DIR . '/modules/projects/vw_forums', 'Forums');
 if ($canViewTask) {
 	$tabBox->add(DP_BASE_DIR . '/modules/tasks/viewgantt', 'Gantt Chart');
+	$tabBox->add(DP_BASE_DIR . '/modules/tasks/viewtimeline', 'Timeline');
 }
 
 // deprecated:

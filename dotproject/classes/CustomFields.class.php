@@ -2,9 +2,9 @@
 if (!defined('DP_BASE_DIR')){
   die('You should not access this file directly');
 }
-	/**
-	 * @abstract CustomField Classes
-	 * @version CVS: $Id$
+	/** Custom field base object 
+	 * 
+	 * Provides base functionality and properties for custom field objects 
 	 */
 	class CustomField
 	{
@@ -25,15 +25,13 @@ if (!defined('DP_BASE_DIR')){
 		var $value_intvalue;
 
 		/**
-		 * CustomField constructor
+		 * @abstract CustomField constructor
 		 * 
-		 * TODO: check/confirm param value types
-		 * 
-		 * @param int $field_id
-		 * @param string $field_name
-		 * @param int $field_order
-		 * @param string $field_description
-		 * @param string $field_extratags
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
 		 */
 		function CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
@@ -76,6 +74,11 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/**
+		 * @abstract Store the instance variables back into the database for $object_id. 
+		 * @param int $object_id The ID of the dotproject object
+		 * @return Database error string on failure, otherwise NULL.
+		 */  
 		function store($object_id)
 		{
 			global $db;
@@ -115,74 +118,128 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/**
+		 * @abstract Set the value of this custom field to an integer.
+		 * @param int $v The integer value to set this custom field to
+		 * @return void
+		 */
 		function setIntValue($v)
 		{	
 			$this->value_intvalue = $v;
 		}
 
+		/**
+		 * @abstract Access the integer value of this custom field
+		 * @return Integer value
+		 */
 		function intValue()
 		{
 			return $this->value_intvalue;
 		}
 
+		/**
+		 * @abstract Set the string value of this custom field
+		 * @param string $v The string value to set this custom field to
+		 * @return void
+		 */ 
 		function setValue($v)
 		{
 			$this->value_charvalue = $v;
 		}
 
+		/**
+		 * @abstract Access the string value of this custom field
+		 * @return String value
+		 */
 		function value()
 		{
 			return $this->value_charvalue;
 		}
 
+		/**
+		 * @abstract Access the string value of this custom field, same implementation as value()
+		 * @return String value
+		 */
 		function charValue()
 		{
 			return $this->value_charvalue;
 		}
 
+		/**
+		 * @abstract Set the value id. This corresponds to the row in custom_fields_values that stores the custom field values and the corresponding dotproject object id
+		 * @param int The value id
+		 */
 		function setValueId($v)
 		{
 			$this->value_id = $v;
 		}
 
+		/**
+		 * @abstract Access the value id
+		 * @return int value id of this custom field (if the custom field has been loaded with values via the load() method)
+		 */ 
 		function valueId()
 		{
 			return $this->value_id;
 		}
 
+		/**
+		 * @abstract Access the custom field HTML name
+		 * @return string HTML name of the custom field.
+		 */
 		function fieldName()
 		{
 			return $this->field_name;
 		}
 
+		/**
+		 * @abstract Access the custom field description 
+		 * @return string description of the custom field.
+		 */
 		function fieldDescription()
 		{
 			return $this->field_description;
 		}
 			
+		/**
+		 * @abstract Access the custom field ID 
+		 * @return string ID of the custom field.
+		 */
 		function fieldId()
 		{
 			return $this->field_id;
 		}
 
+		/**
+		 * @abstract Access the custom field type 
+		 * @return string indicating the type of custom field.
+		 */
 		function fieldHtmlType()
 		{	
 			return $this->field_htmltype;
 		}
 
+		/**
+		 * @abstract Access the extra tags string that should be appended to the custom fields element 
+		 * @return string of tag attributes 
+		 */
 		function fieldExtraTags()
 		{
 			return $this->field_extratags;
 		}
 	}
 
-	/**
-	 *  CustomFieldCheckBox - Produces an INPUT Element of the CheckBox type in edit mode, view mode indicates 'Yes' or 'No'
+	/** Custom field using a HTML checkbox type INPUT 
+	 * Produces an INPUT Element of the CheckBox type in edit mode, view mode prints a string, either 'Yes' or 'No'
 	 */
 	class CustomFieldCheckBox extends CustomField
 	{
-		/**
-		 * CustomFieldCheckBox constructor
+		/** @abstract CustomFieldCheckBox constructor
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
 		 */
 		function CustomFieldCheckBox($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
@@ -190,6 +247,10 @@ if (!defined('DP_BASE_DIR')){
 			$this->field_htmltype = 'checkbox';
 		}
 
+		/** Generate the HTML for the custom field.
+		 * @param string $mode	Can be "edit" or "view" to indicate if editing or viewing controls are to be generated
+		 * @return string custom field as HTML
+		 */ 
 		function getHTML($mode)
 		{
 			switch ($mode) {
@@ -205,19 +266,28 @@ if (!defined('DP_BASE_DIR')){
 			return $html;
 		}
 
+		/**
+		 * @abstract Set the value of this checkbox, 0 is unticked, 1 is ticked 
+		 * @param int $v The integer value to set this custom field to
+		 * @return void
+		 */ 
 		function setValue($v)
 		{
 			$this->value_intvalue = $v;
 		}
 	}
 	
-	/**
-	 *  CustomFieldText - Produces an INPUT Element of the TEXT type in edit mode
+	/** Custom field using a HTML text type INPUT 
+	 * Produces an INPUT Element of the text type in edit mode, view mode prints the string value 
 	 */
 	class CustomFieldText extends CustomField
 	{
-		/**
-		 * CustomFieldText constructor
+		/** @abstract CustomFieldText constructor
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
 		 */
 		function CustomFieldText($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
@@ -225,6 +295,10 @@ if (!defined('DP_BASE_DIR')){
 			$this->field_htmltype = 'textinput';
 		}
 
+		/** Generate the HTML for the custom field.
+		 * @param string $mode	Can be "edit" or "view" to indicate if editing or viewing controls are to be generated
+		 * @return string custom field as HTML
+		 */ 
 		function getHTML($mode)
 		{
 			switch ($mode) {
@@ -239,13 +313,18 @@ if (!defined('DP_BASE_DIR')){
 		}
 	}
 
-	/**
-	 * CustomFieldTextArea - Produces a TEXTAREA Element in edit mode
+	/** Custom field using a HTML TEXTAREA 
+	 * 
+	 * Produces an TEXTAREA Element in edit mode, view mode prints the string value and converts newlines to <br> elements 
 	 */
 	class CustomFieldTextArea extends CustomField
 	{
-		/**
-		 * CustomFieldTextArea constructor
+		/** @abstract CustomFieldText constructor
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
 		 */
 		function CustomFieldTextArea($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
@@ -253,6 +332,10 @@ if (!defined('DP_BASE_DIR')){
 			$this->field_htmltype = 'textarea';
 		}
 
+		/** Generate the HTML for the custom field.
+		 * @param string $mode	Can be "edit" or "view" to indicate if editing or viewing controls are to be generated
+		 * @return string custom field as HTML
+		 */ 
 		function getHTML($mode)
 		{
 			switch ($mode) {
@@ -267,17 +350,30 @@ if (!defined('DP_BASE_DIR')){
 		}
 	}
 	
-	/**
-	 * CustomFieldLabel - Produces just a non editable label
+	/** Custom field string label 
+	 * 
+	 * Produces a string label which is uneditable by users 
 	 */
 	class CustomFieldLabel extends CustomField 
 	{
+
+	/** @abstract CustomFieldLabel constructor
+	 * @param int $field_id 	ID of the custom field
+	 * @param string $field_name 	HTML name of the custom field 
+	 * @param int $field_order 	custom field order 
+	 * @param string $field_description 	Description of the custom field
+	 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
+	 */
 	    function CustomFieldLabel($field_id, $field_name, $field_order, $field_description, $field_extratags)
 	    {
 			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
-            $this->field_htmltype = 'label';
+           		$this->field_htmltype = 'label';
 	    }
 	    
+	   /** Generate the HTML for the custom field.
+	    * @param string $mode this parameter is ignored for the label class
+	    * @return string custom field as HTML
+	    */ 
 	    function getHTML($mode)
 	    {
 			// We don't really care about its mode
@@ -285,17 +381,29 @@ if (!defined('DP_BASE_DIR')){
 	    }
 	}
 	
-	/**
-	 * CustomFieldSeparator - Produces just an horizontal line
+	/** Custom field seperator 
+	 * 
+	 * Produces a horizontal seperator (HR element) 
 	 */
 	class CustomFieldSeparator extends CustomField 
 	{
+	/** @abstract CustomFieldSeperator constructor
+	 * @param int $field_id 	ID of the custom field
+	 * @param string $field_name 	HTML name of the custom field 
+	 * @param int $field_order 	custom field order 
+	 * @param string $field_description 	Description of the custom field
+	 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
+	 */
 	    function CustomFieldSeparator($field_id, $field_name, $field_order, $field_description, $field_extratags)
 	    {
 			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
 			$this->field_htmltype = 'separator';
 	    }
 	    
+	   /** Generate the HTML for the custom field.
+	    * @param string $mode this parameter is ignored for the seperator class
+	    * @return string custom field as HTML
+	    */ 
 	    function getHTML($mode)
 	    {
 			// We don't really care about its mode
@@ -303,10 +411,21 @@ if (!defined('DP_BASE_DIR')){
 	    }
 	}
 
+	/** Custom field sqlselect (select based on an SQL query generated list) 
+	 * 
+	 * Generates a SELECT element with options loaded from a user supplied SQL query 
+	 */
 	class CustomFieldSQLSelect extends CustomFieldSelect
 	{
-		var $options;
+		var $options; /**< select options as class SQLCustomOptionList */
 		
+		/** @abstract CustomFieldSQLSelect constructor
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
+		 */
 		function CustomFieldSQLSelect($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
 			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
@@ -316,13 +435,21 @@ if (!defined('DP_BASE_DIR')){
 		}
 	}
 
-	/**
-	 * CustomFieldSelect - Produces a SELECT list, extends the load method so that the option list can be loaded from a seperate table
+	/** Custom field select (select based on a predefined list) 
+	 * 
+	 * Generates a SELECT element with options predefined in the custom field editor 
 	 */
 	class CustomFieldSelect extends CustomField
 	{
-		var $options;
+		var $options; /**< select options as class CustomOptionList */ 
 
+		/** @abstract CustomFieldSelect constructor
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
+		 */
 		function CustomFieldSelect($field_id, $field_name, $field_order, $field_description, $field_extratags)
 		{
 			$this->CustomField($field_id, $field_name, $field_order, $field_description, $field_extratags);
@@ -331,6 +458,10 @@ if (!defined('DP_BASE_DIR')){
 			$this->options->load();
 		}
 
+	   	/** Generate the HTML for the custom field.
+	    	* @param string $mode can be "view" or "edit", determines which controls should be output.
+	    	* @return string custom field as HTML
+	    	*/ 
 		function getHTML($mode)
 		{
 			switch ($mode) {
@@ -344,28 +475,45 @@ if (!defined('DP_BASE_DIR')){
 			}
 			return $html;
 		}
-
+ 
+		/** Set the selected value index
+		 * @param int $v index of the selected item
+		 */ 
 		function setValue($v)
 		{
 			$this->value_intvalue = $v;
 		}
 
+		/** Get the selected value index
+		 * @return int the index of the selected item 
+		 */
 		function value()
 		{
 			return $this->value_intvalue;
 		}
 	}
 
-	/** CustomFieldWeblink
-	 * Produces an INPUT Element of the TEXT type in edit mode 
-	 * and a <a href> </a> weblink in display mode
+	/** Custom field weblink  
+	 * 
+	 * Generates a HTML anchor (<a>) element with its string value as the href attribute 
 	 */
 	class CustomFieldWeblink extends CustomField {
+		/** @abstract CustomFieldWeblink constructor
+		 * @param int $field_id 	ID of the custom field
+		 * @param string $field_name 	HTML name of the custom field 
+		 * @param int $field_order 	custom field order 
+		 * @param string $field_description 	Description of the custom field
+		 * @param string $field_extratags 	Extra attributes applied to the custom field HTML tag 
+		 */
 		function CustomFieldWeblink ( $field_id, $field_name, $field_order, $field_description, $field_extratags ) {
 			$this->CustomField( $field_id, $field_name, $field_order, $field_description, $field_extratags );
 			$this->field_htmltype = 'href';
 		}
 
+	   	/** Generate the HTML for the custom field.
+	    	* @param $mode string can be "view" or "edit", determines which controls should be output.
+	    	* @return string custom field as HTML
+	    	*/ 
 		function getHTML($mode) {
 			switch($mode) {
 				case "edit":
@@ -379,21 +527,22 @@ if (!defined('DP_BASE_DIR')){
 		}
 	}
 
-	/**
-	 * CustomFields class - loads all custom fields related to a module, produces a html table of all custom fields
+	/** Custom fields class
+	 *	
+	 * Loads all custom fields related to a module, produces a html table of all custom fields
 	 * Also loads values automatically if the obj_id parameter is supplied. The obj_id parameter is the ID of the module object 
 	 * eg. company_id for companies module
 	 */
 	class CustomFields
 	{
-		var $m;
-		var $a;
-		var $mode;
-		var $obj_id;		
+		var $m; /**< The module name */
+		var $a; /**< The module action */ 
+		var $mode; /**< Display mode: can be "edit" or "view" */
+		var $obj_id; /**< Object Id: relates to a dotproject object such as project, company etc. */		
 
-		var $fields;
+		var $fields; /**< associative array of CustomField objects */
 
-		/**
+		/** CustomFields constructor
 		 * @param string $m Module name
 		 * @param string $a Action name
 		 * @param int $obj_id ID of the object with the requested module
@@ -455,8 +604,15 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
-		/* Add a new custom field - will automatically determine the field_order to be the next one in sequence
+		/** Add a custom field to the database
 		 *
+		 * Automatically generates the field_order variable so that the new field appears beneath any existing custom fields.
+		 * @param $field_name HTML name of the custom field
+		 * @param $field_description User description of the custom field
+		 * @param $field_htmltype Type of custom field
+		 * @param $field_datatype (Not Implemented) Type of validation that should be applied to the field
+		 * @param $field_extratags Extra attributes to be added to the custom field element
+		 * @param &$error_msg Reference to a variable to store any error messages 
 		 */
 		function add($field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg)
 		{
@@ -516,6 +672,15 @@ if (!defined('DP_BASE_DIR')){
 			}
 		} 
 
+		/** Update the details of an existing custom field
+		 *
+		 * @param $field_name HTML name of the custom field
+		 * @param $field_description User description of the custom field
+		 * @param $field_htmltype Type of custom field
+		 * @param $field_datatype (Not Implemented) Type of validation that should be applied to the field
+		 * @param $field_extratags Extra attributes to be added to the custom field element
+		 * @param &$error_msg Reference to a variable to store any error messages 
+		 */
 		function update($field_id, $field_name, $field_description, $field_htmltype, $field_datatype, $field_extratags, &$error_msg)
 		{
 			global $db;
@@ -538,6 +703,11 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/** Change the position/order of a custom field
+		 *
+		 * @param $field_id ID of the custom field to change
+		 * @param $field_order Position number to change to
+		 */
 		function updateOrder($field_id, $field_order)
 		{
 			global $db;
@@ -557,6 +727,11 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}	
 
+		/** get the CustomField object with the supplied field_id
+		 *
+		 * @param $field_id ID of the CustomField object to return
+		 * @return requested CustomField object
+		 */ 
 		function fieldWithId($field_id)
 		{
 			foreach ($this->fields as $k => $v) {
@@ -566,6 +741,11 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 	
+		/** get the index of the CustomField object in the CustomFields $fields array
+		 *
+		 * @param $field_id ID of the CustomField object to find
+		 * @return index of the CustomField object 
+		 */
 		function indexOfFieldWithId($field_id)
 		{
 			for ($i = 0; $i < $this->count(); $i++) {
@@ -575,6 +755,10 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/** Move the position/order of a field up or down by one place
+		 * @param $field_id ID of the CustomField object to move
+		 * @param $direction Direction to move the field, can be "up" or "down"
+		 */
 		function moveFieldOrder($field_id, $direction )
 		{
 			$field_to_move = $this->fieldWithId($field_id);
@@ -664,6 +848,9 @@ if (!defined('DP_BASE_DIR')){
 			
 		}
 
+		/** Bind an array of POST or GET variables to the associated CustomField objects
+		 * @param &$formvars Associative array of form variables
+		 */ 
 		function bind(&$formvars)
 		{
 			if (!count($this->fields) == 0) {
@@ -675,6 +862,9 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/** Store the current values of all the CustomField objects in this collection
+		 * @param $object_id ID of the dotproject object (id of the company, project, etc)  
+		 */
 		function store($object_id)
 		{
 			if (!count($this->fields) == 0) {
@@ -693,6 +883,9 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/** Delete a custom field from the database
+		 * @param $field_id ID of the custom field	
+		 */
 		function deleteField($field_id)
 		{
 			global $db;
@@ -705,11 +898,17 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/** Get a count of the custom fields loaded
+		 * @return Integer count of the custom fields
+		 */
 		function count()
 		{
 			return count($this->fields);
 		}
 
+		/** Generate the custom fields HTML as a table
+		 * @return String containing the custom fields as a HTML table
+		 */
 		function getHTML()
 		{
 			if ($this->count() == 0) {
@@ -726,6 +925,8 @@ if (!defined('DP_BASE_DIR')){
 			}
 		}
 
+		/** Echo the custom fields as a HTML table
+		 */  
 		function printHTML()
 		{
 			$html = $this->getHTML();
@@ -733,6 +934,7 @@ if (!defined('DP_BASE_DIR')){
 		}
 		
 		/** Custom Fields Smart Searcher
+		 *
 		 * Module agnostic custom field smart search plugin helper method
 		 * Allows smartsearch to find patterns in custom fields on a per module base
 		 * This has been implemented in stable_2 on 20060724 by gregorerhardt
@@ -752,21 +954,28 @@ if (!defined('DP_BASE_DIR')){
 			return $q->loadList();
 		}
 
+		/** get a custom fields enumerator 
+		 * @return An instance of the CustomFieldsEnumerator class.
+		 */  
 		function getEnumerator()
 		{
 			return new CustomFieldsEnumerator( $this );
 		}
 	}
 
-	/**
-	 * Enumerates CustomFields object, similar to javastyle object enumerator
-	 */ 
+	/** CustomFields object Enumerator
+	 * 
+	 * Enumerates a CustomFields object in the style of a Java enumerator class
+	 */		
 	class CustomFieldsEnumerator
 	{
-		var $customfieldsobj;
-		var $keys;
-		var $index;
+		var $customfieldsobj; /**< Reference to CustomFields object */
+		var $keys; /**< Keys of the CustomField objects inside CustomFields */
+		var $index; /**< Current working index */
 
+		/** CustomFieldsEnumerator constructor
+		 * @param $customfieldsobj A CustomFields object to enumerate
+		 */
 		function CustomFieldsEnumerator( $customfieldsobj )
 		{	
 			$this->customfieldsobj = $customfieldsobj;
@@ -774,6 +983,9 @@ if (!defined('DP_BASE_DIR')){
 			$this->keys = array_keys($this->customfieldsobj->fields);
 		}
 
+		/** Get the next CustomField object in the collection
+		 * @return The next CustomField object, or NULL if there are no more objects to enumerate
+		 */
 		function nextObject()
 		{
 			if ($this->index >= count($this->keys))
@@ -785,6 +997,9 @@ if (!defined('DP_BASE_DIR')){
 			return $nextobject;
 		}
 
+		/** Get the previous CustomField object in the collection
+		 * @return The previous CustomField object, or NULL if we are already at the first object in the collection. 
+		 */
 		function prevObject()
 		{
 			if ($this->index < 0)
@@ -796,27 +1011,40 @@ if (!defined('DP_BASE_DIR')){
 			return $prevobject;
 		}
 
+		/** Move to the last CustomField object in the collection
+		 */
 		function moveLast()
 		{
 			$this->index = (count($this->keys) - 1);
 		}
 
+		/** Reset to the first CustomField object in the collection
+		 */
 		function reset()
 		{
 			$this->index = 0;
 		}
 	}
 
+	/** SQL generated option list
+	 *
+	 * Used in conjunction with the CustomFieldSQLSelect class
+	 */ 
 	class SQLCustomOptionList
 	{
-		var $field_id;
-		var $query;
+		var $field_id; /**< Custom field ID */
+		var $query; /**< SQL Query to produce the list options */
 		
+		/** SQLCustomOptionList constructor
+		 * @param $field_id ID of the CustomField object
+		 */
 		function SQLCustomOptionList($field_id)
 		{
 			$this->field_id = $field_id;
 		}
 		
+		/** Load the query to be used for the option list 
+		 */ 
 		function load()
 		{
 			global $db;
@@ -835,6 +1063,8 @@ if (!defined('DP_BASE_DIR')){
 			$q->clear();		 
 		}
 		
+		/** Store the query used for the option list
+		*/
 		function store()
 		{
 			global $db;
@@ -848,6 +1078,8 @@ if (!defined('DP_BASE_DIR')){
 			$rs = $q->exec();
 		}
 		
+		/** Delete this option list from the database
+		*/
 		function delete()
 		{
 			$q = new DBQuery();
@@ -857,16 +1089,26 @@ if (!defined('DP_BASE_DIR')){
 			$q->exec();
 		}
 		
+		/** Set the SQL query to be used for generating the HTML option list.
+		 * @param $sql SQL Query containing two columns: the first column contains the key and the second column contains the value
+		 */ 
 		function setQuery($sql)
 		{
 			$this->query = $sql;
 		}
 		
+		/** Get the current SQL query
+		 * @return The SQL query
+		 */
 		function getQuery()
 		{
 			return $this->query;
 		}
 		
+		/** Generate the HTML for this option list
+		 * @param $field_name The field_name of the CustomFieldSQLSelect object 
+		 * @param $selected The index of the selected option	
+		 */ 
 		function getHTML($field_name, $selected)
 		{
 			global $db;
@@ -884,6 +1126,10 @@ if (!defined('DP_BASE_DIR')){
 			return $html;
 		}
 		
+		/** Get the option item at a particular index
+		 * @param $i The index of the option in the list
+		 * @return An array containing the key and the value for the option at index $i
+		 */ 
 		function itemAtIndex($i)
 		{
 			global $db;
