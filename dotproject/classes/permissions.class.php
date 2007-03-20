@@ -20,8 +20,9 @@ require_once DP_BASE_DIR . '/lib/phpgacl/gacl_api.class.php';
 // Include the db_connections 
 
 // Now extend the class
-/**
- * Extend the gacl_api class.  There is an argument to separate this
+/** Permissions checking class, based on phpgacl
+ *
+ * Extends the gacl_api class.  There is an argument to separate this
  * into a gacl and gacl_api class on the premise that normal activity
  * only needs the functions in gacl, but it would appear that this is
  * not so for dP, which tends to require reverse lookups rather than
@@ -30,6 +31,9 @@ require_once DP_BASE_DIR . '/lib/phpgacl/gacl_api.class.php';
  */
 class dPacl extends gacl_api {
 
+  /** dPacl constructor
+   * @param $opts Options to supply to the parent gacl_api object
+   */
   function dPacl($opts = null)
   {
     if (! is_array($opts))
@@ -53,6 +57,7 @@ class dPacl extends gacl_api {
     parent::gacl_api($opts);
   }
 
+  /** calls gacl acl_check() function */
   function acl_check($aco_section_value, $aco_value, $aro_section_value, $aro_value, $axo_section_value=NULL, $axo_value=NULL, $root_aro_group=NULL, $root_axo_group=NULL)
   {
   	global $acltime;
@@ -65,12 +70,22 @@ class dPacl extends gacl_api {
   	return $ret;
   }
   
+  /** Check to see if a user has permission to login
+   * @param $login login name to check
+   * @return return status of acl_check
+   */
   function checkLogin($login)
   {
     // Simple ARO<->ACO check, no AXO's required.
     return $this->acl_check("system", "login", "user", $login);
   }
 
+  /** Check to see if a user has permission to access a module
+   * @param $module the module to check against
+   * @param $op operation to check(?)
+   * @param $userid the user's id to check against
+   * @return true if the user has access to the module
+   */
   function checkModule($module, $op, $userid = null)
   {
     if (! $userid)
@@ -80,6 +95,15 @@ class dPacl extends gacl_api {
     return $result;
   }
 
+  /** Check to see if a user has permission to access a module item
+   * 
+   * The item is a dotProject object for example a project within the projects module.
+   * @param $module the module to check against
+   * @param $op operation to check(?)
+   * @param $item item to check permissions against, if null calls checkModule() to check the basic module permissions
+   * @param $userid the user's ID to check with, if null uses the user_id property of the AppUI object (the currently logged in user).
+   * @return True if the user has permission
+   */
   function checkModuleItem($module, $op, $item = null, $userid = null)
   {
     if (! $userid)
@@ -97,12 +121,18 @@ class dPacl extends gacl_api {
     return $result['allow'];
   }
 
-  /**
+  /** Check if the user is denied permission to access a module item
+   *
    * This gets tricky and is there mainly for the compatibility layer
    * for getDeny functions.
    * If we get an ACL ID, and we get allow = false, then the item is
    * actively denied.  Any other combination is a soft-deny (i.e. not
    * strictly allowed, but not actively denied.
+   * @param $module the module to check against
+   * @param $op operation to check(?)
+   * @param $item item to check permissions against
+   * @param $userid the user's ID to check with, if null uses the user_id property of the AppUI object (the currently logged in user).
+   * @return True if the user has permission  
    */
   function checkModuleItemDenied($module, $op, $item, $user_id = null)
   {
@@ -116,6 +146,7 @@ class dPacl extends gacl_api {
       return false;
   }
 
+  /** */
   function addLogin($login, $username)
   {
     $res = $this->add_object("user", $username, $login, 1, 0, "aro");

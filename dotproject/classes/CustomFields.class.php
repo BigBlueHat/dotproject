@@ -1140,17 +1140,26 @@ if (!defined('DP_BASE_DIR')){
 		}
 	}
 	
+	/** custom html select option list
+	 *
+	 * Used in conjunction with the CustomFieldSelect class
+	 */ 
 	class CustomOptionList
 	{
-		var $field_id;
-		var $options;
+		var $field_id; /**< ID of the CustomField parent */
+		var $options; /**< array of options */ 
 
+		/** CustomOptionList constructor
+		 * @param $field_id ID of the parent CustomField object
+		 */ 
 		function CustomOptionList( $field_id )
 		{
 			$this->field_id = $field_id;
 			$this->options = array();
 		}
 
+		/** Load the options associated with the parent CustomField object
+		 */ 
 		function load()
 		{
 			global $db;
@@ -1172,6 +1181,8 @@ if (!defined('DP_BASE_DIR')){
 			$q->clear();
 		}
 
+		/** Store the option list in the database
+		 */
 		function store()
 		{
 			global $db;
@@ -1228,6 +1239,8 @@ if (!defined('DP_BASE_DIR')){
 			return $insert_error.' '.$delete_error;
 		}
 
+		/** Delete this CustomFieldOptionList from the database
+		 */ 
 		function delete()
 		{
 			$q  = new DBQuery();
@@ -1237,21 +1250,36 @@ if (!defined('DP_BASE_DIR')){
 			$q->clear();
 		}
 
+		/** Set the options from an array
+		 * @param $option_array Array to be used for HTML select options
+		 */ 
 		function setOptions($option_array)
 		{
 			$this->options = $option_array;
 		} 
 
+		/** Get the options as an array
+		 * @return Array of options
+		 */
 		function getOptions()
 		{
 			return $this->options;
 		}
 
+		/** Get one of the options using a supplied index
+		 * @param $i Index of the option to fetch
+		 * @return String containing option text 
+		 */
 		function itemAtIndex($i)
 		{
 			return $this->options[$i];
 		}
 
+		
+		/** Generate the HTML for this option list
+		 * @param $field_name The field_name of the CustomFieldSelect object 
+		 * @param $selected The index of the selected option	
+		 */ 
 		function getHTML($field_name, $selected)
 		{
 			$html = "<select name=\"".$field_name."\">\n";

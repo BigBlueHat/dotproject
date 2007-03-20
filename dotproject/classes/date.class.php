@@ -6,10 +6,21 @@ if (!defined('DP_BASE_DIR')){
 /**
 * @package dotproject
 * @subpackage utilites
+* @file date.class.php
+* @brief An extension of the PEAR date class
 */
 
 require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
-
+/** @defgroup dateformatcontstants Date formatting constants */
+/*@{*/
+/** @enum FMT_DATEISO ISO Date Format, Example: 20070320T121545  */
+/** @enum FMT_DATELDAP LDAP Date Format, Example: 20070320121615Z  */
+/** @enum FMT_DATETIME_MYSQL MySQL Datetime Format, Example: 2007-03-20 12:17:07 */
+/** @enum FMT_DATERFC822 RFC822 Date Format, Example: Tue, 20 Mar 2007 12:17:54 */
+/** @enum FMT_TIMESTAMP Timestamp Format, Example: 20070320121837 */
+/** @enum FMT_TIMESTAMP_DATE Timestamp Date-only Format, Example: 20070320 */
+/** @enum FMT_TIMESTAMP_TIME Timestamp Time-only Format, Example: 122012 */
+/*@}*/
 define( 'FMT_DATEISO', '%Y%m%dT%H%M%S' );
 define( 'FMT_DATELDAP', '%Y%m%d%H%M%SZ' );
 define( 'FMT_DATETIME_MYSQL', '%Y-%m-%d %H:%M:%S' );
@@ -17,7 +28,7 @@ define( 'FMT_DATERFC822', '%a, %d %b %Y %H:%M:%S' );
 define( 'FMT_TIMESTAMP', '%Y%m%d%H%M%S' );
 define( 'FMT_TIMESTAMP_DATE', '%Y%m%d' );
 define( 'FMT_TIMESTAMP_TIME', '%H%M%S' );
-define( 'FMT_UNIX', '3' );
+define( 'FMT_UNIX', '3' ); // This only actually outputs the number 3??
 define( 'WDAY_SUNDAY',    0 );
 define( 'WDAY_MONDAY',    1 );
 define( 'WDAY_TUESDAY',   2 );
@@ -29,7 +40,7 @@ define( 'SEC_MINUTE',    60 );
 define( 'SEC_HOUR',    3600 );
 define( 'SEC_DAY',    86400 );
 
-/**
+/**  
  * dotProject implementation of the Pear Date class
  *
  * This provides customised extensions to the Date class to leave the
@@ -37,6 +48,9 @@ define( 'SEC_DAY',    86400 );
  */
 class CDate extends Date {
 
+	/** CDate constructor 
+	 * @param $date A date in any of the supported formats, or NULL for todays date
+	 */ 
 	function CDate($date = null)
 	{
 		global $AppUI;
@@ -67,6 +81,10 @@ class CDate extends Date {
 	 *
 	 * The convertTZ calls are time intensive calls.  When a compare call is
 	 * made in a recussive loop the lag can be significant.
+	 * @param $d1 A date to compare 
+	 * @param $d2 Date to compare to $d1
+	 * @param $convertTZ Convert timezones of date parameters, default is false
+	 * @return -1 if the second date is newer, 1 if the first date is newer, 0 if the dates are equal
 	 */
 	function compare($d1, $d2, $convertTZ=false)
 	{
@@ -89,7 +107,7 @@ class CDate extends Date {
 
 	/**
 	 * Adds (+/-) a number of days to the current date.
-	 * @param int Positive or negative number of days
+	 * @param $n Positive or negative number of days
 	 * @author J. Christopher Pereira <kripper@users.sf.net>
 	 */
 	function addDays( $n )
@@ -106,7 +124,7 @@ class CDate extends Date {
 
 	/**
 	 * Adds (+/-) a number of months to the current date.
-	 * @param int Positive or negative number of months
+	 * @param $n Positive or negative number of months
 	 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 	 */
 	function addMonths( $n )
@@ -134,7 +152,8 @@ class CDate extends Date {
 
 	/**
 	 * New method to get the difference in days the stored date
-	 * @param Date The date to compare to
+	 * @param $when The date to compare to
+	 * @return The difference in days
 	 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 	 */
 	function dateDiff( $when ) 
@@ -147,9 +166,9 @@ class CDate extends Date {
 
 	/**
 	 * New method that sets hour, minute and second in a single call
-	 * @param int hour
-	 * @param int minute
-	 * @param int second
+	 * @param $h hour
+	 * @param $m minute
+	 * @param $s second
 	 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
 	 */
 	function setTime( $h=0, $m=0, $s=0 )
@@ -159,6 +178,11 @@ class CDate extends Date {
 		$this->setSecond( $s );
 	}
 
+	/** Determine if this date is a working day
+	 * 
+	 * Based on dotProjects configured working days
+	 * @return Boolean indicating if this day is in the working week
+	 */
 	function isWorkingDay()
 	{
 	  global $AppUI;
@@ -173,6 +197,9 @@ class CDate extends Date {
 	  return in_array($this->getDayOfWeek(), $working_days);
 	}
 
+	/** Determine the 12 hour time suffix of this date
+	 * @return "am" or "pm"
+	 */
 	function getAMPM()
 	{
 		if ( $this->getHour() > 11 ) {
@@ -183,8 +210,9 @@ class CDate extends Date {
 	}
 
 	/**
-	 * Return date obj for the end of the next working day
-	 * @param	bool	Determine whether to set time to start of day or preserve the time of the given object
+	 * Get date for the end of the next working day
+	 * @param $preserveHours Boolean, Determine whether to set time to start of day or preserve the time of the given object
+	 * @return A date object set to the next working day
 	 */ 
 	function next_working_day( $preserveHours = false ) {
 		global $AppUI;
@@ -205,7 +233,8 @@ class CDate extends Date {
 
 	/**
 	 *  Return date obj for the end of the previous working day
-	 * @param	bool	Determine whether to set time to end of day or preserve the time of the given object
+	 * @param $preserveHours Determine whether to set time to end of day or preserve the time of the given object
+	 * @return A CDate object containing the previous working day
 	 */ 
 	function prev_working_day( $preserveHours = false ) {
 		global $AppUI;
@@ -227,9 +256,9 @@ class CDate extends Date {
 	 * Calculating _robustly_ a date from a given date and duration
 	 * Works in both directions: forwards/prospective and backwards/retrospective
 	 * Respects non-working days
-	 * @param	int	duration	(positive = forward, negative = backward)
-	 * @param	int	durationType; 1 = hour; 24 = day;
-	 * @return	obj	Shifted DateObj
+	 * @param	$duration	(positive = forward, negative = backward)
+	 * @param	$durationType  1 = hour; 24 = day;
+	 * @return	A Date object with the specified duration added.
 	 */ 
 	function addDuration( $duration = '8', $durationType ='1') {
 		// using a sgn function lets us easily cover 
@@ -325,8 +354,8 @@ class CDate extends Date {
 	 * Respects non-working days
 	 *
 	 *
-	 * @param	obj	DateObject	may be viewed as end date
-	 * @return	int							working duration in hours
+	 * @param	$e	DateObject	may be viewed as end date
+	 * @return	Working duration as an integer in hours
 	 */ 
 	function calcDuration($e) {
 		
@@ -382,6 +411,11 @@ class CDate extends Date {
 		return $duration*$sgn;
 	}	
 
+	/** Get the date as a string using specified formatting
+	 * @param $format The formatting string
+	 * @param $convert Convert to UTC timezone
+	 * @return Formatted date string
+	 */
 	function format($format = null, $convert = null)
 	{
 		global $AppUI;
@@ -395,6 +429,10 @@ class CDate extends Date {
   	return $local_date->format($format);
 	}
 
+	/** Get the number of working days between this CDate object and another CDate object
+	 * @param $e CDate object to compare to
+	 * @return Number of working days as integer.
+	 */
 	function workingDaysInSpan($e){
 		global $AppUI;
 		

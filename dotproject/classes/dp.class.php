@@ -3,12 +3,6 @@ if (!defined('DP_BASE_DIR')){
   die('You should not access this file directly');
 }
 
-/**
- *	@package dotproject
- *	@subpackage modules
- *	@version $Revision$
- */
-
 require_once $AppUI->getSystemClass('query');
 
 /**
@@ -16,51 +10,35 @@ require_once $AppUI->getSystemClass('query');
  *
  *	Parent class to all database table derived objects
  *	@author Andrew Eddie <eddieajau@users.sourceforge.net>
- *	@abstract
  */
 class CDpObject {
 // {{{ variables
-/**
- *	@var string Name of the table in the db schema relating to child class
- */
+/** string Name of the table in the db schema relating to child class */
 	var $_tbl = '';
-/**
- *	@var string Name of the primary key field in the table
- */
+/** string Name of the primary key field in the table */
 	var $_tbl_key = '';
-/**
- *  @var string Name of the field containing the name for the item.
- */
+/** string Name of the field containing the name for the item. */
  var $_tbl_name = '';
-/**
- * @var string The name of the field, referencing the logical parent 
- * of the current item
- */
+/** string The name of the field, referencing the logical parent of the current item */
 	var $_tbl_parent = null;
-/**
- * @var object The logical parent of the current item
- */
+/** object The logical parent of the current item */
 	var $_parent = null;
-/**
- *	@var string Error message
- */
+/** string Error message */
 	var $_error = '';
 
-/**
- * @var object Query Handler
- */
+/** object Query Handler */
  var $_query;
 
-/** @var array the fields to search through */
+/** array the fields to search through */
  var $search_fields;
 //}}}
 
-/** {{{ constructor
- *	Object constructor to set table and key field
+/** CDpObject constructor
  *
- *	Can be overloaded/supplemented by the child class
- *	@param string $table name of the table in the db schema relating to child class
- *	@param string $key name of the primary key field in the table
+ *	Object constructor to set table and key field
+ *  Can be overloaded/supplemented by the child class
+ *	@param $table name of the table in the db schema relating to child class
+ *	@param $key name of the primary key field in the table
  */
 	function CDpObject( $table, $key )
 	{
@@ -71,7 +49,7 @@ class CDpObject {
 		$this->_query =& new DBQuery;
 	} // }}} constructor
 
-/**
+/** Get the last error message
  *	@return string Returns the error message
  */
 	function getError()
@@ -82,7 +60,7 @@ class CDpObject {
  *	Binds a named array/hash to this object
  *
  *	can be overloaded/supplemented by the child class
- *	@param array $hash named array
+ *	@param $hash named array
  *	@return null|string	null is operation was satisfactory, otherwise returns an error
  */
 	function bind( $hash )
@@ -97,9 +75,9 @@ class CDpObject {
 	}
 
 /**
- *	Binds an array/hash to this object
- *	@param int $oid optional argument, if not specifed then the value of current key is used
- *	@return any result from the database operation
+ *	Load values into this object from the database
+ *	@param $oid (optional argument), object ID of the object to load, if not specifed then the value of current key is used
+ *	@return A reference to this object on success, otherwise returns boolean false.
  */
 	function load( $oid=null , $strip = true)
 	{
@@ -128,9 +106,12 @@ class CDpObject {
 		return $obj;
 	}
 
-/**
- *	Returns an array, keyed by the key field, of all elements that meet
- *	the where clause provided. Ordered by $order key.
+/** Query this objects database table
+ *
+ * Get an associative array of rows from the same table as this object. Can supply a WHERE clause and ORDER BY statement
+ * @param $order Order by statement (without ORDER BY keywords).
+ * @param $where Where clause to include (without WHERE keyword).
+ * @return An associative array of table rows matching the query
  */
 	function loadAll($order = null, $where = null)
 	{
@@ -147,7 +128,7 @@ class CDpObject {
 
 /**
  *	Return a DBQuery object seeded with the table name.
- *	@param string $alias optional alias for table queries.
+ *	@param $alias optional alias for table queries.
  *	@return DBQuery object
  */
 	function &getQuery($alias = null)
@@ -172,7 +153,7 @@ class CDpObject {
 *	Clone the current record
 *
 *	@author	handco <handco@users.sourceforge.net>
-*	@return	object	The new record object or null if error
+*	@return	The new record object or null if error
 **/
 	function duplicate()
 	{
@@ -188,9 +169,7 @@ class CDpObject {
 	/**
 	 *	Default trimming method for class variables of type string
 	 *
-	 *	@param object Object to trim class variables for
 	 *	Can be overloaded/supplemented by the child class
-	 *	@return none
 	 */
 	function dPTrimAll() {
 		$trim_arr = get_object_vars($this);
@@ -205,7 +184,7 @@ class CDpObject {
  *	Inserts a new row if id is zero or updates an existing row in the database table
  *
  *	Can be overloaded/supplemented by the child class
- *	@return null|string null if successful otherwise returns and error message
+ *	@return null|string null if successful otherwise returns an error message
  */
 	function store( $updateNulls = false ) {
         
@@ -233,6 +212,11 @@ class CDpObject {
 		}
 	}
 
+	/** Check the users access to this object
+	 *
+	 * @param $type Undocumented (Possibly the type of object to check access against)
+	 * @return Boolean true if the user has access, false if they dont.
+	 */
 	function access($type) 
 	{
 		global $AppUI;
@@ -252,14 +236,15 @@ class CDpObject {
 		
 	}
 
-/**
- *	Generic check for whether dependencies exist for this object in the db schema
+/** Check the users permission to delete this object
  *
+ *	Also contains a generic check for whether dependencies exist for this object in the db schema
  *	Can be overloaded/supplemented by the child class
- *	@param string $msg Error message returned
- *	@param int Optional key index
- *	@param array Optional array to compiles standard joins: format [label=>'Label',name=>'table name',idfield=>'field',joinfield=>'field']
- *	@return true|false
+ *
+ *	@param $msg Error message returned
+ *	@param $oid Optional key index
+ *	@param $joins Optional array to compiles standard joins: format [label=>'Label',name=>'table name',idfield=>'field',joinfield=>'field']
+ *	@return Boolean true if the user can delete, false if they cannot
  */
 	function canDelete( &$msg, $oid=null, $joins=null )
 	{
@@ -315,11 +300,12 @@ class CDpObject {
 		return true;
 	}
 
-/**
- *	Default delete method
- *
+/** Delete this object (or one specified by an Object ID)
+ *	
+ *  The $oid parameter allows you to delete a CDpObject not instantiated with database information.
  *	Can be overloaded/supplemented by the child class
- *	@return null|string null if successful otherwise returns and error message
+ *  @param $oid optional ID of object to delete 
+ *	@return null|string null if successful otherwise returns an error message
  */
 	function delete( $oid=null )
 	{
@@ -346,8 +332,8 @@ class CDpObject {
 
 /**
  *	Get specifically denied records from a table/module based on a user
- *	@param int User id number
- *	@return array
+ *	@param $uid User id number
+ *	@return Array of items the user is specifically denied access to.
  */
 	function getDeniedRecords( $uid )
 	{
@@ -360,14 +346,13 @@ class CDpObject {
 
 /**
  *	Returns a list of records exposed to the user
- *	@param int User id number
- *	@param string Optional fields to be returned by the query, default is all
- *	@param string Optional sort order for the query
- *	@param string Optional name of field to index the returned array
- *	@param array Optional array of additional sql parameters (from and where supported)
- *	@return array
+ *	@param $uid User id number
+ *	@param $fields Optional fields to be returned by the query, default is all
+ *	@param $orderby Optional sort order for the query
+ *	@param $index Optional name of field to index the returned array
+ *	@param $extra Optional array of additional sql parameters (from and where supported)
+ *	@return Array of records which the user is allowed to access
  */
-// returns a list of records exposed to the user
 	function getAllowedRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
 	{
 		$perms =& $GLOBALS['AppUI']->acl();
@@ -404,6 +389,15 @@ class CDpObject {
 
 		return $this->_query->loadHashList( $index );
 	}
+
+  /** Get an array of records the user is allowed to edit
+   * @param $uid The user's ID
+   * @param $fields Optional fields to be returned by the query, default is all
+   * @param $orderby Optional sort order for the query
+   * @param $index Optional name of field to index the returned array
+   * @param $extra Optional array of additional sql parameters (from and where supported)
+   * @return Associative array of records the user can edit
+   */
   function getEdittableRecords( $uid, $fields='*', $orderby='', $index=null, $extra=null ) 
   {
     $perms =& $GLOBALS['AppUI']->acl();
@@ -440,6 +434,13 @@ class CDpObject {
 
     return $this->_query->loadHashList( $index );
   }
+
+    /** Get an SQL IN clause with the list of allowed object keys
+     *
+     * @param $uid The user's ID
+	 * @param $index The objects key field, defaults to the primary key of this object
+	 * @return A string containing an SQL IN clause of allowed object keys.
+	 */
 	function getAllowedSQL( $uid, $index = null )
 	{
 		$perms =& $GLOBALS['AppUI']->acl();
@@ -466,6 +467,15 @@ class CDpObject {
 		return $where;
 	}
 
+	/** Get permissions for this object and apply them to a supplied DBQuery object
+	 *
+	 * Note: this function needs to be re-documented
+	 * 
+	 * @param $uid User's ID to check permissions against
+	 * @param &$query DBQuery object to add IN clauses to
+	 * @param $index Index of table to join to
+	 * @param $key Table to join to
+	 */
 	function setAllowedSQL($uid, &$query, $index = null, $key = null)
 	{
 		$perms =& $GLOBALS['AppUI']->acl();
@@ -500,6 +510,13 @@ class CDpObject {
 		}
 	}
 	
+	/** Search for objects of this class by keyword
+	 *
+	 * Uses a predefined list of varchar type fields to search
+	 *
+	 * @param $keyword Keyword to search by
+	 * @return Associative array of results
+	 */
 	function search($keyword)
 	{
 		global $AppUI;

@@ -22,6 +22,14 @@ if (!defined('DP_BASE_DIR')){
  */
 
 
+	/** Get a new authenticator object
+	 *
+	 * Instantiates an authenticator object based on the $auth_mode parameter, which is the authentication mode specified in the system config. 
+	 * If no such file or class exists the function returns an instance of the SQLAuthenticator class.
+	 *
+	 * @param $auth_mode Authentication mode to use
+	 * @return Reference to instantiated Authenticator object
+	 */
 	function &getAuth($auth_mode)
 	{
 		$auth_base = dirname(__FILE__) . '/auth/';
@@ -38,12 +46,16 @@ if (!defined('DP_BASE_DIR')){
 		return $auth;
 	}
 
+	/** SQL Authenticator class
+	 *
+	 * Provides the system with user authentication via an SQL Database
+	 */ 
 	class SQLAuthenticator
 	{
-		var $user_id;
-		var $username;
+		var $user_id; /**< user ID to authenticate with */
+		var $username; /**< username to authenticate with */
 
-		/**
+		/** Authenticate a username and password pair
 		 * @param string $username
 		 * @param string $password
 		 * 
@@ -75,17 +87,26 @@ if (!defined('DP_BASE_DIR')){
 			return false;
 		}
 		
+		/** Display the descriptive name of this authenticatior class
+		 * @return String description of the class
+		 */
 		function displayName()
 		{
 			return "SQL Database";
 		}
 		
+		/** Check whether this authentication method is supported on this host
+		 * @return Boolean, true if the method is supported
+		 */ 
 		function supported()
 		{
 			// every authenticator should support this method
 			return true;
 		}
 
+		/** Get the ID of the user that has been authenticated
+		 * @return Integer of the users ID
+		 */ 
 		function userId()
 		{
 			return $this->user_id;

@@ -4,22 +4,18 @@ if (!defined('DP_BASE_DIR')){
 }
 
 /**
- *	@package dotproject
- *	@subpackage utilites
-*/
-
-/**
  *	This class encapsulates the PHP mail() function.
  *
- *	implements CC, Bcc, Priority headers
+ *	Implements CC, Bcc, Priority headers
  *	@version	1.3
  *	<ul>
  *	<li>added ReplyTo( $address ) method
  *	<li>added Receipt() method - to add a mail receipt
  *	<li>added optionnal charset parameter to Body() method. this should fix charset problem on some mail clients
  *	</ul>
- *	Example
- *	<code>
+ *  Example
+ *	
+ *	@code
  *	include "libmail.php";
  *
  *	$m= new Mail; // create the mail
@@ -35,7 +31,7 @@ if (!defined('DP_BASE_DIR')){
  *	$m->Attach( "/home/leo/toto.gif", "image/gif" ) ;	// attach a file of type image/gif
  *	$m->Send();	// send the mail
  *	echo "the mail below has been sent:<br><pre>", $m->Get(), "</pre>";
- *	</code>
+ *	@endcode
 
 LASTMOD
 	Fri Oct  6 15:46:12 UTC 2000
@@ -44,57 +40,42 @@ LASTMOD
  */
 class Mail
 {
-/**
- *	list of To addresses
- *	@var	array
- */
+/** list of To addresses */
 	var $sendto = array();
-/**
- *	@var	array
-*/
+/** list of CC addresses */
 	var $acc = array();
-/**
- *	@var	array
-*/
+/** list of BCC addresses */
 	var $abcc = array();
-/**
- *	paths of attached files
- *	@var array
-*/
+/** paths of attached files */
 	var $aattach = array();
-
-/**
- *	type of attached files : file (false) or text string (string)
- *	@var array / mixed bool string
-*/
+/** type of attached files : file (false) or text string (string) */
 	var $aString = array();
-
-/**
- *	list of message headers
- *	@var array
-	*/
+/** list of message headers */
 	var $xheaders = array();
-	/**
- *	message priorities referential
- *	@var array
-	*/
+/** message priorities referential */
 	var $priorities = array( '1 (Highest)', '2 (High)', '3 (Normal)', '4 (Low)', '5 (Lowest)' );
-	/**
- *	character set of message
- *	@var string
-	*/
+/** character set of message */
 	var $charset = "us-ascii";
+/** character set encoding */
 	var $ctencoding = "7bit";
+/** message contains a return receipt */
 	var $receipt = 0;
 
 	var $useRawAddress = true;
 
+/** SMTP host to use, default is localhost */
 	var $host;
+/** port to use, default is 25(smtp) */
 	var $port;
+/** whether to use SASL authentication, default is false */
 	var $sasl;
+/** username for authentication */
 	var $username;
+/** password for authentication */
 	var $password;
+/** transport method to use, default is php's mail() function */
 	var $transport;
+/** defer mail delivery */
 	var $defer;
 
 /**
@@ -116,14 +97,11 @@ function Mail()
 }
 
 /**
- *	activate or desactivate the email addresses validator
+ *	activate or de-activate the email addresses validator
  *
- *	ex: autoCheck( true ) turn the validator on
  *	by default autoCheck feature is on
-
- *	@param boolean	$bool set to true to turn on the auto validation
- *	@access public
-*/
+ *	@param $bool set to true to turn on automatic e-mail address validation.
+ */
 function autoCheck( $bool )
 {
 	if( $bool ) {
@@ -135,8 +113,8 @@ function autoCheck( $bool )
 
 /**
  *	Define the subject line of the email
- *	@param string $subject any monoline string
- *	@param string $charset encoding to be used for Quoted-Printable encoding of the subject 
+ *	@param $subject any monoline string
+ *	@param $charset encoding to be used for Quoted-Printable encoding of the subject 
 */
 function Subject( $subject, $charset='' )
 {
@@ -154,8 +132,8 @@ function Subject( $subject, $charset='' )
 }
 
 /**
- *	set the sender of the mail
- *	@param string $from should be an email address
+ *	Set the sender of the mail
+ *	@param $from should be an email address
  */
 function From( $from )
 {
@@ -167,8 +145,8 @@ function From( $from )
 }
 
 /**
- *	set the Reply-to header
- *	@param string $email should be an email address
+ *	Set the Reply-to header
+ *	@param $email should be an email address
 */
 function ReplyTo( $address )
 {
@@ -178,27 +156,26 @@ function ReplyTo( $address )
 	$this->xheaders["Reply-To"] = $address;
 }
 
-/**
- *	add a receipt to the mail ie.  a confirmation is returned to the "From" address (or "ReplyTo" if defined)
+/** Add a return receipt to the e-mail
+ *
+ *	Ie.  a confirmation is returned to the "From" address (or "ReplyTo" if defined)
  *	when the receiver opens the message.
- *	@warning this functionality is *not* a standard, thus only some mail clients are compliants.
+ *	@warning this functionality is *not* a standard, thus only some mail clients are compliant.
 */
-
 function Receipt()
 {
 	$this->receipt = 1;
 }
 
 /**
- *	set the mail recipient
+ *	Set the mail recipient
  *
  *	The optional reset parameter is useful when looping through records to send individual mails.
  *	This prevents the 'to' array being continually stacked with additional addresses.
  *
- *	@param string $to email address, accept both a single address or an array of addresses
- *	@param boolean $reset resets the current array
+ *	@param $to email address, accept both a single address or an array of addresses
+ *	@param $reset resets the current array
 */
-
 function To( $to, $reset=false )
 {
 
@@ -223,10 +200,10 @@ function To( $to, $reset=false )
 
 }
 
-/**
- *	Cc()
- *	set the CC headers ( carbon copy )
- *	$cc : email address(es), accept both array and string
+/** Set the CC recipients
+ *	
+ *	Set the carbon copy recipients using an array or a comma delimited string
+ *	@param $cc Array of e-mail addresses, or string of e-mail addresses seperated by commas.
  */
 function Cc( $cc )
 {
@@ -240,9 +217,10 @@ function Cc( $cc )
 
 }
 
-/**
- *	set the Bcc headers ( blank carbon copy ).
- *	$bcc : email address(es), accept both array and string
+/** Set the BCC recipients
+ *
+ *	set the blind carbon copy recipients using an array or a comma delimited string
+ *	@param $bcc Array of e-mail addresses, or string of e-mail addresses seperated by commas.
  */
 function Bcc( $bcc )
 {
@@ -256,11 +234,16 @@ function Bcc( $bcc )
 		$this->CheckAdresses( $this->abcc );
 }
 
-/**
- *		set the body (message) of the mail
- *		define the charset if the message contains extended characters (accents)
- *		default to us-ascii
- *		$mail->Body( "mél en français avec des accents", "iso-8859-1" );
+/** Set the body (message) of the mail
+ *
+ * define the charset if the message contains extended characters (accents)
+ * defaults to us-ascii, 
+ * Example:
+ * @code
+ * $mail->Body( "mél en français avec des accents", "iso-8859-1" );
+ * @endcode
+ * @param $body Body of the e-mail message
+ * @param $charset charset to use
  */
 function Body( $body, $charset="" )
 {
@@ -273,8 +256,8 @@ function Body( $body, $charset="" )
 	}
 }
 
-/**
- *		set the Organization header
+/** Set the organization header
+ * @param $org value of the organization header
  */
 function Organization( $org )
 {
@@ -282,10 +265,8 @@ function Organization( $org )
 		$this->xheaders['Organization'] = $org;
 }
 
-/**
- *		set the mail priority
- *		$priority : integer taken between 1 (highest) and 5 ( lowest )
- *		ex: $mail->Priority(1) ; => Highest
+/** Set the mail priority
+ *	@param $priority e-mail priority from 1 (highest) to 5 (lowest)
  */
 function Priority( $priority )
 {
@@ -300,13 +281,12 @@ function Priority( $priority )
 	return true;
 }
 
-/**
- *	Attach a file to the mail
+/** Attach a file to the mail
  *
- *	@param string $filename : path of the file to attach
- *	@param string $filetype : MIME-type of the file. default to 'application/x-unknown-content-type'
- *	@param string $disposition : instruct the Mailclient to display the file if possible ("inline") or always as a link ("attachment") possible values are "inline", "attachment"
- *	@param mixed bool/string	$isString : expects $filename to be a real existing file link if FALSE; if var is a STRING $filename is expected to be a dummy and the attachment will be generated from the content of $isString (like an icalendar text block)
+ *	@param $filename Path of the file to attach
+ *	@param $filetype MIME-type of the file. default to 'application/x-unknown-content-type'
+ *	@param $disposition Instruct the Mailclient to display the file if possible ("inline") or always as a link ("attachment") possible values are "inline", "attachment"
+ *	@param $isString expects $filename to be a real existing file link if FALSE; if var is a STRING $filename is expected to be a dummy and the attachment will be generated from the content of $isString (like an icalendar text block)
  */
 function Attach( $filename, $filetype = "", $disposition = "inline", $isString = false )
 {
@@ -320,6 +300,8 @@ function Attach( $filename, $filetype = "", $disposition = "inline", $isString =
 	$this->aString[] = $isString;
 }
 
+/** Reset file attachments
+*/
 function clearAttachments()
 {
 	$this->aattach 	= array();
@@ -330,7 +312,7 @@ function clearAttachments()
 
 /**
  *	Build the email message
- *	@access protected
+ *	@internal
 */
 function BuildMail()
 {
@@ -379,10 +361,9 @@ function BuildMail()
 	}
 }
 
-/**
- *	format and send the mail
- *	@access public
-*/
+/** Format and send the mail
+ * @return Return status of the transport used to send the e-mail
+ */
 function Send()
 {
 	$this->BuildMail();
@@ -399,10 +380,11 @@ function Send()
 
 /**
  * Send email via an SMTP connection.
- *
- * Work based loosly on that of Bugs Genie, which appears to be in turn based on something from 'Ninebirds'
- *
- * @access public
+ * @param $to To recipients
+ * @param $subject E-mail subject
+ * @param $body E-mail body
+ * @param &$headers Extra headers
+ * @return false on error, true on success
  */
 function SMTPSend($to, $subject, $body, &$headers)
 {
@@ -478,6 +460,10 @@ function SMTPSend($to, $subject, $body, &$headers)
 	}
 }
 
+/** Read the connected socket buffer
+ * @internal
+ * @return Data from socket
+ */
 function socketRead()
 {
 	$result = fgets($this->socket, 4096);
@@ -485,6 +471,12 @@ function socketRead()
 	return $result;
 }
 
+/** Send data to the connected socket
+ * @internal
+ * @param $msg Message to send
+ * @param $rcv Return the servers response as the result
+ * @return if $rcv is true, returns the servers response. If $rcv is false returns the number of bytes sent(?)
+ */
 function socketSend($msg, $rcv = true)
 {
 	dprint(__FILE__, __LINE__, 12, "sending: $msg");
@@ -495,6 +487,8 @@ function socketSend($msg, $rcv = true)
 		return $sent;
 }
 
+/** Get the hostname of this server
+*/
 function getHostName()
 {
   // Grab the server address, return a hostname for it.
@@ -508,7 +502,7 @@ function getHostName()
  * Queue mail to allow the queue manager to trigger
  * the email transfer.
  *
- * @access private
+ * @return Event queue ID 
  */
 function QueueMail()
 {
@@ -522,8 +516,13 @@ function QueueMail()
 
 /**
  * Dequeue the email and transfer it.  Called from the queue manager.
- *
- * @access private
+ * @note The first three parameters are not used in this method. Maybe deprecated? - ebrosnan
+ * @param $mod Queue module
+ * @param $type Queue type
+ * @param $originator Originator
+ * @param $owner Event owner
+ * @param &$args Arguments to use with SMTPSend or mail()
+ * @return The return status of the transport's method
  */
 function SendQueuedMail($mod, $type, $originator, $owner, &$args)
 {
@@ -549,7 +548,7 @@ function SendQueuedMail($mod, $type, $originator, $owner, &$args)
  *
  *	can be used for displaying the message in plain text or logging it
  *
- *	@return string
+ *	@return Entire e-mail as a string.
  */
 function Get()
 {
@@ -561,10 +560,10 @@ function Get()
 }
 
 /**
- *	check an email address validity
- *	@access public
- *	@param string $address : email address to check
- *	@return true if email adress is ok
+ *	Check an email address validity
+ *
+ *	@param $address E-mail address to check
+ *	@return boolean true if e-mail address is ok
  */
 function ValidEmail($address)
 {
@@ -578,10 +577,9 @@ function ValidEmail($address)
    }
 }
 
-/**
- *	check validity of email addresses
- *	@param	array $aad -
- *	@return if unvalid, output an error message and exit, this may -should- be customized
+/** Check validity of multiple email addresses
+ * @todo Replace echo of invalid email addresses with a returned array of invalid addresses, also correct spelling of CheckAdresses()
+ * @param $aad Array of e-mail addresses to check
  */
 function CheckAdresses( $aad )
 {
@@ -593,9 +591,7 @@ function CheckAdresses( $aad )
 	}
 }
 
-/**
- *	check and encode attach file(s) . internal use only
- *	@access private
+/** Check and encode attached file(s)
 */
 function _build_attachement()
 {

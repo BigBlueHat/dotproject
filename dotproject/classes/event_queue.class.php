@@ -10,15 +10,16 @@ if (!defined('DP_BASE_DIR')){
  * event notifications and other timed events, as well as
  * outgoing emails.
  *
- * Copyright 2005, the dotProject team.
+ * @author Copyright 2005, the dotProject team.
  */
 class EventQueue {
 
-	var $table = 'event_queue';
-	var $update_list = array();
-	var $delete_list = array();
-	var $event_count = 0;
+	var $table = 'event_queue'; /**< Table to use for events, always 'event_queue' */
+	var $update_list = array(); /**< List of events to update */
+	var $delete_list = array(); /**< List of events to delete */
+	var $event_count = 0; /**< Counter containing number of events to execute */
 
+	/** EventQueue constructor */
 	function EventQueue()
 	{
 	}
@@ -28,23 +29,17 @@ class EventQueue {
 	 *
 	 * The callback can either be the name of a global function or the
 	 * name of a class
-	 * @param mixed $callback function to call when this event is due.
-	 * @param mixed $args Arguments to pass to the callback
-	 * @param string $module module, or originator of the event
-	 * @param string $type type of event (to allow searching)
-	 * @param integer $id id of originating event.
-	 * @param integer $date Seconds since 1970 to trigger event.
-	 * @param integer $repeat_interval seconds to repeat
-	 * @param integer $repeat_count number of times to repeat
-	 * @return integer queue id
+	 * @param $callback function to call when this event is due.
+	 * @param $args Arguments to pass to the callback
+	 * @param $module module, or originator of the event
+	 * @param $type type of event (to allow searching)
+	 * @param $id id of originating event.
+	 * @param $date Seconds since 1970 to trigger event.
+	 * @param $repeat_interval seconds to repeat
+	 * @param $repeat_count number of times to repeat
+	 * @return queue id as integer
+	 * @author gregorerhardt
 	 */
-	/**
-	**	@date 			20051101
-	**	@responsible		gregorerhardt
-	**	@change			added infinitely repeated events support
-	**					choose $repeat_count as -8 to let the event repeat infinitely
-	**					8 is a rotated infinity symbol
-	*/
 	function add($callback, &$args, $module, $sysmodule = false, $id = 0, $type = '', $date = 0, $repeat_interval = 0, $repeat_count = 1)
 	{
 		global $AppUI;
@@ -88,7 +83,7 @@ class EventQueue {
 
 	/**
 	 * Remove the event from the queue. 
-	 * 
+	 * @param $id Event ID
 	 */
 	function remove($id)
 	{
@@ -100,8 +95,12 @@ class EventQueue {
 	}
 
 	/**
-	 * Find a queue record (or records) based upon the
+	 * Find a queue record (or records) matching the supplied parameters
 	 * 
+	 * @param $module Module that the event is associated with.
+	 * @param $type Type(?)
+	 * @param $id Queue origin id
+	 * @return Associative array of queue records
 	 */
 	function find($module, $type, $id = null)
 	{
@@ -114,9 +113,12 @@ class EventQueue {
 		return $q->loadHashList('queue_id');
 	}
 
-	/**
-	 * Execute a queue entry.  This involves resolving the
+	/** Execute an event queue entry
+	 *
+	 * This involves resolving the
 	 * method to execute and passing the arguments to it.
+	 * @param &$fields Reference to the event queue entry to process
+	 * @return The return result of the event method called.
 	 */
 	function execute(&$fields)
 	{
@@ -151,7 +153,8 @@ class EventQueue {
 		}
 	}
 
-	/**
+	/** Scan and execute events to be processed in the queue
+	 *
 	 * Scans the queue for entries that are older than current date.
 	 * If it finds one it tries to execute the attached function.
 	 * If successful, the entry is removed from the queue, or if
@@ -178,15 +181,13 @@ class EventQueue {
 		$this->commit_updates();
 	}
 
+	/** Add an event to the list of events to update or delete
+	 * @param &$fields Event to process
+	 * @param $flag Boolean to indicate whether to delete only this instance of a repeating event
+	 * @author gregorerhardt
+	 */
 	function update_event(&$fields, $flag)
-	{	/**
-		**	@date 			20051101
-		**	@responsible		gregorerhardt
-		**	@change			added infinitely repeated events
-		**					added OR if statement for check whether repeat_count == -8
-		**					8 is a rotated infinity symbol
-		*/
-
+	{	
 		if ($flag === true && $fields['queue_repeat_interval'] > 0 && ($fields['queue_repeat_count'] > 0 || $fields['queue_repeat_count'] == '-8') ) {
 			/**
 			** changed to actual time + interval because there could emerge the situation
@@ -205,6 +206,8 @@ class EventQueue {
 		}
 	}
 
+	/** Commit the pending changes to events in the queue
+	 */
 	function commit_updates()
 	{
 		$q = new DBQuery;
