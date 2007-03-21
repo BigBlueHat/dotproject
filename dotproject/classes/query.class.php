@@ -27,37 +27,42 @@ require_once DP_BASE_DIR . '/lib/adodb/adodb.inc.php';
 define('QUERY_STYLE_ASSOC', ADODB_FETCH_ASSOC);
 define('QUERY_STYLE_NUM' , ADODB_FETCH_NUM);
 define('QUERY_STYLE_BOTH', ADODB_FETCH_BOTH);
-
-/** {{{1 class DBQuery
+// {{{ DBQuery class
+/**
+ * Database query class
+ *
  * Container for creating prefix-safe queries.  Allows build up of
  * a select statement by adding components one at a time.
  *
  * @version	$Id$
- * @package	dotProject
- * @access	public
  * @author	Adam Donnison <adam@saki.com.au>
  * @license	GPL version 2 or later.
  * @copyright	(c) 2003 Adam Donnison
  */
 class DBQuery {
-  var $query;
-  var $table_list;
-  var $where;
-  var $order_by;
-  var $group_by;
-  var $limit;
-  var $offset;
-  var $join;
-  var $type;
-  var $update_list;
-  var $value_list;
-  var $create_table;
-  var $create_definition;
-  var $_table_prefix;
-	var $_query_id = null;
-	var $_old_style = null;
-	var $_db = null;
+  var $query; /**< Contains the query after it has been built. */
+  var $table_list; /**< Array of tables to be queried */
+  var $where; /**< WHERE component of the query */
+  var $order_by; /**< ORDER BY component of the query */
+  var $group_by; /**< GROUP BY component of the query */
+  var $limit; /**< LIMIT component of the query */
+  var $offset; /**< offset of the LIMIT component */
+  var $join; /**< JOIN component of the query */
+  var $type; /**< Query type eg. 'select', 'update' */
+  var $update_list; /**< Array of fields->values to update */
+  var $value_list; /**< Array of values used in INSERT or REPLACE statements */
+  var $create_table; /**< Name of the table to create */
+  var $create_definition; /**< Array containing information about the table definition */
+  var $_table_prefix; /**< Internal string, table prefix, prepended to all queries */
+	var $_query_id = null; /**< Handle to the query result */
+	var $_old_style = null; /**< Use the old style of fetch mode with ADODB */
+	var $_db = null; /**< Handle to the database connection */
 
+  /** DBQuery constructor
+   *
+   * @param $prefix Database table prefix - will be appended to all dotProject table names
+   * @param $query_db Database type
+   */
   function DBQuery($prefix = null, $query_db = null) 
   {
     global $db;
@@ -71,6 +76,8 @@ class DBQuery {
     $this->clear();
   }
   
+  /** Clear the current query and all set options
+   */
   function clear()
   {
 		global $ADODB_FETCH_MODE;
@@ -103,8 +110,8 @@ class DBQuery {
 		$this->_query_id = null;
 	}
   
-  /**
-   * Return the SQL used to concatenate strings.
+  /** Get database specific SQL used to concatenate strings.
+   * @return String containing SQL to concatenate supplied strings
    */
    function concat()
    {
@@ -112,21 +119,24 @@ class DBQuery {
    	$conc_str = call_user_func_array(array(&$this->_db, 'Concat'), $arr);
 	return $conc_str;	
    }
-  /**
-   * Return the SQL used to check for null values (ADODB portable IFNULL function)
+
+  /** Get database specific SQL used to check for null values.
+   *
+   * Calls the ADODB IfNull method
+   * @return String containing SQL to check for null field value
    */
    function ifNull($field, $nullReplacementValue)
    {
    	return $this->_db->IfNull($field, $nullReplacementValue);
    }	
 
-  /**
-   * Add a hash item to an array.
+  /** Add item to an internal associative array
+   * 
+   * Used internally with DBQuery
    *
-   * @access	private
-   * @param	string	$varname	Name of variable to add/create
-   * @param	mixed	$name	Data to add
-   * @param	string 	$id	Index to use in array.
+   * @param	$varname	Name of variable to add/create
+   * @param	$name	Data to add
+   * @param	$id	Index to use in array.
    */
   function addMap($varname, $name, $id)
   {
@@ -138,25 +148,30 @@ class DBQuery {
       $this->{$varname}[] = $name;
   }
 
-  /**
-   * Adds a table to the query.  A table is normally addressed by an
+  /** Add a table to the query
+   *
+   * A table is normally addressed by an
    * alias.  If you don't supply the alias chances are your code will
    * break.  You can add as many tables as are needed for the query.
    * E.g. addTable('something', 'a') will result in an SQL statement
    * of {PREFIX}table as a.
    * Where {PREFIX} is the system defined table prefix.
    *
-   * @param	string	$name	Name of table, without prefix.
-   * @parem	string	$id	Alias for use in query/where/group clauses.
+   * @param	$name	Name of table, without prefix.
+   * @param	$id	Alias for use in query/where/group clauses.
    */
   function addTable($name, $id = null)
   {
     $this->addMap('table_list', $name, $id);
   }
 
-  /**
-   * Add a clause to an array.  Checks to see variable exists first.
+  /** Add a clause to an internal array
+   *
+   * Checks to see variable exists first.
    * then pushes the new data onto the end of the array.
+   * @param $clause the type of clause to add
+   * @param $value the clause value
+   * @param $check_array defaults to true, iterates through each element in $value and adds them seperately to the clause
    */
   function addClause($clause, $value, $check_array = true)
   {
@@ -172,18 +187,25 @@ class DBQuery {
     }
   }
 
-  /**
-   * Add the actual select part of the query.  E.g. '*', or 'a.*'
+  /** Add the select part (fields, functions) to the query
+   *
+   * E.g. '*', or 'a.*'
    * or 'a.field, b.field', etc.  You can call this multiple times
    * and it will correctly format a combined query.
    *
-   * @param	string	$query	Query string to use.
+   * @param	$query	Query string to use.
    */
   function addQuery($query)
   {
     $this->addClause('query', $query);
   }
 
+  /** Insert a value into the database
+   * @param $field The field to insert the value into
+   * @param $value The specified value
+   * @param $set Defaults to false. If true will check to see if the fields or values supplied are comma delimited strings instead of arrays
+   * @param $func Defaults to false. If true will not use quotation marks around the value - to be used when the value being inserted includes a function
+   */
   function addInsert($field, $value, $set = false, $func = false)
   {
 		if ($set)
@@ -209,12 +231,23 @@ class DBQuery {
   }
   
   // implemented addReplace() on top of addInsert()
+  /** Insert a value into the database, to replace an existing row.
+   * @param $field The field to insert the value into
+   * @param $value The specified value
+   * @param $set Defaults to false. If true will check to see if the fields or values supplied are comma delimited strings instead of arrays
+   * @param $func Defaults to false. If true will not use quotation marks around the value - to be used when the value being inserted includes a function
+   */
   function addReplace($field, $value, $set = false, $func = false)
   {
   	 $this->addInsert($field, $value, $set, $func);
 	 $this->type = 'replace';
   }
 
+  /** Update a database value
+   * @param $field The field to update
+   * @param $value The value to set $field to
+   * @param $set Defaults to false. If true will check to see if the fields or values supplied are comma delimited strings instead of arrays
+   */
   function addUpdate($field, $value, $set = false)
   {
 		if ($set)
@@ -237,36 +270,57 @@ class DBQuery {
     $this->type = 'update';
   }
 
+  /** Create a database table
+   * @param $table the name of the table to create
+   */
   function createTable($table)
   {
     $this->type = 'createPermanent';
     $this->create_table = $table;
   }
   
+  /** Create a temporary database table
+   * @param $table the name of the temporary table to create.
+   */
   function createTemp($table)
   {
     $this->type = 'create';
     $this->create_table = $table;
   }
   
+  /** Drop a table from the database
+   *
+   * Use dropTemp() to drop temporary tables
+   * @param $table the name of the table to drop.
+   */
   function dropTable($table)
   {
     $this->type = 'drop';
     $this->create_table = $table;
   }
 
+  /** Drop a temporary table from the database
+   * @param $table the name of the temporary table to drop
+   */
   function dropTemp($table)
   {
     $this->type = 'drop';
     $this->create_table = $table;
   }
 
+	/** Alter a database table 
+	 * @param $table the name of the table to alter
+	 */
 	function alterTable($table)
 	{
 		$this->create_table = $table;
 		$this->type = 'alter';
 	}
 
+	/** Add a field definition for usage with table creation/alteration
+	 * @param $name The name of the field
+	 * @param $type The type of field to create
+	 */
 	function addField($name, $type)
 	{
 		if (! is_array($this->create_definition))
@@ -276,6 +330,9 @@ class DBQuery {
 			'spec' => $name . ' ' . $type);
 	}
 
+	/** Drop a field from table definition or from an existing table
+	 * @param $name The name of the field to drop
+	 */
 	function dropField($name)
 	{
 		if (! is_array($this->create_definition))
@@ -285,6 +342,8 @@ class DBQuery {
 			'spec' => $name);
 	}
 
+	/** Add an index
+	*/
 	function addIndex($name, $type)
 	{
 		if (! is_array($this->create_definition))
@@ -294,6 +353,8 @@ class DBQuery {
 			'spec' => $name . ' ' . $type);
 	}
 
+    /** Drop an index
+    */
 	function dropIndex($name)
 	{
 		if (! is_array($this->create_definition))
@@ -303,6 +364,8 @@ class DBQuery {
 			'spec' => $name);
 	}
 
+	/** Remove a primary key attribute from a field
+	*/
 	function dropPrimary()
 	{
 		if (! is_array($this->create_definition))
@@ -312,6 +375,9 @@ class DBQuery {
 			'spec' => '');
 	}
 
+  /** Set a table creation definition from supplied array
+   * @param $def Array containing table definition
+   */
   function createDefinition($def)
   {
     $this->create_definition = $def;
@@ -323,14 +389,15 @@ class DBQuery {
 		$this->addMap('table_list', $table, null);
 	}
 
-  /** 
-   * Add where sub-clauses.  The where clause can be built up one
+  /** Add a WHERE sub clause
+   * 
+   * The where clause can be built up one
    * part at a time and the resultant query will put in the 'and'
    * between each component.
    *
    * Make sure you use table aliases.
    *
-   * @param	string 	$query	Where subclause to use
+   * @param	$query	Where subclause to use, not including WHERE keyword
    */
   function addWhere($query)
   {
@@ -338,14 +405,15 @@ class DBQuery {
       $this->addClause('where', $query);
   }
 
-  /**
+  /** Add a JOIN condition
+   *
    * Add a join condition to the query.  This only implements
    * left join, however most other joins are either synonymns or
    * can be emulated with where clauses.
    *
-   * @param	string	$table	Name of table (without prefix)
-   * @param	string	$alias	Alias to use instead of table name (required).
-   * @param	mixed	$join	Join condition (e.g. 'a.id = b.other_id')
+   * @param	$table	Name of table (without prefix)
+   * @param	$alias	Alias to use instead of table name (required).
+   * @param	$join	Join condition (e.g. 'a.id = b.other_id')
    *				or array of join fieldnames, e.g. array('id', 'name);
    *				Both are correctly converted into a join clause.
    */
@@ -359,27 +427,52 @@ class DBQuery {
     $this->addClause('join', $var, false);
   }
 
+  /** Add a left join condition
+   *
+   * Helper method to add a left join
+   * @see addJoin()
+   * @param $table Name of table (without prefix)
+   * @param $alias Alias to use instead of table name
+   * @param $join Join condition
+   */
   function leftJoin($table, $alias, $join)
   {
     $this->addJoin($table, $alias, $join, 'left');
   }
-
+ 
+  /** Add a right join condition
+   *
+   * Helper method to add a right join
+   * @see addJoin()
+   * @param $table Name of table (without prefix)
+   * @param $alias Alias to use instead of table name
+   * @param $join Join condition
+   */
   function rightJoin($table, $alias, $join)
   {
     $this->addJoin($table, $alias, $join, 'right');
   }
 
+  /** Add an inner join condition
+   *
+   * Helper method to add an inner join
+   * @see addJoin()
+   * @param $table Name of table (without prefix)
+   * @param $alias Alias to use instead of table name
+   * @param $join Join condition
+   */
   function innerJoin($table, $alias, $join)
   {
     $this->addJoin($table, $alias, $join, 'inner');
   }
 
-  /**
-   * Add an order by clause.  Again, only the fieldname is required, and
+  /** Add an ORDER BY clause
+   *
+   * Again, only the fieldname is required, and
    * it should include an alias if a table has been added.
    * May be called multiple times.
    *
-   * @param	string	$order	Order by field.
+   * @param	$order	Order by field.
    */
   function addOrder($order)
   {
@@ -387,23 +480,25 @@ class DBQuery {
       $this->addClause('order_by', $order);
   }
 
-  /**
-   * Add a group by clause.  Only the fieldname is required.
+  /** Add a GROUP BY clause
+   *
+   * Only the fieldname is required.
    * May be called multiple times.  Use table aliases as required.
    *
-   * @param	string	$group	Field name to group by.
+   * @param	$group	Field name to group by.
    */
   function addGroup($group)
   {
     $this->addClause('group_by', $group);
   }
 
-  /**
+  /** Set a row limit on the query
+   *
    * Set a limit on the query.  This is done in a database-independent
    * fashion.
    *
-   * @param	integer	$limit	Number of rows to limit.
-   * @param	integer	$start	First row to start extraction.
+   * @param	$limit	Number of rows to limit.
+   * @param	$start	First row to start extraction(row offset).
    */
   function setLimit($limit, $start = -1)
   {
@@ -413,8 +508,8 @@ class DBQuery {
 	
 	/** Set a limit on the query based on pagination.
 	 *
-	 * @param integer $page     the current page
-	 * @param integer $pagesize the size of pages
+	 * @param $page     the current page
+	 * @param $pagesize the size of pages
 	 */
 	function setPageLimit($page = 0, $pagesize = 0)
 	{
@@ -430,9 +525,9 @@ class DBQuery {
 		$this->setLimit($pagesize, ($page - 1) * $pagesize);
 	}
 
-  /**
-   * Prepare a query for execution via db_exec.
-   *
+  /** Prepare query for execution
+   * @param $clear Boolean, Clear the query after it has been executed
+   * @return String containing the SQL statement
    */
   function prepare($clear = false)
   {
@@ -479,6 +574,8 @@ class DBQuery {
     dprint(__FILE__, __LINE__, 2, $q);
   }
 
+  /** Prepare the SELECT component of the SQL query
+  */
   function prepareSelect()
   {
     $q = 'SELECT ';
@@ -528,6 +625,8 @@ class DBQuery {
     return $q;
   }
 
+  /** Prepare the UPDATE component of the SQL query
+   */
   function prepareUpdate()
   {
     // You can only update one table, so we get the table detail
@@ -557,6 +656,8 @@ class DBQuery {
     return $q;
   }
 
+  /** Prepare the INSERT component of the SQL query
+   */
   function prepareInsert()
   {
     $q = 'INSERT INTO ';
@@ -587,6 +688,8 @@ class DBQuery {
     return $q;
   }
 
+  /** Prepare the REPLACE component of the SQL query
+   */
   function prepareReplace()
   {
     $q = 'REPLACE INTO ';
@@ -616,7 +719,9 @@ class DBQuery {
     $q .= "($fieldlist) values ($valuelist)";
     return $q;
   }
-  
+ 
+  /** Prepare the DELETE component of the SQL query
+   */
   function prepareDelete()
   {
     $q = 'DELETE FROM ';
@@ -635,8 +740,9 @@ class DBQuery {
     return $q;
   }
 
-	//TODO: add ALTER DROP/CHANGE/MODIFY/IMPORT/DISCARD/...
-	//definitions: http://dev.mysql.com/doc/mysql/en/alter-table.html
+  /** Prepare the ALTER component of the SQL query
+    * @todo add ALTER DROP/CHANGE/MODIFY/IMPORT/DISCARD/.. definitions: http://dev.mysql.com/doc/mysql/en/alter-table.html
+	*/
 	function prepareAlter()
 	{
 		$q = 'ALTER TABLE ' . $this->quote_db($this->_table_prefix . $this->create_table) . ' ';
@@ -658,8 +764,12 @@ class DBQuery {
 		return $q; 
 	}
 
-  /**
+  /** Execute the query
+   *
    * Execute the query and return a handle.  Supplants the db_exec query
+   * @param $style ADODB fetch style. Can be ADODB_FETCH_BOTH, ADODB_FETCH_NUM or ADODB_FETCH_ASSOC
+   * @param $debug Defaults to false. If true, debug output includes explanation of query
+   * @return Handle to the query result
    */
   function &exec($style = ADODB_FETCH_BOTH, $debug = false)
   {
@@ -699,6 +809,9 @@ class DBQuery {
       }
   }
 
+	/** Fetch the first row of the results
+	 * @return First row as array
+	 */ 
 	function fetchRow()
 	{
 		if (! $this->_query_id) {
@@ -707,8 +820,11 @@ class DBQuery {
 		return $this->_query_id->FetchRow();
 	}
 
-	/**
-	 * loadList - replaces dbLoadList on 
+	/** Load database results as an array of associative arrays
+	 *
+	 * Replaces the db_loadList() function
+	 * @param $maxrows Maximum number of rows to return
+	 * @return Array of associative arrays containing row field values
 	 */
 	function loadList($maxrows = null)
 	{
@@ -731,6 +847,12 @@ class DBQuery {
 		return $list;
 	}
 
+	/** Load database results as an associative array, using the supplied field name as the array's keys
+	 *
+	 * Replaces the db_loadHashList() function
+	 * @param $index Defaults to null, the field to use for array keys
+	 * @return Associative array of rows, keyed with the field indicated by the $index parameter
+	 */
 	function loadHashList($index = null)
 	{
 
@@ -754,6 +876,9 @@ class DBQuery {
 		return $hashlist;
 	}
 
+	/** Load a single result row as an associative array
+	 * @return Associative array of field names to values
+	 */
 	function loadHash()
 	{
 		if (! $this->exec(ADODB_FETCH_ASSOC)) {
@@ -764,6 +889,12 @@ class DBQuery {
 		return $hash;
 	}
 	
+	/** Load database results as an associative array
+	 * 
+	 * @note To devs: is this functionally different to loadHashList() ?
+	 * @param $index Field index to use for naming the array keys.
+	 * @return Associative array containing result rows
+	 */
 	function loadArrayList($index = 0)
 	{
 
@@ -779,6 +910,9 @@ class DBQuery {
 		return $hashlist;
 	}
 
+	/** Load an indexed array containing the first column of results only
+	 * @return Indexed array of first column values
+	 */
 	function loadColumn()
 	{
 		if (! $this->exec(ADODB_FETCH_NUM)) {
@@ -792,6 +926,12 @@ class DBQuery {
 		return $result;
 	}
 
+    /** Load database results into a CDpObject based object
+	 * @param &$object Reference to the object to propagate with database results
+	 * @param $bindAll Defaults to false, Bind every field returned to the referenced object
+	 * @param $strip Defaults to true
+	 * @return True on success.
+	 */
 	function loadObject( &$object, $bindAll=false , $strip = true)
 	{
 		if (! $this->exec(ADODB_FETCH_NUM)) {
@@ -816,6 +956,15 @@ class DBQuery {
 		}
 	}
 	
+	/** Bind a hash to an object
+	 *
+	 * Takes the hash/associative array specified by $hash and turns the fields into instance properties of $obj
+	 * @param $hash The hash to bind
+	 * @param &$obj A reference to the object to bind the hash to
+	 * @param $prefix Defaults to null, prefix to use with hash keys
+	 * @param $checkSlashes Defaults to true, strip any slashes from the hash values
+	 * @param $bindAll Bind all values regardless of their existance as defined instance variables
+	 */
 	function bindHashToObject( $hash, &$obj, $prefix=null, $checkSlashes=true, $bindAll=false )
 	{
 		is_array( $hash ) or die( "bindHashToObject : hash expected" );
@@ -840,8 +989,11 @@ class DBQuery {
 		}
 	}
 
-	/**
-	 * Using an XML string, build or update a table.
+	/** Build or update a table using an XML string
+	 *
+	 * @param $xml XML string describing table structure
+	 * @param $mode Defaults to 'REPLACE'
+	 * @return True on success, false if there was an error.
 	 */
 	function execXML($xml, $mode = 'REPLACE')
 	{
@@ -864,8 +1016,9 @@ class DBQuery {
 			return false;
 	}
 
-  /** {{{2 function loadResult
-   * Load a single column result from a single row
+  // {{{2 function loadResult
+  /** Load a single column result from a single row
+   * @return Value of the row column
    */
   function loadResult()
   {
@@ -883,11 +1036,12 @@ class DBQuery {
   }
   //2}}}
 
-  /** {{{2 function make_where_clause
-   * Create a where clause based upon supplied field.
+  // {{{2 function make_where_clause
+ 
+  /** Create a where clause based upon supplied field.
    *
-   * @param	mixed	$clause	Either string or array of subclauses.
-   * @return	string
+   * @param	$where_clause Either string or array of subclauses.
+   * @return SQL WHERE clause as a string.
    */
   function make_where_clause($where_clause)
   {
@@ -906,11 +1060,11 @@ class DBQuery {
   }
   //2}}}
 
-  /** {{{2 function make_order_clause
-   * Create an order by clause based upon supplied field.
+  // {{{2 function make_order_clause
+  /** Create an order by clause based upon supplied field.
    *
-   * @param	mixed	$clause	Either string or array of subclauses.
-   * @return	string
+   * @param	$order_clause	Either string or array of subclauses.
+   * @return SQL ORDER BY clause as a string.
    */
   function make_order_clause($order_clause)
   {
@@ -929,6 +1083,11 @@ class DBQuery {
   //2}}}
 
   //{{{2 function make_group_clause
+  /** Create a group by clause based upon supplied field.
+   *
+   * @param	$group_clause	Either string or array of subclauses.
+   * @return SQL GROUP BY clause as a string.
+   */	
   function make_group_clause($group_clause)
   {
     $result = "";
@@ -946,6 +1105,11 @@ class DBQuery {
   //2}}}
 
   //{{{2 function make_join
+  /** Create a join condition based upon supplied fields.
+   *
+   * @param	$join_clause	Either string or array of subclauses.
+   * @return SQL JOIN condition as a string.
+   */
   function make_join($join_clause)
   {
     $result = "";
@@ -968,7 +1132,11 @@ class DBQuery {
     return $result;
   }
   //2}}}
-
+  /** Add quotes to a string
+   *
+   * @param	$string	A string to add quotes to.
+   * @return The quoted string
+   */
 	function quote($string)
 	{
 		if (is_int($string))
@@ -977,6 +1145,10 @@ class DBQuery {
 			return $this->_db->qstr($string, get_magic_quotes_runtime());
 	}
 	
+   /** Add quotes to a database identifier
+    * @param $string The identifier to quote
+    * @return The quoted identifier
+    */
 	function quote_db($string)
 	{
 		return $this->_db->nameQuote . $string . $this->_db->nameQuote; 

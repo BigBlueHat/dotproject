@@ -146,7 +146,11 @@ class dPacl extends gacl_api {
       return false;
   }
 
-  /** */
+  /** Create an "Access Request Object" that represents a dotProject user
+   * @param $login login
+   * @param $username username
+   * @return true if the user object was added successfully.
+   */
   function addLogin($login, $username)
   {
     $res = $this->add_object("user", $username, $login, 1, 0, "aro");
@@ -155,6 +159,8 @@ class dPacl extends gacl_api {
     return $res;
   }
 
+  /** Update the details of the dotProject user aro
+   */
   function updateLogin($login, $username)
   {
     $id = $this->get_object_id("user", $login, "aro");

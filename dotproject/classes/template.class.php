@@ -5,11 +5,22 @@ if (!defined('DP_BASE_DIR')){
 
 require_once(DP_BASE_DIR . '/lib/smarty/Smarty.class.php');
 
+
+
+/** HTML templating class
+ *
+ * dotProject extension to the Smarty class used for HTML templating.
+ * Abstracts some of the seperate dotProject visual components into seperate methods. Also provides methods
+ * which are purpose based, ie. display a template for editing, display a template for viewing etc..
+ */
 class CTemplate extends Smarty
 {
-//	var $plugins_dir = array('/var/www/html/dotproject/includes/smarty');
 	var $page;
 
+	/** CTemplate constructor
+	 *
+	 * Calls the Smarty constructor and sets the template directories to the correct locations within the dotproject directory
+	 */
 	function CTemplate()
 	{
 		global $AppUI, $m, $a;
@@ -22,6 +33,7 @@ class CTemplate extends Smarty
 		$this->plugins_dir[]= DP_BASE_DIR . '/includes/smarty';
 	}
 	
+	/** Initialise the CTemplate class with variables from dotproject */
 	function init()
 	{
 		global $m, $a, $dPconfig, $AppUI,
@@ -43,6 +55,11 @@ class CTemplate extends Smarty
 		$this->assign('page', $this->page);
 	}
 	
+	/** Display the header section of the dotProject interface
+	 *
+	 * Contains any information to be inserted into the HEAD element including javascript and style information.
+	 * Includes permission checking for the current module and the CAppUI message.
+	 */
 	function displayHeader()
 	{
 		global $locale_char_set, $uistyle, $AppUI, $style_extras;
@@ -101,9 +118,9 @@ class CTemplate extends Smarty
 	/**
 	 * Display a list of records through a smarty template.
 	 * 
-	 * @param string 	$module 		the module for which the list applies (used to determine the smarty template file).
-	 * @param array 	$rows				the actual data to be displayed
-	 * @param int			$totalRows	the total rows available (if 0, it will be interpreted as count($rows)). This is necessary if $rows is a partial result, returned by an sql query with limits, but there are more results.
+	 * @param $module 		the module for which the list applies (used to determine the smarty template file).
+	 * @param $rows			the actual data to be displayed
+	 * @param $totalRows	the total rows available (if 0, it will be interpreted as count($rows)). This is necessary if $rows is a partial result, returned by an sql query with limits, but there are more results.
 	 */	
 	function displayList($module, $rows, $totalRows = 0, $show = null)
 	{
@@ -144,6 +161,9 @@ class CTemplate extends Smarty
 		$this->displayPagination($this->page, $totalRows > 0?$totalRows:$total_rows, $module);
 	}
 	
+	/** Display the view page for the current module using the data from the $item object parameter
+	 * @param $item Object to display
+	 */
 	function displayView($item)
 	{
 		global $m;
@@ -152,7 +172,10 @@ class CTemplate extends Smarty
 		
 		$this->displayFile('view');
 	}
-	
+
+	/** Display the add/edit page for the current module using the data from the $item object parameter
+	 * @param $item Object to edit, If null then blank fields will be used to add an item
+	 */	
 	function displayAddEdit($item)
 	{
 		global $m;
@@ -161,7 +184,12 @@ class CTemplate extends Smarty
 		
 		$this->displayFile('addedit');
 	}
-	
+
+	/** Display a set of paged records
+	 * @param $currentPage The number of the current page
+	 * @param $totalRecords The total number of records
+	 * @param $module Defaults to null, the name of the module (not used)
+	 */
 	function displayPagination($currentPage, $totalRecords, $module = null)
 	{
 		// remove orderby's to prevent resorting
@@ -190,6 +218,10 @@ class CTemplate extends Smarty
 		$this->displayFile('pagination', '.');
 	}
 	
+	/** Display a calendar
+	 * @param $field Field to populate with calendar date
+	 * @param $module Name of the module where the calendar is being displayed
+	 */
 	function displayCalendar($field, $module)
 	{
 		global $AppUI;
@@ -202,6 +234,14 @@ class CTemplate extends Smarty
 		$this->displayFile('calendar', '.');
 	}
 	
+	/** Get the filename of the template to use
+	 *
+	 * Based on the style defined by the user preference, or system configuration, returns the filename
+	 * of the template to use. Also contains a fallback mechanism to use the default template.
+	 * @param $file Template file name eg. addedit
+	 * @param $module Name of the module
+	 * @return The relative path of the template to use
+	 */
 	function file($file, $module)
 	{
 		global $m, $uistyle;
@@ -224,16 +264,26 @@ class CTemplate extends Smarty
 			return "_smarty/$module$file.html";
 	}
 	
+	/** Display a template
+	 * @param $file Filename (without extension) to display
+	 * @param $module Name of the current module
+	 */
 	function displayFile($file, $module = null)
 	{
 		$this->display($this->file($file, $module));
 	}
 	
+	/** Fetch template output as a string
+	 * @param $file Filename (without extension) to fetch
+	 * @param $module Name of the current module
+	 */	
 	function fetchFile($file, $module = null)
 	{
 		return $this->fetch($this->file($file, $module));
 	}
 	
+	/** Load style overrides
+	*/
 	function loadOverrides()
 	{
 		global $AppUI, $uistyle;
