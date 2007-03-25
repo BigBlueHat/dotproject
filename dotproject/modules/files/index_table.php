@@ -186,7 +186,7 @@ foreach ($files as $file_row) {
 
 	if ($fp != $latest_file['file_project']) {
 		if (!$latest_file['project_name']) {
-			$latest_file['project_name'] = $AppUI->_('All Projects');
+			$latest_file['project_name'] = $AppUI->_('Not associted to projects');
 			$latest_file['project_color_identifier'] = 'f4efe3';
 		}
 		if ($showProject) {
