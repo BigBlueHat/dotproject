@@ -138,7 +138,7 @@ function set_clash_action(action) {
  */
 function clash_process()
 {
-  global $AppUI, $do_include, DP_BASE_DIR;
+  global $AppUI, $do_include;
 
   $obj =& new CEvent;
   $obj->bind($_SESSION['add_event_post']);
