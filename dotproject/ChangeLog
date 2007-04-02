@@ -1,3 +1,186 @@
+2007-03-29 23:58  (pedroix)
+---------------------------------
+modules/files/addedit.php
+- 'All' to 'None' back again. I got confused and I shouldn't have touched that, so we are back to 1.44.4.11
+
+2007-03-29 23:45  (pedroix)
+---------------------------------
+modules/files/addedit.php
+- 'None' to 'All' back again :) sorry for the 2 minutes I have removed it
+
+2007-03-29 23:41  (pedroix)
+---------------------------------
+modules/files/addedit.php
+modules/files/addedit_folder.php
+modules/files/files.class.php
+modules/files/folders_table.php
+- Function getFolderSelectList() ported to files.class.php and removed the functions.php file
+
+2007-03-29 00:30  (cyberhorse)
+---------------------------------
+modules/forums/viewer.php
+modules/projects/projects.class.php
+- fixed a few minor warnings - globals and config replacements
+
+2007-03-29 00:24  (cyberhorse)
+---------------------------------
+modules/calendar/clash.php
+modules/links/addedit.php
+- fixed parsing errors (looks like they were result of blind
+- global string replacements)
+
+2007-03-29 00:21  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+modules/tasks/tasks.class.php
+- #1949 - fixed bug with dynamic parent percent completed calculation
+
+2007-03-29 00:17  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+- #1948 - made gacl reuse dp's connection to the database
+
+2007-03-29 00:17  (cyberhorse)
+---------------------------------
+classes/permissions.class.php
+- #1948 - made gacl reuse dotproject's connection to the database
+- removed unreachable code
+
+2007-03-26 10:44  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+- added arial font check for milestones
+
+2007-03-26 10:43  (cyberhorse)
+---------------------------------
+modules/tasks/gantt.php
+- added check for arial font when drawing milestones
+
+2007-03-26 03:25  (nybod)
+---------------------------------
+modules/files/addedit.php
+modules/files/index_table.php
+modules/files/addedit.php
+modules/files/index_table.php
+- Clarified language of files not associated with projects.
+
+2007-03-26 01:16  (caseydk)
+---------------------------------
+modules/admin/addedituser.php
+- tiny language tweak
+
+2007-03-26 00:00  (caseydk)
+---------------------------------
+modules/projects/index.php
+modules/projects/vw_idx_proposed.php
+- Changed the default 'Show All' projects tab from 1000 to -1
+
+2007-03-22 07:32  (caseydk)
+---------------------------------
+includes/main_functions.php
+- removed "center" for better xhtml compliance
+
+2007-03-21 12:19  (mosen)
+---------------------------------
+classes/permissions.class.php
+classes/query.class.php
+classes/template.class.php
+classes/ui.class.php
+- Added some javadoc documentation
+
+2007-03-20 12:40  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+classes/authenticator.class.php
+classes/date.class.php
+classes/dp.class.php
+classes/event_queue.class.php
+classes/libmail.class.php
+classes/permissions.class.php
+- Added a heap of javadoc comments to dp classes
+
+2007-03-20 08:45  (gregorerhardt)
+---------------------------------
+lib/PEAR/Date/Calc.php
+modules/tasks/ae_dates.php
+- 1821, 1853 - removed utf8 encoding of day names in calendar and corrected day name abbreviation to correct locale formatting via strftime
+
+2007-03-20 03:05  (nybod)
+---------------------------------
+modules/reports/existing/allocateduserhours.en.txt
+- Grammar correction
+
+2007-03-19 10:36  (mosen)
+---------------------------------
+classes/CustomFields.class.php
+classes/ui.class.php
+includes/main_functions.php
+js/prototype.js
+modules/projects/view.php
+modules/tasks/viewtimeline.php
+modules/tasks/xmllisttasks.php
+style/_smarty/projects/view.html
+- Added javadoc documentation to custom fields class
+- Modified addModuleJS function in ui class to include subdirectories named 'js' inside modules
+- Modified project view to include viewtimeline tab
+- Added prototype to main javascript includes
+- Added timeline api to projects module
+- Added XML task list page
+
+2007-03-18 06:27  (caseydk)
+---------------------------------
+db/upgrade_contacts.php
+- tweaks to insert the USERFORMAT user preference for all users
+
+2007-03-18 06:27  (caseydk)
+---------------------------------
+db/dotproject.sql
+db/upgrade_101_to_102.sql
+- a few sql tweaks to cover new/upgraded installs
+
+2007-03-18 05:29  (caseydk)
+---------------------------------
+classes/ui.class.php
+- coding standards
+
+2007-03-18 05:28  (caseydk)
+---------------------------------
+db/upgrade_contacts.php
+db/upgrade_contacts_company.php
+db/upgrade_latest.php
+- updated to include the new sentinel code;
+
+2007-03-18 05:28  (caseydk)
+---------------------------------
+db/upgrade_102_to_20alpha.sql
+db/upgrade_20_to_201.sql
+- updated the sql to be mysql5 compliant;
+
+2007-03-18 05:22  (caseydk)
+---------------------------------
+db/upgrade_102_to_20alpha.sql
+db/upgrade_201_to_202.sql
+db/upgrade_20_to_201.sql
+- updated the sql to be mysql5 compliant;
+
+2007-03-18 02:38  (caseydk)
+---------------------------------
+install/do_install_db.php
+- major error in writing the config file, it was simply creating a new sting instead of adding it to the existing one - ouch!;
+
+2007-03-18 02:24  (caseydk)
+---------------------------------
+style/classic/login.php
+style/dp-grey-theme/login.php
+style/default/login.php
+style/_smarty/login.html
+- updated the username length to access 255 characters just like the db and the user addedit screen;
+
+2007-03-16 11:13  (cyberhorse)
+---------------------------------
+ChangeLog
+- updated changelog
+
 2007-03-14 15:26  (pedroix)
 ---------------------------------
 modules/files/folders_table.php
@@ -4605,46 +4788,33 @@ modules/tasks/tasks.class.php
 - #1824 - delete dependencies when deleting tasks.
 - ----------------------------------------------------------------------
 
-2006-11-19 09:54  (cyberhorse)
----------------------------------
-modules/tasks/tasks.class.php
-- revert last change - already was in head
-- ----------------------------------------------------------------------
-
-2006-11-19 09:43  (cyberhorse)
----------------------------------
-modules/tasks/tasks.class.php
-- #1824 - delete task dependencies when deleting a task.
-- ----------------------------------------------------------------------
-
-2006-11-19 09:29  (cyberhorse)
----------------------------------
-modules/tasks/tasks.class.php
-- #1824 - delete dependencies when deleting tasks.
-- ----------------------------------------------------------------------
-
-2006-11-19 00:36  (caseydk)
+2006-11-19 10:06  (caseydk)
 ---------------------------------
 db/dotproject.sql
 - fully mysql 4/5 compliant;
 
-2006-11-18 20:05  (caseydk)
+2006-11-19 05:35  (caseydk)
 ---------------------------------
 includes/version.php
 - changed to denote this as 2.0.4-head as opposed to 2.0.4-5
 
-2006-11-18 19:38  (caseydk)
+2006-11-19 05:32  (caseydk)
+---------------------------------
+files/cache/phpgacl/default/.keep
+- the dir must be in place for the permissions
+
+2006-11-19 05:08  (caseydk)
 ---------------------------------
 classes/ui.class.php
 modules/system/addeditpref.php
 - removed flat view;
 
-2006-11-18 17:58  (caseydk)
+2006-11-19 03:28  (caseydk)
 ---------------------------------
 modules/projects/projects.class.php
 - fixed for the "abiguous field" issue
 
-2006-11-18 17:58  (caseydk)
+2006-11-19 03:28  (caseydk)
 ---------------------------------
 modules/projects/vw_idx_list.php
 modules/tasks/addedit.php
@@ -4653,12 +4823,12 @@ modules/tasks/tasks.php
 modules/calendar/index.php
 - adjusted for coding standards;
 
-2006-11-18 15:15  (caseydk)
+2006-11-19 00:45  (caseydk)
 ---------------------------------
 .htaccess
 - removed the mapping for the REST interface, should not have been committed;
 
-2006-11-18 14:15  (gregorerhardt)
+2006-11-18 23:45  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 style/_smarty/tabBox.html
@@ -4668,42 +4838,42 @@ style/dp-grey-theme/tabBox.html
 db/upgrade_latest.sql
 - dropping flat view mode
 
-2006-11-17 23:47  (caseydk)
+2006-11-18 09:17  (caseydk)
 ---------------------------------
 includes/smarty/function.dPtranslate.php
 - adjusting for clarity/coding standards;
 
-2006-11-17 23:10  (caseydk)
+2006-11-18 08:40  (caseydk)
 ---------------------------------
 includes/main_functions.php
 - adjusting for clarity
 
-2006-11-15 13:03  (pedroix)
+2006-11-15 22:33  (pedroix)
 ---------------------------------
 includes/main_functions.php
 - Make sure only one (the first found) option gets selected from a arraySelect
 
-2006-11-15 12:55  (pedroix)
+2006-11-15 22:25  (pedroix)
 ---------------------------------
 includes/main_functions.php
 - Make sure only one (the first found) option gets selected from a arraySelect
 
-2006-11-14 04:41  (caseydk)
+2006-11-14 14:11  (caseydk)
 ---------------------------------
 .htaccess
 - had to adjust to handle upgrades, the old htaccess blocked access to db.php;
 
-2006-11-14 04:40  (caseydk)
+2006-11-14 14:10  (caseydk)
 ---------------------------------
 style/_smarty/search.html
 - adjusted to conform to proper web layout rules;
 
-2006-11-14 04:39  (caseydk)
+2006-11-14 14:09  (caseydk)
 ---------------------------------
 modules/system/roles/index.php
 - tweaked to resolve a tabbing error issue;
 
-2006-11-12 07:05  (caseydk)
+2006-11-12 16:35  (caseydk)
 ---------------------------------
 classes/dp.class.php
 modules/projects/projects.class.php
@@ -4713,27 +4883,27 @@ modules/tasks/projects_tab.view.task_logs.php
 -  - in order to correct this, the aliasing mechanism had to be tweaked to add the key when provided but also tweak a couple other queries where a prefix was referenced but not used;
 -  - i've tested my modules locally and in my server and haven't found any further problems;
 
-2006-11-11 04:33  (cyberhorse)
+2006-11-11 14:03  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 - extended templates to allow modules to supply their own template files (improving management of new modules)
 
-2006-11-07 12:53  (cyberhorse)
+2006-11-07 22:23  (cyberhorse)
 ---------------------------------
 modules/calendar/day_view.php
 - cleanup
 
-2006-11-07 04:03  (caseydk)
+2006-11-07 13:33  (caseydk)
 ---------------------------------
 modules/files/addedit.php
 - tweaking formatting
 
-2006-11-07 04:02  (caseydk)
+2006-11-07 13:32  (caseydk)
 ---------------------------------
 modules/system/syskeys/index.php
 - changed the translation key
 
-2006-11-05 11:19  (cyberhorse)
+2006-11-05 20:49  (cyberhorse)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/calendar.class.php
@@ -4741,7 +4911,7 @@ modules/calendar/calmgt.php
 modules/calendar/clash.php
 - clean up code
 
-2006-11-05 10:18  (cyberhorse)
+2006-11-05 19:48  (cyberhorse)
 ---------------------------------
 modules/admin/addedituser.php
 modules/admin/admin.class.php
@@ -4757,22 +4927,22 @@ modules/admin/vw_usr_perms.php
 modules/admin/vw_usr_sessions.php
 - update and optimize code
 
-2006-11-05 05:35  (cyberhorse)
+2006-11-05 15:05  (cyberhorse)
 ---------------------------------
 classes/query.class.php
 - #1732 - don't add quotes around integers in sql queries (mysql 5 fix)
 
-2006-11-05 05:05  (cyberhorse)
+2006-11-05 14:35  (cyberhorse)
 ---------------------------------
 modules/system/addeditpref.php
 - #1814 - updated GET_HTTP_VARS usage to _GET
 
-2006-11-05 04:04  (cyberhorse)
+2006-11-05 13:34  (cyberhorse)
 ---------------------------------
 modules/calendar/calendar.class.php
 - initialise event_task and project to 0 (php5/mysql5 fix)
 
-2006-11-04 16:02  (cyberhorse)
+2006-11-05 01:32  (cyberhorse)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/calendar.class.php
@@ -4780,7 +4950,7 @@ modules/calendar/view.php
 - #1568 - added assigned contacts to the assigned display in calendar view.
 - Fixed an sql error when only contacts and no users were displayed.
 
-2006-11-02 16:45  (cyberhorse)
+2006-11-03 02:15  (cyberhorse)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
@@ -4790,7 +4960,7 @@ modules/calendar/do_event_aed.php
 style/_smarty/calendar/addedit.html
 - #1568 - Added contacts to events (to be emailed and to keep track of)
 
-2006-11-02 00:39  (caseydk)
+2006-11-02 10:09  (caseydk)
 ---------------------------------
 modules/calendar/calendar.class.php
 modules/contacts/contacts.class.php
@@ -4805,57 +4975,57 @@ modules/reports/existing/overall.php
 modules/tasks/addedit.php
 - removed all the raw sql both commented out and not
 
-2006-10-31 16:05  (pedroix)
+2006-11-01 01:35  (pedroix)
 ---------------------------------
 js/base.js
 - Opera browser would null the fields of tasks upon add or edit. Not anymore.
 - BTW: since navigator.family is propagated throughout the application and we don't know if opera will stick to geckos standards, navigator.family will be set to own opera in case we need evasive manouvres in the future.
 
-2006-10-30 20:32  (caseydk)
+2006-10-31 06:02  (caseydk)
 ---------------------------------
 modules/tasks/vw_log_update.php
 - scrubbed the old raw sql calls
 
-2006-10-30 20:32  (caseydk)
+2006-10-31 06:02  (caseydk)
 ---------------------------------
 modules/tasks/todo.php
 - adjusted to reference the actual project_active as opposed to the arbitrary project_status field
 
-2006-10-30 20:31  (caseydk)
+2006-10-31 06:01  (caseydk)
 ---------------------------------
 includes/db_connect.php
 - removed the old raw db_exec call
 
-2006-10-30 20:30  (caseydk)
+2006-10-31 06:00  (caseydk)
 ---------------------------------
 db/dotproject.sql
 - cleaned up the creation script to meet PEAR standards and eliminate some mysql5 errors, still 100% mysql4 compliant
 
-2006-10-30 20:28  (caseydk)
+2006-10-31 05:58  (caseydk)
 ---------------------------------
 classes/date.class.php
 modules/projects/do_project_aed.php
 modules/projects/projects.class.php
 - importing a bunch of cyberhorse's changes to support reverse imports of projects
 
-2006-10-26 12:53  (cyberhorse)
+2006-10-26 20:23  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Added some functions to extend functionality.
 
-2006-10-21 21:18  (nybod)
+2006-10-22 04:48  (nybod)
 ---------------------------------
 modules/projects/gantt2.php
 modules/projects/projects.class.php
 modules/tasks/todo.php
 - Removed references to deprecated project_active column in projects table
 
-2006-10-20 01:59  (nybod)
+2006-10-20 09:29  (nybod)
 ---------------------------------
 modules/calendar/calendar.class.php
 - Fixed typo at Line 606, extra "=" sign.
 
-2006-10-18 18:00  (merlinyoda)
+2006-10-19 01:30  (merlinyoda)
 ---------------------------------
 modules/calendar/calendar.class.php
 - 
@@ -4864,7 +5034,7 @@ modules/calendar/calendar.class.php
 - Change was implemented in HEAD branch as of revision 1.50 of
 - calendar.class.php, but was not implemented in the stable_2 branch.
 
-2006-10-18 16:29  (merlinyoda)
+2006-10-18 23:59  (merlinyoda)
 ---------------------------------
 modules/calendar/calendar.class.php
 modules/calendar/calendar.class.php
@@ -4873,148 +5043,148 @@ modules/calendar/calendar.class.php
 - Gets around object cloning/version skewing issue between PHP 4 and PHP 5.
 - Should probably have been created and managed independently anyway.
 
-2006-10-18 12:52  (nybod)
+2006-10-18 20:22  (nybod)
 ---------------------------------
 classes/libmail.class.php
 - Modified regex to accept email address containing sub-domain.
 
-2006-10-17 21:20  (theideaman)
+2006-10-18 04:50  (theideaman)
 ---------------------------------
 classes/libmail.class.php
 - fixed CheckAdresses method to return true if addresses validate. Added CheckAddresses alias method to fix typo.
 
-2006-10-17 16:33  (cyberhorse)
+2006-10-18 00:03  (cyberhorse)
 ---------------------------------
 modules/tasks/todo_tasks_sub.php
 - fixed sql error when no todo tasks are available.
 
-2006-10-16 17:05  (cyberhorse)
+2006-10-17 00:35  (cyberhorse)
 ---------------------------------
 includes/db_connect.php
 - modified some sql to go through the sql query class
 
-2006-10-16 04:19  (caseydk)
+2006-10-16 11:49  (caseydk)
 ---------------------------------
 modules/tasks/tasks.class.php
 modules/tasks/todo.php
 classes/ui.class.php
 - cleaned up some formatting
 
-2006-10-15 15:00  (cyberhorse)
+2006-10-15 22:30  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.class.php
 - fixed an sql error
 
-2006-10-14 19:25  (caseydk)
+2006-10-15 02:55  (caseydk)
 ---------------------------------
 modules/projects/view.php
 - removed a bunch of deprecated code from modules/projects/view.php
 
-2006-10-14 19:25  (caseydk)
+2006-10-15 02:55  (caseydk)
 ---------------------------------
 modules/projects/projects.class.php
 - removed a bunch of deprecated code from modules/projects/projects.class.php
 
-2006-10-14 19:24  (caseydk)
+2006-10-15 02:54  (caseydk)
 ---------------------------------
 modules/projects/index.php
 - removed a bunch of deprecated code from modules/projects/index.php
 
-2006-10-14 19:24  (caseydk)
+2006-10-15 02:54  (caseydk)
 ---------------------------------
 modules/calendar/index.php
 - removed a bunch of deprecated code from modules/calendar/index.php
 
-2006-10-14 19:23  (caseydk)
+2006-10-15 02:53  (caseydk)
 ---------------------------------
 classes/dp.class.php
 - cleaned up some formatting
 
-2006-10-14 14:32  (caseydk)
+2006-10-14 22:02  (caseydk)
 ---------------------------------
 modules/tasks/do_task_aed.php
 - cleaned up some formatting
 
-2006-10-12 17:10  (cyberhorse)
+2006-10-13 00:40  (cyberhorse)
 ---------------------------------
 style/dp-grey-theme/header.html
 style/dp-grey-theme/main.css
 style/dp-grey-theme/tabBox.html
 - fixed tab display completely
 
-2006-10-12 16:48  (cyberhorse)
+2006-10-13 00:18  (cyberhorse)
 ---------------------------------
 style/dp-grey-theme/tabBox.html
 - fixed tabs display (looked half broken)
 
-2006-10-12 16:46  (cyberhorse)
+2006-10-13 00:16  (cyberhorse)
 ---------------------------------
 style/_smarty/tabBox.html
 style/default/tabBox.html
 style/dp-grey-theme/tabBox.html
 - work towards fixing javascript tabs styles (when changing tabs, change styles as well)
 
-2006-10-12 00:43  (merlinyoda)
+2006-10-12 08:13  (merlinyoda)
 ---------------------------------
 fileviewer.php
 - 
 - Added code to resolve issues in IE/HTTPS with file download links that
 - go through fileviewer.php.
 
-2006-10-12 00:33  (merlinyoda)
+2006-10-12 08:03  (merlinyoda)
 ---------------------------------
 fileviewer.php
 - 
 - Added code to resolve issues in IE/HTTPS with file  download links that
 - use through fileviewer.php
 
-2006-10-11 16:17  (pedroix)
+2006-10-11 23:47  (pedroix)
 ---------------------------------
 modules/tasks/tasks.class.php
 - clearReminder was not working. This method was trying to find nothing because the id field of a task is named "task_id" and not just "id". Therefore nothing was being cleared through this method.
 
-2006-10-11 16:10  (pedroix)
+2006-10-11 23:40  (pedroix)
 ---------------------------------
 modules/tasks/tasks.class.php
 - clearReminder was not working. This method was trying to find nothing because the id field of a task is named "task_id" and not just "id". Therefore nothing was being cleared through this method.
 
-2006-10-08 14:03  (nybod)
+2006-10-08 21:33  (nybod)
 ---------------------------------
 classes/template.class.php
 - Corrected small typo causing div by zero error
 
-2006-10-07 23:33  (caseydk)
+2006-10-08 07:03  (caseydk)
 ---------------------------------
 .htaccess
 - forgot to add fileviewer.php to the allow list
 
-2006-10-07 23:19  (caseydk)
+2006-10-08 06:49  (caseydk)
 ---------------------------------
 db/upgrade_latest.sql
 - cleaned up some of the formating, applied some (mysql4 compatible) mysql5 fixes such as inserting null instead of '' for keys
 
-2006-10-07 23:12  (caseydk)
+2006-10-08 06:42  (caseydk)
 ---------------------------------
 .htaccess
 - Locked this thing down like there's no tomorrow, got the idea from Drupal
 
-2006-10-04 18:10  (pedroix)
+2006-10-05 01:40  (pedroix)
 ---------------------------------
 classes/query.class.php
 - Backported loadHash and addReplace methods to stable_2
 
-2006-10-04 16:26  (cyberhorse)
+2006-10-04 23:56  (cyberhorse)
 ---------------------------------
 modules/system/do_systemconfig_aed.php
 - #1654 - handle adding extra slashes
 
-2006-10-04 15:40  (cyberhorse)
+2006-10-04 23:10  (cyberhorse)
 ---------------------------------
 modules/contacts/companies_tab.view.contacts.php
 style/_smarty/contacts/list.html
 - #1787 - fixed tab to use contact list
 
-2006-10-04 15:25  (cyberhorse)
+2006-10-04 22:55  (cyberhorse)
 ---------------------------------
 modules/contacts/select_contact_company.php
 style/_smarty/contacts/_select_contact_company.html
@@ -5022,7 +5192,7 @@ style/_smarty/contacts/_select_contact_company.html
 - fixed a few xhtml compatibility issues
 - optimised files
 
-2006-10-03 13:26  (gregorerhardt)
+2006-10-03 20:56  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
@@ -5031,7 +5201,7 @@ modules/tasks/tasks.class.php
 style/_smarty/tasks/ae_depend.html
 - save checkbox state: set start based on dependency
 
-2006-10-03 12:12  (gregorerhardt)
+2006-10-03 19:42  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 modules/smartsearch/searchobjects/events.inc.php
@@ -5041,12 +5211,12 @@ modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - task dependency shifting and fix for custom fields smartsearch
 
-2006-10-03 12:12  (gregorerhardt)
+2006-10-03 19:42  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - comment completed
 
-2006-10-02 16:02  (cyberhorse)
+2006-10-02 23:32  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 locales/en/contacts.inc
@@ -5055,23 +5225,23 @@ modules/contacts/list.php
 style/_smarty/contacts/list.html
 - #1281 - added contacts list display
 
-2006-09-29 18:58  (caseydk)
+2006-09-30 02:28  (caseydk)
 ---------------------------------
 lib/adodb/adodb-time.zip
 - removed corrupted file (adodb-time.zip), does not seem to be used anywhere;
 
-2006-09-27 16:24  (cyberhorse)
+2006-09-27 23:54  (cyberhorse)
 ---------------------------------
 locales/en/system.inc
 - Added translation strings for new TIMEZONE setting
 
-2006-09-25 01:08  (caseydk)
+2006-09-25 08:38  (caseydk)
 ---------------------------------
 classes/CustomFields.class.php
 classes/query.class.php
 - cleaned up the identation for clarity, nothing major;
 
-2006-09-24 13:06  (cyberhorse)
+2006-09-24 20:36  (cyberhorse)
 ---------------------------------
 classes/permissions.class.php
 includes/main_functions.php
@@ -5079,23 +5249,23 @@ modules/calendar/addedit.php
 modules/calendar/calendar.class.php
 - #1567 - improved contacts display
 
-2006-09-24 11:38  (cyberhorse)
+2006-09-24 19:08  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 style/_smarty/tasks/list.row.html
 - made task list use the user display style config option
 
-2006-09-24 10:58  (cyberhorse)
+2006-09-24 18:28  (cyberhorse)
 ---------------------------------
 modules/system/do_preference_aed.php
 - some optimizations added to system preferences saving - only update user settings at the end and only if the saved settings are for the current user
 
-2006-09-24 10:33  (cyberhorse)
+2006-09-24 18:03  (cyberhorse)
 ---------------------------------
 includes/session.php
 - #1757 - sessions being overwriten by latest logged in user.
 
-2006-09-24 10:01  (cyberhorse)
+2006-09-24 17:31  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 includes/smarty/function.dPdateFormat.php
@@ -5109,98 +5279,98 @@ modules/calendar/day_view.php
 modules/tasks/do_task_aed.php
 - Local timezone changes.
 
-2006-09-24 07:46  (cyberhorse)
+2006-09-24 15:16  (cyberhorse)
 ---------------------------------
 modules/forums/view_topics.php
 - fixed problem with forums tab in projects
 
-2006-09-24 06:41  (cyberhorse)
+2006-09-24 14:11  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Extra function added to find start dates
 
-2006-09-20 11:37  (pedroix)
+2006-09-20 19:07  (pedroix)
 ---------------------------------
 modules/tasks/tasks.php
 - Minor bug on tasks search feature upon search box reset.
 - http://www.dotproject.net/vbulletin/showthread.php?p=24667
 
-2006-09-18 16:27  (nybod)
+2006-09-18 23:57  (nybod)
 ---------------------------------
 classes/libmail.class.php
 - Modified regex to accept email address containing sub-domain.
 
-2006-09-17 12:44  (cyberhorse)
+2006-09-17 20:14  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 - prepare for user timezone changes
 
-2006-09-17 09:28  (cyberhorse)
+2006-09-17 16:58  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 style/_smarty/calendar.html
 - setup calendar display as a template function
 
-2006-09-17 09:22  (cyberhorse)
+2006-09-17 16:52  (cyberhorse)
 ---------------------------------
 style/_smarty/projects/view.html
 - actual project end date calculation
 
-2006-09-17 09:21  (cyberhorse)
+2006-09-17 16:51  (cyberhorse)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
 style/_smarty/system/addeditpref.html
 - Added TIMEZONE preference (to be used for userbased timezone configuration
 
-2006-09-17 08:32  (cyberhorse)
+2006-09-17 16:02  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.php
 - formatting improved
 
-2006-09-17 08:13  (cyberhorse)
+2006-09-17 15:43  (cyberhorse)
 ---------------------------------
 modules/projects/projects.class.php
 - added a couple of extra checks
 - added a few new handy functions (to calculate proj start/end dates)
 
-2006-09-17 07:50  (cyberhorse)
+2006-09-17 15:20  (cyberhorse)
 ---------------------------------
 includes/db_connect.php
 style/_smarty/system/systemconfig.html
 - allow html entities in db - clean them up on display.
 
-2006-09-15 01:58  (gregorerhardt)
+2006-09-15 09:28  (gregorerhardt)
 ---------------------------------
 modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - prefer tue 16:00 over wed 8:00 as an end date
 
-2006-09-14 21:19  (gregorerhardt)
+2006-09-15 04:49  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - calculating task dependency shifting via task_end_date + task time span
 
-2006-09-09 21:55  (caseydk)
+2006-09-10 05:25  (caseydk)
 ---------------------------------
 modules/admin/do_user_aed.php
 - made fix for #1607 - problems when you'd want to associate a new user with an existing contact;
 
-2006-09-09 10:48  (gregorerhardt)
+2006-09-09 18:18  (gregorerhardt)
 ---------------------------------
 ChangeLog
 modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - minor changes to tasks dependency mgt
 
-2006-09-08 01:44  (caseydk)
+2006-09-08 09:14  (caseydk)
 ---------------------------------
 style/_smarty/projects/addedit.html
 - [no log message]
 
-2006-09-08 01:44  (caseydk)
+2006-09-08 09:14  (caseydk)
 ---------------------------------
 modules/projects/index.php
 modules/projects/projects.class.php
@@ -5211,45 +5381,34 @@ modules/projects/vw_idx_list.php
 modules/projects/vw_idx_proposed.php
 - refactored all the vw_idx into one
 
-2006-09-08 01:44  (caseydk)
----------------------------------
-modules/projects/index.php
-modules/projects/projects.class.php
-modules/projects/vw_idx_active.php
-modules/projects/vw_idx_archived.php
-modules/projects/vw_idx_complete.php
-modules/projects/vw_idx_list.php
-modules/projects/vw_idx_proposed.php
-- refactored all the vw_idx into one
-
-2006-09-06 11:00  (gregorerhardt)
+2006-09-06 18:30  (gregorerhardt)
 ---------------------------------
 modules/tasks/do_task_aed.php
 classes/date.class.php
 - calc start date now on server-side, allow empty start date and fix for day-based shifting
 
-2006-09-05 23:47  (gregorerhardt)
+2006-09-06 07:17  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 - wrong var call
 
-2006-09-05 20:25  (gregorerhardt)
+2006-09-06 03:55  (gregorerhardt)
 ---------------------------------
 modules/tasks/ae_dates.php
 - corrected amPm settingfor start date based on cal start day value
 
-2006-09-05 19:05  (gregorerhardt)
+2006-09-06 02:35  (gregorerhardt)
 ---------------------------------
 modules/tasks/do_task_aed.php
 - remove development testing code
 
-2006-09-05 19:03  (gregorerhardt)
+2006-09-06 02:33  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 modules/tasks/do_task_aed.php
 - duration and dateDifference calc fixes, more verbose comments
 
-2006-09-03 19:37  (gregorerhardt)
+2006-09-04 03:07  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 modules/tasks/do_task_aed.php
@@ -5259,221 +5418,221 @@ modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - tasks dependency shifting - finally fixed?
 
-2006-09-03 10:18  (gregorerhardt)
+2006-09-03 17:48  (gregorerhardt)
 ---------------------------------
 images/information.png
 style/_smarty/system/systemconfig.html
 - adding sys config info graphic
 
-2006-09-03 10:01  (caseydk)
+2006-09-03 17:31  (caseydk)
 ---------------------------------
 modules/tasks/do_task_aed.php
 - cleaned up the identation;
 - fixed the date shifting for dependencies... it works!
 
-2006-09-03 10:00  (caseydk)
+2006-09-03 17:30  (caseydk)
 ---------------------------------
 modules/tasks/addedit.js
 - handled the infinite loop when either date is null
 
-2006-09-03 10:00  (caseydk)
+2006-09-03 17:30  (caseydk)
 ---------------------------------
 classes/date.class.php
 - cleaned up the identation
 
-2006-09-02 17:41  (caseydk)
+2006-09-03 01:11  (caseydk)
 ---------------------------------
 style/_smarty/tasks/list.html
 style/_smarty/tasks/list.projects.html
 - changed "Task Creator" to "Task Owner"
 
-2006-09-02 17:35  (caseydk)
+2006-09-03 01:05  (caseydk)
 ---------------------------------
 modules/tasks/vw_tasks.php
 - cleaned up the identation
 
-2006-09-02 17:34  (caseydk)
+2006-09-03 01:04  (caseydk)
 ---------------------------------
 modules/companies/vw_companies.php
 - removed some commented code
 
-2006-09-02 13:49  (gregorerhardt)
+2006-09-02 21:19  (gregorerhardt)
 ---------------------------------
 modules/forums/index.php
 - 1663 - explicit cast in forums My Company Filter for AppUI user_company
 
-2006-09-02 13:38  (gregorerhardt)
+2006-09-02 21:08  (gregorerhardt)
 ---------------------------------
 js/base.js
 - 1669 - task addedit js nodeAdding fixed for hidden type with OPERA
 
-2006-09-01 02:16  (caseydk)
+2006-09-01 09:46  (caseydk)
 ---------------------------------
 includes/version.php
 - updated this to current
 
-2006-09-01 02:15  (caseydk)
+2006-09-01 09:45  (caseydk)
 ---------------------------------
 style/_smarty/tabBox.html
 - hid the flat view
 
-2006-09-01 02:14  (caseydk)
+2006-09-01 09:44  (caseydk)
 ---------------------------------
 style/_smarty/projects/addedit.html
 - [no log message]
 
-2006-09-01 00:41  (caseydk)
+2006-09-01 08:11  (caseydk)
 ---------------------------------
 modules/projects/view.php
 - removed my debug statement.  :(
 
-2006-09-01 00:40  (caseydk)
+2006-09-01 08:10  (caseydk)
 ---------------------------------
 modules/projects/view.php
 - removed the additional AND clause, it made projects with zero tasks not display;
 
-2006-08-27 17:26  (nybod)
+2006-08-28 00:56  (nybod)
 ---------------------------------
 style/_smarty/login.html
 - Made site_terms a link to the defined site terms document.
 
-2006-08-25 17:53  (caseydk)
+2006-08-26 01:23  (caseydk)
 ---------------------------------
 classes/libmail.class.php
 - fix for bug - 0001756: SMTP 451 error sending SMTP mail
 
-2006-08-25 17:41  (caseydk)
+2006-08-26 01:11  (caseydk)
 ---------------------------------
 db/upgrade_20_to_201.sql
 - updated for mysql 5 compliance
 
-2006-08-22 18:29  (gregorerhardt)
+2006-08-23 01:59  (gregorerhardt)
 ---------------------------------
 classes/dp.class.php
 - 1705: revert to old state of no key in table call
 
-2006-08-22 17:58  (gregorerhardt)
+2006-08-23 01:28  (gregorerhardt)
 ---------------------------------
 classes/dp.class.php
 modules/calendar/index.php
 - 1705: add table key to setAllowedSQL query
 
-2006-08-22 17:22  (gregorerhardt)
+2006-08-23 00:52  (gregorerhardt)
 ---------------------------------
 modules/calendar/index.php
 - 1705: replace deprecated getAllowedSql
 
-2006-08-20 20:37  (gregorerhardt)
+2006-08-21 04:07  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - fixing task dependency shifting bug for recursive dependencies
 
-2006-08-20 20:11  (gregorerhardt)
+2006-08-21 03:41  (gregorerhardt)
 ---------------------------------
 modules/tasks/tasks.class.php
 - fixing task dependency shifting bug for recursive dependencies
 
-2006-08-20 13:47  (gregorerhardt)
+2006-08-20 21:17  (gregorerhardt)
 ---------------------------------
 modules/calendar/index.php
 - added link for adding an event
 
-2006-08-20 13:29  (gregorerhardt)
+2006-08-20 20:59  (gregorerhardt)
 ---------------------------------
 modules/admin/vw_usr.php
 - corrected ACL for delete perms
 
-2006-08-20 13:25  (gregorerhardt)
+2006-08-20 20:55  (gregorerhardt)
 ---------------------------------
 LICENSE
 images/icons/group_key.png
 style/_smarty/admin/list.html
 - added icon and link for roles
 
-2006-08-20 12:24  (gregorerhardt)
+2006-08-20 19:54  (gregorerhardt)
 ---------------------------------
 modules/reports/existing/tasklogs.php
 - prepared for translation
 
-2006-08-20 12:17  (gregorerhardt)
+2006-08-20 19:47  (gregorerhardt)
 ---------------------------------
 modules/reports/existing/tasklist.php
 - prepared for translation
 
-2006-08-20 11:57  (gregorerhardt)
+2006-08-20 19:27  (gregorerhardt)
 ---------------------------------
 modules/reports/existing/stats.php
 - prepared for translation
 
-2006-08-19 22:11  (caseydk)
+2006-08-20 05:41  (caseydk)
 ---------------------------------
 style/_smarty/tasks/ae_dates.html
 - tweaked to get the dates to show up properly for editting
 
-2006-08-19 21:01  (caseydk)
+2006-08-20 04:31  (caseydk)
 ---------------------------------
 modules/tasks/todo.php
 - the "show archived projects" was based on having a particular project_status instead of a project_active
 
-2006-08-18 23:45  (merlinyoda)
+2006-08-19 07:15  (merlinyoda)
 ---------------------------------
 locales/en/system.inc
 - 
 - Added some values that were missing for the English version of
 - the "system.inc" translation file.
 
-2006-08-17 20:40  (caseydk)
+2006-08-18 04:10  (caseydk)
 ---------------------------------
 files/cache/phpgacl/.cvsignore
 - [no log message]
 
-2006-08-17 13:24  (cyberhorse)
+2006-08-17 20:54  (cyberhorse)
 ---------------------------------
 modules/calendar/index.php
 - fixed issue with IS (not recognizing onchange for checkboxes - changed to
 - onclick)
 
-2006-08-16 18:57  (caseydk)
+2006-08-17 02:27  (caseydk)
 ---------------------------------
 modules/tasks/vw_tasks.php
 - someone tweaked the default ordering to be task_name, task_end_date which makes no sense from a PM perspective;
 - i've changed it back to task_start_date, task_end_date as the default;
 
-2006-08-16 18:12  (caseydk)
+2006-08-17 01:42  (caseydk)
 ---------------------------------
 modules/tasks/tasks.php
 - the removed tables and fields are already in the query and throwing sql errors as a result
 
-2006-08-16 14:16  (cyberhorse)
+2006-08-16 21:46  (cyberhorse)
 ---------------------------------
 modules/files/index.php
 modules/files/index_table.php
 - fixed file category tabs and general display
 
-2006-08-16 13:51  (cyberhorse)
+2006-08-16 21:21  (cyberhorse)
 ---------------------------------
 modules/tasks/tasksperuser_sub.php
 - fixed view user link
 - fixed xhtml
 
-2006-08-16 13:42  (cyberhorse)
+2006-08-16 21:12  (cyberhorse)
 ---------------------------------
 style/_smarty/tasks/colours.html
 style/_smarty/tasks/organize.html
 style/_smarty/tasks/tasklog.html
 - fixed colour coding to use css styles
 
-2006-08-16 12:55  (cyberhorse)
+2006-08-16 20:25  (cyberhorse)
 ---------------------------------
 modules/tasks/todo_tasks_sub.php
 - applied css styles to task statuses
 
-2006-08-14 13:04  (caseydk)
+2006-08-14 20:34  (caseydk)
 ---------------------------------
 modules/projects/projects.class.php
 - line 554:  a missing comma merged two column names and resulted in a sql error.
 
-2006-08-10 00:19  (merlinyoda)
+2006-08-10 07:49  (merlinyoda)
 ---------------------------------
 db/upgrade_latest.php
 - 
@@ -5482,23 +5641,23 @@ db/upgrade_latest.php
 - the database. This was also necessary to get the "Active Sessions" tab under
 - "User Admin" working in stable_2
 
-2006-08-09 15:26  (cyberhorse)
+2006-08-09 22:56  (cyberhorse)
 ---------------------------------
 style/tasks.css
 - add border to task colours - better to see
 
-2006-08-09 15:06  (cyberhorse)
+2006-08-09 22:36  (cyberhorse)
 ---------------------------------
 modules/admin/addedituser.php
 - only look for user department for existing users
 
-2006-08-09 14:58  (cyberhorse)
+2006-08-09 22:28  (cyberhorse)
 ---------------------------------
 modules/admin/addedituser.php
 modules/admin/do_user_aed.php
 - fixed department saving in user
 
-2006-08-07 23:48  (merlinyoda)
+2006-08-08 07:18  (merlinyoda)
 ---------------------------------
 db/upgrade_to_204.php
 modules/projects/view.php
@@ -5507,7 +5666,7 @@ modules/tasks/tasks.php
 - Fixed problem with "empty" projects not properly displaying information
 - on project/task view pages after 1737 bug fix.
 
-2006-08-06 15:48  (cyberhorse)
+2006-08-06 23:18  (cyberhorse)
 ---------------------------------
 includes/smarty/function.dParraySelect.php
 modules/tasks/ae_dates.php
@@ -5519,14 +5678,14 @@ style/_smarty/tasks/ae_depend.html
 style/_smarty/tasks/ae_resource.html
 - smartified some of the task tabs and fixed some other minor things
 
-2006-08-06 11:48  (cyberhorse)
+2006-08-06 19:18  (cyberhorse)
 ---------------------------------
 modules/public/calendar.php
 modules/tasks/addedit.js
 style/_smarty/public/calendar.html
 - smartified the popup calendar
 
-2006-08-04 17:32  (merlinyoda)
+2006-08-05 01:02  (merlinyoda)
 ---------------------------------
 modules/projects/projects.class.php
 modules/projects/view.php
@@ -5535,7 +5694,7 @@ modules/tasks/tasks.php
 - Fixed project percent complete calculation in similiar manner to stable_2
 - fix for bug report 1737
 
-2006-08-04 01:44  (merlinyoda)
+2006-08-04 09:14  (merlinyoda)
 ---------------------------------
 modules/projects/projects.class.php
 modules/projects/view.php
@@ -5544,12 +5703,12 @@ modules/tasks/tasks.php
 - 
 - Fixed project percentage complete calculations based on submitter's suggestions.
 
-2006-08-01 08:20  (ajdonnison)
+2006-08-01 15:50  (ajdonnison)
 ---------------------------------
 modules/reports/existing/tasklist.php
 - Fixed bug in getting project title on top of PDF.
 
-2006-07-31 23:37  (merlinyoda)
+2006-08-01 07:07  (merlinyoda)
 ---------------------------------
 modules/system/do_systemconfig_aed.php
 style/_smarty/system/systemconfig.html
@@ -5568,13 +5727,13 @@ style/_smarty/system/systemconfig.html
 - old value of "false" (old value passed to POST instead of "true", new
 - value). Unchenged valued were unaffected.
 
-2006-07-31 19:15  (merlinyoda)
+2006-08-01 02:45  (merlinyoda)
 ---------------------------------
 modules/admin/vw_usr_sessions.php
 - 
 - Another "Active Sessions" tweak. Correted Company "order by" link.
 
-2006-07-31 19:09  (merlinyoda)
+2006-08-01 02:39  (merlinyoda)
 ---------------------------------
 includes/smarty/function.dPgetSystemConfigSelect.php
 locales/en/admin.inc
@@ -5587,13 +5746,13 @@ style/_smarty/admin/usr_sessions.html
 - Also fixed bug on "System Configuration" page that caused the improper
 - value to be assigned to the database on for "select" fields.
 
-2006-07-31 18:42  (merlinyoda)
+2006-08-01 02:12  (merlinyoda)
 ---------------------------------
 modules/admin/vw_usr_sessions.php
 - 
 - Another display tweak for "Active Session" tab in admin module.
 
-2006-07-31 18:35  (merlinyoda)
+2006-08-01 02:05  (merlinyoda)
 ---------------------------------
 locales/en/admin.inc
 modules/admin/vw_usr_sessions.php
@@ -5601,43 +5760,43 @@ modules/admin/vw_usr_sessions.php
 - Tweeked display on "Active Session" tab in admin module.
 - Added text strings to translation files (English).
 
-2006-07-31 13:54  (nybod)
+2006-07-31 21:24  (nybod)
 ---------------------------------
 modules/companies/vw_depts.php
 - Function 'findchilddept' renamed to avoid naming clash when viewed in flat view (fix taken from HEAD code)
 
-2006-07-30 11:30  (cyberhorse)
+2006-07-30 19:00  (cyberhorse)
 ---------------------------------
 classes/permissions.class.php
 - turn caching on by default (grr this got lost in one of my other updates)
 
-2006-07-30 06:55  (cyberhorse)
+2006-07-30 14:25  (cyberhorse)
 ---------------------------------
 images/applet-48.png
 - added file here (fixes some broken images)
 
-2006-07-30 06:54  (cyberhorse)
+2006-07-30 14:24  (cyberhorse)
 ---------------------------------
 modules/forums/view_topics.php
 - made sure $tpl is visible
 
-2006-07-30 06:54  (cyberhorse)
+2006-07-30 14:24  (cyberhorse)
 ---------------------------------
 modules/tasks/gantt.php
 - fixed sql (project_active doesn't exist anymore)
 
-2006-07-30 06:53  (cyberhorse)
+2006-07-30 14:23  (cyberhorse)
 ---------------------------------
 style/_smarty/contacts/list.html
 - fixed javascript link
 
-2006-07-28 17:51  (merlinyoda)
+2006-07-29 01:21  (merlinyoda)
 ---------------------------------
 modules/admin/vw_usr_sessions.php
 - 
 - Adding code for "Active Sessions" tab
 
-2006-07-28 17:42  (merlinyoda)
+2006-07-29 01:12  (merlinyoda)
 ---------------------------------
 includes/session.php
 modules/admin/index.php
@@ -5645,13 +5804,13 @@ modules/admin/index.php
 - Modified code to accept "Active Sessions" tab. Will be adding file for
 - "Active Sessions" tab shortly.
 
-2006-07-28 17:38  (merlinyoda)
+2006-07-29 01:08  (merlinyoda)
 ---------------------------------
 modules/admin/index.php
 - 
 - Minor coding style change around code for "Active Sessions" tab.
 
-2006-07-27 22:50  (merlinyoda)
+2006-07-28 06:20  (merlinyoda)
 ---------------------------------
 includes/main_functions.php
 modules/files/addedit.php
@@ -5665,7 +5824,7 @@ style/_smarty/files/addedit.html
 - Also, edited a URL string in includes/main_functions.php to make it more
 - complient with XHTML (replaced lone '&' with '&amp;')
 
-2006-07-27 22:43  (merlinyoda)
+2006-07-28 06:13  (merlinyoda)
 ---------------------------------
 modules/files/addedit.php
 - 
@@ -5673,7 +5832,7 @@ modules/files/addedit.php
 - Applied more permanent and consistant fix. Redirect to link supplied
 - by "getPlace" method in "UI" class.
 
-2006-07-27 22:29  (merlinyoda)
+2006-07-28 05:59  (merlinyoda)
 ---------------------------------
 includes/main_functions.php
 modules/files/addedit.php
@@ -5684,7 +5843,7 @@ modules/files/addedit.php
 - Also modified part of a URL string in includes/main_functions.php to
 - conform with XHTML standards ( '&' to '&amp;' )
 
-2006-07-27 21:16  (nybod)
+2006-07-28 04:46  (nybod)
 ---------------------------------
 modules/admin/viewuser.php
 modules/admin/vw_usr_log.php
@@ -5698,7 +5857,7 @@ modules/tasks/viewgantt.php
 modules/tasks/vw_log_update.php
 - Corrected spelling and syntax - from scollbars=false (note spelling) to scrollbars=no
 
-2006-07-27 21:09  (nybod)
+2006-07-28 04:39  (nybod)
 ---------------------------------
 modules/admin/viewuser.php
 modules/admin/vw_usr_log.php
@@ -5724,18 +5883,18 @@ modules/tasks/vw_log_update.php
 style/_smarty/projects/addedit.html
 - Corrected spelling and syntax - from scollbars=false (note spelling) to scrollbars=no
 
-2006-07-27 18:14  (cyberhorse)
+2006-07-28 01:44  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 style/_smarty/header.html
 - [no log message]
 
-2006-07-27 17:26  (cyberhorse)
+2006-07-28 00:56  (cyberhorse)
 ---------------------------------
 modules/system/addeditpref.php
 - added Y-m-d to the date formats users can chose from
 
-2006-07-27 09:54  (gregorerhardt)
+2006-07-27 17:24  (gregorerhardt)
 ---------------------------------
 classes/CustomFields.class.php
 modules/smartsearch/searchobjects/events.inc.php
@@ -5743,7 +5902,7 @@ modules/smartsearch/searchobjects/projects.inc.php
 modules/smartsearch/searchobjects/tasks.inc.php
 - smartsearch for custom fields: keyword highlighting
 
-2006-07-25 22:29  (merlinyoda)
+2006-07-26 05:59  (merlinyoda)
 ---------------------------------
 classes/dp.class.php
 modules/projects/projects.class.php
@@ -5761,7 +5920,7 @@ modules/tasks/tasks.class.php
 - module if present as opposed to the last task log. Noted need for "actual"
 - end date  field for a given task in code.
 
-2006-07-25 22:24  (merlinyoda)
+2006-07-26 05:54  (merlinyoda)
 ---------------------------------
 classes/dp.class.php
 modules/companies/companies.class.php
@@ -5779,7 +5938,7 @@ modules/tasks/tasks.class.php
 - description field value is preserved and restored after the parent function
 - is called.
 
-2006-07-24 16:22  (gregorerhardt)
+2006-07-24 23:52  (gregorerhardt)
 ---------------------------------
 classes/CustomFields.class.php
 classes/customfieldsparser.class.php
@@ -5787,7 +5946,7 @@ modules/reports/existing/allocateduserhours.php
 modules/system/custom_field_addedit.php
 - custom fields: weblink type and smartsearch plugin helper method prepared for implementation when smartsearch is redesigned
 
-2006-07-24 15:54  (gregorerhardt)
+2006-07-24 23:24  (gregorerhardt)
 ---------------------------------
 classes/CustomFields.class.php
 classes/customfieldsparser.class.php
@@ -5800,18 +5959,18 @@ modules/system/custom_field_addedit.php
 modules/system/custom_field_editor.php
 - custom fields: new type weblink and smart searchability
 
-2006-07-22 22:21  (nybod)
+2006-07-23 05:51  (nybod)
 ---------------------------------
 functions/tasks_func.php
 modules/tasks/view.php
 - Fix to read TaskPriority from sysvals
 
-2006-07-20 14:48  (cyberhorse)
+2006-07-20 22:18  (cyberhorse)
 ---------------------------------
 modules/tasks/viewgantt.php
 - fixed one of the gantt chart displays
 
-2006-07-19 15:30  (merlinyoda)
+2006-07-19 23:00  (merlinyoda)
 ---------------------------------
 modules/projects/vw_logs.php
 modules/projects/vw_logs.php
@@ -5821,7 +5980,7 @@ modules/projects/vw_logs.php
 - "$canEdit" to determine if the delete icon should be displayed. Replaced
 - "$canEdit" with "$canDelete".
 
-2006-07-19 00:01  (merlinyoda)
+2006-07-19 07:31  (merlinyoda)
 ---------------------------------
 modules/files/co.php
 modules/files/do_file_co.php
@@ -5834,7 +5993,7 @@ style/_smarty/files/co.html
 - added menu bar on popup window to ease saving files that don't trigger
 - open/save dialogs (i.e. displayed in browser)
 
-2006-07-18 23:56  (merlinyoda)
+2006-07-19 07:26  (merlinyoda)
 ---------------------------------
 modules/files/co.php
 modules/files/do_file_co.php
@@ -5846,32 +6005,32 @@ modules/files/do_file_co.php
 - added menu bar on popup window to ease saving files that don't trigger
 - open/save dialogs (i.e. displayed in browser)
 
-2006-07-18 16:53  (cyberhorse)
+2006-07-19 00:23  (cyberhorse)
 ---------------------------------
 modules/companies/index.php
 - default company tab to "all" (flat view is broken - shouldn't be used)
 
-2006-07-18 16:52  (cyberhorse)
+2006-07-19 00:22  (cyberhorse)
 ---------------------------------
 modules/admin/do_user_aed.php
 - Updated tab number redirection after user creation
 
-2006-07-18 16:30  (cyberhorse)
+2006-07-19 00:00  (cyberhorse)
 ---------------------------------
 modules/companies/vw_depts.php
 - fixed misspelling
 
-2006-07-18 15:42  (cyberhorse)
+2006-07-18 23:12  (cyberhorse)
 ---------------------------------
 style/_smarty/projects/list.html
 - added project colour to the project list per project
 
-2006-07-18 15:37  (cyberhorse)
+2006-07-18 23:07  (cyberhorse)
 ---------------------------------
 style/_smarty/projects/list.html
 - Added a link to the company name in the project list
 
-2006-07-17 16:05  (cyberhorse)
+2006-07-17 23:35  (cyberhorse)
 ---------------------------------
 classes/permissions.class.php
 db/dotproject.sql
@@ -5880,55 +6039,55 @@ locales/en/system.inc
 modules/tasks/tasks.class.php
 - Add a system configuration variable to control the default depenndency state for all newly created tasks.
 
-2006-07-17 15:48  (cyberhorse)
+2006-07-17 23:18  (cyberhorse)
 ---------------------------------
 style/_smarty/admin/addedit.html
 - fixed xhtml issue
 
-2006-07-16 17:05  (cyberhorse)
+2006-07-17 00:35  (cyberhorse)
 ---------------------------------
 modules/tasks/do_task_aed.php
 style/_smarty/tasks/addedit.html
 - Add save & new button on addedit task to allow for faster task creation (skipping one step)
 
-2006-07-13 14:50  (cyberhorse)
+2006-07-13 22:20  (cyberhorse)
 ---------------------------------
 modules/tasks/viewgantt.php
 - xhtml compatibility fixed
 - gantt charts size and display fixed
 
-2006-07-12 06:30  (ajdonnison)
+2006-07-12 14:00  (ajdonnison)
 ---------------------------------
 modules/tasks/tasks.class.php
 - Reordered query to get around LEFT JOIN constraints in MySQL 5
 
-2006-07-11 15:00  (cyberhorse)
+2006-07-11 22:30  (cyberhorse)
 ---------------------------------
 modules/smartsearch/index.php
 style/_smarty/smartsearch/index.html
 - moved smarty title to index page via CTitleBlock
 
-2006-07-09 08:56  (cyberhorse)
+2006-07-09 16:26  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
 - Added a default icon for CTitleBlock if empty one is passed.
 
-2006-07-09 08:33  (cyberhorse)
+2006-07-09 16:03  (cyberhorse)
 ---------------------------------
 modules/contacts/index.php
 - expanded the functionality of contact alphabet search map to include first and last name starting letters as well as the "order by" field.
 
-2006-07-09 07:26  (cyberhorse)
+2006-07-09 14:56  (cyberhorse)
 ---------------------------------
 modules/companies/vw_depts.php
 - functions renamed to avoid naming clash
 
-2006-07-09 07:23  (cyberhorse)
+2006-07-09 14:53  (cyberhorse)
 ---------------------------------
 modules/history/index.php
 - fixed $tpl missing error
 
-2006-07-07 14:46  (merlinyoda)
+2006-07-07 22:16  (merlinyoda)
 ---------------------------------
 modules/tasks/tasks.php
 - Fixed Bug 1701:
@@ -5937,7 +6096,7 @@ modules/tasks/tasks.php
 - This was messing up the following join statement as it was trying to
 - join using wrong table.
 
-2006-07-06 23:19  (merlinyoda)
+2006-07-07 06:49  (merlinyoda)
 ---------------------------------
 db/dotproject.sql
 - 
@@ -5955,7 +6114,7 @@ db/dotproject.sql
 - 
 - changed version number string from '2.0.2' to '2.0.4'
 
-2006-07-06 23:07  (merlinyoda)
+2006-07-07 06:37  (merlinyoda)
 ---------------------------------
 db/dotproject.sql
 - 
@@ -5967,7 +6126,7 @@ db/dotproject.sql
 - changed "INSERT INTO config " to "INSERT INTO `config`" for purposes of
 - code regularity.
 
-2006-07-06 22:29  (merlinyoda)
+2006-07-07 05:59  (merlinyoda)
 ---------------------------------
 db/dotproject.sql
 - 
@@ -5975,141 +6134,141 @@ db/dotproject.sql
 - 
 - changed version number string from '2.0.2' to '2.0.4'
 
-2006-07-06 09:48  (ajdonnison)
+2006-07-06 17:18  (ajdonnison)
 ---------------------------------
 modules/tasks/tasks.php
 - Added fix for MySQL 5.x restriction on LEFT JOIN
 
-2006-07-02 00:43  (nybod)
+2006-07-02 08:13  (nybod)
 ---------------------------------
 modules/reports/existing/tasklist.php
 - Moved $q->clear(); to pickup all users assigned to task
 
-2006-06-27 16:57  (gregorerhardt)
+2006-06-28 00:27  (gregorerhardt)
 ---------------------------------
 includes/smarty/function.dPtranslate.php
 - type UI_CASE_LOWER added
 
-2006-06-27 16:56  (gregorerhardt)
+2006-06-28 00:26  (gregorerhardt)
 ---------------------------------
 modules/contacts/select_contact_company.php
 style/_smarty/contacts/_select_contact_company.html
 - contact company selector smartified
 
-2006-06-27 16:30  (gregorerhardt)
+2006-06-28 00:00  (gregorerhardt)
 ---------------------------------
 modules/calendar/clash.php
 style/_smarty/calendar/_clash_suggest.html
 style/_smarty/calendar/clash.html
 - event clashing pages smartified
 
-2006-06-27 15:28  (gregorerhardt)
+2006-06-27 22:58  (gregorerhardt)
 ---------------------------------
 modules/calendar/do_webcal_process.php
 modules/calendar/webcal_mgt.php
 style/_smarty/calendar/webcal_mgt.html
 - converted webcal mgt to smarty
 
-2006-06-26 20:02  (gregorerhardt)
+2006-06-27 03:32  (gregorerhardt)
 ---------------------------------
 style/default/main.css
 - created own style description for tbl2 class
 
-2006-06-26 19:43  (gregorerhardt)
+2006-06-27 03:13  (gregorerhardt)
 ---------------------------------
 modules/calendar/calendar.class.php
 - typo fix in event clash mail
 
-2006-06-24 21:21  (cyberhorse)
+2006-06-25 04:51  (cyberhorse)
 ---------------------------------
 modules/system/addeditpref.php
 - PHP >5.0.4 fix
 
-2006-06-24 04:40  (ajdonnison)
+2006-06-24 12:10  (ajdonnison)
 ---------------------------------
 ChangeLog
 - Updated changelog for 2.0.4 release
 
-2006-06-24 04:36  (ajdonnison)
+2006-06-24 12:06  (ajdonnison)
 ---------------------------------
 install/do_install_db.php
 - Update for 2.0.4 upgrade.
 
-2006-06-24 04:35  (ajdonnison)
+2006-06-24 12:05  (ajdonnison)
 ---------------------------------
 db/upgrade_to_204.php
 - file upgrade_to_204.php was initially added on branch stable_2.
 
-2006-06-24 04:35  (ajdonnison)
+2006-06-24 12:05  (ajdonnison)
 ---------------------------------
 db/upgrade_latest.php
 db/upgrade_to_204.php
 includes/version.php
 - Updated install files for 2.0.4
 
-2006-06-23 21:21  (gregorerhardt)
+2006-06-24 04:51  (gregorerhardt)
 ---------------------------------
 modules/calendar/index.php
 - project calendars fixed, types readded, didnt test, events should be storable related to projects and personal cal and one unspec cal again as before
 
-2006-06-23 20:44  (gregorerhardt)
+2006-06-24 04:14  (gregorerhardt)
 ---------------------------------
 modules/calendar/eventimport.php
 style/_smarty/calendar/eventimport.html
 - smarty conv
 
-2006-06-23 20:03  (gregorerhardt)
+2006-06-24 03:33  (gregorerhardt)
 ---------------------------------
 modules/admin/vw_usr_perms.php
 style/_smarty/admin/usr_perms.html
 style/default/main.css
 - smarty conversion and css classes for td bg color highlighting
 
-2006-06-23 17:29  (gregorerhardt)
+2006-06-24 00:59  (gregorerhardt)
 ---------------------------------
 modules/admin/vw_usr_roles.php
 style/_smarty/admin/usr_roles.html
 - smarty conv
 
-2006-06-22 12:12  (ajdonnison)
+2006-06-22 19:42  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 - Fixed XSS bug reported by JPCERT.
 
-2006-06-22 12:10  (ajdonnison)
+2006-06-22 19:40  (ajdonnison)
 ---------------------------------
 classes/ui.class.php
 - Fixed XSS vulnerability in login parameter
 
-2006-06-19 18:39  (nybod)
+2006-06-20 02:09  (nybod)
 ---------------------------------
 index.php
 index.php
 - Changed urlencode to strip_tags
 
-2006-06-19 02:41  (ajdonnison)
+2006-06-19 10:11  (ajdonnison)
 ---------------------------------
 modules/public/contact_selector.php
 - Port of stable_2 bugfix for broken SQL.
 
-2006-06-19 02:35  (ajdonnison)
+2006-06-19 10:05  (ajdonnison)
 ---------------------------------
 modules/public/contact_selector.php
 - Fixed problem with contact_selector occasionally creating bodgy SQL.
 
-2006-06-16 00:15  (gregorerhardt)
+2006-06-16 07:45  (gregorerhardt)
 ---------------------------------
 style/_smarty/projects/addedit.html
 style/_smarty/tasks/organize.html
 - translation softcoding as suggested by Carsten Menke
 
-2006-06-15 22:19  (merlinyoda)
+2006-06-16 05:49  (merlinyoda)
 ---------------------------------
 style/_smarty/tasks/tasklog.html
 - 
 - corrected possible bug similiar to Mantis Bug #1572 where amperstands don't display correctly
 
-2006-06-15 16:44  (merlinyoda)
+2006-06-16 00:14  (merlinyoda)
 ---------------------------------
 modules/tasks/vw_log_update.php
 modules/tasks/vw_logs.php
@@ -6123,7 +6282,7 @@ modules/tasks/vw_logs.php
 - read (and write?) the files properly without the carrage return characters
 - (except for Notepad, Wordpad does).
 
-2006-06-09 21:33  (merlinyoda)
+2006-06-10 05:03  (merlinyoda)
 ---------------------------------
 modules/admin/vw_usr_sessions.php
 style/_smarty/admin/usr_sessions.html
@@ -6137,27 +6296,27 @@ style/_smarty/admin/usr_sessions.html
 - Added "logout user" button that logs out all of a user's sessions. If it's the current user, all
 - previous sessions and the current one are logged out.
 
-2006-06-09 21:33  (merlinyoda)
+2006-06-10 05:03  (merlinyoda)
 ---------------------------------
 modules/admin/vw_usr_sessions.php
 - file vw_usr_sessions.php was added on branch stable_2 on 2006-07-28 15:51:15 +0000
 
-2006-06-06 18:33  (nybod)
+2006-06-07 02:03  (nybod)
 ---------------------------------
 modules/projects/projects.class.php
 - Time related calculations have been moved to ./classes/date.class.php
 
-2006-06-06 13:59  (cyberhorse)
+2006-06-06 21:29  (cyberhorse)
 ---------------------------------
 modules/projects/addedit.php
 - fixed javascript error (urlencoded too far)
 
-2006-06-06 01:01  (gregorerhardt)
+2006-06-06 08:31  (gregorerhardt)
 ---------------------------------
 ChangeLog
 - ChangeLog Update
 
-2006-06-06 00:53  (gregorerhardt)
+2006-06-06 08:23  (gregorerhardt)
 ---------------------------------
 modules/tasks/do_task_aed.php
 classes/ui.class.php
@@ -6168,49 +6327,49 @@ modules/system/do_preference_aed.php
 modules/tasks/ae_resource.php
 - Added preference option to determine whether to send task notifications by default or not
 
-2006-06-05 17:00  (gregorerhardt)
+2006-06-06 00:30  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 - Corrected html form type for locale pref
 
-2006-06-05 16:53  (gregorerhardt)
+2006-06-06 00:23  (gregorerhardt)
 ---------------------------------
 install/vw_idx_check.php
 - Changed Message Type to OK for File Permissions Writable
 
-2006-06-05 16:20  (gregorerhardt)
+2006-06-05 23:50  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 - forgotten range shift
 
-2006-06-05 15:13  (cyberhorse)
+2006-06-05 22:43  (cyberhorse)
 ---------------------------------
 style/_smarty/tasks/list.projects.html
 - #1623 - show "add task" button on the main task list page, next to other buttons.
 
-2006-06-05 15:03  (gregorerhardt)
+2006-06-05 22:33  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 - fix for overlong project names
 
-2006-06-05 14:58  (gregorerhardt)
+2006-06-05 22:28  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 - fix for overlong project names
 
-2006-06-05 14:44  (nybod)
+2006-06-05 22:14  (nybod)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/view.php
 - Event owner and admin role can edit events, some XHTML cleanup
 
-2006-06-05 14:24  (nybod)
+2006-06-05 21:54  (nybod)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/view.php
 - Event owner and admin role can edit events
 
-2006-06-05 13:47  (cyberhorse)
+2006-06-05 21:17  (cyberhorse)
 ---------------------------------
 modules/calendar/calmgt.php
 modules/calendar/eventimport.php
@@ -6219,93 +6378,64 @@ modules/projects/admin_tab.viewuser.projects.php
 modules/system/billingcode.php
 - yet more xhtml compatibility fixes (last ones?)
 
-2006-06-05 13:25  (cyberhorse)
+2006-06-05 20:55  (cyberhorse)
 ---------------------------------
 modules/tasks/organize.php
 style/_smarty/tasks/organize.html
 modules/calendar/addedit.php
 - xhtml validity
 
-2006-06-05 13:15  (cyberhorse)
+2006-06-05 20:45  (cyberhorse)
 ---------------------------------
 modules/tasks/vw_log_update.php
 style/_smarty/tasks/tasklog.addedit.html
 - xhtml compatibility fixes
 
-2006-06-05 13:07  (cyberhorse)
+2006-06-05 20:37  (cyberhorse)
 ---------------------------------
 modules/tasks/vw_logs.php
 style/_smarty/tasks/tasklog.html
 - xhtml fixes
 
-2006-06-05 05:48  (ajdonnison)
+2006-06-05 13:18  (ajdonnison)
 ---------------------------------
 ChangeLog
 - Changelog update
 
-2006-06-05 05:42  (ajdonnison)
+2006-06-05 13:12  (ajdonnison)
 ---------------------------------
 classes/date.class.php
 - Backported fix for PHP 5.1.x which disallows assignment to $this.
 
-2006-06-05 05:41  (ajdonnison)
+2006-06-05 13:11  (ajdonnison)
 ---------------------------------
 classes/date.class.php
 - Changed from using '$this =' to '$this->copy()' so that it works in php 5.1.4
 
-2006-06-05 05:01  (ajdonnison)
+2006-06-05 12:31  (ajdonnison)
 ---------------------------------
 ChangeLog
 includes/version.php
 install/do_install_db.php
 - Changes for 2.0.3 security and bug fix update.
 
-2006-06-05 05:00  (ajdonnison)
+2006-06-05 12:30  (ajdonnison)
 ---------------------------------
 classes/query.class.php
 - Fix for MySQL 5 compatibility in Joins.
 
-2006-06-04 19:28  (gregorerhardt)
+2006-06-05 02:58  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 locales/en/ticketsmith.inc
-modules/ticketsmith/CHANGELOG
-modules/ticketsmith/CREDITS
-modules/ticketsmith/INSTALL
-modules/ticketsmith/LICENSE
-modules/ticketsmith/README
-modules/ticketsmith/TODO
-modules/ticketsmith/UPGRADE
-modules/ticketsmith/admin.php
-modules/ticketsmith/attach.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/do_ticket_aed.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.html
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/pdf.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/reattachticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/setup.php
-modules/ticketsmith/style.css
-modules/ticketsmith/table.schema
-modules/ticketsmith/view.php
-modules/ticketsmith/images/gconf-app-icon.png
-modules/ticketsmith/images/ltwt.gif
-modules/ticketsmith/images/posticon.gif
-modules/ticketsmith/images/rtwt.gif
 - sad enough - ticketsmith had to go away
 
-2006-06-04 18:06  (gregorerhardt)
+2006-06-05 01:36  (gregorerhardt)
 ---------------------------------
 modules/tasks/viewgantt.php
 - corrected gantt driver link
 
-2006-06-04 18:03  (gregorerhardt)
+2006-06-05 01:33  (gregorerhardt)
 ---------------------------------
 modules/tasks/todo.php
 modules/tasks/todo_gantt_sub.php
@@ -6313,17 +6443,17 @@ modules/tasks/viewgantt.php
 modules/tasks/gantt.php
 - todo gantt charts
 
-2006-06-04 17:48  (gregorerhardt)
+2006-06-05 01:18  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 - added minor space character to separate two words
 
-2006-06-04 16:23  (gregorerhardt)
+2006-06-04 23:53  (gregorerhardt)
 ---------------------------------
 modules/tasks/todo_gantt_sub.php
 - file todo_gantt_sub.php was initially added on branch stable_2.
 
-2006-06-04 16:23  (gregorerhardt)
+2006-06-04 23:53  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
 modules/tasks/todo.php
@@ -6331,27 +6461,27 @@ modules/tasks/todo_gantt_sub.php
 modules/tasks/viewgantt.php
 - todo gantt charts
 
-2006-06-04 04:51  (cyberhorse)
+2006-06-04 12:21  (cyberhorse)
 ---------------------------------
 style/_smarty/forums/post_message.html
 - made parent message display to be just text rather than disabled textbox
 
-2006-06-04 04:44  (cyberhorse)
+2006-06-04 12:14  (cyberhorse)
 ---------------------------------
 style/_smarty/forums/post_message.html
 - as previous commit
 
-2006-06-04 04:30  (cyberhorse)
+2006-06-04 12:00  (cyberhorse)
 ---------------------------------
 style/_smarty/forums/post_message.html
 - hide the parent message when posting a new topic
 
-2006-06-01 18:47  (cyberhorse)
+2006-06-02 02:17  (cyberhorse)
 ---------------------------------
 modules/calendar/index.php
 - fixed javascript error
 
-2006-06-01 18:08  (cyberhorse)
+2006-06-02 01:38  (cyberhorse)
 ---------------------------------
 modules/system/custom_field_addedit.js
 modules/system/custom_field_addedit.php
@@ -6359,58 +6489,58 @@ modules/system/roles/vw_role_perms.php
 style/_smarty/system/custom_field_addedit.html
 - xhtml validity
 
-2006-06-01 17:51  (cyberhorse)
+2006-06-02 01:21  (cyberhorse)
 ---------------------------------
 style/_smarty/system/addeditpref.html
 style/_smarty/system/systemconfig.html
 - xhtml validity
 
-2006-06-01 17:37  (cyberhorse)
+2006-06-02 01:07  (cyberhorse)
 ---------------------------------
 style/_smarty/smartsearch/list.html
 - xhtml
 
-2006-06-01 17:28  (cyberhorse)
+2006-06-02 00:58  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 classes/ui.class.php
 modules/files/do_file_co.php
 - xhtml validity
 
-2006-06-01 17:12  (cyberhorse)
+2006-06-02 00:42  (cyberhorse)
 ---------------------------------
 modules/public/selector.php
 modules/public/selector.php
 - xhtml
 
-2006-06-01 17:08  (cyberhorse)
+2006-06-02 00:38  (cyberhorse)
 ---------------------------------
 modules/public/selector.php
 - xhtml validity
 
-2006-06-01 17:04  (cyberhorse)
+2006-06-02 00:34  (cyberhorse)
 ---------------------------------
 modules/calendar/index.php
 - xhtml validity
 
-2006-06-01 16:56  (cyberhorse)
+2006-06-02 00:26  (cyberhorse)
 ---------------------------------
 modules/calendar/index.php
 - xhtml validity
 
-2006-06-01 16:52  (cyberhorse)
+2006-06-02 00:22  (cyberhorse)
 ---------------------------------
 modules/forums/view_messages.php
 style/_smarty/forums/view_messages.html
 style/_smarty/forums/view_messages.row.html
 - xhtml validity
 
-2006-06-01 16:42  (cyberhorse)
+2006-06-02 00:12  (cyberhorse)
 ---------------------------------
 style/_smarty/forums/viewer.html
 - xhtml fixes
 
-2006-06-01 16:32  (cyberhorse)
+2006-06-02 00:02  (cyberhorse)
 ---------------------------------
 style/_smarty/forums/view_messages.html
 style/_smarty/forums/view_messages.row.html
@@ -6418,23 +6548,23 @@ style/_smarty/forums/viewer.html
 modules/forums/view_messages.php
 - xhtml validity
 
-2006-06-01 16:11  (cyberhorse)
+2006-06-01 23:41  (cyberhorse)
 ---------------------------------
 modules/calendar/links_events.php
 modules/calendar/links_tasks.php
 - xhtml validity fixed
 
-2006-06-01 16:00  (cyberhorse)
+2006-06-01 23:30  (cyberhorse)
 ---------------------------------
 index.php
 - fixed XSS weakness
 
-2006-06-01 15:46  (cyberhorse)
+2006-06-01 23:16  (cyberhorse)
 ---------------------------------
 modules/tasks/ae_resource.php
 - javascript error fixed
 
-2006-06-01 15:38  (merlinyoda)
+2006-06-01 23:08  (merlinyoda)
 ---------------------------------
 classes/dp.class.php
 - 
@@ -6442,19 +6572,19 @@ classes/dp.class.php
 - "addWhere" function. This likely fixed other related bugs that had problems with using the
 - "setAllowedSQL" function.
 
-2006-06-01 15:33  (merlinyoda)
+2006-06-01 23:03  (merlinyoda)
 ---------------------------------
 modules/calendar/addedit.php
 - Changed wording in recurrance drop-down box for reasons
 - discussed in Mantis bug 0001557 (i.e. more professional tone)
 
-2006-06-01 15:18  (cyberhorse)
+2006-06-01 22:48  (cyberhorse)
 ---------------------------------
 style/_smarty/header.html
 style/default/tabBox.html
 - fixed xhtml validity
 
-2006-06-01 15:12  (merlinyoda)
+2006-06-01 22:42  (merlinyoda)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/calendar.class.php
@@ -6465,7 +6595,7 @@ style/_smarty/calendar/addedit.html
 -  - tweaked minor bug that didn't handle recurrance properly (according to
 -    a method in calendar.class.php)
 
-2006-06-01 15:10  (cyberhorse)
+2006-06-01 22:40  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
 modules/admin/addedituser.php
@@ -6489,17 +6619,17 @@ modules/system/roles/index.php
 modules/tasks/view.php
 - fixed broken "access denied" redirections
 
-2006-06-01 14:11  (cyberhorse)
+2006-06-01 21:41  (cyberhorse)
 ---------------------------------
 index.php
 - XSS vulnerability fixed
 
-2006-06-01 13:56  (cyberhorse)
+2006-06-01 21:26  (cyberhorse)
 ---------------------------------
 modules/projects/viewgantt.php
 - fixed syntactical errors
 
-2006-06-01 13:42  (cyberhorse)
+2006-06-01 21:12  (cyberhorse)
 ---------------------------------
 index.php
 classes/ui.class.php
@@ -6509,7 +6639,7 @@ includes/session.php
 style/_smarty/login.html
 - fixed 'app' session handling
 
-2006-06-01 11:56  (cyberhorse)
+2006-06-01 19:26  (cyberhorse)
 ---------------------------------
 modules/history/index.php
 modules/projects/viewgantt.php
@@ -6519,14 +6649,14 @@ style/_smarty/history/list.html
 style/_smarty/projects/gantt.html
 - xhtml compatibility
 
-2006-05-31 22:36  (gregorerhardt)
+2006-06-01 06:06  (gregorerhardt)
 ---------------------------------
 includes/smarty/function.dPtranslate.php
 includes/smarty/function.dPtranslateToVar.php
 locales/en/system.inc
 - smartified and softcoded user preference system
 
-2006-05-31 22:29  (gregorerhardt)
+2006-06-01 05:59  (gregorerhardt)
 ---------------------------------
 db/upgrade_latest.sql
 db/dotproject.sql
@@ -6537,60 +6667,57 @@ modules/system/system.class.php
 style/_smarty/system/addeditpref.html
 - smartified and softcoded user preference system
 
-2006-05-31 15:57  (cyberhorse)
+2006-05-31 23:27  (cyberhorse)
 ---------------------------------
 style/calendar.css
 - calendar related styling
 
-2006-05-31 13:57  (gregorerhardt)
+2006-05-31 21:27  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 - setting config item group
 
-2006-05-31 13:52  (gregorerhardt)
+2006-05-31 21:22  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 - charset and auto_increment cleanup
 
-2006-05-31 13:38  (gregorerhardt)
+2006-05-31 21:08  (gregorerhardt)
 ---------------------------------
 modules/admin/viewuser.php
 - do not show projects with assigned tasks by default
 
-2006-05-31 13:18  (gregorerhardt)
+2006-05-31 20:50  (gregorerhardt)
 ---------------------------------
-modules/projects/reports/allocateduserhours.php
 modules/reports/existing/allocateduserhours.php
 - fixed unique array entry bug and division by zero
 
-2006-05-31 11:37  (gregorerhardt)
+2006-05-31 19:07  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
 locales/en/system.inc
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/index.php
 - preparing for ticketsmith move to dotmods
 
-2006-05-30 22:08  (gregorerhardt)
+2006-05-31 05:38  (gregorerhardt)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
 locales/en/system.inc
 - regrouped config items
 
-2006-05-30 19:57  (nybod)
+2006-05-31 03:27  (nybod)
 ---------------------------------
 modules/projects/gantt.php
 modules/tasks/gantt.php
 - backported from HEAD - some progress overshoot and undershoot prevention
 
-2006-05-30 11:11  (gregorerhardt)
+2006-05-30 18:41  (gregorerhardt)
 ---------------------------------
 style/_smarty/system/systemconfig.html
 - replaced config group title
 
-2006-05-30 01:51  (gregorerhardt)
+2006-05-30 09:21  (gregorerhardt)
 ---------------------------------
 classes/ui.class.php
 includes/smarty/function.dPgetSystemConfigSelect.php
@@ -6601,27 +6728,27 @@ style/_smarty/header.html
 style/_smarty/system/systemconfig.html
 - systemconfig smartified, some new general plugins
 
-2006-05-29 17:20  (cyberhorse)
+2006-05-30 00:50  (cyberhorse)
 ---------------------------------
 modules/public/color_selector.php
 - -xhtml validity fixed
 
-2006-05-29 17:10  (cyberhorse)
+2006-05-30 00:40  (cyberhorse)
 ---------------------------------
 modules/tasks/addedit.php
 - xhtml fixed
 
-2006-05-29 17:08  (cyberhorse)
+2006-05-30 00:38  (cyberhorse)
 ---------------------------------
 modules/public/calendar.php
 - fixed xhtml on date picker
 
-2006-05-29 17:03  (cyberhorse)
+2006-05-30 00:33  (cyberhorse)
 ---------------------------------
 style/_smarty/smartsearch/index.html
 - xhtml cleanup
 
-2006-05-29 16:34  (cyberhorse)
+2006-05-30 00:04  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 modules/admin/addedituser.php
@@ -6668,7 +6795,7 @@ style/_smarty/system/index.html
 - xhtml validity fixed
 - general cleanup and optimization
 
-2006-05-28 17:04  (cyberhorse)
+2006-05-29 00:34  (cyberhorse)
 ---------------------------------
 modules/projects/projects.class.php
 modules/projects/vw_forums.php
@@ -6677,29 +6804,28 @@ style/_smarty/forums/post_message.html
 - forum tab in projects handled through forum module - showing messages rather than forums
 - don't ask for subjects on replies
 
-2006-05-27 21:30  (gregorerhardt)
+2006-05-28 05:00  (gregorerhardt)
 ---------------------------------
 modules/reports/existing/allocateduserhours.php
 - week scale in allocated hours report
 
-2006-05-27 21:24  (gregorerhardt)
+2006-05-28 04:54  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 includes/main_functions.php
 modules/projects/projects.class.php
-modules/projects/reports/allocateduserhours.php
 modules/tasks/addedit.js
 modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - Task dependency - task shifting, week scale in allocated hours report
 
-2006-05-27 03:03  (gregorerhardt)
+2006-05-27 10:33  (gregorerhardt)
 ---------------------------------
 modules/projects/gantt.php
 modules/tasks/gantt.php
 - some progress overshoot and undershoot prevention
 
-2006-05-26 14:53  (gregorerhardt)
+2006-05-26 22:23  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
 includes/main_functions.php
@@ -6709,7 +6835,7 @@ modules/tasks/do_task_aed.php
 modules/tasks/tasks.class.php
 - shift depending task B if prior task A is shifted
 
-2006-05-25 17:03  (cyberhorse)
+2006-05-26 00:33  (cyberhorse)
 ---------------------------------
 modules/calendar/addedit.php
 modules/calendar/calendar.class.php
@@ -6751,7 +6877,7 @@ style/classic/header.html
 style/dp-grey-theme/header.html
 - many xhtml fixes (calendar, forums, files modules)
 
-2006-05-24 16:38  (cyberhorse)
+2006-05-25 00:08  (cyberhorse)
 ---------------------------------
 modules/contacts/index.php
 modules/contacts/view.php
@@ -6763,7 +6889,7 @@ style/_smarty/contacts/list.row.html
 style/_smarty/contacts/view.html
 - fixed xhtml validity in contacts module
 
-2006-05-24 16:08  (cyberhorse)
+2006-05-24 23:38  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 classes/ui.class.php
@@ -6776,7 +6902,7 @@ style/_smarty/companies/list.html
 style/_smarty/companies/view.html
 - companies module converted to xhtml compatible
 
-2006-05-24 15:45  (cyberhorse)
+2006-05-24 23:15  (cyberhorse)
 ---------------------------------
 modules/resources/tasks_tab.addedit.other_resources.php
 modules/tasks/addedit.php
@@ -6802,7 +6928,7 @@ style/dp-grey-theme/header.html
 style/dp-grey-theme/tabBox.html
 - tasks module updated to xhtml
 
-2006-05-23 11:27  (cyberhorse)
+2006-05-23 18:57  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
 style/_smarty/tabBox.html
@@ -6810,14 +6936,14 @@ style/default/tabBox.html
 style/dp-grey-theme/tabBox.html
 - fixed & handling at the end of baseHRef
 
-2006-05-23 11:21  (cyberhorse)
+2006-05-23 18:51  (cyberhorse)
 ---------------------------------
 style/_smarty/tabBox.html
 style/dp-grey-theme/header.html
 style/dp-grey-theme/tabBox.html
 - xhtml fixes
 
-2006-05-22 17:08  (cyberhorse)
+2006-05-23 00:38  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 classes/ui.class.php
@@ -6853,7 +6979,7 @@ style/dp-grey-theme/tabBox.html
 - 
 - !NB: Beware that not complete style may be preserved during the change - if any style should be updated, compare to template files from 2.0.2 version
 
-2006-05-21 11:18  (cyberhorse)
+2006-05-21 18:48  (cyberhorse)
 ---------------------------------
 index.php
 classes/template.class.php
@@ -6868,7 +6994,7 @@ style/_smarty/tasks/list.projects.html
 style/_smarty/tasks/list.row.html
 - work towards making all templates smarty (and fall back to _smarty one if files are missing)
 
-2006-05-20 11:35  (cyberhorse)
+2006-05-20 19:05  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 modules/admin/index.php
@@ -6903,7 +7029,6 @@ modules/tasks/ae_depend.php
 modules/tasks/ae_resource.php
 modules/tasks/tasks.class.php
 modules/tasks/tasksperuser_sub.php
-modules/ticketsmith/post_ticket.php
 style/_smarty/filters.html
 style/_smarty/titleBlock.html
 style/_smarty/admin/simple_list.html
@@ -6935,12 +7060,12 @@ style/_smarty/tasks/tasklog.addedit.html
 style/default/header.php
 - xhtml fixes
 
-2006-05-20 10:25  (cyberhorse)
+2006-05-20 17:55  (cyberhorse)
 ---------------------------------
 files/cache/smarty_templates/.cvsignore
 - ignore cache files
 
-2006-05-20 10:21  (cyberhorse)
+2006-05-20 17:51  (cyberhorse)
 ---------------------------------
 modules/projects/view.php
 modules/tasks/projects_tab.view.task_logs.php
@@ -6950,7 +7075,7 @@ style/_smarty/tasks/list.projects.html
 style/_smarty/tasks/tasklog.html
 - fix xhtml issues in projects
 
-2006-05-20 09:37  (cyberhorse)
+2006-05-20 17:07  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
 includes/main_functions.php
@@ -6967,101 +7092,27 @@ style/default/header.php
 style/default/overrides.php
 - fixed xhtml issues
 
-2006-05-20 08:23  (cyberhorse)
+2006-05-20 15:53  (cyberhorse)
 ---------------------------------
 modules/index.html
 - made placeholder file xhtml valid (it's used in the hidden, thread iframe)
 
-2006-05-20 08:23  (cyberhorse)
+2006-05-20 15:53  (cyberhorse)
 ---------------------------------
 style/_smarty/tabBox.html
 - replaced some & with &amp; - xhtml validity
 
-2006-05-20 08:22  (cyberhorse)
+2006-05-20 15:52  (cyberhorse)
 ---------------------------------
 includes/smarty/function.dPshowImage.php
 - alt tag is required for XHTML - made it always available
 
-2006-05-16 16:29  (cyberhorse)
+2006-05-16 23:59  (cyberhorse)
 ---------------------------------
 includes/smarty/modifier.dPhighlight.php
 - fixed bug in highlighting (when keyword was empty)
 
-2006-05-16 16:21  (cyberhorse)
----------------------------------
-style/smarty1/crumbDelete.html
-style/smarty1/debug.html
-style/smarty1/filters.html
-style/smarty1/install.html
-style/smarty1/pagination.html
-style/smarty1/search.html
-style/smarty1/tabBox.html
-style/smarty1/titleBlock.html
-style/smarty1/admin/addedit.html
-style/smarty1/admin/list.html
-style/smarty1/admin/simple_list.html
-style/smarty1/admin/usr_log.html
-style/smarty1/admin/usr_sessions.html
-style/smarty1/admin/view.html
-style/smarty1/backup/index.html
-style/smarty1/backup/restore.html
-style/smarty1/calendar/_event.html
-style/smarty1/calendar/_title.html
-style/smarty1/calendar/_week.html
-style/smarty1/calendar/addedit.html
-style/smarty1/calendar/view.day.html
-style/smarty1/calendar/view.html
-style/smarty1/calendar/view.month.html
-style/smarty1/calendar/view.week.html
-style/smarty1/companies/addedit.html
-style/smarty1/companies/list.html
-style/smarty1/companies/view.html
-style/smarty1/contacts/addedit.html
-style/smarty1/contacts/cardlist.html
-style/smarty1/contacts/index.html
-style/smarty1/contacts/list.html
-style/smarty1/contacts/list.row.html
-style/smarty1/contacts/view.html
-style/smarty1/departments/addedit.html
-style/smarty1/departments/view.html
-style/smarty1/departments/vw_contacts.html
-style/smarty1/files/addedit.html
-style/smarty1/files/co.html
-style/smarty1/files/list.html
-style/smarty1/files/list.row.html
-style/smarty1/forums/addedit.html
-style/smarty1/forums/index.html
-style/smarty1/forums/index.row.html
-style/smarty1/forums/post_message.html
-style/smarty1/forums/view_messages.html
-style/smarty1/forums/view_messages.row.html
-style/smarty1/forums/view_topics.html
-style/smarty1/forums/view_topics.row.html
-style/smarty1/forums/viewer.html
-style/smarty1/history/addedit.html
-style/smarty1/history/list.html
-style/smarty1/projects/addedit.html
-style/smarty1/projects/gantt.html
-style/smarty1/projects/list.html
-style/smarty1/projects/view.html
-style/smarty1/public/register.html
-style/smarty1/smartsearch/index.html
-style/smarty1/smartsearch/list.html
-style/smarty1/system/custom_field_addedit.html
-style/smarty1/system/custom_field_editor.html
-style/smarty1/system/index.html
-style/smarty1/tasks/addedit.html
-style/smarty1/tasks/ae_desc.html
-style/smarty1/tasks/list.html
-style/smarty1/tasks/list.projects.html
-style/smarty1/tasks/list.row.html
-style/smarty1/tasks/organize.html
-style/smarty1/tasks/tasklog.addedit.html
-style/smarty1/tasks/tasklog.html
-style/smarty1/tasks/view.html
-- smarty1 moved to _smarty
-
-2006-05-16 15:27  (cyberhorse)
+2006-05-16 22:57  (cyberhorse)
 ---------------------------------
 classes/dp.class.php
 modules/calendar/calendar.class.php
@@ -7073,19 +7124,19 @@ style/_smarty/smartsearch/list.html
 - #466 - indicate parent in smartsearch
 - deployed a flexible way to keep track of parent for each item (two new variables have to be initiated in constructor - _tbl_parent and _parent - descriptions of the two in dp.class.php's phpdoc comments)
 
-2006-05-16 13:56  (cyberhorse)
+2006-05-16 21:26  (cyberhorse)
 ---------------------------------
 modules/history/setup.php
 - updated module setup to 0.6
 - fixed 0.5 upgrade sql statements for adding indexes
 - #1643 - added new joined index
 
-2006-05-14 16:01  (cyberhorse)
+2006-05-14 23:31  (cyberhorse)
 ---------------------------------
 modules/tasks/addedit.js
 - fixed end date calculations
 
-2006-05-14 15:33  (cyberhorse)
+2006-05-14 23:03  (cyberhorse)
 ---------------------------------
 modules/history/addedit.js
 modules/history/index.php
@@ -7093,63 +7144,63 @@ style/_smarty/history/addedit.html
 - fixed delete button in history module
 - improved limits
 
-2006-05-14 13:06  (cyberhorse)
+2006-05-14 20:36  (cyberhorse)
 ---------------------------------
 modules/tasks/addedit.js
 - #1626 - fixed duration calculation
 
-2006-05-14 12:20  (cyberhorse)
+2006-05-14 19:50  (cyberhorse)
 ---------------------------------
 modules/system/custom_field_addedit.php
 modules/system/do_custom_field_aed.php
 style/_smarty/system/custom_field_addedit.html
 - #1560 - missing delete button in custom fields fixed
 
-2006-05-14 06:51  (cyberhorse)
+2006-05-14 14:21  (cyberhorse)
 ---------------------------------
 modules/system/billingcode.php
 - #1632 - fixed html form errors
 
-2006-05-14 06:42  (cyberhorse)
+2006-05-14 14:12  (cyberhorse)
 ---------------------------------
 modules/contacts/index.php
 style/_smarty/contacts/list.row.html
 - #694 - contacts highlighting
 
-2006-05-14 05:39  (cyberhorse)
+2006-05-14 13:09  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 - #773 - hide guest users from assignees
 
-2006-05-08 17:50  (cyberhorse)
+2006-05-09 01:20  (cyberhorse)
 ---------------------------------
 modules/tasks/addedit.js
 - #1626 - fixed day related end date calculations
 - greatly improved and simplified end date calculations
 - added comments to javascript file
 
-2006-05-08 15:30  (cyberhorse)
+2006-05-08 23:00  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 - fixed an error when there are no results to display in a list
 
-2006-05-08 15:24  (cyberhorse)
+2006-05-08 22:54  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 - fixed pagination starting position (was starting one record late)
 
-2006-05-08 15:19  (cyberhorse)
+2006-05-08 22:49  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 - improved ereg expression for stripping page in pagination
 
-2006-05-08 14:42  (cyberhorse)
+2006-05-08 22:12  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.php
 modules/tasks/vw_tasks.php
 - added assigned users order - by perc_assignment desc first and username second
 
-2006-05-08 14:16  (cyberhorse)
+2006-05-08 21:46  (cyberhorse)
 ---------------------------------
 style/_iconsets/wps/_icons/1.gif
 style/_iconsets/wps/_icons/admin.gif
@@ -7213,12 +7264,12 @@ style/_iconsets/wps/_obj/phone.gif
 style/_iconsets/wps/_obj/warning.gif
 - forgotten files (more...)
 
-2006-05-03 16:18  (cyberhorse)
+2006-05-03 23:48  (cyberhorse)
 ---------------------------------
 style/default/login.php
 - fixed html errors - now it validates as xhtml
 
-2006-05-03 16:12  (cyberhorse)
+2006-05-03 23:42  (cyberhorse)
 ---------------------------------
 style/_iconsets/wps/admin/helix-setup-user.png
 style/_iconsets/wps/admin/helix-setup-users.png
@@ -7242,22 +7293,22 @@ style/_iconsets/wps/tasks/applet-48.png
 style/_iconsets/wps/ticketsmith/gconf-app-icon.png
 - adding missing icons
 
-2006-05-03 16:10  (cyberhorse)
+2006-05-03 23:40  (cyberhorse)
 ---------------------------------
 style/_smarty/tasks/list.row.html
 - fixed image names
 
-2006-05-03 15:30  (cyberhorse)
+2006-05-03 23:00  (cyberhorse)
 ---------------------------------
 includes/smarty/function.dPshowImage.php
 - made image tag xhtml complient
 
-2006-05-03 15:29  (cyberhorse)
+2006-05-03 22:59  (cyberhorse)
 ---------------------------------
 style/_smarty/tasks/list.row.html
 - converted some images to go through findImage function
 
-2006-05-03 15:03  (cyberhorse)
+2006-05-03 22:33  (cyberhorse)
 ---------------------------------
 style/_iconsets/wps/arrow-down.gif
 style/_iconsets/wps/arrow-right.gif
@@ -7285,7 +7336,7 @@ style/_iconsets/wps/view.week.gif
 style/_iconsets/wps/week.gif
 - added a new iconset - wps. Thanks to Mats Djärf (dafox) for the icons.
 
-2006-05-03 14:56  (cyberhorse)
+2006-05-03 22:26  (cyberhorse)
 ---------------------------------
 index.php
 classes/ui.class.php
@@ -7306,12 +7357,12 @@ style/_smarty/tasks/list.row.html
 - /style/_iconsets/{$iconstyle}/_obj/ - files from /images/obj/
 - /style/_iconsets/{$iconstyle}/{$module}/ - files from /module/{$module}/images/
 
-2006-05-03 13:35  (cyberhorse)
+2006-05-03 21:05  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
 - hide directories starting with _ and . in readDir function
 
-2006-05-03 13:33  (cyberhorse)
+2006-05-03 21:03  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 style/_smarty/crumbDelete.html
@@ -7386,7 +7437,7 @@ style/_smarty/tasks/tasklog.html
 style/_smarty/tasks/view.html
 - moved smarty directory to _smarty
 
-2006-04-30 10:42  (cyberhorse)
+2006-04-30 18:12  (cyberhorse)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
@@ -7397,7 +7448,7 @@ style/dp-grey-theme/login.php
 - #412 - added terms and conditions text to login screen
 - added textarea as system config type option
 
-2006-04-30 09:10  (cyberhorse)
+2006-04-30 16:40  (cyberhorse)
 ---------------------------------
 includes/main_functions.php
 modules/system/addeditpref.php
@@ -7406,115 +7457,102 @@ db/dotproject.sql
 db/upgrade_latest.sql
 - #1567 - created a user preference for how to display users
 
-2006-04-30 07:34  (cyberhorse)
+2006-04-30 15:04  (cyberhorse)
 ---------------------------------
 modules/tasks/addedit.php
 - #156 - hide inactive users from task resources assignment
 
-2006-04-30 06:40  (cyberhorse)
+2006-04-30 14:10  (cyberhorse)
 ---------------------------------
 modules/calendar/addedit.php
 - #1614 - event_cwd's value fixed
 
-2006-04-30 06:37  (cyberhorse)
----------------------------------
-style/smarty1/calendar/addedit.html
-- #1614 - event_cwd value fixed
-
-2006-04-30 06:26  (cyberhorse)
+2006-04-30 13:56  (cyberhorse)
 ---------------------------------
 modules/calendar/links_events.php
 modules/calendar/links_tasks.php
-style/smarty1/calendar/_event.html
 - #588 - fixed tasks display and cleaned up smarty
 
-2006-04-30 05:35  (cyberhorse)
+2006-04-30 13:05  (cyberhorse)
 ---------------------------------
 modules/calendar/calendar.class.php
 modules/calendar/links_events.php
-style/smarty1/calendar/_event.html
 - #588
 - added an overlib tooltip with extra event info - dates, descriptions
 - improved smarty handling in events view
 
-2006-04-30 03:52  (cyberhorse)
+2006-04-30 11:22  (cyberhorse)
 ---------------------------------
 modules/tasks/viewgantt.php
 - #81 - fixed width when using the classic theme.
 
-2006-04-30 03:34  (cyberhorse)
+2006-04-30 11:04  (cyberhorse)
 ---------------------------------
 classes/template.class.php
 modules/projects/projects.class.php
 - fixed some pagination issues
 
-2006-04-28 05:05  (cyberhorse)
+2006-04-28 12:35  (cyberhorse)
 ---------------------------------
 classes/query.class.php
 - fixed pagination
 
-2006-04-26 18:19  (theideaman)
+2006-04-27 01:49  (theideaman)
 ---------------------------------
 classes/CustomFields.class.php
 - significant code cleanup; modified existing header comments to DocBlock format
 
-2006-04-26 15:59  (cyberhorse)
+2006-04-26 23:29  (cyberhorse)
 ---------------------------------
 index.php
 modules/public/register.php
-style/smarty1/public/register.html
 - #108 - registration page. Link to it should be ?m=public&a=register
 - defined as the role "guest"
 
-2006-04-26 15:55  (cyberhorse)
+2006-04-26 23:25  (cyberhorse)
 ---------------------------------
 classes/permissions.class.php
 - added comments
 
-2006-04-26 15:53  (cyberhorse)
+2006-04-26 23:23  (cyberhorse)
 ---------------------------------
 modules/admin/admin.class.php
 modules/admin/do_perms_aed.php
 - cleanups
 
-2006-04-24 04:12  (cyberhorse)
+2006-04-24 11:42  (cyberhorse)
 ---------------------------------
 modules/admin/addedituser.php
 - added sorting for contacts in user edit screen.
 
-2006-04-23 08:03  (cyberhorse)
+2006-04-23 15:33  (cyberhorse)
 ---------------------------------
 modules/reports/index.php
 - fixed a poopoo
 
-2006-04-23 07:54  (cyberhorse)
+2006-04-23 15:24  (cyberhorse)
 ---------------------------------
 modules/tasks/vw_tasks.php
 - #1532 - filtering by task type
 
-2006-04-23 07:51  (cyberhorse)
+2006-04-23 15:21  (cyberhorse)
 ---------------------------------
 index.php
 - fixed a poopoo
 
-2006-04-23 07:36  (cyberhorse)
+2006-04-23 15:06  (cyberhorse)
 ---------------------------------
 index.php
 - some cleanup
 
-2006-04-23 07:19  (cyberhorse)
+2006-04-23 14:49  (cyberhorse)
 ---------------------------------
 modules/projects/addedit.php
 modules/projects/do_project_aed.php
 modules/projects/view.php
 - cleanup
 
-2006-04-23 07:09  (cyberhorse)
----------------------------------
-style/smarty1/admin/usr_sessions.html
-- arggrh - forgot this file too
-
-2006-04-23 07:08  (cyberhorse)
+2006-04-23 14:38  (cyberhorse)
 ---------------------------------
 modules/calendar/calendar.class.php
 modules/calendar/clash.php
@@ -7531,43 +7569,46 @@ modules/files/files.class.php
 modules/reports/index.php
 - general cleanup (double to single quotes, reformatting code, cleanup warnings)
 
-2006-04-23 07:06  (cyberhorse)
+2006-04-23 14:36  (cyberhorse)
 ---------------------------------
 modules/forums/viewer.php
 - replaced double quotes with single quotes
 - some other cleanups
 
-2006-04-23 07:01  (cyberhorse)
+2006-04-23 14:31  (cyberhorse)
 ---------------------------------
 classes/permissions.class.php
 - removed unreachable code
 
-2006-04-23 05:39  (cyberhorse)
+2006-04-23 13:09  (cyberhorse)
 ---------------------------------
 index.php
 classes/template.class.php
-style/smarty1/debug.html
-style/smarty1/install.html
 - smartified some parts of main index file
 - replaced double quotes with single quotes
 
-2006-04-23 05:03  (cyberhorse)
+2006-04-23 12:33  (cyberhorse)
 ---------------------------------
 ChangeLog
 modules/tasks/viewgantt.php
 - updated changelog
 - added 2 more selectors for ganttcharts - more to be added
 
-2006-04-23 03:52  (cyberhorse)
+2006-04-23 11:22  (cyberhorse)
 ---------------------------------
 modules/admin/vw_usr_sessions.php
 - yep, forgot a file
 
-2006-04-22 01:33  (pedroix)
+2006-04-22 09:03  (pedroix)
 ---------------------------------
 modules/files/index_table.php
 - Files not viewable on the companies, projects and tasks Files tab
 - http://www.dotproject.net/vbulletin/showthread.php?t=4870
+
+2006-04-21 17:08  (ajdonnison)
+---------------------------------
+includes/version.php
+- Fixed the version number.
 
 2006-04-21 17:06  (ajdonnison)
 ---------------------------------
@@ -7654,12 +7695,6 @@ includes/main_functions.php
 includes/session.php
 - user logout tab in admin
 
-2006-04-20 09:35  (cyberhorse)
----------------------------------
-style/smarty1/admin/addedit.html
-- fixing missing translation
-- fixing wording
-
 2006-04-20 00:45  (cyberhorse)
 ---------------------------------
 modules/admin/index.php
@@ -7682,8 +7717,6 @@ modules/files/index_table.php
 ChangeLog
 modules/projects/do_project_aed.php
 modules/projects/projects.class.php
-modules/ticketsmith/view.php
-style/smarty1/projects/addedit.html
 - #888 - when importing from template project, copy forums/files options as well.
 - #200 - added full text of followups in tickets module if there are less than 5 followups
 
@@ -7707,7 +7740,6 @@ modules/tasks/vw_log_update.php
 ---------------------------------
 .htaccess
 modules/tasks/vw_log_update.php
-style/smarty1/tasks/tasklog.addedit.html
 - #1602 - remember selected billingcode
 
 2006-04-16 18:19  (cyberhorse)
@@ -7889,11 +7921,6 @@ modules/tasks/organize.php
 modules/tasks/projects_tab.view.task_logs.php
 modules/tasks/view.php
 modules/tasks/vw_logs.php
-style/smarty1/calendar/addedit.html
-style/smarty1/calendar/view.html
-style/smarty1/tasks/organize.html
-style/smarty1/tasks/tasklog.html
-style/smarty1/tasks/view.html
 - stupid cvs missing ... a few commits now:
 - #1570 - added url to events
 - #822 - added event_task
@@ -8002,8 +8029,6 @@ modules/projects/index.php
 ---------------------------------
 modules/tasks/tree.js
 modules/tasks/vw_tasks.php
-style/smarty1/tasks/list.html
-style/smarty1/tasks/list.row.html
 - Added expand/collapse all buttons in project view screen
 - fixed ordering handling (was commented out)
 - fixed a few other minor things
@@ -8017,11 +8042,6 @@ includes/db_connect.php
 ---------------------------------
 includes/db_connect.php
 - #977 - fixed stripping of <> chars
-
-2006-03-21 22:33  (cyberhorse)
----------------------------------
-style/smarty1/smartsearch/list.html
-- fixed the links to point to view pages instead of edit ones
 
 2006-03-21 20:28  (ajdonnison)
 ---------------------------------
@@ -8115,11 +8135,6 @@ modules/projects/reports.php
 ---------------------------------
 modules/tasks/view.php
 - #982 - enable "pinning" a task from the task view screen.
-
-2006-03-19 22:49  (cyberhorse)
----------------------------------
-style/smarty1/admin/list.html
-- #1151 - moved login history time to be the last column in user listing.
 
 2006-03-19 22:41  (cyberhorse)
 ---------------------------------
@@ -8229,7 +8244,6 @@ modules/projects/vw_idx_active.php
 modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_complete.php
 modules/projects/vw_idx_proposed.php
-style/smarty1/pagination.html
 - #1549 - pagination in tabs fixed
 - Pagination in general fixed (lots of problem were there - it wasn't finished before)
 - template class keeps current page number
@@ -8248,15 +8262,9 @@ style/default/header.php
 style/dp-grey-theme/header.php
 - Added print button at the top right corner (using "print" css class to define what's printable)
 
-2006-03-19 11:59  (cyberhorse)
----------------------------------
-style/smarty1/smartsearch/list.html
-- added the smartsearch list file
-
 2006-03-19 11:53  (cyberhorse)
 ---------------------------------
 modules/calendar/day_view.php
-style/smarty1/calendar/view.day.html
 - #1561 - fixed calendar dayview tab backgrounds (applied proposed patch)
 
 2006-03-19 01:39  (gregorerhardt)
@@ -8308,11 +8316,6 @@ modules/links/setup.php
 modules/system/addeditpref.php
 - Added empty time format (for dates only display)
 
-2006-03-15 20:17  (cyberhorse)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- #1268 - fixed redundant slashes in tickets subjects and descriptions.
-
 2006-03-15 19:14  (gregorerhardt)
 ---------------------------------
 modules/tasks/gantt.php
@@ -8334,19 +8337,12 @@ modules/admin/vw_usr.php
 db/dotproject.sql
 db/upgrade_latest.sql
 modules/companies/companies.class.php
-style/smarty1/companies/addedit.html
-style/smarty1/companies/view.html
 - #1362 - added country field to company
 
 2006-03-14 18:55  (cyberhorse)
 ---------------------------------
 modules/companies/addedit.php
 - removed blank lines every second line (windows/linux issue)
-
-2006-03-14 09:14  (gregorerhardt)
----------------------------------
-style/smarty1/calendar/view.week.html
-- fixed wrong last week link
 
 2006-03-14 09:08  (gregorerhardt)
 ---------------------------------
@@ -8398,7 +8394,6 @@ modules/tasks/index.php
 ---------------------------------
 modules/files/addedit.php
 modules/files/do_file_aed.php
-style/smarty1/files/addedit.html
 - #1494 - ability to cancel a checkout
 
 2006-03-13 01:29  (cyberhorse)
@@ -8493,11 +8488,6 @@ modules/tasks/vw_logs.php
 modules/tasks/vw_tasks.php
 - replaced some double quotes by single quotes
 
-2006-03-12 08:01  (gregorerhardt)
----------------------------------
-style/smarty1/backup/index.html
-- 1409 - Added a message that files are not included for backup
-
 2006-03-12 07:56  (gregorerhardt)
 ---------------------------------
 db/upgrade_permissions.php
@@ -8556,19 +8546,12 @@ locales/en/ticketsmith.inc
 2006-03-11 15:47  (cyberhorse)
 ---------------------------------
 locales/en/ticketsmith.inc
-modules/ticketsmith/do_ticket_aed.php
 - final touches and fixes for 911 email notifications (translations and fixed missing new line characters).
-
-2006-03-11 15:42  (cyberhorse)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- clear out unneeded commented code
 
 2006-03-11 15:40  (cyberhorse)
 ---------------------------------
 db/dotproject.sql
 db/upgrade_latest.sql
-modules/ticketsmith/do_ticket_aed.php
 - Add notification email configuration setting
 - tickets, marked as 911 (emergency) are being emailed to the notification email
 
@@ -8684,7 +8667,6 @@ classes/ui.class.php
 modules/projects/view.php
 modules/tasks/projects_tab.view.tasks.php
 modules/tasks/vw_tasks.php
-style/smarty1/tasks/list.html
 - added task_status filter in project->view->tasks
 - load proper dynamic tabs in projects view (pass second parameter)
 - convert tasks in project view to dynamically loaded tab
@@ -8705,19 +8687,6 @@ classes/ui.class.php
 modules/tasks/listtasks.php
 - #1516 - fixed task style
 
-2006-03-05 15:14  (cyberhorse)
----------------------------------
-modules/ticketsmith/index.php
-- Replaced static status values with a sysval values
-
-2006-03-05 15:07  (cyberhorse)
----------------------------------
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/setup.php
-- #1533 - replaced hardcoded status / priority with sysvals
-- created a setup class for the tickets module
-
 2006-03-05 13:55  (cyberhorse)
 ---------------------------------
 modules/reports/existing/tasklist.php
@@ -8726,7 +8695,6 @@ modules/reports/existing/tasklist.php
 2006-03-05 13:23  (cyberhorse)
 ---------------------------------
 modules/projects/view.php
-style/smarty1/projects/view.html
 - #1414 - added remaining hours in project view screen. Calculates as sum of remaining percentage for the task * original estimated time for the task
 
 2006-03-05 12:08  (cyberhorse)
@@ -8735,16 +8703,10 @@ classes/ui.class.php
 locales/en/common.inc
 modules/projects/index.php
 modules/projects/projects.class.php
-style/smarty1/filters.html
 - #1328 - added filters for company_type, project_type, project_status
 - added lower case translations for some common entries
 - improved display of filteres
 - added code to search for all lower case translation if the exact match is not found.
-
-2006-03-05 11:37  (cyberhorse)
----------------------------------
-style/smarty1/tasks/addedit.html
-- #1531 - when milestone checkbox is ticked on, the task duration field is set to 0 (javascript). This still allows to change it manually later.
 
 2006-03-05 11:28  (cyberhorse)
 ---------------------------------
@@ -8761,7 +8723,6 @@ modules/system/systemconfig.php
 classes/template.class.php
 db/dotproject.sql
 db/upgrade_latest.sql
-style/smarty1/tasks/list.row.html
 - make task numbers optional (through system configuration). Defaults to off.
 
 2006-03-05 01:37  (cyberhorse)
@@ -8776,7 +8737,6 @@ modules/calendar/index.php
 modules/calendar/links_tasks.php
 modules/calendar/week_view.php
 modules/tasks/tasks.class.php
-style/smarty1/filters.html
 - #123 - Calendar has new filters
 - select what to show - tasks/events
 - tasks filters
@@ -8840,13 +8800,6 @@ modules/projects/index.php
 modules/projects/projects.class.php
 - fixed filtering by company - cleared old filtering info (NB! part of filtering by department could be broken)
 
-2006-03-04 21:26  (cyberhorse)
----------------------------------
-style/smarty1/tasks/list.html
-style/smarty1/tasks/list.projects.html
-style/smarty1/tasks/list.row.html
-- #1385 & #173 - task numbers added (for display purposes only).
-
 2006-03-04 21:21  (cyberhorse)
 ---------------------------------
 modules/history/index.php
@@ -8890,7 +8843,6 @@ modules/public/contact_selector.php
 modules/forums/view_messages.php
 modules/tasks/todo_tasks_sub.php
 modules/forums/view_messages.php
-style/smarty1/forums/view_messages.html
 - 992 - corrected forum messages sort
 
 2006-03-04 05:58  (gregorerhardt)
@@ -9045,13 +8997,7 @@ lib/jpgraph/src/jpgraph_plotmark.inc
 ---------------------------------
 locales/en/projects.inc
 modules/admin/do_user_aed.php
-style/smarty1/admin/addedit.html
 - Fixed mantis bug 1504 - department does not change when users company is changed.
-
-2006-02-28 15:11  (mosen)
----------------------------------
-style/smarty1/projects/list.html
-- Applied patch (Mantis 1514) project list style fixed and a few translation fixes in the project module
 
 2006-02-27 23:36  (gregorerhardt)
 ---------------------------------
@@ -9477,11 +9423,6 @@ modules/projects/projects.class.php
 modules/projects/viewgantt.php
 - personalised projects list for admin viewuser resp. My Info, moved some core code for reusability
 
-2006-02-27 03:29  (gregorerhardt)
----------------------------------
-style/smarty1/projects/list.html
-- added hour unit for duration
-
 2006-02-27 02:51  (gregorerhardt)
 ---------------------------------
 modules/projects/admin_tab.viewuser.projects.php
@@ -9495,7 +9436,6 @@ modules/projects/vw_idx_active.php
 modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_complete.php
 modules/projects/vw_idx_proposed.php
-style/smarty1/projects/list.html
 - arranged project name on the left of company name, added project duration and project status fields in personalised projects under admin viewuser
 
 2006-02-26 23:20  (gregorerhardt)
@@ -9512,8 +9452,6 @@ modules/projects/admin_tab.viewuser.projects_gantt.php
 modules/projects/index.php
 modules/projects/projects.class.php
 modules/projects/viewgantt.php
-style/smarty1/projects/gantt.html
-style/smarty1/projects/list.html
 - personalised projects list for admin-viewuser resp. My Info, needed some code movement in core (projects/index.php) for reusability of central code
 
 2006-02-26 23:09  (cyberhorse)
@@ -9527,14 +9465,11 @@ modules/tasks/vw_log_update.php
 includes/smarty/function.dPdateFormat.php
 modules/tasks/vw_log_update.php
 modules/tasks/vw_logs.php
-style/smarty1/tasks/tasklog.addedit.html
-style/smarty1/tasks/tasklog.html
 - smartified tasklogs
 
 2006-02-26 19:54  (cyberhorse)
 ---------------------------------
 modules/tasks/tasks.php
-style/smarty1/tasks/list.projects.html
 - #1332 - fixed displaying children tasks in task view screen
 
 2006-02-26 19:24  (gregorerhardt)
@@ -9562,7 +9497,6 @@ modules/tasks/vw_tasks.php
 modules/projects/do_project_aed.php
 modules/projects/projects.class.php
 modules/tasks/tasks.class.php
-style/smarty1/projects/addedit.html
 - #1485 - keeping user assignments when importing
 - adjusting start date of imported tasks
 - added flexibility to filters in tasks
@@ -9724,7 +9658,6 @@ modules/files/index_table.php
 ---------------------------------
 modules/departments/do_dept_aed.php
 modules/departments/view.php
-style/smarty1/departments/view.html
 - 1496: several department deletion fixes
 
 2006-02-19 04:42  (gregorerhardt)
@@ -9816,9 +9749,6 @@ modules/smartsearch/searchobjects/tasks.inc.php
 modules/smartsearch/searchobjects/tickets.inc.php
 modules/smartsearch/searchobjects/users.inc.php
 modules/tasks/tasks.class.php
-style/smarty1/filters.html
-style/smarty1/search.html
-style/smarty1/smartsearch/index.html
 - Major rework on search and filtering - integrated in classes and TabBox.
 - cleaned up some parts
 - #1023 - added user/company filters in projects
@@ -9920,7 +9850,6 @@ modules/tasks/addedit.php
 ---------------------------------
 modules/admin/addedituser.php
 modules/admin/do_user_aed.php
-style/smarty1/admin/addedit.html
 - #1413 - added the ability to convert contacts to users (drop down select box on user's creation page)
 
 2006-02-09 09:30  (cyberhorse)
@@ -9959,12 +9888,6 @@ js/base.js
 style/classic/main.css
 style/default/main.css
 style/dp-grey-theme/main.css
-style/smarty1/admin/simple_list.html
-style/smarty1/companies/list.html
-style/smarty1/files/list.row.html
-style/smarty1/history/list.html
-style/smarty1/projects/list.html
-style/smarty1/tasks/list.row.html
 - #697 - added mouse pointer row highlighting
 - applied to all styles in the cvs
 - applied to the following modules:
@@ -9979,7 +9902,6 @@ style/smarty1/tasks/list.row.html
 ---------------------------------
 modules/tasks/tasks.php
 modules/tasks/vw_tasks.php
-style/smarty1/tasks/list.row.html
 - parent/children tasks fixed
 
 2006-02-08 19:52  (cyberhorse)
@@ -9995,7 +9917,6 @@ modules/tasks/listtasks.php
 modules/tasks/tasks.php
 modules/tasks/tree.js
 modules/tasks/vw_tasks.php
-style/smarty1/tasks/list.row.html
 - Fixed more problems with tasks display - node_ids fixed, duplicate tasks avoided, etc
 - 
 - TODO: fix children, non-dynamic tasks display!
@@ -10045,7 +9966,6 @@ modules/tasks/tasks.php
 2006-02-06 22:22  (cyberhorse)
 ---------------------------------
 modules/files/index_table.php
-style/smarty1/files/list.row.html
 - Fixed displaying file names in filelist
 - major problems found with file listings - look further into it!
 
@@ -10088,10 +10008,6 @@ modules/tasks/tasks.class.php
 modules/tasks/tasks.php
 modules/tasks/tree.js
 modules/tasks/vw_tasks.php
-style/smarty1/pagination.html
-style/smarty1/tasks/list.html
-style/smarty1/tasks/list.projects.html
-style/smarty1/tasks/list.row.html
 - task list smartified - big changes done. Probably more work needed. There are redundant variables and functions now (tasks.class.php and global variables)
 - pagination added (not fully functioning in tabs yet and some other places)
 
@@ -10146,11 +10062,6 @@ modules/calendar/calendar.class.php
 2006-01-29 04:28  (pedroix)
 ---------------------------------
 modules/calendar/calendar.class.php
-- Sug0001384: Clicking on Minical Month should display month calendar
-
-2006-01-29 04:20  (pedroix)
----------------------------------
-style/smarty1/calendar/_title.html
 - Sug0001384: Clicking on Minical Month should display month calendar
 
 2006-01-29 03:08  (pedroix)
@@ -10229,31 +10140,6 @@ style/dp-grey-theme/main.css
 ChangeLog
 - Updating ChangeLog
 
-2006-01-10 12:18  (theideaman)
----------------------------------
-style/smarty1/admin/list.html
-- very minor XHTML changes
-
-2006-01-10 12:17  (theideaman)
----------------------------------
-style/smarty1/admin/simple_list.html
-- very minor PHP code cleanup
-
-2006-01-10 12:17  (theideaman)
----------------------------------
-style/smarty1/admin/view.html
-- minor XHTML changes: nowrap
-
-2006-01-10 12:17  (theideaman)
----------------------------------
-style/smarty1/admin/usr_log.html
-- added 'label' tags to filed names and 'id' attributes to fields and 'accesskey' attributes to buttons
-
-2006-01-10 11:35  (theideaman)
----------------------------------
-style/smarty1/admin/addedit.html
-- added 'label' tags to filed names and 'id' attributes to fields
-
 2006-01-06 12:26  (cyberhorse)
 ---------------------------------
 modules/reports/index.php
@@ -10300,22 +10186,6 @@ modules/history/index.php
 - Fixed displaying history item's names (even if they've been deleted, etc)
 - Mantis #804 addressed
 
-2005-12-16 01:22  (theideaman)
----------------------------------
-style/smarty1/calendar/view.day.html
-- very minor XHTML changes
-
-2005-12-15 01:37  (theideaman)
----------------------------------
-style/smarty1/projects/view.html
-- minor XHTML changes: nowrap, style, and double quotes on attributes
-
-2005-12-10 10:47  (pedroix)
----------------------------------
-style/smarty1/projects/view.html
-style/smarty1/projects/addedit.html
-- Bug0001383: Minor typos on Project View and Edit page.
-
 2005-12-05 10:59  (pedroix)
 ---------------------------------
 modules/files/index_table.php
@@ -10339,16 +10209,6 @@ modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_complete.php
 modules/projects/vw_idx_proposed.php
 - Req0001329: add company name to project list
-
-2005-11-29 23:49  (cyberhorse)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- Mantis #1358 - HTTP_POST_VARS replaced
-
-2005-11-29 23:48  (cyberhorse)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- Mantis #1358 - HTTP_POST_VARS removed
 
 2005-11-29 23:43  (cyberhorse)
 ---------------------------------
@@ -10407,7 +10267,6 @@ modules/contacts/view.php
 2005-11-25 10:54  (pedroix)
 ---------------------------------
 locales/en/common.inc
-style/smarty1/admin/addedit.html
 locales/en/common.inc
 modules/admin/addedituser.php
 - Sug 0001348: Password2 -> Confirm Password
@@ -10430,21 +10289,11 @@ classes/CustomFields.class.php
 classes/CustomFields.class.php
 - Bug 0001317: Custom Fields, unable to clear
 
-2005-11-21 15:19  (pedroix)
----------------------------------
-style/smarty1/contacts/view.html
-- Bug 0001338: Inadvertent display of URL2, should be URL
-
 2005-11-21 15:07  (pedroix)
 ---------------------------------
 modules/contacts/addedit.php
 modules/contacts/view.php
 - Bug 0001338: Inadvertent display of URL2, should be URL
-
-2005-11-18 08:32  (mosen)
----------------------------------
-style/smarty1/files/co.html
-- Added missing template for files checkout
 
 2005-11-17 22:16  (cyberhorse)
 ---------------------------------
@@ -10469,7 +10318,6 @@ classes/permissions.class.php
 
 2005-11-17 20:35  (gregorerhardt)
 ---------------------------------
-style/smarty1/tasks/addedit.html
 modules/tasks/addedit.php
 - rollback fix for 1302
 
@@ -10477,11 +10325,6 @@ modules/tasks/addedit.php
 ---------------------------------
 modules/tasks/tasks.class.php
 - Mantis #1275 - PHP5 compatibility fix
-
-2005-11-17 20:25  (cyberhorse)
----------------------------------
-style/smarty1/contacts/view.html
-- Mantis #1279 - in contact/view show only the fields for which there is data.
 
 2005-11-17 20:14  (cyberhorse)
 ---------------------------------
@@ -10524,11 +10367,6 @@ modules/tasks/ae_depend.php
 modules/tasks/addedit.php
 - update
 
-2005-11-17 05:15  (gregorerhardt)
----------------------------------
-style/smarty1/tasks/addedit.html
-- 1302: other resources lost on task resave
-
 2005-11-17 04:15  (gregorerhardt)
 ---------------------------------
 modules/reports/existing/userperformance.php
@@ -10564,7 +10402,6 @@ base.php
 ---------------------------------
 includes/smarty/function.dPshowImage.php
 modules/calendar/view.php
-style/smarty1/calendar/view.html
 - fixed smarty for dPfindImage
 
 2005-11-14 23:00  (gregorerhardt)
@@ -10630,17 +10467,11 @@ modules/calendar/webcal_mgt.php
 modules/calendar/images/event-1.png
 modules/calendar/images/vcalendar-16.png
 modules/calendar/images/vcalendar.png
-style/smarty1/calendar/view.html
 - webdav and webcal functions for icalendar or vcalendar functionality
-
-2005-11-07 15:14  (pedroix)
----------------------------------
-modules/companies/addedit.php
-- Bug 0001320: Add Company, make logged in user the default owner
 
 2005-11-07 15:11  (pedroix)
 ---------------------------------
-style/smarty1/companies/addedit.html
+modules/companies/addedit.php
 modules/companies/addedit.php
 - Bug 0001320: Add Company, make logged in user the default owner
 
@@ -10716,21 +10547,17 @@ modules/tasks/tasks.php
 ---------------------------------
 includes/smarty/function.dPgetSysVal.php
 modules/tasks/ae_desc.php
-style/smarty1/tasks/ae_desc.html
 - Added smarty template for tasks ae_desc tab
 - Added smarty function dPgetSysVal
 
 2005-11-03 09:52  (mosen)
 ---------------------------------
 modules/tasks/addedit.php
-style/smarty1/tasks/addedit.html
 - Added smarty template for tasks addedit
 
 2005-10-31 12:29  (mosen)
 ---------------------------------
 modules/files/index_table.php
-style/smarty1/files/list.html
-style/smarty1/files/list.row.html
 - Added smarty template for files listing
 
 2005-10-31 11:49  (mosen)
@@ -10741,7 +10568,6 @@ modules/files/co.php
 2005-10-31 11:35  (mosen)
 ---------------------------------
 modules/files/addedit.php
-style/smarty1/files/addedit.html
 - Added Smarty template for files addedit
 
 2005-10-31 10:04  (mosen)
@@ -10752,59 +10578,36 @@ includes/smarty/function.dParraySelectTree.php
 2005-10-31 09:53  (mosen)
 ---------------------------------
 modules/forums/view_topics.php
-style/smarty1/forums/view_messages.row.html
-style/smarty1/forums/view_topics.html
-style/smarty1/forums/view_topics.row.html
 - Added Template for Forums topic view
-
-2005-10-28 16:33  (mosen)
----------------------------------
-style/smarty1/forums/view_messages.row.html
-- Smarty template for view_messages in forums module greatly simplified
 
 2005-10-28 16:17  (mosen)
 ---------------------------------
 modules/forums/view_messages.php
-style/smarty1/forums/view_messages.html
-style/smarty1/forums/view_messages.row.html
 - Fixed single mode smarty template in forums
 
 2005-10-28 16:01  (mosen)
 ---------------------------------
 modules/forums/view_messages.php
-style/smarty1/forums/view_messages.html
-style/smarty1/forums/view_messages.row.html
 - More fixes for forum view_messages page - single view broken
-
-2005-10-28 13:39  (mosen)
----------------------------------
-style/smarty1/forums/view_messages.html
-style/smarty1/forums/view_messages.row.html
-- Added template for view_messages forum page
 
 2005-10-27 11:14  (mosen)
 ---------------------------------
 modules/forums/post_message.php
-style/smarty1/forums/post_message.html
 - Added smarty template for forum post/edit message page
 
 2005-10-27 10:32  (mosen)
 ---------------------------------
 modules/forums/viewer.php
-style/smarty1/forums/viewer.html
 - Added smarty template for forum viewer
 
 2005-10-26 17:14  (mosen)
 ---------------------------------
 modules/forums/addedit.php
-style/smarty1/forums/addedit.html
 - Added smarty template for forums addedit page
 
 2005-10-26 16:33  (mosen)
 ---------------------------------
 modules/forums/index.php
-style/smarty1/forums/index.html
-style/smarty1/forums/index.row.html
 - Added smarty templates for forums listing
 
 2005-10-26 14:05  (mosen)
@@ -10850,27 +10653,22 @@ classes/query.class.php
 2005-10-26 09:21  (mosen)
 ---------------------------------
 modules/contacts/addedit.php
-style/smarty1/contacts/addedit.html
 - Added smarty template for contact addedit page
 
 2005-10-25 16:27  (mosen)
 ---------------------------------
 modules/contacts/index.php
-style/smarty1/contacts/index.html
-style/smarty1/contacts/list.row.html
 - Added smarty template for contacts index
 
 2005-10-25 13:34  (mosen)
 ---------------------------------
 modules/departments/vw_contacts.php
-style/smarty1/departments/vw_contacts.html
 - added template for vw_contacts tab in departments
 
 2005-10-25 13:17  (mosen)
 ---------------------------------
 modules/departments/addedit.php
 modules/departments/view.php
-style/smarty1/departments/view.html
 - added smarty template for department view
 - fixed small problem with department addedit template
 
@@ -10878,18 +10676,12 @@ style/smarty1/departments/view.html
 ---------------------------------
 modules/departments/addedit.php
 modules/files/index.php
-style/smarty1/departments/addedit.html
 - Added smarty template for departments add/edit
-
-2005-10-24 15:13  (cyberhorse)
----------------------------------
-style/smarty1/contacts/cardlist.html
-- contacts smartified
 
 2005-10-24 09:44  (mosen)
 ---------------------------------
-style/smarty1/backup/index.html
-style/smarty1/backup/restore.html
+modules/backup/index.php
+modules/backup/restore.php
 - Added smarty templates for Backup module
 
 2005-10-24 09:23  (mosen)
@@ -10900,25 +10692,21 @@ modules/system/custom_field_addedit.js
 2005-10-21 11:04  (mosen)
 ---------------------------------
 modules/smartsearch/index.php
-style/smarty1/smartsearch/index.html
 - Added smarty template for smartsearch module
 
 2005-10-21 08:54  (mosen)
 ---------------------------------
 modules/system/custom_field_editor.php
-style/smarty1/system/custom_field_editor.html
 - Added smarty template for custom field editor - custom field listing page
 
 2005-10-20 17:51  (mosen)
 ---------------------------------
 modules/system/custom_field_addedit.php
-style/smarty1/system/custom_field_addedit.html
 - Added smarty template for custom field editor
 
 2005-10-20 16:39  (mosen)
 ---------------------------------
 modules/system/index.php
-style/smarty1/system/index.html
 - System module index now uses smarty template.
 
 2005-10-19 10:35  (mosen)
@@ -10955,8 +10743,6 @@ modules/tasks/tasks.php
 2005-10-18 11:10  (mosen)
 ---------------------------------
 modules/contacts/index.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/view.php
 - Fixed Mantis Bug 0001259: Several strings are not localized.
 
 2005-10-18 10:49  (mosen)
@@ -10970,13 +10756,11 @@ modules/system/custom_field_addedit.php
 modules/admin/companies_tab.view.users.php
 modules/companies/view.php
 modules/companies/vw_users.php
-style/smarty1/admin/simple_list.html
 - smartifying and moving to auto-loading tab the users list in a company/view page
 
 2005-10-13 00:02  (cyberhorse)
 ---------------------------------
 modules/contacts/view.php
-style/smarty1/contacts/view.html
 - contacts/view smartified
 
 2005-10-12 23:11  (cyberhorse)
@@ -10985,9 +10769,6 @@ modules/calendar/calendar.class.php
 modules/companies/view.php
 modules/companies/vw_contacts.php
 modules/contacts/companies_tab.view.contacts.php
-style/smarty1/calendar/_event.html
-style/smarty1/calendar/_week.html
-style/smarty1/contacts/list.html
 - calendar.class.php smartified (subfunctions dealt with small _template files)
 - companies->contacts tab smartified and moved to a dynamically loaded tab in the contacts module
 
@@ -11002,12 +10783,6 @@ modules/projects/gantt.php
 modules/tasks/gantt.php
 - 1241: gantt milestone - softcoded date, added stone where lost
 
-2005-10-11 00:12  (cyberhorse)
----------------------------------
-style/smarty1/calendar/view.day.html
-style/smarty1/calendar/view.month.html
-- missing template files
-
 2005-10-11 00:11  (cyberhorse)
 ---------------------------------
 classes/template.class.php
@@ -11016,8 +10791,6 @@ modules/calendar/calendar.class.php
 modules/calendar/day_view.php
 modules/calendar/index.php
 modules/calendar/week_view.php
-style/smarty1/calendar/_title.html
-style/smarty1/calendar/view.week.html
 - added smarty dPescape modifier for dp htmlentities
 - updated calendar day/week view with that modifier and a few other optimizations
 - started work on smartifying the calendar class.
@@ -11025,7 +10798,6 @@ style/smarty1/calendar/view.week.html
 2005-10-10 22:52  (cyberhorse)
 ---------------------------------
 modules/calendar/week_view.php
-style/smarty1/calendar/view.week.html
 - calendar/week_view smartified
 
 2005-10-10 01:45  (cyberhorse)
@@ -11033,14 +10805,12 @@ style/smarty1/calendar/view.week.html
 classes/ui.class.php
 includes/smarty/function.dPrequire.php
 modules/calendar/day_view.php
-style/smarty1/tabBox.html
 - tabbox smartified (some work to be done in overriden show() methods)
 - calendar/day view smartified
 
 2005-10-09 23:57  (cyberhorse)
 ---------------------------------
 modules/calendar/view.php
-style/smarty1/calendar/view.html
 - calendar/view smartified
 
 2005-10-06 01:41  (gregorerhardt)
@@ -11061,7 +10831,6 @@ modules/system/do_systemconfig_aed.php
 modules/system/domodsql.php
 modules/system/index.php
 modules/system/translate.php
-style/smarty1/admin/addedit.html
 - 1194: softcoded UserType and cleaned admin check against user_type of 1
 
 2005-10-05 22:33  (gregorerhardt)
@@ -11157,7 +10926,6 @@ ChangeLog
 includes/smarty/function.dPdateFormat.php
 includes/smarty/modifier.dPdateFormat.php
 modules/calendar/addedit.php
-style/smarty1/calendar/addedit.html
 - smartified calendar addedit page
 - converted dPdateFormat in smarty from function to a modifier
 - updated ChangeLog
@@ -11334,7 +11102,6 @@ modules/admin/vw_usr_log.php
 2005-09-07 19:13  (cyberhorse)
 ---------------------------------
 modules/admin/viewuser.php
-style/smarty1/admin/view.html
 - smartified the viewuser page in admin module.
 
 2005-09-07 18:52  (cyberhorse)
@@ -11486,7 +11253,6 @@ modules/tasks/todo_tasks_sub.php
 2005-08-22 21:55  (cyberhorse)
 ---------------------------------
 modules/admin/vw_usr_log.php
-style/smarty1/admin/usr_log.html
 - smartified the user log in user administration pages
 
 2005-08-17 23:00  (cyberhorse)
@@ -11517,7 +11283,6 @@ modules/admin/index.php
 modules/admin/vw_active_usr.php
 modules/admin/vw_inactive_usr.php
 modules/admin/vw_usr.php
-style/smarty1/admin/list.html
 - smartified the user list in user admin
 - removed active/inactive views - common code moved to vw_usr.php file to get rid of repetition.
 
@@ -11534,7 +11299,6 @@ classes/dp.class.php
 2005-08-15 23:30  (cyberhorse)
 ---------------------------------
 modules/admin/addedituser.php
-style/smarty1/admin/addedit.html
 - smartified user addedit screen
 
 2005-08-15 01:27  (cyberhorse)
@@ -11542,7 +11306,6 @@ style/smarty1/admin/addedit.html
 classes/template.class.php
 includes/smarty/function.dPdateFormat.php
 modules/history/index.php
-style/smarty1/history/list.html
 - smartified the list of history
 - added "full" format for the date format in smarty
 - fixed show array in keys if it's not specifically listed
@@ -11552,7 +11315,6 @@ style/smarty1/history/list.html
 includes/smarty/function.dPtranslate.php
 modules/history/addedit.js
 modules/history/addedit.php
-style/smarty1/history/addedit.html
 - smartified the addedit page in history module
 
 2005-08-11 23:26  (cyberhorse)
@@ -11566,11 +11328,6 @@ classes/template.class.php
 modules/admin/viewuser.php
 modules/admin/viewuser.php
 - 1136: translate user type
-
-2005-08-11 01:38  (gregorerhardt)
----------------------------------
-style/smarty1/companies/addedit.html
-- 1127: forgotten remove of old custom fields implementation
 
 2005-08-11 01:32  (gregorerhardt)
 ---------------------------------
@@ -11757,7 +11514,6 @@ modules/system/billingcode.php
 classes/template.class.php
 modules/projects/gantt.php
 modules/projects/viewgantt.php
-style/smarty1/projects/gantt.html
 - added smarty template for the project gantt screen
 - increased the max_execution_time in the gantt producing file for huge graphs (usually, ones including tasks)
 
@@ -11765,7 +11521,6 @@ style/smarty1/projects/gantt.html
 ---------------------------------
 modules/projects/vw_idx_archived.php
 modules/projects/vw_idx_proposed.php
-style/smarty1/projects/list.html
 - smartified the last of project lists
 - added ability to edit projects from the list (as the main list)
 
@@ -11774,7 +11529,6 @@ style/smarty1/projects/list.html
 locales/en/projects.inc
 modules/projects/vw_idx_active.php
 modules/projects/vw_idx_complete.php
-style/smarty1/projects/list.html
 - smartified one more list in projects (complete)
 - made a more useful progress bar, which indicates percentage completed (with one side effect - if a project is 0% done, you can't see it's colour, but to a degree if no work has been done on a project, the colour won't be that useful, as users probably wouldn't associate it with a project that easily)
 
@@ -11789,22 +11543,14 @@ modules/projects/companies_tab.view.active_projects.php
 modules/projects/companies_tab.view.archived_projects.php
 modules/projects/index.php
 modules/projects/vw_idx_active.php
-style/smarty1/projects/addedit.html
-style/smarty1/projects/list.html
 - optimized some default behaviour for template.class, dPbestColor, dPdateFormat
 - some translation values for project list added
 - smartified some more of the project lists
 - some more fixes and optimizations
 
-2005-07-31 14:57  (cyberhorse)
----------------------------------
-style/smarty1/projects/view.html
-- fixed project status display
-
 2005-07-31 14:49  (cyberhorse)
 ---------------------------------
 includes/smarty/function.dPdateFormat.php
-style/smarty1/projects/addedit.html
 - fixed problem with the date formatting in the hidden field. Should all work now.
 
 2005-07-31 14:40  (cyberhorse)
@@ -11812,7 +11558,6 @@ style/smarty1/projects/addedit.html
 includes/smarty/function.dParraySelect.php
 includes/smarty/function.dPdateFormat.php
 modules/projects/addedit.php
-style/smarty1/projects/addedit.html
 - smartified projects/addedit.php
 - updated a couple of the new smarty functions
 - possible problems with dates
@@ -12030,8 +11775,6 @@ lib/smarty/plugins/function.dPbestColor.php
 lib/smarty/plugins/function.dPconfig.php
 lib/smarty/plugins/function.dPtranslate.php
 modules/projects/view.php
-style/smarty1/titleBlock.html
-style/smarty1/projects/view.html
 - fixed an error when title in a titleBlock is missing
 - improved the error messages in the custom functions in smarty
 - added a template page for projects/view
@@ -12064,11 +11807,6 @@ modules/companies/vw_archived.php
 modules/companies/vw_companies.php
 modules/projects/companies_tab.view.active_projects.php
 modules/projects/companies_tab.view.archived_projects.php
-style/smarty1/crumbDelete.html
-style/smarty1/tabBox.html
-style/smarty1/titleBlock.html
-style/smarty1/companies/list.html
-style/smarty1/projects/list.html
 - I'm sorry there are so many changes bundled in one commit, but sf was down for a while ...
 - Mostly work on smartification and a few changes to how translation and auto tabs work to fascilitate it
 - 
@@ -12090,11 +11828,6 @@ modules/tasks/addedit.js
 modules/tasks/ae_dates.php
 - rollback to independance of task duration and task dates
 
-2005-07-21 01:24  (cyberhorse)
----------------------------------
-style/smarty1/companies/list.html
-- The template file for the modules/companies/vw_active.php smartification.
-
 2005-07-21 01:14  (cyberhorse)
 ---------------------------------
 lib/smarty/plugins/function.dPconfig.php
@@ -12111,7 +11844,6 @@ modules/companies/vw_active.php
 index.php
 modules/companies/addedit.php
 modules/companies/view.php
-style/smarty1/companies/view.html
 - smartified modules/companies/view.php
 
 2005-07-20 23:28  (cyberhorse)
@@ -12122,7 +11854,6 @@ lib/smarty/plugins/function.dParraySelect.php
 lib/smarty/plugins/function.dPformSafe.php
 lib/smarty/plugins/function.dPtranslate.php
 modules/companies/addedit.php
-style/smarty1/companies/addedit.html
 - WARNING: From this change on, CVS is to be considered unstable ... sorry guys but this has to be done, and sooner rather than later.
 - 
 - Now for the change - smarty going in.
@@ -12922,6 +12653,33 @@ style/classic/header.php
 style/default/header.php
 style/dp-grey-theme/header.php
 - Added links module as a right-hand crumb.
+
+2005-05-19 15:12  (ajdonnison)
+---------------------------------
+modules/backup/README
+modules/backup/do_backup.php
+modules/backup/do_restore.php
+modules/backup/index.php
+modules/backup/restore.php
+modules/backup/setup.php
+modules/backup/zip.lib.php
+modules/backup/locales/en.inc
+modules/backup/locales/es.inc
+- Imported changed module from dotMods as it now is uses as part of the
+- standard install.
+
+2005-05-19 15:12  (ajdonnison)
+---------------------------------
+modules/backup/README
+modules/backup/do_backup.php
+modules/backup/do_restore.php
+modules/backup/index.php
+modules/backup/restore.php
+modules/backup/setup.php
+modules/backup/zip.lib.php
+modules/backup/locales/en.inc
+modules/backup/locales/es.inc
+- Initial revision
 
 2005-05-19 15:03  (ajdonnison)
 ---------------------------------
@@ -14212,7 +13970,6 @@ modules/smartsearch/searchobjects/tasks.inc.php
 modules/smartsearch/searchobjects/tickets.inc.php
 modules/smartsearch/searchobjects/users.inc.php
 modules/tasks/todo.php
-modules/ticketsmith/pdf.php
 - Added query class cleanup code to areas where it is used, but cleanup
 - not called.  Also reduced number of dbquery class instances where not
 - strictly necessary.
@@ -16465,12 +16222,6 @@ style/dp-grey-theme/header.php
 - Fix for bug 231 where long page titles can cause popup calendar to
 - drop lower parts.
 
-2005-02-16 16:56  (ajdonnison)
----------------------------------
-modules/ticketsmith/index.php
-- Fix for bug#36 as outlined by iexposure - corrected use of defaults for
-- sort order.
-
 2005-02-16 16:44  (ajdonnison)
 ---------------------------------
 index.php
@@ -16601,7 +16352,6 @@ modules/forums/addedit.php
 modules/forums/post_message.php
 modules/tasks/tasks.php
 modules/tasks/tasksperuser_sub.php
-modules/ticketsmith/post_ticket.php
 - fixed js related translation issues
 
 2005-02-14 15:48  (cyberhorse)
@@ -17944,10 +17694,6 @@ modules/calendar/links_events.php
 2004-11-19 01:11  (gregorerhardt)
 ---------------------------------
 modules/admin/do_perms_cp.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/view.php
 - 210: ticketsmith user-contacts troubles
 
 2004-11-18 10:34  (gregorerhardt)
@@ -18018,11 +17764,6 @@ locales/en/common.inc
 modules/contacts/view.php
 - added an edit crumb to the view only option in the contacts (only if permissions allow).
 
-2004-11-11 06:59  (gregorerhardt)
----------------------------------
-modules/ticketsmith/common.inc.php
-- 0000199: stripslashes of ticket output
-
 2004-11-11 06:18  (gregorerhardt)
 ---------------------------------
 fileviewer.php
@@ -18039,7 +17780,6 @@ ChangeLog
 modules/calendar/addedit.php
 modules/calendar/calendar.class.php
 modules/calendar/links_events.php
-modules/ticketsmith/pdf.php
 - reimplementation: hide events from nonworking days, fixed cotnac typos
 
 2004-11-10 17:12  (ajdonnison)
@@ -18335,7 +18075,6 @@ modules/smartsearch/searchobjects/users.inc.php
 modules/tasks/addedit.php
 modules/tasks/ae_depend.php
 modules/tasks/todo.php
-modules/ticketsmith/pdf.php
 - -Solved all the getconfig and cfg method and attribute
 - called from AppUI. Now everything its done from dPgetConfig
 - Changed all user first and last name queries to contact first
@@ -18395,7 +18134,6 @@ modules/tasks/addedit.js
 modules/tasks/ae_depend.php
 modules/tasks/ae_desc.php
 modules/tasks/ae_resource.php
-modules/ticketsmith/pdf.php
 - Bulk import of new permissions system, new reports, file checkin/out.
 
 2004-10-15 11:08  (ajdonnison)
@@ -18493,7 +18231,6 @@ modules/tasks/index.php
 modules/tasks/tasks.class.php
 modules/tasks/tasks.php
 modules/tasks/todo.php
-modules/ticketsmith/index.php
 style/default/header.php
 style/default/overrides.php
 - Bulk import of new permissions system
@@ -20458,9 +20195,6 @@ modules/tasks/tasks.class.php
 modules/tasks/tasks.php
 modules/tasks/tasksperuser.php
 modules/tasks/view.php
-modules/ticketsmith/attach.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/view.php
 style/classic/header.php
 style/classic/login.php
 style/default/header.php
@@ -22036,11 +21770,6 @@ db/dotproject_101.sql
 modules/tasks/addedit.php
 - FIX: new feature in config restrict_task_time_editing was faulty
 
-2004-03-10 12:33  (gregorerhardt)
----------------------------------
-modules/ticketsmith/search.php
-- softcoded ticket type in search view for translation
-
 2004-03-10 10:44  (robertoibarra)
 ---------------------------------
 modules/system/translate.php
@@ -22158,30 +21887,10 @@ modules/tasks/do_task_aed.php
 classes/date.class.php
 - 872985: addMonths 12+(-1)=13?
 
-2004-02-26 20:46  (gregorerhardt)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- 899969: quotes in tickets
-
-2004-02-25 10:17  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed broken MIME headers.
-
-2004-02-25 10:14  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Mail not being sent on change of assignment fixed.
-
 2004-02-24 17:50  (gregorerhardt)
 ---------------------------------
 classes/ui.class.php
 - 897211: renamed bad constructor name in CTabBox_core
-
-2004-02-24 17:42  (gregorerhardt)
----------------------------------
-modules/ticketsmith/common.inc.php
-- 899944: patch for bad word wrap in ticketsmith
 
 2004-02-24 17:34  (gregorerhardt)
 ---------------------------------
@@ -22387,19 +22096,6 @@ modules/tasks/tasks.php
 modules/tasks/tasks.php
 - Fix table header colour
 
-2004-01-31 15:13  (ajdonnison)
----------------------------------
-modules/ticketsmith/admin.php
-modules/ticketsmith/attach.php
-modules/ticketsmith/index.php
-modules/ticketsmith/ltwt.gif
-modules/ticketsmith/posticon.gif
-modules/ticketsmith/rtwt.gif
-modules/ticketsmith/images/ltwt.gif
-modules/ticketsmith/images/posticon.gif
-modules/ticketsmith/images/rtwt.gif
-- Patch 790596 from proca to support standard navigation icons.
-
 2004-01-31 15:10  (ajdonnison)
 ---------------------------------
 images/navfirst.gif
@@ -22459,16 +22155,6 @@ index.php
 modules/forums/post_message.php
 - Added patch 778977 to add citation to posted message, by xnoguer
 
-2004-01-29 17:27  (ajdonnison)
----------------------------------
-modules/ticketsmith/index.php
-- Added patch 777024 by iexposure to add config-based default for sorting.
-
-2004-01-29 17:26  (ajdonnison)
----------------------------------
-modules/ticketsmith/config.inc.php
-- Added patch 777021 by iexposure to add config for sort order.
-
 2004-01-29 17:10  (ajdonnison)
 ---------------------------------
 modules/tasks/view.php
@@ -22498,19 +22184,6 @@ locales/en/system.inc
 ---------------------------------
 lib/jpgraph/src/jpgraph.php
 - Added fix from evgenik for Cyrillic bug. (Patch 763145)
-
-2004-01-29 14:42  (ajdonnison)
----------------------------------
-modules/ticketsmith/common.inc.php
-- Added patch 777016 from iexposure to fix word wrapping.
-
-2004-01-29 13:56  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Added patch 777034 from iexposure - addes my tickets crumb, adds text
-- type email for non-HTML clients.
-- Added patch 823696 from alejandro_liu - fixes sending of dud email when
-- unassigning tasks.
 
 2004-01-29 13:12  (ajdonnison)
 ---------------------------------
@@ -22555,20 +22228,6 @@ style/default/overrides.php
 - be seen as interim as it highlights a problem in db_loadObject, where
 - if the object exists, slashes are stripped, if not they are not.
 - Need to review the whole use of htmlspecialchars, etc.
-
-2004-01-28 16:17  (ajdonnison)
----------------------------------
-modules/ticketsmith/admin.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
-- Fixed javascript form handling for onChange events. (Bug 806786)
-- This fixes search handling on some browsers.
 
 2004-01-27 17:27  (kripper)
 ---------------------------------
@@ -22682,7 +22341,6 @@ index.php
 2004-01-16 04:28  (gregorerhardt)
 ---------------------------------
 modules/admin/index.php
-modules/ticketsmith/search.php
 - used dPformSafe to fix 797846
 
 2004-01-16 04:23  (gregorerhardt)
@@ -22822,11 +22480,6 @@ db/dotproject_102.sql
 - Dotproject now has some mini CRM features!
 - 
 - Now users can relate departments to tasks.
-
-2004-01-11 09:44  (gregorerhardt)
----------------------------------
-modules/ticketsmith/index.php
-- fix838983: no record navigation
 
 2004-01-11 08:10  (gregorerhardt)
 ---------------------------------
@@ -23100,13 +22753,6 @@ modules/public/contact_selector.php
 modules/files/addedit.php
 - softcoded string for js confirming of CancelProcess
 
-2003-12-12 06:12  (gregorerhardt)
----------------------------------
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
-- enhanced fix for #845978: Security fixes and Searach aivailybility fo readOnlyUsers; some strings softcoded for translation
-
 2003-12-12 00:23  (jcgonz)
 ---------------------------------
 modules/tasks/addedit.php
@@ -23355,11 +23001,6 @@ modules/departments/addedit.php
 modules/departments/view.php
 - several translations
 
-2003-12-03 10:22  (gregorerhardt)
----------------------------------
-modules/ticketsmith/index.php
-- fixing #848082: sorting problem with REQUIRE_GLOBALS=OFF
-
 2003-12-03 09:25  (jcgonz)
 ---------------------------------
 modules/projects/vw_idx_proposed.php
@@ -23411,18 +23052,6 @@ modules/admin/vw_usr_perms.php
 ChangeLog
 - Changelog update
 
-2003-11-23 02:44  (gregorerhardt)
----------------------------------
-modules/ticketsmith/attach.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
-- securing ticketsmith in order to fix bug845978
-
 2003-11-18 20:16  (kripper)
 ---------------------------------
 ChangeLog
@@ -23432,11 +23061,6 @@ ChangeLog
 ---------------------------------
 locales/en/ticketsmith.inc
 - added various translations
-
-2003-11-18 08:16  (gregorerhardt)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- added translation for javaScript-Alert
 
 2003-11-18 07:56  (gregorerhardt)
 ---------------------------------
@@ -23588,11 +23212,6 @@ ChangeLog
 ---------------------------------
 index.php
 - Fixed bug related to wrong charset in login page
-
-2003-10-23 13:48  (jcgonz)
----------------------------------
-modules/ticketsmith/index.php
-- Now user is able to perserve state at the ticket list page (open, processing, close, deleted)
 
 2003-10-23 12:12  (gregorerhardt)
 ---------------------------------
@@ -23773,10 +23392,8 @@ modules/projects/index.php
 ChangeLog
 - Changelog update
 
-2003-09-26 07:39  (gregorerhardt)
+2003-09-26 07:40  (gregorerhardt)
 ---------------------------------
-modules/ticketsmith/attach.php
-modules/ticketsmith/common.inc.php
 locales/en/ticketsmith.inc
 - enhancing translation of ticketsmith
 
@@ -23833,14 +23450,6 @@ modules/system/domodsql.php
 2003-09-19 07:08  (gregorerhardt)
 ---------------------------------
 locales/en/ticketsmith.inc
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
 - translation of ticketsmith
 
 2003-09-18 17:32  (kripper)
@@ -23892,11 +23501,6 @@ ChangeLog
 ---------------------------------
 locales/en/contacts.inc
 - added translation for vCard implementation
-
-2003-09-17 08:39  (ajdonnison)
----------------------------------
-modules/ticketsmith/comment.php
-- Removed extraneous .gif suffix causing problems loading image (bug 807307)
 
 2003-09-16 17:31  (kripper)
 ---------------------------------
@@ -24182,11 +23786,6 @@ ChangeLog
 db/upgrade_022_to_100.sql
 - Added beta1 to release1 additions.
 
-2003-09-03 09:55  (ajdonnison)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- Added makemyday's patch to preset the user name and email.
-
 2003-09-03 09:48  (ajdonnison)
 ---------------------------------
 modules/admin/addedituser.php
@@ -24470,12 +24069,6 @@ ChangeLog
 modules/admin/index.php
 - Fixed warning message when first name is blank for a user
 
-2003-07-16 12:00  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Reinstated missing "return to parent" link to make nav easier.
-- Fixed Mime header on generated email.
-
 2003-07-16 11:25  (ajdonnison)
 ---------------------------------
 ChangeLog
@@ -24488,12 +24081,6 @@ db/upgrade_022_to_100.sql
 - Changed cc column in tickets to be 255 characters to handle larger
 - cc lists.
 
-2003-07-16 11:02  (ajdonnison)
----------------------------------
-modules/ticketsmith/INSTALL
-modules/ticketsmith/README
-- Added more detail to allow users to install gateway.pl successfully
-
 2003-07-16 11:01  (ajdonnison)
 ---------------------------------
 includes/gateway.pl
@@ -24503,19 +24090,6 @@ includes/gateway.pl
 ---------------------------------
 includes/gateway.pl
 - Removed the debug output.
-
-2003-07-15 19:12  (ajdonnison)
----------------------------------
-modules/ticketsmith/attach.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/reattachticket.php
-modules/ticketsmith/view.php
-- Now supports file attachments on incoming emails.
-- Tickets can be reassigned to another parent if link_tickets_kludge is
-- set.
 
 2003-07-15 19:11  (ajdonnison)
 ---------------------------------
@@ -24676,16 +24250,6 @@ includes/main_functions.php
 ---------------------------------
 includes/permissions.php
 - Fixed constant declaration
-
-2003-07-04 10:42  (eddieajau)
----------------------------------
-modules/ticketsmith/comment.php
-- Fixed quotes problem
-
-2003-07-04 09:37  (eddieajau)
----------------------------------
-modules/ticketsmith/comment.php
-- Fixed quotes problem
 
 2003-07-04 06:18  (kripper)
 ---------------------------------
@@ -24927,11 +24491,6 @@ ChangeLog
 ---------------------------------
 fileviewer.php
 - Fixed bug in sql that causes an access denied message
-
-2003-06-02 13:00  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed problem with base url.
 
 2003-06-02 12:43  (eddieajau)
 ---------------------------------
@@ -25291,9 +24850,6 @@ modules/projects/addedit.php
 modules/projects/view.php
 modules/public/selector.php
 modules/tasks/addedit.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
 - Updated CONCAT SQL function to CONCAT_WS (safer with null values)
 
 2003-05-16 08:56  (korinek)
@@ -26151,10 +25707,6 @@ modules/tasks/organizer.php
 modules/tasks/todo.php
 modules/tasks/view.php
 modules/tasks/viewgantt.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/view.php
 - Icons updated
 
 2003-04-24 09:15  (eddieajau)
@@ -26237,8 +25789,6 @@ modules/admin/images/helix-setup-users3.png
 modules/contacts/addedit.php
 modules/contacts/index.php
 modules/contacts/images/monkeychat-48.png
-modules/ticketsmith/index.php
-modules/ticketsmith/images/gconf-app-icon.png
 - Icons updated
 
 2003-04-23 17:45  (kripper)
@@ -26401,11 +25951,6 @@ modules/tasks/tasks.class.php
 ---------------------------------
 includes/main_functions.php
 - Fixed wrong delimiter warning
-
-2003-04-17 10:47  (eddieajau)
----------------------------------
-modules/ticketsmith/followup.php
-- Updated mail handling
 
 2003-04-17 10:44  (eddieajau)
 ---------------------------------
@@ -26582,39 +26127,6 @@ ChangeLog
 ChangeLog
 - Changelog update
 
-2003-04-14 21:57  (eddieajau)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- Cosmetic update
-
-2003-04-14 21:49  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
-- Patched several bugs relating to undeclared variables
-
-2003-04-14 21:31  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-- Patched several bugs relating to undeclared variables
-
-2003-04-14 21:14  (eddieajau)
----------------------------------
-modules/ticketsmith/index.php
-modules/ticketsmith/view.php
-- Cosmetic update
-
-2003-04-14 21:13  (eddieajau)
----------------------------------
-modules/ticketsmith/search.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/login.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/admin.php
-modules/ticketsmith/common.inc.php
-- Removed common header and footer
-
 2003-04-14 21:12  (eddieajau)
 ---------------------------------
 index.php
@@ -26697,21 +26209,6 @@ modules/help/en/overview.usermods.hlp
 modules/admin/index.php
 - Fixed A-Z not picking up first and last name letters
 
-2003-04-12 09:20  (eddieajau)
----------------------------------
-modules/ticketsmith/view.php
-- Fixed some uninitialised variables
-
-2003-04-12 09:20  (eddieajau)
----------------------------------
-modules/ticketsmith/config.inc.php
-- Fixed site domain
-
-2003-04-12 09:19  (eddieajau)
----------------------------------
-modules/ticketsmith/common.inc.php
-- Added db error msg
-
 2003-04-12 09:16  (eddieajau)
 ---------------------------------
 modules/files/files.class.php
@@ -26752,7 +26249,6 @@ modules/system/images/index.html
 modules/system/roles/index.html
 modules/system/syskeys/index.html
 modules/tasks/index.html
-modules/ticketsmith/index.html
 style/index.html
 style/classic/index.html
 style/classic/images/index.html
@@ -27045,11 +26541,6 @@ modules/tasks/vw_log_update.php
 modules/tasks/addedit.php
 - Widened the hours/duration fields
 
-2003-04-03 18:48  (eddieajau)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- Fixed bug in description field
-
 2003-04-03 10:59  (eddieajau)
 ---------------------------------
 modules/forums/index.php
@@ -27071,11 +26562,6 @@ modules/admin/vw_usr_perms.php
 ---------------------------------
 locales/en/forums.inc
 - Fixed rouge carriage returns in file
-
-2003-04-01 07:11  (korinek)
----------------------------------
-modules/ticketsmith/index.php
-- Localisation underway - not yet finished
 
 2003-03-31 19:53  (eddieajau)
 ---------------------------------
@@ -27143,11 +26629,6 @@ modules/companies/addedit.php
 ---------------------------------
 includes/config-dist.php
 - no message
-
-2003-03-22 11:19  (eddieajau)
----------------------------------
-modules/ticketsmith/do_ticket_aed.php
-- Initial upload
 
 2003-03-21 06:52  (kobudo)
 ---------------------------------
@@ -27246,11 +26727,6 @@ functions/calendar_func.php
 classes/ui.class.php
 - Added table around icon and system message to improve layout
 - Changed redirect from javascript method to header method (safer)
-
-2003-03-20 10:01  (eddieajau)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- Fixed bug calling wrong "dosql" file name
 
 2003-03-20 09:43  (korinek)
 ---------------------------------
@@ -28740,13 +28216,6 @@ selector.php
 modules/files/index.php
 - File sweeped to add XHTML compliance and confirm tabs used.
 
-2003-02-13 05:37  (kripper)
----------------------------------
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/index.php
-- Added "processing" status. Should be renamed to "In Process" once we add
-- locale support in ticketsmith module.
-
 2003-02-10 12:26  (eddieajau)
 ---------------------------------
 modules/companies/index.php
@@ -28819,15 +28288,6 @@ index.php
 logincheck.php
 selector.php
 - John works at integrating XHTML and CSS stuff...
-
-2003-02-08 12:11  (kobudo)
----------------------------------
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/view.php
-- John fixes his find & replace screwup:(
 
 2003-02-08 12:04  (kobudo)
 ---------------------------------
@@ -28932,11 +28392,6 @@ modules/tasks/organizer.php
 modules/tasks/todo.php
 modules/tasks/view.php
 modules/tasks/viewgantt.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/view.php
 - John changes all instances of <span class="title">*</span>
 - to <h1>*</h1> to improve XHTML and CSS compliance, and
 - add in theme development.
@@ -28956,8 +28411,6 @@ style/default/login.php
 2003-02-08 06:11  (kobudo)
 ---------------------------------
 modules/admin/addeditgroup.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/view.php
 - John converts all instances of <i></i> to <em></em>
 - to improve XHTML/CSS compliance.
 
@@ -28989,15 +28442,6 @@ modules/tasks/addedit.php
 modules/tasks/organizer.php
 modules/tasks/tasks.php
 modules/tasks/view.php
-modules/ticketsmith/admin.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
 style/default/login.php
 - John converts all instances of <b></b> to <strong></strong>
 - to improve XHTML/CSS compliance.
@@ -29061,14 +28505,6 @@ modules/tasks/organizer.php
 modules/tasks/todo.php
 modules/tasks/view.php
 modules/tasks/viewgantt.php
-modules/ticketsmith/admin.php
-modules/ticketsmith/comment.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/post_ticket.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
 style/default/header.php
 style/default/login.php
 - John performs replacement of <br> tags with <br /> for shift to
@@ -29356,12 +28792,6 @@ modules/system/addeditpref.php
 index.php
 style/default/overrides.php
 - Added support to override ui functions
-
-2003-01-17 17:28  (ajdonnison)
----------------------------------
-modules/ticketsmith/view.php
-- Changed app_root to a more generic dotproject.net.  Note that this should
-- be completely externalized at some point.
 
 2003-01-17 16:46  (kripper)
 ---------------------------------
@@ -29714,11 +29144,6 @@ modules/projects/vw_idx_active.php
 ---------------------------------
 locales/en/admin.inc
 - Spanish locales updated
-
-2003-01-11 07:48  (kripper)
----------------------------------
-modules/ticketsmith/common.inc.php
-- Changed signature filed to 'user_signature'
 
 2003-01-11 07:35  (kripper)
 ---------------------------------
@@ -30091,14 +29516,6 @@ modules/tasks/index.php
 modules/tasks/tasks.php
 modules/tasks/view.php
 - Partial upgrade to new code-base
-
-2003-01-04 17:04  (eddieajau)
----------------------------------
-modules/ticketsmith/comment.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-- User id now based on session variable
 
 2003-01-04 17:00  (eddieajau)
 ---------------------------------
@@ -30993,11 +30410,6 @@ ChangeLog
 modules/tasks/viewgantt.php
 - Added buttons for scrolling gantt chart's time range
 
-2002-12-09 04:59  (kripper)
----------------------------------
-modules/ticketsmith/post_ticket.php
-- Fixed reference to unexistent css style 'textcareaclass'
-
 2002-12-08 06:19  (kripper)
 ---------------------------------
 modules/companies/addedit.php
@@ -31592,12 +31004,6 @@ includes/secret.php
 includes/permissions.php
 - Patched security hole
 
-2002-09-20 12:46  (eddieajau)
----------------------------------
-modules/ticketsmith/index.php
-modules/ticketsmith/post_ticket.php
-- Add ticket included in browser
-
 2002-09-06 08:16  (eddieajau)
 ---------------------------------
 modules/tasks/view.php
@@ -31742,9 +31148,6 @@ includes/create_new_menu.php
 ---------------------------------
 includes/config.php
 includes/leftnav.php
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/view.php
 - Removed last (hopefully) of hardcoded entries, changed dotmarketing.org to
 - dotproject.net.
 
@@ -32233,7 +31636,6 @@ images/view.week.gif
 includes/config.php
 includes/gateway.pl
 locales/en/locales.php
-modules/ticketsmith/view.php
 - Changes required to merge the current list of disparate releases
 - into a single, unified code base.
 
@@ -32301,22 +31703,6 @@ includes/gateway.pl
 - Originator now gets a more detailed email that includes a subject that
 - supports immediate followups.
 
-2001-12-21 13:07  (simgar)
----------------------------------
-modules/ticketsmith/comment.php
-- Fixed bug #495698 (corrected path for include) and fixed author_email (remmoved html special characters and replaced
-- with <>)
-
-2001-10-25 11:11  (wezell)
----------------------------------
-modules/ticketsmith/admin.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/search.php
-modules/ticketsmith/view.php
-- fixed ticketsmith include path
-
 2001-10-25 11:02  (wezell)
 ---------------------------------
 calendar.php
@@ -32331,31 +31717,11 @@ index.php
 calendar.php
 color_selector.php
 logincheck.php
-modules/ticketsmith/CHANGELOG
-modules/ticketsmith/admin.php
-modules/ticketsmith/comment.php
 style/main.css
 modules/tasks/addedit.php
 modules/tasks/dosql.php
 modules/tasks/index.php
 modules/tasks/reorder.php
-modules/ticketsmith/CREDITS
-modules/ticketsmith/LICENSE
-modules/ticketsmith/README
-modules/ticketsmith/TODO
-modules/ticketsmith/UPGRADE
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/ltwt.gif
-modules/ticketsmith/posticon.gif
-modules/ticketsmith/rtwt.gif
-modules/ticketsmith/search.php
-modules/ticketsmith/style.css
-modules/ticketsmith/table.schema
-modules/ticketsmith/view.php
 modules/forums/addedit.php
 modules/forums/index.php
 modules/projects/addedit.php
@@ -32473,31 +31839,11 @@ index.php
 calendar.php
 color_selector.php
 logincheck.php
-modules/ticketsmith/CHANGELOG
-modules/ticketsmith/admin.php
-modules/ticketsmith/comment.php
 style/main.css
 modules/tasks/addedit.php
 modules/tasks/dosql.php
 modules/tasks/index.php
 modules/tasks/reorder.php
-modules/ticketsmith/CREDITS
-modules/ticketsmith/LICENSE
-modules/ticketsmith/README
-modules/ticketsmith/TODO
-modules/ticketsmith/UPGRADE
-modules/ticketsmith/common.inc.php
-modules/ticketsmith/config.inc.php
-modules/ticketsmith/followup.php
-modules/ticketsmith/index.php
-modules/ticketsmith/login.php
-modules/ticketsmith/ltwt.gif
-modules/ticketsmith/posticon.gif
-modules/ticketsmith/rtwt.gif
-modules/ticketsmith/search.php
-modules/ticketsmith/style.css
-modules/ticketsmith/table.schema
-modules/ticketsmith/view.php
 modules/forums/addedit.php
 modules/forums/index.php
 modules/projects/addedit.php
