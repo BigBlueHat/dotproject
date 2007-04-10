@@ -360,9 +360,10 @@ table.popcal td.empty {
 	background-color: #e0e0e0;
 }
 
-table.mocal td.day  {
+table.mocal td.day a {
 	background-color: #ffffff;
 	text-align: center;
+	display: block;
 }
 
 table.popcal td.today {

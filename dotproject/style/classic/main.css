@@ -254,9 +254,10 @@ table.popcal td.empty {
 	background-color: #efefe7;
 }
 
-table.mocal td.day  {
+table.mocal td.day a {
 	background-color: #cccccc;
 	text-align: center;
+	display: block;
 }
 
 table.popcal td.today {
