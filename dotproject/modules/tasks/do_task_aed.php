@@ -157,7 +157,7 @@ if ($sub_form) {
 			$obj->updateAssigned( $hassign , $hperc_assign_ar);
 		}
 		
-		if (isset($hdependencies) && !empty($hdependencies)) {
+		if (isset($hdependencies)) {
 			// there are dependencies set!
 			
 			// backup initial start and end dates
