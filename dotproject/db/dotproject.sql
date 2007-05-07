@@ -298,9 +298,10 @@ CREATE TABLE `projects` (
     KEY `idx_sdate` (`project_start_date`),
     KEY `idx_edate` (`project_end_date`),
     KEY `project_short_name` (`project_short_name`),
-    KEY `idx_proj1` (`project_company`)
-
+    KEY `idx_proj1` (`project_company`),
 ) TYPE=MyISAM;
+
+ALTER TABLE projects ADD INDEX `project_identifiers` (`project_name`, `project_color_identifier`);
 
 DROP TABLE IF EXISTS `project_contacts`;
 CREATE TABLE `project_contacts` (
@@ -402,6 +403,8 @@ CREATE TABLE `user_tasks` (
     KEY `index_ut_to_tasks` (`task_id`)
 ) TYPE=MyISAM;
 
+ALTER TABLE `user_tasks` ADD INDEX `user_perc_assignment` (`perc_assignment`);
+
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
     `user_id` int(11) NOT NULL auto_increment,
@@ -416,6 +419,8 @@ CREATE TABLE `users` (
     KEY `idx_pwd` (`user_password`),
     KEY `idx_user_parent` (`user_parent`)
 ) TYPE=MyISAM;
+
+ALTER TABLE users ADD INDEX `user_contact` (`user_contact`);
 
 DROP TABLE IF EXISTS `task_dependencies`;
 CREATE TABLE `task_dependencies` (

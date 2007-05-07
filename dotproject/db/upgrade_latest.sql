@@ -309,3 +309,9 @@ CREATE TABLE `file_folders` (
 #quadrupling field size, "code" should probably not be stored in database
 ALTER TABLE `sysvals` MODIFY `sysval_value_id` VARCHAR(128) NULL DEFAULT '0';
 UPDATE `sysvals` SET `sysval_value_id`='f.project_company.options[f.project_company.selectedIndex].value' WHERE `sysval_value_id` = 'f.project_company.options[f.proj';
+
+# 20070508
+# Added a number of indexes to the database in attempt to optimize things.
+ALTER TABLE projects ADD INDEX `project_identifiers` (`project_name`, `project_color_identifier`);
+ALTER TABLE users ADD INDEX `user_contact` (`user_contact`);
+ALTER TABLE `user_tasks` ADD INDEX `user_perc_assignment` (`perc_assignment`);

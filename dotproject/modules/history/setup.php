@@ -43,7 +43,7 @@ class CSetupHistory {
 			history_description text,
 			PRIMARY KEY  (history_id),
 			INDEX `index_history_module` ( `history_table` , `history_item` ),
-		  INDEX `index_history_item` ( `history_item` ) 
+			INDEX `index_history_item` ( `history_item`, `history_table`, `history_date`) 
 			) TYPE=MyISAM';
 		$q = new DBQuery;
 		$q->createTable('history');
@@ -90,6 +90,8 @@ class CSetupHistory {
 			case '0.5':
 				$q->alterTable('history');
 				$q->addIndex('index_history_module', '(history_table, history_item)');
+				$q->dropIndex('index_history_item');
+				$q->addIndex('index_history_item', '(history_item, history_table, history_date)');
 				$q->exec();
 				$q->clear();
 				break;
