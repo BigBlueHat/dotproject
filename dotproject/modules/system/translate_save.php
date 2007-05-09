@@ -65,5 +65,5 @@ fwrite( $fp, $txt );
 fclose( $fp );
 
 $AppUI->setMsg( "Locales file saved", UI_MSG_OK );
-$AppUI->redirect();
+$AppUI->redirect($AppUI->getPlace());
 ?>

@@ -8,12 +8,16 @@ if (!$canEdit)
 	$AppUI->redirect('m=public&a=access_denied');
 
 $module = dPgetParam($_REQUEST, 'module', 'admin');
-$lang = dPgetParam($_REQUEST, 'lang', 'en');
+$lang = dPgetParam($_REQUEST, 'lang', $AppUI->user_lang);
 
-$AppUI->savePlace('m=system&amp;a=translate&amp;module='.$module.'&amp;lang='.$lang);
+$AppUI->savePlace('m=system&a=translate&module='.$module.'&lang='.$lang);
 
 // read the installed modules
 $modules = arrayMerge( array( 'common', 'styles' ), $AppUI->readDirs( 'modules' ));
+foreach ($modules as $mod)
+	$mods[$mod] = $mod;
+$modules = $mods;
+asort($modules);
 
 // read the installed languages
 $locales = $AppUI->readDirs( 'locales' );
@@ -27,6 +31,10 @@ ob_start();
 	
 	eval( "\$english=array(".ob_get_contents()."\n'0');" );
 ob_end_clean();
+if (!is_writable(DP_BASE_DIR . '/locales/'.$lang.'/' . $modules[$module] . '.inc')) {
+  $AppUI->setMsg( "File {$modules[$module]}.inc not writable. You won't be able to save any changes!", UI_MSG_ERROR );
+  echo $AppUI->getMsg(true);
+} 
 
 $trans = array();
 foreach( $english as $k => $v ) {
