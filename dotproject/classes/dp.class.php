@@ -56,20 +56,33 @@ class CDpObject {
 	{
 		return $this->_error;
 	}
+
 /**
  *	Binds a named array/hash to this object
  *
  *	can be overloaded/supplemented by the child class
- *	@param $hash named array
+ *	@param array $hash named array
  *	@return null|string	null is operation was satisfactory, otherwise returns an error
  */
-	function bind( $hash )
-	{
+	function bind( $hash ) {
 		if (!is_array( $hash )) {
 			$this->_error = get_class( $this )."::bind failed.";
 			return false;
-		} else {
-			bindHashToObject( $hash, $this );
+		} 
+        else {
+			/*
+			 * We need to filter out any object values from the array/hash so the bindHashToObject()
+			 * doesn't die. We also avoid issues such as passing objects to non-object functions 
+			 * and copying object references instead of cloning objects. Object cloning (if needed) 
+			 * should be handled seperatly anyway.
+			 */
+			foreach ($hash as $k => $v) {
+				if ( ! (is_object( $hash[$k] )) ) {
+					$filtered_hash[$k] = $v;
+				}
+			}
+			
+			bindHashToObject( $filtered_hash, $this );
 			return true;
 		}
 	}

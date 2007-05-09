@@ -442,6 +442,21 @@ function bindHashToObject( $hash, &$obj, $prefix=null, $checkSlashes=true, $bind
 {
 	is_array( $hash ) or die( "bindHashToObject : hash expected" );
 	is_object( $obj ) or die( "bindHashToObject : object expected" );
+	
+	/* 
+	 * checking that all hash values are non-objects so that stripslashes() and other such 
+	 * functions are correctly used as well as making sure that we actually create new values and 
+	 * not just copy a reference to an object. bind() already filters non-objects but we still need 
+	 * to check on this should the funtion be called independently of bind()
+	 */
+	$go_on = true;
+    foreach ($hash as $k => $v) {
+		if (is_object( $hash[$k] )) {
+			$error_str .= 'bindHashToObject : non-object expected for hash value with key '.$k . "\n";
+			$go_on = false;
+		}
+	}
+	$go_on or die ( $error_str );
 
 	if ($bindAll) {
 		foreach ($hash as $k => $v) {
