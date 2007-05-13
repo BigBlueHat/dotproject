@@ -173,8 +173,6 @@
 "interface_group_title"=>"User Interface",
 "it"=>"Italian",
 "ja"=>"Japanese",
-"jpLocale_title"=>"jpGraph Locale",
-"jpLocale_tooltip"=>"Use this option to set a locale for jpGraph if it is required. <br />jpGraph is the third party package that is used throughout dotProject to create graphics or charts (eg the Gantt chart).  Leave blank if you experience problems.",
 "ldap_allow_login_title"=>"LDAP also allows standard login",
 "ldap_allow_login_tooltip"=>"dotProject database based users will also be allowed to login",
 "ldap_base_dn_title"=>"LDAP Base DN",

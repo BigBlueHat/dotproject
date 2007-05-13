@@ -11,7 +11,8 @@
 # TODO
 #
 # * replace "task_owner" with "task_creator"
-#
+# * add " DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci" to table definitions (storing data in UTF-8)
+#          do "ALTER TABLE tbl_name DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci" for upgrade_latest.sql script.
 
 DROP TABLE IF EXISTS `companies`;
 CREATE TABLE `companies` (
