@@ -1,3 +1,23 @@
+2007-05-18 01:03  (cyberhorse)
+---------------------------------
+db/upgrade_latest.php
+- Fixed upgrade issue, where user contacts were being lost.
+
+2007-05-18 00:50  (cyberhorse)
+---------------------------------
+db/upgrade_latest.php
+- Fixed a bug, where on upgrade all connections between users and contacts was lost.
+
+2007-05-17 23:59  (cyberhorse)
+---------------------------------
+misc/changelog.php
+- Script to update ChangeLog file and email changes to the mailing list.
+
+2007-05-15 14:54  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-05-15
+
 2007-05-15 14:41  (cyberhorse)
 ---------------------------------
 ChangeLog
