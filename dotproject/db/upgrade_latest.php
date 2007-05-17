@@ -95,7 +95,9 @@ function dPupgrade($from_version, $to_version, $last_updated)
 					}
 				}
 			}
-			include "$baseDir/db/upgrade_contacts.php";
+			if (strcmp($from_version, '2') < 0) {
+				include "$baseDir/db/upgrade_contacts.php";
+			}
 			include "$baseDir/db/upgrade_permissions.php";
 
 			// Fallthrough
