@@ -544,6 +544,7 @@ class CTask extends CDpObject {
             }
             
             // shiftDependentTasks needs this done first
+            $this->check();
             $ret = db_updateObject( 'tasks', $this, 'task_id', false );
             $details['name'] = $this->task_name;
             $details['project'] = $this->task_project;
