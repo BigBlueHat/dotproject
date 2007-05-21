@@ -32,6 +32,10 @@ global $baseUrl;
 
 $baseDir = dirname(isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : __FILE__);
 
+// Set the include path to include sub directories of lib.
+// This ensures third party libraries can work unencumbered.
+set_include_path($baseDir .'/lib:.:'  . get_include_path());
+
 // automatically define the base url
 $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
 $baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
