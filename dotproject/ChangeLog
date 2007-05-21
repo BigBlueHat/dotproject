@@ -1,3 +1,49 @@
+2007-05-21 22:27  (nybod)
+---------------------------------
+modules/files/addedit.php
+- Added projectSelectWithOptGroup from Aramis to group projects by Company
+
+2007-05-21 20:01  (ajdonnison)
+---------------------------------
+base.php
+- Allow third party libraries to work without major change.
+
+2007-05-21 18:33  (ajdonnison)
+---------------------------------
+ChangeLog
+- Update changelog for 2.1-rc2 release.
+
+2007-05-21 18:17  (ajdonnison)
+---------------------------------
+db/upgrade_21rc1_to_21rc2.sql
+- file upgrade_21rc1_to_21rc2.sql was initially added on branch stable_2.
+
+2007-05-21 18:17  (ajdonnison)
+---------------------------------
+db/upgrade_21rc1_to_21rc2.sql
+db/upgrade_latest.php
+db/upgrade_latest.sql
+includes/version.php
+install/do_install_db.php
+- Changes to make release candidate 2.
+
+2007-05-21 10:06  (caseydk)
+---------------------------------
+modules/files/addedit.php
+modules/files/do_file_co.php
+modules/files/files.class.php
+- cleaned up some of the file checkin functionality;
+
+2007-05-21 03:15  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-05-21
+
+2007-05-21 03:12  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-05-21
+
 2007-05-20 03:14  (cyberhorse)
 ---------------------------------
 ChangeLog
