@@ -508,7 +508,11 @@ class CDpObject {
 				// We need to ensure that we don't just break complex SQLs, but
 				// instead limit to a nonsensical value.  This assumes that the
 				// key is auto-incremented.
-		    $query->addWhere("$this->_tbl_key = 0");
+				if (isset($index)) {
+		    	$query->addWhere("$key.$this->_tbl_key = 0");
+				} else {
+		    	$query->addWhere("$this->_tbl_key = 0");
+				}
 		    return;
 			}
 		} else {
