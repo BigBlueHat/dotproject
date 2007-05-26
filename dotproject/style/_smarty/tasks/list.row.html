@@ -72,7 +72,7 @@
 	{/if}
 {/if}
 		{capture name=projDesc assign=popDesc}
-			{$task.task_description|nl2br}
+			{$obj.task_description|nl2br}
 		{/capture}
 		{dPtranslateToVar word='Description' ass='popDescCap'}
 		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" {popup sticky=false caption=$popDescCap text=$popDesc}>
