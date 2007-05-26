@@ -7,10 +7,12 @@
  * @version		CVS: $Id$
  * }}}
  */
+$baseDir = dirname(dirname(__FILE__));
+define('DP_BASE_DIR', $baseDir);
 
 require_once 'check_upgrade.php';
-@include_once "../includes/config.php";
 define('DP_BASE_DIR', $baseDir);
+@include_once "../includes/config.php";
 if ($_POST['mode'] == 'install' && dPcheckExistingDB($dPconfig)) {
 	die("Security Check: dotProject seems to be already installed. Not installing over existing installation");
 }

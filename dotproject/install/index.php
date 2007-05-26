@@ -26,6 +26,8 @@ Copyright (c) 2003-2005 The dotProject Development Team <core-developers@dotproj
 
 The full text of the GPL is in the COPYING file.
 */
+$baseDir = dirname(dirname(__FILE__));
+define('DP_BASE_DIR', $baseDir);
 
 require_once 'check_upgrade.php';
 $mode = dPcheckUpgrade();

@@ -7,6 +7,8 @@
  * @version		CVS: $Id$
  * }}}
  */
+$baseDir = dirname(dirname(__FILE__));
+define('DP_BASE_DIR', $baseDir);
 ?>
 <html>
 <head>
@@ -18,7 +20,7 @@
 <h1><img src="dp.png" align="middle" alt="dotProject Logo" />&nbsp;dotProject Installer</h1>
 <?php
 if ($_POST['mode'] == 'upgrade') {
-	@include_once "../includes/config.php";
+	@include_once '../includes/config.php';
 } elseif (is_file("../includes/config.php")) {
 	require_once 'check_upgrade.php';
 	@include_once "../includes/config.php";
