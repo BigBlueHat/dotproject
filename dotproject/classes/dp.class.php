@@ -199,7 +199,7 @@ class CDpObject {
  *	Can be overloaded/supplemented by the child class
  *	@return null|string null if successful otherwise returns an error message
  */
-	function store( $updateNulls = false ) {
+	function store( $updateNulls = true ) {
         
         $this->dPTrimAll();
         
