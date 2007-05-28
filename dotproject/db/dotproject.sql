@@ -36,7 +36,7 @@ CREATE TABLE `companies` (
     `company_custom` LONGTEXT,
     PRIMARY KEY (`company_id`),
     KEY `idx_cpy1` (`company_owner`)
-) TYPE=MyISAM;
+);
 
 #
 # New to version 1.0
@@ -58,7 +58,7 @@ CREATE TABLE `departments` (
     `dept_desc` text,
     `dept_owner` int(10) unsigned NOT NULL default '0',
     PRIMARY KEY    (`dept_id`)
-) TYPE=MyISAM COMMENT='Department heirarchy under a company';
+);
 
 DROP TABLE IF EXISTS `contacts`;
 CREATE TABLE `contacts` (
@@ -99,7 +99,7 @@ CREATE TABLE `contacts` (
     KEY `idx_oby` (`contact_order_by`),
     KEY `idx_co` (`contact_company`),
     KEY `idx_prp` (`contact_project`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `events`;
 CREATE TABLE `events` (
@@ -127,7 +127,7 @@ CREATE TABLE `events` (
     KEY `id_evp` (`event_parent`),
     KEY `idx_ev1` (`event_owner`),
     KEY `idx_ev2` (`event_project`)
-) TYPE=MyISAM;
+);
 
 # 20050303
 #
@@ -149,7 +149,7 @@ CREATE TABLE `event_queue` (
     KEY `queue_module` (`queue_module`),
     KEY `queue_type` (`queue_type`),
     KEY `queue_origin_id` (`queue_origin_id`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `event_contacts`;
 CREATE TABLE `event_contacts` (
@@ -183,7 +183,7 @@ CREATE TABLE `files` (
     KEY `idx_file_project` (`file_project`),
     KEY `idx_file_parent` (`file_parent`),
     KEY `idx_file_vid` (`file_version_id`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `files_index`;
 CREATE TABLE `files_index` (
@@ -192,7 +192,7 @@ CREATE TABLE `files_index` (
     `word_placement` int(11) NOT NULL default '0',
     PRIMARY KEY    (`file_id`,`word`, `word_placement`),
     KEY `idx_fwrd` (`word`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `forum_messages`;
 CREATE TABLE `forum_messages` (
@@ -209,7 +209,7 @@ CREATE TABLE `forum_messages` (
     KEY `idx_mparent` (`message_parent`),
     KEY `idx_mdate` (`message_date`),
     KEY `idx_mforum` (`message_forum`)
-) TYPE=MyISAM;
+);
 
 #
 # new field forum_last_id in Version 1.0
@@ -231,7 +231,7 @@ CREATE TABLE `forums` (
     KEY `idx_fproject` (`forum_project`),
     KEY `idx_fowner` (`forum_owner`),
     KEY `forum_status` (`forum_status`)
-) TYPE=MyISAM;
+);
 
 #
 # New to Version 1.0
@@ -243,7 +243,7 @@ CREATE TABLE `forum_watch` (
     `watch_topic` int(10) unsigned default NULL,
     KEY `idx_fw1` (`watch_user`, `watch_forum`),
     KEY `idx_fw2` (`watch_user`, `watch_topic`)
-) TYPE=MyISAM COMMENT='Links users to the forums/messages they are watching';
+);
 
 # 20050303
 # New to Version 2.0
@@ -254,7 +254,7 @@ CREATE TABLE `forum_visits` (
     `visit_message` INT(10) NOT NULL DEFAULT 0,
     `visit_date` TIMESTAMP,
     KEY `idx_fv` (`visit_user`, `visit_forum`, `visit_message`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `permissions`;
 CREATE TABLE `permissions` (
@@ -267,7 +267,7 @@ CREATE TABLE `permissions` (
     UNIQUE KEY `idx_pgrant_on` (`permission_grant_on`,`permission_item`,`permission_user`),
     KEY `idx_puser` (`permission_user`),
     KEY `idx_pvalue` (`permission_value`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `projects`;
 CREATE TABLE `projects` (
@@ -300,7 +300,7 @@ CREATE TABLE `projects` (
     KEY `idx_edate` (`project_end_date`),
     KEY `project_short_name` (`project_short_name`),
     KEY `idx_proj1` (`project_company`),
-) TYPE=MyISAM;
+);
 
 ALTER TABLE projects ADD INDEX `project_identifiers` (`project_name`, `project_color_identifier`);
 
@@ -308,13 +308,13 @@ DROP TABLE IF EXISTS `project_contacts`;
 CREATE TABLE `project_contacts` (
     `project_id` INT(10) NOT NULL,
     `contact_id` INT(10) NOT NULL
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `project_departments`;
 CREATE TABLE `project_departments` (
     `project_id` INT(10) NOT NULL,
     `department_id` INT(10) NOT NULL
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `task_log`;
 CREATE TABLE `task_log` (
@@ -331,7 +331,7 @@ CREATE TABLE `task_log` (
     `task_log_related_url` VARCHAR( 255 ) DEFAULT NULL,
     PRIMARY KEY    (`task_log_id`),
     KEY `idx_log_task` (`task_log_task`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `tasks`;
 CREATE TABLE `tasks` (
@@ -370,19 +370,19 @@ CREATE TABLE `tasks` (
     KEY `idx_task_order` (`task_order`),
     KEY `idx_task1` (`task_start_date`),
     KEY `idx_task2` (`task_end_date`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `task_contacts`;
 CREATE TABLE `task_contacts` (
     `task_id` INT(10) NOT NULL,
     `contact_id` INT(10) NOT NULL
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `task_departments`;
 CREATE TABLE `task_departments` (
     `task_id` INT(10) NOT NULL,
     `department_id` INT(10) NOT NULL
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `user_events`;
 CREATE TABLE `user_events` (
@@ -390,7 +390,7 @@ CREATE TABLE `user_events` (
     `event_id` int(11) NOT NULL default '0',
     KEY `uek1` (`user_id`, `event_id`),
     KEY `uek2` (`event_id`, `user_id`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `user_tasks`;
 CREATE TABLE `user_tasks` (
@@ -402,7 +402,7 @@ CREATE TABLE `user_tasks` (
     PRIMARY KEY    (`user_id`,`task_id`),
     KEY `user_type` (`user_type`),
     KEY `index_ut_to_tasks` (`task_id`)
-) TYPE=MyISAM;
+);
 
 ALTER TABLE `user_tasks` ADD INDEX `user_perc_assignment` (`perc_assignment`);
 
@@ -419,7 +419,7 @@ CREATE TABLE `users` (
     KEY `idx_uid` (`user_username`),
     KEY `idx_pwd` (`user_password`),
     KEY `idx_user_parent` (`user_parent`)
-) TYPE=MyISAM;
+);
 
 ALTER TABLE users ADD INDEX `user_contact` (`user_contact`);
 
@@ -438,7 +438,7 @@ CREATE TABLE `user_preferences` (
     `pref_group` varchar(255) NOT NULL default '',
     `pref_type` varchar(255) NOT NULL default '',
     KEY `pref_user` (`pref_user`,`pref_name`)
-) ENGINE=MyISAM;
+);
 
 #
 # ATTENTION:
@@ -519,7 +519,7 @@ CREATE TABLE `modules` (
     `permissions_item_field` CHAR( 100 ),
     `permissions_item_label` CHAR( 100 ),
     PRIMARY KEY    (`mod_id`,`mod_directory`)
-) TYPE=MyISAM;
+);
 
 #
 # Dumping data for table 'modules'
@@ -551,7 +551,7 @@ CREATE TABLE `syskeys` (
     `syskey_sep2` char(2) NOT NULL default '|',
     PRIMARY KEY    (`syskey_id`),
     UNIQUE KEY `idx_syskey_name` (`syskey_id`)
-) TYPE=MyISAM;
+);
 
 #
 # Table structure for table 'sysvals'
@@ -564,7 +564,7 @@ CREATE TABLE `sysvals` (
   `sysval_value_id` varchar(32) default '0',
   `sysval_value` text NOT NULL,
   PRIMARY KEY  (`sysval_id`)
-) TYPE=MyISAM;
+);
 
 INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("1","CompanyType","0","Not Applicable");
 INSERT INTO `sysvals` (`sysval_id`,`sysval_title`,`sysval_value_id`,`sysval_value`) VALUES ("2","CompanyType","1","Client");
@@ -652,7 +652,7 @@ CREATE TABLE `roles` (
     `role_type` int(3) unsigned NOT NULL default '0',
     `role_module` int(10) unsigned NOT NULL default '0',
     PRIMARY KEY    (`role_id`)
-) TYPE=MyISAM;
+);
 
 #
 # Table structure for table 'user_roles'
@@ -662,7 +662,7 @@ DROP TABLE IF EXISTS `user_roles`;
 CREATE TABLE `user_roles` (
     `user_id` int(10) unsigned NOT NULL default '0',
     `role_id` int(10) unsigned NOT NULL default '0'
-) TYPE=MyISAM;
+);
 
 # Host: localhost
 # Database: dotproject
@@ -684,7 +684,7 @@ CREATE TABLE `common_notes` (
     `note_modified` timestamp(14) NOT NULL,
     `note_modified_by` int(10) unsigned NOT NULL default '0',
     PRIMARY KEY    (`note_id`)
-) TYPE=MyISAM; 
+);
 
 
 
@@ -709,7 +709,7 @@ CREATE TABLE `user_task_pin` (
 `task_id` int(10) NOT NULL default '0',
 `task_pinned` tinyint(2) NOT NULL default '1',
 PRIMARY KEY (`user_id`,`task_id`)
-) TYPE=MyISAM;
+);
 
 #
 # Table structure for table `config`
@@ -726,7 +726,7 @@ CREATE TABLE `config` (
     `config_type` varchar(255) NOT NULL default '',
     PRIMARY KEY    (`config_id`),
     UNIQUE KEY `config_name` (`config_name`)
-) TYPE=MyISAM;
+);
 
 #
 # Dumping data for table `config`
@@ -917,7 +917,7 @@ CREATE TABLE `gacl_acl` (
     KEY `gacl_enabled_acl` (`enabled`),
     KEY `gacl_section_value_acl` (`section_value`),
     KEY `gacl_updated_date_acl` (`updated_date`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -938,7 +938,7 @@ CREATE TABLE `gacl_acl_sections` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_value_acl_sections` (`value`),
     KEY `gacl_hidden_acl_sections` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -960,7 +960,7 @@ CREATE TABLE `gacl_aco` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_section_value_value_aco` (`section_value`,`value`),
     KEY `gacl_hidden_aco` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -976,7 +976,7 @@ CREATE TABLE `gacl_aco_map` (
     `section_value` varchar(80) NOT NULL default '0',
     `value` varchar(80) NOT NULL default '',
     PRIMARY KEY    (`acl_id`,`section_value`,`value`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -997,7 +997,7 @@ CREATE TABLE `gacl_aco_sections` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_value_aco_sections` (`value`),
     KEY `gacl_hidden_aco_sections` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1019,7 +1019,7 @@ CREATE TABLE `gacl_aro` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_section_value_value_aro` (`section_value`,`value`),
     KEY `gacl_hidden_aro` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1042,7 +1042,7 @@ CREATE TABLE `gacl_aro_groups` (
     KEY `gacl_parent_id_aro_groups` (`parent_id`),
     KEY `gacl_value_aro_groups` (`value`),
     KEY `gacl_lft_rgt_aro_groups` (`lft`,`rgt`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1057,7 +1057,7 @@ CREATE TABLE `gacl_aro_groups_map` (
     `acl_id` int(11) NOT NULL default '0',
     `group_id` int(11) NOT NULL default '0',
     PRIMARY KEY    (`acl_id`,`group_id`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1073,7 +1073,7 @@ CREATE TABLE `gacl_aro_map` (
     `section_value` varchar(80) NOT NULL default '0',
     `value` varchar(80) NOT NULL default '',
     PRIMARY KEY    (`acl_id`,`section_value`,`value`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1094,7 +1094,7 @@ CREATE TABLE `gacl_aro_sections` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_value_aro_sections` (`value`),
     KEY `gacl_hidden_aro_sections` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1116,7 +1116,7 @@ CREATE TABLE `gacl_axo` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_section_value_value_axo` (`section_value`,`value`),
     KEY `gacl_hidden_axo` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1139,7 +1139,7 @@ CREATE TABLE `gacl_axo_groups` (
     KEY `gacl_parent_id_axo_groups` (`parent_id`),
     KEY `gacl_value_axo_groups` (`value`),
     KEY `gacl_lft_rgt_axo_groups` (`lft`,`rgt`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1154,7 +1154,7 @@ CREATE TABLE `gacl_axo_groups_map` (
     `acl_id` int(11) NOT NULL default '0',
     `group_id` int(11) NOT NULL default '0',
     PRIMARY KEY    (`acl_id`,`group_id`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1170,7 +1170,7 @@ CREATE TABLE `gacl_axo_map` (
     `section_value` varchar(80) NOT NULL default '0',
     `value` varchar(80) NOT NULL default '',
     PRIMARY KEY    (`acl_id`,`section_value`,`value`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1191,7 +1191,7 @@ CREATE TABLE `gacl_axo_sections` (
     PRIMARY KEY    (`id`),
     UNIQUE KEY `gacl_value_axo_sections` (`value`),
     KEY `gacl_hidden_axo_sections` (`hidden`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1206,7 +1206,7 @@ CREATE TABLE `gacl_groups_aro_map` (
     `group_id` int(11) NOT NULL default '0',
     `aro_id` int(11) NOT NULL default '0',
     PRIMARY KEY    (`group_id`,`aro_id`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1221,7 +1221,7 @@ CREATE TABLE `gacl_groups_axo_map` (
     `group_id` int(11) NOT NULL default '0',
     `axo_id` int(11) NOT NULL default '0',
     PRIMARY KEY    (`group_id`,`axo_id`)
-) TYPE=MyISAM;
+);
 # --------------------------------------------------------
 
 #
@@ -1236,7 +1236,7 @@ CREATE TABLE `gacl_phpgacl` (
     `name` varchar(230) NOT NULL default '',
     `value` varchar(230) NOT NULL default '',
     PRIMARY KEY    (`name`)
-) TYPE=MyISAM;
+);
 
 DROP TABLE IF EXISTS `billingcode`;
 CREATE TABLE `billingcode` (
@@ -1247,7 +1247,7 @@ CREATE TABLE `billingcode` (
     `billingcode_status` int(1) NOT NULL default '0',
     `company_id` bigint(20) NOT NULL default '0',
     PRIMARY KEY    (`billingcode_id`)
-) TYPE=MyISAM;
+);
 ALTER TABLE `billingcode` ADD UNIQUE (
 `billingcode_name` ,
 `company_id`
@@ -1274,7 +1274,7 @@ CREATE TABLE `sessions` (
     PRIMARY KEY (`session_id`),
     KEY (`session_updated`),
     KEY (`session_created`)
-) TYPE=MyISAM;
+);
 
 # 20050304
 # Version tracking table.    From here on in all updates are done via the installer,
@@ -1313,7 +1313,7 @@ CREATE TABLE `webcal_projects` (
     `webcal_id` int(11) NOT NULL default '0',
     `project_id` int(11) NOT NULL default '0',
     UNIQUE KEY `webcal_id` (`webcal_id`,`project_id`)
-) ENGINE=MyISAM COMMENT='relate webcal resources to project calendars';
+);
 
 DROP TABLE IF EXISTS `webcal_resources`;
 CREATE TABLE `webcal_resources` (
@@ -1331,7 +1331,7 @@ CREATE TABLE `webcal_resources` (
     `webcal_preserve_id` tinyint(4) NOT NULL default '0',
     `webcal_eq_id` int(11) NOT NULL default '0',
     PRIMARY KEY    (`webcal_id`)
-) ENGINE=MyISAM COMMENT='webcal resource management';
+);
 
 DROP TABLE IF EXISTS `file_folders`;
 CREATE TABLE `file_folders` (
@@ -1340,4 +1340,4 @@ CREATE TABLE `file_folders` (
 	`file_folder_name` varchar(255) NOT NULL default '',
 	`file_folder_description` text,
 	PRIMARY KEY  (`file_folder_id`)
-) TYPE=MyISAM;
+);

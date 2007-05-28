@@ -60,7 +60,7 @@ CREATE TABLE `webcal_projects` (
   `webcal_id` int(11) NOT NULL default '0',
   `project_id` int(11) NOT NULL default '0',
   UNIQUE KEY `webcal_id` (`webcal_id`,`project_id`)
-) ENGINE=MyISAM COMMENT='relate webcal resources to project calendars';
+);
 
 CREATE TABLE `webcal_resources` (
   `webcal_id` int(11) NOT NULL auto_increment,
@@ -77,7 +77,7 @@ CREATE TABLE `webcal_resources` (
   `webcal_preserve_id` tinyint(4) NOT NULL default '0',
   `webcal_eq_id` int(11) NOT NULL default '0',
   PRIMARY KEY  (`webcal_id`)
-) ENGINE=MyISAM COMMENT='webcal resource management' AUTO_INCREMENT=29 ;
+);
 
 # 20060203
 # Indeces added for optimization purposes.
@@ -302,7 +302,7 @@ CREATE TABLE `file_folders` (
 	`file_folder_name` varchar(255) NOT NULL default '',
 	`file_folder_description` text,
 	PRIMARY KEY  (`file_folder_id`)
-) TYPE=MyISAM;
+);
 
 # 20070131
 #row added 20061130 overflowed sysval_value_id field (then sysval_title)
