@@ -92,26 +92,6 @@ $allpdfdata = array();
 function showcompany($company, $restricted = false)
 {
 	global $AppUI, $allpdfdata, $log_start_date, $log_end_date, $log_all;
-       /* $sql="
-        SELECT
-                billingcode_id,
-                billingcode_name,
-                billingcode_value
-        FROM billingcode
-        WHERE company_id=$company
-        ORDER BY billingcode_name ASC
-        ";
-                                                                                                                  
-        $company_billingcodes=NULL;
-        $ptrc=db_exec($sql);
-        $nums=db_num_rows($ptrc);
-        echo db_error();
-                                                                                                                         
-        for ($x=0; $x < $nums; $x++) {
-                $row=db_fetch_assoc($ptrc);
-                $company_billingcodes[$row['billingcode_id']]=$row['billingcode_name'];
-        }
-*/
 	$obj = new CProject();
 	$q = new DBQuery;
 	$q->addTable('projects');
@@ -188,8 +168,7 @@ function showcompany($company, $restricted = false)
 			$pdfdata[] = $pdfproject;
 		}
         }
-	if ($hours > 0)
-	{
+	if ($hours > 0) {
 		$allpdfdata[$company_name] = $pdfdata;
 	
 		echo $table;
@@ -201,89 +180,74 @@ function showcompany($company, $restricted = false)
 }
 
 if ($do_report) {
-
 	$total = 0;
 
-if ($fullaccess) {
-	$sql = "SELECT company_id FROM companies";
-} else {
-	$sql = "SELECT company_id FROM companies WHERE company_owner='" . $AppUI->user_id . "'";
-}
-$companies = db_loadColumn($sql);
-
-if (!empty($companies))	
-	foreach ($companies as $company)
-		$total += showcompany($company);
-else
-{
-	$sql = "SELECT company_id FROM companies";
-	foreach(db_loadColumn($sql) as $company) {
-		$total += showcompany($company, true);
+	if ($fullaccess) {
+		$sql = "SELECT company_id FROM companies";
+	} else {
+		$sql = "SELECT company_id FROM companies WHERE company_owner='" . $AppUI->user_id . "'";
 	}
-}
+	$companies = db_loadColumn($sql);
+	
+	if (!empty($companies)) {	
+		foreach ($companies as $company) {
+			$total += showcompany($company);
+		}
+	} else {
+		$sql = "SELECT company_id FROM companies";
+		foreach(db_loadColumn($sql) as $company) {
+			$total += showcompany($company, true);
+		}
+	}
+	
+	echo '<h2>' . $AppUI->_('Total Hours') . ":"; 
+	printf( "%.2f", $total );
+	echo '</h2>';
 
-echo '<h2>' . $AppUI->_('Total Hours') . ":"; 
-printf( "%.2f", $total );
-echo '</h2>';
 
+	if ($log_pdf) {
+		// make the PDF file
+		$font_dir = DP_BASE_DIR.'/lib/ezpdf/fonts';
 
-if ($log_pdf) {
-	// make the PDF file
-
-		$font_dir = DP_BASE_DIR."/lib/ezpdf/fonts";
-		$temp_dir = DP_BASE_DIR."/files/temp";
-		$base_url = DP_BASE_URL;
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
-
+	
 		$pdf =& new Cezpdf();
 		$pdf->ezSetCmMargins( 1, 2, 1.5, 1.5 );
-		$pdf->selectFont( "$font_dir/Helvetica.afm" );
-
+		$pdf->selectFont( $font_dir.'/Helvetica.afm' );
+	
 		$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
-
-		if ($log_all)
-		{
+	
+		if ($log_all) {
 			$date = new CDate();
 			$pdf->ezText( "\nAll hours as of " . $date->format( $df ) , 8 );
-		}
-		else
-		{
+		}	else {
 			$sdate = new CDate($log_start_date);
 			$edate = new CDate($log_end_date);
 			$pdf->ezText( "\nHours from " . $sdate->format( $df ) .  " to " . $edate->format( $df ), 8);
 		}
 
-		$pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
 		$pdf->ezText( "\n" . $AppUI->_('Overall Report'), 12 );
-
-	foreach($allpdfdata as $company => $data)
-	{
-		$title = $company;
-		$options = array(
-			'showLines' => 1,
-			'showHeadings' => 0,
-			'fontSize' => 8,
-			'rowGap' => 2,
-			'colGap' => 5,
-			'xPos' => 50,
-			'xOrientation' => 'right',
-			'width'=>'500'
-		);
-
-		$pdf->ezTable( $data, NULL, $title, $options );
-	}
-		if ($fp = fopen( "$temp_dir/temp$AppUI->user_id.pdf", 'wb' )) {
-			fwrite( $fp, $pdf->ezOutput() );
-			fclose( $fp );
-			echo "<a href=\"$base_url/files/temp/temp$AppUI->user_id.pdf\" target=\"pdf\">";
-			echo $AppUI->_( "View PDF File" );
-			echo "</a>";
-		} else {
-			echo "Could not open file to save PDF.  ";
-			if (!is_writable( $temp_dir )) {
-				"The files/temp directory is not writable.  Check your file system permissions.";
-			}
+	
+		foreach($allpdfdata as $company => $data) {
+			$title = $company;
+			$options = array(
+				'showLines' => 1,
+				'showHeadings' => 0,
+				'fontSize' => 8,
+				'rowGap' => 2,
+				'colGap' => 5,
+				'xPos' => 50,
+				'xOrientation' => 'right',
+				'width'=>'500'
+			);
+	
+			$pdf->ezTable( $data, NULL, $title, $options );
 		}
+
+		require_once $AppUI->getModuleClass('reports');	
+		$Report = new dPReport();
+		$Report->initializePDF();
+		$Report->write('temp'.$AppUI->user_id.'.pdf', $pdf->ezOutput());
 	}
 }
 ?>

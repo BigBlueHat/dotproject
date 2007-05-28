@@ -351,8 +351,6 @@ if ($do_report)
 		echo db_error();
 
 		$font_dir = DP_BASE_DIR . '/lib/ezpdf/fonts';
-		$temp_dir = DP_BASE_DIR . '/files/temp';
-		$base_url  = DP_BASE_URL;
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
 
 		$pdf =& new Cezpdf();
@@ -387,18 +385,10 @@ if ($do_report)
 
 		$pdf->ezTable( $pdfdata, $headers, '', $options );
 
-		if ($fp = fopen( "$temp_dir/temp$AppUI->user_id.pdf", 'wb' )) {
-			fwrite( $fp, $pdf->ezOutput() );
-			fclose( $fp );
-			echo "<a href=\"$base_url/files/temp/temp$AppUI->user_id.pdf\" target=\"pdf\">";
-			echo $AppUI->_( "View PDF File" );
-			echo "</a>";
-		} else {
-			echo "Could not open file to save PDF.  ";
-			if (!is_writable( $temp_dir )) {
-				"The files/temp directory is not writable.  Check your file system permissions.";
-			}
-		}
+		require_once $AppUI->getModuleClass('reports');	
+		$Report = new dPReport();
+		$Report->initializePDF();
+		$Report->write('temp'.$AppUI->user_id.'.pdf', $pdf->ezOutput());
 	}
 }
 ?>
