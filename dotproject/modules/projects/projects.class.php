@@ -332,7 +332,17 @@ class CProject extends CDpObject {
 		$aBuf2 = db_loadColumn ($sql);
 		
 		return array_merge ($aBuf1, $aBuf2); 
+	}
+	function getAllowedProjectsInRows($userId) {
+		$q = new DBQuery;
+		$q->addTable('projects');
+		$q->addQuery('project_id, project_status, project_name, project_description, project_short_name');                     
+		$q->addGroup('project_id');
+		$q->addOrder('project_short_name');
+		$this->setAllowedSQL($userId, $q);
+		$allowedProjectRows = $q->exec();
 		
+		return $allowedProjectRows;
 	}
 
 	/** 
