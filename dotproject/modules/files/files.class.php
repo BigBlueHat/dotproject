@@ -103,12 +103,35 @@ class CFile extends CDpObject {
 		$this->file_id = intval( $this->file_id );
 		$this->file_version_id = intval($this->file_version_id);
 		$this->file_parent = intval( $this->file_parent );
-		// $this->file_category = intval( $this->file_category );
 		$this->file_task = intval( $this->file_task );
 		$this->file_project = intval( $this->file_project );
 
-		return null; // object is ok
+		return NULL; // object is ok
 	}
+	
+	function checkout($userId, $fileId, $coReason) {
+		$q  = new DBQuery;
+		$q->addTable('files');
+		$q->addUpdate('file_checkout', $userId);
+		$q->addUpdate('file_co_reason', $coReason );
+		$q->addWhere('file_id = '.$fileId);
+		$q->exec();
+		$q->clear();
+
+		return true;
+	}
+	function touchFileVersion() {
+		$q  = new DBQuery;
+		$q->addTable('files');
+		$q->addQuery('file_version_id');
+		$q->addWhere('file_id = '.$this->file_id);
+		$q->addOrder('file_version_id DESC');
+		$q->setLimit(1);
+		$sql = $q->prepare();
+		$q->clear();
+		$latest_file_version = db_loadResult($sql);
+		$this->file_version_id = $latest_file_version + 1;
+	} 
 
 	function delete() {
 		if (!$this->canDelete( $msg ))
@@ -566,10 +589,10 @@ class CFileFolder extends CDpObject {
 	/** @return string Returns the name of the parent folder or null if no parent was found **/
 	function getParentFolderName() {
 		$q = new DBQuery();
-      	$q->addTable($this->_tbl);
-      	$q->addQuery('file_folder_name');
-      	$q->addWhere("file_folder_id=$this->file_folder_parent");
-      	$sql = $q->prepare();
+  	$q->addTable($this->_tbl);
+  	$q->addQuery('file_folder_name');
+  	$q->addWhere("file_folder_id=$this->file_folder_parent");
+  	$sql = $q->prepare();
 /*		$sql = "SELECT file_folder_name" .
 				"FROM file_folders" .
 				"WHERE file_folder_id = $this->file_folder_parent";*/
@@ -578,12 +601,41 @@ class CFileFolder extends CDpObject {
 
 	function countFolders() {
 		$q = new DBQuery();
-      	$q->addTable($this->_tbl);
-      	$q->addQuery('COUNT(*)');
-      	$sql = $q->prepare();
+  	$q->addTable($this->_tbl);
+  	$q->addQuery('COUNT(*)');
+  	$sql = $q->prepare();
 //		$sql = "SELECT COUNT(*) FROM $this->_tbl;";
 		$result = db_loadResult($sql);
 		return $result;
+	}
+}
+
+function getFolderSelectList() {
+	global $AppUI;
+	$folders = array( 0 => '' );
+  $q = new DBQuery();
+	$q->addTable('file_folders');
+	$q->addQuery('file_folder_id, file_folder_name, file_folder_parent');
+	$q->addOrder('file_folder_name');
+	$sql = $q->prepare();
+	$vfolders = arrayMerge( array( '0'=>array( 0, $AppUI->_('Root'), -1 ) ), db_loadHashList( $sql, 'file_folder_id' ));
+	$folders = array_filter($vfolders, "check_perm");
+	return $folders;
+}
+function check_perm(&$var) {
+	global $m;
+	if ($var[0] == 0) {
+		return true;	
+	}
+	// if folder can be edited, keep in array
+	if (!getDenyEdit( $m, $var['file_folder_id'])) {
+		if ( getDenyEdit( $m, $var['file_folder_parent']) ) {
+			$var[2] = 0;
+			$var['file_folder_parent'] = 0;
+		}
+		return true;
+	} else {
+		return false;	
 	}
 }
 

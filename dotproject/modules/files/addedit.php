@@ -17,7 +17,6 @@ if (!$canEdit) {
 if (file_exists(DP_BASE_DIR.'/modules/helpdesk/config.php')) {
 	include (DP_BASE_DIR . '/modules/helpdesk/config.php');
 }
-require (DP_BASE_DIR . '/modules/files/functions.php');
 
 $canAdmin = $perms->checkModule('system', 'edit');
 // add to allow for returning to other modules besides Files
@@ -41,8 +40,6 @@ $msg = '';
 $obj = new CFile();
 $canDelete = $obj->canDelete( $msg, $file_id );
 
-// load the record data
-// $obj = null;
 if ($file_id > 0 && ! $obj->load($file_id)) {
 	$AppUI->setMsg( 'File' );
 	$AppUI->setMsg( "invalidID", UI_MSG_ERROR, true );
