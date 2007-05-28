@@ -72,8 +72,8 @@ class LocalFileManager implements iFileManager {
 	public function updateFile() {
 		return true;
 	}
-	public function deleteFile() {
-		return true;
+	public function deleteFile($file) {
+		return @unlink(DP_BASE_DIR.'/files/'.$file->file_project.'/'.$file->file_real_filename);
 	}
 	public function summarizeFile() {
 		return true;

@@ -135,13 +135,16 @@ class CFile extends CDpObject {
 	} 
 
 	function delete() {
-		if (!$this->canDelete( $msg ))
+		if (!$this->canDelete( $msg )) {
 			return $msg;
+		}
 		$this->_message = "deleted";
 		addHistory('files', $this->file_id, 'delete',  $this->file_name, $this->file_project);
-	// remove the file from the file system
+
+		// remove the file from the file system
 		$this->deleteFile();
-	// delete any index entries
+
+		// delete any index entries
 		$q  = new DBQuery;
 		$q->setDelete('files_index');
 		$q->addQuery('*');
@@ -150,7 +153,8 @@ class CFile extends CDpObject {
 			$q->clear();
 			return db_error();
 		}
-	// delete the main table reference
+
+		// delete the main table reference
 		$q->clear();
 		$q->setDelete('files');
 		$q->addQuery('*');
@@ -171,7 +175,9 @@ class CFile extends CDpObject {
 	 * delete File from File System
 	 */
 	function deleteFile() {
-		return @unlink(DP_BASE_DIR.'/files/'.$this->file_project.'/'.$this->file_real_filename);
+		$fileManagerClass = dPgetConfig('file_backend') != '' ? dPgetConfig('file_backend') : 'LocalFileManager'; 
+		$fileManager = new $fileManagerClass();
+		$resultFile = $fileManager->deleteFile($this);
 	}
 	
 	function streamFile($fileId) {

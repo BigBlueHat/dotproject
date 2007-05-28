@@ -48,8 +48,7 @@ $obj->file_category = intval( dPgetParam( $_POST, 'file_category', 0 ) );
 $version = dPgetParam( $_POST, 'file_version', 0 );
 $revision_type   = dPgetParam( $_POST, 'revision_type', 0 );
 
-if ( strcasecmp('major', $revision_type) == 0 )
-{
+if ( strcasecmp('major', $revision_type) == 0 ) {
   $major_num = strtok($version, ".") + 1;
   $_POST['file_version']= $major_num;
 }
@@ -115,8 +114,7 @@ if (isset( $_FILES['formfile'] )) {
 			$AppUI->redirect($redirect);
 		}
 	} else {
-
-	// store file with a unique name
+		// store file with a unique name
 		$obj->file_name = $upload['name'];
 		$obj->file_type = $upload['type'];
 		$obj->file_size = $upload['size'];
@@ -125,8 +123,8 @@ if (isset( $_FILES['formfile'] )) {
 
 		$res = $obj->moveTemp( $upload );
 		if (!$res) {
-		    $AppUI->setMsg( 'File could not be written', UI_MSG_ERROR );
-		    $AppUI->redirect($redirect);
+			$AppUI->setMsg( 'File could not be written', UI_MSG_ERROR );
+			$AppUI->redirect($redirect);
 		}
 
 	}
@@ -143,8 +141,7 @@ if ($file_id && ($obj->file_project != $oldObj->file_project) ) {
 
 if (!$file_id) {
 	$obj->file_owner = $AppUI->user_id;
-	if (! $obj->file_version_id)
-	{
+	if (! $obj->file_version_id) {
 		$q  = new DBQuery;
 		$q->addTable('files');
 		$q->addQuery('file_version_id');
