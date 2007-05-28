@@ -106,7 +106,7 @@ if (!$canRead) {
 $file_id = isset($_GET['file_id']) ? $_GET['file_id'] : 0;
 
 if ($file_id) {
-	// projects tat are denied access
+	// projects that are denied access
 	require_once($AppUI->getModuleClass('projects'));
 	require_once($AppUI->getModuleClass('files'));
 	$project =& new CProject;
@@ -118,51 +118,10 @@ if ($file_id) {
 	if (count($allowedFiles) && ! array_key_exists($file_id, $allowedFiles)) {
 		$AppUI->redirect( 'm=public&a=access_denied' );
 	}
+	
+	// TODO: check permissions and redirect before this
+	$fileclass->streamFile($file_id);
 
-	$q = new DBQuery;
-	$q->addTable('files');
-	if ($fileclass->file_project) {
-		$project->setAllowedSQL($AppUI->user_id, $q, 'file_project');
-	}
-	$q->addWhere("file_id = '$file_id'");
-	$sql = $q->prepare();
-
-	if (!db_loadHash( $sql, $file )) {
-		$AppUI->redirect('m=public&a=access_denied');
-	};
-
-	$fname = DP_BASE_DIR . '/files/'.$file['file_project'].'/'.$file['file_real_filename'];
-	if (! file_exists($fname)) {
-		$AppUI->setMsg('fileIdError', UI_MSG_ERROR);
-		$AppUI->redirect();
-	}
-    
-    /*
-     * MerlinYoda> 
-     * some added lines from: 
-     * http://www.dotproject.net/vbulletin/showpost.php?p=11975&postcount=13
-     * along with "Pragma" header as suggested in: 
-     * http://www.dotproject.net/vbulletin/showpost.php?p=14928&postcount=1. 
-     * to fix the IE download issue for all for http and https
-     * 
-     */ 
-	header('MIME-Version: 1.0');
-	header('Pragma: ');
-	header('Cache-Control: public');
-	header('Content-length: ' . $file['file_size']);
-	header('Content-type: ' . $file['file_type']);
-	header('Content-transfer-encoding: 8bit');
-	header('Content-disposition: attachment; filename="'.$file['file_name'].'"');
-
-	// read and output the file in chunks to bypass limiting settings in php.ini
-	$handle = fopen(DP_BASE_DIR . "/files/{$file['file_project']}/{$file['file_real_filename']}", 'rb');
-	if ($handle)
-	{
-		while ( !feof($handle) ) {
-			print fread($handle, 8192);
-		}
-		fclose($handle);
-	}
 } else {
 	$AppUI->setMsg( 'fileIdError', UI_MSG_ERROR );
 	$AppUI->redirect();

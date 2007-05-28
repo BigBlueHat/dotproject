@@ -11,6 +11,7 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 if (array_key_exists( 'helpdesk', $AppUI->getInstalledModules() )) {
 	require_once( $AppUI->getModuleClass( 'helpdesk' ) );
 }
+include_once DP_BASE_DIR.'/modules/files/storage/localFileManager.class.php';
 
 /**
 * File Class
@@ -171,6 +172,33 @@ class CFile extends CDpObject {
 	 */
 	function deleteFile() {
 		return @unlink(DP_BASE_DIR.'/files/'.$this->file_project.'/'.$this->file_real_filename);
+	}
+	
+	function streamFile($fileId) {
+		global $AppUI;
+
+		$q = new DBQuery;
+		$q->addTable('files');
+		if ($fileclass->file_project) {
+			$project->setAllowedSQL($AppUI->user_id, $q, 'file_project');
+		}
+		$q->addWhere('file_id = '.$fileId);
+		$sql = $q->prepare();
+
+		if (!db_loadHash( $sql, $file )) {
+			$AppUI->redirect('m=public&a=access_denied');
+		};
+	
+		$fname = DP_BASE_DIR . '/files/'.$file['file_project'].'/'.$file['file_real_filename'];
+		if (! file_exists($fname)) {
+			$AppUI->setMsg('fileIdError', UI_MSG_ERROR);
+			$AppUI->redirect();
+		}
+
+		$fileManagerClass = dPgetConfig('file_backend') != '' ? dPgetConfig('file_backend') : 'LocalFileManager'; 
+		$fileManager = new $fileManagerClass();
+		$resultFile = $fileManager->retrieveFile($file);
+		print $resultFile;
 	}
 
 	/** 
