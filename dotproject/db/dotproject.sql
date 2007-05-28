@@ -299,7 +299,7 @@ CREATE TABLE `projects` (
     KEY `idx_sdate` (`project_start_date`),
     KEY `idx_edate` (`project_end_date`),
     KEY `project_short_name` (`project_short_name`),
-    KEY `idx_proj1` (`project_company`),
+    KEY `idx_proj1` (`project_company`)
 );
 
 ALTER TABLE projects ADD INDEX `project_identifiers` (`project_name`, `project_color_identifier`);
