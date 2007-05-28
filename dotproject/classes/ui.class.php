@@ -1084,10 +1084,9 @@ the active tab, and the selected tab **/
 	/** Find out if the tabbox is in tabbed mode (not flat mode)
 	 * @return True if the tabbox is in tabbed mode
 	 */
-	function isTabbed()
-	{
+	function isTabbed() {
 		global $AppUI;
-		if ($this->active < 0 || @$AppUI->getPref( 'TABVIEW' ) == 2 )
+		if ($this->active < -1 || @$AppUI->getPref( 'TABVIEW' ) == 2 )
 			return false;
 		return true;
 	}
