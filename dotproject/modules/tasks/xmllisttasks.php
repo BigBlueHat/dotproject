@@ -32,8 +32,8 @@
 
 		foreach($tasks as $t)
 		{
-			$start_date = new Date($t['task_start_date']);
-			$end_date = new Date($t['task_end_date']);
+			$start_date = new CDate($t['task_start_date']);
+			$end_date = new CDate($t['task_end_date']);
 		
 			echo "<event start=\"".$start_date->format("%B %d %Y %H:%M:%S GMT")."\" end=\"".$end_date->format("%B %d %Y %H:%M:%S GMT")."\"";
 			if ($t['task_milestone'] == 0) echo " isDuration=\"true\"";

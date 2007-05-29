@@ -121,8 +121,8 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 			}
 
 			// Optimised for speed, AJD.
-			while (Date::compare( $endPeriod, $temp ) > 0 
-			    && Date::compare($target, $temp) > 0
+			while (CDate::compare( $endPeriod, $temp ) > 0 
+			    && CDate::compare($target, $temp) > 0
 			    && ( $end == null || $temp->before($end) ) ) {
 				$links[$temp->format( FMT_TIMESTAMP_DATE )][] = $link;
 				$temp->addSeconds( $sid );

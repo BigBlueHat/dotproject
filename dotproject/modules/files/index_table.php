@@ -268,7 +268,7 @@ foreach ($files as $file_row) {
 		{
 			if ($file['file_version_id'] == $latest_file['file_version_id'])
 			{
-				$hdate = new Date($file['file_date']);
+				$hdate = new CDate($file['file_date']);
 				$hidden_table .= '
 					<tr>
 						<td nowrap="nowrap" width="20">&nbsp;';
