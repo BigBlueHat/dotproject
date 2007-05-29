@@ -103,7 +103,7 @@ $tabview = array( 'tabbed' );
 
 $last_group = '';
 
-$tz = Date_TimeZone::getAvailableIDs();
+$tz = CDate::getAvailableTimezones();
 sort($tz);
 $timezones = array();
 foreach ($tz as $timezone)
