@@ -200,7 +200,6 @@ $xpg_total_pages = ($xpg_totalrecs > $xpg_pagesize) ? ceil($xpg_totalrecs / $xpg
 //shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $folder);
 
 //Lets add our bulk form
-	require (DP_BASE_DIR.'/modules/files/functions.php');
 	$folders_avail = getFolderSelectList();
 	//used O (uppercase 0)instead of 0 (zero) to keep things in place
 	$folders = array('-1' => Array ( 0 => 'O', 1 => '(Move to Folder)', 2 => -1 )) + array('0' => Array ( 0 => 0, 1 => 'Root', 2 => -1 )) + $folders_avail;
