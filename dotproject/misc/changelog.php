@@ -75,7 +75,6 @@ if ($changed_lines > 0)
 	exec('cvs ci -m "Updating ChangeLog on ' . date('Y-m-d') . '" ChangeLog');
 	exec('cvs update ChangeLog');
 	// Update ChangeLog to include latest Changelog change
-	exec('misc/cvs2cl/cvs2cl.pl --dp --accum');
 	copy('ChangeLog', 'ChangeLog.bak');
 }
 else {
@@ -89,9 +88,7 @@ $html .= '
 
 $dir = getcwd();
 $ver = substr($dir, strrpos($dir, '/') + 1);
-$headers = 'From: dotProject ChangeLog updater <cyberhorse@dotproject.net>' . "\n";
-$headers .= 'Reply-To: dotProject ChangeLog updater <cyberhorse@dotproject.net>' . "\n";
-$headers .= 'MIME-Version: 1.0' . "\n";
+$headers = 'MIME-Version: 1.0' . "\n";
 $headers .= 'Content-type: text/html; UTF-8' . "\n";
 
 /**** multipart
