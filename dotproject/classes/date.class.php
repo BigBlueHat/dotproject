@@ -92,17 +92,16 @@ class CDate extends Date {
 			$d1->convertTZ(new Date_TimeZone('UTC'));
 			$d2->convertTZ(new Date_TimeZone('UTC'));
 		}
-		$days1 = Date_Calc::dateToDays($d1->day, $d1->month, $d1->year);
-		$days2 = Date_Calc::dateToDays($d2->day, $d2->month, $d2->year);
-		if($days1 < $days2) return -1;
-		if($days1 > $days2) return 1;
-		if($d1->hour < $d2->hour) return -1;
-		if($d1->hour > $d2->hour) return 1;
-		if($d1->minute < $d2->minute) return -1;
-		if($d1->minute > $d2->minute) return 1;
-		if($d1->second < $d2->second) return -1;
-		if($d1->second > $d2->second) return 1;
-		return 0;
+		
+		$days1 = $d1->format('%Y%m%d');
+		$days2 = $d2->format('%Y%m%d');
+		if ($days1 < $days2) {
+			return -1;
+		}	elseif ($days1 > $days2) {
+			return 1;
+		}	else { // equal
+			return 0;
+		}
 	}
 
 	/**

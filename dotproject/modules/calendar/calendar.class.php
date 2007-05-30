@@ -108,18 +108,17 @@ class CMonthCalendar {
 		$m = $this->this_month->getMonth();
 		$y = $this->this_month->getYear();
 
-		//$date = Date_Calc::beginOfPrevMonth( $d, $m, $y-1, FORMAT_ISO );
 		$this->prev_year = new CDate($date);
 		$this->prev_year->setYear($this->prev_year->getYear() - 1);
 
 		$this->next_year = new CDate($date);
 		$this->next_year->setYear($this->next_year->getYear() + 1);
 
-		$date = Date_Calc::beginOfPrevMonth($d, $m, $y, FMT_TIMESTAMP_DATE);
-		$this->prev_month = new CDate($date);
+		$this->prev_month = new CDate($this->this_month);
+		$this->prev_month->addMonths(-1);
 
-		$date = Date_Calc::beginOfNextMonth($d, $m, $y, FMT_TIMESTAMP_DATE);
-		$this->next_month = new CDate($date);
+		$this->next_month = new CDate($this->this_month);
+		$this->next_month->addMonths(1);
 	}
 
 /**
@@ -264,6 +263,32 @@ class CMonthCalendar {
 		return $tpl->fetchFile('_title', 'calendar');
 	}
 	
+	function _drawMonthsAbbr() {
+		global $a, $m;
+	
+		$url = 'index.php?m='.$m;
+		$url .= $a ? '&amp;a='.$a : '';
+		$url .= isset( $_GET['dialog']) ? '&amp;dialog=1' : '';
+	
+		$year = new CDate();
+		$year->copy($this->this_month);
+		for($i = 1; $i <= 12; $i++) {
+			$year->setMonth($i);
+			//$month = $i;
+			//if ($this->styleMain != 'minical')
+			$month = $year->getMonthName();
+			if (!$this->showWeek) {
+				global $l10n;
+				
+				$month = $l10n->substr($month, 0, 1);
+			}
+			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE) . '">' . $month . '</a></td>';
+			
+		}
+
+		return "\n" . '<tr><td colspan="8"><table class="tbl" width="100%"><tr>' . $s . '</tr></table></td></tr>';
+	}
+	
 	function _drawMonths() {
 		global $a, $m;
 	
@@ -297,15 +322,9 @@ class CMonthCalendar {
 	function _drawDays() {
 		global $locale_char_set;
 
-		$bow = Date_Calc::beginOfWeek(null, null, null, null, LOCALE_FIRST_DAY);
-		$y = substr( $bow, 0, 4 );
-		$m = substr( $bow, 4, 2 );
-		$d = substr( $bow, 6, 2 );
-		$wk = Date_Calc::getCalendarWeek($d, $m, $y, '%a', LOCALE_FIRST_DAY);
-
 		$s = $this->showWeek ? "\n\t\t<th>&nbsp;</th>" : "";
-		foreach( $wk as $day ) {
-			$s .= "\n\t\t<th width=\"14%\">" . htmlentities($day, ENT_COMPAT, $locale_char_set) . "</th>";
+		for( $day = 0; $day < 7; $day++ ) {
+			$s .= "\n\t\t<th width=\"14%\">" . htmlentities(CDate::getWeekdayAbbrname(($day + LOCALE_FIRST_DAY) % 7), ENT_COMPAT, $locale_char_set) . "</th>";
 		}
 
 		return "\n<tr>$s\n</tr>";
@@ -839,7 +858,7 @@ class CEvent extends CDpObject {
 			else
 				$start = true;
 			
-		$body .= $user[contact_first_name].' '.$user[contact_last_name];
+		$body .= $user['contact_first_name'].' '.$user['contact_last_name'];
 	  }
 	  $bodyContacts = $body . "\n\n" . $this->event_description . "\n";
 

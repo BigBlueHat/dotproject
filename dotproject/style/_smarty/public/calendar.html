@@ -1,13 +1,8 @@
 <a href="javascript:void(0);" onclick="clickDay('', '');">{dPtranslate word='clear date'}</a>
 {$calendar}
 <table border="0" cellspacing="0" cellpadding="3" width="100%">
-<tr>
-{foreach from=$months item='month' key='date'}
-	<td width="8%">
-		<a href="index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback={$callback}&amp;date={$date}&amp;uts={$prev_date}" class="">{$month}</a>
-	</td>
-{/foreach}
-</tr>
+{$months}
+
 <tr>
 	<td colspan="6" align="left">
 		<a href="index.php?m=public&amp;a=calendar&amp;dialog=1&amp;callback={$callback}&amp;date={$previous_year}&amp;uts={$prev_date}" class="">{$previous_year_display}</a>

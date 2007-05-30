@@ -30,15 +30,8 @@ if(isset($prev_date))
 	$cal->showHighlightedDays = true;
 }
 
-//$months = array();
-$i = 0;
-while ($i < 12) 
-{
-	$this_month->setMonth( ++$i );
-	$months[$this_month->format( FMT_TIMESTAMP_DATE )] = substr($this_month->format('%b'), 0, 1);
-}
-
-$tpl->assign('months', $months);
+//$tpl->assign('months', $months);
+$tpl->assign('months', $cal->_drawMonthsAbbr());
 $tpl->assign('calendar', $cal->show());
 $tpl->assign('callback', $callback);
 $tpl->assign('previous_year', $cal->prev_year->format(FMT_TIMESTAMP_DATE));
