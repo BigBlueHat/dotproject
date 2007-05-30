@@ -642,7 +642,7 @@ class CEvent extends CDpObject {
 		
 
 	//Calculate the Length of Period (Daily, Weekly, Monthly View)
-		$periodLength = Date_Calc::dateDiff($start_date->getDay(),$start_date->getMonth(),$start_date->getYear(),$end_date->getDay(),$end_date->getMonth(),$end_date->getYear());
+		$periodLength = abs(CDate::compare($start_date, $end_date));
 
 
 		// AJD: Should this be going off the end of the array?	I don't think so.

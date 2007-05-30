@@ -93,15 +93,9 @@ class CDate extends Date {
 			$d2->convertTZ(new Date_TimeZone('UTC'));
 		}
 		
-		$days1 = $d1->format('%Y%m%d');
-		$days2 = $d2->format('%Y%m%d');
-		if ($days1 < $days2) {
-			return -1;
-		}	elseif ($days1 > $days2) {
-			return 1;
-		}	else { // equal
-			return 0;
-		}
+		$days1 = (int) $d1->format('%Y%m%d');
+		$days2 = (int) $d2->format('%Y%m%d');
+		return $days1 - $days2;
 	}
 
 	/**
