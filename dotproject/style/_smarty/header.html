@@ -43,7 +43,7 @@
 	<tr>
 		<td>
 	{foreach from=$modules item='mod' name='mods'}
-		<a href="?m={$mod.mod_directory}">{$mod.mod_ui_name}</a> {if !$smarty.foreach.mods.last} | {/if}
+		<a href="?m={$mod.mod_directory}">{dPtranslate word=$mod.mod_ui_name}</a> {if !$smarty.foreach.mods.last} | {/if}
 	{/foreach}
 		</td>
 		<td nowrap="nowrap" align="right">

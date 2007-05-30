@@ -24,17 +24,22 @@ $locales = $AppUI->readDirs( 'locales' );
 
 ob_start();
 // read language files from module's locale directory preferrably
-	if (file_exists(DP_BASE_DIR . "/modules/$modules[$module]/locales/en.inc" ) )
+	if (file_exists(DP_BASE_DIR . "/modules/$modules[$module]/locales/en.inc" ) ) {
 		@readfile(DP_BASE_DIR . "/modules/$modules[$module]/locales/en.inc" );
-	else
+		if (!is_writable(DP_BASE_DIR . "/modules/{$modules[$module]}/locales/{$lang}.inc")) 
+		  $AppUI->setMsg( "File modules/{$modules[$module]}/locales/{$lang}.inc  not writable. ".
+		                  'You won\'t be able to save any changes!', UI_MSG_ERROR );
+	}	
+	else {
 		@readfile(DP_BASE_DIR . "/locales/en/$modules[$module].inc" );
+		if (!is_writable(DP_BASE_DIR . '/locales/'.$lang.'/' . $modules[$module] . '.inc')) 
+		  $AppUI->setMsg( 'File '.$modules[$module].'.inc not writable. You won\'t be able to save any changes!', UI_MSG_ERROR );
+	}
 	
 	eval( "\$english=array(".ob_get_contents()."\n'0');" );
 ob_end_clean();
-if (!is_writable(DP_BASE_DIR . '/locales/'.$lang.'/' . $modules[$module] . '.inc')) {
-  $AppUI->setMsg( "File {$modules[$module]}.inc not writable. You won't be able to save any changes!", UI_MSG_ERROR );
-  echo $AppUI->getMsg(true);
-} 
+
+echo $AppUI->getMsg(true);
 
 $trans = array();
 foreach( $english as $k => $v ) {
@@ -68,7 +73,7 @@ $titleBlock = new CTitleBlock( 'Translation Management', 'rdf2.png', $m, "$m.$a"
 $titleBlock->addCell(
 '<form action="?m=system&amp;a=translate" method="post" name="modlang">'.
 	$AppUI->_( 'Module' ) . 
-  arraySelect( $modules, 'module', 'size="1" class="text" onchange="document.modlang.submit();"', $module ) . 
+	arraySelect( $modules, 'module', 'size="1" class="text" onchange="document.modlang.submit();"', $module ) . 
 	$AppUI->_( 'Language' ) .
 	arraySelect( $locales, 'lang', 'size="1" class="text" onchange="document.modlang.submit();"', $lang, true ) . 
 '</form>', '', '', '');
