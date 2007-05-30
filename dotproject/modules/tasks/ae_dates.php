@@ -53,18 +53,8 @@ if ($dot = strpos($task_duration, '.') && $obj->task_duration_type == 1)
 // convert the numeric calendar_working_days config array value to a human readable output format
 $cwd = explode(',', dPgetConfig('cal_working_days'));
 
-$cwd_conv = array_map('cal_work_day_conv', $cwd);
+$cwd_conv = array_map(array('CDate', 'getWeekdayAbbrname'), $cwd);
 $cwd_hr = implode(', ', $cwd_conv);
-
-function cal_work_day_conv($val) 
-{
-	global $locale_char_set;
-	$wk = Date_Calc::getCalendarWeek( null, null, null, '%a', LOCALE_FIRST_DAY );
-	
-	$day_name = $wk[($val - LOCALE_FIRST_DAY)%7];
-	
-	return htmlentities($day_name, ENT_COMPAT, $locale_char_set);
-}
 
 if ($start_date)
 {

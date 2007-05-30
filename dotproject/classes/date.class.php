@@ -471,6 +471,15 @@ class CDate extends Date {
 		global $_DATE_TIMEZONE_DATA;
 		return array_keys($_DATE_TIMEZONE_DATA);
 	}
+	
+	function getWeekdayAbbrname($day = false) 
+	{
+		if ($day === false)
+			$day = $this->format('%w');
+		$time = strtotime('this Sunday');
+		$time += SEC_DAY * $day;
+		return strftime('%a', $time);
+	}
 }
 
 $GLOBALS['_DATE_TIMEZONE_DATA'] = array(
