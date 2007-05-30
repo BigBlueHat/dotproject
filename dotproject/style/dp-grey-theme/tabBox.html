@@ -35,7 +35,6 @@
 {if $js_tabs}
 	{foreach from=$tabs item=v key=k} 
 	<div class="tab" id="tab_{$k}">
-	{$base.$v[0].php}
 		{dPrequire file="$base$v[0].php"}
 	</div>
 	{/foreach}
