@@ -20,7 +20,6 @@ if ($file_id) {
 	$obj->_message = 'updated';
 	$oldObj = new CFile();
 	$oldObj->load( $file_id );
-
 } else {
 	/*
 	** @date 		20070309

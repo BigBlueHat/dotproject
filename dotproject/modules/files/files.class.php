@@ -171,15 +171,21 @@ class CFile extends CDpObject {
 		return null;
 	}
 
+	function getStorageEngine() {
+		/*
+		 * Brought this engine resolution here to hide the implementation because
+		 * I'm not convinced that this is the best way to do it.
+		 */ 
+		return dPgetConfig('file_backend') != '' ? dPgetConfig('file_backend') : 'LocalFileManager';
+	}
 	/** 
 	 * delete File from File System
 	 */
 	function deleteFile() {
-		$fileManagerClass = dPgetConfig('file_backend') != '' ? dPgetConfig('file_backend') : 'LocalFileManager'; 
+		$fileManagerClass = $this->getStorageEngine(); 
 		$fileManager = new $fileManagerClass();
 		$resultFile = $fileManager->deleteFile($this);
 	}
-	
 	function streamFile($fileId) {
 		global $AppUI;
 
@@ -201,7 +207,7 @@ class CFile extends CDpObject {
 			$AppUI->redirect();
 		}
 
-		$fileManagerClass = dPgetConfig('file_backend') != '' ? dPgetConfig('file_backend') : 'LocalFileManager'; 
+		$fileManagerClass = $this->getStorageEngine(); 
 		$fileManager = new $fileManagerClass();
 		$resultFile = $fileManager->retrieveFile($file);
 		print $resultFile;
@@ -211,67 +217,23 @@ class CFile extends CDpObject {
 	 * move the file if the affiliated project was changed
 	 */
 	function moveFile( $oldProj, $realname ) {
-		global $AppUI;
-		
-		if (!is_dir(DP_BASE_DIR."/files/$this->file_project")) {
-			$res = mkdir( DP_BASE_DIR."/files/$this->file_project", 0777 );
-			if (!$res) {
-				$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-				return false;
-			}
-		}
-		$res = rename(DP_BASE_DIR."/files/$oldProj/$realname", DP_BASE_DIR."/files/$this->file_project/$realname");
-
-		if (!$res) {
-			return false;
-		}
-		return true;
+		$fileManagerClass = $this->getStorageEngine(); 
+		$fileManager = new $fileManagerClass();
+		return $fileManager->moveFile($this, $oldProj, $realname);
 	}
 
 	// duplicate a file into root
 	function duplicateFile( $oldProj, $realname ) {
-		global $AppUI;
-		if (!is_dir(DP_BASE_DIR.'/files/0')) {
-			$res = mkdir(DP_BASE_DIR.'/files/0', 0777);
-			if (!$res) {
-				$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-				return false;
-			}
-		}
-		$dest_realname = uniqid( rand() );
-		$res = copy(DP_BASE_DIR . "/files/$oldProj/$realname", DP_BASE_DIR . '/files/0/'.$dest_realname);
-
-		if (!$res) {
-			return false;
-		}
-		return $dest_realname;
+		$fileManagerClass = $this->getStorageEngine(); 
+		$fileManager = new $fileManagerClass();
+		return $fileManager->duplicateFile($this, $oldProj, $realname);
 	}
 
 // move a file from a temporary (uploaded) location to the file system
 	function moveTemp( $upload ) {
-		global $AppUI;
-	// check that directories are created
-		if (!is_dir(DP_BASE_DIR . '/files')) {
-		    $res = mkdir(DP_BASE_DIR . '/files', 0777);
-		    if (!$res) {
-			     return false;
-			 }
-		}
-		if (!is_dir(DP_BASE_DIR . '/files/'.$this->file_project)) {
-		    $res = mkdir(DP_BASE_DIR . '/files/'.$this->file_project, 0777 );
-			if (!$res) {
-				$AppUI->setMsg( "Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT );
-				return false;
-			}
-		}
-
-		$this->_filepath = DP_BASE_DIR . "/files/$this->file_project/$this->file_real_filename";
-	// move it
-		$res = move_uploaded_file( $upload['tmp_name'], $this->_filepath );
-		if (!$res) {
-			return false;
-		}
-		return true;
+		$fileManagerClass = $this->getStorageEngine();
+		$fileManager = new $fileManagerClass();
+		return $fileManager->createFile($this, $upload);
 	}
 
 // parse file for indexing
