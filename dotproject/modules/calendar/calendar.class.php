@@ -282,7 +282,7 @@ class CMonthCalendar {
 				
 				$month = $l10n->substr($month, 0, 1);
 			}
-			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE) . '">' . $month . '</a></td>';
+			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE).($this->callback ? '&amp;callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&amp;uts='.key($this->highlightedDays):'') . '">' . $month . '</a></td>';
 			
 		}
 
@@ -294,6 +294,7 @@ class CMonthCalendar {
 	
 		$url = 'index.php?m='.$m;
 		$url .= $a ? '&amp;a='.$a : '';
+		$url .= $_GET['callback'] ? '&amp;callback=' . $_GET['callback'] : '';
 		$url .= isset( $_GET['dialog']) ? '&amp;dialog=1' : '';
 	
 		$year = new CDate();
@@ -305,7 +306,7 @@ class CMonthCalendar {
 			if ($this->showWeek) {
 				$month = $year->getMonthName();
 			}
-			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE) . '">' . $month . '</a></td>';
+			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE).($this->callback ? '&amp;callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&amp;uts='.key($this->highlightedDays):'') . '">' . $month . '</a></td>';
 			
 		}
 
@@ -346,7 +347,6 @@ class CMonthCalendar {
 		$this_month = intval($date->getMonth());
 		$this_year = intval($date->getYear());
 		$cal = CDateSpan::getCalendarMonth($date);
-		//Date_Calc::getCalendarMonth( $this_month, $this_year, '%Y%m%d%w', LOCALE_FIRST_DAY );
 
 		$df = $AppUI->getPref('SHDATEFORMAT');
 

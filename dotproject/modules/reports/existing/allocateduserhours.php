@@ -232,11 +232,20 @@ function userUsageWeeks() {
 GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_date, $users, $user_data, $user_usage,$use_assigned_percentage, $user_tasks_counted_in, $task, $start_date, $end_date;
 
 	$task_duration_per_week = $task->getTaskDurationPerWeek($use_assigned_percentage);
-	$ted = new CDate(Date_Calc::endOfWeek($task_end_date->day,$task_end_date->month,$task_end_date->year));
-	$tsd = new CDate(Date_Calc::beginOfWeek($task_start_date->day,$task_start_date->month,$task_start_date->year));
-	$ed = new CDate(Date_Calc::endOfWeek($end_date->day,$end_date->month,$end_date->year));
-	$sd = new CDate(Date_Calc::beginOfWeek($start_date->day,$start_date->month,$start_date->year));
-
+	$ted = new CDate($task_end_date);
+	//end of the week
+	$ted->addDays(6 - $task_end_date->format('%w') - LOCALE_FIRST_DAY);
+	$tsd = new CDate($task_start_date);
+	//beginning of the week
+	$tsd->addDays(0 - $task_start_date->format('%w') - LOCALE_FIRST_DAY);
+	
+	$ed = new CDate($end_date);
+	//end of the week
+	$ed->addDays(6 - $end_date->format('%w') - LOCALE_FIRST_DAY);
+	$tsd = new CDate($start_date);
+	//beginning of the week
+	$tsd->addDays(0 - $start_date->format('%w') - LOCALE_FIRST_DAY);
+	
 	$week_difference = $end_date->workingDaysInSpan($start_date)/count(explode(",",dPgetConfig("cal_working_days")));
 
 	$actual_date = $start_date;
@@ -410,7 +419,7 @@ GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_
 		$table_header = "<tr><th>".$AppUI->_("User")."</th>";
 		for($i=0; $i<=$days_difference; $i++){
 			if(($actual_date->isWorkingDay()) || (!$actual_date->isWorkingDay() && !$hideNonWd)) {
-			$table_header .= "<th>".utf8_encode(Date_Calc::getWeekdayAbbrname($actual_date->day, $actual_date->month, $actual_date->year, 3))."<br /><table><tr><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></tr></table></th>";	
+			$table_header .= "<th>".$actual_date->getWeekdayAbbrname()."<br /><table><tr><td style='font-weight:normal; font-size:70%'>".$actual_date->format( $df )."</td></tr></table></th>";	
 			} 
 			if($actual_date->isWorkingDay()){
 				$working_days_count++;

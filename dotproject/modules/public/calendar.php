@@ -6,7 +6,7 @@ if (!defined('DP_BASE_DIR')){
 require_once(DP_BASE_DIR . '/classes/ui.class.php');
 require_once(DP_BASE_DIR . '/modules/calendar/calendar.class.php');
 
-$callback 	= isset($_GET['callback']) ? $_GET['callback'] : 0;
+$callback 	= dPgetParam($_GET, 'callback', 0);
 $date 			= dpGetParam($_GET, 'date', null);
 $prev_date 	= dpGetParam($_GET, 'uts', null);
 
