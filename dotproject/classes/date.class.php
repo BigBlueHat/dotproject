@@ -475,6 +475,24 @@ class CDate extends Date {
 	}
 }
 
+class CDateSpan {
+	function getCalendarMonth($date)
+	{
+		$ts = $date->getTime();
+		$daysInMonth = date('t', $ts);
+		$monthDay = new CDate($date);
+		$monthDay->setDay(1);
+		$weekday = $monthDay->format('%w');
+		$month = array();
+		for ($day = $weekday - LOCALE_FIRST_DAY; $day < $daysInMonth + $weekday - LOCALE_FIRST_DAY; $day++) {
+			$month[$day / 7][$day % 7] = $monthDay->format('%Y%m%d%w');
+			$monthDay->addDays(1);
+		}
+		
+		return $month;
+	}
+}
+
 $GLOBALS['_DATE_TIMEZONE_DATA'] = array(
     'Etc/GMT+12' => array(
         'offset' => -43200000,

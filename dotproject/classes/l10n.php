@@ -14,6 +14,8 @@ class CLocalisation
 		
 		//TODO: Initialise $charset during construction!!!
 		$charset = substr($AppUI->user_lang[0], strpos($AppUI->user_lang[0], '.') + 1);
+		if (strtolower(substr($charset, 0, 3)) !== 'utf')
+			return substr($string, $start, $end);
 		
 		if (function_exists('mb_substr')) {
 			return mb_substr($string, $start, $end, $charset);

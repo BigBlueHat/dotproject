@@ -337,7 +337,7 @@ class CMonthCalendar {
 	 *
 	 */
 	 function _drawMain() {
-		GLOBAL $AppUI, $tpl;
+		global $AppUI, $tpl;
 		$today = new CDate();
 		$today = $today->format( "%Y%m%d%w" );
 
@@ -345,7 +345,8 @@ class CMonthCalendar {
 		$this_day = intval($date->getDay());
 		$this_month = intval($date->getMonth());
 		$this_year = intval($date->getYear());
-		$cal = Date_Calc::getCalendarMonth( $this_month, $this_year, '%Y%m%d%w', LOCALE_FIRST_DAY );
+		$cal = CDateSpan::getCalendarMonth($date);
+		//Date_Calc::getCalendarMonth( $this_month, $this_year, '%Y%m%d%w', LOCALE_FIRST_DAY );
 
 		$df = $AppUI->getPref('SHDATEFORMAT');
 
@@ -358,30 +359,36 @@ class CMonthCalendar {
 				$html .= $tpl->fetchFile('_week', 'calendar');
 			}
 
-			foreach ($week as $day) {
-				$this_day = new CDate($day);
-				$y		= intval(substr($day, 0, 4));
-				$m		= intval(substr($day, 4, 2));
-				$d		= intval(substr($day, 6, 2));
-				$dow	= intval(substr($day, 8, 1));
-
-				if ($m != $this_month) {
+			for ($i = 0; $i < 7; $i++) {
+				if (!isset($week[$i])) {
 					$class = 'empty';
-				} else if ($day == $today) {
-					$class = 'today';
-				} else if ($dow == 0 || $dow == 6) {
-					$class = 'weekend';
-				} else {
-					$class = 'day';
+				}	else {
+					$day = $week[$i];
+					$this_day = new CDate($day);
+					$y		= intval(substr($day, 0, 4));
+					$m		= intval(substr($day, 4, 2));
+					$d		= intval(substr($day, 6, 2));
+					$dow	= intval(substr($day, 8, 1));
+	
+					if ($m != $this_month) {
+						$class = 'empty';
+					} else if ($day == $today) {
+						$class = 'today';
+					//TODO: Colour weekend based on working days!
+					} else if ($dow == 0 || $dow == 6) {
+						$class = 'weekend';
+					} else {
+						$class = 'day';
+					}
+					
+					$day = substr( $day, 0, 8 );
 				}
-				
-				$day = substr( $day, 0, 8 );
 				$html .= "\n\t<td class=\"$class\"";
 				if($this->showHighlightedDays && isset($this->highlightedDays[$day])){
 					$html .= " style=\"border: 1px solid ".$this->highlightedDays[$day]."\"";
 				}
 				$html .= ">";
-				if ($m == $this_month) {
+				if (isset($week[$i])) {
 					if ($this->dayFunc) {
 						$html .= "<a href=\"javascript:$this->dayFunc('$day','".$this_day->format( $df )."')\" class=\"$class\">";
 						$html .= "$d";
