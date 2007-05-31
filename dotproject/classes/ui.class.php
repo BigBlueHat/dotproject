@@ -963,13 +963,11 @@ class CAppUI {
 	    }
 	  }
 	  asort($js_files);
-	  $js = '';
-		$js .= $extra_js;
-	  while(list(,$js_file_name) = each($js_files)){
-		  $js .= "<script type=\"text/javascript\" src=\"{$base}js/$js_file_name\"></script>\n";
-		  }
-		// overlib is now loaded via pop_init with smarty
-		//$js .= "<script type=\"text/javascript\" src=\"{$base}lib/overlib/overlib.js\"></script>\n";
+
+		$js = $extra_js;
+		while(list(,$js_file_name) = each($js_files)) {
+			$js .= '<script type="text/javascript" src="'.$base.'js/'.$js_file_name.'"></script>'."\n";
+		}
 		$js .= $this->getModuleJS($m, $a, true);
 		
 		return $js;
@@ -983,7 +981,7 @@ class CAppUI {
 	 * @param $load_all Default is false, If true then load $module.module.js
 	 * @return String containing javascript and <script> elements
 	 */
-	function getModuleJS($module, $file=null, $load_all = false)
+	function getModuleJS($module, $file = null, $load_all = false)
 	{
 		$root = DP_BASE_DIR;
 		if (substr($root, -1) != '/');
