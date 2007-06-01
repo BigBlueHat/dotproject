@@ -1,6 +1,5 @@
 <?php
 $email = 'core-developers@dotproject.net';
-$mime_boundary = '----dotProject----'.md5(time());
 
 exec('misc/cvs2cl/cvs2cl.pl --dp --accum');
 $old_lines = exec('cat ChangeLog.bak | wc -l');
@@ -88,10 +87,13 @@ $html .= '
 
 $dir = getcwd();
 $ver = substr($dir, strrpos($dir, '/') + 1);
+
 $headers = 'MIME-Version: 1.0' . "\n";
 $headers .= 'Content-type: text/html; UTF-8' . "\n";
 
 /**** multipart
+$mime_boundary = '----dotProject----'.md5(time());
+$headers = 'MIME-Version: 1.0' . "\n";
 $headers .= 'Content-type: multipart/alternative; boundary="'.$mime_boundary.'"' . "\n";
 
 $message = '--'.$mime_boundary."\n";
@@ -106,6 +108,9 @@ $message .= '--'.$mime_boundary."\n\n";
 */
 $message = $html;
 
-$subject = '['.$ver.'] ChangeLog ' . date('Y-m-d');
+if (!empty($users))
+	$subject = '['.$ver.'] ChangeLog ' . date('Y-m-d') . ' - ' . array_sum($users) . ' changes';
+else
+	$subject = '['.$ver.'] ChangeLog ' . date('Y-m-d') . ' - no changes';
 mail($email, $subject, $message, $headers);
 ?>
