@@ -134,7 +134,7 @@ class CTemplate extends Smarty
 		if (!$this->get_template_vars('current_url'))
 			$this->assign('current_url', '?m=' . $module);			
 
-		$total_rows = count($rows);
+		$total_rows = count($rows);		
 		$page_size = dPgetConfig('page_size', 25);
 		$i = 0;
 
@@ -152,7 +152,6 @@ class CTemplate extends Smarty
 		}
 
 		$rows = $paginated_rows;
-	
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
 		
@@ -205,8 +204,7 @@ class CTemplate extends Smarty
 		// how many direct page links to display in the pagination bar
 		$pagination['pages_size'] = 30;
 		// how many pages there are in total
-		$pagination['total_pages'] = ceil($pagination['total_records'] / $pagination['pages_size']);
-		
+		$pagination['total_pages'] = ceil($pagination['total_records'] / $pagination['page_size']);
 		$start_page = ($pagination['page'] >= ($pagination['pages_size'] / 2))?$pagination['page'] : 1;
 		$end_page = ($pagination['total_pages'] <= $pagination['page'] + $pagination['pages_size'] / 2)?$pagination['total_pages']:($pagination['page'] + ($pagination['pages_size'] / 2));
 		if ($start_page >= $end_page) // no pagination necessary - only one page!
