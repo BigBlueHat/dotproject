@@ -1,3 +1,28 @@
+2007-06-02 01:34  (revelation7)
+---------------------------------
+classes/template.class.php
+- Fixed 0001977 - pagination.html cannot handle more than 9 pages.
+
+2007-06-01 10:22  (cyberhorse)
+---------------------------------
+misc/changelog.php
+- Added number of changes to the subject line
+
+2007-06-01 09:30  (cyberhorse)
+---------------------------------
+index.php
+- Load new localisation class as one of the first things in
+
+2007-06-01 09:28  (cyberhorse)
+---------------------------------
+modules/files/index_table.new.php
+- not sure if this file is used at all, but if it is, a move away from Date to CDate
+
+2007-06-01 09:18  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-06-01
+
 2007-06-01 02:15  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
