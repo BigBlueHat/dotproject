@@ -168,7 +168,7 @@ if($do_report) {
 			$task_start_date  = new CDate($task->task_start_date);
 			$task_end_date    = new CDate($task->task_end_date);
 			
-			$day_difference   = $task_end_date->dateDiff($task_start_date);
+			$day_difference   = $task_end_date->compare($task_start_date);
 			$actual_date      = $task_start_date;
 	
 			$users            = $task->getAssignedUsers();
@@ -229,7 +229,7 @@ foreach($user_tasks_counted_in as $user_id => $project_information) {
 }
 
 function userUsageWeeks() {
-GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_date, $users, $user_data, $user_usage,$use_assigned_percentage, $user_tasks_counted_in, $task, $start_date, $end_date;
+global $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_date, $users, $user_data, $user_usage,$use_assigned_percentage, $user_tasks_counted_in, $task, $start_date, $end_date;
 
 	$task_duration_per_week = $task->getTaskDurationPerWeek($use_assigned_percentage);
 	$ted = new CDate($task_end_date);
@@ -248,11 +248,11 @@ GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_
 	
 	$week_difference = $end_date->workingDaysInSpan($start_date)/count(explode(",",dPgetConfig("cal_working_days")));
 
-	$actual_date = $start_date;
+	$actual_date = new CDate($start_date);
 
 	for($i = 0; $i<=$week_difference; $i++){
 		if(!$actual_date->before($tsd) && !$actual_date->after($ted)) {
-			$awoy = $actual_date->year.Date_Calc::weekOfYear($actual_date->day,$actual_date->month,$actual_date->year);
+			$awoy = $actual_date->year . $actual_date->getWeek();
 			foreach($users as $user_id => $user_data){
 				if(!isset($user_usage[$user_id][$awoy])){
 					$user_usage[$user_id][$awoy] = 0;
@@ -283,27 +283,27 @@ GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_
 				$user_tasks_counted_in[$user_id][$task->task_project][$task->task_id] += $hours_added;
 			}
 		}
-		$actual_date->addSeconds(168*3600);	// + one week
+		$actual_date->addDays(7);	// + one week
 	}
 }
 
 function showWeeks(){
-GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_names, $user_usage, $hideNonWd, $table_header, $table_rows, $df, $working_days_count, $total_hours_capacity, $total_hours_capacity_all;
+	global $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_names, $user_usage, $hideNonWd, $table_header, $table_rows, $df, $working_days_count, $total_hours_capacity, $total_hours_capacity_all;
 
 	$working_days_count = 0;
 	$allocated_hours_sum = 0;
 
-	$ed = new CDate(Date_Calc::endOfWeek($end_date->day,$end_date->month,$end_date->year));
-	$sd = new CDate(Date_Calc::beginOfWeek($start_date->day,$start_date->month,$start_date->year));
+	$sd = $start_date->beginOfWeek();
+	$ed = $end_date->beginOfWeek();
+	$ed->addDays(7);
 
-	$week_difference = ceil($ed->workingDaysInSpan($sd)/count(explode(",",dPgetConfig("cal_working_days"))));
-
-	$actual_date = $sd;
+	$week_difference = ceil($sd->workingDaysInSpan($ed)/count(explode(",",dPgetConfig("cal_working_days"))));
+	$actual_date = new CDate($sd);
 
 	$table_header = '<tr><th>'.$AppUI->_('User').'</th>';
 	for($i=0; $i<$week_difference; $i++){
-		$table_header .= '<th>'.Date_Calc::weekOfYear($actual_date->day, $actual_date->month, $actual_date->year).'<br /><table><tr><td style="font-weight:normal; font-size:70%">'.$actual_date->format( $df ).'</td></tr></table></th>';	
-		$actual_date->addSeconds(168*3600);	// + one week
+		$table_header .= '<th>'.$actual_date->getWeek().'<br /><table><tr><td style="font-weight:normal; font-size:70%">'.$actual_date->format( $df ).'</td></tr></table></th>';	
+		$actual_date->addDays(7);	// + one week
 	}
 	$table_header .= '<th nowrap="nowrap" colspan="2">'.$AppUI->_('Allocated').'</th></tr>';
 	
@@ -311,19 +311,19 @@ GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user
 	
 	foreach($user_list as $user_id => $user_data){
 	    @$user_names[$user_id] = $user_data['user_username'];
-		if(isset($user_usage[$user_id])) {
+		if (isset($user_usage[$user_id])) {
 			$table_rows .= '
 <tr>
 	<td nowrap="nowrap">
 		('.$user_data['user_username'].') 
 		'.$user_data['contact_first_name'].' '.$user_data['contact_last_name'].'
 	</td>';
-			$actual_date = $sd;
-			for($i=0; $i<$week_difference; $i++){	
-				$awoy = $actual_date->year.Date_Calc::weekOfYear($actual_date->day,$actual_date->month,$actual_date->year);
+			$actual_date = new CDate($sd);
+			for ($i=0; $i<$week_difference; $i++){	
+				$awoy = $actual_date->year . $actual_date->getWeek();
 
 				$table_rows .= '<td align="right">';
-				if(isset($user_usage[$user_id][$awoy])){
+				if (isset($user_usage[$user_id][$awoy])){
 
 					$hours = number_format($user_usage[$user_id][$awoy],2);
 					$table_rows .= $hours;
@@ -339,7 +339,7 @@ GLOBAL   $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user
 				} 
 				$table_rows .= '</td>';
 
-				$actual_date->addSeconds(168*3600);	// + one week
+				$actual_date->addDays(7);	// + one week
 			}
 				
 			$array_sum = array_sum($user_usage[$user_id]);
@@ -410,9 +410,9 @@ GLOBAL $task_start_date, $task_end_date, $day_difference, $hours_added, $actual_
 function showDays(){
 GLOBAL  $allocated_hours_sum, $end_date, $start_date, $AppUI, $user_list, $user_names, $user_usage, $hideNonWd, $table_header, $table_rows, $df, $working_days_count, $total_hours_capacity, $total_hours_capacity_all;
 
-		$days_difference =  $end_date->dateDiff($start_date);
+		$days_difference =  $end_date->compare($start_date);
 
-		$actual_date     = $start_date;
+		$actual_date     = new CDate($start_date);
 		$working_days_count = 0;
 		$allocated_hours_sum = 0;
 		

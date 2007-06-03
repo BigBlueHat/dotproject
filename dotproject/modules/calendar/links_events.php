@@ -51,10 +51,10 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 		$date = $start;
 		$cwd = explode(",", dPgetConfig('cal_working_days'));
 
-		for($i=0; $i <= $start->dateDiff($end); $i++) {
+		for($i=0; $i <= $start->compare($end); $i++) {
 		// the link
 			// optionally do not show events on non-working days 
-			if ( ( $row['event_cwd'] && in_array($date->getDayOfWeek(), $cwd ) ) || !$row['event_cwd'] ) {
+			if ( ( $row['event_cwd'] && in_array($date->format('%w'), $cwd ) ) || !$row['event_cwd'] ) {
 				$url = '?m=calendar&amp;a=view&amp;event_id=' . $row['event_id'];
 				$link['href'] = $url;
 				$link['alt'] = $row['event_description'];
@@ -85,7 +85,7 @@ function getEventLinks( $startPeriod, $endPeriod, &$links, $strMaxLen ) {
 				$link['text'] = $row['event_title'];
 				$links[$date->format( FMT_TIMESTAMP_DATE )][] = $link;
 			 }
-				$date = $date->getNextDay();
+				$date = $date->addDays(1);
 		}
 	}
 }
@@ -147,10 +147,10 @@ function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMax
 			// set Event_type to auto/external event
 			$row['event_type'] = -1;
 
-			for($i=0; $i <= $start->dateDiff($end); $i++) {
+			for($i=0; $i <= $start->compare($end); $i++) {
 			// the link
 				// optionally do not show events on non-working days 
-				if ( ( $row['event_cwd'] && in_array($date->getDayOfWeek(), $cwd ) ) || !$row['event_cwd'] ) {
+				if ( ( $row['event_cwd'] && in_array($date->format('%w'), $cwd ) ) || !$row['event_cwd'] ) {
 					$url = '?m=calendar&a=view&event_id=' . $row['event_id'];
 					$ot = '\''.$AppUI->_('Type:').' '.$types[$row['event_type']].'<br />';				
 					$ot .=$AppUI->_('Start:').' '.$start->format($df).'<br />';
@@ -176,7 +176,7 @@ function getExternalWebcalEventLinks( $startPeriod, $endPeriod, &$links, $strMax
 </table>';
 					$links[$date->format( FMT_TIMESTAMP_DATE )][] = $link;
 				 }
-					$date = $date->getNextDay();
+					$date = $date->addDays(1);
 			}
 		}
 	}

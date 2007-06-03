@@ -158,7 +158,7 @@ foreach ($proTasks as $row) {
 		
 		$ted = new CDate($row['task_end_date']);
 
-		if ($ted->after(new CDate($end_max)))
+		if (!$ted->before(new CDate($end_max)))
 			$end_max = $row['task_end_date'];
 
         $projects[$row['task_project']]['tasks'][] = $row;
@@ -262,7 +262,7 @@ if ($start_date && $end_date){
 }
 
 // check day_diff and modify Headers
-$day_diff = $min_d_start->dateDiff($max_d_end);
+$day_diff = $min_d_start->compare($max_d_end);
 
 if ($day_diff > 240){
         //more than 240 days
@@ -497,7 +497,7 @@ for($i = 0; $i < count(@$gantt_arr); $i ++ ) {
         $bar->caption->Align('left','center');
 
         // show tasks which are both finished and past in (dark)gray
-        if ($progress >= 100 && $end_date->isPast() && get_class($bar) == 'ganttbar') {
+        if ($progress >= 100 && $end_date->before(new CDate()) && get_class($bar) == 'ganttbar') {
                 $bar->caption->SetColor('darkgray');
                 $bar->title->SetColor('darkgray');
                 $bar->setColor('darkgray');

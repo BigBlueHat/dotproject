@@ -188,7 +188,7 @@ function showtask_edit($task, $level=0)
 	} 
 
   if ($start)
-    $days = $now->dateDiff( $end ) * $sign;
+    $days = $now->compare( $end ) * $sign;
   else
     $days = 0;
 

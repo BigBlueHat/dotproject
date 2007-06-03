@@ -97,7 +97,7 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 	$html .= "\n<tr>";
 	
 	$tm = $this_day->format( $tf );
-	$html .= "\n\t<td width=\"1%\" align=\"right\" nowrap=\"nowrap\">".($this_day->getMinute() ? $tm : "<b>$tm</b>")."</td>";
+	$html .= "\n\t<td width=\"1%\" align=\"right\" nowrap=\"nowrap\">".($this_day->format('%M') ? $tm : "<b>$tm</b>")."</td>";
 
 	$timeStamp = $this_day->format( "%H%M%S" );
 	if( @$events2[$timeStamp] ) {
@@ -106,7 +106,7 @@ for ($i=0, $n=($end-$start)*60/$inc; $i < $n; $i++) {
 			$row = $events2[$timeStamp][$j];
 
 			$et = new CDate( $row['event_end_date'] );
-			$rows = (($et->getHour()*60 + $et->getMinute()) - ($this_day->getHour()*60 + $this_day->getMinute()))/$inc;
+			$rows = (($et->format('%H')*60 + $et->format('%M')) - ($this_day->format('%H')*60 + $this_day->format('%M')))/$inc;
 
 			$href = "?m=calendar&amp;a=view&amp;event_id=".$row['event_id'];
 			$alt = $row['event_description'];

@@ -119,9 +119,11 @@ $date = new CDate( $date );
 $first_time = new CDate( $date );
 $first_time->setDay( 1 );
 $first_time->setTime( 0, 0, 0 );
-$first_time->subtractSeconds( 1 );
+$first_time->addSeconds( -1 );
 $last_time = new CDate( $date );
-$last_time->setDay( $date->getDaysInMonth() );
+$ts = $date->getTime();
+$daysInMonth = date('t', $ts);
+$last_time->setDay($daysInMonth);
 $last_time->setTime( 23, 59, 59 );
 
 $links = array();

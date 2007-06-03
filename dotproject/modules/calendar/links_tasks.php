@@ -73,7 +73,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 </tr>\
 </table>';
 
-		if (($start->after( $startPeriod ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
+		if (($startPeriod->before( $start ) || $start->equals($startPeriod) ) && ($start->before( $endPeriod ) || $start->equals($endPeriod) ) ) {
 			$temp = $link;
 			$temp['alt'] = "START [".$row['task_duration'].' '.$AppUI->_( $durnTypes[$row['task_duration_type']] )."]\n".$link['alt'];
 			if ($a != 'day_view') {
@@ -110,10 +110,10 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 			$target = $start;
 			$target->addSeconds( $durn*$sid );
 
-			if (Date::compare( $target, $startPeriod ) < 0) {
+			if (CDate::compare( $target, $startPeriod ) < 0) {
 				continue;
 			}
-			if (Date::compare( $start, $startPeriod ) > 0) {
+			if (CDate::compare( $start, $startPeriod ) > 0) {
 				$temp = $start;
 				$temp->addSeconds( $sid );
 			} else {

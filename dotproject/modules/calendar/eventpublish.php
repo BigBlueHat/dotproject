@@ -67,40 +67,7 @@ if ( isset($_GET['event_id']) && !($_GET['event_id']=='') ) {
 	}
 
 	$text = $v->genString();
-/*
-	//send http-output with this iCalendar
 
-	// BEGIN extra headers to resolve IE caching bug (JRP 9 Feb 2003)
-	// [http://bugs.php.net/bug.php?id=16173]
-		header("Pragma: ");
-		header("Cache-Control: ");
-		header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");
-		header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");
-		header("Cache-Control: no-store, no-cache, must-revalidate");  //HTTP/1.1
-		header("Cache-Control: post-check=0, pre-check=0", false);
-	// END extra headers to resolve IE caching bug
-
-	header("MIME-Version: 1.0");
-	header("Content-Type: text/icalendar");
-	header("Content-Disposition: attachment; filename={$event->event_title}".$start_date->format('%Y%m%d').$start_date->format('%H%M%S').".ics");
-	print_r($text);
-*/
-/*
-#require_once "HTTP/WebDAV/Client/Stream.php";
-require_once( $AppUI->getLibraryClass( 'PEAR/HTTP/WebDAV/Client/Stream' ) );
-
-if (!HTTP_WebDAV_Client_Stream::register()) {
-	PEAR::raiseError("couldn't register WebDAV stream wrappers");
-}
-
-$wdcs = new HTTP_WebDAV_Client_Stream;
-$dummy = true;
-$x = $wdcs->stream_open('http://127.0.0.1/~gregor/webdav/test.ics', '2', array(), $dummy); 
-$w = $wdcs->url_stat('http://127.0.0.1/~gregor/webdav/test.ics');
-echo (int) $x;
-echo "h";
-echo (int) $w; 
-*/
 require_once( $AppUI->getLibraryClass( 'webDAV/class_webdav_client' ) );
 
 $wdc = new webdav_client();

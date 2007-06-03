@@ -131,7 +131,7 @@ if ($start_date && $end_date){
 }
 
 // check day_diff and modify Headers
-$day_diff = $min_d_start->dateDiff($max_d_end);
+$day_diff = $min_d_start->compare($max_d_end);
 
 if ($day_diff > 240){
         //more than 240 days

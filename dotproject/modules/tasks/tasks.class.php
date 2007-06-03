@@ -1551,7 +1551,7 @@ class CTask extends CDpObject {
             $number_assigned_users = count($assigned_users);
         }
         
-        $day_diff = $task_finish_date->dateDiff($task_start_date);
+        $day_diff = $task_finish_date->compare($task_start_date);
         $number_of_days_worked = 0;
         $actual_date = $task_start_date;
         
@@ -2086,7 +2086,7 @@ class CTask extends CDpObject {
         // task will be overdue.
         $expires = new CDate($this->task_end_date);
         $now = new CDate();
-        $diff = $expires->dateDiff($now);
+        $diff = $expires->compare($now);
         $diff *= CDate::compare($expires, $now);
         $prefix = $AppUI->_('Task Due', UI_OUTPUT_RAW);
         if ($diff == 0) {
@@ -2367,7 +2367,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
     //Note from MerlinYoda: shorter equivilent of code commented out below
     //remove if stable
     $style = taskstyle($a);
-    $days = $now->dateDiff( $end_date ) * (($now->after( $end_date ))?-1:1);
+    $days = $now->compare( $end_date ) * (($now->after( $end_date ))?-1:1);
     
     /*
     // prepare coloured highlight of task time information
@@ -2414,7 +2414,7 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
             }
         }
         
-        $days = $now->dateDiff( $end_date ) * $sign;
+        $days = $now->compare( $end_date ) * $sign;
     }
     */
     

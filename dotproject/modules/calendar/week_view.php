@@ -42,7 +42,7 @@ $yy = $this_week->getYear();
 // prepare time period for 'events'
 $first_time = new CDate( Date_calc::beginOfWeek( $dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY ) );
 $first_time->setTime( 0, 0, 0 );
-$first_time->subtractSeconds( 1 );
+$first_time->addSeconds( -1 );
 $last_time = new CDate( Date_calc::endOfWeek( $dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY ) );
 $last_time->setTime( 23, 59, 59 );
 
@@ -114,6 +114,7 @@ for ($i = 0; $i < 7; $i++)
 {
 	$week[] = $show_day;
 	$weekStamps[] = $show_day->format( FMT_TIMESTAMP_DATE );
+	$show_day = new CDate($show_day);
 	$show_day->addSeconds( 24*3600 );
 }
 

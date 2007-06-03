@@ -10,7 +10,6 @@ if (!defined('DP_BASE_DIR')){
  */
 
 require_once( $AppUI->getSystemClass( 'dp' ) );
-require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );
 require_once( $AppUI->getModuleClass( 'companies' ) );
 require_once( $AppUI->getModuleClass( 'forums' ) );
@@ -150,7 +149,7 @@ class CProject extends CDpObject {
         
 		$origDate = new CDate( $origProject->project_start_date );
 		$destDate = new CDate(((!empty($import_date))?$import_date:$this->project_start_date));
-		$offset = $origDate->dateDiff($destDate);
+		$offset = $origDate->compare($destDate);
 		$timeOffset = $destDate->getTime() - $origDate->getTime();
 
 		// Dependencies array
@@ -407,7 +406,7 @@ class CProject extends CDpObject {
 		$start_date = new CDate($this->project_start_date);
 		$end_date = new CDate($this->project_end_date);
 		
-		return $start_date->dateDiff($end_date);
+		return $start_date->compare($end_date);
 	}
 	
 	function getActualEndDate() {
@@ -458,9 +457,9 @@ class CProject extends CDpObject {
 		$min_end_date = $this->calcMinEndDate();
 		
 		$project_end_date = new CDate($this->project_start_date);
-		$duration = $min_end_date->dateDiff($project_end_date);
+		$duration = $min_end_date->compare($project_end_date);
 			
-		$offset = $project_end_date->dateDiff($end_date);
+		$offset = $project_end_date->compare($end_date);
 		$end_date->addDays($offset - $duration);
 
 		return $end_date;
@@ -471,7 +470,7 @@ class CProject extends CDpObject {
 		$diff = 0;
 	
 		if ($start_date != null)
-			$diff = $start_date->dateDiff(new CDate($this->project_start_date));
+			$diff = $start_date->compare(new CDate($this->project_start_date));
 						
 		$latest_date = new CDate($this->project_start_date);
 		$q = new DBQuery();
@@ -491,7 +490,7 @@ class CProject extends CDpObject {
 				$date = $t->task_end_date;
 			$date = new CDate($date);
 			
-			if ($date->dateDiff($latest_date) < 0)
+			if ($date->compare($latest_date) < 0)
 				$latest_date = $date;
 		}
 		$latest_date->addDays($diff);

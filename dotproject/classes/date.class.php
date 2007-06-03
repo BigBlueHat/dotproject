@@ -10,7 +10,6 @@ if (!defined('DP_BASE_DIR')){
 * @brief An extension of the PEAR date class
 */
 
-require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 /** @defgroup dateformatcontstants Date formatting constants */
 /*@{*/
 /** @enum FMT_DATEISO ISO Date Format, Example: 20070320T121545  */
@@ -21,6 +20,14 @@ require_once( $AppUI->getLibraryClass( 'PEAR/Date' ) );
 /** @enum FMT_TIMESTAMP_DATE Timestamp Date-only Format, Example: 20070320 */
 /** @enum FMT_TIMESTAMP_TIME Timestamp Time-only Format, Example: 122012 */
 /*@}*/
+
+/** "YYYY-MM-DD HH:MM:SS" */
+define('DATE_FORMAT_ISO', 1);
+/** "YYYYMMDDHHMMSS" */
+define('DATE_FORMAT_TIMESTAMP', 2);
+/** long int, seconds since the unix epoch */
+define('DATE_FORMAT_UNIXTIME', 3);
+
 define( 'FMT_DATEISO', '%Y%m%dT%H%M%S' );
 define( 'FMT_DATELDAP', '%Y%m%d%H%M%SZ' );
 define( 'FMT_DATETIME_MYSQL', '%Y-%m-%d %H:%M:%S' );
@@ -46,8 +53,44 @@ define( 'SEC_DAY',    86400 );
  * This provides customised extensions to the Date class to leave the
  * Date package as 'pure' as possible
  */
-class CDate extends Date {
+class CDate {
 
+	/**
+	 * the year
+	 * @var int
+	 */
+	var $year;
+	/**
+	 * the month
+	 * @var int
+	 */
+	var $month;
+	/**
+	 * the day
+	 * @var int
+	 */
+	var $day;
+	/**
+	 * the hour
+	 * @var int
+	 */
+	var $hour;
+	/**
+	 * the minute
+	 * @var int
+	 */
+	var $minute;
+	/**
+	 * the second
+	 * @var int
+	 */
+	var $second;
+	/**
+	 * timezone for this date
+	 * @var object Date_TimeZone
+	 */
+	var $tz;
+	
 	/** CDate constructor 
 	 * @param $date A date in any of the supported formats, or NULL for todays date
 	 */ 
@@ -57,25 +100,58 @@ class CDate extends Date {
 		
 		$tz = $AppUI->getPref('TIMEZONE');
 		
-		$this->tz = new Date_TimeZone($tz);
+		$this->setTZ($tz);
 		
 		if (is_null($date)) {
 			$this->setDate(date('Y-m-d H:i:s'));
-		} elseif (is_object($date) && (get_class($date) == get_class($date))) {
+		} elseif (is_object($date) && (get_class($this) == get_class($date))) {
 			$this->setDate($date->getDate());
 		} elseif (preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $date)) {
-    	$this->tz = new Date_TimeZone('UTC');
-    	$d = new Date();
-			$d->convertTZ(new Date_TimeZone('UTC'));
+    	$this->setTZ('UTC');
+    	$d = new CDate();
+			$d->convertTZ('UTC');
 			$d->setDate($date);
 			$this->setDate($d->getDate());
 			if ($tz)
-	 			$this->convertTZ(new Date_TimeZone($tz));	
-		} else {
-			parent::Date($date);
-		}
+	 			$this->convertTZ($tz);	
+		} elseif (is_null($date)) {
+      $this->setDate(date('Y-m-d H:i:s'));
+// following line has been modified by Andrew Eddie to support extending the Date class
+    //} elseif (is_object($date) && (get_class($date) == 'date')) {
+    } elseif (is_object($date) && (get_class($date) == get_class($this))) {
+        $this->copy($date);
+    } elseif (preg_match('/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/', $date)) {
+        $this->setDate($date);
+    } elseif (preg_match('/\d{14}/',$date)) {
+        $this->setDate($date,DATE_FORMAT_TIMESTAMP);
+    } elseif (preg_match('/\d{4}-\d{2}-\d{2}/', $date)) {
+        $this->setDate($date.' 00:00:00');
+    } elseif (preg_match('/\d{8}/',$date)) {
+        $this->setDate($date.'000000',DATE_FORMAT_TIMESTAMP);
+    } else {
+        $this->setDate($date,DATE_FORMAT_UNIXTIME);
+    }
 	}
-
+	
+	/**
+	 * Copy values from another Date object
+	 *
+	 * Makes this Date a copy of another Date object.
+	 *
+	 * @access public
+	 * @param object Date $date Date to copy from
+	 */
+	function copy($date)
+	{
+		$this->year = $date->year;
+		$this->month = $date->month;
+		$this->day = $date->day;
+		$this->hour = $date->hour;
+		$this->minute = $date->minute;
+		$this->second = $date->second;
+		$this->tz = $date->tz;
+	}
+	
 	/**
 	 * Overloaded compare method
 	 *
@@ -86,18 +162,79 @@ class CDate extends Date {
 	 * @param $convertTZ Convert timezones of date parameters, default is false
 	 * @return -1 if the second date is newer, 1 if the first date is newer, 0 if the dates are equal
 	 */
-	function compare($d1, $d2, $convertTZ=false)
+	function compare($d1, $d2 = null, $convertTZ=false)
 	{
-		if ($convertTZ) {
-			$d1->convertTZ(new Date_TimeZone('UTC'));
-			$d2->convertTZ(new Date_TimeZone('UTC'));
+		if ($d2 === null) {
+			$d2 = $d1;
+			$d1 = new CDate($this);
+			if ($convertTZ) {
+				$d1->convertTZ('UTC');
+				$d2->convertTZ('UTC');
+			}
 		}
 		
-		$days1 = (int) $d1->format('%Y%m%d');
-		$days2 = (int) $d2->format('%Y%m%d');
-		return $days1 - $days2;
+		$days1 = $d1->getTime();
+		$days2 = $d2->getTime();
+		
+		return floor(($days1 - $days2) / SEC_DAY);
+	}
+	
+	/**
+	 * Test if this date/time is before a certian date/time
+	 *
+	 * Test if this date/time is before a certian date/time
+	 *
+	 * @access public
+	 * @param object Date $when the date to test against
+	 * @return boolean true if this date is before $when
+	 */
+	function before($when)
+	{
+		return ($this->compare($this,$when) < 0);
+	}
+	
+	function after($date)
+	{
+		return ($this->compare($this,$date) > 0);
+	}
+	
+	function equals($date)
+	{
+		return ($this->compare($this, $date) == 0);
 	}
 
+	/**
+	 * Get this date/time in Unix time() format
+	 *
+	 * Get a representation of this date in Unix time() format.  This may only be
+	 * valid for dates from 1970 to ~2038.
+	 *
+	 * @access public
+	 * @return int number of seconds since the unix epoch
+	 */
+	function getTime()
+	{
+		return $this->getDate(DATE_FORMAT_UNIXTIME);
+	}
+
+	/**
+	 * Sets the time zone of this Date
+	 *
+	 * Sets the time zone of this date with the given
+	 * Timezone id.  Does not alter the date/time,
+	 * only assigns a new time zone.  For conversion, use
+	 * convertTZ().
+	 *
+	 * @access public
+	 * @param string $tz the timezone to use
+	 */
+	function setTZ($tz)
+	{
+		$tz_array = $GLOBALS['_DATE_TIMEZONE_DATA'][$tz];
+		$tz_array['id'] = $tz;
+		$this->tz = $tz_array;
+	}
+    
 	/**
 	 * Adds (+/-) a number of days to the current date.
 	 * @param $n Positive or negative number of days
@@ -106,13 +243,18 @@ class CDate extends Date {
 	function addDays( $n )
 	{
 		$timeStamp = $this->getTime();
-		$oldHour = $this->getHour();
+		$oldHour = $this->hour;
 		$this->setDate( $timeStamp + SEC_DAY * ceil($n), DATE_FORMAT_UNIXTIME);
 		
-		if(($oldHour - $this->getHour()) || !is_int($n)) {
-			$timeStamp += ($oldHour - $this->getHour()) * SEC_HOUR;
+		if(($oldHour - $this->hour) || !is_int($n)) {
+			$timeStamp += ($oldHour - $this->hour) * SEC_HOUR;
 			$this->setDate( $timeStamp + SEC_DAY * $n, DATE_FORMAT_UNIXTIME);
 		}
+	}
+	
+	function addSeconds( $n )
+	{
+		$this->setDate( $this->getTime() + $n, DATE_FORMAT_UNIXTIME);
 	}
 
 	/**
@@ -144,20 +286,6 @@ class CDate extends Date {
 	}
 
 	/**
-	 * New method to get the difference in days the stored date
-	 * @param $when The date to compare to
-	 * @return The difference in days
-	 * @author Andrew Eddie <eddieajau@users.sourceforge.net>
-	 */
-	function dateDiff( $when ) 
-	{
-		return Date_calc::dateDiff(
-			$this->getDay(), $this->getMonth(), $this->getYear(),
-			$when->getDay(), $when->getMonth(), $when->getYear()
-		);
-	}
-
-	/**
 	 * New method that sets hour, minute and second in a single call
 	 * @param $h hour
 	 * @param $m minute
@@ -166,9 +294,9 @@ class CDate extends Date {
 	 */
 	function setTime( $h=0, $m=0, $s=0 )
 	{
-		$this->setHour( $h );
-		$this->setMinute( $m );
-		$this->setSecond( $s );
+		$this->hour = $h;
+		$this->minute = $m;
+		$this->second = $s;
 	}
 
 	/** Determine if this date is a working day
@@ -178,8 +306,6 @@ class CDate extends Date {
 	 */
 	function isWorkingDay()
 	{
-	  global $AppUI;
-	
 	  $working_days = dPgetConfig('cal_working_days');
 	  if(is_null($working_days)){
 	    $working_days = array('1','2','3','4','5');
@@ -187,7 +313,7 @@ class CDate extends Date {
 	    $working_days = explode(',', $working_days);
 	  }
 	
-	  return in_array($this->getDayOfWeek(), $working_days);
+	  return in_array($this->format('%w'), $working_days);
 	}
 
 	/** Determine the 12 hour time suffix of this date
@@ -195,7 +321,7 @@ class CDate extends Date {
 	 */
 	function getAMPM()
 	{
-		if ( $this->getHour() > 11 ) {
+		if ( $this->hour > 11 ) {
 			return "pm";
 		} else {
 			return "am";
@@ -212,14 +338,14 @@ class CDate extends Date {
 		$do = $this;
 		$end = intval(dPgetConfig('cal_day_end'));
 		$start = intval(dPgetConfig('cal_day_start'));
-		while ( ! $this->isWorkingDay() || $this->getHour() > $end ||
-					( $preserveHours == false && $this->getHour() == $end && $this->getMinute() == '0' ) ) {
+		while ( ! $this->isWorkingDay() || $this->hour > $end ||
+					( $preserveHours == false && $this->hour == $end && $this->minute == '0' ) ) {
 			$this->addDays(1);
 			$this->setTime($start, '0', '0');
 		}
 		
 		if ($preserveHours)
-			$this->setTime($do->getHour(), '0', '0');
+			$this->setTime($do->hour, '0', '0');
 		
 		return $this;
 	}
@@ -234,13 +360,13 @@ class CDate extends Date {
 		$do = $this;
 		$end = intval(dPgetConfig('cal_day_end'));
 		$start = intval(dPgetConfig('cal_day_start'));
-		while ( ! $this->isWorkingDay() || ( $this->getHour() < $start ) ||
-					( $this->getHour() == $start && $this->getMinute() == '0' ) ) {
+		while ( ! $this->isWorkingDay() || ( $this->hour < $start ) ||
+					( $this->hour == $start && $this->minute == '0' ) ) {
 			$this->addDays(-1);
 			$this->setTime($end, '0', '0');
 		}
 		if ($preserveHours)
-			$this->setTime($do->getHour(), '0', '0');
+			$this->setTime($do->hour, '0', '0');
 		
 		return $this;
 	}
@@ -375,7 +501,7 @@ class CDate extends Date {
 		}    
 		
 		// determine the (working + non-working) day difference between the two dates
-		$days = $e->dateDiff($s);
+		$days = $e->compare($s);
 
 		// if it is an intraday difference one is finished very easily
 		if($days == 0)
@@ -409,17 +535,59 @@ class CDate extends Date {
 	 * @param $convert Convert to UTC timezone
 	 * @return Formatted date string
 	 */
+	/**
+	 *  Date pretty printing, similar to strftime()
+	 *
+	 *  Formats the date in the given format, much like
+	 *  strftime().  Most strftime() options are supported.<br><br>
+	 *
+	 *  formatting options:<br><br>
+	 *
+	 *  <code>%a  </code>  abbreviated weekday name (Sun, Mon, Tue) <br>
+	 *  <code>%A  </code>  full weekday name (Sunday, Monday, Tuesday) <br>
+	 *  <code>%b  </code>  abbreviated month name (Jan, Feb, Mar) <br>
+	 *  <code>%B  </code>  full month name (January, February, March) <br>
+	 *  <code>%C  </code>  century number (the year divided by 100 and truncated to an integer, range 00 to 99) <br>
+	 *  <code>%d  </code>  day of month (range 00 to 31) <br>
+	 *  <code>%D  </code>  same as "%m/%d/%y" <br>
+	 *  <code>%e  </code>  day of month, single digit (range 0 to 31) <br>
+	 *  <code>%E  </code>  number of days since unspecified epoch (integer) <br>
+	 *  <code>%H  </code>  hour as decimal number (00 to 23) <br>
+	 *  <code>%I  </code>  hour as decimal number on 12-hour clock (01 to 12) <br>
+	 *  <code>%j  </code>  day of year (range 001 to 366) <br>
+	 *  <code>%m  </code>  month as decimal number (range 01 to 12) <br>
+	 *  <code>%M  </code>  minute as a decimal number (00 to 59) <br>
+	 *  <code>%n  </code>  newline character (\n) <br>
+	 *  <code>%O  </code>  dst-corrected timezone offset expressed as "+/-HH:MM" <br>
+	 *  <code>%o  </code>  raw timezone offset expressed as "+/-HH:MM" <br>
+	 *  <code>%p  </code>  either 'am' or 'pm' depending on the time <br>
+	 *  <code>%P  </code>  either 'AM' or 'PM' depending on the time <br>
+	 *  <code>%r  </code>  time in am/pm notation, same as "%I:%M:%S %p" <br>
+	 *  <code>%R  </code>  time in 24-hour notation, same as "%H:%M" <br>
+	 *  <code>%S  </code>  seconds as a decimal number (00 to 59) <br>
+	 *  <code>%t  </code>  tab character (\t) <br>
+	 *  <code>%T  </code>  current time, same as "%H:%M:%S" <br>
+	 *  <code>%w  </code>  weekday as decimal (0 = Sunday) <br>
+	 *  <code>%U  </code>  week number of current year, first sunday as first week <br>
+	 *  <code>%y  </code>  year as decimal (range 00 to 99) <br>
+	 *  <code>%Y  </code>  year as decimal including century (range 0000 to 9999) <br>
+	 *  <code>%%  </code>  literal '%' <br>
+	 * <br>
+	 *
+	 * @access public
+	 * @param string format the format string for returned date/time
+	 * @return string date/time in given format
+	 */
+
 	function format($format = null, $convert = null)
 	{
 		global $AppUI;
-	
-		$local_date = new Date();
-		$local_date->copy($this);
+		
+		$local_date = clone $this;
 		
 		if (($format == FMT_DATETIME_MYSQL || $format == FMT_DATE_MYSQL) && $convert == null)
-  		$local_date->convertTZ(new Date_TimeZone('UTC'));
-  		
-  	return $local_date->format($format);
+  		$local_date->convertTZ('UTC');
+		return strftime($format, mktime($local_date->hour, $local_date->minute, $local_date->second, $local_date->month, $local_date->day, $local_date->year));
 	}
 
 	/** Get the number of working days between this CDate object and another CDate object
@@ -427,25 +595,14 @@ class CDate extends Date {
 	 * @return Number of working days as integer.
 	 */
 	function workingDaysInSpan($e){
-		global $AppUI;
-		
-		// assume start is before end and set a default signum for the duration	
-		$sgn = 1;
-
-		// check whether start before end, interchange otherwise
-		if ($e->before($this)) {
-			// duration is negative, set signum appropriately
-			$sgn = -1;
-		}    
-		
 		$wd = 0;
-		$days = $e->dateDiff($this);
-		$start = $this;
 
+		$days = abs($e->compare($this));
+		$start = $e->before($this) ? new CDate($e) : new CDate($this);
 		for ( $i = 0 ; $i <= $days ; $i++ ){
-		        if ( $start->isWorkingDay())
-		        	$wd++;
-			$start->addDays(1 * $sgn);
+			if ( $start->isWorkingDay())
+				$wd++;
+			$start->addDays(1);
 		}
 
 		return $wd;
@@ -473,9 +630,241 @@ class CDate extends Date {
 		$time += SEC_DAY * $day;
 		return strftime('%a', $time);
 	}
-}
+	
+	function getWeek()
+	{
+		$format = LOCALE_FIRST_DAY == 0 ? '%U' : '%W';
+		return $this->format($format);
+	}
 
-class CDateSpan {
+    /**
+     * Returns the year field of the date object
+     *
+     * Returns the year field of the date object
+     *
+     * @access public
+     * @return int the year
+     */
+    function getYear()
+    {
+        return $this->year;
+    }
+
+    /**
+     * Returns the month field of the date object
+     *
+     * Returns the month field of the date object
+     *
+     * @access public
+     * @return int the month
+     */
+    function getMonth()
+    {
+        return $this->month;
+    }
+
+    /**
+     * Returns the day field of the date object
+     *
+     * Returns the day field of the date object
+     *
+     * @access public
+     * @return int the day
+     */
+    function getDay()
+    {
+        return $this->day;
+    }
+    
+    /**
+     * Set the year field of the date object
+     *
+     * Set the year field of the date object, invalid years (not 0-9999) are set to 0.
+     *
+     * @access public
+     * @param int $y the year
+     */
+    function setYear($y)
+    {
+        if($y < 0 || $y > 9999) {
+            $this->year = 0;
+        } else {
+            $this->year = $y;
+        }
+    }
+
+    /**
+     * Set the month field of the date object
+     *
+     * Set the month field of the date object, invalid months (not 1-12) are set to 1.
+     *
+     * @access public
+     * @param int $m the month
+     */
+    function setMonth($m)
+    {
+        if($m < 1 || $m > 12) {
+            $this->month = 1;
+        } else {
+            $this->month = $m;
+        }
+    }
+
+    /**
+     * Set the fields of a Date object based on the input date and format
+     *
+     * Set the fields of a Date object based on the input date and format,
+     * which is specified by the DATE_FORMAT_* constants.
+     *
+     * @access public
+     * @param string $date input date
+     * @param int $format format constant (DATE_FORMAT_*) of the input date
+     */
+    function setDate($date, $format = DATE_FORMAT_ISO)
+    {
+        switch($format) {
+            case DATE_FORMAT_ISO:
+                if (ereg("([0-9]{4})-([0-9]{2})-([0-9]{2})[ ]([0-9]{2}):([0-9]{2}):([0-9]{2})",$date,$regs)) {
+                    $this->year   = $regs[1];
+                    $this->month  = $regs[2];
+                    $this->day    = $regs[3];
+                    $this->hour   = $regs[4];
+                    $this->minute = $regs[5];
+                    $this->second = $regs[6];
+                } else {
+                    $this->year   = 0;
+                    $this->month  = 1;
+                    $this->day    = 1;
+                    $this->hour   = 0;
+                    $this->minute = 0;
+                    $this->second = 0;
+                }
+                break;
+            case DATE_FORMAT_TIMESTAMP:
+                if (ereg("([0-9]{4})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})([0-9]{2})",$date,$regs)) {
+                    $this->year   = $regs[1];
+                    $this->month  = $regs[2];
+                    $this->day    = $regs[3];
+                    $this->hour   = $regs[4];
+                    $this->minute = $regs[5];
+                    $this->second = $regs[6];
+                } else {
+                    $this->year   = 0;
+                    $this->month  = 1;
+                    $this->day    = 1;
+                    $this->hour   = 0;
+                    $this->minute = 0;
+                    $this->second = 0;
+                }
+                break;
+            case DATE_FORMAT_UNIXTIME:
+                $this->setDate(date("Y-m-d H:i:s", $date));
+                break;
+        }
+    }
+    
+    /**
+     * Get a string (or other) representation of this date
+     *
+     * Get a string (or other) representation of this date in the
+     * format specified by the DATE_FORMAT_* constants.
+     *
+     * @access public
+     * @param int $format format constant (DATE_FORMAT_*) of the output date
+     * @return string the date in the requested format
+     */
+    function getDate($format = DATE_FORMAT_ISO)
+    {
+        switch($format) {
+            case DATE_FORMAT_ISO:
+                return $this->format("%Y-%m-%d %T");
+                break;
+            case DATE_FORMAT_TIMESTAMP:
+                return $this->format("%Y%m%d%H%M%S");
+                break;
+            case DATE_FORMAT_UNIXTIME:
+                return mktime($this->hour, $this->minute, $this->second, $this->month, $this->day, $this->year);
+                break;
+        }
+    }
+    
+    /**
+     * Set the day field of the date object
+     *
+     * Set the day field of the date object, invalid days (not 1-31) are set to 1.
+     *
+     * @access public
+     * @param int $d the day
+     */
+    function setDay($d)
+    {
+        if($d > 31 || $d < 1) {
+            $this->day = 1;
+        } else {
+            $this->day = $d;
+        }
+    }
+
+    /**
+     * Set the hour field of the date object
+     *
+     * Set the hour field of the date object in 24-hour format.
+     * Invalid hours (not 0-23) are set to 0.
+     *
+     * @access public
+     * @param int $h the hour
+     */
+    function setHour($h)
+    {
+        if($h > 23 || $h < 0) {
+            $this->hour = 0;
+        } else {
+            $this->hour = $h;
+        }
+    }
+
+    /**
+     * Set the minute field of the date object
+     *
+     * Set the minute field of the date object, invalid minutes (not 0-59) are set to 0.
+     *
+     * @access public
+     * @param int $m the minute
+     */
+    function setMinute($m)
+    {
+        if($m > 59 || $m < 0) {
+            $this->minute = 0;
+        } else {
+            $this->minute = $m;
+        }
+    }
+
+    /**
+     * Set the second field of the date object
+     *
+     * Set the second field of the date object, invalid seconds (not 0-59) are set to 0.
+     *
+     * @access public
+     * @param int $s the second
+     */
+    function setSecond($s) {
+        if($s > 59 || $s < 0) {
+            $this->second = 0;
+        } else {
+            $this->second = $s;
+        }
+    }
+    
+	function beginOfWeek()
+	{
+		$date = new CDate($this);
+		$weekday = $date->format('%w');
+		$date->addDays(LOCALE_FIRST_DAY - $weekday);
+		
+		return $date;
+	}
+	
 	function getCalendarMonth($date)
 	{
 		$ts = $date->getTime();
@@ -483,14 +872,77 @@ class CDateSpan {
 		$monthDay = new CDate($date);
 		$monthDay->setDay(1);
 		$weekday = $monthDay->format('%w');
+		$monthDay->addDays(LOCALE_FIRST_DAY - $weekday);
 		$month = array();
-		for ($day = $weekday - LOCALE_FIRST_DAY; $day < $daysInMonth + $weekday - LOCALE_FIRST_DAY; $day++) {
+		for ($day = 0; ($day < $daysInMonth + $weekday - LOCALE_FIRST_DAY || $day % 7 != 0); $day++) {
 			$month[$day / 7][$day % 7] = $monthDay->format('%Y%m%d%w');
 			$monthDay->addDays(1);
 		}
-		
+				
 		return $month;
 	}
+	
+	/**
+	 * Gets the full name or abbriviated name of this month
+	 *
+	 * Gets the full name or abbriviated name of this month
+	 *
+	 * @access public
+	 * @param boolean $abbr abbrivate the name
+	 * @return string name of this month
+	 */
+	function getMonthName($abbr = false)
+	{
+		$format = $abbr ? '%b' : '%B';
+		return $this->format($format);
+	}
+	
+	/**
+	 * Gets the full name or abbriviated name of this weekday
+	 *
+	 * Gets the full name or abbriviated name of this weekday
+	 *
+	 * @access public
+	 * @param boolean $abbr abbrivate the name
+	 * @return string name of this day
+	 */
+	function getDayName($abbr = false)
+	{
+		$format = $abbr ? '%a' : '%A';
+		
+		return $this->format($format);
+	}
+	
+
+	/**
+	 * Converts this date to a new time zone
+	 *
+	 * Converts this date to a new time zone.
+	 * WARNING: This may not work correctly if your system does not allow
+	 * putenv() or if localtime() does not work in your environment. 
+	 *
+	 * @access public
+	 * @param string $tz the time zone ID - index in $GLOBALS['_DATE_TIMEZONE_DATA']
+	 */
+	function convertTZ($tz)
+	{
+		// convert to UTC
+		$offset = intval($this->tz['offset'] / 1000);
+		if ($this->tz['hasdst'])
+			$offset += 3600;
+		$this->addSeconds(0 - $offset);
+		// convert UTC to new timezone
+		$offset = intval($GLOBALS['_DATE_TIMEZONE_DATA'][$tz]['offset'] / 1000);
+		if ($this->tz['hasdst'])
+			$offset += 3600;
+		$this->addSeconds($offset);
+		$this->setTZ($tz);
+	}
+}
+
+// Not used
+class CDateSpan {
+
 }
 
 $GLOBALS['_DATE_TIMEZONE_DATA'] = array(

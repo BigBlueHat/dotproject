@@ -197,7 +197,6 @@ function clash_process()
   $first_day = $start_date->format('%E');
   $end_day = $end_date->format('%E');
   $days_between = ($end_day + 1) - $first_day;
-  $oneday =& new Date_Span(array(1,0,0,0));
 
   $slots = array();
   $slot_count = 0;
@@ -215,7 +214,7 @@ function clash_process()
 				);
       }
     } 
-    $first_date->addSpan($oneday);
+    $first_date->addDays(1);
   }
   
   // Now process the events list

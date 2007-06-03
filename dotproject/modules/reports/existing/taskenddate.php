@@ -13,7 +13,7 @@ $start_date = intval( $log_start_date ) ? new CDate( $log_start_date ) : new CDa
 $end_date   = intval( $log_end_date )   ? new CDate( $log_end_date ) : new CDate();
 
 if (!$log_start_date) {
-	$start_date->subtractSpan( new Date_Span( "14,0,0,0" ) );
+	$start_date->addDays(-14);
 }
 $end_date->setTime( 23, 59, 59 );
 ?>

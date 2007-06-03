@@ -58,9 +58,9 @@ $cwd_hr = implode(', ', $cwd_conv);
 
 if ($start_date)
 {
-	$start_time['hour'] 	= $start_date->getHour();
-	$start_time['minute'] = $start_date->getMinute();
-	$start_time['ampm'] 	= $start_date->getAMPM();
+	$start_time['hour'] 	= $start_date->format('%H');
+	$start_time['minute'] = $start_date->format('%M');
+	$start_time['ampm'] 	= $start_date->format('%p');
 }
 else
 {
@@ -71,9 +71,9 @@ else
 
 if ($end_date)
 {
-	$end_time['hour'] 	= $end_date->getHour();
-	$end_time['minute'] = $end_date->getMinute();
-	$end_time['ampm'] 	= $end_date->getAMPM();
+	$end_time['hour'] 	= $end_date->format('%H');
+	$end_time['minute'] = $end_date->format('%M');
+	$end_time['ampm'] 	= $end_date->format('%p');
 }
 else
 {

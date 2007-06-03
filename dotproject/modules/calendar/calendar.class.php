@@ -7,7 +7,6 @@ if (!defined('DP_BASE_DIR')){
  *	Calendar classes
  */
 
-require_once($AppUI->getLibraryClass('PEAR/Date'));
 require_once($AppUI->getSystemClass('dp'));
 require_once($AppUI->getSystemClass('libmail'));
 require_once($AppUI->getSystemClass('date'));
@@ -281,6 +280,9 @@ class CMonthCalendar {
 				global $l10n;
 				
 				$month = $l10n->substr($month, 0, 1);
+				
+				//Consider replacing above with this:
+				//$month = $year->getMonthName(true);
 			}
 			$s .= "\n\t\t" . '<td width="9%"><a href="'.$url.'&amp;date='.$year->format(FMT_TIMESTAMP_DATE).($this->callback ? '&amp;callback='.$this->callback : '').((count($this->highlightedDays)>0)?'&amp;uts='.key($this->highlightedDays):'') . '">' . $month . '</a></td>';
 			
@@ -346,7 +348,7 @@ class CMonthCalendar {
 		$this_day = intval($date->getDay());
 		$this_month = intval($date->getMonth());
 		$this_year = intval($date->getYear());
-		$cal = CDateSpan::getCalendarMonth($date);
+		$cal = CDate::getCalendarMonth($date);
 
 		$df = $AppUI->getPref('SHDATEFORMAT');
 
@@ -522,8 +524,8 @@ class CEvent extends CDpObject {
 		if ($j>0) {
 			switch ($event_recurs) {
 				case 1:
-					$eventStart->addSpan(new Date_Span(3600 * $j));
-					$eventEnd->addSpan(new Date_Span(3600 * $j));
+					$eventStart->addSeconds($j * 3600);
+					$eventEnd->addSeconds($j * 3600);
 					break;
 				case 2:
 					$eventStart->addDays($j);
@@ -582,11 +584,9 @@ class CEvent extends CDpObject {
 	// the event times are stored as unix time stamps, just to be different
 
 	// convert to default db time stamp
-		$sdate = new CDate();
-		$sdate->setDate($start_date->getDate());
+		$sdate = new CDate($start_date);
 		$db_start = $sdate->format( FMT_DATETIME_MYSQL );
-		$edate = new CDate();
-		$edate->setDate($end_date->getDate());
+		$edate = new CDate($end_date);
 		$db_end = $edate->format( FMT_DATETIME_MYSQL );
 		if (! isset($user_id)) {
 			$user_id = $AppUI->user_id;

@@ -68,10 +68,9 @@ foreach ($topics as $row) {
 	$formatted_date = ($last != null) ? $last->format( "$df $tf" ) : null;
 	$tpl_row->assign('formatted_date', $formatted_date);
 
-	$span = new Date_Span();
-	$span->setFromDateDiff( $now, $last );
+	$last_date = new CDate($last);
 
-	$date_diff = sprintf( '%.1f', $span->format( '%d' ) );
+	$date_diff = sprintf( '%.1f', $last_date->compare($now, $last_date) );
 	$tpl_row->assign('date_diff_now_last', $date_diff);
 
 	$topic_rows .= $tpl_row->fetchFile('view_topics.row', 'forums');

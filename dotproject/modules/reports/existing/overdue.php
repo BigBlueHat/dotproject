@@ -30,7 +30,7 @@ else
 $date = new CDate();
 $pdf->ezText( "\n" . $date->format( $df ) , 8 );
 $next_week = new CDate($date);
-$next_week->addSpan(new Date_Span(array(7,0,0,0)));
+$next_week->addDays(7);
 
 $pdf->selectFont( "$font_dir/Helvetica-Bold.afm" );
 $pdf->ezText( "\n" . $AppUI->_('Project Overdue Task Report'), 12 );

@@ -42,7 +42,7 @@ $end_date   = intval( $log_end_date )   ? new CDate( $log_end_date ) : new CDate
 $now = new CDate();
 
 if (!$log_start_date) {
-	$start_date->subtractSpan( new Date_Span( '14,0,0,0' ) );
+	$start_date->addDays(-14);
 }
 $end_date->setTime( 23, 59, 59 );
 ?>
@@ -536,7 +536,7 @@ function displayTask($list,$task,$level,$display_week_hours,$fromPeriod,$toPerio
 	$tmp.='&#160&#160&#160</td>';
 	$tmp.='<td align="center" nowrap="nowrap">';
 	$ed=new CDate($task->task_end_date);
-        $dt=$now->dateDiff($ed);
+        $dt=$now->compare($ed);
         $sgn = $now->compare($ed,$now);
 	$tmp.=($dt*$sgn);
 	$tmp.='</td>';
@@ -599,7 +599,7 @@ function weekDates($display_allocated_hours,$fromPeriod,$toPeriod) {
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s);
 	//$ew=getEndWeek($e); //intval($e->Format("%U"));
-	$dw = ceil($e->dateDiff($s)/7);
+	$dw = ceil($e->compare($s)/7);
 	$ew = $sw + $dw;
 	$row='';
 	for($i=$sw;$i<=$ew;$i++) {
@@ -622,7 +622,7 @@ function weekCells($display_allocated_hours,$fromPeriod,$toPeriod) {
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s); //intval($s->Format("%U"));
 	//$ew=getEndWeek($e); //intval($e->Format("%U"));
-	$dw = ceil($e->dateDiff($s)/7);
+	$dw = ceil($e->compare($s)/7);
 	$ew = $sw + $dw;
 
 return $ew-$sw+1;
@@ -641,14 +641,14 @@ function displayWeeks($list,$task,$level,$fromPeriod,$toPeriod) {
 	$e=new CDate($toPeriod);
 	$sw=getBeginWeek($s); 	//intval($s->Format("%U"));
 	//$ew=getEndWeek($e); //intval($e->Format("%U"));
-	$dw = ceil($e->dateDiff($s)/7);
+	$dw = ceil($e->compare($s)/7);
 	$ew = $sw + $dw;
 
 	$st=new CDate($task->task_start_date);
 	$et=new CDate($task->task_end_date);
 	$stw=getBeginWeek($st); //intval($st->Format("%U"));
 	//$etw=getEndWeek($et); //intval($et->Format("%U"));
-	$dtw = ceil($et->dateDiff($st)/7);
+	$dtw = ceil($et->compare($st)/7);
 	$etw = $stw + $dtw;
 
 	//print "week from: $stw, to: $etw<br>\n";

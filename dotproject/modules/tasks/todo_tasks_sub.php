@@ -104,7 +104,7 @@ if (!empty($tasks))
 			$sign = -1;
 		} 
 
-		$days = $end ? $now->dateDiff( $end ) * $sign : null;
+		$days = $end ? $now->compare( $end ) * $sign : null;
 		$tasks[$tId]['task_due_in'] = $days;
 
 	}

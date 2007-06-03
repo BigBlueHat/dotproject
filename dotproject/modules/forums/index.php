@@ -121,10 +121,9 @@ foreach ($forums as $row) {
 		$formatted_last_message_date = $message_date->format( "$df $tf" );
 		$tpl_row->assign('message_date', $formatted_last_message_date);
 
-		$last = new Date_Span();
-		$last->setFromDateDiff( $now, $message_date );
+		$last = new CDate($message_date);
 
-		$last_post_days = sprintf( '%.1f', $last->format( '%d' ) );
+		$last_post_days = sprintf( '%.1f', $last->compare($now, $last) );
 		$tpl_row->assign('last_post_days', $last_post_days);
 
 		$id = $row['message_parent'] < 0 ? $row['message_id'] : $row['message_parent'];
