@@ -35,7 +35,7 @@ $mm = $this_day->getMonth();
 $yy = $this_day->getYear();
 
 // get current week
-$this_week = Date_calc::beginOfWeek ($dd, $mm, $yy, FMT_TIMESTAMP_DATE, LOCALE_FIRST_DAY);
+$this_week = $this_day->beginOfWeek ();
 
 // prepare time period for 'events'
 $first_time = new CDate( $date);
@@ -47,13 +47,15 @@ if ($phpver < '5') // fix a bug in php4.
 $last_time = new CDate($date);
 $last_time->setTime(23, 59, 59);
 
-$prev_day = new CDate(Date_calc::prevDay($dd, $mm, $yy, FMT_TIMESTAMP_DATE));
-$next_day = new CDate(Date_calc::nextDay($dd, $mm, $yy, FMT_TIMESTAMP_DATE));
+$prev_day = new CDate($this_day);
+$prev_day->addDays(-1);
+$next_day = new CDate($this_day);
+$next_day->addDays(1);
 
 // setup the title block
 $titleBlock = new CTitleBlock( 'Day View', 'myevo-appointments.png', $m, "$m.$a" );
 $titleBlock->addCrumb('?m=calendar&amp;date='.$this_day->format(FMT_TIMESTAMP_DATE), 'month view');
-$titleBlock->addCrumb('?m=calendar&amp;a=week_view&amp;date='.$this_week, 'week view');
+$titleBlock->addCrumb('?m=calendar&amp;a=week_view&amp;date='.$this_week->format(FMT_TIMESTAMP_DATE), 'week view');
 $titleBlock->addCell('
 <form action="?m=calendar&amp;a=addedit&amp;date=' . $this_day->format(FMT_TIMESTAMP_DATE)  . '" method="post">
 	<input type="submit" class="button" value="'.$AppUI->_('new event').'" />
