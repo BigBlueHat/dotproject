@@ -627,14 +627,6 @@ function convert2days( $durn, $units )
 	}
 }
 
-function formatTime( $uts )
-{
-	global $AppUI;
-	$date = new CDate();
-	$date->setDate($uts, DATE_FORMAT_UNIXTIME);	
-	return $date->format( $AppUI->getPref('SHDATEFORMAT') );
-}
-
 /**
  * This function is necessary because Windows likes to
  * write their own standards.  Nothing that depends on locales
