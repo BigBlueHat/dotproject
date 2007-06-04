@@ -279,6 +279,28 @@ class DBQuery {
     $this->create_table = $table;
   }
   
+  function createDatabase($database)
+  {
+  	$dict = NewDataDictionary($this->_db, dPgetConfig('dbtype'));
+  	$dict->CreateDatabase($database);
+  }
+  
+  function DDcreateTable($table, $def, $opts)
+  {
+  	$dict = NewDataDictionary($this->_db, dPgetConfig('dbtype'));
+  	$query_array = $dict->ChangeTableSQL(dPgetConfig('dbprefix') . $table, $def, $opts);
+  	//returns 0 - failed, 1 - executed with errors, 2 - success
+  	return $dict->ExecuteSQLArray($query_array);
+  }
+  
+  function DDcreateIndex($name, $table, $cols, $opts)
+  {
+  	$dict = NewDataDictionary($this->_db, dPgetConfig('dbtype'));
+  	$query_array = $dict->CreateIndexSQL($name, $table, $cols, $opts);
+  	//returns 0 - failed, 1 - executed with errors, 2 - success
+  	return $dict->ExecuteSQLArray($query_array);
+  }
+  
   /** Create a temporary database table
    * @param $table the name of the temporary table to create.
    */

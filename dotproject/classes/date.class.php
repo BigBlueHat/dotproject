@@ -102,7 +102,7 @@ class CDate {
 		
 		$this->setTZ($tz);
 		
-		if (is_null($date)) {
+		if (empty($date)) {
 			$this->setDate(date('Y-m-d H:i:s'));
 		} elseif (is_object($date) && (get_class($this) == get_class($date))) {
 			$this->setDate($date->getDate());
