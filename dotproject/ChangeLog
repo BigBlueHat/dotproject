@@ -1,3 +1,37 @@
+2007-06-05 00:28  (cyberhorse)
+---------------------------------
+lib/fonts/AUTHORS
+lib/fonts/CREDITS
+lib/fonts/ChangeLog
+lib/fonts/FreeMono.ttf
+lib/fonts/FreeMonoBold.ttf
+lib/fonts/FreeMonoBoldOblique.ttf
+lib/fonts/FreeMonoOblique.ttf
+lib/fonts/FreeSans.ttf
+lib/fonts/FreeSansBold.ttf
+lib/fonts/FreeSansBoldOblique.ttf
+lib/fonts/FreeSansOblique.ttf
+lib/fonts/FreeSerif.ttf
+lib/fonts/FreeSerifBold.ttf
+lib/fonts/FreeSerifBoldItalic.ttf
+lib/fonts/FreeSerifItalic.ttf
+lib/fonts/INSTALL
+lib/fonts/README
+lib/jpgraph/src/jpg-config.inc
+lib/jpgraph/src/jpgraph.php
+- Added an Unicode font and updated jpgraph to use it
+
+2007-06-04 10:02  (cyberhorse)
+---------------------------------
+classes/date.class.php
+classes/query.class.php
+- #1984 - similar solution to suggested patch applied
+
+2007-06-04 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-06-04
+
 2007-06-03 21:03  (cyberhorse)
 ---------------------------------
 ChangeLog
