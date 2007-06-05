@@ -1,3 +1,38 @@
+2007-06-06 01:16  (cyberhorse)
+---------------------------------
+style/_smarty/projects/list.html
+- Removed the sticky flag on the overlib popups in the project list
+
+2007-06-06 01:13  (cyberhorse)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/viewgantt.php
+modules/projects/js/timeline-load.js
+- Fixed javascript error on gantt chart page (timeline-load)
+- Fixed javascript being commented out on project gantt chart page
+- Fixed gantt chart display if no dates are set and there are no projects to display
+
+2007-06-06 00:39  (cyberhorse)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/tasks/gantt.php
+- Set an absolute minimum for the gantt charts width - it has to be >=600px (smaller than that just broken or doesn't show enough information)
+
+2007-06-06 00:25  (cyberhorse)
+---------------------------------
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/tasks/gantt.php
+- Completed jpgraph font conversion to Unicode ttf font
+- Fixed a number of PHP5 related problems
+- Fixed calculations for readable date headers display
+
+2007-06-05 06:42  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-06-05
+
 2007-06-05 00:28  (cyberhorse)
 ---------------------------------
 lib/fonts/AUTHORS
@@ -19,6 +54,7 @@ lib/fonts/INSTALL
 lib/fonts/README
 lib/jpgraph/src/jpg-config.inc
 lib/jpgraph/src/jpgraph.php
+modules/tasks/gantt.php
 - Added an Unicode font and updated jpgraph to use it
 
 2007-06-04 10:02  (cyberhorse)
