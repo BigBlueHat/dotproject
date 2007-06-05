@@ -200,7 +200,9 @@ foreach ($projects as $p) {
 	}
 }
 
-$width      = dPgetParam( $_GET, 'width', 600 );
+$width = dPgetParam( $_GET, 'width', 600 );
+if ($width < 600)
+	$width = 600;
 //consider critical (concerning end date) tasks as well
 if ($caller != 'todo') {
 	$start_min = $projects[$project_id]['project_start_date'];

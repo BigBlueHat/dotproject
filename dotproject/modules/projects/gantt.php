@@ -64,12 +64,16 @@ $q->addOrder('project_name, task_end_date DESC');
 $projects = $q->loadList();
 $q->clear();
 
-$width      = dPgetParam( $_GET, 'width', 600 );
+
 $start_date = dPgetParam( $_GET, 'start_date', 0 );
 $end_date   = dPgetParam( $_GET, 'end_date', 0 );
 
 $showAllGantt = dPgetParam( $_REQUEST, 'showAllGantt', '0' );
 //$showTaskGantt = dPgetParam( $_GET, 'showTaskGantt', '0' );
+
+$width      = dPgetParam( $_GET, 'width', 600 );
+if ($width < 600)
+	$width = 600;
 
 $graph = new GanttGraph($width);
 $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);

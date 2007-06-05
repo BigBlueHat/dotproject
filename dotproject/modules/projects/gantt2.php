@@ -54,12 +54,14 @@ $q->addQuery('min(t.task_start_date) task_min_date, max(t.task_end_date) task_ma
 $q->addWhere('u.user_id = ut.user_id AND ut.task_id = t.task_id');
 $taskMinMax = $q->loadList();
 
-$width      = dPgetParam( $_GET, 'width', 600 );
 $start_date = dPgetParam( $_GET, 'start_date', 0 );
 $end_date   = dPgetParam( $_GET, 'end_date', 0 );
 $showTaskGantt = dPgetParam( $_GET, 'showTaskGantt', 0 );
 
-
+$width      = dPgetParam( $_GET, 'width', 600 );
+if ($width < 600)
+	$width = 600;
+	
 $graph2 = new GanttGraph($width);
 $graph2->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 
