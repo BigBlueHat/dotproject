@@ -33,7 +33,7 @@
 						{$row.project_description|nl2br}
 					{/capture}
 					{dPtranslateToVar word='Description' ass='popDescCap'}
-					<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}" {popup sticky=true caption=$popDescCap text=$popDesc}>{$row.project_name}</a>
+					<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}" {popup sticky=false caption=$popDescCap text=$popDesc}>{$row.project_name}</a>
 				</span>
 			</td>
 		{elseif $show[j] == 'project_priority'}
