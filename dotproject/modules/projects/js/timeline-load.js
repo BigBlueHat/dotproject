@@ -37,18 +37,20 @@ function timelineLoadEvents(transport, json)
 function timelineOnLoad() {
 
   var url = location.pathname;
-  var projectid = $('project_id').value;
-
-  new Ajax.Request(url, {
-		method: 'get',
-		parameters: {
-			m: "tasks",
-			a: "xmllisttasks",
-			suppressHeaders: "1",
-			project_id: projectid
-		},
-		onSuccess: timelineLoadEvents
-	});
+  if ($('project_id')) {
+	  var projectid = $('project_id').value;
+	
+	  new Ajax.Request(url, {
+			method: 'get',
+			parameters: {
+				m: "tasks",
+				a: "xmllisttasks",
+				suppressHeaders: "1",
+				project_id: projectid
+			},
+			onSuccess: timelineLoadEvents
+		});
+	}
 }
 
 var resizeTimerID = null;

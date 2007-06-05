@@ -143,9 +143,11 @@ if ($start_date && $end_date){
 }
 
 $today = new CDate();
-if ($max_d_end->compare($today) < 0)
+if (!isset($max_d_end) || $max_d_end->compare($today) < 0)
 	$max_d_end = $today;
 
+if (!isset($min_d_start))
+	$min_d_start = $today;
 // check day_diff and modify Headers
 $day_diff = abs($min_d_start->compare($max_d_end));
 //echo $day_diff; exit;
