@@ -164,6 +164,42 @@ foreach ($proTasks as $row) {
         $projects[$row['task_project']]['tasks'][] = $row;
 }
 $q->clear();
+
+function showgtask( &$a, $level=0 ) {
+        /* Add tasks to gantt chart */
+
+        global $gantt_arr;
+
+        $gantt_arr[] = array($a, $level);
+
+}
+
+function findgchild( &$tarr, $parent, $level=0 ){
+        GLOBAL $projects;
+        $level = $level+1;
+        $n = count( $tarr );
+        for ($x=0; $x < $n; $x++) {
+                if($tarr[$x]['task_parent'] == $parent && $tarr[$x]['task_parent'] != $tarr[$x]['task_id']){
+                        showgtask( $tarr[$x], $level );
+                        findgchild( $tarr, $tarr[$x]['task_id'], $level);
+                }
+        }
+}
+
+reset($projects);
+//$p = &$projects[$project_id];
+foreach ($projects as $p) {
+	$tnums = count( $p['tasks'] );
+
+	for ($i=0; $i < $tnums; $i++) {
+	        $t = $p['tasks'][$i];
+	        if ($t['task_parent'] == $t['task_id']) {
+	                showgtask( $t );
+	                findgchild( $p['tasks'], $t['task_id'] );
+	        }
+	}
+}
+
 $width      = dPgetParam( $_GET, 'width', 600 );
 //consider critical (concerning end date) tasks as well
 if ($caller != 'todo') {
@@ -177,12 +213,9 @@ $count = 0;
 
 
 $graph = new GanttGraph($width);
-$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK);
-//$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY);
-
+$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
+$graph->scale->day->SetStyle(DAYSTYLE_SHORTDATE4);
 $graph->scale->month->SetFont(FF_CUSTOM);
-//$graph->scale->day->SetFont(FF_CUSTOM);
-
 	        
 $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
@@ -236,84 +269,48 @@ $graph->scale->tableTitle->Show(true);
 //month number
 //-----------------------------------------
 if ($start_date && $end_date){
-        $min_d_start = new CDate($start_date);
-        $max_d_end = new CDate($end_date);
-        $graph->SetDateRange( $start_date, $end_date );
+	$min_d_start = new CDate($start_date);
+	$max_d_end = new CDate($end_date);
+	$graph->SetDateRange( $start_date, $end_date );
 } else {
-        // find out DateRange from gant_arr
-        $d_start = new CDate();
-        $d_end = new CDate();
-        for($i = 0; $i < count(@$gantt_arr); $i++ ){
-                $a = $gantt_arr[$i][0];
-                $start = substr($a['task_start_date'], 0, 10);
-                $end = substr($a['task_end_date'], 0, 10);
+	// find out DateRange from gant_arr
+	
+	$d_start = null;
+	$d_end = null;
 
-                $d_start->Date($start);
-                $d_end->Date($end);
+	foreach ($gantt_arr as $a) {
+		$task = $a[0];
 
-                if ($i == 0){
-                        $min_d_start = $d_start;
-                        $max_d_end = $d_end;
-                } else {
-                        if (Date::compare($min_d_start,$d_start)>0){
-                                $min_d_start = $d_start;
-                        }
-                        if (Date::compare($max_d_end,$d_end)<0){
-                                $max_d_end = $d_end;
-                        }
-                }
-        }
+		$d_start = new CDate($task['task_start_date'], 0, 10);
+		if (!isset($min_d_start)) {
+			$min_d_start = new CDate($d_start);
+		} elseif (CDate::compare($min_d_start,$d_start)>0) {
+			$min_d_start = new CDate($d_start);
+		}
+		$d_end = new CDate($task['task_end_date'], 0, 10);
+		if (!isset($max_d_end)) {
+			$max_d_end = new CDate($d_end);
+		} elseif (CDate::compare($max_d_end,$d_end)<0) {
+			$max_d_end = new CDate($d_end);
+		}
+	}
 }
 
 // check day_diff and modify Headers
-$day_diff = $min_d_start->compare($max_d_end);
+$day_diff = abs($min_d_start->compare($max_d_end));
 
 if ($day_diff > 240){
-        //more than 240 days
-        $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH);
+	//more than 240 days
+	$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH);
 } else if ($day_diff > 90){
-        //more than 90 days and less of 241
-        $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK );
-        $graph->scale->week->SetStyle(WEEKSTYLE_WNBR);
+	//more than 90 days and less of 241
+	$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK );
 }
 
 
 //This kludgy function echos children tasks as threads
 
-function showgtask( &$a, $level=0 ) {
-        /* Add tasks to gantt chart */
 
-        global $gantt_arr;
-
-        $gantt_arr[] = array($a, $level);
-
-}
-
-function findgchild( &$tarr, $parent, $level=0 ){
-        GLOBAL $projects;
-        $level = $level+1;
-        $n = count( $tarr );
-        for ($x=0; $x < $n; $x++) {
-                if($tarr[$x]['task_parent'] == $parent && $tarr[$x]['task_parent'] != $tarr[$x]['task_id']){
-                        showgtask( $tarr[$x], $level );
-                        findgchild( $tarr, $tarr[$x]['task_id'], $level);
-                }
-        }
-}
-
-reset($projects);
-//$p = &$projects[$project_id];
-foreach ($projects as $p) {
-	$tnums = count( $p['tasks'] );
-
-	for ($i=0; $i < $tnums; $i++) {
-	        $t = $p['tasks'][$i];
-	        if ($t['task_parent'] == $t['task_id']) {
-	                showgtask( $t );
-	                findgchild( $p['tasks'], $t['task_id'] );
-	        }
-	}
-}
 
 $hide_task_groups = false;
 

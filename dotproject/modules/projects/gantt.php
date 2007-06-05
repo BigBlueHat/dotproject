@@ -46,17 +46,17 @@ if ($department > 0) {
 	$q->addWhere('pd.department_id = '.$department);
 }
 if ($proFilter == '-3'){
-        $q->addWhere('project_owner = '.$user_id);
+	$q->addWhere('project_owner = '.$user_id);
 } else if ($proFilter == '-2'){
-        $q->addWhere('project_status != 3');
+	$q->addWhere('project_status != 3');
 } else if ($proFilter != '-1') {
-         $q->addWhere('project_status = '.$proFilter);
+	$q->addWhere('project_status = '.$proFilter);
 }
 if (!($department > 0) && $company_id != 0) {
-        $q->addWhere('project_company = '.$company_id);
+	$q->addWhere('project_company = '.$company_id);
 }
 if ($showInactive != '1') {
-        $q->addWhere('project_status != 7');
+	$q->addWhere('project_status != 7');
 }
 $pjobj->setAllowedSQL($AppUI->user_id, $q);
 $q->addGroup('project_id');
@@ -77,6 +77,7 @@ $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 $graph->SetFrame(false);
 $graph->SetBox(true, array(0,0,0), 2);
 $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
+$graph->scale->day->SetStyle(DAYSTYLE_SHORTDATE4);
 
 $pLocale = setlocale(LC_TIME, 0); // get current locale for LC_TIME
 $res = @setlocale(LC_TIME, $AppUI->user_lang[0]);
@@ -89,10 +90,11 @@ if ($start_date && $end_date) {
 	$graph->SetDateRange( $start_date, $end_date );
 }
 
-//$graph->scale->actinfo->SetFont(FF_ARIAL);
+//$graph->scale->actinfo->SetFont(FF_CUSTOM);
 $graph->scale->actinfo->vgrid->SetColor('gray');
 $graph->scale->actinfo->SetColor('darkgray');
 $graph->scale->actinfo->SetColTitles(array( $AppUI->_('Project name', UI_OUTPUT_RAW), $AppUI->_('Start Date', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW), $AppUI->_('Actual End', UI_OUTPUT_RAW)),array(160,10, 70,70));
+$graph->scale->actinfo->SetFont(FF_CUSTOM,FS_NORMAL,9);
 
 
 $tableTitle = ($proFilter == '-1') ? $AppUI->_('All Projects') : $projectStatus[$proFilter];
@@ -100,8 +102,7 @@ $graph->scale->tableTitle->Set($tableTitle);
 
 // Use TTF font if it exists
 // try commenting out the following two lines if gantt charts do not display
-if (is_file( TTF_DIR.'arialbd.ttf' ))
-	$graph->scale->tableTitle->SetFont(FF_ARIAL,FS_BOLD,12);
+$graph->scale->tableTitle->SetFont(FF_CUSTOM,FS_BOLD,12);
 $graph->scale->SetTableTitleBackground('#eeeeee');
 $graph->scale->tableTitle->Show(true);
 
@@ -113,45 +114,46 @@ $graph->scale->tableTitle->Show(true);
 //month number
 //-----------------------------------------
 if ($start_date && $end_date){
-        $min_d_start = new CDate($start_date);
-        $max_d_end = new CDate($end_date);
-        $graph->SetDateRange( $start_date, $end_date );
+	$min_d_start = new CDate($start_date);
+	$max_d_end = new CDate($end_date);
+	$graph->SetDateRange( $start_date, $end_date );
 } else {
-        // find out DateRange from gant_arr
-        $d_start = new CDate();
-        $d_end = new CDate();
-        for($i = 0; $i < count(@$projects); $i++ ){
-                $start = substr($p['project_start_date'], 0, 10);
-                $end = substr($p['project_end_date'], 0, 10);
+	// find out DateRange from gant_arr
+	$d_start = null;
+	$d_end = null;
 
-                $d_start->Date($start);
-                $d_end->Date($end);
-
-                if ($i == 0){
-                        $min_d_start = $d_start;
-                        $max_d_end = $d_end;
-                } else {
-                        if (Date::compare($min_d_start,$d_start)>0){
-                                $min_d_start = $d_start;
-                        }
-                        if (Date::compare($max_d_end,$d_end)<0){
-                                $max_d_end = $d_end;
-                        }
-                }
-        }
+	foreach ($projects as $p) {
+		$d_start = new CDate($p['project_start_date'], 0, 10);
+		if (!isset($min_d_start)) {
+			$min_d_start = new CDate($d_start);
+		} elseif (CDate::compare($min_d_start,$d_start)>0) {
+			$min_d_start = new CDate($d_start);
+		}
+		$d_end = new CDate($p['project_end_date'], 0, 10);
+		if (!isset($max_d_end)) {
+			$max_d_end = new CDate($d_end);
+		} elseif (CDate::compare($max_d_end,$d_end)<0) {
+			$max_d_end = new CDate($d_end);
+		}
+	}
 }
+
+$today = new CDate();
+if ($max_d_end->compare($today) < 0)
+	$max_d_end = $today;
 
 // check day_diff and modify Headers
-$day_diff = $min_d_start->compare($max_d_end);
-
+$day_diff = abs($min_d_start->compare($max_d_end));
+//echo $day_diff; exit;
 if ($day_diff > 240){
-        //more than 240 days
-        $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH);
+	//more than 240 days
+	$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH);
 } else if ($day_diff > 90){
-        //more than 90 days and less of 241
-        $graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK );
-        $graph->scale->week->SetStyle(WEEKSTYLE_WNBR);
+	//more than 90 days and less of 241
+	$graph->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HWEEK );
+	$graph->scale->week->SetStyle(WEEKSTYLE_WNBR);
 }
+$graph->scale->month->SetFont(FF_CUSTOM,FS_NORMAL,9);
 
 $row = 0;
 
@@ -200,37 +202,38 @@ foreach($projects as $p) {
 		$cap = '';
 	}
 
-        if ($showLabels){
-                $caption .= $AppUI->_($projectStatus[$p['project_status']]).', ';
-                $caption .= $p['project_status'] <> 7 ? $AppUI->_('active') : $AppUI->_('archived');
-        }
+	if ($showLabels){
+	        $caption .= $AppUI->_($projectStatus[$p['project_status']]).', ';
+	        $caption .= $p['project_status'] <> 7 ? $AppUI->_('active') : $AppUI->_('archived');
+	}
 	$enddate = new CDate($end);
 	$startdate = new CDate($start);
 	$actual_end = $p['project_actual_end_date'] ? $p['project_actual_end_date'] : $end;
 
 	$actual_enddate = new CDate($actual_end);
 	$actual_enddate = $actual_enddate->after($startdate) ? $actual_enddate : $enddate;
-        $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), $actual_enddate->format($df)), $start, $actual_end, $cap, 0.6);
-        $bar->progress->Set(min(($progress/100), 1));
-
-        $bar->title->SetFont(FF_FONT1,FS_NORMAL,10);
-        $bar->SetFillColor('#'.$p['project_color_identifier']);
-        $bar->SetPattern(BAND_SOLID,'#'.$p['project_color_identifier']);
+	$bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), $actual_enddate->format($df)), $start, $actual_end, $cap, 0.6);
+	$bar->progress->Set(min(($progress/100), 1));
+	
+	$bar->title->SetFont(FF_CUSTOM,FS_NORMAL,10);
+	$bar->SetFillColor('#'.$p['project_color_identifier']);
+	$bar->SetPattern(BAND_SOLID,'#'.$p['project_color_identifier']);
 
 	//adding captions
 	$bar->caption = new TextProperty($caption);
+	$bar->caption->SetFont(FF_CUSTOM,FS_NORMAL,10);
 	$bar->caption->Align('left','center');
 
-        // gray out templates, completes, on ice, on hold
-        if ($p['project_status'] != '3' || $p['project_status'] == '7') {
-                $bar->caption->SetColor('darkgray');
-                $bar->title->SetColor('darkgray');
-                $bar->SetColor('darkgray');
-                $bar->SetFillColor('gray');
-                //$bar->SetPattern(BAND_SOLID,'gray');
-                $bar->progress->SetFillColor('darkgray');
-                $bar->progress->SetPattern(BAND_SOLID,'darkgray',98);
-        }
+	// gray out templates, completes, on ice, on hold
+	if ($p['project_status'] != '3' || $p['project_status'] == '7') {
+		$bar->caption->SetColor('darkgray');
+		$bar->title->SetColor('darkgray');
+		$bar->SetColor('darkgray');
+		$bar->SetFillColor('gray');
+		//$bar->SetPattern(BAND_SOLID,'gray');
+		$bar->progress->SetFillColor('darkgray');
+		$bar->progress->SetPattern(BAND_SOLID,'darkgray',98);
+	}
 
 	$graph->Add($bar);
  	
@@ -238,7 +241,6 @@ foreach($projects as $p) {
  	if ($showAllGantt)
  	{
  		// insert tasks into Gantt Chart
- 		
  		// select for tasks for each project	
 		
  		$q  = new DBQuery;
@@ -303,6 +305,9 @@ foreach($projects as $p) {
 
 $today = date('y-m-d');
 $vline = new GanttVLine($today, $AppUI->_('Today', UI_OUTPUT_RAW));
+$vline->title->SetFont(FF_CUSTOM,FS_NORMAL,9);
+
+//print_r($vline);exit;
 $graph->Add($vline);
 $graph->Stroke();
 ?>

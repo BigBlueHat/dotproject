@@ -66,6 +66,8 @@ $graph2->ShowHeaders(GANTT_HYEAR | GANTT_HMONTH | GANTT_HDAY | GANTT_HWEEK);
 $graph2->SetFrame(false);
 $graph2->SetBox(true, array(0,0,0), 2);
 $graph2->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
+$graph2->scale->day->SetStyle(DAYSTYLE_SHORTDATE4);
+$graph2->scale->month->SetFont(FF_CUSTOM,FS_NORMAL,9);
 
 $pLocale = setlocale(LC_TIME, 0); // get current locale for LC_TIME
 $res = @setlocale(LC_TIME, $AppUI->user_lang[0]);
@@ -78,7 +80,7 @@ if ($start_date && $end_date) {
 	$graph2->SetDateRange( $start_date, $end_date );
 }
 
-//$graph2->scale->actinfo->SetFont(FF_ARIAL);
+$graph2->scale->actinfo->SetFont(FF_CUSTOM);
 $graph2->scale->actinfo->vgrid->SetColor('gray');
 $graph2->scale->actinfo->SetColor('darkgray');
 $graph2->scale->actinfo->SetColTitles(array( $AppUI->_('User Name', UI_OUTPUT_RAW), $AppUI->_('Start Date', UI_OUTPUT_RAW), $AppUI->_('Finish', UI_OUTPUT_RAW), $AppUI->_(' ')),array(160,10, 70,70));
@@ -89,8 +91,7 @@ $graph2->scale->tableTitle->Set($tableTitle);
 
 // Use TTF font if it exists
 // try commenting out the following two lines if gantt charts do not display
-if (is_file( TTF_DIR."arialbd.ttf" ))
-	$graph2->scale->tableTitle->SetFont(FF_ARIAL,FS_BOLD,12);
+$graph2->scale->tableTitle->SetFont(FF_CUSTOM,FS_BOLD,12);
 $graph2->scale->SetTableTitleBackground("#eeeeee");
 $graph2->scale->tableTitle->Show(true);
 
@@ -163,7 +164,7 @@ foreach($tasks as $t) {
 		$barTmp = new GanttBar($row++, array($t["user_name"], "", ""," "), "0", "0;" , $t['task_dynamic'] == 1 ? 0.1 : 0.6);						
 		$barTmp->title->SetColor("#".$t['project_color_identifier']);
 		$barTmp->SetFillColor("#".$t['project_color_identifier']);
-		$barTmp->title ->SetFont(FF_FONT1, FF_BOLD);		
+		$barTmp->title ->SetFont(FF_CUSTOM, FF_BOLD);		
 		$graph2->Add($barTmp);
 	}
 		
@@ -218,7 +219,7 @@ foreach($tasks as $t) {
 	$startdate = new CDate($start);
         $bar = new GanttBar($row++, array($name, $startdate->format($df), $enddate->format($df), /*substr($actual_end, 0, 10))*/" "), $start, $actual_end, $cap, 0.6);
    //     $bar->progress->Set($progress/100);
-        $bar->title->SetFont(FF_FONT1,FS_NORMAL,10);
+        $bar->title->SetFont(FF_CUSTOM,FS_NORMAL,10);
         $bar->SetFillColor("#".$t['project_color_identifier']);
         $bar->SetPattern(BAND_SOLID,"#".$t['project_color_identifier']);
 
