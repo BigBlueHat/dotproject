@@ -89,15 +89,18 @@ class CTemplate extends Smarty
 		$this->assign('style_extras', $style_extras);
 		
 		// top navigation menu
-		$nav = $AppUI->getMenuModules();
-		$perms =& $AppUI->acl();
-		$links = array();
-		foreach ($nav as $module) {
-			if ($perms->checkModule($module['mod_directory'], 'access')) {
-				$links[] = $module; //'<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
+		if ($AppUI->user_id > 0) {
+			$nav = $AppUI->getMenuModules();
+			$perms =& $AppUI->acl();
+			$links = array();
+			
+			foreach ($nav as $module) {
+				if ($perms->checkModule($module['mod_directory'], 'access')) {
+					$links[] = $module; //'<a href="?m='.$module['mod_directory'].'">'.$AppUI->_($module['mod_ui_name']).'</a>';
+				}
 			}
+			$this->assign('modules', $links);
 		}
-		$this->assign('modules', $links);
 		
 		$newItem = array( '' => '- New Item -' );
 		if ($perms->checkModule( 'companies', 'add' )) 
