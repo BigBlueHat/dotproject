@@ -907,7 +907,15 @@ class CAppUI {
 		$q->addQuery('mod_directory, mod_ui_name, mod_ui_icon');
 		$q->addWhere("mod_active > 0 AND mod_ui_active > 0 AND mod_directory <> 'public'");
 		$q->addOrder('mod_ui_order');
-		return ($q->loadList());
+		$activeModules = $q->loadList();
+		$perms = & $this->acl();
+		foreach ($activeModules as $mod) {
+			if ($perms->checkModule($mod['mod_directory'], 'view')) {
+				$viewableModules[] = $mod;
+			}
+		}
+
+		return $viewableModules;
 	}
 
 	/** Check a module to see if it is active
