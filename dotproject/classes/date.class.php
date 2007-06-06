@@ -583,7 +583,7 @@ class CDate {
 	{
 		global $AppUI;
 		
-		$local_date = clone $this;
+		$local_date = new CDate($this);
 		
 		if (($format == FMT_DATETIME_MYSQL || $format == FMT_DATE_MYSQL) && $convert == null)
   		$local_date->convertTZ('UTC');
