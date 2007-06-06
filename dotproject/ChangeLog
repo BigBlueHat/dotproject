@@ -1,3 +1,33 @@
+2007-06-07 01:44  (caseydk)
+---------------------------------
+modules/tasks/do_updatetask.php
+- applied rounding to the task logs to make reporting simpler/more meaningful;
+
+2007-06-06 23:48  (cyberhorse)
+---------------------------------
+classes/template.class.php
+- ACL only load the modules in the template if there is access to them (user is logged in)
+
+2007-06-06 23:46  (cyberhorse)
+---------------------------------
+classes/date.class.php
+- Fixed constructor circular dependency
+
+2007-06-06 22:44  (cyberhorse)
+---------------------------------
+classes/date.class.php
+- FIX PHP4 compatibility fixed
+
+2007-06-06 10:25  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- ACL Don't show module at the top menu, unless the user has 'view' permissions to them!
+
+2007-06-06 03:30  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-06-06
+
 2007-06-06 01:16  (cyberhorse)
 ---------------------------------
 style/_smarty/projects/list.html
