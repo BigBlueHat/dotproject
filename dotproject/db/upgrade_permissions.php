@@ -6,7 +6,8 @@ if (! isset($baseDir)) {
 	die('You must not run this script manually.  Instead run the Installer in install/index.php');
 }
 
-@include_once "$baseDir/includes/config.php";
+if ($mode == 'upgrade')
+	include_once "$baseDir/includes/config.php";
 require_once "$baseDir/includes/main_functions.php";
 require_once "$baseDir/install/install.inc.php";
 require_once "$baseDir/includes/db_adodb.php";
