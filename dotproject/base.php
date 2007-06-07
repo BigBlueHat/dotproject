@@ -30,7 +30,15 @@
 global $baseDir;
 global $baseUrl;
 
-$baseDir = dirname(isset($_SERVER['SCRIPT_FILENAME']) ? $_SERVER['SCRIPT_FILENAME'] : __FILE__);
+// Necessary for CGI mode
+if (isset($_SERVER['PATH_TRANSLATED'])) {
+	$basDir = $_SERVER['PATH_TRANSLATED'];
+// If $_SERVER variables are set.
+} elseif (isset($_SERVER['SCRIPT_FILENAME']) {
+	$baseDir = $_SERVER['SCRIPT_FILENAME'];
+} else {
+	$baseDir = __FILE__;
+}
 
 // Set the include path to include sub directories of lib.
 // This ensures third party libraries can work unencumbered.
