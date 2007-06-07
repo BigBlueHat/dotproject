@@ -2,7 +2,11 @@
 ## DO NOT MODIFY THIS FILE BY HAND!
 ##
 "All",
+"All Links",
 "All Projects",
+"Unknown",
+"Document",
+"Application",
 "Are you sure you want to cancel?",
 "Attach a link",
 "Category",
