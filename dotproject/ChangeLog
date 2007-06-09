@@ -1,3 +1,26 @@
+2007-06-09 23:14  (caseydk)
+---------------------------------
+modules/tasks/gantt.php
+- applied patch from #2051;
+- passed along the taskLabels for gantt charts;
+
+2007-06-09 23:13  (caseydk)
+---------------------------------
+modules/files/do_file_co.php
+- moved the file checkout code into the CFile object
+
+2007-06-09 23:10  (caseydk)
+---------------------------------
+modules/tasks/gantt.php
+- applied patch from #2051;
+- passed along the taskLabels for gantt charts;
+
+2007-06-09 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-09
+
 2007-06-08 03:12  (cyberhorse)
 ---------------------------------
 ChangeLog
