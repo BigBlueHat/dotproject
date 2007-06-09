@@ -11,8 +11,10 @@ if (!defined('DP_BASE_DIR')){
 include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph.php');
 include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph_gantt.php');
 
-global $caller, $locale_char_set, $showLabels, $showWork, $showLabels, $showPinned, $showArcProjs, $showHoldProjs, $showDynTasks, $showLowTasks, $user_id;
+global $caller, $locale_char_set, $showLabels, $showWork, $showPinned, 
+	$showArcProjs, $showHoldProjs, $showDynTasks, $showLowTasks, $user_id;
 
+$showLabels = dPgetParam( $_REQUEST, 'showLabels', false );
 $project_id = defVal( @$_REQUEST['project_id'], 0 );
 $f = defVal( @$_REQUEST['f'], 0 );
 
