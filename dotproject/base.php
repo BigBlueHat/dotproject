@@ -32,12 +32,12 @@ global $baseUrl;
 
 // Necessary for CGI mode
 if (isset($_SERVER['PATH_TRANSLATED'])) {
-	$basDir = $_SERVER['PATH_TRANSLATED'];
+	$baseDir = $_SERVER['PATH_TRANSLATED'];
 // If $_SERVER variables are set.
-} elseif (isset($_SERVER['SCRIPT_FILENAME']) {
-	$baseDir = $_SERVER['SCRIPT_FILENAME'];
+} elseif (isset($_SERVER['SCRIPT_FILENAME'])) {
+	$baseDir = str_replace ( 'index.php', '', $_SERVER['SCRIPT_FILENAME']);
 } else {
-	$baseDir = __FILE__;
+	$baseDir = str_replace ( 'index.php', '', __FILE__);
 }
 
 // Set the include path to include sub directories of lib.
