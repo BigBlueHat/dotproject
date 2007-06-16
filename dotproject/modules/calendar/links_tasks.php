@@ -14,7 +14,7 @@ if (!defined('DP_BASE_DIR')){
  * @author Andrew Eddie <eddieajau@users.sourceforge.net>
  */
 function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters ) {
-	GLOBAL $a, $AppUI, $event_id, $df, $tf;
+	global $a, $AppUI, $event_id, $df, $tf, $l10n;
 
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$tf = $AppUI->getPref('TIMEFORMAT');
@@ -39,7 +39,7 @@ function getTaskLinks( $startPeriod, $endPeriod, &$links, $strMaxLen, $filters )
 		$link['alt'] = $row['project_name'].":\n".$row['task_name'];
 	// the link text
 		if (strlen( $row['task_name'] ) > $strMaxLen) {
-			$row['task_name'] = substr( $row['task_name'], 0, $strMaxLen ).'...';
+			$row['task_name'] = $l10n->substr( $row['task_name'], 0, $strMaxLen ).'...';
 		}
 		$link['title'] = $row['task_name'];
 		$link['description'] = $row['task_description'];

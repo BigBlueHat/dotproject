@@ -72,12 +72,12 @@ function getSpaces($amount){
 }
 
 function constructTaskTree($task_data, $depth = 0){
-	global $projTasks, $all_tasks, $parents, $task_parent_options, $task_parent, $task_id;
+	global $l10n, $projTasks, $all_tasks, $parents, $task_parent_options, $task_parent, $task_id;
 
 	$projTasks[$task_data['task_id']] = $task_data['task_name'];
 
 	$selected = $task_data['task_id'] == $task_parent ? 'selected="selected"' : '';
-	$task_data['task_name'] = strlen($task_data[1])>45 ? substr($task_data['task_name'],0, 45).'...' : $task_data['task_name'];
+	$task_data['task_name'] = $l10n->truncate($task_data[1], 45, '...');
 
 	$task_parent_options .= '<option value="'.$task_data['task_id']. '" ' .$selected. '>'.getSpaces($depth*3).dPFormSafe($task_data['task_name']).'</option>'."\n";
 
@@ -173,7 +173,7 @@ if ($department_selection_list!='') {
 
 
 function getDepartmentSelectionList($company_id, $checked_array = array(), $dept_parent=0, $spaces = 0){
-	global $departments_count;
+	global $departments_count, $l10n;
 	$parsed = '';
 
 	if($departments_count < 10) $departments_count++;
@@ -190,9 +190,7 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	foreach($depts_list as $dept_id => $dept_info){
 		$selected = in_array($dept_id, $checked_array) ? ' selected="selected"' : '';
 
-		if(strlen($dept_info['dept_name']) > 30){
-			$dept_info['dept_name'] = substr($dept_info['dept_name'], 0, 28).'...';
-		}
+		$dept_info['dept_name'] = $l10n->truncate($dept_info['dept_name'], 28, '...');
 
 		$parsed .= '<option value="'.$dept_id.'"'.$selected.'>'.str_repeat('&nbsp;', $spaces).$dept_info['dept_name'].'</option>';
 		$parsed .= getDepartmentSelectionList($company_id, $checked_array, $dept_id, $spaces+5);

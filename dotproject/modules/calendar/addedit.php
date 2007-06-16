@@ -171,9 +171,9 @@ $recurs =  array (
 
 $remind = array (
 	'900' 	=> '15 mins',
-	'1800' 	=> '30 mins',
-	'3600' 	=> '1 hour',
-	'7200' 	=> '2 hours',
+	'1800' => '30 mins',
+	'3600' => '1 hour',
+	'7200' => '2 hours',
 	'14400' => '4 hours',
 	'28800' => '8 hours',
 	'56600' => '16 hours',
@@ -184,15 +184,14 @@ $remind = array (
 // build array of times in 30 minute increments
 $times = array();
 $t = new CDate();
-$t->setTime( 0,0,0 );
-if (!defined('LOCALE_TIME_FORMAT'))
+$t->setTime(0, 0, 0);
+if (!defined('LOCALE_TIME_FORMAT')) {
   define('LOCALE_TIME_FORMAT', '%I:%M %p');
-//$m clashes with global $m (module)
-for ($minutes=0; $minutes < ((24 * 60) / $inc); $minutes++) {
-	$times[$t->format( '%H%M%S' )] = $t->format(LOCALE_TIME_FORMAT);
-	$t->addSeconds( $inc * 60 );
 }
-
+for ($minutes=0; $minutes < ((24 * 60) / $inc); $minutes++) {
+	$times[$t->format('%H%M%S')] = $t->format($AppUI->getPref('TIMEFORMAT'));
+	$t->addSeconds($inc * 60);
+}
 
 require_once $AppUI->getSystemClass('CustomFields');
 $custom_fields = new CustomFields('calendar', 'addedit', $obj->event_id, 'edit');

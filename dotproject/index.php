@@ -45,7 +45,8 @@ require_once('base.php');
 clearstatcache();
 if (is_file(DP_BASE_DIR . '/includes/config.php')) {
 	require_once(DP_BASE_DIR . '/includes/config.php');
-} else {
+} else { 
+// Application not initialised - forwarding to installation procedures.
 	include_once(DP_BASE_DIR . '/classes/template.class.php');
 	$tpl = new CTemplate();
 	$tpl->init();

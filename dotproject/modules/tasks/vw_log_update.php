@@ -123,6 +123,7 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 
 <!-- TIMER RELATED SCRIPTS -->
 <script type="text/javascript" language="javascript">
+<!--
 	// please keep these lines on when you copy the source
 	// made by: Nicolas - http://www.javascript-page.com
 	// adapted by: Juan Carlos Gonzalez jcgonz@users.sourceforge.net
@@ -152,10 +153,10 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 	function timerStart() {
 		if(!timerID){ // this means that it needs to be started
 			timerSet();
-			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Stop');?>";
+			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Stop', UI_OUTPUT_JS);?>";
             UpdateTimer();
 		} else { // timer must be stoped
-			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Start');?>";
+			document.editFrm.timerStartStopButton.value = "<?php echo $AppUI->_('Start', UI_OUTPUT_JS);?>";
 			document.getElementById("timerStatus").innerHTML = "";
 			timerStop();
 		}
@@ -187,5 +188,6 @@ $taskLogReference = dPgetSysVal( 'TaskLogReference' );
 		idate = eval( 'document.editFrm.task_' + field + '.value' );
 		window.open( 'index.php?m=public&a=calendar&dialog=1&callback=setCalendar&date=' + idate, 'calwin', 'width=251, height=220, scrollbars=no' );
 	}
+-->
 </script>
 <!-- END OF TIMER RELATED SCRIPTS -->
