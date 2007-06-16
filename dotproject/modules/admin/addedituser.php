@@ -50,8 +50,9 @@ if (!db_loadHash($sql, $user) && $user_id > 0) {
 		$titleBlock->addCrumb('?m=admin', 'users list');
 	if ($user_id > 0) {
 		$titleBlock->addCrumb('?m=admin&amp;a=viewuser&amp;user_id=' . $user_id, 'view this user');
-		if ($canEdit || $user_id == $AppUI->user_id)
+		if ($perms->checkModuleItem('system', 'access', $user_id) && ($canEdit || $user_id == $AppUI->user_id)) {
 			$titleBlock->addCrumb('?m=system&amp;a=addeditpref&amp;user_id=' . $user_id, 'edit preferences');
+		}
 	}
 	$titleBlock->show();
 	
