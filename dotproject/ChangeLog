@@ -1,3 +1,35 @@
+2007-06-16 15:51  (cyberhorse)
+---------------------------------
+index.php
+classes/l10n.php
+modules/calendar/addedit.php
+modules/calendar/links_tasks.php
+modules/tasks/addedit.php
+modules/tasks/vw_log_update.php
+- #1996 - ideas from patch applied. CLocalisation class used and updated.
+
+2007-06-16 13:27  (cyberhorse)
+---------------------------------
+modules/admin/addedituser.php
+modules/admin/viewuser.php
+- #2049 - suggested patch applied
+
+2007-06-16 13:22  (cyberhorse)
+---------------------------------
+modules/projects/view.php
+- #2045 - suggested patch applied
+
+2007-06-16 13:21  (cyberhorse)
+---------------------------------
+style/_smarty/projects/view.html
+- #2045 - hardcoding fixed
+
+2007-06-16 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-16
+
 2007-06-16 03:04  (merlinyoda)
 ---------------------------------
 modules/resources/addedit.php
