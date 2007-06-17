@@ -1,3 +1,91 @@
+2007-06-17 20:52  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+- cleanup and documentation for the new init functions
+
+2007-06-17 20:39  (cyberhorse)
+---------------------------------
+fileviewer.php
+index.php
+classes/date.class.php
+classes/dp.class.php
+classes/l10n.class.php
+classes/l10n.php
+classes/ui.class.php
+functions/projects_func.php
+functions/tasks_func.php
+includes/session.php
+includes/smarty/function.dPtranslate.php
+includes/smarty/function.dPtranslateToVar.php
+locales/core.php
+modules/admin/index.php
+modules/admin/viewuser.php
+modules/calendar/calendar.class.php
+modules/calendar/day_view.php
+modules/calendar/vw_day_events.php
+modules/companies/view.php
+modules/files/co.php
+modules/files/files.class.php
+modules/files/index_table.new.php
+modules/files/index_table.php
+modules/forums/view_messages.php
+modules/forums/view_topics.php
+modules/projects/admin_tab.viewuser.projects.php
+modules/projects/gantt.php
+modules/projects/gantt2.php
+modules/projects/index.php
+modules/projects/projects.class.php
+modules/projects/vw_forums.php
+modules/system/addeditpref.php
+modules/system/do_preference_aed.php
+modules/system/translate.php
+modules/tasks/addedit.php
+modules/tasks/index.php
+modules/tasks/projects_tab.view.task_logs.php
+modules/tasks/tasks.class.php
+modules/tasks/tasks.php
+modules/tasks/tasksperuser_sub.php
+modules/tasks/view.php
+modules/tasks/vw_log_update.php
+modules/tasks/vw_logs.php
+modules/tasks/vw_tasks.php
+style/_smarty/login.html
+- Major changes:
+- translation functionality moved to l10n class - _() function copy left
+- in AppUI, but is deprecated and shouldn't be used.
+- localisation handling moved to l10n class
+- translation files parsed, rather than loaded via eval - eliminates
+- security risks (arbitrary code can be put in files, which in many cases
+- are writable by all).
+- AppUI init() function to handle application logic. Most general system
+- code moved to that.
+- fileviewer.php removed - its responsibility are now handled by the main
+- index.php file
+- Date class PHP5 issue fixed
+- Many small formatting changes and others I cannot think of
+
+2007-06-17 05:01  (nybod)
+---------------------------------
+modules/calendar/calendar.class.php
+- fixed small typo
+
+2007-06-17 04:56  (nybod)
+---------------------------------
+modules/calendar/calendar.class.php
+- Fixed small typo
+
+2007-06-17 04:07  (caseydk)
+---------------------------------
+modules/calendar/calendar.class.php
+modules/calendar/calendar.class.php
+- applied the tweak specified in 2061;
+
+2007-06-17 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-17
+
 2007-06-16 15:51  (cyberhorse)
 ---------------------------------
 index.php
