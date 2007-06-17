@@ -678,7 +678,7 @@ function projects_list_data($user_id = false) {
 	$tasks_users = $q->exec();
 	$q->clear();
 
-	if(isset($department)){
+	if($AppUI->isActiveModule('departments') && isset($department)) {
 		//If a department is specified, we want to display projects from the department, and all departments under that, so we need to build that list of departments
 		$dept_ids = array();
 		$q->addTable('departments');
@@ -782,13 +782,14 @@ function projects_list_data($user_id = false) {
 	}
 	$buffer .= '</select>';
 
+	return $projects;
 }
 
 /** 
  * writes out a single <option> element for display of departments
  */
 function showchilddept( &$a, $level=1 ) {
-	Global $buffer, $department;
+	global $buffer, $department;
 	$s = '<option value="'.$a["dept_id"].'"'.(isset($department)&&$department==$a["dept_id"]?'selected="selected"':'').'>';
     
 	for ($y=0; $y < $level; $y++) {
@@ -815,7 +816,7 @@ function findchilddept( &$tarr, $parent, $level=1 ){
 }
 
 function addDeptId($dataset, $parent){
-	Global $dept_ids;
+	global $dept_ids;
 	foreach ($dataset as $data){
 		if($data['dept_parent']==$parent){
 			$dept_ids[] = $data['dept_id'];

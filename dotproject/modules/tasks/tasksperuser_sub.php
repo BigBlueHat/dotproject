@@ -242,9 +242,9 @@ function chPriority(user_id) {
 <?php
 echo $AppUI->_('P').'&nbsp;=&nbsp;'.$AppUI->_('User specific Task Priority');
 if($do_report){
-        // get Users with all Allocation info (e.g. their freeCapacity)
-        $tempoTask = new CTask();
-        $userAlloc = $tempoTask->getAllocation('user_id');
+	// get Users with all Allocation info (e.g. their freeCapacity)
+	$tempoTask = new CTask();
+	$userAlloc = $tempoTask->getAllocation('user_id');
 	
 	$q  = new DBQuery;
 	$q->addTable('users', 'u');

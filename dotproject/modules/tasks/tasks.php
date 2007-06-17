@@ -125,7 +125,6 @@ $q->addQuery('project_id, COUNT(t1.task_id) as total_tasks');
 $psql2 = $q->prepare();
 $q->clear();
 
-$perms =& $AppUI->acl();
 $projects = array();
 $canViewTask = $perms->checkModule('tasks', 'view');
 if ($canViewTask) {

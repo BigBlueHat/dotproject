@@ -4,6 +4,7 @@ if (!defined('DP_BASE_DIR')){
 }
 
 // project statii
+global $pstatus, $ptype, $priority;
 $pstatus = dPgetSysVal( 'ProjectStatus' );
 $ptype = dPgetSysVal( 'ProjectType' );
 

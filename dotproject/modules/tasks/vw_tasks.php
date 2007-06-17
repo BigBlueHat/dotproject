@@ -3,11 +3,12 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $m, $a, $project_id, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
+global $m, $a, $f, $task_status, $min_view, $query_string, $durnTypes, $tpl;
 global $task_sort_item1, $task_sort_type1, $task_sort_order1;
 global $task_sort_item2, $task_sort_type2, $task_sort_order2;
 global $user_id, $currentTabId, $currentTabName, $canEdit, $showEditCheckbox;
 
+$project_id = intval(dPgetParam($_GET, 'project_id', 0));
 $toggleAll = dPgetParam($_GET, 'parents', false);
 
 /*

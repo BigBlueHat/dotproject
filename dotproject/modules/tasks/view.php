@@ -23,6 +23,7 @@ $perms =& $AppUI->acl();
 if ( $task_id ) {
 	// we are editing an existing task
 	$canView = $perms->checkModuleItem( 'tasks', 'view', $task_id );
+	global $obj;
 	$obj = new CTask();
 	$obj->load($task_id);
 	$parent = $obj->_parent;

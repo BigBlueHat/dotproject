@@ -3,7 +3,9 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $AppUI, $task_id, $df, $canEdit, $m, $tpl;
+global $AppUI, $df, $canEdit, $m, $tpl;
+
+$task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
 
 $perms =& $AppUI->acl();
 if (! $perms->checkModuleItem('task_log', 'view', $task_id)) {

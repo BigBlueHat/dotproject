@@ -8,7 +8,7 @@ include (DP_BASE_DIR.'/lib/jpgraph/src/jpgraph_gantt.php');
 
 ini_set('max_execution_time', 180);
 
-global $AppUI, $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt, $user_id;
+global $AppUI, $l10n, $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt, $user_id;
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -84,9 +84,9 @@ $graph->scale->week->SetStyle(WEEKSTYLE_FIRSTDAY);
 $graph->scale->day->SetStyle(DAYSTYLE_SHORTDATE4);
 
 $pLocale = setlocale(LC_TIME, 0); // get current locale for LC_TIME
-$res = @setlocale(LC_TIME, $AppUI->user_lang[0]);
+$res = @setlocale(LC_TIME, $l10n->lang[0]);
 if ($res) { // Setting locale doesn't fail
-	$graph->scale->SetDateLocale( $AppUI->user_lang[0] );
+	$graph->scale->SetDateLocale( $l10n->lang[0] );
 }
 setlocale(LC_TIME, $pLocale);
 

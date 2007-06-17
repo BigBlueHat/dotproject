@@ -282,7 +282,7 @@ if (strlen($latest_file['file_name']) > $fnamelen+9)
 }
 $file_icon = getIcon($file_row['file_type']);
 echo "
-<a href=\"./fileviewer.php?file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\"><img border=\"0\" width=\"16\" heigth=\"16\" src=\"".DP_BASE_URL."/modules/files/images/$file_icon\" />&nbsp;$filename</a>";
+<a href=\"./index.php?m=files&a=download&file_id={$latest_file['file_id']}\" title=\"{$latest_file['file_description']}\"><img border=\"0\" width=\"16\" heigth=\"16\" src=\"".DP_BASE_URL."/modules/files/images/$file_icon\" />&nbsp;$filename</a>";
 //	{$latest_file['file_name']}
 		?>
 	</td>
@@ -323,7 +323,7 @@ echo "
 									  }
 									  $hidden_table .= '
 					  </td>
-					  <td nowrap="8%"><a href="./fileviewer.php?file_id=' . $file['file_id'] . '" 
+					  <td nowrap="8%"><a href="./index.php?m=files&a=download&file_id=' . $file['file_id'] . '" 
 							  title="' . $file['file_description'] . '">' . 
 							  '<img border="0" width="16" heigth="16" src="'.DP_BASE_URL.'/modules/files/images/'.$file_icon.'" />&nbsp;' . 
 							  $file['file_name'] . '

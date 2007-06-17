@@ -45,7 +45,7 @@ if ($perms->checkModule('system', 'edit')) {
 $titleBlock->show();
 
 // collect language options
-$LANGUAGES = $AppUI->loadLanguages();
+$LANGUAGES = $l10n->loadLanguages();
 $temp = $AppUI->setWarning( false );
 $langlist = array();
 foreach ($LANGUAGES as $lang => $langinfo)
@@ -78,7 +78,7 @@ if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN')
 else
 	$is_win = false;
 foreach (array_keys($LANGUAGES) as $lang) {
-	$currencies[$lang] = formatCurrency($currEx, $AppUI->setUserLocale($lang, false));
+	$currencies[$lang] = formatCurrency($currEx, $l10n->setUserLocale($lang, false));
 }
 
 // collect UI template options

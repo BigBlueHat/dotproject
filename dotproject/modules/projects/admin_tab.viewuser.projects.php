@@ -3,8 +3,9 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $orderby, $orderdir, $priority, $projects, $pstatus, $tab, $tpl, $user_id, $baseDir;
+global $a, $AppUI, $buffer, $company_id, $department, $min_view, $m, $orderby, $orderdir, $priority, $projects, $pstatus, $tab, $tpl;
 
+$user_id = dPgetParam($_GET, 'user_id', 0);
 $perms =& $AppUI->acl();
 $df = $AppUI->getPref('SHDATEFORMAT');
 

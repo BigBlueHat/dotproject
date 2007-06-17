@@ -12,7 +12,7 @@ if (!defined('DP_BASE_DIR')){
  * other databases.  You may need to use less efficient techniques
  * to make it more generic.
  *
- * NOTE: index.php and fileviewer.php MUST call dPsessionStart
+ * NOTE: index.php MUST call dPsessionStart
  * instead of trying to set their own sessions.
  */
 

@@ -3,6 +3,7 @@ if (!defined('DP_BASE_DIR')){
   die('You should not access this file directly');
 }
 
+global $AppUI;
 require_once $AppUI->getSystemClass('query');
 
 /**

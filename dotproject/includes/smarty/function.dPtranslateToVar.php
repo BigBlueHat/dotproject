@@ -18,7 +18,7 @@
  */
 function smarty_function_dPtranslateToVar($params, &$smarty)
 {
-	global $AppUI, $tpl;
+	global $l10n, $tpl;
 	
 	$type = ''; // Set below.
 	extract($params);
@@ -35,9 +35,9 @@ function smarty_function_dPtranslateToVar($params, &$smarty)
 		$word .= $append; 
 	
 	if ($type == 'js')
-		$i18n = $AppUI->_($word . $sentence, UI_OUTPUT_JS);
+		$i18n = $l10n->_($word . $sentence, UI_OUTPUT_JS);
 
-	$i18n = $AppUI->_($word . $sentence);
+	$i18n = $l10n->_($word . $sentence);
 	//$tpl->assign('tt', $i18n);
 	$tpl->assign($ass, $i18n);
 	return;

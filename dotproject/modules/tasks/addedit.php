@@ -11,6 +11,7 @@ $task_id = intval( dPgetParam( $_REQUEST, 'task_id', 0 ) );
 $perms =& $AppUI->acl();
 
 // load the record data
+global $obj;
 $obj = new CTask();
 
 // check if we are in a subform

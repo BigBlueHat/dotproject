@@ -165,7 +165,7 @@ class CDate {
 	function compare($d1, $d2 = null, $convertTZ=false)
 	{
 		if ($d2 === null) {
-			$d2 = $d1;
+			$d2 = new CDate($d1);
 			$d1 = new CDate($this);
 			if ($convertTZ) {
 				$d1->convertTZ('UTC');

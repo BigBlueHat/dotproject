@@ -4,6 +4,8 @@ if (!defined('DP_BASE_DIR')){
 }
 
 global $tab, $locale_char_set, $date;
+// Exported global variables.
+global $this_day, $first_time, $last_time, $company_id, $event_filter, $event_filter_list, $AppUI;
 
 $AppUI->savePlace();
 
@@ -28,14 +30,14 @@ $ctoday = new CDate();
 $today = $ctoday->format(FMT_TIMESTAMP_DATE);
 $date = dPgetParam( $_GET, 'date', $today);
 // establish the focus 'date'
-$this_day = new CDate();
-$this_day->setDate($date . '000000', DATE_FORMAT_TIMESTAMP);
+$this_day = new CDate($date);
+//$this_day->setDate($date . '000000', DATE_FORMAT_TIMESTAMP);
 $dd = $this_day->getDay();
 $mm = $this_day->getMonth();
 $yy = $this_day->getYear();
 
 // get current week
-$this_week = $this_day->beginOfWeek ();
+$this_week = $this_day->beginOfWeek();
 
 // prepare time period for 'events'
 $first_time = new CDate( $date);

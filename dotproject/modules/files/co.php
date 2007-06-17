@@ -63,7 +63,7 @@ $projects = arrayMerge( array( '0'=>$AppUI->_('All') ), $projects );
 //to prevent "less intelligent" pop-up blockers from blocking file checkout.
 //Some "die-hard" pop-up blockers may still block the window despite the direct user interaction.
 //Also added menu bar for saving files that don't trigger an open/save dialog.
-$params = 'file_id=' . $file_id;
+$params = 'm=files&a=download&file_id=' . $file_id;
 $session_id = SID;
 // are the params empty
 // Fix to handle cookieless sessions
@@ -71,7 +71,7 @@ if ($session_id != '') {
     $params .= '&' . $session_id;
 }
 
-$extra_js = "fileloader = window.open('fileviewer.php?{$params}','mywindow','location=1,menubar=1,status=1,width=200px,height=150px,resizable');fileloader.moveTo(0,0);document.coFrm.submit();";
+$extra_js = "fileloader = window.open('index.php?{$params}','mywindow','location=1,menubar=1,status=1,width=200px,height=150px,resizable');fileloader.moveTo(0,0);document.coFrm.submit();";
 
 $tpl->assign('file_id', $file_id);
 $tpl->assign('user_id', $AppUI->user_id);

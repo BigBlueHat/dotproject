@@ -1692,6 +1692,8 @@ class CTask extends CDpObject {
      *  @return array        returns hashList of extent of utilization for assignment of the users
      */
 	function getAllocation( $hash = NULL, $users = NULL ) {
+		global $AppUI;
+	
         $q = new DBQuery();
         
         // retrieve the systemwide default preference for the assignment maximum
@@ -1768,7 +1770,7 @@ class CTask extends CDpObject {
         //$users = db_loadHashList($sql, $hash);
         $users = $q->loadHashList();
         
-        global $perms;
+        $perms = & $AppUI->acl();
         foreach($users as $key => $user_data) {
             if ($perms->isUserPermitted($user_data['user_id']) != true) {
                 unset($users[$key]);

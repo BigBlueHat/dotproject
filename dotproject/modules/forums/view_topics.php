@@ -7,9 +7,9 @@ $AppUI->savePlace();
 
 // retrieve any state parameters
 if (isset( $_GET['orderby'] )) {
-    $orderdir = $AppUI->getState( 'ForumVwOrderDir' ) ? ($AppUI->getState( 'ForumVwOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
+	$orderdir = $AppUI->getState( 'ForumVwOrderDir' ) ? ($AppUI->getState( 'ForumVwOrderDir' )== 'asc' ? 'desc' : 'asc' ) : 'desc';
 	$AppUI->setState( 'ForumVwOrderBy', $_GET['orderby'] );
-    $AppUI->setState( 'ForumVwOrderDir', $orderdir);
+	$AppUI->setState( 'ForumVwOrderDir', $orderdir);
 }
 $orderby         = $AppUI->getState( 'ForumVwOrderBy' ) ? $AppUI->getState( 'ForumVwOrderBy' ) : 'latest_reply';
 $orderdir        = $AppUI->getState( 'ForumVwOrderDir' ) ? $AppUI->getState( 'ForumVwOrderDir' ) : 'desc';

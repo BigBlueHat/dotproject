@@ -18,9 +18,6 @@ define( 'UI_MSG_WARNING', 3 );
 define( 'UI_MSG_ERROR', 4 ); 
 /*@}*/
 
-// global variable holding the translation array
-$GLOBALS['translate'] = array();
-
 /** @defgroup uitranslationcasetypes UI translation case types
  * @brief Used with the CAppUI::_() method
  */
@@ -43,21 +40,21 @@ define( "UI_CASE_UPPERFIRST", 3 );
 /** @enum UI_OUTPUT_HTML Format for HTML output */
 /** @enum UI_OUTPUT_JS Format for Javascript output */
 /** @enum UI_OUTPUT_RAW Do not process output */
-define ("UI_OUTPUT_MASK", 0xF0);
-define ("UI_OUTPUT_HTML", 0);
-define ("UI_OUTPUT_JS", 0x10);
-define ("UI_OUTPUT_RAW", 0x20);
+define ('UI_OUTPUT_MASK', 0xF0);
+define ('UI_OUTPUT_HTML', 0);
+define ('UI_OUTPUT_JS', 	0x10);
+define ('UI_OUTPUT_RAW',	0x20);
 /*@}*/
 
-// DP_BASE_DIR is set in index.php and fileviewer.php and is the base directory
+// DP_BASE_DIR is set in index.php and is the base directory
 // of the dotproject installation.
 require_once DP_BASE_DIR . '/classes/permissions.class.php';
 /**
-* The Application User Interface Class.
-*
-* @author Andrew Eddie <eddieajau@users.sourceforge.net>
-* @version $Revision$
-*/
+ * The Application User Interface Class.
+ *
+ * @author Andrew Eddie <eddieajau@users.sourceforge.net>
+ * @version $Revision$
+ */
 class CAppUI {
 /** generic array for holding the state of anything */
 	var $state=null;
@@ -83,12 +80,10 @@ class CAppUI {
 	var $day_selected=null;
 
 // localisation
-/** current user's locale */
-	var $user_locale=null;
-/** current user's language */
-	var $user_lang=null;
-/** base locale - always 'en' */
-	var $base_locale = 'en'; // do not change - the base 'keys' will always be in english
+/** 
+ * current user's locale
+ * @deprecated 3.0 - 16/06/2007 Use CLocalisation::locale instead. */
+	var $user_locale = null;
 
 /** message string stored from CAppUI::setMsg() */
 	var $msg = '';
@@ -98,7 +93,7 @@ class CAppUI {
 	var $defaultRedirect = '';
 
 /** Configuration variables as array */
-	var $cfg=null;
+	var $cfg = null;
 
 /** Version major */
 	var $version_major = null;
@@ -117,9 +112,10 @@ class CAppUI {
 	
 /** Template class, an instance of CTemplate */
 	var $template = null;
-/**
-* CAppUI Constructor
-*/
+ 
+ /**
+	* CAppUI Constructor
+	*/
 	function CAppUI()
 	{
 		$this->state = array();
@@ -139,51 +135,426 @@ class CAppUI {
 		$this->project_id = 0;
 
 		$this->defaultRedirect = "";
-// set up the default preferences
-		$this->setUserLocale($this->base_locale);
+
 		$this->user_prefs = array();
 	}
-/**
-* Used to load a php class file from the system classes directory
-* @param $name The class root file name (excluding .class.php)
-* @return The path to the include file
- */
-	function getSystemClass( $name=null )
+
+	/**
+	 * Initialise application state.
+	 */
+	function init($minimal = false)
+	{
+		global $l10n, $tpl, $perms, $m, $a, $u, $tab, $uistyle, $iconstyle;
+		
+		// load the commonly used classes
+		require_once($this->getSystemClass('l10n'));
+		$l10n = new CLocalisation();
+		require_once($this->getSystemClass('template'));
+		$tpl = $this->getTemplate();
+		$this->checkStyle();
+		require_once DP_BASE_DIR . '/includes/permissions.php';
+		$perms =& $this->acl();
+		
+		require_once($this->getSystemClass('date'));
+		require_once($this->getSystemClass('dp'));
+		// Loaded by above.
+		//require_once($this->getSystemClass('query'));
+		
+		require_once(DP_BASE_DIR .'/misc/debug.php');
+		
+		// Function for update lost action in user_access_log
+		$this->updateLastAction();
+		
+		// Load default preferences if not logged in
+		if ($this->doLogin()) 
+			$this->loadPrefs(0);
+		
+		// clear out main url parameters
+		$m = '';
+		$a = '';
+		$u = '';
+		
+		$def_a = 'index';
+		if (!isset($_GET['m']) && dPgetConfig('default_view_m')) {
+			$m = dPgetConfig('default_view_m');
+			$def_a = dPgetConfig('default_view_a', $def_a);
+			$tab = dPgetConfig('default_view_tab');
+		} else {
+			// set the module from the url
+			$m = $this->checkFileName(dPgetParam($_GET, 'm', getReadableModule()));
+		}
+		// set the action from the url
+		$a = $this->checkFileName(dPgetParam($_GET, 'a', $def_a));
+		
+		/* This check for $u implies that a file located in a subdirectory of higher depth than 1
+		 * in relation to the module base can't be executed. So it would'nt be possible to
+		 * run for example the file module/directory1/directory2/file.php
+		 * Also it won't be possible to run modules/module/abc.zyz.class.php for that dots are
+		 * not allowed in the request parameters.
+		 */
+		$u = $this->checkFileName(dPgetParam($_GET, 'u', ''));
+
+		if (!$minimal) {
+			
+		}
+		
+		// Initialise localisation with user specific settings.
+		$l10n->setUserLocale();
+
+		// Set the default ui style
+		$uistyle = $this->getPref( 'UISTYLE' ) ? $this->getPref( 'UISTYLE' ) : dPgetConfig('host_style');
+		$iconstyle = $this->getPref( 'ICONSTYLE' ) ? $this->getPref( 'ICONSTYLE' ) : 'default';
+		
+		// write the HTML headers
+		header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');	// Date in the past
+		header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');	// always modified
+		header('Cache-Control: no-cache, must-revalidate, no-store, post-check=0, pre-check=0');	 // HTTP/1.1
+		header('Pragma: no-cache');	// HTTP/1.0
+		
+		// check is the user needs a new password
+		if (dPgetParam( $_POST, 'lostpass', 0 )) {
+			$this->initType('lostpass');
+		} elseif (isset($_REQUEST['login'])) { // check if the user is trying to log in
+			$this->initType('login');
+		// } if ($m == 'public' && $a == 'register') {
+		// Exception for automatic registrations (if they are allowed)
+		//	$suppressHeaders = true;
+		} elseif ($this->doLogin()) { // check if we are logged in
+			$this->initType('loggedout');
+		} elseif ($m == 'files' && $a == 'download') {
+			$this->initType('download');
+		} else {
+			$this->initType('page');
+		}
+	}
+	
+	function initType($type = '')
+	{
+		$func = 'initType' . ucfirst($type);
+		$this->$func();
+	}
+	
+	function initTypeLostpass()
+	{
+		global $uistyle;
+		
+		$uistyle = dPgetConfig('host_style');
+		$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
+		
+		if (dPgetParam( $_REQUEST, 'sendpass', 0 )) {
+			require(DP_BASE_DIR . '/includes/sendpass.php');
+			sendNewPass();
+		} else {
+			$_GET['dialog'] = 1;
+			$tpl->assign('redirect', $redirect);
+			$tpl->displayHeader();
+			$tpl->displayFile('lostpass', '.');
+			$tpl->displayFile('footer', '.');
+		}
+		exit();
+	}
+	
+	function initTypeLogin()
+	{
+		if (dPgetConfig('auth_method') == 'http_ba') {
+			$username = $_SERVER['REMOTE_USER'];
+		} else {
+			$username = dPgetParam( $_POST, 'username', '' );
+		}
+	
+		$password = dPgetParam( $_POST, 'password', '' );
+		$redirect = dPgetParam( $_REQUEST, 'redirect', '' );
+	
+		$ok = $this->login( $username, $password );
+		if (!$ok) {
+			$this->setMsg( 'Login Failed');
+			session_unset();
+		} else {
+			//Register login in user_acces_log
+			$this->registerLogin();
+		}
+		$details['name'] = $this->user_first_name . ' ' . $this->user_last_name;
+		addHistory('login', $this->user_id, 'login', $details);
+	
+		$this->redirect( $redirect );
+	}
+	
+	function initTypeLoggedout()
+	{
+		global $l10n, $tpl;
+		
+		$redirect = $_SERVER['QUERY_STRING']?strip_tags($_SERVER['QUERY_STRING']):'';
+		if (strpos( $redirect, 'logout' ) !== false)
+			$redirect = '';
+	
+		if (isset( $l10n->charset ))
+			header('Content-type: text/html;charset='.$l10n->charset);
+	
+		//  Display the login page unless the authentication method is HTTP Basic Auth
+		if (dPgetConfig('auth_method') == 'http_ba' )
+			$this->redirect( 'login=http_ba&redirect='.$redirect );
+		else
+		{
+			$_GET['dialog'] = 1;
+	
+			$tpl->assign('phpversion', phpversion());
+			$tpl->assign('mysql', function_exists('mysql_pconnect'));
+			$tpl->assign('redirect', $redirect);
+	
+			$tpl->displayHeader();
+			$tpl->displayFile('login', '.');
+			$tpl->displayFile('footer', '.');
+		}
+		
+		// destroy the current session and output login page
+		session_unset();
+		session_destroy();
+		exit;
+	}
+	
+	function initTypeDownload()
+	{
+		$perms =& $this->acl();
+		$canRead = $perms->checkModule('files', 'view');
+		if (!$canRead) {
+			$this->redirect('m=public&a=access_denied');
+		}
+		
+		$file_id = dPgetParam($_GET, 'file_id', 0);
+		
+		if ($file_id) {
+			// projects that are denied access
+			require_once($this->getModuleClass('projects'));
+			require_once($this->getModuleClass('files'));
+			$project =& new CProject;
+			$allowedProjects = $project->getAllowedRecords($this->user_id, 'project_id, project_name');
+			$fileclass =& new CFile;
+			$fileclass->load($file_id);
+			$allowedFiles = $fileclass->getAllowedRecords($this->user_id, 'file_id, file_name');
+			
+			if (count($allowedFiles) && ! array_key_exists($file_id, $allowedFiles)) {
+				$this->redirect('m=public&a=access_denied');
+			}
+			
+			// TODO: check permissions and redirect before this
+			$fileclass->streamFile($file_id);
+		
+		} else {
+			$this->setMsg('fileIdError', UI_MSG_ERROR);
+			$this->redirect();
+		}
+	}
+	
+	function initTypePage()
+	{
+		// Global systemwide variables
+		global $m, $a, $u, $tpl, $l10n, $time, $AppUI, $all_tabs, $perms;
+		// Global variables, used by some pages
+		global $filters, $orderby, $orderdir, $df;
+		// Permissions
+		global $canAccess, $canRead, $canEdit, $canAuthor, $canDelete;
+		
+		// Don't output anything. Usefull for fileviewer.php, gantt.php, etc.
+		$suppressHeaders = dPgetParam($_GET, 'suppressHeaders', false);
+		$dialog = dPgetParam($_GET, 'dialog', false);
+		$perms = & $this->acl();
+		
+		// TODO: canRead/Edit assignements should be moved into each file
+		
+		// check overall module permissions
+		// these can be further modified by the included action files
+		$canAccess 	= $perms->checkModule($m, 'access');
+		$canRead 	= $perms->checkModule($m, 'view');
+		$canEdit 	= $perms->checkModule($m, 'edit');
+		$canAuthor 	= $perms->checkModule($m, 'add');
+		$canDelete 	= $perms->checkModule($m, 'delete');
+		if (!$canAccess) {
+			$this->redirect('m=public&a=access_denied');
+		}
+		
+		$all_tabs = & $this->initTabs($m);	
+		
+		// All settings set. Initialise template (set global variables)
+		$tpl->init();
+		
+		
+		$m_config = dPgetConfig($m);
+		@include_once(DP_BASE_DIR.'/functions/'.$m.'_func.php');
+		
+		if (!$suppressHeaders) {
+			// output the character set header
+			if (isset($l10n->charset)) {
+				header('Content-type: text/html;charset='.$l10n->charset);
+			}
+		}
+		
+		/*
+		 *
+		 * TODO: Permissions should be handled by each file.
+		 * Denying access from index.php still doesn't asure
+		 * someone won't access directly skipping this security check.
+		 *
+		// bounce the user if they don't have at least read access
+		if (!(
+			  // however, some modules are accessible by anyone
+			  $m == 'public' ||
+			  ($m == 'admin' && $a == 'viewuser')
+			  )) {
+			if (!$canRead) {
+				$AppUI->redirect( "m=public&a=access_denied" );
+			}
+		}
+		*/
+		
+		// include the module class file - we use file_exists instead of @ so
+		// that any parse errors in the file are reported, rather than errors
+		// further down the track.
+		$modclass = $this->getModuleClass($m);
+		if (file_exists($modclass)) {
+			include_once($modclass);
+		}
+		if ($u && file_exists(DP_BASE_DIR."/modules/$m/$u/$u.class.php")) {
+			include_once(DP_BASE_DIR."/modules/$m/$u/$u.class.php");
+		}
+		
+		// do some db work if dosql is set
+		if (isset($_REQUEST['dosql'])) {
+			require(DP_BASE_DIR."/modules/$m/" . ($u ? "$u/" : "") . $this->checkFileName($_REQUEST['dosql']) . '.php');
+		}
+		
+		// start output proper
+		$tpl->loadOverrides();
+		ob_start();
+		if(!$suppressHeaders)
+			$tpl->displayHeader();
+		
+		$setuptime = (array_sum(explode(' ',microtime())) - $time);
+		$module_file = DP_BASE_DIR."/modules/$m/" . ($u ? "$u/" : "") . $a . '.php';
+		if (file_exists($module_file)) {
+			require $module_file;
+		} else {
+		// TODO: make this part of the public module? 
+		// TODO: internationalise the string.
+			$titleBlock = new CTitleBlock('Warning', 'log-error.gif');
+			$titleBlock->show();
+		
+			echo $l10n->_('Missing file ('.$module_file.'). Possible Module "'.$m.'" missing!');
+		}
+		
+		if (!$suppressHeaders && !$dialog) {
+			// iframe for doing multithreaded work - handle additional requests.
+			echo '<iframe name="thread" src="' . DP_BASE_URL . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
+			
+			if (dPgetConfig('debug') > 0) {
+				global $acltime, $dbtime, $dbqueries;
+			
+				$tpl->assign('page_time', sprintf('%.3f', (array_sum(explode(' ',microtime())) - $time)));
+				$tpl->assign('setup_time', sprintf('%.3f seconds.', $setuptime));
+				$tpl->assign('acl_time', sprintf('%.3f seconds.', $acltime));
+				$tpl->assign('db_time', sprintf('%.3f seconds.', $dbtime));
+				$tpl->assign('db_queries', $dbqueries);
+				$tpl->displayFile('debug', '.');
+			}
+			
+			$tpl->assign('msg', $AppUI->getMsg());
+			$tpl->displayFile('footer', '.');
+		}
+		ob_end_flush();
+	}
+	
+	function initTabs($m)
+	{
+		if (!isset($_SESSION['all_tabs'][$m])) {
+			$perms =& $this->acl();
+			// For some reason on some systems if you don't set this up
+			// first you get recursive pointers to the all_tabs array, creating
+			// phantom tabs.
+			if (!isset($_SESSION['all_tabs']))
+				$_SESSION['all_tabs'] = array();
+		
+			$_SESSION['all_tabs'][$m] = array();
+			$all_tabs =& $_SESSION['all_tabs'][$m];
+			foreach ($this->getActiveModules() as $dir => $module) {
+				if (!$perms->checkModule($dir, 'access')) {
+					continue;
+				}
+		
+				$modules_tabs = $this->readFiles(DP_BASE_DIR."/modules/$dir/", '^' . $m . '_tab.*\.php');
+				foreach ($modules_tabs as $tab) {
+					// Get the name as the subextension
+					// cut the module_tab. and the .php parts of the filename 
+					// (begining and end)
+					$nameparts = explode('.', $tab);
+					$filename = substr($tab, 0, -4);
+					if (count($nameparts) > 3) {
+						$file = $nameparts[1];
+						if (!isset($all_tabs[$file]))
+							$all_tabs[$file] = array();
+		
+						$arr =& $all_tabs[$file];
+						$name = $nameparts[2];
+					} else {
+						$arr =& $all_tabs;
+						$name = $nameparts[1];
+					}
+					$arr[] = array(
+						'name' => ucfirst(str_replace('_', ' ', $name)),
+						'file' => DP_BASE_DIR . '/modules/' . $dir . '/' . $filename,
+						'module' => $dir);
+		
+					// Don't forget to unset $arr again! $arr is likely to be used in the sequel declaring
+					// any temporary array. This may lead to strange bugs with disappearing tabs (cf. #1767).
+					unset($arr); 
+				}
+			}
+		} else {
+			$all_tabs =& $_SESSION['all_tabs'][$m];
+		}
+		
+		return $all_tabs;
+	}
+	
+ /**
+	* Used to load a php class file from the system classes directory
+	* @param $name The class root file name (excluding .class.php)
+	* @return The path to the include file
+	*/
+	function getSystemClass($name = null)
 	{
 		if ($name) {
 			return DP_BASE_DIR."/classes/$name.class.php";
 		}
 	}
 
-/**
-* Used to load a php class file from the lib directory
-*
-* @param $name The class root file name (excluding .class.php)
-* @return The path to the include file
-*/
-	function getLibraryClass( $name=null )
+ /**
+	* Used to load a php class file from the lib directory
+	*
+	* @param $name The class root file name (excluding .class.php)
+	* @return The path to the include file
+	*/
+	function getLibraryClass($name = null)
 	{
 		if ($name) {
 			return DP_BASE_DIR."/lib/$name.php";
 		}
 	}
 
-/**
-* Used to load a php class file from the module directory
-* @param $name The class root file name (excluding .class.php)
-* @return The path to the include file
- */
-	function getModuleClass( $name=null )
+ /**
+	* Used to load a php class file from the module directory
+	* @param $name The class root file name (excluding .class.php)
+	* @return The path to the include file
+	*/
+	function getModuleClass($name = null)
 	{
 		if ($name) {
 			return DP_BASE_DIR."/modules/$name/$name.class.php";
 		}
 	}
 
-/**
-* Get the dotProject version string.
-* @return String value indicating the current dotproject version
-*/
+ /**
+	* Get the dotProject version string.
+	* @return String value indicating the current dotproject version
+	*/
 	function getVersion()
 	{
 		global $dp_version_major, $dp_version_minor, $dp_version_patch;
@@ -202,9 +573,7 @@ class CAppUI {
 		return $this->version_string;
 	}
 
-/**
-* Checks that the current user preferred style is valid/exists.
-*/
+	/** Checks that the current user preferred style is valid/exists.*/
 	function checkStyle()
 	{
 		// check if default user's uistyle is installed
@@ -225,14 +594,14 @@ class CAppUI {
 		return $this->template;
 	}
 	
-/**
-* Utility function to read the 'directories' under 'path'
-*
-* This function is used to read the modules or locales installed on the file system.
-* @param $path The path to read.
-* @param $default add a default entry at the top (empty)
-* @return A named array of the directories (the key and value are identical).
-*/
+ /**
+	* Utility function to read the 'directories' under 'path'
+	*
+	* This function is used to read the modules or locales installed on the file system.
+	* @param $path The path to read.
+	* @param $default add a default entry at the top (empty)
+	* @return A named array of the directories (the key and value are identical).
+	*/
 	function readDirs( $path, $default = null)
 	{
 		$dirs = array();
@@ -250,12 +619,12 @@ class CAppUI {
 		return $dirs;
 	}
 
-/**
-* Utility function to read the 'files' under 'path'
-* @param $path The path to read.
-* @param $filter A regular expression to filter by.
-* @return array A named array of the files (the key and value are identical).
-*/
+ /**
+	* Utility function to read the 'files' under 'path'
+	* @param $path The path to read.
+	* @param $filter A regular expression to filter by.
+	* @return array A named array of the files (the key and value are identical).
+	*/
 	function readFiles( $path, $filter='.' )
 	{
 		$files = array();
@@ -271,13 +640,13 @@ class CAppUI {
 		return $files;
 	}
 
-/**
-* Utility function to check whether a file name is 'safe'
-*
-* Prevents from access to relative directories (eg ../../dealyfile.php);
-* @param $file The file name.
-* @return array A named array of the files (the key and value are identical).
-*/
+ /**
+	* Utility function to check whether a file name is 'safe'
+	*
+	* Prevents from access to relative directories (eg ../../dealyfile.php);
+	* @param $file The file name.
+	* @return array A named array of the files (the key and value are identical).
+	*/
 	function checkFileName( $file )
 	{
 		global $AppUI;
@@ -293,16 +662,15 @@ class CAppUI {
 		else {
 			return $file;
 		}
-
 	}
 
-/**
-* Utility function to make a file name 'safe'
-*
-* Strips out mallicious insertion of relative directories (eg ../../dealyfile.php);
-* @param $file The file name.
-* @return array A named array of the files (the key and value are identical).
-*/
+ /**
+	* Utility function to make a file name 'safe'
+	*
+	* Strips out mallicious insertion of relative directories (eg ../../dealyfile.php);
+	* @param $file The file name.
+	* @return array A named array of the files (the key and value are identical).
+	*/
 	function makeFileNameSafe( $file )
 	{
 		$file = str_replace( '../', '', $file );
@@ -310,221 +678,52 @@ class CAppUI {
 		return $file;
 	}
 
-/**
-* Sets the user locale.
-*
-* Looks in the user preferences first.  If this value has not been set by the user it uses the system default set in config.php.
-* @param $loc Locale abbreviation corresponding to the sub-directory name in the locales directory (usually the abbreviated language code).
-* @param $set Defaults to true, set the current users locale to the one specified. If false just return the locale that would be used.
-* @return The locale, if $set is false. Otherwise return NULL
-*/
-	function setUserLocale( $loc='', $set = true )
-	{
-		global $locale_char_set;
-
-		$LANGUAGES = $this->loadLanguages();
-
-		if (! $loc) {
-			$loc = @$this->user_prefs['LOCALE'] ? $this->user_prefs['LOCALE'] : dPgetConfig('host_locale');
-		}
-
-		if (isset($LANGUAGES[$loc]))
-			$lang = $LANGUAGES[$loc];
-		else {
-			// Need to try and find the language the user is using, find the first one
-			// that has this as the language part
-			if (strlen($loc) > 2) {
-				list ($l, $c) = explode('_', $loc);
-				$loc = $this->findLanguage($l, $c);
-			} else {
-				$loc = $this->findLanguage($loc);
-			}
-			$lang = $LANGUAGES[$loc];
-		}
-		list($base_locale, $english_string, $native_string, $default_language, $lcs) = $lang;
-		if (! isset($lcs))
-			$lcs = (isset($locale_char_set)) ? $locale_char_set : 'utf-8';
-
-		if (version_compare(phpversion(), '4.3.0', 'ge'))
-			$user_lang = array( $loc . '.' . $lcs, $default_language, $loc, $base_locale);
-		else {
-			if (strtoupper(substr(PHP_OS, 0, 3)) == 'WIN') {
-				$user_lang = $default_language;
-			} else {
-				$user_lang = $loc . '.' . $lcs;
-			}
-		}
-		if ($set) {
-			$this->user_locale = $base_locale;
-			$this->user_lang = $user_lang;
-			$locale_char_set = $lcs;
-		} else {
-			return $user_lang;
-		}
-	}
-
-	/** Find a valid language
-	 * @param $language The desired language
-	 * @param $country Defaults to false. The desired country code
-	 * @return First valid language matching the desired language code or country code
+	/** 
+	 * Translate a string to the local language [same form as the gettext abbreviation]
+	 *
+	 * This is the order of precedence:
+	 * <ul>
+	 * <li>If the key exists in the lang array, return the value of the key
+	 * <li>If no key exists and the base lang is the same as the local lang, just return the string
+	 * <li>If this is not the base lang, then return string with a red star appended to show
+	 * that a translation is required.
+	 * </ul>
+	 * 
+	 * @deprecated 3.0 - 16/06/2007 in favour of CLocalisation::_()
+	 * 
+	 * @param $str The string to translate
+	 * @param $flags Option flags, can be case handling or'd with output formats and cases, see also UI case and output types.
+	 * @see uitranslationcasetypes
+	 * @see uioutputtypes
+	 * @return Translated and formatted string
 	 */
-	function findLanguage($language, $country = false)
+	function _($str, $flags = 0)
 	{
-		$LANGUAGES = $this->loadLanguages();
-		$language = strtolower($language);
-		if ($country) {
-			$country = strtoupper($country);
-			// Try constructing the code again
-			$code = $language . '_' . $country;
-			if (isset($LANGUAGES[$code]))
-				return $code;
-		}
-
-		// Just use the country code and try and find it in the
-		// languages list.
-		$first_entry = null;
-		foreach ($LANGUAGES as $lang => $info) {
-			list($l, $c) = explode('_', $lang);
-			if ($l == $language) {
-				if (! $first_entry)
-					$first_entry = $lang;
-				if ($country && $c == $country)
-					return $lang;
-			}
-		}
-		return $first_entry;
-	}
-
-/** Load the known language codes for loaded locales
- *
- * @return Array of known language codes
- */
-	function loadLanguages()
-	{
-
-		if ( isset($_SESSION['LANGUAGES'])) {
-			$LANGUAGES =& $_SESSION['LANGUAGES'];
-		} else {
-			$LANGUAGES = array();
-			$langs = $this->readDirs('locales');
-			foreach ($langs as $lang) {
-				if (file_exists(DP_BASE_DIR."/locales/$lang/lang.php")) {
-					include_once DP_BASE_DIR."/locales/$lang/lang.php";
-				}
-			}
-			@$_SESSION['LANGUAGES'] =& $LANGUAGES;
-		}
-		return $LANGUAGES;
-	}
-
-/** Translate a string to the local language [same form as the gettext abbreviation]
-*
-* This is the order of precedence:
-* <ul>
-* <li>If the key exists in the lang array, return the value of the key
-* <li>If no key exists and the base lang is the same as the local lang, just return the string
-* <li>If this is not the base lang, then return string with a red star appended to show
-* that a translation is required.
-* </ul>
-* @param $str The string to translate
-* @param $flags Option flags, can be case handling or'd with output formats and cases, see also UI case and output types.
-* @see uitranslationcasetypes
-* @see uioutputtypes
-* @return Translated and formatted string
-*/
-	function _( $str, $flags= 0 )
-	{
-		if (is_array($str)) {
-			$translated = array();
-			foreach ($str as $s)
-				$translated[] = $this->__($s, $flags);
-			return implode(' ', $translated);
-		} else {
-			return $this->__($str, $flags);
-		}
-	}
-
-/** @internal
- * Called by CAppUI::_() to do the actual translation
- */
-	function __( $str, $flags = 0)
-	{
-		$str = trim($str);
-		if (empty( $str )) {
-			return '';
-		}
-		$x = @$GLOBALS['translate'][$str];
-		if (!$x)
-			$x = @$GLOBALS['translate'][strtolower($str)];
+		global $l10n;
 		
-		if ($x) {
-			$str = $x;
-		} else if (dPgetConfig('locale_warn')) {
-			if ($this->base_locale != $this->user_locale ||
-				($this->base_locale == $this->user_locale && !in_array( $str, @$GLOBALS['translate'] )) ) {
-				$str .= dPgetConfig('locale_alert');
-			}
-		}
-		switch ($flags & UI_CASE_MASK) {
-			case UI_CASE_UPPER:
-				$str = strtoupper( $str );
-				break;
-			case UI_CASE_LOWER:
-				$str = strtolower( $str );
-				break;
-			case UI_CASE_UPPERFIRST:
-				$str = ucwords( $str );
-				break;
-		}
-		/* Altered to support multiple styles of output, to fix
-		 * bugs where the same output style cannot be used succesfully
-		 * for both javascript and HTML output.
-		 * PLEASE NOTE: The default is currently UI_OUTPUT_HTML,
-		 * which is different to the previous version (which was
-		 * effectively UI_OUTPUT_RAW).  If this causes problems,
-		 * and they are localised, then use UI_OUTPUT_RAW in the
-		 * offending call.  If they are widespread, change the
-		 * default to UI_OUTPUT_RAW and use the other options
-		 * where appropriate.
-		 * AJD - 2004-12-10
-		 */
-		global $locale_char_set;
-
-		if (! $locale_char_set) {
-			$locale_char_set = 'utf-8';
-		}
-                
-		switch ($flags & UI_OUTPUT_MASK) {
-			case UI_OUTPUT_HTML:
-				$str = htmlentities(stripslashes($str), ENT_COMPAT, $locale_char_set);
-				break;
-			case UI_OUTPUT_JS:
-				$str = addslashes(stripslashes($str)); //, ENT_COMPAT, $locale_char_set);
-				break;
-			case UI_OUTPUT_RAW: 
-				$str = stripslashes($str);
-				break;
-		}
-		return $str;
+		return $l10n->_($str, $flags);
 	}
-/**
-* Set the display of warning for untranslated strings
-* @param $state Boolean, true by default
-*/
+
+ /**
+	* Set the display of warning for untranslated strings
+	* @param $state Boolean, true by default
+	*/
 	function setWarning( $state=true )
 	{
 		$temp = @$this->cfg['locale_warn'];
 		$this->cfg['locale_warn'] = $state;
+		
 		return $temp;
 	}
-/**
-* Save the url query string
-*
-* Also saves one level of history.  This is useful for returning from a delete
-* operation where the record more not now exist.  Returning to a view page
-* would be a nonsense in this case.
-* @param $query If not set then the current url query string is used
-*/
+
+ /**
+	* Save the url query string
+	*
+	* Also saves one level of history.  This is useful for returning from a delete
+	* operation where the record more not now exist.  Returning to a view page
+	* would be a nonsense in this case.
+	* @param $query If not set then the current url query string is used
+	*/
 	function savePlace( $query='' )
 	{
 		if (!$query) {
@@ -535,31 +734,34 @@ class CAppUI {
 			$this->state['SAVEDPLACE'] = $query;
 		}
 	}
-/**
-* Resets the internal saved place variable
-*/
+ 
+ /**
+	* Resets the internal saved place variable
+	*/
 	function resetPlace()
 	{
 		$this->state['SAVEDPLACE'] = '';
 	}
-/**
-* Get the saved place (usually one that could contain an edit button)
-* @return Query string
-*/
+ 
+ /**
+	* Get the saved place (usually one that could contain an edit button)
+	* @return Query string
+	*/
 	function getPlace()
 	{
 		return @$this->state['SAVEDPLACE'];
 	}
-/**
-* Redirects the browser to a new page.
-*
-* Mostly used in conjunction with the savePlace method. It is generally used
-* to prevent nasties from doing a browser refresh after a db update.  The
-* method deliberately does not use javascript to effect the redirect.
-*
-* @param $params The URL query string to append to the URL
-* @param $hist A marker for a historic 'place, only -1 or an empty string is valid.
-*/
+	
+ /**
+	* Redirects the browser to a new page.
+	*
+	* Mostly used in conjunction with the savePlace method. It is generally used
+	* to prevent nasties from doing a browser refresh after a db update.  The
+	* method deliberately does not use javascript to effect the redirect.
+	*
+	* @param $params The URL query string to append to the URL
+	* @param $hist A marker for a historic 'place, only -1 or an empty string is valid.
+	*/
 	function redirect( $params='', $hist='' )
 	{
 		$session_id = SID;
@@ -581,32 +783,34 @@ class CAppUI {
 		header( "Location: index.php?$params" );
 		exit();	// stop the PHP execution
 	}
-/**
-* Set the page message.
-*
-* The page message is displayed above the title block and then again
-* at the end of the page.
-*
-* IMPORTANT: Please note that append should not be used, since for some
-* languagues atomic-wise translation doesn't work. Append should be
-* deprecated.
-*
-* @param $msg The (untranslated) message
-* @param $msgNo The type of message, one of any UI message type
-* @param $append If true, $msg is appended to the current string otherwise
-* the existing message is overwritten with $msg.
-* @see uimessagetypes
-*/
+
+ /**
+	* Set the page message.
+	*
+	* The page message is displayed above the title block and then again
+	* at the end of the page.
+	*
+	* IMPORTANT: Please note that append should not be used, since for some
+	* languagues atomic-wise translation doesn't work. Append should be
+	* deprecated.
+	*
+	* @param $msg The (untranslated) message
+	* @param $msgNo The type of message, one of any UI message type
+	* @param $append If true, $msg is appended to the current string otherwise
+	* the existing message is overwritten with $msg.
+	* @see uimessagetypes
+	*/
 	function setMsg( $msg, $msgNo=0, $append=false )
 	{
 		$msg = $this->_( $msg );
 		$this->msg = $append ? $this->msg.' '.$msg : $msg;
 		$this->msgNo = $msgNo;
 	}
-/**
-* Display the formatted message and icon
-* @param $reset If true the current message state is cleared.
-*/
+	
+ /**
+	* Display the formatted message and icon
+	* @param $reset If true the current message state is cleared.
+	*/
 	function getMsg( $reset=true )
 	{
 		$img = '';
@@ -644,24 +848,26 @@ class CAppUI {
 			. '</tr></table>'
 			: '';
 	}
-/**
-* Set the value of a temporary state variable.
-*
-* The state is only held for the duration of a session.  It is not stored in the database.
-* Also do not set the value if it is unset.
-* @param $label The label or key of the state variable
-* @param $value Value to assign to the label/key
-*/
+	
+ /**
+	* Set the value of a temporary state variable.
+	*
+	* The state is only held for the duration of a session.  It is not stored in the database.
+	* Also do not set the value if it is unset.
+	* @param $label The label or key of the state variable
+	* @param $value Value to assign to the label/key
+	*/
 	function setState( $label, $value = null)
 	{
 		if (isset($value))
 			$this->state[$label] = $value;
 	}
-/**
-* Get the value of a temporary state variable.
-* If a default value is supplied and no value is found, set the default.
-* @return The value of the state variable
-*/
+ 
+ /**
+	* Get the value of a temporary state variable.
+	* If a default value is supplied and no value is found, set the default.
+	* @return The value of the state variable
+	*/
 	function getState( $label, $default_value = null )
 	{
 		if (array_key_exists( $label, $this->state)) {
@@ -674,7 +880,8 @@ class CAppUI {
 		}
 	}
 
-	/** Check for a value in the state variable and user preferences
+	/** 
+	 * Check for a value in the state variable and user preferences
 	 *
 	 * Get a desired value by specifying a state variable to check, a preference to check, and a default value to return
 	 * If none of the others are available.
@@ -704,26 +911,27 @@ class CAppUI {
 		}
 		return $result;
 	}
-/**
-* Login function
-*
-* A number of things are done in this method to prevent illegal entry:
-* <ul>
-* <li>The username and password are trimmed and escaped to prevent malicious
-*     SQL being executed
-* </ul>
-* The schema previously used the MySQL PASSWORD function for encryption.  This
-* Method has been deprecated in favour of PHP's MD5() function for database independance.
-* The check_legacy_password option is no longer valid
-*
-* Upon a successful username and password match, several fields from the user
-* table are loaded in this object for convenient reference.  The style, localces
-* and preferences are also loaded at this time.
-*
-* @param $username The user login name
-* @param $password The user password
-* @return boolean True if successful, false if not
-*/
+ 
+ /**
+	* Login function
+	*
+	* A number of things are done in this method to prevent illegal entry:
+	* <ul>
+	* <li>The username and password are trimmed and escaped to prevent malicious
+	*     SQL being executed
+	* </ul>
+	* The schema previously used the MySQL PASSWORD function for encryption.  This
+	* Method has been deprecated in favour of PHP's MD5() function for database independance.
+	* The check_legacy_password option is no longer valid
+	*
+	* Upon a successful username and password match, several fields from the user
+	* table are loaded in this object for convenient reference.  The style, localces
+	* and preferences are also loaded at this time.
+	*
+	* @param $username The user login name
+	* @param $password The user password
+	* @return boolean True if successful, false if not
+	*/
 	function login( $username, $password )
 	{
 		require_once DP_BASE_DIR . '/classes/authenticator.class.php';
@@ -787,54 +995,56 @@ class CAppUI {
 
 // load the user preferences
 		$this->loadPrefs( $this->user_id );
-		$this->setUserLocale();
+		global $l10n;
+		$l10n->setUserLocale();
 		$this->checkStyle();
 		return true;
 	}
 
-	/** Register the user's login event in the user_access_log table
-	 */
-	   function registerLogin()
-	   {
+	/** Register the user's login event in the user_access_log table */
+	function registerLogin()
+	{
 		$q  = new DBQuery;
 		$q->addTable('user_access_log');
 		$q->addInsert('user_id', "$this->user_id");
 		$q->addInsert('date_time_in', 'now()', false, true);
 		$q->addInsert('user_ip', $_SERVER['REMOTE_ADDR']);
-                $q->exec();
-                $this->last_insert_id = db_insert_id();
-								$q->clear();
-           }
+		$q->exec();
+		$this->last_insert_id = db_insert_id();
+		$q->clear();
+	}
 
-	/** Register the user's last action in the user_access_log table
-	 */
-        function updateLastAction($last_insert_id)
-        {
-		$q  = new DBQuery;
+	/** Register the user's last action in the user_access_log table */
+	function updateLastAction()
+	{
+		$q = new DBQuery;
 		$q->addTable('user_access_log');
 		$q->addUpdate('date_time_last_action', date("Y-m-d H:i:s"));
-		$q->addWhere("user_access_log_id = $last_insert_id");
-                if ($last_insert_id > 0){
-                    $q->exec();
-                    $q->clear();
-                }
-          }
+		$q->addWhere("user_access_log_id = $this->last_insert_id");
+		if ($this->last_insert_id > 0){
+			$q->exec();
+			$q->clear();
+		}
+	}
+
 	/** @deprecated */
 	function logout()
 	{
 	}
-/**
-* Checks whether there is any user logged in.
-*/
+	
+ /**
+	* Checks whether there is any user logged in.
+	*/
 	function doLogin()
 	{
 		return ($this->user_id < 0) ? true : false;
 	}
-/**
-* Gets the value of the specified user preference
-* @param $name Name of the preference
-* @return The value of the preference, or null if the preference does not exist.
-*/
+	
+ /**
+	* Gets the value of the specified user preference
+	* @param $name Name of the preference
+	* @return The value of the preference, or null if the preference does not exist.
+	*/
 	function getPref( $name )
 	{
 		$pref = @$this->user_prefs[$name];
@@ -843,20 +1053,22 @@ class CAppUI {
 	
 		return $pref;
 	}
-/**
-* Sets the value of a user preference specified by name
-* @param $name Name of the preference
-* @param $val The value of the preference
-*/
+	
+ /**
+	* Sets the value of a user preference specified by name
+	* @param $name Name of the preference
+	* @param $val The value of the preference
+	*/
 	function setPref( $name, $val )
 	{
 		$this->user_prefs[$name] = $val;
 	}
-/**
-* Loads the stored user preferences from the database into the internal
-* preferences variable.
-* @param $uid User id number
-*/
+	
+ /**
+	* Loads the stored user preferences from the database into the internal
+	* preferences variable.
+	* @param $uid User id number
+	*/
 	function loadPrefs( $uid=0 )
 	{
 		$q  = new DBQuery;
@@ -870,10 +1082,10 @@ class CAppUI {
 
 // --- Module connectors
 
-/**
-* Get a list of the installed modules
-* @return array Named array list in the form 'module directory'=>'module name'
-*/
+ /**
+	* Get a list of the installed modules
+	* @return array Named array list in the form 'module directory'=>'module name'
+	*/
 	function getInstalledModules()
 	{
 		$q  = new DBQuery;
@@ -882,10 +1094,11 @@ class CAppUI {
 		$q->addOrder('mod_directory');
 		return ($q->loadHashList());
 	}
-/**
-* Get a list of the active modules
-* @return array Named array list in the form 'module directory'=>'module name'
-*/
+ 
+ /**
+	* Get a list of the active modules
+	* @return array Named array list in the form 'module directory'=>'module name'
+	*/
 	function getActiveModules()
 	{
 		$q  = new DBQuery;
@@ -895,11 +1108,12 @@ class CAppUI {
 		$q->addOrder('mod_directory');
 		return ($q->loadHashList());
 	}
-/**
-* Get a list of the modules that should appear in the menu
-* @return array Named array list in the form
-* ['module directory', 'module name', 'module_icon']
-*/
+ 
+ /**
+	* Get a list of the modules that should appear in the menu
+	* @return array Named array list in the form
+	* ['module directory', 'module name', 'module_icon']
+	*/
 	function getMenuModules()
 	{
 		$q  = new DBQuery;
@@ -933,10 +1147,10 @@ class CAppUI {
 		return db_loadResult($sql);
 	}
 
-/**
- * Get a reference to the global dPacl class
- * @return A reference to the dPacl object
- */
+	/**
+	 * Get a reference to the global dPacl class
+	 * @return A reference to the dPacl object
+	 */
 	function &acl()
 	{
 		if (! isset($GLOBALS['acl'])){
@@ -945,9 +1159,11 @@ class CAppUI {
 	  	return $GLOBALS['acl'];
 	}
 
-/** Get Javascript to be assigned to the current template
- * @return String containing javascript or <script> elements referencing external files
- */
+	/** 
+	 * Get Javascript to be assigned to the current template
+	 * 
+	 * @return String containing javascript or <script> elements referencing external files
+	 */
 	function loadJS()
 	{
 	  global $m, $a, $extra_js;
@@ -981,7 +1197,8 @@ class CAppUI {
 		return $js;
 	}
 
-	/** Get Javascript specific to the specified module
+	/** 
+	 * Get Javascript specific to the specified module
 	 * 
 	 * Loads specified module specific javascript. Also searches the js/ subdirectory for files to add
 	 * @param $module Module name
@@ -1046,15 +1263,15 @@ class CTabBox_core {
 the active tab, and the selected tab **/
 	var $javascript = NULL;
 
-/**
-* CTabBox_core constructor
-*
-* Must support 2 arguments, currently active tab, new tab to activate.
-* @param $baseHRef The base URL query string to prefix tab links
-* @param $baseInc The base path to prefix the include file
-* @param $active The active tab
-* @param $javascript Optional javascript method to be used to execute tabs.
-*/
+ /**
+	* CTabBox_core constructor
+	*
+	* Must support 2 arguments, currently active tab, new tab to activate.
+	* @param $baseHRef The base URL query string to prefix tab links
+	* @param $baseInc The base path to prefix the include file
+	* @param $active The active tab
+	* @param $javascript Optional javascript method to be used to execute tabs.
+	*/
 	function CTabBox_core( $baseHRef='', $baseInc='', $active=0, $javascript = null )
 	{
 		$this->tabs = array();
@@ -1063,21 +1280,23 @@ the active tab, and the selected tab **/
 		$this->javascript = $javascript;
 		$this->baseInc = $baseInc;
 	}
-/**
-* Get the name of a tab
-* @return String containing the tabs name
-*/
+ 
+ /**
+	* Get the name of a tab
+	* @return String containing the tabs name
+	*/
 	function getTabName( $idx )
 	{
 		return $this->tabs[$idx][1];
 	}
-/**
-* Add a tab to the object
-* @param $file File to include
-* @param $title The display title/name of the tab
-* @param $translated Defaults to false. shall the title be translated?
-* @param $key Defaults to null, explicitly index the tabs with $key
-*/
+ 
+ /**
+	* Add a tab to the object
+	* @param $file File to include
+	* @param $title The display title/name of the tab
+	* @param $translated Defaults to false. shall the title be translated?
+	* @param $key Defaults to null, explicitly index the tabs with $key
+	*/
 	function add( $file, $title, $translated = false, $key= NULL ) {
 		$t = array( $file, $title, $translated);
 		if (isset($key)) {
@@ -1097,12 +1316,12 @@ the active tab, and the selected tab **/
 		return true;
 	}
 
-/** Display the tabbed box
-*
-* This function may be overridden
-* @param $extra Parameter deprecated, template does not contain {extra} variable
-* @param $js_tabs Defaults to false. Use javascript to show tabs
-*/
+ /** Display the tabbed box
+	*
+	* This function may be overridden
+	* @param $extra Parameter deprecated, template does not contain {extra} variable
+	* @param $js_tabs Defaults to false. Use javascript to show tabs
+	*/
 	function show( $extra='', $js_tabs = false )
 	{
 		global $AppUI, $currentTabId, $currentTabName, $tpl;
@@ -1217,16 +1436,16 @@ class CTitleBlock_core {
 /** The reference for the context help system */
 	var $helpref='';
 
-/** CTitleBlock_core constructor
-*
-* Assigns the title, icon, module and help reference.  If the user does not
-* have permission to view the help module, then the context help icon is
-* not displayed.
-* @param $title The large title displayed by the titleblock
-* @param $icon The icon displayed next to the title
-* @param $module The current module
-* @param $helpref The reference to this module in the help
-*/
+ /** CTitleBlock_core constructor
+	*
+	* Assigns the title, icon, module and help reference.  If the user does not
+	* have permission to view the help module, then the context help icon is
+	* not displayed.
+	* @param $title The large title displayed by the titleblock
+	* @param $icon The icon displayed next to the title
+	* @param $module The current module
+	* @param $helpref The reference to this module in the help
+	*/
 	function CTitleBlock_core( $title, $icon='', $module='', $helpref='' )
 	{
 		$this->title = $title;
@@ -1238,7 +1457,8 @@ class CTitleBlock_core {
 		$this->crumbs = array();
 		$this->showhelp = !getDenyRead( 'help' );
 	}
-	/** Add a cell beside the title
+
+ /** Add a cell beside the title
 	*
 	* Cells are added from left to right.
 	* @param $data HTML to add in this cell

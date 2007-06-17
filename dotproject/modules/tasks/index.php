@@ -6,6 +6,7 @@ if (!defined('DP_BASE_DIR')){
 $AppUI->savePlace();
 $perms =& $AppUI->acl();
 // retrieve any state parameters
+global $user_id;
 $user_id = $AppUI->user_id;
 if($perms->checkModule('admin', 'view')){ // Only sysadmins are able to change users
 	if(dPgetParam($_POST, 'user_id', 0) != 0){ // this means that 

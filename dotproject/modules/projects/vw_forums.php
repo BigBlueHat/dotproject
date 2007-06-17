@@ -3,7 +3,8 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $AppUI, $project_id, $forum_id;
+global $AppUI, $forum_id;
+$project_id = intval(dPgetParam($_GET, 'project_id', 0));
 // Forums mini-table in project view action
 $q = new DBQuery;
 

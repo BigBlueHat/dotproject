@@ -8,7 +8,7 @@ if (!$canEdit)
 	$AppUI->redirect('m=public&a=access_denied');
 
 $module = dPgetParam($_REQUEST, 'module', 'admin');
-$lang = dPgetParam($_REQUEST, 'lang', $AppUI->user_lang);
+$lang = dPgetParam($_REQUEST, 'lang', $l10n->lang[3]);
 
 $AppUI->savePlace('m=system&a=translate&module='.$module.'&lang='.$lang);
 
@@ -93,7 +93,8 @@ $titleBlock->show();
 <tr>
 	<th width="15%" nowrap><?php echo $AppUI->_( 'Abbreviation' );?></th>
 	<th width="40%" nowrap><?php echo $AppUI->_('English String' );?></th>
-	<th width="40%" nowrap><?php echo $AppUI->_( 'String' ).': '.$AppUI->_( $locales[$lang] );?></th>
+	<th width="40%" nowrap><?php echo $AppUI->_( 'String' ).': '.
+	$AppUI->_( $locales[$lang] );?></th>
 	<th width="5%" nowrap><?php echo $AppUI->_( 'delete' );?></th>
 </tr>
 <?php

@@ -34,7 +34,7 @@ $date = new CDate();
 if ($viewtype == 'single')
 {
 	$s = '';
-        $first = true;
+	$first = true;
 }
 
 $new_messages = array();

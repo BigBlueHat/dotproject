@@ -280,7 +280,7 @@ foreach ($files as $file_row) {
 					$hidden_table .= '
 						</td>
 						<td nowrap="8%">
-							<a href="./fileviewer.php?file_id=' . $file['file_id'] . '" title="' 
+							<a href="./index.php?m=files&a=download&file_id=' . $file['file_id'] . '" title="' 
 							. $file['file_description'] . '">' . $file['file_name'] . '
 							</a>
 						</td>

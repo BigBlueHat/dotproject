@@ -3,10 +3,12 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $AppUI, $project_id, $df, $canEdit, $m, $tab;
+global $AppUI, $df, $canEdit, $m, $tab;
+
+$project_id = intval(dPgetParam($_GET, 'project_id', 0));
 
 // Lets check which cost codes have been used before
-$q  = new DBQuery;
+$q = new DBQuery;
 $q->addQuery('project_company');
 $q->addTable('projects');
 $q->addWhere('project_id = ' . $project_id);
@@ -102,6 +104,7 @@ $tpl->displayFile('tasklog', 'tasks');
 ?>
 
 <script type="text/javascript" language="JavaScript">
+<!--
 <?php
 // security improvement:
 // some javascript functions may not appear on client side in case of user not having write permissions
@@ -115,4 +118,5 @@ function delIt2(id) {
 	}
 }
 <?php } ?>
+-->
 </script>

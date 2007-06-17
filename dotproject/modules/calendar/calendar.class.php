@@ -1042,6 +1042,7 @@ class CEvent extends CDpObject {
 	}
 }
 
+global $event_filter_list;
 $event_filter_list = array (
 	'my'	=> 'My Events',
 	'own' => 'Events I Created',

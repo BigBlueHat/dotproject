@@ -7,7 +7,7 @@ include (DP_BASE_DIR . '/lib/jpgraph/src/jpgraph.php');
 include (DP_BASE_DIR . '/lib/jpgraph/src/jpgraph_gantt.php');
 
 // orginal: global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels;
-global $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt; // $showAllGantt == Gantt with tasks and users
+global $l10n, $company_id, $dept_ids, $department, $locale_char_set, $proFilter, $projectStatus, $showInactive, $showLabels, $showAllGantt; // $showAllGantt == Gantt with tasks and users
 
 // get the prefered date format
 $df = $AppUI->getPref('SHDATEFORMAT');
@@ -72,9 +72,9 @@ $graph2->scale->day->SetStyle(DAYSTYLE_SHORTDATE4);
 $graph2->scale->month->SetFont(FF_CUSTOM,FS_NORMAL,9);
 
 $pLocale = setlocale(LC_TIME, 0); // get current locale for LC_TIME
-$res = @setlocale(LC_TIME, $AppUI->user_lang[0]);
+$res = @setlocale(LC_TIME, $l10n->lang[0]);
 if ($res) { // Setting locale doesn't fail
-	$graph->scale->SetDateLocale( $AppUI->user_lang[0] );
+	$graph->scale->SetDateLocale( $l10n->lang[0] );
 }
 setlocale(LC_TIME, $pLocale);
 

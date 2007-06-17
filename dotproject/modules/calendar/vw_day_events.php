@@ -53,7 +53,6 @@ foreach ($events as $row) {
 }
 
 $tf = $AppUI->getPref('TIMEFORMAT');
-
 $dayStamp = $this_day->format( FMT_TIMESTAMP_DATE );
 
 $start = $start_hour;

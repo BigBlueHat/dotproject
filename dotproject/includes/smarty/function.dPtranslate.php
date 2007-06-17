@@ -17,7 +17,7 @@
  */
 function smarty_function_dPtranslate($params, &$smarty)
 {
-	global $AppUI;
+	global $l10n;
 	
 	$type = ''; // Set below.
 	extract($params);
@@ -36,14 +36,14 @@ function smarty_function_dPtranslate($params, &$smarty)
 	}
 	
 	if ($type == 'js') {
-		return $AppUI->_($word . $sentence, UI_OUTPUT_JS);
+		return $l10n->_($word . $sentence, UI_OUTPUT_JS);
 	}
 	
 	if ($type == 'cl') {
-		return $AppUI->_($word . $sentence, UI_CASE_LOWER);
+		return $l10n->_($word . $sentence, UI_CASE_LOWER);
 	}
 	
-	return $AppUI->_($word . $sentence);
+	return $l10n->_($word . $sentence);
 }
 
 /* vim: set expandtab: */

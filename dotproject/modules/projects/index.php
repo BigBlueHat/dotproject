@@ -88,7 +88,7 @@ $obj = new CProject();
 $deny = $obj->getDeniedRecords( $AppUI->user_id );
 
 // collect the full projects list data via function in projects.class.php
-projects_list_data();
+$projects = & projects_list_data();
 
 $project_types = dPgetSysVal("ProjectStatus");
 
@@ -98,7 +98,7 @@ $proposed = 0;
 
 foreach($project_types as $key=>$value)
 {
-        $counter[$key] = 0;
+	$counter[$key] = 0;
 	if (is_array($projects)) {
 		foreach ($projects as $p) {
 			if ($p['project_status'] == $key) {
@@ -107,7 +107,7 @@ foreach($project_types as $key=>$value)
 		}
 	}
                 
-        $project_types[$key] = $AppUI->_($project_types[$key], UI_OUTPUT_RAW) . ' (' . $counter[$key] . ')';
+	$project_types[$key] = $AppUI->_($project_types[$key], UI_OUTPUT_RAW) . ' (' . $counter[$key] . ')';
 }
 
 

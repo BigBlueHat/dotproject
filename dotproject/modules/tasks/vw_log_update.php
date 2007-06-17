@@ -3,8 +3,9 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $AppUI, $task_id, $obj, $percent, $can_edit_time_information, $tpl;
+global $AppUI, $obj, $percent, $can_edit_time_information, $tpl;
 
+$task_id = intval( dPgetParam( $_GET, 'task_id', 0 ) );
 $perms =& $AppUI->acl();
 
 // check permissions
