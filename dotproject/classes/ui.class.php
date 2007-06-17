@@ -140,9 +140,9 @@ class CAppUI {
 	}
 
 	/**
-	 * Initialise application state.
+	 * Initialise application state. General RUN logic.
 	 */
-	function init($minimal = false)
+	function init()
 	{
 		global $l10n, $tpl, $perms, $m, $a, $u, $tab, $uistyle, $iconstyle;
 		
@@ -194,10 +194,6 @@ class CAppUI {
 		 */
 		$u = $this->checkFileName(dPgetParam($_GET, 'u', ''));
 
-		if (!$minimal) {
-			
-		}
-		
 		// Initialise localisation with user specific settings.
 		$l10n->setUserLocale();
 
@@ -213,27 +209,24 @@ class CAppUI {
 		
 		// check is the user needs a new password
 		if (dPgetParam( $_POST, 'lostpass', 0 )) {
-			$this->initType('lostpass');
+			$this->initTypeLostpass();
 		} elseif (isset($_REQUEST['login'])) { // check if the user is trying to log in
-			$this->initType('login');
+			$this->initTypeLogin();
 		// } if ($m == 'public' && $a == 'register') {
 		// Exception for automatic registrations (if they are allowed)
 		//	$suppressHeaders = true;
 		} elseif ($this->doLogin()) { // check if we are logged in
-			$this->initType('loggedout');
+			$this->initTypeLoggedout();
 		} elseif ($m == 'files' && $a == 'download') {
-			$this->initType('download');
+			$this->initTypeDownload();
 		} else {
-			$this->initType('page');
+			$this->initTypePage();
 		}
 	}
 	
-	function initType($type = '')
-	{
-		$func = 'initType' . ucfirst($type);
-		$this->$func();
-	}
-	
+	/**
+	 * Load page when user requests lost password.
+	 */
 	function initTypeLostpass()
 	{
 		global $uistyle;
@@ -245,7 +238,7 @@ class CAppUI {
 			require(DP_BASE_DIR . '/includes/sendpass.php');
 			sendNewPass();
 		} else {
-			$_GET['dialog'] = 1;
+			$_GET['dialog'] = 1; // FIXME: Is that doing anything?
 			$tpl->assign('redirect', $redirect);
 			$tpl->displayHeader();
 			$tpl->displayFile('lostpass', '.');
@@ -254,6 +247,9 @@ class CAppUI {
 		exit();
 	}
 	
+	/**
+	 * Handle login logic. On success, redirect to welcome page.
+	 */
 	function initTypeLogin()
 	{
 		if (dPgetConfig('auth_method') == 'http_ba') {
@@ -279,6 +275,9 @@ class CAppUI {
 		$this->redirect( $redirect );
 	}
 	
+	/**
+	 * Load page when user not logged in - login page. Usually, starting page of a session.
+	 */
 	function initTypeLoggedout()
 	{
 		global $l10n, $tpl;
@@ -312,6 +311,9 @@ class CAppUI {
 		exit;
 	}
 	
+	/**
+	 * File streaming/download page. 
+	 */
 	function initTypeDownload()
 	{
 		$perms =& $this->acl();
@@ -345,6 +347,9 @@ class CAppUI {
 		}
 	}
 	
+	/**
+	 * Handle display of all normal dotProject pages.
+	 */
 	function initTypePage()
 	{
 		// Global systemwide variables
