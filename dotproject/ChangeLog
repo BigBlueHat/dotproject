@@ -1,3 +1,14 @@
+2007-06-18 10:07  (cyberhorse)
+---------------------------------
+base.php
+- Fixed issue with path on some systems.
+
+2007-06-18 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-18
+
 2007-06-17 20:52  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
