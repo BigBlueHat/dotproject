@@ -60,7 +60,6 @@ class LocalFileManager implements iFileManager {
 		}
 		return true;
 	}
-
 	public function retrieveFile($file) {
     $result = '';
     /*
@@ -91,7 +90,7 @@ class LocalFileManager implements iFileManager {
 		}
 		return $result;
 	}
-	public function updateFile() {
+	public function updateFile($file) {
 		return true;
 	}
 	public function deleteFile($file) {
@@ -100,10 +99,10 @@ class LocalFileManager implements iFileManager {
 	public function summarizeFile() {
 		return true;
 	}
-	public function checkinFile() {
+	public function checkinFile($file) {
 		return true;
 	}
-	public function checkoutFile() {
+	public function checkoutFile($file) {
 		return true;
 	}
 }
