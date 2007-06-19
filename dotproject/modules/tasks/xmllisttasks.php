@@ -39,7 +39,7 @@
 			if ($t['task_milestone'] == 0) echo " isDuration=\"true\"";
 			echo " link=\"".DP_BASE_URL."/index.php?m=tasks&amp;a=view&amp;task_id=".$t['task_id']."\"";
 			echo " title=\"".$t['task_name']."\">\n";
-			echo $t['task_description'];
+			echo str_replace('&', '&amp;', $t['task_description']);
 			echo "</event>\n";
 		}
 	
