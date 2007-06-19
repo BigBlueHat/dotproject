@@ -129,7 +129,7 @@
 			{if $user.user_id != $first_user.user_id}
 			<br />
 			<a href="?m=admin&amp;a=viewuser&amp;user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
-				{dPgetContact user_id=$obj.user_id}&nbsp;({$user.perc_assignment}%)</a>
+				{dPgetContact user_id=$user.user_id}&nbsp;({$user.perc_assignment}%)</a>
 			{/if}
 		{/foreach}
 		</span>
