@@ -18,29 +18,30 @@ require_once( $AppUI->getModuleClass( 'forums' ) );
  * The Project Class
  */
 class CProject extends CDpObject {
-	var $project_id = NULL;
-	var $project_company = NULL;
-	var $project_department = NULL;
-	var $project_name = NULL;
-	var $project_short_name = NULL;
-	var $project_owner = NULL;
-	var $project_url = NULL;
-	var $project_demo_url = NULL;
-	var $project_start_date = NULL;
-	var $project_end_date = NULL;
-	var $project_actual_end_date = NULL;
-	var $project_status = NULL;
-	var $project_percent_complete = NULL;
-	var $project_color_identifier = NULL;
-	var $project_description = NULL;
-	var $project_target_budget = NULL;
-	var $project_actual_budget = NULL;
-	var $project_creator = NULL;
-	var $project_private = NULL;
-	var $project_departments= NULL;
-	var $project_contacts = NULL;
-	var $project_priority = NULL;
-	var $project_type = NULL;
+	var $project_id = null;
+	var $project_company = null;
+	var $project_department = 0;
+	var $project_name = null;
+	var $project_short_name = null;
+	var $project_owner = null;
+	var $project_url = null;
+	var $project_demo_url = null;
+	var $project_start_date = null;
+	var $project_end_date = null;
+	var $project_actual_end_date = null;
+	var $project_status = null;
+	var $project_percent_complete = 0;
+	var $project_color_identifier = null;
+	var $project_description = null;
+	var $project_target_budget = null;
+	var $project_actual_budget = null;
+	var $project_creator = null;
+	var $project_private = null;
+	var $project_departments= null;
+	var $project_contacts = null;
+	var $project_priority = null;
+	var $project_type = null;
+	var $project_active = null;
 
 	function CProject() {
 		$this->CDpObject( 'projects', 'project_id' );
