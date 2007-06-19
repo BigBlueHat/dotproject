@@ -58,34 +58,34 @@
 
 {* name link *}
 {if $config.show_task_numbers}{$obj.task_number}. {/if}
+{capture name=projDesc assign=popDesc}
+	{$obj.task_description|dPescape|nl2br}
+{/capture}
+{dPtranslateToVar word='Description' ass='popDescCap'}
+
+{strip}
 {if $obj.children > 0}
 	{if !dPgetConfig('tasks_ajax_list')}
-{if $is_opened}
-{assign var='img_open' value='corner-dots.gif'}
-{else}
-{assign var='img_open' value='shim.gif'}
-{/if}
-<a href="index.php{$query_string}&amp;close_task_id={$obj.task_id}">
-{dPshowImage find=$img_open}</a>
+		{if $is_opened}
+			{assign var='img_open' value='corner-dots.gif'}
+		{else}
+			{assign var='img_open' value='shim.gif'}
+		{/if}
+		<a href="index.php{$query_string}&amp;close_task_id={$obj.task_id}">
+		{dPshowImage find=$img_open}</a>
 	{else}
-<img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" alt="expand" border="0" onclick="dpToggleNode(this);" />
+		<img id="{$obj.node_id}_img" src="images/icons/{if $is_opened}collapse{else}expand{/if}.gif" alt="expand" border="0" onclick="dpToggleNode(this);" />
 	{/if}
+&nbsp;
 {/if}
-		{capture name=projDesc assign=popDesc}
-			{$obj.task_description|dPescape|nl2br}
-		{/capture}
-		{dPtranslateToVar word='Description' ass='popDescCap'}
-		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" {popup sticky=false caption=$popDescCap text=$popDesc}>
-{if $obj.task_dynamic == '1'}
-		<b><i>{$obj.task_name}</i></b>
-{else}
-		{$obj.task_name} 
-{/if}
+		<a href="./index.php?m=tasks&amp;a=view&amp;task_id={$obj.task_id}" {popup sticky=false caption=$popDescCap text=$popDesc} {if $obj.task_dynamic == '1'}style="font-weight: bold; font-style: italic"{/if}>
+			{$obj.task_name} 
 		</a>
 {if $obj.task_milestone > 0}{dPshowImage find='milestone.gif'}{/if}
 {if $obj.children > 0}
-({$obj.children})
+&nbsp;({$obj.children})
 {/if}
+{/strip}
 	</td>
 
 {if $today_view}
@@ -107,11 +107,12 @@
 	</td>
 {/if}
 {if $obj.task_assigned_users}
+{strip}
 	{if $show_all_assignees}
 	<td align="center">
 		{foreach from=$obj.task_assigned_users item=user}
 		<a href="?m=admin&amp;a=viewuser&amp;user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
-			{dPgetContact user_id=$obj.user_id} ({$user.perc_assignment}%)
+			{dPgetContact user_id=$obj.user_id}&nbsp;({$user.perc_assignment}%)
 		</a>, 
 		{/foreach}
 	</td>
@@ -119,21 +120,23 @@
 	<td align="center" nowrap="nowrap">
 		{assign var=first_user value=$obj.task_assigned_users[0]}
 		<a href="?m=admin&amp;a=viewuser&amp;user_id={$first_user.user_id}" title="{dPtranslate word='Extent of Assignment'}:{$first_user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $first_user.perc_assignment}%">
-			{dPgetContact user_id=$first_user.user_id} ({$first_user.perc_assignment}%)</a>
+			{dPgetContact user_id=$first_user.user_id}&nbsp;({$first_user.perc_assignment}%)</a>
 		{if $obj.assignee_count > 1}
+		&nbsp;
 		<a href="javascript:void(0);"  onclick="toggle_users('users_{$obj.task_id}');" title="">(+{$obj.assignee_count-1})</a>
 		<span style="display: none" id="users_{$obj.task_id}">
 		{foreach from=$obj.task_assigned_users item=user}
 			{if $user.user_id != $first_user.user_id}
 			<br />
 			<a href="?m=admin&amp;a=viewuser&amp;user_id={$user.user_id}" title="{dPtranslate sentence='Extent of Assignment'}:{$user.perc_assignment}%; {dPtranslate word='Free Capacity'}:{100 - $user.perc_assignment}%">
-				{dPgetContact user_id=$obj.user_id} ({$user.perc_assignment}%)</a>
+				{dPgetContact user_id=$obj.user_id}&nbsp;({$user.perc_assignment}%)</a>
 			{/if}
 		{/foreach}
 		</span>
 		{/if}
 	</td>
 	{/if}
+{/strip}
 {elseif !$today_view}
 	<td align="center">-</td>
 {/if}
