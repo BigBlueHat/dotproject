@@ -1,3 +1,79 @@
+2007-06-20 01:09  (cyberhorse)
+---------------------------------
+modules/tasks/xmllisttasks.php
+- Fixed XML compatibility issue
+
+2007-06-20 01:01  (pedroix)
+---------------------------------
+style/_smarty/files/addedit.html
+- Final version bug:
+- http://www.dotproject.net/vbulletin/showthread.php?t=7051
+
+2007-06-20 01:00  (cyberhorse)
+---------------------------------
+modules/projects/projects.class.php
+- Fixed missing project_active field in the project class - is that to be used or not?
+- Fixed department issues
+- 
+- NB! is project_department or project_departments or both used?!?
+
+2007-06-20 00:52  (pedroix)
+---------------------------------
+modules/files/addedit.php
+- Final version bug:
+- http://www.dotproject.net/vbulletin/showthread.php?t=7051
+
+2007-06-20 00:43  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/list.row.html
+- Fixed a problem with displaying multiple task assignees (wrong id passed)
+- in tasks list
+
+2007-06-20 00:32  (cyberhorse)
+---------------------------------
+modules/tasks/listtasks.php
+- missing global definition durnTypes
+
+2007-06-20 00:28  (cyberhorse)
+---------------------------------
+.htaccess
+style/_smarty/tasks/list.row.html
+- Fixed access to forbidden javascript (.htaccess wasn't allowing access to
+- modules/tasks/*.js and *.js.php)
+- Minor display changes
+
+2007-06-19 23:57  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+includes/db_connect.php
+modules/tasks/addedit.php
+modules/tasks/do_task_aed.php
+style/_smarty/tasks/addedit.html
+style/_smarty/tasks/ae_dates.html
+style/_smarty/tasks/ae_depend.html
+style/_smarty/tasks/ae_resource.html
+- Fixed more missing (global) variables
+- Added $tab as a global system variable
+- Fixed bug with updating NULL fields (logic was in reverse)
+- Fixed a number of styling issues
+
+2007-06-19 23:05  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/list.row.html
+- Properly escape strings in task description.
+
+2007-06-19 22:34  (cyberhorse)
+---------------------------------
+modules/tasks/ae_depend.php
+modules/tasks/tasks.class.php
+- Fixed missing global variables in tasks/addedit
+
+2007-06-19 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-19
+
 2007-06-18 10:07  (cyberhorse)
 ---------------------------------
 base.php
