@@ -5,7 +5,9 @@ if (!defined('DP_BASE_DIR')){
 
 global $AppUI, $task_parent_options, $loadFromTab;
 global $can_edit_time_information, $obj;
-global $durnTypes, $task_project, $task_id, $tab;
+global $durnTypes, $task_project, $tab;
+
+$task_id = intval(dPgetParam($_REQUEST, 'task_id', 0));
 
 //Time arrays for selects
 $start = intval(dPgetConfig('cal_day_start'));

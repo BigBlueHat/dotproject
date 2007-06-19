@@ -10,6 +10,7 @@ require_once $AppUI->getSystemClass('event_queue');
 require_once $AppUI->getSystemClass('date');
 
 // user based access
+global $task_access;
 $task_access = array(
                      '0'=>'Public',
                      '1'=>'Protected',
@@ -28,6 +29,7 @@ $task_access = array(
 
 // When calculating a task's start date only consider
 // end dates of tasks with these dynamic values.
+global $tracked_dynamics;
 $tracked_dynamics = array(
                           '0' => '0',
                           '1' => '1',
