@@ -357,7 +357,7 @@ function db_updateObject( $table, &$object, $keyName, $updateNulls=true )
 	$update_list = array();
 	$values_list = array();
 	foreach($old_obj as $field => $value)
-		if ($object->$field != $value && ($value !== NULL || $updateNulls)) {
+		if ($object->$field != $value && ($object->$field !== null || $updateNulls)) {
 			$update_list[] = $field;
 			//$values_list[] = htmlspecialchars($object->$field);
 			$values_list[] = $object->$field;

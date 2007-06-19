@@ -7,6 +7,7 @@ if (!defined('DP_BASE_DIR')){
  * Tasks :: Add/Edit Form
  */
 
+global $task_id;
 $task_id = intval( dPgetParam( $_REQUEST, 'task_id', 0 ) );
 $perms =& $AppUI->acl();
 
@@ -24,6 +25,7 @@ if ($task_id > 0 && !$obj->load( $task_id )) {
 $task_parent = isset($_REQUEST['task_parent'])? $_REQUEST['task_parent'] : $obj->task_parent;
 
 // check for a valid project parent
+global $task_project;
 $task_project = intval( $obj->task_project );
 if (!$task_project) {
 	$task_project = dPgetParam( $_REQUEST, 'task_project', 0 );
@@ -52,6 +54,7 @@ if (!$canEdit) {
 //check permissions for the associated project
 $canReadProject = $perms->checkModuleItem( 'projects', 'view', $obj->task_project);
 
+global $durnTypes;
 $durnTypes = dPgetSysVal( 'TaskDurationType' );
 $taskPriority = dPgetSysVal( 'TaskPriority' );
 
@@ -65,6 +68,7 @@ $project = new CProject();
 $project->load( $task_project );
 
 //Pull all users
+global $users;
 $users = dPgetUsersHash();
 
 function getSpaces($amount){
@@ -203,6 +207,7 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 //Dynamic tasks are by default now off because of dangerous behavior if incorrectly used
 if ( is_null($obj->task_dynamic) ) $obj->task_dynamic = 0 ;
 
+global $can_edit_time_information;
 $can_edit_time_information = $obj->canUserEditTimeInformation();
 //get list of projects, for task move drop down list.
 //require_once $AppUI->getModuleClass('projects');
@@ -214,6 +219,7 @@ $pq->addWhere('project_company = '.$company_id);
 $pq->addWhere('( project_status != 7 or project_id = \''. $task_project . '\')');
 $pq->addOrder('project_name');
 $project->setAllowedSQL($AppUI->user_id, $pq);
+global $projects;
 $projects = $pq->loadHashList();
 
 if (dPgetConfig('check_task_dates'))

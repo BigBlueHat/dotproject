@@ -7,7 +7,7 @@ projTasksWithEndDates[{$key}]=new Array('{$task[1]}', '{$task[2]}', '{$task[3]}'
 -->
 </script>
 
-<form action="?m=tasks&amp;a=addedit&amp;task_project={$obj->task_project}"  method="post" name="resourceFrm">
+<form action="?m=tasks&amp;a=addedit&amp;task_project={$task_project}"  method="post" name="resourceFrm">
 	<input type="hidden" name="sub_form" value="1" />
 	<input type="hidden" name="task_id" value="{$obj->task_id}" />
 	<input type="hidden" name="dosql" value="do_task_aed" />

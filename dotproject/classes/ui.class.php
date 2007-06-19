@@ -353,7 +353,7 @@ class CAppUI {
 	function initTypePage()
 	{
 		// Global systemwide variables
-		global $m, $a, $u, $tpl, $l10n, $time, $AppUI, $all_tabs, $perms;
+		global $m, $a, $u, $tab, $tpl, $l10n, $time, $AppUI, $all_tabs, $perms;
 		// Global variables, used by some pages
 		global $filters, $orderby, $orderdir, $df;
 		// Permissions

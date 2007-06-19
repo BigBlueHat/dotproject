@@ -141,7 +141,12 @@ if ($sub_form) {
 			$AppUI->setMsg( $msg, UI_MSG_ERROR );
 			$AppUI->redirect(); // Store failed don't continue?
 		} else {
-			$custom_fields = New CustomFields( $m, 'addedit', $obj->task_id, 'edit' );
+			$q = new DBQuery();
+			$q->addTable('tasks');
+			$q->addQuery('task_description');
+			$q->addWhere('task_id = ' . $obj->task_id);
+			
+			$custom_fields = new CustomFields( $m, 'addedit', $obj->task_id, 'edit' );
  			$custom_fields->bind( $_POST );
  			$sql = $custom_fields->store( $obj->task_id ); // Store Custom Fields
 
@@ -207,7 +212,7 @@ if ($sub_form) {
 				$obj->task_end_date = $ned->format( FMT_DATETIME_MYSQL );						
 							
 				$q = new DBQuery;
-			    $q->addTable('tasks', 't');							
+				$q->addTable('tasks', 't');							
 				$q->addUpdate('task_start_date', $obj->task_start_date);
 				$q->addUpdate('task_end_date', $obj->task_end_date);
 				$q->addWhere('task_id = '.$obj->task_id);
