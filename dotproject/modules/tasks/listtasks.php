@@ -48,6 +48,7 @@ if (isset($_GET['table'])) {
 	$q->addGroup('task_id');
 	$q->addOrder('project_id, task_start_date');
 	
+	global $durnTypes;
 	$durnTypes = dPgetSysVal( 'TaskDurationType' );
 	$tasks = $q->loadList();
 	$msg = db_error();
