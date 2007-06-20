@@ -6,7 +6,7 @@ if (!defined('DP_BASE_DIR')){
 /**
  * Tasks :: Add/Edit Form
  */
-
+global $l10n, $projTasks, $all_tasks, $parents, $task_parent_options, $task_parent;
 global $task_id;
 $task_id = intval( dPgetParam( $_REQUEST, 'task_id', 0 ) );
 $perms =& $AppUI->acl();
@@ -82,7 +82,7 @@ function constructTaskTree($task_data, $depth = 0){
 	$projTasks[$task_data['task_id']] = $task_data['task_name'];
 
 	$selected = $task_data['task_id'] == $task_parent ? 'selected="selected"' : '';
-	$task_data['task_name'] = $l10n->truncate($task_data[1], 45, '...');
+	$task_data['task_name'] = $l10n->truncate($task_data['task_name'], 45, '...');
 
 	$task_parent_options .= '<option value="'.$task_data['task_id']. '" ' .$selected. '>'.getSpaces($depth*3).dPFormSafe($task_data['task_name']).'</option>'."\n";
 
