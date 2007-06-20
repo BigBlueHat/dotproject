@@ -24,12 +24,9 @@ function smarty_function_dPdateFormat($params, &$smarty)
 	
 	$format = 'full'; // to be set by the extract below.
 	extract($params);
-	
+
 	if (empty($date) || $date == '0000-00-00 00:00:00') {
-		if ($format == 'db')
 			return '';
-		else
-			return '-';
 	}
 	
 	if (empty($cdate))
