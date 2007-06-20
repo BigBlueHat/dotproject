@@ -632,6 +632,7 @@ function copyForm(form, to, extras) {
 						sel.appendChild(h.addOption(elem.options[x].value, '', true));
 					}
 				}
+				sel.style.display = 'none';
 				break;
 			case 'radio':
 			case 'checkbox':
@@ -662,12 +663,13 @@ function saveDates(form) {
 
 function saveDepend(form) {
 	var dl = form.task_dependencies.length -1;
-        hd = form.hdependencies;
+	hd = form.hdependencies;
 	hd.value = "";
-	for (dl; dl > -1; dl--){
+	for (dl; dl > -1; dl--) {
 		hd.value = "," + hd.value +","+ form.task_dependencies.options[dl].value;
 	}
-        return new Array('hdependencies');;
+	
+	return new Array('hdependencies');
 }
 
 function checkDetail(form) {
