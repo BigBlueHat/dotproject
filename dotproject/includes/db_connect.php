@@ -223,66 +223,6 @@ function db_loadObjectList( $sql, $object, $maxrows = null )
 	return $list;
 }
 
-
-/**
-* Document::db_insertArray()
-*
-* { Description }
-*
-* @param [type] $verbose
-*/
-function db_insertArray( $table, &$hash, $verbose=false )
-{
-	$fmtsql = "insert into $table ( %s ) values( %s ) ";
-	foreach ($hash as $k => $v) {
-		if (is_array($v) or is_object($v) or $v == null) {
-			continue;
-		}
-		$fields[] = $k;
-		$values[] = "'" . db_escape(htmlspecialchars( $v )) . "'";
-	}
-	$sql = sprintf( $fmtsql, implode( ",", $fields ) ,  implode( ",", $values ) );
-
-	($verbose) && print "$sql<br />\n";
-
-	if (!db_exec( $sql )) {
-		return false;
-	}
-	$id = db_insert_id();
-	return true;
-}
-
-/**
-* Document::db_updateArray()
-*
-* { Description }
-*
-* @param [type] $verbose
-*/
-function db_updateArray( $table, &$hash, $keyName, $verbose=false )
-{
-	$fmtsql = "UPDATE $table SET %s WHERE %s";
-	foreach ($hash as $k => $v) {
-		if ( is_array($v) or is_object($v) or $k[0] == '_' ) // internal or NA field
-			continue;
-
-		if ( $k == $keyName ) { // PK not to be updated
-			$where = "$keyName='" . db_escape( $v ) . "'";
-			continue;
-		}
-		if ($v == '') {
-			$val = 'NULL';
-		} else {
-			$val = "'" . db_escape(htmlspecialchars( $v )) . "'";
-		}
-		$tmp[] = "$k=$val";
-	}
-	$sql = sprintf( $fmtsql, implode( ",", $tmp ) , $where );
-	($verbose) && print "$sql<br />\n";
-	$ret = db_exec( $sql );
-	return $ret;
-}
-
 /**
 * Document::db_delete()
 *

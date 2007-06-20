@@ -206,10 +206,12 @@ class DBQuery {
    * @param $set Defaults to false. If true will check to see if the fields or values supplied are comma delimited strings instead of arrays
    * @param $func Defaults to false. If true will not use quotation marks around the value - to be used when the value being inserted includes a function
    */
-  function addInsert($field, $value, $set = false, $func = false)
+  function addInsert($field, $value = null, $set = false, $func = false)
   {
-		if ($set)
-		{
+		if (is_array($field) && $value == null) {
+			foreach ($field as $f => $v)
+				$this->addMap('value_list', $f, $v);
+		} elseif ($set) {
 			if (is_array($field))
 				$fields = $field;
 			else
@@ -248,10 +250,12 @@ class DBQuery {
    * @param $value The value to set $field to
    * @param $set Defaults to false. If true will check to see if the fields or values supplied are comma delimited strings instead of arrays
    */
-  function addUpdate($field, $value, $set = false)
+  function addUpdate($field, $value = null, $set = false)
   {
-		if ($set)
-		{
+		if (is_array($field) && $value == null) {
+			foreach ($field as $f => $v)
+				$this->addMap('update_list', $f, $v);
+		}	elseif ($set)	{
 			if (is_array($field))
 				$fields = $field;
 			else
@@ -264,9 +268,9 @@ class DBQuery {
 
 			for($i = 0; $i < count($fields); $i++)
 				$this->addMap('update_list', $values[$i], $fields[$i]);
-		}
-		else
+		}	else {
     	$this->addMap('update_list', $value, $field);
+		}
     $this->type = 'update';
   }
 
