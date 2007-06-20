@@ -1,3 +1,69 @@
+2007-06-21 01:58  (cyberhorse)
+---------------------------------
+classes/query.class.php
+includes/db_connect.php
+modules/system/contacts_ldap.php
+- removed db_updateArray and db_insertArray functions. Redundant with
+- DBquery behaviour
+
+2007-06-21 01:32  (caseydk)
+---------------------------------
+modules/tasks/listtasks.php
+- refactored to use the DBQuery object instead of raw sql
+
+2007-06-21 01:32  (caseydk)
+---------------------------------
+modules/projects/projects.class.php
+- further cleaning up the api and updated the project lists;
+
+2007-06-21 01:30  (caseydk)
+---------------------------------
+modules/files/addedit.php
+- updated to apply the security sentinel
+
+2007-06-20 20:57  (nybod)
+---------------------------------
+modules/tasks/tasks.php
+- Display assigned users ordered by percent assigned then name (same as in HEAD)
+
+2007-06-20 20:20  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.js
+- Fixed annoying display issue - select field copies were showing when user
+- hits "save" on a task edit page.
+
+2007-06-20 19:52  (cyberhorse)
+---------------------------------
+style/_smarty/tasks/ae_depend.html
+style/_smarty/tasks/ae_desc.html
+- Minor code formatting improvements
+
+2007-06-20 19:43  (cyberhorse)
+---------------------------------
+modules/tasks/addedit.php
+- Fixed dependecies tab - display dependencies.
+
+2007-06-20 19:35  (cyberhorse)
+---------------------------------
+includes/smarty/function.dPdateFormat.php
+- [no log message]
+
+2007-06-20 09:34  (cyberhorse)
+---------------------------------
+modules/tasks/tasks.class.php
+- fixed MySQL 5 compatibility (as per http://www.dotproject.net/vbulletin/showthread.php?p=23295#post23295)
+
+2007-06-20 04:24  (caseydk)
+---------------------------------
+modules/files/storage/localFileManager.class.php
+- update to fix interface mismatch
+
+2007-06-20 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-20
+
 2007-06-20 01:09  (cyberhorse)
 ---------------------------------
 modules/tasks/xmllisttasks.php
