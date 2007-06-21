@@ -51,13 +51,11 @@ if ($project_id == 0 && $company_id > 0) {
 
 // add in the existing company if for some reason it is dis-allowed
 if ($project_id && !array_key_exists( $row->project_company, $companies )) {
-	$q  = new DBQuery();
+	$q = new DBQuery();
 	$q->addTable('companies');
 	$q->addQuery('company_name');
 	$q->addWhere('companies.company_id = '.$row->project_company);
-	$sql = $q->prepare();
-	$q->clear();
-	$companies[$row->project_company] = db_loadResult($sql);
+	$companies[$row->project_company] = $q->loadResult();
 }
 
 // get critical tasks (criteria: task_end_date)

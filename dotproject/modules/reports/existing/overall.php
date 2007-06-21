@@ -107,25 +107,24 @@ function showcompany($company, $restricted = false)
 	$q->addQuery('company_name');                     
 	$q->addwhere("company_id='$company'");
 	$obj->setAllowedSQL($AppUI->user_id, $q);	
-	$sql = $q->prepare();
-	$company_name = db_loadResult($sql);
+	$company_name = $q->loadResult();
 		
-        $table = '<h2>Company: ' . $company_name . '</h2>
+	$table = '<h2>Company: ' . $company_name . '</h2>
         <table cellspacing="1" cellpadding="4" border="0" class="tbl">';
 	$project_row = '
         <tr>
                 <th>' . $AppUI->_('Project') . '</th>';
                 
-		$pdfth[] = $AppUI->_('Project');
-        $project_row .= '<th>' . $AppUI->_('Total') . '</th></tr>';
+	$pdfth[] = $AppUI->_('Project');
+	$project_row .= '<th>' . $AppUI->_('Total') . '</th></tr>';
 	$pdfth[] = $AppUI->_('Total');
 	$pdfdata[] = $pdfth;
         
-        $hours = 0.0;
+	$hours = 0.0;
 	$table .= $project_row;
 
-        foreach ($projects as $project => $name)
-        {
+	foreach ($projects as $project => $name)
+	{
 		$pdfproject = array();
 		$pdfproject[] = $name;
 		$project_hours = 0;

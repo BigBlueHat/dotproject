@@ -37,9 +37,7 @@ if (!db_loadHash( $sql, $drow ) && $dept_id > 0) {
 	$q->addTable('companies','com');
 	$q->addQuery('company_name');
 	$q->addWhere('com.company_id = '.$company_id);
-	$sql = $q->prepare();
-	$q->clear();
-	$company_name = db_loadResult( $sql );
+	$company_name = $q->loadResult();
 	if (!$dept_id && $company_name === null) {
 		$AppUI->setMsg( 'badCompany', UI_MSG_ERROR );
 		$AppUI->redirect();

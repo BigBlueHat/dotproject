@@ -344,7 +344,7 @@ if ($do_report)
 			$q->addQuery('project_name');
 			$q->addTable('projects');
 			$q->addWhere('project_id = ' . $project_id);
-			$pname = db_loadResult( $q->prepare() );
+			$pname = $q->loadResult();
 		}
 		else
 			$pname = "All Projects";

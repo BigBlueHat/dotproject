@@ -146,9 +146,7 @@ if (!$file_id) {
 		$q->addQuery('file_version_id');
 		$q->addOrder('file_version_id DESC');
 		$q->setLimit(1);
-		$sql = $q->prepare();
-		$q->clear();
-		$latest_file_version = db_loadResult($sql);
+		$latest_file_version = $q->loadResult();
 		$obj->file_version_id = $latest_file_version + 1;
 	} else {
 		$q  = new DBQuery;

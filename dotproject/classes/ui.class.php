@@ -1143,13 +1143,11 @@ class CAppUI {
 	 */
 	function isActiveModule($module)
 	{
-		$q  = new DBQuery;
+		$q = new DBQuery();
 		$q->addTable('modules');
 		$q->addQuery('mod_active');
 		$q->addWhere("mod_directory = '$module'");
-		$sql = $q->prepare();
-		$q->clear();
-		return db_loadResult($sql);
+		return $q->loadResult();
 	}
 
 	/**

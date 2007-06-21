@@ -5,8 +5,11 @@ if (!defined('DP_BASE_DIR')){
 
 // Output the PDF
 // make the PDF file
-$sql = "SELECT project_name FROM projects WHERE project_id=$project_id";
-$pname = db_loadResult( $sql );
+$q = new DBQuery();
+$q->addQuery('project_name');
+$q->addTable('projects');
+$q->addWhere('project_id = ' . (int) $project_id);
+$pname = $q->loadResult();
 if ($err = db_error()) {
 	$AppUI->setMsg($err, UI_MSG_ERROR);
 	$AppUI->redirect();
@@ -25,7 +28,6 @@ if ( $locale_char_set=='utf-8' && function_exists("utf8_decode") )
 	$pdf->ezText( utf8_decode(dPgetConfig( 'company_name' )), 12 );
 else
 	$pdf->ezText( dPgetConfig( 'company_name' ), 12 );
-
 
 $date = new CDate();
 $pdf->ezText( "\n" . $date->format( $df ) , 8 );
@@ -66,7 +68,9 @@ if ($hasResources)
 // Build the data to go into the table.
 $pdfdata = array();
 $columns = array();
-if ($project_id==0) {$columns[] = "<b>" . $AppUI->_('Project Name') . "</b>";}
+if ($project_id==0) {
+	$columns[] = "<b>" . $AppUI->_('Project Name') . "</b>";
+}
 $columns[] = "<b>" . $AppUI->_('Task Name') . "</b>";
 $columns[] = "<b>" . $AppUI->_('Owner') . "</b>";
 $columns[] = "<b>" . $AppUI->_('Assigned Users') . "</b>";
@@ -78,10 +82,14 @@ $columns[] = "<b>" . $AppUI->_('Finish Date') . "</b>";
 $q =& new DBQuery;
 $q->addQuery('a.*');
 $q->addQuery('b.user_username');
-if ($project_id==0) {$q->addQuery('c.project_name');}
+if ($project_id==0) {
+	$q->addQuery('c.project_name');
+}
 $q->addTable('tasks', 'a');
 $q->leftJoin('users', 'b', 'a.task_owner = b.user_id');
-if ($project_id==0) {$q->leftJoin('projects', 'c', 'a.task_project=c.project_id');}
+if ($project_id==0) {
+	$q->leftJoin('projects', 'c', 'a.task_project=c.project_id');
+}
 $q->addWhere('task_percent_complete < 100');
 if ($project_id>0) {$q->addWhere('task_project = ' . $project_id);}
 $q->addWhere("task_end_date <  '" . $date->format(FMT_DATETIME_MYSQL) . "'");

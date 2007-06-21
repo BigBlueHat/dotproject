@@ -128,9 +128,7 @@ class CFile extends CDpObject {
 		$q->addWhere('file_id = '.$this->file_id);
 		$q->addOrder('file_version_id DESC');
 		$q->setLimit(1);
-		$sql = $q->prepare();
-		$q->clear();
-		$latest_file_version = db_loadResult($sql);
+		$latest_file_version = $q->loadResult();
 		$this->file_version_id = $latest_file_version + 1;
 	} 
 
@@ -588,21 +586,16 @@ class CFileFolder extends CDpObject {
   	$q->addTable($this->_tbl);
   	$q->addQuery('file_folder_name');
   	$q->addWhere("file_folder_id=$this->file_folder_parent");
-  	$sql = $q->prepare();
-/*		$sql = "SELECT file_folder_name" .
-				"FROM file_folders" .
-				"WHERE file_folder_id = $this->file_folder_parent";*/
-		return db_loadResult($sql);
+
+		return $q->loadResult();
 	}
 
 	function countFolders() {
 		$q = new DBQuery();
   	$q->addTable($this->_tbl);
   	$q->addQuery('COUNT(*)');
-  	$sql = $q->prepare();
-//		$sql = "SELECT COUNT(*) FROM $this->_tbl;";
-		$result = db_loadResult($sql);
-		return $result;
+
+		return $q->loadResult();
 	}
 }
 

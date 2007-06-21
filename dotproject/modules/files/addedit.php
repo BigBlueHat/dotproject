@@ -87,13 +87,11 @@ if ($obj->file_task) {
 	$file_task = $obj->file_task;
 	$task_name = $obj->getTaskName();
 } else if ($file_task) {
-	$q  = new DBQuery;
+	$q = new DBQuery();
 	$q->addTable('tasks');
 	$q->addQuery('task_name');
 	$q->addWhere("task_id=$file_task");
-	$sql = $q->prepare();
-	$q->clear();
-	$task_name = db_loadResult( $sql );
+	$task_name = $q->loadResult();
 } else {
 	$task_name = '';
 }

@@ -98,26 +98,22 @@ class CContact extends CDpObject{
 		return true;
 	}
 
-	function getCompanyID(){
-		$q  = new DBQuery;
+	function getCompanyID()
+	{
+		$q = new DBQuery();
 		$q->addTable('companies');
 		$q->addQuery('company_id');
 		$q->addWhere('company_name = '.$this->contact_company);
-		$sql = $q->prepare();
-		$q->clear();
-		$company_id = db_loadResult( $sql );
-		return $company_id;
+		return $q->loadResult();
 	}
 
-	function getCompanyName(){
-		$q  = new DBQuery;
+	function getCompanyName()
+	{
+		$q = new DBQuery();
 		$q->addTable('companies');
 		$q->addQuery('company_name');
 		$q->addWhere('company_id = '.$this->contact_company);
-		$sql = $q->prepare();
-		$q->clear();
-		$company_name = db_loadResult( $sql );
-		return $company_name;
+		return $q->loadResult();
  	}
 
 	function getCompanyDetails() {

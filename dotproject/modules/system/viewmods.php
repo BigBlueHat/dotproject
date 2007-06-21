@@ -29,7 +29,7 @@ foreach ($hidden_modules as $no_show) {
 	}
 }
 $q->addOrder('mod_ui_order');
-$modules = db_loadList( $q->prepare() );
+$modules = $q->loadList();
 
 $titleBlock = new CTitleBlock('Modules', 'power-management.png', $m, "$m.$a");
 $titleBlock->addCrumb('?m=system', 'System Admin');

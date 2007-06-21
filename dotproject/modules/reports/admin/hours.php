@@ -202,12 +202,11 @@ if ($do_report) {
 			$q = new DBQuery;
 			$q->addQuery('project_name');
 			$q->addTable('projects');
-			$q->addWhere('project_id = ' . $project_id);
-			$pname = db_loadResult( $q->prepare() );
+			$q->addWhere('project_id = ' . (int) $project_id);
+			$pname = $q->loadResult();
 		}
 		else
 			$pname = "All Projects";
-		echo db_error();
 
 		$font_dir = DP_BASE_DIR . '/lib/ezpdf/fonts';
 		require( $AppUI->getLibraryClass( 'ezpdf/class.ezpdf' ) );
