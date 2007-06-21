@@ -1,3 +1,35 @@
+2007-06-21 11:36  (cyberhorse)
+---------------------------------
+modules/contacts/view.php
+- #2067 - type fixed
+
+2007-06-21 09:32  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+modules/contacts/contacts.class.php
+modules/contacts/view.php
+modules/departments/addedit.php
+modules/files/addedit.php
+modules/files/co.php
+modules/files/do_file_aed.php
+modules/files/files.class.php
+modules/projects/addedit.php
+modules/public/contact_selector.php
+modules/reports/admin/daily.php
+modules/reports/admin/hours.php
+modules/reports/admin/task_summary.php
+modules/reports/admin/weekly.php
+modules/reports/existing/overall.php
+modules/reports/existing/overdue.php
+modules/system/viewmods.php
+- cleaning up use of deprecated functions - db_loadResult and db_loadList
+
+2007-06-21 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-21
+
 2007-06-21 01:58  (cyberhorse)
 ---------------------------------
 classes/query.class.php
