@@ -181,14 +181,15 @@ class dPacl extends gacl_api {
     return $res;
   }
 
-  function deleteLogin($login)
-  {
+  function deleteLogin($login) {
     $id = $this->get_object_id("user", $login, "aro");
     if ($id) {
       $id = $this->del_object($id, "aro", true);
+      $id = $this->get_object_id("user", $login, "aro");
+	    if ($id) {
+	      dprint(__FILE__, __LINE__, 0, "Failed to remove user permission object");
+	    }      
     }
-    if (! $id)
-      dprint(__FILE__, __LINE__, 0, "Failed to remove user permission object");
     return $id;
   }
 
