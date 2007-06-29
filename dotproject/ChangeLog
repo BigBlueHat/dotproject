@@ -1,3 +1,15 @@
+2007-06-29 03:40  (caseydk)
+---------------------------------
+classes/permissions.class.php
+classes/permissions.class.php
+- fixed a subtle issue where not finding permissions for a user would throw an error when you tried to delete the user;
+
+2007-06-29 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-06-29
+
 2007-06-28 03:11  (cyberhorse)
 ---------------------------------
 ChangeLog
