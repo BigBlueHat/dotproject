@@ -32,12 +32,12 @@ global $baseUrl;
 
 // Necessary for CGI mode
 if (isset($_SERVER['PATH_TRANSLATED'])) {
-	$baseDir = str_replace('index.php', '', $_SERVER['PATH_TRANSLATED']);
-// If $_SERVER variables are set.
+    $baseDir = str_replace('index.php', '', $_SERVER['PATH_TRANSLATED']);
+    // If $_SERVER variables are set.
 } elseif (isset($_SERVER['SCRIPT_FILENAME'])) {
-	$baseDir = str_replace ('index.php', '', $_SERVER['SCRIPT_FILENAME']);
+    $baseDir = str_replace('index.php', '', $_SERVER['SCRIPT_FILENAME']);
 } else {
-	$baseDir = str_replace ('index.php', '', __FILE__);
+    $baseDir = str_replace('index.php', '', __FILE__);
 }
 
 // Set the include path to include sub directories of lib.
@@ -49,9 +49,9 @@ $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://'
 $baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
 $pathInfo = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : getenv('PATH_INFO');
 if (@$pathInfo) {
-	$baseUrl .= str_replace('\\','/',dirname($pathInfo));
+    $baseUrl .= str_replace('\\', '/', dirname($pathInfo));
 } else {
-	$baseUrl .= str_replace('\\','/', dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : getenv('SCRIPT_NAME')));
+    $baseUrl .= str_replace('\\', '/', dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : getenv('SCRIPT_NAME')));
 }
 
 // If we are at the top level we will have a trailing slash, which we need to remove, otherwise we get invalid URLs for some servers (like IIS)
