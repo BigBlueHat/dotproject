@@ -75,7 +75,7 @@ function setTask( key, val ) {
 			<td align="right" nowrap="nowrap">{dPtranslate word='File Name'}:</td>
 			<td align="left" class="hilite">{if $obj->file_name|count_characters == 0}n/a{else}{$obj->file_name}{/if}</td>
 			<td>
-				<a href="./fileviewer.php?file_id={$obj->file_id}">{dPtranslate word='download'}</a>
+				<a href="./index.php?m=files&a=download&file_id={$obj->file_id}">{dPtranslate word='download'}</a>
 			</td>
 		</tr>
 		<tr valign="top">

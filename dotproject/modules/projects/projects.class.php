@@ -8,6 +8,7 @@ if (!defined('DP_BASE_DIR')){
  *	@subpackage modules
  *	@version $Revision$
  */
+global $AppUI;
 
 require_once( $AppUI->getSystemClass( 'dp' ) );
 require_once( $AppUI->getModuleClass( 'tasks' ) );

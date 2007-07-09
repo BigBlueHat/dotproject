@@ -8,8 +8,8 @@
 	</td>
 	<td width="10%">{$latest_file.file_co_reason}</td>
 	<td nowrap="8%">
-		<a href="./fileviewer.php?file_id={$latest_file.file_id}" title="{$latest_file.file_description}">
-			<img border="0" width="16" heigth="16" src="{dPconfig var='base_url'}/modules/files/images/{$file_icon}" />&nbsp;
+		<a href="./index.php?m=files&a=download&file_id={$latest_file.file_id}" title="{$latest_file.file_description}">
+			<img border="0" width="16" height="16" src="{dPconfig var='base_url'}/modules/files/images/{$file_icon}" />&nbsp;
 			{$latest_file.filename_display}
 		</a>
 	</td>
