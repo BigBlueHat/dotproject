@@ -62,23 +62,6 @@ class LocalFileManager implements iFileManager {
 	}
 	public function retrieveFile($file) {
     $result = '';
-    /*
-     * MerlinYoda> 
-     * some added lines from: 
-     * http://www.dotproject.net/vbulletin/showpost.php?p=11975&postcount=13
-     * along with "Pragma" header as suggested in: 
-     * http://www.dotproject.net/vbulletin/showpost.php?p=14928&postcount=1. 
-     * to fix the IE download issue for all for http and https
-     * 
-     */
-
-		header('MIME-Version: 1.0');
-		header('Pragma: ');
-		header('Cache-Control: public');
-		header('Content-length: ' . $file['file_size']);
-		header('Content-type: ' . $file['file_type']);
-		header('Content-transfer-encoding: 8bit');
-		header('Content-disposition: attachment; filename="'.$file['file_name'].'"');
 		
 		// read and output the file in chunks to bypass limiting settings in php.ini
 		$handle = fopen(DP_BASE_DIR . "/files/{$file['file_project']}/{$file['file_real_filename']}", 'rb');

@@ -11,7 +11,8 @@ require_once( $AppUI->getModuleClass( 'projects' ) );
 if (array_key_exists( 'helpdesk', $AppUI->getInstalledModules() )) {
 	require_once( $AppUI->getModuleClass( 'helpdesk' ) );
 }
-include_once DP_BASE_DIR.'/modules/files/storage/localFileManager.class.php';
+include_once DP_BASE_DIR.'modules/files/storage/localFileManager.class.php';
+//include_once DP_BASE_DIR.'modules/files/storage/svnFileManager.class.php';
 
 /**
 * File Class
@@ -197,10 +198,11 @@ class CFile extends CDpObject {
 
 		if (!db_loadHash( $sql, $file )) {
 			$AppUI->redirect('m=public&a=access_denied');
-		};
+		}
 	
+		//TODO:  move into the engine class
 		$fname = DP_BASE_DIR . '/files/'.$file['file_project'].'/'.$file['file_real_filename'];
-		if (! file_exists($fname)) {
+		if (!file_exists($fname) && $this->getStorageEngine() == 'LocalFileManager') {
 			$AppUI->setMsg('fileIdError', UI_MSG_ERROR);
 			$AppUI->redirect();
 		}
@@ -208,6 +210,24 @@ class CFile extends CDpObject {
 		$fileManagerClass = $this->getStorageEngine(); 
 		$fileManager = new $fileManagerClass();
 		$resultFile = $fileManager->retrieveFile($file);
+		
+    /*
+     * MerlinYoda> 
+     * some added lines from: 
+     * http://www.dotproject.net/vbulletin/showpost.php?p=11975&postcount=13
+     * along with "Pragma" header as suggested in: 
+     * http://www.dotproject.net/vbulletin/showpost.php?p=14928&postcount=1. 
+     * to fix the IE download issue for all for http and https
+     * 
+     */
+		header('MIME-Version: 1.0');
+		header('Pragma: ');
+		header('Cache-Control: public');
+		header('Content-length: ' . $file['file_size']);
+		header('Content-type: ' . $file['file_type']);
+		header('Content-transfer-encoding: 8bit');
+		header('Content-disposition: attachment; filename="'.$file['file_name'].'"');
+		
 		print $resultFile;
 	}
 

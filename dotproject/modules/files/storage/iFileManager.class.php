@@ -2,7 +2,7 @@
 
 interface iFileManager {
 	public function createFile($file, $upload);
-	public function retrieveFile($fileRow);
+	public function retrieveFile($file);
 	public function updateFile($file);
 	public function deleteFile($fileObject);
 	public function moveFile($file, $oldProject, $realname);
