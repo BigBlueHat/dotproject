@@ -1,3 +1,25 @@
+2007-07-11 23:53  (cyberhorse)
+---------------------------------
+classes/ui.class.php
+modules/projects/index.php
+- Fixed issue with system default tab being ignored
+
+2007-07-11 23:29  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+- Fixed the fix ... this should work now (fingers crossed)
+
+2007-07-11 23:21  (cyberhorse)
+---------------------------------
+modules/projects/index.php
+- Fixed respecting tab set by default settings (not only passed by $_GET)
+
+2007-07-11 03:11  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-07-11
+
 2007-07-10 05:18  (caseydk)
 ---------------------------------
 modules/files/files.class.php
