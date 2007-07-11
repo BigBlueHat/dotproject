@@ -48,10 +48,12 @@ if(isset($_GET["update_project_status"]) && isset($_GET["project_status"]) && is
 // End of project status update
 
 // retrieve any state parameters
-if (isset( $_GET['tab'] )) {
-	$AppUI->setState( 'ProjIdxTab', $_GET['tab'] );
+if (!isset($tab)) {
+	if (isset( $_GET['tab'] )) {
+		$AppUI->setState( 'ProjIdxTab', $_GET['tab'] );
+	}
+	$tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
 }
-$tab = $AppUI->getState( 'ProjIdxTab' ) !== NULL ? $AppUI->getState( 'ProjIdxTab' ) : 0;
 $active = intval( !$AppUI->getState( 'ProjIdxTab' ) );
 
 $company_prefix = 'company_';

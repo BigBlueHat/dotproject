@@ -485,12 +485,12 @@ class CAppUI {
 				}
 		
 				$modules_tabs = $this->readFiles(DP_BASE_DIR."/modules/$dir/", '^' . $m . '_tab.*\.php');
-				foreach ($modules_tabs as $tab) {
+				foreach ($modules_tabs as $mtab) {
 					// Get the name as the subextension
 					// cut the module_tab. and the .php parts of the filename 
 					// (begining and end)
-					$nameparts = explode('.', $tab);
-					$filename = substr($tab, 0, -4);
+					$nameparts = explode('.', $mtab);
+					$filename = substr($mtab, 0, -4);
 					if (count($nameparts) > 3) {
 						$file = $nameparts[1];
 						if (!isset($all_tabs[$file]))
