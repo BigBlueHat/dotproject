@@ -1030,6 +1030,9 @@ class CTask extends CDpObject {
             $q->addWhere('ut.task_id = ' . $this->task_id);
             $q->leftJoin('users', 'ua', 'ua.user_id = ut.user_id');
             $q->leftJoin('contacts', 'c', 'c.contact_id = ua.user_contact');
+        if(! $AppUI->getPref('MAILALL')) {
+		$q->addWhere('ua.user_id <>'.$AppUI->user_id);
+	    }
             $q->addQuery('c.contact_email');
             $q->addQuery('c.contact_first_name');
             $q->addQuery('c.contact_last_name');
