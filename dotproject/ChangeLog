@@ -1,3 +1,29 @@
+2007-07-20 15:50  (caseydk)
+---------------------------------
+modules/files/files.class.php
+- adjusted the folder class to interact with the storage engines;
+
+2007-07-20 15:49  (caseydk)
+---------------------------------
+modules/files/do_file_aed.php
+- turned on error surpression, has been problematic on windows boxes... open to better ideas...
+
+2007-07-20 15:48  (caseydk)
+---------------------------------
+modules/files/storage/localFileManager.class.php
+- continuing to flesh out the storage engine
+
+2007-07-19 03:41  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-07-19
+
+2007-07-15 03:12  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-07-15
+
 2007-07-15 00:38  (nybod)
 ---------------------------------
 classes/ui.class.php
