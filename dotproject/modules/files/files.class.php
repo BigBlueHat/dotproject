@@ -551,6 +551,11 @@ class CFileFolder extends CDpObject {
 	}
 	
 	function delete( $oid = null ) {
+
+		$fileManagerClass = $this->getStorageEngine();
+		$fileManager = new $fileManagerClass();
+		$fileManager->deleteFolder($this->file_folder_id);
+
 		$k = $this->_tbl_key;
 		if ($oid) {
 			$this->$k = intval( $oid );
@@ -565,12 +570,20 @@ class CFileFolder extends CDpObject {
 		$q->addWhere("{$this->_tbl_key} = {$this->$k}");
 		$sql=$q->prepare();
 		$q->clear();
-//		$sql = "DELETE FROM $this->_tbl WHERE $this->_tbl_key = '".$this->$k."'";
+			
 		if (!db_exec( $sql )) {
 			return db_error();
-		} else {
-			return NULL;
 		}
+
+		return NULL;
+	}
+	
+	function store() {
+		$fileManagerClass = $this->getStorageEngine();
+		$fileManager = new $fileManagerClass();
+		$fileManager->createFolder($this->file_folder_parent, $this->file_folder_name, $this->file_folder_description);
+
+		parent::store();
 	}
 	
 	function canDelete(&$msg, $oid) {
@@ -617,6 +630,15 @@ class CFileFolder extends CDpObject {
 
 		return $q->loadResult();
 	}
+	
+	function getStorageEngine() {
+		/*
+		 * Brought this engine resolution here to hide the implementation because
+		 * I'm not convinced that this is the best way to do it.
+		 */ 
+		return dPgetConfig('file_backend') != '' ? dPgetConfig('file_backend') : 'LocalFileManager';
+	}
+	
 }
 
 function getFolderSelectList() {
