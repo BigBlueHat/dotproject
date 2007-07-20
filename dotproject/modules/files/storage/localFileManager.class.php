@@ -73,6 +73,12 @@ class LocalFileManager implements iFileManager {
 		}
 		return $result;
 	}
+	public function createFolder($baseDir, $newDir, $description) {
+		return true;
+	}
+	public function deleteFolder($targetDir) {
+		return true;
+	}
 	public function updateFile($file) {
 		return true;
 	}
