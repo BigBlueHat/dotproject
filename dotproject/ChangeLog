@@ -1,3 +1,13 @@
+2007-07-21 22:43  (nybod)
+---------------------------------
+modules/tasks/tasks.class.php
+- Mantis 2098. Remove create log link if task is dynamic (task_dynamic == 1)
+
+2007-07-21 03:40  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-07-21
+
 2007-07-20 15:50  (caseydk)
 ---------------------------------
 modules/files/files.class.php
