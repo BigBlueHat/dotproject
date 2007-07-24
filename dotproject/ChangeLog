@@ -1,3 +1,14 @@
+2007-07-24 04:52  (caseydk)
+---------------------------------
+modules/tasks/listtasks.php
+- tweaked to support quotes in the task name;
+- there is still an encoding issue here
+
+2007-07-23 03:19  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-07-23
+
 2007-07-22 03:19  (cyberhorse)
 ---------------------------------
 ChangeLog
