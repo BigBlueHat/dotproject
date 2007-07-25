@@ -218,12 +218,11 @@ class CDpObject {
 		}
 		$details['name'] = $this->_tbl_name;
 		$details['changes'] = $ret;
-		addHistory($this->_tbl, $this->$k, $action, $details);
-		if( !$ret ) {
-			return get_class( $this )."::store failed <br />" . db_error();
-		} else {
-			return NULL;
+		if( $ret ) {
+			// only record history if an update or insert actually occurs.
+			addHistory($this->_tbl, $this->$k, $action, $details);
 		}
+		return ((!$ret)?(get_class( $this ) . "::store failed <br />" . db_error()):NULL) ;
 	}
 
 	/** Check the users access to this object
@@ -331,14 +330,14 @@ class CDpObject {
 		if (!$this->canDelete( $msg )) {
 			return $msg;
 		}
-                
-                addHistory($this->_tbl, $this->$k, 'delete');
+		
 		$q  = new DBQuery;
 		$q->setDelete($this->_tbl);
 		$q->addWhere("$this->_tbl_key = '".$this->$k."'");
-		$result = null;
-		if (!$q->exec()) {
-			$result = db_error();
+		$result = ((!$q->exec())?db_error():null);
+		if (!$result) {
+			// only record history if deletion actually occurred
+			addHistory($this->_tbl, $this->$k, 'delete');
 		}
 		$q->clear();
 		return $result;
