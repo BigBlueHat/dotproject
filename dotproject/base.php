@@ -30,6 +30,18 @@
 global $baseDir;
 global $baseUrl;
 
+// only rely on env variables if not using a apache handler
+function safe_get_env($name) 
+{
+	if (isset($_SERVER[$name])) {
+		return $_SERVER[$name];
+	} elseif (strpos(php_sapi_name(), 'apache') === false) {
+		getenv($name);
+	} else {
+		return '';
+	}
+}
+
 // Necessary for CGI mode
 if (isset($_SERVER['PATH_TRANSLATED'])) {
     $baseDir = str_replace('index.php', '', $_SERVER['PATH_TRANSLATED']);
@@ -46,12 +58,12 @@ set_include_path($baseDir .'/lib:.:'  . get_include_path());
 
 // automatically define the base url
 $baseUrl = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] != 'off') ? 'https://' : 'http://';
-$baseUrl .= isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : getenv('HTTP_HOST');
-$pathInfo = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : getenv('PATH_INFO');
-if (@$pathInfo) {
-    $baseUrl .= str_replace('\\', '/', dirname($pathInfo));
+$baseUrl .= safe_get_env('HTTP_HOST');
+$pathInfo = safe_get_env('PATH_INFO');
+if (!empty($pathInfo)) {
+	$baseUrl .= str_replace('\\', '/', dirname($pathInfo));
 } else {
-    $baseUrl .= str_replace('\\', '/', dirname(isset($_SERVER['SCRIPT_NAME']) ? $_SERVER['SCRIPT_NAME'] : getenv('SCRIPT_NAME')));
+	$baseUrl .= str_replace('\\', '/', dirname(safe_get_env('SCRIPT_NAME')));
 }
 
 // If we are at the top level we will have a trailing slash, which we need to remove, otherwise we get invalid URLs for some servers (like IIS)
