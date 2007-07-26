@@ -117,7 +117,7 @@
 				<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id={$user_id}">{dPtranslate word='My Info'}</a> |
 	{if $access_calendar}
 	         <b><a href="./index.php?m=tasks&amp;a=todo">{dPtranslate word='Todo'}</a></b> |
-				<a href="./index.php?m=calendar&amp;a=day_view&amp;date={dPdateFormat cdate=$now}">{dPtranslate word='Today'}</a> |
+				<a href="./index.php?m=calendar&amp;a=day_view&amp;date={dPdateFormat date='now' format='db'}&amp;tab=0">{dPtranslate word='Today'}</a> |
 	{/if}
 	{if $access_links}
 				<a href="./index.php?m=links">{dPtranslate word='Links'}</a> |

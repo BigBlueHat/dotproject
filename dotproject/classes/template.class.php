@@ -82,7 +82,6 @@ class CTemplate extends Smarty
 		$this->assign('access_links', $perms->checkModule('links', 'access'));
 
 		$this->assign('msg', $AppUI->getMsg());
-		$this->assign('now', new CDate());
 	
 		$this->assign('js', $AppUI->loadJS());
 		$this->assign('uistyle', $uistyle);

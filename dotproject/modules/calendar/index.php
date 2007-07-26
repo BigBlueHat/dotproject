@@ -102,7 +102,7 @@ $titleBlock->show();
 <script type="text/javascript" language="javascript">
 <!--
 function clickDay( uts, fdate ) {
-	window.location = './index.php?m=calendar&a=day_view&date='+uts;
+	window.location = './index.php?m=calendar&a=day_view&date='+uts+'&tab=0';
 }
 function clickWeek( uts, fdate ) {
 	window.location = './index.php?m=calendar&a=week_view&date='+uts;

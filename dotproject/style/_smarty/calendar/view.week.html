@@ -23,7 +23,7 @@
 		<table style="width:100%;border-spacing:0;">
 		<tr>
 			<td align="{if $column % 2 == 0}left{else}right{/if}">
-				<a href="?m=calendar&amp;a=day_view&amp;date={dPdateFormat date=$day format='db'}">
+				<a href="?m=calendar&amp;a=day_view&amp;date={dPdateFormat date=$day format='db'}&amp;tab=0">
 	{if $todayStamp == $weekStamps[$smarty.foreach.week.index]}<span style="color:red">{/if}
 	{if $column % 2 == 0}
 		<strong>{dPdateFormat|dPescape date=$day format="%d"}</strong>

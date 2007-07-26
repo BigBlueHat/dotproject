@@ -97,7 +97,7 @@ $tpl->displayFile('view.day');
 <script language="javascript" type="text/javascript">
 <!--
 function clickDay( idate, fdate ) {
-	window.location = './index.php?m=calendar&a=day_view&date='+idate;
+	window.location = './index.php?m=calendar&a=day_view&date='+idate+'&tab=0';
 }
 // -->
 </script>
