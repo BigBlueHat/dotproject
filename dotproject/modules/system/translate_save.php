@@ -10,7 +10,7 @@ if (!defined('DP_BASE_DIR')){
  */
 
 $module = dPgetParam($_POST, 'module', 0);
-$lang = dPgetParam($_POST, 'lang', 'en');
+$lang = dPgetParam($_POST, 'lang', $l10n->lang[3]);
 
 $trans = dPgetParam($_POST, 'trans', 0);
 
