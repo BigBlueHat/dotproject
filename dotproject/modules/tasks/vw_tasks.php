@@ -328,6 +328,8 @@ $tpl->assign('style', $style);
 $tpl->assign('is_opened', $toggleAll == 'open');
 $tpl->assign('ajax', dPgetConfig('tasks_ajax_list'));
 
+$tpl->assign('historyModule', !empty($mods['history']) && !getDenyRead('history'));
+
 $tpl->displayList('tasks', $display_tasks);
 
 if ($toggleAll == 'open')

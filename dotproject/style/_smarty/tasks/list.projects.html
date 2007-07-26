@@ -33,7 +33,9 @@
 	<th nowrap="nowrap">{php}sort_by_item_title( 'Start Date', 'task_start_date', SORT_NUMERIC );{/php}</th>
 	<th nowrap="nowrap">{php}sort_by_item_title( 'Duration', 'task_duration', SORT_NUMERIC );{/php}&nbsp;&nbsp;</th>
 	<th nowrap="nowrap">{php}sort_by_item_title( 'Finish Date', 'task_end_date', SORT_NUMERIC );{/php}</th>
+{if $historyModule}
 	<th nowrap="nowrap">{php}sort_by_item_title( 'Last Update', 'last_update', SORT_NUMERIC );{/php}</th>
+{/if}
 {if $showEditCheckbox}
 	<th width="1">&nbsp;</th>
 {/if}

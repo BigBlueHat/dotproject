@@ -88,7 +88,10 @@ if (isset($_GET['table'])) {
 			$t['style'] = taskstyle($t);
 			$t['level'] = range(1, count(explode('-', $t['node_id']))-2);
 
+			$tpl->assign('historyModule', !empty($mods['history']) && !getDenyRead('history'));
+
 			$tpl->assign('obj', $t);
+			
 			$tpl->displayFile('list.row', 'tasks');
 			echo '[][][]';
 		}

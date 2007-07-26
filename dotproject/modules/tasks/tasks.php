@@ -418,6 +418,8 @@ $tempoTask = new CTask();
 $userAlloc = $tempoTask->getAllocation('user_id');
 $tpl->assign('userAlloc', $userAlloc);
 
+$tpl->assign('historyModule', !empty($mods['history']) && !getDenyRead('history'));
+
 $tpl->assign('rows', $projects);
 
 $tpl->displayFile('list.projects', 'tasks');

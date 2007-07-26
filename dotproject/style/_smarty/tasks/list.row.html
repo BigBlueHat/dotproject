@@ -151,7 +151,7 @@
 	<td nowrap="nowrap" align="center" {$obj.style}>{dPdateFormat date=$obj.task_end_date format='full'}</td>
 {if $today_view}
 	<td nowrap="nowrap" align="center" {$obj.style}>{$obj.task_due_in}</td>
-{else}
+{elseif $historyModule}
 	<td nowrap="nowrap" align="center" {$obj.style}>
 		{dPdateFormat date=$obj.last_update format='full'}
 	</td>
