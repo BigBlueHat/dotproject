@@ -1497,7 +1497,7 @@ class CTask extends CDpObject {
          * under certain circumstances. (i.e. setting the task's completion percentage to 100) to remove any possibility of
          * ambiguity about the 'correct-ness' of the actual end date.
          */
-        if (!empty($mods['history']) && !getDenyRead('history')) {
+        if ($AppUI->isActiveModule('history') && !getDenyRead('history')) {
             $q->addQuery('MAX(history_date) as actual_end_date');
             $q->addTable('history');
             $q->addWhere('history_table=\'tasks\' AND history_item='.$this->task_id);
