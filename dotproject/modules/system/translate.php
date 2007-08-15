@@ -13,7 +13,7 @@ $lang = dPgetParam($_REQUEST, 'lang', $l10n->lang[3]);
 $AppUI->savePlace('m=system&a=translate&module='.$module.'&lang='.$lang);
 
 // read the installed modules
-$modules = arrayMerge( array( 'common', 'styles' ), $AppUI->readDirs( 'modules' ));
+$modules = arrayMerge( array( 'common' => 'common', 'styles' => 'styles'), $AppUI->readDirs( 'modules' ));
 foreach ($modules as $mod)
 	$mods[$mod] = $mod;
 $modules = $mods;
