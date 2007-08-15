@@ -1,3 +1,29 @@
+2007-08-15 20:12  (nybod)
+---------------------------------
+classes/ui.class.php
+- Mantis 2136 - Embolden crumb trail
+
+2007-08-15 18:53  (ajdonnison)
+---------------------------------
+modules/system/translate.php
+- #2078 - Patch from Albert to correctly seed module list.
+
+2007-08-15 18:50  (ajdonnison)
+---------------------------------
+modules/system/translate.php
+- #2078 - Applied patch from Albert, fixing return value from module select list.
+
+2007-08-15 03:23  (nybod)
+---------------------------------
+modules/files/files.class.php
+- Fixed problem with email notifications not being sent out when files uploaded, etc. Problem only existed in stable_2.
+
+2007-08-15 03:10  (cyberhorse)
+---------------------------------
+ChangeLog
+ChangeLog
+- Updating ChangeLog on 2007-08-15
+
 2007-08-15 02:52  (merlinyoda)
 ---------------------------------
 modules/tasks/tasks.class.php
