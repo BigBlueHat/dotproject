@@ -268,7 +268,7 @@ class CLocalisation
 		foreach ($translations as $line) {
 			if (substr($line, 0, 1) == '#')
 				continue;
-			$line = substr($line, 0, -2);
+			$line = substr(trim($line), 0, -1);
 			list($word, $translation) = explode('=>', $line);
 			$word = trim($word);
 			if ($translation) {
