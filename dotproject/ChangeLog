@@ -1,3 +1,70 @@
+2007-09-11 11:39  (cyberhorse)
+---------------------------------
+misc/changelog.php
+- Don't add empty checks to the ChangeLog file
+
+2007-09-11 11:35  (cyberhorse)
+---------------------------------
+misc/changelog.php
+- track only HEAD
+- fixed issues with detecting changes
+
+2007-09-11 11:25  (cyberhorse)
+---------------------------------
+classes/l10n.class.php
+- Fixed a windows issue with translations (extra " was showing after translated terms)
+
+2007-09-11 11:10  (cyberhorse)
+---------------------------------
+modules/admin/viewuser.php
+- Fixed a visibility problem, which made impossible to add roles to new users
+
+2007-09-11 11:04  (cyberhorse)
+---------------------------------
+modules/system/viewmods.php
+- Fixed visibility issue, which made dotproject not detect newly installed modules
+
+2007-09-11 10:36  (cyberhorse)
+---------------------------------
+classes/template.class.php
+- Fixed fatal error during installation
+
+2007-09-11 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-11
+
+2007-09-10 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-10
+
+2007-09-09 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-09
+
+2007-09-08 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-08
+
+2007-09-07 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-07
+
+2007-09-06 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-06
+
+2007-09-05 03:10  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+ChangeLog
+- Updating ChangeLog on 2007-09-05
+
 2007-09-04 14:22  (caseydk)
 ---------------------------------
 tasks.class.php, tasks.php (stable_2)
