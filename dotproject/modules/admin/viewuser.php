@@ -3,7 +3,7 @@ if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly');
 }
 
-global $addPwT, $company_id, $dept_ids, $department, $min_view, $m, $a;
+global $addPwT, $company_id, $dept_ids, $department, $min_view, $m, $a, $user_id;
 
 $user_id = dPgetParam($_GET, 'user_id', 0);
 
