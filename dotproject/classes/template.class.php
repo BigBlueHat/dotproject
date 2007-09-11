@@ -42,9 +42,11 @@ class CTemplate extends Smarty
 		
 		$this->assign('template', $this->template_dir);
 		$this->assign('config', $dPconfig);
-		$this->assign('version', $AppUI->getVersion());
-		$this->assign('user_id', $AppUI->user_id);
-		$this->assign('user_name', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+		if (isset($AppUI)) {
+			$this->assign('version', $AppUI->getVersion());
+			$this->assign('user_id', $AppUI->user_id);
+			$this->assign('user_name', $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
+		}
 		
 		$this->assign('baseUrl', DP_BASE_URL);
 		$this->assign('baseDir', DP_BASE_DIR);
