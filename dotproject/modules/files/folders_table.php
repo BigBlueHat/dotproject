@@ -157,6 +157,7 @@ $deny1 = $project->getDeniedRecords( $AppUI->user_id );
 $task = new CTask();
 $deny2 = $task->getDeniedRecords( $AppUI->user_id );
 
+global $file_types;
 $file_types = dPgetSysVal("FileType");
 
 $folder = $folder ? $folder : 0;
@@ -329,6 +330,7 @@ if ($folder > 0) {
 	$tpl->assign('folders_menu', $folders_menu);
 	$tpl->assign('files', $files);
 	
+	$tpl->assign('file_types', $file_types);
 	foreach($files as $file)
 	{
 		$tpl->assign('file', $file);
@@ -341,7 +343,7 @@ if ($folder > 0) {
 	$tpl->assign('canEdit', $canEdit);
 	$tpl->assign('df', $df);
 	$tpl->assign('tf', $tf);
-	$tpl->assign('file_types', $file_types);
+	
 	
 	$tpl->assign('current_uri', $current_uri);
 	$tpl->assign('tab', $tab);
@@ -358,7 +360,7 @@ if ($folder > 0) {
 // $level is increased when we go deeper into the tree,
 //        used to display a nice indented tree
 function getFolders($parent, $level=0) {
-   global $AppUI, $allowed_folders_ary, $denied_folders_ary, $tab, $m, $a, $company_id, $allowed_companies, $project_id, $task_id, $current_uri;
+   global $AppUI, $allowed_folders_ary, $denied_folders_ary, $tab, $m, $a, $company_id, $allowed_companies, $project_id, $task_id, $current_uri, $file_types;
    // retrieve all children of $parent
 
 
