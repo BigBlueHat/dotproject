@@ -79,6 +79,7 @@ if ($changed_lines > 6)
 else {
 	$text .= 'No changes since last time';
 	$html .= '<h1>No changes since last time!</h1>';
+	copy('ChangeLog.bak', 'ChangeLog');
 }
 
 $html .= '
