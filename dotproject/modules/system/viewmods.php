@@ -16,6 +16,8 @@ $hidden_modules = array(
 	'install'
 );
 
+// Keep this global - used by smarty's dpUnsetArrayValue
+global $modFiles;
 // get the modules actually installed on the file system
 $modFiles = $AppUI->readDirs('modules');
 
