@@ -1,7 +1,7 @@
 <?php
 $email = 'core-developers@dotproject.net';
 
-exec('misc/cvs2cl/cvs2cl.pl --dp --accum');
+exec('misc/cvs2cl/cvs2cl.pl --dp --accum -b');
 $old_lines = exec('cat ChangeLog.bak | wc -l');
 $new_lines = exec('cat ChangeLog | wc -l');
 $changed_lines = $new_lines - $old_lines;
@@ -16,7 +16,7 @@ $html = '
 <body>
 <h1>' . $changed_lines . ' new lines of CVS log</h1>';
 
-if ($changed_lines > 0)
+if ($changed_lines > 6)
 {
 	exec('head -n ' . $changed_lines . ' ChangeLog', $output);
 	$html .= '
