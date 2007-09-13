@@ -1,3 +1,21 @@
+2007-09-13 08:52  (merlinyoda)
+---------------------------------
+index.php, view.php (stable_2)
+- 
+- Fix for Mantis Bug Report #2083. Also cleaned up some double-quote usage
+- and improved display logic when "All" is selected for Department.
+
+2007-09-13 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-09-13
+
+2007-09-12 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+ChangeLog
+- Updating ChangeLog on 2007-09-12
+
 2007-09-11 12:52  (cyberhorse)
 ---------------------------------
 includes/db_connect.php (stable_2)
