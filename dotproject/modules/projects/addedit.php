@@ -92,10 +92,7 @@ if( $AppUI->isActiveModule('departments')) {
 		$q->addTable('project_departments');
 		$q->addQuery('department_id');
 		$q->addWhere('project_id = ' . $project_id);
-		$res =& $q->exec();
-		for ( $res; ! $res->EOF; $res->MoveNext())
-			$selected_departments[] = $res->fields['department_id'];
-		$q->clear();
+		$selected_departments = $q->loadColumn();
 	}
 	$departments_count = 0;
 	$department_selection_list = getDepartmentSelectionList($company_id, $selected_departments);
@@ -322,6 +319,7 @@ function getDepartmentSelectionList($company_id, $checked_array = array(), $dept
 	$q->addTable('departments');
 	$q->addQuery('dept_id, dept_name');
 	$q->addWhere("dept_parent = '$dept_parent' and dept_company = '$company_id'");
+	$q->addOrder('dept_name');
 	$depts_list = $q->loadHashList("dept_id");
 
 	foreach($depts_list as $dept_id => $dept_info){
