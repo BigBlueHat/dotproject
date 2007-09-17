@@ -1455,6 +1455,7 @@ class CTask extends CDpObject {
         
         $deps = $taskObj->getDependencies();
         $obj = new CTask();
+	$last_end_date = false;
         
         // Don't respect end dates of excluded tasks
         if ($tracked_dynamics && !empty($deps)) {
