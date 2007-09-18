@@ -1,7 +1,38 @@
+2007-09-18 20:17  (ajdonnison)
+---------------------------------
+locales/en/companies.inc, locales/en/contacts.inc, locales/en/projects.inc, locales/en/tasks.inc, modules/tasks/organize.php (stable_2)
+- #1987 - accepted patch from acladera on adding missing locale strings.
+
+2007-09-18 20:09  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- Forward port of fix for #2093.
+
+2007-09-18 18:31  (ajdonnison)
+---------------------------------
+classes/libmail.class.php (stable_2)
+- #2093 - incorporated patch from albert.
+
+2007-09-18 11:57  (cyberhorse)
+---------------------------------
+modules/projects/index.php (stable_2)
+- #1906 - Fixed project tab not being remembered (conflict of variable names - $tab was being reused)
+
+2007-09-18 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+ChangeLog
+- Updating ChangeLog on 2007-09-18
+
 2007-09-17 20:36  (ajdonnison)
 ---------------------------------
 modules/projects/addedit.php
 - Forward port fix to 2153 - ordering of departments, cleanup of db code.
+
+2007-09-17 20:36  (ajdonnison)
+---------------------------------
+modules/projects/addedit.php (stable_2)
+- #2153 - Fix ordering of departments.  Clean up odd db code.
 
 2007-09-17 20:36  (ajdonnison)
 ---------------------------------
