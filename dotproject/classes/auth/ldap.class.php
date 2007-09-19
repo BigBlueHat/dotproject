@@ -88,7 +88,7 @@ if (!defined('DP_BASE_DIR')){
 				return false;
 			}
 
-			$filter_r = str_replace("%USERNAME%", $username, $this->filter);
+			$filter_r = html_entity_decode(str_replace("%USERNAME%", $username, $this->filter), ENT_COMPAT, 'UTF-8');
 			$result = @ldap_search($rs, $this->base_dn, $filter_r);
 			if (!$result) {
 				dprint(__FILE__, __LINE__, 9, 'Failed to find user based on filter');
