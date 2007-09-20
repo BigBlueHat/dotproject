@@ -1,3 +1,19 @@
+2007-09-21 02:40  (nybod)
+---------------------------------
+modules/calendar/calendar.class.php
+- Mantis 2164 - Added missing carriage return.
+
+2007-09-21 02:36  (nybod)
+---------------------------------
+modules/calendar/calendar.class.php (stable_2)
+- Mantis 2164 - Added missing carriage return.
+
+2007-09-20 03:11  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+ChangeLog
+- Updating ChangeLog on 2007-09-20
+
 2007-09-19 23:15  (theideaman)
 ---------------------------------
 projects/admin_tab.viewuser.projects.php, projects/departments_tab.view.projects.php, projects/departments_tab.view.projects_gantt.php, projects/viewgantt.php, projects/vw_logs.php, tasks/addedit.php, tasks/ae_depend.php, tasks/tasksperuser_sub.php, tasks/todo_tasks_sub.php, tasks/viewgantt.php, admin/addedituser.php, files/addedit.php, files/co.php, system/addeditpref.php, system/translate.php, tasks/ae_resource.php, tasks/organize.php, tasks/organizer.php, tasks/tasks.php, tasks/vw_log_update.php, admin/vw_usr_perms.php, calendar/addedit.php, contacts/addedit.php, contacts/select_contact_company.php, forums/configure.php, forums/index.php, forums/view_topics.php, public/contact_selector.php, smartsearch/index.php, system/roles/vw_role_perms.php (stable_2)
