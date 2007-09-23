@@ -448,13 +448,13 @@ class CTask extends CDpObject {
         if ($this->task_id == $newParent_id) {
             return null;
         }
-        
+        $children = $this->getChildren();
         $newObj = $this->copy($destProject_id, $destTask_id);
         $new_id = $newObj->task_id;
         if ($newParent_id == 0) {
             $newParent_id = $new_id;
         }
-        $children = $this->getChildren();
+        
         if (!empty($children)) {
             $tempTask = & new CTask();
             foreach ($children as $child) {
