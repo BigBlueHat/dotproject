@@ -141,6 +141,7 @@ class CModule extends CDpObject {
                         //remove module permissions from gacl tables
                         $perms =& $GLOBALS['AppUI']->acl();
                         $perms->deleteGroupItem($this->mod_directory, (($this->mod_admin)?"admin":"non_admin"));
+												$perms->deleteModuleItems($this->mod_directory);
                         $perms->deleteModule($this->mod_directory);
                         if (isset($this->permissions_item_table) && $this->permissions_item_table) {
                                 $perms->deleteModuleSection($this->permissions_item_table);
