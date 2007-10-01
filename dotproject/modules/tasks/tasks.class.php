@@ -2598,21 +2598,20 @@ function showtask( &$a, $level=0, $is_opened = true, $today_view = false) {
 }
 
 function findchild( &$tarr, $parent, $level=0){
-        GLOBAL $projects;
-        global $tasks_opened;
-
-        $level = $level+1;
-        $n = count( $tarr );
-        for ($x=0; $x < $n; $x++) {
-                if($tarr[$x]['task_parent'] == $parent && $tarr[$x]['task_parent'] != $tarr[$x]['task_id']){
-                        $tarr[$x]['node_id'] = $parent . '-' . $tarr['task_id'];
-            $is_opened = in_array($tarr[$x]['task_id'], $tasks_opened);
-                        showtask( $tarr[$x], $level, $is_opened );
-                        if($is_opened || !$tarr[$x]['task_dynamic']){
-                            findchild( $tarr, $tarr[$x]['task_id'], $level);
-                        }
-                }
-        }
+	global $projects, $tasks_opened;
+	
+	$level = $level+1;
+	$n = count( $tarr );
+	for ($x=0; $x < $n; $x++) {
+		if($tarr[$x]['task_parent'] == $parent && $tarr[$x]['task_parent'] != $tarr[$x]['task_id']){
+			$tarr[$x]['node_id'] = $parent . '-' . $tarr['task_id'];
+			$is_opened = in_array($tarr[$x]['task_id'], $tasks_opened);
+			showtask( $tarr[$x], $level, $is_opened );
+			if($is_opened || !$tarr[$x]['task_dynamic']){
+				findchild( $tarr, $tarr[$x]['task_id'], $level);
+			}
+		}
+	}
 }
 
 /* please throw this in an include file somewhere, its very useful */
