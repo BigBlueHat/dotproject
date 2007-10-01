@@ -1,3 +1,24 @@
+2007-10-01 10:44  (caseydk)
+---------------------------------
+modules/tasks/tasks.class.php
+- format tweaks, followup on previous expanding fix;
+
+2007-10-01 10:42  (caseydk)
+---------------------------------
+includes/main_functions.php
+- format tweaks
+
+2007-10-01 03:09  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+- Updating ChangeLog on 2007-10-01
+
+2007-09-30 03:09  (cyberhorse)
+---------------------------------
+ChangeLog (stable_2)
+ChangeLog
+- Updating ChangeLog on 2007-09-30
+
 2007-09-29 03:11  (cyberhorse)
 ---------------------------------
 ChangeLog (stable_2)
