@@ -54,8 +54,8 @@ function arraySelect( &$arr, $select_name, $select_attribs, $selected, $translat
 			// be translated correctly. There are probably others.
 			// As such a more general approach probably based upon an
 			// array lookup for replacements would be a better approach. AJD.
-			$v=str_replace('&#369;','û',$v);
-			$v=str_replace('&#337;','õ',$v);
+			$v=str_replace('&#369;','ï¿½',$v);
+			$v=str_replace('&#337;','ï¿½',$v);
 		}
 		$s .= "\n\t<option value=\"".$k."\"".(($k == $selected && !$did_selected) ? " selected=\"selected\"" : '').">" .  $v  . "</option>";
 		if ($k == $selected) {
@@ -169,14 +169,15 @@ function dPgetUsername( $user )
 	list($contact) = $q->loadList();
 	$user_format = $AppUI->getPref('USERFORMAT');
 	
-	if ($user_format == 'first')
+	if ($user_format == 'first') {
 		return $contact['contact_first_name'] . ' ' . $contact['contact_last_name'];
-	elseif ($user_format == 'last')
+	} elseif ($user_format == 'last') {
 		return $contact['contact_last_name'] . ', ' . $contact['contact_first_name'];
-	elseif ($user_format == 'user')
+	} elseif ($user_format == 'user') {
 		return $contact['user_username'];
-	else
+	} else {
 		return $contact['contact_order_by'];
+	}
 }
 
 function dPgetUsernameFromID( $user )
