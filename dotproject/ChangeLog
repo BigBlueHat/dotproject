@@ -1,7 +1,23 @@
-2007-10-05 03:09  (cyberhorse)
+2007-10-06 13:25  (cyberhorse)
 ---------------------------------
-ChangeLog (stable_2)
-- Updating ChangeLog on 2007-10-05
+classes/ui.class.php
+style/_smarty/debug.html
+- Improved debugging messages (included version info, memory info and limits)
+
+2007-10-06 10:38  (cyberhorse)
+---------------------------------
+misc/changelog.php
+- Changelog follows only trunk ?!
+
+2007-10-06 10:29  (cyberhorse)
+---------------------------------
+misc/changelog.php
+- Don't send changelog email when there are no changes.
+
+2007-10-06 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-06
 
 2007-10-04 03:10  (cyberhorse)
 ---------------------------------
