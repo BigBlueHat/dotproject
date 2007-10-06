@@ -451,13 +451,24 @@ class CAppUI {
 			echo '<iframe name="thread" src="' . DP_BASE_URL . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
 			
 			if (dPgetConfig('debug') > 0) {
-				global $acltime, $dbtime, $dbqueries;
+				global $acltime, $dbtime, $dbqueries, $db;
+
+				$tpl->assign('dp_version', $this->getVersion());
+				$tpl->assign('php_version', phpversion());
+				$tpl->assign('sql_version', $db->ServerInfo());
 			
 				$tpl->assign('page_time', sprintf('%.3f', (array_sum(explode(' ',microtime())) - $time)));
+				$tpl->assign('time_limit', ini_get('max_execution_time'));
 				$tpl->assign('setup_time', sprintf('%.3f seconds.', $setuptime));
 				$tpl->assign('acl_time', sprintf('%.3f seconds.', $acltime));
 				$tpl->assign('db_time', sprintf('%.3f seconds.', $dbtime));
 				$tpl->assign('db_queries', $dbqueries);
+				
+				if (function_exists('memory_get_usage')) {
+					$tpl->assign('memory_usage', sprintf('%01dM', memory_get_usage() / pow(1024, 2)));
+				}
+				$tpl->assign('memory_limit', ini_get('memory_limit'));
+
 				$tpl->displayFile('debug', '.');
 			}
 			

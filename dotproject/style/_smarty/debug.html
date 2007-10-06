@@ -1,6 +1,26 @@
 <div style="text-align: center; border: 1px solid gray; margin-left: 200px; margin-right: 200px; font-size: 10pt; color: gray">
-	Page generated in {$page_time} seconds<br />
-  Time spend in:<br />
+	Versions<br />
+	<table align="center">
+	<tr>
+		<td align="right">dotProject Version:</td>
+		<td align="left">{$dp_version}</td>
+	</tr>
+	<tr>
+		<td align="right">PHP Version:</td>
+		<td align="left">{$php_version}</td>
+	</tr>
+	<tr>
+		<td align="right">Database type:</td>
+		<td align="left">{$config.dbtype}</td>
+	</tr>
+	<tr>
+		<td align="right">Database Version:</td>
+		<td align="left">{$sql_version.version}</td>
+	</tr>
+	</table>
+	<br />
+	Page generated in {$page_time} seconds (Maximum {$time_limit} seconds)<br />
+	Time spend in:<br />
 	<table align="center">
 	<tr>
 		<td align="right">Index (setup):</td>
@@ -15,5 +35,7 @@
 		<td>{$db_time}</td>
 	</tr>
 	</table>
+	<br />
+	Memory usage: {$memory_usage} (Maximum {$memory_limit})
 </div>
 
