@@ -113,5 +113,6 @@ if (!empty($users))
 	$subject = '['.$ver.'] ChangeLog ' . date('Y-m-d') . ' - ' . array_sum($users) . ' changes';
 else
 	$subject = '['.$ver.'] ChangeLog ' . date('Y-m-d') . ' - no changes';
-mail($email, $subject, $message, $headers);
+if ($changed_lines > 6)
+	mail($email, $subject, $message, $headers);
 ?>
