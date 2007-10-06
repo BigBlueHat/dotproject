@@ -1,7 +1,7 @@
 <?php
 $email = 'core-developers@dotproject.net';
 
-exec('misc/cvs2cl/cvs2cl.pl --dp --accum -b');
+exec('misc/cvs2cl/cvs2cl.pl --dp --accum --follow trunk');
 $old_lines = exec('cat ChangeLog.bak | wc -l');
 $new_lines = exec('cat ChangeLog | wc -l');
 $changed_lines = $new_lines - $old_lines;
