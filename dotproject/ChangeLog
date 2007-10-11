@@ -1,3 +1,15 @@
+2007-10-11 22:14  (cyberhorse)
+---------------------------------
+index.php
+classes/ui.class.php
+style/_smarty/debug.html
+- Improved debugging messages (included version info, memory info and limits)
+
+2007-10-07 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-07
+
 2007-10-06 13:25  (cyberhorse)
 ---------------------------------
 classes/ui.class.php
