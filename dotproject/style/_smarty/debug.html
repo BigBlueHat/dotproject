@@ -1,6 +1,9 @@
 <div style="text-align: center; border: 1px solid gray; margin-left: 200px; margin-right: 200px; font-size: 10pt; color: gray">
-	Versions<br />
+	
 	<table align="center">
+	<tr>
+		<th colspan="2">Versions</th>
+	</tr>
 	<tr>
 		<td align="right">dotProject Version:</td>
 		<td align="left">{$dp_version}</td>
@@ -17,25 +20,40 @@
 		<td align="right">Database Version:</td>
 		<td align="left">{$sql_version.version}</td>
 	</tr>
-	</table>
-	<br />
-	Page generated in {$page_time} seconds (Maximum {$time_limit} seconds)<br />
-	Time spend in:<br />
-	<table align="center">
+	<tr>
+		<th colspan="2">Timings</th>
+	</tr>
+	<tr>
+		<td align="right">Page generation:</td>
+		<td align="left">{$page_time} seconds (Maximum {$time_limit} seconds)</td>
+	</tr>
 	<tr>
 		<td align="right">Index (setup):</td>
-		<td>{$setup_time}</td>
+		<td align="left">{$setup_time}</td>
 	</tr>
 	<tr>
 		<td align="right">Permissions (acl):</td>
-		<td>{$acl_time}</td>
+		<td align="left">{$acl_time}</td>
 	</tr>
 	<tr>
 		<td align="right">Database {$db_queries} queries (db):</td>
-		<td>{$db_time}</td>
+		<td align="left">{$db_time}</td>
+	</tr>
+	<tr>
+		<th colspan="2">Memory</th>
+	</tr>
+	<tr>
+		<td align="right">Memory usage:</td>
+		<td align="left">{$memory_usage} (Maximum {$memory_limit})</td>
+	</tr>
+	<tr>
+		<td align="right">Memory delta:</td>
+		<td align="left">{$memory_delta}</td>
+	</tr>
+	<tr>
+		<td align="right">Memory delta at peak:</td>
+		<td align="left">{$memory_delta_peak}</td>
 	</tr>
 	</table>
-	<br />
-	Memory usage: {$memory_usage} (Maximum {$memory_limit})
 </div>
 

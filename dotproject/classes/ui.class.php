@@ -451,7 +451,7 @@ class CAppUI {
 			echo '<iframe name="thread" src="' . DP_BASE_URL . '/modules/index.html" width="0" height="0" frameborder="0"></iframe>';
 			
 			if (dPgetConfig('debug') > 0) {
-				global $acltime, $dbtime, $dbqueries, $db;
+				global $acltime, $dbtime, $dbqueries, $db, $memory_marker;
 
 				$tpl->assign('dp_version', $this->getVersion());
 				$tpl->assign('php_version', phpversion());
@@ -465,9 +465,13 @@ class CAppUI {
 				$tpl->assign('db_queries', $dbqueries);
 				
 				if (function_exists('memory_get_usage')) {
-					$tpl->assign('memory_usage', sprintf('%01dM', memory_get_usage() / pow(1024, 2)));
+					$tpl->assign('memory_usage', sprintf('%01.2f Mb', memory_get_usage() / pow(1024, 2)));
+					$tpl->assign('memory_delta', sprintf('%01d Kb', (memory_get_usage() - $memory_marker) / 1024));
 				}
-				$tpl->assign('memory_limit', ini_get('memory_limit'));
+				if (function_exists('memory_get_peak_usage')) {
+					$tpl->assign('memory_delta_peak', sprintf('%01d Kb', (memory_get_peak_usage() - $memory_marker) / 1024));
+				}
+				$tpl->assign('memory_limit', str_replace('M', ' Mb', ini_get('memory_limit')));
 
 				$tpl->displayFile('debug', '.');
 			}

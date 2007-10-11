@@ -28,6 +28,9 @@
 
 // Timings init
 $time = array_sum(explode(' ', microtime()));
+if (function_exists('memory_get_usage')) {
+	$memory_marker = memory_get_usage();
+}
 $acltime = 0;
 $dbtime = 0;
 $dbqueries = 0;
