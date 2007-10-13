@@ -148,6 +148,7 @@ if (!$file_id) {
 		$q->setLimit(1);
 		$latest_file_version = $q->loadResult();
 		$obj->file_version_id = $latest_file_version + 1;
+//		$obj->checkin();
 	} else {
 		$q  = new DBQuery;
 		$q->addTable('files');

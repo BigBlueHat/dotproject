@@ -12,7 +12,7 @@ if (array_key_exists( 'helpdesk', $AppUI->getInstalledModules() )) {
 	require_once( $AppUI->getModuleClass( 'helpdesk' ) );
 }
 include_once DP_BASE_DIR.'modules/files/storage/localFileManager.class.php';
-//include_once DP_BASE_DIR.'modules/files/storage/svnFileManager.class.php';
+include_once DP_BASE_DIR.'modules/files/storage/svnFileManager.class.php';
 
 /**
 * File Class
@@ -111,6 +111,18 @@ class CFile extends CDpObject {
 		return NULL; // object is ok
 	}
 	
+	function checkin() {
+		/*
+		 * TODO: move the checkin logic here
+		 */
+
+		$fileManagerClass = $this->getStorageEngine(); 
+		$fileManager = new $fileManagerClass();
+		$fileManager->checkoutFile($this);		
+		
+		return true;
+	}
+	
 	function checkout($userId, $fileId, $coReason) {
 		$q  = new DBQuery;
 		$q->addTable('files');
@@ -119,6 +131,10 @@ class CFile extends CDpObject {
 		$q->addWhere('file_id = '.$fileId);
 		$q->exec();
 		$q->clear();
+
+		$fileManagerClass = $this->getStorageEngine(); 
+		$fileManager = new $fileManagerClass();
+		$fileManager->checkoutFile($this);
 
 		return true;
 	}
@@ -132,6 +148,34 @@ class CFile extends CDpObject {
 		$latest_file_version = $q->loadResult();
 		$this->file_version_id = $latest_file_version + 1;
 	} 
+	
+	function attachComment($fileDescription, $file_id, $filename, $project_id) {
+		if ($file_id > 0) {
+			$this->load( $file_id );
+			$this->touchFileVersion();
+			$this->file_description = $fileDescription;
+			$this->store();
+			return true;
+		} elseif ($project_id > 0) {
+			$q  = new DBQuery;
+			$q->addTable('files');
+			$q->addUpdate('file_checkout', $fileDescription);
+			$q->addWhere('file_name = '.$filename);
+			$q->addWhere('file_project = '.$project_id );
+			$q->exec();
+			$q->clear();
+			return true;
+		} elseif ($filename != '') {
+			$q  = new DBQuery;
+			$q->addTable('files');
+			$q->addUpdate('file_checkout', $fileDescription);
+			$q->addWhere('file_name = '.$filename);
+			$q->exec();
+			$q->clear();
+			return true;
+		}
+		return false;
+	}
 
 	function delete() {
 		if (!$this->canDelete( $msg )) {
@@ -251,7 +295,7 @@ class CFile extends CDpObject {
 	function moveTemp( $upload ) {
 		$fileManagerClass = $this->getStorageEngine();
 		$fileManager = new $fileManagerClass();
-		return $fileManager->createFile($this, $upload);
+		return $fileManager->checkinFile($this, $upload);
 	}
 
 // parse file for indexing
