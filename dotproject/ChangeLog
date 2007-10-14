@@ -1,3 +1,26 @@
+2007-10-14 12:24  (ajdonnison)
+---------------------------------
+db/upgrade_21rc2_to_21.sql
+- file upgrade_21rc2_to_21.sql was initially added on branch stable_2.
+
+2007-10-14 07:28  (caseydk)
+---------------------------------
+modules/forums/forums.class.php
+- the forum post count was not being updated when a post was deleted, now it is;
+- it was definitely getting updated - via a count() - on creation so this was a minor issue;
+
+2007-10-14 04:09  (caseydk)
+---------------------------------
+modules/files/do_file_aed.php
+modules/files/files.class.php
+- continued fleshing out the fileManager interface;
+- refactoring functions;
+
+2007-10-12 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-12
+
 2007-10-11 22:14  (cyberhorse)
 ---------------------------------
 index.php
