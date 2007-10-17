@@ -1,3 +1,21 @@
+2007-10-18 01:51  (gregorerhardt)
+---------------------------------
+style/_smarty/projects/list.html
+- Provide edit link pencil image for projects in projects list
+
+2007-10-18 00:31  (gregorerhardt)
+---------------------------------
+includes/main_functions.php
+modules/projects/addedit.php
+includes/smarty/function.dPprojectSelectWithOptGroup.php
+style/_smarty/projects/addedit.html
+- Group projects in import select box by Company or Department
+
+2007-10-15 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-15
+
 2007-10-14 12:24  (ajdonnison)
 ---------------------------------
 db/upgrade_21rc2_to_21.sql
