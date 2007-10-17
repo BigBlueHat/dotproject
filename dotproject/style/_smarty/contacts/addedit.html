@@ -249,8 +249,28 @@ function companyChange() {
 		<tr>
 			<td align="right">{dPtranslate word='Birthday'}:</td>
 			<td nowrap>
-				<input type="text" class="text" name="contact_birthday" value="{dPformSafe var=$obj->contact_birthday|truncate:10:""}" maxlength="10" size="25" />({dPtranslate word='yyyy-mm-dd'})
+				<input type="text" class="text" name="contact_birthday" id="contact_birth" value="{dPformSafe var=$obj->contact_birthday|truncate:10:""}" maxlength="10" size="25" />
 			</td>
+
+  <!-- main calendar program -->
+  <script type="text/javascript" src="{$smarty.const.DP_BASE_URL}/lib/jscalendar/calendar.js"></script>
+
+  <!-- language for the calendar -->
+  <script type="text/javascript" src="{$smarty.const.DP_BASE_URL}/lib/jscalendar/lang/calendar-en.js"></script>
+
+  <!-- the following script defines the Calendar.setup helper function, which makes
+       adding a calendar a matter of 1 or 2 lines of code. -->
+  <script type="text/javascript" src="{$smarty.const.DP_BASE_URL}/lib/jscalendar/calendar-setup.js"></script>
+{php} 
+	global $AppUI;
+	$this->assign('sf', $AppUI->getPref('SHDATEFORMAT')); 
+{/php}
+{literal}
+<script type="text/javascript">
+Calendar.setup({inputField:"contact_birth", ifFormat:"{/literal}{$sf}{literal}", showsTime:true,timeFormat:"24"});
+</script>
+{/literal}
+
 		</tr>
 		</table>
 	</td>
