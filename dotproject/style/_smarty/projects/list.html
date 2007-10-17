@@ -28,13 +28,25 @@
 	{section name=j loop=$show}
 		{if $show[j] == 'project_name'}
 			<td width="50%" style="background-color:#{$row.project_color_identifier}">
-				<span style="color: {dPbestColor bg=$row.project_color_identifier};">
-					{capture name=projDesc assign=popDesc}
-						{$row.project_description|nl2br}
-					{/capture}
-					{dPtranslateToVar word='Description' ass='popDescCap'}
-					<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}" {popup sticky=false caption=$popDescCap text=$popDesc}>{$row.project_name}</a>
-				</span>
+				<table cellpadding="2" cellspacing="0" border="0" width="100%" class="tbl">
+					<tr>
+						<td width="12" style="background-color:#{$row.project_color_identifier}">
+							{if $row.edit}
+								<a href="?m=projects&amp;a=addedit&amp;project_id={$row.project_id}">
+									{dPshowImage find='pencil.gif' alt='Edit Project' wsize='12'}</a>
+							{/if}
+						</td>
+						<td style="background-color:#{$row.project_color_identifier}">
+							<span style="color: {dPbestColor bg=$row.project_color_identifier};">
+								{capture name=projDesc assign=popDesc}
+									{$row.project_description|nl2br}
+								{/capture}
+								{dPtranslateToVar word='Description' ass='popDescCap'}
+								<a href="?m=projects&amp;a=view&amp;project_id={$row.project_id}" {popup sticky=false caption=$popDescCap text=$popDesc}>{$row.project_name}</a>
+							</span>
+						</td>
+					</tr>
+				</table>
 			</td>
 		{elseif $show[j] == 'project_priority'}
 			<td>
