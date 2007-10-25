@@ -1,3 +1,13 @@
+2007-10-25 16:39  (ajdonnison)
+---------------------------------
+classes/libmail.class.php
+- #2190/#2184 - forward port fix from stable2
+
+2007-10-25 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-25
+
 2007-10-24 14:35  (revelation7)
 ---------------------------------
 .cvsignore
