@@ -687,7 +687,7 @@ function _addressEncode( $addr, $offset=0 )
  */
 function _wordEncode($str, $offset=0)
 {
-    if (!$this->canEncode) return $addr;
+    if (!$this->canEncode) return $str;
     
     $cs = $this->charset;
     $str = str_replace(array(' ', "=\r\n", '?') , array('_', '', '=3F'), trim(imap_8bit($str)));
