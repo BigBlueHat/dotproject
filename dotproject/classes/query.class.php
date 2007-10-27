@@ -356,6 +356,20 @@ class DBQuery {
 			'spec' => $name . ' ' . $type);
 	}
 
+	/**
+	 * Alter a field definition for usage with table alteration
+	 * @param $name The name of the field
+	 * @param $type The type of the field
+	 */
+  function alterField($name, $type)
+  {
+    if (! is_array($this->create_definition))
+      $this->create_definition = array();
+    $this->create_definition[] = array('action' => 'CHANGE',
+      'type' => '',
+      'spec' => $name . ' ' . $name . ' ' . $type);
+  }
+
 	/** Drop a field from table definition or from an existing table
 	 * @param $name The name of the field to drop
 	 */
