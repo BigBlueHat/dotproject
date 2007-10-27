@@ -92,11 +92,11 @@ switch ($cmd) {
 		{
 			$obj->bind( $config );
 			$obj->store();
-			$AppUI->setMsg( 'Module upgraded', UI_MSG_OK );
+			$AppUI->setMsg( 'Module upgraded (upgraded to '.$obj->mod_version.')', UI_MSG_OK );
 		}
 		else
 		{
-			$AppUI->setMsg( 'Module not upgraded', UI_MSG_ERROR );
+			$AppUI->setMsg( 'Module not upgraded (upgrade failed from '.$obj->mod_version.' to '.$config['mod_version'].')', UI_MSG_ERROR );
 		}
 		break;
 	case 'configure':
