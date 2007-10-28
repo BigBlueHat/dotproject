@@ -1,3 +1,18 @@
+2007-10-28 07:29  (cyberhorse)
+---------------------------------
+modules/system/domodsql.php
+- Improved "upgrade" messages (include versions)
+
+2007-10-28 07:16  (cyberhorse)
+---------------------------------
+classes/query.class.php
+- Added the functionality to alter an existing db field
+
+2007-10-26 03:10  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-26
+
 2007-10-25 16:39  (ajdonnison)
 ---------------------------------
 classes/libmail.class.php
