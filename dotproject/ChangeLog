@@ -1,3 +1,13 @@
+2007-11-01 19:12  (ajdonnison)
+---------------------------------
+style/_smarty/header.html
+- #2211 forward port of fix for today not remembering tab.
+
+2007-10-29 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-10-29
+
 2007-10-28 07:29  (cyberhorse)
 ---------------------------------
 modules/system/domodsql.php
