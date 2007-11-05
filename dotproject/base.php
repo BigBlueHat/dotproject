@@ -27,6 +27,9 @@
  * }}}
  */
 
+ini_set('display_errors', 1); // Ensure errors get to the user.
+error_reporting(E_ALL & ~E_NOTICE);
+
 global $baseDir;
 global $baseUrl;
 
