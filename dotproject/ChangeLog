@@ -1,3 +1,14 @@
+2007-11-06 10:16  (ajdonnison)
+---------------------------------
+base.php
+index.php
+- Moved error reporting from index.php to base.php so it covers queuscanner as well.
+
+2007-11-02 03:09  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-11-02
+
 2007-11-01 19:12  (ajdonnison)
 ---------------------------------
 style/_smarty/header.html
