@@ -157,11 +157,11 @@ class CDate {
 	 * Overloaded compare method
 	 *
 	 * The convertTZ calls are time intensive calls.  When a compare call is
-	 * made in a recussive loop the lag can be significant.
+	 * made in a recursive loop the lag can be significant.
 	 * @param $d1 A date to compare 
 	 * @param $d2 Date to compare to $d1
 	 * @param $convertTZ Convert timezones of date parameters, default is false
-	 * @return -1 if the second date is newer, 1 if the first date is newer, 0 if the dates are equal
+	 * @return a negative value (e.g. -1) if the second date is newer, a positive value (e.g. 1) if the first date is newer, 0 if the dates are equal
 	 */
 	function compare($d1, $d2 = null, $convertTZ=false)
 	{
@@ -326,7 +326,7 @@ class CDate {
 	}
 
 	/**
-	 * Get date for the end of the next working day
+	 * Set date to the start of the next working day
 	 * @param $preserveHours Boolean, Determine whether to set time to start of day or preserve the time of the given object
 	 * @return A date object set to the next working day
 	 */ 
@@ -348,7 +348,7 @@ class CDate {
 	}
 
 	/**
-	 *	Return date obj for the end of the previous working day
+	 *	Return and set date to the end of the previous working day
 	 * @param $preserveHours Determine whether to set time to end of day or preserve the time of the given object
 	 * @return A CDate object containing the previous working day
 	 */ 
@@ -358,7 +358,7 @@ class CDate {
 		$end = intval(dPgetConfig('cal_day_end'));
 		$start = intval(dPgetConfig('cal_day_start'));
 		while ( ! $this->isWorkingDay() || ( $this->hour < $start ) ||
-					( $this->hour == $start && $this->minute == '0' ) ) {
+					(  $preserveHours == false && $this->hour == $start && $this->minute == '0' ) ) {
 			$this->addDays(-1);
 			$this->setTime($end, '0', '0');
 		}
@@ -457,7 +457,7 @@ class CDate {
 		}
 		//end of proceeding the fulldays
 		
-		return $this->next_working_day();
+		return ($sgn > 0) ? $this->prev_working_day() : $this->next_working_day();
 	}
 
 	/** 
@@ -467,60 +467,112 @@ class CDate {
 	 * Respects non-working days
 	 *
 	 *
-	 * @param	$e	DateObject	may be viewed as end date
-	 * @return	Working duration as an integer in hours
+	 * @param		CDate Object	may be viewed as end date
+	 * @return	int 					Working duration as an integer in hours
 	 */ 
-	function calcDuration($e) {
-		
-		// since one will alter the date ($this) one better copies it to a new instance
-		$s = new CDate();
-		$s->copy($this);
-		
-		// get dP time constants
+	function calcDuration($end) {
+		/* initialize the duration var */
+		$duration = 0;
+
+		/* get dotProject's time related config values (constants) */
 		$cal_day_start = intval(dPgetConfig( 'cal_day_start' ));
 		$cal_day_end = intval(dPgetConfig( 'cal_day_end' ));
 		$dwh = intval(dPgetConfig( 'daily_working_hours' ));
-		
-		// assume start is before end and set a default signum for the duration	
-		$sgn = 1;
-		
-		// check whether start before end, interchange otherwise
-		if ($e->before($s)) {
+				
+		/* check whether start before end, interchange the dates otherwise */
+		if ($this->before($end)) {
+			// start is before end, thus set a positive signum for the duration	
+			$sgn = 1;
+			// since one will alter the date ($this) one better copies it to a new instance
+			$s = new CDate($this);
+			$e = new CDate($end);	
+		}	else {
 			// calculated duration must be negative, set signum appropriately
 			$sgn = -1;
-			
-			$dummy = $s;
-			$s->copy($e);	
-			$e = $dummy;
-		}	 
-		
-		// determine the (working + non-working) day difference between the two dates
-		$days = $e->compare($s);
-		
-		// if it is an intraday difference one is finished very easily
-		if($days == 0) {
-			return min($dwh, abs($e->hour - $s->hour))*$sgn;
+			// interchange the dates
+			$e = new CDate($this);
+			$s = new CDate($end);	
 		}
-		// initialize the duration var
-		$duration = 0;
 		
-		// process the first day
+		/* 
+		** Date Regularisation
+		**
+		** Translate the dates via CDate::next_working_day() and CDate::prev_working_day()
+		**
+		** Assume $cal_day_start = 08:00 and $cal_day_end= 17:00, then
+		** e.g.	20071018 17:00+ => 20071019 08:00 	(if $sgn > 0)
+		** and 	20071019 08:00- => 20071018 17:00		(if $sgn < 0)
+		*/
+		$sgn > 0 ? $s->next_working_day() : $e->prev_working_day();	
+
+		/*
+		* Determine the (working + non-working) day difference between the two dates
+		*
+		* CDate::compare() does not take into account the first day 
+		* in order to be consistent with CDate::addDays()
+		*/
+		$days = $e->compare($s);
+
+		/* Consider the case of an intraday difference */
+		if($days == 0) {
+			/*
+			* The following check 
+			*
+			*		($s->getDay() == $e->getDay()) 
+			*
+			* is indeed necessary since the 
+			*
+			*		CDate::compare()
+			*
+			* method (as used in $days = $e->compare($s))
+			* returns 0 even if the days are different
+			* but the time difference is less than 24h.
+			*/
+
+			if ($s->day == $e->day) {
+				// it is really an intraday difference; this is easy
+				$duration += min($dwh, abs($e->hour - $s->hour));
+			} else {
+				/* the dates are spread over two subsequent days */
+
+				// consider the remaining hours on the first and last day
+				$duration += abs($cal_day_end - $s->hour);
+				$duration += abs($e->hour - $cal_day_start);
+			}
+			return $duration*$sgn;
+		}
 		
-		// take into account the first day if it is a working day!
+		/* Process the first day */
+		
+		// Take into account the first day if it is a working day!
 		$duration += $s->isWorkingDay() ? min($dwh, abs($cal_day_end - $s->hour)) : 0;
+		// go to the next day and reset the hour to the start of the working day 
 		$s->addDays(1);
+		$s->hour = $cal_day_start;
 		
-		// end of processing the first day
-		
-		// calc workingdays between start and end
+		/* Process the working days between start and end */
 		for ($i=1; $i < $days; $i++) {
 			$duration += $s->isWorkingDay() ? $dwh : 0;
 			$s->addDays(1);
 		}
-		
-		// take into account the last day in span only if it is a working day!
-		$duration += $s->isWorkingDay() ? min($dwh, abs($e->hour - $cal_day_start)) : 0;
-		
+
+		/* Process the last day; consider many alternative scenarios */
+		if (!$s->isWorkingDay() && $s->day != $e->day) { 
+			// The current day is the non-working day before the final day.
+			// Thus one only has to consider the remaining hours on the last day.
+			$duration += min($dwh, abs($e->hour - $cal_day_start));
+		} elseif ($s->isWorkingDay() && $s->day != $e->day) {
+			// The current day is the working day before the final day.
+			// Consider the remaining hours on the second-but-last and on the final day.
+			$duration += min($dwh, abs($cal_day_end - $s->hour)) ;
+			$duration += min($dwh, abs($e->hour - $cal_day_start));
+		} elseif ($s->isWorkingDay() && $s->day == $e->day){
+			// The current day is already the final day and a working day, too.
+			//Consider the remaining hours on this final day.
+			$duration += min($dwh, abs($e->hour - $cal_day_start));
+
+		}
+
 		return $duration*$sgn;
 	}
 	
@@ -601,7 +653,6 @@ class CDate {
 			}
 			$start->addDays(1);
 		}
-		
 		return $wd;
 	}
 	
