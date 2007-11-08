@@ -1,3 +1,13 @@
+2007-11-08 08:01  (gregorerhardt)
+---------------------------------
+classes/date.class.php
+- CDate::addDuration and CDate::calcDuration now calculate consistently in hour mode (addDuration) and thus are complementary bijective translation functions. There is still a possible inconsistency of 1h if using addDuration with days.
+
+2007-11-07 03:10  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-11-07
+
 2007-11-06 10:16  (ajdonnison)
 ---------------------------------
 base.php
