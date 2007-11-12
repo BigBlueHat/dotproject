@@ -1,3 +1,13 @@
+2007-11-13 02:51  (cyberhorse)
+---------------------------------
+style/_smarty/history/list.html
+- Added tasks as a selection in the history module
+
+2007-11-09 04:08  (cyberhorse)
+---------------------------------
+ChangeLog
+- Updating ChangeLog on 2007-11-09
+
 2007-11-08 08:01  (gregorerhardt)
 ---------------------------------
 classes/date.class.php
