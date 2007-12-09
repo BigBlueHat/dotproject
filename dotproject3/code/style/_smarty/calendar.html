@@ -1,0 +1,27 @@
+<script type="text/javascript">
+<!--
+dateString = "{dPdateFormat date=$date format='timestamp'}"; // set time to 9:00am tomorrow!!!
+year = dateString.substring(0,4);
+month = dateString.substring(4,6);
+day = dateString.substring(6,8);
+hour = dateString.substring(8,10);
+minute = dateString.substring(10,12);
+var e = new Date(year, month, day, hour, minute);
+
+Calendar.setup(
+{ldelim}
+	inputField  : "{$module}_{$field}_date",         // ID of the input field
+	displayArea : "{$field}_date",         // ID of the input field
+	ifFormat    : "%Y%m%d%H%M%S",    // the date format 
+	daFormat    : "{$df} {$tf}",    // the date format
+	button      : "{$field}_date_button",       // ID of the button
+	firstDay	: 1,
+	weekNumbers : false,
+	showsTime	: true,
+	showOthers  : true,
+	date        : e,
+	timeFormat	: {if $ampm_time_format}'12'{else}'24'{/if}
+{rdelim}
+  );
+-->
+</script>

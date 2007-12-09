@@ -1,0 +1,138 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+	   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<meta name="Description" content="dotProject Grey Theme Style" />
+	<meta name="Version" content="{$version}" />
+	<meta http-equiv="Content-Type" content="text/html;charset={$charset}" />
+	<title>{$config.page_title}</title>
+	<link rel="stylesheet" type="text/css" href="{$baseUrl}/css/print.css" media="print" />
+  <link rel="stylesheet" type="text/css" href="{$baseUrl}/css/calendar.css" />
+	<link rel="stylesheet" type="text/css" href="{$baseUrl}/css/{$uistyle}/main.css" media="all" />
+	<link rel="stylesheet" type="text/css" media="all" href="{$baseUrl}/css/calendar/calendar-dp.css" title="blue" />
+	<style type="text/css" media="all">@import "{$basUrl}/css/{$uistyle}/main.css";</style>
+	<link rel="shortcut icon" href="{$baseUrl}/img/{$uistyle}/favicon.ico" type="image/ico" />
+	{$js}
+	<script type="text/javascript">
+	<!--
+	{literal}
+		function gt_hide_tabs() {
+			var tabs = document.getElementsByTagName('td');
+			var i;
+			for (i = 0; i < tabs.length; i++) {
+				if (tabs[i].className == 'tabon')
+					tabs[i].className = 'taboff';
+			}
+			var divs = document.getElementsByTagName('div');
+			for (i =0; i < divs.length; i++) {
+				if (divs[i].className == 'tab')
+					divs[i].style.display = 'none';
+			}
+			var imgs = document.getElementsByTagName('img');
+			for (i = 0; i < imgs.length; i++) {
+				if (imgs[i].id) {
+					{/literal}
+					if (imgs[i].id.substr(0,8) == 'lefttab_')
+						imgs[i].src = './style/{$uistyle}/images/bar_top_left.gif';
+					else if (imgs[i].id.substr(0,9) == 'righttab_')
+						imgs[i].src = './style/{$uistyle}/images/bar_top_right.gif';
+					{literal}
+				}
+			}
+		}
+		function gt_show_tab(i) {
+		{/literal}
+			var tab = document.getElementById('tab_' + i);
+			tab.style.display = 'block';
+			tab = document.getElementById('toptab_' + i);
+			tab.className = 'tabon';
+			var img = document.getElementById('lefttab_' + i);
+			img.src = './style/{$uistyle}/images/bar_top_Selectedleft.gif';
+			img = document.getElementById('righttab_' + i);
+			img.src = './style/{$uistyle}/images/bar_top_Selectedright.gif';
+		{literal}
+		}
+		hide_tab_function = gt_hide_tabs;
+		show_tab_function = gt_show_tab;
+	-->
+	</script>
+	{/literal}
+</head>
+
+<body onload="this.focus();">
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td>
+		<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<th style="background:url('${baseUrl}/img/{$uistyle}/titlegrad.jpg')" class="banner" align="left">
+				<strong>
+				<a style="color: white" href="{$baseUrl}">{$page_title}</a>
+				</strong>
+			</th>
+			<th align="right" width="50">
+				<a href="http://www.dotproject.net/"{if $dialog} target="_blank"{/if}>
+					<img src="style/{$uistyle}/images/dp_icon.gif" alt="dotProject icon" border="0" /></a>
+			</th>
+		</tr>
+		</table>
+	</td>
+</tr>
+{if !$dialog}
+<tr>
+	<td class="nav" align="left">
+	<table cellpadding="3" cellspacing="0" width="100%">
+	<tr>
+		<td>
+	{foreach from=$modules item='mod' name='mods'}
+		<a href="?m={$mod.mod_directory}">{dPtranslate word=$mod.mod_ui_name}</a> {if !$smarty.foreach.mods.last} | {/if}
+	{/foreach}
+		</td>
+		<td nowrap="nowrap" align="right">
+		<form name="frm_new" method="get" action="./index.php">
+		{dParraySelect array=$new_item name='m' extras='style="font-size:10px" onchange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"' value='' translation=true}
+	{if $company_id}
+		<input type="hidden" name="company_id" value="{$company_id}" />
+	{/if}
+	{if $task_id}
+		<input type="hidden" name="task_parent" value="{$task_id}" />
+	{/if}
+	{if $file_id}
+		<input type="hidden" name="file_id" value="{$file_id}" />
+	{/if}
+		<input type="hidden" name="a" value="addedit" />
+		</form>
+		</td>
+	</tr>
+	</table>
+	</td>
+</tr>
+<tr>
+	<td>
+		<table cellspacing="0" cellpadding="3" border="0" width="100%">
+		<tr>
+			<td width="100%">{dPtranslate word='Welcome'} {$user_name}</td>
+			<td nowrap="nowrap">
+				<a href="#" onclick="javascript:window.open('?m=help&amp;dialog=1', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')">{dPtranslate word='Help'}</a> |
+				<a href="./index.php?m=admin&amp;a=viewuser&amp;user_id={$user_id}">{dPtranslate word='My Info'}</a> |
+	{if $access_calendar}
+	         <b><a href="./index.php?m=tasks&amp;a=todo">{dPtranslate word='Todo'}</a></b> |
+				<a href="./index.php?m=calendar&amp;a=day_view&amp;date={dPdateFormat date='now' format='db'}&amp;tab=0">{dPtranslate word='Today'}</a> |
+	{/if}
+	{if $access_links}
+				<a href="./index.php?m=links">{dPtranslate word='Links'}</a> |
+	{/if}
+				<a href="javascript:void(0);" onclick="window.print();return false;">{dPtranslate word='Print'}</a> | 
+				<a href="./index.php?logout=-1">{dPtranslate word='Logout'}</a>
+			</td>
+		</tr>
+		</table>
+	</td>
+</tr>
+{/if} {* dialog *}
+</table>
+
+<table width="100%" cellspacing="0" cellpadding="4" border="0">
+<tr class="print">
+	<td valign="top" align="left" width="98%">
+	{$msg}

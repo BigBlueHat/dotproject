@@ -1,0 +1,53 @@
+<table width="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+			{if $totaltabs-1 < $active}
+				{*//Last selected tab is not available in this view. eg. Child tasks*}
+				{assign var=active value=0}
+			{/if}
+	<td>
+	<table border="0" cellpadding="0" cellspacing="0">
+	<tr>
+{foreach from=$tabs item=v key=k}
+		<td valign="middle" width="3" height="26">
+			<img id="lefttab_{$k}" src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}left.gif" border="0" alt="" />
+		</td>
+		<td id="toptab_{$k}" valign="middle" nowrap="nowrap" class={if $k == $active}"tabon"{else}"taboff"{/if}>
+			<a href="{if $javascript}javascript:{$javascript}({$active}, {$k})
+	{elseif $js_tabs}javascript:show_tab({$k}){else}{$current_tab}tab={$k}{/if}">
+				{if $v[2]}{$v[1]}{else}{dPtranslate word=$v[1]}{/if}
+			</a>
+		</td>
+		<td valign="middle" width="3">
+			<img id="righttab_{$k}" src="./style/{$uistyle}/images/bar_top_{if $k == $active}Selected{/if}right.gif" border="0" alt="" />
+		</td>
+		<td width="3" class="tabsp">
+			<img src="./images/shim.gif" alt="shim" height="1" width="3" />
+		</td>
+{/foreach}
+	</tr>
+	</table>
+	</td>
+		
+</tr>
+<tr>
+	<td width="100%" colspan="{$totaltabs*4 + 1}" class="tabox">
+			
+{if $js_tabs}
+	{foreach from=$tabs item=v key=k} 
+	<div class="tab" id="tab_{$k}">
+		{dPrequire file="$base$v[0].php"}
+	</div>
+	{/foreach}
+<script language="JavaScript" type="text/javascript">
+<!--
+show_tab('{$active}');
+//-->
+</script>
+
+{else}
+	{dPrequire file=$tab}
+{/if}
+
+	</td>
+</tr>
+</table>

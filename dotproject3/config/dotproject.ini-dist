@@ -1,0 +1,6 @@
+[database]
+adapter = PDO_Mysql
+params.dbname = dbname
+params.username = dbuser
+params.password = dbpass
+

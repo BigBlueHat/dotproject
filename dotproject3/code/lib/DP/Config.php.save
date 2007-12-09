@@ -1,0 +1,101 @@
+<?php
+require_once 'Zend/Config/Ini.php';
+require_once 'Zend/Db.php';
+require_once 'Zend/Db/Exception.php';
+/**
+ * A container for the configuration requirements, needed here to
+ * set up the database connection before AppUI or other classes are
+ * instantiated.  In order to make sure we can be used in the widest
+ * possible circumstances we use the singleton style.
+ */
+
+class DP_Config
+{
+	public $db = null;
+	public static $_instance = null;
+	private $config = null;
+	private $base_config = null;
+
+	private function __construct()
+	{
+		error_log('DP_Config construct');
+		foreach (array(PHP_SYSCONFDIR, PHP_CONFIG_FILE_PATH, PHP_CONFIG_FILE_SCAN_DIR, dirname(__FILE__).'/../../../config') as $d) {
+			if (is_readable($d . '/dotproject.ini')) {
+				$this->base_config = new Zend_Config_Ini($d.'/dotproject.ini', null);
+				break;
+			}
+		}
+		if ($this->base_config) {
+			$this->db = Zend_Db::factory($this->base_config->database);
+			$this->db->setFetchMode(Zend_Db::FETCH_ASSOC);
+		}
+	}
+
+	public static function getInstance()
+	{
+		if (null == self::$_instance) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	/**
+	 * This is a real pain.  It would appear you can get subtle DB
+	 * issues unless you use a new connection for each query.  Need
+	 * to figure this one out at some stage but at the moment, just close
+	 * any open connection and move on.
+	 */
+	public static function getDB()
+	{
+		$db = self::getInstance()->db;
+		// $db->closeConnection();
+		return $db;
+	}
+
+	public static function getConfig($param = null, $default = null)
+	{
+		return self::getInstance()->_getConfig($param, $default);
+	}
+
+	public function _getConfig($param = null, $default = null)
+	{
+		$this->_initConfig();
+		if (isset($param)) {
+			return isset($this->config[$param]) ? $this->config[$param] : $default;
+		} else {
+			return $this->config;
+		}
+	}
+
+	protected function _initConfig()
+	{
+		if (null == $this->config) {
+			try {
+				$q = $this->db->select()->from('config', array('config_name', 'config_value'));
+				$this->config = $this->db->fetchPairs($q);
+			}
+			catch (Zend_Db_Exception $e) {
+			}
+		}
+	}
+
+	public function __get($var)
+	{
+		$this->_initConfig();
+		return isset($this->config[$var]) ? $this->config[$var] : null;
+	}
+
+	public function __set($var, $value)
+	{
+		$this->_initConfig();
+		$this->config[$var] = $value;
+	}
+
+	public function __isset($var)
+	{
+		$this->_initConfig();
+		return isset($this->config[$var]);
+	}
+}
+
+?>
