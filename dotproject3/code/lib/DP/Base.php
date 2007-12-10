@@ -531,7 +531,7 @@ function dPgetSysVal( $title )
  */
 function dPgetSysVal( $title )
 {
-	$q = new DBQuery;
+	$q = new DP_Query;
 	$q->addTable('sysvals');
 	$q->addQuery('sysval_value_id, sysval_value');
 	$q->addWhere("sysval_title = '$title'");
