@@ -616,8 +616,8 @@ class CFileFolder extends CDpObject {
 
 
 function file_size($size) {
-
-	$size_measurments = array(0 => 'B', 1 = 'KiB', 2 = 'MiB', 3 = 'GiB', 4 = 'TiB');
+  
+	$size_measurments = array( 0 => 'B', 1 => 'KiB', 2 => 'MiB', 3 => 'GiB', 4 => 'TiB');
 	
 	for ($i = 0; $i < $size_measurments->sizeof(); $i++ ) {
 		if ($size < 1024) {
