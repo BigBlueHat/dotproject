@@ -1,19 +1,14 @@
-<?php
+<?php /* FILES $Id$ */
+
 if (!defined('DP_BASE_DIR')){
 	die('You should not access this file directly.');
 }
 
-/* FILES $Id$ */
 // modified later by Pablo Roca (proca) in 18 August 2003 - added page support
 // Files modules: index page re-usable sub-table
-GLOBAL $AppUI, $deny1, $canRead, $canEdit, $canAdmin;
-global $company_id, $project_id, $task_id;
-
-global $currentTabId;
-global $currentTabName;
-global $tabbed, $m;
-
-//require_once( DP_BASE_DIR.'/modules/files/index_table.lib.php');
+GLOBAL $AppUI, $m, $canRead, $canEdit, $canAdmin;
+GLOBAL $company_id, $project_id, $task_id;
+GLOBAL $currentTabId, $currentTabName, $tabbed;
 
 // ****************************************************************************
 // Page numbering variables
@@ -59,11 +54,11 @@ $tf = $AppUI->getPref('TIMEFORMAT');
 
 $file_types = dPgetSysVal("FileType");
 if (($company_id || $project_id || $task_id) && !($m=='files')) {
-	$catsql = false;
+	$category_filter = false;
 } else if ($tabbed) {
-	$catsql = (($tab <= 0) ? false : ("file_category = " . --$tab)) ;
+	$category_filter = (($tab <= 0) ? false : ("file_category = " . --$tab)) ;
 } else {
-	$catsql = (($tab < 0) ? false : ("file_category = " . $tab)) ;
+	$category_filter = (($tab < 0) ? false : ("file_category = " . $tab)) ;
 }
 
 // Fetch permissions once for all queries
@@ -82,8 +77,8 @@ if (count ($allowedProjects)) {
 if (count ($allowedTasks)) {
   $q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR file_task = 0 )');
 }
-if ($catsql) {
-	$q->addWhere($catsql);
+if ($category_filter) {
+	$q->addWhere($category_filter);
 }
 if ($company_id) {
 	$q->addWhere("project_company = $company_id");
@@ -113,8 +108,8 @@ if (count ($allowedProjects)) {
 if (count ($allowedTasks)) {
   $q2->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR file_task = 0 )');
 }
-if ($catsql) {
-	$q2->addWhere($catsql);
+if ($category_filter) {
+	$q2->addWhere($category_filter);
 }
 if ($company_id) {
 	$q2->addWhere("project_company = $company_id");
@@ -150,8 +145,8 @@ if (count ($allowedProjects)) {
 if (count ($allowedTasks)) {
   $q3->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR file_task = 0 )');
 }
-if ($catsql) {
-	$q3->addWhere($catsql);
+if ($category_filter) {
+	$q3->addWhere($category_filter);
 }
 if ($company_id) {
 	$q3->addWhere("project_company = $company_id");

@@ -11,14 +11,17 @@ $referrerArray = parse_url($_SERVER['HTTP_REFERER']);
 $referrer = $referrerArray['query'] . $referrerArray['fragment'];
 
 // check permissions for this record
-if ($folder == 0) {
-	$canEdit = true;
+
+
+if ($folder > 0) {
+	$canEdit_folder = true;
 } else {
-	$canEdit = !getDenyEdit( $m, $folder);
+	$canEdit_folder = getPermission($m, 'edit', $folder);
 }
-if (!$canEdit) {
+if ($folder && !($canEdit_folder)) {
 	$AppUI->redirect( "m=public&a=access_denied" );
 }
+
 $q = new DBQuery();
 $q->addTable('file_folders');
 $q->addQuery('file_folders.*');
@@ -29,7 +32,7 @@ $sql = $q->prepare();
 $msg = '';
 $obj = new CFileFolder();
 if ($folder > 0) {
-	$canDelete = $obj->canDelete( $msg, $folder );
+	$canDelete_folder = $obj->canDelete( $msg, $folder );
 }
 
 // load the record data
@@ -45,8 +48,8 @@ $folders = getFolderSelectList();
 $ttl = $folder ? "Edit File Folder" : "Add File Folder";
 $titleBlock = new CTitleBlock( $ttl, 'folder5.png', $m, "$m.$a" );
 $titleBlock->addCrumb( "?m=files", "files list" );
-if ($canEdit && $folder > 0) {
-	$titleBlock->addCrumbDelete( 'delete file folder', $canDelete, $msg );
+if ($canEdit_folder && $folder > 0) {
+	$titleBlock->addCrumbDelete( 'delete file folder', $canDelete_folder, $msg );
 }
 $titleBlock->show();
 

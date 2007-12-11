@@ -106,8 +106,13 @@ class CMonthCalendar {
 		$m = $this->this_month->getMonth();
 		$y = $this->this_month->getYear();
 
+<<<<<<< .mine
+		$this->prev_year = new CDate( $date );
+		$this->prev_year->setYear( $this->prev_year->getYear()-1 );
+=======
 		$this->prev_year = new CDate($date);
 		$this->prev_year->setYear($this->prev_year->getYear()-1);
+>>>>>>> .r5557
 
 		$this->next_year = new CDate($date);
 		$this->next_year->setYear($this->next_year->getYear()+1);
@@ -117,12 +122,28 @@ class CMonthCalendar {
 		setlocale(LC_ALL, $AppUI->user_lang);
 		
 		$this->prev_month = new CDate($date);
-
+		
+		setlocale(LC_TIME, 'en_AU');
+<<<<<<< .mine
+		$date = Date_Calc::beginOfPrevMonth( $d, $m, $y, FMT_TIMESTAMP_DATE );
+		setlocale(LC_ALL, $AppUI->user_lang);
+		
+		$this->prev_month = new CDate( $date );
+=======
 		setlocale(LC_TIME, 'en_AU');
 		$date = Date_Calc::beginOfNextMonth($d, $m, $y, FMT_TIMESTAMP_DATE);
 		setlocale(LC_ALL, $AppUI->user_lang);
 		$this->next_month =  new CDate($date);
+>>>>>>> .r5557
 
+<<<<<<< .mine
+		setlocale(LC_TIME, 'en_AU');
+		$date = Date_Calc::beginOfNextMonth( $d, $m, $y, FMT_TIMESTAMP_DATE );
+		setlocale(LC_ALL, $AppUI->user_lang);
+		$this->next_month =  new CDate( $date );
+
+=======
+>>>>>>> .r5557
 	}
 
 /**

@@ -9,8 +9,8 @@ function check_perm(&$var) {
 		return true;	
 	}
 	// if folder can be edited, keep in array
-	if (!getDenyEdit( $m, $var['file_folder_id'])) {
-		if ( getDenyEdit( $m, $var['file_folder_parent']) ) {
+	if (getPermission($m, 'edit', $var['file_folder_id'])) {
+		if (!(getPermission($m, 'edit', $var['file_folder_parent']))) {
 			$var[2] = 0;
 			$var['file_folder_parent'] = 0;
 		}
