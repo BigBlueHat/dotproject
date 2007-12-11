@@ -1,6 +1,21 @@
 <?php
 require_once 'DP/Controller/Action.php';
 
+/**
+ * This is the file containing the definition of the index controller for the companies module
+ * @author ajdonnison
+ * @version 3.0
+ * @package dotproject
+ * @subpackage companies
+ */
+
+/**
+ * Defines methods that handle the display of company lists
+ * 
+ * 
+ * @package dotproject
+ * @subpackage companies
+ */
 class Companies_IndexController extends DP_Controller_Action
 {
 	public function indexAction()
