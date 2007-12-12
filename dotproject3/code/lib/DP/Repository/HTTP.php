@@ -7,7 +7,7 @@
  * @subpackage lib
  */
 
-require_once('DP/Repository.php');
+require_once('DP/Repository/Abstract.php');
 
 
 
@@ -16,7 +16,7 @@ require_once('DP/Repository.php');
  *
  * The HTTP repository class uses a package index to determine the filename and title of each module.
  */
-class DP_Repository_HTTP extends DP_Repository {
+class DP_Repository_HTTP extends DP_Repository_Abstract {
 	
 	/**
 	 * List the packages available in this repository

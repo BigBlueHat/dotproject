@@ -16,6 +16,8 @@ require_once 'Zend/Http/Client.php';
  * URI's will be validated by Zend_URI. Supported fetch methods will be initially
  * restricted to HTTP and FTP. A special method fetchRepositoryFile is given for fetching a file
  * from a repository given by reference.
+ * 
+ * @var $target_path The destination directory where the fetcher will save files.
  */
 class DP_Fetcher {
 	
@@ -27,11 +29,12 @@ class DP_Fetcher {
 	 * Set up initial download path.
 	 *
 	 * @return DP_Fetcher
+	 * @todo Make the target path configurable
+	 * @todo Establish a consensus on default download directory (or pull location from db).
 	 */
 	function DP_Fetcher()
 	{
 		$this->target_path = DP_BASE_DIR . '/temp';
-		// TODO - make this a real default
 	}
 	
 	/**
@@ -39,10 +42,10 @@ class DP_Fetcher {
 	 *
 	 * @param string $data The HTTP response body
 	 */
-	function _saveToFile($data)
+	function _saveToFile($filename, $data)
 	{
-		$file_name = 'test.tar.gz';
-		$path = $this->target_path.'/'.$file_name;
+
+		$path = $this->target_path.'/'.$filename;
 		
 		$fd = fopen($path, 'w');
 		fwrite($fd, $data);
@@ -68,6 +71,8 @@ class DP_Fetcher {
 	 * Method will determine the protocol to use based on the URI
 	 *
 	 * @param string $URI
+	 * @todo Throw proper exception for invalid URI.
+	 * @todo Handle unrecognised URI scheme.
 	 */
 	function fetchURI($uri) {
 		
@@ -83,12 +88,11 @@ class DP_Fetcher {
 				case 'ftp':
 					return $this->fetchFTP($uriobj->getUri());
 				default:
-					// TODO - scheme not recognised
+
 			}
 		}
 		else
 		{
-			// TODO - throw invalid uri exception
 			throw new Exception('Invalid URI Error');
 		}
 	}
@@ -99,9 +103,11 @@ class DP_Fetcher {
 	 * HTTP protocol is handled through the Zend_Http_Client class.
 	 * Downloads a file from HTTP and saves it to $target_path
 	 * 
-	 * @param string $URI The HTTP file location
-	 * @param array $GET Associative array of GET variables
-	 * @param array $POST Associative array of POST variables
+	 * @param string $URI The HTTP URL
+	 * @param array $GET Associative array of GET variables (name, value).
+	 * @param array $POST Associative array of POST variables (name, value).
+	 * @todo Implement GET and POST
+	 * @todo Extract filename from the URI for call to method _saveToFile.
 	 */
 	function fetchHTTP($URI, $GET = Array(), $POST = Array()) {
 		$client = new Zend_Http_Client();
@@ -113,22 +119,24 @@ class DP_Fetcher {
 		$response = $client->request();
 		
 		if ($response->isError()) {
+			// TODO - Translate error or create specialised HTTP Exception
 			throw new Exception('Error while Fetching via HTTP:'.$response->getStatus().' '.$response->getMessage.'\n');
 		}
 		else {
+			$file_name = 'test.tar.gz';
+			
 			$responsedata = $response->getBody();
-			$savedlocation = $this->_saveToFile($responsedata);
-
+			$savedlocation = $this->_saveToFile($file_name, $responsedata);
 			return $savedlocation;
 		}
 		
 	}
 	
-	
 	/**
 	 * Fetch a file using the FTP protocol
-	 *
+	 * 
 	 * @param Zend_Uri $URI
+	 * @todo Not yet implemented
 	 */
 	function fetchFTP($URI) {
 		

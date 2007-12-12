@@ -13,7 +13,7 @@
  * The Repository class is an abstract of the basic functionality required by all
  * repository types
  */
-class DP_Repository {
+class DP_Repository_Abstract {
 	
 	var $URI;
 	var $package_list;
