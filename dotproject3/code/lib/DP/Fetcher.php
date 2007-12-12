@@ -6,6 +6,8 @@
  * @package dotProject
  * @subpackage lib
  */
+require_once 'Zend/Uri.php';
+require_once 'Zend/Http/Client.php';
 
 /**
  * The Fetcher class deals with retrieval of files given any URI.
@@ -16,6 +18,8 @@
  * from a repository given by reference.
  */
 class DP_Fetcher {
+	
+	var $target_path;
 	
 	/**
 	 * Fetch the specified file from the passed repository reference.
@@ -39,24 +43,59 @@ class DP_Fetcher {
 	 */
 	function fetchURI($URI) {
 		
+		$uri = Zend_Uri::factory($URI);
+		
+		if ($uri instanceof Zend_Uri)
+		{
+			$scheme = $uri->getScheme();
+		
+			switch($scheme) {
+				case 'http':
+					$this->fetchHTTP($URI->getUri());
+					break;
+				case 'ftp':
+					$this->fetchFTP($URI->getUri);
+					break;
+			}
+		}
+		else
+		{
+			// TODO - throw invalid uri exception
+		}
 	}
 	
 	/**
 	 * Fetch a file using the HTTP protocol
 	 *
-	 * This method should pass the request to Zend_HTTP_Client
+	 * HTTP protocol is handled through the Zend_Http_Client class.
 	 * 
-	 * @param string $URI
+	 * @param string $URI The HTTP file location
+	 * @param array $GET Associative array of GET variables
+	 * @param array $POST Associative array of POST variables
 	 */
-	function fetchHTTP($URI) {
+	function fetchHTTP($URI, $GET = Array(), $POST = Array()) {
+		$client = new Zend_Http_Client();
+		$client->setUri($URI);
+		$client->setConfig(array(
+    		'maxredirects' => 0,
+    		'timeout'      => 30));
 		
+		$response = $client->request();
+		
+		if ($response->isError()) {
+			// TODO - throw http error exception
+		}
+		else {
+			$responsedata = $response->getBody();
+			return $responsedata;			
+		}
 	}
 	
 	
 	/**
 	 * Fetch a file using the FTP protocol
 	 *
-	 * @param string $URI
+	 * @param Zend_Uri $URI
 	 */
 	function fetchFTP($URI) {
 		

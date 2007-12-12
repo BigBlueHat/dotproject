@@ -7,7 +7,7 @@
  * @subpackage lib
  */
 
-require_once('DP/Repository/Repository.php');
+require_once('DP/Repository.php');
 
 
 
