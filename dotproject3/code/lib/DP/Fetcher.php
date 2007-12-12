@@ -22,6 +22,34 @@ class DP_Fetcher {
 	var $target_path;
 	
 	/**
+	 * DP_Fetcher constructor
+	 * 
+	 * Set up initial download path.
+	 *
+	 * @return DP_Fetcher
+	 */
+	function DP_Fetcher()
+	{
+		$this->target_path = DP_BASE_DIR . '/temp';
+		// TODO - make this a real default
+	}
+	
+	/**
+	 * Save a HTTP response to a file.
+	 *
+	 * @param string $data The HTTP response body
+	 */
+	function _saveToFile($data)
+	{
+		$file_name = 'test.tar.gz';
+		$path = $this->target_path.'/'.$file_name;
+		
+		$fd = fopen($path, 'w');
+		fwrite($fd, $data);
+		return $path;
+	}
+	
+	/**
 	 * Fetch the specified file from the passed repository reference.
 	 * 
 	 * This method uses the repository class type to determine the fetch method. i.e 
@@ -41,26 +69,27 @@ class DP_Fetcher {
 	 *
 	 * @param string $URI
 	 */
-	function fetchURI($URI) {
+	function fetchURI($uri) {
 		
-		$uri = Zend_Uri::factory($URI);
+		$uriobj = Zend_Uri::factory($uri);
 		
-		if ($uri instanceof Zend_Uri)
+		if ($uriobj instanceof Zend_Uri)
 		{
-			$scheme = $uri->getScheme();
-		
+			$scheme = $uriobj->getScheme();
+			
 			switch($scheme) {
 				case 'http':
-					$this->fetchHTTP($URI->getUri());
-					break;
+					return $this->fetchHTTP($uriobj->getUri());
 				case 'ftp':
-					$this->fetchFTP($URI->getUri);
-					break;
+					return $this->fetchFTP($uriobj->getUri());
+				default:
+					// TODO - scheme not recognised
 			}
 		}
 		else
 		{
 			// TODO - throw invalid uri exception
+			throw new Exception('Invalid URI Error');
 		}
 	}
 	
@@ -68,6 +97,7 @@ class DP_Fetcher {
 	 * Fetch a file using the HTTP protocol
 	 *
 	 * HTTP protocol is handled through the Zend_Http_Client class.
+	 * Downloads a file from HTTP and saves it to $target_path
 	 * 
 	 * @param string $URI The HTTP file location
 	 * @param array $GET Associative array of GET variables
@@ -83,12 +113,15 @@ class DP_Fetcher {
 		$response = $client->request();
 		
 		if ($response->isError()) {
-			// TODO - throw http error exception
+			throw new Exception('Error while Fetching via HTTP:'.$response->getStatus().' '.$response->getMessage.'\n');
 		}
 		else {
 			$responsedata = $response->getBody();
-			return $responsedata;			
+			$savedlocation = $this->_saveToFile($responsedata);
+
+			return $savedlocation;
 		}
+		
 	}
 	
 	
