@@ -16,7 +16,7 @@ require_once('DP/Repository/Repository.php');
  *
  * The HTTP repository class uses a package index to determine the filename and title of each module.
  */
-class HTTPRepository extends DP_Repository {
+class DP_Repository_HTTP extends DP_Repository {
 	
 	/**
 	 * List the packages available in this repository

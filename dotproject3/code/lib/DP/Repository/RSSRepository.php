@@ -18,7 +18,7 @@ require_once('DP/Repository/Repository.php');
  * to get the packages from the specified HTTP server. This is primarily intended for use with sourceforge's
  * Project file listing in RSS format.
  */
-class RSSRepository extends DP_Repository {
+class DP_Repository_RSS extends DP_Repository {
 
 }
 ?>

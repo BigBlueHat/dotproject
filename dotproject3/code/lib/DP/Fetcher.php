@@ -24,7 +24,7 @@ class DP_Fetcher {
 	 * a HTTPRepository will pass the request on to the http fetch method.
 	 *
 	 * @param string $filename
-	 * @param unknown_type $repository
+	 * @param DP_Repository $repository
 	 */
 	function fetchRepositoryFile($filename, $repository) {
 		
