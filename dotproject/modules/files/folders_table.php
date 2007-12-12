@@ -48,7 +48,7 @@ $task = new CTask();
 $allowedTasks = $task->getAllowedSQL($AppUI->user_id, 'file_task');
 
 $cfObj = new CFileFolder();
-$allowedFolders = $cfObj->getAllowedSQL($AppUI->user_id, 'file_folder');
+$allowedFolders = array();//$cfObj->getAllowedSQL($AppUI->user_id, 'file_folder');
 
 // $parent_id is the parent of the children we want to see
 // $level is increased when we go deeper into the tree, used to display a nice indented tree
@@ -62,8 +62,6 @@ function displayFolders($folder_id=0, $level=0) {
 	global $company_id, $project_id, $task_id;
 	global $allowedCompanies, $allowedProjects, $allowedTasks, $allowedFolders;
 	
-	$perms =& $AppUI->acl();
-	
 	$q = new DBQuery();
 	$folders = array();
 	// retrieve all info of $folder_id
@@ -71,9 +69,6 @@ function displayFolders($folder_id=0, $level=0) {
 		$q->addTable('file_folders');
 		$q->addQuery('*');
 		$q->addWhere('file_folder_id = ' . $folder_id);
-		if (count($allowedFolders)) {
-			$q->addWhere($allowedFolders);
-		}
 		$folder_sql = $q->prepare();
 		$q->clear();
 		$folders = db_loadList($folder_sql);
@@ -84,33 +79,7 @@ function displayFolders($folder_id=0, $level=0) {
 	}
 	
 	//get file count for folder
-	$q->addTable('files', 'f');
-	$q->addQuery('count(f.file_id)', 'file_in_folder');
-	$q->addWhere('f.file_folder = '. $folder_id);
-	if (count ($allowedProjects)) {
-		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR f.file_project = 0 )');
-	}
-	if (count ($allowedTasks)) {
-		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') f.OR file_task = 0 )');
-	}
-	if ($project_id) {
-		$q->addWhere('f.file_project = '. $project_id);
-	}
-	if ($task_id) {
-		$q->addWhere('f.file_task = '. $task_id);
-	}
-	if ($company_id) {
-		$q->addJoin('projects', 'p', 'p.project_id = f.file_project');
-		$q->innerJoin('companies','co','co.company_id = p.project_company');
-		$q->addWhere('co.company_id = '. $company_id);
-		$q->addWhere($allowedCompanies);
-	}
-	$q->addGroup('file_version_id');
-	
-	$sql = $q->prepare();
-	$q->clear();
-	
-	$file_count = db_loadResult($sql);
+	$file_count = countFiles($folder_id);
 	
 	//check permissions
 	$canAccess_this = true; //getPermission('file_folders', 'access', $folder_id);
@@ -203,8 +172,8 @@ function displayFolders($folder_id=0, $level=0) {
 		
 		
 		if ($file_count > 0) {
-			echo ('<div class="files-list" id="files_' . $folder_id 
-			      . '" style="display: none;">');
+			echo ('<div class="files-list" id="files_' . $folder_id . '" style="display:' 
+			      . (($level || $open_folder) ? 'none' : 'block') . ';">');
 			displayFiles($folder_id);
 			echo '</div>';
 		} elseif ($folder && !($folder_id && $level)) {
@@ -232,17 +201,61 @@ function displayFolders($folder_id=0, $level=0) {
 	
 }
 
-function displayFiles($folder) {
-
-	global $AppUI, $m, $a, $tab, $xpg_min, $xpg_pagesize;
-	global $canAccess, $canRead, $canEdit, $canAuthor, $canDelete;
-	global $allowedProjects, $allowedTasks, $allowedCompanies, $showProject;
+function countFiles($folder_id) {
 	global $company_id, $project_id, $task_id;
-	global $cfObj, $dPconfig;
-	global $xpg_totalrecs, $xpg_total_pages, $page;
+	global $allowedCompanies, $allowedProjects, $allowedTasks, $allowedFolders;
 	
-	$canEdit = true; //getPermission('file_folders', 'edit', $folder);
-	$canRead = true; //getPermission('file_folders', 'view', $folder);
+	$q = new DBQuery();
+	
+	//get file count for folder
+	$q->addTable('files', 'f');
+	$q->addQuery('count(f.file_id)', 'file_in_folder');
+	$q->addWhere('f.file_folder = '. $folder_id);
+	if (count($allowedFolders)) {
+		$q->addWhere($allowedFolders);
+	}
+	if (count ($allowedProjects)) {
+		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR f.file_project = 0 )');
+	}
+	if (count ($allowedTasks)) {
+		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') f.OR file_task = 0 )');
+	}
+	if ($project_id) {
+		$q->addWhere('f.file_project = '. $project_id);
+	}
+	if ($task_id) {
+		$q->addWhere('f.file_task = '. $task_id);
+	}
+	if ($company_id) {
+		$q->addJoin('projects', 'p', 'p.project_id = f.file_project');
+		$q->innerJoin('companies','co','co.company_id = p.project_company');
+		$q->addWhere('co.company_id = '. $company_id);
+		$q->addWhere($allowedCompanies);
+	}
+	$q->addGroup('file_version_id');
+	
+	$sql = $q->prepare();
+	$q->clear();
+	
+	return db_loadResult($sql);
+}
+
+function displayFiles($folder_id) {
+	
+	global $AppUI, $m, $a, $tab, $page;
+	global $current_uri;
+	
+	global $canAccess, $canRead, $canEdit, $canAuthor, $canDelete;
+	global $canAccess_folders, $canRead_folders, $canEdit_folders;
+	global $canAuthor_folders, $canDelete_folders;
+	
+	global $company_id, $project_id, $task_id;
+	global $allowedCompanies, $allowedProjects, $allowedTasks, $allowedFolders;
+	
+	global $showProject, $cfObj, $dPconfig;
+	
+	$canEdit = true; //getPermission('file_folders', 'edit', $folder_id);
+	$canRead = true; //getPermission('file_folders', 'view', $folder_id);
 	
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$tf = $AppUI->getPref('TIMEFORMAT');
@@ -250,11 +263,14 @@ function displayFiles($folder) {
 	$file_types = dPgetSysVal('FileType');
 	
 	$xpg_pagesize = 30; //TODO?: Set by System Config Value ...
+	$xpg_totalrecs = countFiles($folder_id); //get file count for folder
+	$xpg_total_pages = ($xpg_totalrecs > $xpg_pagesize) ? ceil($xpg_totalrecs / $xpg_pagesize) : 1;
+	
 	$xpg_min = $xpg_pagesize * ($page - 1); // This is where we start our record set from
 	
-	// SETUP FOR FILE LIST
-	// most recent versions
 	$q = new DBQuery();
+	
+	// most recent versions
 	$q->addTable('files', 'f');
 	$q->addQuery('f.*, count(f.file_version) as file_versions' 
 	             . ', round(max(f.file_version), 2) as file_lastversion, f.file_task' 
@@ -266,7 +282,10 @@ function displayFiles($folder) {
 	$q->addJoin('contacts', 'c', 'c.contact_id = u.user_contact');
 	$q->addJoin('tasks', 't', 't.task_id = f.file_task');
 	$q->addJoin('file_folders', 'ff', 'ff.file_folder_id = f.file_folder');
-	$q->addWhere('file_folder = '. $folder);
+	$q->addWhere('file_folder = '. $folder_id);
+	if (count($allowedFolders)) {
+		$q->addWhere($allowedFolders);
+	}
 	if (count ($allowedProjects)) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR f.file_project = 0 )');
 	}
@@ -285,35 +304,43 @@ function displayFiles($folder) {
 		$q->addWhere($allowedCompanies);
 	}
 	
-	$q->addGroup('file_folder');
 	$q->addGroup('project_name');
 	$q->addGroup('file_version_id');
-
-	$q->addOrder('file_folder');
+	
 	$q->addOrder('project_name');
 	$q->addOrder('file_name');
 	
 	$q->setLimit($xpg_pagesize, $xpg_min);
-
+	
 	$files_sql = $q->prepare();
 	$q->clear();
 
 	
 	// all versions
-	$q = new DBQuery();
-	$q->addTable('files');
-	$q->addQuery('files.file_id, file_version, file_project, file_name, file_task' 
-				 . ', file_description, user_username as file_owner, file_size, file_category' 
-				 . ', file_type, file_date, file_folder_name');
-	$q->addJoin('projects', 'p', 'p.project_id = file_project');
-	$q->addJoin('users', 'u', 'u.user_id = file_owner');
-	$q->addJoin('tasks', 't', 't.task_id = file_task');
-	$q->addJoin('file_folders', 'ff', 'ff.file_folder_id = file_folder');
-	$q->addWhere('file_folder = '. $folder);
-	if ($project_id)
+	$q->addTable('files', 'f');
+	$q->addQuery('f.file_id, f.file_version, f.file_project, f.file_name, f.file_task' 
+				 . ', f.file_description, u.user_username as file_owner, f.file_size' 
+	             . ', f.file_category, f.file_type, f.file_date, ff.file_folder_name');
+	$q->addJoin('projects', 'p', 'p.project_id = f.file_project');
+	$q->addJoin('users', 'u', 'u.user_id = f.file_owner');
+	$q->addJoin('tasks', 't', 't.task_id = f.file_task');
+	$q->addJoin('file_folders', 'ff', 'ff.file_folder_id = f.file_folder');
+	$q->addWhere('file_folder = '. $folder_id);
+	if (count($allowedFolders)) {
+		$q->addWhere($allowedFolders);
+	}
+	if (count ($allowedProjects)) {
+		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR f.file_project = 0 )');
+	}
+	if (count ($allowedTasks)) {
+		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR f.file_task = 0 )');
+	}
+	if ($project_id) {
 		$q->addWhere('file_project = '. $project_id);
-	if ($task_id)
+	}
+	if ($task_id) {
 		$q->addWhere('file_task = '. $task_id);
+	}
 	if ($company_id) {
 		$q->innerJoin('companies','co','co.company_id = p.project_company');
 		$q->addWhere('co.company_id = '. $company_id);
@@ -328,25 +355,25 @@ function displayFiles($folder) {
 	$file_versions = array();
 	if ($canRead) {
 		$files = db_loadList($files_sql);
-		$file_versions = db_loadList($file_versions_sql);
+		$file_versions = db_loadHashList($file_versions_sql);
 	}
-	if ($files === array()) {
-		return 0;	
+	if ($files == array()) {
+		return;	
 	}
 ?>
 	<table width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
 	<tr>
 		<th nowrap="nowrap"><?php echo $AppUI->_('File Name'); ?></th>
-		<th><?php echo $AppUI->_('Description'); ?></th>
-		<th><?php echo $AppUI->_('Versions'); ?></th>
-		<th><?php echo $AppUI->_('Category'); ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Description'); ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Versions'); ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Category'); ?></th>
 		<th nowrap="nowrap"><?php echo $AppUI->_('Task Name'); ?></th>
-		<th><?php echo $AppUI->_('Owner'); ?></th>
-		<th><?php echo $AppUI->_('Size'); ?></th>
-		<th><?php echo $AppUI->_('Type'); ?></a></th>
-		<th><?php echo $AppUI->_('Date'); ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Owner'); ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Size'); ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Type'); ?></a></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('Date'); ?></th>
 		<th nowrap="nowrap"><?php echo $AppUI->_('co Reason') ?></th>
-		<th><?php echo $AppUI->_('co') ?></th>
+		<th nowrap="nowrap"><?php echo $AppUI->_('co') ?></th>
 		<th nowrap width="1"></th>
 		<th nowrap width="1"></th>
 	</tr>
@@ -356,9 +383,10 @@ function displayFiles($folder) {
 	
 	$id = 0;
 	foreach ($files as $row) {
+		$latest_file = $file_versions[$row['latest_id']];
 		$file_date = new CDate($row['file_date']);
 
-		if ($fp != $row['file_project']) {
+		if ($fp != $latest_file['file_project']) {
 			if (!$row['project_name']) {
 				$row['project_name'] = $AppUI->_('All Projects');
 				$row['project_color_identifier'] = 'f4efe3';
@@ -554,13 +582,14 @@ function displayFiles($folder) {
 		?>		
 		</td>
 	</tr>
-	<?php echo $hidden_table; ?>
 	<?php 
+			echo $hidden_table; 
 	        $hidden_table = ''; 
-	}?>
+	}
+	?>
 	</table>
 	<?php
-		shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $folder);
+		shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $folder_id);
 	echo "<br />";
 }
 

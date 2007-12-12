@@ -618,20 +618,15 @@ class CFileFolder extends CDpObject {
 function file_size($size) {
   
 	$size_measurments = array( 0 => 'B', 1 => 'KiB', 2 => 'MiB', 3 => 'GiB', 4 => 'TiB');
+	$size_length = sizeof($size_measurments);
 	
-	for ($i = 0; $i < $size_measurments->sizeof(); $i++ ) {
-		if ($size < 1024) {
+	for ($i = 0; $i < ($size_length - 1); $i++ ) {
+		if ($size < pow(2, (10 * ($i + 1)))) {
 			break;
-		} else {
-			$size = ($size / 1024);
 		}
 	}
 	
-	if ($i == $size_measurments->sizeof()) {	
-		--$i;
-	}
-	
-	return (round($size, 2) . ' ' . $size_measurments[$i]);
+	return (round(($size / pow(2, 10 * ($i))), 2) . ' ' . $size_measurments[$i]);
 }
 
 function last_file($file_versions, $file_name, $file_project) {
