@@ -15,8 +15,8 @@
  */
 class DP_Repository_Abstract {
 	
-	var $URI;
-	var $package_list;
+	public $URI;
+	public $package_list;
 	
 	/**
 	 * Fetch the package called $filename from the repository
@@ -25,7 +25,7 @@ class DP_Repository_Abstract {
 	 *
 	 * @param string $filename
 	 */
-	function fetchPackage($filename) {
+	public function fetchPackage($filename) {
 		
 	}
 	
@@ -34,7 +34,7 @@ class DP_Repository_Abstract {
 	 *
 	 * @param string $keyword
 	 */
-	function search($keyword) {
+	public function search($keyword) {
 		
 	}
 }

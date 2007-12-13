@@ -26,7 +26,7 @@ class DP_Repository_HTTP extends DP_Repository_Abstract {
 	 * 
 	 * @return
 	 */
-	function listRepository() {
+	public function listRepository() {
 		
 	}
 }

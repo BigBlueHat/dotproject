@@ -23,9 +23,9 @@ require_once('Zend/Feed.php');
  */
 class DP_Repository_RSS extends DP_Repository_Abstract {
 	
-	var $rss_title;
-	var $rss_link;
-	var $rss_description;
+	public $rss_title;
+	public $rss_link;
+	public $rss_description;
 	
 	/**
 	 * Constructor for DP_Repository_RSS, sets up variables.
@@ -33,7 +33,7 @@ class DP_Repository_RSS extends DP_Repository_Abstract {
 	 * @param string $URI
 	 * @return DP_Repository_RSS
 	 */
-	function DP_Repository_RSS($URI) {
+	public function __construct($URI) {
 		$this->package_list = null;
 		$this->URI = $URI;
 	}
@@ -44,7 +44,7 @@ class DP_Repository_RSS extends DP_Repository_Abstract {
 	 * Example: dotproject file releases http://sourceforge.net/export/rss2_projfiles.php?group_id=21656
 	 * At the moment is specific to sourceforge
 	 */
-	function listPackages() {
+	public function listPackages() {
 		
 		// Import feed
 		try {
@@ -59,7 +59,7 @@ class DP_Repository_RSS extends DP_Repository_Abstract {
 		$this->package_list = Array();
 		
 		foreach ($sourceforgeRss as $item) {
-			$real_link = $this->_extractDownloadLink($item['description']);
+			$real_link = $this->extractDownloadLink($item['description']);
 			$this->package_list[] = Array('title'=>$item['title'],
 											'description'=>$item['description'],
 											'link'=>$real_link
@@ -81,7 +81,7 @@ class DP_Repository_RSS extends DP_Repository_Abstract {
 	 * 
 	 * @param string $sf_description
 	 */
-	function _extractDownloadLink($sf_description)
+	protected function extractDownloadLink($sf_description)
 	{
 		preg_match('http://.*release_id=[0-9]*',$sf_description, $matches);
 		return $matches[0]; 

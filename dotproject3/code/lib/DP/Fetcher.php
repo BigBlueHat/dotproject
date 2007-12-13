@@ -21,7 +21,7 @@ require_once 'Zend/Http/Client.php';
  */
 class DP_Fetcher {
 	
-	var $target_path;
+	public $target_path;
 	
 	/**
 	 * DP_Fetcher constructor
@@ -32,7 +32,7 @@ class DP_Fetcher {
 	 * @todo Make the target path configurable
 	 * @todo Establish a consensus on default download directory (or pull location from db).
 	 */
-	function DP_Fetcher()
+	public function __construct()
 	{
 		$this->target_path = DP_BASE_DIR . '/temp';
 	}
