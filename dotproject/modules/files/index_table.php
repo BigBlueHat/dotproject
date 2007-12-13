@@ -303,6 +303,62 @@ foreach ($files as $file_row) {
 	  <a href="#" onClick="expand('versions_<?php echo $latest_file['file_id']; ?>');">
 	  (<?php echo $file_row['file_versions']; ?>)
 	  </a>
+<?php 
+	}
+?>
+		</td>
+		<td width="10%" nowrap="nowrap" align="center">
+		  <?php echo $file_types[$latest_file["file_category"]]; ?>
+		</td>
+		<td width="10%" nowrap="nowrap" align="center">
+		  <?php
+	if ($file['file_folder_name'] != '') {
+		$file_folder_url = (DP_BASE_URL . '/index.php?m=files&tab=' . (count($file_types)+1) 
+		                    . '&folder=' . $file['file_folder_id']);
+?>
+		  <a href="<?php echo $file_folder_url; ?>">
+		  <?php 
+		echo dPshowImage((DP_BASE_URL . '/modules/files/images/folder5_small.png'), 
+		                 '16', '16', 'folder icon', 'show only this folder');
+?> 
+		  <?php echo  $file['file_folder_name']; ?>
+		  </a>
+		  <?php
+	} else {
+		echo $AppUI->_('Root');
+	}
+?>
+		</td>
+		<td width="5%" align="center">
+		  <a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file['file_task']; ?>">
+		  <?php 
+echo $latest_file["task_name"];
+?>
+		  </a>
+		</td>
+		<td width="15%" nowrap="nowrap">
+		  <?php 
+echo ($latest_file["contact_first_name"] . ' ' . $latest_file["contact_last_name"]);
+?>
+		</td>
+		<td width="5%" nowrap="nowrap" align="right">
+		  <?php 
+echo file_size(intval($latest_file["file_size"]));
+?>
+		</td>
+		<td nowrap="nowrap">
+		  <?php 
+echo $AppUI->_(substr($latest_file['file_type'], strpos($latest_file['file_type'], '/')+1)); 
+?>
+		</td>
+		<td width="15%" nowrap="nowrap" align="right">
+		  <?php echo $file_date->format($df.' '.$tf); ?>
+		</td>
+</tr>
+
+<?php
+	if ($file_row['file_versions'] > 1) {
+?>
 
 	  <tr><td colspan="20">
 		<table style="display: none" id="versions_<?php echo $latest_file['file_id']; ?>" 
@@ -401,55 +457,6 @@ foreach ($files as $file_row) {
 <?php
 	}
 ?>
-		</td>
-		<td width="10%" nowrap="nowrap" align="center">
-		  <?php echo $file_types[$latest_file["file_category"]]; ?>
-		</td>
-		<td width="10%" nowrap="nowrap" align="center">
-		  <?php
-	if ($file['file_folder_name'] != '') {
-		$file_folder_url = (DP_BASE_URL . '/index.php?m=files&tab=' . (count($file_types)+1) 
-		                    . '&folder=' . $file['file_folder_id']);
-?>
-		  <a href="<?php echo $file_folder_url; ?>">
-		  <?php 
-		echo dPshowImage((DP_BASE_URL . '/modules/files/images/folder5_small.png'), 
-		                 '16', '16', 'folder icon', 'show only this folder');
-?> 
-		  <?php echo  $file['file_folder_name']; ?>
-		  </a>
-		  <?php
-	} else {
-		echo $AppUI->_('Root');
-	}
-?>
-		</td>
-		<td width="5%" align="center">
-		  <a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file['file_task']; ?>">
-		  <?php 
-echo $latest_file["task_name"];
-?>
-		  </a>
-		</td>
-		<td width="15%" nowrap="nowrap">
-		  <?php 
-echo ($latest_file["contact_first_name"] . ' ' . $latest_file["contact_last_name"]);
-?>
-		</td>
-		<td width="5%" nowrap="nowrap" align="right">
-		  <?php 
-echo file_size(intval($latest_file["file_size"]));
-?>
-		</td>
-		<td nowrap="nowrap">
-		  <?php 
-echo $AppUI->_(substr($latest_file['file_type'], strpos($latest_file['file_type'], '/')+1)); 
-?>
-		</td>
-		<td width="15%" nowrap="nowrap" align="right">
-		  <?php echo $file_date->format($df.' '.$tf); ?>
-		</td>
-</tr>
 <?php 
 }
 ?>

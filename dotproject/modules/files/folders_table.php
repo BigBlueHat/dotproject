@@ -254,8 +254,6 @@ function displayFiles($folder_id) {
 	
 	global $showProject, $cfObj, $dPconfig;
 	
-	$canEdit = true; //getPermission('file_folders', 'edit', $folder_id);
-	$canRead = true; //getPermission('file_folders', 'view', $folder_id);
 	
 	$df = $AppUI->getPref('SHDATEFORMAT');
 	$tf = $AppUI->getPref('TIMEFORMAT');
@@ -276,7 +274,7 @@ function displayFiles($folder_id) {
 	             . ', round(max(f.file_version), 2) as file_lastversion, f.file_task' 
 	             . ', ff.file_folder_id, ff.file_folder_name, p.project_name' 
 	             . ', p.project_color_identifier, c.contact_first_name, c.contact_last_name' 
-	             . ', t.task_name');
+	             . ', t.task_name, u.user_username as file_owner');
 	$q->addJoin('projects', 'p', 'p.project_id = f.file_project');
 	$q->addJoin('users', 'u', 'u.user_id = f.file_owner');
 	$q->addJoin('contacts', 'c', 'c.contact_id = u.user_contact');
@@ -287,10 +285,10 @@ function displayFiles($folder_id) {
 		$q->addWhere($allowedFolders);
 	}
 	if (count ($allowedProjects)) {
-		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR f.file_project = 0 )');
+		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR file_project = 0 )');
 	}
 	if (count ($allowedTasks)) {
-		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR f.file_task = 0 )');
+		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR file_task = 0 )');
 	}
 	if ($project_id) {
 		$q->addWhere('file_project = '. $project_id);
@@ -336,10 +334,10 @@ function displayFiles($folder_id) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR f.file_task = 0 )');
 	}
 	if ($project_id) {
-		$q->addWhere('file_project = '. $project_id);
+		$q->addWhere('f.file_project = '. $project_id);
 	}
 	if ($task_id) {
-		$q->addWhere('file_task = '. $task_id);
+		$q->addWhere('f.file_task = '. $task_id);
 	}
 	if ($company_id) {
 		$q->innerJoin('companies','co','co.company_id = p.project_company');
@@ -355,7 +353,7 @@ function displayFiles($folder_id) {
 	$file_versions = array();
 	if ($canRead) {
 		$files = db_loadList($files_sql);
-		$file_versions = db_loadHashList($file_versions_sql);
+		$file_versions = db_loadHashList($file_versions_sql, 'file_id');
 	}
 	if ($files == array()) {
 		return;	
@@ -383,62 +381,60 @@ function displayFiles($folder_id) {
 	
 	$id = 0;
 	foreach ($files as $row) {
-		$latest_file = $file_versions[$row['latest_id']];
+		$latest_file = $file_versions[$row['file_id']];
 		$file_date = new CDate($row['file_date']);
-
-		if ($fp != $latest_file['file_project']) {
-			if (!$row['project_name']) {
-				$row['project_name'] = $AppUI->_('All Projects');
-				$row['project_color_identifier'] = 'f4efe3';
+		
+		$canEdit_file = getPermission('files', 'edit', $row['file_id']); //single file level
+		
+		if ($fp != $latest_file["file_project"]) {
+			if (!$latest_file["file_project"]) {
+				$latest_file["project_name"] = $AppUI->_('Not associated to projects');
+				$latest_file["project_color_identifier"] = 'f4efe3';
 			}
 			if ($showProject) {
-				$s = '<tr>';
-				$s .= '<td colspan="20" style="background-color:#'.$row['project_color_identifier'].'">';
-				$s .= '<font color="' . bestColor($row['project_color_identifier']) . '">';
-				if ($row['file_project'] > 0) {
-					$href = './index.php?m=projects&a=view&project_id=' . $row['file_project'];
-				} else {
-					$href = './index.php?m=projects';	
-				}
-				$s .= '<a href="'. $href .'">' . $row['project_name'] . '</a>';
-				$s .= '</font></td></tr>';
-				echo $s;
+				$style = ("background-color:#$latest_file[project_color_identifier];color:" 
+				          . bestColor($latest_file["project_color_identifier"]));
+?>
+<tr>
+	<td colspan="20" style="border: outset 2px #eeeeee;<?php echo $style; ?>">
+	<a href="?m=projects&a=view&project_id=<?php echo $latest_file['file_project']; ?>">
+	<span style="<?php echo $style; ?>"><?php echo $latest_file['project_name']; ?></span></a>
+	</td>
+</tr>
+<?php
 			}
 		}
 		$fp = $row['file_project'];
-	        if ($row['file_versions'] > 1)
-	                $file = last_file($file_versions, $row['file_name'], $row['file_project']);
-	        else 
-	                $file = $row;
 	?>
-	<form name="frm_remove_file_<?php echo $file['file_id']; ?>" action="?m=files" method="post">
+	<form name="frm_remove_file_<?php echo $latest_file['file_id']; ?>" action="?m=files" method="post">
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="1" />
-	<input type="hidden" name="file_id" value="<?php echo $file['file_id']; ?>" />
+	<input type="hidden" name="file_id" value="<?php echo $latest_file['file_id']; ?>" />
 	<input type="hidden" name="redirect" value="<?php echo $current_uri; ?>" />
 	</form>		
-	<form name="frm_duplicate_file_<?php echo $file['file_id']; ?>" action="?m=files" method="post">
+	<form name="frm_duplicate_file_<?php echo $latest_file['file_id']; ?>" action="?m=files" method="post">
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="duplicate" value="1" />
-	<input type="hidden" name="file_id" value="<?php echo $file['file_id']; ?>" />
+	<input type="hidden" name="file_id" value="<?php echo $latest_file['file_id']; ?>" />
 	<input type="hidden" name="redirect" value="<?php echo $current_uri; ?>" />
 	</form>		
 	<tr>
 		<td nowrap="8%">
 <?php 
 	$file_icon = getIcon($row['file_type']);
-	echo '<a href="./fileviewer.php?file_id=' . $file['file_id'] . '" title="' . $file['file_description'] .'">' . (dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16')) . '&nbsp;' . $row['file_name'] . '</a>'; 
+	// TODO: CLEAN UP AFTER HERE
+	echo '<a href="./fileviewer.php?file_id=' . $latest_file['file_id'] . '" title="' . $latest_file['file_description'] .'">' . (dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16')) . '&nbsp;' . $row['file_name'] . '</a>'; 
 ?>
 		</td>
-		<td width="20%"><?php echo $file['file_description'];?></td>
+		<td width="20%"><?php echo $latest_file['file_description'];?></td>
 		<td width="5%" nowrap="nowrap" align="center">
 <?php
 	$hidden_table = '';
 	echo $row['file_lastversion'];
 	if ($row['file_versions'] > 1) {
-		echo ' <a href="#" onClick="expand(\'versions_' . $file['file_id'] . '\'); ">(' . $row['file_versions'] . ')</a>';
+		echo ' <a href="#" onClick="expand(\'versions_' . $latest_file['file_id'] . '\'); ">(' . $row['file_versions'] . ')</a>';
 		$hidden_table = ('<tr><td colspan="20">' . "\n"
-		                 . '<table style="display: none" id="versions_' . $file['file_id']  . "\n" 
+		                 . '<table style="display: none" id="versions_' . $latest_file['file_id']  . "\n" 
 		                 . '" width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">' 
 		                 . "\n". '<tr>' . "\n" 
 		                 . '<th nowrap="nowrap">' . $AppUI->_('File Name') . '</th>' . "\n" 
@@ -449,7 +445,7 @@ function displayFiles($folder_id) {
 		                 . '<th>' . $AppUI->_('Owner') . '</th>' . "\n" 
 		                 . '<th>' . $AppUI->_('Size') . '</th>' . "\n" 
 		                 . '<th>' . $AppUI->_('Type') . '</a></th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Date') . '</th> . "\n"' 
+		                 . '<th>' . $AppUI->_('Date') . '</th>' . "\n"
 		                 . '<th nowrap="nowrap">' . $AppUI->_('co Reason') . '</th>' . "\n" 
 		                 . '<th>' . $AppUI->_('co') . '</th>' . "\n" 
 		                 . '<th nowrap width="1"></th>' . "\n" 
@@ -488,7 +484,7 @@ function displayFiles($folder_id) {
 	                <td width="5%" nowrap="nowrap" align="right">' . intval($file_row['file_size']/1024) . 'kb </td>
 	                <td width="15%" nowrap="nowrap">' . $file_row['file_type'] . '</td>
 	                <td width="15%" nowrap="nowrap" align="right">' . $file_date->format("$df $tf") . '</td>
-        			<td width="10%">' . $row['file_co_reason'] . '</td>
+        			<td width="10%">' . $file_row['file_co_reason'] . '</td>
         			<td nowrap="nowrap" align="center">';
 				if ($canEdit && empty($file_row['file_checkout'])) {
 					$hidden_table .='<a href="?m=files&a=co&file_id='.$file_row['file_id'].'">'.dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16','checkout','checkout file').'</a>';
@@ -531,31 +527,32 @@ function displayFiles($folder_id) {
 	}
 ?>
 	        </td>
-	        <td width="10%" nowrap="nowrap" align="center"><a href="./index.php?m=<?php echo $m; ?>&a=<?php echo $a; ?>&view=categories&tab=<?php echo ($file['file_category']); ?>"><?php echo $file_types[$file["file_category"]]; ?></a></td> 
-		<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $file["file_task"]; ?>"><?php echo $file["task_name"];?></a></td>
-		<td width="15%" nowrap="nowrap"><?php echo $file["contact_first_name"].' '.$file["contact_last_name"]; ?></td>
-		<td width="5%" nowrap="nowrap" align="right"><?php echo intval($file["file_size"] / 1024); ?> kb</td>
-		<td width="15%" nowrap="nowrap"><?php echo $file["file_type"]; ?></td>
+	        <td width="10%" nowrap="nowrap" align="center"><a href="./index.php?m=<?php echo $m; ?>&a=<?php echo $a; ?>&view=categories&tab=<?php echo ($latest_file['file_category']); ?>"><?php echo $file_types[$latest_file["file_category"]]; ?></a></td> 
+		<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file["file_task"]; ?>"><?php echo $latest_file["task_name"];?></a></td>
+		<td width="15%" nowrap="nowrap"><?php echo $latest_file["contact_first_name"].' '.$latest_file["contact_last_name"]; ?></td>
+		<td width="5%" nowrap="nowrap" align="right"><?php echo intval($latest_file["file_size"] / 1024); ?> kb</td>
+		<td width="15%" nowrap="nowrap"><?php echo $latest_file["file_type"]; ?></td>
 		<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format("$df $tf"); ?></td>
-        <td width="10%"><?php echo $file['file_co_reason']; ?></td>
+        <td width="10%"><?php echo $latest_file['file_co_reason']; ?></td>
         <td nowrap="nowrap" align="center">
         <?php if ($canEdit && empty($row['file_checkout'])) {
         ?>
-                <a href="?m=files&a=co&file_id=<?php echo $file['file_id']; ?>"><?php echo dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16','checkout','checkout file'); ?></a>
+                <a href="?m=files&a=co&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16','checkout','checkout file'); ?></a>
         <?php }
         else if ($row['file_checkout'] == $AppUI->user_id) { ?>
-                <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $file['file_id']; ?>"><?php echo dPshowImage(DP_BASE_URL . '/modules/files/images/down.png', '16','16','checkin','checkin file'); ?></a>
+                <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage(DP_BASE_URL . '/modules/files/images/down.png', '16','16','checkin','checkin file'); ?></a>
         <?php }
         else { 
-                if ($file['file_checkout'] == 'final'){
+                if ($latest_file['file_checkout'] == 'final'){
                         echo 'final';
                 } else {
+				  
 						$q4 = new DBQuery;
 						$q4->addQuery("file_id, file_checkout, user_username as co_user, contact_first_name, contact_last_name");
 						$q4->addTable('files');
 						$q4->leftJoin('users', 'cu', 'cu.user_id = file_checkout');
 						$q4->leftJoin('contacts', 'co', 'co.contact_id = cu.user_contact');
-						$q4->addWhere('file_id = '.$file['file_id']);
+						$q4->addWhere('file_id = '.$latest_file['file_id']);
 						$co_user = array();
 						$co_user = $q4->loadList();
 						$co_user = $co_user[0];
@@ -566,18 +563,18 @@ function displayFiles($folder_id) {
         ?>
         </td>
 		<td nowrap="nowrap" align="center" width="48">
-		<?php if ($canEdit && (empty($file['file_checkout']) || ($file['file_checkout'] == 'final' && ($canEdit || $file['project_owner'] == $AppUI->user_id)))) {
-			echo '<a href="./index.php?m=files&a=addedit&file_id=' . $file["file_id"] . '">';
+		<?php if ($canEdit && (empty($latest_file['file_checkout']) || ($latest_file['file_checkout'] == 'final' && ($canEdit || $latest_file['project_owner'] == $AppUI->user_id)))) {
+			echo '<a href="./index.php?m=files&a=addedit&file_id=' . $latest_file["file_id"] . '">';
 			echo dPshowImage(DP_BASE_URL . '/modules/files/images/kedit.png', '16', '16', 'edit file', 'edit file');
 			echo "</a>";
-			echo '<a href="#" onclick="document.frm_duplicate_file_'.$file['file_id'].'.submit()">' . dPshowImage(DP_BASE_URL . '/modules/files/images/duplicate.png', '16', '16', 'duplicate file', 'duplicate file') . '</a>';
-			echo '<a href="#" onclick="if (confirm(\'Are you sure you want to delete this file?\')) {document.frm_remove_file_'.$file['file_id'].'.submit()}">' . dPshowImage(DP_BASE_URL . '/modules/files/images/remove.png', '16', '16', 'delete file', 'delete file') . '</a>';		
+			echo '<a href="#" onclick="document.frm_duplicate_file_'.$latest_file['file_id'].'.submit()">' . dPshowImage(DP_BASE_URL . '/modules/files/images/duplicate.png', '16', '16', 'duplicate file', 'duplicate file') . '</a>';
+			echo '<a href="#" onclick="if (confirm(\'Are you sure you want to delete this file?\')) {document.frm_remove_file_'.$latest_file['file_id'].'.submit()}">' . dPshowImage(DP_BASE_URL . '/modules/files/images/remove.png', '16', '16', 'delete file', 'delete file') . '</a>';		
 		}
 		?>
 		<td nowrap="nowrap" align="center" width="1">
-		<?php if ($canEdit && (empty($file['file_checkout']) || ($file['file_checkout'] == 'final' && ($canEdit || $file['project_owner'] == $AppUI->user_id)))) {
-            $bulk_op = 'onchange="(this.checked) ? addBulkComponent('.$file['file_id'].') : removeBulkComponent('.$file['file_id'].')"';
-			echo '<input type="checkbox" '.$bulk_op.' name="chk_sel_file_'.$file['file_id'].'" />';		
+		<?php if ($canEdit && (empty($latest_file['file_checkout']) || ($latest_file['file_checkout'] == 'final' && ($canEdit || $latest_file['project_owner'] == $AppUI->user_id)))) {
+            $bulk_op = 'onchange="(this.checked) ? addBulkComponent('.$latest_file['file_id'].') : removeBulkComponent('.$latest_file['file_id'].')"';
+			echo '<input type="checkbox" '.$bulk_op.' name="chk_sel_file_'.$latest_file['file_id'].'" />';		
 		}
 		?>		
 		</td>
@@ -734,7 +731,7 @@ if ($folder) {
 ?>
 <?php 
 
-	$canRead_parent = true;//$perms->checkModuleItem('file_folders', 'view', $cfObj->file_folder_parent));
+	$canRead_parent = true;//$perms->checkModuleItem('file_folders', 'view', $cfObj->file_folder_parent);
 	if ($canRead_parent) {
 		echo ("\t\t\t" . '<a href="./index.php?m=' . $m . '&a=' . $a . '&tab=' . $tab . '&folder=' 
 		      . $cfObj->file_folder_parent . '">' . "\n");

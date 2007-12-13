@@ -51,7 +51,6 @@ $titleBlock->addCell(arraySelect($projects, 'project_id',
  * override the file module's $canEdit variable passed from the main index.php 
  * in order to check on file folder permissions
  */
-
 $canAuthor_folders = true; //getPermission('file_folders', 'add');
 
 if ($canAuthor) {
