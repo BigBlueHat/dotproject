@@ -454,6 +454,7 @@ echo $AppUI->_(substr($latest_file['file_type'], strpos($latest_file['file_type'
 		}
 ?>
 		</table>
+	  </td></tr>
 <?php
 	}
 ?>

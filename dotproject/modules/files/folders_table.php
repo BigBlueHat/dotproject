@@ -382,18 +382,18 @@ function displayFiles($folder_id) {
 	$id = 0;
 	foreach ($files as $row) {
 		$latest_file = $file_versions[$row['file_id']];
-		$file_date = new CDate($row['file_date']);
+		$file_date = new CDate($latest_file['file_date']);
 		
-		$canEdit_file = getPermission('files', 'edit', $row['file_id']); //single file level
+		$canEdit_file = getPermission('files', 'edit', $latest_file['file_id']); //single file
 		
-		if ($fp != $latest_file["file_project"]) {
-			if (!$latest_file["file_project"]) {
-				$latest_file["project_name"] = $AppUI->_('Not associated to projects');
-				$latest_file["project_color_identifier"] = 'f4efe3';
+		if ($fp != $latest_file['file_project']) {
+			if (!$latest_file['file_project']) {
+				$latest_file['project_name'] = $AppUI->_('Not associated to projects');
+				$latest_file['project_color_identifier'] = 'f4efe3';
 			}
 			if ($showProject) {
-				$style = ("background-color:#$latest_file[project_color_identifier];color:" 
-				          . bestColor($latest_file["project_color_identifier"]));
+				$style = ('background-color:#' . $latest_file['project_color_identifier'] 
+						  . ';color:' . bestColor($latest_file['project_color_identifier']));
 ?>
 <tr>
 	<td colspan="20" style="border: outset 2px #eeeeee;<?php echo $style; ?>">
@@ -404,15 +404,17 @@ function displayFiles($folder_id) {
 <?php
 			}
 		}
-		$fp = $row['file_project'];
+		$fp = $latest_file['file_project'];
 	?>
-	<form name="frm_remove_file_<?php echo $latest_file['file_id']; ?>" action="?m=files" method="post">
+	<form name="frm_remove_file_<?php echo $latest_file['file_id']; ?>" action="?m=files" 
+	 method="post">
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="del" value="1" />
 	<input type="hidden" name="file_id" value="<?php echo $latest_file['file_id']; ?>" />
 	<input type="hidden" name="redirect" value="<?php echo $current_uri; ?>" />
 	</form>		
-	<form name="frm_duplicate_file_<?php echo $latest_file['file_id']; ?>" action="?m=files" method="post">
+	<form name="frm_duplicate_file_<?php echo $latest_file['file_id']; ?>" action="?m=files" 
+	 method="post">
 	<input type="hidden" name="dosql" value="do_file_aed" />
 	<input type="hidden" name="duplicate" value="1" />
 	<input type="hidden" name="file_id" value="<?php echo $latest_file['file_id']; ?>" />
@@ -421,71 +423,163 @@ function displayFiles($folder_id) {
 	<tr>
 		<td nowrap="8%">
 <?php 
-	$file_icon = getIcon($row['file_type']);
-	// TODO: CLEAN UP AFTER HERE
-	echo '<a href="./fileviewer.php?file_id=' . $latest_file['file_id'] . '" title="' . $latest_file['file_description'] .'">' . (dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16')) . '&nbsp;' . $row['file_name'] . '</a>'; 
+		$file_icon = getIcon($latest_file['file_type']);
 ?>
+		  <a href="./fileviewer.php?file_id=<?php echo $latest_file['file_id']; ?>" 
+		   title="<?php echo $latest_file['file_description']; ?>"> 
+		  <?php 
+		echo dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16');
+?>
+		  &nbsp;<?php echo $latest_file['file_name']; ?> 
+		  </a>
 		</td>
 		<td width="20%"><?php echo $latest_file['file_description'];?></td>
 		<td width="5%" nowrap="nowrap" align="center">
 <?php
-	$hidden_table = '';
-	echo $row['file_lastversion'];
-	if ($row['file_versions'] > 1) {
-		echo ' <a href="#" onClick="expand(\'versions_' . $latest_file['file_id'] . '\'); ">(' . $row['file_versions'] . ')</a>';
-		$hidden_table = ('<tr><td colspan="20">' . "\n"
-		                 . '<table style="display: none" id="versions_' . $latest_file['file_id']  . "\n" 
-		                 . '" width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">' 
-		                 . "\n". '<tr>' . "\n" 
-		                 . '<th nowrap="nowrap">' . $AppUI->_('File Name') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Description') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Versions') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Category') . '</th>' . "\n" 
-		                 . '<th nowrap="nowrap">' . $AppUI->_('Task Name') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Owner') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Size') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Type') . '</a></th>' . "\n" 
-		                 . '<th>' . $AppUI->_('Date') . '</th>' . "\n"
-		                 . '<th nowrap="nowrap">' . $AppUI->_('co Reason') . '</th>' . "\n" 
-		                 . '<th>' . $AppUI->_('co') . '</th>' . "\n" 
-		                 . '<th nowrap width="1"></th>' . "\n" 
-		                 . '<th nowrap width="1"></th>' . "\n" 
-		                 . '</tr>' . "\n");
-		foreach($file_versions as $file_row) {
-			if ($file_row['file_name'] == $row['file_name'] && $file_row['file_project'] == $row['file_project']) {
-				$file_icon = getIcon($file_row['file_type']);
-				$file_date = new CDate($file_row['file_date']);
-				$hidden_table .= '	
-			<form name="frm_delete_sub_file_'.$file_row['file_id'].'" action="?m=files" method="post">
-			<input type="hidden" name="dosql" value="do_file_aed" />
-			<input type="hidden" name="del" value="1" />
-			<input type="hidden" name="file_id" value="'.$file_row['file_id'].'" />
-			<input type="hidden" name="redirect" value="'.$current_uri.'" />
-			</form>';		
-				$hidden_table .= '	
-			<form name="frm_duplicate_sub_file_'.$file_row['file_id'].'" action="?m=files" method="post">
-			<input type="hidden" name="dosql" value="do_file_aed" />
-			<input type="hidden" name="duplicate" value="1" />
-			<input type="hidden" name="file_id" value="'.$file_row['file_id'].'" />
-			<input type="hidden" name="redirect" value="'.$current_uri.'" />
-			</form>';		
-				$hidden_table .= '
-	        <tr>
-	                <td nowrap="8%"><a href="./fileviewer.php?file_id=' . $file_row['file_id'] . '" 
-	                        title="' . $file_row['file_description'] . '">' . 
-				  (dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', '16')) . "&nbsp;" . 
-				  $file_row['file_name'] . '
-	                </a></td>
-	                <td width="20%">' . $file_row['file_description'] . '</td>
-	                <td width="5%" nowrap="nowrap" align="center">' . $file_row['file_version'] . '</td>
-	                <td width="10%" nowrap="nowrap" align="center"><a href="./index.php?m='.$m.'&a='.$a.'&tab='.($file_row['file_category']+1).'">' . $file_types[$file_row['file_category']+1] . '</a></td>
-	                <td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id='.$file_row["file_task"].'">'.$row["task_name"].'</a></td>
-	                <td width="15%" nowrap="nowrap">' . $row["contact_first_name"].' '.$row["contact_last_name"] . '</td>
-	                <td width="5%" nowrap="nowrap" align="right">' . intval($file_row['file_size']/1024) . 'kb </td>
-	                <td width="15%" nowrap="nowrap">' . $file_row['file_type'] . '</td>
-	                <td width="15%" nowrap="nowrap" align="right">' . $file_date->format("$df $tf") . '</td>
-        			<td width="10%">' . $file_row['file_co_reason'] . '</td>
-        			<td nowrap="nowrap" align="center">';
+		$hidden_table = '';
+		echo $row['file_lastversion'];
+		if ($row['file_versions'] > 1) {
+?>
+	  <a href="#" onClick="expand('versions_<?php echo $latest_file['file_id']; ?>');">
+	  (<?php echo $row['file_versions']; ?>)
+	  </a>
+<?php 
+		}
+?>
+		</td>
+		<td width="10%" nowrap="nowrap" align="center">
+		  <?php echo $file_types[$latest_file['file_category']]; ?>
+		</td>
+		<td width="5%" align="center">
+		  <a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file['file_task']; ?>">
+		  <?php echo $latest_file['task_name']; ?>
+		  </a>
+		</td>
+		<td width="15%" nowrap="nowrap">
+		  <?php 
+		echo ($latest_file["contact_first_name"] . ' ' . $latest_file["contact_last_name"]); 
+?>
+		</td>
+		<td width="5%" nowrap="nowrap" align="right">
+		  <?php echo file_size(intval($latest_file['file_size'])); ?>
+		</td>
+		<td nowrap="nowrap">
+		  <?php echo substr($latest_file['file_type'], strpos($latest_file['file_type'], '/')+1) ?>
+		</td>
+		<td width="15%" nowrap="nowrap" align="right">
+		  <?php echo $hdate->format($df . ' ' . $tf); ?>
+		</td>
+		<td width="10%"><?php echo $latest_file['file_co_reason']; ?></td>
+		<td nowrap="nowrap" align="center">
+		
+		</td>
+</tr>
+
+
+
+<?php 
+		if ($row['file_versions'] > 1) {
+?>
+
+	  <tr><td colspan="20">
+		<table style="display: none" id="versions_<?php echo $latest_file['file_id']; ?>" 
+		 width="100%" border="0" cellpadding="2" cellspacing="1" class="tbl">
+		  <tr>
+			<th nowrap="nowrap"><?php echo $AppUI->_('File Name'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Description'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Versions'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Category'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Task Name'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Owner'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Size'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Type'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('Date'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('co Reason'); ?></th>
+			<th nowrap="nowrap"><?php echo $AppUI->_('co'); ?></th>
+			<th nowrap="nowrap"width="1">&nbsp;</th>
+			<th nowrap="nowrap"width="1">&nbsp;</th>
+		  </tr>
+<?php
+			foreach($file_versions as $file) {
+				if ($file['file_version_id'] == $latest_file['file_version_id']) {
+					$file_icon = getIcon($file['file_type']);
+					$hdate = new Date($file['file_date']);
+?>
+
+		  <form name="frm_delete_sub_file_<?php echo $file['file_id']; ?>" 
+		   action="?m=files" method="post">
+		  <input type="hidden" name="dosql" value="do_file_aed" />
+		  <input type="hidden" name="del" value="1" />
+		  <input type="hidden" name="file_id" value="<?php echo $file['file_id']; ?>" />
+		  <input type="hidden" name="redirect" value="<?php echo $current_uri; ?>" />
+		  </form>		
+		  <form name="frm_duplicate_sub_file_<?php echo $file['file_id']; ?>" 
+		   action="?m=files" method="post">
+		  <input type="hidden" name="dosql" value="do_file_aed" />
+		  <input type="hidden" name="duplicate" value="1" />
+		  <input type="hidden" name="file_id" value="<?php echo $file['file_id']; ?>" />
+		  <input type="hidden" name="redirect" value="<?php echo $current_uri; ?>" />
+		  </form>
+		  <tr>
+			<td nowrap="8%">
+			  <a href="./fileviewer.php?file_id=<?php echo $file['file_id']; ?>" 
+			   title="<?php echo $file['file_description']; ?>">
+			  <?php
+					echo dPshowImage((DP_BASE_URL . '/modules/files/images/' . $file_icon), '16', 
+					                 '16');
+?>
+			  <?php echo $file['file_name']; ?> 
+			  </a>
+			</td>
+			<td width="20%"><?php echo $file['file_description']; ?></td>
+			<td width="5%" nowrap="nowrap" align="center"><?php echo $file['file_version']; ?></td>
+			<td width="10%" nowrap="nowrap" align="center">
+			  <?php echo $file_types[$file['file_category']]; ?>
+			</td>
+			<td width="5%" align="center">
+			  <a href="./index.php?m=tasks&a=view&task_id=<?php echo $file['file_task']; ?>">
+			  <?php echo $file['task_name']; ?>
+			  </a>
+			</td>
+			<td width="15%" nowrap="nowrap">
+			  <?php echo ($file["contact_first_name"] . ' ' . $file["contact_last_name"]); ?>
+			</td>
+			<td width="5%" nowrap="nowrap" align="right">
+			  <?php echo file_size(intval($file['file_size'])); ?>
+			</td>
+			<td nowrap="nowrap">
+			  <?php echo substr($file['file_type'], strpos($file['file_type'], '/')+1) ?>
+			</td>
+			<td width="15%" nowrap="nowrap" align="right">
+			  <?php echo $hdate->format("$df $tf"); ?>
+			</td>
+			<td width="10%"><?php echo $file['file_co_reason']; ?></td>
+			<td nowrap="nowrap" align="center">
+			
+			</td>
+			
+			<!--
+			<td nowrap="nowrap" width="20">&nbsp;
+<?php
+					if ($canEdit && $dPconfig['files_show_versions_edit']){
+?>
+			<a href="./index.php?m=files&a=addedit&file_id=<?php echo $file['file_id']; ?>">
+			<?php
+						echo dPshowImage((DP_BASE_URL . '/modules/files/images/kedit.png'), 
+						                 '16', '16', 'edit file', 'edit file');
+?>
+			</a>
+<?php
+					}
+?>
+			</td>
+-->
+				
+				
+		  </tr>
+<?php
+				
+					
 				if ($canEdit && empty($file_row['file_checkout'])) {
 					$hidden_table .='<a href="?m=files&a=co&file_id='.$file_row['file_id'].'">'.dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16','checkout','checkout file').'</a>';
 				} else if ($row['file_checkout'] == $AppUI->user_id) {
@@ -518,12 +612,8 @@ function displayFiles($folder_id) {
 					$bulk_op = 'onchange="(this.checked) ? addBulkComponent('.$file_row['file_id'].') : removeBulkComponent('.$file_row['file_id'].')"';
 					$hidden_table .= '<input type="checkbox" '.$bulk_op.' name="chk_sub_sel_file_'.$file_row['file_id'].'" />';		
 				}
-				$hidden_table .= '</td>';
-				$hidden_table .= '</tr>';
 			}
 		}
-		$hidden_table .= '</table>';
-		//$hidden_table .= '</span>';
 	}
 ?>
 	        </td>
@@ -582,8 +672,18 @@ function displayFiles($folder_id) {
 	<?php 
 			echo $hidden_table; 
 	        $hidden_table = ''; 
-	}
 	?>
+<?php
+				}
+?>
+<?php
+			}
+?>
+		</table>
+	  </td></tr>
+<?php
+		}
+?>
 	</table>
 	<?php
 		shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $folder_id);
