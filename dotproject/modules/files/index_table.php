@@ -260,16 +260,10 @@ foreach ($files as $file_row) {
 	  </a>
 <?php
 	} else if ($latest_file['file_checkout'] == 'final') {
-?>
-	  final
-<?php
+		echo $AppUI->_('final');
 	} else {
-?>
-	  <?php 
-		echo ($latest_file['co_contact_first_name'] . ' ' . $latest_file['co_contact_last_name']); 
-?>
-	  <br>(<?php echo $latest_file['co_user']; ?>)
-<?php
+		echo ('	  ' . $latest_file['co_contact_first_name'] . ' ' 
+		      . $latest_file['co_contact_last_name'] . '<br />(' . $latest_file['co_user'] . ')'); 
 	}
 ?>				
 	</td>

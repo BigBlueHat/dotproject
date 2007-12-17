@@ -273,13 +273,17 @@ function displayFiles($folder_id) {
 	$q->addQuery('f.*, count(f.file_version) as file_versions' 
 	             . ', round(max(f.file_version), 2) as file_lastversion, f.file_task' 
 	             . ', ff.file_folder_id, ff.file_folder_name, p.project_name' 
-	             . ', p.project_color_identifier, c.contact_first_name, c.contact_last_name' 
-	             . ', t.task_name, u.user_username as file_owner');
+	             . ', p.project_color_identifier, p.project_owner, c.contact_first_name' 
+	             . ', c.contact_last_name, t.task_name, u.user_username as file_owner' 
+	             . ', co.contact_first_name as checkout_first_name' 
+	             . ', co.contact_last_name as checkout_last_name');
 	$q->addJoin('projects', 'p', 'p.project_id = f.file_project');
 	$q->addJoin('users', 'u', 'u.user_id = f.file_owner');
 	$q->addJoin('contacts', 'c', 'c.contact_id = u.user_contact');
 	$q->addJoin('tasks', 't', 't.task_id = f.file_task');
 	$q->addJoin('file_folders', 'ff', 'ff.file_folder_id = f.file_folder');
+	$q->leftJoin('users', 'cu', 'cu.user_id = f.file_checkout');
+	$q->leftJoin('contacts', 'co', 'co.contact_id = cu.user_contact');
 	$q->addWhere('file_folder = '. $folder_id);
 	if (count($allowedFolders)) {
 		$q->addWhere($allowedFolders);
@@ -467,11 +471,89 @@ function displayFiles($folder_id) {
 		  <?php echo substr($latest_file['file_type'], strpos($latest_file['file_type'], '/')+1) ?>
 		</td>
 		<td width="15%" nowrap="nowrap" align="right">
-		  <?php echo $hdate->format($df . ' ' . $tf); ?>
+		  <?php echo $file_date->format($df . ' ' . $tf); ?>
 		</td>
 		<td width="10%"><?php echo $latest_file['file_co_reason']; ?></td>
 		<td nowrap="nowrap" align="center">
-		
+		  
+<?php 
+		if ($canEdit && empty($latest_file['file_checkout'])) {
+?>
+			  <a href="?m=files&a=co&file_id=<?php echo $latest_file['file_id']; ?>">
+			  <?php 
+			echo dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16', 
+			                 'checkout','checkout file') ?>
+			  </a>
+<?php 
+		} else if ($latest_file['file_checkout'] == $AppUI->user_id) {
+?>
+			  <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $latest_file['file_id']; ?>">
+			  <?php 
+			echo dPshowImage(DP_BASE_URL . '/modules/files/images/down.png', '16', '16', 
+			                 'checkin','checkin file') ?>
+			  </a>
+<?php
+		} else if ($file['file_checkout'] == 'final') {
+			echo ('			  ' . $AppUI->_('final'));
+		} else {
+			echo ('	  ' . $latest_file['checkout_first_name'] . ' ' 
+			      . $latest_file['checkout_last_name'] . '<br />(' . $latest_file['co_user'] . ')');
+		}
+?>
+		</td>
+		<td nowrap="nowrap" align="right" width="48">
+		  <?php 
+		if (empty($latest_file['file_checkout']) || $latest_file['file_checkout'] == 'final') {
+			// Edit File
+			if ($canEdit || $latest_file['project_owner'] == $AppUI->user_id) {
+?>
+		  <a href="./index.php?m=files&a=addedit&file_id=<?php echo $latest_file['file_id']; ?>">
+<?php
+				echo (dPshowImage(DP_BASE_URL . '/modules/files/images/kedit.png', '16', '16', 
+				                  'edit file', 'edit file'));
+?>
+		  </a>
+<?php 
+			}
+			// Duplicate File
+			if ($canAuthor || $latest_file['project_owner'] == $AppUI->user_id) {
+?>
+		  <a href="#" 
+		   onclick="document.frm_duplicate_file_<?php echo $latest_file['file_id']; ?>.submit()">
+<?php
+				echo (dPshowImage(DP_BASE_URL . '/modules/files/images/duplicate.png', '16', '16', 
+				                  'duplicate file', 'duplicate file'));
+?>
+		  </a>
+<?php 
+			}
+			// Delete File
+			if ($canDelete || $latest_file['project_owner'] == $AppUI->user_id) {
+?>
+		  <a href="#" 
+		   onclick="if (confirm('Are you sure you want to delete this file?')) {document.frm_remove_file_<?php echo $latest_file['file_id']; ?>.submit()}">
+<?php
+				echo (dPshowImage(DP_BASE_URL . '/modules/files/images/remove.png', '16', '16', 
+				                  'delete file', 'delete file'));
+?>
+		  </a>
+<?php 
+			}
+		}
+?>
+		</td>
+		<td nowrap="nowrap" align="center" width="1">
+<?php 
+		if ((empty($latest_file['file_checkout']) || $latest_file['file_checkout'] == 'final') 
+		    && ($canEdit || $latest_file['project_owner'] == $AppUI->user_id)) {
+			$bulk_op = ('onchange="(this.checked) ? addBulkComponent(' . $latest_file['file_id'] 
+						. ') : removeBulkComponent(' . $latest_file['file_id'] . ')"');
+?>
+			<input type="checkbox" <?php echo $bulk_op; ?> 
+			 name="chk_sub_sel_file_<?php echo $file_row['file_id']; ?>" />
+<?php 
+		}
+?>
 		</td>
 </tr>
 
@@ -494,8 +576,6 @@ function displayFiles($folder_id) {
 			<th nowrap="nowrap"><?php echo $AppUI->_('Size'); ?></th>
 			<th nowrap="nowrap"><?php echo $AppUI->_('Type'); ?></th>
 			<th nowrap="nowrap"><?php echo $AppUI->_('Date'); ?></th>
-			<th nowrap="nowrap"><?php echo $AppUI->_('co Reason'); ?></th>
-			<th nowrap="nowrap"><?php echo $AppUI->_('co'); ?></th>
 			<th nowrap="nowrap"width="1">&nbsp;</th>
 			<th nowrap="nowrap"width="1">&nbsp;</th>
 		  </tr>
@@ -503,7 +583,7 @@ function displayFiles($folder_id) {
 			foreach($file_versions as $file) {
 				if ($file['file_version_id'] == $latest_file['file_version_id']) {
 					$file_icon = getIcon($file['file_type']);
-					$hdate = new Date($file['file_date']);
+					$file_version_date = new Date($file['file_date']);
 ?>
 
 		  <form name="frm_delete_sub_file_<?php echo $file['file_id']; ?>" 
@@ -551,139 +631,78 @@ function displayFiles($folder_id) {
 			  <?php echo substr($file['file_type'], strpos($file['file_type'], '/')+1) ?>
 			</td>
 			<td width="15%" nowrap="nowrap" align="right">
-			  <?php echo $hdate->format("$df $tf"); ?>
-			</td>
-			<td width="10%"><?php echo $file['file_co_reason']; ?></td>
-			<td nowrap="nowrap" align="center">
-			
+			  <?php echo $file_version_date->format($df . ' ' . $tf); ?>
 			</td>
 			
-			<!--
-			<td nowrap="nowrap" width="20">&nbsp;
-<?php
-					if ($canEdit && $dPconfig['files_show_versions_edit']){
+			<td nowrap="nowrap" align="right" width="48">
+			  <?php 
+					if ((empty($file['file_checkout']) || $file['file_checkout'] == 'final')) {
+						// Edit File
+						if ($canEdit || $latest_file['project_owner'] == $AppUI->user_id) {
 ?>
-			<a href="./index.php?m=files&a=addedit&file_id=<?php echo $file['file_id']; ?>">
-			<?php
-						echo dPshowImage((DP_BASE_URL . '/modules/files/images/kedit.png'), 
-						                 '16', '16', 'edit file', 'edit file');
-?>
-			</a>
+			  <a href="./index.php?m=files&a=addedit&file_id=<?php echo $latest_file['file_id'];?>">
 <?php
+							echo (dPshowImage(DP_BASE_URL . '/modules/files/images/kedit.png', 
+							                  '16', '16', 'edit file', 'edit file'));
+?>
+			  </a>
+<?php 
+						}
+						// Duplicate File
+						if ($canAuthor) {
+?>
+			  <a href="#" 
+			   onclick="document.frm_duplicate_file_<?php echo $latest_file['file_id']; ?>.submit()">
+<?php
+							echo (dPshowImage(DP_BASE_URL . '/modules/files/images/duplicate.png', 
+							                  '16', '16', 'duplicate file', 'duplicate file'));
+?>
+			  </a>
+<?php 
+						}
+						// Delete File
+						if ($canDelete) {
+?>
+			  <a href="#" 
+			   onclick="if (confirm('Are you sure you want to delete this file?')) {document.frm_remove_file_<?php echo $latest_file['file_id']; ?>.submit()}">
+<?php
+							echo (dPshowImage(DP_BASE_URL . '/modules/files/images/remove.png', 
+							                  '16', '16', 'delete file', 'delete file'));
+?>
+			  </a>
+<?php 
+						}
 					}
 ?>
 			</td>
--->
-				
-				
-		  </tr>
-<?php
-				
-					
-				if ($canEdit && empty($file_row['file_checkout'])) {
-					$hidden_table .='<a href="?m=files&a=co&file_id='.$file_row['file_id'].'">'.dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16','checkout','checkout file').'</a>';
-				} else if ($row['file_checkout'] == $AppUI->user_id) {
-					$hidden_table .='<a href="?m=files&a=addedit&ci=1&file_id='.$file_row['file_id'].'">'.dPshowImage(DP_BASE_URL . '/modules/files/images/down.png', '16','16','checkin','checkin file').'</a>';
-				} else { 
-					if ($file_row['file_checkout'] == 'final'){
-						$hidden_table .= 'final';
-					} else {
-						$q4 = new DBQuery;
-						$q4->addQuery("file_id, file_checkout, user_username as co_user, contact_first_name, contact_last_name");
-						$q4->addTable('files');
-						$q4->leftJoin('users', 'cu', 'cu.user_id = file_checkout');
-						$q4->leftJoin('contacts', 'co', 'co.contact_id = cu.user_contact');
-						$q4->addWhere('file_id = '.$file_row['file_id']);
-						$co_user = array();
-						$co_user = $q4->loadList();
-						$co_user = $co_user[0];
-						$q4->clear();
-						$hidden_table .= $co_user['contact_first_name'].' '.$co_user['contact_last_name'].'<br>('.$co_user['co_user'].')'; 
+			<td nowrap="nowrap" align="center" width="1">
+<?php 
+					if ((empty($latest_file['file_checkout']) 
+					     || $latest_file['file_checkout'] == 'final')
+						&& ($canEdit || $latest_file['project_owner'] == $AppUI->user_id)) {
+						$bulk_op = ('onchange="(this.checked) ? addBulkComponent(' 
+						            . $latest_file['file_id'] . ') : removeBulkComponent(' 
+						            . $latest_file['file_id'] . ')"');
+?>
+			  <input type="checkbox" <?php echo $bulk_op; ?> 
+			   name="chk_sub_sel_file_<?php echo $file_row['file_id']; ?>" />
+<?php 
 					}
-				}
-				$hidden_table .= '</td>';
-				$hidden_table .= '<td nowrap="nowrap" align="right" width="48">';
-				if ($canEdit && (empty($file_row['file_checkout']) || ($file_row['file_checkout'] == 'final' && ($canEdit || $row['project_owner'] == $AppUI->user_id)))) {
-					$hidden_table .= '<a href="./index.php?m=files&a=addedit&file_id=' . $file_row["file_id"] . '">' . dPshowImage(DP_BASE_URL . '/modules/files/images/kedit.png', '16', '16', 'edit file', 'edit file') . "</a>" . '<a href="#" onclick="document.frm_duplicate_sub_file_'.$file_row['file_id'].'.submit()">' . dPshowImage(DP_BASE_URL . '/modules/files/images/duplicate.png', '16', '16', 'duplicate file', 'duplicate file') . "</a>" . '<a href="#" onclick="if (confirm(\'Are you sure you want to delete this file?\')) {document.frm_delete_sub_file_'.$file_row['file_id'].'.submit()}">' . dPshowImage(DP_BASE_URL . '/modules/files/images/remove.png', '16', '16', 'delete file', 'delete file') . "</a>";
-				}
-				$hidden_table .= '</td>';
-				$hidden_table .= '<td nowrap="nowrap" align="right" width="1">';
-				if ($canEdit && (empty($row['file_checkout']) || ($row['file_checkout'] == 'final' && ($canEdit || $row['project_owner'] == $AppUI->user_id)))) {
-					$bulk_op = 'onchange="(this.checked) ? addBulkComponent('.$file_row['file_id'].') : removeBulkComponent('.$file_row['file_id'].')"';
-					$hidden_table .= '<input type="checkbox" '.$bulk_op.' name="chk_sub_sel_file_'.$file_row['file_id'].'" />';		
-				}
-			}
-		}
-	}
 ?>
-	        </td>
-	        <td width="10%" nowrap="nowrap" align="center"><a href="./index.php?m=<?php echo $m; ?>&a=<?php echo $a; ?>&view=categories&tab=<?php echo ($latest_file['file_category']); ?>"><?php echo $file_types[$latest_file["file_category"]]; ?></a></td> 
-		<td width="5%" align="center"><a href="./index.php?m=tasks&a=view&task_id=<?php echo $latest_file["file_task"]; ?>"><?php echo $latest_file["task_name"];?></a></td>
-		<td width="15%" nowrap="nowrap"><?php echo $latest_file["contact_first_name"].' '.$latest_file["contact_last_name"]; ?></td>
-		<td width="5%" nowrap="nowrap" align="right"><?php echo intval($latest_file["file_size"] / 1024); ?> kb</td>
-		<td width="15%" nowrap="nowrap"><?php echo $latest_file["file_type"]; ?></td>
-		<td width="15%" nowrap="nowrap" align="right"><?php echo $file_date->format("$df $tf"); ?></td>
-        <td width="10%"><?php echo $latest_file['file_co_reason']; ?></td>
-        <td nowrap="nowrap" align="center">
-        <?php if ($canEdit && empty($row['file_checkout'])) {
-        ?>
-                <a href="?m=files&a=co&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage(DP_BASE_URL . '/modules/files/images/up.png', '16', '16','checkout','checkout file'); ?></a>
-        <?php }
-        else if ($row['file_checkout'] == $AppUI->user_id) { ?>
-                <a href="?m=files&a=addedit&ci=1&file_id=<?php echo $latest_file['file_id']; ?>"><?php echo dPshowImage(DP_BASE_URL . '/modules/files/images/down.png', '16','16','checkin','checkin file'); ?></a>
-        <?php }
-        else { 
-                if ($latest_file['file_checkout'] == 'final'){
-                        echo 'final';
-                } else {
-				  
-						$q4 = new DBQuery;
-						$q4->addQuery("file_id, file_checkout, user_username as co_user, contact_first_name, contact_last_name");
-						$q4->addTable('files');
-						$q4->leftJoin('users', 'cu', 'cu.user_id = file_checkout');
-						$q4->leftJoin('contacts', 'co', 'co.contact_id = cu.user_contact');
-						$q4->addWhere('file_id = '.$latest_file['file_id']);
-						$co_user = array();
-						$co_user = $q4->loadList();
-						$co_user = $co_user[0];
-						$q4->clear();
-                        echo $co_user['contact_first_name'].' '.$co_user['contact_last_name'].'<br>('.$co_user['co_user'].')'; 
-				}
-        }
-        ?>
-        </td>
-		<td nowrap="nowrap" align="center" width="48">
-		<?php if ($canEdit && (empty($latest_file['file_checkout']) || ($latest_file['file_checkout'] == 'final' && ($canEdit || $latest_file['project_owner'] == $AppUI->user_id)))) {
-			echo '<a href="./index.php?m=files&a=addedit&file_id=' . $latest_file["file_id"] . '">';
-			echo dPshowImage(DP_BASE_URL . '/modules/files/images/kedit.png', '16', '16', 'edit file', 'edit file');
-			echo "</a>";
-			echo '<a href="#" onclick="document.frm_duplicate_file_'.$latest_file['file_id'].'.submit()">' . dPshowImage(DP_BASE_URL . '/modules/files/images/duplicate.png', '16', '16', 'duplicate file', 'duplicate file') . '</a>';
-			echo '<a href="#" onclick="if (confirm(\'Are you sure you want to delete this file?\')) {document.frm_remove_file_'.$latest_file['file_id'].'.submit()}">' . dPshowImage(DP_BASE_URL . '/modules/files/images/remove.png', '16', '16', 'delete file', 'delete file') . '</a>';		
-		}
-		?>
-		<td nowrap="nowrap" align="center" width="1">
-		<?php if ($canEdit && (empty($latest_file['file_checkout']) || ($latest_file['file_checkout'] == 'final' && ($canEdit || $latest_file['project_owner'] == $AppUI->user_id)))) {
-            $bulk_op = 'onchange="(this.checked) ? addBulkComponent('.$latest_file['file_id'].') : removeBulkComponent('.$latest_file['file_id'].')"';
-			echo '<input type="checkbox" '.$bulk_op.' name="chk_sel_file_'.$latest_file['file_id'].'" />';		
-		}
-		?>		
-		</td>
-	</tr>
-	<?php 
-			echo $hidden_table; 
-	        $hidden_table = ''; 
-	?>
+			  </td>
+			</tr>
 <?php
 				}
-?>
-<?php
 			}
 ?>
 		</table>
 	  </td></tr>
 <?php
+
 		}
+	}
 ?>
+
 	</table>
 	<?php
 		shownavbar($xpg_totalrecs, $xpg_pagesize, $xpg_total_pages, $page, $folder_id);

@@ -191,20 +191,18 @@ class CFile extends CDpObject {
 	function duplicateFile($oldProj, $realname) {
 		global $AppUI, $dPconfig;
 		if (!is_dir(DP_BASE_DIR.'/files/0')) {
-		    $res = mkdir(DP_BASE_DIR.'/files/0', 0777);
-			 if (!$res) {
-                                $AppUI->setMsg("Upload folder not setup to accept uploads - change permission on files/ directory.", UI_MSG_ALLERT);
-			     return false;
-			 }
+			$res = mkdir(DP_BASE_DIR.'/files/0', 0777);
+			if (!$res) {
+				$AppUI->setMsg('Upload folder not setup to accept uploads.' 
+				               . ' Change permission on files/ directory.', UI_MSG_ALLERT);
+				return false;
+			}
 		}
 		$dest_realname = uniqid(rand());
 		$res = copy(DP_BASE_DIR . '/files/' . $oldProj . '/' . $realname, 
 		            DP_BASE_DIR . '/files/0/' . $dest_realname);
 		
-		if (!$res) {
-		    return false;
-		}
-		return $dest_realname;
+		return ((!$res) ? false : $dest_realname);
 	}
 	
 	// move a file from a temporary (uploaded) location to the file system
@@ -247,12 +245,12 @@ class CFile extends CDpObject {
 		// buffer the file
 		$this->_filepath = (DP_BASE_DIR . '/files/' . $this->file_project . '/' 
 		                    . $this->file_real_filename);
-		$fp = fopen($this->_filepath, "rb");
+		$fp = fopen($this->_filepath, 'rb');
 		$x = fread($fp, $this->file_size);
 		fclose($fp);
 		
 		// parse it
-		$parser = $parser . " " . $this->_filepath;
+		$parser = $parser . ' ' . $this->_filepath;
 		$pos = strpos($parser, '/pdf');
 		$x = (($pos !== false) ? `$parser -` : `$parser`);
 		
@@ -261,19 +259,19 @@ class CFile extends CDpObject {
 			return 0;
 		}
 		// remove punctuation and parse the strings
-		$x = str_replace(array(".", ",", "!", "@", "(", ")"), " ", $x);
-		$warr = split("[[:space:]]", $x);
+		$x = str_replace(array('.', ',', '!', '@', '(', ')'), ' ', $x);
+		$warr = split('[[:space:]]', $x);
 		
 		$wordarr = array();
 		$nwords = count($warr);
 		for ($x=0; $x < $nwords; $x++) {
 			$newword = $warr[$x];
-			if (!ereg("[[:punct:]]", $newword) && !ereg("[[:digit:]]", $newword) 
+			if (!ereg('[[:punct:]]', $newword) && !ereg('[[:digit:]]', $newword) 
 			    && strlen(trim($newword)) > 2) {
-				$wordarr[] = array("word" => $newword, "wordplace" => $x);
+				$wordarr[] = array('word' => $newword, 'wordplace' => $x);
 			}
 		}
-		db_exec("LOCK TABLES files_index WRITE");
+		db_exec('LOCK TABLES files_index WRITE');
 		// filter out common strings
 		$ignore = array();
 		include_once (DP_BASE_DIR . '/modules/files/file_index_ignore.php');
@@ -285,14 +283,14 @@ class CFile extends CDpObject {
 			$q  = new DBQuery;
 			$q->addTable('files_index');
 			
-			$q->addReplace("file_id", $this->file_id);
-			$q->addReplace("word", $wordarr[$key]['word']);
-			$q->addReplace("word_placement", $wordarr[$key]['wordplace']);
+			$q->addReplace('file_id', $this->file_id);
+			$q->addReplace('word', $wordarr[$key]['word']);
+			$q->addReplace('word_placement', $wordarr[$key]['wordplace']);
 			$q->exec();
 			$q->clear();
 		}
 		
-		db_exec("UNLOCK TABLES;");
+		db_exec('UNLOCK TABLES;');
 		return nwords;
 	}
 	
@@ -320,25 +318,25 @@ class CFile extends CDpObject {
 			$mail = new Mail;		
 			
 			if ($this->file_task == 0) { //notify all developers
-				$mail->Subject($this->_project->project_name . "::" . $this->file_name, 
+				$mail->Subject($this->_project->project_name . '::' . $this->file_name, 
 				               $locale_char_set);
 			} else { //notify all assigned users			
 				$this->_task = new CTask();
 				$this->_task->load($this->file_task);
-				$mail->Subject($this->_project->project_name . "::" . $this->_task->task_name 
-							   . "::" . $this->file_name, $locale_char_set);
+				$mail->Subject($this->_project->project_name . '::' . $this->_task->task_name 
+							   . '::' . $this->file_name, $locale_char_set);
 			}
 			
-			$body = $AppUI->_('Project').": ".$this->_project->project_name;
+			$body = $AppUI->_('Project').': '.$this->_project->project_name;
 			$body .= ("\n" . $AppUI->_('URL') . ':     ' . DP_BASE_URL 
 			          . '/index.php?m=projects&a=view&project_id=' . $this->_project->project_id);
 			
 			$q  = new DBQuery;
 			if (intval($this->_task->task_id) != 0) {
-				$body .= "\n\n" . $AppUI->_('Task') . ":    " . $this->_task->task_name;
+				$body .= "\n\n" . $AppUI->_('Task') . ':    ' . $this->_task->task_name;
 				$body .= ("\n" . $AppUI->_('URL') . ':     ' . DP_BASE_URL 
 				          . '/index.php?m=tasks&a=view&task_id=' . $this->_task->task_id);
-				$body .= ("\n" . $AppUI->_('Description') . ":" . "\n" 
+				$body .= ("\n" . $AppUI->_('Description') . ':' . "\n" 
 				          . $this->_task->task_description);
 				
 				//preparing users array
@@ -372,10 +370,10 @@ class CFile extends CDpObject {
 			}
 			$body .= ("\n\nFile " . $this->file_name . ' was ' . $this->_message . ' by ' 
 			          . $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
-			if ($this->_message != "deleted") {
+			if ($this->_message != 'deleted') {
 				$body .= ("\n" . $AppUI->_('URL') . ':     ' . DP_BASE_URL 
 				          . '/fileviewer.php?file_id=' . $this->file_id);
-				$body .= "\n" . $AppUI->_('Description') . ":" . "\n" . $this->file_description;	
+				$body .= "\n" . $AppUI->_('Description') . ':' . "\n" . $this->file_description;	
 			}
 			
 			//send mail			
@@ -422,11 +420,11 @@ class CFile extends CDpObject {
 				$this->_task = new CTask();
 				$this->_task->load($this->file_task);
 				$mail->Subject($AppUI->_('Project') . ': ' . $this->_project->project_name . '::' 
-				               . $this->_task->task_name . "::" . $this->file_name, 
+				               . $this->_task->task_name . '::' . $this->file_name, 
 				               $locale_char_set);
 			}
 			
-			$body = $AppUI->_('Project') . ": " . $this->_project->project_name;
+			$body = $AppUI->_('Project') . ': ' . $this->_project->project_name;
 			$body .= ("\n" . $AppUI->_('URL') . ':     ' . DP_BASE_URL 
 			          . '/index.php?m=projects&a=view&project_id=' . $this->_project->project_id);
 			
@@ -446,7 +444,7 @@ class CFile extends CDpObject {
 				$sql = '(' . $q->prepare() . ')';
 				$q->clear();   
 				
-				$sql .= " UNION ";
+				$sql .= ' UNION ';
 				
 				$q->addTable('task_contacts', 'tc');
 				$q->addQuery('c.contact_email as contact_email' 
@@ -474,7 +472,7 @@ class CFile extends CDpObject {
 			
 			$body .= ("\n\nFile " . $this->file_name . ' was ' . $this->_message . ' by ' 
 			          . $AppUI->user_first_name . ' ' . $AppUI->user_last_name);
-			if ($this->_message != "deleted") {
+			if ($this->_message != 'deleted') {
 				$body .= ("\n" . $AppUI->_('URL') . ':     ' . DP_BASE_URL 
 				          . '/fileviewer.php?file_id=' . $this->file_id);
 				$body .= "\n" . $AppUI->_('Description') . ":\n" . $this->file_description;	
@@ -599,7 +597,7 @@ class CFileFolder extends CDpObject {
 		$q = new DBQuery();
       	$q->addTable($this->_tbl);
       	$q->addQuery('file_folder_name');
-      	$q->addWhere("file_folder_id=$this->file_folder_parent");
+      	$q->addWhere('file_folder_id=' . $this->file_folder_parent);
       	$sql = $q->prepare();
 		return db_loadResult($sql);
 	}
@@ -651,36 +649,36 @@ function getIcon($file_type) {
 	$mime = str_replace('/','-',$file_type);
 	$icon = 'gnome-mime-'.$mime;
 	if (is_file(DP_BASE_DIR.'/modules/files/images/icons/'.$icon.'.png')) {
-		$result = "icons/$icon.png";
+		$result = 'icons/$icon.png';
 	} else {
-		$mime = split("/", $file_type);
+		$mime = split('/', $file_type);
 		switch($mime[0]){
-		case "audio" : 
-			$result = "icons/wav.png";
+		case 'audio' : 
+			$result = 'icons/wav.png';
 			break;
-		case "image" :
-			$result = "icons/image.png";
+		case 'image' :
+			$result = 'icons/image.png';
 			break;
-		case "text" :
-			$result = "icons/text.png";
+		case 'text' :
+			$result = 'icons/text.png';
 			break;
-		case "video" :
-			$result = "icons/video.png";
+		case 'video' :
+			$result = 'icons/video.png';
 			break;
 		}
-		if ($mime[0] == "application") {
+		if ($mime[0] == 'application') {
 			switch($mime[1]){
-			case "vnd.ms-excel" : 
-				$result = "icons/spreadsheet.png";
+			case 'vnd.ms-excel' : 
+				$result = 'icons/spreadsheet.png';
             	break;
-			case "vnd.ms-powerpoint" :
-				$result = "icons/quicktime.png";
+			case 'vnd.ms-powerpoint' :
+				$result = 'icons/quicktime.png';
             	break;
-			case "octet-stream" :
-				$result = "icons/source_c.png";
+			case 'octet-stream' :
+				$result = 'icons/source_c.png';
             	break;
 			default :
-				$result = "icons/documents.png";
+				$result = 'icons/documents.png';
 			}
 		}
 	}
@@ -688,10 +686,22 @@ function getIcon($file_type) {
 	if ($result == ''){
 		switch($obj->$file_category){
 		default : // no idea what's going on
-			$result = "icons/unknown.png";
+			$result = 'icons/unknown.png';
       	}
 	}
 	return $result;      
+}
+
+function getNextVersionID() {
+	
+	$q = new DBQuery;
+	$q->addTable('files');
+	$q->addQuery('MAX(file_version_id)');
+	$q->addGroup('file_version_id');
+	$latest_file_version = $q->loadResult();
+	$q->clear();
+	
+	return ($latest_file_version + 1);
 }
 
 function getFolderSelectList() {
