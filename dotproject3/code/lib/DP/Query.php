@@ -858,8 +858,9 @@ class DP_Query {
 			return false;
 		}
 
-		return $this->_query_id->fetchAll();
+		$data = $this->_query_id->fetchAll();
 		$this->clear();
+		return $data
 	}
 
 	/** Load database results as an associative array, using the supplied field name as the array's keys
