@@ -822,7 +822,7 @@ class DP_Query {
 				error_log('executing query ' . $q);
 				dprint(__FILE__, __LINE__, 7, "executing query($q)");
 				if (isset($this->limit)) {
-					$this->_db->limit($q, $this->limit, $this->offset);
+					$q = $this->_db->limit($q, $this->limit, $this->offset);
 				}
 				$this->_query_id =  $this->_db->query($q, $this->_bind_list);
 			}
