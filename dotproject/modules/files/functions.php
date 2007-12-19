@@ -3,6 +3,8 @@ if (!defined('DP_BASE_DIR')){
   die('You should not access this file directly.');
 }
 
+/*
+// This functions is now obsolete (obsoleted by getFolderSelectList() in files.class.php)
 function check_perm(&$var) {
 	global $m;
 	if ($var[0] == 0) {
@@ -20,6 +22,7 @@ function check_perm(&$var) {
 	}
 }
 
+// This functions is now obsolete (obsoleted by getFolderSelectList() in files.class.php)
 function getFolderSelectList() {
 	global $AppUI;
 	$folders = array( 0 => '' );
@@ -33,5 +36,5 @@ function getFolderSelectList() {
 	$folders = array_filter($vfolders, "check_perm");
 	return $folders;
 }
-
+*/
 ?>

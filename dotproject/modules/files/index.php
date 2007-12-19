@@ -34,13 +34,20 @@ $projects = $project->getAllowedRecords($AppUI->user_id, 'project_id,project_nam
                                         'project_name', null, $extra );
 $projects = arrayMerge( array( '0'=>$AppUI->_('All', UI_OUTPUT_RAW) ), $projects );
 
-// get SQL for allowed projects/tasks
+// get SQL for allowed projects/tasks and folders
 $task = new CTask();
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'file_project');
 $allowedTasks = $task->getAllowedSQL($AppUI->user_id, 'file_task');
 
+$cfObj = new CFileFolder();
+$allowedFolders = $cfObj->getAllowedSQL($AppUI->user_id, 'file_folder');
+
+//get permissions for folder tab
+$canAccess_folders = getPermission('file_folders', 'access');
+
+
 // setup the title block
-$titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, "$m.$a" );
+$titleBlock = new CTitleBlock( 'Files', 'folder5.png', $m, $m . '.' . $a );
 $titleBlock->addCell($AppUI->_('Filter') . ':' );
 $titleBlock->addCell(arraySelect($projects, 'project_id', 
                                  'onChange="document.pickProject.submit()" size="1" class="text"', 
@@ -51,7 +58,7 @@ $titleBlock->addCell(arraySelect($projects, 'project_id',
  * override the file module's $canEdit variable passed from the main index.php 
  * in order to check on file folder permissions
  */
-$canAuthor_folders = true; //getPermission('file_folders', 'add');
+$canAccess_folders = getPermission('file_folders', 'access');
 
 if ($canAuthor) {
 	$titleBlock->addCell('<input type="submit" class="button" value="' . $AppUI->_('new file') 
@@ -89,6 +96,9 @@ foreach($file_types as $file_type) {
 	if (count ($allowedTasks)) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR file_task = 0 )');
 	}
+	if (count($allowedFolders)) {
+		$q->addWhere('((' . implode(' AND ', $allowedFolders) . ') OR file_folder = 0)');
+	}
 	if ($catsql) {
 		$q->addWhere($catsql);
 	}
@@ -111,8 +121,9 @@ foreach($file_types as $file_type) {
 	$tabBox->add('index_table', $file_type . ' (' . $q->loadResult() .')');
 	++$i;
 }
-
-$tabBox->add('folders_table', 'Folder Explorer');
+if ($canAccess_folders) {
+	$tabBox->add('folders_table', 'Folder Explorer');
+}
 $tabBox->show();
 
 ?>

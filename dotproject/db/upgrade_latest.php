@@ -132,7 +132,7 @@ function dPupgrade($from_version, $to_version, $last_updated)
 		// TODO:  Add new versions here.  Keep this message above the default label.
 		case '20071104': // Last changed date.
 		case '20071114': // Current release
-		case '20071212':
+		case '20071218':
 			// Add the permissions for task_log
 			dPmsg('Adding File Folder permissions');
 			$perms->add_object('app', 'File Folders', 'file_folders', 6, 0, 'axo');

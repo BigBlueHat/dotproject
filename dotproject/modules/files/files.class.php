@@ -564,11 +564,10 @@ class CFileFolder extends CDpObject {
 		global $AppUI;
 		
 		$oid = intval(($oid ? $oid : $this->file_folder_id));
-		/*
+		
 		if (!(parent::canDelete($msg, $oid, $joins))) {
 			return false;
 		}
-		*/
 		
 		$q = new DBQuery();
       	$q->addTable($this->_tbl);
@@ -652,7 +651,7 @@ function getIcon($file_type) {
 		$result = 'icons/$icon.png';
 	} else {
 		$mime = split('/', $file_type);
-		switch($mime[0]){
+		switch ($mime[0]) {
 		case 'audio' : 
 			$result = 'icons/wav.png';
 			break;
@@ -684,8 +683,8 @@ function getIcon($file_type) {
 	}
 	
 	if ($result == ''){
-		switch($obj->$file_category){
-		default : // no idea what's going on
+		switch ($obj->$file_category) {
+		default: // no idea what's going on
 			$result = 'icons/unknown.png';
       	}
 	}
@@ -706,20 +705,15 @@ function getNextVersionID() {
 
 function getFolderSelectList() {
 	global $AppUI;
-	/*
+	
 	$folder = new CFileFolder();
 	$allowed_folders = $folder->getAllowedRecords($AppUI->user_id, 
-	                                              'file_folder_id,file_folder_name', 
+	                                              ('file_folder_id,file_folder_name' 
+	                                               . ',file_folder_parent'), 
 	                                              'file_folder_name');
-	*/
-	$folders = array(0 => '');
-	$q = new DBQuery();
-	$q->addTable('file_folders');
-	$q->addQuery('file_folder_id, file_folder_name, file_folder_parent');
-	$q->addOrder('file_folder_name');
-	$sql = $q->prepare();
-	$folders = arrayMerge(array('0' => array('0', $AppUI->_('Root'), -1)), 
-	                      db_loadHashList($sql, 'file_folder_id'));
+	
+	$folders = arrayMerge(array(array(0, $AppUI->_('Root'), -1)), 
+	                      $allowed_folders);
 	return $folders;
 }
 ?>

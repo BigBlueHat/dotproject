@@ -16,15 +16,15 @@ $current_uri = $current_uriArray['query'] . $current_uriArray['fragment'];
 $folder = dPgetParam($_GET, 'folder', 0);
 $page = dPgetParam( $_GET, "page", 1);
 
+
 global $canAccess_folders, $canRead_folders, $canEdit_folders;
 global $canAuthor_folders, $canDelete_folders;
 
-$canAccess_folders = true; //getPermission('file_folders', 'access');
-$canRead_folders = true; //getPermission('file_folders', 'view');
-$canEdit_folders = true; //getPermission('file_folders', 'edit');
-$canAuthor_folders = true; //getPermission('file_folders', 'add');
-$canDelete_folders = true; //getPermission('file_folders', 'delete');
-
+$canAccess_folders = getPermission('file_folders', 'access');
+$canRead_folders = getPermission('file_folders', 'view');
+$canEdit_folders = getPermission('file_folders', 'edit');
+$canAuthor_folders = getPermission('file_folders', 'add');
+$canDelete_folders = getPermission('file_folders', 'delete');
 
 // load the following classes to retrieved denied records
 include_once($AppUI->getModuleClass('projects'));
@@ -37,7 +37,9 @@ if (!$project_id) {
 	$showProject = true;
 }
 
+
 global $allowedCompanies, $allowedProjects, $allowedTasks, $allowedFolders;
+
 $company = new CCompany();
 $allowedCompanies = $company->getAllowedSQL($AppUI->user_id);
 
@@ -48,7 +50,7 @@ $task = new CTask();
 $allowedTasks = $task->getAllowedSQL($AppUI->user_id, 'file_task');
 
 $cfObj = new CFileFolder();
-$allowedFolders = array();//$cfObj->getAllowedSQL($AppUI->user_id, 'file_folder');
+$allowedFolders = $cfObj->getAllowedSQL($AppUI->user_id, 'file_folder');
 
 // $parent_id is the parent of the children we want to see
 // $level is increased when we go deeper into the tree, used to display a nice indented tree
@@ -82,11 +84,11 @@ function displayFolders($folder_id=0, $level=0) {
 	$file_count = countFiles($folder_id);
 	
 	//check permissions
-	$canAccess_this = true; //getPermission('file_folders', 'access', $folder_id);
-	$canRead_this = true; //getPermission('file_folders', 'view', $folder_id);
-	$canEdit_this = true; //getPermission('file_folders', 'edit', $folder_id);
-	$canAuthor_this = true; //getPermission('file_folders', 'add', $folder_id);
-	$canDelete_this = true; //getPermission('file_folders', 'delete', $folder_id);
+	$canAccess_this = getPermission('file_folders', 'access', $folder_id);
+	$canRead_this = getPermission('file_folders', 'view', $folder_id);
+	$canEdit_this = getPermission('file_folders', 'edit', $folder_id);
+	$canAuthor_this = getPermission('file_folders', 'add', $folder_id);
+	$canDelete_this = getPermission('file_folders', 'delete', $folder_id);
 	
 	if (!($canRead_this) && $folder_id) {
 		return;
@@ -285,14 +287,14 @@ function displayFiles($folder_id) {
 	$q->leftJoin('users', 'cu', 'cu.user_id = f.file_checkout');
 	$q->leftJoin('contacts', 'co', 'co.contact_id = cu.user_contact');
 	$q->addWhere('file_folder = '. $folder_id);
-	if (count($allowedFolders)) {
-		$q->addWhere($allowedFolders);
-	}
 	if (count ($allowedProjects)) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR file_project = 0 )');
 	}
 	if (count ($allowedTasks)) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR file_task = 0 )');
+	}
+	if (count($allowedFolders)) {
+		$q->addWhere('((' . implode(' AND ', $allowedFolders) . ') OR file_folder = 0)');
 	}
 	if ($project_id) {
 		$q->addWhere('file_project = '. $project_id);
@@ -328,14 +330,14 @@ function displayFiles($folder_id) {
 	$q->addJoin('tasks', 't', 't.task_id = f.file_task');
 	$q->addJoin('file_folders', 'ff', 'ff.file_folder_id = f.file_folder');
 	$q->addWhere('file_folder = '. $folder_id);
-	if (count($allowedFolders)) {
-		$q->addWhere($allowedFolders);
-	}
 	if (count ($allowedProjects)) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedProjects) . ') OR f.file_project = 0 )');
 	}
 	if (count ($allowedTasks)) {
 		$q->addWhere('( ( ' . implode(' AND ', $allowedTasks) . ') OR f.file_task = 0 )');
+	}
+	if (count($allowedFolders)) {
+		$q->addWhere('((' . implode(' AND ', $allowedFolders) . ') OR file_folder = 0)');
 	}
 	if ($project_id) {
 		$q->addWhere('f.file_project = '. $project_id);
@@ -711,8 +713,8 @@ function displayFiles($folder_id) {
 
 /**** Main Program ****/
 
-$canEdit_this_folder = true; //getPermission('file_folders', 'edit', $folder);
-$canRead_this_folder = true; //getPermission('file_folders', 'view', $folder);
+$canEdit_this_folder = getPermission('file_folders', 'edit', $folder);
+$canRead_this_folder = getPermission('file_folders', 'view', $folder);
 
 if (!$canRead_folders || !$canRead_this_folder) {
 	$AppUI->redirect("m=public&a=access_denied");
@@ -850,7 +852,7 @@ if ($folder) {
 ?>
 <?php 
 
-	$canRead_parent = true;//$perms->checkModuleItem('file_folders', 'view', $cfObj->file_folder_parent);
+	$canRead_parent = $perms->checkModuleItem('file_folders', 'view', $cfObj->file_folder_parent);
 	if ($canRead_parent) {
 		echo ("\t\t\t" . '<a href="./index.php?m=' . $m . '&a=' . $a . '&tab=' . $tab . '&folder=' 
 		      . $cfObj->file_folder_parent . '">' . "\n");
@@ -891,12 +893,8 @@ displayFolders($folder);
  * for "header option" ids so things would print right
  */
 
-//move folder drop-down
-$folders_list = getFolderSelectList();
-$folders_list = arrayMerge(array('O' => array('O', ('(' . $AppUI->_('Move to Folder') . ')'), -1)), 
-                           $folders_list);
 
-//move project drop-down: allowed Projects only
+//project drop-down: allowed Projects only
 //get list of allowed projects
 $project = new CProject();
 $projects_list = $project->getAllowedRecords($AppUI->user_id, 'project_id,project_name', 
@@ -912,6 +910,10 @@ if (count($allowedProjects)) {
 $proj_companies = $q->loadHashList();
 $q->clear();
 
+//folder drop-down: allowed Folders only
+$folders_list = getFolderSelectList();
+$folders_list = arrayMerge(array('O' => array('O', ('(' . $AppUI->_('Move to Folder') . ')'), -1)), 
+                           $folders_list);
 
 foreach ($projects_list as $prj_id => $prj_name) {
 	$projects_list[$prj_id] = $proj_companies[$prj_id].': '.$prj_name;

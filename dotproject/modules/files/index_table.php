@@ -48,6 +48,7 @@ require_once $AppUI->getModuleClass('files');
 
 $project = new CProject();
 $task = new CTask();
+$cfObj = new CFileFolder();
 
 $df = $AppUI->getPref('SHDATEFORMAT');
 $tf = $AppUI->getPref('TIMEFORMAT');
@@ -64,6 +65,7 @@ if (($company_id || $project_id || $task_id) && !($m=='files')) {
 // Fetch permissions once for all queries
 $allowedProjects = $project->getAllowedSQL($AppUI->user_id, 'file_project');
 $allowedTasks = $task->getAllowedSQL($AppUI->user_id, 'file_task');
+$allowedFolders = $cfObj->getAllowedSQL($AppUI->user_id, 'file_folder');
 
 // SQL text for count the total recs from the selected option
 $q = new DBQuery;
@@ -72,10 +74,13 @@ $q->addTable('files', 'f');
 $q->addJoin('projects', 'p', 'p.project_id = file_project');
 $q->addJoin('tasks', 't', 't.task_id = file_task');
 if (count ($allowedProjects)) {
-  $q->addWhere('((' . implode(' AND ', $allowedProjects) . ') OR file_project = 0)');
+	$q->addWhere('((' . implode(' AND ', $allowedProjects) . ') OR file_project = 0)');
 }
 if (count ($allowedTasks)) {
-  $q->addWhere('((' . implode(' AND ', $allowedTasks) . ') OR file_task = 0)');
+	$q->addWhere('((' . implode(' AND ', $allowedTasks) . ') OR file_task = 0)');
+}
+if (count($allowedFolders)) {
+	$q->addWhere('((' . implode(' AND ', $allowedFolders) . ') OR file_folder = 0)');
 }
 if ($category_filter) {
 	$q->addWhere($category_filter);
@@ -103,10 +108,13 @@ $q2->addJoin('file_folders','ff','ff.file_folder_id = file_folder');
 $q2->addJoin('projects', 'p', 'p.project_id = file_project');
 $q2->addJoin('tasks', 't', 't.task_id = file_task');
 if (count ($allowedProjects)) {
-  $q2->addWhere('((' . implode(' AND ', $allowedProjects) . ') OR file_project = 0)');
+	$q2->addWhere('((' . implode(' AND ', $allowedProjects) . ') OR file_project = 0)');
 }
 if (count ($allowedTasks)) {
-  $q2->addWhere('((' . implode(' AND ', $allowedTasks) . ') OR file_task = 0)');
+	$q2->addWhere('((' . implode(' AND ', $allowedTasks) . ') OR file_task = 0)');
+}
+if (count($allowedFolders)) {
+	$q2->addWhere('((' . implode(' AND ', $allowedFolders) . ') OR file_folder = 0)');
 }
 if ($category_filter) {
 	$q2->addWhere($category_filter);
@@ -140,10 +148,13 @@ $q3->addJoin('tasks', 't', 't.task_id = file_task');
 $q3->leftJoin('users', 'cu', 'cu.user_id = file_checkout');
 $q3->leftJoin('contacts', 'co', 'co.contact_id = cu.user_contact');
 if (count ($allowedProjects)) {
-  $q3->addWhere('((' . implode(' AND ', $allowedProjects) . ') OR file_project = 0)');
+	$q3->addWhere('((' . implode(' AND ', $allowedProjects) . ') OR file_project = 0)');
 }
 if (count ($allowedTasks)) {
-  $q3->addWhere('((' . implode(' AND ', $allowedTasks) . ') OR file_task = 0)');
+	$q3->addWhere('((' . implode(' AND ', $allowedTasks) . ') OR file_task = 0)');
+}
+if (count($allowedFolders)) {
+	$q3->addWhere('((' . implode(' AND ', $allowedFolders) . ') OR file_folder = 0)');
 }
 if ($category_filter) {
 	$q3->addWhere($category_filter);
