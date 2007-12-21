@@ -120,7 +120,15 @@ if ($report_type) {
 	foreach ($reports as $v) {
 		$type = str_replace( '.php', '', $v );
 		$desc_file = str_replace( '.php', '.'.$AppUI->user_locale.'.txt', $v );
-		$desc = @file(DP_BASE_DIR."/modules/reports/$report_category/$desc_file");
+
+		// Load the description file for the user locale, default to 'en'
+		if( file_exists( $desc_file ) ) {
+			$desc = file( DP_BASE_DIR.'/modules/projects/reports/'.$desc_file);
+		} else {
+			$desc_file_en = str_replace( ".php", '.en.txt', $v );
+			//FIXME : need to handle description file non existence
+			$desc = @file( DP_BASE_DIR.'/modules/projects/reports/'.$desc_file_en);
+		}
 
 		echo "
 			<tr>
