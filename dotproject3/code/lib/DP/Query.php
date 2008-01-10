@@ -677,7 +677,7 @@ class DP_Query {
 
     $q .= ' SET ';
     $sets = '';
-    $this->_bind_list[] = array();
+    $this->_bind_list = array();
     foreach( $this->update_list as $field => $value) {
       if ($sets)
         $sets .= ", ";
