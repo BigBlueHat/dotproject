@@ -860,7 +860,7 @@ class DP_Query {
 
 		$data = $this->_query_id->fetchAll();
 		$this->clear();
-		return $data
+		return $data;
 	}
 
 	/** Load database results as an associative array, using the supplied field name as the array's keys
