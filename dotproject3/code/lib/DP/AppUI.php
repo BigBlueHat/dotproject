@@ -1,13 +1,5 @@
 <?php /* CLASSES $Id: ui.class.php,v 1.141 2007/10/11 12:44:40 cyberhorse Exp $ */
 
-require_once 'DP/Base.php';
-require_once 'DP/Query.php';
-require_once 'DP/Config.php';
-require_once 'DP/Localisation.php';
-require_once 'DP/Acl.php';
-require_once 'DP/AppUI/TabBox/Abstract.php';
-require_once 'DP/AppUI/TitleBlock/Abstract.php';
-
 /** @defgroup uimessagetypes UI message type constants 
  * @brief Used with CAppUI::msg() method
  */
@@ -958,15 +950,15 @@ class DP_AppUI {
 		$q->addInsert('date_time_in', 'now()', false, true);
 		$q->addInsert('user_ip', $_SERVER['REMOTE_ADDR']);
 		$q->exec();
-		$this->last_insert_id = db_insert_id();
+		self::$last_insert_id = db_insert_id();
 		$q->clear();
 	}
 
 	/** Register the user's last action in the user_access_log table */
 	function updateLastAction()
 	{
-		if ($this->last_insert_id > 0) {
-			DP_Config::getDb()->update('user_access_log', array('date_time_last_action' => date('Y-m-d H:i:s')), "user_access_log_id = {$this->last_insert_id}");
+		if (self::$last_insert_id > 0) {
+			DP_Config::getDb()->update('user_access_log', array('date_time_last_action' => date('Y-m-d H:i:s')), "user_access_log_id = " . self::$last_insert_id);
 		}
 	}
 

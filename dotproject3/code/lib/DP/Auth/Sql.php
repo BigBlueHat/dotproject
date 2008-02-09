@@ -1,8 +1,4 @@
 <?php
-require_once 'DP/Auth/Interface.php';
-require_once 'DP/AppUI.php';
-require_once 'DP/Query.php';
-require_once 'DP/Config.php';
 /**
  * SQL Based authentication (default)
  *

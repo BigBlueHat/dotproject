@@ -1,8 +1,4 @@
 <?php
-require_once 'Zend/Config/Ini.php';
-require_once 'Zend/Db.php';
-require_once 'Zend/Db/Exception.php';
-require_once 'DP/Session.php';
 
 /**
  * A container for the configuration requirements, needed here to
@@ -16,7 +12,7 @@ class DP_Config
 	private $config = null;
 	private static $_instance = null;
 	private static $base_config = null;
-	public static $db = null;
+	private static $db = null;
 
 	public static function getInstance()
 	{
@@ -36,30 +32,29 @@ class DP_Config
 		self::$db = null;
 	}
 
-	public static function getDB()
+	public static function getDB($new_instance = false)
 	{
-		if (null === self::$db) {
-			foreach (array(PHP_SYSCONFDIR, PHP_CONFIG_FILE_PATH, PHP_CONFIG_FILE_SCAN_DIR, dirname(__FILE__).'/../../../config') as $d) {
-				if (is_readable($d . '/dotproject.ini')) {
-					self::$base_config = new Zend_Config_Ini($d.'/dotproject.ini', null);
-					break;
-				}
+		$db = $new_instance ? null : self::$db;
+		self::getBaseConfig();
+		if (self::$base_config && ( $new_instance || null === self::$db)) {
+			try {
+				$db = Zend_Db::factory(self::$base_config->database);
+				$db->setFetchMode(Zend_Db::FETCH_ASSOC);
 			}
-			if (self::$base_config) {
-				try {
-					self::$db = Zend_Db::factory(self::$base_config->database);
-					self::$db->setFetchMode(Zend_Db::FETCH_ASSOC);
-				}
-				catch(Execption $e) {
-					error_log('exception caught in DP_Session::getDB construct');
-				}
-			} else {
-				error_log('no base config');
+			catch(Execption $e) {
+				error_log('exception caught in DP_Session::getDB construct');
 			}
+		} else {
+			error_log('no base config');
 		}
-		return self::$db;
+		if ($new_instance) {
+			return $db;
+		} else {
+			self::$db = $db;
+			return self::$db;
+		}
 	}
-
+	
 	public static function getConfig($param = null, $default = null)
 	{
 		return self::getInstance()->_getConfig($param, $default);
@@ -114,6 +109,19 @@ class DP_Config
 		  ->from('sysvals', array('sysval_value_id', 'sysval_value'))
 		  ->where('sysval_title = ' . $db->quote($key));
 		return $db->fetchPairs($q);
+	}
+
+	public static function getBaseConfig()
+	{
+		if (null === self::$base_config) {
+			foreach (array(PHP_SYSCONFDIR, PHP_CONFIG_FILE_PATH, PHP_CONFIG_FILE_SCAN_DIR, dirname(__FILE__).'/../../../config') as $d) {
+				if (is_readable($d . '/dotproject.ini')) {
+					self::$base_config = new Zend_Config_Ini($d.'/dotproject.ini', null);
+					break;
+				}
+			}
+		}
+		return self::$base_config;
 	}
 
 }

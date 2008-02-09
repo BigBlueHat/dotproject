@@ -1,7 +1,5 @@
 <?php
 
-require_once 'DP/AppUI.php';
-
 /** Title block class, Generates module header
  *
  * The title block class generates the header which appears at the top of each module.

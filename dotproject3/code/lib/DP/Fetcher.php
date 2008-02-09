@@ -6,8 +6,6 @@
  * @package dotProject
  * @subpackage lib
  */
-require_once 'Zend/Uri.php';
-require_once 'Zend/Http/Client.php';
 
 /**
  * The Fetcher class deals with retrieval of files given any URI.

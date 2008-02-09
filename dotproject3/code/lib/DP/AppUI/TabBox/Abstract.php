@@ -1,7 +1,5 @@
 <?php
 
-require_once 'DP/AppUI.php';
-
 /** Tabbed interface base class
  *
  * Provides a programmatical interface to generate a tabbed style interface

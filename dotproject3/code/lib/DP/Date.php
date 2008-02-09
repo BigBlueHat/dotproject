@@ -5,7 +5,6 @@
 * @file date.class.php
 * @brief An extension of the PEAR date class
 */
-require_once 'DP/AppUI.php';
 
 /** @defgroup dateformatcontstants Date formatting constants */
 /*@{*/

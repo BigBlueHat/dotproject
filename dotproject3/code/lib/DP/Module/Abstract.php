@@ -1,9 +1,4 @@
 <?php /* CLASSES $Id: dp.class.php,v 1.49 2007/07/25 22:20:02 merlinyoda Exp $ */
-require_once 'DP/Base.php';
-require_once 'DP/AppUI.php';
-require_once 'DP/Config.php';
-require_once 'DP/Query.php';
-
 /**
  *	CDpObject Abstract Class.
  *

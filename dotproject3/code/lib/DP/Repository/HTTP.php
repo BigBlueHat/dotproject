@@ -7,9 +7,6 @@
  * @subpackage lib
  */
 
-require_once('DP/Repository/Abstract.php');
-
-
 
 /**
  * The HTTPRepository class provides listing and download functionality for HTTP based repositories.

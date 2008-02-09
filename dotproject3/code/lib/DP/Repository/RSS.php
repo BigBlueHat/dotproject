@@ -7,9 +7,6 @@
  * @subpackage lib
  */
 
-require_once('DP/Repository/Abstract.php');
-require_once('Zend/Feed.php');
-
 /**
  * The DP_Repository_RSS class provides listing and download functionality for RSS feeds (such as sourceforge)
  *

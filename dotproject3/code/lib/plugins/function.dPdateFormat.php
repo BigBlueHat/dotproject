@@ -4,8 +4,6 @@
  * @package Smarty
  * @subpackage plugins
  */
-require_once 'DP/Date.php';
-require_once 'DP/AppUI.php';
 
 /*
  * Smarty {dateFormat date= cdate= format=} function plugin

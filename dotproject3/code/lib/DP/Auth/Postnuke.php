@@ -1,8 +1,4 @@
 <?php
-require_once 'DP/Config.php';
-require_once 'DP/AppUI.php';
-require_once 'DP/Query.php';
-
 class DP_Auth_Postnuke extends DP_Auth_Sql
 {
 	private $fallback = null;

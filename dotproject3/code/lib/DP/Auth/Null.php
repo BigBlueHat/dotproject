@@ -1,5 +1,4 @@
 <?php
-require_once 'DP/Auth/Interface.php';
 
 /**
  * SQL Based authentication (default)

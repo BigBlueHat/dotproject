@@ -1,5 +1,5 @@
 <?php
-/*{{{ Copyright 2003-2007 <developers@saki.com.au>
+/*{{{ Copyright 2003-2008 <developers@saki.com.au>
 
     This file is part of the collected works of Adam Donnison.
 
@@ -17,10 +17,6 @@
     along with this; if not, write to the Free Software
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 }}}*/
-
-require_once 'DP/Config.php';
-require_once 'DP/AppUI.php';
-require_once 'Zend/Db.php';
 
 define('QUERY_STYLE_BOTH', Zend_Db::FETCH_BOTH);
 define('QUERY_STYLE_ASSOC', Zend_Db::FETCH_ASSOC);
@@ -65,9 +61,9 @@ class DP_Query {
 
 	/** DP_Query constructor
 	 */
-	public function __construct() 
+	public function __construct($new_instance = false) 
 	{
-		$this->_db = DP_Config::getDB();
+		$this->_db = DP_Config::getDB($new_instance);
 		$this->_query_id = null;
 		$this->clear();
 	}

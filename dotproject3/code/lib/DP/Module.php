@@ -1,6 +1,4 @@
 <?php
-require_once 'DP/Module/Interface.php';
-require_once 'DP/Module/Abstract.php';
 
 class DP_Module
 {

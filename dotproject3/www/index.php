@@ -10,12 +10,6 @@ set_include_path(get_include_path() . PATH_SEPARATOR . DP_BASE_CODE .'/lib');
 //ini_set('display_errors', true);
 //error_reporting(E_ALL);
 
-// First up, start sessions
-require_once 'DP/Session.php';
-require_once 'DP/AppUI.php';
-require_once 'Zend/Controller/Front.php';
-
-DP_Session_Init('AppUI');
 // var_dump($_SESSION);
 
 DP_AppUI::getInstance()->init();

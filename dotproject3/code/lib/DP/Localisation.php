@@ -1,8 +1,4 @@
 <?php
-require_once 'DP/Base.php';
-require_once 'DP/AppUI.php';
-require_once 'DP/Config.php';
-
 /**
  * Class to handle all localisation issues.
  * 

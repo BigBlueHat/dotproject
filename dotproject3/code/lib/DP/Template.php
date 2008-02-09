@@ -1,7 +1,5 @@
 <?php
 require_once 'smarty/Smarty.class.php';
-require_once 'DP/AppUI.php';
-require_once 'DP/Base.php';
 
 /**
  * Smarty template glue class to allow Zend_View to use Smarty in

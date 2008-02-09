@@ -1,8 +1,4 @@
 <?php
-require_once 'DP/Auth/Interface.php';
-require_once 'DP/AppUI.php';
-require_once 'DP/Config.php';
-require_once 'DP/Query.php';
 
 /**
  * The HTTP Basic authentication relies on the web server providing

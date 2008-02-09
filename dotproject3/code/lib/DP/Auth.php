@@ -1,6 +1,5 @@
 <?php
 
-require_once 'DP/Config.php';
 /**
  * Base class for pluggable authentication, basically a stub with a single static method.
  */

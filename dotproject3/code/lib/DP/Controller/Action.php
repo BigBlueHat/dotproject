@@ -1,10 +1,4 @@
 <?php
-require_once 'DP/AppUI.php';
-require_once 'DP/Template.php';
-require_once 'DP/Module/Interface.php';
-require_once 'DP/Module/Abstract.php';
-require_once 'DP/Module.php';
-require_once 'Zend/Controller/Action.php';
 /**
  * Extend the Zend_Controller_Action to provide entry point for all dP
  * pages.

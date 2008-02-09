@@ -1,5 +1,4 @@
 <?php
-require_once 'DP/Base.php';
 /**
  * Smarty plugin
  * @package Smarty
