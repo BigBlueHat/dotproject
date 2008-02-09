@@ -20,5 +20,7 @@ DP_Session_Init('AppUI');
 
 DP_AppUI::getInstance()->init();
 
-Zend_Controller_Front::run(DP_BASE_CODE . '/modules');
+$dP = Zend_Controller_Front::getInstance();
+$dP->addModuleDirectory(DP_BASE_CODE . '/modules');
+$dP->dispatch();
 ?>
