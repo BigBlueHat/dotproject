@@ -56,7 +56,7 @@ class DP_Session_SaveHandler implements Zend_Session_SaveHandler_Interface
 		$now = time();
 		if ($ret = $this->memcache->$id) {
 			$max = $now - $ret['start'];
-			$idle = $now = $ret['updated'];
+			$idle = $now - $ret['updated'];
 			if ($max < $this->max_lifetime && $idle < $this->max_idle) {
 				return $ret['data'];
 			} else {

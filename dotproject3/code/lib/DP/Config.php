@@ -29,16 +29,17 @@ class DP_Config
 	public function __destruct()
 	{
 		self::$_instance = null;
+		self::$base_config = null;
 		self::$db = null;
 	}
 
 	public static function getDB($new_instance = false)
 	{
 		$db = $new_instance ? null : self::$db;
-		self::getBaseConfig();
-		if (self::$base_config && ( $new_instance || null === self::$db)) {
+		$base_config = self::getBaseConfig();
+		if ($base_config && ( $new_instance || null === self::$db)) {
 			try {
-				$db = Zend_Db::factory(self::$base_config->database);
+				$db = Zend_Db::factory($base_config->database);
 				$db->setFetchMode(Zend_Db::FETCH_ASSOC);
 			}
 			catch(Execption $e) {

@@ -104,7 +104,7 @@ class DP_Memcache_Wrapper
 	public function __set($key, $value)
 	{
 		if ($this->_memcache_available) {
-			$this->_memcache_object->set($this->_namespace.$key, $data,$this->_flags, $this->_max_age);
+			$this->_memcache_object->set($this->_namespace.$key, $value,$this->_flags, $this->_max_age);
 		}
 	}
 

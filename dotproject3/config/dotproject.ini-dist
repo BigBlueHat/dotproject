@@ -4,3 +4,7 @@ params.dbname = dbname
 params.username = dbuser
 params.password = dbpass
 
+[memcached]
+available = 0
+pool = 
+sessions = 0
