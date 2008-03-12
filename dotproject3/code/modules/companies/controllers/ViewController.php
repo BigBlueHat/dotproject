@@ -20,7 +20,13 @@ class Companies_ViewController extends DP_Controller_Action
 {
 	public function indexAction()
 	{
-		throw new Exception('Not implemented');
+		$company_id = $this->getRequest()->getParam('company_id');
+		$obj =& $this->moduleClass();
+		$obj->load($company_id);
+		$tpl = $this->getView();
+		$tpl->assign('obj', $obj);
+		$company_types = DP_Config::getSysVal('CompanyType');
+		$tpl->assign('type', $company_types[$obj->company_type]);
 	}
 
 	public function departmentAction()
