@@ -30,7 +30,11 @@ class DP_Template extends Smarty implements Zend_View_Interface
 	 * @var string
 	 */
 	protected $mod = null;
-
+	/**
+	 * Array of page objects to render when display is called.
+	 */
+	protected $page_objects;
+	
 	/**
 	 * Constructor
 	 *
@@ -53,6 +57,8 @@ class DP_Template extends Smarty implements Zend_View_Interface
 		$this->_smarty->compile_dir = DP_BASE_DIR . '/files/cache/smarty_templates';
 		$this->_smarty->cache_dir = DP_BASE_DIR . '/files/cache/smarty';
 		$this->_smarty->plugins_dir[] = DP_BASE_CODE . '/lib/plugins';
+		
+		$this->page_objects = Array();
 		// Load the basics that are required for plugin functions
 		$this->init();
 	}
@@ -352,6 +358,8 @@ class DP_Template extends Smarty implements Zend_View_Interface
 		$rows = $paginated_rows;
 		$this->assign('rows', $rows);
 		$this->assign('show', $show);
+		// TEMP
+		$this->renderObjects();
 		$this->displayPagination($this->page, $totalRows > 0?$totalRows:$total_rows, $module);
 	}
 	
@@ -384,6 +392,36 @@ class DP_Template extends Smarty implements Zend_View_Interface
 		$pagination['pages'] = range($start_page, $end_page);
 
 		$this->assign('pagination', $pagination);
+	}
+	
+	public function displayObjects()
+	{
+		$this->renderObjects();
+		$this->assign('companies-list-view', 'asdasdasd');
+	}
+	
+	
+	/**
+	 * Add a DP_View subclass to the current template.
+	 * 
+	 * @param DP_View $view_obj An object inheriting the DP_View class.
+	 * 
+	 */
+	public function add(DP_View $view_obj) {
+		$this->page_objects[] = $view_obj;
+	}
+	
+	/**
+	 * Render all of the page objects and assign them to the current template.
+	 * 
+	 * Renders each object and assigns its output to the template variable named after its identifier.
+	 */
+	private function renderObjects() {
+		foreach ($this->page_objects as $obj) {
+			$rendered_view = $obj->render();
+			$template_id = $obj->id();
+			$this->assign($template_id, $rendered_view);
+		}
 	}
 	
 	/** Display a calendar

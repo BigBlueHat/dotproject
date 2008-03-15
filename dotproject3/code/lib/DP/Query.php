@@ -432,6 +432,22 @@ class DP_Query {
       $this->addClause('where', $query);
   }
 
+  /** Add a DP_Filter object
+   * 
+   * Apply rules from the supplied filter as SQL.
+   * 
+   * @param DP_Filter $filter A filter object.
+   */
+  function addFilter(DP_Filter $filter)
+  {
+  	$i = $filter->getIterator();
+  	while (!$i->isDone()) {
+  		$rule = $i->next();
+  		
+  	}		
+  }
+  /**
+
   /** Add a JOIN condition
    *
    * Add a join condition to the query.  This only implements

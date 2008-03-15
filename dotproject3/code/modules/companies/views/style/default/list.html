@@ -1,3 +1,5 @@
+{* List view temporarily hacked for testing purposes *}
+{*
 {if !$rows}
 	{dPtranslate sentence='No companies available'}<br />{$msg}
 {else}
@@ -14,6 +16,9 @@
 	  </th>
 {/section}
 </tr>
+
+
+
 
 {section name=i loop=$rows}
 <tr onmouseover="setPointer(this, '#FFFFB0')" onmouseout="setPointer(this, '')">
@@ -38,3 +43,5 @@
 </table>
 {include file="pagination.html"}
 {/if}
+*}
+{$companies_list_view}

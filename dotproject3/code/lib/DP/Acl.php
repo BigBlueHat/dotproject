@@ -4,6 +4,7 @@
  * turns off all access control.
  * We should replace this with an extension of the Zend_Acl class.
  */
+
 class DP_Acl
 {
 	public function __construct()
@@ -25,5 +26,6 @@ class DP_Acl
 		}
 	}
 }
+
 
 ?>
