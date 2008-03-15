@@ -1,6 +1,5 @@
 <?php
 require_once 'DP/Controller/Action.php';
-require_once 'profiler.inc';
 
 /**
  * This is the file containing the definition of the index controller for the companies module
