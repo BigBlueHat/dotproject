@@ -65,6 +65,15 @@ class DP_View_List extends DP_View_Stateful {
 	}
 	
 	/**
+	 * Get the data source being used for this list view.
+	 * 
+	 * @return DP_List_View_Source_Interface The source object
+	 */
+	public function dataSource() {
+		return $this->$src;
+	}
+	
+	/**
 	 * Add a plain text column to the list view
 	 * 
 	 * @param string $field_name The key of the field to use in this column.

@@ -77,9 +77,9 @@ class Companies_IndexController extends DP_Controller_Action
 				
 		$allowedCompanies = $obj->getAllowedRecords($AppUI->user_id, 'company_id, company_name');
 
-		$tabBox = $this->tabBox();
-		$currentTabId = $tabBox->getActive();
-		$company_type_filter = $tabBox->getActiveParam('list', 0);
+		//$tabBox = $this->tabBox();
+		//$currentTabId = $tabBox->getActive();
+		//$company_type_filter = $tabBox->getActiveParam('list', 0);
 
 		//Listing all types if ALL (-1) is selected
 		$companiesType = ($currentTabId != 0);
@@ -144,12 +144,17 @@ class Companies_IndexController extends DP_Controller_Action
 		// Get list object (which adheres to DP_View_List_Source)		
 		$companies_list_obj = DP_Object_Creator::getListFromFilteredQuery($q, Array($companies_list_filter, $companies_list_sort, $tpl->page));
 		$companies_list_view->setDataSource($companies_list_obj);
+
+		// TODO - When the tab view calls render() on the selected child, the child should generate the data.
+		$companies_tab_view = DP_View_Creator::getTabBoxView('companies_list_tabbox');
+		$companies_tab_view->add($companies_list_view,'All Companies');
+		$companies_tab_view->add($companies_list_view,'Complete Companies');
+		$companies_tab_view->add($companies_list_view,'Not Filtered Companies');
 		
+		$companies_tab_view->updateStateFromServer($this->getRequest());
 		// Add DP_View_List to view
-		$tpl->add($companies_list_view);
+		$tpl->add($companies_tab_view);
 		$tpl->displayObjects();
 	}
-
-
 }
 ?>

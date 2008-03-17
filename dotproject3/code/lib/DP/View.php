@@ -142,5 +142,21 @@ class DP_View {
 		}
 		return $output;
 	}
+	
+	/**
+	 * Render the child with the given ID string.
+	 * 
+	 * @param string $id The identifier of the child view.
+	 * @return string The HTML output of the child view's render() method.
+	 */
+	protected function renderChildWithId($id) {
+		$output = '';
+		foreach ($this->child_views as $child) {
+			if ($child->Id() == $id) {
+				$output .= $child->render();
+			}
+		}
+		return $output;
+	}
 }
 ?>
