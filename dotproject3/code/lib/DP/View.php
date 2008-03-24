@@ -1,7 +1,5 @@
 <?php
 
-require_once 'smarty/Smarty.class.php';
-
 /**
  * The base view class which can contain any number of elements including child views.
  * 
@@ -21,10 +19,6 @@ class DP_View {
 	 */
 	protected $id;
 	/**
-	 * @var object $smarty Instance of Smarty templating system.
-	 */
-	protected $smarty;
-	/**
 	 * @var integer $width Desired width of this element.
 	 */
 	protected $width;
@@ -42,19 +36,6 @@ class DP_View {
 		$this->parent_view_id = -1;
 		$this->width = "100%";
 		$this->child_views = Array();
-		$this->smarty = new Smarty();
-		
-		// TODO - Use a subclass of DP_Template or a lightweight version of DP_Template
-		$this->_smarty->template_dir = array(
-			DP_BASE_CODE.'/modules/'.$this->mod.'/views/style/'.(isset($ui->style) ? $ui->style : 'default'),
-			DP_BASE_CODE.'/modules/'.$this->mod.'/views/style',
-			DP_BASE_CODE.'/style/'.(isset($ui->style) ? $ui->style : 'default'),
-			DP_BASE_CODE.'/style/_smarty/'.$this->mod,
-			DP_BASE_CODE.'/style/_smarty'
-		);
-		$this->_smarty->compile_dir = DP_BASE_DIR . '/files/cache/smarty_templates';
-		$this->_smarty->cache_dir = DP_BASE_DIR . '/files/cache/smarty';
-		$this->_smarty->plugins_dir[] = DP_BASE_CODE . '/lib/plugins';
 	}
 	
 	/**

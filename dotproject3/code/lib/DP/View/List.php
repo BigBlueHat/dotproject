@@ -14,26 +14,22 @@
 class DP_View_List extends DP_View_Stateful {
 
 	/**
-	 * @var DP_List_Source_interface The data source for this DP_View_List Instance
+	 * @var DP_List_Source_interface $src The data source for this DP_View_List Instance
 	 */
 	protected $src;
+
 	/**
-	 * @var Array $columns Internal array of columns to display.
+	 * @var DP_View_RowIterator $rowiterator Renders the table rows.
 	 */
-	protected $columns;
-	/**
-	 * @var mixed $filter Not yet implemented
-	 * @todo Make DP_View_List reflect the sort state.
-	 */
-	protected $filter;
+	public $row_iterator;
 	/**
 	 * @var mixed $sort Sort object
 	 */
 	protected $sort_object;
 	/**
-	 * @var array $tool_views DP_View objects to be inserted into the header area of the DP_View_List
+	 * @var array $column_headers Array of column field names to column names. Used for the sorting headers
 	 */
-	protected $tool_views;
+	protected $column_headers;
 	
 	/**
 	 * Create a new DP_View_List
@@ -42,17 +38,19 @@ class DP_View_List extends DP_View_Stateful {
 	 * @param DP_View_List_Source_Interface $listobj The object implementing the data source interface.
 	 * @return DP_View_List Instance of DP_View_List
 	 */
-	public function __construct($id, DP_Query_Sort $sort) {
+	public function __construct($id) {
 		parent::__construct($id);
 		
-		//$this->src = $listobj;
+		$AppUI = DP_AppUI::getInstance();
+		$this->row_iterator = DP_View_Factory::getRowIterator($this->id().'-rows');
 		$this->src = new DP_List();
-		
-		$this->columns = Array();
-		$this->tool_views = Array();
-		$this->sort_object = $sort;
+		$this->sort_object = $AppUI->getState($this->id().'-sort', new DP_Query_Sort());
+		$this->column_headers = Array();
+
 	}
 
+	// Access methods
+	
 	/**
 	 * Set the data source to use for the list view.
 	 * 
@@ -74,65 +72,37 @@ class DP_View_List extends DP_View_Stateful {
 	}
 	
 	/**
-	 * Add a plain text column to the list view
-	 * 
-	 * @param string $field_name The key of the field to use in this column.
-	 * @param string $field_heading The heading to use for this column.
+	 * Set the view row iterator to use
 	 */
-	public function addTextColumn($field_name, $field_heading) {
-		$this->columns[] = Array("type"=>"text", "name"=>$field_name, "heading"=>$field_heading); 
+	public function setRowIterator(DP_View_RowIterator $rowiterator) {
+		$this->row_iterator = $rowiterator;
+	}
+
+	/**
+	 * Get a reference to the listviews sort object.
+	 * 
+	 * @return DP_Query_Sort An instance of DP_Query_Sort which reflects the current sorting of the view
+	 */
+	public function getSort() {
+		return $this->sort_object;
 	}
 	
 	/**
-	 * Add an object link column to the list view
+	 * Set column headers.
 	 * 
-	 * @param string $object_id_field The key of the field containing the object identifier.
-	 * @param string $object_name_field The key of the field containing the name of the object.
-	 * @param string $link_prefix The link prefix containing the module and action.
-	 * @param string $field_heading The heading of the column.
+	 * @param array $colhdrs array of strings to use as column headers
 	 */
-	public function addObjectLinkColumn($object_id_field, $object_name_field, $link_prefix, $field_heading) {
-		$this->columns[] = Array("type"=>"objectlink", 
-								"object_id"=>$object_id_field, 
-								"name"=>$object_name_field, 
-								"link_prefix"=>$link_prefix,
-								"heading"=>$field_heading);
+	public function setColumnHeaders($colhdrs) {
+		$this->column_headers = $colhdrs;
 	}
-
+	
 	/**
 	 * Get the current number of defined columns.
 	 * 
 	 * @return integer Number of columns.
 	 */
 	public function columnCount() {
-		return count($this->columns);
-	}
-	
-	/**
-	 * Set the filter used to produce the data source for this object.
-	 * 
-	 * The filter lets the list view know what state the search or sort widgets should be in.
-	 * 
-	 * @param DP_Filter $filter The filter used to produce the data source for this object.
-	 * @todo Make the DP_View_List display the proper state of each filter/sort object
-	 */
-	public function setFilterState(DP_Filter $filter) {
-		$this->filter = $filter;
-	}
-	
-	/**
-	 * Insert a DP_View in the table heading section.
-	 * 
-	 * Insert a DP_View to be displayed in the table heading section as a toolbar.
-	 * The toolbar will be rendered with the same style as the table headers.
-	 * More than one view can be added. The views will be displayed sequentially.
-	 * Child views will have the parent id set to the id of this DP_View_List object.
-	 * 
-	 * @param DP_View $view The view to insert
-	 */
-	public function insertToolView(DP_View $view) {
-		$view->setParentViewId($this->id());
-		$this->tool_views[] = $view;
+		return count($this->column_headers);
 	}
 	
 	/**
@@ -172,32 +142,26 @@ class DP_View_List extends DP_View_Stateful {
 	 * @return string HTML output
 	 */
 	public function render() {
-		// TODO - at the moment the table is dynamically generated. Use smarty templates to produce standard
-		// cells or custom cells as required (html shouldnt be used inside the code).
 		$output = "";
 		$output .= "<table class=\"tbl\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
-
-		
-		//$output .= $this->renderToolViews();
 		
 		$output .= '<tr><td colspan="'.$this->columnCount().'">';
 		$output .= $this->renderChildren();
 		$output .= '</td></tr>';
 		
-		foreach ($this->columns as $col) {
-			$output .= "\t<th><a href=\"?sort=".$col["name"]."&view_id=".$this->id()."\" class=\"hdr\">".$col['heading']."</a></th>\n";
+		
+		foreach ($this->column_headers as $fname => $hdr) {
+			$output .= "\t<th><a href=\"?sort=".$fname."&view_id=".$this->id()."\" class=\"hdr\">".$hdr."</a></th>\n";
+		}
+
+		$this->row_iterator->setDataSource($this->src);
+		
+		while (!$this->row_iterator->isDone()) {
+			$row = $this->row_iterator->currentItem();
+			$output .= $row;
+			$this->row_iterator->next();
 		}
 		
-		for ($rn = 0; $rn <= $this->src->rowCount(); $rn++) {
-			$output .= "\t<tr>\n";
-			$output .= "\t\t";
-			$row = $this->src->fetchRow($rn);
-			foreach ($this->columns as $col) {
-				$output .= $this->renderColumn($col, $row);
-			}
-			$output .= "\n";
-			$output .= "\t</tr>\n";
-		}
 		$output .= "</table>\n";
 		
 		return $output;
@@ -207,7 +171,6 @@ class DP_View_List extends DP_View_Stateful {
 	 * Update the visual state of the list view from server request variables.
 	 * 
 	 * This method should update the list view to reflect the state of the sort object.
-	 * @todo Make server updates flow on to child objects
 	 * 
 	 * @param mixed $request Server request object.
 	 */

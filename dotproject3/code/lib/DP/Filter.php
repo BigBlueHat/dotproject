@@ -10,14 +10,17 @@
  * @subpackage system
  * @todo Better retrieval method for filters, Better method of associating filters with views.
  * @todo Better method for converting filter rules to SQL
+ * @todo combine method for combining two filter objects
  */
-class DP_Filter {
+class DP_Filter implements DP_Observable_Interface {
 	/**
 	 * Array of filter rules.
 	 *
 	 * @var array
 	 */
 	public $filters;
+	private $id;
+	private $observers;
 	
 	const VALUE_EQUAL = 0;
 	const VALUE_LT = 1;
@@ -26,15 +29,19 @@ class DP_Filter {
 	
 	function __construct($id = -1) {
 		$this->filters = Array();
+		$this->observers = Array();
+		$this->id = $id;
 	}
-	
+	public function id() {
+		return $this->id;
+	}
 	/**
 	 * Add a rule which filters the list by a field's value.
 	 * 
 	 * @param string $field_name Name of the field/column to filter.
 	 * @param string $field_value Value the field must be equal to in order to pass the filter.
 	 */
-	function fieldEquals($field_name, $field_value) {
+	public function fieldEquals($field_name, $field_value) {
 		$this->filters[] = Array("filter_type"=>DP_Filter::VALUE_EQUAL, "filter_field"=>$field_name, "field_value"=>$field_value);
 	}
 	
@@ -44,7 +51,7 @@ class DP_Filter {
 	 * @param string $field_name Name of the field/column to filter.
 	 * @param string $value_like The substring to use when comparing with the field's value.
 	 */
-	function fieldSubstring($field_name, $value_like) {
+	public function fieldSubstring($field_name, $value_like) {
 		$this->filters[] = Array("filter_type"=>DP_Filter::VALUE_SUBSTR, "filter_field"=>$field_name, "field_value"=>$value_like);
 	}
 	
@@ -54,11 +61,24 @@ class DP_Filter {
 	 * @param string $field_name Name of the field being filtered.
 	 * @return array Array containing the first rule which is acting on the specified field. 
 	 */
-	function getFilter($field_name) {
+	public function getFilter($field_name) {
 		foreach ($this->filters as $filter) {
 			if ($filter['filter_field'] == $field_name) {
 				return $filter;
 			}
+		}
+	}
+	
+	/**
+	 * Add filter rules from another DP_Filter instance.
+	 * 
+	 * @param DP_Filter $filter Another DP_Filter instance.
+	 * @todo check whether filter rules already exist.
+	 */
+	public function addFromFilter(DP_Filter $filter) {
+		$add_filters = $filter->filters;
+		foreach ($add_filters as $f) {
+			$this->filters[] = $f;
 		}
 	}
 	
@@ -68,14 +88,14 @@ class DP_Filter {
 	 * @param string $field_name Name of the field being filtered.
 	 * @todo Implement method or use better criteria for retrieving filters.
 	 */
-	function deleteFilter($field_name) {
+	public function deleteFilter($field_name) {
 		
 	}
 	
 	/**
 	 * Delete all of the filter rules.
 	 */
-	function deleteAllRules() {
+	public function deleteAllRules() {
 		$this->filters = null;
 		$this->filters = Array();
 	}
@@ -85,7 +105,7 @@ class DP_Filter {
 	 * 
 	 * @return integer Number of rules
 	 */
-	function count() {
+	public function count() {
 		return count($this->filters);
 	}
 	
@@ -94,8 +114,33 @@ class DP_Filter {
 	 * 
 	 * @return DP_Filter_Iterator Filter iterator.
 	 */
-	function getIterator() {
+	public function getIterator() {
 		return new DP_Filter_Iterator($this);
 	}
+
+	// From DP_Observable_Interface
+	
+	public function attach(DP_Observer_Interface $observer) {
+		if (!in_array($this->observers, $observer)) {
+			$this->observers[] = $observer;
+		}
+	}
+	
+	public function detach(DP_Observer_Interface $observer){
+		if (in_array($this->observers, $observer)) {
+			$observer_key = array_search($this->observers, $observer);
+			$this->observers[$observer_key] = null;
+			
+			$reordered_observers = array_values($this->observers);
+			$this->observers = $reordered_observers;
+		}
+	}
+	
+	public function notify() {
+		foreach ($this->observer as $ob) {
+			$ob->updateState($this);	
+		}
+	}
+
 }
 ?>

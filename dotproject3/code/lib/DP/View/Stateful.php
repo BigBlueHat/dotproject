@@ -5,7 +5,7 @@
  * Views that inherit this class can interpret POST or GET variables
  * and change their internal representation accordingly. Saving the state
  * of the view is also supported through the DP_View_Stateful::saveState() method.
- * 
+ * @todo The observer pattern may replace DP_View_Stateful
  * @package dotproject
  * @subpackage system
  * @version not.even.alpha

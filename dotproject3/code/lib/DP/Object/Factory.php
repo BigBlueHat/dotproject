@@ -2,7 +2,7 @@
 /**
  * A factory class for dotproject objects
  * 
- * The DP_Object_Creator class is a base Factory class for DP_Object(s).
+ * The DP_Object_Factory class is a base Factory class for DP_Object(s).
  * It retrieves instances of DP_Object or subclasses of DP_Object initialised with attributes from
  * a database or from a html <form> POST method.
  * It stores and updates DP_Object based classes in the database.
@@ -10,7 +10,7 @@
  * @package dotproject
  * @subpackage system
  */
-class DP_Object_Creator {
+class DP_Object_Factory {
 	
 	/** string Name of the table in the db schema relating to child class */
 	protected static $_tbl = '';
@@ -98,7 +98,25 @@ class DP_Object_Creator {
 		$list = $dpquery->loadList();
 		return new DP_List($list);
 	}
+
+	/**
+	 * Retrieve a dynamic list object using a constructed DP_Query
+	 */
+	public static function getDynamicListFromQuery($dpquery) {
+		return new DP_List_Dynamic($dpquery);
+	}
 	
+	/**
+	 * Retrieve a dynamic list object using a constructed DP_Query and a set of filters.
+	 */
+	public static function getDynamicListFromFilteredQuery($dpquery, $filters = Array()) {
+		$dynamic_list =  new DP_List_Dynamic($dpquery);
+		$dynamic_list->addFilter($filters[0]);
+		$dynamic_list->addSort($filters[1]);
+		
+		return $dynamic_list;
+	}
+
 	/**
 	 * Insert an object into the database.
 	 * 

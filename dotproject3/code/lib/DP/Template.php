@@ -225,10 +225,12 @@ class DP_Template extends Smarty implements Zend_View_Interface
 				$name = 'error/error.html';
 			}
 		}
+		
 		if (Zend_Controller_Front::getInstance()->getRequest()->getParam('fromTab')) {
 			$this->assign('includeFile', $name);
 			return $this->_smarty->fetch('jsTab.html');
 		}
+		
 		return ($this->_suppress_headers ? '' : $this->_smarty->fetch('header.html')) . $this->_smarty->fetch($name) . ($this->_suppress_headers ? '' : $this->_smarty->fetch('footer.html'));
 	}
 

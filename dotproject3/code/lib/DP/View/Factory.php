@@ -9,7 +9,7 @@
  * @version not.even.alpha
  * @todo Possibly include the object dimensions in the constructor of view objects.
  */
-class DP_View_Creator {
+class DP_View_Factory {
 	
 	/**
 	 * Instantiate and return a DP_View_List object
@@ -17,8 +17,8 @@ class DP_View_Creator {
 	 * @param string $id Unique identifier to use for the product.
 	 * @param DP_List_Source_Interface $listobj The data source for this view.
 	 */
-	public static function getListView($id, DP_Query_Sort $sort) {
-		return new DP_View_List($id, $sort);
+	public static function getListView($id) {
+		return new DP_View_List($id);
 	}
 
 	/**
@@ -31,7 +31,7 @@ class DP_View_Creator {
 	/**
 	 * Instantiate and return a DP_View_SearchFilter object.
 	 */
-	public static function getSearchFilterView($id, $filter) {
+	public static function getSearchFilterView($id) {
 		return new DP_View_SearchFilter($id, $filter);
 	}
 	
@@ -40,6 +40,10 @@ class DP_View_Creator {
 	 */
 	public static function getSelectFilterView($id, $options, $label) {
 		return new DP_View_SelectFilter($id, $options, $label);
+	}
+
+	public static function getRowIterator($id) {
+		return new DP_View_RowIterator($id);
 	}
 }
 ?>

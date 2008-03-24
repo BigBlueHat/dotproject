@@ -12,29 +12,15 @@
  * 
  */
 interface DP_View_List_Source_Interface {
+
+	/**
+	 * Get an array of column names
+	 */
+	public function getColumns();
 	
 	/**
-	 * Get the number of columns.
-	 * 
-	 * @return integer Number of columns required.
+	 * Get an iterator for the data source
 	 */
-	
-	//public function columnCount();
-	//public function columnHeaders(); 
-	
-	/**
-	 * Get the number of rows.
-	 * 
-	 * @return integer Number of rows.
-	 */
-	public function rowCount();
-	
-	/**
-	 * Fetch a single row by its index (zero based)
-	 * 
-	 * @param integer $index The index of the row to fetch.
-	 * @return array Hash containing the row data
-	 */
-	public function fetchRow($index);
+	public function getIterator();
 }
 ?>

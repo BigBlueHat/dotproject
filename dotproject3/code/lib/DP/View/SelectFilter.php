@@ -10,7 +10,7 @@
  * @todo Not Implemented - Proper option list generation.
  * @todo Consider design for generating the valid options list.
  */
-class DP_View_SelectFilter extends DP_View {
+class DP_View_SelectFilter extends DP_View implements DP_Observer_Interface {
 	/**
 	 * @var array $optionhash Hash of available options.
 	 */
@@ -54,6 +54,17 @@ class DP_View_SelectFilter extends DP_View {
 		$output .= '</select>';
 		$output .= '</div>';
 		return $output;
+	}
+
+	// From DP_Observer_Interface
+	
+	/**
+	 * Update the state of the observer with a given subject reference.
+	 * 
+	 * @param DP_Observable_Interface $subject The subject which has changed its state.
+	 */
+	public function updateState($subject) {
+		
 	}
 }
 ?>

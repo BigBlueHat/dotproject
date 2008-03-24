@@ -11,7 +11,7 @@
  * @todo Tab box state handler
  * @todo Render only selected child unless TabBox is JS based
  */
-class DP_View_TabBox extends DP_View_Stateful {
+class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 	protected $tabs;
 	private $active_tab_index;
 	
@@ -52,6 +52,15 @@ class DP_View_TabBox extends DP_View_Stateful {
 		} else {
 			return false;
 		}
+	}
+	
+	/**
+	 * Get the index of the selected tab
+	 * 
+	 * @return integer Index of selected tab
+	 */
+	public function selectedTab() {
+		return $this->active_tab_index;
 	}
 	
 	/**
@@ -135,6 +144,17 @@ class DP_View_TabBox extends DP_View_Stateful {
 			}
 		}		
 		$this->updateChildrenFromServer($request);
+	}
+
+	
+	// From DP_Observer_Interface
+	
+	/**
+	 * Update the state of the observer with a given subject reference.
+	 * 
+	 * @param DP_Observable_Interface $subject The subject which has changed its state.
+	 */
+	public function updateState($subject) {
 	}
 }
 ?>
