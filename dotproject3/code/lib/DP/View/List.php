@@ -46,7 +46,6 @@ class DP_View_List extends DP_View_Stateful {
 		$this->src = new DP_List();
 		$this->sort_object = $AppUI->getState($this->id().'-sort', new DP_Query_Sort());
 		$this->column_headers = Array();
-
 	}
 
 	// Access methods
@@ -153,6 +152,7 @@ class DP_View_List extends DP_View_Stateful {
 	 * @return string HTML output
 	 */
 	public function render() {
+		
 		$output = "";
 		$output .= "<table class=\"dp-view-list\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
 		
@@ -162,7 +162,7 @@ class DP_View_List extends DP_View_Stateful {
 		
 		
 		foreach ($this->column_headers as $fname => $hdr) {
-			$output .= "\t<th><a href=\"?sort=".$fname."&view_id=".$this->id()."\" class=\"hdr\">".$hdr."</a></th>\n";
+			$output .= '<th><a href="'.$this->getUrlPrefix().'/view_id/'.$this->id().'/sort/'.$fname.'" class="hdr">'.$hdr.'</a></th>';
 		}
 
 		$this->row_iterator->setDataSource($this->src);

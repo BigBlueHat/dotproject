@@ -76,17 +76,18 @@ class Companies_IndexController extends DP_Controller_Action
 	{
 		$AppUI = DP_AppUI::getInstance();
 		$AppUI->savePlace();
-		
+		$req = $this->getRequest();
 		$perms =& $AppUI->acl();
 		
 		// load the company types
 		$types = DP_Config::getSysVal( 'CompanyType' );
 		$obj = $this->moduleClass();
 
-		
+		$this_url = $req->getBaseUrl().'/'.$req->getModuleName().'/'.$req->getControllerName().'/'.$req->getActionName();
 		// setup the title block
 		$m = $this->getRequest()->getModuleName();
 		$a = $this->getRequest()->getActionName();
+
 		$titleBlock = DP_View_Factory::getTitleBlockView('dp-companies-index-tb', 'Companies', 'handshake.png', $m, "$m.$a" );
 
 		// If the user is allowed to create a company, then display link
@@ -101,9 +102,14 @@ class Companies_IndexController extends DP_Controller_Action
 		// Construct the view hierarchy
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
 		$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
+		
 		$company_list_pager = DP_View_Factory::getPagerView('dp-companies-list-pager');
-		$company_list_pager->setItemsPerPage(500);
+		$company_list_pager->setItemsPerPage(100);
+		$company_list_pager->setUrlPrefix($this_url);
+		$company_list_pager->setPersistent(false);
+		
 		$companies_list_view = DP_View_Factory::getListView('companies_list_view');
+		$companies_list_view->setUrlPrefix($this_url);
 		$companies_list_view->add($company_search_view);
 		$companies_list_view->add($company_select_owner_view);
 		$companies_list_view->add($company_list_pager);
@@ -120,34 +126,38 @@ class Companies_IndexController extends DP_Controller_Action
  	
 		$companies_tab_view = DP_View_Factory::getTabBoxView('companies_list_tabbox');	
 		$companies_tab_view->add($companies_list_view, 'All Companies');
-		
+		$companies_tab_view->setUrlPrefix($this_url);
 		// Use the same list view reference for every tab in $_GET mode.
 		foreach ($types as $type_index => $company_type) {
 			$companies_tab_view->add($companies_list_view, $company_type);
 		}
-		
+
+		// DP_View_TabBox is dumb, so the controller must make the link between the selected tab and
+		// The filter rule.
+		$companies_tab_filter = new DP_Filter('dp-companies-tab');
+
 		// Update the view hierarchy with the request object.
 		// (request object is passed down the hierarchy).
 		$companies_tab_view->updateStateFromServer($this->getRequest());
-		// BUG - tab view does not update children
-		$companies_list_view->updateStateFromServer($this->getRequest());
-		
+
 		// Create the data source for the list. The data source here is an object that
 		// encompasses the query and filter objects needed to generate the list.
 		$companies_list_data = new Companies_List_Data();
 		$companies_list_data->addFilter($company_search_view->getFilter());
-		// DP_View_TabBox is dumb, so the controller must make the link between the selected tab and
-		// The filter rule.
-		$companies_tab_filter = new DP_Filter('dp-companies-tab');
+
 
 		// Do not include 'all companies' tab
 		if ($companies_tab_view->selectedTab() > 0) {
 			$companies_tab_filter->fieldEquals('company_type', $companies_tab_view->selectedTab());
 			$companies_list_data->addFilter($companies_tab_filter);
 		}
+		
 		$companies_list_data->addSort($companies_list_view->getSort());
+			
+		$companies_list_data->setPage($company_list_pager->page(), $company_list_pager->itemsPerPage());
 		$companies_list_data->loadList();
-		$company_list_pager->setTotalItems($companies_list_data->count());
+		$company_list_pager->setTotalItems($companies_list_data->count());	
+		
 		$companies_list_view->setDataSource($companies_list_data);
 		$companies_list_view->setColumnHeaders(Array('c.company_name'=>'Company Name', 
 													 'company_projects_active'=>'Active Projects', 
@@ -156,9 +166,9 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		// Save the state of the objects used to filter the query
 		// TODO - DP_View objects should save the underlying state any time they are modified.
-		$AppUI->setState('companies_list_sort',$companies_list_sort);
-		$AppUI->setState('companies_list_searchfilter_filter', $companies_list_filter);
-		
+		//$AppUI->setState('companies_list_sort',$companies_list_sort);
+		//$AppUI->setState('companies_list_searchfilter_filter', $companies_list_filter);
+		//$AppUI->setState('companies_list_tab', $companies_tab_filter);
 		// Add view and render
 		//$tpl = $this->getView();
 		

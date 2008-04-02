@@ -11,19 +11,48 @@
  * @version not.even.alpha
  */
 class DP_View_Stateful extends DP_View {
+	protected $url_prefix;
+	protected $persist_state;	
 	
 	function __construct($id) {
 		parent::__construct($id);
+		
+		$this->persist_state = true;
 	}
 	
 	/**
 	 * Save the state of the view to a session variable.
 	 * 
 	 * The state of this object will be saved to a session variable with the same ID.
-	 * @todo Implement this stub method
+	 * 
+	 * @param mixed $state The nominated state variable
 	 */
-	public function saveState() {
-		
+	public function saveState($state) {
+		if ($this->persist_state) {		
+			$AppUI = DP_AppUI::getInstance();
+			$AppUI->setState($this->id(), $state);
+		}
+	}
+	
+	/**
+	 * Load the state of the view from a session variable
+	 * 
+	 * @param mixed $default The variable to use if nothing is registered with the session.
+	 * @return mixed The state of this view
+	 */
+	public function loadState($default = null) {
+		$AppUI = DP_AppUI::getInstance();
+		$state = $AppUI->getState($this->id(), $default);
+		return $state;
+	}
+	
+	/**
+	 * Set whether the state of this view is persistent i.e should be saved in the session
+	 * 
+	 * @param bool $persist_state Boolean, if the view's state should be saved in the session.
+	 */
+	public function setPersistent($persist_state = true) {
+		$this->persist_state = $persist_state;
 	}
 	
 	/**
@@ -43,6 +72,24 @@ class DP_View_Stateful extends DP_View {
 	}
 	
 	/**
+	 * Get the URL prefix used when generating links.
+	 * 
+	 * @return string The full url prefix.
+	 */
+	public function getUrlPrefix() {
+		return $this->url_prefix;
+	}
+	
+	/**
+	 * Set the URL prefix to use when generating links.
+	 * 
+	 * @param string $url_prefix The full url prefix.
+	 */
+	public function setUrlPrefix($url_prefix) {
+		$this->url_prefix = $url_prefix;
+	}
+	
+	/**
 	 * Handle any POST or GET requests.
 	 * 
 	 * This method tries to access the object's variables in the server request object.
@@ -52,6 +99,8 @@ class DP_View_Stateful extends DP_View {
 	 * @param mixed $request Server request object.
 	 */
 	public function updateStateFromServer($request) {
+		//$params = $request->getParams();
+		//$this->setUrlPrefix($request->getBaseUrl().'/'.$params['module'].'/'.$params['controller'].'/'.$params['action']);
 		$this->updateChildrenFromServer($request);
 	}
 }

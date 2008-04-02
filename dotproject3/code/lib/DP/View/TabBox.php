@@ -21,10 +21,14 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 	 */
 	private $active_tab_index;
 	
+	protected $url_prefix;
+	
 	public function __construct($id) {
 		parent::__construct($id);
+		
+		$AppUI = DP_AppUI::getInstance();
 		$this->tabs = Array();
-		$this->active_tab_index = 0;
+		$this->active_tab_index = $this->loadState(0);
 	}
 	
 	/**
@@ -70,6 +74,15 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 	}
 	
 	/**
+	 * Set selected tab
+	 * 
+	 * @param integer $index The index of the selected tab
+	 */
+	public function setSelectedTab($index) {
+		$this->active_tab_index = 0;
+	}
+	
+	/**
 	 * Render the tabBox view
 	 * 
 	 * Only the selected child is rendered
@@ -95,7 +108,7 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 					<img src="/img/default/'.$tab_decoration_left.'" width="3" height="28" border="0" alt="" />
 				</td>
 				<td id="toptab_'.$idx.'" valign="middle" nowrap="nowrap" class="'.$tab_class.'">
-					<a href="?view_id='.$this->id().'&tab='.$idx.'">'.$tab['label'].'</a>
+					<a href="'.$this->url_prefix.'/view_id/'.$this->id().'/tab/'.$idx.'">'.$tab['label'].'</a>
 				</td>
 				<td valign="middle" width="3">
 					<img src="/img/default/'.$tab_decoration_right.'" width="3" height="28" border="0" alt="" />
@@ -132,12 +145,31 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 	}
 	
 	/**
+	 * Set the prefix to use with tab links
+	 * 
+	 * @param string $url_prefix tab link prefix
+	 */
+	public function setUrlPrefix($url_prefix) {
+		$this->url_prefix = $url_prefix;
+	}
+	
+	/**
 	 * Get the number of tabs in this tabBox
 	 * 
 	 * @return integer Number of tabs.
 	 */
 	public function tabCount() {
 		return count($this->tabs);
+	}
+	
+	/**
+	 * Update child tab views with request object.
+	 */
+	public function updateChildrenFromServer($request) {
+		$tab = $this->tabs[$this->active_tab_index];
+		if ($tab['view'] instanceof DP_View_Stateful) {
+			$tab['view']->updateStateFromServer($request);
+		}
 	}
 	
 	/**
@@ -150,7 +182,8 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 			if (isset($request->tab)) {
 				$this->active_tab_index = $request->tab;
 			}
-		}		
+		}
+		$this->saveState($this->active_tab_index);
 		$this->updateChildrenFromServer($request);
 	}
 
