@@ -145,10 +145,11 @@ class Companies_IndexController extends DP_Controller_Action
 		$companies_list_data = new Companies_List_Data();
 		$companies_list_data->addFilter($company_search_view->getFilter());
 
-
+		$types_keys = array_keys($types);
 		// Do not include 'all companies' tab
 		if ($companies_tab_view->selectedTab() > 0) {
-			$companies_tab_filter->fieldEquals('company_type', $companies_tab_view->selectedTab());
+			// Add company_type filter. Deduct 1 due to the All Companies tab
+			$companies_tab_filter->fieldEquals('company_type', $types_keys[$companies_tab_view->selectedTab() - 1]);
 			$companies_list_data->addFilter($companies_tab_filter);
 		}
 		
@@ -174,6 +175,10 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		$this->view->main = $companies_tab_view;
 		//$tpl->displayObjects();
+		/*
+		foreach($companies_list_view->getSort() as $k => $srt) {
+			echo "POS:".$k." SORT:".$srt;
+		}*/
 	}
 }
 ?>

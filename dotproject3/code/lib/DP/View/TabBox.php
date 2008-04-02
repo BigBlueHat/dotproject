@@ -90,13 +90,13 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 	 * @return string HTML output
 	 */
 	public function render() {
-		$output = '<div>';
+		$output = '<div id='.$this->id().'>';
 		// Output tabs
 		$output .= '
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr><td>
 				<table border="0" cellpadding="0" cellspacing="0">
-				<tr>';
+				<tr height="28">';
 		
 		foreach ($this->tabs as $idx => $tab) {
 			$tab_decoration_left = ($this->isSelected($idx)) ? 'tabSelectedLeft.png' : 'tabLeft.png';
@@ -104,7 +104,7 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 			$tab_class = ($this->isSelected($idx)) ? 'tabon' : 'taboff';
 			
 			$output .= '
-				<td height="28" valign="middle" width="3">
+				<td valign="middle" width="3">
 					<img src="/img/default/'.$tab_decoration_left.'" width="3" height="28" border="0" alt="" />
 				</td>
 				<td id="toptab_'.$idx.'" valign="middle" nowrap="nowrap" class="'.$tab_class.'">

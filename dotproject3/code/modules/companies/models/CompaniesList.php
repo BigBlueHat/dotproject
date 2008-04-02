@@ -90,7 +90,6 @@ class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject {
 		}
 		
 		foreach ($this->sort as $field => $sort_rule) {
-		//foreach($this->sort->sorting_rules as $field => $sort_rule) {
 			switch($sort_rule) {
 				case DP_Query_Sort::SORT_DESCENDING:
 					$this->query->addOrder($field.' DESC');
@@ -102,8 +101,7 @@ class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject {
 					break;
 			}
 		}
-		$bla = $this->query->prepare();
-		
+
 		$this->object_list = $this->query->loadList();
 	}
 	

@@ -60,16 +60,21 @@ class DP_Query_Sort implements Iterator {
 		// Take this field out of the sorting order if it already exists
 		for ($i = 0; $i < count($this->sorting_priority); $i++) {
 			if ($this->sorting_priority[$i] == $field_name) {
-				$this->sorting_priority[$i] = null;
+				$existing_rule = Array($field_name => $this->sorting_rules[$field_name]);
+				unset($this->sorting_priority[$i]);
 			}
 		}
-
+		
+		// If the requested field was already sorted. Use that state, otherwise sort descending
+		//$new_rule = ($existing_rule) ? $existing_rule : Array($field_name => DP_Query_Sort::SORT_DESCENDING);
+		
 		// Add the field to the top of the order list
 		if (count($this->sorting_priority > 0 && is_array($this->sorting_priority))) {
 			$old_values = array_values($this->sorting_priority);
-			$this->sorting_priority = array_merge(Array($field_name));
+			
+			$this->sorting_priority = array_merge(Array($field_name), $old_values);
 		} else {
-			$this->sorting_priority[] = $field_name;
+			$this->sorting_priority[] = $new_rule;
 		}
 		
 		if ($direction == null) {
@@ -92,7 +97,8 @@ class DP_Query_Sort implements Iterator {
 	
 	// From Zend_Engine Iterator
 	public function current() {
-		return $this->sorting_rules[$this->sorting_priority[$this->iter_index]];
+		$sort_field = $this->sorting_priority[$this->iter_index];
+		return $this->sorting_rules[$sort_field];
 	}
 	
 	public function key() {
