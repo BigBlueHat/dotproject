@@ -115,6 +115,21 @@ bordertable {
 	/*height: 12pt; Select boxes are too small in Mozilla */
 }
 
+input{
+	border: 1px black solid;
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+	margin: 1px 1px 1px 1px;
+	/*height: 12pt; Select boxes are too small in Mozilla */
+}
+
+select{
+	border: 1px black solid;
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+	/*height: 12pt; Select boxes are too small in Mozilla */
+}	
+
 TEXTAREA {
 	font-family: Osaka,verdana,helvetica,arial,sans-serif;
 	font-size: 9pt;
@@ -196,6 +211,24 @@ TD.nav {
 }
 
 /* tbl Standard table 'spreadsheet' style */
+table.dp-view-list {
+	background: #a5cbf7;
+}
+
+table.dp-view-list TH {
+	background-color: #08245b;
+	color: #ffffff;
+	list-style-type: disc;
+	list-style-position: inside;
+	border: outset #D1D1CD 1px;
+	font-weight: normal;
+	text-align:center;
+}
+
+table.dp-view-list td {
+	background-color: #ffffff;
+}
+
 table.tbl{
 	background: #a5cbf7;
 }

@@ -61,7 +61,8 @@ class DP_View_Pager extends DP_View {
 		$output = 'Page: ';
 		
 		for ($p = 1; $p <= $numpages; $p++) {
-			$output .= '<a href="javascript:setPage(x)" style="margin-right:5px;">'.($p*$this->pageitems-($this->pageitems-1)).'-'.($p*$this->pageitems).'</a>';
+			//$pager_title = ($p*$this->pageitems-($this->pageitems-1)).'-'.($p*$this->pageitems)
+			$output .= '<a href="javascript:setPage(x)" style="margin-right:5px;">'.$p.'</a>';
 		}
 		
 		return $output;

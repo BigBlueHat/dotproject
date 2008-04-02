@@ -136,6 +136,17 @@ class DP_View_List extends DP_View_Stateful {
 		return $output;
 	}
 	
+	protected function renderChildren() {
+		$output = "";
+		foreach ($this->child_views as $child) {
+			$output .= '<div style="float: left; margin-left: 5px; margin-right: 5px;">';
+			$output .= $child->render();
+			$output .= '</div>';
+			//$output .= '&nbsp;|&nbsp;';
+		}
+		return $output;
+	}
+	
 	/**
 	 * Render this view to HTML
 	 * 
@@ -143,7 +154,7 @@ class DP_View_List extends DP_View_Stateful {
 	 */
 	public function render() {
 		$output = "";
-		$output .= "<table class=\"tbl\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
+		$output .= "<table class=\"dp-view-list\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
 		
 		$output .= '<tr><td colspan="'.$this->columnCount().'">';
 		$output .= $this->renderChildren();

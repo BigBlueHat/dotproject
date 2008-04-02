@@ -95,7 +95,11 @@ class DP_View_RowIterator {
 		$output = '<tr>';
 		
 		foreach ($cells as $cell) {
-			$output .= '<td>';
+			
+			$output .= '<td';
+			$output .= ($cell->align()) ? ' align="'.$cell->align().'"' : '';
+			$output .= ($cell->width()) ? ' width="'.$cell->width().'"' : '';
+			$output .= '>';
 			$output .= $cell->render($this->srciter->currentItem());
 			$output .= '</td>';
 		}

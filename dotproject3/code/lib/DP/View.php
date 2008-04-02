@@ -23,6 +23,10 @@ class DP_View {
 	 */
 	protected $width;
 	/**
+	 * @var string $align Alignment of this view to the parent element
+	 */	
+	protected $align;
+	/**
 	 * @var integer $parent_view_id Identifier of the parent view object.
 	 */
 	protected $parent_view_id;
@@ -30,7 +34,14 @@ class DP_View {
 	 * @var array $child_views Array of child views inside this view.
 	 */
 	protected $child_views;
-	
+	/**
+	 * @var array $html_options associative array for html options
+	 */
+	protected $html_attribs;
+	/**
+	 * @var array $html_attribs_allowed array of allowed html attributes
+	 */
+	protected $html_attribs_allowed;
 	/**
 	 * @var integer PLACE_BOTTOM place the child view at the bottom of this DP_View
 	 */
@@ -40,14 +51,40 @@ class DP_View {
 	 */
 	const PLACE_TOP = 1; 
 	
-	
 	public function __construct($id) {
 		$this->id = $id;
 		$this->parent_view_id = -1;
-		$this->width = "100%";
+		$this->html_attribs = Array();
 		$this->child_views = Array();
+		$this->html_attribs_allowed = Array('width','align','height');
 	}
 
+	/**
+	 * Magic method allows setting of html options using attributes.
+	 * 
+	 * Alignment will be applied to the container, either the parent table cell or a
+	 * div that wraps the output of this view.
+	 * 
+	 * 
+	 */
+	public function __set($name, $value) {
+		if (in_array($name, $this->html_attribs_allowed)) {
+			$this->html_attribs[$name] = $value;
+		}
+	}
+	
+	public function __unset($name) {
+		if (in_array($name, $this->html_attribs_allowed)) {
+			unset($this->html_attribs[$name]);
+		}		
+	}
+	
+	public function __isset($name) {
+		if (in_array($name, $this->html_attribs_allowed)) {
+			return isset($this->html_attribs[$name]);
+		}		
+	}
+	
 	/**
 	 * Call render when converted to string
 	 * 
@@ -101,25 +138,43 @@ class DP_View {
 	 * @return integer Width of this view object in any acceptable HTML unit.
 	 */
 	public function width() {
-		return $this->width;
+		return $this->html_attribs['width'];
 	}
 	
 	/**
 	 * Get the desired height of this view object.
 	 * 
-	 * @todo Implement this stub method.
 	 */
 	public function height() {
-		
+		return $this->html_attribs['height'];
 	}
 	
 	/**
 	 * Get the desired alignment of this object inside the parent.
 	 * 
-	 * @todo Implement this stub method.
 	 */
 	public function align() {
-		
+		return $this->html_attribs['align'];
+	}
+	
+	/**
+	 * Set the desired alignment of this object inside the parent.
+	 * 
+	 * @param integer $align Alignment, one of DP_View::ALIGN_LEFT, DP_View::ALIGN_CENTER or DP_View::ALIGN_RIGHT
+	 */
+	public function setAlign($align) {
+		$this->align = $align;
+	}
+	
+	/**
+	 * Set display options using an associative array.
+	 * 
+	 * Valid keys are: width, height, align
+	 * 
+	 * @param array $options associative array of options.
+	 */
+	public function setHTMLAttribs($attribs) {
+		$this->html_attribs = $attribs;
 	}
 	
 	/**

@@ -96,9 +96,7 @@ class Companies_IndexController extends DP_Controller_Action
 		<input type="submit" class="button" value="'.$AppUI->_('new company').'" />
 		</form>', '',	'', '');
 		
-
 		$this->view->titleblock = $titleBlock;
-		
 		
 		// Construct the view hierarchy
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
@@ -113,9 +111,12 @@ class Companies_IndexController extends DP_Controller_Action
 		// Access the default row iterator, you can set your own if preferred
 		$companies_list_view->row_iterator->addRow(
 								Array(new DP_View_Cell_ObjectLink('company_id','company_name', '/companies/view/id/'),
-									  new DP_View_Cell('company_projects_active'),
-								      new DP_View_Cell('company_projects_inactive'))
+									  new DP_View_Cell('company_projects_active', Array('width'=>'120px', 'align'=>'center')),
+								      new DP_View_Cell('company_projects_inactive', Array('width'=>'120px', 'align'=>'center')),
+								      new DP_View_Cell_ArrayItem($types, 'company_type', Array('align'=>'center','width'=>'120px')))
 											);
+											
+		$companies_list_view->width = '100%';
  	
 		$companies_tab_view = DP_View_Factory::getTabBoxView('companies_list_tabbox');	
 		$companies_tab_view->add($companies_list_view, 'All Companies');
@@ -148,9 +149,10 @@ class Companies_IndexController extends DP_Controller_Action
 		$companies_list_data->loadList();
 		$company_list_pager->setTotalItems($companies_list_data->count());
 		$companies_list_view->setDataSource($companies_list_data);
-		$companies_list_view->setColumnHeaders(Array('c.company_name'=>'Company', 
-													 'company_projects_active'=>'Projects Active', 
-													 'company_projects_inactive'=>'Projects Inactive'));
+		$companies_list_view->setColumnHeaders(Array('c.company_name'=>'Company Name', 
+													 'company_projects_active'=>'Active Projects', 
+													 'company_projects_inactive'=>'Inactive Projects',
+													 'company_type'=>'Company Type'));
 		
 		// Save the state of the objects used to filter the query
 		// TODO - DP_View objects should save the underlying state any time they are modified.
