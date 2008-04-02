@@ -31,13 +31,32 @@ class DP_View {
 	 */
 	protected $child_views;
 	
-	function __construct($id) {
+	/**
+	 * @var integer PLACE_BOTTOM place the child view at the bottom of this DP_View
+	 */
+	const PLACE_BOTTOM = 0;
+	/**
+	 * @var integer PLACE_TOP place the child view at the top of this DP_View
+	 */
+	const PLACE_TOP = 1; 
+	
+	
+	public function __construct($id) {
 		$this->id = $id;
 		$this->parent_view_id = -1;
 		$this->width = "100%";
 		$this->child_views = Array();
 	}
-	
+
+	/**
+	 * Call render when converted to string
+	 * 
+	 * @return string HTML output
+	 */
+	public function __toString() {
+		return $this->render();	
+	}
+
 	/**
 	 * Get the template identifier for this view object.
 	 * 
@@ -71,7 +90,7 @@ class DP_View {
 	 * Add a DP_View which will be inserted inside this view.
 	 * @todo Determine standardised behaviour for views that cannot contain other views. Eg. listview
 	 */
-	public function add(DP_View $view) {
+	public function add(DP_View $view, $location = DP_View::PLACE_TOP) {
 		$view->setParentViewId($this->id());
 		$this->child_views[] = $view;
 	}

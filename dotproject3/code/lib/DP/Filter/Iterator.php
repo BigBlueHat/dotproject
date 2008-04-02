@@ -13,13 +13,14 @@ class DP_Filter_Iterator {
 	
 	public function __construct(DP_Filter $filter) {
 		$this->filter = $filter;
+		$this->index = 0;
 	}
 	
 	/**
 	 * Set the iterator's cursor back to the first item.
 	 */
 	public function first() {
-		$this->index = -1;
+		$this->index = 0;
 	}
 	
 	/**
@@ -27,13 +28,16 @@ class DP_Filter_Iterator {
 	 * 
 	 * @return mixed The next item.
 	 */
-	public function nextItem() {
+	public function next() {
 		$this->index++;
+	}
+	
+	public function currentItem() {
 		if ($this->index < $this->filter->count()) {
 			return $this->filter[$this->index];
 		} else {
-			return null;
-		}
+			return null;	
+		}	
 	}
 	
 	/**

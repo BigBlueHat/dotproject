@@ -45,5 +45,13 @@ class DP_View_Factory {
 	public static function getRowIterator($id) {
 		return new DP_View_RowIterator($id);
 	}
+	
+	public static function getPagerView($id) {
+		return new DP_View_Pager($id);
+	}
+
+	public static function getTitleBlockView($id, $title = '', $icon = '', $module = '', $helpref = '') {
+		return new DP_View_TitleBlock($id, $title, $icon, $module, $helpref);
+	}
 }
 ?>

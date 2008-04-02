@@ -1,0 +1,90 @@
+<?= $this->doctype('XHTML1_TRANSITIONAL') ?>
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+	<?php
+	// Trigger default controller to prepare layout variables
+	// Theres probably a better way to do this.
+	//$this->action('preparelayout','index');
+	$layout = $this->layout();
+	
+	// Set up display variables including style and URLs
+	$AppUI = DP_AppUI::getInstance();
+	$layout->uistyle = $AppUI->getPref('UISTYLE');
+	$layout->baseUrl = Zend_Controller_Front::getInstance()->getBaseUrl();
+	$layout->version = $AppUI->getVersion();
+	
+	// Set up layout level head section
+	$this->headMeta()->appendName('Description', 'dotProject Default Style');
+	$this->headMeta()->appendName('Version', $layout->version);
+	$this->headMeta()->appendHttpEquiv('Content-Type', 'text/html');
+	
+	$this->headTitle($layout->page_title);
+	
+	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/print.css', 'print');
+	$this->headLink()->appendStylesheet($layout->baseUrl.'/calendar.css');
+	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/'.$layout->uistyle.'/main.css');
+	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/calendar/calendar-dp.css');
+	$this->headLink()->appendStylesheet('./style/'.$layout->uistyle.'/main.css');	
+
+	$this->headLink()->appendAlternate($layout->baseUrl.'/img/'.$layout->uistyle.'/favicon.ico', 'image/ico', 'shortcut icon');
+	
+	$this->headStyle()->appendStyle('./style/'.$layout->uistyle.'/main.css');
+	
+	$this->headScript()->appendScript($layout->baseUrl.'/lib/overlib/overlib.js');
+	$this->headScript()->appendScript($layout->baseUrl.'/js/dPcommon.js');
+	
+	// Print out HEAD sections
+	?>
+	<?=$this->headMeta(); ?>
+	<?=$this->headTitle(); ?>
+	<?=$this->headLink(); ?>
+	<?=$this->headStyle(); ?>
+	<?=$this->headScript(); ?>
+</head>
+<body onload="this.focus();">
+<!--  	{popup_init src="`$baseUrl`/lib/overlib/overlib.js"} -->
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<tr>
+	<td>
+		<table width="100%" cellpadding="3" cellspacing="0" border="0">
+		<tr>
+			<th style="background:url('<?=$layout->baseUrl ?>/img/<?=$layout->uistyle ?>/titlegrad.jpg')" class="banner" align="left">
+				<strong>
+				<a style="color: white" href="<?=$layout->baseUrl ?>"><?=$layout->page_title ?></a>
+				</strong>
+			</th>
+			<th align="right" width="50">
+				<a href="http://www.dotproject.net/"<?php if ($layout->dialog) {?>} target="_blank"<?} ?>>
+					<img src="<?=$layout->baseUrl ?>/img/<?=$layout->uistyle ?>/dp_icon.gif" alt="dotProject icon" border="0" /></a>
+			</th>
+		</tr>
+		</table>
+	</td>
+</tr>
+<?php if (!$layout->dialog) { ?>
+	<tr>
+		<td class="nav" align="left">
+			<!-- Module navigation -->
+			<?=$this->action('modulenavigation','index'); ?>
+		</td>
+	</tr>
+	<tr>
+		<td>
+			<!-- User navigation: my info, logout, etc -->
+			<?=$this->action('usernav','index'); ?>
+		</td>
+	</tr>
+<?php } // dialog ?>
+</table>
+<table width="100%" cellspacing="0" cellpadding="4" border="0">
+<tr class="print">
+	<td valign="top" align="left" width="98%">
+	<!--  render system message here -->
+	<!--  render titleblock here -->
+	<!--  render main content -->
+	<?=$this->layout()->content; ?>
+	</td>
+</tr>
+</table>
+</body>
+</html>

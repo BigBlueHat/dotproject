@@ -12,7 +12,13 @@
  * @todo Render only selected child unless TabBox is JS based
  */
 class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
+	/**
+	 * @var $tabs Array of tabs
+	 */
 	protected $tabs;
+	/**
+	 * @var $active_tab_index The index of the active tab.
+	 */
 	private $active_tab_index;
 	
 	public function __construct($id) {
@@ -66,13 +72,15 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 	/**
 	 * Render the tabBox view
 	 * 
+	 * Only the selected child is rendered
+	 * 
 	 * @return string HTML output
 	 */
 	public function render() {
 		$output = '<div>';
 		// Output tabs
 		$output .= '
-			<table width="100%" border="0" cellpadding="3" cellspacing="0">
+			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 			<tr><td>
 				<table border="0" cellpadding="0" cellspacing="0">
 				<tr>';
@@ -101,7 +109,7 @@ class DP_View_TabBox extends DP_View_Stateful implements DP_Observer_Interface {
 		$output .= '
 				</tr>
 				</table>
-			</td></tr><tr><td colspan="'.$this->tabCount().'">';
+			</td></tr><tr><td colspan="'.$this->tabCount().'" class="tabox">';
 		
 		// Output selected child
 		$output .= $this->renderTab($this->active_tab_index);

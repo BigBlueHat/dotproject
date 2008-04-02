@@ -20,9 +20,11 @@ require_once DP_BASE_CODE . '/modules/companies/models/CompaniesList.php';
  */
 class Companies_IndexController extends DP_Controller_Action
 {
+	/*
 	public function indexAction()
-	{
+	{*/
 		
+		/*
 		$AppUI = DP_AppUI::getInstance();
 		$AppUI->savePlace();
 
@@ -63,28 +65,50 @@ class Companies_IndexController extends DP_Controller_Action
 			</form>', '',	'', '');
 		}
 		$titleBlock->show();
-
+		*/
 		// Probably don't need this anymore, except to set the default module name.
-		$tabBox = $this->tabBox();
-		$tabBox->show();
+		//$tabBox = $this->tabBox();
+		//$tabBox->show();
 		//$this->appendRequest('/companies/list');
-	}
+	//}
 
-	public function listAction()
+	public function indexAction()
 	{
 		$AppUI = DP_AppUI::getInstance();
-
+		$AppUI->savePlace();
+		
+		$perms =& $AppUI->acl();
+		
 		// load the company types
 		$types = DP_Config::getSysVal( 'CompanyType' );
 		$obj = $this->moduleClass();
+
+		
+		// setup the title block
+		$m = $this->getRequest()->getModuleName();
+		$a = $this->getRequest()->getActionName();
+		$titleBlock = DP_View_Factory::getTitleBlockView('dp-companies-index-tb', 'Companies', 'handshake.png', $m, "$m.$a" );
+
+		// If the user is allowed to create a company, then display link
+		$titleBlock->addCell(
+			'
+		<form action="'. DP_BASE_URL . '/companies/addedit/" method="post">
+		<input type="submit" class="button" value="'.$AppUI->_('new company').'" />
+		</form>', '',	'', '');
+		
+
+		$this->view->titleblock = $titleBlock;
+		
 		
 		// Construct the view hierarchy
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
 		$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
-
+		$company_list_pager = DP_View_Factory::getPagerView('dp-companies-list-pager');
+		$company_list_pager->setItemsPerPage(500);
 		$companies_list_view = DP_View_Factory::getListView('companies_list_view');
 		$companies_list_view->add($company_search_view);
 		$companies_list_view->add($company_select_owner_view);
+		$companies_list_view->add($company_list_pager);
 		
 		// Access the default row iterator, you can set your own if preferred
 		$companies_list_view->row_iterator->addRow(
@@ -113,7 +137,6 @@ class Companies_IndexController extends DP_Controller_Action
 		$companies_list_data->addFilter($company_search_view->getFilter());
 		// DP_View_TabBox is dumb, so the controller must make the link between the selected tab and
 		// The filter rule.
-		
 		$companies_tab_filter = new DP_Filter('dp-companies-tab');
 
 		// Do not include 'all companies' tab
@@ -123,7 +146,7 @@ class Companies_IndexController extends DP_Controller_Action
 		}
 		$companies_list_data->addSort($companies_list_view->getSort());
 		$companies_list_data->loadList();
-		
+		$company_list_pager->setTotalItems($companies_list_data->count());
 		$companies_list_view->setDataSource($companies_list_data);
 		$companies_list_view->setColumnHeaders(Array('c.company_name'=>'Company', 
 													 'company_projects_active'=>'Projects Active', 
@@ -135,10 +158,10 @@ class Companies_IndexController extends DP_Controller_Action
 		$AppUI->setState('companies_list_searchfilter_filter', $companies_list_filter);
 		
 		// Add view and render
-		$tpl = $this->getView();
+		//$tpl = $this->getView();
 		
-		$tpl->add($companies_tab_view);
-		$tpl->displayObjects();
+		$this->view->main = $companies_tab_view;
+		//$tpl->displayObjects();
 	}
 }
 ?>

@@ -12,10 +12,13 @@ class DP_Controller_Action extends Zend_Controller_Action
 	 */
 	public function init()
 	{
+		/*
 		if ($this->_helper->hasHelper('viewRenderer')) {
 			$this->_helper->viewRenderer->setView(new DP_Template());
 			$this->_helper->viewRenderer->setViewSuffix('html');
 		}
+		*/
+	
 	}
 
 	public function getView()
@@ -28,12 +31,17 @@ class DP_Controller_Action extends Zend_Controller_Action
 	 */
 	public function preDispatch()
 	{
-		$controller = $this->getRequest()->getControllerName();
+		//This seems to return index even when the request url is login??
+		//$controller = $this->getRequest()->getControllerName();
+		$fc = Zend_Controller_Front::getInstance();
+		$controller = $fc->getRequest()->getControllerName();
 		if ($controller != 'login' && $controller != 'error' && DP_AppUI::getInstance()->doLogin()) {
-			$this->getResponse()->setRedirect($this->getRequest()->getBaseUrl() . '/login/?from=' . urlencode($this->getRequest()->getRequestUri()));
+			$redir_login = $fc->getRequest()->getBaseUrl() . '/login/?from=' . urlencode($this->getRequest()->getRequestUri());
+			$this->getResponse()->setRedirect($redir_login);
 			$this->getResponse()->sendHeaders();
 			exit;
 		}
+		
 		if ($this->getRequest()->getParam('_forwarded')) {
 			$this->getView()->suppressHeaders();
 		}

@@ -1,0 +1,124 @@
+<br /><br /><br /><br />
+<?php 
+	// TODO - Most of this style info should be merged into main.css
+	$this->headStyle()->appendStyle('div#logincontainer {	margin-left: auto; 
+															margin-right: auto; 
+															width: 305px; 
+															border: solid #08245b 2px; 
+															background: #d6ebff; 
+															padding: 0px }');
+	
+	$this->headStyle()->appendStyle('div#loginheader { 		background-color: #08245b;
+															color: white;
+															list-style-type: disc;
+															list-style-position: inside;
+															border: outset #D1D1CD 1px; 
+															padding: 5px;}');
+	
+	$this->headStyle()->appendStyle('fieldset { 			border: 0; 
+															padding: 0; 
+															margin:0; }');
+	
+	$this->headStyle()->appendStyle('fieldset#logingrp dl { 	width: 100%; 
+															text-align: justify; 
+															margin-top: 10px;
+															margin-bottom: 10px;
+															}');
+	
+	$this->headStyle()->appendStyle('fieldset#logingrp dt { 	float: left; 
+															width: 100px; 
+															text-align: right;
+															line-height: 100%;
+															margin-top: 3px;
+															margin-bottom: auto;
+															padding-top: 10px;
+															}');
+	
+	$this->headStyle()->appendStyle('fieldset#logingrp dd { 	float: none; 
+															margin-left: auto; 
+															margin-left: 105px; 
+															margin-top: 0px; 
+															margin-bottom: 0px; 
+															padding-top: 10px; }');
+	
+	$this->headStyle()->appendStyle('fieldset#submitgrp { 	float: none; 
+															margin-top: auto; 
+															margin-bottom: 0px; 
+															padding-left: 5px;
+															padding-right: 5px; }');
+	$this->headStyle()->appendStyle('div#info { 			float: none; 
+															margin-top: auto; 
+															margin-bottom: 0px; 
+															padding-left: 5px;
+															padding-right: 5px; }');
+	$this->headStyle()->appendStyle('dd { 					margin: 0; }');
+
+	$this->headStyle()->appendStyle('fieldset#logingrp input {border: 1px black solid;
+															font-family: Osaka,verdana,Sans-Serif;
+															font-size: 8pt;
+															margin-left: 1px;
+															margin-top: 0px;
+															width: 180px;
+											}');
+
+	$this->headStyle()->appendStyle('input#login { 			float: right; 
+															border: 1px black solid; 
+															padding-left: 5px;
+															padding-right: 5px;
+															font-size: 8pt;
+															font-family: Osaka,verdana,Sans-Serif;
+	}');
+	$this->headStyle()->appendStyle('label { 				font-weight: normal; 
+															font-family: Osaka,verdana,Sans-Serif; 
+	}');
+	
+	$this->headStyle()->appendStyle('p {					margin: 5px;');
+	// IE injects whitespace in form tag
+	$this->headStyle()->appendStyle('form {					margin: 0;');
+?>
+<div id="logincontainer">
+	<div id="loginheader"><em><?=$this->config['company_name']?></em></div>
+	<?=$this->form?>
+	<?=$this->form->getDisplayGroup('login')?>
+	<!-- <div id="submission"> -->
+	<?=$this->form->getDisplayGroup('submission')?>
+	<!--  </div> -->
+	<div id="info">
+		<p>
+		<a href="#" onclick="f=document.loginform;f.lostpass.value=1;f.submit();">
+		<?=$this->translate('Help! I\'ve forgotten my password!'); ?></a>
+		</p>
+		<p>
+		<a href="<?=$config['site_terms']?>" target="_new">
+		<?=$this->translate('TERMS AND CONDITIONS OF ACCESSING THIS SITE');?></a>
+		</p>
+	</div>
+</div>
+
+<?php if ($this->version) { ?>
+<div align="center">
+	<span style="font-size:7pt">Version <?=$this->version?></span>
+</div>
+<?php } ?>
+
+<div align="center">
+	<span class="error">&nbsp;<?=$this->dpGetMsg ?></span>
+<?php if ($this->phpversion < '4.1') { ?>
+	<br /><span class="warning">WARNING: dotproject is NOT SUPPORTED for this PHP Version (<?=$this->phpversion?>)</span>
+<?php } ?>
+<?php if (!$this->mysql) { ?>
+	<br /><span class="warning">WARNING: PHP may not be compiled with MySQL support.  This will prevent proper operation of dotProject.  Please check you system setup.</span>
+<?php } ?>
+</div>
+<center>
+	* <?=$this->translate('You must have cookies enabled in your browser'); ?><br />
+</center>
+<div style="text-align: center; display: none;" id="terms">
+	<?=$config['site_terms']?>
+</div>
+
+<script type="text/javascript">
+<!-- // Select all text in the user box (if any) for easier login. If password is saved, hitting enter will login user.
+setTimeout("document.loginform.username.select()", 500);
+-->
+</script>

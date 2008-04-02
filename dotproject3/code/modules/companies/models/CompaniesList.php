@@ -82,6 +82,10 @@ class Companies_List_Data implements DP_Observable_Interface, DP_View_List_Sourc
 		$this->object_list = $this->query->loadList();
 	}
 	
+	public function count() {
+		return count($this->object_list);
+	}
+	
 	// From DP_Observable_Interface
 	
 	public function attach(DP_Observer_Interface $observer) {

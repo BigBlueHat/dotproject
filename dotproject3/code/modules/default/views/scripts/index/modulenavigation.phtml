@@ -1,0 +1,27 @@
+	<table cellpadding="3" cellspacing="0" width="100%">
+	<tr>
+		<td>
+	<?php foreach ($this->modules as $mod) { ?>
+		<a href="<?=$this->layout()->baseUrl ?>/<?=$mod['mod_directory'] ?>/"><?=$mod['mod_ui_name']?></a>
+		<?php if ($mod != $this->modules[count($this->modules)-1]) { ?> | <?} ?>
+	<?php } ?>
+		</td>
+		<td nowrap="nowrap" align="right">
+		<form name="frm_new" method="get" action="./index.php">
+		<?=$this->new_item ?>
+		<!-- {dParraySelect array=$new_item name='m' extras='style="font-size:10px" onchange="f=document.frm_new;mod=f.m.options[f.m.selectedIndex].value;if(mod) f.submit();"' value='' translation=true}
+		-->
+	<?php if ($this->company_id) { ?>
+		<input type="hidden" name="company_id" value="<?=$this->company_id ?>" />
+	<?php } ?>
+	<?php if ($this->task_id) { ?>	
+		<input type="hidden" name="task_parent" value="<?=$this->task_id ?>" />
+	<?php } ?>
+	<?php if ($this->file_id) { ?>
+		<input type="hidden" name="file_id" value="<?=$this->file_id ?>" />
+	<?php } ?>
+		<input type="hidden" name="a" value="addedit" />
+		</form>
+		</td>
+	</tr>
+	</table>

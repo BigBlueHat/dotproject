@@ -19,5 +19,6 @@ $dP = Zend_Controller_Front::getInstance();
 $dP->addModuleDirectory(DP_BASE_CODE . '/modules');
 $dP->addControllerDirectory(DP_BASE_CODE . '/modules/default/controllers');
 //$dP->addControllerDirectory(DP_BASE_CODE . '/modules/companies/controllers');
+Zend_Layout::startMvc(DP_BASE_CODE . '/style/default/layouts');
 $dP->dispatch();
 ?>
