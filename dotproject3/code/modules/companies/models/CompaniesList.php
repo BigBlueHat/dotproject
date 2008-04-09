@@ -11,7 +11,7 @@
  * @version not.even.alpha
  * 
  */
-class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject {
+class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject, Countable {
 	private $query;
 	private $count_query;
 	private $filters;
@@ -93,11 +93,9 @@ class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject {
 			switch($sort_rule) {
 				case DP_Query_Sort::SORT_DESCENDING:
 					$this->query->addOrder($field.' DESC');
-					$this->count_query->addOrder($field.' DESC');
 					break;
 				case DP_Query_Sort::SORT_ASCENDING:
 					$this->query->addOrder($field.' ASC');
-					$this->count_query->addOrder($field.' ASC');
 					break;
 			}
 		}
@@ -105,39 +103,13 @@ class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject {
 		$this->object_list = $this->query->loadList();
 	}
 	
+	// From Countable
+	
 	public function count() {
 		$full_list = $this->count_query->loadList();
 		return count($full_list);
 	}
 	
-	
-	/*
-	// From DP_Observable_Interface
-	// @deprecated DP_Observable functions for SplObserver
-	public function attach(DP_Observer_Interface $observer) {
-		if (!in_array($this->observers, $observer)) {
-			$this->observers[] = $observer;
-		}
-	}
-	
-	public function detach(DP_Observer_Interface $observer){
-		if (in_array($this->observers, $observer)) {
-			$observer_key = array_search($this->observers, $observer);
-			$this->observers[$observer_key] = null;
-			
-			$reordered_observers = array_values($this->observers);
-			$this->observers = $reordered_observers;
-		}
-	}
-	
-	public function notify() {
-		$this->company_list = DP_Object_Factory::getListFromFilteredQuery($this->query, Array($this->filter, $this->sort, 0));
-		
-		foreach ($this->observer as $ob) {
-			$ob->updateState($this);	
-		}
-	}
-	*/
 	// From DP_View_List_Source_Interface
 	
 	public function getIterator() {

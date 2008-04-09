@@ -1,0 +1,85 @@
+@CHARSET "ISO-8859-1";
+/*
+	Contains CSS declarations for Zend_Form elements
+*/
+
+.zend_form_container {
+	border: solid #08245b 2px;
+	background: #d6ebff;	
+}
+
+.zend_form {
+	margin: 0px 0px 0px 0px;
+}	
+
+.zend_form dd {
+	margin: 0px 0px 0px 0px;
+}
+
+.zend_form dt {
+
+}
+
+.zend_form fieldset {
+	border: solid #000000 1px;
+}
+
+.zend_form fieldset dl { 	
+
+}
+
+.zend_form fieldset dt { 	
+	float: left;
+	text-align: right;
+	width: 200px;
+	line-height: 100%;
+	margin-top: 0px;
+	margin-bottom: auto;
+	padding-top: 2px;
+}
+
+.zend_form fieldset dd { 	
+	margin-top: 4px; 
+	margin-bottom: 4px; 
+	margin-left: 205px;
+	padding-top: 2px;
+	padding-left: 2px;
+	background-color: white;
+	height: 15px;
+}
+
+.zend_form fieldset#buttons {
+	border-style: none;
+}
+
+.zend_form fieldset#buttons input {
+	border: 1px black solid;
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+	margin: 1px 1px 1px 1px;
+	/*height: 12pt; Select boxes are too small in Mozilla */
+}
+
+.zend_form fieldset#buttons dt {
+	display: none;
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+}
+
+.zend_form fieldset#buttons dd {
+	float: none;
+	width: 100%;
+	margin: 0px 0px 0px 0px;
+}
+
+.zend_form fieldset#buttons input.leftalign {
+		float: left;
+}
+
+.zend_form fieldset#buttons input.rightalign {
+	float: right;
+}
+
+.zend_form ul.errors {
+	list-style-position: outside;
+}

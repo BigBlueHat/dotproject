@@ -18,6 +18,8 @@ class ErrorController extends DP_Controller_Action
 {
 	public function errorAction()
 	{
+		$this->_helper->layout()->disableLayout();
+		
 		$errors = $this->_getParam('error_handler');
 		$this->_helper->viewRenderer->view->error = $errors->exception->getMessage();
 		$this->_helper->viewRenderer->view->dialog = 1;

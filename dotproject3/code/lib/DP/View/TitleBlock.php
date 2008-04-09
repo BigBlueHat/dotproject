@@ -10,6 +10,8 @@ class DP_View_TitleBlock extends DP_View {
 /** The reference for the context help system */
 	protected $helpref;	
 	
+	protected $crumbs;
+	
 	public function __construct($id, $title = '', $icon = '', $module = '', $helpref = '') {
 		parent::__construct($id);
 		$this->title = $title;
@@ -76,7 +78,7 @@ class DP_View_TitleBlock extends DP_View {
 		return $filters;
 		*/
 	}
-	
+
 	
 	/** Add a cell that contains a search input box
 	 *
@@ -116,7 +118,7 @@ class DP_View_TitleBlock extends DP_View {
 	*/
 	function addCrumb( $link, $label, $icon='' )
 	{
-		$this->crumbs[$link] = array( $label, $icon );
+		$this->crumbs[] = array( 'link'=>$link, 'label'=>$label, 'icon'=>$icon );
 	}
 	
 	/** Add a right aligned link to the title block 
@@ -142,14 +144,25 @@ class DP_View_TitleBlock extends DP_View {
 	 */
 	function addCrumbDelete( $title, $canDelete='', $msg='' )
 	{
-		$this->tpl->assign('title', $title);
-		$this->tpl->assign('canDelete', $canDelete);
+/*
 		if ($canDelete)
 			$this->tpl->assign('msg', ''.$msg);
 		else
 			$this->tpl->assign('msg', '');
-			
-		$this->addCrumbRight($this->tpl->fetch('crumbDelete.html'));
+	*/		
+		$crumb = '<table cellspacing="0" cellpadding="0" border="0">
+					<tr>
+						<td>
+							<a href="javascript:delIt()" title="'.$title.'">
+								<img src="/img/_icons/stock_delete-16.png" />
+							</a>
+						</td>
+						<td>
+							<a href="javascript:delIt()" title="'.$title.'">'.$title.'</a>
+						</td>
+					</tr>
+				</table>';
+		$this->addCrumbRight($crumb);
 	}
 	
 	
@@ -167,20 +180,21 @@ class DP_View_TitleBlock extends DP_View {
 		}
 		$output .= '</td>';
 		
-		foreach ($this->cells1 as $cell) {
-			$output .= $cell[2];
-			$output .= '<td align="right" nowrap="nowrap"'.$cell[0].'>';
-			$output .= $cell[1];
-			$output .= '</td>';
-			$output .= $cell[3];
+		if (count($this->cells1) > 0) {
+			foreach ($this->cells1 as $cell) {
+				$output .= $cell[2];
+				$output .= '<td align="right" nowrap="nowrap"'.$cell[0].'>';
+				$output .= $cell[1];
+				$output .= '</td>';
+				$output .= $cell[3];
+			}
 		}
-		
 		if ($this->helpref) {
 			$output .= '<td nowrap="nowrap" width="20" align="right">
 				<a href="#'.$this->helpref.'" 
 					onclick="javascript:window.open(\'/help/view/hid/'.$this->helpref.'\', \'contexthelp\', \'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes\')" 
 					title="translate:Help">
-					<img src="/images/icons/stock_help-16.png" width="16" height="16" alt="?" />
+					<img src="/img/_icons/stock_help-16.png" width="16" height="16" alt="?" />
 				</a>
 			</td>';
 		}
@@ -192,21 +206,34 @@ class DP_View_TitleBlock extends DP_View {
 						<tr>
 						<td nowrap="nowrap">';
 			
-			foreach ($this->crumbs as $crumb) {
-				$output .= '<strong>
-						  	<a href="'.$crumb['link'].'">
-							<img src='.$crumb['img'].' />'.$crumb['name'].'
-							</a></strong>';		
+			if (count($this->crumbs) > 0) {
+				for ($i = 0; $i < count($this->crumbs); $i++) {
+					$crumb = $this->crumbs[$i];
+					
+					$output .= '<strong>
+							  	<a href="'.$crumb['link'].'">';
+					
+					if ($crumb['img'] != '') {
+						$output .= '<img src='.$crumb['icon'].' />';
+					}
+					
+					$output .= $crumb['label'].'</a></strong>';
+
+					if ($crumb != $this->crumbs[count($this->crumbs) - 1]) {
+						$output .= "<strong> : </strong>";
+					}
+				}
 			}
-			
 			$output .= '</td>';
 			
-			foreach ($this->cells2 as $cell) {
-				$output .= $cell[2];
-				$output .= '<td align="right" nowrap="nowrap"'.$cell[0].'>';
-				$output .= $cell[1];
-				$output .= '</td>';
-				$output .= $cell[3];				
+			if (count($this->cells2) > 0) {
+				foreach ($this->cells2 as $cell) {
+					$output .= $cell[2];
+					$output .= '<td align="right" nowrap="nowrap"'.$cell[0].'>';
+					$output .= $cell[1];
+					$output .= '</td>';
+					$output .= $cell[3];				
+				}
 			}
 			
 			$output .= '</tr></table>';

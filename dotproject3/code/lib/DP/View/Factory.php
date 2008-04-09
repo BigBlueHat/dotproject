@@ -50,6 +50,11 @@ class DP_View_Factory {
 		return new DP_View_Pager($id);
 	}
 
+	/**
+	 * Instantiate and return a DP_View_TitleBlock object.
+	 * 
+	 * @return DP_View_TitleBlock Instance
+	 */
 	public static function getTitleBlockView($id, $title = '', $icon = '', $module = '', $helpref = '') {
 		return new DP_View_TitleBlock($id, $title, $icon, $module, $helpref);
 	}

@@ -1,0 +1,63 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform-view.css');
+?>
+<?=$this->titleblock; ?>
+
+<div id="companies-view-container" class="zend_form_container">
+<dl class="zend_form">
+	<dt></dt>
+	<dd></dd>
+	<dt></dt>
+	<dd>
+	<fieldset id="main"><legend><?=$this->translate('Main Details');?></legend>
+	<dl>
+		<dt><?=$this->translate('Company Name');?>:</dt>
+		<dd><?=$this->obj->company_name?></dd>
+		<dt><?=$this->translate('E-mail');?>:</dt>
+		<dd><?=$this->obj->company_email?></dd>
+		<dt><?=$this->translate('Phone');?>:</dt>
+		<dd><?=$this->obj->company_phone1?></dd>
+		<dt><?=$this->translate('Phone2')?>:</dt>
+		<dd><?=$this->obj->company_phone2?></dd>
+		<dt><?=$this->translate('Fax');?>:</dt>
+		<dd><?=$this->obj->company_fax?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+	<dt></dt>
+	<dd>
+	<fieldset id="address"><legend><?=$this->translate('Address Information');?></legend>
+	<dl>
+		<dt><?=$this->translate('Address 1');?>:</dt>
+		<dd><?=$this->obj->company_address1?></dd>
+		<dt><?=$this->translate('Address 2');?>:</dt>
+		<dd><?=$this->obj->company_address2?></dd>
+		<dt><?=$this->translate('City');?>:</dt>
+		<dd><?=$this->obj->company_city?></dd>
+		<dt><?=$this->translate('State');?>:</dt>
+		<dd><?=$this->obj->company_state?></dd>
+		<dt><?=$this->translate('Zip');?>:</dt>
+		<dd><?=$this->obj->company_zip?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+	<dt></dt>
+	<dd>
+	<fieldset id="other"><legend><?=$this->translate('Other Details')?></legend>
+	<dl>
+		<dt><?=$this->translate('Company Owner');?>:</dt>
+		<dd>company_owner</dd>
+		<dt><?=$this->translate('Type');?>:</dt>
+		<dd>company_type</dd>
+		<dt>URL: http://</dt>
+		<dd><a href="<?=$this->obj->company_primary_url?>"><?=$this->obj->company_primary_url?></a></dd>
+		<dt><?=$this->translate('Company description');?>:</dt>
+		<dd><?=$this->obj->company_description?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+	<dt></dt>
+
+</dl>
+</div>
+

@@ -16,10 +16,22 @@ class DP_Query_Sort implements Iterator {
 	 * @var array $sorting_rules
 	 */
 	public $sorting_rules;
+	/**
+	 * @var array $sorting_priority Array of field names in the order they should be sorted.
+	 */
 	protected $sorting_priority;
+	/**
+	 * @var integer $iter_index Index of the iterator
+	 */
 	protected $iter_index;
 	
+	/**
+	 * @var SORT_ASCENDING Sort a given field in ascending order.
+	 */
 	const SORT_ASCENDING = 0;
+	/**
+	 * @var SORT_DESCENDING Sort a given field in descending order.
+	 */
 	const SORT_DESCENDING = 1;
 	
 	public function __construct() {
@@ -34,7 +46,7 @@ class DP_Query_Sort implements Iterator {
 	 * @param $field_name Name of the field to sort.
 	 */
 	function sortAscending($field_name) {
-		$this->sorting_rules[$field_name] = this::SORT_ASCENDING;
+		$this->sort($field_name, this::SORT_ASCENDING);
 	}
 	
 	/**
@@ -43,7 +55,7 @@ class DP_Query_Sort implements Iterator {
 	 * @param $field_name Name of the field to sort.
 	 */
 	function sortDescending($field_name) {
-		$this->sorting_rules[$field_name] = this::SORT_DESCENDING;
+		$this->sort($field_name, this::SORT_DESCENDING);
 	}
 	
 	/**
@@ -65,9 +77,6 @@ class DP_Query_Sort implements Iterator {
 			}
 		}
 		
-		// If the requested field was already sorted. Use that state, otherwise sort descending
-		//$new_rule = ($existing_rule) ? $existing_rule : Array($field_name => DP_Query_Sort::SORT_DESCENDING);
-		
 		// Add the field to the top of the order list
 		if (count($this->sorting_priority > 0 && is_array($this->sorting_priority))) {
 			$old_values = array_values($this->sorting_priority);
@@ -77,6 +86,7 @@ class DP_Query_Sort implements Iterator {
 			$this->sorting_priority[] = $new_rule;
 		}
 		
+		// Sort the field descending unless it already exists, then reverse its sorting order.
 		if ($direction == null) {
 			if (isset($this->sorting_rules[$field_name])) {
 				// TODO - could probably do this with a logical xor.
@@ -96,6 +106,7 @@ class DP_Query_Sort implements Iterator {
 	}
 	
 	// From Zend_Engine Iterator
+	
 	public function current() {
 		$sort_field = $this->sorting_priority[$this->iter_index];
 		return $this->sorting_rules[$sort_field];
