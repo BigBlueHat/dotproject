@@ -12,7 +12,11 @@ BODY {
 }
 
 ul {
-	margin-left: 25px;
+	/*margin-left: 25px;*/
+}
+
+li {
+	
 }
 
 dl {
@@ -48,6 +52,51 @@ A:hover {
 	text-decoration: underline;
 }
 
+A.navlink:link {
+	color: #08245b;
+	text-decoration: underline;
+}
+
+A.navlink:visited {
+	color: #08245b;
+	text-decoration: underline;
+}
+
+A.navlink_selected {
+	color: #08245b;
+	text-decoration: none;
+	font-weight: bold;
+}
+
+/* DP_View_SearchFilter */
+div.View_SearchFilter {
+	padding: 6px 4px 4px 4px;	
+}
+
+/* DP_View_Pager */
+div.View_Pager {
+	padding: 4px 4px 4px 4px;
+}
+
+/* DP_View_Button */
+div.View_Button {
+	padding: 4px 4px 4px 4px;
+	background-color: white;
+}
+
+.zend_form {
+	margin: 0px;
+}
+
+/* Button */
+button {
+	border: 1px black solid;
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+	/*width: 100px; too small for some translations*/
+}
+
+
 TD {
 	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt
@@ -65,6 +114,15 @@ h1, .title {
 	color: #08245b;
 	margin-bottom: 0px;
 	margin-top: 5px;
+}
+
+/* For Object View */
+h1.headtest {
+	font-size: 18px;
+	font-weight: bold;
+	font-family: Osaka,verdana,Sans-Serif;
+	color: #08245b;
+	margin: 10px 10px 25px 10px;
 }
 
 h2, .subtitle {

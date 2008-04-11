@@ -1,8 +1,13 @@
 	<table cellpadding="3" cellspacing="0" width="100%">
 	<tr>
 		<td>
-	<?php foreach ($this->modules as $mod) { ?>
-		<a href="<?=$this->layout()->baseUrl ?>/<?=$mod['mod_directory'] ?>/"><?=$mod['mod_ui_name']?></a>
+	<?php foreach ($this->modules as $mod) { ?> 
+		<?php if ($this->module_selected == strtolower($mod['mod_ui_name'])) { ?>
+		<a class="navlink_selected"
+		<?php } else { ?>
+		<a class="navlink"
+		<?php } ?>
+		 href="<?=$this->layout()->baseUrl ?>/<?=$mod['mod_directory'] ?>/"><?=$mod['mod_ui_name']?></a>
 		<?php if ($mod != $this->modules[count($this->modules)-1]) { ?> | <?} ?>
 	<?php } ?>
 		</td>

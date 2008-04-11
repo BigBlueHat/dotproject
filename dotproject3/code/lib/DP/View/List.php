@@ -105,48 +105,6 @@ class DP_View_List extends DP_View_Stateful {
 	}
 	
 	/**
-	 * Render a table cell given the column information and the cell data.
-	 * 
-	 * @param array $column Array containing the specs for the column.
-	 * @param array $data Hash of row data.
-	 * @return string Rendered table cell.
-	 */
-	private function renderColumn($column, $data) {
-		switch($column['type']) {
-			case "objectlink":
-				return '<td><a href="'.$column['link_prefix'].$data[$column['object_id']].'">'.$data[$column['name']].'</a></td>';
-			case "text":
-				return '<td>'.$data[$column['name']].'</td>';
-		}
-	}
-	
-	/**
-	 * Render tool views to be inserted at the top of the list view.
-	 * 
-	 * @return string Tool view output.
-	 */
-	private function renderToolViews() {
-		$output = "";
-		
-		foreach ($this->tool_views as $tv) {
-			$output .= "<tr><td colspan=\"".$this->columnCount()."\">".$tv->render()."</td></tr>\n";
-		}
-		
-		return $output;
-	}
-	
-	protected function renderChildren() {
-		$output = "";
-		foreach ($this->child_views as $child) {
-			$output .= '<div style="float: left; margin-left: 5px; margin-right: 5px;">';
-			$output .= $child->render();
-			$output .= '</div>';
-			//$output .= '&nbsp;|&nbsp;';
-		}
-		return $output;
-	}
-	
-	/**
 	 * Render this view to HTML
 	 * 
 	 * @return string HTML output
@@ -154,15 +112,12 @@ class DP_View_List extends DP_View_Stateful {
 	public function render() {
 		
 		$output = "";
+		$output .= $this->renderChildren(DP_View::PREPEND);
+		
 		$output .= "<table class=\"dp-view-list\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
 		
-		$output .= '<tr><td colspan="'.$this->columnCount().'">';
-		$output .= $this->renderChildren();
-		$output .= '</td></tr>';
-		
-		
 		foreach ($this->column_headers as $fname => $hdr) {
-			$output .= '<th><a href="'.$this->getUrlPrefix().'/view_id/'.$this->id().'/sort/'.$fname.'" class="hdr">'.$hdr.'</a></th>';
+			$output .= '<th><a href="?view_id='.$this->id().'&sort='.$fname.'" class="hdr">'.$hdr.'</a></th>';
 		}
 
 		$this->row_iterator->setDataSource($this->src);
@@ -174,7 +129,7 @@ class DP_View_List extends DP_View_Stateful {
 		}
 		
 		$output .= "</table>\n";
-		
+		$output .= $this->renderChildren(DP_View::APPEND);		
 		return $output;
 	}
 

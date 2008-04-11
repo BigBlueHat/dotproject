@@ -1,5 +1,5 @@
 <?php
-require_once 'DP/Controller/Action.php';
+//require_once 'DP/Controller/Action.php';
 
 require_once DP_BASE_CODE . '/modules/companies/models/Factory.php';
 require_once DP_BASE_CODE . '/modules/companies/models/CompaniesList.php';
@@ -87,30 +87,34 @@ class Companies_IndexController extends DP_Controller_Action
 		// setup the title block
 		$m = $req->getModuleName();
 		$a = $req->getActionName();
-		$titleBlock = DP_View_Factory::getTitleBlockView('dp-companies-index-tb', 'Companies', '/img/_icons/companies/handshake.png', $m, "$m.$a" );
+		
+		//$tb = $this->_helper->TitleBlock('Companies', '/img/_icons/companies/handshake.png');
+		//$tb = $this->_helper->TitleBlock('');
+		//$tb->addCrumb('','companies');
 
-		// If the user is allowed to create a company, then display link
-		$titleBlock->addCell('
-			<form action="/companies/edit/new" method="post">
-				<input type="submit" class="button" value="new company" />
-			</form>', '', '', '');
-		
-		$this->view->titleblock = $titleBlock;
-		
 		// Construct the view hierarchy
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
-		$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
+		$company_search_view->setSearchFieldTitle('Company name');
+		// Temporarily removed until implemented
+		//$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
 		
 		$company_list_pager = DP_View_Factory::getPagerView('dp-companies-list-pager');
-		$company_list_pager->setItemsPerPage(100);
+		$company_list_pager->setItemsPerPage(30);
 		$company_list_pager->setUrlPrefix($this_url);
 		$company_list_pager->setPersistent(false);
+		$company_list_pager->align = 'center';
 		
 		$companies_list_view = DP_View_Factory::getListView('companies_list_view');
 		$companies_list_view->setUrlPrefix($this_url);
-		$companies_list_view->add($company_search_view);
-		$companies_list_view->add($company_select_owner_view);
-		$companies_list_view->add($company_list_pager);
+		
+		$new_btn = new DP_View_Button('dp-companies-new','new-company');
+		$new_btn->button->setLabel('+ New Company');
+		$new_btn->button->onClick = "location = '/companies/edit/new'";
+		$companies_list_view->add($new_btn, DP_View::APPEND);
+		
+		$companies_list_view->add($company_search_view, DP_View::PREPEND);
+		//$companies_list_view->add($company_select_owner_view, DP_View::PREPEND);
+		$companies_list_view->add($company_list_pager, DP_View::APPEND);
 		
 		// Access the default row iterator, you can set your own if preferred
 		$companies_list_view->row_iterator->addRow(

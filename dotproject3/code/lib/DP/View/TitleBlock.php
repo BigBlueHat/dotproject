@@ -12,6 +12,8 @@ class DP_View_TitleBlock extends DP_View {
 	
 	protected $crumbs;
 	
+	protected $crumb_seperator;
+	
 	public function __construct($id, $title = '', $icon = '', $module = '', $helpref = '') {
 		parent::__construct($id);
 		$this->title = $title;
@@ -21,6 +23,7 @@ class DP_View_TitleBlock extends DP_View {
 		$this->cells1 = array();
 		$this->cells2 = array();
 		$this->crumbs = array();
+		$this->crumb_seperator = '&gt;';
 	}
 	
  /** Add a cell beside the title
@@ -141,6 +144,7 @@ class DP_View_TitleBlock extends DP_View {
 	 * @param $title Title of the button
 	 * @param $canDelete Boolean, if false will display an icon indicating the user has no permission to delete
 	 * @param $msg Displayed as the title attribute of the delete link
+	 * 
 	 */
 	function addCrumbDelete( $title, $canDelete='', $msg='' )
 	{
@@ -202,16 +206,16 @@ class DP_View_TitleBlock extends DP_View {
 		$output .= '</tr></table>';
 		
 		if (count($this->cells2) > 0 || count($this->crumbs) > 0) {
-			$output .= '<table border="0" cellpadding="4" cellspacing="0" width="100%">
+			$output .= '<table border="0" cellpadding="3" cellspacing="0" width="100%">
 						<tr>
 						<td nowrap="nowrap">';
 			
 			if (count($this->crumbs) > 0) {
+				$output .= '>&nbsp;';
 				for ($i = 0; $i < count($this->crumbs); $i++) {
 					$crumb = $this->crumbs[$i];
 					
-					$output .= '<strong>
-							  	<a href="'.$crumb['link'].'">';
+					$output .= '<strong><a href="'.$crumb['link'].'">';
 					
 					if ($crumb['img'] != '') {
 						$output .= '<img src='.$crumb['icon'].' />';
@@ -220,7 +224,7 @@ class DP_View_TitleBlock extends DP_View {
 					$output .= $crumb['label'].'</a></strong>';
 
 					if ($crumb != $this->crumbs[count($this->crumbs) - 1]) {
-						$output .= "<strong> : </strong>";
+						$output .= '&nbsp;'.$this->crumb_seperator.'&nbsp;';
 					}
 				}
 			}

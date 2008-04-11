@@ -43,13 +43,13 @@ class DP_View {
 	 */
 	protected $html_attribs_allowed;
 	/**
-	 * @var integer PLACE_BOTTOM place the child view at the bottom of this DP_View
+	 * @var integer APPEND place the child view at the bottom of this DP_View
 	 */
-	const PLACE_BOTTOM = 0;
+	const APPEND = 0;
 	/**
-	 * @var integer PLACE_TOP place the child view at the top of this DP_View
+	 * @var integer PREPEND place the child view at the top of this DP_View
 	 */
-	const PLACE_TOP = 1; 
+	const PREPEND = 1; 
 	
 	public function __construct($id) {
 		$this->id = $id;
@@ -127,9 +127,10 @@ class DP_View {
 	 * Add a DP_View which will be inserted inside this view.
 	 * @todo Determine standardised behaviour for views that cannot contain other views. Eg. listview
 	 */
-	public function add(DP_View $view, $location = DP_View::PLACE_TOP) {
+	public function add(DP_View $view, $location = DP_View::PREPEND) {
 		$view->setParentViewId($this->id());
-		$this->child_views[] = $view;
+		// $this->child_views[] = $view;
+		$this->child_views[] = Array('location'=>$location, 'view'=>$view);
 	}
 	
 	/**
@@ -190,10 +191,12 @@ class DP_View {
 	/**
 	 * Render all child DP_View objects into HTML.
 	 */
-	protected function renderChildren() {
+	protected function renderChildren($location = DP_View::PREPEND) {
 		$output = "";
 		foreach ($this->child_views as $child) {
-			$output .= $child->render();
+			if ($child['location'] == $location) {
+				$output .= $child['view']->render();
+			}
 		}
 		return $output;
 	}

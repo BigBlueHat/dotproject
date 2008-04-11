@@ -1,9 +1,5 @@
-		<table cellspacing="0" cellpadding="3" border="0" width="100%">
-		<tr>
-			<td width="100%"><?=$this->translate('Welcome')?> <?=$this->user_name ?></td>
-			<td nowrap="nowrap">
-				<a href="#" onclick="javascript:window.open('<?=$layout->baseUrl ?>/help/', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')"><?=$this->translate('Help')?></a> |
-				<a href="<?=$layout->baseUrl ?>/admin/viewuser/?user_id=<?=$layout->user_id ?>"><?=$this->translate('My').' '.$this->translate('Info'); ?></a> |
+<div style="float: right; text-align: right; width: 200px;">
+	<a href="#" onclick="javascript:window.open('<?=$layout->baseUrl ?>/help/', 'contexthelp', 'width=400, height=400, left=50, top=50, scrollbars=yes, resizable=yes')"><?=$this->translate('Help')?></a><br />
 	<?php if ($layout->access_calendar) { ?>
 	         <b><a href="<?=$layout->baseUrl ?>/tasks/todo/"><?=$this->translate('Todo')?></a></b> |
 				<a href="<?=$layout->baseUrl ?>/calendar/day_view/?date={dPdateFormat date='now' format='db'}"><?=$this->translate('Today')?></a> |
@@ -11,8 +7,15 @@
 	<?php if ($layout->access_links) {?>
 				<a href="<?=$layout->baseUrl ?>/links/"><?=$this->translate('Links')?></a> |
 	<?php } ?>
-				<a href="javascript:void(0);" onclick="window.print();return false;"><?=$this->translate('Print')?></a> |
-				<a href="<?=$layout->baseUrl ?>/logout/"><?=$this->translate('Logout')?></a>
-			</td>
-		</tr>
-		</table>
+	<a href="javascript:void(0);" onclick="window.print();return false;"><?=$this->translate('Print this page')?></a>				
+</div>
+<div style="padding-top: 5px; padding-left: 5px; padding-bottom: 10px;">
+<span>
+	<?=$this->translate('Welcome')?>&nbsp;<?=$this->user_name ?>
+</span>
+<br />
+<span style="">
+	<a href="<?=$layout->baseUrl ?>/admin/viewuser/?user_id=<?=$layout->user_id ?>" class="navlink"><?=$this->translate('My').' '.$this->translate('Info'); ?></a>
+	&nbsp;<a href="<?=$layout->baseUrl ?>/logout/" class="navlink"><?=$this->translate('Logout')?></a>
+</span>
+</div>

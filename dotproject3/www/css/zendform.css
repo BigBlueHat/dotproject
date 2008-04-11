@@ -4,7 +4,7 @@
 */
 
 .zend_form_container {
-	border: solid #08245b 2px;
+	border: solid #aaaaaa 2px;
 	background: #d6ebff;	
 }
 
@@ -21,8 +21,25 @@
 }
 
 .zend_form fieldset {
-	border: solid #000000 1px;
+	border: solid #b6cbdf 1px;
+	margin-top: 3px;
+	margin-bottom: 3px;
 }
+
+.zend_form fieldset.primary {
+	border: solid #96abbf 1px;
+	background: #b2c9db;
+	margin-bottom: 15px;
+}
+
+.zend_form fieldset.secondary {
+	background: #d6ebff;
+}
+
+.zend_form fieldset legend {
+	font-weight: bold;
+}
+
 
 .zend_form fieldset dl { 	
 
@@ -50,13 +67,24 @@
 	border-style: none;
 }
 
-.zend_form fieldset#buttons input {
+.zend_form fieldset#buttons button {
+	float: right;
 	border: 1px black solid;
 	font-family: Osaka,verdana,Sans-Serif;
 	font-size: 8pt;
-	margin: 1px 1px 1px 1px;
+	margin: 3px 3px 3px 3px;
 	/*height: 12pt; Select boxes are too small in Mozilla */
 }
+
+.zend_form fieldset#buttons input {
+	float: right;
+	border: 1px black solid;
+	font-family: Osaka,verdana,Sans-Serif;
+	font-size: 8pt;
+	margin: 3px 3px 3px 3px;
+	/*height: 12pt; Select boxes are too small in Mozilla */
+}
+
 
 .zend_form fieldset#buttons dt {
 	display: none;
@@ -65,18 +93,11 @@
 }
 
 .zend_form fieldset#buttons dd {
-	float: none;
-	width: 100%;
+	/*width: 100%;*/
 	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
 }
 
-.zend_form fieldset#buttons input.leftalign {
-		float: left;
-}
-
-.zend_form fieldset#buttons input.rightalign {
-	float: right;
-}
 
 .zend_form ul.errors {
 	list-style-position: outside;

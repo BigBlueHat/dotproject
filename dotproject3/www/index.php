@@ -12,13 +12,17 @@ set_include_path(get_include_path() . PATH_SEPARATOR . DP_BASE_CODE .'/lib');
 
 //var_dump($_SESSION);
 
+// Get AppUI and set up preferences/uistyle/localisation
 DP_AppUI::getInstance()->init();
 
 $dP = Zend_Controller_Front::getInstance();
 $dP->addModuleDirectory(DP_BASE_CODE . '/modules');
 $dP->addControllerDirectory(DP_BASE_CODE . '/modules/default/controllers');
-//$dP->addControllerDirectory(DP_BASE_CODE . '/modules/companies/controllers');
+
 Zend_Layout::startMvc(DP_BASE_CODE . '/style/default/layouts');
+
 Zend_Controller_Action_HelperBroker::addPrefix('DP_Controller_Action_Helper');
+Zend_Controller_Action_HelperBroker::getStaticHelper('ModelIncluder');
+
 $dP->dispatch();
 ?>

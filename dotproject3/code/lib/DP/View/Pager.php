@@ -29,6 +29,7 @@ class DP_View_Pager extends DP_View_Stateful {
 	 */
 	const PAGER_MODE_PAGES = 2;
 	
+	const PAGER_MODE_NEXTPREV = 3;
 	/**
 	 * Pager view constructor.
 	 * 
@@ -40,7 +41,7 @@ class DP_View_Pager extends DP_View_Stateful {
 	public function __construct($id) {
 		parent::__construct($id);
 		$this->page = $this->loadState(1);
-		$this->totalitems = 100;
+		//$this->totalitems = 100;
 	}
 	
 	/**
@@ -79,12 +80,76 @@ class DP_View_Pager extends DP_View_Stateful {
 		return $this->page;
 	}
 	
+	public function pageCount() {
+		// TODO - this is wrong in some circumstances, check with DP stable code
+		$numpages = $this->totalitems / $this->pageitems;
+		if ($numpages - round($numpages) > 0) {
+			return round($numpages)+ 1;		
+		} else {
+			return round($numpages);
+		}
+	}
+	
+	/**
+	 * Render pager with specified style
+	 * 
+	 * Style is one of PAGER_MODE_RANGES, PAGER_MODE_PAGES or PAGER_MODE_NEXTPREV
+	 */
+	public function renderWithStyle($style) {
+		switch ($style) {
+			case DP_View_Pager::PAGER_MODE_PAGES:
+				$output = $this->renderStylePages();
+				break;
+			case DP_View_Pager::PAGER_MODE_NEXTPREV:
+				$output = $this->renderStyleNextPrev();
+				break;
+		}
+		return $output;
+	}
+	
+	public function render() {
+		return $this->renderWithStyle(DP_View_Pager::PAGER_MODE_NEXTPREV);
+	}
+	
+	public function renderStyleNextPrev() {
+		$numpages = $this->pageCount();
+		$output = '<div align='.$this->align().' class="View_Pager">';
+		$output .= '<form method="GET">';
+		$output .= '<input type="hidden" name="view_id" value="'.$this->id().'" />';
+
+		// Only display pager if there are more than 1 page worth of items
+		if ($this->totalitems > $this->pageitems) {
+			$output .= '&nbsp; <b>Page</b> ';
+			
+			if ($this->page() > 1) {
+				
+				$output .= '<input type="button"
+								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->page()-1).'\';this.form.submit();"	
+								   value="&lt;" />';	
+			}
+			
+			$output .='<input type="text" id="'.$this->id().'-page" name="page" size="5" style="text-align: center" value="'.$this->page().'" />';
+			
+			if ($this->page() != $numpages) {
+
+				$output .= '<input type="button"
+								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->page()+1).'\';this.form.submit();" 
+								   value="&gt;" />';
+			}
+			
+			$output .= ' of '.$numpages.' &nbsp;';
+		}
+		$output .= '</form>';
+		$output .= '</div>';
+		return $output;
+	}
+	
 	/**
 	 * Render the pager view
 	 * @return HTML Output
 	 */
-	public function render() {
-		$numpages = $this->totalitems / $this->pageitems + 1;
+	public function renderStylePages() {
+		$numpages = $this->pageCount();
 		$output = 'Page: ';
 		
 		for ($p = 1; $p <= $numpages; $p++) {

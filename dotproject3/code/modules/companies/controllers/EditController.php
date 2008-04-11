@@ -1,8 +1,4 @@
 <?php
-// TODO - helpers for loading model classes
-require_once DP_BASE_CODE . '/modules/companies/models/Company.php';
-require_once DP_BASE_CODE . '/modules/companies/models/Companies_Table.php';
-
 /**
  * Controller for company object editing functions.
  * 
@@ -17,10 +13,11 @@ class Companies_EditController extends DP_Controller_Action {
 	 * Create a new company object
 	 */
 	public function newAction() {
-		$title_block = DP_View_Factory::getTitleBlockView('dp-companies-new-tb', 'New Company', '/img/_icons/companies/handshake.png', $m, "$m.$a" );
-		$title_block->addCrumb('/companies', 'companies list');	
-		$this->view->titleblock = $title_block;
-		
+		//$title_block = $this->_helper->TitleBlock('New Company', '/img/_icons/companies/handshake.png');
+		$title_block = $this->_helper->TitleBlock('');
+		$title_block->addCrumb('/companies', 'companies');	
+		$title_block->addCrumb('/companies/edit/new', 'new company');
+		$this->view->company_name = 'New company';
 		$this->_helper->actionStack('object', 'edit', 'companies');
 	}
 	
@@ -28,28 +25,43 @@ class Companies_EditController extends DP_Controller_Action {
 	 * Modify an existing company object
 	 */
 	public function objectAction() {
+		Zend_Loader::registerAutoload();
+		
 		$company_id = $this->getRequest()->id;
+
 
 		$form_definition = $this->_helper->FormDefinition('edit-object');
 		$edit_form = new Zend_Form($form_definition);
+		$types = DP_Config::getSysVal( 'CompanyType' );
+		
 		
 		if ($company_id) {
+			// TODO - set default adapter pre dispatch
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
-			
+
 			$company_rows = Company::find($company_id);
 			$row = $company_rows->current();
-			$edit_form->setDefaults($row->toArray());	
+			$rowhash = $row->toArray();
+			$edit_form->setDefaults($rowhash);
+
+			if (!$this->view->company_name) {
+				$this->view->company_name = $rowhash['company_name'];
+			}
+			
+			if (!$this->view->titleblock) {
+				//$title_block = $this->_helper->TitleBlock('Edit Company', '/img/_icons/companies/handshake.png');
+				$title_block = $this->_helper->TitleBlock('');
+				$title_block->addCrumb('/companies', 'companies');
+				$title_block->addCrumb('/companies/view/object/id/'.$company_id, $rowhash['company_name']);
+				$title_block->addCrumb('/companies/edit/object/id/'.$company_id, 'edit');
+			}
+				
+		} else {
+			// no id supplied, error
 		}
 		
 		$this->view->form = $edit_form;
-
-		if (!$this->view->titleblock) {
-			$title_block = DP_View_Factory::getTitleBlockView('dp-companies-edit-tb', 'Edit Company', '/img/_icons/companies/handshake.png', $m, "$m.$a" );
-			$title_block->addCrumb('/companies', 'companies list');
-			$title_block->addCrumb('/companies/view/object/id/'.$company_id, 'view this company');
-			$this->view->titleblock = $title_block;
-		}	
 	}
 	
 	/**
@@ -57,6 +69,7 @@ class Companies_EditController extends DP_Controller_Action {
 	 */
 	public function saveAction() {
 		$this->_helper->viewRenderer('object');
+		Zend_Loader::registerAutoload();
 		
 		// Retrieve the form definition from views/forms
 		$form_definition = $this->_helper->FormDefinition('edit-object');
@@ -66,6 +79,7 @@ class Companies_EditController extends DP_Controller_Action {
 			$this->view->form = $edit_form;		
 		} else {
 			// form is ok
+			$this->_helper->viewRenderer->setNoRender();
 			$company = Company::bind($_POST);
 			
 			$db = DP_Config::getDB();
@@ -75,6 +89,8 @@ class Companies_EditController extends DP_Controller_Action {
 			} else {
 				$company->insert();
 			}
+			
+			$this->_helper->actionStack('index', 'index', 'companies');
 		}
 	}
 }

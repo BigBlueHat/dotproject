@@ -41,6 +41,9 @@ class IndexController extends DP_Controller_Action
 				}
 			}
 			$this->view->modules = $links;
+			$fc = Zend_Controller_Front::getInstance();
+			$req = $fc->getRequest();
+			$this->view->module_selected = $req->getModuleName();
 		}
 		
 		

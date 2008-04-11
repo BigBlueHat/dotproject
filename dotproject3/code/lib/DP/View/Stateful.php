@@ -71,10 +71,21 @@ class DP_View_Stateful extends DP_View {
 	 */
 	protected function updateChildrenFromServer($request) {
 		foreach ($this->child_views as $child) {
-			if ($child instanceof DP_View_Stateful) {
-				$child->updateStateFromServer($request); 
+			if ($child['view'] instanceof DP_View_Stateful) {
+				$child['view']->updateStateFromServer($request); 
 			}
 		}
+	}
+	
+	/**
+	 * Get the URL up to the action but not including parameters.
+	 * @todo FIX action name
+	 */
+	public function getActionUrl() {
+		$fc = Zend_Controller_Front::getInstance();
+		$req = $fc->getRequest();
+		$action_url = $req->getBaseUrl().'/'.$req->getModuleName().'/'.$req->getActionName();
+		return $action_url;
 	}
 	
 	/**

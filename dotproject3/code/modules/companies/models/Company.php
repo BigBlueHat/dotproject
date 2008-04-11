@@ -37,7 +37,7 @@ class Company extends DP_Object_Base {
 	 * @param Array $company_ids Company ids
 	 */
 	public static function find($company_ids) {
-		$tbl = new Companies_Table();
+		$tbl = new Db_Table_Companies();
 		$objs = $tbl->find($company_ids);
 		return $objs;		
 	}
@@ -84,18 +84,18 @@ class Company extends DP_Object_Base {
 	// Modification methods
 	
 	public function insert() {
-		$tbl = new Companies_Table();
+		$tbl = new Db_Table_Companies();
 		$tbl->insert(get_object_vars($this));
 	}
 	
 	public function update() {
-		$tbl = new Companies_Table();
+		$tbl = new Db_Table_Companies();
 		$where = $tbl->getAdapter()->quoteInto('company_id = ?', $this->company_id);
 		$tbl->update(get_object_vars($this), $where);
 	}
 	
 	public function delete() {
-		$tbl = new Companies_Table();
+		$tbl = new Db_Table_Companies();
 		$where = $tbl->getAdapter()->quoteInto('company_id = ?', $this->company_id);
 		$tbl->delete($where);		
 	}

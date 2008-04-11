@@ -23,17 +23,17 @@ em {
 
 A:link {
 	color: #08245b;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 A:visited {
 	color: #08245b;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 A:active {
 	color: red;
-	text-decoration: none;
+	text-decoration: underline;
 }
 
 A:hover {
