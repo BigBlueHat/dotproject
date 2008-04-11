@@ -9,7 +9,8 @@
  * @todo Possible rename to DP_Sort to fit in with naming of DP_Filter
  * @todo Use rule access methods instead of referring directly to internal sort rules variable.
  */
-class DP_Query_Sort implements Iterator {
+class DP_Query_Sort implements Iterator, SplSubject {
+	protected $_observers;
 	/**
 	 * Array of sorting rules.
 	 *
@@ -35,6 +36,7 @@ class DP_Query_Sort implements Iterator {
 	const SORT_DESCENDING = 1;
 	
 	public function __construct() {
+		$this->_observers = Array();
 		$this->sorting_rules = Array();
 		$this->sorting_priority = Array();
 		$this->iter_index = 0;
@@ -105,7 +107,7 @@ class DP_Query_Sort implements Iterator {
 		}
 	}
 	
-	// From Zend_Engine Iterator
+	// From Iterator
 	
 	public function current() {
 		$sort_field = $this->sorting_priority[$this->iter_index];
@@ -131,5 +133,47 @@ class DP_Query_Sort implements Iterator {
 			return false;
 		}
 	}
+
+	// From SplSubject
+	
+	/**
+	 * Attach an observer
+	 * 
+	 * @param SplObserver $observer The observer to attach
+	 * @return null
+	 */
+	public function attach(SplObserver $observer) {
+		if (!in_array($observer, $this->_observers)) {
+			$this->_observers[] = $observer;
+			$observer->update($this);
+		}		
+	}
+	
+	/**
+	 * Detach an observer
+	 * 
+	 * @param SplObserver $observer The observer to detach
+	 * @return null
+	 */
+ 	public function detach (SplObserver $observer) {
+ 		if (in_array($observer, $this->_observers)) {
+			$observer_key = array_search($this->_observers, $observer);
+			$this->_observers[$observer_key] = null;
+			
+			$reordered_observers = array_values($this->_observers);
+			$this->_observers = $reordered_observers;
+		}		
+ 	}
+ 	
+ 	/**
+ 	 * Notify all observers
+ 	 * 
+ 	 */
+ 	public function notify() {
+ 		foreach($this->_observers as $ob) {
+ 			$ob->update($this);
+ 		}
+ 	}
+
 }
 ?>

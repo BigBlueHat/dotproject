@@ -64,22 +64,22 @@ class DP_View_RowIterator {
 	 * 
 	 * @param DP_View_List_Source_Interface $src The data source
 	 */
-	public function setDataSource(DP_View_List_Source_Interface $src) {
+	public function setDataSource(DP_View_List_DataSource $src) {
 		$this->src = $src;
-		$this->srciter = $this->src->getIterator();
+		//$this->srciter = $this->src->getIterator();
 	}
 
 	public function next() {
 		$this->row_index++;
 		if ($this->row_index >= $this->rowCount()) {
 			$this->row_index = 0;
-			$this->srciter->next();
+			$this->src->next();
 		}
 
 	}
 	
 	public function isDone() {
-		if ($this->srciter->isDone() || $this->rowCount() == 0) {
+		if (!$this->src->valid() || $this->rowCount() == 0) {
 			return true;
 		} else {
 			return false;
@@ -100,7 +100,7 @@ class DP_View_RowIterator {
 			$output .= ($cell->align()) ? ' align="'.$cell->align().'"' : '';
 			$output .= ($cell->width()) ? ' width="'.$cell->width().'"' : '';
 			$output .= '>';
-			$output .= $cell->render($this->srciter->currentItem());
+			$output .= $cell->render($this->src->current());
 			$output .= '</td>';
 		}
 		

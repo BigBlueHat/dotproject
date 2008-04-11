@@ -57,7 +57,7 @@ class DP_View_List extends DP_View_Stateful {
 	 * 
 	 * @param DP_View_List_Source_Interface $listsource The list view source.
 	 */
-	public function setDataSource(DP_View_List_Source_Interface $listsource) {
+	public function setDataSource(DP_View_List_DataSource $listsource) {
 		$this->src = $listsource;
 	}
 	
@@ -110,6 +110,8 @@ class DP_View_List extends DP_View_Stateful {
 	 * @return string HTML output
 	 */
 	public function render() {
+		// Notify datasource of our intention to render
+		$this->src->clientWillRender();
 		
 		$output = "";
 		$output .= $this->renderChildren(DP_View::PREPEND);
@@ -121,6 +123,9 @@ class DP_View_List extends DP_View_Stateful {
 		}
 
 		$this->row_iterator->setDataSource($this->src);
+		if ($this->row_iterator->isDone()) {
+			$output .= '<tr><td colspan="'.$this->columnCount().'">No records were found matching your query.</td></tr>';
+		}
 		
 		while (!$this->row_iterator->isDone()) {
 			$row = $this->row_iterator->currentItem();

@@ -3,6 +3,7 @@
 
 require_once DP_BASE_CODE . '/modules/companies/models/Factory.php';
 require_once DP_BASE_CODE . '/modules/companies/models/CompaniesList.php';
+require_once DP_BASE_CODE . '/modules/companies/models/Index.php';
 /**
  * This is the file containing the definition of the index controller for the companies module
  * @author ajdonnison
@@ -72,6 +73,12 @@ class Companies_IndexController extends DP_Controller_Action
 		//$this->appendRequest('/companies/list');
 	//}
 
+	/**
+	 * Get an index of companies.
+	 * 
+	 * The rows are produced by companies_index, an instance of DP_List_Dynamic which
+	 * observes changes in objects which modify its query.
+	 */
 	public function indexAction()
 	{
 		$AppUI = DP_AppUI::getInstance();
@@ -82,38 +89,43 @@ class Companies_IndexController extends DP_Controller_Action
 		$types = DP_Config::getSysVal( 'CompanyType' );
 
 		// Get the full URL without parameters.
+		// This may be redundant now?
 		$req = $this->getRequest();
 		$this_url = $req->getBaseUrl().'/'.$req->getModuleName().'/'.$req->getControllerName().'/'.$req->getActionName();
-		// setup the title block
-		$m = $req->getModuleName();
-		$a = $req->getActionName();
 		
+		// Title block may not be needed, Module navigation already indicates we are in companies module.
 		//$tb = $this->_helper->TitleBlock('Companies', '/img/_icons/companies/handshake.png');
-		//$tb = $this->_helper->TitleBlock('');
-		//$tb->addCrumb('','companies');
 
-		// Construct the view hierarchy
+		$companies_index = new Companies_Index();
+		
+		// Construct the view hierarchy from the inner to the outer elements.
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
-		$company_search_view->setSearchFieldTitle('Company name');
+		$company_search_view->setSearchFieldTitle('Company name'); // TODO - better detection of available search fields through interface.
+		
 		// Temporarily removed until implemented
 		//$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
 		
+		// FIXME - Pager does not reset to page 1 when entering a search query.
 		$company_list_pager = DP_View_Factory::getPagerView('dp-companies-list-pager');
 		$company_list_pager->setItemsPerPage(30);
 		$company_list_pager->setUrlPrefix($this_url);
 		$company_list_pager->setPersistent(false);
 		$company_list_pager->align = 'center';
-		
+
 		$companies_list_view = DP_View_Factory::getListView('companies_list_view');
 		$companies_list_view->setUrlPrefix($this_url);
 		
+		// TODO - Find a better way of adding new object buttons to lists.
 		$new_btn = new DP_View_Button('dp-companies-new','new-company');
 		$new_btn->button->setLabel('+ New Company');
 		$new_btn->button->onClick = "location = '/companies/edit/new'";
 		$companies_list_view->add($new_btn, DP_View::APPEND);
 		
 		$companies_list_view->add($company_search_view, DP_View::PREPEND);
+		
+		// Owner filter disabled until implemented.
 		//$companies_list_view->add($company_select_owner_view, DP_View::PREPEND);
+		
 		$companies_list_view->add($company_list_pager, DP_View::APPEND);
 		
 		// Access the default row iterator, you can set your own if preferred
@@ -137,21 +149,13 @@ class Companies_IndexController extends DP_Controller_Action
 
 		// Update the view hierarchy with the request object.
 		// (request object is passed down the hierarchy).
-		// This must be done before the model generates its data. So that
-		// dp views can act upon the conditions in which the data is generated.
 		$companies_tab_view->updateStateFromServer($this->getRequest());
-
-		// Create the data source for the list. The data source here is an object that
-		// encompasses the query and filter objects needed to generate the list.
-		// @todo Create a reusable model class for object indexes
-		$companies_list_data = new Companies_List_Data();
-		$companies_list_data->addFilter($company_search_view->getFilter());
 
 		// DP_View_TabBox only calls render on its children.
 		// The controller must make the logical link between the selected tab and
 		// the filter rule.
 		$companies_tab_filter = new DP_Filter('dp-companies-tab');
-		
+
 		// @todo Better way of determining Tab to Filter mapping.
 		// Perhaps an array of tab indexes to filter rules.
 		$types_keys = array_keys($types);
@@ -162,14 +166,15 @@ class Companies_IndexController extends DP_Controller_Action
 			$companies_list_data->addFilter($companies_tab_filter);
 		}
 		
-		$companies_list_data->addSort($companies_list_view->getSort());
-		$companies_list_data->setPage($company_list_pager->page(), $company_list_pager->itemsPerPage());
-		
-		$companies_list_data->loadList();
-		$company_list_pager->setTotalItems(count($companies_list_data));	
-		
-		// Must be done after the data is generated
-		$companies_list_view->setDataSource($companies_list_data);
+		// Attach the companies index dynamic list to all of the filtering/sorting elements
+		$companies_list_view->getSort()->attach($companies_index);
+		$companies_tab_filter->attach($companies_index);
+		// The companies index object calls the pagers setTotalItems() method when it knows how many
+		// rows it has.
+		$company_list_pager->attach($companies_index);	
+		$company_search_view->getFilter()->attach($companies_index);
+				
+		$companies_list_view->setDataSource($companies_index);
 		$companies_list_view->setColumnHeaders(Array('c.company_name'=>'Company Name', 
 													 'company_projects_active'=>'Active Projects', 
 													 'company_projects_inactive'=>'Inactive Projects',

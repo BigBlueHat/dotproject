@@ -12,7 +12,8 @@
  * @todo Better method for converting filter rules to SQL
  * @todo combine method for combining two filter objects
  */
-class DP_Filter implements DP_Observable_Interface {
+class DP_Filter implements SplSubject {
+	private $_observers;
 	/**
 	 * Array of filter rules.
 	 *
@@ -20,7 +21,7 @@ class DP_Filter implements DP_Observable_Interface {
 	 */
 	public $filters;
 	private $id;
-	private $observers;
+
 	/**
 	 * @var integer $next_fid The next filter id to assign.
 	 */
@@ -33,8 +34,9 @@ class DP_Filter implements DP_Observable_Interface {
 	const VALUE_SUBSTR = 10;
 
 	function __construct($id = -1) {
+		$this->_observers = Array();
+		
 		$this->filters = Array();
-		$this->observers = Array();
 		$this->id = $id;
 		$this->next_fid = 0;
 	}
@@ -163,29 +165,45 @@ class DP_Filter implements DP_Observable_Interface {
 		return new DP_Filter_Iterator($this);
 	}
 
-	// From DP_Observable_Interface
-
-	public function attach(DP_Observer_Interface $observer) {
-		if (!in_array($this->observers, $observer)) {
-			$this->observers[] = $observer;
-		}
+	// From SplSubject
+	
+	/**
+	 * Attach an observer
+	 * 
+	 * @param SplObserver $observer The observer to attach
+	 * @return null
+	 */
+	public function attach(SplObserver $observer) {
+		if (!in_array($observer, $this->_observers)) {
+			$this->_observers[] = $observer;
+			$observer->update($this);
+		}		
 	}
-
-	public function detach(DP_Observer_Interface $observer){
-		if (in_array($this->observers, $observer)) {
-			$observer_key = array_search($this->observers, $observer);
-			$this->observers[$observer_key] = null;
-
-			$reordered_observers = array_values($this->observers);
-			$this->observers = $reordered_observers;
-		}
-	}
-
-	public function notify() {
-		foreach ($this->observer as $ob) {
-			$ob->updateState($this);
-		}
-	}
-
+	
+	/**
+	 * Detach an observer
+	 * 
+	 * @param SplObserver $observer The observer to detach
+	 * @return null
+	 */
+ 	public function detach (SplObserver $observer) {
+ 		if (in_array($observer, $this->_observers)) {
+			$observer_key = array_search($this->_observers, $observer);
+			$this->_observers[$observer_key] = null;
+			
+			$reordered_observers = array_values($this->_observers);
+			$this->_observers = $reordered_observers;
+		}		
+ 	}
+ 	
+ 	/**
+ 	 * Notify all observers
+ 	 * 
+ 	 */
+ 	public function notify() {
+ 		foreach($this->_observers as $ob) {
+ 			$ob->update($this);
+ 		}
+ 	}
 }
 ?>

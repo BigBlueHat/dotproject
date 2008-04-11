@@ -9,9 +9,9 @@
  * @package dotproject
  * @subpackage companies
  * @version not.even.alpha
- * 
+ * @deprecated This object will be deprecated in favour of Companies_Index
  */
-class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject, Countable {
+class Companies_List_Data implements DP_View_List_DataSource, SplSubject, Countable {
 	private $query;
 	private $count_query;
 	private $filters;
@@ -71,6 +71,11 @@ class Companies_List_Data implements DP_View_List_Source_Interface, SplSubject, 
 	
 	public function setPage($page, $rows_per_page) {
 		$this->query->setPageLimit($page, $rows_per_page);
+	}
+	
+	
+	public function clientWillRender() {
+		
 	}
 	
 	public function loadList() {

@@ -6,7 +6,8 @@
  * @package dotproject
  * @subpackage system
  */
-class DP_View_Pager extends DP_View_Stateful {
+class DP_View_Pager extends DP_View_Stateful implements SplSubject {
+	protected $_observers;
 	/**
 	 * @var $pageitems The number of items appearing on a single page
 	 */
@@ -40,6 +41,7 @@ class DP_View_Pager extends DP_View_Stateful {
 	 */
 	public function __construct($id) {
 		parent::__construct($id);
+		$this->_observers = Array();
 		$this->page = $this->loadState(1);
 		//$this->totalitems = 100;
 	}
@@ -172,5 +174,43 @@ class DP_View_Pager extends DP_View_Stateful {
 		$this->saveState($this->page);
 	}
 	
+	/**
+	 * Attach an observer
+	 * 
+	 * @param SplObserver $observer The observer to attach
+	 * @return null
+	 */
+	public function attach (SplObserver $observer) {
+		if (!in_array($observer, $this->_observers)) {
+			$this->_observers[] = $observer;
+			$observer->update($this);
+		}		
+	}
+	
+	/**
+	 * Detach an observer
+	 * 
+	 * @param SplObserver $observer The observer to detach
+	 * @return null
+	 */
+ 	public function detach (SplObserver $observer) {
+ 		if (in_array($observer, $this->_observers)) {
+			$observer_key = array_search($this->_observers, $observer);
+			$this->_observers[$observer_key] = null;
+			
+			$reordered_observers = array_values($this->_observers);
+			$this->_observers = $reordered_observers;
+		}		
+ 	}
+ 	
+ 	/**
+ 	 * Notify all observers
+ 	 * 
+ 	 */
+ 	public function notify() {
+ 		foreach($this->_observers as $ob) {
+ 			$ob->update($this);
+ 		}
+ 	}
 }
 ?>
