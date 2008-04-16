@@ -18,15 +18,5 @@ interface DP_View_List_DataSource {
 	 * This gives the datasource a chance to refresh its query before the items are iterated through.
 	 */
 	public function clientWillRender();
-	
-	/**
-	 * Get an array of column names
-	 */
-	//public function getColumns();
-	
-	/**
-	 * Get an iterator for the data source
-	 */
-	//public function getIterator();
 }
 ?>

@@ -7,20 +7,14 @@
  * @subpackage system
  */
 class DP_View_Pager extends DP_View_Stateful implements SplSubject {
+	/**
+	 * @var array $_observers Array of observer objects implementing SplObserver
+	 */
 	protected $_observers;
 	/**
-	 * @var $pageitems The number of items appearing on a single page
+	 * @var DP_Pager $pager Instance of pager
 	 */
-	private $pageitems;
-	/**
-	 * @var $totalitems The total number of items
-	 */
-	private $totalitems;
-	/**
-	 * @var $page The current page.
-	 */
-	private $page;
-	
+	protected $pager;
 	/**
 	 * @var PAGER_MODE_RANGES Display page links as ranges of record IDs
 	 */
@@ -29,8 +23,11 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	 * @var PAGER_MODE_PAGES Display page links as page numbers
 	 */
 	const PAGER_MODE_PAGES = 2;
-	
+	/**
+	 * @var PAGER_MODE_NEXTPREV Display next and prev buttons as well as a text input containing the page number.
+	 */
 	const PAGER_MODE_NEXTPREV = 3;
+	
 	/**
 	 * Pager view constructor.
 	 * 
@@ -42,9 +39,29 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	public function __construct($id) {
 		parent::__construct($id);
 		$this->_observers = Array();
-		$this->page = $this->loadState(1);
-		//$this->totalitems = 100;
+
+		// Manage DP_Pager state
+		$AppUI = DP_AppUI::getInstance();
+		$this->pager = new DP_Pager($this->id().'-pager');
+		$pager_state = $AppUI->getState($this->id().'-pager');
+		
+		if ($pager_state != null) {
+			$this->pager->setMemento($pager_state);
+		}		
 	}
+	
+	// Pager view access methods
+	
+	/**
+	 * Get the current instance of DP_Pager
+	 * 
+	 * @return DP_Pager Instance.
+	 */
+	public function getPager() {
+		return $this->pager;
+	}
+	
+	// Pager proxy methods
 	
 	/**
 	 * Set the number of items to display per page
@@ -52,7 +69,7 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	 * @param integer $pageitems The number of items per page.
 	 */
 	public function setItemsPerPage($pageitems) {
-		$this->pageitems = $pageitems;
+		$this->pager->setItemsPerPage($pageitems);
 	}
 	
 	/**
@@ -61,7 +78,7 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	 * @return integer Number of items per page
 	 */
 	public function itemsPerPage() {
-		return $this->pageitems;
+		return $this->pager->itemsPerPage();
 	}
 	
 	/**
@@ -70,7 +87,7 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	 * @param integer $totalitems The total number of items available.
 	 */
 	public function setTotalItems($totalitems) {
-		$this->totalitems = $totalitems;
+		$this->pager->setTotalItems($totalitems);
 	}
 	
 	/**
@@ -79,18 +96,28 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	 * @return integer The current page
 	 */
 	public function page() {
-		return $this->page;
+		return $this->pager->page();
 	}
 	
-	public function pageCount() {
-		// TODO - this is wrong in some circumstances, check with DP stable code
-		$numpages = $this->totalitems / $this->pageitems;
-		if ($numpages - round($numpages) > 0) {
-			return round($numpages)+ 1;		
-		} else {
-			return round($numpages);
-		}
+	/**
+	 * Set the current selected page.
+	 * 
+	 * @param integer $page The page number to set.
+	 */
+	public function setPage($page) {
+		$this->pager->setPage($page);
 	}
+	
+	/**
+	 * Get the current pagecount.
+	 * 
+	 * @return integer number of pages.
+	 */
+	public function pageCount() {
+		return $this->pager->pageCount();
+	}
+	
+	// View methods
 	
 	/**
 	 * Render pager with specified style
@@ -113,29 +140,34 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 		return $this->renderWithStyle(DP_View_Pager::PAGER_MODE_NEXTPREV);
 	}
 	
+	/**
+	 * Render a pager with next and previous buttons, and a page number box.
+	 * 
+	 * @return HTML output
+	 */
 	public function renderStyleNextPrev() {
 		$numpages = $this->pageCount();
 		$output = '<div align='.$this->align().' class="View_Pager">';
-		$output .= '<form method="GET">';
+		$output .= '<form method="GET" name="form-pager">';
 		$output .= '<input type="hidden" name="view_id" value="'.$this->id().'" />';
-
+		
 		// Only display pager if there are more than 1 page worth of items
-		if ($this->totalitems > $this->pageitems) {
+		if ($this->pager->totalItems() > $this->pager->itemsPerPage()) {
 			$output .= '&nbsp; <b>Page</b> ';
 			
-			if ($this->page() > 1) {
+			if ($this->pager->page() > 1) {
 				
 				$output .= '<input type="button"
-								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->page()-1).'\';this.form.submit();"	
+								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->pager->page()-1).'\';this.form.submit();"	
 								   value="&lt;" />';	
 			}
 			
-			$output .='<input type="text" id="'.$this->id().'-page" name="page" size="5" style="text-align: center" value="'.$this->page().'" />';
+			$output .='<input type="text" id="'.$this->id().'-page" name="page" size="5" style="text-align: center" value="'.$this->pager->page().'" />';
 			
-			if ($this->page() != $numpages) {
+			if ($this->pager->page() != $numpages) {
 
 				$output .= '<input type="button"
-								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->page()+1).'\';this.form.submit();" 
+								   onClick="document.getElementById(\''.$this->id().'-page\').value = \''.($this->pager->page()+1).'\';this.form.submit();" 
 								   value="&gt;" />';
 			}
 			
@@ -147,11 +179,12 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	}
 	
 	/**
-	 * Render the pager view
+	 * Render a pager with a list of pages as individual links.
+	 * 
 	 * @return HTML Output
 	 */
 	public function renderStylePages() {
-		$numpages = $this->pageCount();
+		$numpages = $this->pager->pageCount();
 		$output = 'Page: ';
 		
 		for ($p = 1; $p <= $numpages; $p++) {
@@ -168,11 +201,17 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	
 	public function updateStateFromServer($request) {
 		if ($request->view_id == $this->id && isset($request->page)) {
-			$this->page = $request->page;
+			$previous_page_state = $this->pager->page();
+			$this->pager->setPage($request->page);
+			
+			$AppUI = DP_AppUI::getInstance();
+			$AppUI->setState($this->id().'-pager', $this->pager->createMemento());
 		}
 		
-		$this->saveState($this->page);
+		
 	}
+	
+	// From SplSubject Interface.
 	
 	/**
 	 * Attach an observer
@@ -183,7 +222,6 @@ class DP_View_Pager extends DP_View_Stateful implements SplSubject {
 	public function attach (SplObserver $observer) {
 		if (!in_array($observer, $this->_observers)) {
 			$this->_observers[] = $observer;
-			$observer->update($this);
 		}		
 	}
 	

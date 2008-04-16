@@ -7,7 +7,6 @@
  * @package dotproject
  * @subpackage system
  * @version not.even.alpha
- * @todo Not Implemented - Proper option list generation.
  * @todo Consider design for generating the valid options list.
  */
 class DP_View_SelectFilter extends DP_View implements DP_Observer_Interface {
@@ -42,7 +41,7 @@ class DP_View_SelectFilter extends DP_View implements DP_Observer_Interface {
 	 * @return string HTML output
 	 */
 	public function render() {
-		$output = '<div>';
+		$output = '<div id="'.$this->id().'">';
 		
 		$output .= $this->label.':&nbsp;';
 		

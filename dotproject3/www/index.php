@@ -23,6 +23,6 @@ Zend_Layout::startMvc(DP_BASE_CODE . '/style/default/layouts');
 
 Zend_Controller_Action_HelperBroker::addPrefix('DP_Controller_Action_Helper');
 Zend_Controller_Action_HelperBroker::getStaticHelper('ModelIncluder');
-
+Zend_Controller_Action_HelperBroker::getStaticHelper('LoginRedirector');
 $dP->dispatch();
 ?>

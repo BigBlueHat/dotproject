@@ -37,9 +37,9 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 */
 	protected $object_list;	
 	/**
-	 * @var Bool $object_list_iscurrent The list is current if none of the filters have been changed since last query.
+	 * @var Bool $needs_refresh If any modifier changes the list will need to be refreshed.
 	 */
-	protected $object_list_iscurrent;
+	protected $needs_refresh;
 	/**
 	 * @var Integer $object_iter_idx The index of the object iterator
 	 */
@@ -47,7 +47,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	
 	public function __construct() {
 		$this->object_list = Array();
-		$this->object_list_iscurrent = false;
+		$this->needs_refresh = false;
 		
 		$this->object_iter_idx = 0;
 		
@@ -55,13 +55,53 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 		$this->sorter = Array();
 	}
 
+	/**
+	 * Refresh the query results
+	 * 
+	 * Runs the stored query and sets the iscurrent flag to true,
+	 * also takes care of any observed pager views.
+	 */
 	public function refresh() {
 		$this->object_list = $this->query->loadList();
-		$this->object_list_iscurrent = true;
+		$this->needs_refresh = true;
 		
-		if ($this->pager instanceof DP_View_Pager) {
+		if ($this->pager instanceof DP_Pager) {
 			$this->pager->setTotalItems($this->count());
 		}
+	}
+	
+	/**
+	 * Add a modifier object. Eg. pager, keyword filter, sort order.
+	 */
+	public function addModifier($subject) {
+
+		if ($subject instanceof DP_Pager) {
+			// Add new pager
+			$this->pager = $subject;
+			$this->needs_refresh = true;
+
+		} elseif ($subject instanceof DP_Query_Sort) {
+			// Add new sorter
+			$this->sorter = $subject;
+			$this->needs_refresh = true;
+
+		}  elseif ($subject instanceof DP_Filter) {
+			// Add new filter			
+			$filter_exists = false;
+			foreach ($this->filters as $filter) {
+				if ($filter->id() == $subject->id()) {
+					$filter_exists = true;
+				}
+			}
+			
+			if ($filter_exists == false) {
+				$this->filters[] = $subject;
+				$this->needs_refresh = true;
+			}
+		}
+		
+		// We will receive updates from any modifier object
+		$subject->attach($this);
 	}
 	
 	// From Countable
@@ -72,7 +112,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * @return Integer number of records
 	 */
 	public function count() {
-		if ($this->object_list_iscurrent) {
+		if ($this->needs_refresh) {
 			return count($this->object_list);
 		} else {
 			$this->refresh();
@@ -85,7 +125,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * Return the current element.
 	 */
 	public function current() {
-		if ($this->object_list_iscurrent) {
+		if ($this->needs_refresh) {
 			return $this->object_list[$this->object_iter_idx];
 		}
 	}
@@ -94,7 +134,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * Return the key of the current element.
 	 */
 	public function key() {
-		if ($this->object_list_iscurrent) {
+		if ($this->needs_refresh) {
 			return $this->object_iter_idx;
 		}
 	}
@@ -117,7 +157,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * Check if there is a current element after calls to rewind() or next().
 	 */
 	public function valid() {
-		if ($this->object_list_iscurrent) {
+		if ($this->needs_refresh) {
 			if ($this->object_iter_idx < count($this->object_list)) {
 				return true;
 			} else {
@@ -160,7 +200,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 			}
 		}
 		
-		if ($this->pager instanceof DP_View_Pager) {
+		if ($this->pager instanceof DP_Pager) {
 			$this->query->setPageLimit($this->pager->page(), $this->pager->itemsPerPage());
 		}
 
@@ -175,39 +215,10 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * @param Object $subject The object that has changed.
 	 */
 	public function update(SplSubject $subject) {
+		
+		// If the list filters have changed, reset page to 1.
 		if ($subject instanceof DP_Filter) {
-			//Zend_Debug::dump('Filter attached');
-			
-			$filter_exists = false;
-			foreach ($this->filters as $filter) {
-				if ($filter->id() == $subject->id()) {
-					$filter_exists = true;
-				}
-			}
-			
-			if ($filter_exists == false) {
-				$this->filters[] = $subject;
-				$this->object_list_iscurrent = false;
-			}
-			
-			// Check ID to see if it is a new instance of DP_Filter.
-			// If the instance is new, add to local collection.
-			// If the instance is old, compare DP_Filter objects
-			// If they are different, accept the new object (possibly flag for changed state)
-		}
-		
-		if ($subject instanceof DP_View_Pager) {
-			//Zend_Debug::dump('Pager attached');
-			$this->pager = $subject;
-			$this->object_list_iscurrent = false;
-			// Same story different type
-		}
-		
-		if ($subject instanceof DP_Query_Sort) {
-			//Zend_Debug::dump('Sorter attached');
-			$this->sorter = $subject;
-			$this->object_list_iscurrent = false;
-			// Same story different type
+			$this->pager->setPage(1);
 		}
 	}
 }

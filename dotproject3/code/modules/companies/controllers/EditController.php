@@ -32,8 +32,10 @@ class Companies_EditController extends DP_Controller_Action {
 
 		$form_definition = $this->_helper->FormDefinition('edit-object');
 		$edit_form = new Zend_Form($form_definition);
-		$types = DP_Config::getSysVal( 'CompanyType' );
 		
+		$types = DP_Config::getSysVal( 'CompanyType' );
+		$company_type_element = $edit_form->getElement('company_type');
+		$company_type_element->addMultiOptions($types);
 		
 		if ($company_id) {
 			// TODO - set default adapter pre dispatch
@@ -90,7 +92,8 @@ class Companies_EditController extends DP_Controller_Action {
 				$company->insert();
 			}
 			
-			$this->_helper->actionStack('index', 'index', 'companies');
+			// Display a nice message which confirms the save, and views the object
+			//$this->_helper->actionStack('index', 'index', 'companies');
 		}
 	}
 }

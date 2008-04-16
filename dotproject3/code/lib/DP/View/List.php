@@ -44,7 +44,15 @@ class DP_View_List extends DP_View_Stateful {
 		$AppUI = DP_AppUI::getInstance();
 		$this->row_iterator = DP_View_Factory::getRowIterator($this->id().'-rows');
 		$this->src = new DP_List();
-		$this->sort_object = $AppUI->getState($this->id().'-sort', new DP_Query_Sort());
+		
+		// Manage sort state
+		$this->sort_object = new DP_Query_Sort($this->id().'-sort');
+		
+		$sort_state = $AppUI->getState($this->id().'-sort');
+		if ($sort_state != null) {
+			$this->sort_object->setMemento($sort_state);
+		}
+		
 		$this->column_headers = Array();
 	}
 
@@ -148,6 +156,9 @@ class DP_View_List extends DP_View_Stateful {
 	public function updateStateFromServer($request) {
 		if (isset($request->sort) && ($request->view_id == $this->id())) {
 			$this->sort_object->sort($request->sort);
+
+			$AppUI = DP_AppUI::getInstance();
+			$AppUI->setState($this->id().'-sort', $this->sort_object->createMemento());
 		}
 		
 		$this->updateChildrenFromServer($request);

@@ -26,13 +26,23 @@
 	$this->headLink()->appendStylesheet($layout->baseUrl.'/css/calendar/calendar-dp.css');
 	$this->headLink()->appendStylesheet('./style/'.$layout->uistyle.'/main.css');	
 
+	// @todo Fix favicon
 	$this->headLink()->appendAlternate($layout->baseUrl.'/img/'.$layout->uistyle.'/favicon.ico', 'image/ico', 'shortcut icon');
 	
-	$this->headStyle()->appendStyle('./style/'.$layout->uistyle.'/main.css');
+	$this->headLink()->appendStylesheet('./style/'.$layout->uistyle.'/main.css');
 	
-	$this->headScript()->appendScript($layout->baseUrl.'/lib/overlib/overlib.js');
-	$this->headScript()->appendScript($layout->baseUrl.'/js/dPcommon.js');
+	$this->headStyle()->appendStyle('
+        @import "js/dojo-release-1.1.0/dojo/dijit/themes/tundra/tundra.css";
+        @import "js/dojo-release-1.1.0/dojo/dojo/resources/dojo.css"
+    ');
 	
+	$this->headScript()->setAllowArbitraryAttributes(true);
+	
+	$this->headScript()->appendFile('/lib/overlib/overlib.js');
+	$this->headScript()->appendFile('/js/dPcommon.js');
+	
+	$this->headScript()->appendFile('/js/dojo-release-1.1.0/dojo/dojo.js', 'text/javascript', Array('djConfig'=>'parseOnLoad: true'));
+	$this->headScript()->appendScript('dojo.require("dijit.form.Button");');	
 	// Print out HEAD sections
 	?>
 	<?=$this->headMeta(); ?>
@@ -42,7 +52,7 @@
 	<?=$this->headScript(); ?>
 </head>
 <body onload="this.focus();">
-<!--  	{popup_init src="`$baseUrl`/lib/overlib/overlib.js"} -->
+<!-- {popup_init src="`$baseUrl`/lib/overlib/overlib.js"} -->
 <table width="100%" cellpadding="0" cellspacing="0" border="0">
 <tr>
 	<td>

@@ -33,6 +33,7 @@ class IndexController extends DP_Controller_Action
 		if ($AppUI->user_id > 0) {
 			$nav = $AppUI->getMenuModules();
 			$perms =& $AppUI->acl();
+			
 			$links = array();
 			
 			foreach ($nav as $module) {
@@ -46,7 +47,7 @@ class IndexController extends DP_Controller_Action
 			$this->view->module_selected = $req->getModuleName();
 		}
 		
-		
+		/*
 		$modules_newitem = Array('companies'=>'Company',
 								'contacts'=>'Contact',
 								'calendar'=>'Event',
@@ -57,20 +58,25 @@ class IndexController extends DP_Controller_Action
 		$newitem_select = new Zend_Form_Element_Select('new_item', Array('class'=>'text'));
 		$newItem = Array('' => '- New Item -' );
 		
+		
 		foreach($modules_newitem as $m => $txt) {
 			if ($perms->checkModule( $m, 'add' )) 
 				$newItem[$m] = $txt;			
 		}
+		
 		$newitem_select->addMultiOptions($newItem);
 		$newitem_form->addElement($newitem_select);
 		
 		$this->view->new_item = $newitem_form;
-	}
+		*/	
+}
 	
 	// TODO - find a better place for this code
 	public function preparelayoutAction() {
 		$this->_helper->viewRenderer->setNoRender(true);
 		
+		// Temp testing of translation adapter
+		// @todo proper translation setup
 		$adapter = new Zend_Translate('array', array('simple' => 'einfach', 'forgotPassword'=>'Help'), 'de');
 		Zend_Registry::set('Zend_Translate', $adapter);
 		

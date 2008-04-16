@@ -11,7 +11,6 @@
  * @subpackage system
  * @author ebrosnan
  * @version not.even.alpha
- * @todo Assess whether a full instance of smarty is required to insert subviews/child views.
  */
 class DP_View {
 	/**
@@ -183,7 +182,6 @@ class DP_View {
 	 * All DP_View objects must implement this method.
 	 * 
 	 * @return string HTML output of this DP_View object.
-	 * @todo Force implementation of this method for subclasses using an abstract
 	 */
 	public function render() {
 	}

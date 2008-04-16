@@ -9,8 +9,10 @@
  * @todo Possible rename to DP_Sort to fit in with naming of DP_Filter
  * @todo Use rule access methods instead of referring directly to internal sort rules variable.
  */
-class DP_Query_Sort implements Iterator, SplSubject {
+class DP_Query_Sort implements Iterator, SplSubject, DP_Originator_Interface {
 	protected $_observers;
+	
+	protected $id;
 	/**
 	 * Array of sorting rules.
 	 *
@@ -35,10 +37,11 @@ class DP_Query_Sort implements Iterator, SplSubject {
 	 */
 	const SORT_DESCENDING = 1;
 	
-	public function __construct() {
+	public function __construct($id = -1) {
 		$this->_observers = Array();
 		$this->sorting_rules = Array();
 		$this->sorting_priority = Array();
+		$this->id = $id;
 		$this->iter_index = 0;
 	}
 	
@@ -68,7 +71,6 @@ class DP_Query_Sort implements Iterator, SplSubject {
 	 * 
 	 * @param string $field_name Name of the field to sort.
 	 * @param integer $direction Direction to sort, can be DP_Query_Sort::SORT_ASCENDING or DP_Query_Sort::SORT_DESCENDING
-	 * @todo API to define the default sort order when no direction specified.
 	 */
 	function sort($field_name, $direction = null) {
 		// Take this field out of the sorting order if it already exists
@@ -105,6 +107,9 @@ class DP_Query_Sort implements Iterator, SplSubject {
 		} else {		
 			$this->sorting_rules[$field_name] = $direction;
 		}
+		
+		// Notify observers of sorting rule changes.
+		$this->notify();
 	}
 	
 	// From Iterator
@@ -145,7 +150,8 @@ class DP_Query_Sort implements Iterator, SplSubject {
 	public function attach(SplObserver $observer) {
 		if (!in_array($observer, $this->_observers)) {
 			$this->_observers[] = $observer;
-			$observer->update($this);
+			//$observer->update($this);
+			// Observer only updated if something is changed
 		}		
 	}
 	
@@ -174,6 +180,30 @@ class DP_Query_Sort implements Iterator, SplSubject {
  			$ob->update($this);
  		}
  	}
+ 	
+	// From DP_Originator_Interface
+ 	
+ 	/**
+	 * Restore internal state from a memento.
+	 * 
+	 * @param DP_Memento $m State memento.
+	 */
+	public function setMemento(DP_Memento $m) {
+		$state = $m->getState();
+		$this->sorting_rules = $state['sorting_rules'];
+		$this->sorting_priority = $state['sorting_priority'];
+	}
+	
+	/**
+	 * Create a memento containing a snapshot of the current internal state.
+	 * 
+	 * @return DP_Memento current state memento.
+	 */
+	public function createMemento() {
+		$state = Array('sorting_rules' => $this->sorting_rules,
+					   'sorting_priority' => $this->sorting_priority);
+		return new DP_Memento($state);
+	}
 
 }
 ?>

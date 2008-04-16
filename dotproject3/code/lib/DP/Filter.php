@@ -8,11 +8,9 @@
  *
  * @package dotproject
  * @subpackage system
- * @todo Better retrieval method for filters, Better method of associating filters with views.
  * @todo Better method for converting filter rules to SQL
- * @todo combine method for combining two filter objects
  */
-class DP_Filter implements SplSubject {
+class DP_Filter implements SplSubject, DP_Originator_Interface {
 	private $_observers;
 	/**
 	 * Array of filter rules.
@@ -55,6 +53,8 @@ class DP_Filter implements SplSubject {
 								"filter_id"=>$this->next_fid, 
 								"filter_field"=>$field_name, 
 								"field_value"=>$field_value);
+
+		$this->notify(); // Update observers
 	}
 
 	/**
@@ -69,6 +69,8 @@ class DP_Filter implements SplSubject {
 								"filter_id"=>$this->next_fid, 
 								"filter_field"=>$field_name, 
 								"field_value"=>$value_like);
+
+		$this->notify(); // Update observers
 	}
 
 	/**
@@ -100,17 +102,28 @@ class DP_Filter implements SplSubject {
 		}
 		return $subset;
 	}
+	
+	/**
+	 * Set filters from an array of rules.
+	 * 
+	 * @param array $rules Array of rules in the DP_Filter format.
+	 */
+	public function setFilters($rules) {
+		$this->filters = $rules;
+	}
 
 	/**
 	 * Add filter rules from another DP_Filter instance.
 	 *
 	 * @param DP_Filter $filter Another DP_Filter instance.
-	 * @todo check whether filter rules already exist.
 	 */
 	public function addFromFilter(DP_Filter $filter) {
 		$add_filters = $filter->filters;
 		foreach ($add_filters as $f) {
-			$this->filters[] = $f;
+			// Check if the new rule is not already contained within this filter object.
+			if (!in_array($f, $this->filters)) {
+				$this->filters[] = $f;
+			}
 		}
 	}
 
@@ -137,6 +150,8 @@ class DP_Filter implements SplSubject {
 			}
 			$this->filters = array_values($this->filters);
 		}
+		
+		$this->notify(); // Update observers
 	}
 
 	/**
@@ -145,6 +160,8 @@ class DP_Filter implements SplSubject {
 	public function deleteAllRules() {
 		$this->filters = null;
 		$this->filters = Array();
+
+		$this->notify(); // Update observers
 	}
 
 	/**
@@ -176,7 +193,7 @@ class DP_Filter implements SplSubject {
 	public function attach(SplObserver $observer) {
 		if (!in_array($observer, $this->_observers)) {
 			$this->_observers[] = $observer;
-			$observer->update($this);
+
 		}		
 	}
 	
@@ -205,5 +222,25 @@ class DP_Filter implements SplSubject {
  			$ob->update($this);
  		}
  	}
+ 	
+ 	// From DP_Originator_Interface
+ 	
+ 	/**
+	 * Restore internal state from a memento.
+	 * 
+	 * @param DP_Memento $m State memento.
+	 */
+	public function setMemento(DP_Memento $m) {
+		$this->filters = $m->getState();
+	}
+	
+	/**
+	 * Create a memento containing a snapshot of the current internal state.
+	 * 
+	 * @return DP_Memento current state memento.
+	 */
+	public function createMemento() {
+		return new DP_Memento($this->filters);
+	}
 }
 ?>

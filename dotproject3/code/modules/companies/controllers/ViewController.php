@@ -34,6 +34,8 @@ class Companies_ViewController extends DP_Controller_Action
 			
 			$this->view->obj = $obj;
 			
+			$types = DP_Config::getSysVal( 'CompanyType' );
+			$this->view->company_type = $types[$obj->company_type];
 			//$title_block = $this->_helper->TitleBlock($obj->company_name, '/img/_icons/companies/handshake.png');
 			$title_block = $this->_helper->TitleBlock('');
 			$title_block->addCrumb('/companies', 'companies');

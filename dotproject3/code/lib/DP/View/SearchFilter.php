@@ -7,8 +7,7 @@
  * 
  * @package dotproject
  * @subpackage system
- * @todo Implement searching multiple fields
- *
+ * @version 3.0 alpha
  */
 class DP_View_SearchFilter extends DP_View_Stateful {
 	/**
@@ -42,9 +41,14 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 	public function __construct($id) {
 		parent::__construct($id);
 		
-		// Searchfilter always handles its own filter.
+		// Manage DP_Filter state
 		$AppUI = DP_AppUI::getInstance();
-		$this->filter = $AppUI->getState($id.'-filter', new DP_Filter());
+		$this->filter = new DP_Filter($id.'-filter');
+
+		$filter_state = $AppUI->getState($id.'-filter');
+		if ($filter_state != null) {
+			$this->filter->setMemento($filter_state);
+		}
 		
 		//$this->width = "100%";
 		$this->form_reset_var = $this->id().'-reset';
@@ -80,7 +84,7 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 		$search_filter = $this->filter->getFilter($this->field_name);
 		$search_text = $search_filter['field_value'];
 		$output = '<div class="View_SearchFilter">';
-		$output .= '<form method="POST">';
+		$output .= '<form method="POST" action="'.$this->getActionUrl().'">';
 		
 		$output .= '<b>'.$this->getSearchFieldTitle().'</b> contains: ';
 		
@@ -123,23 +127,33 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 	public function updateStateFromServer($request) {
 		// Clear filters if requested
 		$reset_this = $this->form_reset_var;
+		$filter_state = null; 
 		
 		if ($request->view_id == $this->id()) {
 			if ($request->delete_filter) {
 				$this->filter->deleteFilterById($request->delete_filter);
+				$filter_state = $this->filter->createMemento();
 			}
 		}
 		
 		if ($request->$reset_this) {
 			$this->filter->deleteAllRules();
+			$filter_state = $this->filter->createMemento();
 		}
 		
 		// Add search string if requested
-		// TODO - decide if search strings should be cumulative?
 		$input_text = $this->form_input_text;
 		
 		if ($request->$input_text != '') {
 			$this->filter->fieldSubstring('c.company_name', $request->$input_text);
+			$filter_state = $this->filter->createMemento();
+		}
+		
+		// Save state changes
+		// TODO - instead of calling createMemento multiple times just call if changed.
+		if ($filter_state != null) {
+			$AppUI = DP_AppUI::getInstance();
+			$AppUI->setState($this->id().'-filter', $filter_state);
 		}
 	}
 	

@@ -10,6 +10,7 @@
 class DP_Controller_Action_Helper_ModelIncluder extends Zend_Controller_Action_Helper_Abstract {	
 
 	public function preDispatch() {
+		
 		$request = $this->getRequest();
 		$module = $request->getModuleName();
 		$moduleDir = $this->getFrontController()->getControllerDirectory($module);

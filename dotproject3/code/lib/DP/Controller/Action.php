@@ -10,8 +10,8 @@ class DP_Controller_Action extends Zend_Controller_Action
 	/**
 	 * Override the default View object.
 	 */
-	public function init()
-	{
+	//public function init()
+	//{
 		/*
 		if ($this->_helper->hasHelper('viewRenderer')) {
 			$this->_helper->viewRenderer->setView(new DP_Template());
@@ -19,20 +19,22 @@ class DP_Controller_Action extends Zend_Controller_Action
 		}
 		*/
 	
-	}
+	//}
 
+	/*
 	public function getView()
 	{
 		return $this->_helper->viewRenderer->view;
-	}
+	}*/
 
 	/**
 	 * Perform pre dispatch checks, primarily to ensure we are logged in.
 	 */
-	public function preDispatch()
-	{
+	//public function preDispatch()
+	//{
 		//This seems to return index even when the request url is login??
 		//$controller = $this->getRequest()->getControllerName();
+		/*
 		$fc = Zend_Controller_Front::getInstance();
 		$controller = $fc->getRequest()->getControllerName();
 		if ($controller != 'login' && $controller != 'error' && DP_AppUI::getInstance()->doLogin()) {
@@ -44,16 +46,18 @@ class DP_Controller_Action extends Zend_Controller_Action
 		
 		if ($this->getRequest()->getParam('_forwarded')) {
 			$this->getView()->suppressHeaders();
-		}
-	}
+		}*/
+	//}
 
+	/*
 	public function postDispatch()
 	{
 		if ($this->getRequest()->getParam('_forwarded')) {
 			$this->render();
 		}
 	}
-
+	*/
+	
 	public function &moduleClass($modname = null)
 	{
 		if (null === $modname) {
@@ -62,6 +66,7 @@ class DP_Controller_Action extends Zend_Controller_Action
 		return DP_Module::register($modname);
 	}
 
+	/*
 	public function &tabBox()
 	{
 		return DP_AppUI::tabBoxFactory($this->getRequest()->getModuleName(), $this);
@@ -71,7 +76,7 @@ class DP_Controller_Action extends Zend_Controller_Action
 	{
 		$view = $this->getView();
 		return DP_AppUI::titleBlockFactory($this->getRequest()->getModuleName(), $view);
-	}
+	}*/
 
 	public function defVal($key, $default)
 	{
