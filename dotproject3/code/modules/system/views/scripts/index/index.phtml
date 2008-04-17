@@ -1,0 +1,78 @@
+<table width="50%" border="0" cellpadding="0" cellspacing="5" align="left">
+<tr>
+	<td width="42">
+		{dPshowImage src='./modules/system/images/rdf2.png' wsize=42 hsize=42}
+	</td>
+	<td align="left" class="subtitle">
+		<?=$this->translate('Language Support'); ?>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&amp;a=translate"><?=$this->translate('Translation Management'); ?></a>
+	</td>
+</tr>
+
+<tr>
+	<td>
+		{dPshowImage src='./modules/system/images/myevo-weather.png' wsize=42 hsize=42}
+	</td>
+	<td align="left" class="subtitle">
+		<?=$this->translate('Preferences'); ?>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="<?=$this->Url(Array('module'=>'system', 'controller'=>'config', 'action'=>'index')); ?>"><?=$this->translate('System Configuration'); ?></a><br />
+		<a href="?m=system&amp;a=addeditpref"><?=$this->translate('Default User Preferences'); ?></a><br />
+		<a href="?m=system&amp;u=syskeys&amp;a=keys"><?=$this->translate('System Lookup Keys'); ?></a><br />
+		<a href="?m=system&amp;u=syskeys"><?=$this->translate('System Lookup Values'); ?></a><br />
+		<a href="?m=system&amp;a=custom_field_editor"><?=$this->translate('Custom Field Editor'); ?></a><br />
+		<a href="?m=system&amp;a=billingcode"><?=$this->translate('Billing Code Table'); ?></a>
+	</td>
+</tr>
+
+<tr>
+	<td>
+		{dPshowImage src='./modules/system/images/power-management.png' wsize=42 hsize=42}
+	</td>
+	<td align="left" class="subtitle">
+		<?=$this->translate('Modules'); ?>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&amp;a=viewmods"><?=$this->translate('View Modules'); ?></a>
+	</td>
+</tr>
+
+<tr>
+	<td>
+		{dPshowImage src='./modules/system/images/main-settings.png' wsize=42 hsize=42}
+	</td>
+	<td align="left" class="subtitle">
+		<?=$this->translate('Administration'); ?>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&amp;u=roles"><?=$this->translate('User Roles'); ?></a>
+	</td>
+</tr>
+
+<tr>
+	<td>&nbsp;</td>
+	<td align="left">
+		<a href="?m=system&amp;a=contacts_ldap"><?=$this->translate('Import Contacts'); ?></a>
+	</td>
+</tr>
+
+</table>

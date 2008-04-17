@@ -9,7 +9,7 @@
  * @todo DP_Object_Base may be renamed to DP_Object (should be).
  */
 
-class Company extends DP_Object_Base {
+class Company extends DP_Module_ActiveRecord_Abstract {
 	
 	public $company_id;
 	public $company_name;

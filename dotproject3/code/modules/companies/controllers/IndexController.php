@@ -24,6 +24,7 @@ class Companies_IndexController extends DP_Controller_Action
 	 */
 	public function indexAction()
 	{
+		// @todo - find a way to autoload index.
 		$this->_helper->RequireModel('Index');
 
 		$AppUI = DP_AppUI::getInstance();
