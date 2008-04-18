@@ -11,7 +11,7 @@
 <tr>
 	<td>&nbsp;</td>
 	<td align="left">
-		<a href="?m=system&amp;a=translate"><?=$this->translate('Translation Management'); ?></a>
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'translation', 'module'=>'system')); ?>"><?=$this->translate('Translation Management'); ?></a>
 	</td>
 </tr>
 
@@ -28,11 +28,11 @@
 	<td>&nbsp;</td>
 	<td align="left">
 		<a href="<?=$this->Url(Array('module'=>'system', 'controller'=>'config', 'action'=>'index')); ?>"><?=$this->translate('System Configuration'); ?></a><br />
-		<a href="?m=system&amp;a=addeditpref"><?=$this->translate('Default User Preferences'); ?></a><br />
-		<a href="?m=system&amp;u=syskeys&amp;a=keys"><?=$this->translate('System Lookup Keys'); ?></a><br />
-		<a href="?m=system&amp;u=syskeys"><?=$this->translate('System Lookup Values'); ?></a><br />
-		<a href="?m=system&amp;a=custom_field_editor"><?=$this->translate('Custom Field Editor'); ?></a><br />
-		<a href="?m=system&amp;a=billingcode"><?=$this->translate('Billing Code Table'); ?></a>
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'user', 'module'=>'system')); ?>"><?=$this->translate('Default User Preferences'); ?></a><br />
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'keys', 'module'=>'system')); ?>"><?=$this->translate('System Lookup Keys'); ?></a><br />
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'values', 'module'=>'system')); ?>"><?=$this->translate('System Lookup Values'); ?></a><br />
+		<a href="<?=$this->Url(Array('action'=>'customfields', 'controller'=>'index', 'module'=>'system')); ?>"><?=$this->translate('Custom Field Editor'); ?></a><br />
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'billing', 'module'=>'system')); ?>"><?=$this->translate('Billing Code Table'); ?></a>
 	</td>
 </tr>
 
@@ -48,7 +48,7 @@
 <tr>
 	<td>&nbsp;</td>
 	<td align="left">
-		<a href="?m=system&amp;a=viewmods"><?=$this->translate('View Modules'); ?></a>
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'modules', 'module'=>'system')); ?>"><?=$this->translate('View Modules'); ?></a>
 	</td>
 </tr>
 
@@ -64,14 +64,14 @@
 <tr>
 	<td>&nbsp;</td>
 	<td align="left">
-		<a href="?m=system&amp;u=roles"><?=$this->translate('User Roles'); ?></a>
+		<a href="<?=$this->Url(Array('action'=>'index', 'controller'=>'roles', 'module'=>'system')); ?>"><?=$this->translate('User Roles'); ?></a>
 	</td>
 </tr>
 
 <tr>
 	<td>&nbsp;</td>
 	<td align="left">
-		<a href="?m=system&amp;a=contacts_ldap"><?=$this->translate('Import Contacts'); ?></a>
+		<a href="<?=$this->Url(Array('action'=>'ldapcontacts', 'controller'=>'import', 'module'=>'system')); ?>"><?=$this->translate('Import Contacts'); ?></a>
 	</td>
 </tr>
 

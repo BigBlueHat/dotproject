@@ -1,0 +1,124 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl.'/css/zendform-view.css');
+
+?>
+<div id="contacts-view-container" class="zend_form_container">
+<h1 class="headtest"><?=$this->obj->contact_order_by?>
+<div class="DP_View_Button" style="padding: 5px 5px 5px 5px;">
+<button
+	onClick="location = '/contacts/edit/object/id/<?=$this->obj->contact_id?>';">Edit</button>
+</div>
+</h1>
+
+<dl class="zend_form">
+	<dt></dt>
+	<dd><?=$this->obj->contact_id?></dd>
+	<dt></dt>
+	<dd><?=$this->obj->contact_project?></dd>
+	<dt></dt>
+	<dd><?=$this->obj->contact_icon?></dd>
+	<dt></dt>
+	<dd><?=$this->obj->contact_owner?></dd>
+	<dt></dt>
+	<dd>
+	<fieldset id="main" class="primary"><?=$this->translate('Main Details'); ?>
+	<dl>
+		<dt><?=$this->translate('First Name:'); ?></dt>
+
+		<dd><?=$this->obj->contact_first_name?></dd>
+		<dt><?=$this->translate('Last Name:'); ?></dt>
+		<dd><?=$this->obj->contact_last_name?></dd>
+		<dt><?=$this->translate('Shown As:'); ?></dt>
+		<dd><?=$this->obj->contact_order_by?></dd>
+		<dt><?=$this->translate('Company:'); ?></dt>
+		<dd><?=$this->obj->contact_company?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+	<dt></dt>
+	<dd>
+	<fieldset id="contact"><?=$this->translate('Contact Information'); ?>
+	<dl>
+
+		<dt><?=$this->translate('Phone:'); ?></dt>
+		<dd><?=$this->obj->contact_phone?></dd>
+		<dt><?=$this->translate('Phone2:'); ?></dt>
+		<dd><?=$this->obj->contact_phone2?></dd>
+		<dt><?=$this->translate('Mobile Phone:'); ?></dt>
+		<dd><?=$this->obj->contact_mobile?></dd>
+		<dt><?=$this->translate('Fax:'); ?></dt>
+		<dd><?=$this->obj->contact_fax?></dd>
+		<dt><?=$this->translate('E-mail:'); ?></dt>
+
+		<dd><?=$this->obj->contact_email?></dd>
+		<dt><?=$this->translate('E-mail 2:'); ?></dt>
+		<dd><?=$this->obj->contact_email2?></dd>
+		<dt><?=$this->translate('Address 1:'); ?></dt>
+		<dd><?=$this->obj->contact_address1?></dd>
+		<dt><?=$this->translate('Address 2:'); ?></dt>
+		<dd><?=$this->obj->contact_address2?></dd>
+		<dt><?=$this->translate('City:'); ?></dt>
+		<dd><?=$this->obj->contact_city?></dd>
+		<dt><?=$this->translate('State:'); ?></dt>
+		<dd><?=$this->obj->contact_state?></dd>
+		<dt><?=$this->translate('Postcode / Zip:'); ?></dt>
+		<dd><?=$this->obj->contact_zip?></dd>
+		<dt><?=$this->translate('Country:'); ?></dt>
+		<dd><?=$this->obj->contact_country?></dd>
+		<dt><?=$this->translate('Jabber:'); ?></dt>
+		<dd><?=$this->obj->contact_jabber?></dd>
+
+		<dt><?=$this->translate('MSN:'); ?></dt>
+		<dd><?=$this->obj->contact_msn?></dd>
+		<dt><?=$this->translate('Yahoo:'); ?></dt>
+		<dd><?=$this->obj->contact_yahoo?></dd>
+		<dt><?=$this->translate('AOL:'); ?></dt>
+		<dd><?=$this->obj->contact_aol?></dd>
+		<dt><?=$this->translate('ICQ:'); ?></dt>
+		<dd><?=$this->obj->contact_icq?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+	<dt></dt>
+	<dd>
+	<fieldset id="company"><?=$this->translate('Company Information'); ?>
+
+	<dl>
+		<dt><?=$this->translate('Company:'); ?></dt>
+		<dd><?=$this->obj->contact_company?></dd>
+		<dt><?=$this->translate('Job Title:'); ?></dt>
+		<dd><?=$this->obj->contact_job?></dd>
+		<dt><?=$this->translate('Title:'); ?></dt>
+		<dd><?=$this->obj->contact_title?></dd>
+		<dt><?=$this->translate('Department:'); ?></dt>
+		<dd><?=$this->obj->contact_department?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+
+	<dt></dt>
+	<dd>
+	<fieldset id="other"><?=$this->translate('Other Details'); ?>
+	<dl>
+		<dt><?=$this->translate('URL: http://'); ?></dt>
+		<dd><?=$this->obj->contact_url?></dd>
+		<dt><?=$this->translate('Contact Notes:'); ?></dt>
+		<dd><?=$this->obj->contact_notes?></dd>
+		<dt><?=$this->translate('Private Entry:'); ?></dt>
+		<dd><?=$this->obj->contact_private?></dd>
+		<dt><?=$this->translate('Type:'); ?></dt>
+
+		<dd><?=$this->obj->contact_type?></dd>
+	</dl>
+	</fieldset>
+	</dd>
+	
+	<dt></dt>
+	<dd>
+	<fieldset id="buttons">
+		<button onClick="location = '/companies/';">Back</button>
+	</fieldset>
+	</dd>
+	</dl>
+</div>
+

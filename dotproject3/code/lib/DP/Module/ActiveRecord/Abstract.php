@@ -12,37 +12,37 @@ abstract class DP_Module_ActiveRecord_Abstract {
 	 * 
 	 * @param Array $ids object ids
 	 */
-	public static function find($ids);
+	abstract public static function find($ids);
 	
 	/**
 	 * Instantiate one object from a rowset record
 	 * 
 	 * @param Object $row Rowset
 	 */
-	public static function load($rows);
+	abstract public static function load($rows);
 	
 	/**
 	 * Instantiate an object from a set of form values
 	 * 
 	 * @param Array $vars Form values
 	 */
-	public static function bind($vars);
+	abstract public static function bind($vars);
 	
 	// Modification methods
 	
 	/**
 	 * Insert this object.
 	 */
-	public function insert();
+	abstract public function insert();
 	
 	/**
 	 * Update this object.
 	 */
-	public function update();
+	abstract public function update();
 	
 	/**
 	 * Delete this object.
 	 */
-	public function delete();
+	abstract public function delete();
 }
 ?>
