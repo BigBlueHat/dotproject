@@ -14,7 +14,7 @@ class Contacts_Index extends DP_List_Dynamic {
 		// Create query to generate list data
 		// assemble the sql statement
 		
-		$q = new DBQuery;
+		$q = new DP_Query;
 		$q->addQuery('contact_id, contact_order_by');
 		$q->addQuery($showfields);
 		$q->addQuery('contact_first_name, contact_last_name, contact_phone');
@@ -33,10 +33,10 @@ class Contacts_Index extends DP_List_Dynamic {
 		
 		$this->query = $q;
 		
-		$q = new DBQuery;
-		$q->addQuery('count(*)');
-		$q->addTable('contacts', 'a');
-		$q->leftJoin('companies', 'b', 'a.contact_company = b.company_id');
+		$cq = new DP_Query;
+		$cq->addQuery('count(*)');
+		$cq->addTable('contacts', 'a');
+		$cq->leftJoin('companies', 'b', 'a.contact_company = b.company_id');
 		
 		// TODO - filtering of private entries
 		/*
@@ -48,6 +48,9 @@ class Contacts_Index extends DP_List_Dynamic {
 		
 		$this->cq = $cq;
 	}
+	
+	
+	
 	
 	public function count() {
 		$full_list = $this->cq->loadList();

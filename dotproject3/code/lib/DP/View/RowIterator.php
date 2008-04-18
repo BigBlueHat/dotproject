@@ -10,6 +10,7 @@
  * @package dotproject
  * @subpackage system
  * @version 3.0alpha
+ * @deprecated Deprecated in favour of DP_View_Iterator and DP_View_Iterator_2D
  * 
  */
 class DP_View_RowIterator {

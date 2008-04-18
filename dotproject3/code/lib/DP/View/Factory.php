@@ -42,8 +42,18 @@ class DP_View_Factory {
 		return new DP_View_SelectFilter($id, $options, $label);
 	}
 
+	/**
+	 * Instantiate and return a DP_View_Iterator object.
+	 */
+	public static function getViewIterator($id) {
+		return new DP_View_Iterator($id);
+	}
+	
+	/**
+	 * Instantiate and return a DP_View_Iterator_2D object.
+	 */
 	public static function getRowIterator($id) {
-		return new DP_View_RowIterator($id);
+		return new DP_View_Iterator_2D($id);
 	}
 	
 	public static function getPagerView($id) {
@@ -57,6 +67,17 @@ class DP_View_Factory {
 	 */
 	public static function getTitleBlockView($id, $title = '', $icon = '', $module = '', $helpref = '') {
 		return new DP_View_TitleBlock($id, $title, $icon, $module, $helpref);
+	}
+	
+	/**
+	 * Instantiate and return a DP_View_Cells object.
+	 */
+	public static function getCellView($id) {
+		return new DP_View_Cells($id);
+	}
+	
+	public static function getInfoCellView($id) {
+		return new DP_View_InfoCell($id);
 	}
 }
 ?>

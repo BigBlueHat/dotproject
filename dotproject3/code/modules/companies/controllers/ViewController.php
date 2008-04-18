@@ -18,11 +18,6 @@ class Companies_ViewController extends DP_Controller_Action
 {
 	public function objectAction()
 	{
-		// TODO - find a way to autoload model classes
-		// ModelIncluder adds models to include path, zend loader autoloads models.
-		// Need a cleaner way to do this.		
-		Zend_Loader::registerAutoload();
-		
 		$company_id = $this->getRequest()->id;
 		
 		if ($company_id) {

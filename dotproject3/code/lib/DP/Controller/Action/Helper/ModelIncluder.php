@@ -17,6 +17,8 @@ class DP_Controller_Action_Helper_ModelIncluder extends Zend_Controller_Action_H
 		
 		$model_dir = dirname($moduleDir).'/models';
 		set_include_path(get_include_path() . PATH_SEPARATOR . $model_dir);
+		// refresh autoloader - this seems to be necessary to have Zend_Loader recognise the new include path
+		Zend_Loader::registerAutoload();
 	}
 }
 ?>

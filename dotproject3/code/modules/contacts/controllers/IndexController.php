@@ -10,35 +10,54 @@
 class Contacts_IndexController extends DP_Controller_Action {
 	
 	public function indexAction() {
+		$this->_helper->RequireModel('Index');
+		
 		$AppUI = DP_AppUI::getInstance();
 		$AppUI->savePlace();
 		$perms =& $AppUI->acl();
-			
-		// Get the full URL without parameters.
-		$req = $this->getRequest();
-		$this_url = $req->getBaseUrl().'/'.$req->getModuleName().'/'.$req->getControllerName().'/'.$req->getActionName();
-		// setup the title block
-		$m = $req->getModuleName();
-		$a = $req->getActionName();
 		
-		$titleBlock = DP_View_Factory::getTitleBlockView( 'Contacts', 'monkeychat-48.png', $m, "$m.$a" );
-		$titleBlock->addCell( '[alphabetical index]' );
+		$this_url = $this->_helper->Url('index','index','contacts');
 		
-		$titleBlock->addCell(
-			'<input type="submit" class="button" value="'.$AppUI->_('new contact').'">', '',
-			'<form action="?m=contacts&a=addedit" method="post">', '</form>'
-		);
+		$contacts_index = new Contacts_Index();
 		
-		$titleBlock->addCrumbRight(
-			'<a href="./index.php?m=contacts&a=csvexport&suppressHeaders=true">' . $AppUI->_('CSV Download'). "</a> | " .
-			'<a href="./index.php?m=contacts&a=vcardimport&dialog=0">' . $AppUI->_('Import vCard') . '</a>'
-		);
-
-		$this->view->titleblock = $titleBlock;
-		
-		
-		// Construct the view hierarchy
 		$contact_search_view = DP_View_Factory::getSearchFilterView('dp-contacts-list-searchfilter');
+		$contact_search_view->setSearchFieldTitle('Contact name'); // TODO - better detection of available search fields through interface.
+		
+		$contact_list_pager = DP_View_Factory::getPagerView('dp-contacts-list-pager');
+		$contact_list_pager->setItemsPerPage(30);
+		$contact_list_pager->setUrlPrefix($this_url);
+		$contact_list_pager->setPersistent(false);
+		$contact_list_pager->align = 'center';
+
+		// TODO - Find a better way of adding new object buttons to lists.
+		$new_btn = new DP_View_Button('dp-contacts-new','new-contact');
+		$new_btn->button->setLabel('+ New Contact');
+		$new_btn->button->onClick = "location = '/contacts/edit/new'";
+				
+		$contact_cell_view = DP_View_Factory::getCellView('dp-contacts-list');
+		
+		$contact_cell_view->add($contact_search_view, DP_View::PREPEND);
+		$contact_cell_view->add($new_btn, DP_View::APPEND);
+		$contact_cell_view->add($contact_list_pager, DP_View::APPEND);
+		
+		// Create new cell/infocell and tell the cell view to use it.
+		$contact_infocell = DP_View_Factory::getInfoCellView('dp-contact-info');
+		$contact_infocell->setDisplayKeys(Array('contact_first_name', 'contact_last_name'));
+		$contact_cell_view->getViewIterator()->add($contact_infocell);
+		// Add modifiers
+		$contacts_index->addModifier($contact_search_view->getFilter());
+		$contacts_index->addModifier($contact_list_pager->getPager());
+		// Company filter
+		// First letter filter
+		
+		// Update state from request vars
+		$contact_cell_view->updateStateFromServer($this->getRequest());
+		
+		// Set up the datasource
+		$contact_cell_view->setDataSource($contacts_index);
+		
+		// Assign contacts view
+		$this->view->main = $contact_cell_view;
 	}
 }
 ?>
