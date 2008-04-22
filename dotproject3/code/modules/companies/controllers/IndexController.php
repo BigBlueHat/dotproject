@@ -44,6 +44,7 @@ class Companies_IndexController extends DP_Controller_Action
 		// Construct the view hierarchy from the inner to the outer elements.
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
 		$company_search_view->setSearchFieldTitle('Company name'); // TODO - better detection of available search fields through interface.
+		$company_search_view->setSearchField('c.company_name');
 		// Temporarily removed until implemented
 		//$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
 		

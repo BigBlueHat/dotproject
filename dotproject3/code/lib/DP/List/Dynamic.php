@@ -47,7 +47,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	
 	public function __construct() {
 		$this->object_list = Array();
-		$this->needs_refresh = false;
+		$this->needs_refresh = true;
 		
 		$this->object_iter_idx = 0;
 		
@@ -63,7 +63,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 */
 	public function refresh() {
 		$this->object_list = $this->query->loadList();
-		$this->needs_refresh = true;
+		$this->needs_refresh = false;
 		
 		if ($this->pager instanceof DP_Pager) {
 			$this->pager->setTotalItems($this->count());
@@ -107,15 +107,29 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	// From Countable
 	
 	/**
-	 * Get the number of records (if any)
+	 * Get the total number of records regardless of the pager.
 	 * 
 	 * @return Integer number of records
 	 */
 	public function count() {
-		if ($this->needs_refresh) {
+		if ($this->cq != null) {
+			$count_row = $this->cq->loadList();
+			$record_total = array_values($count_row[0]);
+			//Zend_Debug::dump($record_total);
+			return $record_total[0];
+		} else {
+			return 0;
+		}
+	}
+	
+	/**
+	 * Get the number of records returned for this page.
+	 */
+	public function pageItemCount() {
+		if ($this->needs_refresh == false) {
 			return count($this->object_list);
 		} else {
-			$this->refresh();
+			return null;
 		}
 	}
 
@@ -125,7 +139,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * Return the current element.
 	 */
 	public function current() {
-		if ($this->needs_refresh) {
+		if ($this->needs_refresh == false) {
 			return $this->object_list[$this->object_iter_idx];
 		}
 	}
@@ -134,7 +148,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * Return the key of the current element.
 	 */
 	public function key() {
-		if ($this->needs_refresh) {
+		if ($this->needs_refresh == false) {
 			return $this->object_iter_idx;
 		}
 	}
@@ -157,7 +171,7 @@ class DP_List_Dynamic implements Countable, Iterator, SplObserver, DP_View_List_
 	 * Check if there is a current element after calls to rewind() or next().
 	 */
 	public function valid() {
-		if ($this->needs_refresh) {
+		if ($this->needs_refresh == false) {
 			if ($this->object_iter_idx < count($this->object_list)) {
 				return true;
 			} else {

@@ -34,9 +34,9 @@ class Contacts_Index extends DP_List_Dynamic {
 		$this->query = $q;
 		
 		$cq = new DP_Query;
-		$cq->addQuery('count(*)');
+		$cq->addQuery('count(*) as ccount');
 		$cq->addTable('contacts', 'a');
-		$cq->leftJoin('companies', 'b', 'a.contact_company = b.company_id');
+		//$cq->leftJoin('companies', 'b', 'a.contact_company = b.company_id');
 		
 		// TODO - filtering of private entries
 		/*
@@ -47,14 +47,6 @@ class Contacts_Index extends DP_List_Dynamic {
 			)"); */			
 		
 		$this->cq = $cq;
-	}
-	
-	
-	
-	
-	public function count() {
-		$full_list = $this->cq->loadList();
-		return count($full_list);
 	}
 }
 ?>

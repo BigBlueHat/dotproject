@@ -11,6 +11,7 @@ class Contacts_IndexController extends DP_Controller_Action {
 	
 	public function indexAction() {
 		$this->_helper->RequireModel('Index');
+		$this->_helper->RequireModel('View/Card');
 		
 		$AppUI = DP_AppUI::getInstance();
 		$AppUI->savePlace();
@@ -22,9 +23,10 @@ class Contacts_IndexController extends DP_Controller_Action {
 		
 		$contact_search_view = DP_View_Factory::getSearchFilterView('dp-contacts-list-searchfilter');
 		$contact_search_view->setSearchFieldTitle('Contact name'); // TODO - better detection of available search fields through interface.
+		$contact_search_view->setSearchField('contact_order_by');
 		
 		$contact_list_pager = DP_View_Factory::getPagerView('dp-contacts-list-pager');
-		$contact_list_pager->setItemsPerPage(30);
+		$contact_list_pager->setItemsPerPage(40);
 		$contact_list_pager->setUrlPrefix($this_url);
 		$contact_list_pager->setPersistent(false);
 		$contact_list_pager->align = 'center';
@@ -34,30 +36,36 @@ class Contacts_IndexController extends DP_Controller_Action {
 		$new_btn->button->setLabel('+ New Contact');
 		$new_btn->button->onClick = "location = '/contacts/edit/new'";
 				
-		$contact_cell_view = DP_View_Factory::getCellView('dp-contacts-list');
+		// Contacts card view
+		$contact_col_view = DP_View_Factory::getColumnView('dp-contacts-index');
+		// Add utilities
+		$contact_col_view->add($contact_search_view, DP_View::PREPEND);
+		$contact_col_view->add($new_btn, DP_View::APPEND);
+		$contact_col_view->add($contact_list_pager, DP_View::APPEND);
+		// Set up data source
+		$contact_iterator = new DP_View_Iterator();
+		$contact_card_view = new Contacts_View_Card('dp-contacts-view-card');
+		$contact_card_view->setDisplayKeys(Array('contact_phone', 'contact_phone2','contact_email'));
+		$contact_iterator->add($contact_card_view);
+		$contact_iterator->setDataSource($contacts_index);
 		
-		$contact_cell_view->add($contact_search_view, DP_View::PREPEND);
-		$contact_cell_view->add($new_btn, DP_View::APPEND);
-		$contact_cell_view->add($contact_list_pager, DP_View::APPEND);
-		
-		// Create new cell/infocell and tell the cell view to use it.
-		$contact_infocell = DP_View_Factory::getInfoCellView('dp-contact-info');
-		$contact_infocell->setDisplayKeys(Array('contact_first_name', 'contact_last_name'));
-		$contact_cell_view->getViewIterator()->add($contact_infocell);
+		$contact_col_view->setIterator($contact_iterator);
+				
+
 		// Add modifiers
 		$contacts_index->addModifier($contact_search_view->getFilter());
 		$contacts_index->addModifier($contact_list_pager->getPager());
 		// Company filter
 		// First letter filter
-		
+
+			
 		// Update state from request vars
-		$contact_cell_view->updateStateFromServer($this->getRequest());
+		$contact_col_view->updateStateFromServer($this->getRequest());
 		
-		// Set up the datasource
-		$contact_cell_view->setDataSource($contacts_index);
+		$contacts_index->clientWillRender();
 		
 		// Assign contacts view
-		$this->view->main = $contact_cell_view;
+		$this->view->main = $contact_col_view;
 	}
 }
 ?>

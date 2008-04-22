@@ -62,6 +62,10 @@ class DP_View_Iterator {
 		return count($this->views);
 	}
 	
+	public function count() {
+		return $this->src->pageItemCount();
+	}
+	
 	/**
 	 * Set the data source to be used for this row iterator.
 	 * 
@@ -126,12 +130,13 @@ class DP_View_Iterator {
 	 */
 	public function currentItem() {
 		$view = $this->views[$this->index];
-		
-		$output = '<'.$this->containerElement().'>';
+		//$this->src->clientWillRender();
+		//$output = '<'.$this->containerElement().'>';
 		$output .= $view->render($this->src->current());
-		$output .= '</'.$this->containerElement().'>';
+		//$output .= '</'.$this->containerElement().'>';
 		
 		return $output;
 	}
+	
 }
 ?>

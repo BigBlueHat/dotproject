@@ -54,7 +54,7 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 		$this->form_reset_var = $this->id().'-reset';
 		$this->form_input_text = $this->id().'-input';
 		// TODO - this shouldnt be hardcoded
-		$this->field_name = 'c.company_name';
+
 	}
 	
 	/**
@@ -66,12 +66,39 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 		return $this->filter;
 	}
 	
+	/**
+	 * Get the human name of the field being searched.
+	 * 
+	 * @return string The title of the field.
+	 */
 	public function getSearchFieldTitle() {
 		return $this->field_title;
 	}
-	
+	/**
+	 * Set the human name of the field to search.
+	 * 
+	 * @param String $field_title The title of the field.
+	 */
 	public function setSearchFieldTitle($field_title) {
 		$this->field_title = $field_title;
+	}
+	
+	/**
+	 * Set the data field name to search.
+	 * 
+	 * @param string $field_name Field to search.
+	 */
+	public function setSearchField($field_name) {
+		$this->field_name = $field_name;
+	}
+	
+	/**
+	 * Get the data field being searched.
+	 * 
+	 * @return string The field being searched.
+	 */
+	public function getSearchField() {
+		return $this->field_name;
 	}
 	
 	/**
@@ -100,7 +127,7 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 		//$output .= ($search_text != '') ? 'disabled' : '';
 		$output .= '/>';
 
-		$output .= '<input type="hidden" name="'.$this->id().'" value="companieslistview">';
+		//$output .= '<input type="hidden" name="'.$this->id().'" value="companieslistview">';
 		$output .= '<input type="hidden" name="'.$this->form_reset_var.'" id="'.$this->form_reset_var.'" value="0">';
 		$output .= '<input type="button" value="reset" onClick="document.getElementById(\''.$this->form_reset_var.'\').value = 1;this.form.submit();" />';
 		$output .= '<input type="submit" value="search" />';
@@ -145,7 +172,7 @@ class DP_View_SearchFilter extends DP_View_Stateful {
 		$input_text = $this->form_input_text;
 		
 		if ($request->$input_text != '') {
-			$this->filter->fieldSubstring('c.company_name', $request->$input_text);
+			$this->filter->fieldSubstring($this->getSearchField(), $request->$input_text);
 			$filter_state = $this->filter->createMemento();
 		}
 		

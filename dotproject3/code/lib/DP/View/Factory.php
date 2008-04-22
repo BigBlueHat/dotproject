@@ -79,5 +79,9 @@ class DP_View_Factory {
 	public static function getInfoCellView($id) {
 		return new DP_View_InfoCell($id);
 	}
+	
+	public static function getColumnView($id) {
+		return new DP_View_Columns($id);
+	}
 }
 ?>

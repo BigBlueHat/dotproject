@@ -66,7 +66,7 @@ class DP_View_InfoCell extends DP_View_Cell {
 			}
 		}
 		
-		$output .= '<ul>';
+		$output .= '</ul>';
 		$output .= '</div>';
 		
 		return $output;
