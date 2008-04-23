@@ -149,7 +149,7 @@ class DP_View_Columns extends DP_View_Stateful {
 				$column_height = 0;
 				$column_width = floor(100 / $this->columnCount());
 				
-				$output .= '<tr><td width="'.$column_width.'%">';
+				$output .= '<tr><td width="'.$column_width.'%" valign="top">';
 				$column_count = 1;		
 				
 				while (!$this->view_iterator->isDone()) {
@@ -158,7 +158,7 @@ class DP_View_Columns extends DP_View_Stateful {
 					$column_height++;
 					
 					if ($column_height > $max_items_per_col) {
-						$output .= '</td><td width="'.$column_width.'%">';
+						$output .= '</td><td width="'.$column_width.'%" valign="top">';
 						$column_height = 1;
 						$column_count++;
 					}

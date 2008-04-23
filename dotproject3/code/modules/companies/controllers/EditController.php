@@ -10,6 +10,18 @@
 class Companies_EditController extends DP_Controller_Action {
 	
 	/**
+     * FlashMessenger
+     *
+     * @var Zend_Controller_Action_Helper_FlashMessenger
+     */
+    protected $_flashMessenger = null;
+	
+    public function init() {
+    	$this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+    }
+    
+    
+	/**
 	 * Create a new company object
 	 */
 	public function newAction() {
@@ -86,6 +98,7 @@ class Companies_EditController extends DP_Controller_Action {
 			
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
+			
 			if ($company->company_id) {
 				$company->update();
 			} else {
@@ -93,7 +106,12 @@ class Companies_EditController extends DP_Controller_Action {
 			}
 			
 			// Display a nice message which confirms the save, and views the object
-			//$this->_helper->actionStack('index', 'index', 'companies');
+			// TODO - Flashmessenger requires Zend_Session to work correctly.
+			$this->_flashMessenger->addMessage('Company saved.');
+			
+			$this->_redirector = $this->_helper->getHelper('Redirector');
+			$this->_redirector->setGoto('index', 'index', 'companies');
+            $this->_redirector->redirectAndExit();             
 		}
 	}
 }

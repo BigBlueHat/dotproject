@@ -31,9 +31,11 @@ class Contacts_EditController extends Zend_Controller_Action {
 		$form_definition = $this->_helper->FormDefinition('edit-object');
 		$edit_form = new Zend_Form($form_definition);
 		
-		//$types = DP_Config::getSysVal( 'ContactType' );
-		//$company_type_element = $edit_form->getElement('contact_type');
-		//$company_type_element->addMultiOptions($types);
+		
+		// There dont seem to be any contact types?
+		$types = DP_Config::getSysVal( 'ContactType' );
+		$contact_type_element = $edit_form->getElement('contact_type');
+		$contact_type_element->addMultiOptions($types);
 		
 		if ($contact_id) {
 			// TODO - set default adapter pre dispatch
@@ -51,7 +53,7 @@ class Contacts_EditController extends Zend_Controller_Action {
 			}
 			
 			if (!$this->view->titleblock) {
-				//$title_block = $this->_helper->TitleBlock('Edit Company', '/img/_icons/companies/handshake.png');
+				//$title_block = $this->_helper->TitleBlock('Edit Contact', '/img/_icons/companies/handshake.png');
 				$title_block = $this->_helper->TitleBlock('');
 				$title_block->addCrumb('/contacts', 'contacts');
 				$title_block->addCrumb('/contacts/view/object/id/'.$contact_id, $rowhash['contact_last_name'].', '.$rowhash['contact_first_name']);
@@ -89,7 +91,9 @@ class Contacts_EditController extends Zend_Controller_Action {
 			}
 			
 			// Display a nice message which confirms the save, and views the object
-			//$this->_helper->actionStack('index', 'index', 'companies');
+			$this->_redirector = $this->_helper->getHelper('Redirector');
+			$this->_redirector->setGoto('index', 'index', 'contacts');
+            $this->_redirector->redirectAndExit();             
 		}
 	}
 	

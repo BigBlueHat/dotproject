@@ -16,6 +16,20 @@
  */
 class Companies_IndexController extends DP_Controller_Action
 {
+	
+	/**
+     * FlashMessenger
+     *
+     * @var Zend_Controller_Action_Helper_FlashMessenger
+     */
+    protected $_flashMessenger = null;
+	
+	public function init()
+	{
+		$this->_flashMessenger = $this->_helper->getHelper('FlashMessenger');
+	}
+	
+	
 	/**
 	 * Get an index of companies.
 	 * 
@@ -45,6 +59,7 @@ class Companies_IndexController extends DP_Controller_Action
 		$company_search_view = DP_View_Factory::getSearchFilterView('dp-companies-list-searchfilter');
 		$company_search_view->setSearchFieldTitle('Company name'); // TODO - better detection of available search fields through interface.
 		$company_search_view->setSearchField('c.company_name');
+
 		// Temporarily removed until implemented
 		//$company_select_owner_view = DP_View_Factory::getSelectFilterView('dp-companies-list-selectowner', Array('Not Implemented'), 'Owner');
 		
@@ -96,7 +111,7 @@ class Companies_IndexController extends DP_Controller_Action
 		// Attach the companies index dynamic list to all of the filtering/sorting elements		
 		$companies_index->addModifier($companies_list_view->getSort());
 		$companies_index->addModifier($company_search_view->getFilter());
-		$companies_index->addModifier($companies_tab_filter);
+
 		$companies_index->addModifier($company_list_pager->getPager());		
 		
 		// Update the view hierarchy with the request object.
@@ -111,7 +126,7 @@ class Companies_IndexController extends DP_Controller_Action
 			// Add company_type filter. Deduct 1 due to the All Companies tab
 			$companies_tab_filter->fieldEquals('company_type', $types_keys[$companies_tab_view->selectedTab() - 1]);
 		}
-				
+		$companies_index->addModifier($companies_tab_filter);	
 		
 		$companies_list_view->setDataSource($companies_index);
 		// @todo create better definition of headers to combine sortable and non sortable headers
@@ -119,6 +134,10 @@ class Companies_IndexController extends DP_Controller_Action
 													 'company_projects_active'=>'Active Projects', 
 													 'company_projects_inactive'=>'Inactive Projects',
 													 'company_type'=>'Company Type'));
+		
+        // Show status message
+		// TODO - flashmessenger expects Zend_Session as session handler
+        //$this->view->messages = $this->_flashMessenger->getMessages();
 		
 		// TODO - Make root level container for all DP_Views
 		$this->view->main = $companies_tab_view;

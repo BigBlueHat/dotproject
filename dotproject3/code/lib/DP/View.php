@@ -41,6 +41,8 @@ class DP_View {
 	 * @var array $html_attribs_allowed array of allowed html attributes
 	 */
 	protected $html_attribs_allowed;
+	
+	// SubView order
 	/**
 	 * @var integer APPEND place the child view at the bottom of this DP_View
 	 */
