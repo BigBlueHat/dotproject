@@ -54,20 +54,22 @@ class Companies_EditController extends DP_Controller_Action {
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
 
-			$company_rows = Company::find($company_id);
-			$row = $company_rows->current();
-			$rowhash = $row->toArray();
-			$edit_form->setDefaults($rowhash);
+			$companies = new Db_Table_Companies();
+			$rows = $companies->find($company_id);
+			$obj = $rows->current();
+			$obj_hash = $obj->toArray();
+			
+			$edit_form->setDefaults($obj_hash);
 
 			if (!$this->view->company_name) {
-				$this->view->company_name = $rowhash['company_name'];
+				$this->view->company_name = $obj_hash['company_name'];
 			}
 			
 			if (!$this->view->titleblock) {
 				//$title_block = $this->_helper->TitleBlock('Edit Company', '/img/_icons/companies/handshake.png');
 				$title_block = $this->_helper->TitleBlock('');
 				$title_block->addCrumb('/companies', 'companies');
-				$title_block->addCrumb('/companies/view/object/id/'.$company_id, $rowhash['company_name']);
+				$title_block->addCrumb('/companies/view/object/id/'.$company_id, $obj_hash['company_name']);
 				$title_block->addCrumb('/companies/edit/object/id/'.$company_id, 'edit');
 			}
 				
@@ -94,15 +96,23 @@ class Companies_EditController extends DP_Controller_Action {
 		} else {
 			// form is ok
 			$this->_helper->viewRenderer->setNoRender();
-			$company = Company::bind($_POST);
+			//$company = Company::bind($_POST);
 			
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
 			
-			if ($company->company_id) {
-				$company->update();
+			$companies = new Db_Table_Companies();
+			$company_id = $_POST['company_id'];
+			
+			if ($company_id != '') {
+				$where = $companies->getAdapter()->quoteInto('company_id = ?', $company_id);
+				$updated_company = $companies->createRow($_POST);
+				$companies->update($updated_company->toArray(), $where);
 			} else {
-				$company->insert();
+				$new_company = $companies->createRow($_POST);
+				// Empty primary key throws an exception, so force null value.
+				$new_company->company_id = null;
+				$new_company->save();
 			}
 			
 			// Display a nice message which confirms the save, and views the object

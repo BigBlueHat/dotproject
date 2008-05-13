@@ -5,7 +5,7 @@
  * @package dotproject
  * @subpackage contacts
  * @version 3.0 alpha
- * 
+ * @deprecated Zend_Db_Table and Zend_Db_Rowset already provides this functionality. May be subclassed later if need arises.
  *
  */
 class Contact extends DP_Module_ActiveRecord_Abstract {

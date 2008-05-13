@@ -7,6 +7,7 @@
  * @package companies
  * @subpackage models
  * @todo DP_Object_Base may be renamed to DP_Object (should be).
+ * @deprecated Zend_Db_Table and Zend_Db_Rowset already offer this functionality. Can subclass later if need arises.
  */
 
 class Company extends DP_Module_ActiveRecord_Abstract {

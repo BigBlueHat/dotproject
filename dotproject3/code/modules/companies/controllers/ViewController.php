@@ -24,10 +24,23 @@ class Companies_ViewController extends DP_Controller_Action
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
 			
-			$company_rows = Company::find($company_id);
-			$obj = Company::load($company_rows);
+			$companies = new Db_Table_Companies();
+			$rows = $companies->find($company_id);
+			$obj = $rows->current();
+			
+			
+
+			$related_tab_view = DP_View_Factory::getTabBoxView('company_related_children');	
+			$related_tab_view->setUrlPrefix($this_url);
+
+			$child_list = DP_Related::findChildren($obj);
+			foreach ($child_list as $child) {
+				$child_view = DP_Related::factory($obj, $child);
+				$related_tab_view->add($child_view, $child->title);
+			}
 			
 			$this->view->obj = $obj;
+			$this->view->related = $related_tab_view;
 			
 			$types = DP_Config::getSysVal( 'CompanyType' );
 			$this->view->company_type = $types[$obj->company_type];

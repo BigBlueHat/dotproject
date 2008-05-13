@@ -42,21 +42,29 @@ class Contacts_EditController extends Zend_Controller_Action {
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
 
-			$contact_rows = Contact::find($contact_id);
-			$row = $contact_rows->current();
-			$rowhash = $row->toArray();
-			$edit_form->setDefaults($rowhash);
+			$contacts = new Db_Table_Contacts();
+			$rows = $contacts->find($contact_id);
+			$obj = $rows->current();
+			
+			$obj_hash = $obj->toArray();
+
+			$edit_form->setDefaults($obj_hash);
 
 			if (!$this->view->contact_first_name) {
-				$this->view->contact_first_name = $rowhash['contact_first_name'];
-				$this->view->contact_last_name = $rowhash['contact_last_name'];
+				$this->view->contact_first_name = $obj_hash['contact_first_name'];
+				$this->view->contact_last_name = $obj_hash['contact_last_name'];
 			}
 			
 			if (!$this->view->titleblock) {
 				//$title_block = $this->_helper->TitleBlock('Edit Contact', '/img/_icons/companies/handshake.png');
 				$title_block = $this->_helper->TitleBlock('');
 				$title_block->addCrumb('/contacts', 'contacts');
-				$title_block->addCrumb('/contacts/view/object/id/'.$contact_id, $rowhash['contact_last_name'].', '.$rowhash['contact_first_name']);
+				if ($obj->contact_order_by != '') {
+					$title_block->addCrumb('/contacts/view/object/id/'.$contact_id, $obj_hash['contact_order_by']);	
+				} else {
+					$title_block->addCrumb('/contacts/view/object/id/'.$contact_id, $obj_hash['contact_last_name'].', '.$obj_hash['contact_first_name']);
+				}
+				
 				$title_block->addCrumb('/contacts/edit/object/id/'.$contact_id, 'edit');
 			}
 				
@@ -78,22 +86,30 @@ class Contacts_EditController extends Zend_Controller_Action {
 		if (!$edit_form->isValid($_POST)) {
 			$this->view->form = $edit_form;		
 		} else {
-			// form is ok
 			$this->_helper->viewRenderer->setNoRender();
-			$contact = Contact::bind($_POST);
 			
 			$db = DP_Config::getDB();
 			Zend_Db_Table_Abstract::setDefaultAdapter($db);
-			if ($contact->contact_id) {
-				$contact->update();
+			
+			$contacts = new Db_Table_Contacts();
+			$contact_id = $_POST['contact_id'];
+			
+			if ($contact_id != '') {
+				$where = $contacts->getAdapter()->quoteInto('contact_id = ?', $contact_id);
+				$updated_contact = $contacts->createRow($_POST);
+				$contacts->update($updated_contact->toArray(), $where);
 			} else {
-				$contact->insert();
+				$new_contact = $contacts->createRow($_POST);
+				// Empty primary key throws an exception, so force null value.
+				$new_contact->contact_id = null;
+				$new_contact->save();
 			}
 			
 			// Display a nice message which confirms the save, and views the object
+			
 			$this->_redirector = $this->_helper->getHelper('Redirector');
 			$this->_redirector->setGoto('index', 'index', 'contacts');
-            $this->_redirector->redirectAndExit();             
+            $this->_redirector->redirectAndExit();    
 		}
 	}
 	
