@@ -11,7 +11,7 @@
  * @version 3.0 alpha
  * 
  */
-class DP_View_Cell_ArrayItem extends DP_View {
+class DP_View_Cell_ArrayItem extends DP_View_Cell {
 	/**
 	 * @var Array $items collection of items
 	 */

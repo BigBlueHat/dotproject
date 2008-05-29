@@ -69,7 +69,8 @@ class Companies_IndexController extends DP_Controller_Action
 		$company_list_pager->setPersistent(false);
 		$company_list_pager->align = 'center';
 
-		$companies_list_view = DP_View_Factory::getListView('dp-companies-list-view');
+		$list_view_id = 'dp-companies-list-view';
+		$companies_list_view = DP_View_Factory::getListView($list_view_id);
 		$companies_list_view->setUrlPrefix($this_url);
 		
 		// TODO - Find a better way of adding new object buttons to lists.
@@ -77,7 +78,15 @@ class Companies_IndexController extends DP_Controller_Action
 		$new_btn->button->setLabel('+ New Company');
 		$new_btn->button->onClick = "location = '/companies/edit/new'";
 		
-		$companies_list_view->add($new_btn, DP_View::APPEND);
+		// Create selection tools
+		$select_tools = new DP_View_ObjectSelectTools('dp-companies-selection', $list_view_id);
+		
+		// Add buttons to horizontal box
+		$btn_hbox = new DP_View_Hbox('dp-companies-hbox');
+		$btn_hbox->add($new_btn);
+		$btn_hbox->add($select_tools);
+		
+		$companies_list_view->add($btn_hbox, DP_View::APPEND);
 		$companies_list_view->add($company_search_view, DP_View::PREPEND);
 		$companies_list_view->add($company_list_pager, DP_View::APPEND);
 		// Owner filter disabled until implemented.
@@ -86,7 +95,8 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		// Access the default row iterator, you can set your own if preferred
 		$companies_list_view->row_iterator->addRow(
-								Array(new DP_View_Cell_ObjectLink('company_id','company_name', '/companies/view/object/id/'),
+								Array(new DP_View_Cell_ObjectSelect('company_id', Array('width'=>'20px', 'align'=>'center')),
+									  new DP_View_Cell_ObjectLink('company_id','company_name', '/companies/view/object/id/'),
 									  new DP_View_Cell('company_projects_active', Array('width'=>'120px', 'align'=>'center')),
 								      new DP_View_Cell('company_projects_inactive', Array('width'=>'120px', 'align'=>'center')),
 								      new DP_View_Cell_ArrayItem($types, 'company_type', Array('align'=>'center','width'=>'120px')))
@@ -130,7 +140,8 @@ class Companies_IndexController extends DP_Controller_Action
 		
 		$companies_list_view->setDataSource($companies_index);
 		// @todo create better definition of headers to combine sortable and non sortable headers
-		$companies_list_view->setColumnHeaders(Array('c.company_name'=>'Company Name', 
+		$companies_list_view->setColumnHeaders(Array('company_id'=>'X',
+													 'c.company_name'=>'Company Name', 
 													 'company_projects_active'=>'Active Projects', 
 													 'company_projects_inactive'=>'Inactive Projects',
 													 'company_type'=>'Company Type'));

@@ -15,6 +15,7 @@ class DP_Memcache_Wrapper
 	private $_max_age = 0;
 	private $_memcache_object = null;
 	private $_flags = 0;
+	public	$session_list = null;
 
 	/**
 	 * Construct the object.
@@ -88,8 +89,16 @@ class DP_Memcache_Wrapper
 	 */
 	public function __get($key)
 	{
+
 		if ($this->_memcache_available) {
-			return $this->_memcache_object->get($this->_namespace . $key);
+			if ($key == 'session_list') {
+				$obj = $this->_memcache_object->get($this->_namespace . $key);
+				die('sess');
+			} else {
+				$obj = $this->_memcache_object->get($this->_namespace . $key);
+				return $obj;
+			//return $this->_memcache_object->get($this->_namespace . $key);
+			}
 		} else {
 			return null;
 		}
@@ -104,7 +113,12 @@ class DP_Memcache_Wrapper
 	public function __set($key, $value)
 	{
 		if ($this->_memcache_available) {
-			$this->_memcache_object->set($this->_namespace.$key, $value,$this->_flags, $this->_max_age);
+			
+			if ($key == 'session_list') {
+				die('sess-set');	
+			} else {
+				$this->_memcache_object->set($this->_namespace.$key, $value,$this->_flags, $this->_max_age);
+			}
 		}
 	}
 

@@ -14,6 +14,7 @@ class DP_View_Iterator_2D extends DP_View_Iterator {
 	 * @var string $grouping_element The element to group arrays of views with.
 	 */
 	protected $grouping_element;
+	protected $required_js;
 	
 	/**
 	 * Initialise the view array.
@@ -22,6 +23,32 @@ class DP_View_Iterator_2D extends DP_View_Iterator {
 		parent::__construct();
 		$this->grouping_element = 'TR';
 		$this->setContainerElement('TD');
+		$this->required_js = Array();
+	}
+	
+	/**
+	 * Add a required javascript file.
+	 * 
+	 * @param DP_View_Cell $view Cell view that requested the javascript.
+	 * @param string $js Relative URL of the javascript to be included.
+	 */
+	private function addRequiredJS($view, $js) {
+		$this->required_js[] = Array('view'=>$view, 'js'=>$js);
+	}
+	
+	/**
+	 * Get an array of required javascript files.
+	 * 
+	 * @return Array indexed array of relative URLs to javascript files.
+	 */
+	private function getRequiredJSFiles() {
+		$required_files = Array();
+		foreach ($this->required_js as $req) {
+			$required_file = $req['js'];
+			$required_files[] = $required_file;
+		}
+		
+		return $required_files;
 	}
 	
 	/**
@@ -51,6 +78,27 @@ class DP_View_Iterator_2D extends DP_View_Iterator {
 	 */
 	public function setGroupingElement($el) {
 		$this->grouping_element = $el;
+	}
+	
+	/**
+	 * Notify this view that the specified Zend_View will render.
+	 * 
+	 * @param $view Zend_View
+	 */
+	public function viewWillRender($view) {
+		// iterate through rows and cells, collecting required javascript.
+		Zend_Debug::dump("Iterator notified of view render.");
+		foreach($this->views as $viewrow) {
+			foreach ($viewrow as $v) {
+				$js = $v->getRequiredJS(); // Get the javascript required to support the cell.
+				
+				if ($js != null) {
+					Zend_Debug::dump("Javascript required: ".$js);
+					$view->headScript()->appendFile($js);
+				}
+			}
+		}
+		// add javascript to Zend_View
 	}
 	
 	/**

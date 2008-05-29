@@ -160,6 +160,10 @@ class DP_View_TabBox extends DP_View_Stateful {
 		return count($this->tabs);
 	}
 	
+	protected function notifyChildrenWillRender($view) {
+		$this->tabs[$this->active_tab_index]['view']->viewWillRender($view);
+	}
+	
 	/**
 	 * Update child tab views with request object.
 	 */

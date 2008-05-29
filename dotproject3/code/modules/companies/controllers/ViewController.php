@@ -28,8 +28,6 @@ class Companies_ViewController extends DP_Controller_Action
 			$rows = $companies->find($company_id);
 			$obj = $rows->current();
 			
-			
-
 			$related_tab_view = DP_View_Factory::getTabBoxView('company_related_children');	
 			$related_tab_view->setUrlPrefix($this_url);
 

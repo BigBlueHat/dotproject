@@ -3,7 +3,7 @@
  * Cell containing the name of an object which is also a link to that object.
  *
  */
-class DP_View_Cell_ObjectLink extends DP_View {
+class DP_View_Cell_ObjectLink extends DP_View_Cell {
 	private $hrefprefix;
 	private $id_key;
 	private $name_key;

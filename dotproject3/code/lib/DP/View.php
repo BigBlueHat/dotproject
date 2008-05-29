@@ -193,6 +193,38 @@ class DP_View {
 	}
 	
 	/**
+	 * Notify the DP_View Instance that Zend_View will render the template.
+	 * 
+	 * This allows the DP_View object to make use of view helpers to add javascript inclusions
+	 * or modifications to the style sheets as necessary.
+	 * 
+	 * @param Zend_View $view Instance of the view.
+	 */
+	public function viewWillRender($view) {
+		// Add supporting JavaScript
+		// Add supporting CSS
+		//Zend_Debug::dump('Calling child notification');
+		$this->notifyChildrenWillRender($view);
+	}
+	
+	/**
+	 * Notify the child instances of DP_View that Zend_View will render the template.
+	 * 
+	 * This allows child DP_View objects to add javascript and stylesheets before they are rendered.
+	 * 
+	 * @param Zend_View $view Instance of the view.
+	 */
+	protected function notifyChildrenWillRender($view) {
+		//Zend_Debug::dump('Notifying '.count($this->child_views).' children of '.$this->Id());
+		
+		foreach ($this->child_views as $child) {
+			//Zend_Debug::dump('notifying children');
+			$child['view']->viewWillRender($view);
+			//Zend_Debug::dump('Notified child:'.$child['view']->Id());
+		}
+	}
+	
+	/**
 	 * Render all child DP_View objects into HTML.
 	 */
 	protected function renderChildren($location = DP_View::PREPEND) {
@@ -226,6 +258,7 @@ class DP_View {
 	
 	// Localization: From Zend_Form class definition
 	// TODO - add copyright notice from zend license.
+	// TODO - remove reference to Zend_Form
 
     /**
      * Set translator object

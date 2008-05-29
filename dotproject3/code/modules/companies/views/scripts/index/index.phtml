@@ -1,2 +1,7 @@
+<?php
+$this->headLink()->appendStylesheet($this->baseUrl.'/css/dp-view.css');
+// Give DP_View and children a chance to inject javascript/css.
+$this->main->viewWillRender($this);
+?>
 <?=$this->messages?>
 <?=$this->main;?>

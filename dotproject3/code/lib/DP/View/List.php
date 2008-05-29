@@ -113,6 +113,17 @@ class DP_View_List extends DP_View_Stateful {
 	}
 	
 	/**
+	 * Notify this view that it is about to be rendered
+	 * 
+	 * @param Zend_View $view The view object that is about to be rendered.
+	 */
+	public function viewWillRender($view) {
+		Zend_Debug::dump("Listview notified: view will render");
+		$this->row_iterator->viewWillRender($view); // Allows row iterator to add javascript for cells.
+		$this->notifyChildrenWillRender($view);
+	}
+	
+	/**
 	 * Render this view to HTML
 	 * 
 	 * @return string HTML output
@@ -124,23 +135,23 @@ class DP_View_List extends DP_View_Stateful {
 		$output = "";
 		$output .= $this->renderChildren(DP_View::PREPEND);
 		
-		$output .= "<table class=\"dp-view-list\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
+		$output .= "<table class=\"dp-view-list\" id=\"".$this->id()."\" width=\"".$this->width()."\" border=\"0\" cellpadding=\"2\" cellspacing=\"1\" >\n";
 		
 		foreach ($this->column_headers as $fname => $hdr) {
 			$output .= '<th><a href="?view_id='.$this->id().'&sort='.$fname.'" class="hdr">'.$hdr.'</a></th>';
 		}
 
 		$this->row_iterator->setDataSource($this->src);
+		
 		if ($this->row_iterator->isDone()) {
 			$output .= '<tr><td colspan="'.$this->columnCount().'">No records were found matching your query.</td></tr>';
+		} else {	
+			while (!$this->row_iterator->isDone()) {
+				$row = $this->row_iterator->currentItem();
+				$output .= $row;
+				$this->row_iterator->next();
+			}
 		}
-		
-		while (!$this->row_iterator->isDone()) {
-			$row = $this->row_iterator->currentItem();
-			$output .= $row;
-			$this->row_iterator->next();
-		}
-		
 		$output .= "</table>\n";
 		$output .= $this->renderChildren(DP_View::APPEND);		
 		return $output;

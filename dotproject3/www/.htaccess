@@ -6,4 +6,4 @@ php_flag session.auto_start Off
 php_value auto_prepend_file "../code/lib/init.php"
 </IfModule>
 RewriteEngine On
-RewriteRule !\.(js|iso|gif|jpg|jpeg|png|css)$ index.php
+RewriteRule !\.(js|iso|gif|jpg|jpeg|png|css|xml)$ index.php

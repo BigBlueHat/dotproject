@@ -29,3 +29,11 @@ Table.View_Columns {
 	border: 1px solid #000000;
 	background-color: #D6EBFF;
 }
+
+.selectedRow td {
+	background-color: #FF0000;
+}
+
+TR.unselectedRow {
+	background-color: #FFFFFF;
+}

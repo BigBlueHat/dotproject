@@ -2,6 +2,9 @@
 /**
  * Static class to retrieve relationship definitions from the relationship table.
  * 
+ * The DP_Related class checks the relationships table for anything containing the parent object's
+ * originating table. The row(s) returned indicate which child module handlers should be loaded (instances of DP_Related_Handler).
+ * These handlers are instantiated and asked to create DP_View objects based on their parent which get returned to the controller.
  *
  */
 
